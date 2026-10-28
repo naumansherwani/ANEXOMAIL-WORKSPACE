@@ -1,5 +1,10 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 28 Oct 13:10 PKT — founder: Email <-> Chat Bridge (5 features + 5 workflow + 5 DB logic) blueprint mein tarteeb se add; "yeh bhi hoga"
+Verbatim poora text: docs/cursor-work/founder/orders/2026-10-28-1310-mail-chat-bridge-VERBATIM.md
+- Kaam (docs only, Rule 63/64): dedupe scan -> docs/claude/FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md; MASTER-ORDER step 12b; blueprint §16z. Naam: "Mail<->Chat Bridge" (founder ke "Bridge" page se alag, confusion nahi).
+- Halat: **DONE (docs)**: FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md. Scan ka nateeja: zyada tar features user side par PEHLE SE hain (ANEXOChat phase 23-31, E7, E99); founder ko latest-tech port + deltas (thread master record, email+chat ek chain, work-object evidence constraint, reply-from-chat, Outcome Timeline). Order 12b-1..6. Founder ki dono lists (Bridge/Dashboard) blueprint §16z mein.
+
 ## ▶ 28 Oct 13:06 PKT — founder: Bridge ke features batao, Dashboard ke batao; Dashboard ke NEECHAY Bridge aaye ga
 Founder (verbatim): "bhai bridge ke features batao dashboard ke baatao dashboard ke neechay bridge aye ga bridge main kya aye ga socho"
 - Faisla: sidebar order = Dashboard (company health) phir Bridge (founder control) phir decks. Lists: docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md (D1-D9, B1-B9). Dashboard page jab banega (step 5a, pehla tile Ledger gauge) tab nav mein Bridge ke UPAR lagega; us se pehle khali/jhoota Dashboard page nahi (Rule 69).

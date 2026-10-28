@@ -24,6 +24,7 @@ UI system (tokens, shell, Trust, mobile/tablet): docs/claude/FOUNDER-UI-DESIGN-2
 | 11a | **K1 Sealed Agreements** (cross-company cryptographic escrow) | after 11 + F2c |
 | 12 | **F6** Systems + **AI (10 pages, founder-only)**: health, **Analytics**, **Speed (perf)**, **Admin**, **Safety**, **ANEXOChat**, Workspace/AI settings | after 11 |
 | 12a | **K2 Mesh / air-gapped sync** (research spike first; needs LAN node) | after 12 |
+| 12b | **Mail<->Chat Bridge** (6 sub-steps 12b-1..6; most of it exists user-side, founder gets the latest-tech port + new deltas) — FOUNDER-MAIL-CHAT-BRIDGE | after 12 |
 | 13 | **F8** Control: kill switch, flags, one-click executor (every action G2/G3, audit + rollback), Settings changes | after 12 |
 | 13a | **K3 Poison Pill** (crypto-shred of cached data; G3) | after 13 |
 | 14 | **F9 CUTOVER**: old 36 Lovable founder route files + 53 Bun-only founder endpoints removed ONLY after Rust == Bun proof for each | after 13 |

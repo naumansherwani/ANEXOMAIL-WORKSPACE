@@ -334,3 +334,9 @@ Responsive: har phase 390 / 820 / 1440 par proof (Rule 34). Sab data authentic (
 ## §15z KILLER FEATURES + DASHBOARD INDICATORS (founder 28 Oct 12:47) — technology first (Rule 62)
 Full text, duplicate scan, honest limits: **docs/claude/FOUNDER-KILLER-FEATURES-28OCT.md**. Technology: Postgres append-only + Rust (ring Ed25519, sha2) + WASM kernel verify + React 19.2/Vite 8.2 + passkey (F2d). Numbers in FOUNDER-MASTER-ORDER: 5a I1 Ledger Integrity Gauge · 8a I3 Device Trust Map · 10a I2 Work Chain Dependencies · 10b K4 Insider Guard · 11a K1 Sealed Agreements · 12a K2 Mesh · 13a K3 Poison Pill. Pull commands (Rule 66) are written when each phase starts: SQL `sql-run.sh`, Rust+SPA `founder-install.sh`.
 Bridge = founder-only cross-tenant control; Dashboard = read-only company health (the 3 indicators).
+
+
+## §16z MAIL<->CHAT BRIDGE + BRIDGE/DASHBOARD LISTS (founder 28 Oct 13:10)
+Technology first: Postgres append-only + Rust (sha2, ring) + existing mail procs + WASM kernel + React 19.2 split view. Full scan/plan: **docs/claude/FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md** (finding: most features already exist in ANEXOChat phases 23-31/E7 on the user side; founder gets the port + deltas). Order: 12b-1..6 after Mail Desk (11) and ANEXOChat (12).
+Founder's confirmed lists (docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md): **Dashboard** (read-only, trends) = Ledger Integrity Gauge, Active Work Chain Dependencies, Device Trust Map, Uptime and speed, Growth, Mail health, Capacity, Support clock, Audit activity. **Bridge** (founder desk, every row has an action; max ~6 blocks visible) = Needs you, Money now, Fire alarm, Release, Customers waiting, Live Pulse, Poison Pill, Mesh fleet, My desk. Rules: Dashboard says "what is", Bridge says "what do I do now"; each tile lives in one place, the other links. Nav order: Dashboard, then Bridge.
+Pull commands (Rule 66) when each sub-step starts: SQL `sql-run.sh`, Rust+SPA `founder-install.sh`.

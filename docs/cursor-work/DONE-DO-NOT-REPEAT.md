@@ -1163,3 +1163,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 28 Oct 13:30 PKT — founder 13:02: clock colour/background purane jaisa: body radial gradient wapis (ui.css) + Inter 200/300 woff2. Lesson: ek global body rule se poora look badal jata hai — redesign ke baad purane/naye screenshot ka pixel compare karo.
 
 - 28 Oct 13:35 PKT — founder 13:06: nav order Dashboard phir Bridge; B/D lists confirm (FOUNDER-BRIDGE-VS-DASHBOARD). Docs only.
+
+- 28 Oct 13:45 PKT — Mail<->Chat Bridge order (13:10): scan -> zyada tar user side par pehle se (anexochat/sql phase 23-31, E7, E99) — dobara design mat karo, port + deltas: docs/claude/FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md; MASTER-ORDER 12b; blueprint §16z (Bridge/Dashboard lists bhi).

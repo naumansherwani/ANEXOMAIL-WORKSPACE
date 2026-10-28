@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 705c355dfb7be622
+docs/cursor-work/founder/founder-commands.md e21a737a64908871
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 5e6e46573de36831
+docs/cursor-work/DONE-DO-NOT-REPEAT.md b9e69d594352ac5a
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0c1a6a8b9e10e904
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 63a6b8300b27df60
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 6670db559385d065
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -875,7 +875,7 @@ src/lib/i18n.ts da79a8e10a34830b
 src/components/app/files/AttachmentChip.tsx 68e1fbdeb8e34251
 docs/claude/FOUNDER-CODE-INVENTORY-28OCT.md f0db8d47c2645a9b
 docs/claude/FOUNDER-PROTOCOL-28OCT.md 46978a322f4babc2
-docs/claude/FOUNDER-BUILD-PLAN-28OCT.md 2fc8debfde9d2c04
+docs/claude/FOUNDER-BUILD-PLAN-28OCT.md c20482a2a97d72fd
 docs/claude/founder/INDEX.md e84000a6ed0eaa36
 docs/claude/founder/FOUNDER-SECURITY-28OCT.md 55813133c13fe896
 server/founder/.gitignore b53ee26e6ff1da21
@@ -958,7 +958,7 @@ docs/cursor-work/sql/CHECK_E108.sql b9dd58efb9371c43
 server/founder/src/settings.rs bd18acf48b386d3b
 founder-web/src/city.js 84a1e30080335a55
 founder-web/src/places.js 7c64d2716e9dca4c
-docs/claude/FOUNDER-MASTER-ORDER-28OCT.md 0b0c6f1988848532
+docs/claude/FOUNDER-MASTER-ORDER-28OCT.md 991038aaacf96c32
 docs/claude/FOUNDER-UI-DESIGN-28OCT.md 4762e1de22d63e1e
 founder-web/src/Bridge.jsx c382bc6432eb4824
 founder-web/src/Palette.jsx 3a86b195af8dadc7
@@ -975,3 +975,5 @@ founder-web/src/cinema.css 312474c073e9860d
 docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md 7810172f388f411a
 founder-web/src/fonts/Inter-ExtraLight.woff2 6d7a7e116e51ec3f
 founder-web/src/fonts/Inter-Light.woff2 ef36dc6c1a3a465d
+docs/claude/FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md f17bc20a7db70f63
+docs/cursor-work/founder/orders/2026-10-28-1310-mail-chat-bridge-VERBATIM.md 86f4f1078f649311
