@@ -464,3 +464,6 @@ Har naye kaam ki technology + data ka raasta pehle founder ke saath discuss ho a
 
 ## Rule 64 (STRICT, founder 28 Oct 2026 06:10 PKT) — EK PHASE: green, Chrome par LIVE dekha, phir agla
 Founder ke kaam mein ek waqt mein ek phase. Phase tab GREEN jab (1) server par command chali, (2) saboot/CHECK sab OK, (3) Chrome par live dekha gaya. Us se pehle agle phase ka code/pull/command NAHI diya jata, na do phase ki commands mix ki jati hain. Code pehle likha ho to bhi uska pull tab tak nahi jab tak pichla phase green na ho.
+
+## Rule 65 (STRICT, founder 28 Oct 2026 06:37 PKT) — Lovable codes + blueprint DONO samne, features tarteeb se; UI saaf, cluster nahi
+Founder ka kaam: purane Lovable founder code (docs/claude/founder/CODES/01-FILES, 02-ENDPOINTS) aur blueprint (FOUNDER-BUILD-PLAN-28OCT, §6z FX list) DONO samne rakh kar, feature list ki tarteeb se, ek-ek phase. UI: cluster/bheed NAHI — aankhon ko aasaan, saaf, kam cheezein ek screen par; lekin Admin mein sab kuch maujood (kuch gum nahi hota, sirf sahi jagah/andar). Har purani feature ka naye mein ghar blueprint mein likha hona chahiye.

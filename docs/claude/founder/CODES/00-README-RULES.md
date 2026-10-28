@@ -18,3 +18,5 @@ Yeh folder founder ke SAB code ka naqsha hai: files, endpoints, gates, mix, audi
 - FC11: Founder host sirf `founder.anexomail.com` (naya). Purana `founderworkspace.anexomail.com` cutover tak, phir band.
 - FC12 (founder 28 Oct 06:36): FEATURES TARTEEB SE. Har phase mein purani Lovable files ki feature list aur blueprint DONO saamne rakh kar chalna — pehle us page ki features nikalo (01-FILES, 02-ENDPOINTS), phir naye mein banao, phir Chrome live. Koi purani feature bina list ke na chhootay.
 - FC13 (UI): CLUSTER NAHI. Aankhon ko aasan: ek screen = ek maqsad, kam cards, bari saaf likhai, kam rang, bohat khali jagah, ek waqt mein ek section. Admin mein SAB kuch ho (har purani feature) lekin darje se: pehle ek saaf landing/Bridge, baqi decks/menu ke peeche (progressive disclosure). 3D toggle hamesha.
+- FC12 (28 Oct 06:37): Kaam hamesha purane Lovable code + blueprint dono ko saath rakh kar, features list ki tarteeb se. Koi purani feature bina "naye mein ghar" ke na choote.
+- FC13: UI cluster-free: ek screen par kam cheez, bada saaf type, aankhon ko aasaan; sab kuch Admin mein (andar/search/deck), kuch gum nahi.
