@@ -453,3 +453,4 @@ Founder ne plan manzoor kiya: "repo main likh lo ke yeh hai core Founder ki tech
 - **Shakal:** command bridge — pehle 5 second mein paisa + "kya bigad raha hai" + awam ki awaaz; neeche People, Mail Desk, Release, Move-In, Systems, Control; har action do-tap + reason + audit. Privacy: metadata-only (content kabhi nahi).
 - **Phases:** F0 design -> F1a security fix -> F1b foundation -> F2 Bridge -> F3 Money+Release -> F4 People -> F5 Mail Desk -> F6 Systems -> F7 3D -> F8 Control -> F9 cutover. Ek ke baad agla, har phase ka exit saboot plan mein.
 - Nexatect (parent) ka alag login: anexomail.com puri website banne ke BAAD.
+- **Security (founder 28 Oct 05:07):** founder mein Rule 52 kernel builtin + `ANEXO_TAG_MODE=enforce` hamesha; military-level hardening: `docs/claude/founder/FOUNDER-SECURITY-28OCT.md`. Founder ka sab kuch ek jagah: `docs/claude/founder/INDEX.md`.
