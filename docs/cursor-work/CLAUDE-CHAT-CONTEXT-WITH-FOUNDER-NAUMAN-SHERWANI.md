@@ -1833,3 +1833,6 @@ Edge is CADDY with HTTP/3 (FC31) — never mention nginx etc. Sidebar arrows rem
 
 ## 28 Oct 10:40 PKT — LIVE PROOF
 F1a-1 live green in Chrome (device approved chip + exchange 200). Open: re-run founder-install (serves 6ef39cd, needs adf1437), Polar token (founder-polar.sh), HTTP/3 not advertised (no Alt-Svc) -> founder runs diagnostic, then fix Caddy global `servers { protocols h1 h2 h3 }` + UDP 443. Then FOUNDER_LEGACY_TOKEN=0, F1a-2.
+
+## 28 Oct 10:55 PKT
+Polar = connected via the existing production webhook's tables (E105 read-only pulse) + Metrics API using the engine's existing key (founder-polar.sh engine). Never paste keys in chat. Clock has no seconds digits. Server order: sql-run.sh -> CHECK_E105 -> founder-install.sh -> founder-polar.sh engine -> Chrome. LEGACY token flag still 1.

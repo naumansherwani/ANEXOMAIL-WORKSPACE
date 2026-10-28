@@ -56,7 +56,7 @@ function Clock({ tz }) {
   const D = (v, i) => <span className="dg" key={`${i}${v}`}>{v}</span>; // plain function (not a component) so only a changed digit re-mounts and rolls
   return (
     <time className="clock" dateTime={now.toISOString()} aria-label={`${p.hour}:${p.minute} in ${cityOf(tz)}`}>
-      <span className="digits" aria-hidden="true"><span className="pair">{D(p.hour[0], 0)}{D(p.hour[1], 1)}</span><b className="colon">:</b><span className="pair">{D(p.minute[0], 0)}{D(p.minute[1], 1)}</span><span className="secs">{D(p.second[0], 0)}{D(p.second[1], 1)}</span></span>
+      <span className="digits" aria-hidden="true"><span className="pair">{D(p.hour[0], 0)}{D(p.hour[1], 1)}</span><b className="colon">:</b><span className="pair">{D(p.minute[0], 0)}{D(p.minute[1], 1)}</span></span>
       <span className="beam" aria-hidden="true"><i style={{ width: `${(Number(p.second) / 59) * 100}%` }} /></span>
       <small><span className="dot" />{cityOf(tz)} · {String(p.timeZoneName || "").replace("GMT", "GMT")}</small>
     </time>
@@ -64,12 +64,13 @@ function Clock({ tz }) {
 }
 const SAY = { morning: "Good morning", afternoon: "Good afternoon", evening: "Good evening", night: "Good night" };
 const fmtMinor = (n) => (Number(n) / 100).toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-function Greeting({ m, t, v, at, p }) {
+function Greeting({ m, t, v, at, p, h }) {
   const [now, setNow] = useState(() => new Date());
   useEffect(() => { const id = setInterval(() => setNow(new Date()), 30000); return () => clearInterval(id); }, []);
   const tz = browserZone(), part = dayPart(now, tz), nm = firstName();
   const bits = [];
   if (p?.connected && p.mrr_minor != null) bits.push(`${fmtMinor(p.mrr_minor)} MRR (Polar)`, `${p.active_subscriptions ?? 0} active subscription(s)`);
+  else if (h?.subscriptions?.connected) bits.push(`${h.subscriptions.by_status?.active ?? 0} active subscription(s) · ${h.subscriptions.by_status?.past_due ?? 0} past due (Polar webhook)`);
   else if (m?.connected) bits.push(`£ ${Number(m.mrr_gbp || 0).toLocaleString("en-GB")} MRR (manual records, not Polar)`, `${m.active_accounts} active account(s)`);
   if (t) bits.push(t.level === "ok" ? "Nothing needs attention" : `${t.items.filter((i) => i.state !== "ok").length} item(s) need attention`);
   if (v?.connected) bits.push(`${v.new_leads} new lead(s)`);
@@ -106,7 +107,7 @@ export default function App() {
 
   if (!authed) return <Gate />;
   if (pend) return <DeviceScreen code={pend.code} revoked={pend.revoked} retry={load} />;
-  const m = d?.money, t = d?.trouble, v = d?.voice, pl = d?.polar;
+  const m = d?.money, t = d?.trouble, v = d?.voice, pl = d?.polar, hk = d?.polar_hook;
   const AWAM = [["Dashboard", "/app", "dashboard"], ["Mail", "/app/mail/inbox", "mail"], ["People", "/app/people", "people"], ["Calendar", "/app/calendar", "calendar"], ["Work", "/app/work", "work"], ["CRM", "/app/crm", "crm"], ["Org", "/app/org", "org"], ["Analytics", "/app/analytics", "analytics"], ["Safety", "/app/safety", "safety"], ["ANEXOChat", "/app/chat", "chat"], ["AI", "/app/ai-center", "ai"], ["Speed", "/app/perf", "speed"], ["Founder", "/app/founder", "founder"], ["Admin", "/app/admin", "admin"]];
   const NAV = [["bridge", "Bridge"], ...ORDER.map((k) => [k, DECK_META[k].title]), ["audit", "Audit"]];
   const title = view === "bridge" ? "Command center" : (NAV.find((n) => n[0] === view) || [0, ""])[1];
@@ -132,15 +133,19 @@ export default function App() {
           <button className="nav collapse" onClick={toggleSlim} aria-label={slim ? "Expand sidebar" : "Collapse sidebar"} title={slim ? "Expand" : "Collapse"}><Icon k="collapse" /><span className="lbl">Collapse</span></button>
         </nav>
         <main className="content">
-      {view === "bridge" ? <Greeting m={m} t={t} v={v} at={at} p={d?.polar} /> : <div className="titleblock"><span className="kicker">{title.toUpperCase()}</span><h1>{title}</h1></div>}
+      {view === "bridge" ? <Greeting m={m} t={t} v={v} at={at} p={d?.polar} h={d?.polar_hook} /> : <div className="titleblock"><span className="kicker">{title.toUpperCase()}</span><h1>{title}</h1></div>}
       <div className="chips"><span className="chip warn">Signature not yet verified in browser (kernel: F2b)</span>{(() => { const ds = deviceStatus(); return ds.mode === "device" ? <span className="chip ok">Device approved · {ds.label}</span> : <span className="chip warn">{ds.mode === "legacy" ? "Device approval not active on the server yet (install pending)" : "Checking this device…"}</span>; })()}</div>
       {err && <div className="err banner" role="alert">{err}</div>}
       {DECK_META[view] ? <><DeckPage deck={view} money={m} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : view !== "bridge" ? <div className="grid"><Deck key={view} deck={view} /></div> :
       <div className="grid">
         <Card title="BILLING · POLAR">
-          {!pl ? <div className="big dim">…</div> : !pl.connected ? <div className="big dim">not connected<small>{pl.note}</small></div> :
-            <><div className="big">{pl.mrr_minor == null ? "Not measured" : fmtMinor(pl.mrr_minor)}</div><div className="dim">MRR · {pl.active_subscriptions ?? "?"} active · +{pl.new_30d} new · −{pl.canceled_30d} cancelled (30 days)</div>
-              <div className="note">{pl.stale ? `Stale: ${pl.last_error || "no recent reading"}` : `Revenue 30 days: ${fmtMinor(pl.revenue_30d_minor)}`}</div><div className="src">source: {pl.source} · amounts in the Polar account currency</div></>}
+          {!pl ? <div className="big dim">…</div> : <>
+            {pl.connected && pl.mrr_minor != null && <><div className="big">{fmtMinor(pl.mrr_minor)}</div><div className="dim">MRR · {pl.active_subscriptions ?? "?"} active · +{pl.new_30d} new · −{pl.canceled_30d} cancelled (30 days)</div>{pl.stale && <div className="note">Stale: {pl.last_error || "no recent reading"}</div>}</>}
+            {!pl.connected && !hk?.subscriptions?.connected && <div className="big dim">not connected<small>{pl.note}</small></div>}
+            {hk?.subscriptions?.connected && <>{!pl.connected && <><div className="big">{hk.subscriptions.by_status?.active ?? 0}<small>active subscriptions · {hk.subscriptions.by_status?.past_due ?? 0} past due · {hk.subscriptions.ended_30d} ended (30 days)</small></div></>}
+              <ul>{(hk.subscriptions.by_product || []).map((x) => <li key={x.product}><span>{x.product}</span><b>{x.active}</b><em>{x.past_due ? `${x.past_due} past due` : "all paid"}{x.grace ? ` · ${x.grace} in grace` : ""}</em></li>)}</ul></>}
+            {hk?.webhook?.connected ? <div className="src">webhook (API 2026-10): {hk.webhook.events_24h} event(s) in 24 h · last {hk.webhook.age_secs == null ? "never" : hk.webhook.age_secs < 120 ? `${hk.webhook.age_secs} s ago` : `${Math.round(hk.webhook.age_secs / 60)} min ago`}{hk.webhook.unprocessed ? ` · ${hk.webhook.unprocessed} waiting` : ""}{hk.webhook.errors_24h ? ` · ${hk.webhook.errors_24h} error(s)` : ""}{hk.integrity?.signature_rejects_unreviewed ? ` · ${hk.integrity.signature_rejects_unreviewed} unreviewed signature reject(s)` : ""}</div> : hk && <div className="src">{hk.webhook?.note}</div>}
+          </>}
         </Card>
         <Card title="FINANCE">
           {!m ? <div className="big dim">…</div> : !m.connected ? <div className="big dim">not connected<small>{m.note}</small></div> :
