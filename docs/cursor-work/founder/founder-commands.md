@@ -1598,3 +1598,5 @@ Dashboard 'Recent activity' khali tha; yeh SQL usay asli events se bharti hai (+
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)
 ```
 CHECK_E101 ki 9 rows 'OK' aani chahiye. Dobara chalana safe. SQL editor mein paste karni ho: https://github.com/naumansherwani/ANEXOMAIL-WORKSPACE/blob/main/docs/cursor-work/sql/E101_activity_feed_writers.sql (Raw copy), phir CHECK_E101.sql.
+
+## 28 Oct 06:55 — F0b: bash <(git show origin/main:docs/cursor-work/server/founder-install.sh) — E102 green ke baad. Output ka intezar.

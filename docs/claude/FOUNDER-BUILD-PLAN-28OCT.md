@@ -148,3 +148,6 @@ Rule 62: technology pehle. Yeh F9 ke BAAD ka roadmap hai; pehle F0b-F2 pakke. Ho
 | V2 | Data provenance (har data par signature) | Ed25519 signature + content hash + timestamp; envelope HMAC -> asymmetric (browser verify) | Rust HMAC envelope, WASM kernel | **doosra** (F2b ke saath natural) |
 | V3 | ZK-proofs (data safe hone ka saboot bina data dikhaye) | Rust: arkworks/halo2 (Groth16/PLONK), verify WASM mein; pehle chhota statement ("chain mein X entries, root R, koi hata nahi") | audit Merkle root | **research spike** V1 ke baad |
 | V4 | Edge/decentralised encrypted storage | content-addressed (IPFS-jaisa), client-side encryption, edge nodes; Starlink hamare control mein nahi | Storage volumes (storage.ts) | **sab se aakhir**, bari research; abhi commitment nahi |
+
+### 6z-c. UI usool (founder 28 Oct 06:36) — FC12/FC13
+"Mujhe cluster wala nahi chahiye": ek screen ek maqsad; kam cards; aankhon ko aasan (bari likhai, kam rang, khali jagah); admin mein sab kuch magar menu/decks ke peeche. Har phase: Lovable ki us page ki feature list + blueprint saath rakh kar. Phase F0b = jo repo mein hai (login, Bridge 3 cards, 6 decks, do-tap, audit) server par; F1c landing mein is usool par design polish.
