@@ -1754,3 +1754,5 @@ Founder ne kaha: pehle purani founder files ek jagah + deep audit. Kiya: FOUNDER
 ## 28 Oct 07:12 — Founder: existing login hi, naya login nahi. /f/ se apna login form hata diya (gate -> /auth, maujooda token read-only, Rust verify). Build: dist naya. Pull same: [SQL] sql-run.sh + E103 CHECK_E103, [BUILD] founder-install.sh. Test: gate/bridge/401 Playwright ok. Chrome par asli token se Bridge founder khud dekhe (main password nahi dalta).
 
 ## 28 Oct 07:20 — FX-25/26/27 fix (auth.tsx founderHost hide signup link + Save password + Forgot password; FounderBar pill /auth par band). Pull [WEB] pull.sh. Founder ke teen pending outputs (E103 SQL, CHECK, founder-install) abhi baqi.
+
+## 28 Oct 07:30 — E103 SQL dobara SUPER-ADVANCED likhi (ratchet trigger + delete/truncate gap band + constraint + selftest), CHECK_E103 8 rows. E102 ka gap mila: founder_actions par service_role DELETE (default privileges). Pull same: [SQL] bare + E103_founder_actions_english CHECK_E103 (SQL abhi server par chali nahi thi, isliye sha naya).
