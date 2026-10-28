@@ -1,5 +1,11 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 28 Oct 03:04 UTC — founder: user side (metering) ke baad founder side ki advanced features list
+Founder (verbatim ka matlab): "yeh tumne user side ke liye bataya hai, ab founder side ka bhi bata do; list do jo founder ko kerna chaiye hain — super advance, practical working walay features jo adopt kerna chaiye. Duniya hil jaye, technology latest pe ho."
+- Kya: docs-only — `docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md` (A–I sections: Bridge/Money/People/Mail Desk/Release/Systems/Control + advanced extras, sab F-phase mapping ke saath). Koi code nahi (Rule 63).
+- Halat: **DONE (docs/list)** — plan, implementation nahi. Features apne F-phases (FOUNDER-BUILD-PLAN-28OCT.md) mein banenge, founder ke "haan" par ek ek karke.
+
+
 ## 27 Oct 2026 11:06 PKT — FOUNDER DECLARATION: PRO = GREEN (user ke liye), Pro latest technology par MIGRATE = GREEN
 Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri website banye gi tab hum audit karay gay, yeh chalta rehta hai. pro latest technology pe migrate green hai. yeh repo main sab likho, codes nahi likhna phir se. calendar, CRM aur ANEXOChat wala kaam alag mamla hai, yeh founder walay main add ker lo, puri website ki zaroorat hai."
 - **Pro ab dobara TODO nahi.** Pro ka koi kaam dobara nahi likhna/audit nahi karna jab tak puri website ka final audit na aaye (founder ka plan). Naya masla mile to usi turn mein theek, Pro ko "khula" nahi likhna.
