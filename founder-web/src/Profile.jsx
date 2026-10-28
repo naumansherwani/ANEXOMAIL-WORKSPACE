@@ -11,7 +11,15 @@ export function jwtName() {
   } catch { return ""; }
 }
 export const nameOf = (p) => String(p?.display_name || "").trim() || jwtName();
-const initials = (n, e) => (String(n || e || "?").trim().split(/\s+/).slice(0, 2).map((x) => x[0]).join("") || "?").toUpperCase();
+// Initials: first + last name. A leading "Muhammad"-type prefix is skipped when real names follow it (Muhammad Nauman Sherwani -> NS).
+const PREFIX = /^(muhammad|mohammad|mohammed|mohd|md|mr|mrs|ms|dr)\.?$/i;
+export function initials(n, e) {
+  let w = String(n || "").trim().split(/\s+/).filter(Boolean);
+  if (w.length >= 3 && PREFIX.test(w[0])) w = w.slice(1);
+  if (!w.length) w = [String(e || "?").split("@")[0]];
+  const a = w[0][0] || "?", b = w.length > 1 ? w[w.length - 1][0] : "";
+  return (a + b).toUpperCase();
+}
 
 export function Avatar({ p, size = 36 }) {
   return <span className="av" style={{ width: size, height: size, fontSize: Math.round(size * 0.38) }} aria-hidden="true">{p?.avatar_url ? <img src={p.avatar_url} alt="" /> : initials(nameOf(p), p?.email)}</span>;
@@ -30,6 +38,9 @@ export async function shrink(file) {
   throw new Error("This photo is too detailed to shrink — choose another one.");
 }
 
+// Very faint light that follows the cursor around the photo (CSS vars; no re-render).
+const glow = (e) => { const b = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty("--gx", `${e.clientX - b.left}px`); e.currentTarget.style.setProperty("--gy", `${e.clientY - b.top}px`); };
+
 export function AccountMenu({ p, go, fxOn, setFx }) {
   const [open, setOpen] = useState(false), ref = useRef(null);
   useEffect(() => {
@@ -43,7 +54,7 @@ export function AccountMenu({ p, go, fxOn, setFx }) {
   const item = (label, fn) => <button role="menuitem" className="mi" onClick={() => { setOpen(false); fn(); }}>{label}</button>;
   return (
     <div className="acct" ref={ref}>
-      <button className="avbtn" aria-label="Account" aria-haspopup="menu" aria-expanded={open} onClick={() => setOpen((v) => !v)}><Avatar p={p} size={36} /></button>
+      <button className="avbtn" onPointerMove={glow} aria-label="Account" aria-haspopup="menu" aria-expanded={open} onClick={() => setOpen((v) => !v)}><Avatar p={p} size={36} /></button>
       {open && <div className="menu" role="menu">
         <div className="mhead"><Avatar p={p} size={44} /><div><b>{nameOf(p) || "Founder"}</b><span>{p?.email || ""}</span><i className="rolechip">Founder · Chairman</i></div></div>
         {item("Profile & photo", () => go("profile"))}

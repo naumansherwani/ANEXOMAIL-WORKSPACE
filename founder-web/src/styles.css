@@ -165,7 +165,7 @@ html[data-fx="off"] .fx-ambient,html[data-fx="off"] .aurora{display:none!importa
 @media (max-width:760px){.fxtoggle span{display:none}.fxtoggle{padding:0 10px}}
 /* Account menu + profile photo (user-app pattern, founder content) */
 .acct{position:relative;margin-left:10px}
-.avbtn{width:38px;height:38px;min-height:0;min-width:0;padding:0;line-height:0;border-radius:50%;background:transparent;border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;cursor:pointer;overflow:hidden}
+.avbtn{position:relative;--gx:50%;--gy:50%;width:38px;height:38px;min-height:0;min-width:0;padding:0;line-height:0;border-radius:50%;background:transparent;border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;cursor:pointer;overflow:visible}
 .avbtn:hover{border-color:rgba(255,255,255,.34)}
 .av{display:inline-grid;place-items:center;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,#34588f,#4a73b3);color:#fff;font-weight:600;flex:none}
 .av img{width:100%;height:100%;object-fit:cover;display:block}
@@ -182,3 +182,7 @@ html[data-fx="off"] .fx-ambient,html[data-fx="off"] .aurora{display:none!importa
 .prof .row{display:flex;gap:10px;margin:6px 0 10px}
 @media (max-width:760px){.menu{position:fixed;right:12px;left:12px;top:60px;width:auto}}
 .avbtn:hover,.bigav:hover{background:transparent}
+.avbtn::after{content:"";position:absolute;inset:-16px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity .25s ease;background:radial-gradient(circle at var(--gx) var(--gy),rgba(140,175,255,.20) 0,rgba(140,175,255,.07) 38%,transparent 66%)}
+.avbtn:hover::after,.avbtn:focus-visible::after{opacity:1}
+.avbtn:hover{border-color:rgba(160,190,255,.4)}
+@media (prefers-reduced-motion:reduce){.avbtn::after{transition:none}}
