@@ -45,7 +45,6 @@ export function SettingsView({ p, fx, setFx, slim, setSlim, reload, go }) {
   const Msg = () => msg ? <div className={msg.ok ? "toast ok" : "toast bad"} role="status">{msg.t}</div> : null;
   return (
     <div className="setpage">
-      <header className="sethead"><div className="kicker dim">SETTINGS</div><h1>Settings</h1><p className="dim">Your founder account. Everything here is saved on the server, so every approved device looks the same.</p></header>
       {p && p.available === false && <div className="toast bad">Settings storage is not available yet — run the E108 SQL (sql-run.sh) on the server. Changes cannot be saved until then.</div>}
       <div className="setgrid">
         <nav className="setnav" aria-label="Settings sections">

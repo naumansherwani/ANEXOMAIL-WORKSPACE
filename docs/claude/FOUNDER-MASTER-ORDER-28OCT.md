@@ -1,6 +1,8 @@
 # FOUNDER MASTER ORDER — numbered, one list (28 Oct 2026, 12:25 PKT)
 Founder 12:12: "founder ke existing old codes latest technology par kab migrate honge, unki tarteeb kis number par hai? aur jo user ko offer hota hai woh mujhe kab milega?" This is the ONE numbered order. Detail lives in FOUNDER-BUILD-PLAN-28OCT.md §14z, FOUNDER-FEATURE-MAP-28OCT.md, FOUNDER-SETTINGS-CENTER-PORT-28OCT.md. A step is DONE only when it is green in the founder's Chrome (Rule 64). Nothing mocked (Rule 69).
 
+UI system (tokens, shell, Trust, mobile/tablet): docs/claude/FOUNDER-UI-DESIGN-28OCT.md — applies to every step below.
+
 ## The order
 | # | Step | State |
 |---|---|---|

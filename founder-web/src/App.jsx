@@ -1,15 +1,16 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { get, hasToken, deviceStatus, setSetting } from "./api.js";
-import { AccountMenu, ProfileView, nameOf, callName } from "./Profile.jsx";
+import { AccountMenu, ProfileView } from "./Profile.jsx";
 import { SettingsView } from "./Settings.jsx";
 import { DECKS, Deck, Audit } from "./Decks.jsx";
 import { Brand, Icon } from "./Brand.jsx";
 import { DeckPage } from "./Finance.jsx";
 import { DECK_META, ORDER, CATALOG } from "./catalog.js";
-import { dayPart } from "./greeting.js";
-import { useCity, setHome, fmtTime, fmtDateTime, fmtDay, coordsOf } from "./city.js";
+import { useCity, setHome, fmtTime } from "./city.js";
+import { BridgeView } from "./Bridge.jsx";
+import { Palette } from "./Palette.jsx";
+import { Trust } from "./Trust.jsx";
 
-const TXT = { ok: "OK", warn: "ATTENTION", fail: "FAILING", unknown: "UNKNOWN" };
 
 
 function Gate() {
@@ -41,66 +42,30 @@ function DeviceScreen({ code, revoked, retry }) {
   );
 }
 
-// First name from the signed-in session itself (display only). No name in the token -> no name shown (FC26: nothing invented).
-function firstName() {
-  try {
-    const t = window.localStorage.getItem("anexo.session.token"); if (!t) return "";
-    const p = JSON.parse(decodeURIComponent(escape(atob(t.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")))));
-    const m = p.user_metadata || {}, n = m.display_name || m.full_name || m.name || p.name || "";
-    return String(n).trim().split(/\s+/)[0].slice(0, 30);
-  } catch { return ""; }
-}
-// Digital clock: per-digit roll animation, pulsing colon, seconds beam. City + GMT offset come from the browser's own zone (adapts to wherever the founder is).
-function Clock({ tz, city }) {
-  const [now, setNow] = useState(() => new Date());
-  useEffect(() => { const id = setInterval(() => setNow(new Date()), 1000); return () => clearInterval(id); }, []);
-  const p = Object.fromEntries(new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23", timeZone: tz, timeZoneName: "shortOffset" }).formatToParts(now).map((x) => [x.type, x.value]));
-  const D = (v, i) => <span className="dg" key={`${i}${v}`}>{v}</span>; // plain function (not a component) so only a changed digit re-mounts and rolls
-  return (
-    <time className="clock" dateTime={now.toISOString()} aria-label={`${p.hour}:${p.minute} in ${city}`}>
-      <span className="digits" aria-hidden="true"><span className="pair">{D(p.hour[0], 0)}{D(p.hour[1], 1)}</span><b className="colon">:</b><span className="pair">{D(p.minute[0], 0)}{D(p.minute[1], 1)}</span></span>
-      <span className="beam" aria-hidden="true"><i style={{ width: `${(Number(p.second) / 59) * 100}%` }} /></span>
-      <small><span className="dot" />{city} · {String(p.timeZoneName || "").replace("GMT", "GMT")}</small>
-    </time>
-  );
-}
-const SAY = { morning: "Good morning", afternoon: "Good afternoon", evening: "Good evening", night: "Good night" };
-const fmtMinor = (n) => (Number(n) / 100).toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-function Greeting({ m, t, v, at, p, h, me }) {
-  const [now, setNow] = useState(() => new Date());
-  useEffect(() => { const id = setInterval(() => setNow(new Date()), 30000); return () => clearInterval(id); }, []);
-  const c = useCity(), tz = c.iana, part = dayPart(now, tz, coordsOf(c)), nm = (callName(nameOf(me)) || firstName()).slice(0, 30);
-  const bits = [];
-  if (p?.connected && p.mrr_minor != null) bits.push(`${fmtMinor(p.mrr_minor)} MRR (Polar)`, `${p.active_subscriptions ?? 0} active subscription(s)`);
-  else if (h?.subscriptions?.connected) bits.push(`${h.subscriptions.by_status?.active ?? 0} active subscription(s) · ${h.subscriptions.by_status?.past_due ?? 0} past due (Polar webhook)`);
-  else if (m?.connected) bits.push(`£ ${Number(m.mrr_gbp || 0).toLocaleString("en-GB")} MRR (manual records, not Polar)`, `${m.active_accounts} active account(s)`);
-  if (t) bits.push(t.level === "ok" ? "Nothing needs attention" : `${t.items.filter((i) => i.state !== "ok").length} item(s) need attention`);
-  if (v?.connected) bits.push(`${v.new_leads} new lead(s)`);
-  return (
-    <header className="greet">
-      <div>
-        <span className="kicker">{fmtDay(now).toUpperCase()}</span>
-        <h1 className="hello">{SAY[part]}{nm ? <>, <span className="nm">{nm}</span></> : ""}</h1>
-        <p className="dim">{bits.length ? bits.join("  ·  ") : at ? "Nothing measured yet." : "Loading your numbers…"}</p>
-      </div>
-      <Clock tz={tz} city={c.city} />
-    </header>
-  );
-}
+const AWAM = [["Dashboard", "/app", "dashboard"], ["Mail", "/app/mail/inbox", "mail"], ["People", "/app/people", "people"], ["Calendar", "/app/calendar", "calendar"], ["Work", "/app/work", "work"], ["CRM", "/app/crm", "crm"], ["Org", "/app/org", "org"], ["Analytics", "/app/analytics", "analytics"], ["Safety", "/app/safety", "safety"], ["ANEXOChat", "/app/chat", "chat"], ["AI", "/app/ai-center", "ai"], ["Speed", "/app/perf", "speed"], ["Founder", "/app/founder", "founder"], ["Admin", "/app/admin", "admin"]];
+const CC = [["bridge", "Bridge"], ...ORDER.map((k) => [k, DECK_META[k].title]), ["audit", "Audit ledger"]];
+const KNOWN = new Set([...CC.map((x) => x[0]), "profile", "settings"]);
+const fromHash = () => { const h = window.location.hash.replace(/^#\/?/, "").split("?")[0]; return KNOWN.has(h) ? h : "bridge"; };
+const TABS = [["bridge", "Bridge"], ["finance", "Finance"], ["people", "People"], ["mail_desk", "Mail"]];
+const Chev = () => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>;
 
-function Card({ title, tone, children }) {
-  return <section className={`card ${tone || ""}`}><h2>{title}</h2>{children}</section>;
+function CityTime() {
+  const [now, setNow] = useState(() => new Date()), c = useCity();
+  useEffect(() => { const id = setInterval(() => setNow(new Date()), 15000); return () => clearInterval(id); }, []);
+  return <span className="cityp" title={`Times follow ${c.city}`}>{c.city} · {fmtTime(now).slice(0, 5)}</span>;
 }
-
-// Spotlight: the hovered row follows the pointer with a soft light (pure CSS vars, no re-render).
-function spot(e) { const r = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`); e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`); }
 
 export default function App() {
   useCity(); // the whole workspace re-renders when the home city (or the device city) changes
   const [authed, setAuthed] = useState(hasToken());
-  const [view, setView] = useState("bridge");
+  const [view, setViewRaw] = useState(fromHash);
+  const [pal, setPal] = useState(false), [wsOpen, setWsOpen] = useState(() => { try { return window.localStorage.getItem("anexo.founder.ws") === "1"; } catch { return false; } });
+  // Real URLs: #/finance etc. Back/forward and deep links work; one soft cross-fade on change (View Transitions where the browser has them).
+  const setView = useCallback((v) => { if (v === fromHash()) { setViewRaw(v); return; } const go = () => { window.location.hash = `#/${v}`; }; if (document.startViewTransition && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.startViewTransition(() => { go(); }); else go(); }, []);
+  useEffect(() => { const on = () => setViewRaw(fromHash()); window.addEventListener("hashchange", on); return () => window.removeEventListener("hashchange", on); }, []);
   const [prof, setProf] = useState(null);
   const [slim, setSlim] = useState(() => { try { return window.localStorage.getItem("anexo.founder.slim") === "1"; } catch { return false; } });
+  useEffect(() => { document.documentElement.classList.toggle("slim", slim); }, [slim]);
   const toggleSlim = () => { const n = !slim; setSlim(n); try { window.localStorage.setItem("anexo.founder.slim", n ? "1" : "0"); } catch {} setSetting("appearance.sidebar_slim", n).catch(() => {}); };
   const [fx, setFx] = useState(() => { try { return window.localStorage.getItem("anexo.founder.fx") !== "off"; } catch { return true; } });
   useEffect(() => { document.documentElement.setAttribute("data-fx", fx ? "on" : "off"); try { window.localStorage.setItem("anexo.founder.fx", fx ? "on" : "off"); } catch {} }, [fx]);
@@ -121,67 +86,67 @@ export default function App() {
   }, []);
   useEffect(() => { if (authed && !pend) loadProf(); }, [authed, pend, loadProf]);
   useEffect(() => { if (!authed) return; load(); const t = setInterval(load, 15000); return () => clearInterval(t); }, [authed, load]);
+  // Keyboard: Ctrl/⌘+K opens search; "g" then a letter jumps (g b Bridge · g f Finance · g p People · g m Mail Desk · g s Settings).
+  useEffect(() => {
+    let armed = 0;
+    const GO = { b: "bridge", f: "finance", p: "people", m: "mail_desk", s: "settings", a: "audit" };
+    const on = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); setPal((v) => !v); return; }
+      const el = e.target, typing = el && (/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) || el.isContentEditable);
+      if (typing || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (armed && Date.now() - armed < 1200 && GO[e.key]) { armed = 0; setView(GO[e.key]); return; }
+      armed = e.key === "g" ? Date.now() : 0;
+    };
+    window.addEventListener("keydown", on); return () => window.removeEventListener("keydown", on);
+  }, [setView]);
+  const toggleWs = () => { const n = !wsOpen; setWsOpen(n); try { window.localStorage.setItem("anexo.founder.ws", n ? "1" : "0"); } catch {} };
 
   if (!authed) return <Gate />;
   if (pend) return <DeviceScreen code={pend.code} revoked={pend.revoked} retry={load} />;
-  const m = d?.money, t = d?.trouble, v = d?.voice, pl = d?.polar, hk = d?.polar_hook;
-  const AWAM = [["Dashboard", "/app", "dashboard"], ["Mail", "/app/mail/inbox", "mail"], ["People", "/app/people", "people"], ["Calendar", "/app/calendar", "calendar"], ["Work", "/app/work", "work"], ["CRM", "/app/crm", "crm"], ["Org", "/app/org", "org"], ["Analytics", "/app/analytics", "analytics"], ["Safety", "/app/safety", "safety"], ["ANEXOChat", "/app/chat", "chat"], ["AI", "/app/ai-center", "ai"], ["Speed", "/app/perf", "speed"], ["Founder", "/app/founder", "founder"], ["Admin", "/app/admin", "admin"]];
-  const NAV = [["bridge", "Bridge"], ...ORDER.map((k) => [k, DECK_META[k].title]), ["audit", "Audit"]];
-  const title = view === "bridge" ? "Command center" : view === "profile" ? "Profile" : view === "settings" ? "Settings" : (NAV.find((n) => n[0] === view) || [0, ""])[1];
+  const title = view === "bridge" ? "Bridge" : view === "profile" ? "Profile" : view === "settings" ? "Settings" : (CC.find((n) => n[0] === view) || [0, ""])[1];
+  const items = [...CC.map(([k, n]) => ({ id: k, name: n, group: "Command center", icon: k, view: k })), { id: "settings", name: "Settings", group: "Account", icon: "settings", view: "settings" }, { id: "profile", name: "Profile & photo", group: "Account", icon: "people", view: "profile" },
+    ...AWAM.map(([n, href, ic]) => ({ id: href, name: n, group: "Workspace (user app)", icon: ic, href }))];
+  const pick = (x) => { setPal(false); if (x.href) window.location.assign(x.href); else setView(x.view); };
+  const nvBtn = (k, n) => <button key={k} className="nv" title={n} aria-current={view === k ? "page" : undefined} onClick={() => setView(k)}><Icon k={k} /><span className="lbl">{n}</span></button>;
   return (
-    <div className="shell">
-      <div className="aurora" aria-hidden="true"><i /><i /></div>
+    <div className="ws">
       <div className="fx-ambient" aria-hidden="true"><span className="fx-edge" /></div>
-      <header className="topbar">
-        <Brand />
-        <span className="wschip">Founder</span>
-        <AccountMenu p={prof} go={setView} />
-      </header>
-      <div className="body">
-        <nav className={`side ${slim ? "slim" : ""}`} aria-label="Workspace and Command Center">
-          <div className="sidewrap">
-            <div className="scroller">
-              <span className="sidehead">WORKSPACE</span>
-          {AWAM.map(([n, href, ic], i) => <a key={n} className="nav" href={href} title={n} style={{ "--i": i }} onPointerMove={spot}><Icon k={ic} /><span className="lbl">{n}</span></a>)}
-          <span className="sidehead gap">COMMAND CENTER</span>
-          {NAV.map(([k, n], i) => <button key={k} title={n} style={{ "--i": i }} className={`nav ${view === k ? "on" : ""}`} aria-current={view === k} onClick={() => setView(k)} onPointerMove={spot}><Icon k={k} /><span className="lbl">{n}</span>{CATALOG[k] && <em className="cnt" title={`${CATALOG[k].length} features`}>{CATALOG[k].length}</em>}</button>)}
+      <aside className="sb" aria-label="Navigation">
+        <div className="sbtop"><Brand /></div>
+        <div className="sbscroll">
+          <span className="grp">Command center</span>
+          {CC.map(([k, n]) => nvBtn(k, n))}
+          <button className="grp" aria-expanded={wsOpen} onClick={toggleWs}><Chev />Workspace (user app)</button>
+          {wsOpen && AWAM.map(([n, href, ic]) => <a key={n} className="nv" href={href} title={n}><Icon k={ic} /><span className="lbl">{n}</span></a>)}
+        </div>
+        <div className="sbfoot">
+          {nvBtn("settings", "Settings")}
+          <button className="nv" onClick={toggleSlim} aria-label={slim ? "Expand sidebar" : "Collapse sidebar"} title={slim ? "Expand" : "Collapse"}><Icon k="collapse" /><span className="lbl">Collapse</span></button>
+        </div>
+      </aside>
+      <div className="mn">
+        <header className="tp">
+          <span className="crumb">Founder / <b>{title}</b></span>
+          <div className="tpr">
+            <button className="find" onClick={() => setPal(true)} aria-label="Search pages"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6" /><path d="m20 20-4-4" /></svg><span className="ft">Search or jump to a page</span><kbd>Ctrl K</kbd></button>
+            <button className="iconbtn" onClick={() => setPal(true)} aria-label="Search pages"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6" /><path d="m20 20-4-4" /></svg></button>
+            <CityTime />
+            <Trust go={setView} />
+            <AccountMenu p={prof} go={setView} />
           </div>
-          </div>
-          <span className="sidenote">Governance, departments, audit ledger and ANEXOChat — one workspace.</span>
-          <button className="nav collapse" onClick={toggleSlim} aria-label={slim ? "Expand sidebar" : "Collapse sidebar"} title={slim ? "Expand" : "Collapse"}><Icon k="collapse" /><span className="lbl">Collapse</span></button>
-        </nav>
-        <main className="content">
-      {view === "bridge" ? <Greeting m={m} t={t} v={v} at={at} p={d?.polar} h={d?.polar_hook} me={prof} /> : <div className="titleblock"><span className="kicker">{title.toUpperCase()}</span><h1>{title}</h1></div>}
-      <div className="chips"><span className="chip warn">Signature not yet verified in browser (kernel: F2b)</span>{(() => { const ds = deviceStatus(); return ds.mode === "device" ? <span className="chip ok">Device approved · {ds.label}</span> : <span className="chip warn">{ds.mode === "legacy" ? "Device approval not active on the server yet (install pending)" : "Checking this device…"}</span>; })()}</div>
-      {err && <div className="err banner" role="alert">{err}</div>}
-      {view === "profile" ? <ProfileView p={prof} reload={loadProf} /> : view === "settings" ? <SettingsView go={setView} p={prof} fx={fx} setFx={setFx} slim={slim} setSlim={setSlim} reload={loadProf} /> : DECK_META[view] ? <><DeckPage deck={view} money={m} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : view !== "bridge" ? <div className="grid"><Deck key={view} deck={view} /></div> :
-      <div className="grid">
-        <Card title="BILLING · POLAR">
-          {!pl ? <div className="big dim">…</div> : <>
-            {pl.connected && pl.mrr_minor != null && <><div className="big">{fmtMinor(pl.mrr_minor)}</div><div className="dim">MRR · {pl.active_subscriptions ?? "?"} active · +{pl.new_30d} new · −{pl.canceled_30d} cancelled (30 days)</div>{pl.stale && <div className="note">Stale: {pl.last_error || "no recent reading"}</div>}</>}
-            {!pl.connected && !hk?.subscriptions?.connected && <div className="big dim">not connected<small>{pl.note}</small></div>}
-            {hk?.subscriptions?.connected && <>{!pl.connected && <><div className="big">{hk.subscriptions.by_status?.active ?? 0}<small>active subscriptions · {hk.subscriptions.by_status?.past_due ?? 0} past due · {hk.subscriptions.ended_30d} ended (30 days)</small></div></>}
-              <ul>{(hk.subscriptions.by_product || []).map((x) => <li key={x.product}><span>{x.product}</span><b>{x.active}</b><em>{x.past_due ? `${x.past_due} past due` : "all paid"}{x.grace ? ` · ${x.grace} in grace` : ""}</em></li>)}</ul></>}
-            {hk?.webhook?.connected ? <div className="src">webhook (API 2026-10): {hk.webhook.events_24h} event(s) in 24 h · last {hk.webhook.age_secs == null ? "never" : hk.webhook.age_secs < 120 ? `${hk.webhook.age_secs} s ago` : `${Math.round(hk.webhook.age_secs / 60)} min ago`}{hk.webhook.unprocessed ? ` · ${hk.webhook.unprocessed} waiting` : ""}{hk.webhook.errors_24h ? ` · ${hk.webhook.errors_24h} error(s)` : ""}{hk.integrity?.signature_rejects_unreviewed ? ` · ${hk.integrity.signature_rejects_unreviewed} unreviewed signature reject(s)` : ""}</div> : hk && <div className="src">{hk.webhook?.note}</div>}
-            {hk?.rejects?.connected && hk.rejects.total > 0 && <div className="note">Rejected signatures: {hk.rejects.by_reason.map((r) => `${r.reason.replace(/_/g, " ")} ×${r.n}`).join(", ")} — {hk.rejects.sender.no_signature_headers} sent no signature header at all, {hk.rejects.sender.standard_webhook_headers} carried Polar-style headers (wrong or old secret), last {fmtDateTime(hk.rejects.latest_at)}.</div>}
-          </>}
-        </Card>
-        <Card title="FINANCE">
-          {!m ? <div className="big dim">…</div> : !m.connected ? <div className="big dim">not connected<small>{m.note}</small></div> :
-            <><div className="big">£ {(Number(m.mrr_gbp) === 0 ? 0 : Number(m.mrr_gbp)).toLocaleString("en-GB")}</div><div className="dim">MRR · {m.active_accounts} active account(s){m.target_gbp ? ` · target £${m.target_gbp}` : ""}</div>{m.note && <div className="note">{m.note}</div>}<div className="src">source: {m.source} (manual records — not Polar)</div></>}
-        </Card>
-        <Card title="WHAT NEEDS ATTENTION" tone={t?.level}>
-          {!t ? <div className="big dim">…</div> : <><div className={`big lv-${t.level}`}>{TXT[t.level]}</div>
-            <ul>{t.items.map((i) => <li key={i.name}><span>{i.name}</span><b className={`lv-${i.state}`}>{TXT[i.state]}</b><em>{i.detail}</em></li>)}</ul></>}
-        </Card>
-        <Card title="CUSTOMER VOICE">
-          {!v ? <div className="big dim">…</div> : !v.connected ? <div className="big dim">not connected<small>{v.note}</small></div> :
-            <><div className="big">{v.new_leads} new</div><div className="dim">new leads (revenue_leads)</div><div className="note">Channels not connected yet: {v.pending_channels.join(", ")}</div></>}
-        </Card>
-      </div>}
-      <footer>{at ? `updated ${fmtTime(at)} · every 15 s` : "loading…"}</footer>
+        </header>
+        <main className="pg" id="main" key={view}>
+          {view !== "bridge" && view !== "settings" && view !== "profile" && <div className="titleblock"><h1>{title}</h1></div>}
+          {err && <div className="err banner" role="alert">{err}</div>}
+          {view === "bridge" ? <BridgeView d={d} at={at} me={prof} go={setView} /> : view === "profile" ? <ProfileView p={prof} reload={loadProf} /> : view === "settings" ? <SettingsView go={setView} p={prof} fx={fx} setFx={setFx} slim={slim} setSlim={setSlim} reload={loadProf} /> : DECK_META[view] ? <><DeckPage deck={view} money={d?.money} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : <div className="grid"><Deck key={view} deck={view} /></div>}
+          <footer className="pgfoot">{at ? `Updated ${fmtTime(at)} · refreshes every 15 s` : "Loading…"}</footer>
         </main>
       </div>
+      <nav className="tabbar" aria-label="Main">
+        {TABS.map(([k, n]) => <button key={k} aria-current={view === k ? "page" : undefined} onClick={() => setView(k)}><Icon k={k} /><span>{n}</span></button>)}
+        <button onClick={() => setPal(true)}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true"><circle cx="5" cy="12" r="1.4" /><circle cx="12" cy="12" r="1.4" /><circle cx="19" cy="12" r="1.4" /></svg><span>More</span></button>
+      </nav>
+      {pal && <Palette items={items} onPick={pick} onClose={() => setPal(false)} />}
     </div>
   );
 }
