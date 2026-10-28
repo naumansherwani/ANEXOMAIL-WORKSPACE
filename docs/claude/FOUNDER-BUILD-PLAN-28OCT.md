@@ -5,6 +5,10 @@
 > **Founder = Rust binary `anexomail-founder` (axum 0.8, tokio, WebTransport/QUIC, Supabase, passkey, SHA-256 chain + HMAC) + React 19.2/Vite 8.2/TanStack Router static SPA/Tailwind 4.2/shadcn/Three.js WebGPU/Motion+GSAP/WASM kernel (Rule 52, enforce). Bun/Node founder mein KABHI nahi.** Detail: AGENTS.md Rule 61, TECH-MAP 0d. Look: CINEMATIC (Elon-level), awam UI se bilkul ALAG design.
 Founder hukm (28 Oct 04:53): plan pehle, jaldi nahi, phases smooth, Bun RETIRED (founder mein Bun nahi), UI + backend technology likho, saath ke saath likhte jao (compact-safe), Chrome dekho. Isse pehle padho: FOUNDER-PROTOCOL-28OCT.md, FOUNDER-CODE-INVENTORY-28OCT.md, FOUNDER-WORKSPACE-PLAN.md (F0-F9 asli plan), TECH-STACK-BEAST.md. Koi code is plan ko founder ke dekhne se pehle nahi.
 
+## 1z. DATA KA RAASTA — LOCKED (founder ne pasand kiya, 28 Oct 05:26; Rule 62/63)
+Supabase (data) -> `anexomail-founder` Rust (axum+tokio; padhta hai; har jawab par HMAC) -> ek WebTransport/QUIC connection (fallback sadi fetch) -> WASM kernel (Rule 52 builtin; HMAC + audit-chain browser mein verify; `ANEXO_TAG_MODE=enforce`; fail = screen par nahi) -> React 19.2 + TanStack Router (sirf verified data) -> Three.js (sirf draw; 3D kabhi data ka source nahi). 3D fallback: WebGPU -> WebGL2 -> 2D. Pehle 5 second mein numbers saaf parhe jayen; cinematic numbers ke PEECHE.
+CEO faisle (founder ne CEO ko diye): (1) Bridge mein SIRF ASLI data — koi dummy/mock nahi; jo data abhi nahi (paisa) woh "abhi connect nahi" likha, F3 mein Polar/Billing se; (2) rang space-black + ek green accent; (3) F1a (alag founder login host) PEHLE, cinematic Bridge uske peeche.
+
 ## 0. Chrome ka sach (28 Oct 05:00, founder ka Chrome "LENOVO")
 - `founderworkspace.anexomail.com/app/founder` kholne par **awam wala hi Sign-in page** aata hai, upar "FOUNDER PREVIEW" badge. Yaani founder host abhi **wohi ek app** hai (awam ka UI), alag founder UI nahi.
 - Us page par **"Create your account for workspace"** (awam signup) founder host par bhi dikhta hai => founder host par signup band hona chahiye.

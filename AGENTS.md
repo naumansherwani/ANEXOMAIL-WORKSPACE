@@ -458,3 +458,6 @@ Founder ne plan manzoor kiya: "repo main likh lo ke yeh hai core Founder ki tech
 
 ## Rule 62 (STRICT, founder 28 Oct 2026 05:25 PKT) — TECHNOLOGY PEHLE, phir blueprint, phir code
 Har blueprint/plan/phase ke SHURU mein technology likhi ho aur har section mein "yahan is technology par code" saaf ho. Pehle technology dekho (TECH-MAP + Rule 61 founder / Rule 52 kernel), phir blueprint mein daalo, phir code. Galat technology = founder bardasht nahi karega. Founder ka look: CINEMATIC (Elon-level), awam UI se ALAG design; awam-side kaam (Office/HR/Accounting/migration) founder se alag lane.
+
+## Rule 63 (STRICT, founder 28 Oct 2026 05:26 PKT) — banane se PEHLE discuss, phir build; LIVE data, koi dummy/mock nahi
+Har naye kaam ki technology + data ka raasta pehle founder ke saath discuss ho aur repo mein likha ho (founder ka locked raasta: FOUNDER-BUILD-PLAN §1z), phir hi build. Founder/production UI mein dummy ya mock data KABHI nahi: jo data abhi nahi, screen par saaf "abhi connect nahi" likha jaye. Test hamesha live (Chrome). Design mock sirf F0 design canvas mein jayez (production nahi).
