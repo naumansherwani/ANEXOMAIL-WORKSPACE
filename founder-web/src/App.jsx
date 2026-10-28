@@ -6,7 +6,7 @@ import { DECKS, Deck, Audit } from "./Decks.jsx";
 import { Brand, Icon } from "./Brand.jsx";
 import { DeckPage } from "./Finance.jsx";
 import { DECK_META, ORDER, CATALOG } from "./catalog.js";
-import { useCity, setHome, fmtTime } from "./city.js";
+import { useCity, setHome, fmtTime, fmtHM } from "./city.js";
 import { BridgeView } from "./Bridge.jsx";
 import { Palette } from "./Palette.jsx";
 import { Trust } from "./Trust.jsx";
@@ -52,7 +52,7 @@ const Chev = () => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" s
 function CityTime() {
   const [now, setNow] = useState(() => new Date()), c = useCity();
   useEffect(() => { const id = setInterval(() => setNow(new Date()), 15000); return () => clearInterval(id); }, []);
-  return <span className="cityp" title={`Times follow ${c.city}`}>{c.city} · {fmtTime(now).slice(0, 5)}</span>;
+  return <span className="cityp" title={`Times follow ${c.city}`}>{c.city} · {fmtHM(now)}</span>;
 }
 
 export default function App() {
@@ -116,7 +116,6 @@ export default function App() {
       <aside className="sb" aria-label="Navigation">
         <div className="sbtop"><Brand /></div>
         <div className="sbscroll">
-          <span className="grp">Command center</span>
           {CC.map(([k, n], i) => nvBtn(k, n, i))}
           <button className="grp" aria-expanded={wsOpen} onClick={toggleWs}><Chev />Workspace (user app)</button>
           {wsOpen && AWAM.map(([n, href, ic], i) => <a key={n} className="nv" href={href} title={n} style={{ "--i": i }} onPointerMove={spot}><Icon k={ic} /><span className="lbl">{n}</span></a>)}
@@ -128,7 +127,7 @@ export default function App() {
       </aside>
       <div className="mn">
         <header className="tp">
-          <span className="crumb">Founder / <b>{title}</b></span>
+          <span className="crumb">{view === "settings" || view === "profile" ? "Account" : "Command center"} / <b>{title}</b></span>
           <div className="tpr">
             <button className="find" onClick={() => setPal(true)} aria-label="Search pages"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6" /><path d="m20 20-4-4" /></svg><span className="ft">Search or jump to a page</span><kbd>Ctrl K</kbd></button>
             <button className="iconbtn" onClick={() => setPal(true)} aria-label="Search pages"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6" /><path d="m20 20-4-4" /></svg></button>

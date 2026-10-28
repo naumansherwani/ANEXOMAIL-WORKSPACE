@@ -58,3 +58,5 @@ Rule for every row: before porting, write down where the old proc lives (ENDPOIN
 | Analytics, Speed, Safety, ANEXOChat, Admin | Systems deck | 12 |
 | Docs, Sheets, Tasks | Founder desk | 15 |
 Until a founder version exists, the sidebar's WORKSPACE links (Dashboard, Mail, People, Calendar, Work, CRM, Org, Analytics, Safety, ANEXOChat, AI, Speed) open the real user-app pages on the same host, so nothing is missing in daily use.
+
+Bridge vs Dashboard (which tile lives where, CEO view): docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md

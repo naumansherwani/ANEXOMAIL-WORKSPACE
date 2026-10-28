@@ -1,5 +1,15 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 28 Oct 13:02 PKT — founder: clock ka background pehle black nahi tha, bilkul wahi same clock colour chahiye
+Founder (verbatim): "aur yeh clock ka background pehle black nahi tha. mujhe wohi same 2 same clock colour chaye hain"
+- Wajah mili: (1) maine ui.css mein body ka blue radial background hata diya tha (2) clock digits ka Inter weight 200/300 font file nahi thi (400 par gir raha tha). Theek: body background wapis (#1a2748 radial), Inter ExtraLight+Light self-hosted. Old vs new clock crop compare: digits, boxes, colon, beam same.
+- Halat: **DONE (sandbox pixel compare)**; server par founder-install.sh baaki.
+
+## ▶ 28 Oct 13:01 PKT — founder: "Command center" label Bridge ke upar chadha hua; Bridge vs Dashboard CEO nazar se; 12-ghantay wali clock; Chrome live
+Founder (verbatim): "coomand center bridge kahan us pe chada huwa hai dekho? UI ko tum khud dekho ek CEO ki nazar se baki yeh bridge ke features socho alag aur dashboard ke alag tum CEO ho anexomail ke kya kero gay . baki UI pyara hai sirf bridge command center ke uper chada gaya hai command center ko kahin aur likho chorme test live dekho yeh 13 baja raha ai mujhe 12 ganhatay wala chaiye hai"
+- Kaam: (1) sidebar ka "Command center" label Bridge ke upar se hatana (kahin aur) (2) clock + sab waqt 12-ghantay (AM/PM) (3) CEO ki nazar se Bridge (founder-only, "mujhe kya karna hai") vs Dashboard ("company kaisi hai") alag features: docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md (4) Chrome live.
+- Halat: **DONE (build + sandbox)**; server par founder-install.sh baaki. Chrome live (13:01): cinematic + clock server par aa chuki thi; 24-ghanta (13:01) aur label overlap dikha -> theek kiya.
+
 ## ▶ 28 Oct 12:56 PKT — founder: "kaunsa wala is waqt?" + compact se pehle chat context, codes sab repo mein update
 Founder (verbatim): "matlab kaunsa hai is waqat ?" ... "compact chat se pehle chat context codes sab update kero repo main"
 - Jawab (Chrome se server ka CSS naapa, andaza nahi): SERVER par abhi = redesign ka FLAT build (naya shell + Trust, flip clock/aurora NAHI). REPO main (41bf3fe) = naya shell + cinematic restore. Server ko repo wala dena = sirf founder-install.sh dobara.

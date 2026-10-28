@@ -1157,3 +1157,7 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 28 Oct 13:00 PKT — (1) founder 12:49: purana cinematic dashboard + flip clock wapas (cinema.css, Bridge Clock/Greeting) — dobara KABHI mat hatao. View Transitions hata kar CSS fade (navigation tez). (2) founder 12:47: 4 killer features + 3 indicators: docs/claude/FOUNDER-KILLER-FEATURES-28OCT.md, MASTER-ORDER 5a..13a, blueprint §15z. (3) Technology rule AGENTS.md + CLAUDE.md ke top par.
 
 - 28 Oct 13:10 PKT — pre-compaction snapshot likha (context file '13:10 PRE-COMPACTION SNAPSHOT'); FC43 add. Server par live = flat build (clock nahi); repo = restored; founder-install.sh dobara chalana baaki.
+
+- 28 Oct 13:20 PKT — founder 13:01: (1) 'Command center' label Bridge ke upar se hata, breadcrumb mein (Command center / Bridge); Workspace toggle ka chevron theek (2) clock + sab times 12-ghantay AM/PM (city.js fmtTime/fmtHM/fmtDateTime, Clock ampm) (3) CEO split: docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md (B1-B9, D1-D9). Chrome live: server par cinematic wapas aa chuka tha (13:01 flip clock dikha).
+
+- 28 Oct 13:30 PKT — founder 13:02: clock colour/background purane jaisa: body radial gradient wapis (ui.css) + Inter 200/300 woff2. Lesson: ek global body rule se poora look badal jata hai — redesign ke baad purane/naye screenshot ka pixel compare karo.

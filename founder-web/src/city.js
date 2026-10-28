@@ -30,7 +30,9 @@ export function useCity() {
 if (typeof window !== "undefined") { window.addEventListener("focus", emit); setInterval(emit, 60_000); }
 
 const fmt = (d, o) => new Intl.DateTimeFormat("en-GB", { timeZone: compute().iana, ...o }).format(d instanceof Date ? d : new Date(d));
-export const fmtTime = (d) => fmt(d, { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" });
-export const fmtDateTime = (d) => fmt(d, { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+// 12-hour clock everywhere (founder 28 Oct 13:01: "12 ghantay wala chaiye")
+export const fmtTime = (d) => fmt(d, { hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true }).toUpperCase();
+export const fmtHM = (d) => fmt(d, { hour: "numeric", minute: "2-digit", hour12: true }).toUpperCase();
+export const fmtDateTime = (d) => fmt(d, { day: "2-digit", month: "short", year: "numeric", hour: "numeric", minute: "2-digit", hour12: true }).toUpperCase();
 export const fmtDay = (d) => fmt(d, { weekday: "long", day: "numeric", month: "long" });
 export const coordsOf = (c) => (Number.isFinite(c.lat) && Number.isFinite(c.lon) ? { lat: c.lat, lon: c.lon } : undefined);

@@ -1,13 +1,15 @@
 /* ANEXOMAIL Founder — design system (28 Oct 2026). One token set; every screen reads from it.
    Type scale 12/13/14/16/22/32 · radii 8/12/16 · spacing 4-step · one accent. Chosen from 100 rendered variants (lab/), see FOUNDER-UI-DESIGN-28OCT.md. */
+@font-face{font-family:"Inter";font-weight:200;font-style:normal;font-display:swap;src:url("./fonts/Inter-ExtraLight.woff2") format("woff2")}
+@font-face{font-family:"Inter";font-weight:300;font-style:normal;font-display:swap;src:url("./fonts/Inter-Light.woff2") format("woff2")}
 @font-face{font-family:"Inter";font-weight:400;font-style:normal;font-display:swap;src:url("./fonts/Inter-Regular.woff2") format("woff2")}
 @font-face{font-family:"Inter";font-weight:500;font-style:normal;font-display:swap;src:url("./fonts/Inter-Medium.woff2") format("woff2")}
 @font-face{font-family:"Inter";font-weight:600;font-style:normal;font-display:swap;src:url("./fonts/Inter-SemiBold.woff2") format("woff2")}
 @font-face{font-family:"Inter";font-weight:700;font-style:normal;font-display:swap;src:url("./fonts/Inter-Bold.woff2") format("woff2")}
-:root{--bg:#0b0d12;--s1:#10131a;--s2:#171b25;--card:#10131a;--line:#222836;--hair:#222836;--fg:#e9ecf3;--tx:#e9ecf3;--dim:#98a2b6;--faint:#6d778c;
+:root{--bg:#0b0c10;--s1:#10131a;--s2:#171b25;--card:#10131a;--line:#222836;--hair:#222836;--fg:#e9ecf3;--tx:#e9ecf3;--dim:#98a2b6;--faint:#6d778c;
 --ac:#6b9bf2;--p:#34588f;--p2:#4a73b3;--g:#3dd598;--ok:#3dd598;--w:#f2b84b;--wn:#f2b84b;--r:#f2705f;--bad:#f2705f;
 --r1:8px;--r2:12px;--r3:16px;--sw:236px;--tp:56px;--gut:32px;--tabh:64px}
-body{background:var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;font-feature-settings:"cv11","ss01";-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(1100px 560px at 50% -12%,#1a2748 0%,rgba(11,12,16,0) 68%),var(--bg);background-attachment:fixed;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;font-feature-settings:"cv11","ss01";-webkit-font-smoothing:antialiased}
 :focus-visible{outline:2px solid var(--ac);outline-offset:2px;border-radius:6px}
 /* Shell */
 .ws{display:grid;grid-template-columns:var(--sw) minmax(0,1fr);height:100vh;height:100dvh}

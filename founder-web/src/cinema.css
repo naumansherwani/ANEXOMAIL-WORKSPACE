@@ -45,3 +45,5 @@ html[data-fx="off"] .aurora{display:none!important}
 .hello{margin:6px 0 6px}.greet .bsub{margin:0}.kicker{color:var(--dim)}
 .strip,.ledger,.panel{backdrop-filter:blur(10px);background:linear-gradient(180deg,rgba(23,27,36,.78),rgba(16,18,24,.78))}
 @media (max-width:700px){.greet{flex-direction:column;align-items:flex-start}.clock{align-items:flex-start}.clock .digits{font-size:44px}}
+.grp svg{color:var(--faint)}button.grp{justify-content:flex-start;text-align:left}.grp{margin-top:6px}
+.clock .ampm{align-self:flex-end;margin:0 0 .35em .35em;font:600 .26em Inter,sans-serif;letter-spacing:.14em;color:#8fb0ea}

@@ -67,3 +67,7 @@ Polar webhook engine (:3400) par KUCH nahi chalta (no-touch).
 ## 28 Oct 13:00 — ABHI PENDING (sirf 2; poori line copy karein, 'git' se shuru)
 1. SQL: sql-run.sh E108_founder_settings CHECK_E108 (6 rows true)
 2. founder-install.sh (cinematic dashboard + clock wapis, naya shell)
+
+
+## 28 Oct 13:20 — ABHI PENDING (1 point)
+1. founder-install.sh (12-ghantay clock, label fix). E108 SQL agar abhi tak nahi chali to pehle wohi (sql-run.sh E108_founder_settings CHECK_E108).

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { dayPart } from "./greeting.js";
-import { useCity, fmtDateTime, fmtDay, fmtTime, coordsOf } from "./city.js";
+import { useCity, fmtDateTime, fmtDay, fmtHM, coordsOf } from "./city.js";
 import { callName, nameOf } from "./Profile.jsx";
 
 const fmtMinor = (n) => (Number(n) / 100).toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -21,11 +21,13 @@ function firstName() {
 function Clock({ tz, city }) {
   const [now, setNow] = useState(() => new Date());
   useEffect(() => { const id = setInterval(() => setNow(new Date()), 1000); return () => clearInterval(id); }, []);
-  const p = Object.fromEntries(new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23", timeZone: tz, timeZoneName: "shortOffset" }).formatToParts(now).map((x) => [x.type, x.value]));
+  // 12-hour face with AM/PM (founder 28 Oct 13:01). Hour shows one digit before 10 ("1:05"), not "01:05".
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true, timeZone: tz, timeZoneName: "shortOffset" }).formatToParts(now).map((x) => [x.type, x.value]));
   const D = (v, i) => <span className="dg" key={`${i}${v}`}>{v}</span>; // plain function (not a component) so only a changed digit re-mounts and rolls
+  const per = String(p.dayPeriod || "").toUpperCase();
   return (
-    <time className="clock" dateTime={now.toISOString()} aria-label={`${p.hour}:${p.minute} in ${city}`}>
-      <span className="digits" aria-hidden="true"><span className="pair">{D(p.hour[0], 0)}{D(p.hour[1], 1)}</span><b className="colon">:</b><span className="pair">{D(p.minute[0], 0)}{D(p.minute[1], 1)}</span></span>
+    <time className="clock" dateTime={now.toISOString()} aria-label={`${p.hour}:${p.minute} ${per} in ${city}`}>
+      <span className="digits" aria-hidden="true"><span className="pair">{[...p.hour].map((d, i) => D(d, i))}</span><b className="colon">:</b><span className="pair">{D(p.minute[0], 0)}{D(p.minute[1], 1)}</span><span className="ampm">{per}</span></span>
       <span className="beam" aria-hidden="true"><i style={{ width: `${(Number(p.second) / 59) * 100}%` }} /></span>
       <small><span className="dot" />{city} · {String(p.timeZoneName || "")}</small>
     </time>
@@ -56,7 +58,7 @@ function Cell({ label, value, sub, off, action, src, at }) {
     <div className="cell"><div className="cl">{label}</div>
       {value == null ? <div className="cv skel" aria-label="Loading" /> : <div className={`cv ${off ? "off" : ""}`}>{value}</div>}
       {sub && <div className="cn">{sub}</div>}{action}
-      {src && !off && value != null && <div className="cs">{src}{at ? ` · ${fmtTime(at).slice(0, 5)}` : ""}</div>}
+      {src && !off && value != null && <div className="cs">{src}{at ? ` · ${fmtHM(at)}` : ""}</div>}
     </div>
   );
 }
