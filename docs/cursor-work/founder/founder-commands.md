@@ -1,5 +1,10 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 28 Oct 12:39 PKT — founder: agent ne rules bahut toore; ilaaj batao ke rules follow hon
+Founder (verbatim): "mujhe lagta hai ke tumne agents rule break bhut kiye hain. kabhi rules follow nahi huwa hai ajj abhi huway hain aur result better hain is ka kya elaj hai ke tum rules follow kero"
+- Jawab/kaam: wada nahi, MECHANICAL gate: `docs/cursor-work/server/rules-gate.py`. Har commit se pehle main yeh chalata hoon; FAIL = commit nahi. Check: no-mock markers, UI mein Roman Urdu nahi, founder-commands.md + DONE ledger + PULL-COMMANDS code ke saath update, 1-2 pending points, Rule 61 stack gap documented, user files untouched, manifest 0 bad. (Git hook se auto-enforce karna founder ki ijazat par: hook ek persistent setting hai.)
+- Halat: **DONE (gate script)**; judgment wale rules (UI achha hai ya nahi) founder ki aankh se.
+
 ## ▶ 28 Oct 12:17 PKT — founder: Rule 23 mere (founder) par apply nahi; founder ke AI + ANEXOChat tarteeb se banao; Chrome test
 Founder (verbatim): "rule 23 mere uper founder hoon, mere uper rule apply nahi hota hai. AI ke sab banye gay mere founder main tarteeb se. anexochat banay ga tarteeb se. chorme test kero"
 - Rule 23 ki shart thi "jab tak founder khud likh kar na kahe" — founder ne likh diya. **Founder workspace ke andar AI pages (10: arena, automation, billing, index, knowledge, memory, prompts, receipts, studio, ai) ab PLAN mein hain**, FOUNDER-MASTER-ORDER step 12 (F6 Systems + AI) mein, tarteeb se, founder protocol/Rule 69 ke saath. ANEXOChat bhi usi step 12 mein.

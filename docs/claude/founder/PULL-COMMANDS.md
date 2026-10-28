@@ -56,3 +56,9 @@ Polar webhook engine (:3400) par KUCH nahi chalta (no-touch).
 ## 28 Oct 12:30 — ABHI PENDING (is tarteeb se)
 1. SQL (E108 dobara, purana version server par hai): sql-run.sh E108_founder_settings CHECK_E108
 2. founder-install.sh (naya Settings UI + saaf error)
+
+
+## 28 Oct 12:50 — ABHI PENDING (sirf 2, isi tarteeb se)
+1. SQL: sql-run.sh E108_founder_settings CHECK_E108 (6 rows true)
+2. founder-install.sh (naya UI + Trust + shortcuts)
+(host guard / Polar token baad mein, in dono ke green hone ke baad)
