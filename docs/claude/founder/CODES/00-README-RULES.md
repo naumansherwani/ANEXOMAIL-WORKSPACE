@@ -23,3 +23,4 @@ Yeh folder founder ke SAB code ka naqsha hai: files, endpoints, gates, mix, audi
 - FC14 (28 Oct 06:38): Jo purane code mein ACHHA hai woh intact rakho aur behtar banao (todo mat). Frontend duniya ki sab se advance technology par; sab kuch usi mein.
 - FC15 (28 Oct 06:49, LOCKED): crypto/protocol design = FOUNDER-CRYPTO-FINAL-28OCT.md. Ed25519 (server->browser), HMAC-SHA256+HKDF (browser->server), SHA-256 (chain/Merkle/SRI), WASM kernel enforce. Is design se hat kar code nahi; badalna sirf founder ke likhit hukm se.
 - FC16: founderworkspace host end-state mein sirf Rust (awam se zero connection). Naya code kabhi awam service/token/table-write se nahi judta.
+- FC17 (28 Oct 07:14): har jawab ke aakhir mein technology ke hisaab se pull command (tail ke saath) — docs/claude/founder/PULL-COMMANDS.md se. Server par `git pull` kabhi nahi.

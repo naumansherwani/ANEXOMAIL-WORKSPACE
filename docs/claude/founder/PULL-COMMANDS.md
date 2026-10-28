@@ -1,0 +1,31 @@
+# FOUNDER PULL COMMANDS — technology/code ke hisaab se (Rule 66, founder 28 Oct 07:14)
+Qaida: har jawab ke aakhir mein JIS code ka badlav hua, usi technology ki command, `| tail -N` ke saath. SERVER PAR `git pull` KABHI NAHI (working tree untracked => abort). Sab commands `fetch` + `origin/main` se.
+Format: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:<SCRIPT>) 2>&1 | tail -N`
+
+## Kaun si file badli -> kaun si command
+| Code jo badla | Technology | Command (script) | tail |
+|---|---|---|---|
+| `docs/cursor-work/sql/E*.sql` (naya founder/DB) | **SQL** | 1) `docs/cursor-work/server/sql-run.sh` (bare = AUTO sirf naye E-files) 2) `… sql-run.sh) <E_naam> CHECK_<n>` | 25 |
+| `server/founder/**` (Rust), `founder-web/**` (React/Vite SPA + dist) | **Rust founder + SPA** | `docs/cursor-work/server/founder-install.sh` (tests -> build -> SPA -> systemd -> saboot; fail = rollback) | 12 |
+| `server/caddy/founder-host.sh`, `patch-founder-host.py` (founderworkspace host raaste) | **Caddy** | `server/caddy/founder-host.sh` | 12 |
+| `src/**`, `server/routes/**` jo awam React app / Bun hain (jaise auth.tsx, FounderBar.tsx) | **Web (awam React + Brain)** | `docs/cursor-work/server/pull.sh` (pm2 restart khud) | 15 |
+| `server/rust/**` (awam Rust engine :3200) | Rust awam engine | `docs/cursor-work/server/rust-engine-install.sh` | 15 |
+| `polar-payment` | Polar | KABHI NAHI (no-touch) | — |
+
+## Mukammal commands (copy-paste)
+**SQL (bare, E-files auto):**
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) 2>&1 | tail -25`
+**SQL CHECK (E103 misaal):**
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E103_founder_actions_english CHECK_E103 2>&1 | tail -25`
+**Rust founder + SPA:**
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+**Caddy (founder host):**
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:server/caddy/founder-host.sh) 2>&1 | tail -12`
+**Web (awam React/Brain):**
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
+
+## Tarteeb (agar ek hi batch mein kai technologies badli hon)
+1) SQL  2) SQL CHECK  3) Rust founder + SPA  4) Web  5) Caddy (sirf jab host raaste badle).  Wajah: DB pehle (naya code naye table/column par), phir binary, phir web; Caddy aakhir.
+
+## Har phase ke liye
+Blueprint `FOUNDER-BUILD-PLAN-28OCT.md §11z` mein har phase ke agay technology + pull ka qism likha hai; yeh file command ka masdar hai.
