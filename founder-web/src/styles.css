@@ -51,9 +51,6 @@ textarea{background:#0d0f14;color:var(--fg);border:1px solid #2b2f3a;border-radi
 @media (max-width:760px){.side{width:100%;flex:1 1 100%;flex-direction:row;flex-wrap:wrap;border-right:0;border-bottom:1px solid #1d2028;padding:10px 12px}.sidehead,.sidenote{display:none}.content{padding:20px 16px}.topbar .search{display:none}}
 
 /* Awam-style page parts (same pattern as /app analytics): kicker, underlined tabs, centred column, stat tiles, row-cards */
-.brand-lockup{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
-.wm{display:inline-flex;flex-direction:column;line-height:1}.wm b{font-size:15px;font-weight:800;letter-spacing:-.02em;background:linear-gradient(180deg,#f3f5f8,#aab3c2);-webkit-background-clip:text;background-clip:text;color:transparent}
-.wm span{margin-top:5px;display:flex;justify-content:space-between;font-size:8px;font-weight:600;color:#7d8aa3}.wm i{font-style:normal}
 .search{display:flex;justify-content:space-between;align-items:center;border-radius:999px}.search kbd{font:500 11px Inter,sans-serif;color:var(--dim);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
 .nav{display:flex;align-items:center;gap:12px}.nav.on{box-shadow:inset 2px 0 0 var(--p2)}
 .tabs{display:flex;flex-wrap:wrap;border-bottom:1px solid #1d2028;margin:0 -36px;padding:0 24px}
@@ -71,3 +68,11 @@ textarea{background:#0d0f14;color:var(--fg);border:1px solid #2b2f3a;border-radi
 .content>.col,.content>.grid{max-width:960px}
 @media (max-width:760px){.tabs{margin:0 -16px;padding:0 8px}}
 .rowcard code{font:400 11.5px ui-monospace,SFMono-Regular,Menlo,monospace;color:#7d8aa3;margin-top:3px;word-break:break-all}.lead{margin:0;font-size:14px}
+
+/* Real logo lockup — same values as BrandMark.tsx + ax-platinum-text (one logo, one style across the whole site) */
+.brand-lockup{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;flex-shrink:0}
+.brand-lockup svg{width:32px;height:32px;flex-shrink:0}
+.wm{display:inline-flex;flex-direction:column;line-height:1}
+.wm b{display:block;white-space:nowrap;font-size:15px;font-weight:800;letter-spacing:-.02em;background-image:linear-gradient(170deg,oklch(0.985 0.003 250) 0%,oklch(0.855 0.010 252) 52%,oklch(0.665 0.014 253) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.wm span{margin-top:5px;display:flex;width:100%;justify-content:space-between;font-size:8px;font-weight:600;color:oklch(0.735 0.017 252)}
+.wm i{font-style:normal}
