@@ -461,3 +461,6 @@ Har blueprint/plan/phase ke SHURU mein technology likhi ho aur har section mein 
 
 ## Rule 63 (STRICT, founder 28 Oct 2026 05:26 PKT) — banane se PEHLE discuss, phir build; LIVE data, koi dummy/mock nahi
 Har naye kaam ki technology + data ka raasta pehle founder ke saath discuss ho aur repo mein likha ho (founder ka locked raasta: FOUNDER-BUILD-PLAN §1z), phir hi build. Founder/production UI mein dummy ya mock data KABHI nahi: jo data abhi nahi, screen par saaf "abhi connect nahi" likha jaye. Test hamesha live (Chrome). Design mock sirf F0 design canvas mein jayez (production nahi).
+
+## Rule 64 (STRICT, founder 28 Oct 2026 06:10 PKT) — EK PHASE: green, Chrome par LIVE dekha, phir agla
+Founder ke kaam mein ek waqt mein ek phase. Phase tab GREEN jab (1) server par command chali, (2) saboot/CHECK sab OK, (3) Chrome par live dekha gaya. Us se pehle agle phase ka code/pull/command NAHI diya jata, na do phase ki commands mix ki jati hain. Code pehle likha ho to bhi uska pull tab tak nahi jab tak pichla phase green na ho.

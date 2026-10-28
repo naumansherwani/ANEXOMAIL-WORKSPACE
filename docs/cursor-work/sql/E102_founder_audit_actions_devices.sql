@@ -47,6 +47,8 @@ alter table public.founder_audit     enable row level security;
 alter table public.founder_audit_sig enable row level security;
 revoke all on public.founder_audit, public.founder_audit_sig from public, anon, authenticated;
 grant select, insert on public.founder_audit, public.founder_audit_sig to service_role;
+-- Supabase default privileges service_role ko sab kuch dete hain: audit par UPDATE/DELETE/TRUNCATE saaf hata do (trigger ke upar doosri deewar)
+revoke update, delete, truncate, references, trigger on public.founder_audit, public.founder_audit_sig from service_role;
 
 create or replace function public._fa_lp(t text) returns bytea language sql immutable as $$
   select int4send(octet_length(convert_to(coalesce(t, ''), 'UTF8'))) || convert_to(coalesce(t, ''), 'UTF8')

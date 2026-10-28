@@ -1713,3 +1713,5 @@ Haqeeqat (server/routes/auth.ts): ek hi login endpoint sab ke liye; `FOUNDER_PAS
 ## 28 Oct 06:30 PKT — Founder ke server par founder-install.sh 3rd run OK (SPA/healthz 200, me/bridge 401). Meri GALTI: deploy-sites.sh ko `bash <(git show ...)` se chalane ko kaha — woh repo folder se chalti hai (strip-dup-hosts.py); sahi command founder-commands.md ki 28 Oct 06:30 list mein. CHECK_E102.sql bhi (9 row, local PG16 par ok=t) — pehle chhoot gayi thi (Rule: har SQL ke saath CHECK). Agla: founder E102 chalaye, DNS, Caddy, Chrome live.
 
 ## 28 Oct 06:40 PKT — Founder: "F0 design website par kyun nahi?" — sahi, ab F0 ka do-tap + 6 decks asli SPA mein. Naya pull: founder-install.sh dobara (naya binary+SPA). Pehle E102 SQL.
+
+## 28 Oct 06:12 PKT — Founder gussa: maine phases mix kiye (decks/SQL/Caddy ek saath). Rule 64: ek phase green + Chrome live, phir agla. Abhi sirf PHASE = E102 SQL green (CHECK_E102 ka ek FAIL theek kiya). Uske baad ek hi agla phase: F1b/F2a Chrome par live (DNS + Caddy + naya founder-install). Decks wala code push hai par uska pull tab tak nahi.
