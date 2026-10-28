@@ -454,3 +454,4 @@ Founder ne plan manzoor kiya: "repo main likh lo ke yeh hai core Founder ki tech
 - **Phases:** F0 design -> F1a security fix -> F1b foundation -> F2 Bridge -> F3 Money+Release -> F4 People -> F5 Mail Desk -> F6 Systems -> F7 3D -> F8 Control -> F9 cutover. Ek ke baad agla, har phase ka exit saboot plan mein.
 - Nexatect (parent) ka alag login: anexomail.com puri website banne ke BAAD.
 - **Security (founder 28 Oct 05:07):** founder mein Rule 52 kernel builtin + `ANEXO_TAG_MODE=enforce` hamesha; military-level hardening: `docs/claude/founder/FOUNDER-SECURITY-28OCT.md`. Founder ka sab kuch ek jagah: `docs/claude/founder/INDEX.md`.
+- **Product lane (founder 28 Oct 05:13):** Docs+Sheets editor sab packages (Rule 58 supersede), HR+Accounting, 1-click Google/Microsoft migration => `docs/claude/OFFICE-HR-ACCOUNTING-MIGRATION-28OCT.md` (PLAN; founder phases F1a+ pehle).

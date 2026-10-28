@@ -1,3 +1,5 @@
+> **28 Oct 2026 05:13 PKT — SUPERSEDED (Docs+Sheets):** founder hukm: Docs + Sheets editor SAB packages mein, open-source engine (Collabora/OnlyOffice) + WOPI. Slides (Show) ka faisla baqi. Dekho docs/claude/OFFICE-HR-ACCOUNTING-MIGRATION-28OCT.md.
+
 # OFFICE SUITE — Writer / Sheet / Show = BUSINESS package ka hissa (founder hukm 26 Oct 2026 22:35)
 
 **Rule 58:** Office suite (Writer = documents, Sheet = spreadsheets, Show = presentations) **Business package** ka feature hai (starts_at = business; Business Pro aur Enterprise ko bhi milta hai). **Basic aur Pro mein NAHI**, CRM P3-P6 ka hissa NAHI. Feature ID: N-DOC-01 (docs/packages/features.tsv, FEATURE-CATALOG.md). Halat: PROPOSED, abhi bana nahi.

@@ -15,3 +15,4 @@ Founder ka hukm: "founder ka sab kuch ek jagah repo mein, bar bar dhundna na pad
 | Loophole ledger | docs/cursor-work/founder/loophole-ledger.md |
 | Chat context | docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md |
 | Endpoint registry (founder 77 = 53 Bun-only + 24 Rust) | docs/claude/ENDPOINT-PACKAGE-MAP.csv |
+| Product lane (office/HR/accounting/migration) | docs/claude/OFFICE-HR-ACCOUNTING-MIGRATION-28OCT.md |
