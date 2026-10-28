@@ -170,3 +170,9 @@ Kill switches, flags and maintenance. Every change is audited and reversible whe
 - Awam app reading feature flags touches no-touch code (F8).
 - Lifting Rule 23 for LEO draft and ask-anything (F5/F9).
 
+
+## Common features (same on user side) — rule FC22
+Mail, Calendar, People, Work, CRM, Analytics, Org, Safety, ANEXOChat, Speed, Settings and the admin pages already exist on the user side in latest-technology code (Rust procs + React). Founder gets the same features, in this map's order, through the founder protocol only: reuse the pure logic (`#[path]` include or port into `server/founder`), never edit user files, never share design or gates with the user app. Before building any row above, write down where its user-side proc lives (ENDPOINT-PACKAGE-MAP.csv, count-endpoints.py), then port. Awam order (ONE-ORDER-27OCT.md) stays untouched and resumes after founder green (FC21).
+
+## Live check 28 Oct 09:14 PKT (Chrome, read-only)
+https://founderworkspace.anexomail.com/ shows the new shell: real logo, "Founder" chip, "Open app", sidebar Bridge / Finance / People / Mail Desk / AI / Release / Move-In / Systems / Control / Audit, Finance card (£ 0, no accounts recorded), What needs attention OK, Customer voice 1 new, updated 09:13:58 every 15 s. Not yet checked live: deck pages, "Activating → Activated" splash after a fresh sign-in.

@@ -1806,3 +1806,6 @@ Founder asked: existing + new features intact, ordered, gates + endpoints, advan
 
 ## 09:20 PKT — rename + order guard
 Founder: Enterprise -> Business Premium everywhere (Polar has no such product yet, nothing to rename there). FC20/FC21 saved. ONE-ORDER resume pointer added. Awam order untouched.
+
+## 09:15 PKT — pre-compact snapshot
+State: main pushed (feature map 9cf0b7c, rename e1df4ab, this commit next). Founder side live in Chrome (root). Rules added today: FC18 reuse user code in founder protocol, FC19 feature map + never remove real logo, FC20 convert old code to latest tech, FC21 awam ONE-ORDER intact + resume pointer, FC22 common features in order without mixing. Plan rename Enterprise -> Business Premium done (docs everywhere, rust alias; id `enterprise` kept). Pending: founder pastes rust-engine-install output (alias); then F1a (E104 devices, /exchange, refuse founder login on awam hosts) or F3 (finance gates SQL + Polar read-only token) on founder "haan". Small: "/f/" text in founder-install.sh last line; 3 server-vs-repo diff files audit; Rust audit hash alignment.
