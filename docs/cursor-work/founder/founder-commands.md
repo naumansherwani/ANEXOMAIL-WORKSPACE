@@ -1,5 +1,9 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 28 Oct 13:20 PKT — E108 + install server par (VERBATIM paste ka khulasa)
+Founder ne founder-install.sh (OK: zinda, darwaza band, Ed25519 ON) aur E108 CHECK (6 OK, DONE: sab theek) paste kiye, aur likha: "baki kaam shaam ko repo codes context chat ka next tarteeb ko update kero"
+- Halat: **DONE** E108 server par GREEN; founder-install GREEN (12-hour clock, label fix, cinematic restore server par). Shaam: Chrome live proof (Lahore save+reload, clock, sidebar) -> phir F2b.
+
 ## ▶ 28 Oct 13:18 PKT — E108 CHECK fail on server (VERBATIM paste)
 "E108 selftest FAIL: new row for relation founder_settings violates check constraint founder_settings_key_registry ... E108_founder_settings FAIL (exit 3)"
 - Wajah: server par purani E108 ki table thi; `create table if not exists` purana CHECK (personal.home ke baghair) nahi badalta. Fix: E108 ab constraint drop+re-add karta hai (idempotent). Sandbox par purane constraint se replay: selftest OK.

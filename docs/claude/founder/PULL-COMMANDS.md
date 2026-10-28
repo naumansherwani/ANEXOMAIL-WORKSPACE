@@ -75,3 +75,5 @@ Polar webhook engine (:3400) par KUCH nahi chalta (no-touch).
 ## ABHI PENDING (28 Oct 13:25)
 1. E108 dobara (fix): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E108_founder_settings CHECK_E108 2>&1 | tail -25
 2. Phir founder-install.sh.
+
+## ABHI PENDING (28 Oct 13:30): KOI NAHI. E108 aur founder-install server par green hain. Agla server command F2b ke saath.

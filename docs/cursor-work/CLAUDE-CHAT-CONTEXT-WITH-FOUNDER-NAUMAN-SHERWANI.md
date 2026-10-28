@@ -1898,3 +1898,10 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 
 ## 28 Oct 13:20 PKT
 - Founder 13:16: Mail<->Chat Bridge ke 6 features (phase 29, 23+24, 28+31, 30, E7, 27) COMMON hain: user aur founder dono ko milenge. Doc §6. Server par E108 re-run + founder-install abhi pending.
+
+## 28 Oct 13:30 PKT — NEXT TARTEEB (compaction ke baad yahin se)
+- GREEN on server: E108 (CHECK 6 OK, idempotent fix 5f86dc4) + founder-install (12-hour clock, breadcrumb label, cinematic dashboard/flip clock).
+- Founder: baki kaam SHAAM ko. Pending server commands: KOI NAHI.
+- 1) Shaam: Chrome live proof (Rule 64): Settings -> Lahore search+save, reload, clock 12h, sidebar/breadcrumb, graphics+compact toggles; sirf founder ke signed-in tab mein, naya tab/cursor nahi hilana jab tak bole.
+- 2) Phir MASTER-ORDER step 3 leftovers (host guard pull.sh probe->enforce; Polar Metrics token) -> step 4 F2b WASM verify -> 5 F2c audit+Merkle -> 6 S2 -> 7 F2d passkey+S3 -> 8 Decide/Live Pulse/S4 -> 9 F3 -> 10 F4 -> 11 F5 -> 12 F6 (+ANEXOChat) -> 12b Mail<->Chat Bridge -> 13 F8 -> 14 F9 cutover -> 15 Founder desk.
+- Docs: FOUNDER-MASTER-ORDER, FOUNDER-MAIL-CHAT-BRIDGE (C1-C6 common), FOUNDER-BRIDGE-VS-DASHBOARD, FOUNDER-KILLER-FEATURES, FOUNDER-UI-DESIGN. Ek waqt ek phase; feature code F2b se pehle nahi.

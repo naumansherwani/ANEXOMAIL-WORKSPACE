@@ -1169,3 +1169,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 28 Oct 13:20 PKT — Founder order 13:16: 6 common features (C1-C6, user+founder dono) likhe: FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md §6.
 
 - 28 Oct 13:25 PKT — E108 idempotent upgrade: purana registry CHECK drop+re-add (server par selftest fail tha). Dobara mat likho.
+
+- 28 Oct 13:30 PKT — E108 server GREEN (CHECK 6 OK) + founder-install GREEN. Dobara pull command mat do. NEXT: shaam Chrome proof, phir F2b (step 4).
