@@ -894,7 +894,7 @@ server/founder/src/data.rs 6031f4afe83ffdd0
 server/founder/src/gate.rs c3b8fbb573facca1
 server/founder/src/sign.rs e58d8bf3b11dd536
 docs/cursor-work/server/founder-install.sh aab38fb845c653c9
-founder-web/.gitignore 4d56952b0fb13bf8
+founder-web/.gitignore aaccff71fadbb13b
 founder-web/index.html 59bb2d9f2d04a040
 founder-web/package-lock.json 56f1719239e4f0e9
 founder-web/package.json 1e768dde5faf7c14
@@ -905,3 +905,7 @@ founder-web/src/main.jsx 8b541f7e1873971b
 founder-web/src/styles.css 0460b3507b013733
 founder-web/vite.config.js b6ee16d6535a7c22
 server/founder/src/login.rs 465011eb25e7daac
+founder-web/dist/assets/index-BGlg2aAD.css 567362f58a101e89
+founder-web/dist/assets/index-BTDf57v6.js 0bd72706415c8615
+founder-web/dist/assets/three.webgpu-fhNKgNS8.js f3dfde2612263b1a
+founder-web/dist/index.html 0c77e493471210ad
