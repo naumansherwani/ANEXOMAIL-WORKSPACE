@@ -42,7 +42,7 @@ export function Deck({ deck }) {
   const list = d?.connected ? d.actions.filter((a) => a.deck === deck) : [];
   return (
     <section className="card wide">
-      <h2>{info[1].toUpperCase()} · ONE-CLICK</h2>
+      <h2>{info[1].toUpperCase()} · LIVE ACTIONS (one-click, audited)</h2>
       {!d && <div className="dim">…</div>}
       {d && !d.connected && <div className="note">{d.note}</div>}
       {d?.connected && !list.length && <div className="dim">No actions in this deck yet.</div>}
@@ -50,7 +50,7 @@ export function Deck({ deck }) {
         <li key={a.key}><div><b>{a.title}</b><em>{a.summary}</em></div>
           <span className={`pill lv-${a.danger === "high" ? "fail" : a.danger === "medium" ? "warn" : "ok"}`}>{DANGER[a.danger]}</span>
           <button className="mini" onClick={() => setSel(a)}>Tap 1</button></li>))}</ul>
-      <div className="src">Live {info[1]} data arrives in {info[2]}; for now this is the action list only.</div>
+      <div className="src">These actions exist in the server registry today. Tap 1 opens the reason sheet; the executor is switched on in F8.</div>
       {sel && <Sheet action={sel} onClose={() => setSel(null)} onDone={() => setTick((t) => t + 1)} />}
     </section>
   );

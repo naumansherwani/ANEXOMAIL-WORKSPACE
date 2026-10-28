@@ -2,7 +2,8 @@ import { useEffect, useState, useCallback } from "react";
 import { get, hasToken } from "./api.js";
 import { DECKS, Deck, Audit } from "./Decks.jsx";
 import { Brand, Icon } from "./Brand.jsx";
-import { Finance } from "./Finance.jsx";
+import { DeckPage } from "./Finance.jsx";
+import { DECK_META, ORDER } from "./catalog.js";
 
 const TXT = { ok: "OK", warn: "ATTENTION", fail: "FAILING", unknown: "UNKNOWN" };
 
@@ -36,15 +37,15 @@ export default function App() {
 
   if (!authed) return <Gate />;
   const m = d?.money, t = d?.trouble, v = d?.voice;
-  const NAV = [["bridge", "Bridge"], ["finance", "Finance"], ...DECKS.map((x) => [x[0], x[1]]), ["audit", "Audit"]];
+  const NAV = [["bridge", "Bridge"], ...ORDER.map((k) => [k, DECK_META[k].title]), ["audit", "Audit"]];
   const title = view === "bridge" ? "Command center" : (NAV.find((n) => n[0] === view) || [0, ""])[1];
   return (
     <div className="shell">
       <header className="topbar">
         <Brand />
-        <span className="wschip">Founder Workspace</span>
+        <span className="wschip">Founder</span>
         <div className="search" aria-hidden="true"><span>Search or run a command…</span><kbd>⌘K</kbd></div>
-        <a className="link" href="/app">Workspace</a>
+        <a className="link" href="/app">Open app</a>
       </header>
       <div className="body">
         <nav className="side" aria-label="Admin">
@@ -56,7 +57,7 @@ export default function App() {
         {view === "bridge" && <p className="dim">Money, what needs attention and the voice of your customers in one view. Everything shown is server truth; anything not connected yet says so.</p>}</div>
       <div className="chips"><span className="chip warn">Signature not yet verified in browser (kernel: F2b)</span><span className="chip warn">Device approval not yet enabled (F1a)</span></div>
       {err && <div className="err banner" role="alert">{err}</div>}
-      {view === "finance" ? <Finance money={m} /> : view === "audit" ? <div className="grid"><Audit /></div> : view !== "bridge" ? <div className="grid"><Deck key={view} deck={view} /></div> :
+      {DECK_META[view] ? <><DeckPage deck={view} money={m} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : view !== "bridge" ? <div className="grid"><Deck key={view} deck={view} /></div> :
       <div className="grid">
         <Card title="FINANCE">
           {!m ? <div className="big dim">…</div> : !m.connected ? <div className="big dim">not connected<small>{m.note}</small></div> :

@@ -1078,3 +1078,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 28 Oct 09:00: Command Center existing admin shell (topbar+ADMIN sidebar) mein, founder-web mein (user code mix nahi). Dobara mat banao.
 
 - 28 Oct 09:00 PKT — founder-web: REAL ANEXOMAIL logo (Brand.jsx = port of BrandMark.tsx, awam file untouched), icon sidebar, "Money" -> "Finance" (Bridge card + Finance deck with tabs, stat tiles, row-cards, G1/G2/G3 gate badges, all "Planned · F3/F4", no fake data). Founder-only code (FC18). Server gate wiring (founder_actions finance deck) NOT done yet = needs SQL phase.
+
+- 28 Oct 09:05 PKT — FOUNDER-FEATURE-MAP-28OCT.md + founder-web/src/catalog.js: 96 features (62 moved from old Lovable founder/admin pages, 34 new), each with gate G1/G2/G3 + /founder/v1 endpoint + phase, 8 decks (Finance, People, Mail Desk, AI, Release, Move-In, Systems, Control). Generic DeckPage; live registry actions (Tap 1/2 sheet) kept below. Chip "Founder", link "Open app". NOT built: the endpoints themselves (each arrives in its phase).

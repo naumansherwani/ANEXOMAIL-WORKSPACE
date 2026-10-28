@@ -70,3 +70,4 @@ textarea{background:#0d0f14;color:var(--fg);border:1px solid #2b2f3a;border-radi
 .gate i{width:7px;height:7px;border-radius:50%;background:currentColor}.plan{font-size:12px;color:var(--dim);white-space:nowrap}
 .content>.col,.content>.grid{max-width:960px}
 @media (max-width:760px){.tabs{margin:0 -16px;padding:0 8px}}
+.rowcard code{font:400 11.5px ui-monospace,SFMono-Regular,Menlo,monospace;color:#7d8aa3;margin-top:3px;word-break:break-all}.lead{margin:0;font-size:14px}

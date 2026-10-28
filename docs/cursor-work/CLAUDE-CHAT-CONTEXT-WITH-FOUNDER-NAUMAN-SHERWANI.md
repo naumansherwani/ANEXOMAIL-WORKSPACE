@@ -1800,3 +1800,6 @@ Bandwidth/overage = user-side blueprint (CEO-DECISIONS §D), abhi BANANA NAHI. A
 
 ## 09:00 PKT 28 Oct — Finance in awam style, real logo restored
 Founder: demo ne real logo hata diya tha (galti, mani). Ab SPA mein asli BrandMark port, awam-style shell, Finance deck. founder-install output for 23ac826 was OK (28 tests, SPA 200). Next: founder pulls new commit, Chrome check; then SQL for finance deck gates (needs his "haan").
+
+## 09:05 PKT — feature map
+Founder asked: existing + new features intact, ordered, gates + endpoints, advanced. Done as docs + catalog + UI (see FOUNDER-FEATURE-MAP-28OCT.md). Explained why "WORKSPACE" appears (real logo lockup). Next: founder pulls, Chrome check; then F1a or F3 with his "haan".
