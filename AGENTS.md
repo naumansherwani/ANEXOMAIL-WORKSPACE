@@ -470,3 +470,6 @@ Founder ka kaam: purane Lovable founder code (docs/claude/founder/CODES/01-FILES
 
 ## Rule 66 (STRICT, founder 28 Oct 2026 06:57 PKT) — har phase ke saath TECHNOLOGY + pull command (blueprint mein likha)
 Blueprint (docs/claude/FOUNDER-BUILD-PLAN-28OCT.md §11z) mein HAR phase ke agay likha hota hai: kaun si technology is phase mein, kaun se codes likhe jayenge, aur founder ko kaun si pull command. Pull command technology ke hisaab se: SQL=`sql-run.sh` (+CHECK), Rust+SPA=`founder-install.sh`, Caddy=`founder-host.sh`, awam web (sirf F9)=`pull.sh`. SERVER PAR `git pull` KABHI NAHI (working tree untracked) — sirf `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:<script>)`. Phase badle to table pehle update, phir code.
+
+## Rule 67 (STRICT, founder 28 Oct 2026 06:58 PKT) — Founder UI ki zubaan ENGLISH
+Founder/user ko dikhne wali HAR screen ka text English (jaisa pehle wala awam/founder UI tha: "Good morning", "Command center", "Sign in"). Roman Urdu sirf founder se chat mein, UI mein kabhi nahi. Purana jo achha tha (dark premium look, English copy) woh base; naya design usi ko behtar kare, bura/ajeeb nahi. Ab tak /f/ login mein Roman Urdu tha ("Sirf founder ka darwaza") — GALAT, F1c se pehle hi English kiya jaye.

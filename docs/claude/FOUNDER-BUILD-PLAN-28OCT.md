@@ -201,3 +201,5 @@ Pull command ke 4 qism (sab `git -C /opt/anexomail-web fetch -q origin main && b
 Rule: har phase ka exit = tests + server saboot + Chrome live (Rule 64). Is table ko phase se pehle update karna lazmi.
 
 ### FX-23 (Chrome live, 06:58): `/f/` login card screen ke TOP-LEFT mein chipka hua — center nahi, cinematic nahi. Fix F1c (login ka design: center, bada type, aankhon ko aasaan). Login form asli (awam jaisa nahi) — theek.
+
+### FX-24 (founder 28 Oct 06:58): /f/ ka text Roman Urdu tha aur card ajeeb — "pehle wala English jo user ko milta hai woh sahi". Fix: poori founder SPA ka copy English (Rule 67), look = purane achhe dark-premium ka behtar version; /app (purana) bilkul nahi chheda gaya, intact hai. Phase: pehla chhota fix (copy+centering) F0-polish, phir F1a.
