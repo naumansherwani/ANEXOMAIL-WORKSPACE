@@ -7,6 +7,14 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - Migration: Pro ke endpoints Rust :3200 + WebTransport/WASM kernel (Rule 52/56); Bun sirf fallback. Phase table: MIGRATION-PHASES-RUST-PRIMARY.md.
 - **Founder-side (puri website ki zaroorat) mein ADD:** (1) common AttachmentChip (Preview/Download, src/components/app/files/AttachmentChip.tsx) calendar EventFiles + CRM files + ANEXOChat attachments mein; (2) attachment A1-A4 (dedupe, resumable, parallel, signed link) email+ANEXOChat; (3) ANEXOChat live hone ke baad E100 edit. Ye Pro green se alag; Founder workspace / puri-website list ka hissa.
 
+## ▶ 28 Oct 06:30 PKT — FOUNDER F0/F1b: SAHI TARTEEB (founder ko confusion tha; yeh ek hi list hai)
+1. ✅ DONE (founder ke server par 3rd run OK, 06:00): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh)` => SPA 200, healthz 200, me/bridge bina token 401. Founder service `anexomail-founder` zinda 127.0.0.1:3210.
+2. ⏳ SQL E102 (founder_audit, actions, devices): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)` — phir `… sql-run.sh) E102_founder_audit_actions_devices CHECK_E102` (sab row ok=t).
+3. ⏳ DNS (founder khud, registrar): `founder.anexomail.com` A record server IP par. DNS ke BAGHAIR Caddy deploy mat karo (certificate fail).
+4. ⏳ Caddy (DNS ke baad): `cd /opt/anexomail-web && git checkout -- . && git pull -q && bash server/caddy/deploy-sites.sh` (GALAT tha: `bash <(git show ...deploy-sites.sh)` — script apni saathi files `strip-dup-hosts.py` apne folder se leti hai, isliye repo se chalani hai; us galat run mein sirf cert-ownership + coturn copy (idempotent) hui, Caddyfile/sites nahi badle).
+5. ⏳ Chrome live: founder.anexomail.com — login (password), 3D toggle, Bridge asli data. Passkey/sig-verify abhi nahi (F1a/F2b).
+Awam-side backlog (founder se alag): Office/HR/Accounting/migration, passkey popup irritation.
+
 ## ▶ 28 Oct 05:00 PKT — founder: founder ka login Chrome mein hai; "repo likh lo ke yeh hai core Founder ki technology (Bun nahi, Node nahi) ... yehi bana hai". Halat: DONE — AGENTS.md Rule 61 + TECH-MAP 0d. Code abhi nahi (F0 founder ke 'haan' par).
 
 ## ▶ 28 Oct 04:59 PKT — founder: nexatect.com ke liye ALAG login banega (parent company ka sab kuch), **anexomail.com puri website banne ke BAAD** — repo mein likho. (Baqi 2 sawal: UI build = React default, port/naam F1b par; founder ne naya jawab nahi diya.)
