@@ -40,17 +40,14 @@ Sandbox result: 40 cores ok, 619 tests passed, 1 SKIP (jwt_core needs engine cra
 | Polar read-only token (founder env, chat mein nahi) | **Polar token** | `bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-polar.sh)` (pehle fetch; token chhupa kar poochti hai; `off` se hata do) | 13 |
 | `server/lib/founder-host-guard.ts`, `server/routes/auth.ts` (F1a-2) | **Awam web** + guard | 1) `pull.sh` 2) `…founder-hostguard.sh) probe` -> founder host par login -> `status` -> `enforce` | 14 |
 
-## ABHI PENDING — copy-paste, is tarteeb se (28 Oct 2026 12:20, F2a; update har turn)
-Chrome proof se: E106 server par LAG CHUKI (reject breakdown card mein dikha). founder-install pehle chal chuka; ab naya SPA (gol photo, NS, halo, "Nauman", profile_state) ke liye dobara.
-1) **Rust + SPA (naya build) — ab F2a ke saath: sign key banata hai, 'public key endpoint=200' dikhna chahiye:**
+## ABHI PENDING — copy-paste, is tarteeb se (28 Oct 2026 12:55, Settings S1 / E108; update har turn)
+F2a server par LIVE hai (Chrome proof). Ab Settings S1:
+1) **SQL (E108 auto):**
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) 2>&1 | tail -25`
+2) **SQL CHECK (6 rows true):**
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E108_founder_settings CHECK_E108 2>&1 | tail -25`
+3) **Rust + SPA:**
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
-2) **E106 CHECK (agar abhi tak output paste nahi hua):**
-`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E106_founder_polar_rejects CHECK_E106 2>&1 | tail -25`
-3) **Awam web (host guard, mode OFF = koi asar nahi) — agar abhi nahi chali:**
-`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
-4) **Host guard status (probe mode ON hai; pehle https://founderworkspace.anexomail.com/founderlogin par ek baar login):**
-`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-hostguard.sh) status`
-   `founder_host=true` aaye tabhi: `… founder-hostguard.sh) enforce`
-5) **Polar Metrics token (sirf agar card "not connected" kahe):**
-`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-polar.sh) engine`
+4) **Host guard (agar baqi):** founderworkspace/founderlogin par ek baar login -> `…founder-hostguard.sh) status` -> `founder_host=true` par `enforce`.
+5) **Polar Metrics token (sirf agar card "not connected" kahe):** `…founder-polar.sh) engine`
 Polar webhook engine (:3400) par KUCH nahi chalta (no-touch).

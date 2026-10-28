@@ -93,3 +93,6 @@ export async function put(path, body) {
 }
 // Sign out of THIS browser only: drops the session copy + the in-memory founder token. The device approval stays (server side).
 export function signOut() { forget(); try { window.localStorage.removeItem(KEY); window.localStorage.removeItem("anexo.session.last"); } catch {} window.location.replace("/founderlogin"); }
+
+// Founder settings (E108): one signed write per change; value null = back to default.
+export const setSetting = (key, value) => put("/founder/v1/settings", { key, value });

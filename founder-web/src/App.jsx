@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import { get, hasToken, deviceStatus } from "./api.js";
+import { get, hasToken, deviceStatus, setSetting } from "./api.js";
 import { AccountMenu, ProfileView, nameOf, callName } from "./Profile.jsx";
 import { SettingsView } from "./Settings.jsx";
 import { DECKS, Deck, Audit } from "./Decks.jsx";
@@ -69,7 +69,7 @@ const fmtMinor = (n) => (Number(n) / 100).toLocaleString("en-GB", { minimumFract
 function Greeting({ m, t, v, at, p, h, me }) {
   const [now, setNow] = useState(() => new Date());
   useEffect(() => { const id = setInterval(() => setNow(new Date()), 30000); return () => clearInterval(id); }, []);
-  const tz = browserZone(), part = dayPart(now, tz), nm = (callName(nameOf(me)) || firstName()).slice(0, 30);
+  const tz = me?.timezone || browserZone(), part = dayPart(now, tz), nm = (callName(nameOf(me)) || firstName()).slice(0, 30);
   const bits = [];
   if (p?.connected && p.mrr_minor != null) bits.push(`${fmtMinor(p.mrr_minor)} MRR (Polar)`, `${p.active_subscriptions ?? 0} active subscription(s)`);
   else if (h?.subscriptions?.connected) bits.push(`${h.subscriptions.by_status?.active ?? 0} active subscription(s) · ${h.subscriptions.by_status?.past_due ?? 0} past due (Polar webhook)`);
@@ -100,7 +100,7 @@ export default function App() {
   const [view, setView] = useState("bridge");
   const [prof, setProf] = useState(null);
   const [slim, setSlim] = useState(() => { try { return window.localStorage.getItem("anexo.founder.slim") === "1"; } catch { return false; } });
-  const toggleSlim = () => setSlim((s) => { const n = !s; try { window.localStorage.setItem("anexo.founder.slim", n ? "1" : "0"); } catch {} return n; });
+  const toggleSlim = () => { const n = !slim; setSlim(n); try { window.localStorage.setItem("anexo.founder.slim", n ? "1" : "0"); } catch {} setSetting("appearance.sidebar_slim", n).catch(() => {}); };
   const [fx, setFx] = useState(() => { try { return window.localStorage.getItem("anexo.founder.fx") !== "off"; } catch { return true; } });
   useEffect(() => { document.documentElement.setAttribute("data-fx", fx ? "on" : "off"); try { window.localStorage.setItem("anexo.founder.fx", fx ? "on" : "off"); } catch {} }, [fx]);
   const [d, setD] = useState(null), [err, setErr] = useState(""), [at, setAt] = useState(null), [pend, setPend] = useState(null);
@@ -108,7 +108,15 @@ export default function App() {
     try { const r = await get("/founder/v1/bridge"); setD(r.data); setAt(new Date()); setErr(""); setPend(null); }
     catch (x) { if (x.name === "DevicePending") setPend({ code: x.code, revoked: x.revoked }); else if (/expired/i.test(x.message) || !hasToken()) setAuthed(false); else setErr(x.message); }
   }, []);
-  const loadProf = useCallback(async () => { try { setProf((await get("/founder/v1/profile")).data); } catch {} }, []);
+  // Settings (E108): the account's own values. Appearance values saved on the account win over this device's last choice (synced across approved devices).
+  const loadProf = useCallback(async () => {
+    try {
+      const r = (await get("/founder/v1/settings")).data, v = r.settings || {};
+      setProf({ email: r.email, available: r.available, settings: v, display_name: v["personal.display_name"] || "", avatar_url: v["personal.avatar"] || null, timezone: v["personal.timezone"] || null });
+      if (typeof v["appearance.graphics"] === "boolean") setFx(v["appearance.graphics"]);
+      if (typeof v["appearance.sidebar_slim"] === "boolean") setSlim(v["appearance.sidebar_slim"]);
+    } catch {}
+  }, []);
   useEffect(() => { if (authed && !pend) loadProf(); }, [authed, pend, loadProf]);
   useEffect(() => { if (!authed) return; load(); const t = setInterval(load, 15000); return () => clearInterval(t); }, [authed, load]);
 
@@ -144,7 +152,7 @@ export default function App() {
       {view === "bridge" ? <Greeting m={m} t={t} v={v} at={at} p={d?.polar} h={d?.polar_hook} me={prof} /> : <div className="titleblock"><span className="kicker">{title.toUpperCase()}</span><h1>{title}</h1></div>}
       <div className="chips"><span className="chip warn">Signature not yet verified in browser (kernel: F2b)</span>{(() => { const ds = deviceStatus(); return ds.mode === "device" ? <span className="chip ok">Device approved · {ds.label}</span> : <span className="chip warn">{ds.mode === "legacy" ? "Device approval not active on the server yet (install pending)" : "Checking this device…"}</span>; })()}</div>
       {err && <div className="err banner" role="alert">{err}</div>}
-      {view === "profile" ? <ProfileView p={prof} reload={loadProf} /> : view === "settings" ? <SettingsView fx={fx} setFx={setFx} /> : DECK_META[view] ? <><DeckPage deck={view} money={m} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : view !== "bridge" ? <div className="grid"><Deck key={view} deck={view} /></div> :
+      {view === "profile" ? <ProfileView p={prof} reload={loadProf} /> : view === "settings" ? <SettingsView p={prof} fx={fx} setFx={setFx} slim={slim} setSlim={setSlim} reload={loadProf} /> : DECK_META[view] ? <><DeckPage deck={view} money={m} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : view !== "bridge" ? <div className="grid"><Deck key={view} deck={view} /></div> :
       <div className="grid">
         <Card title="BILLING · POLAR">
           {!pl ? <div className="big dim">…</div> : <>

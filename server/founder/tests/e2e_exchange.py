@@ -22,7 +22,6 @@ def session_token(sub, port, exp_in=3600):
 FOUNDER = psql("select user_id from public.founder_accounts limit 1")[1]
 q = lambda v: "'" + str(v).replace("'", "''") + "'"
 
-PROFILES = {}  # test-only stand-in for public.account_profiles (the real table is Supabase; shape = PostgREST)
 class Shim(http.server.BaseHTTPRequestHandler):
     def log_message(self, *a): pass
     def _send(self, code, obj):
@@ -36,20 +35,11 @@ class Shim(http.server.BaseHTTPRequestHandler):
             uid = self.path.split("user_id=eq.")[1].split("&")[0]
             rc, out = psql(f"select count(*) from public.founder_accounts where user_id = {q(uid)}::uuid") if len(uid) == 36 else (1, "0")
             return self._send(200, [{"user_id": uid}] if out == "1" else [])
-        if self.path.startswith("/rest/v1/account_profiles"):
-            uid = self.path.split("user_id=eq.")[1].split("&")[0]
-            return self._send(200, [PROFILES[uid]] if uid in PROFILES else [])
-        self._send(404, {})
-    def do_PATCH(self):
-        if self.path.startswith("/rest/v1/account_profiles"):
-            uid = self.path.split("user_id=eq.")[1].split("&")[0]; body = json.loads(self.rfile.read(int(self.headers.get("content-length", 0))) or b"{}")
-            if uid not in PROFILES: return self._send(200, [])
-            PROFILES[uid].update(body); return self._send(200, [PROFILES[uid]])
         self._send(404, {})
     def do_POST(self):
         if self.path.startswith("/rest/v1/rpc/"):
             name = self.path.rsplit("/", 1)[1]; body = json.loads(self.rfile.read(int(self.headers.get("content-length", 0))) or b"{}")
-            args = ", ".join(f"{k} => {q(v)}" for k, v in body.items())
+            args = ", ".join((f"{k} => {q(json.dumps(v))}::jsonb" if k in ("p_value", "p_meta") else f"{k} => {q(v)}") for k, v in body.items())
             rc, out = psql(f"select to_json(public.{name}({args}))")
             return self._send(200, json.loads(out)) if rc == 0 else self._send(400, {"message": out})
         self._send(404, {})
@@ -152,25 +142,44 @@ r = sh("approve", dcode, REASON="approved by e2e through script"); check("founde
 check("device D can now exchange", call("POST", "/founder/v1/exchange", S, {"device_id": D})[0] == 200)
 r = sh("revoke", dcode, REASON="revoked by e2e through script"); check("founder-device.sh revoke", r.returncode == 0 and r.stdout.startswith("OK"), r.stdout + r.stderr)
 r = sh("approve", "ZZZZZZZZ"); check("script rejects bad code", r.returncode != 0)
-# --- profile photo (Account menu) ---
-PROFILES[FOUNDER] = {"display_name": "Test Founder", "legal_name": "T F", "avatar_url": None}
-c, r = call("GET", "/founder/v1/profile", TA); d = r.get("data", {})
-check("profile read: name + email, no photo yet", c == 200 and d.get("display_name") == "Test Founder" and d.get("avatar_url") is None and d.get("profile_found") is True and d.get("profile_state") == "found", str((c, r)))
-check("profile needs a token", call("GET", "/founder/v1/profile")[0] == 401)
+# --- founder settings (E108, real SQL through the shim) ---
+psql("delete from public.founder_settings")
+c, r = call("GET", "/founder/v1/settings", TA); d = r.get("data", {})
+check("settings read: registry (5 keys) + empty values, nothing invented", c == 200 and d.get("available") is True and d.get("settings") == {} and len(d.get("registry", [])) == 5, str((c, r)))
+check("settings need a token", call("GET", "/founder/v1/settings")[0] == 401)
 PNG = "data:image/png;base64,iVBORw0KGgo="
-c, r = scall("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": PNG}, RK); check("photo save (signed request)", c == 200, str((c, r)))
-check("photo is now stored and returned", call("GET", "/founder/v1/profile", TA)[1]["data"]["avatar_url"] == PNG)
-check("svg / script photo refused (400)", scall("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": "data:image/svg+xml;base64,PHN2Zz4="}, RK)[0] == 400 and scall("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": "javascript:alert(1)"}, RK)[0] == 400)
-check("refused photo did not overwrite the good one", call("GET", "/founder/v1/profile", TA)[1]["data"]["avatar_url"] == PNG)
-check("photo remove (null)", scall("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": None}, RK)[0] == 200 and call("GET", "/founder/v1/profile", TA)[1]["data"]["avatar_url"] is None)
-check("photo save without token = 401", call("PUT", "/founder/v1/profile/avatar", None, {"avatar_url": PNG})[0] == 401)
+put = lambda k, v, key=RK, tok=None, **kw: scall("PUT", "/founder/v1/settings", tok or TA, {"key": k, "value": v}, key, **kw)
+c, r = put("personal.avatar", PNG); check("photo save (signed request, real SQL)", c == 200 and r["data"]["changed"] is True, str((c, r)))
+check("photo is stored and returned", call("GET", "/founder/v1/settings", TA)[1]["data"]["settings"].get("personal.avatar") == PNG)
+check("same value again = no change (no-op, no extra audit)", put("personal.avatar", PNG)[1]["data"]["changed"] is False)
+check("svg / script photo refused (400)", put("personal.avatar", "data:image/svg+xml;base64,PHN2Zz4=")[0] == 400 and put("personal.avatar", "javascript:alert(1)")[0] == 400)
+check("refused photo did not overwrite the good one", call("GET", "/founder/v1/settings", TA)[1]["data"]["settings"].get("personal.avatar") == PNG)
+check("display name saved + validated", put("personal.display_name", "Nauman Sherwani")[0] == 200 and put("personal.display_name", "x")[0] == 400 and put("personal.display_name", "<b>hi</b>")[0] == 400)
+check("timezone: real zone ok, invented zone refused by SQL (pg_timezone_names)", put("personal.timezone", "Asia/Karachi")[0] == 200 and put("personal.timezone", "Mars/Phobos")[0] == 400)
+check("appearance bool settings", put("appearance.graphics", False)[0] == 200 and put("appearance.sidebar_slim", True)[0] == 200 and put("appearance.graphics", "off")[0] == 400)
+check("unknown key refused", put("appearance.nope", True)[0] == 400)
+check("null resets to default", put("appearance.graphics", None)[0] == 200 and "appearance.graphics" not in call("GET", "/founder/v1/settings", TA)[1]["data"]["settings"])
+check("photo remove (null)", put("personal.avatar", None)[0] == 200 and "personal.avatar" not in call("GET", "/founder/v1/settings", TA)[1]["data"]["settings"])
+check("settings write without token = 401", call("PUT", "/founder/v1/settings", None, {"key": "appearance.graphics", "value": True})[0] == 401)
+rc, out = psql("select string_agg(action, ',' order by seq) from public.founder_audit where action like 'settings.%'")
+check("every setting change is in the audit ledger", "settings.personal.avatar" in out and "settings.personal.timezone" in out and "settings.appearance.sidebar_slim" in out, out)
+rc, out = psql("select count(*) from public.founder_settings_history where key='personal.avatar' and (new_value is not null or old_value is not null)")
+check("avatar history is hash-only (no photo copies)", out == "0", out)
 # --- F2a: request signature on writes ---
-PROFILES[FOUNDER] = {"display_name": "T", "legal_name": "T", "avatar_url": None}
-check("write WITHOUT signature = 401", scall("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": PNG}, None)[0] == 401)
-check("write with WRONG key = 401", scall("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": PNG}, base64.urlsafe_b64encode(b"x" * 32).decode().rstrip("="))[0] == 401)
-check("write with STALE timestamp (replay) = 401", scall("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": PNG}, RK, ts=int(time.time()) - 300)[0] == 401)
-check("signature from another token's key = 401", scall("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": PNG}, call("POST", "/founder/v1/exchange", S, {"device_id": B})[1].get("req_key", "") or "AAAA")[0] == 401)
-check("rejected writes changed nothing", call("GET", "/founder/v1/profile", TA)[1]["data"]["avatar_url"] is None)
+put("personal.avatar", PNG)  # known good value that every rejected write below must leave untouched
+check("write WITHOUT signature = 401", scall("PUT", "/founder/v1/settings", TA, {"key": "personal.avatar", "value": PNG}, None)[0] == 401)
+check("write with WRONG key = 401", put("personal.avatar", PNG, base64.urlsafe_b64encode(b"x" * 32).decode().rstrip("="))[0] == 401)
+check("write with STALE timestamp (replay) = 401", put("personal.avatar", PNG, RK, ts=int(time.time()) - 300)[0] == 401)
+check("write with FUTURE timestamp = 401", put("personal.avatar", PNG, RK, ts=int(time.time()) + 300)[0] == 401)
+check("signature from another token's key = 401", put("personal.avatar", PNG, call("POST", "/founder/v1/exchange", S, {"device_id": B})[1].get("req_key", "") or "AAAA")[0] == 401)
+def tampered():
+    body = b'{"key":"personal.avatar","value":null}'  # signed for a DIFFERENT body
+    h = reqsig(RK, "PUT", "/founder/v1/settings", {"key": "personal.avatar", "value": PNG})
+    req = urllib.request.Request(f"http://127.0.0.1:{FPORT}/founder/v1/settings", method="PUT", data=body, headers={"content-type": "application/json", "authorization": f"Bearer {TA}", **h})
+    try: return urllib.request.urlopen(req, timeout=8).status
+    except urllib.error.HTTPError as e: return e.code
+check("body changed after signing = 401 (cannot swap the body)", tampered() == 401)
+check("rejected writes changed nothing", call("GET", "/founder/v1/settings", TA)[1]["data"]["settings"].get("personal.avatar") == PNG)
 c, r = scall("POST", "/founder/v1/action", TA, {"key": "release.pull_web", "reason": "signed e2e attempt"}, RK); check("signed action passes the signature gate (reaches action lookup: 404 here because the shim has no action table — not 401)", c == 404 and r.get("error") == "unknown action", str((c, r)))
 check("unsigned action = 401 before anything else", scall("POST", "/founder/v1/action", TA, {"key": "release.pull_web", "reason": "unsigned attempt"}, None)[0] == 401)
 # --- F2a: Ed25519 envelope ---
@@ -187,9 +196,6 @@ try: pub.verify(base64.urlsafe_b64decode(env["sig_ed"] + "=="), msg + b"x"); bad
 except Exception: bad = True
 check("tampered message fails Ed25519 verify", bad)
 check("HMAC sig still present until kernel enforces Ed25519 (F2b)", len(env.get("sig", "")) == 64)
-PROFILES.pop(FOUNDER); check("missing row is reported as no_row (not a fake empty profile)", call("GET", "/founder/v1/profile", TA)[1]["data"].get("profile_state") == "no_row"); check("no profile row -> honest 502, nothing invented", scall("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": PNG}, RK)[0] == 502)
-rc, out = psql("select string_agg(action, ',' order by seq) from public.founder_audit where action like 'profile.%'")
-check("photo changes are in the audit ledger", "profile.avatar_set" in out and "profile.avatar_removed" in out, out)
 rc, out = psql("select public.founder_audit_verify(1) is null")
 check("audit chain intact", out == "t", out)
 rc, out = psql("select string_agg(action, ',' order by seq) from public.founder_audit where action like 'founder.device.%'")

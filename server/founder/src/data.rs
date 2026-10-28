@@ -30,19 +30,18 @@ impl Sb {
         if !r.status().is_success() { return None; }
         r.json::<Value>().await.ok()
     }
-    /// Founder's own profile row. Err = database/query failed, Ok(None) = no row for this user (never invented).
-    pub async fn profile(&self, uid: &str) -> Result<Option<Value>, ()> {
-        if uid.is_empty() || !uid.chars().all(|c| c.is_ascii_hexdigit() || c == '-') { return Err(()); }
-        let rows = self.rows(&format!("account_profiles?select=display_name,legal_name,avatar_url&user_id=eq.{uid}&limit=1")).await.ok_or(())?;
-        Ok(rows.into_iter().next())
+    /// All of the founder's own settings as one JSON object (key -> value). None = database unavailable / E108 not applied (never invented).
+    pub async fn settings(&self, uid: &str) -> Option<Value> {
+        if uid.is_empty() || !uid.chars().all(|c| c.is_ascii_hexdigit() || c == '-') { return None; }
+        self.rpc("founder_settings_get", serde_json::json!({"p_uid": uid})).await
     }
-    /// Set or clear (None) the founder's own photo. Only that one column, only that user's row.
-    pub async fn set_avatar(&self, uid: &str, url: Option<&str>) -> bool {
-        if uid.is_empty() || !uid.chars().all(|c| c.is_ascii_hexdigit() || c == '-') { return false; }
-        let body = serde_json::json!({"avatar_url": url, "updated_at": chrono_now()});
-        let r = self.http.patch(format!("{}/rest/v1/account_profiles?user_id=eq.{}", self.url, uid)).header("apikey", &self.key)
-            .header("authorization", format!("Bearer {}", self.key)).header("prefer", "return=representation").json(&body).send().await;
-        match r { Ok(r) if r.status().is_success() => r.json::<Vec<Value>>().await.map(|v| !v.is_empty()).unwrap_or(false), _ => false }
+    /// One atomic write through the SQL door (validation + history + audit inside). Err = (HTTP status from PostgREST, message).
+    pub async fn setting_set(&self, uid: &str, key: &str, value: &Value) -> Result<Value, (u16, String)> {
+        let r = self.http.post(format!("{}/rest/v1/rpc/founder_setting_set", self.url)).header("apikey", &self.key)
+            .header("authorization", format!("Bearer {}", self.key)).json(&serde_json::json!({"p_uid": uid, "p_key": key, "p_value": value})).send().await.map_err(|_| (0u16, "database unreachable".to_string()))?;
+        let st = r.status().as_u16();
+        let body: Value = r.json().await.unwrap_or(Value::Null);
+        if (200..300).contains(&st) { Ok(body) } else { Err((st, body["message"].as_str().unwrap_or("").to_string())) }
     }
     pub async fn is_founder(&self, uid: &str) -> bool {
         if uid.is_empty() || !uid.chars().all(|c| c.is_ascii_hexdigit() || c == '-') { return false; } // injection se bachao
@@ -60,14 +59,3 @@ impl Sb {
     }
 }
 
-fn chrono_now() -> String {
-    let d = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs()).unwrap_or(0);
-    // RFC3339 UTC without extra deps
-    let (days, rem) = (d / 86400, d % 86400);
-    let (mut y, mut dd) = (1970i64, days as i64);
-    loop { let yl = if (y % 4 == 0 && y % 100 != 0) || y % 400 == 0 { 366 } else { 365 }; if dd >= yl { dd -= yl; y += 1; } else { break; } }
-    let leap = (y % 4 == 0 && y % 100 != 0) || y % 400 == 0;
-    let ml = [31, if leap { 29 } else { 28 }, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    let mut m = 0; while dd >= ml[m] { dd -= ml[m]; m += 1; }
-    format!("{y:04}-{:02}-{:02}T{:02}:{:02}:{:02}Z", m + 1, dd + 1, rem / 3600, rem % 3600 / 60, rem % 60)
-}

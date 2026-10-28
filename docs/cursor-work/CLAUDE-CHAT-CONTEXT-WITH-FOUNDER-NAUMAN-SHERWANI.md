@@ -1864,3 +1864,6 @@ Graphics toggle moved to Settings. F2a (Ed25519 + request HMAC/HKDF) built+teste
 
 ## 28 Oct 12:30 PKT — RULE 69 / FC39 (STRICT)
 NO MOCK anywhere (user side + founder side). Gates, wire, endpoints, signatures all REAL. Missing feature = honest 'arrives with <phase>' label, never a working-looking fake. Test stand-ins only in tests/. Founder: 'mock data hua to goli maaroon ga' — treat as top priority. Pointers: AGENTS.md Rule 69, FC39. Pending server: founder-install.sh (F2a: sign key) — paste output, then Chrome proof.
+
+## 28 Oct 12:55 PKT — F2a LIVE + Settings S1 built
+F2a proven in Chrome (Ed25519 verified in browser, unsigned write 401). Settings S1 built+tested (E108, signed settings endpoints, SPA Settings/Profile) — NOT on server. Server order: (1) sql-run.sh (E108 auto) (2) sql-run.sh E108_founder_settings CHECK_E108 (3) founder-install.sh. Then Chrome: photo upload, name, timezone, graphics sync. NEXT in order: F2b WASM kernel verify (pin /founder/v1/keys public key, SRI, enforce Ed25519), F2c audit v1 + Merkle (E107), then Settings S2, Decide, Live Pulse. Notifications/Privacy tabs intentionally absent (no backend) — Rule 69.

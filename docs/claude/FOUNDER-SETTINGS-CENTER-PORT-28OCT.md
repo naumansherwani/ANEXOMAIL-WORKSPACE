@@ -46,3 +46,10 @@ SQL: **E108_founder_settings.sql** (+ CHECK_E108): `founder_settings` (registry 
 
 ## What is already DONE from the user's feature set, in founder form (28 Oct)
 Greeting (day-part, sunset evening, Karachi/city-adaptive), digital clock, cinematic glass sidebar with awam order + collapse, Account menu with profile photo (Facebook-style upload, shrink in browser, audit), graphics toggle + ambient edge, device approval, Polar billing pulse (webhook + metrics), finance/people/mail/systems/control decks (catalog, read parts as they ship), real logo.
+
+## UPDATE 28 Oct 12:50 PKT — S1 BUILT (sandbox-proven, not yet on server) — and what changed vs. the table above (Rule 69: only REAL controls)
+- **SQL E108_founder_settings.sql (+CHECK_E108, 6 checks):** `founder_settings` + append-only `founder_settings_history`, RPC `founder_setting_set` (validate, history, audit in one transaction) and `founder_settings_get`. Separate from the user app's `account_profiles` (found live: the founder account has NO profile row there, so the user-side photo could never save — founder settings are now independent, FC18).
+- **Rust:** `settings.rs` registry (+12 tests), `GET /founder/v1/settings`, `PUT /founder/v1/settings {key,value}` (signed write, F2a). The old `/founder/v1/profile*` endpoints are gone.
+- **SPA:** Settings -> Personal (home timezone: greeting/clock follow it) and Appearance (Graphics, Compact sidebar), both saved on the account and synced to every approved device; Profile page: photo + display name.
+- **Real keys now:** personal.display_name, personal.avatar, personal.timezone, appearance.graphics, appearance.sidebar_slim.
+- **NOT built, on purpose (no working-looking fakes):** Notifications — there is no delivery channel yet (comes with Mail Desk F5 / push). Privacy (session lifetime, approval strictness) — needs passkey/session controls after F2b. The Settings page says so in one honest line.

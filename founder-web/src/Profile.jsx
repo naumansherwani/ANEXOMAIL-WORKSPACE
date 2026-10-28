@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { get, put, signOut, deviceStatus } from "./api.js";
+import { setSetting, signOut, deviceStatus } from "./api.js";
 
 // Full name: the account profile first, else the signed-in session's own name. Never invented (FC26).
 export function jwtName() {
@@ -71,25 +71,21 @@ export function AccountMenu({ p, go }) {
 }
 
 export function ProfileView({ p, reload }) {
-  const [busy, setBusy] = useState(false), [msg, setMsg] = useState(null), file = useRef(null);
+  const [busy, setBusy] = useState(false), [msg, setMsg] = useState(null), [nm, setNm] = useState(null), file = useRef(null);
   const ds = deviceStatus();
-  async function choose(e) {
-    const f = e.target.files?.[0]; e.target.value = ""; if (!f) return;
+  const shown = nm ?? (p?.display_name || "");
+  async function save(key, value, okText) {
     setBusy(true); setMsg(null);
     try {
-      const url = await shrink(f);
-      const r = await put("/founder/v1/profile/avatar", { avatar_url: url });
-      if (r.status === 200) { setMsg({ ok: true, t: "Photo saved. It is also your photo in the user app." }); reload(); }
+      const r = await setSetting(key, value);
+      if (r.status === 200) { setMsg({ ok: true, t: okText }); setNm(null); await reload(); }
       else setMsg({ ok: false, t: r.body?.error || `Not saved (HTTP ${r.status})` });
     } catch (x) { setMsg({ ok: false, t: x.message }); }
     setBusy(false);
   }
-  async function remove() {
-    setBusy(true); setMsg(null);
-    const r = await put("/founder/v1/profile/avatar", { avatar_url: null });
-    setMsg(r.status === 200 ? { ok: true, t: "Photo removed." } : { ok: false, t: r.body?.error || `Not removed (HTTP ${r.status})` });
-    if (r.status === 200) reload();
-    setBusy(false);
+  async function choose(e) {
+    const f = e.target.files?.[0]; e.target.value = ""; if (!f) return;
+    try { await save("personal.avatar", await shrink(f), "Photo saved."); } catch (x) { setMsg({ ok: false, t: x.message }); }
   }
   return (
     <div className="grid">
@@ -100,16 +96,19 @@ export function ProfileView({ p, reload }) {
           <div><div className="big" style={{ fontSize: 24 }}>{nameOf(p) || "Founder"}</div><div className="dim">{p?.email}</div><span className="rolechip">Founder · Chairman</span></div>
         </div>
         <input ref={file} type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={choose} />
-        <div className="row"><button className="btn" disabled={busy} onClick={() => file.current?.click()}>Upload photo</button>{p?.avatar_url && <button disabled={busy} onClick={remove}>Remove</button>}</div>
+        <div className="row"><button className="btn" disabled={busy} onClick={() => file.current?.click()}>Upload photo</button>{p?.avatar_url && <button disabled={busy} onClick={() => save("personal.avatar", null, "Photo removed.")}>Remove</button>}</div>
+        <label className="fld"><span className="dim small">Display name</span>
+          <span className="fldrow"><input value={shown} maxLength={60} placeholder={nameOf(p) || "Your name"} onChange={(e) => setNm(e.target.value)} />
+            <button disabled={busy || nm === null || nm === (p?.display_name || "")} onClick={() => save("personal.display_name", nm.trim() === "" ? null : nm.trim(), "Name saved.")}>Save</button></span></label>
         {msg && <div className={msg.ok ? "note" : "err banner"} role="status">{msg.t}</div>}
-        {p && !p.profile_found && <div className="note">{p.profile_state === "query_failed" ? "The profile could not be read from the database (query failed), so a photo cannot be saved right now." : "This account has no profile row in account_profiles, so a photo cannot be saved. Sign in once through the user app to create it, or tell me and I will add a safe create step."}</div>}
-        <div className="src">Photos are shrunk in your browser to fit (jpg, png, webp). Stored on your account profile; every change is written to the audit ledger.</div>
+        {p && p.available === false && <div className="note">Settings storage is not available yet — run the E108 SQL (sql-run.sh) on the server.</div>}
+        <div className="src">Photos are shrunk in your browser to fit (jpg, png, webp). Stored in your founder settings, separate from the user app; every change is written to the audit ledger.</div>
       </section>
       <section className="card">
         <div className="kicker">THIS DEVICE</div>
         <div className="big" style={{ fontSize: 20 }}>{ds.mode === "device" ? "Approved" : ds.mode === "legacy" ? "Approval not active" : "Checking"}</div>
         <div className="dim">{ds.label || "—"}</div>
-        <div className="src">The full list of your approved devices, with one-click revoke, arrives with the Devices screen (after F2). Until then, list and revoke on the server with founder-device.sh.</div>
+        <div className="src">The full list of your approved devices, with one-click revoke, arrives with the Devices screen (after F2c). Until then, list and revoke on the server with founder-device.sh.</div>
       </section>
     </div>
   );
