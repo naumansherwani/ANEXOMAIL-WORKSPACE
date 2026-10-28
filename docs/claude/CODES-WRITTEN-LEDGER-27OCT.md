@@ -33,3 +33,10 @@ Roman Urdu, "Nauman bhai"/"aap", sada zaba; har message mein POORI ordered comma
 4. Pro baaqi: ANEXO_TAG_MODE=enforce (founder env), shared-inbox live collision (2nd Pro user), Bun twins hatana (proof ke baad).
 5. Step L (23 polls -> events), Business/K3/Office suite, CRM P3-P6, Business Pro, Business Premium (Bun-free).
 Test data Pro account: leads zz.kernel/zz.bunprobe/zz.test.*, deals "zz.kernel@... — opportunity", ZZ TEST Deal, rates 60/40 — founder chaahe to saaf.
+
+## 28 Oct 2026 — founder codes written (see CURRENT STATE in the chat-context file)
+- SQL: E102 audit chain+devices, E103 English actions, E104 device approval (10/10), E105 founder_polar_pulse, E106 founder_polar_rejects (E105/E106 read-only over Polar webhook tables).
+- Rust (server/founder): ftoken (ES256 aud anexo-founder), exchange endpoint, polar.rs (tokio read-only Metrics poller + watch feed), hook_view (E105/E106 RPCs, 5 s cache), device_ok per request.
+- SPA (founder-web): exchange flow + device screen, Greeting+Clock (city-adaptive, greeting.js port), cinematic sidebar, FX ambient toggle, BILLING · POLAR card.
+- Awam web: server/lib/founder-host-guard.ts + auth.ts founderHostGate (F1a-2, off by default).
+- Scripts: founder-install.sh (all src/*.rs), founder-device.sh, founder-polar.sh (hidden token / engine), founder-hostguard.sh, caddy founder-host.sh (h3 probe).
