@@ -1781,3 +1781,8 @@ RESTART (env load ke saath): web = `pm2 restart anexomail-web --update-env && pm
 ## 28 Oct 08:00 — MEGA command (all-pull.sh) likhi: har step wohi aazmayi script; sandbox mein stub-git se order + fail-stop test. Command: git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/all-pull.sh) 2>&1 | tail -60
 
 ## 28 Oct 08:20 — Founder: FOUNDER PREVIEW pill hatao; /founderlogin default; cinematic Founder protocol sign-in; chairman level (Command Center, awam business page nahi). Likha: AuthCinema founder variant, auth.tsx (/auth->/founderlogin founder host), FounderBar pill removed, SPA Gate redirect, blueprint 13z. Pull: mega all-pull.sh.
+
+## 28 Oct 2026, 08:35 PKT — COMPACT SE PEHLE (founder: context update + live Chrome)
+Server (founder paste, all-pull.sh): SQL "koi nayi SQL nahi"; founder-install tests 28 ok, SPA 200, healthz 200, me/bridge 401, OK; Caddy v2 patched: / 200, /_cc/ 200, /founder/v1/me 401, /app 200, /founderlogin 200; Web pull OK health 200, pm2 restarts=427, differ=3 (same 3 old files). all-pull.sh = SAB OK (mega command kaam karta hai).
+Founder faisla: login existing intact (dot-network animation RADD, dobara nahi); "FOUNDER PREVIEW" pill hata di; /founderlogin default; sign-in ke upar Welcome Founder + Activating/Activated. 33 features ki build-order + technology: blueprint 13z-c (likha, dobara mat likho).
+AGLA EK PHASE: F1a (E104, /exchange, awam-host refusal, signup refusal, /founder/v1/login hatana). Founder khud login kare, phir Bridge ka asli data Chrome mein dekhna. founder-install.sh ke aakhri message mein purana "/f/" baqi (chhoti fix).

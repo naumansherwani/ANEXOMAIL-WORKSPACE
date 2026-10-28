@@ -266,3 +266,43 @@ Already in the blueprint before this list: Cmd-K, forecast, appeals, kill switch
 - Founder sign-in: existing page INTACT (founder 08:16 rejected the dot-network animation). Only "Founder protocol / Welcome, Founder" above it + activating/activated screen.
 - "FOUNDER PREVIEW" pill REMOVED from the founder host everywhere (FounderBar OFF state returns nothing).
 - Chairman level = the founder lands on the Command Center, not an awam business page. The old `/app` stays reachable (Workspace link) until F9 cutover.
+
+## 13z-c. THE 33 FEATURES IN BUILD ORDER — technology written next to each (founder 28 Oct 08:24; Rule 62/64/66)
+Rule: one phase at a time, each green + seen live in Chrome before the next. Order follows DEPENDENCIES (trust first, then money, then people ...). Common base for every row: Rust `anexomail-founder` (axum + tokio, forbid(unsafe)) + Postgres/Supabase (RLS on) + React 19 SPA; pull = `all-pull.sh` / the matching single script. "No data = Not measured" (Rule 63).
+**Foundation before any feature (not in the 33):** F1a (E104 devices SQL, `/founder/v1/exchange`, awam-host refusal, signup refusal, remove `/founder/v1/login`) -> F2a (Ed25519 sign + HMAC/HKDF, Rust: ed25519-dalek, hmac, hkdf, sha2) -> F2b (WASM kernel) -> F2c (audit v1 align + Merkle, SQL E105).
+| # | Feature | Phase | Technology used here (and why) |
+|---|---|---|---|
+| 1 | A4 Tamper-visible data | F2b | Rust signs every answer (Ed25519); WASM kernel (Rust->wasm32, ed25519-dalek + sha2, SRI-pinned) verifies BEFORE parsing; UI shows TAMPERED. Everything below depends on this. |
+| 2 | H33 Kernel usage truth | F2b | SPA reads `anexoKernel.stats` (Rule 52). Tiny; proves the kernel runs. |
+| 3 | G26 Audit viewer | F2c | SQL `founder_audit` hash chain + Merkle root (E105); kernel re-computes SHA-256 chain in the browser; SPA virtualised list. |
+| 4 | A5 Attention engine | F2 Bridge | Rust pure ranking function over real metric tables (error rate, bounce, failed payment, appeal age); unit-tested; NO AI, no guessing. |
+| 5 | A1 5-second fold | F2 Bridge | SPA (React + Motion); numbers from `/founder/v1/bridge`; 3D stays optional behind the toggle. |
+| 6 | A2 Live push | F2 Bridge | Rust: poll-with-change-detect (or Postgres LISTEN on a session-mode connection — verify first, Supabase Realtime is banned) -> tokio `broadcast` -> axum SSE now; WebTransport (wtransport) once the kernel is in. |
+| 7 | A3 Cmd-K | F2 Bridge | SPA command palette; fixed command grammar + fuzzy match (kernel `rank`) mapped to the `founder_actions` registry (E102/E103); every action two-tap + reason + audit. Natural-language/LLM is NOT here (see #31). |
+| 8 | B6 Real MRR/ARR | F3 | SQL views over the tables the Polar webhook already fills (webhook untouched, Rule 4); Rust reads only. Polar API (reqwest + rustls, read-only token in founder.env, never in repo) only for reconciliation. |
+| 9 | B8 Mismatch alert | F3 | SQL view: `revenue_accounts` vs webhook-fed totals; Rust serves; red when different, never a fake 0. |
+| 10 | B7 Churn + failed payments | F3 | SQL views; actions (reminder mail, extend grace) via existing Rust mail proc + two-tap + audit. |
+| 11 | B10 Biggest leak | F3 | SQL aggregate over the ledger, ranked; one number + proof rows. |
+| 12 | B9 Forecast | F3 | Rust deterministic (trend of last N months, labelled "estimate", range shown); no ML. |
+| 13 | C11 User/Org 360 | F4 | SQL views with a column allow-list (metadata only); a Rust test greps every query so no content table/column can ever be selected. |
+| 14 | C13 Two-tap powers | F4 | Rust -> Supabase auth admin (service key, server only) for suspend/sign-out/device revoke; `founder_actions` ratchet + audit chain. |
+| 15 | C14 Appeals queue | F4 | SQL table (RLS on, append-only decisions) + Rust + SPA queue. |
+| 16 | C12 Abuse scoring | F4 | Rust scoring over the vault device-shape signals (Rule 45; never IP); review queue only, no auto-block. |
+| 17 | D15 Unified company inbox | F4 Mail Desk | Rust reads through the existing mail procs (Dovecot/Postfix untouched); address badge; founder inbox separate (locked identities). |
+| 18 | D18 SLA clock | F4 Mail Desk | SQL timestamps + Rust calc; shows where the 24h is breached. |
+| 19 | D16 Deliverability cockpit | F4 Mail Desk | Rust: hickory-resolver for SPF/DKIM/DMARC; Postfix `mail.log` bounce/complaint counts; failed-sends re-queue via the existing proc. |
+| 20 | F22 Real health probes | F5 | Rust tokio concurrent probes (HTTP + TCP connect to Postfix/Dovecot ports, systemd status); a blind spot is printed as "not probed". |
+| 21 | F24 DNS/cert/backup board | F5 | Rust: hickory (DNS), x509-parser on the TLS handshake (cert expiry), backup file mtime/ledger; ExpiryWatch (FX-13). |
+| 22 | F23 Capacity + cost | F5 | Rust `sysinfo` (disk/mem/cpu); Supabase/Hetzner usage only if a read-only API token is provided, else "Not measured". |
+| 23 | G25 Kill switches / flags | F6 | SQL `feature_flags` (RLS on) + Rust endpoints + audit. NOTE: making the awam app READ the flags touches awam Rust/Web (Rule 35 no-touch) — needs your "yes" as a separate step. |
+| 24 | G27 Break-glass log | F6 | SQL append-only log + Rust; there is no access path, it only records attempts. |
+| 25 | E21 Release gate | F6 | Rust read-only checks (health, migration count, kernel pin SHA) before a release is allowed. |
+| 26 | E19 Deploy history | F6 | The deploy scripts write a row (sha, exit, health) to SQL; SPA timeline. |
+| 27 | E20 Canary + instant rollback | F6 + F8 | Needs #23 (percent flags) + F8 executor (tiny allow-listed privileged Rust binary, no shell input, systemd). Last of the control block. |
+| 28 | H28 3D topology globe | F7 | Three.js WebGPU + TSL, lazy chunk, 2D fallback, 60fps budget; draws data from #20-#22, never the source of truth. |
+| 29 | H30 Incident replay | after F9 | SQL audit chain + metrics history; SPA timeline scrubber (Motion/GSAP); kernel verifies the chain it replays. |
+| 30 | H31 Founder mobile PWA | after F9 | Vite PWA + service worker; offline = view-only of the LAST signed snapshot (no actions offline); 390/820/1440 (Rule 34). |
+| 31 | H32 Ask-anything copilot | after F9 | Rust picks from FIXED read-only query templates (never free-text SQL); a model only chooses the template; content questions refused. BLOCKED by Rule 23 (AI closed) until you lift it. |
+| 32 | D17 LEO draft | after F9 | Same block as #31: LEO is the AI surface (Rule 23). Until lifted: template drafts only; you always press send. |
+| 33 | H29 Voice command | after F9 | Kernel module: on-device speech-to-text (whisper.cpp -> WASM, model downloaded once, SRI-pinned), audio never leaves the browser; Rule 52 version bump. Browser Web Speech API is NOT used (sends audio to a third party). |
+**Founder decisions still needed (asked once, when we reach them):** (a) #23 awam app reading flags = touches no-touch Rust/Web; (b) Polar read-only API token for reconciliation (#8); (c) Rule 23 lift for #31/#32.
