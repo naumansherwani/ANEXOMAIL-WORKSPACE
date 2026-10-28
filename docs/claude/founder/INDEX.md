@@ -21,3 +21,4 @@ Founder ka hukm: "founder ka sab kuch ek jagah repo mein, bar bar dhundna na pad
 | Endpoint registry (founder 77 = 53 Bun-only + 24 Rust) | docs/claude/ENDPOINT-PACKAGE-MAP.csv |
 | Product lane (office/HR/accounting/migration) | docs/claude/OFFICE-HR-ACCOUNTING-MIGRATION-28OCT.md |
 - FOUNDER-CODE-INVENTORY-28OCT.md — purane (Lovable) founder code ki ginti + deep audit + mapping (28 Oct).
+- CODES/ — founder code ka naqsha: rules FC1-11, files, endpoints, gates, mix, deep audit, order (28 Oct).

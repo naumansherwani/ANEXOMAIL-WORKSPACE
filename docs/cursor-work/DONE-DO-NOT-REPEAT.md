@@ -1052,3 +1052,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 
 ## 28 Oct 06:12 PKT — E102 ka ek CHECK FAIL (founder ke server par): service_role ke default privileges audit par UPDATE/DELETE rakhte the. Local PG16 par Supabase jaisi default privileges laga kar reproduce kiya, E102 mein `revoke update,delete,truncate,references,trigger ... from service_role` joda, 2 baar rerun + CHECK 9/9 t. Rule 64: ek phase green+Chrome live, phir agla.
 - 28 Oct: legacy founder code deep audit DONE -> docs/claude/founder/FOUNDER-CODE-INVENTORY-28OCT.md (33+3 routes, 1 bar, 3 lib, 1 server route + gate, ~20 /api/founder routers; loophole = auth.ts FOUNDER_PASSWORD path). Dobara audit mat karo.
+
+- 28 Oct: E102 green. Founder CODES/ folder (rules FC1-11 + files/endpoints/gates/mix/audit/order) likha. Dobara mat likho.
