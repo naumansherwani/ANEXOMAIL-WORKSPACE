@@ -34,9 +34,9 @@ Rates were already APPROVED above (A.6; PRICING-POSITIONING-26OCT §9b): Busines
 Where it is built (user side, NOT the founder phases):
 | Step | Phase | Technology |
 |---|---|---|
-| 1. Meter (real GB per org per month, inbound never blocked) | P4 | SQL (overage ledger, RLS on) + Rust :3200 counters (Tokio), WebTransport/kernel unchanged |
-| 2. Throttle-first (slower, never stop sending; restore at once when overage is on) | P4 | Rust (rate limiter per org); no Bun |
-| 3. Live meter (80% / 95% warning, real GB in billing) | P5/P6 | SPA billing page via `rpc()`; Rust proc |
+| 1. Meter (real GB per org per month, inbound never blocked) | P4 (SQL overage ledger) + P5 (Rust counters) | SQL (RLS on) + Rust :3200 (Tokio), WebTransport/kernel unchanged |
+| 2. Throttle-first (slower, never stop sending; restore at once when overage is on) | P5 | Rust (rate limiter per org); no Bun |
+| 3. Live meter (80% / 95% warning, real GB in billing) | P6 | SPA billing page via `rpc()`; Rust proc |
 | 4. Overage billing line-item (hidden from landing) | P6 | Rust -> Polar (founder creates the Polar products, P3); webhook untouched |
 | 5. Enterprise written fair-use ceiling (CEO guess 100 TB/month) | P4 | founder confirms the number first |
 Order is fixed: meter first, then throttle, then the rate on the bill.
