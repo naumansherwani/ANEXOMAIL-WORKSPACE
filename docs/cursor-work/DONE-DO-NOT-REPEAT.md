@@ -1085,3 +1085,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 
 - 28 Oct 09:15 PKT — LIVE seen in Chrome: Command Center root with new shell (real logo, Founder chip, Open app, 10-item sidebar, Finance card). FC22 written (common user features go into founder in order, no mixing). Pending live: deck pages, splash.
 - 28 Oct 09:20 PKT — logo style matched exactly to BrandMark (svg gradients default units, platinum wordmark, steel sub-word, Inter font link) = FC23.
+- 28 Oct 09:30 PKT — rust-engine-install OK on server (restarts 231, online, all probes 401=ok). Added docs/cursor-work/server/rust-cores-test.sh (40 cores, 619 tests green in sandbox) + PULL-COMMANDS entry. Founder favicon = site favicon.svg (/_cc/favicon.svg). Logo = BrandMark code reused (FC23).
