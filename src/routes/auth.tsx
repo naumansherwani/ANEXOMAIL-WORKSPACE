@@ -1,5 +1,5 @@
 import { BrandSpinner, HoverA } from "@/components/state/BrandLoader";
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useSearch, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -99,7 +99,7 @@ export const Route = createFileRoute("/auth")({
       { name: "robots", content: "noindex" },
     ],
   }),
-  component: AuthPage,
+  component: () => <AuthPage />,
 });
 
 type Mode = "login" | "kind" | "signup" | "link" | "forgot" | "reset" | "recovery";
@@ -111,16 +111,24 @@ type LoginResult =
   | ({ token: string; mfa_required?: false } & Session)
   | { mfa_required: true; challenge_id: string };
 
-function AuthPage() {
+/**
+ * `founderLogin` = /founderlogin (founder host only): EXACTLY this same sign-in page, founder-only. After sign-in the founder lands on the
+ * Command Center (/f/); a non-founder account is refused. On awam hosts the route does not exist (redirects home). Rule 68.
+ */
+export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
   const navigate = useNavigate();
   const { acceptSession, status: authStatus } = useAuth();
-  const search = Route.useSearch();
+  const search = useSearch({ strict: false }) as { mode?: "signup" | "reset" | "forgot"; recovery?: string };
   /** Login form se aaya = finish() ka apna redirect chalega; aur logged-in banda /auth khole to seedha /app. */
   const loginStarted = useRef(false);
 
   // Founder host (founderworkspace.*): awam-only extras (signup link, Save password, Forgot password) hidden — FX-25/26. Login design unchanged.
   const [founderHost, setFounderHost] = useState(false);
-  useEffect(() => setFounderHost(isFounderHost()), []);
+  useEffect(() => {
+    const fh = isFounderHost();
+    setFounderHost(fh);
+    if (founderLogin && !fh) void navigate({ to: "/", replace: true }); // awam host: /founderlogin exists nahi
+  }, [founderLogin]);
   const [mode, setMode] = useState<Mode>(() => {
     if (search.mode === "signup") return "kind";
     if (search.mode === "reset" || search.mode === "forgot") return search.mode;
@@ -169,7 +177,8 @@ function AuthPage() {
   // Pehle se logged-in banda /auth par aaye (back button, purana tab) to login form nahi — seedha workspace.
   useEffect(() => {
     if (authStatus === "signed-in" && !loginStarted.current && !showSplash && mode === "login") {
-      void navigate({ to: "/app", replace: true });
+      if (founderLogin) window.location.assign("/f/");
+      else void navigate({ to: "/app", replace: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authStatus]);
@@ -184,7 +193,19 @@ function AuthPage() {
     }
     sessionToken.set(token);
     const session = authenticated ?? (await api<Session>("/api/auth/session"));
+    if (founderLogin && !session.user.is_founder) {
+      // /founderlogin sirf founder ke liye: awam account ka session foran saaf.
+      sessionToken.clear();
+      setShowSplash(false);
+      loginStarted.current = false;
+      setError("This sign-in is for the founder account only.");
+      return;
+    }
     acceptSession(session);
+    if (founderLogin) {
+      setRedirectTo("/f/");
+      return;
+    }
     window.sessionStorage.removeItem("anexo.pending.checkout");
     // Polar checkout founder ke polar-rust-payment PM2 :3400 par hai — yahan
     // login polar.sh pe nahi bhejte. Awam ANEXOMAIL pages pe rehta hai.
@@ -483,6 +504,9 @@ function AuthPage() {
     }
     await finish(token);
   };
+
+  // /founderlogin sirf founder host par: pehle host tay hone tak (ya awam host par) kuch render nahi.
+  if (founderLogin && !founderHost) return null;
 
   // ── Passkey enrolment screen (post-signup) — centred, no split ──
   if (enrol) {
@@ -1011,6 +1035,10 @@ function AuthPage() {
           // In-app navigate — session memory (acceptSession) rehti hai.
           // window.location.replace reload karta tha → gate dobara /auth bounce.
           // replace: /auth history mein na rahe — warna Back dabate hi /auth -> turant /app (bounce).
+          if (founderLogin) {
+            window.location.assign("/f/"); // /f/ alag static Command Center (Caddy -> Rust), router route nahi
+            return;
+          }
           void navigate({ to: redirectTo, replace: true });
         }}
       />

@@ -28,6 +28,7 @@ import { Route as DevicesRouteImport } from './routes/devices'
 import { Route as DocsRouteImport } from './routes/docs'
 import { Route as EnterpriseRouteImport } from './routes/enterprise'
 import { Route as FounderRouteImport } from './routes/founder'
+import { Route as FounderloginRouteImport } from './routes/founderlogin'
 import { Route as GetStartedRouteImport } from './routes/get-started'
 import { Route as HealthRouteImport } from './routes/health'
 import { Route as JoinRouteImport } from './routes/join'
@@ -278,6 +279,11 @@ const EnterpriseRoute = EnterpriseRouteImport.update({
 const FounderRoute = FounderRouteImport.update({
   id: '/founder',
   path: '/founder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FounderloginRoute = FounderloginRouteImport.update({
+  id: '/founderlogin',
+  path: '/founderlogin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GetStartedRoute = GetStartedRouteImport.update({
@@ -1085,6 +1091,7 @@ export interface FileRoutesByFullPath {
   '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
   '/founder': typeof FounderRouteWithChildren
+  '/founderlogin': typeof FounderloginRoute
   '/get-started': typeof GetStartedRoute
   '/health': typeof HealthRoute
   '/join': typeof JoinRoute
@@ -1261,6 +1268,7 @@ export interface FileRoutesByTo {
   '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
   '/founder': typeof FounderRouteWithChildren
+  '/founderlogin': typeof FounderloginRoute
   '/get-started': typeof GetStartedRoute
   '/health': typeof HealthRoute
   '/join': typeof JoinRoute
@@ -1429,6 +1437,7 @@ export interface FileRoutesById {
   '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
   '/founder': typeof FounderRouteWithChildren
+  '/founderlogin': typeof FounderloginRoute
   '/get-started': typeof GetStartedRoute
   '/health': typeof HealthRoute
   '/join': typeof JoinRoute
@@ -1608,6 +1617,7 @@ export interface FileRouteTypes {
     | '/docs'
     | '/enterprise'
     | '/founder'
+    | '/founderlogin'
     | '/get-started'
     | '/health'
     | '/join'
@@ -1784,6 +1794,7 @@ export interface FileRouteTypes {
     | '/docs'
     | '/enterprise'
     | '/founder'
+    | '/founderlogin'
     | '/get-started'
     | '/health'
     | '/join'
@@ -1951,6 +1962,7 @@ export interface FileRouteTypes {
     | '/docs'
     | '/enterprise'
     | '/founder'
+    | '/founderlogin'
     | '/get-started'
     | '/health'
     | '/join'
@@ -2129,6 +2141,7 @@ export interface RootRouteChildren {
   DocsRoute: typeof DocsRoute
   EnterpriseRoute: typeof EnterpriseRoute
   FounderRoute: typeof FounderRouteWithChildren
+  FounderloginRoute: typeof FounderloginRoute
   GetStartedRoute: typeof GetStartedRoute
   HealthRoute: typeof HealthRoute
   JoinRoute: typeof JoinRoute
@@ -2295,6 +2308,13 @@ declare module '@tanstack/react-router' {
       path: '/founder'
       fullPath: '/founder'
       preLoaderRoute: typeof FounderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/founderlogin': {
+      id: '/founderlogin'
+      path: '/founderlogin'
+      fullPath: '/founderlogin'
+      preLoaderRoute: typeof FounderloginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/get-started': {
@@ -3785,6 +3805,7 @@ const rootRouteChildren: RootRouteChildren = {
   DocsRoute: DocsRoute,
   EnterpriseRoute: EnterpriseRoute,
   FounderRoute: FounderRouteWithChildren,
+  FounderloginRoute: FounderloginRoute,
   GetStartedRoute: GetStartedRoute,
   HealthRoute: HealthRoute,
   JoinRoute: JoinRoute,
@@ -3820,3 +3841,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

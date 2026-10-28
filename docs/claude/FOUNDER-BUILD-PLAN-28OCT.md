@@ -234,3 +234,9 @@ Founder host (isFounderHost) par /auth se HIDE: "New here? Create your account�
 
 ### E103 SUPER-ADVANCED (28 Oct 07:30, founder hukm "sql 103 super advance"): sirf "English titles" nahi — 
 (1) advisory-lock + preflight SKIP, (2) updated_at/text_rev columns, (3) English text sirf jo badle (`IS DISTINCT FROM`, dobara chalane par 0 rows), (4) text constraint NOT VALID->VALIDATE (printable ASCII, title 3..60, summary 3..200), (5) **SAFETY RATCHET** trigger: key/deck immutable; danger sirf badhta; passkey/two-tap sirf on; reversible sirf kam, (5b) **DELETE/TRUNCATE band** — Supabase default privileges service_role ko DELETE dete the: E102 ka asli gap (delete+reinsert se ratchet bypass) — revoke + trigger, (6) `founder_actions_selftest()` (rollback). CHECK_E103 = 8 rows. Sandbox PG16: E102 9/9, E103 8/8, dobara chalana safe, service_role ke delete/truncate/danger-kam = ERROR.
+
+### 12z-e. /founderlogin (founder 28 Oct 07:22: "founderworkspace.anexomail.com/founderlogin ana tha") — [WEB] + [BUILD]
+- `src/routes/founderlogin.tsx` = maujooda AuthPage (EXACT wohi sign-in UI: cinema panel, passkey, email link, recovery code) `founderLogin` mode mein. Founder host par awam extras hide (FX-25/26/27). Login ke baad `window.location.assign("/f/")`; is_founder na ho to session saaf + "This sign-in is for the founder account only."; awam hosts par `/` par redirect. Already-signed-in founder -> seedha /f/.
+- `/f/` gate ab "Go to founder sign in" -> /founderlogin; login ke baad khud /f/ par aata hai (`?next` ki zaroorat khatam).
+- routeTree.gen.ts regenerate (vite build ok), tsc 0 error. Caddy badlav NAHI (/founderlogin default app handle se jata hai).
+- Chrome live test pull ke baad.

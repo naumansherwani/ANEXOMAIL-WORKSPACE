@@ -11,8 +11,8 @@ function Gate() {
       <div className="brand">ANEXOMAIL · FOUNDER</div>
       <h1>Command Center</h1>
       <p className="dim">Sign in with your founder account to continue. The same sign-in you already use — passkey included.</p>
-      <a className="btn" href="/auth">Go to sign in</a>
-      <p className="dim small">After signing in, open the Command Center again from your bookmark.</p>
+      <a className="btn" href="/founderlogin">Go to founder sign in</a>
+      <p className="dim small">After signing in you land here automatically.</p>
     </div></div>
   );
 }
