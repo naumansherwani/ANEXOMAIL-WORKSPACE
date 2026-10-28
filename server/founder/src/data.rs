@@ -23,6 +23,13 @@ impl Sb {
         if !r.status().is_success() && r.status().as_u16() != 416 { return None; }
         r.headers().get("content-range")?.to_str().ok()?.split('/').nth(1)?.parse().ok()
     }
+    /// PostgREST RPC (service_role). Jawab JSON value (null bhi valid) ya None (error).
+    pub async fn rpc(&self, name: &str, body: Value) -> Option<Value> {
+        let r = self.http.post(format!("{}/rest/v1/rpc/{}", self.url, name)).header("apikey", &self.key)
+            .header("authorization", format!("Bearer {}", self.key)).json(&body).send().await.ok()?;
+        if !r.status().is_success() { return None; }
+        r.json::<Value>().await.ok()
+    }
     pub async fn is_founder(&self, uid: &str) -> bool {
         if uid.is_empty() || !uid.chars().all(|c| c.is_ascii_hexdigit() || c == '-') { return false; } // injection se bachao
         self.rows(&format!("founder_accounts?select=user_id&user_id=eq.{uid}&limit=1")).await.map(|r| !r.is_empty()).unwrap_or(false)

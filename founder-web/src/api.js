@@ -16,3 +16,9 @@ export async function get(path) {
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
   return r.json(); // {data, ts, sig} — sig ka browser-side verify = F2b (WASM kernel); abhi UI saaf likhti hai ke verify NAHI hua
 }
+export async function post(path, body) {
+  const r = await fetch(path, { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${token}` }, body: JSON.stringify(body) });
+  if (r.status === 401) { token = null; throw new Error("session khatam"); }
+  let j = null; try { j = await r.json(); } catch {}
+  return { status: r.status, body: j };
+}

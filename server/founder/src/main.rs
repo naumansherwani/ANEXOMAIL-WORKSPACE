@@ -8,6 +8,7 @@ mod sign;
 mod bridge;
 mod data;
 mod login;
+mod actions;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use serde_json::{Value, json};
@@ -105,6 +106,48 @@ async fn login_ep(State(st): State<S>, Json(b): Json<LoginIn>) -> axum::response
     Json(json!({"access_token": access, "expires_in": tok["expires_in"], "passkey": "pending_F1a"})).into_response()
 }
 
+
+async fn actions_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
+    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    let sb = st.sb.as_ref().unwrap();
+    match sb.rows("founder_actions?select=key,deck,title,summary,danger,enabled,reversible&order=deck,key").await {
+        Some(rows) => signed(&st, json!({"connected": true, "actions": rows})),
+        None => signed(&st, json!({"connected": false, "note": "founder_actions nahi mili — E102 SQL chalayein (sql-run.sh)"})),
+    }
+}
+
+async fn audit_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
+    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    let sb = st.sb.as_ref().unwrap();
+    let (rows, bad, head) = tokio::join!(
+        sb.rows("founder_audit?select=seq,ts_ms,action,target,reason,hash,prev_hash&order=seq.desc&limit=15"),
+        sb.rpc("founder_audit_verify", json!({"p_from": 1})),
+        sb.rpc("founder_audit_head", json!({})),
+    );
+    match rows {
+        None => signed(&st, json!({"connected": false, "note": "founder_audit nahi mili — E102 SQL chalayein (sql-run.sh)"})),
+        Some(rows) => signed(&st, json!({"connected": true, "entries": rows, "head": head, "chain_ok": bad.as_ref().map(|v| v.is_null()), "first_bad_seq": bad})),
+    }
+}
+
+#[derive(serde::Deserialize)]
+struct ActIn { key: String, reason: String }
+
+async fn action_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ActIn>) -> axum::response::Response {
+    let c = match authed(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
+    let sb = st.sb.as_ref().unwrap();
+    if !actions::valid_key(&b.key) { return (StatusCode::BAD_REQUEST, Json(json!({"error": "action ka naam ghalat"}))).into_response(); }
+    let Some(reason) = actions::clean_reason(&b.reason) else { return (StatusCode::BAD_REQUEST, Json(json!({"error": "wajah kam az kam 8 akshar"}))).into_response(); };
+    let row = sb.rows(&format!("founder_actions?select=key,enabled,danger&key=eq.{}&limit=1", b.key)).await.and_then(|r| r.into_iter().next());
+    let Some(row) = row else { return (StatusCode::NOT_FOUND, Json(json!({"error": "yeh action catalogue mein nahi"}))).into_response(); };
+    let enabled = row["enabled"].as_bool().unwrap_or(false);
+    // koshish HAMESHA audit mein (chalna ho ya na chalna): kis ne, kya, kyun
+    let a = sb.rpc("founder_audit_append", json!({"p_actor": c.sub, "p_action": format!("attempt.{}", b.key), "p_target": b.key, "p_reason": reason, "p_meta": {"enabled": enabled, "danger": row["danger"]}})).await;
+    let Some(a) = a else { return (StatusCode::BAD_GATEWAY, Json(json!({"error": "audit likha nahi ja saka — action roka gaya"}))).into_response(); };
+    // executor F8 mein: tab tak chalta nahi (koi side-effect nahi)
+    (StatusCode::CONFLICT, Json(json!({"error": "executor abhi nahi (F8) — sirf koshish audit mein likhi gayi", "audit": a}))).into_response()
+}
+
 pub fn app(st: S) -> Router {
     let static_dir = std::env::var("FOUNDER_STATIC").unwrap_or_else(|_| "/opt/anexomail-founder/web".into());
     Router::new()
@@ -112,6 +155,9 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/login", axum::routing::post(login_ep))
         .route("/founder/v1/me", get(me))
         .route("/founder/v1/bridge", get(bridge_ep))
+        .route("/founder/v1/actions", get(actions_ep))
+        .route("/founder/v1/audit", get(audit_ep))
+        .route("/founder/v1/action", axum::routing::post(action_ep))
         .fallback_service(tower_http::services::ServeDir::new(static_dir).append_index_html_on_directories(true))
         .with_state(st)
         .layer(hdr("content-security-policy", "default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'"))
@@ -155,7 +201,7 @@ mod tests {
     }
     #[tokio::test]
     async fn founder_routes_need_bearer() {
-        for path in ["/founder/v1/me", "/founder/v1/bridge"] {
+        for path in ["/founder/v1/me", "/founder/v1/bridge", "/founder/v1/actions", "/founder/v1/audit"] {
             let r = app(st_with_sb()).oneshot(Request::get(path).body(Body::empty()).unwrap()).await.unwrap();
             assert_eq!(r.status(), 401, "{path}");
             let r = app(st_with_sb()).oneshot(Request::get(path).header("authorization", "Bearer a.b.c").body(Body::empty()).unwrap()).await.unwrap();
@@ -167,5 +213,10 @@ mod tests {
         let st = Arc::new(St { sb: None, hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default() });
         let r = app(st).oneshot(Request::get("/founder/v1/me").header("authorization", "Bearer a.b.c").body(Body::empty()).unwrap()).await.unwrap();
         assert_eq!(r.status(), 503);
+    }
+    #[tokio::test]
+    async fn action_post_needs_bearer() {
+        let r = app(st_with_sb()).oneshot(Request::post("/founder/v1/action").header("content-type", "application/json").body(Body::from(r#"{"key":"release.pull_web","reason":"test wajah"}"#)).unwrap()).await.unwrap();
+        assert_eq!(r.status(), 401);
     }
 }
