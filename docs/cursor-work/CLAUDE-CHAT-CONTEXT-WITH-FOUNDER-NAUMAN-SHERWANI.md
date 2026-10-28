@@ -1715,3 +1715,6 @@ Haqeeqat (server/routes/auth.ts): ek hi login endpoint sab ke liye; `FOUNDER_PAS
 ## 28 Oct 06:40 PKT — Founder: "F0 design website par kyun nahi?" — sahi, ab F0 ka do-tap + 6 decks asli SPA mein. Naya pull: founder-install.sh dobara (naya binary+SPA). Pehle E102 SQL.
 
 ## 28 Oct 06:12 PKT — Founder gussa: maine phases mix kiye (decks/SQL/Caddy ek saath). Rule 64: ek phase green + Chrome live, phir agla. Abhi sirf PHASE = E102 SQL green (CHECK_E102 ka ek FAIL theek kiya). Uske baad ek hi agla phase: F1b/F2a Chrome par live (DNS + Caddy + naya founder-install). Decks wala code push hai par uska pull tab tak nahi.
+
+## 28 Oct — legacy founder audit
+Founder ne kaha: pehle purani founder files ek jagah + deep audit. Kiya: FOUNDER-CODE-INVENTORY-28OCT.md. Bada khatra: auth.ts FOUNDER_PASSWORD (password overwrite + createUser). 4 jagah FOUNDER_EMAILS email-trust. Koi file move nahi. Agla: E102 re-run green (Rule 64), phir ek phase.
