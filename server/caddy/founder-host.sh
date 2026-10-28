@@ -19,5 +19,5 @@ if ! caddy validate --config "$MAIN" >/dev/null 2>&1; then
 fi
 systemctl reload caddy || systemctl restart caddy
 sleep 2
-for p in /f/ /founder/v1/me /app; do printf '%s -> ' "$p"; curl -s -o /dev/null -w '%{http_code}\n' --max-time 20 "https://founderworkspace.anexomail.com$p"; done
-echo "(chahiye: /f/ 200 · /founder/v1/me 401 · /app purana jaisa)"
+for p in / /_cc/ /founder/v1/me /app /founderlogin; do printf '%s -> ' "$p"; curl -s -o /dev/null -w '%{http_code}\n' --max-time 20 "https://founderworkspace.anexomail.com$p"; done
+echo "(chahiye: / 200 (Command Center) · /_cc/ 200 · /founder/v1/me 401 · /app aur /founderlogin 200)"

@@ -25,7 +25,7 @@ Format: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/an
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
 
 ## Tarteeb (agar ek hi batch mein kai technologies badli hon)
-1) SQL  2) SQL CHECK  3) Rust founder + SPA  4) Web  5) Caddy (sirf jab host raaste badle).  Wajah: DB pehle (naya code naye table/column par), phir binary, phir web; Caddy aakhir.
+1) SQL  2) SQL CHECK  3) Rust founder + SPA  4) Web  5) Caddy (sirf jab host raaste badle).  Wajah: DB pehle (naya code naye table/column par), phir binary, phir web; Caddy aakhir. NOTE: founder SPA ka base badle to BUILD Caddy se PEHLE (28 Oct: `/_cc/` base).
 
 ## Har phase ke liye
 Blueprint `FOUNDER-BUILD-PLAN-28OCT.md §11z` mein har phase ke agay technology + pull ka qism likha hai; yeh file command ka masdar hai.

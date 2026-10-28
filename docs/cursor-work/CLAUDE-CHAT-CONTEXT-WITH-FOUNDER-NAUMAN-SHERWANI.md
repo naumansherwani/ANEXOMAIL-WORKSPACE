@@ -1767,3 +1767,5 @@ Chrome live (founderworkspace, sirf padha): (1) /auth — Save password, Forgot 
 Status: F0 GREEN (server+Caddy+Chrome gate). F0-polish: English + gate GREEN; Bridge live data baqi (founder login). Agla ek phase: F1a (E104 devices SQL, /exchange, awam hosts par founder login refuse, ?next=/f/) — technology: SQL + Rust founder + Web.
 
 ## 28 Oct 07:35 — Founder naraz: login URL founderworkspace.anexomail.com/founderlogin hona tha (wohi existing page). Bana: src/routes/founderlogin.tsx + auth.tsx founderLogin mode, /f/ gate -> /founderlogin. Rule 68 addendum, plan 12z-e. Pull: [WEB] pull.sh + [BUILD] founder-install.sh (SPA gate link). Chrome test pull ke baad.
+
+## 28 Oct 07:45 — Founder: "/f/" se nafrat. Command Center ab root `/` par: Caddy v2 snippet (/ , /_cc/*, /founder/v1/*, /f->/), SPA base /_cc/, auth.tsx login ke baad assign("/"). FC11 badla, plan 12z-f. Pull tarteeb: WEB -> BUILD -> CADDY. founder ne /founderlogin wale WEB pull ka output abhi nahi diya (sirf founder-install ka diya, jo purana /f/ build tha).

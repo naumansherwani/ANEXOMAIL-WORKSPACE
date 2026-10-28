@@ -177,7 +177,7 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
   // Pehle se logged-in banda /auth par aaye (back button, purana tab) to login form nahi — seedha workspace.
   useEffect(() => {
     if (authStatus === "signed-in" && !loginStarted.current && !showSplash && mode === "login") {
-      if (founderLogin) window.location.assign("/f/");
+      if (founderLogin) window.location.assign("/");
       else void navigate({ to: "/app", replace: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -203,7 +203,7 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
     }
     acceptSession(session);
     if (founderLogin) {
-      setRedirectTo("/f/");
+      setRedirectTo("/");
       return;
     }
     window.sessionStorage.removeItem("anexo.pending.checkout");
@@ -1036,7 +1036,7 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
           // window.location.replace reload karta tha → gate dobara /auth bounce.
           // replace: /auth history mein na rahe — warna Back dabate hi /auth -> turant /app (bounce).
           if (founderLogin) {
-            window.location.assign("/f/"); // /f/ alag static Command Center (Caddy -> Rust), router route nahi
+            window.location.assign("/"); // /f/ alag static Command Center (Caddy -> Rust), router route nahi
             return;
           }
           void navigate({ to: redirectTo, replace: true });

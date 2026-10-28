@@ -2,9 +2,10 @@
 """
 founderworkspace.anexomail.com par NAYA Rust founder jodna (host wahi, founder ka favourite — 28 Oct 2026).
 Purana awam-app founder (/app/founder*, /api/*) bilkul nahi chhedta. Sirf teen raaste Rust :3210 par:
-  /f   -> /f/ (redirect)
-  /f/* -> Rust (prefix hata kar; SPA ke asset relative hain)
+  /           -> Rust (Command Center, address mein koi /f/ nahi)
+  /_cc/*      -> Rust (SPA assets, prefix hata kar)
   /founder/v1/* -> Rust
+  /f, /f/     -> / (purane bookmark redirect)
 Idempotent (marker). Agar host block mein IP allowlist (remote_ip/client_ip/@blocked/abort) mile to KUCH NAHI badalta
 (handle allowlist ko bypass kar sakta hai) — block print karke 2 se exit.
 usage: patch-founder-host.py /etc/caddy/Caddyfile /etc/caddy/sites
@@ -12,17 +13,34 @@ usage: patch-founder-host.py /etc/caddy/Caddyfile /etc/caddy/sites
 import glob, os, re, shutil, sys, time
 
 HOST = "founderworkspace.anexomail.com"
-MARK = "# FOUNDER-NEW (Rust :3210) — repo-managed"
+MARK1 = "# FOUNDER-NEW (Rust :3210) — repo-managed"
+MARK = "# FOUNDER-NEW v2 (Rust :3210) — repo-managed"
 main = sys.argv[1] if len(sys.argv) > 1 else "/etc/caddy/Caddyfile"
 sites = sys.argv[2] if len(sys.argv) > 2 else "/etc/caddy/sites"
 
-SNIP = [
-    "\t" + MARK,
+SNIP_V1 = [
+    "\t" + MARK1,
     "\tredir /f /f/ 308",
     "\thandle_path /f/* {",
     "\t\treverse_proxy 127.0.0.1:3210",
     "\t}",
     "\thandle /founder/v1/* {",
+    "\t\treverse_proxy 127.0.0.1:3210",
+    "\t}",
+]
+# v2: Command Center host ke ROOT par (address mein koi /f/ nahi). Assets /_cc/ ke peeche (purani app ke /assets se takrao nahi).
+SNIP = [
+    "\t" + MARK,
+    "\tredir /f / 308",
+    "\tredir /f/ / 308",
+    "\thandle /_cc/* {",
+    "\t\turi strip_prefix /_cc",
+    "\t\treverse_proxy 127.0.0.1:3210",
+    "\t}",
+    "\thandle /founder/v1/* {",
+    "\t\treverse_proxy 127.0.0.1:3210",
+    "\t}",
+    "\thandle / {",
     "\t\treverse_proxy 127.0.0.1:3210",
     "\t}",
 ]
@@ -65,7 +83,16 @@ if len(found) != 1:
 path, lines, (a, z) = found[0]
 body = "\n".join(lines[a:z + 1])
 if MARK in body:
-    print(">>> founder host pehle se patched — koi badlav nahi")
+    print(">>> founder host pehle se patched (v2) — koi badlav nahi")
+    sys.exit(0)
+if MARK1 in body:
+    k = next(n for n in range(a, z + 1) if lines[n].strip() == MARK1)
+    if lines[k:k + len(SNIP_V1)] != SNIP_V1:
+        print("!!! purana (v1) founder snippet badla hua mila — kuch nahi badla"); sys.exit(2)
+    bak = f"{path}.bak.founder.{int(time.time())}"
+    shutil.copyfile(path, bak)
+    open(path, "w", encoding="utf-8").write("\n".join(lines[:k] + SNIP + lines[k + len(SNIP_V1):]))
+    print(f">>> upgraded v1 -> v2 in {path} (backup {bak})")
     sys.exit(0)
 if re.search(r"remote_ip|client_ip|@blocked|abort|not remote", body):
     print("!!! Is host block mein IP allowlist/guard mila — handle usay bypass kar sakta hai, isliye KUCH NAHI badla.")

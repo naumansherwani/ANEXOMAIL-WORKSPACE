@@ -240,3 +240,9 @@ Founder host (isFounderHost) par /auth se HIDE: "New here? Create your accountâ€
 - `/f/` gate ab "Go to founder sign in" -> /founderlogin; login ke baad khud /f/ par aata hai (`?next` ki zaroorat khatam).
 - routeTree.gen.ts regenerate (vite build ok), tsc 0 error. Caddy badlav NAHI (/founderlogin default app handle se jata hai).
 - Chrome live test pull ke baad.
+
+### 12z-f. "/f/" KHATAM (founder 28 Oct 07:40: "yeh end ka f khatam kero, i hate it") â€” Command Center ab `https://founderworkspace.anexomail.com/` (root)
+- Caddy v2 snippet (founder-host.sh/patch-founder-host.py, v1->v2 auto-upgrade, sandbox-tested): `/` -> Rust (Command Center), `/_cc/*` -> Rust (assets, prefix strip), `/founder/v1/*` -> Rust, `/f` & `/f/` -> 308 `/`. Purana awam-app `/app`, `/auth`, `/founderlogin` waise hi.
+- SPA vite `base: "/_cc/"` (assets purani app ke /assets se takrao nahi); login ke baad `window.location.assign("/")`; /f/ wali har jagah "/" hui.
+- Test (Node stub Caddy-jaisa + Playwright): `/` gate, token ke saath Bridge, link /founderlogin, 0 JS error, 0 failed request.
+- Pull TARTEEB (lazmi): [WEB] -> [BUILD] -> [CADDY]. BUILD CADDY se PEHLE (warna naya `/` purane relative-asset build ko serve karega).
