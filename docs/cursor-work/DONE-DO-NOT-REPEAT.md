@@ -1039,3 +1039,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 ## 28 Oct 05:10 PKT — Loophole darj: founder awam login se bhi andar aata hai (auth.ts, FOUNDER_PASSWORD + shared session). Fix F1a mein (FOUNDER-BUILD-PLAN addendum). Code abhi nahi.
 
 ## 28 Oct 05:25 PKT — server/founder/ crate scaffold (anexomail-founder): audit.rs (SHA-256 chain+HMAC, 4 tests) + /healthz + hardening headers (1 test) = 5/5 pass. Sirf sandbox; server par INSTALL NAHI (deploy nahi). Cargo sandbox mein: `env -u NO_PROXY -u no_proxy cargo test`. F0 design founder ke "haan" par.
+
+## 28 Oct 05:45 PKT — server/founder F1b-code: gate (Bearer ES256 local verify via jwt_core + founder_accounts => 401/403), sign (HMAC envelope), data (Supabase REST), bridge (ASLI hisaab: money=revenue_accounts active MRR, trouble=mail_outbox+expiry file, voice=revenue_leads new; na-maujood = null, jhoota 0 nahi), routes /founder/v1/me + /founder/v1/bridge + static SPA (FOUNDER_STATIC). 22 test pass. Env: FOUNDER_HMAC_KEY (>=32), SUPABASE4_URL, SUPABASE4_SERVICE_ROLE_KEY. Server par abhi INSTALL NAHI. Agla: SPA (React+Three) + install script + alag host.
