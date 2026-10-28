@@ -1,24 +1,19 @@
 import { useEffect, useState, useCallback } from "react";
-import { login, logout, get, hasToken } from "./api.js";
+import { get, hasToken } from "./api.js";
 import Scene from "./Scene.jsx";
 import { DECKS, Deck, Audit } from "./Decks.jsx";
 
 const TXT = { ok: "OK", warn: "ATTENTION", fail: "FAILING", unknown: "UNKNOWN" };
 
-function Login({ onIn }) {
-  const [email, setEmail] = useState(""), [pw, setPw] = useState(""), [err, setErr] = useState(""), [busy, setBusy] = useState(false);
-  const go = async (e) => { e.preventDefault(); setBusy(true); setErr(""); try { await login(email, pw); onIn(); } catch (x) { setErr(x.message); } finally { setBusy(false); setPw(""); } };
+function Gate() {
   return (
-    <div className="loginwrap"><form className="login" onSubmit={go}>
+    <div className="loginwrap"><div className="login">
       <div className="brand">ANEXOMAIL · FOUNDER</div>
-      <h1>Founder sign in</h1>
-      <p className="dim">Command Center · restricted access. This is not the customer sign-in.</p>
-      <label>Email<input type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} required /></label>
-      <label>Password<input type="password" autoComplete="current-password" value={pw} onChange={(e) => setPw(e.target.value)} required /></label>
-      <button disabled={busy}>{busy ? "…" : "Sign in"}</button>
-      {err && <div className="err" role="alert">{err}</div>}
-      <p className="dim small">Passkey as the second step is coming in the next phase. Until then: password only.</p>
-    </form></div>
+      <h1>Command Center</h1>
+      <p className="dim">Sign in with your founder account to continue. The same sign-in you already use — passkey included.</p>
+      <a className="btn" href="/auth">Go to sign in</a>
+      <p className="dim small">After signing in, open the Command Center again from your bookmark.</p>
+    </div></div>
   );
 }
 
@@ -34,18 +29,18 @@ export default function App() {
   const [d, setD] = useState(null), [err, setErr] = useState(""), [gfx, setGfx] = useState("…"), [at, setAt] = useState(null);
   const load = useCallback(async () => {
     try { const r = await get("/founder/v1/bridge"); setD(r.data); setAt(new Date()); setErr(""); }
-    catch (x) { if (!hasToken()) setAuthed(false); else setErr(x.message); }
+    catch (x) { if (/expired/i.test(x.message) || !hasToken()) setAuthed(false); else setErr(x.message); }
   }, []);
   useEffect(() => { if (!authed) return; load(); const t = setInterval(load, 15000); return () => clearInterval(t); }, [authed, load]);
 
-  if (!authed) return <Login onIn={() => setAuthed(true)} />;
+  if (!authed) return <Gate />;
   const m = d?.money, t = d?.trouble, v = d?.voice;
   return (
     <main>
       {gfxOn && <Scene money={m} trouble={t} voice={v} onRenderer={setGfx} />}
       <header>
         <span className="brand">ANEXOMAIL · FOUNDER</span>
-        <span className="chips"><button className="chip tgl" onClick={flip3d} aria-pressed={gfxOn} title="3D on/off — always in your hands">3D: {gfxOn ? `ON · ${gfx}` : "OFF (2D)"}</button><span className="chip warn">Signature not yet verified in browser (kernel: F2b)</span><span className="chip warn">Passkey not yet enabled (F1a)</span><button className="link" onClick={() => { logout(); setAuthed(false); }}>Bahar</button></span>
+        <span className="chips"><button className="chip tgl" onClick={flip3d} aria-pressed={gfxOn} title="3D on/off — always in your hands">3D: {gfxOn ? `ON · ${gfx}` : "OFF (2D)"}</button><span className="chip warn">Signature not yet verified in browser (kernel: F2b)</span><span className="chip warn">Device approval not yet enabled (F1a)</span><a className="link" href="/app">Workspace</a></span>
       </header>
       <nav className="decks" aria-label="Decks">
         {[["bridge", "Bridge"], ...DECKS.map((x) => [x[0], x[1]]), ["audit", "Audit"]].map(([k, n]) => <button key={k} className={`tab ${view === k ? "on" : ""}`} aria-current={view === k} onClick={() => setView(k)}>{n}</button>)}

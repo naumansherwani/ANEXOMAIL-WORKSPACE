@@ -37,3 +37,5 @@ button{min-height:46px;background:var(--g);color:#06130c;border:0;border-radius:
 textarea{background:#0d1511;color:var(--fg);border:1px solid #2b3a33;border-radius:8px;padding:10px;font:inherit;resize:none}
 .kicker{font:12px ui-monospace,monospace;letter-spacing:.14em}.row{display:flex;gap:10px;justify-content:flex-end}.row button{flex:1}
 .sheet{max-height:calc(100vh - 32px);overflow:auto}
+
+.btn{display:flex;align-items:center;justify-content:center;min-height:46px;background:var(--g);color:#06130c;border-radius:8px;font:600 15px system-ui;text-decoration:none}

@@ -222,3 +222,9 @@ Kharabi (founder host par awam cheezein):
 | FX-26 | "Save password" checkbox + "Forgot your password?" (awam flows) founder host par | founder host par hata do; recovery sirf passkey+recovery code (founder ke liye password reset = founder khud server se) | F1a |
 | FX-27 | "FOUNDER PREVIEW" pill login par bhi | hata do (sirf founder host hai, preview ka matlab nahi) | F1a |
 Login ka look/flow NAHI badalta (Rule 68) — sirf in teen awam cheezon ka founder host par hide.
+
+### 12z-c. NAYA LOGIN HATA DIYA (founder 28 Oct 07:12: "existing login like karta hoon, tumne jo naya login banaya woh nahi hoga")
+- /f/ SPA se apna email/password form POORA hata diya. Ab: session nahi to sirf ek saaf screen "Command Center — Go to sign in" jo maujooda `/auth` par bhejti hai. Session hai to Bridge seedha.
+- Token: SPA sirf maujooda login ka token PADHTI hai (localStorage `anexo.session.token`, kabhi likhti/copy nahi), Rust usay verify karta hai (ES256 + founder_accounts, 403 = founder nahi). Playwright: gate / bridge (stub) / 401->gate, 0 JS errors.
+- Rust `/founder/v1/login` endpoint ab UI se bilkul nahi judta (dead) — F1a mein hata diya jaye (/founder/v1/exchange aayega).
+- Chhoti kami (F1a): login ke baad /auth seedha /app bhejta hai (`next` support nahi) — founder /f/ bookmark se kholta hai; F1a mein `?next=/f/` support.

@@ -1750,3 +1750,5 @@ Founder ne kaha: pehle purani founder files ek jagah + deep audit. Kiya: FOUNDER
 ## 28 Oct 07:06 — Founder: existing login (/auth) pasand, wohi rahega -> Rule 68, plan §12z (FX-6 revised: awam hosts par founder login refuse + /f/ login ke peeche + /founder/v1/exchange). /f/ ka apna form abhi fallback, F1a mein hatega. Pending: founder ke E103 SQL + founder-install output.
 
 ## 28 Oct 07:08 — Chrome live existing login (/auth founderworkspace): achha login; founder host par awam signup link, Save password, Forgot password, FOUNDER PREVIEW pill -> FX-25/26/27 (plan §12z-b). Login UI nahi badla. Tab wapas /app.
+
+## 28 Oct 07:12 — Founder: existing login hi, naya login nahi. /f/ se apna login form hata diya (gate -> /auth, maujooda token read-only, Rust verify). Build: dist naya. Pull same: [SQL] sql-run.sh + E103 CHECK_E103, [BUILD] founder-install.sh. Test: gate/bridge/401 Playwright ok. Chrome par asli token se Bridge founder khud dekhe (main password nahi dalta).
