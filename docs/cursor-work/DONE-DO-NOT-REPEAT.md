@@ -1075,3 +1075,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 28 Oct 08:55: Command Center ka 3D cartoon hata kar maujooda-app jaisa clean gradient look; Rust detail strings English. Dobara 3D pillars mat banao.
 - 28 Oct 08:40: bandwidth throttle-first+meter user-side blueprint mein (CEO-DECISIONS D) + formula doc. Dobara mat likho.
 - 28 Oct 08:45: FC18 common-features rule; Chrome live clean Command Center green; bandwidth abhi nahi banana. Dobara mat likho.
+- 28 Oct 09:00: Command Center existing admin shell (topbar+ADMIN sidebar) mein, founder-web mein (user code mix nahi). Dobara mat banao.

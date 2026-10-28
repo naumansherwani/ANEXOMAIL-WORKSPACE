@@ -2,8 +2,6 @@
 :root{--bg:#0b0c10;--card:#12141a;--line:#272a33;--fg:#eceff4;--dim:#98a1b1;--p:#34588f;--p2:#4a73b3;--g:#3ccf91;--w:#e9b44c;--r:#ef6a58}
 *{box-sizing:border-box}html,body,#root{height:100%;margin:0}
 body{color:var(--fg);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(1100px 560px at 50% -12%,#1a2748 0%,rgba(11,12,16,0) 68%),var(--bg);background-attachment:fixed}
-main{position:relative;min-height:100%;display:flex;flex-direction:column;padding:22px max(20px,env(safe-area-inset-left));gap:18px;max-width:1240px;margin:0 auto}
-header{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
 .brand{font:600 13px Inter,system-ui,sans-serif;letter-spacing:.16em;color:var(--fg)}
 .chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.chip{font:500 12px Inter,system-ui,sans-serif;border:1px solid var(--line);color:var(--dim);padding:5px 10px;border-radius:999px;background:rgba(18,20,26,.7)}
 .chip.warn{border-color:#5a4a26;color:var(--w)}
@@ -35,3 +33,20 @@ button{min-height:46px;background:var(--p);color:#fff;border:0;border-radius:10p
 textarea{background:#0d0f14;color:var(--fg);border:1px solid #2b2f3a;border-radius:10px;padding:10px;font:inherit;resize:none}
 .kicker{font:600 12px Inter,sans-serif;letter-spacing:.14em}.row{display:flex;gap:10px;justify-content:flex-end}.row button{flex:1}
 .btn{display:flex;align-items:center;justify-content:center;min-height:46px;background:var(--p);color:#fff;border-radius:10px;font:600 15px Inter,system-ui,sans-serif;text-decoration:none}.btn:hover{background:var(--p2)}
+
+/* Shell = the existing app's admin layout (top bar + left sidebar + content), founder-only code */
+.shell{min-height:100%;display:flex;flex-direction:column}
+.topbar{display:flex;align-items:center;gap:16px;padding:12px 20px;border-bottom:1px solid #1d2028;flex-wrap:wrap}
+.logo{display:flex;flex-direction:column;line-height:1.1}.logo b{font-weight:600;font-size:15px;letter-spacing:.02em}.logo span{font-size:9px;letter-spacing:.3em;color:var(--dim)}
+.wschip{border:1px solid var(--line);border-radius:10px;padding:7px 12px;font-size:13px;font-weight:500;background:var(--card)}
+.search{flex:1;min-width:180px;max-width:520px;margin:0 auto;border:1px solid var(--line);border-radius:12px;padding:9px 14px;font-size:13px;color:var(--dim);background:#101217}
+.body{display:flex;flex-wrap:wrap;flex:1}
+.side{width:216px;flex:0 0 216px;border-right:1px solid #1d2028;padding:16px 12px;display:flex;flex-direction:column;gap:2px}
+.sidehead{font-size:11px;letter-spacing:.14em;color:#6f7889;padding:6px 10px}
+.nav{min-height:40px;text-align:left;background:transparent;color:var(--dim);border:1px solid transparent;border-radius:10px;padding:0 10px;font:500 14px Inter,sans-serif}
+.nav:hover{background:#15171d;color:var(--fg)}.nav.on{background:#18233a;color:#fff;border-color:#2d4a7a}
+.sidenote{margin-top:auto;padding:14px 10px 0;font-size:12px;color:#6f7889;line-height:1.5}
+.content{flex:999 1 560px;min-width:0;padding:30px 36px;display:flex;flex-direction:column;gap:20px}
+.titleblock{display:flex;flex-direction:column;gap:8px}.titleblock h1{margin:0;font-size:34px;font-weight:600;letter-spacing:-.02em}.titleblock p{margin:0;max-width:620px;font-size:14px;line-height:1.55}
+.titleblock .kicker{color:var(--dim)}
+@media (max-width:760px){.side{width:100%;flex:1 1 100%;flex-direction:row;flex-wrap:wrap;border-right:0;border-bottom:1px solid #1d2028;padding:10px 12px}.sidehead,.sidenote{display:none}.content{padding:20px 16px}.topbar .search{display:none}}
