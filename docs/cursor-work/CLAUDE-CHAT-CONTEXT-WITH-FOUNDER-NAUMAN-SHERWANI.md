@@ -1730,3 +1730,5 @@ Founder ne kaha: pehle purani founder files ek jagah + deep audit. Kiya: FOUNDER
 ## 28 Oct 06:40 — Founder: Chrome ki sab galtiyan (FX-15..21) fix meri zimmedari. Rule 65 / FC12-13: Lovable code + blueprint saath, feature tarteeb se; UI cluster nahi, aankhon ko aasaan, Admin mein sab kuch. F0 install command (founder-install.sh) di gayi — E102 green ho chuki.
 
 ## 28 Oct 06:40 — Founder: jo achha hai intact + behtar; frontend duniya ki advance tech. FC14 + blueprint §8z (rakho+behtar table, frontend stack).
+
+## 28 Oct 06:45 — F0b server par green (28 tests, SPA/healthz 200, me/bridge 401). Founder ke naye faisle: (1) backend+browser military grade WASM kernel, tarteeb se kaam; (2) awam-masle wale email addresses (support/billing/hello/resolved...) ALAG, founder ka apna mailbox ALAG (blueprint FX-22); (3) jo achha rakho+behtar (FC14). Agla EK qadam: DNS A record founder.anexomail.com (founder registrar mein) -> Caddy deploy (cd /opt/anexomail-web && git checkout -- . && git pull -q && bash server/caddy/deploy-sites.sh) -> Chrome live. Founder.Caddyfile mein IP allowlist comment-out hai (F1a).

@@ -138,6 +138,7 @@ Maqsad: purana founder code awam se ALAG nazar aaye; jo galat mile uska number y
 | FX-19 | Awam dashboard par "Add backup passkey" nag + Install ANEXOMAIL banner + Storage 750 GB awam widget founder par | founder par awam widget nahi; passkey = ek baar per device (FOUNDER-PROTOCOL §2b) | F1a |
 | FX-20 | Boot splash "Opening your workspace" awam wala | founder ka apna cinematic boot | F0 |
 | FX-21 | ExpiryWatch ("Mail TLS 65 days") awam dashboard par | Systems deck | F5 |
+| FX-22 | Founder ka mailbox aur awam-masle wale addresses (resolved@, moveyourbusiness@, hello@, billing@, noreply@, leo@) ek hi plan list mein mile hue (founder-plan.ts) | founder ka apna mailbox ALAG surface (Mail Desk F4 mein "Founder inbox"); awam-support addresses alag "Support desks" (Leo); family testers alag; sab alag provision actions | F4 |
 Achhi cheez (rakho): Expiry watch ka data (27/27 checks fine) asli server report se; dark premium look ka base.
 
 ## 7z. VISION (founder ke 4 suggestions, latest technology par) — tarteeb ke saath, abhi sirf likha
