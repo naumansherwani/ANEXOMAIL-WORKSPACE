@@ -53,3 +53,12 @@ Greeting (day-part, sunset evening, Karachi/city-adaptive), digital clock, cinem
 - **SPA:** Settings -> Personal (home timezone: greeting/clock follow it) and Appearance (Graphics, Compact sidebar), both saved on the account and synced to every approved device; Profile page: photo + display name.
 - **Real keys now:** personal.display_name, personal.avatar, personal.timezone, appearance.graphics, appearance.sidebar_slim.
 - **NOT built, on purpose (no working-looking fakes):** Notifications — there is no delivery channel yet (comes with Mail Desk F5 / push). Privacy (session lifetime, approval strictness) — needs passkey/session controls after F2b. The Settings page says so in one honest line.
+
+## ORDER of the three deferred Settings tabs (founder 28 Oct 12:08: "yeh teeno kab aayenge, tarteeb mein add karo")
+Rule 69: a tab appears only when its backend is real. Each one is tied to the phase that creates that backend:
+| # | Tab | Why it waits | Built in | After |
+|---|---|---|---|---|
+| 1 | **Time machine + Drift & schedule** (history, one-click revert, drift vs baseline, scheduled changes) | needs the audit chain with Merkle proof (F2c); history table already records every change since E108 | **Settings S2** | F2c |
+| 2 | **Privacy** (session length, device-approval strictness, passkey-required for G3, export) | needs real passkey assertion for G3 (F2d, planned right after F2c; removes FOUNDER_PASSWORD only after proof) | **Settings S3** | F2d passkey |
+| 3 | **Notifications** (which alerts, where) | needs a real delivery channel: browser push first (service worker + Rust web-push), email via Mail Desk (F5); the alert SOURCES are Decide (N) and Live Pulse | **Settings S4** = N1 push with Decide/Live Pulse; N2 email with F5 | Decide + Live Pulse (push); F5 (email) |
+Full order: F2a (done) -> Settings S1 (built) -> F2b -> F2c -> **S2 Time machine/Drift** -> F2d passkey -> **S3 Privacy** -> Decide (N) + Live Pulse -> **S4 Notifications (push)** -> F3-b Polar -> F4 People -> F5 Mail Desk (+ email notifications, undo-send settings) -> F6 Systems/AI (+ Workspace/AI settings) -> F8 Control -> F9 cutover -> Founder desk.

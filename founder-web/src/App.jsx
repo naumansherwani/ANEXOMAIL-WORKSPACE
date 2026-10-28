@@ -6,7 +6,8 @@ import { DECKS, Deck, Audit } from "./Decks.jsx";
 import { Brand, Icon } from "./Brand.jsx";
 import { DeckPage } from "./Finance.jsx";
 import { DECK_META, ORDER, CATALOG } from "./catalog.js";
-import { dayPart, browserZone } from "./greeting.js";
+import { dayPart } from "./greeting.js";
+import { useCity, setHome, fmtTime, fmtDateTime, fmtDay, coordsOf } from "./city.js";
 
 const TXT = { ok: "OK", warn: "ATTENTION", fail: "FAILING", unknown: "UNKNOWN" };
 
@@ -49,18 +50,17 @@ function firstName() {
     return String(n).trim().split(/\s+/)[0].slice(0, 30);
   } catch { return ""; }
 }
-const cityOf = (tz) => tz.split("/").pop().replace(/_/g, " ");
 // Digital clock: per-digit roll animation, pulsing colon, seconds beam. City + GMT offset come from the browser's own zone (adapts to wherever the founder is).
-function Clock({ tz }) {
+function Clock({ tz, city }) {
   const [now, setNow] = useState(() => new Date());
   useEffect(() => { const id = setInterval(() => setNow(new Date()), 1000); return () => clearInterval(id); }, []);
   const p = Object.fromEntries(new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23", timeZone: tz, timeZoneName: "shortOffset" }).formatToParts(now).map((x) => [x.type, x.value]));
   const D = (v, i) => <span className="dg" key={`${i}${v}`}>{v}</span>; // plain function (not a component) so only a changed digit re-mounts and rolls
   return (
-    <time className="clock" dateTime={now.toISOString()} aria-label={`${p.hour}:${p.minute} in ${cityOf(tz)}`}>
+    <time className="clock" dateTime={now.toISOString()} aria-label={`${p.hour}:${p.minute} in ${city}`}>
       <span className="digits" aria-hidden="true"><span className="pair">{D(p.hour[0], 0)}{D(p.hour[1], 1)}</span><b className="colon">:</b><span className="pair">{D(p.minute[0], 0)}{D(p.minute[1], 1)}</span></span>
       <span className="beam" aria-hidden="true"><i style={{ width: `${(Number(p.second) / 59) * 100}%` }} /></span>
-      <small><span className="dot" />{cityOf(tz)} · {String(p.timeZoneName || "").replace("GMT", "GMT")}</small>
+      <small><span className="dot" />{city} · {String(p.timeZoneName || "").replace("GMT", "GMT")}</small>
     </time>
   );
 }
@@ -69,7 +69,7 @@ const fmtMinor = (n) => (Number(n) / 100).toLocaleString("en-GB", { minimumFract
 function Greeting({ m, t, v, at, p, h, me }) {
   const [now, setNow] = useState(() => new Date());
   useEffect(() => { const id = setInterval(() => setNow(new Date()), 30000); return () => clearInterval(id); }, []);
-  const tz = me?.timezone || browserZone(), part = dayPart(now, tz), nm = (callName(nameOf(me)) || firstName()).slice(0, 30);
+  const c = useCity(), tz = c.iana, part = dayPart(now, tz, coordsOf(c)), nm = (callName(nameOf(me)) || firstName()).slice(0, 30);
   const bits = [];
   if (p?.connected && p.mrr_minor != null) bits.push(`${fmtMinor(p.mrr_minor)} MRR (Polar)`, `${p.active_subscriptions ?? 0} active subscription(s)`);
   else if (h?.subscriptions?.connected) bits.push(`${h.subscriptions.by_status?.active ?? 0} active subscription(s) · ${h.subscriptions.by_status?.past_due ?? 0} past due (Polar webhook)`);
@@ -79,11 +79,11 @@ function Greeting({ m, t, v, at, p, h, me }) {
   return (
     <header className="greet">
       <div>
-        <span className="kicker">{new Intl.DateTimeFormat("en-GB", { weekday: "long", day: "numeric", month: "long", timeZone: tz }).format(now).toUpperCase()}</span>
+        <span className="kicker">{fmtDay(now).toUpperCase()}</span>
         <h1 className="hello">{SAY[part]}{nm ? <>, <span className="nm">{nm}</span></> : ""}</h1>
         <p className="dim">{bits.length ? bits.join("  ·  ") : at ? "Nothing measured yet." : "Loading your numbers…"}</p>
       </div>
-      <Clock tz={tz} />
+      <Clock tz={tz} city={c.city} />
     </header>
   );
 }
@@ -96,6 +96,7 @@ function Card({ title, tone, children }) {
 function spot(e) { const r = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`); e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`); }
 
 export default function App() {
+  useCity(); // the whole workspace re-renders when the home city (or the device city) changes
   const [authed, setAuthed] = useState(hasToken());
   const [view, setView] = useState("bridge");
   const [prof, setProf] = useState(null);
@@ -112,7 +113,8 @@ export default function App() {
   const loadProf = useCallback(async () => {
     try {
       const r = (await get("/founder/v1/settings")).data, v = r.settings || {};
-      setProf({ email: r.email, available: r.available, settings: v, display_name: v["personal.display_name"] || "", avatar_url: v["personal.avatar"] || null, timezone: v["personal.timezone"] || null });
+      setProf({ email: r.email, available: r.available, settings: v, display_name: v["personal.display_name"] || "", avatar_url: v["personal.avatar"] || null, home: v["personal.home"] || null });
+      setHome(v["personal.home"]);
       if (typeof v["appearance.graphics"] === "boolean") setFx(v["appearance.graphics"]);
       if (typeof v["appearance.sidebar_slim"] === "boolean") setSlim(v["appearance.sidebar_slim"]);
     } catch {}
@@ -161,7 +163,7 @@ export default function App() {
             {hk?.subscriptions?.connected && <>{!pl.connected && <><div className="big">{hk.subscriptions.by_status?.active ?? 0}<small>active subscriptions · {hk.subscriptions.by_status?.past_due ?? 0} past due · {hk.subscriptions.ended_30d} ended (30 days)</small></div></>}
               <ul>{(hk.subscriptions.by_product || []).map((x) => <li key={x.product}><span>{x.product}</span><b>{x.active}</b><em>{x.past_due ? `${x.past_due} past due` : "all paid"}{x.grace ? ` · ${x.grace} in grace` : ""}</em></li>)}</ul></>}
             {hk?.webhook?.connected ? <div className="src">webhook (API 2026-10): {hk.webhook.events_24h} event(s) in 24 h · last {hk.webhook.age_secs == null ? "never" : hk.webhook.age_secs < 120 ? `${hk.webhook.age_secs} s ago` : `${Math.round(hk.webhook.age_secs / 60)} min ago`}{hk.webhook.unprocessed ? ` · ${hk.webhook.unprocessed} waiting` : ""}{hk.webhook.errors_24h ? ` · ${hk.webhook.errors_24h} error(s)` : ""}{hk.integrity?.signature_rejects_unreviewed ? ` · ${hk.integrity.signature_rejects_unreviewed} unreviewed signature reject(s)` : ""}</div> : hk && <div className="src">{hk.webhook?.note}</div>}
-            {hk?.rejects?.connected && hk.rejects.total > 0 && <div className="note">Rejected signatures: {hk.rejects.by_reason.map((r) => `${r.reason.replace(/_/g, " ")} ×${r.n}`).join(", ")} — {hk.rejects.sender.no_signature_headers} sent no signature header at all, {hk.rejects.sender.standard_webhook_headers} carried Polar-style headers (wrong or old secret), last {new Date(hk.rejects.latest_at).toLocaleString("en-GB")}.</div>}
+            {hk?.rejects?.connected && hk.rejects.total > 0 && <div className="note">Rejected signatures: {hk.rejects.by_reason.map((r) => `${r.reason.replace(/_/g, " ")} ×${r.n}`).join(", ")} — {hk.rejects.sender.no_signature_headers} sent no signature header at all, {hk.rejects.sender.standard_webhook_headers} carried Polar-style headers (wrong or old secret), last {fmtDateTime(hk.rejects.latest_at)}.</div>}
           </>}
         </Card>
         <Card title="FINANCE">
@@ -177,7 +179,7 @@ export default function App() {
             <><div className="big">{v.new_leads} new</div><div className="dim">new leads (revenue_leads)</div><div className="note">Channels not connected yet: {v.pending_channels.join(", ")}</div></>}
         </Card>
       </div>}
-      <footer>{at ? `updated ${at.toLocaleTimeString("en-GB")} · every 15 s` : "loading…"}</footer>
+      <footer>{at ? `updated ${fmtTime(at)} · every 15 s` : "loading…"}</footer>
         </main>
       </div>
     </div>

@@ -2,8 +2,8 @@
 -- ---------------------------------------------------------------------------------------------------------------------------
 -- Technology: Postgres 15+ (Supabase), security definer RPC (service_role only, search_path pinned), E102 founder_accounts + founder_audit_append par.
 --   1) Table      — founder_settings(user_id, key, value jsonb): registry-bound keys, CHECK key list. AWAM `account_profiles` ko haath NAHI lagta (FC18/Rule 35).
---   2) Registry   — personal.display_name (text 2..60), personal.avatar (jpeg/png/webp data URL <=180000 ya https <=500), personal.timezone (asli IANA zone,
---                   pg_timezone_names se check), appearance.graphics (bool), appearance.sidebar_slim (bool). Value null/JSON null = default par wapas.
+--   2) Registry   — personal.display_name (text 2..60), personal.avatar (jpeg/png/webp data URL <=180000 ya https <=500), personal.home (ek shehar: {city,country,iana,lat,lon} — iana asli zone
+--                   pg_timezone_names se check, lat/lon range check), appearance.graphics (bool), appearance.sidebar_slim (bool). Value null/JSON null = default par wapas.
 --   3) History    — founder_settings_history append-only (trigger: update/delete/truncate band); avatar ki puri value nahi, sirf SHA-256 (size + privacy).
 --   4) RPC        — founder_setting_set(uid, key, value): founder-only, per-user advisory lock, validate, no-op detect, upsert/delete, history + audit ek transaction.
 --                   founder_settings_get(uid): saari values ek jsonb object mein (stable).
@@ -28,7 +28,7 @@ begin
     value jsonb not null,
     updated_at timestamptz not null default now(),
     primary key (user_id, key),
-    constraint founder_settings_key_registry check (key in ('personal.display_name','personal.avatar','personal.timezone','appearance.graphics','appearance.sidebar_slim')),
+    constraint founder_settings_key_registry check (key in ('personal.display_name','personal.avatar','personal.home','appearance.graphics','appearance.sidebar_slim')),
     constraint founder_settings_value_size check (octet_length(value::text) <= 190000)
   );
   alter table public.founder_settings enable row level security;   -- koi policy nahi: anon/authenticated ko kuch nahi; sirf service_role (RLS bypass) + security definer RPC
@@ -78,10 +78,15 @@ begin
         return length(t) <= 180000 and t ~ '^data:image/(jpeg|jpg|png|webp);base64,[A-Za-z0-9+/=]+$';
       end if;
       return length(t) <= 500 and t ~ '^https://[^\s"<>'']+$';
-    when 'personal.timezone' then
-      if jsonb_typeof(p_value) <> 'string' then return false; end if;
-      t := p_value #>> '{}';
-      return length(t) <= 60 and exists (select 1 from pg_timezone_names where name = t);
+    when 'personal.home' then
+      -- exactly {city, country, iana, lat, lon}; nothing else is accepted
+      if jsonb_typeof(p_value) <> 'object' then return false; end if;
+      if (select array_agg(k order by k) from jsonb_object_keys(p_value) k) is distinct from array['city','country','iana','lat','lon'] then return false; end if;
+      if jsonb_typeof(p_value -> 'city') <> 'string' or jsonb_typeof(p_value -> 'country') <> 'string' or jsonb_typeof(p_value -> 'iana') <> 'string'
+         or jsonb_typeof(p_value -> 'lat') <> 'number' or jsonb_typeof(p_value -> 'lon') <> 'number' then return false; end if;
+      if (p_value ->> 'city') !~ '^[^\x00-\x1f\x7f<>]{1,60}$' or (p_value ->> 'country') !~ '^[^\x00-\x1f\x7f<>]{0,60}$' then return false; end if;
+      if (p_value ->> 'lat')::numeric not between -90 and 90 or (p_value ->> 'lon')::numeric not between -180 and 180 then return false; end if;
+      return exists (select 1 from pg_timezone_names where name = p_value ->> 'iana');
     when 'appearance.graphics', 'appearance.sidebar_slim' then
       return jsonb_typeof(p_value) = 'boolean';
     else return false;
@@ -95,7 +100,7 @@ returns jsonb language plpgsql security definer set search_path = pg_catalog, pu
 declare old jsonb; v_new jsonb := case when p_value is null or jsonb_typeof(p_value) = 'null' then null else p_value end; ho text; hn text; v_avatar boolean := (p_key = 'personal.avatar'); a jsonb;
 begin
   if p_uid is null or not exists (select 1 from public.founder_accounts where user_id = p_uid) then raise exception 'founder nahi' using errcode = '42501'; end if;
-  if p_key is null or p_key not in ('personal.display_name','personal.avatar','personal.timezone','appearance.graphics','appearance.sidebar_slim') then raise exception 'unknown setting' using errcode = '22023'; end if;
+  if p_key is null or p_key not in ('personal.display_name','personal.avatar','personal.home','appearance.graphics','appearance.sidebar_slim') then raise exception 'unknown setting' using errcode = '22023'; end if;
   if v_new is not null and not public._founder_setting_valid(p_key, v_new) then raise exception 'invalid value for %', p_key using errcode = '22023'; end if;
   perform pg_advisory_xact_lock(hashtextextended('founder_settings:' || p_uid::text, 0));
   select value into old from public.founder_settings where user_id = p_uid and key = p_key;
@@ -148,11 +153,18 @@ begin
     if not v_ok then raise exception 'script avatar qubool'; end if;
     if exists (select 1 from public.founder_settings_history where user_id = v_uid and key = 'personal.avatar' and (new_value is not null or old_value is not null)) then raise exception 'avatar ki puri value history mein'; end if;
     r := r || 'avatar valid/invalid + history hash-only OK; ';
-    res := public.founder_setting_set(v_uid, 'personal.timezone', to_jsonb('Asia/Karachi'::text));
-    if (res ->> 'changed')::boolean is not true then raise exception 'timezone set nahi'; end if;
-    v_ok := false; begin perform public.founder_setting_set(v_uid, 'personal.timezone', to_jsonb('Mars/Phobos'::text)); exception when others then v_ok := true; end;
+    res := public.founder_setting_set(v_uid, 'personal.home', jsonb_build_object('city','Lahore','country','Pakistan','iana','Asia/Karachi','lat',31.52,'lon',74.36));
+    if (res ->> 'changed')::boolean is not true then raise exception 'home city set nahi'; end if;
+    if public.founder_settings_get(v_uid) -> 'personal.home' ->> 'city' <> 'Lahore' then raise exception 'home city wapas nahi mila'; end if;
+    v_ok := false; begin perform public.founder_setting_set(v_uid, 'personal.home', jsonb_build_object('city','Phobos','country','Mars','iana','Mars/Phobos','lat',1,'lon',1)); exception when others then v_ok := true; end;
     if not v_ok then raise exception 'jhoota timezone qubool'; end if;
-    r := r || 'timezone OK; ';
+    v_ok := false; begin perform public.founder_setting_set(v_uid, 'personal.home', jsonb_build_object('city','Lahore','country','Pakistan','iana','Asia/Karachi','lat',131,'lon',74.36)); exception when others then v_ok := true; end;
+    if not v_ok then raise exception 'lat range qubool'; end if;
+    v_ok := false; begin perform public.founder_setting_set(v_uid, 'personal.home', jsonb_build_object('city','Lahore','country','Pakistan','iana','Asia/Karachi','lat',31.5,'lon',74.3,'extra','x')); exception when others then v_ok := true; end;
+    if not v_ok then raise exception 'extra key qubool'; end if;
+    v_ok := false; begin perform public.founder_setting_set(v_uid, 'personal.home', to_jsonb('Lahore'::text)); exception when others then v_ok := true; end;
+    if not v_ok then raise exception 'text shehar qubool'; end if;
+    r := r || 'home city OK; ';
     res := public.founder_setting_set(v_uid, 'appearance.graphics', to_jsonb(false));
     if (res ->> 'changed')::boolean is not true then raise exception 'graphics set nahi'; end if;
     v_ok := false; begin perform public.founder_setting_set(v_uid, 'appearance.graphics', to_jsonb('off'::text)); exception when others then v_ok := true; end;

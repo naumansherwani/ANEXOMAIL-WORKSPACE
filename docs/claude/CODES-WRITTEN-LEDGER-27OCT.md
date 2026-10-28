@@ -46,3 +46,5 @@ Test data Pro account: leads zz.kernel/zz.bunprobe/zz.test.*, deals "zz.kernel@.
 - 28 Oct 12:20 — F2a: server/founder/src/sign.rs (Ed25519 + HKDF req key + req HMAC, 3 new tests), main.rs (keys_ep, write_ok, signed alg/kid/sig_ed, exchange req_key, --gen-sign-key), tests/e2e_exchange.py (+15 checks), founder-web/src/api.js (writeHeaders), Settings.jsx, App.jsx/Profile.jsx (toggle moved), docs/cursor-work/server/founder-install.sh (sign key).
 
 - 28 Oct 12:55 — Settings S1: docs/cursor-work/sql/E108_founder_settings.sql + CHECK_E108.sql, server/founder/src/settings.rs (renamed from profile.rs), data.rs (settings, setting_set), main.rs (settings_ep, settings_put), tests/e2e_exchange.py (settings + F2a checks, real SQL via shim), founder-web/src/{Settings,Profile,App,api}.jsx|js, styles.css.
+
+- 28 Oct 13:05 — adaptive city: founder-web/src/{city.js,places.js,Settings.jsx,App.jsx,Live.jsx,Decks.jsx,styles.css}; E108 personal.home (SQL + settings.rs + e2e).

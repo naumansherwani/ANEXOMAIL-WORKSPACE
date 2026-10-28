@@ -6,7 +6,7 @@ use serde_json::Value;
 pub const REGISTRY: [(&str, &str, &str); 5] = [
     ("personal.display_name", "text", "null"),
     ("personal.avatar", "image", "null"),
-    ("personal.timezone", "timezone", "null"),
+    ("personal.home", "place", "null"),
     ("appearance.graphics", "bool", "true"),
     ("appearance.sidebar_slim", "bool", "false"),
 ];
@@ -24,6 +24,15 @@ pub fn valid_avatar(s: &str) -> bool {
 
 fn valid_name(s: &str) -> bool { let n = s.chars().count(); (2..=60).contains(&n) && s.trim() == s && !s.chars().any(|c| c.is_control() || c == '<' || c == '>') }
 fn valid_tz_shape(s: &str) -> bool { s.len() <= 60 && s.contains('/') && s.chars().all(|c| c.is_ascii_alphanumeric() || matches!(c, '/' | '_' | '+' | '-')) }
+fn clean_txt(v: &Value, min: usize, max: usize) -> bool { v.as_str().map(|s| { let n = s.chars().count(); n >= min && n <= max && !s.chars().any(|c| c.is_control() || c == '<' || c == '>') }).unwrap_or(false) }
+/// A place is exactly {city, country, iana, lat, lon}. The real zone-name check (pg_timezone_names) is done by SQL.
+fn valid_place(v: &Value) -> bool {
+    let Some(o) = v.as_object() else { return false };
+    if o.len() != 5 { return false; }
+    let num = |k: &str, lo: f64, hi: f64| o.get(k).and_then(|x| x.as_f64()).map(|n| n >= lo && n <= hi).unwrap_or(false);
+    o.get("city").map(|x| clean_txt(x, 1, 60)).unwrap_or(false) && o.get("country").map(|x| clean_txt(x, 0, 60)).unwrap_or(false)
+        && o.get("iana").and_then(|x| x.as_str()).map(valid_tz_shape).unwrap_or(false) && num("lat", -90.0, 90.0) && num("lon", -180.0, 180.0)
+}
 
 pub fn known(key: &str) -> bool { REGISTRY.iter().any(|r| r.0 == key) }
 
@@ -34,7 +43,7 @@ pub fn valid(key: &str, v: &Value) -> bool {
     match key {
         "personal.display_name" => v.as_str().map(valid_name).unwrap_or(false),
         "personal.avatar" => v.as_str().map(valid_avatar).unwrap_or(false),
-        "personal.timezone" => v.as_str().map(valid_tz_shape).unwrap_or(false), // the real zone list check is in SQL (pg_timezone_names)
+        "personal.home" => valid_place(v), // the real zone list check is in SQL (pg_timezone_names)
         "appearance.graphics" | "appearance.sidebar_slim" => v.is_boolean(),
         _ => false,
     }
@@ -59,6 +68,15 @@ mod tests {
     #[test] fn null_resets_any_known_key() { for (k, _, _) in REGISTRY { assert!(valid(k, &Value::Null), "{k}"); } }
     #[test] fn name_rules() { assert!(valid("personal.display_name", &json!("Nauman Sherwani"))); assert!(!valid("personal.display_name", &json!("x"))); assert!(!valid("personal.display_name", &json!(" pad "))); assert!(!valid("personal.display_name", &json!("<b>hi</b>"))); assert!(!valid("personal.display_name", &json!(5))); }
     #[test] fn bool_rules() { assert!(valid("appearance.graphics", &json!(false))); assert!(!valid("appearance.graphics", &json!("off"))); assert!(!valid("appearance.sidebar_slim", &json!(1))); }
-    #[test] fn timezone_shape() { assert!(valid("personal.timezone", &json!("Asia/Karachi"))); assert!(valid("personal.timezone", &json!("America/Argentina/Buenos_Aires"))); assert!(!valid("personal.timezone", &json!("Karachi"))); assert!(!valid("personal.timezone", &json!("a/b;drop"))); }
+    #[test] fn place_rules() {
+        let ok = json!({"city":"Lahore","country":"Pakistan","iana":"Asia/Karachi","lat":31.52,"lon":74.36});
+        assert!(valid("personal.home", &ok));
+        assert!(!valid("personal.home", &json!("Lahore")), "text is not a place");
+        assert!(!valid("personal.home", &json!({"city":"Lahore","country":"Pakistan","iana":"Asia/Karachi","lat":131,"lon":74.36})), "lat range");
+        assert!(!valid("personal.home", &json!({"city":"Lahore","country":"Pakistan","iana":"Karachi","lat":31.5,"lon":74.3})), "zone shape");
+        assert!(!valid("personal.home", &json!({"city":"Lahore","country":"Pakistan","iana":"Asia/Karachi","lat":31.5,"lon":74.3,"x":1})), "extra key");
+        assert!(!valid("personal.home", &json!({"city":"<b>","country":"P","iana":"Asia/Karachi","lat":31.5,"lon":74.3})), "markup in city");
+        assert!(!valid("personal.home", &json!({"city":"Lahore","country":"Pakistan","iana":"Asia/Karachi","lat":"31.5","lon":74.3})), "lat as text");
+    }
     #[test] fn registry_defaults_are_json() { assert_eq!(registry_json().as_array().unwrap().len(), REGISTRY.len()); }
 }

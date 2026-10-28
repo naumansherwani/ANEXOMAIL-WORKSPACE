@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { fmtDateTime } from "./city.js";
 import { get } from "./api.js";
 
 // Existing (today's app) features shown LIVE on the new page. Read-only: same-origin GET to the existing /api/founder/* routes with the same signed session.
@@ -11,10 +12,10 @@ function fmt(k, v) {
   if (typeof v === "number") {
     if (/gbp|revenue|spend|cost|cash|balance|mrr|arr/i.test(k) && !/count|seats|accounts/i.test(k)) return `£ ${(v === 0 ? 0 : v).toLocaleString("en-GB", { maximumFractionDigits: 2 })}`;
     if (/progress|rate|share|ratio|pct/i.test(k) && v <= 1 && v >= 0) return `${Math.round(v * 1000) / 10}%`;
-    if (/_ts$|_ms$/.test(k) && v > 1e11) return new Date(v).toLocaleString("en-GB");
+    if (/_ts$|_ms$/.test(k) && v > 1e11) return fmtDateTime(v);
     return v.toLocaleString("en-GB", { maximumFractionDigits: 2 });
   }
-  if (isDate(v)) return new Date(v).toLocaleString("en-GB");
+  if (isDate(v)) return fmtDateTime(v);
   return String(v);
 }
 const isObj = (v) => v && typeof v === "object" && !Array.isArray(v);

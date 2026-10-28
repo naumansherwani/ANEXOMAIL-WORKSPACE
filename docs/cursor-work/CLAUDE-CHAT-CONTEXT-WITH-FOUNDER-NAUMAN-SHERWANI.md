@@ -1867,3 +1867,6 @@ NO MOCK anywhere (user side + founder side). Gates, wire, endpoints, signatures 
 
 ## 28 Oct 12:55 PKT — F2a LIVE + Settings S1 built
 F2a proven in Chrome (Ed25519 verified in browser, unsigned write 401). Settings S1 built+tested (E108, signed settings endpoints, SPA Settings/Profile) — NOT on server. Server order: (1) sql-run.sh (E108 auto) (2) sql-run.sh E108_founder_settings CHECK_E108 (3) founder-install.sh. Then Chrome: photo upload, name, timezone, graphics sync. NEXT in order: F2b WASM kernel verify (pin /founder/v1/keys public key, SRI, enforce Ed25519), F2c audit v1 + Merkle (E107), then Settings S2, Decide, Live Pulse. Notifications/Privacy tabs intentionally absent (no backend) — Rule 69.
+
+## 28 Oct 13:05 PKT — adaptive city + Lahore
+Adaptive city system built (city.js): Home city (Settings->Personal, Detect/search, Lahore in list) else device city; clock/greeting/all times follow. E108 now has personal.home (not timezone). NOT on server: sql-run.sh -> CHECK_E108 -> founder-install.sh; then in Chrome founder (or I, with his OK in the signed-in tab) selects Lahore. Settings tabs order: S2 Time machine/Drift (after F2c) -> F2d passkey + S3 Privacy -> Decide/Live Pulse + S4 Notifications (push), F5 email. Awam app untouched.

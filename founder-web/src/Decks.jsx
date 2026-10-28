@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { fmtDateTime } from "./city.js";
 import { get, post } from "./api.js";
 
 export const DECKS = [
@@ -67,7 +68,7 @@ export function Audit() {
       {d?.connected && <>
         <div className={`big lv-${d.chain_ok ? "ok" : "fail"}`}>{d.chain_ok ? "INTACT" : `BROKEN at seq ${d.first_bad_seq}`}</div>
         <div className="src">head #{d.head?.seq} · {String(d.head?.hash).slice(0, 16)}… (the database recomputes the whole chain every time)</div>
-        <ul className="acts">{d.entries.map((e) => <li key={e.seq}><div><b>#{e.seq} {e.action}</b><em>{e.reason}</em></div><span className="src">{new Date(e.ts_ms).toLocaleString("en-GB")}</span></li>)}</ul>
+        <ul className="acts">{d.entries.map((e) => <li key={e.seq}><div><b>#{e.seq} {e.action}</b><em>{e.reason}</em></div><span className="src">{fmtDateTime(e.ts_ms)}</span></li>)}</ul>
         {!d.entries.length && <div className="dim">No entries yet.</div>}</>}
     </section>
   );
