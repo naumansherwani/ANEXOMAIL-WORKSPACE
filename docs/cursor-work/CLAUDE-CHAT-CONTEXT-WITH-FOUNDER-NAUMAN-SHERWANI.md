@@ -1870,3 +1870,6 @@ F2a proven in Chrome (Ed25519 verified in browser, unsigned write 401). Settings
 
 ## 28 Oct 13:05 PKT — adaptive city + Lahore
 Adaptive city system built (city.js): Home city (Settings->Personal, Detect/search, Lahore in list) else device city; clock/greeting/all times follow. E108 now has personal.home (not timezone). NOT on server: sql-run.sh -> CHECK_E108 -> founder-install.sh; then in Chrome founder (or I, with his OK in the signed-in tab) selects Lahore. Settings tabs order: S2 Time machine/Drift (after F2c) -> F2d passkey + S3 Privacy -> Decide/Live Pulse + S4 Notifications (push), F5 email. Awam app untouched.
+
+## 28 Oct 13:20 PKT — MASTER ORDER
+Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which number'. Steps 1 done (F1a, F2a live), 2 built (S1 + adaptive city; server pending E108 + install), 3 server leftovers, 4 F2b, 5 F2c, 6 S2, 7 F2d+S3, 8 Decide/Live Pulse/S4, 9 F3 Finance/Release/Move-In, 10 F4 People, 11 F5 Mail Desk, 12 F6 Systems, 13 F8 Control, 14 F9 cutover (old 36 Lovable files + 53 Bun endpoints), 15 Founder desk.

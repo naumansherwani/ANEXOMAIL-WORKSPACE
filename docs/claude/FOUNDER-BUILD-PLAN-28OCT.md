@@ -3,6 +3,7 @@
 > ## ⚙ TECHNOLOGY PEHLE (Rule 62 — founder ka STRICT usool, 28 Oct 05:25)
 > Pehle technology dekho, phir blueprint likho; har section/phase mein saaf likha ho "yahan kis technology par code likhna hai". Galti founder bardasht nahi karega.
 > **Founder = Rust binary `anexomail-founder` (axum 0.8, tokio, WebTransport/QUIC, Supabase, passkey, SHA-256 chain + HMAC) + React 19.2/Vite 8.2/TanStack Router static SPA/Tailwind 4.2/shadcn/Three.js WebGPU/Motion+GSAP/WASM kernel (Rule 52, enforce). Bun/Node founder mein KABHI nahi.** Detail: AGENTS.md Rule 61, TECH-MAP 0d. Look: CINEMATIC (Elon-level), awam UI se bilkul ALAG design.
+**MASTER ORDER (numbered, current): docs/claude/FOUNDER-MASTER-ORDER-28OCT.md**
 Founder hukm (28 Oct 04:53): plan pehle, jaldi nahi, phases smooth, Bun RETIRED (founder mein Bun nahi), UI + backend technology likho, saath ke saath likhte jao (compact-safe), Chrome dekho. Isse pehle padho: FOUNDER-PROTOCOL-28OCT.md, FOUNDER-CODE-INVENTORY-28OCT.md, FOUNDER-WORKSPACE-PLAN.md (F0-F9 asli plan), TECH-STACK-BEAST.md. Koi code is plan ko founder ke dekhne se pehle nahi.
 
 ## 1z. DATA KA RAASTA — LOCKED (founder ne pasand kiya, 28 Oct 05:26; Rule 62/63)

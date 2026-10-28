@@ -62,3 +62,5 @@ Yeh folder founder ke SAB code ka naqsha hai: files, endpoints, gates, mix, audi
 - **FC40 (28 Oct):** Founder ki apni settings table `founder_settings` (E108) — awam `account_profiles` par NAHI (founder ka row hota hi nahi). Har setting registry key hai (SQL authoritative + Rust mirror), write = signed PUT /founder/v1/settings + history + audit. Naya setting = pehle registry (SQL+settings.rs), phir UI. Jo setting asli backend ke bina chalti nazar aaye woh UI mein NAHI (Rule 69).
 
 - **FC41 (28 Oct, founder):** Poori website ek ADAPTIVE CITY follow karti hai (city.js): Settings ka Home city (exact) ya warna device ka shehar. Koi bhi naya time/date UI `fmtTime/fmtDateTime/fmtDay` (city.js) se dikhaye, `toLocale*` seedha NAHI; clock/greeting `useCity()`. Home city hard-code NAHI hoti, founder khud chunta hai. Founder ka shehar: Lahore (founder ne chuna, Settings se).
+
+- **FC42 (28 Oct):** 'Kab / kis number par' ka jawab hamesha docs/claude/FOUNDER-MASTER-ORDER-28OCT.md se (ek numbered list). Har phase ke baad us file mein state update karo. Naya kaam usi list mein number le kar jaye, alag se nahi.
