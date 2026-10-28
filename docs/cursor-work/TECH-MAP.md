@@ -41,6 +41,14 @@
 | | Bun SSR (Nitro) | **Sirf website ka server-side render**, API nahi. |
 | **Payments** | Polar Rust webhook :3400 | **NO-TOUCH.** |
 
+### 0d. FOUNDER workspace ki technology (founder 28 Oct 2026 05:00, Rule 61 — LOCKED)
+| Jagah | Technology | Kaam | Status |
+|---|---|---|---|
+| Founder backend | Rust `anexomail-founder` (axum 0.8.9, tokio), alag service/user, Supabase, passkey WebAuthn, SHA-256 chain + HMAC, WebTransport/QUIC | founder API + static SPA serve | PLANNED (F1b) |
+| Founder UI | React 19.2, Vite 8.2, TanStack Router (static SPA), Tailwind 4.2, shadcn, Three.js WebGPU lazy, Motion/GSAP, WASM kernel | command bridge | PLANNED (F0 design) |
+| Founder mein Bun/Node | **KABHI NAHI** (build-time JS toolchain sirf sandbox/CI mein) | — | RULE |
+Detail: docs/claude/FOUNDER-BUILD-PLAN-28OCT.md.
+
 ### 0b. Har technology ki PULL command (founder 20 Oct 06:36: "kaun si technology ki pull hai") — har jawab mein alag block, label ke saath
 | Technology | Code kahan likha jata hai (repo) | Server par kaise aata hai (sirf yehi raasta) |
 |---|---|---|

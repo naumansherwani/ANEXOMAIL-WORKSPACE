@@ -445,3 +445,11 @@ UPDATE Rule 52 (founder 26 Oct 2026 20:05 PKT): "ab se Rule 52 se browser ka shu
 **HANDOFF #3:** docs/claude/CODES-WRITTEN-LEDGER-27OCT.md pehle padho.
 
 - **Rule 60 — Cinematic/3D frontend stack (founder 27 Oct 2026 00:51):** three.js/R3F/WebGPU+TSL/GSAP ScrollTrigger+Lenis/Theatre.js/Rapier/GLSL Moon shaders/Web Audio+WASM Opus/OffscreenCanvas/KTX2+Draco/Rive/View Transitions/Spline-glTF aur **WebXR VR/AR (zaroori)** ab se implement hongi, jahan `docs/claude/CINEMATIC-FRONTEND-STACK-27OCT.md` section E mein likha hai. Kaam wale screens (mail/work/CRM/Office) cinematic nahi. Har 3D chunk lazy + fallback + measure.
+
+## Rule 61 (STRICT, founder 28 Oct 2026 05:00 PKT) — FOUNDER ki CORE TECHNOLOGY (Bun nahi, Node nahi) — yehi banega
+Founder ne plan manzoor kiya: "repo main likh lo ke yeh hai core Founder ki technology ... yehi bana hai". Detail + phases: `docs/claude/FOUNDER-BUILD-PLAN-28OCT.md`; protocol: `docs/claude/FOUNDER-PROTOCOL-28OCT.md`; inventory: `docs/claude/FOUNDER-CODE-INVENTORY-28OCT.md`.
+- **Backend:** naya Rust binary `anexomail-founder` (crate `server/founder/`), alag service + alag Linux user; axum 0.8.9 + tokio; live = WebTransport/QUIC; data Supabase se; **passkey (WebAuthn) lazmi** (password + passkey dono); SHA-256 audit hash-chain + HMAC. Founder ke 53 Bun-only endpoint Rust par port; Bun route tabhi hatega jab Rust ka saboot aaye. **Founder mein Bun/Node runtime KABHI nahi.**
+- **UI:** React 19.2, Vite 8.2, TanStack Router (static SPA), Tailwind 4.2, shadcn, Three.js WebGPU (lazy), Motion/GSAP, WASM kernel (audit chain browser mein verify). Server par sirf Rust binary.
+- **Shakal:** command bridge — pehle 5 second mein paisa + "kya bigad raha hai" + awam ki awaaz; neeche People, Mail Desk, Release, Move-In, Systems, Control; har action do-tap + reason + audit. Privacy: metadata-only (content kabhi nahi).
+- **Phases:** F0 design -> F1a security fix -> F1b foundation -> F2 Bridge -> F3 Money+Release -> F4 People -> F5 Mail Desk -> F6 Systems -> F7 3D -> F8 Control -> F9 cutover. Ek ke baad agla, har phase ka exit saboot plan mein.
+- Nexatect (parent) ka alag login: anexomail.com puri website banne ke BAAD.

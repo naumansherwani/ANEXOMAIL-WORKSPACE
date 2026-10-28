@@ -7,6 +7,8 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - Migration: Pro ke endpoints Rust :3200 + WebTransport/WASM kernel (Rule 52/56); Bun sirf fallback. Phase table: MIGRATION-PHASES-RUST-PRIMARY.md.
 - **Founder-side (puri website ki zaroorat) mein ADD:** (1) common AttachmentChip (Preview/Download, src/components/app/files/AttachmentChip.tsx) calendar EventFiles + CRM files + ANEXOChat attachments mein; (2) attachment A1-A4 (dedupe, resumable, parallel, signed link) email+ANEXOChat; (3) ANEXOChat live hone ke baad E100 edit. Ye Pro green se alag; Founder workspace / puri-website list ka hissa.
 
+## ▶ 28 Oct 05:00 PKT — founder: founder ka login Chrome mein hai; "repo likh lo ke yeh hai core Founder ki technology (Bun nahi, Node nahi) ... yehi bana hai". Halat: DONE — AGENTS.md Rule 61 + TECH-MAP 0d. Code abhi nahi (F0 founder ke 'haan' par).
+
 ## ▶ 28 Oct 04:59 PKT — founder: nexatect.com ke liye ALAG login banega (parent company ka sab kuch), **anexomail.com puri website banne ke BAAD** — repo mein likho. (Baqi 2 sawal: UI build = React default, port/naam F1b par; founder ne naya jawab nahi diya.)
 Halat: DONE (FOUNDER-PROTOCOL §8 + BUILD-PLAN §5). Founder ka Chrome tab (pehle se login) mujhe nazar nahi aata — mere tab group mein nahi; founder tab group mein lane ya URL de.
 
