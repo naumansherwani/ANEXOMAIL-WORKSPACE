@@ -1167,3 +1167,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 28 Oct 13:45 PKT — Mail<->Chat Bridge order (13:10): scan -> zyada tar user side par pehle se (anexochat/sql phase 23-31, E7, E99) — dobara design mat karo, port + deltas: docs/claude/FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md; MASTER-ORDER 12b; blueprint §16z (Bridge/Dashboard lists bhi).
 
 - 28 Oct 13:20 PKT — Founder order 13:16: 6 common features (C1-C6, user+founder dono) likhe: FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md §6.
+
+- 28 Oct 13:25 PKT — E108 idempotent upgrade: purana registry CHECK drop+re-add (server par selftest fail tha). Dobara mat likho.

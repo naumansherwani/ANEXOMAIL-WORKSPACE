@@ -1,5 +1,10 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 28 Oct 13:18 PKT — E108 CHECK fail on server (VERBATIM paste)
+"E108 selftest FAIL: new row for relation founder_settings violates check constraint founder_settings_key_registry ... E108_founder_settings FAIL (exit 3)"
+- Wajah: server par purani E108 ki table thi; `create table if not exists` purana CHECK (personal.home ke baghair) nahi badalta. Fix: E108 ab constraint drop+re-add karta hai (idempotent). Sandbox par purane constraint se replay: selftest OK.
+- Halat: FIXED, push ke baad founder dobara SQL chalaye.
+
 ## ▶ 28 Oct 13:16 PKT — Common features (VERBATIM)
 "Duplicate scan ka nateeja ... Mail se chat room: phase 29; Promise/Decision: phase 23 aur 24; File evidence + stale-file: phase 28 aur 31; Chat se email jawab: phase 30; Delete for Everyone 48h: E7; Provenance hash chain: phase 27. yeh common feature hain jo anexochat user aur mujhe founder ko mile gay yeh likh lo"
 - Halat: **DONE (docs)**: FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md §6 (C1-C6 common table).

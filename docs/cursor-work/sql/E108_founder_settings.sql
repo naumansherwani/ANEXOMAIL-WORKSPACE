@@ -31,6 +31,9 @@ begin
     constraint founder_settings_key_registry check (key in ('personal.display_name','personal.avatar','personal.home','appearance.graphics','appearance.sidebar_slim')),
     constraint founder_settings_value_size check (octet_length(value::text) <= 190000)
   );
+  -- idempotent upgrade: purani E108 mein registry CHECK mein personal.home nahi tha; create-if-not-exists use nahi badalta, isliye constraint dobara lagate hain
+  alter table public.founder_settings drop constraint if exists founder_settings_key_registry;
+  alter table public.founder_settings add constraint founder_settings_key_registry check (key in ('personal.display_name','personal.avatar','personal.home','appearance.graphics','appearance.sidebar_slim'));
   alter table public.founder_settings enable row level security;   -- koi policy nahi: anon/authenticated ko kuch nahi; sirf service_role (RLS bypass) + security definer RPC
   revoke all on public.founder_settings from public, anon, authenticated;
 

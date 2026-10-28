@@ -71,3 +71,7 @@ Polar webhook engine (:3400) par KUCH nahi chalta (no-touch).
 
 ## 28 Oct 13:20 — ABHI PENDING (1 point)
 1. founder-install.sh (12-ghantay clock, label fix). E108 SQL agar abhi tak nahi chali to pehle wohi (sql-run.sh E108_founder_settings CHECK_E108).
+
+## ABHI PENDING (28 Oct 13:25)
+1. E108 dobara (fix): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E108_founder_settings CHECK_E108 2>&1 | tail -25
+2. Phir founder-install.sh.
