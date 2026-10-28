@@ -1827,3 +1827,6 @@ Server: E104 SQL OK (CHECK 10/10). founder-install failed on missing ftoken.rs -
 
 ## 28 Oct 10:30 PKT — Polar system
 Built polar.rs (tokio async poller, GET /v1/metrics/, read-only token FOUNDER_POLAR_READ_TOKEN set via founder-polar.sh), Bridge card BILLING · POLAR. Blueprint 14z has the locked order (F1a-1, F3-a Polar, F1a-2, F2a/b/c, Decide, Live Pulse, F3-b, F4..F9, Founder desk). Founder next: founder-install.sh, then founder-polar.sh.
+
+## 28 Oct 10:35 PKT
+Edge is CADDY with HTTP/3 (FC31) — never mention nginx etc. Sidebar arrows removed. Clock = city-adaptive digital clock (FC32). Waiting: founder-install.sh output, founder-polar.sh token entry.

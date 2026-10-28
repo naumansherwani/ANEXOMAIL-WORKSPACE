@@ -9,22 +9,6 @@ import { dayPart, browserZone } from "./greeting.js";
 const TXT = { ok: "OK", warn: "ATTENTION", fail: "FAILING", unknown: "UNKNOWN" };
 
 
-// Sidebar overflow helper: small chevrons appear only when more items exist above/below; hovering one scrolls that way (like the browser menu arrow).
-function useScrollArrows() {
-  const ref = useRef(null), raf = useRef(0);
-  const [up, setUp] = useState(false), [down, setDown] = useState(false);
-  const measure = useCallback(() => { const e = ref.current; if (!e) return; setUp(e.scrollTop > 2); setDown(e.scrollTop + e.clientHeight < e.scrollHeight - 2); }, []);
-  useEffect(() => {
-    const e = ref.current; if (!e) return;
-    measure(); e.addEventListener("scroll", measure, { passive: true });
-    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : null; ro?.observe(e); window.addEventListener("resize", measure);
-    return () => { e.removeEventListener("scroll", measure); ro?.disconnect(); window.removeEventListener("resize", measure); cancelAnimationFrame(raf.current); };
-  }, [measure]);
-  const go = (dir) => { cancelAnimationFrame(raf.current); const step = () => { const e = ref.current; if (!e) return; e.scrollTop += dir * 7; raf.current = requestAnimationFrame(step); }; raf.current = requestAnimationFrame(step); };
-  const stop = () => cancelAnimationFrame(raf.current);
-  return { ref, up, down, go, stop };
-}
-
 function Gate() {
   // No session at all: go straight to the founder sign-in (default entry). A stale token shows this card instead (no redirect loop).
   useEffect(() => { if (!hasToken()) window.location.replace("/founderlogin"); }, []);
@@ -63,6 +47,21 @@ function firstName() {
     return String(n).trim().split(/\s+/)[0].slice(0, 30);
   } catch { return ""; }
 }
+const cityOf = (tz) => tz.split("/").pop().replace(/_/g, " ");
+// Digital clock: per-digit roll animation, pulsing colon, seconds beam. City + GMT offset come from the browser's own zone (adapts to wherever the founder is).
+function Clock({ tz }) {
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => { const id = setInterval(() => setNow(new Date()), 1000); return () => clearInterval(id); }, []);
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23", timeZone: tz, timeZoneName: "shortOffset" }).formatToParts(now).map((x) => [x.type, x.value]));
+  const D = (v, i) => <span className="dg" key={`${i}${v}`}>{v}</span>; // plain function (not a component) so only a changed digit re-mounts and rolls
+  return (
+    <time className="clock" dateTime={now.toISOString()} aria-label={`${p.hour}:${p.minute} in ${cityOf(tz)}`}>
+      <span className="digits" aria-hidden="true"><span className="pair">{D(p.hour[0], 0)}{D(p.hour[1], 1)}</span><b className="colon">:</b><span className="pair">{D(p.minute[0], 0)}{D(p.minute[1], 1)}</span><span className="secs">{D(p.second[0], 0)}{D(p.second[1], 1)}</span></span>
+      <span className="beam" aria-hidden="true"><i style={{ width: `${(Number(p.second) / 59) * 100}%` }} /></span>
+      <small><span className="dot" />{cityOf(tz)} · {String(p.timeZoneName || "").replace("GMT", "GMT")}</small>
+    </time>
+  );
+}
 const SAY = { morning: "Good morning", afternoon: "Good afternoon", evening: "Good evening", night: "Good night" };
 const fmtMinor = (n) => (Number(n) / 100).toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 function Greeting({ m, t, v, at, p }) {
@@ -81,7 +80,7 @@ function Greeting({ m, t, v, at, p }) {
         <h1 className="hello">{SAY[part]}{nm ? <>, <span className="nm">{nm}</span></> : ""}</h1>
         <p className="dim">{bits.length ? bits.join("  ·  ") : at ? "Nothing measured yet." : "Loading your numbers…"}</p>
       </div>
-      <time className="clock" dateTime={now.toISOString()}>{new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: tz }).format(now)}<small>{tz.replace(/_/g, " ")}</small></time>
+      <Clock tz={tz} />
     </header>
   );
 }
@@ -96,7 +95,6 @@ function spot(e) { const r = e.currentTarget.getBoundingClientRect(); e.currentT
 export default function App() {
   const [authed, setAuthed] = useState(hasToken());
   const [view, setView] = useState("bridge");
-  const sa = useScrollArrows();
   const [slim, setSlim] = useState(() => { try { return window.localStorage.getItem("anexo.founder.slim") === "1"; } catch { return false; } });
   const toggleSlim = () => setSlim((s) => { const n = !s; try { window.localStorage.setItem("anexo.founder.slim", n ? "1" : "0"); } catch {} return n; });
   const [d, setD] = useState(null), [err, setErr] = useState(""), [at, setAt] = useState(null), [pend, setPend] = useState(null);
@@ -123,14 +121,12 @@ export default function App() {
       <div className="body">
         <nav className={`side ${slim ? "slim" : ""}`} aria-label="Workspace and Command Center">
           <div className="sidewrap">
-            {sa.up && <button className="scrollarrow top" aria-label="Scroll up" tabIndex={-1} onMouseEnter={() => sa.go(-1)} onMouseLeave={sa.stop} onClick={() => sa.ref.current?.scrollBy({ top: -160, behavior: "smooth" })}><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 7l7 9H5z" /></svg></button>}
-            <div className="scroller" ref={sa.ref}>
+            <div className="scroller">
               <span className="sidehead">WORKSPACE</span>
           {AWAM.map(([n, href, ic], i) => <a key={n} className="nav" href={href} title={n} style={{ "--i": i }} onPointerMove={spot}><Icon k={ic} /><span className="lbl">{n}</span></a>)}
           <span className="sidehead gap">COMMAND CENTER</span>
           {NAV.map(([k, n], i) => <button key={k} title={n} style={{ "--i": i }} className={`nav ${view === k ? "on" : ""}`} aria-current={view === k} onClick={() => setView(k)} onPointerMove={spot}><Icon k={k} /><span className="lbl">{n}</span>{CATALOG[k] && <em className="cnt" title={`${CATALOG[k].length} features`}>{CATALOG[k].length}</em>}</button>)}
           </div>
-            {sa.down && <button className="scrollarrow bottom" aria-label="Scroll down" tabIndex={-1} onMouseEnter={() => sa.go(1)} onMouseLeave={sa.stop} onClick={() => sa.ref.current?.scrollBy({ top: 160, behavior: "smooth" })}><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17L5 8h14z" /></svg></button>}
           </div>
           <span className="sidenote">Governance, departments, audit ledger and ANEXOChat — one workspace.</span>
           <button className="nav collapse" onClick={toggleSlim} aria-label={slim ? "Expand sidebar" : "Collapse sidebar"} title={slim ? "Expand" : "Collapse"}><Icon k="collapse" /><span className="lbl">Collapse</span></button>

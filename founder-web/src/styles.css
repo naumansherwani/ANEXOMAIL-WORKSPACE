@@ -92,13 +92,11 @@ a.nav{text-decoration:none;min-height:40px}.nav .lbl{white-space:nowrap}
 /* Hidden scrollbars: invisible until the pointer is over the scrollable area (all scroll areas) */
 *{scrollbar-width:thin;scrollbar-color:transparent transparent}*:hover{scrollbar-color:#3a4152 transparent}
 *::-webkit-scrollbar{width:8px;height:8px}*::-webkit-scrollbar-track{background:transparent}*::-webkit-scrollbar-thumb{background:transparent;border-radius:8px}*:hover::-webkit-scrollbar-thumb{background:#3a4152}*::-webkit-scrollbar-thumb:hover{background:#505a70}
-/* Sidebar scroller with browser-menu style arrows */
+/* Sidebar scroller (no arrows; wheel/touch scroll, scrollbar appears on hover only) */
 .side{overflow:hidden}.sidewrap{position:relative;flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
 .scroller{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:2px}
-.scrollarrow{position:absolute;left:0;right:0;z-index:2;min-height:22px;height:22px;border-radius:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(var(--bg),rgba(11,12,16,.92));color:var(--dim);border:0;padding:0}
-.scrollarrow.top{top:0}.scrollarrow.bottom{bottom:0;background:linear-gradient(rgba(11,12,16,.92),var(--bg))}.scrollarrow:hover{color:#fff;background:#171a22}
 .side .sidenote{margin-top:10px}
-@media (max-width:760px){.sidewrap{flex:1 1 100%}.scroller{flex-direction:row;flex-wrap:wrap}.scrollarrow{display:none}}
+@media (max-width:760px){.sidewrap{flex:1 1 100%}.scroller{flex-direction:row;flex-wrap:wrap}}
 .chip.ok{border-color:#1f5a40;color:var(--g)}
 .devcode{font:600 34px/1.1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.2em;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:#0d0f14;text-align:center}
 .cmd{display:block;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--dim);background:#0d0f14;border:1px solid var(--line);border-radius:10px;padding:10px 12px;word-break:break-all;user-select:all}
@@ -136,3 +134,18 @@ a.nav{text-decoration:none;min-height:40px}.nav .lbl{white-space:nowrap}
 .card:hover{transform:translateY(-3px);border-color:#34405a;box-shadow:0 18px 50px rgba(0,0,0,.4),0 0 0 1px rgba(74,115,179,.2)}
 @media (prefers-reduced-motion:reduce){.aurora i,.nav,.greet,.card{animation:none!important}.nav,.card{transition:none}}
 @media (max-width:760px){.aurora i{filter:blur(60px)}.clock{align-items:flex-start}}
+
+/* ===== Digital clock ===== */
+.clock{align-items:flex-end}
+.clock .digits{display:flex;align-items:center;gap:6px;font:200 clamp(38px,5.4vw,60px)/1 Inter,sans-serif;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.clock .pair{display:flex;gap:4px}
+.clock .dg{display:inline-block;min-width:.62em;text-align:center;padding:.06em .08em;border-radius:10px;color:#eef3ff;background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 8px 24px -10px rgba(74,115,179,.55);animation:roll .45s cubic-bezier(.2,.9,.2,1) both}
+@keyframes roll{from{transform:translateY(-38%);opacity:0;filter:blur(3px)}to{transform:none;opacity:1;filter:none}}
+.clock .colon{font-weight:300;color:#7aa3e6;text-shadow:0 0 16px rgba(122,163,230,.9);animation:pulse 1s ease-in-out infinite;margin:0 1px}
+@keyframes pulse{50%{opacity:.25}}
+.clock .secs{display:flex;gap:2px;margin-left:8px;font-size:.38em;color:#7d889c}.clock .secs .dg{min-width:.6em;background:none;border-color:transparent;box-shadow:none;color:#9bb4e6}
+.clock .beam{display:block;width:100%;height:2px;border-radius:2px;background:rgba(255,255,255,.07);overflow:hidden}
+.clock .beam i{display:block;height:100%;border-radius:2px;background:linear-gradient(90deg,#4a73b3,#a9c6f5);box-shadow:0 0 10px rgba(122,163,230,.9);transition:width 1s linear}
+.clock small{display:flex;align-items:center;gap:8px}
+.clock .dot{width:6px;height:6px;border-radius:50%;background:#3ccf91;box-shadow:0 0 8px #3ccf91}
+@media (prefers-reduced-motion:reduce){.clock .dg,.clock .colon{animation:none}.clock .beam i{transition:none}}

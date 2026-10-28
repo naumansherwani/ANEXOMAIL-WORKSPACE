@@ -20,4 +20,5 @@ fi
 systemctl reload caddy || systemctl restart caddy
 sleep 2
 for p in / /_cc/ /founder/v1/me /app /founderlogin; do printf '%s -> ' "$p"; curl -s -o /dev/null -w '%{http_code}\n' --max-time 20 "https://founderworkspace.anexomail.com$p"; done
+printf "HTTP/3 advert (Alt-Svc) -> "; curl -sI --max-time 20 https://founderworkspace.anexomail.com/ | grep -i "^alt-svc" | tr -d "\r" || echo "MISSING — Caddy mein h3 band ya UDP 443 band (firewall: ufw allow 443/udp)"
 echo "(chahiye: / 200 (Command Center) · /_cc/ 200 · /founder/v1/me 401 · /app aur /founderlogin 200)"
