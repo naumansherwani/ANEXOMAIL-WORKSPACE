@@ -88,3 +88,14 @@ a.nav{text-decoration:none;min-height:40px}.nav .lbl{white-space:nowrap}
 .side.slim{width:68px;flex-basis:68px;padding:16px 8px}.side.slim .lbl,.side.slim .sidenote{display:none}.side.slim .sidehead{font-size:0;height:1px;background:#1d2028;margin:8px 6px;padding:0}.side.slim .nav{justify-content:center;padding:0}.side.slim .nav.collapse svg{transform:rotate(180deg)}
 @media (max-width:760px){.nav.collapse{display:none}.side.slim{width:100%;flex-basis:100%}.side.slim .lbl{display:inline}}
 @media (min-width:761px){.shell{height:100vh}.body{flex-wrap:nowrap;min-height:0;flex:1}.side{height:100%}.content{overflow-y:auto;height:100%}}
+
+/* Hidden scrollbars: invisible until the pointer is over the scrollable area (all scroll areas) */
+*{scrollbar-width:thin;scrollbar-color:transparent transparent}*:hover{scrollbar-color:#3a4152 transparent}
+*::-webkit-scrollbar{width:8px;height:8px}*::-webkit-scrollbar-track{background:transparent}*::-webkit-scrollbar-thumb{background:transparent;border-radius:8px}*:hover::-webkit-scrollbar-thumb{background:#3a4152}*::-webkit-scrollbar-thumb:hover{background:#505a70}
+/* Sidebar scroller with browser-menu style arrows */
+.side{overflow:hidden}.sidewrap{position:relative;flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
+.scroller{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:2px}
+.scrollarrow{position:absolute;left:0;right:0;z-index:2;min-height:22px;height:22px;border-radius:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(var(--bg),rgba(11,12,16,.92));color:var(--dim);border:0;padding:0}
+.scrollarrow.top{top:0}.scrollarrow.bottom{bottom:0;background:linear-gradient(rgba(11,12,16,.92),var(--bg))}.scrollarrow:hover{color:#fff;background:#171a22}
+.side .sidenote{margin-top:10px}
+@media (max-width:760px){.sidewrap{flex:1 1 100%}.scroller{flex-direction:row;flex-wrap:wrap}.scrollarrow{display:none}}

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { get, hasToken } from "./api.js";
 import { DECKS, Deck, Audit } from "./Decks.jsx";
 import { Brand, Icon } from "./Brand.jsx";
@@ -6,6 +6,23 @@ import { DeckPage } from "./Finance.jsx";
 import { DECK_META, ORDER } from "./catalog.js";
 
 const TXT = { ok: "OK", warn: "ATTENTION", fail: "FAILING", unknown: "UNKNOWN" };
+
+
+// Sidebar overflow helper: small chevrons appear only when more items exist above/below; hovering one scrolls that way (like the browser menu arrow).
+function useScrollArrows() {
+  const ref = useRef(null), raf = useRef(0);
+  const [up, setUp] = useState(false), [down, setDown] = useState(false);
+  const measure = useCallback(() => { const e = ref.current; if (!e) return; setUp(e.scrollTop > 2); setDown(e.scrollTop + e.clientHeight < e.scrollHeight - 2); }, []);
+  useEffect(() => {
+    const e = ref.current; if (!e) return;
+    measure(); e.addEventListener("scroll", measure, { passive: true });
+    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : null; ro?.observe(e); window.addEventListener("resize", measure);
+    return () => { e.removeEventListener("scroll", measure); ro?.disconnect(); window.removeEventListener("resize", measure); cancelAnimationFrame(raf.current); };
+  }, [measure]);
+  const go = (dir) => { cancelAnimationFrame(raf.current); const step = () => { const e = ref.current; if (!e) return; e.scrollTop += dir * 7; raf.current = requestAnimationFrame(step); }; raf.current = requestAnimationFrame(step); };
+  const stop = () => cancelAnimationFrame(raf.current);
+  return { ref, up, down, go, stop };
+}
 
 function Gate() {
   // No session at all: go straight to the founder sign-in (default entry). A stale token shows this card instead (no redirect loop).
@@ -28,6 +45,7 @@ function Card({ title, tone, children }) {
 export default function App() {
   const [authed, setAuthed] = useState(hasToken());
   const [view, setView] = useState("bridge");
+  const sa = useScrollArrows();
   const [slim, setSlim] = useState(() => { try { return window.localStorage.getItem("anexo.founder.slim") === "1"; } catch { return false; } });
   const toggleSlim = () => setSlim((s) => { const n = !s; try { window.localStorage.setItem("anexo.founder.slim", n ? "1" : "0"); } catch {} return n; });
   const [d, setD] = useState(null), [err, setErr] = useState(""), [at, setAt] = useState(null);
@@ -52,10 +70,16 @@ export default function App() {
       </header>
       <div className="body">
         <nav className={`side ${slim ? "slim" : ""}`} aria-label="Workspace and Command Center">
-          <span className="sidehead">WORKSPACE</span>
+          <div className="sidewrap">
+            {sa.up && <button className="scrollarrow top" aria-label="Scroll up" tabIndex={-1} onMouseEnter={() => sa.go(-1)} onMouseLeave={sa.stop} onClick={() => sa.ref.current?.scrollBy({ top: -160, behavior: "smooth" })}><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 7l7 9H5z" /></svg></button>}
+            <div className="scroller" ref={sa.ref}>
+              <span className="sidehead">WORKSPACE</span>
           {AWAM.map(([n, href, ic]) => <a key={n} className="nav" href={href} title={n}><Icon k={ic} /><span className="lbl">{n}</span></a>)}
           <span className="sidehead gap">COMMAND CENTER</span>
           {NAV.map(([k, n]) => <button key={k} title={n} className={`nav ${view === k ? "on" : ""}`} aria-current={view === k} onClick={() => setView(k)}><Icon k={k} /><span className="lbl">{n}</span></button>)}
+          </div>
+            {sa.down && <button className="scrollarrow bottom" aria-label="Scroll down" tabIndex={-1} onMouseEnter={() => sa.go(1)} onMouseLeave={sa.stop} onClick={() => sa.ref.current?.scrollBy({ top: 160, behavior: "smooth" })}><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17L5 8h14z" /></svg></button>}
+          </div>
           <span className="sidenote">Governance, departments, audit ledger and ANEXOChat — one workspace.</span>
           <button className="nav collapse" onClick={toggleSlim} aria-label={slim ? "Expand sidebar" : "Collapse sidebar"} title={slim ? "Expand" : "Collapse"}><Icon k="collapse" /><span className="lbl">Collapse</span></button>
         </nav>
