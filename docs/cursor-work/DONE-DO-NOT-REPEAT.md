@@ -1073,3 +1073,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 28 Oct 08:35: 33 features ki tarteeb + technology blueprint 13z-c; all-pull.sh server par SAB OK. Dobara mat likho.
 - 28 Oct 08:45: bandwidth competitor check + honest-bandwidth promise PACKAGE-FEATURE-FORMULA.md; Chrome live Command Center dekha; £ -0 fix. Dobara mat likho.
 - 28 Oct 08:55: Command Center ka 3D cartoon hata kar maujooda-app jaisa clean gradient look; Rust detail strings English. Dobara 3D pillars mat banao.
+- 28 Oct 08:40: bandwidth throttle-first+meter user-side blueprint mein (CEO-DECISIONS D) + formula doc. Dobara mat likho.

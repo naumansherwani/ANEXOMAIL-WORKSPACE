@@ -28,3 +28,15 @@ Founder ne sab faisle CEO ko delegate kiye ("tum ceo sab faislay kero jo zoho au
 - P6 Overage billing (usage -> bill line-item, hidden from landing).
 - P7 Capacity: admission control, signup pause gate, SMTP rate limits, Hetzner port-25 verify, k6 load test.
 - P8 Founding-member + waves go-live.
+
+## D. Bandwidth: throttle-first + live meter (founder 28 Oct 2026 08:37) — USER-SIDE blueprint, docs only, nothing built (Rule 5)
+Rates were already APPROVED above (A.6; PRICING-POSITIONING-26OCT §9b): Business 10TB@£12, Business Pro 30TB@£11, Enterprise 50TB@£10, Basic/Pro fair-use (throttle, no bill). Full competitor check (Google/Microsoft/Zoho limits read from their own pages, what is NOT verified) + the four promises: `docs/cursor-work/PACKAGE-FEATURE-FORMULA.md` section "Bandwidth: competitor check + honest-bandwidth promise".
+Where it is built (user side, NOT the founder phases):
+| Step | Phase | Technology |
+|---|---|---|
+| 1. Meter (real GB per org per month, inbound never blocked) | P4 | SQL (overage ledger, RLS on) + Rust :3200 counters (Tokio), WebTransport/kernel unchanged |
+| 2. Throttle-first (slower, never stop sending; restore at once when overage is on) | P4 | Rust (rate limiter per org); no Bun |
+| 3. Live meter (80% / 95% warning, real GB in billing) | P5/P6 | SPA billing page via `rpc()`; Rust proc |
+| 4. Overage billing line-item (hidden from landing) | P6 | Rust -> Polar (founder creates the Polar products, P3); webhook untouched |
+| 5. Enterprise written fair-use ceiling (CEO guess 100 TB/month) | P4 | founder confirms the number first |
+Order is fixed: meter first, then throttle, then the rate on the bill.
