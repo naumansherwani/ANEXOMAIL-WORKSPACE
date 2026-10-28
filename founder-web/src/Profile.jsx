@@ -1,10 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { get, put, signOut, deviceStatus } from "./api.js";
 
+// Full name: the account profile first, else the signed-in session's own name. Never invented (FC26).
+export function jwtName() {
+  try {
+    const t = window.localStorage.getItem("anexo.session.token"); if (!t) return "";
+    const p = JSON.parse(decodeURIComponent(escape(atob(t.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")))));
+    const m = p.user_metadata || {};
+    return String(m.display_name || m.full_name || m.name || p.name || "").trim().slice(0, 60);
+  } catch { return ""; }
+}
+export const nameOf = (p) => String(p?.display_name || "").trim() || jwtName();
 const initials = (n, e) => (String(n || e || "?").trim().split(/\s+/).slice(0, 2).map((x) => x[0]).join("") || "?").toUpperCase();
 
 export function Avatar({ p, size = 36 }) {
-  return <span className="av" style={{ width: size, height: size, fontSize: Math.round(size * 0.38) }} aria-hidden="true">{p?.avatar_url ? <img src={p.avatar_url} alt="" /> : initials(p?.display_name, p?.email)}</span>;
+  return <span className="av" style={{ width: size, height: size, fontSize: Math.round(size * 0.38) }} aria-hidden="true">{p?.avatar_url ? <img src={p.avatar_url} alt="" /> : initials(nameOf(p), p?.email)}</span>;
 }
 
 // Scale to <=320px, JPEG; step the quality down until it fits the server limit (130 KB). The user never sees "too large" for a normal photo.
@@ -35,7 +45,7 @@ export function AccountMenu({ p, go, fxOn, setFx }) {
     <div className="acct" ref={ref}>
       <button className="avbtn" aria-label="Account" aria-haspopup="menu" aria-expanded={open} onClick={() => setOpen((v) => !v)}><Avatar p={p} size={36} /></button>
       {open && <div className="menu" role="menu">
-        <div className="mhead"><Avatar p={p} size={44} /><div><b>{p?.display_name || "Founder"}</b><span>{p?.email || ""}</span><i className="rolechip">Founder · Chairman</i></div></div>
+        <div className="mhead"><Avatar p={p} size={44} /><div><b>{nameOf(p) || "Founder"}</b><span>{p?.email || ""}</span><i className="rolechip">Founder · Chairman</i></div></div>
         {item("Profile & photo", () => go("profile"))}
         {item("Devices & sessions", () => go("profile"))}
         {item("Audit ledger", () => go("audit"))}
@@ -75,12 +85,12 @@ export function ProfileView({ p, reload }) {
         <div className="kicker">PROFILE</div>
         <div className="profrow">
           <button className="bigav" onClick={() => file.current?.click()} disabled={busy} aria-label="Change profile photo"><Avatar p={p} size={96} /><span className="cam">{busy ? "Saving…" : "Change"}</span></button>
-          <div><div className="big" style={{ fontSize: 24 }}>{p?.display_name || "Founder"}</div><div className="dim">{p?.email}</div><span className="rolechip">Founder · Chairman</span></div>
+          <div><div className="big" style={{ fontSize: 24 }}>{nameOf(p) || "Founder"}</div><div className="dim">{p?.email}</div><span className="rolechip">Founder · Chairman</span></div>
         </div>
         <input ref={file} type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={choose} />
         <div className="row"><button className="btn" disabled={busy} onClick={() => file.current?.click()}>Upload photo</button>{p?.avatar_url && <button disabled={busy} onClick={remove}>Remove</button>}</div>
         {msg && <div className={msg.ok ? "note" : "err banner"} role="status">{msg.t}</div>}
-        {p && !p.profile_found && <div className="note">No profile row was found for this account, so a photo cannot be saved yet.</div>}
+        {p && !p.profile_found && <div className="note">{p.profile_state === "query_failed" ? "The profile could not be read from the database (query failed), so a photo cannot be saved right now." : "This account has no profile row in account_profiles, so a photo cannot be saved. Sign in once through the user app to create it, or tell me and I will add a safe create step."}</div>}
         <div className="src">Photos are shrunk in your browser to fit (jpg, png, webp). Stored on your account profile; every change is written to the audit ledger.</div>
       </section>
       <section className="card">

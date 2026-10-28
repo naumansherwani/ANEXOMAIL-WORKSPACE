@@ -30,10 +30,11 @@ impl Sb {
         if !r.status().is_success() { return None; }
         r.json::<Value>().await.ok()
     }
-    /// Founder's own profile row (display name + photo). None = table/row unavailable (never invented).
-    pub async fn profile(&self, uid: &str) -> Option<Value> {
-        if uid.is_empty() || !uid.chars().all(|c| c.is_ascii_hexdigit() || c == '-') { return None; }
-        self.rows(&format!("account_profiles?select=display_name,legal_name,avatar_url&user_id=eq.{uid}&limit=1")).await?.into_iter().next()
+    /// Founder's own profile row. Err = database/query failed, Ok(None) = no row for this user (never invented).
+    pub async fn profile(&self, uid: &str) -> Result<Option<Value>, ()> {
+        if uid.is_empty() || !uid.chars().all(|c| c.is_ascii_hexdigit() || c == '-') { return Err(()); }
+        let rows = self.rows(&format!("account_profiles?select=display_name,legal_name,avatar_url&user_id=eq.{uid}&limit=1")).await.ok_or(())?;
+        Ok(rows.into_iter().next())
     }
     /// Set or clear (None) the founder's own photo. Only that one column, only that user's row.
     pub async fn set_avatar(&self, uid: &str, url: Option<&str>) -> bool {

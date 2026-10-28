@@ -142,7 +142,7 @@ r = sh("approve", "ZZZZZZZZ"); check("script rejects bad code", r.returncode != 
 # --- profile photo (Account menu) ---
 PROFILES[FOUNDER] = {"display_name": "Test Founder", "legal_name": "T F", "avatar_url": None}
 c, r = call("GET", "/founder/v1/profile", TA); d = r.get("data", {})
-check("profile read: name + email, no photo yet", c == 200 and d.get("display_name") == "Test Founder" and d.get("avatar_url") is None and d.get("profile_found") is True, str((c, r)))
+check("profile read: name + email, no photo yet", c == 200 and d.get("display_name") == "Test Founder" and d.get("avatar_url") is None and d.get("profile_found") is True and d.get("profile_state") == "found", str((c, r)))
 check("profile needs a token", call("GET", "/founder/v1/profile")[0] == 401)
 PNG = "data:image/png;base64,iVBORw0KGgo="
 c, r = call("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": PNG}); check("photo save", c == 200, str((c, r)))
@@ -151,7 +151,7 @@ check("svg / script photo refused (400)", call("PUT", "/founder/v1/profile/avata
 check("refused photo did not overwrite the good one", call("GET", "/founder/v1/profile", TA)[1]["data"]["avatar_url"] == PNG)
 check("photo remove (null)", call("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": None})[0] == 200 and call("GET", "/founder/v1/profile", TA)[1]["data"]["avatar_url"] is None)
 check("photo save without token = 401", call("PUT", "/founder/v1/profile/avatar", None, {"avatar_url": PNG})[0] == 401)
-PROFILES.pop(FOUNDER); check("no profile row -> honest 502, nothing invented", call("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": PNG})[0] == 502)
+PROFILES.pop(FOUNDER); check("missing row is reported as no_row (not a fake empty profile)", call("GET", "/founder/v1/profile", TA)[1]["data"].get("profile_state") == "no_row"); check("no profile row -> honest 502, nothing invented", call("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": PNG})[0] == 502)
 rc, out = psql("select string_agg(action, ',' order by seq) from public.founder_audit where action like 'profile.%'")
 check("photo changes are in the audit ledger", "profile.avatar_set" in out and "profile.avatar_removed" in out, out)
 rc, out = psql("select public.founder_audit_verify(1) is null")

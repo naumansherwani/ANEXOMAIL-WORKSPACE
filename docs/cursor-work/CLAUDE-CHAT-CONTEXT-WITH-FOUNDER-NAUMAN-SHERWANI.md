@@ -1852,3 +1852,6 @@ Polar = connected via the existing production webhook's tables (E105 read-only p
 
 ## 28 Oct 11:50 PKT — Account menu + photo
 Founder: "user wale profile style + facebook jaisi photo + settings founder ke hisab se, kab?" Screenshot awam /app ka tha. Built+tested (not on server): Account menu, photo upload, Profile page. Founder next: `founder-install.sh`. Order for the rest: Devices list+revoke screen after F2c; Founder Settings page (security, devices, graphics, notifications, theme) alongside Decide/Live Pulse; Billing/awam settings never in founder menu (FC36). Server-side pending list unchanged (E106, install, pull.sh, hostguard probe).
+
+## 28 Oct 11:24 PKT
+Founder: order unchanged, Settings page goes WITH F2a. Server now has: profile/Account menu build (install OK), hostguard probe. Founder wants me to live-test Chrome and fix UI/UX/loopholes directly. Still pending server: E106 sql + CHECK, pull.sh (confirm). Hostguard: founder must log in once at founderworkspace/founderlogin then `founder-hostguard.sh status` must show founder_host=true, then enforce.

@@ -79,9 +79,11 @@ async fn me(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
 
 async fn profile_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
     let c = match authed(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
-    let p = st.sb.as_ref().unwrap().profile(&c.sub).await;
+    let r = st.sb.as_ref().unwrap().profile(&c.sub).await;
+    let state = match &r { Ok(Some(_)) => "found", Ok(None) => "no_row", Err(_) => "query_failed" };
+    let p = r.ok().flatten();
     let name = p.as_ref().and_then(|v| v["display_name"].as_str().or_else(|| v["legal_name"].as_str())).unwrap_or("").to_string();
-    signed(&st, json!({"email": c.email, "display_name": name, "avatar_url": p.as_ref().and_then(|v| v["avatar_url"].as_str()), "profile_found": p.is_some()}))
+    signed(&st, json!({"email": c.email, "display_name": name, "avatar_url": p.as_ref().and_then(|v| v["avatar_url"].as_str()), "profile_found": p.is_some(), "profile_state": state}))
 }
 
 #[derive(serde::Deserialize)]

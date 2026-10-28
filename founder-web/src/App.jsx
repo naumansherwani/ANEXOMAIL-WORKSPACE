@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { get, hasToken, deviceStatus } from "./api.js";
-import { AccountMenu, ProfileView } from "./Profile.jsx";
+import { AccountMenu, ProfileView, nameOf } from "./Profile.jsx";
 import { DECKS, Deck, Audit } from "./Decks.jsx";
 import { Brand, Icon } from "./Brand.jsx";
 import { DeckPage } from "./Finance.jsx";
@@ -65,10 +65,10 @@ function Clock({ tz }) {
 }
 const SAY = { morning: "Good morning", afternoon: "Good afternoon", evening: "Good evening", night: "Good night" };
 const fmtMinor = (n) => (Number(n) / 100).toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-function Greeting({ m, t, v, at, p, h }) {
+function Greeting({ m, t, v, at, p, h, me }) {
   const [now, setNow] = useState(() => new Date());
   useEffect(() => { const id = setInterval(() => setNow(new Date()), 30000); return () => clearInterval(id); }, []);
-  const tz = browserZone(), part = dayPart(now, tz), nm = firstName();
+  const tz = browserZone(), part = dayPart(now, tz), nm = (nameOf(me).split(/\s+/)[0] || firstName()).slice(0, 30);
   const bits = [];
   if (p?.connected && p.mrr_minor != null) bits.push(`${fmtMinor(p.mrr_minor)} MRR (Polar)`, `${p.active_subscriptions ?? 0} active subscription(s)`);
   else if (h?.subscriptions?.connected) bits.push(`${h.subscriptions.by_status?.active ?? 0} active subscription(s) · ${h.subscriptions.by_status?.past_due ?? 0} past due (Polar webhook)`);
@@ -142,7 +142,7 @@ export default function App() {
           <button className="nav collapse" onClick={toggleSlim} aria-label={slim ? "Expand sidebar" : "Collapse sidebar"} title={slim ? "Expand" : "Collapse"}><Icon k="collapse" /><span className="lbl">Collapse</span></button>
         </nav>
         <main className="content">
-      {view === "bridge" ? <Greeting m={m} t={t} v={v} at={at} p={d?.polar} h={d?.polar_hook} /> : <div className="titleblock"><span className="kicker">{title.toUpperCase()}</span><h1>{title}</h1></div>}
+      {view === "bridge" ? <Greeting m={m} t={t} v={v} at={at} p={d?.polar} h={d?.polar_hook} me={prof} /> : <div className="titleblock"><span className="kicker">{title.toUpperCase()}</span><h1>{title}</h1></div>}
       <div className="chips"><span className="chip warn">Signature not yet verified in browser (kernel: F2b)</span>{(() => { const ds = deviceStatus(); return ds.mode === "device" ? <span className="chip ok">Device approved · {ds.label}</span> : <span className="chip warn">{ds.mode === "legacy" ? "Device approval not active on the server yet (install pending)" : "Checking this device…"}</span>; })()}</div>
       {err && <div className="err banner" role="alert">{err}</div>}
       {view === "profile" ? <ProfileView p={prof} reload={loadProf} /> : DECK_META[view] ? <><DeckPage deck={view} money={m} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : view !== "bridge" ? <div className="grid"><Deck key={view} deck={view} /></div> :
