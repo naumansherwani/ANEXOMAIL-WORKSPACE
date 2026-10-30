@@ -73,10 +73,10 @@ export const MIN_EVENING_START = 16 * 60;
 export const MAX_EVENING_START = 19 * 60;
 export const DEFAULT_EVENING_START = 17 * 60;
 
-const rad = (d) => (d * Math.PI) / 180;
+const rad = (d: number) => (d * Math.PI) / 180;
 
 /** Offset of `tz` from UTC at `at`, in minutes. */
-function offsetMinutes(at, tz) {
+function offsetMinutes(at: Date, tz: string) {
   const p = new Intl.DateTimeFormat("en-US", {
     timeZone: tz,
     hourCycle: "h23",
@@ -87,7 +87,7 @@ function offsetMinutes(at, tz) {
     minute: "numeric",
     second: "numeric",
   }).formatToParts(at);
-  const g = (t) => Number(p.find((x) => x.type === t)?.value);
+  const g = (t: string) => Number(p.find((x) => x.type === t)?.value);
   return Math.round(
     (Date.UTC(g("year"), g("month") - 1, g("day"), g("hour"), g("minute"), g("second")) -
       at.getTime()) /
@@ -96,7 +96,7 @@ function offsetMinutes(at, tz) {
 }
 
 /** Local minutes after midnight of the sunset (NOAA general solar position, accurate to a couple of minutes). null = no sunset that day. */
-export function sunsetMinutes(at, lat, lon, offsetMin) {
+export function sunsetMinutes(at: Date, lat: number, lon: number, offsetMin: number) {
   const start = Date.UTC(at.getUTCFullYear(), 0, 0);
   const day = Math.floor((at.getTime() - start) / 86_400_000);
   const g = ((2 * Math.PI) / 365) * (day - 1);
@@ -125,12 +125,12 @@ export function sunsetMinutes(at, lat, lon, offsetMin) {
 }
 
 /** Minutes after midnight (local) when "Good evening" begins today. */
-export function eveningStart(at, tz, coords) {
+export function eveningStart(at: Date, tz: string, coords?: { lat: number; lon: number }) {
   // The person's own city (Settings) is exact; a zone's main city is the next best; nothing known keeps 17:00.
   const place =
     coords && Number.isFinite(coords.lat) && Number.isFinite(coords.lon)
       ? [coords.lat, coords.lon]
-      : ZONES[tz];
+      : (ZONES as Record<string, number[]>)[tz];
   if (!place) return DEFAULT_EVENING_START;
   let off;
   try {
@@ -145,14 +145,14 @@ export function eveningStart(at, tz, coords) {
 }
 
 /** Local minutes after midnight in `tz`. */
-export function localMinutes(at, tz) {
+export function localMinutes(at: Date, tz: string) {
   const p = new Intl.DateTimeFormat("en-US", {
     timeZone: tz,
     hourCycle: "h23",
     hour: "numeric",
     minute: "numeric",
   }).formatToParts(at);
-  const g = (t) => Number(p.find((x) => x.type === t)?.value);
+  const g = (t: string) => Number(p.find((x) => x.type === t)?.value);
   return g("hour") * 60 + g("minute");
 }
 
@@ -165,7 +165,7 @@ export function browserZone() {
 }
 
 /** The zone the person chose in Settings (their home city) wins over the browser's; a missing or unusable name falls back to the browser's. */
-export function preferredZone(saved) {
+export function preferredZone(saved?: string | null) {
   if (saved) {
     try {
       new Intl.DateTimeFormat("en-US", { timeZone: saved });
@@ -177,9 +177,9 @@ export function preferredZone(saved) {
   return browserZone();
 }
 
-export function dayPart(at = new Date(), zone, coords) {
+export function dayPart(at: Date = new Date(), zone?: string | null, coords?: { lat: number; lon: number }) {
   let tz = preferredZone(zone);
-  let m;
+  let m: number;
   try {
     m = localMinutes(at, tz);
   } catch {

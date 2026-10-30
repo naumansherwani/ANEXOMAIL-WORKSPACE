@@ -1,0 +1,13 @@
+/* Tailwind 4.2 — theme + utilities ONLY (no preflight): the cinematic CSS (ui.css, cinema.css) stays in full effect, so the look does not change (FC43).
+   Founder design tokens are exposed to utilities through @theme so new screens are written in Tailwind with the same palette. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@theme inline {
+  --color-bg: var(--bg);
+  --color-ac: var(--ac);
+  --color-dim: var(--dim);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+}

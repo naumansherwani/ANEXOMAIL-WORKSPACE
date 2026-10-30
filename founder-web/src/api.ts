@@ -5,7 +5,10 @@ const KEY = "anexo.session.token", DEV = "anexo.founder.device";
 const tok = () => { try { return window.localStorage.getItem(KEY); } catch { return null; } };
 export const hasToken = () => !!tok();
 const expired = () => new Error("Session expired — sign in again");
-export class DevicePending extends Error { constructor(code, revoked) { super(revoked ? "device_revoked" : "device_pending"); this.name = "DevicePending"; this.code = code; this.revoked = !!revoked; } }
+export class DevicePending extends Error { code: string | null; revoked: boolean; constructor(code: string | null, revoked: boolean) { super(revoked ? "device_revoked" : "device_pending"); this.name = "DevicePending"; this.code = code; this.revoked = !!revoked; } }
+/** Signed envelope every /founder/v1 GET returns: {data, ts, sig, kid}. Browser-side verify = F2b (WASM kernel). */
+export type Envelope<T = any> = { data: T; ts?: number; sig?: string; sig_ed?: string; kid?: string };
+export type WriteResult = { status: number; body: any };
 
 // Device id: random per browser, stored only as a device binding (not a login). The server keeps only its SHA-256.
 function deviceId() {
@@ -20,23 +23,23 @@ function deviceId() {
   } catch { return null; }
 }
 function deviceLabel() {
-  const ua = navigator.userAgent || "", p = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || "";
+  const ua = navigator.userAgent || "", p = (navigator as Navigator & { userAgentData?: { platform?: string } }).userAgentData?.platform || navigator.platform || "";
   const br = /Edg\//.test(ua) ? "Edge" : /OPR\//.test(ua) ? "Opera" : /Firefox\//.test(ua) ? "Firefox" : /Chrome\//.test(ua) ? "Chrome" : /Safari\//.test(ua) ? "Safari" : "Browser";
   return `${br} on ${String(p).replace(/[^ -~]/g, "").slice(0, 30) || "device"}`.slice(0, 80);
 }
 
-let ft = null, fexp = 0, inflight = null, mode = "none", dlabel = "", rk = null; // rk = per-token request key (memory only)
+let ft: string | null = null, fexp = 0, inflight: Promise<string | null> | null = null, mode = "none", dlabel = "", rk: string | null = null; // rk = per-token request key (memory only)
 export const deviceStatus = () => ({ mode, label: dlabel }); // "device" = founder token in use · "legacy" = fallback to session token · "none"
 
-async function exchange() {
+async function exchange(): Promise<string | null> {
   const t = tok(); if (!t) throw expired();
   const id = deviceId();
   if (!id) { mode = "legacy"; return null; }
-  let r;
+  let r: Response;
   try { r = await fetch("/founder/v1/exchange", { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${t}` }, body: JSON.stringify({ device_id: id, label: deviceLabel() }), cache: "no-store" }); }
   catch { mode = "legacy"; return null; }
   if (r.status === 401) throw expired();
-  let j = {}; try { j = await r.json(); } catch {}
+  let j: any = {}; try { j = await r.json(); } catch {}
   if (r.status === 200 && j.token) { ft = j.token; rk = j.req_key || null; fexp = j.exp * 1000; mode = "device"; dlabel = j.device || ""; return ft; }
   if (r.status === 403 && j.error === "device_pending") throw new DevicePending(j.code, false);
   if (r.status === 403 && j.error === "device_revoked") throw new DevicePending(null, true);
@@ -44,7 +47,7 @@ async function exchange() {
   if (r.status === 429) throw new Error("Too many device attempts — try again in 15 minutes");
   mode = "legacy"; return null; // 502/503: token service not installed yet -> honest fallback (server still accepts the session token during grace)
 }
-async function bearer() {
+async function bearer(): Promise<string | null> {
   if (ft && fexp - 60000 > Date.now()) return ft;
   if (!inflight) inflight = exchange().finally(() => { inflight = null; });
   const x = await inflight;
@@ -53,10 +56,10 @@ async function bearer() {
 export const forget = () => { ft = null; fexp = 0; rk = null; };
 
 // F2a: every write is signed with the per-token key (HMAC-SHA256 over METHOD, path, timestamp, body hash). Replays older than 60 s and changed bodies are refused by the server.
-const b64u = (s) => Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/")), (c) => c.charCodeAt(0));
-const hex = (buf) => [...new Uint8Array(buf)].map((x) => x.toString(16).padStart(2, "0")).join("");
-async function writeHeaders(method, path, bodyStr, token) {
-  const h = { "content-type": "application/json", authorization: `Bearer ${token}` };
+const b64u = (s: string) => Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/")), (c) => c.charCodeAt(0));
+const hex = (buf: ArrayBuffer) => [...new Uint8Array(buf)].map((x) => x.toString(16).padStart(2, "0")).join("");
+async function writeHeaders(method: string, path: string, bodyStr: string, token: string): Promise<Record<string, string>> {
+  const h: Record<string, string> = { "content-type": "application/json", authorization: `Bearer ${token}` };
   if (!rk || token !== ft) return h; // legacy session token (grace): no request key exists
   const ts = Math.floor(Date.now() / 1000), enc = new TextEncoder();
   const bh = hex(await crypto.subtle.digest("SHA-256", enc.encode(bodyStr)));
@@ -65,8 +68,8 @@ async function writeHeaders(method, path, bodyStr, token) {
   return h;
 }
 
-const auth = async (path) => (path.startsWith("/founder/v1/") && !path.startsWith("/founder/v1/exchange") ? bearer() : tok());
-export async function get(path, retry = true) {
+const auth = async (path: string) => (path.startsWith("/founder/v1/") && !path.startsWith("/founder/v1/exchange") ? bearer() : tok());
+export async function get<T = any>(path: string, retry = true): Promise<Envelope<T>> {
   const t = await auth(path); if (!t) throw expired();
   const r = await fetch(path, { headers: { authorization: `Bearer ${t}` }, cache: "no-store" });
   if (r.status === 401 && retry && ft && t === ft) { forget(); return get(path, false); } // revoked / expired founder token -> one fresh exchange
@@ -75,24 +78,24 @@ export async function get(path, retry = true) {
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
   return r.json(); // {data, ts, sig} — browser-side signature verify = F2b (WASM kernel); the UI says plainly it is not verified yet
 }
-export async function post(path, body) {
+export async function post(path: string, body: unknown): Promise<WriteResult> {
   const t = await auth(path); if (!t) throw expired();
   const bs = JSON.stringify(body);
   const r = await fetch(path, { method: "POST", headers: await writeHeaders("POST", path, bs, t), body: bs });
   if (r.status === 401) { forget(); throw expired(); }
-  let j = null; try { j = await r.json(); } catch {}
+  let j: any = null; try { j = await r.json(); } catch {}
   return { status: r.status, body: j };
 }
-export async function put(path, body) {
+export async function put(path: string, body: unknown): Promise<WriteResult> {
   const t = await auth(path); if (!t) throw expired();
   const bs = JSON.stringify(body);
   const r = await fetch(path, { method: "PUT", headers: await writeHeaders("PUT", path, bs, t), body: bs });
   if (r.status === 401) { forget(); throw expired(); }
-  let j = null; try { j = await r.json(); } catch {}
+  let j: any = null; try { j = await r.json(); } catch {}
   return { status: r.status, body: j };
 }
 // Sign out of THIS browser only: drops the session copy + the in-memory founder token. The device approval stays (server side).
 export function signOut() { forget(); try { window.localStorage.removeItem(KEY); window.localStorage.removeItem("anexo.session.last"); } catch {} window.location.replace("/founderlogin"); }
 
 // Founder settings (E108): one signed write per change; value null = back to default.
-export const setSetting = (key, value) => put("/founder/v1/settings", { key, value });
+export const setSetting = (key: string, value: unknown) => put("/founder/v1/settings", { key, value });

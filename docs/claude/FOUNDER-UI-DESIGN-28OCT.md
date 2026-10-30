@@ -28,11 +28,11 @@ Layout: >=1024 sidebar 236px; 700–1023 icon rail 64px; <=700 no sidebar + floa
 |---|---|---|
 | React 19.2 | yes | — |
 | Vite 8.2 | yes | — |
-| TanStack Router (static SPA) | hash routes written by hand; TanStack Router install in progress | switch (small) |
-| Tailwind 4.2 + shadcn | no — plain CSS on tokens | decision: new components may adopt Tailwind v4 mapped to the same tokens (@theme); old CSS not rewritten wholesale |
+| TanStack Router (static SPA) | **DONE 30 Oct 2026 (T1):** `@tanstack/react-router`, hash history (URLs unchanged: `#/finance`), one `/$view` route, shell = root layout (`founder-web/src/router.tsx`) | none |
+| Tailwind 4.2 + shadcn | **DONE as foundation 30 Oct 2026 (T1):** `tailwindcss` + `@tailwindcss/vite` 4.2.x, theme + utilities only (no preflight, so the cinematic CSS is untouched), tokens exposed in `@theme`; shadcn pattern in `src/components/ui` (Radix Switch + Slot, cva, clsx, tailwind-merge) used by Settings. New screens are written in Tailwind; old CSS is moved only when a screen is rebuilt (no look change, FC43) | adopt per screen |
 | Three.js WebGPU lazy | three is a dependency; the 3D scene was removed from the Bridge (founder: no 3D clutter) | only when a screen needs it |
 | Motion/GSAP | CSS animations only (cinema.css) | GSAP when a 3D/scroll scene needs it |
-| TypeScript | no — plain JS (.jsx) | gap: convert, or founder approves JS |
+| TypeScript | **DONE 30 Oct 2026 (T1):** every file is `.ts/.tsx`, `strict: true`, `tsc --noEmit` = 0 errors (TypeScript 7), `@/` path alias | none |
 | WASM kernel verifies audit chain/responses in the browser | NOT yet | F2b (step 4 of FOUNDER-MASTER-ORDER) |
 | Backend Rust axum + tokio, WebTransport/QUIC | HTTP/3 fetch today; WebTransport live stream not yet | Decide + Live Pulse step |
 Founder-side rules honoured in this UI: Rule 69 (no mock data: every number is a real response or an honest "Not connected"), Rule 64 (done = green in his Chrome), Rule 67 (English UI).

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { fmtDateTime } from "./city.js";
-import { get } from "./api.js";
+import { fmtDateTime } from "./city";
+import { get } from "./api";
 
 // Existing (today's app) features shown LIVE on the new page. Read-only: same-origin GET to the existing /api/founder/* routes with the same signed session.
 // Interim until each feature's Rust endpoint ships (FC10: nothing new is added to the old routes). Real values only: missing = "Not measured" (Rule 63).
-const human = (k) => String(k).replace(/_/g, " ").replace(/\b(gbp|mrr|arr|id|sla|dns|ai|crm|qa|p50|p95)\b/gi, (m) => m.toUpperCase()).replace(/^./, (c) => c.toUpperCase());
-const isDate = (v) => typeof v === "string" && /^\d{4}-\d{2}-\d{2}T/.test(v);
-function fmt(k, v) {
+const human = (k: unknown) => String(k).replace(/_/g, " ").replace(/\b(gbp|mrr|arr|id|sla|dns|ai|crm|qa|p50|p95)\b/gi, (m) => m.toUpperCase()).replace(/^./, (c) => c.toUpperCase());
+const isDate = (v: unknown): v is string => typeof v === "string" && /^\d{4}-\d{2}-\d{2}T/.test(v);
+function fmt(k: string, v: unknown): string {
   if (v === null || v === undefined) return "Not measured";
   if (typeof v === "boolean") return v ? "Yes" : "No";
   if (typeof v === "number") {
@@ -18,11 +18,11 @@ function fmt(k, v) {
   if (isDate(v)) return fmtDateTime(v);
   return String(v);
 }
-const isObj = (v) => v && typeof v === "object" && !Array.isArray(v);
-const unwrap = (j) => { let x = j; for (let i = 0; i < 2; i++) if (isObj(x) && "data" in x && Object.keys(x).every((k) => ["data", "ok", "ts", "sig", "ok"].includes(k))) x = x.data; return x; };
+const isObj = (v: unknown): v is Record<string, any> => !!v && typeof v === "object" && !Array.isArray(v);
+const unwrap = (j: unknown): any => { let x = j; for (let i = 0; i < 2; i++) if (isObj(x) && "data" in x && Object.keys(x).every((k) => ["data", "ok", "ts", "sig", "ok"].includes(k))) x = x.data; return x; };
 const TITLE_KEYS = ["name", "title", "label", "org_name", "domain", "email", "slug", "key", "id"];
 
-function Rows({ rows }) {
+function Rows({ rows }: { rows: any[] }) {
   const shown = rows.slice(0, 40);
   return (
     <div className="list">
@@ -37,7 +37,7 @@ function Rows({ rows }) {
   );
 }
 
-function Value({ v, name, depth = 0 }) {
+function Value({ v, name, depth = 0 }: { v: any; name?: string; depth?: number }) {
   if (Array.isArray(v)) return v.length ? (v.every((x) => !isObj(x) && !Array.isArray(x)) ? <p className="dim">{v.map((x) => fmt("", x)).join(", ")}</p> : <Rows rows={v} />) : <p className="dim small">None</p>;
   if (isObj(v)) {
     const scalars = Object.entries(v).filter(([, x]) => !isObj(x) && !Array.isArray(x));
@@ -52,11 +52,11 @@ function Value({ v, name, depth = 0 }) {
   return <div className="tiles"><div className="tile"><span>{human(name || "Value")}</span><b>{fmt(name || "", v)}</b></div></div>;
 }
 
-export function LiveFeature({ title, summary, path }) {
-  const [st, setSt] = useState({ s: "load" });
+export function LiveFeature({ title, summary, path }: { title: string; summary: string; path: string }) {
+  const [st, setSt] = useState<{ s: "load" | "ok" | "err"; d?: any; m?: string }>({ s: "load" });
   useEffect(() => {
     let off = false;
-    get(path).then((j) => !off && setSt({ s: "ok", d: unwrap(j) })).catch((e) => !off && setSt({ s: "err", m: e.message }));
+    get(path).then((j) => !off && setSt({ s: "ok", d: unwrap(j) })).catch((e: Error) => !off && setSt({ s: "err", m: e.message }));
     return () => { off = true; };
   }, [path]);
   return (

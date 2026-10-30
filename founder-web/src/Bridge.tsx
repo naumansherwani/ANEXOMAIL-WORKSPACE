@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
-import { dayPart } from "./greeting.js";
-import { useCity, fmtDateTime, fmtDay, fmtHM, coordsOf } from "./city.js";
-import { callName, nameOf } from "./Profile.jsx";
+import { dayPart } from "./greeting";
+import { useCity, fmtDateTime, fmtDay, fmtHM, coordsOf } from "./city";
+import { callName, nameOf } from "./Profile";
+import type { Prof } from "./types";
 
-const fmtMinor = (n) => (Number(n) / 100).toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const SAY = { morning: "Good morning", afternoon: "Good afternoon", evening: "Good evening", night: "Good night" };
-const STATE = { ok: "OK", warn: "Needs a look", fail: "Failing", unknown: "Unknown" };
+// Shapes of the signed /founder/v1/bridge data and the Polar/finance reads. Fields are optional because each source can be "not connected" (Rule 69).
+type Check = { name: string; state: "ok" | "warn" | "fail" | "unknown"; detail: string };
+type Trouble = { items: Check[] };
+type At = Date | string | number | null | undefined;
+type CellData = { value: React.ReactNode; sub?: React.ReactNode; off?: boolean };
+
+const fmtMinor = (n: unknown) => (Number(n) / 100).toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const SAY: Record<string, string> = { morning: "Good morning", afternoon: "Good afternoon", evening: "Good evening", night: "Good night" };
+const STATE: Record<string, string> = { ok: "OK", warn: "Needs a look", fail: "Failing", unknown: "Unknown" };
 
 // First name from the signed-in session itself (display only). No name in the token -> no name shown (FC26: nothing invented).
 function firstName() {
@@ -18,12 +25,12 @@ function firstName() {
 }
 
 // Digital clock: per-digit roll animation, pulsing colon, seconds beam. City + GMT offset follow the adaptive city (home city, else the device zone).
-function Clock({ tz, city }) {
+function Clock({ tz, city }: { tz: string; city: string }) {
   const [now, setNow] = useState(() => new Date());
   useEffect(() => { const id = setInterval(() => setNow(new Date()), 1000); return () => clearInterval(id); }, []);
   // 12-hour face with AM/PM (founder 28 Oct 13:01). Hour shows one digit before 10 ("1:05"), not "01:05".
-  const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true, timeZone: tz, timeZoneName: "shortOffset" }).formatToParts(now).map((x) => [x.type, x.value]));
-  const D = (v, i) => <span className="dg" key={`${i}${v}`}>{v}</span>; // plain function (not a component) so only a changed digit re-mounts and rolls
+  const p: Record<string, string> = Object.fromEntries(new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true, timeZone: tz, timeZoneName: "shortOffset" }).formatToParts(now).map((x) => [x.type, x.value]));
+  const D = (v: string, i: number) => <span className="dg" key={`${i}${v}`}>{v}</span>; // plain function (not a component) so only a changed digit re-mounts and rolls
   const per = String(p.dayPeriod || "").toUpperCase();
   return (
     <time className="clock" dateTime={now.toISOString()} aria-label={`${p.hour}:${p.minute} ${per} in ${city}`}>
@@ -34,11 +41,11 @@ function Clock({ tz, city }) {
   );
 }
 
-function Greeting({ t, at, me }) {
+function Greeting({ t, at, me }: { t: Trouble | null | undefined; at: At; me: Prof | null }) {
   const [now, setNow] = useState(() => new Date());
   useEffect(() => { const id = setInterval(() => setNow(new Date()), 30000); return () => clearInterval(id); }, []);
   const c = useCity(), part = dayPart(now, c.iana, coordsOf(c)), nm = (callName(nameOf(me)) || firstName()).slice(0, 30);
-  const bad = t ? t.items.filter((i) => i.state !== "ok").length : 0;
+  const bad = t ? t.items.filter((i: Check) => i.state !== "ok").length : 0;
   const tone = !t ? "unknown" : bad ? "warn" : "ok";
   return (
     <header className="greet">
@@ -53,7 +60,7 @@ function Greeting({ t, at, me }) {
   );
 }
 
-function Cell({ label, value, sub, off, action, src, at }) {
+function Cell({ label, value, sub, off, action, src, at }: { label: string; value?: React.ReactNode; sub?: React.ReactNode; off?: boolean; action?: React.ReactNode; src?: string; at?: At }) {
   return (
     <div className="cell"><div className="cl">{label}</div>
       {value == null ? <div className="cv skel" aria-label="Loading" /> : <div className={`cv ${off ? "off" : ""}`}>{value}</div>}
@@ -63,17 +70,17 @@ function Cell({ label, value, sub, off, action, src, at }) {
   );
 }
 
-const cap = (s) => String(s || "").replace(/\b\w/g, (c) => c.toUpperCase());  // title-case names that arrive as snake_case ids
-export function BridgeView({ d, at, me, go }) {
+const cap = (s: unknown) => String(s || "").replace(/\b\w/g, (c) => c.toUpperCase());  // title-case names that arrive as snake_case ids
+export function BridgeView({ d, at, me, go }: { d: any; at: At; me: Prof | null; go: (v: string) => void }) {
   const m = d?.money, t = d?.trouble, v = d?.voice, pl = d?.polar, hk = d?.polar_hook;
   const subs = hk?.subscriptions;
-  const polar = !pl ? { value: null } : pl.connected && pl.mrr_minor != null
+  const polar: CellData = !pl ? { value: null } : pl.connected && pl.mrr_minor != null
     ? { value: <>£{fmtMinor(pl.mrr_minor)} <small>MRR</small></>, sub: `${pl.active_subscriptions ?? "?"} active · +${pl.new_30d} new · −${pl.canceled_30d} cancelled (30 days)${pl.stale ? ` · stale: ${pl.last_error || "no recent reading"}` : ""}` }
     : subs?.connected ? { value: <>{subs.by_status?.active ?? 0} <small>active subscriptions</small></>, sub: `${subs.by_status?.past_due ?? 0} past due · ${subs.ended_30d} ended (30 days)` }
     : { value: "Not connected", off: true, sub: pl.note };
-  const fin = !m ? { value: null } : !m.connected ? { value: "Not connected", off: true, sub: m.note }
+  const fin: CellData = !m ? { value: null } : !m.connected ? { value: "Not connected", off: true, sub: m.note }
     : { value: <>£{(Number(m.mrr_gbp) === 0 ? 0 : Number(m.mrr_gbp)).toLocaleString("en-GB")} <small>MRR</small></>, sub: `${m.active_accounts} active account(s)${m.target_gbp ? ` · target £${m.target_gbp}` : ""} · ${m.source} (manual records, not Polar)` };
-  const voice = !v ? { value: null } : !v.connected ? { value: "Not connected", off: true, sub: v.note }
+  const voice: CellData = !v ? { value: null } : !v.connected ? { value: "Not connected", off: true, sub: v.note }
     : { value: <>{v.new_leads} <small>new leads</small></>, sub: v.pending_channels?.length ? `Channels not connected yet: ${v.pending_channels.join(", ")}` : "" };
   const wh = hk?.webhook;
   return (
@@ -86,19 +93,19 @@ export function BridgeView({ d, at, me, go }) {
       </section>
       {subs?.connected && (subs.by_product || []).length > 0 && <>
         <h2>Subscriptions by product</h2>
-        <div className="ledger">{subs.by_product.map((x) => <div className="lrow" key={x.product}><i className={`sdot ${x.past_due ? "warn" : "ok"}`} /><div><div className="lt">{cap(x.product)}</div><div className="ld">{x.past_due ? `${x.past_due} past due` : "all paid"}{x.grace ? ` · ${x.grace} in grace` : ""}</div></div><b className="lnum">{x.active}</b></div>)}</div>
+        <div className="ledger">{subs.by_product.map((x: any) => <div className="lrow" key={x.product}><i className={`sdot ${x.past_due ? "warn" : "ok"}`} /><div><div className="lt">{cap(x.product)}</div><div className="ld">{x.past_due ? `${x.past_due} past due` : "all paid"}{x.grace ? ` · ${x.grace} in grace` : ""}</div></div><b className="lnum">{x.active}</b></div>)}</div>
       </>}
       <h2>Needs attention <span>{t ? `${t.items.length} checks` : ""}</span></h2>
       <div className="ledger">
         {!t ? <div className="lrow"><i className="sdot unknown" /><div className="lt skel w" /><span /></div> :
           t.items.length === 0 ? <div className="lrow empty">No checks reported.</div> :
-          t.items.map((i) => <div className="lrow" key={i.name}><i className={`sdot ${i.state}`} /><div><div className="lt">{cap(i.name.replace(/_/g, " "))}</div><div className="ld">{i.detail}</div></div><span className={`lstate ${i.state}`}>{STATE[i.state] || i.state}</span></div>)}
+          t.items.map((i: Check) => <div className="lrow" key={i.name}><i className={`sdot ${i.state}`} /><div><div className="lt">{cap(i.name.replace(/_/g, " "))}</div><div className="ld">{i.detail}</div></div><span className={`lstate ${i.state}`}>{STATE[i.state] || i.state}</span></div>)}
       </div>
       {(wh?.connected || (hk?.rejects?.connected && hk.rejects.total > 0)) && <>
         <h2>Polar webhook</h2>
         <div className="ledger">
           {wh?.connected && <div className="lrow"><i className={`sdot ${wh.errors_24h ? "warn" : "ok"}`} /><div><div className="lt">{wh.events_24h} {wh.events_24h === 1 ? "event" : "events"} in 24 h</div><div className="ld">API 2026-10 · last {wh.age_secs == null ? "never" : wh.age_secs < 120 ? `${wh.age_secs} s ago` : `${Math.round(wh.age_secs / 60)} min ago`}{wh.unprocessed ? ` · ${wh.unprocessed} waiting` : ""}{wh.errors_24h ? ` · ${wh.errors_24h} error(s)` : ""}{hk.integrity?.signature_rejects_unreviewed ? ` · ${hk.integrity.signature_rejects_unreviewed} unreviewed signature reject(s)` : ""}</div></div><span /></div>}
-          {hk?.rejects?.connected && hk.rejects.total > 0 && (() => { const recent = (hk.rejects.daily_7d || []).reduce((s, x) => s + (x.n || 0), 0); return <div className="lrow"><i className={`sdot ${recent ? "warn" : "ok"}`} /><div><div className="lt">{recent ? `Rejected signatures: ${recent} in the last 7 days (${hk.rejects.total} in total)` : `No new rejected signatures in 7 days (${hk.rejects.total} older, all before ${hk.rejects.latest_at ? fmtDateTime(hk.rejects.latest_at) : "now"})`}</div><div className="ld">{hk.rejects.by_reason.map((r) => `${r.reason.replace(/_/g, " ")} ×${r.n}`).join(", ")} — {hk.rejects.sender.no_signature_headers} sent no signature header, {hk.rejects.sender.standard_webhook_headers} carried Polar-style headers (wrong or old secret){hk.rejects.latest_at ? `, last ${fmtDateTime(hk.rejects.latest_at)}` : ""}</div></div><span /></div>; })()}
+          {hk?.rejects?.connected && hk.rejects.total > 0 && (() => { const recent = (hk.rejects.daily_7d || []).reduce((s: number, x: any) => s + (x.n || 0), 0); return <div className="lrow"><i className={`sdot ${recent ? "warn" : "ok"}`} /><div><div className="lt">{recent ? `Rejected signatures: ${recent} in the last 7 days (${hk.rejects.total} in total)` : `No new rejected signatures in 7 days (${hk.rejects.total} older, all before ${hk.rejects.latest_at ? fmtDateTime(hk.rejects.latest_at) : "now"})`}</div><div className="ld">{hk.rejects.by_reason.map((r: any) => `${r.reason.replace(/_/g, " ")} ×${r.n}`).join(", ")} — {hk.rejects.sender.no_signature_headers} sent no signature header, {hk.rejects.sender.standard_webhook_headers} carried Polar-style headers (wrong or old secret){hk.rejects.latest_at ? `, last ${fmtDateTime(hk.rejects.latest_at)}` : ""}</div></div><span /></div>; })()}
         </div>
       </>}
     </>

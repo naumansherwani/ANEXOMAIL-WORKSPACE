@@ -1920,3 +1920,9 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 - Server GREEN: E108, founder-install (Settings sirf account menu mein, Polar reject row 7-din). Hostguard mode=probe, log khali. Polar token status: pending dekhna (`founder-polar.sh status`).
 - Founder ka hukm: Bridge aur Dashboard ke features + unki technology/codes repo mein: DONE -> docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md (technology per tile). Code mein abhi nahi: WebTransport, webauthn-rs, WASM kernel, TanStack Router, TypeScript, Tailwind/shadcn.
 - NEXT (order): Chrome verify (Settings sidebar se gayi, Polar green) -> step 3 (hostguard enforce, Polar token) -> F2b WASM kernel. Rule 29: loophole mile to usi turn mein fix, list nahi. Founder naya subscription fee nahi dega: kaam seedha, dobara nahi.
+
+## 30 Oct 19:50 PKT — T1 DONE (repo), F2b next
+- Founder 18:54 gussa: locked technology CODE mein use karo. Kiya: docs/claude/FOUNDER-TECHNOLOGY-ADOPTION-30OCT.md (har technology ka ghar + tarteeb) + T1 code: TypeScript strict, TanStack Router (hash), Tailwind 4.2, shadcn (Radix Switch/Button). Sandbox: tsc 0 errors, vite build, Playwright 3 sizes (palette Enter/g s/back OK, no hscroll, 0 errors), pixel diff <0.4%.
+- Pending server: founder-install.sh (1 point), phir Chrome verify (Rule 64), phir F2b.
+- F2b plan (Rule 52): wohi ek kernel `web-wasm/` (Rust, plain extern C ABI, tokio LocalSet, sha256+hmac already v0.4.0): naya module `ed25519` (verify envelope sig_ed over '<ts>.<sha256hex(data_json)>', kid s1, public key GET /founder/v1/keys) -> version bump 0.5.0 -> founder-web/public/kernel/anexo-kernel-0.5.0.wasm + SHA-256 pin + SPA loader -> Trust chip green. Founder side wasm ka build founder-web mein; user-side kernel ka behaviour nahi badalna (feature-gated module).
+- Sandbox tools: npm = `env -u NO_PROXY -u no_proxy`; bun add tez (9 s). wasm32 target installed, wasm-bindgen CLI nahi (zaroorat nahi: plain ABI).

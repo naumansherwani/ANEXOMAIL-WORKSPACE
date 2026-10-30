@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { deviceStatus } from "./api.js";
+import { deviceStatus } from "./api";
 
 // The one place that says whether you can trust what you are looking at. Every line is a real check of this browser's session.
 // Signature row stays amber until the WASM kernel (F2b) verifies each response in the browser.
-export function Trust({ go }) {
-  const [open, setOpen] = useState(false), ref = useRef(null), ds = deviceStatus();
+export function Trust({ go }: { go: (v: string) => void }) {
+  const [open, setOpen] = useState(false), ref = useRef<HTMLDivElement>(null), ds = deviceStatus();
   useEffect(() => {
     if (!open) return;
-    const away = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
-    const esc = (e) => { if (e.key === "Escape") setOpen(false); };
+    const away = (e: PointerEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
+    const esc = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
     document.addEventListener("pointerdown", away); document.addEventListener("keydown", esc);
     return () => { document.removeEventListener("pointerdown", away); document.removeEventListener("keydown", esc); };
   }, [open]);

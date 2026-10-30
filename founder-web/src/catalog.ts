@@ -3,9 +3,11 @@
 //   gate: 1 = read (signed session) · 2 = two-tap + written reason · 3 = two-tap + reason + passkey
 //   origin: "old" = exists today in the old founder app (moves here, nothing lost, FC12/FC14) · "new" = new founder feature
 // Nothing here is live data; a feature shows real data only when its endpoint ships (Rule 63).
-const G = (rows) => rows.map(([title, summary, gate, endpoint, phase, origin, legacy]) => ({ title, summary, gate, endpoint, phase, origin, legacy }));
+type Row = [string, string, 1 | 2 | 3, string, string, string, string?];
+const G = (rows: Row[]) => rows.map(([title, summary, gate, endpoint, phase, origin, legacy]) => ({ title, summary, gate, endpoint, phase, origin, legacy }));
 
-export const DECK_META = {
+export type Feature = ReturnType<typeof G>[number];
+export const DECK_META: Record<string, { title: string; phase: string; intro: string }> = {
   finance: { title: "Finance", phase: "F3", intro: "Revenue, billing, credits and pipeline in one place. Reading needs your signed session; anything that moves money needs a second tap, a reason, and for the strongest actions your passkey." },
   people: { title: "People", phase: "F4", intro: "Organisations, users, devices and permissions. Metadata only: message content is never shown." },
   mail_desk: { title: "Mail Desk", phase: "F5", intro: "Company mailboxes, support replies and deliverability." },
@@ -17,7 +19,7 @@ export const DECK_META = {
 };
 export const ORDER = ["finance", "people", "mail_desk", "ai", "release", "move_in", "systems", "control"];
 
-export const CATALOG = {
+export const CATALOG: Record<string, Feature[]> = {
   finance: G([
     ["Revenue overview", "Target progress, ARR run-rate, one-off booked, open leads, partners", 1, "GET /founder/v1/finance/overview", "F3", "old", "/api/founder/revenue/overview"],
     ["Pipeline", "Committed MRR vs pipeline MRR vs the gap, one-off cash", 1, "GET /founder/v1/finance/pipeline", "F3", "old", "/api/founder/revenue/pipeline"],

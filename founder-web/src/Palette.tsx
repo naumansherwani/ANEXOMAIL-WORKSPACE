@@ -1,14 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Icon } from "./Brand.jsx";
+import { Icon } from "./Brand";
 
 // Ctrl/⌘+K: jump to any page. Only real destinations — every row opens an existing page.
-export function Palette({ items, onPick, onClose }) {
-  const [q, setQ] = useState(""), [i, setI] = useState(0), box = useRef(null);
+export type NavItem = { id: string; name: string; group: string; icon: string; view: string };
+export function Palette({ items, onPick, onClose }: { items: NavItem[]; onPick: (x: NavItem) => void; onClose: () => void }) {
+  const [q, setQ] = useState(""), [i, setI] = useState(0), box = useRef<HTMLInputElement>(null);
   const list = useMemo(() => { const s = q.trim().toLowerCase(); return s ? items.filter((x) => `${x.name} ${x.group}`.toLowerCase().includes(s)) : items; }, [q, items]);
   useEffect(() => { box.current?.focus(); }, []);
   useEffect(() => { setI(0); }, [q]);
   useEffect(() => { document.querySelector(".pal li.on")?.scrollIntoView({ block: "nearest" }); }, [i]);
-  const key = (e) => {
+  const key = (e: React.KeyboardEvent) => {
     if (e.key === "Escape") onClose();
     else if (e.key === "ArrowDown") { e.preventDefault(); setI((n) => Math.min(list.length - 1, n + 1)); }
     else if (e.key === "ArrowUp") { e.preventDefault(); setI((n) => Math.max(0, n - 1)); }

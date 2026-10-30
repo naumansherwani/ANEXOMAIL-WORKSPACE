@@ -1,5 +1,11 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 30 Oct 18:54 PKT — founder: locked technology CODE mein use karo (WebTransport, passkey, WASM kernel, TanStack Router, TypeScript, Tailwind, shadcn)
+Founder (verbatim): "Abhi code mein nahi hai: WebTransport, passkey (webauthn-rs), WASM kernel, TanStack Router, TypeScript, Tailwind aur shadcn. ... kyin nahi chai code main? kab use hoga? demkh kharab ker rahay ho mera bhenchod tum? her time tumhay samjhna pherta hai gandu. 1000000000000000000000000000 technology kahan use hogi yeh top pe lihha hai woh use kero."
+Founder ne paste kiya: founder-install.sh OK; founder-polar.sh status: token SET, 'polar reader ON (read-only, metrics API)' (Polar Metrics token = step 3 DONE).
+- Hukm: AGENTS.md top par jo technology likhi hai wahi code mein use hogi — "abhi nahi" ka bahana band. Gap list ab ORDER hai: har technology ka ghar + sequence repo mein likhna aur ek ek karke code mein laana (Rule 64: ek phase, green, Chrome, phir agla).
+- Halat: **T1 DONE in repo (sandbox-proven)**: UI stack ab code mein — TypeScript (strict, tsc 0 errors, 327 se), TanStack Router (hash history, URLs wahi #/finance, back/forward + palette + g-shortcuts test pass 1440/820/390), Tailwind 4.2 (theme+utilities, preflight nahi => look nahi badla; pixel diff < 0.4% = clock/aurora animation), shadcn (Radix Switch + Slot, cva) Settings mein. Server par founder-install.sh baaqi, phir Chrome. AGLA: F2b WASM kernel — NOTE Rule 52: alag crate nahi, wohi ek kernel web-wasm/ (module add + version bump, plain extern C ABI); FOUNDER-TECHNOLOGY-ADOPTION-30OCT.md.
+
 ## ▶ 30 Oct 18:49 PKT — founder: Bridge/Dashboard features + technology/codes padh kar likho; pull commands kaam nahi karti; chat context update; pull-command rules padho
 Founder (verbatim): "mainay bola tha ke bridge main jo features aye gay woh dalo aur dashboard ke andar jo features aye woh dalo. technology codes kaun se use ker rahay hain woh read ker ke codes likhna hai. koi bhi command pull nahi hoti hai gandu compact chat ke anay se pehle context update kero chat ka aur pull commands ke rule read kero"
 Founder ne paste kiya: (1) hostguard status: mode probe, [founder.host] log khali (2) founder-polar.sh status: koi output nahi (meri galat command) (3) founder-install.sh: OK, service zinda, Ed25519 ON, signature ENFORCED.

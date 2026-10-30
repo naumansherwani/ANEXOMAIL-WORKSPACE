@@ -1,6 +1,6 @@
 // Home place: a bundled list of cities (name, country, time zone, centre) — no map service, no network. JS port of the user app's src/lib/places.ts (FC18: separate copy).
 // "Detect my city" asks the browser for the position ONCE, picks the nearest city from this list ON THE DEVICE, and only that city is saved. The exact position is never sent or stored.
-const ROWS = [
+const ROWS: [string, string, string, number, number][] = [
   // Pakistan
   ["Karachi", "Pakistan", "Asia/Karachi", 24.86, 67.01],
   ["Lahore", "Pakistan", "Asia/Karachi", 31.52, 74.36],
@@ -132,7 +132,8 @@ const ROWS = [
   ["Auckland", "New Zealand", "Pacific/Auckland", -36.85, 174.76],
 ];
 
-export const PLACES = ROWS.map(([city, country, iana, lat, lon]) => ({
+export type Place = { city: string; country: string; iana: string; lat: number; lon: number };
+export const PLACES: Place[] = ROWS.map(([city, country, iana, lat, lon]) => ({
   city,
   country,
   iana,
@@ -140,13 +141,13 @@ export const PLACES = ROWS.map(([city, country, iana, lat, lon]) => ({
   lon,
 }));
 
-export const placeLabel = (p) =>
+export const placeLabel = (p: { city: string; country?: string }) =>
   p.country ? `${p.city}, ${p.country}` : p.city;
 
-const rad = (d) => (d * Math.PI) / 180;
+const rad = (d: number) => (d * Math.PI) / 180;
 
 /** Great-circle distance in kilometres. */
-export function distanceKm(aLat, aLon, bLat, bLon) {
+export function distanceKm(aLat: number, aLon: number, bLat: number, bLon: number) {
   const dLat = rad(bLat - aLat);
   const dLon = rad(bLon - aLon);
   const h =
@@ -155,10 +156,10 @@ export function distanceKm(aLat, aLon, bLat, bLon) {
 }
 
 /** The list's nearest city to a position, and how far it is. */
-export function nearestPlace(lat, lon) {
+export function nearestPlace(lat: number, lon: number): { place: Place; km: number } | null {
   if (!Number.isFinite(lat) || !Number.isFinite(lon) || Math.abs(lat) > 90 || Math.abs(lon) > 180)
     return null;
-  let best = null;
+  let best: { place: Place; km: number } | null = null;
   for (const p of PLACES) {
     const km = distanceKm(lat, lon, p.lat, p.lon);
     if (!best || km < best.km) best = { place: p, km };
@@ -166,19 +167,19 @@ export function nearestPlace(lat, lon) {
   return best;
 }
 
-const fold = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const fold = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
 /** Type-ahead: city names starting with the text first, then words inside, then country. Max 8. */
-export function searchPlaces(query, limit = 8) {
+export function searchPlaces(query: string, limit = 8): Place[] {
   const q = fold(query.trim());
   if (!q) return [];
-  const scored = [];
+  const scored: [number, Place][] = [];
   for (const p of PLACES) {
     const c = fold(p.city);
     const k = fold(p.country);
     const score = c.startsWith(q)
       ? 0
-      : c.split(" ").some((w) => w.startsWith(q))
+      : c.split(" ").some((w: string) => w.startsWith(q))
         ? 1
         : c.includes(q)
           ? 2
@@ -194,13 +195,13 @@ export function searchPlaces(query, limit = 8) {
 }
 
 /** A city for a bare time zone ("Asia/Karachi" -> Karachi): the first city of the list in that zone. */
-export function placeForZone(iana) {
+export function placeForZone(iana: string): Place | null {
   return PLACES.find((p) => p.iana === iana) ?? null;
 }
 
 /** Is `x` a well-formed saved place (what the server returns)? */
-export function isPlace(x) {
-  const p = x;
+export function isPlace(x: unknown): x is Place {
+  const p = x as Partial<Place> | null;
   return (
     !!p &&
     typeof p.city === "string" &&

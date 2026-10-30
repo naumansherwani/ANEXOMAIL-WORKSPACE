@@ -8,7 +8,8 @@ UI system (tokens, shell, Trust, mobile/tablet): docs/claude/FOUNDER-UI-DESIGN-2
 |---|---|---|
 | 1 | F1a-1 device approval, F2a Ed25519 + request signatures | **LIVE (Chrome-proven)** |
 | 2 | Settings S1 (E108): photo, name, **home city / adaptive city**, graphics, sidebar | built, tested, on server after: sql-run.sh -> CHECK_E108 -> founder-install.sh |
-| 3 | Server leftovers: awam host guard (`pull.sh`, probe -> enforce), Polar Metrics token | founder commands pending |
+| 3 | Server leftovers: awam host guard (`pull.sh`, probe -> enforce), Polar Metrics token | Polar token **DONE 30 Oct** (reader ON); host guard still `probe` (needs one sign-in at /founderlogin, then enforce) |
+| 3a | **T1 UI stack foundation** — TypeScript + TanStack Router + Tailwind 4.2 + shadcn (founder 30 Oct 18:54: locked technology is USED, not listed as a gap) — FOUNDER-TECHNOLOGY-ADOPTION-30OCT.md | in progress |
 | 4 | **F2b** WASM kernel verify in the browser (pins the public key, SRI, enforce) | next build |
 | 5 | **F2c** audit v1 + Merkle (E107) | after 4 |
 | 5a | **I1 Ledger Integrity Gauge** (+ Dashboard item in Command center) — FOUNDER-KILLER-FEATURES | after 5 |

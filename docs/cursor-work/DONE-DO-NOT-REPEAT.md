@@ -1179,3 +1179,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 30 Oct 19:10 PKT — founder-install GREEN (Settings ek jagah, Polar 7-din). founder-polar.sh ab 'status' deta hai (tested). BRIDGE-VS-DASHBOARD mein technology+code per tile. Hostguard abhi 'probe', [founder.host] log khali -> founder ko founderlogin par ek baar sign-in chahiye phir status phir enforce.
 
 - 30 Oct 19:20 PKT — Bridge ledger text ab sentence-case (CSS capitalize hata; 'Event(S) In 24 H' bug). Server par live verify Settings-ek-jagah + Polar 7-din GREEN (Chrome 18:50).
+
+- 30 Oct 19:50 PKT — T1 UI stack in code: TypeScript strict (327 errors -> 0), TanStack Router hash history (router.tsx, /$view), Tailwind 4.2 theme+utilities (tailwind.css, no preflight), shadcn Switch/Button (components/ui). npm sandbox mein: `env -u NO_PROXY -u no_proxy` + bun add (npm tarball DNS NO_PROXY ki wajah se fail). Dobara mat banao. NEXT: F2b (web-wasm kernel mein ed25519 verify module).
