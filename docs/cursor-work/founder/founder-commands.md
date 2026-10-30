@@ -1767,3 +1767,7 @@ Halat: L15 + L5e (ledger). Technology: React-TS UI + signed Rust endpoints + WAS
 ## 30 Oct 21:05 PKT — founder order (verbatim)
 "yeh mujhe company health nahi likha nazar aye aur chorme page ke andar dekho workspace ke andar dashboard hai yeh tum CEO ho tumhay nazar nahi ata hai ke pura page ek ek jaga dekho aur fix kero" (+ founder-install OK, awam pull.sh OK 16:02 UTC)
 Halat: Chrome mein poora Dashboard ek ek hissa dekha (screenshots + gates/API text): L15b masle fix (naam Dashboard, ms, Billing, raw names). Workspace (user app) group alag hai, naam "Dashboard" wahan user ka hai.
+
+## 30 Oct 21:14 PKT — founder order (verbatim)
+"chat context aur codes likh chukay dobara nahi likhna hai sab kuch update kero verna compact chat aye ga? yeh sab cheezein mujhe tarteeb se chaiye hain aur yeh mujhe working chaiye hain technology ke hisab se chaiye hain aur in ki tarteeb phases main kab aye gi yeh bhi batna hai." (+ founder-install OK; 2 photos: sidebar "Dashboard" + Workspace (user app) group)
+Halat: founder-install 21:14 OK -> sidebar naam "Dashboard" live. Naya doc FOUNDER-PORT-ORDER-30OCT.md = har workspace feature ka technology + phase + aaj kya chalta hai. Dates nahi likhi (andaza hota).
