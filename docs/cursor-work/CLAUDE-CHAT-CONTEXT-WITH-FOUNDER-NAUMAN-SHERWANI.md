@@ -2018,3 +2018,8 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 - OPEN: L5 (founder sign out + login + hostguard status), Polar API token (F3), executor F8, F2c Merkle (NEXT phase: design note Rule 63, E107 SQL, kernel merkle).
 - Docs: PORT-ORDER, PARITY (125 route files), ADVANCED-FEATURES N1-N12, GREEN-AUDIT. Chrome tab: group band hua tha, naya tab (tabs_context createIfEmpty). Sandbox test server: scratchpad csp_srv.py, srv/index.html dist se copy karna zaruri; scripts warm.js/dash.js/resp.js.
 - Rules yaad: Roman Urdu "Nauman bhai", Rule 70 technology report har jawab, green sirf Chrome live, commands sirf founder-install/hostguard/pull.sh, password kabhi nahi daalna, rm -rf blocked (copy over).
+
+## 30 Oct 22:10 PKT — L19 LIVE + L20 LEGACY REVIVAL
+- 0e4882d server par; Chrome: snapshot instant (F5 ke fauran baad data), early.js + kernel meta active, 7/7 verified, Trusted. Taaza data ~1.8 s (exchange 652 + handler ~1.1 s). Agla speed step founder ke haan par: query auth ke saath parallel + 10 s server cache.
+- Founder rule (22:00): purane founder/admin pages preserve, latest tech, user se bina mix. Doc: FOUNDER-LEGACY-REVIVAL-30OCT.md (33 pages -> deck/tech/step, per-page tick-list legacy/<page>.md jab phase shuru ho, retire sirf Chrome proof ke baad). F9 = retire after proof, delete nahi.
+- Pending: L5 (founder sign out + login + hostguard status). Phir F2c design note.

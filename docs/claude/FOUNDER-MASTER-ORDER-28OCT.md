@@ -67,3 +67,5 @@ Bridge vs Dashboard (which tile lives where, CEO view): docs/claude/FOUNDER-BRID
 - Port order per feature (technology + phase): docs/claude/FOUNDER-PORT-ORDER-30OCT.md (21:20). Pointer only; master order above stays locked.
 
 - Parity per user area (repo scan, 125 route files): docs/claude/FOUNDER-PARITY-30OCT.md (21:35).
+
+- Legacy pages (30 Oct 22:10): none is dropped. Each old founder/admin page is ported with its own tick-list and retired only after Chrome proof: docs/claude/FOUNDER-LEGACY-REVIVAL-30OCT.md. F9 = "retire after proof", not "delete".
