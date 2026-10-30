@@ -5,4 +5,7 @@ import "./styles.css";
 import "./ui.css";
 import "./cinema.css";
 import "./tailwind.css";
+import { warmKernel } from "./kernel";
+
+warmKernel();
 createRoot(document.getElementById("root") as HTMLElement).render(<RouterProvider router={router} />);

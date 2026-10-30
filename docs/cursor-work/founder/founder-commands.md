@@ -1775,3 +1775,7 @@ Halat: founder-install 21:14 OK -> sidebar naam "Dashboard" live. Naya doc FOUND
 ## 30 Oct 21:21 PKT — founder order (verbatim)
 "yeh sab bhi fix hona hai aur yeh latest technology pe migrate hona hai yeh is liye ek clean saaf polish UI bana rahay hain founder side ke jo tumne tarteeb se kerna hai. dekho user side ki cheezein founder ko bhi same features mile gay aur yeh 80 to 90% same hoga woh ab tumne repo se dekhna hai ke kaun se features abhi founder ko milna hai ... repo update saath ke saath kero takay chat context exactly pata ho aur codes update kero jo green hai woh sirf tum match kero gay chorme live se dekh ke. tarteeb se chalo technology kaun si aye gi bus us ke codes likho." (+ hostguard status paste: phir khali)
 Halat: repo scan -> FOUNDER-PARITY-30OCT.md; sidebar "User dashboard" (L16); L5f: naya login chahiye. Green sirf Chrome live match ke baad.
+
+## 30 Oct 21:23 PKT — founder order (verbatim)
+"Command center / Dashboard yeh mujhe Founder Comand center sirf likha aye. aur page refresh nahi hota hai yeh sab se bada bug hai"
+Halat: L17 crumb; L18 refresh round 2 (Chrome naap: kernel late, duplicate calls, parallel load). Code pushed, Chrome live proof founder-install ke baad. Tab group band tha: naya tab banaya (signed-in same browser).

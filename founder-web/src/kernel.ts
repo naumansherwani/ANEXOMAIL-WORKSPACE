@@ -33,6 +33,9 @@ function w(): Worker {
   return worker;
 }
 
+/** Start the worker and compile the kernel right at page start, in parallel with the first data calls (page refresh no longer waits for it). */
+export const warmKernel = () => { try { w().postMessage({ warm: true }); } catch { /* verify will report */ } };
+
 export type TrustState = "starting" | "verified" | "failed";
 let state: TrustState = "starting", detail = "";
 const subs = new Set<() => void>();

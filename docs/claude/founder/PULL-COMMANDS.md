@@ -151,3 +151,7 @@ Rust+SPA (naam "Dashboard", sahi ms, Billing row, saaf tiles): `git -C /opt/anex
 ## 30 Oct 21:40 — ABHI PENDING
 1) Rust+SPA (sidebar "User dashboard"): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
 2) L5: NS menu > Sign out > /founderlogin login, phir hostguard status (21:05 wali command).
+
+## 30 Oct 21:45 — ABHI PENDING (refresh speed + top bar + sidebar label)
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+Phir Chrome mein F5 (main naapunga). L5: Sign out > login > hostguard status (21:05 wali).

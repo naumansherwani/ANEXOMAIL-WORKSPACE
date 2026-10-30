@@ -80,10 +80,19 @@ async function readSigned<T>(r: Response, path: string): Promise<Envelope<T>> {
   if (!v.ok) throw new Error(`Answer hidden: ${v.reason}`);
   return { data: JSON.parse(v.data) as T, verified: true };
 }
-export async function get<T = any>(path: string, retry = true): Promise<Envelope<T>> {
+// Same GET asked twice at the same moment (shell + a page) shares one network call and one verification.
+const liveGets = new Map<string, Promise<Envelope<any>>>();
+export function get<T = any>(path: string, retry = true): Promise<Envelope<T>> {
+  const k = retry ? path : "";
+  if (k) { const p = liveGets.get(k); if (p) return p as Promise<Envelope<T>>; }
+  const run = getOnce<T>(path, retry);
+  if (k) { liveGets.set(k, run); const done = () => { if (liveGets.get(k) === run) liveGets.delete(k); }; run.then(done, done); }
+  return run;
+}
+async function getOnce<T = any>(path: string, retry = true): Promise<Envelope<T>> {
   const t = await auth(path); if (!t) throw expired();
   const r = await fetch(path, { headers: { authorization: `Bearer ${t}` }, cache: "no-store" });
-  if (r.status === 401 && retry && ft && t === ft) { forget(); return get(path, false); } // revoked / expired founder token -> one fresh exchange
+  if (r.status === 401 && retry && ft && t === ft) { forget(); return getOnce(path, false); } // revoked / expired founder token -> one fresh exchange
   if (r.status === 401) throw expired();
   if (r.status === 403) throw new Error("This account is not a founder account");
   if (!r.ok) throw new Error(`HTTP ${r.status}`);

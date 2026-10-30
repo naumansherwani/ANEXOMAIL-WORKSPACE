@@ -15,7 +15,8 @@ function load(): Promise<Ex> {
   return ex;
 }
 
-self.onmessage = async (ev: MessageEvent<{ id: number; body: ArrayBuffer; now: number; skew: number }>) => {
+self.onmessage = async (ev: MessageEvent<{ id: number; body: ArrayBuffer; now: number; skew: number; warm?: boolean }>) => {
+  if (ev.data.warm) { try { await load(); } catch { /* the first real verify reports the error */ } return; } // refresh speed: fetch + hash + compile the kernel while the data calls are still in flight
   const { id, body, now, skew } = ev.data;
   try {
     const k = await load();

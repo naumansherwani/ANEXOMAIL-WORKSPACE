@@ -1210,3 +1210,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 ## 30 Oct 2026 21:25 PKT — founder-install 21:14 OK (Dashboard naam live). FOUNDER-PORT-ORDER-30OCT.md likha (tarteeb + technology + phase). Dobara mat likho.
 
 ## 30 Oct 2026 21:40 PKT — FOUNDER-PARITY-30OCT.md (repo scan 125 files), sidebar "User dashboard" (L16), L5f (naya login chahiye). Dobara mat likho.
+
+## 30 Oct 2026 21:45 PKT — L17 crumb "Founder Command Center"; L18 refresh round 2 (warmKernel boot, get() dedupe, warm()). Chrome naap: F5 chalta hai, FCP 473 ms, data 3-4 s tha. Proof baqi.

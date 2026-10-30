@@ -2008,3 +2008,6 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 
 ## 30 Oct 21:40 PKT — PARITY + L16 + L5f
 - Parity doc: har user area -> founder deck/step/technology. L16 sidebar. L5f: status khali kyunki pull ke baad naya login nahi hua. Green sirf Chrome live match ke baad (founder rule). Next: F2c design note.
+
+## 30 Oct 21:45 PKT — L17 + L18
+- Top bar sirf "Founder Command Center". Refresh: kernel boot par chalu, duplicate GET khatam. Server-side auth cache sirf founder ke haan ke baad (security tradeoff). Naap: Chrome live F5 install ke baad. Chrome tab group band hua tha -> naya tab 1609160754.
