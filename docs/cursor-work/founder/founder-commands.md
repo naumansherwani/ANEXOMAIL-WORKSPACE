@@ -4,7 +4,7 @@
 Founder (verbatim): "meri haan hai aur chat context update kero. technology rule read kero. aur kaam shuru kero."
 - Technology rule dobara padha (AGENTS.md top + Rule 61/62/66): Rust anexomail-founder (axum 0.8 + tokio, Ed25519 server->browser, HMAC+HKDF browser->server, SHA-256 chain + Merkle, passkey), Postgres RLS; UI React 19.2 + Vite 8.2 (gaps: TS, TanStack Router, Tailwind/shadcn = founder decision); WASM kernel F2b; Bun/Node founder server mein nahi.
 - Kaam: (1) Chrome live proof (Lahore save+reload, 12h clock, sidebar, breadcrumb, toggles) (2) step 3 status (host guard, Polar token) (3) F2b technology note -> phir F2b, ek phase ek waqt (Rule 64).
-- Halat: IN PROGRESS.
+- Halat: **Chrome proof DONE 30 Oct 18:45** (founder ke signed-in tab mein): Lahore search+save -> 'Saved.' -> reload ke baad bhi Lahore (Pakistan, saved as your home city); topbar 'Lahore · 6:40 PM'; Bridge clock 6:40 PM 'LAHORE · GMT+5' (12-hour, AM/PM); breadcrumb 'Command center / Bridge'; cinematic aurora + flip clock + gradient greeting server par; Appearance: Graphics ON, Compact sidebar ON -> sidebar 64px, OFF -> 236px (original state restored). Agla: step 3 status, F2b.
 
 ## ▶ 28 Oct 13:20 PKT — E108 + install server par (VERBATIM paste ka khulasa)
 Founder ne founder-install.sh (OK: zinda, darwaza band, Ed25519 ON) aur E108 CHECK (6 OK, DONE: sab theek) paste kiye, aur likha: "baki kaam shaam ko repo codes context chat ka next tarteeb ko update kero"
