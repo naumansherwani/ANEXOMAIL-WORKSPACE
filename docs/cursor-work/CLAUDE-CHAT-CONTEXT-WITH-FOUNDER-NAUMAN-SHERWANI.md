@@ -1926,3 +1926,10 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 - Pending server: founder-install.sh (1 point), phir Chrome verify (Rule 64), phir F2b.
 - F2b plan (Rule 52): wohi ek kernel `web-wasm/` (Rust, plain extern C ABI, tokio LocalSet, sha256+hmac already v0.4.0): naya module `ed25519` (verify envelope sig_ed over '<ts>.<sha256hex(data_json)>', kid s1, public key GET /founder/v1/keys) -> version bump 0.5.0 -> founder-web/public/kernel/anexo-kernel-0.5.0.wasm + SHA-256 pin + SPA loader -> Trust chip green. Founder side wasm ka build founder-web mein; user-side kernel ka behaviour nahi badalna (feature-gated module).
 - Sandbox tools: npm = `env -u NO_PROXY -u no_proxy`; bun add tez (9 s). wasm32 target installed, wasm-bindgen CLI nahi (zaroorat nahi: plain ABI).
+
+## 30 Oct 19:15 PKT — T1 PUSHED (425ec14) — TARTEEB MAT TORNA
+- Founder 19:13: compaction ke baad context update; kaun se codes likhe, tarteeb mat torna. Rule 64: ek waqt ek phase.
+- LIKHE HUE CODES (repo mein, push): Rust founder (exchange, keys, me, bridge, settings, finance/polar, actions, audit, action; Ed25519 server->browser, HMAC browser->server); SQL E102-E108; SPA T1 = TypeScript strict + TanStack Router (hash) + Tailwind 4.2 + shadcn (Switch, Button); Settings S1 (account menu only); Bridge/Dashboard tiles; scripts founder-install.sh, sql-run.sh, founder-polar.sh status, founder-hostguard.sh.
+- ABHI NAHI (tarteeb ye hai): 1) founder-install.sh (T1) + Chrome verify 2) F2b WASM ed25519 in web-wasm/ v0.5.0 3) F2c Merkle (E107) 4) F2d passkey webauthn-rs 5) WebTransport wtransport. Phase green hone se pehle agla code nahi.
+- Pending founder command (sirf yeh): founder-install.sh | tail -12. package-lock.json stale (server npm nahi chalata). Hostguard abhi probe.
+- Founder ne greeting ("Good evening") ko Apple se zyada advanced dekhna chaha: Chrome mein dekh kar sirf kamzori theek, cinematic look (flip clock, aurora) FC43 ke tahet nahi chhedna.
