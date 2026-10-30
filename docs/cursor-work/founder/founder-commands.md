@@ -1703,3 +1703,7 @@ CHECK_E101 ki 9 rows 'OK' aani chahiye. Dobara chalana safe. SQL editor mein pas
 ## 30 Oct 19:21 PKT — founder order (verbatim)
 "jo mere maslay hain un ki fix kero ek bhi loophole nahi chodna hai aur technology kaun si aye gi woh dekho ek technology hai ke puri website ke liye hain ke builtin WASM KERNEL likha jata hai RUST, tokio, aysnc, aur yeh 24 hours retha hai aur yeh backend se ata hai. agar tumne technology ko mix kiya ya soch ke kaam nahi kiya tujhe goli maarun ga, kaun UI frontend aye ga aur kaun sa cinematic use hoga woh sab dekho? apple se advance banao. chorme kholo dekho ke kya loophole hai kaun se maslay hain jo fix hona hai likhe ke kaam kero takay tumhari memroy main yaad ho"
 Halat: Chrome audit done -> docs/claude/FOUNDER-LOOPHOLE-LEDGER-30OCT.md (L1 fixed: actions cache; L2..L8 ghar likhe). Technology map (kernel/backend/UI/cinematic, no mix) usi file mein. T1 live + Chrome proof pehle ho chuka. Agla: F2b.
+
+## 30 Oct 19:24 PKT — founder order (verbatim)
+"dashboard main kaun se features aye gay aur bridge main kaun se features aye gay yeh repo main likha hai is ko fix kero abhi ke abhi"
+Halat: FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md theek kiya: stale technology line (T1 ab code mein), naya "STATUS IN CODE TODAY" table (har tile LIVE/PARTIAL/NOT BUILT, Bridge.tsx se mila kar), Dashboard naam ka tkrao (awam /app Dashboard vs founder D1-D9 "Company health") likha.

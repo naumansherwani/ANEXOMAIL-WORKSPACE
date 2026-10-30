@@ -40,7 +40,7 @@ Then People/Mail Desk, then the killer features in FOUNDER-KILLER-FEATURES order
 
 ## TECHNOLOGY AND CODE PER TILE (Rule 62: technology first; read from server/founder/Cargo.toml and founder-web/package.json on 30 Oct 2026)
 **In use today (verified in the repo):** Rust edition 2024, `axum 0.8` + `tokio 1` (full), `tower-http 0.6`, `reqwest 0.12` (rustls, GET-only Polar reader), `ring 0.17` (Ed25519 signing), `hmac 0.12` + `sha2 0.10` + `hex` (request MAC, hash chain), `serde`/`serde_json`. SPA: `react 19.2`, `vite 8.2`, `three 0.185` (lazy). Data: Supabase Postgres through service role RPCs (RLS on). Endpoints today: `/founder/v1/{exchange,keys,me,bridge,settings,finance/polar,actions,audit,action}`.
-**Target stack not yet in the code (Rule 61, honest):** WebTransport/QUIC (`wtransport`), `webauthn-rs` passkey, `ed25519-dalek`/WASM kernel (F2b), Merkle (E107), TanStack Router, TypeScript, Tailwind 4.2 + shadcn. Every tile below says which of these it needs.
+**Target stack not yet in the code (Rule 61, honest; corrected 30 Oct 19:35):** WebTransport/QUIC (`wtransport`), `webauthn-rs` passkey, `ed25519-dalek`/WASM kernel (F2b), Merkle (E107). TypeScript, TanStack Router, Tailwind 4.2 and shadcn ARE in the code since T1 (commit 425ec14, live in Chrome 30 Oct 19:20). Every tile below says which of these it needs.
 | Tile | Technology it runs on | Code (exists -> new) | Data source / SQL | Pull command type |
 |---|---|---|---|---|
 | B2 Money now / D5 Growth | Rust `reqwest` GET poller (60 s, last-good + stale flag) -> signed envelope -> React | `polar.rs`, `bridge::money` exist; churn/failed-payment views new (F3) | Polar Metrics API (read-only token) + `E105` pulse tables | SQL (new view) then founder-install |
@@ -59,3 +59,22 @@ Rule that follows from this table: a tile is built only when its row's technolog
 
 ## PULL-COMMAND FORM FOR THIS WORK (Rule 41 / 46 / 48 / 66)
 Only commands that already exist in the repo are given to the founder, one technology at a time, always `git -C /opt/anexomail-web fetch -q origin main && bash <(... show origin/main:<script>)`, never `git pull`/`merge` in /opt/anexomail-web. A command that was invented or untested is a Rule 48 breach (30 Oct 2026: `founder-polar.sh status` did not exist; it now does and is tested).
+
+## STATUS IN CODE TODAY (30 Oct 2026 19:35, checked against Bridge.tsx and the live Chrome tab)
+**What the founder sees on Bridge now (all real data, none mocked):** Billing · Polar, Finance (manual revenue), Customer voice (leads), Needs attention (Mail Outbox, Expiry Watch), Polar webhook events and signature-reject row.
+| Tile | Status | Note |
+|---|---|---|
+| B1 Needs you | NOT BUILT | queue UI = step 8 (Decide); `actions.rs` exists |
+| B2 Money now | PARTIAL, LIVE | Billing · Polar + Finance cells; churn/failed payments = F3-b |
+| B3 Fire alarm | PARTIAL, LIVE | Mail Outbox + Expiry Watch checks; 12 probes + kill switches later |
+| B4 Release | NOT BUILT | Release deck lists registry actions only; executor = F8 |
+| B5 Customers waiting | PARTIAL, LIVE | Customer voice (leads count); SLA/abuse queue = F5 |
+| B6 Live Pulse | NOT BUILT | needs WebTransport first |
+| B7 Poison Pill, B8 Mesh | NOT BUILT | K3 / K2 |
+| B9 My desk | NOT BUILT | step 15 |
+| D1 Ledger Integrity Gauge | NOT BUILT | needs F2b then F2c Merkle (E107) |
+| D2 Work Chain Dependencies | NOT BUILT | step 10a |
+| D3 Device Trust Map | NOT BUILT | step 8a |
+| D4-D9 | NOT BUILT | each waits on its step above |
+**There is no founder "Dashboard" view yet.** The sidebar group "Workspace (user app)" has an item called Dashboard: that is the awam product dashboard (`/app`), NOT the founder Dashboard D1-D9. To avoid the clash, the founder Dashboard will appear above Bridge only when D1 ships, and will be labelled "Company health".
+**Rule kept:** a tile is added only when its source and technology exist; until then it is not drawn (Rule 69).

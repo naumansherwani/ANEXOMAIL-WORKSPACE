@@ -1183,3 +1183,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 30 Oct 19:50 PKT — T1 UI stack in code: TypeScript strict (327 errors -> 0), TanStack Router hash history (router.tsx, /$view), Tailwind 4.2 theme+utilities (tailwind.css, no preflight), shadcn Switch/Button (components/ui). npm sandbox mein: `env -u NO_PROXY -u no_proxy` + bun add (npm tarball DNS NO_PROXY ki wajah se fail). Dobara mat banao. NEXT: F2b (web-wasm kernel mein ed25519 verify module).
 
 - 30 Oct 2026 19:30 — Chrome loophole audit + FOUNDER-LOOPHOLE-LEDGER-30OCT.md (L1..L8) + technology map. L1 FIXED (Decks actions: last real reply shown instantly). T1 stack live (Chrome proof). Dobara mat karo.
+
+- 30 Oct 2026 19:35 — FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md: status table + stale stack line fixed. Dobara mat karo.
