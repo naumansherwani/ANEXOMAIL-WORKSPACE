@@ -1,5 +1,11 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 30 Oct 18:49 PKT — founder: Bridge/Dashboard features + technology/codes padh kar likho; pull commands kaam nahi karti; chat context update; pull-command rules padho
+Founder (verbatim): "mainay bola tha ke bridge main jo features aye gay woh dalo aur dashboard ke andar jo features aye woh dalo. technology codes kaun se use ker rahay hain woh read ker ke codes likhna hai. koi bhi command pull nahi hoti hai gandu compact chat ke anay se pehle context update kero chat ka aur pull commands ke rule read kero"
+Founder ne paste kiya: (1) hostguard status: mode probe, [founder.host] log khali (2) founder-polar.sh status: koi output nahi (meri galat command) (3) founder-install.sh: OK, service zinda, Ed25519 ON, signature ENFORCED.
+- Kiya: Rule 41/46/48/66 + PULL-COMMANDS.md padhe. Galti: 'founder-polar.sh status' repo mein thi hi nahi -> ab script mein 'status' joda aur test kiya (sirf padhta hai, token nahi dikhata). BRIDGE-VS-DASHBOARD mein har tile ke saath TECHNOLOGY aur CODE table (Cargo.toml/package.json se padha: axum 0.8, tokio, reqwest, ring, hmac, sha2; react 19.2, vite 8.2, three) + 'abhi code mein nahi' list (WebTransport, webauthn-rs, WASM kernel, TanStack, TS, Tailwind).
+- Halat: **DONE (docs + script)**; founder-install.sh server par GREEN (18:49 paste) = Settings ek jagah + Polar 7-din row server par. Chrome verify baaqi.
+
 ## ▶ 30 Oct 18:42 PKT — founder: Settings do jagah (NS menu + sidebar), ek hi jagah; loophole dikhe to usi waqt fix; saare rules padho; naya subscription fee nahi dunga
 Founder (verbatim): "yeh ns main bhi settings ata hai aur side bar main bhi ata hai yeh ek hi jaga settings option rakho. ... tumne saray rules nahi read kiye hai main ab naya subscription fees nahi dun ga 100000000 bar bola hai ke koi bhi lopphole nazar aye usi waqat fix kerna hai"
 - Kaam: (1) Settings ek hi jagah (2) jo loophole Chrome mein dikha (Polar 301 unreviewed signature rejects / 0 events, last event 5256 min) report nahi, FIX (Polar :3400 engine NO-TOUCH; founder-side reader/review) (3) AGENTS.md ke saare rules padhe.

@@ -5,12 +5,17 @@
 # Pehle Polar dashboard > Settings > Developers > New Organization Access Token: SIRF scope `metrics:read` (aur kuch nahi). Yeh payment/webhook token NAHI.
 # Naya token nahi banana? Engine ka maujooda secret reuse:  ...founder-polar.sh) engine   (/opt/polar-rust-payment/.env se POLAR_ACCESS_TOKEN seedha founder.env mein; screen par kabhi nahi).
 #   Dhyan: woh payment-engine ka token hai (zyada ikhtiyar); founder code sirf GET karta hai. Scope metrics:read na ho to card wajah likhega — tab chhota naya token lena behtar.
+# Halat dekhne ke liye (sirf padhta hai, token nahi dikhata):  bash <(...founder-polar.sh) status
 # Hatane ke liye:  bash <(...founder-polar.sh) off
 set -euo pipefail
 ENVF="${FOUNDER_ENV:-/etc/anexomail/founder.env}"; SVC=anexomail-founder
 [ "$(id -u)" -eq 0 ] || { echo "FAIL: root chahiye"; exit 2; }
 [ -f "$ENVF" ] || { echo "FAIL: $ENVF nahi — pehle founder-install.sh"; exit 2; }
 sedi() { sed -i "$@" "$ENVF"; }
+if [ "${1:-}" = "status" ]; then   # sirf padhta hai: token set hai ya nahi (value KABHI nahi dikhati) + aakhri 'polar reader' log
+  if grep -q '^FOUNDER_POLAR_READ_TOKEN=' "$ENVF"; then echo "token: SET (hidden)"; else echo "token: NOT SET"; fi
+  journalctl -u $SVC -n 300 --no-pager 2>/dev/null | grep -E "polar reader" | tail -2 || true; exit 0
+fi
 if [ "${1:-}" = "off" ]; then sedi '/^FOUNDER_POLAR_READ_TOKEN=/d'; systemctl restart $SVC; sleep 2; journalctl -u $SVC -n 20 --no-pager | grep -E "polar reader" | tail -1; exit 0; fi
 if [ "${1:-}" = "engine" ]; then
   EE="${POLAR_ENGINE_ENV:-/opt/polar-rust-payment/.env}"; [ -r "$EE" ] || { echo "FAIL: $EE nahi padh sakta"; exit 2; }

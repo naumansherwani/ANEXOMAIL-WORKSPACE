@@ -1914,3 +1914,9 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 
 ## 30 Oct 19:00 PKT
 - Founder: Settings do jagah thi -> ek (account menu). Founder gussa: loophole report nahi, FIX (Rule 29/33/21); naya subscription fee nahi dega — kaam seedha, dobara-dobara nahi. Polar 301 rejects purane (<=22 Oct), ab 7-din par. Pending server: founder-install.sh (1 point). NEXT: step 3 status (hostguard status; Polar token: Bridge par ab polar reader alag dekho) phir F2b.
+
+## 30 Oct 19:10 PKT — COMPACT SE PEHLE CONTEXT
+- Founder gussa: meri di hui commands kaam nahi karti thi (founder-polar.sh status exist nahi karta tha) -> Rule 48: sirf repo ki aazmayi hui commands. Ab fixed + tested. Pull rules: Rule 41/46/48/66 + docs/claude/founder/PULL-COMMANDS.md (git -C /opt/anexomail-web fetch -q origin main && bash <(git -C ... show origin/main:<script>) | tail -N; kabhi git pull nahi).
+- Server GREEN: E108, founder-install (Settings sirf account menu mein, Polar reject row 7-din). Hostguard mode=probe, log khali. Polar token status: pending dekhna (`founder-polar.sh status`).
+- Founder ka hukm: Bridge aur Dashboard ke features + unki technology/codes repo mein: DONE -> docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md (technology per tile). Code mein abhi nahi: WebTransport, webauthn-rs, WASM kernel, TanStack Router, TypeScript, Tailwind/shadcn.
+- NEXT (order): Chrome verify (Settings sidebar se gayi, Polar green) -> step 3 (hostguard enforce, Polar token) -> F2b WASM kernel. Rule 29: loophole mile to usi turn mein fix, list nahi. Founder naya subscription fee nahi dega: kaam seedha, dobara nahi.

@@ -37,3 +37,25 @@ Navigation order (founder 13:06): **Dashboard, then Bridge**, then the decks. "D
 2. Needs-you queue (Decide) — it turns the Bridge from a report into a tool.
 3. Ledger Integrity Gauge — the one number that proves everything else can be trusted.
 Then People/Mail Desk, then the killer features in FOUNDER-KILLER-FEATURES order.
+
+## TECHNOLOGY AND CODE PER TILE (Rule 62: technology first; read from server/founder/Cargo.toml and founder-web/package.json on 30 Oct 2026)
+**In use today (verified in the repo):** Rust edition 2024, `axum 0.8` + `tokio 1` (full), `tower-http 0.6`, `reqwest 0.12` (rustls, GET-only Polar reader), `ring 0.17` (Ed25519 signing), `hmac 0.12` + `sha2 0.10` + `hex` (request MAC, hash chain), `serde`/`serde_json`. SPA: `react 19.2`, `vite 8.2`, `three 0.185` (lazy). Data: Supabase Postgres through service role RPCs (RLS on). Endpoints today: `/founder/v1/{exchange,keys,me,bridge,settings,finance/polar,actions,audit,action}`.
+**Target stack not yet in the code (Rule 61, honest):** WebTransport/QUIC (`wtransport`), `webauthn-rs` passkey, `ed25519-dalek`/WASM kernel (F2b), Merkle (E107), TanStack Router, TypeScript, Tailwind 4.2 + shadcn. Every tile below says which of these it needs.
+| Tile | Technology it runs on | Code (exists -> new) | Data source / SQL | Pull command type |
+|---|---|---|---|---|
+| B2 Money now / D5 Growth | Rust `reqwest` GET poller (60 s, last-good + stale flag) -> signed envelope -> React | `polar.rs`, `bridge::money` exist; churn/failed-payment views new (F3) | Polar Metrics API (read-only token) + `E105` pulse tables | SQL (new view) then founder-install |
+| B3 Fire alarm / D4 Uptime | Rust probes (`reqwest`, `tokio::time`) + `systemd` reader | `bridge::trouble` exists (mail outbox, expiry watch); probe history new | probes table (new E-file), `E102` audit | SQL then founder-install |
+| B1 Needs you | Rust action queue `founder_actions` + G2 two-tap / G3 passkey (`webauthn-rs`, new) | `actions.rs`, `gate.rs` exist; queue UI new (step 8) | `E102`/`E103` | SQL then founder-install |
+| B5 Customers waiting / D6 / D8 | Rust mail-desk reader + SLA clock (`tokio`) | `bridge::voice` exists (leads count); rest new (F5) | leads/mail tables read-only | founder-install |
+| B6 Live Pulse | Rust `tokio::sync::watch` change feed -> WebTransport push (`wtransport`, new) | new `pulse.rs` | real vs test accounts registry (`test_accounts`, Rule 49) | founder-install |
+| B4 Release / B3 kill switches | Rust executor (allow-listed commands, step-up G3) | `actions.rs` base; executor new (F8) | `founder_actions` | SQL + founder-install |
+| B7 Poison Pill / B8 Mesh | Crypto-shred (key destroy), LAN node (research spike) | new | new E-file | later |
+| D1 Ledger Integrity Gauge | `sha2` chain + Merkle (E107) verified in the browser by the WASM kernel (F2b) | `audit.rs` (v1 chain) exists; Merkle + kernel new | `E102` chain, `E107` checkpoints | SQL then founder-install |
+| D2 Work Chain Dependencies | Postgres `depends_on` constraint + promise engine | new | `E1xx` (step 10a) | SQL then founder-install |
+| D3 Device Trust Map | Postgres `founder_devices` + device-reported city (never IP) | `ftoken.rs`/`login.rs` exist; map UI + three.js (lazy) new | `E104` | founder-install |
+| D7 Capacity | Rust `tokio::process`/`sysinfo`-style reader (read only) | new | server metrics | founder-install |
+| D9 Audit activity | SQL view over `founder_audit` | `audit.rs` reads exist; chart new | `E102` | SQL then founder-install |
+Rule that follows from this table: a tile is built only when its row's technology exists (e.g. B6 needs WebTransport first); until then the Bridge/Dashboard shows "Not connected / Not measured" with the reason (Rule 69).
+
+## PULL-COMMAND FORM FOR THIS WORK (Rule 41 / 46 / 48 / 66)
+Only commands that already exist in the repo are given to the founder, one technology at a time, always `git -C /opt/anexomail-web fetch -q origin main && bash <(... show origin/main:<script>)`, never `git pull`/`merge` in /opt/anexomail-web. A command that was invented or untested is a Rule 48 breach (30 Oct 2026: `founder-polar.sh status` did not exist; it now does and is tested).

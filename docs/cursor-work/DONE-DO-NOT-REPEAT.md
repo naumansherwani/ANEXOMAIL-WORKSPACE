@@ -1175,3 +1175,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 30 Oct 18:45 PKT — Chrome live proof GREEN (Settings S1 / E108): Lahore save+reload, 12h clock, breadcrumb, cinematic, Compact sidebar toggle. Dobara proof mat lo. NEXT: step 3 (host guard, Polar token) then F2b.
 
 - 30 Oct 19:00 PKT — Settings ek hi jagah (account menu); Polar reject row ab 7-din par (purani ginti amber nahi). Loophole mile to usi turn mein fix (Rule 29) — list nahi. founder-polar.sh mein 'status' nahi hai (founder ko mat dena).
+
+- 30 Oct 19:10 PKT — founder-install GREEN (Settings ek jagah, Polar 7-din). founder-polar.sh ab 'status' deta hai (tested). BRIDGE-VS-DASHBOARD mein technology+code per tile. Hostguard abhi 'probe', [founder.host] log khali -> founder ko founderlogin par ek baar sign-in chahiye phir status phir enforce.
