@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0c1a6a8b9e10e904
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 9bde35cc54799a10
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 736918f24295bb7f
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716

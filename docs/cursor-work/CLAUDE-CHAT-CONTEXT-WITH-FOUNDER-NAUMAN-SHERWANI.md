@@ -1933,3 +1933,7 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 - ABHI NAHI (tarteeb ye hai): 1) founder-install.sh (T1) + Chrome verify 2) F2b WASM ed25519 in web-wasm/ v0.5.0 3) F2c Merkle (E107) 4) F2d passkey webauthn-rs 5) WebTransport wtransport. Phase green hone se pehle agla code nahi.
 - Pending founder command (sirf yeh): founder-install.sh | tail -12. package-lock.json stale (server npm nahi chalata). Hostguard abhi probe.
 - Founder ne greeting ("Good evening") ko Apple se zyada advanced dekhna chaha: Chrome mein dekh kar sirf kamzori theek, cinematic look (flip clock, aurora) FC43 ke tahet nahi chhedna.
+
+## 30 Oct 19:20 PKT — T1 LIVE + CHROME PROOF (Rule 64 green)
+- founder-install.sh OK (SPA 200, token 401, Ed25519 ON, writes enforced). Chrome (founder tab 1609160493, no new tab): bundle index-CLMo78xN.js, "Good evening, Nauman" + flip clock 7:16 PM unchanged, Settings only in NS menu (#/settings), g+f -> #/finance, back/forward ok, unknown hash -> #/bridge, Ctrl K palette ok, console errors 0.
+- NEXT (only): F2b WASM ed25519 in web-wasm/ v0.5.0. Trust chip stays amber "Review" until F2b. Greeting redesign only if founder asks; FC43 look untouched.
