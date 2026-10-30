@@ -63,6 +63,7 @@ function Cell({ label, value, sub, off, action, src, at }) {
   );
 }
 
+const cap = (s) => String(s || "").replace(/\b\w/g, (c) => c.toUpperCase());  // title-case names that arrive as snake_case ids
 export function BridgeView({ d, at, me, go }) {
   const m = d?.money, t = d?.trouble, v = d?.voice, pl = d?.polar, hk = d?.polar_hook;
   const subs = hk?.subscriptions;
@@ -85,18 +86,18 @@ export function BridgeView({ d, at, me, go }) {
       </section>
       {subs?.connected && (subs.by_product || []).length > 0 && <>
         <h2>Subscriptions by product</h2>
-        <div className="ledger">{subs.by_product.map((x) => <div className="lrow" key={x.product}><i className={`sdot ${x.past_due ? "warn" : "ok"}`} /><div><div className="lt">{x.product}</div><div className="ld">{x.past_due ? `${x.past_due} past due` : "all paid"}{x.grace ? ` · ${x.grace} in grace` : ""}</div></div><b className="lnum">{x.active}</b></div>)}</div>
+        <div className="ledger">{subs.by_product.map((x) => <div className="lrow" key={x.product}><i className={`sdot ${x.past_due ? "warn" : "ok"}`} /><div><div className="lt">{cap(x.product)}</div><div className="ld">{x.past_due ? `${x.past_due} past due` : "all paid"}{x.grace ? ` · ${x.grace} in grace` : ""}</div></div><b className="lnum">{x.active}</b></div>)}</div>
       </>}
       <h2>Needs attention <span>{t ? `${t.items.length} checks` : ""}</span></h2>
       <div className="ledger">
         {!t ? <div className="lrow"><i className="sdot unknown" /><div className="lt skel w" /><span /></div> :
           t.items.length === 0 ? <div className="lrow empty">No checks reported.</div> :
-          t.items.map((i) => <div className="lrow" key={i.name}><i className={`sdot ${i.state}`} /><div><div className="lt">{i.name.replace(/_/g, " ")}</div><div className="ld">{i.detail}</div></div><span className={`lstate ${i.state}`}>{STATE[i.state] || i.state}</span></div>)}
+          t.items.map((i) => <div className="lrow" key={i.name}><i className={`sdot ${i.state}`} /><div><div className="lt">{cap(i.name.replace(/_/g, " "))}</div><div className="ld">{i.detail}</div></div><span className={`lstate ${i.state}`}>{STATE[i.state] || i.state}</span></div>)}
       </div>
       {(wh?.connected || (hk?.rejects?.connected && hk.rejects.total > 0)) && <>
         <h2>Polar webhook</h2>
         <div className="ledger">
-          {wh?.connected && <div className="lrow"><i className={`sdot ${wh.errors_24h ? "warn" : "ok"}`} /><div><div className="lt">{wh.events_24h} event(s) in 24 h</div><div className="ld">API 2026-10 · last {wh.age_secs == null ? "never" : wh.age_secs < 120 ? `${wh.age_secs} s ago` : `${Math.round(wh.age_secs / 60)} min ago`}{wh.unprocessed ? ` · ${wh.unprocessed} waiting` : ""}{wh.errors_24h ? ` · ${wh.errors_24h} error(s)` : ""}{hk.integrity?.signature_rejects_unreviewed ? ` · ${hk.integrity.signature_rejects_unreviewed} unreviewed signature reject(s)` : ""}</div></div><span /></div>}
+          {wh?.connected && <div className="lrow"><i className={`sdot ${wh.errors_24h ? "warn" : "ok"}`} /><div><div className="lt">{wh.events_24h} {wh.events_24h === 1 ? "event" : "events"} in 24 h</div><div className="ld">API 2026-10 · last {wh.age_secs == null ? "never" : wh.age_secs < 120 ? `${wh.age_secs} s ago` : `${Math.round(wh.age_secs / 60)} min ago`}{wh.unprocessed ? ` · ${wh.unprocessed} waiting` : ""}{wh.errors_24h ? ` · ${wh.errors_24h} error(s)` : ""}{hk.integrity?.signature_rejects_unreviewed ? ` · ${hk.integrity.signature_rejects_unreviewed} unreviewed signature reject(s)` : ""}</div></div><span /></div>}
           {hk?.rejects?.connected && hk.rejects.total > 0 && (() => { const recent = (hk.rejects.daily_7d || []).reduce((s, x) => s + (x.n || 0), 0); return <div className="lrow"><i className={`sdot ${recent ? "warn" : "ok"}`} /><div><div className="lt">{recent ? `Rejected signatures: ${recent} in the last 7 days (${hk.rejects.total} in total)` : `No new rejected signatures in 7 days (${hk.rejects.total} older, all before ${hk.rejects.latest_at ? fmtDateTime(hk.rejects.latest_at) : "now"})`}</div><div className="ld">{hk.rejects.by_reason.map((r) => `${r.reason.replace(/_/g, " ")} ×${r.n}`).join(", ")} — {hk.rejects.sender.no_signature_headers} sent no signature header, {hk.rejects.sender.standard_webhook_headers} carried Polar-style headers (wrong or old secret){hk.rejects.latest_at ? `, last ${fmtDateTime(hk.rejects.latest_at)}` : ""}</div></div><span /></div>; })()}
         </div>
       </>}

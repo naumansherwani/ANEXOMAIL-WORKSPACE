@@ -66,7 +66,7 @@ button.grp svg{transition:transform .15s}button.grp[aria-expanded="true"] svg{tr
 .pg h2{margin:12px 0 -6px;font:600 14px Inter,sans-serif;color:var(--fg);letter-spacing:0;display:flex;gap:10px;align-items:baseline}.pg h2 span{font-weight:400;color:var(--faint);font-size:13px}
 .ledger{border:1px solid var(--line);border-radius:var(--r3);background:var(--s1);overflow:hidden}
 .lrow{display:grid;grid-template-columns:16px minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line)}.lrow:last-child{border-bottom:0}
-.lt{font:500 14px Inter,sans-serif;text-transform:capitalize}.ld{font-size:13px;color:var(--dim);word-break:break-word}.lnum{font:600 16px Inter,sans-serif;font-variant-numeric:tabular-nums}
+.lt{font:500 14px Inter,sans-serif}.ld{font-size:13px;color:var(--dim);word-break:break-word}.lnum{font:600 16px Inter,sans-serif;font-variant-numeric:tabular-nums}
 .lstate{font:500 13px Inter,sans-serif}.lstate.ok{color:var(--ok)}.lstate.warn{color:var(--wn)}.lstate.fail{color:var(--bad)}.lstate.unknown{color:var(--dim)}.lrow.empty{display:block;color:var(--dim)}
 /* Existing components on the same tokens: flat surfaces, no lift, no gradient */
 .tile,.rowcard,.livecard{background:var(--s1);border-radius:var(--r2)}

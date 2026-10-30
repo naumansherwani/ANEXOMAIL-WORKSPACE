@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md e3aec1fcacff2411
+docs/cursor-work/founder/founder-commands.md 94679da1efa0fd13
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 2f24e593092f8e4b
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 4fc3ab6c25360ccc
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -904,7 +904,7 @@ founder-web/src/main.jsx 850c0e93911df487
 founder-web/src/styles.css 9239d6b5ca060ced
 founder-web/vite.config.js 2da26fa35044407f
 server/founder/src/login.rs 465011eb25e7daac
-founder-web/dist/index.html 3bef729a4221f235
+founder-web/dist/index.html b4cd2e31888586f6
 docs/claude/founder/LEGACY-FOUNDER-FILES.md b379225e91ecfe5e
 docs/cursor-work/sql/E102_founder_audit_actions_devices.sql 98efcf0605642fcc
 docs/cursor-work/sql/CHECK_E102.sql 08c02fd1d918d4dc
@@ -924,7 +924,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md 095875fbd142c9fe
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md bf15645d27d8000c
+docs/claude/founder/PULL-COMMANDS.md 24cb4f10e1e3cf2a
 src/routes/founderlogin.tsx 2146604b56bdedaf
 founder-web/src/Brand.jsx a2da950d93a6aaa7
 founder-web/src/Finance.jsx d5525da3e7490887
@@ -960,10 +960,10 @@ founder-web/src/city.js 84a1e30080335a55
 founder-web/src/places.js 7c64d2716e9dca4c
 docs/claude/FOUNDER-MASTER-ORDER-28OCT.md 991038aaacf96c32
 docs/claude/FOUNDER-UI-DESIGN-28OCT.md 4762e1de22d63e1e
-founder-web/src/Bridge.jsx 06a45e1517dc4d10
+founder-web/src/Bridge.jsx 28d2ca7e3e89e98e
 founder-web/src/Palette.jsx 3a86b195af8dadc7
 founder-web/src/Trust.jsx a334123c4a09ba15
-founder-web/src/ui.css 1e508775ca381bf4
+founder-web/src/ui.css 5e1ee99592a29007
 founder-web/src/fonts/Inter-Bold.woff2 7a2cfbc25078d618
 founder-web/src/fonts/Inter-Medium.woff2 c8f84bf00cbd6136
 founder-web/src/fonts/Inter-Regular.woff2 21d73733fb1fbfe6
@@ -977,5 +977,5 @@ founder-web/src/fonts/Inter-ExtraLight.woff2 6d7a7e116e51ec3f
 founder-web/src/fonts/Inter-Light.woff2 ef36dc6c1a3a465d
 docs/claude/FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md f8521c78a2103383
 docs/cursor-work/founder/orders/2026-10-28-1310-mail-chat-bridge-VERBATIM.md 86f4f1078f649311
-founder-web/dist/assets/index-BOeS8ZnU.js aee52b5f500d2452
-founder-web/dist/assets/index-ZS6Dl6Ac.css ef094d36f82192d5
+founder-web/dist/assets/index-C0CQM_Ch.js f003e4b7402bd034
+founder-web/dist/assets/index-B3xiUipN.css 039efddf41a04925
