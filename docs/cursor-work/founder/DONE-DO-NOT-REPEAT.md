@@ -572,3 +572,5 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - Responsive sandbox (real CSP server, scratchpad resp.js): 4 viewports x 13 views, 0 overflow/0 small taps/0 errors. Chrome window resize nahi hota (maximized) — dobara try mat karo; sandbox Playwright use karo.
 - Bridge icon = suspension bridge (Brand.tsx). Hostguard `diag` mode read-only. FOUNDER-ADVANCED-FEATURES-30OCT.md likha (N1-N12), 28OCT file ke items dohrae nahi.
 - Sandbox test server: /tmp scratchpad srv/ ka index.html dist se copy karna zaruri (_cc symlink dist ko), warna purana hash 404.
+
+## 30 Oct 2026 20:55 PKT — diag v1 natija: pm2 log files 14 Aug ke baad nahi likhi gayi (L5c); diag v2 banaya. Dobara v1 mat mango.

@@ -22,6 +22,10 @@ diag() {  # READ-ONLY: kuch badalta nahi, koi secret value nahi chhapta (sirf na
   echo "== .env: FOUNDER_HOST_GUARD line: $(grep -cE '^FOUNDER_HOST_GUARD=' "$ENVF" 2>/dev/null || echo 0) | FOUNDER_EMAIL set: $(grep -qE '^FOUNDER_EMAIL=.+' "$ENVF" 2>/dev/null && echo yes || echo no-default-email)"
   echo "== log files:"; ls -l --time-style=+%F_%T "$L"/"$APP"-*.log 2>/dev/null | awk '{print $5" bytes "$6" "$7}' || echo "koi nahi"
   echo "== log lines: [founder.host]=$(cat "$L"/"$APP"-*.log 2>/dev/null | grep -cF '[founder.host]' || true)  /api/auth/login=$(cat "$L"/"$APP"-*.log 2>/dev/null | grep -c 'auth/login' || true)"
+  echo "== pm2 ke asli log paths (app yahan likhta hai):"; pm2 describe "$APP" 2>/dev/null | grep -E "out log path|error log path|exec cwd|script path" | sed 's/[│┃|]//g' | tr -s ' ' || true
+  echo "== sab se naye 5 log files (pm2 + /var/log + app folder, aakhri 3 din):"; find "$L" /var/log "$W" -maxdepth 3 -name '*.log' -mtime -3 -not -path '*/node_modules/*' 2>/dev/null | head -40 | xargs -r ls -lt --time-style=+%F_%T 2>/dev/null | head -5 | awk '{print $5" bytes "$6" "$7}' || true
+  echo "== un files mein [founder.host] ki ginti:"; find "$L" /var/log "$W" -maxdepth 3 -name '*.log' -mtime -3 -not -path '*/node_modules/*' 2>/dev/null | head -40 | xargs -r grep -lF '[founder.host]' 2>/dev/null | head -5 || true; echo "(khali = kisi taza log mein nahi)"
+  echo "== journald (pm2 systemd ke andar chale to):"; journalctl --since "-2 days" --no-pager 2>/dev/null | grep -F '[founder.host]' | tail -3 | cut -c1-200 || true
   echo "== code mein guard: $(grep -rlF 'founderHostGate' "$W/server" 2>/dev/null | head -3 | tr '\n' ' ')"
   echo "== founder login ka raasta (code mein 'founderlogin'/'exchange' ka zikr):"; grep -rlE "founderlogin|founder/v1/exchange" "$W/server" "$W/src" 2>/dev/null | head -6
   echo "== founder host par aaj ki auth requests (Caddy log, agar hai):"; grep -hE '"(host|Host)":\["?founderworkspace' /var/log/caddy/*.log 2>/dev/null | grep -E 'auth|login|exchange' | tail -3 | cut -c1-200 || true; }

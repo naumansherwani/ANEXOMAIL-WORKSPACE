@@ -1987,3 +1987,7 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 ## 30 Oct 20:45 PKT — RESPONSIVE (sandbox) + BRIDGE ICON + DIAG + N1-N12 DOC
 - L13 responsive GREEN sandbox (390/820/1024/1440 x 13 views). L14 Bridge icon bana (founder-install ke baad Chrome proof). L5b: `founder-hostguard.sh diag` naya, founder ko ek command; natija se agla qadam (shak: guard sirf tab log karta hai jab email founder pehchaana jaye — natija batayega).
 - Naya doc: docs/claude/FOUNDER-ADVANCED-FEATURES-30OCT.md (N1-N12 + user/founder table). Agla phase: F2c Merkle design + E107.
+
+## 30 Oct 20:55 PKT — L5c DIAG NATIJA
+- Server diag v1: app pid 2602860 cwd /opt/anexomail-web, guard line .env mein hai, FOUNDER_EMAIL set nahi (default email), pm2 out/error log aakhri 14 Aug => app console kisi aur jagah likhta hai. diag v2 (pm2 describe paths + taza logs + journald) ka natija chahiye; phir tay hoga: log ka asli ghar, ya guard mein probe-log har login par (bina email) — awam pull zaroori hoga.
+- Logo founder-install abhi pending (founder ne paste nahi kiya).
