@@ -134,3 +134,7 @@ Agar F2b se data na dikhe (ghalti se hide): rollback = pichla commit 7928c3a ya 
 ## 30 Oct 20:55 — L5 diag v2 (read-only)
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-hostguard.sh) diag 2>&1 | tail -24`
 (logo wali founder-install pehle wali command abhi bhi pending agar nahi chali.)
+
+## 30 Oct 21:05 — L5d status (log ka sahi ghar)
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-hostguard.sh) status 2>&1 | tail -10`
+Agar [founder.host] line dikhe aur founder_host=true ho -> enforce command next (script khud lock-out se bachati hai).

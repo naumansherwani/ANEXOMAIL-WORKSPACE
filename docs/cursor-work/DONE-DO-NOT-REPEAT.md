@@ -1200,3 +1200,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 ## 30 Oct 2026 20:45 PKT — Bridge icon (suspension bridge, Brand.tsx), responsive sandbox 52/52 GREEN, hostguard diag (read-only), FOUNDER-ADVANCED-FEATURES-30OCT.md. Dobara mat likho. Detail: docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md.
 
 ## 30 Oct 2026 20:55 PKT — diag v1 natija: pm2 log files 14 Aug ke baad nahi likhi gayi (L5c); diag v2 banaya. Dobara v1 mat mango.
+
+## 30 Oct 2026 21:05 PKT — L5d: pm2 logs /var/log/pm2 mein hain (diag v2). hostguard LOGS() ne status/enforce/diag theek kiye. Diag dobara mat mango; ab `status`.

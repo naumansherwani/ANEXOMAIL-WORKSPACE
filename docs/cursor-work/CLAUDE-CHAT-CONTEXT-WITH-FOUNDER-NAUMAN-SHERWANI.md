@@ -1991,3 +1991,6 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 ## 30 Oct 20:55 PKT — L5c DIAG NATIJA
 - Server diag v1: app pid 2602860 cwd /opt/anexomail-web, guard line .env mein hai, FOUNDER_EMAIL set nahi (default email), pm2 out/error log aakhri 14 Aug => app console kisi aur jagah likhta hai. diag v2 (pm2 describe paths + taza logs + journald) ka natija chahiye; phir tay hoga: log ka asli ghar, ya guard mein probe-log har login par (bina email) — awam pull zaroori hoga.
 - Logo founder-install abhi pending (founder ne paste nahi kiya).
+
+## 30 Oct 21:05 PKT — L5d
+- pm2 logs: /var/log/pm2/anexomail-web-{out,error}.log (script purani jagah dekh rahi thi). Fix pushed; founder `status` chalaye. Awam test account NAHI chahiye. Migration sawal ka jawab: MASTER-ORDER (F2c->S2->F2d->S3->Decide/Live Pulse->F3 Finance ...), Dashboard Company health live.

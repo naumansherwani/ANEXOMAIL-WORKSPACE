@@ -574,3 +574,5 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - Sandbox test server: /tmp scratchpad srv/ ka index.html dist se copy karna zaruri (_cc symlink dist ko), warna purana hash 404.
 
 ## 30 Oct 2026 20:55 PKT — diag v1 natija: pm2 log files 14 Aug ke baad nahi likhi gayi (L5c); diag v2 banaya. Dobara v1 mat mango.
+
+## 30 Oct 2026 21:05 PKT — L5d: pm2 logs /var/log/pm2 mein hain (diag v2). hostguard LOGS() ne status/enforce/diag theek kiye. Diag dobara mat mango; ab `status`.
