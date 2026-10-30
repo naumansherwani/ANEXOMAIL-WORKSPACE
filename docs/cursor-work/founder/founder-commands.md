@@ -1723,3 +1723,7 @@ Halat: Rule 70 AGENTS.md + CLAUDE.md. founder-install pull hua; Chrome proof gre
 ## 30 Oct 19:39 PKT — founder order (verbatim)
 "yeh lahore top pe aya hai khatham kero search wala center main yeh is tarah rakho baki clock jo hai woh intact kero aur review wala sahi hai"
 Halat: top bar se "Lahore · time" chip hata diya; search bar top bar ke BEECH mein (grid 1fr auto 1fr; 1440 aur 1024 par center = main ka center); greeting ka flip clock aur Review chip untouched; mobile (390) par search icon wahi. Chrome proof pull ke baad.
+
+## 30 Oct 19:43 PKT — founder order (verbatim)
+"mujhe her technology ke hisab se pull command daina hai. sab repo update kero aur chat context update kero sab kuch update ka matalb samjho."
+Halat: PULL-COMMANDS.md mein "PER TECHNOLOGY" table (11 scripts, har ek repo mein verified), abhi chalana: founder-install.sh (top bar) aur L5 hostguard (login ke baad). Context + DONE updated.

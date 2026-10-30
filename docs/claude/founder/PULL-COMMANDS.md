@@ -98,3 +98,20 @@ Phir (founder step, L5): `/founderlogin` par ek baar login -> `git -C /opt/anexo
 
 ## 30 Oct 19:50 — ABHI PENDING (sirf SPA badla: top bar)
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+
+## PER TECHNOLOGY — SAB COMMANDS EK JAGAH (founder 30 Oct 19:43; Rule 66/70; har script repo mein maujood hai, 30 Oct ko check)
+| Technology | Command | Abhi chalana? |
+|---|---|---|
+| SQL (Postgres, E-files) | `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) 2>&1 | tail -25` | NAHI (E108 green; agla E107 F2c ke saath) |
+| SQL CHECK | `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E108_founder_settings CHECK_E108 2>&1 | tail -25` | NAHI (green ho chuka) |
+| Rust founder + React SPA (UI + cinematic) | `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12` | **HAAN — top bar (7928c3a)** |
+| Caddy (founder host) | `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:server/caddy/founder-host.sh) 2>&1 | tail -12` | NAHI (host raaste nahi badle) |
+| Host guard (awam web + guard) | `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-hostguard.sh) status 2>&1 | tail -14` | HAAN, /founderlogin par login ke BAAD (L5); phir `enforce` |
+| Polar token status | `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-polar.sh) status 2>&1 | tail -13` | NAHI (token SET, reader ON) |
+| Awam web (React + Bun brain) | `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15` | NAHI (awam code nahi badla) |
+| Awam Rust engine | `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh) 2>&1 | tail -15` | NAHI |
+| Rust cores tests (read-only) | `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-cores-test.sh) 2>&1 | tail -25` | NAHI (optional) |
+| WASM kernel saboot (awam kernel, read-only) | `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/kernel-check.sh) 2>&1 | tail -10` | NAHI (founder ed25519 F2b abhi code mein nahi) |
+| SAB EK SAATH (SQL -> Rust+SPA -> Caddy -> Web) | `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/all-pull.sh) 2>&1 | tail -60` | NAHI (sirf jab kai technologies badli hon) |
+
+Naye E-file (E107 Merkle, probes, device map) aur F2b (web-wasm founder kernel) ki commands tab likhi jayengi jab unka code push hoga; abhi invent nahi (Rule 48). Server par `git pull` kabhi nahi.

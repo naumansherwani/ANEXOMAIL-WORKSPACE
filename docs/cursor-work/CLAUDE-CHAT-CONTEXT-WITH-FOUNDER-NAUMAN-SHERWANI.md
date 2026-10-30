@@ -1952,3 +1952,7 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 
 ## 30 Oct 19:50 PKT — TOP BAR
 - Founder 19:39: top bar se Lahore chip khatam, search BEECH mein, flip clock intact, Review chip sahi. Kiya (UI React+Tailwind/CSS, App.tsx + ui.css): crumb | search (center) | Review + NS. Pending server: founder-install.sh -> Chrome proof. L7 lockfile OPEN (registry network). hostguard abhi probe (founder login baqi).
+
+## 30 Oct 19:55 PKT — PULL COMMANDS PER TECHNOLOGY (done)
+- docs/claude/founder/PULL-COMMANDS.md ke aakhir mein table: SQL, SQL CHECK, Rust+SPA (founder-install), Caddy, hostguard, polar status, awam web pull.sh, awam rust, rust-cores-test, kernel-check (awam WASM), all-pull. Sab scripts repo mein maujood. "Update" ka matlab (founder): repo + chat context + ledgers + pull commands, sab ek saath, har turn.
+- Abhi chalani: founder-install.sh (top bar 7928c3a) -> Chrome proof; L5 login ke baad hostguard status/enforce. F2b ke baad hi founder WASM command banegi.
