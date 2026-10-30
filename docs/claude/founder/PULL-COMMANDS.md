@@ -182,3 +182,5 @@ founder-install.sh: `git -C /opt/anexomail-web fetch -q origin main && bash <(gi
 2) WEB (awam): the usual `pull.sh` (restarts anexomail-web)
 3) RUST+UI: founder-install.sh (command above)
 4) status: `... founder-hostguard.sh) status 2>&1 | tail -20`
+
+## 30 Oct 23:05 PKT — greeting v3 (UI only): founder-install.sh (same command as above)
