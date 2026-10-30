@@ -2023,3 +2023,6 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 - 0e4882d server par; Chrome: snapshot instant (F5 ke fauran baad data), early.js + kernel meta active, 7/7 verified, Trusted. Taaza data ~1.8 s (exchange 652 + handler ~1.1 s). Agla speed step founder ke haan par: query auth ke saath parallel + 10 s server cache.
 - Founder rule (22:00): purane founder/admin pages preserve, latest tech, user se bina mix. Doc: FOUNDER-LEGACY-REVIVAL-30OCT.md (33 pages -> deck/tech/step, per-page tick-list legacy/<page>.md jab phase shuru ho, retire sirf Chrome proof ke baad). F9 = retire after proof, delete nahi.
 - Pending: L5 (founder sign out + login + hostguard status). Phir F2c design note.
+
+## 22:20 PKT — UI redesign shipped (commit after a257133)
+Founder said UI was plain text (honest verdict: it was NOT Apple level: flat boxes, no icons, misaligned h2). Fixed: `dx.css` plane look (soft gradient glass, icon chips, status pills, gate cards, endpoint table with method pills), h2 `margin:12px auto`. User-side code untouched. Sandbox 1440/820/390: no overflow. NEXT: founder runs founder-install.sh, I verify live in Chrome; green only after live match. Then L5, F2c.
