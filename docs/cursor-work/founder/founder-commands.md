@@ -1739,3 +1739,7 @@ Halat: founder-install pull OK. Chrome GREEN: refresh FCP 571 ms (pehle 3731), t
 ## 30 Oct 20:25 PKT — founder order (verbatim; continuation)
 "... jo hogaya hai green kerte jao ... L5 ... L7 ..." (19:56) — chrome test: GREEN L10/L11. Phir F2b shuru (order: 3b green hone ke baad; L5 founder login aur L7 lockfile khule, un par F2b ruka nahi kyunki wo founder/network steps hain).
 Halat F2b: web-wasm v0.5.0 (ed25519@1+envelope@1) + founder-web kernel.ts/worker, enforce, CSP font-src fix (L6 asli bug), Trusted Types worker (L12). Server + Chrome proof pending (founder-install.sh).
+
+## 30 Oct 20:09 PKT — founder order (verbatim)
+"gandu is ko green kero L5: /founderlogin par aap ka ek baar login. L7: lockfile ... Muhje dobara yeh nazar nahi aye yeh green repo main kerna hai. compact chat aye ga toh sab codes aur chat context update kero. yeh sab cheezein green kero tarteeb ko follow kero aur green kero."
+Halat: F2b server+Chrome GREEN (Trusted). L5 = founder-only login; 3 qadam FOUNDER-ONLY-STEPS.md mein (ek jagah, har jawab mein nahi). L7 lockfile: naye proxy flags ke saath chal raha.

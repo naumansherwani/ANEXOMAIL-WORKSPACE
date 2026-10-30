@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md a0b27e83ea7544ef
+docs/cursor-work/founder/founder-commands.md 3e968d6b58c8c392
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md c632a3ea2206ed70
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 186b01b5a22f4a58
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0c1a6a8b9e10e904
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md bb44d0c3c83eff08
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 47c19a42f1e9d73c
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -984,7 +984,7 @@ founder-web/src/tailwind.css 565258978b85a219
 founder-web/src/types.ts 0c5de00129a58d55
 founder-web/tsconfig.json 712476d5e06e6a3a
 founder-web/vite.config.ts a10e0fda90c24eef
-docs/claude/FOUNDER-LOOPHOLE-LEDGER-30OCT.md 3e156910d6ce866b
+docs/claude/FOUNDER-LOOPHOLE-LEDGER-30OCT.md 8221af12ddf1f558
 founder-web/dist/assets/Inter-Bold-sbKixbcS.woff2 7a2cfbc25078d618
 founder-web/dist/assets/Inter-ExtraLight-BhvJvErM.woff2 6d7a7e116e51ec3f
 founder-web/dist/assets/Inter-Light-Czry1CUT.woff2 ef36dc6c1a3a465d
@@ -1009,3 +1009,4 @@ founder-web/src/kernel.ts 96f76e3b07c7e411
 founder-web/src/kernel.worker.ts 8a9ad70fc2b13d8d
 public/kernel/anexo-kernel-0.5.0.wasm 2d6a9bb17533dcfc
 web-wasm/src/ed.rs b4331b38c7c7b8b8
+docs/claude/founder/FOUNDER-ONLY-STEPS.md 94d3816874cacec2
