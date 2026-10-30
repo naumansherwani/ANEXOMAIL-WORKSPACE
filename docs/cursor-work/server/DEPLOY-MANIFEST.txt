@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md a9151abfe3a20ab4
+docs/cursor-work/founder/founder-commands.md ebda0fd9964ea951
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md fef247783aee6b2c
+docs/cursor-work/DONE-DO-NOT-REPEAT.md f0541da2ed2da49c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -900,7 +900,7 @@ founder-web/package-lock.json 56f1719239e4f0e9
 founder-web/package.json c0b915b8e44a6271
 founder-web/src/styles.css 9239d6b5ca060ced
 server/founder/src/login.rs 465011eb25e7daac
-founder-web/dist/index.html 95e7a6712d7099d8
+founder-web/dist/index.html 73dbdc59d5fb3a3e
 docs/claude/founder/LEGACY-FOUNDER-FILES.md b379225e91ecfe5e
 docs/cursor-work/sql/E102_founder_audit_actions_devices.sql 98efcf0605642fcc
 docs/cursor-work/sql/CHECK_E102.sql 08c02fd1d918d4dc
@@ -919,7 +919,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md 095875fbd142c9fe
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md 1af9a9916f7d0ab0
+docs/claude/founder/PULL-COMMANDS.md b7e276c9266cab85
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 32121a0adc1a3ebf
@@ -961,12 +961,10 @@ founder-web/src/fonts/Inter-Light.woff2 ef36dc6c1a3a465d
 docs/claude/FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md f8521c78a2103383
 docs/cursor-work/founder/orders/2026-10-28-1310-mail-chat-bridge-VERBATIM.md 86f4f1078f649311
 docs/claude/FOUNDER-TECHNOLOGY-ADOPTION-30OCT.md f19d007cada6612d
-founder-web/dist/assets/index-CLMo78xN.js b38420a673ec4d96
-founder-web/dist/assets/index-DMJyfhs1.css c4830f0e0b6d9275
 founder-web/src/App.tsx 4e9b2fe7d6e4907a
 founder-web/src/Brand.tsx acba4a510f503e1c
 founder-web/src/Bridge.tsx 4777eebe7e0377f2
-founder-web/src/Decks.tsx 48450747bbb4baaa
+founder-web/src/Decks.tsx fc993f9de6f6d39d
 founder-web/src/Finance.tsx 2a8eea5946eed203
 founder-web/src/Live.tsx ca95a03310aa67da
 founder-web/src/Palette.tsx bec5fe14e9404b25
@@ -987,3 +985,12 @@ founder-web/src/tailwind.css 565258978b85a219
 founder-web/src/types.ts 0c5de00129a58d55
 founder-web/tsconfig.json 0ba727b9828f3d82
 founder-web/vite.config.ts a10e0fda90c24eef
+docs/claude/FOUNDER-LOOPHOLE-LEDGER-30OCT.md d4b4a89030dc3f15
+founder-web/dist/assets/Inter-Bold-sbKixbcS.woff2 7a2cfbc25078d618
+founder-web/dist/assets/Inter-ExtraLight-BhvJvErM.woff2 6d7a7e116e51ec3f
+founder-web/dist/assets/Inter-Light-Czry1CUT.woff2 ef36dc6c1a3a465d
+founder-web/dist/assets/Inter-Medium-DofoG70T.woff2 c8f84bf00cbd6136
+founder-web/dist/assets/Inter-Regular-DK7peppx.woff2 21d73733fb1fbfe6
+founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2 43443e801ec3cb75
+founder-web/dist/assets/index-CYTR-uIc.css d9ac2cc717e26dbf
+founder-web/dist/assets/index-DjbI9iMG.js 12fe4c8e79586dc3

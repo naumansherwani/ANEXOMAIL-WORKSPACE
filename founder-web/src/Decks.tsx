@@ -42,9 +42,12 @@ function Sheet({ action, onClose, onDone }: { action: FounderAction; onClose: ()
   );
 }
 
+// Last real server answer, shown instantly while a fresh one loads (no mock data: it is the previous /actions reply).
+let lastActions: ActionsData | null = null;
+
 export function Deck({ deck }: { deck: string }) {
-  const [d, setD] = useState<ActionsData | null>(null), [sel, setSel] = useState<FounderAction | null>(null), [tick, setTick] = useState(0);
-  useEffect(() => { get<ActionsData>("/founder/v1/actions").then((r) => setD(r.data)).catch(() => setD({ connected: false, note: "Could not load", actions: [] })); }, [tick]);
+  const [d, setD] = useState<ActionsData | null>(lastActions), [sel, setSel] = useState<FounderAction | null>(null), [tick, setTick] = useState(0);
+  useEffect(() => { get<ActionsData>("/founder/v1/actions").then((r) => { lastActions = r.data; setD(r.data); }).catch(() => setD({ connected: false, note: "Could not load", actions: [] })); }, [tick]);
   const info = DECKS.find((x) => x[0] === deck) ?? [deck, deck, ""];
   const list = d?.connected ? d.actions.filter((a: FounderAction) => a.deck === deck) : [];
   return (
@@ -65,7 +68,7 @@ export function Deck({ deck }: { deck: string }) {
 
 export function Audit() {
   const [d, setD] = useState<AuditData | null>(null);
-  useEffect(() => { get<AuditData>("/founder/v1/audit").then((r) => setD(r.data)).catch(() => setD({ connected: false, note: "Could not load", chain_ok: false, entries: [] })); }, []);
+  useEffect(() => { get<AuditData>("/founder/v1/audit").then((r) => { setD(r.data); }).catch(() => setD({ connected: false, note: "Could not load", chain_ok: false, entries: [] })); }, []);
   return (
     <section className="card wide">
       <h2>AUDIT CHAIN</h2>

@@ -88,3 +88,6 @@ Polar webhook engine (:3400) par KUCH nahi chalta (no-touch).
 
 ## ABHI PENDING (30 Oct 19:50) — 1 point
 1. founder-install.sh (T1: TypeScript + TanStack Router + Tailwind + shadcn, look wahi): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12
+
+## 30 Oct 19:30 — ABHI PENDING (sirf yeh ek)
+Rust+SPA (L1 actions cache): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
