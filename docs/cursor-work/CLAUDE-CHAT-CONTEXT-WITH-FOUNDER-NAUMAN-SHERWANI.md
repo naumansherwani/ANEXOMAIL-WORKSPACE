@@ -1943,3 +1943,9 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 - Code (is commit mein): L1 actions cache; L2 Rust main.rs (authed join, bridge_ep join with hook_view, pulse+rejects join; 61 tests ok); L3 awam links = https://anexomail.com + naya tab; L9 DashboardView "Company health" (#/dashboard, g d), Bridge ab Greeting + Money exceptions + Needs attention + Polar webhook.
 - Baqi: founder-install.sh (1 command) -> Chrome proof (Bridge speed naapna: pehle bridge 1466 ms, actions ~900 ms; Dashboard view; awam links naye tab) -> L7 package-lock (npm5 background /tmp/npm5.log) -> L5 founder login+hostguard enforce -> PHIR F2b.
 - Technology 4 parat (no mix): Rust backend / WASM kernel web-wasm (Rust, tokio LocalSet, Worker) / React+TS+TanStack+Tailwind+shadcn UI / Cinematic CSS+Three.js lazy.
+
+## 30 Oct 19:42 PKT — 3b GREEN (L1,L2,L3,L9) + RULE 70
+- Rule 70: har jawab ke aakhir mein technology report (file -> technology -> phase). Technology GOD ke baad sab se important.
+- CODES JO LIKH DIYE (dobara nahi): Rust: axum endpoints exchange/keys/me/bridge/settings/finance-polar/actions/audit/action, Ed25519 sign + HMAC write, hook_view/authed concurrency (L2). SQL: E102-E108. UI (React 19.2+TS+TanStack hash+Tailwind+shadcn): Bridge, Company health (#/dashboard), Finance/People/... decks, Settings S1, Palette, g-shortcuts, awam links new tab (anexomail.com). Cinematic CSS: aurora, glass sidebar, gradient greeting, flip clock (FC43). WASM kernel web-wasm v0.4.0 (sha256/hmac) = awam-side; founder ed25519 (F2b) ABHI NAHI.
+- Chrome proof: bundle index-BhoknSBJ, Bridge 863 ms (pehle 1466), console 0 errors.
+- Baqi tarteeb: L7 lockfile (npm5 background) -> L5 founder /founderlogin + hostguard enforce (status abhi probe, log khali) -> F2b.

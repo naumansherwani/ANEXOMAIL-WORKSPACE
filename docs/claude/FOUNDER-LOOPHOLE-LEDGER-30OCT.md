@@ -5,10 +5,10 @@ Audit: founder ke signed-in Chrome tab, 12 views, console, network. Qaida (Rule 
 | # | Maslah | Status | Fix / ghar |
 |---|---|---|---|
 | L1 | `/founder/v1/actions` har view badalne par dobara (~900 ms), khali jhalak | FIXED 30 Oct | Decks.tsx: pichla asli server jawab foran dikhta hai, peeche taza aata hai (mock nahi) |
-| L2 | Bridge pehli call ~1.4 s, actions ~0.9 s (sequential Supabase round-trips) | FIXED in code 30 Oct (server proof pending) | main.rs: auth `is_founder`+`device_ok` ek saath (tokio::join!), Bridge mein Polar pulse bhi join, pulse+rejects ek saath; 61 tests pass; naap founder-install ke baad Chrome mein |
-| L3 | Sidebar "Workspace (user app)" links founder host par awam `/app` kholte hain (host mix) | FIXED in code 30 Oct | links ab `https://anexomail.com/app...` naye tab mein (noopener); founder SPA kabhi awam page par navigate nahi karta. Server par `/app` ka hat jana F9 |
+| L2 | Bridge pehli call ~1.4 s, actions ~0.9 s (sequential Supabase round-trips) | FIXED + Chrome proof 30 Oct 19:37: Bridge 1466 -> 863 ms, actions ~900 -> 821 ms first load (baqi waqt Supabase round-trip; auth cache NAHI kiya: device revoke foran band rehna zaroori) | main.rs: auth `is_founder`+`device_ok` ek saath (tokio::join!), Bridge mein Polar pulse bhi join, pulse+rejects ek saath; 61 tests pass; naap founder-install ke baad Chrome mein |
+| L3 | Sidebar "Workspace (user app)" links founder host par awam `/app` kholte hain (host mix) | FIXED + Chrome proof 30 Oct 19:37 (links _blank noopener, https://anexomail.com/app) | links ab `https://anexomail.com/app...` naye tab mein (noopener); founder SPA kabhi awam page par navigate nahi karta. Server par `/app` ka hat jana F9 |
 | L4 | Trust chip amber "Review": browser verify nahi karta | OPEN, NEXT | F2b: web-wasm ed25519 verify, enforce mode |
-| L9 | Bridge par Billing/Finance/Customer voice totals (trend = Dashboard ka kaam) | FIXED in code 30 Oct | naya view "Company health" (`#/dashboard`, g d) mein gaye; Bridge par Money exceptions sirf jab past due/grace ho |
+| L9 | Bridge par Billing/Finance/Customer voice totals (trend = Dashboard ka kaam) | FIXED + Chrome proof 30 Oct 19:37 | naya view "Company health" (`#/dashboard`, g d) mein gaye; Bridge par Money exceptions sirf jab past due/grace ho |
 | L5 | Host guard `probe` (enforce nahi) | FOUNDER STEP | `/founderlogin` ek baar -> `founder-hostguard.sh status` -> `enforce` |
 | L6 | 6 Inter weights "not loaded" | NOT A BUG | font-display swap, sirf istemal par load |
 | L7 | package-lock.json stale | OPEN, low | server npm nahi chalata; sandbox mein env -u NO_PROXY se dobara banana |

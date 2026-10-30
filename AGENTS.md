@@ -494,3 +494,6 @@ Rule 68 addendum (founder 28 Oct 07:22): founder ka login URL = `founderworkspac
 - Har endpoint REAL: jo route UI mein hai woh server par maujood aur kaam karta ho; jo abhi nahi bana woh UI mein "arrives with <phase>" likha ho, button chalta hua nazar na aaye.
 - Test-only stand-ins (e2e shim, sandbox stub tables) sirf `tests/` ya scratchpad mein; production binary/SPA mein nahi, aur kabhi "proof" ke taur par founder ko live data keh kar na dikhaye jayen. Sandbox screenshot mein test data ho to saaf likha ho "sandbox".
 - Check: naya code likhne ke baad `grep -rniE "mock|dummy|lorem|sample data|fake" <changed files>` + live Chrome par asli data/honest state dekho.
+
+## Rule 70 (STRICT, founder 30 Oct 2026 19:36 PKT) — HAR JAWAB MEIN TECHNOLOGY KI RIPORT ("technology GOD ke baad sab se important hai")
+Aaj ke baad har kaam ke jawab ke aakhir mein ek chhoti table/list: **kaun si file/code badla -> uski technology kaun si (Rust axum+tokio / WASM kernel web-wasm / React+TS+TanStack+Tailwind+shadcn / Cinematic CSS+Three.js / SQL Postgres) -> kis phase mein**, aur jo technology abhi code mein NAHI wo bhi saaf likho. Chat context (CLAUDE-CHAT-CONTEXT...) mein "codes jo likh diye, dobara nahi likhne" ki list har turn update. Technology mix karna (UI mein crypto/verify, kernel mein DOM, cinematic mein data) = Rule 70 breach.

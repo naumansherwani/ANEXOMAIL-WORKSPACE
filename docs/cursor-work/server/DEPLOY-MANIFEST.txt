@@ -119,14 +119,14 @@ src/lib/settings.ts b6ed27fd6d2c994a
 src/components/app/settings/SettingsBits.tsx 34207b0ce33787a9
 server/rust/cal_core.rs 5770133e95524592
 server/rust/cal_glue.rs 1b9885a7994aeebe
-AGENTS.md 58ec3361221dafa4
+AGENTS.md 08d8a1fa60eddd90
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md d8bb6316681f0a6a
+docs/cursor-work/founder/founder-commands.md 484b17e3047c891c
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 2b3e77222f27fa39
+docs/cursor-work/DONE-DO-NOT-REPEAT.md a61bc59f40434746
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0c1a6a8b9e10e904
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md a3cfe0e89cfcadca
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md a5e91b72c694b703
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -952,7 +952,7 @@ founder-web/src/fonts/Inter-Medium.woff2 c8f84bf00cbd6136
 founder-web/src/fonts/Inter-Regular.woff2 21d73733fb1fbfe6
 founder-web/src/fonts/Inter-SemiBold.woff2 43443e801ec3cb75
 docs/cursor-work/server/rules-gate.py 20ea7a9c569d1141
-CLAUDE.md 4f9d180d117bc1f2
+CLAUDE.md 6e582f3612a2677c
 docs/claude/FOUNDER-KILLER-FEATURES-28OCT.md 8f8bb489bc473a7c
 founder-web/src/cinema.css 312474c073e9860d
 docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md af209f4adf209b87
@@ -985,7 +985,7 @@ founder-web/src/tailwind.css 565258978b85a219
 founder-web/src/types.ts 0c5de00129a58d55
 founder-web/tsconfig.json 0ba727b9828f3d82
 founder-web/vite.config.ts a10e0fda90c24eef
-docs/claude/FOUNDER-LOOPHOLE-LEDGER-30OCT.md 85f6643bed87b68d
+docs/claude/FOUNDER-LOOPHOLE-LEDGER-30OCT.md d93b340bb952ba1b
 founder-web/dist/assets/Inter-Bold-sbKixbcS.woff2 7a2cfbc25078d618
 founder-web/dist/assets/Inter-ExtraLight-BhvJvErM.woff2 6d7a7e116e51ec3f
 founder-web/dist/assets/Inter-Light-Czry1CUT.woff2 ef36dc6c1a3a465d

@@ -1715,3 +1715,7 @@ Halat: FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md fix (B6/B8 -> Dashboard, 3 total-cel
 ## 30 Oct 19:29 PKT — founder order (verbatim, short)
 "yeh repo main likho ke yeh fix hona hai in ki tarteeb se fix kero sab ... technology ko mind main rakh ke ... yeh sab ka sab kaam kerna hai yeh priritoy hai aur tarteeb main yeh add kero aur yeh kaam shuru kero aur compact chat se pehle context update kero. yeh f2b shuru kerne se pehle in ko fix kero green kero." (+ Bridge/Dashboard split: Bridge = action blocks, Dashboard = Company health)
 Halat: MASTER-ORDER row 3b (F2b se pehle). Code: L2 Rust concurrency, L3 awam links naye tab, Dashboard "Company health" view, L9 Bridge totals Dashboard mein. Server+Chrome green baqi. L7 lockfile npm chal raha. L5 founder step.
+
+## 30 Oct 19:36 PKT — founder order (verbatim)
+"ajj ke baad yeh rule hai ke mujhe update kero gay ke kaun se codes ki tehnollogy likhi hai takay mujhe pata ho ke tumhay yaad hai ke technology GOD ke baad sab se important hai ... compact chat se pehle chat context codes update kero ke yeh likh diya hai dobara nahi likhna hai aur mainay pull ker liya hai chorme test dekho"
+Halat: Rule 70 AGENTS.md + CLAUDE.md. founder-install pull hua; Chrome proof green (bundle index-BhoknSBJ, Company health, Bridge 863 ms, awam links new tab, console 0 errors). hostguard status: mode probe, log khali (founder abhi /founderlogin par login nahi hua). L7 lockfile pending.
