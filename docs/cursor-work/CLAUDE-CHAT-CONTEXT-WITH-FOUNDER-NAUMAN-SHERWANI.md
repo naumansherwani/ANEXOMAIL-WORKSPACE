@@ -1994,3 +1994,8 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 
 ## 30 Oct 21:05 PKT — L5d
 - pm2 logs: /var/log/pm2/anexomail-web-{out,error}.log (script purani jagah dekh rahi thi). Fix pushed; founder `status` chalaye. Awam test account NAHI chahiye. Migration sawal ka jawab: MASTER-ORDER (F2c->S2->F2d->S3->Decide/Live Pulse->F3 Finance ...), Dashboard Company health live.
+
+## 30 Oct 21:15 PKT — DASHBOARD FRONT PAGE (L15) + GUARD PROBE LOG (L5e)
+- Founder: Dashboard front page, user-jaisa icon, user Command Center jaisa look, endpoints+gates+real features (no mock), Bridge CEO-style alag. Code: founder-web/src/Surface.tsx (new), Bridge.tsx DashboardView, App.tsx/router.tsx default=dashboard, Brand.tsx icon, ui.css. Sab data asli probes se; server jawab na de to "Not answering" likhta hai (jhoot nahi).
+- L5: status 20:51 phir khali. auth.ts probe mode ab har login par log. Founder: 1) founder-install 2) awam pull.sh 3) founder host par login 4) hostguard status.
+- Chrome live proof baqi (pull ke baad). Phir F2c design.

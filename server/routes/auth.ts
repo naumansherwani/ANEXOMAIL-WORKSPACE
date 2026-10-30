@@ -550,7 +550,8 @@ async function founderHostGate(req: any, email: string, kind: "login" | "signup"
   }
   const host = requestHost(req.headers);
   const a = hostDecide(mode, kind, host, founderHosts(), isF);
-  if (isF) console.warn(`[founder.host] mode=${mode} kind=${kind} host=${host || "-"} founder_host=${founderHosts().includes(host)} decision=${a}`);
+  // probe: log EVERY login/signup attempt (host + is_founder only, never the email) so the guard can be proven to run; other modes log founders only.
+  if (isF || mode === "probe") console.warn(`[founder.host] mode=${mode} kind=${kind} host=${host || "-"} founder_host=${founderHosts().includes(host)} is_founder=${isF} decision=${a}`);
   return a === "refuse";
 }
 

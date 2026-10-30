@@ -46,12 +46,12 @@ function DeviceScreen({ code, revoked, retry }: { code: string | null; revoked: 
 
 const AWAM = [["Dashboard", "/app", "dashboard"], ["Mail", "/app/mail/inbox", "mail"], ["People", "/app/people", "people"], ["Calendar", "/app/calendar", "calendar"], ["Work", "/app/work", "work"], ["CRM", "/app/crm", "crm"], ["Org", "/app/org", "org"], ["Analytics", "/app/analytics", "analytics"], ["Safety", "/app/safety", "safety"], ["ANEXOChat", "/app/chat", "chat"], ["AI", "/app/ai-center", "ai"], ["Speed", "/app/perf", "speed"], ["Founder", "/app/founder", "founder"], ["Admin", "/app/admin", "admin"]];
 const CC: [string, string][] = [["dashboard", "Company health"], ["bridge", "Bridge"], ...ORDER.map((k): [string, string] => [k, DECK_META[k].title]), ["audit", "Audit ledger"]];
-/** Every page the router knows (TanStack Router, hash history: #/finance). Unknown names redirect to Bridge. */
+/** Every page the router knows (TanStack Router, hash history: #/finance). Unknown names redirect to the Dashboard (front page). */
 export const KNOWN = new Set([...CC.map((x) => x[0]), "profile", "settings"]);
 // L3 (30 Oct): the user app lives on its own host; links open it in a NEW tab there, so this founder host never serves or navigates to the awam app.
 const AWAM_ORIGIN = "https://anexomail.com";
 const AWAM_T: [string, string, string][] = (AWAM as [string, string, string][]).map(([n, p, ic]) => [n, AWAM_ORIGIN + p, ic]);
-const TABS: [string, string][] = [["bridge", "Bridge"], ["finance", "Finance"], ["people", "People"], ["mail_desk", "Mail"]];
+const TABS: [string, string][] = [["dashboard", "Home"], ["bridge", "Bridge"], ["finance", "Finance"], ["people", "People"]];
 const Chev = () => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>;
 
 /** Everything the page bodies need from the shell (profile, live bridge data, appearance). Provided by the shell, read by the routed pages. */
@@ -62,7 +62,7 @@ export const useShell = () => { const c = useContext(ShellCtx); if (!c) throw ne
 /** The routed page body for the current view. */
 export function ViewBody() {
   const { view, d, at, prof, loadProf, fx, setFx, slim, setSlim, setView } = useShell();
-  return (view === "bridge" ? <BridgeView d={d} at={at} me={prof} go={setView} /> : view === "dashboard" ? <DashboardView d={d} at={at} go={setView} /> : view === "profile" ? <ProfileView p={prof} reload={loadProf} /> : view === "settings" ? <SettingsView go={setView} p={prof} fx={fx} setFx={setFx} slim={slim} setSlim={setSlim} reload={loadProf} /> : DECK_META[view] ? <><DeckPage deck={view} money={d?.money} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : <div className="grid"><Deck key={view} deck={view} /></div>);
+  return (view === "bridge" ? <BridgeView d={d} at={at} me={prof} go={setView} /> : view === "dashboard" ? <DashboardView d={d} at={at} go={setView} me={prof} /> : view === "profile" ? <ProfileView p={prof} reload={loadProf} /> : view === "settings" ? <SettingsView go={setView} p={prof} fx={fx} setFx={setFx} slim={slim} setSlim={setSlim} reload={loadProf} /> : DECK_META[view] ? <><DeckPage deck={view} money={d?.money} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : <div className="grid"><Deck key={view} deck={view} /></div>);
 }
 
 export default function App() {
@@ -70,7 +70,7 @@ export default function App() {
   const [authed, setAuthed] = useState(hasToken());
   // TanStack Router (hash history): the current page is the route param, back/forward and deep links come from the router.
   const nav = useNavigate();
-  const view = useRouterState({ select: (s) => s.location.pathname.replace(/^\/+/, "").split("/")[0] || "bridge" });
+  const view = useRouterState({ select: (s) => s.location.pathname.replace(/^\/+/, "").split("/")[0] || "dashboard" });
   const [pal, setPal] = useState(false), [wsOpen, setWsOpen] = useState(() => { try { return window.localStorage.getItem("anexo.founder.ws") === "1"; } catch { return false; } });
   // Real URLs: #/finance etc. The page area fades in once on change (CSS, no waiting on the browser).
   const setView = useCallback((v: string) => { void nav({ to: "/$view", params: { view: v } }); }, [nav]);
@@ -150,7 +150,7 @@ export default function App() {
           </div>
         </header>
         <main className="pg" id="main" key={view}>
-          {view !== "bridge" && view !== "settings" && view !== "profile" && <div className="titleblock"><h1>{title}</h1></div>}
+          {view !== "bridge" && view !== "dashboard" && view !== "settings" && view !== "profile" && <div className="titleblock"><h1>{title}</h1></div>}
           {err && <div className="err banner" role="alert">{err}</div>}
           <Outlet />
           <footer className="pgfoot">{at ? `Updated ${fmtTime(at)} · refreshes every 15 s` : "Loading…"}</footer>

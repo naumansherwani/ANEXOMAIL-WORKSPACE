@@ -38,7 +38,7 @@ case "$M" in
 esac
 [ -f "$ENVF" ] || { echo "FAIL: $ENVF nahi"; exit 2; }
 if [ "$M" = enforce ]; then
-  LOGS | xargs -r grep -hF "[founder.host]" 2>/dev/null | grep -q "founder_host=true" \
+  LOGS | xargs -r grep -hF "[founder.host]" 2>/dev/null | grep -v "is_founder=false" | grep -q "founder_host=true" \
     || { echo "FAIL: pehle probe chalao aur founder host par login karo — log mein founder_host=true ka saboot nahi mila (lock-out se bachao)"; exit 3; }
 fi
 cp -p "$ENVF" "$ENVF.bak.hostguard.$(date +%s)"

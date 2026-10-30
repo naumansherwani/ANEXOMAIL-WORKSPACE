@@ -56,7 +56,7 @@ button.grp svg{transition:transform .15s}button.grp[aria-expanded="true"] svg{tr
 .titleblock p.dim{margin:0}
 /* Bridge */
 .bhead h1{margin-bottom:8px}.bsub{margin:0;display:flex;align-items:center;gap:10px;color:var(--dim);font-size:16px;flex-wrap:wrap}.bsub .sep{width:3px;height:3px;border-radius:50%;background:var(--faint)}
-.strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:var(--r3);background:var(--s1);overflow:hidden}
+.strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:var(--r3);background:var(--s1);overflow:hidden}
 .cell{padding:20px 24px;display:flex;flex-direction:column;gap:6px;min-width:0;border-right:1px solid var(--line)}.cell:last-child{border-right:0}
 .cl{color:var(--dim);font-size:13px}.cv{font:600 22px/1.25 Inter,sans-serif;letter-spacing:-.015em;font-variant-numeric:tabular-nums}.cv small{font:400 14px Inter,sans-serif;color:var(--dim);letter-spacing:0}
 .cv.off{color:var(--dim);font-weight:500;font-size:16px}.cn{font-size:12px;color:var(--dim);line-height:1.5}
@@ -107,3 +107,6 @@ html.slim .nv{width:44px;height:44px;justify-content:center;padding:0}html.slim 
   .prow .mini{width:100%}.cityact .ghost{width:100%}.searchbox{flex-basis:100%}
 }
 .cs{font:400 12px Inter,sans-serif;color:var(--faint);margin-top:2px}
+
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;border-radius:99px;background:var(--ok);transition:width .6s ease}.watch .lrow{padding:18px 22px}.lt code{font:600 11px ui-monospace,Menlo,monospace;color:var(--dim);margin-right:6px}button.lstate.lnk{background:transparent;border:1px solid currentColor;border-radius:99px;padding:5px 12px;cursor:pointer}
+@media (max-width:1023px) and (min-width:701px){.strip{grid-template-columns:repeat(2,minmax(0,1fr))}}

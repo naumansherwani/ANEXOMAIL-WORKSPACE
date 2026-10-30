@@ -138,3 +138,8 @@ Agar F2b se data na dikhe (ghalti se hide): rollback = pichla commit 7928c3a ya 
 ## 30 Oct 21:05 — L5d status (log ka sahi ghar)
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-hostguard.sh) status 2>&1 | tail -10`
 Agar [founder.host] line dikhe aur founder_host=true ho -> enforce command next (script khud lock-out se bachati hai).
+
+## 30 Oct 21:15 — ABHI PENDING (is tarteeb se)
+1) Rust+SPA (Dashboard front page + naya Bridge icon): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+2) Awam web (guard probe-log; Bun, pm2 restart khud): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
+3) Phir /founderlogin par ek baar login, phir hostguard `status` (command upar 21:05 wali).

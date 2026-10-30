@@ -3,12 +3,12 @@
 import { createRootRoute, createRoute, createRouter, createHashHistory, redirect, Navigate } from "@tanstack/react-router";
 import App, { KNOWN, ViewBody } from "./App";
 
-const root = createRootRoute({ component: App, notFoundComponent: () => <Navigate to="/$view" params={{ view: "bridge" }} replace /> });
-const index = createRoute({ getParentRoute: () => root, path: "/", beforeLoad: () => { throw redirect({ to: "/$view", params: { view: "bridge" } }); } });
+const root = createRootRoute({ component: App, notFoundComponent: () => <Navigate to="/$view" params={{ view: "dashboard" }} replace /> });
+const index = createRoute({ getParentRoute: () => root, path: "/", beforeLoad: () => { throw redirect({ to: "/$view", params: { view: "dashboard" } }); } });
 const page = createRoute({
   getParentRoute: () => root,
   path: "/$view",
-  beforeLoad: ({ params }) => { if (!KNOWN.has(params.view)) throw redirect({ to: "/$view", params: { view: "bridge" } }); },
+  beforeLoad: ({ params }) => { if (!KNOWN.has(params.view)) throw redirect({ to: "/$view", params: { view: "dashboard" } }); },
   component: ViewBody,
 });
 

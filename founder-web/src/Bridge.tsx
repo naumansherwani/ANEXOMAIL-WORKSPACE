@@ -3,6 +3,7 @@ import { dayPart } from "./greeting";
 import { useCity, fmtDateTime, fmtDay, fmtHM, coordsOf } from "./city";
 import { callName, nameOf } from "./Profile";
 import type { Prof } from "./types";
+import { Surface } from "./Surface";
 
 // Shapes of the signed /founder/v1/bridge data and the Polar/finance reads. Fields are optional because each source can be "not connected" (Rule 69).
 type Check = { name: string; state: "ok" | "warn" | "fail" | "unknown"; detail: string };
@@ -100,7 +101,7 @@ export function BridgeView({ d, at, me, go }: { d: any; at: At; me: Prof | null;
 }
 
 /** Company health (nouns and trends, read-only): the key totals that used to sit on the Bridge. Only real server data; nothing is drawn for a source that does not exist yet. */
-export function DashboardView({ d, at, go }: { d: any; at: At; go: (v: string) => void }) {
+export function DashboardView({ d, at, go, me }: { d: any; at: At; go: (v: string) => void; me: Prof | null }) {
   const m = d?.money, v = d?.voice, pl = d?.polar, hk = d?.polar_hook;
   const subs = hk?.subscriptions;
   const polar: CellData = !pl ? { value: null } : pl.connected && pl.mrr_minor != null
@@ -111,21 +112,34 @@ export function DashboardView({ d, at, go }: { d: any; at: At; go: (v: string) =
     : { value: <>£{(Number(m.mrr_gbp) === 0 ? 0 : Number(m.mrr_gbp)).toLocaleString("en-GB")} <small>MRR</small></>, sub: `${m.active_accounts} active account(s)${m.target_gbp ? ` · target £${m.target_gbp}` : ""} · ${m.source} (manual records, not Polar)` };
   const voice: CellData = !v ? { value: null } : !v.connected ? { value: "Not connected", off: true, sub: v.note }
     : { value: <>{v.new_leads} <small>{v.new_leads === 1 ? "new lead" : "new leads"}</small></>, sub: v.pending_channels?.length ? `Channels not connected yet: ${v.pending_channels.join(", ")}` : "" };
+  const t = d?.trouble, tot = t ? t.items.length : 0, bad = t ? t.items.filter((i: Check) => i.state !== "ok").length : 0;
+  const pay: CellData = !subs ? { value: null } : !subs.connected ? { value: "Not connected", off: true, sub: subs.note } : { value: <>{subs.by_status?.past_due ?? 0} <small>past due</small></>, sub: (subs.by_product || []).reduce((a: number, x: any) => a + (x.grace || 0), 0) ? `${(subs.by_product || []).reduce((a: number, x: any) => a + (x.grace || 0), 0)} in grace period` : "No payment problems" };
+  const target = Number(m?.target_gbp) || 0, mrr = Number(m?.mrr_gbp) || 0, pct = target ? Math.min(100, Math.round((mrr / target) * 100)) : 0;
   return (
     <>
+      <Greeting t={t} at={at} me={me} />
+      <div className="ledger watch" aria-label="Company watch">
+        <div className="lrow">
+          <i className={`sdot ${!t ? "unknown" : bad ? "warn" : "ok"}`} />
+          <div><div className="lt">Company watch</div><div className="ld">{!t ? "Not measured yet" : `${tot - bad}/${tot} checks fine${at ? ` · checked ${fmtHM(at)}` : ""}`}</div></div>
+          <button className={`lstate ${!t ? "unknown" : bad ? "warn" : "ok"} lnk`} onClick={() => go("bridge")}>{!t ? "Open Bridge" : bad ? `${bad} need a look` : "All clear"}</button>
+        </div>
+      </div>
       <section className="strip" aria-label="Key numbers">
         <Cell label="Billing · Polar" src={pl?.connected && pl.mrr_minor != null ? "Polar API" : "Polar webhook"} at={at} {...polar} action={!polar.off ? null : <button className="lnk" onClick={() => go("finance")}>Open Finance</button>} />
         <Cell label="Finance" src="Manual revenue records" at={at} {...fin} />
+        <Cell label="Payment problems" src="Polar webhook" at={at} {...pay} />
         <Cell label="Customer voice" src="Leads table" at={at} {...voice} />
       </section>
       {subs?.connected && (subs.by_product || []).length > 0 && <>
         <h2>Subscriptions by product</h2>
         <div className="ledger">{subs.by_product.map((x: any) => <div className="lrow" key={x.product}><i className={`sdot ${x.past_due ? "warn" : "ok"}`} /><div><div className="lt">{cap(x.product)}</div><div className="ld">{x.past_due ? `${x.past_due} past due` : "all paid"}{x.grace ? ` · ${x.grace} in grace` : ""}</div></div><b className="lnum">{x.active}</b></div>)}</div>
       </>}
-      <h2>Coming, in order</h2>
-      <div className="ledger">
-        {([["Ledger integrity gauge", "after the browser kernel (F2b) and the Merkle audit (F2c)"], ["Device trust map", "after device approval (step 8a)"], ["Work chain dependencies", "after the promise engine (step 10a)"], ["Live pulse", "after WebTransport"]] as [string, string][]).map(([a, b]) => <div className="lrow" key={a}><i className="sdot unknown" /><div><div className="lt">{a}</div><div className="ld">{b}</div></div><span /></div>)}
-      </div>
+      {m?.connected && target > 0 && <>
+        <h2>Revenue target</h2>
+        <div className="ledger"><div className="lrow"><i className={`sdot ${pct >= 100 ? "ok" : "unknown"}`} /><div><div className="lt">£{mrr.toLocaleString("en-GB")} of £{target.toLocaleString("en-GB")} MRR</div><div className="bar" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}><i style={{ width: `${pct}%` }} /></div></div><b className="lnum">{pct}%</b></div></div>
+      </>}
+      <Surface go={go} />
     </>
   );
 }
