@@ -552,6 +552,8 @@ async function founderHostGate(req: any, email: string, kind: "login" | "signup"
   const a = hostDecide(mode, kind, host, founderHosts(), isF);
   // probe: log EVERY login/signup attempt (host + is_founder only, never the email) so the guard can be proven to run; other modes log founders only.
   if (isF || mode === "probe") console.warn(`[founder.host] mode=${mode} kind=${kind} host=${host || "-"} founder_host=${founderHosts().includes(host)} is_founder=${isF} decision=${a}`);
+  // L5 v2 (E110): the proof lives in the database, not in log files. Founder attempts only (no email, no IP); fire and forget, never blocks a login.
+  if (isF) void Promise.resolve(getAdmin().rpc("founder_host_record", { p_source: "web", p_kind: kind, p_host: host || "-", p_founder_host: founderHosts().includes(host), p_is_founder: true, p_mode: mode, p_decision: a === "refuse" ? "refuse" : a === "log" ? "log" : "allow" })).catch(() => {});
   return a === "refuse";
 }
 

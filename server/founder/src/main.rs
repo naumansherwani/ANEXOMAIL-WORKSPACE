@@ -13,6 +13,7 @@ mod ftoken;
 mod polar;
 mod settings;
 mod authcache;
+mod hostproof;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -189,6 +190,10 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
             let did = r["device_id"].as_str().unwrap_or("");
             let Some((token, exp)) = keys.mint(&c.sub, &c.email, did, now_s()) else { return StatusCode::INTERNAL_SERVER_ERROR.into_response(); };
             st.lim.lock().unwrap().clear(&key);
+            { // L5 v2: where was this founder session made? (fire and forget, never slows or fails the sign-in)
+                let (sb2, host) = (sb.clone(), hostproof::host_of(&h)); let fh = hostproof::is_founder_host(&host, &hostproof::founder_hosts());
+                tokio::spawn(async move { let _ = sb2.rpc("founder_host_record", json!({"p_source": "rust", "p_kind": "exchange", "p_host": host, "p_founder_host": fh, "p_is_founder": true, "p_mode": "n/a", "p_decision": "allow"})).await; });
+            }
             let req_key = B64.encode(sign::req_key(&st.hmac_key, &token));
             Json(json!({"token": token, "req_key": req_key, "exp": exp, "expires_in": ftoken::TTL_SECS, "device": r["label"], "first": r["first"].as_bool().unwrap_or(false)})).into_response()
         }
@@ -224,6 +229,16 @@ async fn actions_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Respon
     match sb.rows("founder_actions?select=key,deck,title,summary,danger,enabled,reversible&order=deck,key").await {
         Some(rows) => signed(&st, json!({"connected": true, "actions": rows})),
         None => signed(&st, json!({"connected": false, "note": "founder_actions not found — run the E102 SQL (sql-run.sh)"})),
+    }
+}
+
+/// GET /founder/v1/hostguard — proof of "founder only on the founder host" straight from E110 (signed like every answer).
+async fn hostguard_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
+    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    let sb = st.sb.as_ref().unwrap();
+    match sb.rpc("founder_host_proof", json!({})).await {
+        Some(p) => signed(&st, p),
+        None => signed(&st, json!({"connected": false, "note": "founder_host_proof not found - run the E110 SQL (sql-run.sh)"})),
     }
 }
 
@@ -273,6 +288,7 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/finance/polar", get(polar_ep))
         .route("/founder/v1/actions", get(actions_ep))
         .route("/founder/v1/audit", get(audit_ep))
+        .route("/founder/v1/hostguard", get(hostguard_ep))
         .route("/founder/v1/action", axum::routing::post(action_ep))
         .fallback_service(tower_http::services::ServeDir::new(static_dir).append_index_html_on_directories(true).precompressed_gzip())
         .with_state(st)

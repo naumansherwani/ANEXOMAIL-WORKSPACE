@@ -58,3 +58,15 @@ Qaida: UI sirf kernel ka natija dikhata hai; kernel "TAMPERED" kahe to data rend
 | L22 NEW: "Founder Command Center" in the Founder · Chairman blue, top bar + greeting eyebrow | CODE DONE | founder-install, then Chrome |
 | L5, L5b-L5f host guard | OPEN, FOUNDER STEP: Sign out, login at /founderlogin, then `founder-hostguard.sh status`; cannot be proven from here | founder |
 | E109 SQL | GREEN on server (ledger written, CHECK_E109 9/9 OK, founder paste 22:44); no UI uses it yet | server |
+
+## L5 v2 — rewritten 30 Oct 22:58 PKT on latest technology (founder 22:54: "L5 ke codes phir se likho ... latest technology")
+Why v1 failed: the proof was a grep of pm2 log files; status was empty 5 times (log paths, env not in /proc, login path unclear), and `enforce` depended on it.
+| Layer | Technology | Code |
+|---|---|---|
+| SQL | Postgres, RLS on, append-only `founder_host_events` (host, kind, is_founder, mode, decision; no email/IP), `founder_host_record`, `founder_host_proof()` (ready_to_enforce, last founder-host session, last founder-on-user-host attempt, counts), selftest + CHECK_E110 (7/7 locally) | `docs/cursor-work/sql/E110_founder_host_proof.sql`, `CHECK_E110.sql` |
+| RUST (tokio, axum) | `exchange` records where the founder session was made (Host / x-forwarded-host, async fire-and-forget, never slows sign-in); NEW signed `GET /founder/v1/hostguard`; `hostproof.rs` + 4 tests (70 total pass) | `server/founder/src/hostproof.rs`, `main.rs` |
+| KERNEL | the new endpoint's answer is verified in the browser like every other (no new kernel code) | — |
+| UI (React-TS) | Dashboard feature card "Host separation" + endpoint row (8 endpoints) | `Surface.tsx` |
+| WEB (awam Bun) | `founderHostGate` also writes the E110 row (founder attempts only, fire-and-forget); enforcement logic unchanged | `server/routes/auth.ts` |
+| Bash | `founder-hostguard.sh status` prints the database proof; `enforce` requires `ready_to_enforce` from the database, not log grep | `docs/cursor-work/server/founder-hostguard.sh` |
+Status: CODE DONE, NOT GREEN. Order: sql-run (E110) -> awam pull.sh (auth.ts) -> founder-install (Rust + UI) -> founder signs out and in at /founderlogin -> `status` shows ready_to_enforce true -> `enforce`.

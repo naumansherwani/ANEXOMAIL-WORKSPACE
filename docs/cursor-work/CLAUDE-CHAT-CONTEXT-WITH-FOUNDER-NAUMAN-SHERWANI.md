@@ -2039,3 +2039,5 @@ Scene3D.tsx appeared in the working tree at 22:25 (not written by me in this tur
 ## 22:42 PKT — live Chrome check of db15a3e (founder installed): orb green 2/2, greeting v2, bridge map OK; profile mark overlapped real name (fixed, awaits install). E109 SQL STILL NOT RUN on the server: founder needs the sql-run.sh commands (in PULL-COMMANDS.md 22:30). Phase position written in FOUNDER-GREEN-AUDIT-30OCT.md.
 
 ## 22:55 PKT — RULE (founder, 1e9th time): the REAL logo (Brand.tsx `LogoMark`, user-app paths) wherever a logo is needed; never redraw it. E109 installed + CHECK 9/9 on server. L-series table in FOUNDER-LOOPHOLE-LEDGER-30OCT.md "L-SERIES LIVE STATUS": L14/15/16/17/18/19 now GREEN from Chrome numbers; only L5* (founder sign-out/login) open. Founder blue (#5ec8ff to #4aa3f0) = top bar + greeting eyebrow + Founder pill. Next: founder-install (logo+colour), then Rust live endpoint + SSE.
+
+## 22:58 PKT — L5 v2 (latest technology) written: proof now in DB (E110), not pm2 logs. 4 pulls needed in this order: sql-run (E110) -> awam pull.sh -> founder-install -> founder sign out/in -> `founder-hostguard.sh status` -> enforce. See ledger "L5 v2".

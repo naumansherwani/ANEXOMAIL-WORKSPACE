@@ -11,12 +11,18 @@ set -euo pipefail
 W="${W:-/opt/anexomail-web}"; APP="${APP:-anexomail-web}"; ENVF="${ENVF:-$W/.env}"; M="${1:-status}"
 [ "$(id -u)" -eq 0 ] || { echo "FAIL: root chahiye"; exit 2; }
 LOGS() { ls "/var/log/pm2/$APP"-*.log "${PM2_HOME:-$HOME/.pm2}/logs/$APP"-*.log 2>/dev/null || true; }  # asli ghar: /var/log/pm2 (diag 30 Oct), purana ~/.pm2/logs bhi
+PROOF() {  # E110: saboot database se (founder_host_proof), pm2 log se nahi. psql + /etc/anexomail/sync.env (WORKING_URL), jaise sql-run.sh.
+  [ -r /etc/anexomail/sync.env ] && . /etc/anexomail/sync.env 2>/dev/null || true
+  command -v psql >/dev/null && [ -n "${WORKING_URL:-}" ] && psql "$WORKING_URL" -X -At -c "select founder_host_proof()::text" 2>/dev/null || echo ""
+}
 show() {
   echo "mode (.env file): $(grep -E '^FOUNDER_HOST_GUARD=' "$ENVF" 2>/dev/null | tail -1 | cut -d= -f2- || true)"
   PID="$(pm2 pid "$APP" 2>/dev/null | head -1 || true)"
   if [ -n "${PID:-}" ] && [ "$PID" != 0 ] && [ -r "/proc/$PID/environ" ]; then echo "mode (running process): $(tr '\0' '\n' </proc/"$PID"/environ | grep -E '^FOUNDER_HOST_GUARD=' | cut -d= -f2- || true)"; else echo "mode (running process): pid nahi mila"; fi
   echo "--- aakhri [founder.host] log (pm2 ki poori log files, sirf aakhri 400 line nahi):"
-  LOGS | xargs -r grep -hF "[founder.host]" 2>/dev/null | tail -5 || true; }
+  LOGS | xargs -r grep -hF "[founder.host]" 2>/dev/null | tail -5 || true
+  P="$(PROOF)"; echo "--- SABOOT (database, E110 founder_host_proof):"
+  if [ -n "$P" ]; then echo "$P" | python3 -c 'import sys,json;d=json.load(sys.stdin);[print(f"  {k}: {d.get(k)}") for k in ("state","ready_to_enforce","last_founder_host_at","last_founder_on_awam_host_at","web_guard_last_seen_at","refused_30d","counts_30d","note") if k in d]'; else echo "  nahi mila: E110 SQL chalayein (sql-run.sh) ya WORKING_URL nahi"; fi; }
 diag() {  # READ-ONLY: kuch badalta nahi, koi secret value nahi chhapta (sirf naam/haan-nahi/ginti)
   L="/var/log/pm2"
   echo "== pm2 app '$APP': pid=$(pm2 pid "$APP" 2>/dev/null | head -1) cwd=$(readlink "/proc/$(pm2 pid "$APP" 2>/dev/null | head -1)/cwd" 2>/dev/null || echo ?)"
@@ -38,8 +44,9 @@ case "$M" in
 esac
 [ -f "$ENVF" ] || { echo "FAIL: $ENVF nahi"; exit 2; }
 if [ "$M" = enforce ]; then
-  LOGS | xargs -r grep -hF "[founder.host]" 2>/dev/null | grep -v "is_founder=false" | grep -q "founder_host=true" \
-    || { echo "FAIL: pehle probe chalao aur founder host par login karo — log mein founder_host=true ka saboot nahi mila (lock-out se bachao)"; exit 3; }
+  P="$(PROOF)"
+  echo "$P" | grep -q '"ready_to_enforce": true' \
+    || { echo "FAIL: database saboot nahi (founder host par koi session record nahi). Sign out, /founderlogin par login, phir status. (lock-out se bachao)"; exit 3; }
 fi
 cp -p "$ENVF" "$ENVF.bak.hostguard.$(date +%s)"
 sed -i '/^FOUNDER_HOST_GUARD=/d' "$ENVF"; printf 'FOUNDER_HOST_GUARD=%s\n' "$M" >>"$ENVF"

@@ -176,3 +176,9 @@ founder-install.sh: `git -C /opt/anexomail-web fetch -q origin main && bash <(gi
 ## 30 Oct 22:42 PKT — profile mark fix (UI only): founder-install.sh (same command as above)
 
 ## 30 Oct 22:55 PKT — real logo + Founder blue (UI only): founder-install.sh (same command as above)
+
+## 30 Oct 22:58 PKT — L5 v2 (4 pulls, in order)
+1) SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) 2>&1 | tail -25` then `... sql-run.sh) E110_founder_host_proof CHECK_E110 2>&1 | tail -25`
+2) WEB (awam): the usual `pull.sh` (restarts anexomail-web)
+3) RUST+UI: founder-install.sh (command above)
+4) status: `... founder-hostguard.sh) status 2>&1 | tail -20`

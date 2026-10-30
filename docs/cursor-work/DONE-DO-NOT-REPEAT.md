@@ -1226,3 +1226,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 30 Oct 22:42 PKT: profile 3D mark placement fix (dx.css) done; green audit updated. Do not redo.
 
 - 30 Oct 22:55 PKT: LogoMark real logo everywhere (Brand.tsx), Founder blue title, L-series live status DONE. Never redraw the logo.
+
+- 30 Oct 22:58 PKT: L5 v2 code (E110, hostproof.rs, hostguard endpoint, auth.ts record, script) DONE; not installed. Do not rewrite.
