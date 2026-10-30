@@ -82,3 +82,8 @@ button.dx-card{cursor:pointer;width:100%}button.dx-card:hover{transform:translat
 .g-eyebrow,.crumb b{background:linear-gradient(90deg,#5ec8ff,#4aa3f0);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
 .crumb b{font-weight:700}
 .phero{display:none}
+/* Greeting v3 (founder 22:58): Founder · Chairman sits in the centre under "Good night"; the date now lives with the time. */
+.g-main{display:inline-flex;flex-direction:column;align-items:center;text-align:center}
+.g-main .hello{justify-content:center}.g-main .g-meta{justify-content:center;margin-bottom:12px}.g-main .bsub{justify-content:center}
+.clock .cdate{color:#9aa6bd;letter-spacing:.12em}
+@media (max-width:700px){.g-main{align-items:flex-start;text-align:left}.g-main .hello,.g-main .g-meta,.g-main .bsub{justify-content:flex-start}}

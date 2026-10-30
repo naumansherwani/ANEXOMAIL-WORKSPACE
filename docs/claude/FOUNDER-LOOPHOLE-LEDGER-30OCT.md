@@ -70,3 +70,4 @@ Why v1 failed: the proof was a grep of pm2 log files; status was empty 5 times (
 | WEB (awam Bun) | `founderHostGate` also writes the E110 row (founder attempts only, fire-and-forget); enforcement logic unchanged | `server/routes/auth.ts` |
 | Bash | `founder-hostguard.sh status` prints the database proof; `enforce` requires `ready_to_enforce` from the database, not log grep | `docs/cursor-work/server/founder-hostguard.sh` |
 Status: CODE DONE, NOT GREEN. Order: sql-run (E110) -> awam pull.sh (auth.ts) -> founder-install (Rust + UI) -> founder signs out and in at /founderlogin -> `status` shows ready_to_enforce true -> `enforce`.
+| L21 / L22 update 23:05 | L21 real logo GREEN and L22 Founder blue top bar GREEN (Chrome 22:59). Greeting v3 (pill centred, date with time) repo only | founder-install |

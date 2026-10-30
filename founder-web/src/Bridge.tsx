@@ -36,6 +36,7 @@ function Clock({ tz, city }: { tz: string; city: string }) {
     <time className="clock" dateTime={now.toISOString()} aria-label={`${p.hour}:${p.minute} ${per} in ${city}`}>
       <span className="digits" aria-hidden="true"><span className="pair">{[...p.hour].map((d, i) => D(d, i))}</span><b className="colon">:</b><span className="pair">{D(p.minute[0], 0)}{D(p.minute[1], 1)}</span><span className="ampm">{per}</span></span>
       <span className="beam" aria-hidden="true"><i style={{ width: `${(Number(p.second) / 59) * 100}%` }} /></span>
+      <small className="cdate">{new Intl.DateTimeFormat("en-GB", { weekday: "long", day: "numeric", month: "long", timeZone: tz }).format(now)}</small>
       <small><span className="dot" />{city} · {String(p.timeZoneName || "")}</small>
     </time>
   );
@@ -70,10 +71,10 @@ function Greeting({ t, at, me }: { t: Trouble | null | undefined; at: At; me: Pr
   const tone = !t ? "unknown" : bad ? "warn" : "ok";
   return (
     <header className="greet">
-      <div>
+      <div className="g-main">
         <span className="kicker g-eyebrow">FOUNDER COMMAND CENTER</span>
         <h1 className="hello"><span>{SAY[part]}{nm ? <>, <span className="nm">{nm}</span></> : ""}</span><DayGlyph part={part} /></h1>
-        <div className="g-meta"><span className="g-pill">Founder · Chairman</span><span className="g-date">{fmtDay(now)}</span></div>
+        <div className="g-meta"><span className="g-pill">Founder · Chairman</span></div>
         <p className="bsub"><span className={`sdot ${tone}`} aria-hidden="true" />
           <span>{!t ? (at ? "Nothing measured yet." : "Checking your systems…") : bad ? `${bad} item${bad === 1 ? "" : "s"} need${bad === 1 ? "s" : ""} a look` : "Nothing needs attention"}</span></p>
       </div>
