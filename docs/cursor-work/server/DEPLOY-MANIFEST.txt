@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 3fa3f784ab42df09
+docs/cursor-work/founder/founder-commands.md dd23c9afe03177c6
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md d1ef3ed9c04b19b8
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 48a7e47734c4751e
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -955,7 +955,7 @@ docs/cursor-work/server/rules-gate.py 20ea7a9c569d1141
 CLAUDE.md 4f9d180d117bc1f2
 docs/claude/FOUNDER-KILLER-FEATURES-28OCT.md 8f8bb489bc473a7c
 founder-web/src/cinema.css 312474c073e9860d
-docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md 4cd73cab22f91885
+docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md af209f4adf209b87
 founder-web/src/fonts/Inter-ExtraLight.woff2 6d7a7e116e51ec3f
 founder-web/src/fonts/Inter-Light.woff2 ef36dc6c1a3a465d
 docs/claude/FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md f8521c78a2103383

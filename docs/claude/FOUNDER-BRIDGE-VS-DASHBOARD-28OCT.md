@@ -4,33 +4,42 @@ Rule: **Bridge = verbs and "now" (what needs ME).** **Dashboard = nouns and "tre
 ## What I check as CEO, in this order every morning
 1. Is anything on fire? 2. Is money coming in? 3. Who is waiting for my decision? 4. Did anyone touch something they shouldn't? 5. Are customers OK? 6. What is live / risky?
 
-## BRIDGE (founder only, across all tenants, every row has an action)
-| # | Block | Source / step | Action (gate) |
-|---|---|---|---|
-| B1 | **Needs you** — one queue: approvals, appeals, comp/extend requests, sealed agreements waiting for my countersign, insider holds to review, release waiting | Decide (N) step 8; K1 11a; K4 10b; F3/F4 | Approve / reject (G2, G3 for money) |
-| B2 | **Money now** — MRR, failed payments, who is about to churn | Polar (F3-a done, F3-b step 9) | Send reminder / extend grace (G2) |
-| B3 | **Fire alarm** — anything failing right now + the kill switches | Systems probes (12), Control (13) | Open incident / kill switch (G3) |
-| B4 | **Release** — what is live, one-click deploy + rollback | Release deck (9), executor (13) | Deploy / rollback (G3) |
-| B5 | **Customers waiting** — new leads, SLA breaches, abuse review queue | Mail Desk (11), People (10) | Reply / assign (G2) |
-| B6 | **Live Pulse** — real vs test accounts, signups today | step 8 | none (read) |
-| B7 | **Poison Pill** — devices I can shred | K3 (13a) | Shred (G3 + passkey) |
-| B8 | **Mesh fleet** — office LAN nodes online (only when K2 exists) | K2 (12a) | none |
-| B9 | **My desk** — founder mail summary, my tasks/calendar | Founder desk (15) | open |
-Bridge stays short: max ~6 blocks visible, each with its count; everything else one click away in the decks (Rule 65: clean screen, nothing lost).
+## FIXED 30 Oct 19:40 PKT (founder: "dashboard aur bridge mein kya hona chahiye, abhi fix karo"): ek tile = ek ghar, test = "kya isme meri koi action hai?"
+Purani galtiyan jo theek hui: (1) B6 Live Pulse aur B8 Mesh mein koi action nahi thi, to woh Bridge ke nahi, Dashboard ke hain. (2) Bridge par abhi Billing, Finance (MRR) aur Customer voice ke totals dikhte hain: yeh "how is the company" (noun/trend) hain, yani Dashboard ke; Bridge par sirf unka EXCEPTION (past due, failed payment, SLA breach) aayega. (3) Bridge max 6 blocks.
 
-## DASHBOARD (company health, read-only G1; first for ANEXOMAIL itself, later the same component per business account — FC22)
-| # | Block | Source / step |
-|---|---|---|
-| D1 | **Ledger Integrity Gauge** (founder's #1) | F2c Merkle — 5a |
-| D2 | **Active Work Chain Dependencies** (founder's #2) | Promise engine + `depends_on` — 10a |
-| D3 | **Device Trust Map** (founder's #3) | founder_devices + device vault — 8a |
-| D4 | **Uptime and speed** — probes history, p95, error rate | Systems — 12 |
-| D5 | **Growth** — MRR trend, signups, activation, churn curve | F3 — 9 |
-| D6 | **Mail health** — deliverability, bounces, queue age | Mail Desk — 11 |
-| D7 | **Capacity** — disk, mailboxes, storage per plan | Systems — 12 |
-| D8 | **Support clock** — SLA, response time trend | Mail Desk — 11 |
-| D9 | **Audit activity** — writes per day, time machine / drift | F2c, S2 — 5, 6 |
-Navigation order (founder 13:06): **Dashboard, then Bridge**, then the decks. "Dashboard" appears above Bridge when D1 ships (5a); no empty page before that. The sidebar group label "Command center" is no longer printed above Bridge; it is the first part of the breadcrumb (Command center / Bridge).
+## BRIDGE — founder ke samne "ABHI MUJH SE KYA CHAHIYE" (verbs; har row mein action)
+| # | Block | Kya dikhe (real data) | Action (gate) | Technology |
+|---|---|---|---|---|
+| B1 | **Needs you** | approvals, appeals, comp/extend, sealed agreements, insider holds, release waiting: ek queue | Approve / reject (G2; paisa = G3) | Rust `founder_actions` queue + gates; passkey `webauthn-rs` (F2d) |
+| B2 | **Fire alarm** | jo abhi fail ho raha hai (Mail Outbox, Expiry Watch, 12 probes) + kill switches | Open incident / kill switch (G3) | Rust `tokio` probes + `reqwest`; systemd reader |
+| B3 | **Money exceptions** | past due, failed payments, churn risk, Polar webhook reject (sirf jab ho) | Reminder / extend grace (G2) | Rust `reqwest` Polar poller (60 s) |
+| B4 | **Customers waiting** | naye leads, SLA breach, abuse queue | Reply / assign (G2) | Rust mail-desk reader + SLA clock (`tokio`) |
+| B5 | **Release** | kya live hai, deploy + rollback | Deploy / rollback (G3) | Rust executor (allow-list, F8) |
+| B6 | **Poison Pill** | woh devices jinhe shred kar sakta hoon | Shred (G3 + passkey) | crypto-shred (K3) |
+| B7 | **My desk** | mera mail summary, tasks, calendar | Open | founder desk (step 15) |
+Khali block nahi dikhta: "Nothing needs attention" (jaisa abhi). Bridge = chhoti, tez, kaam wali screen.
+
+## DASHBOARD — founder ke samne "COMPANY KAISI HAI" (nouns/trend; read-only G1; naam "Company health")
+| # | Block | Kya dikhe | Technology |
+|---|---|---|---|
+| D1 | **Ledger Integrity Gauge** (#1) | ek number: chain + Merkle browser mein verify hua ya nahi | Rust `sha2` chain + Merkle (E107), **WASM kernel verify (F2b/F2c)**, gauge = React SVG |
+| D2 | **Active Work Chain Dependencies** (#2) | kaun sa kaam kis par ruka hai | Postgres `depends_on` + promise engine (10a) |
+| D3 | **Device Trust Map** (#3) | meri devices ka shehar/trust | Postgres `founder_devices`, Three.js lazy (city, kabhi IP nahi) |
+| D4 | **Money & growth** | MRR, active subscriptions, signups, activation, churn curve (abhi Bridge par jo 3 cells hain, woh yahan aayenge) | Polar Metrics + `E105` pulse tables, React SVG charts |
+| D5 | **Uptime and speed** | probe history, p95, error rate | Rust probes table |
+| D6 | **Mail health** | deliverability, bounces, queue age | Mail Desk reader |
+| D7 | **Capacity** | disk, mailboxes, storage per plan | Rust read-only metrics |
+| D8 | **Support clock** | SLA, response time trend | Mail Desk |
+| D9 | **Audit activity** | writes/day, time machine / drift | SQL view over `founder_audit` |
+| D10 | **Live Pulse** | real vs test accounts, signups today, live | Rust `tokio::sync::watch` -> **WebTransport** (`wtransport`) |
+| D11 | **Mesh fleet** | office LAN nodes (sirf jab K2 ho) | research spike |
+
+## TECHNOLOGY LAYERS — kaun kya karta hai, mix nahi
+1. **Rust backend** (axum + tokio, 24x7): data banata, sign karta (Ed25519), gates lagata.
+2. **WASM kernel** (`web-wasm/`, Rust, tokio LocalSet, Worker): backend se aata, browser mein verify karta; "TAMPERED" to tile data nahi dikhata.
+3. **React 19.2 + TypeScript + TanStack Router + Tailwind + shadcn**: sirf dikhata hai (Bridge, Dashboard, Settings).
+4. **Cinematic** (CSS aurora/glass/flip clock, Three.js lazy): sirf look; kabhi data/verify nahi.
+Navigation: Dashboard ("Company health") Bridge se pehle, lekin tab aayega jab D1 ship ho (khali page nahi, Rule 69). Tab tak Bridge ke 3 total-cells wahin rehte (founder ne pasand kiye, FC43), phir D4 mein jayenge founder ke "haan" par.
 
 ## What I (CEO) would build first
 1. Make money real (Polar token, F3-b) — a company that cannot see its money is flying blind.
