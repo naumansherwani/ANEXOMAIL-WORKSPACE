@@ -126,3 +126,7 @@ Agar F2b se data na dikhe (ghalti se hide): rollback = pichla commit 7928c3a ya 
 ## 30 Oct 20:35 — ABHI PENDING
 1) Rust + SPA (Settings 8-tab list): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
 2) L5 diagnosis (naya status: running process env + poori log files): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-hostguard.sh) status 2>&1 | tail -14`
+
+## 30 Oct 20:45 — ABHI PENDING
+1) Rust + SPA (naya Bridge icon): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+2) L5 read-only diag (kuch badalta nahi, koi secret nahi): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-hostguard.sh) diag 2>&1 | tail -20`
