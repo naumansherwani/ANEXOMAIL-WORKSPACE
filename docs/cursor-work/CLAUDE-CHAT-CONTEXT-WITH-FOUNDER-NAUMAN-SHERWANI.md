@@ -2029,3 +2029,6 @@ Founder said UI was plain text (honest verdict: it was NOT Apple level: flat box
 
 ## 22:35 PKT — Chrome live: new Dashboard CONFIRMED (2/2 ring, 7/7 endpoints, Trusted). Old look seen earlier was a stale tab (same-hash navigate does not reload).
 Founder 22:15 order: logo loading on every refresh, everywhere. Done in code: `Splash` in App.tsx (+ dx.css): logo + "Founder Command Center" + bar, stays until first fresh signed answer (min 0.7 s, max 4 s), fades out. Needs founder-install, then Chrome check. NOT yet done (honest): 3D/cinematic graphics (Three.js is in package.json but unused on Dashboard) and Profile/Account page polish: next UI phase, needs founder's word on where 3D goes (proposal: Bridge map "-> <-" + hero orb), per Rule 63 design note first.
+
+## 22:30 PKT — founder: "ek bhi mock data hua to goli maron ga ... live ... sql advance 800 lines"
+Wrote E109 (E107 stays reserved for Merkle): live change feed + one-RPC snapshot + metrics + anomaly, 600 real lines (not padded), tested on local Postgres 16 (selftest OK, CHECK 9/9). Audit: no invented business numbers; ONE static claim found (`pending_channels` hard-coded in bridge.rs) and polling is 15 s. Next: founder runs sql-run.sh + CHECK_E109, then Rust live endpoint + SSE, then UI. Splash (2e67532) still awaits founder-install.

@@ -165,3 +165,7 @@ founder-install.sh: `git -C /opt/anexomail-web fetch -q origin main && bash <(gi
 
 ## 30 Oct 22:35 PKT — Splash loading screen (UI only)
 founder-install.sh: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh)`
+
+## 30 Oct 22:30 PKT — E109 founder live (SQL only)
+1) `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) 2>&1 | tail -25`
+2) `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E109_founder_live CHECK_E109 2>&1 | tail -25`
