@@ -90,8 +90,10 @@ async fn authed(st: &St, h: &HeaderMap) -> Result<jwt_core::Claims, StatusCode> 
     if ftoken::looks_founder(tok) {
         let Some(k) = &st.ft else { return Err(StatusCode::UNAUTHORIZED) };
         let c = k.verify(tok, now_s()).map_err(|_| StatusCode::UNAUTHORIZED)?;
-        if !sb.is_founder(&c.sub).await { return Err(StatusCode::FORBIDDEN); }
-        if !sb.device_ok(&c.sub, &c.did).await { return Err(StatusCode::UNAUTHORIZED); } // device revoke => foran band
+        // L2 (30 Oct): dono DB checks ek saath (pehle line se, 2 round-trip); natija wahi: founder nahi => 403, device revoke => 401 (foran band)
+        let (founder, dev) = tokio::join!(sb.is_founder(&c.sub), sb.device_ok(&c.sub, &c.did));
+        if !founder { return Err(StatusCode::FORBIDDEN); }
+        if !dev { return Err(StatusCode::UNAUTHORIZED); }
         return Ok(jwt_core::Claims { sub: c.sub, email: c.email, session_id: None, exp: c.exp });
     }
     if !st.legacy { return Err(StatusCode::UNAUTHORIZED); }
@@ -133,12 +135,13 @@ async fn bridge_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Respons
     if let Err(code) = authed(&st, &h).await { return code.into_response(); }
     let sb = st.sb.as_ref().unwrap();
     let path = std::env::var("EXPIRY_WATCH_FILE").unwrap_or_else(|_| "/var/lib/anexomail/expiry-watch.json".into());
-    let (accs, target, queue, leads, expiry) = tokio::join!(
+    let (accs, target, queue, leads, expiry, polar_hook) = tokio::join!(
         sb.rows("revenue_accounts?select=status,mrr_gbp"),
         sb.rows("revenue_targets?select=target_gbp&order=month.desc&limit=1"),
         sb.count("mail_outbox?select=id&state=in.(queued,failed)"),
         sb.count("revenue_leads?select=id&stage=eq.new"),
         read_expiry(&path),
+        hook_view(&st),
     );
     let tgt = target.and_then(|r| r.first().cloned()).and_then(|r| r.get("target_gbp").and_then(|v| v.as_f64().or_else(|| v.as_str().and_then(|s| s.parse().ok()))));
     signed(&st, json!({
@@ -146,7 +149,7 @@ async fn bridge_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Respons
         "trouble": bridge::trouble(queue, expiry.as_ref()),
         "voice": bridge::voice(leads),
         "polar": st.polar.view(now_s()),
-        "polar_hook": hook_view(&st).await,
+        "polar_hook": polar_hook,
     }))
 }
 
@@ -194,9 +197,10 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
 async fn hook_view(st: &St) -> Value {
     let now = now_s();
     if let Some((t, v)) = st.hook.lock().unwrap().clone() { if now - t < 5 { return v; } }
-    let mut v = match &st.sb { Some(sb) => sb.rpc("founder_polar_pulse", json!({})).await.unwrap_or_else(|| json!({"webhook": {"connected": false, "note": "pulse unavailable — run the E105 SQL (sql-run.sh) or the database did not answer"}})), None => json!({"webhook": {"connected": false, "note": "database not configured"}}) };
+    let (pulse, rejects) = match &st.sb { Some(sb) => tokio::join!(sb.rpc("founder_polar_pulse", json!({})), sb.rpc("founder_polar_rejects", json!({}))), None => (None, None) };
+    let mut v = match &st.sb { Some(_) => pulse.unwrap_or_else(|| json!({"webhook": {"connected": false, "note": "pulse unavailable — run the E105 SQL (sql-run.sh) or the database did not answer"}})), None => json!({"webhook": {"connected": false, "note": "database not configured"}}) };
     if let (Some(sb), Some(o)) = (&st.sb, v.as_object_mut()) { // E106: why signatures were rejected (counts only); absent until E106 is applied
-        if let Some(r) = sb.rpc("founder_polar_rejects", json!({})).await { o.insert("rejects".into(), r); }
+        let _ = sb; if let Some(r) = rejects { o.insert("rejects".into(), r); }
     }
     *st.hook.lock().unwrap() = Some((now, v.clone()));
     v

@@ -1711,3 +1711,7 @@ Halat: FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md theek kiya: stale technology line (T
 ## 30 Oct 19:25 PKT — founder order (verbatim)
 "dashboard main kaun se features aye gay aur bridge main kaun se features aye gay yeh repo main likha hai is ko fix kero abhi ke abhi technology kaun si aye gi yeh serious hai dashboard main founder ke samne kya hona chaiye hain aur bridge main founder ke samne kya hona chaoye hain yeh socho aur jawab do"
 Halat: FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md fix (B6/B8 -> Dashboard, 3 total-cells -> D4 baad mein, Bridge 7 verb blocks, Dashboard D1-D11, 4 technology layers).
+
+## 30 Oct 19:29 PKT — founder order (verbatim, short)
+"yeh repo main likho ke yeh fix hona hai in ki tarteeb se fix kero sab ... technology ko mind main rakh ke ... yeh sab ka sab kaam kerna hai yeh priritoy hai aur tarteeb main yeh add kero aur yeh kaam shuru kero aur compact chat se pehle context update kero. yeh f2b shuru kerne se pehle in ko fix kero green kero." (+ Bridge/Dashboard split: Bridge = action blocks, Dashboard = Company health)
+Halat: MASTER-ORDER row 3b (F2b se pehle). Code: L2 Rust concurrency, L3 awam links naye tab, Dashboard "Company health" view, L9 Bridge totals Dashboard mein. Server+Chrome green baqi. L7 lockfile npm chal raha. L5 founder step.

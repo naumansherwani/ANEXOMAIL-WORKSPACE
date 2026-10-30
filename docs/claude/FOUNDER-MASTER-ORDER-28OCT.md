@@ -10,6 +10,7 @@ UI system (tokens, shell, Trust, mobile/tablet): docs/claude/FOUNDER-UI-DESIGN-2
 | 2 | Settings S1 (E108): photo, name, **home city / adaptive city**, graphics, sidebar | built, tested, on server after: sql-run.sh -> CHECK_E108 -> founder-install.sh |
 | 3 | Server leftovers: awam host guard (`pull.sh`, probe -> enforce), Polar Metrics token | Polar token **DONE 30 Oct** (reader ON); host guard still `probe` (needs one sign-in at /founderlogin, then enforce) |
 | 3a | **T1 UI stack foundation** — TypeScript + TanStack Router + Tailwind 4.2 + shadcn (founder 30 Oct 18:54: locked technology is USED, not listed as a gap) — FOUNDER-TECHNOLOGY-ADOPTION-30OCT.md | in progress |
+| 3b | **PRIORITY BEFORE F2b (founder 30 Oct 19:29):** fix the open loopholes in this order — L2 Bridge speed (Rust: auth DB checks + Polar pulse run together), L3 awam links never on the founder host (open on anexomail.com in a new tab), Bridge/Dashboard split ("Company health" view; Bridge keeps only action rows), L7 lockfile, L5 host guard enforce (founder: sign in once, then `founder-hostguard.sh status` -> `enforce`). L4 (Trust chip) is F2b itself. Green on server + Chrome first | in progress |
 | 4 | **F2b** WASM kernel verify in the browser (pins the public key, SRI, enforce) | next build |
 | 5 | **F2c** audit v1 + Merkle (E107) | after 4 |
 | 5a | **I1 Ledger Integrity Gauge** (+ Dashboard item in Command center) — FOUNDER-KILLER-FEATURES | after 5 |

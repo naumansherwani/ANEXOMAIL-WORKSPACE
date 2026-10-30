@@ -1937,3 +1937,9 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 ## 30 Oct 19:20 PKT — T1 LIVE + CHROME PROOF (Rule 64 green)
 - founder-install.sh OK (SPA 200, token 401, Ed25519 ON, writes enforced). Chrome (founder tab 1609160493, no new tab): bundle index-CLMo78xN.js, "Good evening, Nauman" + flip clock 7:16 PM unchanged, Settings only in NS menu (#/settings), g+f -> #/finance, back/forward ok, unknown hash -> #/bridge, Ctrl K palette ok, console errors 0.
 - NEXT (only): F2b WASM ed25519 in web-wasm/ v0.5.0. Trust chip stays amber "Review" until F2b. Greeting redesign only if founder asks; FC43 look untouched.
+
+## 30 Oct 19:40 PKT — PRIORITY 3b (F2b SE PEHLE) — compaction ke baad yahin se
+- Founder 19:29: loopholes tarteeb se fix, green, phir F2b. Repo: MASTER-ORDER row 3b, FOUNDER-LOOPHOLE-LEDGER-30OCT.md (L1..L9), BRIDGE-VS-DASHBOARD doc (fixed 19:25).
+- Code (is commit mein): L1 actions cache; L2 Rust main.rs (authed join, bridge_ep join with hook_view, pulse+rejects join; 61 tests ok); L3 awam links = https://anexomail.com + naya tab; L9 DashboardView "Company health" (#/dashboard, g d), Bridge ab Greeting + Money exceptions + Needs attention + Polar webhook.
+- Baqi: founder-install.sh (1 command) -> Chrome proof (Bridge speed naapna: pehle bridge 1466 ms, actions ~900 ms; Dashboard view; awam links naye tab) -> L7 package-lock (npm5 background /tmp/npm5.log) -> L5 founder login+hostguard enforce -> PHIR F2b.
+- Technology 4 parat (no mix): Rust backend / WASM kernel web-wasm (Rust, tokio LocalSet, Worker) / React+TS+TanStack+Tailwind+shadcn UI / Cinematic CSS+Three.js lazy.
