@@ -590,3 +590,5 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 ## 30 Oct 2026 22:00 PKT — GREEN AUDIT likha (FOUNDER-GREEN-AUDIT-30OCT.md). L19 code done: authcache.rs (66 tests), early.js kernel start, wasm immutable, snapshot, saada text. db9b882 live verify hua (crumb, User dashboard, kernel 459 ms). Dobara mat likho.
 
 ## 30 Oct 2026 22:10 PKT — founder-install 0e4882d OK; Chrome LIVE: snapshot + early.js green. FOUNDER-LEGACY-REVIVAL-30OCT.md (33 purane pages preserve, tick-list). Dobara mat likho.
+
+- 30 Oct 22:35 PKT: Splash loading screen (App.tsx Splash + dx.css) and Dashboard plane look (dx.css, Surface.tsx) are DONE; do not rewrite. 3D graphics and Profile polish are NOT done yet.

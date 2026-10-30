@@ -65,6 +65,31 @@ export function ViewBody() {
   return (view === "bridge" ? <BridgeView d={d} at={at} me={prof} go={setView} /> : view === "dashboard" ? <DashboardView d={d} at={at} go={setView} me={prof} /> : view === "profile" ? <ProfileView p={prof} reload={loadProf} /> : view === "settings" ? <SettingsView go={setView} p={prof} fx={fx} setFx={setFx} slim={slim} setSlim={setSlim} reload={loadProf} /> : DECK_META[view] ? <><DeckPage deck={view} money={d?.money} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : <div className="grid"><Deck key={view} deck={view} /></div>);
 }
 
+const Logo = () => (
+  <svg viewBox="0 0 64 64" aria-hidden="true"><defs>
+    <linearGradient id="sa" x1="12" y1="4" x2="54" y2="60"><stop offset="0%" stopColor="#4a73b3" /><stop offset="100%" stopColor="#1d3157" /></linearGradient>
+    <linearGradient id="sb" x1="20" y1="18" x2="46" y2="46"><stop offset="0%" stopColor="#2c4a7a" /><stop offset="100%" stopColor="#17294a" /></linearGradient>
+    <linearGradient id="se" x1="4" y1="4" x2="60" y2="60"><stop offset="0%" stopColor="#f4f6f9" /><stop offset="60%" stopColor="#c3c9d3" /><stop offset="100%" stopColor="#8d95a3" /></linearGradient></defs>
+    <path d="M32 4 L61 59 L45.5 59 L32 32 L18.5 59 L3 59 Z" fill="url(#sa)" stroke="url(#se)" strokeWidth="1.6" strokeLinejoin="miter" />
+    <path d="M32 19 L43 41 L21 41 Z" fill="url(#sb)" stroke="url(#se)" strokeWidth="1.3" strokeLinejoin="miter" />
+    <path d="M9 52 L56 33" stroke="url(#se)" strokeWidth="1.1" strokeLinecap="round" opacity=".9" />
+    <circle cx="15" cy="49.6" r="2.4" fill="#f4f6f9" /><circle cx="32" cy="42.7" r="2.4" fill="#f4f6f9" /><circle cx="50" cy="35.4" r="2.4" fill="#f4f6f9" /></svg>
+);
+
+/** Loading screen with the logo on every refresh, on every page: stays until the first fresh signed answer (min 0.7 s, max 4 s), then fades out. */
+function Splash({ show }: { show: boolean }) {
+  const [gone, setGone] = useState(false);
+  useEffect(() => { if (show) { setGone(false); return; } const t = setTimeout(() => setGone(true), 450); return () => clearTimeout(t); }, [show]);
+  if (gone) return null;
+  return (
+    <div className={`splash ${show ? "" : "out"}`} role="status" aria-label="Loading ANEXOMAIL Founder">
+      <Logo />
+      <b>ANEXOMAIL</b><span className="sp-sub">Founder Command Center</span>
+      <div className="bar"><i /></div>
+    </div>
+  );
+}
+
 export default function App() {
   useCity(); // the whole workspace re-renders when the home city (or the device city) changes
   const [authed, setAuthed] = useState(hasToken());
@@ -81,8 +106,10 @@ export default function App() {
   const [fx, setFx] = useState(() => { try { return window.localStorage.getItem("anexo.founder.fx") !== "off"; } catch { return true; } });
   useEffect(() => { document.documentElement.setAttribute("data-fx", fx ? "on" : "off"); try { window.localStorage.setItem("anexo.founder.fx", fx ? "on" : "off"); } catch {} }, [fx]);
   const [d, setD] = useState<any>(null), [err, setErr] = useState(""), [at, setAt] = useState<Date | null>(null), [pend, setPend] = useState<{ code: string | null; revoked: boolean } | null>(null);
+  const [live, setLive] = useState(false), [minMs, setMinMs] = useState(false), [giveUp, setGiveUp] = useState(false);
+  useEffect(() => { const a = setTimeout(() => setMinMs(true), 700), b = setTimeout(() => setGiveUp(true), 4000); return () => { clearTimeout(a); clearTimeout(b); }; }, []);
   const load = useCallback(async () => {
-    try { const r = await get("/founder/v1/bridge"); setD(r.data); setAt(new Date()); setErr(""); setPend(null); }
+    try { const r = await get("/founder/v1/bridge"); setD(r.data); setAt(new Date()); setErr(""); setPend(null); setLive(true); }
     catch (x) { const e = x as Error & { code?: string | null; revoked?: boolean }; if (e.name === "DevicePending") setPend({ code: e.code ?? null, revoked: !!e.revoked }); else if (/expired/i.test(e.message) || !hasToken()) setAuthed(false); else setErr(e.message); }
   }, []);
   // Settings (E108): the account's own values. Appearance values saved on the account win over this device's last choice (synced across approved devices).
@@ -125,6 +152,7 @@ export default function App() {
   return (
     <ShellCtx.Provider value={shell}>
     <div className="ws">
+      <Splash show={authed && !((live && minMs) || giveUp)} />
       <div className="aurora" aria-hidden="true"><i /><i /></div>
       <div className="fx-ambient" aria-hidden="true"><span className="fx-edge" /></div>
       <aside className="sb" aria-label="Navigation">

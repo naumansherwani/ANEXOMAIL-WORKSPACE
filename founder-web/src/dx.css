@@ -37,3 +37,10 @@ button.dx-card{cursor:pointer;width:100%}button.dx-card:hover{transform:translat
 @media (max-width:1023px){.dx-tiles{grid-template-columns:repeat(2,1fr)}.dx-gates{grid-template-columns:1fr}.dx-ep{grid-template-columns:10px 50px 1fr minmax(100px,150px)}.dx-what{display:none}}
 @media (max-width:700px){.dx-grid{grid-template-columns:1fr}.dx-tile{min-height:112px;padding:14px}.dx-tile .dx-big{font-size:26px}.dx-lab{font-size:12px;gap:8px}.dx-hero{flex-wrap:wrap;padding:18px}.dx-h{font-size:22px}.dx-pill{width:100%}.dx-ep{grid-template-columns:10px 46px 1fr}.dx-lat{grid-column:2/-1;justify-content:flex-start}.dx-eps summary{flex-wrap:wrap}}
 @media (prefers-reduced-motion:reduce){.dx>*{animation:none}.dx-ring .arc,.dx-bar i{transition:none}}
+/* Splash: logo loading screen on every refresh (React-TS + CSS). Reuses .boot look from boot.css so cold load and refresh feel identical. */
+.splash{position:fixed;inset:0;z-index:100;display:grid;place-content:center;justify-items:center;gap:14px;background:radial-gradient(1100px 560px at 50% -12%,#1a2748 0%,rgba(11,12,16,0) 68%),#0b0c10;font-family:Inter,sans-serif;transition:opacity .45s ease,visibility .45s}
+.splash.out{opacity:0;visibility:hidden;pointer-events:none}
+.splash svg{width:84px;height:84px;filter:drop-shadow(0 8px 28px rgba(74,115,179,.35));animation:bootbreath 2.4s ease-in-out infinite}
+.splash b{color:#e9ecf3;font-weight:600;font-size:15px;letter-spacing:.34em;margin-top:8px}.sp-sub{color:#98a1b1;font-size:12.5px}
+.splash .bar{width:132px;height:2px;border-radius:2px;background:rgba(152,162,182,.18);overflow:hidden;margin-top:8px}.splash .bar i{display:block;width:44%;height:100%;background:linear-gradient(90deg,transparent,#8fb0e8,transparent);animation:bootrun 1.15s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.splash svg,.splash .bar i{animation:none}}

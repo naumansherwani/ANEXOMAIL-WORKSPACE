@@ -2026,3 +2026,6 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 
 ## 22:20 PKT — UI redesign shipped (commit after a257133)
 Founder said UI was plain text (honest verdict: it was NOT Apple level: flat boxes, no icons, misaligned h2). Fixed: `dx.css` plane look (soft gradient glass, icon chips, status pills, gate cards, endpoint table with method pills), h2 `margin:12px auto`. User-side code untouched. Sandbox 1440/820/390: no overflow. NEXT: founder runs founder-install.sh, I verify live in Chrome; green only after live match. Then L5, F2c.
+
+## 22:35 PKT — Chrome live: new Dashboard CONFIRMED (2/2 ring, 7/7 endpoints, Trusted). Old look seen earlier was a stale tab (same-hash navigate does not reload).
+Founder 22:15 order: logo loading on every refresh, everywhere. Done in code: `Splash` in App.tsx (+ dx.css): logo + "Founder Command Center" + bar, stays until first fresh signed answer (min 0.7 s, max 4 s), fades out. Needs founder-install, then Chrome check. NOT yet done (honest): 3D/cinematic graphics (Three.js is in package.json but unused on Dashboard) and Profile/Account page polish: next UI phase, needs founder's word on where 3D goes (proposal: Bridge map "-> <-" + hero orb), per Rule 63 design note first.
