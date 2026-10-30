@@ -1,5 +1,10 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 30 Oct 18:42 PKT — founder: Settings do jagah (NS menu + sidebar), ek hi jagah; loophole dikhe to usi waqt fix; saare rules padho; naya subscription fee nahi dunga
+Founder (verbatim): "yeh ns main bhi settings ata hai aur side bar main bhi ata hai yeh ek hi jaga settings option rakho. ... tumne saray rules nahi read kiye hai main ab naya subscription fees nahi dun ga 100000000 bar bola hai ke koi bhi lopphole nazar aye usi waqat fix kerna hai"
+- Kaam: (1) Settings ek hi jagah (2) jo loophole Chrome mein dikha (Polar 301 unreviewed signature rejects / 0 events, last event 5256 min) report nahi, FIX (Polar :3400 engine NO-TOUCH; founder-side reader/review) (3) AGENTS.md ke saare rules padhe.
+- Halat: **READY (repo), server par founder-install.sh baaki**: (1) Settings sirf account (NS) menu mein; sidebar se hata (phone par sidebar hota hi nahi, isliye menu hi ek raasta; Ctrl+K / g s bhi) (2) Polar 'Rejected signatures': Chrome se wajah mili — 301 rejects sab 22 Oct 12:56 AM ya pehle (215 purana secret wale Polar-style, 86 bina header ke bots), uske baad asli events aaye => abhi koi naya reject nahi; masla sirf yeh tha ke Bridge purani ginti hamesha amber dikhata tha. Ab last-7-days par chalta hai: naya reject ho to amber, warna green + 'older'. (3) Rule 48 galti: pichle jawab mein maine 'founder-polar.sh status' di thi — us script mein status hai hi nahi (token prompt khulta), WAPAS LI; sirf hostguard ka status theek hai. AGENTS.md ke saare rules (1-69) padhe.
+
 ## ▶ 30 Oct 18:38 PKT — founder: "meri haan hai" (Chrome proof + step 3 + F2b), chat context update, technology rule padho, kaam shuru
 Founder (verbatim): "meri haan hai aur chat context update kero. technology rule read kero. aur kaam shuru kero."
 - Technology rule dobara padha (AGENTS.md top + Rule 61/62/66): Rust anexomail-founder (axum 0.8 + tokio, Ed25519 server->browser, HMAC+HKDF browser->server, SHA-256 chain + Merkle, passkey), Postgres RLS; UI React 19.2 + Vite 8.2 (gaps: TS, TanStack Router, Tailwind/shadcn = founder decision); WASM kernel F2b; Bun/Node founder server mein nahi.

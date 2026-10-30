@@ -1911,3 +1911,6 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 
 ## 30 Oct 18:45 PKT
 - Chrome proof GREEN (founder tab signed in): Lahore persisted after reload, 12h clock 'LAHORE · GMT+5', breadcrumb, cinematic, toggles. Bridge dikha: Polar 0 subs, 301 unreviewed signature rejects, topbar 'Review' amber (Trust, F2b tak). NEXT: step 3 status (host guard / Polar token), phir F2b (server/founder-kernel abhi nahi).
+
+## 30 Oct 19:00 PKT
+- Founder: Settings do jagah thi -> ek (account menu). Founder gussa: loophole report nahi, FIX (Rule 29/33/21); naya subscription fee nahi dega — kaam seedha, dobara-dobara nahi. Polar 301 rejects purane (<=22 Oct), ab 7-din par. Pending server: founder-install.sh (1 point). NEXT: step 3 status (hostguard status; Polar token: Bridge par ab polar reader alag dekho) phir F2b.

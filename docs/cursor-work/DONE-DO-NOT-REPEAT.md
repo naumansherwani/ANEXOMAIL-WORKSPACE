@@ -1173,3 +1173,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 28 Oct 13:30 PKT — E108 server GREEN (CHECK 6 OK) + founder-install GREEN. Dobara pull command mat do. NEXT: shaam Chrome proof, phir F2b (step 4).
 
 - 30 Oct 18:45 PKT — Chrome live proof GREEN (Settings S1 / E108): Lahore save+reload, 12h clock, breadcrumb, cinematic, Compact sidebar toggle. Dobara proof mat lo. NEXT: step 3 (host guard, Polar token) then F2b.
+
+- 30 Oct 19:00 PKT — Settings ek hi jagah (account menu); Polar reject row ab 7-din par (purani ginti amber nahi). Loophole mile to usi turn mein fix (Rule 29) — list nahi. founder-polar.sh mein 'status' nahi hai (founder ko mat dena).

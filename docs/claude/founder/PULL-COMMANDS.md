@@ -77,3 +77,6 @@ Polar webhook engine (:3400) par KUCH nahi chalta (no-touch).
 2. Phir founder-install.sh.
 
 ## ABHI PENDING (28 Oct 13:30): KOI NAHI. E108 aur founder-install server par green hain. Agla server command F2b ke saath.
+
+## ABHI PENDING (30 Oct 19:00) — 1 point
+1. founder-install.sh (Settings ek jagah + Polar reject row 7-din): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12

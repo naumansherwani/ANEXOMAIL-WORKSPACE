@@ -121,7 +121,6 @@ export default function App() {
           {wsOpen && AWAM.map(([n, href, ic], i) => <a key={n} className="nv" href={href} title={n} style={{ "--i": i }} onPointerMove={spot}><Icon k={ic} /><span className="lbl">{n}</span></a>)}
         </div>
         <div className="sbfoot">
-          {nvBtn("settings", "Settings")}
           <button className="nv" onClick={toggleSlim} aria-label={slim ? "Expand sidebar" : "Collapse sidebar"} title={slim ? "Expand" : "Collapse"}><Icon k="collapse" /><span className="lbl">Collapse</span></button>
         </div>
       </aside>
