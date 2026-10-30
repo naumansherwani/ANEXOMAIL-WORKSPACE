@@ -1980,3 +1980,6 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 - Founder: Settings "same to same user wali" -> SOON list = user ke 8 tabs (doc: FOUNDER-SETTINGS-CENTER-PORT 30 Oct 20:30). Personal+Appearance LIVE.
 - L5: hostguard status login ke baad bhi log khali. Wajah ka shak: status sirf aakhri 400 pm2 lines dekhta tha / running process env alag ho sakta hai. Script naya: .env mode + running process mode + poori log files. Founder ko wohi status command dobara (naye script ke saath, pull ke baad).
 - L7 lockfile: npm7 chal raha (600 s limit). Agla phase: F2c Merkle (design doc + E107 SQL).
+
+## 30 Oct 20:40 PKT — L7 GREEN
+- npm lock 3 baar fail (registry/proxy, 600 s timeout). Fix: bun.lock (`env -u NO_PROXY -u no_proxy bun install --lockfile-only`), saboot saaf folder frozen install + tsc + vite build. package-lock.json hata di. Server par koi farq nahi. Khula sirf L5 (hostguard status naye script se).

@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 2c5c9991c6073c88
+docs/cursor-work/DONE-DO-NOT-REPEAT.md ae8432a6223ad871
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0c1a6a8b9e10e904
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 7ec6084081fbd261
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 138ae9f6a54247b0
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -895,7 +895,6 @@ server/founder/src/sign.rs 1e37d229d78842fb
 docs/cursor-work/server/founder-install.sh f6b5d50fa6ecb7b8
 founder-web/.gitignore aaccff71fadbb13b
 founder-web/index.html 81b8e9696eddd7c6
-founder-web/package-lock.json 56f1719239e4f0e9
 founder-web/package.json c0b915b8e44a6271
 founder-web/src/styles.css 9239d6b5ca060ced
 server/founder/src/login.rs 465011eb25e7daac
@@ -984,7 +983,7 @@ founder-web/src/tailwind.css 565258978b85a219
 founder-web/src/types.ts 0c5de00129a58d55
 founder-web/tsconfig.json 712476d5e06e6a3a
 founder-web/vite.config.ts a10e0fda90c24eef
-docs/claude/FOUNDER-LOOPHOLE-LEDGER-30OCT.md 8221af12ddf1f558
+docs/claude/FOUNDER-LOOPHOLE-LEDGER-30OCT.md 7762098e9753ac4b
 founder-web/dist/assets/Inter-Bold-sbKixbcS.woff2 7a2cfbc25078d618
 founder-web/dist/assets/Inter-ExtraLight-BhvJvErM.woff2 6d7a7e116e51ec3f
 founder-web/dist/assets/Inter-Light-Czry1CUT.woff2 ef36dc6c1a3a465d
@@ -1010,3 +1009,4 @@ web-wasm/src/ed.rs b4331b38c7c7b8b8
 docs/claude/founder/FOUNDER-ONLY-STEPS.md 94d3816874cacec2
 founder-web/dist/assets/index-p2Fe5ltg.js f9ea0ae6b464661e
 founder-web/dist/assets/index-p2Fe5ltg.js.gz 22200d4aa67900bd
+founder-web/bun.lock 53c13c28c277473e
