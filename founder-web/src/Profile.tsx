@@ -1,4 +1,4 @@
-import { ProfileHero } from "./Scene3D";
+import { LogoMark } from "./Brand";
 import { useEffect, useRef, useState } from "react";
 import { setSetting, signOut, deviceStatus } from "./api";
 import type { Prof, Msg } from "./types";
@@ -72,6 +72,14 @@ export function AccountMenu({ p, go }: { p: Prof | null; go: (v: string) => void
   );
 }
 
+/** The real logo, leaning toward the pointer (CSS 3D, no WebGL, no autoplay). */
+function ProfileMark() {
+  const ref = useRef<HTMLDivElement>(null);
+  const move = (e: React.PointerEvent) => { const el = ref.current; if (!el) return; const r = el.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5; el.style.transform = `perspective(500px) rotateY(${x * 28}deg) rotateX(${-y * 22}deg)`; };
+  const leave = () => { if (ref.current) ref.current.style.transform = ""; };
+  return <div className="pmark" onPointerMove={move} onPointerLeave={leave}><div className="pm-in" ref={ref}><LogoMark size={64} title="ANEXOMAIL" /></div></div>;
+}
+
 export function ProfileView({ p, reload }: { p: Prof | null; reload: () => Promise<void> | void }) {
   const [busy, setBusy] = useState(false), [msg, setMsg] = useState<Msg>(null), [nm, setNm] = useState<string | null>(null), file = useRef<HTMLInputElement>(null);
   const ds = deviceStatus();
@@ -92,7 +100,7 @@ export function ProfileView({ p, reload }: { p: Prof | null; reload: () => Promi
   return (
     <div className="grid">
       <section className="card prof">
-        <ProfileHero />
+        <ProfileMark />
         <div className="kicker">PROFILE</div>
         <div className="profrow">
           <button className="bigav" onClick={() => file.current?.click()} disabled={busy} aria-label="Change profile photo"><Avatar p={p} size={96} /><span className="cam">{busy ? "Saving…" : "Change"}</span></button>

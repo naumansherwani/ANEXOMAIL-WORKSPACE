@@ -75,3 +75,10 @@ button.dx-card{cursor:pointer;width:100%}button.dx-card:hover{transform:translat
 .phero{top:2px;right:14px;width:120px;height:62px}
 .prof .profrow{margin-top:34px}
 @media (max-width:700px){.phero{width:84px;height:48px}}
+/* Real logo on the profile card (replaces the redrawn 3D triangle) + Founder blue on the title text (same blue as the Founder · Chairman pill). */
+.pmark{position:absolute;right:18px;top:12px;width:78px;height:78px;display:grid;place-items:center}
+.pm-in{transition:transform .25s ease-out;filter:drop-shadow(0 8px 22px rgba(74,115,179,.45));transform-style:preserve-3d}.pm-in svg{width:64px;height:64px;display:block}
+@media (max-width:700px){.pmark{width:56px;height:56px;right:12px;top:10px}.pm-in svg{width:46px;height:46px}}
+.g-eyebrow,.crumb b{background:linear-gradient(90deg,#5ec8ff,#4aa3f0);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.crumb b{font-weight:700}
+.phero{display:none}

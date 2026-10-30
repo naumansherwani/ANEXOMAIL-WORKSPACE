@@ -42,3 +42,19 @@ Qaida: UI sirf kernel ka natija dikhata hai; kernel "TAMPERED" kahe to data rend
 | L19 | Refresh round 3 (founder 21:39: "187 ms ko 50-100 ms", live Chrome, "speed and technology advance"). Chrome 21:46 naap: kernel 459 ms, data ~2.3 s (exchange 653 + har call ~1.1 s; ek DB round trip ~0.7 s) | CODE DONE: (a) Rust `authcache.rs`: same (account, device) ke parallel auth sawalon ka EK jawab, 5 s; "no" kabhi nahi rakha; PUT/POST hamesha fresh (66 tests); (b) kernel .wasm immutable cache (versioned file, SHA-256 worker mein pinned); (c) `public/early.js` + build meta: kernel page parse par chalu (sandbox: worker request 100-170 ms, main bundle se pehle); (d) instant snapshot: pichla verified Bridge jawab sessionStorage se, kernel dobara verify karke, asli time ke label ke saath; (e) Dashboard saada text. HONEST: sandbox localhost par 50 ms mumkin nahi (HTML+JS khud 60 ms); asli naap Chrome mein install ke baad | founder-install |
 | L19 LIVE | Chrome 22:02 (0e4882d install): early.js + meta kernel-worker ACTIVE, snapshot ZAHIR (F5 ke fauran baad poora Dashboard asli data + purane waqt ke saath), 7/7 endpoints, Trusted. Naap: exchange 652 ms; settings 1021, bridge 1137, polar 1076, actions 1104, audit 1092 ms; me 444 ms (auth sharing kaam kar raha: pehle 798). Taaza data ab bhi ~1.8 s: har handler apni DB query (~0.6 s) auth ke BAAD chalata hai | SNAPSHOT + EARLY = GREEN. Taaza data tez karna = AGLA: (a) handler query auth ke saath parallel (auth sirf jawab rokta hai), (b) bridge/actions ka 10 s server cache. Founder ke haan par | — |
 | L20 | Founder 22:00: purane founder/admin pages preserve + latest tech + user se alag | DOC DONE: FOUNDER-LEGACY-REVIVAL-30OCT.md (33 pages, har ka naya ghar, tick-list rule, retire sirf Chrome proof ke baad) | har phase mein |
+
+## L-SERIES LIVE STATUS — 30 Oct 22:55 PKT (Chrome, founder's signed-in tab, install db15a3e; real data)
+| # | Status now | Evidence |
+|---|---|---|
+| L1, L2, L3, L4, L6, L7, L9, L10, L11, L12 | GREEN (unchanged, earlier Chrome proofs) | see rows above |
+| L14 bridge icon | GREEN | sidebar shows suspension bridge, 22:38 |
+| L15 / L15b Dashboard front page | GREEN | 2/2 ring, 7/7 endpoints, Trusted, 22:38 |
+| L16 "User dashboard" label | GREEN | sidebar group, 22:38 |
+| L17 top bar "Founder Command Center" | GREEN | top bar, 22:38 (now in Founder blue, code 22:55) |
+| L18 / L19 refresh | GREEN with numbers: F5 (type=reload) FCP 508 ms; early.js 235 ms; kernel worker requested at 539 ms (before data, was 1946); exchange 682 ms; me/polar 190 ms (auth sharing works, was ~1.1 s); bridge/settings/actions/audit ~620 ms each; everything on screen ~1.85 s (was ~2.3 s); snapshot paints instantly; splash with logo. NOT reached: 50-100 ms data (floor = Supabase round trip ~0.6 s + exchange). E109 `founder_live_snapshot()` (SQL now installed, CHECK 9/9) + Rust wiring is the next cut | Chrome 22:56 |
+| L13 responsive | SANDBOX GREEN; live phone/tablet not testable from this Chrome window | 52 checks |
+| L20 legacy revival | DOC DONE; tick-lists per phase | — |
+| L21 NEW logo rule (founder 22:44): the REAL logo everywhere a logo is needed | CODE DONE: one `LogoMark` in Brand.tsx (exact user-app paths + oklch gradients) used by sidebar, splash, profile; boot HTML uses same gradients; redrawn 3D triangle removed | founder-install, then Chrome |
+| L22 NEW: "Founder Command Center" in the Founder · Chairman blue, top bar + greeting eyebrow | CODE DONE | founder-install, then Chrome |
+| L5, L5b-L5f host guard | OPEN, FOUNDER STEP: Sign out, login at /founderlogin, then `founder-hostguard.sh status`; cannot be proven from here | founder |
+| E109 SQL | GREEN on server (ledger written, CHECK_E109 9/9 OK, founder paste 22:44); no UI uses it yet | server |

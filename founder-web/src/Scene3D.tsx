@@ -134,27 +134,3 @@ export function BridgeMap({ inbound, outbound }: { inbound: Lane[]; outbound: La
     </section>
   );
 }
-
-/** 3. Profile header: the real ANEXOMAIL mark as a metal solid that leans toward the pointer. Parallax only, no autoplay spin. */
-export function ProfileHero() {
-  const { host, state } = useScene((T, w, h) => {
-    const scene = new T.Scene(), camera = new T.PerspectiveCamera(30, w / h, 0.1, 30); camera.position.set(0, 0, 7.5);
-    const S = 0.062, P = (x: number, y: number) => new T.Vector2((x - 32) * S, (32 - y) * S);
-    const outer = new T.Shape([P(32, 4), P(61, 59), P(45.5, 59), P(32, 32), P(18.5, 59), P(3, 59)]);
-    const inner = new T.Shape([P(32, 19), P(43, 41), P(21, 41)]);
-    const eg = (s: TT.Shape, d: number) => new T.ExtrudeGeometry(s, { depth: d, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.04, bevelSegments: 3 });
-    const m1 = new T.MeshStandardMaterial({ color: 0x6b9bf2, metalness: 0.55, roughness: 0.32, emissive: 0x16305f, emissiveIntensity: 0.6 }), m2 = new T.MeshStandardMaterial({ color: 0xe6ebf3, metalness: 0.5, roughness: 0.25, emissive: 0x2a3550, emissiveIntensity: 0.4 });
-    const a = new T.Mesh(eg(outer, 0.3), m1), b = new T.Mesh(eg(inner, 0.2), m2); b.position.z = 0.32;
-    const grp = new T.Group(); grp.add(a, b); a.position.z = -0.15; scene.add(grp);
-    scene.add(new T.HemisphereLight(0xdbe6ff, 0x1a2036, 1.6)); const k = new T.PointLight(0xffffff, 120, 20); k.position.set(3, 3, 5); scene.add(k);
-    const r = new T.PointLight(0x6b9bf2, 40, 20); r.position.set(-4, -2, 3); scene.add(r);
-    let tx = 0, ty = 0;
-    return {
-      scene, camera, pointer(x, y) { tx = x * 0.5; ty = y * 0.35; },
-      tick(t) { grp.rotation.y += (tx - grp.rotation.y) * 0.08; grp.rotation.x += (ty - grp.rotation.x) * 0.08; grp.position.y = Math.sin(t * 0.8) * 0.06; },
-      resize(w2, h2) { (camera as TT.PerspectiveCamera).aspect = w2 / h2; (camera as TT.PerspectiveCamera).updateProjectionMatrix(); },
-      dispose() { a.geometry.dispose(); b.geometry.dispose(); m1.dispose(); m2.dispose(); },
-    };
-  }, []);
-  return <div className="phero" aria-hidden="true"><div className="orb-fallback ph-fb" /><div className={`orb-gl ${state === "ready" || state === "off" ? "on" : ""}`} ref={host} /></div>;
-}

@@ -174,3 +174,5 @@ founder-install.sh: `git -C /opt/anexomail-web fetch -q origin main && bash <(gi
 founder-install.sh: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh)`
 
 ## 30 Oct 22:42 PKT — profile mark fix (UI only): founder-install.sh (same command as above)
+
+## 30 Oct 22:55 PKT — real logo + Founder blue (UI only): founder-install.sh (same command as above)
