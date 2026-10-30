@@ -1961,3 +1961,7 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 - Chrome ne dikhaya: refresh par ~3.7 s khali screen. Fix: boot logo (index.html + public/boot.css, React render par replace), gzip precompress (precompress.sh BUILD KE BAAD HAR BAAR chalao, .gz dist mein commit), Rust `asset_cache` (immutable /assets/*) + ServeDir precompressed_gzip. Technology: SPA = React/Vite (UI), Rust axum/tower-http (server). 62 tests ok.
 - WebTransport: F2b -> F2c -> F2d ke baad (ADOPTION doc mein ghar + alag UDP port founder se poochna).
 - Pending: founder-install.sh -> Chrome naap (FCP pehle 3731 ms). Phir L5, L7, F2b.
+
+## 30 Oct 19:58 PKT — L10 + L11 GREEN (server + Chrome)
+- Server par codes hain (founder-install OK). Chrome: FCP 571 ms (pehle 3731), JS cache 0 transfer, gzip, boot logo, top bar centre search. DOBARA NAHI LIKHNA.
+- Khula: L5 founder /founderlogin (hostguard abhi probe), L7 lockfile (npm6 background /tmp/npm6.log), phir F2b (ed25519 web-wasm v0.5.0).

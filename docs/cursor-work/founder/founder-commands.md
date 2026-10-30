@@ -1731,3 +1731,7 @@ Halat: PULL-COMMANDS.md mein "PER TECHNOLOGY" table (11 scripts, har ek repo mei
 ## 30 Oct 19:48 PKT — founder order (verbatim)
 "yeh page refresh kerne pe bhi mere logo aye loading ke saath aur yeh super fast aye aur webtransport kab aye ga? ... sab update kero verna compact chat aye ga. tarteeb follow kero. chorme dekho. baki page refresh wala kaam kero theek"
 Halat: top bar pull hua (founder-install OK; hostguard abhi probe, login baqi). Chrome: refresh par 3.7 s kala screen mila (FCP 3731 ms, JS 416 KB uncompressed, no-store) -> L11 fix (boot logo, gzip, immutable assets). WebTransport = F2b->F2c->F2d ke baad.
+
+## 30 Oct 19:56 PKT — founder order (verbatim)
+"is ki pull command hogaye hai codes dobara nahi likhna hai server pe codes hain aur chat context codes sab repo main update kero aur next kaam yeh kero Abhi bhi khula: L5 ... L7 ... aur jo hogaya hai green kerte jao ... baki chorme test kero"
+Halat: founder-install pull OK. Chrome GREEN: refresh FCP 571 ms (pehle 3731), top bar centre search, clock + Review intact, assets immutable + gzip. Agla: L7 lockfile (background), L5 founder login, F2b.
