@@ -1743,3 +1743,7 @@ Halat F2b: web-wasm v0.5.0 (ed25519@1+envelope@1) + founder-web kernel.ts/worker
 ## 30 Oct 20:09 PKT — founder order (verbatim)
 "gandu is ko green kero L5: /founderlogin par aap ka ek baar login. L7: lockfile ... Muhje dobara yeh nazar nahi aye yeh green repo main kerna hai. compact chat aye ga toh sab codes aur chat context update kero. yeh sab cheezein green kero tarteeb ko follow kero aur green kero."
 Halat: F2b server+Chrome GREEN (Trusted). L5 = founder-only login; 3 qadam FOUNDER-ONLY-STEPS.md mein (ek jagah, har jawab mein nahi). L7 lockfile: naye proxy flags ke saath chal raha.
+
+## 30 Oct 20:18 PKT — founder order (verbatim)
+"yeh sab update kero chat context codes update kero. meri settings same to same user wali cheezein honi chaiye hain mujhe likhe kiya hai. next tarteeb shuru kero chorme test ke baad" (+ hostguard status paste: mode probe, log khali, login ke baad bhi)
+Halat: Settings side list ab user ke 8 tabs ki tarteeb mein (Personal+Appearance LIVE, baqi coming with phase). Hostguard: log khali mila -> `status` ko poori pm2 log files + running-process env dikhane wala banaya (bash -n + stub test) — sirf aakhri 400 line dekhta tha. Agla: F2c design + E107 SQL.

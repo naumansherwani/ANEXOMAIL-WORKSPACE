@@ -1974,3 +1974,9 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 ## 30 Oct 20:20 PKT — F2b GREEN (server + Chrome)
 - Chrome: bundle index-3Lfb3QXU.js, chip "Trusted", popover "Responses are verified in this browser", fonts 6/6 loaded, kernel.worker loaded. Kernel 0.5.0 live. DOBARA NAHI LIKHNA.
 - Khula: L5 (sirf founder: docs/claude/founder/FOUNDER-ONLY-STEPS.md), L7 lockfile (npm7 /tmp/npm7.log). Agla phase: F2c Merkle (E107 SQL pehle, phir Rust audit v1 + kernel merkle module + Ledger Integrity Gauge), phir F2d passkey, phir WebTransport. Rule 70 report har jawab mein.
+
+## 30 Oct 20:35 PKT — LIVE TEST DONE + SETTINGS LIST + L5 DIAGNOSIS
+- Chrome live: 13 views Trusted, settings write+reload persist proven (Compact OFF restored), session ended once (founder re-login hua).
+- Founder: Settings "same to same user wali" -> SOON list = user ke 8 tabs (doc: FOUNDER-SETTINGS-CENTER-PORT 30 Oct 20:30). Personal+Appearance LIVE.
+- L5: hostguard status login ke baad bhi log khali. Wajah ka shak: status sirf aakhri 400 pm2 lines dekhta tha / running process env alag ho sakta hai. Script naya: .env mode + running process mode + poori log files. Founder ko wohi status command dobara (naye script ke saath, pull ke baad).
+- L7 lockfile: npm7 chal raha (600 s limit). Agla phase: F2c Merkle (design doc + E107 SQL).

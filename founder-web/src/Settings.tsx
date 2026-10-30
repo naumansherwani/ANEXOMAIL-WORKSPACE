@@ -16,7 +16,9 @@ const I: Record<string, ReactNode> = {
 };
 const Ico = ({ k }: { k: string }) => <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{I[k]}</svg>;
 const TABS = [["personal", "Personal", "Name, photo and home city"], ["appearance", "Appearance", "Graphics and sidebar"]];
-const SOON = [["Time machine & Drift", "after F2c"], ["Privacy", "after passkey"], ["Notifications", "with Decide / Mail Desk"]];
+// Same eight tabs, same order as the user app (Personal, Workspace, Appearance, Notifications, Privacy, AI settings, Time machine, Drift & schedule).
+// Personal and Appearance are live; each other tab appears only when its real backend exists (Rule 69), so it is listed here with the phase that builds it.
+const SOON = [["Workspace", "with Systems (F6)"], ["Notifications", "with Decide and Live Pulse (S4)"], ["Privacy", "after passkey (S3)"], ["AI settings", "with the AI deck (F6)"], ["Time machine", "after the audit Merkle proof (F2c, S2)"], ["Drift & schedule", "after the audit Merkle proof (F2c, S2)"]];
 
 type Props = { p: Prof | null; fx: boolean; setFx: (v: boolean) => void; slim: boolean; setSlim: (v: boolean) => void; reload: () => Promise<void> | void; go?: (v: string) => void };
 export function SettingsView({ p, fx, setFx, slim, setSlim, reload, go }: Props) {

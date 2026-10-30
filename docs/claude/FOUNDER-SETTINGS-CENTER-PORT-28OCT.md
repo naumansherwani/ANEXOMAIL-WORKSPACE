@@ -62,3 +62,17 @@ Rule 69: a tab appears only when its backend is real. Each one is tied to the ph
 | 2 | **Privacy** (session length, device-approval strictness, passkey-required for G3, export) | needs real passkey assertion for G3 (F2d, planned right after F2c; removes FOUNDER_PASSWORD only after proof) | **Settings S3** | F2d passkey |
 | 3 | **Notifications** (which alerts, where) | needs a real delivery channel: browser push first (service worker + Rust web-push), email via Mail Desk (F5); the alert SOURCES are Decide (N) and Live Pulse | **Settings S4** = N1 push with Decide/Live Pulse; N2 email with F5 | Decide + Live Pulse (push); F5 (email) |
 Full order: F2a (done) -> Settings S1 (built) -> F2b -> F2c -> **S2 Time machine/Drift** -> F2d passkey -> **S3 Privacy** -> Decide (N) + Live Pulse -> **S4 Notifications (push)** -> F3-b Polar -> F4 People -> F5 Mail Desk (+ email notifications, undo-send settings) -> F6 Systems/AI (+ Workspace/AI settings) -> F8 Control -> F9 cutover -> Founder desk.
+
+## 30 Oct 20:30 PKT — founder: "meri settings same to same user wali cheezein honi chaiye"
+Founder Settings ab user app ke jaise 8 tabs, wohi tarteeb, dikhate hain (src/routes/app.settings.tsx ki list): **Personal (LIVE), Workspace, Appearance (LIVE), Notifications, Privacy, AI settings, Time machine, Drift & schedule**. Jo tab abhi live nahi, Settings ki side list mein "COMING, IN ORDER" mein hai aur har ek ke saath wo phase likha hai jo uska asli backend banata hai (Rule 69: koi nakli control nahi).
+| Tab | Status | Phase |
+|---|---|---|
+| Personal | LIVE | S1 |
+| Workspace | coming | F6 Systems |
+| Appearance | LIVE | S1 |
+| Notifications | coming | S4 (Decide + Live Pulse push; email F5) |
+| Privacy | coming | S3 (passkey F2d ke baad) |
+| AI settings | coming | F6 AI deck |
+| Time machine | coming | S2 (F2c Merkle ke baad) |
+| Drift & schedule | coming | S2 (F2c ke baad) |
+Har tab apne phase mein user wale ke barabar feature set ke saath latest technology par (Rust endpoint + signed envelope + kernel verify + audit row) banega.

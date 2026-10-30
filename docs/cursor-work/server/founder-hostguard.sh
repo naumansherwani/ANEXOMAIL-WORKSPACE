@@ -9,7 +9,12 @@
 set -euo pipefail
 W="${W:-/opt/anexomail-web}"; APP="${APP:-anexomail-web}"; ENVF="${ENVF:-$W/.env}"; M="${1:-status}"
 [ "$(id -u)" -eq 0 ] || { echo "FAIL: root chahiye"; exit 2; }
-show() { echo "mode: $(grep -E '^FOUNDER_HOST_GUARD=' "$ENVF" 2>/dev/null | tail -1 | cut -d= -f2- || true)"; echo "--- aakhri [founder.host] log:"; pm2 logs "$APP" --nostream --lines 400 2>/dev/null | grep -F "[founder.host]" | tail -5 || true; }
+show() {
+  echo "mode (.env file): $(grep -E '^FOUNDER_HOST_GUARD=' "$ENVF" 2>/dev/null | tail -1 | cut -d= -f2- || true)"
+  PID="$(pm2 pid "$APP" 2>/dev/null | head -1 || true)"
+  if [ -n "${PID:-}" ] && [ "$PID" != 0 ] && [ -r "/proc/$PID/environ" ]; then echo "mode (running process): $(tr '\0' '\n' </proc/"$PID"/environ | grep -E '^FOUNDER_HOST_GUARD=' | cut -d= -f2- || true)"; else echo "mode (running process): pid nahi mila"; fi
+  echo "--- aakhri [founder.host] log (pm2 ki poori log files, sirf aakhri 400 line nahi):"
+  grep -hF "[founder.host]" "${PM2_HOME:-$HOME/.pm2}/logs/$APP"-*.log 2>/dev/null | tail -5 || true; }
 case "$M" in
   status) show; exit 0;;
   off|probe|enforce) ;;
@@ -17,7 +22,7 @@ case "$M" in
 esac
 [ -f "$ENVF" ] || { echo "FAIL: $ENVF nahi"; exit 2; }
 if [ "$M" = enforce ]; then
-  pm2 logs "$APP" --nostream --lines 1000 2>/dev/null | grep -F "[founder.host]" | grep -q "founder_host=true" \
+  grep -hF "[founder.host]" "${PM2_HOME:-$HOME/.pm2}/logs/$APP"-*.log 2>/dev/null | grep -q "founder_host=true" \
     || { echo "FAIL: pehle probe chalao aur founder host par login karo — log mein founder_host=true ka saboot nahi mila (lock-out se bachao)"; exit 3; }
 fi
 cp -p "$ENVF" "$ENVF.bak.hostguard.$(date +%s)"
