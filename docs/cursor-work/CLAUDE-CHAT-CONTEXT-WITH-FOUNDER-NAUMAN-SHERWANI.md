@@ -1956,3 +1956,8 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 ## 30 Oct 19:55 PKT — PULL COMMANDS PER TECHNOLOGY (done)
 - docs/claude/founder/PULL-COMMANDS.md ke aakhir mein table: SQL, SQL CHECK, Rust+SPA (founder-install), Caddy, hostguard, polar status, awam web pull.sh, awam rust, rust-cores-test, kernel-check (awam WASM), all-pull. Sab scripts repo mein maujood. "Update" ka matlab (founder): repo + chat context + ledgers + pull commands, sab ek saath, har turn.
 - Abhi chalani: founder-install.sh (top bar 7928c3a) -> Chrome proof; L5 login ke baad hostguard status/enforce. F2b ke baad hi founder WASM command banegi.
+
+## 30 Oct 20:05 PKT — L11 REFRESH SPEED + LOGO
+- Chrome ne dikhaya: refresh par ~3.7 s khali screen. Fix: boot logo (index.html + public/boot.css, React render par replace), gzip precompress (precompress.sh BUILD KE BAAD HAR BAAR chalao, .gz dist mein commit), Rust `asset_cache` (immutable /assets/*) + ServeDir precompressed_gzip. Technology: SPA = React/Vite (UI), Rust axum/tower-http (server). 62 tests ok.
+- WebTransport: F2b -> F2c -> F2d ke baad (ADOPTION doc mein ghar + alag UDP port founder se poochna).
+- Pending: founder-install.sh -> Chrome naap (FCP pehle 3731 ms). Phir L5, L7, F2b.

@@ -1,0 +1,11 @@
+/* Boot screen: painted by the browser the moment index.html arrives, before any JavaScript runs. React replaces it on first render. */
+html{background:#0b0c10;color-scheme:dark}
+body{margin:0;background:radial-gradient(1100px 560px at 50% -12%,#1a2748 0%,rgba(11,12,16,0) 68%),#0b0c10;background-attachment:fixed}
+.boot{position:fixed;inset:0;display:grid;place-content:center;justify-items:center;gap:22px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+.boot svg{width:84px;height:84px;filter:drop-shadow(0 8px 28px rgba(74,115,179,.35));animation:bootbreath 2.4s ease-in-out infinite}
+.boot b{display:block;color:#e9ecf3;font-weight:600;font-size:15px;letter-spacing:.34em;text-align:center}
+.boot .bar{width:132px;height:2px;border-radius:2px;background:rgba(152,162,182,.18);overflow:hidden}
+.boot .bar i{display:block;width:44%;height:100%;border-radius:2px;background:linear-gradient(90deg,transparent,#8fb0e8,transparent);animation:bootrun 1.15s ease-in-out infinite}
+@keyframes bootbreath{0%,100%{transform:scale(1);opacity:.92}50%{transform:scale(1.04);opacity:1}}
+@keyframes bootrun{0%{transform:translateX(-110%)}100%{transform:translateX(250%)}}
+@media (prefers-reduced-motion:reduce){.boot svg,.boot .bar i{animation:none}.boot .bar i{width:100%;opacity:.5}}

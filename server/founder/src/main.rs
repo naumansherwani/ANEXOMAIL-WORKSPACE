@@ -267,7 +267,7 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/actions", get(actions_ep))
         .route("/founder/v1/audit", get(audit_ep))
         .route("/founder/v1/action", axum::routing::post(action_ep))
-        .fallback_service(tower_http::services::ServeDir::new(static_dir).append_index_html_on_directories(true))
+        .fallback_service(tower_http::services::ServeDir::new(static_dir).append_index_html_on_directories(true).precompressed_gzip())
         .with_state(st)
         .layer(hdr("content-security-policy", "default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'"))
         .layer(hdr("strict-transport-security", "max-age=63072000; includeSubDomains; preload"))
@@ -276,6 +276,18 @@ pub fn app(st: S) -> Router {
         .layer(hdr("cross-origin-opener-policy", "same-origin"))
         .layer(hdr("cross-origin-embedder-policy", "require-corp"))
         .layer(hdr("cache-control", "no-store"))
+        .layer(axum::middleware::from_fn(asset_cache))
+}
+
+/// Speed (30 Oct): Vite file names carry a content hash, so `/assets/*` can be cached for a year without ever being stale.
+/// Everything else (index.html, every /founder/v1 answer) stays `no-store`. Outermost layer, so it wins over the global no-store.
+async fn asset_cache(req: axum::extract::Request, next: axum::middleware::Next) -> axum::response::Response {
+    let hashed = req.uri().path().starts_with("/assets/");
+    let mut res = next.run(req).await;
+    if hashed && res.status() == StatusCode::OK {
+        res.headers_mut().insert(HeaderName::from_static("cache-control"), HeaderValue::from_static("public, max-age=31536000, immutable"));
+    }
+    res
 }
 
 #[tokio::main]
@@ -329,6 +341,21 @@ mod tests {
         let h = r.headers();
         assert!(h["content-security-policy"].to_str().unwrap().contains("frame-ancestors 'none'"));
         assert_eq!(h["cache-control"], "no-store");
+    }
+
+    #[tokio::test]
+    async fn hashed_assets_cached_but_pages_and_api_not() {
+        let dir = std::env::temp_dir().join(format!("fo-static-{}", std::process::id()));
+        std::fs::create_dir_all(dir.join("assets")).unwrap();
+        std::fs::write(dir.join("assets/a-1.js"), b"x").unwrap();
+        std::fs::write(dir.join("index.html"), b"<html></html>").unwrap();
+        unsafe { std::env::set_var("FOUNDER_STATIC", &dir); }
+        let st = || Arc::new(St{sb:None,hmac_key:b"k".to_vec(),jwks:RwLock::new(vec![]),lim:Default::default(),ft:None,legacy:true,polar:polar::Live::off(),hook:Default::default(),ed:None,reqsig:Default::default()});
+        let get = |p: &'static str| { let r = app(st()); async move { r.oneshot(Request::builder().uri(p).body(Body::empty()).unwrap()).await.unwrap() } };
+        assert_eq!(get("/assets/a-1.js").await.headers()["cache-control"], "public, max-age=31536000, immutable");
+        assert_eq!(get("/assets/missing.js").await.headers()["cache-control"], "no-store");
+        assert_eq!(get("/index.html").await.headers()["cache-control"], "no-store");
+        assert_eq!(get("/founder/v1/me").await.headers()["cache-control"], "no-store");
     }
 
     fn st_with_sb() -> S {

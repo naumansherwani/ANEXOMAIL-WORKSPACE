@@ -1727,3 +1727,7 @@ Halat: top bar se "Lahore · time" chip hata diya; search bar top bar ke BEECH m
 ## 30 Oct 19:43 PKT — founder order (verbatim)
 "mujhe her technology ke hisab se pull command daina hai. sab repo update kero aur chat context update kero sab kuch update ka matalb samjho."
 Halat: PULL-COMMANDS.md mein "PER TECHNOLOGY" table (11 scripts, har ek repo mein verified), abhi chalana: founder-install.sh (top bar) aur L5 hostguard (login ke baad). Context + DONE updated.
+
+## 30 Oct 19:48 PKT — founder order (verbatim)
+"yeh page refresh kerne pe bhi mere logo aye loading ke saath aur yeh super fast aye aur webtransport kab aye ga? ... sab update kero verna compact chat aye ga. tarteeb follow kero. chorme dekho. baki page refresh wala kaam kero theek"
+Halat: top bar pull hua (founder-install OK; hostguard abhi probe, login baqi). Chrome: refresh par 3.7 s kala screen mila (FCP 3731 ms, JS 416 KB uncompressed, no-store) -> L11 fix (boot logo, gzip, immutable assets). WebTransport = F2b->F2c->F2d ke baad.

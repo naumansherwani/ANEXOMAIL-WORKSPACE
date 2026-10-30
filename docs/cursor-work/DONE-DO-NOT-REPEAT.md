@@ -1190,3 +1190,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 30 Oct 2026 19:40 — Rule 70 (technology report har jawab mein). 3b L1,L2,L3,L9 server+Chrome GREEN. Dobara mat likho.
 - 30 Oct 2026 19:50 — Top bar: Lahore chip HATA (founder order), search CENTER, flip clock + Review chip intact. L7 lockfile: registry se npm baar baar fail (ENOTFOUND/timeout), OPEN. Dobara mat chherna.
 - 30 Oct 2026 19:55 — PULL-COMMANDS 'PER TECHNOLOGY' table (11 verified scripts). Har turn: abhi-chalane-wali command sabse upar. Dobara mat banao.
+- 30 Oct 2026 20:05 — L11 refresh speed: boot logo (public/boot.css + index.html), gzip precompress (founder-web/precompress.sh, build ke baad chalao), Rust asset_cache immutable. Dobara mat likho.

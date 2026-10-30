@@ -15,3 +15,6 @@ Why this order: T1 first because every later screen is then written once in the 
 ## Honest limits (no mock, Rule 69)
 - WebTransport needs UDP/QUIC reachable on the founder host (Caddy HTTP/3 is on; the Rust listener and cert wiring is its own phase, not a flag).
 - Tailwind is added without its CSS reset so the existing cinematic CSS stays byte-for-byte in effect; existing `ui.css`/`cinema.css` tokens are mapped into Tailwind's `@theme`, not thrown away.
+
+## WebTransport (Live Pulse) — kab (founder 30 Oct 19:48 "webtransport kab aye ga?")
+Tarteeb (Rule 64, ek waqt ek phase): F2b WASM verify -> F2c Merkle (E107) -> F2d passkey -> **WebTransport `wtransport` (Live Pulse D10)**. Is ka ghar: founder Rust binary mein alag UDP listener (QUIC, HTTP/3), Caddy QUIC proxy nahi karta, isliye alag UDP port + TLS cert chahiye (awam engine par udp/3443 pehle se live hai, `kernel-check.sh`; founder ke liye alag port founder se poochh kar). Fetch fallback pehle se maujood. Tab tak Dashboard par "Live pulse: after WebTransport" likha hai.

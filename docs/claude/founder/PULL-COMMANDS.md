@@ -115,3 +115,6 @@ Phir (founder step, L5): `/founderlogin` par ek baar login -> `git -C /opt/anexo
 | SAB EK SAATH (SQL -> Rust+SPA -> Caddy -> Web) | `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/all-pull.sh) 2>&1 | tail -60` | NAHI (sirf jab kai technologies badli hon) |
 
 Naye E-file (E107 Merkle, probes, device map) aur F2b (web-wasm founder kernel) ki commands tab likhi jayengi jab unka code push hoga; abhi invent nahi (Rule 48). Server par `git pull` kabhi nahi.
+
+## 30 Oct 20:05 — ABHI PENDING (Rust + SPA: refresh speed L11)
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
