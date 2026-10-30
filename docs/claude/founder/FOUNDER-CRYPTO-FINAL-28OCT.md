@@ -28,7 +28,7 @@ Koi apna crypto nahi: sirf audited crates — `ring`/`ed25519-dalek`, `hmac`, `s
 - Replay: ts window ±30s + seq monotonic per session; request nonce echo.
 - Key rotation: `kid`; browser mein pinned public keys ki list (kernel ke andar), purani 2 tak.
 
-## 3. WASM kernel (`server/founder-kernel`, Rust -> wasm32, alag crate; awam kernel se alag)
+## 3. WASM kernel (CORRECTED 30 Oct: ek hi kernel `web-wasm/`, Rule 52 — alag `server/founder-kernel` crate NAHI; naye modules ed25519@1 + envelope@1, v0.5.0)
 API: `sha256`, `hmac256`, `hkdf`, `ed25519_verify`, `verify_envelope`, `sign_request`, `audit_chain_verify`, `merkle_verify`, `ct_eq`, `sniff`. Koi network/DOM nahi — pure functions. Browser mein Worker mein chalta hai. `ANEXO_TAG_MODE=enforce` (Rule 52): kernel ready na ho / verify fail = data dikhta hi nahi (warn-mode nahi).
 Tests (sab lazmi, jab tak sab pass nahi push nahi): RFC 8032 (Ed25519), RFC 4231 (HMAC), NIST SHA-256, RFC 5869 (HKDF), RFC 6962 Merkle vectors; Rust-sign -> WASM-verify cross test (node + Playwright); tamper (1 bit), replay, wrong ctx, wrong host, wrong kid, truncated; fuzz (cargo-fuzz) envelope parser.
 

@@ -1735,3 +1735,7 @@ Halat: top bar pull hua (founder-install OK; hostguard abhi probe, login baqi). 
 ## 30 Oct 19:56 PKT — founder order (verbatim)
 "is ki pull command hogaye hai codes dobara nahi likhna hai server pe codes hain aur chat context codes sab repo main update kero aur next kaam yeh kero Abhi bhi khula: L5 ... L7 ... aur jo hogaya hai green kerte jao ... baki chorme test kero"
 Halat: founder-install pull OK. Chrome GREEN: refresh FCP 571 ms (pehle 3731), top bar centre search, clock + Review intact, assets immutable + gzip. Agla: L7 lockfile (background), L5 founder login, F2b.
+
+## 30 Oct 20:25 PKT — founder order (verbatim; continuation)
+"... jo hogaya hai green kerte jao ... L5 ... L7 ..." (19:56) — chrome test: GREEN L10/L11. Phir F2b shuru (order: 3b green hone ke baad; L5 founder login aur L7 lockfile khule, un par F2b ruka nahi kyunki wo founder/network steps hain).
+Halat F2b: web-wasm v0.5.0 (ed25519@1+envelope@1) + founder-web kernel.ts/worker, enforce, CSP font-src fix (L6 asli bug), Trusted Types worker (L12). Server + Chrome proof pending (founder-install.sh).

@@ -7,6 +7,7 @@
 //!   async       : kernel_tick (executor), kernel_host_complete (JS ka jawab), live_*, rpc_*
 //!   JS imports  : env.host_wake / env.host_call / env.host_emit (sys.rs)
 #![allow(async_fn_in_trait)] // Transport/Host/Sink sirf is crate ke andar, ek thread (LocalSet) — Send bound ki zaroorat nahi
+pub mod ed;
 pub mod exec;
 pub mod filectx;
 pub mod frame;
@@ -24,9 +25,9 @@ use std::collections::HashMap;
 use std::rc::Rc;
 
 pub const ABI: u32 = 1;
-pub const VERSION: (u32, u32, u32) = (0, 4, 0);
+pub const VERSION: (u32, u32, u32) = (0, 5, 0);
 /// Naam@module-version. Naya module ya badla hua module => yahan entry + VERSION bump (Cargo.toml bhi).
-pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1"];
+pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1"];
 
 thread_local! {
     static OUT: RefCell<Vec<u8>> = const { RefCell::new(Vec::new()) };
@@ -122,6 +123,22 @@ pub extern "C" fn sha256_finish(h: u32) -> u32 {
 #[unsafe(no_mangle)]
 pub extern "C" fn sha256_drop(h: u32) {
     hash::drop_hasher(h)
+}
+
+/* ------------------------------------------------- ed25519 + envelope (F2b) */
+/// 1 = signature sahi, 0 = nahi (kisi bhi wajah se). Strict verify.
+#[unsafe(no_mangle)]
+pub extern "C" fn ed25519_verify(pk: u32, pkl: u32, msg: u32, ml: u32, sig: u32, sl: u32) -> u32 {
+    ed::verify(unsafe { bytes(pk, pkl) }, unsafe { bytes(msg, ml) }, unsafe { bytes(sig, sl) }) as u32
+}
+/// /founder/v1 jawab ki kachchi body verify (pinned key, ts window `skew_s`). Wapas code (ed::OK=0...).
+/// Code 0 par out buffer = 8 bytes: data_start u32 LE, data_end u32 LE (body ke andar). JS sirf isi tukde ko parse kare.
+#[unsafe(no_mangle)]
+pub extern "C" fn envelope_verify(body: u32, len: u32, now_s: u32, skew_s: u32) -> u32 {
+    match ed::envelope_verify(unsafe { bytes(body, len) }, now_s as i64, skew_s as i64) {
+        Ok((s, e)) => { let mut o = (s as u32).to_le_bytes().to_vec(); o.extend((e as u32).to_le_bytes()); set_out(o); ed::OK }
+        Err(c) => { set_out(Vec::new()); c }
+    }
 }
 
 /* -------------------------------------------------------------- hmac-sha256 */
@@ -236,7 +253,7 @@ mod tests {
         let ver = j.iter().find(|(k, _)| k == "version").unwrap().1.clone();
         assert_eq!(ver, env!("CARGO_PKG_VERSION"), "VERSION bump Cargo.toml ke saath");
         assert!(info_json().contains("\"abi\":1"));
-        for m in ["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1"] {
+        for m in ["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1"] {
             assert!(info_json().contains(m), "{m}");
         }
     }

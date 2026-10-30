@@ -118,3 +118,7 @@ Naye E-file (E107 Merkle, probes, device map) aur F2b (web-wasm founder kernel) 
 
 ## 30 Oct 20:05 — ABHI PENDING (Rust + SPA: refresh speed L11)
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+
+## 30 Oct 20:25 — ABHI PENDING (F2b + font fix: Rust + SPA)
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+Agar F2b se data na dikhe (ghalti se hide): rollback = pichla commit 7928c3a ya 64956fa ka founder-install (hum Chrome mein pehle dekhte hain). Awam side (Rule 52 ek kernel): `public/kernel/anexo-kernel-0.5.0.wasm` + pin.gen.ts badle, awam `pull.sh` agli awam deploy par; E90 `kernel_release_publish('0.5.0', ...)` tab jab founder kahe (3 round).

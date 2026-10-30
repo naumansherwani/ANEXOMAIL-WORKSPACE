@@ -3,7 +3,7 @@
 # (wasm-bindgen ke bina: sandbox mein CLI nahi, aur ABI chhota/auditable rehta hai). Version har naye module ke saath badhta hai.
 [package]
 name = "anexo-kernel"
-version = "0.4.0"
+version = "0.5.0"
 edition = "2024"
 publish = false
 
@@ -13,8 +13,11 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 tokio = { version = "1", default-features = false, features = ["rt", "sync", "macros"] }
 sha2 = "0.10"
+ed25519-dalek = { version = "2", default-features = false }
 
 [dev-dependencies]
+base64 = "0.22"
+ring = "0.17"
 tokio = { version = "1", features = ["rt", "macros", "time"] }
 
 [profile.release]

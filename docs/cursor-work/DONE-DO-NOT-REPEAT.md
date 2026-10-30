@@ -1192,3 +1192,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 30 Oct 2026 19:55 — PULL-COMMANDS 'PER TECHNOLOGY' table (11 verified scripts). Har turn: abhi-chalane-wali command sabse upar. Dobara mat banao.
 - 30 Oct 2026 20:05 — L11 refresh speed: boot logo (public/boot.css + index.html), gzip precompress (founder-web/precompress.sh, build ke baad chalao), Rust asset_cache immutable. Dobara mat likho.
 - 30 Oct 2026 19:58 — L10 (top bar) + L11 (refresh speed) SERVER+CHROME GREEN (FCP 571 ms). Dobara mat likho. Khula: L5 (founder login), L7 (lockfile).
+- 30 Oct 2026 20:25 — F2b IN CODE (kernel 0.5.0, Worker, enforce, TT policy) + CSP font-src bug fix. Proof pending server+Chrome. Kernel dobara mat likho; sirf proof.

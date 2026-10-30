@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { deviceStatus } from "./api";
+import { trust } from "./kernel";
 
 // The one place that says whether you can trust what you are looking at. Every line is a real check of this browser's session.
-// Signature row stays amber until the WASM kernel (F2b) verifies each response in the browser.
+// F2b: the signature row is live. It turns green only after the WASM kernel (Rust, Ed25519, pinned key) has verified a response in this browser.
 export function Trust({ go }: { go: (v: string) => void }) {
-  const [open, setOpen] = useState(false), ref = useRef<HTMLDivElement>(null), ds = deviceStatus();
+  const [open, setOpen] = useState(false), ref = useRef<HTMLDivElement>(null), ds = deviceStatus(), ks = useSyncExternalStore(trust.sub, () => trust.get().state), kd = trust.get().detail;
   useEffect(() => {
     if (!open) return;
     const away = (e: PointerEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
@@ -16,7 +17,9 @@ export function Trust({ go }: { go: (v: string) => void }) {
   const rows = [
     dev,
     { s: "ok", t: "Writes are signed", d: "Every change needs a per-session request signature; the server refuses unsigned writes." },
-    { s: "warn", t: "Responses not yet verified in this browser", d: "The server signs every response (Ed25519). Checking it here arrives with the browser kernel (F2b)." },
+    ks === "verified" ? { s: "ok", t: "Responses are verified in this browser", d: "Every answer is checked by the WASM kernel against the server's pinned Ed25519 key before it is shown." }
+      : ks === "failed" ? { s: "fail", t: "An answer failed verification and was hidden", d: kd }
+      : { s: "unknown", t: "Starting the security kernel…", d: "" },
   ];
   const worst = rows.some((r) => r.s === "fail") ? "fail" : rows.some((r) => r.s === "warn" || r.s === "unknown") ? "warn" : "ok";
   return (

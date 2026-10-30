@@ -18,3 +18,9 @@ Why this order: T1 first because every later screen is then written once in the 
 
 ## WebTransport (Live Pulse) — kab (founder 30 Oct 19:48 "webtransport kab aye ga?")
 Tarteeb (Rule 64, ek waqt ek phase): F2b WASM verify -> F2c Merkle (E107) -> F2d passkey -> **WebTransport `wtransport` (Live Pulse D10)**. Is ka ghar: founder Rust binary mein alag UDP listener (QUIC, HTTP/3), Caddy QUIC proxy nahi karta, isliye alag UDP port + TLS cert chahiye (awam engine par udp/3443 pehle se live hai, `kernel-check.sh`; founder ke liye alag port founder se poochh kar). Fetch fallback pehle se maujood. Tab tak Dashboard par "Live pulse: after WebTransport" likha hai.
+
+## F2b — STATUS (30 Oct 20:25): IN CODE, server + Chrome proof pending
+- Kernel = web-wasm v0.5.0 (ek hi kernel, Rule 52; alag `server/founder-kernel` crate NAHI banega — CRYPTO-FINAL §3 ka purana naam). Naye modules `ed25519@1` (RFC 8032 vectors) + `envelope@1` (kachchi body: duplicate-key reject, ts window, kid pin, verify PEHLE phir parse). 52 Rust tests; ring-sign -> kernel-verify cross test.
+- Browser: `founder-web/src/kernel.ts` + `kernel.worker.ts` (Worker, SHA-256 pinned wasm, Trusted Types policy). `api.ts` har `/founder/v1` jawab (keys/exchange chhor kar) pehle verify karta hai; fail = data hide (enforce). Trust chip ab asli state se (Starting / Verified / Failed).
+- Pinned key s1 = `BvK2K2SrpbZoJAHblaB2c1DwXAzEmv4J-m27rVft7RQ` (server `/founder/v1/keys`). Key badli to naya kernel build.
+- Honest limit: kernel server se hi aata hai (wasm hash pin JS mein); poori chain ka bharosa TLS + repo-signed manifest par; F2c Merkle aur signed asset manifest isse mazboot karenge.

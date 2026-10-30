@@ -1,13 +1,14 @@
 // Founder API (same origin). The existing sign-in is the ONLY login (Rule 68); this file never stores or copies its token.
 // F1a: the session token is exchanged ONCE per 15 minutes for a founder token (aud=anexo-founder, device-bound) which lives in MEMORY only.
 // If the server has no token service yet (install pending), calls fall back to the session token and the page says so plainly.
+import { verifyBody } from "./kernel";
 const KEY = "anexo.session.token", DEV = "anexo.founder.device";
 const tok = () => { try { return window.localStorage.getItem(KEY); } catch { return null; } };
 export const hasToken = () => !!tok();
 const expired = () => new Error("Session expired — sign in again");
 export class DevicePending extends Error { code: string | null; revoked: boolean; constructor(code: string | null, revoked: boolean) { super(revoked ? "device_revoked" : "device_pending"); this.name = "DevicePending"; this.code = code; this.revoked = !!revoked; } }
-/** Signed envelope every /founder/v1 GET returns: {data, ts, sig, kid}. Browser-side verify = F2b (WASM kernel). */
-export type Envelope<T = any> = { data: T; ts?: number; sig?: string; sig_ed?: string; kid?: string };
+/** Signed envelope every /founder/v1 GET returns: {data, ts, sig_ed, kid}. The WASM kernel verifies the raw body before `data` is parsed (F2b). */
+export type Envelope<T = any> = { data: T; ts?: number; sig?: string; sig_ed?: string; kid?: string; verified?: boolean };
 export type WriteResult = { status: number; body: any };
 
 // Device id: random per browser, stored only as a device binding (not a login). The server keeps only its SHA-256.
@@ -69,6 +70,14 @@ async function writeHeaders(method: string, path: string, bodyStr: string, token
 }
 
 const auth = async (path: string) => (path.startsWith("/founder/v1/") && !path.startsWith("/founder/v1/exchange") ? bearer() : tok());
+const SIGNED = (path: string) => path.startsWith("/founder/v1/") && !path.startsWith("/founder/v1/keys") && !path.startsWith("/founder/v1/exchange");
+/** F2b: verify the raw body in the WASM kernel FIRST; only the verified `data` text is parsed. Failure = nothing is shown (enforce). */
+async function readSigned<T>(r: Response, path: string): Promise<Envelope<T>> {
+  if (!SIGNED(path)) return r.json();
+  const v = await verifyBody(await r.arrayBuffer());
+  if (!v.ok) throw new Error(`Answer hidden: ${v.reason}`);
+  return { data: JSON.parse(v.data) as T, verified: true };
+}
 export async function get<T = any>(path: string, retry = true): Promise<Envelope<T>> {
   const t = await auth(path); if (!t) throw expired();
   const r = await fetch(path, { headers: { authorization: `Bearer ${t}` }, cache: "no-store" });
@@ -76,14 +85,15 @@ export async function get<T = any>(path: string, retry = true): Promise<Envelope
   if (r.status === 401) throw expired();
   if (r.status === 403) throw new Error("This account is not a founder account");
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
-  return r.json(); // {data, ts, sig} — browser-side signature verify = F2b (WASM kernel); the UI says plainly it is not verified yet
+  return readSigned<T>(r, path);
 }
 export async function post(path: string, body: unknown): Promise<WriteResult> {
   const t = await auth(path); if (!t) throw expired();
   const bs = JSON.stringify(body);
   const r = await fetch(path, { method: "POST", headers: await writeHeaders("POST", path, bs, t), body: bs });
   if (r.status === 401) { forget(); throw expired(); }
-  let j: any = null; try { j = await r.json(); } catch {}
+  let j: any = null;
+  try { j = r.ok && SIGNED(path) ? (await readSigned(r, path)).data : await r.json(); } catch (e) { if (r.ok) throw e; }
   return { status: r.status, body: j };
 }
 export async function put(path: string, body: unknown): Promise<WriteResult> {
@@ -91,7 +101,8 @@ export async function put(path: string, body: unknown): Promise<WriteResult> {
   const bs = JSON.stringify(body);
   const r = await fetch(path, { method: "PUT", headers: await writeHeaders("PUT", path, bs, t), body: bs });
   if (r.status === 401) { forget(); throw expired(); }
-  let j: any = null; try { j = await r.json(); } catch {}
+  let j: any = null;
+  try { j = r.ok && SIGNED(path) ? (await readSigned(r, path)).data : await r.json(); } catch (e) { if (r.ok) throw e; }
   return { status: r.status, body: j };
 }
 // Sign out of THIS browser only: drops the session copy + the in-memory founder token. The device approval stays (server side).

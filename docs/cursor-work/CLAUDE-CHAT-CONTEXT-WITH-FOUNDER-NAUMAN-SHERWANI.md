@@ -1965,3 +1965,8 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 ## 30 Oct 19:58 PKT — L10 + L11 GREEN (server + Chrome)
 - Server par codes hain (founder-install OK). Chrome: FCP 571 ms (pehle 3731), JS cache 0 transfer, gzip, boot logo, top bar centre search. DOBARA NAHI LIKHNA.
 - Khula: L5 founder /founderlogin (hostguard abhi probe), L7 lockfile (npm6 background /tmp/npm6.log), phir F2b (ed25519 web-wasm v0.5.0).
+
+## 30 Oct 20:25 PKT — F2b IN CODE
+- web-wasm v0.5.0: src/ed.rs (PINNED s1 key, verify, envelope_verify_with, tests RFC8032/tamper/stale/dup/unknown-kid/truncated, ring cross-sign), lib.rs exports ed25519_verify + envelope_verify; scripts/build-kernel.sh -> public/kernel/anexo-kernel-0.5.0.wasm + src/lib/kernel/pin.gen.ts; kernel.test.ts modules list. founder-web: kernel-sync.sh (copy same wasm + src/kernel.pin.ts), src/kernel.ts + kernel.worker.ts (Worker, SHA pin, Trusted Types policy), api.ts readSigned (verify raw body first), Trust.tsx live state, kernel.test.ts (bun). Rust: CSP font-src 'self' (+test). tsconfig excludes tests.
+- LESSONS: (1) sandbox test server MUST send the real CSP/COEP (csp_srv.py in scratchpad) — it caught fonts + worker problems. (2) `pkill -f`/`pgrep -f` with my own command text kills my shell (exit 144): use /proc cmdline match. (3) NO_PROXY includes index.crates.io: `unset NO_PROXY` for cargo.
+- Next: founder-install.sh -> Chrome: Trust chip must turn green on real jawab; failure => rollback. Then L5, L7, F2c.

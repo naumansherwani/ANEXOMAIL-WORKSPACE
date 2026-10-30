@@ -100,7 +100,7 @@ describe("kernel wasm — load, pin, version", () => {
     const k = await Kernel.load({ bytes: bytes(), sha256: KERNEL_PIN.sha256 });
     expect(k.info.version).toBe(KERNEL_PIN.version);
     expect(k.info.abi).toBe(1);
-    expect(k.info.modules).toEqual(["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1"]);
+    expect(k.info.modules).toEqual(["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1"]);
     const cargo = readFileSync("web-wasm/Cargo.toml", "utf8").match(/^version\s*=\s*"([^"]+)"/m)?.[1];
     expect(cargo).toBe(KERNEL_PIN.version);
   });
