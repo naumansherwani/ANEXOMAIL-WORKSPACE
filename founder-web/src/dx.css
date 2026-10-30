@@ -44,3 +44,30 @@ button.dx-card{cursor:pointer;width:100%}button.dx-card:hover{transform:translat
 .splash b{color:#e9ecf3;font-weight:600;font-size:15px;letter-spacing:.34em;margin-top:8px}.sp-sub{color:#98a1b1;font-size:12.5px}
 .splash .bar{width:132px;height:2px;border-radius:2px;background:rgba(152,162,182,.18);overflow:hidden;margin-top:8px}.splash .bar i{display:block;width:44%;height:100%;background:linear-gradient(90deg,transparent,#8fb0e8,transparent);animation:bootrun 1.15s ease-in-out infinite}
 @media (prefers-reduced-motion:reduce){.splash svg,.splash .bar i{animation:none}}
+/* 3D layer (Scene3D.tsx). Fallbacks are pure CSS so nothing is ever blank; the canvas fades in once three.js is ready. */
+.orb{position:relative;width:104px;height:104px;flex:none}.orb-gl{position:absolute;inset:0;opacity:0;transition:opacity .6s}.orb-gl.on{opacity:1}.orb-gl canvas{width:100%!important;height:100%!important;display:block}
+.orb-fallback{position:absolute;inset:14%;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.5),var(--oc,#6b7a99) 45%,rgba(0,0,0,.4));box-shadow:0 0 36px var(--oc,#6b7a99);opacity:.8}
+.orb.ok{--oc:#3dd598}.orb.warn{--oc:#f2b84b}.orb.fail{--oc:#ef6a58}.orb.unknown{--oc:#6b7a99}
+.dx-orbwrap{position:relative;width:112px;height:112px;flex:none;display:grid;place-items:center}.dx-orbwrap .orb{position:absolute;inset:0;width:100%;height:100%}.dx-orbwrap .num{position:relative;font:650 19px Inter,sans-serif;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.55);font-variant-numeric:tabular-nums;pointer-events:none}
+.bmap{display:grid;grid-template-columns:minmax(150px,1fr) minmax(280px,2.2fr) minmax(150px,1fr);gap:8px;align-items:center;padding:14px 20px;margin:4px 0 14px}
+.bm-col h3{margin:0 0 8px;font:600 12px Inter,sans-serif;color:var(--dim);letter-spacing:.02em}.bm-col.r{text-align:right}.bm-col ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.bm-col li{display:flex;flex-direction:column;gap:1px;font-size:12.5px;color:var(--dim)}.bm-col li b{font:650 22px Inter,sans-serif;color:var(--fg);font-variant-numeric:tabular-nums;letter-spacing:-.02em}.bm-col li b:not(:where(:has(*))){}
+.bm-stage{position:relative;height:190px}.bm-stage .orb-gl{position:absolute;inset:0}.bm-fb{inset:30% 6%;border-radius:99px;height:3px;background:linear-gradient(90deg,transparent,#c3c9d3,transparent);box-shadow:none;top:50%;bottom:auto}
+.bm-quiet{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);font-size:12px;color:var(--faint)}
+.phero{position:absolute;right:14px;top:6px;width:210px;height:150px;pointer-events:auto}.phero .orb-gl{position:absolute;inset:0}.ph-fb{inset:20%;border-radius:20% 20% 6% 6%;background:linear-gradient(160deg,#4a73b3,#1d3157);box-shadow:0 0 30px rgba(74,115,179,.5)}
+.prof{position:relative;overflow:hidden}
+@media (max-width:700px){.bmap{grid-template-columns:1fr 1fr;padding:14px}.bm-stage{grid-column:1/-1;order:-1;height:140px}.phero{width:130px;height:96px}.dx-orbwrap{width:96px;height:96px}}
+/* 3D polish: CSS fallback fades out once the canvas is drawing; profile mark sits clear of the name. */
+.orb:has(.orb-gl.on) .orb-fallback,.phero:has(.orb-gl.on) .ph-fb,.bm-stage:has(.orb-gl.on) .bm-fb{opacity:0;transition:opacity .5s}
+.phero{right:10px;top:8px;width:170px;height:124px}
+@media (max-width:700px){.phero{width:110px;height:84px}}
+/* Greeting v2 (same structure as the user Command Center: eyebrow, heavy heading with a day glyph, workspace pill, status line). */
+.g-eyebrow{display:block;font:600 12px Inter,sans-serif;letter-spacing:.2em;color:var(--dim)}
+.greet .hello{display:flex;align-items:center;gap:16px;margin:8px 0 12px;font-weight:800;letter-spacing:-.035em;font-size:clamp(34px,5.4vw,60px);line-height:1.02}
+.dayg{width:clamp(34px,4.4vw,52px);height:clamp(34px,4.4vw,52px);flex:none;filter:drop-shadow(0 6px 18px rgba(245,165,36,.45));animation:dayg 5s ease-in-out infinite}
+.dayg.night{filter:drop-shadow(0 6px 20px rgba(255,214,120,.4))}
+@keyframes dayg{50%{transform:translateY(-3px) scale(1.03)}}
+.g-meta{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.g-pill{font:600 12px Inter,sans-serif;padding:5px 12px;border-radius:99px;color:#0b2540;background:linear-gradient(90deg,#5ec8ff,#4aa3f0);box-shadow:0 4px 16px -4px rgba(74,163,240,.6)}
+.g-date{color:var(--faint);font-size:13px}
+@media (prefers-reduced-motion:reduce){.dayg{animation:none}}

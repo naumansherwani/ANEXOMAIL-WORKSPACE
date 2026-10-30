@@ -1798,3 +1798,14 @@ Done 22:20: `founder-web/src/dx.css` (new, gradient glass plane look), `Surface.
 ## 30 Oct 22:17 PKT (verbatim)
 "data live her cheeze mujeh batye ek bhi mock data huwa tumhay goli marun ga. sab kuch live latest technology pe page pe auto updates aye live real aye technology ke hisab se is ki sql bana do advance level 800lines pe"
 Done 22:30: `docs/cursor-work/sql/E109_founder_live.sql` + `CHECK_E109.sql` (tested locally), audit in FOUNDER-LIVE-DATA-AUDIT-30OCT.md. Rust/UI wiring is the next phases, not started.
+
+## 30 Oct 22:24 PKT (verbatim essentials)
+"yeh saab kaam kerne hain jo nahi huway hain ... MERI CHAT KA EK EK LINE READ KEROOOOOO ... yeh teeno kero (1 hero health 3D orb, 2 Bridge '-> <-' 3D map, 3 Profile cinematic header) lekin orbit baqwas hai idea hai haan health ka rang change ho woh zaurur kero. Frontend UI next level demo dekhao pehle lekin original ke saath bana huwa ho aur mujhe backend technology Wasm kernel Rust, tokio, async main 24hours ho woh kabhi bhulna nahi hai technology read kero map kahan aye ga, us ke hisab se kero. aur tarteeb bhi saath main follow kero." (+ install output 22:24 OK, 66 tests)
+
+## 30 Oct 22:25 PKT (verbatim, essentials)
+"gandu yeh saab kaam kerne hain jo nahi huway hain toh tune sab kerne hain MERI CHAT KA EK EK LINE READ KEROOOOOO ... yeh teeno kero lekin orbit baqwas hai idea hai haan health ka rang change ho woh zaurur kero. Frontend UI next level demo dekhao pehle lekin original ke saath bana huwa ho aur mujhe backend technology Wasm kernel Rust, tokio, async man 24hours ho woh kabhi bhulna nahi hai technology read kero map kahan aye ga, us ke hisab se kero. aur tarteeb bhi saath main follow kero. ... mujhe orbit nahi chaiye hain cinematic vercel aur apple level UI chaiye hai woh level pe soch testing kero live"
+Meaning: do ALL THREE 3D places (Dashboard hero, Bridge map, Profile header), NO orbit look, health colour must change with real health; real data only; show demo first; keep Rust+tokio async 24h + WASM kernel as the backbone; follow the phase order. Install of 2e67532 done by founder 22:24.
+
+## 30 Oct 22:29 PKT (verbatim, essentials, with photo of user Command Center "Good night" + moon + pill)
+"yeh adaptive good night morning aye jaise user ko offer kiya hai yeh command center is tarah likha aye yeh is type ko zara advance level pe leke jao. aur live testing ke saath sab kero."
+Done 22:35: Greeting v2 (Bridge.tsx Greeting + DayGlyph SVG sunrise/sun/sunset/moon, eyebrow FOUNDER COMMAND CENTER, Founder pill, status line) + 3D layer (Scene3D.tsx: HealthOrb on Dashboard hero, BridgeMap on Bridge, ProfileHero) + dx.css polish. Needs founder-install, then live Chrome check.

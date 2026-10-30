@@ -2032,3 +2032,6 @@ Founder 22:15 order: logo loading on every refresh, everywhere. Done in code: `S
 
 ## 22:30 PKT — founder: "ek bhi mock data hua to goli maron ga ... live ... sql advance 800 lines"
 Wrote E109 (E107 stays reserved for Merkle): live change feed + one-RPC snapshot + metrics + anomaly, 600 real lines (not padded), tested on local Postgres 16 (selftest OK, CHECK 9/9). Audit: no invented business numbers; ONE static claim found (`pending_channels` hard-coded in bridge.rs) and polling is 15 s. Next: founder runs sql-run.sh + CHECK_E109, then Rust live endpoint + SSE, then UI. Splash (2e67532) still awaits founder-install.
+
+## 22:35 PKT — 3D + greeting v2 (UI only)
+Scene3D.tsx appeared in the working tree at 22:25 (not written by me in this turn; reviewed, fixed a TS error in the bridge cables, polished) : HealthOrb (colour = verified health, eases ~1 s, no orbit/spin), BridgeMap (real counts as particles, quiet = no particles), ProfileHero (extruded real mark, pointer parallax only). three.js lazy chunk 724 kB (not on first paint), render loop stops when hidden. Greeting v2 matches the user Command Center. Splash confirmed live in Chrome 22:26. Backbone unchanged: Rust+tokio async 24h, WASM kernel verifies; 3D only draws kernel-verified values (unverified = grey). NEXT: founder-install, Chrome check, then E109 install + Rust live/SSE.

@@ -4,6 +4,7 @@ import { useCity, fmtDateTime, fmtDay, fmtHM, coordsOf } from "./city";
 import { callName, nameOf } from "./Profile";
 import type { Prof } from "./types";
 import { Surface } from "./Surface";
+import { BridgeMap, type Lane } from "./Scene3D";
 
 // Shapes of the signed /founder/v1/bridge data and the Polar/finance reads. Fields are optional because each source can be "not connected" (Rule 69).
 type Check = { name: string; state: "ok" | "warn" | "fail" | "unknown"; detail: string };
@@ -40,6 +41,27 @@ function Clock({ tz, city }: { tz: string; city: string }) {
   );
 }
 
+/** Time-of-day glyph (adaptive like the user app): sunrise, sun, sunset, moon. Inline SVG, no emoji, so it looks the same on every device. Technology: React-TS + SVG + CSS glow. */
+function DayGlyph({ part }: { part: string }) {
+  const sun = part === "afternoon", set = part === "evening", rise = part === "morning";
+  return (
+    <svg className={`dayg ${part}`} viewBox="0 0 48 48" role="img" aria-label={part}>
+      <defs>
+        <radialGradient id="dgs" cx="40%" cy="35%" r="70%"><stop offset="0" stopColor="#fff3c4" /><stop offset="1" stopColor="#f5a524" /></radialGradient>
+        <linearGradient id="dgm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#ffe9a8" /><stop offset="1" stopColor="#f2a33a" /></linearGradient>
+      </defs>
+      {part === "night" ? <path d="M33 6a19 19 0 1 0 9 31 15 15 0 0 1-9-31z" fill="url(#dgm)" /> : (
+        <g>
+          <circle cx="24" cy={sun ? 24 : 30} r={sun ? 10 : 11} fill="url(#dgs)" />
+          {sun && [0, 45, 90, 135, 180, 225, 270, 315].map((a) => <line key={a} x1="24" y1="5" x2="24" y2="10" stroke="#f9c74f" strokeWidth="2.6" strokeLinecap="round" transform={`rotate(${a} 24 24)`} />)}
+          {(rise || set) && <path d="M6 36h36" stroke="#ffd48a" strokeWidth="2.6" strokeLinecap="round" />}
+          {(rise || set) && <path d={rise ? "M24 14v-6M13 19l-3-3M35 19l3-3" : "M24 14v-6M13 19l-3-3M35 19l3-3"} stroke="#f9c74f" strokeWidth="2.4" strokeLinecap="round" fill="none" />}
+        </g>
+      )}
+    </svg>
+  );
+}
+
 function Greeting({ t, at, me }: { t: Trouble | null | undefined; at: At; me: Prof | null }) {
   const [now, setNow] = useState(() => new Date());
   useEffect(() => { const id = setInterval(() => setNow(new Date()), 30000); return () => clearInterval(id); }, []);
@@ -49,8 +71,9 @@ function Greeting({ t, at, me }: { t: Trouble | null | undefined; at: At; me: Pr
   return (
     <header className="greet">
       <div>
-        <span className="kicker">{fmtDay(now).toUpperCase()}</span>
-        <h1 className="hello">{SAY[part]}{nm ? <>, <span className="nm">{nm}</span></> : ""}</h1>
+        <span className="kicker g-eyebrow">FOUNDER COMMAND CENTER</span>
+        <h1 className="hello"><span>{SAY[part]}{nm ? <>, <span className="nm">{nm}</span></> : ""}</span><DayGlyph part={part} /></h1>
+        <div className="g-meta"><span className="g-pill">Founder · Chairman</span><span className="g-date">{fmtDay(now)}</span></div>
         <p className="bsub"><span className={`sdot ${tone}`} aria-hidden="true" />
           <span>{!t ? (at ? "Nothing measured yet." : "Checking your systems…") : bad ? `${bad} item${bad === 1 ? "" : "s"} need${bad === 1 ? "s" : ""} a look` : "Nothing needs attention"}</span></p>
       </div>
@@ -64,9 +87,15 @@ export function BridgeView({ d, at, me, go }: { d: any; at: At; me: Prof | null;
   const t = d?.trouble, hk = d?.polar_hook;
   const subs = hk?.subscriptions;
   const wh = hk?.webhook;
+  // Real counts only: a source that is not connected gives null ("Not connected"), never 0. Nothing here is estimated.
+  const mailItem = t?.items?.find((i: Check) => i.name === "mail_outbox"), mailN = !mailItem ? null : /empty/i.test(mailItem.detail) ? 0 : /^(\d+)/.exec(mailItem.detail)?.[1] != null ? Number(/^(\d+)/.exec(mailItem.detail)![1]) : null;
+  const rej7 = hk?.rejects?.connected ? (hk.rejects.daily_7d || []).reduce((s: number, x: { n?: number }) => s + (x.n || 0), 0) : null;
+  const inbound: Lane[] = [{ label: "New leads", n: d?.voice?.connected ? d.voice.new_leads : null }, { label: "Polar events, 24 h", n: wh?.connected ? wh.events_24h : null }, { label: "New subscriptions, 30 d", n: subs?.connected ? (subs.new_30d ?? null) : null }];
+  const outbound: Lane[] = [{ label: "Mail waiting or failed", n: mailN }, { label: "Webhook errors, 24 h", n: wh?.connected ? wh.errors_24h : null }, { label: "Rejected signatures, 7 d", n: rej7 }];
   return (
     <>
       <Greeting t={t} at={at} me={me} />
+      <BridgeMap inbound={inbound} outbound={outbound} />
       {subs?.connected && (subs.by_status?.past_due > 0 || (subs.by_product || []).some((x: any) => x.grace)) && <>
         <h2>Money exceptions</h2>
         <div className="ledger">{(subs.by_product || []).filter((x: any) => x.past_due || x.grace).map((x: any) => <div className="lrow" key={x.product}><i className="sdot warn" /><div><div className="lt">{cap(x.product)}</div><div className="ld">{x.past_due ? `${x.past_due} past due` : ""}{x.past_due && x.grace ? " · " : ""}{x.grace ? `${x.grace} in grace` : ""}</div></div><span /></div>)}</div>

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import { get, warm, deviceStatus } from "./api";
 import { trust } from "./kernel";
 import { fmtHM } from "./city";
+import { HealthOrb, type Tone } from "./Scene3D";
 
 // The Dashboard body. Everything on it is measured in THIS browser, right now (Rule 69: no mock data): the signed Rust answers, the gates from the
 // action registry, the endpoints with their real response time. Technology: React-TS + CSS (glass cards, one entrance motion); the WASM kernel verifies every answer.
@@ -34,20 +35,6 @@ type State = "ok" | "warn" | "fail" | "unknown";
 const GATES: [string, "low" | "medium" | "high", string, string][] = [["G1", "low", "One tap", "Read-only and safe"], ["G2", "medium", "Two taps and a reason", "Changes something"], ["G3", "high", "Passkey", "Money, access, shutdown (arrives in F2d)"]];
 const fmtMinor = (n: unknown) => (Number(n) / 100).toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const cap = (s: unknown) => String(s || "").replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-
-/** Health ring: the share of checks that are fine. The arc fills in once on first paint. */
-function Ring({ ok, total, tone }: { ok: number; total: number; tone: State }) {
-  const R = 44, C = 2 * Math.PI * R, [on, setOn] = useState(false);
-  useEffect(() => { const id = requestAnimationFrame(() => setOn(true)); return () => cancelAnimationFrame(id); }, []);
-  const frac = total ? ok / total : 0;
-  return (
-    <svg className={`dx-ring ${tone}`} viewBox="0 0 100 100" role="img" aria-label={total ? `${ok} of ${total} checks fine` : "Not measured yet"}>
-      <circle cx="50" cy="50" r={R} className="trk" />
-      {total > 0 && <circle cx="50" cy="50" r={R} className="arc" strokeDasharray={C} strokeDashoffset={on ? C * (1 - frac) : C} transform="rotate(-90 50 50)" />}
-      <text x="50" y="50" className="num" textAnchor="middle" dominantBaseline="central">{total ? `${ok}/${total}` : "–"}</text>
-    </svg>
-  );
-}
 
 function Tile({ icon, tone, label, value, unit, sub, off, bar, pct }: { icon: string; tone?: State; label: string; value?: React.ReactNode; unit?: string; sub?: React.ReactNode; off?: boolean; bar?: boolean; pct?: number }) {
   return (
@@ -103,13 +90,15 @@ export function Surface({ d, at, go }: { d: any; at: Date | string | number | nu
   ] : [];
   const maxMs = Math.max(400, ...live.map((r) => r.ms || 0));
 
+  // The orb shows only what the kernel verified: unverified answers draw a grey orb, never a guess. A failing endpoint can only make it worse.
+  const orbTone: Tone = ks !== "verified" || !t ? "unknown" : rows && okN === 0 ? "fail" : bad || (rows && okN < live.length) ? (bad && t.items.some((i: { state: string }) => i.state === "fail") ? "fail" : "warn") : "ok";
   const headline = !t ? "Checking your systems" : bad ? `${bad} ${bad === 1 ? "thing needs" : "things need"} a look` : "Everything is running";
   const subline = [t ? `${tot - bad} of ${tot} checks fine` : null, rows ? `${okN} of ${live.length} endpoints answering` : null, ks === "verified" ? "Answers verified" : null].filter(Boolean).join("  ·  ");
 
   return (
     <div className="dx">
       <section className="dx-card dx-hero" style={{ "--i": 0 } as React.CSSProperties} aria-label="Company status">
-        <Ring ok={tot - bad} total={tot} tone={tone} />
+        <div className="dx-orbwrap"><HealthOrb tone={orbTone} label={`Company health: ${headline}`} /><span className="num">{tot ? `${tot - bad}/${tot}` : "–"}</span></div>
         <div className="dx-herotx">
           <h2 className="dx-h">{headline}</h2>
           <p className="dx-p">{subline || "Nothing measured yet"}{at ? `  ·  checked ${fmtHM(at)}` : ""}</p>

@@ -1,3 +1,4 @@
+import { ProfileHero } from "./Scene3D";
 import { useEffect, useRef, useState } from "react";
 import { setSetting, signOut, deviceStatus } from "./api";
 import type { Prof, Msg } from "./types";
@@ -91,6 +92,7 @@ export function ProfileView({ p, reload }: { p: Prof | null; reload: () => Promi
   return (
     <div className="grid">
       <section className="card prof">
+        <ProfileHero />
         <div className="kicker">PROFILE</div>
         <div className="profrow">
           <button className="bigav" onClick={() => file.current?.click()} disabled={busy} aria-label="Change profile photo"><Avatar p={p} size={96} /><span className="cam">{busy ? "Saving…" : "Change"}</span></button>
