@@ -73,11 +73,26 @@ async function writeHeaders(method: string, path: string, bodyStr: string, token
 
 const auth = async (path: string) => (path.startsWith("/founder/v1/") && !path.startsWith("/founder/v1/exchange") ? bearer() : tok());
 const SIGNED = (path: string) => path.startsWith("/founder/v1/") && !path.startsWith("/founder/v1/keys") && !path.startsWith("/founder/v1/exchange");
+// Instant refresh: the last Bridge answer this TAB verified is kept (session storage, cleared on sign-out/close) and shown straight away after F5,
+// verified AGAIN by the kernel (signature only; age up to a day) and labelled with its real time. The live answer replaces it as soon as it arrives.
+const SNAP_PATH = "/founder/v1/bridge", SNAP = "anexo.f.snap.bridge";
+const saveSnap = (buf: ArrayBuffer) => { try { window.sessionStorage.setItem(SNAP, JSON.stringify({ t: Date.now(), b: new TextDecoder().decode(buf) })); } catch { /* storage blocked: just no instant paint */ } };
+export async function lastBridge(): Promise<{ data: any; at: Date } | null> {
+  try {
+    const raw = window.sessionStorage.getItem(SNAP); if (!raw) return null;
+    const { t, b } = JSON.parse(raw) as { t: number; b: string };
+    if (!t || Date.now() - t > 86_400_000) return null;
+    const v = await verifyBody(new TextEncoder().encode(b).buffer as ArrayBuffer, 90_000, true);
+    return v.ok ? { data: JSON.parse(v.data), at: new Date(t) } : null;
+  } catch { return null; }
+}
 /** F2b: verify the raw body in the WASM kernel FIRST; only the verified `data` text is parsed. Failure = nothing is shown (enforce). */
 async function readSigned<T>(r: Response, path: string): Promise<Envelope<T>> {
   if (!SIGNED(path)) return r.json();
-  const v = await verifyBody(await r.arrayBuffer());
+  const raw = await r.arrayBuffer(), keep = path === SNAP_PATH ? raw.slice(0) : null;
+  const v = await verifyBody(raw);
   if (!v.ok) throw new Error(`Answer hidden: ${v.reason}`);
+  if (keep) saveSnap(keep);
   return { data: JSON.parse(v.data) as T, verified: true };
 }
 // Same GET asked twice at the same moment (shell + a page) shares one network call and one verification.
@@ -117,7 +132,7 @@ export async function put(path: string, body: unknown): Promise<WriteResult> {
   return { status: r.status, body: j };
 }
 // Sign out of THIS browser only: drops the session copy + the in-memory founder token. The device approval stays (server side).
-export function signOut() { forget(); try { window.localStorage.removeItem(KEY); window.localStorage.removeItem("anexo.session.last"); } catch {} window.location.replace("/founderlogin"); }
+export function signOut() { forget(); try { window.sessionStorage.removeItem(SNAP); } catch {} try { window.localStorage.removeItem(KEY); window.localStorage.removeItem("anexo.session.last"); } catch {} window.location.replace("/founderlogin"); }
 
 // Founder settings (E108): one signed write per change; value null = back to default.
 export const setSetting = (key: string, value: unknown) => put("/founder/v1/settings", { key, value });

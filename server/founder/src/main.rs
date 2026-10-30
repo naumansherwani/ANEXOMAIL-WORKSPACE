@@ -12,6 +12,7 @@ mod actions;
 mod ftoken;
 mod polar;
 mod settings;
+mod authcache;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -24,7 +25,7 @@ fn hdr(n: &'static str, v: &'static str) -> SetResponseHeaderLayer<HeaderValue> 
     SetResponseHeaderLayer::overriding(HeaderName::from_static(n), HeaderValue::from_static(v))
 }
 
-pub struct St { pub sb: Option<data::Sb>, pub hmac_key: Vec<u8>, pub jwks: RwLock<Vec<jwt_core::Jwk>>, pub lim: std::sync::Mutex<login::Limiter>, pub ft: Option<ftoken::Keys>, pub legacy: bool, pub polar: Arc<polar::Live>, pub hook: std::sync::Mutex<Option<(i64, Value)>>, pub ed: Option<sign::EdKeys>, pub reqsig: bool }
+pub struct St { pub sb: Option<data::Sb>, pub hmac_key: Vec<u8>, pub jwks: RwLock<Vec<jwt_core::Jwk>>, pub lim: std::sync::Mutex<login::Limiter>, pub ft: Option<ftoken::Keys>, pub legacy: bool, pub polar: Arc<polar::Live>, pub hook: std::sync::Mutex<Option<(i64, Value)>>, pub ed: Option<sign::EdKeys>, pub reqsig: bool, pub gate: authcache::AuthCache }
 type S = Arc<St>;
 
 fn now_s() -> i64 { std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0) }
@@ -84,13 +85,19 @@ async fn authed_session(st: &St, h: &HeaderMap) -> Result<jwt_core::Claims, Stat
 }
 
 /// Har founder endpoint ka darwaza: (1) founder token (aud=anexo-founder, device ab bhi approved) YA (2) grace mein purana session token (FOUNDER_LEGACY_TOKEN=0 par band).
-async fn authed(st: &St, h: &HeaderMap) -> Result<jwt_core::Claims, StatusCode> {
+async fn authed(st: &St, h: &HeaderMap) -> Result<jwt_core::Claims, StatusCode> { authed_with(st, h, false).await }
+/// Writes (PUT/POST) always ask the database fresh: no cache, a revoke is honoured at once.
+async fn authed_w(st: &St, h: &HeaderMap) -> Result<jwt_core::Claims, StatusCode> { authed_with(st, h, true).await }
+async fn authed_with(st: &St, h: &HeaderMap, fresh: bool) -> Result<jwt_core::Claims, StatusCode> {
     let Some(sb) = &st.sb else { return Err(StatusCode::SERVICE_UNAVAILABLE) };
     let tok = gate::bearer(h.get("authorization").and_then(|v| v.to_str().ok())).ok_or(StatusCode::UNAUTHORIZED)?;
     if ftoken::looks_founder(tok) {
         let Some(k) = &st.ft else { return Err(StatusCode::UNAUTHORIZED) };
         let c = k.verify(tok, now_s()).map_err(|_| StatusCode::UNAUTHORIZED)?;
         // L2 (30 Oct): dono DB checks ek saath (pehle line se, 2 round-trip); natija wahi: founder nahi => 403, device revoke => 401 (foran band)
+        if !fresh && st.gate.ok(&c.sub, &c.did, || async { let (f, d) = tokio::join!(sb.is_founder(&c.sub), sb.device_ok(&c.sub, &c.did)); f && d }).await {
+            return Ok(jwt_core::Claims { sub: c.sub, email: c.email, session_id: None, exp: c.exp }); // 30 Oct refresh speed: same (account, device) shares one answer for 5 s
+        }
         let (founder, dev) = tokio::join!(sb.is_founder(&c.sub), sb.device_ok(&c.sub, &c.did));
         if !founder { return Err(StatusCode::FORBIDDEN); }
         if !dev { return Err(StatusCode::UNAUTHORIZED); }
@@ -120,7 +127,7 @@ struct SetIn { key: String, #[serde(default)] value: Value }
 
 /// PUT {key, value}: signed write (x-fo-ts/x-fo-sig). value null = back to default.
 async fn settings_put(State(st): State<S>, h: HeaderMap, body: axum::body::Bytes) -> axum::response::Response {
-    let c = match authed(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
+    let c = match authed_w(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
     if let Err(r) = write_ok(&st, &h, "PUT", "/founder/v1/settings", &body) { return r; }
     let Ok(b) = serde_json::from_slice::<SetIn>(&body) else { return (StatusCode::BAD_REQUEST, Json(json!({"error": "invalid body"}))).into_response() };
     if !settings::valid(&b.key, &b.value) { return (StatusCode::BAD_REQUEST, Json(json!({"error": "invalid setting or value"}))).into_response(); }
@@ -238,7 +245,7 @@ async fn audit_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response
 struct ActIn { key: String, reason: String }
 
 async fn action_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Bytes) -> axum::response::Response {
-    let c = match authed(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
+    let c = match authed_w(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
     if let Err(r) = write_ok(&st, &h, "POST", "/founder/v1/action", &body) { return r; }
     let Ok(b) = serde_json::from_slice::<ActIn>(&body) else { return (StatusCode::BAD_REQUEST, Json(json!({"error": "invalid body"}))).into_response() };
     let sb = st.sb.as_ref().unwrap();
@@ -282,7 +289,8 @@ pub fn app(st: S) -> Router {
 /// Speed (30 Oct): Vite file names carry a content hash, so `/assets/*` can be cached for a year without ever being stale.
 /// Everything else (index.html, every /founder/v1 answer) stays `no-store`. Outermost layer, so it wins over the global no-store.
 async fn asset_cache(req: axum::extract::Request, next: axum::middleware::Next) -> axum::response::Response {
-    let hashed = req.uri().path().starts_with("/assets/");
+    // hashed bundles AND the versioned kernel file (its SHA-256 is pinned inside the worker, so a cached copy can only ever be the right bytes)
+    let hashed = req.uri().path().starts_with("/assets/") || req.uri().path().starts_with("/kernel/anexo-kernel-");
     let mut res = next.run(req).await;
     if hashed && res.status() == StatusCode::OK {
         res.headers_mut().insert(HeaderName::from_static("cache-control"), HeaderValue::from_static("public, max-age=31536000, immutable"));
@@ -323,7 +331,7 @@ async fn main() {
     let (polar, pcfg) = match polar::Cfg::from_env() { Some(c) => (polar::Live::new(true), Some(c)), None => (polar::Live::off(), None) };
     eprintln!("founder: polar reader {}", if pcfg.is_some() { "ON (read-only, metrics API)" } else { "OFF (no FOUNDER_POLAR_READ_TOKEN)" });
     if let Some(c) = pcfg { polar::spawn(polar.clone(), c, now_s); }
-    let st = Arc::new(St { sb, hmac_key: key.into_bytes(), jwks: RwLock::new(jwks), lim: Default::default(), ft, legacy, polar, hook: Default::default(), ed, reqsig });
+    let st = Arc::new(St { sb, hmac_key: key.into_bytes(), jwks: RwLock::new(jwks), lim: Default::default(), ft, legacy, polar, hook: Default::default(), ed, reqsig, gate: authcache::AuthCache::new(std::time::Duration::from_secs(5)) });
     let addr = std::env::var("FOUNDER_BIND").unwrap_or_else(|_| "127.0.0.1:3210".into());
     let l = tokio::net::TcpListener::bind(&addr).await.expect("bind");
     axum::serve(l, app(st)).await.expect("serve");
@@ -336,7 +344,7 @@ mod tests {
     use tower::ServiceExt;
     #[tokio::test]
     async fn health_has_hardening_headers() {
-        let r = app(Arc::new(St{sb:None,hmac_key:b"k".to_vec(),jwks:RwLock::new(vec![]),lim:Default::default(),ft:None,legacy:true,polar:polar::Live::off(),hook:Default::default(),ed:None,reqsig:true})).oneshot(Request::get("/healthz").body(Body::empty()).unwrap()).await.unwrap();
+        let r = app(Arc::new(St{sb:None,hmac_key:b"k".to_vec(),jwks:RwLock::new(vec![]),lim:Default::default(),ft:None,legacy:true,polar:polar::Live::off(),hook:Default::default(),ed:None,reqsig:true, gate:authcache::AuthCache::new(std::time::Duration::from_secs(5))})).oneshot(Request::get("/healthz").body(Body::empty()).unwrap()).await.unwrap();
         assert_eq!(r.status(), 200);
         let h = r.headers();
         assert!(h["content-security-policy"].to_str().unwrap().contains("frame-ancestors 'none'"));
@@ -349,12 +357,15 @@ mod tests {
     async fn hashed_assets_cached_but_pages_and_api_not() {
         let dir = std::env::temp_dir().join(format!("fo-static-{}", std::process::id()));
         std::fs::create_dir_all(dir.join("assets")).unwrap();
+        std::fs::create_dir_all(dir.join("kernel")).unwrap();
+        std::fs::write(dir.join("kernel/anexo-kernel-9.9.9.wasm"), b"x").unwrap();
         std::fs::write(dir.join("assets/a-1.js"), b"x").unwrap();
         std::fs::write(dir.join("index.html"), b"<html></html>").unwrap();
         unsafe { std::env::set_var("FOUNDER_STATIC", &dir); }
-        let st = || Arc::new(St{sb:None,hmac_key:b"k".to_vec(),jwks:RwLock::new(vec![]),lim:Default::default(),ft:None,legacy:true,polar:polar::Live::off(),hook:Default::default(),ed:None,reqsig:Default::default()});
+        let st = || Arc::new(St{sb:None,hmac_key:b"k".to_vec(),jwks:RwLock::new(vec![]),lim:Default::default(),ft:None,legacy:true,polar:polar::Live::off(),hook:Default::default(),ed:None,reqsig:Default::default(), gate:authcache::AuthCache::new(std::time::Duration::from_secs(5))});
         let get = |p: &'static str| { let r = app(st()); async move { r.oneshot(Request::builder().uri(p).body(Body::empty()).unwrap()).await.unwrap() } };
         assert_eq!(get("/assets/a-1.js").await.headers()["cache-control"], "public, max-age=31536000, immutable");
+        assert_eq!(get("/kernel/anexo-kernel-9.9.9.wasm").await.headers()["cache-control"], "public, max-age=31536000, immutable");
         assert_eq!(get("/assets/missing.js").await.headers()["cache-control"], "no-store");
         assert_eq!(get("/index.html").await.headers()["cache-control"], "no-store");
         assert_eq!(get("/founder/v1/me").await.headers()["cache-control"], "no-store");
@@ -362,7 +373,7 @@ mod tests {
 
     fn st_with_sb() -> S {
         let sb = data::Sb { url: "http://127.0.0.1:1".into(), key: "k".into(), http: reqwest::Client::new() };
-        Arc::new(St { sb: Some(sb), hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: polar::Live::off(), hook: Default::default(), ed: None, reqsig: true })
+        Arc::new(St { sb: Some(sb), hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: polar::Live::off(), hook: Default::default(), ed: None, reqsig: true, gate: authcache::AuthCache::new(std::time::Duration::from_secs(5)) })
     }
     #[tokio::test]
     async fn founder_routes_need_bearer() {
@@ -375,7 +386,7 @@ mod tests {
     }
     #[tokio::test]
     async fn unconfigured_is_503_not_open() {
-        let st = Arc::new(St { sb: None, hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: polar::Live::off(), hook: Default::default(), ed: None, reqsig: true });
+        let st = Arc::new(St { sb: None, hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: polar::Live::off(), hook: Default::default(), ed: None, reqsig: true, gate: authcache::AuthCache::new(std::time::Duration::from_secs(5)) });
         let r = app(st).oneshot(Request::get("/founder/v1/me").header("authorization", "Bearer a.b.c").body(Body::empty()).unwrap()).await.unwrap();
         assert_eq!(r.status(), 503);
     }

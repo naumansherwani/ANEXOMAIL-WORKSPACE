@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, createContext, useContext, type ReactNode } from "react";
 import { Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
-import { get, hasToken, deviceStatus, setSetting } from "./api";
+import { get, hasToken, deviceStatus, setSetting, lastBridge } from "./api";
 import { AccountMenu, ProfileView } from "./Profile";
 import { SettingsView } from "./Settings";
 import { DECKS, Deck, Audit } from "./Decks";
@@ -96,6 +96,7 @@ export default function App() {
     } catch {}
   }, []);
   useEffect(() => { if (authed && !pend) loadProf(); }, [authed, pend, loadProf]);
+  useEffect(() => { if (!authed) return; let live = true; void lastBridge().then((s) => { if (live && s) { setD((c: any) => c ?? s.data); setAt((c) => c ?? s.at); } }); return () => { live = false; }; }, [authed]);
   useEffect(() => { if (!authed) return; load(); const t = setInterval(load, 15000); return () => clearInterval(t); }, [authed, load]);
   // Keyboard: Ctrl/⌘+K opens search; "g" then a letter jumps (g b Bridge · g f Finance · g p People · g m Mail Desk · g s Settings).
   useEffect(() => {

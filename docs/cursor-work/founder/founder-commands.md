@@ -1779,3 +1779,7 @@ Halat: repo scan -> FOUNDER-PARITY-30OCT.md; sidebar "User dashboard" (L16); L5f
 ## 30 Oct 21:23 PKT — founder order (verbatim)
 "Command center / Dashboard yeh mujhe Founder Comand center sirf likha aye. aur page refresh nahi hota hai yeh sab se bada bug hai"
 Halat: L17 crumb; L18 refresh round 2 (Chrome naap: kernel late, duplicate calls, parallel load). Code pushed, Chrome live proof founder-install ke baad. Tab group band tha: naya tab banaya (signed-in same browser).
+
+## 30 Oct 21:39 PKT — founder order (verbatim)
+"sab kuch chat context codes sab kuch repo main update kero abhi tak kaun sa green hai us ki audit bhi do. compact chat anay se pehle abh isi mins ka contect update kero takay claude waha se continoue karay. sandbox mein 187 ms ko 50ms -100ms pe leke jao aur yeh chorme pe live nazar aye. aur page refresh wala masla bhi solve kero. mujhe speed and tehnology advance do. chorme pe dekho ke ke founder ka frontend page UI apple ke level ka simple text likhe hain. faisla kero tum ek CEO ki nazar se aur user ki nazar dekho."
+Halat: green audit doc (FOUNDER-GREEN-AUDIT-30OCT.md); L19 refresh round 3 (auth sharing Rust, kernel early.js, immutable wasm, instant snapshot); Dashboard text saada. Install ke baad Chrome naap.

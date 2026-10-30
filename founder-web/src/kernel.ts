@@ -25,8 +25,8 @@ const ttPolicy = (window as unknown as { trustedTypes?: { createPolicy(n: string
 
 function w(): Worker {
   if (!worker) {
-    const href = workerUrl;
-    worker = new Worker((ttPolicy ? ttPolicy.createScriptURL(href) : href) as string, { type: "module" });
+    const href = workerUrl, early = (window as unknown as { __kw?: Worker }).__kw; // early.js may already have started it
+    worker = early ?? new Worker((ttPolicy ? ttPolicy.createScriptURL(href) : href) as string, { type: "module" });
     worker.onmessage = (ev) => { const f = waiting.get(ev.data.id); if (f) { waiting.delete(ev.data.id); f(ev.data); } };
     worker.onerror = () => { for (const [id, f] of waiting) { waiting.delete(id); f({ code: 100 }); } };
   }
@@ -43,12 +43,12 @@ export const trust = { get: () => ({ state, detail }), sub: (f: () => void) => {
 function set(s: TrustState, d: string) { state = s; detail = d; subs.forEach((f) => f()); }
 
 /** Verify a raw response body. Resolves with the signed `data` text, or a refusal (never both). */
-export function verifyBody(body: ArrayBuffer, skewSecs = 120): Promise<Verdict> {
+export function verifyBody(body: ArrayBuffer, skewSecs = 120, quiet = false): Promise<Verdict> {
   return new Promise((resolve) => {
     const id = ++seq;
     waiting.set(id, (m) => {
-      if (m.code === 0 && m.data !== undefined) { set("verified", "Signature checked by the WASM kernel"); resolve({ ok: true, data: m.data }); }
-      else { const reason = REASON[m.code] ?? "Verification failed."; set("failed", reason); resolve({ ok: false, code: m.code, reason }); }
+      if (m.code === 0 && m.data !== undefined) { if (!quiet) set("verified", "Signature checked by the WASM kernel"); resolve({ ok: true, data: m.data }); }
+      else { const reason = REASON[m.code] ?? "Verification failed."; if (!quiet) set("failed", reason); resolve({ ok: false, code: m.code, reason }); }
     });
     w().postMessage({ id, body, now: Math.floor(Date.now() / 1000), skew: skewSecs }, [body]);
   });

@@ -155,3 +155,7 @@ Rust+SPA (naam "Dashboard", sahi ms, Billing row, saaf tiles): `git -C /opt/anex
 ## 30 Oct 21:45 — ABHI PENDING (refresh speed + top bar + sidebar label)
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
 Phir Chrome mein F5 (main naapunga). L5: Sign out > login > hostguard status (21:05 wali).
+
+## 30 Oct 22:00 — ABHI PENDING (Rust + SPA: auth sharing, kernel early start, instant snapshot)
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+(Rust build server par hoti hai: founder-install.sh khud cargo build chalata hai; time lag sakta hai.) Phir F5 naap Chrome mein.
