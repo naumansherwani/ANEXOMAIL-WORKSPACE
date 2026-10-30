@@ -2035,3 +2035,5 @@ Wrote E109 (E107 stays reserved for Merkle): live change feed + one-RPC snapshot
 
 ## 22:35 PKT — 3D + greeting v2 (UI only)
 Scene3D.tsx appeared in the working tree at 22:25 (not written by me in this turn; reviewed, fixed a TS error in the bridge cables, polished) : HealthOrb (colour = verified health, eases ~1 s, no orbit/spin), BridgeMap (real counts as particles, quiet = no particles), ProfileHero (extruded real mark, pointer parallax only). three.js lazy chunk 724 kB (not on first paint), render loop stops when hidden. Greeting v2 matches the user Command Center. Splash confirmed live in Chrome 22:26. Backbone unchanged: Rust+tokio async 24h, WASM kernel verifies; 3D only draws kernel-verified values (unverified = grey). NEXT: founder-install, Chrome check, then E109 install + Rust live/SSE.
+
+## 22:42 PKT — live Chrome check of db15a3e (founder installed): orb green 2/2, greeting v2, bridge map OK; profile mark overlapped real name (fixed, awaits install). E109 SQL STILL NOT RUN on the server: founder needs the sql-run.sh commands (in PULL-COMMANDS.md 22:30). Phase position written in FOUNDER-GREEN-AUDIT-30OCT.md.

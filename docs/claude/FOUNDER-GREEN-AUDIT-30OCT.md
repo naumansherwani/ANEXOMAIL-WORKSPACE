@@ -27,3 +27,16 @@ Rule: GREEN = running on the server + CHECK passed + seen live in the founder's 
 | Executor (0 actions enabled) | F8 |
 | Sidebar group "Workspace (user app)" still lists old links "Founder" and "Admin" that open the old Lovable pages | removed at F9 cutover (they are user-app routes; founder never edits user files) |
 | Everything from F2c onward | not started (design note first, Rule 63) |
+
+## UPDATE 22:42 PKT — seen live in the founder's Chrome after his install of db15a3e
+| Item | Technology | Evidence (Chrome, real data) |
+|---|---|---|
+| Logo splash on refresh (logo, "Founder Command Center", bar, fades when data arrives) | UI + CSS | seen mid-load 22:26, gone after data |
+| Dashboard plane look: hero, 4 tiles with icons, feature cards with "Live" pills, gates, endpoints | UI + CSS | 22:38 |
+| HealthOrb: GREEN with "2/2", "Everything is running", "Answers verified" (colour = verified health, grey when unverified) | UI + Three.js (lazy) + KERNEL verdict | 22:38 |
+| Greeting v2: eyebrow FOUNDER COMMAND CENTER, "Good night, Nauman" + moon, Founder pill, date, status | UI + SVG | 22:38 |
+| Bridge map: bridge drawn, Arriving: 1 lead, Leaving: 0/0/0, canvas 670x237 | UI + Three.js | 22:38 |
+| Profile 3D mark | UI + Three.js | seen, but BUG: mark overlapped the real long name and email. Fixed in code 22:41, needs install + re-check, so NOT green |
+Still not seen live: orb amber/red (needs a real warning/failure; the colour logic is code-proven only), instant-snapshot timing after F5 (not re-measured).
+## PHASE POSITION (order of FOUNDER-PORT-ORDER-30OCT.md)
+Done and green: stack, kernel verify, settings, Dashboard, Bridge, audit view, splash, 3D (except profile fix). Written, not installed: E109 SQL (server step 1 below). Next in order: E109 install -> Rust `/live` + SSE -> Dashboard live auto-update -> L5 host guard (founder sign-out/in) -> F2c Merkle (E107) -> S2 -> F2d passkey -> Finance -> People -> Mail Desk -> Systems -> Control -> F9 cutover.

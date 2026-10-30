@@ -172,3 +172,5 @@ founder-install.sh: `git -C /opt/anexomail-web fetch -q origin main && bash <(gi
 
 ## 30 Oct 22:35 PKT — 3D layer + greeting v2 (UI only)
 founder-install.sh: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh)`
+
+## 30 Oct 22:42 PKT — profile mark fix (UI only): founder-install.sh (same command as above)

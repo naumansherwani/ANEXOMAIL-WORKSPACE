@@ -596,3 +596,5 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - 30 Oct 22:30 PKT: E109_founder_live.sql + CHECK_E109 written and tested (SQL only). Rust/UI live wiring NOT done.
 
 - 30 Oct 22:35 PKT: Scene3D.tsx (HealthOrb/BridgeMap/ProfileHero) and Greeting v2 DONE in code; not rewrite. Live Chrome check pending install.
+
+- 30 Oct 22:42 PKT: profile 3D mark placement fix (dx.css) done; green audit updated. Do not redo.

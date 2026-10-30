@@ -71,3 +71,7 @@ button.dx-card{cursor:pointer;width:100%}button.dx-card:hover{transform:translat
 .g-pill{font:600 12px Inter,sans-serif;padding:5px 12px;border-radius:99px;color:#0b2540;background:linear-gradient(90deg,#5ec8ff,#4aa3f0);box-shadow:0 4px 16px -4px rgba(74,163,240,.6)}
 .g-date{color:var(--faint);font-size:13px}
 @media (prefers-reduced-motion:reduce){.dayg{animation:none}}
+/* Live fix (22:40): long real name + email overlapped the 3D mark. The mark now sits in the PROFILE header row, above the name. */
+.phero{top:2px;right:14px;width:120px;height:62px}
+.prof .profrow{margin-top:34px}
+@media (max-width:700px){.phero{width:84px;height:48px}}
