@@ -143,3 +143,7 @@ Agar [founder.host] line dikhe aur founder_host=true ho -> enforce command next 
 1) Rust+SPA (Dashboard front page + naya Bridge icon): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
 2) Awam web (guard probe-log; Bun, pm2 restart khud): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
 3) Phir /founderlogin par ek baar login, phir hostguard `status` (command upar 21:05 wali).
+
+## 30 Oct 21:25 — ABHI PENDING (sirf yeh)
+Rust+SPA (naam "Dashboard", sahi ms, Billing row, saaf tiles): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+(awam pull.sh aur founder-install 21:15 wale ho chuke. L5: ab /founderlogin par ek login, phir hostguard status.)

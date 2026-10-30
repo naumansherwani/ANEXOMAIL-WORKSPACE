@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
-import { get, deviceStatus } from "./api";
+import { get, warm, deviceStatus } from "./api";
 import { trust } from "./kernel";
 
 // Dashboard "control surface": the founder API, its gates and the features that really answer — all measured in THIS browser, right now (Rule 69: no mock).
@@ -25,7 +25,7 @@ export function Surface({ go }: { go: (v: string) => void }) {
   const [rows, setRows] = useState<Row[] | null>(null), [at, setAt] = useState<Date | null>(null), [busy, setBusy] = useState(false);
   const ks = useSyncExternalStore(trust.sub, () => trust.get().state);
   const run = useCallback(async () => {
-    setBusy(true);
+    setBusy(true); await warm();
     const out = await Promise.all(ENDPOINTS.map(async (ep): Promise<Row> => {
       if (!ep.probe) return { ep };
       const t0 = performance.now();
@@ -41,12 +41,12 @@ export function Surface({ go }: { go: (v: string) => void }) {
 
   const by = (p: string) => rows?.find((r) => r.ep.path === p && r.ep.method === "GET");
   const acts: Act[] = by("/founder/v1/actions")?.data?.actions || [];
-  const au = by("/founder/v1/audit")?.data, pol = by("/founder/v1/finance/polar")?.data, br = by("/founder/v1/bridge")?.data, ds = deviceStatus();
+  const au = by("/founder/v1/audit")?.data, pol = by("/founder/v1/finance/polar")?.data, br = by("/founder/v1/bridge")?.data, hook = br?.polar_hook, ds = deviceStatus();
   const feat: { name: string; state: "ok" | "warn" | "fail" | "unknown"; text: string; to?: string }[] = rows ? [
     { name: "Signed answers", state: ks === "verified" ? "ok" : ks === "failed" ? "fail" : "unknown", text: ks === "verified" ? "Every answer is verified by the Rust kernel in this browser" : ks === "failed" ? "A response failed verification and was hidden" : "No answer verified yet" },
     { name: "Device approval", state: ds.mode === "device" ? "ok" : "warn", text: ds.mode === "device" ? `Device-bound token · ${ds.label || "this device"}` : "Using the plain session token (device token service not answering)" },
     { name: "Audit ledger", state: !au ? "fail" : !au.connected ? "unknown" : au.chain_ok ? "ok" : "fail", text: !au ? "Not answering" : !au.connected ? au.note || "Not connected" : au.chain_ok ? `Chain intact${au.head ? ` · head #${au.head.seq}` : ""} · ${au.entries?.length ?? 0} recent entries` : `Chain broken at #${au.first_bad_seq}`, to: "audit" },
-    { name: "Billing (Polar)", state: !pol ? "fail" : pol.connected ? (pol.stale ? "warn" : "ok") : "unknown", text: !pol ? "Not answering" : pol.connected ? `${pol.active_subscriptions ?? "?"} active subscriptions${pol.stale ? " · stale" : ""}` : pol.note || "Not connected", to: "finance" },
+    { name: "Billing (Polar)", state: !pol && !hook ? "fail" : pol?.connected ? (pol.stale ? "warn" : "ok") : hook?.subscriptions?.connected ? "ok" : "unknown", text: pol?.connected ? `${pol.active_subscriptions ?? "?"} active subscriptions${pol.stale ? " · stale" : ""}` : hook?.subscriptions?.connected ? `Polar webhook live · ${hook.subscriptions.by_status?.active ?? 0} active subscriptions · Polar API metrics not connected` : pol?.note || "Not connected", to: "finance" },
     { name: "Finance records", state: !br ? "fail" : br.money?.connected ? "ok" : "unknown", text: !br ? "Not answering" : br.money?.connected ? `${br.money.active_accounts} active account(s)` : br.money?.note || "Not connected", to: "finance" },
     { name: "Customer voice", state: !br ? "fail" : br.voice?.connected ? "ok" : "unknown", text: !br ? "Not answering" : br.voice?.connected ? `${br.voice.new_leads} new lead(s)` : br.voice?.note || "Not connected", to: "bridge" },
     { name: "Action registry", state: !by("/founder/v1/actions")?.ok ? "fail" : !acts.length ? "unknown" : "ok", text: !by("/founder/v1/actions")?.ok ? "Not answering" : acts.length ? `${acts.length} actions · ${acts.filter((a) => a.enabled).length} enabled · executor off until F8` : "No actions registered", to: "control" },

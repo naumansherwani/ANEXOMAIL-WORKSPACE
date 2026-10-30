@@ -109,9 +109,9 @@ export function DashboardView({ d, at, go, me }: { d: any; at: At; go: (v: strin
     : subs?.connected ? { value: <>{subs.by_status?.active ?? 0} <small>active subscriptions</small></>, sub: `${subs.by_status?.past_due ?? 0} past due · ${subs.ended_30d} ended (30 days)` }
     : { value: "Not connected", off: true, sub: pl.note };
   const fin: CellData = !m ? { value: null } : !m.connected ? { value: "Not connected", off: true, sub: m.note }
-    : { value: <>£{(Number(m.mrr_gbp) === 0 ? 0 : Number(m.mrr_gbp)).toLocaleString("en-GB")} <small>MRR</small></>, sub: `${m.active_accounts} active account(s)${m.target_gbp ? ` · target £${m.target_gbp}` : ""} · ${m.source} (manual records, not Polar)` };
+    : { value: <>£{(Number(m.mrr_gbp) === 0 ? 0 : Number(m.mrr_gbp)).toLocaleString("en-GB")} <small>MRR</small></>, sub: `${m.active_accounts} active account(s)${m.target_gbp ? ` · target £${m.target_gbp}` : ""} · from your own revenue records (not Polar)` };
   const voice: CellData = !v ? { value: null } : !v.connected ? { value: "Not connected", off: true, sub: v.note }
-    : { value: <>{v.new_leads} <small>{v.new_leads === 1 ? "new lead" : "new leads"}</small></>, sub: v.pending_channels?.length ? `Channels not connected yet: ${v.pending_channels.join(", ")}` : "" };
+    : { value: <>{v.new_leads} <small>{v.new_leads === 1 ? "new lead" : "new leads"}</small></>, sub: v.pending_channels?.length ? `Not connected yet: ${v.pending_channels.map((c: string) => cap(c)).join(", ")}` : "" };
   const t = d?.trouble, tot = t ? t.items.length : 0, bad = t ? t.items.filter((i: Check) => i.state !== "ok").length : 0;
   const pay: CellData = !subs ? { value: null } : !subs.connected ? { value: "Not connected", off: true, sub: subs.note } : { value: <>{subs.by_status?.past_due ?? 0} <small>past due</small></>, sub: (subs.by_product || []).reduce((a: number, x: any) => a + (x.grace || 0), 0) ? `${(subs.by_product || []).reduce((a: number, x: any) => a + (x.grace || 0), 0)} in grace period` : "No payment problems" };
   const target = Number(m?.target_gbp) || 0, mrr = Number(m?.mrr_gbp) || 0, pct = target ? Math.min(100, Math.round((mrr / target) * 100)) : 0;

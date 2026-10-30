@@ -54,6 +54,8 @@ async function bearer(): Promise<string | null> {
   const x = await inflight;
   return x || tok();
 }
+/** Get the founder token ready (one shared exchange) so timings measure the answer, not the sign-in. */
+export const warm = async () => { try { await bearer(); } catch { /* the probes below report the real error */ } };
 export const forget = () => { ft = null; fexp = 0; rk = null; };
 
 // F2a: every write is signed with the per-token key (HMAC-SHA256 over METHOD, path, timestamp, body hash). Replays older than 60 s and changed bodies are refused by the server.
