@@ -1,5 +1,11 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 30 Oct 18:38 PKT — founder: "meri haan hai" (Chrome proof + step 3 + F2b), chat context update, technology rule padho, kaam shuru
+Founder (verbatim): "meri haan hai aur chat context update kero. technology rule read kero. aur kaam shuru kero."
+- Technology rule dobara padha (AGENTS.md top + Rule 61/62/66): Rust anexomail-founder (axum 0.8 + tokio, Ed25519 server->browser, HMAC+HKDF browser->server, SHA-256 chain + Merkle, passkey), Postgres RLS; UI React 19.2 + Vite 8.2 (gaps: TS, TanStack Router, Tailwind/shadcn = founder decision); WASM kernel F2b; Bun/Node founder server mein nahi.
+- Kaam: (1) Chrome live proof (Lahore save+reload, 12h clock, sidebar, breadcrumb, toggles) (2) step 3 status (host guard, Polar token) (3) F2b technology note -> phir F2b, ek phase ek waqt (Rule 64).
+- Halat: IN PROGRESS.
+
 ## ▶ 28 Oct 13:20 PKT — E108 + install server par (VERBATIM paste ka khulasa)
 Founder ne founder-install.sh (OK: zinda, darwaza band, Ed25519 ON) aur E108 CHECK (6 OK, DONE: sab theek) paste kiye, aur likha: "baki kaam shaam ko repo codes context chat ka next tarteeb ko update kero"
 - Halat: **DONE** E108 server par GREEN; founder-install GREEN (12-hour clock, label fix, cinematic restore server par). Shaam: Chrome live proof (Lahore save+reload, clock, sidebar) -> phir F2b.
