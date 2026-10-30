@@ -65,3 +65,5 @@ Until a founder version exists, the sidebar's WORKSPACE links (Dashboard, Mail, 
 Bridge vs Dashboard (which tile lives where, CEO view): docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md
 
 - Port order per feature (technology + phase): docs/claude/FOUNDER-PORT-ORDER-30OCT.md (21:20). Pointer only; master order above stays locked.
+
+- Parity per user area (repo scan, 125 route files): docs/claude/FOUNDER-PARITY-30OCT.md (21:35).

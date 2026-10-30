@@ -1771,3 +1771,7 @@ Halat: Chrome mein poora Dashboard ek ek hissa dekha (screenshots + gates/API te
 ## 30 Oct 21:14 PKT — founder order (verbatim)
 "chat context aur codes likh chukay dobara nahi likhna hai sab kuch update kero verna compact chat aye ga? yeh sab cheezein mujhe tarteeb se chaiye hain aur yeh mujhe working chaiye hain technology ke hisab se chaiye hain aur in ki tarteeb phases main kab aye gi yeh bhi batna hai." (+ founder-install OK; 2 photos: sidebar "Dashboard" + Workspace (user app) group)
 Halat: founder-install 21:14 OK -> sidebar naam "Dashboard" live. Naya doc FOUNDER-PORT-ORDER-30OCT.md = har workspace feature ka technology + phase + aaj kya chalta hai. Dates nahi likhi (andaza hota).
+
+## 30 Oct 21:21 PKT — founder order (verbatim)
+"yeh sab bhi fix hona hai aur yeh latest technology pe migrate hona hai yeh is liye ek clean saaf polish UI bana rahay hain founder side ke jo tumne tarteeb se kerna hai. dekho user side ki cheezein founder ko bhi same features mile gay aur yeh 80 to 90% same hoga woh ab tumne repo se dekhna hai ke kaun se features abhi founder ko milna hai ... repo update saath ke saath kero takay chat context exactly pata ho aur codes update kero jo green hai woh sirf tum match kero gay chorme live se dekh ke. tarteeb se chalo technology kaun si aye gi bus us ke codes likho." (+ hostguard status paste: phir khali)
+Halat: repo scan -> FOUNDER-PARITY-30OCT.md; sidebar "User dashboard" (L16); L5f: naya login chahiye. Green sirf Chrome live match ke baad.
