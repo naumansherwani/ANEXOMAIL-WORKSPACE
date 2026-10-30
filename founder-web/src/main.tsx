@@ -5,5 +5,6 @@ import "./styles.css";
 import "./ui.css";
 import "./cinema.css";
 import "./tailwind.css";
+import "./dx.css";
 
 createRoot(document.getElementById("root") as HTMLElement).render(<RouterProvider router={router} />);

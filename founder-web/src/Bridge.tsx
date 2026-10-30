@@ -9,9 +9,7 @@ import { Surface } from "./Surface";
 type Check = { name: string; state: "ok" | "warn" | "fail" | "unknown"; detail: string };
 type Trouble = { items: Check[] };
 type At = Date | string | number | null | undefined;
-type CellData = { value: React.ReactNode; sub?: React.ReactNode; off?: boolean };
 
-const fmtMinor = (n: unknown) => (Number(n) / 100).toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const SAY: Record<string, string> = { morning: "Good morning", afternoon: "Good afternoon", evening: "Good evening", night: "Good night" };
 const STATE: Record<string, string> = { ok: "OK", warn: "Needs a look", fail: "Failing", unknown: "Unknown" };
 
@@ -61,16 +59,6 @@ function Greeting({ t, at, me }: { t: Trouble | null | undefined; at: At; me: Pr
   );
 }
 
-function Cell({ label, value, sub, off, action, src, at }: { label: string; value?: React.ReactNode; sub?: React.ReactNode; off?: boolean; action?: React.ReactNode; src?: string; at?: At }) {
-  return (
-    <div className="cell"><div className="cl">{label}</div>
-      {value == null ? <div className="cv skel" aria-label="Loading" /> : <div className={`cv ${off ? "off" : ""}`}>{value}</div>}
-      {sub && <div className="cn">{sub}</div>}{action}
-      {src && !off && value != null && <div className="cs">{src}{at ? ` · ${fmtHM(at)}` : ""}</div>}
-    </div>
-  );
-}
-
 const cap = (s: unknown) => String(s || "").replace(/\b\w/g, (c) => c.toUpperCase());  // title-case names that arrive as snake_case ids
 export function BridgeView({ d, at, me, go }: { d: any; at: At; me: Prof | null; go: (v: string) => void }) {
   const t = d?.trouble, hk = d?.polar_hook;
@@ -100,46 +88,12 @@ export function BridgeView({ d, at, me, go }: { d: any; at: At; me: Prof | null;
   );
 }
 
-/** Company health (nouns and trends, read-only): the key totals that used to sit on the Bridge. Only real server data; nothing is drawn for a source that does not exist yet. */
+/** Dashboard (company health): all numbers, gates and endpoints are measured live in Surface.tsx; the greeting is shared with the Bridge. */
 export function DashboardView({ d, at, go, me }: { d: any; at: At; go: (v: string) => void; me: Prof | null }) {
-  const m = d?.money, v = d?.voice, pl = d?.polar, hk = d?.polar_hook;
-  const subs = hk?.subscriptions;
-  const polar: CellData = !pl ? { value: null } : pl.connected && pl.mrr_minor != null
-    ? { value: <>£{fmtMinor(pl.mrr_minor)} <small>MRR</small></>, sub: `${pl.active_subscriptions ?? "?"} active · +${pl.new_30d} new · −${pl.canceled_30d} cancelled (30 days)${pl.stale ? ` · stale: ${pl.last_error || "no recent reading"}` : ""}` }
-    : subs?.connected ? { value: <>{subs.by_status?.active ?? 0} <small>active subscriptions</small></>, sub: `${subs.by_status?.past_due ?? 0} past due · ${subs.ended_30d} ended (30 days)` }
-    : { value: "Not connected", off: true, sub: pl.note };
-  const fin: CellData = !m ? { value: null } : !m.connected ? { value: "Not connected", off: true, sub: m.note }
-    : { value: <>£{(Number(m.mrr_gbp) === 0 ? 0 : Number(m.mrr_gbp)).toLocaleString("en-GB")} <small>MRR</small></>, sub: `${m.active_accounts} active account(s)${m.target_gbp ? ` · target £${m.target_gbp}` : ""} · from your own revenue records (not Polar)` };
-  const voice: CellData = !v ? { value: null } : !v.connected ? { value: "Not connected", off: true, sub: v.note }
-    : { value: <>{v.new_leads} <small>{v.new_leads === 1 ? "new lead" : "new leads"}</small></>, sub: v.pending_channels?.length ? `Not connected yet: ${v.pending_channels.map((c: string) => cap(c)).join(", ")}` : "" };
-  const t = d?.trouble, tot = t ? t.items.length : 0, bad = t ? t.items.filter((i: Check) => i.state !== "ok").length : 0;
-  const pay: CellData = !subs ? { value: null } : !subs.connected ? { value: "Not connected", off: true, sub: subs.note } : { value: <>{subs.by_status?.past_due ?? 0} <small>past due</small></>, sub: (subs.by_product || []).reduce((a: number, x: any) => a + (x.grace || 0), 0) ? `${(subs.by_product || []).reduce((a: number, x: any) => a + (x.grace || 0), 0)} in grace period` : "No payment problems" };
-  const target = Number(m?.target_gbp) || 0, mrr = Number(m?.mrr_gbp) || 0, pct = target ? Math.min(100, Math.round((mrr / target) * 100)) : 0;
   return (
     <>
-      <Greeting t={t} at={at} me={me} />
-      <div className="ledger watch" aria-label="Company watch">
-        <div className="lrow">
-          <i className={`sdot ${!t ? "unknown" : bad ? "warn" : "ok"}`} />
-          <div><div className="lt">Company watch</div><div className="ld">{!t ? "Not measured yet" : `${tot - bad}/${tot} checks fine${at ? ` · checked ${fmtHM(at)}` : ""}`}</div></div>
-          <button className={`lstate ${!t ? "unknown" : bad ? "warn" : "ok"} lnk`} onClick={() => go("bridge")}>{!t ? "Open Bridge" : bad ? `${bad} need a look` : "All clear"}</button>
-        </div>
-      </div>
-      <section className="strip" aria-label="Key numbers">
-        <Cell label="Billing · Polar" src={pl?.connected && pl.mrr_minor != null ? "Polar API" : "Polar webhook"} at={at} {...polar} action={!polar.off ? null : <button className="lnk" onClick={() => go("finance")}>Open Finance</button>} />
-        <Cell label="Finance" src="Manual revenue records" at={at} {...fin} />
-        <Cell label="Payment problems" src="Polar webhook" at={at} {...pay} />
-        <Cell label="Customer voice" src="Leads table" at={at} {...voice} />
-      </section>
-      {subs?.connected && (subs.by_product || []).length > 0 && <>
-        <h2>Subscriptions by product</h2>
-        <div className="ledger">{subs.by_product.map((x: any) => <div className="lrow" key={x.product}><i className={`sdot ${x.past_due ? "warn" : "ok"}`} /><div><div className="lt">{cap(x.product)}</div><div className="ld">{x.past_due ? `${x.past_due} past due` : "all paid"}{x.grace ? ` · ${x.grace} in grace` : ""}</div></div><b className="lnum">{x.active}</b></div>)}</div>
-      </>}
-      {m?.connected && target > 0 && <>
-        <h2>Revenue target</h2>
-        <div className="ledger"><div className="lrow"><i className={`sdot ${pct >= 100 ? "ok" : "unknown"}`} /><div><div className="lt">£{mrr.toLocaleString("en-GB")} of £{target.toLocaleString("en-GB")} MRR</div><div className="bar" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}><i style={{ width: `${pct}%` }} /></div></div><b className="lnum">{pct}%</b></div></div>
-      </>}
-      <Surface go={go} />
+      <Greeting t={d?.trouble} at={at} me={me} />
+      <Surface d={d} at={at} go={go} />
     </>
   );
 }
