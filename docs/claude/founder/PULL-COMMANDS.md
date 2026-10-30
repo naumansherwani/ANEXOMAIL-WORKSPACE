@@ -95,3 +95,6 @@ Rust+SPA (L1 actions cache): `git -C /opt/anexomail-web fetch -q origin main && 
 ## 30 Oct 19:40 — ABHI PENDING (sirf yeh ek; Rust + SPA dono badle: L2, L3, Dashboard, L1)
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
 Phir (founder step, L5): `/founderlogin` par ek baar login -> `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-hostguard.sh) status 2>&1 | tail -14` -> `founder_host=true` par `... enforce`.
+
+## 30 Oct 19:50 — ABHI PENDING (sirf SPA badla: top bar)
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`

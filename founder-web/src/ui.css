@@ -24,9 +24,9 @@ button.grp svg{transition:transform .15s}button.grp[aria-expanded="true"] svg{tr
 .nv[aria-current="page"] svg{color:var(--ac)}
 .sbfoot{border-top:1px solid var(--line);padding-top:8px;margin-top:8px;display:flex;flex-direction:column;gap:2px}
 .mn{display:flex;flex-direction:column;min-width:0;min-height:0}
-.tp{flex:none;height:var(--tp);display:flex;align-items:center;gap:12px;padding:0 var(--gut);border-bottom:1px solid var(--line);background:rgba(11,13,18,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);position:relative;z-index:6}
+.tp{flex:none;height:var(--tp);display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:12px;padding:0 var(--gut);border-bottom:1px solid var(--line);background:rgba(11,13,18,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);position:relative;z-index:6}
 .crumb{color:var(--dim);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.crumb b{color:var(--fg);font-weight:600}
-.tpr{margin-left:auto;display:flex;align-items:center;gap:10px}
+.tpr{justify-self:end;display:flex;align-items:center;gap:10px}.tpc{justify-self:center}.tpc .find{min-width:min(420px,38vw)}
 .find{display:flex;align-items:center;gap:10px;min-height:36px;padding:0 8px 0 12px;min-width:240px;background:var(--bg);border:1px solid var(--line);color:var(--dim);border-radius:var(--r2);font:400 13px Inter,sans-serif}
 .find:hover{background:var(--s1);border-color:#303850}.find kbd,.pal kbd{font:500 11px Inter,sans-serif;border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--dim);background:none}.find kbd{margin-left:auto}
 .iconbtn{display:none;width:44px;height:44px;min-height:44px;padding:0;place-items:center;background:none;color:var(--dim);border-radius:var(--r2)}
@@ -85,7 +85,7 @@ html.slim .nv{width:44px;height:44px;justify-content:center;padding:0}html.slim 
 .tabbar{display:none}
 @media (max-width:700px){
   .ws{grid-template-columns:1fr;--gut:16px}.sb{display:none}
-  .tp{padding:0 var(--gut)}.find,.cityp,.trustbtn .tt{display:none}.iconbtn{display:grid}.tpr{gap:4px}
+  .tp{padding:0 var(--gut);display:flex}.tpr{margin-left:auto}.tpc{display:none}.find,.trustbtn .tt{display:none}.iconbtn{display:grid}.tpr{gap:4px}
   .pg{padding:20px var(--gut) calc(var(--tabh) + 36px + env(safe-area-inset-bottom))}
   .titleblock h1,.bhead h1,.sethead h1{font-size:28px}
   .bsub .sep{display:none}.bsub{gap:4px 10px}

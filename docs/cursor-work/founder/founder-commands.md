@@ -1719,3 +1719,7 @@ Halat: MASTER-ORDER row 3b (F2b se pehle). Code: L2 Rust concurrency, L3 awam li
 ## 30 Oct 19:36 PKT — founder order (verbatim)
 "ajj ke baad yeh rule hai ke mujhe update kero gay ke kaun se codes ki tehnollogy likhi hai takay mujhe pata ho ke tumhay yaad hai ke technology GOD ke baad sab se important hai ... compact chat se pehle chat context codes update kero ke yeh likh diya hai dobara nahi likhna hai aur mainay pull ker liya hai chorme test dekho"
 Halat: Rule 70 AGENTS.md + CLAUDE.md. founder-install pull hua; Chrome proof green (bundle index-BhoknSBJ, Company health, Bridge 863 ms, awam links new tab, console 0 errors). hostguard status: mode probe, log khali (founder abhi /founderlogin par login nahi hua). L7 lockfile pending.
+
+## 30 Oct 19:39 PKT — founder order (verbatim)
+"yeh lahore top pe aya hai khatham kero search wala center main yeh is tarah rakho baki clock jo hai woh intact kero aur review wala sahi hai"
+Halat: top bar se "Lahore · time" chip hata diya; search bar top bar ke BEECH mein (grid 1fr auto 1fr; 1440 aur 1024 par center = main ka center); greeting ka flip clock aur Review chip untouched; mobile (390) par search icon wahi. Chrome proof pull ke baad.

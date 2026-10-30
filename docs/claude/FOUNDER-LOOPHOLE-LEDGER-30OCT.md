@@ -22,3 +22,6 @@ Audit: founder ke signed-in Chrome tab, 12 views, console, network. Qaida (Rule 
 | UI (kya dikhta hai) | React 19.2 + TypeScript + TanStack Router + Tailwind 4.2 + shadcn | views, forms, palette | crypto ka faisla |
 | Cinematic | CSS (aurora, glass, flip clock) + Three.js WebGPU lazy (sirf 3D/city) | look, motion | data ya verification |
 Qaida: UI sirf kernel ka natija dikhata hai; kernel "TAMPERED" kahe to data render nahi.
+
+| L10 | Top bar par "Lahore · time" chip faltu; search kinare par | FIXED in code 30 Oct 19:50 (Chrome proof pending) | chip hata (App.tsx CityTime removed), search `.tpc` center (ui.css grid); flip clock aur Review chip same |
+| L7b | npm lockfile regen registry se fail (ENOTFOUND, phir 150 s timeout) | OPEN | server ko farq nahi; jab network chale tab `npm install --package-lock-only` |

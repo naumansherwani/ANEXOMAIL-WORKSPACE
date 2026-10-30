@@ -1949,3 +1949,6 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 - CODES JO LIKH DIYE (dobara nahi): Rust: axum endpoints exchange/keys/me/bridge/settings/finance-polar/actions/audit/action, Ed25519 sign + HMAC write, hook_view/authed concurrency (L2). SQL: E102-E108. UI (React 19.2+TS+TanStack hash+Tailwind+shadcn): Bridge, Company health (#/dashboard), Finance/People/... decks, Settings S1, Palette, g-shortcuts, awam links new tab (anexomail.com). Cinematic CSS: aurora, glass sidebar, gradient greeting, flip clock (FC43). WASM kernel web-wasm v0.4.0 (sha256/hmac) = awam-side; founder ed25519 (F2b) ABHI NAHI.
 - Chrome proof: bundle index-BhoknSBJ, Bridge 863 ms (pehle 1466), console 0 errors.
 - Baqi tarteeb: L7 lockfile (npm5 background) -> L5 founder /founderlogin + hostguard enforce (status abhi probe, log khali) -> F2b.
+
+## 30 Oct 19:50 PKT — TOP BAR
+- Founder 19:39: top bar se Lahore chip khatam, search BEECH mein, flip clock intact, Review chip sahi. Kiya (UI React+Tailwind/CSS, App.tsx + ui.css): crumb | search (center) | Review + NS. Pending server: founder-install.sh -> Chrome proof. L7 lockfile OPEN (registry network). hostguard abhi probe (founder login baqi).

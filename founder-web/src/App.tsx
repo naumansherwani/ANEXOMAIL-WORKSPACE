@@ -54,12 +54,6 @@ const AWAM_T: [string, string, string][] = (AWAM as [string, string, string][]).
 const TABS: [string, string][] = [["bridge", "Bridge"], ["finance", "Finance"], ["people", "People"], ["mail_desk", "Mail"]];
 const Chev = () => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>;
 
-function CityTime() {
-  const [now, setNow] = useState(() => new Date()), c = useCity();
-  useEffect(() => { const id = setInterval(() => setNow(new Date()), 15000); return () => clearInterval(id); }, []);
-  return <span className="cityp" title={`Times follow ${c.city}`}>{c.city} · {fmtHM(now)}</span>;
-}
-
 /** Everything the page bodies need from the shell (profile, live bridge data, appearance). Provided by the shell, read by the routed pages. */
 type ShellData = { view: string; d: any; at: Date | null; prof: Prof | null; loadProf: () => Promise<void>; fx: boolean; setFx: (v: boolean) => void; slim: boolean; setSlim: (v: boolean) => void; err: string; setView: (v: string) => void };
 const ShellCtx = createContext<ShellData | null>(null);
@@ -146,10 +140,11 @@ export default function App() {
       <div className="mn">
         <header className="tp">
           <span className="crumb">{view === "settings" || view === "profile" ? "Account" : "Command center"} / <b>{title}</b></span>
-          <div className="tpr">
+          <div className="tpc">
             <button className="find" onClick={() => setPal(true)} aria-label="Search pages"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6" /><path d="m20 20-4-4" /></svg><span className="ft">Search or jump to a page</span><kbd>Ctrl K</kbd></button>
+          </div>
+          <div className="tpr">
             <button className="iconbtn" onClick={() => setPal(true)} aria-label="Search pages"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6" /><path d="m20 20-4-4" /></svg></button>
-            <CityTime />
             <Trust go={setView} />
             <AccountMenu p={prof} go={setView} />
           </div>

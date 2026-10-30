@@ -1188,3 +1188,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 30 Oct 2026 19:40 — Bridge vs Dashboard doc fixed (ek tile = ek ghar; Bridge sirf action wale 7 blocks, Dashboard D1-D11 'Company health'). Dobara mat badlo bina founder ke.
 - 30 Oct 2026 19:40 — Priority 3b: L2 (Rust join), L3 (awam links new tab on anexomail.com), Dashboard 'Company health' view (#/dashboard) + Bridge exceptions only. F2b tab tak nahi jab tak server+Chrome green. Dobara mat karo.
 - 30 Oct 2026 19:40 — Rule 70 (technology report har jawab mein). 3b L1,L2,L3,L9 server+Chrome GREEN. Dobara mat likho.
+- 30 Oct 2026 19:50 — Top bar: Lahore chip HATA (founder order), search CENTER, flip clock + Review chip intact. L7 lockfile: registry se npm baar baar fail (ENOTFOUND/timeout), OPEN. Dobara mat chherna.
