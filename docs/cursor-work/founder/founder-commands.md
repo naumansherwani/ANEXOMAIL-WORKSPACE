@@ -2085,3 +2085,6 @@ S1b RUST + UI WRITTEN (tarteeb se next, 1 Nov ~12:00): Rust = server/founder/src
 - 13:19 (founder, verbatim summary): E118 server paste green; "yeh tune codes likh diye hain yeh repo update kero server pe codes aagaye hain aur baki ka chat context update kero. baki kaam shaam hoga aur chorme pe dekho live. sab se pehle update kero aur batao. aur awam side ka account open hai aur founder side ka open hai dono ke settings page side by side ek ek compare kero jahan masla aye seedha fix kero lekin likh ke kerna hai" + scolded me for English: ROMAN URDU ONLY.
   STATUS 13:25: E118 marked GREEN. Settings compare in Chrome: see next entry.
   STATUS 13:30: compare 2 done live (docs/claude/FOUNDER-VS-AWAM-SETTINGS-COMPARE-01NOV.md 'Compare 2'): rows match; N2 Drift title wording queued (UI), N5 founderlogin awam route shows magic-link + DBSC claim -> fix in 7-4. No code changed.
+
+- 13:23 (founder, verbatim): "tarteeb blueprint ke hisab se kya hai. dusra repo se dekh ke landng page pe footer pe sab jaga technology kaun si use kerte hain likho."
+  STATUS 13:40: founder said "duscuss kero" (13:24) -> footer code REVERTED (nothing built, nothing committed); discussion only: order from FOUNDER-MASTER-ORDER-28OCT.md + footer 'Built with' proposal awaiting his word (Rule 63).
