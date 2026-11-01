@@ -12,7 +12,7 @@ One letter per step, in build order. **GREEN** only where the proof exists (serv
 | **D** | T1 UI stack: TypeScript, TanStack Router, Tailwind 4.2, shadcn | [3a] | **GREEN** (425ec14) |
 | **E** | Loophole fixes L1-L12 | [3b] | **GREEN** except L5 (parked) and lockfile (open, step 4e) |
 | **F** | WASM kernel verify in the browser (Rust kernel, Worker, pinned .wasm) | [4] | **GREEN** (Chrome) |
-| **G** | Audit + Merkle: G1 SQL E107 **GREEN** · G2 Rust + UI card **GREEN** · G3 kernel `merkle@1` **GREEN** · G4 Ledger seal gauge hardening (E120; the gauge itself is GREEN since 1 Nov 09:00, G4 closes its loopholes: written + tested 2 Nov, server + Chrome pending; honest limits = G5 external anchor / kernel consistency proof, `G4-LEDGER-GAUGE-HARDENING-02NOV.md`) (I1) | [5], [5a] | G1-G3 **GREEN**, G4 pending |
+| **G** | Audit + Merkle: G1 SQL E107 **GREEN** · G2 Rust + UI card **GREEN** · G3 kernel `merkle@1` **GREEN** · G4 Ledger seal gauge hardening (E120; the gauge itself is GREEN since 1 Nov 09:00, G4 closes its loopholes: written + tested 2 Nov, server + Chrome pending; honest limits = G5 external anchor / kernel consistency proof, `G4-LEDGER-GAUGE-HARDENING-02NOV.md`) (I1) · **G5 Un-forgeable history (founder 2 Nov 03:37, god-level): G5-0 finish the technology read · G5a RFC 9162 consistency proofs (SQL + Rust + kernel `merkle@2`) · G5b C2SP signed checkpoints (own audit-log key) · G5c external witnesses, k-of-n cosignatures checked in WASM (founder decision G5-D: which witnesses) · G5d pin portability; design + review gate in `G5-UNFORGEABLE-HISTORY-02NOV.md`** | [5], [5a] | G1-G3 **GREEN**; G4 = Rust+SPA installed on the server **GREEN** (122 tests, 2 Nov 03:37), SQL E120 + Chrome check STILL TO PASTE; G5 pending |
 | **H** | Settings S2: Time machine + Drift | [6] | **GREEN** (server + Chrome 11:02) |
 | **I** | Settings S1b: key registry, Appearance, Ambient Studio. I1 SQL E114 **GREEN** · I2 Rust + UI written, install + Chrome pending | [6b] | I1 GREEN, I2 pending |
 | **J** | Passkey + Privacy: J1 SQL E117 **GREEN** · J2 SQL E118 chairman protocol **GREEN** · J3 Rust `webauthn-rs` (7-2) · J4 UI Privacy tab (7-3) · J5 enforce T2/T3, remove `FOUNDER_PASSWORD` (7-4) · J6 mobile flare + cancel (7-5) | [7] | J1, J2 **GREEN**; J3-J6 pending |
@@ -33,10 +33,11 @@ One letter per step, in build order. **GREEN** only where the proof exists (serv
 
 | Letter | Step | Status |
 |---|---|---|
-| **W1** | Landing footer "Built with" (founder's wording) | in repo; `pull.sh` ran OK 15:02; Chrome look pending |
-| **W2** | Sync 3 files (CommandPalette, dashboard.ts, admin.addresses) via DEPLOY-MANIFEST | in repo (1705a04); next `pull.sh` pending |
+| **W1** | Landing footer "Built with" (founder's wording) | `pull.sh` ran OK on the server; Chrome look pending |
+| **W2** | Sync 3 files (CommandPalette, dashboard.ts, admin.addresses) via DEPLOY-MANIFEST | **GREEN on the server** (pull.sh 2 Nov 03:37: 3 files `wrote`, build OK, differ=0, /app/domains 200); Chrome menu check pending |
 | **W3** | = K5 T256-2 awam AES-256 (approved, after K3) | approved, pending |
 | **W5** | **Host guard (= founder C2 / L5)**: awam and founder hosts never serve each other; probe -> enforce. **RULE (founder 1 Nov 06:07, repeated 15:22): PARKED, runs together with the awam migration (A2), awam login is in the old Brain.** Not skipped | PARKED (founder decision), ONE-ORDER row A8 |
+| **W6** | Kernel `merkle@2` (G5a) moves the ONE kernel pin (Rule 52), so the awam pin follows the founder's proof; awam publishes through its own kernel lane (E90 `kernel_release_publish`) when it pulls | after G5a is GREEN |
 | **W4** | Catch-up A1-A7: Bun-free pages, webauthn-rs, DBSC, WebGPU, MoQ (MQ0-MQ4), PQM, PQN | after each founder letter turns GREEN |
 
 ## Rules

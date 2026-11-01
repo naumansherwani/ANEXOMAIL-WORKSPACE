@@ -54,6 +54,8 @@ T = [
  ("PQ mail-content encryption (OpenPGP RFC 9980: ML-KEM-768+X25519, ML-DSA-65+Ed25519)", ("server/founder/src", r'ml.?kem|ml.?dsa|9980'), ("server/rust", r'ml.?kem|ml.?dsa|9980'), "founder PQM (after 11) then awam PQM"),
  ("Streaming attachment encryption (hybrid ML-KEM + chunked AEAD)", ("server/founder/src", r'chunked_aead|stream_seal'), ("server/rust", r'chunked_aead|stream_seal'), "PQN1-PQN2 (with PQM)"),
  ("Live state sync encrypted at app level (WebTransport)", ("server/founder/src", r'state_seal|live_seal'), ("server/rust", r'state_seal|live_seal'), "PQN3 (after 7a)"),
+ ("Merkle CONSISTENCY proofs (RFC 9162) in the kernel", ("web-wasm/src", r'consistency_verify'), ("web-wasm/src", r'consistency_verify'), "G5a (kernel merkle@2; awam pin follows, A9)"),
+ ("External witness cosignatures (C2SP tlog-cosignature, k-of-n)", ("server/founder/src", r'cosignature/v1|witness_cosign'), ("server/rust", r'cosignature/v1|witness_cosign'), "G5c (after founder decision G5-D)"),
  ("MoQ (Media over QUIC)",           ("server/founder/src", r'moq'),                     ("server/rust", r'moq'), "founder MoQ-F (after 7a); awam MQ0-MQ4"),
 ]
 rows = []

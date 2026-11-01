@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 040931072a236e7b
+docs/cursor-work/founder/founder-commands.md 236f77c701c4c600
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md f097568380076f2c
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 4e939768a285232c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0c1a6a8b9e10e904
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 242a4811a77e32bc
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 48838845ffa1e499
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -385,7 +385,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md a3aa23b82550ea78
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 4aa3bcf748403c3e
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -820,7 +820,7 @@ docs/packages/trial/DATA-ISOLATION.md a168aebf466d6c67
 docs/packages/trial/FEATURES-AND-GATES.md 7634145c881b3526
 docs/packages/trial/NO-MOCK-AND-ONBOARDING.md 7640390fa0e591ac
 docs/packages/trial/README.md 50b6d0cae91d20f8
-docs/claude/ONE-ORDER-27OCT.md ba854c7450df31c9
+docs/claude/ONE-ORDER-27OCT.md bedf9425c673d6a9
 docs/claude/MASTER-MIGRATION-AND-GATES-27OCT.md 1c9a29730c36e593
 server/rust/setx_core.rs 0da0ba3ceaad04b9
 server/rust/setx_glue.rs c0463e2308280fbb
@@ -942,7 +942,7 @@ docs/claude/FOUNDER-SETTINGS-CENTER-PORT-28OCT.md fe791aed4ae0e57b
 docs/cursor-work/sql/E108_founder_settings.sql f4a698f2b0ca8a75
 docs/cursor-work/sql/CHECK_E108.sql b9dd58efb9371c43
 server/founder/src/settings.rs 9c6a138876785997
-docs/claude/FOUNDER-MASTER-ORDER-28OCT.md 009a1b9e6996d6b4
+docs/claude/FOUNDER-MASTER-ORDER-28OCT.md 7396a1477439b82c
 docs/claude/FOUNDER-UI-DESIGN-28OCT.md 186b7b149c97eef2
 founder-web/src/ui.css 8fef604c380421d3
 founder-web/src/fonts/Inter-Bold.woff2 7a2cfbc25078d618
@@ -1017,7 +1017,7 @@ docs/cursor-work/sql/E111_founder_channels_telemetry.sql 22c2b268cfcf41c4
 docs/cursor-work/sql/CHECK_E111.sql efefebfe1d6e27b0
 server/founder/src/live.rs 86edab3fe10e5f65
 server/founder/tests/e2e_live_stream.py 4b71a3ec7c398725
-docs/claude/FOUNDER-SERVER-STATE-30OCT.md c939286828b0720b
+docs/claude/FOUNDER-SERVER-STATE-30OCT.md 3b3e2928d8b5ee84
 docs/claude/FOUNDER-CHANNELS-CEO-LIST-01NOV.md d63b64c03c5df84d
 docs/claude/FOUNDER-MASTER-AUDIT-01NOV.md 1a252a64bfae2084
 docs/cursor-work/sql/E112_founder_inbox.sql 466f73b3fbcfc8ae
@@ -1064,7 +1064,7 @@ docs/cursor-work/sql/CHECK_E117.sql 0d263a16ea6f5d5e
 docs/cursor-work/sql/E117_founder_passkey_stepup_recovery.sql 58a76f937ab0efef
 docs/cursor-work/sql/E118_founder_chairman_protocol.sql 47cc66be9f22ff9d
 docs/cursor-work/sql/CHECK_E118.sql aa4905210e39f655
-docs/cursor-work/server/tech-proof.py 46f35485feadd041
+docs/cursor-work/server/tech-proof.py c2ec2fbf1119d948
 server/founder/src/tls256.rs 08d73cd1dbabdfa3
 docs/cursor-work/server/founder-tls256.sh 2e64fb62a9625dfa
 docs/cursor-work/sql/E119_founder_tls_posture.sql b2a16c82148d3857
