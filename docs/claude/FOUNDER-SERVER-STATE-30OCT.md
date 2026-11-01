@@ -111,3 +111,7 @@ BLUEPRINT TARTEEB: step 4d Founder Inbox (NEW, inserted before 5 Merkle) -> 5 F2
 HONEST: until P4 nothing can submit, so Glitch/Support stay "Not connected" (true). Stream-health chip: unknown -> if tick_health ok and reliability unknown, show ok from ticks (small UI/SQL tweak inside P1).
 PULL ORDER P1: sql-run.sh E112_founder_inbox CHECK_E112 first, then founder-install.sh.
 IF COMPACTION HITS MID-CODE: git status/diff --stat, read this, finish file in progress (E112 in docs/cursor-work/sql/), never restart.
+
+## UPDATE 1 Nov 07:50 PKT — 4d P1 SQL DONE (E112, repo, NOT installed yet)
+`docs/cursor-work/sql/E112_founder_inbox.sql` (815 lines, selftest OK + idempotent on local Postgres 16) + `CHECK_E112.sql` (10 checks). Tables: founder_reports, founder_report_groups, founder_report_events (hash chain), severity rules, SLA, transitions. RPC: report_submit (service_role, awam backend later), founder_report_set, founder_group_set, founder_report_verify, founder_inbox_list/get/stats/channels/prune/sla_watch/rules/week/search/timeline/snapshot, selftest. Live source `user_reports` registered.
+STILL TO DO in 4d P1: Rust read endpoints `/founder/v1/inbox` (founder_inbox_snapshot) + `/inbox/list` + `/inbox/group`; Dashboard "Inbox" card (honest "no reports yet" until P4 button); Stream-health chip fix. Then pull: sql-run.sh E112_founder_inbox CHECK_E112, then founder-install.sh.

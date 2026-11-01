@@ -1253,3 +1253,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 1 Nov 07:05 PKT: 4b-3 + 4b-4 SERVER PAR INSTALLED + Chrome GREEN (E111 9/9 OK, 77 tests, Live chip, last check moves 5 s, Channels + Stream health real). Founder ko dobara install mat bolo. Next: step 5 Merkle (design note first).
 - 1 Nov 07:11 PKT STANDING (founder): koi feature 'Not connected'/'data nahi aa raha' nahi rehna chahiye. Jhoota 'connected' kabhi nahi; hal = asli wiring (Glitch/Support/Company Mail/Billing API) phase-wise. Chip 'Not connected' wording bhi theek karna.
 - 1 Nov 07:25 PKT: step 4d (Founder Inbox P1, E112) STARTED, inserted before Merkle. Do not re-plan; see SERVER-STATE Checkpoint 3.
+- 1 Nov 07:50 PKT: E112 SQL written+tested (810 lines, selftest OK). Do not rewrite. Next: Rust /founder/v1/inbox*, Dashboard Inbox card, chip fix.
