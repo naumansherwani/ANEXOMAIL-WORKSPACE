@@ -30,3 +30,14 @@ Rust `/founder/v1/live` + SSE (uses E109 `founder_live_snapshot/tick/since`) -> 
 - REPO ONLY (needs founder-install): top bar title removed + date under the clock (this commit). Everything else in SPA = what the server has.
 - Bridge (Mail<->Chat) = master order 12b, after steps 11 and 12.
 - 1 Nov 05:30 PKT: g-clip fix in repo; pending founder-install together with 05:25 UI (top bar title removed, date under clock).
+
+## UPDATE 1 Nov 05:35 PKT - founder-install (44e1661) DONE by founder (70 tests, SPA 200, healthz 200). Chrome live: g of "morning" now complete, top-bar title gone, eyebrow stays. Date under the clock is on the page (clock column).
+### NEXT, in master-order terms (FOUNDER-MASTER-ORDER-28OCT.md)
+| # | What | Owner | Rule |
+|---|---|---|---|
+| N1 | Finish step 3 / L5: awam `pull.sh` (web_guard_last_seen is None), then `founder-hostguard.sh status` -> `enforce` | founder (2 commands) | green = status shows web_guard_last_seen set + enforce on |
+| N2 | Founder order 22:17 "live data, auto updates": Rust `/founder/v1/live` + SSE over E109 (`founder_live_snapshot/tick/since`), then Dashboard auto-update (React-TS, kernel-verified frames). Replace hard-coded `pending_channels` with registry here too | Claude | CHECK + Chrome (watch a number change without reload) |
+| N3 | Step 5 F2c audit v1 + Merkle (E107), design note first (Rule 63), kernel `merkle` | Claude | then 5a I1 Ledger Integrity Gauge |
+| N4 | Step 6 S2 Settings (Time machine, Drift) -> step 7 F2d passkey + S3 -> step 8 Decide/Live Pulse/S4 -> 8a I3 | Claude | in this order |
+| N5 | 9 Finance, 10 People (+10a I2, 10b K4), 11 Mail Desk (+11a K1), 12 Systems/AI (+12a K2), **12b Mail<->Chat Bridge**, 13 Control (+13a K3), 14 F9 cutover, 15 Founder desk | Claude | one phase at a time |
+Not asked and NOT next: Mail<->Chat Bridge build (12b). Leftover checks: orb amber/red under a real warning; F5 refresh 50-100 ms target; awam-side kernel 0.5.0 / E90 release publish.

@@ -75,3 +75,4 @@ Status: CODE DONE, NOT GREEN. Order: sql-run (E110) -> awam pull.sh (auth.ts) ->
 | L22 note 1 Nov 05:10 | Greeting v3 centring rejected and reverted to v2 (founder-approved, already installed). Do not centre. Bridge Engine design note written (docs only) |
 | L22 note 1 Nov 05:25 | top-bar title removed, date under clock (repo; needs founder-install). L5 v2 partly installed: E110 + Rust OK, awam pull.sh + enforce remain |
 - L22 note 1 Nov 05:30: g descender clip fixed (repo, needs founder-install)
+| L22 1 Nov 05:35 | GREEN in Chrome: g of morning whole, top-bar title removed, eyebrow stays |

@@ -189,3 +189,4 @@ founder-install.sh: `git -C /opt/anexomail-web fetch -q origin main && bash <(gi
 
 ## 1 Nov 05:25 PKT - UI only: founder-install.sh (same command as above) = top bar title removed, date under clock. L5 v2 steps 1,3 and 4 DONE by founder; only awam pull.sh then hostguard enforce remain.
 - 1 Nov 05:30: install founder-install.sh once = top bar title removed + date under clock + g fix.
+- 1 Nov 05:35: greeting/top-bar/g-fix installed by founder; nothing pending except L5 pull.sh + enforce.
