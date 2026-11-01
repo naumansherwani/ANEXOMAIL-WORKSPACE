@@ -1,6 +1,6 @@
-//! Module `merkle@1` — audit-ledger Merkle tree (master order step 5, F2c). SAME rule as SQL E107 (`_fm_leaf`, `_fm_node`, `_fm_next_level`) and RFC 6962:
+//! `merkle_core` (module `merkle@1` of the kernel) — audit-ledger Merkle tree (master order step 5, F2c). SAME rule as SQL E107 (`_fm_leaf`, `_fm_node`, `_fm_next_level`) and RFC 6962:
 //!   leaf = sha256(0x00 || row_hash_bytes)   node = sha256(0x01 || left || right)   odd last node is promoted unchanged (never duplicated).
-//! One source for two users: the browser kernel (Rule 52) and the founder server (`#[path]` include). Pure functions, no I/O, no clock.
+//! One source (server/rust/, next to jwt_core.rs) for two users: the browser kernel `web-wasm` (Rule 52) and the founder server, both by `#[path]` include. Pure functions, no I/O, no clock.
 //! Proof path items are `(side, sibling)`: side `R` = sibling on the right (node = H(01||node||sib)), `L` = sibling on the left (node = H(01||sib||node)).
 use sha2::{Digest, Sha256};
 

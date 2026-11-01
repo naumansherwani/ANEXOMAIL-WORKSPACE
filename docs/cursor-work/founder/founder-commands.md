@@ -1962,4 +1962,7 @@ DONE (sirf record, koi code nahi): server-par GREEN list = steps 1-4b, 4d P1 (E1
 
 ## 1 Nov 08:47 PKT — founder (verbatim gist)
 "next shuru kero technology read kero us ke hisab se codes aur pull command aye ga aur mujeh technology batna hai, waja banta hai ke yahan yeh kyon zaruri hai, is ka kya role hai, aur webtransport kab aye ga?"
-DONE (step 5, 5R + 5a UI): web-wasm/src/merkle.rs (ek tree-qaida, kernel + server), server/founder/src/ledger.rs + 5 routes + auto-seal, Surface.tsx "Ledger seal" card. WebTransport: master order ke baad F2d passkey (step 7) ke BAAD (docs/claude/FOUNDER-TECHNOLOGY-ADOPTION-30OCT.md line 20). Kernel `merkle@1` export + version bump + publish = alag sub-phase 5K (awam kernel lane se jura, founder ke "haan" par).
+DONE (step 5, 5R + 5a UI): server/rust/merkle_core.rs (ek tree-qaida, kernel + server), server/founder/src/ledger.rs + 5 routes + auto-seal, Surface.tsx "Ledger seal" card. WebTransport: master order ke baad F2d passkey (step 7) ke BAAD (docs/claude/FOUNDER-TECHNOLOGY-ADOPTION-30OCT.md line 20). Kernel `merkle@1` export + version bump + publish = alag sub-phase 5K (awam kernel lane se jura, founder ke "haan" par).
+
+## 1 Nov 08:51 PKT — founder
+founder-install paste: FAIL tests, `couldn't find file src/../../../web-wasm/src/merkle.rs` (kuch nahi badla). Fix: file server/rust/merkle_core.rs + installer stage.

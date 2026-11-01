@@ -1,9 +1,9 @@
 //! Audit ledger Merkle (master order step 5, F2c; SQL = E107). Rust side: whitelisted query parsing, an independent Rust check of every exported
-//! proof (second witness next to SQL), and the automatic checkpoint. Technology: Rust (axum, tokio). The tree rule lives ONCE in `web-wasm/src/merkle.rs`
+//! proof (second witness next to SQL), and the automatic checkpoint. Technology: Rust (axum, tokio). The tree rule lives ONCE in `server/rust/merkle_core.rs`
 //! (included here by path, so the server and the browser kernel can never disagree). Nothing is invented: a missing E107 answers `connected:false`.
 use serde_json::{Value, json};
 
-#[path = "../../../web-wasm/src/merkle.rs"]
+#[path = "../../rust/merkle_core.rs"]
 pub mod merkle;
 
 pub const EXPORT_MAX: i64 = 200;

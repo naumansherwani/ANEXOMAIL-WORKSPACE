@@ -20,6 +20,8 @@ FILES="Cargo.toml Cargo.lock $(git -C "$REPO" ls-tree --name-only origin/main se
 for f in $FILES; do show "server/founder/$f" >"$ROOT/src/$f" || { echo "FAIL: repo mein server/founder/$f nahi"; exit 2; }; done
 # jwt_core ko main.rs `../../rust/jwt_core.rs` se leta hai
 mkdir -p "$ROOT/rust" && show server/rust/jwt_core.rs >"$ROOT/rust/jwt_core.rs" || { echo "FAIL: jwt_core.rs nahi"; exit 2; }
+# merkle_core.rs (ledger.rs `../../rust/merkle_core.rs`): wahi ek file jo browser kernel bhi leta hai (step 5)
+show server/rust/merkle_core.rs >"$ROOT/rust/merkle_core.rs" || { echo "FAIL: merkle_core.rs nahi"; exit 2; }
 # main.rs ka path src/ se ../../rust/jwt_core.rs = $ROOT/rust/jwt_core.rs (src/src -> ../../ = src/..)
 echo "== 1/4 tests"; (cd "$ROOT/src" && cargo test --release 2>&1 | grep -E "test result|FAILED|^error" ) ; (cd "$ROOT/src" && cargo test --release >/dev/null 2>&1) || { echo "FAIL: tests — kuch nahi badla"; exit 3; }
 echo "== 2/4 build"; (cd "$ROOT/src" && nice cargo build --release 2>&1 | tail -3) ; NEW="$ROOT/src/target/release/anexomail-founder"; [ -x "$NEW" ] || { echo "FAIL: build"; exit 3; }

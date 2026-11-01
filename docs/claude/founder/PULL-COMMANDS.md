@@ -242,3 +242,5 @@ Kitni baar: sql-run.sh sha ledger mein likhta hai, wahi file dobara nahi chalti;
 FOUNDER ke liye aaj sirf #1 aur #2. Step 5 (Merkle): SQL E107 DONE (green); Rust/kernel/UI phase = #2.
 
 ## 1 Nov 08:55 PKT — step 5 Rust + UI (5R + 5a): Merkle core, 5 routes, auto-seal, Dashboard "Ledger seal" card. Pull: sirf founder-install.sh (same command). E107 SQL pehle se green.
+
+## 1 Nov 08:58 PKT — founder-install fix: merkle_core.rs ab installer stage karta hai. Pull: wahi founder-install.sh dobara.
