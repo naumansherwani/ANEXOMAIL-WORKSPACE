@@ -15,6 +15,7 @@ mod settings;
 mod authcache;
 mod hostproof;
 mod live;
+mod inbox;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -319,6 +320,29 @@ async fn live_stream_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Re
     res
 }
 
+/// 4d (Founder Inbox, E112): ONE signed answer = stats + SLA watch + week + channel evidence + chain health. Read only; missing SQL says so.
+async fn inbox_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
+    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    let sb = st.sb.as_ref().unwrap();
+    match sb.rpc("founder_inbox_snapshot", json!({})).await { Some(v) if v.is_object() => signed(&st, v), _ => signed(&st, inbox::missing()) }
+}
+
+/// The issues (grouped reports) without any message body or reporter. Query is whitelisted in `inbox::parse_list`.
+async fn inbox_list_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
+    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    let q = match inbox::parse_list(uri.query()) { Ok(q) => q, Err(e) => return (StatusCode::BAD_REQUEST, Json(json!({"error": e}))).into_response() };
+    let sb = st.sb.as_ref().unwrap();
+    match sb.rpc("founder_inbox_list", inbox::list_args(&q)).await { Some(v) if v.is_object() => signed(&st, v), _ => signed(&st, inbox::missing()) }
+}
+
+/// One issue in full (the founder is the only reader of the message text).
+async fn inbox_group_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
+    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    let id = match inbox::parse_group(uri.query()) { Ok(i) => i, Err(e) => return (StatusCode::BAD_REQUEST, Json(json!({"error": e}))).into_response() };
+    let sb = st.sb.as_ref().unwrap();
+    match sb.rpc("founder_inbox_get", json!({"p_group": id})).await { Some(v) if v.is_object() => signed(&st, v), _ => signed(&st, inbox::missing()) }
+}
+
 fn live_missing() -> serde_json::Value {
     json!({"connected": false, "note": "founder_live_snapshot not answering - run the E109 SQL (sql-run.sh)"})
 }
@@ -372,6 +396,9 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/hostguard", get(hostguard_ep))
         .route("/founder/v1/live", get(live_ep))
         .route("/founder/v1/live/stream", get(live_stream_ep))
+        .route("/founder/v1/inbox", get(inbox_ep))
+        .route("/founder/v1/inbox/list", get(inbox_list_ep))
+        .route("/founder/v1/inbox/group", get(inbox_group_ep))
         .route("/founder/v1/action", axum::routing::post(action_ep))
         .fallback_service(tower_http::services::ServeDir::new(static_dir).append_index_html_on_directories(true).precompressed_gzip())
         .with_state(st)
@@ -484,7 +511,7 @@ mod tests {
     }
     #[tokio::test]
     async fn founder_routes_need_bearer() {
-        for path in ["/founder/v1/me", "/founder/v1/bridge", "/founder/v1/settings", "/founder/v1/finance/polar", "/founder/v1/actions", "/founder/v1/audit", "/founder/v1/hostguard", "/founder/v1/live", "/founder/v1/live/stream"] {
+        for path in ["/founder/v1/me", "/founder/v1/bridge", "/founder/v1/settings", "/founder/v1/finance/polar", "/founder/v1/actions", "/founder/v1/audit", "/founder/v1/hostguard", "/founder/v1/live", "/founder/v1/live/stream", "/founder/v1/inbox", "/founder/v1/inbox/list", "/founder/v1/inbox/group"] {
             let r = app(st_with_sb()).oneshot(Request::get(path).body(Body::empty()).unwrap()).await.unwrap();
             assert_eq!(r.status(), 401, "{path}");
             let r = app(st_with_sb()).oneshot(Request::get(path).header("authorization", "Bearer a.b.c").body(Body::empty()).unwrap()).await.unwrap();

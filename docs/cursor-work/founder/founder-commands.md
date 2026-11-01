@@ -1903,3 +1903,4 @@ Amal: har founder card/feature asli live data se wired ho; "Not connected"/"abhi
 ## 1 Nov 07:17 PKT — founder (verbatim): "yeh compact chat aye ga kaam shuru kero technology ke hisab se yeh kaam kerna hai aur tarteeb batao ke yah kab aye gi?"
 Amal: haan = P1 (user reports intake: SQL E112 >=800 lines + Rust + Stream-health chip fix) shuru; pehle checkpoint docs; aur blueprint mein iski jagah batana.
 Status 07:50: E112 SQL (810 lines) likhi+test (local Postgres 16, selftest OK); Rust+UI agla.
+Status 08:10: 4d P1 poora (E112 SQL + Rust inbox endpoints + UI Inbox card); founder ko sql-run E112 phir founder-install.

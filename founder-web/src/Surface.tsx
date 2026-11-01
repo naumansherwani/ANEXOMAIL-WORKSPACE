@@ -17,6 +17,7 @@ export const ENDPOINTS: Ep[] = [
   { method: "GET", path: "/founder/v1/audit", what: "Audit ledger and chain check", gate: "Signed", probe: true },
   { method: "GET", path: "/founder/v1/hostguard", what: "Founder only on the founder host", gate: "Signed", probe: true },
   { method: "GET", path: "/founder/v1/live", what: "Live company numbers in one answer", gate: "Signed", probe: true },
+  { method: "GET", path: "/founder/v1/inbox", what: "Glitch and support reports", gate: "Signed", probe: true },
   { method: "GET", path: "/founder/v1/keys", what: "Public signing key", gate: "Public", probe: true },
   { method: "PUT", path: "/founder/v1/settings", what: "Save a setting", gate: "Signed write", probe: false },
   { method: "POST", path: "/founder/v1/action", what: "Request an action", gate: "Signed write, recorded in audit, runs from F8", probe: false },
@@ -30,7 +31,7 @@ const G: Record<string, string> = {
   bolt: "M13 2L3 14h9l-1 8 10-12h-9l1-8z", lock: "M5 11h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1zM8 11V7a4 4 0 0 1 8 0v4", sliders: "M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6", chat: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z", check: "M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4L12 14l-3-3",
 };
 const Gl = ({ n }: { n: string }) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={G[n]} /></svg>;
-const FICON: Record<string, string> = { "Signed answers": "shield", "Approved device": "device", "Audit ledger": "ledger", "Billing": "card", "Revenue records": "wallet", "Customers": "chat", "Action registry": "bolt", "Host separation": "lock", "Live feed": "bolt", "Channels": "chat", "Stream health": "shield", "Settings": "sliders" };
+const FICON: Record<string, string> = { "Signed answers": "shield", "Approved device": "device", "Audit ledger": "ledger", "Billing": "card", "Revenue records": "wallet", "Customers": "chat", "Action registry": "bolt", "Host separation": "lock", "Live feed": "bolt", "Channels": "chat", "Stream health": "shield", "Inbox": "ledger", "Settings": "sliders" };
 const STX: Record<State, string> = { ok: "Live", warn: "Check", fail: "Down", unknown: "Not connected" };
 type Row = { ep: Ep; ms?: number; ok?: boolean; note?: string; data?: any };
 type Act = { key: string; title: string; deck: string; danger: "low" | "medium" | "high"; enabled: boolean };
@@ -76,7 +77,7 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
   const by = (p: string) => rows?.find((r) => r.ep.path === p && r.ep.method === "GET");
   const acts: Act[] = by("/founder/v1/actions")?.data?.actions || [], actsOk = !!by("/founder/v1/actions")?.ok;
   const d = by("/founder/v1/bridge")?.data ?? d0; // the freshest verified Bridge answer (refreshed on every live change)
-  const hg = by("/founder/v1/hostguard")?.data, lv = L.snapshot ?? by("/founder/v1/live")?.data, au = by("/founder/v1/audit")?.data, pol = by("/founder/v1/finance/polar")?.data ?? d?.polar, ds = deviceStatus();
+  const hg = by("/founder/v1/hostguard")?.data, ib = by("/founder/v1/inbox")?.data, lv = L.snapshot ?? by("/founder/v1/live")?.data, au = by("/founder/v1/audit")?.data, pol = by("/founder/v1/finance/polar")?.data ?? d?.polar, ds = deviceStatus();
   const m = d?.money, v = d?.voice, hk = d?.polar_hook, subs = hk?.subscriptions, t = d?.trouble;
   const tot = t ? t.items.length : 0, bad = t ? t.items.filter((i: { state: string }) => i.state !== "ok").length : 0;
   const tone: State = !t ? "unknown" : bad ? "warn" : "ok";
@@ -99,9 +100,14 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
     { name: "Live feed", state: LSTATE(L.status, lv), chip: LCHIP[L.status],
       text: !lv ? "Not answering" : lv.connected === false ? lv.note || "Not connected" : `Version ${lv.version ?? "?"}, ${(lv.sources || []).length} source${(lv.sources || []).length === 1 ? "" : "s"}${(lv.sources || []).some((x: any) => x.stale) ? ", some not updating" : ", all fresh"}${L.lastTickAt ? ` · last check ${fmtTime(new Date(L.lastTickAt))}${L.lastTickOk === false ? " (failed)" : ""}` : ""}` },
     { name: "Channels", state: !lv ? "fail" : !Array.isArray(lv.channels) ? "unknown" : lv.channel_chain?.ok === false ? "fail" : lv.channels.some((c: any) => c.state === "degraded" || c.looks_stale) ? "warn" : lv.channels.some((c: any) => c.state === "connected") ? "ok" : "unknown",
-      text: !lv ? "Not answering" : !Array.isArray(lv.channels) ? "Channel list not installed yet (E111 SQL step)" : lv.channel_chain?.ok === false ? "History chain broken, do not trust channel states" : `${lv.channels.filter((c: any) => c.state === "connected").length} of ${lv.channels.length} connected${lv.channels.some((c: any) => c.state === "degraded" || c.looks_stale) ? ", one is not updating" : ""}` },
-    { name: "Stream health", state: !lv ? "fail" : !lv.tick_health ? "unknown" : (lv.telemetry_level === "fail" ? "fail" : lv.telemetry_level === "warn" ? "warn" : lv.telemetry_level === "ok" ? "ok" : "unknown"),
-      text: !lv ? "Not answering" : !lv.tick_health ? "Health record not installed yet (E111 SQL step)" : lv.tick_health.level === "unknown" ? "Collecting the first checks" : [...(lv.tick_health.reasons || []), ...(lv.reliability?.reasons || [])].join(". ") || `${lv.tick_health.ticks_ok} checks in the last hour, none missed` },
+      chip: Array.isArray(lv?.channels) ? `${lv.channels.filter((c: any) => c.state === "connected").length} of ${lv.channels.length}` : undefined,
+      text: !lv ? "Not answering" : !Array.isArray(lv.channels) ? "Channel list is installed with the E111 SQL step" : lv.channel_chain?.ok === false ? "History chain broken, do not trust channel states" : `${lv.channels.filter((c: any) => c.state === "connected").length} of ${lv.channels.length} connected${lv.channels.some((c: any) => c.state === "degraded" || c.looks_stale) ? ", one is not updating" : ""}${lv.channels.some((c: any) => c.state !== "connected") ? `. Waiting for first data: ${lv.channels.filter((c: any) => c.state !== "connected" && c.state !== "disabled").map((c: any) => c.label).join(", ")}` : ""}` },
+    { name: "Stream health", state: !lv ? "fail" : !lv.tick_health ? "unknown" : (lv.telemetry_level === "fail" || lv.tick_health.level === "fail" ? "fail" : lv.telemetry_level === "warn" || lv.tick_health.level === "warn" ? "warn" : lv.tick_health.level === "ok" ? "ok" : "unknown"),
+      chip: !lv?.tick_health ? undefined : lv.tick_health.level === "unknown" ? "Collecting" : undefined,
+      text: !lv ? "Not answering" : !lv.tick_health ? "Health record is installed with the E111 SQL step" : lv.tick_health.level === "unknown" ? "Collecting the first checks" : [...(lv.tick_health.reasons || []), ...(lv.reliability?.reasons || [])].join(". ") || `${lv.tick_health.ticks_ok} checks in the last hour, none missed` },
+    { name: "Inbox", state: !ib ? "fail" : ib.connected === false ? "unknown" : ib.stats?.level === "fail" ? "fail" : ib.stats?.level === "warn" ? "warn" : "ok",
+      chip: ib && ib.connected !== false && !ib.stats?.total_groups ? "Ready" : ib?.connected === false ? "Install" : undefined,
+      text: !ib ? "Not answering" : ib.connected === false ? ib.note || "Install the E112 SQL step" : !ib.stats?.total_groups ? "Ready. Glitch and support reports appear here the moment a user sends one" : [`${ib.stats.active} open issue${ib.stats.active === 1 ? "" : "s"}`, ib.stats.new ? `${ib.stats.new} new` : null, ...(ib.stats.reasons || [])].filter(Boolean).join(", ") },
     { name: "Action registry", state: !actsOk ? "fail" : !acts.length ? "unknown" : "ok", text: !actsOk ? "Not answering" : acts.length ? `${acts.length} actions, ${acts.filter((a) => a.enabled).length} enabled` : "No actions yet", to: "control" },
     { name: "Settings", state: by("/founder/v1/settings")?.ok ? "ok" : "fail", text: by("/founder/v1/settings")?.ok ? "Saved on the server" : "Not answering", to: "settings" },
   ] : [];
