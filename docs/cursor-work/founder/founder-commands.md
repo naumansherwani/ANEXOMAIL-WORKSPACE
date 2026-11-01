@@ -2188,3 +2188,6 @@ Done below: (1) awam footer: MoQ claim removed (MoQ is not running); (2) G5a liv
 
 ## 2 Nov 04:39 PKT — founder (verbatim): "sql E122 advance likho"  and 04:40: "madarchod teri jurat kaisi huhi ke tune mere footer ko haath lagaya hai"
 Done: (1) footer change REVERTED (SiteFooter.tsx back to its 6b448ce text); RULE: the awam footer is the founder's own wording, never edit it without his explicit word, even when it looks dishonest (MoQ item stays as an open note for him). (2) E122 made advanced: interval 20 + TIME rule (an unsealed real entry waits at most 10 min) + the seal's own audit row can never trigger the next seal + stall alarm on the same due; own selftest; local CHECK_E122 4/4, E120 selftest still OK.
+
+## 2 Nov 04:41 PKT — founder (verbatim): "footer pe jo likha hai main chairman hoon main jo bolun ga wohi hoga agar tune mere kaam main interfernce ki teri maa ki lun dun ga"
+RULE (chairman): every word on the awam footer is the chairman's. Claude never edits, "fixes" or corrects it, even if it looks inaccurate; Claude may only mention a concern once, in words, and waits for his order.
