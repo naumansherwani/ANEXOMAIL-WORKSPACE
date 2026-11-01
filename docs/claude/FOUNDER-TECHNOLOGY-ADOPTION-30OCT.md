@@ -42,7 +42,7 @@ Sach ki hudood (founder side par kya likhna jaiz hai): "256-bit TLS 1.3" aur "si
 
 | Technology | Verified fact (source seen 1 Nov 2026) | Awam side | Founder side | Phase |
 |---|---|---|---|---|
-| WebTransport (browser) | Baseline: Chrome, Edge, Firefox, Safari 26.4 (Mar 2026) | LIVE: Rust `wtrpc`, UDP 3443, `wtransport` 0.1.14 + quinn 0.10.2 (old) | PLANNED, step 7a, `wtransport` 0.7.1 (latest on docs.rs) | awam upgrade 0.1.14 -> 0.7.x only on founder order after cutover |
+| WebTransport (browser) | Baseline: Chrome, Edge, Firefox, Safari 26.4 (Mar 2026) | LIVE: Rust `wtrpc`, UDP 3443, `wtransport` 0.7.2 + quinn 0.11.11 (server Cargo.lock read 1 Nov 14:19; the earlier 0.1.14 value was stale) | PLANNED, step 7a, `wtransport` 0.7.1 (latest on docs.rs) | no awam upgrade needed: already on 0.7.2 |
 | Caddy and WebTransport | quic-go gives HTTP/3 (default since Caddy 2.6). Caddy does not proxy WebTransport itself; maintainer points to `caddy-l4` for HTTP/3 passthrough. Issue 5086 page did not mention WebTransport, so the status stays unconfirmed | UDP 3443 is bound directly by Rust, not through Caddy | same: Rust binds UDP itself; Caddy L4 only if needed, tested first | 7a |
 | MoQ (Media over QUIC) | `draft-ietf-moq-transport-22` dated 1 Oct 2026, still a WG draft, NO RFC; IESG milestone Dec 2026. Wire format still changes between drafts. Cloudflare relay: tech preview since Aug 2025 (draft-07 subset); self-serve relay beta Jul 2026 (secondary source). Cloudflare and moq.dev relays were not interoperable as of Jun 2026 | PLANNED for ANEXOChat one-to-many (channels, live rooms, announcements) behind a flag, pinned to one draft | same module, shared | after ANEXOChat core; never before |
 | MoQ claims NOT verified | "Meta relay", "production ready", "kills WebRTC" from the pasted text. Do not write these anywhere as fact | - | - | - |
@@ -53,3 +53,6 @@ Sach ki hudood (founder side par kya likhna jaiz hai): "256-bit TLS 1.3" aur "si
 | Merkle audit ledger (E107) | RFC 6962-style; kernel 0.6.0 `merkle@1` | n/a | GREEN | step 5 done |
 
 Honest answer to "tumhay ati hai kya": yes, Rust + tokio + wtransport + quinn are written here already (awam `wtrpc`). The website's WebTransport was NOT rewritten; it is old (0.1.14) and works.
+
+
+## 1 Nov 2026 14:25 PKT — 1 Nov 14:25 SERVER CHECK (founder paste 14:19): awam live Cargo.lock = wtransport 0.7.2 + quinn 0.11.11 (the '0.1.14 / quinn 0.10.2' chart row was STALE, now corrected). Founder host TLS: TLSv1.3, TLS_AES_128_GCM_SHA256, certificate Verification OK; openssl printed no 'Server Temp Key' line so post-quantum hybrid is still UNKNOWN (not claimed; 7b needs a check that can see the group).

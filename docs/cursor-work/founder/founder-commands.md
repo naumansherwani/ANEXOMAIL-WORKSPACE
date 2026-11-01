@@ -2106,3 +2106,6 @@ S1b RUST + UI WRITTEN (tarteeb se next, 1 Nov ~12:00): Rust = server/founder/src
 
 - 14:10 (founder, verbatim): "yeh sab tarteeb main add kero. kaun se phase main kaun si technology aye gi likho. baki server wali command do" (with the 7-MISSING table pasted back; first line: "WebAuthn FIDO2 keys ka cryptographic registration schema")
   STATUS 14:20: 1 Nov 14:20 founder 14:10: PHASE -> TECHNOLOGY table added to FOUNDER-MASTER-ORDER-28OCT.md (7-1b .. 16, with proof per phase); design note row 7-5 corrected from 'mobile OTP recovery' to alert + STOP-cancel (no OTP). Server read-only check command given (awam wtransport version + TLS).
+
+- 14:19 (founder): pasted the read-only server check output (wtransport 0.7.2, quinn 0.11.11, TLSv1.3 AES_128_GCM, Verification OK).
+  STATUS 14:25: 1 Nov 14:25 SERVER CHECK (founder paste 14:19): awam live Cargo.lock = wtransport 0.7.2 + quinn 0.11.11 (the '0.1.14 / quinn 0.10.2' chart row was STALE, now corrected). Founder host TLS: TLSv1.3, TLS_AES_128_GCM_SHA256, certificate Verification OK; openssl printed no 'Server Temp Key' line so post-quantum hybrid is still UNKNOWN (not claimed; 7b needs a check that can see the group).

@@ -45,8 +45,8 @@ Proof = a script that reads the repo and shows file:line for every technology, o
 | MoQ | not in either lane; IETF draft, no RFC | **NEW row 7e "MoQ-F"** (founder first, after 7a, Live Pulse behind a flag), then awam MQ0-MQ4 (ONE-ORDER-27OCT.md) | honest wording: "adopting MoQ (IETF draft)" until it is green |
 Awam lane gaps: MoQ (MQ0-MQ4), WebGPU renderer (not asked; Three.js is there). Awam code is not touched by this ledger.
 
-## Open fact to verify (found while building this)
-`server/rust/Cargo.toml` in the repo says `wtransport = "0.7"`, but the 1 Nov chart in FOUNDER-TECHNOLOGY-ADOPTION-30OCT.md says awam runs `wtransport` 0.1.14 live. One of them is stale. Read-only check on the server (what the BUILT binary uses): the Cargo.lock beside the live source. Until it is read, say "wtransport" without a version everywhere (the landing footer already does).
+## Fact verified on the server (founder paste, 1 Nov 14:19) — closes the open question
+Awam live `/opt/anexomail-rust/Cargo.lock`: **wtransport 0.7.2, quinn 0.11.11** (matches the repo `Cargo.toml`). The earlier chart value "0.1.14 / quinn 0.10.2" was stale and is corrected. Founder host TLS: TLSv1.3, `TLS_AES_128_GCM_SHA256`, certificate verification OK. The check printed no key-exchange group, so post-quantum hybrid TLS is still UNKNOWN and is NOT claimed anywhere (7b will check with a command that shows the negotiated group).
 
 ## Order the missing ones will be built (one phase at a time, Rule 66)
 7-2 webauthn-rs -> 7-3 Privacy UI -> 7-4 enforce -> 7-5 flare -> 7a wtransport -> 7b DBSC + PQ TLS -> 7c Motion + GSAP -> 7d WebGPU -> 7e MoQ-F. Each is green on the server + his Chrome before the next starts; this script is re-run after each and the MISSING count must drop by exactly the one that was built.
