@@ -63,7 +63,7 @@ describe("Ambient Studio maths (mirrors SQL E114 and Rust ambient.rs)", () => {
     expect(paint(c, { ...DEF, pattern: 0 }, "full").still).toBe(true);
     expect(paint(c, DEF, "none").still).toBe(true);
     expect(paint(c, { ...DEF, pattern: 6 }, "reduced").kind).toBe("breathe");
-    expect(paint(c, DEF, "full").vars["--op"]).toBe("0.7");
+    expect(paint(c, DEF, "full").vars["--op"]).toBe("0.39"); // intensity is scaled so text on top stays readable
     expect(radix(c).Z).toBe(65536);
   });
 });

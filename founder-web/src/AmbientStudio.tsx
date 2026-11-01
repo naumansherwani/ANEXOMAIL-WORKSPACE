@@ -11,7 +11,9 @@ let CACHE: Catalog | null = null;
 export function useCatalog(enabled: boolean): Catalog | null {
   const [c, setC] = useState<Catalog | null>(CACHE);
   useEffect(() => {
-    if (!enabled || CACHE) return; let live = true;
+    if (!enabled) return;
+    if (CACHE) { setC(CACHE); return; } // a catalog loaded by another screen must reach this one too (found in the layout test: it stayed on "Loading")
+    let live = true;
     get("/founder/v1/ambient/catalog").then((r) => { const d = r.data?.data; if (live && catalogOk(d)) { CACHE = d; setC(d); } }).catch(() => {});
     return () => { live = false; };
   }, [enabled]);

@@ -53,7 +53,7 @@ export function paint(c: Catalog, r: Recipe, motion: "full" | "reduced" | "none"
     kind: still ? "still" : reduced ? "breathe" : kind, still,
     vars: {
       "--c1": p.stops[0], "--c2": p.stops[1], "--c3": p.stops[2],
-      "--op": String(c.intensities[r.intensity].percent / 100), "--blend": c.blends[r.blend].css,
+      "--op": String(Math.round(c.intensities[r.intensity].percent * 0.55) / 100), "--blend": c.blends[r.blend].css,
       "--per": `${reduced ? Math.max(12, period) : period || 1}s`,
       "--ax": `${(r.seed * 37) % 100}%`, "--ay": `${(r.seed * 53) % 100}%`, "--ang": `${((r.seed * 7) + r.pattern * 15) % 360}deg`,
     },

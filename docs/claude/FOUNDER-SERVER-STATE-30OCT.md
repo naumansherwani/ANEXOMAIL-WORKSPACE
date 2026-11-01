@@ -211,3 +211,5 @@ E114 INSTALLED + GREEN on the server (registry, 11 appearance keys, ambient cata
 
 ## UPDATE 1 Nov ~12:00 PKT
 S1b Rust + UI pushed, NOT yet installed. After founder-install.sh: Appearance tab = 2 blocks + Ambient Studio.
+
+- 1 Nov 11:42 S1b Rust+UI installed on server (founder-install OK). Polish SPA pending install.

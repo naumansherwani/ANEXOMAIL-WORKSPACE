@@ -297,3 +297,6 @@ Expected: "E114 selftest OK", "E114 selftest2 OK", "E114 ambient looks in the ca
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12
 ```
 Expected: 116 tests OK, build OK, saboot OK. Then hard-reload the founder site -> Settings -> Appearance.
+
+### S1b polish (SPA only)
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`

@@ -182,3 +182,21 @@ html[data-focus="hc"] :focus-visible{outline:3px solid #fff!important;outline-of
 .ambtweak select{background:#ffffff0f;color:inherit;border:1px solid #ffffff2a;border-radius:8px;padding:6px}
 .ambfavs{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
 .ambchip{width:34px;height:34px;border-radius:50%;border:2px solid #ffffff33;cursor:pointer}.ambchip.on{border-color:#fff}
+
+/* ===== Polish only (1 Nov 11:50, founder: "jo current bana hai usko polish karo"): same layout, same look; tidier tools row, calmer controls, 44px touch targets ===== */
+.setrow:has(+ .s2tools){border-bottom:0;padding-bottom:4px}
+.s2tools{margin:0 0 6px;padding:2px 0 14px;border-bottom:1px solid var(--line)}
+.setrow.last + .s2tools,.s2tools:last-child{border-bottom:0}
+.s2tbtn{gap:8px!important}
+.s2tbtn button{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 12px;border:1px solid var(--line);border-radius:var(--r1,8px);background:rgba(255,255,255,.05);color:var(--dim);font:600 12px Inter,sans-serif;text-decoration:none;transition:background .2s,color .2s,border-color .2s}
+.s2tbtn button svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.s2tbtn button:hover{background:rgba(255,255,255,.1);color:var(--fg)}
+.s2tbtn button[aria-expanded="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.seg{flex-wrap:nowrap;max-width:100%}.seg button{white-space:nowrap}
+.setrow .switch{position:relative}.setrow .switch::after{content:"";position:absolute;inset:-10px}
+@media (max-width:700px){.s2tbtn button{min-height:44px;padding:0 14px}.seg{width:100%}.seg button{flex:1 1 0;min-height:44px}.setrow{flex-wrap:wrap}.ambdial{height:140px}.ambtweak{grid-template-columns:1fr}.ambrow button{min-height:44px}}
+@media (pointer:coarse){.seg button{min-height:44px}}
+.s2tbtn button{white-space:nowrap}
+@media (max-width:1023px){.s2tbtn button,.ambrow button,.ambtweak select,.ambtweak button{min-height:40px}}
+@media (max-width:700px){.s2tbtn{gap:6px!important}.s2tbtn button{padding:0 11px}.ambrow button,.ambtweak select,.ambtweak button{min-height:44px}.ambtweak select{font-size:16px}}
+@media (max-width:700px){.s2tbtn button{min-height:44px}}

@@ -656,3 +656,5 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - 1 Nov 11:26 — E114 SQL = GREEN ON THE SERVER (CHECK_E114 14/14 + E65). Do NOT give him the E114 command again. Next: S1b Rust, then UI.
 
 - 1 Nov ~12:00 — S1b Rust + UI written and tested in the sandbox (116 Rust, 21 bun, tsc clean). Server install = founder-install.sh (his next command). Do NOT rewrite; Chrome check after install.
+
+- 1 Nov: S1b Rust+UI installed on server 11:42 (OK). POLISH-ONLY pass on existing cinematic Settings (tools pills, 44/40px targets, switch hit area, catalog-loading fix). Redesign rejected+reverted. No new look.
