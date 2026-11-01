@@ -53,3 +53,12 @@ export function verifyBody(body: ArrayBuffer, skewSecs = 120, quiet = false): Pr
     w().postMessage({ id, body, now: Math.floor(Date.now() / 1000), skew: skewSecs }, [body]);
   });
 }
+
+/** Step 5K: does this audit row hash lead to this root through this path (`L:<hex>,R:<hex>`)? The kernel (merkle@1) decides; any failure = false. */
+export function merkleVerify(row: string, path: string, root: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    const id = ++seq;
+    waiting.set(id, (m) => resolve(m.code === 0 && m.data === "1"));
+    w().postMessage({ id, merkle: { row, path, root } });
+  });
+}

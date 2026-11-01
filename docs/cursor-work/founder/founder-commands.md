@@ -1978,3 +1978,6 @@ DONE: master order mein 11b (common attachments A1+A2+A4, shared Rust + kernel s
 ## 1 Nov 09:17 PKT — founder (verbatim gist)
 "awam ke blueprint mein M-series thi, baaqi implementation order tha; Pro ke saare endpoints latest technology par migrate ho chuke, basic, business, business pro abhi nahi — yeh sab mentioned hai kya? awam ki tarteeb nahi tootay mujhe ek audit do. aur founder side ka next tarteeb se shuru kero (5K kernel merkle@1). chat context update kero."
 DONE: awam audit -> docs/claude/ONE-ORDER-27OCT.md (1 Nov 09:25 section, registry numbers: pro 51/51, basic 107/142, business 4/188, business_pro 0/5, founder 24/77, ai_soon 0/56). 5K shuru.
+
+## 1 Nov 09:30 PKT — 5K done in repo (kernel merkle@1)
+Kernel 0.5.0 -> 0.6.0: `merkle@1` (web-wasm MODULES + `merkle_verify` ABI export, text path `L:hex,R:hex`), shared `server/rust/merkle_core.rs::verify_text`, built by scripts/build-kernel.sh (62 kernel tests), founder-web kernel-sync (sha256 f7f9393d...ff52), worker + `merkleVerify`, Dashboard "Ledger seal" now says "N of N newest entries proven in this browser". 95 server tests, tsc 0, bun test 8 (sandbox), vite build OK.

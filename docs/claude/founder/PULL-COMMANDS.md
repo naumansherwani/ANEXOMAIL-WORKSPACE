@@ -246,3 +246,5 @@ FOUNDER ke liye aaj sirf #1 aur #2. Step 5 (Merkle): SQL E107 DONE (green); Rust
 ## 1 Nov 08:58 PKT — founder-install fix: merkle_core.rs ab installer stage karta hai. Pull: wahi founder-install.sh dobara.
 
 ## 1 Nov 09:00 PKT — step 5 GREEN (server + Chrome). Koi nayi pull command nahi. Agla phase 5K ke liye alag command aayegi.
+
+## 1 Nov 09:32 PKT — 5K (kernel merkle@1 0.6.0 + Dashboard browser proof). Pull: sirf founder-install.sh. NOTE: awam site 0.5.0 par rahegi jab tak awam web pull (banned lane); kernel-check.sh us tak mismatch dikhaye = expected.

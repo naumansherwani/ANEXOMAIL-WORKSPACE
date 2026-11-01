@@ -27,9 +27,9 @@ use std::collections::HashMap;
 use std::rc::Rc;
 
 pub const ABI: u32 = 1;
-pub const VERSION: (u32, u32, u32) = (0, 5, 0);
+pub const VERSION: (u32, u32, u32) = (0, 6, 0);
 /// Naam@module-version. Naya module ya badla hua module => yahan entry + VERSION bump (Cargo.toml bhi).
-pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1"];
+pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1"];
 
 thread_local! {
     static OUT: RefCell<Vec<u8>> = const { RefCell::new(Vec::new()) };
@@ -125,6 +125,13 @@ pub extern "C" fn sha256_finish(h: u32) -> u32 {
 #[unsafe(no_mangle)]
 pub extern "C" fn sha256_drop(h: u32) {
     hash::drop_hasher(h)
+}
+
+/* ------------------------------------------------- merkle@1 (F2c / step 5K) */
+/// 1 = row hash + path lead to root, 0 = no (any malformed input too). Path text: `L:<64 hex>,R:<64 hex>,...` (empty = zero hops). All hex lowercase.
+#[unsafe(no_mangle)]
+pub extern "C" fn merkle_verify(row: u32, rl: u32, path: u32, pl: u32, root: u32, ol: u32) -> u32 {
+    merkle::verify_text(unsafe { text(row, rl) }, unsafe { text(path, pl) }, unsafe { text(root, ol) }) as u32
 }
 
 /* ------------------------------------------------- ed25519 + envelope (F2b) */
@@ -255,7 +262,7 @@ mod tests {
         let ver = j.iter().find(|(k, _)| k == "version").unwrap().1.clone();
         assert_eq!(ver, env!("CARGO_PKG_VERSION"), "VERSION bump Cargo.toml ke saath");
         assert!(info_json().contains("\"abi\":1"));
-        for m in ["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1"] {
+        for m in ["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1"] {
             assert!(info_json().contains(m), "{m}");
         }
     }

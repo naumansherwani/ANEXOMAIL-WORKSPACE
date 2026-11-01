@@ -30,3 +30,18 @@ test("envelope_verify refuses a body that is not signed by the pinned key", asyn
   const p = ex.kernel_alloc(body.length); new Uint8Array(ex.memory.buffer, p, body.length).set(body);
   expect(ex.envelope_verify(p, body.length, Math.floor(Date.now() / 1000), 120)).toBe(5); // BAD_SIG
 });
+
+test("merkle_verify in the real wasm: SQL E107 vector (n=3, last leaf) proves, one changed character fails", async () => {
+  const { instance } = await WebAssembly.instantiate(bytes, { env: { host_wake() {}, host_call() {}, host_emit() {} } });
+  const ex = instance.exports as any;
+  const put = (t: string) => { const b = new TextEncoder().encode(t), p = ex.kernel_alloc(Math.max(b.length, 1)); new Uint8Array(ex.memory.buffer, p, b.length).set(b); return [p, b.length] as const; };
+  const row = "01298bf8427622fb14734f7efc8c967c9e037bb1e51040c3462e422a2d29f0dd";
+  const path = "L:619933a6cda3bcd1faba11b3fb9ec2d8bd13d4ec4d9c8787d3c830cea5220476";
+  const root = "affb9317bdc52d5109a09da7a9e5ae9503f6b95b5476b5ea2de70b050e7b09b9";
+  const v = (r: string, p: string, o: string) => ex.merkle_verify(...put(r), ...put(p), ...put(o));
+  expect(v(row, path, root)).toBe(1);
+  expect(v(row.replace("01298b", "01298c"), path, root)).toBe(0);
+  expect(v(row, path.replace("L:", "R:"), root)).toBe(0);
+  expect(v(row, path, root.replace("affb", "affc"))).toBe(0);
+  expect(v(row, "", root)).toBe(0);
+});

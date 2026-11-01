@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { get, warm, deviceStatus } from "./api";
-import { trust } from "./kernel";
+import { merkleVerify, trust } from "./kernel";
 import { fmtHM, fmtTime } from "./city";
 import { onLiveChange, useLive, type LiveStatus } from "./livefeed";
 import { HealthOrb, type Tone } from "./Scene3D";
@@ -76,6 +76,23 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
   useEffect(() => onLiveChange(() => { if (again.current) return; again.current = true; void run().finally(() => { again.current = false; }); }), [run]);
 
   const by = (p: string) => rows?.find((r) => r.ep.path === p && r.ep.method === "GET");
+  // Step 5K: the newest audit entries are proven against the sealed root by the WASM kernel in THIS browser (merkle@1), not just by the server.
+  const [lp, setLp] = useState<{ n: number; ok: number } | null>(null);
+  const mkRows = by("/founder/v1/audit/merkle")?.data?.pulse?.rows as number | undefined;
+  useEffect(() => {
+    if (!mkRows || mkRows < 1) return;
+    let off = false;
+    void (async () => {
+      try {
+        const r = await get(`/founder/v1/audit/export?from=${Math.max(1, mkRows - 4)}&to=${mkRows}`), ex = r.data;
+        if (!ex?.rows?.length || !ex.root) return;
+        let ok = 0;
+        for (const row of ex.rows) if (await merkleVerify(row.hash, (row.path || []).map((x: { s: string; h: string }) => `${x.s}:${x.h}`).join(","), ex.root)) ok++;
+        if (!off) setLp({ n: ex.rows.length, ok });
+      } catch { if (!off) setLp(null); }
+    })();
+    return () => { off = true; };
+  }, [mkRows]);
   const acts: Act[] = by("/founder/v1/actions")?.data?.actions || [], actsOk = !!by("/founder/v1/actions")?.ok;
   const d = by("/founder/v1/bridge")?.data ?? d0; // the freshest verified Bridge answer (refreshed on every live change)
   const hg = by("/founder/v1/hostguard")?.data, ib = by("/founder/v1/inbox")?.data, mk = by("/founder/v1/audit/merkle")?.data, lv = L.snapshot ?? by("/founder/v1/live")?.data, au = by("/founder/v1/audit")?.data, pol = by("/founder/v1/finance/polar")?.data ?? d?.polar, ds = deviceStatus();
@@ -93,11 +110,11 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
     { name: "Signed answers", state: ks === "verified" ? "ok" : ks === "failed" ? "fail" : "unknown", text: ks === "verified" ? "Checked in this browser" : ks === "failed" ? "An answer failed the check and was hidden" : "Waiting for the first answer" },
     { name: "Approved device", state: ds.mode === "device" ? "ok" : "warn", text: ds.mode === "device" ? ds.label || "This device" : "No device token" },
     { name: "Audit ledger", state: !au ? "fail" : !au.connected ? "unknown" : au.chain_ok ? "ok" : "fail", text: !au ? "Not answering" : !au.connected ? au.note || "Not connected" : au.chain_ok ? `Chain intact${au.head ? `, entry ${au.head.seq}` : ""}` : `Chain broken at ${au.first_bad_seq}`, to: "audit" },
-    { name: "Ledger seal", state: !mk ? "fail" : mk.connected === false ? "unknown" : mk.pulse?.level === "fail" ? "fail" : mk.pulse?.level === "warn" ? "warn" : "ok",
+    { name: "Ledger seal", state: !mk ? "fail" : mk.connected === false ? "unknown" : mk.pulse?.level === "fail" || (lp && lp.ok < lp.n) ? "fail" : mk.pulse?.level === "warn" ? "warn" : "ok",
       chip: mk?.pulse?.last_checkpoint ? `#${mk.pulse.last_checkpoint.id}` : undefined,
-      text: !mk ? "Not answering" : mk.connected === false ? mk.note || "Install the E107 SQL step" : mk.pulse?.last_checkpoint
+      text: !mk ? "Not answering" : mk.connected === false ? mk.note || "Install the E107 SQL step" : (mk.pulse?.last_checkpoint
         ? `${mk.pulse.rows} entries, sealed up to entry ${mk.pulse.last_checkpoint.upto_seq} at ${fmtHM(mk.pulse.last_checkpoint.created_ms)}, ${mk.pulse.lag_rows} since`
-        : `${mk.pulse?.rows ?? 0} entries, the first seal comes at ${mk.pulse?.every_rows ?? "?"} new entries`, to: "audit" },
+        : `${mk.pulse?.rows ?? 0} entries, the first seal comes at ${mk.pulse?.every_rows ?? "?"} new entries`) + (lp ? `. ${lp.ok} of ${lp.n} newest entries proven in this browser` : ""), to: "audit" },
     { name: "Billing", state: !pol && !hk ? "fail" : pol?.connected ? (pol.stale ? "warn" : "ok") : subs?.connected ? "ok" : "unknown", text: pol?.connected ? `${pol.active_subscriptions ?? "?"} active subscriptions` : subs?.connected ? "Polar webhook live, API metrics not connected" : pol?.note || "Not connected", to: "finance" },
     { name: "Revenue records", state: !d ? "fail" : m?.connected ? "ok" : "unknown", text: !d ? "Not answering" : m?.connected ? `${m.active_accounts} active account${m.active_accounts === 1 ? "" : "s"}` : m?.note || "Not connected", to: "finance" },
     { name: "Customers", state: !d ? "fail" : v?.connected ? "ok" : "unknown", text: !d ? "Not answering" : v?.connected ? `${v.new_leads} new lead${v.new_leads === 1 ? "" : "s"}` : v?.note || "Not connected", to: "bridge" },

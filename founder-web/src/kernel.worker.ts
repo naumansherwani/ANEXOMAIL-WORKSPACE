@@ -1,7 +1,7 @@
 // F2b: the WASM kernel runs here, off the UI thread (Rule 52: Worker). It only verifies; it never touches the DOM or the network except to fetch its own .wasm.
 import { KERNEL } from "./kernel.pin";
 
-type Ex = { memory: WebAssembly.Memory; kernel_alloc(n: number): number; kernel_free(p: number, n: number): void; kernel_out_ptr(): number; kernel_out_len(): number; envelope_verify(p: number, l: number, now: number, skew: number): number };
+type Ex = { memory: WebAssembly.Memory; kernel_alloc(n: number): number; kernel_free(p: number, n: number): void; kernel_out_ptr(): number; kernel_out_len(): number; envelope_verify(p: number, l: number, now: number, skew: number): number; merkle_verify(r: number, rl: number, p: number, pl: number, o: number, ol: number): number };
 const hex = (b: ArrayBuffer) => [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join("");
 let ex: Promise<Ex> | null = null;
 
@@ -15,7 +15,17 @@ function load(): Promise<Ex> {
   return ex;
 }
 
-self.onmessage = async (ev: MessageEvent<{ id: number; body: ArrayBuffer; now: number; skew: number; warm?: boolean }>) => {
+self.onmessage = async (ev: MessageEvent<{ id: number; body: ArrayBuffer; now: number; skew: number; warm?: boolean; merkle?: { row: string; path: string; root: string } }>) => {
+  if (ev.data.merkle) { // step 5K: audit-ledger inclusion proof checked by the kernel (merkle@1) in this browser
+    const { id, merkle: m } = ev.data;
+    try {
+      const k = await load(), enc = new TextEncoder(), put = (t: string) => { const b = enc.encode(t), p = k.kernel_alloc(Math.max(b.length, 1)); new Uint8Array(k.memory.buffer, p, b.length).set(b); return [p, b.length] as const; };
+      const [r, p, o] = [put(m.row), put(m.path), put(m.root)], code = k.merkle_verify(r[0], r[1], p[0], p[1], o[0], o[1]);
+      for (const x of [r, p, o]) k.kernel_free(x[0], Math.max(x[1], 1));
+      (self as unknown as Worker).postMessage({ id, code: code === 1 ? 0 : 1, data: code === 1 ? "1" : "0" });
+    } catch (e) { (self as unknown as Worker).postMessage({ id, code: 100, error: String(e) }); }
+    return;
+  }
   if (ev.data.warm) { try { await load(); } catch { /* the first real verify reports the error */ } return; } // refresh speed: fetch + hash + compile the kernel while the data calls are still in flight
   const { id, body, now, skew } = ev.data;
   try {

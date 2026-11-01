@@ -97,6 +97,22 @@ pub fn path_from_json(v: &[(String, String)]) -> Option<Vec<(Side, H32)>> {
     v.iter().map(|(s, h)| Some((match s.as_str() { "L" => Side::L, "R" => Side::R, _ => return None }, from_hex(h)?))).collect()
 }
 
+/// Text form used by the kernel ABI (no JSON parser inside the wasm): `L:<64 hex>,R:<64 hex>,...` (empty text = zero hops).
+/// Any malformed part (bad side, bad hex, empty item, stray space) = false, never a panic.
+pub fn verify_text(row_hash_hex: &str, path_text: &str, root_hex: &str) -> bool {
+    let (Some(row), Some(root)) = (from_hex(row_hash_hex), from_hex(root_hex)) else { return false };
+    let mut p = Vec::new();
+    if !path_text.is_empty() {
+        for item in path_text.split(',') {
+            let Some((s, h)) = item.split_once(':') else { return false };
+            let side = match s { "L" => Side::L, "R" => Side::R, _ => return false };
+            let Some(sib) = from_hex(h) else { return false };
+            p.push((side, sib));
+        }
+    }
+    verify(&row, &p, &root)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -207,5 +223,22 @@ mod tests {
         assert!(levels(&[]).is_empty());
         assert!(path(&levels(&leaves_of(3)), 3).is_none());
         assert!(path(&[], 0).is_none());
+    }
+
+    #[test]
+    fn text_form_verifies_the_sql_vectors_and_refuses_garbage() {
+        // n=3 last leaf, path and root straight from SQL E107 vectors
+        let rows = vec_rows(3);
+        let root = to_hex(&root_of(&leaves_of(3)).unwrap());
+        let row = to_hex(&rows[2]);
+        let path = "L:619933a6cda3bcd1faba11b3fb9ec2d8bd13d4ec4d9c8787d3c830cea5220476";
+        assert!(verify_text(&row, path, &root));
+        assert!(verify_text(&to_hex(&rows[0]), "", "158cccace1cd000b720dc6533de2620ea3e70b907a6d7a7038687f1b28a7537c"), "1 leaf = zero hops");
+        for bad in ["R:619933a6cda3bcd1faba11b3fb9ec2d8bd13d4ec4d9c8787d3c830cea5220476", "X:61", "L:zz", "L", ",", "L:619933a6cda3bcd1faba11b3fb9ec2d8bd13d4ec4d9c8787d3c830cea5220476,", " L:619933a6cda3bcd1faba11b3fb9ec2d8bd13d4ec4d9c8787d3c830cea5220476"] {
+            assert!(!verify_text(&row, bad, &root), "{bad}");
+        }
+        assert!(!verify_text("nothex", path, &root));
+        assert!(!verify_text(&row, path, &"0".repeat(64)));
+        assert!(!verify_text(&row, &vec!["L:".to_string() + &"00".repeat(32); 65].join(","), &root), "65 hops refused");
     }
 }
