@@ -1245,3 +1245,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 1 Nov 06:35 PKT: 4b-1 code written (main.rs live_ep + Surface.tsx Live feed card). Do not rewrite; needs founder-install then Chrome check, then 4b-2 (tick + SSE).
 - 1 Nov 06:25 PKT: 4b-1 GREEN (installed + Chrome). Do not redo. Next: 4b-2 tick task + SSE (design note FOUNDER-LIVE-RUST-SSE-DESIGN-01NOV.md).
 - 1 Nov 06:30 PKT: checkpoint written for 4b-2 (plan in SERVER-STATE bottom section). Update context BEFORE coding long phases (founder order).
+- 1 Nov 07:00 PKT: 4b-2 code written (live.rs, live_stream_ep, envelope refactor, 75 tests, mock e2e). Do not rewrite. Needs founder-install, then 4b-3 UI.

@@ -14,6 +14,7 @@ mod polar;
 mod settings;
 mod authcache;
 mod hostproof;
+mod live;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -32,16 +33,18 @@ type S = Arc<St>;
 fn now_s() -> i64 { std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0) }
 
 /// Jawab: {data, ts, sig} — sig = HMAC(key, ts.sha256(data)); kernel browser mein verify karta hai.
-fn signed(st: &St, data: Value) -> axum::response::Response {
+fn envelope(st: &St, data: &Value) -> Value {
     let ts = now_s();
-    let txt = serde_json::to_string(&data).unwrap_or_default();
+    let txt = serde_json::to_string(data).unwrap_or_default();
     let sig = sign::sign(&st.hmac_key, ts, &txt);
     // F2a: Ed25519 over the same message. `sig` (HMAC) stays until the browser kernel (F2b) verifies Ed25519 and enforces it.
     match &st.ed {
-        Some(ed) => Json(json!({"data": data, "ts": ts, "sig": sig, "alg": "ed25519", "kid": sign::ED_KID, "sig_ed": ed.sign(ts, &txt)})).into_response(),
-        None => Json(json!({"data": data, "ts": ts, "sig": sig})).into_response(),
+        Some(ed) => json!({"data": data, "ts": ts, "sig": sig, "alg": "ed25519", "kid": sign::ED_KID, "sig_ed": ed.sign(ts, &txt)}),
+        None => json!({"data": data, "ts": ts, "sig": sig}),
     }
 }
+
+fn signed(st: &St, data: Value) -> axum::response::Response { Json(envelope(st, &data)).into_response() }
 
 /// Public verification key (public by design). The kernel in the browser (F2b) pins it; the private key never leaves the server.
 async fn keys_ep(State(st): State<S>) -> axum::response::Response {
@@ -252,6 +255,56 @@ async fn live_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response 
     }
 }
 
+/// 4b-2: SSE stream of signed frames. Connect = `snapshot` frame (everything now), then a `tick` frame per tick (+ an `events` frame with the real changes
+/// since the last id when something changed), `: hb` heartbeat every 15 s. Ends after 10 minutes (the browser reconnects and is re-authorised).
+/// Needs the same token as every other endpoint; the SPA reads it with fetch (EventSource cannot send the Authorization header).
+async fn live_stream_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
+    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    let Some(sb) = st.sb.clone() else { return StatusCode::SERVICE_UNAVAILABLE.into_response() };
+    let hub = live::hub();
+    let Some(slot) = live::Slot::take(&hub) else { return (StatusCode::SERVICE_UNAVAILABLE, "too many live streams").into_response() };
+    let mut last_id: i64 = h.get("last-event-id").and_then(|v| v.to_str().ok()).and_then(|v| v.parse().ok()).unwrap_or(0);
+    let mut rx = hub.tx.subscribe(); // subscribe BEFORE the snapshot so no tick is missed in between
+    let (tx, body_rx) = tokio::sync::mpsc::channel::<axum::body::Bytes>(8);
+    tokio::spawn(async move {
+        let _slot = slot;
+        let send = |frame: String| tx.try_send(axum::body::Bytes::from(frame)).is_ok(); // full queue = slow client: drop it, it reconnects with Last-Event-ID
+        let snap = match sb.rpc("founder_live_snapshot", json!({})).await { Some(v) if v.is_object() => v, _ => live_missing() };
+        if let Some(v) = snap.get("version").and_then(|v| v.as_i64()) { last_id = v; }
+        let line = |st: &St, d: &Value| serde_json::to_string(&envelope(st, d)).unwrap_or_default();
+        if !send(live::sse_frame(Some(last_id), "snapshot", &line(&st, &snap))) { return; }
+        let end = tokio::time::Instant::now() + live::MAX_LIFETIME;
+        let mut hb = tokio::time::interval(live::HEARTBEAT);
+        hb.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Delay);
+        hb.tick().await;
+        loop {
+            tokio::select! {
+                _ = tokio::time::sleep_until(end) => return,
+                _ = hb.tick() => { if !send(": hb\n\n".to_string()) { return; } }
+                r = rx.recv() => match r {
+                    Ok(t) => {
+                        if !send(live::sse_frame(Some(t.version), "tick", &line(&st, &live::tick_json(&t)))) { return; }
+                        if t.ok && t.version > last_id {
+                            if let Some(d) = sb.rpc("founder_live_since", json!({"p_after": last_id, "p_limit": 100})).await {
+                                if let Some(v) = d.get("version").and_then(|v| v.as_i64()) { last_id = v.max(last_id); }
+                                if !send(live::sse_frame(Some(last_id), "events", &line(&st, &d))) { return; }
+                            }
+                        }
+                    }
+                    Err(tokio::sync::broadcast::error::RecvError::Lagged(_)) => return, // fell behind: end, the client reconnects and gets a fresh snapshot
+                    Err(_) => return,
+                }
+            }
+        }
+    });
+    let mut res = axum::body::Body::from_stream(live::RxStream(body_rx)).into_response();
+    let hd = res.headers_mut();
+    hd.insert(HeaderName::from_static("content-type"), HeaderValue::from_static("text/event-stream"));
+    hd.insert(HeaderName::from_static("cache-control"), HeaderValue::from_static("no-store"));
+    hd.insert(HeaderName::from_static("x-accel-buffering"), HeaderValue::from_static("no"));
+    res
+}
+
 fn live_missing() -> serde_json::Value {
     json!({"connected": false, "note": "founder_live_snapshot not answering - run the E109 SQL (sql-run.sh)"})
 }
@@ -304,6 +357,7 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/audit", get(audit_ep))
         .route("/founder/v1/hostguard", get(hostguard_ep))
         .route("/founder/v1/live", get(live_ep))
+        .route("/founder/v1/live/stream", get(live_stream_ep))
         .route("/founder/v1/action", axum::routing::post(action_ep))
         .fallback_service(tower_http::services::ServeDir::new(static_dir).append_index_html_on_directories(true).precompressed_gzip())
         .with_state(st)
@@ -362,6 +416,7 @@ async fn main() {
     let (polar, pcfg) = match polar::Cfg::from_env() { Some(c) => (polar::Live::new(true), Some(c)), None => (polar::Live::off(), None) };
     eprintln!("founder: polar reader {}", if pcfg.is_some() { "ON (read-only, metrics API)" } else { "OFF (no FOUNDER_POLAR_READ_TOKEN)" });
     if let Some(c) = pcfg { polar::spawn(polar.clone(), c, now_s); }
+    if let Some(s) = &sb { live::start(s.clone()); } // 4b-2: the one process-wide live tick
     let st = Arc::new(St { sb, hmac_key: key.into_bytes(), jwks: RwLock::new(jwks), lim: Default::default(), ft, legacy, polar, hook: Default::default(), ed, reqsig, gate: authcache::AuthCache::new(std::time::Duration::from_secs(5)) });
     let addr = std::env::var("FOUNDER_BIND").unwrap_or_else(|_| "127.0.0.1:3210".into());
     let l = tokio::net::TcpListener::bind(&addr).await.expect("bind");
@@ -415,7 +470,7 @@ mod tests {
     }
     #[tokio::test]
     async fn founder_routes_need_bearer() {
-        for path in ["/founder/v1/me", "/founder/v1/bridge", "/founder/v1/settings", "/founder/v1/finance/polar", "/founder/v1/actions", "/founder/v1/audit", "/founder/v1/hostguard", "/founder/v1/live"] {
+        for path in ["/founder/v1/me", "/founder/v1/bridge", "/founder/v1/settings", "/founder/v1/finance/polar", "/founder/v1/actions", "/founder/v1/audit", "/founder/v1/hostguard", "/founder/v1/live", "/founder/v1/live/stream"] {
             let r = app(st_with_sb()).oneshot(Request::get(path).body(Body::empty()).unwrap()).await.unwrap();
             assert_eq!(r.status(), 401, "{path}");
             let r = app(st_with_sb()).oneshot(Request::get(path).header("authorization", "Bearer a.b.c").body(Body::empty()).unwrap()).await.unwrap();
