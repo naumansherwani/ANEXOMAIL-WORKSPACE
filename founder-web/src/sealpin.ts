@@ -43,10 +43,14 @@ export function judgePin(pin: Seal | null, current: Seal | null, pinnedNow: Seal
  * it proves the new ledger contains the old one unchanged. ext = "ok" (kernel accepted) | "bad" (kernel refused) | "na" (route/proof unavailable).
  * A refused proof is always a rewrite. An accepted proof also settles a seal we could not re-ask ("unchecked"). "na" changes nothing.
  */
-export function withExtension(v: PinVerdict, ext: "ok" | "bad" | "na", pin: Seal | null, current: Seal | null): PinVerdict {
+export function withExtension(v: PinVerdict, ext: "ok" | "bad" | "na" | "absent", pin: Seal | null, current: Seal | null): PinVerdict {
   if (ext === "bad") return { state: "rewritten", text: `the ledger now at seal #${current?.id ?? "?"} does not extend seal #${pin?.id ?? "?"} that this browser remembered (consistency proof refused): history was rewritten` };
   if (ext === "ok" && (v.state === "advanced" || v.state === "unchecked") && pin && current)
     return { state: "advanced", text: `seal #${pin.id} still holds and the kernel proved the ledger up to entry ${current.upto_seq} extends it unchanged (RFC 9162)` };
+  // "na" = the proof route exists but gave no usable answer, or the kernel could not run: the server moved ahead WITHOUT a proof, so the remembered seal
+  // is NOT moved forward (a forked server must not be able to skip the very check it should pass). "absent" = E121 is not installed yet: old behaviour.
+  if (ext === "na" && v.state === "advanced" && pin && current)
+    return { state: "unchecked", text: `seal #${pin.id} still matches, but no consistency proof could be checked just now, so the remembered seal was not moved` };
   return v;
 }
 

@@ -64,11 +64,12 @@ export function merkleVerify(row: string, path: string, root: string): Promise<b
 }
 
 /** G5a: is the ledger of `second` entries (root `sr`) an extension of the ledger of `first` entries (root `fr`)? RFC 9162 proof, checked by the kernel (merkle@2). Any failure = false. */
-export function consistencyVerify(first: number, second: number, fr: string, sr: string, proof: string[]): Promise<boolean> {
+export function consistencyVerify(first: number, second: number, fr: string, sr: string, proof: string[]): Promise<boolean | null> {
   return new Promise((resolve) => {
     if (!Number.isSafeInteger(first) || !Number.isSafeInteger(second) || first < 1 || second < first || second > 0xffffffff) { resolve(false); return; }
     const id = ++seq;
-    waiting.set(id, (m) => resolve(m.code === 0 && m.data === "1"));
+    // true = the kernel accepted; false = the kernel REFUSED the proof; null = the kernel could not run at all (never reported as a refusal)
+    waiting.set(id, (m) => resolve(m.code === 100 ? null : m.code === 0 && m.data === "1"));
     w().postMessage({ id, consistency: { first, second, fr, sr, proof: proof.join(",") } });
   });
 }

@@ -68,3 +68,22 @@ test("merkle_consistency_verify in the real wasm agrees with the independent Pyt
   expect(call(0, 5, "00".repeat(32), "00".repeat(32), [])).toBe(0);
   expect(call(5, 4, "00".repeat(32), "00".repeat(32), [])).toBe(0);
 });
+
+test("merkle_consistency_verify in the real wasm: forged old root with a power-of-two old size, and edge forms of the proof text", async () => {
+  const { instance } = await WebAssembly.instantiate(bytes, { env: { host_wake() {}, host_call() {}, host_emit() {} } });
+  const ex = instance.exports as any;
+  const put = (t: string) => { const b = new TextEncoder().encode(t), p = ex.kernel_alloc(Math.max(b.length, 1)); new Uint8Array(ex.memory.buffer, p, b.length).set(b); return [p, b.length] as const; };
+  const call = (m: number, n: number, fr: string, sr: string, proofText: string) => ex.merkle_consistency_verify(m, n, ...put(fr), ...put(sr), ...put(proofText));
+  const vec = JSON.parse(readFileSync("../server/rust/consistency_vectors.json", "utf8"));
+  const c = vec.cases.find((x: any) => x.m === 4 && x.n === 7);
+  expect(call(4, 7, c.first_root, c.second_root, c.proof.join(","))).toBe(1);
+  for (const forged of c.proof) expect(call(4, 7, forged, c.second_root, c.proof.join(","))).toBe(0);   // a node taken from the proof passed off as the old root
+  const p = c.proof.join(",");
+  expect(call(4, 7, c.first_root, c.second_root, p + "\n")).toBe(0);
+  expect(call(4, 7, c.first_root, c.second_root, "0x" + p)).toBe(0);
+  expect(call(4, 7, c.first_root, c.second_root, "," + p)).toBe(0);
+  expect(call(4, 7, c.first_root, c.second_root, Array(65).fill("11".repeat(32)).join(","))).toBe(0);  // 65 hashes: parsed, then refused
+  expect(call(4, 7, c.first_root, c.second_root, Array(66).fill("11".repeat(32)).join(","))).toBe(0);  // 66 hashes: refused by the parser
+  // Huge sizes: only "no panic" is promised. A root does not commit to its size, so SIZES are bound by the signed seal (G5b), never by this check alone.
+  expect([0, 1]).toContain(call(2 ** 31, 2 ** 32 - 1, c.first_root, c.second_root, p));
+});

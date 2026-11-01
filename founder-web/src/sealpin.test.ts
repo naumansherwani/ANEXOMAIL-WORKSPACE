@@ -77,8 +77,24 @@ test("a kernel-checked consistency proof upgrades or overrules the seal comparis
   expect(withExtension(unc, "ok", pin, cur).state).toBe("advanced");           // the proof settles a seal that could not be re-asked
   expect(withExtension(adv, "bad", pin, cur).state).toBe("rewritten");         // a refused proof beats a matching-looking seal
   expect(withExtension(unc, "bad", pin, cur).state).toBe("rewritten");
-  expect(withExtension(adv, "na", pin, cur)).toEqual(adv);                      // route missing: nothing changes
+  expect(withExtension(adv, "absent", pin, cur)).toEqual(adv);                  // E121 not installed: the old comparison stays
   expect(withExtension(same1, "ok", seal(4), seal(4))).toEqual(same1);
   const rb = judgePin(seal(5), seal(3), null);
   expect(withExtension(rb, "ok", seal(5), seal(3)).state).toBe("rollback");     // a proof can never rescue a rollback
+});
+
+test("a server that moved ahead but gives NO usable proof can never move the remembered seal forward", () => {
+  const pin = seal(2), cur = seal(4), adv = judgePin(pin, cur, seal(2));
+  const na = withExtension(adv, "na", pin, cur);
+  expect(na.state).toBe("unchecked");
+  expect(shouldAdvancePin(na)).toBe(false);
+  expect(shouldAdvancePin(withExtension(adv, "ok", pin, cur))).toBe(true);
+  expect(shouldAdvancePin(withExtension(adv, "absent", pin, cur))).toBe(true);
+  expect(shouldAdvancePin(withExtension(adv, "bad", pin, cur))).toBe(false);
+  expect(withExtension(judgePin(pin, cur, "error"), "na", pin, cur).state).toBe("unchecked");   // stays unchecked
+  const rb = judgePin(seal(5), seal(3), null);
+  expect(withExtension(rb, "na", seal(5), seal(3))).toEqual(rb);
+  expect(withExtension(rb, "ok", seal(5), seal(3)).state).toBe("rollback");
+  const rw = judgePin(seal(2), seal(2, h("c")), null);
+  expect(withExtension(rw, "ok", seal(2), seal(2, h("c"))).state).toBe("rewritten");
 });

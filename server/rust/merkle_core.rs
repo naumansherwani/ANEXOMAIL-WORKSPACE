@@ -396,6 +396,33 @@ mod tests {
         for (m, n) in [(u64::MAX, u64::MAX), (1, u64::MAX), (u64::MAX - 1, u64::MAX), (0, 0)] { let _ = verify_consistency(m, n, &z, &z, &[z; 3]); }
     }
     #[test]
+    fn power_of_two_old_size_with_a_forged_old_root_and_text_edge_forms_are_refused() {
+        let l = leaves_of(7);
+        let (rm, rn) = (mth(&l[..4]), mth(&l));
+        let pr = consistency_proof(&l, 4, 7).unwrap();
+        assert!(verify_consistency(4, 7, &rm, &rn, &pr));
+        for forged in &pr { assert!(!verify_consistency(4, 7, forged, &rn, &pr), "a proof node passed off as the old root"); }
+        let txt = pr.iter().map(to_hex).collect::<Vec<_>>().join(",");
+        let (a, b) = (to_hex(&rm), to_hex(&rn));
+        assert!(verify_consistency_text(4, 7, &a, &b, &txt));
+        for bad in [format!("{txt}\n"), format!("0x{txt}"), format!(",{txt}"), format!("{txt},,"), txt.to_uppercase()] { assert!(!verify_consistency_text(4, 7, &a, &b, &bad), "{bad}"); }
+        let h = to_hex(&[0x11u8; 32]);
+        assert!(!verify_consistency_text(4, 7, &a, &b, &vec![h.as_str(); 65].join(",")), "65 hashes parse, then are refused");
+        assert!(!verify_consistency_text(4, 7, &a, &b, &vec![h.as_str(); 66].join(",")), "66 hashes refused by the parser");
+        let _ = verify_consistency(1 << 62, (1u64 << 63) - 1, &rm, &rn, &pr); // huge sizes: only 'no panic' is promised; sizes are bound by the signed seal, not by the roots
+    }
+    #[test]
+    fn larger_trees_also_verify_with_real_proofs() {
+        let l = leaves_of(700);
+        for (m, n) in [(1usize, 700usize), (255, 256), (256, 257), (300, 700), (512, 700), (699, 700), (350, 351), (1, 2), (129, 700)] {
+            let (rm, rn) = (mth(&l[..m]), mth(&l[..n]));
+            let pr = consistency_proof(&l, m, n).unwrap();
+            assert!(verify_consistency(m as u64, n as u64, &rm, &rn, &pr), "m={m} n={n}");
+            let mut bad = pr.clone(); let i = pr.len() / 2; bad[i][5] ^= 0x10;
+            assert!(!verify_consistency(m as u64, n as u64, &rm, &rn, &bad), "flip m={m} n={n}");
+        }
+    }
+    #[test]
     fn text_form_is_strict() {
         let l = leaves_of(9);
         let (rm, rn) = (to_hex(&mth(&l[..5])), to_hex(&mth(&l[..9])));

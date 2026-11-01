@@ -28,7 +28,10 @@ Order inside G5: **G5-0** research (finish reading the specs above) -> **G5a** -
 - Until G5c is green and shows a real k-of-n count, the gauge must say "not witnessed". No page says "tamper-proof".
 - Nothing here protects mail content; it protects the audit history.
 
-## Founder decision G5-D (needed before G5c, not before G5a/G5b)
+## Founder decision G5-D: DECIDED 2 Nov 04:00 = NO outside accounts, no signups by the founder ("main nahi karunga aur nahi ho sakta"). The text below is kept only as history.
+**New G5c (needs nothing from him):** the server itself sends each seal root to account-free time anchors (OpenTimestamps public calendars, an RFC 3161 free time authority). The gauge may say "time-anchored by ..." only for a real receipt it holds; it never says "witnessed". True third-party cosigning stays out unless he reopens it.
+
+## (history) Founder decision G5-D (needed before G5c, not before G5a/G5b)
 Which independent witnesses? Candidates, in order of my recommendation: (1) join existing public witnesses of the C2SP/Sigsum ecosystem (no cost, real independence; availability and admission to be read in G5-0), (2) one witness we run on a different provider and different account, (3) a time anchor via OpenTimestamps (Bitcoin) or an RFC 3161 authority. Any paid account or outside signup is the founder's action (I cannot create accounts).
 
 ## Review gate (the founder's "review kero jab tak super advance na ho")
@@ -50,3 +53,6 @@ A part is NOT done until all of these are shown, in this order:
 | G5b, G5c, G5d | | all of it |
 
 **Design fact found while testing (written so it is never forgotten):** a Merkle root does not commit to its own tree size. Verifying a proof "for size n+1" against the root of size n can pass when the proof's last element is the leaf hash. So the SIZES must be bound by something signed: the E107 seal already hashes `(id, upto_seq, leaves, root, head_hash)` into `cp_hash`, and G5b signs that as a C2SP checkpoint. The consistency check is only ever used together with a seal/checkpoint that fixes the size.
+
+## Reviewer result (2 Nov 04:05) and fixes
+Independent reviewer: Rust verifier matches RFC 9162 step by step, no accepted false proof found, privileges correct. Findings fixed: (1) MEDIUM fail-open "na": a server that moved ahead without a usable proof can no longer move the remembered seal forward (`withExtension` returns unchecked, test added); (2) a kernel/worker failure is no longer reported as "history rewritten" (`consistencyVerify` returns null); (3) SQL verifier returns false for NULL inputs, seal lookups are deterministic; test gaps added (65/66 hashes, forged power-of-two old root, text edge forms, trees up to 700 leaves, NULL/66-element SQL cases). **Still true:** no literal RFC test vectors exist in the repo and the reference was written by the same author; G5-0 must find published vectors (e.g. from a transparency-log reference implementation).

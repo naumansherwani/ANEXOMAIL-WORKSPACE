@@ -50,7 +50,8 @@ create or replace function public._fm_consistency_check(p_first bigint, p_second
 language plpgsql immutable set search_path = pg_catalog, public, extensions as $$
 declare p bytea[] := array[]::bytea[]; x jsonb; fr bytea; sr bytea; fnn bigint; sn bigint; c bytea; i integer; v_fr bytea; v_sr bytea;
 begin
-  if p_first is null or p_second is null or p_first < 1 or p_first > p_second then return false; end if;
+  if p_first is null or p_second is null or p_first_root is null or p_second_root is null or p_proof is null then return false; end if;   -- NULL is never an answer
+  if p_first < 1 or p_first > p_second then return false; end if;
   if p_first_root !~ '^[0-9a-f]{64}$' or p_second_root !~ '^[0-9a-f]{64}$' then return false; end if;
   if jsonb_typeof(p_proof) <> 'array' or jsonb_array_length(p_proof) > 65 then return false; end if;
   fr := decode(p_first_root, 'hex'); sr := decode(p_second_root, 'hex');
@@ -100,8 +101,9 @@ begin
     raise exception 'E121: 1 <= first <= second <= head (%) hona chahiye', v_head using errcode = '22023'; end if;
   if p_second > v_max then raise exception 'E121: second % policy ke max_leaves % se bara', p_second, v_max using errcode = '22023'; end if;
   v_out := public._fm_consistency_from_leaves(public._fm_leaves(p_second), p_first::integer, p_second::integer);
-  select jsonb_build_object('id', id, 'cp_hash', cp_hash, 'root', root) into v_a from public.founder_audit_checkpoints where upto_seq = p_first;
-  select jsonb_build_object('id', id, 'cp_hash', cp_hash, 'root', root) into v_b from public.founder_audit_checkpoints where upto_seq = p_second;
+  select jsonb_build_object('id', id, 'cp_hash', cp_hash, 'root', root) into v_a from public.founder_audit_checkpoints where upto_seq = p_first order by id desc limit 1;
+  select jsonb_build_object('id', id, 'cp_hash', cp_hash, 'root', root) into v_b from public.founder_audit_checkpoints where upto_seq = p_second order by id desc limit 1;
+  -- the seal's stored root is NOT compared here: the caller (the browser, from the signed seal) compares it to first_root; the selftest checks they agree
   return v_out || jsonb_build_object('head', v_head, 'first_seal', v_a, 'second_seal', v_b,
                                      'rule', 'RFC 9162 2.1.4; leaf=sha256(00||row_hash) node=sha256(01||left||right)');
 end $$;
@@ -146,6 +148,12 @@ begin
     if public._fm_consistency_check(1, 2, 'XYZ', repeat('a', 64), '[]'::jsonb) or public._fm_consistency_check(1, 2, repeat('a', 64), repeat('a', 64), '"x"'::jsonb)
        or public._fm_consistency_check(1, 2, repeat('a', 64), repeat('a', 64), jsonb_build_array(5)) or public._fm_consistency_check(1, 2, repeat('A', 64), repeat('a', 64), '[]'::jsonb) then
       raise exception 'malformed input accepted'; end if;
+    if public._fm_consistency_check(3, 3, repeat('a', 64), repeat('a', 64), null) is not false or public._fm_consistency_check(1, 2, null, repeat('a', 64), '[]'::jsonb) is not false
+       or public._fm_consistency_check(1, 2, repeat('a', 64), null, '[]'::jsonb) is not false or public._fm_consistency_check(null, 2, repeat('a', 64), repeat('a', 64), '[]'::jsonb) is not false then
+      raise exception 'NULL input did not give false'; end if;
+    if public._fm_consistency_check(2, 9, repeat('a', 64), repeat('b', 64), (select jsonb_agg(repeat('1', 64)) from generate_series(1, 66))) then raise exception '66 hashes accepted'; end if;
+    if public._fm_consistency_check(2, 9, repeat('a', 64), repeat('b', 64), jsonb_build_array(repeat('1', 64), null)) then raise exception 'a NULL proof element accepted'; end if;
+    if public._fm_consistency_check(4611686018427387904, 9223372036854775807, repeat('a', 64), repeat('b', 64), jsonb_build_array(repeat('1', 64), repeat('2', 64))) then raise exception 'huge sizes accepted'; end if;
     r := r || 'validation OK; ';
     -- 4) the REAL ledger door: grow it, seal in the middle, prove old -> new, SQL verifier accepts, roots equal the E107 roots, seals are named
     for i in 1 .. 6 loop perform public.founder_audit_append(v_uid, 'g5a.selftest', 'row-' || i, 'selftest entry number ' || i, '{}'::jsonb); end loop;

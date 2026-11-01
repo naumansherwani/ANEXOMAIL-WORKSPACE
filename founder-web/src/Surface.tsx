@@ -120,10 +120,14 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
       // G5a: the server moved ahead: ask for ONE RFC 9162 consistency proof pin -> now and let the WASM kernel (merkle@2) check it against the roots
       // THIS browser holds (the pinned root and the current seal root); the server only supplies the proof hashes. Route missing = nothing changes.
       if (pin && mkSeal && mkSeal.id > pin.id && mkSeal.upto_seq > pin.upto_seq && v.state !== "rewritten" && v.state !== "rollback") {
-        let ext: "ok" | "bad" | "na" = "na";
+        let ext: "ok" | "bad" | "na" | "absent" = "na";
         try {
           const c = (await get(`/founder/v1/audit/consistency?first=${pin.upto_seq}&second=${mkSeal.upto_seq}`)).data;
-          if (Array.isArray(c?.proof) && c.proof.every((x: unknown) => typeof x === "string")) ext = (await consistencyVerify(pin.upto_seq, mkSeal.upto_seq, pin.root, mkSeal.root, c.proof)) ? "ok" : "bad";
+          if (c?.connected === false) ext = "absent";                                    // E121 not installed on this server: the old seal comparison stays
+          else if (Array.isArray(c?.proof) && c.proof.length <= 65 && c.proof.every((x: unknown) => typeof x === "string")) {
+            const r = await consistencyVerify(pin.upto_seq, mkSeal.upto_seq, pin.root, mkSeal.root, c.proof);
+            ext = r === true ? "ok" : r === false ? "bad" : "na";                          // null = kernel could not run: NOT a tamper alarm
+          }
         } catch { ext = "na"; }
         v = withExtension(v, ext, pin, mkSeal);
       }
