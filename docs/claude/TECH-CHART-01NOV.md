@@ -16,3 +16,5 @@
 | Merkle audit ledger (E107) | RFC 6962-style; kernel 0.6.0 `merkle@1` | n/a | GREEN | step 5 done |
 
 Honest answer to "tumhay ati hai kya": yes, Rust + tokio + wtransport + quinn are written here already (awam `wtrpc`). The website's WebTransport was NOT rewritten; it is old (0.1.14) and works.
+
+FOUNDER DECISION 1 Nov 10:04: MoQ is built by us (own Rust relay on wtransport), no Cloudflare relay/API. Service = systemd, never pm2/Bun. Not started; comes after ANEXOChat core.

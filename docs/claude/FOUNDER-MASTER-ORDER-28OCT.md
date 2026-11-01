@@ -14,7 +14,7 @@ UI system (tokens, shell, Trust, mobile/tablet): docs/claude/FOUNDER-UI-DESIGN-2
 | 4 | **F2b** WASM kernel verify in the browser (pins the public key, SRI, enforce) | next build |
 | 5 | **F2c** audit v1 + Merkle (E107) | **SQL E107 GREEN on server (1 Nov 08:33)**; 5R Rust (`server/rust/merkle_core.rs`, `ledger.rs`, routes, auto-seal) + 5a UI card **GREEN on server + Chrome 1 Nov 09:00**; 5K kernel `merkle@1` (0.6.0) **GREEN on server + Chrome 1 Nov 09:35** (step 5 COMPLETE) |
 | 5a | **I1 Ledger Integrity Gauge** (+ Dashboard item in Command center) — FOUNDER-KILLER-FEATURES | after 5 |
-| 6 | **S2** Settings: Time machine + Drift & schedule | after 5 |
+| 6 | **S2** Settings: Time machine + Drift & schedule | after 5 — SQL E113 written 1 Nov 10:30 (local 14/14, 976 lines); server sql-run pending, then Rust (`settings_s2.rs`) + UI |
 | 7 | **F2d** passkey proof for G3 (then FOUNDER_PASSWORD path removed) + **S3** Privacy | after 6 |
 | 7a | **WebTransport / QUIC (`wtransport`)** founder live channel, replaces polling (own UDP listener + cert wiring, not awam's udp/3443); per `FOUNDER-TECHNOLOGY-ADOPTION-30OCT.md` | after 7 |
 | 7b | **Session & transport hardening (research 1 Nov, FOUNDER-TECHNOLOGY-ADOPTION-30OCT.md)**: DBSC (hardware-bound session, Chrome 146 Windows) + post-quantum hybrid TLS check on Caddy + founder splash lines (only true ones) | with 7 / 7a |
@@ -77,3 +77,7 @@ Bridge vs Dashboard (which tile lives where, CEO view): docs/claude/FOUNDER-BRID
 ## ADMIN = awam ke maslon ka ghar (founder 1 Nov 09:36, locked)
 "Jo awam se mera promise hai aur jin ki waja se founder account mein awam ke maslay solve hone hain, woh sab founder ke ADMIN mein hone hain. Founder ka apna sab kuch (Mail, Calendar, Settings, Profile ...) PERSONAL alag. Awam side ke saray maslay Admin ke andar solve honge aur wahan ADMIN ka apna UI/UX banega." (promises: `docs/cursor-work/PROMISES.md`.)
 => Systems > **Admin** (step 12) = awam ke maslay: support replies, glitch/inbox (E112), appeals/abuse, billing/Polar issues, move-in, org kill-switch/impersonate (G3), storage, health/incidents; apna alag Admin UI/UX (queues, SLA, per-issue actions). Founder personal pages Admin se alag rahenge. Step 12 ke design note mein yeh pehla sawal.
+
+
+## MoQ = OUR OWN relay (founder 1 Nov 10:04: "i hate cloudflare, hum MoQ khud karay gay")
+No Cloudflare relay or API anywhere in ANEXOChat. MoQ, when its turn comes (after ANEXOChat core, one pinned draft: `draft-ietf-moq-transport-22` as of 1 Oct 2026, no RFC yet), is a Rust relay we write and run ourselves on `wtransport`/QUIC, systemd service, no pm2, no Bun. Until then nothing is installed for MoQ and nothing is claimed. Interop with other relays is not a goal; if drafts change we change our one pin.

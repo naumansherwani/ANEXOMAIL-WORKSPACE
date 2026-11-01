@@ -254,3 +254,10 @@ FOUNDER ke liye aaj sirf #1 aur #2. Step 5 (Merkle): SQL E107 DONE (green); Rust
 ## 1 Nov 09:50 PKT — N menu (Audit ledger hata, email poora). Pull: sirf founder-install.sh. (Optional read-only TLS check: openssl s_client line in FOUNDER-TECHNOLOGY-ADOPTION-30OCT.md)
 
 ## 1 Nov 10:00 — no new pull. This turn is docs only. Day-to-day remain sql-run.sh and founder-install.sh. pull.sh stays BANNED.
+
+
+## 1 Nov 10:30 — E113 (step 6 SQL: Time machine, Drift, Scheduled changes). Technology: SQL only. Run:
+```
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E113_founder_settings_timemachine CHECK_E113 2>&1 | tail -25
+```
+Expect: selftest OK, selftest2 OK, crosscheck OK, 14 rows all `t`. No restart, no pm2, no Bun.

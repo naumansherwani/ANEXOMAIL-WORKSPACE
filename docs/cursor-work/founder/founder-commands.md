@@ -1996,3 +1996,9 @@ DONE: N menu Chrome-verified GREEN (no Audit ledger, 348px, full email). Chart -
 
 ## 1 Nov 10:00 PKT — founder: "attachment (3d0474f7) ko read kar lete, masla solve tha"
 Attachment = the 09:51 paste (AI MoQ/wtransport/Caddy text + openssl output + founder-install OK). Already covered in TECH-CHART-01NOV.md. Not adopted from it: "Meta relay" (unverified), PM2 for a new service (founder side is systemd/Rust only; Bun/pm2 BANNED), cloning moq-rs onto the server now (no order; MoQ is a draft, planned after ANEXOChat core).
+
+## 1 Nov 10:04 PKT — founder (verbatim)
+(pasted openssl TLS 1.3 output again) + "repo main ja ke rules read kero; jab bola karun ke pura repo read kero toh pura read kero repo. haan hai lekin advance level codes ke saath." + my "not adopted" list: ""Meta relay" verify nahi -> yeh sab kerna hai"; ""Production-ready" MoQ draft-22... Cloudflare relay tech preview ( i hate cloudfare hum MoQ khud karay gay.""; PM2 banned, systemd; moq-rs clone abhi nahi; Caddy L4 tab jab 7a ho.
+MEANING: (a) "haan" = step 6 (S2 Time machine + Drift & schedule) start, advance-level. (b) MoQ = OUR OWN Rust relay, NO Cloudflare dependency. (c) "pura repo read" = full read before building.
+
+DONE (10:30): STEP 6 SQL = docs/cursor-work/sql/E113_founder_settings_timemachine.sql (976 lines) + CHECK_E113.sql (14 checks). Local Postgres: selftest OK (undo, replay+tamper detect, point-in-time, diff, drift incl. live ledger policy, schedule apply/auto-rollback/confirm/superseded/limits), selftest2 OK, crosscheck OK, 14/14, rerun safe. MoQ = our own relay (no Cloudflare) recorded in master order, tech chart, ANEXOChat block. Next after server green: Rust settings_s2.rs + UI tabs (Time machine, Drift & schedule).

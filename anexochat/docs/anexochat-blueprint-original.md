@@ -6,7 +6,7 @@
 > | Layer | Technology | Why for chat | Status |
 > |---|---|---|---|
 > | Realtime push | WebTransport over QUIC (Rust `wtransport`, UDP 3443) | messages, typing, presence without TCP head-of-line blocking | awam LIVE (0.1.14, old); upgrade to 0.7.x later |
-> | Channels / live rooms / broadcast (one-to-many) | MoQ (Media over QUIC), `draft-ietf-moq-transport-22`, pinned to ONE draft, behind a flag | fan-out to thousands (Telegram-channel style, live rooms) | PLANNED; still a draft, no RFC, so fallback = WebTransport/WebSocket |
+> | Channels / live rooms / broadcast (one-to-many) | MoQ (Media over QUIC), `draft-ietf-moq-transport-22`, pinned to ONE draft, behind a flag | fan-out to thousands (Telegram-channel style, live rooms) | PLANNED; OUR OWN Rust relay (founder 1 Nov: no Cloudflare), still a draft, no RFC, so fallback = WebTransport/WebSocket |
 > | 1:1 and group calls | WebRTC + TURN (`anexovideochat-turn.md`) | MoQ is not the right fit for 2-way calling | unchanged |
 > | Attachments | A1-A4 common file engine (resumable chunks, A3 over WebTransport) | WhatsApp-class big files | PLANNED, master order 11b/11c |
 > | Verification in browser | Rule-52 WASM kernel (Ed25519, HMAC, Merkle `merkle@1`) | tamper-proof message/audit proofs | founder GREEN; awam pin 0.6.0 pending pull |
