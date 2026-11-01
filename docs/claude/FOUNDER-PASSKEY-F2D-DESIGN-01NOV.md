@@ -59,3 +59,20 @@ See `docs/claude/AWAM-MOBILE-LOGIN-COUNTRY-REQUIREMENT-01NOV.md`.
 
 ## D. Effect on the phases
 7-1 (E117) stays as is and is green. New order: **7-1b E118** (tiers, action-hash binding, AAGUID column, T3 delay table) → 7-2 Rust webauthn-rs → 7-3 UI → 7-4 enforce + remove `FOUNDER_PASSWORD` → 7-5 becomes "mobile backup flare + cancel channel" (no OTP, provider needed only for notifications).
+
+
+---
+# 7-0 DECIDED (founder 1 Nov 13:07 — the four section-C questions answered)
+| # | Question | Founder decision | What it means in code |
+|---|---|---|---|
+| 1 | Two FIDO2 hardware keys (one in the safe)? | **Yes, mandatory.** A single key is a single point of failure; the safe key is the break-glass. | T3 needs two DIFFERENT active hardware-class credentials. E118 stores `kind` (platform / hardware) + `aaguid` per credential. |
+| 2 | Hardware-only allow-list now or later? | **Hybrid.** Platform passkeys (Windows Hello / Secure Enclave) first; strict AAGUID allow-list on T2/T3 steps. | `founder_protocol.t2_hardware_only` starts **false** (T2 accepts platform), **T3 is always hardware + allow-listed**. The founder flips T2 to hardware-only with one T2 action. |
+| 3 | T3 = two keys + 10-minute delay + cancel window? | **Accepted as written.** | `founder_t3_requests`: first key starts it, the DB sets `ready_at >= created + 10 min` (cannot be shortened), the second key approves inside the window, any approved device can cancel. |
+| 4 | Mobile number? | **Register it for alert + cancel only.** Never authentication. | `founder_mobile_flare` (E.164, confirmed by an inbound reply in 7-5, not by an OTP). A mobile recovery needs a confirmed number AND a second proof (recovery code or hardware key). |
+Note on the adviser text the founder pasted: it mentions "Basic/Pro tier users". The founder protocol has no user tiers (one chairman); the T0-T3 tiers are tiers of ACTIONS. Allow-list entries are never typed from memory: the table starts empty and the founder trusts a model by approving the AAGUID his own key presents (T2, shown in the Privacy tab in 7-3) — no invented hardware IDs.
+
+## Phase order now
+**7-1b = E118 (this commit)** tiers, action-hash binding, hardware class + AAGUID allow-list, T3 two-key delay, mobile flare, recovery proof -> 7-2 Rust `webauthn-rs` (also computes the same canonical action hash; parity vectors) -> 7-3 UI -> 7-4 enforce on the real actions (settings retention / require_passkey, kill switch…), remove `FOUNDER_PASSWORD` -> 7-5 flare delivery + STOP-cancel channel -> 7b DBSC + PQ TLS.
+
+## Canonical action hash (SQL, Rust and the browser must agree byte for byte)
+`sha256( "anexo-action-v1\n" + action + "\n" + target + "\n" + nonce + "\n" + join("\n", sorted(key + "=" + value)) )`, keys sorted by byte order, **all param values are strings**, nonce 16-64 chars of `[A-Za-z0-9_-]`. The WebAuthn challenge of a T2/T3 assertion is this digest, so the key signs exactly the action shown.

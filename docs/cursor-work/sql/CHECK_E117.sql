@@ -8,22 +8,18 @@ select 'E117 6 tables maujood, RLS on, anon/authenticated ko access nahi, servic
 union all select 'E117 raaz (passkey body, recovery code hash, ceremony state) plain select se padhe nahi ja sakte',
        not has_column_privilege('service_role', 'public.founder_passkeys', 'passkey', 'select')
        and not has_table_privilege('service_role', 'public.founder_recovery_codes', 'select') and not has_table_privilege('service_role', 'public.founder_passkey_ceremonies', 'select'), 2
-union all select 'E117 15 doors maujood, anon/authenticated execute nahi, service_role ke liye khule',
-       (select bool_and(to_regprocedure(f) is not null and not has_function_privilege('anon', f, 'execute') and not has_function_privilege('authenticated', f, 'execute') and has_function_privilege('service_role', f, 'execute'))
-          from unnest(array['public.founder_passkey_ceremony_begin(uuid,text,jsonb)','public.founder_passkey_ceremony_take(uuid,uuid,text)','public.founder_stepup_issue(uuid,uuid,text,text)',
-            'public.founder_stepup_consume(uuid,uuid,uuid,text,text)','public.founder_passkey_add(uuid,uuid,text,jsonb,text,uuid)','public.founder_passkey_list(uuid)','public.founder_passkey_active(uuid)',
-            'public.founder_passkey_touch(uuid,text,jsonb,bigint)','public.founder_passkey_revoke(uuid,uuid,uuid,text,uuid)','public.founder_passkey_status(uuid)',
-            'public.founder_recovery_codes_generate(uuid,uuid,uuid)','public.founder_recovery_open(uuid,text,text)','public.founder_recovery_cancel(uuid,uuid,uuid,text)',
-            'public.founder_recovery_tick(timestamptz)','public.founder_recovery_complete(uuid,uuid,uuid)']) f), 3
+union all select 'E117 doors maujood, anon/authenticated execute nahi, service_role ke liye khule (E118 ne kuch signatures badal diye: naam se check)',
+       (select bool_and(exists (select 1 from pg_proc where pronamespace = 'public'::regnamespace and proname = f)
+                        and not exists (select 1 from pg_proc where pronamespace = 'public'::regnamespace and proname = f and (has_function_privilege('anon', oid, 'execute') or has_function_privilege('authenticated', oid, 'execute') or not has_function_privilege('service_role', oid, 'execute'))))
+          from unnest(array['founder_passkey_ceremony_begin','founder_passkey_ceremony_take','founder_stepup_issue','founder_stepup_consume','founder_passkey_add','founder_passkey_list','founder_passkey_active','founder_passkey_touch','founder_passkey_revoke','founder_passkey_status','founder_recovery_codes_generate','founder_recovery_open','founder_recovery_cancel','founder_recovery_tick','founder_recovery_complete']) f), 3
 union all select 'E117 database khud 24 ghante ki cooling-off bypass nahi hone deta: mobile recovery ke liye ready_at kam az kam created_at + 24h',
        exists (select 1 from pg_constraint where conname = 'founder_recovery_cooling' and conrelid = 'public.founder_recovery_requests'::regclass)
        and exists (select 1 from pg_indexes where indexname = 'founder_recovery_one_open_idx'), 4
 union all select 'E117 step-up grant ki hadd: 5 minute (recovery 10), ceremony 5 minute, passkey ki zyada se zyada 5',
        exists (select 1 from pg_constraint where conname = 'founder_stepup_window') and exists (select 1 from pg_constraint where conname = 'founder_ceremony_window')
-       and (select count(*) from pg_proc where proname = 'founder_passkey_add') = 1, 5
-union all select 'E117 behaviour selftest (ceremony single-use, pehli passkey, grant single-use/device/scope/expiry, max 5, counter + clone, recovery codes, wrong-code lockout, mobile 24h, cancel, expire) + selftest2',
-       coalesce((select public.founder_passkey_selftest() like 'E117 selftest OK%' or public.founder_passkey_selftest() like 'E117 selftest SKIP%'), false)
-       and coalesce((select public.founder_passkey_selftest2() like 'E117 selftest2 OK%'), false), 6
+       and (select count(*) from pg_proc where proname = 'founder_passkey_add') >= 1, 5
+union all select 'E117 behaviour selftest ab E118 mein hai (action-bound grants ke saath); yahan sirf recovery cooling constraint ka wajood',
+       exists (select 1 from pg_constraint where conname = 'founder_recovery_cooling'), 6
 union all select 'E117 purane selftests ab bhi green (E113, E115, E116), audit chain saaf, history replay == live table',
        coalesce((select public.founder_settings_s2_selftest() like 'E113 selftest OK%' or public.founder_settings_s2_selftest() like 'E113 selftest SKIP%'), false)
        and coalesce((select public.founder_settings_s1c_selftest() like 'E115 selftest OK%' or public.founder_settings_s1c_selftest() like 'E115 selftest SKIP%'), false)
