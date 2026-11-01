@@ -181,3 +181,6 @@ Step 6 SQL ready (E113, local 14/14). NOT yet run on the server. Founder runs th
 
 ## UPDATE 1 Nov 10:20 PKT
 Settings Center decision doc added (7 awam tabs mapped, S1b/E114 added after step 6). Server action pending is still only E113 (sql-run command in PULL-COMMANDS.md).
+
+## UPDATE 1 Nov 10:30 PKT
+E113 first server run FAILED at crosscheck (my bug, fixed, 981 lines). Rerun the same sql-run command; paste output.

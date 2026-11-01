@@ -11,7 +11,7 @@ union all select 'E113 RPC maujood, anon/authenticated execute nahi, service_rol
                             'public.founder_settings_drift(uuid)','public.founder_setting_explain(text)','public.founder_setting_blast(uuid,text)',
                             'public.founder_settings_schedule_create(uuid,text,jsonb,timestamptz,integer,text)','public.founder_settings_schedule_cancel(uuid,uuid,text)',
                             'public.founder_settings_schedule_confirm(uuid,uuid,text)','public.founder_settings_schedule_tick(timestamptz)','public.founder_settings_schedule_preview(timestamptz)',
-                            'public.founder_settings_schedule_list(uuid,integer)','public.founder_settings_pulse(uuid)','public.founder_settings_crosscheck()']) f), 2
+                            'public.founder_settings_schedule_list(uuid,integer)','public.founder_settings_pulse(uuid)','public.founder_settings_crosscheck(uuid)']) f), 2
 union all select 'E113 revert log + schedule triggers chalu (append-only / state machine)',
        (select count(*) from pg_trigger where tgrelid = to_regclass('public.founder_settings_revert_log') and tgname in ('founder_settings_revert_log_no_upd','founder_settings_revert_log_no_trunc')) = 2
        and (select count(*) from pg_trigger where tgrelid = to_regclass('public.founder_settings_schedule') and tgname in ('founder_settings_schedule_guard','founder_settings_schedule_no_trunc')) = 2, 3
@@ -30,10 +30,10 @@ union all select 'E113 behaviour selftest (undo, replay, time travel, drift, sch
        coalesce((select public.founder_settings_s2_selftest() like 'E113 selftest OK%' or public.founder_settings_s2_selftest() like 'E113 selftest SKIP%'), false), 8
 union all select 'E113 selftest2 (privileges, hygiene, coverage)', coalesce((select public.founder_settings_s2_selftest2() like 'E113 selftest2 OK%'), false), 9
 union all select 'E113 crosscheck: history replay == live settings (second derivation)', public.founder_settings_crosscheck() like 'E113 crosscheck OK%', 10
-union all select 'E113 asli founder par history replay == live table (null = saaf)',
-       coalesce((select public.founder_settings_replay_check(user_id) is null from public.founder_accounts order by user_id limit 1), true), 11
+union all select 'E113 har founder par history replay == live table (null = saaf)',
+       coalesce((select bool_and(public.founder_settings_replay_check(user_id) is null) from public.founder_accounts), true), 11
 union all select 'E113 asli founder par drift score 0..100 deta hai',
-       coalesce((select (public.founder_settings_drift(user_id) ->> 'score')::integer between 0 and 100 from public.founder_accounts order by user_id limit 1), true), 12
+       coalesce((select bool_and((public.founder_settings_drift(user_id) ->> 'score')::integer between 0 and 100) from public.founder_accounts), true), 12
 union all select 'E113 live source settings_history register', exists (select 1 from public.founder_live_sources where key = 'settings_history'), 13
 union all select 'E113 audit chain saaf (E102)', public.founder_audit_verify(1) is null, 14
 ) t order by ord;

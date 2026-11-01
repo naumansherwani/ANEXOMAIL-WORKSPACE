@@ -636,22 +636,27 @@ begin
 end $$;
 
 -- ==============================================================================================================================
--- 10) cross-check: replay must also agree with a second, independent derivation (latest history row per key via window function)
+-- 10) cross-check: replay must also agree with a second, independent derivation (latest history row per key via window function).
+--     p_uid null = every founder account (diagnostic on real data); p_uid given = just that founder (what the selftest uses).
+--     The comparison is scoped to ONE founder at a time: another founder's rows must never count against this one.
 -- ==============================================================================================================================
-create or replace function public.founder_settings_crosscheck() returns text language plpgsql stable security definer
+drop function if exists public.founder_settings_crosscheck();
+create or replace function public.founder_settings_crosscheck(p_uid uuid default null) returns text language plpgsql stable security definer
 set search_path = pg_catalog, public, extensions set statement_timeout = '20s' as $$
-declare u uuid; bad integer := 0; n integer := 0;
+declare u uuid; n integer := 0; v_bad text; v_msg text := '';
 begin
-  for u in select user_id from public.founder_accounts loop
+  for u in select user_id from public.founder_accounts where p_uid is null or user_id = p_uid order by user_id loop
     n := n + 1;
     with w as (select key, new_value, new_hash, row_number() over (partition by key order by id desc) rn from public.founder_settings_history where user_id = u),
-         latest as (select key, new_value, new_hash from w where rn = 1 and new_hash is not null)
-    select count(*) into bad from (
-      select l.key from latest l full join public.founder_settings s on s.user_id = u and s.key = l.key
-       where (l.key is null) or (s.key is null) or (l.key <> 'personal.avatar' and l.new_value is distinct from s.value)
-          or (l.key = 'personal.avatar' and l.new_hash is distinct from public._fs_hash(s.value))) x;
-    if bad > 0 then return 'E113 crosscheck FAIL: ' || bad || ' key(s) differ for one founder'; end if;
+         latest as (select key, new_value, new_hash from w where rn = 1 and new_hash is not null),
+         live as (select key, value from public.founder_settings where user_id = u)
+    select string_agg(coalesce(l.key, s.key), ',' order by coalesce(l.key, s.key)) into v_bad
+      from latest l full join live s on s.key = l.key
+     where (l.key is null) or (s.key is null) or (l.key <> 'personal.avatar' and l.new_value is distinct from s.value)
+        or (l.key = 'personal.avatar' and l.new_hash is distinct from public._fs_hash(s.value));
+    if v_bad is not null then v_msg := v_msg || left(u::text, 8) || ': ' || v_bad || '; '; end if;
   end loop;
+  if v_msg <> '' then return 'E113 crosscheck FAIL: ' || v_msg; end if;
   return 'E113 crosscheck OK (' || n || ' founder account(s))';
 end $$;
 
@@ -748,7 +753,7 @@ begin
 
     -- replay must equal live; tamper must be caught
     if public.founder_settings_replay_check(u) is not null then raise exception 'replay check dirty: %', public.founder_settings_replay_check(u); end if;
-    if public.founder_settings_crosscheck() not like 'E113 crosscheck OK%' then raise exception 'crosscheck: %', public.founder_settings_crosscheck(); end if;
+    if public.founder_settings_crosscheck(u) not like 'E113 crosscheck OK%' then raise exception 'crosscheck: %', public.founder_settings_crosscheck(u); end if;
     update public.founder_settings set value = to_jsonb(false) where user_id = u and key = 'appearance.graphics';   -- bypasses the door on purpose
     if public.founder_settings_replay_check(u) is null then raise exception 'replay check missed a tampered value'; end if;
     update public.founder_settings set value = to_jsonb(true) where user_id = u and key = 'appearance.graphics';
@@ -909,7 +914,7 @@ begin
       'public.founder_settings_drift(uuid)','public.founder_setting_explain(text)','public.founder_setting_blast(uuid,text)',
       'public.founder_settings_schedule_create(uuid,text,jsonb,timestamptz,integer,text)','public.founder_settings_schedule_cancel(uuid,uuid,text)',
       'public.founder_settings_schedule_confirm(uuid,uuid,text)','public.founder_settings_schedule_tick(timestamptz)','public.founder_settings_schedule_preview(timestamptz)',
-      'public.founder_settings_schedule_list(uuid,integer)','public.founder_settings_pulse(uuid)','public.founder_settings_crosscheck()'] loop
+      'public.founder_settings_schedule_list(uuid,integer)','public.founder_settings_pulse(uuid)','public.founder_settings_crosscheck(uuid)'] loop
     if to_regprocedure(f) is null then raise exception 'rpc missing: %', f; end if;
     if has_function_privilege('anon', f, 'execute') or has_function_privilege('authenticated', f, 'execute') or has_function_privilege('public', f, 'execute') then raise exception 'rpc open to the public: %', f; end if;
     if not has_function_privilege('service_role', f, 'execute') then raise exception 'service_role cannot run %', f; end if;
@@ -944,7 +949,7 @@ begin
       'public.founder_settings_drift(uuid)','public.founder_setting_explain(text)','public.founder_setting_blast(uuid,text)',
       'public.founder_settings_schedule_create(uuid,text,jsonb,timestamptz,integer,text)','public.founder_settings_schedule_cancel(uuid,uuid,text)',
       'public.founder_settings_schedule_confirm(uuid,uuid,text)','public.founder_settings_schedule_tick(timestamptz)','public.founder_settings_schedule_preview(timestamptz)',
-      'public.founder_settings_schedule_list(uuid,integer)','public.founder_settings_pulse(uuid)','public.founder_settings_crosscheck()',
+      'public.founder_settings_schedule_list(uuid,integer)','public.founder_settings_pulse(uuid)','public.founder_settings_crosscheck(uuid)',
       'public.founder_settings_s2_selftest()','public.founder_settings_s2_selftest2()'] loop
     execute format('revoke all on function %s from public, anon, authenticated', f);
     execute format('grant execute on function %s to service_role', f);
