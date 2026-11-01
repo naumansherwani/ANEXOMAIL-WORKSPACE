@@ -30,6 +30,19 @@ impl Sb {
         if !r.status().is_success() { return None; }
         r.json::<Value>().await.ok()
     }
+    /// Like `rpc`, but keeps the database's own plain-language message when the SQL door refuses (validation / "already undone" / limits).
+    /// Err = (HTTP status from PostgREST, message). 0 = unreachable. Used by the S2 write routes so the founder reads WHY.
+    pub async fn rpc_msg(&self, name: &str, body: Value) -> Result<Value, (u16, String)> {
+        let r = self.http.post(format!("{}/rest/v1/rpc/{}", self.url, name)).header("apikey", &self.key)
+            .header("authorization", format!("Bearer {}", self.key)).json(&body).send().await.map_err(|_| (0u16, "database unreachable".to_string()))?;
+        let st = r.status().as_u16();
+        let v: Value = r.json().await.unwrap_or(Value::Null);
+        if (200..300).contains(&st) { return Ok(v); }
+        let msg = v["message"].as_str().unwrap_or("").to_string();
+        let code = v["code"].as_str().unwrap_or("").to_string();
+        if st == 404 || code == "PGRST202" { return Err((404, "The server's settings time machine is older than this app. Run the E113 SQL step (sql-run.sh) once, then try again.".into())); }
+        Err((st, msg))
+    }
     /// All of the founder's own settings as one JSON object (key -> value). None = database unavailable / E108 not applied (never invented).
     pub async fn settings(&self, uid: &str) -> Option<Value> {
         if uid.is_empty() || !uid.chars().all(|c| c.is_ascii_hexdigit() || c == '-') { return None; }

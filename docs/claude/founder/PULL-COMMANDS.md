@@ -271,3 +271,9 @@ git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-w
 ```
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E113_founder_settings_timemachine CHECK_E113 2>&1 | tail -25
 ```
+
+## 1 Nov 10:55 — Step 6 Rust + UI (Settings S2). Technology: Rust (axum) + React-TS SPA. Run (E113 is already green):
+```
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh)
+```
+Expect: tests 105 passed, build OK, saboot 4/4 OK. Then say "founder side kholo" and I check the Time machine and Drift & schedule tabs in Chrome.

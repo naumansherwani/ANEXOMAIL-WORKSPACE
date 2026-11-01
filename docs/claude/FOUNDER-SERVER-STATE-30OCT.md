@@ -187,3 +187,9 @@ E113 first server run FAILED at crosscheck (my bug, fixed, 981 lines). Rerun the
 
 ## UPDATE 1 Nov 10:45 PKT
 E113 run #2: selftest passed on server, selftest2 failed (service_role over-granted by Supabase default ACL) - fixed, rerun #3 command in PULL-COMMANDS.md.
+
+## UPDATE 1 Nov 10:40 PKT
+E113 GREEN on the server (CHECK_E113 14 OK, E65 OK). No server action pending. Next code: Rust settings_s2.rs + UI.
+
+## UPDATE 1 Nov 10:55 PKT
+Step 6 Rust + UI written and green in the sandbox. Server action: founder-install.sh (PULL-COMMANDS.md). Chrome check of the founder site only after the founder says to open it.

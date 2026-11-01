@@ -110,3 +110,29 @@ html.slim .nv{width:44px;height:44px;justify-content:center;padding:0}html.slim 
 
 .bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;border-radius:99px;background:var(--ok);transition:width .6s ease}.watch .lrow{padding:18px 22px}.lt code{font:600 11px ui-monospace,Menlo,monospace;color:var(--dim);margin-right:6px}button.lstate.lnk{background:transparent;border:1px solid currentColor;border-radius:99px;padding:5px 12px;cursor:pointer}
 @media (max-width:1023px) and (min-width:701px){.strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Settings S2 (step 6): Time machine, Drift & schedule, row tools. Same glass panels as the rest of Settings. */
+.setitem.soon{opacity:.55;cursor:default}.setitem.soon small{font-style:italic}
+.s2 .s2bar,.s2 .s2form{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:end;margin:6px 0 12px}
+.s2sel{display:flex;flex-direction:column;gap:4px;font:500 12px Inter,sans-serif;color:var(--dim);min-width:170px}
+.s2sel.wide{flex:1 1 280px}.s2sel input,.s2sel select{min-height:40px;border:1px solid var(--line);border-radius:10px;background:var(--s2);color:var(--fg);padding:0 10px;font:400 14px Inter,sans-serif}
+.s2sw{display:flex;align-items:center;gap:10px;min-height:40px}.s2sw em{font-style:normal;color:var(--fg)}
+.s2count{margin:4px 0 8px;font-size:13px}
+.s2list{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column}
+.s2row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.s2row:first-child{border-top:0}.s2row.done{opacity:.6}
+.s2main{display:flex;flex-direction:column;gap:3px;min-width:0}.s2main b{font-weight:600;overflow-wrap:anywhere}
+.s2act{display:flex;gap:8px;flex-shrink:0}
+.s2tag{font:500 12px Inter,sans-serif;color:var(--dim);border:1px solid var(--line);border-radius:99px;padding:4px 10px;white-space:nowrap}
+.s2tag.risky{color:var(--bad,#ff6b6b);border-color:currentColor}.s2tag.loose{color:var(--warn,#f5b94a);border-color:currentColor}
+.s2ok{color:var(--ok,#4ade80);font-weight:600}.s2bad{color:var(--bad,#ff6b6b);font-weight:600}
+.s2undo,.s2past,.s2pop{border:1px solid var(--line);background:var(--s2);border-radius:12px;padding:12px 14px;margin:8px 0;display:flex;flex-direction:column;gap:8px}
+.s2past ul{list-style:none;margin:6px 0 0;padding:0}.s2past li{display:flex;justify-content:space-between;gap:12px;padding:4px 0}.s2past em{font-style:normal;color:var(--dim)}
+.s2btns{display:flex;gap:8px;flex-wrap:wrap}
+.s2score{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin:8px 0 12px}
+.s2big{display:flex;align-items:baseline;gap:4px}.s2big b{font:700 56px/1 Inter,sans-serif;letter-spacing:-.02em}.s2big span{color:var(--dim);font-size:18px}
+.s2cnt{display:flex;gap:18px;color:var(--dim)}.s2cnt b{color:var(--fg);font-size:20px;margin-right:4px}
+.s2tools{margin:2px 0 14px}.s2tbtn{display:flex;gap:14px}
+.s2tbtn button{background:none;border:0;padding:6px 0;color:var(--dim);font:500 12px Inter,sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.s2tbtn button:hover,.s2tbtn button[aria-expanded="true"]{color:var(--fg)}
+@media (max-width:700px){.s2row{flex-direction:column;align-items:flex-start}.s2act{width:100%}.s2sel{min-width:100%}}

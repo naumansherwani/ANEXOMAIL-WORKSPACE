@@ -12,6 +12,7 @@ mod actions;
 mod ftoken;
 mod polar;
 mod settings;
+mod settings_s2;
 mod authcache;
 mod hostproof;
 mod live;
@@ -142,6 +143,89 @@ async fn settings_put(State(st): State<S>, h: HeaderMap, body: axum::body::Bytes
         Err((400, msg)) => (StatusCode::BAD_REQUEST, Json(json!({"error": if msg.is_empty() { "invalid setting or value".to_string() } else { msg }}))).into_response(),
         Err((_, _)) => (StatusCode::BAD_GATEWAY, Json(json!({"error": "The server's settings table is older than this app. Run the E108 SQL step (sql-run.sh) once, then try again."}))).into_response(),
     }
+}
+
+// ---------- Settings S2 (step 6, SQL E113): Time machine, Drift, Scheduled changes, Explain / Blast radius ----------
+fn bad(msg: &str) -> axum::response::Response { (StatusCode::BAD_REQUEST, Json(json!({"error": msg}))).into_response() }
+
+/// Read: one signed answer from one E113 RPC. `args` already whitelisted by the caller. Missing SQL says so (never invented).
+async fn s2_read(st: &S, h: &HeaderMap, rpc: &str, args: impl FnOnce(&str) -> Value) -> axum::response::Response {
+    let c = match authed(st, h).await { Ok(c) => c, Err(code) => return code.into_response() };
+    match st.sb.as_ref().unwrap().rpc(rpc, args(&c.sub)).await {
+        Some(v) if !v.is_null() => signed(st, json!({"available": true, "data": v})),
+        _ => signed(st, settings_s2::missing()),
+    }
+}
+async fn s2_history_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
+    let q = match settings_s2::parse_history(uri.query()) { Ok(q) => q, Err(e) => return bad(e) };
+    s2_read(&st, &h, "founder_settings_history_list", |u| json!({"p_uid": u, "p_key": q.key, "p_before_id": q.before, "p_limit": q.limit})).await
+}
+async fn s2_at_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
+    let t = match settings_s2::parse_at(uri.query()) { Ok(t) => t, Err(e) => return bad(e) };
+    s2_read(&st, &h, "founder_settings_at", |u| json!({"p_uid": u, "p_ts": settings_s2::iso_from_ms(t)})).await
+}
+async fn s2_diff_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
+    let (a, b) = match settings_s2::parse_diff(uri.query()) { Ok(x) => x, Err(e) => return bad(e) };
+    s2_read(&st, &h, "founder_settings_diff", |u| json!({"p_uid": u, "p_from": settings_s2::iso_from_ms(a), "p_to": settings_s2::iso_from_ms(b)})).await
+}
+async fn s2_timeline_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
+    let l = match settings_s2::parse_limit(uri.query(), 60) { Ok(l) => l, Err(e) => return bad(e) };
+    s2_read(&st, &h, "founder_settings_timeline", |u| json!({"p_uid": u, "p_limit": l})).await
+}
+async fn s2_drift_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response { s2_read(&st, &h, "founder_settings_drift", |u| json!({"p_uid": u})).await }
+async fn s2_pulse_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response { s2_read(&st, &h, "founder_settings_pulse", |u| json!({"p_uid": u})).await }
+async fn s2_scheduled_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
+    let l = match settings_s2::parse_limit(uri.query(), 50) { Ok(l) => l, Err(e) => return bad(e) };
+    s2_read(&st, &h, "founder_settings_schedule_list", |u| json!({"p_uid": u, "p_limit": l})).await
+}
+async fn s2_explain_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
+    let k = match settings_s2::parse_key(uri.query()) { Ok(k) => k, Err(e) => return bad(e) };
+    s2_read(&st, &h, "founder_setting_explain", |_| json!({"p_key": k})).await
+}
+async fn s2_blast_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
+    let k = match settings_s2::parse_key(uri.query()) { Ok(k) => k, Err(e) => return bad(e) };
+    s2_read(&st, &h, "founder_setting_blast", |u| json!({"p_uid": u, "p_key": k})).await
+}
+
+/// Write: signed envelope (G2: two taps + reason in the body), then one SQL door that audits inside the same transaction.
+async fn s2_write(st: &S, h: &HeaderMap, path: &str, body: &axum::body::Bytes, rpc: &str, build: impl FnOnce(&str, &[u8]) -> Result<Value, &'static str>) -> axum::response::Response {
+    let c = match authed_w(st, h).await { Ok(c) => c, Err(code) => return code.into_response() };
+    if let Err(r) = write_ok(st, h, "POST", path, body) { return r; }
+    let args = match build(&c.sub, body) { Ok(a) => a, Err(e) => return bad(e) };
+    match st.sb.as_ref().unwrap().rpc_msg(rpc, args).await {
+        Ok(v) => signed(st, json!({"ok": true, "result": v})),
+        Err((404, m)) => (StatusCode::BAD_GATEWAY, Json(json!({"error": m}))).into_response(),
+        Err((s, m)) if (400..500).contains(&s) && !m.is_empty() => bad(&m),
+        Err(_) => (StatusCode::BAD_GATEWAY, Json(json!({"error": "The database did not answer. Nothing was changed."}))).into_response(),
+    }
+}
+async fn s2_revert_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Bytes) -> axum::response::Response {
+    s2_write(&st, &h, "/founder/v1/settings/revert", &body, "founder_setting_revert", |u, b| {
+        let i: settings_s2::RevertIn = serde_json::from_slice(b).map_err(|_| "invalid body")?;
+        settings_s2::check_revert(&i)?;
+        Ok(json!({"p_uid": u, "p_history_id": i.history_id, "p_reason": i.reason.trim()}))
+    }).await
+}
+async fn s2_schedule_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Bytes) -> axum::response::Response {
+    s2_write(&st, &h, "/founder/v1/settings/schedule", &body, "founder_settings_schedule_create", |u, b| {
+        let i: settings_s2::ScheduleIn = serde_json::from_slice(b).map_err(|_| "invalid body")?;
+        settings_s2::check_schedule(&i, now_s() * 1000)?;
+        Ok(json!({"p_uid": u, "p_key": i.key, "p_value": i.value, "p_apply_at": settings_s2::iso_from_ms(i.apply_at_ms), "p_rollback_minutes": i.rollback_minutes, "p_reason": i.reason.trim()}))
+    }).await
+}
+async fn s2_cancel_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Bytes) -> axum::response::Response {
+    s2_write(&st, &h, "/founder/v1/settings/schedule/cancel", &body, "founder_settings_schedule_cancel", |u, b| {
+        let i: settings_s2::IdReasonIn = serde_json::from_slice(b).map_err(|_| "invalid body")?;
+        settings_s2::check_id_reason(&i)?;
+        Ok(json!({"p_uid": u, "p_id": i.id, "p_reason": i.reason.trim()}))
+    }).await
+}
+async fn s2_confirm_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Bytes) -> axum::response::Response {
+    s2_write(&st, &h, "/founder/v1/settings/schedule/confirm", &body, "founder_settings_schedule_confirm", |u, b| {
+        let i: settings_s2::IdReasonIn = serde_json::from_slice(b).map_err(|_| "invalid body")?;
+        settings_s2::check_id_reason(&i)?;
+        Ok(json!({"p_uid": u, "p_id": i.id, "p_reason": i.reason.trim()}))
+    }).await
 }
 
 async fn bridge_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
@@ -434,6 +518,19 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/me", get(me))
         .route("/founder/v1/bridge", get(bridge_ep))
         .route("/founder/v1/settings", get(settings_ep).put(settings_put))
+        .route("/founder/v1/settings/history", get(s2_history_ep))
+        .route("/founder/v1/settings/at", get(s2_at_ep))
+        .route("/founder/v1/settings/diff", get(s2_diff_ep))
+        .route("/founder/v1/settings/timeline", get(s2_timeline_ep))
+        .route("/founder/v1/settings/drift", get(s2_drift_ep))
+        .route("/founder/v1/settings/pulse", get(s2_pulse_ep))
+        .route("/founder/v1/settings/scheduled", get(s2_scheduled_ep))
+        .route("/founder/v1/settings/explain", get(s2_explain_ep))
+        .route("/founder/v1/settings/blast", get(s2_blast_ep))
+        .route("/founder/v1/settings/revert", axum::routing::post(s2_revert_ep))
+        .route("/founder/v1/settings/schedule", axum::routing::post(s2_schedule_ep))
+        .route("/founder/v1/settings/schedule/cancel", axum::routing::post(s2_cancel_ep))
+        .route("/founder/v1/settings/schedule/confirm", axum::routing::post(s2_confirm_ep))
         .route("/founder/v1/finance/polar", get(polar_ep))
         .route("/founder/v1/actions", get(actions_ep))
         .route("/founder/v1/audit", get(audit_ep))
@@ -560,7 +657,7 @@ mod tests {
     }
     #[tokio::test]
     async fn founder_routes_need_bearer() {
-        for path in ["/founder/v1/me", "/founder/v1/bridge", "/founder/v1/settings", "/founder/v1/finance/polar", "/founder/v1/actions", "/founder/v1/audit", "/founder/v1/hostguard", "/founder/v1/live", "/founder/v1/live/stream", "/founder/v1/inbox", "/founder/v1/inbox/list", "/founder/v1/inbox/group", "/founder/v1/audit/merkle", "/founder/v1/audit/merkle/stats", "/founder/v1/audit/proof?seq=1", "/founder/v1/audit/export?from=1&to=2"] {
+        for path in ["/founder/v1/me", "/founder/v1/bridge", "/founder/v1/settings", "/founder/v1/settings/history", "/founder/v1/settings/at?t=1793000000000", "/founder/v1/settings/diff?from=1700000000000&to=1790000000000", "/founder/v1/settings/timeline", "/founder/v1/settings/drift", "/founder/v1/settings/pulse", "/founder/v1/settings/scheduled", "/founder/v1/settings/explain?key=personal.home", "/founder/v1/settings/blast?key=personal.home", "/founder/v1/finance/polar", "/founder/v1/actions", "/founder/v1/audit", "/founder/v1/hostguard", "/founder/v1/live", "/founder/v1/live/stream", "/founder/v1/inbox", "/founder/v1/inbox/list", "/founder/v1/inbox/group", "/founder/v1/audit/merkle", "/founder/v1/audit/merkle/stats", "/founder/v1/audit/proof?seq=1", "/founder/v1/audit/export?from=1&to=2"] {
             let r = app(st_with_sb()).oneshot(Request::get(path).body(Body::empty()).unwrap()).await.unwrap();
             assert_eq!(r.status(), 401, "{path}");
             let r = app(st_with_sb()).oneshot(Request::get(path).header("authorization", "Bearer a.b.c").body(Body::empty()).unwrap()).await.unwrap();
