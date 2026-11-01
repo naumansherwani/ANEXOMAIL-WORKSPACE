@@ -277,3 +277,5 @@ git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-w
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh)
 ```
 Expect: tests 105 passed, build OK, saboot 4/4 OK. Then say "founder side kholo" and I check the Time machine and Drift & schedule tabs in Chrome.
+
+## 1 Nov 11:00 — no new pull. Step 6 Rust+UI already installed (founder paste: 105 tests, 4/4). Next pull comes with S1b (SQL E114 via sql-run.sh, then founder-install.sh).

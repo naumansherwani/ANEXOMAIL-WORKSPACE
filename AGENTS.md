@@ -497,3 +497,7 @@ Rule 68 addendum (founder 28 Oct 07:22): founder ka login URL = `founderworkspac
 
 ## Rule 70 (STRICT, founder 30 Oct 2026 19:36 PKT) — HAR JAWAB MEIN TECHNOLOGY KI RIPORT ("technology GOD ke baad sab se important hai")
 Aaj ke baad har kaam ke jawab ke aakhir mein ek chhoti table/list: **kaun si file/code badla -> uski technology kaun si (Rust axum+tokio / WASM kernel web-wasm / React+TS+TanStack+Tailwind+shadcn / Cinematic CSS+Three.js / SQL Postgres) -> kis phase mein**, aur jo technology abhi code mein NAHI wo bhi saaf likho. Chat context (CLAUDE-CHAT-CONTEXT...) mein "codes jo likh diye, dobara nahi likhne" ki list har turn update. Technology mix karna (UI mein crypto/verify, kernel mein DOM, cinematic mein data) = Rule 70 breach.
+
+
+## Rule 71 (STRICT, founder 1 Nov 2026 10:53 PKT) — AI SIRF FOUNDER KE LIYE, SAB SE END PAR
+Awam ko AI nahi milega; AI anexomail.com (founder workspace) ka hai. AI ke saare advance features sirf founder ko milenge, aur AI ka kaam master order ke **sab se aakhri step 16** mein hoga (Docs/Sheets ke baad). Awam ka Lovable wala AI code (`src/components/app/ai/*`, `src/lib/ai-*.ts`, Explain-with-Leo, `app.settings.ai`) abhi chhua nahi jayega (awam alag lane, Rule 35); usay hatana founder ke likhe hukm par, cutover ke baad ka alag awam phase hai. Founder AI awam ke AI code se copy nahi hoga (data mix dobara nahi): nayi, founder stack par (Rust + signed envelope + founder gates; read-first, no free-text SQL, send wohi dabata hai). Rule 23 (ai.anexomail.com band) apni jagah.

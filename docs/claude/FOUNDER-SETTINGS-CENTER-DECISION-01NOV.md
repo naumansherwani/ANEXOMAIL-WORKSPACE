@@ -22,7 +22,7 @@
 | 5 | **Privacy** — Read receipts (never sent, informational), Block tracking pixels (On) | Both kept: read receipts shown as "Never sent — nothing to switch on"; tracking pixels blocked in Mail Desk render. Founder additions: session lifetime, device-approval strictness, passkey-required for G3, audit visibility, **export** of own data (G3) | G2 / G3 | SQL + Rust + passkey (F2d) + kernel | S3 (step 7); pixels = step 11 |
 | 6 | **Time machine** — "Every setting change, reversible" | ✔ SQL **E113**: every version, who/when/from/to, one-click undo (each version once), point-in-time view, diff, merged feed, history-vs-live replay check. Founder extra: each version shows its audit entry number and is **proven in this browser** with the kernel Merkle check | G1 read / G2 undo | SQL E113 (done locally), Rust `settings_s2.rs`, kernel `merkle@1`, React-TS | step 6: SQL written, Rust + UI next |
 | 7 | **Drift & schedule** — score 100/100, aligned/looser/risky; scheduled changes with auto-rollback | ✔ SQL **E113**: score from real baselines (name, home city, ledger seal policy, unsealed lag) which grows with each new key; scheduled changes with "keep it or it rolls back", never overwrites a newer value | G1 / G2 | SQL E113, Rust tick every minute, React-TS | step 6 |
-| — | **AI settings** (awam page, not a tab on Business) | Leo/AI limits for the founder surface | G2 | Rust + SQL | step 12 (F6 AI) |
+| — | **AI settings** | founder-only; awam gets no AI. Limits/models for the founder AI | G2 | Rust + SQL | **step 16 (the very end), founder 1 Nov 10:53** |
 
 ## Features inside each tab — the final founder list (keys)
 Personal: `personal.display_name`, `personal.home`, `personal.avatar` (live), `mail.undo_send_seconds`, `mail.send_confidence`.
@@ -47,3 +47,6 @@ Founder order (verbatim gist): "jaisa awam UI UX bana hua hai mera bhi yehi same
 - **Saved as:** key `appearance.ambient` (the recipe, ~60 bytes) and `appearance.ambient_favs` (up to 24 favourites). Both go through the normal door (history + audit), appear in Time machine (undo your atmosphere), Drift (no baseline: a taste, not a risk), and can be scheduled ("evening look at 19:00").
 - **Technology:** Three.js (WebGPU with WebGL fallback, lazy chunk) with one shader whose uniforms are the recipe; OffscreenCanvas in a worker when the browser supports it; CSS-only fallback when Graphics is off or WebGL is missing. React 19 + TS + Tailwind 4 for the picker. SQL E114 validates the recipe ranges (authoritative); Rust mirrors them.
 - **Does not touch:** the cinematic look the founder likes. The current aurora becomes the default recipe ("Aurora / breathe"), so nothing he liked changes unless he picks another look.
+
+
+**UPDATE 1 Nov 10:53:** AI settings and every AI feature are founder-only and are built last (master order step 16). Nothing AI is copied from the awam code.

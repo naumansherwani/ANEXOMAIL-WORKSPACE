@@ -14,7 +14,7 @@ UI system (tokens, shell, Trust, mobile/tablet): docs/claude/FOUNDER-UI-DESIGN-2
 | 4 | **F2b** WASM kernel verify in the browser (pins the public key, SRI, enforce) | next build |
 | 5 | **F2c** audit v1 + Merkle (E107) | **SQL E107 GREEN on server (1 Nov 08:33)**; 5R Rust (`server/rust/merkle_core.rs`, `ledger.rs`, routes, auto-seal) + 5a UI card **GREEN on server + Chrome 1 Nov 09:00**; 5K kernel `merkle@1` (0.6.0) **GREEN on server + Chrome 1 Nov 09:35** (step 5 COMPLETE) |
 | 5a | **I1 Ledger Integrity Gauge** (+ Dashboard item in Command center) — FOUNDER-KILLER-FEATURES | after 5 |
-| 6 | **S2** Settings: Time machine + Drift & schedule | after 5 — SQL E113 **GREEN on the server 1 Nov 10:34** (CHECK 14/14 + E65 all OK); Rust `settings_s2.rs` (13 routes, 105 tests) + UI (Time machine, Drift & schedule, Explain/Blast/History) WRITTEN 1 Nov 10:55, founder-install + Chrome check pending |
+| 6 | **S2** Settings: Time machine + Drift & schedule | after 5 — SQL E113 **GREEN on the server 1 Nov 10:34** (CHECK 14/14 + E65); Rust `settings_s2.rs` (13 routes) + UI **installed on the server 1 Nov 10:53** (founder-install: 105 tests OK, build OK, saboot 4/4). Chrome check pending until the founder says to open the founder site |
 | 7 | **F2d** passkey proof for G3 (then FOUNDER_PASSWORD path removed) + **S3** Privacy | after 6 |
 | 7a | **WebTransport / QUIC (`wtransport`)** founder live channel, replaces polling (own UDP listener + cert wiring, not awam's udp/3443); per `FOUNDER-TECHNOLOGY-ADOPTION-30OCT.md` | after 7 |
 | 7b | **Session & transport hardening (research 1 Nov, FOUNDER-TECHNOLOGY-ADOPTION-30OCT.md)**: DBSC (hardware-bound session, Chrome 146 Windows) + post-quantum hybrid TLS check on Caddy + founder splash lines (only true ones) | with 7 / 7a |
@@ -28,7 +28,7 @@ UI system (tokens, shell, Trust, mobile/tablet): docs/claude/FOUNDER-UI-DESIGN-2
 | 11a | **K1 Sealed Agreements** (cross-company cryptographic escrow) | after 11 + F2c |
 | 11b | **COMMON ATTACHMENTS (founder 1 Nov 09:05, plan `docs/cursor-work/ATTACH-LATEST-TECH-PLAN-27OCT.md`): A1 instant dedupe (kernel sha256 -> `attach.have`), A2 resumable chunks (per-chunk SHA-256), A4 signed share link.** ONE implementation in the shared Rust (`server/rust/attach_core.rs` / `attach_glue.rs`) + kernel `sha256@1`; founder Mail compose (step 11) and Mail<->Chat Bridge (12b) USE it, no second copy | with 11 (before 12b) |
 | 11c | **A3 parallel chunks over WebTransport** (same shared attach code) | after the WebTransport phase (which comes after 7) |
-| 12 | **F6** Systems + **AI (10 pages, founder-only)**: health, **Analytics**, **Speed (perf)**, **Admin**, **Safety**, **ANEXOChat**, Workspace/AI settings | after 11 |
+| 12 | **F6** Systems: health, **Analytics**, **Speed (perf)**, **Admin**, **Safety**, **ANEXOChat**, Workspace settings. **AI is NOT here any more: it moved to the very end (step 16, founder 1 Nov 10:53)** | after 11 |
 | 12a | **K2 Mesh / air-gapped sync** (research spike first; needs LAN node) | after 12 |
 | 12b | **Mail<->Chat Bridge** (6 sub-steps 12b-1..6; most of it exists user-side, founder gets the latest-tech port + new deltas) — FOUNDER-MAIL-CHAT-BRIDGE | after 12 |
 | 13 | **F8** Control: kill switch, flags, one-click executor (every action G2/G3, audit + rollback), Settings changes | after 12 |
@@ -87,3 +87,10 @@ No Cloudflare relay or API anywhere in ANEXOChat. MoQ, when its turn comes (afte
 Tab order: Personal, Workspace, Appearance, Notifications, Privacy, Time machine, Drift & schedule (+AI in step 12). Full decision, keys and phases: `docs/claude/FOUNDER-SETTINGS-CENTER-DECISION-01NOV.md`. New: **S1b** (Appearance extension, E114) right after step 6 S2. No other step moves.
 
 **S1b adds the Ambient Studio** (founder 1 Nov 10:40): car-style ambient looks, over one million generated recipes. See the addendum in FOUNDER-SETTINGS-CENTER-DECISION-01NOV.md.
+
+
+## AI = FOUNDER ONLY, AT THE VERY END (founder 1 Nov 10:53 — locked, Rule 71)
+Verbatim gist: "awam ko AI nahi milega; yeh AI anexomail.com ka hai, sirf us mein milega. Lovable ne jo data mix kiya hai us ki waja se aaj mera kaam tabah hua. AI ke jitne bhi advance features hain yeh founder ko milenge. AI wala kaam hum END pe karenge, founder side ka."
+- **Step 16 (new, last, after Docs/Sheets step 15): FOUNDER AI** = all advanced AI features, founder workspace only (Rust + signed envelope + founder gates; read-first, no free-text SQL, he presses send). The old "AI (10 pages)" and the Settings "AI settings" tab are built here, not in step 12.
+- **Awam gets no AI.** The awam code still has AI surfaces from Lovable (`src/components/app/ai/AiBits.tsx`, `src/lib/ai-studio.ts`, `ai-billing.ts`, `ai-automation.ts`, `settings/SettingsBits.tsx` Explain-with-Leo, compose/dashboard/calendar panels, `routes/app.settings.ai.tsx`). They are NOT touched now (Rule 35, awam is a separate lane). Removing them is a separate awam phase after the founder cutover, only on his written order, with an audit of what data those surfaces touch.
+- Founder-side rule that follows: nothing from the awam AI code is copied into the founder side (no mixing again); the founder AI is written fresh on the founder stack.
