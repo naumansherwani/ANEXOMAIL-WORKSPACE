@@ -172,3 +172,6 @@ HONEST (awam lane): `scripts/build-kernel.sh` rewrote the AWAM pin (`src/lib/ker
 
 ## UPDATE 1 Nov 09:35 PKT — 5K SERVER PAR GREEN (founder paste + Chrome)
 founder-install: 95 tests OK, build OK, saboot 4/4 (SPA 200, signing ON, healthz 200). Chrome founder tab: "Ledger seal | 18 entries, the first seal comes at 50 new entries. 5 of 5 newest entries proven in this browser" — kernel 0.6.0 `merkle@1` ne server ke export ke 5 proof khud verify kiye. GREEN poora: steps 1-4b, 4d P1, STEP 5 (E107 + Rust + kernel + UI). Chart "Founder purane 77" in FOUNDER-WORKSPACE-ORDER-01NOV.md. NEXT: step 6 S2 (Time machine + Drift & schedule) — design note first.
+
+## UPDATE 1 Nov 10:00 PKT
+N menu (Audit ledger removed, 348px, full email) installed on server AND verified in founder Chrome: GREEN. Tech chart: TECH-CHART-01NOV.md. Server install needed: none (docs only). Optional read-only check for 7b: `caddy version` and `openssl s_client -connect founderworkspace.anexomail.com:443 -groups X25519MLKEM768 </dev/null 2>&1 | grep -i "group\|Cipher"`.

@@ -1,4 +1,21 @@
 # ANEXOChat™ Blueprint — The World's Super-Advanced Business Chat
+
+> ## TECHNOLOGY FOR ANEXOChat — founder order 1 Nov 2026 ("beast level, WhatsApp aur Telegram ko challenge")
+> Added at the top by founder's written order; the original blueprint below is unchanged. Applies to BOTH awam ANEXOChat and the founder-side chat (same engine, founder gates on top). Facts verified 1 Nov 2026.
+>
+> | Layer | Technology | Why for chat | Status |
+> |---|---|---|---|
+> | Realtime push | WebTransport over QUIC (Rust `wtransport`, UDP 3443) | messages, typing, presence without TCP head-of-line blocking | awam LIVE (0.1.14, old); upgrade to 0.7.x later |
+> | Channels / live rooms / broadcast (one-to-many) | MoQ (Media over QUIC), `draft-ietf-moq-transport-22`, pinned to ONE draft, behind a flag | fan-out to thousands (Telegram-channel style, live rooms) | PLANNED; still a draft, no RFC, so fallback = WebTransport/WebSocket |
+> | 1:1 and group calls | WebRTC + TURN (`anexovideochat-turn.md`) | MoQ is not the right fit for 2-way calling | unchanged |
+> | Attachments | A1-A4 common file engine (resumable chunks, A3 over WebTransport) | WhatsApp-class big files | PLANNED, master order 11b/11c |
+> | Verification in browser | Rule-52 WASM kernel (Ed25519, HMAC, Merkle `merkle@1`) | tamper-proof message/audit proofs | founder GREEN; awam pin 0.6.0 pending pull |
+> | Sessions | DBSC (Chrome 146 Windows) + passkeys | stolen-cookie protection | PLANNED step 7 / 7b |
+> | Transport crypto | TLS 1.3 now; hybrid post-quantum only after a check | honest claims only | check pending |
+> | Hardening | RLS on Supabase, signed writes, audit hash chain + Merkle | founder gates | GREEN on founder |
+>
+> Not claimed: "production-ready MoQ", "Meta relay", "256-bit TLS". Details: `docs/claude/TECH-CHART-01NOV.md`.
+
 # FOUNDER ORIGINAL — DO NOT MODIFY
 
 > Save kiya: Sep 9 2026. Yeh founder ka original blueprint hai.

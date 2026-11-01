@@ -1274,3 +1274,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 1 Nov 09:32 PKT: 5K kernel merkle@1 (0.6.0) built in repo; Ledger seal browser proof; awam pin rewritten (site stays 0.5.0 until awam pull). Server: founder-install.sh pending.
 - 1 Nov 09:35 PKT: STEP 5 + 5K SERVER PAR GREEN + Chrome ('5 of 5 newest entries proven in this browser', 18 entries). Chart 'Founder purane 77' added. NEXT step 6 S2 (design note first).
 - 1 Nov 09:50 PKT: N menu: Audit ledger hata, email poora (founder-install.sh pending); research DBSC/PQ-TLS/WebTransport -> ADOPTION doc + master order 7b; 'ADMIN = awam ke maslon ka ghar' locked in master order.
+
+- 1 Nov 10:00: N menu GREEN in Chrome. Tech chart = docs/claude/TECH-CHART-01NOV.md (do not rewrite). ANEXOChat tech block already at top of original blueprint (do not re-add).
