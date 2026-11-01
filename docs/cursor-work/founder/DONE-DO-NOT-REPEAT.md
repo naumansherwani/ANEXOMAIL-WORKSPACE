@@ -666,3 +666,5 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - 1 Nov 12:40 S1c GREEN on server (CHECK_E115 8/8, E65 ok, founder-install OK) + live Chrome write test OK. S1d WRITTEN: E116 drift value rule + CHECK_E116, schedule form widened, all 22 labels. Install pending (sql-run E116, founder-install).
 
 - 1 Nov 12:30 E116 failed on server (replay check dirty: raw delete in selftests vs real stored values). Fixed in the same file (door-based reset + patched E113 selftest inside E116). LESSON: every selftest must run on a populated account, never assume an empty founder_settings.
+
+- 1 Nov 12:55 S1d GREEN on server (CHECK_E116 6/6, E65 ok, founder-install OK). Side-by-side compare written to repo (FOUNDER-VS-AWAM-SETTINGS-COMPARE-01NOV.md). S1e written (Display name row, nav alignment, mobile email wrap) - install pending.

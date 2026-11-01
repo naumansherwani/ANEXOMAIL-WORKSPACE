@@ -48,7 +48,7 @@ function Seg<T extends string | number>({ value, options, label, disabled, onPic
   return <div className="seg" role="group" aria-label={label}>{options.map(([v, t]) => <button key={String(v)} type="button" className={value === v ? "on" : ""} aria-pressed={value === v} disabled={disabled} onClick={() => onPick(v)}>{t}</button>)}</div>;
 }
 export function SettingsView({ p, fx, setFx, slim, setSlim, reload, go, preview, setPreview }: Props) {
-  const [tab, setTab] = useState("personal"), [hkey, setHkey] = useState<string | null>(null), [busy, setBusy] = useState(false), [msg, setMsg] = useState<MsgT>(null);
+  const [tab, setTab] = useState("personal"), [nameDraft, setNameDraft] = useState<string | null>(null), [hkey, setHkey] = useState<string | null>(null), [busy, setBusy] = useState(false), [msg, setMsg] = useState<MsgT>(null);
   const city = useCity(), [q, setQ] = useState(""), [found, setFound] = useState<{ place: Place; km: number } | null>(null), [problem, setProblem] = useState<string | null>(null), [locating, setLocating] = useState(false);
   const hits = searchPlaces(q);
   const pick = (pl: Place) => { setFound(null); setQ(""); setProblem(null); save("personal.home", { city: pl.city, country: pl.country, iana: pl.iana, lat: pl.lat, lon: pl.lon }); };
@@ -101,6 +101,11 @@ export function SettingsView({ p, fx, setFx, slim, setSlim, reload, go, preview,
                 <div className="pwho"><b>{p ? nameOf(p) : "—"}</b><span className="dim">{p?.email}</span></div>
                 {go && <Button variant="ghost" size="mini" onClick={() => go("profile")}>Edit name &amp; photo</Button>}
               </div>
+              <div className="setrow"><div><b>Display name</b><p className="dim">The name shown in your greeting and next to your actions in the ledger. Saved as a setting; empty puts it back to your account name.</p></div>
+                <span className="fldrow"><input aria-label="Display name" value={nameDraft ?? (p?.display_name || "")} maxLength={60} placeholder={p ? nameOf(p) : "Your name"} onChange={(e) => setNameDraft(e.target.value)} />
+                  <Button variant="ghost" disabled={busy || nameDraft === null || nameDraft.trim() === (p?.display_name || "") || (nameDraft.trim().length > 0 && nameDraft.trim().length < 2)} onClick={() => void save("personal.display_name", nameDraft!.trim() === "" ? null : nameDraft!.trim(), () => setNameDraft(null))}>Save</Button></span></div>
+              <RowTools k="personal.display_name" onHistory={openHistory} />
+              <Msg />
             </section>
             <section className="panel">
               <div className="panelhead"><h2>Home city</h2><p className="dim">The clock, greeting (sunset-aware), dates and every time in the workspace follow this city.</p></div>

@@ -313,3 +313,6 @@ Expected: 116 tests OK, build OK, saboot OK. Then hard-reload the founder site -
 2. SPA: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
 
 _(12:30 note: E116 was corrected after its first server run failed; run the S1d SQL command above again — the file on origin/main is the fixed one.)_
+
+### S1e (SPA only: Display name row + nav alignment) — one command
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`

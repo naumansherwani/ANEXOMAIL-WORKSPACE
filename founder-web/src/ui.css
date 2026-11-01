@@ -200,3 +200,7 @@ html[data-focus="hc"] :focus-visible{outline:3px solid #fff!important;outline-of
 @media (max-width:1023px){.s2tbtn button,.ambrow button,.ambtweak select,.ambtweak button{min-height:40px}}
 @media (max-width:700px){.s2tbtn{gap:6px!important}.s2tbtn button{padding:0 11px}.ambrow button,.ambtweak select,.ambtweak button{min-height:44px}.ambtweak select{font-size:16px}}
 @media (max-width:700px){.s2tbtn button{min-height:44px}}
+
+/* S1e (compare M2): the settings list keeps one text column — the icon box no longer shrinks with the text */
+.setitem>svg{flex:0 0 18px;width:18px;min-width:18px}.setitem>span{flex:1;min-width:0}
+.pwho{min-width:0;flex:1}.pwho span,.pwho b{overflow-wrap:anywhere}
