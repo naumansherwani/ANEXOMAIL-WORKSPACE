@@ -1,3 +1,12 @@
+# RECONCILIATION (1 Nov 05:25 PKT) - READ THIS BEFORE THE REST
+This note was first written WITHOUT reading docs/claude/FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md (founder order 28 Oct 13:10, already in the repo). That was my mistake. The 28 Oct doc is the MASTER; this note is only the deeper workflow + relational detail for it. Where they differ, the 28 Oct doc and FOUNDER-MASTER-ORDER win:
+1. ORDER: this is master-order step **12b-1..12b-6**, after step 11 (Mail Desk) and 12 (Systems + ANEXOChat). It is NOT the next build. My "B1-B7 / E111-E116" table in section 11 is replaced by 12b-1..6; SQL numbers are assigned when each step is built.
+2. NAMES: master doc uses `bridge_threads` (not `bridge_links`), `bridge_events`, `work_objects` (with the D3 constraint: no "done" without an evidence file hash), `file_master`. Read `bridge_links` below as `bridge_threads`.
+3. ALREADY EXISTS user-side (do not rebuild, reuse through existing procs): ANEXOChat phase 29 `email_discuss_in_chat` + `chat_email_links` + `chat_email_quotes`; phase 30 `chat_email_drafts` (+citations, consent, escalations; explicit Send stays); phase 23 promise engine; phase 24 decision ledger; phases 25-27 timeline/provenance (`chat_message_provenance`); phase 28 receipts; phase 31 file context + diff; E7 delete-for-everyone 48 h; E97 `commitment_ledger`. Files: anexochat/sql/phase23..31_*.sql.
+4. SCOPE of the genuinely new part: ONE chain across email + chat (`bridge_events`), extraction from email text too, `work_objects` evidence constraint, shared `file_master`, live stale badge on both panes, Global Outcome Timeline.
+5. Feature 4 keeps the phase-30 rule: reply from the chat panel is always an explicit Send (no accidental send).
+6. Founder side = new tables/endpoints under `/founder/v1/bridge/*`; user-side tables are read via existing procs only, never edited (FC18/FC20/FC22).
+
 # BRIDGE ENGINE — Email <-> Chat: functional workflow + relational design (design note, Rule 63; 1 Nov 2026)
 Founder order (verbatim in docs/cursor-work/founder/founder-commands.md, 1 Nov 05:00): five features (unified ledger threading, promise and decision extraction, file evidence chain, direct broadcast to external email from chat, honest edit and revocation sync) + split-screen Bridge (left email, right chat, bottom/centre Bridge Engine). Deliverable now: workflow + database logic for the founder's product architecture manual. NO code was written for this note; every SQL block below is a design sketch, built later phase by phase (Rule 66).
 
@@ -147,7 +156,7 @@ create table bridge_outbound (
 | Split-screen, timeline, badges, composer "Send as email" | React-TS + Tailwind, Cinematic CSS |
 | Founder-side visibility (counts only) | founder Bridge page: Rust `/founder/v1/...` aggregate RPC over E109-style fingerprints, never content |
 
-## 11. Phases (each one green before the next)
+## 11. Phases (SUPERSEDED by reconciliation point 1: use master-order 12b-1..12b-6; the table is kept only as a content split)
 | Phase | Content | SQL |
 |---|---|---|
 | B1 | links + Outcome Timeline + verify + room open | E111 |
