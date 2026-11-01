@@ -12,6 +12,7 @@ GREEN = on server + CHECK + seen live in founder Chrome. One phase at a time (Ru
 | 6b | S1b/S1c Appearance + Ambient (E114), 8 new keys (E115), Drift value rule (E116), Display name row (S1e) | GREEN |
 | 7 / 7-1 | F2d passkey SQL (E117) | GREEN |
 | 7 / 7-1b | Chairman protocol SQL (E118): action hash, T2/T3, AAGUID allow-list, mobile flare | GREEN (server 1 Nov 13:19) |
+| 7b-T256 | AES-256-GCM terminator: E119 + Rust + script dry-run GREEN on server (1 Nov 14:45); APPLY=1 + Chrome :8443 open | PARTLY GREEN |
 | 7 / 7-2 | Rust `webauthn-rs` + same canonical action hash (parity vectors) + T3 ticker | NEXT (evening) |
 | 7 / 7-3 | UI Privacy tab: passkeys, hardware keys, allow-list, recovery codes, mobile | after 7-2 |
 | 7 / 7-4 | Enforce on real actions, remove FOUNDER_PASSWORD, founder sign-in passkey-only (no mailed link, no DBSC claim until 7b) | after 7-3 + his Chrome passkey proof |
@@ -29,3 +30,5 @@ GREEN = on server + CHECK + seen live in founder Chrome. One phase at a time (Ru
 | 16 | Founder AI (Rule 71: awam gets none) | very last |
 Small queued items: N2 Drift title wording (UI), N5 founder sign-in page claims (7-4), kernel pin E90 `kernel_release_publish`, git remote URL to ANEXOMAIL-WORKSPACE.
 Awam lane (separate, ONE-ORDER-27OCT.md): landing footer "Built with" written 1 Nov (pull.sh pending until the founder runs it); MoQ promise tracked as MQ0-MQ4 in that file; mobile login + mandatory country = requirement only (AWAM-MOBILE-LOGIN-COUNTRY-REQUIREMENT-01NOV.md).
+
+PQM (post-quantum mail content, RFC 9980) = rows 11d/11e + awam A1-A7 added 1 Nov 15:30; nothing built yet.

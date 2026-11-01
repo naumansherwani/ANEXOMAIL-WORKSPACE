@@ -267,3 +267,29 @@ Facts (TECH-MAP / FOUNDER-TECHNOLOGY-ADOPTION-30OCT.md, checked 1 Nov): `draft-i
 | MQ3 | One live feature on MoQ behind a flag (mail live stamp first, smallest blast radius), HTTP fallback kept | after MQ2 | founder sees it green live in Chrome |
 | MQ4 | Wider rollout (chat presence, one-to-many media) | after MQ3 | each feature = one phase, differential proof |
 Honest wording rule: until MQ3 is green the footer line stays as the founder worded it; in conversation say "adopting MoQ (IETF draft)", never "MoQ is live". Position is PROPOSED by the CEO-agent; the founder confirms or moves it.
+
+## 1 Nov 2026 15:30 PKT — AWAM TECHNOLOGY CATCH-UP: everything the market has that awam lacks becomes a numbered phase (founder 14:48: "yeh sab anexomail ke pass bhi hoga ... main option nahi daita")
+Awam lane only; founder lane has its own rows in FOUNDER-MASTER-ORDER-28OCT.md. Each phase = one phase (Rule 66), green on the server + his Chrome before the next, differential proof against the current behaviour so the live site never breaks. Position is the CEO-agent's proposal: the founder can move a row, not delete it.
+| Order | Awam phase | Technology | Gate / why here |
+|---|---|---|---|
+| A1 | **T256-2: AES-256-GCM-only TLS for anexomail.com** (test port first, then 443) | rustls terminator or proxy, per the T256-1 result | founder host proven first (TLS-AES256-PLAN-01NOV.md); his written haan for the awam edge |
+| A2 | **Bun-free pages**: Nitro-on-Bun page renderer replaced by Rust + static assets + the kernel; the Brain's 336 remaining endpoints move to Rust (ONE-ORDER steps 6-13 above) | Rust + static SPA + WASM kernel | founder decision 1 Nov 06:07: after the founder deck; every endpoint differential-tested Rust == Bun |
+| A3 | **Passkeys in Rust (G42)**: `webauthn-rs` replaces the Bun passkey exception | Rust `webauthn-rs` | after founder 7-2 is green (same ceremonies, reused code, separate tables per Rule 35) |
+| A4 | **DBSC** device-bound sessions for users (Chrome 146+ Windows; fallback = today's device record) | Rust + browser | after founder 7b proves it on one user |
+| A5 | **WebGPU renderer** for the 3D layer (WebGL2 fallback) | Three.js WebGPU | after founder 7d |
+| A6 | **MoQ MQ0-MQ4** (section above) | MoQ relay + `moq@1` in the kernel | after founder 7e (MoQ-F) is green |
+| A7 | **PQ mail-content encryption PQM0-PQM5** (below) | OpenPGP RFC 9980 (ML-KEM-768+X25519, ML-DSA-65+Ed25519) | after founder PQM proves it on the founder's own mail |
+Honest comparison that triggered this (web, 1 Nov): Proton shipped optional post-quantum mail encryption to ALL plans on 6 May 2026 (new keys for FUTURE mail, no re-encryption of old mail, OpenPGP v6, encrypted forwarding paused). Today ANEXOMAIL has post-quantum TRANSPORT only (X25519MLKEM768 on both hosts, seen 1 Nov 14:28), not post-quantum mail CONTENT.
+### PQM — post-quantum mail content (both lanes; founder first)
+Standard: OpenPGP post-quantum = **RFC 9980** (Proposed Standard, extends RFC 9580; read 1 Nov via the IETF datatracker page of draft-ietf-openpgp-pqc-17 "became RFC 9980"). Algorithms in it: ML-KEM-768+X25519 (encryption), ML-DSA-65+Ed25519 (signatures), SLH-DSA (stand-alone signatures).
+| # | PQM step | Layer | Proof |
+|---|---|---|---|
+| PQM0 | Research spike: read RFC 9980 + RFC 9580 fully, choose the Rust implementation after a licence + audit read (no crate is chosen from memory), define what "encrypted mail" means for ANEXOMAIL (user-held keys, what search/spam-scan can still see, forwarding behaviour) | doc only | founder reads it |
+| PQM1 | SQL: public-key registry per mailbox (key id, algorithm, created, revoked, never the private key), key-publication door, audit ledger entry per key event | SQL | CHECK + selftest on a populated account |
+| PQM2 | Rust: key generation / import, encrypt + decrypt + sign + verify per RFC 9980 with the published test vectors | Rust | cargo tests with the RFC vectors |
+| PQM3 | Browser: the SAME code compiled into the one WASM kernel (`pqmail@1`), private keys never leave the device (Rule 52) | WASM kernel + React-TS | kernel tests + Chrome round trip |
+| PQM4 | Mail Desk / compose UI: encrypt to a recipient who has a key, honest "not encrypted" when not, key fingerprints shown | React-TS | founder sends himself an encrypted mail |
+| PQM5 | Interop with Proton/OpenPGP v6 recipients; encrypted forwarding behaviour documented (Proton pauses it) | Rust + docs | a real mail to a Proton address |
+Order: founder lane after step 11 (his own mail), awam lane after PQM5 is proven on him.
+### Website rule (founder: "seedha technology codes se likh ke website pe dun ga")
+A technology name goes on the public site ONLY when `python3 docs/cursor-work/server/tech-proof.py` shows it PROVEN for the lane the page describes and its server check is green. Until then the public footer lists only what runs today. `tech-proof.py` now has the PQ-mail row (MISSING in both lanes).
