@@ -1257,3 +1257,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 1 Nov 08:10 PKT: 4d P1 code complete (E112 810 lines, inbox.rs + 3 endpoints, 81 tests, Inbox card, chip fixes). Needs founder: sql-run E112 then founder-install. Do not rewrite.
 - 1 Nov 07:40 PKT: 4d P1 SERVER PAR INSTALLED + Chrome GREEN (E112 10/10, 81 tests, Inbox card Ready). FOUNDER-CHAIRMAN-MAP-01NOV.md written. Founder ko dobara install mat bolo. Open: L8 Stream-health SLO min-sample fix in P2.
 - 1 Nov 07:45 PKT: user-app sidebar group + Stream health card REMOVED (founder 07:39); do NOT re-add either. Telemetry default off. Needs founder-install, then Chrome proof.
+- 1 Nov 07:50 PKT PERMANENT RULE (founder, gussa): lafz 'khali'/'empty'/'nothing yet'/'Ready'/'waiting for first data' kabhi nahi, na reply mein na UI mein. Har card mein asli live number/halat (counts, last check time, chain status). Inbox card + Recent changes copy fixed in this commit.

@@ -89,3 +89,4 @@ Status: CODE DONE, NOT GREEN. Order: sql-run (E110) -> awam pull.sh (auth.ts) ->
 - 1 Nov 08:10 L7: Glitch/Support had no source at all -> E112 intake + Inbox (P1). Open: P4 user-side button needs founder ok.
 - 1 Nov 07:40 L8 (open): Stream health 'Down 75% short streams' from page reloads; fix = min sample 20 + ignore client_gone reloads, in E113 (P2). L7 GREEN on server (Inbox ready).
 - 1 Nov 07:40 L8 CLOSED by removal (Stream health card gone; telemetry default OFF). Rule from founder: no meta/diagnostic cards that can turn red from a reload; only long-running real live-wired features.
+- 1 Nov 07:50 L9: empty-state wording ('Ready', 'Nothing has changed yet') banned by founder; replaced with live numbers (Inbox: open/new/past reply time/chain; Recent changes: Watching N live sources, last check). Other places with 'Nothing needs attention' (Bridge) to be reviewed with founder.

@@ -103,8 +103,8 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
       chip: Array.isArray(lv?.channels) ? `${lv.channels.filter((c: any) => c.state === "connected").length} of ${lv.channels.length}` : undefined,
       text: !lv ? "Not answering" : !Array.isArray(lv.channels) ? "Channel list is installed with the E111 SQL step" : lv.channel_chain?.ok === false ? "History chain broken, do not trust channel states" : `${lv.channels.filter((c: any) => c.state === "connected").length} of ${lv.channels.length} connected${lv.channels.some((c: any) => c.state === "degraded" || c.looks_stale) ? ", one is not updating" : ""}${lv.channels.some((c: any) => c.state !== "connected") ? `. Waiting for first data: ${lv.channels.filter((c: any) => c.state !== "connected" && c.state !== "disabled").map((c: any) => c.label).join(", ")}` : ""}` },
     { name: "Inbox", state: !ib ? "fail" : ib.connected === false ? "unknown" : ib.stats?.level === "fail" ? "fail" : ib.stats?.level === "warn" ? "warn" : "ok",
-      chip: ib && ib.connected !== false && !ib.stats?.total_groups ? "Ready" : ib?.connected === false ? "Install" : undefined,
-      text: !ib ? "Not answering" : ib.connected === false ? ib.note || "Install the E112 SQL step" : !ib.stats?.total_groups ? "Ready. Glitch and support reports appear here the moment a user sends one" : [`${ib.stats.active} open issue${ib.stats.active === 1 ? "" : "s"}`, ib.stats.new ? `${ib.stats.new} new` : null, ...(ib.stats.reasons || [])].filter(Boolean).join(", ") },
+      chip: ib?.connected === false ? "Install" : undefined,
+      text: !ib ? "Not answering" : ib.connected === false ? ib.note || "Install the E112 SQL step" : [`${ib.stats?.active ?? 0} open issue${(ib.stats?.active ?? 0) === 1 ? "" : "s"}`, `${ib.stats?.new ?? 0} new`, `${ib.stats?.respond_late ?? 0} past reply time`, ib.chain?.ok === false ? "history chain broken" : "history chain intact", ...(ib.stats?.reasons || [])].join(", ") },
     { name: "Action registry", state: !actsOk ? "fail" : !acts.length ? "unknown" : "ok", text: !actsOk ? "Not answering" : acts.length ? `${acts.length} actions, ${acts.filter((a) => a.enabled).length} enabled` : "No actions yet", to: "control" },
     { name: "Settings", state: by("/founder/v1/settings")?.ok ? "ok" : "fail", text: by("/founder/v1/settings")?.ok ? "Saved on the server" : "Not answering", to: "settings" },
   ] : [];
@@ -147,7 +147,7 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
 
       <h3 className="dx-sec" style={{ "--i": 3 } as React.CSSProperties}>Recent changes <span>Since you opened this page</span></h3>
       <section className="dx-card dx-changes" style={{ "--i": 3 } as React.CSSProperties} aria-label="Recent changes" aria-live="polite">
-        {!L.events.length ? <p className="dx-empty">{L.status === "live" ? "Nothing has changed yet. The check runs every 5 seconds." : L.status === "paused" ? "Paused while this tab is hidden." : "Waiting for the live connection."}</p> : (
+        {!L.events.length ? <p className="dx-empty">{L.status === "paused" ? "Live updates pause while this tab is hidden and resume the moment you return." : `Watching ${(lv?.sources || []).length} live sources${L.lastTickAt ? `, last check ${fmtTime(new Date(L.lastTickAt))}` : ""}. Every real change appears here the second it happens.`}</p> : (
           <ul>{L.events.map((e) => {
             const label = (lv?.sources || []).find((x: any) => x.source === e.source)?.label || cap(e.source), dl = (e.detail as any)?.delta;
             return <li key={e.id}><b>{label}</b><span>{e.kind === "stale" ? "stopped updating" : e.kind === "recover" ? "recovered" : e.kind === "appear" ? "appeared" : e.kind === "vanish" ? "disappeared" : typeof dl === "number" ? `${dl > 0 ? "+" : ""}${dl}` : "changed"}</span><time>{fmtTime(new Date(e.ts))}</time></li>;

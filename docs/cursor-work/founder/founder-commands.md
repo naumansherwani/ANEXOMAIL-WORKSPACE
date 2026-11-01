@@ -1916,3 +1916,7 @@ Status 07:36: sidebar poora scroll dekha (live), kamiyan CHAIRMAN-MAP section 6 
 Amal: (1) sidebar se "Workspace (user app)" group POORA hata do (User dashboard, Mail, People, Calendar, Work, CRM, Org, Analytics, Safety, ANEXOChat, AI, Speed, Founder, Admin) — sirf founder ke apne decks; user-app features founder ko apne endpoints/gates par milenge (parity table), user pages nahi; (2) Stream health card Dashboard se hata do (refresh par laal hota tha); is qism ke "meta/telemetry" features founder ya user UI par nahi: sirf lamba-chalne wale asli live-wired features; (3) repo + context update.
 
 ## 1 Nov 07:42 PKT — note: 07:39/07:40 order logged twice (same text). Done = the 07:39 Amal above: user-app group removed, Stream-health card removed, telemetry writes OFF by default (FOUNDER_TELEMETRY=on to enable), no E113 needed. Founder-install only.
+
+## 1 Nov 07:44 PKT — founder (gussa, verbatim gist): lafz "khali" se nafrat; "100000000000 bar bola hai ... mujhe sirf live data wire working suna hai sirf aur sirf"
+RULE (permanent, replies + UI): lafz "khali"/"empty"/"nothing yet"/"Ready"/"waiting for first data" kabhi nahi. Har card/line mein asli live number ya asli live halat (count, last check time, chain status). Jahan source abhi nahi, wahan seedha batao "kab wire hoga" ya wire karo; kabhi "khali" nahi.
+Status 07:50: Inbox card + Recent changes ab hamesha live numbers; rule DONE mein.
