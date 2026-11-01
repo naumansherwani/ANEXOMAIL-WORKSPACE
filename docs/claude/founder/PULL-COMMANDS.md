@@ -199,3 +199,8 @@ founder-install.sh: `git -C /opt/anexomail-web fetch -q origin main && bash <(gi
 ## 1 Nov 07:00 PKT - 4b-2: founder-install.sh only (Rust: live tick + /founder/v1/live/stream). No SQL, no UI change.
 - 1 Nov 06:40: 4b-2 founder-install DONE by founder. Nothing pending to pull until 4b-3 code.
 ## 1 Nov 07:20 PKT - 4b-3 (UI + kernel verify of SSE frames): founder-install.sh only. No SQL, no Rust change.
+
+## 1 Nov 08:30 PKT — 4b-3 + 4b-4 (SQL pehle, phir Rust+SPA). Founder ke liye 2 commands:
+1) SQL (E111 + CHECK): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E111_founder_channels_telemetry CHECK_E111 2>&1 | tail -25`  (9 ok = t)
+2) Rust + SPA: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh)`  (4b-3 UI + 4b-4 Rust/UI)
+Rollback: env FOUNDER_TELEMETRY=off (telemetry writes band; registry + snapshot_v2 chalte rehte hain).

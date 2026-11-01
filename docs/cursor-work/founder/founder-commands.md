@@ -1885,3 +1885,6 @@ Founder pasted founder-install (75 tests OK, alive). Order: "sab kuch update ker
 
 ## 1 Nov 06:41 PKT
 "haan hai meri ... codes super advance level ... pull command technology ke hisab se" -> 4b-3 coded (UI + kernel), pull = founder-install.sh only.
+
+## 1 Nov 06:45 PKT — founder: "sql hamesha dalo her phase main super advance level kam se kam 800lines pe"
+Amal: har phase mein SQL (E-number + CHECK) >= ~800 asli lines. 4b-4 = E111_founder_channels_telemetry.sql (801 lines) + CHECK_E111.sql. Pull order: sql-run.sh pehle, phir founder-install.sh.

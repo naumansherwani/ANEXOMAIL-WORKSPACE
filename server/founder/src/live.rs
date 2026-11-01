@@ -45,20 +45,43 @@ pub fn sse_frame(id: Option<i64>, event: &str, data: &str) -> String {
 fn now_s() -> i64 { std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0) }
 
 /// Start the single process-wide tick. Safe to call once from main. FOUNDER_LIVE_TICK=off disables it (rollback switch).
+/// E111 telemetry on? `FOUNDER_TELEMETRY=off` is the rollback switch (registry + snapshot_v2 keep working, only the writes stop).
+pub fn telemetry_on() -> bool { std::env::var("FOUNDER_TELEMETRY").map(|v| v != "off").unwrap_or(true) }
+
+/// Open a stream session row. None = telemetry off / E111 missing / database slow (2 s cap): never blocks or breaks the stream.
+pub async fn session_open(sb: &Sb, kind: &str) -> Option<i64> {
+    if !telemetry_on() { return None; }
+    let r = tokio::time::timeout(Duration::from_secs(2), sb.rpc("founder_live_session_open", json!({"p_auth_kind": kind}))).await.ok()??;
+    r.as_i64()
+}
+
+/// Close it with the real reason and frame count. Fire-and-forget (spawned): the closing path never waits for the database.
+pub async fn session_close(sb: &Sb, id: Option<i64>, reason: &'static str, frames: i32) {
+    let Some(id) = id else { return };
+    let sb = sb.clone();
+    tokio::spawn(async move { let _ = sb.rpc("founder_live_session_close", json!({"p_id": id, "p_reason": reason, "p_frames": frames})).await; });
+}
+
 pub fn start(sb: Sb) {
     if std::env::var("FOUNDER_LIVE_TICK").map(|v| v == "off").unwrap_or(false) { eprintln!("founder: live tick OFF (FOUNDER_LIVE_TICK=off)"); return; }
     let hub = hub();
     tokio::spawn(async move {
+        if telemetry_on() { let _ = sb.rpc("founder_live_session_sweep", json!({})).await; } // streams left "open" by a crashed/restarted process -> orphan
         let mut iv = tokio::time::interval(TICK_EVERY);
         iv.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
         let mut fails = 0u32;
         loop {
             iv.tick().await;
+            let t0 = std::time::Instant::now();
             let t = match sb.rpc("founder_live_tick", json!({"p_record": true})).await.and_then(|v| parse_tick(&v, now_s())) {
                 Some(t) => { if fails > 0 { eprintln!("founder: live tick recovered after {fails} failures"); } fails = 0; t }
                 None => { fails += 1; if fails == 1 || fails % 60 == 0 { eprintln!("founder: live tick failed ({fails} in a row) - E109 missing or database not answering"); }
                           Tick { version: hub.last.lock().ok().and_then(|g| g.as_ref().map(|x| x.version)).unwrap_or(0), changed: vec![], at_s: now_s(), ok: false } }
             };
+            if telemetry_on() {
+                let (sb2, ok, ms) = (sb.clone(), t.ok, t0.elapsed().as_millis().min(600_000) as i64);
+                tokio::spawn(async move { let _ = sb2.rpc("founder_live_tick_report", json!({"p_ok": ok, "p_ms": ms})).await; });
+            }
             if let Ok(mut g) = hub.last.lock() { *g = Some(t.clone()); }
             let _ = hub.tx.send(t); // Err = nobody is listening: fine
         }

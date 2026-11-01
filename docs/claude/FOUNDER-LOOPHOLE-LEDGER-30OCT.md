@@ -84,3 +84,4 @@ Status: CODE DONE, NOT GREEN. Order: sql-run (E110) -> awam pull.sh (auth.ts) ->
 - 4b-2 1 Nov 07:00: code done (live.rs + /live/stream, 75 tests, mock e2e); awaiting founder-install; green proof comes with 4b-3 in Chrome
 - 4b-2 INSTALLED 1 Nov 06:38 (founder paste). Green proof with 4b-3 in Chrome.
 - 4b-3 1 Nov 07:20: SPA live stream code done (sse.ts, livefeed.ts, Surface Live feed chip + Recent changes), awaiting founder-install + Chrome proof
+- 1 Nov 08:30 L6 (closed in code, needs install): hard-coded pending_channels in bridge.rs -> registry (E111 founder_channels_pending); response says registry "db" or "missing" so a fallback never pretends.

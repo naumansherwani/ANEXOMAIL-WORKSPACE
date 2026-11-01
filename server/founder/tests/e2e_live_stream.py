@@ -6,7 +6,7 @@ from cryptography.hazmat.primitives.asymmetric.utils import decode_dss_signature
 BIN=sys.argv[1]; UID="11111111-2222-3333-4444-555555555555"
 b64=lambda b: base64.urlsafe_b64encode(b).rstrip(b"=").decode()
 KEY=ec.generate_private_key(ec.SECP256R1()); N=KEY.public_key().public_numbers()
-calls={"tick":0}
+calls={"tick":0,"report":[],"open":0,"close":[],"sweep":0,"v2":0,"pending":0}
 class H(http.server.BaseHTTPRequestHandler):
     def log_message(s,*a): pass
     def send_j(s,o):
@@ -20,6 +20,11 @@ class H(http.server.BaseHTTPRequestHandler):
         name=s.path.rsplit("/",1)[1]
         if name=="founder_live_tick":
             calls["tick"]+=1; return s.send_j({"version": 0 if calls["tick"]<2 else 2, "changed": [] if calls["tick"]<2 else ["leads"]})
+        if name=="founder_live_snapshot_v2": calls["v2"]+=1; return s.send_j({"version":0,"sources":[],"trouble":{"level":"ok","items":[]},"pending_channels":["support"],"channels":[],"tick_health":{"level":"unknown"}})
+        if name=="founder_live_tick_report": calls["report"].append(body); return s.send_j(None)
+        if name=="founder_live_session_open": calls["open"]+=1; return s.send_j(41)
+        if name=="founder_live_session_close": calls["close"].append(body); return s.send_j(True)
+        if name=="founder_live_session_sweep": calls["sweep"]+=1; return s.send_j(0)
         if name=="founder_live_snapshot": return s.send_j({"version":0,"sources":[],"trouble":{"level":"ok","items":[]}})
         if name=="founder_live_since": return s.send_j({"version":2,"events":[{"id":1,"source":"leads","kind":"change"},{"id":2,"source":"leads","kind":"change"}],"gap":False})
         s.send_j(None)
@@ -40,4 +45,10 @@ while time.time()-t0<13:
 print(frames)
 try: urllib.request.urlopen(urllib.request.Request(f"http://127.0.0.1:{fport}/founder/v1/live/stream"),timeout=5)
 except Exception as e: print("no token ->",getattr(e,"code",e))
+resp.close(); time.sleep(0.6)
+print("TELEMETRY", {"v2":calls["v2"],"sweep":calls["sweep"],"open":calls["open"],"reports":len(calls["report"]),"close":calls["close"]})
+assert calls["v2"]>=1 and calls["sweep"]==1 and calls["open"]==1, "snapshot_v2/sweep/session_open not called"
+assert len(calls["report"])>=2 and all(set(r)=={"p_ok","p_ms"} for r in calls["report"]), "tick_report missing or wrong shape"
+assert len(calls["close"])==1 and calls["close"][0]["p_id"]==41 and calls["close"][0]["p_reason"] in ("client_gone","slow_client") and calls["close"][0]["p_frames"]>=3, calls["close"]
+print("E2E TELEMETRY OK")
 pr.terminate(); print(pr.stderr.read()[-400:])

@@ -146,19 +146,21 @@ async fn bridge_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Respons
     if let Err(code) = authed(&st, &h).await { return code.into_response(); }
     let sb = st.sb.as_ref().unwrap();
     let path = std::env::var("EXPIRY_WATCH_FILE").unwrap_or_else(|_| "/var/lib/anexomail/expiry-watch.json".into());
-    let (accs, target, queue, leads, expiry, polar_hook) = tokio::join!(
+    let (accs, target, queue, leads, expiry, polar_hook, pending) = tokio::join!(
         sb.rows("revenue_accounts?select=status,mrr_gbp"),
         sb.rows("revenue_targets?select=target_gbp&order=month.desc&limit=1"),
         sb.count("mail_outbox?select=id&state=in.(queued,failed)"),
         sb.count("revenue_leads?select=id&stage=eq.new"),
         read_expiry(&path),
         hook_view(&st),
+        sb.rpc("founder_channels_pending", json!({})),
     );
+    let pending = pending.as_ref().and_then(bridge::pending_from);
     let tgt = target.and_then(|r| r.first().cloned()).and_then(|r| r.get("target_gbp").and_then(|v| v.as_f64().or_else(|| v.as_str().and_then(|s| s.parse().ok()))));
     signed(&st, json!({
         "money": bridge::money(accs.as_deref(), tgt),
         "trouble": bridge::trouble(queue, expiry.as_ref()),
-        "voice": bridge::voice(leads),
+        "voice": bridge::voice(leads, pending),
         "polar": st.polar.view(now_s()),
         "polar_hook": polar_hook,
     }))
@@ -249,10 +251,14 @@ async fn hostguard_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Resp
 async fn live_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
     if let Err(code) = authed(&st, &h).await { return code.into_response(); }
     let sb = st.sb.as_ref().unwrap();
-    match sb.rpc("founder_live_snapshot", json!({})).await {
-        Some(v) if v.is_object() => signed(&st, v),
-        _ => signed(&st, live_missing()),
-    }
+    signed(&st, live_snapshot(sb).await)
+}
+
+/// The one snapshot used by /live and the stream's first frame: E111 `founder_live_snapshot_v2` (channels + reliability + tick health); if E111 is not
+/// installed it falls back to the E109 `founder_live_snapshot`; if that is missing too, the answer says so (never invented).
+async fn live_snapshot(sb: &data::Sb) -> Value {
+    if let Some(v) = sb.rpc("founder_live_snapshot_v2", json!({})).await { if v.is_object() { return v; } }
+    match sb.rpc("founder_live_snapshot", json!({})).await { Some(v) if v.is_object() => v, _ => live_missing() }
 }
 
 /// 4b-2: SSE stream of signed frames. Connect = `snapshot` frame (everything now), then a `tick` frame per tick (+ an `events` frame with the real changes
@@ -266,36 +272,44 @@ async fn live_stream_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Re
     let mut last_id: i64 = h.get("last-event-id").and_then(|v| v.to_str().ok()).and_then(|v| v.parse().ok()).unwrap_or(0);
     let mut rx = hub.tx.subscribe(); // subscribe BEFORE the snapshot so no tick is missed in between
     let (tx, body_rx) = tokio::sync::mpsc::channel::<axum::body::Bytes>(8);
+    let kind = if st.ft.is_some() { "device" } else { "legacy" };
     tokio::spawn(async move {
         let _slot = slot;
-        let send = |frame: String| tx.try_send(axum::body::Bytes::from(frame)).is_ok(); // full queue = slow client: drop it, it reconnects with Last-Event-ID
-        let snap = match sb.rpc("founder_live_snapshot", json!({})).await { Some(v) if v.is_object() => v, _ => live_missing() };
+        let sid = live::session_open(&sb, kind).await; // E111 telemetry, fire-and-forget: None = off or not installed, the stream is unaffected
+        let mut frames: i32 = 0;
+        let reason: &'static str = async {
+        let gone = || if tx.is_closed() { "client_gone" } else { "slow_client" }; // receiver dropped = browser left; queue full = it could not keep up
+        let mut send = |frame: String| { frames += 1; tx.try_send(axum::body::Bytes::from(frame)).is_ok() }; // full queue = slow client: drop it, it reconnects with Last-Event-ID
+        let snap = live_snapshot(&sb).await;
         if let Some(v) = snap.get("version").and_then(|v| v.as_i64()) { last_id = v; }
         let line = |st: &St, d: &Value| serde_json::to_string(&envelope(st, d)).unwrap_or_default();
-        if !send(live::sse_frame(Some(last_id), "snapshot", &line(&st, &snap))) { return; }
+        if !send(live::sse_frame(Some(last_id), "snapshot", &line(&st, &snap))) { return gone(); }
         let end = tokio::time::Instant::now() + live::MAX_LIFETIME;
         let mut hb = tokio::time::interval(live::HEARTBEAT);
         hb.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Delay);
         hb.tick().await;
         loop {
             tokio::select! {
-                _ = tokio::time::sleep_until(end) => return,
-                _ = hb.tick() => { if !send(": hb\n\n".to_string()) { return; } }
+                _ = tokio::time::sleep_until(end) => return "lifetime",
+                _ = tx.closed() => return "client_gone",
+                _ = hb.tick() => { if !send(": hb\n\n".to_string()) { return gone(); } }
                 r = rx.recv() => match r {
                     Ok(t) => {
-                        if !send(live::sse_frame(Some(t.version), "tick", &line(&st, &live::tick_json(&t)))) { return; }
+                        if !send(live::sse_frame(Some(t.version), "tick", &line(&st, &live::tick_json(&t)))) { return gone(); }
                         if t.ok && t.version > last_id {
                             if let Some(d) = sb.rpc("founder_live_since", json!({"p_after": last_id, "p_limit": 100})).await {
                                 if let Some(v) = d.get("version").and_then(|v| v.as_i64()) { last_id = v.max(last_id); }
-                                if !send(live::sse_frame(Some(last_id), "events", &line(&st, &d))) { return; }
+                                if !send(live::sse_frame(Some(last_id), "events", &line(&st, &d))) { return gone(); }
                             }
                         }
                     }
-                    Err(tokio::sync::broadcast::error::RecvError::Lagged(_)) => return, // fell behind: end, the client reconnects and gets a fresh snapshot
-                    Err(_) => return,
+                    Err(tokio::sync::broadcast::error::RecvError::Lagged(_)) => return "lagged", // fell behind: end, the client reconnects and gets a fresh snapshot
+                    Err(_) => return "server_stop",
                 }
             }
         }
+        }.await;
+        live::session_close(&sb, sid, reason, frames).await;
     });
     let mut res = axum::body::Body::from_stream(live::RxStream(body_rx)).into_response();
     let hd = res.headers_mut();

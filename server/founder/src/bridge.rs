@@ -47,16 +47,53 @@ pub fn trouble(mail_queue: Option<i64>, expiry: Option<&Value>) -> Value {
 }
 
 /// AWAM KI AWAAZ: naye leads (revenue_leads stage=new); glitch/support channel baad ke phase mein.
-pub fn voice(new_leads: Option<i64>) -> Value {
+/// `pending` = answer of `founder_channels_pending()` (E111, the channel registry). None = E111 not installed / not answering: the OLD fixed list is shown
+/// and the answer says `registry: "missing"` so nothing pretends the database confirmed it.
+pub fn voice(new_leads: Option<i64>, pending: Option<Vec<String>>) -> Value {
+    let (list, reg) = match pending {
+        Some(p) => (p, "db"),
+        None => (vec!["glitch".to_string(), "support".to_string(), "company_mail".to_string()], "missing"),
+    };
     match new_leads {
-        None => json!({"connected": false, "note": "cannot reach revenue_leads"}),
-        Some(n) => json!({"connected": true, "new_leads": n, "pending_channels": ["glitch", "support", "company_mail"]}),
+        None => json!({"connected": false, "note": "cannot reach revenue_leads", "pending_channels": list, "registry": reg}),
+        Some(n) => json!({"connected": true, "new_leads": n, "pending_channels": list, "registry": reg}),
     }
+}
+
+/// Read the registry answer: a JSON array of channel keys. Anything else (object with "error", numbers, bad keys) = None, never guessed.
+pub fn pending_from(v: &Value) -> Option<Vec<String>> {
+    let a = v.as_array()?;
+    let mut out = Vec::with_capacity(a.len());
+    for x in a {
+        let k = x.as_str()?;
+        if k.len() < 2 || k.len() > 41 || !k.starts_with(|c: char| c.is_ascii_lowercase()) || !k.chars().all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '_') { return None; }
+        out.push(k.to_string());
+    }
+    Some(out)
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn pending_reads_only_clean_key_arrays() {
+        assert_eq!(pending_from(&json!(["glitch", "support"])), Some(vec!["glitch".to_string(), "support".to_string()]));
+        assert_eq!(pending_from(&json!([])), Some(vec![]));
+        assert_eq!(pending_from(&json!({"error": "42883"})), None);
+        assert_eq!(pending_from(&json!([1, 2])), None);
+        assert_eq!(pending_from(&json!(["Bad Key"])), None);
+        assert_eq!(pending_from(&json!(["a"])), None);
+    }
+    #[test]
+    fn voice_says_where_the_list_came_from() {
+        let db = voice(Some(3), Some(vec!["support".to_string()]));
+        assert_eq!(db["registry"], "db");
+        assert_eq!(db["pending_channels"], json!(["support"]));
+        let old = voice(Some(3), None);
+        assert_eq!(old["registry"], "missing");
+        assert_eq!(old["pending_channels"].as_array().map(|a| a.len()), Some(3));
+        assert_eq!(voice(None, Some(vec![]))["connected"], false);
+    }
     #[test]
     fn money_sums_only_active() {
         let rows = vec![
