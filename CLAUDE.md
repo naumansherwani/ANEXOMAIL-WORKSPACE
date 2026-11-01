@@ -1,3 +1,9 @@
+# >>> CLAUDE: AFTER ANY COMPACTION OR NEW CHAT, DO THIS BEFORE ANYTHING ELSE (founder 2 Nov 03:14 PKT) <<<
+> 1. Read `AGENTS.md` (Rules 1-70) and `docs/claude/founder/CODES/00-README-RULES.md` (FC1-FC42).
+> 2. Read `docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` (line 13 = latest stamp, bottom = newest checkpoint) and `docs/cursor-work/founder/founder-commands.md`.
+> 3. Work by the LETTERED blueprint `docs/claude/BLUEPRINT-ABC-01NOV.md` (Rule 0: strict letter order, GREEN only with pasted proof). Awam rules: `docs/claude/ONE-ORDER-27OCT.md`.
+> 4. Talk to the founder in Roman Urdu, call him "Aap" / "Nauman bhai", short. End every reply with the Rule-70 technology table. Never duplicate what exists (grep the repo first). Never write fake GREEN.
+
 # CLAUDE.md — read AGENTS.md, but this block first
 
 > ## ⚠ TECHNOLOGY RULES — READ THIS FIRST, BEFORE ANY FOUNDER WORK (founder 28 Oct 2026 12:47 PKT: "technology Claude ke top par likho")

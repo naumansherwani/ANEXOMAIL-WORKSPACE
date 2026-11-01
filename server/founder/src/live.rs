@@ -88,7 +88,7 @@ pub fn start(sb: Sb) {
                 let sb4 = sb.clone();
                 tokio::spawn(async move { if let Some(v) = sb4.rpc("founder_settings_schedule_tick", json!({})).await { if crate::settings_s2::tick_busy(&v) { eprintln!("founder: scheduled settings tick {v}"); } } }); // E113: apply due changes, roll back unconfirmed ones
             }
-            if n_tick % 12 == 0 { let sb3 = sb.clone(); tokio::spawn(async move { let _ = crate::ledger::auto_seal(&sb3).await; }); } // ~60 s: seal the audit ledger when the policy says it is due (E107)
+            if n_tick % 12 == 0 { let sb3 = sb.clone(); tokio::spawn(async move { let _ = crate::ledger::auto_seal(&sb3).await; let _ = crate::ledger::auto_verify(&sb3).await; }); } // ~60 s: seal the audit ledger when the policy says it is due (E107)
             if let Ok(mut g) = hub.last.lock() { *g = Some(t.clone()); }
             let _ = hub.tx.send(t); // Err = nobody is listening: fine
         }

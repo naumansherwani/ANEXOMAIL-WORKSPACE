@@ -32,6 +32,16 @@ pub fn parse_proof(q: Option<&str>) -> Result<ProofQ, &'static str> {
     Ok(ProofQ { seq, upto })
 }
 
+/// `id=<n>` only: one seal (checkpoint) by number. The browser asks for the seal it pinned earlier to prove history was not rewritten.
+pub fn parse_seal(q: Option<&str>) -> Result<i64, &'static str> {
+    let mut id = None;
+    for pair in q.unwrap_or("").split('&').filter(|p| !p.is_empty()) {
+        let (k, v) = pair.split_once('=').unwrap_or((pair, ""));
+        match k { "id" => id = Some(num(v, "invalid id")?), _ => return Err("unknown parameter") }
+    }
+    id.ok_or("missing id")
+}
+
 /// `from=<n>&to=<n>`, at most EXPORT_MAX rows.
 pub fn parse_range(q: Option<&str>) -> Result<RangeQ, &'static str> {
     let (mut from, mut to) = (None, None);
@@ -77,12 +87,41 @@ pub async fn auto_seal(sb: &crate::data::Sb) -> Option<bool> {
     Some(r.get("created").and_then(|c| c.as_bool()).unwrap_or(false))
 }
 
+/// G4 (E120): is a FULL ledger check (chain + seals re-hashed) due? Yes when none has ever run, or the last one is older than the policy interval.
+/// Pure on purpose (unit tested). A pulse without `policy` (E120 not installed) is never "due": we do not call a door that does not exist.
+pub fn verify_due(pulse: &Value) -> bool {
+    let Some(every) = pulse.pointer("/policy/verify_every_secs").and_then(|v| v.as_i64()) else { return false };
+    match pulse.get("full_check") {
+        None | Some(Value::Null) => true,
+        Some(fc) => fc.get("age_s").and_then(|a| a.as_i64()).map_or(true, |age| age >= every),
+    }
+}
+
+/// Called from the live tick (every ~60 s) next to `auto_seal`: when a full check is due, run it (SQL does the real re-hash and records the result).
+/// SQL rate-limits itself (one run per 60 s), so a restart loop cannot hammer the database. Returns Some(ran).
+pub async fn auto_verify(sb: &crate::data::Sb) -> Option<bool> {
+    let p = sb.rpc("founder_audit_merkle_pulse", json!({})).await?;
+    if !verify_due(&p) { return Some(false); }
+    let r = sb.rpc("founder_audit_verify_record", json!({"p_source": "rust"})).await?;
+    Some(r.get("ran").and_then(|c| c.as_bool()).unwrap_or(false))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use super::merkle::*;
     use sha2::{Digest, Sha256};
 
+    #[test]
+    fn seal_query_is_whitelisted() {
+        assert_eq!(parse_seal(Some("id=7")), Ok(7));
+        assert!(parse_seal(None).is_err());
+        assert!(parse_seal(Some("id=0")).is_err());
+        assert!(parse_seal(Some("id=-1")).is_err());
+        assert!(parse_seal(Some("id=1;drop")).is_err());
+        assert!(parse_seal(Some("id=1&x=2")).is_err());
+        assert!(parse_seal(Some("id=1234567890123456789")).is_err());
+    }
     #[test]
     fn proof_query_is_whitelisted() {
         assert_eq!(parse_proof(Some("seq=5")).unwrap(), ProofQ { seq: 5, upto: None });
@@ -110,6 +149,18 @@ mod tests {
     fn rust_second_witness_accepts_a_good_export() {
         for n in [1, 2, 3, 7, 8, 9, 33] { let c = check_export(&export_of(n)); assert_eq!(c["all_ok"], true, "n={n}"); assert_eq!(c["ok"], n as u64); }
     }
+    #[test]
+    fn full_check_is_due_when_never_run_or_older_than_the_policy() {
+        let p = |fc: Value| json!({"policy": {"verify_every_secs": 1800}, "full_check": fc});
+        assert!(verify_due(&p(Value::Null)), "never run -> due");
+        assert!(verify_due(&p(json!({"age_s": 1800}))), "exactly the interval -> due");
+        assert!(verify_due(&p(json!({"age_s": 99999}))), "old -> due");
+        assert!(!verify_due(&p(json!({"age_s": 1799}))), "fresh -> not due");
+        assert!(verify_due(&p(json!({"chain_ok": true}))), "a result with no age is not trusted as fresh");
+        assert!(!verify_due(&json!({"full_check": null})), "E120 not installed (no policy) -> never call the missing door");
+        assert!(!verify_due(&json!({"connected": false})), "E107 missing -> not due");
+    }
+
     #[test]
     fn rust_second_witness_catches_every_kind_of_tamper() {
         let mut ex = export_of(9);

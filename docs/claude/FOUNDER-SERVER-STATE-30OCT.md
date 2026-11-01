@@ -275,3 +275,5 @@ S1b Rust + UI pushed, NOT yet installed. After founder-install.sh: Appearance ta
 - 1 Nov 15:30 founder 15:21: B 'built; status old' unclear -> B is GREEN (E108 CHECK 6 OK on server + founder-install, Settings in his Chrome); BLUEPRINT-ABC rule 0 added: strict LETTER ORDER, next = first non-GREEN (C2 parked, E lockfile/L5, G4, I2, then J3).
 
 - 1 Nov 15:35 founder 15:22: the C2 host-guard PARKED rule must also be in the awam blueprint. DONE: ONE-ORDER row A8 + BLUEPRINT-ABC W5 + C-row cross reference.
+
+- 2 Nov 03:50 founder 03:14 G4 'haan' + 'pehle super advance socho, har loophole, technology read kero' + CLAUDE.md top block. DONE (sandbox): repo read -> the gauge already existed GREEN (5a) so G4 = hardening E120 (8 loopholes, docs/claude/G4-LEDGER-GAUGE-HARDENING-02NOV.md, honest limits G5). SQL CHECK_E120 4/4 local, Rust 122 tests, UI 34 tests, tsc 0, vite build OK. NOT GREEN until server (sql-run E120, founder-install) + Chrome.

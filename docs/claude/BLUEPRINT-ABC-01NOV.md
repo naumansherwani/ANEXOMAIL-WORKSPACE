@@ -12,7 +12,7 @@ One letter per step, in build order. **GREEN** only where the proof exists (serv
 | **D** | T1 UI stack: TypeScript, TanStack Router, Tailwind 4.2, shadcn | [3a] | **GREEN** (425ec14) |
 | **E** | Loophole fixes L1-L12 | [3b] | **GREEN** except L5 (parked) and lockfile (open, step 4e) |
 | **F** | WASM kernel verify in the browser (Rust kernel, Worker, pinned .wasm) | [4] | **GREEN** (Chrome) |
-| **G** | Audit + Merkle: G1 SQL E107 **GREEN** · G2 Rust + UI card **GREEN** · G3 kernel `merkle@1` **GREEN** · G4 Ledger Integrity Gauge (I1) | [5], [5a] | G1-G3 **GREEN**, G4 pending |
+| **G** | Audit + Merkle: G1 SQL E107 **GREEN** · G2 Rust + UI card **GREEN** · G3 kernel `merkle@1` **GREEN** · G4 Ledger seal gauge hardening (E120; the gauge itself is GREEN since 1 Nov 09:00, G4 closes its loopholes: written + tested 2 Nov, server + Chrome pending; honest limits = G5 external anchor / kernel consistency proof, `G4-LEDGER-GAUGE-HARDENING-02NOV.md`) (I1) | [5], [5a] | G1-G3 **GREEN**, G4 pending |
 | **H** | Settings S2: Time machine + Drift | [6] | **GREEN** (server + Chrome 11:02) |
 | **I** | Settings S1b: key registry, Appearance, Ambient Studio. I1 SQL E114 **GREEN** · I2 Rust + UI written, install + Chrome pending | [6b] | I1 GREEN, I2 pending |
 | **J** | Passkey + Privacy: J1 SQL E117 **GREEN** · J2 SQL E118 chairman protocol **GREEN** · J3 Rust `webauthn-rs` (7-2) · J4 UI Privacy tab (7-3) · J5 enforce T2/T3, remove `FOUNDER_PASSWORD` (7-4) · J6 mobile flare + cancel (7-5) | [7] | J1, J2 **GREEN**; J3-J6 pending |

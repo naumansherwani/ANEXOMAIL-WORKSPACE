@@ -463,6 +463,13 @@ async fn merkle_proof_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap
     let sb = st.sb.as_ref().unwrap();
     match sb.rpc("founder_audit_merkle_proof", json!({"p_seq": q.seq, "p_upto": q.upto})).await { Some(v) if v.is_object() => signed(&st, v), _ => signed(&st, ledger::missing()) }
 }
+/// G4 (E120): one seal by number, so the browser can compare the seal it pinned earlier with what the server says now (rollback / rewrite check).
+async fn merkle_seal_get_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
+    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    let id = match ledger::parse_seal(uri.query()) { Ok(i) => i, Err(e) => return (StatusCode::BAD_REQUEST, Json(json!({"error": e}))).into_response() };
+    let sb = st.sb.as_ref().unwrap();
+    match sb.rpc("founder_audit_checkpoint_get", json!({"p_id": id})).await { Some(v) if v.is_object() => signed(&st, v), _ => signed(&st, ledger::missing()) }
+}
 /// Rows + proofs from SQL, then Rust checks every proof itself (second witness) before the browser kernel does its own.
 async fn merkle_export_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
     if let Err(code) = authed(&st, &h).await { return code.into_response(); }
@@ -586,6 +593,7 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/audit/proof", get(merkle_proof_ep))
         .route("/founder/v1/audit/export", get(merkle_export_ep))
         .route("/founder/v1/audit/checkpoint", axum::routing::post(merkle_seal_ep))
+        .route("/founder/v1/audit/seal", get(merkle_seal_get_ep))
         .route("/founder/v1/inbox", get(inbox_ep))
         .route("/founder/v1/inbox/list", get(inbox_list_ep))
         .route("/founder/v1/inbox/group", get(inbox_group_ep))

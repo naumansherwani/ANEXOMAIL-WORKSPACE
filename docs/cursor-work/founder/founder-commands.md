@@ -2156,3 +2156,8 @@ S1b RUST + UI WRITTEN (tarteeb se next, 1 Nov ~12:00): Rust = server/founder/src
 
 - 15:22 (founder, verbatim): "C2: host guard. Yeh PARKED hai ... yeh bhi rule hai jo awam side hai us ke blueprint main bhi likhna hai"
   STATUS: 1 Nov 15:35 founder 15:22: the C2 host-guard PARKED rule must also be in the awam blueprint. DONE: ONE-ORDER row A8 + BLUEPRINT-ABC W5 + C-row cross reference.
+
+- 2 Nov 03:14 (founder, verbatim gist): "G4 ... meri haan hai. aur lekin pehle super advance codes socho jitna soch saktay ho socho us ke andar her ek choti si choti loophole cover ho jaye. technology read kero. compact chat anay wala hai toh sab se uper claude ke liye likho ke rules and chat context read kero." + "pull.sh (3 awam files) ki command do".
+  STATUS 2 Nov: CLAUDE.md top block added (read rules + chat context first). G4 = REPO READ: the Dashboard "Ledger seal" gauge (5a) already exists and is GREEN in Chrome (1 Nov 09:00), so G4 is NOT a new gauge; it closes the gauge's loopholes (E120).
+
+  STATUS 03:50: 2 Nov 03:50 founder 03:14 G4 'haan' + 'pehle super advance socho, har loophole, technology read kero' + CLAUDE.md top block. DONE (sandbox): repo read -> the gauge already existed GREEN (5a) so G4 = hardening E120 (8 loopholes, docs/claude/G4-LEDGER-GAUGE-HARDENING-02NOV.md, honest limits G5). SQL CHECK_E120 4/4 local, Rust 122 tests, UI 34 tests, tsc 0, vite build OK. NOT GREEN until server (sql-run E120, founder-install) + Chrome.

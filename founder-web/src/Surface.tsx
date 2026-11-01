@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { get, warm, deviceStatus } from "./api";
 import { merkleVerify, trust } from "./kernel";
+import { asSeal, judgePin, ledgerGauge, loadPin, savePin, shouldAdvancePin, type PinVerdict, type Proof } from "./sealpin";
 import { fmtHM, fmtTime } from "./city";
 import { onLiveChange, useLive, type LiveStatus } from "./livefeed";
 import { HealthOrb, type Tone } from "./Scene3D";
@@ -77,22 +78,50 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
 
   const by = (p: string) => rows?.find((r) => r.ep.path === p && r.ep.method === "GET");
   // Step 5K: the newest audit entries are proven against the sealed root by the WASM kernel in THIS browser (merkle@1), not just by the server.
-  const [lp, setLp] = useState<{ n: number; ok: number } | null>(null);
+  // G4 (E120): the browser proves the 5 newest entries AND 2 random older ones against the stored seal, and checks the seal it remembered
+  // (pin) still reads the same on the server: a rolled-back or rewritten history cannot look fine. All pure logic lives in sealpin.ts (tested).
+  const [lp, setLp] = useState<Proof>(null);
+  const [pinV, setPinV] = useState<PinVerdict | null>(null);
   const mkRows = by("/founder/v1/audit/merkle")?.data?.pulse?.rows as number | undefined;
+  const mkSeal = asSeal(by("/founder/v1/audit/merkle")?.data?.pulse?.last_checkpoint);
+  const mkSealKey = mkSeal ? `${mkSeal.id}:${mkSeal.cp_hash}` : "none";
   useEffect(() => {
     if (!mkRows || mkRows < 1) return;
     let off = false;
     void (async () => {
       try {
         const r = await get(`/founder/v1/audit/export?from=${Math.max(1, mkRows - 4)}&to=${mkRows}`), ex = r.data;
-        if (!ex?.rows?.length || !ex.root) return;
-        let ok = 0;
-        for (const row of ex.rows) if (await merkleVerify(row.hash, (row.path || []).map((x: { s: string; h: string }) => `${x.s}:${x.h}`).join(","), ex.root)) ok++;
-        if (!off) setLp({ n: ex.rows.length, ok });
-      } catch { if (!off) setLp(null); }
+        if (!ex?.rows?.length || !ex.root) throw new Error("no export");
+        let n = 0, ok = 0;
+        for (const row of ex.rows) { n++; if (await merkleVerify(row.hash, (row.path || []).map((x: { s: string; h: string }) => `${x.s}:${x.h}`).join(","), ex.root)) ok++; }
+        // two random OLDER entries, proven against the root stored in the seal itself (so an old row that was changed no longer fits the seal)
+        if (mkSeal && mkSeal.upto_seq > 8) {
+          for (let k = 0; k < 2; k++) {
+            const seq = 1 + Math.floor(Math.random() * (mkSeal.upto_seq - 5));
+            const pr = (await get(`/founder/v1/audit/merkle/proof?seq=${seq}&upto=${mkSeal.upto_seq}`)).data;
+            n++;
+            if (pr?.root === mkSeal.root && pr?.row_hash && await merkleVerify(pr.row_hash, (pr.path || []).map((x: { s: string; h: string }) => `${x.s}:${x.h}`).join(","), pr.root)) ok++;
+          }
+        }
+        if (!off) setLp({ n, ok });
+      } catch { if (!off) setLp("failed"); }
     })();
     return () => { off = true; };
-  }, [mkRows]);
+  }, [mkRows, mkSealKey]);
+  useEffect(() => {
+    let off = false;
+    void (async () => {
+      const pin = loadPin();
+      let pinnedNow: ReturnType<typeof asSeal> | "error" = null;
+      if (pin && mkSeal && mkSeal.id > pin.id) {
+        try { pinnedNow = asSeal((await get(`/founder/v1/audit/seal?id=${pin.id}`)).data) ?? "error"; } catch { pinnedNow = "error"; }
+      }
+      const v = judgePin(pin, mkSeal, pinnedNow);
+      if (shouldAdvancePin(v) && mkSeal) savePin(mkSeal);
+      if (!off) setPinV(v);
+    })();
+    return () => { off = true; };
+  }, [mkSealKey]);
   const acts: Act[] = by("/founder/v1/actions")?.data?.actions || [], actsOk = !!by("/founder/v1/actions")?.ok;
   const d = by("/founder/v1/bridge")?.data ?? d0; // the freshest verified Bridge answer (refreshed on every live change)
   const hg = by("/founder/v1/hostguard")?.data, ib = by("/founder/v1/inbox")?.data, mk = by("/founder/v1/audit/merkle")?.data, lv = L.snapshot ?? by("/founder/v1/live")?.data, au = by("/founder/v1/audit")?.data, pol = by("/founder/v1/finance/polar")?.data ?? d?.polar, ds = deviceStatus();
@@ -110,11 +139,7 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
     { name: "Signed answers", state: ks === "verified" ? "ok" : ks === "failed" ? "fail" : "unknown", text: ks === "verified" ? "Checked in this browser" : ks === "failed" ? "An answer failed the check and was hidden" : "Waiting for the first answer" },
     { name: "Approved device", state: ds.mode === "device" ? "ok" : "warn", text: ds.mode === "device" ? ds.label || "This device" : "No device token" },
     { name: "Audit ledger", state: !au ? "fail" : !au.connected ? "unknown" : au.chain_ok ? "ok" : "fail", text: !au ? "Not answering" : !au.connected ? au.note || "Not connected" : au.chain_ok ? `Chain intact${au.head ? `, entry ${au.head.seq}` : ""}` : `Chain broken at ${au.first_bad_seq}`, to: "audit" },
-    { name: "Ledger seal", state: !mk ? "fail" : mk.connected === false ? "unknown" : mk.pulse?.level === "fail" || (lp && lp.ok < lp.n) ? "fail" : mk.pulse?.level === "warn" ? "warn" : "ok",
-      chip: mk?.pulse?.last_checkpoint ? `#${mk.pulse.last_checkpoint.id}` : undefined,
-      text: !mk ? "Not answering" : mk.connected === false ? mk.note || "Install the E107 SQL step" : (mk.pulse?.last_checkpoint
-        ? `${mk.pulse.rows} entries, sealed up to entry ${mk.pulse.last_checkpoint.upto_seq} at ${fmtHM(mk.pulse.last_checkpoint.created_ms)}, ${mk.pulse.lag_rows} since`
-        : `${mk.pulse?.rows ?? 0} entries, the first seal comes at ${mk.pulse?.every_rows ?? "?"} new entries`) + (lp ? `. ${lp.ok} of ${lp.n} newest entries proven in this browser` : ""), to: "audit" },
+    { name: "Ledger seal", ...ledgerGauge(mk, lp, pinV, fmtHM), to: "audit" },
     { name: "Billing", state: !pol && !hk ? "fail" : pol?.connected ? (pol.stale ? "warn" : "ok") : subs?.connected ? "ok" : "unknown", text: pol?.connected ? `${pol.active_subscriptions ?? "?"} active subscriptions` : subs?.connected ? "Polar webhook live, API metrics not connected" : pol?.note || "Not connected", to: "finance" },
     { name: "Revenue records", state: !d ? "fail" : m?.connected ? "ok" : "unknown", text: !d ? "Not answering" : m?.connected ? `${m.active_accounts} active account${m.active_accounts === 1 ? "" : "s"}` : m?.note || "Not connected", to: "finance" },
     { name: "Customers", state: !d ? "fail" : v?.connected ? "ok" : "unknown", text: !d ? "Not answering" : v?.connected ? `${v.new_leads} new lead${v.new_leads === 1 ? "" : "s"}` : v?.note || "Not connected", to: "bridge" },

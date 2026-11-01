@@ -339,3 +339,11 @@ _(12:30 note: E116 was corrected after its first server run failed; run the S1d 
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -25`
 **3 — Server ops (test port 8443; dry run first, nothing changes):**
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-tls256.sh) 2>&1 | tail -25`
+
+## 2 Nov 03:50 - G4 ledger gauge hardening (E120). ONE command at a time, in this order
+**1 - SQL (E120):**
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E120_founder_ledger_gauge_hardening CHECK_E120 2>&1 | tail -20`
+**2 - Rust + SPA, after 1 is green (122 tests):**
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -25`
+**3 - Chrome:** Ctrl+Shift+R on the Dashboard. "Ledger seal" must show "full check ... entries intact" within ~2 minutes and "N of 7 entries proven in this browser".
+**Awam files (W2):** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
