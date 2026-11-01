@@ -13,6 +13,7 @@ mod ftoken;
 mod polar;
 mod settings;
 mod settings_s2;
+mod ambient;
 mod authcache;
 mod hostproof;
 mod live;
@@ -155,6 +156,32 @@ async fn s2_read(st: &S, h: &HeaderMap, rpc: &str, args: impl FnOnce(&str) -> Va
         Some(v) if !v.is_null() => signed(st, json!({"available": true, "data": v})),
         _ => signed(st, settings_s2::missing()),
     }
+}
+async fn amb_read(st: &S, h: &HeaderMap, rpc: &str, args: Value) -> axum::response::Response {
+    if let Err(code) = authed(st, h).await { return code.into_response(); }
+    match st.sb.as_ref().unwrap().rpc(rpc, args).await {
+        Some(v) if !v.is_null() => signed(st, json!({"available": true, "data": v})),
+        _ => signed(st, ambient::missing()),
+    }
+}
+async fn amb_catalog_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response { amb_read(&st, &h, "founder_ambient_catalog", json!({})).await }
+async fn amb_describe_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
+    let r = match ambient::parse_recipe(uri.query()) { Ok(r) => r, Err(e) => return bad(e) };
+    amb_read(&st, &h, "founder_ambient_describe", json!({"p_r": r.to_json()})).await
+}
+async fn amb_step_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
+    let r = match ambient::parse_recipe(uri.query()) { Ok(r) => r, Err(e) => return bad(e) };
+    let d = match ambient::parse_delta(uri.query()) { Ok(d) => d, Err(e) => return bad(e) };
+    amb_read(&st, &h, "founder_ambient_step", json!({"p_r": r.to_json(), "p_delta": d})).await
+}
+async fn amb_neighbours_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
+    let r = match ambient::parse_recipe(uri.query()) { Ok(r) => r, Err(e) => return bad(e) };
+    let n = match ambient::parse_each(uri.query()) { Ok(n) => n, Err(e) => return bad(e) };
+    amb_read(&st, &h, "founder_ambient_neighbours", json!({"p_r": r.to_json(), "p_each": n})).await
+}
+async fn amb_surprise_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
+    let n = match ambient::parse_entropy(uri.query()) { Ok(n) => n, Err(e) => return bad(e) };
+    amb_read(&st, &h, "founder_ambient_surprise", json!({"p_entropy": n})).await
 }
 async fn s2_history_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
     let q = match settings_s2::parse_history(uri.query()) { Ok(q) => q, Err(e) => return bad(e) };
@@ -531,6 +558,11 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/settings/schedule", axum::routing::post(s2_schedule_ep))
         .route("/founder/v1/settings/schedule/cancel", axum::routing::post(s2_cancel_ep))
         .route("/founder/v1/settings/schedule/confirm", axum::routing::post(s2_confirm_ep))
+        .route("/founder/v1/ambient/catalog", get(amb_catalog_ep))
+        .route("/founder/v1/ambient/describe", get(amb_describe_ep))
+        .route("/founder/v1/ambient/step", get(amb_step_ep))
+        .route("/founder/v1/ambient/neighbours", get(amb_neighbours_ep))
+        .route("/founder/v1/ambient/surprise", get(amb_surprise_ep))
         .route("/founder/v1/finance/polar", get(polar_ep))
         .route("/founder/v1/actions", get(actions_ep))
         .route("/founder/v1/audit", get(audit_ep))
@@ -657,7 +689,7 @@ mod tests {
     }
     #[tokio::test]
     async fn founder_routes_need_bearer() {
-        for path in ["/founder/v1/me", "/founder/v1/bridge", "/founder/v1/settings", "/founder/v1/settings/history", "/founder/v1/settings/at?t=1793000000000", "/founder/v1/settings/diff?from=1700000000000&to=1790000000000", "/founder/v1/settings/timeline", "/founder/v1/settings/drift", "/founder/v1/settings/pulse", "/founder/v1/settings/scheduled", "/founder/v1/settings/explain?key=personal.home", "/founder/v1/settings/blast?key=personal.home", "/founder/v1/finance/polar", "/founder/v1/actions", "/founder/v1/audit", "/founder/v1/hostguard", "/founder/v1/live", "/founder/v1/live/stream", "/founder/v1/inbox", "/founder/v1/inbox/list", "/founder/v1/inbox/group", "/founder/v1/audit/merkle", "/founder/v1/audit/merkle/stats", "/founder/v1/audit/proof?seq=1", "/founder/v1/audit/export?from=1&to=2"] {
+        for path in ["/founder/v1/ambient/catalog", "/founder/v1/ambient/describe?palette=60&pattern=1&speed=9&intensity=6&blend=0&seed=0", "/founder/v1/ambient/step?palette=60&pattern=1&speed=9&intensity=6&blend=0&seed=0&delta=1", "/founder/v1/ambient/neighbours?palette=60&pattern=1&speed=9&intensity=6&blend=0&seed=0", "/founder/v1/ambient/surprise?n=7", "/founder/v1/me", "/founder/v1/bridge", "/founder/v1/settings", "/founder/v1/settings/history", "/founder/v1/settings/at?t=1793000000000", "/founder/v1/settings/diff?from=1700000000000&to=1790000000000", "/founder/v1/settings/timeline", "/founder/v1/settings/drift", "/founder/v1/settings/pulse", "/founder/v1/settings/scheduled", "/founder/v1/settings/explain?key=personal.home", "/founder/v1/settings/blast?key=personal.home", "/founder/v1/finance/polar", "/founder/v1/actions", "/founder/v1/audit", "/founder/v1/hostguard", "/founder/v1/live", "/founder/v1/live/stream", "/founder/v1/inbox", "/founder/v1/inbox/list", "/founder/v1/inbox/group", "/founder/v1/audit/merkle", "/founder/v1/audit/merkle/stats", "/founder/v1/audit/proof?seq=1", "/founder/v1/audit/export?from=1&to=2"] {
             let r = app(st_with_sb()).oneshot(Request::get(path).body(Body::empty()).unwrap()).await.unwrap();
             assert_eq!(r.status(), 401, "{path}");
             let r = app(st_with_sb()).oneshot(Request::get(path).header("authorization", "Bearer a.b.c").body(Body::empty()).unwrap()).await.unwrap();

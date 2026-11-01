@@ -136,3 +136,49 @@ html.slim .nv{width:44px;height:44px;justify-content:center;padding:0}html.slim 
 .s2tbtn button{background:none;border:0;padding:6px 0;color:var(--dim);font:500 12px Inter,sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .s2tbtn button:hover,.s2tbtn button[aria-expanded="true"]{color:var(--fg)}
 @media (max-width:700px){.s2row{flex-direction:column;align-items:flex-start}.s2act{width:100%}.s2sel{min-width:100%}}
+
+/* ===== S1b Appearance (E114) — same options as the user app; the OS reduced-motion setting wins (see appearance.ts) ===== */
+html{zoom:var(--ts,1)}
+html[data-motion="none"] *,html[data-motion="none"] *::before,html[data-motion="none"] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+html[data-motion="reduced"] *,html[data-motion="reduced"] *::before,html[data-motion="reduced"] *::after{animation-iteration-count:1!important;animation-duration:.2s!important}
+html[data-tempo="fast"] *{transition-duration:.12s!important}
+html[data-tempo="slow"] *{transition-duration:.3s!important}
+html[data-density="compact"] .panel{padding:12px 14px}
+html[data-density="compact"] .setrow{padding-top:8px;padding-bottom:8px}
+html[data-density="compact"] .nv{padding-top:6px;padding-bottom:6px}
+html[data-focus="hc"] :focus-visible{outline:3px solid #fff!important;outline-offset:2px!important;box-shadow:0 0 0 6px #000!important}
+.seg{display:inline-flex;gap:2px;padding:2px;border:1px solid var(--line,#ffffff22);border-radius:10px;background:#ffffff0a;flex-wrap:wrap}
+.seg button{border:0;background:transparent;color:inherit;padding:6px 11px;border-radius:8px;font:inherit;font-size:.9em;cursor:pointer}
+.seg button.on{background:#ffffff22;font-weight:600}
+.seg button:disabled{opacity:.55;cursor:default}
+/* Ambient layer: one fixed wash behind the content (below it, above the aurora). Periods are never shorter than 0.5 s (<= 2 flashes a second). */
+.amb{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:var(--op,.7);mix-blend-mode:var(--blend,normal);will-change:transform,opacity;
+  background:radial-gradient(60vmax 60vmax at var(--ax,30%) var(--ay,30%),var(--c1),transparent 66%),radial-gradient(50vmax 50vmax at calc(100% - var(--ax,30%)) calc(100% - var(--ay,30%)),var(--c2),transparent 66%),conic-gradient(from var(--ang,0deg) at 50% 50%,var(--c3),transparent 40%,var(--c1) 70%,transparent);filter:blur(36px)}
+.amb[data-kind="breathe"]{animation:amb-breathe var(--per) ease-in-out infinite alternate}
+.amb[data-kind="wave"]{animation:amb-wave var(--per) ease-in-out infinite alternate}
+.amb[data-kind="sweep"]{animation:amb-sweep var(--per) linear infinite alternate}
+.amb[data-kind="ripple"]{animation:amb-ripple var(--per) ease-out infinite}
+.amb[data-kind="spin"]{animation:amb-spin var(--per) linear infinite}
+.amb[data-kind="drift"]{animation:amb-drift var(--per) ease-in-out infinite alternate}
+.amb[data-kind="pulse"]{animation:amb-pulse var(--per) ease-in-out infinite}
+.amb[data-kind="rise"]{animation:amb-rise var(--per) ease-in-out infinite alternate}
+.amb[data-kind="fall"]{animation:amb-fall var(--per) ease-in-out infinite alternate}
+@keyframes amb-breathe{from{transform:scale(1)}to{transform:scale(1.12)}}
+@keyframes amb-wave{from{transform:translateX(-6%)}to{transform:translateX(6%)}}
+@keyframes amb-sweep{from{transform:translateX(-12%) rotate(-2deg)}to{transform:translateX(12%) rotate(2deg)}}
+@keyframes amb-ripple{from{transform:scale(.9);filter:blur(36px)}to{transform:scale(1.2);filter:blur(52px)}}
+@keyframes amb-spin{to{transform:rotate(360deg) scale(1.4)}}
+@keyframes amb-drift{from{transform:translate(-4%,3%)}to{transform:translate(5%,-4%)}}
+@keyframes amb-pulse{0%,100%{opacity:calc(var(--op,.7)*.55)}50%{opacity:var(--op,.7)}}
+@keyframes amb-rise{from{transform:translateY(7%)}to{transform:translateY(-7%)}}
+@keyframes amb-fall{from{transform:translateY(-7%)}to{transform:translateY(7%)}}
+/* Ambient Studio picker */
+.ambdial{position:relative;height:150px;border-radius:16px;margin:10px 0;cursor:ew-resize;touch-action:none;display:flex;flex-direction:column;justify-content:flex-end;padding:14px 18px;color:#fff;text-shadow:0 1px 8px #0009;border:1px solid #ffffff2a;user-select:none;outline-offset:3px}
+.ambname{display:flex;gap:12px;align-items:baseline;font-size:1.25em}.ambname span{opacity:.85;font-size:.8em}
+.ambnum{opacity:.85;font-size:.85em;font-variant-numeric:tabular-nums}
+.ambrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.ambrow .grow{flex:1}
+.ambtweak{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:12px 0}
+.ambtweak label{display:flex;flex-direction:column;gap:4px;font-size:.85em;opacity:.95}
+.ambtweak select{background:#ffffff0f;color:inherit;border:1px solid #ffffff2a;border-radius:8px;padding:6px}
+.ambfavs{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.ambchip{width:34px;height:34px;border-radius:50%;border:2px solid #ffffff33;cursor:pointer}.ambchip.on{border-color:#fff}

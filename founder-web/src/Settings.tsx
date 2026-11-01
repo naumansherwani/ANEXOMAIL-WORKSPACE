@@ -7,6 +7,9 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Avatar, nameOf } from "./Profile";
 import { DriftSchedule, RowTools, TimeMachine } from "./SettingsS2";
+import { AmbientStudio, useCatalog } from "./AmbientStudio";
+import { APPEARANCE_DEFAULTS, applyAppearance, effectiveMotion, osReducedMotion, readAppearance, TEXT_SIZES, type Appearance } from "./appearance";
+import { valid as validRecipe, type Recipe } from "./ambient";
 
 // Founder Settings Center — S1 (plan: docs/claude/FOUNDER-SETTINGS-CENTER-PORT-28OCT.md). Every control here is wired to a real server setting (E108).
 const I: Record<string, ReactNode> = {
@@ -27,7 +30,7 @@ const Ico = ({ k }: { k: string }) => <svg viewBox="0 0 24 24" width="18" height
 const NAV: [string, string, string | null, string][] = [
   ["personal", "Personal", "Name, photo and home city", "personal"],
   ["workspace", "Workspace", "with Systems (F6)", "appearance"],
-  ["appearance", "Appearance", "Graphics and sidebar", "appearance"],
+  ["appearance", "Appearance", "Motion, text, density and ambient looks", "appearance"],
   ["notifications", "Notifications", "with Decide and Live Pulse (S4)", "appearance"],
   ["privacy", "Privacy", "after passkey (S3)", "appearance"],
   ["history", "Time machine", "Every change, one click to undo", "history"],
@@ -36,8 +39,12 @@ const NAV: [string, string, string | null, string][] = [
 ];
 const LIVE = new Set(["personal", "appearance", "history", "drift"]);
 
-type Props = { p: Prof | null; fx: boolean; setFx: (v: boolean) => void; slim: boolean; setSlim: (v: boolean) => void; reload: () => Promise<void> | void; go?: (v: string) => void };
-export function SettingsView({ p, fx, setFx, slim, setSlim, reload, go }: Props) {
+type Props = { p: Prof | null; fx: boolean; setFx: (v: boolean) => void; slim: boolean; setSlim: (v: boolean) => void; reload: () => Promise<void> | void; go?: (v: string) => void; preview: Recipe | null; setPreview: (r: Recipe | null) => void };
+/** A row of exclusive choices (the same options as the user app). */
+function Seg<T extends string | number>({ value, options, label, disabled, onPick }: { value: T; options: [T, string][]; label: string; disabled?: boolean; onPick: (v: T) => void }) {
+  return <div className="seg" role="group" aria-label={label}>{options.map(([v, t]) => <button key={String(v)} type="button" className={value === v ? "on" : ""} aria-pressed={value === v} disabled={disabled} onClick={() => onPick(v)}>{t}</button>)}</div>;
+}
+export function SettingsView({ p, fx, setFx, slim, setSlim, reload, go, preview, setPreview }: Props) {
   const [tab, setTab] = useState("personal"), [hkey, setHkey] = useState<string | null>(null), [busy, setBusy] = useState(false), [msg, setMsg] = useState<MsgT>(null);
   const city = useCity(), [q, setQ] = useState(""), [found, setFound] = useState<{ place: Place; km: number } | null>(null), [problem, setProblem] = useState<string | null>(null), [locating, setLocating] = useState(false);
   const hits = searchPlaces(q);
@@ -60,6 +67,11 @@ export function SettingsView({ p, fx, setFx, slim, setSlim, reload, go }: Props)
     } catch (x) { setMsg({ ok: false, t: (x as Error).message }); }
     setBusy(false);
   }
+  const ap = readAppearance(p?.settings), os = osReducedMotion(), cat = useCatalog(tab === "appearance");
+  const savedAmb = cat && validRecipe(cat, p?.settings?.["appearance.ambient"]) ? (p!.settings["appearance.ambient"] as Recipe) : null;
+  const favs = cat && Array.isArray(p?.settings?.["appearance.ambient_favs"]) ? (p!.settings["appearance.ambient_favs"] as unknown[]).filter((x): x is Recipe => validRecipe(cat, x)) : [];
+  // the change shows at once on this screen; the save then confirms it (and the account keeps it for every approved device)
+  const put = (key: string, value: unknown, patch: Partial<Appearance>) => save(key, value, () => applyAppearance({ ...ap, ...patch }));
   const openHistory = (k: string) => { setHkey(k); setTab("history"); setMsg(null); };
   const Msg = () => msg ? <div className={msg.ok ? "toast ok" : "toast bad"} role="status">{msg.t}</div> : null;
   return (
@@ -104,16 +116,44 @@ export function SettingsView({ p, fx, setFx, slim, setSlim, reload, go }: Props)
               <Msg />
             </section>
           </>}
-          {tab === "appearance" && <section className="panel">
-            <div className="panelhead"><h2>Appearance</h2></div>
-            <div className="setrow"><div><b>Graphics</b><p className="dim">Animated glowing edge and soft background light. Turn off for a plain, fastest-possible screen.</p></div>
-              <Switch checked={fx} aria-label="Graphics" disabled={busy} onCheckedChange={(v) => save("appearance.graphics", v, () => setFx(v))} /></div>
-            <RowTools k="appearance.graphics" onHistory={openHistory} />
-            <div className="setrow last"><div><b>Compact sidebar</b><p className="dim">Start with the sidebar collapsed to icons.</p></div>
-              <Switch checked={slim} aria-label="Compact sidebar" disabled={busy} onCheckedChange={(v) => save("appearance.sidebar_slim", v, () => setSlim(v))} /></div>
-            <RowTools k="appearance.sidebar_slim" onHistory={openHistory} />
-            <Msg />
-          </section>}
+          {tab === "appearance" && <>
+            <section className="panel">
+              <div className="panelhead"><h2>This device — Motion &amp; delight</h2><p className="dim">Applies the moment you tap it — no save button, no reload. Saved on your account too, so every approved device matches. Your operating system's reduced-motion setting always wins on top of this.</p></div>
+              <div className="setrow"><div><b>Text size</b><p className="dim">Makes all text bigger or smaller. You can also pinch to zoom any time.</p></div>
+                <Seg label="Text size" value={ap.text_scale} disabled={busy} options={TEXT_SIZES.map((n) => [n, n === 100 ? "Default" : `${n}%`] as [number, string])} onPick={(v) => put("appearance.text_scale", v, { text_scale: v })} /></div>
+              <RowTools k="appearance.text_scale" onHistory={openHistory} />
+              <div className="setrow"><div><b>Animations</b><p className="dim">Full keeps the whole motion language · Reduced fades only, nothing travels · None is complete stillness (calm mode).</p></div>
+                <Seg label="Animations" value={ap.animations} disabled={busy} options={[["full", "Full"], ["reduced", "Reduced"], ["none", "None"]]} onPick={(v) => put("appearance.animations", v, { animations: v })} /></div>
+              <RowTools k="appearance.animations" onHistory={openHistory} />
+              <div className="setrow"><div><b>Transitions</b><p className="dim">The tempo of every panel, hover and reveal. Fast is 0.6× the standard clock, slow is 1.5×.</p></div>
+                <Seg label="Transitions" value={ap.transitions} disabled={busy} options={[["fast", "Fast"], ["normal", "Normal"], ["slow", "Slow"]]} onPick={(v) => put("appearance.transitions", v, { transitions: v })} /></div>
+              <RowTools k="appearance.transitions" onHistory={openHistory} />
+              <div className="setrow"><div><b>Graphics &amp; visual effects</b><p className="dim">Glows, aurora backgrounds, ambient looks and floating cards (and 3D scenes). Turn off for a flat, fast, battery-friendly look.</p></div>
+                <Switch checked={fx} aria-label="Graphics" disabled={busy} onCheckedChange={(v) => save("appearance.graphics", v, () => setFx(v))} /></div>
+              <RowTools k="appearance.graphics" onHistory={openHistory} />
+              <div className="setrow"><div><b>Celebration (earned delight)</b><p className="dim">On by default. Fires only when work is genuinely finished — a proof completing, a queue reaching zero.</p></div>
+                <Switch checked={ap.celebration} aria-label="Celebration" disabled={busy} onCheckedChange={(v) => put("appearance.celebration", v, { celebration: v })} /></div>
+              <RowTools k="appearance.celebration" onHistory={openHistory} />
+              <div className="setrow last"><div><b>High-contrast focus ring</b><p className="dim">Makes the keyboard position unmistakable — useful on projectors and for accessibility reviews.</p></div>
+                <Switch checked={ap.focus_ring} aria-label="High-contrast focus ring" disabled={busy} onCheckedChange={(v) => put("appearance.focus_ring", v, { focus_ring: v })} /></div>
+              <RowTools k="appearance.focus_ring" onHistory={openHistory} />
+              <p className="dim small">Operating system reduced-motion: {os ? "on · motion is reduced everywhere" : "off · motion currently allowed"}. Motion in use here: <b>{effectiveMotion(ap, os)}</b>.</p>
+            </section>
+            <section className="panel">
+              <div className="panelhead"><h2>Account — Appearance</h2><p className="dim">Density and layout, stored on your account. Instant, no reload, no layout jump.</p></div>
+              <div className="setrow"><div><b>Density</b><p className="dim">How tight the layout packs information.</p></div>
+                <Seg label="Density" value={ap.density} disabled={busy} options={[["comfortable", "Comfortable"], ["compact", "Compact"]]} onPick={(v) => put("appearance.density", v, { density: v })} /></div>
+              <RowTools k="appearance.density" onHistory={openHistory} />
+              <div className="setrow"><div><b>Reduce motion</b><p className="dim">Honour the calm setting and drop all non-essential animation on this account.</p></div>
+                <Switch checked={ap.reduce_motion} aria-label="Reduce motion" disabled={busy} onCheckedChange={(v) => put("appearance.reduce_motion", v, { reduce_motion: v })} /></div>
+              <RowTools k="appearance.reduce_motion" onHistory={openHistory} />
+              <div className="setrow last"><div><b>Compact sidebar</b><p className="dim">Start with the sidebar collapsed to icons.</p></div>
+                <Switch checked={slim} aria-label="Compact sidebar" disabled={busy} onCheckedChange={(v) => save("appearance.sidebar_slim", v, () => setSlim(v))} /></div>
+              <RowTools k="appearance.sidebar_slim" onHistory={openHistory} />
+              <Msg />
+            </section>
+            <AmbientStudio saved={savedAmb} favs={favs} cat={cat} preview={preview} setPreview={setPreview} motion={effectiveMotion(ap, os)} save={save} busy={busy} onHistory={openHistory} />
+          </>}
           {tab === "history" && <TimeMachine startKey={hkey} onKey={setHkey} />}
           {tab === "drift" && <DriftSchedule />}
         </div>

@@ -7,7 +7,8 @@ use serde_json::{Value, json};
 use crate::settings;
 
 /// Keys that may be scheduled (mirrors `founder_settings_info.schedulable` in E113; the photo is never schedulable).
-pub const SCHEDULABLE: [&str; 4] = ["personal.display_name", "personal.home", "appearance.graphics", "appearance.sidebar_slim"];
+pub const SCHEDULABLE: [&str; 12] = ["personal.display_name", "personal.home", "appearance.graphics", "appearance.sidebar_slim", "appearance.text_scale", "appearance.animations",
+    "appearance.transitions", "appearance.celebration", "appearance.focus_ring", "appearance.density", "appearance.reduce_motion", "appearance.ambient"];
 
 pub const MIN_MS: i64 = 1_577_836_800_000; // 2020-01-01: before this no founder history can exist
 pub const MAX_MS: i64 = 4_102_444_800_000; // 2100-01-01

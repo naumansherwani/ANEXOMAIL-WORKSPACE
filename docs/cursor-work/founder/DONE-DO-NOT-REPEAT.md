@@ -652,3 +652,7 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - 1 Nov 11:15 — awam Settings Center read live, all 7 tabs + Explain/Blast radius/History panels: docs/claude/AWAM-SETTINGS-CENTER-LIVE-LIST-01NOV.md. Do NOT re-read; use that file. E114 SQL drafted (711 lines, untested, needs >=800 + CHECK_E114).
 
 - 1 Nov 11:40 — E114 SQL GREEN LOCALLY (829 lines, CHECK_E114 14/14, E113 checks still green). Server run = founder's next command (sql-run.sh E114 CHECK_E114). Rust (settings registry mirror + ambient routes) and UI come AFTER he pastes green. Do not rewrite E114.
+
+- 1 Nov 11:26 — E114 SQL = GREEN ON THE SERVER (CHECK_E114 14/14 + E65). Do NOT give him the E114 command again. Next: S1b Rust, then UI.
+
+- 1 Nov ~12:00 — S1b Rust + UI written and tested in the sandbox (116 Rust, 21 bun, tsc clean). Server install = founder-install.sh (his next command). Do NOT rewrite; Chrome check after install.

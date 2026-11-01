@@ -289,3 +289,11 @@ Expect: tests 105 passed, build OK, saboot 4/4 OK. Then say "founder side kholo"
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E114_founder_appearance_ambient CHECK_E114 2>&1 | tail -25
 ```
 Expected: "E114 selftest OK", "E114 selftest2 OK", "E114 ambient looks in the catalog: 301989888000", CHECK_E114 = 14 rows all t. Needs E113 already run (it is). Rust + UI for S1b follow only after this is green.
+
+## 1 Nov 11:26 — E114 DONE by the founder (green). No new pull until the S1b Rust + UI is ready (then founder-install.sh).
+
+## 1 Nov ~12:00 — S1b Rust + SPA (technology: Rust axum + React/TS + CSS). One command (tests -> build -> SPA -> systemd -> saboot; fail = rollback):
+```
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12
+```
+Expected: 116 tests OK, build OK, saboot OK. Then hard-reload the founder site -> Settings -> Appearance.

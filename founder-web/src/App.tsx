@@ -3,6 +3,9 @@ import { Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { get, hasToken, deviceStatus, setSetting, lastBridge } from "./api";
 import { AccountMenu, ProfileView } from "./Profile";
 import { SettingsView } from "./Settings";
+import { AmbientLayer, useCatalog } from "./AmbientStudio";
+import { applyAppearance, effectiveMotion, osReducedMotion, readAppearance } from "./appearance";
+import { valid as validRecipe, type Recipe } from "./ambient";
 import { DECKS, Deck, Audit } from "./Decks";
 import { Brand, Icon, LogoMark } from "./Brand";
 import { DeckPage } from "./Finance";
@@ -50,14 +53,14 @@ export const KNOWN = new Set([...CC.map((x) => x[0]), "profile", "settings"]);
 const TABS: [string, string][] = [["dashboard", "Home"], ["bridge", "Bridge"], ["finance", "Finance"], ["people", "People"]];
 
 /** Everything the page bodies need from the shell (profile, live bridge data, appearance). Provided by the shell, read by the routed pages. */
-type ShellData = { view: string; d: any; at: Date | null; prof: Prof | null; loadProf: () => Promise<void>; fx: boolean; setFx: (v: boolean) => void; slim: boolean; setSlim: (v: boolean) => void; err: string; setView: (v: string) => void };
+type ShellData = { view: string; d: any; at: Date | null; prof: Prof | null; loadProf: () => Promise<void>; fx: boolean; setFx: (v: boolean) => void; slim: boolean; setSlim: (v: boolean) => void; err: string; setView: (v: string) => void; preview: Recipe | null; setPreview: (r: Recipe | null) => void };
 const ShellCtx = createContext<ShellData | null>(null);
 export const useShell = () => { const c = useContext(ShellCtx); if (!c) throw new Error("useShell outside the shell"); return c; };
 
 /** The routed page body for the current view. */
 export function ViewBody() {
-  const { view, d, at, prof, loadProf, fx, setFx, slim, setSlim, setView } = useShell();
-  return (view === "bridge" ? <BridgeView d={d} at={at} me={prof} go={setView} /> : view === "dashboard" ? <DashboardView d={d} at={at} go={setView} me={prof} /> : view === "profile" ? <ProfileView p={prof} reload={loadProf} /> : view === "settings" ? <SettingsView go={setView} p={prof} fx={fx} setFx={setFx} slim={slim} setSlim={setSlim} reload={loadProf} /> : DECK_META[view] ? <><DeckPage deck={view} money={d?.money} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : <div className="grid"><Deck key={view} deck={view} /></div>);
+  const { view, d, at, prof, loadProf, fx, setFx, slim, setSlim, setView, preview, setPreview } = useShell();
+  return (view === "bridge" ? <BridgeView d={d} at={at} me={prof} go={setView} /> : view === "dashboard" ? <DashboardView d={d} at={at} go={setView} me={prof} /> : view === "profile" ? <ProfileView p={prof} reload={loadProf} /> : view === "settings" ? <SettingsView preview={preview} setPreview={setPreview} go={setView} p={prof} fx={fx} setFx={setFx} slim={slim} setSlim={setSlim} reload={loadProf} /> : DECK_META[view] ? <><DeckPage deck={view} money={d?.money} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : <div className="grid"><Deck key={view} deck={view} /></div>);
 }
 
 /** Loading screen with the logo on every refresh, on every page: stays until the first fresh signed answer (min 0.7 s, max 4 s), then fades out. */
@@ -84,6 +87,15 @@ export default function App() {
   // Real URLs: #/finance etc. The page area fades in once on change (CSS, no waiting on the browser).
   const setView = useCallback((v: string) => { void nav({ to: "/$view", params: { view: v } }); }, [nav]);
   const [prof, setProf] = useState<Prof | null>(null);
+  // Appearance (E114): the account's values drive text size, motion, tempo, density and the focus ring; the OS reduced-motion setting is re-read whenever it changes.
+  const [preview, setPreview] = useState<Recipe | null>(null);
+  const savedLook = prof?.settings?.["appearance.ambient"];
+  const cat = useCatalog(!!savedLook || !!preview);
+  useEffect(() => {
+    const run = () => applyAppearance(readAppearance(prof?.settings));
+    run(); const m = window.matchMedia?.("(prefers-reduced-motion: reduce)"); m?.addEventListener?.("change", run); return () => m?.removeEventListener?.("change", run);
+  }, [prof]);
+  const look: Recipe | null = preview ?? (cat && validRecipe(cat, savedLook) ? (savedLook as Recipe) : null);
   const [slim, setSlim] = useState(() => { try { return window.localStorage.getItem("anexo.founder.slim") === "1"; } catch { return false; } });
   useEffect(() => { document.documentElement.classList.toggle("slim", slim); }, [slim]);
   const toggleSlim = () => { const n = !slim; setSlim(n); try { window.localStorage.setItem("anexo.founder.slim", n ? "1" : "0"); } catch {} setSetting("appearance.sidebar_slim", n).catch(() => {}); };
@@ -130,12 +142,13 @@ export default function App() {
   const pick = (x: NavItem & { href?: string }) => { setPal(false); if (x.href) window.open(x.href, "_blank", "noopener,noreferrer"); else setView(x.view); };
   const spot = (e: React.PointerEvent<HTMLElement>) => { const r = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`); e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`); };
   const nvBtn = (k: string, n: string, i = 0) => <button key={k} className="nv" style={{ "--i": i } as React.CSSProperties} onPointerMove={spot} title={n} aria-current={view === k ? "page" : undefined} onClick={() => setView(k)}><Icon k={k} /><span className="lbl">{n}</span></button>;
-  const shell: ShellData = { view, d, at, prof, loadProf, fx, setFx, slim, setSlim, err, setView };
+  const shell: ShellData = { view, d, at, prof, loadProf, fx, setFx, slim, setSlim, err, setView, preview, setPreview };
   return (
     <ShellCtx.Provider value={shell}>
     <div className="ws">
       <Splash show={authed && !((live && minMs) || giveUp)} />
       <div className="aurora" aria-hidden="true"><i /><i /></div>
+      {fx && cat && look && <AmbientLayer cat={cat} recipe={look} motion={effectiveMotion(readAppearance(prof?.settings), osReducedMotion())} />}
       <div className="fx-ambient" aria-hidden="true"><span className="fx-edge" /></div>
       <aside className="sb" aria-label="Navigation">
         <div className="sbtop"><Brand /></div>

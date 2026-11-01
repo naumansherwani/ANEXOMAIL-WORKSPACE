@@ -205,3 +205,9 @@ No server change. Awam settings list written to repo (docs only). E114 SQL draft
 
 ## UPDATE 1 Nov 11:40 PKT
 E114 not yet on the server (his first paste was the unfixed draft; failed and rolled back, nothing stored). Fixed version green locally; waits for his sql-run.sh paste.
+
+## UPDATE 1 Nov 11:26 PKT
+E114 INSTALLED + GREEN on the server (registry, 11 appearance keys, ambient catalog 301,989,888,000 looks). Rust/UI of S1b not yet on the server.
+
+## UPDATE 1 Nov ~12:00 PKT
+S1b Rust + UI pushed, NOT yet installed. After founder-install.sh: Appearance tab = 2 blocks + Ambient Studio.

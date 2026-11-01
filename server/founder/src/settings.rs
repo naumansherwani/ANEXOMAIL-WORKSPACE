@@ -3,12 +3,21 @@
 use serde_json::Value;
 
 /// (key, kind, default as JSON text) — what the SPA is told, so the UI never invents a default.
-pub const REGISTRY: [(&str, &str, &str); 5] = [
+pub const REGISTRY: [(&str, &str, &str); 14] = [
     ("personal.display_name", "text", "null"),
     ("personal.avatar", "image", "null"),
     ("personal.home", "place", "null"),
     ("appearance.graphics", "bool", "true"),
     ("appearance.sidebar_slim", "bool", "false"),
+    ("appearance.text_scale", "enum", "100"),
+    ("appearance.animations", "enum", "\"full\""),
+    ("appearance.transitions", "enum", "\"normal\""),
+    ("appearance.celebration", "bool", "true"),
+    ("appearance.focus_ring", "bool", "false"),
+    ("appearance.density", "enum", "\"comfortable\""),
+    ("appearance.reduce_motion", "bool", "false"),
+    ("appearance.ambient", "recipe", "{\"palette\":60,\"pattern\":1,\"speed\":9,\"intensity\":6,\"blend\":0,\"seed\":0}"),
+    ("appearance.ambient_favs", "recipes", "[]"),
 ];
 
 /// A photo is a small data: URL (jpeg/png/webp, base64, <= 180_000 chars) or a short https link. Same limits as the user app, so both stay compatible.
@@ -44,13 +53,41 @@ pub fn valid(key: &str, v: &Value) -> bool {
         "personal.display_name" => v.as_str().map(valid_name).unwrap_or(false),
         "personal.avatar" => v.as_str().map(valid_avatar).unwrap_or(false),
         "personal.home" => valid_place(v), // the real zone list check is in SQL (pg_timezone_names)
-        "appearance.graphics" | "appearance.sidebar_slim" => v.is_boolean(),
+        "appearance.graphics" | "appearance.sidebar_slim" | "appearance.celebration" | "appearance.focus_ring" | "appearance.reduce_motion" => v.is_boolean(),
+        // exact JSON number 90/100/115/130/150 (the same sizes as the user app), never a string and never 115.5
+        "appearance.text_scale" => v.as_i64().map(|n| v.is_i64() && matches!(n, 90 | 100 | 115 | 130 | 150)).unwrap_or(false),
+        "appearance.animations" => matches!(v.as_str(), Some("full" | "reduced" | "none")),
+        "appearance.transitions" => matches!(v.as_str(), Some("fast" | "normal" | "slow")),
+        "appearance.density" => matches!(v.as_str(), Some("compact" | "comfortable")),
+        "appearance.ambient" | "appearance.ambient_favs" => crate::ambient::valid_setting(key, v),
         _ => false,
     }
 }
 
 pub fn registry_json() -> Value {
     Value::Array(REGISTRY.iter().map(|(k, kind, d)| serde_json::json!({"key": k, "kind": kind, "default": serde_json::from_str::<Value>(d).unwrap_or(Value::Null)})).collect())
+}
+
+#[cfg(test)]
+mod tests_s1b {
+    use super::*;
+    use serde_json::json;
+    #[test] fn registry_has_the_fourteen_keys_of_e114() { assert_eq!(REGISTRY.len(), 14); }
+    #[test] fn appearance_values() {
+        for (k, good, bad) in [("appearance.text_scale", vec![json!(90), json!(100), json!(115), json!(130), json!(150)], vec![json!(120), json!("115"), json!(115.5), json!(true)]),
+                               ("appearance.animations", vec![json!("full"), json!("reduced"), json!("none")], vec![json!("off"), json!(true)]),
+                               ("appearance.transitions", vec![json!("fast"), json!("normal"), json!("slow")], vec![json!("medium")]),
+                               ("appearance.density", vec![json!("compact"), json!("comfortable")], vec![json!("cozy"), json!(["compact"])]),
+                               ("appearance.celebration", vec![json!(true), json!(false)], vec![json!("yes"), json!(1)]),
+                               ("appearance.focus_ring", vec![json!(true)], vec![json!(1)]),
+                               ("appearance.reduce_motion", vec![json!(false)], vec![json!("true")])] {
+            for g in good { assert!(valid(k, &g), "{k} {g}"); }
+            for b in bad { assert!(!valid(k, &b), "{k} {b}"); }
+        }
+    }
+    #[test] fn ambient_defaults_are_valid_and_match_sql() {
+        for (k, _, d) in REGISTRY { let v: Value = serde_json::from_str(d).unwrap(); if v.is_null() { continue; } assert!(valid(k, &v), "default of {k}"); }
+    }
 }
 
 #[cfg(test)]
