@@ -85,3 +85,9 @@ button.dx-card{cursor:pointer;width:100%}button.dx-card:hover{transform:translat
 
 /* date sits under the clock (founder 1 Nov 05:19: "date time ke saath"); greeting block itself stays v2, left aligned */
 .clock .cdate{display:block;color:#9aa6bd;letter-spacing:.12em;text-transform:uppercase;font-size:11px;margin-top:6px}
+
+/* 4b-3 recent changes (live stream) */
+.dx-changes{padding:14px 18px}.dx-changes ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.dx-changes li{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:14px;align-items:baseline;font-size:14px}
+.dx-changes li b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dx-changes li span{color:var(--dim,#9aa6bd)}.dx-changes li time{color:var(--faint,#6f7889);font-variant-numeric:tabular-nums}
+.dx-empty{margin:0;color:var(--dim,#9aa6bd);font-size:14px}.dx-empty.warn{color:#f5a524;margin-top:8px}

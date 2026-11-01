@@ -83,3 +83,4 @@ Status: CODE DONE, NOT GREEN. Order: sql-run (E110) -> awam pull.sh (auth.ts) ->
 - 4b-1 GREEN 1 Nov 06:25 (Chrome: Live feed card, 9/9 endpoints). Next 4b-2.
 - 4b-2 1 Nov 07:00: code done (live.rs + /live/stream, 75 tests, mock e2e); awaiting founder-install; green proof comes with 4b-3 in Chrome
 - 4b-2 INSTALLED 1 Nov 06:38 (founder paste). Green proof with 4b-3 in Chrome.
+- 4b-3 1 Nov 07:20: SPA live stream code done (sse.ts, livefeed.ts, Surface Live feed chip + Recent changes), awaiting founder-install + Chrome proof

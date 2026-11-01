@@ -198,3 +198,4 @@ founder-install.sh: `git -C /opt/anexomail-web fetch -q origin main && bash <(gi
 - 1 Nov 06:30: nothing to pull. Next pull = founder-install.sh after 4b-2 code.
 ## 1 Nov 07:00 PKT - 4b-2: founder-install.sh only (Rust: live tick + /founder/v1/live/stream). No SQL, no UI change.
 - 1 Nov 06:40: 4b-2 founder-install DONE by founder. Nothing pending to pull until 4b-3 code.
+## 1 Nov 07:20 PKT - 4b-3 (UI + kernel verify of SSE frames): founder-install.sh only. No SQL, no Rust change.

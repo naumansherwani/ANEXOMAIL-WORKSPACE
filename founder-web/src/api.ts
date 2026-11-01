@@ -113,6 +113,16 @@ async function getOnce<T = any>(path: string, retry = true): Promise<Envelope<T>
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
   return readSigned<T>(r, path);
 }
+/** 4b-3: open a Server-Sent-Events stream with the founder token (EventSource cannot send an Authorization header). The caller reads `response.body`; every frame is verified by the kernel in live.ts. */
+export async function openStream(path: string, lastId: number, signal: AbortSignal, retry = true): Promise<Response> {
+  const t = await auth(path); if (!t) throw expired();
+  const r = await fetch(path, { headers: { authorization: `Bearer ${t}`, accept: "text/event-stream", ...(lastId > 0 ? { "last-event-id": String(lastId) } : {}) }, cache: "no-store", signal });
+  if (r.status === 401 && retry && ft && t === ft) { forget(); return openStream(path, lastId, signal, false); } // revoked / expired founder token -> one fresh exchange
+  if (r.status === 401) throw expired();
+  if (r.status === 403) throw new Error("This account is not a founder account");
+  if (!r.ok || !r.body) throw new Error(`HTTP ${r.status}`);
+  return r;
+}
 export async function post(path: string, body: unknown): Promise<WriteResult> {
   const t = await auth(path); if (!t) throw expired();
   const bs = JSON.stringify(body);

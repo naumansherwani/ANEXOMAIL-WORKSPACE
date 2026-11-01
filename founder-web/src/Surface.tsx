@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { get, warm, deviceStatus } from "./api";
 import { trust } from "./kernel";
-import { fmtHM } from "./city";
+import { fmtHM, fmtTime } from "./city";
+import { onLiveChange, useLive, type LiveStatus } from "./livefeed";
 import { HealthOrb, type Tone } from "./Scene3D";
 
 // The Dashboard body. Everything on it is measured in THIS browser, right now (Rule 69: no mock data): the signed Rust answers, the gates from the
@@ -35,6 +36,8 @@ type Row = { ep: Ep; ms?: number; ok?: boolean; note?: string; data?: any };
 type Act = { key: string; title: string; deck: string; danger: "low" | "medium" | "high"; enabled: boolean };
 type State = "ok" | "warn" | "fail" | "unknown";
 const GATES: [string, "low" | "medium" | "high", string, string][] = [["G1", "low", "One tap", "Read-only and safe"], ["G2", "medium", "Two taps and a reason", "Changes something"], ["G3", "high", "Passkey", "Money, access, shutdown (arrives in F2d)"]];
+const LCHIP: Record<LiveStatus, string> = { connecting: "Connecting", live: "Live", reconnecting: "Reconnecting", polling: "Polling", paused: "Paused" };
+const LSTATE = (st: LiveStatus, lv: any): State => !lv ? "fail" : lv.connected === false ? "unknown" : st === "paused" ? "unknown" : st === "live" ? (lv.trouble?.level === "fail" ? "fail" : lv.trouble?.level === "warn" ? "warn" : lv.trouble?.level === "unknown" ? "unknown" : "ok") : "warn";
 const fmtMinor = (n: unknown) => (Number(n) / 100).toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const cap = (s: unknown) => String(s || "").replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
@@ -49,7 +52,7 @@ function Tile({ icon, tone, label, value, unit, sub, off, bar, pct }: { icon: st
   );
 }
 
-export function Surface({ d, at, go }: { d: any; at: Date | string | number | null | undefined; go: (v: string) => void }) {
+export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number | null | undefined; go: (v: string) => void }) {
   const [rows, setRows] = useState<Row[] | null>(null), [checked, setChecked] = useState<Date | null>(null), [busy, setBusy] = useState(false);
   const ks = useSyncExternalStore(trust.sub, () => trust.get().state);
   const run = useCallback(async () => {
@@ -66,10 +69,14 @@ export function Surface({ d, at, go }: { d: any; at: Date | string | number | nu
     setRows(out); setChecked(new Date()); setBusy(false);
   }, []);
   useEffect(() => { void run(); }, [run]);
+  // 4b-3: the live stream. A real change in a source (tick `changed` / events frame) re-reads every number now instead of waiting.
+  const L = useLive(), again = useRef(false);
+  useEffect(() => onLiveChange(() => { if (again.current) return; again.current = true; void run().finally(() => { again.current = false; }); }), [run]);
 
   const by = (p: string) => rows?.find((r) => r.ep.path === p && r.ep.method === "GET");
   const acts: Act[] = by("/founder/v1/actions")?.data?.actions || [], actsOk = !!by("/founder/v1/actions")?.ok;
-  const hg = by("/founder/v1/hostguard")?.data, lv = by("/founder/v1/live")?.data, au = by("/founder/v1/audit")?.data, pol = by("/founder/v1/finance/polar")?.data ?? d?.polar, ds = deviceStatus();
+  const d = by("/founder/v1/bridge")?.data ?? d0; // the freshest verified Bridge answer (refreshed on every live change)
+  const hg = by("/founder/v1/hostguard")?.data, lv = L.snapshot ?? by("/founder/v1/live")?.data, au = by("/founder/v1/audit")?.data, pol = by("/founder/v1/finance/polar")?.data ?? d?.polar, ds = deviceStatus();
   const m = d?.money, v = d?.voice, hk = d?.polar_hook, subs = hk?.subscriptions, t = d?.trouble;
   const tot = t ? t.items.length : 0, bad = t ? t.items.filter((i: { state: string }) => i.state !== "ok").length : 0;
   const tone: State = !t ? "unknown" : bad ? "warn" : "ok";
@@ -80,7 +87,7 @@ export function Surface({ d, at, go }: { d: any; at: Date | string | number | nu
   const mrr = polarApi ? fmtMinor(pol.mrr_minor) : m?.connected ? Number(m.mrr_gbp || 0).toLocaleString("en-GB") : null;
   const target = Number(m?.target_gbp) || 0, pct = !polarApi && m?.connected && target ? Math.min(100, Math.round((Number(m.mrr_gbp || 0) / target) * 100)) : undefined;
   const grace = (subs?.by_product || []).reduce((a: number, x: { grace?: number }) => a + (x.grace || 0), 0);
-  const feat: { name: string; state: State; text: string; to?: string }[] = rows ? [
+  const feat: { name: string; state: State; text: string; to?: string; chip?: string }[] = rows ? [
     { name: "Signed answers", state: ks === "verified" ? "ok" : ks === "failed" ? "fail" : "unknown", text: ks === "verified" ? "Checked in this browser" : ks === "failed" ? "An answer failed the check and was hidden" : "Waiting for the first answer" },
     { name: "Approved device", state: ds.mode === "device" ? "ok" : "warn", text: ds.mode === "device" ? ds.label || "This device" : "No device token" },
     { name: "Audit ledger", state: !au ? "fail" : !au.connected ? "unknown" : au.chain_ok ? "ok" : "fail", text: !au ? "Not answering" : !au.connected ? au.note || "Not connected" : au.chain_ok ? `Chain intact${au.head ? `, entry ${au.head.seq}` : ""}` : `Chain broken at ${au.first_bad_seq}`, to: "audit" },
@@ -89,8 +96,8 @@ export function Surface({ d, at, go }: { d: any; at: Date | string | number | nu
     { name: "Customers", state: !d ? "fail" : v?.connected ? "ok" : "unknown", text: !d ? "Not answering" : v?.connected ? `${v.new_leads} new lead${v.new_leads === 1 ? "" : "s"}` : v?.note || "Not connected", to: "bridge" },
     { name: "Host separation", state: !hg ? "fail" : !hg.connected ? "unknown" : hg.state === "ok" ? "ok" : hg.state === "warn" ? "warn" : "unknown",
       text: !hg ? "Not answering" : !hg.connected ? hg.note || "Not connected" : hg.state === "warn" ? "A founder sign-in was seen on a user host" : hg.ready_to_enforce ? `Founder session made on the founder host${hg.last_founder_host_at ? `, ${fmtHM(hg.last_founder_host_at)}` : ""}` : hg.note || "No founder session recorded yet" },
-    { name: "Live feed", state: !lv ? "fail" : !lv.connected && lv.connected !== undefined ? "unknown" : lv.trouble?.level === "fail" ? "fail" : lv.trouble?.level === "warn" ? "warn" : lv.trouble?.level === "unknown" ? "unknown" : "ok",
-      text: !lv ? "Not answering" : lv.connected === false ? lv.note || "Not connected" : `Version ${lv.version ?? "?"}, ${(lv.sources || []).length} source${(lv.sources || []).length === 1 ? "" : "s"}${(lv.sources || []).some((x: any) => x.stale) ? ", some not updating" : ", all fresh"}` },
+    { name: "Live feed", state: LSTATE(L.status, lv), chip: LCHIP[L.status],
+      text: !lv ? "Not answering" : lv.connected === false ? lv.note || "Not connected" : `Version ${lv.version ?? "?"}, ${(lv.sources || []).length} source${(lv.sources || []).length === 1 ? "" : "s"}${(lv.sources || []).some((x: any) => x.stale) ? ", some not updating" : ", all fresh"}${L.lastTickAt ? ` · last check ${fmtTime(new Date(L.lastTickAt))}${L.lastTickOk === false ? " (failed)" : ""}` : ""}` },
     { name: "Action registry", state: !actsOk ? "fail" : !acts.length ? "unknown" : "ok", text: !actsOk ? "Not answering" : acts.length ? `${acts.length} actions, ${acts.filter((a) => a.enabled).length} enabled` : "No actions yet", to: "control" },
     { name: "Settings", state: by("/founder/v1/settings")?.ok ? "ok" : "fail", text: by("/founder/v1/settings")?.ok ? "Saved on the server" : "Not answering", to: "settings" },
   ] : [];
@@ -126,9 +133,20 @@ export function Surface({ d, at, go }: { d: any; at: Date | string | number | nu
       <h3 className="dx-sec" style={{ "--i": 2 } as React.CSSProperties}>Working features</h3>
       <section className="dx-grid" style={{ "--i": 2 } as React.CSSProperties} aria-label="Working features">
         {!rows ? [0, 1, 2, 3].map((i) => <div key={i} className="dx-card dx-feat"><div className="dx-big skel s" /></div>) : feat.map((f) => {
-          const inner = <><span className={`dx-ic ${f.state}`}><Gl n={FICON[f.name] || "check"} /></span><div className="dx-fx"><div className="dx-fn">{f.name}</div><div className="dx-ft">{f.text}</div></div><span className={`st ${f.state}`}>{STX[f.state]}</span></>;
+          const inner = <><span className={`dx-ic ${f.state}`}><Gl n={FICON[f.name] || "check"} /></span><div className="dx-fx"><div className="dx-fn">{f.name}</div><div className="dx-ft">{f.text}</div></div><span className={`st ${f.state}`}>{f.chip ?? STX[f.state]}</span></>;
           return f.to ? <button key={f.name} className="dx-card dx-feat btn" onClick={() => go(f.to!)}>{inner}</button> : <div key={f.name} className="dx-card dx-feat">{inner}</div>;
         })}
+      </section>
+
+      <h3 className="dx-sec" style={{ "--i": 3 } as React.CSSProperties}>Recent changes <span>Since you opened this page</span></h3>
+      <section className="dx-card dx-changes" style={{ "--i": 3 } as React.CSSProperties} aria-label="Recent changes" aria-live="polite">
+        {!L.events.length ? <p className="dx-empty">{L.status === "live" ? "Nothing has changed yet. The check runs every 5 seconds." : L.status === "paused" ? "Paused while this tab is hidden." : "Waiting for the live connection."}</p> : (
+          <ul>{L.events.map((e) => {
+            const label = (lv?.sources || []).find((x: any) => x.source === e.source)?.label || cap(e.source), dl = (e.detail as any)?.delta;
+            return <li key={e.id}><b>{label}</b><span>{e.kind === "stale" ? "stopped updating" : e.kind === "recover" ? "recovered" : e.kind === "appear" ? "appeared" : e.kind === "vanish" ? "disappeared" : typeof dl === "number" ? `${dl > 0 ? "+" : ""}${dl}` : "changed"}</span><time>{fmtTime(new Date(e.ts))}</time></li>;
+          })}</ul>
+        )}
+        {L.dropped > 0 && <p className="dx-empty warn">{L.dropped} live update{L.dropped === 1 ? "" : "s"} refused: the signature did not verify.</p>}
       </section>
 
       <h3 className="dx-sec" style={{ "--i": 3 } as React.CSSProperties}>Gates <span>Who can do what</span></h3>
