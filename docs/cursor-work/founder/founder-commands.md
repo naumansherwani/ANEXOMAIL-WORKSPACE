@@ -1948,3 +1948,7 @@ DONE: Chrome check GREEN (08:30 wording live); E107 SQL docs/cursor-work/sql/E10
 
 ## 1 Nov 08:33 PKT — founder (verbatim gist)
 E107 sql-run output paste (12/12 OK + E65 sweep OK). "webpull aur pm2 restart tera baap kerwaye ga? dirty cache khatam kerwao" — founder ko awam pull.sh / pm2 restart (Bun+pm2 purani lane) nahi chalana. JAWAB: E107 SQL-only, koi webpull/pm2 nahi; founder side sirf founder-install.sh (Rust binary + static files). Awam pull.sh/pm2 sirf awam migration ki lane mein, founder ko tab tak chalane nahi dena jab tak awam file na badli ho.
+
+## 1 Nov 08:40 PKT — founder (verbatim gist) + rust-engine-install.sh output (2 attachments)
+"yeh sab add kero repo main tarteeb se; codes mere pass kaun se aye hain yeh add kero. chat context update kero. mujeh pull command diya kero." (5 commands: sql-run.sh, rust-engine-install.sh, pm2 restart anexomail-rust, founder-install.sh, pull.sh)
+PASTE = AWAM Rust engine (pm2 anexomail-rust :3200) pre-flight + proof: 32 modules (cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex crmd trialx authx contx basx wsx billx setx calexp promx wtrpc) sab unit tests OK; main.rs sab patch pehle se judi (kuch nahi badla); saboot sab nakli token 401/404 = theek; pm2 online, 3D uptime, 0 unstable restarts, restarts 231 (cumulative). Founder side ka nahi: founder = anexomail-founder (Rust, founder-install.sh).

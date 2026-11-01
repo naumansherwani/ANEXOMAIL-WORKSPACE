@@ -152,3 +152,6 @@ Founder's Chrome tab read live: Dashboard, Bridge, Founder Workspace (Mail, Peop
 
 ## UPDATE 1 Nov 08:33 PKT — E107 SERVER PAR GREEN
 Founder paste: E107 chali (sha 0fd28841f0b3b51f, ledger mein), CHECK_E107 12/12 OK, E65 sweep OK. Founder ko is phase mein koi webpull / pm2 restart nahi (SQL-only). NEXT: Rust merkle.rs + routes, kernel merkle, UI gauge (founder-install.sh).
+
+## UPDATE 1 Nov 08:45 PKT — AWAM Rust engine paste (rust-engine-install.sh)
+Server par awam pm2 `anexomail-rust` (:3200) online (uptime 3D, unstable restarts 0, restarts 231 cumulative): 32 modules (cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex crmd trialx authx contx basx wsx billx setx calexp promx wtrpc), unit tests sab OK, main.rs patches pehle se judi, saboot theek, kuch nahi badla. Founder service alag (anexomail-founder, founder-install.sh). NOTE: awam wtrpc WebTransport udp/3443 par chalta hai — founder ka WebTransport (D10) alag port/listener lega, is se takrana nahi chahiye (phase mein port tay hoga).

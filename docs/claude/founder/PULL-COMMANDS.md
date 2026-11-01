@@ -230,3 +230,13 @@ Rollback: env FOUNDER_TELEMETRY=off (telemetry writes band; registry + snapshot_
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E107_founder_audit_merkle CHECK_E107 2>&1 | tail -25
 ```
 Kitni baar: sql-run.sh sha ledger mein likhta hai, wahi file dobara nahi chalti; file idempotent hai (dobara chale to bhi safe). Edit karna ho to nayi E-file.
+
+## 1 Nov 08:45 PKT — PULL COMMANDS TABLE (har technology ki ek command; kab kaun si)
+| # | Kab | Command (har ek `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/<script>)`) |
+|---|---|---|
+| 1 | Naya SQL (E-file) | `<script>` = `sql-run.sh` (bina naam = auto; ya `sql-run.sh) E107_founder_audit_merkle CHECK_E107`). Ek file ek baar (sha ledger), idempotent |
+| 2 | FOUNDER side (Rust `anexomail-founder` + SPA) | `founder-install.sh` — YEH aap ki founder lane. Na pm2, na Bun/Node |
+| 3 | AWAM Rust engine (pm2 `anexomail-rust` :3200) | `rust-engine-install.sh`; sirf jab awam Rust modules badlen. 1 Nov 08:40 paste: 32 modules OK, kuch nahi badla |
+| 4 | AWAM Rust restart | `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health` — sirf jab #3 ne "build/restart" kaha |
+| 5 | AWAM web (Bun + pm2) | `pull.sh` — sirf jab awam site ki file badle (purani lane, awam migration tak) |
+FOUNDER ke liye aaj sirf #1 aur #2. Step 5 (Merkle): SQL E107 DONE (green); Rust/kernel/UI phase = #2.
