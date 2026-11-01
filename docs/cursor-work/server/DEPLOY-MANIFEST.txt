@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md a2b811496b80002a
+docs/cursor-work/founder/founder-commands.md 3758adb982a062f9
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -1030,3 +1030,4 @@ server/founder/src/inbox.rs 55d81ee9f2200ada
 docs/claude/FOUNDER-CHAIRMAN-MAP-01NOV.md 26e8b1462a37abf2
 docs/claude/FOUNDER-WORKSPACE-ORDER-01NOV.md 0fb3d0a29482934c
 founder-web/dist/assets/index-BkbuK4EX.js 986081010c80cd14
+docs/claude/FOUNDER-F2C-MERKLE-DESIGN-01NOV.md 234f5b7caeef1a65
