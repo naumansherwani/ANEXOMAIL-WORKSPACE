@@ -331,3 +331,11 @@ _(12:30 note: E116 was corrected after its first server run failed; run the S1d 
 
 ### T256-0 read-only inventory (changes nothing) — one command
 `ss -tulpn | grep -E ':(80|443|8443|3443)\b'; echo ---; haproxy -vv 2>/dev/null | head -3; echo ---; find / -type d -path '*caddy/certificates' 2>/dev/null | head -3`
+
+### T256-1 (founder AES-256 terminator) — ONE command at a time, in this order
+**1 — SQL (E119 posture ledger):**
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E119_founder_tls_posture CHECK_E119 2>&1 | tail -20`
+**2 — Rust (tls256 + prober + /founder/v1/tls), after 1 is green:**
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -25`
+**3 — Server ops (test port 8443; dry run first, nothing changes):**
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-tls256.sh) 2>&1 | tail -25`

@@ -49,6 +49,8 @@ T = [
  ("webauthn-rs (Rust passkey)",      ("server/founder/Cargo.toml", r'webauthn'),         None, "founder 7-2"),
  ("DBSC (device-bound sessions)",    ("server/founder/src", r'DBSC|Secure-Session'),    None, "founder 7b"),
  ("Post-quantum hybrid TLS check",   None,                                               None, "founder 7b (server check first)"),
+ ("TLS 1.3 AES-256-GCM-only terminator (rustls)", ("server/founder/src/tls256.rs", r'TLS13_AES_256_GCM_SHA384'), ("server/rust", r'TLS13_AES_256_GCM_SHA384'), "founder T256-1 written; awam T256-2 (after founder proof + his written haan)"),
+ ("TLS posture ledger (SQL, real handshakes)", ("docs/cursor-work/sql/E119_founder_tls_posture.sql", r'founder_tls_posture'), None, "-"),
  ("MoQ (Media over QUIC)",           ("server/founder/src", r'moq'),                     ("server/rust", r'moq'), "founder MoQ-F (after 7a); awam MQ0-MQ4"),
 ]
 rows = []

@@ -11,14 +11,19 @@ dependencies = [
  "futures-core",
  "hex",
  "hmac",
+ "hyper",
+ "hyper-util",
  "reqwest",
  "ring",
+ "rustls",
  "serde",
  "serde_json",
  "sha2",
  "tokio",
+ "tokio-rustls",
  "tower",
  "tower-http",
+ "webpki-roots",
 ]
 
 [[package]]

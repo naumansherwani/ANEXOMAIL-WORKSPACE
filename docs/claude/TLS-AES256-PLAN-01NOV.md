@@ -10,9 +10,14 @@
 | Phase | What | Layer | Proof |
 |---|---|---|---|
 | T256-0 | Read-only inventory on the server: who owns 80/443/8443/UDP 443/3443, is HAProxy installed (and its OpenSSL), where Caddy keeps the certificates | server check | his paste |
-| T256-1 | **Founder host first:** a TLS 256-only terminator on test port 8443 for founderworkspace.anexomail.com (design A: Rust `rustls`, only AES-256-GCM, inside the founder binary together with 7a; design B: HAProxy with OpenSSL 3.5.5 `ssl-default-bind-ciphersuites TLS_AES_256_GCM_SHA384`). Chosen from T256-0. Live 443 untouched | Rust or proxy | `openssl s_client -connect host:8443` shows AES_256 with a normal client; Chrome DevTools > Security shows AES_256_GCM |
+| T256-1 **(CODE WRITTEN 1 Nov 15:05, server run pending)** | **Founder host first:** a TLS 256-only terminator on test port 8443 for founderworkspace.anexomail.com (design A: Rust `rustls`, only AES-256-GCM, inside the founder binary together with 7a; design B: HAProxy with OpenSSL 3.5.5 `ssl-default-bind-ciphersuites TLS_AES_256_GCM_SHA384`). Chosen from T256-0. Live 443 untouched | Rust or proxy | `openssl s_client -connect host:8443` shows AES_256 with a normal client; Chrome DevTools > Security shows AES_256_GCM |
 | T256-2 | Same for the awam host anexomail.com on 8443, only after T256-1 is green; awam site never goes down (Caddy keeps 443) | proxy | same |
 | T256-3 | Switch 443 per host, one host at a time: backup config, validate, switch, 1-minute rollback ready | server | both checks again + site loads |
 | T256-4 | UDP side: HTTP/3 (443) and awam WebTransport (3443) restricted to AES-256 session suite where the library allows it; document what cannot be | Rust + proxy | openssl/curl --http3 check |
 | T256-5 | Footer / splash wording updated to the proven sentence only | React | `tech-proof.py` row + live Chrome |
 Rule: no step runs on awam without his written "haan" for that step. This plan changes no code.
+
+## T256-0/T256-1 result so far (1 Nov 15:05)
+T256-0 inventory (founder paste 14:33): Caddy owns tcp 80/443 + udp 443; awam `anexomail-rust` owns udp 3443; 8443 is free; HAProxy is NOT installed; certificates live in `/var/lib/caddy/.local/share/caddy/certificates`. So design A (Rust `rustls` inside the founder binary) was built: no new package on the server.
+Files: `server/founder/src/tls256.rs` (+3 tests), `docs/cursor-work/sql/E119_founder_tls_posture.sql` + `CHECK_E119.sql`, `docs/cursor-work/server/founder-tls256.sh`.
+Server order (ONE at a time): (1) `sql-run.sh E119_founder_tls_posture CHECK_E119`, (2) `founder-install.sh` (builds + tests the Rust, now with tls256), (3) `founder-tls256.sh` dry-run, then `APPLY=1`. Then Chrome: open `https://founderworkspace.anexomail.com:8443/` (needs 8443 reachable) and DevTools > Security must say AES_256_GCM. Only after that: T256-3 (443), T256-2 (awam, his written haan).

@@ -19,6 +19,7 @@ mod hostproof;
 mod live;
 mod inbox;
 mod ledger;
+mod tls256;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -360,6 +361,16 @@ async fn hostguard_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Resp
     }
 }
 
+/// GET /founder/v1/tls — what every probed host REALLY negotiated (E119 `founder_tls_posture`): browser-style client, AES-256-only client, AES-128-only client. Signed like every answer.
+async fn tls_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
+    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    let sb = st.sb.as_ref().unwrap();
+    match sb.rpc("founder_tls_posture", json!({})).await {
+        Some(p) => signed(&st, p),
+        None => signed(&st, json!({"connected": false, "note": "founder_tls_posture not found - run the E119 SQL (sql-run.sh)"})),
+    }
+}
+
 /// 4b-1 (founder live data, E109): ONE signed answer with every live number. One database call (`founder_live_snapshot`), nothing invented; if the SQL is missing the answer says so.
 async fn live_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
     if let Err(code) = authed(&st, &h).await { return code.into_response(); }
@@ -567,6 +578,7 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/actions", get(actions_ep))
         .route("/founder/v1/audit", get(audit_ep))
         .route("/founder/v1/hostguard", get(hostguard_ep))
+        .route("/founder/v1/tls", get(tls_ep))
         .route("/founder/v1/live", get(live_ep))
         .route("/founder/v1/live/stream", get(live_stream_ep))
         .route("/founder/v1/audit/merkle", get(merkle_ep))
@@ -637,6 +649,15 @@ async fn main() {
     if let Some(c) = pcfg { polar::spawn(polar.clone(), c, now_s); }
     if let Some(s) = &sb { live::start(s.clone()); } // 4b-2: the one process-wide live tick
     let st = Arc::new(St { sb, hmac_key: key.into_bytes(), jwks: RwLock::new(jwks), lim: Default::default(), ft, legacy, polar, hook: Default::default(), ed, reqsig, gate: authcache::AuthCache::new(std::time::Duration::from_secs(5)) });
+    match tls256::from_env() { // T256-1: own TLS 1.3 terminator, AES-256-GCM only, on its own port (default OFF); the main port above is never touched
+        None => eprintln!("founder: TLS-256 terminator OFF (no FOUNDER_TLS256_ADDR)"),
+        Some(Err(e)) => eprintln!("founder: TLS-256 terminator NOT started: {e}"),
+        Some(Ok((a, cfg))) => match tokio::net::TcpListener::bind(&a).await {
+            Ok(l) => { eprintln!("founder: TLS-256 terminator ON {a} (TLS 1.3, AES-256-GCM only)"); tokio::spawn(tls256::serve(l, cfg, app(st.clone()))); }
+            Err(e) => eprintln!("founder: TLS-256 terminator NOT started: bind {a}: {e}"),
+        },
+    }
+    if let Some(sb) = st.sb.clone() { tls256::spawn_prober(sb); }
     let addr = std::env::var("FOUNDER_BIND").unwrap_or_else(|_| "127.0.0.1:3210".into());
     let l = tokio::net::TcpListener::bind(&addr).await.expect("bind");
     axum::serve(l, app(st)).await.expect("serve");
