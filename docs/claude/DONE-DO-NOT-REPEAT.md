@@ -10,3 +10,5 @@
 - 1 Nov 10:55: Step 6 Rust settings_s2.rs + UI SettingsS2.tsx written (105 Rust tests, bun 11, tsc 0). Do not rewrite; founder-install + Chrome check pending.
 
 - 1 Nov 11:00: Step 6 Rust+UI installed on server (105 tests, 4/4). Rule 71: AI founder-only, step 16 (last). Do not build AI earlier; do not touch awam AI code.
+
+- 1 Nov 11:05: STEP 6 GREEN in founder Chrome (Time machine 18 versions proven, Drift 92/100). Do not rebuild. AI label fixed.

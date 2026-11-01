@@ -32,7 +32,7 @@ const NAV: [string, string, string | null, string][] = [
   ["privacy", "Privacy", "after passkey (S3)", "appearance"],
   ["history", "Time machine", "Every change, one click to undo", "history"],
   ["drift", "Drift & schedule", "Score vs baseline, scheduled changes", "drift"],
-  ["ai", "AI settings", "with the AI deck (F6)", "appearance"],
+  ["ai", "AI settings", "founder only, built last (step 16)", "appearance"],
 ];
 const LIVE = new Set(["personal", "appearance", "history", "drift"]);
 

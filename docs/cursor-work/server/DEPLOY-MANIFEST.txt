@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md c864bfceb61435cd
+docs/cursor-work/founder/founder-commands.md 69263fb3d5fa7361
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md e686efb9a85d7b60
+docs/cursor-work/DONE-DO-NOT-REPEAT.md a96c2c6d74412668
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -898,7 +898,7 @@ founder-web/index.html d5b8de883d5e95f0
 founder-web/package.json c0b915b8e44a6271
 founder-web/src/styles.css 29dd38c1d060c718
 server/founder/src/login.rs 465011eb25e7daac
-founder-web/dist/index.html 7b92b2cfe93a6cd5
+founder-web/dist/index.html 64ce550c55cfc47f
 docs/claude/founder/LEGACY-FOUNDER-FILES.md b379225e91ecfe5e
 docs/cursor-work/sql/E102_founder_audit_actions_devices.sql 98efcf0605642fcc
 docs/cursor-work/sql/CHECK_E102.sql 08c02fd1d918d4dc
@@ -917,7 +917,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md eb1ba2a7a3861722
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md 50307be9068ed76a
+docs/claude/founder/PULL-COMMANDS.md c314ec0028433c8a
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 32121a0adc1a3ebf
@@ -942,7 +942,7 @@ docs/claude/FOUNDER-SETTINGS-CENTER-PORT-28OCT.md fe791aed4ae0e57b
 docs/cursor-work/sql/E108_founder_settings.sql f4a698f2b0ca8a75
 docs/cursor-work/sql/CHECK_E108.sql b9dd58efb9371c43
 server/founder/src/settings.rs bd18acf48b386d3b
-docs/claude/FOUNDER-MASTER-ORDER-28OCT.md 8821ee860f320cbf
+docs/claude/FOUNDER-MASTER-ORDER-28OCT.md 3f89409f8c333038
 docs/claude/FOUNDER-UI-DESIGN-28OCT.md 186b7b149c97eef2
 founder-web/src/ui.css fd79509c77d08aa4
 founder-web/src/fonts/Inter-Bold.woff2 7a2cfbc25078d618
@@ -967,7 +967,7 @@ founder-web/src/Finance.tsx 2a8eea5946eed203
 founder-web/src/Live.tsx ca95a03310aa67da
 founder-web/src/Palette.tsx bec5fe14e9404b25
 founder-web/src/Profile.tsx c126bff40c79c25f
-founder-web/src/Settings.tsx b8ba46770a85e8b1
+founder-web/src/Settings.tsx 5af9a1871335fe60
 founder-web/src/Trust.tsx 469c9361b0cc7f80
 founder-web/src/api.ts 0fdb681e2a1cbb2a
 founder-web/src/catalog.ts 1b0a697b0c31b723
@@ -1017,7 +1017,7 @@ docs/cursor-work/sql/E111_founder_channels_telemetry.sql 22c2b268cfcf41c4
 docs/cursor-work/sql/CHECK_E111.sql efefebfe1d6e27b0
 server/founder/src/live.rs 284e57468206c1da
 server/founder/tests/e2e_live_stream.py 4b71a3ec7c398725
-docs/claude/FOUNDER-SERVER-STATE-30OCT.md 0eda58d38b667403
+docs/claude/FOUNDER-SERVER-STATE-30OCT.md c2b3295bb621168b
 docs/claude/FOUNDER-CHANNELS-CEO-LIST-01NOV.md d63b64c03c5df84d
 docs/claude/FOUNDER-MASTER-AUDIT-01NOV.md 1a252a64bfae2084
 docs/cursor-work/sql/E112_founder_inbox.sql 466f73b3fbcfc8ae
@@ -1036,7 +1036,7 @@ founder-web/public/kernel/anexo-kernel-0.6.0.wasm f7f9393d3dcf051f
 public/kernel/anexo-kernel-0.6.0.wasm f7f9393d3dcf051f
 anexochat/docs/anexochat-blueprint-original.md a332abc47953ef05
 docs/claude/TECH-CHART-01NOV.md 7b30b47f9d2ce1f3
-docs/claude/DONE-DO-NOT-REPEAT.md 0d33d2fe18cd5d34
+docs/claude/DONE-DO-NOT-REPEAT.md ea9f50c8dcdc292b
 docs/cursor-work/sql/CHECK_E113.sql e172af2fa6575ca4
 docs/cursor-work/sql/E113_founder_settings_timemachine.sql f685f2dd91178faf
 docs/claude/FOUNDER-SETTINGS-CENTER-DECISION-01NOV.md 70427a3adb10f5ac
@@ -1045,4 +1045,4 @@ founder-web/src/s2lib.ts 8d7ca06f5afb4b9d
 founder-web/src/settingsS2.test.ts fd93667abe335683
 server/founder/src/settings_s2.rs e151cac0561c67d0
 founder-web/dist/assets/index-6WhspRwl.css 036a49b7cff82378
-founder-web/dist/assets/index-BARcpuPm.js 61098990b5c854e1
+founder-web/dist/assets/index-D3MQu9uJ.js 889c6424154743bb
