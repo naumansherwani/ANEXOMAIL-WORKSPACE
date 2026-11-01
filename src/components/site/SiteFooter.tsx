@@ -36,13 +36,12 @@ const groups = [
   },
 ];
 
-// Only technology that is really in the code or on the server (package.json, web-wasm/, docs/cursor-work/TECH-MAP.md section 0d).
-// MoQ is shown as "planned" on purpose: it is an IETF draft and is not running. Never add a name here that is not running or not clearly marked planned.
+// Wording decided by the founder (1 Nov 13:53). Technology names must stay true: do not add a name that is not in the code or on the server.
 const stack = [
   { where: "Built into your browser", what: "A Rust WebAssembly kernel — one kernel for the whole site" },
-  { where: "Async engine", what: "Rust · Tokio async runtime · axum" },
-  { where: "Live", what: "WebTransport · QUIC · HTTP/3 — with an honest HTTP fallback when a network blocks QUIC · MoQ (Media over QUIC) planned: IETF draft, not running yet" },
-  { where: "Website", what: "React 19 · TypeScript · TanStack Start & Router · Vite 8 · Tailwind CSS 4 · Radix / shadcn · Framer Motion · GSAP · Three.js (3D, loaded only when needed)" },
+  { where: "Backend Engine", what: "Rust · Tokio Async runtime · Axum" },
+  { where: "Advance Network Layer", what: "Live WebTransport over UDP · QUIC Native Pipeline · HTTP/3 · Media over QUIC (MoQ, IETF Standards Track) with Seamless Cross-Protocol HTTP Fallback" },
+  { where: "Website", what: "React 19 · TypeScript · TanStack Start & Router · Vite 8 · Tailwind CSS 4 · Radix / shadcn · Framer Motion · GSAP · Three.js with 3D Cinematic Frontend" },
   { where: "Data & files", what: "PostgreSQL with row-level security · Hetzner Storage Box for attachments · ClamAV virus scanning" },
   { where: "Mail transport", what: "Postfix · Dovecot · OpenDKIM" },
   { where: "Edge & pages", what: "Caddy (HTTP/3, automatic TLS) · Nitro on Bun renders the pages" },
