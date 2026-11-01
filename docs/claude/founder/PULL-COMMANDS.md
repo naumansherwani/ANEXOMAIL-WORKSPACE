@@ -283,3 +283,9 @@ Expect: tests 105 passed, build OK, saboot 4/4 OK. Then say "founder side kholo"
 ## 1 Nov 11:06 — SPA label fix (AI settings: "founder only, built last (step 16)"). Technology: React-TS SPA. It ships with the next founder-install.sh (S1b); no separate pull needed today.
 
 ## 1 Nov 11:15 — no new pull. Docs only (awam settings list) + E114 draft not yet ready to run. Next pull = sql-run.sh E114 when green locally.
+
+## 1 Nov 11:40 — SQL E114 (S1b: registry + Appearance keys + Ambient Studio catalog). Technology: SQL. Run once, then paste the output:
+```
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E114_founder_appearance_ambient CHECK_E114 2>&1 | tail -25
+```
+Expected: "E114 selftest OK", "E114 selftest2 OK", "E114 ambient looks in the catalog: 301989888000", CHECK_E114 = 14 rows all t. Needs E113 already run (it is). Rust + UI for S1b follow only after this is green.

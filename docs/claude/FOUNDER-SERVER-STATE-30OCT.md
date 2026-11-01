@@ -202,3 +202,6 @@ STEP 6 GREEN: server + founder Chrome (Time machine 18 versions with proven tick
 
 ## UPDATE 1 Nov 11:15 PKT
 No server change. Awam settings list written to repo (docs only). E114 SQL drafted, not yet run anywhere.
+
+## UPDATE 1 Nov 11:40 PKT
+E114 not yet on the server (his first paste was the unfixed draft; failed and rolled back, nothing stored). Fixed version green locally; waits for his sql-run.sh paste.

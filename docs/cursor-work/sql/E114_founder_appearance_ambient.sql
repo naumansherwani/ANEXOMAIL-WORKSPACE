@@ -15,7 +15,7 @@
 --                       step forward and backward through the whole list like a car's ambient-light menu, and "look #n" always means the same look on every device.
 --                       The total is COMPUTED from the tables (founder_ambient_total), never typed in. Favourites: up to 24 recipes.
 --   4) INFO ROWS      — plain-words Explain / Blast radius text for each new key (E113 registry), and which keys can be scheduled (an "evening look at 19:00" is a scheduled ambient change).
---   5) selftest / selftest2 (rolled back, E104 standard). CHECK_E114.sql has 14 checks.
+--   5) selftest / selftest2 (rolled back, E104 standard), E113 selftest2 made registry-aware (8b), photosensitivity cap, neighbours and Surprise-me RPCs (3b). CHECK_E114.sql has 14 checks.
 -- Rules kept: every write still goes through founder_setting_set (history + founder_audit in one transaction); registries are read-only for service_role (revoke all first, then grant exactly
 -- what is needed — Supabase gives service_role everything on new tables by default); nothing here touches the awam tables (FC18 / Rule 35). Polar :3400 NO-TOUCH. Safe to run again.
 -- Not re-runnable after this file: E108 and E113 (they would put back the old fixed key lists). sql-run.sh keeps a sha ledger, so each runs once.
@@ -283,7 +283,8 @@ begin
     'speed',   (select jsonb_build_object('id', id, 'factor', factor) from public.founder_ambient_speeds where id = (p_r ->> 'speed')::smallint),
     'intensity', (select jsonb_build_object('id', id, 'percent', percent) from public.founder_ambient_intensities where id = (p_r ->> 'intensity')::smallint),
     'blend',   (select jsonb_build_object('id', id, 'name', name, 'css', css) from public.founder_ambient_blends where id = (p_r ->> 'blend')::smallint),
-    'seed', (p_r ->> 'seed')::integer);
+    'seed', (p_r ->> 'seed')::integer,
+    'effective_flashes_per_sec', public.founder_ambient_effective_rate(p_r));
 end $$;
 
 -- the whole catalog in one answer (small: about 120 palettes), with the totals computed from the tables
@@ -300,6 +301,42 @@ language sql stable security definer set search_path = pg_catalog, public set st
     'default', (select default_value from public.founder_setting_registry where key = 'appearance.ambient'),
     'max_favourites', 24)
 $$;
+
+
+-- ==============================================================================================================================
+-- 3b) photosensitivity, the picker's neighbours, and "Surprise me"
+-- ==============================================================================================================================
+-- A pattern's own rate is multiplied by the speed. The effective rate is capped at 2 flashes a second, whatever pattern and speed are chosen (at speed 2.0x, Heartbeat would otherwise reach 2.4).
+create or replace function public.founder_ambient_effective_rate(p_r jsonb) returns numeric
+language plpgsql stable security definer set search_path = pg_catalog, public set statement_timeout = '5s' as $$
+declare v_raw numeric;
+begin
+  if not public._fa_recipe_valid(p_r) then raise exception 'not a valid ambient look' using errcode = '22023'; end if;
+  select pt.flashes_per_sec * sp.factor into v_raw
+    from public.founder_ambient_patterns pt, public.founder_ambient_speeds sp
+   where pt.id = (p_r ->> 'pattern')::smallint and sp.id = (p_r ->> 'speed')::smallint;
+  return round(least(2, v_raw), 3);
+end $$;
+
+-- the looks around the current one, so the picker can pre-render the next and previous before the cursor gets there (both directions wrap)
+create or replace function public.founder_ambient_neighbours(p_r jsonb, p_each integer default 3) returns jsonb
+language plpgsql stable security definer set search_path = pg_catalog, public set statement_timeout = '5s' as $$
+declare v_each integer := least(greatest(coalesce(p_each, 3), 1), 12); v_n bigint; v_total bigint := public.founder_ambient_total();
+begin
+  v_n := public.founder_ambient_index(p_r);
+  return jsonb_build_object('index', v_n, 'total', v_total,
+    'previous', (select coalesce(jsonb_agg(jsonb_build_object('n', ((v_n - i) % v_total + v_total) % v_total, 'recipe', public.founder_ambient_at(((v_n - i) % v_total + v_total) % v_total)) order by i), '[]'::jsonb) from generate_series(1, v_each) i),
+    'next',     (select coalesce(jsonb_agg(jsonb_build_object('n', (v_n + i) % v_total, 'recipe', public.founder_ambient_at((v_n + i) % v_total)) order by i), '[]'::jsonb) from generate_series(1, v_each) i));
+end $$;
+
+-- "Surprise me": a whole number from the browser becomes one look. Same input, same look (deterministic, so it can be tested), spread over the whole list.
+create or replace function public.founder_ambient_surprise(p_entropy bigint) returns jsonb
+language plpgsql stable security definer set search_path = pg_catalog, public set statement_timeout = '5s' as $$
+declare v_total bigint := public.founder_ambient_total();
+begin
+  if p_entropy is null then raise exception 'entropy needed' using errcode = '22023'; end if;
+  return public.founder_ambient_at(abs(hashtextextended('ambient:' || p_entropy::text, 114)) % v_total);
+end $$;
 
 -- ==============================================================================================================================
 -- 4) validator + write door now read the registry
@@ -449,7 +486,7 @@ insert into public.founder_settings_info (key, label, plain, example, tradeoff, 
  ('appearance.ambient', 'Ambient look',
   'The atmosphere behind the workspace, picked like a car''s ambient lighting: step forward and backward through the whole list and the screen changes live. A look is a small recipe (palette, pattern, speed, intensity, blend, seed), so the same look appears the same on every approved device.',
   'Aurora Dawn with Breathe at 70% is the default. Step on to Aurora Mist, Aurora Neon, and so on.',
-  'Moving looks use a little more battery; Graphics off or Reduce motion turns them into a still wash. No look flashes more than twice a second.',
+  'Moving looks use a little more battery; Graphics off or Reduce motion turns them into a still wash. No look flashes more than twice a second: that is enforced for every pattern at every speed.',
   array['Aurora background','3D scenes','Ambient edge'], 'low', true, true),
  ('appearance.ambient_favs', 'Favourite looks',
   'Up to 24 ambient looks you have kept, one tap away.',
@@ -466,6 +503,7 @@ declare f text;
 begin
   foreach f in array array['public.founder_ambient_total()','public.founder_ambient_index(jsonb)','public.founder_ambient_at(bigint)','public.founder_ambient_step(jsonb,bigint)',
                            'public.founder_ambient_describe(jsonb)','public.founder_ambient_catalog()','public.founder_setting_registry_list()',
+                           'public.founder_ambient_effective_rate(jsonb)','public.founder_ambient_neighbours(jsonb,integer)','public.founder_ambient_surprise(bigint)',
                            'public.founder_appearance_selftest()','public.founder_appearance_selftest2()'] loop
     if to_regprocedure(f) is not null then
       execute format('revoke all on function %s from public, anon, authenticated', f);
@@ -592,7 +630,11 @@ begin
     -- ambient setting through the door, history, undo, replay
     j := public.founder_setting_set(u, 'appearance.ambient', public.founder_ambient_step(recipe, 5));
     if (j ->> 'changed')::boolean is not true then raise exception 'ambient not saved'; end if;
-    if public.founder_setting_set(u, 'appearance.ambient', 'null'::jsonb) ->> 'changed' <> 'true' or public.founder_settings_get(u) ? 'appearance.ambient' then raise exception 'ambient null must return to the default'; end if;
+    -- write first, read after, in separate statements: Postgres may evaluate the operands of one OR in any order (it did, in the first server run)
+    j := public.founder_setting_set(u, 'appearance.ambient', 'null'::jsonb);
+    if j ->> 'changed' <> 'true' then raise exception 'ambient null must change the stored value'; end if;
+    j2 := public.founder_settings_get(u);
+    if j2 ? 'appearance.ambient' then raise exception 'ambient null must return to the default'; end if;
     perform public.founder_setting_set(u, 'appearance.ambient', public.founder_ambient_step(recipe, 5));
     perform public.founder_setting_set(u, 'appearance.ambient', public.founder_ambient_step(recipe, 9));
     j := public.founder_setting_revert(u, public._fs_last_history_id(u, 'appearance.ambient'), 'selftest undo the look');
@@ -620,6 +662,33 @@ begin
     if public._fs_current(u, 'appearance.ambient') <> public.founder_ambient_step(recipe, 5) or (select state from public.founder_settings_schedule where id = sid) <> 'rolled_back' then raise exception 'scheduled look not rolled back'; end if;
     if not public._fs_fails(format($q$select public.founder_settings_schedule_create(%L, 'appearance.ambient_favs', '[]'::jsonb, now() + interval '5 minutes', null, 'selftest favs cannot be scheduled')$q$, u)) then raise exception 'favourites were schedulable'; end if;
     r := r || 'scheduled look+rollback OK; ';
+
+    -- photosensitivity: for EVERY pattern at EVERY speed the effective rate is at most 2 a second; a still pattern is 0; the cap really bites (Heartbeat at top speed)
+    select count(*) into bad from public.founder_ambient_patterns pt, public.founder_ambient_speeds sp
+     where public.founder_ambient_effective_rate(jsonb_build_object('palette',0,'pattern',pt.id,'speed',sp.id,'intensity',0,'blend',0,'seed',0)) > 2;
+    if bad > 0 then raise exception '% pattern/speed pairs exceed 2 flashes a second', bad; end if;
+    if public.founder_ambient_effective_rate('{"palette":0,"pattern":0,"speed":19,"intensity":0,"blend":0,"seed":0}'::jsonb) <> 0 then raise exception 'a still look must not flash'; end if;
+    if public.founder_ambient_effective_rate('{"palette":0,"pattern":23,"speed":19,"intensity":0,"blend":0,"seed":0}'::jsonb) <> 2 then raise exception 'Heartbeat at top speed must be capped at 2'; end if;
+    if (public.founder_ambient_describe(recipe) ->> 'effective_flashes_per_sec')::numeric > 2 then raise exception 'describe must show the capped rate'; end if;
+    r := r || 'flash cap (480 pairs) OK; ';
+
+    -- neighbours: n+1..n+k and n-1..n-k, in order, wrapping at both ends; every neighbour is a valid look
+    j := public.founder_ambient_neighbours(recipe, 4);
+    if jsonb_array_length(j -> 'next') <> 4 or jsonb_array_length(j -> 'previous') <> 4 then raise exception 'neighbours shape: %', j; end if;
+    if (j -> 'next' -> 0 -> 'recipe') <> public.founder_ambient_step(recipe, 1) or (j -> 'previous' -> 0 -> 'recipe') <> public.founder_ambient_step(recipe, -1)
+       or (j -> 'next' -> 3 -> 'recipe') <> public.founder_ambient_step(recipe, 4) or (j -> 'previous' -> 3 -> 'recipe') <> public.founder_ambient_step(recipe, -4) then raise exception 'neighbours out of order'; end if;
+    j2 := public.founder_ambient_neighbours(public.founder_ambient_at(0), 2);
+    if (j2 -> 'previous' -> 0 ->> 'n')::bigint <> v_total - 1 then raise exception 'previous of look 0 must wrap to the last look'; end if;
+    if jsonb_array_length(public.founder_ambient_neighbours(recipe, 999) -> 'next') <> 12 then raise exception 'neighbour count must be limited to 12'; end if;
+    r := r || 'neighbours OK; ';
+
+    -- surprise: deterministic, valid, spread out (500 different numbers give at least 495 different looks)
+    if public.founder_ambient_surprise(42) <> public.founder_ambient_surprise(42) then raise exception 'surprise must be deterministic'; end if;
+    if not public._fa_recipe_valid(public.founder_ambient_surprise(-9223372036854775807)) or not public._fa_recipe_valid(public.founder_ambient_surprise(0)) then raise exception 'surprise gave an invalid look'; end if;
+    select count(distinct public.founder_ambient_surprise(i)::text) into bad from generate_series(1, 500) i;
+    if bad < 495 then raise exception 'surprise is not spread out (% distinct of 500)', bad; end if;
+    if not public._fs_fails($q$select public.founder_ambient_surprise(null)$q$) then raise exception 'surprise accepted a null'; end if;
+    r := r || 'surprise OK; ';
 
     -- the history replay and the Time machine still agree with the live table, drift still answers, chain clean
     if public.founder_settings_replay_check(u) is not null then raise exception 'replay check dirty: %', public.founder_settings_replay_check(u); end if;
@@ -674,6 +743,55 @@ begin
   r := r || 'appearance coverage OK; ';
   return 'E114 selftest2 OK — ' || r || 'done';
 end $$;
+
+
+-- ==============================================================================================================================
+-- 8b) E113's selftest2 assumed exactly 5 keys (the E108 list). The registry is now the one list, so the test reads it instead.
+--     Same checks otherwise. (E113 itself is left untouched: the server keeps a sha ledger of files already run.)
+-- ==============================================================================================================================
+create or replace function public.founder_settings_s2_selftest2() returns text
+language plpgsql security definer set search_path = pg_catalog, public, extensions set statement_timeout = '30s' as $$
+declare r text := ''; t text; f text; v_n integer;
+begin
+  foreach t in array array['public.founder_settings_revert_log','public.founder_settings_schedule','public.founder_settings_info','public.founder_settings_baseline'] loop
+    if to_regclass(t) is null then raise exception 'table missing: %', t; end if;
+    if not (select relrowsecurity from pg_class where oid = to_regclass(t)) then raise exception 'RLS off on %', t; end if;
+    if has_table_privilege('anon', t, 'select') or has_table_privilege('authenticated', t, 'select') or has_table_privilege('anon', t, 'insert') or has_table_privilege('authenticated', t, 'insert') then raise exception 'anon/authenticated can reach %', t; end if;
+  end loop;
+  if has_table_privilege('service_role', 'public.founder_settings_info', 'insert') or has_table_privilege('service_role', 'public.founder_settings_baseline', 'update') then raise exception 'registries must be read-only for service_role'; end if;
+  if has_table_privilege('service_role', 'public.founder_settings_revert_log', 'update') or has_table_privilege('service_role', 'public.founder_settings_revert_log', 'delete') then raise exception 'revert log must be append-only for service_role'; end if;
+  if has_table_privilege('service_role', 'public.founder_settings_schedule', 'delete') then raise exception 'service_role must not delete schedule rows'; end if;
+  r := r || 'tables+RLS+grants OK; ';
+  foreach f in array array[
+      'public.founder_settings_history_list(uuid,text,bigint,integer)','public.founder_setting_revert(uuid,bigint,text)','public.founder_settings_at(uuid,timestamptz)',
+      'public.founder_settings_diff(uuid,timestamptz,timestamptz)','public.founder_settings_replay_check(uuid)','public.founder_settings_timeline(uuid,integer)',
+      'public.founder_settings_drift(uuid)','public.founder_setting_explain(text)','public.founder_setting_blast(uuid,text)',
+      'public.founder_settings_schedule_create(uuid,text,jsonb,timestamptz,integer,text)','public.founder_settings_schedule_cancel(uuid,uuid,text)',
+      'public.founder_settings_schedule_confirm(uuid,uuid,text)','public.founder_settings_schedule_tick(timestamptz)','public.founder_settings_schedule_preview(timestamptz)',
+      'public.founder_settings_schedule_list(uuid,integer)','public.founder_settings_pulse(uuid)','public.founder_settings_crosscheck(uuid)'] loop
+    if to_regprocedure(f) is null then raise exception 'rpc missing: %', f; end if;
+    if has_function_privilege('anon', f, 'execute') or has_function_privilege('authenticated', f, 'execute') or has_function_privilege('public', f, 'execute') then raise exception 'rpc open to the public: %', f; end if;
+    if not has_function_privilege('service_role', f, 'execute') then raise exception 'service_role cannot run %', f; end if;
+  end loop;
+  r := r || 'rpc grants OK; ';
+  select count(*) into v_n from pg_proc p where p.oid = any (array[to_regprocedure('public.founder_setting_revert(uuid,bigint,text)'), to_regprocedure('public.founder_settings_schedule_tick(timestamptz)'),
+        to_regprocedure('public.founder_settings_schedule_create(uuid,text,jsonb,timestamptz,integer,text)'), to_regprocedure('public.founder_settings_drift(uuid)'),
+        to_regprocedure('public.founder_settings_history_list(uuid,text,bigint,integer)')])
+     and p.prosecdef and exists (select 1 from unnest(p.proconfig) c where c like 'search_path=%') and exists (select 1 from unnest(p.proconfig) c where c like 'statement_timeout=%');
+  if v_n <> 5 then raise exception 'security definer functions must pin search_path and statement_timeout (%/5)', v_n; end if;
+  r := r || 'definer hygiene OK; ';
+  if (select count(*) from pg_trigger where tgrelid = to_regclass('public.founder_settings_schedule') and tgname in ('founder_settings_schedule_guard','founder_settings_schedule_no_trunc')) <> 2 then raise exception 'schedule triggers missing'; end if;
+  if (select count(*) from pg_trigger where tgrelid = to_regclass('public.founder_settings_revert_log') and tgname in ('founder_settings_revert_log_no_upd','founder_settings_revert_log_no_trunc')) <> 2 then raise exception 'revert log triggers missing'; end if;
+  r := r || 'triggers OK; ';
+  if exists (select 1 from public.founder_settings_info i where not exists (select 1 from public.founder_setting_registry r where r.key = i.key)) then raise exception 'info has a key outside the registry'; end if;
+  if exists (select 1 from public.founder_setting_registry r where not exists (select 1 from public.founder_settings_info i where i.key = r.key)) then raise exception 'every registry key needs an info row'; end if;
+  r := r || 'registry coverage OK; ';
+  if not exists (select 1 from public.founder_live_sources where key = 'settings_history') then raise exception 'live source missing'; end if;
+  r := r || 'live source OK; ';
+  return 'E113 selftest2 OK — registry-aware (E114); ' || r || 'done';
+end $$;
+revoke all on function public.founder_settings_s2_selftest2() from public, anon, authenticated;
+grant execute on function public.founder_settings_s2_selftest2() to service_role;
 
 do $$ begin
   perform public._fs_noop_probe();

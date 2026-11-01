@@ -24,7 +24,7 @@ union all select 'E113 security definer RPC par search_path + statement_timeout 
           from pg_proc where oid in (to_regprocedure('public.founder_setting_revert(uuid,bigint,text)'), to_regprocedure('public.founder_settings_schedule_tick(timestamptz)'),
                                      to_regprocedure('public.founder_settings_drift(uuid)'), to_regprocedure('public.founder_settings_history_list(uuid,text,bigint,integer)'),
                                      to_regprocedure('public.founder_settings_schedule_create(uuid,text,jsonb,timestamptz,integer,text)'))), 5
-union all select 'E113 info registry: E108 ki har key ke liye plain-words row (5)', (select count(*) from public.founder_settings_info) = 5, 6
+union all select 'E113 info registry: E108 ki har key ke liye plain-words row (5 after E113; every registry key after E114)', (select count(*) from public.founder_settings_info) >= 5 and not exists (select 1 from public.founder_settings_info i where to_regclass('public.founder_setting_registry') is not null and not exists (select 1 from public.founder_setting_registry r where r.key = i.key)), 6
 union all select 'E113 baseline registry maujood (set + ledger policy rows)', (select count(*) from public.founder_settings_baseline) >= 5, 7
 union all select 'E113 behaviour selftest (undo, replay, time travel, drift, schedule, auto-rollback, superseded, limits, guards)',
        coalesce((select public.founder_settings_s2_selftest() like 'E113 selftest OK%' or public.founder_settings_s2_selftest() like 'E113 selftest SKIP%'), false), 8
