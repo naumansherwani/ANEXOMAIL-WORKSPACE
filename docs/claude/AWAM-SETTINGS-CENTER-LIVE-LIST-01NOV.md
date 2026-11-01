@@ -80,15 +80,15 @@ Correction recorded: the Appearance device block (6 controls) and account block 
 |---|---|---|---|
 | Personal | Display name, Home city | LIVE | - |
 | Personal | Profile photo (founder extra) | LIVE | - |
-| Personal | Undo send window | MISSING | key `undo_send_seconds` (0-60, default 30); enforced when Mail Desk lands (step 11) |
-| Personal | Send confidence check | MISSING | key `send_confidence_check` (bool, on) |
-| Workspace | Retention window | MISSING (tab "coming") | key `retention_days` (0 = keep forever) |
-| Workspace | Require two-factor for everyone | MISSING | founder form: `require_passkey` (bool); enforced by step 7 passkey |
-| Workspace | Flag external recipients | MISSING | key `flag_external` (bool, on) |
+| Personal | Undo send window | S1c written 1 Nov (E115 local green, Rust 117 tests, UI) — server install pending | - |
+| Personal | Send confidence check | S1c written (same) | - |
+| Workspace | Retention window | S1c written (tab live) | key `retention_days` (0 = keep forever) |
+| Workspace | Require two-factor for everyone | S1c written | founder form: `require_passkey` (bool); enforced by step 7 passkey |
+| Workspace | Flag external recipients | S1c written | key `flag_external` (bool, on) |
 | Appearance | THIS DEVICE (6) + footer, ACCOUNT Density/Reduce motion | LIVE in code; polish SPA installed but live site still serves old index (diagnosis pending) | - |
-| Notifications | Quiet hours | MISSING (tab "coming") | key `quiet_hours` (bool, on; escalations excepted) |
-| Notifications | Only VIPs interrupt | MISSING | key `only_vips` (bool, off) |
-| Privacy | Read receipts | MISSING (tab "coming") | read-only row "Never sent" (no key: nothing to switch on) |
-| Privacy | Block tracking pixels | MISSING | key `block_tracking_pixels` (bool, on) |
+| Notifications | Quiet hours | S1c written (tab live) | key `quiet_hours` (bool, on; escalations excepted) |
+| Notifications | Only VIPs interrupt | S1c written | key `only_vips` (bool, off) |
+| Privacy | Read receipts | S1c written (tab live) | read-only row "Never sent" (no key: nothing to switch on) |
+| Privacy | Block tracking pixels | S1c written | key `block_tracking_pixels` (bool, on) |
 | Time machine, Drift & schedule | - | LIVE (E113) | new keys join automatically via registry |
 Honest rule: each new row stores real values in the registry with history/blast/drift/schedule like the rest; rows whose effect belongs to a later step say so in their Explain text (no fake "enforced"). Order: (1) fix live SPA, (2) S1c.

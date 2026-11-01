@@ -3,10 +3,18 @@
 use serde_json::Value;
 
 /// (key, kind, default as JSON text) — what the SPA is told, so the UI never invents a default.
-pub const REGISTRY: [(&str, &str, &str); 14] = [
+pub const REGISTRY: [(&str, &str, &str); 22] = [
     ("personal.display_name", "text", "null"),
     ("personal.avatar", "image", "null"),
     ("personal.home", "place", "null"),
+    ("personal.undo_send", "enum", "30"),
+    ("personal.send_check", "bool", "true"),
+    ("workspace.retention_days", "enum", "0"),
+    ("workspace.require_passkey", "bool", "true"),
+    ("workspace.flag_external", "bool", "true"),
+    ("notifications.quiet_hours", "bool", "true"),
+    ("notifications.only_vips", "bool", "false"),
+    ("privacy.block_trackers", "bool", "true"),
     ("appearance.graphics", "bool", "true"),
     ("appearance.sidebar_slim", "bool", "false"),
     ("appearance.text_scale", "enum", "100"),
@@ -53,7 +61,11 @@ pub fn valid(key: &str, v: &Value) -> bool {
         "personal.display_name" => v.as_str().map(valid_name).unwrap_or(false),
         "personal.avatar" => v.as_str().map(valid_avatar).unwrap_or(false),
         "personal.home" => valid_place(v), // the real zone list check is in SQL (pg_timezone_names)
-        "appearance.graphics" | "appearance.sidebar_slim" | "appearance.celebration" | "appearance.focus_ring" | "appearance.reduce_motion" => v.is_boolean(),
+        "appearance.graphics" | "appearance.sidebar_slim" | "appearance.celebration" | "appearance.focus_ring" | "appearance.reduce_motion"
+        | "personal.send_check" | "workspace.require_passkey" | "workspace.flag_external" | "notifications.quiet_hours" | "notifications.only_vips" | "privacy.block_trackers" => v.is_boolean(),
+        // S1c: exact JSON integers from a closed list (never a string, never 30.5)
+        "personal.undo_send" => v.as_i64().map(|n| v.is_i64() && matches!(n, 0 | 5 | 10 | 20 | 30 | 60)).unwrap_or(false),
+        "workspace.retention_days" => v.as_i64().map(|n| v.is_i64() && matches!(n, 0 | 30 | 90 | 180 | 365 | 730 | 1825)).unwrap_or(false),
         // exact JSON number 90/100/115/130/150 (the same sizes as the user app), never a string and never 115.5
         "appearance.text_scale" => v.as_i64().map(|n| v.is_i64() && matches!(n, 90 | 100 | 115 | 130 | 150)).unwrap_or(false),
         "appearance.animations" => matches!(v.as_str(), Some("full" | "reduced" | "none")),
@@ -72,7 +84,7 @@ pub fn registry_json() -> Value {
 mod tests_s1b {
     use super::*;
     use serde_json::json;
-    #[test] fn registry_has_the_fourteen_keys_of_e114() { assert_eq!(REGISTRY.len(), 14); }
+    #[test] fn registry_has_the_twenty_two_keys_of_e115() { assert_eq!(REGISTRY.len(), 22); }
     #[test] fn appearance_values() {
         for (k, good, bad) in [("appearance.text_scale", vec![json!(90), json!(100), json!(115), json!(130), json!(150)], vec![json!(120), json!("115"), json!(115.5), json!(true)]),
                                ("appearance.animations", vec![json!("full"), json!("reduced"), json!("none")], vec![json!("off"), json!(true)]),
@@ -84,6 +96,20 @@ mod tests_s1b {
             for g in good { assert!(valid(k, &g), "{k} {g}"); }
             for b in bad { assert!(!valid(k, &b), "{k} {b}"); }
         }
+    }
+    #[test] fn s1c_values() {
+        for (k, good, bad) in [("personal.undo_send", vec![json!(0), json!(5), json!(10), json!(20), json!(30), json!(60)], vec![json!(15), json!(-5), json!(61), json!(30.5), json!("30"), json!(true), json!([30])]),
+                               ("workspace.retention_days", vec![json!(0), json!(30), json!(90), json!(180), json!(365), json!(730), json!(1825)], vec![json!(1), json!(45), json!(364), json!(1826), json!(-30), json!(90.5), json!("90"), json!(false)]),
+                               ("personal.send_check", vec![json!(true), json!(false)], vec![json!("true"), json!(1), json!([])]),
+                               ("workspace.require_passkey", vec![json!(true), json!(false)], vec![json!("yes"), json!(0)]),
+                               ("workspace.flag_external", vec![json!(true), json!(false)], vec![json!({}), json!("false")]),
+                               ("notifications.quiet_hours", vec![json!(true), json!(false)], vec![json!(1)]),
+                               ("notifications.only_vips", vec![json!(true), json!(false)], vec![json!("no")]),
+                               ("privacy.block_trackers", vec![json!(true), json!(false)], vec![json!("false"), json!(0)])] {
+            for g in good { assert!(valid(k, &g), "{k} {g}"); }
+            for b in bad { assert!(!valid(k, &b), "{k} {b}"); }
+        }
+        assert!(!known("privacy.read_receipts"), "read receipts has no key (fixed 'Never sent')");
     }
     #[test] fn ambient_defaults_are_valid_and_match_sql() {
         for (k, _, d) in REGISTRY { let v: Value = serde_json::from_str(d).unwrap(); if v.is_null() { continue; } assert!(valid(k, &v), "default of {k}"); }

@@ -29,16 +29,19 @@ const Ico = ({ k }: { k: string }) => <svg viewBox="0 0 24 24" width="18" height
 // A tab is clickable only when its real backend exists (Rule 69); the others stay in their place and say which phase builds them.
 const NAV: [string, string, string | null, string][] = [
   ["personal", "Personal", "Name, photo and home city", "personal"],
-  ["workspace", "Workspace", "with Systems (F6)", "appearance"],
+  ["workspace", "Workspace", "Retention, passkey and external-recipient rules", "workspace"],
   ["appearance", "Appearance", "Motion, text, density and ambient looks", "appearance"],
-  ["notifications", "Notifications", "with Decide and Live Pulse (S4)", "appearance"],
-  ["privacy", "Privacy", "after passkey (S3)", "appearance"],
+  ["notifications", "Notifications", "Who may interrupt you, and when", "notifications"],
+  ["privacy", "Privacy", "Tracking and read receipts", "privacy"],
   ["history", "Time machine", "Every change, one click to undo", "history"],
   ["drift", "Drift & schedule", "Score vs baseline, scheduled changes", "drift"],
   ["ai", "AI settings", "founder only, built last (step 16)", "appearance"],
 ];
-const LIVE = new Set(["personal", "appearance", "history", "drift"]);
+const LIVE = new Set(["personal", "workspace", "appearance", "notifications", "privacy", "history", "drift"]);
 
+const TOGGLE_DEFAULTS: Record<string, boolean> = { "personal.send_check": true, "workspace.require_passkey": true, "workspace.flag_external": true, "notifications.quiet_hours": true, "notifications.only_vips": false, "privacy.block_trackers": true };
+const UNDO_SECONDS: [number, string][] = [[0, "Off"], [5, "5 s"], [10, "10 s"], [20, "20 s"], [30, "30 s"], [60, "60 s"]];
+const RETENTION: [number, string][] = [[0, "Forever"], [30, "30 days"], [90, "90 days"], [180, "180 days"], [365, "1 year"], [730, "2 years"], [1825, "5 years"]];
 type Props = { p: Prof | null; fx: boolean; setFx: (v: boolean) => void; slim: boolean; setSlim: (v: boolean) => void; reload: () => Promise<void> | void; go?: (v: string) => void; preview: Recipe | null; setPreview: (r: Recipe | null) => void };
 /** A row of exclusive choices (the same options as the user app). */
 function Seg<T extends string | number>({ value, options, label, disabled, onPick }: { value: T; options: [T, string][]; label: string; disabled?: boolean; onPick: (v: T) => void }) {
@@ -72,6 +75,12 @@ export function SettingsView({ p, fx, setFx, slim, setSlim, reload, go, preview,
   const favs = cat && Array.isArray(p?.settings?.["appearance.ambient_favs"]) ? (p!.settings["appearance.ambient_favs"] as unknown[]).filter((x): x is Recipe => validRecipe(cat, x)) : [];
   // the change shows at once on this screen; the save then confirms it (and the account keeps it for every approved device)
   const put = (key: string, value: unknown, patch: Partial<Appearance>) => save(key, value, () => applyAppearance({ ...ap, ...patch }));
+  // S1c rows: the value comes from the account (null/absent = the registry default shown here), the write goes through the same signed door as every other setting
+  const sv = <T,>(k: string, d: T): T => { const x = p?.settings?.[k]; return x === undefined || x === null ? d : (x as T); };
+  const Tog = ({ k, title, text, note, last }: { k: string; title: string; text: string; note?: string; last?: boolean }) => (
+    <><div className={`setrow${last ? " last" : ""}`}><div><b>{title}</b><p className="dim">{text}{note && <> <em>{note}</em></>}</p></div>
+      <Switch checked={sv<boolean>(k, TOGGLE_DEFAULTS[k])} aria-label={title} disabled={busy} onCheckedChange={(v) => save(k, v)} /></div>
+      <RowTools k={k} onHistory={openHistory} /></>);
   const openHistory = (k: string) => { setHkey(k); setTab("history"); setMsg(null); };
   const Msg = () => msg ? <div className={msg.ok ? "toast ok" : "toast bad"} role="status">{msg.t}</div> : null;
   return (
@@ -115,7 +124,37 @@ export function SettingsView({ p, fx, setFx, slim, setSlim, reload, go, preview,
               <RowTools k="personal.home" onHistory={openHistory} />
               <Msg />
             </section>
+            <section className="panel">
+              <div className="panelhead"><h2>Sending</h2><p className="dim">Your own defaults for outgoing mail. Nothing here leaks to anyone else. They start working when Mail Desk is built (step 11); until then your choice is stored and its history is kept.</p></div>
+              <div className="setrow"><div><b>Undo send window</b><p className="dim">How long a sent mail is held before it really leaves.</p></div>
+                <Seg label="Undo send window" value={sv<number>("personal.undo_send", 30)} disabled={busy} options={UNDO_SECONDS} onPick={(v) => save("personal.undo_send", v)} /></div>
+              <RowTools k="personal.undo_send" onHistory={openHistory} />
+              <Tog k="personal.send_check" title="Send confidence check" text="Warn before sending when tone, recipients or attachments look wrong." last />
+              <Msg />
+            </section>
           </>}
+          {tab === "workspace" && <section className="panel">
+            <div className="panelhead"><h2>Company-wide behaviour</h2><p className="dim">Every change shows its blast radius before you save it. Retention and passkey are high-severity, so they are applied at once and never scheduled.</p></div>
+            <div className="setrow"><div><b>Retention window</b><p className="dim">How long mail is kept before permanent deletion. <em>No deletion job exists yet (Mail, step 11), so nothing is removed whatever you pick.</em></p></div>
+              <Seg label="Retention window" value={sv<number>("workspace.retention_days", 0)} disabled={busy} options={RETENTION} onPick={(v) => save("workspace.retention_days", v)} /></div>
+            <RowTools k="workspace.retention_days" onHistory={openHistory} />
+            <Tog k="workspace.require_passkey" title="Require passkey for every sign-in" text="Every sign-in must use a passkey, not only a token — the founder form of “require two-factor for everyone”." note="Passkey sign-in is built in step 7; until then the approved-device gate stays the only door." />
+            <Tog k="workspace.flag_external" title="Flag external recipients" text="Show a clear warning when a thread leaves the company." note="Works when Mail Desk is built (step 11)." last />
+            <Msg />
+          </section>}
+          {tab === "notifications" && <section className="panel">
+            <div className="panelhead"><h2>Who may interrupt you</h2><p className="dim">And when silence is enforced. Alerts themselves arrive with Decide and Live Pulse (step 8); until then your choices are stored and their history is kept.</p></div>
+            <Tog k="notifications.quiet_hours" title="Quiet hours" text="Silence everything outside working hours, except escalations." />
+            <Tog k="notifications.only_vips" title="Only VIPs interrupt" text="Everything else waits for the next inbox check." last />
+            <Msg />
+          </section>}
+          {tab === "privacy" && <section className="panel">
+            <div className="panelhead"><h2>Tracking and read receipts</h2><p className="dim">Off by default. Nothing here is ever sent to a sender.</p></div>
+            <div className="setrow"><div><b>Read receipts</b><p className="dim">ANEXOMAIL never tells a sender when you open their mail — there is nothing to switch on.</p></div>
+              <span className="seg" role="note" aria-label="Read receipts: never sent"><button type="button" className="on" disabled aria-pressed="true">Never sent</button></span></div>
+            <Tog k="privacy.block_trackers" title="Block tracking pixels" text="Strip trackers from incoming mail before it renders." note="Works when Mail Desk is built (step 11)." last />
+            <Msg />
+          </section>}
           {tab === "appearance" && <>
             <section className="panel">
               <div className="panelhead"><h2>This device — Motion &amp; delight</h2><p className="dim">Applies the moment you tap it — no save button, no reload. Saved on your account too, so every approved device matches. Your operating system's reduced-motion setting always wins on top of this.</p></div>

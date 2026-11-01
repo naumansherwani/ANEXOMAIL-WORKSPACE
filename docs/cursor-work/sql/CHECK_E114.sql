@@ -1,4 +1,4 @@
--- CHECK E114 — kuch persist nahi karta (selftest rollback). Har row ok = true. 14 checks.
+-- CHECK E114 — kuch persist nahi karta (selftest rollback). Har row ok = true. 13 checks.
 select item, ok from (
 select 'E114 registry + 5 ambient tables maujood, RLS on, anon/authenticated ko access nahi, service_role sirf read' as item,
        (select bool_and(to_regclass(t) is not null and (select relrowsecurity from pg_class where oid = to_regclass(t))
@@ -11,8 +11,8 @@ union all select 'E114 RPC maujood, anon/authenticated execute nahi, service_rol
           from unnest(array['public.founder_ambient_total()','public.founder_ambient_index(jsonb)','public.founder_ambient_at(bigint)','public.founder_ambient_step(jsonb,bigint)',
                             'public.founder_ambient_describe(jsonb)','public.founder_ambient_catalog()','public.founder_ambient_effective_rate(jsonb)','public.founder_ambient_neighbours(jsonb,integer)',
                             'public.founder_ambient_surprise(bigint)','public.founder_setting_registry_list()','public.founder_setting_set(uuid,text,jsonb)']) f), 2
-union all select 'E114 registry mein 14 keys (3 personal + 11 appearance), har key ka info row hai aur har info row ki key registry mein hai',
-       (select count(*) from public.founder_setting_registry) = 14
+union all select 'E114 registry mein E114 ki 14 keys (E115 ke baad 22 ho sakti hain), har key ka info row hai aur har info row ki key registry mein hai',
+       (select count(*) from public.founder_setting_registry) >= 14 and (select count(*) from public.founder_setting_registry where area in ('personal','appearance') and key like any (array['personal.%','appearance.%']) and key in ('personal.display_name','personal.avatar','personal.home','appearance.graphics','appearance.sidebar_slim','appearance.text_scale','appearance.animations','appearance.transitions','appearance.celebration','appearance.focus_ring','appearance.density','appearance.reduce_motion','appearance.ambient','appearance.ambient_favs')) = 14
        and not exists (select 1 from public.founder_setting_registry r where not exists (select 1 from public.founder_settings_info i where i.key = r.key))
        and not exists (select 1 from public.founder_settings_info i where not exists (select 1 from public.founder_setting_registry r where r.key = i.key)), 3
 union all select 'E114 founder_settings.key aur schedule.key registry ki foreign key hain (purani fixed list nahi)',
@@ -39,9 +39,8 @@ union all select 'E114 har look ka ek number: 2000 numbers par at -> index round
 union all select 'E114 default look valid hai aur registry ke default se milta hai',
        public._fa_recipe_valid((select default_value from public.founder_setting_registry where key = 'appearance.ambient'))
        and public.founder_ambient_catalog() -> 'default' = (select default_value from public.founder_setting_registry where key = 'appearance.ambient'), 10
-union all select 'E114 behaviour selftest (keys, ambient, step, favourites, schedule + rollback, flash cap, neighbours, surprise, replay)',
-       coalesce((select public.founder_appearance_selftest() like 'E114 selftest OK%' or public.founder_appearance_selftest() like 'E114 selftest SKIP%'), false), 11
-union all select 'E114 selftest2 (privileges, hygiene, foreign keys, coverage)', coalesce((select public.founder_appearance_selftest2() like 'E114 selftest2 OK%'), false), 12
+union all select 'E114 behaviour selftests E115 ne registry-aware selftest se badal diye (E115 selftest 14 purani keys bhi test karta hai)',
+       to_regprocedure('public.founder_appearance_selftest()') is null and to_regprocedure('public.founder_appearance_selftest2()') is null, 11
 union all select 'E113 selftest + selftest2 aur crosscheck ab bhi green (registry-aware)',
        coalesce((select public.founder_settings_s2_selftest() like 'E113 selftest OK%' or public.founder_settings_s2_selftest() like 'E113 selftest SKIP%'), false)
        and coalesce((select public.founder_settings_s2_selftest2() like 'E113 selftest2 OK%'), false)

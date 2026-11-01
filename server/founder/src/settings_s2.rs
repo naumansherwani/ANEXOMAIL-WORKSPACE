@@ -7,8 +7,9 @@ use serde_json::{Value, json};
 use crate::settings;
 
 /// Keys that may be scheduled (mirrors `founder_settings_info.schedulable` in E113; the photo is never schedulable).
-pub const SCHEDULABLE: [&str; 12] = ["personal.display_name", "personal.home", "appearance.graphics", "appearance.sidebar_slim", "appearance.text_scale", "appearance.animations",
-    "appearance.transitions", "appearance.celebration", "appearance.focus_ring", "appearance.density", "appearance.reduce_motion", "appearance.ambient"];
+pub const SCHEDULABLE: [&str; 18] = ["personal.display_name", "personal.home", "appearance.graphics", "appearance.sidebar_slim", "appearance.text_scale", "appearance.animations",
+    "appearance.transitions", "appearance.celebration", "appearance.focus_ring", "appearance.density", "appearance.reduce_motion", "appearance.ambient",
+    "personal.undo_send", "personal.send_check", "workspace.flag_external", "notifications.quiet_hours", "notifications.only_vips", "privacy.block_trackers"];
 
 pub const MIN_MS: i64 = 1_577_836_800_000; // 2020-01-01: before this no founder history can exist
 pub const MAX_MS: i64 = 4_102_444_800_000; // 2100-01-01
@@ -213,7 +214,7 @@ mod tests {
         assert!(check_id_reason(&IdReasonIn { id: "1".into(), reason: "cancel this schedule".into() }).is_err());
         assert!(check_id_reason(&IdReasonIn { id: "0e9a1f2c-3b4d-4e5f-8a9b-0c1d2e3f4a5b".into(), reason: "x".into() }).is_err());
     }
-    #[test] fn schedulable_keys_are_registry_keys() { for k in SCHEDULABLE { assert!(settings::known(k), "{k}"); } assert!(!SCHEDULABLE.contains(&"personal.avatar")); }
+    #[test] fn schedulable_keys_are_registry_keys() { for k in SCHEDULABLE { assert!(settings::known(k), "{k}"); } assert!(!SCHEDULABLE.contains(&"personal.avatar")); assert!(!SCHEDULABLE.contains(&"workspace.retention_days")); assert!(!SCHEDULABLE.contains(&"workspace.require_passkey")); }
     #[test] fn tick_busy_flag() {
         assert!(!tick_busy(&json!({"skipped": false, "applied": 0, "rolled_back": 0, "superseded": 0, "failed": 0})));
         assert!(tick_busy(&json!({"applied": 1})));

@@ -2054,3 +2054,7 @@ S1b RUST + UI WRITTEN (tarteeb se next, 1 Nov ~12:00): Rust = server/founder/src
 - 11:58: "sab context chat update kero codes pull hogaye hain update kero green kero compact chat se pehle sab update kero"
 
 - 12:00: "gandu tujhe main dekhta hoon user side settings page aur us ko match kero founder se lekn founder ka features alag hai. agar yeh awam walay features founder ko nahi mile toh tujhe goli maarun ga"
+
+- 12:01: "chorme pe live dekho phir match kero"
+  STATUS 12:20: awam live re-read in Chrome (list unchanged) -> S1c written: E115 + CHECK_E115 (local green), Rust 117 tests, UI Workspace/Notifications/Privacy + Personal Sending. Server install pending (sql-run E115, then founder-install).
+- 12:00: (see above) awam rows -> founder: 8 keys added in S1c; read receipts = fixed "Never sent".
