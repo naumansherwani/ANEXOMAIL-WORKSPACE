@@ -1981,3 +1981,7 @@ DONE: awam audit -> docs/claude/ONE-ORDER-27OCT.md (1 Nov 09:25 section, registr
 
 ## 1 Nov 09:30 PKT — 5K done in repo (kernel merkle@1)
 Kernel 0.5.0 -> 0.6.0: `merkle@1` (web-wasm MODULES + `merkle_verify` ABI export, text path `L:hex,R:hex`), shared `server/rust/merkle_core.rs::verify_text`, built by scripts/build-kernel.sh (62 kernel tests), founder-web kernel-sync (sha256 f7f9393d...ff52), worker + `merkleVerify`, Dashboard "Ledger seal" now says "N of N newest entries proven in this browser". 95 server tests, tsc 0, bun test 8 (sandbox), vite build OK.
+
+## 1 Nov 09:29 PKT — founder (verbatim gist) + founder-install paste (95 tests, build, saboot 4/4 = SERVER PAR INSTALLED)
+"founder purane 77 (24 Rust, 53 Bun): technology chart update kero; jo 24 Rust par hain woh awam se mix na hon; baaqi 53 latest technology par le jao. chat context update kero, codes server par hain green kero, codes rules update to date rakho, compact chat se pehle Claude ke liye sab ready."
+DONE: 5K SERVER PAR GREEN + Chrome ("18 entries ... 5 of 5 newest entries proven in this browser"); chart FOUNDER-WORKSPACE-ORDER-01NOV.md ("Founder purane 77").

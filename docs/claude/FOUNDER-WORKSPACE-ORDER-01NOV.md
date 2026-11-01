@@ -44,3 +44,26 @@ Founder-only (user ke paas nahi): Finance (step 9, Polar LIVE), Release, Move-In
 | L12 | Repo mein bun.lock (founder-web) | HATA (07:55) |
 | L13 | Tests bun-par | Kernel SSE port (step 4e) |
 | L14 | Awam root bun/node | awam migration lane (founder deck ke baad) |
+
+## "Founder purane 77" — technology chart (founder order 1 Nov 09:29: Rust par 24 awam se mix na hon, baaki 53 latest technology par)
+Source: `docs/claude/ENDPOINT-PACKAGE-MAP.csv` rows with `starts_at = founder` (awam Bun/Rust engine ke purane founder endpoints). TARGET: sab founder side par NATIVE: Rust `anexomail-founder` (axum + tokio), signed `/founder/v1/*` answers, WASM kernel verifies in the browser, Postgres RPC (service_role), founder gates. Awam par kuch nahi badalta.
+| Group (bun file) | Ginti | Aaj kahan | Founder step (native ghar) | Technology target |
+|---|---|---|---|---|
+| release.ts | 13 | **Rust** (awam engine, `founder.release.*`) | 9 Finance/**Release** | Rust founder + SQL (naya E-file), G2/G3 |
+| movein.ts | 5 Rust + 11 Bun | Rust 5 (`movein.*`, `founder.movein.*`; public `movein.request`/`capacity` awam ke) / Bun 11 | 9 **Move-In** | Rust founder (cockpit, transition, schedule, sweep) |
+| analytics.ts | 2 | **Rust** (`founderAnalytics.overview`, `billing.revenueTruth`) | 12 Systems > Analytics (+ 9 Finance revenue truth) | Rust founder |
+| integrations.ts | 1 | **Rust** (`founderIntegrations.overview`) | 12 Systems | Rust founder |
+| security.ts | 1 | **Rust** (`founderSecurity.overview`) | 12 Systems > Safety | Rust founder (host proof already native) |
+| settings.ts | 1 | **Rust** (`founderSettings.overview`) | **DONE natively** (E108 Settings, `/founder/v1/settings`) | legacy proc, step 14 mein hat jata hai |
+| revenue.ts | 1 Rust + 1 Bun | Rust: `revenue.lead` (**public awam lead form, awam ka rahe ga**) / Bun: `founder/revenue/overview` | 9 Finance | Rust founder (Polar pulse already native) |
+| admin.ts | 11 | Bun | 12 Systems > Admin | Rust founder + registry actions |
+| perf.ts | 9 | Bun | 12 Systems > Speed | Rust founder (+ kernel samples) |
+| storage.ts | 2 | Bun | 12 Systems | Rust founder |
+| ai-credits.ts | 1 | Bun | 12 AI | Rust founder |
+| founder.ts | 6 | Bun (overview, mailboxes, ai-agents, ai-mail ...) | Bridge (**DONE native**) / 11 Mail Desk (mailboxes, ai-mail) / 12 AI (ai-agents) | Rust founder |
+| billing-support.ts | 2 | Bun (support replies) | 11 Mail Desk (support) + 4d Inbox | Rust founder + E112 inbox |
+| crm.ts | 2 | Bun | 10 People > CRM | Rust founder |
+| org.ts | 4 | Bun (org state/list, kill-switch, impersonate) | 10 People > Org / 13 Control (kill-switch, G3) | Rust founder, G3 passkey |
+| glitch.ts | 4 | Bun (report, trigger, sweep, health) | 4d Inbox (E112 native) ; user report button = P4 (awam, founder ok) | Rust founder |
+Jod: Rust 24 (2+1+5+13+1+1+1) + Bun 53 (11+1+2+2+6+4+11+4+9+1+2) = 77.
+MIX ROKNE KE QAIDE: (1) jo 24 awam engine (pm2 :3200) mein hain wahin chalte rahenge jab tak step 14 (cutover); founder UI unhe nahi bulati — founder UI sirf `/founder/v1/*` Rust native bulati hai; (2) har group ka native ghar upar ke step mein banta hai (SQL E-file + Rust + kernel verify + UI), tab uska awam twin cutover par hat jata hai; (3) public awam endpoints (`revenue.lead`, `movein.request`, `movein.capacity`, `glitch.report`) awam ke hain: founder unhe nahi chhedta; (4) koi naya awam Bun code nahi.
