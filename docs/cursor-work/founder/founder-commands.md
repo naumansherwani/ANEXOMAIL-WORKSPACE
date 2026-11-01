@@ -1966,3 +1966,7 @@ DONE (step 5, 5R + 5a UI): server/rust/merkle_core.rs (ek tree-qaida, kernel + s
 
 ## 1 Nov 08:51 PKT — founder
 founder-install paste: FAIL tests, `couldn't find file src/../../../web-wasm/src/merkle.rs` (kuch nahi badla). Fix: file server/rust/merkle_core.rs + installer stage.
+
+## 1 Nov 09:00 PKT — founder (verbatim gist) + founder-install paste (94 tests, build, 4/4 saboot OK)
+"HAAN hai" (5K kernel merkle@1 alag phase). "awam side ke kuch features maine note karwaye the jis mein email/file attachment ki technology ki baat ki thi, yeh ek common technology hai jo use hogi." "yeh sab kuch aya hai mere server pe green kero, chat context update kero ke yahan tak kaam green hai, compact chat anay wala hai. email/file attachment ki baat read kero."
+DONE: step 5 (5R + 5a) SERVER PAR GREEN + Chrome: Ledger seal card "17 entries, the first seal comes at 50 new entries". Attachment: docs/cursor-work/ATTACH-LATEST-TECH-PLAN-27OCT.md padha — common technology A1 instant dedupe (kernel sha256 -> attach.have), A2 resumable chunks, A3 parallel chunks over WebTransport, A4 signed share link; awam attach_glue.rs (E48/E72) live. Founder side reuse karta hai (ek File_Master/AttachmentChip), alag nahi banata.
