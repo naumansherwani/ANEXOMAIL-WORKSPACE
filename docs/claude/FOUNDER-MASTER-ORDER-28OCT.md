@@ -22,7 +22,7 @@ UI system (tokens, shell, Trust, mobile/tablet): docs/claude/FOUNDER-UI-DESIGN-2
 | 10 | **F4** People: Org, CRM, Team permissions, Account 360, abuse/appeals, Work | after 9 |
 | 10a | **I2 Active Work Chain Dependencies** (needs `depends_on` SQL) | with 10 |
 | 10b | **K4 Insider Guard** (metadata-only deterministic auditor; hold = reversible) | after 10 |
-| 11 | **F5** Mail Desk (+ **Mail**, **Calendar** common features, email notifications, undo-send settings) | after 10 |
+| 11 | **F5 MAIL** = founder ka apna **Mail** (inbox, folders, compose, outbox, undo-send, email notifications) + **Calendar**; **Mail Desk** (company mailboxes, support replies, deliverability, SLA) is page ke ANDAR sab se END par (founder 1 Nov 07:57: "mail desk mera baap nahi hai, mail desk us mein aye ga end pe") | after 10 |
 | 11a | **K1 Sealed Agreements** (cross-company cryptographic escrow) | after 11 + F2c |
 | 12 | **F6** Systems + **AI (10 pages, founder-only)**: health, **Analytics**, **Speed (perf)**, **Admin**, **Safety**, **ANEXOChat**, Workspace/AI settings | after 11 |
 | 12a | **K2 Mesh / air-gapped sync** (research spike first; needs LAN node) | after 12 |
@@ -57,10 +57,10 @@ Rule for every row: before porting, write down where the old proc lives (ENDPOIN
 | Settings: Privacy | S3 | 7 |
 | Settings: Notifications | S4 (push), email with Mail Desk | 8, 11 |
 | People, Org, CRM, Work | People deck | 10 |
-| Mail, Calendar | Mail Desk | 11 |
+| Mail (inbox, folders, compose, outbox), Calendar | **Mail** page; Mail Desk = uska aakhri hissa | 11 |
 | Analytics, Speed, Safety, ANEXOChat, Admin | Systems deck | 12 |
 | Docs, Sheets, Tasks | Founder desk | 15 |
-Until a founder version exists, the sidebar's WORKSPACE links (Dashboard, Mail, People, Calendar, Work, CRM, Org, Analytics, Safety, ANEXOChat, AI, Speed) open the real user-app pages on the same host, so nothing is missing in daily use.
+(Founder 1 Nov 07:45: sidebar ka "Workspace (user app)" group HATA diya; ab group **Founder Workspace** mein sirf founder ke apne pages, har ek tab jab wire hoke live ho. Dekho FOUNDER-WORKSPACE-ORDER-01NOV.md.)
 
 Bridge vs Dashboard (which tile lives where, CEO view): docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md
 

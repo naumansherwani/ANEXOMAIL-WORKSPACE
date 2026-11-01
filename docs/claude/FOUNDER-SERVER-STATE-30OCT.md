@@ -138,3 +138,8 @@ NEXT: P2 Inbox page (+ Bridge exception rows); sidebar item "Inbox" jodna (found
 07:45/07:50 UI cleanup AND telemetry-off are SERVER PAR INSTALLED (founder paste 07:5x: 81 tests, healthz 200). Chrome proof of them = next step after the next install.
 NEW (repo): sidebar = Dashboard, Bridge, group "Founder Workspace" (Mail Desk, People, AI, Systems, Control, Finance, Release, Move-In, Audit ledger) in the founder's list order; `ORDER` in catalog.ts reordered; founder-web/bun.lock removed. Doc: FOUNDER-WORKSPACE-ORDER-01NOV.md (14 user items -> founder pages + live source + step; loophole table L8-L14). New step 4e Kernel SSE port inserted before Merkle.
 PULL: founder-install.sh only.
+
+## UPDATE 1 Nov 08:20 PKT — GALTI SUDHARI: Mail vs Mail Desk (founder 07:57), repo; founder-install baaki
+Founder: "mail desk mera baap nahi hai; Mail (inbox sab) alag page, Mail Desk us ke andar sab se end par." FIX: sidebar/deck key `mail_desk` -> `mail`, title "Mail" (intro + catalog: Inbox and folders, Compose and outbox, Calendar, phir "Mail Desk: ..." rows), shortcut g m = Mail. Master order step 11 + parity + audit + chairman map corrected. FOUNDER-WORKSPACE-ORDER-01NOV.md now has the true per-item table (page, master step, source, DONE / NOT DONE) and the list of what is DONE in the master order (steps 1-4b, 4d P1) vs next.
+RULE (naya, hamesha): kisi bhi user-app item ko founder page ka naam dene se pehle FOUNDER-MASTER-ORDER-28OCT.md ka step padho; parent/child (Mail > Mail Desk, People > Org/CRM/Work, Systems > Analytics/Speed/Safety/ANEXOChat/Admin) wahan se lo, apni marzi se nahi.
+PULL: founder-install.sh only.

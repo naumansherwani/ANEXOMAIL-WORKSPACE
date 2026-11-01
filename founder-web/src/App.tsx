@@ -109,10 +109,10 @@ export default function App() {
   useEffect(() => { if (authed && !pend) loadProf(); }, [authed, pend, loadProf]);
   useEffect(() => { if (!authed) return; let live = true; void lastBridge().then((s) => { if (live && s) { setD((c: any) => c ?? s.data); setAt((c) => c ?? s.at); } }); return () => { live = false; }; }, [authed]);
   useEffect(() => { if (!authed) return; load(); const t = setInterval(load, 15000); return () => clearInterval(t); }, [authed, load]);
-  // Keyboard: Ctrl/⌘+K opens search; "g" then a letter jumps (g b Bridge · g f Finance · g p People · g m Mail Desk · g s Settings).
+  // Keyboard: Ctrl/⌘+K opens search; "g" then a letter jumps (g b Bridge · g f Finance · g p People · g m Mail · g s Settings).
   useEffect(() => {
     let armed = 0;
-    const GO: Record<string, string> = { d: "dashboard", b: "bridge", f: "finance", p: "people", m: "mail_desk", s: "settings", a: "audit" };
+    const GO: Record<string, string> = { d: "dashboard", b: "bridge", f: "finance", p: "people", m: "mail", s: "settings", a: "audit" };
     const on = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); setPal((v) => !v); return; }
       const el = e.target as HTMLElement | null, typing = !!el && (/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) || el.isContentEditable);

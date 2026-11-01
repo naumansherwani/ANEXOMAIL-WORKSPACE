@@ -10,7 +10,7 @@ export type Feature = ReturnType<typeof G>[number];
 export const DECK_META: Record<string, { title: string; phase: string; intro: string }> = {
   finance: { title: "Finance", phase: "F3", intro: "Revenue, billing, credits and pipeline in one place. Reading needs your signed session; anything that moves money needs a second tap, a reason, and for the strongest actions your passkey." },
   people: { title: "People", phase: "F4", intro: "Organisations, users, devices and permissions. Metadata only: message content is never shown." },
-  mail_desk: { title: "Mail Desk", phase: "F5", intro: "Company mailboxes, support replies and deliverability." },
+  mail: { title: "Mail", phase: "F5", intro: "Your own inbox, folders, compose and outbox, plus Calendar. Mail Desk (company mailboxes, support replies, deliverability) is the last part of this page." },
   ai: { title: "AI", phase: "F6", intro: "Workflows, knowledge, prompts, spend and receipts for the AI features." },
   release: { title: "Release", phase: "F3", intro: "What is live, what changed, and one-click deploys with proof." },
   move_in: { title: "Move-In", phase: "F3", intro: "Customer onboarding cockpit: slots, cut-overs, mailbox and DNS checks." },
@@ -18,7 +18,7 @@ export const DECK_META: Record<string, { title: string; phase: string; intro: st
   control: { title: "Control", phase: "F8", intro: "Kill switches, flags and maintenance. Every change is audited and reversible where possible." },
 };
 // Sidebar order under "Founder Workspace" = the founder's own list order (Mail, People, AI, Systems = Analytics/Safety/Speed/ANEXOChat, Control = Admin), then the founder-only decks. Founder 1 Nov 07:52.
-export const ORDER = ["mail_desk", "people", "ai", "systems", "control", "finance", "release", "move_in"];
+export const ORDER = ["mail", "people", "ai", "systems", "control", "finance", "release", "move_in"];
 
 export const CATALOG: Record<string, Feature[]> = {
   finance: G([
@@ -52,19 +52,22 @@ export const CATALOG: Record<string, Feature[]> = {
     ["Force sign-out / revoke device", "End sessions or remove a device", 2, "POST /founder/v1/action people.revoke_device", "F4", "new"],
     ["Extend trial", "More trial days for one account", 2, "POST /founder/v1/action people.extend_trial", "F4", "new"],
   ]),
-  mail_desk: G([
-    ["Company mailboxes", "Planned and provisioned addresses", 1, "GET /founder/v1/mail/mailboxes", "F5", "old", "/api/founder/mailboxes"],
-    ["AI email addresses", "AI mail and approvals", 1, "GET /founder/v1/mail/ai-mail", "F5", "old", "/api/founder/ai-mail"],
-    ["Support desk (Leo)", "Support inbox and replies", 1, "GET /founder/v1/mail/support", "F5", "old", "/api/founder/support/replies"],
-    ["Family accounts", "AI Executive premium family accounts", 1, "GET /founder/v1/mail/family", "F5", "old"],
-    ["Delivery monitoring", "Delivered, queued, deferred, bounced", 1, "GET /founder/v1/mail/delivery", "F5", "old"],
-    ["Provision mailbox", "Create a company mailbox", 2, "POST /founder/v1/action mail.provision", "F5", "old"],
-    ["Approve AI mail", "Approve an AI-drafted message", 2, "POST /founder/v1/action mail.ai_approve", "F5", "old"],
-    ["Unified company inbox", "Five company addresses plus your own inbox, address badge on each", 1, "GET /founder/v1/mail/inbox", "F5", "new"],
-    ["Deliverability", "SPF, DKIM, DMARC posture, bounce and complaint rate", 1, "GET /founder/v1/mail/deliverability", "F5", "new"],
-    ["Requeue failed mail", "Failed to queued, with a limit", 2, "POST /founder/v1/action mail_desk.requeue_failed", "F5", "new"],
-    ["Draft a reply (LEO)", "LEO drafts, you send. The AI never answers alone", 2, "POST /founder/v1/mail/draft", "F5", "new"],
-    ["24-hour SLA clock", "What is late, and where", 1, "GET /founder/v1/mail/sla", "F5", "new"],
+  mail: G([
+    ["Inbox and folders", "Your own mail: inbox, sent, drafts, folders, search", 1, "GET /founder/v1/mail/folders", "F5", "new"],
+    ["Compose and outbox", "Write, undo-send, outbox with failed and queued", 2, "POST /founder/v1/mail/send", "F5", "new"],
+    ["Calendar", "Your calendar and invites", 1, "GET /founder/v1/calendar", "F5", "new"],
+    ["Mail Desk: Company mailboxes", "Planned and provisioned addresses", 1, "GET /founder/v1/mail/mailboxes", "F5", "old", "/api/founder/mailboxes"],
+    ["Mail Desk: AI email addresses", "AI mail and approvals", 1, "GET /founder/v1/mail/ai-mail", "F5", "old", "/api/founder/ai-mail"],
+    ["Mail Desk: Support desk (Leo)", "Support inbox and replies", 1, "GET /founder/v1/mail/support", "F5", "old", "/api/founder/support/replies"],
+    ["Mail Desk: Family accounts", "AI Executive premium family accounts", 1, "GET /founder/v1/mail/family", "F5", "old"],
+    ["Mail Desk: Delivery monitoring", "Delivered, queued, deferred, bounced", 1, "GET /founder/v1/mail/delivery", "F5", "old"],
+    ["Mail Desk: Provision mailbox", "Create a company mailbox", 2, "POST /founder/v1/action mail.provision", "F5", "old"],
+    ["Mail Desk: Approve AI mail", "Approve an AI-drafted message", 2, "POST /founder/v1/action mail.ai_approve", "F5", "old"],
+    ["Mail Desk: Unified company inbox", "Five company addresses plus your own inbox, address badge on each", 1, "GET /founder/v1/mail/inbox", "F5", "new"],
+    ["Mail Desk: Deliverability", "SPF, DKIM, DMARC posture, bounce and complaint rate", 1, "GET /founder/v1/mail/deliverability", "F5", "new"],
+    ["Mail Desk: Requeue failed mail", "Failed to queued, with a limit", 2, "POST /founder/v1/action mail_desk.requeue_failed", "F5", "new"],
+    ["Mail Desk: Draft a reply (LEO)", "LEO drafts, you send. The AI never answers alone", 2, "POST /founder/v1/mail/draft", "F5", "new"],
+    ["Mail Desk: 24-hour SLA clock", "What is late, and where", 1, "GET /founder/v1/mail/sla", "F5", "new"],
   ]),
   ai: G([
     ["AI overview", "Usage and health of the AI features", 1, "GET /founder/v1/ai/overview", "F6", "old", "/api/founder/ai-agents"],

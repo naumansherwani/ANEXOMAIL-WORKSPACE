@@ -1,24 +1,31 @@
 # FOUNDER WORKSPACE — founder ki apni list, apni tarteeb (founder 1 Nov 07:52 PKT)
 Order verbatim: founder-commands.md 07:52. Sidebar: Dashboard, Bridge, phir group **Founder Workspace** (Bridge ke neechay). Har item founder ke apne endpoint (`/founder/v1/*`), apne gates (G1/G2/G3), apni tables, latest technology (Rust axum+tokio -> signed envelope -> WASM kernel verify -> React-TS). User ke pages/data/token KABHI nahi (FC18/FC22). Item sidebar mein tab aata hai jab wire hoke live ho ("jab bari aye gi"); slow technology banned.
 
-| # | Founder ki list (user app naam) | Founder Workspace item | Live source (asli) | Gates | Step (blueprint) | Halat |
+**GALTI SUDHARI (founder 07:57): "Mail" ko "Mail Desk" likha tha — galat. Mail = inbox/folders/compose/outbox (founder ka apna Mail page). Mail Desk (company mailboxes, support replies, deliverability, SLA) us Mail ke ANDAR, sab se END par.**
+Build tarteeb = FOUNDER-MASTER-ORDER-28OCT.md ka number (locked). Sidebar dikhane ki tarteeb = founder ki list. Har item ka kaam wahi jo master order ke step mein likha.
+| # | Founder ki list | Founder Workspace page | Master step (build) | Live source (asli) | Gates | Halat |
 |---|---|---|---|---|---|---|
-| 1 | Dashboard | **Dashboard** (company health) | live feed + Polar + audit + inbox | G1 | 4a/4b/4d | LIVE |
-| 2 | Mail | **Mail Desk** | company mailboxes (Postfix/Dovecot) + outbox | G1/G2 | 11 | deck sidebar mein; asli mail 11 mein |
-| 3 | People | **People** | accounts, devices, orgs (metadata only) | G1/G2 | 10 | deck; asli 10 mein |
-| 4 | Calendar | Mail Desk > Calendar | calendar tables | G1 | 11 | 11 mein |
-| 5 | Work | People > Work chain | work + depends_on (10a) | G1 | 10 | 10 mein |
-| 6 | CRM | People > CRM | revenue_leads, accounts | G1/G2 | 10 | 10 mein |
-| 7 | Org | People > Org | orgs, members, policies | G1 | 10 | 10 mein |
-| 8 | Analytics | Systems > Analytics | probes + Polar metrics | G1 | 12 | 12 mein |
-| 9 | Safety | Systems > Safety | abuse + host proof + insider guard | G1/G2 | 12 (K4 10b) | 12 mein |
-| 10 | ANEXOChat | Systems > ANEXOChat (+ Mail<->Chat Bridge 12b) | chat metadata | G1 | 12 / 12b | 12 mein |
-| 11 | AI | **AI** (10 founder-only pages) | AI spend/receipts | G1 | 12 | deck; asli 12 mein |
-| 12 | Speed | Systems > Speed | p95 probes | G1 | 12 | 12 mein |
-| 13 | Founder | Control + Settings (purane Lovable founder pages replace, F9) | founder_actions | G2/G3 | 13/14 | cutover par |
-| 14 | Admin | Control (kill switch, flags, executor) | founder_actions | G2/G3 | 13 | 13 mein |
-Founder-only extra (user ke paas nahi): Finance (Polar), Release, Move-In, Audit ledger, **Inbox** (4d P2).
-**Naam 'Admin/Founder/Speed...' ke sidebar items ek ek karke tab dikhenge jab unka page asli data se live ho** — abhi group mein wo decks hain jo sidebar mein pehle se the (Mail Desk, People, AI, Systems, Control, Finance, Release, Move-In, Audit ledger), isi tarteeb mein (founder ki list ki tarteeb pehle, phir founder-only).
+| 1 | Dashboard | **Dashboard** | 1-4b, 4d | live feed, Polar, audit, inbox, host proof | G1 | **DONE, server par + Chrome GREEN** |
+| 2 | Mail | **Mail** (inbox, folders, compose, outbox) | 11 | founder ke apne mailboxes (Postfix/Dovecot) | G1/G2 | NOT DONE (page catalog mein, asli mail 11 mein) |
+| 3 | People | **People** | 10 | accounts, devices, orgs (metadata) | G1/G2 | NOT DONE |
+| 4 | Calendar | **Calendar** (Mail ke saath) | 11 | calendar tables | G1 | NOT DONE |
+| 5 | Work | People > **Work** | 10 + 10a | work + depends_on | G1 | NOT DONE |
+| 6 | CRM | People > **CRM** | 10 | revenue_leads, accounts | G1/G2 | NOT DONE (leads ginti Dashboard par LIVE) |
+| 7 | Org | People > **Org** | 10 | orgs, members, policies | G1 | NOT DONE |
+| 8 | Analytics | Systems > **Analytics** | 12 | probes + Polar metrics | G1 | NOT DONE |
+| 9 | Safety | Systems > **Safety** (+ K4 Insider Guard 10b) | 12 | abuse, host proof | G1/G2 | host proof LIVE (4c); baqi NOT DONE |
+| 10 | ANEXOChat | Systems > **ANEXOChat** (+ 12b Mail<->Chat Bridge) | 12 / 12b | chat metadata | G1 | NOT DONE |
+| 11 | AI | **AI** (10 founder-only pages) | 12 | AI spend/receipts | G1 | NOT DONE |
+| 12 | Speed | Systems > **Speed** | 12 | p95 probes | G1 | endpoint ms Dashboard par LIVE; page NOT DONE |
+| 13 | Founder | = **Bridge** (purane Lovable founder home replace) | 4a (done) / 14 cutover | bridge endpoint | G1 | **DONE (Bridge)**, purane pages 14 mein hatenge |
+| 14 | Admin | Systems > **Admin** + **Control** (kill switch, flags, executor) | 12 + 13 | founder_actions | G2/G3 | registry LIVE (12 actions); executor NOT DONE |
+Mail Desk (inside Mail, aakhri): Company mailboxes, Support replies (Inbox 4d P3 yahin jurti hai), AI email addresses, Deliverability, SLA clock.
+Founder-only (user ke paas nahi): Finance (step 9, Polar LIVE), Release, Move-In (9), Audit ledger (DONE), **Inbox** (4d P1 DONE, P2 next), Settings (S1 DONE, S2-S4 baaki).
+
+## Master order mein ab tak kya HO CHUKA (server par + Chrome)
+1 device approval + Ed25519 (DONE) · 2 Settings S1 + profile + home city (DONE) · 3 Polar token (DONE; host guard L5 PARKED) · 3a TS + TanStack Router + Tailwind 4.2 + shadcn (DONE) · 3b loopholes L1-L22 (DONE) · 4 F2b WASM kernel verify (DONE) · 4a Dashboard + Bridge + Audit + Settings (DONE) · 4b live data E109 + stream + UI (DONE) · 4d Founder Inbox P1 E112 (DONE).
+**Agla (master order):** 4d P2-P4 (Inbox page, jawab Mail ke saath, awam button) · 4e Kernel SSE port · 5 F2c Merkle · 5a gauge · 6 S2 · 7 F2d passkey + S3 · 8 Decide + Live Pulse + S4 · 8a Device Trust Map · 9 Finance/Release/Move-In · 10 People(+Org/CRM/Work) · 11 **Mail (+Calendar), Mail Desk end par** · 12 Systems (Analytics/Speed/Safety/ANEXOChat/Admin) + AI · 12b Mail<->Chat · 13 Control · 14 cutover · 15 Docs/Sheets.
+**Naam 'Admin/Founder/Speed...' ke sidebar items ek ek karke tab dikhenge jab unka page asli data se live ho** — abhi group mein wo decks hain jo sidebar mein pehle se the (Mail, People, AI, Systems, Control, Finance, Release, Move-In, Audit ledger), isi tarteeb mein (founder ki list ki tarteeb pehle, phir founder-only).
 
 ## Technology rules (founder: bun, node, slow tech BANNED)
 - Server: sirf Rust binary + static files. Bun/Node server par kabhi nahi (aaj bhi nahi: founder-install "server par npm/Node NAHI").
@@ -32,7 +39,7 @@ Founder-only extra (user ke paas nahi): Finance (Polar), Release, Move-In, Audit
 |---|---|---|
 | L8 | Stream health refresh par laal | CARD HATA DI (07:45), telemetry default off |
 | L9 | "khali/empty/Ready" lafz | Inbox card + Recent changes asli numbers (07:50); Bridge "Nothing needs attention" + Channels "Waiting for first data" abhi baqi: founder ki haan (copy -> "2 of 2 checks passing" / "wiring: P4 button") |
-| L10 | Decks (Finance/People/Mail Desk/AI/Release/Move-In/Systems/Control) catalog pages hain, "Nothing here is live data" | har deck ko ek ek wire karna = steps 9-13; tab tak deck page par asli registry actions (live) hi dikhte hain, koi nakli number nahi |
+| L10 | Decks (Finance/People/Mail/AI/Release/Move-In/Systems/Control) catalog pages hain, "Nothing here is live data" | har deck ko ek ek wire karna = steps 9-13; tab tak deck page par asli registry actions (live) hi dikhte hain, koi nakli number nahi |
 | L11 | Sidebar mein pehle user-app group (user pages) | HATA (07:45) |
 | L12 | Repo mein bun.lock (founder-web) | HATA (07:55) |
 | L13 | Tests bun-par | Kernel SSE port (step 4e) |

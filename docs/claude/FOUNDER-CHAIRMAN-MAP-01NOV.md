@@ -20,7 +20,7 @@ Chairman ko "sab kuch dikhe": har deck ka ek Dashboard card zaroor (kuch na ho t
 | Inbox (Glitch+Support) | card "Inbox": open issues, new, reasons (HAZIR) | sirf exception: critical khula, jawab ki der, SLA breach (P2) | naya **Inbox** page: list/filter/detail/status buttons (P2) |
 | Channels | card "Channels" (HAZIR) | channel degraded ho to row | Inbox page ke upar channel strip (P2) |
 | Stream health | card (HAZIR) | fail par row | Systems (F6) |
-| Company Mail | card "Channels" mein | — | Mail Desk (step 11) |
+| Company Mail / Support replies | card "Channels" mein | — | **Mail** page, andar Mail Desk (step 11, end par) |
 Sidebar mein "Inbox" naya item Bridge ke baad (P2). FOUNDER KA FAISLA CHAHIYE: sidebar naam "Inbox" theek?
 
 ## 4. User-side UI/UX features -> founder parity (same UX, latest technology, DATA KABHI MIX NAHI)
@@ -35,7 +35,7 @@ Qaida (FC18/FC22): founder ke apne component/endpoint/table; user ki React files
 | TouchScrollbar / HScroll | NAHI | phone scrollbar/table scroll | UI polish |
 | ConfirmButton | PARTIAL (Decks reason sheet) | shared component | 8 |
 | WorkspaceLoader (splash) | HAI (splash) | — | done |
-| ComposeOverlay (mail compose) | NAHI | Mail Desk | 11 |
+| ComposeOverlay (mail compose) | NAHI | Mail page | 11 |
 | FeatureGate / PlanSurfaceGate | n/a (founder ke gates G1/G2/G3) | — | — |
 | CrossPlatformBar | NAHI | founder cross-device (N9 PWA) | 7 |
 | i18n | NAHI (English only, Rule 67) | — | — |
