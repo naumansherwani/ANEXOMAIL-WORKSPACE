@@ -1945,3 +1945,6 @@ ACTION: (1) wording -> real counts (Surface.tsx/Bridge), (2) phir master order s
 ## 1 Nov 08:22 PKT — founder (verbatim gist)
 "ek deep audit kero jo bhi glitches ya loophole ho fix kero. yeh sql E107 mujhe sql folder main tarteeb se nazar ana chaiye, yeh sql E107 kitni baar run hoga? kya yeh edit ho raha hai? ... yeh sab se latest pull huwa hai yeh chrome pe dekho. saath ke saath green mark kero."
 DONE: Chrome check GREEN (08:30 wording live); E107 SQL docs/cursor-work/sql/E107_founder_audit_merkle.sql (E106 aur E108 ke beech); jawab: sql-run.sh sha ledger se ek hi baar, file idempotent, edit = nayi E-file.
+
+## 1 Nov 08:33 PKT — founder (verbatim gist)
+E107 sql-run output paste (12/12 OK + E65 sweep OK). "webpull aur pm2 restart tera baap kerwaye ga? dirty cache khatam kerwao" — founder ko awam pull.sh / pm2 restart (Bun+pm2 purani lane) nahi chalana. JAWAB: E107 SQL-only, koi webpull/pm2 nahi; founder side sirf founder-install.sh (Rust binary + static files). Awam pull.sh/pm2 sirf awam migration ki lane mein, founder ko tab tak chalane nahi dena jab tak awam file na badli ho.
