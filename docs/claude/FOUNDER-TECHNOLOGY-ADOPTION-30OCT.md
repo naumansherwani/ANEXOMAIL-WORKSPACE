@@ -62,3 +62,6 @@ Honest answer to "tumhay ati hai kya": yes, Rust + tokio + wtransport + quinn ar
 
 
 ## 1 Nov 2026 14:45 PKT — 1 Nov 14:45 SERVER CHECK (founder paste 14:25): Caddy v2.11.4; server openssl 3.5.5. When a client offers ONLY TLS_AES_256_GCM_SHA384, BOTH founderworkspace.anexomail.com and anexomail.com negotiate TLSv1.3 + AES_256_GCM_SHA384 (Verification OK). So 256 is AVAILABLE on the shared Caddy edge; the default pick for normal browsers stays AES-128 (Go TLS 1.3 order not configurable). Founder 14:25 demanded a command to force 256 now: none exists for Caddy; honest options written to him (256-only terminator, staged on a test port first). PQ group check command given (openssl 3.5.5 can show 'Negotiated TLS1.3 group').
+
+
+## 1 Nov 2026 14:55 PKT — 1 Nov 14:55 SERVER CHECK (founder paste 14:28): Caddy built with go1.26.3. BOTH founderworkspace.anexomail.com and anexomail.com negotiate X25519MLKEM768 (post-quantum hybrid) with TLS 1.3 — so the PQ part of 7b is ALREADY TRUE on the shared edge. Default cipher for normal clients stays TLS_AES_128_GCM_SHA256 (Go order); AES-256 is only picked when the client offers only it (14:25 test).

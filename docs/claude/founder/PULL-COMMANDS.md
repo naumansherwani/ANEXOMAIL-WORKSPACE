@@ -328,3 +328,6 @@ _(12:30 note: E116 was corrected after its first server run failed; run the S1d 
 
 ### Read-only server check (changes nothing): awam wtransport/quinn version + TLS of the founder host — one command
 `grep -A1 -E 'name = "(wtransport|quinn)"' /opt/anexomail-rust/Cargo.lock; echo ---; openssl s_client -connect founderworkspace.anexomail.com:443 -tls1_3 </dev/null 2>/dev/null | grep -E "Protocol|Cipher|Verification|Server Temp Key"`
+
+### T256-0 read-only inventory (changes nothing) — one command
+`ss -tulpn | grep -E ':(80|443|8443|3443)\b'; echo ---; haproxy -vv 2>/dev/null | head -3; echo ---; find / -type d -path '*caddy/certificates' 2>/dev/null | head -3`
