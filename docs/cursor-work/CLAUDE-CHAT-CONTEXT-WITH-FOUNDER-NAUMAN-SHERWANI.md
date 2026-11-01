@@ -2104,3 +2104,6 @@ Founder ordered: fix the footer and fix G5a, no questions. Footer MoQ claim remo
 
 ## Checkpoint 2 Nov 04:55 PKT
 RULE: never touch the awam footer text (founder's own wording, he was furious 04:40); the MoQ claim stays until he says. Footer change reverted. E122 advanced (time rule + no seal loop) built, local CHECK 4/4; he runs ONE SQL command; no awam pull needed. G5a stays not-live-proven until two seals exist.
+
+## Checkpoint 2 Nov 05:00 PKT
+E122 live: seal #1 exists (upto 29, 4:38 AM), browser pinned it. Bug fixed (my G4 ghalti): UI path /audit/merkle/proof -> /audit/proof (503 live); route-guard test routes.test.ts; dist rebuilt; he must run founder-install again. Footer is LOCKED: out of DEPLOY-MANIFEST + rules-gate FAIL. G5a consistency still needs a 2nd seal (after the new SPA is installed).

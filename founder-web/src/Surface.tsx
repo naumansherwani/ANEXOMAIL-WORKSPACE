@@ -98,7 +98,7 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
         if (mkSeal && mkSeal.upto_seq > 8) {
           for (let k = 0; k < 2; k++) {
             const seq = 1 + Math.floor(Math.random() * (mkSeal.upto_seq - 5));
-            const pr = (await get(`/founder/v1/audit/merkle/proof?seq=${seq}&upto=${mkSeal.upto_seq}`)).data;
+            const pr = (await get(`/founder/v1/audit/proof?seq=${seq}&upto=${mkSeal.upto_seq}`)).data;
             n++;
             if (pr?.root === mkSeal.root && pr?.row_hash && await merkleVerify(pr.row_hash, (pr.path || []).map((x: { s: string; h: string }) => `${x.s}:${x.h}`).join(","), pr.root)) ok++;
           }

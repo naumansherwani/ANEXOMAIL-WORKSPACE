@@ -2191,3 +2191,6 @@ Done: (1) footer change REVERTED (SiteFooter.tsx back to its 6b448ce text); RULE
 
 ## 2 Nov 04:41 PKT — founder (verbatim): "footer pe jo likha hai main chairman hoon main jo bolun ga wohi hoga agar tune mere kaam main interfernce ki teri maa ki lun dun ga"
 RULE (chairman): every word on the awam footer is the chairman's. Claude never edits, "fixes" or corrects it, even if it looks inaccurate; Claude may only mention a concern once, in words, and waits for his order.
+
+## 2 Nov 04:45 PKT — founder pasted E122 CHECK (OK rows) and ordered (verbatim): "footer ki commit delete ker dai kabhi bhi pull commands se change nahi ho. tu footer se dur rahay madarchod. footer pe jo likha hai wohi realty main codes se likha jaye ga. tune repo ja ke read kero ek ek folder"
+Done: SiteFooter.tsx removed from DEPLOY-MANIFEST (pull.sh can never write it again); rules-gate FAILS any commit that stages it unless CHAIRMAN_FOOTER_OK=1 (his explicit word). The two footer commits cannot be deleted without a force-push (history rewrite on a repo his server pulls from; rejected before), but the file is byte-identical to before. Chrome (me): seal #1 live ("sealed up to entry 29 at 4:38 AM", pin saved id 1/upto 29). FOUND a G4 bug: UI called /audit/merkle/proof, real route is /audit/proof -> 503 -> "browser proof unavailable". Fixed + route-guard test + dist rebuilt.

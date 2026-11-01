@@ -88,6 +88,11 @@ for f in staged:
     if re.match(r"(src/(routes|components|lib)|server/routes)/", f):
         warn("FC18/FC22", f"user-side file touched: {f} (founder work must not edit user files)")
 
+# CHAIRMAN FOOTER LOCK (founder 2 Nov 04:41): the awam footer text is the chairman's own wording. Claude never edits it.
+# Only the founder's explicit order may unlock one commit: CHAIRMAN_FOOTER_OK=1 python3 ... (say so in founder-commands.md first).
+if "src/components/site/SiteFooter.tsx" in staged and os.environ.get("CHAIRMAN_FOOTER_OK") != "1":
+    fail("CHAIRMAN FOOTER", "SiteFooter.tsx is the chairman's wording: not editable without his explicit order (CHAIRMAN_FOOTER_OK=1)")
+
 # Deploy manifest must be clean
 v = subprocess.run([sys.executable, "docs/cursor-work/server/manifest-verify.py"], capture_output=True, text=True).stdout.strip().splitlines()
 if not v or not v[-1].endswith(" 0 bad"):
