@@ -1326,3 +1326,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 1 Nov 13:55 FOOTER wording per founder 13:53 verbatim: Backend Engine 'Rust · Tokio Async runtime · Axum'; 'Advance Network Layer' (Live WebTransport over UDP · QUIC Native Pipeline · HTTP/3 · Media over QUIC (MoQ, IETF Standards Track) with Seamless Cross-Protocol HTTP Fallback) replaces Live; Website '... Three.js with 3D Cinematic Frontend'. No 'planned'/'block QUIC' words. Honest note given to founder: MoQ is not running in code (IETF draft). pull.sh pending.
 
 - 1 Nov 14:00 FOOTER: removed rows Mail transport, Edge & pages, Payments (already on the landing page; founder 13:55). Remaining: browser kernel, Backend Engine, Advance Network Layer, Website, Data & files. pull.sh pending.
+
+- 1 Nov 14:05 founder 13:59: MoQ promise (footer) added to the AWAM blueprint (ONE-ORDER-27OCT.md, MQ0-MQ4, gates, honest-wording rule); FOUNDER-FULL-ORDER-STATUS-01NOV.md refreshed (green vs remaining; evening = 7-2 Rust webauthn-rs).

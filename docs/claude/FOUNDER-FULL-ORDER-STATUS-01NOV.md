@@ -1,31 +1,31 @@
-# FULL BLUEPRINT ORDER WITH STATUS (1 Nov 2026 05:40 PKT) - source: FOUNDER-MASTER-ORDER-28OCT.md + FOUNDER-SERVER-STATE-30OCT.md
-GREEN = on server + CHECK + seen live in founder Chrome. One phase at a time (Rule 66).
+# FULL BLUEPRINT ORDER WITH STATUS (refreshed 1 Nov 2026 14:05 PKT) - source: FOUNDER-MASTER-ORDER-28OCT.md + FOUNDER-SERVER-STATE-30OCT.md
+GREEN = on server + CHECK + seen live in founder Chrome. One phase at a time (Rule 66). Detail of each row: FOUNDER-MASTER-ORDER-28OCT.md.
 | # | Step | Status |
 |---|---|---|
 | 1 | F1a device approval, F2a Ed25519 + signatures | GREEN |
-| 2 | Settings S1 (E108): photo, name, home city, graphics, sidebar | GREEN |
-| 3 | Polar token DONE; awam host guard enforce (L5) | OPEN: founder awam pull.sh, then hostguard enforce |
-| 3a | T1 UI stack (TS, TanStack Router, Tailwind 4.2, shadcn) | GREEN |
-| 3b | Loopholes L2 speed, L3, L7, Bridge/Dashboard split, L14-L22 | GREEN except L5 |
-| 4 | F2b WASM kernel verify in browser (Trusted) | GREEN |
-| 4b | Live data (founder 22:17): E109 SQL GREEN; Rust /live + SSE + Dashboard auto-update + pending_channels registry | NEXT (N2) |
-| 5 | F2c audit v1 + Merkle (E107) | after 4b |
-| 5a | I1 Ledger Integrity Gauge | after 5 |
-| 6 | S2 Settings: Time machine, Drift and schedule | after 5a |
-| 7 | F2d passkey (FOUNDER_PASSWORD removed) + S3 Privacy | after 6 |
-| 8 | Decide (N) + Live Pulse + S4 Notifications | after 7 |
-| 8a | I3 Device Trust Map | after 8 |
-| 9 | F3 Finance: Polar failed payments/churn, Revenue, Billing, Release, Move-In | after 8 |
-| 10 | F4 People: Org, CRM, permissions, Account 360, abuse, Work | after 9 |
-| 10a | I2 Active Work Chain Dependencies | with 10 |
-| 10b | K4 Insider Guard | after 10 |
-| 11 | F5 Mail Desk (+ Mail, Calendar, notifications, undo-send) | after 10 |
-| 11a | K1 Sealed Agreements | after 11 + F2c |
-| 12 | F6 Systems + AI (10 pages) + Analytics, Speed, Admin, Safety, ANEXOChat | after 11 |
-| 12a | K2 Mesh / air-gapped sync (research spike) | after 12 |
-| 12b | Mail<->Chat Bridge, sub-steps 12b-1..6 | after 12 |
-| 13 | F8 Control: kill switch, flags, one-click executor | after 12 |
-| 13a | K3 Poison Pill | after 13 |
-| 14 | F9 CUTOVER: remove Lovable founder routes + Bun-only endpoints after Rust == Bun proof | after 13 |
-| 15 | Founder desk: Docs + Sheets (WOPI), calendar, tasks | last |
-Awam ONE-ORDER is a separate lane, resumes after step 3 is green (FC21).
+| 2 | Settings S1 (E108) | GREEN |
+| 3 | Polar token | GREEN. L5 awam host guard = parked to the awam migration |
+| 3a, 3b | T1 UI stack; loopholes | GREEN (L5 parked) |
+| 4, 4b | F2b WASM kernel verify; live data (E109, /founder/v1/live) | GREEN |
+| 5, 5a | F2c audit + Merkle (E107, Rust, kernel merkle@1) + Ledger Integrity Gauge | GREEN |
+| 6 | S2 Time machine + Drift & schedule (E113) | GREEN |
+| 6b | S1b/S1c Appearance + Ambient (E114), 8 new keys (E115), Drift value rule (E116), Display name row (S1e) | GREEN |
+| 7 / 7-1 | F2d passkey SQL (E117) | GREEN |
+| 7 / 7-1b | Chairman protocol SQL (E118): action hash, T2/T3, AAGUID allow-list, mobile flare | GREEN (server 1 Nov 13:19) |
+| 7 / 7-2 | Rust `webauthn-rs` + same canonical action hash (parity vectors) + T3 ticker | NEXT (evening) |
+| 7 / 7-3 | UI Privacy tab: passkeys, hardware keys, allow-list, recovery codes, mobile | after 7-2 |
+| 7 / 7-4 | Enforce on real actions, remove FOUNDER_PASSWORD, founder sign-in passkey-only (no mailed link, no DBSC claim until 7b) | after 7-3 + his Chrome passkey proof |
+| 7 / 7-5 | Mobile flare delivery + STOP-cancel (needs channel + his number) | after 7-4 |
+| 7a | WebTransport (`wtransport`) for the founder live channel | after 7 |
+| 7b | DBSC + post-quantum TLS check | with 7a |
+| 8, 8a | Decide + Live Pulse + S4 Notifications; Device Trust Map | after 7 |
+| 9 | F3 Finance (Polar, Revenue, Billing, Release, Move-In) | after 8 |
+| 10, 10a, 10b | F4 People; Active Work Chain; Insider Guard | after 9 |
+| 11, 11a-c | F5 Mail + Calendar (Mail Desk last); Sealed Agreements; attachments A1-A4 | after 10 |
+| 12, 12a, 12b | F6 Systems; Mesh; Mail<->Chat Bridge | after 11 |
+| 13, 13a | F8 Control; Poison Pill | after 12 |
+| 14 | F9 CUTOVER (Lovable routes + Bun-only endpoints removed after Rust == Bun) | after 13 |
+| 15 | Docs + Sheets (WOPI) | last |
+| 16 | Founder AI (Rule 71: awam gets none) | very last |
+Small queued items: N2 Drift title wording (UI), N5 founder sign-in page claims (7-4), kernel pin E90 `kernel_release_publish`, git remote URL to ANEXOMAIL-WORKSPACE.
+Awam lane (separate, ONE-ORDER-27OCT.md): landing footer "Built with" written 1 Nov (pull.sh pending until the founder runs it); MoQ promise tracked as MQ0-MQ4 in that file; mobile login + mandatory country = requirement only (AWAM-MOBILE-LOGIN-COUNTRY-REQUIREMENT-01NOV.md).

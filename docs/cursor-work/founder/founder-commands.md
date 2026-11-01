@@ -2097,3 +2097,6 @@ S1b RUST + UI WRITTEN (tarteeb se next, 1 Nov ~12:00): Rust = server/founder/src
 
 - 13:55 (founder, verbatim): "Mail transport / Edge & pages / Payments ... aur yeh sab delete kero yeh alread landing page pe hai. baki sab theek hai."
   STATUS 14:00: 1 Nov 14:00 FOOTER: removed rows Mail transport, Edge & pages, Payments (already on the landing page; founder 13:55). Remaining: browser kernel, Backend Engine, Advance Network Layer, Website, Data & files. pull.sh pending.
+
+- 13:59 (founder, verbatim): "IETF yeh awam se vaada hai yeh dalna hai aur yeh kab aye gi agar awam side a repo main tarteeb awam side walaya bluerint main add kero. ... jo green hai woh mujhe batao aur jo rehta hai shaam ke liye update kero compact chat se pehle sab kuch"
+  STATUS 14:05: 1 Nov 14:05 founder 13:59: MoQ promise (footer) added to the AWAM blueprint (ONE-ORDER-27OCT.md, MQ0-MQ4, gates, honest-wording rule); FOUNDER-FULL-ORDER-STATUS-01NOV.md refreshed (green vs remaining; evening = 7-2 Rust webauthn-rs).
