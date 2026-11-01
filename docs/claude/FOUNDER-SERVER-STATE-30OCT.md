@@ -223,3 +223,5 @@ S1b Rust + UI pushed, NOT yet installed. After founder-install.sh: Appearance ta
 - 1 Nov 12:30 E116 failed on server (replay check dirty: raw delete in selftests vs real stored values). Fixed in the same file (door-based reset + patched E113 selftest inside E116). LESSON: every selftest must run on a populated account, never assume an empty founder_settings.
 
 - 1 Nov 12:55 S1d GREEN on server (CHECK_E116 6/6, E65 ok, founder-install OK). Side-by-side compare written to repo (FOUNDER-VS-AWAM-SETTINGS-COMPARE-01NOV.md). S1e written (Display name row, nav alignment, mobile email wrap) - install pending.
+
+- 1 Nov 12:50 S1e GREEN on server + live Chrome. Tech audit: kernel F2b already LIVE (master row 4 corrected). Next: step 7 F2d passkey + S3 Privacy (design note first, Rule 63).
