@@ -133,3 +133,8 @@ SIDEBAR: group "Workspace (user app)" (User dashboard + 13 user links) REMOVED f
 STREAM HEALTH card REMOVED from Dashboard (it turned red on a reload). Rust `live::telemetry_on()` now defaults OFF (`FOUNDER_TELEMETRY=on` enables); e2e mock sets it on. E111 SQL stays installed (idle). L8 CLOSED by removal. Tests: tsc 0, bun 7, cargo 81.
 PULL: founder-install.sh only (Rust + SPA). Green = Chrome: sidebar has no user-app group, no Stream health card, Inbox + Channels cards remain, 9 cards + Recent changes.
 NEXT: P2 Inbox page (+ Bridge exception rows); sidebar item "Inbox" jodna (founder ki haan).
+
+## UPDATE 1 Nov 08:00 PKT — Founder Workspace sidebar + bun purge (repo; founder-install baaki)
+07:45/07:50 UI cleanup AND telemetry-off are SERVER PAR INSTALLED (founder paste 07:5x: 81 tests, healthz 200). Chrome proof of them = next step after the next install.
+NEW (repo): sidebar = Dashboard, Bridge, group "Founder Workspace" (Mail Desk, People, AI, Systems, Control, Finance, Release, Move-In, Audit ledger) in the founder's list order; `ORDER` in catalog.ts reordered; founder-web/bun.lock removed. Doc: FOUNDER-WORKSPACE-ORDER-01NOV.md (14 user items -> founder pages + live source + step; loophole table L8-L14). New step 4e Kernel SSE port inserted before Merkle.
+PULL: founder-install.sh only.

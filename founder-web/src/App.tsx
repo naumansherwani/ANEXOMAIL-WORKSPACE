@@ -126,7 +126,7 @@ export default function App() {
   if (!authed) return <Gate />;
   if (pend) return <DeviceScreen code={pend.code} revoked={pend.revoked} retry={load} />;
   const title = view === "bridge" ? "Bridge" : view === "profile" ? "Profile" : view === "settings" ? "Settings" : (CC.find((n) => n[0] === view) || ["", ""])[1];
-  const items: (NavItem & { href?: string })[] = [...CC.map(([k, n]) => ({ id: k, name: n, group: "Command center", icon: k, view: k })), { id: "settings", name: "Settings", group: "Account", icon: "settings", view: "settings" }, { id: "profile", name: "Profile & photo", group: "Account", icon: "people", view: "profile" }];
+  const items: (NavItem & { href?: string })[] = [...CC.map(([k, n]) => ({ id: k, name: n, group: ["dashboard", "bridge"].includes(k) ? "Command center" : "Founder Workspace", icon: k, view: k })), { id: "settings", name: "Settings", group: "Account", icon: "settings", view: "settings" }, { id: "profile", name: "Profile & photo", group: "Account", icon: "people", view: "profile" }];
   const pick = (x: NavItem & { href?: string }) => { setPal(false); if (x.href) window.open(x.href, "_blank", "noopener,noreferrer"); else setView(x.view); };
   const spot = (e: React.PointerEvent<HTMLElement>) => { const r = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`); e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`); };
   const nvBtn = (k: string, n: string, i = 0) => <button key={k} className="nv" style={{ "--i": i } as React.CSSProperties} onPointerMove={spot} title={n} aria-current={view === k ? "page" : undefined} onClick={() => setView(k)}><Icon k={k} /><span className="lbl">{n}</span></button>;
@@ -140,7 +140,9 @@ export default function App() {
       <aside className="sb" aria-label="Navigation">
         <div className="sbtop"><Brand /></div>
         <div className="sbscroll">
-          {CC.map(([k, n], i) => nvBtn(k, n, i))}
+          {CC.slice(0, 2).map(([k, n], i) => nvBtn(k, n, i))}
+          <div className="grp" role="presentation">Founder Workspace</div>
+          {CC.slice(2).map(([k, n], i) => nvBtn(k, n, i + 2))}
         </div>
         <div className="sbfoot">
           <button className="nv" onClick={toggleSlim} aria-label={slim ? "Expand sidebar" : "Collapse sidebar"} title={slim ? "Expand" : "Collapse"}><Icon k="collapse" /><span className="lbl">Collapse</span></button>

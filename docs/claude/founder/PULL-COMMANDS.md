@@ -218,3 +218,5 @@ Rollback: env FOUNDER_TELEMETRY=off (telemetry writes band; registry + snapshot_
 ## 1 Nov 07:45 PKT — UI cleanup (user-app sidebar group + Stream health card removed, telemetry default off). Pull: sirf founder-install.sh: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh)`
 
 ## 1 Nov 07:50 PKT — copy fix (live numbers, no empty-state words). Pull: sirf founder-install.sh (same command as 07:45).
+
+## 1 Nov 08:00 PKT — Founder Workspace sidebar group + bun.lock removed. Pull: sirf founder-install.sh (same command).

@@ -90,3 +90,4 @@ Status: CODE DONE, NOT GREEN. Order: sql-run (E110) -> awam pull.sh (auth.ts) ->
 - 1 Nov 07:40 L8 (open): Stream health 'Down 75% short streams' from page reloads; fix = min sample 20 + ignore client_gone reloads, in E113 (P2). L7 GREEN on server (Inbox ready).
 - 1 Nov 07:40 L8 CLOSED by removal (Stream health card gone; telemetry default OFF). Rule from founder: no meta/diagnostic cards that can turn red from a reload; only long-running real live-wired features.
 - 1 Nov 07:50 L9: empty-state wording ('Ready', 'Nothing has changed yet') banned by founder; replaced with live numbers (Inbox: open/new/past reply time/chain; Recent changes: Watching N live sources, last check). Other places with 'Nothing needs attention' (Bridge) to be reviewed with founder.
+- 1 Nov 08:00 L10-L14 logged (decks catalog placeholders, bun.lock removed, tests on bun -> step 4e, awam bun = migration lane). See FOUNDER-WORKSPACE-ORDER-01NOV.md.

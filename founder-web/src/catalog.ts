@@ -17,7 +17,8 @@ export const DECK_META: Record<string, { title: string; phase: string; intro: st
   systems: { title: "Systems", phase: "F6", intro: "Real health probes, capacity and speed across every tenant." },
   control: { title: "Control", phase: "F8", intro: "Kill switches, flags and maintenance. Every change is audited and reversible where possible." },
 };
-export const ORDER = ["finance", "people", "mail_desk", "ai", "release", "move_in", "systems", "control"];
+// Sidebar order under "Founder Workspace" = the founder's own list order (Mail, People, AI, Systems = Analytics/Safety/Speed/ANEXOChat, Control = Admin), then the founder-only decks. Founder 1 Nov 07:52.
+export const ORDER = ["mail_desk", "people", "ai", "systems", "control", "finance", "release", "move_in"];
 
 export const CATALOG: Record<string, Feature[]> = {
   finance: G([
