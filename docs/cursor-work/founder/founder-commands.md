@@ -1832,3 +1832,8 @@ Done 23:05: FOUNDER-SERVER-STATE-30OCT.md (installed vs repo-only), greeting v3 
 -> Greeting v3 REVERTED to v2 (identical to 35867e0 for Bridge.tsx and dx.css). Pill + date stay in the meta row, left aligned. Do not centre anything again without his exact sentence.
 "Anexomail ke workspace dashboard par is Bridge ko Zoho-killer banane ke liye ... 5 features (Unified Ledger Threading, Immutable Promise and Decision Extraction, File Evidence Chain, Direct Broadcast to External Email from Chat, Honest Edit and Revocation Sync) + split-screen (left email, right chat, centre/bottom Bridge Engine) ... Email <-> Chat Bridge ka functional workflow design ya database relational logic taiyar karo, jo founder apne product architecture manual mein shamil kar sakein? is ka logic soch ke banao."
 -> Done: docs/claude/BRIDGE-EMAIL-CHAT-ENGINE-DESIGN-01NOV.md (design note only, no code).
+
+## 1 Nov 05:19 PKT (verbatim essentials)
+"yeh image dekho do jaga pe command center hai is main se sab se top pe remove kero aur date bola tha ke time ke saath kero jaise pehle tha baki sab theek hai"
+-> Top bar title "Founder Command Center" removed (eyebrow above the greeting stays). Date moved under the clock (SUNDAY 1 NOVEMBER, then KARACHI GMT+5). Greeting block stays v2, left aligned, pill unchanged.
+"yeh sab chat context update kero verna compact chat aye ... tarteeb codes hamesha update kero" -> context/ledgers updated every turn.

@@ -607,3 +607,4 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 
 - 1 Nov 05:10 PKT: greeting v3 (centred) REJECTED by founder, reverted to v2. Do NOT centre the eyebrow/heading/pill. Email<->Chat Bridge design note written: docs/claude/BRIDGE-EMAIL-CHAT-ENGINE-DESIGN-01NOV.md (no code yet; do not rewrite, build phase B1 only when the founder approves).
 - 1 Nov 05:25 PKT: Mail<->Chat Bridge is master-order step 12b (docs/claude/FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md = MASTER, already existed). Always grep docs/claude for the topic BEFORE writing a new design note. Detail note BRIDGE-EMAIL-CHAT-ENGINE-DESIGN-01NOV.md now carries a RECONCILIATION header. User-side phases 23-31 + E7 + E97 already exist.
+- 1 Nov 05:25 PKT: top-bar 'Founder Command Center' title REMOVED by founder order (keep eyebrow). Date lives under the clock, not in the greeting meta row. Do not re-add either.

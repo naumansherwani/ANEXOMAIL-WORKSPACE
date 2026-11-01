@@ -2046,3 +2046,4 @@ Scene3D.tsx appeared in the working tree at 22:25 (not written by me in this tur
 
 ## 1 Nov 2026 05:10 PKT - greeting v3 rejected and reverted to v2 (nothing to pull). Email<->Chat Bridge ("Zoho-killer") design note written: docs/claude/BRIDGE-EMAIL-CHAT-ENGINE-DESIGN-01NOV.md (5 features, SQL sketch E111-E116, phases B1-B7, honest limits, 3 open questions). READ FOUNDER-SERVER-STATE-30OCT.md first. No code for the Bridge exists yet.
 ## 1 Nov 05:25 PKT - Mail<->Chat Bridge = master order 12b (after 11 and 12), master doc FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md; my 01NOV note is detail only. Pull commands live in docs/claude/founder/PULL-COMMANDS.md.
+## 1 Nov 05:25 PKT - founder: remove top-bar title, date under clock (done, repo, needs founder-install). L5 v2: E110 + Rust installed; remaining awam pull.sh + enforce. READ FOUNDER-SERVER-STATE-30OCT.md first.

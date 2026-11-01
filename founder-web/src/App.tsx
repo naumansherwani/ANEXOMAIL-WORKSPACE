@@ -157,7 +157,7 @@ export default function App() {
       </aside>
       <div className="mn">
         <header className="tp">
-          <span className="crumb"><b>Founder Command Center</b></span>
+          <span className="crumb" aria-hidden="true" />
           <div className="tpc">
             <button className="find" onClick={() => setPal(true)} aria-label="Search pages"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6" /><path d="m20 20-4-4" /></svg><span className="ft">Search or jump to a page</span><kbd>Ctrl K</kbd></button>
           </div>

@@ -73,3 +73,4 @@ Status: CODE DONE, NOT GREEN. Order: sql-run (E110) -> awam pull.sh (auth.ts) ->
 | L21 / L22 update 23:05 | L21 real logo GREEN and L22 Founder blue top bar GREEN (Chrome 22:59). Greeting v3 (pill centred, date with time) repo only | founder-install |
 
 | L22 note 1 Nov 05:10 | Greeting v3 centring rejected and reverted to v2 (founder-approved, already installed). Do not centre. Bridge Engine design note written (docs only) |
+| L22 note 1 Nov 05:25 | top-bar title removed, date under clock (repo; needs founder-install). L5 v2 partly installed: E110 + Rust OK, awam pull.sh + enforce remain |

@@ -82,3 +82,6 @@ button.dx-card{cursor:pointer;width:100%}button.dx-card:hover{transform:translat
 .g-eyebrow,.crumb b{background:linear-gradient(90deg,#5ec8ff,#4aa3f0);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
 .crumb b{font-weight:700}
 .phero{display:none}
+
+/* date sits under the clock (founder 1 Nov 05:19: "date time ke saath"); greeting block itself stays v2, left aligned */
+.clock .cdate{display:block;color:#9aa6bd;letter-spacing:.12em;text-transform:uppercase;font-size:11px;margin-top:6px}
