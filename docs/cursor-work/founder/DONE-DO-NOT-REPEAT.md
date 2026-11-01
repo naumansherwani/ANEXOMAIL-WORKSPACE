@@ -612,3 +612,4 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - 1 Nov 05:35 PKT: founder-install 44e1661 installed and live-verified (g fix, top-bar title removed). Do not redo. Next order: N1 L5 pull.sh+enforce (founder), N2 Rust /live + SSE, N3 F2c Merkle.
 - 1 Nov 05:40 PKT: full numbered order with status = docs/claude/FOUNDER-FULL-ORDER-STATUS-01NOV.md (founder asked for the whole blueprint).
 - 1 Nov 05:50 PKT: step 4b design note written (docs/claude/FOUNDER-LIVE-RUST-SSE-DESIGN-01NOV.md), phases 4b-1..4. No code yet. Do not rewrite; build 4b-1 after founder says go.
+- 1 Nov 05:55 PKT: awam pull.sh + hostguard enforce RAN by founder. Do not ask again; only the awam-host 403 test + status remain for L5 green.

@@ -41,3 +41,9 @@ Rust `/founder/v1/live` + SSE (uses E109 `founder_live_snapshot/tick/since`) -> 
 | N4 | Step 6 S2 Settings (Time machine, Drift) -> step 7 F2d passkey + S3 -> step 8 Decide/Live Pulse/S4 -> 8a I3 | Claude | in this order |
 | N5 | 9 Finance, 10 People (+10a I2, 10b K4), 11 Mail Desk (+11a K1), 12 Systems/AI (+12a K2), **12b Mail<->Chat Bridge**, 13 Control (+13a K3), 14 F9 cutover, 15 Founder desk | Claude | one phase at a time |
 Not asked and NOT next: Mail<->Chat Bridge build (12b). Leftover checks: orb amber/red under a real warning; F5 refresh 50-100 ms target; awam-side kernel 0.5.0 / E90 release publish.
+
+## UPDATE 1 Nov 05:55 PKT (founder paste 05:46)
+- DONE by founder: awam `pull.sh` (web online, restarts 432, build OK), then `founder-hostguard.sh enforce`: .env now FOUNDER_HOST_GUARD=enforce, pm2 restarted by the script. ("mode (running process)" is blank only because the script cannot read the pm2 env from /proc; the .env line is the truth.)
+- Still unproven: `web_guard_last_seen_at` is None until a founder attempt hits the awam host. FOUNDER TEST (1 step): private window, https://anexomail.com/auth, sign in with the founder email -> must show the "founder portal" 403; then `founder-hostguard.sh status` shows last_founder_on_awam_host_at + web_guard_last_seen_at set + refused_30d 1. Then L5 = GREEN.
+- Safety: founder login at founderworkspace.anexomail.com/founderlogin must still work (verify in Chrome, sign in is founder's click). Rollback: `founder-hostguard.sh probe`.
+- The server's "memory stamp" (pull.sh) now reads the 1 Nov line of the chat context file.
