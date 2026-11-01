@@ -1955,3 +1955,7 @@ PASTE = AWAM Rust engine (pm2 anexomail-rust :3200) pre-flight + proof: 32 modul
 
 ## 1 Nov 08:42 PKT — founder
 "Awam web (Bun + pm2) pull.sh yeh bun baned hai" — pull.sh ko pull table se BANNED likh diya; founder ko yeh command nahi di jaye gi. Sach: awam site abhi isi Bun lane par chal rahi hai; usay Bun/Node se hatana alag migration phase (awam site ki technology badalna) — master order mein founder ke likhe order se, bina uske awam site nahi chhedi jati.
+
+## 1 Nov 08:43 PKT — founder
+"agla kaam tarteeb kya hai jo mere server pe hain us ko green kero. dobara codes nahi likhna hai aur repo update chat context update kero."
+DONE (sirf record, koi code nahi): server-par GREEN list = steps 1-4b, 4d P1 (E111, E112), step 5 SQL (E107). Agla = step 5 Rust merkle.rs + kernel merkle + UI gauge (5a), phir 6 S2 ... (master order jaisa).
