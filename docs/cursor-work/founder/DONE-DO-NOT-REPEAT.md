@@ -614,3 +614,4 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - 1 Nov 05:50 PKT: step 4b design note written (docs/claude/FOUNDER-LIVE-RUST-SSE-DESIGN-01NOV.md), phases 4b-1..4. No code yet. Do not rewrite; build 4b-1 after founder says go.
 - 1 Nov 05:55 PKT: awam pull.sh + hostguard enforce RAN by founder. Do not ask again; only the awam-host 403 test + status remain for L5 green.
 - 1 Nov 05:55 PKT: L5 NOT green: founder session found on anexomail.com/app. Guard only on /login+/signup; passkey/magic-link/oauth/mfa/refresh unguarded. auth.tsx now redirects founder_portal_only to the founder portal (awam, repo only, needs awam pull.sh). Next: guard those paths + retest.
+- 1 Nov 06:10 PKT: L5 root cause: /api/auth runs in Brain anexomail-leo (/opt/anexomail), installed by brain-*-install.sh, NOT pull.sh. Do not tell founder to run pull.sh for auth.ts changes. Guard script wrote the wrong .env/process. Next: brain-hostguard-install.sh.

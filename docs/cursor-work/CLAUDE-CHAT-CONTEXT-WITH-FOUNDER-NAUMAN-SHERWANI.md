@@ -2052,3 +2052,4 @@ Scene3D.tsx appeared in the working tree at 22:25 (not written by me in this tur
 ## 1 Nov 05:40 PKT - founder asked for the full blueprint: docs/claude/FOUNDER-FULL-ORDER-STATUS-01NOV.md (steps 1-15 with status). Next = N1 (founder L5) then 4b/N2.
 ## 1 Nov 05:50 PKT - founder overwhelmed ('pagal ho jana hai'): gave him ONLY copy-paste commands for N1; I own step 4b. Design note FOUNDER-LIVE-RUST-SSE-DESIGN-01NOV.md written; build 4b-1 next.
 ## 1 Nov 05:55 PKT - founder test: logged in on anexomail.com; guard did not refuse. Passkey/magic-link/oauth paths unguarded. auth.tsx redirect built. L5 NOT green.
+## 1 Nov 06:10 PKT - L5: auth runs in Brain anexomail-leo; guard never installed there. Next build: brain-hostguard-install.sh (founder go needed).
