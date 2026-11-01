@@ -184,3 +184,6 @@ Settings Center decision doc added (7 awam tabs mapped, S1b/E114 added after ste
 
 ## UPDATE 1 Nov 10:30 PKT
 E113 first server run FAILED at crosscheck (my bug, fixed, 981 lines). Rerun the same sql-run command; paste output.
+
+## UPDATE 1 Nov 10:45 PKT
+E113 run #2: selftest passed on server, selftest2 failed (service_role over-granted by Supabase default ACL) - fixed, rerun #3 command in PULL-COMMANDS.md.

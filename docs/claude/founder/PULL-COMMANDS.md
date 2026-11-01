@@ -266,3 +266,8 @@ Expect: selftest OK, selftest2 OK, crosscheck OK, 14 rows all `t`. No restart, n
 ```
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E113_founder_settings_timemachine CHECK_E113 2>&1 | tail -25
 ```
+
+## 1 Nov 10:45 — E113 RERUN #2 (selftest passed on the server; selftest2 failed: Supabase default ACL gave service_role full rights on the new tables; fixed with explicit revoke). SQL only, same command:
+```
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E113_founder_settings_timemachine CHECK_E113 2>&1 | tail -25
+```

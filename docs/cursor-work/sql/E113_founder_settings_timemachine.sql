@@ -63,6 +63,7 @@ create table if not exists public.founder_settings_revert_log (
 create index if not exists founder_settings_revert_log_idx on public.founder_settings_revert_log (user_id, created_at desc);
 alter table public.founder_settings_revert_log enable row level security;
 revoke all on public.founder_settings_revert_log from public, anon, authenticated;
+revoke all on public.founder_settings_revert_log from service_role;   -- Supabase default ACL gives service_role everything on new tables; take it back first
 grant select, insert on public.founder_settings_revert_log to service_role;
 
 -- 1b) scheduled changes
@@ -91,6 +92,7 @@ create index if not exists founder_settings_schedule_rb_idx on public.founder_se
 create index if not exists founder_settings_schedule_user_idx on public.founder_settings_schedule (user_id, created_at desc);
 alter table public.founder_settings_schedule enable row level security;
 revoke all on public.founder_settings_schedule from public, anon, authenticated;
+revoke all on public.founder_settings_schedule from service_role;
 grant select, insert, update on public.founder_settings_schedule to service_role;
 
 -- 1c) read-only registries (upserted by this file; service_role can only read)
@@ -107,6 +109,7 @@ create table if not exists public.founder_settings_info (
 );
 alter table public.founder_settings_info enable row level security;
 revoke all on public.founder_settings_info from public, anon, authenticated;
+revoke all on public.founder_settings_info from service_role;
 grant select on public.founder_settings_info to service_role;
 
 create table if not exists public.founder_settings_baseline (
@@ -121,6 +124,7 @@ create table if not exists public.founder_settings_baseline (
 );
 alter table public.founder_settings_baseline enable row level security;
 revoke all on public.founder_settings_baseline from public, anon, authenticated;
+revoke all on public.founder_settings_baseline from service_role;
 grant select on public.founder_settings_baseline to service_role;
 
 comment on table public.founder_settings_revert_log is 'E113: which settings-history version was undone (append-only). One version can be undone once.';
