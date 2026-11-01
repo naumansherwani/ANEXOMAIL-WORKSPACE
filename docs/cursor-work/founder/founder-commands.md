@@ -2138,3 +2138,6 @@ S1b RUST + UI WRITTEN (tarteeb se next, 1 Nov ~12:00): Rust = server/founder/src
 
 - 15:03 (founder pasted APPLY=1 server output; 15:02 pasted founder-install GREEN 120 tests + pull.sh OK)
   STATUS: 1 Nov 15:05 T256-1 APPLY=1 ran on server (founder output pasted 15:03): 'TLS-256 terminator ON 0.0.0.0:8443 (TLS 1.3, AES-256-GCM only)'; normal client Verification OK (return code 0); AES-128-only client REFUSED (alert 40 handshake failure). Server-side GREEN. NOT yet: cipher line of the normal client not shown in paste, ledger row from the prober (first run ~20s after start, then 6h), ufw 8443 + Chrome padlock check, awam T256-2.
+
+- 15:09 (founder, verbatim): "TOH DALO ABHI KE ABHI ... jo kerna hai kero meri haan hai." + pasted curl 401 / journal / empty psql output
+  STATUS: 1 Nov 15:12 founder 15:09 'TOH DALO ABHI KE ABHI ... meri haan hai': 3 awam files added to DEPLOY-MANIFEST (CommandPalette.tsx, lib/dashboard.ts, routes/app.admin.addresses.tsx). Cause: server had 28 Oct versions, repo newer (blueprint #8 Domains), pull.sh copies only manifest files. pull.sh builds sha-guarded and restores on build fail. Server GREEN only after the founder's pull.sh shows 'wrote' x3 + build OK + differ=0. Also: psql founder_tls_checks command printed NOTHING (not even header) - not green, rerun with exit code.
