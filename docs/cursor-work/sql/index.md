@@ -54,3 +54,4 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E106 | founder Polar rejects: founder_polar_rejects() — signature-reject counts by reason/day/sender class, no raw body, no header values; Polar tables untouched | CHECK_E106 (5 checks) | 28 Oct READY (server par chalana baqi) |
 | E108 | founder_settings (+history, RPC founder_setting_set/get) — Settings S1 + profile photo, separate from awam account_profiles | CHECK_E108 (6) | founder; sandbox-proven 28 Oct 12:50, server pending |
 | E120 | founder_audit_verify_runs + policy knobs + pulse with checker / full_check / sealer_stalled / cp_hash / now_ms (G4 gauge hardening) | CHECK_E120 (4) | founder; sandbox-proven 2 Nov, server pending |
+| E122 | founder_seal_interval | seal every 20 entries (G5a live proof) | CHECK_E122 (2) |

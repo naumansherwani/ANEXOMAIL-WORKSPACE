@@ -40,7 +40,7 @@ const groups = [
 const stack = [
   { where: "Built into your browser", what: "A Rust WebAssembly kernel — one kernel for the whole site" },
   { where: "Backend Engine", what: "Rust · Tokio Async runtime · Axum" },
-  { where: "Advance Network Layer", what: "Live WebTransport over UDP · QUIC Native Pipeline · HTTP/3 · Media over QUIC (MoQ, IETF Standards Track) with Seamless Cross-Protocol HTTP Fallback" },
+  { where: "Advance Network Layer", what: "Live WebTransport over UDP · QUIC Native Pipeline · HTTP/3 with Seamless Cross-Protocol HTTP Fallback" },
   { where: "Website", what: "React 19 · TypeScript · TanStack Start & Router · Vite 8 · Tailwind CSS 4 · Radix / shadcn · Framer Motion · GSAP · Three.js with 3D Cinematic Frontend" },
   { where: "Data & files", what: "PostgreSQL with row-level security · Hetzner Storage Box for attachments · ClamAV virus scanning" },
 ];

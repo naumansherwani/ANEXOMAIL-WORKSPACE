@@ -2098,3 +2098,6 @@ G5a GREEN on the server (founder-install 134 tests, run twice; E121 CHECK 3/3). 
 
 ## Checkpoint 2 Nov 04:40 PKT
 Chrome checked by me (founder asked: never ask him, look yourself). G4 Chrome GREEN (Ledger seal: 28 entries intact, full check 26 min ago, 5 of 5 proven in this browser). W6 GREEN (awam wasm 0.7.0 200, SHA == pin). G5a: Rust/SQL/kernel on the server GREEN; the browser consistency path cannot run until a first seal exists (50 entries), honest NOT-proven-live. Awam footer still claims MoQ (not running) -> queued honesty fix. Next: G5-0 then G5b (discuss first, Rule 63).
+
+## Checkpoint 2 Nov 04:50 PKT
+Founder ordered: fix the footer and fix G5a, no questions. Footer MoQ claim removed (src/components/site/SiteFooter.tsx). E122 written + tested locally: seal every 20 entries so the browser G5a consistency proof can run live (ledger 28 -> first seal at once). Both need his 2 commands (E122 SQL, awam pull). Not GREEN until his paste + my Chrome look.

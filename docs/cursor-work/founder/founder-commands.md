@@ -2182,3 +2182,6 @@ Order: "tarteeb se chalo, rules read kero, jitna kaam kiya sab repo + chat conte
 
 ## 2 Nov 04:32 PKT — founder: "chrome mujhse nahi poocha kero, khudi dekha kero, repo se live match kero"
 Done: I opened his Chrome tabs myself (read-only). Founder Dashboard + awam wasm results are in the blueprint G row and DONE ledgers (G4 Chrome GREEN, W6 GREEN, G5a consistency not testable live until the first seal at 50 entries). Rule: from now on I check Chrome myself for read-only proof and never ask him to look.
+
+## 2 Nov 04:36 PKT — founder order (verbatim): "tu mera baap nahi ke footer pe kya likha hai, tu bus fix kero aur G5a bhi fix kero"
+Done below: (1) awam footer: MoQ claim removed (MoQ is not running); (2) G5a live: E122 lowers the seal interval 50 -> 20 so the first seal happens at once (ledger has 28), second after 20 more entries, so the browser consistency path can run live. No question asked.
