@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 3984144944e85ad6
+docs/cursor-work/founder/founder-commands.md a2979bcac046af44
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0c1a6a8b9e10e904
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 3d3021a6a59f8225
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md e6f2b6f9d8cf5461
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -892,7 +892,7 @@ server/founder/src/bridge.rs 12ea8228b6829893
 server/founder/src/data.rs bff0a3036aa29fa8
 server/founder/src/gate.rs c3b8fbb573facca1
 server/founder/src/sign.rs 1e37d229d78842fb
-docs/cursor-work/server/founder-install.sh 6c664e8f6997b8fe
+docs/cursor-work/server/founder-install.sh c0edf5864f8877b7
 founder-web/.gitignore aaccff71fadbb13b
 founder-web/index.html d5b8de883d5e95f0
 founder-web/package.json c0b915b8e44a6271
@@ -917,7 +917,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md eb1ba2a7a3861722
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md 61297e5e5ffceb19
+docs/claude/founder/PULL-COMMANDS.md 4f4811e25cc79cd7
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 32121a0adc1a3ebf
@@ -1068,3 +1068,4 @@ docs/cursor-work/sql/CHECK_E119.sql 8a79e357ded727d0
 src/components/app/CommandPalette.tsx 12a0fd1cf3105c1a
 src/lib/dashboard.ts 66e8a7d64fa8e599
 src/routes/app.admin.addresses.tsx cb8efe1f397d00f0
+docs/claude/BLUEPRINT-ABC-01NOV.md 5e4cacfa337be0e8

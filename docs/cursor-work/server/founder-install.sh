@@ -22,6 +22,8 @@ for f in $FILES; do show "server/founder/$f" >"$ROOT/src/$f" || { echo "FAIL: re
 mkdir -p "$ROOT/rust" && show server/rust/jwt_core.rs >"$ROOT/rust/jwt_core.rs" || { echo "FAIL: jwt_core.rs nahi"; exit 2; }
 # merkle_core.rs (ledger.rs `../../rust/merkle_core.rs`): wahi ek file jo browser kernel bhi leta hai (step 5)
 show server/rust/merkle_core.rs >"$ROOT/rust/merkle_core.rs" || { echo "FAIL: merkle_core.rs nahi"; exit 2; }
+# G5a: ledger.rs test include_str!("../../rust/consistency_vectors.json") (820 Python-reference cases)
+show server/rust/consistency_vectors.json >"$ROOT/rust/consistency_vectors.json" || { echo "FAIL: consistency_vectors.json nahi"; exit 2; }
 # main.rs ka path src/ se ../../rust/jwt_core.rs = $ROOT/rust/jwt_core.rs (src/src -> ../../ = src/..)
 echo "== 1/4 tests"; (cd "$ROOT/src" && cargo test --release 2>&1 | grep -E "test result|FAILED|^error" ) ; (cd "$ROOT/src" && cargo test --release >/dev/null 2>&1) || { echo "FAIL: tests — kuch nahi badla"; exit 3; }
 echo "== 2/4 build"; (cd "$ROOT/src" && nice cargo build --release 2>&1 | tail -3) ; NEW="$ROOT/src/target/release/anexomail-founder"; [ -x "$NEW" ] || { echo "FAIL: build"; exit 3; }

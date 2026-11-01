@@ -361,3 +361,7 @@ Note: the awam site keeps serving kernel 0.6.0 until its own pull (Rule 52 pin f
 **1 - SQL E121:** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E121_founder_audit_consistency CHECK_E121 2>&1 | tail -20`  -> 3 rows OK
 **2 - Rust + SPA + kernel 0.7.0 (134 tests):** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -25`  -> "134 passed", "OK - founder service zinda"
 **3 - awam (he runs it himself; brings kernel 0.7.0 + the pin):** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
+
+## 2 Nov 04:20 — founder-install fix (G5a)
+Rust-test ne `consistency_vectors.json` mangi, script copy nahi karta tha. Ab karta hai. Dobara chalayein:
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -25`

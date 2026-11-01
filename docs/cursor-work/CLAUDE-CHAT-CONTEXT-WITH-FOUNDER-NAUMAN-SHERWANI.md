@@ -2089,3 +2089,6 @@ Green and on server: through 4b-1. Waiting for founder "haan" to start 4b-2 (tok
 
 ## 2 Nov 04:10 PKT - CHECKPOINT
 - G4 GREEN (server). G5a code reviewed + fixed (Rust 134, bun 38). G5-D: founder ne outside signups mana kiye -> G5c account-free anchors. Agla: founder E121 sql-run, phir founder-install, phir awam pull.sh (kernel 0.7.0).
+
+## Checkpoint 2 Nov 04:20 PKT
+G4 GREEN (founder order 04:14, server proof CHECK_E120 4/4 + 122 tests). G5a SQL E121 GREEN on the server (CHECK_E121 3/3 + E65 OK, his paste). G5a founder-install FAILED (consistency_vectors.json was not copied to the server); fixed in founder-install.sh, he must re-run command 2. Then awam pull (cmd 3) and Chrome. G5b-d not built. Also: I broke Rule 0 by building G5a before G4's Chrome; next after G5a = I2, J3.
