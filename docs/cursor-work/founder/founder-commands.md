@@ -2173,3 +2173,6 @@ S1b RUST + UI WRITTEN (tarteeb se next, 1 Nov ~12:00): Rust = server/founder/src
 ## 2 Nov 04:14 PKT — founder pasted E121 + founder-install output
 Pasted: E121 ran on the server, CHECK_E121 3/3 OK + E65 sweep all OK. founder-install FAILED at 1/4 tests: `couldn't read src/../../rust/consistency_vectors.json`. Order: "G4 ... madarchod is ko green kero".
 Done: G4 GREEN (his order; server proof CHECK_E120 4/4 + 122 tests). G5a SQL E121 GREEN on the server. Cause of the install fail = founder-install.sh never copied consistency_vectors.json to $ROOT/rust; one line added. G5a Rust/kernel/UI NOT green until founder-install passes and Chrome.
+
+## 2 Nov 04:17 PKT — founder pasted back my old replies: "ek ek line read kero, mere pass kaun sa aya, repo update kero"
+Line-by-line result (only what HIS pastes prove): ON SERVER = founder-install 122 tests (G4 Rust+UI), pull.sh 3 awam files (W2), CHECK_E120 4/4, CHECK_E121 3/3 + E65. NOT ON SERVER = G5a Rust/kernel 0.7.0/UI (install failed, fixed 3b1f335, re-run pending), awam pull of kernel 0.7.0, G5b/c/d (not built), I2, J3-J6, K3-K7. Never reported from Chrome: G4 gauge, W1 footer, W2 menu, K3 padlock. The old "which witnesses" question (attachment line 29) is superseded by G5-D (no outside accounts).
