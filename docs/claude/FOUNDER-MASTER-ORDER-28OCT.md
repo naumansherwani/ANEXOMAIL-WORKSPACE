@@ -17,6 +17,7 @@ UI system (tokens, shell, Trust, mobile/tablet): docs/claude/FOUNDER-UI-DESIGN-2
 | 6 | **S2** Settings: Time machine + Drift & schedule | after 5 |
 | 7 | **F2d** passkey proof for G3 (then FOUNDER_PASSWORD path removed) + **S3** Privacy | after 6 |
 | 7a | **WebTransport / QUIC (`wtransport`)** founder live channel, replaces polling (own UDP listener + cert wiring, not awam's udp/3443); per `FOUNDER-TECHNOLOGY-ADOPTION-30OCT.md` | after 7 |
+| 7b | **Session & transport hardening (research 1 Nov, FOUNDER-TECHNOLOGY-ADOPTION-30OCT.md)**: DBSC (hardware-bound session, Chrome 146 Windows) + post-quantum hybrid TLS check on Caddy + founder splash lines (only true ones) | with 7 / 7a |
 | 8 | **Decide (N)** one button + **Live Pulse** (real vs test accounts) + **S4** Notifications (push) | after 7 |
 | 8a | **I3 Device Trust Map** (device-reported city, never IP) | after 8 |
 | 9 | **F3** Finance deck on latest tech: Polar failed payments / churn / reconcile, Revenue, Billing, **Release (7 old launch pages)**, **Move-In** | after 8 |
@@ -72,3 +73,7 @@ Bridge vs Dashboard (which tile lives where, CEO view): docs/claude/FOUNDER-BRID
 - Parity per user area (repo scan, 125 route files): docs/claude/FOUNDER-PARITY-30OCT.md (21:35).
 
 - Legacy pages (30 Oct 22:10): none is dropped. Each old founder/admin page is ported with its own tick-list and retired only after Chrome proof: docs/claude/FOUNDER-LEGACY-REVIVAL-30OCT.md. F9 = "retire after proof", not "delete".
+
+## ADMIN = awam ke maslon ka ghar (founder 1 Nov 09:36, locked)
+"Jo awam se mera promise hai aur jin ki waja se founder account mein awam ke maslay solve hone hain, woh sab founder ke ADMIN mein hone hain. Founder ka apna sab kuch (Mail, Calendar, Settings, Profile ...) PERSONAL alag. Awam side ke saray maslay Admin ke andar solve honge aur wahan ADMIN ka apna UI/UX banega." (promises: `docs/cursor-work/PROMISES.md`.)
+=> Systems > **Admin** (step 12) = awam ke maslay: support replies, glitch/inbox (E112), appeals/abuse, billing/Polar issues, move-in, org kill-switch/impersonate (G3), storage, health/incidents; apna alag Admin UI/UX (queues, SLA, per-issue actions). Founder personal pages Admin se alag rahenge. Step 12 ke design note mein yeh pehla sawal.

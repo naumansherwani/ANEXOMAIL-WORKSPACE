@@ -63,7 +63,6 @@ export function AccountMenu({ p, go }: { p: Prof | null; go: (v: string) => void
         {item("Profile & photo", () => go("profile"))}
         {item("Settings", () => go("settings"))}
         {item("Devices & sessions", () => go("profile"))}
-        {item("Audit ledger", () => go("audit"))}
         <div className="msep" />
         <div className="mnote">This browser: {ds.mode === "device" ? `approved · ${ds.label}` : ds.mode === "legacy" ? "approval not active yet" : "checking"}</div>
         {item("Sign out", signOut)}
