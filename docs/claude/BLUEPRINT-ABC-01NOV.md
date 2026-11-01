@@ -33,7 +33,7 @@ One letter per step, in build order. **GREEN** only where the proof exists (serv
 
 | Letter | Step | Status |
 |---|---|---|
-| **W1** | Landing footer "Built with" (founder's wording; MoQ claim removed 2 Nov 04:45 by his order because MoQ is not running) | `pull.sh` ran OK on the server; Chrome look pending |
+| **W1** | Landing footer "Built with" (founder's own wording. **I must not touch it**: I removed the MoQ claim 2 Nov 04:45, he objected 04:40, REVERTED. Footer text changes only on his explicit word) | `pull.sh` ran OK on the server; Chrome look pending |
 | **W2** | Sync 3 files (CommandPalette, dashboard.ts, admin.addresses) via DEPLOY-MANIFEST | **GREEN on the server** (pull.sh 2 Nov 03:37: 3 files `wrote`, build OK, differ=0, /app/domains 200); Chrome menu check pending |
 | **W3** | = K5 T256-2 awam AES-256 (approved, after K3) | approved, pending |
 | **W5** | **Host guard (= founder C2 / L5)**: awam and founder hosts never serve each other; probe -> enforce. **RULE (founder 1 Nov 06:07, repeated 15:22): PARKED, runs together with the awam migration (A2), awam login is in the old Brain.** Not skipped | PARKED (founder decision), ONE-ORDER row A8 |

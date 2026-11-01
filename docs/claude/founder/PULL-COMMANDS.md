@@ -370,8 +370,7 @@ Rust-test ne `consistency_vectors.json` mangi, script copy nahi karta tha. Ab ka
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
 Is baar `wrote  public/kernel/anexo-kernel-0.7.0.wasm` aani chahiye. Phir: `curl -sI https://anexomail.com/kernel/anexo-kernel-0.7.0.wasm | head -1` -> 200.
 
-## 2 Nov 04:45 — E122 (seal har 20 entries par) + awam footer (MoQ ka jhoota daawa hata diya)
-Pehle SQL (1 line):
-`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E122_founder_seal_interval CHECK_E122 2>&1 | tail -12`
-Isme 2 `OK` rows. Phir awam pull (footer):
-`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
+## 2 Nov 04:50 — E122 ADVANCED (seal har 20 entries YA 10 minute, seal-loop se mehfooz)
+Footer ko maine haath nahi lagana, wapas kar diya; awam pull ki zaroorat nahi. Sirf yeh SQL (1 line):
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E122_founder_seal_interval CHECK_E122 2>&1 | tail -14`
+Isme 4 `OK` rows aani chahiye. E107 aur E120 pehle se server par hain.

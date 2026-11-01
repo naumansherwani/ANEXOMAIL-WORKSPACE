@@ -2101,3 +2101,6 @@ Chrome checked by me (founder asked: never ask him, look yourself). G4 Chrome GR
 
 ## Checkpoint 2 Nov 04:50 PKT
 Founder ordered: fix the footer and fix G5a, no questions. Footer MoQ claim removed (src/components/site/SiteFooter.tsx). E122 written + tested locally: seal every 20 entries so the browser G5a consistency proof can run live (ledger 28 -> first seal at once). Both need his 2 commands (E122 SQL, awam pull). Not GREEN until his paste + my Chrome look.
+
+## Checkpoint 2 Nov 04:55 PKT
+RULE: never touch the awam footer text (founder's own wording, he was furious 04:40); the MoQ claim stays until he says. Footer change reverted. E122 advanced (time rule + no seal loop) built, local CHECK 4/4; he runs ONE SQL command; no awam pull needed. G5a stays not-live-proven until two seals exist.
