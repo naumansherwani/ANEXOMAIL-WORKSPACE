@@ -22,7 +22,7 @@ Recovery = a **state machine in SQL, provider-agnostic**, so the SMS provider is
 | 7-2 | Rust `webauthn-rs` | register / authenticate ceremonies, step-up grant, clone detection, routes + tests | next |
 | 7-3 | React-TS | Privacy tab (S3): passkey list, add, revoke, recovery codes; the step-up prompt component | after 7-2 |
 | 7-4 | Rust + SQL | enforce G3 on dangerous actions; passkey for sign-in; remove `FOUNDER_PASSWORD` | after his Chrome proof of 7-3 |
-| 7-5 | Rust + SQL | mobile OTP recovery with the 24 h cooling-off | after the SMS provider decision |
+| 7-5 | Rust + SQL | mobile alert + STOP-cancel flare with the 24 h cooling-off (NO OTP, founder decision 13:07) | after the alert channel decision |
 
 ## 5. Awam side (separate; written, NOT built — Rule 35: founder side never mixes with awam)
 See `docs/claude/AWAM-MOBILE-LOGIN-COUNTRY-REQUIREMENT-01NOV.md`.

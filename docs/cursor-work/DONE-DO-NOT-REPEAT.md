@@ -1330,3 +1330,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 1 Nov 14:05 founder 13:59: MoQ promise (footer) added to the AWAM blueprint (ONE-ORDER-27OCT.md, MQ0-MQ4, gates, honest-wording rule); FOUNDER-FULL-ORDER-STATUS-01NOV.md refreshed (green vs remaining; evening = 7-2 Rust webauthn-rs).
 
 - 1 Nov 14:15 TECH PROOF: docs/cursor-work/server/tech-proof.py (repo-reading proof, file:line or MISSING) + docs/claude/TECHNOLOGY-PROOF-LEDGER-01NOV.md. 7 MISSING: webauthn-rs (7-2), wtransport founder (7a), DBSC (7b), Motion+GSAP (new 7c), WebGPU (new 7d), MoQ (new 7e MoQ-F, awam MQ0-4). Master order rows 7c/7d/7e added. Open fact: awam wtransport version Cargo.toml 0.7 vs chart 0.1.14 -> verify on server.
+
+- 1 Nov 14:20 founder 14:10: PHASE -> TECHNOLOGY table added to FOUNDER-MASTER-ORDER-28OCT.md (7-1b .. 16, with proof per phase); design note row 7-5 corrected from 'mobile OTP recovery' to alert + STOP-cancel (no OTP). Server read-only check command given (awam wtransport version + TLS).

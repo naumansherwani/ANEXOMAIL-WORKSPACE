@@ -98,3 +98,23 @@ Verbatim gist: "awam ko AI nahi milega; yeh AI anexomail.com ka hai, sirf us mei
 - **Step 16 (new, last, after Docs/Sheets step 15): FOUNDER AI** = all advanced AI features, founder workspace only (Rust + signed envelope + founder gates; read-first, no free-text SQL, he presses send). The old "AI (10 pages)" and the Settings "AI settings" tab are built here, not in step 12.
 - **Awam gets no AI.** The awam code still has AI surfaces from Lovable (`src/components/app/ai/AiBits.tsx`, `src/lib/ai-studio.ts`, `ai-billing.ts`, `ai-automation.ts`, `settings/SettingsBits.tsx` Explain-with-Leo, compose/dashboard/calendar panels, `routes/app.settings.ai.tsx`). They are NOT touched now (Rule 35, awam is a separate lane). Removing them is a separate awam phase after the founder cutover, only on his written order, with an audit of what data those surfaces touch.
 - Founder-side rule that follows: nothing from the awam AI code is copied into the founder side (no mixing again); the founder AI is written fresh on the founder stack.
+
+## PHASE -> TECHNOLOGY (founder order 14:10, 1 Nov 2026) — which technology lands in which phase, in build order
+One phase at a time (Rule 66); each is green on the server + his Chrome before the next. After each, `python3 docs/cursor-work/server/tech-proof.py` must show exactly one fewer MISSING. Never mix layers in one phase (Rule 70).
+| Phase | Technology that lands | Layer | Proof it landed |
+|---|---|---|---|
+| 7-1 / 7-1b (DONE) | WebAuthn/FIDO2 registration schema, action hash, tiers, AAGUID allow-list, T3 two-key + delay, mobile flare (E117, E118) | SQL | CHECK_E117 7/7, CHECK_E118 7/7, E65 |
+| **7-2 (NEXT)** | `webauthn-rs` (WebAuthn register + authenticate, FIDO2 keys, clone detection) + the SAME canonical action hash (parity vectors) + T3 ticker on Tokio | Rust | cargo tests + parity vectors == SQL; tech-proof: webauthn-rs PROVEN |
+| 7-3 | Browser WebAuthn (`navigator.credentials`), Privacy tab: passkeys, hardware keys, allow-list, recovery codes, step-up prompt | React-TS UI | Chrome: add a key, see it listed |
+| 7-4 | Enforcement of T2/T3 on real actions; founder sign-in passkey-only; `FOUNDER_PASSWORD` removed; no mailed sign-in link, no DBSC claim | Rust + SQL + UI | his Chrome passkey proof first |
+| 7-5 | Out-of-band alert + STOP-cancel for the mobile flare (alert + cancel only, never a login) | Rust + SQL | provider + his number needed |
+| 7a | WebTransport / QUIC via `wtransport` (own UDP port + cert), HTTP/3 live channel replaces polling | Rust + UI | tech-proof: wtransport PROVEN (founder); Chrome shows live transport |
+| 7b | DBSC (device-bound sessions, Chrome 146 Windows) + post-quantum hybrid TLS check on Caddy | Rust + server check | read-only openssl check; DBSC header in code |
+| 7c | Motion (Framer) + GSAP in the founder UI, CINEMATIC look pixel-equal | React-TS UI | tech-proof: Framer Motion + GSAP PROVEN |
+| 7d | Three.js WebGPU renderer (WebGL2 fallback kept) | React-TS UI | tech-proof: WebGPU PROVEN, FPS budget |
+| 7e | MoQ-F: own MoQ relay (staging), `moq@1` in the one WASM kernel, Live Pulse behind a flag (one-way live; WebRTC stays for calls). Then awam MQ0-MQ4 | Rust + WASM kernel + UI | tech-proof: MoQ PROVEN; founder accepts the IETF-draft risk in writing first |
+| 8 | Decide (one button), Live Pulse, S4 push notifications | Rust + SQL + UI | |
+| 9-13 | Finance, People, Mail + Calendar (Mail Desk last), Systems, Control | Rust + SQL + UI | |
+| 14 | Cutover: old Lovable founder routes + Bun-only endpoints removed after Rust == Bun | Rust | |
+| 15 | Docs + Sheets (WOPI) | engine chosen after a licence read | |
+| 16 | Founder AI (Rule 71: awam gets none) | founder only | |
