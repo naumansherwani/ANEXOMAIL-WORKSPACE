@@ -219,3 +219,5 @@ S1b Rust + UI pushed, NOT yet installed. After founder-install.sh: Appearance ta
 - 1 Nov 12:20 S1c written, install pending: first `sql-run.sh E115_founder_settings_s1c CHECK_E115`, then founder-install.sh.
 
 - 1 Nov 12:40 S1c GREEN on server (CHECK_E115 8/8, E65 ok, founder-install OK) + live Chrome write test OK. S1d WRITTEN: E116 drift value rule + CHECK_E116, schedule form widened, all 22 labels. Install pending (sql-run E116, founder-install).
+
+- 1 Nov 12:30 E116 failed on server (replay check dirty: raw delete in selftests vs real stored values). Fixed in the same file (door-based reset + patched E113 selftest inside E116). LESSON: every selftest must run on a populated account, never assume an empty founder_settings.

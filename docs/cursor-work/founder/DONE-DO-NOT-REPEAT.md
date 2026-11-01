@@ -664,3 +664,5 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - 1 Nov 12:20 S1c WRITTEN (not yet on server): E115_founder_settings_s1c.sql (8 keys, registry 14->22, selftest + selftest2, E114 fixed-count selftests replaced) + CHECK_E115 (8/8 local) + CHECK_E114 relaxed (13); Rust 117 tests (REGISTRY 22, SCHEDULABLE 18); UI Personal Sending + Workspace/Notifications/Privacy tabs live (390/1440 no hscroll). Awam re-read live in Chrome 12:05: list unchanged. Honest: effects of these keys belong to steps 7/8/11 and each Explain says so; Drift baseline for them is NOT in S1c.
 
 - 1 Nov 12:40 S1c GREEN on server (CHECK_E115 8/8, E65 ok, founder-install OK) + live Chrome write test OK. S1d WRITTEN: E116 drift value rule + CHECK_E116, schedule form widened, all 22 labels. Install pending (sql-run E116, founder-install).
+
+- 1 Nov 12:30 E116 failed on server (replay check dirty: raw delete in selftests vs real stored values). Fixed in the same file (door-based reset + patched E113 selftest inside E116). LESSON: every selftest must run on a populated account, never assume an empty founder_settings.

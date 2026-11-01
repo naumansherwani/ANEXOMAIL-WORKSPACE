@@ -10,7 +10,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update (1 Nov 12:40): S1c (E115 + Rust 117 + SPA) server par GREEN, Chrome mein live real write test OK (Block tracking pixels). S1d likha: E116 Drift value rule (5 baseline rows) + CHECK_E116 + schedule form sab 14 schedulable keys + sab 22 keys ke labels; server par install baqi (sql-run E116 phir founder-install). Apple/Vercel claim nahi.
+Aakhri update (1 Nov 12:30): S1c server par GREEN + live Chrome write test OK. E116 (S1d) pehli server run FAIL "replay check dirty": selftests ne raw delete kiya jabke account mein asli values thi — E116 file theek ki (door-based reset, E113 selftest registry-wide reset ke saath E116 ke andar), local par populated account par sab green. Server par E116 dobara chalana baqi (phir founder-install). LESSON: selftest hamesha populated account par chalao.
 
 Pichla: **21 Oct 2026, 05:50 PKT — B2 GREEN (server par chala): Rust `rust-passkey-install.sh` proof SAB PASS (14 checks: tamper/replay/clone/ghalat origin/recovery/filter-injection) + Web pull (build OK, server==repo 486/487, sirf routeTree.gen.ts generated diff). Backup /opt/anexomail-rust/src/main.rs.bak.1792541331.**
 Passkey/recovery LOGIN ab Rust PRIMARY (Bun fallback). Dobara mat likho: passkey_core.rs, passkey_glue.rs, passkey_patch.py, passkey-proof.py, rust-passkey-install.sh, src/lib/passkey.ts Rust-first.

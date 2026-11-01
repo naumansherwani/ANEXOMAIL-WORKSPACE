@@ -311,3 +311,5 @@ Expected: 116 tests OK, build OK, saboot OK. Then hard-reload the founder site -
 ### S1d (E116 + SPA) — two commands, in this order
 1. SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E116_founder_drift_value_rule CHECK_E116 2>&1 | tail -20`
 2. SPA: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+
+_(12:30 note: E116 was corrected after its first server run failed; run the S1d SQL command above again — the file on origin/main is the fixed one.)_
