@@ -322,3 +322,6 @@ _(12:30 note: E116 was corrected after its first server run failed; run the S1d 
 
 ### Step 7 phase 7-1b (E118, SQL only) — one command
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E118_founder_chairman_protocol CHECK_E118 2>&1 | tail -20`
+
+### Landing footer 'Built with' (Website / React, awam) — one command
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`

@@ -2088,3 +2088,6 @@ S1b RUST + UI WRITTEN (tarteeb se next, 1 Nov ~12:00): Rust = server/founder/src
 
 - 13:23 (founder, verbatim): "tarteeb blueprint ke hisab se kya hai. dusra repo se dekh ke landng page pe footer pe sab jaga technology kaun si use kerte hain likho."
   STATUS 13:40: founder said "duscuss kero" (13:24) -> footer code REVERTED (nothing built, nothing committed); discussion only: order from FOUNDER-MASTER-ORDER-28OCT.md + footer 'Built with' proposal awaiting his word (Rule 63).
+
+- 13:30 (founder, verbatim): "technology builtin Browser WASM KERNEL in rust, tokio aysnc and webtransport yeh baki jo tumhay better lagay woh likho. ... Live: WebTransport/QUIC, HTTPS/3 yeh sab ek line main likho sab jaga aur live dekho ke kaisa lagta hai dekhne with MoQ bhi add kero english main likho sab kuch aur yeh tarteeb se likho."
+  STATUS 13:45: 1 Nov 13:45 LANDING FOOTER 'Built with' strip written (src/components/site/SiteFooter.tsx, React, awam site, founder order 13:30): browser Rust WASM kernel, Rust+Tokio+axum, Live = WebTransport · QUIC · HTTP/3 (one line) + MoQ shown as PLANNED (IETF draft, not running), website stack, data, mail transport, edge (Nitro on Bun stated honestly), Polar. Founder stack NOT published. Seen live locally 1440 + 390 (no hscroll). Server: pull.sh pending.

@@ -36,6 +36,19 @@ const groups = [
   },
 ];
 
+// Only technology that is really in the code or on the server (package.json, web-wasm/, docs/cursor-work/TECH-MAP.md section 0d).
+// MoQ is shown as "planned" on purpose: it is an IETF draft and is not running. Never add a name here that is not running or not clearly marked planned.
+const stack = [
+  { where: "Built into your browser", what: "A Rust WebAssembly kernel — one kernel for the whole site" },
+  { where: "Async engine", what: "Rust · Tokio async runtime · axum" },
+  { where: "Live", what: "WebTransport · QUIC · HTTP/3 — with an honest HTTP fallback when a network blocks QUIC · MoQ (Media over QUIC) planned: IETF draft, not running yet" },
+  { where: "Website", what: "React 19 · TypeScript · TanStack Start & Router · Vite 8 · Tailwind CSS 4 · Radix / shadcn · Framer Motion · GSAP · Three.js (3D, loaded only when needed)" },
+  { where: "Data & files", what: "PostgreSQL with row-level security · Hetzner Storage Box for attachments · ClamAV virus scanning" },
+  { where: "Mail transport", what: "Postfix · Dovecot · OpenDKIM" },
+  { where: "Edge & pages", what: "Caddy (HTTP/3, automatic TLS) · Nitro on Bun renders the pages" },
+  { where: "Payments", what: "Polar" },
+];
+
 export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-card/50">
@@ -91,6 +104,22 @@ export function SiteFooter() {
             </ul>
           </div>
         ))}
+      </div>
+
+      <div className="border-t border-border">
+        <div className="ax-container py-8">
+          <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+            Built with
+          </h3>
+          <dl className="mt-4 grid gap-x-8 gap-y-2 text-xs text-muted-foreground md:grid-cols-[11rem_1fr]">
+            {stack.map((row) => (
+              <div key={row.where} className="contents">
+                <dt className="font-medium text-foreground/80">{row.where}</dt>
+                <dd>{row.what}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </div>
 
       <div className="border-t border-border">
