@@ -648,3 +648,5 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - 1 Nov 09:32 PKT: 5K kernel merkle@1 (0.6.0) built in repo; Ledger seal browser proof; awam pin rewritten (site stays 0.5.0 until awam pull). Server: founder-install.sh pending.
 - 1 Nov 09:35 PKT: STEP 5 + 5K SERVER PAR GREEN + Chrome ('5 of 5 newest entries proven in this browser', 18 entries). Chart 'Founder purane 77' added. NEXT step 6 S2 (design note first).
 - 1 Nov 09:50 PKT: N menu: Audit ledger hata, email poora (founder-install.sh pending); research DBSC/PQ-TLS/WebTransport -> ADOPTION doc + master order 7b; 'ADMIN = awam ke maslon ka ghar' locked in master order.
+
+- 1 Nov 11:15 — awam Settings Center read live, all 7 tabs + Explain/Blast radius/History panels: docs/claude/AWAM-SETTINGS-CENTER-LIVE-LIST-01NOV.md. Do NOT re-read; use that file. E114 SQL drafted (711 lines, untested, needs >=800 + CHECK_E114).

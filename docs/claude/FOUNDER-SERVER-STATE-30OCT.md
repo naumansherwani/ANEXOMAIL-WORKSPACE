@@ -199,3 +199,6 @@ STEP 6 SERVER GREEN: founder-install 105 tests OK, build OK, saboot 4/4 (Time ma
 
 ## UPDATE 1 Nov 11:05 PKT
 STEP 6 GREEN: server + founder Chrome (Time machine 18 versions with proven ticks, Drift 92/100, scheduled form live). Next S1b (E114).
+
+## UPDATE 1 Nov 11:15 PKT
+No server change. Awam settings list written to repo (docs only). E114 SQL drafted, not yet run anywhere.
