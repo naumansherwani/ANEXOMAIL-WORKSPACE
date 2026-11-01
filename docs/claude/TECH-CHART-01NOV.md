@@ -18,3 +18,32 @@
 Honest answer to "tumhay ati hai kya": yes, Rust + tokio + wtransport + quinn are written here already (awam `wtrpc`). The website's WebTransport was NOT rewritten; it is old (0.1.14) and works.
 
 FOUNDER DECISION 1 Nov 10:04: MoQ is built by us (own Rust relay on wtransport), no Cloudflare relay/API. Service = systemd, never pm2/Bun. Not started; comes after ANEXOChat core.
+
+---
+
+## TECHNOLOGY MATCH — 2 Nov 2026 05:10 PKT (founder 04:57 order: "technology match ker ke dai"). Locked rule vs repo (tech-proof.py) vs server/Chrome proof. Nothing here is assumed.
+
+| Locked technology (rule) | In the repo code (tech-proof.py) | Proven on the server / Chrome (founder paste or my Chrome look) | Status |
+|---|---|---|---|
+| Rust axum 0.8 + tokio (Rule 61) | PROVEN founder Cargo.toml | founder-install 134 tests, service zinda (2 Nov 04:27) | GREEN |
+| Ed25519 server->browser, HMAC+HKDF browser->server (FC15/FC38) | PROVEN sign.rs | "Ed25519 signing ON kid s1 ... write-request signature ENFORCED" (install output) | GREEN |
+| SHA-256 audit chain + Merkle RFC 6962 (E107) | PROVEN ledger.rs | Chrome: "Chain intact, entry 30", seal #1 | GREEN |
+| ONE Rust WASM kernel (Rule 52), Worker, pinned | PROVEN web-wasm, kernel.worker.ts | Chrome: awam serves 0.7.0, SHA-256 == pin | GREEN |
+| Kernel merkle@1 (inclusion proofs) | PROVEN | Chrome 1 Nov "5 of 5 proven in this browser" | GREEN |
+| Kernel merkle@2 (RFC 9162 consistency) | PROVEN lib.rs | server: Rust+SQL green; Chrome: needs a 2nd seal + the SPA with the /audit/proof fix | PARTIAL (not live-proven) |
+| React 19.2, Vite 8, TypeScript, TanStack Router, Tailwind 4.2, shadcn | PROVEN | T1 GREEN 425ec14; Chrome live | GREEN |
+| PostgreSQL + RLS, passkey SQL (E117/E118) | PROVEN | CHECK_E117/E118 OK, E65 sweep OK | GREEN |
+| TLS 1.3 AES-256-GCM terminator rustls (T256-1) | PROVEN tls256.rs | server 1 Nov 15:05 + E119 prober rows | GREEN (test port 8443; Chrome padlock K3 pending) |
+| X25519MLKEM768 post-quantum key exchange | n/a (Caddy) | openssl on both hosts 1 Nov 14:55 | GREEN |
+| Three.js (lazy) | PROVEN Scene3D.tsx | Chrome live | GREEN |
+| WebTransport / QUIC `wtransport` on founder | **MISSING** | awam has it (0.7.2), founder none | NOT IN CODE (K6 / 7a) |
+| Passkey `webauthn-rs` (Rust) | **MISSING** | SQL side only | NOT IN CODE (J3 / 7-2) |
+| Three.js WebGPU renderer | **MISSING** | - | NOT IN CODE (L2) |
+| Framer Motion, GSAP on founder | **MISSING** | awam has both | NOT IN CODE (L1) |
+| DBSC | **MISSING** | - | NOT IN CODE (K7 / 7b) |
+| MoQ | **MISSING** | footer claims it, nothing runs | NOT IN CODE (M) |
+| PQ mail content OpenPGP RFC 9980 | **MISSING** (a false PROVEN from a comment in tls256.rs was FIXED today: regex now needs a real function) | - | NOT IN CODE (Q4) |
+| Streaming attachment encryption, live-state encryption | **MISSING** | - | NOT IN CODE (Q5 / PQN) |
+| G5b signed checkpoints, G5c time anchors (no accounts) | **MISSING** (tech-proof rows added; the stale "G5c witnesses" row replaced by the G5-D wording) | - | NOT IN CODE (G5b-d) |
+
+MISSING somewhere: 13 (tech-proof.py). Mixed layers found: 0. Bun/Node on the founder server: 0. Second kernel: 0.

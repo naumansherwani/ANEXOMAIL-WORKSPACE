@@ -1030,7 +1030,7 @@ docs/cursor-work/sql/E107_founder_audit_merkle.sql 0fd28841f0b3b51f
 server/founder/src/ledger.rs 7b089b4c149de768
 server/rust/merkle_core.rs 10a8a9caa5aa4b73
 anexochat/docs/anexochat-blueprint-original.md a332abc47953ef05
-docs/claude/TECH-CHART-01NOV.md 7b30b47f9d2ce1f3
+docs/claude/TECH-CHART-01NOV.md 0087d99a38f74b23
 docs/claude/DONE-DO-NOT-REPEAT.md ea9f50c8dcdc292b
 docs/cursor-work/sql/CHECK_E113.sql ac2a10b397d6d386
 docs/cursor-work/sql/E113_founder_settings_timemachine.sql f685f2dd91178faf
@@ -1059,7 +1059,7 @@ docs/cursor-work/sql/CHECK_E117.sql 0d263a16ea6f5d5e
 docs/cursor-work/sql/E117_founder_passkey_stepup_recovery.sql 58a76f937ab0efef
 docs/cursor-work/sql/E118_founder_chairman_protocol.sql 47cc66be9f22ff9d
 docs/cursor-work/sql/CHECK_E118.sql aa4905210e39f655
-docs/cursor-work/server/tech-proof.py c2ec2fbf1119d948
+docs/cursor-work/server/tech-proof.py 892714d59b34a543
 server/founder/src/tls256.rs 08d73cd1dbabdfa3
 docs/cursor-work/server/founder-tls256.sh 2e64fb62a9625dfa
 docs/cursor-work/sql/E119_founder_tls_posture.sql b2a16c82148d3857

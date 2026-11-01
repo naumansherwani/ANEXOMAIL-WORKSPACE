@@ -51,11 +51,12 @@ T = [
  ("Post-quantum hybrid TLS check",   None,                                               None, "founder 7b (server check first)"),
  ("TLS 1.3 AES-256-GCM-only terminator (rustls)", ("server/founder/src/tls256.rs", r'TLS13_AES_256_GCM_SHA384'), ("server/rust", r'TLS13_AES_256_GCM_SHA384'), "founder T256-1 written; awam T256-2 (after founder proof + his written haan)"),
  ("TLS posture ledger (SQL, real handshakes)", ("docs/cursor-work/sql/E119_founder_tls_posture.sql", r'founder_tls_posture'), None, "-"),
- ("PQ mail-content encryption (OpenPGP RFC 9980: ML-KEM-768+X25519, ML-DSA-65+Ed25519)", ("server/founder/src", r'ml.?kem|ml.?dsa|9980'), ("server/rust", r'ml.?kem|ml.?dsa|9980'), "founder PQM (after 11) then awam PQM"),
+ ("PQ mail-content encryption (OpenPGP RFC 9980: ML-KEM-768+X25519, ML-DSA-65+Ed25519)", ("server/founder/src", r'fn\s+\w*(ml_kem|ml_dsa|pgp_seal)'), ("server/rust", r'fn\s+\w*(ml_kem|ml_dsa|pgp_seal)'), "founder PQM (after 11) then awam PQM"),
  ("Streaming attachment encryption (hybrid ML-KEM + chunked AEAD)", ("server/founder/src", r'chunked_aead|stream_seal'), ("server/rust", r'chunked_aead|stream_seal'), "PQN1-PQN2 (with PQM)"),
  ("Live state sync encrypted at app level (WebTransport)", ("server/founder/src", r'state_seal|live_seal'), ("server/rust", r'state_seal|live_seal'), "PQN3 (after 7a)"),
  ("Merkle CONSISTENCY proofs (RFC 9162) in the kernel", ("web-wasm/src", r'consistency_verify'), ("web-wasm/src", r'consistency_verify'), "G5a (kernel merkle@2; awam pin follows, A9)"),
- ("External witness cosignatures (C2SP tlog-cosignature, k-of-n)", ("server/founder/src", r'cosignature/v1|witness_cosign'), ("server/rust", r'cosignature/v1|witness_cosign'), "G5c (after founder decision G5-D)"),
+ ("Signed checkpoints (C2SP tlog-checkpoint, own audit-log key)", ("server/founder/src", r'tlog_checkpoint|signed_checkpoint'), ("server/rust", r'tlog_checkpoint|signed_checkpoint'), "G5b"),
+ ("External time anchors, NO accounts (OpenTimestamps + RFC 3161)", ("server/founder/src", r'opentimestamps|rfc3161|tsa_anchor'), ("server/rust", r'opentimestamps|rfc3161|tsa_anchor'), "G5c (founder decision G5-D 2 Nov: no signups; say 'time-anchored', never 'witnessed')"),
  ("MoQ (Media over QUIC)",           ("server/founder/src", r'moq'),                     ("server/rust", r'moq'), "founder MoQ-F (after 7a); awam MQ0-MQ4"),
 ]
 rows = []
