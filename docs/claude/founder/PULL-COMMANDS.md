@@ -240,3 +240,5 @@ Kitni baar: sql-run.sh sha ledger mein likhta hai, wahi file dobara nahi chalti;
 | 4 | AWAM Rust restart | `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health` — sirf jab #3 ne "build/restart" kaha |
 | 5 | AWAM web | `pull.sh` — **BUN BANNED (founder 1 Nov 08:42): founder ko yeh command KABHI nahi di jaye gi.** Awam site abhi isi lane par chal rahi hai, isliye file repo mein hai; usay Bun/Node se nikalna ek alag migration phase hai (founder ke order se, master order mein jagah milne par). Tab tak awam par koi badlav nahi |
 FOUNDER ke liye aaj sirf #1 aur #2. Step 5 (Merkle): SQL E107 DONE (green); Rust/kernel/UI phase = #2.
+
+## 1 Nov 08:55 PKT — step 5 Rust + UI (5R + 5a): Merkle core, 5 routes, auto-seal, Dashboard "Ledger seal" card. Pull: sirf founder-install.sh (same command). E107 SQL pehle se green.

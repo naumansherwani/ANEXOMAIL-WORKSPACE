@@ -70,6 +70,7 @@ pub fn start(sb: Sb) {
         let mut iv = tokio::time::interval(TICK_EVERY);
         iv.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
         let mut fails = 0u32;
+        let mut n_tick = 0u32;
         loop {
             iv.tick().await;
             let t0 = std::time::Instant::now();
@@ -82,6 +83,8 @@ pub fn start(sb: Sb) {
                 let (sb2, ok, ms) = (sb.clone(), t.ok, t0.elapsed().as_millis().min(600_000) as i64);
                 tokio::spawn(async move { let _ = sb2.rpc("founder_live_tick_report", json!({"p_ok": ok, "p_ms": ms})).await; });
             }
+            n_tick = n_tick.wrapping_add(1);
+            if n_tick % 12 == 0 { let sb3 = sb.clone(); tokio::spawn(async move { let _ = crate::ledger::auto_seal(&sb3).await; }); } // ~60 s: seal the audit ledger when the policy says it is due (E107)
             if let Ok(mut g) = hub.last.lock() { *g = Some(t.clone()); }
             let _ = hub.tx.send(t); // Err = nobody is listening: fine
         }

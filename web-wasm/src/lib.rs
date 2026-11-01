@@ -15,6 +15,7 @@ pub mod hash;
 pub mod intent;
 pub mod host;
 pub mod live;
+pub mod merkle;
 pub mod rank;
 pub mod rpc;
 pub mod sniff;

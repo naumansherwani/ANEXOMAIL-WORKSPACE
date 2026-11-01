@@ -18,6 +18,7 @@ export const ENDPOINTS: Ep[] = [
   { method: "GET", path: "/founder/v1/hostguard", what: "Founder only on the founder host", gate: "Signed", probe: true },
   { method: "GET", path: "/founder/v1/live", what: "Live company numbers in one answer", gate: "Signed", probe: true },
   { method: "GET", path: "/founder/v1/inbox", what: "Glitch and support reports", gate: "Signed", probe: true },
+  { method: "GET", path: "/founder/v1/audit/merkle", what: "Audit ledger seal (Merkle)", gate: "Signed", probe: true },
   { method: "GET", path: "/founder/v1/keys", what: "Public signing key", gate: "Public", probe: true },
   { method: "PUT", path: "/founder/v1/settings", what: "Save a setting", gate: "Signed write", probe: false },
   { method: "POST", path: "/founder/v1/action", what: "Request an action", gate: "Signed write, recorded in audit, runs from F8", probe: false },
@@ -77,7 +78,7 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
   const by = (p: string) => rows?.find((r) => r.ep.path === p && r.ep.method === "GET");
   const acts: Act[] = by("/founder/v1/actions")?.data?.actions || [], actsOk = !!by("/founder/v1/actions")?.ok;
   const d = by("/founder/v1/bridge")?.data ?? d0; // the freshest verified Bridge answer (refreshed on every live change)
-  const hg = by("/founder/v1/hostguard")?.data, ib = by("/founder/v1/inbox")?.data, lv = L.snapshot ?? by("/founder/v1/live")?.data, au = by("/founder/v1/audit")?.data, pol = by("/founder/v1/finance/polar")?.data ?? d?.polar, ds = deviceStatus();
+  const hg = by("/founder/v1/hostguard")?.data, ib = by("/founder/v1/inbox")?.data, mk = by("/founder/v1/audit/merkle")?.data, lv = L.snapshot ?? by("/founder/v1/live")?.data, au = by("/founder/v1/audit")?.data, pol = by("/founder/v1/finance/polar")?.data ?? d?.polar, ds = deviceStatus();
   const m = d?.money, v = d?.voice, hk = d?.polar_hook, subs = hk?.subscriptions, t = d?.trouble;
   const tot = t ? t.items.length : 0, bad = t ? t.items.filter((i: { state: string }) => i.state !== "ok").length : 0;
   const tone: State = !t ? "unknown" : bad ? "warn" : "ok";
@@ -92,6 +93,11 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
     { name: "Signed answers", state: ks === "verified" ? "ok" : ks === "failed" ? "fail" : "unknown", text: ks === "verified" ? "Checked in this browser" : ks === "failed" ? "An answer failed the check and was hidden" : "Waiting for the first answer" },
     { name: "Approved device", state: ds.mode === "device" ? "ok" : "warn", text: ds.mode === "device" ? ds.label || "This device" : "No device token" },
     { name: "Audit ledger", state: !au ? "fail" : !au.connected ? "unknown" : au.chain_ok ? "ok" : "fail", text: !au ? "Not answering" : !au.connected ? au.note || "Not connected" : au.chain_ok ? `Chain intact${au.head ? `, entry ${au.head.seq}` : ""}` : `Chain broken at ${au.first_bad_seq}`, to: "audit" },
+    { name: "Ledger seal", state: !mk ? "fail" : mk.connected === false ? "unknown" : mk.pulse?.level === "fail" ? "fail" : mk.pulse?.level === "warn" ? "warn" : "ok",
+      chip: mk?.pulse?.last_checkpoint ? `#${mk.pulse.last_checkpoint.id}` : undefined,
+      text: !mk ? "Not answering" : mk.connected === false ? mk.note || "Install the E107 SQL step" : mk.pulse?.last_checkpoint
+        ? `${mk.pulse.rows} entries, sealed up to entry ${mk.pulse.last_checkpoint.upto_seq} at ${fmtHM(mk.pulse.last_checkpoint.created_ms)}, ${mk.pulse.lag_rows} since`
+        : `${mk.pulse?.rows ?? 0} entries, the first seal comes at ${mk.pulse?.every_rows ?? "?"} new entries`, to: "audit" },
     { name: "Billing", state: !pol && !hk ? "fail" : pol?.connected ? (pol.stale ? "warn" : "ok") : subs?.connected ? "ok" : "unknown", text: pol?.connected ? `${pol.active_subscriptions ?? "?"} active subscriptions` : subs?.connected ? "Polar webhook live, API metrics not connected" : pol?.note || "Not connected", to: "finance" },
     { name: "Revenue records", state: !d ? "fail" : m?.connected ? "ok" : "unknown", text: !d ? "Not answering" : m?.connected ? `${m.active_accounts} active account${m.active_accounts === 1 ? "" : "s"}` : m?.note || "Not connected", to: "finance" },
     { name: "Customers", state: !d ? "fail" : v?.connected ? "ok" : "unknown", text: !d ? "Not answering" : v?.connected ? `${v.new_leads} new lead${v.new_leads === 1 ? "" : "s"}` : v?.note || "Not connected", to: "bridge" },

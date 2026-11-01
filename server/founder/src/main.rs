@@ -16,6 +16,7 @@ mod authcache;
 mod hostproof;
 mod live;
 mod inbox;
+mod ledger;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -320,6 +321,49 @@ async fn live_stream_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Re
     res
 }
 
+/// 5 (Audit ledger Merkle, E107): cheap pulse for the Dashboard gauge (counts + last checkpoint; the full chain is NOT re-hashed every 5 s).
+async fn merkle_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
+    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    let sb = st.sb.as_ref().unwrap();
+    let (p, rule) = tokio::join!(sb.rpc("founder_audit_merkle_pulse", json!({})), sb.rpc("founder_audit_merkle_rule", json!({})));
+    match p { Some(v) if v.is_object() => signed(&st, json!({"connected": true, "pulse": v, "rule": rule})), _ => signed(&st, ledger::missing()) }
+}
+/// Full check (re-hashes the chain and recent checkpoints): the Audit ledger page asks this, not the Dashboard.
+async fn merkle_stats_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
+    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    let sb = st.sb.as_ref().unwrap();
+    let (s, l) = tokio::join!(sb.rpc("founder_audit_merkle_stats", json!({})), sb.rpc("founder_audit_checkpoint_list", json!({"p_limit": 10})));
+    match s { Some(v) if v.is_object() => signed(&st, json!({"connected": true, "stats": v, "checkpoints": l})), _ => signed(&st, ledger::missing()) }
+}
+async fn merkle_proof_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
+    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    let q = match ledger::parse_proof(uri.query()) { Ok(q) => q, Err(e) => return (StatusCode::BAD_REQUEST, Json(json!({"error": e}))).into_response() };
+    let sb = st.sb.as_ref().unwrap();
+    match sb.rpc("founder_audit_merkle_proof", json!({"p_seq": q.seq, "p_upto": q.upto})).await { Some(v) if v.is_object() => signed(&st, v), _ => signed(&st, ledger::missing()) }
+}
+/// Rows + proofs from SQL, then Rust checks every proof itself (second witness) before the browser kernel does its own.
+async fn merkle_export_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
+    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    let q = match ledger::parse_range(uri.query()) { Ok(q) => q, Err(e) => return (StatusCode::BAD_REQUEST, Json(json!({"error": e}))).into_response() };
+    let sb = st.sb.as_ref().unwrap();
+    match sb.rpc("founder_audit_export", json!({"p_from": q.from, "p_to": q.to})).await {
+        Some(mut v) if v.is_object() => { let c = ledger::check_export(&v); v["rust_check"] = c; signed(&st, v) }
+        _ => signed(&st, ledger::missing()),
+    }
+}
+#[derive(serde::Deserialize, Default)]
+struct SealIn { reason: Option<String> }
+/// Founder presses "Seal now": a signed write (G2), audited inside SQL. Same checkpoint the automatic one makes.
+async fn merkle_seal_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Bytes) -> axum::response::Response {
+    let c = match authed_w(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
+    if let Err(r) = write_ok(&st, &h, "POST", "/founder/v1/audit/checkpoint", &body) { return r; }
+    let b: SealIn = if body.is_empty() { SealIn::default() } else { match serde_json::from_slice(&body) { Ok(b) => b, Err(_) => return (StatusCode::BAD_REQUEST, Json(json!({"error": "invalid body"}))).into_response() } };
+    let reason = b.reason.map(|r| r.trim().to_string()).filter(|r| !r.is_empty()).unwrap_or_else(|| "manual checkpoint (founder pressed Seal now)".into());
+    if reason.chars().count() < 8 || reason.chars().count() > 300 || reason.chars().any(|c| c.is_control()) { return (StatusCode::BAD_REQUEST, Json(json!({"error": "reason must be 8-300 characters"}))).into_response(); }
+    let sb = st.sb.as_ref().unwrap();
+    match sb.rpc("founder_audit_checkpoint", json!({"p_actor": c.sub, "p_reason": reason})).await { Some(v) if v.is_object() => signed(&st, v), _ => signed(&st, ledger::missing()) }
+}
+
 /// 4d (Founder Inbox, E112): ONE signed answer = stats + SLA watch + week + channel evidence + chain health. Read only; missing SQL says so.
 async fn inbox_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
     if let Err(code) = authed(&st, &h).await { return code.into_response(); }
@@ -396,6 +440,11 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/hostguard", get(hostguard_ep))
         .route("/founder/v1/live", get(live_ep))
         .route("/founder/v1/live/stream", get(live_stream_ep))
+        .route("/founder/v1/audit/merkle", get(merkle_ep))
+        .route("/founder/v1/audit/merkle/stats", get(merkle_stats_ep))
+        .route("/founder/v1/audit/proof", get(merkle_proof_ep))
+        .route("/founder/v1/audit/export", get(merkle_export_ep))
+        .route("/founder/v1/audit/checkpoint", axum::routing::post(merkle_seal_ep))
         .route("/founder/v1/inbox", get(inbox_ep))
         .route("/founder/v1/inbox/list", get(inbox_list_ep))
         .route("/founder/v1/inbox/group", get(inbox_group_ep))
@@ -511,7 +560,7 @@ mod tests {
     }
     #[tokio::test]
     async fn founder_routes_need_bearer() {
-        for path in ["/founder/v1/me", "/founder/v1/bridge", "/founder/v1/settings", "/founder/v1/finance/polar", "/founder/v1/actions", "/founder/v1/audit", "/founder/v1/hostguard", "/founder/v1/live", "/founder/v1/live/stream", "/founder/v1/inbox", "/founder/v1/inbox/list", "/founder/v1/inbox/group"] {
+        for path in ["/founder/v1/me", "/founder/v1/bridge", "/founder/v1/settings", "/founder/v1/finance/polar", "/founder/v1/actions", "/founder/v1/audit", "/founder/v1/hostguard", "/founder/v1/live", "/founder/v1/live/stream", "/founder/v1/inbox", "/founder/v1/inbox/list", "/founder/v1/inbox/group", "/founder/v1/audit/merkle", "/founder/v1/audit/merkle/stats", "/founder/v1/audit/proof?seq=1", "/founder/v1/audit/export?from=1&to=2"] {
             let r = app(st_with_sb()).oneshot(Request::get(path).body(Body::empty()).unwrap()).await.unwrap();
             assert_eq!(r.status(), 401, "{path}");
             let r = app(st_with_sb()).oneshot(Request::get(path).header("authorization", "Bearer a.b.c").body(Body::empty()).unwrap()).await.unwrap();
