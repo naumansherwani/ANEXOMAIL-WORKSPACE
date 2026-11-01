@@ -291,5 +291,21 @@ Standard: OpenPGP post-quantum = **RFC 9980** (Proposed Standard, extends RFC 95
 | PQM4 | Mail Desk / compose UI: encrypt to a recipient who has a key, honest "not encrypted" when not, key fingerprints shown | React-TS | founder sends himself an encrypted mail |
 | PQM5 | Interop with Proton/OpenPGP v6 recipients; encrypted forwarding behaviour documented (Proton pauses it) | Rust + docs | a real mail to a Proton address |
 Order: founder lane after step 11 (his own mail), awam lane after PQM5 is proven on him.
+
+### PQN — post-quantum NETWORK + live-data protection (founder 1 Nov 15:11; both lanes, founder first)
+Founder pasted a comparison saying Proton protects only static mail content and that our network is further ahead. **Honest ledger (the website says only what is PROVEN):**
+- **True today:** Caddy negotiates X25519MLKEM768 (post-quantum key exchange) on BOTH hosts, proven with `openssl s_client` on the server (1 Nov 14:28). The founder host also has a TLS 1.3 AES-256-GCM-only terminator on test port 8443 (T256-1, server GREEN 15:03).
+- **Not true today (do NOT say it on the site):** (a) post-quantum is only the TLS key exchange between browser and server; it is standard TLS, not a private "quantum tunnel", and other providers can have it too; (b) there is NO application-layer encryption of live metadata, user actions, state sync or attachment streams yet; (c) no runtime "binary state check of the hardware boundary" exists; the real hardware-key control is the passkey AAGUID allow-list in E118 (SQL, built, not yet enforced in Rust); (d) the claim that Proton's routing is "legacy" is not something we have evidence for, and Proton shipped OpenPGP post-quantum mail content on 6 May 2026 (RFC 9980). We do not write claims about other companies on our site.
+- **What can honestly put us ahead (all still to build, each needs proof before any website word):**
+
+| # | PQN step | Layer | Proof |
+|---|---|---|---|
+| PQN0 | Research spike: what "encrypted in flight at app level" means for live state (key schedule, who holds keys, what the server must still see for spam/search), choose crates after a licence + audit read | doc only | founder reads it |
+| PQN1 | Streaming attachments: chunked AEAD (AES-256-GCM, per-chunk nonce, authenticated chunk order), key wrapped with ML-KEM-768+X25519 hybrid, resumable; reuse the PQM key registry | Rust + SQL | RFC/KAT vectors + a large-file round trip with a tampered chunk rejected |
+| PQN2 | Same code in the one WASM kernel (`stream@1`), keys never leave the device (Rule 52) | WASM kernel + React-TS | kernel tests + Chrome upload/download |
+| PQN3 | Live state sync over WebTransport (needs 7a): per-session hybrid key, encrypted state deltas and user-action events, replay protection | Rust (wtransport) + kernel | two-browser live test, a replayed frame is refused |
+| PQN4 | Runtime transport telemetry (signed, no mail content): handshake group, cipher, QUIC/HTTP fallback shown honestly in the Command Center; hardware-key enforcement from E118 in Rust (7-2) | SQL + Rust + React-TS | founder sees real rows, no mock |
+| PQN5 | Third-party read of the design (independent review) before any "ahead of X" wording; website text only for rows tech-proof shows PROVEN | review + docs | written review |
+Order: PQN0 now (doc), PQN1-PQN2 with PQM (after step 11), PQN3 after 7a, PQN4 with 7-2/7-4; awam lane after the founder proof of each (A-series). tech-proof.py tracks PQN1/PQN3 rows.
 ### Website rule (founder: "seedha technology codes se likh ke website pe dun ga")
 A technology name goes on the public site ONLY when `python3 docs/cursor-work/server/tech-proof.py` shows it PROVEN for the lane the page describes and its server check is green. Until then the public footer lists only what runs today. `tech-proof.py` now has the PQ-mail row (MISSING in both lanes).
