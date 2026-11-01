@@ -1233,3 +1233,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 
 - 1 Nov 05:10 PKT: founder greeting stays v2 (no centring). Bridge Engine design note exists: docs/claude/BRIDGE-EMAIL-CHAT-ENGINE-DESIGN-01NOV.md.
 - 1 Nov 05:25 PKT: founder top-bar title removed, date under clock (founder-web UI). See docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md.
+- 1 Nov 05:30 PKT: greeting 'g' descender clip fixed (dx.css .greet .hello line-height 1.1 + padding-bottom .2em). Any gradient text with background-clip:text needs a box tall enough for descenders; do not shrink line-height again.

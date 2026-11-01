@@ -1837,3 +1837,7 @@ Done 23:05: FOUNDER-SERVER-STATE-30OCT.md (installed vs repo-only), greeting v3 
 "yeh image dekho do jaga pe command center hai is main se sab se top pe remove kero aur date bola tha ke time ke saath kero jaise pehle tha baki sab theek hai"
 -> Top bar title "Founder Command Center" removed (eyebrow above the greeting stays). Date moved under the clock (SUNDAY 1 NOVEMBER, then KARACHI GMT+5). Greeting block stays v2, left aligned, pill unchanged.
 "yeh sab chat context update kero verna compact chat aye ... tarteeb codes hamesha update kero" -> context/ledgers updated every turn.
+
+## 1 Nov 05:20 PKT (verbatim)
+"live chorme man dekho good morning ka g cut kerta hai live dekhoo sab kuch tum"
+-> Seen live in Chrome: the descender of the g in "morning" was cut flat (background-clip:text paints only inside the box, line-height 1.02). Fixed in dx.css (.greet .hello line-height 1.1 + bottom padding .2em). Sandbox screenshot shows full g. Needs founder-install.

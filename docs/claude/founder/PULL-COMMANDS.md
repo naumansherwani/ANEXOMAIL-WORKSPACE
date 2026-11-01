@@ -188,3 +188,4 @@ founder-install.sh: `git -C /opt/anexomail-web fetch -q origin main && bash <(gi
 ## 1 Nov 05:10 PKT - greeting: NOTHING to pull (v3 reverted to v2, server already has v2). The 23:05 greeting-v3 install above is cancelled. Pending pulls are only the L5 v2 sequence (22:58 section).
 
 ## 1 Nov 05:25 PKT - UI only: founder-install.sh (same command as above) = top bar title removed, date under clock. L5 v2 steps 1,3 and 4 DONE by founder; only awam pull.sh then hostguard enforce remain.
+- 1 Nov 05:30: install founder-install.sh once = top bar title removed + date under clock + g fix.
