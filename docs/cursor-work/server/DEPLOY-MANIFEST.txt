@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 22a3a83922b50bea
+docs/cursor-work/founder/founder-commands.md 482729bc6618ffff
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md dfa9c63152603a02
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 908667fd9b339fcf
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0c1a6a8b9e10e904
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md a70e5d98e23828f5
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 3c1e97663a13bf07
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -942,7 +942,7 @@ docs/claude/FOUNDER-SETTINGS-CENTER-PORT-28OCT.md fe791aed4ae0e57b
 docs/cursor-work/sql/E108_founder_settings.sql f4a698f2b0ca8a75
 docs/cursor-work/sql/CHECK_E108.sql b9dd58efb9371c43
 server/founder/src/settings.rs bd18acf48b386d3b
-docs/claude/FOUNDER-MASTER-ORDER-28OCT.md 06b186bb70c48876
+docs/claude/FOUNDER-MASTER-ORDER-28OCT.md 2e4a5f51b1fca337
 docs/claude/FOUNDER-UI-DESIGN-28OCT.md 186b7b149c97eef2
 founder-web/src/ui.css ed42a14c99422c99
 founder-web/src/fonts/Inter-Bold.woff2 7a2cfbc25078d618
@@ -1017,7 +1017,7 @@ docs/cursor-work/sql/E111_founder_channels_telemetry.sql 22c2b268cfcf41c4
 docs/cursor-work/sql/CHECK_E111.sql efefebfe1d6e27b0
 server/founder/src/live.rs 3baedb139c281088
 server/founder/tests/e2e_live_stream.py 4b71a3ec7c398725
-docs/claude/FOUNDER-SERVER-STATE-30OCT.md 4e6fe62ff77095ce
+docs/claude/FOUNDER-SERVER-STATE-30OCT.md f723446803fa7d1b
 docs/claude/FOUNDER-CHANNELS-CEO-LIST-01NOV.md d63b64c03c5df84d
 docs/claude/FOUNDER-MASTER-AUDIT-01NOV.md 1a252a64bfae2084
 docs/cursor-work/sql/E112_founder_inbox.sql 466f73b3fbcfc8ae
@@ -1038,6 +1038,7 @@ founder-web/dist/assets/index-CJJJ97x_.js 3338f757ee64e22f
 founder-web/dist/assets/index-CiFGj_Kc.css 7eee8adcb1016abb
 anexochat/docs/anexochat-blueprint-original.md a332abc47953ef05
 docs/claude/TECH-CHART-01NOV.md 7b30b47f9d2ce1f3
-docs/claude/DONE-DO-NOT-REPEAT.md b5941e603294e884
+docs/claude/DONE-DO-NOT-REPEAT.md d7671914865b48d0
 docs/cursor-work/sql/CHECK_E113.sql 36c647dd90f3031e
 docs/cursor-work/sql/E113_founder_settings_timemachine.sql 1992379001ec7de9
+docs/claude/FOUNDER-SETTINGS-CENTER-DECISION-01NOV.md 9a6ee9bb0a914938

@@ -178,3 +178,6 @@ N menu (Audit ledger removed, 348px, full email) installed on server AND verifie
 
 ## UPDATE 1 Nov 10:30 PKT
 Step 6 SQL ready (E113, local 14/14). NOT yet run on the server. Founder runs the sql-run.sh command in PULL-COMMANDS.md (E113 section). After green: Rust `settings_s2.rs` + UI (Time machine, Drift & schedule), then Chrome check.
+
+## UPDATE 1 Nov 10:20 PKT
+Settings Center decision doc added (7 awam tabs mapped, S1b/E114 added after step 6). Server action pending is still only E113 (sql-run command in PULL-COMMANDS.md).

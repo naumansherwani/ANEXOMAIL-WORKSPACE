@@ -1278,3 +1278,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 1 Nov 10:00: N menu GREEN in Chrome. Tech chart = docs/claude/TECH-CHART-01NOV.md (do not rewrite). ANEXOChat tech block already at top of original blueprint (do not re-add).
 
 - 1 Nov 10:30: E113 (step 6 SQL) written + local 14/14. Do not rewrite; server run pending. MoQ = own relay, no Cloudflare.
+
+- 1 Nov 10:20: Settings Center decision written (FOUNDER-SETTINGS-CENTER-DECISION-01NOV.md). Do not re-decide; build per phases (S2 -> S1b/E114 -> S3 -> S4).

@@ -81,3 +81,7 @@ Bridge vs Dashboard (which tile lives where, CEO view): docs/claude/FOUNDER-BRID
 
 ## MoQ = OUR OWN relay (founder 1 Nov 10:04: "i hate cloudflare, hum MoQ khud karay gay")
 No Cloudflare relay or API anywhere in ANEXOChat. MoQ, when its turn comes (after ANEXOChat core, one pinned draft: `draft-ietf-moq-transport-22` as of 1 Oct 2026, no RFC yet), is a Rust relay we write and run ourselves on `wtransport`/QUIC, systemd service, no pm2, no Bun. Until then nothing is installed for MoQ and nothing is claimed. Interop with other relays is not a goal; if drafts change we change our one pin.
+
+
+## Settings Center = awam ki tarteeb (founder 1 Nov 10:13) — locked
+Tab order: Personal, Workspace, Appearance, Notifications, Privacy, Time machine, Drift & schedule (+AI in step 12). Full decision, keys and phases: `docs/claude/FOUNDER-SETTINGS-CENTER-DECISION-01NOV.md`. New: **S1b** (Appearance extension, E114) right after step 6 S2. No other step moves.
