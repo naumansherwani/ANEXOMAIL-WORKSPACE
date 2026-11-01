@@ -356,3 +356,8 @@ _(12:30 note: E116 was corrected after its first server run failed; run the S1d 
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -25`
 **3 - Chrome:** Ctrl+Shift+R. On the first visit after this the gauge pins the seal; after the next automatic seal (every 50 entries) it must say "the kernel proved the ledger up to entry N extends it unchanged (RFC 9162)".
 Note: the awam site keeps serving kernel 0.6.0 until its own pull (Rule 52 pin follows, ONE-ORDER A9).
+
+## 2 Nov 04:20 - FINAL order for G5a (review fixes included). G4 (E120) is already GREEN on the server (CHECK 4/4, 04:00). ONE command at a time:
+**1 - SQL E121:** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E121_founder_audit_consistency CHECK_E121 2>&1 | tail -20`  -> 3 rows OK
+**2 - Rust + SPA + kernel 0.7.0 (134 tests):** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -25`  -> "134 passed", "OK - founder service zinda"
+**3 - awam (he runs it himself; brings kernel 0.7.0 + the pin):** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
