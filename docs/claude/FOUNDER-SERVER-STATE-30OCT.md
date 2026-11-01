@@ -273,3 +273,5 @@ S1b Rust + UI pushed, NOT yet installed. After founder-install.sh: Appearance ta
 - 1 Nov 15:25 founder 15:17: 'numbering kero abc ke naam se, green ke samne green'; and 'HAAN HAI' for awam T256-2. DONE: docs/claude/BLUEPRINT-ABC-01NOV.md (letters A-V founder + W awam, old # in brackets). T256-2 (awam AES-256) = APPROVED in writing, builds as K5/W3 AFTER K3 (Chrome padlock on :8443) is green (one phase at a time).
 
 - 1 Nov 15:30 founder 15:21: B 'built; status old' unclear -> B is GREEN (E108 CHECK 6 OK on server + founder-install, Settings in his Chrome); BLUEPRINT-ABC rule 0 added: strict LETTER ORDER, next = first non-GREEN (C2 parked, E lockfile/L5, G4, I2, then J3).
+
+- 1 Nov 15:35 founder 15:22: the C2 host-guard PARKED rule must also be in the awam blueprint. DONE: ONE-ORDER row A8 + BLUEPRINT-ABC W5 + C-row cross reference.

@@ -8,7 +8,7 @@ One letter per step, in build order. **GREEN** only where the proof exists (serv
 |---|---|---|---|
 | **A** | Device approval + Ed25519 request signatures | [1] | **GREEN** (Chrome) |
 | **B** | Settings S1 (photo, name, adaptive city, graphics, sidebar) | [2] | **GREEN** (E108 CHECK 6 OK on the server + founder-install green, context lines 1903/1920; Settings page lives in his Chrome and H runs on it). The master-order row text was stale |
-| **C** | Server leftovers: C1 Polar Metrics token **GREEN** · C2 awam host guard (L5) PARKED to the awam migration | [3] | C1 GREEN, C2 parked |
+| **C** | Server leftovers: C1 Polar Metrics token **GREEN** · C2 awam host guard (L5) PARKED to the awam migration (same rule written on the awam side as W5 / A8) | [3] | C1 GREEN, C2 parked |
 | **D** | T1 UI stack: TypeScript, TanStack Router, Tailwind 4.2, shadcn | [3a] | **GREEN** (425ec14) |
 | **E** | Loophole fixes L1-L12 | [3b] | **GREEN** except L5 (parked) and lockfile (open, step 4e) |
 | **F** | WASM kernel verify in the browser (Rust kernel, Worker, pinned .wasm) | [4] | **GREEN** (Chrome) |
@@ -36,6 +36,7 @@ One letter per step, in build order. **GREEN** only where the proof exists (serv
 | **W1** | Landing footer "Built with" (founder's wording) | in repo; `pull.sh` ran OK 15:02; Chrome look pending |
 | **W2** | Sync 3 files (CommandPalette, dashboard.ts, admin.addresses) via DEPLOY-MANIFEST | in repo (1705a04); next `pull.sh` pending |
 | **W3** | = K5 T256-2 awam AES-256 (approved, after K3) | approved, pending |
+| **W5** | **Host guard (= founder C2 / L5)**: awam and founder hosts never serve each other; probe -> enforce. **RULE (founder 1 Nov 06:07, repeated 15:22): PARKED, runs together with the awam migration (A2), awam login is in the old Brain.** Not skipped | PARKED (founder decision), ONE-ORDER row A8 |
 | **W4** | Catch-up A1-A7: Bun-free pages, webauthn-rs, DBSC, WebGPU, MoQ (MQ0-MQ4), PQM, PQN | after each founder letter turns GREEN |
 
 ## Rules
