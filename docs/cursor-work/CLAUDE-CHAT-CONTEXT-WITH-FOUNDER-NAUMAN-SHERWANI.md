@@ -10,7 +10,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: 1 Nov 08:30 PKT — 4b-3 + 4b-4 code written (E111 SQL 801 lines, Rust telemetry, SPA cards); founder ko sql-run E111 phir founder-install chalana hai, phir Chrome proof. Details: docs/claude/FOUNDER-SERVER-STATE-30OCT.md (UPDATE 1 Nov 08:30).
+Aakhri update: 1 Nov 07:05 PKT — 4b-3 + 4b-4 SERVER PAR INSTALLED aur Chrome mein GREEN (Live chip, last check har 5 s, Channels + Stream health asli). Ab koi pull pending nahi. Agla: step 5 F2c Merkle (founder ki haan par, design note pehle). Rule-70 table mein "repo only" nahi, "server par installed" likho. Details: FOUNDER-SERVER-STATE-30OCT.md (UPDATE 1 Nov 07:05).
 
 Pichla: **21 Oct 2026, 05:50 PKT — B2 GREEN (server par chala): Rust `rust-passkey-install.sh` proof SAB PASS (14 checks: tamper/replay/clone/ghalat origin/recovery/filter-injection) + Web pull (build OK, server==repo 486/487, sirf routeTree.gen.ts generated diff). Backup /opt/anexomail-rust/src/main.rs.bak.1792541331.**
 Passkey/recovery LOGIN ab Rust PRIMARY (Bun fallback). Dobara mat likho: passkey_core.rs, passkey_glue.rs, passkey_patch.py, passkey-proof.py, rust-passkey-install.sh, src/lib/passkey.ts Rust-first.

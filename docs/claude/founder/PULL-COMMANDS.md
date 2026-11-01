@@ -204,3 +204,5 @@ founder-install.sh: `git -C /opt/anexomail-web fetch -q origin main && bash <(gi
 1) SQL (E111 + CHECK): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E111_founder_channels_telemetry CHECK_E111 2>&1 | tail -25`  (9 ok = t)
 2) Rust + SPA: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh)`  (4b-3 UI + 4b-4 Rust/UI)
 Rollback: env FOUNDER_TELEMETRY=off (telemetry writes band; registry + snapshot_v2 chalte rehte hain).
+
+## 1 Nov 07:05 PKT — 4b-3 + 4b-4: SERVER PAR INSTALLED + Chrome GREEN. Pull: koi pending nahi. Agla pull step 5 ke baad.
