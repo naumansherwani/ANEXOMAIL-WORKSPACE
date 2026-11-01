@@ -42,6 +42,18 @@ pub fn parse_seal(q: Option<&str>) -> Result<i64, &'static str> {
     id.ok_or("missing id")
 }
 
+/// `first=<n>&second=<n>` only, first <= second: the two ledger sizes a consistency proof is asked for (G5a).
+pub fn parse_consistency(q: Option<&str>) -> Result<(i64, i64), &'static str> {
+    let (mut first, mut second) = (None, None);
+    for pair in q.unwrap_or("").split('&').filter(|p| !p.is_empty()) {
+        let (k, v) = pair.split_once('=').unwrap_or((pair, ""));
+        match k { "first" => first = Some(num(v, "invalid first")?), "second" => second = Some(num(v, "invalid second")?), _ => return Err("unknown parameter") }
+    }
+    let (first, second) = (first.ok_or("missing first")?, second.ok_or("missing second")?);
+    if second < first { return Err("second before first"); }
+    Ok((first, second))
+}
+
 /// `from=<n>&to=<n>`, at most EXPORT_MAX rows.
 pub fn parse_range(q: Option<&str>) -> Result<RangeQ, &'static str> {
     let (mut from, mut to) = (None, None);
@@ -73,6 +85,16 @@ pub fn check_export(ex: &Value) -> Value {
         if good { ok += 1; } else { bad.push(r.get("seq").cloned().unwrap_or(Value::Null)); }
     }
     json!({"checked": rows.len(), "ok": ok, "bad_seqs": bad, "all_ok": root.is_some() && ok as usize == rows.len() && !rows.is_empty()})
+}
+
+/// G5a: Rust's own check of a SQL consistency answer (second witness): the proof must carry the sizes and roots it claims. false on any malformed field.
+pub fn check_consistency(v: &Value) -> bool {
+    (|| {
+        let (first, second) = (v.get("first")?.as_u64()?, v.get("second")?.as_u64()?);
+        let (fr, sr) = (merkle::from_hex(v.get("first_root")?.as_str()?)?, merkle::from_hex(v.get("second_root")?.as_str()?)?);
+        let proof: Vec<_> = v.get("proof")?.as_array()?.iter().map(|x| merkle::from_hex(x.as_str()?)).collect::<Option<_>>()?;
+        Some(merkle::verify_consistency(first, second, &fr, &sr, &proof))
+    })().unwrap_or(false)
 }
 
 /// Called from the live tick (every ~60 s): if the pulse says a checkpoint is due, seal the ledger. The actor is the founder account (the audit row
@@ -121,6 +143,45 @@ mod tests {
         assert!(parse_seal(Some("id=1;drop")).is_err());
         assert!(parse_seal(Some("id=1&x=2")).is_err());
         assert!(parse_seal(Some("id=1234567890123456789")).is_err());
+    }
+    /// G5a three-way check: the Python reference (docs/cursor-work/server/g5a-reference.py, written from the RFC) produced these vectors; Rust must produce the
+    /// SAME proof bytes for every (m, n) with n <= 40 and its verifier must accept them. SQL E121 carries literal vectors from the same reference.
+    #[test]
+    fn rust_matches_the_independent_python_reference_byte_for_byte() {
+        use super::merkle::{consistency_proof, from_hex, leaf, to_hex, verify_consistency};
+        use sha2::{Digest, Sha256};
+        let v: Value = serde_json::from_str(include_str!("../../rust/consistency_vectors.json")).unwrap();
+        let max_n = v["max_n"].as_u64().unwrap() as usize;
+        let leaves: Vec<_> = (1..=max_n).map(|g| leaf(&Sha256::digest(format!("founder-merkle-vector-{g}").as_bytes()).into())).collect();
+        let cases = v["cases"].as_array().unwrap();
+        assert_eq!(cases.len(), max_n * (max_n + 1) / 2, "the vector file must hold every pair");
+        for c in cases {
+            let (m, n) = (c["m"].as_u64().unwrap() as usize, c["n"].as_u64().unwrap() as usize);
+            let want: Vec<String> = c["proof"].as_array().unwrap().iter().map(|x| x.as_str().unwrap().to_string()).collect();
+            let got: Vec<String> = consistency_proof(&leaves, m, n).unwrap().iter().map(to_hex).collect();
+            assert_eq!(got, want, "proof differs from Python for m={m} n={n}");
+            let (fr, sr) = (from_hex(c["first_root"].as_str().unwrap()).unwrap(), from_hex(c["second_root"].as_str().unwrap()).unwrap());
+            let proof: Vec<_> = want.iter().map(|h| from_hex(h).unwrap()).collect();
+            assert!(verify_consistency(m as u64, n as u64, &fr, &sr, &proof), "Rust refused a Python proof m={m} n={n}");
+        }
+    }
+    #[test]
+    fn consistency_query_is_whitelisted() {
+        assert_eq!(parse_consistency(Some("first=3&second=9")), Ok((3, 9)));
+        assert_eq!(parse_consistency(Some("second=9&first=9")), Ok((9, 9)));
+        for bad in [None, Some("first=3"), Some("second=3"), Some("first=9&second=3"), Some("first=0&second=3"), Some("first=1&second=2&x=1"), Some("first=a&second=2"), Some("first=1;&second=2")] { assert!(parse_consistency(bad).is_err(), "{bad:?}"); }
+    }
+    #[test]
+    fn rust_checks_a_consistency_answer_and_refuses_a_changed_one() {
+        use super::merkle::*;
+        let l: Vec<H32> = (1..=9usize).map(|g| leaf(&sha2::Sha256::digest(format!("founder-merkle-vector-{g}").as_bytes()).into())).collect();
+        let pr: Vec<String> = consistency_proof(&l, 5, 9).unwrap().iter().map(to_hex).collect();
+        let good = json!({"first": 5, "second": 9, "first_root": to_hex(&mth(&l[..5])), "second_root": to_hex(&mth(&l)), "proof": pr});
+        assert!(check_consistency(&good));
+        let mut bad = good.clone(); bad["second"] = json!(0); assert!(!check_consistency(&bad));
+        let mut bad = good.clone(); bad["proof"][0] = json!("zz"); assert!(!check_consistency(&bad));
+        let mut bad = good.clone(); bad["second_root"] = json!(to_hex(&mth(&l[..8]))); assert!(!check_consistency(&bad));
+        assert!(!check_consistency(&json!({"connected": false})));
     }
     #[test]
     fn proof_query_is_whitelisted() {

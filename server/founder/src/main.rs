@@ -470,6 +470,16 @@ async fn merkle_seal_get_ep(State(st): State<S>, uri: axum::http::Uri, h: Header
     let sb = st.sb.as_ref().unwrap();
     match sb.rpc("founder_audit_checkpoint_get", json!({"p_id": id})).await { Some(v) if v.is_object() => signed(&st, v), _ => signed(&st, ledger::missing()) }
 }
+/// G5a (E121): RFC 9162 consistency proof between two ledger sizes. Rust ALSO checks the proof with its own verifier before answering (second witness); the browser kernel (merkle@2) is the third.
+async fn merkle_consistency_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
+    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    let (first, second) = match ledger::parse_consistency(uri.query()) { Ok(q) => q, Err(e) => return (StatusCode::BAD_REQUEST, Json(json!({"error": e}))).into_response() };
+    let sb = st.sb.as_ref().unwrap();
+    match sb.rpc("founder_audit_consistency_proof", json!({"p_first": first, "p_second": second})).await {
+        Some(mut v) if v.is_object() => { let ok = ledger::check_consistency(&v); v["rust_check"] = json!({"ok": ok}); signed(&st, v) }
+        _ => signed(&st, ledger::missing()),
+    }
+}
 /// Rows + proofs from SQL, then Rust checks every proof itself (second witness) before the browser kernel does its own.
 async fn merkle_export_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
     if let Err(code) = authed(&st, &h).await { return code.into_response(); }
@@ -594,6 +604,7 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/audit/export", get(merkle_export_ep))
         .route("/founder/v1/audit/checkpoint", axum::routing::post(merkle_seal_ep))
         .route("/founder/v1/audit/seal", get(merkle_seal_get_ep))
+        .route("/founder/v1/audit/consistency", get(merkle_consistency_ep))
         .route("/founder/v1/inbox", get(inbox_ep))
         .route("/founder/v1/inbox/list", get(inbox_list_ep))
         .route("/founder/v1/inbox/group", get(inbox_group_ep))

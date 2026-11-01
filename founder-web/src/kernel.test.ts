@@ -45,3 +45,26 @@ test("merkle_verify in the real wasm: SQL E107 vector (n=3, last leaf) proves, o
   expect(v(row, path, root.replace("affb", "affc"))).toBe(0);
   expect(v(row, "", root)).toBe(0);
 });
+
+test("merkle_consistency_verify in the real wasm agrees with the independent Python reference on EVERY (m, n) pair up to 40 leaves, and refuses every change", async () => {
+  const { instance } = await WebAssembly.instantiate(bytes, { env: { host_wake() {}, host_call() {}, host_emit() {} } });
+  const ex = instance.exports as any;
+  const put = (t: string) => { const b = new TextEncoder().encode(t), p = ex.kernel_alloc(Math.max(b.length, 1)); new Uint8Array(ex.memory.buffer, p, b.length).set(b); return [p, b.length] as const; };
+  const call = (m: number, n: number, fr: string, sr: string, proof: string[]) => ex.merkle_consistency_verify(m, n, ...put(fr), ...put(sr), ...put(proof.join(",")));
+  const vec = JSON.parse(readFileSync("../server/rust/consistency_vectors.json", "utf8"));
+  expect(vec.cases.length).toBe((vec.max_n * (vec.max_n + 1)) / 2);
+  const flip = (hx: string) => (hx[0] === "0" ? "1" : "0") + hx.slice(1);
+  for (const c of vec.cases) {
+    expect(call(c.m, c.n, c.first_root, c.second_root, c.proof)).toBe(1);
+    if (c.m < c.n) {
+      expect(call(c.m, c.n, c.second_root, c.first_root, c.proof)).toBe(0);                                                   // swapped roots
+      expect(call(c.m, c.n, c.first_root, c.second_root, [flip(c.proof[0]), ...c.proof.slice(1)])).toBe(0);                  // changed proof hash
+      expect(call(c.m, c.n, c.first_root, c.second_root, [...c.proof, "00".repeat(32)])).toBe(0);                            // extended
+      expect(call(c.m, c.n, c.first_root, c.second_root, c.proof.slice(0, -1))).toBe(0);                                     // truncated
+      expect(call(c.m, c.n, flip(c.first_root), c.second_root, c.proof)).toBe(0);                                            // wrong old root
+      expect(call(c.m, c.n, c.first_root, flip(c.second_root), c.proof)).toBe(0);                                            // wrong new root
+    }
+  }
+  expect(call(0, 5, "00".repeat(32), "00".repeat(32), [])).toBe(0);
+  expect(call(5, 4, "00".repeat(32), "00".repeat(32), [])).toBe(0);
+});

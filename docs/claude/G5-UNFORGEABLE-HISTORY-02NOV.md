@@ -39,3 +39,14 @@ A part is NOT done until all of these are shown, in this order:
 4. **Property/fuzz test** on random trees and random byte garbage into the verifier (never panics, never accepts).
 5. **Independent review:** a second reviewer that did not write the code reads the diff against this file and the RFC and reports. Findings are fixed and the review repeated until it reports none.
 6. Then the server run and the founder's Chrome check. GREEN only with the pasted proof.
+
+## Build status (updated 2 Nov 2026 ~04:40; honest)
+| Part | Built in the sandbox | Not yet |
+|---|---|---|
+| G5a Rust | route `/founder/v1/audit/consistency` + `check_consistency` (second witness) + `merkle_core.rs`: `mth`, `consistency_proof` (SUBPROOF), `verify_consistency` (RFC 9162 2.1.4.2), `verify_consistency_text`. 130 founder tests: every pair 1..150 verifies, every single-bit flip of every proof hash (n<=40, 2.2M cases) refused, wrong/swapped/extended/truncated/reordered refused, 20 000 random garbage proofs never accepted, u64 edge sizes never panic, **byte-for-byte equal to the independent Python reference for all 820 pairs (n<=40)** | |
+| G5a SQL | `E121_founder_audit_consistency.sql`: `_fm_subproof`, `_fm_consistency_from_leaves`, `_fm_consistency_check` (SQL verifier), door `founder_audit_consistency_proof(first, second)` (also names the signed seals at those sizes), selftest with literal Python vectors, 820 pairs verified, tamper refused, real ledger. **SQL == Python on 820 pairs, 0 differences** | server run of E121 |
+| G5a kernel | `merkle_consistency_verify` export, module `merkle@2`, kernel 0.7.0 | published to the server (founder-install), E90 release row |
+| G5a UI | `consistencyVerify()` + worker message + `withExtension` + the Surface effect: when the server moved ahead, ONE proof pin -> now is fetched (`/founder/v1/audit/consistency`, Rust re-checks it) and the kernel verifies it against roots this browser holds | live Chrome proof |
+| G5b, G5c, G5d | | all of it |
+
+**Design fact found while testing (written so it is never forgotten):** a Merkle root does not commit to its own tree size. Verifying a proof "for size n+1" against the root of size n can pass when the proof's last element is the leaf hash. So the SIZES must be bound by something signed: the E107 seal already hashes `(id, upto_seq, leaves, root, head_hash)` into `cp_hash`, and G5b signs that as a C2SP checkpoint. The consistency check is only ever used together with a seal/checkpoint that fixes the size.

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { get, warm, deviceStatus } from "./api";
-import { merkleVerify, trust } from "./kernel";
-import { asSeal, judgePin, ledgerGauge, loadPin, savePin, shouldAdvancePin, type PinVerdict, type Proof } from "./sealpin";
+import { consistencyVerify, merkleVerify, trust } from "./kernel";
+import { asSeal, judgePin, ledgerGauge, loadPin, savePin, shouldAdvancePin, withExtension, type PinVerdict, type Proof } from "./sealpin";
 import { fmtHM, fmtTime } from "./city";
 import { onLiveChange, useLive, type LiveStatus } from "./livefeed";
 import { HealthOrb, type Tone } from "./Scene3D";
@@ -116,7 +116,17 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
       if (pin && mkSeal && mkSeal.id > pin.id) {
         try { pinnedNow = asSeal((await get(`/founder/v1/audit/seal?id=${pin.id}`)).data) ?? "error"; } catch { pinnedNow = "error"; }
       }
-      const v = judgePin(pin, mkSeal, pinnedNow);
+      let v = judgePin(pin, mkSeal, pinnedNow);
+      // G5a: the server moved ahead: ask for ONE RFC 9162 consistency proof pin -> now and let the WASM kernel (merkle@2) check it against the roots
+      // THIS browser holds (the pinned root and the current seal root); the server only supplies the proof hashes. Route missing = nothing changes.
+      if (pin && mkSeal && mkSeal.id > pin.id && mkSeal.upto_seq > pin.upto_seq && v.state !== "rewritten" && v.state !== "rollback") {
+        let ext: "ok" | "bad" | "na" = "na";
+        try {
+          const c = (await get(`/founder/v1/audit/consistency?first=${pin.upto_seq}&second=${mkSeal.upto_seq}`)).data;
+          if (Array.isArray(c?.proof) && c.proof.every((x: unknown) => typeof x === "string")) ext = (await consistencyVerify(pin.upto_seq, mkSeal.upto_seq, pin.root, mkSeal.root, c.proof)) ? "ok" : "bad";
+        } catch { ext = "na"; }
+        v = withExtension(v, ext, pin, mkSeal);
+      }
       if (shouldAdvancePin(v) && mkSeal) savePin(mkSeal);
       if (!off) setPinV(v);
     })();

@@ -347,3 +347,12 @@ _(12:30 note: E116 was corrected after its first server run failed; run the S1d 
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -25`
 **3 - Chrome:** Ctrl+Shift+R on the Dashboard. "Ledger seal" must show "full check ... entries intact" within ~2 minutes and "N of 7 entries proven in this browser".
 **Awam files (W2):** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
+
+## 2 Nov 04:50 - G5a consistency proofs (E121 + Rust 132 tests + kernel 0.7.0 merkle@2). ONE command at a time, in this order
+(G4 first: the E120 command above must already be green, because G5a's browser check sits on the same gauge.)
+**1 - SQL (E121):**
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E121_founder_audit_consistency CHECK_E121 2>&1 | tail -20`
+**2 - Rust + SPA + kernel 0.7.0, after 1 is green (132 tests):**
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -25`
+**3 - Chrome:** Ctrl+Shift+R. On the first visit after this the gauge pins the seal; after the next automatic seal (every 50 entries) it must say "the kernel proved the ledger up to entry N extends it unchanged (RFC 9162)".
+Note: the awam site keeps serving kernel 0.6.0 until its own pull (Rule 52 pin follows, ONE-ORDER A9).

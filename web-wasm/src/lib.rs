@@ -27,9 +27,9 @@ use std::collections::HashMap;
 use std::rc::Rc;
 
 pub const ABI: u32 = 1;
-pub const VERSION: (u32, u32, u32) = (0, 6, 0);
+pub const VERSION: (u32, u32, u32) = (0, 7, 0);
 /// Naam@module-version. Naya module ya badla hua module => yahan entry + VERSION bump (Cargo.toml bhi).
-pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1"];
+pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1", "merkle@2"];
 
 thread_local! {
     static OUT: RefCell<Vec<u8>> = const { RefCell::new(Vec::new()) };
@@ -132,6 +132,14 @@ pub extern "C" fn sha256_drop(h: u32) {
 #[unsafe(no_mangle)]
 pub extern "C" fn merkle_verify(row: u32, rl: u32, path: u32, pl: u32, root: u32, ol: u32) -> u32 {
     merkle::verify_text(unsafe { text(row, rl) }, unsafe { text(path, pl) }, unsafe { text(root, ol) }) as u32
+}
+
+/* ------------------------------------------------- merkle@2 (G5a: RFC 9162 consistency proofs) */
+/// 1 = the tree of `second` leaves (root `sr`) extends the tree of `first` leaves (root `fr`) without changing any of them, 0 = no (any malformed input too).
+/// Roots: 64 lowercase hex. Proof text: `<64 hex>,<64 hex>,...` (empty only when first == second). The SIZES are bound by the signed seal (G5b), not by this check.
+#[unsafe(no_mangle)]
+pub extern "C" fn merkle_consistency_verify(first: u32, second: u32, fr: u32, frl: u32, sr: u32, srl: u32, proof: u32, pl: u32) -> u32 {
+    merkle::verify_consistency_text(first as u64, second as u64, unsafe { text(fr, frl) }, unsafe { text(sr, srl) }, unsafe { text(proof, pl) }) as u32
 }
 
 /* ------------------------------------------------- ed25519 + envelope (F2b) */
@@ -262,7 +270,7 @@ mod tests {
         let ver = j.iter().find(|(k, _)| k == "version").unwrap().1.clone();
         assert_eq!(ver, env!("CARGO_PKG_VERSION"), "VERSION bump Cargo.toml ke saath");
         assert!(info_json().contains("\"abi\":1"));
-        for m in ["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1"] {
+        for m in ["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1", "merkle@2"] {
             assert!(info_json().contains(m), "{m}");
         }
     }

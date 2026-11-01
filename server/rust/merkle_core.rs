@@ -113,6 +113,76 @@ pub fn verify_text(row_hash_hex: &str, path_text: &str, root_hex: &str) -> bool 
     verify(&row, &p, &root)
 }
 
+// ============================================================================================================================================
+// G5a: CONSISTENCY proofs (RFC 9162 section 2.1.4). "The tree of `second` leaves extends the tree of `first` leaves without changing any of the
+// first ones." The tree shape here (odd node promoted) is the same tree as the RFC 6962 recursive split at the largest power of two below n
+// (proven for 1..150 leaves in the tests), so the RFC algorithm applies unchanged. Generator = SUBPROOF; verifier = the RFC verification algorithm.
+// ============================================================================================================================================
+
+/// RFC 6962 recursive tree hash of leaves that are already leaf-hashed (reference form; `root_of` is the fast iterative form).
+pub fn mth(leaves: &[H32]) -> H32 {
+    match leaves.len() {
+        0 => panic!("mth of an empty list"),
+        1 => leaves[0],
+        n => { let k = largest_pow2_below(n); node(&mth(&leaves[..k]), &mth(&leaves[k..])) }
+    }
+}
+fn largest_pow2_below(n: usize) -> usize { let mut k = 1; while k * 2 < n { k *= 2; } k }
+
+fn subproof(m: usize, d: &[H32], b: bool) -> Vec<H32> {
+    let n = d.len();
+    if m == n { return if b { vec![] } else { vec![mth(d)] }; }
+    let k = largest_pow2_below(n);
+    if m <= k { let mut v = subproof(m, &d[..k], b); v.push(mth(&d[k..])); v }
+    else { let mut v = subproof(m - k, &d[k..], false); v.push(mth(&d[..k])); v }
+}
+
+/// The proof that the first `first` leaves are a prefix of the first `second` leaves (1 <= first <= second <= leaves.len()). None for any other sizes.
+pub fn consistency_proof(leaves: &[H32], first: usize, second: usize) -> Option<Vec<H32>> {
+    if first < 1 || first > second || second > leaves.len() { return None; }
+    Some(subproof(first, &leaves[..second], true))
+}
+
+/// RFC 9162 2.1.4.2. Accepts only if the proof rebuilds BOTH roots. Sizes must be 1 <= first <= second; equal sizes need an empty proof and equal roots.
+/// A proof longer than 65 hashes cannot exist for any tree that fits in memory and is refused outright.
+pub fn verify_consistency(first: u64, second: u64, first_root: &H32, second_root: &H32, proof: &[H32]) -> bool {
+    if first < 1 || first > second || proof.len() > 65 { return false; }
+    if first == second { return proof.is_empty() && first_root == second_root; }
+    if proof.is_empty() { return false; }
+    let mut p: Vec<H32> = Vec::with_capacity(proof.len() + 1);
+    if first.is_power_of_two() { p.push(*first_root); }          // the old tree is a complete subtree the generator did not emit
+    p.extend_from_slice(proof);
+    let (mut fnn, mut sn) = (first - 1, second - 1);
+    while fnn & 1 == 1 { fnn >>= 1; sn >>= 1; }
+    let (mut fr, mut sr) = (p[0], p[0]);
+    for c in &p[1..] {
+        if sn == 0 { return false; }
+        if fnn & 1 == 1 || fnn == sn {
+            fr = node(c, &fr); sr = node(c, &sr);
+            if fnn & 1 == 0 { while fnn & 1 == 0 && fnn != 0 { fnn >>= 1; sn >>= 1; } }
+        } else {
+            sr = node(&sr, c);
+        }
+        fnn >>= 1; sn >>= 1;
+    }
+    &fr == first_root && &sr == second_root && sn == 0
+}
+
+/// Text form for the kernel ABI (no JSON parser inside the wasm): sizes as numbers, roots as 64 lowercase hex, proof as `<64 hex>,<64 hex>,...`
+/// (empty text = no hashes). Anything malformed (bad hex, empty item, stray space, too many hashes) = false, never a panic.
+pub fn verify_consistency_text(first: u64, second: u64, first_root_hex: &str, second_root_hex: &str, proof_text: &str) -> bool {
+    let (Some(fr), Some(sr)) = (from_hex(first_root_hex), from_hex(second_root_hex)) else { return false };
+    let mut proof = Vec::new();
+    if !proof_text.is_empty() {
+        for item in proof_text.split(',') {
+            let Some(h) = from_hex(item) else { return false };
+            proof.push(h);
+            if proof.len() > 65 { return false; }
+        }
+    }
+    verify_consistency(first, second, &fr, &sr, &proof)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -240,5 +310,103 @@ mod tests {
         assert!(!verify_text("nothex", path, &root));
         assert!(!verify_text(&row, path, &"0".repeat(64)));
         assert!(!verify_text(&row, &vec!["L:".to_string() + &"00".repeat(32); 65].join(","), &root), "65 hops refused");
+    }
+
+    // ---------------------------------------------------------------- G5a: consistency proofs
+    #[test]
+    fn iterative_root_equals_the_rfc_recursive_tree_for_1_to_150_leaves() {
+        for n in 1..=150 { let l = leaves_of(n); assert_eq!(root_of(&l).unwrap(), mth(&l), "n={n}"); }
+    }
+    #[test]
+    fn every_consistency_proof_for_1_to_150_leaves_verifies_and_has_the_rfc_length_bound() {
+        let l = leaves_of(150);
+        for n in 1..=150usize {
+            let rn = mth(&l[..n]);
+            for m in 1..=n {
+                let rm = mth(&l[..m]);
+                let pr = consistency_proof(&l, m, n).unwrap();
+                assert!(verify_consistency(m as u64, n as u64, &rm, &rn, &pr), "m={m} n={n}");
+                assert!(pr.len() <= (usize::BITS - (n - 1).leading_zeros()) as usize + 1, "proof too long m={m} n={n}");
+                if m == n { assert!(pr.is_empty(), "equal sizes need an empty proof"); }
+            }
+        }
+    }
+    #[test]
+    fn consistency_generator_refuses_impossible_sizes() {
+        let l = leaves_of(10);
+        for (m, n) in [(0, 5), (6, 5), (1, 11), (0, 0), (11, 11)] { assert!(consistency_proof(&l, m, n).is_none(), "{m} {n}"); }
+    }
+    #[test]
+    fn every_single_bit_flip_in_any_proof_hash_is_rejected() {
+        let l = leaves_of(40);
+        for n in 2..=40usize {
+            let rn = mth(&l[..n]);
+            for m in 1..n {
+                let rm = mth(&l[..m]);
+                let pr = consistency_proof(&l, m, n).unwrap();
+                for i in 0..pr.len() { for bit in 0..256usize {
+                    let mut bad = pr.clone(); bad[i][bit / 8] ^= 1 << (bit % 8);
+                    assert!(!verify_consistency(m as u64, n as u64, &rm, &rn, &bad), "bit flip accepted m={m} n={n} i={i} bit={bit}");
+                } }
+            }
+        }
+    }
+    #[test]
+    fn wrong_sizes_wrong_roots_and_reshaped_proofs_are_rejected() {
+        let l = leaves_of(64);
+        for n in 2..=64usize {
+            let rn = mth(&l[..n]);
+            for m in 1..n {
+                let rm = mth(&l[..m]);
+                let pr = consistency_proof(&l, m, n).unwrap();
+                let ok = |a: u64, b: u64, x: &H32, y: &H32, p: &[H32]| verify_consistency(a, b, x, y, p);
+                assert!(ok(m as u64, n as u64, &rm, &rn, &pr));
+                assert!(!ok(m as u64, n as u64, &rn, &rm, &pr), "swapped roots m={m} n={n}");
+                let mut rn_bad = rn; rn_bad[31] ^= 0x80; assert!(!ok(m as u64, n as u64, &rm, &rn_bad, &pr), "wrong new root m={m} n={n}");
+                let mut rm_bad = rm; rm_bad[0] ^= 1; assert!(!ok(m as u64, n as u64, &rm_bad, &rn, &pr), "wrong old root m={m} n={n}");
+                assert!(!ok(0, n as u64, &rm, &rn, &pr), "first=0");
+                assert!(!ok(n as u64 + 1, n as u64, &rm, &rn, &pr), "first>second");
+                if m + 1 < n { assert!(!ok(m as u64 + 1, n as u64, &rm, &rn, &pr), "lied about the old size m={m} n={n}"); }
+                // NOTE (design fact, not a bug): a Merkle root does not commit to its own tree size, so the SIZES are bound by the signed checkpoint (G5b), never by this check alone.
+                assert!(!ok(m as u64, n as u64, &rm, &rn, &[]), "empty proof");
+                let mut ext = pr.clone(); ext.push([7u8; 32]); assert!(!ok(m as u64, n as u64, &rm, &rn, &ext), "extended proof m={m} n={n}");
+                let mut cut = pr.clone(); cut.pop(); assert!(!ok(m as u64, n as u64, &rm, &rn, &cut), "truncated proof m={m} n={n}");
+                if pr.len() > 1 { let mut rev = pr.clone(); rev.reverse(); if rev != pr { assert!(!ok(m as u64, n as u64, &rm, &rn, &rev), "reordered proof m={m} n={n}"); } }
+            }
+            // equal sizes: proof must be empty and the roots equal
+            assert!(verify_consistency(n as u64, n as u64, &rn, &rn, &[]));
+            assert!(!verify_consistency(n as u64, n as u64, &rn, &rn, &[[1u8; 32]]), "equal sizes with a proof");
+            assert!(!verify_consistency(n as u64, n as u64, &rn, &mth(&l[..n - 1]), &[]), "equal sizes, different roots");
+        }
+    }
+    #[test]
+    fn random_garbage_never_verifies_and_never_panics() {
+        let mut x: u64 = 0x9E3779B97F4A7C15;
+        let mut next = move || { x ^= x << 13; x ^= x >> 7; x ^= x << 17; x };
+        for _ in 0..20_000 {
+            let (m, n) = (1 + next() % 300, 1 + next() % 300);
+            let mut hash = || { let mut a = [0u8; 32]; for b in a.iter_mut() { *b = next() as u8; } a };
+            let (fr, sr) = (hash(), hash());
+            let plen = (hash()[0] % 70) as usize;
+            let proof: Vec<H32> = (0..plen).map(|_| hash()).collect();
+            if m <= n { assert!(!verify_consistency(m, n, &fr, &sr, &proof), "garbage accepted m={m} n={n}"); }
+        }
+        // sizes at the edge of u64 must not overflow or panic
+        let z = [0u8; 32];
+        for (m, n) in [(u64::MAX, u64::MAX), (1, u64::MAX), (u64::MAX - 1, u64::MAX), (0, 0)] { let _ = verify_consistency(m, n, &z, &z, &[z; 3]); }
+    }
+    #[test]
+    fn text_form_is_strict() {
+        let l = leaves_of(9);
+        let (rm, rn) = (to_hex(&mth(&l[..5])), to_hex(&mth(&l[..9])));
+        let pr = consistency_proof(&l, 5, 9).unwrap();
+        let txt = pr.iter().map(to_hex).collect::<Vec<_>>().join(",");
+        assert!(verify_consistency_text(5, 9, &rm, &rn, &txt));
+        assert!(!verify_consistency_text(5, 9, &rm, &rn, &format!("{txt},")), "trailing comma");
+        assert!(!verify_consistency_text(5, 9, &rm, &rn, &txt.replace(',', ", ")), "space");
+        assert!(!verify_consistency_text(5, 9, &rm.to_uppercase(), &rn, &txt), "upper case hex");
+        assert!(!verify_consistency_text(5, 9, &rm, &rn, ""), "no proof for different sizes");
+        assert!(verify_consistency_text(9, 9, &rn, &rn, ""), "equal sizes, no proof");
+        assert!(!verify_consistency_text(5, 9, &rm, &rn, &vec![txt.as_str(); 20].join(",")), "too many hashes");
     }
 }

@@ -38,6 +38,18 @@ export function judgePin(pin: Seal | null, current: Seal | null, pinnedNow: Seal
     : { state: "rewritten", text: `seal #${pin.id} is different from what this browser remembered: history was rewritten` };
 }
 
+/**
+ * G5a: when the server moved ahead of the pinned seal, a kernel-checked RFC 9162 consistency proof is STRONGER than comparing the old seal:
+ * it proves the new ledger contains the old one unchanged. ext = "ok" (kernel accepted) | "bad" (kernel refused) | "na" (route/proof unavailable).
+ * A refused proof is always a rewrite. An accepted proof also settles a seal we could not re-ask ("unchecked"). "na" changes nothing.
+ */
+export function withExtension(v: PinVerdict, ext: "ok" | "bad" | "na", pin: Seal | null, current: Seal | null): PinVerdict {
+  if (ext === "bad") return { state: "rewritten", text: `the ledger now at seal #${current?.id ?? "?"} does not extend seal #${pin?.id ?? "?"} that this browser remembered (consistency proof refused): history was rewritten` };
+  if (ext === "ok" && (v.state === "advanced" || v.state === "unchecked") && pin && current)
+    return { state: "advanced", text: `seal #${pin.id} still holds and the kernel proved the ledger up to entry ${current.upto_seq} extends it unchanged (RFC 9162)` };
+  return v;
+}
+
 export function loadPin(): Seal | null {
   try { const raw = localStorage.getItem(KEY); return raw ? asSeal(JSON.parse(raw)) : null; } catch { return null; }
 }

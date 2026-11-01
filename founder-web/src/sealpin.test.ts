@@ -1,6 +1,6 @@
 // G4 (E120) guard: the rollback/rewrite check and the gauge wording are pure and must never regress.
 import { expect, test } from "bun:test";
-import { asSeal, fmtAge, judgePin, ledgerGauge, shouldAdvancePin, type Seal } from "./sealpin";
+import { asSeal, fmtAge, judgePin, ledgerGauge, shouldAdvancePin, withExtension, type Seal } from "./sealpin";
 
 const h = (c: string) => c.repeat(64);
 const seal = (id: number, root = h("a"), cp = h("b"), upto = id * 50): Seal => ({ id, upto_seq: upto, root, cp_hash: cp });
@@ -67,4 +67,18 @@ test("every loophole turns the gauge: never checked, stale checker, stalled seal
 test("fail is never softened by a later warn", () => {
   const g = ledgerGauge(pulse({ level: "fail", sealer_stalled: true, checker: "stale" }), "failed", null, t);
   expect(g.state).toBe("fail");
+});
+
+test("a kernel-checked consistency proof upgrades or overrules the seal comparison", () => {
+  const pin = seal(2), cur = seal(4);
+  const adv = judgePin(pin, cur, seal(2)), unc = judgePin(pin, cur, "error"), same1 = judgePin(seal(4), seal(4), null);
+  expect(withExtension(adv, "ok", pin, cur).state).toBe("advanced");
+  expect(withExtension(adv, "ok", pin, cur).text).toContain("RFC 9162");
+  expect(withExtension(unc, "ok", pin, cur).state).toBe("advanced");           // the proof settles a seal that could not be re-asked
+  expect(withExtension(adv, "bad", pin, cur).state).toBe("rewritten");         // a refused proof beats a matching-looking seal
+  expect(withExtension(unc, "bad", pin, cur).state).toBe("rewritten");
+  expect(withExtension(adv, "na", pin, cur)).toEqual(adv);                      // route missing: nothing changes
+  expect(withExtension(same1, "ok", seal(4), seal(4))).toEqual(same1);
+  const rb = judgePin(seal(5), seal(3), null);
+  expect(withExtension(rb, "ok", seal(5), seal(3)).state).toBe("rollback");     // a proof can never rescue a rollback
 });
