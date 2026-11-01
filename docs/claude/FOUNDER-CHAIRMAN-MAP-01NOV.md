@@ -44,3 +44,8 @@ Tarteeb: FOUNDER-MASTER-AUDIT-01NOV.md (4d Inbox -> 5 Merkle -> 6 S2 -> 7 passke
 
 ## 5. Live mein mili ek asli kami (L8)
 Stream health card 07:34 par "Down: 75% of streams closed within 20 seconds". Wajah asli hai: aaj mein ne baar-baar page reload kiya (har reload = chhota session). SLO ka qaida kamzor hai: bohat kam sessions par percentage bhi "fail" ho jata hai. FIX (P2 ke SQL E113 mein): kam az kam 20 band sessions ka sample, warna "Collecting"; aur reload (client_gone) ko reconnect-storm mein na ginna jab tak lagataar na ho. Tab tak card laal rahe ga (jhoot nahi, par gumrah-kun).
+
+## 6. Sidebar poora scroll karke dekha (live Chrome 07:35, founder ka hukam "neechay tak jao")
+Sidebar andar scroll hota hai (list 1026 px, dikhne wali 547 px). Neeche tak: Dashboard, Bridge, Finance, People, Mail Desk, AI, Release, Move-In, Systems, Control, Audit ledger | group "Workspace (user app)": User dashboard, Mail, People, Calendar, Work, CRM, Org, Analytics, Safety, ANEXOChat, AI, Speed, Founder, Admin | Collapse. Aakhri item Admin hai, kuch kata hua nahi, Collapse se overlap nahi.
+KAMIYAN (asli): (1) **People aur AI do baar** (founder deck + user app group) — chairman ko confuse karta hai. (2) "Founder" link = purane Lovable founder pages (F9 cutover par jayega). (3) User-app group ke links user ke pages kholte hain: data mix na ho isliye har link ka founder version bante hi us group se ghayab (parity table). (4) **Inbox sidebar mein nahi** (P2 mein add). (5) Dashboard ke "New customers" tile ke neeche "Not connected yet: Glitch, Support, Company Mail" ab registry se aati hai (sach).
+FAISLA (founder ki haan par, code nahi badla): user-app group ke duplicate naam "People"/"AI" ko "People (user app)"/"AI (user app)" likhna, Inbox item jodna.
