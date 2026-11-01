@@ -2115,3 +2115,6 @@ S1b RUST + UI WRITTEN (tarteeb se next, 1 Nov ~12:00): Rust = server/founder/src
 
 - 14:24 (founder, verbatim): "256 hoga her keemat pe hoga tum repo chodo mujhe command do caddy pe"
   STATUS 14:40: command given (read-only: caddy version + go build version + openssl 256-only test on both hosts). Honest finding repeated: Caddy/Go picks AES-128 first for TLS 1.3 and cannot be configured; forcing AES-256 for every client needs a different TLS terminator (option: founder Rust binary with rustls restricted to AES-256-GCM) -> design decision for the founder, nothing built.
+
+- 14:25 (founder, verbatim): "main bol raha hoon ke mujhe command do ke 256 pe jaye bahi ke abhi do" (with the 256-only test output pasted)
+  STATUS 14:45: 1 Nov 14:45 SERVER CHECK (founder paste 14:25): Caddy v2.11.4; server openssl 3.5.5. When a client offers ONLY TLS_AES_256_GCM_SHA384, BOTH founderworkspace.anexomail.com and anexomail.com negotiate TLSv1.3 + AES_256_GCM_SHA384 (Verification OK). So 256 is AVAILABLE on the shared Caddy edge; the default pick for normal browsers stays AES-128 (Go TLS 1.3 order not configurable). Founder 14:25 demanded a command to force 256 now: none exists for Caddy; honest options written to him (256-only terminator, staged on a test port first). PQ group check command given (openssl 3.5.5 can show 'Negotiated TLS1.3 group').
