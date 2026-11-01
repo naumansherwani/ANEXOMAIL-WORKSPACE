@@ -1941,3 +1941,7 @@ RULE (hamesha): (1) blueprint (FOUNDER-MASTER-ORDER-28OCT.md) ki tarteeb KABHI n
 ## 1 Nov 08:17 PKT — founder (verbatim gist)
 "MERI HAAN HAI" — "Nothing needs attention" (Bridge) aur "waiting for first data" (Channels) ki jagah asli ginti likho. "jo kaam nahi huwa hai woh kero, duplicate kaam nahi kerna. sab kuch real likho."
 ACTION: (1) wording -> real counts (Surface.tsx/Bridge), (2) phir master order step 5 (E107 SQL).
+
+## 1 Nov 08:22 PKT — founder (verbatim gist)
+"ek deep audit kero jo bhi glitches ya loophole ho fix kero. yeh sql E107 mujhe sql folder main tarteeb se nazar ana chaiye, yeh sql E107 kitni baar run hoga? kya yeh edit ho raha hai? ... yeh sab se latest pull huwa hai yeh chrome pe dekho. saath ke saath green mark kero."
+DONE: Chrome check GREEN (08:30 wording live); E107 SQL docs/cursor-work/sql/E107_founder_audit_merkle.sql (E106 aur E108 ke beech); jawab: sql-run.sh sha ledger se ek hi baar, file idempotent, edit = nayi E-file.

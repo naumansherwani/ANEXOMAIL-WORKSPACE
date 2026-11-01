@@ -146,3 +146,6 @@ PULL: founder-install.sh only.
 
 ## UPDATE 1 Nov 08:25 PKT — LIVE CHROME CHECK + order 08:06 recorded
 Founder's Chrome tab read live: Dashboard, Bridge, Founder Workspace (Mail, People, AI, Systems, Control, Finance, Release, Move-In, Audit ledger); no user-app group, no Stream health card. Founder's laptop photos show the OLD Friday build (stale tab; index is no-store, hard refresh fixes). Mail Desk is INSIDE Mail, last (master step 11). Order 08:06 in founder-commands.md. NEXT: step 5 F2c Merkle (E107), design note first. PULL: none.
+
+## UPDATE 1 Nov 08:50 PKT — 08:30 wording GREEN in Chrome; E107 SQL written (step 5)
+08:30 wording (Bridge "2 of 2 checks passing", Channels "0 of 3 connected. Wiring next: Glitch, Support, Company Mail") SERVER PAR INSTALLED + dekha founder ke Chrome mein. E107_founder_audit_merkle.sql (830 lines) + CHECK_E107.sql (12 checks): local Postgres par 12/12 OK, selftest, selftest2 aur crosscheck (RFC 6962 recursive == iterative, 1..70 leaves) OK, dobara chalana safe. Tables: founder_audit_checkpoints (append-only, hash-chained), founder_audit_merkle_policy. RPC: root, proof, proof_check, checkpoint, due, verify, list, consistency, export, stats, pulse, vectors, preview, verify_range. SERVER PAR CHALNA BAAKI (pull command PULL-COMMANDS.md). NEXT: Rust merkle.rs, kernel merkle, UI gauge — E107 green ke baad.

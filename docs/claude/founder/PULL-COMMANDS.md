@@ -224,3 +224,9 @@ Rollback: env FOUNDER_TELEMETRY=off (telemetry writes band; registry + snapshot_
 ## 1 Nov 08:20 PKT — Mail (not Mail Desk) naming fix + docs. Pull: sirf founder-install.sh (same command).
 
 ## 1 Nov 08:30 PKT — real counts wording (Bridge "N of N checks passing", Channels "Wiring next: ..."). Pull: sirf founder-install.sh (same command).
+
+## 1 Nov 08:50 PKT — E107 founder audit Merkle (step 5, SQL, 830 lines, idempotent). Pull: PEHLE SQL, phir kuch nahi (Rust/UI agla phase).
+```
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E107_founder_audit_merkle CHECK_E107 2>&1 | tail -25
+```
+Kitni baar: sql-run.sh sha ledger mein likhta hai, wahi file dobara nahi chalti; file idempotent hai (dobara chale to bhi safe). Edit karna ho to nayi E-file.
