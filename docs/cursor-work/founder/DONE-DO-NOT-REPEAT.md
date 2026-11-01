@@ -610,3 +610,4 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - 1 Nov 05:25 PKT: top-bar 'Founder Command Center' title REMOVED by founder order (keep eyebrow). Date lives under the clock, not in the greeting meta row. Do not re-add either.
 - 1 Nov 05:30 PKT: greeting 'g' descender clip fixed (dx.css .greet .hello line-height 1.1 + padding-bottom .2em). Any gradient text with background-clip:text needs a box tall enough for descenders; do not shrink line-height again.
 - 1 Nov 05:35 PKT: founder-install 44e1661 installed and live-verified (g fix, top-bar title removed). Do not redo. Next order: N1 L5 pull.sh+enforce (founder), N2 Rust /live + SSE, N3 F2c Merkle.
+- 1 Nov 05:40 PKT: full numbered order with status = docs/claude/FOUNDER-FULL-ORDER-STATUS-01NOV.md (founder asked for the whole blueprint).
