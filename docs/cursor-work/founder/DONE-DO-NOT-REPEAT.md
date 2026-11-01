@@ -618,3 +618,4 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - 1 Nov 06:07 PKT: founder: whole awam site migrates later (business package, latest tech). L5 Brain installer PARKED pending his yes; next = 4b-1 on 'haan'. Keep replies short, he is watching credits.
 - 1 Nov 06:20 PKT: ONE ordered index of ALL founder work = docs/claude/FOUNDER-MASTER-AUDIT-01NOV.md (read it with SERVER-STATE after compaction). 4b-1 is the active phase. Founder said 'haan' to 4b-1 (tick 5 s, Dashboard first).
 - 1 Nov 06:35 PKT: 4b-1 code written (main.rs live_ep + Surface.tsx Live feed card). Do not rewrite; needs founder-install then Chrome check, then 4b-2 (tick + SSE).
+- 1 Nov 06:25 PKT: 4b-1 GREEN (installed + Chrome). Do not redo. Next: 4b-2 tick task + SSE (design note FOUNDER-LIVE-RUST-SSE-DESIGN-01NOV.md).

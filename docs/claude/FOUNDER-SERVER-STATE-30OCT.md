@@ -62,3 +62,6 @@ TODO next (one phase): add founderHostGate to passkey login verify, magic-link v
 
 ## UPDATE 1 Nov 06:35 PKT - step 4b-1 CODE DONE (repo only, NOT green)
 RUST: `GET /founder/v1/live` (main.rs `live_ep`, one RPC `founder_live_snapshot`, signed, honest fallback `live_missing`), 71 tests pass. UI: endpoint added to the Dashboard probe list (now 9) + feature card "Live feed" (version, sources, stale). No SQL needed (E109 already on server). Founder pull: founder-install.sh only. Green = Dashboard shows "Live feed: Version N, K sources" in Chrome. Next: 4b-2 tick task + SSE stream.
+
+## UPDATE 1 Nov 06:25 PKT - 4b-1 GREEN (founder-install paste 06:22 + Chrome)
+Server: 71 tests, SPA 200, healthz 200. Chrome (reloaded): Dashboard "9 of 9 endpoints answering", card "Live feed: Version 0, 12 sources, all fresh", /live answered in ~1013 ms, date under the clock, Host separation card shows founder session 6:22 AM. Version 0 = the change feed is empty because nothing calls `founder_live_tick` yet: 4b-2 (one tokio tick task + SSE) fills it. NEXT = 4b-2.

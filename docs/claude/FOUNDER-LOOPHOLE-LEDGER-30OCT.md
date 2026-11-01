@@ -80,3 +80,4 @@ Status: CODE DONE, NOT GREEN. Order: sql-run (E110) -> awam pull.sh (auth.ts) ->
 - L5 1 Nov 05:55: RED/OPEN: founder logged into awam host with enforce on; unguarded entry paths found
 - L5 1 Nov 06:10: root cause = guard never installed in Brain (anexomail-leo, /opt/anexomail). Fix = brain-hostguard-install.sh (not built yet, needs founder go).
 - 4b-1 1 Nov 06:35: code done (Rust /live + Dashboard Live feed card), awaiting founder-install + Chrome proof
+- 4b-1 GREEN 1 Nov 06:25 (Chrome: Live feed card, 9/9 endpoints). Next 4b-2.
