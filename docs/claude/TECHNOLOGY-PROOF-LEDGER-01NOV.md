@@ -30,8 +30,9 @@ Proof = a script that reads the repo and shows file:line for every technology, o
 | webauthn-rs (Rust passkey) | MISSING | n/a here | founder 7-2 |
 | DBSC (device-bound sessions) | MISSING | n/a here | founder 7b |
 | Post-quantum hybrid TLS check | n/a here | n/a here | founder 7b (server check first) |
+| TLS 1.3 AES-256-GCM-only terminator (rustls) | PROVEN server/founder/src/tls256.rs:15 | MISSING | founder T256-1 written; awam T256-2 (after founder proof + his written haan) |
+| TLS posture ledger (SQL, real handshakes) | PROVEN docs/cursor-work/sql/E119_founder_tls_posture.sql:44 | n/a here | - |
 | MoQ (Media over QUIC) | MISSING | MISSING | founder MoQ-F (after 7a); awam MQ0-MQ4 |
-
 
 ## What is MISSING, and the phase that builds it (founder lane unless written otherwise)
 | Technology | Why missing | Phase | Rule |
@@ -50,3 +51,6 @@ Awam live `/opt/anexomail-rust/Cargo.lock`: **wtransport 0.7.2, quinn 0.11.11** 
 
 ## Order the missing ones will be built (one phase at a time, Rule 66)
 7-2 webauthn-rs -> 7-3 Privacy UI -> 7-4 enforce -> 7-5 flare -> 7a wtransport -> 7b DBSC + PQ TLS -> 7c Motion + GSAP -> 7d WebGPU -> 7e MoQ-F. Each is green on the server + his Chrome before the next starts; this script is re-run after each and the MISSING count must drop by exactly the one that was built.
+
+## Server-green (founder pastes) so far on this ledger
+E117 (13:00), E118 (13:19), E119 + Rust tls256 + prober route + install (14:45). Counted `MISSING` after the run is in the printed footer of `tech-proof.py`.
