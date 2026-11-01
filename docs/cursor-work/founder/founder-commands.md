@@ -2135,3 +2135,6 @@ S1b RUST + UI WRITTEN (tarteeb se next, 1 Nov ~12:00): Rust = server/founder/src
 
 - 14:55 (founder, verbatim): "3a T1 UI stack foundation ... in progress / 3b yeh kyin nahi shuru huwa hai tarteeb kyin tooti hai?"
   STATUS 15:40: 1 Nov 15:40 founder 14:55 asked 'row 3a/3b in progress: yeh kyun nahi shuru hua, tarteeb kyun tooti?' ANSWER: the order was NOT broken; rows 3a/3b in FOUNDER-MASTER-ORDER-28OCT.md carried STALE 'in progress' text. 3a (T1 UI stack) GREEN since 30 Oct 20:57 (commit 425ec14); 3b loopholes GREEN except L5 (parked to the awam migration, awam Brain) and the founder-web lockfile (bun.lock removed on purpose, step 4e). Rows corrected.
+
+- 15:03 (founder pasted APPLY=1 server output; 15:02 pasted founder-install GREEN 120 tests + pull.sh OK)
+  STATUS: 1 Nov 15:05 T256-1 APPLY=1 ran on server (founder output pasted 15:03): 'TLS-256 terminator ON 0.0.0.0:8443 (TLS 1.3, AES-256-GCM only)'; normal client Verification OK (return code 0); AES-128-only client REFUSED (alert 40 handshake failure). Server-side GREEN. NOT yet: cipher line of the normal client not shown in paste, ledger row from the prober (first run ~20s after start, then 6h), ufw 8443 + Chrome padlock check, awam T256-2.
