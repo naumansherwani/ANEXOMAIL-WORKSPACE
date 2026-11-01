@@ -1230,3 +1230,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 30 Oct 22:58 PKT: L5 v2 code (E110, hostproof.rs, hostguard endpoint, auth.ts record, script) DONE; not installed. Do not rewrite.
 
 - 30 Oct 23:05 PKT: see FOUNDER-SERVER-STATE-30OCT.md; L21 and L22 GREEN in Chrome. Greeting v3 in repo only.
+
+- 1 Nov 05:10 PKT: founder greeting stays v2 (no centring). Bridge Engine design note exists: docs/claude/BRIDGE-EMAIL-CHAT-ENGINE-DESIGN-01NOV.md.

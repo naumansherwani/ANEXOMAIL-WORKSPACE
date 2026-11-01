@@ -12,7 +12,7 @@ Source of truth for "is it installed": the founder's own pasted output + Chrome.
 ## IN THE REPO ONLY (not installed yet; do not rewrite, just give the founder the pull)
 | Item | Needs |
 |---|---|
-| SPA greeting v3 (pill centred under "Good night", date next to the clock) | founder-install |
+| SPA greeting REVERTED to v2 (1 Nov): v3 centring was rejected by the founder; server already has v2, nothing to pull for the greeting | none |
 | L5 v2: SQL E110 + CHECK_E110, Rust `hostproof.rs` (70 tests) + `/founder/v1/hostguard`, awam `auth.ts` DB record, `founder-hostguard.sh` DB status, Dashboard "Host separation" card | 4 pulls in order: sql-run (E110) -> awam pull.sh -> founder-install -> founder sign out/in -> status (see PULL-COMMANDS 22:58) |
 
 ## NOT STARTED (order unchanged)
@@ -20,3 +20,7 @@ Rust `/founder/v1/live` + SSE (uses E109 `founder_live_snapshot/tick/since`) -> 
 
 ## FOUNDER RULES THAT KEEP BEING BROKEN (check before every UI change)
 1. Real logo only (`LogoMark` in Brand.tsx), never redraw. 2. No mock data. 3. Founder blue (#5ec8ff to #4aa3f0) on the title and pill. 4. Backend = Rust + tokio async 24 h + WASM kernel; 3D only draws kernel-verified values. 5. User side code is never edited (the one allowed touch: `server/routes/auth.ts` host guard).
+
+## UPDATE 1 Nov 05:10 PKT
+- Greeting v3 (centred eyebrow/heading, date under clock) was REJECTED by the founder ("woh pehle wala sahi tha"). Bridge.tsx and dx.css are back to v2 (same as 35867e0). The server already runs v2. Never centre anything in the greeting again without his exact sentence.
+- New design note (docs only, no code): docs/claude/BRIDGE-EMAIL-CHAT-ENGINE-DESIGN-01NOV.md (Email <-> Chat Bridge, phases B1-B7, SQL E111-E116 proposed). Awam-stack feature; nothing installed.

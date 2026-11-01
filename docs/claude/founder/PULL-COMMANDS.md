@@ -184,3 +184,5 @@ founder-install.sh: `git -C /opt/anexomail-web fetch -q origin main && bash <(gi
 4) status: `... founder-hostguard.sh) status 2>&1 | tail -20`
 
 ## 30 Oct 23:05 PKT — greeting v3 (UI only): founder-install.sh (same command as above)
+
+## 1 Nov 05:10 PKT - greeting: NOTHING to pull (v3 reverted to v2, server already has v2). The 23:05 greeting-v3 install above is cancelled. Pending pulls are only the L5 v2 sequence (22:58 section).

@@ -2043,3 +2043,5 @@ Scene3D.tsx appeared in the working tree at 22:25 (not written by me in this tur
 ## 22:58 PKT — L5 v2 (latest technology) written: proof now in DB (E110), not pm2 logs. 4 pulls needed in this order: sql-run (E110) -> awam pull.sh -> founder-install -> founder sign out/in -> `founder-hostguard.sh status` -> enforce. See ledger "L5 v2".
 
 ## 23:05 PKT — READ docs/claude/FOUNDER-SERVER-STATE-30OCT.md FIRST after compaction (what is installed vs repo only). Live Chrome 22:59: real logo on profile OK, Founder blue top bar OK (L21, L22 green). Greeting v3 + L5 v2 are repo-only until the founder pulls.
+
+## 1 Nov 2026 05:10 PKT - greeting v3 rejected and reverted to v2 (nothing to pull). Email<->Chat Bridge ("Zoho-killer") design note written: docs/claude/BRIDGE-EMAIL-CHAT-ENGINE-DESIGN-01NOV.md (5 features, SQL sketch E111-E116, phases B1-B7, honest limits, 3 open questions). READ FOUNDER-SERVER-STATE-30OCT.md first. No code for the Bridge exists yet.
