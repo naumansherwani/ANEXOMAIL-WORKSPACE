@@ -2094,3 +2094,6 @@ S1b RUST + UI WRITTEN (tarteeb se next, 1 Nov ~12:00): Rust = server/founder/src
 
 - 13:47/13:53 (founder, verbatim summary): footer wording orders (Async engine = Tokio async runtime · axum; no 'planned'/'coming soon'; 'block quic mat likho'; Advance Network Layer + Backend Engine + Website lines as he pasted).
   STATUS 13:55: 1 Nov 13:55 FOOTER wording per founder 13:53 verbatim: Backend Engine 'Rust · Tokio Async runtime · Axum'; 'Advance Network Layer' (Live WebTransport over UDP · QUIC Native Pipeline · HTTP/3 · Media over QUIC (MoQ, IETF Standards Track) with Seamless Cross-Protocol HTTP Fallback) replaces Live; Website '... Three.js with 3D Cinematic Frontend'. No 'planned'/'block QUIC' words. Honest note given to founder: MoQ is not running in code (IETF draft). pull.sh pending.
+
+- 13:55 (founder, verbatim): "Mail transport / Edge & pages / Payments ... aur yeh sab delete kero yeh alread landing page pe hai. baki sab theek hai."
+  STATUS 14:00: 1 Nov 14:00 FOOTER: removed rows Mail transport, Edge & pages, Payments (already on the landing page; founder 13:55). Remaining: browser kernel, Backend Engine, Advance Network Layer, Website, Data & files. pull.sh pending.

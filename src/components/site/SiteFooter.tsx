@@ -43,9 +43,6 @@ const stack = [
   { where: "Advance Network Layer", what: "Live WebTransport over UDP · QUIC Native Pipeline · HTTP/3 · Media over QUIC (MoQ, IETF Standards Track) with Seamless Cross-Protocol HTTP Fallback" },
   { where: "Website", what: "React 19 · TypeScript · TanStack Start & Router · Vite 8 · Tailwind CSS 4 · Radix / shadcn · Framer Motion · GSAP · Three.js with 3D Cinematic Frontend" },
   { where: "Data & files", what: "PostgreSQL with row-level security · Hetzner Storage Box for attachments · ClamAV virus scanning" },
-  { where: "Mail transport", what: "Postfix · Dovecot · OpenDKIM" },
-  { where: "Edge & pages", what: "Caddy (HTTP/3, automatic TLS) · Nitro on Bun renders the pages" },
-  { where: "Payments", what: "Polar" },
 ];
 
 export function SiteFooter() {
