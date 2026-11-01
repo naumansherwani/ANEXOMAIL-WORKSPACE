@@ -2176,3 +2176,6 @@ Done: G4 GREEN (his order; server proof CHECK_E120 4/4 + 122 tests). G5a SQL E12
 
 ## 2 Nov 04:17 PKT — founder pasted back my old replies: "ek ek line read kero, mere pass kaun sa aya, repo update kero"
 Line-by-line result (only what HIS pastes prove): ON SERVER = founder-install 122 tests (G4 Rust+UI), pull.sh 3 awam files (W2), CHECK_E120 4/4, CHECK_E121 3/3 + E65. NOT ON SERVER = G5a Rust/kernel 0.7.0/UI (install failed, fixed 3b1f335, re-run pending), awam pull of kernel 0.7.0, G5b/c/d (not built), I2, J3-J6, K3-K7. Never reported from Chrome: G4 gauge, W1 footer, W2 menu, K3 padlock. The old "which witnesses" question (attachment line 29) is superseded by G5-D (no outside accounts).
+
+## 2 Nov 04:27 PKT — founder pasted founder-install (134 OK, twice) + awam pull.sh output
+Order: "tarteeb se chalo, rules read kero, jitna kaam kiya sab repo + chat context update kero". Done: G5a Rust+UI+SQL GREEN on the server (his paste). Awam pull ran but the kernel 0.7.0 wasm was not shipped (not in manifest): found, fixed, re-pull needed. Next in letter order: G5-0 (finish the spec read) then G5b; Rule 63 = discuss G5b before building.

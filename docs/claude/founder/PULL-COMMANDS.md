@@ -365,3 +365,7 @@ Note: the awam site keeps serving kernel 0.6.0 until its own pull (Rule 52 pin f
 ## 2 Nov 04:20 — founder-install fix (G5a)
 Rust-test ne `consistency_vectors.json` mangi, script copy nahi karta tha. Ab karta hai. Dobara chalayein:
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -25`
+
+## 2 Nov 04:35 — awam pull dobara (kernel 0.7.0 wasm ab manifest mein)
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
+Is baar `wrote  public/kernel/anexo-kernel-0.7.0.wasm` aani chahiye. Phir: `curl -sI https://anexomail.com/kernel/anexo-kernel-0.7.0.wasm | head -1` -> 200.

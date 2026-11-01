@@ -2092,3 +2092,6 @@ Green and on server: through 4b-1. Waiting for founder "haan" to start 4b-2 (tok
 
 ## Checkpoint 2 Nov 04:20 PKT
 G4 GREEN (founder order 04:14, server proof CHECK_E120 4/4 + 122 tests). G5a SQL E121 GREEN on the server (CHECK_E121 3/3 + E65 OK, his paste). G5a founder-install FAILED (consistency_vectors.json was not copied to the server); fixed in founder-install.sh, he must re-run command 2. Then awam pull (cmd 3) and Chrome. G5b-d not built. Also: I broke Rule 0 by building G5a before G4's Chrome; next after G5a = I2, J3.
+
+## Checkpoint 2 Nov 04:35 PKT
+G5a GREEN on the server (founder-install 134 tests, run twice; E121 CHECK 3/3). Chrome look pending. Awam pull ran (differ=0) BUT the 0.7.0 wasm was not in DEPLOY-MANIFEST -> anexomail.com serves 404 for it (verified by curl); fixed by adding it to the manifest; founder re-runs the awam pull.sh once. Next letter step: G5-0 (read tlog-witness, Sigsum, OpenTimestamps, find published RFC/CT vectors), then G5b. Rule 63: discuss before building. Never force-push; run the gate unpiped.
