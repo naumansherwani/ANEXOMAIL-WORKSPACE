@@ -1856,3 +1856,7 @@ Done 23:05: FOUNDER-SERVER-STATE-30OCT.md (installed vs repo-only), greeting v3 
 
 ## 1 Nov 05:46 PKT
 Founder pasted pull.sh + status + enforce outputs (all OK, enforce set). -> state doc updated, memory stamp line refreshed.
+
+## 1 Nov 05:53 PKT (verbatim essentials)
+"https://anexomail.com/auth yeh mainay kiya hai phir login kiya toh chorme pe dekho kya aya hai? ... duniya main kahin se bhi website open kerun aur mera subdomain mujeh auto pehchan le yeh pehle lovable ne kiya tha ... yeh kero"
+-> Chrome live: founder account (naumansherwani.founder@...) is INSIDE the awam dashboard at anexomail.com/app. Guard did NOT refuse and E110 recorded nothing. Finding: passkey login (auth-passkey.ts), magic-link/verify, oauth/callback, mfa/verify, refresh have NO founderHostGate; only /login and /signup do. Also the session may have existed before. Built: auth.tsx sends a founder_portal_only 403 to the founder portal automatically (auto-recognise). NOT yet: guard on the other entry paths (design + test needed, next).

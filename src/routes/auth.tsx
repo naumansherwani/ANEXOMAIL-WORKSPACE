@@ -244,6 +244,11 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
   };
 
   const fail = (e: unknown) => {
+    // Founder host guard (F1a-2): a founder account is recognised by the server on any awam host and sent to the founder portal (founder 1 Nov 05:53: "mujhe auto pehchan le"). No password or token is passed in the URL.
+    if (e instanceof ApiError && e.code === "founder_portal_only") {
+      window.location.assign("https://founderworkspace.anexomail.com/founderlogin");
+      return;
+    }
     const raw =
       e instanceof ApiError
         ? e.message

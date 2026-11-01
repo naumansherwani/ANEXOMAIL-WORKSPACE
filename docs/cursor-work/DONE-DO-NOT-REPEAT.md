@@ -1238,3 +1238,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 1 Nov 05:40 PKT: full numbered order with status = docs/claude/FOUNDER-FULL-ORDER-STATUS-01NOV.md (founder asked for the whole blueprint).
 - 1 Nov 05:50 PKT: step 4b design note written (docs/claude/FOUNDER-LIVE-RUST-SSE-DESIGN-01NOV.md), phases 4b-1..4. No code yet. Do not rewrite; build 4b-1 after founder says go.
 - 1 Nov 05:55 PKT: awam pull.sh + hostguard enforce RAN by founder. Do not ask again; only the awam-host 403 test + status remain for L5 green.
+- 1 Nov 05:55 PKT: L5 NOT green: founder session found on anexomail.com/app. Guard only on /login+/signup; passkey/magic-link/oauth/mfa/refresh unguarded. auth.tsx now redirects founder_portal_only to the founder portal (awam, repo only, needs awam pull.sh). Next: guard those paths + retest.

@@ -47,3 +47,8 @@ Not asked and NOT next: Mail<->Chat Bridge build (12b). Leftover checks: orb amb
 - Still unproven: `web_guard_last_seen_at` is None until a founder attempt hits the awam host. FOUNDER TEST (1 step): private window, https://anexomail.com/auth, sign in with the founder email -> must show the "founder portal" 403; then `founder-hostguard.sh status` shows last_founder_on_awam_host_at + web_guard_last_seen_at set + refused_30d 1. Then L5 = GREEN.
 - Safety: founder login at founderworkspace.anexomail.com/founderlogin must still work (verify in Chrome, sign in is founder's click). Rollback: `founder-hostguard.sh probe`.
 - The server's "memory stamp" (pull.sh) now reads the 1 Nov line of the chat context file.
+
+## UPDATE 1 Nov 05:55 PKT - L5 is NOT green (Chrome proof)
+Founder opened anexomail.com/auth, logged in, and the tab shows him inside the awam Business dashboard (anexomail.com/app, account naumansherwani.founder@anexomail.com). Enforce is set but did not refuse; E110 shows web_guard_last_seen None, refused 0. Likely causes: (1) login through a path without the guard (passkey / saved session / magic-link / oauth / refresh), (2) a session that already existed. Guard exists only in POST /api/auth/login and /signup.
+Repo-only change: src/routes/auth.tsx: on founder_portal_only the awam login page sends the browser to https://founderworkspace.anexomail.com/founderlogin (founder wish: any host, auto-recognised, then the founder portal). Needs awam pull.sh.
+TODO next (one phase): add founderHostGate to passkey login verify, magic-link verify, oauth callback, mfa verify and refresh for founder identities; retest from a signed-out incognito window.
