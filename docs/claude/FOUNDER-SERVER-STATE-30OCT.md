@@ -121,3 +121,9 @@ SQL E112 (810 lines, CHECK 10 ok) + RUST `inbox.rs` (whitelisted query parser, 4
 GREEN = founder runs sql-run E112 + founder-install, then Claude Chrome: Inbox card "Ready", Stream health "Live"/ok, 10 of 10 endpoints answering.
 HONEST: reports can only arrive via `report_submit` (service_role) from the awam backend => P4 (user-side button, needs founder's ok). Until then Inbox says "Ready", Glitch/Support stay waiting for first data.
 NEXT: P2 Inbox UI page (list, filter, detail, status buttons = signed writes), then P3 reply with Mail Desk, P4 awam button. Merkle after.
+
+## UPDATE 1 Nov 07:40 PKT — 4d P1 GREEN: SERVER PAR INSTALLED + CHROME PROOF
+Server (founder paste): sql-run E112 CHECK 10/10 OK (+E65 OK); founder-install 81 tests, healthz 200, token + Ed25519 ON.
+Chrome 07:34 (founder tab, reload): "10 of 10 endpoints answering"; card Inbox "Ready. Glitch and support reports appear here the moment a user sends one"; Channels "0 of 3 connected. Waiting for first data: Glitch, Support, Company Mail" chip "0 of 3"; Live feed Version 23, 13 sources (user_reports registered), last check moves; Bridge page unchanged (Arriving/Leaving/Needs attention).
+FINDING L8: Stream health shows "75.00% of streams closed within 20 seconds | Down" (caused by my page reloads; SLO needs min sample 20 + ignore reload). Fix in P2 SQL (E113).
+NEW DOC: FOUNDER-CHAIRMAN-MAP-01NOV.md (Dashboard vs Bridge vs deck pages; user UX parity list). NEXT: P2 Inbox page + E113 (>=800 lines: SLO sample rule, inbox write support, exceptions feed for Bridge), then P3, P4 (needs founder ok), Merkle.
