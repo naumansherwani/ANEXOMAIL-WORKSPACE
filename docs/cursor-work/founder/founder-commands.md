@@ -2052,3 +2052,5 @@ S1b RUST + UI WRITTEN (tarteeb se next, 1 Nov ~12:00): Rust = server/founder/src
 - 11:50: "yeh kya baqwas tatti tum bana rahay ho? tumhay cinematic bola tha jo current already bana huwa hai us ko polish kero sirf"
 
 - 11:58: "sab context chat update kero codes pull hogaye hain update kero green kero compact chat se pehle sab update kero"
+
+- 12:00: "gandu tujhe main dekhta hoon user side settings page aur us ko match kero founder se lekn founder ka features alag hai. agar yeh awam walay features founder ko nahi mile toh tujhe goli maarun ga"

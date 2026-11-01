@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md e48cc1e76647de8b
+docs/cursor-work/founder/founder-commands.md f0a585fde783e380
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -1044,7 +1044,7 @@ founder-web/src/SettingsS2.tsx 8dbc223d06794e4a
 founder-web/src/s2lib.ts 8d7ca06f5afb4b9d
 founder-web/src/settingsS2.test.ts fd93667abe335683
 server/founder/src/settings_s2.rs 4ad955dc484878cd
-docs/claude/AWAM-SETTINGS-CENTER-LIVE-LIST-01NOV.md 54cd5ff19f997ac9
+docs/claude/AWAM-SETTINGS-CENTER-LIVE-LIST-01NOV.md 9f3bc330665e4ceb
 docs/cursor-work/sql/E114_founder_appearance_ambient.sql 1bbde51cfc348019
 docs/cursor-work/sql/CHECK_E114.sql 2de0e829bf481c1b
 founder-web/src/AmbientStudio.tsx d7e8b1e1886ba751

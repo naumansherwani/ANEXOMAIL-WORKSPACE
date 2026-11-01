@@ -74,3 +74,21 @@ Correction recorded: the Appearance device block (6 controls) and account block 
 - **Blast radius** — a count line "0 members · 0 mailboxes · 0 automations" and a second line "Severity low · reversible in one click". Founder version: real counts from the info registry (E113 `founder_setting_blast`), e.g. approved devices, scheduled changes.
 - **History** — "No change recorded yet." or the list of past values for that one key. Founder version: the same plus the ledger entry number and a browser-side "proven" tick.
 - Row controls seen: Turn on / Turn off for toggles; Detect my city / search box for Home city.
+
+## GAP: awam row -> founder state (1 Nov 12:00, founder order "awam walay features founder ko milen")
+| Awam tab | Awam row | Founder today | Plan (S1c = one phase: SQL E115 registry keys + Rust REGISTRY + UI rows) |
+|---|---|---|---|
+| Personal | Display name, Home city | LIVE | - |
+| Personal | Profile photo (founder extra) | LIVE | - |
+| Personal | Undo send window | MISSING | key `undo_send_seconds` (0-60, default 30); enforced when Mail Desk lands (step 11) |
+| Personal | Send confidence check | MISSING | key `send_confidence_check` (bool, on) |
+| Workspace | Retention window | MISSING (tab "coming") | key `retention_days` (0 = keep forever) |
+| Workspace | Require two-factor for everyone | MISSING | founder form: `require_passkey` (bool); enforced by step 7 passkey |
+| Workspace | Flag external recipients | MISSING | key `flag_external` (bool, on) |
+| Appearance | THIS DEVICE (6) + footer, ACCOUNT Density/Reduce motion | LIVE in code; polish SPA installed but live site still serves old index (diagnosis pending) | - |
+| Notifications | Quiet hours | MISSING (tab "coming") | key `quiet_hours` (bool, on; escalations excepted) |
+| Notifications | Only VIPs interrupt | MISSING | key `only_vips` (bool, off) |
+| Privacy | Read receipts | MISSING (tab "coming") | read-only row "Never sent" (no key: nothing to switch on) |
+| Privacy | Block tracking pixels | MISSING | key `block_tracking_pixels` (bool, on) |
+| Time machine, Drift & schedule | - | LIVE (E113) | new keys join automatically via registry |
+Honest rule: each new row stores real values in the registry with history/blast/drift/schedule like the rest; rows whose effect belongs to a later step say so in their Explain text (no fake "enforced"). Order: (1) fix live SPA, (2) S1c.
