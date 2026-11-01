@@ -7,7 +7,7 @@ One letter per step, in build order. **GREEN** only where the proof exists (serv
 | Letter | Step | Old # | Status |
 |---|---|---|---|
 | **A** | Device approval + Ed25519 request signatures | [1] | **GREEN** (Chrome) |
-| **B** | Settings S1 (photo, name, adaptive city, graphics, sidebar) | [2] | built; status text old, S2 runs on top of it in Chrome |
+| **B** | Settings S1 (photo, name, adaptive city, graphics, sidebar) | [2] | **GREEN** (E108 CHECK 6 OK on the server + founder-install green, context lines 1903/1920; Settings page lives in his Chrome and H runs on it). The master-order row text was stale |
 | **C** | Server leftovers: C1 Polar Metrics token **GREEN** · C2 awam host guard (L5) PARKED to the awam migration | [3] | C1 GREEN, C2 parked |
 | **D** | T1 UI stack: TypeScript, TanStack Router, Tailwind 4.2, shadcn | [3a] | **GREEN** (425ec14) |
 | **E** | Loophole fixes L1-L12 | [3b] | **GREEN** except L5 (parked) and lockfile (open, step 4e) |
@@ -39,6 +39,7 @@ One letter per step, in build order. **GREEN** only where the proof exists (serv
 | **W4** | Catch-up A1-A7: Bun-free pages, webauthn-rs, DBSC, WebGPU, MoQ (MQ0-MQ4), PQM, PQN | after each founder letter turns GREEN |
 
 ## Rules
+0. **The blueprint runs in LETTER ORDER (founder 1 Nov 15:21).** Next letter = the first one that is not GREEN. Today that is: C2 (host guard, parked by the founder's 1 Nov 06:07 decision), E (L5 parked + lockfile), G4 (Integrity Gauge), I2 (install + Chrome of S1b), then J3. A parked item stays in its place until the founder says skip or do it; nothing later starts before that.
 1. One letter at a time: green on the server + live in his Chrome before the next letter starts.
 2. No duplicate: PQM = Q4, attachments = Q2/Q3, WebTransport = K6; PQN only adds on top.
 3. Open decision (founder): Q2 "instant dedupe" vs end-to-end encryption in PQN0.

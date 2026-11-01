@@ -2150,3 +2150,6 @@ S1b RUST + UI WRITTEN (tarteeb se next, 1 Nov ~12:00): Rust = server/founder/src
 
 - 15:17 (founder, verbatim gist): "in ki numbering kero abc ke naam se clear likho blueprint aur jo green hai us ke samne green likho ... awam T256-2: HAAN HAI"
   STATUS: 1 Nov 15:25 founder 15:17: 'numbering kero abc ke naam se, green ke samne green'; and 'HAAN HAI' for awam T256-2. DONE: docs/claude/BLUEPRINT-ABC-01NOV.md (letters A-V founder + W awam, old # in brackets). T256-2 (awam AES-256) = APPROVED in writing, builds as K5/W3 AFTER K3 (Chrome padlock on :8443) is green (one phase at a time).
+
+- 15:21 (founder, verbatim gist): "B ... built; status text old ... IS KYA MATLAB HAI. bola hai ke jo green hai clear likho GREEN HAI. numbering se chalega yeh rule hai tarteeb se yeh blueprint chalay ga"
+  STATUS: 1 Nov 15:30 founder 15:21: B 'built; status old' unclear -> B is GREEN (E108 CHECK 6 OK on server + founder-install, Settings in his Chrome); BLUEPRINT-ABC rule 0 added: strict LETTER ORDER, next = first non-GREEN (C2 parked, E lockfile/L5, G4, I2, then J3).
