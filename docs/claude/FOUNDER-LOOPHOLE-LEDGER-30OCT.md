@@ -88,3 +88,4 @@ Status: CODE DONE, NOT GREEN. Order: sql-run (E110) -> awam pull.sh (auth.ts) ->
 - 1 Nov 07:05 L6 CLOSED+GREEN on server: pending_channels ab registry se (Chrome proof). Chhota: unknown chip text 'Not connected' (Stream health) - wording touch-up pending.
 - 1 Nov 08:10 L7: Glitch/Support had no source at all -> E112 intake + Inbox (P1). Open: P4 user-side button needs founder ok.
 - 1 Nov 07:40 L8 (open): Stream health 'Down 75% short streams' from page reloads; fix = min sample 20 + ignore client_gone reloads, in E113 (P2). L7 GREEN on server (Inbox ready).
+- 1 Nov 07:40 L8 CLOSED by removal (Stream health card gone; telemetry default OFF). Rule from founder: no meta/diagnostic cards that can turn red from a reload; only long-running real live-wired features.

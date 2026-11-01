@@ -127,3 +127,9 @@ Server (founder paste): sql-run E112 CHECK 10/10 OK (+E65 OK); founder-install 8
 Chrome 07:34 (founder tab, reload): "10 of 10 endpoints answering"; card Inbox "Ready. Glitch and support reports appear here the moment a user sends one"; Channels "0 of 3 connected. Waiting for first data: Glitch, Support, Company Mail" chip "0 of 3"; Live feed Version 23, 13 sources (user_reports registered), last check moves; Bridge page unchanged (Arriving/Leaving/Needs attention).
 FINDING L8: Stream health shows "75.00% of streams closed within 20 seconds | Down" (caused by my page reloads; SLO needs min sample 20 + ignore reload). Fix in P2 SQL (E113).
 NEW DOC: FOUNDER-CHAIRMAN-MAP-01NOV.md (Dashboard vs Bridge vs deck pages; user UX parity list). NEXT: P2 Inbox page + E113 (>=800 lines: SLO sample rule, inbox write support, exceptions feed for Bridge), then P3, P4 (needs founder ok), Merkle.
+
+## UPDATE 1 Nov 07:45 PKT — UI cleanup per founder 07:39 (repo, awaiting founder-install; NOT green yet)
+SIDEBAR: group "Workspace (user app)" (User dashboard + 13 user links) REMOVED from App.tsx + Cmd+K list; sidebar = Dashboard, Bridge, Finance, People, Mail Desk, AI, Release, Move-In, Systems, Control, Audit ledger (+ Collapse). User-app features come to the founder as founder decks on founder endpoints/gates (FOUNDER-PARITY-30OCT.md), never as user pages.
+STREAM HEALTH card REMOVED from Dashboard (it turned red on a reload). Rust `live::telemetry_on()` now defaults OFF (`FOUNDER_TELEMETRY=on` enables); e2e mock sets it on. E111 SQL stays installed (idle). L8 CLOSED by removal. Tests: tsc 0, bun 7, cargo 81.
+PULL: founder-install.sh only (Rust + SPA). Green = Chrome: sidebar has no user-app group, no Stream health card, Inbox + Channels cards remain, 9 cards + Recent changes.
+NEXT: P2 Inbox page (+ Bridge exception rows); sidebar item "Inbox" jodna (founder ki haan).

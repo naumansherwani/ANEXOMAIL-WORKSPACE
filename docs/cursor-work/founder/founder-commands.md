@@ -1910,3 +1910,9 @@ Status 08:10: 4d P1 poora (E112 SQL + Rust inbox endpoints + UI Inbox card); fou
 Amal: (1) green + Chrome proof; (2) Bridge vs Dashboard ka saaf nakshah (kya kahan, chairman ko sab kuch dikhe); (3) user-side UI/UX feature list (repo se) -> founder parity table (same UX, latest tech, data kabhi mix nahi); (4) docs/context update.
 Status 07:40: 4d P1 GREEN (server + Chrome). Chairman map doc likha; P2 + E113 agla.
 Status 07:36: sidebar poora scroll dekha (live), kamiyan CHAIRMAN-MAP section 6 mein.
+
+## 1 Nov 07:39 PKT — founder (verbatim, Roman Urdu)
+"user dashboard yeh baqwas mujeh nazar nahi aye yeh real features founder ko dainay hain jaise bola hai ke website 80 to 90% same founder ko mile ga bus technology latest hogi gates founder ke hogay aur endpoint founder ke hogay. yeh UI UX itna zedia hai side bar main yeh mujhe irritate kerta hai." + "yeh baqwas kism ka feature mere ya user ki side pe mat rakhna hai [Stream health Down 75%] yeh refresh ke baad red hota hai yeh baqwas mera demkh kharab karay ga yeh ghaitya main bardshat nahi kerun ga mujhe woh feature chaiye hain jo lamba time live wire working chalte ho samjhay. repo update kero sab kuch update kero"
+Amal: (1) sidebar se "Workspace (user app)" group POORA hata do (User dashboard, Mail, People, Calendar, Work, CRM, Org, Analytics, Safety, ANEXOChat, AI, Speed, Founder, Admin) — sirf founder ke apne decks; user-app features founder ko apne endpoints/gates par milenge (parity table), user pages nahi; (2) Stream health card Dashboard se hata do (refresh par laal hota tha); is qism ke "meta/telemetry" features founder ya user UI par nahi: sirf lamba-chalne wale asli live-wired features; (3) repo + context update.
+
+## 1 Nov 07:42 PKT — note: 07:39/07:40 order logged twice (same text). Done = the 07:39 Amal above: user-app group removed, Stream-health card removed, telemetry writes OFF by default (FOUNDER_TELEMETRY=on to enable), no E113 needed. Founder-install only.

@@ -45,8 +45,8 @@ pub fn sse_frame(id: Option<i64>, event: &str, data: &str) -> String {
 fn now_s() -> i64 { std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0) }
 
 /// Start the single process-wide tick. Safe to call once from main. FOUNDER_LIVE_TICK=off disables it (rollback switch).
-/// E111 telemetry on? `FOUNDER_TELEMETRY=off` is the rollback switch (registry + snapshot_v2 keep working, only the writes stop).
-pub fn telemetry_on() -> bool { std::env::var("FOUNDER_TELEMETRY").map(|v| v != "off").unwrap_or(true) }
+/// E111 telemetry (stream sessions + tick buckets). OFF unless `FOUNDER_TELEMETRY=on`: the founder UI shows no stream-health card any more (founder 1 Nov 07:39: no meta/diagnostic cards that turn red on a reload), so nothing writes rows nobody reads. Registry + snapshot_v2 are unaffected.
+pub fn telemetry_on() -> bool { std::env::var("FOUNDER_TELEMETRY").map(|v| v == "on").unwrap_or(false) }
 
 /// Open a stream session row. None = telemetry off / E111 missing / database slow (2 s cap): never blocks or breaks the stream.
 pub async fn session_open(sb: &Sb, kind: &str) -> Option<i64> {

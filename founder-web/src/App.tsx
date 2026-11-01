@@ -44,15 +44,10 @@ function DeviceScreen({ code, revoked, retry }: { code: string | null; revoked: 
   );
 }
 
-const AWAM = [["User dashboard", "/app", "dashboard"], ["Mail", "/app/mail/inbox", "mail"], ["People", "/app/people", "people"], ["Calendar", "/app/calendar", "calendar"], ["Work", "/app/work", "work"], ["CRM", "/app/crm", "crm"], ["Org", "/app/org", "org"], ["Analytics", "/app/analytics", "analytics"], ["Safety", "/app/safety", "safety"], ["ANEXOChat", "/app/chat", "chat"], ["AI", "/app/ai-center", "ai"], ["Speed", "/app/perf", "speed"], ["Founder", "/app/founder", "founder"], ["Admin", "/app/admin", "admin"]];
 const CC: [string, string][] = [["dashboard", "Dashboard"], ["bridge", "Bridge"], ...ORDER.map((k): [string, string] => [k, DECK_META[k].title]), ["audit", "Audit ledger"]];
 /** Every page the router knows (TanStack Router, hash history: #/finance). Unknown names redirect to the Dashboard (front page). */
 export const KNOWN = new Set([...CC.map((x) => x[0]), "profile", "settings"]);
-// L3 (30 Oct): the user app lives on its own host; links open it in a NEW tab there, so this founder host never serves or navigates to the awam app.
-const AWAM_ORIGIN = "https://anexomail.com";
-const AWAM_T: [string, string, string][] = (AWAM as [string, string, string][]).map(([n, p, ic]) => [n, AWAM_ORIGIN + p, ic]);
 const TABS: [string, string][] = [["dashboard", "Home"], ["bridge", "Bridge"], ["finance", "Finance"], ["people", "People"]];
-const Chev = () => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>;
 
 /** Everything the page bodies need from the shell (profile, live bridge data, appearance). Provided by the shell, read by the routed pages. */
 type ShellData = { view: string; d: any; at: Date | null; prof: Prof | null; loadProf: () => Promise<void>; fx: boolean; setFx: (v: boolean) => void; slim: boolean; setSlim: (v: boolean) => void; err: string; setView: (v: string) => void };
@@ -85,7 +80,7 @@ export default function App() {
   // TanStack Router (hash history): the current page is the route param, back/forward and deep links come from the router.
   const nav = useNavigate();
   const view = useRouterState({ select: (s) => s.location.pathname.replace(/^\/+/, "").split("/")[0] || "dashboard" });
-  const [pal, setPal] = useState(false), [wsOpen, setWsOpen] = useState(() => { try { return window.localStorage.getItem("anexo.founder.ws") === "1"; } catch { return false; } });
+  const [pal, setPal] = useState(false);
   // Real URLs: #/finance etc. The page area fades in once on change (CSS, no waiting on the browser).
   const setView = useCallback((v: string) => { void nav({ to: "/$view", params: { view: v } }); }, [nav]);
   const [prof, setProf] = useState<Prof | null>(null);
@@ -127,13 +122,11 @@ export default function App() {
     };
     window.addEventListener("keydown", on); return () => window.removeEventListener("keydown", on);
   }, [setView]);
-  const toggleWs = () => { const n = !wsOpen; setWsOpen(n); try { window.localStorage.setItem("anexo.founder.ws", n ? "1" : "0"); } catch {} };
 
   if (!authed) return <Gate />;
   if (pend) return <DeviceScreen code={pend.code} revoked={pend.revoked} retry={load} />;
   const title = view === "bridge" ? "Bridge" : view === "profile" ? "Profile" : view === "settings" ? "Settings" : (CC.find((n) => n[0] === view) || ["", ""])[1];
-  const items: (NavItem & { href?: string })[] = [...CC.map(([k, n]) => ({ id: k, name: n, group: "Command center", icon: k, view: k })), { id: "settings", name: "Settings", group: "Account", icon: "settings", view: "settings" }, { id: "profile", name: "Profile & photo", group: "Account", icon: "people", view: "profile" },
-    ...AWAM_T.map(([n, href, ic]) => ({ id: href, name: n, group: "Workspace (user app)", icon: ic, view: "", href }))];
+  const items: (NavItem & { href?: string })[] = [...CC.map(([k, n]) => ({ id: k, name: n, group: "Command center", icon: k, view: k })), { id: "settings", name: "Settings", group: "Account", icon: "settings", view: "settings" }, { id: "profile", name: "Profile & photo", group: "Account", icon: "people", view: "profile" }];
   const pick = (x: NavItem & { href?: string }) => { setPal(false); if (x.href) window.open(x.href, "_blank", "noopener,noreferrer"); else setView(x.view); };
   const spot = (e: React.PointerEvent<HTMLElement>) => { const r = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`); e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`); };
   const nvBtn = (k: string, n: string, i = 0) => <button key={k} className="nv" style={{ "--i": i } as React.CSSProperties} onPointerMove={spot} title={n} aria-current={view === k ? "page" : undefined} onClick={() => setView(k)}><Icon k={k} /><span className="lbl">{n}</span></button>;
@@ -148,8 +141,6 @@ export default function App() {
         <div className="sbtop"><Brand /></div>
         <div className="sbscroll">
           {CC.map(([k, n], i) => nvBtn(k, n, i))}
-          <button className="grp" aria-expanded={wsOpen} onClick={toggleWs}><Chev />Workspace (user app)</button>
-          {wsOpen && AWAM_T.map(([n, href, ic], i) => <a key={n} className="nv" href={href} target="_blank" rel="noopener noreferrer" title={n} style={{ "--i": i } as React.CSSProperties} onPointerMove={spot}><Icon k={ic} /><span className="lbl">{n}</span></a>)}
         </div>
         <div className="sbfoot">
           <button className="nv" onClick={toggleSlim} aria-label={slim ? "Expand sidebar" : "Collapse sidebar"} title={slim ? "Expand" : "Collapse"}><Icon k="collapse" /><span className="lbl">Collapse</span></button>

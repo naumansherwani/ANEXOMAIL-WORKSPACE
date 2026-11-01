@@ -42,10 +42,13 @@ Qaida (FC18/FC22): founder ke apne component/endpoint/table; user ki React files
 | Feature areas: ai, analytics, billing, calendar, chat, compose, crm, dashboard, files, mail, migrate, org, people, premium, release, safety, search, security, settings, trial, work | Dashboard, Settings (2 tabs), Profile hain; baqi decks | FOUNDER-PARITY-30OCT.md table (92 user files -> decks) | 6-13 |
 Tarteeb: FOUNDER-MASTER-AUDIT-01NOV.md (4d Inbox -> 5 Merkle -> 6 S2 -> 7 passkey -> 8 Decide -> 9 Finance -> 10 People -> 11 Mail Desk -> 12 Systems -> 13 Control).
 
-## 5. Live mein mili ek asli kami (L8)
+## 5. (BAND 07:42) Stream health card — founder ne hata diya; L8 band
+Founder 07:39: refresh par laal hone wali meta card nahi chahiye. Card Dashboard se HATA di; telemetry writes default OFF (FOUNDER_TELEMETRY=on se chalu). Asli server kharabi (tick fail/gap) agar kabhi dikhani ho to sirf Bridge par EXCEPTION ke taur par (P2). Neeche purani tafseel sirf record ke liye.
+
+### (purana) L8
 Stream health card 07:34 par "Down: 75% of streams closed within 20 seconds". Wajah asli hai: aaj mein ne baar-baar page reload kiya (har reload = chhota session). SLO ka qaida kamzor hai: bohat kam sessions par percentage bhi "fail" ho jata hai. FIX (P2 ke SQL E113 mein): kam az kam 20 band sessions ka sample, warna "Collecting"; aur reload (client_gone) ko reconnect-storm mein na ginna jab tak lagataar na ho. Tab tak card laal rahe ga (jhoot nahi, par gumrah-kun).
 
-## 6. Sidebar poora scroll karke dekha (live Chrome 07:35, founder ka hukam "neechay tak jao")
+## 6. (Sidebar ab SAAF 07:42: user-app group poora hata diya; sirf founder ke apne decks) — purana audit: Sidebar poora scroll karke dekha (live Chrome 07:35, founder ka hukam "neechay tak jao")
 Sidebar andar scroll hota hai (list 1026 px, dikhne wali 547 px). Neeche tak: Dashboard, Bridge, Finance, People, Mail Desk, AI, Release, Move-In, Systems, Control, Audit ledger | group "Workspace (user app)": User dashboard, Mail, People, Calendar, Work, CRM, Org, Analytics, Safety, ANEXOChat, AI, Speed, Founder, Admin | Collapse. Aakhri item Admin hai, kuch kata hua nahi, Collapse se overlap nahi.
 KAMIYAN (asli): (1) **People aur AI do baar** (founder deck + user app group) — chairman ko confuse karta hai. (2) "Founder" link = purane Lovable founder pages (F9 cutover par jayega). (3) User-app group ke links user ke pages kholte hain: data mix na ho isliye har link ka founder version bante hi us group se ghayab (parity table). (4) **Inbox sidebar mein nahi** (P2 mein add). (5) Dashboard ke "New customers" tile ke neeche "Not connected yet: Glitch, Support, Company Mail" ab registry se aati hai (sach).
 FAISLA (founder ki haan par, code nahi badla): user-app group ke duplicate naam "People"/"AI" ko "People (user app)"/"AI (user app)" likhna, Inbox item jodna.

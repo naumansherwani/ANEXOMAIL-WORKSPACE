@@ -30,7 +30,7 @@ class H(http.server.BaseHTTPRequestHandler):
         s.send_j(None)
 sv=http.server.ThreadingHTTPServer(("127.0.0.1",0),H); port=sv.server_port; threading.Thread(target=sv.serve_forever,daemon=True).start()
 fp=socket.socket(); fp.bind(("127.0.0.1",0)); fport=fp.getsockname()[1]; fp.close()
-env=dict(os.environ,SUPABASE4_URL=f"http://127.0.0.1:{port}",SUPABASE4_SERVICE_ROLE_KEY="k",FOUNDER_HMAC_KEY="x"*40,FOUNDER_BIND=f"127.0.0.1:{fport}",FOUNDER_STATIC="/tmp")
+env=dict(os.environ,SUPABASE4_URL=f"http://127.0.0.1:{port}",SUPABASE4_SERVICE_ROLE_KEY="k",FOUNDER_HMAC_KEY="x"*40,FOUNDER_BIND=f"127.0.0.1:{fport}",FOUNDER_STATIC="/tmp",FOUNDER_TELEMETRY="on")
 pr=subprocess.Popen([BIN],env=env,stderr=subprocess.PIPE,text=True); time.sleep(1.5)
 h=b64(json.dumps({"alg":"ES256","typ":"JWT","kid":"sb1"}).encode())
 p=b64(json.dumps({"iss":f"http://127.0.0.1:{port}/auth/v1","aud":"authenticated","sub":UID,"email":"f@t","exp":int(time.time())+600}).encode())
