@@ -2194,3 +2194,6 @@ RULE (chairman): every word on the awam footer is the chairman's. Claude never e
 
 ## 2 Nov 04:45 PKT — founder pasted E122 CHECK (OK rows) and ordered (verbatim): "footer ki commit delete ker dai kabhi bhi pull commands se change nahi ho. tu footer se dur rahay madarchod. footer pe jo likha hai wohi realty main codes se likha jaye ga. tune repo ja ke read kero ek ek folder"
 Done: SiteFooter.tsx removed from DEPLOY-MANIFEST (pull.sh can never write it again); rules-gate FAILS any commit that stages it unless CHAIRMAN_FOOTER_OK=1 (his explicit word). The two footer commits cannot be deleted without a force-push (history rewrite on a repo his server pulls from; rejected before), but the file is byte-identical to before. Chrome (me): seal #1 live ("sealed up to entry 29 at 4:38 AM", pin saved id 1/upto 29). FOUND a G4 bug: UI called /audit/merkle/proof, real route is /audit/proof -> 503 -> "browser proof unavailable". Fixed + route-guard test + dist rebuilt.
+
+## 2 Nov 04:50 PKT — founder (verbatim): "madarchod tune technology read kiye bina saray kaam ker diye ... abhi tu ja ke blueprint main read kero abhi ke abhi"
+Done: re-read AGENTS.md Rules 52, 61, 62, 63, 64, 70, 71; CODES/00-README-RULES.md FC1-FC43; FOUNDER-TECHNOLOGY-ADOPTION-30OCT.md; TECH-CHART-01NOV.md. Result in the chat context checkpoint 05:05 (breach list). No code changed in this step.
