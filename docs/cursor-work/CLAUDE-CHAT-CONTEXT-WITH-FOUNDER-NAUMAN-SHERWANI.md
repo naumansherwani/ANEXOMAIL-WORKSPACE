@@ -2095,3 +2095,6 @@ G4 GREEN (founder order 04:14, server proof CHECK_E120 4/4 + 122 tests). G5a SQL
 
 ## Checkpoint 2 Nov 04:35 PKT
 G5a GREEN on the server (founder-install 134 tests, run twice; E121 CHECK 3/3). Chrome look pending. Awam pull ran (differ=0) BUT the 0.7.0 wasm was not in DEPLOY-MANIFEST -> anexomail.com serves 404 for it (verified by curl); fixed by adding it to the manifest; founder re-runs the awam pull.sh once. Next letter step: G5-0 (read tlog-witness, Sigsum, OpenTimestamps, find published RFC/CT vectors), then G5b. Rule 63: discuss before building. Never force-push; run the gate unpiped.
+
+## Checkpoint 2 Nov 04:40 PKT
+Chrome checked by me (founder asked: never ask him, look yourself). G4 Chrome GREEN (Ledger seal: 28 entries intact, full check 26 min ago, 5 of 5 proven in this browser). W6 GREEN (awam wasm 0.7.0 200, SHA == pin). G5a: Rust/SQL/kernel on the server GREEN; the browser consistency path cannot run until a first seal exists (50 entries), honest NOT-proven-live. Awam footer still claims MoQ (not running) -> queued honesty fix. Next: G5-0 then G5b (discuss first, Rule 63).

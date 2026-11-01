@@ -2179,3 +2179,6 @@ Line-by-line result (only what HIS pastes prove): ON SERVER = founder-install 12
 
 ## 2 Nov 04:27 PKT — founder pasted founder-install (134 OK, twice) + awam pull.sh output
 Order: "tarteeb se chalo, rules read kero, jitna kaam kiya sab repo + chat context update kero". Done: G5a Rust+UI+SQL GREEN on the server (his paste). Awam pull ran but the kernel 0.7.0 wasm was not shipped (not in manifest): found, fixed, re-pull needed. Next in letter order: G5-0 (finish the spec read) then G5b; Rule 63 = discuss G5b before building.
+
+## 2 Nov 04:32 PKT — founder: "chrome mujhse nahi poocha kero, khudi dekha kero, repo se live match kero"
+Done: I opened his Chrome tabs myself (read-only). Founder Dashboard + awam wasm results are in the blueprint G row and DONE ledgers (G4 Chrome GREEN, W6 GREEN, G5a consistency not testable live until the first seal at 50 entries). Rule: from now on I check Chrome myself for read-only proof and never ask him to look.
