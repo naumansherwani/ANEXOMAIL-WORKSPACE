@@ -2,13 +2,25 @@
 export const LABEL: Record<string, string> = {
   "personal.display_name": "Display name", "personal.avatar": "Profile photo", "personal.home": "Home city",
   "appearance.graphics": "Graphics", "appearance.sidebar_slim": "Compact sidebar",
+  "appearance.text_scale": "Text size", "appearance.animations": "Animations", "appearance.transitions": "Transitions", "appearance.celebration": "Celebration",
+  "appearance.focus_ring": "High-contrast focus ring", "appearance.density": "Density", "appearance.reduce_motion": "Reduce motion",
+  "appearance.ambient": "Ambient look", "appearance.ambient_favs": "Favourite looks",
+  "personal.undo_send": "Undo send window", "personal.send_check": "Send confidence check",
+  "workspace.retention_days": "Retention window", "workspace.require_passkey": "Require passkey for every sign-in", "workspace.flag_external": "Flag external recipients",
+  "notifications.quiet_hours": "Quiet hours", "notifications.only_vips": "Only VIPs interrupt", "privacy.block_trackers": "Block tracking pixels",
 };
 export const label = (k: string) => LABEL[k] ?? k;
 
 export function fmtVal(key: string, v: unknown): string {
   if (v === null || v === undefined) return "default";
   if (typeof v === "boolean") return v ? "On" : "Off";
+  if (key === "appearance.text_scale" && typeof v === "number") return v === 100 ? "Default" : `${v}%`;
+  if (key === "personal.undo_send" && typeof v === "number") return v === 0 ? "Off" : `${v} s`;
+  if (key === "workspace.retention_days" && typeof v === "number") return v === 0 ? "Forever" : v % 365 === 0 ? `${v / 365} year${v === 365 ? "" : "s"}` : `${v} days`;
+  if (key === "appearance.ambient" && typeof v === "object") return "custom look";
+  if (key === "appearance.ambient_favs" && Array.isArray(v)) return `${v.length} saved`;
   if (key === "personal.home" && typeof v === "object") { const o = v as { city?: string; country?: string }; return [o.city, o.country].filter(Boolean).join(", "); }
+  if (typeof v === "string" && /^[a-z]+$/.test(v) && key.startsWith("appearance.")) return v[0].toUpperCase() + v.slice(1);
   if (typeof v === "string") return v.length > 40 ? `${v.slice(0, 40)}…` : v;
   return JSON.stringify(v);
 }

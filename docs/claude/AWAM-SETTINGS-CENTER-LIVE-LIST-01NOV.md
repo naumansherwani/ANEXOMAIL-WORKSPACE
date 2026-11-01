@@ -80,7 +80,7 @@ Correction recorded: the Appearance device block (6 controls) and account block 
 |---|---|---|---|
 | Personal | Display name, Home city | LIVE | - |
 | Personal | Profile photo (founder extra) | LIVE | - |
-| Personal | Undo send window | S1c written 1 Nov (E115 local green, Rust 117 tests, UI) — server install pending | - |
+| Personal | Undo send window | LIVE on server 1 Nov 12:40 (E115) | - |
 | Personal | Send confidence check | S1c written (same) | - |
 | Workspace | Retention window | S1c written (tab live) | key `retention_days` (0 = keep forever) |
 | Workspace | Require two-factor for everyone | S1c written | founder form: `require_passkey` (bool); enforced by step 7 passkey |

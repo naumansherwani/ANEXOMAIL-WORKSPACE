@@ -122,14 +122,26 @@ export function TimeMachine({ startKey, onKey }: { startKey: string | null; onKe
 type Drift = { score: number; aligned: number; loose: number; risky: number; items: { key: string; label: string; state: "aligned" | "loose" | "risky"; current: unknown; recommended: unknown; why: string }[] };
 type Sched = { id: string; key: string; label: string; to: unknown; apply_at_ms: number; rollback_minutes: number | null; state: string; reason: string; applied_ms: number | null; rollback_due_ms: number | null; can_cancel: boolean; can_confirm: boolean; note: string | null };
 const STATE_TXT: Record<string, string> = { scheduled: "Waiting to apply", applied: "Applied", confirmed: "Kept", rolled_back: "Rolled back", cancelled: "Cancelled", superseded: "Overtaken by a newer change", failed: "Failed" };
-const FORM_KEYS: [string, "bool" | "text"][] = [["appearance.graphics", "bool"], ["appearance.sidebar_slim", "bool"], ["personal.display_name", "text"]];
+// Every key the server allows to be scheduled (SQL founder_settings_info.schedulable, Rust SCHEDULABLE) except the two that need a picture or a place (ambient look, home city).
+type Kind = "bool" | "text" | "pick";
+const FORM_KEYS: [string, Kind, [string | number, string][]?][] = [
+  ["appearance.graphics", "bool"], ["appearance.sidebar_slim", "bool"], ["appearance.celebration", "bool"], ["appearance.focus_ring", "bool"], ["appearance.reduce_motion", "bool"],
+  ["appearance.text_scale", "pick", [[90, "90%"], [100, "Default"], [115, "115%"], [130, "130%"], [150, "150%"]]],
+  ["appearance.animations", "pick", [["full", "Full"], ["reduced", "Reduced"], ["none", "None"]]],
+  ["appearance.transitions", "pick", [["fast", "Fast"], ["normal", "Normal"], ["slow", "Slow"]]],
+  ["appearance.density", "pick", [["comfortable", "Comfortable"], ["compact", "Compact"]]],
+  ["personal.display_name", "text"],
+  ["personal.undo_send", "pick", [[0, "Off"], [5, "5 s"], [10, "10 s"], [20, "20 s"], [30, "30 s"], [60, "60 s"]]],
+  ["personal.send_check", "bool"], ["workspace.flag_external", "bool"], ["notifications.quiet_hours", "bool"], ["notifications.only_vips", "bool"], ["privacy.block_trackers", "bool"],
+];
 const ROLLBACKS: [string, number | null][] = [["Keep it (no rollback)", null], ["Roll back after 15 min", 15], ["Roll back after 1 hour", 60], ["Roll back after 4 hours", 240], ["Roll back after 24 hours", 1440]];
 
 export function DriftSchedule() {
   const [drift, setDrift] = useState<Drift | null>(null), [sched, setSched] = useState<Sched[]>([]), [avail, setAvail] = useState(true), [err, setErr] = useState<string | null>(null), [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; t: string } | null>(null);
   const [k, setK] = useState(FORM_KEYS[0][0]), [bv, setBv] = useState(false), [tv, setTv] = useState(""), [when_, setWhen] = useState(""), [rb, setRb] = useState<number | null>(15), [why, setWhy] = useState("");
-  const kind = FORM_KEYS.find((x) => x[0] === k)?.[1] ?? "bool";
+  const spec = FORM_KEYS.find((x) => x[0] === k) ?? FORM_KEYS[0], kind = spec[1], opts = spec[2] ?? [], [pv, setPv] = useState<string>("");
+  useEffect(() => { setPv(opts.length ? String(opts[0][0]) : ""); }, [k]); // eslint-disable-line react-hooks/exhaustive-deps
   const load = useCallback(async () => {
     try {
       const [d, s] = await Promise.all([ask<Drift>("/founder/v1/settings/drift"), ask<Sched[]>("/founder/v1/settings/scheduled")]);
@@ -145,7 +157,7 @@ export function DriftSchedule() {
     setBusy(false);
   };
   const create = () => {
-    const ms = Date.parse(when_); const value = kind === "bool" ? bv : tv.trim();
+    const ms = Date.parse(when_); const value = kind === "bool" ? bv : kind === "pick" ? (typeof opts[0]?.[0] === "number" ? Number(pv) : pv) : tv.trim();
     void act("/founder/v1/settings/schedule", { key: k, value, apply_at_ms: ms, rollback_minutes: rb, reason: why.trim() }, "Scheduled. It will apply at the chosen time.");
   };
   const worst = useMemo(() => (drift ? drift.items.filter((i) => i.state !== "aligned") : []), [drift]);
@@ -166,6 +178,7 @@ export function DriftSchedule() {
         <div className="s2form">
           <label className="s2sel">Setting<select value={k} onChange={(e) => setK(e.target.value)}>{FORM_KEYS.map(([key]) => <option key={key} value={key}>{label(key)}</option>)}</select></label>
           {kind === "bool" ? <label className="s2sel">New value<span className="s2sw"><Switch checked={bv} onCheckedChange={setBv} aria-label="New value" /><em>{bv ? "On" : "Off"}</em></span></label>
+            : kind === "pick" ? <label className="s2sel">New value<select value={pv} onChange={(e) => setPv(e.target.value)}>{opts.map(([v, t]) => <option key={String(v)} value={String(v)}>{t}</option>)}</select></label>
             : <label className="s2sel">New value<input value={tv} maxLength={60} onChange={(e) => setTv(e.target.value)} placeholder="2–60 characters" /></label>}
           <label className="s2sel">Apply at<input type="datetime-local" value={when_} onChange={(e) => setWhen(e.target.value)} /></label>
           <label className="s2sel">Safety<select value={rb ?? ""} onChange={(e) => setRb(e.target.value ? Number(e.target.value) : null)}>{ROLLBACKS.map(([t, v]) => <option key={t} value={v ?? ""}>{t}</option>)}</select></label>

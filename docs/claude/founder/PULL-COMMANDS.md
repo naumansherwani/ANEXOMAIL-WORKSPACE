@@ -307,3 +307,7 @@ Expected: 116 tests OK, build OK, saboot OK. Then hard-reload the founder site -
 ### S1c (E115 + Rust + UI) — two commands, in this order
 1. SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E115_founder_settings_s1c CHECK_E115 2>&1 | tail -20`  (needs E114 already run: it is)
 2. Rust + SPA: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+
+### S1d (E116 + SPA) — two commands, in this order
+1. SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E116_founder_drift_value_rule CHECK_E116 2>&1 | tail -20`
+2. SPA: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
