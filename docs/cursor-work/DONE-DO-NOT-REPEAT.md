@@ -1300,3 +1300,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 1 Nov ~12:00 — S1b Rust + UI written and tested in the sandbox (116 Rust, 21 bun, tsc clean). Server install = founder-install.sh (his next command). Do NOT rewrite; Chrome check after install.
 
 - 1 Nov: S1b Rust+UI installed on server 11:42 (OK). POLISH-ONLY pass on existing cinematic Settings (tools pills, 44/40px targets, switch hit area, catalog-loading fix). Redesign rejected+reverted. No new look.
+
+- 1 Nov 11:55 S1b polish (096c1ab) founder-install.sh: saboot OK (SPA index 200, 401s, healthz 200). BUT Chrome live 11:58 still loads old assets index-B-wxsPdH.js (repo has index-7MQ7Nny5.js) even after SW+cache cleared -> server serves old index; diagnosis command given, NOT yet green in Chrome. Next: founder pastes ls/pm2 output, then restart/fix, then Chrome check.

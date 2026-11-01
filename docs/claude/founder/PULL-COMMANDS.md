@@ -300,3 +300,6 @@ Expected: 116 tests OK, build OK, saboot OK. Then hard-reload the founder site -
 
 ### S1b polish (SPA only)
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+
+### S1b polish diagnosis (read-only)
+`ls -la /opt/anexomail-founder/web/assets/; grep -o "index-[A-Za-z0-9_-]*\.\(js\|css\)" /opt/anexomail-founder/web/index.html; pm2 ls | grep -i founder`

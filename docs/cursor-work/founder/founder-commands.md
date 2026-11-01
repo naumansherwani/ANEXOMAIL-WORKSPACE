@@ -2050,3 +2050,5 @@ S1b RUST + UI WRITTEN (tarteeb se next, 1 Nov ~12:00): Rust = server/founder/src
 - 11:44: "settings center kahan likha hai? aur apple aur vercel level jab ban jaye tab tum wapis ana. aur live demo test aur live real test ke baad mobile, tablet, laptop computer level UI UX banao technology rule read kero"
 - 11:45: "kaun si technology pe baana hai yeh bhi likha hai yeh read kero."
 - 11:50: "yeh kya baqwas tatti tum bana rahay ho? tumhay cinematic bola tha jo current already bana huwa hai us ko polish kero sirf"
+
+- 11:58: "sab context chat update kero codes pull hogaye hain update kero green kero compact chat se pehle sab update kero"
