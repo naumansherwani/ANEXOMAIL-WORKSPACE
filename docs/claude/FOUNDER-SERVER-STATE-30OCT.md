@@ -143,3 +143,6 @@ PULL: founder-install.sh only.
 Founder: "mail desk mera baap nahi hai; Mail (inbox sab) alag page, Mail Desk us ke andar sab se end par." FIX: sidebar/deck key `mail_desk` -> `mail`, title "Mail" (intro + catalog: Inbox and folders, Compose and outbox, Calendar, phir "Mail Desk: ..." rows), shortcut g m = Mail. Master order step 11 + parity + audit + chairman map corrected. FOUNDER-WORKSPACE-ORDER-01NOV.md now has the true per-item table (page, master step, source, DONE / NOT DONE) and the list of what is DONE in the master order (steps 1-4b, 4d P1) vs next.
 RULE (naya, hamesha): kisi bhi user-app item ko founder page ka naam dene se pehle FOUNDER-MASTER-ORDER-28OCT.md ka step padho; parent/child (Mail > Mail Desk, People > Org/CRM/Work, Systems > Analytics/Speed/Safety/ANEXOChat/Admin) wahan se lo, apni marzi se nahi.
 PULL: founder-install.sh only.
+
+## UPDATE 1 Nov 08:25 PKT — LIVE CHROME CHECK + order 08:06 recorded
+Founder's Chrome tab read live: Dashboard, Bridge, Founder Workspace (Mail, People, AI, Systems, Control, Finance, Release, Move-In, Audit ledger); no user-app group, no Stream health card. Founder's laptop photos show the OLD Friday build (stale tab; index is no-store, hard refresh fixes). Mail Desk is INSIDE Mail, last (master step 11). Order 08:06 in founder-commands.md. NEXT: step 5 F2c Merkle (E107), design note first. PULL: none.
