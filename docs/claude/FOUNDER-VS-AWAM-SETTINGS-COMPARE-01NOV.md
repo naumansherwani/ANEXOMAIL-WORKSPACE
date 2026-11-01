@@ -15,3 +15,15 @@ All 15 awam rows exist on the founder side with Explain / Blast radius / History
 
 ## Deliberate differences (not mistakes)
 Founder left-list layout and cinematic look vs awam top tabs; AI settings placeholder (step 16, Rule 71); Ambient Studio; ledger entry + browser proof on every version; no Drift baseline for choices (undo window, retention, only-VIPs).
+
+## Compare 2 — 1 Nov 13:25, live in Chrome (awam Business account tab + founder tab, dono logged in)
+Founder order 13:19: "dono ke settings page side by side ek ek compare kero, jahan masla aye seedha fix kero, likh ke".
+Read live (text + screenshot): awam Personal/Workspace/Notifications/Privacy/Health vs founder Personal/Workspace/Appearance/Notifications/Privacy/Time machine/Drift.
+| # | Finding | Verdict |
+|---|---|---|
+| N1 | Rows, wording, order of the 7 tabs: awam == founder (Display name, Undo send, Send check, Home city; Retention, 2FA/passkey, external; Quiet hours, VIPs; Read receipts "Never sent", Block trackers). | MATCH, nothing to fix |
+| N2 | Founder Drift shows 95/100, "1 looser": item title "Display name is set" with badge "Looser than baseline". The title states the TARGET, the badge says it is NOT met (his Display name is empty, the account name is used). Correct maths, confusing wording. | POLISH, not a bug: when state is loose the title should read "Display name is not set". UI-only (founder-web DriftCard text), next UI phase; founder can reach 100/100 by saving a Display name. |
+| N3 | Founder Privacy tab has no passkey/hardware-key/recovery rows yet. | Known: phase 7-3 (after Rust 7-2). Not a defect. |
+| N4 | Layout: awam = top tabs, founder = left sub-nav with one-line hints + "AI settings (founder only, step 16)". | Deliberate difference (Rule 35), kept. |
+| N5 | The founder Chrome tab that was open on `/founderlogin` is the AWAM SPA login route (`src/routes/auth.tsx`) served on the founder host: it offers "Email me a sign-in link", "recovery code" and text "Rust + WebTransport · device-bound sessions". Awam WebTransport is real; but for the FOUNDER protocol a mailed link is not allowed (no OTP/link, phishing-resistant keys only) and device-bound sessions (DBSC) are 7b, not built. | NOTED for 7-4: the founder sign-in must become passkey-only and must not claim DBSC until 7b. No awam code touched (no order). |
+No founder-side code changed in this compare: nothing broken was found, only N2 wording (queued) and N5 (queued for 7-4).
