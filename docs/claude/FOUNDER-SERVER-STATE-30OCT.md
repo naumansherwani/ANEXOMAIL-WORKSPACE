@@ -225,3 +225,5 @@ S1b Rust + UI pushed, NOT yet installed. After founder-install.sh: Appearance ta
 - 1 Nov 12:55 S1d GREEN on server (CHECK_E116 6/6, E65 ok, founder-install OK). Side-by-side compare written to repo (FOUNDER-VS-AWAM-SETTINGS-COMPARE-01NOV.md). S1e written (Display name row, nav alignment, mobile email wrap) - install pending.
 
 - 1 Nov 12:50 S1e GREEN on server + live Chrome. Tech audit: kernel F2b already LIVE (master row 4 corrected). Next: step 7 F2d passkey + S3 Privacy (design note first, Rule 63).
+
+- 1 Nov 13:10 STEP 7 phase 7-1 WRITTEN: E117 (passkeys, ceremonies, G3 step-up grants, recovery codes, recovery state machine) + CHECK_E117. Design note + awam requirement note in repo. Server run pending. 7-2 Rust webauthn-rs only after E117 is green on the server.

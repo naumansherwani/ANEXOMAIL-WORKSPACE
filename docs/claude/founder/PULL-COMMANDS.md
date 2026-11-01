@@ -316,3 +316,6 @@ _(12:30 note: E116 was corrected after its first server run failed; run the S1d 
 
 ### S1e (SPA only: Display name row + nav alignment) — one command
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+
+### Step 7 phase 7-1 (E117, SQL only) — one command
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E117_founder_passkey_stepup_recovery CHECK_E117 2>&1 | tail -20`
