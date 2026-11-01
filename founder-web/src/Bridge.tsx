@@ -76,7 +76,7 @@ function Greeting({ t, at, me }: { t: Trouble | null | undefined; at: At; me: Pr
         <h1 className="hello"><span>{SAY[part]}{nm ? <>, <span className="nm">{nm}</span></> : ""}</span><DayGlyph part={part} /></h1>
         <div className="g-meta"><span className="g-pill">Founder · Chairman</span></div>
         <p className="bsub"><span className={`sdot ${tone}`} aria-hidden="true" />
-          <span>{!t ? (at ? "Nothing measured yet." : "Checking your systems…") : bad ? `${bad} item${bad === 1 ? "" : "s"} need${bad === 1 ? "s" : ""} a look` : "Nothing needs attention"}</span></p>
+          <span>{!t ? "Checking your systems…" : bad ? `${t.items.length - bad} of ${t.items.length} checks passing, ${bad} need${bad === 1 ? "s" : ""} a look` : `${t.items.length} of ${t.items.length} checks passing`}</span></p>
       </div>
       <Clock tz={c.iana} city={c.city} />
     </header>

@@ -222,3 +222,5 @@ Rollback: env FOUNDER_TELEMETRY=off (telemetry writes band; registry + snapshot_
 ## 1 Nov 08:00 PKT — Founder Workspace sidebar group + bun.lock removed. Pull: sirf founder-install.sh (same command).
 
 ## 1 Nov 08:20 PKT — Mail (not Mail Desk) naming fix + docs. Pull: sirf founder-install.sh (same command).
+
+## 1 Nov 08:30 PKT — real counts wording (Bridge "N of N checks passing", Channels "Wiring next: ..."). Pull: sirf founder-install.sh (same command).

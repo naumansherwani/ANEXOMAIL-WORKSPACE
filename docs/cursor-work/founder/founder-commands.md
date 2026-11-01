@@ -1937,3 +1937,7 @@ RULE (hamesha): (1) blueprint (FOUNDER-MASTER-ORDER-28OCT.md) ki tarteeb KABHI n
 
 ## 1 Nov 08:11 PKT — founder (gussa, verbatim gist)
 "mujhe woh images wala sab kuch tarteeb se wire chaiye hai" — (14 items: Dashboard, Mail, People, Calendar, Work, CRM, Org, Analytics, Safety, ANEXOChat, AI, Speed, Founder, Admin) master-order ki tarteeb se, live, latest tech, awam se mix nahi. ACTION: bina aur sawal ke master order step 5 (Merkle E107) se shuru; har step ke baad agla, tarteeb nahi tootegi.
+
+## 1 Nov 08:17 PKT — founder (verbatim gist)
+"MERI HAAN HAI" — "Nothing needs attention" (Bridge) aur "waiting for first data" (Channels) ki jagah asli ginti likho. "jo kaam nahi huwa hai woh kero, duplicate kaam nahi kerna. sab kuch real likho."
+ACTION: (1) wording -> real counts (Surface.tsx/Bridge), (2) phir master order step 5 (E107 SQL).
