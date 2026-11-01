@@ -26,3 +26,36 @@ Recovery = a **state machine in SQL, provider-agnostic**, so the SMS provider is
 
 ## 5. Awam side (separate; written, NOT built — Rule 35: founder side never mixes with awam)
 See `docs/claude/AWAM-MOBILE-LOGIN-COUNTRY-REQUIREMENT-01NOV.md`.
+
+---
+# 7-0 Chairman protocol (founder 1 Nov 13:00: "mujhe duniya se OTP khatam kerna hai, mobile sirf backup hai; founder protocol alag hai; chairman level tumhari nazar mein kya hona chahiye")
+**Decision recorded:** the founder protocol has **no OTP and no SMS as a way in or as an approval**. Mobile is a **backup channel only**: it can warn and it can cancel; on its own it can never approve anything. (This replaces the "mobile OTP opens a recovery" idea of section 3 above; E117's recovery table keeps the 24 h cooling-off and the `mobile` channel as a *trigger that needs a second proof*, see R3.)
+
+## A. What the strongest practice looks like today (my recommendation, for the founder to accept or change)
+1. **Phishing-resistant keys only.** WebAuthn passkeys are origin-bound: a fake site cannot get an assertion. Nothing a person can read out or type (OTP, SMS, TOTP) is accepted for the founder.
+2. **Two different kinds of key, at least two keys.** (a) the platform passkey of the founder's own laptop/phone, (b) a **FIDO2 hardware security key** kept physically separate (office safe). User verification required (PIN/biometric on the key). Attestation `direct` with an **AAGUID allow-list** so only genuine hardware models can be enrolled (the E117 table needs one extra column; webauthn-rs supports attestation CA lists).
+3. **Action-bound signing ("what you see is what you sign").** The WebAuthn challenge is the SHA-256 of a canonical description of the action (what, target, amount, nonce, time). A grant cannot be replayed for a different action, and the ledger stores the action hash next to the assertion. E117's generic `g3` grant is the first step; the action hash is the planned E118 delta (grant carries `action_hash`; `founder_stepup_consume` must present the same hash).
+4. **Tiers instead of one gate** (Rule: every action is G-gated, server enforces):
+   | Tier | Examples | Proof |
+   |---|---|---|
+   | T0 view | dashboards, read pages | approved device + live session |
+   | T1 change | settings, labels | session + passkey (user verification) at sign-in |
+   | T2 dangerous | retention, require-passkey, revoke a device or passkey, new recovery codes, refunds | fresh passkey assertion bound to the action hash (5 min, single use) |
+   | T3 catastrophic | kill switch, key rotation, delete data, remove the last passkey | **two different keys** (platform + hardware) on two assertions, a **10-minute delay with a cancel window**, ledger entry first |
+5. **Session bound to the device (DBSC, Chrome 146 Windows)**, 15-minute idle, no bearer cookie that can be copied; **hybrid post-quantum TLS** (X25519MLKEM768) on the founder listener. Both are phase 7b; neither needs a new idea, only the library.
+6. **Everything proven in the browser**: step-ups and recoveries are ledger entries, sealed by the Merkle tree and checked by the Rust WASM kernel in the Worker (already live).
+
+## B. Recovery without OTP
+- **R1 recovery codes** (10, offline, one time): E117 already; opens a ready recovery at once, ledger + alert.
+- **R2 second hardware key**: the normal answer. Losing one key is not an incident because the other one signs.
+- **R3 mobile backup (never alone):** a registered mobile can *start* a recovery request, which stays **pending 24 h** (E117's DB constraint), every approved device is alerted and can cancel, and it only completes together with **a recovery code or a hardware key**. The mobile never approves; it is a flare. No SMS OTP is used to *prove* identity; the number is used to *notify* (and, optionally, as a cancel channel: a reply that says STOP cancels the pending request).
+- **R4 sealed share (optional, for a chairman):** a Shamir 2-of-3 split of an offline recovery secret (founder, safe, a trusted person); reconstruction is T3-style (delay + cancel). Server stores no secret.
+
+## C. Decisions only the founder can make
+1. Buy **two FIDO2 hardware keys** (one for the safe)? Without them the founder protocol cannot reach T3 honestly.
+2. Enforce the **hardware-only allow-list** now, or accept platform passkeys first and tighten later?
+3. T3 = two keys + 10 minute delay: accepted?
+4. Does a mobile number still get registered at all (only for alerts / cancel)?
+
+## D. Effect on the phases
+7-1 (E117) stays as is and is green. New order: **7-1b E118** (tiers, action-hash binding, AAGUID column, T3 delay table) → 7-2 Rust webauthn-rs → 7-3 UI → 7-4 enforce + remove `FOUNDER_PASSWORD` → 7-5 becomes "mobile backup flare + cancel channel" (no OTP, provider needed only for notifications).
