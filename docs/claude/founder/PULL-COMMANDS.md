@@ -238,5 +238,5 @@ Kitni baar: sql-run.sh sha ledger mein likhta hai, wahi file dobara nahi chalti;
 | 2 | FOUNDER side (Rust `anexomail-founder` + SPA) | `founder-install.sh` — YEH aap ki founder lane. Na pm2, na Bun/Node |
 | 3 | AWAM Rust engine (pm2 `anexomail-rust` :3200) | `rust-engine-install.sh`; sirf jab awam Rust modules badlen. 1 Nov 08:40 paste: 32 modules OK, kuch nahi badla |
 | 4 | AWAM Rust restart | `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health` — sirf jab #3 ne "build/restart" kaha |
-| 5 | AWAM web (Bun + pm2) | `pull.sh` — sirf jab awam site ki file badle (purani lane, awam migration tak) |
+| 5 | AWAM web | `pull.sh` — **BUN BANNED (founder 1 Nov 08:42): founder ko yeh command KABHI nahi di jaye gi.** Awam site abhi isi lane par chal rahi hai, isliye file repo mein hai; usay Bun/Node se nikalna ek alag migration phase hai (founder ke order se, master order mein jagah milne par). Tab tak awam par koi badlav nahi |
 FOUNDER ke liye aaj sirf #1 aur #2. Step 5 (Merkle): SQL E107 DONE (green); Rust/kernel/UI phase = #2.

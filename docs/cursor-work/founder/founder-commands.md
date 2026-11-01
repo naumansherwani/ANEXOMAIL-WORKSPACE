@@ -1952,3 +1952,6 @@ E107 sql-run output paste (12/12 OK + E65 sweep OK). "webpull aur pm2 restart te
 ## 1 Nov 08:40 PKT — founder (verbatim gist) + rust-engine-install.sh output (2 attachments)
 "yeh sab add kero repo main tarteeb se; codes mere pass kaun se aye hain yeh add kero. chat context update kero. mujeh pull command diya kero." (5 commands: sql-run.sh, rust-engine-install.sh, pm2 restart anexomail-rust, founder-install.sh, pull.sh)
 PASTE = AWAM Rust engine (pm2 anexomail-rust :3200) pre-flight + proof: 32 modules (cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex crmd trialx authx contx basx wsx billx setx calexp promx wtrpc) sab unit tests OK; main.rs sab patch pehle se judi (kuch nahi badla); saboot sab nakli token 401/404 = theek; pm2 online, 3D uptime, 0 unstable restarts, restarts 231 (cumulative). Founder side ka nahi: founder = anexomail-founder (Rust, founder-install.sh).
+
+## 1 Nov 08:42 PKT — founder
+"Awam web (Bun + pm2) pull.sh yeh bun baned hai" — pull.sh ko pull table se BANNED likh diya; founder ko yeh command nahi di jaye gi. Sach: awam site abhi isi Bun lane par chal rahi hai; usay Bun/Node se hatana alag migration phase (awam site ki technology badalna) — master order mein founder ke likhe order se, bina uske awam site nahi chhedi jati.

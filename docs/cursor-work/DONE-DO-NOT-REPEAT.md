@@ -1264,3 +1264,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 1 Nov 08:50 PKT: E107 founder audit Merkle SQL (830 lines) + CHECK_E107 (12 checks) written, tested locally 12/12 + selftest/selftest2/crosscheck OK, idempotent re-run OK. Server par chalna baaki. Next: Rust merkle.rs, WASM kernel merkle, UI gauge.
 - 1 Nov 08:33 PKT: E107 SERVER PAR GREEN (sql-run 12/12 + E65 sweep OK, sha 0fd28841f0b3b51f). Founder ko webpull/pm2 restart nahi chalana: E107 SQL-only; founder side = founder-install.sh. Next: Rust merkle.rs, kernel merkle, UI gauge.
 - 1 Nov 08:45 PKT: awam rust-engine-install.sh paste = 32 Rust modules maujood, main.rs sab judi, saboot theek, kuch nahi badla (pm2 anexomail-rust online, 0 unstable). Founder lane alag (founder-install.sh). Pull table PULL-COMMANDS.md mein.
+- 1 Nov 08:45 PKT: pull.sh (awam, Bun) BANNED in PULL-COMMANDS table; awam Bun->latest tech migration = alag phase, founder order se.
