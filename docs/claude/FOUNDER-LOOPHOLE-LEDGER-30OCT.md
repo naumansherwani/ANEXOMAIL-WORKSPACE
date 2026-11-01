@@ -79,3 +79,4 @@ Status: CODE DONE, NOT GREEN. Order: sql-run (E110) -> awam pull.sh (auth.ts) ->
 - L5 1 Nov 05:55: ENFORCE ON (founder). Proof pending: founder test on anexomail.com/auth then status (web_guard_last_seen set). GREEN after that.
 - L5 1 Nov 05:55: RED/OPEN: founder logged into awam host with enforce on; unguarded entry paths found
 - L5 1 Nov 06:10: root cause = guard never installed in Brain (anexomail-leo, /opt/anexomail). Fix = brain-hostguard-install.sh (not built yet, needs founder go).
+- 4b-1 1 Nov 06:35: code done (Rust /live + Dashboard Live feed card), awaiting founder-install + Chrome proof

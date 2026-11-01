@@ -193,3 +193,4 @@ founder-install.sh: `git -C /opt/anexomail-web fetch -q origin main && bash <(gi
 ## 1 Nov 05:55 PKT - N1 done by founder (pull.sh + enforce). Remaining proof = founder test at anexomail.com/auth + status. Next Claude build: 4b-1 after founder answers (tick 5 s? Dashboard first?).
 ## 1 Nov 05:55 PKT - L5 open (see SERVER-STATE). Repo has auth.tsx founder redirect; awam pull.sh needed. Do not tell founder L5 is green.
 ## 1 Nov 06:10 - NO pull for auth.ts: Brain needs its own brain-*-install.sh (not built yet).
+## 1 Nov 06:35 PKT - 4b-1: founder-install.sh only (Rust /founder/v1/live + Dashboard 'Live feed' card). No SQL. Then Claude checks Chrome.

@@ -242,6 +242,20 @@ async fn hostguard_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Resp
     }
 }
 
+/// 4b-1 (founder live data, E109): ONE signed answer with every live number. One database call (`founder_live_snapshot`), nothing invented; if the SQL is missing the answer says so.
+async fn live_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
+    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    let sb = st.sb.as_ref().unwrap();
+    match sb.rpc("founder_live_snapshot", json!({})).await {
+        Some(v) if v.is_object() => signed(&st, v),
+        _ => signed(&st, live_missing()),
+    }
+}
+
+fn live_missing() -> serde_json::Value {
+    json!({"connected": false, "note": "founder_live_snapshot not answering - run the E109 SQL (sql-run.sh)"})
+}
+
 async fn audit_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
     if let Err(code) = authed(&st, &h).await { return code.into_response(); }
     let sb = st.sb.as_ref().unwrap();
@@ -289,6 +303,7 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/actions", get(actions_ep))
         .route("/founder/v1/audit", get(audit_ep))
         .route("/founder/v1/hostguard", get(hostguard_ep))
+        .route("/founder/v1/live", get(live_ep))
         .route("/founder/v1/action", axum::routing::post(action_ep))
         .fallback_service(tower_http::services::ServeDir::new(static_dir).append_index_html_on_directories(true).precompressed_gzip())
         .with_state(st)
@@ -358,6 +373,13 @@ mod tests {
     use super::*;
     use axum::{body::Body, http::Request};
     use tower::ServiceExt;
+    #[test]
+    fn live_missing_never_pretends() {
+        let v = live_missing();
+        assert_eq!(v["connected"], false);
+        assert!(v["note"].as_str().unwrap().contains("E109"));
+        assert!(v.get("version").is_none() && v.get("money").is_none());
+    }
     #[tokio::test]
     async fn health_has_hardening_headers() {
         let r = app(Arc::new(St{sb:None,hmac_key:b"k".to_vec(),jwks:RwLock::new(vec![]),lim:Default::default(),ft:None,legacy:true,polar:polar::Live::off(),hook:Default::default(),ed:None,reqsig:true, gate:authcache::AuthCache::new(std::time::Duration::from_secs(5))})).oneshot(Request::get("/healthz").body(Body::empty()).unwrap()).await.unwrap();
@@ -393,7 +415,7 @@ mod tests {
     }
     #[tokio::test]
     async fn founder_routes_need_bearer() {
-        for path in ["/founder/v1/me", "/founder/v1/bridge", "/founder/v1/settings", "/founder/v1/finance/polar", "/founder/v1/actions", "/founder/v1/audit"] {
+        for path in ["/founder/v1/me", "/founder/v1/bridge", "/founder/v1/settings", "/founder/v1/finance/polar", "/founder/v1/actions", "/founder/v1/audit", "/founder/v1/hostguard", "/founder/v1/live"] {
             let r = app(st_with_sb()).oneshot(Request::get(path).body(Body::empty()).unwrap()).await.unwrap();
             assert_eq!(r.status(), 401, "{path}");
             let r = app(st_with_sb()).oneshot(Request::get(path).header("authorization", "Bearer a.b.c").body(Body::empty()).unwrap()).await.unwrap();

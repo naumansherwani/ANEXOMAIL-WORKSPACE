@@ -15,6 +15,7 @@ export const ENDPOINTS: Ep[] = [
   { method: "GET", path: "/founder/v1/actions", what: "Actions and gates", gate: "Signed", probe: true },
   { method: "GET", path: "/founder/v1/audit", what: "Audit ledger and chain check", gate: "Signed", probe: true },
   { method: "GET", path: "/founder/v1/hostguard", what: "Founder only on the founder host", gate: "Signed", probe: true },
+  { method: "GET", path: "/founder/v1/live", what: "Live company numbers in one answer", gate: "Signed", probe: true },
   { method: "GET", path: "/founder/v1/keys", what: "Public signing key", gate: "Public", probe: true },
   { method: "PUT", path: "/founder/v1/settings", what: "Save a setting", gate: "Signed write", probe: false },
   { method: "POST", path: "/founder/v1/action", what: "Request an action", gate: "Signed write, recorded in audit, runs from F8", probe: false },
@@ -28,7 +29,7 @@ const G: Record<string, string> = {
   bolt: "M13 2L3 14h9l-1 8 10-12h-9l1-8z", lock: "M5 11h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1zM8 11V7a4 4 0 0 1 8 0v4", sliders: "M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6", chat: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z", check: "M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4L12 14l-3-3",
 };
 const Gl = ({ n }: { n: string }) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={G[n]} /></svg>;
-const FICON: Record<string, string> = { "Signed answers": "shield", "Approved device": "device", "Audit ledger": "ledger", "Billing": "card", "Revenue records": "wallet", "Customers": "chat", "Action registry": "bolt", "Host separation": "lock", "Settings": "sliders" };
+const FICON: Record<string, string> = { "Signed answers": "shield", "Approved device": "device", "Audit ledger": "ledger", "Billing": "card", "Revenue records": "wallet", "Customers": "chat", "Action registry": "bolt", "Host separation": "lock", "Live feed": "bolt", "Settings": "sliders" };
 const STX: Record<State, string> = { ok: "Live", warn: "Check", fail: "Down", unknown: "Not connected" };
 type Row = { ep: Ep; ms?: number; ok?: boolean; note?: string; data?: any };
 type Act = { key: string; title: string; deck: string; danger: "low" | "medium" | "high"; enabled: boolean };
@@ -68,7 +69,7 @@ export function Surface({ d, at, go }: { d: any; at: Date | string | number | nu
 
   const by = (p: string) => rows?.find((r) => r.ep.path === p && r.ep.method === "GET");
   const acts: Act[] = by("/founder/v1/actions")?.data?.actions || [], actsOk = !!by("/founder/v1/actions")?.ok;
-  const hg = by("/founder/v1/hostguard")?.data, au = by("/founder/v1/audit")?.data, pol = by("/founder/v1/finance/polar")?.data ?? d?.polar, ds = deviceStatus();
+  const hg = by("/founder/v1/hostguard")?.data, lv = by("/founder/v1/live")?.data, au = by("/founder/v1/audit")?.data, pol = by("/founder/v1/finance/polar")?.data ?? d?.polar, ds = deviceStatus();
   const m = d?.money, v = d?.voice, hk = d?.polar_hook, subs = hk?.subscriptions, t = d?.trouble;
   const tot = t ? t.items.length : 0, bad = t ? t.items.filter((i: { state: string }) => i.state !== "ok").length : 0;
   const tone: State = !t ? "unknown" : bad ? "warn" : "ok";
@@ -88,6 +89,8 @@ export function Surface({ d, at, go }: { d: any; at: Date | string | number | nu
     { name: "Customers", state: !d ? "fail" : v?.connected ? "ok" : "unknown", text: !d ? "Not answering" : v?.connected ? `${v.new_leads} new lead${v.new_leads === 1 ? "" : "s"}` : v?.note || "Not connected", to: "bridge" },
     { name: "Host separation", state: !hg ? "fail" : !hg.connected ? "unknown" : hg.state === "ok" ? "ok" : hg.state === "warn" ? "warn" : "unknown",
       text: !hg ? "Not answering" : !hg.connected ? hg.note || "Not connected" : hg.state === "warn" ? "A founder sign-in was seen on a user host" : hg.ready_to_enforce ? `Founder session made on the founder host${hg.last_founder_host_at ? `, ${fmtHM(hg.last_founder_host_at)}` : ""}` : hg.note || "No founder session recorded yet" },
+    { name: "Live feed", state: !lv ? "fail" : !lv.connected && lv.connected !== undefined ? "unknown" : lv.trouble?.level === "fail" ? "fail" : lv.trouble?.level === "warn" ? "warn" : lv.trouble?.level === "unknown" ? "unknown" : "ok",
+      text: !lv ? "Not answering" : lv.connected === false ? lv.note || "Not connected" : `Version ${lv.version ?? "?"}, ${(lv.sources || []).length} source${(lv.sources || []).length === 1 ? "" : "s"}${(lv.sources || []).some((x: any) => x.stale) ? ", some not updating" : ", all fresh"}` },
     { name: "Action registry", state: !actsOk ? "fail" : !acts.length ? "unknown" : "ok", text: !actsOk ? "Not answering" : acts.length ? `${acts.length} actions, ${acts.filter((a) => a.enabled).length} enabled` : "No actions yet", to: "control" },
     { name: "Settings", state: by("/founder/v1/settings")?.ok ? "ok" : "fail", text: by("/founder/v1/settings")?.ok ? "Saved on the server" : "Not answering", to: "settings" },
   ] : [];
