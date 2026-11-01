@@ -1895,3 +1895,7 @@ Amal: code nahi likhna; rules + repo padhna; context/state mein 4b-3, 4b-4 = "SE
 
 ## 1 Nov 07:11 PKT — founder (verbatim, message beech mein kat gaya): "yaad rakho koi bhi feature mujhe not connected ya data abhi aa raha nahi chaiye hain mujhe e..."
 Matlab (Claude ki samajh, founder se confirm baaki): koi bhi card/feature "Not connected" ya "data abhi nahi aa raha" nahi dikhna chahiye; har cheez asli live data se judi ho. Mock phir bhi nahi (Rule 66) -> iska sirf ek raasta hai: har channel/feature ko ASLI wire karna. Abhi "Not connected": Glitch, Support, Company Mail (channels), Billing API metrics, Stream health/Channels unknown chip.
+
+## 1 Nov 07:11 PKT — founder (verbatim, Roman Urdu)
+"yaad rakho koi bhi feature mujhe not connected ya data abhi aa raha nahi chaiye hain mujhe her cheeze live working wire chaiye hain"
+Amal: har founder card/feature asli live data se wired ho; "Not connected"/"abhi data nahi" ki halat khatam karni hai (jhoota data kabhi nahi: wiring asli source se). Pehle jo cards abhi unwired hain unki fehrist + har ek ka asli source + phase.
