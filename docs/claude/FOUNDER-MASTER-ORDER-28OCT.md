@@ -16,6 +16,7 @@ UI system (tokens, shell, Trust, mobile/tablet): docs/claude/FOUNDER-UI-DESIGN-2
 | 5a | **I1 Ledger Integrity Gauge** (+ Dashboard item in Command center) — FOUNDER-KILLER-FEATURES | after 5 |
 | 6 | **S2** Settings: Time machine + Drift & schedule | after 5 |
 | 7 | **F2d** passkey proof for G3 (then FOUNDER_PASSWORD path removed) + **S3** Privacy | after 6 |
+| 7a | **WebTransport / QUIC (`wtransport`)** founder live channel, replaces polling (own UDP listener + cert wiring, not awam's udp/3443); per `FOUNDER-TECHNOLOGY-ADOPTION-30OCT.md` | after 7 |
 | 8 | **Decide (N)** one button + **Live Pulse** (real vs test accounts) + **S4** Notifications (push) | after 7 |
 | 8a | **I3 Device Trust Map** (device-reported city, never IP) | after 8 |
 | 9 | **F3** Finance deck on latest tech: Polar failed payments / churn / reconcile, Revenue, Billing, **Release (7 old launch pages)**, **Move-In** | after 8 |
@@ -24,6 +25,8 @@ UI system (tokens, shell, Trust, mobile/tablet): docs/claude/FOUNDER-UI-DESIGN-2
 | 10b | **K4 Insider Guard** (metadata-only deterministic auditor; hold = reversible) | after 10 |
 | 11 | **F5 MAIL** = founder ka apna **Mail** (inbox, folders, compose, outbox, undo-send, email notifications) + **Calendar**; **Mail Desk** (company mailboxes, support replies, deliverability, SLA) is page ke ANDAR sab se END par (founder 1 Nov 07:57: "mail desk mera baap nahi hai, mail desk us mein aye ga end pe") | after 10 |
 | 11a | **K1 Sealed Agreements** (cross-company cryptographic escrow) | after 11 + F2c |
+| 11b | **COMMON ATTACHMENTS (founder 1 Nov 09:05, plan `docs/cursor-work/ATTACH-LATEST-TECH-PLAN-27OCT.md`): A1 instant dedupe (kernel sha256 -> `attach.have`), A2 resumable chunks (per-chunk SHA-256), A4 signed share link.** ONE implementation in the shared Rust (`server/rust/attach_core.rs` / `attach_glue.rs`) + kernel `sha256@1`; founder Mail compose (step 11) and Mail<->Chat Bridge (12b) USE it, no second copy | with 11 (before 12b) |
+| 11c | **A3 parallel chunks over WebTransport** (same shared attach code) | after the WebTransport phase (which comes after 7) |
 | 12 | **F6** Systems + **AI (10 pages, founder-only)**: health, **Analytics**, **Speed (perf)**, **Admin**, **Safety**, **ANEXOChat**, Workspace/AI settings | after 11 |
 | 12a | **K2 Mesh / air-gapped sync** (research spike first; needs LAN node) | after 12 |
 | 12b | **Mail<->Chat Bridge** (6 sub-steps 12b-1..6; most of it exists user-side, founder gets the latest-tech port + new deltas) — FOUNDER-MAIL-CHAT-BRIDGE | after 12 |

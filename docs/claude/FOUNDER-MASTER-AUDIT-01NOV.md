@@ -27,6 +27,7 @@ Layers (Rule 70, never mixed): SQL (Postgres, RLS, `sql-run.sh`) | RUST (`anexom
 | 10b | K4 Insider Guard (metadata-only deterministic auditor; hold = reversible) | RUST SQL | PLAN | - |
 | 11 | F5 **Mail** (inbox, folders, compose, outbox, undo-send, email notifications) + Calendar; **Mail Desk** (company mailboxes, support replies, deliverability) = aakhri hissa Mail ke andar | RUST SQL UI | PLAN | no customer content ever |
 | 11a | K1 Sealed Agreements (cross-company escrow; needs F2c) | RUST KERNEL SQL | PLAN | - |
+| 11b/11c | **Common attachments** A1 dedupe + A2 resumable + A4 share link (with 11); A3 parallel over WebTransport (11c, after WebTransport). Shared Rust + kernel sha256, founder reuses awam's `attach_glue.rs` family | SQL(plan_catalog key only if needed) RUST KERNEL UI | PLAN (founder 1 Nov 09:05) | 2 GB-class file resumes after a cut connection; same sha256 uploaded once |
 | 12 | F6 Systems: Analytics, Speed, Safety, ANEXOChat, Admin, **AI (10 pages, founder-only)**, calls telemetry, motion budgets; legacy checklists in `docs/claude/legacy/<page>.md` | RUST SQL UI CINEMA | PLAN | each old page checklist ticked in Chrome |
 | 12a | K2 Mesh / air-gapped sync (research spike; needs a LAN node) | RUST | PLAN | - |
 | 12b | **Mail<->Chat Bridge** 12b-1..6 (FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md master + BRIDGE-EMAIL-CHAT-ENGINE-DESIGN-01NOV.md detail; user side phases 23-31 already exist) | SQL RUST KERNEL UI | PLAN | - |
