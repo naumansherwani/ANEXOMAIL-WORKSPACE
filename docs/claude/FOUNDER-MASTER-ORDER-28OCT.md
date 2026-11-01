@@ -1,3 +1,5 @@
+> **LETTERED VIEW (founder 1 Nov 15:17): `BLUEPRINT-ABC-01NOV.md` = same order, one letter per step (A..V + awam W), GREEN marked. Detail stays below.**
+
 # FOUNDER MASTER ORDER — numbered, one list (28 Oct 2026, 12:25 PKT)
 Founder 12:12: "founder ke existing old codes latest technology par kab migrate honge, unki tarteeb kis number par hai? aur jo user ko offer hota hai woh mujhe kab milega?" This is the ONE numbered order. Detail lives in FOUNDER-BUILD-PLAN-28OCT.md §14z, FOUNDER-FEATURE-MAP-28OCT.md, FOUNDER-SETTINGS-CENTER-PORT-28OCT.md. A step is DONE only when it is green in the founder's Chrome (Rule 64). Nothing mocked (Rule 69).
 
