@@ -1270,3 +1270,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 1 Nov 08:58 PKT: founder-install FAIL (merkle path) FIXED: server/rust/merkle_core.rs staged by founder-install.sh; repull.
 - 1 Nov 09:00 PKT: STEP 5 GREEN on server + Chrome (Ledger seal card live, 94 tests, 4/4 proof). Founder haan: 5K kernel merkle@1 next. Attachment tech (A1-A4) = common, founder side reuses (Mail 11, Bridge 12b); A3 after WebTransport (post step 7).
 - 1 Nov 09:08 PKT: master order mein 7a WebTransport, 11b common attachments (A1+A2+A4), 11c A3 add (founder 09:05). Awam ko A1-A4 abhi nahi (plan only); awam migration founder ke baad.
+- 1 Nov 09:25 PKT: AWAM AUDIT in ONE-ORDER-27OCT.md (pro 51/51, basic 107/142, business 4/188, bp 0/5; tarteeb intact). 5K kernel merkle@1 started.

@@ -1974,3 +1974,7 @@ DONE: step 5 (5R + 5a) SERVER PAR GREEN + Chrome: Ledger seal card "17 entries, 
 ## 1 Nov 09:05 PKT — founder (verbatim gist)
 "yeh attachment walay steps founder blueprint main bhi add kero. sirf itna batao ke awam ko yeh technology file attachment wali super fast milti hai ya nahi? awam wala kaam abhi migration wala pending hai woh founder ke baad shuru hoga?"
 DONE: master order mein 11b (common attachments A1+A2+A4, shared Rust + kernel sha256), 11c (A3 over WebTransport), 7a (WebTransport) add; audit row 11b/11c. JAWAB: awam ko abhi A1-A4 NAHI mili (plan only); abhi single-request Tokio streaming upload (SHA-256 + ClamAV + atomic rename) hai. A1/A2/A4 ka server-side shared Rust hone se awam ko bhi milega; awam web UI/Bun migration founder ke baad.
+
+## 1 Nov 09:17 PKT — founder (verbatim gist)
+"awam ke blueprint mein M-series thi, baaqi implementation order tha; Pro ke saare endpoints latest technology par migrate ho chuke, basic, business, business pro abhi nahi — yeh sab mentioned hai kya? awam ki tarteeb nahi tootay mujhe ek audit do. aur founder side ka next tarteeb se shuru kero (5K kernel merkle@1). chat context update kero."
+DONE: awam audit -> docs/claude/ONE-ORDER-27OCT.md (1 Nov 09:25 section, registry numbers: pro 51/51, basic 107/142, business 4/188, business_pro 0/5, founder 24/77, ai_soon 0/56). 5K shuru.

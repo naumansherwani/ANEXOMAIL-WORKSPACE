@@ -241,3 +241,17 @@ M1/M2 = DONE. M3 = contacts/storage/support/workspace DONE, billing-sync = C1 DO
 - **Is file ki tarteeb jyon ki tyon intact hai.** Founder Command Center (qadam 9 ka naya ghar, FC1-FC21) chal raha hai; uske green (F0..F9) hone ke BAAD 100% wapis yahan: pehla non-GREEN qadam (table upar: 2b/3 deploy saboot, phir 4 Batch E, 5 Pro walk, 6 Login 24 + C2, 7 PRO GREEN CLOSE, 8 L, 10 Trial, 11 Business, 12 CRM/Business Pro/T-series, 13 Business Premium + Personal). Founder kaam is table ka koi qadam na hata'ta hai na badalta hai.
 - **NAAM BADLA (founder 28 Oct 09:04):** purana plan "Enterprise" ab **Business Premium** hai (upar ki list: Basic, Pro, Business, Business Pro, Business Premium). Baqi plans ke naam same. Repo mein docs har jagah badle; "Enterprise support" page (£790 Priority Support add-on, /enterprise route) alag cheez hai, wahi naam. Competitor mentions (Google "Enterprise Plus", Zoho "Enterprise") jyon ke tyon.
 - **Andar ki id abhi `enterprise` hai** (plan_catalog/E100 SQL, docs/packages/enterprise/, Polar slug) — display naam badla, id nahi, taake kuch na toote; Rust plan-matches mein `business_premium` alias jod diya (cal/crmx/workx/analytics, tests pass). Polar mein yeh product abhi hai hi nahi (package baad mein banega) — id bhi tab badlegi jab E100 dobara edit hoga (ANEXOChat live ke baad, pehle se likha plan).
+
+## 1 Nov 2026 09:25 PKT — AWAM AUDIT (founder order: "awam ki tarteeb nahi tootay, mujhe audit do")
+Source: `docs/claude/ENDPOINT-PACKAGE-MAP.csv` (column `starts_at`, `status`) + `count-endpoints.py` (523 total, Rust-first 187, baaqi 336, Rust procs 338 — wahi ginti jo 27 Oct 05:44 thi: founder-first order ki wajah se awam par koi naya kaam nahi hua).
+| Package (starts_at) | Endpoints | Rust-first | Baaqi (Bun par) | Matlab |
+|---|---|---|---|---|
+| pro | 51 | 51 | **0** | Pro MIGRATION GREEN (27 Oct 05:48). "Pro CLOSE" abhi nahi: Pro walk + ANEXO_TAG_MODE=enforce baaqi (steps 5, 7) |
+| basic | 142 | 107 | **35** | login 24 (M4, step 6), billing C2 5 (step 6, paisa, founder ijazat + shadow), integrations/others |
+| business | 188 | 4 | **184** | M6 chat/ai/files + ANEXOChat K3 + Office (step 11): NAHI hua |
+| business_pro | 5 | 0 | 5 | step 12: NAHI hua |
+| ai_soon | 56 | 0 | 56 | AI host (coming soon) |
+| founder | 77 | 24 | 53 | founder Command Center ka nayi Rust side = FOUNDER-MASTER-ORDER step 14 (cutover) par Bun-only founder endpoints hatenge |
+| internal | 4 | 1 | 3 | |
+Jawab: HAAN, yeh sab likha hua hai — Pro done, Basic baaki 35, Business/Business Pro/Business Premium baaki. Tarteeb (is file ki table: 2b/3 deploy saboot -> 4 Batch E -> 5 Pro walk -> 6 Login 24 + C2 -> 7 PRO GREEN CLOSE -> 8 L polls -> 10 Trial -> 11 Business -> 12 CRM/Business Pro/T-series -> 13 Business Premium + Personal) JYON KI TYON; 28 Oct 09:15 resume pointer: Founder Command Center green hone ke BAAD pehla non-GREEN qadam. Founder side ka step 14 (cutover) aur awam Bun migration (Bun/Node se bahar) isi resume ke baad.
+FINDINGS: (1) koi tarteeb tooti nahi; founder side ne awam files nahi chhedi (jwt_core/attach_* sirf reuse). (2) Awam Bun/pull.sh banned lane hai founder ke liye: awam par jo kaam baaki hai woh ab "Rust + static + kernel" par hoga, Bun migration step ke saath (founder order ke baad). (3) Attachments A1-A4 (ATTACH-LATEST-TECH-PLAN-27OCT.md) awam par abhi NAHI bane, founder blueprint 11b/11c mein shared Rust ke taur par jode gaye. (4) Kernel merkle@1 (5K) ka publish awam kernel lane se jura: founder ko `pull.sh` nahi diya jata; founder site apni kernel copy khud serve karti hai.
