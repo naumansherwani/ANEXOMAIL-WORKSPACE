@@ -412,3 +412,6 @@ Then sign in to the founder site; I look at the Ledger seal card in Chrome.
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E124_founder_time_anchors CHECK_E124 | tail -25`
 2. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) | tail -20`
 3. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -15`
+
+## UI fix (2 Nov 07:55) — Gates card "checking…" instead of false "not answering"
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) | tail -8` then Ctrl+Shift+R.
