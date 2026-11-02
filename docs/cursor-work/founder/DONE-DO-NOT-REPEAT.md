@@ -755,3 +755,4 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - 2 Nov 08:05 G5c CODE (not GREEN yet): SQL E124 time anchors; Rust server/rust/anchor_core.rs (RFC 3161 + OpenTimestamps, shared with kernel) + server/founder/src/anchors.rs (tick + /founder/v1/audit/anchors); kernel 0.9.0 anchor@1; founder-web anchorgauge.ts "Time anchor" gauge. Do not rewrite these.
 
 - 2 Nov 07:45 G5c GREEN (founder pastes + my Chrome look: 'Seal 3 time-anchored: 2 TSA'). Do not rebuild E124 / anchor_core / anchors.rs / anchor@1. OTS-Bitcoin still pending (hours).
+- 2 Nov 07:55 UI fix: Gates card no longer says 'not answering' while loading (Surface.tsx, dist index-B3a1vE21.js). Do not revert.

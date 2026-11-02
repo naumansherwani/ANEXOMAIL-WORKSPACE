@@ -265,9 +265,9 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
           return (
             <div className="dx-card dx-gate" key={g}>
               <div className="dx-gtop"><b className="dx-gid">{g}</b><span className="dx-gwhy">{how}</span></div>
-              <div className="dx-big">{!rows ? <span className="skel s" /> : actsOk ? list.length : "–"}<small>{actsOk ? (list.length === 1 ? "action" : "actions") : "not answering"}</small></div>
+              <div className="dx-big">{!rows ? <span className="skel s" /> : actsOk ? list.length : "–"}<small>{!rows ? "checking…" : actsOk ? (list.length === 1 ? "action" : "actions") : "not answering"}</small></div>
               <div className="dx-seg" aria-hidden="true">{list.map((a) => <i key={a.key} className={a.enabled ? "on" : ""} />)}</div>
-              <div className="dx-sub">{!actsOk ? "Action registry is not answering" : list.length ? `${en} of ${list.length} enabled  ·  ${list.slice(0, 3).map((a) => a.title).join(", ")}${list.length > 3 ? "…" : ""}` : why}</div>
+              <div className="dx-sub">{!rows ? "Asking the action registry…" : !actsOk ? "Action registry is not answering" : list.length ? `${en} of ${list.length} enabled  ·  ${list.slice(0, 3).map((a) => a.title).join(", ")}${list.length > 3 ? "…" : ""}` : why}</div>
             </div>
           );
         })}

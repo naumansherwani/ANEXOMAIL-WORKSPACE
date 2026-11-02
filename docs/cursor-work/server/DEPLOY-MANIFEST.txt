@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md e5f22103d51ee942
+docs/cursor-work/founder/founder-commands.md 4d4f471aa2b26423
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -385,7 +385,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md a1b6392c00ebddce
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md e0d7cde31d92435c
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -897,7 +897,7 @@ founder-web/index.html d5b8de883d5e95f0
 founder-web/package.json c0b915b8e44a6271
 founder-web/src/styles.css 29dd38c1d060c718
 server/founder/src/login.rs 465011eb25e7daac
-founder-web/dist/index.html e21f2ffeea9354e6
+founder-web/dist/index.html 0f3a816276d55e8c
 docs/claude/founder/LEGACY-FOUNDER-FILES.md b379225e91ecfe5e
 docs/cursor-work/sql/E102_founder_audit_actions_devices.sql 98efcf0605642fcc
 docs/cursor-work/sql/CHECK_E102.sql 08c02fd1d918d4dc
@@ -1000,7 +1000,7 @@ founder-web/src/kernel.worker.ts 1143cfcae868a1a4
 web-wasm/src/ed.rs b4331b38c7c7b8b8
 docs/claude/founder/FOUNDER-ONLY-STEPS.md 94d3816874cacec2
 docs/claude/FOUNDER-ADVANCED-FEATURES-30OCT.md 301aa5022513263f
-founder-web/src/Surface.tsx 6a7d505ad479ed6a
+founder-web/src/Surface.tsx b67fa0865ffbdd7f
 docs/claude/FOUNDER-PORT-ORDER-30OCT.md 0625398275cc1e9f
 docs/claude/FOUNDER-PARITY-30OCT.md c02681851b231519
 docs/claude/FOUNDER-GREEN-AUDIT-30OCT.md cb42c6079e0c585d
@@ -1089,3 +1089,4 @@ server/rust/anchor_core.rs c1042ecda6347674
 server/rust/g5c_tsa_vectors.json fee828dd190a88cf
 founder-web/src/anchorgauge.ts 0a58f95d7333754c
 founder-web/src/anchorgauge.test.ts cb7a2111c15d3ca3
+founder-web/dist/assets/index-B3a1vE21.js baaef8e08fa0aafe
