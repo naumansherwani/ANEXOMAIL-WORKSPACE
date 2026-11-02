@@ -2135,3 +2135,6 @@ Not on the server / not in code: WebTransport, webauthn-rs, WebGPU, Framer/GSAP,
 
 ## Checkpoint 2 Nov 05:40 PKT
 Awam sidebar -> founder order written in the blueprint: People/Work/CRM/Org = P (11th step ahead), Mail/Calendar/Domains = Q (12th), Analytics/ANEXOChat/Speed/Safety/Admin = R (13th). ANEXOChat is rebuilt from scratch on the latest technology, only the phases not properly built (32-57 = nothing exists; 1-31 judged by proof at their turn), list discussed with him first (Rule 63). Nothing starts before G5a is GREEN (still waiting for seal #2; reminder set 05:39).
+
+## Checkpoint 2 Nov 05:45 PKT — G5a GREEN
+Proof: his pastes (E121 3/3, E122 4/4, founder-install 134 tests x3) + my Chrome look: seal #2 formed 5:30 AM (upto 31) and the browser says "seal #1 still holds and the kernel proved the ledger up to entry 31 extends it unchanged (RFC 9162)" (I reset the browser memory to the real seal #1 to see the text; it re-advanced to #2). ONE next phase = G5b (C2SP signed checkpoint, own Ed25519 audit-log key; Rust + WASM kernel + SQL edit of existing files if needed). Rule 63: discuss with him first, no code before his word. AGENTS.md Rule 72 = ANEXOChat rule (locked).

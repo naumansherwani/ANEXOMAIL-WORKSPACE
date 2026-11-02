@@ -292,3 +292,4 @@ S1b Rust + UI pushed, NOT yet installed. After founder-install.sh: Appearance ta
 - 2 Nov 05:25 BUILT, not on the server yet: E122 edited (1b: one labelled real audit entry 'audit.g5a_proof', idempotent) so seal #2 forms and the live consistency check runs; Dashboard 'Endpoints' repo-style card removed (founder order 05:14). Needs E122 re-run + founder-install; G5a GREEN only after my Chrome look.
 - 2 Nov 05:27 ON THE SERVER (his paste): E122 edited version (CHECK_E122 4/4, E65 OK) + founder-install 134 tests (SPA without the Endpoints card, /audit/proof fix). Do not write again. G5a GREEN waits only for seal #2 + the consistency text in Chrome.
 - 2 Nov 05:40 blueprint: awam sidebar -> founder order + technology per row, ANEXOChat from-scratch-on-latest rule (docs only, no code).
+- 2 Nov 05:41 G5a GREEN (server + Chrome proof, seal #2 at 5:30, RFC 9162 extension proven in his browser). AGENTS.md Rule 72 (ANEXOChat) locked. Next: G5b, discuss first.

@@ -501,3 +501,11 @@ Aaj ke baad har kaam ke jawab ke aakhir mein ek chhoti table/list: **kaun si fil
 
 ## Rule 71 (STRICT, founder 1 Nov 2026 10:53 PKT) — AI SIRF FOUNDER KE LIYE, SAB SE END PAR
 Awam ko AI nahi milega; AI anexomail.com (founder workspace) ka hai. AI ke saare advance features sirf founder ko milenge, aur AI ka kaam master order ke **sab se aakhri step 16** mein hoga (Docs/Sheets ke baad). Awam ka Lovable wala AI code (`src/components/app/ai/*`, `src/lib/ai-*.ts`, Explain-with-Leo, `app.settings.ai`) abhi chhua nahi jayega (awam alag lane, Rule 35); usay hatana founder ke likhe hukm par, cutover ke baad ka alag awam phase hai. Founder AI awam ke AI code se copy nahi hoga (data mix dobara nahi): nayi, founder stack par (Rust + signed envelope + founder gates; read-first, no free-text SQL, send wohi dabata hai). Rule 23 (ai.anexomail.com band) apni jagah.
+
+## Rule 72 (STRICT, founder 2 Nov 2026 05:39 PKT) — ANEXOChat: shuru se, latest technology, blueprint ke mutabiq, jo live se match kare wohi rahe
+- ANEXOChat blueprint `anexochat/docs/anexochat-blueprint-original.md` ke PART 0 (non-negotiable rules) se shuru hoga, phir Phase 1, 2, 3 ... tarteeb se (Rule 0/64: ek phase, server + CHECK + Chrome, phir agla).
+- Har phase ko pehle LIVE ke saath match kiya jata hai (server + Chrome). Jo live se match karta hai woh chalega; jo match nahi karta woh latest technology par dobara banega (convert, andha copy-paste nahi, FC20). Phases 32-57: abhi na SQL na code, yeh sab banengi.
+- Har phase ki technology mein MoQ shamil: apna Rust relay (`wtransport`/QUIC, systemd, Cloudflare nahi, ek pinned draft), jahan us phase mein MoQ fit ho (one-to-many: channels, announcements, live rooms, presence/state fan-out). Do-tarfa calls WebRTC rehti hain (TECH-CHART: MoQ 2-way calling ke liye theek nahi, verified). MoQ tab tak claim nahi hota jab tak chal na raha ho (Rule 69).
+- Founder, Business Pro aur Business Premium: ANEXOChat SAME hai. Pura ban jaye, TAB decide hoga ke kis package ko kitna feature gate milega (Rule 53 gate-pehle ka qaida is mein se chhoot: gate sab se END mein).
+- Tarteeb: People/Work/CRM/Org = P (11vi), Mail/Calendar/Domains = Q (12vi), Analytics/ANEXOChat/Speed/Safety/Admin = R (13vi). Pehle phases ki list founder ke saath discuss (Rule 63), phir code.
+
