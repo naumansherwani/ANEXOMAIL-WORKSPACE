@@ -25,6 +25,9 @@ Polar -> Caddy -> Rust :3400 verifies the signature (HMAC-SHA256, Standard Webho
 ## Safety
 - Customer emails only on the founder screen. Webhook secret and Polar token never printed or committed. Duplicate delivery (two URLs) handled by the unique webhook-id.
 
+## His answer 11:56 (question 1)
+Both webhook URLs return 200 OK. `anexomail.com/api/v1/polar-webhook` = PRIMARY (the real one he controls, the one that will connect); `polarpayments.anexomail.com/api/v1/polar-webhook` = FALLBACK. Both real. The ledger keeps one row per webhook-id, so a double delivery is harmless. Still unproven: that both land on the same :3400 service (a `/health` check on both hosts shows it).
+
 ## Questions for him (answers needed before O-P1)
 1. Both webhook URLs go to the same :3400 service? If both are live, every event arrives twice (the ledger de-duplicates, but one URL may be removable).
 2. Does the existing Polar token read customers and subscriptions, or metrics only? (check on the server, no printing)
