@@ -747,3 +747,4 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - 2 Nov 06:40 E123 selftest fix (edited): the selftest retired the real active key at its created_ms, so real signed notes looked 'outside the key window' on a server that already had signed notes. Now retired 'now'. Reproduced locally with 2 real signed notes (old file FAIL, new file OK).
 - 2 Nov 06:40 DEPLOY-MANIFEST kernel 0.8.0 line had a 32-char hash (pull.sh compares 16): fixed, awam pull.sh must be re-run.
 - 2 Nov 06:45 CHECK_G5B_LIVE.sql (read-only live proof of signing).
+- 2 Nov 06:40 G5b part 1 GREEN on server (his paste: install OK, CHECK_E123 5/5, pull.sh OK, CHECK_G5B_LIVE 4/4). Part 2 (UI gauge, TOFU pin, real-wasm test, fuzz, reviewer) open.

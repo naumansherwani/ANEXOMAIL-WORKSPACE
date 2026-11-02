@@ -2240,3 +2240,6 @@ Fixed. Re-run the awam pull.sh.
 
 ## 2 Nov 06:38 — pasted: founder-install OK, E123 CHECK 5/5 OK, pull.sh OK
 Kernel 0.8.0 on awam: 200, sha ok (my Chrome look). Next: CHECK_G5B_LIVE for signing proof.
+
+## 2 Nov 06:40 — pasted CHECK_G5B_LIVE 4/4 OK
+G5b part 1 green on the server. Next = G5b part 2 (UI + TOFU pin + tests + review).
