@@ -58,7 +58,7 @@ BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
 ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex crmd trialx authx contx basx wsx billx setx calexp promx signx wtrpc"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
-extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; ics) echo "cal_core.rs";; evidence) echo "attach_core.rs";; esac; }
+extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; ics) echo "cal_core.rs";; evidence) echo "attach_core.rs";; signx) echo "vault_core.rs";; esac; }
 EXPLICIT="${MODULES:-}"
 WANT="${MODULES:-$ALL_MODULES}"
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
