@@ -92,7 +92,7 @@ function SessionsPage() {
                                 notify.done("Session ended", "That device is signed out."),
                               onError: (e) =>
                                 notify.failed(
-                                  e.isNotImplemented ? "Not wired yet" : "Could not end session",
+                                  "Could not end session",
                                   {
                                     description: e.message,
                                   },
@@ -136,9 +136,7 @@ function SessionsPage() {
                     ),
                   onError: (e) =>
                     notify.failed(
-                      e.isNotImplemented
-                        ? "Kill switch not wired yet"
-                        : "Could not run kill switch",
+                      "Could not run kill switch",
                       {
                         description: e.message,
                       },

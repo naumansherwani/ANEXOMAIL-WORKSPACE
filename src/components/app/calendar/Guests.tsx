@@ -99,8 +99,7 @@ export function Guests({ event }: { event: CalendarEvent }) {
           ))}
         </ul>
         <p className="ax-caption mt-ax-2 text-muted-foreground">
-          Answers and invitation status are not available yet — the calendar engine update is
-          pending.
+          Guest answers will appear here as people reply.
         </p>
       </section>
     );
@@ -145,7 +144,7 @@ export function Guests({ event }: { event: CalendarEvent }) {
           void guests.refetch();
         },
         onError: (e) =>
-          notify.failed(e.isNotImplemented ? "Not live yet" : "Could not re-send", {
+          notify.failed("Could not re-send", {
             description: e.message,
           }),
       },
@@ -182,7 +181,7 @@ export function Guests({ event }: { event: CalendarEvent }) {
           void guests.refetch();
         },
         onError: (e) =>
-          notify.failed(e.isNotImplemented ? "Not live yet" : "Could not move", {
+          notify.failed("Could not move", {
             description: e.message,
           }),
       },
@@ -211,7 +210,7 @@ export function Guests({ event }: { event: CalendarEvent }) {
           void guests.refetch();
         },
         onError: (e) =>
-          notify.failed(e.isNotImplemented ? "Not live yet" : "Could not cancel", {
+          notify.failed("Could not cancel", {
             description: e.message,
           }),
       },

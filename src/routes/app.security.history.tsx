@@ -122,7 +122,7 @@ function HistoryPage() {
                                 ),
                               onError: (err) =>
                                 notify.failed(
-                                  err.isNotImplemented ? "Not wired yet" : "Could not report",
+                                  "Could not report",
                                   {
                                     description: err.message,
                                   },

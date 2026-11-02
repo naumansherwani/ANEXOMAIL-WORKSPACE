@@ -34,7 +34,7 @@ export function CaptureLead() {
           notify.done("Lead captured", "They are on your book.");
         },
         onError: (err) =>
-          notify.failed(err.isNotImplemented ? "Lead capture not wired yet" : "Could not save lead", {
+          notify.failed("Could not save lead", {
             description: err.message,
           }),
       },
@@ -103,7 +103,7 @@ export function OpenDealForm({ onDone }: { onDone?: () => void }) {
           onDone?.();
         },
         onError: (err) =>
-          notify.failed(err.isNotImplemented ? "Deal create not wired yet" : "Could not open deal", {
+          notify.failed("Could not open deal", {
             description: err.message,
           }),
       },

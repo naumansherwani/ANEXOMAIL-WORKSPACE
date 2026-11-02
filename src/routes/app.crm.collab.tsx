@@ -175,7 +175,7 @@ function ApprovalsList() {
       {
         onSuccess: () => notify.done("Decision saved", `Request ${decision}.`),
         onError: (e) =>
-          notify.failed(e.isNotImplemented ? "Approvals not wired yet" : "Could not save", {
+          notify.failed("Could not save", {
             description: e.message,
           }),
       },

@@ -102,10 +102,8 @@ export function QuoteInChat({
       void navigate({ to: "/app/chat", search: { c: conversationId } as never });
     } catch (e) {
       const err = e as { isNotImplemented?: boolean; message?: string };
-      notify.failed(err.isNotImplemented ? "Not wired yet" : "Quote failed", {
-        description: err.isNotImplemented
-          ? "Waiting on chat.send / chat.bridge.quote."
-          : (err.message ?? "Unknown error"),
+      notify.failed("Quote failed", {
+        description: (err.message ?? "Unknown error"),
       });
     } finally {
       setBusy(false);

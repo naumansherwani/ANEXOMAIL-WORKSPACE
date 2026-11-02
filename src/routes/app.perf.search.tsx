@@ -56,7 +56,7 @@ function QueryLabPage() {
                 onSuccess: (r) =>
                   notify.done("Trace captured", `${r.trace.total_ms}ms · ${r.trace.rows} rows`),
                 onError: (err) =>
-                  notify.failed(err.isNotImplemented ? "Query lab not wired yet" : "Query failed", {
+                  notify.failed("Query failed", {
                     description: err.message,
                   }),
               },

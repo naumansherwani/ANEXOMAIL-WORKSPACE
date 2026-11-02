@@ -96,7 +96,7 @@ function Arena() {
                   onSuccess: () =>
                     notify.done("Arena run finished", "Sherlock scored every answer."),
                   onError: (e) =>
-                    notify.failed(e.isNotImplemented ? "Arena not wired yet" : "Run failed", {
+                    notify.failed("Run failed", {
                       description: e.message,
                     }),
                 },

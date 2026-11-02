@@ -116,7 +116,7 @@ function ClassicPipeline() {
       {
         onSuccess: () => notify.done("Deal moved", `${deal.title} → ${STAGE_LABEL[next]}`),
         onError: (e) =>
-          notify.failed(e.isNotImplemented ? "Stage move not wired yet" : "Could not move deal", {
+          notify.failed("Could not move deal", {
             description: e.message,
           }),
       },
@@ -293,7 +293,7 @@ function ClassicPipeline() {
                                 {
                                   onSuccess: () => notify.done("Work opened", "The deal is a task on Work."),
                                   onError: (e) =>
-                                    notify.failed(e.isNotImplemented ? "Work link not wired yet" : "Could not open work", {
+                                    notify.failed("Could not open work", {
                                       description: e.message,
                                     }),
                                 },

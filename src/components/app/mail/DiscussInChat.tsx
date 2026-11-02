@@ -54,10 +54,8 @@ export function DiscussInChat({
                 } else notify.failed(r.error ?? "Bridge refused");
               },
               onError: (error) =>
-                notify.failed(error.isNotImplemented ? "Not wired yet" : "Could not open chat", {
-                  description: error.isNotImplemented
-                    ? "Waiting on chat.bridge.discuss."
-                    : error.message,
+                notify.failed("Could not open chat", {
+                  description: error.message,
                 }),
             },
           );
@@ -83,7 +81,7 @@ export function DiscussInChat({
                   setPeople(`${reachable}/${list.length} reachable in chat`);
                 },
                 onError: (error) =>
-                  setPeople(error.isNotImplemented ? "presence arm offline" : "presence unknown"),
+                  setPeople("presence unknown"),
               },
             )
           }

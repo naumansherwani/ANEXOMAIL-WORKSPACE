@@ -241,9 +241,7 @@ function MembersPage() {
           ) : members.error ? (
             <ErrorState
               body={
-                members.error.isNotImplemented
-                  ? "Members aren't live on the server yet."
-                  : members.error.message
+                members.error.message
               }
               onRetry={() => void members.refetch()}
             />
@@ -328,9 +326,7 @@ function MembersPage() {
             ) : invitations.error ? (
               <ErrorState
                 body={
-                  invitations.error.isNotImplemented
-                    ? "Invitations aren't live on the server yet."
-                    : invitations.error.message
+                  invitations.error.message
                 }
                 onRetry={() => void invitations.refetch()}
               />

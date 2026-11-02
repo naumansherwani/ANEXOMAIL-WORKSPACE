@@ -140,7 +140,7 @@ function Prompts() {
                                 },
                                 onError: (e) =>
                                   notify.failed(
-                                    e.isNotImplemented ? "Fork not wired yet" : "Fork failed",
+                                    "Fork failed",
                                     { description: e.message },
                                   ),
                               },
@@ -171,7 +171,7 @@ function Prompts() {
                             },
                             onError: (e) =>
                               notify.failed(
-                                e.isNotImplemented ? "Versions not wired yet" : "Save failed",
+                                "Save failed",
                                 { description: e.message },
                               ),
                           },

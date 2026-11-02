@@ -116,7 +116,7 @@ export function OverlapMatrix({
     const notLive = err.status === 404 || err.status === 501 || err.status === 503 || err.status === 0;
     return (
       <p role="status" className="ax-caption text-muted-foreground">
-        {notLive ? "Everyone's hours are not switched on yet — the calendar engine update is pending." : err.message}
+        {notLive ? "Everyone's working hours can't be shown right now. Please try again soon." : err.message}
       </p>
     );
   }

@@ -47,7 +47,7 @@ function FounderOrg() {
     toggle.mutate(patch, {
       onSuccess: () => notify.done(label, "The server confirmed the new state."),
       onError: (e) =>
-        notify.failed(e.isNotImplemented ? "Kill switch not wired yet" : "Could not apply", {
+        notify.failed("Could not apply", {
           description: e.message,
         }),
     });

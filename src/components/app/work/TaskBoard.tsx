@@ -56,7 +56,7 @@ export function TaskBoard() {
                       {
                         onError: (error) =>
                           notify.failed(
-                            error.isNotImplemented ? "Not wired yet" : "Could not update",
+                            "Could not update",
                             {
                               description: error.message,
                             },

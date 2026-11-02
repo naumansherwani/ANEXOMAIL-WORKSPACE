@@ -62,7 +62,7 @@ function MembersPage() {
       {
         onSuccess: (radius) => setPending({ member, radius }),
         onError: (e) =>
-          notify.failed(e.isNotImplemented ? "Blast radius not wired yet" : "Could not check", {
+          notify.failed("Could not check", {
             description: e.message,
           }),
       },
@@ -79,7 +79,7 @@ function MembersPage() {
           setPending(null);
         },
         onError: (e) =>
-          notify.failed(e.isNotImplemented ? "Revoke not wired yet" : "Could not revoke", {
+          notify.failed("Could not revoke", {
             description: e.message,
           }),
       },

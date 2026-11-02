@@ -44,7 +44,7 @@ export function HomePlaceCard() {
           notify.done("Home city saved", `${placeLabel(p)} — your greeting and clock follow it.`);
         },
         onError: (e) =>
-          notify.failed(e.isNotImplemented ? "Not wired yet" : "Could not save", {
+          notify.failed("Could not save", {
             description: e.message,
           }),
       },

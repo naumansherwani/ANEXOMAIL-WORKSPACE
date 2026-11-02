@@ -182,7 +182,7 @@ export function FindTime({
       {err && (
         <p role="alert" className="ax-caption text-danger">
           {notLive
-            ? "Find-a-time is not switched on yet — the calendar engine update is pending."
+            ? "Find a time is unavailable right now. Please try again soon."
             : err.message}
         </p>
       )}

@@ -75,7 +75,7 @@ function FounderDeck() {
         ),
       onError: (error) =>
         notify.failed(
-          error.isNotImplemented ? "Provisioning not wired yet" : "Could not provision",
+          "Could not provision",
           {
             description: error.message,
           },

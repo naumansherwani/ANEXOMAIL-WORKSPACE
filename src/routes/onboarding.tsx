@@ -81,9 +81,7 @@ function OnboardingPage() {
   const fail = (e: unknown) =>
     setError(
       e instanceof ApiError
-        ? e.isNotImplemented
-          ? "This step isn't live on the server yet."
-          : e.message
+        ? e.message
         : "Something went wrong.",
     );
 

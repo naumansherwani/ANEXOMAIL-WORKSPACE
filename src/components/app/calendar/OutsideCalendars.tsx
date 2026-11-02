@@ -94,7 +94,7 @@ export function OutsideCalendars() {
       {list.isError && !list.data ? (
         <p className="ax-caption mt-ax-2 text-muted-foreground">
           {list.error.isNotImplemented || list.error.code === "sql_missing"
-            ? "Outside calendars are not switched on for this server yet."
+            ? "Outside calendars are unavailable right now."
             : list.error.message}
         </p>
       ) : subs.length === 0 ? (

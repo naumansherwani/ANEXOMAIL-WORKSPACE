@@ -215,10 +215,8 @@ function ProvidersTab() {
                             onSuccess: () =>
                               notify.done("Disconnected", "Tokens revoked on the server."),
                             onError: (err) =>
-                              notify.failed(err.isNotImplemented ? "Not wired yet" : "Failed", {
-                                description: err.isNotImplemented
-                                  ? "POST /api/integrations/disconnect pending."
-                                  : err.message,
+                              notify.failed("Failed", {
+                                description: err.message,
                               }),
                           },
                         )
@@ -271,10 +269,8 @@ function MigrationTab() {
                   "Our team starts it with you. The status shows below.",
                 ),
               onError: (err) =>
-                notify.failed(err.isNotImplemented ? "Not wired yet" : "Failed", {
-                  description: err.isNotImplemented
-                    ? "POST /api/integrations/migrations pending."
-                    : err.message,
+                notify.failed("Failed", {
+                  description: err.message,
                 }),
             },
           );
@@ -374,10 +370,8 @@ function MigrationTab() {
                               {
                                 onSuccess: () => notify.done("Done", `Migration ${a}d.`),
                                 onError: (err) =>
-                                  notify.failed(err.isNotImplemented ? "Not wired yet" : "Failed", {
-                                    description: err.isNotImplemented
-                                      ? "POST /api/integrations/migrations/control pending."
-                                      : err.message,
+                                  notify.failed("Failed", {
+                                    description: err.message,
                                   }),
                               },
                             )
@@ -518,10 +512,8 @@ function ExportTab() {
                 onSuccess: () =>
                   notify.done("Export queued", "Download link appears below when ready."),
                 onError: (err) =>
-                  notify.failed(err.isNotImplemented ? "Not wired yet" : "Failed", {
-                    description: err.isNotImplemented
-                      ? "POST /api/integrations/exports pending."
-                      : err.message,
+                  notify.failed("Failed", {
+                    description: err.message,
                   }),
               },
             )
@@ -618,10 +610,8 @@ function ActionsTab() {
                           { id: a.id, enabled: !a.enabled },
                           {
                             onError: (err) =>
-                              notify.failed(err.isNotImplemented ? "Not wired yet" : "Failed", {
-                                description: err.isNotImplemented
-                                  ? "POST /api/integrations/leo-actions/toggle pending."
-                                  : err.message,
+                              notify.failed("Failed", {
+                                description: err.message,
                               }),
                           },
                         )

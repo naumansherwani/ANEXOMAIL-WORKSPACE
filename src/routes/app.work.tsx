@@ -209,7 +209,7 @@ function WorkPage() {
           notify.done("Task added", "It is on the board.");
         },
         onError: (error) =>
-          notify.failed(error.isNotImplemented ? "Not wired yet" : "Could not add", {
+          notify.failed("Could not add", {
             description: error.message,
           }),
       },

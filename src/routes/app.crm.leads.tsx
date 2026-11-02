@@ -122,9 +122,7 @@ function LeadsPage() {
                               onSuccess: () => notify.done("Lead converted", "A deal was created."),
                               onError: (e) =>
                                 notify.failed(
-                                  e.isNotImplemented
-                                    ? "Convert not wired yet"
-                                    : "Could not convert",
+                                  "Could not convert",
                                   { description: e.message },
                                 ),
                             },

@@ -134,7 +134,7 @@ function Workbench() {
                   onSuccess: (d) => setSessionId(d.session.id),
                   onError: (e) =>
                     notify.failed(
-                      e.isNotImplemented ? "Sessions not wired yet" : "Could not create session",
+                      "Could not create session",
                       { description: e.message },
                     ),
                 },

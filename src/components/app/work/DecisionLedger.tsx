@@ -194,7 +194,7 @@ export function DecisionLedger() {
                                 "Cited draft is in Mail → Drafts; nothing was sent.",
                               ),
                         onError: (e) =>
-                          notify.failed(e.isNotImplemented ? "Not wired yet" : "Draft failed", {
+                          notify.failed("Draft failed", {
                             description: e.message,
                           }),
                       },

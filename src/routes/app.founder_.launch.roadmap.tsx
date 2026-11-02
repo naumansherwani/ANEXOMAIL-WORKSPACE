@@ -65,9 +65,7 @@ function RoadmapPage() {
                 },
                 onError: (err) =>
                   notify.failed("Could not add", {
-                    description: err.isNotImplemented
-                      ? "Waiting on POST /api/founder/release/roadmap."
-                      : err.message,
+                    description: err.message,
                   }),
               },
             );

@@ -94,9 +94,7 @@ function ClaimPage() {
           setAvailability({
             state: "unavailable",
             reason:
-              e instanceof ApiError && e.isNotImplemented
-                ? "The address directory isn't live on the server yet."
-                : e instanceof ApiError
+              e instanceof ApiError && e instanceof ApiError
                   ? e.message
                   : "Could not check this address.",
           });
@@ -170,9 +168,7 @@ function ClaimPage() {
     } catch (e) {
       setError(
         e instanceof ApiError
-          ? e.isNotImplemented
-            ? "Address claiming isn't live on the server yet."
-            : e.message
+          ? e.message
           : "Could not claim this address.",
       );
     } finally {

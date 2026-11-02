@@ -101,8 +101,8 @@ function MailFolderPage() {
         {
           onSuccess: () => notify.done(okMessage),
           onError: (error) =>
-            notify.failed(error.isNotImplemented ? "Not wired yet" : "Action failed", {
-              description: error.isNotImplemented ? `Waiting on ${endpoint}.` : error.message,
+            notify.failed("Action failed", {
+              description: error.message,
             }),
         },
       ),

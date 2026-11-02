@@ -41,7 +41,7 @@ export function ConversationTruthBar({ conversationId }: { conversationId: strin
                 },
                 onError: (err: Error) =>
                   notify.failed(
-                    (err as ApiError).isNotImplemented ? "Not wired yet" : "Could not set state",
+                    "Could not set state",
                     { description: err.message },
                   ),
               },
@@ -65,9 +65,7 @@ export function ConversationTruthBar({ conversationId }: { conversationId: strin
         {health.isPending
           ? "Health: reading"
           : health.isError
-            ? health.error.isNotImplemented
-              ? "Health arm offline"
-              : "Health: unavailable"
+            ? "Health: unavailable"
             : h
               ? `${h.open_items} open · ${h.blocked_items} blocked · ${h.overdue_items} overdue`
               : "Health: none"}

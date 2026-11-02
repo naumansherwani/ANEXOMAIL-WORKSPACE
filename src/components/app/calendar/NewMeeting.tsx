@@ -94,10 +94,8 @@ export function NewMeeting({
           onCreated(data.event.id);
         },
         onError: (error) =>
-          notify.failed(error.isNotImplemented ? "Not wired yet" : "Could not create", {
-            description: error.isNotImplemented
-              ? "Waiting on POST /api/calendar/events."
-              : error.message,
+          notify.failed("Could not create", {
+            description: error.message,
           }),
       },
     );

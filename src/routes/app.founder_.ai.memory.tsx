@@ -86,7 +86,7 @@ function Memory() {
                               onSuccess: () => notify.done("Forgotten", "Deleted from the server."),
                               onError: (e) =>
                                 notify.failed(
-                                  e.isNotImplemented ? "Memory not wired yet" : "Could not delete",
+                                  "Could not delete",
                                   { description: e.message },
                                 ),
                             },

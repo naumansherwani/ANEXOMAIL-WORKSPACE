@@ -49,7 +49,7 @@ function SecurityPage() {
       {
         onSuccess: () => notify.done("Device signed out", "That session is dead everywhere."),
         onError: (e) =>
-          notify.failed(e.isNotImplemented ? "Kill device not wired yet" : "Could not sign out", {
+          notify.failed("Could not sign out", {
             description: e.message,
           }),
       },
@@ -61,7 +61,7 @@ function SecurityPage() {
       {
         onSuccess: () => notify.done("Break-glass open", "30 minutes only. Everyone was notified."),
         onError: (e) =>
-          notify.failed(e.isNotImplemented ? "Break-glass not wired yet" : "Could not open", {
+          notify.failed("Could not open", {
             description: e.message,
           }),
       },

@@ -128,7 +128,7 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
           onDone();
         },
         onError: (e) =>
-          notify.failed(e.isNotImplemented ? "Not wired yet" : "Could not save", {
+          notify.failed("Could not save", {
             description: e.message,
           }),
       },

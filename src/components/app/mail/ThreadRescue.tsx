@@ -85,10 +85,8 @@ export function ThreadRescue({
                     setOpen(false);
                   },
                   onError: (error) =>
-                    notify.failed(error.isNotImplemented ? "Not wired yet" : "Rescue failed", {
-                      description: error.isNotImplemented
-                        ? "Waiting on chat.bridge.rescue."
-                        : error.message,
+                    notify.failed("Rescue failed", {
+                      description: error.message,
                     }),
                 },
               );

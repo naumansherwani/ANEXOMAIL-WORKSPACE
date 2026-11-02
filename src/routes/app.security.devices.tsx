@@ -47,7 +47,7 @@ function DevicesPage() {
           ),
         onError: (e) =>
           notify.failed(
-            e.isNotImplemented ? "Device trust not wired yet" : "Could not update device",
+            "Could not update device",
             {
               description: e.message,
             },

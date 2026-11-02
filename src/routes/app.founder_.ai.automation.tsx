@@ -75,7 +75,7 @@ function AutomationPage() {
   const [value, setValue] = useState("");
 
   const fail = (label: string) => (e: { isNotImplemented?: boolean; message: string }) =>
-    notify.failed(e.isNotImplemented ? `${label} abhi wired nahi` : `${label} fail hua`, {
+    notify.failed(`${label} fail hua`, {
       description: e.message,
     });
 

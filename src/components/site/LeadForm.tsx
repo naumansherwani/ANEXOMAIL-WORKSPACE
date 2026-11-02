@@ -107,9 +107,7 @@ export function LeadForm({ kind, cta, quoteGbp, detail, seats, note }: Props) {
 
       {submit.isError && (
         <p className="mt-4 text-sm text-destructive">
-          {submit.error.isNotImplemented
-            ? "This request line is not wired on the server yet — email moveyourbusiness@anexomail.com and it gets handled the same hour."
-            : submit.error.message}
+          {submit.error.message}
         </p>
       )}
 

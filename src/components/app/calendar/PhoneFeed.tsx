@@ -62,7 +62,7 @@ export function PhoneFeed() {
   if (list.error) {
     return (
       <p role="alert" className="mt-2 text-[12px] text-muted-foreground">
-        Calendar link is not switched on for this workspace yet.
+        Calendar link is unavailable for this workspace right now.
       </p>
     );
   }

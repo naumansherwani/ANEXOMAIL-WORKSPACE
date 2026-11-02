@@ -98,7 +98,7 @@ function Receipts() {
                                   ),
                                 onError: (err) =>
                                   notify.failed(
-                                    err.isNotImplemented ? "Guardrail not wired yet" : "Failed",
+                                    "Failed",
                                     { description: err.message },
                                   ),
                               },

@@ -61,8 +61,8 @@ function FounderKnowledge() {
   const pin = usePinDocument();
 
   const notWired = (endpoint: string) => (err: { isNotImplemented: boolean; message: string }) =>
-    notify.failed(err.isNotImplemented ? "Not wired yet" : "Failed", {
-      description: err.isNotImplemented ? `${endpoint} is pending on the server.` : err.message,
+    notify.failed("Failed", {
+      description: err.message,
     });
 
   return (

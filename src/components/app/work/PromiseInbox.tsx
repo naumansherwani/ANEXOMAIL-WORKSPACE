@@ -46,7 +46,7 @@ export function PromiseInbox() {
               : "It will not be suggested again.",
           ),
         onError: (error) =>
-          notify.failed(error.isNotImplemented ? "Not wired yet" : "Could not save", {
+          notify.failed("Could not save", {
             description: error.message,
           }),
       },

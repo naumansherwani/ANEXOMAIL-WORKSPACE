@@ -66,9 +66,7 @@ export function NotWired({ endpoint }: { endpoint: string }) {
     <div className="flex items-start gap-ax-3 rounded-xl border border-dashed border-border px-ax-4 py-ax-3">
       <PlugZap aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-steel" />
       <p className="ax-caption text-muted-foreground">
-        Not wired yet — waiting on{" "}
-        <code className="rounded bg-secondary px-1 py-0.5 text-[11px]">{endpoint}</code>. Nothing is
-        shown until real data arrives.
+        <span data-endpoint={endpoint}>This isn&apos;t available right now. Please check back soon.</span>
       </p>
     </div>
   );

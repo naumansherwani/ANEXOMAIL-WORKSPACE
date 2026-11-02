@@ -89,9 +89,7 @@ function LockPage() {
                   notify.failed(
                     e.status === 409 ? "This version is already locked" : "Lock failed",
                     {
-                      description: e.isNotImplemented
-                        ? "Waiting on POST /api/founder/release/lock."
-                        : e.message,
+                      description: e.message,
                     },
                   ),
               },

@@ -90,9 +90,7 @@ function ChecklistPage() {
                                     onSuccess: () => notify.done(`${i.label} → ${NEXT[i.state]}`),
                                     onError: (e) =>
                                       notify.failed("Could not update", {
-                                        description: e.isNotImplemented
-                                          ? "Waiting on POST /api/founder/release/checklist/item."
-                                          : e.message,
+                                        description: e.message,
                                       }),
                                   },
                                 )

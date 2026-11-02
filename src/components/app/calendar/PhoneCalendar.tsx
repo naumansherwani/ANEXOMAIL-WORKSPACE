@@ -98,7 +98,7 @@ export function PhoneCalendar() {
 
       {method !== "app" ? null : list.error ? (
         <p role="alert" className="mt-2 text-[12px] text-muted-foreground">
-          Phone calendar is not switched on for this workspace yet.
+          Phone calendar is unavailable for this workspace right now.
         </p>
       ) : (
         <>

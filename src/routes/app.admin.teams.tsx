@@ -120,9 +120,7 @@ function TeamsPage() {
         ) : teams.error ? (
           <ErrorState
             body={
-              teams.error.isNotImplemented
-                ? "Teams aren't live on the server yet."
-                : teams.error.message
+              teams.error.message
             }
             onRetry={() => void teams.refetch()}
           />

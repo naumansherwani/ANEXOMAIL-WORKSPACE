@@ -139,7 +139,7 @@ export function EventDetail({ id }: { id: string }) {
                         "Decisions and actions are in the conversation.",
                       ),
                     onError: (error) =>
-                      notify.failed(error.isNotImplemented ? "Not wired yet" : "Could not post", {
+                      notify.failed("Could not post", {
                         description: error.message,
                       }),
                   },

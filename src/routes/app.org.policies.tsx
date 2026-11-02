@@ -44,7 +44,7 @@ function PoliciesPage() {
       {
         onSuccess: (result) => setSim(result),
         onError: (e) =>
-          notify.failed(e.isNotImplemented ? "Simulator not wired yet" : "Could not simulate", {
+          notify.failed("Could not simulate", {
             description: e.message,
           }),
       },
@@ -58,7 +58,7 @@ function PoliciesPage() {
         onSuccess: () =>
           notify.done(enabled ? "Policy live" : "Policy off", "The server confirmed it."),
         onError: (e) =>
-          notify.failed(e.isNotImplemented ? "Policy toggle not wired yet" : "Could not apply", {
+          notify.failed("Could not apply", {
             description: e.message,
           }),
       },

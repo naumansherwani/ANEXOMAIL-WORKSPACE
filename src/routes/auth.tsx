@@ -272,9 +272,7 @@ export function AuthPage({ founderLogin = false, startMode }: { founderLogin?: b
           ? e.message
           : "";
     const message =
-      e instanceof ApiError && e.isNotImplemented
-        ? "This sign-in method isn't live on the server yet."
-        : raw === "password_mismatch"
+      e instanceof ApiError && raw === "password_mismatch"
           ? "Passwords do not match."
           : /invalid login|invalid_credentials/i.test(raw)
             ? "That email and password did not match. Use your @anexomail.com address."

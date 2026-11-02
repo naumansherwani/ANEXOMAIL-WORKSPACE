@@ -205,10 +205,8 @@ function FounderAiBilling() {
                       onSuccess: () =>
                         notify.done("Cap saved", "Server enforces it on every call."),
                       onError: (err) =>
-                        notify.failed(err.isNotImplemented ? "Not wired yet" : "Failed", {
-                          description: err.isNotImplemented
-                            ? "POST /api/ai/billing/cap pending."
-                            : err.message,
+                        notify.failed("Failed", {
+                          description: err.message,
                         }),
                     },
                   );
@@ -326,10 +324,8 @@ function FounderAiBilling() {
                                     `${r.credits} credits · charged ${money(r.charged, r.currency)}`,
                                   ),
                                 onError: (err) =>
-                                  notify.failed(err.isNotImplemented ? "Not wired yet" : "Failed", {
-                                    description: err.isNotImplemented
-                                      ? "POST /api/ai/billing/checkout pending on the server."
-                                      : err.message,
+                                  notify.failed("Failed", {
+                                    description: err.message,
                                   }),
                               },
                             )

@@ -59,9 +59,7 @@ function LaunchCommand() {
                   ),
                 onError: (e) =>
                   notify.failed(e.status === 409 ? "A run is already in flight" : "QA run failed", {
-                    description: e.isNotImplemented
-                      ? "Waiting on POST /api/founder/release/run."
-                      : e.message,
+                    description: e.message,
                   }),
               },
             )

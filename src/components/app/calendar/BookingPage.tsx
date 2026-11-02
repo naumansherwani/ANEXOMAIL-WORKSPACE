@@ -198,7 +198,7 @@ function Body() {
           setD(draftOf(now, s.suggested_handle));
           notify.done(d.enabled ? "Booking page is live" : "Saved — the page is off");
         },
-        onError: (e) => setError(e.status === 501 ? "Booking pages are not switched on yet." : e.message),
+        onError: (e) => setError(e.status === 501 ? "Booking pages are unavailable right now. Please try again soon." : e.message),
       },
     );
   };

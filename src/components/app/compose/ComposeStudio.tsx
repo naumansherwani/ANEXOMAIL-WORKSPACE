@@ -635,7 +635,7 @@ export function ComposeStudio({
               className="h-8 rounded-lg border border-border bg-card px-2 text-[11px] text-foreground [@media(pointer:coarse)]:h-11"
             >
               <option value="">
-                {templates.isError ? "Templates — not wired yet" : "Insert template"}
+                {templates.isError ? "Templates unavailable right now" : "Insert template"}
               </option>
               {templates.data?.templates.map((t) => (
                 <option key={t.id} value={t.id}>
@@ -1099,9 +1099,8 @@ export function ComposeStudio({
 }
 
 function reportFailure(notWired: boolean, message: string, endpoint: string) {
-  notify.failed(notWired ? "Not wired yet" : "Not sent", {
-    description: notWired
-      ? `Your draft stays here. ${endpoint} is pending on the server.`
-      : message,
+  void endpoint;
+  notify.failed("Not sent", {
+    description: notWired ? "Your draft is safe here. Please try again in a moment." : message,
   });
 }

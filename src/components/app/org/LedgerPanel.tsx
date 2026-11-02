@@ -30,7 +30,7 @@ export function LedgerPanel({ title, hint, empty }: { title: string; hint: strin
             });
         },
         onError: (e) =>
-          notify.failed(e.isNotImplemented ? "Verify not wired yet" : "Could not verify", {
+          notify.failed("Could not verify", {
             description: e.message,
           }),
       },

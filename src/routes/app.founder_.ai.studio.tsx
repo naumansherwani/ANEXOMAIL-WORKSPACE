@@ -105,7 +105,7 @@ function StudioPage() {
       {
         onSuccess: (d) => setRun(d.run),
         onError: (e) =>
-          notify.failed(e.isNotImplemented ? "Studio abhi wired nahi" : "Run fail hua", {
+          notify.failed("Run fail hua", {
             description: e.message,
           }),
       },
@@ -128,7 +128,7 @@ function StudioPage() {
       {
         onSuccess: (d) => notify.done("Batch chala", `${d.batch.total} targets server pe queued.`),
         onError: (e) =>
-          notify.failed(e.isNotImplemented ? "Batch abhi wired nahi" : "Batch fail hua", {
+          notify.failed("Batch fail hua", {
             description: e.message,
           }),
       },
@@ -272,7 +272,7 @@ function StudioPage() {
                       onSuccess: (d) =>
                         notify.done("Applied", `Server ne ${d.applied_to} mein likh diya.`),
                       onError: (e) =>
-                        notify.failed(e.isNotImplemented ? "Apply abhi wired nahi" : "Apply fail", {
+                        notify.failed("Apply fail", {
                           description: e.message,
                         }),
                     },
@@ -342,7 +342,7 @@ function StudioPage() {
                                 },
                                 onError: (e) =>
                                   notify.failed(
-                                    e.isNotImplemented ? "Recipes abhi wired nahi" : "Recipe fail",
+                                    "Recipe fail",
                                     { description: e.message },
                                   ),
                               },

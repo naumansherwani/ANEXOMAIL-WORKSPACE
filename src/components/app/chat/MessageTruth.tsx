@@ -118,7 +118,7 @@ function Actions({
   const [emailTo, setEmailTo] = useState("");
 
   const fail = (title: string) => (error: { isNotImplemented: boolean; message: string }) =>
-    notify.failed(error.isNotImplemented ? "Not wired yet" : title, {
+    notify.failed(title, {
       description: error.message,
     });
 
@@ -264,9 +264,7 @@ function Actions({
           </p>
         ) : (
           <p className="text-[11px] text-muted-foreground">
-            {suggestion.error?.isNotImplemented
-              ? "Work suggestion arm not reachable."
-              : "No work pattern found in this message."}
+            {"No work pattern found in this message."}
           </p>
         )}
         <Button
@@ -362,7 +360,7 @@ function Receipts({ messageId }: { messageId: string }) {
   if (q.isError)
     return (
       <p className="text-muted-foreground">
-        {q.error.isNotImplemented ? "Receipt arm not reachable." : q.error.message}
+        {q.error.message}
       </p>
     );
   const pack = q.data;
@@ -416,7 +414,7 @@ function Provenance({ messageId }: { messageId: string }) {
   if (q.isError)
     return (
       <p className="text-muted-foreground">
-        {q.error.isNotImplemented ? "Provenance arm not reachable." : q.error.message}
+        {q.error.message}
       </p>
     );
   const p = q.data;

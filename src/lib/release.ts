@@ -400,7 +400,7 @@ export async function flushOutbox(): Promise<{ sent: number; failed: number; kep
         attempts,
         state: attempts >= 6 ? "failed" : "queued",
         next_retry_at: Date.now() + backoff(attempts),
-        error: err.isNotImplemented ? "Server route not wired yet" : err.message,
+        error: err.message,
       } satisfies OutboxItem);
       failed += 1;
     }

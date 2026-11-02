@@ -40,7 +40,7 @@ export function reportInvites({
   if (!invites) {
     notify.failed("Saved, but the guests were NOT e-mailed", {
       description:
-        "The calendar engine update that sends invitations is not live yet. The meeting is on your calendar.",
+        "Your meeting is on your calendar, but invitations could not be sent right now. Please try sending them again shortly.",
     });
     return;
   }

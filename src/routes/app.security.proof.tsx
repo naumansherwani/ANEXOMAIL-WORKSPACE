@@ -52,7 +52,7 @@ function ProofPage() {
                   notify.done("Proof generated", "Hash recorded — the pack is ready to export."),
                 onError: (e) =>
                   notify.failed(
-                    e.isNotImplemented ? "Proof not wired yet" : "Could not run proof",
+                    "Could not run proof",
                     {
                       description: e.message,
                     },
