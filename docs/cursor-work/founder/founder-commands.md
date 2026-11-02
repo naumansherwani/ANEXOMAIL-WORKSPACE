@@ -2234,3 +2234,6 @@ Done: all three pull commands given together (E123 SQL, founder-install, awam pu
 
 ## 2 Nov 06:28 — E123 selftest FAIL on server ("signed outside the window"): "fix kero E123"
 Fixed in E123 (edit, same file). Re-run the SQL command.
+
+## 2 Nov 06:31 — pull.sh: SHA MISMATCH kernel 0.8.0 (manifest hash was 32 chars)
+Fixed. Re-run the awam pull.sh.

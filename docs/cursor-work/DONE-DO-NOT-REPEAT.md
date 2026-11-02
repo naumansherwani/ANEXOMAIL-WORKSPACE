@@ -1387,3 +1387,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 2 Nov 06:30 G5b part 1: CHECK_E123.sql added; E123 FK to seals removed (E107 selftest truncates seals). Pull commands given. Part 2 = next phase.
 - 2 Nov 06:35 E123 made ADVANCED (edited, not a new file): one note judge, signed_verify, vkey (matches Go), sign-lag policy+level in pulse, rotation chain prev_id; CHECK_E123 now 5. Route /audit/signed also returns db_recheck + vkey.
 - 2 Nov 06:40 E123 selftest fix (edited): the selftest retired the real active key at its created_ms, so real signed notes looked 'outside the key window' on a server that already had signed notes. Now retired 'now'. Reproduced locally with 2 real signed notes (old file FAIL, new file OK).
+- 2 Nov 06:40 DEPLOY-MANIFEST kernel 0.8.0 line had a 32-char hash (pull.sh compares 16): fixed, awam pull.sh must be re-run.

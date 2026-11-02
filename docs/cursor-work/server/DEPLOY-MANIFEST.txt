@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 4f7a14eb99e731d5
+docs/cursor-work/founder/founder-commands.md d540743b27a01c4d
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 77f5b2b2a7e84414
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 046ee7af991cf5df
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -385,7 +385,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md aa158ba2ec89aca6
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 960b0cbe36a5bd19
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -916,7 +916,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md eb1ba2a7a3861722
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md b8076da2f1af10fd
+docs/claude/founder/PULL-COMMANDS.md 879a1cc3366470b8
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 32121a0adc1a3ebf
@@ -1068,7 +1068,7 @@ src/components/app/CommandPalette.tsx 12a0fd1cf3105c1a
 src/lib/dashboard.ts 66e8a7d64fa8e599
 src/routes/app.admin.addresses.tsx cb8efe1f397d00f0
 docs/claude/BLUEPRINT-ABC-01NOV.md 82846662e27bbd8c
-public/kernel/anexo-kernel-0.8.0.wasm 81edb33af286566224653ee456b6c79a
+public/kernel/anexo-kernel-0.8.0.wasm 81edb33af2865662
 docs/cursor-work/sql/E122_founder_seal_interval.sql be0edb2538f82051
 docs/cursor-work/sql/CHECK_E122.sql d10212a8dfda8472
 founder-web/src/routes.test.ts da4a2795630823c7
