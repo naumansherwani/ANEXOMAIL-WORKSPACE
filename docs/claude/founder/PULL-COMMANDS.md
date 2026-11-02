@@ -392,3 +392,5 @@ Isme 134 tests passed + "OK - founder service zinda". Awam pull ki zaroorat nahi
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
 What you will see after 2: within ~2 minutes the sealer signs every seal (SQL: `select public.founder_audit_signed_pulse();` shows unsigned = 0 and the active key). The Dashboard shows NOTHING new yet (the gauge text is part 2). GREEN only with your paste + my Chrome look.
 Part 2 (next phase, NOT written yet): UI gauge text + TOFU pin, real-wasm test, fuzz, independent reviewer.
+
+- 2 Nov 06:40 E123 fixed (selftest bug). Re-run step 1 (the same SQL command); steps 2 and 3 unchanged.
