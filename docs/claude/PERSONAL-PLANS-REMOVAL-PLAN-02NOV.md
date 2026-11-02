@@ -48,13 +48,24 @@ Founder paste (08:36): 18 accounts; 3 personal-kind: **masoodsherwani@anexomail.
 ## Status 2 Nov 08:57 — Polar
 Founder deleted all 6 Personal products in Polar himself. Repo side was already clean (contracts removed + guard test). Nothing left to do in Polar for Personal.
 
-## PX2 — Sign-up / Create account (founder order 2 Nov 09:02 PKT, written to the repo; CODE WAITS FOR HIS "GO")
-Founder's words (verbatim in `founder-commands.md`). Scope, in plain terms:
-1. **Remove the "Personal / Business" choice everywhere a new person sees it:** the sign-up page AND the create-account step (`WorkspaceKindCards.tsx`, `src/routes/auth.tsx` KIND_KEY, `onboarding.tsx`, `claim.tsx`, Rust `workspace.personal`). Everyone becomes a Business-ladder account (Basic / Pro / Business / Business Pro / Business Premium). Legacy `personal` kind rows stay readable by the engine (shared with Basic/Pro).
-2. **Create account gets two new fields:** Country (full list, with flag) and Mobile number (country dial code from the chosen country, E.164 check). Stored on `account_profiles` (new columns or `preferences`, SQL first, RLS stays on). NO mock data.
-3. **Live availability, red / green, for what the person types:**
-   - **ANEXOMAIL address / username:** ALREADY exists (`GET /api/auth/identity/check`, used in `claim.tsx`: taken / reserved / invalid). To do: use it on the create-account form as well, with a clear RED "already taken" and GREEN "available".
-   - **Outside e-mail the person signs up or recovers with (Gmail, Outlook, Yahoo, any provider):** if that address is already registered, show RED "already used"; if free, GREEN. Honest limit: the check must not become a way to list who has an account (enumeration). Plan: rate-limited, same answer time, and a neutral message after the first few tries (Rule on account privacy to be checked against AGENTS.md before building).
-   - **Mobile number:** same RED / GREEN if already used on another account.
-4. Order of work (one phase at a time, each GREEN only with his paste + my Chrome look): PX2a SQL (country + mobile columns, unique checks), PX2b Rust/Bun availability door for email + mobile, PX2c UI (remove kind cards, add Country + Mobile + live check), PX2d Chrome proof on sign-up and create-account.
-5. NOT in this step: the mail-server mailboxes of the two deleted test accounts (waits for his explicit "haan").
+## PX2 — Sign-up / Create account, REVISED 2 Nov 09:07 PKT (founder: no unfair walls, advanced, latest technology; code goes phase by phase)
+Founder's words are verbatim in `founder-commands.md` (09:02 and 09:07). What is decided and why:
+
+1. **Remove the "Personal / Business" choice** on sign-up AND create-account (`WorkspaceKindCards.tsx`, `auth.tsx` KIND_KEY, `onboarding.tsx`, `claim.tsx`, Rust `workspace.personal`). Everyone is on the Business ladder. Legacy `personal` kind rows stay readable (shared engine).
+2. **Country + Mobile numbers on create account.** Country = ISO list with flag, stored `account_profiles.country_iso2`. Mobile: a person may add **many numbers** (max 5), the **same number may exist on more than one account** (founder: "yeh zulam user ke saath nahi kero"). Stored E.164 in `account_phones` (E127). Honest: with no SMS provider chosen, numbers are saved **unverified** and are NOT used to sign in yet.
+3. **Availability, red / green, without hurting anyone:**
+   - **ANEXOMAIL username / address:** live RED "already taken / reserved" or GREEN "available" (a handle is public by nature, like any mail provider). The door exists (`GET /api/auth/identity/check`, `claim.tsx`); it moves into the create-account form.
+   - **Outside e-mail (Gmail, Outlook, Yahoo, any):** NO red "already used" and NO number-based red either. Instead the **verify-first pattern**: the person always sees the same neutral screen ("Check your inbox"); a link is mailed. If the address is free it continues sign-up; if it already belongs to an account, the OWNER gets a safe notice mail and nothing is revealed to the typist. This stops anyone counting who has an account (no enumeration) and is not unfair to a real user.
+   - Rate-limit per IP + per target, same response time.
+4. **Passkey is compulsory (already in code: `needs_passkey` after sign-up) and becomes the everyday way in: after sign-out the phone shows the biometric prompt (fingerprint / face) straight away.**
+   - **Gap found in code (2 Nov):** passkey login today needs the e-mail typed first (`login_options` in `server/rust/passkey_glue.rs`; Bun `auth-passkey.ts`), and registration asks `residentKey: "preferred"`. For the "just touch the sensor" flow we need **discoverable credentials**: `residentKey: "required"` for NEW passkeys, a username-less `login_options` (empty allow list, challenge not tied to a user), verify resolves the user from the credential id / `userHandle`, and the browser side uses WebAuthn **conditional mediation** (`mediation: "conditional"`, passkey autofill) plus an auto-prompt on the sign-in screen when this device remembers a passkey. Existing passkeys on phones are mostly discoverable already; old ones keep the typed-email path.
+   - Recovery codes stay as the fallback (G35). Test accounts exempt as before.
+5. **Phases (one at a time; GREEN only with his paste + my Chrome look):**
+   - **PX2a SQL = E127 + CHECK_E127** (written 2 Nov, scratch-tested; he runs `sql-run E127_signup_country_phones CHECK_E127`).
+   - **PX2b doors:** Rust username-less passkey login + `residentKey required` for new passkeys; verify-first e-mail door; phones add/list/remove door (`account_phones`, max 5, E.164). Bun fallback kept in step.
+   - **PX2c UI:** remove kind cards; Country + Mobile fields (several numbers); red/green for the ANEXOMAIL name; passkey autofill / auto-biometric on sign-in.
+   - **PX2d Chrome proof** on sign-up, create-account and sign-in.
+6. NOT in this step: SMS verification / mobile login (needs a provider decision, see `AWAM-MOBILE-LOGIN-COUNTRY-REQUIREMENT-01NOV.md`), mail-server mailboxes of the two deleted test accounts (waits for his "haan").
+
+## Status 2 Nov 09:07 — E126
+Founder ran E126: CHECK_E126 7/7 OK, E65 sweep OK. basic.test@ and alikhan@ are gone; masoodsherwani@anexomail.com is on Business kind, plan Pro (account count 18 -> 16, no personal-kind account left). Not yet looked at in Chrome (needs Masood's own sign-in).
