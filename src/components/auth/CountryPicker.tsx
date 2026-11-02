@@ -82,7 +82,7 @@ export function CountryPicker({
           autoComplete="off"
           required
           className="flex h-10 w-full rounded-md border border-border bg-background px-3 pr-9 text-sm"
-          placeholder={current ? `${current.flag} ${current.name} (+${current.dial})` : "Search your country (type P for Pakistan)"}
+          placeholder={current ? `${current.flag} ${current.name} (+${current.dial})` : "Search your country"}
           value={open ? query : current ? `${current.flag} ${current.name} (+${current.dial})` : ""}
           onFocus={() => setOpen(true)}
           onChange={(e) => {

@@ -40,7 +40,7 @@ export function ContactFields({ value, onChange, locale = "en" }: { value: Conta
             type="tel"
             inputMode="tel"
             autoComplete="tel-national"
-            placeholder="300 1234567"
+            placeholder="Your number, without the country code"
             value={value.national}
             onChange={(e) => onChange({ ...value, national: e.target.value })}
             disabled={!current}
