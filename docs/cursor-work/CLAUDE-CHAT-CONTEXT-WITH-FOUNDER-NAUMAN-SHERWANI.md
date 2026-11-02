@@ -2138,3 +2138,6 @@ Awam sidebar -> founder order written in the blueprint: People/Work/CRM/Org = P 
 
 ## Checkpoint 2 Nov 05:45 PKT — G5a GREEN
 Proof: his pastes (E121 3/3, E122 4/4, founder-install 134 tests x3) + my Chrome look: seal #2 formed 5:30 AM (upto 31) and the browser says "seal #1 still holds and the kernel proved the ledger up to entry 31 extends it unchanged (RFC 9162)" (I reset the browser memory to the real seal #1 to see the text; it re-advanced to #2). ONE next phase = G5b (C2SP signed checkpoint, own Ed25519 audit-log key; Rust + WASM kernel + SQL edit of existing files if needed). Rule 63: discuss with him first, no code before his word. AGENTS.md Rule 72 = ANEXOChat rule (locked).
+
+## Checkpoint 2 Nov 05:50 PKT
+FC44 (founder gets the awam codes: same logic, same UI/UX, only /founder/v1 endpoints + G1/G2/G3 gates are his) locked in CODES/00-README-RULES.md. Awam side: Mail<->Chat Bridge preserved for Business, Business Pro, Business Premium (ONE-ORDER 2 Nov 05:46); package gates only after ANEXOChat is complete (Rule 72). Not in code yet: WebTransport (K6), webauthn-rs (J3), WebGPU (L2), Framer/GSAP (L1), DBSC (K7), MoQ (M), PQ mail (Q4), attachment/live encryption (Q2/Q5), G5b, G5c, G5d. ONE next phase: G5b (discuss first).

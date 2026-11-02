@@ -311,3 +311,10 @@ Founder pasted a comparison saying Proton protects only static mail content and 
 Order: PQN0 now (doc), PQN1-PQN2 with PQM (after step 11), PQN3 after 7a, PQN4 with 7-2/7-4; awam lane after the founder proof of each (A-series). tech-proof.py tracks PQN1/PQN3 rows.
 ### Website rule (founder: "seedha technology codes se likh ke website pe dun ga")
 A technology name goes on the public site ONLY when `python3 docs/cursor-work/server/tech-proof.py` shows it PROVEN for the lane the page describes and its server check is green. Until then the public footer lists only what runs today. `tech-proof.py` now has the PQ-mail row (MISSING in both lanes).
+
+## 2 Nov 2026 05:46 PKT — BRIDGE (Mail<->Chat) is SAVED for awam too (founder order, awam side)
+Founder: "bridge ke codes awam ke liye mehfooz ker lo ... awam ko bhi dai gay: Business, Business Pro, Business Premium ke andar."
+- The Mail<->Chat Bridge (founder step 12b / blueprint R2; design: `docs/claude/BRIDGE-EMAIL-CHAT-ENGINE-DESIGN-01NOV.md`, `docs/claude/FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md`; existing user-side pieces: `anexochat/sql/phase29_email_to_chat.sql`, `phase30_chat_to_email.sql`, `src/routes/anexochat.tsx` / `app.chat.tsx`) is PRESERVED: no file of it is deleted, moved or rewritten for the founder lane. The founder gets the latest-technology port; awam keeps the original and later gets the same Bridge inside **Business, Business Pro and Business Premium**.
+- Which package gets which Bridge feature (the gates) is decided ONLY after ANEXOChat is fully built (AGENTS.md Rule 72), not before.
+- Awam site is already on the latest technology; what the founder receives from it is described in `docs/claude/founder/CODES/00-README-RULES.md` FC44.
+
