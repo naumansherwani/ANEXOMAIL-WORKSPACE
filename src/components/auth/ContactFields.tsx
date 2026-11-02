@@ -47,7 +47,7 @@ export function ContactFields({ value, onChange, locale = "en" }: { value: Conta
           />
         </div>
         {value.national.trim() !== "" && !e164 && <p className="ax-caption text-destructive">Enter the number without the country code.</p>}
-        <p className="ax-caption text-muted-foreground">You can keep up to 5 numbers. Sign-in by SMS is not live yet.</p>
+        <p className="ax-caption text-muted-foreground">Optional. Helps keep your account safe. You can add more numbers later in Settings.</p>
       </div>
     </div>
   );

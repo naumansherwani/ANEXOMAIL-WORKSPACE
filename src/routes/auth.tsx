@@ -833,7 +833,7 @@ export function AuthPage({ founderLogin = false, startMode }: { founderLogin?: b
                                 <option value="other_email">Other email I can open</option>
                               </select>
                               <p className="ax-caption">
-                                Reset links go here. SMS is not live yet. Not Sign in with Apple.
+                                We send password reset links to this email.
                               </p>
                             </div>
                             <Field
