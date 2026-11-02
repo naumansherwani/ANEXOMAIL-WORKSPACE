@@ -1403,3 +1403,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 2 Nov 08:50 E125 GREEN on server (his paste: CHECK_E125 5/5, E65 OK) + pull.sh OK (602 same). Do not rerun. Test-account delete E126 waits for his haan.
 - 2 Nov 08:58 E126 written + tested on scratch PG (idempotent): deletes basic.test@ + alikhan@ (founder 08:54), Masood -> business kind, plan pro. Mail-server mailboxes of the two = separate step. Do not rewrite.
 - 2 Nov 08:57 Polar: founder DELETED all 6 Personal products himself (PX Polar step DONE, his own word). Repo already has no Personal contract (billing-products guard test). Do not ask again.
+- 2 Nov 09:05 E126 first run FAILED on server (trial_events append-only), nothing changed; rewritten to use the E24 account_purge engine (do not hand-delete ledger rows).

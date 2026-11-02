@@ -5,15 +5,15 @@
 --   A) masoodsherwani@anexomail.com stays (NEVER deleted): workspace_kind personal -> business (same as humza/raana: org slug family-*), onboarded=true, plan stays 'pro'.
 --      resolve_account_kind: pref "business" -> business, so he keeps every Pro feature under the Business ladder and is not pushed through onboarding (he already owns an org).
 --   B) basic.test@anexomail.com and alikhan@anexomail.com are deleted: only those two emails, never Masood (hard guard below).
---      Rows blocking the delete (foreign keys with NO ACTION / RESTRICT) are removed first, generically, for auth.users and for the organisations they own.
---      Their family_accounts rows and mail_accounts rows are removed too. If a blocker cannot be removed automatically the whole step aborts with its name (nothing changed).
+--      Uses the existing E24 engine public.account_purge(user, false, true, false) (it unlocks append-only ledgers like trial_events inside the transaction; first attempt 08:59 failed on trial_events and changed nothing).
+--      Then their family_accounts rows. Any refusal aborts the whole step (nothing changed).
 -- NOT done here: the real mailboxes on the mail server (Stalwart / files) — separate step after this. Polar customers: none (0 subscriptions).
 -- =============================================================================
 set search_path = public, extensions;
 
 do $$
 declare
-  v_masood uuid; v_ids uuid[]; v_orgs uuid[]; v_n integer; r record;
+  v_masood uuid; v_ids uuid[]; v_n integer; v_rep jsonb; r record;
 begin
   perform pg_advisory_xact_lock(hashtextextended('E126:test_accounts', 0));
 
@@ -40,34 +40,19 @@ begin
     return;
   end if;
 
-  select coalesce(array_agg(id), '{}') into v_orgs from public.organisations where owner_id = any(v_ids);
-
-  -- children of the organisations they own (FK NO ACTION / RESTRICT only; CASCADE ones go by themselves)
-  for r in select c.conrelid::regclass::text as tbl, a.attname as col
-           from pg_constraint c join pg_attribute a on a.attrelid = c.conrelid and a.attnum = c.conkey[1]
-           where c.contype = 'f' and c.confrelid = 'public.organisations'::regclass and array_length(c.conkey, 1) = 1 and c.confdeltype in ('a', 'r') loop
-    execute format('delete from %s where %I = any($1)', r.tbl, r.col) using v_orgs;
-    get diagnostics v_n = row_count;
-    if v_n > 0 then raise notice 'E126: % (%): % rows removed', r.tbl, r.col, v_n; end if;
-  end loop;
-  if to_regclass('public.mail_accounts') is not null then
-    delete from public.mail_accounts where org_id = any(v_orgs) or lower(address) in ('basic.test@anexomail.com', 'alikhan@anexomail.com');
-  end if;
-  delete from public.organisations where id = any(v_orgs);
-
-  -- rows blocking auth.users
-  for r in select c.conrelid::regclass::text as tbl, a.attname as col
-           from pg_constraint c join pg_attribute a on a.attrelid = c.conrelid and a.attnum = c.conkey[1]
-           where c.contype = 'f' and c.confrelid = 'auth.users'::regclass and array_length(c.conkey, 1) = 1 and c.confdeltype in ('a', 'r') loop
-    execute format('delete from %s where %I = any($1)', r.tbl, r.col) using v_ids;
-    get diagnostics v_n = row_count;
-    if v_n > 0 then raise notice 'E126: % (%): % rows removed', r.tbl, r.col, v_n; end if;
+  -- the repo's own purge engine (E24 account_purge): unlocks the immutable ledgers (trial_events etc.) inside this transaction, removes the user's rows and the orgs where
+  -- the user is the ONLY member, then deletes auth.users. skip_grace = true (test accounts). Any refusal (blocked / storage files / not found) aborts everything.
+  for r in select id, email from auth.users where id = any(v_ids) loop
+    v_rep := public.account_purge(r.id, false, true, false);
+    if coalesce((v_rep->>'ok')::boolean, false) is not true then
+      raise exception 'E126: account_purge refused % : %', r.email, v_rep::text;
+    end if;
+    raise notice 'E126: purged %', r.email;
   end loop;
   if to_regclass('public.family_accounts') is not null then
     delete from public.family_accounts where lower(email) in ('basic.test@anexomail.com', 'alikhan@anexomail.com');
   end if;
 
-  delete from auth.users where id = any(v_ids) and id <> v_masood;
-  get diagnostics v_n = row_count;
-  raise notice 'E126: auth.users deleted: %', v_n;
+  select count(*) into v_n from auth.users where id = any(v_ids);
+  if v_n > 0 then raise exception 'E126: % account(s) still exist after purge', v_n; end if;
 end $$;
