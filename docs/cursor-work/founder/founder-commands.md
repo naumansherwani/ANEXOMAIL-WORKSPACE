@@ -2258,3 +2258,5 @@ G5b GREEN (my Chrome look confirmed). Next phase: G5c.
 Phase: G5c (OpenTimestamps + RFC 3161, no accounts). Rule for me: re-read the chat-context top block + this file every ~30 s of work while writing (done by a re-read step between files).
 - 2 Nov 07:42 founder: 'codes likh liye hain server pe hain green kero' -> G5c pastes + Chrome look done, marked GREEN.
 - 2 Nov 07:55 founder: 'not answering par khud dekho' -> cause found: Gates card said 'not answering' during the first ~1 s load (rows not loaded yet). Fixed in Surface.tsx: shows 'checking…' until the first answers arrive. UI only (founder-install to ship).
+
+- 2 Nov 07:57 founder (verbatim): "awam ke liye busiess premium bhi package hai 21000pound wala aur jo founder ke features hai woh awam ke tarkeey se jo awam ke hisab se codes likhe jaye gay toh yeh sab awam ke blueprint main dalo aur baki jo founder ke side pe 100% advance codes is list main abhi tak nahi hai woh dalo"  -> docs only: docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md + docs/claude/FOUNDER-EXTRA-ADVANCED-02NOV.md + rows in BLUEPRINT-ABC. No code, no price change.

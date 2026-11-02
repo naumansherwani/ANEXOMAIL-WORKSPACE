@@ -756,3 +756,4 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 
 - 2 Nov 07:45 G5c GREEN (founder pastes + my Chrome look: 'Seal 3 time-anchored: 2 TSA'). Do not rebuild E124 / anchor_core / anchors.rs / anchor@1. OTS-Bitcoin still pending (hours).
 - 2 Nov 07:55 UI fix: Gates card no longer says 'not answering' while loading (Surface.tsx, dist index-B3a1vE21.js). Do not revert.
+- 2 Nov 08:10 docs: AWAM-ENGINE-BLUEPRINT-02NOV.md (AX1-AX8), FOUNDER-EXTRA-ADVANCED-02NOV.md (X1-X4), rows X and AX in BLUEPRINT-ABC. Do not duplicate.
