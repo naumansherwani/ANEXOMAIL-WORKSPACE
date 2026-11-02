@@ -73,3 +73,12 @@ export function consistencyVerify(first: number, second: number, fr: string, sr:
     w().postMessage({ id, consistency: { first, second, fr, sr, proof: proof.join(",") } });
   });
 }
+
+/** G5b: is `note` the C2SP signed checkpoint of (size, root) under the audit-log key `pub` (64 hex) named `name`? The kernel (checkpoint@1) decides. true = valid; false = the kernel REFUSED it; null = the kernel could not run (never reported as a refusal). */
+export function checkpointVerify(note: string, name: string, pub: string, size: string, root: string): Promise<boolean | null> {
+  return new Promise((resolve) => {
+    const id = ++seq;
+    waiting.set(id, (m) => resolve(m.code === 100 ? null : m.code === 0 && m.data === "1"));
+    w().postMessage({ id, checkpoint: { note, name, pub, size, root } });
+  });
+}

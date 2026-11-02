@@ -71,8 +71,73 @@ export function fmtAge(s: number): string {
   return `${Math.round(s / 86400)} days ago`;
 }
 
+// ---- G5b: the signed checkpoint (C2SP) ----------------------------------------------------------------------------------------------------------
+// The server delivers the newest signed note + the audit-log public keys. The KERNEL checks the Ed25519 signature and that the note's size/root are the ones we expect;
+// this file only (1) shapes the answer, (2) remembers the audit-log key in this browser (TOFU: first sight is trusted, a later change is a loud warning), (3) writes the sentence.
+export type LogKey = { id: number; name: string; pub_hex: string; key_id_hex: string; status: string };
+export type SignedView = { note: string; cp_id: number; size: number; root: string; origin: string; key: LogKey; keys: LogKey[]; level: string; unsigned: number; recheckOk: boolean | null };
+export type KeyVerdict = { state: "new" | "same" | "rotated" | "replaced"; text: string };
+export type SignedVerdict = { state: "ok" | "warn" | "fail" | "none"; text: string; keyState?: KeyVerdict["state"] };
+const KEYPIN = "anexo.founder.logkeypin.v1";
+const HEX8 = /^[0-9a-f]{8}$/;
+
+export function asLogKey(v: any): LogKey | null {
+  if (!v || typeof v !== "object") return null;
+  const id = Number(v.id);
+  if (!Number.isSafeInteger(id) || id < 1 || typeof v.name !== "string" || v.name.length < 3 || v.name.length > 200 || /[\s+]/.test(v.name)) return null;
+  if (typeof v.pub_hex !== "string" || !HEX64.test(v.pub_hex) || typeof v.key_id_hex !== "string" || !HEX8.test(v.key_id_hex)) return null;
+  return { id, name: v.name, pub_hex: v.pub_hex, key_id_hex: v.key_id_hex, status: v.status === "retired" ? "retired" : "active" };
+}
+
+/** `d` = the signed data of GET /founder/v1/audit/signed. null = nothing usable (E123 not installed, or no seal signed yet): no claim is made then. */
+export function asSignedView(d: any): SignedView | null {
+  if (!d || d.connected === false || !d.signed || d.signed.found !== true) return null;
+  const s = d.signed, cp = Number(s.cp_id), size = Number(s.size);
+  if (!Number.isSafeInteger(cp) || cp < 1 || !Number.isSafeInteger(size) || size < 1 || typeof s.root !== "string" || !HEX64.test(s.root)) return null;
+  if (typeof s.note !== "string" || s.note.length < 100 || s.note.length > 4096 || typeof s.origin !== "string") return null;
+  const keys = (Array.isArray(s.keys) ? s.keys : []).map(asLogKey).filter((k: LogKey | null): k is LogKey => !!k);
+  const key = keys.find((k: LogKey) => k.id === Number(s.key_id));
+  if (!key || key.name !== s.origin) return null;
+  const p = d.pulse ?? {}, rc = d.db_recheck;
+  return { note: s.note, cp_id: cp, size, root: s.root, origin: s.origin, key, keys, level: typeof p.level === "string" ? p.level : "ok", unsigned: Number(p.unsigned) || 0, recheckOk: rc && typeof rc.ok === "boolean" ? rc.ok : null };
+}
+
+export function loadKeyPin(): { name: string; pub_hex: string } | null {
+  try { const o = JSON.parse(localStorage.getItem(KEYPIN) ?? "null"); return o && typeof o.name === "string" && HEX64.test(o.pub_hex) ? { name: o.name, pub_hex: o.pub_hex } : null; } catch { return null; }
+}
+export function saveKeyPin(k: { name: string; pub_hex: string }): void {
+  try { localStorage.setItem(KEYPIN, JSON.stringify({ name: k.name, pub_hex: k.pub_hex })); } catch { /* private window: first-sight trust starts again next time */ }
+}
+/** TOFU for the audit-log key. First sight = remembered. Same key = fine. A different key is NEVER accepted silently: "rotated" (the old key is still listed by the server as retired) is a warning, "replaced" (the old key is not even listed) is a failure. */
+export function judgeKey(pin: { name: string; pub_hex: string } | null, k: LogKey, keys: LogKey[]): KeyVerdict {
+  if (!pin) return { state: "new", text: "the audit-log key was remembered in this browser" };
+  if (pin.name === k.name && pin.pub_hex === k.pub_hex) return { state: "same", text: "the audit-log key is the one this browser remembered" };
+  if (keys.some((x) => x.pub_hex === pin.pub_hex && x.status === "retired")) return { state: "rotated", text: "the audit-log key was changed since this browser first saw it (the old key is listed as retired); check it, then trust the new key" };
+  return { state: "replaced", text: "the audit-log key is NOT the one this browser remembered and the old key is not in the server's list: possible key substitution" };
+}
+
+/**
+ * kernel = what the WASM kernel said about THIS note under THIS key: "ok" | "bad" | "na" (could not run).
+ * mkSeal = the newest seal the server shows on the Dashboard. The signed note may be one seal behind (the signer runs about once a minute): that is information, not an alarm.
+ */
+export function judgeSigned(view: SignedView | null, kernel: "ok" | "bad" | "na", keyV: KeyVerdict | null, mkSeal: Seal | null): SignedVerdict {
+  if (!view) return { state: "none", text: "" };
+  if (kernel === "bad") return { state: "fail", text: `the signature on seal #${view.cp_id} did NOT verify in this browser (kernel refused it)` };
+  if (kernel === "na") return { state: "warn", text: `could not check the signature on seal #${view.cp_id} just now` };
+  if (keyV?.state === "replaced") return { state: "fail", text: keyV.text, keyState: "replaced" };
+  if (mkSeal && mkSeal.id === view.cp_id && (mkSeal.root !== view.root || mkSeal.upto_seq !== view.size)) return { state: "fail", text: `the signed note for seal #${view.cp_id} says a different root than the seal shown: they disagree` };
+  if (view.recheckOk === false) return { state: "fail", text: "the database re-check of the stored signed notes found a problem" };
+  const parts = [`seal #${view.cp_id} is signed by the audit-log key (Ed25519, checked by the kernel in this browser)`];
+  let state: SignedVerdict["state"] = "ok";
+  if (keyV?.state === "rotated") { state = "warn"; parts.push(keyV.text); }
+  if (mkSeal && mkSeal.id > view.cp_id) parts.push(`the newer seal #${mkSeal.id} is not signed yet`);
+  if (view.level === "fail") { state = "fail"; parts.push("seals have waited far too long for a signature"); }
+  else if (view.level === "warn" && state === "ok") { state = "warn"; parts.push("seals are waiting for a signature"); }
+  return { state, text: parts.join("; "), keyState: keyV?.state };
+}
+
 /** The gauge. `mk` is the signed answer of GET /founder/v1/audit/merkle. `fmtTime` shows a server time in the founder's city. */
-export function ledgerGauge(mk: any, proof: Proof, pin: PinVerdict | null, fmtTime: (ms: number) => string): Gauge {
+export function ledgerGauge(mk: any, proof: Proof, pin: PinVerdict | null, fmtTime: (ms: number) => string, signed: SignedVerdict | null = null): Gauge {
   if (!mk) return { state: "fail", text: "Not answering" };
   if (mk.connected === false) return { state: "unknown", text: mk.note || "Install the E107 SQL step" };
   const p = mk.pulse ?? {}, lc = p.last_checkpoint, fc = p.full_check;
@@ -96,5 +161,6 @@ export function ledgerGauge(mk: any, proof: Proof, pin: PinVerdict | null, fmtTi
     if (pin.state === "rollback" || pin.state === "rewritten") { bump("fail"); parts.push(pin.text.toUpperCase().slice(0, 1) + pin.text.slice(1)); }
     else if (pin.text && pin.state !== "new") parts.push(pin.text);
   }
+  if (signed && signed.state !== "none" && signed.text) { if (signed.state === "fail") bump("fail"); else if (signed.state === "warn") bump("warn"); parts.push(signed.text.charAt(0).toUpperCase() + signed.text.slice(1)); }
   return { state, text: parts.join(". "), chip: lc ? `#${lc.id}` : undefined };
 }

@@ -748,3 +748,4 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - 2 Nov 06:40 DEPLOY-MANIFEST kernel 0.8.0 line had a 32-char hash (pull.sh compares 16): fixed, awam pull.sh must be re-run.
 - 2 Nov 06:45 CHECK_G5B_LIVE.sql (read-only live proof of signing).
 - 2 Nov 06:40 G5b part 1 GREEN on server (his paste: install OK, CHECK_E123 5/5, pull.sh OK, CHECK_G5B_LIVE 4/4). Part 2 (UI gauge, TOFU pin, real-wasm test, fuzz, reviewer) open.
+- 2 Nov 07:00 G5b part 2 WRITTEN (not green): founder gets its own kernel 0.8.0 copy (kernel-sync.sh; /_cc/kernel/anexo-kernel-0.8.0.wasm), worker + kernel.ts checkpointVerify, sealpin.ts asSignedView/judgeKey(TOFU)/judgeSigned + gauge sentence, Surface effect + 'Trust new key' button, bun tests incl. REAL wasm vs Go vectors + 3000-mutation fuzz (46 pass), dist rebuilt (index-85iBf02w.js).

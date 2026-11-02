@@ -398,3 +398,7 @@ Part 2 (next phase, NOT written yet): UI gauge text + TOFU pin, real-wasm test, 
 - 2 Nov 06:45 awam pull.sh: re-run after the manifest hash fix (kernel 0.8.0).
 
 - 2 Nov 06:45 live proof of signing (wait ~2 min after founder-install): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E123_founder_signed_checkpoints CHECK_G5B_LIVE 2>&1 | grep -v "^$" | head -8`
+
+## G5b part 2 (2 Nov 07:00) — ONE command (Rust+SPA, includes founder kernel 0.8.0 copy and the new Dashboard sentence):
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+Then sign in again; the Ledger seal card should say "Seal #N is signed by the audit-log key (Ed25519, checked by the kernel in this browser)". Awam needs nothing new (kernel 0.8.0 already live).

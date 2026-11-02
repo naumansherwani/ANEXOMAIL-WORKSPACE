@@ -2243,3 +2243,6 @@ Kernel 0.8.0 on awam: 200, sha ok (my Chrome look). Next: CHECK_G5B_LIVE for sig
 
 ## 2 Nov 06:40 — pasted CHECK_G5B_LIVE 4/4 OK
 G5b part 1 green on the server. Next = G5b part 2 (UI + TOFU pin + tests + review).
+
+## 2 Nov 06:42 — "yeh code likho aur fix kero, awam update rakho, founder ke side pe bhi ek copy"
+Written: G5b part 2 (UI + TOFU + founder kernel 0.8.0 copy + real-wasm tests). Awam kernel 0.8.0 already live. Pull: founder-install only.

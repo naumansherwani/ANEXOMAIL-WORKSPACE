@@ -98,3 +98,57 @@ test("a server that moved ahead but gives NO usable proof can never move the rem
   const rw = judgePin(seal(2), seal(2, h("c")), null);
   expect(withExtension(rw, "ok", seal(2), seal(2, h("c"))).state).toBe("rewritten");
 });
+
+// ---- G5b: signed checkpoint judging (pure) ----
+import { asLogKey, asSignedView, judgeKey, judgeSigned } from "./sealpin";
+const K1 = { id: 1, name: "founderworkspace.anexomail.com/audit-log", pub_hex: "a".repeat(64), key_id_hex: "b2e17a58", status: "active" };
+const K0 = { ...K1, id: 2, pub_hex: "c".repeat(64), key_id_hex: "11223344" };
+const sd = (over: any = {}) => ({ connected: true, signed: { found: true, cp_id: 5, size: 120, root: "d".repeat(64), origin: K1.name, note: "x".repeat(150), key_id: 1, keys: [K1], ...over.signed }, pulse: { level: "ok", unsigned: 0, ...over.pulse }, db_recheck: over.db_recheck ?? { ok: true } });
+const seal5 = { id: 5, upto_seq: 120, root: "d".repeat(64), cp_hash: "e".repeat(64) };
+
+test("asSignedView accepts the real shape and refuses anything odd", () => {
+  expect(asSignedView(sd())?.cp_id).toBe(5);
+  expect(asSignedView(null)).toBeNull();
+  expect(asSignedView({ connected: false })).toBeNull();
+  expect(asSignedView(sd({ signed: { found: false } }))).toBeNull();
+  expect(asSignedView(sd({ signed: { root: "zz" } }))).toBeNull();
+  expect(asSignedView(sd({ signed: { key_id: 99 } }))).toBeNull();                 // key not in the list
+  expect(asSignedView(sd({ signed: { origin: "other/name" } }))).toBeNull();      // origin is not the key's name
+  expect(asSignedView(sd({ signed: { note: "short" } }))).toBeNull();
+  expect(asLogKey({ ...K1, name: "has space" })).toBeNull();
+  expect(asLogKey({ ...K1, pub_hex: "AB" })).toBeNull();
+});
+
+test("TOFU key pin: first sight remembered, same is fine, a change is never silent", () => {
+  expect(judgeKey(null, K1, [K1]).state).toBe("new");
+  expect(judgeKey({ name: K1.name, pub_hex: K1.pub_hex }, K1, [K1]).state).toBe("same");
+  expect(judgeKey({ name: K1.name, pub_hex: K0.pub_hex }, K1, [K1, { ...K0, status: "retired" }]).state).toBe("rotated");
+  expect(judgeKey({ name: K1.name, pub_hex: K0.pub_hex }, K1, [K1]).state).toBe("replaced");
+});
+
+test("judgeSigned: kernel refusal is a failure, a kernel that cannot run is only a warning, and the sentence is honest", () => {
+  const v = asSignedView(sd())!;
+  expect(judgeSigned(v, "ok", { state: "same", text: "" }, seal5).state).toBe("ok");
+  expect(judgeSigned(v, "ok", { state: "same", text: "" }, seal5).text).toContain("checked by the kernel in this browser");
+  expect(judgeSigned(v, "bad", null, seal5).state).toBe("fail");
+  expect(judgeSigned(v, "na", null, seal5).state).toBe("warn");
+  expect(judgeSigned(v, "ok", { state: "replaced", text: "x" }, seal5).state).toBe("fail");
+  expect(judgeSigned(v, "ok", { state: "rotated", text: "changed" }, seal5).state).toBe("warn");
+  expect(judgeSigned(null, "ok", null, seal5).state).toBe("none");
+  // the note says another root than the seal on screen = failure
+  expect(judgeSigned(v, "ok", { state: "same", text: "" }, { ...seal5, root: "f".repeat(64) }).state).toBe("fail");
+  // one seal behind = information, not an alarm
+  const behind = judgeSigned(v, "ok", { state: "same", text: "" }, { ...seal5, id: 6, upto_seq: 140 });
+  expect(behind.state).toBe("ok"); expect(behind.text).toContain("seal #6 is not signed yet");
+  expect(judgeSigned(asSignedView(sd({ pulse: { level: "fail" } }))!, "ok", { state: "same", text: "" }, seal5).state).toBe("fail");
+  expect(judgeSigned(asSignedView(sd({ db_recheck: { ok: false } }))!, "ok", { state: "same", text: "" }, seal5).state).toBe("fail");
+});
+
+test("ledgerGauge shows the signed sentence and a failed signature turns the gauge red", () => {
+  const mk = { connected: true, pulse: { level: "ok", rows: 130, every_rows: 20, lag_rows: 10, last_checkpoint: { id: 5, upto_seq: 120, created_ms: 1 }, checker: "ok", full_check: { chain_ok: true, cp_ok: true, age_s: 60, rows: 130 } } };
+  const v = asSignedView(sd())!;
+  const ok = ledgerGauge(mk, null, null, () => "now", judgeSigned(v, "ok", { state: "same", text: "" }, seal5));
+  expect(ok.state).toBe("ok"); expect(ok.text).toContain("Seal #5 is signed by the audit-log key");
+  expect(ledgerGauge(mk, null, null, () => "now", judgeSigned(v, "bad", null, seal5)).state).toBe("fail");
+  expect(ledgerGauge(mk, null, null, () => "now").text).not.toContain("signed");
+});

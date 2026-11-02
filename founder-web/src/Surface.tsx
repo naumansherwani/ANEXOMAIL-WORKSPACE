@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { get, warm, deviceStatus } from "./api";
-import { consistencyVerify, merkleVerify, trust } from "./kernel";
-import { asSeal, judgePin, ledgerGauge, loadPin, savePin, shouldAdvancePin, withExtension, type PinVerdict, type Proof } from "./sealpin";
+import { checkpointVerify, consistencyVerify, merkleVerify, trust } from "./kernel";
+import { asSeal, asSignedView, judgeKey, judgePin, judgeSigned, ledgerGauge, loadKeyPin, loadPin, saveKeyPin, savePin, shouldAdvancePin, withExtension, type PinVerdict, type Proof, type SignedVerdict, type SignedView } from "./sealpin";
 import { fmtHM, fmtTime } from "./city";
 import { onLiveChange, useLive, type LiveStatus } from "./livefeed";
 import { HealthOrb, type Tone } from "./Scene3D";
@@ -136,6 +136,26 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
     })();
     return () => { off = true; };
   }, [mkSealKey]);
+  // G5b: the newest C2SP signed checkpoint. The server only delivers the note + the audit-log public keys; the WASM kernel (checkpoint@1) checks the Ed25519 signature
+  // and the size/root in THIS browser, and the key is remembered here (TOFU: a later change is a loud warning, never silent). All logic is in sealpin.ts (tested).
+  const [sgV, setSgV] = useState<SignedVerdict | null>(null);
+  const [sgView, setSgView] = useState<SignedView | null>(null);
+  const [keyTick, setKeyTick] = useState(0);
+  useEffect(() => {
+    let off = false;
+    void (async () => {
+      try {
+        const view = asSignedView((await get("/founder/v1/audit/signed")).data);
+        if (!view) { if (!off) { setSgView(null); setSgV({ state: "none", text: "" }); } return; }
+        const k = await checkpointVerify(view.note, view.origin, view.key.pub_hex, String(view.size), view.root);
+        const kernel = k === true ? "ok" : k === false ? "bad" : "na";
+        const pinK = loadKeyPin(), keyV = judgeKey(pinK, view.key, view.keys);
+        if (kernel === "ok" && keyV.state === "new") saveKeyPin(view.key);                  // first sight only, and only for a note that really verified
+        if (!off) { setSgView(view); setSgV(judgeSigned(view, kernel, keyV, mkSeal)); }
+      } catch { if (!off) { setSgView(null); setSgV(null); } }                            // route missing / unreachable: no claim either way
+    })();
+    return () => { off = true; };
+  }, [mkSealKey, keyTick]);
   const acts: Act[] = by("/founder/v1/actions")?.data?.actions || [], actsOk = !!by("/founder/v1/actions")?.ok;
   const d = by("/founder/v1/bridge")?.data ?? d0; // the freshest verified Bridge answer (refreshed on every live change)
   const hg = by("/founder/v1/hostguard")?.data, ib = by("/founder/v1/inbox")?.data, mk = by("/founder/v1/audit/merkle")?.data, lv = L.snapshot ?? by("/founder/v1/live")?.data, au = by("/founder/v1/audit")?.data, pol = by("/founder/v1/finance/polar")?.data ?? d?.polar, ds = deviceStatus();
@@ -149,11 +169,12 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
   const mrr = polarApi ? fmtMinor(pol.mrr_minor) : m?.connected ? Number(m.mrr_gbp || 0).toLocaleString("en-GB") : null;
   const target = Number(m?.target_gbp) || 0, pct = !polarApi && m?.connected && target ? Math.min(100, Math.round((Number(m.mrr_gbp || 0) / target) * 100)) : undefined;
   const grace = (subs?.by_product || []).reduce((a: number, x: { grace?: number }) => a + (x.grace || 0), 0);
-  const feat: { name: string; state: State; text: string; to?: string; chip?: string }[] = rows ? [
+  const feat: { name: string; state: State; text: string; to?: string; chip?: string; act?: { label: string; run: () => void } }[] = rows ? [
     { name: "Signed answers", state: ks === "verified" ? "ok" : ks === "failed" ? "fail" : "unknown", text: ks === "verified" ? "Checked in this browser" : ks === "failed" ? "An answer failed the check and was hidden" : "Waiting for the first answer" },
     { name: "Approved device", state: ds.mode === "device" ? "ok" : "warn", text: ds.mode === "device" ? ds.label || "This device" : "No device token" },
     { name: "Audit ledger", state: !au ? "fail" : !au.connected ? "unknown" : au.chain_ok ? "ok" : "fail", text: !au ? "Not answering" : !au.connected ? au.note || "Not connected" : au.chain_ok ? `Chain intact${au.head ? `, entry ${au.head.seq}` : ""}` : `Chain broken at ${au.first_bad_seq}`, to: "audit" },
-    { name: "Ledger seal", ...ledgerGauge(mk, lp, pinV, fmtHM), to: "audit" },
+    { name: "Ledger seal", ...ledgerGauge(mk, lp, pinV, fmtHM, sgV), to: sgV?.keyState === "rotated" ? undefined : "audit",
+      act: sgV?.keyState === "rotated" && sgView ? { label: "Trust new key", run: () => { saveKeyPin(sgView.key); setKeyTick((n) => n + 1); } } : undefined },
     { name: "Billing", state: !pol && !hk ? "fail" : pol?.connected ? (pol.stale ? "warn" : "ok") : subs?.connected ? "ok" : "unknown", text: pol?.connected ? `${pol.active_subscriptions ?? "?"} active subscriptions` : subs?.connected ? "Polar webhook live, API metrics not connected" : pol?.note || "Not connected", to: "finance" },
     { name: "Revenue records", state: !d ? "fail" : m?.connected ? "ok" : "unknown", text: !d ? "Not answering" : m?.connected ? `${m.active_accounts} active account${m.active_accounts === 1 ? "" : "s"}` : m?.note || "Not connected", to: "finance" },
     { name: "Customers", state: !d ? "fail" : v?.connected ? "ok" : "unknown", text: !d ? "Not answering" : v?.connected ? `${v.new_leads} new lead${v.new_leads === 1 ? "" : "s"}` : v?.note || "Not connected", to: "bridge" },
@@ -202,7 +223,7 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
       <section className="dx-grid" style={{ "--i": 2 } as React.CSSProperties} aria-label="Working features">
         {!rows ? [0, 1, 2, 3].map((i) => <div key={i} className="dx-card dx-feat"><div className="dx-big skel s" /></div>) : feat.map((f) => {
           const inner = <><span className={`dx-ic ${f.state}`}><Gl n={FICON[f.name] || "check"} /></span><div className="dx-fx"><div className="dx-fn">{f.name}</div><div className="dx-ft">{f.text}</div></div><span className={`st ${f.state}`}>{f.chip ?? STX[f.state]}</span></>;
-          return f.to ? <button key={f.name} className="dx-card dx-feat btn" onClick={() => go(f.to!)}>{inner}</button> : <div key={f.name} className="dx-card dx-feat">{inner}</div>;
+          return f.act ? <div key={f.name} className="dx-card dx-feat">{inner}<button className="st warn" onClick={f.act.run}>{f.act.label}</button></div> : f.to ? <button key={f.name} className="dx-card dx-feat btn" onClick={() => go(f.to!)}>{inner}</button> : <div key={f.name} className="dx-card dx-feat">{inner}</div>;
         })}
       </section>
 

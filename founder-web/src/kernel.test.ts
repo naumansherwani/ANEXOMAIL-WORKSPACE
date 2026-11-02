@@ -87,3 +87,60 @@ test("merkle_consistency_verify in the real wasm: forged old root with a power-o
   // Huge sizes: only "no panic" is promised. A root does not commit to its size, so SIZES are bound by the signed seal (G5b), never by this check alone.
   expect([0, 1]).toContain(call(2 ** 31, 2 ** 32 - 1, c.first_root, c.second_root, p));
 });
+
+// ---- G5b: checkpoint@1 in the REAL wasm, against notes made by Go's own `note` package (the independent oracle, docs/cursor-work/server/g5b-oracle/) ----
+const vec = JSON.parse(readFileSync("../server/rust/g5b_vectors.json", "utf8"));
+async function ckp() {
+  const { instance } = await WebAssembly.instantiate(bytes, { env: { host_wake() {}, host_call() {}, host_emit() {} } });
+  const ex = instance.exports as any;
+  const put = (t: string) => { const b = new TextEncoder().encode(t), p = ex.kernel_alloc(Math.max(b.length, 1)); new Uint8Array(ex.memory.buffer, p, b.length).set(b); return [p, b.length] as const; };
+  return (note: string, name: string, pub: string, size: string, root: string) => { const a = [note, name, pub, size, root].map(put); return ex.checkpoint_verify(...a.flat()) as number; };
+}
+
+test("checkpoint_verify in the real wasm: every Go-signed note verifies, wrong size / root / key / name is refused", async () => {
+  const v = await ckp(), keys = vec.keys;
+  expect(vec.vectors.length).toBe(44);
+  for (const x of vec.vectors) {
+    const k = keys[x.key], root64 = x.root_hex, size = (x.note as string).split("\n")[1]; // the size as text from the note itself: 2^64-1 does not survive JSON.parse as a JS number
+    expect(v(x.note, k.name, k.pub_hex, size, root64)).toBe(1);
+    expect(v(x.note, k.name, k.pub_hex, String(BigInt(size) === 0n ? 1n : BigInt(size) - 1n), root64)).toBe(0);
+    expect(v(x.note, k.name, k.pub_hex, size, "0".repeat(64))).toBe(0);
+    expect(v(x.note, k.name, keys[(x.key + 1) % 4].pub_hex, size, root64)).toBe(0);
+    expect(v(x.note, keys[(x.key + 1) % 4].name, k.pub_hex, size, root64)).toBe(0);
+  }
+});
+
+test("checkpoint_verify: bad inputs are refused, never a crash (leading-zero size, upper-case hex, short key)", async () => {
+  const v = await ckp(), x = vec.vectors.find((y: any) => y.size === 31 && y.key === 0), k = vec.keys[0];
+  expect(v(x.note, k.name, k.pub_hex, "031", x.root_hex)).toBe(0);
+  expect(v(x.note, k.name, k.pub_hex.toUpperCase(), "31", x.root_hex)).toBe(0);
+  expect(v(x.note, k.name, k.pub_hex.slice(2), "31", x.root_hex)).toBe(0);
+  expect(v(x.note, k.name, k.pub_hex, "31", x.root_hex.toUpperCase())).toBe(0);
+  expect(v("", k.name, k.pub_hex, "31", x.root_hex)).toBe(0);
+  expect(v(x.note, "", k.pub_hex, "31", x.root_hex)).toBe(0);
+  expect(v("x".repeat(100000), k.name, k.pub_hex, "31", x.root_hex)).toBe(0);
+});
+
+test("checkpoint_verify: the real wasm agrees with Go on every single-byte flip (235 mutations), and 3000 random mutations never get through", async () => {
+  const v = await ckp(), k = vec.keys[0];
+  const base = vec.vectors.find((y: any) => y.size === 31 && y.key === 0);
+  // the 235 Go-judged mutations were made from a different base note (size 31, root "mutation-base"); judge each with the size/root that note really carries
+  for (const m of vec.mutations) {
+    const lines = (m.note as string).split("\n"); // body is the first 3 lines when the note is still shaped like one
+    const size = lines[1], root = Buffer.from(lines[2] ?? "", "base64");
+    const rootHex = root.length === 32 ? root.toString("hex") : "0".repeat(64);
+    const got = v(m.note, k.name, k.pub_hex, /^\d+$/.test(size ?? "") ? size : "31", rootHex);
+    if (!m.go_verifies) expect(got).toBe(0);            // Go refused it: the wasm must refuse it too
+  }
+  // deterministic fuzz: random 1-4 byte edits of a good note must never verify against the ORIGINAL size/root
+  let seed = 0x9e3779b9; const rnd = () => (seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0);
+  const good = Buffer.from(base.note, "utf8");
+  let accepted = 0;
+  for (let i = 0; i < 3000; i++) {
+    const b = Buffer.from(good), n = 1 + (rnd() % 4);
+    for (let j = 0; j < n; j++) b[rnd() % b.length] ^= 1 << (rnd() % 8);
+    if (b.equals(good)) continue;
+    accepted += v(b.toString("utf8"), k.name, k.pub_hex, "31", base.root_hex);
+  }
+  expect(accepted).toBe(0);
+});
