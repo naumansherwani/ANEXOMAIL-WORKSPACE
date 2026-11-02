@@ -396,3 +396,5 @@ Part 2 (next phase, NOT written yet): UI gauge text + TOFU pin, real-wasm test, 
 - 2 Nov 06:40 E123 fixed (selftest bug). Re-run step 1 (the same SQL command); steps 2 and 3 unchanged.
 
 - 2 Nov 06:45 awam pull.sh: re-run after the manifest hash fix (kernel 0.8.0).
+
+- 2 Nov 06:45 live proof of signing (wait ~2 min after founder-install): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E123_founder_signed_checkpoints CHECK_G5B_LIVE 2>&1 | grep -v "^$" | head -8`
