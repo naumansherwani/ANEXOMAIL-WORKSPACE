@@ -2231,3 +2231,6 @@ Done: pull commands (E123 SQL -> founder-install -> awam pull.sh) in PULL-COMMAN
 
 ## 2 Nov 06:26 — "sab pull commands ek saath diya kero"
 Done: all three pull commands given together (E123 SQL, founder-install, awam pull.sh).
+
+## 2 Nov 06:28 — E123 selftest FAIL on server ("signed outside the window"): "fix kero E123"
+Fixed in E123 (edit, same file). Re-run the SQL command.

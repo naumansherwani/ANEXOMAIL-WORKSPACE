@@ -262,7 +262,7 @@ begin
     v_kid := substr(encode(extensions.digest(convert_to(v_name, 'UTF8') || '\x0a01'::bytea || decode(v_pub, 'hex'), 'sha256'), 'hex'), 1, 8);
     v_kid2 := substr(encode(extensions.digest(convert_to(v_name, 'UTF8') || '\x0a01'::bytea || decode(v_pub2, 'hex'), 'sha256'), 'hex'), 1, 8);
     -- (the selftest retires any real active key inside this rolled-back block; nothing leaks)
-    update public.founder_audit_log_keys set status = 'retired', retired_ms = created_ms where status = 'active';
+    update public.founder_audit_log_keys set status = 'retired', retired_ms = greatest(created_ms, (extract(epoch from clock_timestamp()) * 1000)::bigint) where status = 'active';   -- retired NOW, so the real key's notes stay inside its window
     if not public._fs_fails(format($q$select public.founder_audit_log_key_register(%L, %L, %L, 'deadbeef')$q$, v_uid, v_name, v_pub)) then raise exception 'a wrong key id was accepted'; end if;
     j := public.founder_audit_log_key_register(v_uid, v_name, v_pub, v_kid);
     if not (j ->> 'registered')::boolean then raise exception 'registering failed: %', j; end if;
