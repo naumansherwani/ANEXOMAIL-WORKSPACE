@@ -459,3 +459,6 @@ Optional, only after he read the GEO1 plan: `git -C /opt/anexomail-web fetch -q 
 1. SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E129_org_optional_hardening CHECK_E129 | tail -30`
 2. Rust (default organisation name): `git -C /opt/anexomail-web fetch -q origin main && MODULES=wsx bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh) 2>&1 | tail -25`
 3. Web (CountryPicker + optional name + /signup address): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -25`
+
+## E130 fix for E129 (2 Nov 10:16) - SQL, then the same CHECK
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E130_org_report_text_cast CHECK_E129 | tail -30`
