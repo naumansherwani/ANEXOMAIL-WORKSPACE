@@ -12,23 +12,6 @@ export type WorkspacePlanId = "basic" | "pro" | "business" | "business_pro";
 
 export type AccountKind = "personal" | "business";
 
-export type PersonalTierId = "personal_basic" | "personal_pro" | "personal_premium";
-
-/**
- * Paise Polar landing cards se. Kind personal hone ke baad SKU yeh naam ban'ta hai.
- * Landing pe Personal Polar SKU nahi. Webhook no-touch — `workspace_plan` pehle se.
- *
- * Polar Basic £40 → Personal Basic
- * Polar Pro £105 → Personal Pro
- * Polar Business £360 → Business kind (company). Agar kind personal ho to Personal Pro power.
- * Polar Business Pro £2850 → kind personal = Personal Premium; kind business = Business Pro
- */
-export function polarToPersonalTier(plan: WorkspacePlanId): PersonalTierId {
-  if (plan === "business_pro") return "personal_premium";
-  if (plan === "pro" || plan === "business") return "personal_pro";
-  return "personal_basic";
-}
-
 export type SurfaceHosts = {
   publicMailHost: boolean;
   aiHost: boolean;

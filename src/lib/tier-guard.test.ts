@@ -5,14 +5,13 @@ import { join } from "node:path";
 /**
  * UNIVERSAL-UI GUARD (founder 21 Oct 2026): "website editing universal — package ke hisab se nahi".
  * Ek UI/copy badlav har package par ek saath lagna chahiye. Package ka farq SIRF in jagahon se aa sakta hai:
- * plan-surface.ts (kya khulta hai), plans.ts / personal-tiers.ts (card+price), billing/checkout/onboarding (paisa).
+ * plan-surface.ts (kya khulta hai), plans.ts (card+price), billing/checkout/onboarding (paisa).
  * Baqi har component/route mein `plan === "basic"` jaisi tier-literal comparison RATCHET hai: baseline se BARHNI nahi chahiye,
  * naya file 0 se shuru. Zaroorat ho to tier logic plan-surface.ts mein dalo (surface capability) — phir sab package par ek hi code chalta hai.
  */
 const ALLOW = new Set([
   "src/lib/plan-surface.ts",
   "src/lib/plans.ts",
-  "src/lib/personal-tiers.ts",
   "src/lib/revenue.ts",
   "src/routes/app.billing.tsx",
   "src/routes/plans.tsx",
@@ -22,7 +21,7 @@ const ALLOW = new Set([
   "src/routes/claim.tsx",
   "src/routes/auth.tsx",
 ]);
-const RE = /\b(?:billed|plan|planId|tier|workspacePlan|kind)\s*(?:===|!==)\s*["'](?:basic|pro|business|business_pro|personal_basic|personal_pro|personal_premium)["']/g;
+const RE = /\b(?:billed|plan|planId|tier|workspacePlan|kind)\s*(?:===|!==)\s*["'](?:basic|pro|business|business_pro)["']/g;
 
 function walk(d: string, out: string[] = []) {
   for (const f of readdirSync(d)) {

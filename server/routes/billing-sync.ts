@@ -309,20 +309,13 @@ authRouter.post("/change-plan", async (req, res) => {
   if (!target) {
     return res.status(400).json({ error: "product_required", known: Object.keys(BILLING_PRODUCTS) });
   }
-  // Two kinds of target:
-  //   • personal-tier products (accountKind "personal"): only a personal account
-  //   • generic workspace plans (kind "plan", no accountKind tag): only an
-  //     account that is NOT explicitly personal. A personal account has to
-  //     convert first (ConvertToBusiness). kind null (not stamped yet) is
-  //     allowed, same as /intent already allows it for untagged products.
-  const isPersonalTarget = target.accountKind === "personal";
+  // Only the Business ladder is sold (Personal plans were retired 2 Nov 2026): generic workspace plans, never an
+  // account explicitly tagged "personal" (it has to convert first, ConvertToBusiness). kind null (not stamped yet) is allowed.
   const isWorkspaceTarget = target.kind === "plan" && !target.accountKind;
-  if (!isPersonalTarget && !isWorkspaceTarget) {
+  if (!isWorkspaceTarget) {
     return res.status(400).json({ error: "change_plan_plan_products_only" });
   }
-  if (isPersonalTarget) {
-    if (!(await enforceAccountKind(userId, target.accountKind, res))) return;
-  } else if ((await accountKindFor(userId)) === "personal") {
+  if ((await accountKindFor(userId)) === "personal") {
     return res.status(403).json({ error: "convert_to_business_first" });
   }
 

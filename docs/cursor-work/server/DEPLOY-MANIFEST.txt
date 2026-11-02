@@ -23,7 +23,7 @@ src/components/site/AnexoMailField.tsx 4d0f9a34e273e888
 src/components/site/SiteNav.tsx 4b7533a4e09ff3a8
 src/components/site/PlanFeatureList.tsx 6419d9494509fbb0
 src/routes/index.tsx b661c7a75b3f6b7b
-src/routes/plans.tsx ce5ba9610759be3c
+src/routes/plans.tsx 9184cfdc6e88eee4
 src/routes/app.people.tsx 423eb4164a4dceb4
 src/routes/app.work.tsx 3a052d4018249a14
 src/components/app/people/ContactProfile.tsx 57e25d1019faf52f
@@ -40,7 +40,7 @@ src/routes/app.crm.collab.tsx 2955adff7ecb6af7
 src/routes/app.crm.reports.tsx 7c9b79f4e5b5a1e3
 src/routes/app.crm.index.tsx 2940905686029e77
 src/lib/mail.ts 04b60f1f9ba88245
-src/routes/app.billing.tsx 6bbf6de1647b5c4c
+src/routes/app.billing.tsx 03cc4dd361e4d9f1
 src/routes/app.account.tsx 0f5af82df12a5524
 src/routes/app.admin.tsx b7d1afae6ab3fa4c
 src/routes/app.admin.members.tsx 36e5510fd5d4ba79
@@ -55,7 +55,7 @@ src/routes/get-started.tsx 26e18cb222848629
 src/lib/ics.ts e5b885bb1f9e0ba8
 src/components/app/calendar/IcsImport.tsx 4f9a9943bcf9ad9a
 src/components/app/PlanSurfaceGate.tsx b5f2d59675b9c8b5
-src/lib/plan-surface.ts 0a30157ccf603ea1
+src/lib/plan-surface.ts c7faa5b40dbead70
 src/components/app/dashboard/Greeting.tsx 04b1c71408a15402
 src/components/app/dashboard/Panels.tsx 4ab55253b75c2425
 src/components/app/mail/InboxWelcome.tsx 52450784b63156ac
@@ -74,7 +74,6 @@ src/lib/report-figures.ts 21b05c7f52004220
 src/components/app/work/DecisionLedger.tsx 5db4d0eb44ee890a
 src/components/app/work/PromiseRecovery.tsx a490927789d4bd77
 src/lib/crm.ts 1c09aa74ae114d5c
-src/lib/personal-tiers.ts 93056896f08e505c
 src/components/app/people/ContactsImport.tsx 3fb07a6b9294d100
 src/lib/contacts-import.ts b0615264d021d4f1
 src/lib/calendar.ts 0562ce86f6ed21b5
@@ -126,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 2dc20d9946f2f66e
+docs/cursor-work/founder/founder-commands.md 0f9a09be3382c329
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -258,7 +257,7 @@ src/lib/api.ts 571d1ad7a84ec613
 src/lib/api-refresh.test.ts 4039fb727ec8e788
 server/rust/jwt_core.rs 1e419b367e46ec3c
 docs/cursor-work/server/tier-sweep.sh 1a6b7aa79d0ace53
-src/lib/tier-guard.test.ts d7308453842c1a6b
+src/lib/tier-guard.test.ts a16e4b160b6f172a
 src/lib/tier-guard.baseline.json 75095fd08628920d
 server/rust/passkey_core.rs 5aa795ff74733765
 server/rust/passkey_glue.rs 3cd1b5e8cfe933cc
@@ -385,7 +384,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 793bf9123f9bd0ab
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 6c6f0bece53c2b8a
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -806,12 +805,12 @@ server/rust/wsx_core.rs 3f981ffa0c3fe71d
 server/rust/wsx_glue.rs a91f17544c5837b3
 docs/cursor-work/server/wsx-live-test.sh b23be31e65d5d5fe
 docs/claude/POLAR-COPY-V6-BUSINESS.md a97c2be4fce58a40
-server/config/billing-products.ts 7aa742c003c71c1c
-server/config/billing-products.test.ts 5b8bbfd0d6f4852b
+server/config/billing-products.ts 724189b40543a163
+server/config/billing-products.test.ts 4afd7754a43fc509
 docs/claude/POLAR-COPY-V6-BUSINESS-PRO.md 0cd78e3da905bfea
 server/rust/billx_core.rs 48e84e3a21328670
 server/rust/billx_glue.rs 2dc939fbabde5ec6
-server/routes/billing-sync.ts 1ab7c2ba4dd3c5be
+server/routes/billing-sync.ts 8a6d18773fb9a05c
 src/routes/app.billing.state.tsx 7138c5b5a99b422a
 docs/packages/TRIAL-48H-DESIGN.md cc772127c6fc9b69
 docs/packages/trial/BUILD-PLAN.md bf80afc9c9ff356c
@@ -916,7 +915,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md eb1ba2a7a3861722
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md b7e1127913f5fc46
+docs/claude/founder/PULL-COMMANDS.md 17c7e6a80b621af1
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 6f67741f87811209
@@ -1092,4 +1091,4 @@ founder-web/src/anchorgauge.test.ts cb7a2111c15d3ca3
 founder-web/dist/assets/index-B3a1vE21.js baaef8e08fa0aafe
 docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md d506bd97187a2148
 docs/claude/FOUNDER-EXTRA-ADVANCED-02NOV.md 5deda874fa1f074d
-docs/claude/PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md 973c7f0388446c4e
+docs/claude/PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md 6bd255a2555fddc5

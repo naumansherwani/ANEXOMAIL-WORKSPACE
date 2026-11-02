@@ -9,9 +9,6 @@ import { BillingToggle } from "@/components/site/BillingToggle";
 import { CheckoutButton, PlanCheckoutButton } from "@/components/site/PlanCheckoutButton";
 import { PlanFeatureList } from "@/components/site/PlanFeatureList";
 import { ANNUAL_NOTE, WORKSPACE_PLANS, priceFor, money, type BillingCycle } from "@/lib/plans";
-import { PERSONAL_TIERS } from "@/lib/personal-tiers";
-import { useAuth } from "@/lib/auth";
-import { ConvertToBusiness } from "@/components/site/ConvertToBusiness";
 
 export const Route = createFileRoute("/plans")({
   head: () => ({
@@ -246,74 +243,6 @@ const businessCompare: CompareGroup[] = compare.map((g) => ({
 
 const ALL3 = ["Included", "Included", "Included"];
 
-/**
- * Personal table — every cell must be true to `plan-surface.ts` (rail + gates) and
- * `sql/phase48_storage_quota.sql` (storage / max send). A Personal account is one person:
- * no domains, aliases, shared inbox, roles or audit — so none of those rows exist here.
- */
-const personalCompare: CompareGroup[] = [
-  {
-    group: "Mail and storage",
-    rows: [
-      { label: "Price per month", cells: ["£17", "£83", "£1,850"] },
-      { label: "Your own @anexomail.com address", cells: ALL3 },
-      { label: "Mail storage", cells: ["5 GB", "10 GB", "1 TB pooled"] },
-      { label: "Largest file you can send", cells: ["25 MB", "25 MB", "5 GB"] },
-      { label: "Undo send window", cells: ["30 seconds", "30 seconds", "30 seconds"] },
-    ],
-  },
-  {
-    group: "Everyday tools",
-    rows: [
-      { label: "Contacts and calendar", cells: ALL3 },
-      { label: "One search box for mail and contacts", cells: ALL3 },
-      {
-        label: "Work — your own tasks",
-        cells: ["Simple task list", "Boards, notes, tasks, analytics", "Boards, notes, tasks, analytics"],
-      },
-      { label: "Snooze, schedule send, templates", cells: ["—", "Included", "Included"] },
-      { label: "Full CRM", cells: ["—", "Included", "Included"] },
-      { label: "ANEXOChat and ANEXOVideoCall", cells: ["—", "Included", "Included"] },
-    ],
-  },
-  {
-    group: "Support",
-    rows: [
-      {
-        label: "Human support (no ticket portal)",
-        cells: ["Reply within 72h", "Reply within 48h", "Reply within 12h"],
-      },
-    ],
-  },
-];
-
-const personalFaqs = [
-  {
-    q: "Do I need a company or a domain?",
-    a: "No. A Personal plan gives you your own @anexomail.com address the moment you sign up — no domain, no company account, nothing to set up first.",
-  },
-  {
-    q: "Is VAT included in these prices?",
-    a: "No. £17, £83 and £1,850 are the prices before tax. VAT or local sales tax is added at checkout based on your country, and it appears as a separate line on every receipt.",
-  },
-  {
-    q: "How does billing work?",
-    a: "Monthly or yearly, by card. Yearly gives one month free on Basic and Pro+, and two months free on Premium. There is no setup fee and no minimum term.",
-  },
-  {
-    q: "Can I cancel any time?",
-    a: "Yes. Email billing@anexomail.com and we cancel it — no phone call and no retention conversation. You keep access until the end of the period you already paid for.",
-  },
-  {
-    q: "Can I move to a company workspace later?",
-    a: "Yes. From Billing you can convert the same account to a Business workspace — same sign-in, same email address. Business has its own plans; Personal and Business are kept separate.",
-  },
-  {
-    q: "Is there AI in these plans?",
-    a: "No. Personal plans are email and workspace only. Nothing in your mail is used to train anything.",
-  },
-];
-
 /** One comparison table for every plan kind (same markup the Business table always used). */
 function CompareTable({
   heads,
@@ -435,22 +364,8 @@ const services = [
   },
 ];
 
-type PlanKind = "personal" | "business";
-
 function PlansPage() {
   const [cycle, setCycle] = useState<BillingCycle>("monthly");
-  const [planKind, setPlanKind] = useState<PlanKind>("personal");
-
-  // E21 (13 Oct 2026): a signed-in account already has a kind — it only
-  // ever gets to choose packages from that kind, never the other one.
-  // Guests (not signed in / kind not decided yet) keep the full toggle.
-  const { status, session } = useAuth();
-  const accountKind: PlanKind | null =
-    status === "signed-in" && (session?.user.account_kind === "personal" || session?.user.account_kind === "business")
-      ? (session.user.account_kind as PlanKind)
-      : null;
-  const kindLocked = accountKind !== null;
-  const effectiveKind: PlanKind = accountKind ?? planKind;
 
   return (
     <div className="min-h-screen bg-background">
@@ -459,117 +374,21 @@ function PlansPage() {
         <section className="ax-container pt-20 pb-8 text-center md:pt-24">
           <p className="ax-eyebrow">Plans</p>
           <h1 className="mx-auto mt-4 max-w-2xl text-4xl text-foreground md:text-5xl">
-            {effectiveKind === "personal" ? "Personal plans." : "Business plans."}
+            Business plans.
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            {effectiveKind === "personal"
-              ? "Your own email workspace — no company account needed."
-              : "Company email with governance, shared inboxes and your own domain."}
+            Company email with governance, shared inboxes and your own domain.
           </p>
-
-          {/* Personal / Business toggle — hidden once an account's kind is known */}
-          {!kindLocked && (
-            <div className="mt-6 flex justify-center">
-              <div className="inline-flex items-center gap-1 rounded-full border border-border bg-secondary/40 p-1">
-                {(["personal", "business"] as PlanKind[]).map((k) => (
-                  <button
-                    key={k}
-                    type="button"
-                    onClick={() => setPlanKind(k)}
-                    className={`ax-press rounded-full px-5 py-2 text-[13px] font-semibold capitalize transition-colors ${
-                      planKind === k
-                        ? "border border-border bg-card text-foreground"
-                        : "border border-transparent text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {k}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
 
           <div className="mt-4 flex justify-center">
             <BillingToggle value={cycle} onChange={setCycle} yearlyNote="Save with yearly" />
           </div>
           <p className="mx-auto mt-3 max-w-xl text-xs leading-relaxed text-muted-foreground">
-            {effectiveKind === "personal"
-              ? "Personal Basic and Pro+ get 1 month free yearly. Personal Premium gets 2 months free."
-              : "Basic and Pro get 1 month free yearly. Business and Business Pro get 2 months free."}
+            Basic and Pro get 1 month free yearly. Business and Business Pro get 2 months free.
           </p>
         </section>
 
-        {/* ── Personal plans ─────────────────────────────────── */}
-        {effectiveKind === "personal" && (
-          <section
-            data-ax-pricing="personal-plans"
-            className="ax-container grid gap-5 pb-24 md:grid-cols-3"
-          >
-            {PERSONAL_TIERS.map((tier) => {
-              const price = cycle === "monthly" ? tier.monthly : Math.round(tier.yearly / 12);
-              const pk = cycle === "monthly" ? tier.productKeyMonthly : tier.productKeyYearly;
-              return (
-                <article
-                  key={tier.id}
-                  className="ax-plane group flex flex-col rounded-3xl p-7 transition-colors duration-300 hover:border-primary/55"
-                >
-                  <div className="flex items-start justify-between gap-2">
-                    <h2 className="text-sm font-bold tracking-tight text-foreground">{tier.name}</h2>
-                    {tier.badge && (
-                      <span className="rounded-full border border-border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-                        {tier.badge}
-                      </span>
-                    )}
-                  </div>
-                  <p className="mt-4 text-4xl font-extrabold tracking-tight text-foreground">
-                    {money(price)}
-                    <span className="text-sm font-medium text-muted-foreground"> / mo</span>
-                  </p>
-                  <p className="mt-1 text-xs font-semibold text-primary">
-                    {cycle === "yearly"
-                      ? `${money(tier.yearly)} / year · ${tier.yearlyRule === "two-months-free" ? "2 months free" : "1 month free"}`
-                      : `${tier.yearlyRule === "two-months-free" ? "2 months" : "1 month"} free on yearly billing`}
-                  </p>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{tier.tagline}</p>
-                  <PlanFeatureList
-                    features={tier.features}
-                    className="mt-6 flex-1 space-y-2.5"
-                    renderItem={(f, hidden) => (
-                      <li key={f} hidden={hidden} className="flex gap-2 text-sm text-muted-foreground">
-                        <Check className="mt-0.5 size-4 shrink-0 text-success" />
-                        {f}
-                      </li>
-                    )}
-                  />
-                  <div className="mt-6">
-                    {/* changePlan: a signed-in personal account that already
-                        has an active subscription gets it changed in place
-                        instead of a second Polar checkout (E21 part 3). A
-                        guest or first-time buyer falls through to the
-                        normal checkout automatically, server-side. */}
-                    <CheckoutButton
-                      productKey={pk}
-                      source={`plans:${tier.id}`}
-                      requireSignIn
-                      changePlan
-                    />
-                  </div>
-                </article>
-              );
-            })}
-          </section>
-        )}
-
-        {/* ── Convert to business — signed-in personal accounts only ───
-            Escape hatch now that the toggle above is locked to their kind. */}
-        {kindLocked && accountKind === "personal" && (
-          <section className="ax-container flex justify-center pb-16">
-            <ConvertToBusiness />
-          </section>
-        )}
-
         {/* ── Business plans (existing, no-touch) ────────────── */}
-        {effectiveKind === "business" && (
         <section
           data-ax-pricing="plans"
           className="ax-container grid gap-5 pb-24 md:grid-cols-2 xl:grid-cols-4"
@@ -613,10 +432,7 @@ function PlansPage() {
             );
           })}
         </section>
-        )}
 
-        {/* Business only: a Personal buyer must never see company move-in / priority-support prices. */}
-        {effectiveKind === "business" && (
         <section className="ax-container pb-20">
           <h2 className="text-2xl text-foreground md:text-3xl">Done-for-you services</h2>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
@@ -678,56 +494,24 @@ function PlansPage() {
             </a>
           </p>
         </section>
-        )}
 
         <section className="ax-container pb-20">
           <h2 className="text-2xl text-foreground md:text-3xl">Feature by feature</h2>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            {effectiveKind === "personal"
-              ? "Exactly what is in each Personal plan, and what is not. A dash means it is not included on that plan."
-              : "Exactly what is in each plan, and what is not. A dash means it is not included on that plan."}
+            Exactly what is in each plan, and what is not. A dash means it is not included on that plan.
           </p>
 
-          {effectiveKind === "personal" ? (
-            <>
-              <CompareTable
-                heads={["Personal Basic · £17", "Personal Pro+ · £83", "Personal Premium · £1,850"]}
-                groups={personalCompare}
-                minWidth="min-w-[34rem]"
-              />
-              <p className="mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                Need your own company domain, shared inboxes or a team? That is a Business workspace — separate plans,
-                kept apart from Personal.
-                {!kindLocked && (
-                  <>
-                    {" "}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setPlanKind("business");
-                        window.scrollTo({ top: 0, behavior: "smooth" });
-                      }}
-                      className="ax-tap font-semibold text-foreground underline underline-offset-4"
-                    >
-                      See Business plans
-                    </button>
-                  </>
-                )}
-              </p>
-            </>
-          ) : (
             <CompareTable
               heads={["Basic · £40", "Pro · £105", "Business · £360", "Business Pro · £2,850"]}
               groups={businessCompare}
               minWidth="min-w-[42rem]"
             />
-          )}
         </section>
 
         <section className="ax-container pb-24">
           <h2 className="text-2xl text-foreground md:text-3xl">Questions people actually ask</h2>
           <div className="mt-7 grid gap-4 md:grid-cols-2">
-            {(effectiveKind === "personal" ? personalFaqs : faqs).map((f) => (
+            {faqs.map((f) => (
               <article key={f.q} className="ax-plane rounded-3xl p-6">
                 <h3 className="text-base font-bold text-foreground">{f.q}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
@@ -735,23 +519,11 @@ function PlansPage() {
             ))}
           </div>
           <p className="mt-7 text-sm text-muted-foreground">
-            {effectiveKind === "personal" ? (
-              <>
-                Something not answered here? Write to{" "}
-                <a href="mailto:billing@anexomail.com" className="text-foreground underline underline-offset-4">
-                  billing@anexomail.com
-                </a>{" "}
-                — a person replies, not a portal.
-              </>
-            ) : (
-              <>
                 Something not answered here?{" "}
                 <Link to="/migration" className="text-foreground underline underline-offset-4">
                   Ask us on the move-in form
                 </Link>{" "}
                 — a person replies, not a portal.
-              </>
-            )}
           </p>
         </section>
       </main>

@@ -415,3 +415,6 @@ Then sign in to the founder site; I look at the Ledger seal card in Chrome.
 
 ## UI fix (2 Nov 07:55) — Gates card "checking…" instead of false "not answering"
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) | tail -8` then Ctrl+Shift+R.
+
+## Personal packages removal, step 1 (2 Nov 08:45) — awam site only (UI + Bun billing), no SQL
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -15` then Ctrl+Shift+R on anexomail.com/plans (only 4 Business cards, no Personal toggle).

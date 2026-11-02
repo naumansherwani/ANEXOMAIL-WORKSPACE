@@ -761,3 +761,4 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - 2 Nov 08:20 Business Premium = £21,000/month in all docs (AGENTS.md UPDATE line 2 Nov 08:07 is the rule). Personal Premium £18,500 YEARLY is different, never change. Dobara mat likho.
 - 2 Nov 08:25 Business Premium yearly = £210,000 (2 months free), old 26 Oct Enterprise £18,500 lines deleted. Dobara mat likho.
 - 2 Nov 08:30 Personal packages RETIRED (docs/rule only); removal plan PX0-PX3 written, no code deleted, no Polar change. Dobara mat likho; no new Personal work.
+- 2 Nov 08:45 Personal PACKAGES removed from awam UI/billing code (plans.tsx, app.billing.tsx, personal-tiers.ts deleted, billing-products/sync). Engine (plan-surface gates, account_kind) KEPT on purpose. Do not re-add. SQL E125 / sign-up choice / Polar pending.
