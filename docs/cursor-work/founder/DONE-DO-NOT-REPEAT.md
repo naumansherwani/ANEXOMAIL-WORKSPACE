@@ -769,3 +769,4 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - 2 Nov 08:58 E126 written + tested on scratch PG (idempotent): deletes basic.test@ + alikhan@ (founder 08:54), Masood -> business kind, plan pro. Mail-server mailboxes of the two = separate step. Do not rewrite.
 - 2 Nov 08:57 Polar: founder DELETED all 6 Personal products himself (PX Polar step DONE, his own word). Repo already has no Personal contract (billing-products guard test). Do not ask again.
 - 2 Nov 09:05 E126 first run FAILED on server (trial_events append-only), nothing changed; rewritten to use the E24 account_purge engine (do not hand-delete ledger rows).
+- 2 Nov 09:10 PX2 sign-up spec (remove Personal|Business on sign-up AND create-account; add Country + Mobile; red/green availability for username + outside e-mail + mobile) WRITTEN in PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md. Handle check already exists (identity/check, claim.tsx). Code waits for his go.

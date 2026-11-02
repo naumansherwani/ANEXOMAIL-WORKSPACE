@@ -47,3 +47,14 @@ Founder paste (08:36): 18 accounts; 3 personal-kind: **masoodsherwani@anexomail.
 
 ## Status 2 Nov 08:57 — Polar
 Founder deleted all 6 Personal products in Polar himself. Repo side was already clean (contracts removed + guard test). Nothing left to do in Polar for Personal.
+
+## PX2 — Sign-up / Create account (founder order 2 Nov 09:02 PKT, written to the repo; CODE WAITS FOR HIS "GO")
+Founder's words (verbatim in `founder-commands.md`). Scope, in plain terms:
+1. **Remove the "Personal / Business" choice everywhere a new person sees it:** the sign-up page AND the create-account step (`WorkspaceKindCards.tsx`, `src/routes/auth.tsx` KIND_KEY, `onboarding.tsx`, `claim.tsx`, Rust `workspace.personal`). Everyone becomes a Business-ladder account (Basic / Pro / Business / Business Pro / Business Premium). Legacy `personal` kind rows stay readable by the engine (shared with Basic/Pro).
+2. **Create account gets two new fields:** Country (full list, with flag) and Mobile number (country dial code from the chosen country, E.164 check). Stored on `account_profiles` (new columns or `preferences`, SQL first, RLS stays on). NO mock data.
+3. **Live availability, red / green, for what the person types:**
+   - **ANEXOMAIL address / username:** ALREADY exists (`GET /api/auth/identity/check`, used in `claim.tsx`: taken / reserved / invalid). To do: use it on the create-account form as well, with a clear RED "already taken" and GREEN "available".
+   - **Outside e-mail the person signs up or recovers with (Gmail, Outlook, Yahoo, any provider):** if that address is already registered, show RED "already used"; if free, GREEN. Honest limit: the check must not become a way to list who has an account (enumeration). Plan: rate-limited, same answer time, and a neutral message after the first few tries (Rule on account privacy to be checked against AGENTS.md before building).
+   - **Mobile number:** same RED / GREEN if already used on another account.
+4. Order of work (one phase at a time, each GREEN only with his paste + my Chrome look): PX2a SQL (country + mobile columns, unique checks), PX2b Rust/Bun availability door for email + mobile, PX2c UI (remove kind cards, add Country + Mobile + live check), PX2d Chrome proof on sign-up and create-account.
+5. NOT in this step: the mail-server mailboxes of the two deleted test accounts (waits for his explicit "haan").
