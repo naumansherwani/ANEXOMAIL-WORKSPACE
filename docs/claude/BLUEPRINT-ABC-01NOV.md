@@ -41,7 +41,7 @@ One letter per step, in build order. **GREEN** only where the proof exists (serv
 | **W4** | Catch-up A1-A7: Bun-free pages, webauthn-rs, DBSC, WebGPU, MoQ (MQ0-MQ4), PQM, PQN | after each founder letter turns GREEN |
 
 ## AWAM SIDEBAR -> FOUNDER, same features on the latest technology (founder 2 Nov 05:33). Strict letter order; each row starts only when every earlier letter is GREEN (Rule 0/1).
-Order of what is still ahead (nothing here starts before G5a is GREEN): 1 G5b · 2 G5c · 3 G5d · 4 I2 · 5 J3-J6 · 6 K3-K7 · 7 L1-L2 · 8 M · 9 N · 10 O · **11 P** · **12 Q** · **13 R** · 14 S · 15 T · 16 U · 17 V.
+Order of what is still ahead (nothing here starts before G5a is GREEN): 1 G5b · 2 G5c (GREEN 2 Nov 07:45) · 3 G5d · 4 I2 · 5 J3-J6 · 6 K3-K7 · 7 L1-L2 · 8 M · 9 N · 10 O · **11 P** · **12 Q** · **13 R** · 14 S · 15 T · 16 U · 17 V.
 | Awam sidebar | Founder page | Letter / master step | Position in the order | Technology (latest, Rule 61/52/70) |
 |---|---|---|---|---|
 | Dashboard | Dashboard + Bridge | A-H | **DONE** (GREEN, Chrome) | Rust axum+tokio -> signed envelope -> WASM kernel -> React 19 + TS + TanStack + Tailwind + shadcn, CINEMATIC; SQL Postgres |
