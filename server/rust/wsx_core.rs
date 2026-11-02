@@ -33,6 +33,15 @@ pub fn personal_slug(uid: &str) -> String {
     format!("personal-{flat}")
 }
 
+/// Domain is OPTIONAL (founder 2 Nov 2026, "user ke mindset se"): a person without a company domain must still finish sign-up with an ANEXOMAIL address;
+/// the domain can be connected later in Settings. Blank -> Ok(None). A non-blank value is checked exactly like `normalize_org_domain`.
+pub fn normalize_org_domain_optional(raw: &str) -> Result<Option<String>, &'static str> {
+    if raw.trim().is_empty() {
+        return Ok(None);
+    }
+    normalize_org_domain(raw).map(Some)
+}
+
 /// Organisation domain saaf + jaanch. Err = (code, message) — Bun jaisi English messages.
 pub fn normalize_org_domain(raw: &str) -> Result<String, &'static str> {
     let mut s = raw.trim().to_lowercase();
@@ -98,6 +107,14 @@ mod tests {
         assert_eq!(slugify("Ünï Cödé", "u1u2u3u4"), "n-c-d-u1u2u3u4");
         assert_eq!(slugify(&"a".repeat(80), "12345678").len(), 40 + 1 + 8);
         assert_eq!(personal_slug("123e4567-e89b-12d3-a456-426614174000"), "personal-123e4567e89b");
+    }
+    #[test]
+    fn domain_is_optional_but_checked_when_given() {
+        assert_eq!(normalize_org_domain_optional(""), Ok(None));
+        assert_eq!(normalize_org_domain_optional("   "), Ok(None));
+        assert_eq!(normalize_org_domain_optional("https://WWW.Acme.com/x"), Ok(Some("acme.com".into())));
+        assert_eq!(normalize_org_domain_optional("anexomail.com"), Err("Use your company domain, not anexomail.com."));
+        assert_eq!(normalize_org_domain_optional("nodot"), Err("Enter a domain like company.com."));
     }
     #[test]
     fn domains() {

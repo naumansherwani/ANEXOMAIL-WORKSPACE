@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 07a85cd1c34ca7cc
+docs/cursor-work/founder/founder-commands.md c13c54f13f31ee4f
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 1554238d11b39bd1
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 608800cd9379b14b
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs bd14a1074691a67d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 2f0d2fe26867d199
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 96e4833b89915574
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -347,7 +347,7 @@ src/router.tsx 3b7aceb40294eb29
 src/routes/app.safety.tsx 5b3baa7dce93791b
 src/routes/auth_.callback.tsx 7b6e0e097af5c818
 src/routes/claim.tsx 023a19b74180ce37
-src/routes/onboarding.tsx f6fd338c63973411
+src/routes/onboarding.tsx c344327a2e9c9802
 src/components/state/BrandLoader.tsx d7d3f0687669229a
 server/rust/polar-payment/Cargo.toml b19720335aa99719
 docs/cursor-work/server/polar-cp-proof.py 3eca410c891a98cc
@@ -383,7 +383,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md f664ab0442f5f2f9
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 342edceb49705a4c
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -800,8 +800,8 @@ server/rust/basx_glue.rs 60834731a50ffb7f
 src/components/site/SlaProof.tsx 589e27ddd7ff036a
 src/lib/storage-client.ts c0f62c771d5645df
 docs/cursor-work/server/installer-dryrun.sh 70570d6395ca3a37
-server/rust/wsx_core.rs 3f981ffa0c3fe71d
-server/rust/wsx_glue.rs a91f17544c5837b3
+server/rust/wsx_core.rs cceab26c8d18e4f4
+server/rust/wsx_glue.rs a5b9af24284b04a6
 docs/cursor-work/server/wsx-live-test.sh b23be31e65d5d5fe
 docs/claude/POLAR-COPY-V6-BUSINESS.md a97c2be4fce58a40
 server/config/billing-products.ts 724189b40543a163
@@ -914,7 +914,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md eb1ba2a7a3861722
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md 2a9fa5b03902b990
+docs/claude/founder/PULL-COMMANDS.md dd30d0e5e6acdc4b
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 6f67741f87811209
@@ -1090,7 +1090,7 @@ founder-web/src/anchorgauge.test.ts cb7a2111c15d3ca3
 founder-web/dist/assets/index-B3a1vE21.js baaef8e08fa0aafe
 docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md 16553ced705db799
 docs/claude/FOUNDER-EXTRA-ADVANCED-02NOV.md 5deda874fa1f074d
-docs/claude/PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md 926cee2571b33596
+docs/claude/PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md b3fde0a60691a0d1
 docs/cursor-work/sql/CHECK_PX0_PERSONAL_LIST.sql c0c2c7ab77b1c5c3
 docs/cursor-work/sql/E125_retire_personal_packages.sql 18bdb688359c9c70
 docs/cursor-work/sql/CHECK_E125.sql 4f037d0dd562d212

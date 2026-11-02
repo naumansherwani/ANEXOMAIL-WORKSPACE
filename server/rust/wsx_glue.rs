@@ -188,11 +188,12 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
             if !c::org_name_ok(&name) {
                 return fail(StatusCode::BAD_REQUEST, "bad_name", "Organisation name is required.");
             }
-            let domain = match c::normalize_org_domain(&st(input, "domain")) {
+            // Domain is optional: a person without a company domain still gets a working workspace on the ANEXOMAIL address.
+            let domain = match c::normalize_org_domain_optional(&st(input, "domain")) {
                 Ok(d) => d,
                 Err(m) => return fail(StatusCode::BAD_REQUEST, "bad_domain", m),
             };
-            match create_org(&uid, &name, &mail, "business", Some(domain)).await {
+            match create_org(&uid, &name, &mail, "business", domain).await {
                 Ok(m) => {
                     stamp_kind(&uid, &mail, "business").await;
                     crate::ok(json!({ "id": m.id, "name": m.name, "slug": m.slug, "domain": m.domain, "kind": m.kind })).into_response()

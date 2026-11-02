@@ -88,3 +88,8 @@ Phases: GEO1a decision (Cloudflare or nginx) -> GEO1b edge rule + 403 page -> GE
 
 ## Status 2 Nov 09:45 — PX2b code written (Rust only)
 `server/rust/signx_core.rs` (21 tests: country wall, E.164, suggestions, HMAC door token, rate window, phone blind index), `signx_glue.rs` (8 procs, type-checked in a stub crate), installer module `signx`, SQL E128, Caddy `server/caddy/geoblock.sh` (GEO1). Server steps in PULL-COMMANDS ("PX2b signx + GEO1"). Security rationale: `SIGNUP-SECURITY-MILITARY-GRADE-02NOV.md`. Still to write: username-less passkey login + residentKey required (Rust `passkey_glue.rs`), UI (PX2c).
+
+## Status 2 Nov 09:50 — PX2c on the server, domain made optional (founder: "user ke mindset se socho")
+- PX2c pulled by the founder (pull.sh OK, build OK, 605 files same). Chrome proof of the new sign-up screen still to do by Claude.
+- **Company domain is now OPTIONAL at onboarding** (Rust `wsx_core::normalize_org_domain_optional`, 5 wsx tests; UI helper text "No company domain yet? Leave it empty"). Reason: with Personal retired every person is Business-ladder; forcing a company domain would stop individuals at the last step. A domain-less workspace already exists in production (family-* orgs have domain NULL), so downstream code copes. Needs a Rust rebuild: `MODULES=wsx` install (PULL-COMMANDS).
+- What users like (proposals, not built, each its own small phase): one-screen sign-up, passkey autofill sign-in (PX2b-2), password strength meter, "show password", live name check (done), clear error text next to the field, no forced phone number (done: optional), Country auto-guessed from the browser language (suggestion only).

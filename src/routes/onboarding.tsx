@@ -164,15 +164,16 @@ function OnboardingPage() {
 
               <div className="space-y-1.5">
                 <Label htmlFor="org-domain" className="ax-caption text-foreground">
-                  Organisation domain
+                  Organisation domain <span className="font-normal text-muted-foreground">(optional)</span>
                 </Label>
                 <Input
                   id="org-domain"
-                  required
                   value={orgDomain}
                   onChange={(e) => setOrgDomain(e.target.value)}
                   autoComplete="off"
+                  placeholder="company.com"
                 />
+                <p className="ax-caption text-muted-foreground">No company domain yet? Leave it empty. You work on your @anexomail.com address and can connect a domain later in Settings.</p>
               </div>
 
               {error && (

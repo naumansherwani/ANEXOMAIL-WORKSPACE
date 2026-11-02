@@ -450,3 +450,7 @@ E128 SQL: DONE (his paste 09:34, CHECK_E128 3/3 + E65 OK).
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
 Then Ctrl+Shift+R and open anexomail.com/auth?mode=signup (the Personal | Business screen must be gone; Country, Mobile, red/green name check appear).
 Optional, only after he read the GEO1 plan: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:server/caddy/geoblock.sh) apply 2>&1 | tail -15`
+
+## Optional company domain (2 Nov 09:55) — Rust (wsx) then web
+1. Rust: `git -C /opt/anexomail-web fetch -q origin main && MODULES=wsx bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh) 2>&1 | tail -25`
+2. Web: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -12`
