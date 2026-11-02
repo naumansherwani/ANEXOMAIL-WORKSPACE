@@ -2246,3 +2246,6 @@ G5b part 1 green on the server. Next = G5b part 2 (UI + TOFU pin + tests + revie
 
 ## 2 Nov 06:42 — "yeh code likho aur fix kero, awam update rakho, founder ke side pe bhi ek copy"
 Written: G5b part 2 (UI + TOFU + founder kernel 0.8.0 copy + real-wasm tests). Awam kernel 0.8.0 already live. Pull: founder-install only.
+
+## 2 Nov 06:49 — pasted founder-install OK; "pura repo update, rules/technology read, green mark"
+Reviewer fixes written (SQL E123 edited, SPA). Needs: E123 re-run + founder-install again. GREEN only after my Chrome look (sign-in needed).

@@ -402,3 +402,8 @@ Part 2 (next phase, NOT written yet): UI gauge text + TOFU pin, real-wasm test, 
 ## G5b part 2 (2 Nov 07:00) — ONE command (Rust+SPA, includes founder kernel 0.8.0 copy and the new Dashboard sentence):
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
 Then sign in again; the Ledger seal card should say "Seal #N is signed by the audit-log key (Ed25519, checked by the kernel in this browser)". Awam needs nothing new (kernel 0.8.0 already live).
+
+## G5b reviewer fixes (2 Nov 07:20) — run these TWO, one after the other (SQL first):
+1) `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E123_founder_signed_checkpoints CHECK_E123 2>&1 | grep -v "^$" | head -14`
+2) `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+Then sign in to the founder site; I look at the Ledger seal card in Chrome.

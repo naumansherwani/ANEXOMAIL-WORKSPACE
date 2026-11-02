@@ -79,6 +79,7 @@ export type SignedView = { note: string; cp_id: number; size: number; root: stri
 export type KeyVerdict = { state: "new" | "same" | "rotated" | "replaced"; text: string };
 export type SignedVerdict = { state: "ok" | "warn" | "fail" | "none"; text: string; keyState?: KeyVerdict["state"] };
 const KEYPIN = "anexo.founder.logkeypin.v1";
+export const SIGN_GAP_WARN = 5;            // more unsigned seals than this on screen = warn, whatever the server's own pulse says
 const HEX8 = /^[0-9a-f]{8}$/;
 
 export function asLogKey(v: any): LogKey | null {
@@ -112,16 +113,21 @@ export function saveKeyPin(k: { name: string; pub_hex: string }): void {
 export function judgeKey(pin: { name: string; pub_hex: string } | null, k: LogKey, keys: LogKey[]): KeyVerdict {
   if (!pin) return { state: "new", text: "the audit-log key was remembered in this browser" };
   if (pin.name === k.name && pin.pub_hex === k.pub_hex) return { state: "same", text: "the audit-log key is the one this browser remembered" };
-  if (keys.some((x) => x.pub_hex === pin.pub_hex && x.status === "retired")) return { state: "rotated", text: "the audit-log key was changed since this browser first saw it (the old key is listed as retired); check it, then trust the new key" };
-  return { state: "replaced", text: "the audit-log key is NOT the one this browser remembered and the old key is not in the server's list: possible key substitution" };
+  const fp = `${k.key_id_hex}:${k.pub_hex.slice(0, 16)}`;
+  // The server supplies this list, so "retired" is NOT proof that the founder rotated the key (nothing signed by the old key authorises the new one yet). A changed key is therefore a FAILURE, never a warning:
+  // the only way out is the founder's own deliberate "Trust new key" after checking the fingerprint somewhere else (for example `select public.founder_audit_log_vkey();` on the server).
+  if (keys.some((x) => x.pub_hex === pin.pub_hex && x.status === "retired" && x.id !== k.id) && k.status === "active")
+    return { state: "rotated", text: `the audit-log key changed since this browser first saw it. New key ${fp}. Check this fingerprint on the server before trusting it` };
+  return { state: "replaced", text: `the audit-log key is NOT the one this browser remembered and the server does not list the old key as retired: possible key substitution (${fp})` };
 }
 
 /**
  * kernel = what the WASM kernel said about THIS note under THIS key: "ok" | "bad" | "na" (could not run).
  * mkSeal = the newest seal the server shows on the Dashboard. The signed note may be one seal behind (the signer runs about once a minute): that is information, not an alarm.
  */
-export function judgeSigned(view: SignedView | null, kernel: "ok" | "bad" | "na", keyV: KeyVerdict | null, mkSeal: Seal | null): SignedVerdict {
-  if (!view) return { state: "none", text: "" };
+export function judgeSigned(view: SignedView | null, kernel: "ok" | "bad" | "na", keyV: KeyVerdict | null, mkSeal: Seal | null, hadKeyPin = false): SignedVerdict {
+  // no usable note: silent only if this browser has never seen the feature working; otherwise the feature went away = say so (a server must not be able to switch the proof off quietly)
+  if (!view) return hadKeyPin ? { state: "warn", text: "signed checkpoints were available before but are not available now" } : { state: "none", text: "" };
   if (kernel === "bad") return { state: "fail", text: `the signature on seal #${view.cp_id} did NOT verify in this browser (kernel refused it)` };
   if (kernel === "na") return { state: "warn", text: `could not check the signature on seal #${view.cp_id} just now` };
   if (keyV?.state === "replaced") return { state: "fail", text: keyV.text, keyState: "replaced" };
@@ -129,8 +135,12 @@ export function judgeSigned(view: SignedView | null, kernel: "ok" | "bad" | "na"
   if (view.recheckOk === false) return { state: "fail", text: "the database re-check of the stored signed notes found a problem" };
   const parts = [`seal #${view.cp_id} is signed by the audit-log key (Ed25519, checked by the kernel in this browser)`];
   let state: SignedVerdict["state"] = "ok";
-  if (keyV?.state === "rotated") { state = "warn"; parts.push(keyV.text); }
-  if (mkSeal && mkSeal.id > view.cp_id) parts.push(`the newer seal #${mkSeal.id} is not signed yet`);
+  if (keyV?.state === "rotated") return { state: "fail", text: keyV.text, keyState: "rotated" };
+  if (mkSeal && mkSeal.id > view.cp_id) {
+    parts.push(`the newer seal #${mkSeal.id} is not signed yet`);
+    // judged HERE from what this browser sees, not from the server's own pulse: a server that serves an old note while saying "ok" must not stay green
+    if (mkSeal.id - view.cp_id > SIGN_GAP_WARN) { state = "warn"; parts.push(`${mkSeal.id - view.cp_id} seals are unsigned`); }
+  }
   if (view.level === "fail") { state = "fail"; parts.push("seals have waited far too long for a signature"); }
   else if (view.level === "warn" && state === "ok") { state = "warn"; parts.push("seals are waiting for a signature"); }
   return { state, text: parts.join("; "), keyState: keyV?.state };

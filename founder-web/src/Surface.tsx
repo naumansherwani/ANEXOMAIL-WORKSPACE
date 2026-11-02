@@ -140,19 +140,21 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
   // and the size/root in THIS browser, and the key is remembered here (TOFU: a later change is a loud warning, never silent). All logic is in sealpin.ts (tested).
   const [sgV, setSgV] = useState<SignedVerdict | null>(null);
   const [sgView, setSgView] = useState<SignedView | null>(null);
-  const [keyTick, setKeyTick] = useState(0);
+  const [keyTick, setKeyTick] = useState(0), [trustArm, setTrustArm] = useState(false);   // two deliberate clicks to accept a changed key
   useEffect(() => {
     let off = false;
     void (async () => {
       try {
+        const pinK = loadKeyPin();
         const view = asSignedView((await get("/founder/v1/audit/signed")).data);
-        if (!view) { if (!off) { setSgView(null); setSgV({ state: "none", text: "" }); } return; }
+        if (!view) { if (!off) { setSgView(null); setSgV(judgeSigned(null, "ok", null, mkSeal, !!pinK)); } return; }
         const k = await checkpointVerify(view.note, view.origin, view.key.pub_hex, String(view.size), view.root);
         const kernel = k === true ? "ok" : k === false ? "bad" : "na";
-        const pinK = loadKeyPin(), keyV = judgeKey(pinK, view.key, view.keys);
-        if (kernel === "ok" && keyV.state === "new") saveKeyPin(view.key);                  // first sight only, and only for a note that really verified
-        if (!off) { setSgView(view); setSgV(judgeSigned(view, kernel, keyV, mkSeal)); }
-      } catch { if (!off) { setSgView(null); setSgV(null); } }                            // route missing / unreachable: no claim either way
+        const keyV = judgeKey(pinK, view.key, view.keys), verdict = judgeSigned(view, kernel, keyV, mkSeal, !!pinK);
+        // first sight only, only for a note the kernel verified AND whose final verdict is not a failure (a forged first note must not get its key remembered)
+        if (kernel === "ok" && keyV.state === "new" && verdict.state !== "fail") saveKeyPin(view.key);
+        if (!off) { setSgView(view); setSgV(verdict); }
+      } catch { if (!off) { setSgView(null); setSgV(judgeSigned(null, "ok", null, mkSeal, !!loadKeyPin())); } }   // route unreachable: silent only if this browser never saw the feature
     })();
     return () => { off = true; };
   }, [mkSealKey, keyTick]);
@@ -173,8 +175,8 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
     { name: "Signed answers", state: ks === "verified" ? "ok" : ks === "failed" ? "fail" : "unknown", text: ks === "verified" ? "Checked in this browser" : ks === "failed" ? "An answer failed the check and was hidden" : "Waiting for the first answer" },
     { name: "Approved device", state: ds.mode === "device" ? "ok" : "warn", text: ds.mode === "device" ? ds.label || "This device" : "No device token" },
     { name: "Audit ledger", state: !au ? "fail" : !au.connected ? "unknown" : au.chain_ok ? "ok" : "fail", text: !au ? "Not answering" : !au.connected ? au.note || "Not connected" : au.chain_ok ? `Chain intact${au.head ? `, entry ${au.head.seq}` : ""}` : `Chain broken at ${au.first_bad_seq}`, to: "audit" },
-    { name: "Ledger seal", ...ledgerGauge(mk, lp, pinV, fmtHM, sgV), to: sgV?.keyState === "rotated" ? undefined : "audit",
-      act: sgV?.keyState === "rotated" && sgView ? { label: "Trust new key", run: () => { saveKeyPin(sgView.key); setKeyTick((n) => n + 1); } } : undefined },
+    { name: "Ledger seal", ...ledgerGauge(mk, lp, pinV, fmtHM, sgV), to: sgV?.keyState === "rotated" || sgV?.keyState === "replaced" ? undefined : "audit",
+      act: (sgV?.keyState === "rotated" || sgV?.keyState === "replaced") && sgView ? { label: trustArm ? "Click again: trust this key" : "Trust new key…", run: () => { if (!trustArm) { setTrustArm(true); return; } saveKeyPin(sgView.key); setTrustArm(false); setKeyTick((n) => n + 1); } } : undefined },
     { name: "Billing", state: !pol && !hk ? "fail" : pol?.connected ? (pol.stale ? "warn" : "ok") : subs?.connected ? "ok" : "unknown", text: pol?.connected ? `${pol.active_subscriptions ?? "?"} active subscriptions` : subs?.connected ? "Polar webhook live, API metrics not connected" : pol?.note || "Not connected", to: "finance" },
     { name: "Revenue records", state: !d ? "fail" : m?.connected ? "ok" : "unknown", text: !d ? "Not answering" : m?.connected ? `${m.active_accounts} active account${m.active_accounts === 1 ? "" : "s"}` : m?.note || "Not connected", to: "finance" },
     { name: "Customers", state: !d ? "fail" : v?.connected ? "ok" : "unknown", text: !d ? "Not answering" : v?.connected ? `${v.new_leads} new lead${v.new_leads === 1 ? "" : "s"}` : v?.note || "Not connected", to: "bridge" },

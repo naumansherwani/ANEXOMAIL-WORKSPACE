@@ -85,15 +85,17 @@ end $$;
 -- Used by the insert trigger (refuse bad notes) AND by founder_audit_signed_verify (re-check what is stored). SQL cannot check Ed25519: Rust did before inserting, the kernel does in the browser.
 create or replace function public._fm_signedcp_judge(p_note text, p_name text, p_key_id_hex text, p_size bigint, p_root text) returns text
 language plpgsql immutable set search_path = pg_catalog, public, extensions as $$
-declare v_body text; v_sig text; v_b64 text; v_raw bytea;
+declare v_body text; v_sig text; v_b64 text; v_raw bytea; v_pre text;
 begin
   if p_note is null or length(p_note) > 4096 then return 'note missing or too long'; end if;
   if p_note ~ '[\x01-\x09\x0b-\x1f\x7f]' then return 'control character in the note'; end if;
   v_body := p_name || E'\n' || p_size::text || E'\n' || encode(decode(p_root, 'hex'), 'base64') || E'\n';
   if left(p_note, length(v_body) + 1) <> v_body || E'\n' then return 'the note body is not exactly the seal''s checkpoint body'; end if;
   v_sig := substr(p_note, length(v_body) + 2);
-  if v_sig !~ (E'^— ' || replace(p_name, '.', '\.') || ' [A-Za-z0-9+/]{91}=\n$') then return 'the signature block is not exactly one line "— <key name> <base64 of 68 bytes>"'; end if;
-  v_b64 := split_part(split_part(v_sig, ' ', 3), E'\n', 1);
+  -- no regex built from the key name (a name with ( | [ ... would break or loosen it): compare the fixed prefix as plain text, then match only the base64 tail
+  v_pre := E'— ' || p_name || ' ';
+  if left(v_sig, length(v_pre)) <> v_pre or substr(v_sig, length(v_pre) + 1) !~ E'^[A-Za-z0-9+/]{91}=\n$' then return 'the signature block is not exactly one line "— <key name> <base64 of 68 bytes>"'; end if;
+  v_b64 := left(substr(v_sig, length(v_pre) + 1), 92);
   v_raw := decode(v_b64, 'base64');
   if length(v_raw) <> 68 then return 'the signature block is not 68 bytes (4 key id + 64 Ed25519)'; end if;
   if replace(encode(v_raw, 'base64'), E'\n', '') <> v_b64 then return 'the signature is not canonical base64'; end if;
@@ -123,10 +125,11 @@ create trigger founder_audit_signed_cp_guard_trunc before truncate on public.fou
 -- register (or rotate to) the audit-log public key. Same pub twice = no-op. A different pub retires the active key and activates the new one (audited).
 create or replace function public.founder_audit_log_key_register(p_actor uuid, p_name text, p_pub_hex text, p_key_id_hex text)
 returns jsonb language plpgsql security definer set search_path = pg_catalog, public, extensions set statement_timeout = '10s' as $$
-declare v_act public.founder_audit_log_keys%rowtype; v_id bigint; v_ms bigint := (extract(epoch from clock_timestamp()) * 1000)::bigint; v_rotated boolean := false;
+declare v_act public.founder_audit_log_keys%rowtype; v_id bigint; v_ms bigint; v_rotated boolean := false;
 begin
   if p_actor is null or not exists (select 1 from public.founder_accounts where user_id = p_actor) then raise exception 'E123: actor is not a founder' using errcode = '42501'; end if;
   perform pg_advisory_xact_lock(hashtextextended('founder_signedcp:key', 0));
+  v_ms := (extract(epoch from clock_timestamp()) * 1000)::bigint;     -- taken AFTER the lock: a signer that committed before us has signed_ms <= retired_ms
   select * into v_act from public.founder_audit_log_keys where status = 'active';
   if found and v_act.pub_hex = p_pub_hex and v_act.name = p_name then
     return jsonb_build_object('registered', false, 'id', v_act.id, 'name', v_act.name, 'pub_hex', v_act.pub_hex, 'key_id_hex', v_act.key_id_hex, 'reason', 'already the active key');
@@ -149,9 +152,11 @@ $$;
 
 create or replace function public.founder_audit_signed_cp_add(p_cp_id bigint, p_key_id bigint, p_note text)
 returns jsonb language plpgsql security definer set search_path = pg_catalog, public, extensions set statement_timeout = '10s' as $$
-declare v_cp public.founder_audit_checkpoints%rowtype; v_key public.founder_audit_log_keys%rowtype; v_ms bigint := (extract(epoch from clock_timestamp()) * 1000)::bigint;
+declare v_cp public.founder_audit_checkpoints%rowtype; v_key public.founder_audit_log_keys%rowtype; v_ms bigint;
 begin
+  perform pg_advisory_xact_lock(hashtextextended('founder_signedcp:key', 0));   -- same lock as register/rotate: a signature and a rotation can never interleave
   perform pg_advisory_xact_lock(hashtextextended('founder_signedcp:add', 0));
+  v_ms := (extract(epoch from clock_timestamp()) * 1000)::bigint;
   if exists (select 1 from public.founder_audit_signed_checkpoints where cp_id = p_cp_id) then return jsonb_build_object('added', false, 'reason', 'this seal already has a signed note'); end if;
   select * into v_cp from public.founder_audit_checkpoints where id = p_cp_id;
   if not found then raise exception 'E123: no such seal' using errcode = '23503'; end if;
@@ -306,6 +311,9 @@ begin
     if public._fm_signedcp_judge(replace(v_note, v_name, v_name || chr(9)), v_name, v_kid, (v_cp ->> 'size')::bigint, v_cp ->> 'root') is null then raise exception 'the judge accepted a tab'; end if;
     if public._fm_signedcp_judge(v_note, v_name, 'ffffffff', (v_cp ->> 'size')::bigint, v_cp ->> 'root') is null then raise exception 'the judge accepted another key id'; end if;
     if public._fm_signedcp_judge(v_note, v_name, v_kid, (v_cp ->> 'size')::bigint + 1, v_cp ->> 'root') is null then raise exception 'the judge accepted another size'; end if;
+    -- key names with regex metacharacters must give a verdict, never an exception or a loosened check
+    perform public._fm_signedcp_judge(replace(v_note, v_name, 'a(bcd'), 'a(bcd', v_kid, (v_cp ->> 'size')::bigint, v_cp ->> 'root');   -- must return a verdict (any), never raise 'invalid regular expression'
+    if public._fm_signedcp_judge(E'a|bcd\n' || (v_cp ->> 'size') || E'\n' || encode(decode(v_cp ->> 'root', 'hex'), 'base64') || E'\n\n— anything goes here\n', 'a|bcd', v_kid, (v_cp ->> 'size')::bigint, v_cp ->> 'root') is null then raise exception 'the judge accepted junk under an a| name'; end if;
     j := public.founder_audit_signed_verify(5);
     if not (j ->> 'ok')::boolean or (j ->> 'checked')::int < 1 then raise exception 'verify failed on a good ledger: %', j; end if;
     -- the vkey formula equals the one Go's note.NewVerifier-compatible output has for the published vector key 0 (Go: NewEd25519VerifierKey, committed in g5b_vectors.json)

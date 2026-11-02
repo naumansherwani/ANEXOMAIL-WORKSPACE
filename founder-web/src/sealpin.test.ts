@@ -123,6 +123,7 @@ test("TOFU key pin: first sight remembered, same is fine, a change is never sile
   expect(judgeKey(null, K1, [K1]).state).toBe("new");
   expect(judgeKey({ name: K1.name, pub_hex: K1.pub_hex }, K1, [K1]).state).toBe("same");
   expect(judgeKey({ name: K1.name, pub_hex: K0.pub_hex }, K1, [K1, { ...K0, status: "retired" }]).state).toBe("rotated");
+  expect(judgeKey({ name: K1.name, pub_hex: K0.pub_hex }, K1, [K1, { ...K0, status: "retired" }]).text).toContain(K1.key_id_hex);   // the fingerprint is shown so it can be checked elsewhere
   expect(judgeKey({ name: K1.name, pub_hex: K0.pub_hex }, K1, [K1]).state).toBe("replaced");
 });
 
@@ -133,8 +134,12 @@ test("judgeSigned: kernel refusal is a failure, a kernel that cannot run is only
   expect(judgeSigned(v, "bad", null, seal5).state).toBe("fail");
   expect(judgeSigned(v, "na", null, seal5).state).toBe("warn");
   expect(judgeSigned(v, "ok", { state: "replaced", text: "x" }, seal5).state).toBe("fail");
-  expect(judgeSigned(v, "ok", { state: "rotated", text: "changed" }, seal5).state).toBe("warn");
+  expect(judgeSigned(v, "ok", { state: "rotated", text: "changed" }, seal5).state).toBe("fail");   // a changed key is never only a warning (the server supplies the key list)
   expect(judgeSigned(null, "ok", null, seal5).state).toBe("none");
+  expect(judgeSigned(null, "ok", null, seal5, true).state).toBe("warn");                          // feature seen before, gone now = said out loud
+  // a server that serves an old note while its own pulse says ok must not stay green
+  expect(judgeSigned(v, "ok", { state: "same", text: "" }, { ...seal5, id: 11, upto_seq: 300 }).state).toBe("warn");
+  expect(judgeSigned(v, "ok", { state: "same", text: "" }, { ...seal5, id: 10, upto_seq: 300 }).state).toBe("ok");
   // the note says another root than the seal on screen = failure
   expect(judgeSigned(v, "ok", { state: "same", text: "" }, { ...seal5, root: "f".repeat(64) }).state).toBe("fail");
   // one seal behind = information, not an alarm
