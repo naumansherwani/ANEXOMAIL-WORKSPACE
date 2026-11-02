@@ -47,3 +47,19 @@ FOUNDER DECISION 1 Nov 10:04: MoQ is built by us (own Rust relay on wtransport),
 | G5b signed checkpoints, G5c time anchors (no accounts) | **MISSING** (tech-proof rows added; the stale "G5c witnesses" row replaced by the G5-D wording) | - | NOT IN CODE (G5b-d) |
 
 MISSING somewhere: 13 (tech-proof.py). Mixed layers found: 0. Bun/Node on the founder server: 0. Second kernel: 0.
+
+## FULL TECHNOLOGY AUDIT — 2 Nov 2026 05:15 PKT (founder 05:03 order). Installed versions measured, latest from npm / crates.io the same minute.
+| Layer | Locked by founder | In code (package.json / Cargo.toml) | Installed / resolved | Latest published | Verdict |
+|---|---|---|---|---|---|
+| React | 19.2 | ^19.2.0 | 19.3.1 | 19.3.1 | latest |
+| Vite | 8.2 | ^8.2.0 | 8.3.4 | 8.3.4 | latest |
+| TypeScript | strict | ^7.0.2 | 7.0.2 | 7.0.2 | latest |
+| TanStack Router | yes | ^1.170.46 | 1.170.46 | 1.170.45 | latest |
+| Tailwind | 4.2 (exact pin) | 4.2 | 4.2.4 | 4.3.3 | locked at 4.2 by design; a bump is his word only (look must stay pixel-equal) |
+| Three.js | WebGPU later | ^0.185.1 | 0.185.1 | 0.186.1 | one minor behind; bump with L2 |
+| axum / tokio | 0.8 / 1 | 0.8 / 1 | 0.8.x / 1.x | 0.8.9 / 1.54.1 | latest |
+| rustls + tokio-rustls | rustls ring | 0.23 / 0.26 | latest 0.23.x | 0.23.46 / 0.26.6 | latest |
+| tower-http / reqwest / sha2 / hmac | - | 0.6 / 0.12 / 0.10 / 0.10 | - | 0.7.1 / 0.13.5 / 0.11.1 / - | one minor behind; bump only inside a phase that touches them, never as a drive-by (breaking API) |
+| Layers | Rust only on the server | founder server: 0 Bun/Node/express hits; founder-web/src: 0 .js/.jsx left; 1 kernel | - | - | clean |
+| UI claims | only what is PROVEN | grep of founder-web/src for WebTransport/MoQ/passkey/256/post-quantum/witnessed/tamper-proof: 0 false claims (one honest comment in Scene3D.tsx) | - | - | clean |
+Not in code (home + letter): WebTransport K6, webauthn-rs J3, WebGPU L2, Motion/GSAP L1, DBSC K7, MoQ M, PQ mail Q4, attachment/live encryption Q2/Q5, G5b, G5c. rules-gate --all run on the whole founder tree.
