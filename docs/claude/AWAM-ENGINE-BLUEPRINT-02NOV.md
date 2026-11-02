@@ -5,18 +5,17 @@ Docs only. No code, no price change, no new rule is locked by this file. Source 
 > **2 Nov 08:14: Personal packages are retired (founder). The awam gets only the Business ladder below.** See `PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md`.
 
 
-## 0a. NOT YET ON THE SERVER (awam side) - founder's order 2 Nov 11:04: "ek list bana jo pending kaam hai jo server tak nahi gaye hain"
-Only things that are WRITTEN and in the repo but have NOT reached the server. Nothing new is added to this list unless he orders it. Status checked against his pastes (last server paste 10:56).
-| # | What | Technology | Why it is not on the server | The one command that puts it there |
-|---|---|---|---|---|
-| 1 | Country mandatory on the server + friendly organisation errors (PX7a/b) | Rust `wsx` | not installed yet | `MODULES=wsx` rust-engine-install |
-| 2 | Latency middleware, p50/p95/p99 (AX9b) | Rust `latency` | his 10:56 run stopped before build (old anchor); fixed since | `MODULES=latency` rust-engine-install |
-| 3 | Passkey sign-in without a username (PX8) | Rust `passkey_glue` | his 10:56 run rolled back (test account was deleted); fixed since | rust-passkey-install |
-| 4 | "Launching soon" notice on the landing page | React/TS | pushed after his last pull | pull.sh |
-| 5 | Block AF / IL / KP at the edge (GEO1) | Caddy | plan is GREEN, apply not run | `geoblock.sh apply` |
-| 6 | Retire the mail-server folders of the two deleted test accounts | server script | plan not run yet (apply only after he reads the plan) | `mailbox-retire.sh plan` |
-Already ON the server (his pastes): E125-E130, wsx first version (default organisation name, optional domain), pull.sh 10:56 (sign-up page, /signup, country search, hand cursor, copy sweep, stale-green fix, onboarding country box, passkey autofill code).
-NOT written at all (not on this list, waiting for his word): PX7c (hide deleted organisations, DNS check, organisation settings), `/wt/rpc` latency, Premium card, AX0-AX8, founder lane.
+## 0a. Awam: written work and where it stands (founder 2 Nov 11:04 order; updated 11:35 with his pastes)
+| Phase | What | Technology | State |
+|---|---|---|---|
+| PX7a/b | Country mandatory on the server + friendly organisation errors | Rust `wsx` | **GREEN**: his `MODULES=wsx` 11:1x: 6 tests ok, files same as repo, probe 401 |
+| AX9b | Latency middleware, p50/p95/p99 | Rust `latency` | **GREEN**: his install: 10 tests ok, one anchor patched, build OK, health OK, pm2 online. Numbers page `127.0.0.1:3601/latency` appears after the first requests (his one check: `curl -s http://127.0.0.1:3601/latency`) |
+| PX8 | Passkey sign-in without a username | Rust `passkey_glue` | **GREEN**: his run: PROOF SAB PASS incl. "usernameless: options 200 + EMPTY allow-list" and "usernameless: verify -> 200 + token"; replay, clone, injection all pass |
+| PX11/PX12 | Landing "Launching soon" notice | React/TS | **GREEN**: his pull.sh (610 files same) + my Chrome look: the notice is at the very top of anexomail.com |
+| GEO1 | Block AF / IL / KP at the edge | Caddy | **GREEN (applied)**: his run: 23 site blocks wired, anexomail.com 200, founderworkspace.anexomail.com 200, backup `/root/i9/caddy-geoblock-1793599658`. Honest limit: a VPN exit outside those countries is not blocked |
+| MB1 | Mail folders of the two deleted test accounts | server script | NOT run: only the read-only `plan` is waiting for him |
+Already GREEN earlier: E125-E130, wsx first version, sign-up page, /signup, country search, hand cursor, copy sweep, stale-green fix.
+NOT written (waiting for his word, no code exists): PX7c (hide deleted organisations, DNS check, organisation settings), `/wt/rpc` latency, Premium card, AX0-AX8, founder lane G5d onward.
 
 ## 0. Packages (from `src/lib/plans.ts` + the founder's 07:57 word)
 | Package | Price | Users | In `plans.ts` today? |
