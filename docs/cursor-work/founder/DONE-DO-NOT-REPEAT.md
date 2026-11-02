@@ -759,3 +759,4 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - 2 Nov 08:10 docs: AWAM-ENGINE-BLUEPRINT-02NOV.md (AX1-AX8), FOUNDER-EXTRA-ADVANCED-02NOV.md (X1-X4), rows X and AX in BLUEPRINT-ABC. Do not duplicate.
 - 2 Nov 08:12 Bandwidth table/promise = ALREADY in PACKAGE-FEATURE-FORMULA.md (28 Oct 08:30) + CEO-DECISIONS (D). Pointer only in AWAM-ENGINE-BLUEPRINT sec 2b; Premium £21,000/month, hidden cap 20,000 users. Dobara mat likho.
 - 2 Nov 08:20 Business Premium = £21,000/month in all docs (AGENTS.md UPDATE line 2 Nov 08:07 is the rule). Personal Premium £18,500 YEARLY is different, never change. Dobara mat likho.
+- 2 Nov 08:25 Business Premium yearly = £210,000 (2 months free), old 26 Oct Enterprise £18,500 lines deleted. Dobara mat likho.
