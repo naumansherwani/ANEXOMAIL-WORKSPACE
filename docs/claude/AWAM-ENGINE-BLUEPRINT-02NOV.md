@@ -2,6 +2,8 @@
 
 Docs only. No code, no price change, no new rule is locked by this file. Source of the order: `docs/cursor-work/founder/founder-commands.md` (07:57). Lane letters here are **AX1-AX8** so they never collide with the founder letters A-V or the awam W-rows in `BLUEPRINT-ABC-01NOV.md`.
 
+> **2 Nov 08:14: Personal packages are retired (founder). The awam gets only the Business ladder below.** See `PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md`.
+
 ## 0. Packages (from `src/lib/plans.ts` + the founder's 07:57 word)
 | Package | Price | Users | In `plans.ts` today? |
 |---|---|---|---|
