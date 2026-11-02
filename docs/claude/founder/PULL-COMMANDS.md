@@ -445,3 +445,8 @@ E128 SQL: DONE (his paste 09:34, CHECK_E128 3/3 + E65 OK).
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:server/caddy/geoblock.sh) plan 2>&1 | tail -20`
 4. Caddy post-quantum check (read-only; server has openssl 3.5.5, Caddy v2.11.4):
 `openssl s_client -groups X25519MLKEM768 -connect anexomail.com:443 </dev/null 2>/dev/null | grep -i "negotiated tls1.3 group"`
+
+## PX2c sign-up UI (2 Nov 09:50) — web only (React); Rust signx already live
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
+Then Ctrl+Shift+R and open anexomail.com/auth?mode=signup (the Personal | Business screen must be gone; Country, Mobile, red/green name check appear).
+Optional, only after he read the GEO1 plan: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:server/caddy/geoblock.sh) apply 2>&1 | tail -15`

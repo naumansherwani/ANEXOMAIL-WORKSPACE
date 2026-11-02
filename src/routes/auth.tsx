@@ -6,7 +6,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { AnexoMailField } from "@/components/site/AnexoMailField";
 import { AuthCinema } from "@/components/site/AuthCinema";
 import { CinematicSplash } from "@/components/site/CinematicSplash";
-import { WorkspaceKindCards } from "@/components/site/WorkspaceKindCards";
+import { AvailabilityHint, useHandleAvailability } from "@/components/auth/AvailabilityHint";
+import { ContactFields, contactToE164, type Contact } from "@/components/auth/ContactFields";
+import { flushContact, stashContact } from "@/lib/signx";
 import { anexomailAddress } from "@/lib/anexomail-address";
 import { Eye, EyeOff, KeyRound, Mail, ShieldCheck } from "lucide-react";
 
@@ -102,7 +104,7 @@ export const Route = createFileRoute("/auth")({
   component: () => <AuthPage />,
 });
 
-type Mode = "login" | "kind" | "signup" | "link" | "forgot" | "reset" | "recovery";
+type Mode = "login" | "signup" | "link" | "forgot" | "reset" | "recovery";
 
 // LOCKED: social sign-in (Google / Apple / GitHub) ANEXOMAIL par nahi hai.
 // User khud account banata hai (email + password) → Supabase → dashboard.
@@ -131,7 +133,7 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
     if (!founderLogin && fh && window.location.hostname.toLowerCase() === "founderworkspace.anexomail.com") window.location.replace("/founderlogin" + window.location.search); // founder host: sign-in default = /founderlogin
   }, [founderLogin]);
   const [mode, setMode] = useState<Mode>(() => {
-    if (search.mode === "signup") return "kind";
+    if (search.mode === "signup") return "signup";
     if (search.mode === "reset" || search.mode === "forgot") return search.mode;
     return "login";
   });
@@ -164,7 +166,9 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
   /** Credentials sent, answer not back yet: the loading screen is already up (no dead click). */
   const [signingIn, setSigningIn] = useState(false);
   const [redirectTo, setRedirectTo] = useState<string | null>(null);
-  const [workspaceKind, setWorkspaceKind] = useState<"personal" | "business" | null>(null);
+  // Personal packages are retired (founder 2 Nov 2026): every new account is a Business-ladder workspace, so there is no kind to choose.
+  const [contact, setContact] = useState<Contact>({ country_iso2: "", national: "" });
+  const handleAvail = useHandleAvailability(email, mode === "signup");
   const [moreDetails, setMoreDetails] = useState(false);
   const [savePassword, setSavePassword] = useState(true);
   const lastNameTouched = useRef(false);
@@ -193,6 +197,7 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
       /* private window: bas retry-guard nahi */
     }
     sessionToken.set(token);
+    await flushContact(); // country + mobile typed at sign-up (no-op when nothing is waiting)
     const session = authenticated ?? (await api<Session>("/api/auth/session"));
     if (founderLogin && !session.user.is_founder) {
       // /founderlogin sirf founder ke liye: awam account ka session foran saaf.
@@ -267,17 +272,6 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
     setSigningIn(false);
     if (!redirectTo) setShowSplash(false);
     setError(message);
-  };
-
-  const pickKind = (kind: "personal" | "business") => {
-    setError(null);
-    setWorkspaceKind(kind);
-    try {
-      window.sessionStorage.setItem(KIND_KEY, kind);
-    } catch {
-      /* ignore */
-    }
-    setMode("signup");
   };
 
   const submit = async (event: React.FormEvent) => {
@@ -367,14 +361,11 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
 
       if (mode === "signup") {
         if (password !== passwordConfirm) throw new Error("password_mismatch");
-        const stored = window.sessionStorage.getItem(KIND_KEY);
-        const kind =
-          workspaceKind ||
-          (stored === "personal" || stored === "business" ? stored : null);
-        if (!kind) {
-          setMode("kind");
-          return;
-        }
+        if (!contact.country_iso2) throw new Error("Choose your country.");
+        if (handleAvail.state === "taken") throw new Error("That ANEXOMAIL name is already taken. Pick one of the available names.");
+        if (handleAvail.state === "blocked") throw new Error("ANEXOMAIL is not available in your country.");
+        if (contact.national.trim() && !contactToE164(contact, navigator.language.slice(0, 2))) throw new Error("Check your mobile number.");
+        const kind = "business";
         const res = await api<{
           token?: string;
           confirmation_required?: boolean;
@@ -402,6 +393,7 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
           }),
           auth: false,
         });
+        stashContact({ country_iso2: contact.country_iso2, e164: contactToE164(contact, navigator.language.slice(0, 2)) });
         if (res.pending_approval) {
           setSigningIn(false);
           setPendingReview(true);
@@ -566,7 +558,7 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
 
         {/* RIGHT — Form panel */}
         <div className="flex flex-1 items-center justify-center px-6 py-12 lg:px-14">
-          <div className={cn("ax-in w-full", mode === "kind" ? "max-w-[42rem]" : "max-w-[28rem]")}>
+          <div className={cn("ax-in w-full", "max-w-[28rem]")}>
 
             <div className="mb-6 lg:hidden">
               <Link to="/" className="ax-focus rounded-md">
@@ -583,28 +575,7 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
 
             {/* Card */}
             <div className="rounded-2xl border border-border bg-card p-ax-5 shadow-2xl">
-              {mode === "kind" && !challengeId && !linkSent ? (
-                <>
-                  <WorkspaceKindCards
-                    busy={busy}
-                    onPersonal={() => pickKind("personal")}
-                    onBusiness={() => pickKind("business")}
-                  />
-                  <p className="ax-caption mt-ax-4 text-center">
-                    Already have a workspace?{" "}
-                    <button
-                      type="button"
-                      className="ax-focus rounded font-semibold text-cyan-accent"
-                      onClick={() => {
-                        setError(null);
-                        setMode("login");
-                      }}
-                    >
-                      Sign in
-                    </button>
-                  </p>
-                </>
-              ) : (
+              {(
                 <>
               {/* Animated header — smooth morph on mode switch */}
               <AnimatePresence mode="wait">
@@ -623,11 +594,7 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
                   ) : mode === "signup" ? (
                     <Header
                       title="Create your account"
-                      sub={
-                        workspaceKind === "business"
-                          ? "Business workspace — then choose your plan."
-                          : "Personal workspace — then choose your plan."
-                      }
+                      sub="Your workspace — then choose your plan."
                     />
                   ) : mode === "recovery" ? (
                     <Header title="Use a recovery code" sub="Lost your phone and your passkeys? Enter one of the 10 codes you saved. Each works once." />
@@ -769,6 +736,12 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
                             onChange={setEmail}
                             autoComplete={mode === "login" ? "username" : "email"}
                           />
+                        )}
+                        {mode === "signup" && (
+                          <>
+                            <AvailabilityHint a={handleAvail} onPick={setEmail} />
+                            <ContactFields value={contact} onChange={setContact} locale={navigator.language.slice(0, 2)} />
+                          </>
                         )}
                         {mode === "recovery" && (
                           <Field
@@ -982,24 +955,13 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
                         className="ax-focus rounded font-semibold text-cyan-accent"
                         onClick={() => {
                           setError(null);
-                          setMode("kind");
+                          setMode("signup");
                         }}
                       >
                         Create your account for workspace
                       </button>
                     ) : mode === "signup" ? (
                       <>
-                        <button
-                          type="button"
-                          className="ax-focus rounded font-semibold text-cyan-accent"
-                          onClick={() => {
-                            setError(null);
-                            setMode("kind");
-                          }}
-                        >
-                          Back
-                        </button>
-                        {" · "}
                         <button
                           type="button"
                           className="ax-focus rounded font-semibold text-cyan-accent"

@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { Building2, LogIn } from "lucide-react";
 
 import { BrandMark } from "@/components/site/BrandMark";
-import { WorkspaceKindCards } from "@/components/site/WorkspaceKindCards";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -67,16 +66,16 @@ function OnboardingPage() {
     const kind = session.user.account_kind;
     const stored =
       typeof window !== "undefined" ? window.sessionStorage.getItem("anexo.pending.workspace_kind") : null;
-    const chosen = stored === "personal" || stored === "business" ? stored : kind;
+    // Personal packages are retired (founder 2 Nov 2026): a new account always goes to the company step. Only an account that was ALREADY
+    // personal-kind before the retirement keeps its old path, so nobody is locked out.
+    const chosen = kind === "personal" || stored === "personal" ? "personal" : "business";
     if (chosen === "business") {
       autoKind.current = true;
       setPath("business-name");
       return;
     }
-    if (chosen === "personal") {
-      autoKind.current = true;
-      void goPersonal();
-    }
+    autoKind.current = true;
+    void goPersonal();
   }, [status, session, navigate, busy, path]);
 
   const fail = (e: unknown) =>
@@ -136,11 +135,7 @@ function OnboardingPage() {
         <div className="mt-ax-4 rounded-2xl border border-border bg-card p-ax-5 shadow-2xl">
           {path === "choose" && (
             <div className="space-y-ax-3">
-              <WorkspaceKindCards
-                busy={busy}
-                onPersonal={() => void goPersonal()}
-                onBusiness={() => setPath("business-name")}
-              />
+              <p className="ax-caption text-center text-muted-foreground">Preparing your workspace…</p>
 
               {error && (
                 <p role="alert" className="ax-caption text-destructive">

@@ -88,7 +88,7 @@ src/routeTree.gen.ts fcb94a2e260d3af7
 src/lib/team.ts 13a8057bc6c41f2c
 src/lib/team-report.ts c2e82622aec75438
 src/routes/join.tsx 5a1b64a71dcccd30
-src/routes/auth.tsx 2db485d46e9c8345
+src/routes/auth.tsx 66af677acbc15bff
 src/routes/app.integrations.tsx 6046afeafaa38dc0
 src/lib/workspace-i18n.ts 616c123f5cf62ede
 src/routes/app.settings.ai.tsx 67d3e1596be41f2a
@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 12317c8e36902996
+docs/cursor-work/founder/founder-commands.md 07a85cd1c34ca7cc
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 414cbfe9747aae7a
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 1554238d11b39bd1
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs bd14a1074691a67d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 658a69dbab5cd66b
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 2f0d2fe26867d199
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -343,12 +343,11 @@ src/components/app/safety/SafetyPanels.tsx 279e4cc7afc2b2f9
 src/components/app/work/WorkChainBoard.tsx 32dbcc104db8f5d7
 src/components/site/ConvertToBusiness.tsx 284a357f38d9d13c
 src/components/site/PlanCheckoutButton.tsx 45204c00bd9e267f
-src/components/site/WorkspaceKindCards.tsx 64cc3a54d2b2bd84
 src/router.tsx 3b7aceb40294eb29
 src/routes/app.safety.tsx 5b3baa7dce93791b
 src/routes/auth_.callback.tsx 7b6e0e097af5c818
 src/routes/claim.tsx 023a19b74180ce37
-src/routes/onboarding.tsx b2f9e6869dc87304
+src/routes/onboarding.tsx f6fd338c63973411
 src/components/state/BrandLoader.tsx d7d3f0687669229a
 server/rust/polar-payment/Cargo.toml b19720335aa99719
 docs/cursor-work/server/polar-cp-proof.py 3eca410c891a98cc
@@ -384,7 +383,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md a94569c01111b5c3
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md f664ab0442f5f2f9
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -915,7 +914,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md eb1ba2a7a3861722
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md 3deaa87ee0833751
+docs/claude/founder/PULL-COMMANDS.md 2a9fa5b03902b990
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 6f67741f87811209
@@ -1108,3 +1107,7 @@ server/caddy/geoblock.sh 7823c6fb8b289407
 server/rust/signx_core.rs ddcff59c5b8ba934
 server/rust/signx_glue.rs 5cdca19433325f0a
 server/rust/latency_core.rs a7fe44b909fdd998
+src/components/auth/AvailabilityHint.tsx fcfc3f3fa4e44671
+src/components/auth/ContactFields.tsx 37fe219d85d1f828
+src/lib/countries.ts a4c483eed39aa596
+src/lib/signx.ts e4790f01c5617024
