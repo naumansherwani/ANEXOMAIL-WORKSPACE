@@ -2122,3 +2122,13 @@ Founder asked 05:10 why the Dashboard shows the "Endpoints" card with PUT /setti
 
 ## Checkpoint 2 Nov 05:25 PKT
 Founder: no PARTIAL, bring GREEN. G5a closing move built: E122 edited (1b: one labelled real audit entry -> seal #2 -> live consistency check), Endpoints card removed from the Dashboard. He runs 2 commands: (1) E122 sql-run (2) founder-install. Then I look in Chrome for 'extends the seal it remembered'; only then G5a GREEN.
+
+## Checkpoint 2 Nov 05:30 PKT — SERVER TRUTH for the compaction (what is ALREADY on his server: DO NOT WRITE AGAIN)
+His pastes prove these are ON THE SERVER (do not rebuild, do not re-give the command):
+- SQL: E107 (Merkle), E117, E118, E119, E120 (G4 hardening), E121 (RFC 9162 consistency, CHECK 3/3 04:14), E122 (seal every 20 entries OR 10 min, no seal loop, stall on same due, ONE labelled proof entry `audit.g5a_proof`; CHECK_E122 4/4 OK + E65 sweep OK, his paste 05:27). Rule: if already-run SQL has a problem, EDIT that file; new SQL is fine when a phase needs it.
+- Rust founder binary: 134 tests passed, build OK, service zinda (founder-install 05:27, includes /audit/seal, /audit/consistency, /audit/proof fix, merkle_core consistency, auto_verify tick, tls256).
+- SPA (founder-web/dist): sealpin gauge, consistencyVerify, Endpoints card REMOVED, /audit/proof path fixed (installed 05:27).
+- Kernel 0.7.0 (merkle@2) sha 411749be...37e2: founder dist AND awam (anexomail.com serves it, 200, SHA == pin; awam pull ran 04:30 and 05:00).
+- Awam: pull.sh ran: src same=603 differ=0, build OK; SiteFooter.tsx is NOT in DEPLOY-MANIFEST and rules-gate FAILs any edit (chairman wording, never touch).
+Chrome proven (me, 05:10): Ledger seal "7 of 7 entries proven in this browser, seal #1 matches what this browser remembered". STILL OPEN for G5a GREEN: seal #2 (due ~10 min after the proof entry, ~05:37) and the Dashboard text "extends the seal this browser remembered" from the consistency check. Then G5a = GREEN and the ONE next phase is G5b (discuss first, Rule 63), technology: Rust + WASM kernel; no new technology before G5a is GREEN.
+Not on the server / not in code: WebTransport, webauthn-rs, WebGPU, Framer/GSAP, DBSC, MoQ, PQ mail, attachment/live encryption, G5b, G5c, G5d.
