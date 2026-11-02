@@ -428,5 +428,5 @@ Then sign in to the founder site; I look at the Ledger seal card in Chrome.
 2. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) CHECK_PX0B_TEST_FOOTPRINT | tail -40`  (read-only: what deleting basic.test@ and alikhan@ would remove; then the founder says haan, then E126)
 
 ## Personal copy audit (2 Nov 08:50) — web only, Rust string changed (main.rs:338)
-1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:pull.sh) | tail -15`
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -15`
 (the Rust chat-message string takes effect at the next Rust rebuild; no behaviour change)
