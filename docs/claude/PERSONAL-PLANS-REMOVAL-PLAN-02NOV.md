@@ -43,3 +43,7 @@ Rule I follow: remove the Personal PACKAGES (price/display/checkout layer) only.
 Founder paste (08:36): 18 accounts; 3 personal-kind: **masoodsherwani@anexomail.com** (plan already **pro**, no subscription), **basic.test@anexomail.com**, **alikhan@anexomail.com** (both test accounts: created 10 and 13 Oct, no plan, no subscription); **0 paid subscriptions**.
 - **E125** (`E125_retire_personal_packages.sql` + `CHECK_E125.sql`, tested twice on a scratch database): empties `personal_polar_map`, switches off and deletes the 6 Personal price-book rows (kept off if referenced), makes sure Masood is on `pro`. Masood's workspace kind is deliberately NOT changed: inside the plan engine a Basic/Pro workspace without an organisation IS "personal" kind, and the same engine serves the Business ladder, so changing it would push him through business onboarding. The `personal_workspace_label()` function stays (the login session calls it); with the map empty it returns no label.
 - **Test accounts:** NOT deleted. `CHECK_PX0B_TEST_FOOTPRINT.sql` (read-only) lists every table row that would go with them; after he sees it and says haan on the two emails, E126 deletes them. Mail-server mailboxes are outside the database and are listed as a separate step.
+
+
+## Status 2 Nov 08:57 — Polar
+Founder deleted all 6 Personal products in Polar himself. Repo side was already clean (contracts removed + guard test). Nothing left to do in Polar for Personal.
