@@ -2272,3 +2272,6 @@ Phase: G5c (OpenTimestamps + RFC 3161, no accounts). Rule for me: re-read the ch
 - 2 Nov 08:28 founder (verbatim): "masoodsherwani@anexomail.com ... is ko tumne ek bhi feature lost ke is ko fix kero. founder side ka kaam hold pe hai woh repo main udate kero compact chat hone wala hai sab kuch update kero" -> Masood email recorded; lost-feature check done (ConvertToBusiness restored on /plans for legacy personal-kind accounts); founder side ON HOLD in the chat-context top block; CHECK_PX0_PERSONAL_LIST.sql written (tested on scratch DB).
 
 - 2 Nov 08:36 founder pasted: pull.sh OK x2 and CHECK_PX0_PERSONAL_LIST: 18 accounts, 3 personal-kind (masoodsherwani@ [plan pro already], basic.test@, alikhan@), 0 paid subscriptions. -> E125 (safe parts) + CHECK_E125 + CHECK_PX0B_TEST_FOOTPRINT written; test-account deletion (E126) waits for his explicit yes on the two emails after the footprint.
+
+- 2 Nov 08:40 PKT (founder, verbatim): "compact chat aye ga context update kero claude ke liye" -> chat-context top block updated (STATE FOR A NEW CHAT).
+- 2 Nov 08:37 PKT (founder, verbatim): "sab business packages ke andar blling main se bhi zikar khatham kero personal packages ka aur personal packages ka clean audit kero jahan nazar aye delete lekin read ker ke business se conencted nahi ho" -> copy/labels cleaned; engine untouched.

@@ -55,9 +55,9 @@ src/routes/get-started.tsx 26e18cb222848629
 src/lib/ics.ts e5b885bb1f9e0ba8
 src/components/app/calendar/IcsImport.tsx 4f9a9943bcf9ad9a
 src/components/app/PlanSurfaceGate.tsx b5f2d59675b9c8b5
-src/lib/plan-surface.ts c7faa5b40dbead70
+src/lib/plan-surface.ts b9751a197ea3ff9a
 src/components/app/dashboard/Greeting.tsx 04b1c71408a15402
-src/components/app/dashboard/Panels.tsx 4ab55253b75c2425
+src/components/app/dashboard/Panels.tsx 37406cd9371f9a5d
 src/components/app/mail/InboxWelcome.tsx 52450784b63156ac
 src/components/app/mail/ThreadList.tsx 81f2820480d53dea
 src/routes/app.admin.audit.tsx c7884b9e5e926572
@@ -71,8 +71,8 @@ src/routes/app.org.compliance.tsx 584f2d054ea4efea
 src/components/app/org/LedgerPanel.tsx 060c6f042e8a14bd
 src/lib/org-export.ts 221df989c4969375
 src/lib/report-figures.ts 21b05c7f52004220
-src/components/app/work/DecisionLedger.tsx 5db4d0eb44ee890a
-src/components/app/work/PromiseRecovery.tsx a490927789d4bd77
+src/components/app/work/DecisionLedger.tsx 4ddd18ae43715011
+src/components/app/work/PromiseRecovery.tsx 09e13cb4f459e95b
 src/lib/crm.ts 1c09aa74ae114d5c
 src/components/app/people/ContactsImport.tsx 3fb07a6b9294d100
 src/lib/contacts-import.ts b0615264d021d4f1
@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 281cd6b3ca25ba3c
+docs/cursor-work/founder/founder-commands.md 7fbcfe8abc50879d
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md c852e9086e8e5613
+docs/cursor-work/DONE-DO-NOT-REPEAT.md b57c3faf2e9f683d
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -243,9 +243,9 @@ docs/cursor-work/server/brain-auth-harden-install.sh 74c99f2896e76eed
 src/components/fx/FxAmbient.tsx 30983ae55876c9a1
 src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
-server/rust/main.rs 0c1a6a8b9e10e904
+server/rust/main.rs bd14a1074691a67d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 5b34e63bb00aa102
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 252d496391f46911
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -384,7 +384,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 1c4394e8bd8f4da0
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md c5f6ab451c859e88
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -704,7 +704,7 @@ server/routes/analytics.ts 25f75423495ba227
 server/rust/wtrpc_core.rs 9b651c989c6968e8
 server/rust/wtrpc_glue.rs 1d5a97eb68a67f1e
 src/components/app/security/TwoStepCard.tsx f2048d4ab0db90db
-src/lib/kernel/kernel.test.ts 34c95ade924de18f
+src/lib/kernel/kernel.test.ts 3ce9104f9c807212
 src/lib/kernel/kernel.ts 90797af61aa4eeb6
 src/lib/kernel/pin.gen.ts ccb1e9abc54d454f
 web-wasm/Cargo.lock f15b873b93437cc7
@@ -915,7 +915,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md eb1ba2a7a3861722
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md 0a6491cba23442ec
+docs/claude/founder/PULL-COMMANDS.md d977ea2bc31ba196
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 6f67741f87811209

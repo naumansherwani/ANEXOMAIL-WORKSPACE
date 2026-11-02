@@ -335,7 +335,7 @@ async fn chat_identity(token: &str) -> Result<Me, (StatusCode, &'static str, Str
         return Err((
             StatusCode::FORBIDDEN,
             "chat_not_entitled",
-            "Chat is on Personal Pro, Business and Business Pro.".to_string(),
+            "Chat is on Pro, Business and Business Pro.".to_string(),
         ));
     }
 

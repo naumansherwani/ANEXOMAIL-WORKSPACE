@@ -491,7 +491,7 @@ function LockedAnalyticsGhost({ t, personal }: { t: (s: string) => string; perso
         <p className="text-[12px] font-bold text-foreground">{t("Email analytics")}</p>
         <p className="text-center text-[11px] leading-snug text-muted-foreground/60 max-w-[200px]">
           {personal
-            ? t("Volume, reply speed and delivery rate — available on Personal Pro+.")
+            ? t("Volume, reply speed and delivery rate — available on Pro and above.")
             : t("Volume, reply speed and delivery rate — available on Pro.")}
         </p>
         <a
@@ -499,7 +499,7 @@ function LockedAnalyticsGhost({ t, personal }: { t: (s: string) => string; perso
           className="ax-tap flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-[11px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
         >
           <Sparkles className="size-3" />
-          {personal ? t("Upgrade to Personal Pro+") : t("Upgrade to Pro")}
+          {t("Upgrade to Pro")}
         </a>
       </div>
     </div>
@@ -519,7 +519,7 @@ export function AnalyticsPanel({ enabled, proAccess }: { enabled: boolean; proAc
   return (
     <DashboardCard
       title={t("Email analytics")}
-      hint={proAccess ? t("Volume and response speed.") : personal ? t("Personal Pro+ feature.") : t("Pro feature.")}
+      hint={proAccess ? t("Volume and response speed.") : personal ? t("Pro feature.") : t("Pro feature.")}
       icon={<ArrowUpRight className="size-4" />}
     >
       {/* Basic — locked ghost panel, no real query fired */}

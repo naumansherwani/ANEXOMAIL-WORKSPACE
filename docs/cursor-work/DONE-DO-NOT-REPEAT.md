@@ -1399,3 +1399,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 2 Nov 07:45 G5c GREEN (founder pastes + my Chrome look: 'Seal 3 time-anchored: 2 TSA'). Do not rebuild E124 / anchor_core / anchors.rs / anchor@1. OTS-Bitcoin still pending (hours).
 - 2 Nov 08:55 plans.tsx: ConvertToBusiness restored for legacy personal-kind accounts (no Business feature lost). CHECK_PX0_PERSONAL_LIST.sql added.
 - 2 Nov 09:10 E125 + CHECK_E125 + CHECK_PX0B written (local scratch PG tested, idempotent). Masood already plan pro, kind untouched on purpose. Test accounts NOT deleted yet (E126 after his yes). Dobara mat likho.
+- 2 Nov 08:50 Personal-package copy audit DONE: plan-surface.ts labels/copy (no more 'Personal Pro+/Premium/Basic' text), Panels/DecisionLedger/PromiseRecovery copy, main.rs:338 chat string; kernel.test.ts module list updated (G5c). Engine/gates/account_kind untouched. Do not redo.
