@@ -1382,3 +1382,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 2 Nov 05:41 G5a GREEN (server + Chrome proof, seal #2 at 5:30, RFC 9162 extension proven in his browser). AGENTS.md Rule 72 (ANEXOChat) locked. Next: G5b, discuss first.
 - 2 Nov 05:46 docs only: FC44 (founder gets awam codes, same UI/UX, own endpoints + gates), awam-side Bridge preserved for Business/Pro/Premium (ONE-ORDER).
 - 2 Nov 06:10 G5b OPEN (C2SP signed checkpoints): design + technology read written in G5-UNFORGEABLE-HISTORY-02NOV.md; code in progress, nothing on the server yet.
+
+- 2 Nov 06:20 G5b WIP (NOT green, nothing run on the server): `server/rust/checkpoint_core.rs` (C2SP signed note, 7 tests vs Go `note` oracle vectors `g5b_vectors.json`), `server/founder/src/signedcp.rs` (+route /founder/v1/audit/signed, tick), `sql/E123_founder_signed_checkpoints.sql` (local selftest OK), kernel 0.8.0 `checkpoint@1`. Still to do: CHECK_E123, UI gauge + TOFU pin, real-wasm test, fuzz, reviewer.

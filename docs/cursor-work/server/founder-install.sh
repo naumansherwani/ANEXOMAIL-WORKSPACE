@@ -24,6 +24,8 @@ mkdir -p "$ROOT/rust" && show server/rust/jwt_core.rs >"$ROOT/rust/jwt_core.rs" 
 show server/rust/merkle_core.rs >"$ROOT/rust/merkle_core.rs" || { echo "FAIL: merkle_core.rs nahi"; exit 2; }
 # G5a: ledger.rs test include_str!("../../rust/consistency_vectors.json") (820 Python-reference cases)
 show server/rust/consistency_vectors.json >"$ROOT/rust/consistency_vectors.json" || { echo "FAIL: consistency_vectors.json nahi"; exit 2; }
+show server/rust/checkpoint_core.rs >"$ROOT/rust/checkpoint_core.rs" || { echo "FAIL: checkpoint_core.rs nahi"; exit 2; }
+show server/rust/g5b_vectors.json >"$ROOT/rust/g5b_vectors.json" || { echo "FAIL: g5b_vectors.json nahi"; exit 2; }
 # main.rs ka path src/ se ../../rust/jwt_core.rs = $ROOT/rust/jwt_core.rs (src/src -> ../../ = src/..)
 echo "== 1/4 tests"; (cd "$ROOT/src" && cargo test --release 2>&1 | grep -E "test result|FAILED|^error" ) ; (cd "$ROOT/src" && cargo test --release >/dev/null 2>&1) || { echo "FAIL: tests — kuch nahi badla"; exit 3; }
 echo "== 2/4 build"; (cd "$ROOT/src" && nice cargo build --release 2>&1 | tail -3) ; NEW="$ROOT/src/target/release/anexomail-founder"; [ -x "$NEW" ] || { echo "FAIL: build"; exit 3; }
@@ -58,6 +60,8 @@ grep -q '^FOUNDER_TOKEN_KEY_FILE=' "$ENVF" || echo "FOUNDER_TOKEN_KEY_FILE=$KEYF
 # F2a: Ed25519 response-signing key (file 0400); public key is served at /founder/v1/keys
 SIGNF=/etc/anexomail/founder-sign.p8
 "$ROOT/anexomail-founder" --gen-sign-key "$SIGNF" | sed 's/^/   sign key: /'; chown anexomail-founder:anexomail-founder "$SIGNF"; chmod 400 "$SIGNF"
+AUDLK=/etc/anexomail/founder-auditlog.p8   # G5b: the audit log's OWN signing key (not the response key above); public half is registered in the database by the sealer
+"$ROOT/anexomail-founder" --gen-sign-key "$AUDLK" | sed 's/^/   audit-log key: /'; chown anexomail-founder:anexomail-founder "$AUDLK"; chmod 400 "$AUDLK"
 grep -q '^FOUNDER_SIGN_KEY_FILE=' "$ENVF" || echo "FOUNDER_SIGN_KEY_FILE=$SIGNF" >>"$ENVF"
 grep -q '^FOUNDER_LEGACY_TOKEN=' "$ENVF" || echo "FOUNDER_LEGACY_TOKEN=1" >>"$ENVF"   # 1 = purana session token abhi bhi chalta (grace); Chrome proof ke baad 0
 chown root:anexomail-founder "$ENVF"; chmod 640 "$ENVF"; chown -R root:anexomail-founder "$ROOT/web"; chmod -R g+rX "$ROOT/web"

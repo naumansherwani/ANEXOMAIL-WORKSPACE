@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 1fe47cc1a64507ee
+docs/cursor-work/founder/founder-commands.md 8f7de25b0e4d0ecf
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 7d87e9415e9be3ea
+docs/cursor-work/DONE-DO-NOT-REPEAT.md de0b9cf609292719
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -385,7 +385,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md af6515967273f411
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 72eafc4104bd003c
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -707,14 +707,14 @@ server/rust/wtrpc_glue.rs 1d5a97eb68a67f1e
 src/components/app/security/TwoStepCard.tsx f2048d4ab0db90db
 src/lib/kernel/kernel.test.ts 34c95ade924de18f
 src/lib/kernel/kernel.ts 90797af61aa4eeb6
-src/lib/kernel/pin.gen.ts 6324f57a775e5191
-web-wasm/Cargo.lock 12205363ff0c6171
-web-wasm/Cargo.toml 85a99919d68fd01b
+src/lib/kernel/pin.gen.ts 63ba4b78b09d7f3a
+web-wasm/Cargo.lock a602a11d7376d8a4
+web-wasm/Cargo.toml 735a3b2750497c8a
 web-wasm/src/exec.rs 58931ede25e35d01
 web-wasm/src/frame.rs dc702d2f8eec25cb
 web-wasm/src/hash.rs 855b67a21b6fbf33
 web-wasm/src/host.rs 3e0fc86c8638483f
-web-wasm/src/lib.rs 6b8b86881dd05822
+web-wasm/src/lib.rs f137de34ca136ea3
 web-wasm/src/live.rs 9cd93b2f7622b64f
 web-wasm/src/rank.rs 9588d32f0dabc948
 web-wasm/src/rpc.rs 1c21df12fab245ce
@@ -880,7 +880,7 @@ server/founder/.gitignore b53ee26e6ff1da21
 server/founder/Cargo.lock a7d3c564e0b6c428
 server/founder/Cargo.toml ec53ed55177286cf
 server/founder/src/audit.rs b68fb02fcadadac3
-server/founder/src/main.rs 35843fccd6651a01
+server/founder/src/main.rs a4e3cfc3b3bb5029
 docs/claude/OFFICE-HR-ACCOUNTING-MIGRATION-28OCT.md bc57767804dcab4e
 docs/claude/founder/design-f0/Action.dc.html 74ecac9376091b71
 docs/claude/founder/design-f0/Login.dc.html 4970172916db14e5
@@ -891,7 +891,7 @@ server/founder/src/bridge.rs 12ea8228b6829893
 server/founder/src/data.rs bff0a3036aa29fa8
 server/founder/src/gate.rs c3b8fbb573facca1
 server/founder/src/sign.rs 1e37d229d78842fb
-docs/cursor-work/server/founder-install.sh c0edf5864f8877b7
+docs/cursor-work/server/founder-install.sh 96971e3d8bcd10c8
 founder-web/.gitignore aaccff71fadbb13b
 founder-web/index.html d5b8de883d5e95f0
 founder-web/package.json c0b915b8e44a6271
@@ -916,7 +916,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md eb1ba2a7a3861722
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md 489894d2cea6daae
+docs/claude/founder/PULL-COMMANDS.md e99de85bde737eec
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 32121a0adc1a3ebf
@@ -1014,7 +1014,7 @@ server/founder/src/hostproof.rs a087e4fc98b97b2b
 docs/claude/BRIDGE-EMAIL-CHAT-ENGINE-DESIGN-01NOV.md eb602619a35cb2bc
 docs/cursor-work/sql/E111_founder_channels_telemetry.sql 22c2b268cfcf41c4
 docs/cursor-work/sql/CHECK_E111.sql efefebfe1d6e27b0
-server/founder/src/live.rs 86edab3fe10e5f65
+server/founder/src/live.rs d0dcd8b7d6665edb
 server/founder/tests/e2e_live_stream.py 4b71a3ec7c398725
 docs/claude/FOUNDER-SERVER-STATE-30OCT.md 25e9184513ee81d4
 docs/claude/FOUNDER-CHANNELS-CEO-LIST-01NOV.md d63b64c03c5df84d
@@ -1068,7 +1068,7 @@ src/components/app/CommandPalette.tsx 12a0fd1cf3105c1a
 src/lib/dashboard.ts 66e8a7d64fa8e599
 src/routes/app.admin.addresses.tsx cb8efe1f397d00f0
 docs/claude/BLUEPRINT-ABC-01NOV.md 82846662e27bbd8c
-public/kernel/anexo-kernel-0.7.0.wasm 411749be4ab665f4
+public/kernel/anexo-kernel-0.8.0.wasm 81edb33af286566224653ee456b6c79a
 docs/cursor-work/sql/E122_founder_seal_interval.sql be0edb2538f82051
 docs/cursor-work/sql/CHECK_E122.sql d10212a8dfda8472
 founder-web/src/routes.test.ts da4a2795630823c7

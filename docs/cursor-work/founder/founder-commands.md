@@ -2222,3 +2222,6 @@ Done: (1) founder side: CODES/00-README-RULES.md FC44 + blueprint note (same cod
 
 ## 2 Nov 06:02/06:04 PKT — founder (verbatim): "shuru kero lekin technology batao aur advance codes aur new sql likhna hai advance level" and (pasting my technology list) "yeh repo main likho is ko read ker ke advance codes likho repo main chat context update kero takay claude ko pata ho top pe likho ke kya codes chal rahaay hain"
 Done: technology sent to him; G5b section in G5-UNFORGEABLE-HISTORY-02NOV.md; chat context TOP block "CODES IN PROGRESS RIGHT NOW" + stamp line 14. Now building (core, Go oracle vectors, E123, Rust, kernel 0.8.0, UI), then review.
+
+## 2 Nov 06:16 — "yeh match ker lena tum yeh bana rahay ho aur codes match kero" (G5b)
+Status: WIP, not green. Written: checkpoint_core.rs, signedcp.rs, E123 SQL, kernel 0.8.0. Open: CHECK_E123, UI + TOFU pin, real-wasm test, fuzz, reviewer. Nothing for the server yet.

@@ -15,6 +15,9 @@ pub mod hash;
 pub mod intent;
 pub mod host;
 pub mod live;
+#[path = "../../server/rust/checkpoint_core.rs"]
+#[allow(dead_code)]
+pub mod checkpoint;
 #[path = "../../server/rust/merkle_core.rs"]
 pub mod merkle;
 pub mod rank;
@@ -27,9 +30,9 @@ use std::collections::HashMap;
 use std::rc::Rc;
 
 pub const ABI: u32 = 1;
-pub const VERSION: (u32, u32, u32) = (0, 7, 0);
+pub const VERSION: (u32, u32, u32) = (0, 8, 0);
 /// Naam@module-version. Naya module ya badla hua module => yahan entry + VERSION bump (Cargo.toml bhi).
-pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1", "merkle@2"];
+pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1", "merkle@2", "checkpoint@1"];
 
 thread_local! {
     static OUT: RefCell<Vec<u8>> = const { RefCell::new(Vec::new()) };
@@ -140,6 +143,18 @@ pub extern "C" fn merkle_verify(row: u32, rl: u32, path: u32, pl: u32, root: u32
 #[unsafe(no_mangle)]
 pub extern "C" fn merkle_consistency_verify(first: u32, second: u32, fr: u32, frl: u32, sr: u32, srl: u32, proof: u32, pl: u32) -> u32 {
     merkle::verify_consistency_text(first as u64, second as u64, unsafe { text(fr, frl) }, unsafe { text(sr, srl) }, unsafe { text(proof, pl) }) as u32
+}
+
+/* ------------------------------------------------- checkpoint@1 (G5b: C2SP signed note / tlog-checkpoint) */
+/// 1 = the note is a well-formed, canonical checkpoint for (name, size, root), carrying a valid Ed25519 signature from the audit-log key `pub_hex`; 0 = anything else.
+/// Strings: note (UTF-8 text), name (key name = origin), pub_hex / root_hex (64 lowercase hex), size (canonical decimal). The same Rust file the founder server signs and self-checks with.
+#[unsafe(no_mangle)]
+pub extern "C" fn checkpoint_verify(note: u32, nl: u32, name: u32, nnl: u32, pk: u32, pkl: u32, size: u32, sl: u32, root: u32, rl: u32) -> u32 {
+    let pkb = unsafe { text(pk, pkl) };
+    let pub_bytes: Option<Vec<u8>> = (pkb.len() == 64).then(|| (0..32).filter_map(|i| u8::from_str_radix(&pkb[2 * i..2 * i + 2], 16).ok()).collect());
+    let Some(pub_bytes) = pub_bytes.filter(|b| b.len() == 32) else { return 0 };
+    checkpoint::verify_text(unsafe { text(note, nl) }, unsafe { text(name, nnl) }, pkb, unsafe { text(size, sl) }, unsafe { text(root, rl) },
+        &|m, s| ed::verify(&pub_bytes, m, s)) as u32
 }
 
 /* ------------------------------------------------- ed25519 + envelope (F2b) */
@@ -270,7 +285,7 @@ mod tests {
         let ver = j.iter().find(|(k, _)| k == "version").unwrap().1.clone();
         assert_eq!(ver, env!("CARGO_PKG_VERSION"), "VERSION bump Cargo.toml ke saath");
         assert!(info_json().contains("\"abi\":1"));
-        for m in ["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1", "merkle@2"] {
+        for m in ["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1", "merkle@2", "checkpoint@1"] {
             assert!(info_json().contains(m), "{m}");
         }
     }

@@ -382,3 +382,5 @@ Isme 134 tests passed + "OK - founder service zinda". Awam pull ki zaroorat nahi
 ## 2 Nov 05:25 — G5a ko GREEN karne ke 2 commands (ek ek karke)
 1) SQL (E122 edit hui, idempotent): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E122_founder_seal_interval CHECK_E122 2>&1 | grep -v "^$" | head -14`
 2) Rust+SPA (Endpoints card hata, naya build): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -25`
+
+## G5b (2 Nov 06:20) — NOT READY: no pull command yet. Order when ready: 1) SQL E123 sql-run, 2) founder-install, 3) awam pull.sh (kernel 0.8.0). Given one at a time after the review is clean.
