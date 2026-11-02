@@ -2154,3 +2154,6 @@ FC44 (founder gets the awam codes: same logic, same UI/UX, only /founder/v1 endp
 
 ## Checkpoint 2 Nov 11:40 PKT
 His 11:16 pastes: latency curl = real numbers (AX9b verified GREEN); mailbox plan = map lines only, NO folders (base empty) so MB1 stays open, do NOT run apply. His question: is there ONE master blueprint (migration, M series, latest technology) in order? Answer: master = docs/claude/BLUEPRINT-ABC-01NOV.md (founder A-X, AX, awam W1-W6, awam sidebar->founder, Rules); awam detail = docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md (AX1-AX10, 2c latest-technology table, 0a/2e-2g ledger). Two files, linked by row AX. No new work started.
+
+## Checkpoint 2 Nov 11:40 PKT (clock note: his messages are 11:26-11:33)
+AWAM PARKED (his order 11:33). Resume order after the founder lane is complete: Basic, Business, Business Pro, Business Premium last. Read docs/claude/AWAM-PARKED-ORDER-02NOV.md. His pull.sh: server==repo, src same=610 differ=0. Next work = founder lane, first letter not GREEN, only on his word.

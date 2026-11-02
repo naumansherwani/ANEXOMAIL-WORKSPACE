@@ -31,6 +31,8 @@ One letter per step, in build order. **GREEN** only where the proof exists (serv
 | **X** | Extra advanced (founder 2 Nov 07:57): X1 Proof of restore · X2 Founder continuity (after J3) · X3 Served-code seal · X4 Supply-chain board. Detail: `FOUNDER-EXTRA-ADVANCED-02NOV.md` | new | after V |
 | **AX** | AWAM lane: founder engine rebuilt the awam way, per tenant, for Basic/Pro/Business/Business Pro/**Business Premium £21,000**. AX1-AX10 in `AWAM-ENGINE-BLUEPRINT-02NOV.md`. Waits for his yes on proposed FC45; no price change | new | after the founder letter it needs is GREEN |
 
+> **AWAM IS PARKED (founder 2 Nov 11:33): see `docs/claude/AWAM-PARKED-ORDER-02NOV.md`. Resume order: Basic, Business, Business Pro, Business Premium last.**
+
 ## AWAM lane (anexomail.com), follows each founder proof
 
 | Letter | Step | Status |

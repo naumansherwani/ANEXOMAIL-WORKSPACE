@@ -5,6 +5,8 @@ Docs only. No code, no price change, no new rule is locked by this file. Source 
 > **2 Nov 08:14: Personal packages are retired (founder). The awam gets only the Business ladder below.** See `PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md`.
 
 
+> **AWAM IS PARKED (founder 2 Nov 11:33): see `docs/claude/AWAM-PARKED-ORDER-02NOV.md`. Resume order: Basic, Business, Business Pro, Business Premium last.**
+
 ## 0a. Awam: written work and where it stands (founder 2 Nov 11:04 order; updated 11:35 with his pastes)
 | Phase | What | Technology | State |
 |---|---|---|---|
