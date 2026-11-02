@@ -430,3 +430,6 @@ Then sign in to the founder site; I look at the Ledger seal card in Chrome.
 ## Personal copy audit (2 Nov 08:50) — web only, Rust string changed (main.rs:338)
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -15`
 (the Rust chat-message string takes effect at the next Rust rebuild; no behaviour change)
+
+## E126 test accounts + Masood to Business (2 Nov 08:58) — one command, no pull needed (SQL only)
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E126_delete_two_test_accounts_masood_business CHECK_E126 | tail -25`

@@ -1401,3 +1401,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 2 Nov 09:10 E125 + CHECK_E125 + CHECK_PX0B written (local scratch PG tested, idempotent). Masood already plan pro, kind untouched on purpose. Test accounts NOT deleted yet (E126 after his yes). Dobara mat likho.
 - 2 Nov 08:50 Personal-package copy audit DONE: plan-surface.ts labels/copy (no more 'Personal Pro+/Premium/Basic' text), Panels/DecisionLedger/PromiseRecovery copy, main.rs:338 chat string; kernel.test.ts module list updated (G5c). Engine/gates/account_kind untouched. Do not redo.
 - 2 Nov 08:50 E125 GREEN on server (his paste: CHECK_E125 5/5, E65 OK) + pull.sh OK (602 same). Do not rerun. Test-account delete E126 waits for his haan.
+- 2 Nov 08:58 E126 written + tested on scratch PG (idempotent): deletes basic.test@ + alikhan@ (founder 08:54), Masood -> business kind, plan pro. Mail-server mailboxes of the two = separate step. Do not rewrite.

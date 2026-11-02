@@ -59,3 +59,4 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E124 | founder_anchor_* (providers, policy, jobs, hash-chained evidence + events) + 12 doors: account-free outside time anchors for signed checkpoints, RFC 3161 TSA + OpenTimestamps (G5c) | CHECK_E124 (5) | founder; local PG16 selftest OK 2 Nov, server pending |
 | CHECK_PX0 | `CHECK_PX0_PERSONAL_LIST.sql` read-only list of personal-kind accounts + Masood row (Personal removal step 0; no E number, changes nothing) | 2 Nov |
 | E125 | Personal packages retired: personal_polar_map emptied, 6 Personal price-book rows off/deleted, masoodsherwani kept on Pro, NO account deleted (CHECK_E125; CHECK_PX0B_TEST_FOOTPRINT shows what deleting the 2 test accounts would remove) | 2 Nov |
+| E126 | Two test accounts (basic.test@, alikhan@) deleted incl. owned orgs + blockers; masoodsherwani@ converted to business kind on plan pro, never deleted (founder 2 Nov 08:54) | CHECK_E126 (7) |
