@@ -2163,3 +2163,6 @@ Polar live-finance PLAN written (no code): docs/claude/FOUNDER-FINANCE-POLAR-LIV
 
 ## Checkpoint 3 Nov 04:50 PKT
 His order: letter order is never broken; finance (O) WAITS. Quality law written at the top of CLAUDE.md: super advanced code, SQL above super advanced. CORRECTION: G5b and G5c are already GREEN (context line 9/11); my earlier "G5b NAHI" was wrong (master row text stale, fixed in BLUEPRINT-ABC). Next founder letter = G5d (pin portability), then I2. Founder code ON HOLD until his "go". He wanted a summary BEFORE any code.
+
+## Checkpoint 3 Nov 05:20 PKT
+G5d started by his "go" (04:50). Design corrected (no witnesses: horizon = oldest checkpoint with >=2 TSAs or Bitcoin). Part 1 SQL E131 + CHECK_E131 written, local selftest OK, NOT on the server, NOT green. Next: his pull of E131 (sql-run.sh E131_founder_portable_verify CHECK_E131), then Part 2 Rust route, Part 3 TS/UI. Finance (O) is LAST in the order (his word). He wants an updated copy of the original blueprint in chat as we go, only GREEN written, Chrome look after writing green.

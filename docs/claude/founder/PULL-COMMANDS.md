@@ -476,3 +476,7 @@ Optional, only after he read the GEO1 plan: `git -C /opt/anexomail-web fetch -q 
 4. Caddy GEO1 apply: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:server/caddy/geoblock.sh) apply 2>&1 | tail -15`
 5. Mailboxes, PLAN first (read-only): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/mailbox-retire.sh) plan 2>&1 | tail -30`
 6. Web (landing notice): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -25`
+
+## E131 - G5d pin portability, SQL only (3 Nov 05:20) - one command, then paste the output
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E131_founder_portable_verify CHECK_E131 | tail -30`
+Expect: the E131 selftest line "OK", then CHECK_E131 with 5 x true, then the E65 sweep OK. Nothing else changes (additive).
