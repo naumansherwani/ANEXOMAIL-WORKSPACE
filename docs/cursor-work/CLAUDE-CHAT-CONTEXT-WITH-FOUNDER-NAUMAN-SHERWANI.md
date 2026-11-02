@@ -2160,3 +2160,6 @@ AWAM PARKED (his order 11:33). Resume order after the founder lane is complete: 
 
 ## Checkpoint 2 Nov 11:55 PKT
 Polar live-finance PLAN written (no code): docs/claude/FOUNDER-FINANCE-POLAR-LIVE-PLAN-02NOV.md. Existing polar-rust-payment already has webhook, WAL, reconcile, 5 subscription events. Waiting for his answers (4 questions in the file) and the handler-body paste (sed -n 890,990p).
+
+## Checkpoint 3 Nov 04:50 PKT
+His order: letter order is never broken; finance (O) WAITS. Quality law written at the top of CLAUDE.md: super advanced code, SQL above super advanced. CORRECTION: G5b and G5c are already GREEN (context line 9/11); my earlier "G5b NAHI" was wrong (master row text stale, fixed in BLUEPRINT-ABC). Next founder letter = G5d (pin portability), then I2. Founder code ON HOLD until his "go". He wanted a summary BEFORE any code.

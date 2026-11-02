@@ -2,6 +2,8 @@
 
 One letter per step, in build order. **GREEN** only where the proof exists (server output and/or the founder's Chrome). Old master-order numbers stay in `[brackets]` so nothing is duplicated. Source of truth for detail: `FOUNDER-MASTER-ORDER-28OCT.md`. The website says only what `tech-proof.py` shows PROVEN.
 
+> **STATUS CORRECTION (3 Nov 04:50): in row G, G5b is GREEN (2 Nov 06:58: E123 CHECK 5/5, CHECK_G5B_LIVE 4/4, founder-install 144 tests, my Chrome look) and G5c is GREEN (2 Nov 07:45: E124 CHECK 5/5, 160 tests, Chrome: Seal 3 time-anchored). The row text below is older. NEXT founder letter = G5d, then I2. Quality law: super advanced code, SQL above super advanced.**
+
 ## FOUNDER lane (founderworkspace.anexomail.com)
 
 | Letter | Step | Old # | Status |

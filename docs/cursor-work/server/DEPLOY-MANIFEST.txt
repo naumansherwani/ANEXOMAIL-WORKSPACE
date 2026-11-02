@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 2c6f005d446c4607
+docs/cursor-work/founder/founder-commands.md 08f0c4a9d0c5838d
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs bd14a1074691a67d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md f338f5cbd1ee95a4
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md f0c2b03a048d4bdc
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -947,7 +947,7 @@ founder-web/src/fonts/Inter-Medium.woff2 c8f84bf00cbd6136
 founder-web/src/fonts/Inter-Regular.woff2 21d73733fb1fbfe6
 founder-web/src/fonts/Inter-SemiBold.woff2 43443e801ec3cb75
 docs/cursor-work/server/rules-gate.py c15bad0a8571a019
-CLAUDE.md e4a3a5cfdb1ee809
+CLAUDE.md 5e6aff61742b5fcb
 docs/claude/FOUNDER-KILLER-FEATURES-28OCT.md 8f8bb489bc473a7c
 founder-web/src/cinema.css 312474c073e9860d
 docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md af209f4adf209b87
@@ -1065,7 +1065,7 @@ docs/cursor-work/sql/CHECK_E119.sql 8a79e357ded727d0
 src/components/app/CommandPalette.tsx 12a0fd1cf3105c1a
 src/lib/dashboard.ts 66e8a7d64fa8e599
 src/routes/app.admin.addresses.tsx cb8efe1f397d00f0
-docs/claude/BLUEPRINT-ABC-01NOV.md 5ace5c1d427b675e
+docs/claude/BLUEPRINT-ABC-01NOV.md c98fcda8a47d25d7
 public/kernel/anexo-kernel-0.9.0.wasm 38a1e8fa33d1c727
 docs/cursor-work/sql/E122_founder_seal_interval.sql be0edb2538f82051
 docs/cursor-work/sql/CHECK_E122.sql d10212a8dfda8472
