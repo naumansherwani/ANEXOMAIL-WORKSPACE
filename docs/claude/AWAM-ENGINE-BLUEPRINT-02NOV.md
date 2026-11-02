@@ -108,5 +108,21 @@ GREEN = his pasted server output. Nothing below is written twice; a phase points
 **Big (feature rows AX0-AX8, none built):** 9 rows. By his own rule ("awam ka pura nahi khol lena, founder ke baad") they stay CLOSED until he opens them, one row at a time, in order AX0, AX1 ... AX8.
 **Count:** 3 waiting on him + 4 small of mine = 7 items before the awam lane is quiet. 9 big rows are parked on purpose. Founder lane (G5d onward: I2, J3-J6, K-V, X1-X4) is ON HOLD and starts the moment he says go.
 
+## 2g. PENDING list (founder 2 Nov 10:56: "yeh sab kaam pending main dalo blueprint main"). One place, honest status, nothing hidden.
+| # | Item | Technology | State at 2 Nov 11:20 | What is needed |
+|---|---|---|---|---|
+| 1 | PX7a/b wsx: country mandatory + friendly organisation errors | Rust | written, pushed; NOT installed | his `MODULES=wsx` command |
+| 2 | PX8 passkey without username | Rust | his run at 10:56 ROLLED BACK safely: the proof account `basic.test@` was deleted in E126. Installer now picks a test account that exists, and the proof tests the username-less path | his `rust-passkey-install.sh` command again |
+| 3 | AX9b latency hook | Rust | his run at 10:56 stopped BEFORE build (a main.rs anchor I guessed was missing; nothing changed). Now ONE anchor (`.layer(cors);`, found), numbers on `127.0.0.1:3601/latency` | his `MODULES=latency` command again |
+| 4 | GEO1 apply (block AF / IL / KP at Caddy) | Caddy | plan GREEN; his words 10:56 = go | `geoblock.sh apply` |
+| 5 | Mail-server mailboxes of `basic.test@` and `alikhan@` | server | new `mailbox-retire.sh` (plan = read-only; apply MOVES folders, never deletes) | his `plan`, then `apply` |
+| 6 | PX7c: hide deleted organisations, `org_ensure_default` at sign-in, DNS TXT check, organisation settings screen | Rust + React | not started | my next phase |
+| 7 | `/wt/rpc` latency (WebTransport) | Rust | not measured | my next phase |
+| 8 | Onboarding + Masood Chrome look | browser | not looked at (login needed) | his own look or a logged-in tab |
+| 9 | Business Premium plan card + Polar product + 20,000 cap in the terms | React + Polar | PARKED until ALL packages exist (his 10:38) | later |
+| 10 | AX0-AX8 feature rows (bandwidth meter, activity chain, outside time, live, trust page, sealed agreements, devices, insider guard, poison pill / auditor pack) | mixed | closed on purpose | he opens them one at a time |
+| 11 | Founder lane G5d onward (I2, J3-J6, K-V, X1-X4) | Rust + WASM + React | ON HOLD | his "go" |
+Landing page shows a "Launching soon" notice at the very top (`LaunchBanner.tsx`, his 10:56 order) until he says remove it.
+
 ## 3. Not in this file
 Plan prices, plan caps, Polar products and the plan copy on `/plans` are **not touched** here. Putting any AX row onto a plan card is a separate order from the founder after the row is GREEN.

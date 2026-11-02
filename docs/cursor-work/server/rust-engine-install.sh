@@ -15,7 +15,7 @@
 #   security -> server/rust/security_core.rs + security_glue.rs (Security page: asli sessions/devices/logins + live TLS)  [pehle E39 SQL]
 #   evidence -> server/rust/evidence_core.rs + evidence_glue.rs (attach_core.rs saath) (appeal ke saboot: screenshots/PDF/docs — tokio stream upload, clamd, allowlist; appeal 20,000 characters; `appeal.device.open`)  [pehle E72 SQL; attach ke saath]
 #   dav    -> server/rust/dav_core.rs    + dav_glue.rs    (CalDAV C1 sirf padhna: /dav/*, app password procs + secret calendar link /dav/feed/<key>.ics; Caddy alag: caddy-caldav.sh)  [pehle E80 + E81 SQL + .env CALDAV_PEPPER]
-#   latency -> server/rust/latency_core.rs + latency_glue.rs (AX9b: p50/p95/p99 middleware, /metrics :3600)  [koi SQL nahi]
+#   latency -> server/rust/latency_core.rs + latency_glue.rs (AX9b: p50/p95/p99 middleware, numbers 127.0.0.1:3601/latency)  [koi SQL nahi]
 #   wtrpc  -> server/rust/wtrpc_core.rs + wtrpc_glue.rs (WebTransport `/wt/rpc`: WASM kernel ka EK transport, har proc wohi dispatcher se; koi proc nahi rakhta)  [koi SQL nahi]
 #   analytics -> server/rust/analytics_core.rs + analytics_glue.rs (Analytics Center: response debt, thread economics, deep work, leaks, promise SLA, forecast, team, founder overview)  [pehle E89 SQL]
 #   workx  -> server/rust/workx_core.rs + workx_glue.rs (Pro: work.tasks, work.promises, crm.overview + 27 Oct: work.task.create/update, work.followThrough, work.note(.save), calendar.outcome.post — Bun se Rust, Tokio async; gate Pro+)  [koi SQL nahi]
@@ -219,18 +219,12 @@ CFG={
               'wt_session: /wt/rpc ko wtrpc_glue ko do', 'wtrpc_glue::wants(request.path())')
            ]},
  # latency (AX9b, founder 2 Nov 2026): p50 / p95 / p99 of every /rpc/* and /file/* request — ONE axum middleware layer + std-only core. Rust only. Koi proc, koi SQL nahi.
- # Numbers localhost-only observability port :3600 /metrics par (`anexomail_latency_us{probe,quantile}`). Anchors main.rs mein na milen to build se PEHLE ruk jata hai (kuch nahi badalta).
+ # Numbers module khud localhost-only 127.0.0.1:3601/latency par deta hai (`anexomail_latency_us{probe,quantile}`). main.rs mein SIRF EK anchor (`.layer(cors);`); na mile to build se PEHLE ruk jata hai (kuch nahi badalta).
  "latency": {"public": False, "label": "latency", "procs": [],
            "late_replace": [
              ('        .layer(cors);\n',
               '        .layer(axum::middleware::from_fn(latency_glue::mw))\n        .layer(cors);\n',
-              'router: latency middleware cors se andar', 'latency_glue::mw'),
-             ('async fn observability_metrics() -> impl IntoResponse {\n',
-              'async fn observability_metrics() -> impl IntoResponse {\n    let lat = latency_glue::prometheus();\n',
-              'metrics: latency numbers tayyar', 'latency_glue::prometheus'),
-             ('anexomail_webtransport_live {webtransport_live}\n"',
-              'anexomail_webtransport_live {webtransport_live}\n{lat}"',
-              'metrics: latency numbers likho', '{lat}"')
+              'router: latency middleware cors se andar', 'latency_glue::mw')
            ]},
  # attach (G38): bheji jane wali mail ke attachments (stream upload, org-ke-andar SHA-256 dedup, clamd, quota). SQL E48 PEHLE.
  # Routes: POST /file/attach (upload), GET /file/attach/get?id= (download). Thread read ka `url` (jo server ka disk_path de deta tha) band + `stored` flag.
@@ -635,7 +629,7 @@ for m in $MODS; do
         *) echo "   -> calfile: jawab upar dekhein";;
       esac;;
     latency)
-      echo "   -> latency: middleware /rpc/* par laga. Numbers: curl -s http://127.0.0.1:3600/metrics | grep anexomail_latency  (kuch requests ke baad p50/p95/p99 aate hain)."
+      echo "   -> latency: middleware /rpc/* par laga. Numbers: curl -s http://127.0.0.1:3601/latency  (kuch requests ke baad p50/p95/p99 aate hain)."
       ;;
     wtrpc)
       echo "   -> wtrpc: WebTransport (udp/3443) par chalta hai — HTTP probe nahi. Asli test: browser kernel (Settings > About ya console: anexoKernel.rpcUp)."

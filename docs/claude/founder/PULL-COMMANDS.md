@@ -468,3 +468,11 @@ Optional, only after he read the GEO1 plan: `git -C /opt/anexomail-web fetch -q 
 2. Rust latency (middleware): `git -C /opt/anexomail-web fetch -q origin main && MODULES=latency bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh) 2>&1 | tail -25`
 3. Rust passkey (no username): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-passkey-install.sh) 2>&1 | tail -25`
 4. Web: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -25`
+
+## RETRY + GEO1 + mailboxes (2 Nov 11:20) - in this order, one technology each
+1. Rust latency (one anchor now): `git -C /opt/anexomail-web fetch -q origin main && MODULES=latency bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh) 2>&1 | tail -25`
+2. Rust wsx (country + friendly errors): `git -C /opt/anexomail-web fetch -q origin main && MODULES=wsx bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh) 2>&1 | tail -25`
+3. Rust passkey (proof account is picked automatically): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-passkey-install.sh) 2>&1 | tail -25`
+4. Caddy GEO1 apply: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:server/caddy/geoblock.sh) apply 2>&1 | tail -15`
+5. Mailboxes, PLAN first (read-only): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/mailbox-retire.sh) plan 2>&1 | tail -30`
+6. Web (landing notice): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -25`

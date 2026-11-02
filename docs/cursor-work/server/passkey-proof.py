@@ -88,6 +88,17 @@ try:
             check("naye token par Brain /api/auth/session 200", bc == 200, bc)
         c, d, e = rpc("auth.passkey.status", {}, auth=token)
         check("status: test account exempt", c == 200 and (d or {}).get("exempt") is True, (c, d))
+    # 5b usernameless (founder 2 Nov): empty e-mail -> challenge that belongs to nobody, empty allow-list; verify finds the account from the credential id
+    c, d, e = rpc("auth.passkey.options", {"email": ""})
+    chu = ((d or {}).get("publicKey") or {}).get("challenge")
+    allow_u = ((d or {}).get("publicKey") or {}).get("allowCredentials")
+    check("usernameless: options 200 + challenge + EMPTY allow-list", c == 200 and chu and allow_u == [], (c, e, allow_u))
+    c, d, e = rpc("auth.passkey.verify", assertion(chu, 2)) if chu else (0, None, "no challenge")
+    token2 = (d or {}).get("token")
+    check("usernameless: verify -> 200 + token (account found from the credential)", c == 200 and token2, (c, e))
+    if token2:
+        req("POST", SBU + "/auth/v1/logout?scope=local", None, {"apikey": SBK, "authorization": "Bearer " + token2})
+        sb("DELETE", "/rest/v1/account_sessions?token_hash=eq." + hashlib.sha256(token2.encode()).hexdigest())
     # 6 replay of the very same assertion
     c, _, e = rpc("auth.passkey.verify", good)
     check("replay: wohi assertion dobara -> 400", c == 400 and e == "passkey_challenge_expired", (c, e))

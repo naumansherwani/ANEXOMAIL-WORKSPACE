@@ -9,6 +9,7 @@
 #   tamper/replay/clone/ghalat origin/recovery) -> koi bhi FAIL => purani binary + src wapas. Proof ke baad test credential/challenge/session saaf.
 set -uo pipefail
 REPO="${REPO:-/opt/anexomail-web}"; TARGET="${TARGET:-/opt/anexomail-rust}"; RPC="${RPC:-http://127.0.0.1:3200}"; BRAIN="${BRAIN:-http://127.0.0.1:3100}"
+EMAIL_SET="${EMAIL:-}"
 EMAIL="${EMAIL:-basic.test@anexomail.com}"
 STAMP="$(date +%s)"; BIN="$TARGET/target/release/anexomail-rust"; LOG="/tmp/anexomail-rust-passkey-$STAMP.log"
 S="$TARGET/src/main.rs"; C="$TARGET/Cargo.toml"; L="$TARGET/Cargo.lock"
@@ -66,6 +67,13 @@ else
   rollback() { echo "!! $1"; exit 1; }
 fi
 
+if [ -z "${EMAIL_SET:-}" ]; then
+  # basic.test@ was deleted on 2 Nov (E126): pick the first test account that still exists (override: EMAIL=name@anexomail.com)
+  for cand in "$EMAIL" business.test@anexomail.com business_pro.test@anexomail.com bpro.test@anexomail.com; do
+    got="$(curl -s -m 8 -X POST "$SBU/rest/v1/rpc/auth_user_id_by_email" -H "apikey: $SBK" -H "authorization: Bearer $SBK" -H 'content-type: application/json' -d "{\"_email\":\"$cand\"}" 2>/dev/null)"
+    case "$got" in \"[0-9a-f]*-*) EMAIL="$cand"; break;; esac
+  done
+fi
 echo "== 6) ASLI SABOOT: software authenticator ($EMAIL) — poora passkey login Rust par"
 RPC="$RPC" BRAIN="$BRAIN" SBU="$SBU" SBK="$SBK" EMAIL="$EMAIL" python3 -I "$T/passkey-proof.py"; prc=$?
 unset SBK

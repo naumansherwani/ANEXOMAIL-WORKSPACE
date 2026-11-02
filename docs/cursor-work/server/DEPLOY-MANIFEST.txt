@@ -22,7 +22,7 @@ src/components/app/compose/ComposeStudio.tsx 582cc80b0e81ed6c
 src/components/site/AnexoMailField.tsx 4d0f9a34e273e888
 src/components/site/SiteNav.tsx 4b7533a4e09ff3a8
 src/components/site/PlanFeatureList.tsx 6419d9494509fbb0
-src/routes/index.tsx b661c7a75b3f6b7b
+src/routes/index.tsx ad83a198e68f0edd
 src/routes/plans.tsx 2079b272fdf41894
 src/routes/app.people.tsx 423eb4164a4dceb4
 src/routes/app.work.tsx 4235663f3f2b640a
@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 373cc86e31f90f5f
+docs/cursor-work/founder/founder-commands.md 9322a8a037e3008a
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -139,7 +139,7 @@ docs/cursor-work/TECH-MAP.md 2195ee73fe3fd483
 server/rust/export_core.rs 086ef9caf998828f
 server/rust/export_glue.rs e1aa78e116e2a353
 docs/cursor-work/sql/E44_account_export.sql 256fa217a12458e0
-docs/cursor-work/server/rust-engine-install.sh b092c78c2ae87eaa
+docs/cursor-work/server/rust-engine-install.sh 0317f37f4d0db4b3
 src/components/app/security/IntegrityGate.tsx 05dc58e611855298
 src/lib/account-export.ts 0f06184f8b7786c2
 docs/cursor-work/sql/E45_integrity_purge.sql 52b81aa0216ec1e7
@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md a1525cfac05e3071
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 94e2691033a8ce53
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs bd14a1074691a67d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md d4add6f2442ed78c
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 60df995fc3ad7afb
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -263,8 +263,8 @@ server/rust/passkey_core.rs 5aa795ff74733765
 server/rust/passkey_glue.rs 1062ec1f430b7f18
 src/lib/passkey-login.test.ts 0b0d0113dcfb2cff
 docs/cursor-work/server/passkey_patch.py 26ac57c951cd9d1f
-docs/cursor-work/server/passkey-proof.py 747096e2afc9560e
-docs/cursor-work/server/rust-passkey-install.sh 70124a09f7ab588f
+docs/cursor-work/server/passkey-proof.py 8f82a8623870efd6
+docs/cursor-work/server/rust-passkey-install.sh 04d5d4860c177142
 server/routes/auth-passkey.test.ts 9c5227558359a871
 docs/cursor-work/server/brain_passkey_harden.py 6a26723d89bacc63
 docs/cursor-work/server/brain-passkey-harden-install.sh b1b5af51f20048a3
@@ -914,7 +914,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md eb1ba2a7a3861722
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md e103615f4822e243
+docs/claude/founder/PULL-COMMANDS.md 9f1b39b3ded21e03
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 6f67741f87811209
@@ -1088,7 +1088,7 @@ server/rust/g5c_tsa_vectors.json fee828dd190a88cf
 founder-web/src/anchorgauge.ts 0a58f95d7333754c
 founder-web/src/anchorgauge.test.ts cb7a2111c15d3ca3
 founder-web/dist/assets/index-B3a1vE21.js baaef8e08fa0aafe
-docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md 15a06b669cb2da36
+docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md f67ce5ef8cf1bb7e
 docs/claude/FOUNDER-EXTRA-ADVANCED-02NOV.md 5deda874fa1f074d
 docs/claude/PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md b3fde0a60691a0d1
 docs/cursor-work/sql/CHECK_PX0_PERSONAL_LIST.sql c0c2c7ab77b1c5c3
@@ -1139,4 +1139,6 @@ src/routes/app.org.policies.tsx 63e17d20e18afd96
 src/routes/app.org.security.tsx 9236dca400b4eb65
 src/routes/app.perf.search.tsx 2e8edefb08f8ba8d
 src/routes/app.security.proof.tsx 72d28e0a4879ff06
-server/rust/latency_glue.rs b3dd67a7d11093fc
+server/rust/latency_glue.rs fbeed337152628d6
+docs/cursor-work/server/mailbox-retire.sh 2185de7a12a7d4f4
+src/components/site/LaunchBanner.tsx 645a81c0b2caecd3

@@ -17,6 +17,7 @@ import {
   Users,
 } from "lucide-react";
 
+import { LaunchBanner } from "@/components/site/LaunchBanner";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Reveal, EASE } from "@/components/site/Reveal";
@@ -173,6 +174,7 @@ function Index() {
   const [cycle, setCycle] = useState<BillingCycle>("monthly");
   return (
     <div id="top" className="min-h-screen bg-background">
+      <LaunchBanner />
       <SiteNav />
 
       <main>
