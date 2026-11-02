@@ -9,6 +9,11 @@
 --      SQL cannot check Ed25519: the Rust door verifies the signature before it calls us, and the browser kernel verifies it again. SQL guarantees the BODY is the seal's.
 --   3) doors (service_role only): founder_audit_log_key_register, founder_audit_signed_cp_add, founder_audit_signed_cp_pending, founder_audit_signed_cp_get, founder_audit_signed_pulse.
 --   4) own selftest (rolls back).
+--   ADVANCED (founder 06:24 "super advanced"): 5) ONE note judge (`_fm_signedcp_judge`) used by the insert trigger AND by the re-checker, so they can never disagree;
+--   6) `founder_audit_signed_verify(n)` re-checks the last n signed notes against the LIVE ledger (re-derives the root from the audit rows, key window, shape);
+--   7) signing-lag policy + level in the pulse (signer dead / key missing is a visible alarm, like the G4 sealer alarm); 8) key rotation chain (prev_id);
+--   9) `founder_audit_log_vkey()` = the public key in the standard `name+hash+base64` verifier format (what Go's note.NewVerifier and Sigsum read), checked against the Go oracle;
+--   10) `founder_audit_signed_cp_latest_note()` = the newest note as plain text, ready to publish as the log's checkpoint.
 -- A signed note is NOT an audit entry (would create a new seal, which needs a new note, ...). The key registration IS audited ('audit.logkey').
 
 -- 1) keys -----------------------------------------------------------------------------------------------------------------------
@@ -24,6 +29,7 @@ do $$ begin
     retired_ms  bigint,
     constraint founder_audit_log_keys_retired check ((status = 'retired') = (retired_ms is not null))
   );
+  alter table public.founder_audit_log_keys add column if not exists prev_id bigint;   -- rotation chain: the key this one replaced (null for the first)
   create unique index if not exists founder_audit_log_keys_one_active on public.founder_audit_log_keys ((true)) where status = 'active';
   create unique index if not exists founder_audit_log_keys_name_id on public.founder_audit_log_keys (name, key_id_hex);
   alter table public.founder_audit_log_keys enable row level security;
@@ -37,7 +43,7 @@ begin
   if tg_op = 'DELETE' or tg_op = 'TRUNCATE' then raise exception 'founder_audit_log_keys: keys are never deleted' using errcode = '42501'; end if;
   if tg_op = 'UPDATE' then
     if not (old.status = 'active' and new.status = 'retired' and new.retired_ms is not null and new.retired_ms >= old.created_ms
-            and new.id = old.id and new.name = old.name and new.pub_hex = old.pub_hex and new.key_id_hex = old.key_id_hex and new.created_ms = old.created_ms) then
+            and new.id = old.id and new.prev_id is not distinct from old.prev_id and new.name = old.name and new.pub_hex = old.pub_hex and new.key_id_hex = old.key_id_hex and new.created_ms = old.created_ms) then
       raise exception 'founder_audit_log_keys: the only allowed change is active -> retired' using errcode = '42501';
     end if;
   end if;
@@ -75,24 +81,37 @@ do $$ begin
   revoke update, delete, truncate, references, trigger on public.founder_audit_signed_checkpoints from service_role;
 end $$;
 
+-- ONE judge for "is this note exactly the signed checkpoint of this seal under this key?". Returns the problem in plain words, or null when it is fine.
+-- Used by the insert trigger (refuse bad notes) AND by founder_audit_signed_verify (re-check what is stored). SQL cannot check Ed25519: Rust did before inserting, the kernel does in the browser.
+create or replace function public._fm_signedcp_judge(p_note text, p_name text, p_key_id_hex text, p_size bigint, p_root text) returns text
+language plpgsql immutable set search_path = pg_catalog, public, extensions as $$
+declare v_body text; v_sig text; v_b64 text; v_raw bytea;
+begin
+  if p_note is null or length(p_note) > 4096 then return 'note missing or too long'; end if;
+  if p_note ~ '[\x01-\x09\x0b-\x1f\x7f]' then return 'control character in the note'; end if;
+  v_body := p_name || E'\n' || p_size::text || E'\n' || encode(decode(p_root, 'hex'), 'base64') || E'\n';
+  if left(p_note, length(v_body) + 1) <> v_body || E'\n' then return 'the note body is not exactly the seal''s checkpoint body'; end if;
+  v_sig := substr(p_note, length(v_body) + 2);
+  if v_sig !~ (E'^— ' || replace(p_name, '.', '\.') || ' [A-Za-z0-9+/]{91}=\n$') then return 'the signature block is not exactly one line "— <key name> <base64 of 68 bytes>"'; end if;
+  v_b64 := split_part(split_part(v_sig, ' ', 3), E'\n', 1);
+  v_raw := decode(v_b64, 'base64');
+  if length(v_raw) <> 68 then return 'the signature block is not 68 bytes (4 key id + 64 Ed25519)'; end if;
+  if replace(encode(v_raw, 'base64'), E'\n', '') <> v_b64 then return 'the signature is not canonical base64'; end if;
+  if substr(encode(v_raw, 'hex'), 1, 8) <> p_key_id_hex then return 'the signature carries another key id'; end if;
+  return null;
+end $$;
+
 create or replace function public._fm_signedcp_guard() returns trigger language plpgsql as $$
-declare v_cp public.founder_audit_checkpoints%rowtype; v_key public.founder_audit_log_keys%rowtype; v_body text; v_sig text;
+declare v_cp public.founder_audit_checkpoints%rowtype; v_key public.founder_audit_log_keys%rowtype; v_bad text;
 begin
   if tg_op <> 'INSERT' then raise exception 'founder_audit_signed_checkpoints is append-only (% blocked)', tg_op using errcode = '42501'; end if;
   select * into v_cp from public.founder_audit_checkpoints where id = new.cp_id;
   if not found then raise exception 'E123: no such seal' using errcode = '23503'; end if;
   select * into v_key from public.founder_audit_log_keys where id = new.key_id;
   if not found or v_key.status <> 'active' then raise exception 'E123: the signing key is unknown or retired' using errcode = '22023'; end if;
-  -- the body is DERIVED from the seal, never taken from the caller
-  v_body := v_key.name || E'\n' || v_cp.upto_seq::text || E'\n' || encode(decode(v_cp.root, 'hex'), 'base64') || E'\n';
   if new.origin <> v_key.name or new.size <> v_cp.upto_seq or new.root <> v_cp.root then raise exception 'E123: origin/size/root differ from the seal' using errcode = '22023'; end if;
-  if left(new.note, length(v_body) + 1) <> v_body || E'\n' then raise exception 'E123: the note body is not exactly the seal''s checkpoint body' using errcode = '22023'; end if;
-  v_sig := substr(new.note, length(v_body) + 2);
-  if v_sig !~ (E'^— ' || replace(v_key.name, '.', '\.') || ' [A-Za-z0-9+/]{91}=\n') then
-    raise exception 'E123: the signature line is not "— <key name> <base64 of 68 bytes>"' using errcode = '22023';
-  end if;
-  -- the first 4 raw bytes of the signature line must be this key's id (what other tools use to pick the key)
-  if substr(encode(decode(split_part(split_part(v_sig, ' ', 3), E'\n', 1), 'base64'), 'hex'), 1, 8) <> v_key.key_id_hex then raise exception 'E123: the signature carries another key id' using errcode = '22023'; end if;
+  v_bad := public._fm_signedcp_judge(new.note, v_key.name, v_key.key_id_hex, v_cp.upto_seq, v_cp.root);
+  if v_bad is not null then raise exception 'E123: %', v_bad using errcode = '22023'; end if;
   return new;
 end $$;
 drop trigger if exists founder_audit_signed_cp_guard on public.founder_audit_signed_checkpoints;
@@ -114,9 +133,9 @@ begin
   end if;
   if found then update public.founder_audit_log_keys set status = 'retired', retired_ms = greatest(v_ms, v_act.created_ms) where id = v_act.id; v_rotated := true; end if;
   select coalesce(max(id), 0) + 1 into v_id from public.founder_audit_log_keys;
-  insert into public.founder_audit_log_keys (id, name, pub_hex, key_id_hex, status, created_ms) values (v_id, p_name, p_pub_hex, p_key_id_hex, 'active', v_ms);
+  insert into public.founder_audit_log_keys (id, name, pub_hex, key_id_hex, status, created_ms, prev_id) values (v_id, p_name, p_pub_hex, p_key_id_hex, 'active', v_ms, case when v_rotated then v_act.id end);
   perform public.founder_audit_append(p_actor, 'audit.logkey', 'logkey:' || v_id, case when v_rotated then 'audit-log signing key rotated' else 'audit-log signing key registered' end,
-                                      jsonb_build_object('id', v_id, 'name', p_name, 'pub_hex', p_pub_hex, 'key_id_hex', p_key_id_hex, 'rotated', v_rotated));
+                                      jsonb_build_object('id', v_id, 'name', p_name, 'pub_hex', p_pub_hex, 'key_id_hex', p_key_id_hex, 'rotated', v_rotated, 'prev_id', case when v_rotated then v_act.id end));
   return jsonb_build_object('registered', true, 'rotated', v_rotated, 'id', v_id, 'name', p_name, 'pub_hex', p_pub_hex, 'key_id_hex', p_key_id_hex);
 end $$;
 
@@ -154,14 +173,79 @@ begin
     'keys', (select coalesce(jsonb_agg(jsonb_build_object('id', id, 'name', name, 'pub_hex', pub_hex, 'key_id_hex', key_id_hex, 'status', status) order by id), '[]'::jsonb) from public.founder_audit_log_keys));
 end $$;
 
+-- 3b) signing-lag policy: how long a seal may stay without a signed note before the gauge warns / fails (singleton row, changed only by editing this file or an audited door later).
+do $$ begin
+  perform pg_advisory_xact_lock(hashtextextended('founder_signedcp:ddl', 0));
+  create table if not exists public.founder_audit_sign_policy (
+    id boolean primary key default true check (id),
+    warn_secs integer not null default 300,
+    fail_secs integer not null default 1800,
+    constraint founder_audit_sign_policy_order check (warn_secs between 60 and 86400 and fail_secs > warn_secs and fail_secs <= 604800)
+  );
+  insert into public.founder_audit_sign_policy (id) values (true) on conflict do nothing;
+  alter table public.founder_audit_sign_policy enable row level security;
+  revoke all on public.founder_audit_sign_policy from public, anon, authenticated;
+  grant select on public.founder_audit_sign_policy to service_role;
+end $$;
+
+-- the pulse (replaces the first draft): + oldest unsigned age, level (ok | warn | fail | off), policy
 create or replace function public.founder_audit_signed_pulse() returns jsonb
-language sql stable security definer set search_path = pg_catalog, public set statement_timeout = '5s' as $$
-  select jsonb_build_object(
+language plpgsql stable security definer set search_path = pg_catalog, public set statement_timeout = '5s' as $$
+declare v_now bigint := (extract(epoch from clock_timestamp()) * 1000)::bigint; v_pol public.founder_audit_sign_policy%rowtype; v_key public.founder_audit_log_keys%rowtype;
+        v_unsigned bigint; v_oldest bigint; v_age bigint; v_level text := 'ok'; v_why text := 'every seal has a signed note';
+begin
+  select * into v_pol from public.founder_audit_sign_policy where id;
+  select * into v_key from public.founder_audit_log_keys where status = 'active';
+  select count(*), min(cp.created_ms) into v_unsigned, v_oldest from public.founder_audit_checkpoints cp where not exists (select 1 from public.founder_audit_signed_checkpoints s where s.cp_id = cp.id);
+  v_age := case when v_oldest is null then 0 else greatest(0, (v_now - v_oldest) / 1000) end;
+  if v_key.id is null then
+    if v_unsigned > 0 then v_level := case when v_age >= v_pol.fail_secs then 'fail' when v_age >= v_pol.warn_secs then 'warn' else 'off' end; v_why := 'no audit-log key is registered yet'; else v_level := 'off'; v_why := 'no audit-log key registered and nothing to sign'; end if;
+  elsif v_unsigned > 0 then
+    if v_age >= v_pol.fail_secs then v_level := 'fail'; v_why := 'seals have waited for a signature past the fail limit';
+    elsif v_age >= v_pol.warn_secs then v_level := 'warn'; v_why := 'seals are waiting for a signature'; end if;
+  end if;
+  return jsonb_build_object(
     'latest_seal', (select coalesce(max(id), 0) from public.founder_audit_checkpoints),
     'latest_signed', (select coalesce(max(cp_id), 0) from public.founder_audit_signed_checkpoints),
-    'unsigned', (select count(*) from public.founder_audit_checkpoints cp where not exists (select 1 from public.founder_audit_signed_checkpoints s where s.cp_id = cp.id)),
-    'active_key', (select jsonb_build_object('id', id, 'name', name, 'pub_hex', pub_hex, 'key_id_hex', key_id_hex) from public.founder_audit_log_keys where status = 'active'),
-    'keys', (select count(*) from public.founder_audit_log_keys))
+    'signed', (select count(*) from public.founder_audit_signed_checkpoints),
+    'unsigned', v_unsigned, 'oldest_unsigned_age_s', v_age, 'level', v_level, 'why', v_why,
+    'policy', jsonb_build_object('warn_secs', v_pol.warn_secs, 'fail_secs', v_pol.fail_secs),
+    'active_key', case when v_key.id is null then null else jsonb_build_object('id', v_key.id, 'name', v_key.name, 'pub_hex', v_key.pub_hex, 'key_id_hex', v_key.key_id_hex, 'prev_id', v_key.prev_id) end,
+    'keys', (select count(*) from public.founder_audit_log_keys), 'now_ms', v_now);
+end $$;
+
+-- re-check what is STORED against the LIVE ledger: the last n signed notes. For each: shape (same judge as the trigger), the key window, and the root RE-DERIVED from the audit rows.
+-- (The Ed25519 signature itself is re-checked in the browser kernel; SQL cannot.) Returns {checked, ok, problems:[{cp_id, problem}]}.
+create or replace function public.founder_audit_signed_verify(p_last integer default 5) returns jsonb
+language plpgsql stable security definer set search_path = pg_catalog, public, extensions set statement_timeout = '30s' as $$
+declare r record; v_bad text; v_probs jsonb := '[]'::jsonb; v_n integer := 0; v_root text;
+begin
+  for r in select s.*, k.name as k_name, k.key_id_hex, k.created_ms as k_created, k.retired_ms as k_retired, c.upto_seq as c_size, c.root as c_root
+           from public.founder_audit_signed_checkpoints s join public.founder_audit_log_keys k on k.id = s.key_id join public.founder_audit_checkpoints c on c.id = s.cp_id
+           order by s.cp_id desc limit greatest(1, least(coalesce(p_last, 5), 100)) loop
+    v_n := v_n + 1;
+    v_bad := public._fm_signedcp_judge(r.note, r.k_name, r.key_id_hex, r.c_size, r.c_root);
+    if v_bad is null and (r.origin <> r.k_name or r.size <> r.c_size or r.root <> r.c_root) then v_bad := 'stored origin/size/root differ from the seal'; end if;
+    if v_bad is null and (r.signed_ms < r.k_created or (r.k_retired is not null and r.signed_ms > r.k_retired)) then v_bad := 'signed outside the window in which its key was active'; end if;
+    if v_bad is null then
+      v_root := encode(public._fm_root_of(public._fm_leaves(r.c_size)), 'hex');
+      if v_root <> r.c_root then v_bad := 'the audit rows no longer produce the signed root (the ledger was changed after signing)'; end if;
+    end if;
+    if v_bad is not null then v_probs := v_probs || jsonb_build_array(jsonb_build_object('cp_id', r.cp_id, 'problem', v_bad)); end if;
+  end loop;
+  return jsonb_build_object('checked', v_n, 'ok', jsonb_array_length(v_probs) = 0, 'problems', v_probs);
+end $$;
+
+-- the active public key in the standard verifier format `name+<8 hex key id>+base64(0x01 || pub)` (Go note.NewVerifier, Sigsum, Trillian read this); null when no key
+create or replace function public.founder_audit_log_vkey() returns text
+language sql stable security definer set search_path = pg_catalog, public, extensions as $$
+  select name || '+' || key_id_hex || '+' || replace(encode('\x01'::bytea || decode(pub_hex, 'hex'), 'base64'), E'\n', '') from public.founder_audit_log_keys where status = 'active'
+$$;
+
+-- the newest signed note as plain text (exactly the bytes to publish as the log's latest checkpoint), null if none
+create or replace function public.founder_audit_signed_cp_latest_note() returns text
+language sql stable security definer set search_path = pg_catalog, public as $$
+  select note from public.founder_audit_signed_checkpoints order by cp_id desc limit 1
 $$;
 
 -- 4) selftest ------------------------------------------------------------------------------------------------------------------
@@ -214,9 +298,39 @@ begin
     j := public.founder_audit_signed_pulse();
     if (j -> 'active_key' ->> 'name') <> v_name or (j ->> 'latest_signed')::bigint <> (v_cp ->> 'cp_id')::bigint then raise exception 'pulse is wrong: %', j; end if;
     r := r || 'get + pulse OK; ';
+    -- ADVANCED checks: judge, verify, vkey (against Go's own output), pulse levels, latest note
+    if public._fm_signedcp_judge(v_note, v_name, v_kid, (v_cp ->> 'size')::bigint, v_cp ->> 'root') is not null then raise exception 'the judge refused a correct note'; end if;
+    if public._fm_signedcp_judge(v_note || 'x', v_name, v_kid, (v_cp ->> 'size')::bigint, v_cp ->> 'root') is null then raise exception 'the judge accepted trailing bytes'; end if;
+    if public._fm_signedcp_judge(replace(v_note, E'\n—', E'\n\n—'), v_name, v_kid, (v_cp ->> 'size')::bigint, v_cp ->> 'root') is null then raise exception 'the judge accepted an extra blank line'; end if;
+    if public._fm_signedcp_judge(v_note || v_sigline, v_name, v_kid, (v_cp ->> 'size')::bigint, v_cp ->> 'root') is null then raise exception 'the judge accepted two signature lines'; end if;
+    if public._fm_signedcp_judge(replace(v_note, v_name, v_name || chr(9)), v_name, v_kid, (v_cp ->> 'size')::bigint, v_cp ->> 'root') is null then raise exception 'the judge accepted a tab'; end if;
+    if public._fm_signedcp_judge(v_note, v_name, 'ffffffff', (v_cp ->> 'size')::bigint, v_cp ->> 'root') is null then raise exception 'the judge accepted another key id'; end if;
+    if public._fm_signedcp_judge(v_note, v_name, v_kid, (v_cp ->> 'size')::bigint + 1, v_cp ->> 'root') is null then raise exception 'the judge accepted another size'; end if;
+    j := public.founder_audit_signed_verify(5);
+    if not (j ->> 'ok')::boolean or (j ->> 'checked')::int < 1 then raise exception 'verify failed on a good ledger: %', j; end if;
+    -- the vkey formula equals the one Go's note.NewVerifier-compatible output has for the published vector key 0 (Go: NewEd25519VerifierKey, committed in g5b_vectors.json)
+    if 'founderworkspace.anexomail.com/audit-log' || '+' || 'b2e17a58' || '+' || replace(encode('\x01'::bytea || decode('a2622df8bfb35ab556cfb2993bc03585b34484ec894dab29926312c149b8a783', 'hex'), 'base64'), E'\n', '')
+       <> 'founderworkspace.anexomail.com/audit-log+b2e17a58+AaJiLfi/s1q1Vs+ymTvANYWzRITsiU2rKZJjEsFJuKeD' then raise exception 'the vkey format differs from Go'; end if;
+    if public.founder_audit_log_vkey() <> v_name || '+' || v_kid || '+' || replace(encode('\x01'::bytea || decode(v_pub, 'hex'), 'base64'), E'\n', '') then raise exception 'founder_audit_log_vkey is wrong'; end if;
+    if public.founder_audit_signed_cp_latest_note() <> v_note then raise exception 'latest note is wrong'; end if;
+    -- pulse levels: a fresh seal is "ok"/pending, an old unsigned seal warns then fails (clock moved by editing the seal time inside this rolled-back block is not possible: seals are immutable, so the policy is tightened instead)
+    perform public.founder_audit_append(v_uid, 'e123.selftest', 'row-1', 'selftest entry for a second seal', '{}'::jsonb);
+    perform public.founder_audit_checkpoint(v_uid, 'selftest second seal left unsigned');
+    j := public.founder_audit_signed_pulse();
+    if (j ->> 'unsigned')::int < 1 or j ->> 'level' <> 'ok' then raise exception 'a fresh unsigned seal must be ok/pending: %', j; end if;
+    perform pg_sleep(1.2);   -- policy minimum is 60 s, so test the levels by lowering the limits through the table (rolled back)
+    alter table public.founder_audit_sign_policy drop constraint founder_audit_sign_policy_order;
+    update public.founder_audit_sign_policy set warn_secs = 0, fail_secs = 1;
+    j := public.founder_audit_signed_pulse();
+    if j ->> 'level' <> 'fail' then raise exception 'an unsigned seal past the fail limit must be fail: %', j; end if;
+    update public.founder_audit_sign_policy set warn_secs = 0, fail_secs = 100000;
+    j := public.founder_audit_signed_pulse();
+    if j ->> 'level' <> 'warn' then raise exception 'an unsigned seal past the warn limit must be warn: %', j; end if;
+    r := r || 'judge + verify + vkey(Go) + latest-note + pulse levels OK; ';
     -- rotation: a different key retires the first one, and the first one's note stays readable
     j := public.founder_audit_log_key_register(v_uid, v_name, v_pub2, v_kid2);
     if not (j ->> 'rotated')::boolean or (select count(*) from public.founder_audit_log_keys where status = 'active') <> 1 or (select status from public.founder_audit_log_keys where key_id_hex = v_kid and name = v_name) <> 'retired' then raise exception 'rotation failed: %', j; end if;
+    if (select prev_id from public.founder_audit_log_keys where status = 'active') is distinct from (select id from public.founder_audit_log_keys where key_id_hex = v_kid and name = v_name and status = 'retired') then raise exception 'the rotation chain (prev_id) is not linked'; end if;
     if public.founder_audit_signed_cp_get((v_cp ->> 'cp_id')::bigint) ->> 'note' <> v_note then raise exception 'rotation lost the old note'; end if;
     r := r || 'rotation OK; ';
     raise exception 'ROLLBACK_SELFTEST';
@@ -230,7 +344,7 @@ end $$;
 
 do $$ declare f text; begin
   foreach f in array array['public._fm_logkey_guard()', 'public._fm_signedcp_guard()', 'public.founder_audit_log_key_register(uuid,text,text,text)', 'public.founder_audit_signed_cp_pending(integer)',
-    'public.founder_audit_signed_cp_add(bigint,bigint,text)', 'public.founder_audit_signed_cp_get(bigint)', 'public.founder_audit_signed_pulse()', 'public.founder_audit_e123_selftest()'] loop
+    'public.founder_audit_signed_cp_add(bigint,bigint,text)', 'public.founder_audit_signed_cp_get(bigint)', 'public.founder_audit_signed_pulse()', 'public._fm_signedcp_judge(text,text,text,bigint,text)', 'public.founder_audit_signed_verify(integer)', 'public.founder_audit_log_vkey()', 'public.founder_audit_signed_cp_latest_note()', 'public.founder_audit_e123_selftest()'] loop
     execute format('revoke all on function %s from public, anon, authenticated', f);
     execute format('grant execute on function %s to service_role', f);
   end loop;

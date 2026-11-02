@@ -4,25 +4,29 @@
    "name": "founderworkspace.anexomail.com/audit-log",
    "seed_hex": "8c2366e0091dc0603d356fe2dea3eb39cb0a9e5a596e25c9696e652147eb33f5",
    "pub_hex": "a2622df8bfb35ab556cfb2993bc03585b34484ec894dab29926312c149b8a783",
-   "key_id_hex": "b2e17a58"
+   "key_id_hex": "b2e17a58",
+   "vkey": "founderworkspace.anexomail.com/audit-log+b2e17a58+AaJiLfi/s1q1Vs+ymTvANYWzRITsiU2rKZJjEsFJuKeD"
   },
   {
    "name": "founderworkspace.anexomail.com/audit-log-1",
    "seed_hex": "2c63c3585d4e5d2ef92adb4b6c1143ddf043773e632f4d287982f345b93da594",
    "pub_hex": "81d1174b7f8d3f70c98fb68ddeb9087caf3facc78cd17bb78beac3283599f392",
-   "key_id_hex": "d485ca48"
+   "key_id_hex": "d485ca48",
+   "vkey": "founderworkspace.anexomail.com/audit-log-1+d485ca48+AYHRF0t/jT9wyY+2jd65CHyvP6zHjNF7t4vqwyg1mfOS"
   },
   {
    "name": "founderworkspace.anexomail.com/audit-log-2",
    "seed_hex": "fca28c6b771dddceba8c4e29590e8dc51b44082e3ad8ee5e7eab35c7d7f3103c",
    "pub_hex": "859a9a9101d770573b7d909d1607e947133f01a8e25325513d0989bbc490c8ae",
-   "key_id_hex": "ae71befb"
+   "key_id_hex": "ae71befb",
+   "vkey": "founderworkspace.anexomail.com/audit-log-2+ae71befb+AYWampEB13BXO32QnRYH6UcTPwGo4lMlUT0JibvEkMiu"
   },
   {
    "name": "founderworkspace.anexomail.com/audit-log-3",
    "seed_hex": "31e70a02368bbc57e07ff2f59724533ef5c561004bf6e8dfd5a4bd1ef164b874",
    "pub_hex": "5d4b3ec601dbbc4270794acbf0f9158b767fbd416dff92c18f2a5cce5e33c72e",
-   "key_id_hex": "1ed8cfc3"
+   "key_id_hex": "1ed8cfc3",
+   "vkey": "founderworkspace.anexomail.com/audit-log-3+1ed8cfc3+AV1LPsYB27xCcHlKy/D5FYt2f71Bbf+SwY8qXM5eM8cu"
   }
  ],
  "mutations": [

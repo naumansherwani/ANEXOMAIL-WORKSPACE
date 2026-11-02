@@ -2228,3 +2228,6 @@ Status: WIP, not green. Written: checkpoint_core.rs, signedcp.rs, E123 SQL, kern
 
 ## 2 Nov 06:21 — "jo codes likhe hain un ki pull command do, jo baki hai next phase main, repo + chat context update"
 Done: pull commands (E123 SQL -> founder-install -> awam pull.sh) in PULL-COMMANDS.md; remaining = G5b part 2 (next phase). Status: not green until his paste + Chrome.
+
+## 2 Nov 06:26 — "sab pull commands ek saath diya kero"
+Done: all three pull commands given together (E123 SQL, founder-install, awam pull.sh).

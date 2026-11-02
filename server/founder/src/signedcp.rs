@@ -68,9 +68,10 @@ pub async fn sign_pending(sb: &crate::data::Sb) -> Option<usize> {
 
 /// What the browser asks for: the newest signed note + the key list + the pulse. The kernel verifies; this is only delivery.
 pub async fn view(sb: &crate::data::Sb) -> Value {
-    let (g, p) = tokio::join!(sb.rpc("founder_audit_signed_cp_get", json!({})), sb.rpc("founder_audit_signed_pulse", json!({})));
+    let (g, p, v, vk) = tokio::join!(sb.rpc("founder_audit_signed_cp_get", json!({})), sb.rpc("founder_audit_signed_pulse", json!({})),
+        sb.rpc("founder_audit_signed_verify", json!({"p_last": 3})), sb.rpc("founder_audit_log_vkey", json!({})));
     match (g, p) {
-        (Some(g), Some(p)) if g.is_object() => json!({"connected": true, "signing": key().is_some(), "signed": g, "pulse": p}),
+        (Some(g), Some(p)) if g.is_object() => json!({"connected": true, "signing": key().is_some(), "signed": g, "pulse": p, "db_recheck": v, "vkey": vk}),
         _ => json!({"connected": false, "signing": key().is_some(), "reason": "Run the E123 SQL step (sql-run.sh) once."}),
     }
 }

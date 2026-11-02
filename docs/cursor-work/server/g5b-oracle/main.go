@@ -22,6 +22,7 @@ type key struct {
 	Seed   string `json:"seed_hex"`
 	Pub    string `json:"pub_hex"`
 	ID     string `json:"key_id_hex"`
+	VKey   string `json:"vkey"`
 	skey   string
 	vkey   string
 }
@@ -57,7 +58,7 @@ func main() {
 		parts := strings.SplitN(vkey, "+", 3)
 		hash := parts[1]
 		skey := fmt.Sprintf("PRIVATE+KEY+%s+%s+%s", name, hash, base64.StdEncoding.EncodeToString(append([]byte{1}, seed[:]...)))
-		keys = append(keys, key{Name: name, Seed: hex.EncodeToString(seed[:]), Pub: hex.EncodeToString(pub), ID: hash, skey: skey, vkey: vkey})
+		keys = append(keys, key{Name: name, Seed: hex.EncodeToString(seed[:]), Pub: hex.EncodeToString(pub), ID: hash, VKey: vkey, skey: skey, vkey: vkey})
 	}
 	sizes := []uint64{0, 1, 2, 3, 7, 29, 31, 50, 1000, 4294967296, 18446744073709551615}
 	var vecs []vec

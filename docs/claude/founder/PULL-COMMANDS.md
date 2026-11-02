@@ -384,7 +384,7 @@ Isme 134 tests passed + "OK - founder service zinda". Awam pull ki zaroorat nahi
 2) Rust+SPA (Endpoints card hata, naya build): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -25`
 
 ## G5b part 1 (2 Nov 06:30) — signed checkpoints: SQL + Rust + kernel 0.8.0. Run IN THIS ORDER, one at a time, paste each output.
-1) SQL (technology: SQL). Needs E107+E120+E122. Local PG16: selftest OK, CHECK 4/4, E107 selftest still OK:
+1) SQL (technology: SQL). Needs E107+E120+E122. Local PG16: selftest OK, CHECK 5/5 (advanced E123: one judge, live re-verify, vkey checked against Go, signing-lag alarm, rotation chain), E107 selftest still OK:
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E123_founder_signed_checkpoints CHECK_E123 2>&1 | grep -v "^$" | head -14`
 2) Rust founder + new audit-log key file (technology: Rust). Do this AFTER step 1 is pasted:
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`

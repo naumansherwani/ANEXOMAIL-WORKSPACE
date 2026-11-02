@@ -55,4 +55,4 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E108 | founder_settings (+history, RPC founder_setting_set/get) — Settings S1 + profile photo, separate from awam account_profiles | CHECK_E108 (6) | founder; sandbox-proven 28 Oct 12:50, server pending |
 | E120 | founder_audit_verify_runs + policy knobs + pulse with checker / full_check / sealer_stalled / cp_hash / now_ms (G4 gauge hardening) | CHECK_E120 (4) | founder; sandbox-proven 2 Nov, server pending |
 | E122 | founder_seal_interval | seal every 20 entries or 10 min, no seal loop, stall on same due (G5a live proof) | CHECK_E122 (2) |
-| E123 | founder_audit_log_keys + founder_audit_signed_checkpoints + 5 doors: C2SP signed checkpoint per seal (G5b); body derived from the seal, Ed25519 checked by Rust + kernel | CHECK_E123 (4) | founder; local PG16 selftest OK 2 Nov, server pending |
+| E123 | founder_audit_log_keys + founder_audit_signed_checkpoints + 5 doors: C2SP signed checkpoint per seal (G5b); body derived from the seal, Ed25519 checked by Rust + kernel | CHECK_E123 (5) | founder; local PG16 selftest OK 2 Nov, server pending |

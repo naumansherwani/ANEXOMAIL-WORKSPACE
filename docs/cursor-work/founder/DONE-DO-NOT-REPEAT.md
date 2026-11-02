@@ -743,3 +743,4 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 
 - 2 Nov 06:20 G5b WIP (not green): Rust core + signer + E123 SQL + kernel 0.8.0 written; UI, CHECK_E123, real-wasm test, fuzz, review still open.
 - 2 Nov 06:30 G5b part 1 pull commands given (E123, founder-install, pull.sh); part 2 next phase.
+- 2 Nov 06:35 E123 made ADVANCED (edited, not a new file): one note judge, signed_verify, vkey (matches Go), sign-lag policy+level in pulse, rotation chain prev_id; CHECK_E123 now 5. Route /audit/signed also returns db_recheck + vkey.

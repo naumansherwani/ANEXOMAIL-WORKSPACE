@@ -1385,3 +1385,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 
 - 2 Nov 06:20 G5b WIP (NOT green, nothing run on the server): `server/rust/checkpoint_core.rs` (C2SP signed note, 7 tests vs Go `note` oracle vectors `g5b_vectors.json`), `server/founder/src/signedcp.rs` (+route /founder/v1/audit/signed, tick), `sql/E123_founder_signed_checkpoints.sql` (local selftest OK), kernel 0.8.0 `checkpoint@1`. Still to do: CHECK_E123, UI gauge + TOFU pin, real-wasm test, fuzz, reviewer.
 - 2 Nov 06:30 G5b part 1: CHECK_E123.sql added; E123 FK to seals removed (E107 selftest truncates seals). Pull commands given. Part 2 = next phase.
+- 2 Nov 06:35 E123 made ADVANCED (edited, not a new file): one note judge, signed_verify, vkey (matches Go), sign-lag policy+level in pulse, rotation chain prev_id; CHECK_E123 now 5. Route /audit/signed also returns db_recheck + vkey.
