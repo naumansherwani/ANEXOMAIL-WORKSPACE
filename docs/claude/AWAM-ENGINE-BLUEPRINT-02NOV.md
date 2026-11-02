@@ -79,12 +79,30 @@ GREEN = his pasted server output. Nothing below is written twice; a phase points
 | PX2c | Sign-up UI without Personal|Business, availability hint, contact fields | React/TS | `auth.tsx`, `onboarding.tsx`, `AvailabilityHint`, `ContactFields`, `countries.ts`, `signx.ts` | **GREEN** (pull OK 09:47); Chrome look pending |
 | PX3 | Company domain optional | Rust | `wsx_core.rs` `normalize_org_domain_optional` + `wsx_glue.rs` | **GREEN** (`MODULES=wsx` build OK, probe 401, 09:57) |
 | AX9a | Latency percentile core (p50/p95/p99, 496 buckets) | Rust | `latency_core.rs` (8 tests) | written; hook (AX9b) not started |
-| PX4 | Country search + first-letter ranking | React/TS | `CountryPicker.tsx` + test (5), used by `ContactFields` | written 10:20; waits for his pull |
-| PX5 | Organisation NAME optional ("<Name> workspace") | Rust + React | `wsx_core.rs` `default_org_name` (5 tests), `wsx_glue.rs`, `onboarding.tsx` | written; waits for `MODULES=wsx` + pull |
-| PX6 | Organisation layer hardened (guard trigger, limits, org_events chain, domain proof, last owner, soft delete, integrity report) | SQL | E129 (545 lines) + `CHECK_E129` (12) | scratch 12/12; waits for his `sql-run` |
-| PX9 | Clean address: sign-up lives at `/signup`, sign-in at `/auth` | React/TS | `signup.tsx`, `auth.tsx` (redirect + address follows mode), `routeTree.gen.ts`, links in `PlanCheckoutButton`, `get-started`, `join`, `onboarding` | written 10:40; waits for pull; marketing pages not yet checked for other `/auth` sign-up links |
+| PX4 | Country search + first-letter ranking | React/TS | `CountryPicker.tsx` + test (5), used by `ContactFields` | **GREEN** (his pull.sh: CountryPicker.tsx + test on the server, server==repo 609 files); hint no longer names a country (his "pakistan print ker diya"); Chrome look pending |
+| PX5 | Organisation NAME optional ("<Name> workspace") | Rust + React | `wsx_core.rs` `default_org_name` (5 tests), `wsx_glue.rs`, `onboarding.tsx` | **GREEN** (his `MODULES=wsx`: 5 tests ok, build OK, probe 401) + pull.sh; Chrome look pending |
+| PX6 | Organisation layer hardened (guard trigger, limits, org_events chain, domain proof, last owner, soft delete, integrity report) | SQL | E129 (545 lines) + `CHECK_E129` (12) | **GREEN** (his `sql-run`: E129 ran, CHECK_E129 12/12, E65 sweep OK; E130 fixed a varchar/text bug in the report function) |
+| PX9 | Clean address: sign-up lives at `/signup`, sign-in at `/auth` | React/TS | `signup.tsx`, `auth.tsx` (redirect + address follows mode), `routeTree.gen.ts`, links in `PlanCheckoutButton`, `get-started`, `join`, `onboarding` | **GREEN** on the server (his pull.sh wrote `src/routes/signup.tsx`); Chrome look at `anexomail.com/signup` pending; marketing pages not yet checked for other `/auth` sign-up links |
 | PX7 (open) | Rust to use E129: filter `deleted_at`, `org_ensure_default` at sign-in, DNS TXT lookup for `org_domain_claim_confirm`, org settings UI (rename, add domain later) | Rust + React | not started | open |
 | PX8 (open) | Passkey username-less login | Rust `passkey_glue` + React | not started | open |
+
+## 2f. Awam: how much is left (founder 2 Nov 10:25: "ab founder ki taraf, batao kitna kaam hai awam ka")
+**Done and GREEN (sign-up lane, PX0-PX6, PX9, E125-E130):** nothing in this lane is rewritten. Open in this lane: my own Chrome look (sign-up, country search, availability, onboarding without domain / org name, Masood).
+**Small, needs only his word:**
+| # | Item | Technology | Needs |
+|---|---|---|---|
+| 1 | GEO1 apply (block AF / IL / KP at Caddy) | Caddy | his "go" |
+| 2 | Mail-server mailboxes of the two deleted test accounts | server | his explicit "haan" |
+| 3 | Business Premium `plans.ts` card + Polar product + 20,000 cap in the terms | React + Polar | his step P3 |
+**Small, my work (1 phase each):**
+| # | Item | Technology |
+|---|---|---|
+| 4 | PX7: Rust uses E129 (hide deleted organisations, `org_ensure_default` at sign-in, DNS TXT lookup, org settings: rename, add domain later) | Rust + React |
+| 5 | Country mandatory on the SERVER (today client-side only; Bun sign-up route is banned and untouched) | Rust |
+| 6 | PX8: passkey sign-in without typing a username (`residentKey: required`, conditional UI) | Rust `passkey_glue` + React |
+| 7 | AX9b: hook `latency_core` into `/rpc`, `/wt/rpc`, auth, mail | Rust |
+**Big (feature rows AX0-AX8, none built):** 9 rows. By his own rule ("awam ka pura nahi khol lena, founder ke baad") they stay CLOSED until he opens them, one row at a time, in order AX0, AX1 ... AX8.
+**Count:** 3 waiting on him + 4 small of mine = 7 items before the awam lane is quiet. 9 big rows are parked on purpose. Founder lane (G5d onward: I2, J3-J6, K-V, X1-X4) is ON HOLD and starts the moment he says go.
 
 ## 3. Not in this file
 Plan prices, plan caps, Polar products and the plan copy on `/plans` are **not touched** here. Putting any AX row onto a plan card is a separate order from the founder after the row is GREEN.

@@ -1088,7 +1088,7 @@ server/rust/g5c_tsa_vectors.json fee828dd190a88cf
 founder-web/src/anchorgauge.ts 0a58f95d7333754c
 founder-web/src/anchorgauge.test.ts cb7a2111c15d3ca3
 founder-web/dist/assets/index-B3a1vE21.js baaef8e08fa0aafe
-docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md 48873337a5549519
+docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md 3506aad70d293c8d
 docs/claude/FOUNDER-EXTRA-ADVANCED-02NOV.md 5deda874fa1f074d
 docs/claude/PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md b3fde0a60691a0d1
 docs/cursor-work/sql/CHECK_PX0_PERSONAL_LIST.sql c0c2c7ab77b1c5c3
