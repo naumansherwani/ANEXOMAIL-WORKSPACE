@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 4b41002b16cf9e63
+docs/cursor-work/founder/founder-commands.md a3e5d5d8e05fdc7d
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -139,7 +139,7 @@ docs/cursor-work/TECH-MAP.md 2195ee73fe3fd483
 server/rust/export_core.rs 086ef9caf998828f
 server/rust/export_glue.rs e1aa78e116e2a353
 docs/cursor-work/sql/E44_account_export.sql 256fa217a12458e0
-docs/cursor-work/server/rust-engine-install.sh 6577506a77520ab3
+docs/cursor-work/server/rust-engine-install.sh 6794d3b0267f71cf
 src/components/app/security/IntegrityGate.tsx 05dc58e611855298
 src/lib/account-export.ts 0f06184f8b7786c2
 docs/cursor-work/sql/E45_integrity_purge.sql 52b81aa0216ec1e7
@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md dfac0c2785091694
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 63a2abd83eb93ec0
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs bd14a1074691a67d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 8e87d021b083475b
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 8c58e6c79e7a41ca
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -384,7 +384,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 47ceeb6c79ac5ff7
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 729f2281785866c4
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -417,7 +417,7 @@ src/lib/history.test.ts d26cdfc56deea483
 src/lib/calendar-jump.ts 378d1a18d2415728
 src/components/app/search/HistoryResults.tsx 8da549dd49fd57e3
 src/routes/app.search.tsx 6f74a251778663b7
-docs/cursor-work/sql/index.md f8648745c34109d1
+docs/cursor-work/sql/index.md ab0dce5cf3139819
 docs/cursor-work/sql/CHECK_E65.sql ce449a9bcfd36628
 docs/cursor-work/sql/E65_rls_and_advisor_sweep.sql df4483c0cee65b4e
 docs/cursor-work/sql/proofs/E65_proof.sql 983e734dff0b7e79
@@ -915,7 +915,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md eb1ba2a7a3861722
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md 7677bf3af87b2cee
+docs/claude/founder/PULL-COMMANDS.md 45f77c69ba6a72e3
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 6f67741f87811209
@@ -1091,7 +1091,7 @@ founder-web/src/anchorgauge.test.ts cb7a2111c15d3ca3
 founder-web/dist/assets/index-B3a1vE21.js baaef8e08fa0aafe
 docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md d506bd97187a2148
 docs/claude/FOUNDER-EXTRA-ADVANCED-02NOV.md 5deda874fa1f074d
-docs/claude/PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md f39e925c49b02be5
+docs/claude/PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md 926cee2571b33596
 docs/cursor-work/sql/CHECK_PX0_PERSONAL_LIST.sql c0c2c7ab77b1c5c3
 docs/cursor-work/sql/E125_retire_personal_packages.sql 18bdb688359c9c70
 docs/cursor-work/sql/CHECK_E125.sql 4f037d0dd562d212
@@ -1100,3 +1100,10 @@ docs/cursor-work/sql/CHECK_E126.sql 2f30ad6032e83d15
 docs/cursor-work/sql/E126_delete_two_test_accounts_masood_business.sql f22803ef32d1d2e5
 docs/cursor-work/sql/CHECK_E127.sql f45320baa23d9bc7
 docs/cursor-work/sql/E127_signup_country_phones.sql 1e63539eb1e7d01e
+docs/claude/SIGNUP-SECURITY-MILITARY-GRADE-02NOV.md 6740deef4214150b
+docs/cursor-work/sql/CHECK_E128.sql 8a7410ad92aadc26
+docs/cursor-work/sql/E128_phone_blind_index.sql 4631282614b6acb2
+server/caddy/geoblock-gen.py fec292aaaeb5dba2
+server/caddy/geoblock.sh 7823c6fb8b289407
+server/rust/signx_core.rs ddcff59c5b8ba934
+server/rust/signx_glue.rs 5cdca19433325f0a

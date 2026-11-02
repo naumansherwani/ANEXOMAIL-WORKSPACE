@@ -56,7 +56,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex crmd trialx authx contx basx wsx billx setx calexp promx wtrpc"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex crmd trialx authx contx basx wsx billx setx calexp promx signx wtrpc"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; ics) echo "cal_core.rs";; evidence) echo "attach_core.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -202,6 +202,9 @@ CFG={
  "contx": {"public": False, "label": "contx", "procs": ['"contacts.list"','"contacts.tags"','"contacts.get"','"contacts.update"','"contacts.tag"','"contacts.timeline"','"companies.list"','"companies.get"','"companies.timeline"','"search.universal"']},
  # promx (Rule 52/56, compose Business Outcomes, Pro): wada (promise) HMAC-sealed ledger + thread economics. SQL E97 PEHLE. Gate Pro+ Rust mein.
  "promx": {"public": False, "label": "promx", "procs": ['"commit.record"','"commit.status"','"commit.list"','"commit.verify"','"commit.economics"','"commit.rate"','"commit.rateSet"','"file.context"']},
+ # signx (PX2b, founder 2 Nov 2026, "bun banned"): sign-up / create-account doors — Gmail-style red/green for ANEXOMAIL name + outside e-mail (HMAC door token, rate window), country wall AF/IL/KP (country, +93/+972/+850, timezone), country + many phone numbers. Rust ONLY, no Bun twin. SQL E127 + E128 PEHLE. Public procs need headers (client address).
+ "signx": {"public": True, "label": "signx", "procs": ['"signx.policy"','"signx.token"','"signx.check"','"signx.country.set"','"signx.phones.list"','"signx.phones.add"','"signx.phones.remove"','"signx.phones.primary"'], "need_mods": ["vault_core"],
+          "public_call": "public(&proc, &input, &headers)"},
  # authx (Rule 52/56): `auth.session` — har page-load par chalne wali session/profile read. Sirf login. Koi SQL nahi. Login/refresh/logout Bun par (alag migration).
  "authx": {"public": False, "label": "authx", "procs": ['"auth.session"']},
  "trialx": {"public": False, "label": "trialx", "procs": ['"account.signup.security"','"account.signup.events"','"account.signup.holds"']},
@@ -642,6 +645,20 @@ for m in $MODS; do
         *'"unauthorized"'*) echo "   -> promx: Rust ne commit.* pakda (nakli login 401 = theek). SQL E97 chala hona lazmi (asli test: Compose mein 'I will send it by Friday' likho)";;
         *procedure_not_in_rust*|*unknown_proc*) echo "   -> promx: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> promx: jawab upar dekhein";;
+      esac;;
+    signx)
+      r="$(probe signx.policy '{"input":{}}')"
+      echo "   signx.policy (public): $r"
+      case "$r" in
+        *blocked_countries*) echo "   -> signx: Rust ne signx.* pakda (policy: AF, IL, KP). Agla: signx.token + signx.check, SQL E127/E128 chala hona lazmi.";;
+        *procedure_not_in_rust*|*unknown_proc*) echo "   -> signx: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *) echo "   -> signx: jawab upar dekhein";;
+      esac
+      r="$(probe signx.check '{"input":{"kind":"handle","value":"test","token":"x","nonce":"x","ts":1}}')"
+      echo "   signx.check (nakli token): $r"
+      case "$r" in
+        *bad_token*) echo "   -> signx: nakli HMAC token 401 bad_token (theek).";;
+        *) echo "   -> signx: jawab upar dekhein";;
       esac;;
     crmd)
       r="$(probe crm.leads '{"input":{}}')"

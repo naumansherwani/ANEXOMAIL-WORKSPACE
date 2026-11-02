@@ -84,3 +84,7 @@ Order in his words: those three countries are not on the website, their IPs are 
 5. **Log:** every blocked attempt writes only the country code and a time (no personal data), so the counter shows on the founder dashboard later.
 6. Legal note for the founder (not advice): write the country list in the Terms of Service page so the block is not a surprise to anyone.
 Phases: GEO1a decision (Cloudflare or nginx) -> GEO1b edge rule + 403 page -> GEO1c sign-up/phone refusal (rides with PX2b) -> GEO1d Chrome proof from the server side (a test request with a forged country header, and the real page). Real proof from inside those countries is not possible from here; the proof is: rule installed + test with the provider's test header.
+
+
+## Status 2 Nov 09:45 — PX2b code written (Rust only)
+`server/rust/signx_core.rs` (21 tests: country wall, E.164, suggestions, HMAC door token, rate window, phone blind index), `signx_glue.rs` (8 procs, type-checked in a stub crate), installer module `signx`, SQL E128, Caddy `server/caddy/geoblock.sh` (GEO1). Server steps in PULL-COMMANDS ("PX2b signx + GEO1"). Security rationale: `SIGNUP-SECURITY-MILITARY-GRADE-02NOV.md`. Still to write: username-less passkey login + residentKey required (Rust `passkey_glue.rs`), UI (PX2c).

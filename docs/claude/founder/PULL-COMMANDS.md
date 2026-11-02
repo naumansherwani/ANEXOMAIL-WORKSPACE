@@ -436,3 +436,9 @@ Then sign in to the founder site; I look at the Ledger seal card in Chrome.
 
 ## E127 country + phones (PX2a, 2 Nov 09:15) — SQL only, no pull
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E127_signup_country_phones CHECK_E127 | tail -25`
+
+## PX2b signx + GEO1 (2 Nov 09:40) — in this order, one technology each
+1. SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E128_phone_blind_index CHECK_E128 | tail -20`
+2. Rust (only the new module, restore-on-fail): `git -C /opt/anexomail-web fetch -q origin main && MODULES=signx bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh) 2>&1 | tail -30`
+3. Caddy country wall, PLAN only (reads, changes nothing): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:server/caddy/geoblock.sh) plan 2>&1 | tail -20`  (apply only after he has read the plan: same command with `apply`)
+4. Caddy post-quantum check (read-only): `caddy version; openssl s_client -groups X25519MLKEM768 -connect anexomail.com:443 </dev/null 2>/dev/null | grep -i "negotiated\|group" | head -3`  (an old openssl says unknown group; then `caddy version` built with Go >= 1.24 is the evidence)

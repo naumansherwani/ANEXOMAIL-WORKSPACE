@@ -61,3 +61,4 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E125 | Personal packages retired: personal_polar_map emptied, 6 Personal price-book rows off/deleted, masoodsherwani kept on Pro, NO account deleted (CHECK_E125; CHECK_PX0B_TEST_FOOTPRINT shows what deleting the 2 test accounts would remove) | 2 Nov |
 | E126 | Two test accounts (basic.test@, alikhan@) deleted incl. owned orgs + blockers; masoodsherwani@ converted to business kind on plan pro, never deleted (founder 2 Nov 08:54) | CHECK_E126 (7) |
 | E127 | PX2a: account_profiles.country_iso2 + account_phones (many numbers per account, same number allowed on several accounts, max 5, unverified until SMS exists) | CHECK_E127 (5) |
+| E128 | PX2b: account_phones.e164_hmac keyed blind index (HMAC-SHA256, HASHING.md), non-unique | CHECK_E128 (3) |
