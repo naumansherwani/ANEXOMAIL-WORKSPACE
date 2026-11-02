@@ -742,3 +742,4 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - 2 Nov 06:10 G5b OPEN (C2SP signed checkpoints): design + technology read written in G5-UNFORGEABLE-HISTORY-02NOV.md; code in progress, nothing on the server yet.
 
 - 2 Nov 06:20 G5b WIP (not green): Rust core + signer + E123 SQL + kernel 0.8.0 written; UI, CHECK_E123, real-wasm test, fuzz, review still open.
+- 2 Nov 06:30 G5b part 1 pull commands given (E123, founder-install, pull.sh); part 2 next phase.

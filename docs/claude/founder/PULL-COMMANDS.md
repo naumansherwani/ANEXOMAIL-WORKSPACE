@@ -383,4 +383,12 @@ Isme 134 tests passed + "OK - founder service zinda". Awam pull ki zaroorat nahi
 1) SQL (E122 edit hui, idempotent): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E122_founder_seal_interval CHECK_E122 2>&1 | grep -v "^$" | head -14`
 2) Rust+SPA (Endpoints card hata, naya build): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -25`
 
-## G5b (2 Nov 06:20) — NOT READY: no pull command yet. Order when ready: 1) SQL E123 sql-run, 2) founder-install, 3) awam pull.sh (kernel 0.8.0). Given one at a time after the review is clean.
+## G5b part 1 (2 Nov 06:30) — signed checkpoints: SQL + Rust + kernel 0.8.0. Run IN THIS ORDER, one at a time, paste each output.
+1) SQL (technology: SQL). Needs E107+E120+E122. Local PG16: selftest OK, CHECK 4/4, E107 selftest still OK:
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E123_founder_signed_checkpoints CHECK_E123 2>&1 | grep -v "^$" | head -14`
+2) Rust founder + new audit-log key file (technology: Rust). Do this AFTER step 1 is pasted:
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+3) Awam kernel 0.8.0 (technology: WASM kernel, awam pin). After step 2:
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
+What you will see after 2: within ~2 minutes the sealer signs every seal (SQL: `select public.founder_audit_signed_pulse();` shows unsigned = 0 and the active key). The Dashboard shows NOTHING new yet (the gauge text is part 2). GREEN only with your paste + my Chrome look.
+Part 2 (next phase, NOT written yet): UI gauge text + TOFU pin, real-wasm test, fuzz, independent reviewer.

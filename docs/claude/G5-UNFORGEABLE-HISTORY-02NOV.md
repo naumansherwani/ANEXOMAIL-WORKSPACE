@@ -63,3 +63,6 @@ Independent reviewer: Rust verifier matches RFC 9162 step by step, no accepted f
 **Honest limits (never over-claimed):** a signature by a key that lives on the same server proves "this server said so", not "an outside party saw it" (that is G5c time anchors). A fully compromised server can sign anything with the key; the signed checkpoint binds the SIZE to the root (closing the G5a gap), and key rotation is explicit and audited.
 **Review gate:** Go oracle vectors (Go signs, Rust verifies; Rust signs from the same seed, bytes identical), the published PeterNeumann vector, every single-byte flip of a signed note rejected, strict-format negatives, SQL selftest, real wasm test, independent reviewer repeated until clean.
 
+
+### G5b status (2 Nov 06:30)
+Part 1 written and pull commands given: checkpoint_core.rs, signedcp.rs, E123 + CHECK_E123, kernel 0.8.0. E123 has NO foreign key to the seals table on purpose (E107's selftest truncates it; the first draft broke it and the local CHECK caught that). Part 2 (next phase): UI gauge + TOFU pin, real-wasm test, fuzz, Rust==WASM, independent reviewer.

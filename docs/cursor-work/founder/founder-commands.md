@@ -2225,3 +2225,6 @@ Done: technology sent to him; G5b section in G5-UNFORGEABLE-HISTORY-02NOV.md; ch
 
 ## 2 Nov 06:16 — "yeh match ker lena tum yeh bana rahay ho aur codes match kero" (G5b)
 Status: WIP, not green. Written: checkpoint_core.rs, signedcp.rs, E123 SQL, kernel 0.8.0. Open: CHECK_E123, UI + TOFU pin, real-wasm test, fuzz, reviewer. Nothing for the server yet.
+
+## 2 Nov 06:21 — "jo codes likhe hain un ki pull command do, jo baki hai next phase main, repo + chat context update"
+Done: pull commands (E123 SQL -> founder-install -> awam pull.sh) in PULL-COMMANDS.md; remaining = G5b part 2 (next phase). Status: not green until his paste + Chrome.

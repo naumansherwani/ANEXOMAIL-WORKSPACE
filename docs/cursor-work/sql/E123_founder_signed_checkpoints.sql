@@ -4,7 +4,7 @@
 -- HONEST LIMIT: the key is on the same server. This proves "the audit-log key said so", not "an outside party saw it" — that is G5c (time anchors).
 -- What this adds (all additive, idempotent; nothing is deleted or changed):
 --   1) founder_audit_log_keys   : the audit-log PUBLIC keys. Exactly ONE active (partial unique index). Retired keys stay for ever (old notes must stay checkable). Only active->retired is allowed.
---   2) founder_audit_signed_checkpoints : append-only, one signed note per seal (FK to the seal). A trigger RECOMPUTES the body from the seal row
+--   2) founder_audit_signed_checkpoints : append-only, one signed note per seal (seal checked by trigger (no FK: the E107 selftest truncates seals)). A trigger RECOMPUTES the body from the seal row
 --      (origin, size = upto_seq, root as base64) and refuses a note whose body differs, whose key is retired/unknown, or whose key name is not the origin.
 --      SQL cannot check Ed25519: the Rust door verifies the signature before it calls us, and the browser kernel verifies it again. SQL guarantees the BODY is the seal's.
 --   3) doors (service_role only): founder_audit_log_key_register, founder_audit_signed_cp_add, founder_audit_signed_cp_pending, founder_audit_signed_cp_get, founder_audit_signed_pulse.
@@ -60,7 +60,7 @@ create trigger founder_audit_log_keys_guard_trunc before truncate on public.foun
 do $$ begin
   perform pg_advisory_xact_lock(hashtextextended('founder_signedcp:ddl', 0));
   create table if not exists public.founder_audit_signed_checkpoints (
-    cp_id      bigint primary key references public.founder_audit_checkpoints (id),
+    cp_id      bigint primary key check (cp_id >= 1),      -- no FK on purpose: E107's own selftest truncates the seals table, and a FK would break it; the guard trigger checks the seal exists
     key_id     bigint not null references public.founder_audit_log_keys (id),
     origin     text   not null,
     size       bigint not null check (size >= 1),
@@ -68,6 +68,7 @@ do $$ begin
     note       text   not null check (length(note) between 100 and 4096),
     signed_ms  bigint not null check (signed_ms > 0)
   );
+  alter table public.founder_audit_signed_checkpoints drop constraint if exists founder_audit_signed_checkpoints_cp_id_fkey;   -- re-run safe
   alter table public.founder_audit_signed_checkpoints enable row level security;
   revoke all on public.founder_audit_signed_checkpoints from public, anon, authenticated;
   grant select, insert on public.founder_audit_signed_checkpoints to service_role;
