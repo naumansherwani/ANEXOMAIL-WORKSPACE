@@ -1,6 +1,7 @@
 # PACKAGES PRICING v6 — flat per-month + Business Premium (FOUNDER LOCKED 25 Oct 2026)
 
-> **UPDATE 26 Oct 2026 05:07 PKT (founder, 'sab kuch sochne ke baad'): ENTERPRISE = £18,500 / month** (pehle £15,000). Yearly (CEO x10 proposal) £185,000. Business Premium ko Business Pro ke BAAD alag banaya jayega -- yeh poori website ka chehra hoga, isliye price zyada. Business Premium abhi zero: koi gate/code nahi, advanced technology par, bug nahi chalega. Repo mein jahan jahan Business Premium price tha update kiya.
+> **UPDATE 2 Nov 2026 08:07 PKT (founder, latest, wins): BUSINESS PREMIUM (= the old "Enterprise") = £21,000 / month.** Whole website for the awam in this package; hidden backend cap 20,000 users, shown as unlimited. Yearly stays the CEO x10 proposal = £210,000 (derived, founder to confirm). Every older £18,500 below for Business Premium/Enterprise was changed to £21,000 on 2 Nov; Personal Premium £18,500 YEARLY is a different product and is unchanged. Polar product and `src/lib/plans.ts` card: founder step (P3), not done.
+> **UPDATE 26 Oct 2026 05:07 PKT (founder, 'sab kuch sochne ke baad'): ENTERPRISE = £18,500 / month** (pehle £15,000). Yearly (CEO x10 proposal) £185,000. [SUPERSEDED 2 Nov 08:07, see the line above] Business Premium ko Business Pro ke BAAD alag banaya jayega -- yeh poori website ka chehra hoga, isliye price zyada. Business Premium abhi zero: koi gate/code nahi, advanced technology par, bug nahi chalega. Repo mein jahan jahan Business Premium price tha update kiya.
 
 
 Source: founder verbatim 25 Oct 2026 21:30 UTC (26 Oct 02:30 PKT) — `docs/cursor-work/founder/founder-commands.md`.
@@ -22,7 +23,7 @@ Status: **READY (docs)** — code (`src/lib/plans.ts`, `server/config/billing-pr
 | Pro Package | £105 | Up to 20 users | 300 GB (15 GB per user × 20) | £5.25 / user | 35 MB |
 | Business Flat | £360 | Up to 60 users | 1,500 GB = 1.5 TB (25 GB per user × 60 — backend pool) | £6.00 / user | 45 MB |
 | Business Pro | £2,850 | Up to 570 users | 10 TB | £5.00 / user | **60 MB** |
-| **Business Premium (NAYA)** | **£18,500** | **Unlimited users** | **15 TB shared (logical)** | n/a (unlimited → per-user sab se sasta) | **100 MB** |
+| **Business Premium (NAYA)** | **£21,000** | **Unlimited users** | **15 TB shared (logical)** | n/a (unlimited → per-user sab se sasta) | **100 MB** |
 
 Founder ne confirm kiya (table vs bullets ke farq): Basic **25 GB**, Pro **300 GB**, Business transfer **45 MB**, Business Pro **10 TB** (taake Business Premium ke 15 TB se alag rahe).
 
@@ -52,7 +53,7 @@ Founder ne confirm kiya (table vs bullets ke farq): Basic **25 GB**, Pro **300 G
 - File Transfer Limit: **60 MB** instant email attachment
 - Effective per-user: £5.00
 
-### Business Premium — £18,500 / month (NAYA)
+### Business Premium — £21,000 / month (NAYA)
 - User/Mailbox Cap: **Unlimited users**
 - Logical Storage: **15 TB shared (logical)** pool
 - File Transfer Limit: **100 MB** instant email attachment
@@ -65,7 +66,7 @@ Founder ne confirm kiya (table vs bullets ke farq): Basic **25 GB**, Pro **300 G
 - **Business Premium: UNLIMITED users** — koi cap nahi, jitni bhi company barhe.
 
 Doosra farq: storage — Business Pro **10 TB**, Business Premium **15 TB** (+5 TB).
-**Ab yeh bhi farq hai:** attachment limit Business Pro **60 MB**, Business Premium **100 MB** (pehle dono 100 MB the, 26 Oct update ke baad alag). Price 6.32× (£2,850 → £18,500) ka matlab: Business Premium company jitni bhi barhe, per-user kharcha nammumkin had tak neeche jaata hai (Business Pro 570 par ~£5.00/user; Business Premium par unlimited seats).
+**Ab yeh bhi farq hai:** attachment limit Business Pro **60 MB**, Business Premium **100 MB** (pehle dono 100 MB the, 26 Oct update ke baad alag). Price 7.37× (£2,850 → £21,000) ka matlab: Business Premium company jitni bhi barhe, per-user kharcha nammumkin had tak neeche jaata hai (Business Pro 570 par ~£5.00/user; Business Premium par unlimited seats).
 
 ## Feature gating — kya badla, kya nahi
 
@@ -76,7 +77,7 @@ Doosra farq: storage — Business Pro **10 TB**, Business Premium **15 TB** (+5 
 ## Polar mein kaise update hoga (founder khud karega)
 
 1. **Polar dashboard → Products → har package ka NAYA product banao.** Purane product ki price dashboard se badalna sahi tareeqa nahi — purane checkout links purana price dikhate hain; isliye naya product banao, purana baad mein Archive karo.
-   - Recurring monthly: Basic **£40** · Pro **£105** · Business **£360** · Business Pro **£2,850** · Business Premium **£18,500**.
+   - Recurring monthly: Basic **£40** · Pro **£105** · Business **£360** · Business Pro **£2,850** · Business Premium **£21,000**.
    - Har product ke metadata mein: `brand=anexomail`, `kind=plan`, `plan=<basic|pro|business|business_pro|enterprise>`, `cycle=monthly`, `account_kind=business`.
    - Business Premium ka plan identifier repo/backend ke liye **`enterprise`** hoga (naya tier — 5th tier, backend/SQL/Rust mein alag qadam, founder ke hukm par).
 2. **Har naye product ki Product ID (UUID) copy karo.**

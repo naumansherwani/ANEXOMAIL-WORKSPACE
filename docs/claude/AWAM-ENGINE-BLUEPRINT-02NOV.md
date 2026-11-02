@@ -35,5 +35,24 @@ Everything not in the table (Ctrl K palette, device vault list, the status keywo
 ## 2b. Bandwidth: already written, NOT repeated here
 Per-package bandwidth (Business 10 TB @ £12, Business Pro 30 TB @ £11, Business Premium 50 TB @ £10 with a written fair-use ceiling; Basic/Pro fair-use throttle only), the competitor check, and the four user promises (throttle first then money, inbound never blocked, live meter at 80% / 95%, Premium unlimited-ish with a written ceiling) are already in the repo, awam side: `docs/cursor-work/PACKAGE-FEATURE-FORMULA.md` (section "Bandwidth: competitor check + honest-bandwidth promise", founder 28 Oct 08:30) and `docs/claude/CEO-DECISIONS-AND-FIX-PHASES-26OCT.md` (D). The ledger says "do not write again". The competitor figures there are the **verified** ones; the Google upload/IMAP GB-per-day numbers in the chat text are marked NOT verified in that doc, so they stay out. **Rust metering / throttle / Polar overage billing is NOT built** — it becomes the first awam code step (meter first, then the rate), as a row **AX0** before AX1, only when the founder says go.
 
+## 2c. Business Premium (£21,000 / month): the whole website, on the latest technology (founder 08:07: "is package ki technology likhi jaye gi latest wali")
+Business Premium = every awam feature (Business Pro's all features, Rule 23: no AI) + AX0-AX8 in full + the P rows. One code path (`resolve_plan`, no copy); the hidden 20,000-user cap is enforced in the backend there, and the page shows no number. Status words are the blueprint's: **GREEN** = proven on the server and in Chrome, **planned** = a letter in `BLUEPRINT-ABC-01NOV.md` that is not GREEN yet. Nothing below is claimed as shipped to awam unless its row says so.
+
+| Layer | Latest technology for this package | Where it stands (2 Nov) |
+|---|---|---|
+| Server | Rust (axum 0.8 + tokio, `ring`, rustls); no Bun / Node (Rule 61) for Premium endpoints | founder lane GREEN; awam Bun-free move = lettered W-rows |
+| Transport | HTTP/3 + WebTransport (QUIC, `wtransport`) for live data, calls stay WebRTC | **planned** K6 |
+| Key exchange / cipher | X25519MLKEM768 (post-quantum hybrid), AES-256-GCM terminator | **GREEN** K1, K2 (founder hosts); awam hosts K5 **planned** |
+| Mail content | OpenPGP post-quantum, RFC 9980 (PQM) | **planned** Q4 |
+| Live data protection | PQN | **planned** Q5 |
+| Tamper-proof history | Merkle log (RFC 6962/9162) + signed checkpoints (C2SP) + outside time (RFC 3161 + OpenTimestamps), verified in the browser by the WASM kernel | **GREEN** founder G5a-G5c; awam = AX1/AX2 |
+| Browser engine | ONE WASM kernel (Rule 52, pinned, Worker), modules `merkle@2`, `checkpoint@1`, `anchor@1`, `intent@1`, `sha256@1` | **GREEN** (kernel 0.9.0) |
+| Sign-in | Passkeys (`webauthn-rs`), device-bound sessions (DBSC) | **planned** J3-J6, K7 |
+| Database | Postgres with RLS on, per-tenant hash-chained tables, append-only guards | **GREEN** pattern (E107, E123, E124) |
+| Front end | React 19.2, Vite 8.2, TypeScript (strict), TanStack Router, Tailwind 4.2, shadcn, Framer Motion + GSAP, Three.js WebGPU (lazy) | awam is already on the latest line (FC44); L1/L2 **planned** |
+| Streaming | MoQ on an own Rust relay (one-to-many only) | **planned** M |
+| Metering and billing | Rust bandwidth meter, throttle-first, Polar overage meter at 50 TB @ £10 | **not built** (AX0) |
+| Hidden user cap | 20,000 users, enforced in `resolve_plan`'s single path; written in the terms | **not built**; terms text is a founder item |
+
 ## 3. Not in this file
 Plan prices, plan caps, Polar products and the plan copy on `/plans` are **not touched** here. Putting any AX row onto a plan card is a separate order from the founder after the row is GREEN.

@@ -7,7 +7,7 @@ import os
 HERE = os.path.dirname(os.path.abspath(__file__))
 ORD = ["basic", "pro", "business", "business_pro", "enterprise"]
 NAME = {"basic": "Basic £40", "pro": "Pro £105", "business": "Business £360",
-        "business_pro": "Business Pro £2,850", "enterprise": "Business Premium £18,500"}
+        "business_pro": "Business Pro £2,850", "enterprise": "Business Premium £21,000"}
 LIMITS = [
     ("Users cap", "5", "20", "60", "570", "unlimited"),
     ("Mailboxes", "3", "10", "-", "-", "-"),
