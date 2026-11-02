@@ -32,6 +32,21 @@ begin
   raise notice 'E122: seal interval % -> 20', v_pol.every_rows;
 end $$;
 
+-- 1b) G5a live proof (founder order 2 Nov 05:14: "pura green kero"). The consistency check needs a SECOND seal, and a second seal needs one real
+--     new ledger entry. This writes exactly ONE honestly-labelled audit entry (action 'audit.g5a_proof', reason says who ordered it and why),
+--     once (idempotent: skipped if it exists). It is a real chain entry, not a fake record: the time rule seals it within 10 minutes and the browser
+--     then runs the RFC 9162 consistency check against the seal it remembered.
+do $$
+declare v_actor uuid;
+begin
+  if to_regprocedure('public.founder_audit_append(uuid,text,text,text,jsonb)') is null then raise notice 'E122 SKIP proof entry: no audit door'; return; end if;
+  if exists (select 1 from public.founder_audit where action = 'audit.g5a_proof') then raise notice 'E122: proof entry already exists, nothing to do'; return; end if;
+  select user_id into v_actor from public.founder_accounts order by 1 limit 1;
+  if v_actor is null then raise notice 'E122 SKIP proof entry: no founder account yet'; return; end if;
+  perform public.founder_audit_append(v_actor, 'audit.g5a_proof', 'seal-2', 'Founder ordered G5a live proof on 2 Nov 2026 05:14 PKT: one real entry so the second seal forms and the browser runs the consistency check', '{}'::jsonb);
+  raise notice 'E122: wrote the one G5a proof entry';
+end $$;
+
 -- 2+3) the pulse with the time rule (replaces the E120 pulse; same shape plus real_lag_rows and policy.seal_max_age_secs)
 create or replace function public._fm_pulse_at(p_now_ms bigint) returns jsonb
 language plpgsql stable security definer set search_path = pg_catalog, public set statement_timeout = '5s' as $$

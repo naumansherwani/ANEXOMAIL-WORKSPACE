@@ -378,3 +378,7 @@ Isme 4 `OK` rows aani chahiye. E107 aur E120 pehle se server par hain.
 ## 2 Nov 05:00 — founder-install (browser proof ka path theek, SPA naya)
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -25`
 Isme 134 tests passed + "OK - founder service zinda". Awam pull ki zaroorat nahi. Footer ab pull se kabhi nahi badalta (manifest se nikal diya).
+
+## 2 Nov 05:25 — G5a ko GREEN karne ke 2 commands (ek ek karke)
+1) SQL (E122 edit hui, idempotent): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E122_founder_seal_interval CHECK_E122 2>&1 | grep -v "^$" | head -14`
+2) Rust+SPA (Endpoints card hata, naya build): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -25`

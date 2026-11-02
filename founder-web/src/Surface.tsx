@@ -170,7 +170,6 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
     { name: "Action registry", state: !actsOk ? "fail" : !acts.length ? "unknown" : "ok", text: !actsOk ? "Not answering" : acts.length ? `${acts.length} actions, ${acts.filter((a) => a.enabled).length} enabled` : "No actions yet", to: "control" },
     { name: "Settings", state: by("/founder/v1/settings")?.ok ? "ok" : "fail", text: by("/founder/v1/settings")?.ok ? "Saved on the server" : "Not answering", to: "settings" },
   ] : [];
-  const maxMs = Math.max(400, ...live.map((r) => r.ms || 0));
 
   // The orb shows only what the kernel verified: unverified answers draw a grey orb, never a guess. A failing endpoint can only make it worse.
   const orbTone: Tone = ks !== "verified" || !t ? "unknown" : rows && okN === 0 ? "fail" : bad || (rows && okN < live.length) ? (bad && t.items.some((i: { state: string }) => i.state === "fail") ? "fail" : "warn") : "ok";
@@ -232,25 +231,6 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
           );
         })}
       </section>
-
-      <details className="dx-card dx-eps" open style={{ "--i": 4 } as React.CSSProperties}>
-        <summary><span className="dx-sech">Endpoints</span><span className="dx-sechs">{rows ? `${okN} of ${live.length} answering` : "Checking…"}{checked ? `  ·  ${fmtHM(checked)}` : ""}</span>
-          <button className="lnk" disabled={busy} onClick={(e) => { e.preventDefault(); void run(); }}>{busy ? "Checking…" : "Check again"}</button></summary>
-        <div className="dx-eplist">
-          {ENDPOINTS.map((ep) => {
-            const r = rows?.find((x) => x.ep === ep), st: State = !rows || !ep.probe ? "unknown" : r?.ok ? "ok" : "fail";
-            return (
-              <div className="dx-ep" key={ep.method + ep.path} title={`${ep.what}. ${ep.gate}.${r?.note ? ` ${r.note}.` : ""}`}>
-                <i className={`sdot ${st}`} />
-                <span className={`dx-m ${ep.method}`}>{ep.method}</span>
-                <span className="dx-path">{ep.path.replace("/founder/v1", "")}</span>
-                <span className="dx-what">{ep.what}</span>
-                <span className="dx-lat">{ep.probe ? <><i style={{ width: `${Math.max(4, Math.round(((r?.ms || 0) / maxMs) * 100))}%` }} className={r?.ok === false ? "bad" : ""} /><b>{r?.ms != null ? `${r.ms} ms` : ""}</b></> : <em>Not tested here</em>}</span>
-              </div>
-            );
-          })}
-        </div>
-      </details>
     </div>
   );
 }
