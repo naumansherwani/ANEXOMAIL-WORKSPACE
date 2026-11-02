@@ -294,3 +294,4 @@ S1b Rust + UI pushed, NOT yet installed. After founder-install.sh: Appearance ta
 - 2 Nov 05:40 blueprint: awam sidebar -> founder order + technology per row, ANEXOChat from-scratch-on-latest rule (docs only, no code).
 - 2 Nov 05:41 G5a GREEN (server + Chrome proof, seal #2 at 5:30, RFC 9162 extension proven in his browser). AGENTS.md Rule 72 (ANEXOChat) locked. Next: G5b, discuss first.
 - 2 Nov 05:46 docs only: FC44 (founder gets awam codes, same UI/UX, own endpoints + gates), awam-side Bridge preserved for Business/Pro/Premium (ONE-ORDER).
+- 2 Nov 06:10 G5b OPEN (C2SP signed checkpoints): design + technology read written in G5-UNFORGEABLE-HISTORY-02NOV.md; code in progress, nothing on the server yet.
