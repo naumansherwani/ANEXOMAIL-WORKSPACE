@@ -22,7 +22,11 @@ mod ledger;
 #[path = "../../rust/checkpoint_core.rs"]
 #[allow(dead_code)]
 mod checkpoint_core;
+#[path = "../../rust/anchor_core.rs"]
+#[allow(dead_code)]
+mod anchor_core;
 mod signedcp;
+mod anchors;
 mod tls256;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
@@ -466,6 +470,11 @@ async fn signed_cp_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Resp
     if let Err(code) = authed(&st, &h).await { return code.into_response(); }
     signed(&st, signedcp::view(st.sb.as_ref().unwrap()).await)
 }
+/// G5c: newest time-anchored checkpoint (RFC 3161 / OpenTimestamps evidence). The kernel re-verifies; this only delivers.
+async fn anchors_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
+    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    signed(&st, anchors::view(st.sb.as_ref().unwrap()).await)
+}
 async fn merkle_proof_ep(State(st): State<S>, uri: axum::http::Uri, h: HeaderMap) -> axum::response::Response {
     if let Err(code) = authed(&st, &h).await { return code.into_response(); }
     let q = match ledger::parse_proof(uri.query()) { Ok(q) => q, Err(e) => return (StatusCode::BAD_REQUEST, Json(json!({"error": e}))).into_response() };
@@ -611,6 +620,7 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/audit/merkle/stats", get(merkle_stats_ep))
         .route("/founder/v1/audit/proof", get(merkle_proof_ep))
         .route("/founder/v1/audit/signed", get(signed_cp_ep))
+        .route("/founder/v1/audit/anchors", get(anchors_ep))
         .route("/founder/v1/audit/export", get(merkle_export_ep))
         .route("/founder/v1/audit/checkpoint", axum::routing::post(merkle_seal_ep))
         .route("/founder/v1/audit/seal", get(merkle_seal_get_ep))
@@ -739,7 +749,7 @@ mod tests {
     }
     #[tokio::test]
     async fn founder_routes_need_bearer() {
-        for path in ["/founder/v1/ambient/catalog", "/founder/v1/ambient/describe?palette=60&pattern=1&speed=9&intensity=6&blend=0&seed=0", "/founder/v1/ambient/step?palette=60&pattern=1&speed=9&intensity=6&blend=0&seed=0&delta=1", "/founder/v1/ambient/neighbours?palette=60&pattern=1&speed=9&intensity=6&blend=0&seed=0", "/founder/v1/ambient/surprise?n=7", "/founder/v1/me", "/founder/v1/bridge", "/founder/v1/settings", "/founder/v1/settings/history", "/founder/v1/settings/at?t=1793000000000", "/founder/v1/settings/diff?from=1700000000000&to=1790000000000", "/founder/v1/settings/timeline", "/founder/v1/settings/drift", "/founder/v1/settings/pulse", "/founder/v1/settings/scheduled", "/founder/v1/settings/explain?key=personal.home", "/founder/v1/settings/blast?key=personal.home", "/founder/v1/finance/polar", "/founder/v1/actions", "/founder/v1/audit", "/founder/v1/hostguard", "/founder/v1/live", "/founder/v1/live/stream", "/founder/v1/inbox", "/founder/v1/inbox/list", "/founder/v1/inbox/group", "/founder/v1/audit/merkle", "/founder/v1/audit/merkle/stats", "/founder/v1/audit/proof?seq=1", "/founder/v1/audit/signed", "/founder/v1/audit/export?from=1&to=2"] {
+        for path in ["/founder/v1/ambient/catalog", "/founder/v1/ambient/describe?palette=60&pattern=1&speed=9&intensity=6&blend=0&seed=0", "/founder/v1/ambient/step?palette=60&pattern=1&speed=9&intensity=6&blend=0&seed=0&delta=1", "/founder/v1/ambient/neighbours?palette=60&pattern=1&speed=9&intensity=6&blend=0&seed=0", "/founder/v1/ambient/surprise?n=7", "/founder/v1/me", "/founder/v1/bridge", "/founder/v1/settings", "/founder/v1/settings/history", "/founder/v1/settings/at?t=1793000000000", "/founder/v1/settings/diff?from=1700000000000&to=1790000000000", "/founder/v1/settings/timeline", "/founder/v1/settings/drift", "/founder/v1/settings/pulse", "/founder/v1/settings/scheduled", "/founder/v1/settings/explain?key=personal.home", "/founder/v1/settings/blast?key=personal.home", "/founder/v1/finance/polar", "/founder/v1/actions", "/founder/v1/audit", "/founder/v1/hostguard", "/founder/v1/live", "/founder/v1/live/stream", "/founder/v1/inbox", "/founder/v1/inbox/list", "/founder/v1/inbox/group", "/founder/v1/audit/merkle", "/founder/v1/audit/merkle/stats", "/founder/v1/audit/proof?seq=1", "/founder/v1/audit/signed", "/founder/v1/audit/anchors", "/founder/v1/audit/export?from=1&to=2"] {
             let r = app(st_with_sb()).oneshot(Request::get(path).body(Body::empty()).unwrap()).await.unwrap();
             assert_eq!(r.status(), 401, "{path}");
             let r = app(st_with_sb()).oneshot(Request::get(path).header("authorization", "Bearer a.b.c").body(Body::empty()).unwrap()).await.unwrap();

@@ -407,3 +407,8 @@ Then sign in again; the Ledger seal card should say "Seal #N is signed by the au
 1) `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E123_founder_signed_checkpoints CHECK_E123 2>&1 | grep -v "^$" | head -14`
 2) `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
 Then sign in to the founder site; I look at the Ledger seal card in Chrome.
+
+## G5c (2 Nov 08:05) — in order
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E124_founder_time_anchors.sql CHECK_E124.sql | tail -25`
+2. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) | tail -20`
+3. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -15`

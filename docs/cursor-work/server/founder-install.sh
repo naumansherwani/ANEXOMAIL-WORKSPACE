@@ -26,6 +26,8 @@ show server/rust/merkle_core.rs >"$ROOT/rust/merkle_core.rs" || { echo "FAIL: me
 show server/rust/consistency_vectors.json >"$ROOT/rust/consistency_vectors.json" || { echo "FAIL: consistency_vectors.json nahi"; exit 2; }
 show server/rust/checkpoint_core.rs >"$ROOT/rust/checkpoint_core.rs" || { echo "FAIL: checkpoint_core.rs nahi"; exit 2; }
 show server/rust/g5b_vectors.json >"$ROOT/rust/g5b_vectors.json" || { echo "FAIL: g5b_vectors.json nahi"; exit 2; }
+show server/rust/anchor_core.rs >"$ROOT/rust/anchor_core.rs" || { echo "FAIL: anchor_core.rs nahi"; exit 2; }
+show server/rust/g5c_tsa_vectors.json >"$ROOT/rust/g5c_tsa_vectors.json" || { echo "FAIL: g5c_tsa_vectors.json nahi"; exit 2; }
 # main.rs ka path src/ se ../../rust/jwt_core.rs = $ROOT/rust/jwt_core.rs (src/src -> ../../ = src/..)
 echo "== 1/4 tests"; (cd "$ROOT/src" && cargo test --release 2>&1 | grep -E "test result|FAILED|^error" ) ; (cd "$ROOT/src" && cargo test --release >/dev/null 2>&1) || { echo "FAIL: tests — kuch nahi badla"; exit 3; }
 echo "== 2/4 build"; (cd "$ROOT/src" && nice cargo build --release 2>&1 | tail -3) ; NEW="$ROOT/src/target/release/anexomail-founder"; [ -x "$NEW" ] || { echo "FAIL: build"; exit 3; }

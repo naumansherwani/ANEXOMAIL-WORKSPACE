@@ -2252,3 +2252,7 @@ Reviewer fixes written (SQL E123 edited, SPA). Needs: E123 re-run + founder-inst
 
 ## 2 Nov 06:58 — pasted E123 rerun + founder-install OK
 G5b GREEN (my Chrome look confirmed). Next phase: G5c.
+
+## 2 Nov 07:05 — G5c start (verbatim essentials)
+"ab yeh masala hai ke tum bhul jate ho codes likhtay waqat, rule yeh hai ke tum her 30 seconds ke baad read kero ke repo aur dekho gay kya likh rahay thay. ab yeh shuru kero advance codes likho sql 800 lines ka super advance working meaningful aur wire wala jis se magic founder account pe nazar aye. aur is main se abhi tak kya codes likhe hain A. Bridge ... B. Money ... C. People ... D. Mail Desk ... E. Release ... F. Systems ... G. Control ... H. Duniya hil jaye extras ... Sab ka tarteeb F2->F8 ke phases mein likha hai, baki repo update kero compact chat anay wala hai top pe likho claude ke liye ke codes kya likh rahay ho. rules read kero technology read kero"
+Phase: G5c (OpenTimestamps + RFC 3161, no accounts). Rule for me: re-read the chat-context top block + this file every ~30 s of work while writing (done by a re-read step between files).

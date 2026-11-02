@@ -82,3 +82,13 @@ export function checkpointVerify(note: string, name: string, pub: string, size: 
     w().postMessage({ id, checkpoint: { note, name, pub, size, root } });
   });
 }
+
+/** G5c: what does this evidence (hex) claim about `digest` (sha256 of the signed note)? kind 1 = RFC 3161 token, 2 = OpenTimestamps file. The kernel (anchor@1) re-derives it.
+ *  string = the claim; null = the kernel REFUSED the evidence; undefined = the kernel could not run (never reported as a refusal). */
+export function anchorInspect(kind: 1 | 2, ev: string, digest: string): Promise<string | null | undefined> {
+  return new Promise((resolve) => {
+    const id = ++seq;
+    waiting.set(id, (m) => resolve(m.code === 100 ? undefined : m.code === 0 ? String(m.data ?? "") : null));
+    w().postMessage({ id, anchor: { kind, ev, digest } });
+  });
+}

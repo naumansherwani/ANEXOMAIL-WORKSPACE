@@ -18,6 +18,9 @@ pub mod live;
 #[path = "../../server/rust/checkpoint_core.rs"]
 #[allow(dead_code)]
 pub mod checkpoint;
+#[path = "../../server/rust/anchor_core.rs"]
+#[allow(dead_code)]
+pub mod anchor;
 #[path = "../../server/rust/merkle_core.rs"]
 pub mod merkle;
 pub mod rank;
@@ -30,9 +33,9 @@ use std::collections::HashMap;
 use std::rc::Rc;
 
 pub const ABI: u32 = 1;
-pub const VERSION: (u32, u32, u32) = (0, 8, 0);
+pub const VERSION: (u32, u32, u32) = (0, 9, 0);
 /// Naam@module-version. Naya module ya badla hua module => yahan entry + VERSION bump (Cargo.toml bhi).
-pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1", "merkle@2", "checkpoint@1"];
+pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1", "merkle@2", "checkpoint@1", "anchor@1"];
 
 thread_local! {
     static OUT: RefCell<Vec<u8>> = const { RefCell::new(Vec::new()) };
@@ -155,6 +158,14 @@ pub extern "C" fn checkpoint_verify(note: u32, nl: u32, name: u32, nnl: u32, pk:
     let Some(pub_bytes) = pub_bytes.filter(|b| b.len() == 32) else { return 0 };
     checkpoint::verify_text(unsafe { text(note, nl) }, unsafe { text(name, nnl) }, pkb, unsafe { text(size, sl) }, unsafe { text(root, rl) },
         &|m, s| ed::verify(&pub_bytes, m, s)) as u32
+}
+
+/* ------------------------------------------------- anchor@1 (G5c: outside time anchors — RFC 3161 token / OpenTimestamps proof) */
+/// kind 1 = RFC 3161 token, 2 = OpenTimestamps file; `ev` = the evidence as lowercase hex, `dg` = sha256 of the signed note (64 hex). 1 = the evidence really binds that digest (TSTInfo / commitment chain);
+/// the claim is then in the out buffer (see `anchor::inspect`). 0 = anything else. The CMS signature is checked by the founder server (ring), not here: the kernel has no RSA/ECDSA.
+#[unsafe(no_mangle)]
+pub extern "C" fn anchor_inspect(kind: u32, ev: u32, evl: u32, dg: u32, dgl: u32) -> u32 {
+    match anchor::inspect(kind, unsafe { text(ev, evl) }, unsafe { text(dg, dgl) }) { Some(o) => { set_out(o.into_bytes()); 1 } None => { set_out(Vec::new()); 0 } }
 }
 
 /* ------------------------------------------------- ed25519 + envelope (F2b) */
@@ -285,7 +296,7 @@ mod tests {
         let ver = j.iter().find(|(k, _)| k == "version").unwrap().1.clone();
         assert_eq!(ver, env!("CARGO_PKG_VERSION"), "VERSION bump Cargo.toml ke saath");
         assert!(info_json().contains("\"abi\":1"));
-        for m in ["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1", "merkle@2", "checkpoint@1"] {
+        for m in ["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1", "merkle@2", "checkpoint@1", "anchor@1"] {
             assert!(info_json().contains(m), "{m}");
         }
     }
