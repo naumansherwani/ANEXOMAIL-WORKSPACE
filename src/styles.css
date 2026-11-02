@@ -793,6 +793,28 @@ button:disabled,
   cursor: not-allowed !important;
 }
 
+/* Hand cursor on the WHOLE dropdown / opener, empty space included (founder 2 Nov 10:30): selects, comboboxes (country search), popup triggers,
+   checkboxes, radios, switches, file pickers, range sliders. */
+select:not(:disabled),
+[role="combobox"]:not([aria-disabled="true"]):not(:disabled),
+[role="switch"]:not([aria-disabled="true"]),
+[role="checkbox"]:not([aria-disabled="true"]),
+[role="radio"]:not([aria-disabled="true"]),
+[role="menuitem"]:not([aria-disabled="true"]),
+[aria-haspopup]:not([aria-disabled="true"]):not(:disabled),
+input[type="checkbox"]:not(:disabled),
+input[type="radio"]:not(:disabled),
+input[type="range"]:not(:disabled),
+input[type="file"]:not(:disabled),
+input[type="submit"]:not(:disabled),
+input[type="button"]:not(:disabled) {
+  cursor: pointer !important;
+}
+/* The Sign in / Create account button keeps the hand while it is working (it used to flip to the "not allowed" sign right after the click). */
+.ax-a-hover:disabled {
+  cursor: pointer !important;
+}
+
 
 /* Keyboard sovereignty — a visible ring on every focusable surface, always. */
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {

@@ -10,7 +10,7 @@ src/components/app/AppShell.tsx c9ea0bdf8d920b67
 src/components/app/ComposeOverlay.tsx cf965eb48d282dcb
 src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx accbdda84ae313f9
-src/styles.css 310ec8c6df20968b
+src/styles.css 18bf488e4d0a3232
 src/routes/app.mail.$folder.tsx ca4b1c4a9e4c23e5
 src/routes/app.mail.$folder.$threadId.tsx d9cf4dd871202ee3
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md b38d3f0294dd5f7e
+docs/cursor-work/founder/founder-commands.md 77ccd726c91fbe44
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 3df257b8d58d962d
+docs/cursor-work/DONE-DO-NOT-REPEAT.md a533bf5b753e9314
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -1112,7 +1112,7 @@ src/components/auth/ContactFields.tsx bcb5acb636853356
 src/lib/countries.ts a4c483eed39aa596
 src/lib/signx.ts e4790f01c5617024
 src/components/auth/CountryPicker.test.ts dff0020980aa611d
-src/components/auth/CountryPicker.tsx 9d73cf4280240f98
+src/components/auth/CountryPicker.tsx 4181f4539fdd561e
 src/routes/signup.tsx 284ae2f75fb2ad29
 src/components/app/chat/ConversationTruthBar.tsx b7b441822de6d0f4
 src/components/app/chat/MessageTruth.tsx f777c1ff4e30515e
