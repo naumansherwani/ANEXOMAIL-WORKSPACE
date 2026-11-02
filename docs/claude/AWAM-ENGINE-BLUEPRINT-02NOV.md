@@ -9,11 +9,11 @@ Docs only. No code, no price change, no new rule is locked by this file. Source 
 | Phase | What | Technology | State |
 |---|---|---|---|
 | PX7a/b | Country mandatory on the server + friendly organisation errors | Rust `wsx` | **GREEN**: his `MODULES=wsx` 11:1x: 6 tests ok, files same as repo, probe 401 |
-| AX9b | Latency middleware, p50/p95/p99 | Rust `latency` | **GREEN**: his install: 10 tests ok, one anchor patched, build OK, health OK, pm2 online. Numbers page `127.0.0.1:3601/latency` appears after the first requests (his one check: `curl -s http://127.0.0.1:3601/latency`) |
+| AX9b | Latency middleware, p50/p95/p99 | Rust `latency` | **GREEN**: his install: 10 tests ok, one anchor patched, build OK, health OK, pm2 online. **Numbers verified 11:16 by his `curl`: real p50/p95/p99 for rpc, auth, chat.** Numbers page `127.0.0.1:3601/latency` appears after the first requests (his one check: `curl -s http://127.0.0.1:3601/latency`) |
 | PX8 | Passkey sign-in without a username | Rust `passkey_glue` | **GREEN**: his run: PROOF SAB PASS incl. "usernameless: options 200 + EMPTY allow-list" and "usernameless: verify -> 200 + token"; replay, clone, injection all pass |
 | PX11/PX12 | Landing "Launching soon" notice | React/TS | **GREEN**: his pull.sh (610 files same) + my Chrome look: the notice is at the very top of anexomail.com |
 | GEO1 | Block AF / IL / KP at the edge | Caddy | **GREEN (applied)**: his run: 23 site blocks wired, anexomail.com 200, founderworkspace.anexomail.com 200, backup `/root/i9/caddy-geoblock-1793599658`. Honest limit: a VPN exit outside those countries is not blocked |
-| MB1 | Mail folders of the two deleted test accounts | server script | NOT run: only the read-only `plan` is waiting for him |
+| MB1 | Mail folders of the two deleted test accounts | server script | NOT done: his `plan` (11:16) found only the Postfix map lines (`basic.test@`, `alikhan@`), NO folders (`virtual_mailbox_base` empty). The real Dovecot mail path must be found first; `apply` is NOT to be run until a plan lists the folders |
 Already GREEN earlier: E125-E130, wsx first version, sign-up page, /signup, country search, hand cursor, copy sweep, stale-green fix.
 NOT written (waiting for his word, no code exists): PX7c (hide deleted organisations, DNS check, organisation settings), `/wt/rpc` latency, Premium card, AX0-AX8, founder lane G5d onward.
 
