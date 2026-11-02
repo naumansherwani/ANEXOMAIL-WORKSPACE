@@ -2132,3 +2132,6 @@ His pastes prove these are ON THE SERVER (do not rebuild, do not re-give the com
 - Awam: pull.sh ran: src same=603 differ=0, build OK; SiteFooter.tsx is NOT in DEPLOY-MANIFEST and rules-gate FAILs any edit (chairman wording, never touch).
 Chrome proven (me, 05:10): Ledger seal "7 of 7 entries proven in this browser, seal #1 matches what this browser remembered". STILL OPEN for G5a GREEN: seal #2 (due ~10 min after the proof entry, ~05:37) and the Dashboard text "extends the seal this browser remembered" from the consistency check. Then G5a = GREEN and the ONE next phase is G5b (discuss first, Rule 63), technology: Rust + WASM kernel; no new technology before G5a is GREEN.
 Not on the server / not in code: WebTransport, webauthn-rs, WebGPU, Framer/GSAP, DBSC, MoQ, PQ mail, attachment/live encryption, G5b, G5c, G5d.
+
+## Checkpoint 2 Nov 05:40 PKT
+Awam sidebar -> founder order written in the blueprint: People/Work/CRM/Org = P (11th step ahead), Mail/Calendar/Domains = Q (12th), Analytics/ANEXOChat/Speed/Safety/Admin = R (13th). ANEXOChat is rebuilt from scratch on the latest technology, only the phases not properly built (32-57 = nothing exists; 1-31 judged by proof at their turn), list discussed with him first (Rule 63). Nothing starts before G5a is GREEN (still waiting for seal #2; reminder set 05:39).

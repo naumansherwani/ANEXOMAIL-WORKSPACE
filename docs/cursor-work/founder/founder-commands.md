@@ -2209,3 +2209,6 @@ Done: (1) G5a: E122 EDITED (not a new file): section 1b writes ONE honestly-labe
 
 ## 2 Nov 05:27 PKT — founder pasted: E122 CHECK 4/4 OK + E65 OK, founder-install 134 tests OK. Order: "chat context update kero ab compact chat anay wala hai, pehle codes sab likho ke server pe ja chuka hai dobara nahi likhna hai"
 Done: chat-context checkpoint 05:30 lists exactly what is on the server; ledgers updated. Waiting only for seal #2 (Chrome) to call G5a GREEN.
+
+## 2 Nov 05:33 PKT — founder (verbatim): "[awam sidebar: Dashboard Mail People Calendar Work CRM Org Analytics Domains ANEXOChat] yeh sab ki bari jo awam waay features same to same mujhe founder ko kab mile gay latest technology pe? is ki tarteeb main kab bari hai yeh bhi update do aur technology likho in ke agay aur anexochat shuru se banye ga latest technology pe is original blueprint jo repo hai us ke mutabiq pura nahi bnaye ga sirf woh banaye ga jo phases sahi nahi bana huwa hai"
+Done: BLUEPRINT-ABC-01NOV.md new section "AWAM SIDEBAR -> FOUNDER" (position + technology per row; ANEXOChat from-scratch rule: only phases not properly built; 32-57 have no code at all; 1-31 judged by proof at their turn). Domains placed with Mail (FOUNDER-PARITY-30OCT).

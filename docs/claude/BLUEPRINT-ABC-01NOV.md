@@ -40,6 +40,23 @@ One letter per step, in build order. **GREEN** only where the proof exists (serv
 | **W6** | Kernel `merkle@2` (G5a) moves the ONE kernel pin (Rule 52), so the awam pin follows the founder's proof; awam publishes through its own kernel lane (E90 `kernel_release_publish`) when it pulls | after G5a is GREEN |
 | **W4** | Catch-up A1-A7: Bun-free pages, webauthn-rs, DBSC, WebGPU, MoQ (MQ0-MQ4), PQM, PQN | after each founder letter turns GREEN |
 
+## AWAM SIDEBAR -> FOUNDER, same features on the latest technology (founder 2 Nov 05:33). Strict letter order; each row starts only when every earlier letter is GREEN (Rule 0/1).
+Order of what is still ahead (nothing here starts before G5a is GREEN): 1 G5b · 2 G5c · 3 G5d · 4 I2 · 5 J3-J6 · 6 K3-K7 · 7 L1-L2 · 8 M · 9 N · 10 O · **11 P** · **12 Q** · **13 R** · 14 S · 15 T · 16 U · 17 V.
+| Awam sidebar | Founder page | Letter / master step | Position in the order | Technology (latest, Rule 61/52/70) |
+|---|---|---|---|---|
+| Dashboard | Dashboard + Bridge | A-H | **DONE** (GREEN, Chrome) | Rust axum+tokio -> signed envelope -> WASM kernel -> React 19 + TS + TanStack + Tailwind + shadcn, CINEMATIC; SQL Postgres |
+| People | People | P (step 10) | 11th | Rust (`/founder/v1/*`) + SQL + React-TS; reuse awam logic via `#[path]` include, never edit awam files (FC18) |
+| Work | People > Work (+ Chain Dependencies P1, `depends_on` SQL edit) | P (10, 10a) | 11th | same |
+| CRM | People > CRM | P (10) | 11th | same |
+| Org | People > Org (+ Insider Guard P2) | P (10, 10b) | 11th | same |
+| Mail | Mail (inbox, folders, compose, outbox); Mail Desk is its LAST part | Q (step 11) | 12th | Rust + SQL + WASM kernel; attachments ONE shared Rust code (Q2, `attach_core.rs` + kernel `sha256@1`); parallel chunks over WebTransport (Q3, after K6); PQ mail OpenPGP RFC 9980 (Q4); PQN (Q5) |
+| Calendar | Calendar (with Mail) | Q (step 11) | 12th | Rust + SQL + React-TS |
+| Domains | inside the Mail group (FOUNDER-PARITY-30OCT) | Q (step 11) | 12th | Rust + SQL + React-TS |
+| Analytics | Systems > Analytics | R (step 12) | 13th | Rust probes + Polar metrics + React-TS |
+| ANEXOChat | Systems > ANEXOChat (+ R2 Mail<->Chat Bridge) | R (step 12) | 13th | REBUILT FROM SCRATCH on the latest technology (see rule below): Rust axum+tokio, WebTransport (K6) for live, WASM kernel for client work, SQL, React-TS CINEMATIC; MoQ (M) only for one-to-many |
+| (Speed, Safety, Admin) | Systems > Speed / Safety / Admin | R (step 12) | 13th | Rust + SQL + React-TS |
+**ANEXOChat rule (founder 2 Nov 05:33):** build it from scratch on the latest technology, following the ORIGINAL repo blueprint (`anexochat/docs/anexochat-blueprint-original.md`, Phases 1-57) but ONLY the phases that are not properly built. Repo evidence today: SQL exists for Phases 1-31 (`anexochat/sql/*`, listed in `anexochat/README.md`) and per AGENTS.md "Phase 1-31A live wire"; **Phases 32-57 have no SQL and no code at all** (AGENTS: Phase 32+ only on the founder's word). Phases 1-31 are NOT claimed good: each one is judged at its turn by a server + Chrome proof, and only the ones that fail are rebuilt. Nothing from the old chat code is copied blindly (FC20: convert, do not paste). Rule 63: the list of phases to rebuild is written and discussed with him BEFORE any code.
+
 ## Rules
 0. **The blueprint runs in LETTER ORDER (founder 1 Nov 15:21).** Next letter = the first one that is not GREEN. Today that is: C2 (host guard, parked by the founder's 1 Nov 06:07 decision), E (L5 parked + lockfile), G4 (Integrity Gauge), I2 (install + Chrome of S1b), then J3. A parked item stays in its place until the founder says skip or do it; nothing later starts before that.
 1. One letter at a time: green on the server + live in his Chrome before the next letter starts.
