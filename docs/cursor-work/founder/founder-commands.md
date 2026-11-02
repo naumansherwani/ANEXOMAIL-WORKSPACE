@@ -2249,3 +2249,6 @@ Written: G5b part 2 (UI + TOFU + founder kernel 0.8.0 copy + real-wasm tests). A
 
 ## 2 Nov 06:49 — pasted founder-install OK; "pura repo update, rules/technology read, green mark"
 Reviewer fixes written (SQL E123 edited, SPA). Needs: E123 re-run + founder-install again. GREEN only after my Chrome look (sign-in needed).
+
+## 2 Nov 06:58 — pasted E123 rerun + founder-install OK
+G5b GREEN (my Chrome look confirmed). Next phase: G5c.
