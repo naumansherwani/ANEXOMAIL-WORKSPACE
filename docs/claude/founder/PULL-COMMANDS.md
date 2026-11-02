@@ -418,3 +418,7 @@ Then sign in to the founder site; I look at the Ledger seal card in Chrome.
 
 ## Personal packages removal, step 1 (2 Nov 08:45) — awam site only (UI + Bun billing), no SQL
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -15` then Ctrl+Shift+R on anexomail.com/plans (only 4 Business cards, no Personal toggle).
+
+## Personal removal PX0 (2 Nov 08:55) — in this order, together
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -15`
+2. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) CHECK_PX0_PERSONAL_LIST | tail -40`  (read-only list; paste it back, then E125)

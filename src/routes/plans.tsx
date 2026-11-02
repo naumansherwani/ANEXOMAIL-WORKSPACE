@@ -6,6 +6,8 @@ import { useState } from "react";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { BillingToggle } from "@/components/site/BillingToggle";
+import { useAuth } from "@/lib/auth";
+import { ConvertToBusiness } from "@/components/site/ConvertToBusiness";
 import { CheckoutButton, PlanCheckoutButton } from "@/components/site/PlanCheckoutButton";
 import { PlanFeatureList } from "@/components/site/PlanFeatureList";
 import { ANNUAL_NOTE, WORKSPACE_PLANS, priceFor, money, type BillingCycle } from "@/lib/plans";
@@ -366,6 +368,9 @@ const services = [
 
 function PlansPage() {
   const [cycle, setCycle] = useState<BillingCycle>("monthly");
+  // A signed-in account that still carries the old "personal" workspace kind keeps its escape hatch (Business plans need a business workspace).
+  const { status, session } = useAuth();
+  const legacyPersonal = status === "signed-in" && session?.user.account_kind === "personal";
 
   return (
     <div className="min-h-screen bg-background">
@@ -387,6 +392,12 @@ function PlansPage() {
             Basic and Pro get 1 month free yearly. Business and Business Pro get 2 months free.
           </p>
         </section>
+
+        {legacyPersonal && (
+          <section className="ax-container flex justify-center pb-16">
+            <ConvertToBusiness />
+          </section>
+        )}
 
         {/* ── Business plans (existing, no-touch) ────────────── */}
         <section

@@ -1397,3 +1397,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 2 Nov 08:05 kernel 0.9.0 (anchor@1 added, G5c) public/kernel/anexo-kernel-0.9.0.wasm sha256 38a1e8fa33d1c727...; awam pin src/lib/kernel/pin.gen.ts updated.
 
 - 2 Nov 07:45 G5c GREEN (founder pastes + my Chrome look: 'Seal 3 time-anchored: 2 TSA'). Do not rebuild E124 / anchor_core / anchors.rs / anchor@1. OTS-Bitcoin still pending (hours).
+- 2 Nov 08:55 plans.tsx: ConvertToBusiness restored for legacy personal-kind accounts (no Business feature lost). CHECK_PX0_PERSONAL_LIST.sql added.

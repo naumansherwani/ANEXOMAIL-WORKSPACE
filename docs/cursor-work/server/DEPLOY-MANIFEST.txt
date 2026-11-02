@@ -23,7 +23,7 @@ src/components/site/AnexoMailField.tsx 4d0f9a34e273e888
 src/components/site/SiteNav.tsx 4b7533a4e09ff3a8
 src/components/site/PlanFeatureList.tsx 6419d9494509fbb0
 src/routes/index.tsx b661c7a75b3f6b7b
-src/routes/plans.tsx 9184cfdc6e88eee4
+src/routes/plans.tsx 2079b272fdf41894
 src/routes/app.people.tsx 423eb4164a4dceb4
 src/routes/app.work.tsx 3a052d4018249a14
 src/components/app/people/ContactProfile.tsx 57e25d1019faf52f
@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 0f9a09be3382c329
+docs/cursor-work/founder/founder-commands.md 1fce6cab263a6a57
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 7c69b1f1e484cbae
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 1ca46ac39588a76b
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0c1a6a8b9e10e904
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 617e54de5f3e4584
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 5b34e63bb00aa102
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -384,7 +384,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 6c6f0bece53c2b8a
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 4d13ca64ce96a086
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -417,7 +417,7 @@ src/lib/history.test.ts d26cdfc56deea483
 src/lib/calendar-jump.ts 378d1a18d2415728
 src/components/app/search/HistoryResults.tsx 8da549dd49fd57e3
 src/routes/app.search.tsx 6f74a251778663b7
-docs/cursor-work/sql/index.md 1e7b352594bec79f
+docs/cursor-work/sql/index.md 14c8a8e00162de1a
 docs/cursor-work/sql/CHECK_E65.sql ce449a9bcfd36628
 docs/cursor-work/sql/E65_rls_and_advisor_sweep.sql df4483c0cee65b4e
 docs/cursor-work/sql/proofs/E65_proof.sql 983e734dff0b7e79
@@ -915,7 +915,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md eb1ba2a7a3861722
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md 17c7e6a80b621af1
+docs/claude/founder/PULL-COMMANDS.md 8c7c2d9b3a30bc4c
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 6f67741f87811209
@@ -1091,4 +1091,5 @@ founder-web/src/anchorgauge.test.ts cb7a2111c15d3ca3
 founder-web/dist/assets/index-B3a1vE21.js baaef8e08fa0aafe
 docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md d506bd97187a2148
 docs/claude/FOUNDER-EXTRA-ADVANCED-02NOV.md 5deda874fa1f074d
-docs/claude/PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md 6bd255a2555fddc5
+docs/claude/PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md 09c513928dda81c5
+docs/cursor-work/sql/CHECK_PX0_PERSONAL_LIST.sql c0c2c7ab77b1c5c3

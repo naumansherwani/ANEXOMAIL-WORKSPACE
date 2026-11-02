@@ -57,3 +57,4 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E122 | founder_seal_interval | seal every 20 entries or 10 min, no seal loop, stall on same due (G5a live proof) | CHECK_E122 (2) |
 | E123 | founder_audit_log_keys + founder_audit_signed_checkpoints + 5 doors: C2SP signed checkpoint per seal (G5b); body derived from the seal, Ed25519 checked by Rust + kernel | CHECK_E123 (5) | founder; local PG16 selftest OK 2 Nov, server pending |
 | E124 | founder_anchor_* (providers, policy, jobs, hash-chained evidence + events) + 12 doors: account-free outside time anchors for signed checkpoints, RFC 3161 TSA + OpenTimestamps (G5c) | CHECK_E124 (5) | founder; local PG16 selftest OK 2 Nov, server pending |
+| CHECK_PX0 | `CHECK_PX0_PERSONAL_LIST.sql` read-only list of personal-kind accounts + Masood row (Personal removal step 0; no E number, changes nothing) | 2 Nov |
