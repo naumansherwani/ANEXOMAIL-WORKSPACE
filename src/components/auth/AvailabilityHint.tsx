@@ -21,11 +21,13 @@ export function useHandleAvailability(local: string, enabled: boolean): Availabi
   const seq = useRef(0);
   useEffect(() => {
     const v = anexomailLocalPart(local).toLowerCase();
+    // Every change of the box makes the answers still on their way stale, INCLUDING when the box is emptied
+    // (bug 2 Nov 10:38: "nex" was checked, the box was cleared, the old answer arrived and printed a green "available" under an empty box).
+    const mine = ++seq.current;
     if (!enabled || v.length < 3) {
       setA({ state: "idle" });
       return;
     }
-    const mine = ++seq.current;
     setA({ state: "checking" });
     const timer = window.setTimeout(async () => {
       try {

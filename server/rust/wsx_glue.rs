@@ -5,7 +5,7 @@
 // Hu-ba-hu Bun workspace.ts: organisations(+owner_id retry) -> org_members(+status retry, fail => rollback) -> account_organisations
 // + account_org_members -> orgs (best effort) -> mail_accounts attach -> account_profiles.preferences.workspace_kind + onboarded.
 // POST /workspace/invitations alag proc nahi: Rust `team.invites.create` (team_glue) pehle se hai. Hisaab wsx_core.rs (3 tests).
-// Domain errors 400/409 (Rule 59); koi bhi fail => Bun fallback client par sirf 502/503/404 par.
+// Domain errors 400/409 (Rule 59); country_required 400 (a new account must have a country); koi bhi fail => Bun fallback client par sirf 502/503/404 par.
 // ============================================================================
 
 use crate::wsx_core as c;
@@ -196,12 +196,23 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
                 Ok(d) => d,
                 Err(m) => return fail(StatusCode::BAD_REQUEST, "bad_domain", m),
             };
+            // Country is MANDATORY for a new account (founder 2 Nov): the sign-up form asks for it, and the SERVER enforces it here too, so a changed client cannot skip it.
+            // Only accounts that have no organisation yet reach this point (everyone else already onboarded); the onboarding screen then shows a country box.
+            let has_country = first(crate::sb_select(&format!("account_profiles?select=country_iso2&user_id=eq.{}&limit=1", enc(&uid))).await)
+                .and_then(|p| p.get("country_iso2").and_then(|x| x.as_str()).map(|c| c.len() == 2))
+                .unwrap_or(false);
+            if !has_country {
+                return fail(StatusCode::BAD_REQUEST, "country_required", "Choose your country to continue.");
+            }
             match create_org(&uid, &name, &mail, "business", domain).await {
                 Ok(m) => {
                     stamp_kind(&uid, &mail, "business").await;
                     crate::ok(json!({ "id": m.id, "name": m.name, "slug": m.slug, "domain": m.domain, "kind": m.kind })).into_response()
                 }
-                Err(e) => fail(StatusCode::INTERNAL_SERVER_ERROR, "operational_workspace_failed", &e),
+                Err(e) => match c::map_org_error(&e) {
+                    Some((code, ecode, msg)) => fail(StatusCode::from_u16(code).unwrap_or(StatusCode::BAD_REQUEST), ecode, msg),
+                    None => fail(StatusCode::INTERNAL_SERVER_ERROR, "operational_workspace_failed", &e),
+                },
             }
         }
         _ => fail(StatusCode::NOT_FOUND, "unknown_proc", "unknown proc"),

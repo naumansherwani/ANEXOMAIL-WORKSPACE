@@ -443,6 +443,36 @@ export function AuthPage({ founderLogin = false, startMode }: { founderLogin?: b
     }
   };
 
+  // Passkey autofill (conditional UI): on the sign-in form the browser lists the saved passkeys under the email box; choosing one signs in with no typing.
+  useEffect(() => {
+    if (mode !== "login" || founderLogin || founderHost || typeof window === "undefined") return;
+    if (!window.PublicKeyCredential || typeof PublicKeyCredential.isConditionalMediationAvailable !== "function") return;
+    const ctl = new AbortController();
+    let cancelled = false;
+    (async () => {
+      try {
+        if (!(await PublicKeyCredential.isConditionalMediationAvailable()) || cancelled) return;
+        const options = await passkeyLoginOptions("");
+        const credential = await navigator.credentials.get({
+          publicKey: PublicKeyCredential.parseRequestOptionsFromJSON(options.publicKey),
+          mediation: "conditional",
+          signal: ctl.signal,
+        });
+        if (!credential || cancelled) return;
+        loginStarted.current = true;
+        const res = await passkeyLoginVerify((credential as PublicKeyCredential).toJSON());
+        await finish(res.token);
+      } catch {
+        /* no passkey chosen, aborted, or not available: the normal form keeps working */
+      }
+    })();
+    return () => {
+      cancelled = true;
+      ctl.abort();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode, founderLogin, founderHost]);
+
   const passkey = async () => {
     setError(null);
     if (!("credentials" in navigator) || !window.PublicKeyCredential) {
@@ -451,7 +481,8 @@ export function AuthPage({ founderLogin = false, startMode }: { founderLogin?: b
     }
     setBusy(true);
     try {
-      const options = await passkeyLoginOptions(anexomailAddress(email));
+      // No username typed = the browser offers the passkeys it holds for this site (the server finds the account from the passkey).
+      const options = await passkeyLoginOptions(email.trim() ? anexomailAddress(email) : "");
       const credential = await navigator.credentials.get({
         publicKey: PublicKeyCredential.parseRequestOptionsFromJSON(options.publicKey),
       });
@@ -492,7 +523,7 @@ export function AuthPage({ founderLogin = false, startMode }: { founderLogin?: b
       await finish(token);
     } catch (e) {
       if (e instanceof ApiError && e.isNotImplemented) {
-        setEnrolBlocked("Passkey enrolment isn't live on the server yet.");
+        setEnrolBlocked("We could not set up your passkey right now. Please try again in a moment.");
       } else {
         fail(e);
       }
@@ -743,7 +774,7 @@ export function AuthPage({ founderLogin = false, startMode }: { founderLogin?: b
                             label="Email"
                             value={email}
                             onChange={setEmail}
-                            autoComplete={mode === "login" ? "username" : "email"}
+                            autoComplete={mode === "login" ? "username webauthn" : "email"}
                           />
                         )}
                         {mode === "signup" && (

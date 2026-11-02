@@ -9,6 +9,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { rpcOrRest } from "@/lib/rpc";
 import { api, ApiError } from "@/lib/api";
+import { CountryPicker } from "@/components/auth/CountryPicker";
+import { countryList, filterBlocked, LOCAL_BLOCKED } from "@/lib/countries";
+import { setCountry } from "@/lib/signx";
 import { useAuth } from "@/lib/auth";
 import { useLocale } from "@/lib/i18n";
 
@@ -19,12 +22,12 @@ export const Route = createFileRoute("/onboarding")({
       { title: "Create your account for workspace — ANEXOMAIL" },
       {
         name: "description",
-        content: "Choose account type: Personal or Business. Then open your ANEXOMAIL inbox.",
+        content: "Set up your ANEXOMAIL workspace, then open your inbox.",
       },
       { property: "og:title", content: "Create your account for workspace — ANEXOMAIL" },
       {
         property: "og:description",
-        content: "Personal mail, or a named business workspace with your organisation domain.",
+        content: "Your ANEXOMAIL workspace, with an organisation name and domain if you have them.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -45,6 +48,10 @@ function OnboardingPage() {
   const [orgDomain, setOrgDomain] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  /** The server answered "country_required": show a country box (a new account must have one). */
+  const [needCountry, setNeedCountry] = useState(false);
+  const [country, setCountryIso] = useState("");
+  const countries = filterBlocked(countryList("en"), LOCAL_BLOCKED);
   const autoKind = useRef(false);
 
   useEffect(() => {
@@ -78,12 +85,14 @@ function OnboardingPage() {
     void goPersonal();
   }, [status, session, navigate, busy, path]);
 
-  const fail = (e: unknown) =>
+  const fail = (e: unknown) => {
+    if (e instanceof ApiError && e.code === "country_required") setNeedCountry(true);
     setError(
       e instanceof ApiError
         ? e.message
         : "Something went wrong.",
     );
+  };
 
   const goPersonal = async () => {
     setError(null);
@@ -104,6 +113,10 @@ function OnboardingPage() {
     setError(null);
     setBusy(true);
     try {
+      if (needCountry) {
+        if (!country) throw new ApiError("Choose your country to continue.", 400, "country_required");
+        await setCountry(country);
+      }
       await rpcOrRest("workspace.organisations", { path: "/api/workspace/organisations", method: "POST", body: { name: org, domain: orgDomain } }, { name: org, domain: orgDomain });
       await api("/api/auth/onboarding/complete", { method: "POST" });
       await refresh();
@@ -173,6 +186,8 @@ function OnboardingPage() {
                 />
                 <p className="ax-caption text-muted-foreground">No company domain yet? Leave it empty. You work on your @anexomail.com address and can connect a domain later in Settings.</p>
               </div>
+
+              {needCountry && <CountryPicker list={countries} value={country} onChange={setCountryIso} />}
 
               {error && (
                 <p role="alert" className="ax-caption text-destructive">

@@ -88,7 +88,7 @@ src/routeTree.gen.ts 8f48cda13fef67ca
 src/lib/team.ts 13a8057bc6c41f2c
 src/lib/team-report.ts c2e82622aec75438
 src/routes/join.tsx 084983ff42559891
-src/routes/auth.tsx fced797cabd83afc
+src/routes/auth.tsx 42e7726c07797b56
 src/routes/app.integrations.tsx 819a9eed56ded24a
 src/lib/workspace-i18n.ts 616c123f5cf62ede
 src/routes/app.settings.ai.tsx 67d3e1596be41f2a
@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 77ccd726c91fbe44
+docs/cursor-work/founder/founder-commands.md 373cc86e31f90f5f
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -139,7 +139,7 @@ docs/cursor-work/TECH-MAP.md 2195ee73fe3fd483
 server/rust/export_core.rs 086ef9caf998828f
 server/rust/export_glue.rs e1aa78e116e2a353
 docs/cursor-work/sql/E44_account_export.sql 256fa217a12458e0
-docs/cursor-work/server/rust-engine-install.sh fa2d5a1107ec5afb
+docs/cursor-work/server/rust-engine-install.sh b092c78c2ae87eaa
 src/components/app/security/IntegrityGate.tsx 05dc58e611855298
 src/lib/account-export.ts 0f06184f8b7786c2
 docs/cursor-work/sql/E45_integrity_purge.sql 52b81aa0216ec1e7
@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md a533bf5b753e9314
+docs/cursor-work/DONE-DO-NOT-REPEAT.md a1525cfac05e3071
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs bd14a1074691a67d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 8bf7fb36e0980244
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md d4add6f2442ed78c
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -260,7 +260,7 @@ docs/cursor-work/server/tier-sweep.sh 1a6b7aa79d0ace53
 src/lib/tier-guard.test.ts a16e4b160b6f172a
 src/lib/tier-guard.baseline.json 75095fd08628920d
 server/rust/passkey_core.rs 5aa795ff74733765
-server/rust/passkey_glue.rs 3cd1b5e8cfe933cc
+server/rust/passkey_glue.rs 1062ec1f430b7f18
 src/lib/passkey-login.test.ts 0b0d0113dcfb2cff
 docs/cursor-work/server/passkey_patch.py 26ac57c951cd9d1f
 docs/cursor-work/server/passkey-proof.py 747096e2afc9560e
@@ -347,7 +347,7 @@ src/router.tsx 3b7aceb40294eb29
 src/routes/app.safety.tsx 5b3baa7dce93791b
 src/routes/auth_.callback.tsx 7b6e0e097af5c818
 src/routes/claim.tsx 197d16be757afade
-src/routes/onboarding.tsx 585947744c96e7d3
+src/routes/onboarding.tsx 2e89b55a66bff3db
 src/components/state/BrandLoader.tsx d7d3f0687669229a
 server/rust/polar-payment/Cargo.toml b19720335aa99719
 docs/cursor-work/server/polar-cp-proof.py 3eca410c891a98cc
@@ -800,8 +800,8 @@ server/rust/basx_glue.rs 60834731a50ffb7f
 src/components/site/SlaProof.tsx 589e27ddd7ff036a
 src/lib/storage-client.ts c0f62c771d5645df
 docs/cursor-work/server/installer-dryrun.sh 70570d6395ca3a37
-server/rust/wsx_core.rs e36825ff34386f1a
-server/rust/wsx_glue.rs f076e6f31e39a102
+server/rust/wsx_core.rs f0dbe39b4bd02738
+server/rust/wsx_glue.rs a8d2bb0c2c7e02dd
 docs/cursor-work/server/wsx-live-test.sh b23be31e65d5d5fe
 docs/claude/POLAR-COPY-V6-BUSINESS.md a97c2be4fce58a40
 server/config/billing-products.ts 724189b40543a163
@@ -914,7 +914,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md eb1ba2a7a3861722
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md 1eee8707281d8b92
+docs/claude/founder/PULL-COMMANDS.md e103615f4822e243
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 6f67741f87811209
@@ -1088,7 +1088,7 @@ server/rust/g5c_tsa_vectors.json fee828dd190a88cf
 founder-web/src/anchorgauge.ts 0a58f95d7333754c
 founder-web/src/anchorgauge.test.ts cb7a2111c15d3ca3
 founder-web/dist/assets/index-B3a1vE21.js baaef8e08fa0aafe
-docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md 3a848938af3a787f
+docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md 15a06b669cb2da36
 docs/claude/FOUNDER-EXTRA-ADVANCED-02NOV.md 5deda874fa1f074d
 docs/claude/PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md b3fde0a60691a0d1
 docs/cursor-work/sql/CHECK_PX0_PERSONAL_LIST.sql c0c2c7ab77b1c5c3
@@ -1106,8 +1106,8 @@ server/caddy/geoblock-gen.py fec292aaaeb5dba2
 server/caddy/geoblock.sh 7823c6fb8b289407
 server/rust/signx_core.rs ddcff59c5b8ba934
 server/rust/signx_glue.rs 5cdca19433325f0a
-server/rust/latency_core.rs a7fe44b909fdd998
-src/components/auth/AvailabilityHint.tsx fcfc3f3fa4e44671
+server/rust/latency_core.rs c6b014e93e70260f
+src/components/auth/AvailabilityHint.tsx 011e7cedc014449d
 src/components/auth/ContactFields.tsx bcb5acb636853356
 src/lib/countries.ts a4c483eed39aa596
 src/lib/signx.ts e4790f01c5617024
@@ -1139,3 +1139,4 @@ src/routes/app.org.policies.tsx 63e17d20e18afd96
 src/routes/app.org.security.tsx 9236dca400b4eb65
 src/routes/app.perf.search.tsx 2e8edefb08f8ba8d
 src/routes/app.security.proof.tsx 72d28e0a4879ff06
+server/rust/latency_glue.rs b3dd67a7d11093fc

@@ -93,6 +93,25 @@ fn domain_shape_ok(s: &str) -> bool {
     hb.iter().all(|c| alnum(*c) || *c == b'.' || *c == b'-')
 }
 
+/// E129 triggers raise short codes; turn the database's text into an honest, friendly answer (status, code, message). None = unknown, keep the generic failure.
+pub fn map_org_error(db: &str) -> Option<(u16, &'static str, &'static str)> {
+    if db.contains("org_domain_not_allowed") {
+        Some((400, "bad_domain", "Use your company domain, not a public mail service or anexomail.com."))
+    } else if db.contains("org_domain_invalid") {
+        Some((400, "bad_domain", "Enter a domain like company.com."))
+    } else if db.contains("organisations_domain_ci_uq") {
+        Some((409, "domain_taken", "That domain is already connected to another workspace."))
+    } else if db.contains("org_limit_owned") {
+        Some((429, "org_limit", "You already own the most organisations allowed. Delete one first."))
+    } else if db.contains("org_limit_rate") {
+        Some((429, "org_limit", "You created several organisations today. Please try again tomorrow."))
+    } else if db.contains("org_slug_reserved") || db.contains("org_slug_invalid") {
+        Some((400, "bad_name", "Please choose a different organisation name."))
+    } else {
+        None
+    }
+}
+
 pub fn org_name_ok(name: &str) -> bool {
     name.trim().chars().count() >= 2
 }
@@ -127,6 +146,14 @@ mod tests {
         assert_eq!(default_org_name("a@x.com"), "My workspace");
         assert_eq!(default_org_name(""), "My workspace");
         assert!(org_name_ok(&default_org_name("zz@x.com")));
+    }
+    #[test]
+    fn database_errors_become_friendly_answers() {
+        assert_eq!(map_org_error("... org_domain_not_allowed ...").map(|x| x.0), Some(400));
+        assert_eq!(map_org_error("duplicate key value violates unique constraint \"organisations_domain_ci_uq\"").map(|x| x.1), Some("domain_taken"));
+        assert_eq!(map_org_error("org_limit_rate").map(|x| x.0), Some(429));
+        assert_eq!(map_org_error("org_limit_owned").map(|x| x.0), Some(429));
+        assert_eq!(map_org_error("something else"), None);
     }
     #[test]
     fn slugs() {

@@ -136,6 +136,38 @@ pub fn probe(p: Probe) -> &'static Quantizer {
     &PROBES[p as usize]
 }
 
+/// Which probe a request path belongs to (pure). `/rpc/<proc>`: auth.* and whoami -> Auth, mail* -> Mail, chat* -> Chat, the rest -> Rpc; `/file/*` -> Other.
+pub fn probe_for_path(path: &str) -> Probe {
+    let Some(proc) = path.strip_prefix("/rpc/") else {
+        return if path.starts_with("/file/") { Probe::Other } else { Probe::Web };
+    };
+    if proc.starts_with("auth.") || proc == "whoami" || proc.starts_with("signx.") {
+        Probe::Auth
+    } else if proc.starts_with("mail") {
+        Probe::Mail
+    } else if proc.starts_with("chat") {
+        Probe::Chat
+    } else {
+        Probe::Rpc
+    }
+}
+
+/// Prometheus text for every probe that has samples: count and p50 / p95 / p99 / max in microseconds. Upper-edge percentiles (never flattering).
+pub fn render_prometheus() -> String {
+    let mut out = String::new();
+    for (i, name) in PROBE_NAMES.iter().enumerate() {
+        let sn = PROBES[i].snapshot();
+        if sn.count == 0 {
+            continue;
+        }
+        out.push_str(&format!("anexomail_latency_count{{probe=\"{name}\"}} {}\n", sn.count));
+        for (q, v) in [("0.5", sn.p50_us), ("0.95", sn.p95_us), ("0.99", sn.p99_us), ("1", sn.max_us)] {
+            out.push_str(&format!("anexomail_latency_us{{probe=\"{name}\",quantile=\"{q}\"}} {v}\n"));
+        }
+    }
+    out
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -241,5 +273,27 @@ mod tests {
         assert!(probe(Probe::Chat).snapshot().count >= 1);
         assert_eq!(probe(Probe::Db).snapshot().count, 0);
         assert_eq!(PROBE_NAMES[Probe::WtRpc as usize], "wt_rpc");
+    }
+
+    #[test]
+    fn paths_pick_the_right_probe() {
+        assert_eq!(probe_for_path("/rpc/auth.session"), Probe::Auth);
+        assert_eq!(probe_for_path("/rpc/whoami"), Probe::Auth);
+        assert_eq!(probe_for_path("/rpc/signx.check"), Probe::Auth);
+        assert_eq!(probe_for_path("/rpc/mail.threads"), Probe::Mail);
+        assert_eq!(probe_for_path("/rpc/mailx.list"), Probe::Mail);
+        assert_eq!(probe_for_path("/rpc/chat.send"), Probe::Chat);
+        assert_eq!(probe_for_path("/rpc/work.tasks"), Probe::Rpc);
+        assert_eq!(probe_for_path("/file/chunk"), Probe::Other);
+        assert_eq!(probe_for_path("/ready"), Probe::Web);
+    }
+
+    #[test]
+    fn prometheus_text_lists_only_probes_with_samples() {
+        probe(Probe::Web).record_us(1500); // its own probe: the tests share the statics and run in parallel
+        let t = render_prometheus();
+        assert!(t.contains("anexomail_latency_count{probe=\"web\"}"));
+        assert!(t.contains("anexomail_latency_us{probe=\"web\",quantile=\"0.99\"}"));
+        assert!(!t.contains("probe=\"wt_rpc\""));
     }
 }

@@ -318,6 +318,30 @@ pub async fn public(proc: &str, input: &Value, headers: &HeaderMap) -> Resp {
     }
 }
 
+/// Sign in WITHOUT typing a username (founder 2 Nov): a challenge that belongs to nobody yet, and an empty allow-list, so the browser offers the
+/// passkeys it holds for this site. The user is found from the credential id at verify time (login_verify already does that). Same rate limit as the
+/// named flow; it reveals nothing about any account.
+async fn usernameless_options(rp: &pc::Rp) -> Resp {
+    let challenge = match random_challenge() {
+        Ok(c) => c,
+        Err(e) => return fail(StatusCode::INTERNAL_SERVER_ERROR, &e),
+    };
+    let now = now_secs();
+    let _ = pg_delete(&format!("webauthn_challenges?expires_at=lt.{}", pc::pct(&pc::iso_utc(now)))).await;
+    let ins = crate::sb_insert(
+        "webauthn_challenges",
+        json!({ "kind": "authenticate", "challenge": challenge, "rp_id": rp.rp_id, "origin": rp.origin, "expires_at": pc::iso_utc(now + 300) }),
+    )
+    .await;
+    if ins.is_err() {
+        return fail(StatusCode::INTERNAL_SERVER_ERROR, "passkey_challenge_failed");
+    }
+    crate::ok(json!({ "publicKey": {
+        "challenge": challenge, "rpId": rp.rp_id, "timeout": 60000, "userVerification": "required", "allowCredentials": []
+    }}))
+    .into_response()
+}
+
 async fn login_options(input: &Value, headers: &HeaderMap) -> Resp {
     let rp = match rp_of(headers) {
         Ok(r) => r,
@@ -325,7 +349,7 @@ async fn login_options(input: &Value, headers: &HeaderMap) -> Resp {
     };
     let email = pc::anexomail_identity(&st(input, "email"));
     if email.is_empty() {
-        return crate::err(StatusCode::BAD_REQUEST, "email_required", "Email is required.").into_response();
+        return usernameless_options(&rp).await;
     }
     // Same answer whether the account exists or not (no user enumeration).
     let no_passkey = || crate::err(StatusCode::BAD_REQUEST, "no_passkey", "No passkey on this account. Use your password.").into_response();
@@ -620,7 +644,7 @@ async fn register_options(uid: &str, email: &str, headers: &HeaderMap) -> Resp {
         "user": { "id": pc::b64url_encode(uid.as_bytes()), "name": email, "displayName": email },
         "pubKeyCredParams": [ { "type": "public-key", "alg": -7 }, { "type": "public-key", "alg": -257 } ],
         "excludeCredentials": exclude,
-        "authenticatorSelection": { "residentKey": "preferred", "userVerification": "required" },
+        "authenticatorSelection": { "residentKey": "required", "requireResidentKey": true, "userVerification": "required" },
         "timeout": 120000,
         "attestation": "none"
     }}))

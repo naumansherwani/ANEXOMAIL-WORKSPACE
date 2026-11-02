@@ -78,13 +78,17 @@ GREEN = his pasted server output. Nothing below is written twice; a phase points
 | GEO1 | Block AF / IL / KP at the edge | Caddy | `server/caddy/geoblock.sh` + `geoblock-gen.py` | plan **GREEN**; apply waits for his "go" |
 | PX2c | Sign-up UI without Personal|Business, availability hint, contact fields | React/TS | `auth.tsx`, `onboarding.tsx`, `AvailabilityHint`, `ContactFields`, `countries.ts`, `signx.ts` | **GREEN** (pull OK 09:47); Chrome look pending |
 | PX3 | Company domain optional | Rust | `wsx_core.rs` `normalize_org_domain_optional` + `wsx_glue.rs` | **GREEN** (`MODULES=wsx` build OK, probe 401, 09:57) |
-| AX9a | Latency percentile core (p50/p95/p99, 496 buckets) | Rust | `latency_core.rs` (8 tests) | written; hook (AX9b) not started |
+| AX9a | Latency percentile core (p50/p95/p99, 496 buckets) | Rust | `latency_core.rs` (10 tests) | written |
+| AX9b | Latency hook: one middleware on `/rpc/*` + `/file/*`, numbers on `:3600/metrics` | Rust | `latency_glue.rs`, installer module `latency` | written 11:00; waits for `MODULES=latency`; `/wt/rpc` not measured yet |
+| PX11 | Hand cursor on every dropdown / opener; stale green answer under an empty email box fixed | React/TS (CSS + hook) | `styles.css`, `CountryPicker.tsx`, `AvailabilityHint.tsx` | cursor GREEN-pending-look (pulled 10:38); bug fix waits for pull |
 | PX4 | Country search + first-letter ranking | React/TS | `CountryPicker.tsx` + test (5), used by `ContactFields` | **GREEN** (his pull.sh: CountryPicker.tsx + test on the server, server==repo 609 files); hint no longer names a country (his "pakistan print ker diya"); Chrome look pending |
 | PX5 | Organisation NAME optional ("<Name> workspace") | Rust + React | `wsx_core.rs` `default_org_name` (5 tests), `wsx_glue.rs`, `onboarding.tsx` | **GREEN** (his `MODULES=wsx`: 5 tests ok, build OK, probe 401) + pull.sh; Chrome look pending |
 | PX6 | Organisation layer hardened (guard trigger, limits, org_events chain, domain proof, last owner, soft delete, integrity report) | SQL | E129 (545 lines) + `CHECK_E129` (12) | **GREEN** (his `sql-run`: E129 ran, CHECK_E129 12/12, E65 sweep OK; E130 fixed a varchar/text bug in the report function) |
 | PX9 | Clean address: sign-up lives at `/signup`, sign-in at `/auth` | React/TS | `signup.tsx`, `auth.tsx` (redirect + address follows mode), `routeTree.gen.ts`, links in `PlanCheckoutButton`, `get-started`, `join`, `onboarding` | **GREEN** on the server (his pull.sh wrote `src/routes/signup.tsx`); **my Chrome look 2 Nov 10:30: `/signup` opens, `/auth?mode=signup` redirects to `/signup`**; marketing pages not yet checked for other `/auth` sign-up links |
-| PX7 (open) | Rust to use E129: filter `deleted_at`, `org_ensure_default` at sign-in, DNS TXT lookup for `org_domain_claim_confirm`, org settings UI (rename, add domain later) | Rust + React | not started | open |
-| PX8 (open) | Passkey username-less login | Rust `passkey_glue` + React | not started | open |
+| PX7a | Friendly answers for E129 trigger errors (public mail domain, taken domain, org limits, reserved name) | Rust | `wsx_core.rs` `map_org_error` (6 tests) + `wsx_glue.rs` | written 11:00; waits for `MODULES=wsx` |
+| PX7b | Country MANDATORY on the server (`country_required`), onboarding shows a country box on that answer | Rust + React/TS | `wsx_glue.rs`, `onboarding.tsx` | written 11:00; waits for `MODULES=wsx` + pull |
+| PX7c (open) | Hide deleted organisations in listings, `org_ensure_default` at sign-in, DNS TXT lookup for `org_domain_claim_confirm`, org settings screen (rename, add domain later) | Rust + React | not started | open |
+| PX8 | Passkey sign-in WITHOUT typing a username (empty allow-list, user found from the credential id; new passkeys are discoverable; browser autofill) | Rust `passkey_glue.rs` + React `auth.tsx` | written 11:00 (passkey_core 15 tests ok); waits for `rust-passkey-install.sh` + pull. Existing passkeys made before this may not be discoverable: they keep working with an email |
 
 ## 2f. Awam: how much is left (founder 2 Nov 10:25: "ab founder ki taraf, batao kitna kaam hai awam ka")
 **Done and GREEN (sign-up lane, PX0-PX6, PX9, E125-E130):** nothing in this lane is rewritten. **My Chrome look 2 Nov 10:30 (live anexomail.com):** `/signup` opens with no Personal|Business step; typing P in Country lists Pakistan, Palau, Palestine, Panama ...; picking Pakistan shows +92; `masoodsherwani` shows red "That name is already taken" + 5 green suggestions; `zq7trial2026x` shows green "is available"; the new mobile hint is live. Still not looked at (needs a login, I do not type passwords): onboarding without domain / org name and Masood's account. The live page still showed the OLD country hint "type P for Pakistan" = the fix (commit 80344264) waits for his pull.sh.
@@ -93,7 +97,7 @@ GREEN = his pasted server output. Nothing below is written twice; a phase points
 |---|---|---|---|
 | 1 | GEO1 apply (block AF / IL / KP at Caddy) | Caddy | his "go" |
 | 2 | Mail-server mailboxes of the two deleted test accounts | server | his explicit "haan" |
-| 3 | Business Premium `plans.ts` card + Polar product + 20,000 cap in the terms | React + Polar | his step P3 |
+| 3 | Business Premium `plans.ts` card + Polar product + 20,000 cap in the terms | React + Polar | PARKED (his 10:38: it comes only after ALL packages exist) |
 **Small, my work (1 phase each):**
 | # | Item | Technology |
 |---|---|---|
