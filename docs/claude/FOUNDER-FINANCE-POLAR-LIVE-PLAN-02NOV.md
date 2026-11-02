@@ -1,0 +1,32 @@
+# Founder Finance: live Polar events (PLAN ONLY, nothing built) - founder order 2 Nov 11:53
+Letter O (Finance deck). Belongs to the founder lane; awam is parked.
+
+## What exists on the server (his pastes 11:49 / 11:50)
+- `/opt/polar-rust-payment` (pm2 `polar-rust-payment`, :3400, Rust axum 0.8 + tokio + sqlx/Postgres + hmac/sha2). main.rs 1407 lines, pcp.rs 329. Migrated Rust: Rule 35 (surgical edits only).
+- Routes: POST `/api/v1/polar-webhook`, `/api/v1/replay`, `/api/v1/reconcile`, `/api/v1/checkout`, GET `/api/v1/checkout/{id}`, `/api/v1/billing/{user_id}`, POST `/api/v1/portal`, `/health`, `/ready`, `/metrics`.
+- Events handled today: subscription.active / past_due / canceled / revoked / updated. Write-ahead log dirs: pending, done, dead, rejects.
+- Polar side (his message): two production webhook URLs, API version 2026-10: `https://anexomail.com/api/v1/polar-webhook` and `https://polarpayments.anexomail.com/api/v1/polar-webhook`.
+- NOT yet read: the handler body (what it writes to the DB per event).
+
+## The way (flow)
+Polar -> Caddy -> Rust :3400 verifies the signature (HMAC-SHA256, Standard Webhooks headers) -> existing WAL -> existing plan update (unchanged) AND one NEW step: append the event to a finance ledger -> founder Rust `anexomail-founder` reads it -> `/founder/v1/finance/*` signed envelope -> WASM kernel verifies in the browser -> React-TS card (CINEMATIC).
+
+## Phases (one at a time; each GREEN only with his pastes + my Chrome look)
+- O-P1 SQL: append-only `polar_events` ledger (unique on the webhook-id so a repeated delivery is stored once; no foreign key; hash-chained like org_events; RLS on, founder/service only) + a view for "who came" and "who left". CHECK file.
+- O-P2 Rust in `polar-rust-payment`: ONLY add the ledger insert and the extra events (subscription.created, subscription.uncanceled, customer.created, order.created/paid/refunded). Existing handling untouched. Unit tests. Plan shown to him before the edit.
+- O-P3 Rust in `anexomail-founder`: `/founder/v1/finance/customers`, `/churn`, `/events` (read-only).
+- O-P4 UI card: new customers, leaving (cancelled, access until period end), gone (revoked), churn %, MRR. Real data only, empty state when none.
+- O-P5 live push: first refresh by short polling; true live push over WebTransport after K6.
+- Backfill: use the existing `/reconcile` pull so history is real from day one. No mock data.
+
+## Churn words (so the numbers are honest)
+- Cancelled = will leave at period end, still paying/active now. Revoked = access ended = churned. Churn % = revoked in period / active at period start. Cancel reason shown when the customer gave one.
+
+## Safety
+- Customer emails only on the founder screen. Webhook secret and Polar token never printed or committed. Duplicate delivery (two URLs) handled by the unique webhook-id.
+
+## Questions for him (answers needed before O-P1)
+1. Both webhook URLs go to the same :3400 service? If both are live, every event arrives twice (the ledger de-duplicates, but one URL may be removable).
+2. Does the existing Polar token read customers and subscriptions, or metrics only? (check on the server, no printing)
+3. Is O moved ahead of G5b/I2, or does it wait in letter order?
+4. Payload shape under API version 2026-10 must be checked against Polar's docs before O-P2.

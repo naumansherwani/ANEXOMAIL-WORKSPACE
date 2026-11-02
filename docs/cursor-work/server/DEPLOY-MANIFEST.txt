@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md a655832db397108a
+docs/cursor-work/founder/founder-commands.md 4af3c40f17803c83
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs bd14a1074691a67d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 358fe811446bed35
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md f338f5cbd1ee95a4
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -1143,3 +1143,4 @@ server/rust/latency_glue.rs fbeed337152628d6
 docs/cursor-work/server/mailbox-retire.sh 2185de7a12a7d4f4
 src/components/site/LaunchBanner.tsx 645a81c0b2caecd3
 docs/claude/AWAM-PARKED-ORDER-02NOV.md 0d04e6e4d8298360
+docs/claude/FOUNDER-FINANCE-POLAR-LIVE-PLAN-02NOV.md 0f2639f7c8f51d72
