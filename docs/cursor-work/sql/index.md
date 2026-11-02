@@ -62,3 +62,4 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E126 | Two test accounts (basic.test@, alikhan@) deleted incl. owned orgs + blockers; masoodsherwani@ converted to business kind on plan pro, never deleted (founder 2 Nov 08:54) | CHECK_E126 (7) |
 | E127 | PX2a: account_profiles.country_iso2 + account_phones (many numbers per account, same number allowed on several accounts, max 5, unverified until SMS exists) | CHECK_E127 (5) |
 | E128 | PX2b: account_phones.e164_hmac keyed blind index (HMAC-SHA256, HASHING.md), non-unique | CHECK_E128 (3) |
+| E129 | Create your workspace: organisation OPTIONAL + org layer hardening (guard trigger, limits, hash-chained org_events, domain proof, last-owner, soft delete, integrity report) | CHECK_E129 (12) |

@@ -1,5 +1,5 @@
 import { BrandSpinner, HoverA } from "@/components/state/BrandLoader";
-import { createFileRoute, useNavigate, useSearch, Link } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate, useSearch, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -76,6 +76,10 @@ function lastNameFromLegal(full: string) {
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
+  // Old links /auth?mode=signup keep working: they land on the clean /signup address.
+  beforeLoad: ({ search }) => {
+    if (search.mode === "signup") throw redirect({ to: "/signup" });
+  },
   validateSearch: (search: Record<string, unknown>): { mode?: "signup" | "reset" | "forgot"; recovery?: string } => ({
     mode:
       search.mode === "signup" || search.mode === "reset" || search.mode === "forgot"
@@ -117,7 +121,7 @@ type LoginResult =
  * `founderLogin` = /founderlogin (founder host only): EXACTLY this same sign-in page, founder-only. After sign-in the founder lands on the
  * Command Center (/f/); a non-founder account is refused. On awam hosts the route does not exist (redirects home). Rule 68.
  */
-export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
+export function AuthPage({ founderLogin = false, startMode }: { founderLogin?: boolean; startMode?: "signup" }) {
   const navigate = useNavigate();
   const { acceptSession, status: authStatus } = useAuth();
   const search = useSearch({ strict: false }) as { mode?: "signup" | "reset" | "forgot"; recovery?: string };
@@ -133,10 +137,17 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
     if (!founderLogin && fh && window.location.hostname.toLowerCase() === "founderworkspace.anexomail.com") window.location.replace("/founderlogin" + window.location.search); // founder host: sign-in default = /founderlogin
   }, [founderLogin]);
   const [mode, setMode] = useState<Mode>(() => {
-    if (search.mode === "signup") return "signup";
+    if (startMode === "signup" || search.mode === "signup") return "signup";
     if (search.mode === "reset" || search.mode === "forgot") return search.mode;
     return "login";
   });
+  // Clean addresses (founder 2 Nov): creating an account lives at /signup, signing in at /auth. The address follows the mode, without a reload.
+  useEffect(() => {
+    if (founderLogin || typeof window === "undefined") return;
+    const here = window.location.pathname;
+    if (mode === "signup" && here === "/auth") window.history.replaceState(window.history.state, "", "/signup");
+    else if (mode === "login" && here === "/signup") window.history.replaceState(window.history.state, "", "/auth");
+  }, [mode, founderLogin]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");

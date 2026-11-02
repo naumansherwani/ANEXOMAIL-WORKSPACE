@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
+import { CountryPicker } from "@/components/auth/CountryPicker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { countryList, filterBlocked, toE164 } from "@/lib/countries";
@@ -25,28 +26,7 @@ export function ContactFields({ value, onChange, locale = "en" }: { value: Conta
 
   return (
     <div className="space-y-ax-3">
-      <div className="space-y-1.5">
-        <Label htmlFor="signup-country" className="text-[13px] font-semibold text-foreground">
-          Country
-        </Label>
-        <select
-          id="signup-country"
-          required
-          className="flex h-10 w-full rounded-md border border-border bg-background px-3 text-sm"
-          value={value.country_iso2}
-          onChange={(e) => onChange({ ...value, country_iso2: e.target.value })}
-          autoComplete="country"
-        >
-          <option value="" disabled>
-            Choose your country
-          </option>
-          {list.map((c) => (
-            <option key={c.iso2} value={c.iso2}>
-              {c.flag} {c.name} (+{c.dial})
-            </option>
-          ))}
-        </select>
-      </div>
+      <CountryPicker list={list} value={value.country_iso2} onChange={(iso2) => onChange({ ...value, country_iso2: iso2 })} />
       <div className="space-y-1.5">
         <Label htmlFor="signup-mobile" className="text-[13px] font-semibold text-foreground">
           Mobile number <span className="font-normal text-muted-foreground">(optional)</span>

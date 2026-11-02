@@ -151,15 +151,15 @@ function OnboardingPage() {
                 <Building2 className="mx-auto size-5 text-cyan-accent" />
                 <h1 className="ax-heading mt-ax-2 text-foreground">Your organisation</h1>
                 <p className="ax-caption mt-1">
-                  Name the company workspace, then the domain it will send from.
+                  Both are optional. Skip them and we create "Your name workspace" for you; rename it or add a domain any time in Settings.
                 </p>
               </div>
 
               <div className="space-y-1.5">
                 <Label htmlFor="org" className="ax-caption text-foreground">
-                  Organisation name
+                  Organisation name <span className="font-normal text-muted-foreground">(optional)</span>
                 </Label>
-                <Input id="org" required minLength={2} value={org} onChange={(e) => setOrg(e.target.value)} />
+                <Input id="org" minLength={2} value={org} onChange={(e) => setOrg(e.target.value)} placeholder="Your company or team" />
               </div>
 
               <div className="space-y-1.5">
@@ -230,7 +230,7 @@ function OnboardingIntro({ loading }: { loading: boolean }) {
               </Link>
             </Button>
             <Button asChild variant="ghost" className="w-full">
-              <Link to="/auth" search={{ mode: "signup" }}>
+              <Link to="/signup">
                 Create your account for workspace
               </Link>
             </Button>

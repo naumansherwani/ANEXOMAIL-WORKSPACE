@@ -166,14 +166,14 @@ export function CheckoutButton({
 
     // Trial: no payment — direct signup
     if (pk === "TRIAL") {
-      window.location.assign("/auth?mode=signup");
+      window.location.assign("/signup");
       return;
     }
 
     // Personal products — guest must sign up first (account_kind is decided
     // at signup; there is no "guest personal" to attach a kind to).
     if (requireSignIn && status !== "signed-in") {
-      window.location.assign("/auth?mode=signup");
+      window.location.assign("/signup");
       return;
     }
 

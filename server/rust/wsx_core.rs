@@ -97,9 +97,37 @@ pub fn org_name_ok(name: &str) -> bool {
     name.trim().chars().count() >= 2
 }
 
+/// The organisation is OPTIONAL at onboarding (founder 2 Nov 2026): a blank name becomes "<Name> workspace", taken from the e-mail name
+/// ("ali.khan@anexomail.com" -> "Ali Khan workspace"), the same pattern the family workspaces already use.
+pub fn default_org_name(email: &str) -> String {
+    let local = email.split('@').next().unwrap_or("").trim();
+    let words: Vec<String> = local
+        .split(|c: char| !c.is_alphanumeric())
+        .filter(|w| !w.is_empty())
+        .take(4)
+        .map(|w| {
+            let mut ch = w.chars();
+            match ch.next() {
+                Some(f) => f.to_uppercase().collect::<String>() + &ch.as_str().to_lowercase(),
+                None => String::new(),
+            }
+        })
+        .collect();
+    let base = words.join(" ");
+    if base.chars().count() < 2 { "My workspace".to_string() } else { format!("{base} workspace") }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn default_names() {
+        assert_eq!(default_org_name("ali.khan@anexomail.com"), "Ali Khan workspace");
+        assert_eq!(default_org_name("MASOOD_sherwani@x.com"), "Masood Sherwani workspace");
+        assert_eq!(default_org_name("a@x.com"), "My workspace");
+        assert_eq!(default_org_name(""), "My workspace");
+        assert!(org_name_ok(&default_org_name("zz@x.com")));
+    }
     #[test]
     fn slugs() {
         assert_eq!(slugify("Acme Corp!!", "12345678-aaaa"), "acme-corp-12345678");

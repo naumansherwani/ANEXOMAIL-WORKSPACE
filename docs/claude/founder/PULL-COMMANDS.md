@@ -454,3 +454,8 @@ Optional, only after he read the GEO1 plan: `git -C /opt/anexomail-web fetch -q 
 ## Optional company domain (2 Nov 09:55) — Rust (wsx) then web
 1. Rust: `git -C /opt/anexomail-web fetch -q origin main && MODULES=wsx bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh) 2>&1 | tail -25`
 2. Web: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -12`
+
+## PX4 + PX5 + PX6 (2 Nov 10:25): country search, organisation optional, E129 - in this order, one technology each
+1. SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E129_org_optional_hardening CHECK_E129 | tail -30`
+2. Rust (default organisation name): `git -C /opt/anexomail-web fetch -q origin main && MODULES=wsx bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh) 2>&1 | tail -25`
+3. Web (CountryPicker + optional name + /signup address): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -25`

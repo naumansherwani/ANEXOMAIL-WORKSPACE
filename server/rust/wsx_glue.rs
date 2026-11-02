@@ -184,7 +184,10 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
             }
         }
         "workspace.organisations" => {
-            let name = st(input, "name").trim().to_string();
+            let mut name = st(input, "name").trim().to_string();
+            if name.is_empty() {
+                name = c::default_org_name(&mail); // optional: blank name -> "<Name> workspace"
+            }
             if !c::org_name_ok(&name) {
                 return fail(StatusCode::BAD_REQUEST, "bad_name", "Organisation name is required.");
             }

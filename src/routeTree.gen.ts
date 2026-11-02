@@ -46,6 +46,7 @@ import { Route as RsvpRouteImport } from './routes/rsvp'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as StatusRouteImport } from './routes/status'
 import { Route as StorageRouteImport } from './routes/storage'
 import { Route as TrialEndedRouteImport } from './routes/trial-ended'
@@ -369,6 +370,11 @@ const SecurityRoute = SecurityRouteImport.update({
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StatusRoute = StatusRouteImport.update({
@@ -1109,6 +1115,7 @@ export interface FileRoutesByFullPath {
   '/search': typeof SearchRoute
   '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
+  '/signup': typeof SignupRoute
   '/status': typeof StatusRoute
   '/storage': typeof StorageRoute
   '/trial-ended': typeof TrialEndedRoute
@@ -1286,6 +1293,7 @@ export interface FileRoutesByTo {
   '/search': typeof SearchRoute
   '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
+  '/signup': typeof SignupRoute
   '/status': typeof StatusRoute
   '/storage': typeof StorageRoute
   '/trial-ended': typeof TrialEndedRoute
@@ -1455,6 +1463,7 @@ export interface FileRoutesById {
   '/search': typeof SearchRoute
   '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
+  '/signup': typeof SignupRoute
   '/status': typeof StatusRoute
   '/storage': typeof StorageRoute
   '/trial-ended': typeof TrialEndedRoute
@@ -1635,6 +1644,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/security'
     | '/settings'
+    | '/signup'
     | '/status'
     | '/storage'
     | '/trial-ended'
@@ -1812,6 +1822,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/security'
     | '/settings'
+    | '/signup'
     | '/status'
     | '/storage'
     | '/trial-ended'
@@ -1980,6 +1991,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/security'
     | '/settings'
+    | '/signup'
     | '/status'
     | '/storage'
     | '/trial-ended'
@@ -2159,6 +2171,7 @@ export interface RootRouteChildren {
   SearchRoute: typeof SearchRoute
   SecurityRoute: typeof SecurityRoute
   SettingsRoute: typeof SettingsRoute
+  SignupRoute: typeof SignupRoute
   StatusRoute: typeof StatusRoute
   StorageRoute: typeof StorageRoute
   TrialEndedRoute: typeof TrialEndedRoute
@@ -2434,6 +2447,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/status': {
@@ -3823,6 +3843,7 @@ const rootRouteChildren: RootRouteChildren = {
   SearchRoute: SearchRoute,
   SecurityRoute: SecurityRoute,
   SettingsRoute: SettingsRoute,
+  SignupRoute: SignupRoute,
   StatusRoute: StatusRoute,
   StorageRoute: StorageRoute,
   TrialEndedRoute: TrialEndedRoute,

@@ -322,7 +322,7 @@ function Invitation({ token, signedIn, authLoading }: { token: string; signedIn:
             <Link to="/auth">Sign in to join</Link>
           </Button>
           <Button asChild className="ax-tap w-full" size="lg" variant="outline" onClick={() => rememberInvite(token)}>
-            <Link to="/auth" search={{ mode: "signup" }}>
+            <Link to="/signup">
               Create an account
             </Link>
           </Button>
