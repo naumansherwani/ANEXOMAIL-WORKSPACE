@@ -422,3 +422,7 @@ Then sign in to the founder site; I look at the Ledger seal card in Chrome.
 ## Personal removal PX0 (2 Nov 08:55) — in this order, together
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -15`
 2. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) CHECK_PX0_PERSONAL_LIST | tail -40`  (read-only list; paste it back, then E125)
+
+## Personal removal E125 (2 Nov 09:10) — together, in this order
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E125_retire_personal_packages CHECK_E125 | tail -25`
+2. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) CHECK_PX0B_TEST_FOOTPRINT | tail -40`  (read-only: what deleting basic.test@ and alikhan@ would remove; then the founder says haan, then E126)

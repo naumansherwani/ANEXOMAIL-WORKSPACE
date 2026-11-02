@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 1fce6cab263a6a57
+docs/cursor-work/founder/founder-commands.md 281cd6b3ca25ba3c
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 1ca46ac39588a76b
+docs/cursor-work/DONE-DO-NOT-REPEAT.md c852e9086e8e5613
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -384,7 +384,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 4d13ca64ce96a086
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 1c4394e8bd8f4da0
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -417,7 +417,7 @@ src/lib/history.test.ts d26cdfc56deea483
 src/lib/calendar-jump.ts 378d1a18d2415728
 src/components/app/search/HistoryResults.tsx 8da549dd49fd57e3
 src/routes/app.search.tsx 6f74a251778663b7
-docs/cursor-work/sql/index.md 14c8a8e00162de1a
+docs/cursor-work/sql/index.md 7d24e3c915dcad89
 docs/cursor-work/sql/CHECK_E65.sql ce449a9bcfd36628
 docs/cursor-work/sql/E65_rls_and_advisor_sweep.sql df4483c0cee65b4e
 docs/cursor-work/sql/proofs/E65_proof.sql 983e734dff0b7e79
@@ -915,7 +915,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md eb1ba2a7a3861722
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md 8c7c2d9b3a30bc4c
+docs/claude/founder/PULL-COMMANDS.md 0a6491cba23442ec
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 6f67741f87811209
@@ -1091,5 +1091,8 @@ founder-web/src/anchorgauge.test.ts cb7a2111c15d3ca3
 founder-web/dist/assets/index-B3a1vE21.js baaef8e08fa0aafe
 docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md d506bd97187a2148
 docs/claude/FOUNDER-EXTRA-ADVANCED-02NOV.md 5deda874fa1f074d
-docs/claude/PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md 09c513928dda81c5
+docs/claude/PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md a9d6401419ad46c2
 docs/cursor-work/sql/CHECK_PX0_PERSONAL_LIST.sql c0c2c7ab77b1c5c3
+docs/cursor-work/sql/E125_retire_personal_packages.sql 18bdb688359c9c70
+docs/cursor-work/sql/CHECK_E125.sql 4f037d0dd562d212
+docs/cursor-work/sql/CHECK_PX0B_TEST_FOOTPRINT.sql b375d581d34834fb

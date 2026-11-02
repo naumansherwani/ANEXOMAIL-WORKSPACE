@@ -763,3 +763,4 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - 2 Nov 08:30 Personal packages RETIRED (docs/rule only); removal plan PX0-PX3 written, no code deleted, no Polar change. Dobara mat likho; no new Personal work.
 - 2 Nov 08:45 Personal PACKAGES removed from awam UI/billing code (plans.tsx, app.billing.tsx, personal-tiers.ts deleted, billing-products/sync). Engine (plan-surface gates, account_kind) KEPT on purpose. Do not re-add. SQL E125 / sign-up choice / Polar pending.
 - 2 Nov 08:55 FOUNDER SIDE ON HOLD (his word 08:28); active work = Personal removal (PX0 list -> E125 -> sign-up choice -> docs). ConvertToBusiness restored on /plans. Masood=Pro, never deleted. Dobara mat likho.
+- 2 Nov 09:10 E125 + CHECK_E125 + CHECK_PX0B written (local scratch PG tested, idempotent). Masood already plan pro, kind untouched on purpose. Test accounts NOT deleted yet (E126 after his yes). Dobara mat likho.
