@@ -185,6 +185,7 @@ const OID_P256: &[u8] = &[0x2a, 0x86, 0x48, 0xce, 0x3d, 0x03, 0x01, 0x07];
 const OID_P384: &[u8] = &[0x2b, 0x81, 0x04, 0x00, 0x22];
 const OID_ECDSA_SHA256: &[u8] = &[0x2a, 0x86, 0x48, 0xce, 0x3d, 0x04, 0x03, 0x02];
 const OID_ECDSA_SHA384: &[u8] = &[0x2a, 0x86, 0x48, 0xce, 0x3d, 0x04, 0x03, 0x03];
+const OID_ECDSA_SHA512: &[u8] = &[0x2a, 0x86, 0x48, 0xce, 0x3d, 0x04, 0x03, 0x04];   // ecdsa-with-SHA512 (1.2.840.10045.4.3.4): what freetsa.org signs with (P-384 key)
 const OID_SHA384: &[u8] = &[0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x02];
 const OID_SHA512: &[u8] = &[0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x03];
 
@@ -366,7 +367,7 @@ pub fn parse_tsr(resp: &[u8], digest: &[u8; 32], nonce: Option<&[u8; 8]>) -> Res
     let (bt, bits, tail) = tlv(kr)?; if !tail.is_empty() { return Err("trailing bytes after the public key".into()); }
     if bt != 0x03 || bits.is_empty() || bits[0] != 0 { return Err("bad public key bit string".into()); }
     let key = bits[1..].to_vec();
-    let sig_hash = |o: &[u8]| -> Option<u16> { if o == OID_RSA_SHA256 || o == OID_ECDSA_SHA256 { Some(256) } else if o == OID_RSA_SHA384 || o == OID_ECDSA_SHA384 { Some(384) } else if o == OID_RSA_SHA512 { Some(512) } else { None } };
+    let sig_hash = |o: &[u8]| -> Option<u16> { if o == OID_RSA_SHA256 || o == OID_ECDSA_SHA256 { Some(256) } else if o == OID_RSA_SHA384 || o == OID_ECDSA_SHA384 { Some(384) } else if o == OID_RSA_SHA512 || o == OID_ECDSA_SHA512 { Some(512) } else { None } };
     let hb = sig_hash(sig_oid).unwrap_or(dbits);
     let kind = if alg_oid == OID_RSA {
         if !(sig_oid == OID_RSA || sig_hash(sig_oid).is_some()) { return Err(format!("unsupported RSA signature algorithm {}", oid_text(sig_oid))); }
@@ -374,7 +375,9 @@ pub fn parse_tsr(resp: &[u8], digest: &[u8; 32], nonce: Option<&[u8; 8]>) -> Res
     } else if alg_oid == OID_EC_KEY {
         let (ct, curve, ctail) = tlv(alg_par)?; if ct != 0x06 || !ctail.is_empty() { return Err("EC parameters are not a single named curve".into()); }
         let c = if curve == OID_P256 { 256 } else if curve == OID_P384 { 384 } else { return Err(format!("unsupported curve {}", oid_text(curve))); };
-        if (c, hb) != (256, 256) && (c, hb) != (384, 384) { return Err("unsupported ECDSA curve/hash pair".into()); }
+        // Exactly the pairs the founder server can VERIFY: ring does P-256/SHA-256, P-256/SHA-384, P-384/SHA-256, P-384/SHA-384; RustCrypto p384 adds P-384/SHA-512 (freetsa).
+        // P-256/SHA-512 is refused on purpose: no verifier for it exists, and a parser must never accept what nobody checks.
+        if !matches!((c, hb), (256, 256) | (256, 384) | (384, 256) | (384, 384) | (384, 512)) { return Err("unsupported ECDSA curve/hash pair".into()); }
         SigKind::Ecdsa { curve: c, hash: hb }
     } else { return Err(format!("unsupported signer key type {}", oid_text(alg_oid))); };
     Ok(Tsr {
@@ -410,7 +413,8 @@ mod tests {
     fn ring_ok(t: &Tsr) -> bool {
         let alg: &dyn rs::VerificationAlgorithm = match &t.kind {
             SigKind::RsaPkcs1(256) => &rs::RSA_PKCS1_2048_8192_SHA256, SigKind::RsaPkcs1(384) => &rs::RSA_PKCS1_2048_8192_SHA384, SigKind::RsaPkcs1(512) => &rs::RSA_PKCS1_2048_8192_SHA512,
-            SigKind::Ecdsa { curve: 256, .. } => &rs::ECDSA_P256_SHA256_ASN1, SigKind::Ecdsa { curve: 384, .. } => &rs::ECDSA_P384_SHA384_ASN1, _ => return false };
+            SigKind::Ecdsa { curve: 256, hash: 256 } => &rs::ECDSA_P256_SHA256_ASN1, SigKind::Ecdsa { curve: 256, hash: 384 } => &rs::ECDSA_P256_SHA384_ASN1, SigKind::Ecdsa { curve: 384, hash: 256 } => &rs::ECDSA_P384_SHA256_ASN1, SigKind::Ecdsa { curve: 384, hash: 384 } => &rs::ECDSA_P384_SHA384_ASN1,
+            SigKind::Ecdsa { curve: 384, hash: 512 } => return false /* ring has no P-384/SHA-512: the tests below skip it, the founder server verifies it with RustCrypto p384 (anchors.rs tests) */, _ => return false };
         rs::UnparsedPublicKey::new(alg, &t.key).verify(&t.signed_bytes, &t.signature).is_ok()
     }
     fn arr<const N: usize>(h: &str) -> [u8; N] { from_hex(h).unwrap().try_into().unwrap() }
@@ -443,7 +447,7 @@ mod tests {
             let t = parse_tsr(&from_hex(e["reply_hex"].as_str().unwrap()).unwrap(), &d, None).unwrap_or_else(|x| panic!("{}: {x}", e["name"]));
             assert_eq!(t.signer_pin, e["spki_sha256"].as_str().unwrap(), "{}", e["name"]);
             assert_eq!(t.serial_hex.trim_start_matches('0'), e["serial_hex"].as_str().unwrap().trim_start_matches('0').to_lowercase());
-            assert!(ring_ok(&t), "ring rejects {}", e["name"]);
+            if t.kind != (SigKind::Ecdsa { curve: 384, hash: 512 }) { assert!(ring_ok(&t), "ring rejects {}", e["name"]); }
             assert!(t.gen_time_ms > 1_700_000_000_000);
         }
     }
@@ -458,6 +462,7 @@ mod tests {
             let d: [u8; 32] = arr(e["digest_hex"].as_str().unwrap());
             let r = from_hex(e["reply_hex"].as_str().unwrap()).unwrap();
             let good = parse_tsr(&r, &d, None).unwrap();
+            if good.kind == (SigKind::Ecdsa { curve: 384, hash: 512 }) { continue; }   // ring cannot judge it; the same flip test runs against RustCrypto in anchors.rs
             for i in 0..r.len() {
                 let mut m = r.clone(); m[i] ^= 0x01;
                 if let Ok(t) = parse_tsr(&m, &d, None) {

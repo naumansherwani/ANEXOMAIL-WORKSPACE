@@ -28,12 +28,20 @@ ess_cert_id_chain = no
 ess_cert_id_alg = sha256
 EOT
 }
-mk rsa256 rsa:2048 sha256; mk rsa512 rsa:3072 sha512; mk ec256 ec:<(openssl ecparam -name prime256v1) sha256
+# G5c: the original set (default). R2 (3 Nov): G5C_SET=r2 adds the P-384 pairs real TSAs use (freetsa = P-384 key + ecdsa-with-SHA512), made by the same independent OpenSSL.
+if [ "${G5C_SET:-base}" = "r2" ]; then
+  mk ec384x512 ec:<(openssl ecparam -name secp384r1) sha512; mk ec384x384 ec:<(openssl ecparam -name secp384r1) sha384; mk ec256x512 ec:<(openssl ecparam -name prime256v1) sha512
+  SET='[("ec384x512", "ec", "sha256"), ("ec384x384", "ec", "sha256"), ("ec256x512", "ec", "sha256")]'
+else
+  mk rsa256 rsa:2048 sha256; mk rsa512 rsa:3072 sha512; mk ec256 ec:<(openssl ecparam -name prime256v1) sha256
+  SET='[("rsa256", "rsa", "sha256"), ("rsa512", "rsa", "sha256"), ("ec256", "ec", "sha256")]'
+fi
+export SET
 python3 - "$OUT" <<'PY'
 import subprocess, json, sys, hashlib, re, os
 out = sys.argv[1]; vecs = []
 def run(*a, inp=None): return subprocess.run(a, check=True, capture_output=True, input=inp).stdout
-for n, alg, hashname in [("rsa256", "rsa", "sha256"), ("rsa512", "rsa", "sha256"), ("ec256", "ec", "sha256")]:
+for n, alg, hashname in eval(os.environ["SET"]):
     for k in range(2):
         data = f"g5c oracle {n} {k}".encode(); digest = hashlib.sha256(data).hexdigest()
         run("openssl", "ts", "-query", "-digest", digest, "-sha256", "-cert", "-out", f"{n}.tsq")

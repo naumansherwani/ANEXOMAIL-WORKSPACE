@@ -502,3 +502,11 @@ Every reply that touches the server lists ALL pull commands for that batch, in R
 6. **Probe (still useful, read-only)**: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/anchor-probe.sh) 2>&1 | tail -80`
 
 ## RULE (founder 3 Nov 06:07): list every technology slot, but give a COMMAND only where that technology changed; write "no change" for the rest. Never repeat a SQL command when no SQL changed.
+
+## G5c R2 (3 Nov 06:39 PKT) — only the changed technologies get a command (his rule)
+SQL: no change.
+Rust + SPA founder (cargo downloads p384/ecdsa on the server; 166 tests must pass):
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12
+Rust awam + restart: no change. Brain: no change.
+Web (kernel 0.10.0 files + pins changed, so it builds):
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15

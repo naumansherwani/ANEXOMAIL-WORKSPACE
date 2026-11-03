@@ -1,4 +1,4 @@
-//! G5c — account-free OUTSIDE TIME ANCHORS for the signed checkpoints. Technology: Rust (reqwest + ring). Parsing / format rules live ONCE in `server/rust/anchor_core.rs`
+//! G5c — account-free OUTSIDE TIME ANCHORS for the signed checkpoints. Technology: Rust (reqwest + ring; RustCrypto p384 only for P-384/SHA-512). Parsing / format rules live ONCE in `server/rust/anchor_core.rs`
 //! (shared with the browser kernel, Rule 52). This file: the tick (E124 queue -> public TSA / OpenTimestamps calendar -> verify -> SQL door), and the view the browser asks.
 //! Honest limits: no account anywhere; a TSA signer is pinned (TOFU) not chained to a public root; every failure is stored as plain text in the job, never swallowed.
 use crate::anchor_core as ac;
@@ -34,19 +34,35 @@ async fn body_of(r: reqwest::Response) -> Result<Vec<u8>, String> {
     Ok(b.to_vec())
 }
 
-pub fn ring_verify(t: &ac::Tsr) -> bool {
+/// Who checks a CMS signature. ring for everything it implements; RustCrypto p384 (pure Rust, verify-only, no C) for the one pair ring does not have: P-384 + SHA-512 (freetsa.org).
+/// The parser (`anchor_core::parse_tsr`) accepts EXACTLY the pairs listed here, so a token it lets through always has a verifier, and the (curve, hash) pair is matched exactly (never "any hash on this curve").
+pub fn sig_verify(t: &ac::Tsr) -> Option<&'static str> {
     let alg: &dyn rs::VerificationAlgorithm = match &t.kind {
         ac::SigKind::RsaPkcs1(256) => &rs::RSA_PKCS1_2048_8192_SHA256, ac::SigKind::RsaPkcs1(384) => &rs::RSA_PKCS1_2048_8192_SHA384, ac::SigKind::RsaPkcs1(512) => &rs::RSA_PKCS1_2048_8192_SHA512,
-        ac::SigKind::Ecdsa { curve: 256, .. } => &rs::ECDSA_P256_SHA256_ASN1, ac::SigKind::Ecdsa { curve: 384, .. } => &rs::ECDSA_P384_SHA384_ASN1, _ => return false };
-    rs::UnparsedPublicKey::new(alg, &t.key).verify(&t.signed_bytes, &t.signature).is_ok()
+        ac::SigKind::Ecdsa { curve: 256, hash: 256 } => &rs::ECDSA_P256_SHA256_ASN1, ac::SigKind::Ecdsa { curve: 256, hash: 384 } => &rs::ECDSA_P256_SHA384_ASN1,
+        ac::SigKind::Ecdsa { curve: 384, hash: 256 } => &rs::ECDSA_P384_SHA256_ASN1, ac::SigKind::Ecdsa { curve: 384, hash: 384 } => &rs::ECDSA_P384_SHA384_ASN1,
+        ac::SigKind::Ecdsa { curve: 384, hash: 512 } => return if p384_sha512(t) { Some("rustcrypto-p384") } else { None },
+        _ => return None };
+    if rs::UnparsedPublicKey::new(alg, &t.key).verify(&t.signed_bytes, &t.signature).is_ok() { Some("ring") } else { None }
+}
+
+/// ECDSA P-384 over the SHA-512 of the signed attributes (RFC 5758 ecdsa-with-SHA512). The key must be an UNCOMPRESSED point (ring demands the same); the signature strict DER; the digest is
+/// handed over as a pre-hash, which ECDSA truncates to the leftmost 384 bits (FIPS 186-5) - that is the whole reason ring cannot do it and this can.
+fn p384_sha512(t: &ac::Tsr) -> bool {
+    use ecdsa::signature::hazmat::PrehashVerifier;
+    use sha2::{Digest, Sha512};
+    if t.key.len() != 97 || t.key[0] != 0x04 { return false; }
+    let Ok(vk) = ecdsa::VerifyingKey::<p384::NistP384>::from_sec1_bytes(&t.key) else { return false };
+    let Ok(sig) = ecdsa::Signature::<p384::NistP384>::from_der(&t.signature) else { return false };
+    vk.verify_prehash(&Sha512::digest(&t.signed_bytes), &sig).is_ok()
 }
 
 /// Everything about one TSA answer, decided without the network (so it is testable): parse, bind to our digest + nonce, check the CMS signature.
 pub fn check_tsa_reply(reply: &[u8], digest: &[u8; 32], nonce: &[u8; 8]) -> Result<(ac::Tsr, Value), String> {
     let t = ac::parse_tsr(reply, digest, Some(nonce))?;
-    if !ring_verify(&t) { return Err("the TSA signature does not verify".into()); }
+    let Some(by) = sig_verify(&t) else { return Err("the TSA signature does not verify".into()) };
     let parsed = json!({"gen_time_ms": t.gen_time_ms, "serial": if t.serial_hex.len() < 2 { format!("0{}", t.serial_hex) } else { t.serial_hex.clone() }, "nonce": t.nonce_hex, "policy": t.policy,
-        "signer_pin": t.signer_pin, "cert_not_before_ms": t.not_before_ms, "cert_not_after_ms": t.not_after_ms, "tstinfo_sha256": t.tstinfo_sha256, "sig": format!("{:?}", t.kind), "verified_by": "ring"});
+        "signer_pin": t.signer_pin, "cert_not_before_ms": t.not_before_ms, "cert_not_after_ms": t.not_after_ms, "tstinfo_sha256": t.tstinfo_sha256, "sig": format!("{:?}", t.kind), "verified_by": by});
     Ok((t, parsed))
 }
 
@@ -188,5 +204,45 @@ mod tests {
             if let Ok((t2, _)) = check_tsa_reply(&bad, &d, &n) { assert_eq!(t2.signer_pin, t.signer_pin); assert_eq!(t2.gen_time_ms, t.gen_time_ms); }
         }
         assert!(ok > 0, "no vector carried a usable nonce");
+    }
+    // R2 (3 Nov): freetsa signs with a P-384 key + ecdsa-with-SHA512, a pair ring does not have. These vectors come from OpenSSL acting as a TSA with the SAME key/hash pair.
+    fn by_name(name: &str) -> Vec<Value> { vecs()["vectors"].as_array().unwrap().iter().filter(|e| e["name"] == name).cloned().collect() }
+    fn open_vec(e: &Value) -> (Vec<u8>, [u8; 32], [u8; 8]) {
+        (ac::from_hex(e["reply_hex"].as_str().unwrap()).unwrap(), ac::from_hex(e["digest_hex"].as_str().unwrap()).unwrap().try_into().unwrap(), ac::from_hex(e["nonce_hex"].as_str().unwrap()).unwrap().try_into().unwrap())
+    }
+    #[test] fn p384_sha512_reply_is_verified_by_rustcrypto_and_the_pair_is_exact() {
+        let v = by_name("ec384x512"); assert_eq!(v.len(), 2);
+        for e in &v {
+            let (r, d, n) = open_vec(e); let (t, p) = check_tsa_reply(&r, &d, &n).unwrap();
+            assert_eq!(t.kind, ac::SigKind::Ecdsa { curve: 384, hash: 512 }); assert_eq!(p["verified_by"], "rustcrypto-p384"); assert_eq!(p["signer_pin"], e["spki_sha256"]);
+        }
+        for e in &by_name("ec384x384") { let (r, d, n) = open_vec(e); let (t, p) = check_tsa_reply(&r, &d, &n).unwrap(); assert_eq!(t.kind, ac::SigKind::Ecdsa { curve: 384, hash: 384 }); assert_eq!(p["verified_by"], "ring"); }
+    }
+    #[test] fn p384_sha512_forgeries_are_refused() {
+        let e = &by_name("ec384x512")[0]; let (r, d, n) = open_vec(e); let (t, _) = check_tsa_reply(&r, &d, &n).unwrap();
+        // 1) one flipped bit anywhere in the signature, 2) one flipped bit in the signed attributes, 3) the other vector's signature under this key, 4) a compressed key, 5) a truncated key
+        for bit in [0usize, 7, 100, t.signature.len() * 8 - 1] { let mut t2 = t.clone(); t2.signature[bit / 8] ^= 1 << (bit % 8); assert!(sig_verify(&t2).is_none(), "signature bit {bit}"); }
+        for at in [0usize, t.signed_bytes.len() / 2, t.signed_bytes.len() - 1] { let mut t2 = t.clone(); t2.signed_bytes[at] ^= 0x01; assert!(sig_verify(&t2).is_none(), "signed byte {at}"); }
+        let other = &by_name("ec384x512")[1]; let (r2, d2, n2) = open_vec(other); let (t3, _) = check_tsa_reply(&r2, &d2, &n2).unwrap();
+        let mut t4 = t.clone(); t4.signature = t3.signature.clone(); assert!(sig_verify(&t4).is_none());
+        let mut t5 = t.clone(); t5.key[0] = 0x02; t5.key.truncate(49); assert!(sig_verify(&t5).is_none());
+        let mut t6 = t.clone(); t6.key.truncate(96); assert!(sig_verify(&t6).is_none());
+        let mut t7 = t.clone(); t7.key[1] ^= 0x01; assert!(sig_verify(&t7).is_none(), "a point off the curve or another key");
+        let mut t8 = t.clone(); t8.signature.push(0); assert!(sig_verify(&t8).is_none(), "trailing byte after the DER signature");
+    }
+    #[test] fn p256_sha512_is_refused_by_the_parser_because_nobody_verifies_it() {
+        let e = &vecs()["refused_by_design"][0]; assert_eq!(e["name"], "ec256x512"); let (r, d, n) = open_vec(e);
+        assert!(ac::parse_tsr(&r, &d, Some(&n)).is_err());
+    }
+    #[test] fn every_pair_the_parser_accepts_has_a_verifier() {
+        // the contract in one place: whatever parse_tsr lets through, sig_verify must be able to say yes to for a genuine token.
+        let mut seen = std::collections::BTreeSet::new();
+        for e in vecs()["vectors"].as_array().unwrap() { let (r, d, n) = open_vec(e); if let Ok(t) = ac::parse_tsr(&r, &d, Some(&n)) { assert!(sig_verify(&t).is_some(), "{}", e["name"]); seen.insert(format!("{:?}", t.kind)); } }
+        assert!(seen.contains("Ecdsa { curve: 384, hash: 512 }") && seen.contains("Ecdsa { curve: 384, hash: 384 }") && seen.contains("Ecdsa { curve: 256, hash: 256 }"), "{seen:?}");
+    }
+    #[test] fn flipping_any_byte_of_a_p384_sha512_reply_never_changes_an_accepted_claim() {
+        // the same property anchor_core proves against ring, here against the RustCrypto verifier: a tampered reply is refused, or it still says exactly what the genuine one said.
+        let e = &by_name("ec384x512")[0]; let (r, d, n) = open_vec(e); let (good, _) = check_tsa_reply(&r, &d, &n).unwrap();
+        for i in 0..r.len() { let mut m = r.clone(); m[i] ^= 0x01; if let Ok((t, _)) = check_tsa_reply(&m, &d, &n) { assert_eq!((t.gen_time_ms, &t.signer_pin, &t.serial_hex), (good.gen_time_ms, &good.signer_pin, &good.serial_hex), "byte {i}"); } }
     }
 }
