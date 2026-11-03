@@ -2373,3 +2373,8 @@ Done by me: typed 'Laptop' + pressed Add key on his tab: POST /founder/v1/passke
 
 ## 3 Nov 09:35 PKT — "chorme live dekho" (verbatim)
 Chrome look: his key 'Laptop' REGISTERED live (Your keys 1/5, 'Healthy: chain intact, facts consistent', 1 synced, Trust report events info 2, Signal API ran: 'Told your passkey provider about 1 change'). Found bug: first-key recovery codes not shown (E118 wants a grant once one key is active) -> fix: Rust makes the first key's codes BEFORE adding the key. 'Make new codes' (T2) pressed: /passkey/options 200 = kernel action@1 digest matched live; waiting for his touch.
+
+## 3 Nov 09:43 PKT — his paste (verbatim summary) + order "codes sab update kero" (compact aayega)
+Paste: founder-install (bug fix) OK: SPA 200, exchange 401, token service ON, Ed25519 ON, write-request signature ENFORCED, healthz 200, me/bridge 401, OK founder service zinda.
+My Chrome look 09:44 (his tab): Security keys: Healthy, 1/5, Laptop 'last used 5 min ago', Trust report 'allow 2 - info 3 - quarantined 0 - open provider notices 0 - post-quantum 0'. => a REAL passkey sign-in (assertion) went through the server (E139 assert allow x2), the T2 grant for recovery.codes was consumed, Signal notices acknowledged.
+Status: J3 + J4 + J5 gate + recovery-codes T2 = GREEN with paste + Chrome. Not exercised live (named, not hidden): hardware-only toggle, flare phone (needs SMS provider), T3 two-key flow, Remove with a 2nd key. Web pull.sh (auth.ts + kernel for awam site) still to run; FOUNDER_PASSWORD code delete after his say-so.

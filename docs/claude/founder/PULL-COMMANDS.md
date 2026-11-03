@@ -12,10 +12,9 @@ Format: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/an
 | `server/rust/**` (awam Rust engine :3200) | Rust awam engine | `docs/cursor-work/server/rust-engine-install.sh` | 15 |
 | `polar-payment` | Polar | KABHI NAHI (no-touch) | — |
 
-## ABHI PENDING (3 Nov 09:50) — 1 point
-J3 fix (pehli key ke recovery codes): Rust + SPA founder dobara:
-1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
-Phir (agla turn) Web: pull.sh.
+## ABHI PENDING (3 Nov 09:45) — 1 point
+J3/J4/J5 server + founder-install GREEN (paste + Chrome). Baqi sirf Web (kernel 0.12.0 + auth.ts guard, awam site):
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
 
 ## Mukammal commands (copy-paste)
 **SQL (bare, E-files auto):**
