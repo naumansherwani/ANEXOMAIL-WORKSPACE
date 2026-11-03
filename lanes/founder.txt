@@ -71,6 +71,7 @@ docs/cursor-work/sql/E133_anchor_pending_any_length.sql
 docs/cursor-work/sql/E134_anchor_requeue_door.sql
 docs/cursor-work/sql/E138_founder_portable_tick.sql
 docs/cursor-work/sql/E139_founder_webauthn_l3.sql
+docs/cursor-work/sql/E140_founder_flare_push.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/E68_proof.sql

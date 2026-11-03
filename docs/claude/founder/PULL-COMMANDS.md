@@ -576,3 +576,5 @@ git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-w
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15
 
 <!-- 3 Nov 11:05: ABHI PENDING = none. J6 flare v2 is planned only (docs/claude/FOUNDER-FLARE-J6-RESEARCH-03NOV.md); the next pull comes with E140. -->
+
+<!-- 3 Nov 11:25: E140 SQL is in the repo but NOT yet given to the founder as a command (comes with the Rust sender so SQL + founder-install go as one block). -->
