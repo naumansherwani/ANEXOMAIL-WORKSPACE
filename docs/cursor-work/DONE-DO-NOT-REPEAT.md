@@ -1435,3 +1435,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 3 Nov 05:49 Chrome look: findings L-A (seal/anchor times shown without date) and L-B (Live feed "Reconnecting") written in the context; neither fixed yet.
 - 3 Nov 05:57 WRITTEN (not on the server): G5c R1 = E133 + CHECK_E133 + anchors.rs (any pending commitment length) + core test (161 tests pass). R2 not written (needs real freetsa pair + kernel re-release). Do not rewrite.
 - 3 Nov 05:57 RULE (his anger 05:57): never start several phases together; finish and GREEN one phase, update the context TOP line each step. Current phase: G5c R1.
+- 3 Nov 06:08 GREEN-on-server by his pastes: E133 + CHECK_E133 3/3, founder-install, pull.sh. Probe output received: OTS leaf = 44 bytes (R1 cause proven), freetsa = P-384 + SHA-512 (R2 cause proven). R1 live proof waits for the next seal. Command rule: only changed technologies get a command.

@@ -500,3 +500,5 @@ Every reply that touches the server lists ALL pull commands for that batch, in R
 3. **Rust awam + restart**: no change. 4. **Brain**: no change.
 5. **Web (awam)**: docs only, no change. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
 6. **Probe (still useful, read-only)**: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/anchor-probe.sh) 2>&1 | tail -80`
+
+## RULE (founder 3 Nov 06:07): list every technology slot, but give a COMMAND only where that technology changed; write "no change" for the rest. Never repeat a SQL command when no SQL changed.
