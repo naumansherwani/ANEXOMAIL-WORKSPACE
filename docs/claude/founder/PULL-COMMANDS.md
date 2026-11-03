@@ -12,9 +12,7 @@ Format: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/an
 | `server/rust/**` (awam Rust engine :3200) | Rust awam engine | `docs/cursor-work/server/rust-engine-install.sh` | 15 |
 | `polar-payment` | Polar | KABHI NAHI (no-touch) | — |
 
-## ABHI PENDING (3 Nov 09:45) — 1 point
-J3/J4/J5 server + founder-install GREEN (paste + Chrome). Baqi sirf Web (kernel 0.12.0 + auth.ts guard, awam site):
-1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
+## ABHI PENDING (3 Nov 09:50): KOI NAHI. SQL E139, founder-install (x2) aur Web pull.sh teeno server par green hain (uske paste mile). Agla server command J6 live proof / K3 ke saath.
 
 ## Mukammal commands (copy-paste)
 **SQL (bare, E-files auto):**

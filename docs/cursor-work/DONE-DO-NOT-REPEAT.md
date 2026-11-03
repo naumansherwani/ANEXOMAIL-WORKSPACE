@@ -1468,3 +1468,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 ## 3 Nov 2026 09:50 PKT — first founder passkey registered live; fix: first-key recovery codes generated before the key (passkey.rs). Re-run founder-install.
 
 ## 3 Nov 2026 09:45 PKT — J3 + J4 + J5(T2 gate) GREEN (his paste + my Chrome: real passkey registered and used, T2 grant consumed, Signal acked). J6 live exercises + Web pull.sh + FOUNDER_PASSWORD code delete still open. Do not rebuild J3-J5.
+
+## 3 Nov 2026 09:50 PKT — Web pull.sh OK (kernel 0.12.0 + auth.ts guard live on the awam host). J1-J5 GREEN; J6 live proof open.
