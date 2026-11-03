@@ -480,3 +480,6 @@ Optional, only after he read the GEO1 plan: `git -C /opt/anexomail-web fetch -q 
 ## E131 - G5d pin portability, SQL only (3 Nov 05:20) - one command, then paste the output
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E131_founder_portable_verify CHECK_E131 | tail -30`
 Expect: the E131 selftest line "OK", then CHECK_E131 with 5 x true, then the E65 sweep OK. Nothing else changes (additive).
+
+## RULE (founder 3 Nov 05:00): "mujhe pull command hamesa sari do"
+Every reply that touches the server lists ALL pull commands for that batch, in Rule-46 order: 1 SQL (+CHECK), 2 Rust+SPA (founder-install), 3 Caddy (only if routes changed), 4 Web (pull.sh). Mark the ones that have nothing new as "no change this time" instead of leaving them out.

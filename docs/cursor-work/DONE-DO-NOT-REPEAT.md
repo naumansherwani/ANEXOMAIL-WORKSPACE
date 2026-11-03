@@ -1428,3 +1428,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 2 Nov 11:40 GREEN by his curl: latency numbers page returns real p50/p95/p99 (AX9b verified). MB1: plan found map lines only, no mail folders; mailbox-retire.sh `apply` NOT to be run until the real Dovecot path is found. Master-blueprint answer given: BLUEPRINT-ABC-01NOV.md (letters A-X, AX, W1-W6, awam sidebar) + AWAM-ENGINE-BLUEPRINT-02NOV.md (AX1-AX10, 2c tech table).
 - 2 Nov 11:40 AWAM PARKED by founder order. Order file: docs/claude/AWAM-PARKED-ORDER-02NOV.md (Basic, Business, Business Pro, Premium last; Pro not named, ask). Server==repo proven by his pull.sh (610 same, 0 differ).
 - 3 Nov 05:20 G5d part 1: SQL E131 (+CHECK_E131) written, local selftest OK, NOT on the server, NOT green. Do not rewrite it; next = his pull of E131, then Rust route + TS/UI. Finance (O) is last.
+- 3 Nov 05:00 RULE: always give ALL pull commands (see PULL-COMMANDS.md).
