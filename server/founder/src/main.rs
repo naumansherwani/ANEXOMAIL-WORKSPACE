@@ -689,9 +689,11 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/action", axum::routing::post(action_ep))
         .fallback_service(tower_http::services::ServeDir::new(static_dir).append_index_html_on_directories(true).precompressed_gzip())
         .with_state(st)
-        .layer(hdr("content-security-policy", "default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'"))
+        .layer(hdr("content-security-policy", "default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'"))
         .layer(hdr("strict-transport-security", "max-age=63072000; includeSubDomains; preload"))
         .layer(hdr("x-content-type-options", "nosniff"))
+        .layer(hdr("x-frame-options", "DENY"))
+        .layer(hdr("permissions-policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), bluetooth=(), publickey-credentials-get=(self), publickey-credentials-create=(self)"))
         .layer(hdr("referrer-policy", "no-referrer"))
         .layer(hdr("cross-origin-opener-policy", "same-origin"))
         .layer(hdr("cross-origin-embedder-policy", "require-corp"))
@@ -787,6 +789,9 @@ mod tests {
         assert!(h["content-security-policy"].to_str().unwrap().contains("frame-ancestors 'none'"));
         assert!(h["content-security-policy"].to_str().unwrap().contains("font-src 'self'")); // 30 Oct: without it Inter was blocked by default-src 'none'
         assert!(h["content-security-policy"].to_str().unwrap().contains("'wasm-unsafe-eval'")); // F2b kernel
+        assert!(h["content-security-policy"].to_str().unwrap().contains("manifest-src 'self'") && h["content-security-policy"].to_str().unwrap().contains("worker-src 'self'")); // J6: the iPhone manifest + push service worker
+        assert_eq!(h["x-frame-options"], "DENY");
+        assert!(h["permissions-policy"].to_str().unwrap().contains("publickey-credentials-get=(self)") && h["permissions-policy"].to_str().unwrap().contains("camera=()")); // passkeys must keep working
         assert_eq!(h["cache-control"], "no-store");
     }
 

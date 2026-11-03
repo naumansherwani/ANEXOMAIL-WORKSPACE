@@ -596,3 +596,6 @@ Web pull.sh is NOT needed for this.
 ## ABHI PENDING (3 Nov 12:30 PKT): hardware toggle fix (E142 + readiness panel). Two points (Rule 24).
 1. SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E142_founder_hardware_truth CHECK_E142 2>&1 | tail -12`
 2. Rust + SPA: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
+
+## ABHI PENDING (3 Nov 12:30 PKT): founder-install only (1 point). E142 is GREEN (his paste 12:17). Why: security headers (Permissions-Policy, X-Frame-Options, CSP manifest-src/worker-src) found missing in my live audit.
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
