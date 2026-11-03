@@ -1443,3 +1443,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 3 Nov 06:56 Chrome look blocked again (founder tab on /founderlogin after founder-install restart). No GREEN written.
 - 3 Nov 06:57 Chrome look OK (dashboard live, kernel 0.10.0 proves 7/7 entries). E135 skipped on the server (2+ founders): wrote E136 + CHECK_E136, tested on scratch with 2 founders. Do not redo.
 - 3 Nov 07:05 R1 GREEN (paste + Chrome). Written: E137+CHECK_E137, FS1 session renewal (session.ts, api.ts, session.test.ts, founder dist). Do not redo.
+- 3 Nov 07:14 R2 GREEN (paste + Chrome: 3 TSA on seal 5). Seal policy also seals by age (seal 5 after 3 entries). Taught him the anchor flow in chat.

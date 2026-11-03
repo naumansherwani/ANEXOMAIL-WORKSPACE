@@ -533,3 +533,5 @@ git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-w
 Rust + SPA founder (the SPA dist changed: session renewal; this restart ends your sign-in ONE last time - sign in again after it):
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12
 Rust awam: no change. Brain: no change. Web: no change.
+
+## (3 Nov 07:14 PKT) nothing new to run: SQL no change, Rust+SPA no change (do not re-run), Rust awam no change, Brain no change, Web no change.
