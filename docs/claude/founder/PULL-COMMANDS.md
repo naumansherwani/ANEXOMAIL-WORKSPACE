@@ -592,3 +592,7 @@ Web pull.sh is NOT needed for this.
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
 
 ## ABHI PENDING (3 Nov 12:00 PKT): none. E140, E141 and the founder-install with the mobile CSS are on his server (his pastes 11:30, 11:45, 11:57). Next pull comes with the next code (J8 lease or K3).
+
+## ABHI PENDING (3 Nov 12:30 PKT): hardware toggle fix (E142 + readiness panel). Two points (Rule 24).
+1. SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E142_founder_hardware_truth CHECK_E142 2>&1 | tail -12`
+2. Rust + SPA: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`

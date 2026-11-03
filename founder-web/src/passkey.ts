@@ -71,6 +71,6 @@ export async function runSignals(signals: Json[]): Promise<{ done: number; unsup
   return { done, unsupported };
 }
 
-export type KeysView = { available: boolean; keys: any[]; webauthn: any; signals: any[]; protocol: any; post_quantum: any };
+export type KeysView = { available: boolean; keys: any[]; webauthn: any; signals: any[]; protocol: any; post_quantum: any; hardware?: any };
 export const loadKeys = async (): Promise<KeysView> => (await get<KeysView>("/founder/v1/passkey/list")).data;
 export const door = (name: string, body: Json) => post(`/founder/v1/chairman/${name}`, body);

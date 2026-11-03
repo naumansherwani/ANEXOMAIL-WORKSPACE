@@ -27,7 +27,7 @@ export function Keys() {
   };
   if (err) return <section className="panel"><div className="panelhead"><h2>Security keys</h2><p className="dim">{err}</p></div></section>;
   if (!v) return <section className="panel"><div className="panelhead"><h2>Security keys</h2><p className="dim">Loading…</p></div></section>;
-  const wa = v.webauthn ?? {}, pr = v.protocol ?? {}, keys = (v.keys ?? []).filter((k) => !k.revoked), pq = v.post_quantum ?? {};
+  const wa = v.webauthn ?? {}, pr = v.protocol ?? {}, keys = (v.keys ?? []).filter((k) => !k.revoked), pq = v.post_quantum ?? {}, hw = v.hardware && Array.isArray(v.hardware.keys) ? v.hardware : null;
   return <><section className="panel" aria-label="Security keys">
     <div className="panelhead"><h2>Security keys</h2>
       <p className="dim">Passkeys (WebAuthn Level 3). Every sign-in is judged by the server and written to a chained ledger — {LEVEL[wa.level] ?? "unknown"}: {wa.why ?? "no data yet"}.</p></div>
@@ -46,6 +46,9 @@ export function Keys() {
       <Button variant="ghost" size="mini" disabled={busy || !keys.length}
         onClick={() => run(async () => { const r = await step("recovery.codes", "new batch", {}, "recovery_codes", (g, n) => ({ p_grant: g, p_nonce: n })); setCodes(r?.codes ?? r); return "New recovery codes made. Save them now."; })}>Make new codes</Button></div>
     {codes && <pre className="dim" aria-label="Recovery codes, shown once" style={{ userSelect: "all", whiteSpace: "pre-wrap" }}>{codes.join("\n")}</pre>}
+    {hw && <div className="setrow hwready" aria-label="Hardware key readiness"><div><b>Hardware keys: {hw.hardware_keys} of {hw.needed} needed</b><p className="dim">{hw.next}</p>
+      <ul className="hwlist">{(hw.keys ?? []).map((k: any) => <li key={k.id}><span>{k.label}{k.attachment ? ` · ${k.attachment}` : ""}{k.be ? " · synced" : ""}</span> <em className={k.counts ? "ok" : "no"}>{k.counts ? "counts as hardware" : k.why_not}</em>
+        {k.trustable && <Button variant="ghost" size="mini" disabled={busy} onClick={() => run(async () => { await step("aaguid.allow", k.aaguid, { enabled: "yes" }, "aaguid_allow", (g, n) => ({ p_aaguid: k.aaguid, p_label: k.label.slice(0, 60), p_enabled: true, p_grant: g, p_nonce: n })); return `${k.label}: model trusted.`; })}>Trust this model</Button>}</li>)}</ul></div></div>}
     <div className="setrow"><div><b>Protected steps need hardware</b><p className="dim">{pr.t2_hardware_only ? "On: a protected step must be approved by an allow-listed hardware key." : (pr.hardware_keys ?? 0) < 2 ? "Off: a synced passkey can approve a protected step. Needs two trusted hardware keys before it can be turned on (lock-out guard)." : "Off: a synced passkey can approve a protected step."}</p></div>
       <Button variant="ghost" size="mini" disabled={busy || !keys.length || (!pr.t2_hardware_only && (pr.hardware_keys ?? 0) < 2)} title={!pr.t2_hardware_only && (pr.hardware_keys ?? 0) < 2 ? "Needs two trusted hardware keys first (otherwise you could lock yourself out)" : undefined}
         onClick={() => run(async () => { await step("protocol.t2_hardware", "protocol", { on: pr.t2_hardware_only ? "no" : "yes" }, "t2_hardware", (g, n) => ({ p_on: !pr.t2_hardware_only, p_grant: g, p_nonce: n })); return pr.t2_hardware_only ? "Hardware-only turned off." : "Hardware-only turned on."; })}>{pr.t2_hardware_only ? "Turn off" : "Turn on"}</Button></div>

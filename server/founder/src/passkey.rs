@@ -524,13 +524,14 @@ pub async fn finish_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Byte
 pub async fn list_ep(State(st): State<S>, h: HeaderMap) -> Response {
     let (uid, _e, _d) = match ctx(&st, &h, "/founder/v1/passkey/list", b"", false).await { Ok(x) => x, Err(r) => return r };
     let sb = match sbx(&st) { Ok(s) => s, Err(r) => return r };
-    let (keys, wa, sig, proto, pq) = tokio::join!(sb.rpc("founder_passkey_list", json!({"p_uid": uid})), sb.rpc("founder_webauthn_status", json!({"p_uid": uid})),
-        sb.rpc("founder_webauthn_signal_next", json!({"p_uid": uid})), sb.rpc("founder_protocol_status", json!({"p_uid": uid})), sb.rpc("founder_webauthn_pq_report", json!({})));
+    let (keys, wa, sig, proto, pq, ready) = tokio::join!(sb.rpc("founder_passkey_list", json!({"p_uid": uid})), sb.rpc("founder_webauthn_status", json!({"p_uid": uid})),
+        sb.rpc("founder_webauthn_signal_next", json!({"p_uid": uid})), sb.rpc("founder_protocol_status", json!({"p_uid": uid})), sb.rpc("founder_webauthn_pq_report", json!({})),
+        sb.rpc("founder_hardware_readiness", json!({"p_uid": uid})));
     // E117's list shows only the first 8 characters; a protected step on a key needs the full id (it is the action's target), so join it in by row id
     let full = sb.rows(&format!("founder_passkeys?select=id,credential_id&user_id=eq.{uid}&revoked_at=is.null")).await.unwrap_or_default();
     let mut keys = keys.unwrap_or(json!([]));
     if let Some(a) = keys.as_array_mut() { for k in a { if let Some(f) = full.iter().find(|f| f["id"] == k["id"]) { k["credential_id"] = f["credential_id"].clone(); } } }
-    crate::signed(&st, json!({"available": true, "keys": keys, "webauthn": wa, "signals": sig.map(|s| s["signals"].clone()).unwrap_or(json!([])), "protocol": proto, "post_quantum": pq}))
+    crate::signed(&st, json!({"available": true, "keys": keys, "webauthn": wa, "signals": sig.map(|s| s["signals"].clone()).unwrap_or(json!([])), "protocol": proto, "post_quantum": pq, "hardware": ready.unwrap_or(json!(null))}))
 }
 
 /// The SQL doors the browser may call through /founder/v1/chairman/<door> (POST, signed). Argument names are fixed here; shapes are checked here and again in SQL.

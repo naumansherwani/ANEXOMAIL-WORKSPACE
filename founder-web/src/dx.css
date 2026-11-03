@@ -100,3 +100,11 @@ button.dx-card{cursor:pointer;width:100%}button.dx-card:hover{transform:translat
   .panel[aria-label="Security keys"] .setrow > span, .panel[aria-label="Phone alerts"] .setrow > span { display: flex; gap: 8px; width: 100%; }
   .panel[aria-label="Security keys"] .setrow > span input, .panel[aria-label="Phone alerts"] .setrow > span input { flex: 1 1 0; min-width: 0; width: auto !important; }
 }
+
+/* E142 hardware readiness (Rule 19/34: wraps at 390 px, touch targets >= 44 px) */
+.hwready { align-items: flex-start; }
+.hwlist { list-style: none; margin: .5rem 0 0; padding: 0; display: grid; gap: .5rem; }
+.hwlist li { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem .75rem; min-width: 0; overflow-wrap: anywhere; }
+.hwlist li em { font-style: normal; font-size: .85em; opacity: .8; }
+.hwlist li em.ok { color: var(--ok, #4ade80); opacity: 1; }
+.hwlist li button { min-height: 44px; min-width: 44px; }
