@@ -510,3 +510,8 @@ git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-w
 Rust awam + restart: no change. Brain: no change.
 Web (kernel 0.10.0 files + pins changed, so it builds):
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15
+
+## R1 proof (3 Nov 06:45 PKT) — SQL changed (E134, E135); nothing else new beyond the R2 commands above
+SQL (bare = AUTO, runs E134 + E135 then CHECK_E134 + CHECK_E135):
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) 2>&1 | tail -25
+Order of the whole batch: SQL first, then Rust+SPA founder-install (R2), then Web pull.sh (kernel 0.10.0).

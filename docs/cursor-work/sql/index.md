@@ -67,3 +67,5 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E131 | G5d pin portability: the oldest signed checkpoint with outside time evidence (>= 2 TSAs or Bitcoin) as a pin-less horizon; one-read bundle with ONE consistency proof; hash-chained horizon log that flags a horizon moving later; pulse + verify + selftest | CHECK_E131 (5) |
 | E132 | G5c repair: the E124 selftest judges the signer warning itself, so it passes on a server that has real dead anchoring jobs (CHECK_E124 was red on the live state) | CHECK_E124 (5) |
 | E133 | G5c repair R1: the evidence guard accepts an OpenTimestamps pending commitment of 1 to 4096 whole bytes (Bitcoin stage stays 32); selftest | CHECK_E133 (3) |
+| E134 | G5c repair R1 part 2: audited door `founder_anchor_requeue` (founder only, cause must be named, enabled providers only, one event per job + one audit row, 2nd run no-op); events list gains requeued; selftest | CHECK_E134 (3) |
+| E135 | G5c repair R1 part 3: re-queue the OTS jobs that died of the 32-byte bug (idempotent; freetsa NOT included, it waits for the R2 binary) | CHECK_E135 (3) |

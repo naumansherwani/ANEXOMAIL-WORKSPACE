@@ -2316,3 +2316,4 @@ Phase: G5c (OpenTimestamps + RFC 3161, no accounts). Rule for me: re-read the ch
 - 3 Nov 06:13 PKT (founder, verbatim, abuse not copied): his pastes again (founder-install OK, pull.sh OK, E133 sql-run) + "ek ek line read kero. live chorme test kero. jahan pe loophole aye seedha fix kero. compact chat aya hai context update kero".
 - 3 Nov 06:22 PKT (founder, verbatim): 'yeh 100% green kero ... duniya ka sab se advance kaun sa hai yeh batao jo anexomail ke pass hoga wire live green working' => R2 Raasta B chosen by me as the most advanced.
 - 3 Nov 06:39 PKT (founder, verbatim): "WASM kernel ki jodi hai yaad rakho agar WASM nahi toh no kernel" (sent mid-work 06:23).
+- 3 Nov 06:45 PKT (founder, verbatim): "R1 (OpenTimestamps) abhi GREEN nahi hai (toh is ko green kero) ... is ka mujhe green ka saboot do ek bhi nahi bachay. kya yeh R1 theek kiya hai"
