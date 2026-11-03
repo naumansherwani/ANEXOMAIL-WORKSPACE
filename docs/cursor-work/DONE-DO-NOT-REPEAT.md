@@ -1450,3 +1450,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 3 Nov 07:49 RULE from him: after EVERY new repo file the Rust crate reads (include_str!/#[path]), add its `show` line to founder-install.sh AND test in a dir holding only the installer file set (proof script: copy installer list -> cargo test).
 - 3 Nov 07:55 FS1 part 1 renewal GREEN (22 -> 56 min, still signed in). Do not rebuild session.ts/api.ts renewal. Open: restart test.
 - 3 Nov 07:57 FS1 GREEN (restart test passed). Do not touch session renewal again. G5d part 2 Rust on server; CHECK_G5D_LIVE.sql written (read only), waits for his paste.
+- 3 Nov 08:00 G5d part 2 GREEN (CHECK_G5D_LIVE 5/5 + Chrome). Next: part 3 only (UI + kernel calls).

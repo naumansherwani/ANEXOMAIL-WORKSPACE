@@ -547,3 +547,5 @@ Rust awam: no change. Brain: no change. Web: no change.
 SQL (reads only; run it 2-3 minutes after founder-install):
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) CHECK_G5D_LIVE 2>&1 | tail -12
 Rust+SPA founder: no change (already run 07:55). Rust awam: no change. Brain: no change. Web: no change.
+
+## (3 Nov 08:00 PKT) docs only: SQL no change, Rust+SPA founder no change, Rust awam no change, Brain no change, Web no change. Nothing to run.
