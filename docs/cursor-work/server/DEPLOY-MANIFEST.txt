@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md ccb7f5b305bf57d1
+docs/cursor-work/founder/founder-commands.md 71a26be70a7ee66b
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 19212acc9fc0e302
+docs/cursor-work/DONE-DO-NOT-REPEAT.md b4e2f41c776ecebe
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs bd14a1074691a67d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md f469acac783348b2
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md cd9c08cbae7a3917
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -416,7 +416,7 @@ src/lib/history.test.ts d26cdfc56deea483
 src/lib/calendar-jump.ts 378d1a18d2415728
 src/components/app/search/HistoryResults.tsx 8da549dd49fd57e3
 src/routes/app.search.tsx 6f74a251778663b7
-docs/cursor-work/sql/index.md 55a4c6acfa8a1d39
+docs/cursor-work/sql/index.md 751afef65d99e9e0
 docs/cursor-work/sql/CHECK_E65.sql ce449a9bcfd36628
 docs/cursor-work/sql/E65_rls_and_advisor_sweep.sql df4483c0cee65b4e
 docs/cursor-work/sql/proofs/E65_proof.sql 983e734dff0b7e79
@@ -878,7 +878,7 @@ server/founder/.gitignore b53ee26e6ff1da21
 server/founder/Cargo.lock 60b8b8975ed5d5ae
 server/founder/Cargo.toml 46a197b71968f5f2
 server/founder/src/audit.rs b68fb02fcadadac3
-server/founder/src/main.rs d1a580d3cce6ee67
+server/founder/src/main.rs 1e89e3dfc273b9bf
 docs/claude/OFFICE-HR-ACCOUNTING-MIGRATION-28OCT.md bc57767804dcab4e
 docs/claude/founder/design-f0/Action.dc.html 74ecac9376091b71
 docs/claude/founder/design-f0/Login.dc.html 4970172916db14e5
@@ -914,7 +914,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md eb1ba2a7a3861722
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md d55fa29b0d9cec3f
+docs/claude/founder/PULL-COMMANDS.md 73652d4411526c17
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 6f67741f87811209
@@ -1012,7 +1012,7 @@ server/founder/src/hostproof.rs a087e4fc98b97b2b
 docs/claude/BRIDGE-EMAIL-CHAT-ENGINE-DESIGN-01NOV.md eb602619a35cb2bc
 docs/cursor-work/sql/E111_founder_channels_telemetry.sql 22c2b268cfcf41c4
 docs/cursor-work/sql/CHECK_E111.sql efefebfe1d6e27b0
-server/founder/src/live.rs 7e83c79af6e0409a
+server/founder/src/live.rs 889073ebf5cfc9c0
 server/founder/tests/e2e_live_stream.py 4b71a3ec7c398725
 docs/claude/FOUNDER-SERVER-STATE-30OCT.md 25e9184513ee81d4
 docs/claude/FOUNDER-CHANNELS-CEO-LIST-01NOV.md d63b64c03c5df84d
@@ -1065,11 +1065,11 @@ docs/cursor-work/sql/CHECK_E119.sql 8a79e357ded727d0
 src/components/app/CommandPalette.tsx 12a0fd1cf3105c1a
 src/lib/dashboard.ts 66e8a7d64fa8e599
 src/routes/app.admin.addresses.tsx cb8efe1f397d00f0
-docs/claude/BLUEPRINT-ABC-01NOV.md 03044da6cec2ba77
+docs/claude/BLUEPRINT-ABC-01NOV.md 7e6cbbe67ecdb551
 docs/cursor-work/sql/E122_founder_seal_interval.sql be0edb2538f82051
 docs/cursor-work/sql/CHECK_E122.sql d10212a8dfda8472
 founder-web/src/routes.test.ts da4a2795630823c7
-docs/claude/G5-UNFORGEABLE-HISTORY-02NOV.md d76e3ca3b0773ebe
+docs/claude/G5-UNFORGEABLE-HISTORY-02NOV.md cb617af0183f45ff
 docs/cursor-work/sql/E123_founder_signed_checkpoints.sql c288e9abd0d6420d
 docs/cursor-work/sql/CHECK_E123.sql 56d0befaa0927127
 server/founder/src/signedcp.rs 9cee562b40be6c7f
@@ -1159,3 +1159,7 @@ docs/cursor-work/sql/E137_requeue_freetsa_after_r2.sql d169366404165bf7
 docs/cursor-work/sql/CHECK_E137.sql 8576ff912ba6cc3a
 founder-web/src/session.ts a1b157378da73c07
 founder-web/src/session.test.ts 8ebab1710a81e25e
+server/founder/src/portable.rs 3d25c9b1eb5ea8de
+server/rust/g5d_bundle_vector.json 1b60673e9058cd87
+docs/cursor-work/sql/E138_founder_portable_tick.sql 1841cfdba6ec7801
+docs/cursor-work/sql/CHECK_E138.sql a91b810dfc2174b1

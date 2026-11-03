@@ -1445,3 +1445,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 3 Nov 07:05 R1 GREEN (paste + Chrome). Written: E137+CHECK_E137, FS1 session renewal (session.ts, api.ts, session.test.ts, founder dist). Do not redo.
 - 3 Nov 07:14 R2 GREEN (paste + Chrome: 3 TSA on seal 5). Seal policy also seals by age (seal 5 after 3 entries). Taught him the anchor flow in chat.
 - 3 Nov 07:20 FS1 gate set by him (no next letter before FS1 GREEN). Scheduled 07:55 renewal check. Technology list written in the blueprint.
+- 3 Nov 07:36 G5d part 2 WRITTEN (not on the server): E138_founder_portable_tick.sql + CHECK_E138.sql, server/founder/src/portable.rs, route /founder/v1/audit/portable, tick in live.rs, server/rust/g5d_bundle_vector.json. 174 Rust tests, E138 selftest + CHECK 6/6 on scratch. Do not rewrite; next is the server run + Chrome look, then part 3.

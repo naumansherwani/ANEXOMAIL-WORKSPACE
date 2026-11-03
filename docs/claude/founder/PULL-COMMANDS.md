@@ -535,3 +535,10 @@ git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-w
 Rust awam: no change. Brain: no change. Web: no change.
 
 ## (3 Nov 07:14 PKT) nothing new to run: SQL no change, Rust+SPA no change (do not re-run), Rust awam no change, Brain no change, Web no change.
+
+## G5d part 2 (3 Nov 07:36 PKT) — SQL + Rust+SPA founder changed; HELD until the FS1 renewal check (~07:55) is done
+SQL (bare = AUTO runs E138, then CHECK_E138 + the E65 sweep):
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) 2>&1 | tail -25
+Rust + SPA founder (174 tests must pass; this is the ONE controlled restart for the FS1 test, I watch his Chrome while it runs):
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12
+Rust awam: no change. Brain: no change. Web: no change.
