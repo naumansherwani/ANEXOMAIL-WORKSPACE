@@ -1,5 +1,10 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 3 Nov 08:06 UTC (13:06 PKT) — founder: ANEXOChat bandwidth/file-limit idea + monthly cap formula (Business 500MB / Biz Pro 1.5GB / Biz Premium 4GB)
+Founder (verbatim): "anexochat ke liye mujhe idea do jis se yeh user bandwith ki gand maar rai gay, business ke liye 500MB file ki limit hai lekin is ka cap monthly lagna chaiye hai? aur business pro ko 1.5gb aur business premium ko 4gb lekin bandiwth ka formula do whatsapp free transfer daita hai yahan mera bussiness se out nahi hona hai"
+- Note: PACKAGE-FEATURE-FORMULA.md mein 26 Oct ke locked gates abhi bhi 2GB/5GB/7GB per-file hain — founder ke naye numbers (500MB/1.5GB/4GB) ko us table par replace karne se pehle uski "haan" chahiye.
+- Halat: **DONE (docs, proposal)**: formula + table PACKAGE-FEATURE-FORMULA.md mein founder-proposal block ke taur par likh di; koi code/SQL nahi chheda.
+
 ## ▶ 30 Oct 18:54 PKT — founder: locked technology CODE mein use karo (WebTransport, passkey, WASM kernel, TanStack Router, TypeScript, Tailwind, shadcn)
 Founder (verbatim): "Abhi code mein nahi hai: WebTransport, passkey (webauthn-rs), WASM kernel, TanStack Router, TypeScript, Tailwind aur shadcn. ... kyin nahi chai code main? kab use hoga? demkh kharab ker rahay ho mera bhenchod tum? her time tumhay samjhna pherta hai gandu. 1000000000000000000000000000 technology kahan use hogi yeh top pe lihha hai woh use kero."
 Founder ne paste kiya: founder-install.sh OK; founder-polar.sh status: token SET, 'polar reader ON (read-only, metrics API)' (Polar Metrics token = step 3 DONE).

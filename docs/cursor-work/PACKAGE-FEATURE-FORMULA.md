@@ -21,6 +21,19 @@
 # AI (ai.anexomail.com, alag product): AI Pro £2,000 / AI Business £5,000 / AI Executive £25,000 per month. Workspace plans = AI ZERO.
 # Detail: docs/claude/PRICING-POSITIONING-26OCT.md section 9.
 
+# ═══ UPDATE 3 Nov 2026 08:06 UTC — FOUNDER PROPOSAL: ANEXOChat per-file + MONTHLY BANDWIDTH CAP formula (founder approve baqi — 26 Oct ke 2GB/5GB/7GB iski "haan" par replace honge) ═══
+# Founder ke numbers: Business 500MB / Business Pro 1.5GB / Business Premium 4GB per file, monthly cap lazmi.
+# FORMULA (ek hi jagah, har package par chalta hai):
+#   per_file_mb            = founder ka number (500 / 1536 / 4096)
+#   SENDS_PER_MONTH        = 100 (default; founder chahe to badal de — yehi asli "dial")
+#   monthly_quota_per_user = per_file_mb x SENDS_PER_MONTH  -> Business 50GB, Biz Pro 150GB, Biz Premium 400GB
+#   org_pool               = monthly_quota_per_user x users  -> Business 20x50GB=1TB, Biz Pro 570x150GB=85.5TB; Premium (unlimited users) = per-user fair-use 400GB, pool "Unlimited (fair-use)"
+#   burst_hour             = per_file_mb x 10 (ek ghantay ki token-bucket burst; mahine ka quota isse kam nahi hota, sirf rate smoothing)
+#   warn at 80% quota, THROTTLE at 100% (chunk rate slow) — INBOUND kabhi block nahi, kabhi billing-jhatka nahi
+#   FREE (0 counted): sha256 DEDUP (same content dobara bheja = ek hi baar transfer), already-downloaded file ka dobara download (browser cache), inbound receiving, kernel-verified resumable retry
+# Asli cost check (Hetzner ~€1/TB): Biz Premium 400GB/user/mo ≈ €0.40/user/mo vs £21,000/mo plan => cap paisa ke liye nahi, ABUSE-protection hai. Competitor check (Rule 54): WhatsApp transfer free hai magar unka media servers par expire hota hai aur business model alag hai; Google Drive/Zoho limits per-user hain. Hamara farq: dedup + cache + resumable => generous cap, honest bill, na user gussa na Hetzner bill.
+# Gate enforcement SERVER par (Rust resolve_plan + chat entitlements) — UI sirf aaina (Rule 69).
+
 # ═══ PRO v6 GATE (26 Oct 2026 06:40 PKT, Rule 53 — DRAFT, founder approve baqi) — poori detail: docs/packages/pro/ ═══
 # PRO = £105/month flat, yearly £1,155 (x11), UP TO 20 USERS, 10 mailboxes, 300GB shared, 35MB attachment, 3 company domains,
 #   3 booking links, 4 trusted devices, support 48h. Shared inbox/collision guard, snooze, schedule send, templates, boards/notes/tasks,
