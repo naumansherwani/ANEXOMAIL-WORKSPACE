@@ -25,3 +25,6 @@ Each package starts only after the earlier one is GREEN with his pastes plus a l
 ## Where the detail lives
 - Master lettered blueprint: `docs/claude/BLUEPRINT-ABC-01NOV.md`
 - Awam detail (AX1-AX10, tech table 2c, ledger 0a/2e-2g): `docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md`
+
+## Added 3 Nov 08:17 (founder): founder technology -> awam
+Every advanced founder technology is preserved and goes to the awam AFTER the founder account is 100% ready, adapted to the awam (per organisation, Business ladder order). Table: `AWAM-ENGINE-BLUEPRINT-02NOV.md` section 0b. Still PARKED: no awam code until the founder lane is complete.

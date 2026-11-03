@@ -7,6 +7,22 @@ Docs only. No code, no price change, no new rule is locked by this file. Source 
 
 > **AWAM IS PARKED (founder 2 Nov 11:33): see `docs/claude/AWAM-PARKED-ORDER-02NOV.md`. Resume order: Basic, Business, Business Pro, Business Premium last.**
 
+## 0b. FOUNDER TECHNOLOGY -> AWAM (founder 3 Nov 08:17 PKT, verbatim in founder-commands.md)
+Order: "jitni bhi advance technology founder ke pass awam ko bhi milni chahiye ... founder ka account 100% ready ke baad awam ko sab mile ga yeh technology. awam ke mutabiq".
+- **Rule:** every advanced technology built in the founder lane is PRESERVED (codes stay in the repo, never deleted or flattened) and is CARRIED to the awam once the founder account is 100% ready. Nothing starts before that (the parked order stands).
+- **Adapted to the awam, not copied:** per-organisation scope instead of founder-wide, awam wording, Business ladder order (Basic, Business, Business Pro, Business Premium last), no founder-only controls.
+- **What carries over (source in repo, one shared kernel, Rule 52):**
+| Founder technology (letter) | Awam form (adapted) | Reuse |
+|---|---|---|
+| WASM kernel verify of signed answers (F2b) | already shared: same kernel pin on both sites | `web-wasm/` |
+| Merkle ledger + consistency proofs (G1-G5a) | each organisation gets its own tamper-evident activity ledger | E107/E121 SQL pattern, merkle@1/@2 |
+| Signed checkpoints (G5b) | org ledger seals signed with the awam log key | checkpoint@1 |
+| Outside-time anchors, RFC 3161 + OpenTimestamps (G5c) | org seals time-anchored | anchor@1 |
+| Portable pin (G5d) | any browser can verify an org ledger with no remembered state | portable@1 (kernel 0.11.0, already in the awam wasm) |
+| Device-bound tokens, passkeys, session renewal (FS1) | awam sign-in hardening | session pattern |
+| Hash-chained append-only SQL with selftests + CHECK files | awam tables of the same kind | E-series style |
+- Each item starts only after the earlier package is GREEN with his pastes plus a live Chrome look (Rule 0/1). Founder letters first; this table is the awam's reading list afterwards.
+
 ## 0a. Awam: written work and where it stands (founder 2 Nov 11:04 order; updated 11:35 with his pastes)
 | Phase | What | Technology | State |
 |---|---|---|---|

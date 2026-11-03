@@ -556,3 +556,5 @@ git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-w
 Web (the awam site ships the same kernel pin):
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15
 SQL: no change. Rust awam: no change. Brain: no change.
+
+## (3 Nov 08:17 PKT) docs only: SQL no change, Rust+SPA founder no change, Rust awam no change, Brain no change, Web no change. Nothing new to run (the two G5d part 3 commands from 08:15 still wait).
