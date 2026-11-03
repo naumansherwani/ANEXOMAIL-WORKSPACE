@@ -515,3 +515,9 @@ git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-w
 SQL (bare = AUTO, runs E134 + E135 then CHECK_E134 + CHECK_E135):
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) 2>&1 | tail -25
 Order of the whole batch: SQL first, then Rust+SPA founder-install (R2), then Web pull.sh (kernel 0.10.0).
+
+## Read the CHECK_E135 FAIL (3 Nov 06:52 PKT) — SQL read-only (CHECK_ANCHOR_JOBS lists every job that is not done + the last requeue/dead events); nothing else changed
+SQL (reads only, writes nothing):
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) CHECK_ANCHOR_JOBS 2>&1 | tail -40
+Rust+SPA founder: no change. Rust awam: no change. Brain: no change. Web: no change.
+(E134 note, 3 Nov 06:49: E134 changed after his first failed run; the bare sql-run he ran at 06:51 already applied the fixed file. Server-affecting E134 fix had no pull-commands entry at 3cd04dcd; this entry covers it.)
