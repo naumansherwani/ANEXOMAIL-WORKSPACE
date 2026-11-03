@@ -4,7 +4,7 @@ Method: every row of `BLUEPRINT-ABC-01NOV.md` compared with the live page text, 
 |---|---|---|---|
 | A device approval + signatures | GREEN | Dashboard: 'Approved device Chrome on Windows'; write signature enforced (founder-install output) | LIVE |
 | B Settings S1 | GREEN | Personal (name, photo, Lahore), Workspace, Appearance (text size, animations), Notifications tabs load | LIVE |
-| C1 Polar Metrics token | GREEN | Dashboard Billing: 'Polar webhook live, API metrics not connected' | **MISMATCH -> corrected to NOT GREEN** (token not set; needs his read-only token via founder-polar.sh) |
+| C1 Polar Metrics token | GREEN (was) | Dashboard Billing: 'Polar webhook live, API metrics not connected' | **MISMATCH**: the founder DROPPED C1 (no token); Polar goes through the existing webhook into a ledger in letter O. Blueprint row now says DROPPED. Dashboard text is the honest state until O |
 | C2 awam host guard | parked | n/a | parked |
 | D UI stack | GREEN | bundle index-DsCUO6qP.js, hash router, shadcn look | LIVE |
 | E loophole fixes | GREEN | headers: CSP, HSTS, nosniff, COOP, COEP, no-store LIVE; Permissions-Policy, X-Frame-Options, manifest/worker CSP were MISSING -> fixed in repo d804dd2e, needs founder-install | LIVE + 1 gap fixed (awaiting install) |

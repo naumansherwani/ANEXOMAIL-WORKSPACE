@@ -600,9 +600,11 @@ Web pull.sh is NOT needed for this.
 ## ABHI PENDING (3 Nov 12:30 PKT): founder-install only (1 point). E142 is GREEN (his paste 12:17). Why: security headers (Permissions-Policy, X-Frame-Options, CSP manifest-src/worker-src) found missing in my live audit.
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
 
-## ABHI PENDING (3 Nov 12:35 PKT): two points (Rule 24). Detail: docs/claude/BLUEPRINT-LIVE-MATCH-03NOV.md. C1 (Polar token, founder-polar.sh) comes after these two.
+## ABHI PENDING (3 Nov 12:35 PKT): two points (Rule 24). Detail: docs/claude/BLUEPRINT-LIVE-MATCH-03NOV.md. (No Polar token step: C1 is DROPPED, see 12:50 note.)
 1. founder-install (header fix): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
 2. K3 (Chrome padlock), only if ufw is the firewall: `ufw allow 8443/tcp` and then I look at https://founderworkspace.anexomail.com:8443/ in Chrome.
 
-## ABHI PENDING (3 Nov 12:45 PKT): same founder-install as the 12:35 block, now ALSO carries the J6 live-bug fix (service worker needed a Trusted Types policy). Still two points: 1 founder-install, 2 `ufw allow 8443/tcp` (K3). Polar status check (read-only) is point 3 only after these.
+## ABHI PENDING (3 Nov 12:45 PKT): same founder-install as the 12:35 block, now ALSO carries the J6 live-bug fix (service worker needed a Trusted Types policy). Still two points: 1 founder-install, 2 `ufw allow 8443/tcp` (K3). No Polar step: C1 was DROPPED by the founder.
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
+
+<!-- 3 Nov 12:50: C1 Polar token DROPPED (founder, three times). Polar goes through the existing webhook + ledger in letter O. Never offer founder-polar.sh again. -->

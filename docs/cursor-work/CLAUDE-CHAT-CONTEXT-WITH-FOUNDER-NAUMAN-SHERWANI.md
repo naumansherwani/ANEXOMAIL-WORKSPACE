@@ -2239,3 +2239,6 @@ His order 12:23: match every blueprint line with the live site. Result in docs/c
 
 ## CHECKPOINT 3 Nov 12:45 PKT
 His order 12:27: J6 live proof is MINE to drive. I clicked Add in his Chrome: real bug (Trusted Types blocked the service worker) fixed in Flare.tsx, 82 SPA tests pass; after founder-install I retry: he allows notifications + touches his key, I watch the confirm, Send test, last receipt. C1 Polar token: master order says DONE 30 Oct but live says not connected; method = founder-polar.sh (status first).
+
+## CHECKPOINT 3 Nov 12:50 PKT
+HIS RULE: C1 (Polar token) is DROPPED. Use the existing webhook endpoints + one advanced layer (ledger, Merkle, kernel verify), letter O. Saved in FOUNDER-FINANCE-POLAR-LIVE-PLAN-02NOV.md ('DECISION LOCKED'), blueprint row C, PULL-COMMANDS, DONE. I had missed that the blueprint row still said 'Polar Metrics token GREEN'; that line was the stale one.

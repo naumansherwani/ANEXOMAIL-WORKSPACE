@@ -33,3 +33,8 @@ Both webhook URLs return 200 OK. `anexomail.com/api/v1/polar-webhook` = PRIMARY 
 2. Does the existing Polar token read customers and subscriptions, or metrics only? (check on the server, no printing)
 3. Is O moved ahead of G5b/I2, or does it wait in letter order?
 4. Payload shape under API version 2026-10 must be checked against Polar's docs before O-P2.
+
+## DECISION LOCKED (founder 3 Nov 12:31 PKT, verbatim in founder-commands.md; he had said it before 3 Nov 05:20 and 2 Nov 11:53-11:56)
+- C1 (a Polar Metrics API token) is **DROPPED**. Nobody asks for a token. `polar.rs` + `FOUNDER_POLAR_READ_TOKEN` + `founder-polar.sh` stay in the repo as dormant code and are NOT to be offered again.
+- Method = use the **existing endpoint** (the two webhook URLs above; Polar engine :3400 is NO-TOUCH except the one ledger insert in O-P2) and build **one layer on top with the most advanced technology**.
+- That layer (to be designed in O, with the 2026 technology chart, before any code): Standard Webhooks signature + replay window, append-only hash-chained `polar_events` ledger (unique webhook-id), Merkle + signed checkpoints through the existing kernel (`merkle@2`) so the browser verifies the finance numbers, reconcile-based backfill, WebTransport live push after K6. Nothing starts before letter O (it is the LAST founder letter).

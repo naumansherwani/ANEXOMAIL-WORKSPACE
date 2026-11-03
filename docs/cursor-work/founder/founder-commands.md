@@ -2445,3 +2445,6 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 
 ### 3 Nov 12:27 PKT (verbatim)
 "mainay C1 ka token system ka bola tha ke polar ke liye blueprint main tarkeeka bola tha woh kahan hai aur J6 ka tumne khud kerna hai"
+
+### 3 Nov 12:31 PKT (verbatim)
+"gandu mainay bola tha polar ka C1 wala idea drop kiya tha mainay bola tha endpoint existing ko hi use karay gay us ke uper ek layer banaye gi duniya ki advance technology ka bola tha gandu claude ne save nahi kiya tha tareeka?"
