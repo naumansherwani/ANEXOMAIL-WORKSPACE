@@ -526,3 +526,10 @@ Rust+SPA founder: no change. Rust awam: no change. Brain: no change. Web: no cha
 SQL (bare = AUTO runs E136, then CHECK_E136 and the E65 sweep):
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) 2>&1 | tail -25
 Rust+SPA founder: no change (do NOT re-run it: it ends the browser session). Rust awam: no change. Brain: no change. Web: no change.
+
+## R2 data step + FS1 session renewal (3 Nov 07:05 PKT) — two technologies changed
+SQL (bare = AUTO runs E137, then CHECK_E137 + the E65 sweep):
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) 2>&1 | tail -25
+Rust + SPA founder (the SPA dist changed: session renewal; this restart ends your sign-in ONE last time - sign in again after it):
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12
+Rust awam: no change. Brain: no change. Web: no change.

@@ -2,6 +2,7 @@
 // F1a: the session token is exchanged ONCE per 15 minutes for a founder token (aud=anexo-founder, device-bound) which lives in MEMORY only.
 // If the server has no token service yet (install pending), calls fall back to the session token and the page says so plainly.
 import { verifyBody } from "./kernel";
+import { EXPIRES_KEY, REFRESH_KEY, TICK_MS, classifyRefresh, knownExpiry, needsRefresh } from "./session";
 const KEY = "anexo.session.token", DEV = "anexo.founder.device";
 const tok = () => { try { return window.localStorage.getItem(KEY); } catch { return null; } };
 export const hasToken = () => !!tok();
@@ -32,14 +33,57 @@ function deviceLabel() {
 let ft: string | null = null, fexp = 0, inflight: Promise<string | null> | null = null, mode = "none", dlabel = "", rk: string | null = null; // rk = per-token request key (memory only)
 export const deviceStatus = () => ({ mode, label: dlabel }); // "device" = founder token in use · "legacy" = fallback to session token · "none"
 
-async function exchange(): Promise<string | null> {
+// FS1: the sign-in is RENEWED, not allowed to die. One shared refresh (single flight); the session only ends when the refresh token itself is dead (see session.ts).
+const lsGet = (k: string) => { try { return window.localStorage.getItem(k); } catch { return null; } };
+const lsSet = (k: string, v: string) => { try { window.localStorage.setItem(k, v); } catch { /* private window: renewal simply cannot persist */ } };
+let renewing: Promise<boolean> | null = null;
+/** true = a fresh session token is now stored. false = nothing changed (dead refresh token clears it; a blip keeps it). Never throws. */
+export function renewSession(): Promise<boolean> {
+  if (renewing) return renewing;
+  const rt = lsGet(REFRESH_KEY); if (!rt) return Promise.resolve(false);
+  renewing = (async () => {
+    try {
+      const r = await fetch("/api/auth/refresh", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ refresh_token: rt }), cache: "no-store" });
+      let j: { token?: unknown; refresh_token?: unknown; expires_at?: unknown } = {}; try { j = await r.json(); } catch { /* not json */ }
+      const got = typeof j.token === "string" && j.token.length > 20;
+      const out = classifyRefresh(r.status, got);
+      if (out === "renewed") {
+        lsSet(KEY, j.token as string);
+        if (typeof j.refresh_token === "string" && j.refresh_token) lsSet(REFRESH_KEY, j.refresh_token);
+        if (typeof j.expires_at === "number") lsSet(EXPIRES_KEY, String(j.expires_at));
+        return true;
+      }
+      if (out === "revoked") {
+        // Two tabs can renew at the same moment with the same old refresh token: the loser is told "dead", yet the winner already stored a NEW one. Only a refresh token that is still the one we sent is really dead.
+        if (lsGet(REFRESH_KEY) !== rt) return true;
+        try { window.localStorage.removeItem(REFRESH_KEY); window.localStorage.removeItem(EXPIRES_KEY); } catch { /* ignore */ }
+      }
+      return false;
+    } catch { return false; } // offline / DNS: keep everything, the next tick tries again
+  })().finally(() => { renewing = null; });
+  return renewing;
+}
+/** Renew early when the token is within RENEW_BEFORE_S of its end. Safe to call often. */
+export async function keepSessionFresh(): Promise<void> {
+  const t = tok(); if (!t) return;
+  if (needsRefresh(knownExpiry(lsGet(EXPIRES_KEY), t), Math.floor(Date.now() / 1000), !!lsGet(REFRESH_KEY))) await renewSession();
+}
+if (typeof window !== "undefined") {
+  const tick = () => { void keepSessionFresh(); };
+  window.setInterval(tick, TICK_MS);
+  window.addEventListener("online", tick);
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") tick(); });
+}
+
+async function exchange(again = true): Promise<string | null> {
+  await keepSessionFresh();
   const t = tok(); if (!t) throw expired();
   const id = deviceId();
   if (!id) { mode = "legacy"; return null; }
   let r: Response;
   try { r = await fetch("/founder/v1/exchange", { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${t}` }, body: JSON.stringify({ device_id: id, label: deviceLabel() }), cache: "no-store" }); }
   catch { mode = "legacy"; return null; }
-  if (r.status === 401) throw expired();
+  if (r.status === 401) { if (again && (await renewSession())) return exchange(false); throw expired(); } // an expired session token: renew once, then ask again
   let j: any = {}; try { j = await r.json(); } catch {}
   if (r.status === 200 && j.token) { ft = j.token; rk = j.req_key || null; fexp = j.exp * 1000; mode = "device"; dlabel = j.device || ""; return ft; }
   if (r.status === 403 && j.error === "device_pending") throw new DevicePending(j.code, false);

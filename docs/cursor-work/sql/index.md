@@ -70,3 +70,4 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E134 | G5c repair R1 part 2: audited door `founder_anchor_requeue` (founder only, cause must be named, enabled providers only, one event per job + one audit row, 2nd run no-op); events list gains requeued; selftest | CHECK_E134 (3) |
 | E135 | G5c repair R1 part 3: re-queue the OTS jobs that died of the 32-byte bug (idempotent; freetsa NOT included, it waits for the R2 binary) | CHECK_E135 (3) |
 | E136 | G5c repair R1 part 4: E135 skipped itself (server has 2+ founder accounts); actor = founder with the newest audited action, else the only founder | CHECK_E136 (4) |
+| E137 | G5c repair R2 data step: re-queue the freetsa jobs that died of "unsupported ECDSA curve/hash pair" (after the R2 binary) | CHECK_E137 (4) |

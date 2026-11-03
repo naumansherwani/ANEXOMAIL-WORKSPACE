@@ -1442,3 +1442,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 3 Nov 06:52 his sql-run: E134+E135 applied; live jobs dead=12 done=8 pending=3 queued=1; CHECK_E135 row1 FAIL (reason unknown). Wrote CHECK_ANCHOR_JOBS.sql (read-only listing).
 - 3 Nov 06:56 Chrome look blocked again (founder tab on /founderlogin after founder-install restart). No GREEN written.
 - 3 Nov 06:57 Chrome look OK (dashboard live, kernel 0.10.0 proves 7/7 entries). E135 skipped on the server (2+ founders): wrote E136 + CHECK_E136, tested on scratch with 2 founders. Do not redo.
+- 3 Nov 07:05 R1 GREEN (paste + Chrome). Written: E137+CHECK_E137, FS1 session renewal (session.ts, api.ts, session.test.ts, founder dist). Do not redo.
