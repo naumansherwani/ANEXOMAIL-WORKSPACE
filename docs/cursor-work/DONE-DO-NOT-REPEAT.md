@@ -1453,3 +1453,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 3 Nov 08:00 G5d part 2 GREEN (CHECK_G5D_LIVE 5/5 + Chrome). Next: part 3 only (UI + kernel calls).
 - 3 Nov 08:15 G5d part 3 WRITTEN (kernel portable@1 0.11.0 + portable.ts + Portable pin gauge + L-A fmtStamp), NOT on the server, NOT green. Do not rewrite the kernel module; next = his pull of founder-install + pull.sh, his paste, my Chrome look.
 - 3 Nov 08:17 his order: all advanced founder technology is preserved and carries to the awam after the founder account is 100% ready (AWAM-ENGINE-BLUEPRINT section 0b). Docs only, awam still parked.
+- 3 Nov 08:25 PKT G5d part 3 GREEN, so G5d is GREEN (his pastes founder-install + pull.sh + my Chrome: Portable pin sentence live, bundle index-BVftvuir.js). Do not rewrite portable@1, portable.ts, E131, E138, portable.rs. Next letter: I2.
