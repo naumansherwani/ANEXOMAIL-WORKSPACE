@@ -3,7 +3,7 @@
 One letter per step, in build order. **GREEN** only where the proof exists (server output and/or the founder's Chrome). Old master-order numbers stay in `[brackets]` so nothing is duplicated. Source of truth for detail: `FOUNDER-MASTER-ORDER-28OCT.md`. The website says only what `tech-proof.py` shows PROVEN.
 > **TOP PRIORITY (founder 3 Nov 12:37, he said C1 is NOT to wander again): Polar C1 = DROPPED. It EMERGES inside letter O (Finance): existing webhook endpoints -> hash-chained ledger -> advanced verified layer, plan `FOUNDER-FINANCE-POLAR-LIVE-PLAN-02NOV.md`. No token, no `founder-polar.sh`, no side road before O.**
 
-## GREEN LEDGER (3 Nov 2026 13:45 PKT; every GREEN needs his paste + my Chrome look; this table is the quick read for a new chat)
+## GREEN LEDGER (3 Nov 2026 13:50 PKT; every GREEN needs his paste + my Chrome look; this table is the quick read for a new chat)
 | Phase | GREEN | Proof (time) |
 |---|---|---|
 | A device approval + signatures | GREEN | Chrome (earlier); 3 Nov 12:19 'Approved device Chrome on Windows' |
@@ -19,8 +19,10 @@ One letter per step, in build order. **GREEN** only where the proof exists (serv
 | J hardware toggle E142 | GREEN | his paste 12:17 + Chrome 12:19 ('Hardware keys: 0 of 2', Laptop = platform) |
 | J6 phone alerts (E140, E141, flare.rs, panel) | GREEN on desktop Chrome (3 Nov 13:25); real-phone proof OPEN | his key touch + my Chrome: confirmed, test sent 2, receipt, ledger intact |
 | K1, K2 transport | GREEN | earlier server openssl; not re-proven 3 Nov |
-| ANEXOChat Phase 61 (awam SQL, code) | WRITTEN, sandbox-green; NOT on his server | selftest + CHECK_phase61 5/5 in scratch PG (13:40) |
-| K3-K7, L, M, N, O, P, Q, R (+R3), S, T, U, V, X, J7-J9 | NOT GREEN | not built |
+| ANEXOChat Phase 13-15 + 61 (awam SQL: file engine, chart, quota, Premium 21,000-user cap) | GREEN (SQL on his server) | his paste 3 Nov 13:48: phase13_15 OK + E65 OK; phase61 + CHECK_phase61 4 OK rows + E65 OK. Rust throttle + plans.ts Premium card still to build (awam parked) |
+| K3 padlock on :8443 | NEXT: waiting for `ufw allow 8443/tcp` on his server (he said allowed 13:48), then my Chrome look | not yet proven |
+| J8 vault lease | NEXT after K3 (needs no operator) | not built |
+| K4-K7, L, M, N, O, P, Q, R (+R3), S, T, U, V, X, J7, J9 | NOT GREEN | not built |
 
 > **WHEN (his 12:37 questions): WebTransport / QUIC / UDP / WASM kernel / tokio async Rust.** tokio async Rust + axum and the WASM kernel are ALREADY the base of every GREEN letter (A-J). The QUIC/UDP transport is **K6** (`wtransport`, QUIC over UDP, HTTP/3 WebTransport; needs UDP open on the firewall), built in letter order after K3 (padlock :8443), K4 (AES-256 per host), K5 (awam T256-2); then K7 DBSC; then L, M (MoQ over the same transport). Its first users: N (Live Pulse push) and Q3 (parallel mail chunks). So the order is **K3 -> K4 -> K5 -> K6 -> K7**; K3 waits only for the firewall step.
 > **WHEN: the awam Calendar (and Mail, People, Work, CRM, Org) with the SAME code logic and UI/UX on the founder account = letter Q (Q1)**, after O (Finance) and P (People). Founder order: finance is the last founder-first item, but letter order puts Q after P.

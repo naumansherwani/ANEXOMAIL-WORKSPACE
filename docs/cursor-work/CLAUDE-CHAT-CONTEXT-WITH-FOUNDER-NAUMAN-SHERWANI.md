@@ -2269,3 +2269,6 @@ Business Premium user cap = 21,000 (NOT unlimited; the word Unlimited appears on
 
 ## CHECKPOINT 3 Nov 13:55 PKT
 He asked for the SQL pull command. Given: PULL-COMMANDS.md block 13:55 (phase13_15_file_engine, then phase61_file_limits_quota + CHECK_phase61). Pending on his side: those 2 SQL points and K3 `ufw allow 8443/tcp`. Premium = 21,000 users cap (Unlimited is price-page wording only). Premium storage number still needs his word. Latest commit before this note: 6c461e39.
+
+## CHECKPOINT 3 Nov 14:00 PKT
+His paste 13:48: phase13_15_file_engine OK, phase61 + CHECK_phase61 all OK (4 rows), E65 OK both times. ANEXOChat SQL = GREEN on his server (ledger row updated). He said "K3 ufw allow 8443/tcp yeh allowed hai" and "baki kaam sham ko". NEXT in letter order: K3 (his `ufw allow 8443/tcp`, then my Chrome look at https://founderworkspace.anexomail.com:8443/), then J8 vault lease, K4-K7, L, M, N... Premium = 21,000 cap. Work resumes in the evening; read the GREEN LEDGER first.

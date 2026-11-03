@@ -1,4 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
+## ▶ 3 Nov 13:48 PKT — founder: ANEXOChat SQL pastes OK; context updated rakho, baki kaam sham ko; tarteeb mein next kya; K3 ufw allow 8443/tcp allowed hai
+Founder (verbatim): "sab context updated rakho baki kaam sham ko. aur tarteeb main next kya hai?  K3 ufw allow 8443/tcp. yeh allowed hai"
+Done: GREEN LEDGER row + context checkpoint 14:00. Next = K3 (his ufw command), then J8.
+
 ## ▶ 3 Nov 13:43 PKT — founder: sql ki pull command do; baki chat context aur codes update rakho
 Founder (verbatim): "sql ki command dai pull ki baki chat context update rakho codes update rako"
 Done: PULL-COMMANDS block 13:55 (2 SQL points), context checkpoint 13:55.
