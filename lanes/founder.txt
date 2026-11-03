@@ -86,8 +86,8 @@ founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
-founder-web/dist/assets/index-BPx7ihpj.js
-founder-web/dist/assets/index-BPx7ihpj.js.gz
+founder-web/dist/assets/index-Bn1fpIZf.js
+founder-web/dist/assets/index-Bn1fpIZf.js.gz
 founder-web/dist/assets/index-BnepOpGp.css
 founder-web/dist/assets/index-BnepOpGp.css.gz
 founder-web/dist/assets/kernel.worker-CsjAWUNm.js
@@ -97,6 +97,7 @@ founder-web/dist/assets/three.module-Dza5cG3s.js.gz
 founder-web/dist/boot.css
 founder-web/dist/early.js
 founder-web/dist/favicon.svg
+founder-web/dist/flare-sw.js
 founder-web/dist/index.html
 founder-web/dist/kernel/anexo-kernel-0.12.0.wasm
 founder-web/index.html
@@ -106,6 +107,7 @@ founder-web/precompress.sh
 founder-web/public/boot.css
 founder-web/public/early.js
 founder-web/public/favicon.svg
+founder-web/public/flare-sw.js
 founder-web/public/kernel/anexo-kernel-0.12.0.wasm
 founder-web/src/AmbientStudio.tsx
 founder-web/src/App.tsx
@@ -113,6 +115,7 @@ founder-web/src/Brand.tsx
 founder-web/src/Bridge.tsx
 founder-web/src/Decks.tsx
 founder-web/src/Finance.tsx
+founder-web/src/Flare.tsx
 founder-web/src/Keys.tsx
 founder-web/src/Live.tsx
 founder-web/src/Palette.tsx
@@ -134,6 +137,7 @@ founder-web/src/city.ts
 founder-web/src/components/ui/button.tsx
 founder-web/src/components/ui/switch.tsx
 founder-web/src/dx.css
+founder-web/src/flare_pure.ts
 founder-web/src/fonts/Inter-Bold.woff2
 founder-web/src/fonts/Inter-ExtraLight.woff2
 founder-web/src/fonts/Inter-Light.woff2
@@ -180,6 +184,7 @@ server/founder/src/audit.rs
 server/founder/src/authcache.rs
 server/founder/src/bridge.rs
 server/founder/src/data.rs
+server/founder/src/flare.rs
 server/founder/src/ftoken.rs
 server/founder/src/gate.rs
 server/founder/src/hostproof.rs

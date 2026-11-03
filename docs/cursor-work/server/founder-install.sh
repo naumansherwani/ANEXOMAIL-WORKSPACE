@@ -68,6 +68,10 @@ SIGNF=/etc/anexomail/founder-sign.p8
 "$ROOT/anexomail-founder" --gen-sign-key "$SIGNF" | sed 's/^/   sign key: /'; chown anexomail-founder:anexomail-founder "$SIGNF"; chmod 400 "$SIGNF"
 AUDLK=/etc/anexomail/founder-auditlog.p8   # G5b: the audit log's OWN signing key (not the response key above); public half is registered in the database by the sealer
 "$ROOT/anexomail-founder" --gen-sign-key "$AUDLK" | sed 's/^/   audit-log key: /'; chown anexomail-founder:anexomail-founder "$AUDLK"; chmod 400 "$AUDLK"
+# J6: Web Push (VAPID, P-256) key for the phone alerts; the private half never leaves this file (0400)
+VAPIDF=/etc/anexomail/founder-vapid.p8
+"$ROOT/anexomail-founder" --gen-vapid-key "$VAPIDF" | sed 's/^/   vapid key: /'; chown anexomail-founder:anexomail-founder "$VAPIDF"; chmod 400 "$VAPIDF"
+grep -q '^FOUNDER_VAPID_KEY_FILE=' "$ENVF" || echo "FOUNDER_VAPID_KEY_FILE=$VAPIDF" >>"$ENVF"
 grep -q '^FOUNDER_SIGN_KEY_FILE=' "$ENVF" || echo "FOUNDER_SIGN_KEY_FILE=$SIGNF" >>"$ENVF"
 grep -q '^FOUNDER_LEGACY_TOKEN=' "$ENVF" || echo "FOUNDER_LEGACY_TOKEN=1" >>"$ENVF"   # 1 = purana session token abhi bhi chalta (grace); Chrome proof ke baad 0
 chown root:anexomail-founder "$ENVF"; chmod 640 "$ENVF"; chown -R root:anexomail-founder "$ROOT/web"; chmod -R g+rX "$ROOT/web"

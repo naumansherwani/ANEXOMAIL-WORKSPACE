@@ -28,3 +28,23 @@ describe("passkey helpers", () => {
     expect(friendly(new Error("boom"))).toBe("boom");
   });
 });
+
+import { b64uBytes, isConfirmToken, pushSupported, sha256Hex, subscriptionFields } from "./flare_pure";
+describe("phone alerts (J6) helpers", () => {
+  test("sha-256 hex matches the known vector (this is the value SQL _fh_sha computes)", async () => {
+    expect(await sha256Hex("abc")).toBe("ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad");
+  });
+  test("base64url key becomes bytes", () => { expect([...b64uBytes("AAEC")]).toEqual([0, 1, 2]); expect([...b64uBytes("-_8")]).toEqual([0xfb, 0xff]); });
+  test("subscription fields mirror the server door", () => {
+    const ok = { endpoint: "https://fcm.googleapis.com/fcm/send/abc", keys: { p256dh: "B" + "A".repeat(86), auth: "A".repeat(22) } };
+    expect(subscriptionFields(ok)).toEqual({ endpoint: ok.endpoint, p256dh: ok.keys.p256dh, auth: ok.keys.auth });
+    expect(subscriptionFields({ ...ok, endpoint: "http://x/y" })).toBeNull();
+    expect(subscriptionFields({ ...ok, keys: { ...ok.keys, p256dh: "C" + "A".repeat(86) } })).toBeNull();
+    expect(subscriptionFields({ ...ok, keys: { ...ok.keys, auth: "A".repeat(21) } })).toBeNull();
+    expect(subscriptionFields({ endpoint: ok.endpoint })).toBeNull();
+  });
+  test("confirm token shape and push support", () => {
+    expect(isConfirmToken("A".repeat(32))).toBe(true); expect(isConfirmToken("A".repeat(31))).toBe(false); expect(isConfirmToken("a b".padEnd(32, "a"))).toBe(false); expect(isConfirmToken(5)).toBe(false);
+    expect(pushSupported({})).toBe(false); expect(pushSupported({ Notification: {}, PushManager: {}, navigator: { serviceWorker: {} } })).toBe(true);
+  });
+});

@@ -578,3 +578,8 @@ git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-w
 <!-- 3 Nov 11:05: ABHI PENDING = none. J6 flare v2 is planned only (docs/claude/FOUNDER-FLARE-J6-RESEARCH-03NOV.md); the next pull comes with E140. -->
 
 <!-- 3 Nov 11:25: E140 SQL is in the repo but NOT yet given to the founder as a command (comes with the Rust sender so SQL + founder-install go as one block). -->
+
+## ABHI PENDING (3 Nov 11:50 PKT): J6 phone alerts (E140 + flare.rs + Phone alerts panel). Two points only (Rule 24).
+1. SQL (E140 + CHECK_E140): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E140_founder_flare_push CHECK_E140 2>&1 | tail -14`
+2. Rust + SPA (installer makes the P-256 VAPID key, starts the sender): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
+Web pull.sh is NOT needed for this.

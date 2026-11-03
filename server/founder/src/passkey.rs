@@ -547,6 +547,12 @@ pub fn door_spec(door: &str) -> Option<(&'static str, &'static [(&'static str, c
         "recovery_cancel" => ("founder_recovery_cancel", &[("p_request", 'u'), ("p_reason", 't')]),
         "mds" => ("founder_mds_ingest", &[("p_blob_no", 'n'), ("p_entries", 'a')]),
         "signal_ack" => ("founder_webauthn_signal_ack", &[("p_id", 'u')]),
+        // E140 / J6 phone push alerts (shapes: e endpoint url, k key text up to 100, s short text)
+        "push_subscribe" => ("founder_push_subscribe", &[("p_endpoint", 'e'), ("p_p256dh", 'k'), ("p_auth", 'k'), ("p_label", 's'), ("p_grant", 'u'), ("p_nonce", 's')]),
+        "push_confirm" => ("founder_push_confirm", &[("p_token", 's')]),
+        "push_remove" => ("founder_push_remove", &[("p_sub", 'u'), ("p_grant", 'u'), ("p_nonce", 's')]),
+        "push_test" => ("founder_push_test", &[]),
+        "push_status" => ("founder_push_status", &[]),
         _ => return None,
     })
 }
@@ -554,7 +560,7 @@ pub fn door_spec(door: &str) -> Option<(&'static str, &'static [(&'static str, c
 pub fn door_args(spec: &[(&str, char)], b: &Value, uid: &str, did: &str, door: &str) -> Result<Value, &'static str> {
     let mut o = serde_json::Map::new();
     o.insert("p_uid".into(), json!(uid));
-    if !matches!(door, "mds" | "signal_ack") { o.insert("p_device".into(), json!(did)); }
+    if !matches!(door, "mds" | "signal_ack" | "push_status") { o.insert("p_device".into(), json!(did)); }
     for (name, shape) in spec {
         let v = b.get(*name);
         let ok = match shape {
@@ -566,6 +572,8 @@ pub fn door_args(spec: &[(&str, char)], b: &Value, uid: &str, did: &str, door: &
             'b' => v.is_some_and(|x| x.is_boolean()),
             'n' => v.and_then(|x| x.as_i64()).is_some_and(|n| (1..=1_000_000_000).contains(&n)),
             'a' => v.and_then(|x| x.as_array()).is_some_and(|a| a.len() <= 2000),
+            'e' => v.and_then(|x| x.as_str()).is_some_and(|s| s.starts_with("https://") && s.len() <= 700 && s.is_ascii()),
+            'k' => v.and_then(|x| x.as_str()).is_some_and(|s| !s.is_empty() && s.len() <= 100 && s.bytes().all(|c| c.is_ascii_alphanumeric() || c == b'-' || c == b'_')),
             _ => false,
         };
         if !ok { return Err("a field is missing or has the wrong shape"); }
@@ -603,6 +611,14 @@ mod route_tests {
         let (_, rc) = door_spec("recovery_codes").unwrap();
         assert!(door_args(rc, &json!({}), "me", "dev", "recovery_codes").is_ok()); // first-key path: grant and nonce may be null
         assert!(door_args(rc, &json!({"p_grant": "nope"}), "me", "dev", "recovery_codes").is_err());
+        let (_, ps) = door_spec("push_subscribe").unwrap();
+        let good = json!({"p_endpoint": "https://fcm.googleapis.com/fcm/send/abc", "p_p256dh": "B".repeat(87), "p_auth": "A".repeat(22), "p_label": "Pixel", "p_grant": U, "p_nonce": "nonce-123456"});
+        assert!(door_args(ps, &good, "me", "dev", "push_subscribe").is_ok());
+        let mut bad = good.clone(); bad["p_endpoint"] = json!("http://x.example/abc"); assert!(door_args(ps, &bad, "me", "dev", "push_subscribe").is_err());
+        let mut bad = good.clone(); bad["p_p256dh"] = json!("B".repeat(101)); assert!(door_args(ps, &bad, "me", "dev", "push_subscribe").is_err());
+        let mut bad = good.clone(); bad["p_auth"] = json!("a b"); assert!(door_args(ps, &bad, "me", "dev", "push_subscribe").is_err());
+        let st_args = door_args(door_spec("push_status").unwrap().1, &json!({}), "me", "dev", "push_status").unwrap();
+        assert!(st_args.get("p_device").is_none() && st_args["p_uid"] == "me");
         let (_, fl) = door_spec("flare_set").unwrap();
         assert!(door_args(fl, &json!({"p_e164": "+923001234567", "p_grant": U, "p_nonce": "nonce-123456"}), "me", "dev", "flare_set").is_ok());
         assert!(door_args(fl, &json!({"p_e164": "", "p_grant": U, "p_nonce": "n"}), "me", "dev", "flare_set").is_err());
@@ -621,9 +637,9 @@ mod route_tests {
     }
     #[test]
     fn every_door_matches_a_real_sql_signature_name() {
-        for d in ["recovery_codes", "aaguid_allow", "t2_hardware", "t3_cancel", "flare_set", "flare_remove", "revoke", "recovery_cancel", "mds", "signal_ack"] {
+        for d in ["recovery_codes", "aaguid_allow", "t2_hardware", "t3_cancel", "flare_set", "flare_remove", "revoke", "recovery_cancel", "mds", "signal_ack", "push_subscribe", "push_confirm", "push_remove", "push_test", "push_status"] {
             let (f, spec) = door_spec(d).unwrap();
-            assert!(f.starts_with("founder_") && !spec.is_empty() || d == "recovery_codes");
+            assert!(f.starts_with("founder_") && (!spec.is_empty() || matches!(d, "recovery_codes" | "push_test" | "push_status")));
         }
     }
 }

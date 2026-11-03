@@ -33,6 +33,7 @@ mod tls256;
 #[allow(dead_code)]
 mod passkey_core;
 mod passkey;
+mod flare;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -471,6 +472,12 @@ async fn merkle_stats_ep(State(st): State<S>, h: HeaderMap) -> axum::response::R
     match s { Some(v) if v.is_object() => signed(&st, json!({"connected": true, "stats": v, "checkpoints": l})), _ => signed(&st, ledger::missing()) }
 }
 /// G5b: newest C2SP signed checkpoint + keys. The browser kernel verifies the signature; this only delivers it.
+/// GET /founder/v1/flare/key: the VAPID public key the phone subscribes with (public by nature, still behind the founder session).
+async fn flare_key_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
+    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    signed(&st, json!({"enabled": flare::PUBLIC.get().is_some(), "key": flare::PUBLIC.get()}))
+}
+
 async fn signed_cp_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
     if let Err(code) = authed(&st, &h).await { return code.into_response(); }
     signed(&st, signedcp::view(st.sb.as_ref().unwrap()).await)
@@ -663,6 +670,7 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/passkey/verify", axum::routing::post(passkey::verify_ep))
         .route("/founder/v1/passkey/finish", axum::routing::post(passkey::finish_ep))
         .route("/founder/v1/passkey/list", get(passkey::list_ep))
+        .route("/founder/v1/flare/key", get(flare_key_ep))
         .route("/founder/v1/chairman/{door}", axum::routing::post(passkey::door_ep))
         .route("/founder/v1/inbox", get(inbox_ep))
         .route("/founder/v1/inbox/list", get(inbox_list_ep))
@@ -703,6 +711,12 @@ async fn main() {
         println!("generated");
         return;
     }
+    if let Some(i) = std::env::args().position(|a| a == "--gen-vapid-key") { // installer (J6): P-256 key for Web Push (VAPID), once, file 0400; the service itself cannot write /etc (ProtectSystem=strict)
+        let path = std::env::args().nth(i + 1).expect("path lazmi");
+        if std::path::Path::new(&path).exists() { println!("exists"); return; }
+        match flare::Vapid::load_or_create(&path, "https://invalid.example") { Some(v) => println!("generated public {}", v.public_b64()), None => { eprintln!("vapid keygen failed"); std::process::exit(1); } }
+        return;
+    }
     if let Some(i) = std::env::args().position(|a| a == "--gen-sign-key") { // installer: Ed25519 signing key, once, file 0400
         let path = std::env::args().nth(i + 1).expect("path lazmi");
         if std::path::Path::new(&path).exists() { println!("exists"); return; }
@@ -725,6 +739,7 @@ async fn main() {
     let (polar, pcfg) = match polar::Cfg::from_env() { Some(c) => (polar::Live::new(true), Some(c)), None => (polar::Live::off(), None) };
     eprintln!("founder: polar reader {}", if pcfg.is_some() { "ON (read-only, metrics API)" } else { "OFF (no FOUNDER_POLAR_READ_TOKEN)" });
     if let Some(c) = pcfg { polar::spawn(polar.clone(), c, now_s); }
+    match (&sb, flare::Cfg::from_env()) { (Some(s), Some(c)) => flare::spawn(s.clone(), c), (_, None) => eprintln!("founder: flare sender OFF (FOUNDER_FLARE=off or no usable VAPID key)"), _ => {} }
     if let Some(s) = &sb { live::start(s.clone()); } // 4b-2: the one process-wide live tick
     let st = Arc::new(St { sb, hmac_key: key.into_bytes(), jwks: RwLock::new(jwks), lim: Default::default(), ft, legacy, polar, hook: Default::default(), ed, reqsig, gate: authcache::AuthCache::new(std::time::Duration::from_secs(5)) });
     match tls256::from_env() { // T256-1: own TLS 1.3 terminator, AES-256-GCM only, on its own port (default OFF); the main port above is never touched
