@@ -1,0 +1,255 @@
+import { BrandSpinner } from "@/components/state/BrandLoader";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
+import { Building2, LogIn } from "lucide-react";
+
+import { BrandMark } from "@/components/site/BrandMark";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { rpcOrRest } from "@/lib/rpc";
+import { api, ApiError } from "@/lib/api";
+import { CountryPicker } from "@/components/auth/CountryPicker";
+import { countryList, filterBlocked, LOCAL_BLOCKED } from "@/lib/countries";
+import { setCountry } from "@/lib/signx";
+import { useAuth } from "@/lib/auth";
+import { useLocale } from "@/lib/i18n";
+
+export const Route = createFileRoute("/onboarding")({
+  ssr: false,
+  head: () => ({
+    meta: [
+      { title: "Create your account for workspace — ANEXOMAIL" },
+      {
+        name: "description",
+        content: "Set up your ANEXOMAIL workspace, then open your inbox.",
+      },
+      { property: "og:title", content: "Create your account for workspace — ANEXOMAIL" },
+      {
+        property: "og:description",
+        content: "Your ANEXOMAIL workspace, with an organisation name and domain if you have them.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "robots", content: "noindex" },
+    ],
+  }),
+  component: OnboardingPage,
+});
+
+type Path = "choose" | "business-name";
+
+function OnboardingPage() {
+  const navigate = useNavigate();
+  const { session, status, refresh } = useAuth();
+
+  const [path, setPath] = useState<Path>("choose");
+  const [org, setOrg] = useState("");
+  const [orgDomain, setOrgDomain] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  /** The server answered "country_required": show a country box (a new account must have one). */
+  const [needCountry, setNeedCountry] = useState(false);
+  const [country, setCountryIso] = useState("");
+  const countries = filterBlocked(countryList("en"), LOCAL_BLOCKED);
+  const autoKind = useRef(false);
+
+  useEffect(() => {
+    if (status !== "signed-in" || !session) return;
+    // FOUNDER PROTOCOL: founder par awam ka org onboarding kabhi nahi.
+    if (session.user.is_founder) {
+      void navigate({ to: "/app", replace: true });
+      return;
+    }
+    if (!session.user.anexomail_address) {
+      void navigate({ to: "/claim", replace: true });
+      return;
+    }
+    if (session.user.onboarded) {
+      void navigate({ to: "/app", replace: true });   // pehle full reload /dashboard -> /app (do hop + dobara loading)
+      return;
+    }
+    if (autoKind.current || busy || path !== "choose") return;
+    const kind = session.user.account_kind;
+    const stored =
+      typeof window !== "undefined" ? window.sessionStorage.getItem("anexo.pending.workspace_kind") : null;
+    // Personal packages are retired (founder 2 Nov 2026): a new account always goes to the company step. Only an account that was ALREADY
+    // personal-kind before the retirement keeps its old path, so nobody is locked out.
+    const chosen = kind === "personal" || stored === "personal" ? "personal" : "business";
+    if (chosen === "business") {
+      autoKind.current = true;
+      setPath("business-name");
+      return;
+    }
+    autoKind.current = true;
+    void goPersonal();
+  }, [status, session, navigate, busy, path]);
+
+  const fail = (e: unknown) => {
+    if (e instanceof ApiError && e.code === "country_required") setNeedCountry(true);
+    setError(
+      e instanceof ApiError
+        ? e.message
+        : "Something went wrong.",
+    );
+  };
+
+  const goPersonal = async () => {
+    setError(null);
+    setBusy(true);
+    try {
+      await rpcOrRest("workspace.personal", { path: "/api/workspace/personal", method: "POST", body: {} }, {});
+      await refresh();
+      window.location.replace("/dashboard");
+    } catch (e) {
+      fail(e);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const createOrg = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setError(null);
+    setBusy(true);
+    try {
+      if (needCountry) {
+        if (!country) throw new ApiError("Choose your country to continue.", 400, "country_required");
+        await setCountry(country);
+      }
+      await rpcOrRest("workspace.organisations", { path: "/api/workspace/organisations", method: "POST", body: { name: org, domain: orgDomain } }, { name: org, domain: orgDomain });
+      await api("/api/auth/onboarding/complete", { method: "POST" });
+      await refresh();
+      window.sessionStorage.removeItem("anexo.pending.workspace_kind");
+      window.location.replace("/dashboard");
+    } catch (e) {
+      fail(e);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return status !== "signed-in" ? (
+    <OnboardingIntro loading={status === "loading"} />
+  ) : (
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-16">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-[-14rem] h-[30rem] w-[54rem] -translate-x-1/2 rounded-full bg-cyan-accent/10 blur-[130px]"
+      />
+
+      <div className="ax-in relative w-full max-w-[42rem]">
+        <div className="flex justify-center">
+          <BrandMark />
+        </div>
+
+        <div className="mt-ax-4 rounded-2xl border border-border bg-card p-ax-5 shadow-2xl">
+          {path === "choose" && (
+            <div className="space-y-ax-3">
+              <p className="ax-caption text-center text-muted-foreground">Preparing your workspace…</p>
+
+              {error && (
+                <p role="alert" className="ax-caption text-destructive">
+                  {error}
+                </p>
+              )}
+            </div>
+          )}
+
+          {path === "business-name" && (
+            <form onSubmit={createOrg} className="space-y-ax-3">
+              <div className="text-center">
+                <Building2 className="mx-auto size-5 text-cyan-accent" />
+                <h1 className="ax-heading mt-ax-2 text-foreground">Your organisation</h1>
+                <p className="ax-caption mt-1">
+                  Both are optional. Skip them and we create "Your name workspace" for you; rename it or add a domain any time in Settings.
+                </p>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="org" className="ax-caption text-foreground">
+                  Organisation name <span className="font-normal text-muted-foreground">(optional)</span>
+                </Label>
+                <Input id="org" minLength={2} value={org} onChange={(e) => setOrg(e.target.value)} placeholder="Your company or team" />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="org-domain" className="ax-caption text-foreground">
+                  Organisation domain <span className="font-normal text-muted-foreground">(optional)</span>
+                </Label>
+                <Input
+                  id="org-domain"
+                  value={orgDomain}
+                  onChange={(e) => setOrgDomain(e.target.value)}
+                  autoComplete="off"
+                  placeholder="company.com"
+                />
+                <p className="ax-caption text-muted-foreground">No company domain yet? Leave it empty. You work on your @anexomail.com address and can connect a domain later in Settings.</p>
+              </div>
+
+              {needCountry && <CountryPicker list={countries} value={country} onChange={setCountryIso} />}
+
+              {error && (
+                <p role="alert" className="ax-caption text-destructive">
+                  {error}
+                </p>
+              )}
+
+              <Button type="submit" className="ax-press w-full" disabled={busy}>
+                {busy && <BrandSpinner className="size-4" />}
+                Continue
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                className="w-full"
+                disabled={busy}
+                onClick={() => {
+                  setError(null);
+                  setPath("choose");
+                }}
+              >
+                Back
+              </Button>
+            </form>
+          )}
+        </div>
+      </div>
+    </main>
+  );
+}
+
+function OnboardingIntro({ loading }: { loading: boolean }) {
+  const { t } = useLocale();
+  return (
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-16">
+      <div className="ax-in relative w-full max-w-[28rem] text-center">
+        <BrandMark />
+        <h1 className="ax-heading mt-ax-5 text-foreground">{t("Create your account for workspace")}</h1>
+        <p className="ax-body mt-ax-2">
+          {t("Sign in first. Then choose Personal or Business — no domain required on day one.")}
+        </p>
+        {loading ? (
+          <p className="ax-caption mt-ax-4 flex items-center justify-center gap-2">
+            <BrandSpinner className="size-4" />
+            Checking your session…
+          </p>
+        ) : (
+          <div className="mt-ax-4 flex flex-col gap-2">
+            <Button asChild className="ax-press w-full">
+              <Link to="/auth">
+                <LogIn className="size-4" />
+                Sign in
+              </Link>
+            </Button>
+            <Button asChild variant="ghost" className="w-full">
+              <Link to="/signup">
+                Create your account for workspace
+              </Link>
+            </Button>
+          </div>
+        )}
+      </div>
+    </main>
+  );
+}

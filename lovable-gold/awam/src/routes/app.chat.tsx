@@ -1,0 +1,771 @@
+import { useQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
+import {
+  Check,
+  Paperclip,
+  Pencil,
+  PhoneCall,
+  PictureInPicture2,
+  Plus,
+  Search,
+  Send,
+  WifiOff,
+  X,
+} from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+
+import {
+  AtmosphereControl,
+  AtmosphereStage,
+  useAtmosphere,
+} from "@/components/app/chat/Atmosphere";
+import { ConversationRow, HealthChip } from "@/components/app/chat/ChatBits";
+import { CinemaStage, useCinema } from "@/components/app/chat/CinemaStage";
+import { ConversationTruthBar } from "@/components/app/chat/ConversationTruthBar";
+import { CallConnectReport } from "@/components/app/chat/CallConnectReport";
+import { FileTransfers } from "@/components/app/chat/FileTransfers";
+import { MessageStream } from "@/components/app/chat/MessageStream";
+import { MessageTruth } from "@/components/app/chat/MessageTruth";
+import { VideoCallOverlay } from "@/components/app/chat/VideoCall";
+import { WorkStrip } from "@/components/app/chat/WorkStrip";
+import { DetailPanel, EmptyState, ListPanel } from "@/components/app/Panel";
+import { StateBlock } from "@/components/state/StateBlock";
+import { Button } from "@/components/ui/button";
+import {
+  deviceLabel,
+  useChatSearch,
+  useConversationPrefs,
+  useDeleteMessage,
+  useDeleteMessage48h,
+  useDeleteMessageAnytime,
+  useEditMessage,
+  useHideMessage,
+  usePinMessage,
+  useReact,
+  useChatBootstrap,
+  useChatSend,
+  useConversations,
+  useMarkRead,
+  useMessages,
+  usePresence,
+  useStartDirect,
+  useTypingPing,
+} from "@/lib/chat";
+import type { ChatMessage } from "@/lib/chat";
+import { chatCall, useChatLive } from "@/lib/chat-transport";
+import { useCall } from "@/lib/chat-call";
+import { useVideoGate } from "@/lib/chat-video";
+import { filesFromPaste, newUpload, uploadImage, type Upload } from "@/lib/chat-attachments";
+import {
+  deepSearch,
+  markDeviceSeen,
+  useResumePosition,
+  useSyncedDraft,
+} from "@/lib/chat-continuity";
+import { deepLinkConversation, isPaneMode, popOutConversation } from "@/lib/chat-multitask";
+import { useAuth } from "@/lib/auth";
+import { surfaceFromSession } from "@/lib/plan-surface";
+
+export const Route = createFileRoute("/app/chat")({
+  head: () => ({
+    meta: [{ title: "ANEXOChat — ANEXOMAIL Workspace" }, { name: "robots", content: "noindex" }],
+  }),
+  component: ChatPage,
+});
+
+function ChatPage() {
+  const atmosphere = useAtmosphere();
+  const bootstrap = useChatBootstrap();
+  const entitled = bootstrap.isSuccess;
+  const conversations = useConversations(entitled);
+  // Phase 11 multitasking: pop-out window `?c=<id>` deep link se seedha khulti hai.
+  const [openId, setOpenId] = useState<string | null>(() =>
+    typeof window === "undefined" ? null : deepLinkConversation(),
+  );
+  const pane = isPaneMode();
+  const messages = useMessages(openId);
+  const presence = usePresence(openId, entitled);
+  const { send, pending } = useChatSend(openId);
+  const markRead = useMarkRead(openId);
+  const startDirect = useStartDirect();
+  const typingPing = useTypingPing(openId);
+  // Phase 12 continuity: draft server-authoritative hai — har device par wahi draft.
+  const draftBox = useSyncedDraft(openId);
+  const resume = useResumePosition(openId);
+  // Phase 11 attachments: drag-drop / paste / picker — progress + errors asli.
+  const [uploads, setUploads] = useState<Upload[]>([]);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  function addFiles(files: File[]) {
+    if (!openId || !files.length) return;
+    for (const file of files) {
+      const u = newUpload(file);
+      setUploads((prev) => [...prev, u]);
+      void uploadImage(openId, file, (patch) =>
+        setUploads((prev) => prev.map((x) => (x.id === u.id ? { ...x, ...patch } : x))),
+      );
+    }
+  }
+  const [replyTo, setReplyTo] = useState<ChatMessage | null>(null);
+  // Inline edit state — window.prompt se behtar: proper textarea in-stream.
+  const [editTarget, setEditTarget] = useState<ChatMessage | null>(null);
+  const [editDraft, setEditDraft] = useState("");
+  const [toolsOpen, setToolsOpen] = useState(false);
+  // Message-level truth drawer (Phase 19-30 arms) — ek message ek waqt.
+  const [moreFor, setMoreFor] = useState<ChatMessage | null>(null);
+  useEffect(() => {
+    setMoreFor(null);
+    setToolsOpen(false);
+  }, [openId]);
+  const [query, setQuery] = useState("");
+  const react = useReact(openId);
+  const editMessage = useEditMessage(openId);
+  const deleteMessage = useDeleteMessage(openId);
+  // Delete ladder (locked): Basic/Pro 1h · Business 48h (E7) · Business Pro no limit (E6).
+  // power = featurePlan (Personal Pro/Premium = business_pro power). SQL gate bhi hai.
+  const { session, organisation } = useAuth();
+  const { power } = surfaceFromSession(session?.user, organisation?.slug);
+  const anytimeDelete = power === "business_pro";
+  const extended48Delete = power === "business";
+  const deleteAnytime = useDeleteMessageAnytime(openId);
+  const delete48h = useDeleteMessage48h(openId);
+  const hideMessage = useHideMessage(openId);
+  const pinMessage = usePinMessage(openId);
+  const prefs = useConversationPrefs(openId);
+  const search = useChatSearch(query);
+  const [online, setOnline] = useState(true);
+  const live = useChatLive(openId);
+
+  // PHASE 12: device register — continuity ka canonical roster server par.
+  useEffect(() => {
+    if (!entitled) return;
+    void markDeviceSeen().catch(() => undefined);
+  }, [entitled]);
+
+  // PHASE 12: full-history deep search — chat jitni purani ho, hamesha milti hai.
+  const deep = useQuery({
+    queryKey: ["chat", "search", "deep", query],
+    enabled: entitled && query.trim().length >= 2,
+    queryFn: () => deepSearch({ q: query.trim(), limit: 60 }),
+    staleTime: 15_000,
+  });
+
+  useEffect(() => {
+    const sync = () => setOnline(navigator.onLine);
+    sync();
+    window.addEventListener("online", sync);
+    window.addEventListener("offline", sync);
+    return () => {
+      window.removeEventListener("online", sync);
+      window.removeEventListener("offline", sync);
+    };
+  }, []);
+
+  // Presence truth: apna heartbeat bhejte hain, doosre ka DB se padhte hain.
+  useEffect(() => {
+    if (!entitled) return;
+    const ping = () =>
+      void chatCall<{ ok: boolean }>(
+        "chat.presence.ping",
+        { device: deviceLabel() },
+        { path: "/api/chat/presence", method: "POST", body: { device: deviceLabel() } },
+      ).catch(() => {});
+    ping();
+    const timer = window.setInterval(ping, 30_000);
+    return () => window.clearInterval(timer);
+  }, [entitled]);
+
+  const list = conversations.data?.conversations ?? [];
+  const active = list.find((c) => c.conversation_id === openId) ?? null;
+  const gate = useVideoGate(entitled);
+  const call = useCall(openId, bootstrap.data?.user_id ?? null, active?.other_user_id ?? null);
+  // 3D sirf tab chalta hai jab koi call live nahi — call par khud-ba-khud OFF.
+  const cinema = useCinema(atmosphere.calm, atmosphere.effect, call.phase !== "idle");
+  const ordered = useMemo(
+    () => [...(messages.data?.messages ?? [])].sort((a, b) => a.seq - b.seq),
+    [messages.data],
+  );
+
+  // Read receipt sirf tab jab message asal mein screen par aaya.
+  useEffect(() => {
+    const last = ordered.at(-1);
+    if (!openId || !last || last.mine) return;
+    markRead.mutate(last.seq);
+  }, [openId, ordered, markRead]);
+
+  const typingNames = (presence.data?.typing ?? [])
+    .map((t) => bootstrap.data?.members.find((m) => m.user_id === t.user_id)?.display_name)
+    .filter(Boolean) as string[];
+
+  const teammates = (bootstrap.data?.members ?? []).filter(
+    (m) => m.user_id !== bootstrap.data?.user_id,
+  );
+
+  if (bootstrap.isLoading) {
+    return (
+      <div className="px-6 py-8">
+        <StateBlock title="Opening ANEXOChat" body="Checking your workspace access." />
+      </div>
+    );
+  }
+
+  if (bootstrap.isError) {
+    const forbidden = bootstrap.error?.status === 403;
+    return (
+      <div className="px-6 py-8">
+        <StateBlock
+          title={forbidden ? "ANEXOChat is on Business plans" : "ANEXOChat is not reachable"}
+          body={
+            forbidden
+              ? "ANEXOChat is included with Business and Business Pro. Basic and Pro do not include it."
+              : (bootstrap.error?.message ?? "The workspace server did not answer.")
+          }
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative flex min-h-0 flex-1 flex-col bg-background md:flex-row">
+      <AtmosphereStage band={atmosphere.band} effect={atmosphere.effect} calm={atmosphere.calm} />
+      <CinemaStage band={atmosphere.band} effect={atmosphere.effect} quality={cinema.quality} />
+
+      {/* Phase 11 multitasking: pop-out pane (?pane=1) mein sirf detail dikhta hai. */}
+      {pane ? null : (
+        <ListPanel
+          title="ANEXOChat"
+          mobileHidden={Boolean(openId)}
+          action={
+            <span className="text-[11px] text-muted-foreground" title={live.detail}>
+              {list.length} {list.length === 1 ? "conversation" : "conversations"} ·{" "}
+              {live.transport === "webtransport" ? "WebTransport live" : "HTTP/3 polling"}
+            </span>
+          }
+        >
+          <div className="border-b border-border px-3 py-2">
+            <label className="sr-only" htmlFor="ax-chat-search">
+              Search messages
+            </label>
+            <div className="flex items-center gap-2 rounded-lg border border-border px-2 py-1.5">
+              <Search className="size-3.5 text-muted-foreground" />
+              <input
+                id="ax-chat-search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search messages"
+                className="w-full bg-transparent text-xs text-foreground outline-none"
+              />
+            </div>
+            {query.trim().length >= 2 ? (
+              <div className="mt-2 flex flex-col gap-1">
+                {(search.data?.results ?? []).length === 0 ? (
+                  <p className="text-[11px] text-muted-foreground">
+                    {search.isFetching ? "Searching" : "No message matches that text."}
+                  </p>
+                ) : (
+                  (search.data?.results ?? []).map((hit) => (
+                    <button
+                      key={hit.id}
+                      type="button"
+                      onClick={() => {
+                        setOpenId(hit.conversation_id);
+                        setQuery("");
+                      }}
+                      className="rounded-lg border border-border px-2 py-1 text-left text-[11px] text-muted-foreground hover:text-foreground"
+                    >
+                      <span className="font-semibold text-foreground">{hit.sender_name}</span>{" "}
+                      {hit.body.slice(0, 70)}
+                    </button>
+                  ))
+                )}
+                {(deep.data ?? []).length ? (
+                  <>
+                    <p className="pt-1 text-[10px] uppercase tracking-wide text-muted-foreground">
+                      Full history
+                    </p>
+                    {(deep.data ?? []).map((hit) => (
+                      <button
+                        key={hit.message_id}
+                        type="button"
+                        onClick={() => {
+                          setOpenId(hit.conversation_id);
+                          setQuery("");
+                        }}
+                        className="rounded-lg border border-border px-2 py-1 text-left text-[11px] text-muted-foreground hover:text-foreground"
+                      >
+                        <span className="font-semibold text-foreground">
+                          {hit.conversation_title ?? "Conversation"}
+                        </span>{" "}
+                        {hit.body.slice(0, 70)}
+                      </button>
+                    ))}
+                  </>
+                ) : null}
+              </div>
+            ) : null}
+          </div>
+
+          {list.length === 0 ? (
+            <div className="p-4">
+              <EmptyState
+                title="No conversations yet"
+                body={
+                  teammates.length
+                    ? "Start a direct conversation with someone in this workspace."
+                    : "Nobody else is in this chat workspace yet, so there is nothing to open."
+                }
+                action={
+                  teammates.length ? (
+                    <div className="flex flex-col gap-1">
+                      {teammates.map((m) => (
+                        <button
+                          key={m.user_id}
+                          type="button"
+                          className="ax-press rounded-lg border border-border px-3 py-1.5 text-xs text-foreground"
+                          onClick={() =>
+                            startDirect.mutate(m.user_id, {
+                              onSuccess: (r: { conversation_id: string }) =>
+                                setOpenId(r.conversation_id),
+                            })
+                          }
+                        >
+                          Message {m.display_name ?? "teammate"}
+                        </button>
+                      ))}
+                    </div>
+                  ) : undefined
+                }
+              />
+            </div>
+          ) : (
+            list.map((c) => (
+              <ConversationRow
+                key={c.conversation_id}
+                conversation={c}
+                active={c.conversation_id === openId}
+                onOpen={() => setOpenId(c.conversation_id)}
+              />
+            ))
+          )}
+        </ListPanel>
+      )}
+
+      <DetailPanel mobileVisible={Boolean(openId)}>
+        {!active ? (
+          <div className="p-6">
+            <EmptyState
+              title="Pick a conversation"
+              body="Every message here is stored in your workspace and every state is real."
+            />
+          </div>
+        ) : (
+          <div className="relative flex h-full min-h-0 flex-col">
+            <header className="relative z-10 shrink-0 border-b border-border bg-background px-4 py-3">
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="text-sm font-bold tracking-tight text-foreground">
+                  {active.other_name ?? "Conversation"}
+                </h2>
+                <HealthChip health={active.health} reason={active.health_reason} />
+                {/* Live transport indicator */}
+                <span
+                  title={live.detail}
+                  className="inline-flex items-center gap-1 rounded-full border border-border bg-card/60 px-2 py-0.5 text-[10px] text-muted-foreground"
+                >
+                  <span
+                    className={`size-1.5 rounded-full ${live.transport === "webtransport" ? "bg-emerald-500" : "bg-amber-400"}`}
+                  />
+                  {live.transport === "webtransport" ? "QUIC live" : "HTTP/3 polling"}
+                </span>
+                {!online ? (
+                  <span className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-[11px] text-muted-foreground">
+                    <WifiOff className="size-3" /> Offline
+                  </span>
+                ) : null}
+                {gate.data?.allowed ? (
+                  <button
+                    type="button"
+                    onClick={() => void call.start()}
+                    className="ax-press ml-auto inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-3 py-1.5 text-[11px] font-medium text-foreground transition-colors hover:border-primary/40 hover:bg-primary/8 hover:text-primary"
+                  >
+                    <PhoneCall className="size-3" /> Video call
+                  </button>
+                ) : (
+                  <span className="ml-auto text-[11px] text-muted-foreground">
+                    ANEXOVideoCall · Business Pro
+                  </span>
+                )}
+                <button
+                  type="button"
+                  onClick={() => prefs.mutate({ mute_minutes: 60 })}
+                  className="rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground"
+                >
+                  Mute 1h
+                </button>
+                <button
+                  type="button"
+                  onClick={() => active && popOutConversation(active.conversation_id)}
+                  aria-label="Open this chat in a side window"
+                  title="Open in side window"
+                  className="rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground"
+                >
+                  <PictureInPicture2 className="size-3.5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => prefs.mutate({ archived: true })}
+                  className="rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground"
+                >
+                  Archive
+                </button>
+              </div>
+              {/* Atmosphere + Cinema — compact single strip */}
+              <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                <AtmosphereControl
+                  band={atmosphere.band}
+                  effect={atmosphere.effect}
+                  calm={atmosphere.calm}
+                  caption={atmosphere.caption}
+                  onEffect={atmosphere.setEffect}
+                  onCalm={atmosphere.setCalm}
+                />
+                <div className="ml-auto flex items-center gap-1.5">
+                  <select
+                    aria-label="Cinematic quality"
+                    value={cinema.pref}
+                    disabled={!cinema.enabled}
+                    onChange={(e) =>
+                      cinema.setQuality(e.target.value as "auto" | "off" | "low" | "high")
+                    }
+                    className="rounded-full border border-border bg-transparent px-2 py-0.5 text-[11px] text-muted-foreground disabled:opacity-40"
+                  >
+                    <option value="auto">3D auto</option>
+                    <option value="high">3D high</option>
+                    <option value="low">3D low</option>
+                    <option value="off">3D off</option>
+                  </select>
+                  <button
+                    type="button"
+                    aria-pressed={cinema.enabled}
+                    onClick={() => cinema.setEnabled(!cinema.enabled)}
+                    className={`rounded-full border px-2 py-0.5 text-[11px] transition-colors ${
+                      cinema.enabled
+                        ? "border-primary/30 bg-primary/8 text-primary"
+                        : "border-border text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {cinema.pausedByCall ? "3D paused" : cinema.enabled ? "3D on" : "3D off"}
+                  </button>
+                  {cinema.soundable ? (
+                    <button
+                      type="button"
+                      onClick={() => cinema.setSound(!cinema.sound)}
+                      className="rounded-full border border-border px-2 py-0.5 text-[11px] text-muted-foreground hover:text-foreground"
+                    >
+                      {cinema.sound ? "♪ on" : "♪ off"}
+                    </button>
+                  ) : null}
+                </div>
+              </div>
+            </header>
+
+            <ConversationTruthBar conversationId={openId!} />
+
+            {toolsOpen ? (
+              <aside
+                aria-label="Conversation tools"
+                className="relative z-20 max-h-[48%] shrink-0 overflow-y-auto border-b border-border bg-background shadow-elev-2"
+              >
+                <div className="sticky top-0 z-10 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border bg-background px-4 py-2.5">
+                  <div className="min-w-0">
+                    <h3 className="truncate text-sm font-semibold text-foreground">
+                      Conversation tools
+                    </h3>
+                    <p className="truncate text-[11px] text-muted-foreground">
+                      Files, tasks, promises and decisions
+                    </p>
+                  </div>
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="quiet"
+                    aria-label="Close conversation tools"
+                    title="Close conversation tools"
+                    onClick={() => setToolsOpen(false)}
+                    className="size-8 shrink-0"
+                  >
+                    <X className="size-4" />
+                  </Button>
+                </div>
+                <div className="[&>section]:mt-0 [&>section]:rounded-none [&>section]:border-x-0 [&>section]:border-t-0">
+                  <WorkStrip conversationId={openId!} />
+                  <FileTransfers conversationId={openId!} />
+                </div>
+              </aside>
+            ) : null}
+
+            <MessageStream
+              messages={ordered}
+              pending={pending}
+              resume={resume}
+              actions={{
+                onReact: (message_id, emoji) => react.mutate({ message_id, emoji }),
+                onReply: (m) => setReplyTo(m),
+                onEdit: (m) => {
+                  setEditTarget(m);
+                  setEditDraft(m.body);
+                },
+                onDeleteForEveryone: (id) => deleteMessage.mutate(id),
+                ...(anytimeDelete
+                  ? { onDeleteAnytime: (id: string) => deleteAnytime.mutate(id) }
+                  : {}),
+                ...(extended48Delete ? { onDelete48h: (id: string) => delete48h.mutate(id) } : {}),
+                onHide: (id) => hideMessage.mutate(id),
+                onPin: (message_id, pin) => pinMessage.mutate({ message_id, pin }),
+                onMore: (m) => setMoreFor((cur) => (cur?.id === m.id ? null : m)),
+              }}
+            />
+
+            {moreFor ? (
+              <MessageTruth
+                message={moreFor}
+                conversationId={openId!}
+                conversations={list}
+                onClose={() => setMoreFor(null)}
+              />
+            ) : null}
+
+            {/* PHASE 31A — call ke baad asli connect readings (null = not measured). */}
+            <CallConnectReport phase={call.phase} sessionId={call.sessionId} />
+
+            <VideoCallOverlay
+              phase={call.phase}
+              detail={call.detail}
+              stats={call.stats}
+              remote={call.remote}
+              local={call.local}
+              incoming={call.incoming}
+              signaling={call.signaling}
+              turnAvailable={call.turnAvailable}
+              showTechnical={gate.data?.allowed === true}
+              quality={call.quality}
+              onQuality={(next) => void call.setQuality(next)}
+              capture={call.capture}
+              codecs={call.codecs}
+              maxRung={call.maxRung}
+              onAnswer={() => void call.answer()}
+              onHangup={call.hangup}
+              ringing={call.ringing}
+              topology={call.topology}
+              mediaForwarding={call.mediaForwarding}
+              survival={call.survival}
+              onDecline={call.decline}
+              screensharing={call.screensharing}
+              onScreenShare={() => void call.screenShare()}
+              onStopScreenShare={() => void call.stopScreenShare()}
+              callDuration={call.callDuration}
+              speaking={call.speaking}
+            />
+
+            {/* Inline edit bar — replaces compose when editing a message */}
+            {editTarget ? (
+              <div className="shrink-0 border-t border-primary/40 bg-primary/5 px-4 py-3">
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5 text-[11px] font-semibold text-primary">
+                    <Pencil className="size-3" /> Editing message
+                  </span>
+                  <button
+                    type="button"
+                    aria-label="Cancel edit"
+                    onClick={() => {
+                      setEditTarget(null);
+                      setEditDraft("");
+                    }}
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    <X className="size-3.5" />
+                  </button>
+                </div>
+                <form
+                  className="flex items-end gap-2"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const body = editDraft.trim();
+                    if (body && body !== editTarget.body) {
+                      editMessage.mutate({ message_id: editTarget.id, body });
+                    }
+                    setEditTarget(null);
+                    setEditDraft("");
+                  }}
+                >
+                  <textarea
+                    autoFocus
+                    value={editDraft}
+                    rows={2}
+                    onChange={(e) => setEditDraft(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Escape") {
+                        setEditTarget(null);
+                        setEditDraft("");
+                      }
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        const body = editDraft.trim();
+                        if (body && body !== editTarget.body) {
+                          editMessage.mutate({ message_id: editTarget.id, body });
+                        }
+                        setEditTarget(null);
+                        setEditDraft("");
+                      }
+                    }}
+                    className="min-h-[2.5rem] flex-1 resize-none rounded-xl border border-primary/40 bg-transparent px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  />
+                  <button
+                    type="submit"
+                    disabled={!editDraft.trim() || editDraft.trim() === editTarget.body}
+                    className="ax-press inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50"
+                  >
+                    <Check className="size-4" /> Save
+                  </button>
+                </form>
+                <p className="mt-1 text-[10px] text-muted-foreground">
+                  Enter to save · Esc to cancel
+                </p>
+              </div>
+            ) : null}
+
+            <div
+              className={`relative z-10 shrink-0 border-t border-border bg-background px-4 py-3 ${editTarget ? "opacity-40 pointer-events-none" : ""}`}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => {
+                e.preventDefault();
+                addFiles(Array.from(e.dataTransfer?.files ?? []));
+              }}
+            >
+              <p className="mb-1.5 h-4 text-[11px] text-muted-foreground">
+                {typingNames.length
+                  ? `${typingNames.join(", ")} ${typingNames.length === 1 ? "is" : "are"} typing`
+                  : ""}
+              </p>
+              {replyTo ? (
+                <div className="mb-2 flex items-start gap-2 rounded-lg border-l-2 border-primary/60 bg-muted/40 px-2 py-1 text-[11px] text-muted-foreground">
+                  <span className="min-w-0 flex-1">
+                    Replying to {replyTo.sender_name}: {replyTo.body.slice(0, 90)}
+                  </span>
+                  <button type="button" aria-label="Cancel reply" onClick={() => setReplyTo(null)}>
+                    <X className="size-3" />
+                  </button>
+                </div>
+              ) : null}
+              {uploads.length ? (
+                <div className="mb-2 flex flex-wrap gap-1.5">
+                  {uploads.map((u) => (
+                    <span
+                      key={u.id}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground"
+                    >
+                      {u.state === "done"
+                        ? `${u.name} ready`
+                        : u.state === "failed"
+                          ? `${u.name} — ${u.error ?? "failed"}`
+                          : `${u.name} ${u.progress}%`}
+                      <button
+                        type="button"
+                        aria-label={`Remove ${u.name}`}
+                        onClick={() => setUploads((prev) => prev.filter((x) => x.id !== u.id))}
+                      >
+                        <X className="size-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              ) : null}
+              <form
+                className="flex items-end gap-2"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const body = draftBox.body.trim();
+                  const done = uploads.filter((u) => u.state === "done" && u.attachment_id);
+                  const attachmentIds = done.map((u) => u.attachment_id as string);
+                  if (!body && !attachmentIds.length) return;
+                  draftBox.clear();
+                  typingPing(false);
+                  send.mutate({
+                    body: body || done.map((u) => u.name).join(", "),
+                    reply_to_id: replyTo?.id ?? null,
+                    attachment_ids: attachmentIds,
+                  });
+                  setReplyTo(null);
+                  setUploads([]);
+                }}
+              >
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  aria-label="Choose images to attach"
+                  onChange={(e) => {
+                    addFiles(Array.from(e.target.files ?? []));
+                    e.target.value = "";
+                  }}
+                />
+                <Button
+                  type="button"
+                  size="icon"
+                  variant={toolsOpen ? "secondary" : "outline"}
+                  aria-label={toolsOpen ? "Close conversation tools" : "Open conversation tools"}
+                  title={toolsOpen ? "Close conversation tools" : "Files, tasks and more"}
+                  aria-expanded={toolsOpen}
+                  onClick={() => setToolsOpen((open) => !open)}
+                  className="size-9 shrink-0"
+                >
+                  <Plus className={`size-4 transition-transform ${toolsOpen ? "rotate-45" : ""}`} />
+                </Button>
+                <button
+                  type="button"
+                  onClick={() => fileRef.current?.click()}
+                  aria-label="Attach an image"
+                  title="Attach an image"
+                  className="ax-press rounded-xl border border-border px-3 py-2 text-muted-foreground hover:text-foreground"
+                >
+                  <Paperclip className="size-4" />
+                </button>
+                <textarea
+                  value={draftBox.body}
+                  rows={2}
+                  onChange={(e) => {
+                    draftBox.save(e.target.value, replyTo?.id ?? null);
+                    typingPing(e.target.value.trim().length > 0);
+                  }}
+                  onPaste={(e) => {
+                    const files = filesFromPaste(e.nativeEvent);
+                    if (files.length) {
+                      e.preventDefault();
+                      addFiles(files);
+                    }
+                  }}
+                  onBlur={() => typingPing(false)}
+                  placeholder="Write a message"
+                  className="min-h-[2.75rem] flex-1 resize-y rounded-xl border border-border bg-transparent px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                />
+                <button
+                  type="submit"
+                  disabled={!draftBox.body.trim() && !uploads.some((u) => u.state === "done")}
+                  className="ax-press inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50"
+                >
+                  <Send className="size-4" />
+                  Send
+                </button>
+              </form>
+              <p className="mt-1.5 text-[11px] text-muted-foreground">
+                Offline, a message waits here as “Waiting to send”. It is never shown as sent until
+                the workspace has it.
+              </p>
+            </div>
+          </div>
+        )}
+      </DetailPanel>
+    </div>
+  );
+}

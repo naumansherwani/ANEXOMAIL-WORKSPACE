@@ -1,0 +1,63 @@
+import { toast } from "sonner";
+
+/**
+ * Toast system — Phase 4.
+ * One voice for every transient message. Rules:
+ * - a toast reports something that already happened, never a question
+ * - success is short and silent-ish (2.6s); errors stay 12s (or until dismissed with the X), longer only when they carry a Retry
+ * - every failure toast carries a retry action when a retry is possible
+ * - never used for validation inside a form — that belongs on the field
+ */
+
+const DURATION_OK = 2600;
+const DURATION_ERR = 12000;
+
+/** Same message = same toast (replaces, never stacks). */
+const idOf = (message: string, description?: string) => `${message}|${description ?? ""}`.slice(0, 160);
+
+export const notify = {
+  done(message: string, description?: string) {
+    return toast.success(message, { description, duration: DURATION_OK });
+  },
+
+  info(message: string, description?: string) {
+    return toast(message, { description, duration: DURATION_OK });
+  },
+
+  failed(
+    message: string,
+    options?: { description?: string; retry?: () => void; retryLabel?: string },
+  ) {
+    return toast.error(message, {
+      id: idOf(message, options?.description),
+      description: options?.description,
+      duration: options?.retry ? 30000 : DURATION_ERR,
+      dismissible: true,
+      action: options?.retry
+        ? { label: options.retryLabel ?? "Retry", onClick: options.retry }
+        : undefined,
+    });
+  },
+
+  /** Undo window: toast with an Undo button for `ms` (e.g. send held on the server). Voice: "already happened". */
+  undoable(message: string, description: string, ms: number, onUndo: () => void) {
+    return toast(message, {
+      description,
+      duration: ms,
+      action: { label: "Undo", onClick: onUndo },
+    });
+  },
+
+  /** Work in flight — resolves into a single success or failure toast. */
+  working<T>(promise: Promise<T>, copy: { loading: string; success: string; error: string }) {
+    return toast.promise(promise, {
+      loading: copy.loading,
+      success: copy.success,
+      error: copy.error,
+    });
+  },
+
+  dismiss(id?: string | number) {
+    toast.dismiss(id);
+  },
+};

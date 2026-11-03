@@ -1,0 +1,49 @@
+bun_file,method,path,client_rust_first_proc,status
+admin.ts,GET,/api/founder/admin/overview,,BUN-ONLY or client wiring not proven
+ai-credits.ts,GET,/api/founder/ai/credits/overview,,BUN-ONLY or client wiring not proven
+analytics.ts,GET,/api/founder/analytics/overview,founderAnalytics.overview,RUST-FIRST (Bun fallback)
+analytics.ts,GET,/api/founder/billing/revenue,billing.revenueTruth,RUST-FIRST (Bun fallback)
+billing-support.ts,GET,/api/founder/support/replies,,BUN-ONLY or client wiring not proven
+billing-support.ts,POST,/api/founder/support/replies/:id/replied,,BUN-ONLY or client wiring not proven
+crm.ts,GET,/api/founder/crm/state,,BUN-ONLY or client wiring not proven
+crm.ts,POST,/api/founder/crm/toggle,,BUN-ONLY or client wiring not proven
+founder.ts,GET,/api/founder/overview,,BUN-ONLY or client wiring not proven
+founder.ts,GET,/api/founder/mailboxes,,BUN-ONLY or client wiring not proven
+founder.ts,GET,/api/founder/ai-agents,,BUN-ONLY or client wiring not proven
+founder.ts,GET,/api/founder/ai-mail,,BUN-ONLY or client wiring not proven
+founder.ts,POST,/api/founder/mailboxes/provision,,BUN-ONLY or client wiring not proven
+founder.ts,POST,/api/founder/ai-mail/approve,,BUN-ONLY or client wiring not proven
+glitch.ts,GET,/api/founder/glitch/health,,BUN-ONLY or client wiring not proven
+integrations.ts,GET,/api/founder/integrations/overview,founderIntegrations.overview,RUST-FIRST (Bun fallback)
+movein.ts,GET,/api/founder/movein/cockpit,founder.movein.cockpit,RUST-FIRST (Bun fallback)
+movein.ts,GET,/api/founder/movein/deal/:id,founder.movein.deal,RUST-FIRST (Bun fallback)
+movein.ts,POST,/api/founder/movein/transition,,BUN-ONLY or client wiring not proven
+movein.ts,POST,/api/founder/movein/schedule,,BUN-ONLY or client wiring not proven
+movein.ts,POST,/api/founder/movein/arm,,BUN-ONLY or client wiring not proven
+movein.ts,POST,/api/founder/movein/mailbox,,BUN-ONLY or client wiring not proven
+movein.ts,POST,/api/founder/movein/dns,,BUN-ONLY or client wiring not proven
+movein.ts,POST,/api/founder/movein/runbook,,BUN-ONLY or client wiring not proven
+movein.ts,POST,/api/founder/movein/exception,,BUN-ONLY or client wiring not proven
+movein.ts,POST,/api/founder/movein/rollback,,BUN-ONLY or client wiring not proven
+movein.ts,POST,/api/founder/movein/invoice,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/founder/org/state,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/founder/org/list,,BUN-ONLY or client wiring not proven
+org.ts,POST,/api/founder/org/kill-switch,,BUN-ONLY or client wiring not proven
+org.ts,POST,/api/founder/org/impersonate,,BUN-ONLY or client wiring not proven
+perf.ts,GET,/api/founder/perf/overview,,BUN-ONLY or client wiring not proven
+release.ts,POST,/api/founder/release/run,founder.release.run,RUST-FIRST (Bun fallback)
+release.ts,GET,/api/founder/release/checks,founder.release.checks,RUST-FIRST (Bun fallback)
+release.ts,GET,/api/founder/release/overview,founder.release.overview,RUST-FIRST (Bun fallback)
+release.ts,GET,/api/founder/release/checklist,founder.release.checklist,RUST-FIRST (Bun fallback)
+release.ts,POST,/api/founder/release/checklist/item,founder.release.checklist.item,RUST-FIRST (Bun fallback)
+release.ts,GET,/api/founder/release/deployments,founder.release.deployments,RUST-FIRST (Bun fallback)
+release.ts,GET,/api/founder/release/lock,founder.release.lock.create,RUST-FIRST (Bun fallback)
+release.ts,POST,/api/founder/release/lock,founder.release.lock.create,RUST-FIRST (Bun fallback)
+release.ts,GET,/api/founder/release/roadmap,founder.release.roadmap.create,RUST-FIRST (Bun fallback)
+release.ts,POST,/api/founder/release/roadmap,founder.release.roadmap.create,RUST-FIRST (Bun fallback)
+release.ts,GET,/api/founder/revenue/pipeline,founder.revenue.pipeline,RUST-FIRST (Bun fallback)
+revenue.ts,GET,/api/founder/revenue/overview,,BUN-ONLY or client wiring not proven
+security.ts,GET,/api/founder/security/overview,founderSecurity.overview,RUST-FIRST (Bun fallback)
+settings.ts,GET,/api/founder/settings/overview,founderSettings.overview,RUST-FIRST (Bun fallback)
+storage.ts,GET,/api/founder/storage/volumes,,BUN-ONLY or client wiring not proven
+storage.ts,POST,/api/founder/storage/volume,,BUN-ONLY or client wiring not proven

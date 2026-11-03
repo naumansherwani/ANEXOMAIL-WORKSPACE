@@ -1,0 +1,387 @@
+/**
+ * Compose Studio — Phase 9.
+ *
+ * NO DUPLICATE rule: drafts, versions, templates, snippets, signatures, the
+ * send queue (undo-send hold), the follow-up promise tracker and the pre-send
+ * confidence scan ALL live on the server (Server 2 -> Supabase 4). This file
+ * only speaks HTTP.
+ * NO MOCK rule: a missing endpoint surfaces as an honest "not wired" state —
+ * nothing is faked in the browser.
+ */
+
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { api, ApiError } from "@/lib/api";
+import { rpcOrRest } from "@/lib/rpc";
+
+export type ComposeTone = "warm" | "direct" | "formal" | "short" | "apologetic";
+
+export type DraftPayload = {
+  id?: string;
+  thread_id?: string;
+  identity?: string;
+  to: string;
+  cc?: string;
+  bcc?: string;
+  subject: string;
+  body: string;
+  send_at?: string;
+  language?: string;
+  /** G38: Rust upload se mile file ids (sirf bhejte/schedule karte waqt; draft autosave mein nahi) */
+  attachment_ids?: string[];
+};
+
+export type DraftRecord = { id: string; version: number; saved_at: string };
+
+export type DraftVersion = {
+  id: string;
+  version: number;
+  saved_at: string;
+  subject: string | null;
+  body: string | null;
+};
+
+export type MailTemplate = {
+  id: string;
+  name: string;
+  scope: "org" | "personal";
+  subject: string | null;
+  body: string;
+  variables: string[];
+};
+
+export type MailSnippet = { id: string; shortcut: string; body: string };
+
+export type MailSignature = {
+  id: string;
+  identity: string;
+  name: string;
+  body: string;
+  is_default: boolean;
+};
+
+export type ConfidenceIssue = {
+  kind:
+    | "missing_variable"
+    | "attachment_promised"
+    | "external_domain"
+    | "empty_subject"
+    | "risky_tone"
+    | "broken_link"
+    | "wrong_identity";
+  severity: "block" | "warn" | "note";
+  message: string;
+};
+
+export type ConfidenceReport = {
+  score: number;
+  issues: ConfidenceIssue[];
+};
+
+export type FollowUp = {
+  id: string;
+  thread_id: string | null;
+  subject: string | null;
+  remind_at: string;
+  status: "pending" | "kept" | "missed";
+};
+
+export type ScheduledMail = {
+  id: string;
+  subject: string | null;
+  to: string;
+  status: "holding" | "queued" | "sent" | "cancelled";
+  send_at: string | null;
+};
+
+export type ThreadInsights = {
+  opened: boolean | null;
+  open_count: number;
+  last_opened_at: string | null;
+  response_rate: number | null;
+  avg_response_minutes: number | null;
+  best_send_hour: number | null;
+  recipient_timezone: string | null;
+};
+
+/* ------------------------------------------------------------------ drafts */
+
+/** Autosave — called on a 3s debounce from the studio. Server owns versions. */
+export function useSaveDraft() {
+  const qc = useQueryClient();
+  return useMutation<DraftRecord, ApiError, DraftPayload>({
+    mutationFn: (payload) =>
+      // Rust PRIMARY (mail.drafts.save), Bun /api/mail/drafts fallback
+      rpcOrRest<DraftRecord>(
+        "mail.drafts.save",
+        { path: "/api/mail/drafts", method: "POST", body: payload },
+        payload,
+      ),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ["mail", "drafts"] }),
+  });
+}
+
+export function useDraftVersions(draftId: string | undefined) {
+  return useQuery<{ versions: DraftVersion[] }, ApiError>({
+    queryKey: ["mail", "drafts", draftId, "versions"],
+    queryFn: () =>
+      rpcOrRest<{ versions: DraftVersion[] }>(
+        "mail.drafts.versions",
+        { path: `/api/mail/drafts/${draftId}` },
+        { id: draftId },
+      ),
+    enabled: Boolean(draftId),
+    retry: false,
+  });
+}
+
+/* --------------------------------------------------- templates / snippets */
+
+export function useTemplates() {
+  return useQuery<{ templates: MailTemplate[] }, ApiError>({
+    queryKey: ["mail", "templates"],
+    queryFn: () =>
+      rpcOrRest<{ templates: MailTemplate[] }>(
+        "mail.templates.list",
+        { path: "/api/mail/templates" },
+        {},
+      ),
+    retry: false,
+    staleTime: 60_000,
+  });
+}
+
+export function useSaveTemplate() {
+  const qc = useQueryClient();
+  return useMutation<{ id: string }, ApiError, { name: string; subject: string; body: string }>({
+    // Rust PRIMARY (mail.templates.save), Bun /api/mail/templates fallback
+    mutationFn: (p) =>
+      rpcOrRest<{ id: string }>(
+        "mail.templates.save",
+        { path: "/api/mail/templates", method: "POST", body: p },
+        p,
+      ),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ["mail", "templates"] }),
+  });
+}
+
+export function useDeleteTemplate() {
+  const qc = useQueryClient();
+  return useMutation<{ removed: number }, ApiError, { id: string }>({
+    // Rust PRIMARY (mail.templates.delete), Bun fallback
+    mutationFn: ({ id }) =>
+      rpcOrRest<{ removed: number }>(
+        "mail.templates.delete",
+        { path: `/api/mail/templates/${encodeURIComponent(id)}`, method: "DELETE" },
+        { id },
+      ),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ["mail", "templates"] }),
+  });
+}
+
+export function useSnippets() {
+  return useQuery<{ snippets: MailSnippet[] }, ApiError>({
+    queryKey: ["mail", "snippets"],
+    queryFn: () =>
+      rpcOrRest<{ snippets: MailSnippet[] }>(
+        "mail.snippets.list",
+        { path: "/api/mail/snippets" },
+        {},
+      ),
+    retry: false,
+    staleTime: 60_000,
+  });
+}
+
+export function useDeleteSnippet() {
+  const qc = useQueryClient();
+  return useMutation<{ removed: number }, ApiError, { id: string }>({
+    // Rust PRIMARY (mail.snippets.delete), Bun fallback
+    mutationFn: ({ id }) =>
+      rpcOrRest<{ removed: number }>(
+        "mail.snippets.delete",
+        { path: `/api/mail/snippets/${encodeURIComponent(id)}`, method: "DELETE" },
+        { id },
+      ),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ["mail", "snippets"] }),
+  });
+}
+
+export function useSignatures() {
+  return useQuery<{ signatures: MailSignature[] }, ApiError>({
+    queryKey: ["mail", "signatures"],
+    queryFn: () =>
+      rpcOrRest<{ signatures: MailSignature[] }>(
+        "mail.signatures.list",
+        { path: "/api/mail/signatures" },
+        {},
+      ),
+    retry: false,
+    staleTime: 60_000,
+  });
+}
+
+/* --------------------------------------------------------- pre-send checks */
+
+export function useSendConfidence() {
+  return useMutation<ConfidenceReport, ApiError, DraftPayload & { attachments?: number }>({
+    mutationFn: (payload) =>
+      rpcOrRest<ConfidenceReport>(
+        "mail.confidence",
+        { path: "/api/mail/send-confidence", method: "POST", body: payload },
+        payload,
+      ),
+  });
+}
+
+/* ------------------------------------------------- queue / undo-send hold */
+
+/**
+ * Undo Send is a real server-side hold: the row lands in mail_scheduled with
+ * status `holding` and only becomes `queued` when the hold window passes.
+ */
+export function useScheduleSend() {
+  const qc = useQueryClient();
+  return useMutation<
+    { id: string; status: ScheduledMail["status"] },
+    ApiError,
+    DraftPayload & { hold_seconds?: number }
+  >({
+    // B3: Rust PRIMARY (mail.schedule), Bun /api/mail/schedule fallback (Rust 404/501/502/503 par)
+    mutationFn: (payload) =>
+      rpcOrRest(
+        "mail.schedule",
+        { path: "/api/mail/schedule", method: "POST", body: payload },
+        payload,
+      ),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ["mail"] }),
+  });
+}
+
+/** Plain call (no hook): the Undo toast outlives the closed composer, so it cannot depend on a mounted component. */
+export function cancelScheduledSend(id: string): Promise<unknown> {
+  return rpcOrRest(
+    "mail.schedule.cancel",
+    { path: `/api/mail/schedule/${id}/cancel`, method: "POST", body: {} },
+    { id },
+  );
+}
+
+export function useCancelScheduled() {
+  const qc = useQueryClient();
+  return useMutation<unknown, ApiError, { id: string }>({
+    mutationFn: ({ id }) => cancelScheduledSend(id),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ["mail"] }),
+  });
+}
+
+/* ------------------------------------------------------- follow-up promise */
+
+export function useCreateFollowUp() {
+  const qc = useQueryClient();
+  return useMutation<
+    FollowUp,
+    ApiError,
+    { thread_id?: string; subject?: string; remind_at: string }
+  >({
+    mutationFn: (payload) =>
+      rpcOrRest<FollowUp>(
+        "mail.followup.create",
+        { path: "/api/mail/follow-up", method: "POST", body: payload },
+        payload,
+      ),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ["mail", "follow-ups"] }),
+  });
+}
+
+export function useFollowUps() {
+  return useQuery<{ follow_ups: FollowUp[] }, ApiError>({
+    queryKey: ["mail", "follow-ups"],
+    queryFn: () =>
+      rpcOrRest<{ follow_ups: FollowUp[] }>(
+        "mail.followup.list",
+        { path: "/api/mail/follow-up" },
+        {},
+      ),
+    retry: false,
+  });
+}
+
+/* -------------------------------------------------------- thread analytics */
+
+export function useThreadInsights(threadId: string | undefined) {
+  return useQuery<ThreadInsights, ApiError>({
+    queryKey: ["mail", "thread", threadId, "insights"],
+    queryFn: () =>
+      rpcOrRest<ThreadInsights>(
+        "mail.thread.insights",
+        { path: `/api/mail/thread/${threadId}/insights` },
+        { id: threadId },
+      ),
+    enabled: Boolean(threadId),
+    retry: false,
+  });
+}
+
+/* ------------------------------------------------------------ Leo / Jimmy */
+
+export type LeoComposeTask =
+  | { task: "COMPOSE"; intent: string }
+  | { task: "REWRITE"; tone: ComposeTone }
+  | { task: "SUBJECT" }
+  | { task: "TRANSLATE"; language: string }
+  | { task: "COACH" };
+
+export type LeoComposeResult = {
+  reply: string;
+  subject?: string;
+  language?: string;
+  notes?: string[];
+};
+
+/** Draft coach / rewrite / subject / translate — all one Leo COMPOSE surface. */
+export function useLeoCompose() {
+  return useMutation<
+    LeoComposeResult,
+    ApiError,
+    LeoComposeTask & { body?: string; subject?: string; thread_id?: string; to?: string }
+  >({
+    mutationFn: (payload) =>
+      api<LeoComposeResult>("/api/leo/chat", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      }),
+  });
+}
+
+/** Feature 21 — Jimmy escalation (paid/business tier, Sherlock-audited draft). */
+export function useAskJimmy() {
+  return useMutation<
+    LeoComposeResult & { audited_by?: string },
+    ApiError,
+    { thread_id?: string; to?: string; subject?: string; body?: string; question?: string }
+  >({
+    mutationFn: (payload) =>
+      api("/api/leo/escalate", { method: "POST", body: JSON.stringify(payload) }),
+  });
+}
+
+/* ------------------------------------------------------------- utilities */
+
+/** Variables in a template body: {{first_name}} — resolved before send. */
+export function findVariables(text: string): string[] {
+  return Array.from(new Set([...text.matchAll(/{{\s*([\w.]+)\s*}}/g)].map((m) => m[1]!)));
+}
+
+export function applyVariables(text: string, values: Record<string, string>) {
+  return text.replace(/{{\s*([\w.]+)\s*}}/g, (whole, key: string) => values[key] ?? whole);
+}
+
+/** Read time + reading level indicator (presentation only). */
+export function readingStats(text: string) {
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+  const sentences = Math.max(1, (text.match(/[.!?]+/g) ?? []).length);
+  const perSentence = words / sentences;
+  const level = perSentence > 24 ? "complex" : perSentence > 16 ? "slightly complex" : "easy";
+  return { words, seconds: Math.round((words / 220) * 60), level };
+}

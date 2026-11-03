@@ -12,6 +12,11 @@
 .cursor/rules/server-pull-rebase.mdc
 .cursor/rules/session-1821-lock.mdc
 .cursor/rules/zoho-compete-lock.mdc
+.lovable/plan/anexochat-compact-tools-and-stable-message-controls-2026-09-20.md
+.lovable/plan/anexomail-recovery-and-live-proof-plan-2026-09-08.md
+.lovable/plan/anexomail-workspace-memory-lock-phase-0-2026-08-06.md
+.lovable/plan/personal-polar-plans-safe-separation-plan-2026-09-16.md
+.lovable/project.json
 docs/BLUEPRINT-SUPERSEDE-PLAN.md
 docs/MASTER-BUILD-PLAN.md
 docs/absm-billing-mesh.md
@@ -79,6 +84,7 @@ docs/claude/FRONTEND-TECHNOLOGY-PLAN-27OCT.md
 docs/claude/G4-LEDGER-GAUGE-HARDENING-02NOV.md
 docs/claude/G5-UNFORGEABLE-HISTORY-02NOV.md
 docs/claude/GO-TO-MARKET-AND-CAPACITY-26OCT.md
+docs/claude/LOVABLE-BUN-MIGRATION-PLAN-03NOV.md
 docs/claude/MASTER-MIGRATION-AND-GATES-27OCT.md
 docs/claude/MIGRATION-LEDGER-24OCT.md
 docs/claude/OFFICE-HR-ACCOUNTING-MIGRATION-28OCT.md

@@ -563,3 +563,6 @@ SQL: no change. Rust awam: no change. Brain: no change.
 
 ## (3 Nov 08:45 PKT) Rule 73 lanes + audit: docs/rules only. SQL, Rust+SPA founder, Rust awam, Brain: no change. Web: pull.sh (memory sync):
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15
+
+## (3 Nov 08:50 PKT) lovable-gold widened + migration plan: docs/tooling only. SQL, Rust+SPA founder, Rust awam, Brain: no change. Web: pull.sh (memory sync):
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15

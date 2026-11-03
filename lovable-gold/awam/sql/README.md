@@ -1,0 +1,211 @@
+# ANEXOMAIL — SQL blocks (Supabase #4)
+
+Rule: har phase ka SQL isi folder mein rehta hai, repo ke andar. Founder Supabase
+SQL editor mein poori file copy-paste karta hai. Koi migration tool nahi.
+
+Har file locked rules follow karti hai:
+
+- **Idempotent + self-healing** — purani conflicting table `_legacy_<ts>` ban jati hai,
+  phir fresh create hoti hai. Sirf `if not exists` kaafi nahi (column mismatch).
+- **Grants pehle, phir RLS** — `authenticated` + `service_role` grants, uske baad
+  `enable row level security` aur `own_rows` policy (`user_id = auth.uid()`).
+- **Supabase = source of truth** — table pehle yahan, phir code mein.
+
+| File                           | Phase           | Kya banata hai                                                                                                                                                                                                                                                                                                                                                                               |
+| ------------------------------ | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `phase17_ai_studio.sql`        | 17              | AI Studio runs, recipes, recipe steps, batches                                                                                                                                                                                                                                                                                                                                               |
+| `phase18_ai_automation.sql`    | 18              | Workflows, steps, runs, rules, variables, suggestions, email automations                                                                                                                                                                                                                                                                                                                     |
+| `phase19_ai_billing.sql`       | 19              | AI wallet, credit events ledger, top-up packs (£135/£300/£1000/£2000), sandbox checkouts                                                                                                                                                                                                                                                                                                     |
+| `phase20_ai_knowledge.sql`     | 20              | Knowledge spaces, documents, chunks (pg_trgm), answers with citations, `knowledge_recall()` RPC                                                                                                                                                                                                                                                                                              |
+| `phase21_billing_platform.sql` | 21              | Workspace plans (£23/£46/£97/£2,850), subscriptions, invoices, tax profiles, payment methods                                                                                                                                                                                                                                                                                                  |
+| `phase22_integrations.sql`     | 22              | Provider catalog (Gmail/Workspace/Outlook/M365/Zoho/Proton/IMAP/SMTP), connections, migration jobs + per-item log, delivery proof checks + blocklists, export jobs, Leo Actions, `founder_integrations_overview()`                                                                                                                                                                           |
+| `phase23_settings.sql`         | 23              | Setting catalog + values, Time Machine versions (blast snapshot), scheduled change + auto-rollback, Leo explanations, 14 real seeded settings                                                                                                                                                                                                                                                |
+| `phase24_analytics.sql`        | 24              | Cost rates (£/hour), response-debt daily snapshots, thread cost ledger, deep-work map, attention leaks, promise SLA, `founder_analytics_overview()`                                                                                                                                                                                                                                          |
+| `phase25_admin.sql`            | 25              | Admin Center: self-healing health checks + heal proof runs, storage snapshots (forecast), incidents + timeline events, delivery watchtower events, log lens (pg_trgm), organisation reports, diagnostic runs + probes, `founder_admin_overview()`                                                                                                                                            |
+| `phase26_security.sql`         | 26              | Security Platform: device trust registry (fingerprint + trust score, API keys retired), sessions, login replay events, anomalies (impossible travel freeze), encryption surfaces + key ledger, ownership proof packs + checks, kill switches, hash-chained `security_ledger`, `founder_security_overview()`                                                                                  |
+| `phase27_perf.sql`             | 27              | Performance Platform: speed budgets (7 real seeded budgets) + samples (p50/p95/p99), prefetch hit/miss + ms saved, cold-start surface map, query-lab stage traces, device performance twins, releases + regressions, `founder_perf_overview()`                                                                                                                                               |
+| `phase28_revenue.sql`          | 28              | Revenue Engine (no AI): `revenue_leads` (public migration/partner/support requests with reference + quote), `revenue_accounts` (plan, seats, MRR, support add-on), `revenue_jobs` (Move-In one-off £568–£3,350 pipeline), `revenue_partners` (20/25/30% commission ladder, live seats), `revenue_targets` (monthly £ target, seeded £500)                                            |
+| `phase30_release.sql`          | 30              | Production & Founder Lock: `release_runs` + `release_checks` (60+ live probes), `release_checklist` (24 real seeded items), `deployments` (commit sha, actor, rollback trail), `release_locks` (append-only signature ledger), `roadmap_items` (v2.0 board, 8 seeded), `mail_outbox` Phase 30 columns (user_id + idempotency_key, additive), `subscription_pipeline` (migration lead -> MRR) |
+| `phase_leo_memory.sql`         | leo brain       | LEO 3M-message memory: `leo_memory_vectors` (working/episodic/semantic + pgvector), `agent_memory_config` tiers (Jimmy 3M · Leo 3M · Sherlock 1M · Industry 100K), `leo_recall()` RPC, `leo_memory_prune()` cap                                                                                                                                                                              |
+
+Chalane ki tarteeb: file number ke hisaab se (17 → 18 → 19 → 20 → 21 → 22 → 23 → 24 → 25 → 26 → 27 → 28 → 30), phir `phase_wire_*` files.
+| `phase31_ai_credits.sql` | 31 | AI Credit Engine: `ai_credit_wallets` (subscription/top-up/complimentary/reserved buckets), immutable `ai_credit_ledger` (update/delete blocked by trigger), locked `ai_credit_topup_products` (9 packs, £5,000 pack founder-only), `ai_credit_plans` (£135/400 · £300/1,200 · £1,000/5,000 · £2,000/10,000), `ai_actions` (pre-flight → reserve → settle, provider cost alag), `ai_credit_grants` (5+5 complimentary once per cycle), RPCs `ai_credits_reserve` / `ai_credits_settle` / `ai_credits_release` / `ai_credits_topup` / `ai_credits_complimentary` |
+| `phase32_trial.sql` | 32 | Trial lifecycle: `trial_accounts` (48h timer, status trial|active|expired|frozen|released, plan, passkey/recovery flags, 30-day address reservation), immutable `trial_events` ledger with **idempotent** warn_24h/warn_2h/expired/frozen/released unique index, `reserved_handles` (awam ko admin/hello/billing/postmaster block), `trial_mail_holds` (frozen mailbox ki mail held/rejected — kabhi silently discard nahi), authority `account_state()` + `entitled_full()` + `ai_enabled()` (trial/expired/frozen = AI hard zero), RPCs `trial_start`/`trial_claim_address`/`trial_set_security`/`trial_subscribe`, hourly `trial_sweep()` + pg_cron job |
+| `phase33_polar_checkout.sql` | 33 | Polar Checkout + Webhook: `polar_checkout_sessions` (created sessions per user, product key, status), `polar_webhook_events` (immutable verified event log), backend routes `/api/billing/checkout` + `/api/public/polar/webhook` |
+| `editor/phase34_billing_support.sql` | 34 | SQL-editor-only: Polar billing truth + founder reply clock; server runner dobara execute nahi karta |
+
+| `phase35_payment_safety.sql` | 35 | Payment Safety Net (ek bhi payment zaya nahi): `polar_webhook_raw` (har hit ka raw payload, signature fail ho to bhi), `payment_alerts` (3 fail par founder alert), retry state on `polar_webhook_events` (state/attempts/next_retry_at, exponential backoff 1m→6h, 8 ke baad dead-letter), RPCs `webhook_capture_raw` / `webhook_mark_processed` / `webhook_mark_failed` / `webhook_claim_retries`, views `payment_reconciliation_gaps` (paid order jiska invoice/subscription missing) + `payment_health` |
+
+## phase36_state_sync.sql — State Sync Engine (NO PAYMENT FAILURE)
+
+Supabase #4 = source of truth, Polar sirf messenger.
+
+- `billing_intents` — checkout se PEHLE banti hai, is liye koi payment orphan nahi
+- `entitlement_state` — authoritative entitlement (sirf `billing_apply_entitlement` likhta hai)
+- `billing_state_log` — har transition ka immutable log
+- `billing_intent_confirm()` — idempotent, webhook ya pull dono se
+- `billing_sync_claim/touch/fail/abandon_stale()` — backoff sweep; paid kabhi abandon nahi
+- `billing_truth_gaps` + `billing_state_health` — founder ke liye gap radar
+
+## phase37_movein_ops.sql — MOVE-IN OPERATIONS & REVENUE COCKPIT (money machine)
+
+Poora £568–£3,350 Managed Move-In operation, sirf SQL ki authority pe (no hard-coded logic):
+
+- `movein_deals` + `movein_transitions` — legal state machine (22 states), gates DB decide karti hai
+- `movein_audit` — append-only (update/delete trigger se blocked)
+- `movein_mailboxes` + `movein_mailbox_gaps` — per-mailbox handover evidence
+- `movein_capacity` / `movein_waitlist` / `movein_book_slot()` — 2 per month, advisory lock se race-proof
+- `movein_dns_checks` + `movein_dns_proof` + `movein_dns_green()` — MX/SPF/DKIM/DMARC pre+post proof
+- `movein_runbook` + `movein_seed_runbook()` + `movein_cutover_ready()` + `movein_arm_cutover()`
+- `movein_rollback_points` — rollback first-class, arm ke liye lazmi
+- `movein_payments` + `movein_sync_payments()` + `movein_attach_intent()` — 50/50 cash clock, Phase 36 `billing_intents` truth se linked
+- `movein_exceptions` — WARNING/BLOCKED/FAILED/CUSTOMER_ACTION_REQUIRED, cutover block
+- `movein_health_calc()` (stable) + `movein_health()` (persist) — deterministic score, no AI
+- `movein_open_deal()` / `movein_transition()` — band+price ladder (1-5 £568 · 6-15 £1,670 · 16-29 £2,210 · 30+ £3,350; Phase 46 authority)
+- `movein_evidence_bundle()` / `movein_customer_view()` / `movein_cockpit()` + `movein_cash_clock` / `movein_attention`
+
+## phase38_movein_hardening.sql — Move-In Security & Integrity (Phase 38)
+
+Phase 37 ke saath complement karta hai (rewrite nahi, surgical fixes). Phase 37 pehle, Phase 38 baad mein chalao.
+
+P0
+
+- Har `movein_*` SECURITY DEFINER function ka EXECUTE `public`/`anon`/`authenticated` se revoke; sirf `service_role` (+ 2 customer RPC) ko grant
+- `movein_customer_view(deal)` ab `movein_is_deal_member()` se verify karta hai (`auth.uid()` = deal ka user/owner), warna `not_authorized_for_deal`
+- `movein_evidence_bundle()` + `movein_cockpit()` = founder/service-role only
+- Global views (`movein_cash_clock`, `movein_attention`, `movein_mailbox_gaps`, `movein_dns_proof`) authenticated se revoke; customer ke liye user-filtered `movein_my_mailbox_gaps` / `movein_my_dns_proof`
+- `movein_attach_intent()` binding: intent ka `user_id` = deal ka user · `kind='movein'` · `currency='GBP'` · amount exact leg amount · ek intent do jagah attach nahi (unique index) · leg sirf deposit/final
+- `movein_data_verified_ok()` gate: mailbox rows > 0 · rows = deal ka expected `mailbox_count` · sab VERIFIED · `messages_source > 0` · `messages_verified >= messages_source`. Zero-mailbox kabhi pass nahi
+
+P1
+
+- `movein_next_reference()` ab atomic `movein_reference_counter` (yearly) se — `count(*)+1` khatam, concurrent duplicate nahi
+- Waitlist integrity: ek deal ki ek hi active position; month+position unique
+- `movein_promote_waitlist(month)` — slot free hote hi pehla waitlisted deal promote (CANCELLED/CLOSED transition se auto-call)
+- Rollback: `movein_rollback_create()` / `movein_rollback_validate()` / `movein_rollback_use()` (arm reset + ROLLBACK_REQUIRED exception + ON_HOLD)
+- Mailbox counts constraint: `verified <= copied <= source`, sab non-negative
+
+Small hardening
+
+- `movein_dns_checks`: `phase in (PRE,POST)`, `record in (MX,SPF,DKIM,DMARC)`, `owner_id` column + auto-fill trigger + backfill
+- `blocks_cutover` ab `movein_cutover_ready()` ka hissa; high severity par trigger se auto-true
+
+## phase39_movein_fixes.sql — Move-In surgical fixes (Phase 39)
+
+Phase 37 + 38 ka complement (kuch touch nahi hua). Tarteeb: 37 → 38 → 39.
+
+- **Intent binding (P0)**: `billing_intents.movein_deal_id` + `movein_leg` columns, unique bind index, backfill. `movein_attach_intent()` ab reject karta hai: doosre deal/leg ka bound intent · pehle se paid/entitled unbound intent · deal se purana intent.
+- **Rollback transitions (P0)**: `CUTOVER_EXECUTED` / `POST_CUTOVER_VERIFIED` / `FINAL_50_INVOICED` → `ON_HOLD` legal; recovery raaste `ON_HOLD` → DATA_COPY / DATA_VERIFIED / CUTOVER_READY (gates ke saath).
+- **Reference counter (P1)**: `count(*)` khatam — asli `MOVE-IN-YYYY-NNN` ka highest NNN parse kar ke counter set.
+- **Constraints (P2)**: mailbox counts clamp (verified ≤ copied ≤ source, no negatives) + DNS phase/record normalise, phir `VALIDATE CONSTRAINT`.
+
+## phase40_evidence_truth.sql — EVIDENCE TRUTH (Phase 40)
+
+Phase 39 ka FIX 4 replace karta hai. Historical evidence kabhi mutate nahi:
+
+- `movein_mailboxes` counts aur `movein_dns_checks` phase/record par koi UPDATE nahi (no clamp, no PRE/MX default)
+- Constraints NOT VALID rehti hain -> future writes enforce, purani rows waisi hi
+- `movein_evidence_violations` view — har invalid row jaisi hai waisi (observed values ke saath)
+- `movein_evidence_validate()` — VALIDATE CONSTRAINT sirf tab jab us table ka data genuinely clean ho
+- File ke end par report: kitni invalid rows remaining hain (operator manually correct karta hai)
+
+## phase43_annual_billing_lock.sql — Annual Billing Lock
+
+- Exact monthly/yearly product selection ke liye `billing_cycle` intent par persist hota hai
+- Client ka amount reject: expected amount server registry se aata hai
+- Paid webhook/pull par product ID, GBP currency aur exact amount validate hota hai
+- Mismatch par entitlement nahi milta; payment safety retry/alert path handle karta hai
+- v3 purani `billing_sync_claim(integer)` ko transaction ke andar drop/recreate karta hai, is liye OUT return-type upgrade fail nahi hota
+- Phase 44 ke tamam real Polar IDs isi file mein merged hain; ab **sirf Phase 43** Supabase #4 SQL Editor mein run hoti hai
+
+## phase44_polar_ids_v2.sql — RETIRED compatibility guard
+
+- Iska poora kaam Phase 43 v3 mein merge ho gaya hai
+- Ghalti se run ho to fail nahi hoti; sirf notice deti hai
+
+## phase45_founder_identity.sql — Founder identity lock (Phase 45)
+
+Kahan chalti hai: **Supabase #4 -> SQL Editor** (Hetzner par nahi).
+
+- Mojooda Auth user `naumansherwani.founder@anexomail.com` / `3e3a60ea-1580-4443-94f6-b758de732dce` ko founder map karti hai (naya user NAHI banati)
+- `founder_accounts` = founder role ki authority (role kabhi profile/users par nahi)
+- `trial_accounts` status `active` + 10 saal — founder trial/freeze mein kabhi nahi phansta
+- `entitlement_state` = `business_pro`, support on, charge zero
+- End par 4 VERIFY queries: auth uid ↔ founder role match, account state, entitlement, aur founder count = 1
+
+- `phase46_pricing_v5.sql` — PRICING v5: Basic £23/£253 · Pro £46/£506 · Business £97/£970 · Business Pro £2,850/£28,500 · Priority Support £790 · Move-In £568/£1,670/£2,210/£3,350
+## phase47_glitch_crm_alert.sql — Glitch truth + CRM alerts
+
+Kahan chalti hai: **Supabase #4 -> SQL Editor**.
+
+- Tables: `customer_glitch_logs` · `feedback_user_triggers` · `glitch_noise_rules` · `glitch_alerts`
+- GRANTs + RLS: likhna sirf backend (service_role), padhna sirf founder (`founder_accounts`)
+- Functions: `glitch_is_noise` · `glitch_log` · `glitch_trigger_log` · `glitch_alert_due` ·
+  `glitch_alert_mark` · `glitch_health` · `greatest_severity`
+- Fazool alert band: noise rules · fingerprint dedupe · 12 alert/hour cap ·
+  console.error = warning only · rage click sirf 3+ session par
+- Ops + WhatsApp setup: `docs/glitch-whatsapp.md`
+
+## `phase48_storage_quota.sql` — Phase 48 · Inbox Storage & Quota (logical)
+
+- Tables: `storage_plans` · `storage_volumes` · `mailbox_storage` · `storage_events`
+- View: `storage_capacity_health` (70% warning · 85% critical thin-provisioning radar)
+- Functions: `storage_plan_of` (workspace → owner → `entitlement_state.user_id`; founder = business_pro) ·
+  `storage_state` · `storage_can_accept` · `storage_reserve` · `storage_commit` ·
+  `storage_release` · `storage_purge` · `storage_volume_register` · `storage_capacity_sweep`
+- Backend routes: `/api/storage/state|preflight|reserve|commit|release` ·
+  `/api/internal/storage/accept|commit|sweep` · `/api/founder/storage/volumes` · `POST /api/founder/storage/volume`
+- Physical ops (Hetzner Storage Box mount, Dovecot, Caddy `/files/*`): `docs/storage-hetzner.md`
+- Verify: `select name, kind, level, percent from public.storage_capacity_health order by percent desc;`
+
+## `phase49_absm_billing_mesh.sql` — Phase 49 · Autonomous Billing State Mesh (ABSM)
+
+Webhook-independent billing truth: guest checkout intents (`guest_token`), observation
+layer (`billing_observations`), versioned state + SHA-256 hash (`billing_state_versions`,
+`billing_state_apply`), QUIC outbox/inbox durability, adaptive reconciliation queue
+(P0..P4 + poll_seconds), immutable `billing_receipts`, radar view `billing_mesh_health`.
+Detail: `docs/absm-billing-mesh.md`.
+
+- `phase49b_hotfix_random_token.sql` — HOTFIX: gen_random_bytes → gen_random_uuid token,
+  billing_state_hash ka search_path `public, extensions` (Supabase pgcrypto fix).
+- `phase12a_mail_prediction.sql` — PHASE 12A inline word prediction: `mail_predict_phrases`
+  (global business phrase book + SIRF user ke apne learned n-grams), `mail_predict_events`,
+  functions `mail_predict()` / `mail_predict_learn()` (secrets+emails+digits filter) /
+  `mail_predict_event()`. Rust PRIMARY arms: mail.predict · mail.predict.learn ·
+  mail.predict.event; Bun `/api/mail/predict*` fallback. Teen surfaces parallel:
+  anexomail.com (founder side), founderworkspace., ai.anexomail.com.
+
+## `phase50_polar_rust_payment.sql` — Phase 50 · Polar Rust Payment Engine
+
+LIFETIME payment lock: webhook sirf signal (Rust `:3400` verify -> `polar_webhook_inbox`
+insert -> instant 200). Business logic Postgres `AFTER INSERT` trigger `polar_inbox_apply()`
+mein: `polar_subscriptions` (canonical plan/status/grace), `polar_checkout_log`
+(return_to samet), `polar_mail_outbox` (receipt · welcome · grace_warning).
+`polar_billing_state(uuid)` in-app panel ka sach — grace 3 din, `service_blocked`
+hamesha `false` (services block kabhi nahi). Detail: `docs/polar-rust-payment.md`.
+
+## `phase51_polar_payment_hardening.sql` — Phase 51 · Payment hardening
+
+Phase 50 ka trigger ZINDA rehta hai (fast path). Yeh phase sirf sach + safety:
+`polar_signature_rejects` (401 events ka raw body + headers — ghalat secret 2 minute
+mein pakra jaye, data khoye baghair), `polar_reconcile_log` (har 15 min Rust engine
+Polar API vs internal state: ok/missing/diverged/unknown), `polar_payment_alerts`
+(watchdog: queue_stalled · queue_depth_high · dead_letter · reconcile_gap, hourly
+bucket se ek hi alert), aur `polar_payment_pulse()` (ek call mein poora payment sach
+— Founder deck / status page ke liye). Engine side: local append-only WAL (fsync ke
+baad 200, Supabase down ho to bhi Polar ko 200), worker backoff 30s→24h + 8 attempt
+ke baad dead-letter (row zinda, `/api/v1/replay`), `/ready` + `/metrics`.
+Ingress: `docs/caddy-payments-host.md` (`polarpayments.anexomail.com` → Server 2 `62.238.98.98` → 127.0.0.1:3400).
+
+
+## ANEXOChat ka SQL yahan NAHI hai
+
+ANEXOChat (chat · video call · file engine · work/decision/promise engine · account
+integrity Phase 24A) ka har SQL ab apne alag folder mein hai: **`anexochat/sql/`**
+aur uske docs `anexochat/docs/`. Index: `anexochat/README.md`.
+Yeh folder (`sql/`) sirf ANEXOMAIL Workspace ke phases ke liye hai.
+
+| `phase52_mail_launch.sql` | 52 · mail launch | Mail truth: `mail_domains`, `mailboxes` (13 asli anexomail.com addresses), `mail_threads`/`mail_messages`/`mail_attachments`, append-only `mail_inbound_raw` + `mail_outbox_log`, RPC `mail_ingest()` (Postfix pipe) aur `mail_outbox_record()` — threading/dedupe Postgres mein. Wire steps: `docs/wire/` |
+| `phase54_mail_ingest_org_fix.sql` | 54 · mail ingest org fix | `mail_ingest()` ab `org_id`/`account_id` mailbox ke `mail_accounts` row se leta hai (warna ANEXOMAIL System org) — legacy NOT NULL `org_id` ki wajah se inbound pipe queue mein reh jaati thi. Purani null rows bhi bhar deta hai. Wire steps: `docs/wire/06-mail.md` |
+| `phase55_founder_single_inbox.sql` | 55 · founder single inbox | Founder ka ek hi inbox `naumansherwani.founder@anexomail.com`; anexomail.com ki har company address ka `unified_target` usi par; `founder_inbox_config` (recovery `anexomail27@gmail.com`, shared password, awam limits off) aur `awam_data_access = false` CHECK — awam ka data kabhi nahi. Wire steps: `docs/wire/19-founder-single-inbox.md` |
+| `phase58_mail_contract_final.sql` | 58 · final mail contract | Live `mb.org_id` aur `cc_addrs` drift ka non-destructive fix: mailbox ownership compatibility, canonical/legacy recipient columns sync trigger, `mail_ingest(jsonb)` complete replacement aur Data API schema reload. Wire: `docs/wire/24-mail-contract-final.md` |

@@ -1,0 +1,167 @@
+/**
+ * Phase 32 — TRIAL LIFECYCLE (transport only).
+ *
+ * FOUNDER LOCK: sach DB mein hai. Yeh file kabhi decide nahi karti ke trial
+ * bacha hai ya nahi — `public.account_state()` ka jawab jaisa aata hai waisa
+ * dikhata hai. Client timer sirf display; devtools se badalne se kuch nahi hota.
+ * NO MOCK: endpoint na mile to honest state.
+ */
+
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { ApiError } from "@/lib/api";
+import { rpcOrRest } from "@/lib/rpc";
+
+export type AccountState = {
+  // E20 (13 Oct 2026): "pending_plan" — real signup, address claimed, lekin
+  // koi plan select/pay nahi hua abhi. Trial nahi hai (no countdown), koi
+  // fake plan label nahi. See docs/cursor-work/sql/E20_personal_plan_pending.sql
+  state: "none" | "pending_plan" | "trial" | "active" | "expired" | "frozen" | "released";
+  plan: "basic" | "pro" | "business" | "business_pro" | null;
+  hours_left: number;
+  trial_ends_at: string | null;
+  can_social_login: boolean;
+  recovery_access: boolean;
+  billing_access: boolean;
+  business_data: boolean;
+  trial_limited: boolean;
+  trial_features: string[];
+  /** Trial / expired / frozen = hard zero. Sirf active plan pe AI. */
+  ai_enabled: boolean;
+  address: string | null;
+  address_reserved_days_left: number | null;
+  needs_claim: boolean;
+  needs_passkey: boolean;
+  needs_recovery: boolean;
+};
+
+export type TrialEvent = {
+  id: string;
+  event_type: string;
+  detail: Record<string, unknown>;
+  created_at: string;
+};
+
+export type MailHold = {
+  id: string;
+  from_address: string | null;
+  subject: string | null;
+  disposition: "held" | "rejected" | "delivered";
+  reason: string | null;
+  received_at: string;
+  released_at: string | null;
+};
+
+export function useAccountState() {
+  return useQuery<AccountState, ApiError>({
+    queryKey: ["trial", "state"],
+    // Rule 52: browser -> WASM kernel -> Rust `account_state`; Bun /api/trial/state sirf fallback.
+    queryFn: () => rpcOrRest<AccountState>("account.signup.state", { path: "/api/trial/state" }, {}),
+    retry: false,
+    // Server authority ko har 5 min refresh — timer chalta rehta hai display mein.
+    staleTime: 60_000,
+    refetchInterval: 5 * 60_000,
+  });
+}
+
+export function useTrialEvents() {
+  return useQuery<{ events: TrialEvent[] }, ApiError>({
+    queryKey: ["trial", "events"],
+    queryFn: () => rpcOrRest<{ events: TrialEvent[] }>("account.signup.events", { path: "/api/trial/events" }, {}),
+    retry: false,
+  });
+}
+
+export function useMailHolds() {
+  return useQuery<{ holds: MailHold[] }, ApiError>({
+    queryKey: ["trial", "mail-holds"],
+    queryFn: () => rpcOrRest<{ holds: MailHold[] }>("account.signup.holds", { path: "/api/trial/mail-holds" }, {}),
+    retry: false,
+  });
+}
+
+export function useAddressCheck(handle: string) {
+  const clean = handle.trim().toLowerCase();
+  return useQuery<
+    { handle: string; available: boolean; reason?: string; address?: string },
+    ApiError
+  >({
+    queryKey: ["trial", "address", clean],
+    queryFn: () =>
+      rpcOrRest<{ handle: string; available: boolean; reason?: string; address?: string }>(
+        "account.signup.address",
+        { path: `/api/trial/address?handle=${encodeURIComponent(clean)}` },
+        { handle: clean },
+      ),
+    enabled: clean.length >= 3,
+    retry: false,
+  });
+}
+
+function useInvalidateState() {
+  const qc = useQueryClient();
+  return () => qc.invalidateQueries({ queryKey: ["trial"] });
+}
+
+export function useStartTrial() {
+  const done = useInvalidateState();
+  return useMutation<AccountState, ApiError, { provider: string }>({
+    mutationFn: (body) => rpcOrRest<AccountState>("account.signup.start", { path: "/api/trial/start", method: "POST", body }, body),
+    onSuccess: () => void done(),
+  });
+}
+
+export function useClaimAddress() {
+  const done = useInvalidateState();
+  return useMutation<{ ok: boolean; state: AccountState }, ApiError, { handle: string }>({
+    mutationFn: async (body) => {
+      const r = await rpcOrRest<{ ok: boolean; state: AccountState }>("account.signup.claim", { path: "/api/trial/claim", method: "POST", body }, body);
+      // Rust claim "nahi mila" ko 200 {ok:false} deta hai; Bun 409 deta tha — UI ek jaisa dekhe.
+      if (r && r.ok === false) throw new ApiError("Address could not be claimed.", 409, "claim_failed");
+      return r;
+    },
+    onSuccess: () => void done(),
+  });
+}
+
+export function useSetSecurity() {
+  const done = useInvalidateState();
+  return useMutation<
+    AccountState,
+    ApiError,
+    { passkey?: boolean; recovery_kind?: string; recovery_hint?: string }
+  >({
+    mutationFn: (body) => rpcOrRest<AccountState>("account.signup.security", { path: "/api/trial/security", method: "POST", body }, body),
+    onSuccess: () => void done(),
+  });
+}
+
+export function useSubscribe() {
+  const done = useInvalidateState();
+  return useMutation<
+    { ok: boolean; state: AccountState },
+    ApiError,
+    { plan: "basic" | "pro" | "business" | "business_pro"; payment_ref: string }
+  >({
+    // E23: Rust /rpc/account.signup.activate PRIMARY, Bun /api/trial/subscribe
+    // fallback. The server ignores plan/payment_ref -- it only activates when a
+    // verified entitlement exists (billing_intent_confirm), so these fields are
+    // kept only for the existing call signature.
+    mutationFn: (body) =>
+      rpcOrRest(
+        "account.signup.activate",
+        { path: "/api/trial/subscribe", method: "POST", body },
+        {},
+      ),
+    onSuccess: () => void done(),
+  });
+}
+
+/** Sirf display formatting — koi faisla nahi. */
+export function formatHoursLeft(hours: number): string {
+  if (hours <= 0) return "0m";
+  const h = Math.floor(hours);
+  const m = Math.round((hours - h) * 60);
+  if (h <= 0) return `${m}m`;
+  return `${h}h ${String(m).padStart(2, "0")}m`;
+}

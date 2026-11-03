@@ -1,0 +1,1137 @@
+/**
+ * ANEXOVIDEOCHAT · PHASE 10A — ULTRA-LOW-LATENCY CALL ENGINE
+ *
+ * FOUNDER LOCK — "Speed is measured, not marketed":
+ *   - Standards-based only: WebRTC Unified Plan, Trickle ICE, ICE restart,
+ *     simulcast (3 layers), setCodecPreferences (AV1 -> VP9 -> H.264),
+ *     Opus 48k + DTX + audio-first degradation, getStats() telemetry.
+ *   - P2P PREFERRED, TURN AUTOMATIC FALLBACK (coturn, ephemeral HMAC creds
+ *     server se). P2P-only final architecture nahi hai.
+ *   - Signaling persistent (WebTransport -> Supabase Realtime -> durable rows).
+ *     1.2s polling primary kabhi nahi.
+ *   - Har number asli reading hai (RTT/jitter/loss/bitrate/FPS/res/path).
+ *     Reading na mile to UI "measuring" likhta hai — guess kabhi nahi.
+ *   - Gate: chat_video_allowed() = founder + business_pro (server 403 deta hai).
+ */
+import { useCallback, useEffect, useRef, useState } from "react";
+
+import { chatCall } from "./chat-transport";
+import {
+  openSignalLink,
+  type SignalFrame,
+  type SignalLink,
+  type SignalTransport,
+} from "./chat-signal";
+// PHASE 10B — NEW ADDED: adaptive 8K ladder (real capture only, no fake 8K)
+import {
+  applyCodecPreference,
+  applyRung,
+  captureConstraints,
+  codecSupport,
+  labelForSize,
+  LADDER,
+  QualityLadder,
+  readCapture,
+  rungIndex,
+  sendEncodings,
+  TOP_RUNG,
+  type CaptureReport,
+  type CodecSupport,
+  type QualityChoice,
+  type QualityRung,
+} from "./chat-video-quality";
+// PHASE 31A — light-speed path: QUIC signaling truth, pre-warm, self-made ring,
+// apna SFU, audio-first survival. Har reading asli, koi marketing number nahi.
+import {
+  connectMark,
+  ringSettle,
+  ringStart,
+  sfuEnsure,
+  sfuJoin,
+  sfuLeave,
+  survivalRecord,
+} from "./chat-lightspeed";
+import { dropPrewarm, prewarmIce, prewarmReport } from "./chat-prewarm";
+import { calmMode, startRing, type RingHandle } from "./chat-ringtone";
+
+export type CallPhase =
+  | "idle"
+  | "requesting-media"
+  | "connecting"
+  | "ringing"
+  | "live"
+  | "reconnecting"
+  | "ended"
+  | "failed";
+
+export type CallPath = "p2p" | "relay" | "unknown";
+export type CallQuality = "good" | "fair" | "poor";
+
+export type CallStats = {
+  rtt_ms: number | null;
+  jitter_ms: number | null;
+  loss_pct: number | null;
+  bitrate_kbps: number | null;
+  fps: number | null;
+  width: number | null;
+  height: number | null;
+  path: CallPath;
+  video_codec: string | null;
+  audio_codec: string | null;
+  quality: CallQuality | null;
+  setup_ms: number | null;
+  ice_restarts: number;
+  // PHASE 10B — NEW ADDED: encode/decode truth, alag alag readings
+  encoded_width: number | null;
+  encoded_height: number | null;
+  decoded_width: number | null;
+  decoded_height: number | null;
+  limitation: string | null; // qualityLimitationReason (cpu | bandwidth | none)
+  available_out_kbps: number | null;
+  frames_dropped: number | null;
+  rung: QualityRung | null;
+  rung_label: string;
+};
+
+const EMPTY_STATS: CallStats = {
+  rtt_ms: null,
+  jitter_ms: null,
+  loss_pct: null,
+  bitrate_kbps: null,
+  fps: null,
+  width: null,
+  height: null,
+  path: "unknown",
+  video_codec: null,
+  audio_codec: null,
+  quality: null,
+  setup_ms: null,
+  ice_restarts: 0,
+  encoded_width: null,
+  encoded_height: null,
+  decoded_width: null,
+  decoded_height: null,
+  limitation: null,
+  available_out_kbps: null,
+  frames_dropped: null,
+  rung: null,
+  rung_label: "measuring",
+};
+
+/** STUN free + TURN (coturn) ephemeral creds server se. Secret frontend pe nahi. */
+type IceBundle = { iceServers: RTCIceServer[]; turn: boolean };
+
+const STUN: RTCIceServer[] = [
+  { urls: ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302"] },
+];
+
+export async function iceBundle(): Promise<IceBundle> {
+  try {
+    const res = await chatCall<{ ice_servers: RTCIceServer[]; ttl_seconds: number }>(
+      "chat.turn.credentials",
+      undefined,
+      { path: "/api/chat/video/turn" },
+    );
+    const servers = res.ice_servers ?? [];
+    const hasTurn = servers.some((s) =>
+      (Array.isArray(s.urls) ? s.urls : [s.urls]).some((u) => String(u).startsWith("turn")),
+    );
+    return { iceServers: servers.length ? servers : STUN, turn: hasTurn };
+  } catch {
+    // TURN issuer down = P2P still try hoti hai, aur UI sach bolta hai.
+    return { iceServers: STUN, turn: false };
+  }
+}
+
+/** Best-available video codec order — device jo support kare wahi chalta hai. */
+const CODEC_ORDER = ["video/AV1", "video/VP9", "video/H264", "video/VP8"];
+
+/** Opus voice survival is negotiated in SDP, not guessed from sender priority. */
+function tuneOpusSdp(sdp: string | undefined): string | undefined {
+  if (!sdp) return sdp;
+  const opusPayloads = [...sdp.matchAll(/^a=rtpmap:(\d+) opus\/48000(?:\/\d+)?\s*$/gim)].map(
+    (match) => match[1],
+  );
+  let next = sdp;
+  for (const payload of opusPayloads) {
+    if (!payload) continue;
+    const fmtp = new RegExp(`^a=fmtp:${payload} ([^\\r\\n]*)$`, "im");
+    const required = ["useinbandfec=1", "usedtx=1", "stereo=0", "maxaveragebitrate=64000"];
+    if (fmtp.test(next)) {
+      next = next.replace(fmtp, (_line, params: string) => {
+        const keys = new Set(
+          params.split(";").map((part) => part.trim().split("=")[0]?.toLowerCase()),
+        );
+        const additions = required.filter((part) => !keys.has(part.split("=")[0]));
+        return `a=fmtp:${payload} ${params}${additions.length ? `;${additions.join(";")}` : ""}`;
+      });
+    } else {
+      next = next.replace(
+        new RegExp(`(^a=rtpmap:${payload} opus/48000(?:/\\d+)?\\s*$)`, "im"),
+        `$1\r\na=fmtp:${payload} ${required.join(";")}`,
+      );
+    }
+  }
+  return next;
+}
+
+function tunedLocalDescription(peer: RTCPeerConnection): RTCSessionDescriptionInit | null {
+  const description = peer.localDescription;
+  if (!description) return null;
+  const sdp = tuneOpusSdp(description.sdp);
+  return sdp === undefined ? { type: description.type } : { type: description.type, sdp };
+}
+
+function preferCodecs(transceiver: RTCRtpTransceiver) {
+  const caps = RTCRtpSender.getCapabilities("video");
+  if (!caps?.codecs || !("setCodecPreferences" in transceiver)) return;
+  const ranked = [...caps.codecs].sort(
+    (a, b) =>
+      CODEC_ORDER.findIndex((c) => c.toLowerCase() === a.mimeType.toLowerCase()) -
+      CODEC_ORDER.findIndex((c) => c.toLowerCase() === b.mimeType.toLowerCase()),
+  );
+  try {
+    transceiver.setCodecPreferences(
+      ranked
+        .filter((c) => CODEC_ORDER.some((x) => x.toLowerCase() === c.mimeType.toLowerCase()))
+        .concat(ranked),
+    );
+  } catch {
+    /* browser ne mana kiya to default negotiation — jhoot nahi */
+  }
+}
+
+/** Simulcast: 3 layers (full / half / quarter) — receiver/SFU jo chahe le. */
+// PHASE 10B — NEW ADDED: layers ab ladder ke rung se bante hain
+// (`sendEncodings(rung)` = h/m/l, SFU-ready shape; TURN ko SFU kehna mamnu).
+
+export type CallHandle = ReturnType<typeof useCall>;
+
+export function useCall(
+  conversationId: string | null,
+  selfId: string | null,
+  peerId: string | null,
+) {
+  const pc = useRef<RTCPeerConnection | null>(null);
+  const link = useRef<SignalLink | null>(null);
+  const localRef = useRef<MediaStream | null>(null);
+  const sessionId = useRef<string | null>(null);
+  const startedAt = useRef<number>(0);
+  const restarts = useRef<number>(0);
+  const polite = useRef<boolean>(false);
+  const makingOffer = useRef<boolean>(false);
+  const ignoreOffer = useRef<boolean>(false);
+  const pendingIce = useRef<RTCIceCandidateInit[]>([]);
+
+  const [phase, setPhase] = useState<CallPhase>("idle");
+  const [detail, setDetail] = useState("Not in a call");
+  const [stats, setStats] = useState<CallStats>(EMPTY_STATS);
+  const [remote, setRemote] = useState<MediaStream | null>(null);
+  const [local, setLocal] = useState<MediaStream | null>(null);
+  const [incoming, setIncoming] = useState<SignalFrame | null>(null);
+  const [signaling, setSignaling] = useState<SignalTransport>("rows");
+  const [turnAvailable, setTurnAvailable] = useState<boolean | null>(null);
+  // PHASE 10B — NEW ADDED: quality choice + asli capture report + codec support
+  const [choice, setChoice] = useState<QualityChoice>("auto");
+  const [capture, setCapture] = useState<CaptureReport | null>(null);
+  const [codecs] = useState<CodecSupport>(() => codecSupport());
+  const ladder = useRef<QualityLadder>(new QualityLadder(rungIndex("720p"), TOP_RUNG));
+  const captureCeiling = useRef(LADDER[rungIndex("720p")]!);
+  // Screen share state — track replaced but original camera kept
+  const [screensharing, setScreensharing] = useState(false);
+  const priorCamTrack = useRef<MediaStreamTrack | null>(null);
+  // Call duration — seconds since phase = "live"
+  const [callDuration, setCallDuration] = useState<number | null>(null);
+  const liveAt = useRef<number | null>(null);
+  // Speaker detection — local audio level > threshold = speaking
+  const [speaking, setSpeaking] = useState(false);
+  const audioCtx = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const choiceRef = useRef<QualityChoice>("auto");
+
+  // ── PHASE 31A refs/state ───────────────────────────────────────────────────
+  const ring = useRef<RingHandle | null>(null);
+  const ringId = useRef<string | null>(null);
+  const noAnswer = useRef<number | null>(null);
+  const signalSentAt = useRef<number>(0);
+  const marked = useRef<Set<string>>(new Set());
+  const audioOnly = useRef<boolean>(false);
+  const sfuRoom = useRef<string | null>(null);
+  const [ringing, setRinging] = useState<{
+    tone: "ringtone" | "ringback";
+    audible: boolean;
+  } | null>(null);
+  const [topology, setTopology] = useState<"mesh" | "sfu" | null>(null);
+  const [mediaForwarding, setMediaForwarding] = useState(false);
+  const [survival, setSurvival] = useState<string | null>(null);
+
+  /** Ek mark ek dafa; value na mile to null jata hai — guess kabhi nahi. */
+  const mark = useCallback(
+    (name: Parameters<typeof connectMark>[0]["mark"], value?: number | null) => {
+      const sid = sessionId.current;
+      if (!sid || marked.current.has(name)) return;
+      marked.current.add(name);
+      void connectMark({
+        session_id: sid,
+        mark: name,
+        value_ms: value ?? null,
+        transport: link.current?.transport() ?? "rows",
+      }).catch(() => {});
+    },
+    [],
+  );
+
+  const stopRing = useCallback((action: "answered" | "declined" | "no_answer" | null) => {
+    ring.current?.stop();
+    ring.current = null;
+    setRinging(null);
+    if (noAnswer.current) {
+      window.clearTimeout(noAnswer.current);
+      noAnswer.current = null;
+    }
+    const id = ringId.current;
+    if (id && action) {
+      ringId.current = null;
+      void ringSettle({ ring_id: id, action }).catch(() => {});
+    }
+  }, []);
+
+  const teardown = useCallback(
+    (reason: string) => {
+      if (sessionId.current) {
+        void chatCall(
+          "chat.call.end",
+          { session_id: sessionId.current, reason },
+          {
+            path: "/api/chat/video/call/end",
+            method: "POST",
+            body: { session_id: sessionId.current, reason },
+          },
+        ).catch(() => {});
+      }
+      // PHASE 31A — ring band, SFU seat chhoro, warm socket band
+      stopRing(null);
+      if (sfuRoom.current) {
+        void sfuLeave(sfuRoom.current).catch(() => {});
+        sfuRoom.current = null;
+      }
+      dropPrewarm();
+      marked.current.clear();
+      audioOnly.current = false;
+      setSurvival(null);
+      setMediaForwarding(false);
+      sessionId.current = null;
+      pc.current?.getSenders().forEach((s) => s.track?.stop());
+      try {
+        pc.current?.close();
+      } catch {
+        /* already closed */
+      }
+      pc.current = null;
+      localRef.current?.getTracks().forEach((t) => t.stop());
+      localRef.current = null;
+      setLocal(null);
+      setRemote(null);
+      setStats(EMPTY_STATS);
+      pendingIce.current = [];
+    },
+    [stopRing],
+  );
+
+  const media = useCallback(async () => {
+    if (localRef.current) return localRef.current;
+    setPhase("requesting-media");
+    setDetail("Asking for camera and microphone");
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true,
+        channelCount: 1,
+        sampleRate: 48000,
+      } as MediaTrackConstraints,
+      // PHASE 10B — NEW ADDED: highest NATIVE resolution maango (ideal/max,
+      // force nahi). Camera jo de wahi sach — upscale se 8K nahi banta.
+      video: captureConstraints(LADDER[TOP_RUNG]!),
+    });
+    localRef.current = stream;
+    setLocal(stream);
+
+    // Asli capture reading — badge/label sirf isi se banta hai.
+    const report = readCapture(stream.getVideoTracks()[0]);
+    setCapture(report);
+    const ceilingIdx = LADDER.reduce(
+      (acc, r, i) => ((report.height ?? 0) >= r.height && (report.width ?? 0) >= r.width ? i : acc),
+      0,
+    );
+    captureCeiling.current = LADDER[ceilingIdx]!;
+    ladder.current = new QualityLadder(
+      choiceRef.current === "auto"
+        ? ceilingIdx
+        : Math.min(ceilingIdx, rungIndex(choiceRef.current)),
+      ceilingIdx,
+    );
+    return stream;
+  }, []);
+
+  const build = useCallback(
+    async (isCaller: boolean) => {
+      const ice = await iceBundle();
+      setTurnAvailable(ice.turn);
+      const peer = new RTCPeerConnection({
+        iceServers: ice.iceServers,
+        iceCandidatePoolSize: 4,
+        bundlePolicy: "max-bundle",
+        rtcpMuxPolicy: "require",
+        iceTransportPolicy: "all",
+      });
+      polite.current = !isCaller;
+
+      const stream = await media();
+      const audio = stream.getAudioTracks()[0];
+      const video = stream.getVideoTracks()[0];
+
+      if (audio) {
+        const t = peer.addTransceiver(audio, { direction: "sendrecv", streams: [stream] });
+        // Opus DTX + audio ko congestion mein pehla haq
+        const p = t.sender.getParameters();
+        p.encodings = [{ ...(p.encodings?.[0] ?? {}), priority: "high", networkPriority: "high" }];
+        await t.sender.setParameters(p).catch(() => {});
+      }
+      if (video) {
+        const t = peer.addTransceiver(video, {
+          direction: "sendrecv",
+          streams: [stream],
+          // PHASE 10B — NEW ADDED: layers current rung se (SFU-ready shape)
+          sendEncodings: sendEncodings(ladder.current.current()),
+        });
+        // AV1 -> VP9 -> H.264 -> VP8 (capability se, assume kuch nahi)
+        if (applyCodecPreference(t) === null) preferCodecs(t);
+        await applyRung(t.sender, video, ladder.current.current(), captureCeiling.current);
+      }
+
+      // Trickle ICE — candidate bante hi bhej do, wait nahi
+      peer.onicecandidate = (e) => {
+        if (!conversationId || !peerId) return;
+        if (e.candidate) {
+          mark("ice_gather_first", Math.round(performance.now() - startedAt.current));
+          void link.current?.send(peerId, "ice", e.candidate.toJSON());
+        } else {
+          void link.current?.send(peerId, "ice-end", {});
+        }
+      };
+      peer.ontrack = (e) => {
+        setRemote(e.streams[0] ?? null);
+        // PHASE 31A — playout tuning: 60-80ms target. Live baat ke liye buffer
+        // chhota, magar audio pehle. Browser support na ho to chup chaap skip.
+        const r = e.receiver as RTCRtpReceiver & { jitterBufferTarget?: number };
+        try {
+          r.jitterBufferTarget = e.track.kind === "audio" ? 80 : 60;
+        } catch {
+          /* browser ne mana kiya — default playout, jhoot nahi */
+        }
+        // Pehli remote frame ka asli waqt (video track ke unmute par)
+        if (e.track.kind === "video") {
+          const stamp = () => {
+            mark("first_remote_frame", Math.round(performance.now() - startedAt.current));
+            stopRing("answered");
+          };
+          if (e.track.muted) e.track.addEventListener("unmute", stamp, { once: true });
+          else stamp();
+        }
+      };
+
+      peer.onnegotiationneeded = async () => {
+        if (!peerId) return;
+        try {
+          makingOffer.current = true;
+          await peer.setLocalDescription();
+          await link.current?.send(peerId, "offer", { sdp: tunedLocalDescription(peer)?.sdp });
+        } catch {
+          /* renegotiation failure = connection state hi sach bolegi */
+        } finally {
+          makingOffer.current = false;
+        }
+      };
+
+      peer.oniceconnectionstatechange = () => {
+        if (peer.iceConnectionState === "failed") void restart(peer);
+      };
+      peer.onconnectionstatechange = () => {
+        const cs = peer.connectionState;
+        if (cs === "connected") {
+          setPhase("live");
+          setDetail("Connected — encrypted end-to-end (DTLS-SRTP)");
+          mark("ice_connected", Math.round(performance.now() - startedAt.current));
+          stopRing("answered");
+          dropPrewarm(); // warm socket ka kaam khatam
+        } else if (cs === "disconnected") {
+          setPhase("reconnecting");
+          setDetail("Network changed — recovering the same call (ICE restart)");
+          window.setTimeout(() => {
+            if (pc.current === peer && peer.connectionState === "disconnected") void restart(peer);
+          }, 1200);
+        } else if (cs === "failed") {
+          setPhase("reconnecting");
+          void restart(peer);
+        } else if (cs === "closed") {
+          setPhase("ended");
+          setDetail("Call ended");
+        }
+      };
+
+      pc.current = peer;
+      return peer;
+    },
+    [conversationId, mark, media, peerId, stopRing],
+  );
+
+  /** ICE restart — WiFi -> 4G par call nahi tootti, black screen nahi aati. */
+  const restart = useCallback(
+    async (peer: RTCPeerConnection) => {
+      if (!peerId || peer !== pc.current) return;
+      restarts.current += 1;
+      setStats((s) => ({ ...s, ice_restarts: restarts.current }));
+      try {
+        await peer.setLocalDescription(await peer.createOffer({ iceRestart: true }));
+        await link.current?.send(peerId, "restart", { sdp: tunedLocalDescription(peer)?.sdp });
+        setDetail("Reconnecting on the new network path");
+      } catch {
+        setPhase("failed");
+        setDetail("Could not re-establish a media path");
+      }
+    },
+    [peerId],
+  );
+
+  const openLink = useCallback(() => {
+    if (!conversationId || !selfId || link.current) return;
+    link.current = openSignalLink({
+      conversationId,
+      selfId,
+      onTransport: setSignaling,
+      onFrame: (frame) => void handleFrame(frame),
+    });
+  }, [conversationId, selfId]);
+
+  const handleFrame = useCallback(
+    async (frame: SignalFrame) => {
+      const peer = pc.current;
+      const sdp = String(frame.payload["sdp"] ?? "");
+
+      if (frame.kind === "offer" || frame.kind === "restart") {
+        if (!peer) {
+          if (frame.kind === "offer") {
+            setIncoming(frame);
+            setPhase("ringing");
+            setDetail("Incoming ANEXOVideoChat call");
+            // PHASE 31A — RINGTONE (callee). Calm Mode par sirf visual + haptic.
+            if (!ring.current) {
+              const handle = startRing("ringtone");
+              ring.current = handle;
+              setRinging({ tone: "ringtone", audible: handle.audible });
+            }
+          }
+          return;
+        }
+        // Perfect negotiation — glare handle, call kabhi deadlock nahi
+        const offerCollision = makingOffer.current || peer.signalingState !== "stable";
+        ignoreOffer.current = !polite.current && offerCollision;
+        if (ignoreOffer.current) return;
+        if (offerCollision) await peer.setLocalDescription({ type: "rollback" }).catch(() => {});
+        await peer.setRemoteDescription({ type: "offer", sdp });
+        await peer.setLocalDescription();
+        if (peerId)
+          await link.current?.send(peerId, "answer", { sdp: tunedLocalDescription(peer)?.sdp });
+        return;
+      }
+
+      if (frame.kind === "answer" && peer) {
+        if (peer.signalingState !== "have-local-offer") return;
+        // PHASE 31A — signal ka asli round-trip (offer bheja -> answer aaya)
+        if (signalSentAt.current) {
+          mark("signal_rtt", Math.round(performance.now() - signalSentAt.current));
+        }
+        mark("answer_received", Math.round(performance.now() - startedAt.current));
+        await peer.setRemoteDescription({ type: "answer", sdp });
+        for (const c of pendingIce.current.splice(0)) await peer.addIceCandidate(c).catch(() => {});
+        return;
+      }
+
+      if (frame.kind === "ice") {
+        const cand = frame.payload as RTCIceCandidateInit;
+        if (!peer || !peer.remoteDescription) {
+          pendingIce.current.push(cand);
+          return;
+        }
+        await peer.addIceCandidate(cand).catch(() => {});
+        return;
+      }
+
+      if (frame.kind === "end") {
+        teardown("peer_ended");
+        setPhase("ended");
+        setDetail("Your teammate ended the call");
+        setIncoming(null);
+      }
+    },
+    [mark, peerId, teardown],
+  );
+
+  const registerSession = useCallback(
+    async (role: "caller" | "callee") => {
+      if (!conversationId) return;
+      startedAt.current = performance.now();
+      restarts.current = 0;
+      try {
+        const res = await chatCall<{ session_id?: string; id?: string } | string>(
+          "chat.call.start",
+          {
+            conversation_id: conversationId,
+            peer_user_id: peerId,
+            role,
+            signaling: link.current?.transport() ?? "rows",
+          },
+          {
+            path: "/api/chat/video/call/start",
+            method: "POST",
+            body: {
+              conversation_id: conversationId,
+              peer_user_id: peerId,
+              role,
+              signaling: link.current?.transport() ?? "rows",
+            },
+          },
+        );
+        sessionId.current = typeof res === "string" ? res : (res?.session_id ?? res?.id ?? null);
+      } catch {
+        sessionId.current = null; // telemetry optional — call kabhi block nahi hoti
+      }
+    },
+    [conversationId, peerId],
+  );
+
+  const start = useCallback(async () => {
+    if (!conversationId || !peerId) return;
+    openLink();
+    setPhase("connecting");
+    try {
+      const peer = await build(true);
+      await registerSession("caller");
+      // PHASE 31A — pre-warm ki asli reading session ke saath likh do
+      const warm = prewarmReport();
+      if (warm) {
+        mark("prewarm_started", 0);
+        mark("prewarm_ready", warm.first_candidate_ms);
+      }
+      await peer.setLocalDescription(await peer.createOffer());
+      signalSentAt.current = performance.now();
+      await link.current?.send(peerId, "offer", { sdp: tunedLocalDescription(peer)?.sdp });
+      mark("signal_sent", Math.round(performance.now() - startedAt.current));
+      setPhase("ringing");
+      setDetail("Ringing — candidates are already streaming (Trickle ICE)");
+
+      // RINGBACK (caller) — halka pulse. Calm Mode par sound nahi.
+      if (!ring.current) {
+        const handle = startRing("ringback");
+        ring.current = handle;
+        setRinging({ tone: "ringback", audible: handle.audible });
+      }
+      if (sessionId.current) {
+        const state = await ringStart({
+          session_id: sessionId.current,
+          to_user: peerId,
+          tone: "ringback",
+          calm_mode: calmMode(),
+          trigger_path: link.current?.transport() ?? "rows",
+        }).catch(() => null);
+        ringId.current = state?.ring_id ?? null;
+        // 45s / 60s plan window ke baad "no answer" — jhoota "missed" kabhi nahi
+        const win = (state?.window_seconds ?? 45) * 1000;
+        noAnswer.current = window.setTimeout(() => {
+          if (pc.current?.connectionState === "connected") return;
+          stopRing("no_answer");
+          setDetail("No answer — the call was never picked up");
+          teardown("no_answer");
+          setPhase("ended");
+        }, win);
+      }
+    } catch (error) {
+      teardown("start_failed");
+      setPhase("failed");
+      setDetail((error as Error).message);
+    }
+  }, [build, conversationId, mark, openLink, peerId, registerSession, stopRing, teardown]);
+
+  const answer = useCallback(async () => {
+    const offer = incoming;
+    if (!offer || !conversationId) return;
+    openLink();
+    setPhase("connecting");
+    setDetail("Connecting");
+    try {
+      stopRing("answered"); // uthate hi ring band — record mein "answered"
+      const peer = await build(false);
+      await registerSession("callee");
+      await peer.setRemoteDescription({ type: "offer", sdp: String(offer.payload["sdp"] ?? "") });
+      await peer.setLocalDescription();
+      await link.current?.send(offer.from_user, "answer", {
+        sdp: tunedLocalDescription(peer)?.sdp,
+      });
+      for (const c of pendingIce.current.splice(0)) await peer.addIceCandidate(c).catch(() => {});
+      setIncoming(null);
+    } catch (error) {
+      teardown("answer_failed");
+      setPhase("failed");
+      setDetail((error as Error).message);
+    }
+  }, [build, conversationId, incoming, openLink, registerSession, stopRing, teardown]);
+
+  /** Incoming call decline — record mein "declined", "missed" kabhi nahi. */
+  const decline = useCallback(() => {
+    if (incoming) void link.current?.send(incoming.from_user, "end", {});
+    stopRing("declined");
+    teardown("declined");
+    setIncoming(null);
+    setPhase("ended");
+    setDetail("You declined the call");
+  }, [incoming, stopRing, teardown]);
+
+  const hangup = useCallback(() => {
+    if (peerId) void link.current?.send(peerId, "end", {});
+    teardown("local_hangup");
+    setPhase("ended");
+    setDetail("Call ended");
+    setIncoming(null);
+  }, [peerId, teardown]);
+
+  /** Seamless device switch — track replace, renegotiation ke bina rukawat. */
+  const switchDevice = useCallback(async (kind: "audio" | "video", deviceId: string) => {
+    const peer = pc.current;
+    if (!peer) return;
+    const fresh = await navigator.mediaDevices.getUserMedia(
+      kind === "audio"
+        ? { audio: { deviceId: { exact: deviceId } } }
+        : { video: { deviceId: { exact: deviceId } } },
+    );
+    const track = kind === "audio" ? fresh.getAudioTracks()[0] : fresh.getVideoTracks()[0];
+    if (!track) return;
+    const sender = peer.getSenders().find((s) => s.track?.kind === kind);
+    await sender?.replaceTrack(track);
+    const old = localRef.current;
+    if (old) {
+      old
+        .getTracks()
+        .filter((t) => t.kind === kind)
+        .forEach((t) => {
+          old.removeTrack(t);
+          t.stop();
+        });
+      old.addTrack(track);
+      setLocal(new MediaStream(old.getTracks()));
+    }
+  }, []);
+
+  /**
+   * PHASE 31A — pre-warm: call button dabne se PEHLE hi network ka raasta
+   * maloom. Media isse nahi guzarti; 60s baad khud band. Ye koi "instant call"
+   * dawa nahi — sirf waqt bachata hai.
+   */
+  const prewarm = useCallback(async () => {
+    if (prewarmReport()) return;
+    try {
+      const ice = await iceBundle();
+      prewarmIce(ice.iceServers);
+    } catch {
+      /* prewarm optional — call phir bhi normal chalti hai */
+    }
+  }, []);
+
+  /**
+   * PHASE 31A — group topology. 3+ log = apna SFU (media forwarding). 1:1 mesh.
+   * TURN ko SFU kehna mamnu — room row khud bataata hai forwarding hai ya nahi.
+   */
+  const prepareGroup = useCallback(
+    async (participants: number) => {
+      if (!conversationId) return null;
+      const room = await sfuEnsure(conversationId, participants).catch(() => null);
+      if (!room?.ok) {
+        setTopology(null);
+        setMediaForwarding(false);
+        return room ?? null;
+      }
+      sfuRoom.current = room.room_id ?? null;
+      setTopology(room.topology ?? null);
+      setMediaForwarding(room.media_forwarding === true);
+      if (room.room_id) {
+        await sfuJoin(room.room_id, 3, codecs.av1 ? "av1" : codecs.vp9 ? "vp9" : "h264").catch(
+          () => {},
+        );
+      }
+      return room;
+    },
+    [codecs.av1, codecs.vp9, conversationId],
+  );
+
+  // Signaling link chat khulte hi live (incoming call miss nahi hoti)
+  useEffect(() => {
+    if (!conversationId || !selfId) return;
+    openLink();
+    void prewarm();
+    return () => {
+      link.current?.close();
+      link.current = null;
+      dropPrewarm();
+    };
+  }, [conversationId, openLink, prewarm, selfId]);
+
+  // ── Telemetry: sirf asli readings, append-only DB samples ────────────────
+  useEffect(() => {
+    if (phase !== "live" && phase !== "reconnecting") return;
+    let lastBytes = 0;
+    let lastAt = 0;
+    let lastLost = 0;
+    let lastPackets = 0;
+
+    const timer = window.setInterval(async () => {
+      const peer = pc.current;
+      if (!peer) return;
+      const report = await peer.getStats();
+      const next: CallStats = { ...EMPTY_STATS, ice_restarts: restarts.current };
+      let bytes = 0;
+      let at = 0;
+      let pairId = "";
+
+      report.forEach((r) => {
+        if (r.type === "outbound-rtp" && (r as RTCOutboundRtpStreamStats).kind === "video") {
+          const o = r as RTCOutboundRtpStreamStats & {
+            framesPerSecond?: number;
+            frameWidth?: number;
+            frameHeight?: number;
+            qualityLimitationReason?: string;
+          };
+          bytes = Number(o.bytesSent ?? 0);
+          at = Number(o.timestamp ?? 0);
+          next.fps = o.framesPerSecond != null ? Math.round(o.framesPerSecond) : next.fps;
+          next.width = o.frameWidth ?? next.width;
+          next.height = o.frameHeight ?? next.height;
+          // PHASE 10B — NEW ADDED: encode truth alag
+          next.encoded_width = o.frameWidth ?? next.encoded_width;
+          next.encoded_height = o.frameHeight ?? next.encoded_height;
+          next.limitation = o.qualityLimitationReason ?? next.limitation;
+        }
+        // PHASE 10B — NEW ADDED: bandwidth estimate (ladder ka faisla isi se)
+        if (r.type === "candidate-pair") {
+          const p = r as RTCIceCandidatePairStats & { availableOutgoingBitrate?: number };
+          if (p.availableOutgoingBitrate != null) {
+            next.available_out_kbps = Math.round(p.availableOutgoingBitrate / 1000);
+          }
+        }
+        if (r.type === "inbound-rtp" && (r as RTCInboundRtpStreamStats).kind === "video") {
+          const i = r as RTCInboundRtpStreamStats & {
+            jitter?: number;
+            packetsLost?: number;
+            packetsReceived?: number;
+            framesPerSecond?: number;
+            frameWidth?: number;
+            frameHeight?: number;
+            framesDropped?: number;
+          };
+          // PHASE 10B — NEW ADDED: decode truth alag + dropped frames
+          if (i.frameWidth) {
+            next.decoded_width = i.frameWidth;
+            next.decoded_height = i.frameHeight ?? next.decoded_height;
+          }
+          if (i.framesDropped != null) next.frames_dropped = Number(i.framesDropped);
+          if (i.jitter != null) next.jitter_ms = Math.round(i.jitter * 1000);
+          const lost = Number(i.packetsLost ?? 0);
+          const got = Number(i.packetsReceived ?? 0);
+          if (got > lastPackets) {
+            const dLost = Math.max(0, lost - lastLost);
+            const dGot = got - lastPackets;
+            next.loss_pct = Math.round((dLost / Math.max(1, dGot + dLost)) * 1000) / 10;
+          }
+          lastLost = lost;
+          lastPackets = got;
+          if (i.framesPerSecond != null) next.fps = Math.round(i.framesPerSecond);
+          if (i.frameWidth) {
+            next.width = i.frameWidth;
+            next.height = i.frameHeight ?? next.height;
+          }
+        }
+        if (r.type === "candidate-pair" && (r as RTCIceCandidatePairStats).state === "succeeded") {
+          const p = r as RTCIceCandidatePairStats;
+          if (p.nominated !== false) {
+            pairId = String(p.remoteCandidateId ?? "");
+            if (p.currentRoundTripTime != null)
+              next.rtt_ms = Math.round(p.currentRoundTripTime * 1000);
+          }
+        }
+        if (r.type === "codec") {
+          const c = r as { mimeType?: string };
+          if (c.mimeType?.startsWith("video/")) next.video_codec = c.mimeType.replace("video/", "");
+          if (c.mimeType?.startsWith("audio/")) next.audio_codec = c.mimeType.replace("audio/", "");
+        }
+      });
+
+      report.forEach((r) => {
+        if (r.type === "remote-candidate" && r.id === pairId) {
+          const c = r as { candidateType?: string };
+          next.path = c.candidateType === "relay" ? "relay" : "p2p";
+        }
+      });
+
+      if (bytes && at && lastBytes && at > lastAt) {
+        next.bitrate_kbps = Math.round(((bytes - lastBytes) * 8) / ((at - lastAt) / 1000) / 1000);
+      }
+      lastBytes = bytes || lastBytes;
+      lastAt = at || lastAt;
+
+      const rtt = next.rtt_ms ?? null;
+      const loss = next.loss_pct ?? null;
+      next.quality =
+        rtt == null && loss == null
+          ? null
+          : (rtt ?? 0) < 150 && (loss ?? 0) < 2
+            ? "good"
+            : (rtt ?? 0) < 300 && (loss ?? 0) < 6
+              ? "fair"
+              : "poor";
+      next.setup_ms =
+        startedAt.current && phase === "live"
+          ? Math.round(performance.now() - startedAt.current)
+          : null;
+
+      // PHASE 10B — NEW ADDED: adaptive ladder (8K -> 480p aur wapas upar).
+      // AUTO par har 2s sample pe max 1 qadam; call kabhi 8K na milne par
+      // disconnect nahi hoti. Manual choice par rung pinned rehta hai.
+      const sender = pc.current?.getSenders().find((s) => s.track?.kind === "video");
+      const vTrack = localRef.current?.getVideoTracks()[0];
+      if (choiceRef.current === "auto") {
+        const decision = ladder.current.step({
+          rtt_ms: next.rtt_ms,
+          loss_pct: next.loss_pct,
+          available_out_bps:
+            next.available_out_kbps == null ? null : next.available_out_kbps * 1000,
+          quality_limitation: next.limitation,
+          fps: next.fps,
+        });
+        if (decision.changed) {
+          setDetail(decision.reason);
+          await applyRung(sender, vTrack, ladder.current.current(), captureCeiling.current);
+        }
+      }
+      const rung = ladder.current.current();
+      next.rung = rung.key;
+      next.rung_label = labelForSize(
+        next.encoded_width ?? capture?.width ?? null,
+        next.encoded_height ?? capture?.height ?? null,
+      );
+
+      setStats(next);
+
+      // ── PHASE 31A — AUDIO-FIRST SURVIVAL ────────────────────────────────
+      // Network gir jaye to video chhoro, awaaz zinda rakho — call wahi rehti
+      // hai aur record mein wajah likhi jati hai. Reason ke bina kuch nahi.
+      const vSender = pc.current?.getSenders().find((s) => s.track?.kind === "video");
+      const badNet = (next.loss_pct ?? 0) > 12 || (next.rtt_ms ?? 0) > 480;
+      const goodNet = (next.loss_pct ?? 0) < 3 && (next.rtt_ms ?? 0) < 220;
+      if (badNet && !audioOnly.current && vSender?.track) {
+        audioOnly.current = true;
+        vSender.track.enabled = false;
+        setSurvival("Audio-only — network dropped the video, the call stayed up");
+        setDetail("Audio-only — video paused to keep the voice clear");
+        if (sessionId.current) {
+          void survivalRecord({
+            session_id: sessionId.current,
+            state: "audio_only",
+            reason:
+              (next.loss_pct ?? 0) > 12
+                ? `packet loss ${next.loss_pct}% — video paused, audio kept`
+                : `round trip ${next.rtt_ms} ms — video paused, audio kept`,
+            rtt_ms: next.rtt_ms,
+            loss_pct: next.loss_pct,
+          }).catch(() => {});
+        }
+      } else if (goodNet && audioOnly.current && vSender?.track) {
+        audioOnly.current = false;
+        vSender.track.enabled = true;
+        setSurvival(null);
+        if (sessionId.current) {
+          void survivalRecord({
+            session_id: sessionId.current,
+            state: "video_restored",
+            reason: "network recovered — video restored",
+            rtt_ms: next.rtt_ms,
+            loss_pct: next.loss_pct,
+          }).catch(() => {});
+        }
+      }
+      if (sessionId.current) {
+        void chatCall(
+          "chat.call.stat",
+          { session_id: sessionId.current, sample: next },
+          {
+            path: "/api/chat/video/call/stat",
+            method: "POST",
+            body: { session_id: sessionId.current, sample: next },
+          },
+        ).catch(() => {});
+      }
+    }, 2000);
+
+    return () => window.clearInterval(timer);
+  }, [capture, phase]);
+
+  useEffect(() => () => teardown("unmount"), [teardown]);
+
+  // ── Call duration counter ────────────────────────────────────────────────
+  useEffect(() => {
+    if (phase === "live") {
+      liveAt.current = liveAt.current ?? Date.now();
+      const t = window.setInterval(() => {
+        setCallDuration(Math.floor((Date.now() - (liveAt.current ?? Date.now())) / 1000));
+      }, 1000);
+      return () => window.clearInterval(t);
+    }
+    if (phase === "ended" || phase === "idle") {
+      liveAt.current = null;
+      setCallDuration(null);
+    }
+  }, [phase]);
+
+  // ── Local speaker detection (Web Audio analyser) ─────────────────────────
+  useEffect(() => {
+    if (phase !== "live" || !local) {
+      audioCtx.current?.close().catch(() => {});
+      audioCtx.current = null;
+      analyserRef.current = null;
+      setSpeaking(false);
+      return;
+    }
+    let stopped = false;
+    const ctx = new AudioContext();
+    audioCtx.current = ctx;
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = 256;
+    analyserRef.current = analyser;
+    const src = ctx.createMediaStreamSource(local);
+    src.connect(analyser);
+    const buf = new Uint8Array(analyser.frequencyBinCount);
+    const poll = () => {
+      if (stopped) return;
+      analyser.getByteFrequencyData(buf);
+      const avg = buf.reduce((s, v) => s + v, 0) / buf.length;
+      setSpeaking(avg > 18);
+      window.requestAnimationFrame(poll);
+    };
+    poll();
+    return () => {
+      stopped = true;
+      ctx.close().catch(() => {});
+      audioCtx.current = null;
+      analyserRef.current = null;
+      setSpeaking(false);
+    };
+  }, [phase, local]);
+
+  /** Screen share — replaces video track; browser stop button = auto-restore camera. */
+  const screenShare = useCallback(async () => {
+    const peer = pc.current;
+    if (!peer || screensharing) return;
+    try {
+      const screen = await navigator.mediaDevices.getDisplayMedia({
+        video: { frameRate: { ideal: 30, max: 60 } },
+        audio: false,
+      });
+      const screenTrack = screen.getVideoTracks()[0];
+      if (!screenTrack) return;
+      const sender = peer.getSenders().find((s) => s.track?.kind === "video");
+      // Keep original camera track for restore
+      priorCamTrack.current = sender?.track ?? null;
+      await sender?.replaceTrack(screenTrack);
+      setScreensharing(true);
+      // Auto-restore when user hits browser "Stop sharing"
+      screenTrack.addEventListener(
+        "ended",
+        () => void stopScreenShare(),
+        { once: true },
+      );
+    } catch {
+      /* user cancelled — no action */
+    }
+  }, [screensharing]);
+
+  /** Stop screen share — restores camera at last quality rung. */
+  const stopScreenShare = useCallback(async () => {
+    const peer = pc.current;
+    if (!peer) return;
+    try {
+      const rung = ladder.current.current();
+      const camTrack =
+        priorCamTrack.current ??
+        (
+          await navigator.mediaDevices.getUserMedia({
+            video: captureConstraints(rung, capture?.deviceId),
+          })
+        ).getVideoTracks()[0];
+      priorCamTrack.current = null;
+      if (!camTrack) { setScreensharing(false); return; }
+      const sender = peer.getSenders().find((s) => s.track?.kind === "video");
+      await sender?.replaceTrack(camTrack);
+      const old = localRef.current;
+      if (old) {
+        old.getVideoTracks().forEach((t) => { old.removeTrack(t); t.stop(); });
+        old.addTrack(camTrack);
+        setLocal(new MediaStream(old.getTracks()));
+      }
+    } catch { /* restore failed — call still alive */ }
+    finally { setScreensharing(false); }
+  }, [capture?.deviceId]);
+
+  /** PHASE 10B — NEW ADDED: AUTO ya manual rung. 8K sirf tab jab camera de. */
+  const setQuality = useCallback(async (next: QualityChoice) => {
+    choiceRef.current = next;
+    setChoice(next);
+    if (next !== "auto") ladder.current.pin(rungIndex(next));
+    const sender = pc.current?.getSenders().find((s) => s.track?.kind === "video");
+    const track = localRef.current?.getVideoTracks()[0];
+    await applyRung(sender, track, ladder.current.current(), captureCeiling.current);
+  }, []);
+
+  return {
+    phase,
+    detail,
+    stats,
+    remote,
+    local,
+    incoming: Boolean(incoming),
+    signaling,
+    turnAvailable,
+    start,
+    answer,
+    hangup,
+    switchDevice,
+    // PHASE 31A — NEW ADDED: ring truth, decline, group topology, survival
+    decline,
+    ringing,
+    topology,
+    mediaForwarding,
+    survival,
+    prepareGroup,
+    sessionId: sessionId.current,
+    // PHASE 10B — NEW ADDED
+    quality: choice,
+    setQuality,
+    capture,
+    codecs,
+    maxRung: captureCeiling.current.key,
+    // Screen share
+    screensharing,
+    screenShare,
+    stopScreenShare,
+    // Duration + speaker
+    callDuration,
+    speaking,
+  };
+}

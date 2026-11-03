@@ -1,0 +1,501 @@
+// ANEXOMAIL — Polar legacy bridge (Server 2 / Brain, port 3100)
+//
+// PAYMENT ENGINE LOCK (5 Sep 2026): asli payment/webhook authority
+// dedicated Rust engine `polar-rust-payment` (127.0.0.1:3400) hai.
+// Yeh Express file ab sirf BRIDGE hai:
+//   - purana /api/public/polar/webhook hit ho jaye to raw body
+//     127.0.0.1:3400/api/v1/polar-webhook par forward hoti hai (koi logic yahan nahi)
+//   - read-only billing views (subscription/invoices/payment-health) waise hi rehte hain
+// Polar dashboard mein sirf: https://anexomail.com/api/v1/polar-webhook
+//
+// NANO COMMAND (server par):
+//   cp /opt/anexomail/src/routes/polar.ts /opt/anexomail/src/routes/polar.ts.bak.$(date +%s) 2>/dev/null
+//   nano /opt/anexomail/src/routes/polar.ts
+//   # select all -> paste -> Ctrl+O, Ctrl+X
+//
+// Env required:
+//   POLAR_ACCESS_TOKEN, POLAR_WEBHOOK_SECRET, POLAR_SUCCESS_URL
+//   SUPABASE4_URL, SUPABASE4_SERVICE_ROLE_KEY
+//   POLAR_ENGINE_URL (default http://127.0.0.1:3400)
+
+import { Router } from "express";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { BILLING_PRODUCTS, configuredProduct, productById } from "../config/billing-products";
+
+const SUPABASE_URL = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
+const SERVICE_KEY =
+  process.env.SUPABASE4_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+
+const POLAR_TOKEN = process.env.POLAR_ACCESS_TOKEN || "";
+const POLAR_API = "https://api.polar.sh";
+// Payment authority: dedicated Rust engine. Sirf bridge/forward ke liye.
+const POLAR_ENGINE_URL = (process.env.POLAR_ENGINE_URL || "http://127.0.0.1:3400").replace(
+  /\/+$/,
+  "",
+);
+const SUCCESS_URL =
+  process.env.POLAR_SUCCESS_URL || "https://anexomail.com/checkout/done?checkout_id={CHECKOUT_ID}";
+
+let db: SupabaseClient | null = null;
+if (SUPABASE_URL && SERVICE_KEY) {
+  db = createClient(SUPABASE_URL, SERVICE_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+} else {
+  console.error("polar: SUPABASE4_URL / SUPABASE4_SERVICE_ROLE_KEY missing — routes will 503");
+}
+
+if (!POLAR_TOKEN) console.error("polar: POLAR_ACCESS_TOKEN missing — checkout will 503");
+console.log(`polar: webhook bridge -> ${POLAR_ENGINE_URL}/api/v1/polar-webhook`);
+
+const publicRouter = Router();
+const authRouter = Router();
+
+function productMap(): Record<string, string> {
+  const map: Record<string, string> = {};
+  for (const key of Object.keys(BILLING_PRODUCTS)) {
+    const product = configuredProduct(key);
+    if (product) map[key] = product.productId;
+  }
+  return map;
+}
+
+function kindFromMetadata(meta?: Record<string, string> | null) {
+  const m = meta || {};
+  return {
+    brand: m.brand || "anexomail",
+    kind: m.kind || "unknown",
+    band: m.band || null,
+    plan: m.plan || null,
+  };
+}
+
+async function requireUser(req: any, res: any): Promise<string | null> {
+  if (!db) {
+    res.status(503).json({ error: "supabase_not_configured" });
+    return null;
+  }
+  const raw = String(req.headers.authorization || "");
+  const token = raw.startsWith("Bearer ") ? raw.slice(7) : "";
+  if (!token) {
+    res.status(401).json({ error: "unauthorized" });
+    return null;
+  }
+  const { data, error } = await db.auth.getUser(token);
+  if (error || !data?.user) {
+    res.status(401).json({ error: "unauthorized" });
+    return null;
+  }
+  return data.user.id;
+}
+
+// ---------- Polar API helpers ----------
+async function polarFetch(path: string, init?: RequestInit) {
+  const res = await fetch(`${POLAR_API}${path}`, {
+    ...init,
+    headers: {
+      authorization: `Bearer ${POLAR_TOKEN}`,
+      "content-type": "application/json",
+      accept: "application/json",
+      ...(init?.headers || {}),
+    },
+  });
+  const text = await res.text();
+  const json = text ? JSON.parse(text) : null;
+  if (!res.ok) {
+    const err = json?.detail || json?.message || json?.error || `polar_${res.status}`;
+    throw new Error(String(err));
+  }
+  return json;
+}
+
+// ---------- checkout: authenticated ----------
+authRouter.post("/checkout", async (req, res) => {
+  return res.status(410).json({ error: "checkout_route_retired", use: "/api/billing/intent" });
+});
+
+authRouter.get("/checkout/:id", async (req, res) => {
+  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
+  if (!POLAR_TOKEN) return res.status(503).json({ error: "polar_not_configured" });
+
+  const userId = await requireUser(req, res);
+  if (!userId) return;
+
+  const { id } = req.params;
+  try {
+    const checkout = await polarFetch(`/v1/checkouts/${id}`);
+    // ownership check
+    const { data: intent } = await db
+      .from("billing_intents")
+      .select("id,user_id,product_id")
+      .eq("polar_checkout_id", id)
+      .maybeSingle();
+    if (!intent) return res.status(404).json({ error: "checkout_not_found" });
+    if (intent.user_id !== userId) return res.status(403).json({ error: "forbidden" });
+    const status = String(checkout.status || "unknown");
+    if (status === "confirmed" || status === "succeeded") {
+      const paidProductId = String(checkout.product_id || checkout.product?.id || "");
+      const { error: confirmError } = await db.rpc("billing_intent_confirm", {
+        p_intent: intent.id,
+        p_checkout_id: id,
+        p_order_id: checkout.order_id || null,
+        p_amount: checkout.total_amount ? Number(checkout.total_amount) / 100 : null,
+        p_source: "checkout_return_pull",
+        p_currency: String(checkout.currency || "GBP").toUpperCase(),
+        p_product_id: paidProductId || intent.product_id || null,
+      });
+      if (confirmError) throw confirmError;
+    }
+    res.json({
+      id: checkout.id,
+      status,
+      customer_email: checkout.customer_email,
+      product_id: checkout.product_id,
+      product_price_id: checkout.product_price_id,
+      metadata: checkout.metadata,
+      url: checkout.url,
+    });
+  } catch (e: any) {
+    console.error("[polar checkout get]", e);
+    res.status(502).json({ error: "checkout_fetch_failed", detail: e.message });
+  }
+});
+
+// ---------- webhook: legacy bridge -> Rust engine :3400 ----------
+// Yahan koi verification / business logic NAHI. Raw body jaisi ki taisi
+// Rust engine ko chali jati hai; wahi signature verify karta hai aur inbox
+// mein insert karta hai. Polar dashboard mein ab sirf /api/v1/polar-webhook
+// hona chahiye — yeh route sirf purane hits ke liye zinda hai.
+publicRouter.post("/polar/webhook", async (req, res) => {
+  const body = req.rawBody ? Buffer.from(req.rawBody) : Buffer.from(JSON.stringify(req.body ?? {}));
+  const headers: Record<string, string> = { "content-type": "application/json" };
+  for (const key of [
+    "webhook-id",
+    "webhook-timestamp",
+    "webhook-signature",
+    "x-polar-signature",
+    "user-agent",
+  ]) {
+    const value = req.headers[key];
+    if (value) headers[key] = String(value);
+  }
+
+  try {
+    const upstream = await fetch(`${POLAR_ENGINE_URL}/api/v1/polar-webhook`, {
+      method: "POST",
+      headers,
+      body,
+    });
+    const text = await upstream.text();
+    return res
+      .status(upstream.status)
+      .type("text/plain")
+      .send(text || "");
+  } catch (e: any) {
+    // Engine down: Polar ko fail mat batao — woh retry karega.
+    console.error("[polar webhook bridge]", e?.message || e);
+    await captureRaw(req, String(req.headers["webhook-id"] || ""), false, "engine_unreachable");
+    return res.status(503).json({ error: "payment_engine_unreachable" });
+  }
+});
+
+// Har hit ka raw record — signature fail ho to bhi. Yeh kabhi throw nahi karta.
+async function captureRaw(req: any, eventId: string, verified: boolean, reason: string | null) {
+  if (!db) return;
+  try {
+    await db.rpc("webhook_capture_raw", {
+      p_event_id: eventId || null,
+      p_type: req.body?.type || null,
+      p_body: req.body ?? null,
+      p_verified: verified,
+      p_reason: reason,
+      p_headers: {
+        "webhook-id": String(req.headers["webhook-id"] || ""),
+        "webhook-timestamp": String(req.headers["webhook-timestamp"] || ""),
+        "user-agent": String(req.headers["user-agent"] || ""),
+      },
+    });
+  } catch (e) {
+    console.error("[polar webhook raw-capture]", e);
+  }
+}
+
+// ---------- retry sweep: cron ya founder chala sakta hai ----------
+// POST /api/public/polar/replay  header: x-anexomail-cron: $CRON_SECRET
+publicRouter.post("/polar/replay", async (req, res) => {
+  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
+  const secret = process.env.CRON_SECRET || process.env.POLAR_REPLAY_SECRET || "";
+  if (!secret || String(req.headers["x-anexomail-cron"] || "") !== secret) {
+    return res.status(401).json({ error: "unauthorized" });
+  }
+  const { data, error } = await db.rpc("webhook_claim_retries", { p_limit: 20 });
+  if (error) return res.status(500).json({ error: "claim_failed", detail: error.message });
+
+  let processed = 0;
+  let failed = 0;
+  for (const row of (data as any[]) || []) {
+    try {
+      await processWebhookEvent(row.payload, row.polar_event_id);
+      await db.rpc("webhook_mark_processed", { p_event_id: row.polar_event_id });
+      processed += 1;
+    } catch (e: any) {
+      await db.rpc("webhook_mark_failed", {
+        p_event_id: row.polar_event_id,
+        p_error: String(e?.message || e),
+      });
+      failed += 1;
+    }
+  }
+  return res.json({ claimed: (data as any[])?.length || 0, processed, failed });
+});
+
+// ---------- billing truth for the signed-in workspace ----------
+authRouter.get("/subscription", async (req, res) => {
+  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
+  const userId = await requireUser(req, res);
+  if (!userId) return;
+  const { data, error } = await db
+    .from("workspace_subscriptions")
+    .select(
+      "plan,state,seats,seats_used,price_per_seat,currency,interval,renews_at,cancel_at,storage_per_mailbox_gb",
+    )
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (error) return res.status(500).json({ error: "db_error", detail: error.message });
+  return res.json(
+    data || {
+      plan: null,
+      state: "none",
+      seats: 0,
+      seats_used: 0,
+      price_per_seat: 0,
+      currency: "GBP",
+      interval: "month",
+      renews_at: null,
+      cancel_at: null,
+      storage_per_mailbox_gb: null,
+    },
+  );
+});
+
+authRouter.get("/invoices", async (req, res) => {
+  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
+  const userId = await requireUser(req, res);
+  if (!userId) return;
+  const { data, error } = await db
+    .from("workspace_invoices")
+    .select(
+      "id,number,state,subtotal,tax,total,currency,period_start,period_end,issued_at,paid_at,pdf_url",
+    )
+    .eq("user_id", userId)
+    .order("issued_at", { ascending: false });
+  if (error) return res.status(500).json({ error: "db_error", detail: error.message });
+  return res.json({ invoices: data || [] });
+});
+
+// Founder-facing payment safety board (auth required).
+authRouter.get("/payment-health", async (req, res) => {
+  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
+  const userId = await requireUser(req, res);
+  if (!userId) return;
+  const { data: founder } = await db
+    .from("founder_accounts")
+    .select("user_id")
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (!founder) return res.status(403).json({ error: "founder_only" });
+
+  const [health, gaps, alerts] = await Promise.all([
+    db.from("payment_health").select("*").maybeSingle(),
+    db.from("payment_reconciliation_gaps").select("*").limit(50),
+    db
+      .from("payment_alerts")
+      .select("id,severity,kind,polar_event_id,message,created_at")
+      .is("resolved_at", null)
+      .order("created_at", { ascending: false })
+      .limit(50),
+  ]);
+  return res.json({
+    health: health.data || null,
+    gaps: gaps.data || [],
+    alerts: alerts.data || [],
+  });
+});
+
+async function processWebhookEvent(event: any, eventId: string) {
+  if (!db) return;
+  const type = event?.type;
+  const data = event?.data || {};
+
+  if (type === "checkout.updated" && data.status === "confirmed") {
+    await db
+      .from("polar_checkout_sessions")
+      .update({ status: "confirmed", confirmed_at: new Date().toISOString() })
+      .eq("polar_checkout_id", data.id);
+  }
+
+  if (type === "order.paid") {
+    const checkoutMeta = data.checkout?.metadata || {};
+    const meta = { ...checkoutMeta, ...(data.metadata || {}) };
+    const userId =
+      meta.anexomail_user_id || data.external_customer_id || data.customer?.external_id;
+    const product = data.product || data.items?.[0]?.product || {};
+    const productMeta = product.metadata || {};
+    const paidProductId = String(
+      product.id || data.product_id || data.items?.[0]?.product_id || "",
+    );
+    const registeredProduct = paidProductId ? productById(paidProductId) : null;
+    const legacyMeta = kindFromMetadata(productMeta);
+    const kind = registeredProduct?.kind || legacyMeta.kind;
+    const plan = registeredProduct?.plan || legacyMeta.plan;
+    const band = registeredProduct?.band || legacyMeta.band;
+    const billingCycle = registeredProduct?.cycle || meta.billing_cycle || "monthly";
+    const amount = Number(data.total_amount ?? data.amount ?? 0) / 100;
+    const isRecurring = data.subscription_id ? true : false;
+    const customerEmail =
+      data.customer_email || data.customer?.email || data.customer?.billing_address?.email || null;
+    const responseHours: Record<string, number> = { basic: 72, pro: 48, business: 24 };
+
+    const intentId = meta.anexomail_intent_id || null;
+    if ((kind === "plan" || kind === "ai_plan") && (!registeredProduct || !intentId)) {
+      throw new Error("paid_plan_missing_registered_product_or_intent");
+    }
+    if (intentId) {
+      const { error: confirmError } = await db.rpc("billing_intent_confirm", {
+        p_intent: intentId,
+        p_checkout_id: data.checkout_id || data.checkout?.id || null,
+        p_order_id: data.id || null,
+        p_amount: amount,
+        p_source: "webhook",
+        p_currency: String(data.currency || "GBP").toUpperCase(),
+        p_product_id: paidProductId || null,
+      });
+      if (confirmError) throw confirmError;
+    }
+
+    // Polar sends the provider receipt/invoice. Supabase stores our immutable proof.
+    await db.from("billing_event_receipts").upsert(
+      {
+        polar_event_id: eventId,
+        polar_order_id: data.id || null,
+        user_id: userId || null,
+        customer_email: customerEmail,
+        event_type: type,
+        plan: plan || null,
+        amount_gbp: amount,
+        currency: String(data.currency || "GBP").toUpperCase(),
+        provider_email_state: "provider_managed",
+        payload: data,
+      },
+      { onConflict: "polar_event_id", ignoreDuplicates: true },
+    );
+
+    let invoiceWriteError: string | null = null;
+    if (userId) {
+      const invoiceNumber = String(
+        data.invoice_number || data.order_number || data.id || event?.id,
+      );
+      const { error: invoiceError } = await db.from("workspace_invoices").upsert(
+        {
+          user_id: userId,
+          number: invoiceNumber,
+          state: "paid",
+          subtotal: Number(data.subtotal_amount ?? data.total_amount ?? data.amount ?? 0) / 100,
+          tax: Number(data.tax_amount ?? 0) / 100,
+          total: amount,
+          currency: String(data.currency || "GBP").toUpperCase(),
+          period_start: data.subscription?.current_period_start || null,
+          period_end: data.subscription?.current_period_end || null,
+          issued_at: data.created_at || new Date().toISOString(),
+          paid_at: data.modified_at || data.created_at || new Date().toISOString(),
+          pdf_url: data.invoice?.url || data.invoice_url || null,
+        },
+        { onConflict: "user_id,number" },
+      );
+      invoiceWriteError = invoiceError?.message || null;
+    }
+
+    // upsert revenue account for subscriptions
+    if (kind === "plan" && userId && plan) {
+      const seats = Number(meta.seats || 1);
+      const mrr = isRecurring ? (billingCycle === "yearly" ? amount / 12 : amount) : 0;
+      const { error: subscriptionError } = await db.from("workspace_subscriptions").upsert(
+        {
+          user_id: userId,
+          plan,
+          state: "active",
+          seats,
+          seats_used: 1,
+          price_per_seat: seats > 0 ? amount / seats : amount,
+          currency: String(data.currency || "GBP").toUpperCase(),
+          interval: billingCycle === "yearly" ? "year" : "month",
+          renews_at: data.subscription?.current_period_end || data.current_period_end || null,
+          polar_customer_id: data.customer_id || data.customer?.id || null,
+          polar_subscription_id: data.subscription_id || data.subscription?.id || null,
+          customer_email: customerEmail,
+          response_due_hours: responseHours[plan] || 72,
+          provider_payload: data,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "user_id" },
+      );
+      if (subscriptionError) throw subscriptionError;
+      const { error: revenueError } = await db.from("revenue_accounts").upsert(
+        {
+          company: customerEmail || "unknown",
+          plan,
+          seats,
+          mrr_gbp: mrr,
+          status: "active",
+          started_at: new Date().toISOString(),
+        },
+        { onConflict: "company" },
+      );
+      if (revenueError) throw revenueError;
+    }
+
+    // log one-off job for move-in
+    if (kind === "movein" && userId) {
+      await db.from("revenue_jobs").insert({
+        company: customerEmail || "unknown",
+        kind: "migration",
+        amount_gbp: amount,
+        stage: "paid",
+      });
+    }
+
+    // flag SLA addon
+    if (kind === "support" && userId) {
+      await db
+        .from("revenue_accounts")
+        .update({ sla_addon: true })
+        .eq("company", customerEmail || "unknown");
+    }
+
+    if (invoiceWriteError) throw new Error(`workspace_invoice_sync_failed: ${invoiceWriteError}`);
+  }
+
+  if (type === "subscription.canceled" || type === "subscription.revoked") {
+    const email = data.customer_email || data.customer?.email || "unknown";
+    await db.from("revenue_accounts").update({ status: "churned" }).eq("company", email);
+    if (data.id) {
+      await db
+        .from("workspace_subscriptions")
+        .update({ state: "cancelled", updated_at: new Date().toISOString() })
+        .eq("polar_subscription_id", data.id);
+    }
+  }
+
+  if (type === "subscription.past_due") {
+    const email = data.customer_email || data.customer?.email || "unknown";
+    await db.from("revenue_accounts").update({ status: "paused" }).eq("company", email);
+    if (data.id) {
+      await db
+        .from("workspace_subscriptions")
+        .update({ state: "past_due", updated_at: new Date().toISOString() })
+        .eq("polar_subscription_id", data.id);
+    }
+  }
+}
+
+export { authRouter, publicRouter };
