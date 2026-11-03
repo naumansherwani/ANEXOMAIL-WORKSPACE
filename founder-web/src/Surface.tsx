@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { get, warm, deviceStatus } from "./api";
-import { anchorInspect, checkpointVerify, consistencyVerify, merkleVerify, trust } from "./kernel";
+import { anchorInspect, portableVerify, checkpointVerify, consistencyVerify, merkleVerify, trust } from "./kernel";
 import { asAnchorView, judgeAnchor, type AnchorVerdict, type Checked } from "./anchorgauge";
 import { asSeal, asSignedView, judgeKey, judgePin, judgeSigned, ledgerGauge, loadKeyPin, loadPin, saveKeyPin, savePin, shouldAdvancePin, withExtension, type PinVerdict, type Proof, type SignedVerdict, type SignedView } from "./sealpin";
-import { fmtHM, fmtTime } from "./city";
+import { fmtHM, fmtTime, fmtStamp } from "./city";
+import { asPortableView, judgePortable, type PortableVerdict } from "./portable";
 import { onLiveChange, useLive, type LiveStatus } from "./livefeed";
 import { HealthOrb, type Tone } from "./Scene3D";
 
@@ -165,13 +166,26 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
     let off = false;
     void (async () => {
       let r: any;
-      try { r = await get("/founder/v1/audit/anchors"); } catch { if (!off) setAnV(judgeAnchor(null, null, [], fmtHM, true)); return; }
+      try { r = await get("/founder/v1/audit/anchors"); } catch { if (!off) setAnV(judgeAnchor(null, null, [], fmtStamp, true)); return; }
       const v = asAnchorView(r?.data);
-      if (!v) { if (!off) setAnV(judgeAnchor(null, null, [], fmtHM)); return; }
+      if (!v) { if (!off) setAnV(judgeAnchor(null, null, [], fmtStamp)); return; }
       let digestOk: boolean | null = null;
       try { const h = new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(v.note))); digestOk = [...h].map((x) => x.toString(16).padStart(2, "0")).join("") === v.digest_hex; } catch { digestOk = null; }
       const checked: Checked[] = await Promise.all(v.evidence.map(async (ev) => ({ ev, kernel: await anchorInspect(ev.kind === "rfc3161" ? 1 : 2, ev.evidence_hex, v.digest_hex) })));
-      if (!off) setAnV(judgeAnchor(v, digestOk, checked, fmtHM));
+      if (!off) setAnV(judgeAnchor(v, digestOk, checked, fmtStamp));
+    })();
+    return () => { off = true; };
+  }, [mkSealKey]);
+  // G5d part 3: pin portability. One bundle from the server; the kernel (portable@1) judges sha, shape, both seals, outside time and the consistency proof in THIS browser.
+  const [pbV, setPbV] = useState<PortableVerdict | null>(null);
+  useEffect(() => {
+    let off = false;
+    void (async () => {
+      let r: any;
+      try { r = await get("/founder/v1/audit/portable"); } catch { if (!off) setPbV(judgePortable(null, undefined, fmtStamp, true)); return; }
+      const v = asPortableView(r?.data);
+      const report = v && v !== "none" ? await portableVerify(v.text, v.sha) : undefined;
+      if (!off) setPbV(judgePortable(v, report, fmtStamp));
     })();
     return () => { off = true; };
   }, [mkSealKey]);
@@ -192,8 +206,9 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
     { name: "Signed answers", state: ks === "verified" ? "ok" : ks === "failed" ? "fail" : "unknown", text: ks === "verified" ? "Checked in this browser" : ks === "failed" ? "An answer failed the check and was hidden" : "Waiting for the first answer" },
     { name: "Approved device", state: ds.mode === "device" ? "ok" : "warn", text: ds.mode === "device" ? ds.label || "This device" : "No device token" },
     { name: "Audit ledger", state: !au ? "fail" : !au.connected ? "unknown" : au.chain_ok ? "ok" : "fail", text: !au ? "Not answering" : !au.connected ? au.note || "Not connected" : au.chain_ok ? `Chain intact${au.head ? `, entry ${au.head.seq}` : ""}` : `Chain broken at ${au.first_bad_seq}`, to: "audit" },
-    { name: "Ledger seal", ...ledgerGauge(mk, lp, pinV, fmtHM, sgV), to: sgV?.keyState === "rotated" || sgV?.keyState === "replaced" ? undefined : "audit",
+    { name: "Ledger seal", ...ledgerGauge(mk, lp, pinV, fmtStamp, sgV), to: sgV?.keyState === "rotated" || sgV?.keyState === "replaced" ? undefined : "audit",
       act: (sgV?.keyState === "rotated" || sgV?.keyState === "replaced") && sgView ? { label: trustArm ? "Click again: trust this key" : "Trust new key…", run: () => { if (!trustArm) { setTrustArm(true); return; } saveKeyPin(sgView.key); setTrustArm(false); setKeyTick((n) => n + 1); } } : undefined },
+    { name: "Portable pin", state: pbV?.state ?? "unknown", text: pbV?.text ?? "Checking the portable proof", chip: pbV?.chip, to: "audit" },
     { name: "Time anchor", state: anV?.state ?? "unknown", text: anV?.text ?? "Checking outside time anchors", chip: anV?.chip, to: "audit" },
     { name: "Billing", state: !pol && !hk ? "fail" : pol?.connected ? (pol.stale ? "warn" : "ok") : subs?.connected ? "ok" : "unknown", text: pol?.connected ? `${pol.active_subscriptions ?? "?"} active subscriptions` : subs?.connected ? "Polar webhook live, API metrics not connected" : pol?.note || "Not connected", to: "finance" },
     { name: "Revenue records", state: !d ? "fail" : m?.connected ? "ok" : "unknown", text: !d ? "Not answering" : m?.connected ? `${m.active_accounts} active account${m.active_accounts === 1 ? "" : "s"}` : m?.note || "Not connected", to: "finance" },

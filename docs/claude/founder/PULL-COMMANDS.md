@@ -549,3 +549,10 @@ git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-w
 Rust+SPA founder: no change (already run 07:55). Rust awam: no change. Brain: no change. Web: no change.
 
 ## (3 Nov 08:00 PKT) docs only: SQL no change, Rust+SPA founder no change, Rust awam no change, Brain no change, Web no change. Nothing to run.
+
+## G5d part 3 (3 Nov 08:15 PKT) — Rust+SPA founder and Web changed (kernel 0.11.0)
+Rust + SPA founder (new wasm + vector files; tests must pass; one restart):
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12
+Web (the awam site ships the same kernel pin):
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15
+SQL: no change. Rust awam: no change. Brain: no change.

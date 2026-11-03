@@ -144,3 +144,24 @@ test("checkpoint_verify: the real wasm agrees with Go on every single-byte flip 
   }
   expect(accepted).toBe(0);
 });
+
+test("portable_verify in the real wasm: the independent-tools bundle (openssl TSAs, python Ed25519) passes with its facts; every tamper is refused", async () => {
+  const { instance } = await WebAssembly.instantiate(bytes, { env: { host_wake() {}, host_call() {}, host_emit() {} } });
+  const ex = instance.exports as any;
+  const put = (t: string) => { const b = new TextEncoder().encode(t), p = ex.kernel_alloc(Math.max(b.length, 1)); new Uint8Array(ex.memory.buffer, p, b.length).set(b); return [p, b.length] as const; };
+  const run = (text: string, sha: string) => { const ok = ex.portable_verify(...put(text), ...put(sha)); return { ok, rep: JSON.parse(new TextDecoder().decode(new Uint8Array(ex.memory.buffer, ex.kernel_out_ptr(), ex.kernel_out_len()).slice())) }; };
+  const vec = JSON.parse(readFileSync("../server/rust/g5d_kernel_vector.json", "utf8")), { text, sha } = vec.good;
+  const g = run(text, sha);
+  expect(g.ok).toBe(1);
+  expect(g.rep.ok).toBe(true);
+  for (const k of ["horizon_cp", "head_cp", "horizon_size", "head_size", "origin", "tsa", "anchored_ms", "proof_hashes"]) expect(g.rep.facts[k]).toBe(vec.facts[k]);
+  const sha256 = (t: string) => createHash("sha256").update(t).digest("hex");
+  const bad = run(text, sha.replace(/^./, sha[0] === "0" ? "1" : "0"));               // wrong committed hash
+  expect(bad.ok).toBe(0); expect(bad.rep.failed_step).toBe("sha256");
+  const flipped = text.replace(/"size": ?9/, '"size": 10');                          // a changed head size, hash recomputed so only the signatures can catch it
+  if (flipped !== text) { const r = run(flipped, sha256(flipped)); expect(r.ok).toBe(0); expect(r.rep.ok).toBe(false); }
+  const cut = text.slice(0, text.length - 40), r2 = run(cut, sha256(cut));            // truncated
+  expect(r2.ok).toBe(0);
+  expect(run("", sha256("")).ok).toBe(0);
+  expect(run(text, "zz").ok).toBe(0);
+});

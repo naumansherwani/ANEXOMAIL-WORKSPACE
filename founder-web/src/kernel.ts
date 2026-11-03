@@ -92,3 +92,17 @@ export function anchorInspect(kind: 1 | 2, ev: string, digest: string): Promise<
     w().postMessage({ id, anchor: { kind, ev, digest } });
   });
 }
+
+export type PortableReport = { ok: boolean; passed?: string[]; failed_step?: string; problem?: string; facts?: { horizon_cp: number; head_cp: number; horizon_size: number; head_size: number; origin: string; tsa: number; bitcoin: boolean; anchored_ms: number; proof_hashes: number; not_covered_rows: number } };
+
+/** G5d part 3: judge the whole portable bundle (text exactly as sent + its sha256) with the kernel (portable@1). Resolves with the report (ok or the first failed step); undefined = the kernel could not run or answered nonsense (never reported as a refusal). */
+export function portableVerify(text: string, sha: string): Promise<PortableReport | undefined> {
+  return new Promise((resolve) => {
+    const id = ++seq;
+    waiting.set(id, (m) => {
+      if (m.code !== 0 || typeof m.data !== "string") { resolve(undefined); return; }
+      try { const r = JSON.parse(m.data.slice(1)) as PortableReport; resolve(typeof r?.ok === "boolean" && r.ok === (m.data[0] === "1") ? r : undefined); } catch { resolve(undefined); }
+    });
+    w().postMessage({ id, portable: { text, sha } });
+  });
+}

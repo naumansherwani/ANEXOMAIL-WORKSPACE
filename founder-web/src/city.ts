@@ -38,3 +38,6 @@ export const fmtHM = (d: D) => fmt(d, { hour: "numeric", minute: "2-digit", hour
 export const fmtDateTime = (d: D) => fmt(d, { day: "2-digit", month: "short", year: "numeric", hour: "numeric", minute: "2-digit", hour12: true }).toUpperCase();
 export const fmtDay = (d: D) => fmt(d, { weekday: "long", day: "numeric", month: "long" });
 export const coordsOf = (c: { lat: number | null; lon: number | null }) => (c.lat != null && c.lon != null && Number.isFinite(c.lat) && Number.isFinite(c.lon) ? { lat: c.lat, lon: c.lon } : undefined);
+
+// L-A: a time that can be days old must carry its DATE ("3 Nov, 8:03 AM"); fmtHM alone showed only the clock and read like "today".
+export const fmtStamp = (d: D) => `${fmt(d, { day: "numeric", month: "short" })}, ${fmtHM(d)}`;
