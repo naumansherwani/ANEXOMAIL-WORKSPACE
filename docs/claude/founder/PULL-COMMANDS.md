@@ -583,3 +583,7 @@ git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-w
 1. SQL (E140 + CHECK_E140): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E140_founder_flare_push CHECK_E140 2>&1 | tail -14`
 2. Rust + SPA (installer makes the P-256 VAPID key, starts the sender): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
 Web pull.sh is NOT needed for this.
+
+## ABHI PENDING (3 Nov 11:40 PKT): J6 loophole fixes (E141 receipts + ack route + SSRF guard + iPhone manifest). Two points (Rule 24). E140 and the first founder-install are already GREEN on his server (his 11:30 paste).
+1. SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E141_founder_flare_receipts CHECK_E141 2>&1 | tail -12`
+2. Rust + SPA: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`

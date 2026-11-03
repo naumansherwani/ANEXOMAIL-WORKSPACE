@@ -74,4 +74,5 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E138 | G5d part 2: the portable-pin observer: policy, fencing lease, hash-chained tick log + serve log, canonical bundle text + sha256, selftest | CHECK_E138 (6) |
 | E139 | J3: WebAuthn Level 3 brain: policy singleton, credential facts (BE/AAGUID immutable), hash-chained event ledger, FIDO MDS3 ledger, Signal API queue, clone rule, risk-scored assert, honest PQ report, selftest | CHECK_E139 (7) |
 | E140 | J6: FLARE v2 = phone Web Push (RFC 8291/8292): push subscription (endpoint allow-list, key shapes, T2 flare.push, confirm token hash), outbox state machine, hash-chained event ledger, T3 alert triggers, sender doors claim/report, selftest. CHECK_E140 (6). |
+| E141 | J6 hardening: end-to-end DELIVERY RECEIPTS (one-time ack token inside the encrypted push, hash only in SQL), one escalation reminder after 90 s, status of unacknowledged alerts. CHECK_E141 (5). |
 | CHECK_G5D_LIVE | G5d part 2 live proof (read only): the Rust tick wrote rows, newest < 5 min, observer pulse ok, horizon observed, chains clean | 5 checks |

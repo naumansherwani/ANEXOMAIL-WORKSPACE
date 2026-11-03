@@ -97,6 +97,16 @@ impl Vapid {
     }
 }
 
+/// The same allow-list as SQL `_fh_endpoint_ok`: https, a known push-service host, default port, no credentials, no query.
+pub fn endpoint_allowed(e: &str) -> bool {
+    let Some(rest) = e.strip_prefix("https://") else { return false };
+    if e.len() > 700 || e.contains(['#', '?', '@']) || !e.is_ascii() { return false; }
+    let Some((host, path)) = rest.split_once('/') else { return false };
+    if path.len() < 8 || host.is_empty() || host.contains(':') || !host.bytes().all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == b'-' || c == b'.') { return false; }
+    let ends = |suf: &str| host.len() > suf.len() && host.ends_with(suf) && host.as_bytes()[host.len() - suf.len() - 1] == b'.';
+    host == "fcm.googleapis.com" || host == "updates.push.services.mozilla.com" || host == "web.push.apple.com" || ends("push.apple.com") || ends("notify.windows.com")
+}
+
 pub fn origin_of(endpoint: &str) -> Option<String> {
     let rest = endpoint.strip_prefix("https://")?;
     let host = rest.split('/').next().filter(|h| !h.is_empty() && !h.contains('@'))?;
@@ -106,13 +116,14 @@ pub fn origin_of(endpoint: &str) -> Option<String> {
 // ------------------------------------------------------------------ the message ------------------------------------------------------------------
 
 /// Declarative-Web-Push-shaped payload. `origin` is the founder host (navigate must stay on the site). No secret of any action is ever written here.
-pub fn payload(kind: &str, reference: Option<&str>, token: Option<&str>, origin: &str) -> Option<Vec<u8>> {
+pub fn payload(kind: &str, reference: Option<&str>, token: Option<&str>, ack: Option<&str>, origin: &str) -> Option<Vec<u8>> {
     let (title, body, urgent) = match kind {
         "confirm" => ("Confirm this phone", "Open to finish setting up alerts.", false),
         "test" => ("Test alert", "Phone alerts work.", false),
         "t3_begun" => ("Protected action started", "A two-key action was started. If it was not you, cancel it now.", true),
         "t3_approved" => ("Protected action approved", "The second key approved it. Check it now.", true),
         "t3_cancelled" => ("Protected action cancelled", "A protected action was cancelled.", false),
+        "t3_reminder" => ("Reminder: protected action waiting", "Not yet acknowledged on this phone. If it was not you, cancel it now.", true),
         _ => return None,
     };
     let mut v = json!({
@@ -122,6 +133,7 @@ pub fn payload(kind: &str, reference: Option<&str>, token: Option<&str>, origin:
     });
     if let Some(r) = reference { v["r"] = json!(r); }
     if let Some(t) = token { v["t"] = json!(t); }
+    if let Some(a) = ack.filter(|a| a.len() == 32 && a.bytes().all(|c| c.is_ascii_alphanumeric() || c == b'-' || c == b'_')) { v["a"] = json!(a); }   // the receipt token: inside the encrypted payload only
     serde_json::to_vec(&v).ok()
 }
 
@@ -130,6 +142,17 @@ pub fn topic_of(tag: &str) -> String {
     let d = digest::digest(&digest::SHA256, tag.as_bytes());
     B64.encode(&d.as_ref()[..18])              // 24 characters
 }
+
+// ------------------------------------------------------------------ the receipt door (called by the phone's service worker) ------------------------------------------------------------------
+
+static ACK_WINDOW: std::sync::Mutex<(i64, u32)> = std::sync::Mutex::new((0, 0));
+/// At most 120 receipt attempts per minute for the whole server (the token has 192 bits, so guessing is hopeless anyway; this only stops a flood from costing database work).
+pub fn ack_allowed(now_s: i64) -> bool {
+    let mut w = ACK_WINDOW.lock().unwrap_or_else(|e| e.into_inner());
+    if now_s / 60 != w.0 { *w = (now_s / 60, 0); }
+    w.1 += 1; w.1 <= 120
+}
+pub fn ack_token_ok(t: &str) -> bool { t.len() == 32 && t.bytes().all(|c| c.is_ascii_alphanumeric() || c == b'-' || c == b'_') }
 
 // ------------------------------------------------------------------ the sender loop ------------------------------------------------------------------
 
@@ -154,7 +177,9 @@ async fn send_one(http: &reqwest::Client, cfg: &Cfg, row: &Value) -> (i32, Optio
     let kind = s("kind");
     let token = row.get("payload").and_then(|p| p.get("t")).and_then(|t| t.as_str());
     let reference = row.get("payload").and_then(|p| p.get("r")).and_then(|t| t.as_str());
-    let Some(plain) = payload(kind, reference, token, &cfg.origin) else { return (400, None) };
+    let ack = row.get("payload").and_then(|p| p.get("a")).and_then(|t| t.as_str());
+    if !endpoint_allowed(s("endpoint")) { return (400, None); }                          // defence in depth: the database already refuses other hosts
+    let Some(plain) = payload(kind, reference, token, ack, &cfg.origin) else { return (400, None) };
     let Ok(body) = encrypt(s("p256dh"), s("auth"), &plain) else { return (400, None) };
     let Ok(auth) = cfg.vapid.authorization(s("endpoint"), now_s()) else { return (400, None) };
     let ttl = row.get("ttl").and_then(|v| v.as_i64()).unwrap_or(300).clamp(60, 86400);
@@ -172,6 +197,7 @@ async fn send_one(http: &reqwest::Client, cfg: &Cfg, row: &Value) -> (i32, Optio
 
 /// One pass: claim, send, report. Returns how many rows were handled (None = the E140 doors are not installed or the database did not answer).
 pub async fn tick(sb: &crate::data::Sb, http: &reqwest::Client, cfg: &Cfg) -> Option<usize> {
+    let _ = sb.rpc("founder_push_escalate", json!({})).await;                         // E141: one reminder when a sent alert got no receipt for 90 s
     let got = sb.rpc("founder_push_claim", json!({"p_limit": 10})).await?;
     let rows = got.get("rows").and_then(|r| r.as_array()).cloned().unwrap_or_default();
     for row in &rows {
@@ -185,7 +211,7 @@ pub async fn tick(sb: &crate::data::Sb, http: &reqwest::Client, cfg: &Cfg) -> Op
 /// Background sender: every 4 s while there is work, every 20 s when idle, 60 s when the SQL is missing. Never panics, never blocks a request.
 pub fn spawn(sb: crate::data::Sb, cfg: Cfg) {
     tokio::spawn(async move {
-        let http = reqwest::Client::builder().timeout(std::time::Duration::from_secs(15)).connect_timeout(std::time::Duration::from_secs(8)).user_agent("anexomail-founder-flare/1").build().unwrap_or_default();
+        let http = reqwest::Client::builder().redirect(reqwest::redirect::Policy::none()).timeout(std::time::Duration::from_secs(15)).connect_timeout(std::time::Duration::from_secs(8)).user_agent("anexomail-founder-flare/1").build().unwrap_or_default();
         let _ = PUBLIC.set(cfg.vapid.public_b64());
         eprintln!("founder: flare sender ON (Web Push, VAPID key {}…)", &cfg.vapid.public_b64()[..8]);
         loop {
@@ -295,11 +321,24 @@ mod tests {
         assert_eq!(origin_of("https://web.push.apple.com/abc").as_deref(), Some("https://web.push.apple.com"));
         assert_eq!(origin_of("http://x/y"), None); assert_eq!(origin_of("https://u@x/y"), None); assert_eq!(origin_of("https:///y"), None);
         let t = topic_of("t3:abcd1234"); assert_eq!(t.len(), 24); assert!(t.bytes().all(|c| c.is_ascii_alphanumeric() || c == b'-' || c == b'_')); assert_eq!(t, topic_of("t3:abcd1234")); assert_ne!(t, topic_of("t3:abcd1235"));
-        let p: Value = serde_json::from_slice(&payload("t3_begun", Some("9d8f"), None, "https://f.example").unwrap()).unwrap();
+        let p: Value = serde_json::from_slice(&payload("t3_begun", Some("9d8f"), None, Some(&"A".repeat(32)), "https://f.example").unwrap()).unwrap();
+        assert_eq!(p["a"], "A".repeat(32)); assert!(payload("test", None, None, Some("bad token"), "https://f.example").map(|b| serde_json::from_slice::<Value>(&b).unwrap().get("a").is_none()).unwrap());
         assert_eq!(p["web_push"], 8030); assert!(!p["notification"]["title"].as_str().unwrap().is_empty()); assert_eq!(p["notification"]["navigate"], "https://f.example/#/settings"); assert_eq!(p["r"], "9d8f");
         let text = p.to_string(); assert!(!text.contains("key.rotate") && !text.contains("hash"));
-        let c: Value = serde_json::from_slice(&payload("confirm", None, Some("tok"), "https://f.example").unwrap()).unwrap(); assert_eq!(c["t"], "tok");
-        assert!(payload("unknown_kind", None, None, "https://f.example").is_none());
-        for k in ["confirm", "test", "t3_begun", "t3_approved", "t3_cancelled"] { assert!(payload(k, None, None, "https://f.example").unwrap().len() < 600); }
+        let c: Value = serde_json::from_slice(&payload("confirm", None, Some("tok"), None, "https://f.example").unwrap()).unwrap(); assert_eq!(c["t"], "tok");
+        assert!(payload("unknown_kind", None, None, None, "https://f.example").is_none());
+        for k in ["confirm", "test", "t3_begun", "t3_approved", "t3_cancelled", "t3_reminder"] { assert!(payload(k, None, None, Some(&"A".repeat(32)), "https://f.example").unwrap().len() < 700); }
+    }
+
+    #[test]
+    fn endpoint_allow_list_matches_sql_and_closes_ssrf_shapes() {
+        for ok in ["https://fcm.googleapis.com/fcm/send/abcdefgh", "https://updates.push.services.mozilla.com/wpush/v2/abcdefgh", "https://web.push.apple.com/abcdefgh1", "https://api.push.apple.com/3/device/abcdef", "https://wns2-par02p.notify.windows.com/w/abcdefgh"] { assert!(endpoint_allowed(ok), "{ok}"); }
+        for bad in ["http://fcm.googleapis.com/fcm/send/abcdefgh", "https://fcm.googleapis.com.evil.example/fcm/send/abcdefgh", "https://evilfcm.googleapis.com/abcdefgh1", "https://notify.windows.com/abcdefgh1", "https://x.notify.windows.com.evil.io/abcdefgh1", "https://127.0.0.1/abcdefgh1",
+                    "https://fcm.googleapis.com:8443/fcm/send/abcdefgh", "https://u@fcm.googleapis.com/fcm/send/abcdefgh", "https://fcm.googleapis.com/fcm/send/abcdefgh?x=1", "https://fcm.googleapis.com/", "https://FCM.googleapis.com/fcm/send/abcdefgh", "https://localhost/abcdefgh1"] { assert!(!endpoint_allowed(bad), "{bad}"); }
+    }
+    #[test]
+    fn receipt_door_shape_and_rate_limit() {
+        assert!(ack_token_ok(&"a-_B".repeat(8))); assert!(!ack_token_ok("short")); assert!(!ack_token_ok(&"a b ".repeat(8)));
+        let base = 6_000_000_000i64; for _ in 0..120 { assert!(ack_allowed(base)); } assert!(!ack_allowed(base)); assert!(ack_allowed(base + 60));
     }
 }

@@ -69,17 +69,21 @@ export function Flare() {
 
   if (err) return <section className="panel"><div className="panelhead"><h2>Phone alerts</h2><p className="dim">{err}</p></div></section>;
   if (!st) return <section className="panel"><div className="panelhead"><h2>Phone alerts</h2><p className="dim">Loading…</p></div></section>;
-  const phones: any[] = st.phones ?? [], q = st.queue ?? {};
+  const phones: any[] = st.phones ?? [], q = st.queue ?? {}, unacked: any[] = st.unacked ?? [];
+  const ios = /iPhone|iPad/.test(navigator.userAgent) && !(navigator as any).standalone && !matchMedia("(display-mode: standalone)").matches;
   return <section className="panel" aria-label="Phone alerts">
     <div className="panelhead"><h2>Phone alerts</h2>
       <p className="dim">When a protected action starts, your phone gets an encrypted push (Web Push). No text message and no phone number are involved. The alert is advice; the waiting time and the cancel button stay the real protection.</p></div>
+    {unacked.length > 0 && <div className="setrow" role="alert"><div><b className="err">{unacked.length} alert{unacked.length > 1 ? "s" : ""} not confirmed received</b>
+      <p className="dim">{unacked.slice(0, 3).map((u) => `${u.kind.replace("t3_", "")} → ${u.phone}, sent ${ago(u.sent_ms)}`).join(" · ")}. The push service accepted them, but the phone never sent its receipt. Check the phone, then send a test.</p></div></div>}
+    {ios && <div className="setrow"><div><b>iPhone: one step first</b><p className="dim">Safari only allows alerts for a site on the Home Screen. Tap Share, then "Add to Home Screen", open Anexomail from that icon, and come back to this page.</p></div></div>}
     {phones.length === 0 && <div className="setrow"><div><b>No phone yet</b><p className="dim">Without a confirmed phone there is no flare. Add this phone below.</p></div></div>}
     {phones.map((p) => <div className="setrow" key={p.id}><div><b>{p.label}{p.sha === here ? " (this device)" : ""}</b>
-      <p className="dim">{p.confirmed ? "Confirmed" : p.waiting ? "Waiting for the confirmation push" : "Not confirmed"} · via {p.service} · last delivered {ago(p.last_ok_ms)}{p.fail_count ? ` · ${p.fail_count} failed` : ""}</p></div>
+      <p className="dim">{p.confirmed ? "Confirmed" : p.waiting ? "Waiting for the confirmation push" : "Not confirmed"} · via {p.service} · last receipt {ago(p.last_ack_ms)}{p.fail_count ? ` · ${p.fail_count} failed` : ""}</p></div>
       <Button variant="ghost" size="mini" disabled={busy} onClick={() => remove(p)}>Remove</Button></div>)}
     <div className="setrow"><div><b>Add this phone</b><p className="dim">Name it, allow notifications, then use a key. The key approves exactly this phone.</p></div>
       <span style={{ display: "flex", gap: 6 }}><input aria-label="Phone name" placeholder="My phone" maxLength={40} value={label} onChange={(e) => setLabel(e.target.value)} />
-        <Button size="mini" disabled={busy || !pushSupported(window)} onClick={add}>Add</Button></span></div>
+        <Button size="mini" disabled={busy || !pushSupported(window)} title={pushSupported(window) ? undefined : "This browser cannot receive push alerts"} onClick={add}>Add</Button></span></div>
     {phones.some((p) => p.confirmed) && <div className="setrow"><div><b>Send a test</b><p className="dim">One test per phone per minute.</p></div>
       <Button variant="ghost" size="mini" disabled={busy} onClick={() => run(async () => { const r = await door("push_test", {}); if (r.status !== 200) throw new Error(r.body?.error || `HTTP ${r.status}`); return r.body.result?.queued ? "Test queued; it arrives in a few seconds." : "A test was just sent; wait a minute."; })}>Send test</Button></div>}
     <div className="setrow"><div><b>Delivery</b><p className="dim">Queue: {Object.entries(q).map(([k, n]) => `${k} ${n}`).join(" · ") || "empty"} · ledger {st.chain?.ok ? `intact (${st.chain.checked} checked)` : "BROKEN"}.</p>

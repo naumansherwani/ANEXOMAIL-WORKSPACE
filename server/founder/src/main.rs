@@ -478,6 +478,16 @@ async fn flare_key_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Resp
     signed(&st, json!({"enabled": flare::PUBLIC.get().is_some(), "key": flare::PUBLIC.get()}))
 }
 
+/// POST /founder/v1/flare/ack {"t": "<32-char token>"}: the phone's service worker returns the one-time token it found inside the encrypted push. No session (a service worker holds no
+/// credential); the 192-bit token is the credential, it works once and only for that alert (E141). The answer never says why a token failed.
+async fn flare_ack_ep(State(st): State<S>, body: axum::body::Bytes) -> axum::response::Response {
+    if !flare::ack_allowed(now_s()) { return StatusCode::TOO_MANY_REQUESTS.into_response(); }
+    let t = serde_json::from_slice::<Value>(&body).ok().and_then(|v| v.get("t").and_then(|t| t.as_str()).map(str::to_owned)).filter(|t| flare::ack_token_ok(t));
+    let (Some(t), Some(sb)) = (t, st.sb.as_ref()) else { return StatusCode::BAD_REQUEST.into_response() };
+    let ok = sb.rpc("founder_push_ack", json!({"p_token": t})).await.and_then(|v| v.get("ok").and_then(|o| o.as_bool())).unwrap_or(false);
+    (if ok { StatusCode::OK } else { StatusCode::NOT_FOUND }).into_response()
+}
+
 async fn signed_cp_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
     if let Err(code) = authed(&st, &h).await { return code.into_response(); }
     signed(&st, signedcp::view(st.sb.as_ref().unwrap()).await)
@@ -671,6 +681,7 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/passkey/finish", axum::routing::post(passkey::finish_ep))
         .route("/founder/v1/passkey/list", get(passkey::list_ep))
         .route("/founder/v1/flare/key", get(flare_key_ep))
+        .route("/founder/v1/flare/ack", axum::routing::post(flare_ack_ep))
         .route("/founder/v1/chairman/{door}", axum::routing::post(passkey::door_ep))
         .route("/founder/v1/inbox", get(inbox_ep))
         .route("/founder/v1/inbox/list", get(inbox_list_ep))

@@ -2408,3 +2408,12 @@ He pasted three "2026 cellular-core" features and asked: add them to the AWAM bl
 2) Baseband-level NIDD = 3GPP Rel 17/18 control-plane tunnelling for T3 Emergency Cancel / Alert / Remote Wipe even with data off (AnexoChat T3 Remote Abort / Remote Wipe).
 3) eSIM Cryptographic Vault Binding = GSMA IoT SAFE / ARA-M: login/device-vault key locked inside the SIM (AnexoChat Workspace Device Identity).
 Answer given: recorded as J7 / J8 / J9 (founder), AX11 / AX12 / AX13 (awam), AnexoChat Phases 58 / 59 / 60, each with the VERIFIED truth and a real substitute, no fake "0%" claims.
+
+## 3 Nov 11:30 PKT — his order (verbatim)
+"[the J6 'what to understand' list: push service sees metadata only; delivery not guaranteed; iPhone needs Home Screen; old SMS row removed; T3 two-key live proof waits for Control (S) and hardware toggle needs 2 hardware keys; context/blueprint updated] yeh jo maslay hain mere pass nahi leke aao seedha fix kero advance technology codes ke saath. yeh ek bhi point nahi chodhna nahi hai."
+His pastes: sql-run E140 CHECK_E140 -> checks 3,4,5,6 OK + E65 sweep all OK + "DONE: sab theek"; founder-install OK (vapid key generated, SPA 200, healthz 200, me/bridge 401).
+Plan: fix each point in code where code can fix it: (1) delivery receipt (E141: SW acks a one-time token, unacked high alerts escalate + show red in UI), (2) iPhone Home Screen (web manifest + apple meta), (3) honest what code cannot fix: push metadata is inherent to every push service; two hardware keys must physically exist; T3 live proof needs Control (S) (letter order).
+
+## 3 Nov 11:33 PKT — his order (verbatim)
+"loophole fix kero technology ke hisab se green kero live theek kero"
+Reading: find and close every loophole in the J6 phone-alert code, then make it GREEN technology by technology with his pastes and my live Chrome look. Loophole review below (E141 + Rust ack route + rate limit + tests).

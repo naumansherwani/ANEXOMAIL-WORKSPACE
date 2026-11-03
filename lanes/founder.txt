@@ -72,6 +72,7 @@ docs/cursor-work/sql/E134_anchor_requeue_door.sql
 docs/cursor-work/sql/E138_founder_portable_tick.sql
 docs/cursor-work/sql/E139_founder_webauthn_l3.sql
 docs/cursor-work/sql/E140_founder_flare_push.sql
+docs/cursor-work/sql/E141_founder_flare_receipts.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/E68_proof.sql
@@ -86,10 +87,10 @@ founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
-founder-web/dist/assets/index-Bn1fpIZf.js
-founder-web/dist/assets/index-Bn1fpIZf.js.gz
 founder-web/dist/assets/index-BnepOpGp.css
 founder-web/dist/assets/index-BnepOpGp.css.gz
+founder-web/dist/assets/index-SdfkAdTp.js
+founder-web/dist/assets/index-SdfkAdTp.js.gz
 founder-web/dist/assets/kernel.worker-CsjAWUNm.js
 founder-web/dist/assets/kernel.worker-CsjAWUNm.js.gz
 founder-web/dist/assets/three.module-Dza5cG3s.js
@@ -98,8 +99,12 @@ founder-web/dist/boot.css
 founder-web/dist/early.js
 founder-web/dist/favicon.svg
 founder-web/dist/flare-sw.js
+founder-web/dist/icon-180.png
+founder-web/dist/icon-192.png
+founder-web/dist/icon-512.png
 founder-web/dist/index.html
 founder-web/dist/kernel/anexo-kernel-0.12.0.wasm
+founder-web/dist/manifest.webmanifest
 founder-web/index.html
 founder-web/kernel-sync.sh
 founder-web/package.json
@@ -108,7 +113,11 @@ founder-web/public/boot.css
 founder-web/public/early.js
 founder-web/public/favicon.svg
 founder-web/public/flare-sw.js
+founder-web/public/icon-180.png
+founder-web/public/icon-192.png
+founder-web/public/icon-512.png
 founder-web/public/kernel/anexo-kernel-0.12.0.wasm
+founder-web/public/manifest.webmanifest
 founder-web/src/AmbientStudio.tsx
 founder-web/src/App.tsx
 founder-web/src/Brand.tsx

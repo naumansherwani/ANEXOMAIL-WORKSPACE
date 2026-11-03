@@ -15,7 +15,11 @@ self.addEventListener("push", (event) => {
     work.push(caches.open("anexo-flare").then((c) => c.put("/__flare/pending-confirm", new Response(d.t))));
   }
   work.push(self.clients.matchAll({ type: "window" }).then((cs) => cs.forEach((c) => c.postMessage({ flare: d.k, ref: d.r || null }))));
-  work.push(self.registration.showNotification(n.title, { body: n.body || "", tag: n.tag || "anexo", requireInteraction: !!n.requireInteraction, data: { navigate: n.navigate || "/" } }));
+  if (typeof d.a === "string" && /^[A-Za-z0-9_-]{32}$/.test(d.a)) {   // E141 delivery receipt: proves THIS phone received and showed the alert; the token travelled inside the encrypted push
+    work.push(self.registration.showNotification(n.title, { body: n.body || "", tag: n.tag || "anexo", requireInteraction: !!n.requireInteraction, data: { navigate: n.navigate || "/" } })
+      .then(() => fetch("/founder/v1/flare/ack", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ t: d.a }), keepalive: true, credentials: "omit", cache: "no-store" }))
+      .catch(() => {}));
+  } else work.push(self.registration.showNotification(n.title, { body: n.body || "", tag: n.tag || "anexo", requireInteraction: !!n.requireInteraction, data: { navigate: n.navigate || "/" } }));
   event.waitUntil(Promise.all(work));
 });
 self.addEventListener("notificationclick", (event) => {
