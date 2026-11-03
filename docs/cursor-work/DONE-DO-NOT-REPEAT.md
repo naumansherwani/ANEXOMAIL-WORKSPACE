@@ -1434,3 +1434,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 3 Nov 05:49 PKT GREEN by his pastes: E131 (G5d part 1) CHECK 5/5 OK; E132 + CHECK_E124 5/5 OK + E65 OK (G5c repair R4); founder-install OK; pull.sh 610 same (server==repo). anchor-probe.sh is on the server but he has NOT pasted its output yet: R1 (OTS) and R2 (freetsa) stay NOT GREEN. Do not rewrite E131/E132.
 - 3 Nov 05:49 Chrome look: findings L-A (seal/anchor times shown without date) and L-B (Live feed "Reconnecting") written in the context; neither fixed yet.
 - 3 Nov 05:57 WRITTEN (not on the server): G5c R1 = E133 + CHECK_E133 + anchors.rs (any pending commitment length) + core test (161 tests pass). R2 not written (needs real freetsa pair + kernel re-release). Do not rewrite.
+- 3 Nov 05:57 RULE (his anger 05:57): never start several phases together; finish and GREEN one phase, update the context TOP line each step. Current phase: G5c R1.
