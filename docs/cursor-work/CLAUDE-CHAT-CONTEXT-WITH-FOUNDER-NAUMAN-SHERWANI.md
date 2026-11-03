@@ -2167,3 +2167,6 @@ His order: letter order is never broken; finance (O) WAITS. Quality law written 
 
 ## Checkpoint 3 Nov 05:20 PKT
 G5d started by his "go" (04:50). Design corrected (no witnesses: horizon = oldest checkpoint with >=2 TSAs or Bitcoin). Part 1 SQL E131 + CHECK_E131 written, local selftest OK, NOT on the server, NOT green. Next: his pull of E131 (sql-run.sh E131_founder_portable_verify CHECK_E131), then Part 2 Rust route, Part 3 TS/UI. Finance (O) is LAST in the order (his word). He wants an updated copy of the original blueprint in chat as we go, only GREEN written, Chrome look after writing green.
+
+## Checkpoint 3 Nov 05:35 PKT
+His 05:20 order done in writing: A-H feature lines added to BLUEPRINT-ABC (GREEN/NOT GREEN only, money half of A1 -> O). G5c repair R1-R4 written. E131 (G5d SQL) GREEN on the server by his paste; G5d as a whole NOT green (Rust route + TS/UI still to write). E132 + anchor-probe.sh pushed; NEXT: his probe output -> fix OTS (R1) and freetsa (R2) against the real bytes. He is angry about "adhoora" wording and about not reading the rules: read AGENTS.md rules first, never say adhoora, GREEN or NOT GREEN only.

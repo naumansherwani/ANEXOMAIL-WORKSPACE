@@ -1,3 +1,4 @@
+
 -- E131 — G5d: PIN PORTABILITY. A brand-new browser (no remembered pin, no history) can verify the ledger from scratch.
 -- Founder order 3 Nov 04:50: "shuru kero ... sql likhna hai" (quality law: super advanced code, SQL above super advanced).
 --

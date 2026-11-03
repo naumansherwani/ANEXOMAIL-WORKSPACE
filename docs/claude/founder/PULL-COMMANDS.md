@@ -483,3 +483,11 @@ Expect: "OK", then CHECK_E131 5 x OK, then the E65 sweep OK. (3 Nov 05:10: first
 
 ## RULE (founder 3 Nov 05:00): "mujhe pull command hamesa sari do"
 Every reply that touches the server lists ALL pull commands for that batch, in Rule-46 order: 1 SQL (+CHECK), 2 Rust+SPA (founder-install), 3 Caddy (only if routes changed), 4 Web (pull.sh). Mark the ones that have nothing new as "no change this time" instead of leaving them out.
+
+## G5c repair + G5d, ALL commands by technology (3 Nov 05:30). Rule 46 order; "no change" slots are listed on purpose (founder 3 Nov 05:00)
+1. **SQL** (new: E132, selftest repair): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E132_anchor_selftest_repair CHECK_E124 | tail -30`   (expect CHECK_E124 5 x OK, then the E65 sweep OK)
+2. **SQL, G5d check again** (E131 is already GREEN on the server by his paste 05:20): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E131_founder_portable_verify CHECK_E131 | tail -30`
+3. **Read-only probe of the outside services** (new script, writes nothing, paste ALL of it): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/anchor-probe.sh) 2>&1 | tail -80`
+4. **Rust + SPA founder**: no change this time. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+5. **Rust awam / Brain**: no change this time.
+6. **Web (awam)**: docs only, no change. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`

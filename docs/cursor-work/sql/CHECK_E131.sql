@@ -1,3 +1,4 @@
+
 -- CHECK E131 — reads only (the selftest rolls back). 5 checks. (The E124 selftest is NOT called here: it needs a pulse with no dead anchoring jobs, and the live server has real ones.)
 select item, ok from (
 select 'E131 policy + horizon log exist, RLS on, closed to anon/authenticated, log append-only and policy read-only for service_role' as item,

@@ -35,6 +35,39 @@ One letter per step, in build order. **GREEN** only where the proof exists (serv
 
 > **AWAM IS PARKED (founder 2 Nov 11:33): see `docs/claude/AWAM-PARKED-ORDER-02NOV.md`. Resume order: Basic, Business, Business Pro, Business Premium last.**
 
+## FOUNDER FEATURE LINES A-H (his list, FOUNDER-ADVANCED-FEATURES-28OCT.md) placed INTO the lettered order (founder 3 Nov 05:20: "mujhe mere system ke mutabiq sab green kerna hai, master blueprint main add kero")
+Status words are only **GREEN** or **NOT GREEN** (no "adhoora"). GREEN = server + CHECK + his paste + my Chrome look. Every NOT GREEN line has a home letter and starts in letter order. The money half of A1 goes to **O (Finance)**, because the Polar API is not connected yet (plan: `FOUNDER-FINANCE-POLAR-LIVE-PLAN-02NOV.md`). Finance O stays LAST of the founder letters (his word 3 Nov 04:50), only X comes after it.
+| Line | What | Home letter | Status |
+|---|---|---|---|
+| A1 | 5-second fold: money + what is breaking + awam voice | N (what is breaking, awam voice) + **O (money half)** | NOT GREEN |
+| A2 | Live push, page updates itself | N (Live Pulse); Rust SSE `live.rs` is on the server, page auto-update not seen | NOT GREEN |
+| A3 | Cmd-K command bar with real commands (page jump exists) | N | NOT GREEN |
+| A4 | Data verified in the browser, tamper-visible | F + G | **GREEN** (Chrome: "Trusted", ledger proofs) |
+| A5 | Attention ranked from real signals only | N | NOT GREEN |
+| B1-B5 | Polar MRR/ARR, churn + failed payments, mismatch alert, forecast, biggest leak | **O** | NOT GREEN |
+| C1-C4 | People 360, abuse scoring, two-tap powers, appeals | P | NOT GREEN |
+| D1-D4 | Mail Desk: unified inbox, deliverability, LEO draft, 24h SLA | Q (last part) | NOT GREEN |
+| E1-E3 | One-click deploy history, canary + rollback, release gate | **O** (Release) | NOT GREEN |
+| F1 | Real health probes of every service | R | NOT GREEN (the orb has 2 checks) |
+| F2-F3 | Capacity + cost; DNS / cert / backup expiry board | R | NOT GREEN |
+| G1 | Kill switches / feature flags | S | NOT GREEN |
+| G2 | Audit viewer, hash chain verified in the browser | G | **GREEN** (ledger seal + signed note + time anchor seen in Chrome) |
+| G3 | Break-glass log | S | NOT GREEN |
+| H1 | 3D topology globe, WebGPU + 2D fallback | L | NOT GREEN (the Bridge map is Three.js and GREEN; the globe is not) |
+| H2 | Voice command, recording never leaves the browser | V | NOT GREEN |
+| H3 | Incident replay timeline | N | NOT GREEN |
+| H4 | Mobile PWA 390/820/1440 | R | NOT GREEN (responsive is GREEN in the sandbox, PWA install is not) |
+| H5 | Ask-anything copilot, metadata only | V | NOT GREEN |
+| H6 | Kernel usage truth, live | R | NOT GREEN |
+
+## G5c REPAIR (his 4 points, 3 Nov 05:20; found in his own E131 run: the live pulse shows 12 dead anchoring jobs). G5c stays GREEN for what it proved (TSA time anchors from DigiCert + Sectigo), these four are NOT GREEN until fixed and seen
+| R | What the server really said | Cause (read in the code) | Fix | Status |
+|---|---|---|---|---|
+| R1 | OpenTimestamps: 3 calendars end in "calendar commitment is not 32 bytes" | `server/founder/src/anchors.rs` line 83 insists the pending leaf message is exactly 32 bytes, and E124 SQL (`commit_hex ~ '^[0-9a-f]{64}$'`) repeats it; the real calendar replies do not fit. Not guessed: step 1 = `anchor-probe.sh` shows the real bytes from his server (this sandbox cannot reach the calendars) | after his probe output: Rust parser + SQL + kernel `anchor@1` fixed against the REAL reply, with that reply kept as a test vector | NOT GREEN, waiting for the probe output |
+| R2 | freetsa: "unsupported ECDSA curve/hash pair" | `server/rust/anchor_core.rs` line 377 accepts only P-256+SHA-256 and P-384+SHA-384; freetsa signs with another pair | same probe shows freetsa's real pair; then the pair is added ONLY if `ring` can verify it, with a real reply as the test vector | NOT GREEN, waiting for the probe output |
+| R3 | Digicert and Sectigo work | nothing to fix. "Time-anchored" stays true; the Bitcoin half is what R1 restores | none | GREEN (as G5c proved) |
+| R4 | `CHECK_E124` fails on the live server | the E124 selftest demanded a clean pulse, but the pulse (correctly) warns about the real dead jobs; reproduced locally with a committed dead-job fixture, then fixed | E132 replaces the selftest function only (E124 untouched); CHECK_E131 already avoids it | SQL fixed locally, NOT on the server, NOT GREEN |
+
 ## AWAM lane (anexomail.com), follows each founder proof
 
 | Letter | Step | Status |
