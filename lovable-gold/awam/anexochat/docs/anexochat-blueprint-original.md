@@ -670,9 +670,25 @@ AI only processes content when: user explicitly requests OR user has explicitly 
 
 ---
 
+## PHASE 58 — 5G SLICE-ON-DEMAND FOR CALLS AND BIG FILES (CAMARA QoD) — founder 3 Nov 2026 11:24 PKT
+- Wire protocol: CAMARA Quality on Demand (GSMA Open Gateway). Founder id: J7; awam id: AX11. Research and honest limits: `docs/claude/CELLULAR-CORE-J7-J9-RESEARCH-03NOV.md`.
+- When a user STARTS an 8K-capable simulcast video call or forwards big files, the Rust backend may ask the user's operator (direct or via an aggregator) for a priority profile for that device and UDP flow, and ends the session when the call ends. The user sees "Priority network on" only after the operator confirms the session; if the operator says no or the network ends it (`NETWORK_TERMINATED`), the call continues normally and the UI says so.
+- Not promised: "zero drop". Pakistan operators are unverified; without an operator/aggregator contract the feature shows "not available on your network". No mock status (Rule 69).
+- Packages: Business Pro (which parts: founder decides) and Business Premium (whole website). The gate is written at the END of the AnexoChat build (Rule 72).
+
+## PHASE 59 — T3 REMOTE ABORT / REMOTE WIPE THAT WORKS WITHOUT INTERNET (vault lease; NIDD only for IoT hardware) — founder 3 Nov 2026 11:24 PKT
+- Founder id: J8; awam id: AX12. The founder asked for 3GPP Non-IP Data Delivery. Verified: NIDD (SCEF/NEF `3gpp-nidd/v1`) serves cellular-IoT devices, not smartphone apps. So this phase delivers the same outcome (a hijacked or cut-off device locks itself and its database) with: (1) a short server-signed device lease that the AnexoChat vault needs to open; a revoked device is not renewed and locks when the lease ends, even if the thief keeps it offline; (2) while online, the J6 Web Push and the WebTransport channel revoke at once; (3) company-wide "delete for everyone" and the strict security actions keep their own audit-chain entry and T2/T3 gate.
+- NIDD adapter: only if an operator exposes SCEF/NEF access AND an IoT-class device (an Anexo hardware token) exists. Not claimed before it runs.
+- Packages: Business Pro (which parts: founder decides) and Business Premium. Gate at the END (Rule 72).
+
+## PHASE 60 — WORKSPACE DEVICE IDENTITY BOUND TO THE SIM (IoT SAFE / ARA-M, plus SIM-swap signals) — founder 3 Nov 2026 11:24 PKT
+- Founder id: J9; awam id: AX13. IoT SAFE is a SIM-applet root of trust for cellular IoT devices; a normal user's eSIM belongs to the operator and cannot carry our applet, and iOS gives apps no SIM-applet access. So this phase delivers: (1) AnexoChat device-vault credentials bound to a hardware-backed passkey (J3: Secure Enclave / StrongBox, AAGUID allow-list, MDS) so a cloned app cannot sign as the user; (2) CAMARA SIM Swap / Device Swap signals feed the E139 risk engine as an extra reason (step-up or deny), never as a login factor; (3) an IoT SAFE adapter only for enterprises that supply their own IoT SAFE SIMs or a future Anexo hardware token.
+- Not claimed: "mathematically 0% impersonation". Real claim: an attacker needs the device-bound key, which does not leave its hardware.
+- Packages: Business Pro (which parts: founder decides) and Business Premium. Gate at the END (Rule 72).
+
 ## FINAL MASTER LOCK
 
-BUILD ANEXOChat™ PHASE 1 THROUGH PHASE 57.
+BUILD ANEXOChat™ PHASE 1 THROUGH PHASE 60.
 
 - Basic (£20) + Pro (£40) → ZERO ANEXOChat access
 - Business → Phases 1–56
