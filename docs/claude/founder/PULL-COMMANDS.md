@@ -560,3 +560,6 @@ SQL: no change. Rust awam: no change. Brain: no change.
 ## (3 Nov 08:17 PKT) docs only: SQL no change, Rust+SPA founder no change, Rust awam no change, Brain no change, Web no change. Nothing new to run (the two G5d part 3 commands from 08:15 still wait).
 
 ## (3 Nov 08:25 PKT) nothing new to run: both G5d part 3 commands were run by him at 08:21 (OK). SQL, Rust+SPA founder, Rust awam, Brain, Web: no change.
+
+## (3 Nov 08:45 PKT) Rule 73 lanes + audit: docs/rules only. SQL, Rust+SPA founder, Rust awam, Brain: no change. Web: pull.sh (memory sync):
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15

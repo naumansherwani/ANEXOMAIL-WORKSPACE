@@ -57,6 +57,15 @@ if big and "docs/cursor-work/DONE-DO-NOT-REPEAT.md" not in staged:
 srv = [] if ALL else [f for f in staged if re.match(r"(founder-web/src|founder-web/dist|server/founder/src|docs/cursor-work/sql)/", f)]
 if srv and "docs/claude/founder/PULL-COMMANDS.md" not in staged:
     fail("24 pull command", "server-affecting change but PULL-COMMANDS.md not updated")
+# Rule 73 (founder 3 Nov 08:33): lanes. Every file in one lane, founder never reaches into awam code (and back), lovable-gold/ is a frozen copy of the Lovable code.
+if os.path.exists("lanes/lane-sync.py"):
+    r = subprocess.run([sys.executable, "lanes/lane-sync.py", "--check"], capture_output=True, text=True)
+    for l in r.stdout.splitlines():
+        if l.startswith("FAIL"):
+            fails.append(l)
+    if r.returncode != 0 and not any(x.startswith("FAIL") for x in r.stdout.splitlines()):
+        fails.append("FAIL [73 lanes] lane-sync --check crashed: " + r.stderr[-200:])
+
 pc = "docs/claude/founder/PULL-COMMANDS.md"
 if os.path.exists(pc):
     t = open(pc).read()
