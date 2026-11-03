@@ -517,3 +517,4 @@ UPDATE 2 Nov 2026 08:14 PKT (founder): **PERSONAL PACKAGES ARE RETIRED** (Person
 - Founder code awam code ko import nahi karta (`src/`, `server/routes`, `server/lib`), awam code founder code ko import nahi karta. Jo cheez dono ko chahiye wo SHARED hai aur ek hi jagah (Rule 52).
 - Nayi/hata/rename file ke baad `python3 lanes/lane-sync.py` chalao (lists + gold taza), phir commit. `rules-gate.py` `lane-sync.py --check` chalata hai; stale list ya cross-import = FAIL.
 - Kuch bhi physically move/delete nahi hota jab tak founder na kahe: build paths, installers aur imports toot jate hain.
+- Founder ka kaam PINPOINT (founder 3 Nov 08:43): pehle `lanes/FOUNDER-INDEX.md` kholo (feature -> SQL, CHECK, Rust, UI, test files), seedha wahan jao, repo mein dhundna nahi. `lane-sync.py --check` index ki har file ka wujood check karta hai.

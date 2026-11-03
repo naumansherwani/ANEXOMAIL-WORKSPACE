@@ -83,6 +83,24 @@ def endpoint_split():
     return {"awam/ENDPOINTS-awam.csv": hd + "\n" + "\n".join(a) + "\n", "founder/ENDPOINTS-founder.csv": hd + "\n" + "\n".join(f) + "\n"}
 
 
+def index_problems():
+    """FOUNDER-INDEX.md: every backticked file name must exist (by basename) in the founder or shared lane, the founder SQL, or be a full repo path."""
+    idx = read("lanes/FOUNDER-INDEX.md")
+    if not idx: return ["lanes/FOUNDER-INDEX.md is missing"]
+    names = set()
+    for l in ("founder", "shared"):
+        names |= {p.split("/")[-1] for p in read(f"lanes/{l}.txt").split()}
+    names |= {p.split("/")[-1] for p in read("lanes/awam.txt").split() if p.startswith("docs/cursor-work/sql/CHECK_")}
+    names |= {p.split("/")[-1] for p in subprocess.check_output(["git", "ls-files", "web-wasm/src", "server/rust"], text=True).split()}
+    full = set(subprocess.check_output(["git", "ls-files"], text=True).split())
+    bad = []
+    for t in set(re.findall(r"`([^`\s]+\.(?:rs|ts|tsx|sql|css|sh|md|py|json))`", idx)):
+        if t in full or t.split("/")[-1] in names: continue
+        if t.startswith("components/ui/") and f"founder-web/src/{t}" in full: continue
+        bad.append(f"lanes/FOUNDER-INDEX.md names {t}, which does not exist")
+    return bad
+
+
 def cross_imports():
     bad = []
     for p in subprocess.check_output(["git", "ls-files", "founder-web/src", "server/founder/src"], text=True).split():
@@ -114,7 +132,7 @@ def main():
             if not os.path.exists(q) or sha(q) != sha(p): problems.append(f"{q} differs from {p}")
         for k, v in ep.items():
             if read(f"{GOLD}/{k}") != v: problems.append(f"{GOLD}/{k} is stale")
-        problems += cross_imports()
+        problems += cross_imports() + index_problems()
         for x in problems: print("FAIL [73 lanes]", x)
         print(f"lane-check: {len(rows)} files in lanes, {len(gold)} Lovable files frozen, {len(problems)} problem(s)")
         sys.exit(1 if problems else 0)
