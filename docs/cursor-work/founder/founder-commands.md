@@ -2474,3 +2474,6 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 
 ### 3 Nov 13:19 PKT (verbatim, sent while I was working)
 "jin sql main hai un ko edit ker le sql ko ya un sql ka new sql main zikar kero aur advance level sql likho"
+
+### 3 Nov 13:25 PKT (verbatim)
+"yeh compact chat hone wala hai yeh sab claude ke liye time ke saath is ko chat context update kero code ko update kero. jo green hai green phases ke agay likho. sql command pull command kaha hai?"

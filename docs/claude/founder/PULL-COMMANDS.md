@@ -616,3 +616,8 @@ Web pull.sh is NOT needed for this.
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
 
 <!-- 3 Nov 13:40: ANEXOChat chart code (phase61 SQL, plans.ts, landing text, awam main.rs ping) = AWAM side, parked: NO pull command now; it ships with the awam migration (SQL: phase13_15 then phase61 + CHECK_phase61; Rust+Web builds). Founder pending stays: ufw allow 8443/tcp (K3). -->
+
+## ABHI PENDING (3 Nov 13:50 PKT): ANEXOChat chart (500MB / 1.5GB / 4GB + monthly quota), AWAM side, optional now (awam is parked). Rule 46 order. sql-run.sh now also finds `anexochat/sql/*.sql` (tested through the runner in a scratch DB: phase61 + CHECK_phase61 4 OK rows + E65 OK). phase61 REFUSES with a clear message if phase13_15 was never applied on that database.
+1. SQL (phase61 + its CHECK): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) phase61_file_limits_quota CHECK_phase61 2>&1 | tail -14`
+2. Web (plans.ts + landing text, awam site): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
+(The awam Rust ping constant needs no build now. Founder side: K3 `ufw allow 8443/tcp` is still pending.)

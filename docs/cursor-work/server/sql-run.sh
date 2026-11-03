@@ -47,6 +47,8 @@ for n in "$@"; do
   n="${n%.sql}"
   case "$n" in *[!A-Za-z0-9_]*|"") echo "FAIL: ghalat naam '$n'"; exit 2 ;; esac
   if [ -n "$SRC_DIR" ]; then cat "$SRC_DIR/$n.sql" >"$T" 2>/dev/null; else git -C "$REPO" show "origin/main:docs/cursor-work/sql/$n.sql" >"$T" 2>/dev/null; fi
+  # 3 Nov 2026: the ANEXOChat/awam SQL lives in anexochat/sql/ (e.g. phase61_file_limits_quota, CHECK_phase61): same runner, same ledger, same CHECK rules
+  [ -s "$T" ] || { if [ -n "$SRC_DIR" ]; then cat "$SRC_DIR/../../../anexochat/sql/$n.sql" >"$T" 2>/dev/null; else git -C "$REPO" show "origin/main:anexochat/sql/$n.sql" >"$T" 2>/dev/null; fi; }
   [ -s "$T" ] || { echo "FAIL: $n.sql repo mein nahi mili"; exit 2; }
   sha="$(sha256sum "$T" | cut -c1-16)"
   case "$n" in
