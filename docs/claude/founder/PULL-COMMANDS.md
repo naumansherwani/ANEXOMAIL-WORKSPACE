@@ -521,3 +521,8 @@ SQL (reads only, writes nothing):
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) CHECK_ANCHOR_JOBS 2>&1 | tail -40
 Rust+SPA founder: no change. Rust awam: no change. Brain: no change. Web: no change.
 (E134 note, 3 Nov 06:49: E134 changed after his first failed run; the bare sql-run he ran at 06:51 already applied the fixed file. Server-affecting E134 fix had no pull-commands entry at 3cd04dcd; this entry covers it.)
+
+## R1 loophole fix (3 Nov 06:57 PKT) — SQL changed (E136, CHECK_E136); nothing else
+SQL (bare = AUTO runs E136, then CHECK_E136 and the E65 sweep):
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) 2>&1 | tail -25
+Rust+SPA founder: no change (do NOT re-run it: it ends the browser session). Rust awam: no change. Brain: no change. Web: no change.
