@@ -2318,3 +2318,4 @@ Phase: G5c (OpenTimestamps + RFC 3161, no accounts). Rule for me: re-read the ch
 - 3 Nov 06:39 PKT (founder, verbatim): "WASM kernel ki jodi hai yaad rakho agar WASM nahi toh no kernel" (sent mid-work 06:23).
 - 3 Nov 06:45 PKT (founder, verbatim): "R1 (OpenTimestamps) abhi GREEN nahi hai (toh is ko green kero) ... is ka mujhe green ka saboot do ek bhi nahi bachay. kya yeh R1 theek kiya hai"
 - 3 Nov 06:46 PKT (founder): pasted founder-install OK + pull.sh OK for R2 (kernel 0.10.0). No new words.
+- 3 Nov 06:50 PKT (founder pasted, no words): sql-run failed "E134 selftest FAIL: wrong set requeued: job_ids 202-207,26058 requeued 7".

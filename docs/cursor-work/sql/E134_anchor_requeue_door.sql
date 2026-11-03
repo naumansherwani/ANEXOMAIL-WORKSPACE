@@ -48,7 +48,7 @@ grant execute on function public.founder_anchor_requeue(uuid, text, text, text) 
 create or replace function public.founder_anchor_e134_selftest() returns text
 language plpgsql security definer set search_path = pg_catalog, public, extensions set statement_timeout = '60s' as $$
 declare r text := ''; v_uid uuid; v_name text := 'selftest.example/e134'; v_pub text := encode(extensions.digest(convert_to(clock_timestamp()::text || random()::text, 'UTF8'), 'sha256'), 'hex'); v_kid text; v_key_id bigint; v_cp jsonb; v_cpid bigint; v_note text;
-        v_a bigint; v_b bigint; v_c bigint; v_d bigint; j jsonb; b_jobs bigint; b_aud bigint; b_evt bigint; b_evi bigint; v_aud0 bigint;
+        v_a bigint; v_b bigint; v_c bigint; v_d bigint; j jsonb; v_pre integer; v_ev0 bigint; v_rq0 bigint; b_jobs bigint; b_aud bigint; b_evt bigint; b_evi bigint; v_aud0 bigint;
 begin
   select user_id into v_uid from public.founder_accounts limit 1;
   if v_uid is null then return 'E134 selftest SKIP (no founder account yet)'; end if;
@@ -83,16 +83,22 @@ begin
     r := r || 'refusals OK; ';
     -- a provider that is switched off is left alone
     perform public.founder_anchor_provider_set(v_uid, 'ots-finney', false, 'selftest switches finney off');
-    select count(*) into v_aud0 from public.founder_audit;
+    select count(*) into v_aud0 from public.founder_audit; select count(*) into v_ev0 from public.founder_anchor_events where event = 'requeued'; select count(*) into v_rq0 from public.founder_audit where action = 'anchor.requeue';
+    -- on a LIVE ledger real dead jobs of the same cause may exist (the very ones this door is for): the selftest must not assume it is alone. It counts them first (inside the rolled-back transaction).
+    select count(*) into v_pre from public.founder_anchor_jobs jj join public.founder_anchor_providers pp on pp.id = jj.provider_id
+      where jj.state = 'dead' and pp.enabled and position('not 32 bytes' in lower(coalesce(jj.last_error, ''))) > 0;
     j := public.founder_anchor_requeue(v_uid, null, 'NOT 32 BYTES', 'requeue the jobs the 32-byte bug killed');       -- case-insensitive cause, all providers
-    if (j ->> 'requeued')::int <> 1 or j -> 'job_ids' <> to_jsonb(array[v_a]) then raise exception 'wrong set requeued: %', j; end if;
+    if (j ->> 'requeued')::int <> v_pre or v_pre < 1 then raise exception 'wrong number requeued (expected %): %', v_pre, j; end if;
+    if not (j -> 'job_ids') @> to_jsonb(array[v_a]) or (j -> 'job_ids') @> to_jsonb(array[v_b]) or (j -> 'job_ids') @> to_jsonb(array[v_c]) then raise exception 'wrong set requeued: %', j; end if;
+    if exists (select 1 from public.founder_anchor_jobs jj join public.founder_anchor_providers pp on pp.id = jj.provider_id
+               where jj.state = 'dead' and pp.enabled and position('not 32 bytes' in lower(coalesce(jj.last_error, ''))) > 0) then raise exception 'a matching dead job was left behind'; end if;
     if (select state || '/' || attempts || '/' || next_try_ms from public.founder_anchor_jobs where id = v_a) <> 'queued/0/0' then raise exception 'job a was not reset'; end if;
     if (select last_error from public.founder_anchor_jobs where id = v_a) not like 'requeued: calendar commitment is not 32 bytes%' then raise exception 'the old error was lost'; end if;
     if (select state from public.founder_anchor_jobs where id = v_b) <> 'dead' then raise exception 'a job with another cause was touched'; end if;
     if (select state from public.founder_anchor_jobs where id = v_c) <> 'dead' then raise exception 'a job of a switched-off provider was touched'; end if;
     if (select state from public.founder_anchor_jobs where id = v_d) not in ('queued', 'pending') then raise exception 'an unrelated job changed state'; end if;
-    if (select count(*) from public.founder_anchor_events where event = 'requeued' and cp_id = v_cpid) <> 1 then raise exception 'the requeued event is missing'; end if;
-    if (select count(*) from public.founder_audit where action = 'anchor.requeue') <> 1 or (select count(*) from public.founder_audit) <> v_aud0 + 1 then raise exception 'the requeue was not audited exactly once'; end if;
+    if (select count(*) from public.founder_anchor_events where event = 'requeued') - v_ev0 <> v_pre or (select count(*) from public.founder_anchor_events where event = 'requeued' and cp_id = v_cpid) <> 1 then raise exception 'the requeued events are not one per job'; end if;
+    if (select count(*) from public.founder_audit where action = 'anchor.requeue') - v_rq0 <> 1 or (select count(*) from public.founder_audit) <> v_aud0 + 1 then raise exception 'the requeue was not audited exactly once'; end if;
     r := r || 'exact set + event + one audit row; ';
     -- second call: nothing left, no audit noise
     j := public.founder_anchor_requeue(v_uid, null, 'not 32 bytes', 'requeue the jobs the 32-byte bug killed');
