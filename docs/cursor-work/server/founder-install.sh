@@ -27,6 +27,8 @@ show server/rust/consistency_vectors.json >"$ROOT/rust/consistency_vectors.json"
 show server/rust/checkpoint_core.rs >"$ROOT/rust/checkpoint_core.rs" || { echo "FAIL: checkpoint_core.rs nahi"; exit 2; }
 show server/rust/g5b_vectors.json >"$ROOT/rust/g5b_vectors.json" || { echo "FAIL: g5b_vectors.json nahi"; exit 2; }
 show server/rust/anchor_core.rs >"$ROOT/rust/anchor_core.rs" || { echo "FAIL: anchor_core.rs nahi"; exit 2; }
+# J3: passkey.rs reads the shared, read-only WebAuthn byte rules (CBOR, COSE, authData) through `#[path]`
+show server/rust/passkey_core.rs >"$ROOT/rust/passkey_core.rs" || { echo "FAIL: passkey_core.rs nahi"; exit 2; }
 show server/rust/g5c_tsa_vectors.json >"$ROOT/rust/g5c_tsa_vectors.json" || { echo "FAIL: g5c_tsa_vectors.json nahi"; exit 2; }
 # G5d part 2: portable.rs test include_str!("../../rust/g5d_bundle_vector.json") (a bundle made by the production SQL)
 show server/rust/g5d_bundle_vector.json >"$ROOT/rust/g5d_bundle_vector.json" || { echo "FAIL: g5d_bundle_vector.json nahi"; exit 2; }

@@ -22,6 +22,7 @@ pub mod checkpoint;
 #[path = "../../server/rust/anchor_core.rs"]
 #[allow(dead_code)]
 pub mod anchor;
+pub mod action;
 #[path = "../../server/rust/merkle_core.rs"]
 pub mod merkle;
 pub mod rank;
@@ -34,9 +35,9 @@ use std::collections::HashMap;
 use std::rc::Rc;
 
 pub const ABI: u32 = 1;
-pub const VERSION: (u32, u32, u32) = (0, 11, 0);
+pub const VERSION: (u32, u32, u32) = (0, 12, 0);
 /// Naam@module-version. Naya module ya badla hua module => yahan entry + VERSION bump (Cargo.toml bhi).
-pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1", "merkle@2", "checkpoint@1", "anchor@1", "portable@1"];
+pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1", "merkle@2", "checkpoint@1", "anchor@1", "portable@1", "action@1"];
 
 thread_local! {
     static OUT: RefCell<Vec<u8>> = const { RefCell::new(Vec::new()) };
@@ -191,6 +192,15 @@ pub extern "C" fn envelope_verify(body: u32, len: u32, now_s: u32, skew_s: u32) 
 #[unsafe(no_mangle)]
 pub extern "C" fn portable_verify(text_ptr: u32, text_len: u32, sha_ptr: u32, sha_len: u32) -> u32 {
     let (ok, rep) = portable::verify(unsafe { text(text_ptr, text_len) }, unsafe { text(sha_ptr, sha_len) });
+    set_out(rep.into_bytes());
+    ok as u32
+}
+
+/* ------------------------------------------------------- action@1 (J3) */
+/// 1 = the action's canonical text, SHA-256 digest and WebAuthn challenge are exactly what the server claimed (same rules as SQL `_fp_canonical`); 0 = anything else. JSON report in the out buffer either way.
+#[unsafe(no_mangle)]
+pub extern "C" fn action_check(ptr: u32, len: u32) -> u32 {
+    let (ok, rep) = action::check(unsafe { text(ptr, len) });
     set_out(rep.into_bytes());
     ok as u32
 }

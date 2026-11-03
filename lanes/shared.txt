@@ -23,7 +23,7 @@ public/apple-touch-icon.png
 public/favicon.svg
 public/icon-192.png
 public/icon-512.png
-public/kernel/anexo-kernel-0.11.0.wasm
+public/kernel/anexo-kernel-0.12.0.wasm
 public/manifest.webmanifest
 public/robots.txt
 public/sw.js
@@ -49,6 +49,7 @@ tsconfig.json
 vite.config.ts
 web-wasm/Cargo.lock
 web-wasm/Cargo.toml
+web-wasm/src/action.rs
 web-wasm/src/ed.rs
 web-wasm/src/exec.rs
 web-wasm/src/filectx.rs

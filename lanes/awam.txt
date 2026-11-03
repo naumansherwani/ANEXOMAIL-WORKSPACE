@@ -272,6 +272,7 @@ docs/cursor-work/sql/CHECK_E135.sql
 docs/cursor-work/sql/CHECK_E136.sql
 docs/cursor-work/sql/CHECK_E137.sql
 docs/cursor-work/sql/CHECK_E138.sql
+docs/cursor-work/sql/CHECK_E139.sql
 docs/cursor-work/sql/CHECK_E42_E47.sql
 docs/cursor-work/sql/CHECK_E48.sql
 docs/cursor-work/sql/CHECK_E50.sql
@@ -640,6 +641,7 @@ server/rust/ics_core.rs
 server/rust/ics_glue.rs
 server/rust/imip_core.rs
 server/rust/inbound_attach.rs
+server/rust/j3_action_vectors.json
 server/rust/latency_core.rs
 server/rust/latency_glue.rs
 server/rust/livex_core.rs

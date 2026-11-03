@@ -815,7 +815,15 @@ async function ensureFounderOrg(founderId: string): Promise<void> {
   //   2. Fail → getUserByEmail → agar hai to password update → retry
   //   3. Agar account hi nahi → createUser (email_confirm=true) + founder_accounts row
   const founderPassword = process.env.FOUNDER_PASSWORD || "";
-  if (founderPassword && email === FOUNDER_EMAIL && password === founderPassword) {
+  // J5 (3 Nov): the env password is a bootstrap for the very first sign-in only. The moment ONE active founder passkey exists it is dead, and any database doubt also means dead (fail closed).
+  // The founder then signs in with his own account password as everyone does; protected steps need a passkey (E117/E118/E139). Full code removal follows his Chrome proof (Rule 69).
+  const envPasswordRetired = async (): Promise<boolean> => {
+    try {
+      const { count, error } = await getAdmin().from("founder_passkeys").select("id", { count: "exact", head: true }).is("revoked_at", null);
+      return !!error || (count ?? 0) > 0;
+    } catch { return true; }
+  };
+  if (founderPassword && email === FOUNDER_EMAIL && password === founderPassword && !(await envPasswordRetired())) {
     let { data: fd, error: fe } = await getPublicAuth().auth.signInWithPassword({ email, password });
 
     if (fe || !fd?.user) {

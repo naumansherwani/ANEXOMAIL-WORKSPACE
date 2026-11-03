@@ -1,0 +1,87 @@
+{
+ "ok": [
+  {
+   "hash": "a443ec5946acf7b614ff9f96263c04444d2d1642e25ed1e5badfc1ef845ea8a9",
+   "nonce": "nonce-0123456789ab",
+   "action": "passkey.add",
+   "params": {
+    "label": "Yubikey 5C"
+   },
+   "target": "abcDEF_-0123",
+   "canonical": "anexo-action-v1\npasskey.add\nabcDEF_-0123\nnonce-0123456789ab\nlabel=Yubikey 5C"
+  },
+  {
+   "hash": "cdbec4c027246416d000b0667971a879a3863a113ca885b4a2d9b9c937c9da26",
+   "nonce": "AAAAAAAAAAAAAAAA",
+   "action": "release.pull_web",
+   "params": {},
+   "target": "web",
+   "canonical": "anexo-action-v1\nrelease.pull_web\nweb\nAAAAAAAAAAAAAAAA\n"
+  },
+  {
+   "hash": "3ec59f862bf552bf12f1abba659fa1be49a227fd1b60568bb75201d36c29b63d",
+   "nonce": "n_o_n_c_e-1234567",
+   "action": "finance.refund",
+   "params": {
+    "mid": "x",
+    "zeta": "last",
+    "alpha": "first"
+   },
+   "target": "order-42",
+   "canonical": "anexo-action-v1\nfinance.refund\norder-42\nn_o_n_c_e-1234567\nalpha=first\nmid=x\nzeta=last"
+  },
+  {
+   "hash": "5b088e7b19ec48af4b9ba31c19c05c2f3bce795be63b7a19d1981f8daf40405f",
+   "nonce": "0123456789abcdef0123456789abcdef",
+   "action": "passkey.revoke",
+   "params": {
+    "reason": "lost the key on a train — ünïcode"
+   },
+   "target": "cred",
+   "canonical": "anexo-action-v1\npasskey.revoke\ncred\n0123456789abcdef0123456789abcdef\nreason=lost the key on a train — ünïcode"
+  }
+ ],
+ "bad": [
+  {
+   "nonce": "AAAAAAAAAAAAAAAA",
+   "action": "Bad.Action",
+   "params": {},
+   "target": "t"
+  },
+  {
+   "nonce": "AAAAAAAAAAAAAAAA",
+   "action": "ab",
+   "params": {},
+   "target": "t"
+  },
+  {
+   "nonce": "short",
+   "action": "a.bcd",
+   "params": {},
+   "target": "t"
+  },
+  {
+   "nonce": "AAAAAAAAAAAAAAAA",
+   "action": "a.bcd",
+   "params": {
+    "k": 5
+   },
+   "target": "t"
+  },
+  {
+   "nonce": "AAAAAAAAAAAAAAAA",
+   "action": "a.bcd",
+   "params": {
+    "Bad": "x"
+   },
+   "target": "t"
+  },
+  {
+   "nonce": "AAAAAAAAAAAAAAAA",
+   "action": "a.bcd",
+   "params": [],
+   "target": "t"
+  }
+ ],
+ "note": "J3 parity vectors: canonical text and sha256 made by the production SQL (E118 _fp_canonical + founder_action_hash). The WASM kernel (action@1) and the founder Rust must agree with these."
+}

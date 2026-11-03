@@ -2349,3 +2349,13 @@ Phase: G5c (OpenTimestamps + RFC 3161, no accounts). Rule for me: re-read the ch
 3 Nov 08:48 PKT (verbatim): "yeh tumne best kiya hai rule bana do ab website easy ban jaye gi sab ek jaga pe ker diya hai. talash kerna wala kaam khatham hai founder ke codes lovbele walay bus in ko latest technology pe leke jana hai woh tumne blueprint main her phase ke agay likhna hai ke kaun si technology use hogi frontend backned sab likho. phor next phase shuru kero"  HALAT: (1) Rule 74 pinpoint (AGENTS.md top + CLAUDE.md top); (2) blueprint gets a TECHNOLOGY-PER-PHASE table (frontend, backend, data, kernel/transport) for every letter + the Lovable-Bun migration lane; (3) next phase = I2.
 
 3 Nov 08:58 PKT STATUS: I2 GREEN by my Chrome look (see blueprint). Rule 74 + technology-per-phase table written. Next: J3 discuss (Rule 63) before code.
+
+3 Nov 08:58 PKT (verbatim, J3 answer): "duniya ki advance technology is phase main use kero reasearch kero jitna advance soch saktay ho phir use se super advance codes likho sql likhp 900lines ka jis main her baat cover ho jaye super advance rule hai. repo main likho compact chat aa chuka hai likhe ke codes likhna hai"  HALAT: J3 (founder passkey) STARTED: (1) research the most advanced passkey/WebAuthn technology in the world, write it down; (2) SQL E139 about 900 lines covering everything (not a repeat of E117/E118); (3) then Rust + kernel parity vectors + UI in letter order J3, J4. Context file updated first (compaction warning: codes are TO BE WRITTEN, not written).
+
+## 3 Nov 09:01 PKT — J3 (verbatim, mid-turn)
+"yeh awam ke liye codes perserve kerna hai awam side ke liye aur jo tumne research ki hai woh repo read kero yeh phase ki demand puri kero. ab compact chat aya hai toh tum rules read kero aur codes likh chukay ho us ko continoue kero. abhi already codes likh rahay ho us ko dekho read kero."
+Status: rules + E139 parts re-read; E139 selftest being fixed (MDS state in test); awam inheritance note goes into the J3 research doc + awam blueprint.
+
+## 3 Nov 09:04 PKT — J3 (verbatim)
+"[pasted my J3 research summary] ... is ke mutabiq sab kero. baki jo likha hai us ke saath match kero super advance codes technology likho wasm kernel ko bhi include kerna hai HMAC SHa ke"
+Reading: do all of J3 as written; include the WASM kernel (HMAC-SHA256 / SHA-256 side) in the passkey work. Note: the pasted text says W3C Recommendation 25 Aug 2026 and "ML-DSA passkeys already in 1Password": the research doc keeps ML-DSA ids as requested drafts (policy OFF, PQ report honest 0) until a source I can open says final.

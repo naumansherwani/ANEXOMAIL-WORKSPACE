@@ -106,3 +106,16 @@ export function portableVerify(text: string, sha: string): Promise<PortableRepor
     w().postMessage({ id, portable: { text, sha } });
   });
 }
+
+export type ActionReport = { ok: boolean; hash?: string; challenge?: string; canonical?: string; problem?: string };
+/** J3: re-derive the digest + WebAuthn challenge of a protected action in the kernel (action@1, same rules as the SQL). Resolves with the report; undefined = the kernel could not run (never shown as a refusal). */
+export function actionCheck(input: { action: string; target: string; params: Record<string, string>; nonce: string; hash?: string; challenge?: string }): Promise<ActionReport | undefined> {
+  return new Promise((resolve) => {
+    const id = ++seq;
+    waiting.set(id, (m) => {
+      if (m.code !== 0 || typeof m.data !== "string") { resolve(undefined); return; }
+      try { const r = JSON.parse(m.data.slice(1)) as ActionReport; resolve(typeof r?.ok === "boolean" && r.ok === (m.data[0] === "1") ? r : undefined); } catch { resolve(undefined); }
+    });
+    w().postMessage({ id, action: { input: JSON.stringify(input) } });
+  });
+}

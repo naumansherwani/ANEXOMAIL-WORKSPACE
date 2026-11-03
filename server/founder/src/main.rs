@@ -29,6 +29,10 @@ mod signedcp;
 mod anchors;
 mod portable;
 mod tls256;
+#[path = "../../rust/passkey_core.rs"]
+#[allow(dead_code)]
+mod passkey_core;
+mod passkey;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -569,7 +573,7 @@ async fn audit_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response
 }
 
 #[derive(serde::Deserialize)]
-struct ActIn { key: String, reason: String }
+struct ActIn { key: String, reason: String, #[serde(default)] grant: Option<String>, #[serde(default)] nonce: Option<String>, #[serde(default)] target: Option<String>, #[serde(default)] params: Option<Value> }
 
 async fn action_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Bytes) -> axum::response::Response {
     let c = match authed_w(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
@@ -581,8 +585,31 @@ async fn action_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Bytes) -
     let row = sb.rows(&format!("founder_actions?select=key,enabled,danger&key=eq.{}&limit=1", b.key)).await.and_then(|r| r.into_iter().next());
     let Some(row) = row else { return (StatusCode::NOT_FOUND, Json(json!({"error": "unknown action"}))).into_response(); };
     let enabled = row["enabled"].as_bool().unwrap_or(false);
+    // J5: tiers are ENFORCED here, before anything is recorded as accepted. T2 = a fresh passkey grant for exactly this action (digest of action, target, params, nonce); T3 = never through this door.
+    let tier = sb.rows(&format!("founder_action_tiers?select=tier&action=eq.{}&limit=1", b.key)).await.and_then(|r| r.into_iter().next()).and_then(|r| r["tier"].as_i64());
+    let mut gate_note = json!({"tier": tier});
+    match passkey::tier_gate(tier) {
+        passkey::TierGate::Open => {}
+        passkey::TierGate::T3Only => {
+            let _ = sb.rpc("founder_audit_append", json!({"p_actor": c.sub, "p_action": format!("refused.{}", b.key), "p_target": b.key, "p_reason": reason, "p_meta": {"why": "T3 action sent to the T2 door"}})).await;
+            return (StatusCode::FORBIDDEN, Json(json!({"error": "This is a T3 action: it needs two hardware keys and a delay (Security keys)."}))).into_response();
+        }
+        passkey::TierGate::NeedGrant => {
+            let (Some(did), Some(grant), Some(nonce)) = (passkey::did_of(&st, &h), b.grant.as_deref().filter(|g| passkey::is_uuid(g)), b.nonce.as_deref()) else {
+                let _ = sb.rpc("founder_audit_append", json!({"p_actor": c.sub, "p_action": format!("refused.{}", b.key), "p_target": b.key, "p_reason": reason, "p_meta": {"why": "T2 step-up grant missing"}})).await;
+                return (StatusCode::FORBIDDEN, Json(json!({"error": "This step needs a passkey approval first.", "needs": "stepup", "tier": 2}))).into_response();
+            };
+            let target = b.target.clone().unwrap_or_else(|| b.key.clone());
+            let params = b.params.clone().unwrap_or_else(|| json!({}));
+            if let Err((_, msg)) = sb.rpc_msg("founder_stepup_consume", json!({"p_uid": c.sub, "p_device": did, "p_grant": grant, "p_action": b.key, "p_target": target, "p_params": params, "p_nonce": nonce})).await {
+                let _ = sb.rpc("founder_audit_append", json!({"p_actor": c.sub, "p_action": format!("refused.{}", b.key), "p_target": b.key, "p_reason": reason, "p_meta": {"why": "T2 grant refused", "detail": msg}})).await;
+                return (StatusCode::FORBIDDEN, Json(json!({"error": if msg.is_empty() { "The passkey approval was refused.".to_string() } else { msg }, "needs": "stepup", "tier": 2}))).into_response();
+            }
+            gate_note["stepup"] = json!("consumed");
+        }
+    }
     // koshish HAMESHA audit mein (chalna ho ya na chalna): kis ne, kya, kyun
-    let a = sb.rpc("founder_audit_append", json!({"p_actor": c.sub, "p_action": format!("attempt.{}", b.key), "p_target": b.key, "p_reason": reason, "p_meta": {"enabled": enabled, "danger": row["danger"]}})).await;
+    let a = sb.rpc("founder_audit_append", json!({"p_actor": c.sub, "p_action": format!("attempt.{}", b.key), "p_target": b.key, "p_reason": reason, "p_meta": {"enabled": enabled, "danger": row["danger"], "gate": gate_note}})).await;
     let Some(a) = a else { return (StatusCode::BAD_GATEWAY, Json(json!({"error": "audit write failed — action blocked"}))).into_response(); };
     // executor F8 mein: tab tak chalta nahi (koi side-effect nahi)
     (StatusCode::CONFLICT, Json(json!({"error": "executor not enabled yet (F8) — attempt recorded in audit", "audit": a}))).into_response()
@@ -632,6 +659,11 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/audit/checkpoint", axum::routing::post(merkle_seal_ep))
         .route("/founder/v1/audit/seal", get(merkle_seal_get_ep))
         .route("/founder/v1/audit/consistency", get(merkle_consistency_ep))
+        .route("/founder/v1/passkey/options", axum::routing::post(passkey::options_ep))
+        .route("/founder/v1/passkey/verify", axum::routing::post(passkey::verify_ep))
+        .route("/founder/v1/passkey/finish", axum::routing::post(passkey::finish_ep))
+        .route("/founder/v1/passkey/list", get(passkey::list_ep))
+        .route("/founder/v1/chairman/{door}", axum::routing::post(passkey::door_ep))
         .route("/founder/v1/inbox", get(inbox_ep))
         .route("/founder/v1/inbox/list", get(inbox_list_ep))
         .route("/founder/v1/inbox/group", get(inbox_group_ep))

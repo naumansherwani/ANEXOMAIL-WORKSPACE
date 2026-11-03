@@ -10,6 +10,7 @@ import { DriftSchedule, RowTools, TimeMachine } from "./SettingsS2";
 import { AmbientStudio, useCatalog } from "./AmbientStudio";
 import { APPEARANCE_DEFAULTS, applyAppearance, effectiveMotion, osReducedMotion, readAppearance, TEXT_SIZES, type Appearance } from "./appearance";
 import { valid as validRecipe, type Recipe } from "./ambient";
+import { Keys } from "./Keys";
 
 // Founder Settings Center — S1 (plan: docs/claude/FOUNDER-SETTINGS-CENTER-PORT-28OCT.md). Every control here is wired to a real server setting (E108).
 const I: Record<string, ReactNode> = {
@@ -32,7 +33,7 @@ const NAV: [string, string, string | null, string][] = [
   ["workspace", "Workspace", "Retention, passkey and external-recipient rules", "workspace"],
   ["appearance", "Appearance", "Motion, text, density and ambient looks", "appearance"],
   ["notifications", "Notifications", "Who may interrupt you, and when", "notifications"],
-  ["privacy", "Privacy", "Tracking and read receipts", "privacy"],
+  ["privacy", "Privacy", "Tracking, receipts and security keys", "privacy"],
   ["history", "Time machine", "Every change, one click to undo", "history"],
   ["drift", "Drift & schedule", "Score vs baseline, scheduled changes", "drift"],
   ["ai", "AI settings", "founder only, built last (step 16)", "appearance"],
@@ -160,6 +161,7 @@ export function SettingsView({ p, fx, setFx, slim, setSlim, reload, go, preview,
             <Tog k="privacy.block_trackers" title="Block tracking pixels" text="Strip trackers from incoming mail before it renders." note="Works when Mail Desk is built (step 11)." last />
             <Msg />
           </section>}
+          {tab === "privacy" && <Keys />}
           {tab === "appearance" && <>
             <section className="panel">
               <div className="panelhead"><h2>This device — Motion &amp; delight</h2><p className="dim">Applies the moment you tap it — no save button, no reload. Saved on your account too, so every approved device matches. Your operating system's reduced-motion setting always wins on top of this.</p></div>
