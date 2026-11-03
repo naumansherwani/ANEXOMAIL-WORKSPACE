@@ -2272,3 +2272,6 @@ He asked for the SQL pull command. Given: PULL-COMMANDS.md block 13:55 (phase13_
 
 ## CHECKPOINT 3 Nov 14:00 PKT
 His paste 13:48: phase13_15_file_engine OK, phase61 + CHECK_phase61 all OK (4 rows), E65 OK both times. ANEXOChat SQL = GREEN on his server (ledger row updated). He said "K3 ufw allow 8443/tcp yeh allowed hai" and "baki kaam sham ko". NEXT in letter order: K3 (his `ufw allow 8443/tcp`, then my Chrome look at https://founderworkspace.anexomail.com:8443/), then J8 vault lease, K4-K7, L, M, N... Premium = 21,000 cap. Work resumes in the evening; read the GREEN LEDGER first.
+
+## CHECKPOINT 3 Nov 14:05 PKT
+K3 GREEN: his ufw paste (8443/tcp ALLOW v4+v6) + my Chrome look (no cert warning, secure context). Note: `/_cc/*` files 404 on :8443 (Caddy serves them on :443), page unstyled there; fixed by K4. NEXT in order: J8 vault lease (no operator needed), then K4, K5, K6, K7, L, M, N. He said the rest of the work is in the evening.

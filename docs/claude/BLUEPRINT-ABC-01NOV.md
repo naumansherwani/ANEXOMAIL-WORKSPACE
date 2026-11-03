@@ -3,7 +3,7 @@
 One letter per step, in build order. **GREEN** only where the proof exists (server output and/or the founder's Chrome). Old master-order numbers stay in `[brackets]` so nothing is duplicated. Source of truth for detail: `FOUNDER-MASTER-ORDER-28OCT.md`. The website says only what `tech-proof.py` shows PROVEN.
 > **TOP PRIORITY (founder 3 Nov 12:37, he said C1 is NOT to wander again): Polar C1 = DROPPED. It EMERGES inside letter O (Finance): existing webhook endpoints -> hash-chained ledger -> advanced verified layer, plan `FOUNDER-FINANCE-POLAR-LIVE-PLAN-02NOV.md`. No token, no `founder-polar.sh`, no side road before O.**
 
-## GREEN LEDGER (3 Nov 2026 13:50 PKT; every GREEN needs his paste + my Chrome look; this table is the quick read for a new chat)
+## GREEN LEDGER (3 Nov 2026 13:55 PKT; every GREEN needs his paste + my Chrome look; this table is the quick read for a new chat)
 | Phase | GREEN | Proof (time) |
 |---|---|---|
 | A device approval + signatures | GREEN | Chrome (earlier); 3 Nov 12:19 'Approved device Chrome on Windows' |
@@ -20,7 +20,7 @@ One letter per step, in build order. **GREEN** only where the proof exists (serv
 | J6 phone alerts (E140, E141, flare.rs, panel) | GREEN on desktop Chrome (3 Nov 13:25); real-phone proof OPEN | his key touch + my Chrome: confirmed, test sent 2, receipt, ledger intact |
 | K1, K2 transport | GREEN | earlier server openssl; not re-proven 3 Nov |
 | ANEXOChat Phase 13-15 + 61 (awam SQL: file engine, chart, quota, Premium 21,000-user cap) | GREEN (SQL on his server) | his paste 3 Nov 13:48: phase13_15 OK + E65 OK; phase61 + CHECK_phase61 4 OK rows + E65 OK. Rust throttle + plans.ts Premium card still to build (awam parked) |
-| K3 padlock on :8443 | NEXT: waiting for `ufw allow 8443/tcp` on his server (he said allowed 13:48), then my Chrome look | not yet proven |
+| K3 padlock on :8443 | GREEN (3 Nov 13:55) with one honest note | his paste: `ufw` 8443/tcp + v6 ALLOW; my Chrome: `https://founderworkspace.anexomail.com:8443/` loads with NO certificate warning, isSecureContext=true, title 'ANEXOMAIL Founder'. NOTE: on this test port the shell loads but its files `/_cc/*` (css, js) answer 404, so the page is unstyled; the real app stays on :443 (Caddy serves `/_cc`). Not a K3 failure (K3 = padlock); it is solved when K4 puts AES-256 on :443 itself |
 | J8 vault lease | NEXT after K3 (needs no operator) | not built |
 | K4-K7, L, M, N, O, P, Q, R (+R3), S, T, U, V, X, J7, J9 | NOT GREEN | not built |
 

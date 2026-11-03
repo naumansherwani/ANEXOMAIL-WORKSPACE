@@ -1,4 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
+## ▶ 3 Nov 13:51 PKT — founder: ufw 8443/tcp done (paste), "dekh lo", baki shaam ko update
+Founder (verbatim): "ufw allow 8443/tcp && ufw status | grep 8443 dekh lo baki shaam ko update kero anhi tak" + paste: Rule added / Rule added (v6) / 8443/tcp ALLOW Anywhere (+v6)
+Done: Chrome look at :8443 (K3 GREEN, /_cc 404 note). Next J8.
+
 ## ▶ 3 Nov 13:48 PKT — founder: ANEXOChat SQL pastes OK; context updated rakho, baki kaam sham ko; tarteeb mein next kya; K3 ufw allow 8443/tcp allowed hai
 Founder (verbatim): "sab context updated rakho baki kaam sham ko. aur tarteeb main next kya hai?  K3 ufw allow 8443/tcp. yeh allowed hai"
 Done: GREEN LEDGER row + context checkpoint 14:00. Next = K3 (his ufw command), then J8.
