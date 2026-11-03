@@ -82,7 +82,7 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
       {
         label: "ANEXOChat & Relay video",
         path: "/anexochat",
-        note: "Public product landing — messaging, 5GB resumable transfer, evidence chain, device trust, work chain, ANEXOVideoCall",
+        note: "Public product landing — messaging, resumable transfer up to 4GB, evidence chain, device trust, work chain, ANEXOVideoCall",
       },
       {
         label: "Managed migration",

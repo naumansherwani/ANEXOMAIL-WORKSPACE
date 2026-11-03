@@ -2468,3 +2468,9 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 
 ### 3 Nov 13:09 PKT (verbatim)
 "anexochat main se awam ke liye AI nikal do sirf founder ko AI mile ga woh bhi jab mujhe zarurat hogi. aur business ke andar yeh repo main update kero founder ne bola hai ke file transfer ki ijazat mile 500MB bussiness ke liye aur 1.5gb mile gi business pro ko aur business premium ko 4gb mile gi us ke sath ek month main qouta hoga badwith ke saath business walon ko yeh mainay banya hai formula yeh update kero latest anexochat ke original blueprint main." + the formula text (Business 500MB/50GB/pool 20 users x 50GB = 1TB; Business Pro 1.5GB/150GB/570 x 150GB = 85.5TB fair-use; Business Premium 4GB/400GB/unlimited users = per-user 400GB fair-use; monthly quota = per-file x 100 sends; hourly burst = per-file x 10 token bucket; 80% warning, 100% throttle, never block, inbound never closed; dedup sha256 counts once; re-download free from cache; resumable chunks + Rust server gate; question about replacing the old 2GB/5GB/7GB gates) + third founder-install paste (OK, service zinda).
+
+### 3 Nov 13:17 PKT (verbatim)
+"Code mein gates (plans.ts) abhi 2/5/7 GB hi hain. Woh ANEXOChat ke build mein badlenge. gandu is ko badalo jo new mainay bola Business 500 MB 50 GB 20 users x 50 GB = 1 TB / Business Pro 1.5 GB 150 GB 570 x 150 GB = 85.5 TB, fair-use / Business Premium 4 GB yeh wala chart ab reality hai"
+
+### 3 Nov 13:19 PKT (verbatim, sent while I was working)
+"jin sql main hai un ko edit ker le sql ko ya un sql ka new sql main zikar kero aur advance level sql likho"

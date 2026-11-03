@@ -2254,3 +2254,6 @@ His 12:55 order: Bun founder code starts at N then O,P,Q,R,S,T,V (table in AWAM-
 
 ## CHECKPOINT 3 Nov 13:25 PKT
 J6 desktop-Chrome proof done by me with his key touch (confirmed, test sent, receipt, ledger intact). ANEXOChat: awam AI removed (Phase 57 founder-only on demand); Phase 61 added (500MB/1.5GB/4GB per file, 50/150/400 GB monthly per user, 100 sends dial, hour burst x10, 80% warn, 100% throttle never block, dedup, free re-download, Rust gate). Old 2/5/7GB gates superseded in docs; code unchanged.
+
+## CHECKPOINT 3 Nov 13:40 PKT
+His 13:17/13:19 orders: the ANEXOChat chart (500MB/50GB/1TB pool, 1.5GB/150GB/85.5TB, 4GB/400GB) is now CODE: advanced SQL phase61 + CHECK_phase61 (selftest green in scratch PG), phase13_15 seed edited, plans.ts, landing text, main.rs ping. Not on the server (awam parked); the Rust throttle is built with ANEXOChat.

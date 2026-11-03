@@ -92,7 +92,7 @@ src/routes/auth.tsx 42e7726c07797b56
 src/routes/app.integrations.tsx 819a9eed56ded24a
 src/lib/workspace-i18n.ts 616c123f5cf62ede
 src/routes/app.settings.ai.tsx 67d3e1596be41f2a
-src/routes/pages.tsx 9c979a648309a5c9
+src/routes/pages.tsx fbcbbacd2b722d8c
 src/lib/ia.ts 6b9286758f761225
 src/lib/migration-report.ts 891244cee18a2821
 src/lib/migration.ts d0b8fbc0336aea9c
@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 6f16ec47707ac055
+docs/cursor-work/founder/founder-commands.md befd8b93ab6987e2
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 06ee61cc0fdc8383
+docs/cursor-work/DONE-DO-NOT-REPEAT.md fcbda9ef6144ca98
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -243,14 +243,14 @@ docs/cursor-work/server/brain-auth-harden-install.sh 74c99f2896e76eed
 src/components/fx/FxAmbient.tsx 30983ae55876c9a1
 src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
-server/rust/main.rs bd14a1074691a67d
+server/rust/main.rs da5c3db196fbe81d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 7b7012208e2e446d
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 302a3ee1360bac4c
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
 src/components/app/calendar/TimeGrid.tsx e99750ba4f3106a4
-src/lib/plans.ts 6c71742e02268185
+src/lib/plans.ts 81dbf643f4fda131
 docs/cursor-work/sql/E52_alias_fair_use.sql c484bcfe67a0c2cf
 docs/cursor-work/sql/CHECK_E52.sql 7884b25b262eb1e6
 src/lib/api.ts 571d1ad7a84ec613
@@ -416,7 +416,7 @@ src/lib/history.test.ts d26cdfc56deea483
 src/lib/calendar-jump.ts 378d1a18d2415728
 src/components/app/search/HistoryResults.tsx 8da549dd49fd57e3
 src/routes/app.search.tsx 6f74a251778663b7
-docs/cursor-work/sql/index.md 8fe1f11e36c55249
+docs/cursor-work/sql/index.md dbb3457c9e29bc1f
 docs/cursor-work/sql/CHECK_E65.sql ce449a9bcfd36628
 docs/cursor-work/sql/E65_rls_and_advisor_sweep.sql df4483c0cee65b4e
 docs/cursor-work/sql/proofs/E65_proof.sql 983e734dff0b7e79
@@ -506,7 +506,7 @@ docs/cursor-work/sql/E72_appeal_evidence.sql 25dda0a8169909ea
 docs/cursor-work/sql/proofs/E72_proof.sql 2d3f5f8b455121b2
 server/rust/evidence_core.rs b86e6fdc300d8e24
 server/rust/evidence_glue.rs 355558546a8da3d9
-src/routes/anexochat.tsx 6b4f0b5aa580c0fe
+src/routes/anexochat.tsx bd39cb7bbbdcd535
 src/routes/app.security.vault.tsx f5280c62b670a394
 docs/cursor-work/sql/CHECK_E73.sql 91b9ad0565eb33b3
 docs/cursor-work/sql/E73_calendar_subscriptions.sql cb85578b92ea0d24
@@ -662,7 +662,7 @@ docs/cursor-work/server/basic-gate-probe.sh 8e344a01887fc035
 docs/cursor-work/server/count-endpoints.py 53d09ef3113ac451
 src/lib/assignee-name.ts 428d9bfd3886d49f
 docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md 47a9ce98cdf76a7f
-docs/cursor-work/PACKAGE-FEATURE-FORMULA.md d2a3cacbda58bb1c
+docs/cursor-work/PACKAGE-FEATURE-FORMULA.md 883e2fecb25dbb88
 docs/claude/PRICING-POSITIONING-26OCT.md 3fb2bd1b45bffb8e
 docs/claude/ANEXOCHAT-CINEMATIC-VOICE-BLUEPRINT.md dfa215ae4029eabf
 docs/claude/BULLETPROOF-RELIABILITY-26OCT.md bb8c5f74d084624e
@@ -914,7 +914,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md eb1ba2a7a3861722
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md f8bce1ad111eaf9c
+docs/claude/founder/PULL-COMMANDS.md 0d72c3ed896270ce
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 6f67741f87811209
@@ -1027,7 +1027,7 @@ docs/cursor-work/sql/CHECK_E107.sql 39441892b4711d85
 docs/cursor-work/sql/E107_founder_audit_merkle.sql 0fd28841f0b3b51f
 server/founder/src/ledger.rs 7b089b4c149de768
 server/rust/merkle_core.rs 10a8a9caa5aa4b73
-anexochat/docs/anexochat-blueprint-original.md 3693afb64cd33a45
+anexochat/docs/anexochat-blueprint-original.md 4c2c23d17e6cb755
 docs/claude/TECH-CHART-01NOV.md 84d8473550011286
 docs/claude/DONE-DO-NOT-REPEAT.md ea9f50c8dcdc292b
 docs/cursor-work/sql/CHECK_E113.sql ac2a10b397d6d386
@@ -1174,7 +1174,7 @@ eslint.config.js 7880b13681af1ac1
 bunfig.toml 95aa208a2e288cb8
 .prettierignore d139089165db2bf8
 lanes/FOUNDER-INDEX.md b0065eea9d3815f1
-lovable-gold/MANIFEST.sha256 e4f7a886a039f5bb
+lovable-gold/MANIFEST.sha256 7024a21123614438
 lovable-gold/awam/server/routes/auth.ts 9c8c54887bf1467e
 lovable-gold/awam/src/lib/kernel/kernel.test.ts 8f6bcd44a0ba84b8
 lovable-gold/awam/src/lib/kernel/pin.gen.ts 384584647527951d
@@ -1194,12 +1194,12 @@ public/kernel/anexo-kernel-0.12.0.wasm 2cd06db7d2f4d576
 server/founder/src/passkey.rs 3c4c2e4bd2433a5d
 server/rust/j3_action_vectors.json d90c898ebb69d9ea
 web-wasm/src/action.rs eda7722b529a2887
-lanes/ALL-FILES.csv 3dd77d759d04d044
-lanes/awam.txt 69526052eb145171
+lanes/ALL-FILES.csv 317172df2235618e
+lanes/awam.txt b9b67cc14f6f1ee9
 lanes/docs.txt 92352c366e2bccc7
 lanes/founder.txt d20f670249748fcd
 lanes/shared.txt 4f82131ce69a3900
-lovable-gold/README.md 820a38056ca7aa8f
+lovable-gold/README.md 985f455d431fa857
 docs/claude/FOUNDER-FLARE-J6-RESEARCH-03NOV.md 5e7c593fa4db1406
 docs/cursor-work/sql/CHECK_E140.sql 0aa343c84820214f
 docs/cursor-work/sql/E140_founder_flare_push.sql 3c95ae9963ebd5bf
@@ -1208,7 +1208,7 @@ founder-web/public/flare-sw.js 18117831d20c2b4e
 founder-web/src/Flare.tsx 8ac0ef589564e926
 founder-web/src/flare_pure.ts 3ac17e75d23d0f6f
 server/founder/src/flare.rs e2abd00ce1dcbdf3
-lovable-gold/awam/anexochat/docs/anexochat-blueprint-original.md 3693afb64cd33a45
+lovable-gold/awam/anexochat/docs/anexochat-blueprint-original.md 4c2c23d17e6cb755
 docs/claude/CELLULAR-CORE-J7-J9-RESEARCH-03NOV.md 1ae1b2857af4e6f7
 docs/cursor-work/sql/CHECK_E141.sql 95f98be3bf350786
 docs/cursor-work/sql/E141_founder_flare_receipts.sql c33e5956033b49b1

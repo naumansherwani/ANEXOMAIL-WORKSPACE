@@ -614,3 +614,5 @@ Web pull.sh is NOT needed for this.
 
 ## ABHI PENDING (3 Nov 13:15 PKT): founder-install ONE more time (his 12:55 install is GREEN). Why: J6 live bug 3 (the door got an empty nonce: 'a field is missing or has the wrong shape') fixed in Flare.tsx + Keys.tsx. Then I click Add again and he touches his key. K3 `ufw allow 8443/tcp` is still his second point.
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
+
+<!-- 3 Nov 13:40: ANEXOChat chart code (phase61 SQL, plans.ts, landing text, awam main.rs ping) = AWAM side, parked: NO pull command now; it ships with the awam migration (SQL: phase13_15 then phase61 + CHECK_phase61; Rust+Web builds). Founder pending stays: ufw allow 8443/tcp (K3). -->

@@ -77,3 +77,5 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E141 | J6 hardening: end-to-end DELIVERY RECEIPTS (one-time ack token inside the encrypted push, hash only in SQL), one escalation reminder after 90 s, status of unacknowledged alerts. CHECK_E141 (5). |
 | E142 | J hardening: a key is HARDWARE only if its model is trusted AND its facts say device-bound (BE=0, not platform); class re-decided by triggers; `founder_hardware_readiness()` says why a key does not count + next step. CHECK_E142 (4). |
 | CHECK_G5D_LIVE | G5d part 2 live proof (read only): the Rust tick wrote rows, newest < 5 min, observer pulse ok, horizon observed, chains clean | 5 checks |
+
+| anexochat PHASE 61 | `anexochat/sql/phase61_file_limits_quota.sql`: ANEXOChat file chart 500MB/1.5GB/4GB + per-user monthly quota 50/150/400GB (throttle never block, dedup, drift guard). `anexochat/sql/CHECK_phase61.sql` (5). Awam SQL: runs with the awam migration, after phase13_15. |

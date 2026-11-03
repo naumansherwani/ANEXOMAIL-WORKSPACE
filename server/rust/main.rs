@@ -2103,7 +2103,7 @@ async fn file_ping() -> impl IntoResponse {
             "external_api": false,
             "engines": ["type-policy", "clamd-local", "entropy", "archive-ratio", "local-classifier"]
         },
-        "max_file_bytes": 5_368_709_120u64,
+        "max_file_bytes": 4_294_967_296u64,   // 4 GB = the largest package (Business Premium); each plan's own cap is enforced by the SQL gate (phase61)
         "max_chunk_bytes": 16_777_216u64,
         "resumable": true,
         "integrity": "sha256-per-chunk"

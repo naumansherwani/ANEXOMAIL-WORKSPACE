@@ -5,6 +5,7 @@ anexochat/docs/anexochat-file-engine.md
 anexochat/docs/anexovideochat-turn.md
 anexochat/docs/caddy-anexochat.md
 anexochat/packages/ANEXOCHAT-PACKAGES-PHASEWISE.md
+anexochat/sql/CHECK_phase61.sql
 anexochat/sql/README.md
 anexochat/sql/anexochat_phase03_message_engine.sql
 anexochat/sql/anexochat_phase07_cinema_video.sql
@@ -26,6 +27,7 @@ anexochat/sql/phase30_chat_to_email.sql
 anexochat/sql/phase31_file_context.sql
 anexochat/sql/phase31b_family_chat_workspace.sql
 anexochat/sql/phase31c_file_download_manifest.sql
+anexochat/sql/phase61_file_limits_quota.sql
 anexochat/sql/videocall_phase31_call_record.sql
 anexochat/sql/videocall_phase31a_lightspeed.sql
 server/accounts/create-accounts.sh

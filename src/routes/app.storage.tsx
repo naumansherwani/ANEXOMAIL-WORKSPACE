@@ -163,7 +163,7 @@ function StoragePage() {
         </CardBody>
       </Section>
 
-      {/* PHASE 13/14/15 — file engine: transfer vs storage, resumable 5GB */}
+      {/* PHASE 13/14/15 — file engine: transfer vs storage, resumable, per-package file limit 500MB / 1.5GB / 4GB */}
       <FileTransfers />
     </div>
   );

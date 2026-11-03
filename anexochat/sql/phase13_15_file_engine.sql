@@ -29,15 +29,19 @@ create table if not exists public.file_plan_limits (
 insert into public.file_plan_limits
   (plan, max_file_bytes, pool_bytes, transfer_unlimited, monthly_transfer_bytes, max_concurrent, versions_kept)
 values
-  ('basic',        0,                       0,                        false, 0,                 0, 0),
-  ('pro',          0,                       0,                        false, 0,                 0, 0),
-  ('business',     2147483648,              274877906944,             false, 5497558138880,     3, 10),
-  ('business_pro', 5368709120,              1099511627776,            true,  null,              6, 30),
-  -- AI plans: platform included, isliye file engine bhi saath aata hai
-  ('ai_pro',       2147483648,              274877906944,             false, 5497558138880,     4, 10),
-  ('ai_business',  5368709120,              1099511627776,            true,  null,              6, 30),
-  ('ai_executive', 5368709120,              2199023255552,            true,  null,              8, 50),
-  ('founder',      5368709120,              1099511627776,            true,  null,              8, 50)
+  ('basic',            0,             0,             false, 0,    0, 0),
+  ('pro',              0,             0,             false, 0,    0, 0),
+  -- FOUNDER CHART 3 Nov 2026 13:09/13:17 ("ab reality hai"): per file 500 MB / 1.5 GB / 4 GB. The old 2/5/7 GB gates are GONE.
+  -- Monthly transfer is a PER-USER quota (per file x 100 sends), throttled never blocked: see phase61_file_limits_quota.sql. monthly_transfer_bytes stays NULL (the old workspace-wide refusal is off on purpose).
+  ('business',         524288000,     274877906944,  false, null, 3, 10),
+  ('business_pro',     1610612736,    1099511627776, false, null, 6, 30),
+  ('business_premium', 4294967296,    1099511627776, false, null, 8, 50),   -- storage pool copied from business_pro: his word needed on Premium storage
+  ('enterprise',       4294967296,    1099511627776, false, null, 8, 50),   -- alias of business_premium (older plan name)
+  -- AI plans keep ANEXOChat as before (platform included) at the matching package size; NO AI feature comes with it (Phase 57 is founder-only, on demand)
+  ('ai_pro',           524288000,     274877906944,  false, null, 4, 10),
+  ('ai_business',      1610612736,    1099511627776, false, null, 6, 30),
+  ('ai_executive',     4294967296,    2199023255552, false, null, 8, 50),
+  ('founder',          4294967296,    1099511627776, true,  null, 8, 50)
 on conflict (plan) do update set
   max_file_bytes = excluded.max_file_bytes,
   pool_bytes = excluded.pool_bytes,
@@ -55,8 +59,8 @@ create policy file_plan_limits_read on public.file_plan_limits
 
 -- 1) private bucket for large files (signed URLs only) ------------------------
 insert into storage.buckets (id, name, public, file_size_limit)
-values ('chat-files', 'chat-files', false, 5368709120)
-on conflict (id) do update set public = false, file_size_limit = 5368709120;
+values ('chat-files', 'chat-files', false, 4294967296)   -- 4 GB = the largest package (Business Premium); each plan's own cap is enforced by file_transfer_begin
+on conflict (id) do update set public = false, file_size_limit = 4294967296;
 
 -- 2) SELF-HEAL: purane/adhoore table jinme is phase ka koi bhi lazmi column nahi,
 --    unko `_legacy_<timestamp>` naam de kar side par rakh dete hain (data delete nahi).

@@ -38,13 +38,13 @@ export const Route = createFileRoute("/anexochat")({
       {
         name: "description",
         content:
-          "ANEXOChat: 5GB resumable file transfer, evidence-backed delivery states, self-hosted file safety, device trust and message-to-task work chains. Relay video calls up to 8K.",
+          "ANEXOChat: resumable file transfer up to 4GB, evidence-backed delivery states, self-hosted file safety, device trust and message-to-task work chains. Relay video calls up to 8K.",
       },
       { property: "og:title", content: "ANEXOChat & Relay Video — ANEXOMAIL" },
       {
         property: "og:description",
         content:
-          "Business messaging with proof: resumable 5GB transfers, evidence chain instead of fake 'Delivered', self-hosted safety, and work that closes only with evidence.",
+          "Business messaging with proof: resumable transfers up to 4GB, evidence chain instead of fake 'Delivered', self-hosted safety, and work that closes only with evidence.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -61,8 +61,8 @@ const pillars = [
   },
   {
     icon: Paperclip,
-    title: "5GB files, resumable",
-    body: "A 4.7GB file at 94% does not start again. Lose the connection and the transfer pauses; reconnect and it resumes from 94%. Every chunk is hashed on both sides — only a mismatched chunk is re-sent.",
+    title: "Up to 4GB files, resumable",
+    body: "A 3.8GB file at 94% does not start again. Lose the connection and the transfer pauses; reconnect and it resumes from 94%. Every chunk is hashed on both sides — only a mismatched chunk is re-sent.",
   },
   {
     icon: BadgeCheck,
@@ -93,7 +93,7 @@ const messaging = [
   "Delete for everyone still works after 48 hours — no silent time limit",
   "Reply quoting, forwarding and starring messages",
   "Typing, presence and read state that reflect the server, not a guess",
-  "Voice notes, photos, video and documents up to 5GB",
+  "Voice notes, photos, video and documents up to 500MB (Business), 1.5GB (Business Pro) or 4GB (Business Premium)",
   "Search across every past conversation, not just the recent window",
   "Pinned messages and per-conversation mute",
   "Draft and scroll position resume on any device you sign in from",

@@ -704,7 +704,7 @@ AI only processes content when: user explicitly requests OR user has explicitly 
 - **Resumable chunks** (Phase 14/15) stay; the **gate is enforced in Rust on the server**, the UI is only a mirror (Rule: server gate, never UI-only).
 - **Honest cost (his numbers):** Hetzner bandwidth is about EUR 1 per TB; the most expensive case (Premium, 400 GB per user per month) is about EUR 0.40 per user per month, nothing against a GBP 21,000 per month plan. The cap exists to stop abuse, not to recover the Hetzner bill.
 - **Transfer vs storage stay separate (Phase 13):** the 1 TB pooled storage (Phase 43) is not changed by this phase.
-- Build note: docs only today. The code gates (`plans.ts` / plan-surface) still say 2/5/7 GB until the Rust gate is written in the AnexoChat build; nothing was changed in code.
+- **Code = the chart (3 Nov 13:17 'ab reality hai'):** `anexochat/sql/phase61_file_limits_quota.sql` (+ `CHECK_phase61.sql`) holds the chart in ONE function `file_chart()`, a trigger refuses any row that disagrees (an old 2/5/7 GB script now FAILS), per-user quota / burst / org pool are generated columns of the one dial, thresholds are a pure function, dedup is a database rule, selftest green in a scratch Postgres. `phase13_15_file_engine.sql` seed rows were edited to the same numbers. `src/lib/plans.ts` + landing text + `main.rs` ping updated. NOT yet on his server: the awam SQL runs with the awam migration (parked); the Rust byte-rate THROTTLE (`rate_mode='slow'`) is applied by the Rust transfer engine in the ANEXOChat build.
 
 ---
 
