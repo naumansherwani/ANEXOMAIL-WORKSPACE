@@ -66,3 +66,4 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E130 | Fix for E129: org_integrity_report() casts every detail column to text (auth.users.email is varchar) | CHECK_E129 (12) |
 | E131 | G5d pin portability: the oldest signed checkpoint with outside time evidence (>= 2 TSAs or Bitcoin) as a pin-less horizon; one-read bundle with ONE consistency proof; hash-chained horizon log that flags a horizon moving later; pulse + verify + selftest | CHECK_E131 (5) |
 | E132 | G5c repair: the E124 selftest judges the signer warning itself, so it passes on a server that has real dead anchoring jobs (CHECK_E124 was red on the live state) | CHECK_E124 (5) |
+| E133 | G5c repair R1: the evidence guard accepts an OpenTimestamps pending commitment of 1 to 4096 whole bytes (Bitcoin stage stays 32); selftest | CHECK_E133 (3) |

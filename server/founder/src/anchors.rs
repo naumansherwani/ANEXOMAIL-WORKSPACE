@@ -80,9 +80,10 @@ async fn run_ots_submit(sb: &Sb, job: &Value, id: i64) -> Result<(), String> {
     let node = ac::parse_timestamp(&b).map_err(|e| format!("calendar answer is not a valid proof: {e}"))?;
     let ls = ac::leaves(&node, &digest).map_err(|e| e.to_string())?;
     let pend = ls.iter().find_map(|l| if let ac::Att::Pending(u) = &l.att { Some((l.commit.clone(), u.clone())) } else { None }).ok_or("calendar answer carries no pending attestation")?;
-    if pend.0.len() != 32 { return Err("calendar commitment is not 32 bytes".into()); }
+    // The OpenTimestamps format allows a commitment of any length up to MAX_MSG (E133 / G5c R1); the old "exactly 32 bytes" rule killed every job whose calendar appends before its last hash.
+    if pend.0.is_empty() || pend.0.len() > ac::MAX_MSG { return Err(format!("calendar commitment has an impossible length ({} bytes)", pend.0.len())); }
     let file = ac::detached_file(&digest, &node);
-    let parsed = json!({"commit_hex": ac::to_hex(&pend.0), "calendar": pend.1, "leaves": ls.len(), "format": "opentimestamps-v1"});
+    let parsed = json!({"commit_hex": ac::to_hex(&pend.0), "calendar": pend.1, "commit_len": pend.0.len(), "leaves": ls.len(), "format": "opentimestamps-v1"});
     let res = sb.rpc("founder_anchor_record_ots", json!({"p_job": id, "p_stage": "ots_pending", "p_evidence_hex": ac::to_hex(&file), "p_parsed": parsed})).await.ok_or("SQL refused the proof")?;
     if res.get("recorded").and_then(|x| x.as_bool()) == Some(false) { return Err(format!("not stored: {}", res["reason"].as_str().unwrap_or("?"))); }
     Ok(())

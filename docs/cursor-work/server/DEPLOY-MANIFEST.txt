@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md b5c0b990bdc7987c
+docs/cursor-work/founder/founder-commands.md 9cdc734327cb0ff1
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md c7ed9d8238703840
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 51bbb0c7df59c986
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs bd14a1074691a67d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 81f0bfc946491ce0
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md dbd8a86560aec3ed
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -416,7 +416,7 @@ src/lib/history.test.ts d26cdfc56deea483
 src/lib/calendar-jump.ts 378d1a18d2415728
 src/components/app/search/HistoryResults.tsx 8da549dd49fd57e3
 src/routes/app.search.tsx 6f74a251778663b7
-docs/cursor-work/sql/index.md bdd0757d76a17d9d
+docs/cursor-work/sql/index.md 257def23f0a14d9f
 docs/cursor-work/sql/CHECK_E65.sql ce449a9bcfd36628
 docs/cursor-work/sql/E65_rls_and_advisor_sweep.sql df4483c0cee65b4e
 docs/cursor-work/sql/proofs/E65_proof.sql 983e734dff0b7e79
@@ -914,7 +914,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md eb1ba2a7a3861722
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md 7b501c1afa340e48
+docs/claude/founder/PULL-COMMANDS.md 682837c399f494cd
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 6f67741f87811209
@@ -1065,7 +1065,7 @@ docs/cursor-work/sql/CHECK_E119.sql 8a79e357ded727d0
 src/components/app/CommandPalette.tsx 12a0fd1cf3105c1a
 src/lib/dashboard.ts 66e8a7d64fa8e599
 src/routes/app.admin.addresses.tsx cb8efe1f397d00f0
-docs/claude/BLUEPRINT-ABC-01NOV.md 0df1be840b76f6c2
+docs/claude/BLUEPRINT-ABC-01NOV.md 7a894629e734f8b8
 public/kernel/anexo-kernel-0.9.0.wasm 38a1e8fa33d1c727
 docs/cursor-work/sql/E122_founder_seal_interval.sql be0edb2538f82051
 docs/cursor-work/sql/CHECK_E122.sql d10212a8dfda8472
@@ -1082,8 +1082,8 @@ docs/cursor-work/server/g5c-oracle/g5c_tsa_vectors.json fee828dd190a88cf
 docs/cursor-work/server/g5c-oracle/make-vectors.sh 173c4d0cf7608c68
 docs/cursor-work/sql/CHECK_E124.sql 4f3f47c390a64f8d
 docs/cursor-work/sql/E124_founder_time_anchors.sql a9a79b715a06fd43
-server/founder/src/anchors.rs 3ebc7b8c551cc98e
-server/rust/anchor_core.rs c1042ecda6347674
+server/founder/src/anchors.rs 195a5d4cc1898593
+server/rust/anchor_core.rs 9bdb0a0894ea830e
 server/rust/g5c_tsa_vectors.json fee828dd190a88cf
 founder-web/src/anchorgauge.ts 0a58f95d7333754c
 founder-web/src/anchorgauge.test.ts cb7a2111c15d3ca3
@@ -1148,3 +1148,5 @@ docs/cursor-work/sql/E131_founder_portable_verify.sql 1459c4016dc5df26
 docs/cursor-work/sql/CHECK_E131.sql 73d45de0de9fa9a8
 docs/cursor-work/sql/E132_anchor_selftest_repair.sql 6db49e0e7242396e
 docs/cursor-work/server/anchor-probe.sh 2b9bde11dd20e760
+docs/cursor-work/sql/E133_anchor_pending_any_length.sql 573a9fb75dca4eb1
+docs/cursor-work/sql/CHECK_E133.sql 42e9a91ed7c02ecc

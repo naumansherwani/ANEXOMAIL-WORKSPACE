@@ -17,7 +17,7 @@ pub fn sha256(b: &[u8]) -> [u8; 32] { Sha256::digest(b).into() }
 pub const OTS_MAGIC: &[u8] = b"\x00OpenTimestamps\x00\x00Proof\x00\xbf\x89\xe2\xe8\x84\xe8\x92\x94";
 const TAG_PENDING: [u8; 8] = [0x83, 0xdf, 0xe3, 0x0d, 0x2e, 0xf9, 0x0c, 0x8e];
 const TAG_BITCOIN: [u8; 8] = [0x05, 0x88, 0x96, 0x0d, 0x73, 0xd7, 0x19, 0x01];
-const MAX_MSG: usize = 4096;       // OpenTimestamps Op.MAX_MSG_LENGTH
+pub const MAX_MSG: usize = 4096;       // OpenTimestamps Op.MAX_MSG_LENGTH (also the longest commitment a calendar may use)
 const MAX_DEPTH: usize = 64;
 const MAX_ITEMS: usize = 4000;
 const MAX_VARBYTES: usize = 1 << 20;
@@ -414,6 +414,28 @@ mod tests {
         rs::UnparsedPublicKey::new(alg, &t.key).verify(&t.signed_bytes, &t.signature).is_ok()
     }
     fn arr<const N: usize>(h: &str) -> [u8; N] { from_hex(h).unwrap().try_into().unwrap() }
+    // E133 / G5c R1: the OpenTimestamps format allows ANY message length up to MAX_MSG at a pending leaf, not only 32 bytes. A calendar that appends to the digest before its last hash
+    // (or ends on an append/prepend) hands out a longer commitment; the old server check "exactly 32" killed every such job. These tests pin the rules the fix relies on.
+    #[test] fn pending_leaf_commitment_may_be_longer_than_32_bytes() {
+        let d = [7u8; 32];
+        let leaf = Node { items: vec![Item::Att(Att::Pending("https://cal.example".into()))] };
+        let tree = Node { items: vec![Item::Op(Op::Append(vec![9u8; 20]), leaf)] };
+        let ls = leaves(&tree, &d).unwrap();
+        assert_eq!(ls.len(), 1); assert_eq!(ls[0].commit.len(), 52);
+        assert_eq!(&ls[0].commit[..32], &d[..]); assert_eq!(&ls[0].commit[32..], &[9u8; 20][..]);
+        // a detached file with it round-trips and the kernel-side inspect reports the full commitment
+        let file = detached_file(&d, &tree);
+        let (fd, back) = parse_detached(&file).unwrap(); assert_eq!(fd, d); assert_eq!(back, tree);
+        let out = inspect(2, &to_hex(&file), &to_hex(&d)).unwrap();
+        assert_eq!(out, format!("pending|0|{}", to_hex(&ls[0].commit)));
+        // the upgrade replaces exactly that leaf, whatever its length
+        let up = Node { items: vec![Item::Att(Att::Bitcoin(800_000))] };
+        let mut t2 = back.clone(); assert!(upgrade_pending(&mut t2, &d, &ls[0].commit, &up).unwrap());
+        assert!(leaves(&t2, &d).unwrap().iter().any(|l| matches!(l.att, Att::Bitcoin(800_000))));
+        // a commitment longer than MAX_MSG can never be produced
+        let huge = Node { items: vec![Item::Op(Op::Append(vec![1u8; MAX_MSG]), Node { items: vec![Item::Att(Att::Pending("x".into()))] })] };
+        assert!(leaves(&huge, &d).is_err());
+    }
     #[test] fn real_openssl_replies_parse_and_verify() {
         let v = vecs();
         for e in v["vectors"].as_array().unwrap() {

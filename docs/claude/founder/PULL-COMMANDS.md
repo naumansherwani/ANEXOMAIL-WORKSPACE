@@ -493,3 +493,10 @@ Every reply that touches the server lists ALL pull commands for that batch, in R
 6. **Web (awam)**: docs only, no change. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
 
 (ran by him 3 Nov 05:49 PKT: E131 CHECK OK, E132 + CHECK_E124 OK, founder-install OK, pull.sh OK. NOT yet run: anchor-probe.sh.)
+
+## G5c repair R1 (3 Nov 05:57 PKT) - ALL commands by technology, Rule 46 order. SQL FIRST, then Rust
+1. **SQL** (new E133): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E133_anchor_pending_any_length CHECK_E133 | tail -30`   (expect 3 x OK, then E65 OK)
+2. **Rust + SPA founder** (anchors.rs changed; the installer runs the 161 tests and rolls back on fail): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+3. **Rust awam + restart**: no change. 4. **Brain**: no change.
+5. **Web (awam)**: docs only, no change. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
+6. **Probe (still useful, read-only)**: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/anchor-probe.sh) 2>&1 | tail -80`
