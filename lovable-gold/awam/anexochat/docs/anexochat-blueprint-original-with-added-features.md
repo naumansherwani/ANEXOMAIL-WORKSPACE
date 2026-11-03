@@ -1,7 +1,7 @@
 # ANEXOChat™ Blueprint — The World's Super-Advanced Business Chat
 Status: SOURCE OF TRUTH (locked 14 Aug 2026). Build reads from this file. Founder ne kaha: "kuch add kerwana hai" — additions isi file mein aayengi.
 
-> **SUPERSEDED on file limits (founder 3 Nov 2026 13:30 PKT).** Every '5GB', 'unlimited transfer' and 'unlimited users' line for Business Pro below is OLD. Reality = `anexochat-blueprint-original.md` Phase 61: Business 500 MB / 50 GB per user per month / 20 users; Business Pro 1.5 GB / 150 GB per user / 570 users (85.5 TB fair-use, NOT unlimited); Business Premium 4 GB / 400 GB per user / unlimited users. Do not build from the old lines.
+> **SUPERSEDED on file limits (founder 3 Nov 2026 13:30 PKT).** Every '5GB', 'unlimited transfer' and 'unlimited users' line for Business Pro below is OLD. Reality = `anexochat-blueprint-original.md` Phase 61: Business 500 MB / 50 GB per user per month / 20 users; Business Pro 1.5 GB / 150 GB per user / 570 users (85.5 TB fair-use, NOT unlimited); Business Premium 4 GB / 400 GB per user / 21,000 users cap (price page alone says 'Unlimited'). Do not build from the old lines.
 
 
 Host: anexochat.anexomail.com (Caddy + Namecheap DNS already done).

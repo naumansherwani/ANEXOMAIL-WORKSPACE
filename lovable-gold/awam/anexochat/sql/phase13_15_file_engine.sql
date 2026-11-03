@@ -8,7 +8,7 @@
 --      FOUNDER CHART (3 Nov 2026 13:09/13:17, replaces the old 'Business Pro unlimited / 5 GB' line):
 --        Business         500 MB per file · 50 GB per user per month · 20 users x 50 GB = ~1 TB
 --        Business Pro     1.5 GB per file · 150 GB per user per month · 570 users x 150 GB = 85.5 TB fair-use (NOT unlimited)
---        Business Premium 4 GB per file · 400 GB per user per month · unlimited users (400 GB per user fair-use)
+--        Business Premium 4 GB per file · 400 GB per user per month · 21,000 users CAP (not unlimited; only the price page says 'Unlimited'), 400 GB per user fair-use
 --      Transfer is a monthly per-user quota, throttled never blocked (phase61_file_limits_quota.sql). Storage pool is separate.
 --   2. Version chain: same naam dobara aane par purani version zinda rehti hai.
 --   3. Chunk integrity: har chunk ka sha256 DB mein; mismatch = chunk corrupt,
@@ -198,6 +198,33 @@ create table if not exists public.chat_transfer_ledger (
 );
 create index if not exists chat_transfer_ledger_ws_day_idx
   on public.chat_transfer_ledger (workspace_id, day desc);
+
+-- 4b) FK REPAIR + POLICY RESET (idempotent). An older run may have renamed chat_files to chat_files_legacy_<stamp>;
+--     a foreign key follows its table when it is renamed, so chat_file_versions.file_id would still point at the legacy table
+--     and every new version would fail. Re-point the keys at the live tables. Same for the policies: remove every old one by name first.
+do $$
+declare r record;
+begin
+  for r in
+    select c.conname, c.conrelid::regclass as child, c.confrelid::regclass as parent, a.attname as col
+    from pg_constraint c join pg_attribute a on a.attrelid = c.conrelid and a.attnum = c.conkey[1]
+    where c.contype = 'f' and c.conrelid in ('public.chat_file_versions'::regclass, 'public.chat_file_chunks'::regclass, 'public.chat_transfers'::regclass)
+      and ((c.conrelid = 'public.chat_file_versions'::regclass and a.attname = 'file_id' and c.confrelid <> 'public.chat_files'::regclass)
+        or (c.conrelid = 'public.chat_file_chunks'::regclass and a.attname = 'version_id' and c.confrelid <> 'public.chat_file_versions'::regclass)
+        or (c.conrelid = 'public.chat_transfers'::regclass and a.attname = 'version_id' and c.confrelid <> 'public.chat_file_versions'::regclass))
+  loop
+    execute format('alter table %s drop constraint %I', r.child, r.conname);
+    execute format('alter table %s add constraint %I foreign key (%I) references %s(id) on delete cascade not valid', r.child, r.conname, r.col,
+                   case when r.child = 'public.chat_file_versions'::regclass then 'public.chat_files' else 'public.chat_file_versions' end);
+    raise notice 'repaired foreign key % on % (was pointing at %)', r.conname, r.child, r.parent;
+  end loop;
+  for r in select policyname, tablename from pg_policies where schemaname = 'public'
+           and tablename in ('chat_files','chat_file_versions','chat_file_chunks','chat_transfers','chat_transfer_ledger')
+           and policyname in ('chat_files_read','chat_file_versions_read','chat_file_chunks_read','chat_transfers_read','chat_transfer_ledger_read')
+  loop
+    execute format('drop policy %I on public.%I', r.policyname, r.tablename);
+  end loop;
+end $$;
 
 -- grants + RLS ---------------------------------------------------------------
 grant select on public.chat_files, public.chat_file_versions,

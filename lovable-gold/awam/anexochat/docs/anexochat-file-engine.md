@@ -12,7 +12,7 @@ attachments (200 MB, `chat_attachments`) alag rehta hai; yeh large-file engine h
 |---|---|---|---|
 | Single file max | 500 MB | 1.5 GB | 4 GB |
 | Monthly transfer per user | 50 GB | 150 GB | 400 GB |
-| Org transfer pool | 20 x 50 GB = ~1 TB | 570 x 150 GB = 85.5 TB fair-use | unlimited users, 400 GB per user |
+| Org transfer pool | 20 x 50 GB = ~1 TB | 570 x 150 GB = 85.5 TB fair-use | 21,000 users cap, 400 GB per user |
 | Pooled workspace storage | 256 GB | 1 TB | 1 TB (his word needed) |
 | Versions kept | 10 | 30 | 50 |
 

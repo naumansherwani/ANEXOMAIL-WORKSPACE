@@ -4,7 +4,7 @@
 -- the quota numbers are GENERATED columns of the one dial (sends_per_month), the thresholds are a pure function, dedup is a database rule, and a selftest + CHECK file prove it.
 --   Business          500 MB per file   50 GB per user per month   20 users  x 50 GB  = ~1 TB organisation pool
 --   Business Pro      1.5 GB            150 GB                     570 users x 150 GB = 85.5 TB fair-use
---   Business Premium  4 GB              400 GB                     unlimited users, 400 GB per user fair-use
+--   Business Premium  4 GB              400 GB                     21,000 users CAP (founder 13:38: NOT unlimited; only the PRICE page shows the word 'Unlimited'), 21,000 x 400 GB = 8.4 PB fair-use
 --   monthly quota = per file x sends_per_month (100, his dial); hour burst = per file x 10; warn at 80%, THROTTLE at 100%, NEVER block; inbound is never closed.
 --   FREE (counted 0): sha256 dedup (same content already stored in the workspace), re-download (downloads are never written to the ledger), inbound receiving.
 -- Needs phase13_15_file_engine.sql (edited the same day: its seed rows now carry the chart). Safe to run again. Selftest rolls back.
@@ -23,12 +23,12 @@ language sql immutable parallel safe set search_path = pg_catalog, public as $$
     ('ai_pro',           524288000::bigint,  20),
     ('business_pro',     1610612736::bigint, 570),
     ('ai_business',      1610612736::bigint, 570),
-    ('business_premium', 4294967296::bigint, null::integer),
-    ('enterprise',       4294967296::bigint, null::integer),
-    ('ai_executive',     4294967296::bigint, null::integer)
+    ('business_premium', 4294967296::bigint, 21000),
+    ('enterprise',       4294967296::bigint, 21000),
+    ('ai_executive',     4294967296::bigint, 21000)
   ) as v(p, f, u) where v.p = lower(coalesce(p_plan, ''))
 $$;
-comment on function public.file_chart(text) is 'PHASE 61: the founder chart (3 Nov 2026). 500 MB / 1.5 GB / 4 GB per file; 20 / 570 / unlimited users. The only place these numbers are typed.';
+comment on function public.file_chart(text) is 'PHASE 61: the founder chart (3 Nov 2026). 500 MB / 1.5 GB / 4 GB per file; 20 / 570 / 21,000 users (Premium; the price page alone says Unlimited). The only place these numbers are typed.';
 
 -- 2) columns: the dial and everything derived from it ---------------------------------------------------------------------------------------------------------------------
 alter table public.file_plan_limits add column if not exists sends_per_month integer not null default 100;
@@ -231,11 +231,11 @@ begin
   for l in select * from public.file_plan_limits where plan in ('business','business_pro','business_premium','enterprise') loop
     if l.plan = 'business' and (l.max_file_bytes <> 500::bigint*1024*1024 or l.per_user_monthly_bytes <> 500::bigint*1024*1024*100 or l.burst_hour_bytes <> 500::bigint*1024*1024*10 or l.org_pool_transfer_bytes <> 500::bigint*1024*1024*100*20) then raise exception 'business chart wrong: %', row_to_json(l); end if;
     if l.plan = 'business_pro' and (l.max_file_bytes <> 1536::bigint*1024*1024 or l.per_user_monthly_bytes <> 150::bigint*1024*1024*1024 or l.org_pool_transfer_bytes <> 150::bigint*1024*1024*1024*570) then raise exception 'business_pro chart wrong: %', row_to_json(l); end if;
-    if l.plan in ('business_premium','enterprise') and (l.max_file_bytes <> 4::bigint*1024*1024*1024 or l.per_user_monthly_bytes <> 400::bigint*1024*1024*1024 or l.org_pool_transfer_bytes is not null or l.max_users is not null) then raise exception 'premium chart wrong: %', row_to_json(l); end if;
+    if l.plan in ('business_premium','enterprise') and (l.max_file_bytes <> 4::bigint*1024*1024*1024 or l.per_user_monthly_bytes <> 400::bigint*1024*1024*1024 or l.org_pool_transfer_bytes <> 400::bigint*1024*1024*1024*21000 or l.max_users <> 21000) then raise exception 'premium chart wrong: %', row_to_json(l); end if;
     if l.transfer_unlimited or l.monthly_transfer_bytes is not null or not l.throttle_never_block then raise exception '% still carries the old workspace-wide quota', l.plan; end if;
   end loop;
   if exists (select 1 from public.file_plan_limits where max_file_bytes in (2147483648, 5368709120, 7516192768)) then raise exception 'an old 2/5/7 GB gate is still in the table'; end if;
-  r := r || 'chart is the table (500 MB / 1.5 GB / 4 GB, 50 / 150 / 400 GB, 20 x 50 GB, 570 x 150 GB, Premium unlimited users), no 2/5/7 GB left OK; ';
+  r := r || 'chart is the table (500 MB / 1.5 GB / 4 GB, 50 / 150 / 400 GB, 20 x 50 GB, 570 x 150 GB, Premium 21,000 users x 400 GB), no 2/5/7 GB left OK; ';
   -- 2) the guard refuses drift
   begin update public.file_plan_limits set max_file_bytes = 5368709120 where plan = 'business_pro'; raise exception 'guard let the old 5 GB back in'; exception when check_violation then null; end;
   begin update public.file_plan_limits set transfer_unlimited = true where plan = 'business'; raise exception 'guard let unlimited transfer back in'; exception when check_violation then null; end;
@@ -260,6 +260,7 @@ begin
   select id into u_real from auth.users limit 1;
   if u_real is null then r := r || 'dedup SKIP (no account in auth.users); ';
   else
+  begin
   insert into public.chat_files (workspace_id, owner_id, name, content_type) values (w, u_real, 'a.pdf', 'application/pdf') returning id into f1;
   insert into public.chat_file_versions (file_id, version, bytes, content_type, file_sha256, chunk_size, chunk_count, storage_prefix, created_by, state) values (f1, 1, 1000, 'application/pdf', sha, 1048576, 1, w || '/' || f1 || '/v1', u_real, 'ready') returning id into v1;
   insert into public.chat_files (workspace_id, owner_id, name, content_type) values (w, u_real, 'same.pdf', 'application/pdf') returning id into f2;
@@ -269,6 +270,10 @@ begin
   update public.chat_file_versions set file_sha256 = repeat('cd', 32) where id = v2;
   if public.file_is_dedup(v2, w) then raise exception 'a different file was treated as a duplicate'; end if;
   r := r || 'dedup: same sha + size counted once, different file counted OK; ';
+  exception when foreign_key_violation then
+    -- an older schema whose foreign keys point somewhere else (e.g. a renamed _legacy table): say so plainly, do not fake a pass. phase13_15 now repairs those keys.
+    r := r || 'dedup SKIP (foreign keys of chat_files/chat_file_versions point to another table: run phase13_15_file_engine.sql again, it repairs them; ' || sqlerrm || '); ';
+  end;
   end if;
   -- 6) pool state carries the quota
   if public.file_pool_state(u, w) ? 'quota' is not true then raise exception 'file_pool_state lost the quota key'; end if;

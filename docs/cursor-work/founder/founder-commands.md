@@ -1,4 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
+## ▶ 3 Nov 13:38 PKT — founder: phase13_15 policy error + phase61 selftest FK error on his Supabase; Business Premium is NOT unlimited, cap 21,000 users (only the PRICE page says Unlimited)
+Founder (verbatim): "busniess premium users unlimted nahi hai yeh 21000users hai ki limit hai cap. sirf price package pe user ko unlimted show hoga. repo update kero"
+Done: phase13_15 FK repair + policy reset (idempotent), phase61 dedup part skips plainly on a foreign-key mismatch; file_chart Premium/enterprise/ai_executive = 21000 users; org pool 21,000 x 400 GB; selftest + CHECK_phase61 + docs updated. Sandbox: fresh run, re-run, and a deliberately broken FK all OK.
+
 ## ▶ 3 Nov 13:30 PKT — founder: phase13_15 SQL main Business Premium ka zikar nahi, Business Pro unlimited likha hai, theek karo; compact ke baad pehle repo padho
 Founder (verbatim): "is main nahi hai bussiness premium ka zikar aur business pro ko unlimited likha hai repo main is ko theek kero. gandu compact chat huwa hai toh tu pehle repo read kerna hai."
 Done: phase13_15 header + title, anexochat/README, anexochat-file-engine.md (chart table), blueprint-original line 91, blueprint-with-added-features (SUPERSEDED note + the 'no monthly cap' line), FeatureGate Business Pro tagline (570 users, not unlimited). Seed rows were already right.

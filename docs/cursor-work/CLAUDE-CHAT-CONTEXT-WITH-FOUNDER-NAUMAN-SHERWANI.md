@@ -2263,3 +2263,6 @@ GREEN LEDGER is at the top of docs/claude/BLUEPRINT-ABC-01NOV.md. Today (3 Nov 0
 
 ## CHECKPOINT 3 Nov 13:35 PKT
 Stale "Business Pro unlimited / 5 GB" lines removed from phase13_15 header, anexochat docs and FeatureGate tagline; Business Premium named in the phase13_15 header. Business Pro is NEVER unlimited (570 users, 150 GB per user per month). Old 2/5/7 GB and unlimited-transfer lines in the "with-added-features" blueprint carry a SUPERSEDED note.
+
+## CHECKPOINT 3 Nov 13:50 PKT
+Business Premium user cap = 21,000 (NOT unlimited; the word Unlimited appears on the PRICE page only). file_chart, selftest, CHECK_phase61 and ANEXOChat docs updated. phase13_15 now repairs FKs that point at a _legacy table and resets its policies; phase61 selftest no longer dies on that. His 13:38 Supabase errors were these two.

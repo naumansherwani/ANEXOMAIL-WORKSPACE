@@ -695,7 +695,7 @@ AI only processes content when: user explicitly requests OR user has explicitly 
 |---|---|---|---|
 | Business | 500 MB | 50 GB | 20 users x 50 GB = 1 TB |
 | Business Pro | 1.5 GB | 150 GB | 570 users x 150 GB = 85.5 TB, fair-use |
-| Business Premium | 4 GB | 400 GB | unlimited users = 400 GB per user, fair-use |
+| Business Premium | 4 GB | 400 GB | **21,000 users cap** (NOT unlimited; only the price page shows the word 'Unlimited') x 400 GB per user = 8.4 PB fair-use |
 - **The dial:** the monthly quota is per-file x **100 sends** a month; "100" is his dial and can be raised or lowered.
 - **Burst:** one hour of burst = per-file x 10 (token bucket). It does not eat the monthly quota; it only smooths the speed.
 - **Warnings:** at 80% the user is warned; at 100% the transfer is **throttled (slowed), never blocked**; **inbound is never closed**; no billing shock.

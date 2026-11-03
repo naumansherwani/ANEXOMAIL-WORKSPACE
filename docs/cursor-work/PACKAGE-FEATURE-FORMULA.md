@@ -27,7 +27,7 @@
 #   per_file_mb            = founder ka number (500 / 1536 / 4096)
 #   SENDS_PER_MONTH        = 100 (default; founder chahe to badal de — yehi asli "dial")
 #   monthly_quota_per_user = per_file_mb x SENDS_PER_MONTH  -> Business 50GB, Biz Pro 150GB, Biz Premium 400GB
-#   org_pool               = monthly_quota_per_user x users  -> Business 20x50GB=1TB, Biz Pro 570x150GB=85.5TB; Premium (unlimited users) = per-user fair-use 400GB, pool "Unlimited (fair-use)"
+#   org_pool               = monthly_quota_per_user x users  -> Business 20x50GB=1TB, Biz Pro 570x150GB=85.5TB; Premium (21,000-user cap; 'Unlimited' is price-page wording only) = 21,000 x 400GB fair, per-user fair-use 400GB, pool "Unlimited (fair-use)"
 #   burst_hour             = per_file_mb x 10 (ek ghantay ki token-bucket burst; mahine ka quota isse kam nahi hota, sirf rate smoothing)
 #   warn at 80% quota, THROTTLE at 100% (chunk rate slow) — INBOUND kabhi block nahi, kabhi billing-jhatka nahi
 #   FREE (0 counted): sha256 DEDUP (same content dobara bheja = ek hi baar transfer), already-downloaded file ka dobara download (browser cache), inbound receiving, kernel-verified resumable retry
@@ -319,5 +319,5 @@ These rates are the ones already recorded above (line "Bandwidth overage (hidden
 |---|---|---|---|
 | Business | 500 MB | 50 GB | 20 users x 50 GB = 1 TB |
 | Business Pro | 1.5 GB | 150 GB | 570 x 150 GB = 85.5 TB fair-use |
-| Business Premium | 4 GB | 400 GB | unlimited users, 400 GB per user fair-use |
+| Business Premium | 4 GB | 400 GB | 21,000 users cap (price page says Unlimited), 400 GB per user fair-use |
 Dial = 100 sends. Hour burst = per-file x 10 (token bucket, not counted against the month). 80% warning, 100% throttle, NEVER block, inbound never closed. Dedup by sha256 counts once; a re-download from the browser cache counts 0. Gate enforced in Rust (UI = mirror). Honest cost about EUR 0.40 per user per month at the Premium cap. Phase 61 in `anexochat/docs/anexochat-blueprint-original.md`. Code gates CHANGED 3 Nov 13:17: `anexochat/sql/phase61_file_limits_quota.sql`, `phase13_15_file_engine.sql` seed, `plans.ts`, landing text, `main.rs` ping.
