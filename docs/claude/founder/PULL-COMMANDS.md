@@ -611,3 +611,6 @@ Web pull.sh is NOT needed for this.
 
 ## ABHI PENDING (3 Nov 13:05 PKT): founder-install ONE more time (his 12:42 install is GREEN: headers + the Trusted Types fix are live, my Chrome 12:50). Why again: second J6 live bug (push worker 'no active Service Worker') fixed in Flare.tsx. K3 `ufw allow 8443/tcp` is still his second point.
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
+
+## ABHI PENDING (3 Nov 13:15 PKT): founder-install ONE more time (his 12:55 install is GREEN). Why: J6 live bug 3 (the door got an empty nonce: 'a field is missing or has the wrong shape') fixed in Flare.tsx + Keys.tsx. Then I click Add again and he touches his key. K3 `ufw allow 8443/tcp` is still his second point.
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`

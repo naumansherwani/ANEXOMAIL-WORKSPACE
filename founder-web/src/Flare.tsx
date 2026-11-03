@@ -66,7 +66,7 @@ export function Flare() {
     const target = await sha256Hex(f.endpoint);
     const p = await prove({ action: "flare.push", target, params: {} });
     if (!p.ok) { await sub.unsubscribe().catch(() => {}); throw new Error(p.error); }
-    const r = await door("push_subscribe", { p_endpoint: f.endpoint, p_p256dh: f.p256dh, p_auth: f.auth, p_label: label.trim() || "My phone", p_grant: p.result.grant, p_nonce: p.result.nonce ?? "" });
+    const r = await door("push_subscribe", { p_endpoint: f.endpoint, p_p256dh: f.p256dh, p_auth: f.auth, p_label: label.trim() || "My phone", p_grant: p.result.grant, p_nonce: p.nonce });
     if (r.status !== 200) { await sub.unsubscribe().catch(() => {}); throw new Error(r.body?.error || `HTTP ${r.status}`); }
     setLabel("");
     return (await confirmFromCache()) ? "Phone confirmed. Alerts are on." : "Phone added. The confirmation push has not arrived yet — keep this page open; it finishes when the push lands (10 minutes).";
@@ -75,7 +75,7 @@ export function Flare() {
   const remove = (ph: any) => run(async () => {
     const p = await prove({ action: "flare.push", target: ph.sha, params: { op: "remove" } });
     if (!p.ok) throw new Error(p.error);
-    const r = await door("push_remove", { p_sub: ph.id, p_grant: p.result.grant, p_nonce: p.result.nonce ?? "" });
+    const r = await door("push_remove", { p_sub: ph.id, p_grant: p.result.grant, p_nonce: p.nonce });
     if (r.status !== 200) throw new Error(r.body?.error || `HTTP ${r.status}`);
     if (ph.sha === here) { const reg = await navigator.serviceWorker.getRegistration(swUrl()); await (await reg?.pushManager.getSubscription())?.unsubscribe().catch(() => {}); }
     return `${ph.label} removed.`;

@@ -66,3 +66,17 @@ The founder PAGES are already new (Rust + React-TS + SQL). What is still Bun is 
 | `settings.ts` | 1/1 | B/H (done in new stack) |
 
 **Founder total: 18 of 48 have a Rust twin; 30 are Bun-only.** Order: O, P, Q, R, S, then T removes the Bun twins. That is the answer to 'when does the founder Bun code go to the latest technology': letter by letter from O, and the Bun code is switched off at T.
+
+## FOUNDER BUN CODE: WHICH PHASE STARTS IT, AND THE ORDER (his 12:55 order; counted from the 30 Bun-only rows of `ENDPOINTS-founder.csv`)
+**It starts at letter N** (first letter that owns a Bun-only founder endpoint). Before that (J6, J8, K, L, M) no founder Bun endpoint moves. Each phase moves ONLY its own endpoints, in letter order; the Bun twin stays until **T (cutover)**.
+| Order | Phase (letter) | Bun-only founder endpoints that move to Rust (`server/founder`, axum + tokio, signed answer, kernel verify, React-TS card, SQL ledger where it writes) | Count |
+|---|---|---|---|
+| 1 | **N** Decide + Live Pulse | founder.ts GET `/api/founder/overview` | 1 |
+| 2 | **O** Finance deck (Polar, Revenue, Billing, Release, Move-In) | revenue.ts GET `/revenue/overview`; movein.ts POST transition, schedule, arm, mailbox, dns, runbook, exception, rollback, invoice (money/state changes = T2/T3 gates, passkey) | 10 |
+| 3 | **P** People (CRM, Org) | crm.ts GET `/crm/state`, POST `/crm/toggle`; org.ts GET `/org/state`, `/org/list` | 4 |
+| 4 | **Q** Mail + Calendar | founder.ts GET `/mailboxes`, POST `/mailboxes/provision` | 2 |
+| 5 | **R** Systems / Admin (+ R3 Mail Desk) | admin.ts GET `/admin/overview`; glitch.ts GET `/glitch/health`; perf.ts GET `/perf/overview`; storage.ts GET `/storage/volumes`, POST `/storage/volume`; billing-support.ts GET `/support/replies`, POST `/support/replies/:id/replied` | 7 |
+| 6 | **S** Control | org.ts POST `/org/kill-switch`, POST `/org/impersonate` (T2/T3, audited) | 2 |
+| 7 | **T** Cutover | no new endpoint: the 48 Bun founder endpoints are switched off after each Rust twin is GREEN (his paste + Chrome) and he says so; `lovable-gold/` stays | 0 |
+| 8 | **V** Founder AI | ai-credits.ts GET `/ai/credits/overview`; founder.ts GET `/ai-agents`, `/ai-mail`, POST `/ai-mail/approve` | 4 |
+Sum 1+10+4+2+7+2+4 = 30 (U Docs/Sheets has none). The 18 endpoints that already have Rust twins need no phase work, only the T switch-off.

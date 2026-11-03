@@ -2248,3 +2248,6 @@ His 12:37 order recorded: C1 emerges in O (top of blueprint); K6 WebTransport/QU
 
 ## CHECKPOINT 3 Nov 13:05 PKT
 His 12:42 order: install paste GREEN (headers live, my Chrome look). J6 retry found a 2nd bug (no active SW), fixed, awaits one more founder-install; he must touch his key after that. Answers given: next in blueprint order = J6 live proof -> J8 -> K3..K7 -> L -> M -> N -> O (Polar emerges here) -> P -> Q (awam Mail/Calendar) -> R (Admin, R3 Mail Desk) -> S -> T (Bun cutover) -> U -> V. Bun map: docs/claude/AWAM-FEATURES-BUN-TO-LATEST-03NOV.md.
+
+## CHECKPOINT 3 Nov 13:15 PKT
+His 12:55 order: Bun founder code starts at N then O,P,Q,R,S,T,V (table in AWAM-FEATURES-BUN-TO-LATEST-03NOV.md). ANEXOCHAT RULE LOCKED: Business = basic to medium, Business Pro = up to 75%, Business Premium = whole user side, nothing founder-side, latest technology; folder anexochat/packages/. J6: install GREEN, 3rd live bug (empty nonce) fixed, one more founder-install then his key touch.

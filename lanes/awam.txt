@@ -4,6 +4,7 @@ anexochat/docs/anexochat-blueprint-original.md
 anexochat/docs/anexochat-file-engine.md
 anexochat/docs/anexovideochat-turn.md
 anexochat/docs/caddy-anexochat.md
+anexochat/packages/ANEXOCHAT-PACKAGES-PHASEWISE.md
 anexochat/sql/README.md
 anexochat/sql/anexochat_phase03_message_engine.sql
 anexochat/sql/anexochat_phase07_cinema_video.sql

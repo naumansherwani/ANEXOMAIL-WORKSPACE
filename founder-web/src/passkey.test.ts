@@ -73,3 +73,9 @@ test("Flare waits for THIS service worker registration to be active, not service
   expect(src).toContain("whenActive(await navigator.serviceWorker.register(");
   expect(src).not.toContain("await navigator.serviceWorker.ready");
 });
+
+// J6 live bug 3 (3 Nov 12:58): the nonce the door needs is the one the SERVER issued with the options (Proved.nonce), not a field of the grant result; an empty one fails the 's' shape ("a field is missing or has the wrong shape").
+test("protected-step doors send the server-issued nonce (Proved.nonce)", () => {
+  const fs = require("node:fs");
+  for (const f of ["./Flare.tsx", "./Keys.tsx"]) { const src = fs.readFileSync(new URL(f, import.meta.url), "utf8") as string; expect(src).not.toContain("result.nonce"); expect(src).toContain("p.nonce"); }
+});

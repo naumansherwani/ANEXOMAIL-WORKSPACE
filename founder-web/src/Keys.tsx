@@ -21,7 +21,7 @@ export function Keys() {
   const step = async (action: string, target: string, params: Record<string, string>, doorName: string, body: (grant: string, n: string) => Record<string, unknown>): Promise<any> => {
     const p = await prove({ action, target, params });
     if (!p.ok) throw new Error(p.error);
-    const r = await door(doorName, body(p.result.grant, p.result.nonce ?? ""));
+    const r = await door(doorName, body(p.result.grant, p.nonce));
     if (r.status !== 200) throw new Error(r.body?.error || `HTTP ${r.status}`);
     return r.body.result;
   };
