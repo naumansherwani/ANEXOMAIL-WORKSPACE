@@ -1,3 +1,5 @@
+> ## >>> RULE 74 (founder 3 Nov 2026 08:43/08:48): FOUNDER WORK IS PINPOINT. Open `lanes/FOUNDER-INDEX.md` FIRST, find the feature, go straight to its SQL / CHECK / Rust / UI / test files. Do NOT grep the repo to search. Lovable (Bun) code is frozen in `lovable-gold/` (Rule 73). The blueprint lists the technology (frontend, backend, data, kernel) next to every phase. <<<
+
 # ANEXOMAIL Workspace — Agent Rules
 
 > ## ⚠ TECHNOLOGY RULES — READ THIS FIRST, BEFORE ANY FOUNDER WORK (founder 28 Oct 2026 12:47 PKT: "technology Claude ke top par likho")
@@ -517,4 +519,8 @@ UPDATE 2 Nov 2026 08:14 PKT (founder): **PERSONAL PACKAGES ARE RETIRED** (Person
 - Founder code awam code ko import nahi karta (`src/`, `server/routes`, `server/lib`), awam code founder code ko import nahi karta. Jo cheez dono ko chahiye wo SHARED hai aur ek hi jagah (Rule 52).
 - Nayi/hata/rename file ke baad `python3 lanes/lane-sync.py` chalao (lists + gold taza), phir commit. `rules-gate.py` `lane-sync.py --check` chalata hai; stale list ya cross-import = FAIL.
 - Kuch bhi physically move/delete nahi hota jab tak founder na kahe: build paths, installers aur imports toot jate hain.
-- Founder ka kaam PINPOINT (founder 3 Nov 08:43): pehle `lanes/FOUNDER-INDEX.md` kholo (feature -> SQL, CHECK, Rust, UI, test files), seedha wahan jao, repo mein dhundna nahi. `lane-sync.py --check` index ki har file ka wujood check karta hai.
+
+## Rule 74 (STRICT, founder 3 Nov 2026 08:48 PKT) — FOUNDER KAAM PINPOINT, TECHNOLOGY HAR PHASE KE AAGE
+- Founder ka kaam shuru karne se pehle `lanes/FOUNDER-INDEX.md` kholo (feature -> SQL, CHECK, Rust, UI, test files) aur seedha wahan jao. Repo mein dhundna band. `lane-sync.py --check` index ki har file ka wujood check karta hai.
+- Nayi file ya feature aaye to index mein ek row, aur blueprint ke "TECHNOLOGY PER PHASE" table mein us phase ki technology (frontend, backend, data, kernel) likhi jaye.
+- Lovable (Bun) code gold hai: `lovable-gold/`; usay latest technology par le jana hi baqi kaam hai (LOVABLE-BUN-MIGRATION-PLAN-03NOV.md).
