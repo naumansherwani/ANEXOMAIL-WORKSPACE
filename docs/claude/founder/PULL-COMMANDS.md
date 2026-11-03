@@ -603,3 +603,6 @@ Web pull.sh is NOT needed for this.
 ## ABHI PENDING (3 Nov 12:35 PKT): two points (Rule 24). Detail: docs/claude/BLUEPRINT-LIVE-MATCH-03NOV.md. C1 (Polar token, founder-polar.sh) comes after these two.
 1. founder-install (header fix): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
 2. K3 (Chrome padlock), only if ufw is the firewall: `ufw allow 8443/tcp` and then I look at https://founderworkspace.anexomail.com:8443/ in Chrome.
+
+## ABHI PENDING (3 Nov 12:45 PKT): same founder-install as the 12:35 block, now ALSO carries the J6 live-bug fix (service worker needed a Trusted Types policy). Still two points: 1 founder-install, 2 `ufw allow 8443/tcp` (K3). Polar status check (read-only) is point 3 only after these.
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`

@@ -2442,3 +2442,6 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 
 ### 3 Nov 12:23 PKT (verbatim)
 "blueprint ki ek ek line ek ek word ko match kero ke live website founder account pe hai ya nahi jo nahi seedha fix kero"
+
+### 3 Nov 12:27 PKT (verbatim)
+"mainay C1 ka token system ka bola tha ke polar ke liye blueprint main tarkeeka bola tha woh kahan hai aur J6 ka tumne khud kerna hai"

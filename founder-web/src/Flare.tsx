@@ -8,6 +8,13 @@ import { PENDING_CACHE, PENDING_KEY, b64uBytes, isConfirmToken, pushSupported, s
 // Adding or removing a phone is a protected step: a key approves exactly that phone (the grant is bound to sha-256 of its address). Nothing here is invented: the list comes from the server.
 const ago = (ms?: number | null) => { if (!ms) return "never"; const s = Math.max(0, (Date.now() - ms) / 1000); return s < 90 ? "just now" : s < 5400 ? `${Math.round(s / 60)} min ago` : s < 129600 ? `${Math.round(s / 3600)} h ago` : `${Math.round(s / 86400)} days ago`; };
 const swUrl = () => `${import.meta.env.BASE_URL}flare-sw.js`;
+// The server sends `require-trusted-types-for 'script'`: a service-worker URL must be a TrustedScriptURL (found live 3 Nov 12:30: 'This document requires TrustedScriptURL'). One narrow policy: only our own flare-sw.js.
+type TT = { createPolicy(n: string, o: { createScriptURL(u: string): string }): { createScriptURL(u: string): string } };
+let ttPolicy: { createScriptURL(u: string): string } | null | undefined;
+const swScript = (): string | unknown => {
+  if (ttPolicy === undefined) { const tt = (window as unknown as { trustedTypes?: TT }).trustedTypes; try { ttPolicy = tt?.createPolicy("anexo-flare-sw", { createScriptURL(u: string) { const x = new URL(u, location.href); if (x.origin !== location.origin || x.pathname !== `${import.meta.env.BASE_URL}flare-sw.js`) throw new Error("blocked service worker url"); return x.href; } }) ?? null; } catch { ttPolicy = null; } }
+  return ttPolicy ? ttPolicy.createScriptURL(swUrl()) : swUrl();
+};
 
 export function Flare() {
   const [st, setSt] = useState<any>(null), [err, setErr] = useState<string | null>(null), [busy, setBusy] = useState(false), [note, setNote] = useState<{ ok: boolean; t: string } | null>(null);
@@ -46,7 +53,7 @@ export function Flare() {
     const k = await get<{ enabled: boolean; key: string | null }>("/founder/v1/flare/key");
     if (!k.data.enabled || !k.data.key) throw new Error("Phone alerts are switched off on the server.");
     if ((await Notification.requestPermission()) !== "granted") throw new Error("Notifications were not allowed on this phone.");
-    const reg = await navigator.serviceWorker.register(swUrl()); await navigator.serviceWorker.ready;
+    const reg = await navigator.serviceWorker.register(swScript() as string); await navigator.serviceWorker.ready;
     const sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64uBytes(k.data.key) });
     const f = subscriptionFields(sub.toJSON() as any); if (!f) throw new Error("The browser gave an address the server would refuse.");
     const target = await sha256Hex(f.endpoint);

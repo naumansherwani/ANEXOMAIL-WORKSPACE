@@ -59,3 +59,11 @@ describe("mobile + tablet rule (Rule 19 / 34) for the key and phone panels", () 
   });
   test("the phone and key panel rows wrap on narrow screens", () => { expect(css).toContain('.panel[aria-label="Phone alerts"] .setrow { flex-wrap: wrap; }'); });
 });
+
+// J6 live bug (3 Nov 12:30): the CSP demands Trusted Types, so registering the push service worker with a plain string throws. The source must go through the narrow policy.
+test("Flare registers the service worker through a Trusted Types policy", () => {
+  const src = require("node:fs").readFileSync(new URL("./Flare.tsx", import.meta.url), "utf8") as string;
+  expect(src).toContain('createPolicy("anexo-flare-sw"');
+  expect(src).not.toMatch(/serviceWorker\.register\(swUrl\(\)\)/);
+  expect(src).toContain("serviceWorker.register(swScript() as string)");
+});

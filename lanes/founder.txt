@@ -88,10 +88,10 @@ founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
+founder-web/dist/assets/index-BbiLDiad.js
+founder-web/dist/assets/index-BbiLDiad.js.gz
 founder-web/dist/assets/index-D3PWyXm9.css
 founder-web/dist/assets/index-D3PWyXm9.css.gz
-founder-web/dist/assets/index-DsCUO6qP.js
-founder-web/dist/assets/index-DsCUO6qP.js.gz
 founder-web/dist/assets/kernel.worker-CsjAWUNm.js
 founder-web/dist/assets/kernel.worker-CsjAWUNm.js.gz
 founder-web/dist/assets/three.module-Dza5cG3s.js
