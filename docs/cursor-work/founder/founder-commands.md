@@ -2359,3 +2359,10 @@ Status: rules + E139 parts re-read; E139 selftest being fixed (MDS state in test
 ## 3 Nov 09:04 PKT — J3 (verbatim)
 "[pasted my J3 research summary] ... is ke mutabiq sab kero. baki jo likha hai us ke saath match kero super advance codes technology likho wasm kernel ko bhi include kerna hai HMAC SHa ke"
 Reading: do all of J3 as written; include the WASM kernel (HMAC-SHA256 / SHA-256 side) in the passkey work. Note: the pasted text says W3C Recommendation 25 Aug 2026 and "ML-DSA passkeys already in 1Password": the research doc keeps ML-DSA ids as requested drafts (policy OFF, PQ report honest 0) until a source I can open says final.
+
+## 3 Nov 09:26 PKT — J3-J6 paste (verbatim summary of his message)
+He pasted: sql-run AUTO -> "E139_founder_webauthn_l3 ... OK — ledger mein likh diya", E65 sweep OK (6), CHECK_E139 7/7 OK, "DONE: sab theek."; second sql-run run: skip (already applied) + CHECK_E139 7/7 OK; founder-install: "SPA index=200, exchange bina token=401, token service ON, Ed25519 signing ON kid s1, write-request signature ENFORCED, healthz=200, me/bridge bina token=401, OK - founder service zinda".
+His order: "yeh sab commands codes pull hone ke baad server pe hain update kero is ko jaldi se aur yeh compact chat se pehle sab repo claude ko ready ker ke do chat context codes sab ready kero."
+Status: server proof for SQL + Rust/SPA received; my Chrome look on his tab next (Settings > Privacy > Security keys); J GREEN only after that.
+
+Status 09:35: Chrome look done on his tab (Security keys panel live, Trusted, kernel 0.12.0). Real-key tap is his; not pressed by me (first passkey retires env FOUNDER_PASSWORD).

@@ -12,9 +12,9 @@ Format: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/an
 | `server/rust/**` (awam Rust engine :3200) | Rust awam engine | `docs/cursor-work/server/rust-engine-install.sh` | 15 |
 | `polar-payment` | Polar | KABHI NAHI (no-touch) | — |
 
-## ABHI PENDING (3 Nov 09:30) — J3-J6, sirf 2 point, isi tarteeb se (Web pull.sh agla turn, Rule 24)
-1. SQL (E139 + CHECK): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) 2>&1 | tail -25` — phir `... sql-run.sh) E139_founder_webauthn_l3 CHECK_E139 2>&1 | tail -25` (7 true)
-2. Rust + SPA founder: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+## ABHI PENDING (3 Nov 09:35) — 1 point
+J3-J6: SQL E139 (CHECK 7/7) aur founder-install server par GREEN (uska paste mila). Baqi sirf Web (kernel 0.12.0 + auth.ts awam site):
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
 
 ## Mukammal commands (copy-paste)
 **SQL (bare, E-files auto):**
