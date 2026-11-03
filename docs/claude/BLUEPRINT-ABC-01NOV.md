@@ -11,7 +11,7 @@ One letter per step, in build order. **GREEN** only where the proof exists (serv
 |---|---|---|---|
 | **A** | Device approval + Ed25519 request signatures | [1] | **GREEN** (Chrome) |
 | **B** | Settings S1 (photo, name, adaptive city, graphics, sidebar) | [2] | **GREEN** (E108 CHECK 6 OK on the server + founder-install green, context lines 1903/1920; Settings page lives in his Chrome and H runs on it). The master-order row text was stale |
-| **C** | Server leftovers: C1 Polar Metrics token **GREEN** · C2 awam host guard (L5) PARKED to the awam migration (same rule written on the awam side as W5 / A8) | [3] | C1 GREEN, C2 parked |
+| **C** | Server leftovers: C1 Polar Metrics token **NOT GREEN (corrected 3 Nov 12:30: the reader code is built, but the live Dashboard says 'API metrics not connected' = FOUNDER_POLAR_READ_TOKEN is not set on his server; GREEN only when `founder-polar.sh` is run with his read-only token and the Dashboard shows active subscriptions)** · C2 awam host guard (L5) PARKED to the awam migration (same rule written on the awam side as W5 / A8) | [3] | C1 NOT GREEN (token not set), C2 parked |
 | **D** | T1 UI stack: TypeScript, TanStack Router, Tailwind 4.2, shadcn | [3a] | **GREEN** (425ec14) |
 | **E** | Loophole fixes L1-L12 | [3b] | **GREEN** except L5 (parked) and lockfile (open, step 4e) |
 | **F** | WASM kernel verify in the browser (Rust kernel, Worker, pinned .wasm) | [4] | **GREEN** (Chrome) |
@@ -144,7 +144,7 @@ Stack that applies to every founder phase unless a row says otherwise: **Fronten
 |---|---|---|---|---|---|
 | A device approval, signatures | React-TS (Decks, Palette) | Rust `ftoken.rs` (ES256, 15 min, device-bound), `gate.rs`, `actions.rs` | E102, E103, E104 | kernel `envelope@1` verifies every answer | GREEN |
 | B Settings S1 | React-TS + shadcn (Settings, Profile) | Rust `settings.rs` | E108, E115 | kernel verify | GREEN |
-| C C1 Polar read | React-TS | Rust `polar.rs` (reqwest, read-only token) | E105, E106 | kernel verify | GREEN (C2 parked) |
+| C C1 Polar read | React-TS | Rust `polar.rs` (reqwest, read-only token) | E105, E106 | kernel verify | code built, token NOT set = NOT GREEN (C2 parked) |
 | D UI stack | TS strict, TanStack Router, Tailwind 4.2, shadcn | none | none | none | GREEN |
 | E loophole fixes | CSP + Trusted Types in the SPA | Rust headers / gates | SQL guards | kernel hash-pinned wasm | GREEN (L5, lockfile open) |
 | F WASM kernel | TS glue + Worker (`kernel.ts`, `kernel.worker.ts`) | Rust `sign.rs` signs answers | none | Rust to wasm32 (`web-wasm`), pinned sha256 | GREEN |

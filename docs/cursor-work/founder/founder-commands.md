@@ -2439,3 +2439,6 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 
 ### 3 Nov 12:17 PKT (verbatim)
 "Compacted conversation hogaya hai tum sab bhul gaye ho gay. yeh chat context chal raha tha tum sab codes chat latest sab update kero claude ke liye. yeh output save kero [E142 CHECK 4/4 OK + E65 OK + founder-install OK pastes] ... blueprint main jitna bhi phases hai founder side ke jo ke green hai us ko repo codes ko match kero live founder account ke ek ek features live hai wire hain kya audit kero chorme live test ke saath jahan pe bhi loophole nazar aye us ko auto fix kero"
+
+### 3 Nov 12:23 PKT (verbatim)
+"blueprint ki ek ek line ek ek word ko match kero ke live website founder account pe hai ya nahi jo nahi seedha fix kero"

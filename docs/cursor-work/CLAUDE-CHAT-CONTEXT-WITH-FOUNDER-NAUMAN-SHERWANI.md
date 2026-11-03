@@ -2233,3 +2233,6 @@ Hardware toggle: root cause = class decided by a claimed AAGUID only + no UI to 
 
 ## CHECKPOINT 3 Nov 12:30 PKT (his order 12:17: audit every GREEN founder phase vs repo vs live)
 E142 GREEN (his paste: CHECK_E142 4/4, E65 OK, founder-install OK; my Chrome 12:19: 'Hardware keys: 0 of 2', Laptop = platform). Live audit done in his Chrome: 11 pages + 7 Settings tabs load, 0 JS errors, no hscroll at 1536 px, unauth routes 401/405. Loophole fixed (repo, needs founder-install): missing Permissions-Policy + X-Frame-Options, CSP lacked manifest-src/worker-src. Honest facts: Release page says 'Not measured' (letter R, NOT GREEN, correct); Bridge shows 301 old signature rejects (all before 22 Oct). Route id is move_in (hash move-in falls back to dashboard). Not re-measured at 390/820 live (window cannot resize). Next: J8 vault lease, then K3.
+
+## CHECKPOINT 3 Nov 12:35 PKT
+His order 12:23: match every blueprint line with the live site. Result in docs/claude/BLUEPRINT-LIVE-MATCH-03NOV.md. One MISMATCH fixed (C1 was marked GREEN but the Polar token is not set). Everything else matches. Pending for him: founder-install (headers), K3 firewall, C1 token.
