@@ -1440,3 +1440,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 3 Nov 06:45 WRITTEN (not green): E134 requeue door + E135 requeue data step + CHECK_E134/E135 (scratch chain rebuilt: stub + E102,E108,E109,E107,E113,E120-E124,E131-E133). Do NOT rewrite; he runs bare sql-run.
 - 3 Nov 06:50 E134 selftest made live-ledger-safe (counts real dead jobs, deltas for events/audit). First server run failed 06:49 on that; nothing was applied. Lesson: every selftest must assume a populated live ledger.
 - 3 Nov 06:52 his sql-run: E134+E135 applied; live jobs dead=12 done=8 pending=3 queued=1; CHECK_E135 row1 FAIL (reason unknown). Wrote CHECK_ANCHOR_JOBS.sql (read-only listing).
+- 3 Nov 06:56 Chrome look blocked again (founder tab on /founderlogin after founder-install restart). No GREEN written.
