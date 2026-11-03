@@ -67,3 +67,9 @@ test("Flare registers the service worker through a Trusted Types policy", () => 
   expect(src).not.toMatch(/serviceWorker\.register\(swUrl\(\)\)/);
   expect(src).toContain("serviceWorker.register(swScript() as string)");
 });
+
+test("Flare waits for THIS service worker registration to be active, not serviceWorker.ready", () => {
+  const src = require("node:fs").readFileSync(new URL("./Flare.tsx", import.meta.url), "utf8") as string;
+  expect(src).toContain("whenActive(await navigator.serviceWorker.register(");
+  expect(src).not.toContain("await navigator.serviceWorker.ready");
+});

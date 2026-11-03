@@ -2245,3 +2245,6 @@ HIS RULE: C1 (Polar token) is DROPPED. Use the existing webhook endpoints + one 
 
 ## CHECKPOINT 3 Nov 12:55 PKT
 His 12:37 order recorded: C1 emerges in O (top of blueprint); K6 WebTransport/QUIC/UDP comes after K3,K4,K5 (needs UDP open); awam Calendar = Q1 after O and P; NEW R3 Admin > Mail Desk = separate advanced mailbox folder under Admin, different from founder Mail in every respect (docs/claude/FOUNDER-ADMIN-MAIL-DESK-03NOV.md). Mail Desk is no longer inside Q1.
+
+## CHECKPOINT 3 Nov 13:05 PKT
+His 12:42 order: install paste GREEN (headers live, my Chrome look). J6 retry found a 2nd bug (no active SW), fixed, awaits one more founder-install; he must touch his key after that. Answers given: next in blueprint order = J6 live proof -> J8 -> K3..K7 -> L -> M -> N -> O (Polar emerges here) -> P -> Q (awam Mail/Calendar) -> R (Admin, R3 Mail Desk) -> S -> T (Bun cutover) -> U -> V. Bun map: docs/claude/AWAM-FEATURES-BUN-TO-LATEST-03NOV.md.

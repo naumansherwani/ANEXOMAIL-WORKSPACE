@@ -10,6 +10,13 @@ const ago = (ms?: number | null) => { if (!ms) return "never"; const s = Math.ma
 const swUrl = () => `${import.meta.env.BASE_URL}flare-sw.js`;
 // The server sends `require-trusted-types-for 'script'`: a service-worker URL must be a TrustedScriptURL (found live 3 Nov 12:30: 'This document requires TrustedScriptURL'). One narrow policy: only our own flare-sw.js.
 type TT = { createPolicy(n: string, o: { createScriptURL(u: string): string }): { createScriptURL(u: string): string } };
+/** `serviceWorker.ready` waits for the registration that controls THIS page (another scope), not for the one just registered: found live 3 Nov 12:45 ('no active Service Worker'). Wait for this very registration. */
+const whenActive = (reg: ServiceWorkerRegistration): Promise<ServiceWorkerRegistration> => new Promise((ok, no) => {
+  if (reg.active) return ok(reg);
+  const w = reg.installing ?? reg.waiting; if (!w) return no(new Error("The alert worker did not start."));
+  const t = setTimeout(() => no(new Error("The alert worker took too long to start.")), 15000);
+  w.addEventListener("statechange", () => { if (w.state === "activated") { clearTimeout(t); ok(reg); } else if (w.state === "redundant") { clearTimeout(t); no(new Error("The alert worker was replaced before it started.")); } });
+});
 let ttPolicy: { createScriptURL(u: string): string } | null | undefined;
 const swScript = (): string | unknown => {
   if (ttPolicy === undefined) { const tt = (window as unknown as { trustedTypes?: TT }).trustedTypes; try { ttPolicy = tt?.createPolicy("anexo-flare-sw", { createScriptURL(u: string) { const x = new URL(u, location.href); if (x.origin !== location.origin || x.pathname !== `${import.meta.env.BASE_URL}flare-sw.js`) throw new Error("blocked service worker url"); return x.href; } }) ?? null; } catch { ttPolicy = null; } }
@@ -53,7 +60,7 @@ export function Flare() {
     const k = await get<{ enabled: boolean; key: string | null }>("/founder/v1/flare/key");
     if (!k.data.enabled || !k.data.key) throw new Error("Phone alerts are switched off on the server.");
     if ((await Notification.requestPermission()) !== "granted") throw new Error("Notifications were not allowed on this phone.");
-    const reg = await navigator.serviceWorker.register(swScript() as string); await navigator.serviceWorker.ready;
+    const reg = await whenActive(await navigator.serviceWorker.register(swScript() as string));
     const sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64uBytes(k.data.key) });
     const f = subscriptionFields(sub.toJSON() as any); if (!f) throw new Error("The browser gave an address the server would refuse.");
     const target = await sha256Hex(f.endpoint);

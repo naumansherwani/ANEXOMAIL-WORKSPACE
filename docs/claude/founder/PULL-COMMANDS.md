@@ -608,3 +608,6 @@ Web pull.sh is NOT needed for this.
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
 
 <!-- 3 Nov 12:50: C1 Polar token DROPPED (founder, three times). Polar goes through the existing webhook + ledger in letter O. Never offer founder-polar.sh again. -->
+
+## ABHI PENDING (3 Nov 13:05 PKT): founder-install ONE more time (his 12:42 install is GREEN: headers + the Trusted Types fix are live, my Chrome 12:50). Why again: second J6 live bug (push worker 'no active Service Worker') fixed in Flare.tsx. K3 `ufw allow 8443/tcp` is still his second point.
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`

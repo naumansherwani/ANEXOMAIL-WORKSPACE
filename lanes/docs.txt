@@ -27,6 +27,7 @@ docs/anexomail-security-blueprint.md
 docs/caddy-payments-host.md
 docs/claude/ANEXOCHAT-CINEMATIC-VOICE-BLUEPRINT.md
 docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md
+docs/claude/AWAM-FEATURES-BUN-TO-LATEST-03NOV.md
 docs/claude/AWAM-MOBILE-LOGIN-COUNTRY-REQUIREMENT-01NOV.md
 docs/claude/AWAM-PARKED-ORDER-02NOV.md
 docs/claude/AWAM-SETTINGS-CENTER-LIVE-LIST-01NOV.md
