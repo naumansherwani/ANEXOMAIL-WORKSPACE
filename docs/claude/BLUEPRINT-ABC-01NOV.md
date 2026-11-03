@@ -2,6 +2,7 @@
 
 One letter per step, in build order. **GREEN** only where the proof exists (server output and/or the founder's Chrome). Old master-order numbers stay in `[brackets]` so nothing is duplicated. Source of truth for detail: `FOUNDER-MASTER-ORDER-28OCT.md`. The website says only what `tech-proof.py` shows PROVEN.
 
+> **G5d part 1 = GREEN on the server (3 Nov 05:49 PKT, his paste: E131 CHECK_E131 5/5 OK, sha 1459c4016dc5df26 already in the ledger). G5d as a whole is NOT GREEN: part 2 (Rust route + tick) and part 3 (TS decision logic + kernel calls + gauge sentence) are not on the server.**
 > **STATUS CORRECTION (3 Nov 04:50): in row G, G5b is GREEN (2 Nov 06:58: E123 CHECK 5/5, CHECK_G5B_LIVE 4/4, founder-install 144 tests, my Chrome look) and G5c is GREEN (2 Nov 07:45: E124 CHECK 5/5, 160 tests, Chrome: Seal 3 time-anchored). The row text below is older. NEXT founder letter = G5d, then I2. Quality law: super advanced code, SQL above super advanced.**
 
 ## FOUNDER lane (founderworkspace.anexomail.com)
@@ -66,7 +67,7 @@ Status words are only **GREEN** or **NOT GREEN** (no "adhoora"). GREEN = server 
 | R1 | OpenTimestamps: 3 calendars end in "calendar commitment is not 32 bytes" | `server/founder/src/anchors.rs` line 83 insists the pending leaf message is exactly 32 bytes, and E124 SQL (`commit_hex ~ '^[0-9a-f]{64}$'`) repeats it; the real calendar replies do not fit. Not guessed: step 1 = `anchor-probe.sh` shows the real bytes from his server (this sandbox cannot reach the calendars) | after his probe output: Rust parser + SQL + kernel `anchor@1` fixed against the REAL reply, with that reply kept as a test vector | NOT GREEN, waiting for the probe output |
 | R2 | freetsa: "unsupported ECDSA curve/hash pair" | `server/rust/anchor_core.rs` line 377 accepts only P-256+SHA-256 and P-384+SHA-384; freetsa signs with another pair | same probe shows freetsa's real pair; then the pair is added ONLY if `ring` can verify it, with a real reply as the test vector | NOT GREEN, waiting for the probe output |
 | R3 | Digicert and Sectigo work | nothing to fix. "Time-anchored" stays true; the Bitcoin half is what R1 restores | none | GREEN (as G5c proved) |
-| R4 | `CHECK_E124` fails on the live server | the E124 selftest demanded a clean pulse, but the pulse (correctly) warns about the real dead jobs; reproduced locally with a committed dead-job fixture, then fixed | E132 replaces the selftest function only (E124 untouched); CHECK_E131 already avoids it | SQL fixed locally, NOT on the server, NOT GREEN |
+| R4 | `CHECK_E124` fails on the live server | the E124 selftest demanded a clean pulse, but the pulse (correctly) warns about the real dead jobs; reproduced locally with a committed dead-job fixture, then fixed | E132 replaces the selftest function only (E124 untouched); CHECK_E131 already avoids it | **GREEN** (3 Nov 05:49 PKT: his paste: E132 applied, CHECK_E124 5/5 OK, E65 sweep OK, server==repo 610 same). Chrome look: not needed (SQL test only) |
 
 ## AWAM lane (anexomail.com), follows each founder proof
 

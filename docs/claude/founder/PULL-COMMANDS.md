@@ -491,3 +491,5 @@ Every reply that touches the server lists ALL pull commands for that batch, in R
 4. **Rust + SPA founder**: no change this time. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
 5. **Rust awam / Brain**: no change this time.
 6. **Web (awam)**: docs only, no change. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
+
+(ran by him 3 Nov 05:49 PKT: E131 CHECK OK, E132 + CHECK_E124 OK, founder-install OK, pull.sh OK. NOT yet run: anchor-probe.sh.)
