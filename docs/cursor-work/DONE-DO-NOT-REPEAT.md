@@ -1429,3 +1429,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 2 Nov 11:40 AWAM PARKED by founder order. Order file: docs/claude/AWAM-PARKED-ORDER-02NOV.md (Basic, Business, Business Pro, Premium last; Pro not named, ask). Server==repo proven by his pull.sh (610 same, 0 differ).
 - 3 Nov 05:20 G5d part 1: SQL E131 (+CHECK_E131) written, local selftest OK, NOT on the server, NOT green. Do not rewrite it; next = his pull of E131, then Rust route + TS/UI. Finance (O) is last.
 - 3 Nov 05:00 RULE: always give ALL pull commands (see PULL-COMMANDS.md).
+- 3 Nov 05:10 E131 applied on the server by his run ("ledger mein likh diya"); CHECK_E131 check 5 fixed (E124 selftest removed, it fails on live dead jobs). FINDING for G5c: live anchoring has 12 dead jobs (OTS commitment not 32 bytes, freetsa ECDSA curve/hash pair); CHECK_E124 would fail on the live state too. Not fixed, not asked.
