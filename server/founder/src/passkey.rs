@@ -463,6 +463,8 @@ async fn register_step(st: &St, sb: &crate::data::Sb, uid: &str, did: &str, cred
 #[allow(clippy::too_many_arguments)]
 async fn finish_register(st: &St, sb: &crate::data::Sb, uid: &str, did: &str, reg: &Reg, label: &str, grant: Option<&str>, nonce: Option<&str>, via: &str) -> Response {
     let aaguid = reg.facts["aaguid"].as_str().unwrap_or("");
+    // the FIRST key's recovery codes are made BEFORE the key exists: E118 asks for a step-up grant as soon as one key is active, and there is nothing to approve it with yet
+    let codes = if via == "first" { sb.rpc("founder_recovery_codes_generate", json!({"p_uid": uid, "p_device": did, "p_grant": Value::Null, "p_nonce": Value::Null})).await } else { None };
     let added = match sb.rpc_msg("founder_passkey_add", json!({"p_uid": uid, "p_device": did, "p_credential_id": reg.credential_id, "p_passkey": reg.key, "p_label": label, "p_aaguid": aaguid, "p_grant": grant, "p_nonce": nonce})).await { Ok(v) => v, Err(e) => return sql_err(e) };
     let facts = match sb.rpc_msg("founder_webauthn_register", json!({"p_uid": uid, "p_credential_id": reg.credential_id, "p_facts": reg.facts})).await { Ok(v) => v, Err(e) => return sql_err(e) };
     if facts["ok"].as_bool() != Some(true) {
@@ -473,8 +475,6 @@ async fn finish_register(st: &St, sb: &crate::data::Sb, uid: &str, did: &str, re
         }
         return (StatusCode::FORBIDDEN, Json(json!({"error": "the WebAuthn policy refused this key", "reasons": facts["reasons"], "kind": facts["kind"]}))).into_response();
     }
-    // first key => the 10 one-time recovery codes, shown once
-    let codes = if added["active"].as_i64() == Some(1) { sb.rpc("founder_recovery_codes_generate", json!({"p_uid": uid, "p_device": did, "p_grant": Value::Null, "p_nonce": Value::Null})).await } else { None };
     crate::signed(st, json!({"ok": true, "added": added, "facts": facts, "via": via, "recovery_codes": codes}))
 }
 

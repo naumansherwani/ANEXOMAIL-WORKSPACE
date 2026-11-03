@@ -1464,3 +1464,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 ## 3 Nov 2026 09:35 PKT — J3-J6 installed on his server (SQL 7/7 + founder-install OK, his paste) and Security keys panel seen live in his Chrome (list 200, Trusted, kernel 0.12.0 sha ok). Real-key tap proof pending his hand. Do not rebuild.
 
 ## 3 Nov 2026 09:40 PKT — J3-J6 GREEN on server proof by founder order (real-key tap open). Next: Web pull.sh, then K3.
+
+## 3 Nov 2026 09:50 PKT — first founder passkey registered live; fix: first-key recovery codes generated before the key (passkey.rs). Re-run founder-install.
