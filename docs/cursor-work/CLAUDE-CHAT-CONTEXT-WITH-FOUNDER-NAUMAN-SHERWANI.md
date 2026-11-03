@@ -2251,3 +2251,6 @@ His 12:42 order: install paste GREEN (headers live, my Chrome look). J6 retry fo
 
 ## CHECKPOINT 3 Nov 13:15 PKT
 His 12:55 order: Bun founder code starts at N then O,P,Q,R,S,T,V (table in AWAM-FEATURES-BUN-TO-LATEST-03NOV.md). ANEXOCHAT RULE LOCKED: Business = basic to medium, Business Pro = up to 75%, Business Premium = whole user side, nothing founder-side, latest technology; folder anexochat/packages/. J6: install GREEN, 3rd live bug (empty nonce) fixed, one more founder-install then his key touch.
+
+## CHECKPOINT 3 Nov 13:25 PKT
+J6 desktop-Chrome proof done by me with his key touch (confirmed, test sent, receipt, ledger intact). ANEXOChat: awam AI removed (Phase 57 founder-only on demand); Phase 61 added (500MB/1.5GB/4GB per file, 50/150/400 GB monthly per user, 100 sends dial, hour burst x10, 80% warn, 100% throttle never block, dedup, free re-download, Rust gate). Old 2/5/7GB gates superseded in docs; code unchanged.

@@ -76,3 +76,7 @@ Every phase above, on the latest stack: Rust axum + tokio, WebTransport (K6) for
 1. Is the phase split above right? Biggest change vs Phase 55: Business Pro no longer has Phases 25, 26, 31 (timeline, health, file context) and 37-39 (cinematic weather), 17, 19 (file security, device vault) - those are Premium only.
 2. Phase 57 (AI) stays outside this table (the awam gets no AI).
 3. J7-J9 parts for Business Pro.
+
+## Updates 3 Nov 12:55-13:09
+- **Phase 57 (AI) is FOUNDER-ONLY, on demand.** The awam gets no AI in ANEXOChat (his 13:09 order). Not in any package column.
+- **Phase 61 (new): file transfer limits + monthly bandwidth quota** applies to all three packages: Business 500 MB per file (50 GB per user per month), Business Pro 1.5 GB (150 GB), Business Premium 4 GB (400 GB). See the blueprint's Phase 61. It is a limit, not a feature phase, so it is not counted in the 54.

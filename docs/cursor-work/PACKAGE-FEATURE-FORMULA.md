@@ -15,7 +15,7 @@
 # Surface unmix (teen hosts, Chat vs LEO, do Admin): docs/cursor-work/IMPLEMENTATION-MASTER.md §0
 
 # ═══ UPDATE 26 Oct 2026 03:42 PKT — FOUNDER GATE DECISIONS (neeche ke purane 7-column tables HISTORY; yeh jeetta hai) ═══
-# ANEXOChat: Business ladder -> Business 2GB / Business Pro 5GB / Business Premium 7GB (Basic, Pro = NAHI). Personal ladder -> PRO+ 2GB / Premium 4GB (Personal Basic = NAHI).
+# [SUPERSEDED 3 Nov 13:09 by the ANEXOCHAT FILE TRANSFER section at the end: 500MB / 1.5GB / 4GB] ANEXOChat: Business ladder -> Business 2GB / Business Pro 5GB / Business Premium 7GB (Basic, Pro = NAHI). Personal ladder -> PRO+ 2GB / Premium 4GB (Personal Basic = NAHI).
 # Email attachment: 25/35/45/60/100 MB. Storage (shared pool): Basic 15GB (3 mailboxes) / 300GB/1.5TB/10TB/15TB. CRDT docs: Business+. Business Premium = Business Pro ke saare features + upar.
 # Bandwidth overage (hidden, bill-only): Business 10TB @ £12/TB, Business Pro 30TB @ £11/TB, Business Premium 50TB @ £10/TB (CEO decision, founder veto).
 # AI (ai.anexomail.com, alag product): AI Pro £2,000 / AI Business £5,000 / AI Executive £25,000 per month. Workspace plans = AI ZERO.
@@ -55,7 +55,7 @@
 # | CRM base (accounts/leads/pipeline/tasks) | - | Y | Y | Y | Y | People only | Y | Y |
 # | CRM collab + risk + business ledgers | - | - | Y | Y | Y | - | Y | Y |
 # | CRM activity ledger + graph | - | - | - | Y | Y | - | Y | Y |
-# | ANEXOChat + ANEXOVideoCall (file send) | - | - | Y 2GB | Y 5GB | Y 7GB | - | Y 2GB | Y 4GB |
+# | ANEXOChat + ANEXOVideoCall (file send) | - | - | Y 500MB | Y 1.5GB | Y 4GB | [3 Nov 13:09, old 2/5/7GB] - | Y 2GB | Y 4GB |
 # | CRDT collaborative docs | - | - | Y | Y | Y | - | (founder faisla) | (founder faisla) |
 # | Org centre (members/roles/departments/policies/audit/compliance) | - | - | Y | Y | Y | never | never | never |
 # | Company domains + addresses | Y(biz kind) | Y | Y | Y | Y | never | never | never |
@@ -312,3 +312,12 @@ These rates are the ones already recorded above (line "Bandwidth overage (hidden
 3. Live meter: warning at 80% and 95%, and the billing page shows the real GB used.
 4. Business Premium: "unlimited-ish" but with a written fair-use ceiling.
 **Truth (Rule 5):** all of this is TODO. Rust metering, throttle and Polar overage billing do not exist yet; the first step is the meter, then the rate. Awam-side lane (not the founder phases). Pricing/policy commits need this Competitor-check line (Rule 54) — it is the table above.
+
+
+## ANEXOCHAT FILE TRANSFER + MONTHLY BANDWIDTH QUOTA (founder formula, 3 Nov 2026 13:09 PKT) — SUPERSEDES the 2GB / 5GB / 7GB gates and the "Monthly transfer 5 TB / unlimited" row above
+| Package | Per file | Monthly cap per user (per-file x 100 sends) | Org pool |
+|---|---|---|---|
+| Business | 500 MB | 50 GB | 20 users x 50 GB = 1 TB |
+| Business Pro | 1.5 GB | 150 GB | 570 x 150 GB = 85.5 TB fair-use |
+| Business Premium | 4 GB | 400 GB | unlimited users, 400 GB per user fair-use |
+Dial = 100 sends. Hour burst = per-file x 10 (token bucket, not counted against the month). 80% warning, 100% throttle, NEVER block, inbound never closed. Dedup by sha256 counts once; a re-download from the browser cache counts 0. Gate enforced in Rust (UI = mirror). Honest cost about EUR 0.40 per user per month at the Premium cap. Phase 61 in `anexochat/docs/anexochat-blueprint-original.md`. Code gates (`plans.ts`) are NOT changed yet.

@@ -45,6 +45,8 @@ Therefore:
 
 Basic and Pro must have no ANEXOChat access.
 
+> **UPDATE 3 Nov 2026 13:09 PKT (founder, verbatim in `docs/cursor-work/founder/founder-commands.md`): THE AWAM GETS NO AI IN ANEXOCHAT.** Phase 57 (the AI assistant layer) is **FOUNDER-ONLY and only on demand ("jab mujhe zarurat hogi")**. The three AI plans are no longer a way into ANEXOChat AI. ANEXOChat is for **Business, Business Pro and Business Premium** only. The AI plan lines in this section are kept for history and are SUPERSEDED. File limits and monthly quota: **Phase 61**.
+
 **CORE RULE:** ANEXOChat is an API-FREE architecture. No third-party AI API, weather API, file-transfer API, chat API, or external SaaS API is required for the core product.
 
 ---
@@ -86,7 +88,7 @@ Supporting realtime synchronization may use: Supabase Realtime
 **Core philosophy:** Mail when it matters. Chat when it's instant. Work when it's done.
 
 **Business Pro:** £250/month per company
-Includes: Unlimited legitimate internal users, Unlimited messages, Unlimited chat transfer, 1TB pooled workspace storage, 5GB maximum individual file, ANEXOMAIL Business, Advanced administration, Device Trust, Audit Ledger, Access revocation, Export, Privacy controls, Priority support
+Includes: Unlimited legitimate internal users, Unlimited messages, Unlimited chat transfer, 1TB pooled workspace storage, maximum individual file per package (Business 500MB, Business Pro 1.5GB, Business Premium 4GB; Phase 61), ANEXOMAIL Business, Advanced administration, Device Trust, Audit Ledger, Access revocation, Export, Privacy controls, Priority support
 
 ---
 
@@ -212,7 +214,7 @@ Synchronize: messages, read state, unread state, drafts, attachments, conversati
 
 ## PHASE 13 — FILE ENGINE
 
-Business Pro: Unlimited transfer volume, Individual file max 5GB, Storage 1TB pooled workspace
+Individual file max: Business 500MB, Business Pro 1.5GB, Business Premium 4GB; transfer = monthly bandwidth quota per user (Phase 61, throttle never block); Storage 1TB pooled workspace
 
 Transfer and storage are separate concepts.
 
@@ -228,7 +230,7 @@ Support: chunking, streaming, integrity checks, resumable transfers, concurrent 
 
 ---
 
-## PHASE 15 — RESUMABLE 5GB TRANSFER
+## PHASE 15 — RESUMABLE TRANSFER (per-package max file 500MB / 1.5GB / 4GB, Phase 61)
 
 Connection disappears → Transfer paused. Connection returns → Resuming from last position. No unnecessary restart from zero.
 
@@ -519,7 +521,7 @@ No broken sidebar. No hidden composer. No inaccessible send button.
 
 ## PHASE 53 — RELEASE GATE
 
-Before production verify all: Authentication, Workspace isolation, Messaging, Delivery, Read receipts, Typing, Presence, Offline, Reconnect, Files, 5GB enforcement, Scanning, Resume, Storage, 1TB enforcement, Export, Device Trust, Revocation, Audit, Notifications, Groups, Search, Email bridge, Calm Mode, Cinematic UI, Performance, Accessibility
+Before production verify all: Authentication, Workspace isolation, Messaging, Delivery, Read receipts, Typing, Presence, Offline, Reconnect, Files, per-package file-size + monthly quota enforcement (Phase 61), Scanning, Resume, Storage, 1TB enforcement, Export, Device Trust, Revocation, Audit, Notifications, Groups, Search, Email bridge, Calm Mode, Cinematic UI, Performance, Accessibility
 
 ---
 
@@ -558,9 +560,9 @@ Before production verify all: Authentication, Workspace isolation, Messaging, De
 Included in Business Pro:
 ✅ Unlimited legitimate internal users
 ✅ Unlimited ANEXOChat messages
-✅ Unlimited ANEXOChat transfer volume
+✅ ANEXOChat transfer within the monthly bandwidth quota (Phase 61: 150 GB per user per month, throttled never blocked)
 ✅ 1TB pooled storage
-✅ 5GB maximum individual file
+✅ 1.5GB maximum individual file (Phase 61)
 ✅ Groups, Read receipts, Typing, Presence, Resumable transfers
 ✅ Business work layer, Promise tracking, Decision ledger, Conversation health
 ✅ Message provenance, Business receipts, Permanent search, Email ↔ Chat bridge
@@ -583,7 +585,7 @@ The user should feel:
 
 ---
 
-## PHASE 57 — ADVANCED HUMAN-CHAT AI ASSISTANT LAYER (ANEXOMAIL AI plans only)
+## PHASE 57 — ADVANCED HUMAN-CHAT AI ASSISTANT LAYER (FOUNDER ONLY, ON DEMAND — awam AI REMOVED 3 Nov 2026 13:09; was: ANEXOMAIL AI plans only)
 
 ### CORE PRINCIPLE
 
@@ -686,14 +688,35 @@ AI only processes content when: user explicitly requests OR user has explicitly 
 - Not claimed: "mathematically 0% impersonation". Real claim: an attacker needs the device-bound key, which does not leave its hardware.
 - Packages: Business Pro (which parts: founder decides) and Business Premium. Gate at the END (Rule 72).
 
+
+## PHASE 61 — FILE TRANSFER LIMITS + MONTHLY BANDWIDTH QUOTA (founder 3 Nov 2026 13:09 PKT, his own formula; supersedes every "5GB / unlimited transfer" line above)
+**Per-file maximum:** Business **500 MB** · Business Pro **1.5 GB** · Business Premium **4 GB**. (Old gates 2 GB / 5 GB / 7 GB are REPLACED; Basic and Pro have no ANEXOChat.)
+| Package | Per file | Monthly cap per user (= per-file x 100 sends) | Organisation pool |
+|---|---|---|---|
+| Business | 500 MB | 50 GB | 20 users x 50 GB = 1 TB |
+| Business Pro | 1.5 GB | 150 GB | 570 users x 150 GB = 85.5 TB, fair-use |
+| Business Premium | 4 GB | 400 GB | unlimited users = 400 GB per user, fair-use |
+- **The dial:** the monthly quota is per-file x **100 sends** a month; "100" is his dial and can be raised or lowered.
+- **Burst:** one hour of burst = per-file x 10 (token bucket). It does not eat the monthly quota; it only smooths the speed.
+- **Warnings:** at 80% the user is warned; at 100% the transfer is **throttled (slowed), never blocked**; **inbound is never closed**; no billing shock.
+- **Dedup:** the same file (sha256) sent again, to anyone, counts ONCE (offices send the same file often).
+- **Free re-download:** a user who already took a file and fetches it again from the browser cache = 0 counted.
+- **Resumable chunks** (Phase 14/15) stay; the **gate is enforced in Rust on the server**, the UI is only a mirror (Rule: server gate, never UI-only).
+- **Honest cost (his numbers):** Hetzner bandwidth is about EUR 1 per TB; the most expensive case (Premium, 400 GB per user per month) is about EUR 0.40 per user per month, nothing against a GBP 21,000 per month plan. The cap exists to stop abuse, not to recover the Hetzner bill.
+- **Transfer vs storage stay separate (Phase 13):** the 1 TB pooled storage (Phase 43) is not changed by this phase.
+- Build note: docs only today. The code gates (`plans.ts` / plan-surface) still say 2/5/7 GB until the Rust gate is written in the AnexoChat build; nothing was changed in code.
+
+---
+
 ## FINAL MASTER LOCK
 
-BUILD ANEXOChat™ PHASE 1 THROUGH PHASE 60.
+BUILD ANEXOChat™ PHASE 1 THROUGH PHASE 61. (3 Nov 13:09: AI Phase 57 is founder-only; awam AI plans have NO ANEXOChat AI. Packages = Business / Business Pro / Business Premium, split in `anexochat/packages/ANEXOCHAT-PACKAGES-PHASEWISE.md`.)
 
 - Basic (£20) + Pro (£40) → ZERO ANEXOChat access
 - Business → Phases 1–56
 - Business Pro → Phases 1–56 (full £250/company limits)
-- AI Pro / AI Business / AI Executive → Phases 1–57
+- ~~AI Pro / AI Business / AI Executive → Phases 1–57~~ SUPERSEDED 3 Nov 13:09: no AI for the awam; Phase 57 founder-only on demand
+- Business Premium → whole user side (Phases 1–56, 58–61), nothing founder-side
 
 Do not duplicate Phases 1–56 for AI plans. AI plans inherit the exact same foundation + Phase 57.
 

@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 5d435b13bd2e02ee
+docs/cursor-work/founder/founder-commands.md dea38cf348e154fb
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 7e4be650e97c7e8a
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 06ee61cc0fdc8383
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs bd14a1074691a67d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 9200c3f10557d6e0
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 7b7012208e2e446d
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -662,7 +662,7 @@ docs/cursor-work/server/basic-gate-probe.sh 8e344a01887fc035
 docs/cursor-work/server/count-endpoints.py 53d09ef3113ac451
 src/lib/assignee-name.ts 428d9bfd3886d49f
 docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md 47a9ce98cdf76a7f
-docs/cursor-work/PACKAGE-FEATURE-FORMULA.md 6d0128cf6c82ab8f
+docs/cursor-work/PACKAGE-FEATURE-FORMULA.md 9bf4b3fe3bfb8b08
 docs/claude/PRICING-POSITIONING-26OCT.md 3fb2bd1b45bffb8e
 docs/claude/ANEXOCHAT-CINEMATIC-VOICE-BLUEPRINT.md dfa215ae4029eabf
 docs/claude/BULLETPROOF-RELIABILITY-26OCT.md bb8c5f74d084624e
@@ -1027,7 +1027,7 @@ docs/cursor-work/sql/CHECK_E107.sql 39441892b4711d85
 docs/cursor-work/sql/E107_founder_audit_merkle.sql 0fd28841f0b3b51f
 server/founder/src/ledger.rs 7b089b4c149de768
 server/rust/merkle_core.rs 10a8a9caa5aa4b73
-anexochat/docs/anexochat-blueprint-original.md ff9b6eaf24c585a7
+anexochat/docs/anexochat-blueprint-original.md 3693afb64cd33a45
 docs/claude/TECH-CHART-01NOV.md 84d8473550011286
 docs/claude/DONE-DO-NOT-REPEAT.md ea9f50c8dcdc292b
 docs/cursor-work/sql/CHECK_E113.sql ac2a10b397d6d386
@@ -1064,7 +1064,7 @@ docs/cursor-work/sql/CHECK_E119.sql 8a79e357ded727d0
 src/components/app/CommandPalette.tsx 12a0fd1cf3105c1a
 src/lib/dashboard.ts 66e8a7d64fa8e599
 src/routes/app.admin.addresses.tsx cb8efe1f397d00f0
-docs/claude/BLUEPRINT-ABC-01NOV.md 95e4fdcde558e49e
+docs/claude/BLUEPRINT-ABC-01NOV.md aa36aa556b5515be
 docs/cursor-work/sql/E122_founder_seal_interval.sql be0edb2538f82051
 docs/cursor-work/sql/CHECK_E122.sql d10212a8dfda8472
 founder-web/src/routes.test.ts 3f007995613c3568
@@ -1174,7 +1174,7 @@ eslint.config.js 7880b13681af1ac1
 bunfig.toml 95aa208a2e288cb8
 .prettierignore d139089165db2bf8
 lanes/FOUNDER-INDEX.md b0065eea9d3815f1
-lovable-gold/MANIFEST.sha256 0fa0c888600d3eb2
+lovable-gold/MANIFEST.sha256 e4f7a886a039f5bb
 lovable-gold/awam/server/routes/auth.ts 9c8c54887bf1467e
 lovable-gold/awam/src/lib/kernel/kernel.test.ts 8f6bcd44a0ba84b8
 lovable-gold/awam/src/lib/kernel/pin.gen.ts 384584647527951d
@@ -1208,7 +1208,7 @@ founder-web/public/flare-sw.js 18117831d20c2b4e
 founder-web/src/Flare.tsx 8ac0ef589564e926
 founder-web/src/flare_pure.ts 3ac17e75d23d0f6f
 server/founder/src/flare.rs e2abd00ce1dcbdf3
-lovable-gold/awam/anexochat/docs/anexochat-blueprint-original.md ff9b6eaf24c585a7
+lovable-gold/awam/anexochat/docs/anexochat-blueprint-original.md 3693afb64cd33a45
 docs/claude/CELLULAR-CORE-J7-J9-RESEARCH-03NOV.md 1ae1b2857af4e6f7
 docs/cursor-work/sql/CHECK_E141.sql 95f98be3bf350786
 docs/cursor-work/sql/E141_founder_flare_receipts.sql c33e5956033b49b1
