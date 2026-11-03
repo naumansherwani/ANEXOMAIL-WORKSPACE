@@ -590,3 +590,5 @@ Web pull.sh is NOT needed for this.
 
 ## ABHI PENDING (3 Nov 11:58 PKT): founder-install only (1 point). SQL E141 is already GREEN (his paste 11:45). Why: the mobile/tablet CSS fix (dx.css) for the key and phone panels.
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
+
+## ABHI PENDING (3 Nov 12:00 PKT): none. E140, E141 and the founder-install with the mobile CSS are on his server (his pastes 11:30, 11:45, 11:57). Next pull comes with the next code (J8 lease or K3).
