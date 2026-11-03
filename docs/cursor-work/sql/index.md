@@ -72,3 +72,4 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E136 | G5c repair R1 part 4: E135 skipped itself (server has 2+ founder accounts); actor = founder with the newest audited action, else the only founder | CHECK_E136 (4) |
 | E137 | G5c repair R2 data step: re-queue the freetsa jobs that died of "unsupported ECDSA curve/hash pair" (after the R2 binary) | CHECK_E137 (4) |
 | E138 | G5d part 2: the portable-pin observer: policy, fencing lease, hash-chained tick log + serve log, canonical bundle text + sha256, selftest | CHECK_E138 (6) |
+| CHECK_G5D_LIVE | G5d part 2 live proof (read only): the Rust tick wrote rows, newest < 5 min, observer pulse ok, horizon observed, chains clean | 5 checks |

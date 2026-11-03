@@ -542,3 +542,8 @@ git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-w
 Rust + SPA founder (174 tests must pass; this is the ONE controlled restart for the FS1 test, I watch his Chrome while it runs):
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12
 Rust awam: no change. Brain: no change. Web: no change.
+
+## G5d part 2 live proof (3 Nov 07:58 PKT) — SQL read-only; nothing else
+SQL (reads only; run it 2-3 minutes after founder-install):
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) CHECK_G5D_LIVE 2>&1 | tail -12
+Rust+SPA founder: no change (already run 07:55). Rust awam: no change. Brain: no change. Web: no change.
