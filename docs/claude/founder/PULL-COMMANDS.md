@@ -587,3 +587,6 @@ Web pull.sh is NOT needed for this.
 ## ABHI PENDING (3 Nov 11:40 PKT): J6 loophole fixes (E141 receipts + ack route + SSRF guard + iPhone manifest). Two points (Rule 24). E140 and the first founder-install are already GREEN on his server (his 11:30 paste).
 1. SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E141_founder_flare_receipts CHECK_E141 2>&1 | tail -12`
 2. Rust + SPA: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
+
+## ABHI PENDING (3 Nov 11:58 PKT): founder-install only (1 point). SQL E141 is already GREEN (his paste 11:45). Why: the mobile/tablet CSS fix (dx.css) for the key and phone panels.
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`

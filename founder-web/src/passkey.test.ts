@@ -48,3 +48,14 @@ describe("phone alerts (J6) helpers", () => {
     expect(pushSupported({})).toBe(false); expect(pushSupported({ Notification: {}, PushManager: {}, navigator: { serviceWorker: {} } })).toBe(true);
   });
 });
+
+import { readFileSync } from "node:fs";
+describe("mobile + tablet rule (Rule 19 / 34) for the key and phone panels", () => {
+  const css = readFileSync(new URL("./dx.css", import.meta.url), "utf8");
+  test("touch targets are 44 px and inputs 16 px on narrow or touch screens", () => {
+    expect(css).toMatch(/@media \(pointer:coarse\), \(max-width:820px\)/);
+    expect(css).toMatch(/\.mini \{ min-height: 44px; min-width: 44px;/);
+    expect(css).toMatch(/input, select, textarea \{ font-size: 16px; \}/);
+  });
+  test("the phone and key panel rows wrap on narrow screens", () => { expect(css).toContain('.panel[aria-label="Phone alerts"] .setrow { flex-wrap: wrap; }'); });
+});

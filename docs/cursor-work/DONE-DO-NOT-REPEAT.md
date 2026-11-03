@@ -1480,3 +1480,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 3 Nov 11:55 J7/J8/J9 + AX11-13 + AnexoChat PHASE 58-60 WRITTEN as blueprint rows with verified limits (docs/claude/CELLULAR-CORE-J7-J9-RESEARCH-03NOV.md). No code. Do not re-research; build J8 (vault lease) after J6 GREEN.
 
 - 3 Nov 11:40 J6 E140 + first founder-install GREEN by his pastes (11:30). Loophole round: E141 (delivery receipts, escalation reminder, unacked status; CHECK_E141 5/5 sandbox), Rust ack route + rate limit + SSRF allow-list + no redirects (207 tests), SW receipt, UI red state + iPhone hint, web manifest + icons. Not yet on his server; my Chrome look on E140 panel done (panel live, sw 200).
+
+- 3 Nov 11:55 E141 GREEN by his paste (CHECK_E141 checks 4,5 OK + E65). Rule 19/34 gap on the J6 panels found by me and fixed in founder-web/src/dx.css (touch 44px, inputs 16px, wrapping rows) with a test; sandbox harness measurement at 390/820/1440: no horizontal scroll, no small targets on touch. Other founder pages and the awam site NOT re-measured in this round.

@@ -91,3 +91,12 @@ button.dx-card{cursor:pointer;width:100%}button.dx-card:hover{transform:translat
 .dx-changes li{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:14px;align-items:baseline;font-size:14px}
 .dx-changes li b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dx-changes li span{color:var(--dim,#9aa6bd)}.dx-changes li time{color:var(--faint,#6f7889);font-variant-numeric:tabular-nums}
 .dx-empty{margin:0;color:var(--dim,#9aa6bd);font-size:14px}.dx-empty.warn{color:#f5a524;margin-top:8px}
+
+/* Rule 19 / 34 (mobile + tablet first): on touch and on narrow screens every control is >= 44 px and inputs are 16 px (iOS does not zoom on focus); rows of the key and phone panels wrap instead of squeezing. */
+@media (pointer:coarse), (max-width:820px) {
+  .mini { min-height: 44px; min-width: 44px; white-space: nowrap; padding: 0 16px; }
+  input, select, textarea { font-size: 16px; }
+  .panel[aria-label="Security keys"] .setrow, .panel[aria-label="Phone alerts"] .setrow { flex-wrap: wrap; }
+  .panel[aria-label="Security keys"] .setrow > span, .panel[aria-label="Phone alerts"] .setrow > span { display: flex; gap: 8px; width: 100%; }
+  .panel[aria-label="Security keys"] .setrow > span input, .panel[aria-label="Phone alerts"] .setrow > span input { flex: 1 1 0; min-width: 0; width: auto !important; }
+}
