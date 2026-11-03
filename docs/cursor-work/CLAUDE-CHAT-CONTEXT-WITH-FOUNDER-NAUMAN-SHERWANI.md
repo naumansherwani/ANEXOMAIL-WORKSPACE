@@ -2266,3 +2266,6 @@ Stale "Business Pro unlimited / 5 GB" lines removed from phase13_15 header, anex
 
 ## CHECKPOINT 3 Nov 13:50 PKT
 Business Premium user cap = 21,000 (NOT unlimited; the word Unlimited appears on the PRICE page only). file_chart, selftest, CHECK_phase61 and ANEXOChat docs updated. phase13_15 now repairs FKs that point at a _legacy table and resets its policies; phase61 selftest no longer dies on that. His 13:38 Supabase errors were these two.
+
+## CHECKPOINT 3 Nov 13:55 PKT
+He asked for the SQL pull command. Given: PULL-COMMANDS.md block 13:55 (phase13_15_file_engine, then phase61_file_limits_quota + CHECK_phase61). Pending on his side: those 2 SQL points and K3 `ufw allow 8443/tcp`. Premium = 21,000 users cap (Unlimited is price-page wording only). Premium storage number still needs his word. Latest commit before this note: 6c461e39.

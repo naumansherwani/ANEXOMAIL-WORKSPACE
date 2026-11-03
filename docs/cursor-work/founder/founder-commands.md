@@ -1,4 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
+## ▶ 3 Nov 13:43 PKT — founder: sql ki pull command do; baki chat context aur codes update rakho
+Founder (verbatim): "sql ki command dai pull ki baki chat context update rakho codes update rako"
+Done: PULL-COMMANDS block 13:55 (2 SQL points), context checkpoint 13:55.
+
 ## ▶ 3 Nov 13:38 PKT — founder: phase13_15 policy error + phase61 selftest FK error on his Supabase; Business Premium is NOT unlimited, cap 21,000 users (only the PRICE page says Unlimited)
 Founder (verbatim): "busniess premium users unlimted nahi hai yeh 21000users hai ki limit hai cap. sirf price package pe user ko unlimted show hoga. repo update kero"
 Done: phase13_15 FK repair + policy reset (idempotent), phase61 dedup part skips plainly on a foreign-key mismatch; file_chart Premium/enterprise/ai_executive = 21000 users; org pool 21,000 x 400 GB; selftest + CHECK_phase61 + docs updated. Sandbox: fresh run, re-run, and a deliberately broken FK all OK.

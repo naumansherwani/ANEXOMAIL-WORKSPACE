@@ -621,3 +621,8 @@ Web pull.sh is NOT needed for this.
 1. SQL (phase61 + its CHECK): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) phase61_file_limits_quota CHECK_phase61 2>&1 | tail -14`
 2. Web (plans.ts + landing text, awam site): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
 (The awam Rust ping constant needs no build now. Founder side: K3 `ufw allow 8443/tcp` is still pending.)
+
+## ABHI PENDING (3 Nov 13:55 PKT): ANEXOChat SQL (awam side, his Supabase), 2 points in this order. Why: phase13_15 now repairs foreign keys that point at a _legacy table and resets its policies (his 13:38 errors); phase61 has Premium capped at 21,000 users. Sandbox: fresh run, re-run and a broken-FK run all OK.
+1. SQL (file engine first): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) phase13_15_file_engine 2>&1 | tail -14`
+2. SQL (quota + its CHECK, 5 rows must be `t`): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) phase61_file_limits_quota CHECK_phase61 2>&1 | tail -14`
+(Pasting the file in the Supabase editor works too: run phase13_15 first, then phase61. No Rust/Web pull needed for this. Founder side: K3 `ufw allow 8443/tcp` still pending.)
