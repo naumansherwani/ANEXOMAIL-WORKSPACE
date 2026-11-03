@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md dea38cf348e154fb
+docs/cursor-work/founder/founder-commands.md 6f16ec47707ac055
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -662,7 +662,7 @@ docs/cursor-work/server/basic-gate-probe.sh 8e344a01887fc035
 docs/cursor-work/server/count-endpoints.py 53d09ef3113ac451
 src/lib/assignee-name.ts 428d9bfd3886d49f
 docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md 47a9ce98cdf76a7f
-docs/cursor-work/PACKAGE-FEATURE-FORMULA.md 9bf4b3fe3bfb8b08
+docs/cursor-work/PACKAGE-FEATURE-FORMULA.md d2a3cacbda58bb1c
 docs/claude/PRICING-POSITIONING-26OCT.md 3fb2bd1b45bffb8e
 docs/claude/ANEXOCHAT-CINEMATIC-VOICE-BLUEPRINT.md dfa215ae4029eabf
 docs/claude/BULLETPROOF-RELIABILITY-26OCT.md bb8c5f74d084624e

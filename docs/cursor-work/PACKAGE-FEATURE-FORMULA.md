@@ -21,7 +21,7 @@
 # AI (ai.anexomail.com, alag product): AI Pro £2,000 / AI Business £5,000 / AI Executive £25,000 per month. Workspace plans = AI ZERO.
 # Detail: docs/claude/PRICING-POSITIONING-26OCT.md section 9.
 
-# ═══ UPDATE 3 Nov 2026 08:06 UTC — FOUNDER PROPOSAL: ANEXOChat per-file + MONTHLY BANDWIDTH CAP formula (founder approve baqi — 26 Oct ke 2GB/5GB/7GB iski "haan" par replace honge) ═══
+# ═══ UPDATE 3 Nov 2026 08:06 UTC — FOUNDER PROPOSAL: ANEXOChat per-file + MONTHLY BANDWIDTH CAP formula (**APPROVED by the founder 3 Nov 2026 13:09 PKT** — his order 'yeh update kero latest anexochat ke original blueprint main': the 26 Oct 2GB/5GB/7GB gates are REPLACED in docs; code gates still to be changed) ═══
 # Founder ke numbers: Business 500MB / Business Pro 1.5GB / Business Premium 4GB per file, monthly cap lazmi.
 # FORMULA (ek hi jagah, har package par chalta hai):
 #   per_file_mb            = founder ka number (500 / 1536 / 4096)
