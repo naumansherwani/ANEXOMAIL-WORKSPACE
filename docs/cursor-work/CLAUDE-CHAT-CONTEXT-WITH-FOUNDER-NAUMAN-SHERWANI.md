@@ -2242,3 +2242,6 @@ His order 12:27: J6 live proof is MINE to drive. I clicked Add in his Chrome: re
 
 ## CHECKPOINT 3 Nov 12:50 PKT
 HIS RULE: C1 (Polar token) is DROPPED. Use the existing webhook endpoints + one advanced layer (ledger, Merkle, kernel verify), letter O. Saved in FOUNDER-FINANCE-POLAR-LIVE-PLAN-02NOV.md ('DECISION LOCKED'), blueprint row C, PULL-COMMANDS, DONE. I had missed that the blueprint row still said 'Polar Metrics token GREEN'; that line was the stale one.
+
+## CHECKPOINT 3 Nov 12:55 PKT
+His 12:37 order recorded: C1 emerges in O (top of blueprint); K6 WebTransport/QUIC/UDP comes after K3,K4,K5 (needs UDP open); awam Calendar = Q1 after O and P; NEW R3 Admin > Mail Desk = separate advanced mailbox folder under Admin, different from founder Mail in every respect (docs/claude/FOUNDER-ADMIN-MAIL-DESK-03NOV.md). Mail Desk is no longer inside Q1.

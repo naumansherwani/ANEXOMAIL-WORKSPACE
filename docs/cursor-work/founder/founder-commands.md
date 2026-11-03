@@ -2448,3 +2448,6 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 
 ### 3 Nov 12:31 PKT (verbatim)
 "gandu mainay bola tha polar ka C1 wala idea drop kiya tha mainay bola tha endpoint existing ko hi use karay gay us ke uper ek layer banaye gi duniya ki advance technology ka bola tha gandu claude ne save nahi kiya tha tareeka?"
+
+### 3 Nov 12:37 PKT (verbatim)
+"is ko top prioty pe likho yeh fiance section main aye ga O wala main toh C1 jo hai O main emerge hoga ab yeh ghum nahi kerna hai. aur webtransport, quic, quin, udp with WASM KERNEL tokio aysnc rust ki bari kab aye gi? kaun sa phase hai aur awam walay saray calnadar ke features as it is mujhe founder ko kab do gay? aur yeh bhi likho ke awam jo already likha hai ke awam ke maslay admin main sune aur solve kiye jaiye gay aur is i admin ke andar duniya ka advance pura mailbox system bhi banaye ga ek alag folder hoga. admin pe click karay gay toh admin ke neechay side bar main hoga mail desk us pe click kray gay toh mail ka section aye ga us pe clickkaray gay toh jaisa awam ka bana hai ya use bhi advance mailbox hoga yeh founder ke mailbox se her cheeze alag hogi."
