@@ -6,12 +6,17 @@ attachments (200 MB, `chat_attachments`) alag rehta hai; yeh large-file engine h
 
 ## Phase 13 — File engine (transfer ≠ storage)
 
-| Cheez | Business | Business Pro |
-|---|---|---|
-| Single file max | 2 GB | **5 GB** |
-| Pooled workspace storage | 256 GB | **1 TB** |
-| Monthly transfer volume | 5 TB | **unlimited** |
-| Versions kept | 10 | 30 |
+**FOUNDER CHART 3 Nov 2026 13:09 (replaces the old 2 GB / 5 GB / unlimited table; code = `phase61_file_limits_quota.sql`):**
+
+| Cheez | Business | Business Pro | Business Premium |
+|---|---|---|---|
+| Single file max | 500 MB | 1.5 GB | 4 GB |
+| Monthly transfer per user | 50 GB | 150 GB | 400 GB |
+| Org transfer pool | 20 x 50 GB = ~1 TB | 570 x 150 GB = 85.5 TB fair-use | unlimited users, 400 GB per user |
+| Pooled workspace storage | 256 GB | 1 TB | 1 TB (his word needed) |
+| Versions kept | 10 | 30 | 50 |
+
+Transfer is throttled at 100%, never blocked. Nothing is unlimited.
 
 - Storage = jo bytes rakhi hui hain (`chat_file_versions` state `ready` ka jama).
 - Transfer = jo bytes chali (`chat_transfer_ledger`, append-only). Dono kabhi mix nahi.
@@ -29,7 +34,7 @@ attachments (200 MB, `chat_attachments`) alag rehta hai; yeh large-file engine h
 - Concurrency plan se (`max_concurrent`), backpressure = 24 MB inflight cap.
 - Progress sirf `verified` chunks ka jama — jhooti 100% kabhi nahi.
 
-## Phase 15 — Resumable 5 GB
+## Phase 15 — Resumable (up to the package's per-file max)
 
 - Resume identity = workspace + conversation + naam + bytes + fingerprint
   (head 1 MB + tail 1 MB + size ka sha256). Wahi identity dobara = **wahi version**

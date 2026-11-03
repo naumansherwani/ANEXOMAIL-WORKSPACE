@@ -2260,3 +2260,6 @@ His 13:17/13:19 orders: the ANEXOChat chart (500MB/50GB/1TB pool, 1.5GB/150GB/85
 
 ## CHECKPOINT 3 Nov 13:50 PKT (compact is coming; READ THIS FIRST)
 GREEN LEDGER is at the top of docs/claude/BLUEPRINT-ABC-01NOV.md. Today (3 Nov 09:00-13:50): E142 hardware truth GREEN; J6 desktop-Chrome GREEN (3 live bugs fixed); headers loophole fixed + live; C1 Polar token DROPPED (emerges in O, plan FOUNDER-FINANCE-POLAR-LIVE-PLAN); Bun founder code starts at N (table in AWAM-FEATURES-BUN-TO-LATEST-03NOV.md); R3 Admin>Mail Desk plan; ANEXOChat: awam AI removed, Phase 61 chart = CODE (phase61 SQL, plans.ts, landing, ping), packages draft in anexochat/packages/. Pending for him: K3 `ufw allow 8443/tcp`; optional awam commands (phase61 SQL + Web pull.sh). Next in order: J8 vault lease, K3-K7, L, M, N (first Bun-founder endpoint), O.
+
+## CHECKPOINT 3 Nov 13:35 PKT
+Stale "Business Pro unlimited / 5 GB" lines removed from phase13_15 header, anexochat docs and FeatureGate tagline; Business Premium named in the phase13_15 header. Business Pro is NEVER unlimited (570 users, 150 GB per user per month). Old 2/5/7 GB and unlimited-transfer lines in the "with-added-features" blueprint carry a SUPERSEDED note.

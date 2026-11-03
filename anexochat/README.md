@@ -21,7 +21,7 @@ anexochat/
 | `sql/anexochat_phase11_attachments.sql` | 11 | `chat-media` bucket, attachments, avatars |
 | `sql/anexochat_phase11b_attachment_flag.sql` | 11B | attachment flag fix |
 | `sql/anexochat_phase12_continuity.sql` | 12 | devices, drafts (rev), positions, deep trigram search |
-| `sql/phase13_15_file_engine.sql` | 13/14/15 | transfer vs storage split, chunk sha256, resumable 5 GB |
+| `sql/phase13_15_file_engine.sql` | 13/14/15 | transfer vs storage split, chunk sha256, resumable (500 MB / 1.5 GB / 4 GB per file, Phase 61) |
 | `sql/phase16_18_file_truth_safety.sql` | 16/17/18 | evidence chain, type policy, local-only scanning |
 | `sql/phase19_22_device_safety_work.sql` | 19/20/21/22 | device vault, trust revoke, safety queue, work chain |
 | `sql/phase23_promise_engine.sql` | 23 | promise recovery (human-only), device ban appeals |

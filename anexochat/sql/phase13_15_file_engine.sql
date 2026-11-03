@@ -1,11 +1,15 @@
 -- ============================================================================
--- ANEXOCHAT · PHASE 13 + 14 + 15 — FILE ENGINE / LARGE-FILE / RESUMABLE 5GB
+-- ANEXOCHAT · PHASE 13 + 14 + 15 — FILE ENGINE / LARGE-FILE / RESUMABLE (500 MB / 1.5 GB / 4 GB per file)
 --   Supabase #4 (PostgreSQL = canonical truth)
 --   Idempotent + self-healing. Har naya table par GRANT + RLS.
 --
 -- LOCK:
 --   1. TRANSFER (bytes moved) aur STORAGE (bytes kept) do alag cheezein hain.
---      Business Pro: transfer unlimited · single file max 5 GB · pooled 1 TB store.
+--      FOUNDER CHART (3 Nov 2026 13:09/13:17, replaces the old 'Business Pro unlimited / 5 GB' line):
+--        Business         500 MB per file · 50 GB per user per month · 20 users x 50 GB = ~1 TB
+--        Business Pro     1.5 GB per file · 150 GB per user per month · 570 users x 150 GB = 85.5 TB fair-use (NOT unlimited)
+--        Business Premium 4 GB per file · 400 GB per user per month · unlimited users (400 GB per user fair-use)
+--      Transfer is a monthly per-user quota, throttled never blocked (phase61_file_limits_quota.sql). Storage pool is separate.
 --   2. Version chain: same naam dobara aane par purani version zinda rehti hai.
 --   3. Chunk integrity: har chunk ka sha256 DB mein; mismatch = chunk corrupt,
 --      sirf woh chunk dobara (poori file kabhi nahi).

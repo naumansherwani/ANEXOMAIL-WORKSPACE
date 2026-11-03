@@ -40,7 +40,7 @@ const PLAN_META: Record<
   business_pro: {
     label: "Business Pro",
     badge: "Most complete",
-    tagline: "Unlimited users, 1TB storage, 1.5GB files, 40-person calls, promise engine.",
+    tagline: "Up to 570 users, 1TB storage, 1.5GB files, 40-person calls, promise engine.",
   },
 };
 

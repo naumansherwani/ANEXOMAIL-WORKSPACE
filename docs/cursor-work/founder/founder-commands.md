@@ -1,4 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
+## ▶ 3 Nov 13:30 PKT — founder: phase13_15 SQL main Business Premium ka zikar nahi, Business Pro unlimited likha hai, theek karo; compact ke baad pehle repo padho
+Founder (verbatim): "is main nahi hai bussiness premium ka zikar aur business pro ko unlimited likha hai repo main is ko theek kero. gandu compact chat huwa hai toh tu pehle repo read kerna hai."
+Done: phase13_15 header + title, anexochat/README, anexochat-file-engine.md (chart table), blueprint-original line 91, blueprint-with-added-features (SUPERSEDED note + the 'no monthly cap' line), FeatureGate Business Pro tagline (570 users, not unlimited). Seed rows were already right.
+
 
 ## ▶ 3 Nov 08:06 UTC (13:06 PKT) — founder: ANEXOChat bandwidth/file-limit idea + monthly cap formula (Business 500MB / Biz Pro 1.5GB / Biz Premium 4GB)
 Founder (verbatim): "anexochat ke liye mujhe idea do jis se yeh user bandwith ki gand maar rai gay, business ke liye 500MB file ki limit hai lekin is ka cap monthly lagna chaiye hai? aur business pro ko 1.5gb aur business premium ko 4gb lekin bandiwth ka formula do whatsapp free transfer daita hai yahan mera bussiness se out nahi hona hai"

@@ -88,7 +88,7 @@ Supporting realtime synchronization may use: Supabase Realtime
 **Core philosophy:** Mail when it matters. Chat when it's instant. Work when it's done.
 
 **Business Pro:** £250/month per company
-Includes: Unlimited legitimate internal users, Unlimited messages, Unlimited chat transfer, 1TB pooled workspace storage, maximum individual file per package (Business 500MB, Business Pro 1.5GB, Business Premium 4GB; Phase 61), ANEXOMAIL Business, Advanced administration, Device Trust, Audit Ledger, Access revocation, Export, Privacy controls, Priority support
+Includes: Up to 570 users, Unlimited messages, Monthly chat transfer quota 150 GB per user (fair-use, throttled never blocked; Phase 61), 1TB pooled workspace storage, maximum individual file per package (Business 500MB, Business Pro 1.5GB, Business Premium 4GB; Phase 61), ANEXOMAIL Business, Advanced administration, Device Trust, Audit Ledger, Access revocation, Export, Privacy controls, Priority support
 
 ---
 

@@ -1,6 +1,9 @@
 # ANEXOChat™ Blueprint — The World's Super-Advanced Business Chat
 Status: SOURCE OF TRUTH (locked 14 Aug 2026). Build reads from this file. Founder ne kaha: "kuch add kerwana hai" — additions isi file mein aayengi.
 
+> **SUPERSEDED on file limits (founder 3 Nov 2026 13:30 PKT).** Every '5GB', 'unlimited transfer' and 'unlimited users' line for Business Pro below is OLD. Reality = `anexochat-blueprint-original.md` Phase 61: Business 500 MB / 50 GB per user per month / 20 users; Business Pro 1.5 GB / 150 GB per user / 570 users (85.5 TB fair-use, NOT unlimited); Business Premium 4 GB / 400 GB per user / unlimited users. Do not build from the old lines.
+
+
 Host: anexochat.anexomail.com (Caddy + Namecheap DNS already done).
 
 Complete All Phases. Core intelligence, realtime, file transfer, safety and business logic run through Supabase4 + PostgreSQL + Rust + tRPC + WebTransport/QUIC + Caddy HTTP/3. Bun must be included as a fallback/secondary. Build simultaneously for Founder + Business + Business Pro + ANEXOMAIL AI Pro + AI Business + AI Executive.
@@ -767,7 +770,7 @@ The user should feel: "WhatsApp jaisa simple." Then: "Lekin business ke liye ban
 
 Build ANEXOChat™ as a native human-to-human private communication system inside ANEXOMAIL. Architecture must be API-FREE from the beginning. Do not introduce third-party chat APIs, AI APIs, weather APIs, file-transfer APIs, moderation APIs or external communication SaaS dependencies. Use the existing Supabase/PostgreSQL/SB4 infrastructure, Supabase Realtime where appropriate, and the Rust/WebTransport/HTTP3/QUIC architecture for realtime and large-file transport.
 
-ANEXOChat is HUMAN-TO-HUMAN. Normal chat must not use AI. Business Pro is £2,850/month per company with unlimited legitimate internal users, unlimited messages, unlimited transfer volume, 1TB pooled storage and 5GB maximum individual file size. Do not implement unlimited storage. Do not implement a monthly transfer cap for Business Pro.
+ANEXOChat is HUMAN-TO-HUMAN. Normal chat must not use AI. Business Pro is £2,850/month per company with unlimited legitimate internal users, unlimited messages, unlimited transfer volume, 1TB pooled storage and 5GB maximum individual file size. Do not implement unlimited storage. (OLD, replaced 3 Nov 2026: Business Pro now has a 150 GB per user monthly quota, throttled never blocked.)
 
 Implement the complete Messenger/WhatsApp familiarity layer first, then the business superpower layer, then safety/trust, then cinematic experience, then advanced realtime/transfer and observability.
 
