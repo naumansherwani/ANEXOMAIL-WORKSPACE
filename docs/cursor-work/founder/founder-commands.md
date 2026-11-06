@@ -2550,3 +2550,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 6 Nov 21:17: live Chrome must match repo codes on every device; founder and user site same codes, only layout differs.
 
 - 6 Nov 21:46: (after founder-install OK) founder must be 100% GREEN with the latest technology in the next 2 days; do not mix awam and founder; tell me the order and start the work now. = GO for J8.
+
+- 6 Nov 21:51: E143 must be the world's most advanced SQL (rule: founder SQL = above super advanced). Rewritten as E143 v2.

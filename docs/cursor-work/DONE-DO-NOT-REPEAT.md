@@ -1519,3 +1519,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 6 Nov 21:30 parity pass: Bridge map stacks <1000px, tablet rail removed, search kept, LIVE CHROME = REPO rule on top + gate.
 
 - 6 Nov 21:55 J8a: SQL E143 founder_vault_lease + CHECK_E143 written, sandbox PASS (selftest + 4/4 CHECK, run twice). Not on his server yet. Next J8b Rust signer, J8c kernel verify, J8d UI.
+
+- 6 Nov 22:10 E143 v2: two hash chains (global + per device), gapless unique serials, nonce hash-only, rate limits + clock-back guard, refusal de-dup, revoke -> main audit chain, panic lock, sweep, per-device verify, security_invoker view. Sandbox: upgrade from v1, fresh DB, rerun all PASS, CHECK 5/5. Not on his server yet.

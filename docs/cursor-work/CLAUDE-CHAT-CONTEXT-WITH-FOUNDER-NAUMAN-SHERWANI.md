@@ -2317,3 +2317,6 @@ Parity pass done in code (ui.css, dx.css): no separate tablet rail, Bridge map s
 
 ### Checkpoint 6 Nov 21:55 PKT
 Live bundle index-B8hr8AR0.js = repo dist (curl on founder host) after his founder-install 21:46. His order: founder 100% GREEN in 2 days, founder only (no awam mixing), start now = GO for J8. J8a SQL E143 vault lease written + sandbox PASS; he must run the E143 pull (PULL-COMMANDS). Order next: J8b Rust signer, J8c WASM kernel lease verify, J8d UI + live proof; then K4, K5(awam: parked until founder done), K6, K7, L, M.
+
+### Checkpoint 6 Nov 22:10 PKT
+His 21:51 order: E143 = world-class SQL. E143 v2 written and sandbox-proven (selftest PASS on upgrade, fresh DB and rerun; CHECK 5/5). He runs the one E143 pull next; then J8b Rust signer (uses founder_vault_lease_issue + nonce, signs with the existing Ed25519 key, calls sweep in the tick), J8c kernel verify, J8d UI.

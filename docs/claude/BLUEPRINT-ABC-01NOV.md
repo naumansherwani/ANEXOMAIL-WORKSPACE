@@ -205,3 +205,5 @@ SQL E114 14/14 (his paste 1 Nov), Rust + UI installed by his founder-install 08:
 
 
 **J8 status 6 Nov 21:55:** GO given. J8a SQL E143 + CHECK_E143 written, sandbox PASS (not on his server, NOT GREEN). Next J8b Rust lease signer, J8c kernel verify, J8d UI.
+
+**J8a 6 Nov 22:10:** E143 v2 (two chains, gapless serials, rate limits, clock guard, audit link, panic, sweep) sandbox PASS; waiting for his server paste.

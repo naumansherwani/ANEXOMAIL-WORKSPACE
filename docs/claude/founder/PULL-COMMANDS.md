@@ -655,3 +655,5 @@ Web pull.sh is NOT needed for this.
 
 **6 Nov 21:55 J8a SQL E143 (vault lease), 1 point, CHECK = 4 rows `t`:**
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E143_founder_vault_lease CHECK_E143 2>&1 | tail -14`
+
+**6 Nov 22:10 J8a E143 v2 (replaces the 21:55 command; same command, now CHECK = 5 rows `t`):** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E143_founder_vault_lease CHECK_E143 2>&1 | tail -14`
