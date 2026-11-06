@@ -2335,3 +2335,9 @@ J8b installed (his paste 22:17). He asked for more advanced technology: E144 (ke
 
 ### Checkpoint 6 Nov 22:58 PKT
 Fix on top of 22:50: E143 guard function now includes the E144 rules (to_jsonb, no-op without the columns), so re-running E143 after E144 is safe. Proven in the sandbox (both DBs, CHECK 5/5 + 4/4). Command for him unchanged (PULL-COMMANDS 22:50).
+
+### Checkpoint 6 Nov 22:24 PKT (timeline of this evening, PKT)
+- 19:24 order: next + nothing broken; 19:33-19:45 device approval + lockout fixes installed; 20:09-20:38 his anger: ONE website one build, mobile/tablet; 20:59 phone screenshots GREEN for 6 screens; 21:17 LIVE CHROME = REPO rule; 21:30 parity pass pushed (1ec6ee78), his install 21:46, live bundle index-B8hr8AR0.js = repo dist.
+- 21:46 GO for J8. 22:04 J8a (SQL E143 v2) GREEN. 22:17 J8b (Rust lease.rs, 215 tests, 401 proof) installed. 22:24 J8a2 (SQL E144 key-split + PoP + crypto-shred) GREEN, his paste.
+- Code map: SQL docs/cursor-work/sql/E143_founder_vault_lease.sql, E144_founder_vault_lease_keysplit.sql, CHECK_E143/E144; Rust server/founder/src/lease.rs + main.rs (vault_lease_ep, vault_status_ep, spawn_sweep); design docs/claude/J8-LEASE-ADVANCED-DESIGN-06NOV.md.
+- NEXT: J8b2 Rust (route -> founder_vault_lease_grant, ES256 device proof via ring, server half HKDF(FOUNDER_VAULT_MASTER, device_id||half_salt)), J8c WASM kernel lease@1, J8d UI. Server-side env FOUNDER_VAULT_MASTER must be created by him once (the installer will create it like the other keys).
