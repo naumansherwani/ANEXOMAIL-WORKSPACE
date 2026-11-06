@@ -54,6 +54,16 @@ if big and "docs/cursor-work/founder/founder-commands.md" not in staged:
     fail("24 commands", "code changed but founder-commands.md (verbatim order + status) not updated in this commit")
 if big and "docs/cursor-work/DONE-DO-NOT-REPEAT.md" not in staged:
     fail("ledger", "code changed but DONE-DO-NOT-REPEAT.md not updated")
+# Founder 6 Nov 2026 20:45 ("rules follow kerwao"): the chat context is updated with every code change, and the two top rules can never be removed from the first lines.
+if big and "docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md" not in staged:
+    fail("context", "code changed but CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md (new checkpoint) not updated in this commit")
+for top in ("AGENTS.md", "CLAUDE.md"):
+    try:
+        head = open(top, encoding="utf-8").read(2500)
+    except OSError:
+        head = ""
+    if "ONE WEBSITE, ONE BUILD" not in head or "RULE 34" not in head:
+        fail("34 ONE BUILD", top + ": the ONE WEBSITE, ONE BUILD and RULE 34 blocks must stay at the very top (founder 6 Nov 2026)")
 srv = [] if ALL else [f for f in staged if re.match(r"(founder-web/src|founder-web/dist|server/founder/src|docs/cursor-work/sql)/", f)]
 if srv and "docs/claude/founder/PULL-COMMANDS.md" not in staged:
     fail("24 pull command", "server-affecting change but PULL-COMMANDS.md not updated")

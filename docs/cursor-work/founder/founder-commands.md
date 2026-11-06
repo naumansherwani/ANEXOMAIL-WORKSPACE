@@ -1,4 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
+## ▶ 6 Nov 20:45 PKT — founder: install paste OK; update repo codes + chat context now; make Claude follow the rules; tell me my task and do not overload me
+Founder (verbatim): "yeh claude ke liye repo mai codes aur chat context abhi ke abhi update kero aur rules follow kerwao claude ke liye. mujhe bata do mera kaam aur mat bharao"
+Done: rules-gate enforces context + top rules; BEFORE EVERY REPLY checklist; context 21:05; his one task named.
+
 ## ▶ 6 Nov 20:38 PKT — founder (angry): you are making 3 parts like Lovable (computer, mobile, tablet separate); write the rule at the top NOW: the whole website is built together, founder side, mobile + tablet + computer + laptop
 Founder (verbatim, abuse trimmed): "tu website ke lovable ki tarah 3 hisay ker diye hain computer aur mobile tablet ko alag alag bana raha hai. pehle tu rules ko top pe likh abhi ke abhi jis main puri website ek saath build hogi founder side mobile tablet computer laptop"
 Done: ONE WEBSITE, ONE BUILD block at the top of AGENTS.md, CLAUDE.md, START-HERE; audit (no JS size switch); context 21:00.

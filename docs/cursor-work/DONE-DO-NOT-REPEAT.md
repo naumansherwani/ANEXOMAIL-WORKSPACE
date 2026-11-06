@@ -1509,3 +1509,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 ## 6 Nov 2026 20:55 PKT — Mobile + tablet pass part 1: minmax(0,1fr) grids, settings tab strip, field rows wrap, 44 px touch targets (switches keep look), 97 tests. Rule 34/19 now the first lines of AGENTS.md, CLAUDE.md, START-HERE. Waits for founder-install + his phone screenshots.
 
 ## 6 Nov 2026 21:00 PKT — LOCKED: ONE WEBSITE, ONE BUILD (no separate mobile/tablet/desktop versions) at the top of AGENTS.md, CLAUDE.md, START-HERE. Docs only.
+
+## 6 Nov 2026 21:05 PKT — rules-gate: context checkpoint required with code changes; ONE BUILD + RULE 34 must stay at the top of AGENTS.md/CLAUDE.md. START-HERE has the BEFORE EVERY REPLY checklist. His install 20:45 OK (mobile/tablet CSS live).

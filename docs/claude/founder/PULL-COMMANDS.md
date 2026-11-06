@@ -642,3 +642,5 @@ Web pull.sh is NOT needed for this.
 
 ## ABHI PENDING (6 Nov 20:55 PKT): founder-install ONE more time (SPA only). Why: mobile + tablet pass (his order 20:17 / 20:24): phone cards no longer cut off, settings tabs no longer overlap, Save stays in its card, 44 px touch targets on touch screens, switches keep their look. Then reload the phone and send screenshots of Home, Bridge, Settings (Personal + Appearance), Finance, People, Mail; I mark each in GREEN-LIST-06NOV.md.
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
+
+<!-- 6 Nov 20:45: his founder-install (mobile + tablet CSS) paste = OK. NO pull pending. His only task: reload the phone and send screenshots of Home, Bridge, Settings (Personal + Appearance), Finance, People, Mail. -->

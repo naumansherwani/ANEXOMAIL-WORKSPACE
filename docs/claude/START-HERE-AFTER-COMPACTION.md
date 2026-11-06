@@ -1,5 +1,9 @@
 # START HERE after a compaction or a new chat (updated 6 Nov 2026 20:30 PKT, founder order 20:00 "rules her cheese top pe rakho")
 
+## BEFORE EVERY REPLY (checklist, founder 6 Nov 20:45; the rules-gate enforces the machine-checkable parts)
+1. His order pasted verbatim into founder-commands.md first. 2. ONE website, ONE build; mobile + tablet + laptop at 390 / 820 / 1200+ for anything visual. 3. Chat context checkpoint + DONE line + PULL-COMMANDS note in the SAME commit as the code (gate fails otherwise). 4. At most 1-2 pull points, in Rule 46 order. 5. Roman Urdu, short, no padding, no repeated lists; his own task stated in ONE line. 6. End with the Rule-70 table and "Abhi code mein NAHI". 7. Never fake GREEN; never touch the footer; never offer the Polar token.
+
+
 ## ONE WEBSITE, ONE BUILD (top of everything, founder 6 Nov 20:38)
 One codebase, built once, computer + laptop + tablet + mobile together. No separate mobile/tablet/desktop versions, no JS screen-size switch (`isMobile`-style), no feature that exists on one size only. Only the layout flexes. A new feature is written responsive in the same change. Audit 6 Nov: the founder SPA already has no JS device switch (0 hits); only CSS media queries; what collapses on small screens is labels and secondary text (`.dx-what` endpoint column, settings tab descriptions/icons, the "coming soon" list, sidebar text labels become icons, the sidebar becomes a bottom bar on phone), never a feature.
 
