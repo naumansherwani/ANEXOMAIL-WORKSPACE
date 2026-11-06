@@ -74,6 +74,7 @@ docs/cursor-work/sql/E139_founder_webauthn_l3.sql
 docs/cursor-work/sql/E140_founder_flare_push.sql
 docs/cursor-work/sql/E141_founder_flare_receipts.sql
 docs/cursor-work/sql/E142_founder_hardware_truth.sql
+docs/cursor-work/sql/E143_founder_vault_lease.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/E68_proof.sql

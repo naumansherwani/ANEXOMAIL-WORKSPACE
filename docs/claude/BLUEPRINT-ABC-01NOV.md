@@ -203,3 +203,5 @@ Rows marked pending are decided together before code (Rule 63): the technology c
 ### I2 = GREEN (3 Nov 08:58 PKT)
 SQL E114 14/14 (his paste 1 Nov), Rust + UI installed by his founder-install 08:21, my Chrome look on his tab: Settings > Appearance renders, Ambient Studio shows the server catalog (`/founder/v1/ambient/catalog` 200, `/founder/v1/settings` 200), the Surprise button called `/founder/v1/ambient/surprise` 200 and "Back to saved" reverted it (nothing saved). The "key registry" is the 14-key settings registry inside E108/E114 (no separate screen). NEXT letter = J3 (Rust `webauthn-rs`).
 
+
+**J8 status 6 Nov 21:55:** GO given. J8a SQL E143 + CHECK_E143 written, sandbox PASS (not on his server, NOT GREEN). Next J8b Rust lease signer, J8c kernel verify, J8d UI.

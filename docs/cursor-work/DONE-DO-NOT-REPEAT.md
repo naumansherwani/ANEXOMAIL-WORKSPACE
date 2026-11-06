@@ -1517,3 +1517,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 ## 6 Nov 2026 21:25 PKT — Parity audit: device trust label visible on phone; tests guard against any JS screen-size switch; START-HERE section 7 lists the only deliberate layout differences.
 
 - 6 Nov 21:30 parity pass: Bridge map stacks <1000px, tablet rail removed, search kept, LIVE CHROME = REPO rule on top + gate.
+
+- 6 Nov 21:55 J8a: SQL E143 founder_vault_lease + CHECK_E143 written, sandbox PASS (selftest + 4/4 CHECK, run twice). Not on his server yet. Next J8b Rust signer, J8c kernel verify, J8d UI.

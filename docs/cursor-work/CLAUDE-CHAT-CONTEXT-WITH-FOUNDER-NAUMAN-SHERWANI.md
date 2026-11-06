@@ -2314,3 +2314,6 @@ His goal (21:06): the founder side is the SAME code on phone, tablet and laptop;
 
 ### Checkpoint 6 Nov 21:30 PKT
 Parity pass done in code (ui.css, dx.css): no separate tablet rail, Bridge map stacks <1000px, audit 390/768/820/1024 clean. New rule LIVE CHROME = REPO on top of AGENTS/CLAUDE/START-HERE + gate. Next: founder-install, then live bundle hash check; J8 only on his go.
+
+### Checkpoint 6 Nov 21:55 PKT
+Live bundle index-B8hr8AR0.js = repo dist (curl on founder host) after his founder-install 21:46. His order: founder 100% GREEN in 2 days, founder only (no awam mixing), start now = GO for J8. J8a SQL E143 vault lease written + sandbox PASS; he must run the E143 pull (PULL-COMMANDS). Order next: J8b Rust signer, J8c WASM kernel lease verify, J8d UI + live proof; then K4, K5(awam: parked until founder done), K6, K7, L, M.
