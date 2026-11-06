@@ -86,6 +86,11 @@ begin
   if new.serial < old.serial then raise exception 'E143: the lease serial only goes up' using errcode = '42501'; end if;
   if old.revoked_ms is not null and (new.revoked_ms is distinct from old.revoked_ms or new.expires_ms > old.expires_ms or new.serial <> old.serial or new.issued_ms <> old.issued_ms) then
     raise exception 'E143: a revoked device can never get its lease back' using errcode = '42501'; end if;
+  -- E144 rules, written with to_jsonb so they are no-ops until the E144 columns exist (a re-run of E143 must never weaken the guard)
+  if to_jsonb(old) ->> 'key_thumb' is not null and to_jsonb(new) ->> 'key_thumb' is distinct from to_jsonb(old) ->> 'key_thumb' then raise exception 'E144: the device key is bound once and never changes' using errcode = '42501'; end if;
+  if to_jsonb(old) ->> 'shred_nonce' is null and to_jsonb(new) ->> 'shred_nonce' is not null and to_jsonb(old) ->> 'shredded_ms' is not null then raise exception 'E144: a shredded nonce never comes back' using errcode = '42501'; end if;
+  if to_jsonb(old) ->> 'shred_nonce' is not null and to_jsonb(new) ->> 'shred_nonce' is not null and to_jsonb(new) ->> 'shred_nonce' <> to_jsonb(old) ->> 'shred_nonce' then raise exception 'E144: the shred nonce never changes (the half must stay derivable)' using errcode = '42501'; end if;
+  if to_jsonb(old) ->> 'last_proof_ms' is not null and to_jsonb(new) ->> 'last_proof_ms' is not null and (to_jsonb(new) ->> 'last_proof_ms')::bigint < (to_jsonb(old) ->> 'last_proof_ms')::bigint then raise exception 'E144: proof time only goes up' using errcode = '42501'; end if;
   return new;
 end $$;
 drop trigger if exists founder_vault_lease_guard on public.founder_vault_lease;

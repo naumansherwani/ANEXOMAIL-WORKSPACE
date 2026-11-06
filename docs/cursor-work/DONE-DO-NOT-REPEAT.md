@@ -1529,3 +1529,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 6 Nov 22:40 J8b written: server/founder/src/lease.rs (strict lease_data, refusal map, sweep loop) + routes POST /founder/v1/vault/lease, GET /founder/v1/vault/status. 215 tests ok offline. Not installed yet.
 
 - 6 Nov 22:17 J8b INSTALLED on his server (215 tests, vault/lease 401 without token). 22:50 E144 written + sandbox PASS; E143 hardened (grant by column when E144 exists, revoke trigger shreds when E144 exists, so re-run order no longer matters).
+
+- 6 Nov 22:58 E143 guard now carries the E144 rules via to_jsonb (a re-run of E143 can never weaken the guard). Sandbox: E143, E144, E143 again on an upgraded and a fresh DB: CHECK_E143 5/5 + CHECK_E144 4/4. (22:50 commit had a re-run bug: fixed.)

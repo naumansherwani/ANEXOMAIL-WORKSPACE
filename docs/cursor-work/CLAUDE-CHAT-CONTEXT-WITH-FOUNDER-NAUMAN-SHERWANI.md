@@ -2332,3 +2332,6 @@ J8b Rust written (lease.rs + 2 routes + sweep every 60 s), 215 tests offline. Ne
 
 ### Checkpoint 6 Nov 22:50 PKT
 J8b installed (his paste 22:17). He asked for more advanced technology: E144 (key-split vault key, DPoP-style device-key proof, crypto-shred on revoke) written, sandbox PASS. Full technology table per layer: docs/claude/J8-LEASE-ADVANCED-DESIGN-06NOV.md. Order: he runs the E143+E144 pull -> J8b2 Rust (grant route + ES256 proof + HKDF half, env FOUNDER_VAULT_MASTER) -> J8c kernel lease@1 -> J8d UI. Technology rule reminder: SQL = above super advanced, Rust = server, WASM kernel = browser verify, React-TS UI = screen; never mix layers.
+
+### Checkpoint 6 Nov 22:58 PKT
+Fix on top of 22:50: E143 guard function now includes the E144 rules (to_jsonb, no-op without the columns), so re-running E143 after E144 is safe. Proven in the sandbox (both DBs, CHECK 5/5 + 4/4). Command for him unchanged (PULL-COMMANDS 22:50).
