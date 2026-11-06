@@ -2323,3 +2323,6 @@ His 21:51 order: E143 = world-class SQL. E143 v2 written and sandbox-proven (sel
 
 ### Checkpoint 6 Nov 22:20 PKT
 E143 on his server: selftest PASS, CHECK 4/5 (row 5 FAIL). Cause found from his diag paste: v1 table existed, shape constraints missing. Fixed in E143 (upgrade block), sandbox repro 5/5. He re-runs the one E143 command; GREEN only when 5 OK. Then J8b Rust.
+
+### Checkpoint 6 Nov 22:05 PKT
+J8a GREEN on his paste (CHECK_E143 5/5, E65 6/6). Next: J8b Rust lease signer (route + Ed25519 signature over the lease, sweep in the tick), then J8c kernel verify, J8d UI.
