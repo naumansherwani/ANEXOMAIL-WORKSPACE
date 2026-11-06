@@ -1525,3 +1525,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 6 Nov 22:20 E143 upgrade fix: CREATE TABLE IF NOT EXISTS had skipped the named shape CHECKs on a server that already had the v1 table; now added by DO block. Reproduced in sandbox from a v1-shaped DB: PASS + CHECK 5/5.
 
 - 6 Nov 22:05 J8a GREEN (E143 on his server, CHECK 5/5, E65 6/6). Next J8b Rust signer.
+
+- 6 Nov 22:40 J8b written: server/founder/src/lease.rs (strict lease_data, refusal map, sweep loop) + routes POST /founder/v1/vault/lease, GET /founder/v1/vault/status. 215 tests ok offline. Not installed yet.

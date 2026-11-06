@@ -209,3 +209,5 @@ SQL E114 14/14 (his paste 1 Nov), Rust + UI installed by his founder-install 08:
 **J8a 6 Nov 22:10:** E143 v2 (two chains, gapless serials, rate limits, clock guard, audit link, panic, sweep) sandbox PASS; waiting for his server paste.
 
 **J8a = GREEN (6 Nov 22:04 PKT):** his pastes: Supabase editor selftest PASS (22:02 screenshots) and sql-run E143 + CHECK_E143 all OK + E65 sweep 6/6 OK (22:04; row 5 fixed by the upgrade block, bfbfdd18). SQL-only phase: no screen, so the Chrome look is not applicable. J8 as a whole is NOT GREEN: J8b Rust signer, J8c kernel verify, J8d UI + live proof follow.
+
+**J8b 6 Nov 22:40:** Rust lease signer written (215 tests), NOT installed, NOT green. Lease = Ed25519 envelope over {type vault-lease@1, device_id, serial, issued_ms, expires_ms, ttl_s, nonce}; fail-closed validation.

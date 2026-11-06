@@ -2556,3 +2556,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 6 Nov 22:02: his E143 paste: selftest PASS on server, CHECK row 5 FAIL (diag: old v1 table kept loose checks, shape constraints missing). Fix: E143 adds them on upgrade.
 
 - 6 Nov 22:04: his E143 re-run paste all OK + E65 sweep 6/6 OK, order: 'green kero'.
+
+- 6 Nov 22:04 follow-up: 'green kero' done (J8a), continue the order J8b -> J8c -> J8d.

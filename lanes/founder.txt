@@ -201,6 +201,7 @@ server/founder/src/ftoken.rs
 server/founder/src/gate.rs
 server/founder/src/hostproof.rs
 server/founder/src/inbox.rs
+server/founder/src/lease.rs
 server/founder/src/ledger.rs
 server/founder/src/live.rs
 server/founder/src/login.rs

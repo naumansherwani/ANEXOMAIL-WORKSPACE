@@ -34,6 +34,7 @@ mod tls256;
 mod passkey_core;
 mod passkey;
 mod flare;
+mod lease;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -473,6 +474,29 @@ async fn merkle_stats_ep(State(st): State<S>, h: HeaderMap) -> axum::response::R
     match s { Some(v) if v.is_object() => signed(&st, json!({"connected": true, "stats": v, "checkpoints": l})), _ => signed(&st, ledger::missing()) }
 }
 /// G5b: newest C2SP signed checkpoint + keys. The browser kernel verifies the signature; this only delivers it.
+/// POST /founder/v1/vault/lease: renew THIS device's vault lease (J8b). The device is the one inside the founder token (`did`); SQL E143 decides; a lease is signed (Ed25519 envelope) only
+/// when the answer passes `lease::lease_data`. Write path: always asks the database fresh, so a revoke is honoured at once.
+async fn vault_lease_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
+    let c = match authed_w(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
+    let Some(sb) = st.sb.as_ref() else { return StatusCode::SERVICE_UNAVAILABLE.into_response() };
+    let did = match (gate::bearer(h.get("authorization").and_then(|v| v.to_str().ok())), &st.ft) {
+        (Some(t), Some(k)) if ftoken::looks_founder(t) => match k.verify(t, now_s()) { Ok(f) => f.did, Err(_) => return StatusCode::UNAUTHORIZED.into_response() },
+        _ => return (StatusCode::FORBIDDEN, Json(json!({"error": "A vault lease needs a device-bound founder session."}))).into_response(),
+    };
+    let Some(r) = sb.rpc("founder_vault_lease_issue", json!({"p_uid": c.sub, "p_device": did, "p_ttl_s": 900})).await else { return (StatusCode::SERVICE_UNAVAILABLE, Json(json!({"error": "Vault lease is not installed yet."}))).into_response() };
+    if r.get("ok").and_then(|v| v.as_bool()) == Some(false) {
+        let why = r.get("why").and_then(|v| v.as_str()).unwrap_or("");
+        return (StatusCode::from_u16(lease::refusal_status(why)).unwrap_or(StatusCode::BAD_GATEWAY), Json(json!({"error": lease::refusal_text(why), "why": why}))).into_response();
+    }
+    match lease::lease_data(&r, &did) { Some(d) => signed(&st, d), None => (StatusCode::BAD_GATEWAY, Json(json!({"error": "The lease answer was not valid, so nothing was signed."}))).into_response() }
+}
+/// GET /founder/v1/vault/status: every approved device with its lease state (live / expired / revoked / none), seconds left and ledger head. Signed answer.
+async fn vault_status_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
+    let c = match authed(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
+    let Some(sb) = st.sb.as_ref() else { return StatusCode::SERVICE_UNAVAILABLE.into_response() };
+    match sb.rpc("founder_vault_lease_status", json!({"p_uid": c.sub})).await { Some(v) => signed(&st, v), None => (StatusCode::SERVICE_UNAVAILABLE, Json(json!({"error": "Vault lease is not installed yet."}))).into_response() }
+}
+
 /// GET /founder/v1/flare/key: the VAPID public key the phone subscribes with (public by nature, still behind the founder session).
 async fn flare_key_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
     if let Err(code) = authed(&st, &h).await { return code.into_response(); }
@@ -682,6 +706,8 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/passkey/finish", axum::routing::post(passkey::finish_ep))
         .route("/founder/v1/passkey/list", get(passkey::list_ep))
         .route("/founder/v1/flare/key", get(flare_key_ep))
+        .route("/founder/v1/vault/lease", axum::routing::post(vault_lease_ep))
+        .route("/founder/v1/vault/status", get(vault_status_ep))
         .route("/founder/v1/flare/ack", axum::routing::post(flare_ack_ep))
         .route("/founder/v1/chairman/{door}", axum::routing::post(passkey::door_ep))
         .route("/founder/v1/inbox", get(inbox_ep))
@@ -753,6 +779,7 @@ async fn main() {
     let (polar, pcfg) = match polar::Cfg::from_env() { Some(c) => (polar::Live::new(true), Some(c)), None => (polar::Live::off(), None) };
     eprintln!("founder: polar reader {}", if pcfg.is_some() { "ON (read-only, metrics API)" } else { "OFF (no FOUNDER_POLAR_READ_TOKEN)" });
     if let Some(c) = pcfg { polar::spawn(polar.clone(), c, now_s); }
+    if let Some(s) = &sb { lease::spawn_sweep(s.clone()); }
     match (&sb, flare::Cfg::from_env()) { (Some(s), Some(c)) => flare::spawn(s.clone(), c), (_, None) => eprintln!("founder: flare sender OFF (FOUNDER_FLARE=off or no usable VAPID key)"), _ => {} }
     if let Some(s) = &sb { live::start(s.clone()); } // 4b-2: the one process-wide live tick
     let st = Arc::new(St { sb, hmac_key: key.into_bytes(), jwks: RwLock::new(jwks), lim: Default::default(), ft, legacy, polar, hook: Default::default(), ed, reqsig, gate: authcache::AuthCache::new(std::time::Duration::from_secs(5)) });

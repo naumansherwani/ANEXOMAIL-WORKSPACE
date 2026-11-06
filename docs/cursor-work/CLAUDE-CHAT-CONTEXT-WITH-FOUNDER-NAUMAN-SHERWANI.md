@@ -2326,3 +2326,6 @@ E143 on his server: selftest PASS, CHECK 4/5 (row 5 FAIL). Cause found from his 
 
 ### Checkpoint 6 Nov 22:05 PKT
 J8a GREEN on his paste (CHECK_E143 5/5, E65 6/6). Next: J8b Rust lease signer (route + Ed25519 signature over the lease, sweep in the tick), then J8c kernel verify, J8d UI.
+
+### Checkpoint 6 Nov 22:40 PKT
+J8b Rust written (lease.rs + 2 routes + sweep every 60 s), 215 tests offline. Needs his founder-install, then a 401 proof. Next J8c: WASM kernel `lease@1` verify (reuse the one Rule-52 kernel in web-wasm/), J8d UI (Settings > Privacy: device lease card + auto-renew every ~5 min in api.ts).
