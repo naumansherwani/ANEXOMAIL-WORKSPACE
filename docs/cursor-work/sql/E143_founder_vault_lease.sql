@@ -38,6 +38,14 @@ do $$ begin
   if not exists (select 1 from pg_constraint where conname = 'founder_vault_lease_nonce_shape') then
     alter table public.founder_vault_lease add constraint founder_vault_lease_nonce_shape check (nonce_hash is null or nonce_hash ~ '^[0-9a-f]{64}$');
   end if;
+  -- upgrade from v1 (table already there, so CREATE TABLE skipped its named shape rules): add them now
+  if not exists (select 1 from pg_constraint where conrelid = 'public.founder_vault_lease'::regclass and conname = 'founder_vault_lease_live_shape') then
+    alter table public.founder_vault_lease add constraint founder_vault_lease_live_shape check (revoked_ms is not null or expires_ms = issued_ms + ttl_s * 1000::bigint);
+  end if;
+  if not exists (select 1 from pg_constraint where conrelid = 'public.founder_vault_lease'::regclass and conname = 'founder_vault_lease_cut_shape') then
+    alter table public.founder_vault_lease add constraint founder_vault_lease_cut_shape check (revoked_ms is null or expires_ms <= revoked_ms);
+  end if;
+  -- the two loose v1 rules (expires > issued, unnamed) are replaced by the exact shape rules above
   alter table public.founder_vault_lease drop constraint if exists founder_vault_lease_check;
   alter table public.founder_vault_lease drop constraint if exists founder_vault_lease_check1;
   create table if not exists public.founder_vault_lease_event (

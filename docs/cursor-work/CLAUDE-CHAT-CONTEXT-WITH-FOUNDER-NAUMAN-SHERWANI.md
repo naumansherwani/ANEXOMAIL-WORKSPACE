@@ -2320,3 +2320,6 @@ Live bundle index-B8hr8AR0.js = repo dist (curl on founder host) after his found
 
 ### Checkpoint 6 Nov 22:10 PKT
 His 21:51 order: E143 = world-class SQL. E143 v2 written and sandbox-proven (selftest PASS on upgrade, fresh DB and rerun; CHECK 5/5). He runs the one E143 pull next; then J8b Rust signer (uses founder_vault_lease_issue + nonce, signs with the existing Ed25519 key, calls sweep in the tick), J8c kernel verify, J8d UI.
+
+### Checkpoint 6 Nov 22:20 PKT
+E143 on his server: selftest PASS, CHECK 4/5 (row 5 FAIL). Cause found from his diag paste: v1 table existed, shape constraints missing. Fixed in E143 (upgrade block), sandbox repro 5/5. He re-runs the one E143 command; GREEN only when 5 OK. Then J8b Rust.
