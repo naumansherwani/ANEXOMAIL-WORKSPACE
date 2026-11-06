@@ -662,3 +662,5 @@ Web pull.sh is NOT needed for this.
 
 **6 Nov 22:40 J8b Rust lease signer (1 point, Rust only, 215 tests):** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh)`
 Proof after: `curl -s -o /dev/null -w '%{http_code}\n' -X POST https://founderworkspace.anexomail.com/founder/v1/vault/lease` must print 401 (door closed without token).
+
+**6 Nov 22:50 J8a2 SQL E144 (1 point, CHECK = 4 rows OK; run AFTER E143, which is already on the server):** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E143_founder_vault_lease E144_founder_vault_lease_keysplit CHECK_E143 CHECK_E144 2>&1 | tail -16`

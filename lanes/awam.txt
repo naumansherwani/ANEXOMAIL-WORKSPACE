@@ -280,6 +280,7 @@ docs/cursor-work/sql/CHECK_E140.sql
 docs/cursor-work/sql/CHECK_E141.sql
 docs/cursor-work/sql/CHECK_E142.sql
 docs/cursor-work/sql/CHECK_E143.sql
+docs/cursor-work/sql/CHECK_E144.sql
 docs/cursor-work/sql/CHECK_E42_E47.sql
 docs/cursor-work/sql/CHECK_E48.sql
 docs/cursor-work/sql/CHECK_E50.sql

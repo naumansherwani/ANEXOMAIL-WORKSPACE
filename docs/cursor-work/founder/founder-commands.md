@@ -2558,3 +2558,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 6 Nov 22:04: his E143 re-run paste all OK + E65 sweep 6/6 OK, order: 'green kero'.
 
 - 6 Nov 22:04 follow-up: 'green kero' done (J8a), continue the order J8b -> J8c -> J8d.
+
+- 6 Nov 22:17: (after J8b install paste OK) 'is technology mein aur advance ki gunjaish ho to kero; claude ke liye top codes/rules/context update.' => E144 key-split + PoP + crypto-shred designed and written; design doc docs/claude/J8-LEASE-ADVANCED-DESIGN-06NOV.md.

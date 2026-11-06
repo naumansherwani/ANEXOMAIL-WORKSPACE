@@ -62,3 +62,11 @@ Audit 6 Nov 21:25: (a) JS: no screen-size switch anywhere (the only size reads a
 ## 8. LIVE CHROME = REPO (founder 6 Nov 21:17)
 Live Chrome must match the repo code on every device, founder AND awam site. Same codes, only layout differs. Check the live bundle hash against the repo build, then 390 / 820 / 1200+.
 Update 21:30: tablet no longer has its own rail; labelled sidebar from 768; search box always in the top bar; Bridge map stacks under 1000 px; Settings tabs keep icons + descriptions.
+
+
+## 9. TECHNOLOGY PER LAYER (founder 6 Nov 22:17: every phase names its technology; never mix layers)
+- SQL (Postgres, above super advanced: constraints, triggers, hash chains, RLS, selftest, CHECK file) = decisions + ledgers.
+- Rust `anexomail-founder` (axum 0.8, tokio, ring) = server, signing, key derivation. No Node/Bun on the founder server.
+- WASM kernel (one Rule-52 kernel, `web-wasm/`) = browser-side verification.
+- React 19 + Vite + TS strict + TanStack Router + Tailwind 4 + shadcn, WebCrypto = screens. CINEMATIC look stays.
+- J8 detail and layer table: `docs/claude/J8-LEASE-ADVANCED-DESIGN-06NOV.md`. Current: J8a GREEN, J8b installed, E144 written (waits his pull), then J8b2, J8c, J8d.

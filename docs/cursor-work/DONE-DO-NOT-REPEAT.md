@@ -1527,3 +1527,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 6 Nov 22:05 J8a GREEN (E143 on his server, CHECK 5/5, E65 6/6). Next J8b Rust signer.
 
 - 6 Nov 22:40 J8b written: server/founder/src/lease.rs (strict lease_data, refusal map, sweep loop) + routes POST /founder/v1/vault/lease, GET /founder/v1/vault/status. 215 tests ok offline. Not installed yet.
+
+- 6 Nov 22:17 J8b INSTALLED on his server (215 tests, vault/lease 401 without token). 22:50 E144 written + sandbox PASS; E143 hardened (grant by column when E144 exists, revoke trigger shreds when E144 exists, so re-run order no longer matters).

@@ -2329,3 +2329,6 @@ J8a GREEN on his paste (CHECK_E143 5/5, E65 6/6). Next: J8b Rust lease signer (r
 
 ### Checkpoint 6 Nov 22:40 PKT
 J8b Rust written (lease.rs + 2 routes + sweep every 60 s), 215 tests offline. Needs his founder-install, then a 401 proof. Next J8c: WASM kernel `lease@1` verify (reuse the one Rule-52 kernel in web-wasm/), J8d UI (Settings > Privacy: device lease card + auto-renew every ~5 min in api.ts).
+
+### Checkpoint 6 Nov 22:50 PKT
+J8b installed (his paste 22:17). He asked for more advanced technology: E144 (key-split vault key, DPoP-style device-key proof, crypto-shred on revoke) written, sandbox PASS. Full technology table per layer: docs/claude/J8-LEASE-ADVANCED-DESIGN-06NOV.md. Order: he runs the E143+E144 pull -> J8b2 Rust (grant route + ES256 proof + HKDF half, env FOUNDER_VAULT_MASTER) -> J8c kernel lease@1 -> J8d UI. Technology rule reminder: SQL = above super advanced, Rust = server, WASM kernel = browser verify, React-TS UI = screen; never mix layers.

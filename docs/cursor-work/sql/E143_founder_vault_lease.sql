@@ -70,7 +70,11 @@ do $$ begin
   alter table public.founder_vault_lease enable row level security;
   alter table public.founder_vault_lease_event enable row level security;
   revoke all on public.founder_vault_lease, public.founder_vault_lease_event from public, anon, authenticated, service_role;
-  grant select on public.founder_vault_lease, public.founder_vault_lease_event to service_role;
+  grant select on public.founder_vault_lease_event to service_role;
+  -- E144 narrows the lease table to named columns (the shred nonce is never readable); a re-run of E143 must not undo that
+  if not exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'founder_vault_lease' and column_name = 'shred_nonce') then
+    grant select on public.founder_vault_lease to service_role;
+  end if;
 end $$;
 
 -- 2) guards ----------------------------------------------------------------------------------------------------------------------------------------
@@ -179,7 +183,12 @@ declare v_now bigint := public._fh_now_ms(); l public.founder_vault_lease%rowtyp
 begin
   if old.revoked_at is null and new.revoked_at is not null then
     perform pg_advisory_xact_lock(hashtextextended('founder_vault_lease:' || new.id::text, 0));
-    update public.founder_vault_lease set revoked_ms = v_now, expires_ms = least(expires_ms, v_now) where device_id = new.id and revoked_ms is null returning * into l;
+    if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'founder_vault_lease' and column_name = 'shred_nonce') then
+      -- E144 is installed: revoking also destroys the key-half nonce (one statement, so the E144 shape rule holds)
+      execute 'update public.founder_vault_lease set revoked_ms = $1, expires_ms = least(expires_ms, $1), shred_nonce = null, shredded_ms = $1 where device_id = $2 and revoked_ms is null returning *' into l using v_now, new.id;
+    else
+      update public.founder_vault_lease set revoked_ms = v_now, expires_ms = least(expires_ms, v_now) where device_id = new.id and revoked_ms is null returning * into l;
+    end if;
     v_ok := public._fh_vl_audit(new.user_id, 'device.vault_lease_cut', new.id::text, 'Device revoked: its vault lease was cut at once', jsonb_build_object('had_lease', l.device_id is not null, 'serial', l.serial, 'label', new.label));
     perform public._fh_vl_log(new.user_id, new.id, l.serial, 'revoked', jsonb_build_object('had_lease', l.device_id is not null, 'cut_at_ms', v_now, 'audited', v_ok));
   end if;
