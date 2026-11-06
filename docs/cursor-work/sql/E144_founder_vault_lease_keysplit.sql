@@ -91,6 +91,8 @@ end $$;
 
 revoke all on function public.founder_vault_lease_grant(uuid, uuid, text, bigint, integer) from public, anon, authenticated;
 grant execute on function public.founder_vault_lease_grant(uuid, uuid, text, bigint, integer) to service_role;
+-- LOOPHOLE CLOSED: the E143 core skips the device-key proof, so nobody but the grant function (security definer) may call it any more
+revoke execute on function public.founder_vault_lease_issue(uuid, uuid, integer) from service_role;
 
 -- 4) selftest (rolls back) -----------------------------------------------------------------------------------------------------------------------------
 create or replace function public.founder_vault_lease_keysplit_selftest() returns text language plpgsql security definer set search_path = pg_catalog, public, extensions as $$

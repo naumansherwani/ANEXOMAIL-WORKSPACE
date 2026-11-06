@@ -2353,3 +2353,6 @@ New top rule (his 22:46): SHARED-CODE RULE, awam pull.sh command given on the sp
 
 ### Checkpoint 6 Nov 23:20 PKT (FOR COMPACTION: read docs/claude/START-HERE-AFTER-COMPACTION.md section 11 first)
 He is on a 1 hour break. Done tonight: see START-HERE s.11 (GREEN / NOT GREEN / NEXT / code map / standing rules). New finding in his Chrome: awam kernel 0.13.0 wasm = 404 because DEPLOY-MANIFEST lacked it (fixed, commit follows); he must re-run the awam pull.sh once (PULL-COMMANDS 23:20). FeatureGate.tsx + app.storage.tsx (his 3 Nov Business Pro 570 / Premium 21,000 text) were also never in the manifest, so awam server still had the old text; the same pull delivers them. Next after his paste: J8c GREEN, then J8d UI.
+
+### Checkpoint 6 Nov 23:35 PKT
+Audit on his 22:54 order. Found + fixed: (1) deploy gap: non-src deployed files (kernel wasm) never reached the server via pull.sh -> gate check added; (2) E143 issue core bypassed the device-key proof for service_role -> closed in E144 (CHECK_E144 now 5 rows). Live Chrome on his tab: founder bundle index-BAnjULmy.js, kernel 0.13.0 200 on founder host, vault/lease + status + me + flare/key 401 without a token. Pending his two pastes: SQL point then awam pull (PULL-COMMANDS 23:35). Then J8c GREEN check (awam wasm 200), then J8d.

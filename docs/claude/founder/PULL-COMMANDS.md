@@ -676,3 +676,6 @@ Then the awam site must carry the SAME kernel (Rule 52, one kernel): `git -C /op
 (6 Nov 22:46 rule: shared-code changes always carry a separate awam pull.sh point; see AGENTS.md top.)
 
 **6 Nov 23:20 AWAM point (shared kernel fix): the 0.13.0 wasm was missing from DEPLOY-MANIFEST so awam answered 404 for it (found in his Chrome). Fixed in the manifest (+ FeatureGate.tsx, app.storage.tsx from his 3 Nov order). He runs once:** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15` (expect: wrote public/kernel/anexo-kernel-0.13.0.wasm, FeatureGate.tsx, app.storage.tsx; differ=0). Founder side needs no new command.
+
+**6 Nov 23:35 SQL point (E144 closes the issue core; CHECK_E143 5 + CHECK_E144 5 = 10 rows OK):** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E143_founder_vault_lease E144_founder_vault_lease_keysplit CHECK_E143 CHECK_E144 2>&1 | tail -18`
+**AWAM point (shared kernel wasm + his 3 Nov plan text), same as 23:20, run it AFTER the SQL point:** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`

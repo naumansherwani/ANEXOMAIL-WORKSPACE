@@ -117,6 +117,20 @@ v = subprocess.run([sys.executable, "docs/cursor-work/server/manifest-verify.py"
 if not v or not v[-1].endswith(" 0 bad"):
     fail("manifest", "manifest-verify is not 0 bad: " + (v[-1] if v else "no output"))
 
+# Loophole found 6 Nov 2026 (awam answered 404 for kernel 0.13.0): manifest-sync only auto-adds src/, so a deployed non-src file (the kernel wasm, public/) never reached the server.
+# Every shipped kernel wasm (user site + founder SPA + founder dist) and the wasm the pin names MUST be in the deploy manifest.
+try:
+    man = {l.split()[0] for l in open("docs/cursor-work/server/DEPLOY-MANIFEST.txt", encoding="utf-8").read().splitlines() if l.strip() and not l.startswith("#")}
+    tracked = sh("git", "ls-files", "public/kernel", "founder-web/public/kernel", "founder-web/dist/kernel").split()
+    miss = [f for f in tracked if f.endswith(".wasm") and f not in man]
+    pin = re.search(r'version:\s*"([0-9.]+)"', open("src/lib/kernel/pin.gen.ts", encoding="utf-8").read())
+    if pin and f"public/kernel/anexo-kernel-{pin.group(1)}.wasm" not in man:
+        miss.append(f"public/kernel/anexo-kernel-{pin.group(1)}.wasm (named by src/lib/kernel/pin.gen.ts)")
+    if miss:
+        fail("manifest kernel", "kernel wasm not in DEPLOY-MANIFEST (awam would answer 404): " + ", ".join(miss) + "  -> python3 docs/cursor-work/server/manifest-sync.py <those paths>")
+except OSError:
+    pass
+
 for w in warns:
     print(w)
 for x in fails:

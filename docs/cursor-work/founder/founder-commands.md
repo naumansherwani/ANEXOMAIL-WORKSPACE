@@ -2570,3 +2570,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 6 Nov 22:46: 'very good, i am impressed, yeh hamesa kero; yeh bhi rule rakho: jab awam ka on the spot kerna ho to command do' (after I gave the separate awam pull.sh point for the shared kernel).
 
 - 6 Nov 22:53: his founder-install paste (220 tests, 'vault master: exists') + awam pull.sh paste (build OK, restarts 494, src same=608 differ=2: FeatureGate.tsx + app.storage.tsx). Order: 'compact chat hone wala hai; puri chat context with codes Claude ke liye abhi update kero; baki kaam 1 hour break ke baad; chrome live dekh lo; founder ka world's best kero.'
+
+- 6 Nov 22:54 (mid-turn): 'jahan bhi loophole nazar aye auto fix aur live Chrome test kero.' Loopholes fixed: (1) rules-gate now fails when a kernel wasm is not in DEPLOY-MANIFEST (the awam 404), (2) E143 issue core is closed to service_role once E144 exists (device proof could be bypassed), E143 re-run cannot reopen it. Live Chrome: founder bundle index-BAnjULmy.js, kernel 0.13.0 = 200 (341396 bytes) on founder host; /vault/lease POST, /vault/status, /me, /flare/key = 401, /keys = 200; awam wasm = 404 until his pull.

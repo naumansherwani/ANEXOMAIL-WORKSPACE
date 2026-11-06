@@ -1,4 +1,4 @@
--- CHECK E144 — reads only (the selftest rolls back). 4 checks.
+-- CHECK E144 — reads only (the selftest rolls back). 5 checks.
 select item, ok from (
 select 'E144 columns exist (key_thumb, last_proof_ms, shred_nonce, shredded_ms) and the shape rule is validated' as item,
        (select count(*) from information_schema.columns where table_schema = 'public' and table_name = 'founder_vault_lease' and column_name in ('key_thumb', 'last_proof_ms', 'shred_nonce', 'shredded_ms')) = 4
@@ -14,4 +14,8 @@ union all select 'E144 behaviour selftest (key bound once, replay / stale / mism
 union all select 'E144 the E143 selftest still passes with the shred rule and the lease chain re-checks clean',
        coalesce((select public.founder_vault_lease_selftest() like 'E143 selftest PASS%' or public.founder_vault_lease_selftest() like 'E143 selftest SKIP%'), false)
        and coalesce((public.founder_vault_lease_verify(1000) ->> 'ok')::boolean, false), 4
+union all select 'E144 the E143 issue core (no device proof) is NOT callable by service_role, anon or authenticated: only the grant door reaches it',
+       not has_function_privilege('service_role', 'public.founder_vault_lease_issue(uuid,uuid,integer)', 'execute')
+       and not has_function_privilege('anon', 'public.founder_vault_lease_issue(uuid,uuid,integer)', 'execute')
+       and not has_function_privilege('authenticated', 'public.founder_vault_lease_issue(uuid,uuid,integer)', 'execute'), 5
 ) t order by ord;
