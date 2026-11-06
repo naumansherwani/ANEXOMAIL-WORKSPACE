@@ -1,5 +1,8 @@
 # START HERE after a compaction or a new chat (updated 6 Nov 2026 20:30 PKT, founder order 20:00 "rules her cheese top pe rakho")
 
+## ONE WEBSITE, ONE BUILD (top of everything, founder 6 Nov 20:38)
+One codebase, built once, computer + laptop + tablet + mobile together. No separate mobile/tablet/desktop versions, no JS screen-size switch (`isMobile`-style), no feature that exists on one size only. Only the layout flexes. A new feature is written responsive in the same change. Audit 6 Nov: the founder SPA already has no JS device switch (0 hits); only CSS media queries; what collapses on small screens is labels and secondary text (`.dx-what` endpoint column, settings tab descriptions/icons, the "coming soon" list, sidebar text labels become icons, the sidebar becomes a bottom bar on phone), never a feature.
+
 ## RULE 34 / 19 (top of everything)
 The site runs on laptop, computer, mobile AND tablet. A founder phase is GREEN only after 390 / 820 / 1200+ px are seen (his phone screenshot + sandbox measurement), 44 px touch targets, no sideways scroll, nothing cut off, no empty screen. Existing founder code is brought to mobile/tablet, never rewritten. He is angry that this was skipped (6 Nov 20:09, 20:17, 20:24).
 

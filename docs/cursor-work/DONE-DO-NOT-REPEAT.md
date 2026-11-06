@@ -1507,3 +1507,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 ## 6 Nov 2026 20:15 PKT — GREEN-LIST-06NOV.md sent. His install 20:09 OK (lock fix + browser names live). OPEN: mobile + tablet pass over every founder tab BEFORE J8. Do not repeat the FOUNDER_PASSWORD line in replies.
 
 ## 6 Nov 2026 20:55 PKT — Mobile + tablet pass part 1: minmax(0,1fr) grids, settings tab strip, field rows wrap, 44 px touch targets (switches keep look), 97 tests. Rule 34/19 now the first lines of AGENTS.md, CLAUDE.md, START-HERE. Waits for founder-install + his phone screenshots.
+
+## 6 Nov 2026 21:00 PKT — LOCKED: ONE WEBSITE, ONE BUILD (no separate mobile/tablet/desktop versions) at the top of AGENTS.md, CLAUDE.md, START-HERE. Docs only.

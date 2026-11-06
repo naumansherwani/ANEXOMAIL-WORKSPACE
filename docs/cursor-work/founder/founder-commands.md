@@ -1,4 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
+## ▶ 6 Nov 20:38 PKT — founder (angry): you are making 3 parts like Lovable (computer, mobile, tablet separate); write the rule at the top NOW: the whole website is built together, founder side, mobile + tablet + computer + laptop
+Founder (verbatim, abuse trimmed): "tu website ke lovable ki tarah 3 hisay ker diye hain computer aur mobile tablet ko alag alag bana raha hai. pehle tu rules ko top pe likh abhi ke abhi jis main puri website ek saath build hogi founder side mobile tablet computer laptop"
+Done: ONE WEBSITE, ONE BUILD block at the top of AGENTS.md, CLAUDE.md, START-HERE; audit (no JS size switch); context 21:00.
+
 ## ▶ 6 Nov 20:24 PKT — founder: read the rules; the codes already exist, take them to mobile and tablet; old rules at the top; update chat context right now
 Founder (verbatim): "rules read kero pehle se codes likhe hai sirf mobile aur tablet pe leke jao. aur ainda rules read kero jo pehle rules likhe hain un ko top pe rakho abhi ke abhi chat context update kero, founder ke codes likhe hain un ko mobile tablet pe implmenet kero"
 Done: Rule 34/19 block at the top of AGENTS.md, CLAUDE.md, START-HERE; context 20:30; responsive audit + first fix (cards cut off on phone).
