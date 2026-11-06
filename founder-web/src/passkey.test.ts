@@ -108,3 +108,12 @@ describe("mobile + tablet CSS rules (Rule 19/34, founder 6 Nov 2026)", () => {
   test("settings tabs scroll inside their own strip and never shrink into each other", () => { expect(dx).toContain(".setnav .setitem { flex: 0 0 auto; white-space: nowrap;"); expect(dx).toContain("overflow-x: auto"); });
   test("deck tabs are one scrolling strip on a phone", () => { expect(dx).toContain(".tabs { flex-wrap: nowrap; overflow-x: auto;"); });
 });
+
+describe("phone and laptop run the SAME code (founder 6 Nov 2026: only the layout differs)", () => {
+  const fs = require("node:fs"), path = require("node:path"); const dir = path.dirname(new URL(import.meta.url).pathname);
+  const src = fs.readdirSync(dir).filter((f: string) => /\.(tsx?|ts)$/.test(f) && !/\.test\./.test(f)).map((f: string) => [f, fs.readFileSync(path.join(dir, f), "utf8") as string]);
+  test("no JavaScript screen-size switch anywhere (no innerWidth / matchMedia width / userAgent device branch)", () => {
+    for (const [f, t] of src) { if (f === "devicelabel.ts" || f === "api.ts") continue; expect([f, /innerWidth|matchMedia\(["'`]\((max|min)-width|isMobile|isTablet/.test(t)]).toEqual([f, false]); }
+  });
+  test("the device trust label stays visible on a phone", () => { expect(fs.readFileSync(path.join(dir, "ui.css"), "utf8")).not.toMatch(/\.trustbtn \.tt\s*\{[^}]*display:\s*none/); });
+});

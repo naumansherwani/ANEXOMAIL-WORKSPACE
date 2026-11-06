@@ -1,4 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
+## ▶ 6 Nov 21:06 PKT — founder: update everything; fix any loophole; goal = founder side Chrome codes same to same on mobile/tablet, only the layout differs
+Founder (verbatim): "sab kuch update kero aur chat context agar koi loophole nazar ata hai toh fix kero. goal yehi hai ke founder side chorme sab codes same to same ho sirf mobile tablet layout ka farq hoga baki sab same hoga"
+Done: parity audit, trust-label fix, 2 guard tests, START-HERE section 7, context 21:25.
+
 ## ▶ 6 Nov 20:59 PKT — founder: 6 phone screenshots; read every image; update chat context + codes; mark GREEN; the phone must show the same as the laptop Chrome website
 Founder (verbatim): "home, bridge, aur yeh sab ek ek image ko read kero. chat context update kero repo main codes update kero green kero aur yeh sab mobile pe jo ata hai same to same chorme is laptop main jo website hain jo tum dekh saktay ho woh hao"
 Done: all six read, laptop Chrome compared (identical data), GREEN-LIST + ledger updated, deck-tabs strip fix, context 21:15.

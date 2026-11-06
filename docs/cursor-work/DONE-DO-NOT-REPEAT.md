@@ -1513,3 +1513,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 ## 6 Nov 2026 21:05 PKT — rules-gate: context checkpoint required with code changes; ONE BUILD + RULE 34 must stay at the top of AGENTS.md/CLAUDE.md. START-HERE has the BEFORE EVERY REPLY checklist. His install 20:45 OK (mobile/tablet CSS live).
 
 ## 6 Nov 2026 21:15 PKT — PHONE GREEN: Home, Bridge, Settings>Appearance, Finance, People, Mail (his screenshots + my laptop Chrome look, identical data). Deck tabs = one scrolling strip on phone (dx.css). Tablet live proof still open.
+
+## 6 Nov 2026 21:25 PKT — Parity audit: device trust label visible on phone; tests guard against any JS screen-size switch; START-HERE section 7 lists the only deliberate layout differences.

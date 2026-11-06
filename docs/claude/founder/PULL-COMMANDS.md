@@ -647,3 +647,6 @@ Web pull.sh is NOT needed for this.
 
 ## ABHI PENDING (6 Nov 21:15 PKT): founder-install ONE more time (SPA only), small: deck tabs (Finance, People, Mail...) become one scrolling strip on a phone (no orphan "Gates" on a 2nd row). Optional-cosmetic; his 6 phone screens are already GREEN without it.
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
+
+## ABHI PENDING (6 Nov 21:25 PKT): founder-install ONE more time (SPA only; this REPLACES the 21:15 block, one run brings both): deck tabs = one strip on a phone, and the device trust label ("Trusted" / "Review") is visible on a phone like on the laptop.
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
