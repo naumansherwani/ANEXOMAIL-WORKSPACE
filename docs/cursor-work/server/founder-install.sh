@@ -71,6 +71,10 @@ AUDLK=/etc/anexomail/founder-auditlog.p8   # G5b: the audit log's OWN signing ke
 # J6: Web Push (VAPID, P-256) key for the phone alerts; the private half never leaves this file (0400)
 VAPIDF=/etc/anexomail/founder-vapid.p8
 "$ROOT/anexomail-founder" --gen-vapid-key "$VAPIDF" | sed 's/^/   vapid key: /'; chown anexomail-founder:anexomail-founder "$VAPIDF"; chmod 400 "$VAPIDF"
+# J8b2: master secret for the vault key half (file 0400, hex; the database never sees it; losing it locks every vault, so it is created ONCE and never replaced)
+VMASTER=/etc/anexomail/founder-vault-master.key
+"$ROOT/anexomail-founder" --gen-vault-master "$VMASTER" | sed 's/^/   vault master: /'; chown anexomail-founder:anexomail-founder "$VMASTER"; chmod 400 "$VMASTER"
+grep -q '^FOUNDER_VAULT_MASTER_FILE=' "$ENVF" || echo "FOUNDER_VAULT_MASTER_FILE=$VMASTER" >>"$ENVF"
 grep -q '^FOUNDER_VAPID_KEY_FILE=' "$ENVF" || echo "FOUNDER_VAPID_KEY_FILE=$VAPIDF" >>"$ENVF"
 grep -q '^FOUNDER_SIGN_KEY_FILE=' "$ENVF" || echo "FOUNDER_SIGN_KEY_FILE=$SIGNF" >>"$ENVF"
 grep -q '^FOUNDER_LEGACY_TOKEN=' "$ENVF" || echo "FOUNDER_LEGACY_TOKEN=1" >>"$ENVF"   # 1 = purana session token abhi bhi chalta (grace); Chrome proof ke baad 0

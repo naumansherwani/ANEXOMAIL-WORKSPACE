@@ -666,3 +666,6 @@ Proof after: `curl -s -o /dev/null -w '%{http_code}\n' -X POST https://founderwo
 **6 Nov 22:50 J8a2 SQL E144 (1 point, CHECK = 4 rows OK; run AFTER E143, which is already on the server):** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E143_founder_vault_lease E144_founder_vault_lease_keysplit CHECK_E143 CHECK_E144 2>&1 | tail -16`
 
 **6 Nov 23:00 (E143 guard fix, same single command as the 22:50 point; run it, it replaces the earlier E143 on the server):** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E143_founder_vault_lease E144_founder_vault_lease_keysplit CHECK_E143 CHECK_E144 2>&1 | tail -16`
+
+**6 Nov 23:15 J8b2 Rust (1 point, Rust only; creates the vault master key file once; 220 tests):** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh)`
+Proof after: output line `vault master: generated`, and `journalctl -u anexomail-founder -n 40 --no-pager | grep 'vault lease key'` must say ON. Never delete /etc/anexomail/founder-vault-master.key (losing it locks every vault).

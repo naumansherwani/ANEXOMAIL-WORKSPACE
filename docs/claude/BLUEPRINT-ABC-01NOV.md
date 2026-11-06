@@ -215,3 +215,5 @@ SQL E114 14/14 (his paste 1 Nov), Rust + UI installed by his founder-install 08:
 **J8 status 6 Nov 22:50:** J8a GREEN; J8b installed on his server (401 proof, 215 tests); J8a2 E144 written + sandbox PASS (not on server). J8 as a whole NOT GREEN: J8b2 Rust grant + HKDF half, J8c kernel, J8d UI + live proof remain. Design: `docs/claude/J8-LEASE-ADVANCED-DESIGN-06NOV.md`.
 
 **J8a2 (E144 key-split + proof-of-possession + crypto-shred) = GREEN (6 Nov 22:24 PKT):** his paste of sql-run E143+E144 with CHECK_E144 4/4 OK, E143 shape row OK, E65 6/6 OK (SQL phase, no screen: Chrome look not applicable). Phase ledger for J8 so far: J8a GREEN 22:04 | J8b installed 22:17 (401 proof) | J8a2 GREEN 22:24 | J8b2 Rust grant route NEXT | J8c kernel | J8d UI + live proof. J8 as a whole is NOT GREEN.
+
+**J8b2 6 Nov 23:15:** Rust grant route + HKDF half + ES256 proof written, 220 tests, NOT installed, NOT green.

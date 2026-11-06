@@ -1533,3 +1533,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 6 Nov 22:58 E143 guard now carries the E144 rules via to_jsonb (a re-run of E143 can never weaken the guard). Sandbox: E143, E144, E143 again on an upgraded and a fresh DB: CHECK_E143 5/5 + CHECK_E144 4/4. (22:50 commit had a re-run bug: fixed.)
 
 - 6 Nov 22:24 J8a2 GREEN (E144 on his server, CHECK_E144 4/4, E65 6/6). Do not re-run E143/E144 again. Next J8b2 Rust.
+
+- 6 Nov 23:15 J8b2 written: lease.rs half() HKDF, verify_proof ES256 (ring), thumbprint RFC7638, MASTER file, route now calls founder_vault_lease_grant and needs {jwk, ts, proof}; installer creates /etc/anexomail/founder-vault-master.key once. 220 tests ok. Not installed yet.

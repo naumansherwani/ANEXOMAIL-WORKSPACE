@@ -476,19 +476,29 @@ async fn merkle_stats_ep(State(st): State<S>, h: HeaderMap) -> axum::response::R
 /// G5b: newest C2SP signed checkpoint + keys. The browser kernel verifies the signature; this only delivers it.
 /// POST /founder/v1/vault/lease: renew THIS device's vault lease (J8b). The device is the one inside the founder token (`did`); SQL E143 decides; a lease is signed (Ed25519 envelope) only
 /// when the answer passes `lease::lease_data`. Write path: always asks the database fresh, so a revoke is honoured at once.
-async fn vault_lease_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
+async fn vault_lease_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Bytes) -> axum::response::Response {
     let c = match authed_w(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
     let Some(sb) = st.sb.as_ref() else { return StatusCode::SERVICE_UNAVAILABLE.into_response() };
+    let Some(master) = lease::MASTER.get() else { return (StatusCode::SERVICE_UNAVAILABLE, Json(json!({"error": "Vault lease key is not set up on the server yet."}))).into_response() };
     let did = match (gate::bearer(h.get("authorization").and_then(|v| v.to_str().ok())), &st.ft) {
         (Some(t), Some(k)) if ftoken::looks_founder(t) => match k.verify(t, now_s()) { Ok(f) => f.did, Err(_) => return StatusCode::UNAUTHORIZED.into_response() },
         _ => return (StatusCode::FORBIDDEN, Json(json!({"error": "A vault lease needs a device-bound founder session."}))).into_response(),
     };
-    let Some(r) = sb.rpc("founder_vault_lease_issue", json!({"p_uid": c.sub, "p_device": did, "p_ttl_s": 900})).await else { return (StatusCode::SERVICE_UNAVAILABLE, Json(json!({"error": "Vault lease is not installed yet."}))).into_response() };
+    // J8b2: the device must prove it holds its own key. Body: {"jwk": {...}, "ts": <ms>, "proof": "<base64url r||s>"}
+    let b: Value = serde_json::from_slice(&body).unwrap_or(Value::Null);
+    let (Some(ts), Some(proof), Some(jwk)) = (b.get("ts").and_then(|v| v.as_i64()), b.get("proof").and_then(|v| v.as_str()), b.get("jwk")) else {
+        return (StatusCode::BAD_REQUEST, Json(json!({"error": "The device proof is missing.", "why": "key_required"}))).into_response() };
+    let Some(thumb) = lease::verify_proof(&did, ts, jwk, proof) else { return (StatusCode::FORBIDDEN, Json(json!({"error": "The device proof is not valid.", "why": "key_required"}))).into_response() };
+    let Some(r) = sb.rpc("founder_vault_lease_grant", json!({"p_uid": c.sub, "p_device": did, "p_key_thumb": thumb, "p_proof_ms": ts, "p_ttl_s": 900})).await else { return (StatusCode::SERVICE_UNAVAILABLE, Json(json!({"error": "Vault lease is not installed yet."}))).into_response() };
     if r.get("ok").and_then(|v| v.as_bool()) == Some(false) {
         let why = r.get("why").and_then(|v| v.as_str()).unwrap_or("");
         return (StatusCode::from_u16(lease::refusal_status(why)).unwrap_or(StatusCode::BAD_GATEWAY), Json(json!({"error": lease::refusal_text(why), "why": why}))).into_response();
     }
-    match lease::lease_data(&r, &did) { Some(d) => signed(&st, d), None => (StatusCode::BAD_GATEWAY, Json(json!({"error": "The lease answer was not valid, so nothing was signed."}))).into_response() }
+    let half = r.get("half_salt").and_then(|v| v.as_str()).and_then(|salt| lease::half(master, &did, salt));
+    match half.and_then(|hf| lease::lease_data(&r, &did, &hf)) {
+        Some(d) => { let mut resp = signed(&st, d); resp.headers_mut().insert(axum::http::header::CACHE_CONTROL, axum::http::HeaderValue::from_static("no-store")); resp }
+        None => (StatusCode::BAD_GATEWAY, Json(json!({"error": "The lease answer was not valid, so nothing was signed."}))).into_response(),
+    }
 }
 /// GET /founder/v1/vault/status: every approved device with its lease state (live / expired / revoked / none), seconds left and ledger head. Signed answer.
 async fn vault_status_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
@@ -757,6 +767,14 @@ async fn main() {
         match flare::Vapid::load_or_create(&path, "https://invalid.example") { Some(v) => println!("generated public {}", v.public_b64()), None => { eprintln!("vapid keygen failed"); std::process::exit(1); } }
         return;
     }
+    if let Some(i) = std::env::args().position(|a| a == "--gen-vault-master") { // installer (J8b2): 32-byte master for the vault key half, once, file 0400
+        let path = std::env::args().nth(i + 1).expect("path lazmi");
+        if std::path::Path::new(&path).exists() { println!("exists"); return; }
+        lease::gen_master(&path).expect("write");
+        #[cfg(unix)] { use std::os::unix::fs::PermissionsExt; std::fs::set_permissions(&path, std::fs::Permissions::from_mode(0o400)).expect("chmod"); }
+        println!("generated");
+        return;
+    }
     if let Some(i) = std::env::args().position(|a| a == "--gen-sign-key") { // installer: Ed25519 signing key, once, file 0400
         let path = std::env::args().nth(i + 1).expect("path lazmi");
         if std::path::Path::new(&path).exists() { println!("exists"); return; }
@@ -779,6 +797,8 @@ async fn main() {
     let (polar, pcfg) = match polar::Cfg::from_env() { Some(c) => (polar::Live::new(true), Some(c)), None => (polar::Live::off(), None) };
     eprintln!("founder: polar reader {}", if pcfg.is_some() { "ON (read-only, metrics API)" } else { "OFF (no FOUNDER_POLAR_READ_TOKEN)" });
     if let Some(c) = pcfg { polar::spawn(polar.clone(), c, now_s); }
+    { let mp = std::env::var("FOUNDER_VAULT_MASTER_FILE").unwrap_or_else(|_| "/etc/anexomail/founder-vault-master.key".into());
+      if lease::load_master(&mp) { eprintln!("founder: vault lease key ON (server half = HKDF, master file loaded)"); } else { eprintln!("founder: vault lease key OFF (no usable {mp}); POST /founder/v1/vault/lease answers 503"); } }
     if let Some(s) = &sb { lease::spawn_sweep(s.clone()); }
     match (&sb, flare::Cfg::from_env()) { (Some(s), Some(c)) => flare::spawn(s.clone(), c), (_, None) => eprintln!("founder: flare sender OFF (FOUNDER_FLARE=off or no usable VAPID key)"), _ => {} }
     if let Some(s) = &sb { live::start(s.clone()); } // 4b-2: the one process-wide live tick
