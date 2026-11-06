@@ -90,12 +90,12 @@ founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
-founder-web/dist/assets/index-B8hr8AR0.js
-founder-web/dist/assets/index-B8hr8AR0.js.gz
+founder-web/dist/assets/index-BAnjULmy.js
+founder-web/dist/assets/index-BAnjULmy.js.gz
 founder-web/dist/assets/index-hpDUCFZB.css
 founder-web/dist/assets/index-hpDUCFZB.css.gz
-founder-web/dist/assets/kernel.worker-CsjAWUNm.js
-founder-web/dist/assets/kernel.worker-CsjAWUNm.js.gz
+founder-web/dist/assets/kernel.worker-lrvwuwuv.js
+founder-web/dist/assets/kernel.worker-lrvwuwuv.js.gz
 founder-web/dist/assets/three.module-Dza5cG3s.js
 founder-web/dist/assets/three.module-Dza5cG3s.js.gz
 founder-web/dist/boot.css
@@ -106,7 +106,7 @@ founder-web/dist/icon-180.png
 founder-web/dist/icon-192.png
 founder-web/dist/icon-512.png
 founder-web/dist/index.html
-founder-web/dist/kernel/anexo-kernel-0.12.0.wasm
+founder-web/dist/kernel/anexo-kernel-0.13.0.wasm
 founder-web/dist/manifest.webmanifest
 founder-web/index.html
 founder-web/kernel-sync.sh
@@ -119,7 +119,7 @@ founder-web/public/flare-sw.js
 founder-web/public/icon-180.png
 founder-web/public/icon-192.png
 founder-web/public/icon-512.png
-founder-web/public/kernel/anexo-kernel-0.12.0.wasm
+founder-web/public/kernel/anexo-kernel-0.13.0.wasm
 founder-web/public/manifest.webmanifest
 founder-web/src/AmbientStudio.tsx
 founder-web/src/App.tsx

@@ -165,3 +165,25 @@ test("portable_verify in the real wasm: the independent-tools bundle (openssl TS
   expect(run("", sha256("")).ok).toBe(0);
   expect(run(text, "zz").ok).toBe(0);
 });
+
+test("lease@1 in the real wasm: RFC 5869 style key schedule is stable, a live lease is judged live, a wound-back clock ends it, a replayed serial is refused", async () => {
+  const { instance } = await WebAssembly.instantiate(bytes, { env: { host_wake() {}, host_call() {}, host_emit() {} } });
+  const ex = instance.exports as any;
+  const run = (fn: string, text: string) => {
+    const b = new TextEncoder().encode(text), p = ex.kernel_alloc(b.length); new Uint8Array(ex.memory.buffer, p, b.length).set(b);
+    const ok = ex[fn](p, b.length), out = new TextDecoder().decode(new Uint8Array(ex.memory.buffer, ex.kernel_out_ptr(), ex.kernel_out_len()).slice());
+    return { ok, out };
+  };
+  const dev = "0f8fad5b-d9cb-469f-a165-70867728950e", k = "A".repeat(43);
+  const key1 = run("lease_vault_key", JSON.stringify({ local: k, half: "B".repeat(42) + "E", device_id: dev }));
+  const key2 = run("lease_vault_key", JSON.stringify({ local: k, half: "B".repeat(42) + "E", device_id: dev }));
+  expect(key1.ok).toBe(1); expect(key1.out).toHaveLength(43); expect(key1.out).toBe(key2.out);
+  expect(run("lease_vault_key", JSON.stringify({ local: "short", half: k, device_id: dev })).ok).toBe(0);
+  const data = { type: "vault-lease@1", device_id: dev, serial: 3, issued_ms: 1_700_000_000_000, expires_ms: 1_700_000_900_000, ttl_s: 900, nonce: "0123456789abcdef0123456789abcdef", key_thumb: k, half: k };
+  const base = { data, device_id: dev, pinned_serial: 0, received_wall_ms: 1_700_000_000_500, received_mono_ms: 10_000, now_wall_ms: 1_700_000_000_500, now_mono_ms: 10_000 };
+  const live = run("lease_check", JSON.stringify(base));
+  expect(live.ok).toBe(1); expect(JSON.parse(live.out)).toMatchObject({ state: "live", remaining_ms: 900_000, serial: 3 });
+  expect(run("lease_check", JSON.stringify({ ...base, now_mono_ms: 10_000 + 900_000, now_wall_ms: 1_700_000_900_500 })).ok).toBe(0);
+  expect(JSON.parse(run("lease_check", JSON.stringify({ ...base, now_mono_ms: 410_000, now_wall_ms: 1_700_000_010_500 })).out).reason).toContain("turned back");
+  expect(JSON.parse(run("lease_check", JSON.stringify({ ...base, pinned_serial: 4 })).out).reason).toContain("replay");
+});

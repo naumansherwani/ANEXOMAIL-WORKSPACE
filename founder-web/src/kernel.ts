@@ -119,3 +119,26 @@ export function actionCheck(input: { action: string; target: string; params: Rec
     w().postMessage({ id, action: { input: JSON.stringify(input) } });
   });
 }
+
+export type LeaseData = { type: "vault-lease@1"; device_id: string; serial: number; issued_ms: number; expires_ms: number; ttl_s: number; nonce: string; key_thumb: string; half: string };
+export type LeaseClocks = { received_wall_ms: number; received_mono_ms: number; now_wall_ms: number; now_mono_ms: number };
+export type LeaseReport = { ok: boolean; state: "live" | "expired" | "refused"; remaining_ms: number; serial?: number; reason?: string };
+/** J8c: is this vault lease good for THIS device right now? The kernel (lease@1) judges shape, serial (no replay of an older lease), clock skew and the time left on the MONOTONIC clock. undefined = the kernel could not run. */
+export function leaseCheck(data: LeaseData, deviceId: string, pinnedSerial: number, clocks: LeaseClocks): Promise<LeaseReport | undefined> {
+  return new Promise((resolve) => {
+    const id = ++seq;
+    waiting.set(id, (m) => {
+      if (m.code !== 0 || typeof m.data !== "string") { resolve(undefined); return; }
+      try { const r = JSON.parse(m.data.slice(1)) as LeaseReport; resolve(typeof r?.ok === "boolean" && r.ok === (m.data[0] === "1") ? r : undefined); } catch { resolve(undefined); }
+    });
+    w().postMessage({ id, lease: { op: "check", input: JSON.stringify({ data, device_id: deviceId, pinned_serial: pinnedSerial, ...clocks }) } });
+  });
+}
+/** J8c: vault key = HKDF-SHA256(local half, server half) computed in the kernel. Resolves with base64url of 32 bytes; undefined = bad input or no kernel. */
+export function leaseVaultKey(localHalf: string, serverHalf: string, deviceId: string): Promise<string | undefined> {
+  return new Promise((resolve) => {
+    const id = ++seq;
+    waiting.set(id, (m) => { resolve(m.code === 0 && typeof m.data === "string" && m.data[0] === "1" ? m.data.slice(1) : undefined); });
+    w().postMessage({ id, lease: { op: "key", input: JSON.stringify({ local: localHalf, half: serverHalf, device_id: deviceId }) } });
+  });
+}
