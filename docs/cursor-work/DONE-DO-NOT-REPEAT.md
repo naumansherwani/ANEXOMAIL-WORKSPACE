@@ -1499,3 +1499,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 ## 6 Nov 2026 20:00 PKT — Device-exchange lockout was per ACCOUNT (a waiting phone locked the approved desktop 15 min). Now per account+device (ftoken::exchange_key, test, 208 Rust tests). On his server after founder-install. Next: approve phone code 483C7C5A, then J6 phone proof, then J8.
 
 ## 6 Nov 2026 20:10 PKT — founder-device.sh no longer needs exactly one founder_accounts row: approve/revoke find the account by the device code (must be a founder account). His install 19:42 GREEN.
+
+## 6 Nov 2026 20:25 PKT — Phone approved (Chrome on Android). Device list names the real browser (devicelabel.ts, 9 tests, 93 SPA tests). Every browser is allowed; each is approved once.

@@ -2,6 +2,7 @@
 // F1a: the session token is exchanged ONCE per 15 minutes for a founder token (aud=anexo-founder, device-bound) which lives in MEMORY only.
 // If the server has no token service yet (install pending), calls fall back to the session token and the page says so plainly.
 import { verifyBody } from "./kernel";
+import { browserName } from "./devicelabel";
 import { EXPIRES_KEY, REFRESH_KEY, TICK_MS, classifyRefresh, knownExpiry, needsRefresh } from "./session";
 const KEY = "anexo.session.token", DEV = "anexo.founder.device";
 const tok = () => { try { return window.localStorage.getItem(KEY); } catch { return null; } };
@@ -26,7 +27,7 @@ function deviceId() {
 }
 function deviceLabel() {
   const ua = navigator.userAgent || "", p = (navigator as Navigator & { userAgentData?: { platform?: string } }).userAgentData?.platform || navigator.platform || "";
-  const br = /Edg\//.test(ua) ? "Edge" : /OPR\//.test(ua) ? "Opera" : /Firefox\//.test(ua) ? "Firefox" : /Chrome\//.test(ua) ? "Chrome" : /Safari\//.test(ua) ? "Safari" : "Browser";
+  const br = browserName(ua);
   return `${br} on ${String(p).replace(/[^ -~]/g, "").slice(0, 30) || "device"}`.slice(0, 80);
 }
 

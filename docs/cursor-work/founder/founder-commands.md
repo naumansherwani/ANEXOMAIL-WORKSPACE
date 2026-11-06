@@ -1,4 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
+## ▶ 6 Nov 19:45 PKT — founder: approve OK; UC Browser, Opera, Firefox sab ke liye allowed kero
+Founder (verbatim): approve paste (OK, Chrome on Android approved) + "yeh UC Browser opera firefox sab ke liye allowed kero."
+Done: no browser block exists; devicelabel.ts names every browser, 93 tests; PULL-COMMANDS 20:25; context 20:25.
+
 ## ▶ 6 Nov 19:42 PKT — founder: install paste OK; approve failed "founder uid ek nahi mila"
 Founder (verbatim): the founder-install paste (OK, token ON, signature ENFORCED) + `founder-device.sh approve 483C7C5A` -> "FAIL: founder uid ek nahi mila (FOUNDER_UID=<uuid> do)"
 Done: founder-device.sh finds the account from the code; PULL-COMMANDS 20:10; context 20:10.

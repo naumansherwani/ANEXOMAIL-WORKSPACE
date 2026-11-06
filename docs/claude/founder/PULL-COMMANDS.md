@@ -633,3 +633,6 @@ Web pull.sh is NOT needed for this.
 
 ## ABHI PENDING (6 Nov 20:10 PKT): his install (19:42) is GREEN (token service ON, signature ENFORCED, healthz 200). The approve command stopped with "founder uid ek nahi mila" because founder-device.sh needed exactly ONE founder_accounts row. FIXED: approve/revoke now find the account from the device code. ONE point:
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-device.sh) approve 483C7C5A 2>&1 | tail -8`  (then press "Check again" ONCE on the phone)
+
+## ABHI PENDING (6 Nov 20:25 PKT): his phone approve is OK (Chrome on Android approved 19:45). He asked for UC Browser / Opera / Firefox "sab ke liye allowed". There is no browser block in the code: EVERY browser works, each browser is its own device and is approved once with `founder-device.sh approve <CODE>`. New: the device list now names the real browser (UC Browser, Opera, Firefox, Samsung, Edge, Vivaldi...) instead of "Chrome". ONE point (SPA only):
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`

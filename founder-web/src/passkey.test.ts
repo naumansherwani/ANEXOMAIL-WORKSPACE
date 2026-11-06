@@ -79,3 +79,19 @@ test("protected-step doors send the server-issued nonce (Proved.nonce)", () => {
   const fs = require("node:fs");
   for (const f of ["./Flare.tsx", "./Keys.tsx"]) { const src = fs.readFileSync(new URL(f, import.meta.url), "utf8") as string; expect(src).not.toContain("result.nonce"); expect(src).toContain("p.nonce"); }
 });
+
+import { browserName } from "./devicelabel";
+describe("device label names the real browser", () => {
+  const cases: Array<[string, string]> = [
+    ["Mozilla/5.0 (Linux; U; Android 13; en-US) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/100.0.4896.58 UCBrowser/13.5.0.1306 Mobile Safari/537.36", "UC Browser"],
+    ["Mozilla/5.0 (Linux; Android 13; SM-S911B) AppleWebKit/537.36 Chrome/120.0 Mobile Safari/537.36 OPR/80.1.4244", "Opera"],
+    ["Mozilla/5.0 (Android 14; Mobile; rv:126.0) Gecko/126.0 Firefox/126.0", "Firefox"],
+    ["Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 Chrome/120.0 Mobile Safari/537.36 EdgA/120.0", "Edge"],
+    ["Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 Chrome/120.0 SamsungBrowser/23.0 Mobile Safari/537.36", "Samsung Internet"],
+    ["Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 Chrome/120.0 Mobile Safari/537.36", "Chrome"],
+    ["Mozilla/5.0 (iPhone; CPU iPhone OS 17_0) AppleWebKit/605.1.15 Version/17.0 Mobile Safari/604.1", "Safari"],
+    ["Mozilla/5.0 (iPhone; CPU iPhone OS 17_0) AppleWebKit/605.1.15 FxiOS/126.0 Mobile Safari/605.1.15", "Firefox"],
+    ["", "Browser"],
+  ];
+  for (const [ua, n] of cases) test(n + ": " + ua.slice(-40), () => { expect(browserName(ua)).toBe(n); });
+});
