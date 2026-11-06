@@ -12,7 +12,21 @@ URL="$(grep -m1 '^SUPABASE4_URL=' "$ENVF" | cut -d= -f2-)"; KEY="$(grep -m1 '^SU
 [ -n "$URL" ] && [ -n "$KEY" ] || { echo "FAIL: Supabase URL/key env file mein nahi"; exit 2; }
 rest() { curl -s -m 15 "$@" -H "apikey: $KEY" -H "authorization: Bearer $KEY"; }
 UID_="${FOUNDER_UID:-$(rest "$URL/rest/v1/founder_accounts?select=user_id&limit=2" | python3 -c 'import sys,json; r=json.load(sys.stdin); print(r[0]["user_id"] if len(r)==1 else "")' 2>/dev/null)}"
-[ -n "$UID_" ] || { echo "FAIL: founder uid ek nahi mila (FOUNDER_UID=<uuid> do)"; exit 2; }
+# 6 Nov 2026: more than one founder_accounts row (or a failed read) used to stop here. approve/revoke now find the account from the DEVICE CODE itself:
+# the one founder account that really has that device code waiting (or listed). It must also be a founder account. Still exactly one, else it refuses.
+if [ -z "$UID_" ] && echo "${2:-}" | grep -Eq '^[0-9A-F]{8}$'; then
+  UID_="$(rest "$URL/rest/v1/founder_devices?select=user_id&pending_code=eq.${2}&revoked_at=is.null" | python3 -c '
+import sys,json
+try: r=json.load(sys.stdin)
+except Exception: r=[]
+u=sorted({x["user_id"] for x in r if isinstance(x,dict) and x.get("user_id")})
+print(u[0] if len(u)==1 else "")' 2>/dev/null)"
+  if [ -n "$UID_" ]; then
+    ok="$(rest "$URL/rest/v1/founder_accounts?select=user_id&user_id=eq.$UID_" | python3 -c 'import sys,json; print(len(json.load(sys.stdin)))' 2>/dev/null)"
+    [ "$ok" = "1" ] || UID_=""
+  fi
+fi
+[ -n "$UID_" ] || { echo "FAIL: founder uid nahi mila. approve/revoke ke liye code ka device is account par nahi mila; list ke liye FOUNDER_UID=<uuid> do"; exit 2; }
 rpc() { rest -X POST "$URL/rest/v1/rpc/$1" -H 'content-type: application/json' -d "$2"; }
 cmd="${1:-list}"; code="${2:-}"; reason="${REASON:-approved from server by founder ($cmd $code)}"
 case "$cmd" in

@@ -1497,3 +1497,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 3 Nov 13:50 his 13:25 order: GREEN LEDGER table at the top of the blueprint (phase -> GREEN -> proof time); sql-run.sh now resolves anexochat/sql/*.sql (tested end to end in scratch PG: phase61 + CHECK_phase61 OK); PULL-COMMANDS has the phase61 SQL command + Web pull.sh. Awam side, optional now.
 
 ## 6 Nov 2026 20:00 PKT — Device-exchange lockout was per ACCOUNT (a waiting phone locked the approved desktop 15 min). Now per account+device (ftoken::exchange_key, test, 208 Rust tests). On his server after founder-install. Next: approve phone code 483C7C5A, then J6 phone proof, then J8.
+
+## 6 Nov 2026 20:10 PKT — founder-device.sh no longer needs exactly one founder_accounts row: approve/revoke find the account by the device code (must be a founder account). His install 19:42 GREEN.

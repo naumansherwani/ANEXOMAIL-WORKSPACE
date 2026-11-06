@@ -1,4 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
+## ▶ 6 Nov 19:42 PKT — founder: install paste OK; approve failed "founder uid ek nahi mila"
+Founder (verbatim): the founder-install paste (OK, token ON, signature ENFORCED) + `founder-device.sh approve 483C7C5A` -> "FAIL: founder uid ek nahi mila (FOUNDER_UID=<uuid> do)"
+Done: founder-device.sh finds the account from the code; PULL-COMMANDS 20:10; context 20:10.
+
 ## ▶ 6 Nov 19:33 PKT — founder: phone shows "This device needs approval" (code 483C7C5A) and desktop shows "Too many device attempts - try again in 15 minutes"; solve it; update chat context
 Founder (verbatim): "yeh chat context claude ke liye update kero. sab kuch update kero. aur yeh mera masla solve kero image dekho." (2 screenshots: phone approval card, desktop Security keys error)
 Done: limiter key per device (ftoken::exchange_key), test, 208 pass; PULL-COMMANDS 19:50; context 20:00.
