@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md b9b1d07c9bb81a1a
+docs/cursor-work/founder/founder-commands.md dce596abad7cbef9
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs da5c3db196fbe81d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md c4432b576f434325
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md bdfc7cd21ea2ea69
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -1064,7 +1064,7 @@ docs/cursor-work/sql/CHECK_E119.sql 8a79e357ded727d0
 src/components/app/CommandPalette.tsx 12a0fd1cf3105c1a
 src/lib/dashboard.ts 66e8a7d64fa8e599
 src/routes/app.admin.addresses.tsx cb8efe1f397d00f0
-docs/claude/BLUEPRINT-ABC-01NOV.md 63bca9911c169efb
+docs/claude/BLUEPRINT-ABC-01NOV.md e20ab7bd95ead332
 docs/cursor-work/sql/E122_founder_seal_interval.sql be0edb2538f82051
 docs/cursor-work/sql/CHECK_E122.sql d10212a8dfda8472
 founder-web/src/routes.test.ts 3f007995613c3568

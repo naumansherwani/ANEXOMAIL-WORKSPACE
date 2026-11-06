@@ -1,4 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
+## ▶ 6 Nov 19:24 PKT — founder: next tarteeb kya hai; tarteeb nahi tootay; repo + chat context update; sab rules padho
+Founder (verbatim): "next tarteeeb kya ha? ... aur tarteeb nahi tootay aur sara kuch update kero repo main aur chat context bhi update kero. sab rules read kero"
+Done: rules read, ledger header + J6-phone/J8 rows, context checkpoint 19:30. No code built (founder code on hold until "go").
+
 ## ▶ 3 Nov 13:51 PKT — founder: ufw 8443/tcp done (paste), "dekh lo", baki shaam ko update
 Founder (verbatim): "ufw allow 8443/tcp && ufw status | grep 8443 dekh lo baki shaam ko update kero anhi tak" + paste: Rule added / Rule added (v6) / 8443/tcp ALLOW Anywhere (+v6)
 Done: Chrome look at :8443 (K3 GREEN, /_cc 404 note). Next J8.
