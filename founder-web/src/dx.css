@@ -129,3 +129,9 @@ button.dx-card{cursor:pointer;width:100%}button.dx-card:hover{transform:translat
 }
 .fldrow { flex-wrap: wrap; }
 .fldrow input { min-width: 0; flex: 1 1 180px; }
+/* DECK TABS (Finance, People, Mail...) on phone: one scrolling strip like the Settings tabs, no orphan "Gates" on a second row (founder phone screenshots 6 Nov 20:56). */
+@media (max-width:760px) {
+  .tabs { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tabs > * { flex: 0 0 auto; white-space: nowrap; }
+}

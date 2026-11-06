@@ -1,4 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
+## ▶ 6 Nov 20:59 PKT — founder: 6 phone screenshots; read every image; update chat context + codes; mark GREEN; the phone must show the same as the laptop Chrome website
+Founder (verbatim): "home, bridge, aur yeh sab ek ek image ko read kero. chat context update kero repo main codes update kero green kero aur yeh sab mobile pe jo ata hai same to same chorme is laptop main jo website hain jo tum dekh saktay ho woh hao"
+Done: all six read, laptop Chrome compared (identical data), GREEN-LIST + ledger updated, deck-tabs strip fix, context 21:15.
+
 ## ▶ 6 Nov 20:45 PKT — founder: install paste OK; update repo codes + chat context now; make Claude follow the rules; tell me my task and do not overload me
 Founder (verbatim): "yeh claude ke liye repo mai codes aur chat context abhi ke abhi update kero aur rules follow kerwao claude ke liye. mujhe bata do mera kaam aur mat bharao"
 Done: rules-gate enforces context + top rules; BEFORE EVERY REPLY checklist; context 21:05; his one task named.

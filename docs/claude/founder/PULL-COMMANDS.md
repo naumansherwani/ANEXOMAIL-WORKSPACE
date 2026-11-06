@@ -644,3 +644,6 @@ Web pull.sh is NOT needed for this.
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
 
 <!-- 6 Nov 20:45: his founder-install (mobile + tablet CSS) paste = OK. NO pull pending. His only task: reload the phone and send screenshots of Home, Bridge, Settings (Personal + Appearance), Finance, People, Mail. -->
+
+## ABHI PENDING (6 Nov 21:15 PKT): founder-install ONE more time (SPA only), small: deck tabs (Finance, People, Mail...) become one scrolling strip on a phone (no orphan "Gates" on a 2nd row). Optional-cosmetic; his 6 phone screens are already GREEN without it.
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`

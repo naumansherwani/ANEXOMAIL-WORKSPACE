@@ -106,4 +106,5 @@ describe("mobile + tablet CSS rules (Rule 19/34, founder 6 Nov 2026)", () => {
     expect(dx).toContain("@media (pointer:coarse), (max-width:1100px)"); expect(dx).toContain(".pg button:not(.switch)"); expect(dx).toContain("min-height: 44px"); expect(dx).toContain(".switch::after");
   });
   test("settings tabs scroll inside their own strip and never shrink into each other", () => { expect(dx).toContain(".setnav .setitem { flex: 0 0 auto; white-space: nowrap;"); expect(dx).toContain("overflow-x: auto"); });
+  test("deck tabs are one scrolling strip on a phone", () => { expect(dx).toContain(".tabs { flex-wrap: nowrap; overflow-x: auto;"); });
 });
