@@ -674,3 +674,5 @@ Proof after: output line `vault master: generated`, and `journalctl -u anexomail
 Then the awam site must carry the SAME kernel (Rule 52, one kernel): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15` (awam keeps working on 0.12.0 until this is run; no awam screen changes).
 
 (6 Nov 22:46 rule: shared-code changes always carry a separate awam pull.sh point; see AGENTS.md top.)
+
+**6 Nov 23:20 AWAM point (shared kernel fix): the 0.13.0 wasm was missing from DEPLOY-MANIFEST so awam answered 404 for it (found in his Chrome). Fixed in the manifest (+ FeatureGate.tsx, app.storage.tsx from his 3 Nov order). He runs once:** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15` (expect: wrote public/kernel/anexo-kernel-0.13.0.wasm, FeatureGate.tsx, app.storage.tsx; differ=0). Founder side needs no new command.

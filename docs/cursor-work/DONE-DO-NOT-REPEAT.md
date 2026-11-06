@@ -1539,3 +1539,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 6 Nov 22:36 J8b2 GREEN (server paste + Chrome). 23:40 J8c written: web-wasm lease@1 + kernel 0.13.0 + founder-web wrapper, 112 kernel tests, bun 101. Not installed. Next J8d UI.
 
 - 6 Nov 22:50 SHARED-CODE RULE written on top of AGENTS.md + CLAUDE.md + START-HERE s.10 and enforced by rules-gate.
+
+- 6 Nov 23:20 LESSON: public/kernel/*.wasm (and any non-src deployed file) is NOT auto-added to DEPLOY-MANIFEST by manifest-sync; add it by path: `python3 docs/cursor-work/server/manifest-sync.py public/kernel/anexo-kernel-<ver>.wasm founder-web/public/kernel/... founder-web/dist/kernel/...` in the SAME commit as a kernel bump. Then check `curl -I https://anexomail.com/kernel/anexo-kernel-<ver>.wasm` = 200 after his pull.
