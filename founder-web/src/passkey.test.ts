@@ -95,3 +95,15 @@ describe("device label names the real browser", () => {
   ];
   for (const [ua, n] of cases) test(n + ": " + ua.slice(-40), () => { expect(browserName(ua)).toBe(n); });
 });
+
+describe("mobile + tablet CSS rules (Rule 19/34, founder 6 Nov 2026)", () => {
+  const fs = require("node:fs"); const dx: string = fs.readFileSync(new URL("./dx.css", import.meta.url), "utf8"), ui: string = fs.readFileSync(new URL("./ui.css", import.meta.url), "utf8");
+  test("no bare 1fr grid column is left (it grows to the widest nowrap line and cuts cards off)", () => {
+    for (const css of [dx, ui]) expect(/grid-template-columns:\s*(repeat\(\d+,\s*1fr\)|1fr)\s*[;}]/.test(css)).toBe(false);
+  });
+  test("cards never exceed their column", () => { expect(dx).toContain(".dx-card,.dx-feat,.dx-tile,.dx-gate{min-width:0;max-width:100%}"); });
+  test("44 px touch targets on touch screens and up to tablet landscape, switches keep their look", () => {
+    expect(dx).toContain("@media (pointer:coarse), (max-width:1100px)"); expect(dx).toContain(".pg button:not(.switch)"); expect(dx).toContain("min-height: 44px"); expect(dx).toContain(".switch::after");
+  });
+  test("settings tabs scroll inside their own strip and never shrink into each other", () => { expect(dx).toContain(".setnav .setitem { flex: 0 0 auto; white-space: nowrap;"); expect(dx).toContain("overflow-x: auto"); });
+});

@@ -143,5 +143,5 @@ html[data-fx="off"] .fx-ambient{display:none!important}
 .toast{border-radius:10px;padding:10px 14px;font-size:13px;border:1px solid var(--line)}.toast.ok{background:#0f2219;border-color:#1f4a35;color:#8fe0b8}.toast.bad{background:#2a1512;border-color:#5a3226;color:#f2a398}.toast.warn{background:#241d0e;border-color:#5a4a26;color:var(--w)}
 .toast .inl{display:flex;gap:8px;margin-top:8px}.mini{min-height:36px}
 .setpage .setrow{padding:14px 0;border-bottom:1px solid var(--line)}.setpage .setrow.last{border-bottom:0}
-@media (max-width:820px){.setgrid{grid-template-columns:1fr}.setnav{position:static;flex-direction:row;flex-wrap:wrap}.setsoon{display:none}}
+@media (max-width:820px){.setgrid{grid-template-columns:minmax(0,1fr)}.setnav{position:static;flex-direction:row;flex-wrap:wrap}.setsoon{display:none}}
 

@@ -1,5 +1,8 @@
 # START HERE after a compaction or a new chat (updated 6 Nov 2026 20:30 PKT, founder order 20:00 "rules her cheese top pe rakho")
 
+## RULE 34 / 19 (top of everything)
+The site runs on laptop, computer, mobile AND tablet. A founder phase is GREEN only after 390 / 820 / 1200+ px are seen (his phone screenshot + sandbox measurement), 44 px touch targets, no sideways scroll, nothing cut off, no empty screen. Existing founder code is brought to mobile/tablet, never rewritten. He is angry that this was skipped (6 Nov 20:09, 20:17, 20:24).
+
 ## 0. Who and how
 Nauman Sherwani = founder and chairman, Asia/Karachi. Talk Roman Urdu, "Aap" / "Nauman bhai", short. He gets angry at stale, repeated or missed things: fix directly, never hand him a list of problems. Never fake GREEN (GREEN = his pasted server output + my own Chrome look). Never skip a letter. ONE phase at a time. Founder code is SUPER ADVANCED, SQL above that. No mock data anywhere.
 
@@ -40,3 +43,7 @@ His honest "Not connected" tiles on Bridge/Finance are real (sources arrive in l
 5. L Look (Framer Motion + GSAP, Three.js WebGPU globe; CINEMATIC stays pixel-equal), M MoQ own Rust relay.
 6. N Bun cutover begins, O Polar ledger (C1 emerges), P, Q (awam Mail/Calendar), R (+R3 Admin > Mail Desk), S, T (Bun off), U, V. J7/J9 only when he names an operator/aggregator.
 Open words from him: Premium storage number (1 TB copied from Business Pro, needs his word), Premium plan card in `plans.ts`.
+
+## 6. Founder responsive harness (sandbox, not shipped)
+Files live in the session scratchpad and are re-creatable: a tiny Node static server over `founder-web/dist` (map `/_cc/` to dist), Playwright Chromium (`/opt/npm-tools/node_modules/playwright/index.mjs`), localStorage `anexo.session.token` set, every `/founder/v1/**` answered with `{"data":{}}`, wait about 4.6 s (the app gives up on the bridge after 4 s and then shows the shell). It measures per view at 390x844 / 820x1180 / 1024x768: horizontal overflow, elements past the right edge, touch targets under 40 px. Views: dashboard, bridge, mail, people, ai, systems, control, finance, release, move_in, audit, settings, profile. It proves the layout and empty states, NOT real data (his phone screenshots are the data proof).
+First run 6 Nov 20:20: found phone cards cut off on the right (grid `1fr` grew to the width of a nowrap line); fixed by `minmax(0,1fr)` everywhere + a safety-net block at the end of `dx.css`; then 13 views x 3 sizes = 39 rows with zero overflow.

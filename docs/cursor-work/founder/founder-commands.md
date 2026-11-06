@@ -1,4 +1,12 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
+## ▶ 6 Nov 20:24 PKT — founder: read the rules; the codes already exist, take them to mobile and tablet; old rules at the top; update chat context right now
+Founder (verbatim): "rules read kero pehle se codes likhe hai sirf mobile aur tablet pe leke jao. aur ainda rules read kero jo pehle rules likhe hain un ko top pe rakho abhi ke abhi chat context update kero, founder ke codes likhe hain un ko mobile tablet pe implmenet kero"
+Done: Rule 34/19 block at the top of AGENTS.md, CLAUDE.md, START-HERE; context 20:30; responsive audit + first fix (cards cut off on phone).
+
+## ▶ 6 Nov 20:17 PKT — founder (angry, abusive): website must work on laptop, computer, mobile AND tablet; repo read karo; "yeh mujhe mobile tablet ke liye bana"
+Founder (verbatim, abuse trimmed): "tujhe itni akal nahi hai ke website laptop, computer, mobile, tablet pe chalti hai ... repo read kero ... aur yeh mujhe mobile tablet ke liye bana"
+Order taken as: build the mobile + tablet layout for EVERY founder tab now (this is his "go" for this work), prove at 390 / 820 / 1024 px.
+
 ## ▶ 6 Nov 20:09 PKT — founder: install paste OK; angry that phases were done without mobile and tablet; why delete the password; update chat context, send me the GREEN list, update repo
 Founder (verbatim): "Madarchod tune itnay phases ka kaam mobile aur tablet ke bina kiya hai aur sab khali choda hai aur harmi main kyun chod delete kerun password? ... yeh sab chat context claude ke liye update kero aur mujhe green ki list send kero. repo update kerp"
 Done: GREEN-LIST-06NOV.md (with phone/tablet column), ledger row for the mobile+tablet pass before J8, START-HERE updated, context 20:15.

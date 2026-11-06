@@ -84,13 +84,13 @@ html.slim .nv{width:44px;height:44px;justify-content:center;padding:0}html.slim 
 /* Phone: no sidebar; floating bottom bar */
 .tabbar{display:none}
 @media (max-width:700px){
-  .ws{grid-template-columns:1fr;--gut:16px}.sb{display:none}
+  .ws{grid-template-columns:minmax(0,1fr);--gut:16px}.sb{display:none}
   .tp{padding:0 var(--gut);display:flex}.tpr{margin-left:auto}.tpc{display:none}.find,.trustbtn .tt{display:none}.iconbtn{display:grid}.tpr{gap:4px}
   .pg{padding:20px var(--gut) calc(var(--tabh) + 36px + env(safe-area-inset-bottom))}
   .titleblock h1,.bhead h1,.sethead h1{font-size:28px}
   .bsub .sep{display:none}.bsub{gap:4px 10px}
-  .strip{grid-template-columns:1fr}.cell{border-right:0;border-bottom:1px solid var(--line)}.cell:last-child{border-bottom:0}
-  .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;z-index:20;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));height:var(--tabh);padding:4px;background:rgba(16,19,26,.94);backdrop-filter:blur(14px);border:1px solid #2a3144;border-radius:22px;box-shadow:0 12px 36px rgba(0,0,0,.5)}
+  .strip{grid-template-columns:minmax(0,1fr)}.cell{border-right:0;border-bottom:1px solid var(--line)}.cell:last-child{border-bottom:0}
+  .tabbar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;z-index:20;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));height:var(--tabh);padding:4px;background:rgba(16,19,26,.94);backdrop-filter:blur(14px);border:1px solid #2a3144;border-radius:22px;box-shadow:0 12px 36px rgba(0,0,0,.5)}
   .tabbar button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:48px;padding:0;background:none;color:var(--dim);font:500 11px Inter,sans-serif;border-radius:18px}
   .tabbar button[aria-current="page"]{background:var(--s2);color:var(--fg)}.tabbar button[aria-current="page"] svg{color:var(--ac)}
   .pgfoot{text-align:left}.tpop{position:fixed;left:12px;right:12px;top:64px;width:auto}
@@ -102,7 +102,7 @@ html.slim .nv{width:44px;height:44px;justify-content:center;padding:0}html.slim 
 .pg{animation:pgin .16s ease-out}
 /* Settings on tablet / phone: sections become a compact segmented bar */
 @media (max-width:1023px){
-  .setgrid{grid-template-columns:1fr;gap:16px}.setnav{position:static;flex-direction:row;gap:6px;overflow-x:auto;padding:4px;border:1px solid var(--line);border-radius:var(--r2);background:var(--s1)}
+  .setgrid{grid-template-columns:minmax(0,1fr);gap:16px}.setnav{position:static;flex-direction:row;gap:6px;overflow-x:auto;padding:4px;border:1px solid var(--line);border-radius:var(--r2);background:var(--s1)}
   .setitem{flex:1;justify-content:center;padding:0 14px;min-height:44px}.setitem small{display:none}.setitem svg{display:none}.setsoon{display:none}
   .prow .mini{width:100%}.cityact .ghost{width:100%}.searchbox{flex-basis:100%}
 }
@@ -194,7 +194,7 @@ html[data-focus="hc"] :focus-visible{outline:3px solid #fff!important;outline-of
 .s2tbtn button[aria-expanded="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .seg{flex-wrap:nowrap;max-width:100%}.seg button{white-space:nowrap}
 .setrow .switch{position:relative}.setrow .switch::after{content:"";position:absolute;inset:-10px}
-@media (max-width:700px){.s2tbtn button{min-height:44px;padding:0 14px}.seg{width:100%}.seg button{flex:1 1 0;min-height:44px}.setrow{flex-wrap:wrap}.ambdial{height:140px}.ambtweak{grid-template-columns:1fr}.ambrow button{min-height:44px}}
+@media (max-width:700px){.s2tbtn button{min-height:44px;padding:0 14px}.seg{width:100%}.seg button{flex:1 1 0;min-height:44px}.setrow{flex-wrap:wrap}.ambdial{height:140px}.ambtweak{grid-template-columns:minmax(0,1fr)}.ambrow button{min-height:44px}}
 @media (pointer:coarse){.seg button{min-height:44px}}
 .s2tbtn button{white-space:nowrap}
 @media (max-width:1023px){.s2tbtn button,.ambrow button,.ambtweak select,.ambtweak button{min-height:40px}}

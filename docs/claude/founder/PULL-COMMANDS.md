@@ -639,3 +639,6 @@ Web pull.sh is NOT needed for this.
 
 ## ABHI PENDING (6 Nov 20:35 PKT): founder-install ONE more time. Why: his approved phone (screenshot 19:59) still showed "Too many device attempts" because the lock was checked BEFORE the approval; now a lock never blocks an approved device (Rust test, 209 pass). Same install also brings the real browser names (UC / Opera / Firefox...) in the device list. After it, reload the phone once; the red banner is gone and the J6 phone proof can start.
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
+
+## ABHI PENDING (6 Nov 20:55 PKT): founder-install ONE more time (SPA only). Why: mobile + tablet pass (his order 20:17 / 20:24): phone cards no longer cut off, settings tabs no longer overlap, Save stays in its card, 44 px touch targets on touch screens, switches keep their look. Then reload the phone and send screenshots of Home, Bridge, Settings (Personal + Appearance), Finance, People, Mail; I mark each in GREEN-LIST-06NOV.md.
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
