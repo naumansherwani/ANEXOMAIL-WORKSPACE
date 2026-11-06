@@ -1,4 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
+## ▶ 6 Nov 20:00 PKT — founder: all codes + chat context + rules at the top of the repo for Claude (compaction came); look at my mobile screenshot
+Founder (verbatim): "yeh saab codes aur chat context sab kuch update kero repo ke andar rules her cheese top pe rakho ke claude ke liye compact chat aa chuka hai. YEH IMAGE DEKHO MERE MOBILE KA HAI" (screenshot: approved phone, Bridge, red banner "Too many device attempts")
+Done: lock-vs-approved bug fixed + test; START-HERE-AFTER-COMPACTION.md; CLAUDE.md/AGENTS.md/context pointers; PULL-COMMANDS 20:35.
+
 ## ▶ 6 Nov 19:45 PKT — founder: approve OK; UC Browser, Opera, Firefox sab ke liye allowed kero
 Founder (verbatim): approve paste (OK, Chrome on Android approved) + "yeh UC Browser opera firefox sab ke liye allowed kero."
 Done: no browser block exists; devicelabel.ts names every browser, 93 tests; PULL-COMMANDS 20:25; context 20:25.

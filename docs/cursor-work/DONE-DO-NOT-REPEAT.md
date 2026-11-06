@@ -1501,3 +1501,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 ## 6 Nov 2026 20:10 PKT — founder-device.sh no longer needs exactly one founder_accounts row: approve/revoke find the account by the device code (must be a founder account). His install 19:42 GREEN.
 
 ## 6 Nov 2026 20:25 PKT — Phone approved (Chrome on Android). Device list names the real browser (devicelabel.ts, 9 tests, 93 SPA tests). Every browser is allowed; each is approved once.
+
+## 6 Nov 2026 20:35 PKT — Device exchange: a lock never blocks an approved device (ftoken::exchange_blocked, 209 Rust tests). START-HERE-AFTER-COMPACTION.md created and linked from CLAUDE.md, AGENTS.md, context line 13. Waits for his founder-install.

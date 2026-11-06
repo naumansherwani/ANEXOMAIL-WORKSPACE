@@ -636,3 +636,6 @@ Web pull.sh is NOT needed for this.
 
 ## ABHI PENDING (6 Nov 20:25 PKT): his phone approve is OK (Chrome on Android approved 19:45). He asked for UC Browser / Opera / Firefox "sab ke liye allowed". There is no browser block in the code: EVERY browser works, each browser is its own device and is approved once with `founder-device.sh approve <CODE>`. New: the device list now names the real browser (UC Browser, Opera, Firefox, Samsung, Edge, Vivaldi...) instead of "Chrome". ONE point (SPA only):
 1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
+
+## ABHI PENDING (6 Nov 20:35 PKT): founder-install ONE more time. Why: his approved phone (screenshot 19:59) still showed "Too many device attempts" because the lock was checked BEFORE the approval; now a lock never blocks an approved device (Rust test, 209 pass). Same install also brings the real browser names (UC / Opera / Firefox...) in the device list. After it, reload the phone once; the red banner is gone and the J6 phone proof can start.
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`

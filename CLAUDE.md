@@ -1,3 +1,4 @@
+# >>> CLAUDE: AFTER ANY COMPACTION OR NEW CHAT, OPEN `docs/claude/START-HERE-AFTER-COMPACTION.md` FIRST (founder 6 Nov 20:00: rules + state + order in one file), then the list below <<<
 # >>> FOUNDER CODE QUALITY LAW (founder 3 Nov 04:44 PKT): founder-lane code = SUPER ADVANCED code; SQL = ABOVE super advanced (advance-level SQL: constraints, triggers, append-only ledgers, hash chains, RLS, selftests, CHECK files). Never a plain or mock version. Letter order is never broken: next founder letter = G5d (G5a, G5b, G5c are GREEN). Founder-side code stays ON HOLD until he says "go". <<<
 # >>> CLAUDE: AFTER ANY COMPACTION OR NEW CHAT, DO THIS BEFORE ANYTHING ELSE (founder 2 Nov 03:14 PKT) <<<
 > 1. Read `AGENTS.md` (Rules 1-70) and `docs/claude/founder/CODES/00-README-RULES.md` (FC1-FC42).

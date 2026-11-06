@@ -314,10 +314,11 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
     };
     if !ftoken::valid_device_id(&b.device_id) { return (StatusCode::BAD_REQUEST, Json(json!({"error": "invalid device id"}))).into_response(); }
     let (key, now) = (ftoken::exchange_key(&c.sub, &b.device_id), std::time::Instant::now());   // per device: a waiting phone never locks the approved desktop
-    if st.lim.lock().unwrap().locked(&key, now) { return (StatusCode::TOO_MANY_REQUESTS, Json(json!({"error": "too many attempts, try again in 15 minutes"}))).into_response(); }
+    let locked = st.lim.lock().unwrap().locked(&key, now);   // 6 Nov 2026: a lock may only slow a device that is NOT approved. An approved device always gets its token (his phone was approved and still showed "Too many device attempts" because the lock was checked first).
     let Some(r) = sb.rpc("founder_device_exchange", json!({"p_uid": c.sub, "p_device_hash": ftoken::device_hash(&b.device_id), "p_label": ftoken::clean_label(&b.label)})).await else {
         return (StatusCode::BAD_GATEWAY, Json(json!({"error": "device service unavailable — run the E104 SQL (sql-run.sh)"}))).into_response();
     };
+    if ftoken::exchange_blocked(locked, r["state"].as_str()) { return (StatusCode::TOO_MANY_REQUESTS, Json(json!({"error": "too many attempts, try again in 15 minutes"}))).into_response(); }
     match r["state"].as_str() {
         Some("approved") => {
             let did = r["device_id"].as_str().unwrap_or("");

@@ -75,6 +75,9 @@ pub fn device_hash(device_id: &str) -> String { hex::encode(ring::digest::digest
 /// (every "Check again" is a failed try) used up the 5 tries and locked the already-approved desktop out for 15 minutes. A waiting device now only locks itself.
 pub fn exchange_key(sub: &str, device_id: &str) -> String { format!("ex:{}:{}", sub, &device_hash(device_id)[..16]) }
 
+/// A lock only slows a device that is not approved. Approved always passes (founder 6 Nov 2026, his approved phone was still locked out).
+pub fn exchange_blocked(locked: bool, state: Option<&str>) -> bool { locked && state != Some("approved") }
+
 /// device_id: browser ka random (kam az kam 32 akshar, sirf url-safe), warna reject.
 pub fn valid_device_id(d: &str) -> bool { (32..=128).contains(&d.len()) && d.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'-' || b == b'_') }
 
@@ -86,6 +89,13 @@ pub fn clean_label(l: &str) -> String {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn a_lock_never_blocks_an_approved_device() {
+        assert!(!exchange_blocked(true, Some("approved")));
+        assert!(exchange_blocked(true, Some("pending")) && exchange_blocked(true, Some("revoked")) && exchange_blocked(true, None));
+        assert!(!exchange_blocked(false, Some("pending")));
+    }
+
     #[test]
     fn a_waiting_phone_cannot_lock_the_approved_desktop() {
         use crate::login::Limiter;

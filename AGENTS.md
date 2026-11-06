@@ -1,3 +1,4 @@
+> ## >>> AFTER A COMPACTION OR NEW CHAT: OPEN `docs/claude/START-HERE-AFTER-COMPACTION.md` FIRST (founder 6 Nov 2026 20:00). It holds the reading order, process rules, locked decisions, state and the letter order in one file. <<<
 > ## >>> RULE 74 (founder 3 Nov 2026 08:43/08:48): FOUNDER WORK IS PINPOINT. Open `lanes/FOUNDER-INDEX.md` FIRST, find the feature, go straight to its SQL / CHECK / Rust / UI / test files. Do NOT grep the repo to search. Lovable (Bun) code is frozen in `lovable-gold/` (Rule 73). The blueprint lists the technology (frontend, backend, data, kernel) next to every phase. <<<
 
 # ANEXOMAIL Workspace — Agent Rules
