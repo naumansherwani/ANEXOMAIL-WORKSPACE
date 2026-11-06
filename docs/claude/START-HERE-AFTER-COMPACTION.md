@@ -24,7 +24,7 @@ Nauman Sherwani = founder and chairman, Asia/Karachi. Talk Roman Urdu, "Aap" / "
 - Business Pro is NEVER unlimited (570 users).
 - Landing footer "Built with" is his wording: never touch it; MoQ stays "planned" until letter M is GREEN.
 - Device trust: every browser/profile is its own device and is approved once (`founder-device.sh approve <CODE>`). Do not switch that off.
-- `FOUNDER_PASSWORD` code delete only on his word. T3 two-key proof only when Control (S) arrives.
+- `FOUNDER_PASSWORD`: he asked 6 Nov 20:09 "kyun delete kerun?": do NOT keep asking or listing it in replies; leave it exactly as is. T3 two-key proof only when Control (S) arrives.
 
 ## 4. STATE (6 Nov 2026 20:30 PKT)
 GREEN: A, B, D, E (L5 parked), F, G, H, I, J1-J5, J hardware E142, J6 on desktop, K1, K2, K3, ANEXOChat SQL 13-15 + 61.
@@ -32,7 +32,8 @@ Today: the founder phone (Android) was approved (19:45). Two bugs found from his
 His honest "Not connected" tiles on Bridge/Finance are real (sources arrive in letters O, P, Q); they are not a bug.
 
 ## 5. ORDER (no letter skipped)
-1. His `founder-install.sh` (the last block of PULL-COMMANDS) -> phone banner gone.
+1. (DONE 6 Nov 20:09, his paste OK) `founder-install.sh` with the lock fix. Waiting: his phone reload shows the banner gone.
+1b. MOBILE + TABLET pass over every founder tab (his anger 20:09: phases were built without phone/tablet proof). See `docs/claude/GREEN-LIST-06NOV.md` last column. Do it before J8. Rule 19/34.
 2. J6 real-phone proof (phone: Settings > Phone alerts > Add, allow notifications; I send the test; I read the receipt in the ledger) -> J6 fully GREEN.
 3. J8 vault lease (no operator needed; only after his "go").
 4. K4 AES-256 on :443 (also fixes the `/_cc` 404 on :8443), K5 awam T256-2, K6 WebTransport `wtransport` (UDP open), K7 DBSC.

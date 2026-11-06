@@ -3,7 +3,7 @@
 One letter per step, in build order. **GREEN** only where the proof exists (server output and/or the founder's Chrome). Old master-order numbers stay in `[brackets]` so nothing is duplicated. Source of truth for detail: `FOUNDER-MASTER-ORDER-28OCT.md`. The website says only what `tech-proof.py` shows PROVEN.
 > **TOP PRIORITY (founder 3 Nov 12:37, he said C1 is NOT to wander again): Polar C1 = DROPPED. It EMERGES inside letter O (Finance): existing webhook endpoints -> hash-chained ledger -> advanced verified layer, plan `FOUNDER-FINANCE-POLAR-LIVE-PLAN-02NOV.md`. No token, no `founder-polar.sh`, no side road before O.**
 
-## GREEN LEDGER (6 Nov 2026 19:30 PKT; nothing new since 3 Nov 14:05; ORDER: J6 phone proof -> J8 -> K4 -> K5 -> K6 -> K7 -> L -> M -> N -> O -> P -> Q -> R -> S -> T -> U -> V; no letter is skipped; every GREEN needs his paste + my Chrome look; this table is the quick read for a new chat)
+## GREEN LEDGER (6 Nov 2026 19:30 PKT; nothing new since 3 Nov 14:05; ORDER: J6 phone proof + MOBILE/TABLET pass -> J8 -> K4 -> K5 -> K6 -> K7 -> L -> M -> N -> O -> P -> Q -> R -> S -> T -> U -> V; no letter is skipped; every GREEN needs his paste + my Chrome look; this table is the quick read for a new chat)
 | Phase | GREEN | Proof (time) |
 |---|---|---|
 | A device approval + signatures | GREEN | Chrome (earlier); 3 Nov 12:19 'Approved device Chrome on Windows' |
@@ -21,6 +21,7 @@ One letter per step, in build order. **GREEN** only where the proof exists (serv
 | K1, K2 transport | GREEN | earlier server openssl; not re-proven 3 Nov |
 | ANEXOChat Phase 13-15 + 61 (awam SQL: file engine, chart, quota, Premium 21,000-user cap) | GREEN (SQL on his server) | his paste 3 Nov 13:48: phase13_15 OK + E65 OK; phase61 + CHECK_phase61 4 OK rows + E65 OK. Rust throttle + plans.ts Premium card still to build (awam parked) |
 | K3 padlock on :8443 | GREEN (3 Nov 13:55) with one honest note | his paste: `ufw` 8443/tcp + v6 ALLOW; my Chrome: `https://founderworkspace.anexomail.com:8443/` loads with NO certificate warning, isSecureContext=true, title 'ANEXOMAIL Founder'. NOTE: on this test port the shell loads but its files `/_cc/*` (css, js) answer 404, so the page is unstyled; the real app stays on :443 (Caddy serves `/_cc`). Not a K3 failure (K3 = padlock); it is solved when K4 puts AES-256 on :443 itself |
+| MOBILE + TABLET pass (his order 6 Nov 20:09: phases were built without proving phone and tablet) | NEXT, before J8: every founder tab at 390 / 820 px, his phone screenshots + sandbox measurements; see `docs/claude/GREEN-LIST-06NOV.md` last column | phone seen only: approval card, Bridge |
 | J6 real-phone proof | OPEN, the only thing left in letter J before J8 (his own research doc says J8 starts after J6 GREEN) | his phone: open the founder site, Add to Home Screen (iPhone) or install (Android), allow notifications, I send a test, he taps it; I read the receipt in the ledger |
 | J8 vault lease (dead-man lease, no operator needed) | NEXT after the J6 phone proof, built only when he says "go" (founder code is ON HOLD until then) | not built |
 | K4-K7, L, M, N, O, P, Q, R (+R3), S, T, U, V, X, J7, J9 | NOT GREEN | not built |

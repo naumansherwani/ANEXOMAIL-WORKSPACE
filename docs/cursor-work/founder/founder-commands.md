@@ -1,4 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
+## ▶ 6 Nov 20:09 PKT — founder: install paste OK; angry that phases were done without mobile and tablet; why delete the password; update chat context, send me the GREEN list, update repo
+Founder (verbatim): "Madarchod tune itnay phases ka kaam mobile aur tablet ke bina kiya hai aur sab khali choda hai aur harmi main kyun chod delete kerun password? ... yeh sab chat context claude ke liye update kero aur mujhe green ki list send kero. repo update kerp"
+Done: GREEN-LIST-06NOV.md (with phone/tablet column), ledger row for the mobile+tablet pass before J8, START-HERE updated, context 20:15.
+
 ## ▶ 6 Nov 20:00 PKT — founder: all codes + chat context + rules at the top of the repo for Claude (compaction came); look at my mobile screenshot
 Founder (verbatim): "yeh saab codes aur chat context sab kuch update kero repo ke andar rules her cheese top pe rakho ke claude ke liye compact chat aa chuka hai. YEH IMAGE DEKHO MERE MOBILE KA HAI" (screenshot: approved phone, Bridge, red banner "Too many device attempts")
 Done: lock-vs-approved bug fixed + test; START-HERE-AFTER-COMPACTION.md; CLAUDE.md/AGENTS.md/context pointers; PULL-COMMANDS 20:35.
