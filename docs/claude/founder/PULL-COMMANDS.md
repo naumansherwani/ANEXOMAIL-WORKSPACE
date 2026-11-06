@@ -626,3 +626,7 @@ Web pull.sh is NOT needed for this.
 1. SQL (file engine first): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) phase13_15_file_engine 2>&1 | tail -14`
 2. SQL (quota + its CHECK, 5 rows must be `t`): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) phase61_file_limits_quota CHECK_phase61 2>&1 | tail -14`
 (Pasting the file in the Supabase editor works too: run phase13_15 first, then phase61. No Rust/Web pull needed for this. Founder side: K3 `ufw allow 8443/tcp` still pending.)
+
+## ABHI PENDING (6 Nov 19:50 PKT): founder-install, THEN approve his phone. Why: (a) his desktop showed "Too many device attempts - try again in 15 minutes" because the limiter was one bucket per account and his waiting phone used up the 5 tries; now one bucket per device (Rust test + 208 tests pass). The install restarts the service, which also clears the current lock. (b) his phone (Android) shows the code 483C7C5A and waits for approval.
+1. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -14`
+2. `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-device.sh) approve 483C7C5A 2>&1 | tail -8`  (then press "Check again" ONCE on the phone)

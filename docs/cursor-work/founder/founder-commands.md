@@ -1,4 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
+## ▶ 6 Nov 19:33 PKT — founder: phone shows "This device needs approval" (code 483C7C5A) and desktop shows "Too many device attempts - try again in 15 minutes"; solve it; update chat context
+Founder (verbatim): "yeh chat context claude ke liye update kero. sab kuch update kero. aur yeh mera masla solve kero image dekho." (2 screenshots: phone approval card, desktop Security keys error)
+Done: limiter key per device (ftoken::exchange_key), test, 208 pass; PULL-COMMANDS 19:50; context 20:00.
+
 ## ▶ 6 Nov 19:24 PKT — founder: next tarteeb kya hai; tarteeb nahi tootay; repo + chat context update; sab rules padho
 Founder (verbatim): "next tarteeeb kya ha? ... aur tarteeb nahi tootay aur sara kuch update kero repo main aur chat context bhi update kero. sab rules read kero"
 Done: rules read, ledger header + J6-phone/J8 rows, context checkpoint 19:30. No code built (founder code on hold until "go").

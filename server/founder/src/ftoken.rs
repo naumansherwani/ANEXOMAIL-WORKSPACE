@@ -71,6 +71,10 @@ pub fn verify(token: &str, public: &[u8], now: i64) -> Result<FClaims, FErr> {
 /// sha256(device_id) hex — DB mein raw device_id kabhi nahi.
 pub fn device_hash(device_id: &str) -> String { hex::encode(ring::digest::digest(&ring::digest::SHA256, device_id.as_bytes()).as_ref()) }
 
+/// Rate-limit key of the device exchange: ONE bucket per (account, device). Founder 6 Nov 2026: the old key was the account alone, so a phone waiting for approval
+/// (every "Check again" is a failed try) used up the 5 tries and locked the already-approved desktop out for 15 minutes. A waiting device now only locks itself.
+pub fn exchange_key(sub: &str, device_id: &str) -> String { format!("ex:{}:{}", sub, &device_hash(device_id)[..16]) }
+
 /// device_id: browser ka random (kam az kam 32 akshar, sirf url-safe), warna reject.
 pub fn valid_device_id(d: &str) -> bool { (32..=128).contains(&d.len()) && d.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'-' || b == b'_') }
 
@@ -82,6 +86,19 @@ pub fn clean_label(l: &str) -> String {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn a_waiting_phone_cannot_lock_the_approved_desktop() {
+        use crate::login::Limiter;
+        let (phone, desk) = (exchange_key("founder-1", &"p".repeat(40)), exchange_key("founder-1", &"d".repeat(40)));
+        assert_ne!(phone, desk);
+        assert_eq!(phone, exchange_key("founder-1", &"p".repeat(40)));
+        assert_ne!(exchange_key("founder-1", &"p".repeat(40)), exchange_key("founder-2", &"p".repeat(40)));
+        let (mut l, now) = (Limiter::default(), std::time::Instant::now());
+        for _ in 0..5 { l.fail(&phone, now); }
+        assert!(l.locked(&phone, now), "the phone locks itself after 5 pending tries");
+        assert!(!l.locked(&desk, now), "the desktop must stay open");
+    }
+
     use super::*;
     fn keys() -> Keys { Keys::from_pkcs8(&Keys::generate_pkcs8().unwrap()).unwrap() }
     #[test]
