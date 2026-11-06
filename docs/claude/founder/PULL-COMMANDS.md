@@ -672,3 +672,5 @@ Proof after: output line `vault master: generated`, and `journalctl -u anexomail
 
 **6 Nov 23:40 J8c WASM kernel 0.13.0 (lease@1), SPA only:** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh)` (one command; 220 Rust tests as before, SPA now serves anexo-kernel-0.13.0.wasm, bundle index-BAnjULmy.js).
 Then the awam site must carry the SAME kernel (Rule 52, one kernel): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15` (awam keeps working on 0.12.0 until this is run; no awam screen changes).
+
+(6 Nov 22:46 rule: shared-code changes always carry a separate awam pull.sh point; see AGENTS.md top.)

@@ -1537,3 +1537,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 6 Nov 23:15 J8b2 written: lease.rs half() HKDF, verify_proof ES256 (ring), thumbprint RFC7638, MASTER file, route now calls founder_vault_lease_grant and needs {jwk, ts, proof}; installer creates /etc/anexomail/founder-vault-master.key once. 220 tests ok. Not installed yet.
 
 - 6 Nov 22:36 J8b2 GREEN (server paste + Chrome). 23:40 J8c written: web-wasm lease@1 + kernel 0.13.0 + founder-web wrapper, 112 kernel tests, bun 101. Not installed. Next J8d UI.
+
+- 6 Nov 22:50 SHARED-CODE RULE written on top of AGENTS.md + CLAUDE.md + START-HERE s.10 and enforced by rules-gate.

@@ -2566,3 +2566,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 6 Nov 22:24 follow-up: continue the order, J8b2 next (done in repo 23:15).
 
 - 6 Nov 22:36: his journalctl paste 'vault lease key ON' (17:32 UTC). J8b2 GREEN on the server. Continue J8c.
+
+- 6 Nov 22:46: 'very good, i am impressed, yeh hamesa kero; yeh bhi rule rakho: jab awam ka on the spot kerna ho to command do' (after I gave the separate awam pull.sh point for the shared kernel).

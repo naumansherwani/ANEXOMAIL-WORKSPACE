@@ -70,3 +70,7 @@ Update 21:30: tablet no longer has its own rail; labelled sidebar from 768; sear
 - WASM kernel (one Rule-52 kernel, `web-wasm/`) = browser-side verification.
 - React 19 + Vite + TS strict + TanStack Router + Tailwind 4 + shadcn, WebCrypto = screens. CINEMATIC look stays.
 - J8 detail and layer table: `docs/claude/J8-LEASE-ADVANCED-DESIGN-06NOV.md`. Current: J8a GREEN, J8b installed, E144 written (waits his pull), then J8b2, J8c, J8d.
+
+
+## 10. SHARED-CODE RULE (founder 6 Nov 22:46)
+Any founder change that also changes a file the awam site carries (kernel pin, shared lib, public/kernel) => in the SAME reply give him the awam pull.sh command as its own point. If awam is not affected, say so in one line. Founder and awam commands stay separate; the awam one never replaces the founder one.

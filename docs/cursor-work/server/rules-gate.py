@@ -62,7 +62,7 @@ for top in ("AGENTS.md", "CLAUDE.md"):
         head = open(top, encoding="utf-8").read(2500)
     except OSError:
         head = ""
-    if "ONE WEBSITE, ONE BUILD" not in head or "RULE 34" not in head or "LIVE CHROME = REPO" not in head:
+    if "ONE WEBSITE, ONE BUILD" not in head or "RULE 34" not in head or "LIVE CHROME = REPO" not in head or "SHARED-CODE RULE" not in head:
         fail("34 ONE BUILD", top + ": the ONE WEBSITE, ONE BUILD and RULE 34 blocks must stay at the very top (founder 6 Nov 2026)")
 srv = [] if ALL else [f for f in staged if re.match(r"(founder-web/src|founder-web/dist|server/founder/src|docs/cursor-work/sql)/", f)]
 if srv and "docs/claude/founder/PULL-COMMANDS.md" not in staged:

@@ -2347,3 +2347,6 @@ J8b2 Rust written (220 tests offline): server half = HKDF-SHA256(master file, sa
 
 ### Checkpoint 6 Nov 22:36 PKT / 23:40 repo
 J8b2 GREEN (his journalctl paste 'vault lease key ON' + my Chrome: dashboard fine). J8c written: kernel 0.13.0 lease@1 (shared kernel: awam pin changes too, so after founder-install he runs the awam pull.sh to keep ONE kernel). Wrapper: founder-web/src/kernel.ts leaseCheck(data, deviceId, pinnedSerial, clocks) and leaseVaultKey(local, half, deviceId). Next J8d: lease.ts (WebCrypto non-extractable ECDSA P-256 key in IndexedDB, proof `anexo-lease-proof@1|device|ts`, renew ~5 min, local half in IndexedDB, server half memory only, wipe at expiry, pinned serial in storage), Settings > Privacy card (live/expired/revoked per device, panic lock behind T3), tests, Chrome live proof.
+
+### Checkpoint 6 Nov 22:50 PKT
+New top rule (his 22:46): SHARED-CODE RULE, awam pull.sh command given on the spot as a separate point whenever a founder change touches shared files. His install/pull pastes for J8c (founder-install + awam pull.sh) are still pending.
