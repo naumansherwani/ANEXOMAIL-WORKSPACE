@@ -56,7 +56,9 @@ button.dx-card{cursor:pointer;width:100%}button.dx-card:hover{transform:translat
 .bm-quiet{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);font-size:12px;color:var(--faint)}
 .phero{position:absolute;right:14px;top:6px;width:210px;height:150px;pointer-events:auto}.phero .orb-gl{position:absolute;inset:0}.ph-fb{inset:20%;border-radius:20% 20% 6% 6%;background:linear-gradient(160deg,#4a73b3,#1d3157);box-shadow:0 0 30px rgba(74,115,179,.5)}
 .prof{position:relative;overflow:hidden}
-@media (max-width:700px){.bmap{grid-template-columns:minmax(0,1fr) minmax(0,1fr);padding:14px}.bm-stage{grid-column:1/-1;order:-1;height:140px}.phero{width:130px;height:96px}.dx-orbwrap{width:96px;height:96px}}
+/* the map stacks (stage on top, Arriving / Leaving side by side) as soon as the content column is too narrow for 3 columns: with the full labelled sidebar that is under 1000 px, not only on a phone */
+@media (max-width:1000px){.bmap{grid-template-columns:minmax(0,1fr) minmax(0,1fr);padding:14px}.bm-stage{grid-column:1/-1;order:-1;height:140px}}
+@media (max-width:700px){.phero{width:130px;height:96px}.dx-orbwrap{width:96px;height:96px}}
 /* 3D polish: CSS fallback fades out once the canvas is drawing; profile mark sits clear of the name. */
 .orb:has(.orb-gl.on) .orb-fallback,.phero:has(.orb-gl.on) .ph-fb,.bm-stage:has(.orb-gl.on) .bm-fb{opacity:0;transition:opacity .5s}
 .phero{right:10px;top:8px;width:170px;height:124px}

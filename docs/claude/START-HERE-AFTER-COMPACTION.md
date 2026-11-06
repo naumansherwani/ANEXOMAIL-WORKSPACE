@@ -57,3 +57,8 @@ First run 6 Nov 20:20: found phone cards cut off on the right (grid `1fr` grew t
 
 ## 7. PARITY: phone and laptop are the same code (founder 6 Nov 21:06: "sab codes same to same, sirf mobile tablet layout ka farq")
 Audit 6 Nov 21:25: (a) JS: no screen-size switch anywhere (the only size reads are Scene3D resizing its own canvas); a test guards it. (b) Same bundle, same live numbers on phone and laptop (screens compared). (c) Every page is reachable on a phone: the bottom bar has Home, Bridge, Finance, People and "More", and "More" opens the same search/jump palette that lists every page (Mail, AI, Systems, Control, Release, Move-In, Audit ledger...). (d) LOOPHOLE FOUND AND FIXED: the device trust label ("Trusted" / "Review") was hidden on a phone, only a dot; now shown. (e) Dead CSS (`.dx-what`, `.setsoon`, `.fxtoggle` match no component) = nothing is hidden by them. (f) The ONLY deliberate layout differences left: sidebar -> icon rail (tablet) -> bottom bar (phone); the centre search box -> a search icon on a phone (same palette); Settings tab icons and one-line descriptions are hidden under 1024 px (the section itself explains itself); a decorative separator dot. Anything new that hides content on a small screen must be written down here first.
+
+
+## 8. LIVE CHROME = REPO (founder 6 Nov 21:17)
+Live Chrome must match the repo code on every device, founder AND awam site. Same codes, only layout differs. Check the live bundle hash against the repo build, then 390 / 820 / 1200+.
+Update 21:30: tablet no longer has its own rail; labelled sidebar from 768; search box always in the top bar; Bridge map stacks under 1000 px; Settings tabs keep icons + descriptions.

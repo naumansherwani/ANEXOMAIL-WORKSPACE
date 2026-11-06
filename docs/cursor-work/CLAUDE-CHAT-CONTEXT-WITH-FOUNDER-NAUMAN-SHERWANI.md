@@ -2311,3 +2311,6 @@ He sent 6 phone screenshots (Home 8:50, Bridge 8:51, Settings>Appearance 8:53, F
 
 ## CHECKPOINT 6 Nov 21:25 PKT (parity audit)
 His goal (21:06): the founder side is the SAME code on phone, tablet and laptop; only the layout differs. Parity audit done (START-HERE section 7): no JS size switch (a test now guards it), same bundle and numbers on phone and laptop, every page reachable on a phone through "More" (the palette), ONE loophole found and fixed: the "Trusted/Review" device label was hidden on phones (ui.css), now visible. The remaining deliberate differences are listed in START-HERE section 7 (nav shape, search box -> icon, settings tab icons/descriptions). 100 SPA tests, build done. One founder-install (PULL-COMMANDS 21:25) ships this + the deck-tabs strip. STILL OPEN: tablet live proof, phone proof of the other tabs, J6 phone alerts, J8 on "go".
+
+### Checkpoint 6 Nov 21:30 PKT
+Parity pass done in code (ui.css, dx.css): no separate tablet rail, Bridge map stacks <1000px, audit 390/768/820/1024 clean. New rule LIVE CHROME = REPO on top of AGENTS/CLAUDE/START-HERE + gate. Next: founder-install, then live bundle hash check; J8 only on his go.

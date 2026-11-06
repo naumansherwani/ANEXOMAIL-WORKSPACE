@@ -1515,3 +1515,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 ## 6 Nov 2026 21:15 PKT — PHONE GREEN: Home, Bridge, Settings>Appearance, Finance, People, Mail (his screenshots + my laptop Chrome look, identical data). Deck tabs = one scrolling strip on phone (dx.css). Tablet live proof still open.
 
 ## 6 Nov 2026 21:25 PKT — Parity audit: device trust label visible on phone; tests guard against any JS screen-size switch; START-HERE section 7 lists the only deliberate layout differences.
+
+- 6 Nov 21:30 parity pass: Bridge map stacks <1000px, tablet rail removed, search kept, LIVE CHROME = REPO rule on top + gate.

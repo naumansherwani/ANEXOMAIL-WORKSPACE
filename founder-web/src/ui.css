@@ -72,23 +72,19 @@ button.grp svg{transition:transform .15s}button.grp[aria-expanded="true"] svg{tr
 .tile,.rowcard,.livecard{background:var(--s1);border-radius:var(--r2)}
 .panel{background:var(--s1);box-shadow:none}
 .chip{background:none}
-/* Tablet: icon rail */
-@media (max-width:1023px){
-  .ws{--sw:64px}.sb{padding:12px 8px;align-items:center}.sbtop{padding:2px 0 12px}.sbtop .wm{display:none}.sbtop .brand-lockup{gap:0}
-  .nv{width:44px;height:44px;justify-content:center;padding:0}.nv .lbl,.grp,.sbfoot .lbl{display:none}.sbscroll{align-items:center}.sbfoot{align-items:center}
-  .find{min-width:0}.find .ft{display:none}.find kbd{display:none}
-  .pg,.tp{--gut:24px}
-}
+/* Tablet: the SAME labelled sidebar as the laptop (founder 6 Nov 2026 21:11, "100% ek jaisa"); the icon rail exists only when he chooses the slim sidebar himself. */
+@media (max-width:1100px){ .tp{grid-template-columns:minmax(0,0) minmax(0,1fr) auto} .tpc{justify-self:stretch;min-width:0} .tpc .find{min-width:0;width:100%;max-width:420px} }
+@media (max-width:1023px){ .find{min-width:0} .pg,.tp{--gut:24px} }
 html.slim .ws{--sw:64px}html.slim .sb{padding:12px 8px;align-items:center}html.slim .sbtop{padding:2px 0 12px}html.slim .sbtop .wm{display:none}html.slim .sbtop .brand-lockup{gap:0}
 html.slim .nv{width:44px;height:44px;justify-content:center;padding:0}html.slim .nv .lbl,html.slim .grp{display:none}html.slim .sbscroll,html.slim .sbfoot{align-items:center}
-/* Phone: no sidebar; floating bottom bar */
+/* Phone (under 768 px): no sidebar; floating bottom bar. The search BOX stays in the top bar like on the laptop. */
 .tabbar{display:none}
-@media (max-width:700px){
+@media (max-width:767px){
   .ws{grid-template-columns:minmax(0,1fr);--gut:16px}.sb{display:none}
-  .tp{padding:0 var(--gut);display:flex}.tpr{margin-left:auto}.tpc{display:none}.find{display:none}.trustbtn .tt{font-size:13px}.iconbtn{display:grid}.tpr{gap:4px}
+  .tp{padding:0 var(--gut);display:flex;gap:8px}.crumb{display:none}.tpc{flex:1 1 0;min-width:0}.tpc .find{min-width:0;width:100%}.find .ft{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.trustbtn .tt{font-size:13px}.tpr{gap:4px;margin-left:auto}
   .pg{padding:20px var(--gut) calc(var(--tabh) + 36px + env(safe-area-inset-bottom))}
   .titleblock h1,.bhead h1,.sethead h1{font-size:28px}
-  .bsub .sep{display:none}.bsub{gap:4px 10px}
+  .bsub{gap:4px 10px}
   .strip{grid-template-columns:minmax(0,1fr)}.cell{border-right:0;border-bottom:1px solid var(--line)}.cell:last-child{border-bottom:0}
   .tabbar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;z-index:20;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));height:var(--tabh);padding:4px;background:rgba(16,19,26,.94);backdrop-filter:blur(14px);border:1px solid #2a3144;border-radius:22px;box-shadow:0 12px 36px rgba(0,0,0,.5)}
   .tabbar button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:48px;padding:0;background:none;color:var(--dim);font:500 11px Inter,sans-serif;border-radius:18px}
@@ -103,7 +99,7 @@ html.slim .nv{width:44px;height:44px;justify-content:center;padding:0}html.slim 
 /* Settings on tablet / phone: sections become a compact segmented bar */
 @media (max-width:1023px){
   .setgrid{grid-template-columns:minmax(0,1fr);gap:16px}.setnav{position:static;flex-direction:row;gap:6px;overflow-x:auto;padding:4px;border:1px solid var(--line);border-radius:var(--r2);background:var(--s1)}
-  .setitem{flex:1;justify-content:center;padding:0 14px;min-height:44px}.setitem small{display:none}.setitem svg{display:none}.setsoon{display:none}
+  .setitem{flex:1;justify-content:center;padding:0 14px;min-height:44px}
   .prow .mini{width:100%}.cityact .ghost{width:100%}.searchbox{flex-basis:100%}
 }
 .cs{font:400 12px Inter,sans-serif;color:var(--faint);margin-top:2px}
@@ -204,3 +200,6 @@ html[data-focus="hc"] :focus-visible{outline:3px solid #fff!important;outline-of
 /* S1e (compare M2): the settings list keeps one text column — the icon box no longer shrinks with the text */
 .setitem>svg{flex:0 0 18px;width:18px;min-width:18px}.setitem>span{flex:1;min-width:0}
 .pwho{min-width:0;flex:1}.pwho span,.pwho b{overflow-wrap:anywhere}
+
+/* The "Ctrl K" hint is a keyboard hint: hidden only on touch screens (no keyboard), the one deliberate difference. */
+@media (pointer:coarse){.find kbd{display:none}}

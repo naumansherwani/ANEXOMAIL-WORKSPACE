@@ -40,3 +40,5 @@ Before J8, a mobile + tablet pass over every founder tab (Rule 19/34): 390 px an
 | People | 8:56: Features 13, Gates 8-4-1, real organisations list ("Pro Buyer Two Test") | Features 13, Gates 8-4-1, same organisation (identical) | **GREEN phone** |
 | Mail | 8:57: Features 15, Gates 10-5-0, Mail Desk company mailboxes | Features 15, Gates 10-5-0 (identical) | **GREEN phone** |
 Same data on both screens: ONE build, only the layout flexes. Still open: tablet (820) live proof, phone proof of the other tabs (AI, Systems, Control, Release, Move-In, Audit ledger, Profile, Settings Personal/Workspace/Notifications/Privacy/Time machine/Drift), J6 phone alerts.
+
+UPDATE 21:30: parity pass built; sandbox audit clean at 390/768/820/1024. Live proof pending his install.
