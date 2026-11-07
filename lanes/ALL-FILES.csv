@@ -14,6 +14,7 @@ path,lane,what
 .cursor/rules/session-1821-lock.mdc,docs,"docs / memory / rules"
 .cursor/rules/zoho-compete-lock.mdc,docs,"docs / memory / rules"
 .gitignore,shared,"root config"
+.lovable/north-star/north-star.md,docs,"Lovable project files"
 .lovable/plan/anexochat-compact-tools-and-stable-message-controls-2026-09-20.md,docs,"Lovable project files"
 .lovable/plan/anexomail-recovery-and-live-proof-plan-2026-09-08.md,docs,"Lovable project files"
 .lovable/plan/anexomail-workspace-memory-lock-phase-0-2026-08-06.md,docs,"Lovable project files"

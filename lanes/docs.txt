@@ -12,6 +12,7 @@
 .cursor/rules/server-pull-rebase.mdc
 .cursor/rules/session-1821-lock.mdc
 .cursor/rules/zoho-compete-lock.mdc
+.lovable/north-star/north-star.md
 .lovable/plan/anexochat-compact-tools-and-stable-message-controls-2026-09-20.md
 .lovable/plan/anexomail-recovery-and-live-proof-plan-2026-09-08.md
 .lovable/plan/anexomail-workspace-memory-lock-phase-0-2026-08-06.md
