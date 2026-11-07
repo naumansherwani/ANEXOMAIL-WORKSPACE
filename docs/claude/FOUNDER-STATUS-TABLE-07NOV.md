@@ -24,3 +24,24 @@ GREEN = his pasted server output and/or my own live Chrome look and/or his phone
 | K4.3-K4.6 | cert refresh timer, SNI front, live :443 switch, CHECK | Rust + Caddy + SQL | NOT STARTED (switch needs his haan) |
 | ANEXOChat 13-15+61 | File engine, quotas | SQL | GREEN | 3 Nov |
 | NOT GREEN | K5 (awam AES-256), K6 (wtransport QUIC), K7 (DBSC), L (Cinematic motion/WebGPU), M (MoQ), N..V, X, J7, J9; tablet on a real tablet; phone proof of AI/Systems/Control/Release/Move-In/Audit; panic lock for real | | | |
+
+
+## WIRED / REAL WORKING column (founder 7 Nov 15:12: "green ke agay likho wired hai real working"). Honest, from the proofs we have; "not proven" is said where we only have a server/SQL proof.
+| Letter | GREEN | Wired end to end? | Really working today? |
+|---|---|---|---|
+| A device approval | GREEN | YES (browser -> Rust -> SQL) | YES: his phone and desktop approved and listed, Android lease issued |
+| B/H settings | GREEN | YES (UI -> Rust -> SQL, history/undo) | YES (his Chrome, phone Settings tabs) |
+| D UI stack | GREEN | YES | YES (live bundle = repo build) |
+| E loophole fixes | GREEN | YES (headers, limits on the live service) | YES (headers seen live; L5 parked) |
+| F kernel verify | GREEN | YES (WASM in the browser) | YES ("Answers verified" on every founder screen) |
+| G audit chain + Merkle + seals | GREEN | YES | YES (seal #6, portable proof); nothing external reads the anchors yet |
+| I appearance | GREEN | YES | YES (applies at once, saved) |
+| J1-J5 passkey / T2 / T3 | GREEN | YES (WebAuthn ceremonies, T3 table) | PARTLY: passkeys and T2 used for real; T3 (two hardware keys + 10 min) NOT run for real (needs 2 trusted hardware keys) |
+| J6 phone alerts | GREEN | YES (Rust push sender, SQL receipts, service worker) | YES on desktop (Windows Chrome via fcm, last receipt 4 days ago); the Android phone is NOT added yet |
+| J8a-c vault lease server + kernel | GREEN | YES | YES (leases #1 phone, #6 desktop, kernel judges them) |
+| J8d vault screen + panic | GREEN | YES (screen -> Rust -> SQL E143-E145) | PARTLY: lease + renew + device list work for real; the vault key encrypts NOTHING yet (no consumer), panic lock not run for real |
+| Mobile pass (Privacy) | GREEN | YES (same CSS everywhere) | YES (his phone); other tabs and a real tablet not proven |
+| K1-K3 AES-256 on :8443 | GREEN | YES (own Rust terminator running) | YES on :8443 only; the real site on :443 is still Caddy (AES-128 first) |
+| K4.1 | GREEN narrow | YES | YES (assets 200 on :8443) |
+| K4.2 | written | proxy ON in the journal | login page opened but unstyled; fix waits his install; NOT proven |
+| ANEXOChat 13-15+61 (files, quotas) | GREEN (SQL) | SQL only: tables, quotas, 21,000 cap | NOT proven as a screen: no UI for it in the founder app yet |

@@ -2407,3 +2407,6 @@ He said: write world-class advanced SQL (rule). Done: E145_founder_vault_panic_t
 
 ### Checkpoint 7 Nov 15:25 PKT
 - 7 Nov 15:25: his K4.2 install + curl: / 200, /founderlogin 200, /app 200, journal 'legacy path proxy ON'. My Chrome on :8443/founderlogin: title 'Founder sign in', isSecureContext=true, BUT unstyled: old app assets /assets/* 404 (the old app serves its own /assets). FIX (not yet installed): fproxy now uses an inverted closed table 'is_ours' (/, /f, /_cc/*, /founder/v1/*) and everything else goes to the old app, like Caddy; the layer + Alt-Svc clear are applied ONLY to the :8443 TLS router (NOT :3210: behind Caddy the founder SPA assets also arrive as /assets/* after Caddy strips /_cc, so a global proxy would have broken the live site). 225 tests. Status table sent to him: docs/claude/FOUNDER-STATUS-TABLE-07NOV.md.
+
+### Checkpoint 7 Nov 15:35 PKT
+- 7 Nov 15:35: he asked 'green ke agay likho wired hai real working': added the WIRED / REAL WORKING column to docs/claude/FOUNDER-STATUS-TABLE-07NOV.md. Honest gaps: vault key has no consumer, T3/panic not run for real, Android phone not added to alerts, real site still on Caddy AES-128, ANEXOChat has no UI, K4.2 unproven. From now on every GREEN line in ledgers states wired + really working.
