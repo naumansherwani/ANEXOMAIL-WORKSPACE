@@ -3,7 +3,7 @@ Every row below was marked GREEN while only partly real. Each becomes truly GREE
 
 | # | Gap | What closes it | Who | Technology | State |
 |---|---|---|---|---|---|
-| G1 | Android phone not added to alerts (J6) [17:25: code DEPLOYED on his server (Add fingerprint, Alert number); E146 GREEN wired+real 4/4; phone proof still missing] | Settings > Privacy > Phone alerts: name it, Add (allow notifications, touch the key), Send test, tap the alert | HIS PHONE (step given) | Web Push + service worker | OPEN |
+| G1 | CLOSED 7 Nov 19:30 GREEN wired+real (his screenshots) - was: Android phone not added to alerts (J6) [17:25: code DEPLOYED on his server (Add fingerprint, Alert number); E146 GREEN wired+real 4/4; phone proof still missing] | Settings > Privacy > Phone alerts: name it, Add (allow notifications, touch the key), Send test, tap the alert | HIS PHONE (step given) | Web Push + service worker | OPEN |
 | G2 | Vault key encrypts nothing (J8d) | First consumer: the session snapshot kept in the browser is sealed with AES-256-GCM under the vault key while a lease is live and unreadable after the lease ends; proof by a test + live Chrome (snapshot is ciphertext, comes back after renew, gone after lock) | CLAUDE | React-TS + WebCrypto AES-GCM + kernel key | NEXT |
 | G3 | T3 / panic lock never run for real | Needs TWO trusted hardware keys (two FIDO2 keys, allow-listed with "Trust this model"), then the real flow: start (key 1) -> wait 10 min -> approve (key 2) -> confirm; test on a spare device first so no real device is locked by mistake | HIS HANDS + Claude | SQL E118/E145 + Rust + WebAuthn | OPEN (needs keys) |
 | G4 | Real site on :443 still Caddy (AES-128 first) | K4.3 cert refresh, K4.4 SNI front, K4.5 live switch (his haan, rollback ready), K4.6 CHECK + Chrome | CLAUDE + his haan | Rust rustls + Caddy + SQL E119 | IN PROGRESS |
@@ -44,3 +44,7 @@ G1 delivery GREEN (his screenshots: Android listed + confirmed, readable alert).
 
 ## 7 Nov 19:20 G1
 Worker v3 live = repo. Only open G1 item: his tap screenshot ('You opened this alert'). Then the 390/820/1200 look of the Phone alerts card, then G2.
+
+## 7 Nov 19:30 G1 CLOSED
+- 7 Nov 2026 19:30 PKT: G1 CLOSED = GREEN, WIRED: YES / REAL: YES. Proof = his phone screenshots 6:50-6:51 PM: lock-screen alert 'Test alert / Phone alerts work.'; he TAPPED it and Chrome opened the founder Settings > Privacy page scrolled to Phone alerts with 'You opened this alert: Test alert (tick) - The alert reached this phone and the tap brought you here. Phone alerts work end to end.'; list shows 'Chrome on Windows (desktop)' AND 'Chrome on Android (this device)', both 'Confirmed via fcm.googleapis.com, last receipt just now'. Seen: 390 (his phone) + 1200+ (my Chrome); 820 tablet = G7. Chain of fixes that closed G1: Add fingerprint (platform key), E147 approval from a trusted device, E146 banned countries + Alert number, simple one-tap UI, worker v2 (never empty), v3 (tap). NEXT = G2 vault-key consumer (technology below in the NEXT PHASE block).
+G2 is now the open item in progress.
