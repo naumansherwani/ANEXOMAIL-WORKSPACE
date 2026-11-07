@@ -54,3 +54,5 @@ GREEN = his pasted server output and/or my own live Chrome look and/or his phone
 
 | Second key via approval flow (E147 + screens) | SQL+Rust+React-TS | GREEN 7 Nov 2026 18:35 PKT | WIRED: YES / REAL: YES (my Chrome saw Your keys 2/5, new platform key added just now) |
 | Phone alerts on the Android phone | React-TS+Rust+SQL | OPEN | WIRED: YES / REAL: not yet (phone not listed, no alert received) |
+
+| Alert worker v2 + Last alert row | JS service worker + React-TS | LIVE, NOT GREEN | WIRED: YES (live bundle D9iBf3BL = repo) / REAL: needs his phone screenshot 7 Nov 2026 19:15 PKT |

@@ -35,3 +35,6 @@ SW v2 built (never an empty notification, reason code in odd pushes, update on c
 
 ## 7 Nov 19:05 G1: empty alert, observability
 Worker records last received alert; card shows it. GREEN needs his phone screenshot.
+
+## 7 Nov 19:15 G1
+Alert worker v2 + 'Last alert' row LIVE = repo (his install, my Chrome fetch). OPEN: his phone Send test + screenshot (notification + Last alert row) decides whether the emptiness was content or display.
