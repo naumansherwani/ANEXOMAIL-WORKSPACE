@@ -683,3 +683,5 @@ Then the awam site must carry the SAME kernel (Rule 52, one kernel): `git -C /op
 (7 Nov 13:20: the 23:35 SQL point and the AWAM point were both run by him, outputs OK; nothing pending to pull until J8d is written.)
 
 - 7 Nov 14:10: J8d vault lease UI written (SPA only). Command: founder-install.sh. Awam pull NOT needed. Not GREEN until live Chrome 390/820/1200+.
+
+- 7 Nov 14:40: J8d panic lock (E145 SQL + Rust t3_execute arm + UI). Commands: sql-run.sh E143 E144 E145 (+CHECK_E145), then founder-install.sh. Awam pull NOT needed. Not GREEN until live Chrome 390/820/1200+.

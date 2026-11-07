@@ -13,13 +13,13 @@ async function begin(body: Json): Promise<Opts> {
   return r.body as Opts;
 }
 
-export type ActionSpec = { action: string; target: string; params?: Record<string, string>; purpose?: "action" | "t3_begin" | "t3_approve" | "t3_execute"; request?: string };
+export type ActionSpec = { action: string; target: string; params?: Record<string, string>; purpose?: "action" | "t3_begin" | "t3_approve" | "t3_execute"; request?: string; nonce?: string };
 export type Proved = { ok: true; result: any; decision: string; risk: number; nonce: string } | { ok: false; error: string; decision?: string };
 
 /** Sign in or approve ONE named action with a key. For an action the kernel re-derives the digest first: if the server's digest or challenge is not the digest of exactly what was asked, the key is never touched. */
 export async function prove(spec?: ActionSpec): Promise<Proved> {
   if (!supported()) return { ok: false, error: "This browser has no passkey support." };
-  const o = await begin(spec ? { purpose: spec.purpose ?? "action", action: spec.action, target: spec.target, params: spec.params ?? {}, request: spec.request } : { purpose: "signin" });
+  const o = await begin(spec ? { purpose: spec.purpose ?? "action", action: spec.action, target: spec.target, params: spec.params ?? {}, request: spec.request, nonce: spec.nonce } : { purpose: "signin" });
   if (spec) {
     const chk: ActionReport | undefined = await actionCheck({ action: spec.action, target: spec.target, params: spec.params ?? {}, nonce: o.nonce ?? "", hash: o.hash, challenge: o.options.challenge });
     if (!chk) return { ok: false, error: "The security kernel could not run, so the key was not touched." };

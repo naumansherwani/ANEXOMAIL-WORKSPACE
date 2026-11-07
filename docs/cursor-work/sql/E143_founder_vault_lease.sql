@@ -287,8 +287,12 @@ revoke all on function public.founder_vault_lease_issue(uuid, uuid, integer), pu
   public.founder_vault_lease_status(uuid), public.founder_vault_lease_verify(integer), public.founder_vault_lease_device_verify(uuid),
   public._fh_vl_log(uuid, uuid, bigint, text, jsonb), public._fh_vl_audit(uuid, text, text, text, jsonb) from public, anon, authenticated;
 drop function if exists public._fh_vl_log(uuid, uuid, text, jsonb);
-grant execute on function public.founder_vault_lease_panic(uuid, uuid), public.founder_vault_lease_sweep(),
+grant execute on function public.founder_vault_lease_sweep(),
   public.founder_vault_lease_status(uuid), public.founder_vault_lease_verify(integer), public.founder_vault_lease_device_verify(uuid) to service_role;
+-- the raw panic is open to service_role only until E145 (the T3 door) exists; after that ONLY founder_vault_panic_run reaches it
+do $$ begin
+  if to_regprocedure('public.founder_vault_panic_run(uuid,uuid,uuid,text)') is null then grant execute on function public.founder_vault_lease_panic(uuid, uuid) to service_role; end if;
+end $$;
 -- the issue core is open to service_role only until E144 exists; after that ONLY founder_vault_lease_grant (device proof) may reach it, so a re-run of E143 never reopens the bypass
 do $$ begin
   if to_regprocedure('public.founder_vault_lease_grant(uuid,uuid,text,bigint,integer)') is null then

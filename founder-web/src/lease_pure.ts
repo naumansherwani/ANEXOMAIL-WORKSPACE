@@ -64,3 +64,35 @@ export function sortRows(rows: DeviceRow[], mine: string | null): DeviceRow[] {
   const rank = { live: 0, expired: 1, none: 2, revoked: 3 } as const;
   return [...rows].sort((a, b) => (a.device_id === mine ? -1 : b.device_id === mine ? 1 : 0) || rank[a.state] - rank[b.state] || a.label.localeCompare(b.label));
 }
+
+// ---- panic lock (T3): two different hardware keys, a 10-minute delay, a cancel window. The page only carries the steps; SQL (E118 + E145) decides everything. ----
+export const PANIC_ACTION = "vault.panic_lock";
+export const PANIC_KEY = "anexo.vault.panic";
+export type PanicSaved = { request: string; nonce: string; ready_ms: number; expires_ms: number; approved?: boolean };
+export type PanicStage = "idle" | "waiting" | "ready" | "approved" | "expired";
+/** Where the T3 request stands, from what the server told us at begin time. */
+export function panicStage(s: PanicSaved | null, nowMs: number): PanicStage {
+  if (!s) return "idle";
+  if (nowMs >= s.expires_ms) return "expired";
+  if (s.approved) return "approved";
+  return nowMs >= s.ready_ms ? "ready" : "waiting";
+}
+export function parsePanic(raw: string | null): PanicSaved | null {
+  if (!raw) return null;
+  try {
+    const v = JSON.parse(raw) as Partial<PanicSaved>;
+    const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (typeof v.request !== "string" || !uuid.test(v.request) || typeof v.nonce !== "string" || !/^[A-Za-z0-9_-]{16,64}$/.test(v.nonce)) return null;
+    if (!Number.isFinite(v.ready_ms) || !Number.isFinite(v.expires_ms) || (v.expires_ms as number) <= (v.ready_ms as number)) return null;
+    return { request: v.request, nonce: v.nonce, ready_ms: v.ready_ms as number, expires_ms: v.expires_ms as number, approved: v.approved === true };
+  } catch { return null; }
+}
+export function panicText(stage: PanicStage, msToReady: number): { title: string; sub: string } {
+  switch (stage) {
+    case "waiting": return { title: `Panic lock started: ready in ${clockText(secondsLeft(msToReady))}`, sub: "The delay is running. You can cancel until it is done. A second, different hardware key must approve it." };
+    case "ready": return { title: "Panic lock: waiting for the second key", sub: "The delay is over. Use a different hardware key to approve, then confirm." };
+    case "approved": return { title: "Panic lock approved: confirm to lock", sub: "Confirming locks every other device for good and keeps only this one." };
+    case "expired": return { title: "Panic lock request ran out", sub: "Nothing was locked. Start again if you still want it." };
+    default: return { title: "Panic lock", sub: "Locks every other device's vault for good and keeps only this one. Needs two different hardware keys and a 10-minute delay." };
+  }
+}

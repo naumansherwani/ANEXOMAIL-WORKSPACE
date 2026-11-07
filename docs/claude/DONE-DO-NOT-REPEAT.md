@@ -14,3 +14,5 @@
 - 1 Nov 11:05: STEP 6 GREEN in founder Chrome (Time machine 18 versions proven, Drift 92/100). Do not rebuild. AI label fixed.
 
 - 7 Nov 14:10: J8d WRITTEN (not yet GREEN): founder-web/src/lease_pure.ts (+10 bun tests), lease.ts (WebCrypto non-extractable ECDSA P-256 key in IndexedDB, auto-renew, kernel lease@1 judges every lease, vault key in memory only), Vault.tsx card in Settings > Privacy, api.ts deviceUuid(). GREEN only after founder-install + live Chrome at 390/820/1200+. Nothing is encrypted with the vault key yet (honest). J8e panic route not built.
+
+- 7 Nov 14:40: J8d panic lock written: SQL E145 (vault.panic_lock = T3, founder_vault_panic_run = only door, raw panic closed, in-transaction proof, selftest PASS in sandbox, CHECK_E145 4/4), Rust passkey.rs t3_execute arm for it (220 tests), UI panic flow in Vault.tsx (begin / approve / confirm / cancel), passkey.ts nonce pass-through. NOT GREEN until his sql-run E143+E144+E145 output and live Chrome. Needs 2 trusted hardware keys to actually run (T3).

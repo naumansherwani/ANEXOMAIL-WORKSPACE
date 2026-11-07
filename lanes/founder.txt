@@ -76,6 +76,7 @@ docs/cursor-work/sql/E141_founder_flare_receipts.sql
 docs/cursor-work/sql/E142_founder_hardware_truth.sql
 docs/cursor-work/sql/E143_founder_vault_lease.sql
 docs/cursor-work/sql/E144_founder_vault_lease_keysplit.sql
+docs/cursor-work/sql/E145_founder_vault_panic_t3.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/E68_proof.sql
@@ -90,10 +91,10 @@ founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
-founder-web/dist/assets/index-CrnXDiS_.js
-founder-web/dist/assets/index-CrnXDiS_.js.gz
 founder-web/dist/assets/index-hpDUCFZB.css
 founder-web/dist/assets/index-hpDUCFZB.css.gz
+founder-web/dist/assets/index-xABp9PqM.js
+founder-web/dist/assets/index-xABp9PqM.js.gz
 founder-web/dist/assets/kernel.worker-lrvwuwuv.js
 founder-web/dist/assets/kernel.worker-lrvwuwuv.js.gz
 founder-web/dist/assets/three.module-Dza5cG3s.js

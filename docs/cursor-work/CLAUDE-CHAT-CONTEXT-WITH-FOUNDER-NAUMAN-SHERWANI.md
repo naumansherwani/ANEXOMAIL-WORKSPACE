@@ -2368,3 +2368,6 @@ His 13:30 order: (1) capital-letter standing rule on top: every phase mobile + t
 
 ### Checkpoint 7 Nov 14:10 PKT
 J8d written: lease_pure.ts (tested, 111 bun tests total), lease.ts (engine), Vault.tsx (card under Phone alerts), api.ts deviceUuid(). SPA only: founder-install gives it to him; awam pull NOT needed. NOT GREEN until live Chrome at 390/820/1200+. J8e (panic route) and vault-key consumers are later.
+
+### Checkpoint 7 Nov 14:40 PKT
+He said: write world-class advanced SQL (rule). Done: E145_founder_vault_panic_t3.sql + CHECK_E145.sql (sandbox e143b with E103-E118 applied: selftest PASS, CHECK 4/4, E143/E144/E145 re-run safe). E143 re-run no longer re-grants the raw panic once E145 exists. Rust: passkey.rs t3_execute for action vault.panic_lock calls founder_vault_panic_run. UI: Vault.tsx panic stages (lease_pure.ts panicStage/parsePanic, 113 bun tests). T3 needs 2 trusted hardware keys + 10 min delay: that is by design (his table said "behind T3"). Not GREEN until his server output and live Chrome.

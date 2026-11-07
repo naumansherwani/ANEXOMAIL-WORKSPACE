@@ -70,3 +70,18 @@ test("the device list puts this device first, then live, expired, none, revoked"
   const rows = [r("d", "Z", "revoked"), r("c", "Y", "none"), r("b", "X", "expired"), r("a", "W", "live"), r("me", "Mine", "revoked")];
   expect(sortRows(rows, "me").map((x) => x.device_id)).toEqual(["me", "a", "b", "c", "d"]);
 });
+
+import { PANIC_ACTION, panicStage, panicText, parsePanic } from "./lease_pure";
+const RQ = "0f8fad5b-d9cb-469f-a165-70867728950e", NN = "abcdefghijklmnop0123";
+test("panic stages follow the clock and the server's request", () => {
+  const s = { request: RQ, nonce: NN, ready_ms: 1000, expires_ms: 5000 };
+  expect(panicStage(null, 0)).toBe("idle"); expect(panicStage(s, 999)).toBe("waiting"); expect(panicStage(s, 1000)).toBe("ready"); expect(panicStage({ ...s, approved: true }, 2000)).toBe("approved"); expect(panicStage(s, 5000)).toBe("expired"); expect(panicStage({ ...s, approved: true }, 5000)).toBe("expired");
+  expect(PANIC_ACTION).toBe("vault.panic_lock");
+});
+test("a saved panic request is rejected unless every field is well-formed", () => {
+  const ok = { request: RQ, nonce: NN, ready_ms: 1, expires_ms: 2 };
+  expect(parsePanic(JSON.stringify(ok))).not.toBeNull(); expect(parsePanic(null)).toBeNull(); expect(parsePanic("{")).toBeNull();
+  expect(parsePanic(JSON.stringify({ ...ok, request: "x" }))).toBeNull(); expect(parsePanic(JSON.stringify({ ...ok, nonce: "short" }))).toBeNull();
+  expect(parsePanic(JSON.stringify({ ...ok, expires_ms: 1 }))).toBeNull(); expect(parsePanic(JSON.stringify({ ...ok, ready_ms: "a" }))).toBeNull();
+  for (const st of ["idle", "waiting", "ready", "approved", "expired"] as const) expect(panicText(st, 61_000).title.length).toBeGreaterThan(5);
+});

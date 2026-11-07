@@ -496,6 +496,8 @@ async fn assert_step(st: &St, sb: &crate::data::Sb, uid: &str, did: &str, cred: 
         "action" => ("founder_stepup_issue", json!({"p_uid": uid, "p_device": did, "p_credential_id": cid, "p_action": action, "p_target": target, "p_params": params, "p_nonce": nonce})),
         "t3_begin" => ("founder_t3_begin", json!({"p_uid": uid, "p_device": did, "p_credential_id": cid, "p_action": action, "p_target": target, "p_params": params, "p_nonce": nonce})),
         "t3_approve" => ("founder_t3_approve", json!({"p_uid": uid, "p_device": did, "p_request": state["request"], "p_credential_id": cid, "p_action": action, "p_target": target, "p_params": params, "p_nonce": nonce})),
+        // E145: the vault panic lock is executed by its own door, which consumes the approved T3 request itself (single use), keeps THIS device and proves the result in the same transaction
+        "t3_execute" if action == "vault.panic_lock" => ("founder_vault_panic_run", json!({"p_uid": uid, "p_device": did, "p_request": state["request"], "p_nonce": nonce})),
         "t3_execute" => ("founder_t3_execute", json!({"p_uid": uid, "p_device": did, "p_request": state["request"], "p_action": action, "p_target": target, "p_params": params, "p_nonce": nonce})),
         _ => return refuse(StatusCode::BAD_REQUEST, "this ceremony cannot be answered with an assertion"),
     };

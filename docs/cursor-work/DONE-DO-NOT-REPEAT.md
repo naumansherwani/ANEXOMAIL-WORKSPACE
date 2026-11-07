@@ -1551,3 +1551,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 7 Nov 13:35 CAPITAL rule (mobile, tablet, laptop, computer, live-tested every phase) on top of AGENTS/CLAUDE (gate). J6 + J8b written GREEN (J6 by his order with the honest real-phone note). J8d started.
 
 - 7 Nov 14:10: J8d vault lease UI written (SPA only), not GREEN until live Chrome 390/820/1200+. See docs/claude/DONE-DO-NOT-REPEAT.md.
+
+- 7 Nov 14:40: J8d panic lock (E145 SQL + Rust t3_execute arm + UI). Commands: sql-run.sh E143 E144 E145 (+CHECK_E145), then founder-install.sh. Awam pull NOT needed. Not GREEN until live Chrome 390/820/1200+.

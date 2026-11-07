@@ -2580,3 +2580,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 7 Nov 13:30: 'shuru kero; top pe likho: mobile, tablet, laptop, computer ke liye yeh codes ho gaye, live testing mobile aur tablet ka har phase ek rule hai, yeh top repo pe CAPITAL letters mein likho; technology ko top par likh ke phase shuru kero; baki jo ho chuke sab ko green likho, J6 ko bhi.' => capital rule on top of AGENTS/CLAUDE + gate; J8d started (technology already in the NEXT PHASE block); GREEN written for J6 (by his order, honest note) and J8b.
 
 - 7 Nov 14:10: (continuing his 13:30 order) J8d code written: vault lease UI + engine. Awam command NOT needed (founder-web only, no shared file changed).
+
+- 7 Nov 14:40: J8d panic lock (E145 SQL + Rust t3_execute arm + UI). Commands: sql-run.sh E143 E144 E145 (+CHECK_E145), then founder-install.sh. Awam pull NOT needed. Not GREEN until live Chrome 390/820/1200+.
