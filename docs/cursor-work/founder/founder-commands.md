@@ -2686,3 +2686,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 8 Nov 2026 03:20 PKT his order (sent 03:07): pasted the bundle check ( :443 serves index-Bqhlal5C; :8443 output was binary, needs -a) and: 'yaad rakho mobile aur tablet laptop computer ke andar codes nazar aye is ka rule read kero abhi ke abhi'. I re-read Rule 19, Rule 34, ONE WEBSITE ONE BUILD, LIVE CHROME = REPO: every feature/panel/button exists on mobile (390), tablet (820), laptop/computer (1200+); only the layout flexes; GREEN only after all three are seen.
 
 - 8 Nov 2026 03:40 PKT his order (sent 03:32): pasted both bundle checks: :443/founderlogin and :8443/founderlogin both serve index-Bqhlal5C. 'yeh claude ke liye chat codes top pe repo main update kero'.
+
+- 8 Nov 2026 03:45 PKT his paste (sent 03:34): /_cc/ check: :443 -> index-TIPb62WV, :8443 -> index-TIPb62WV.

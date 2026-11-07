@@ -75,3 +75,5 @@ GREEN = his pasted server output and/or my own live Chrome look and/or his phone
 - 8 Nov 2026 03:10 PKT FOUNDER: K4.4 spare-port run on his server: SNI front ON 127.0.0.1:8445, routing proven by certificates (founder host -> founder cert, anexomail.com -> Caddy cert, AES-128 = Caddy). NOT GREEN: founder-host cipher line missing in the output, AES-256 through the front still to prove (one more openssl check). Next after proof: K4.5 (needs his 'haan' for the live switch).
 
 - 8 Nov 2026 03:15 PKT FOUNDER: K4.4 = GREEN (WIRED: YES / REAL: YES on spare port 8445): AES-256 asked -> TLS_AES_256_GCM_SHA384; AES-128 only -> handshake failure. Real :443 still Caddy. Next K4.5.
+
+- 8 Nov 2026 03:45 PKT FOUNDER: bundle gap CLOSED. LIVE = REPO: founderworkspace /_cc/ serves index-TIPb62WV on BOTH :443 and :8443 (his curl output) = repo build index-TIPb62WV. K4.4 stays GREEN (spare port 8445). Next: K4.5.
