@@ -2483,3 +2483,6 @@ His G2 install paste OK. Live bundle was index-DmKbS7TC; found a legacy plaintex
 
 ## CHECKPOINT 7 Nov 2026 20:20 PKT
 - 7 Nov 2026 20:20 PKT Caddy recovery: restore cp done on his server; compare script moved to repo server/caddy/caddy-compare.py (heredoc paste got stuck). RULE: no multi-line heredocs in commands for him; always a repo script.
+
+## CHECKPOINT 7 Nov 2026 20:20 PKT
+Caddy incident CLOSED: /etc/caddy restored from backup 1793599658, validate OK, hosts same as running. Country wall never live (no geoblock.caddy). RULE from founder: server commands go directly in chat (single line), never a repo script, never <TS> placeholders, never heredocs.
