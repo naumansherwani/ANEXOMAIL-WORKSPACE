@@ -118,14 +118,14 @@ src/lib/settings.ts b6ed27fd6d2c994a
 src/components/app/settings/SettingsBits.tsx 34207b0ce33787a9
 server/rust/cal_core.rs 5770133e95524592
 server/rust/cal_glue.rs 1b9885a7994aeebe
-AGENTS.md 5aad9008e0dafa65
+AGENTS.md 098df16ff7f0ca5e
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 3e38d1f062fa5707
+docs/cursor-work/founder/founder-commands.md dc2f95b86ef3e1b5
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs da5c3db196fbe81d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md dcc7beca03105e61
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md a8643b733d5d58a7
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -947,7 +947,7 @@ founder-web/src/fonts/Inter-Medium.woff2 c8f84bf00cbd6136
 founder-web/src/fonts/Inter-Regular.woff2 21d73733fb1fbfe6
 founder-web/src/fonts/Inter-SemiBold.woff2 43443e801ec3cb75
 docs/cursor-work/server/rules-gate.py c21e8069f8aceb91
-CLAUDE.md b78abe0aae3efea7
+CLAUDE.md d525f0dfd60e80a4
 docs/claude/FOUNDER-KILLER-FEATURES-28OCT.md 8f8bb489bc473a7c
 founder-web/src/cinema.css 312474c073e9860d
 docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md af209f4adf209b87
@@ -1220,9 +1220,9 @@ founder-web/public/kernel/anexo-kernel-0.13.0.wasm 73aaa53dd0823591
 founder-web/dist/kernel/anexo-kernel-0.13.0.wasm 73aaa53dd0823591
 src/components/app/FeatureGate.tsx f0ae35c8646cb436
 src/routes/app.storage.tsx 78ca91241d265b0f
-docs/claude/CLOSE-THE-GAPS-07NOV.md 7c9b891fafe559b3
+docs/claude/CLOSE-THE-GAPS-07NOV.md 8ee1abaf898d7fe1
 docs/claude/FOUNDER-STATUS-TABLE-07NOV.md 9400065fdf920269
-docs/claude/START-HERE-AFTER-COMPACTION.md 9f0f5070459e3bfe
+docs/claude/START-HERE-AFTER-COMPACTION.md e09395b66c12260d
 docs/claude/K4-REAL-443-DESIGN-07NOV.md f3052fcf8c0fb1f1
 docs/claude/AWAM-PACKAGES-PROPOSAL-07NOV.md ad9be171a6790419
 docs/claude/AWAM-PROTON-PLUS-PLAN-07NOV.md 6ae7ae0171ef776e
