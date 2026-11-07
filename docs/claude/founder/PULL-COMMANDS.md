@@ -764,3 +764,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 7 Nov 2026 20:25 PKT (server, one line each, in chat): next = G2 reinstall: git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -15
 
 - 7 Nov 2026 22:10 PKT (founder, in chat, one line each): 1) git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -15 ; 2) APPLY=1 founder-tls256.sh (daily cron). Proof: touch cert, wait 10 min, journalctl grep 'TLS-256 certificate RELOADED'.
+
+- 7 Nov 2026 23:15 PKT on his return, in this order, one line each: (a) K4.3 daily cron: APPLY=1 bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-tls256.sh) 2>&1 | tail -15 ; (b) K4.3 proof: touch /etc/anexomail/tls/founderworkspace.anexomail.com.crt; sleep 610; journalctl -u anexomail-founder --since '12 min ago' --no-pager | grep 'TLS-256' ; (c) K4.4 founder-install.sh (Rust has front.rs, OFF by default).

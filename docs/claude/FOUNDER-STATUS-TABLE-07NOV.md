@@ -68,3 +68,4 @@ GREEN = his pasted server output and/or my own live Chrome look and/or his phone
 | G2 snapshot sealed by vault key, deleted at lease end | his install + my Chrome leases #27/#34/#35/#36 | WIRED: YES | REAL: YES (phone screenshot of the new line pending for 390/820) |
 | G2 on phone 390 | his screenshot 9:39 PM lease #17 | WIRED: YES | REAL: YES (820 in G7) |
 | K4.3 cert hot-reload + guard | Rust tests 229 pass | WIRED: pending install | REAL: pending journal proof |
+| K4.4 SNI front (spare port) | Rust tests 234 pass | WIRED: pending install + spare-port run | REAL: pending |

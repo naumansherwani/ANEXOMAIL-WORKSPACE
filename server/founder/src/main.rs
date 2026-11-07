@@ -29,6 +29,7 @@ mod signedcp;
 mod anchors;
 mod portable;
 mod tls256;
+mod front;
 mod fproxy;
 #[path = "../../rust/passkey_core.rs"]
 #[allow(dead_code)]
@@ -827,6 +828,14 @@ async fn main() {
         Some(Ok((a, store, cert_path, key_path))) => match tokio::net::TcpListener::bind(&a).await {
             Ok(l) => { eprintln!("founder: TLS-256 terminator ON {a} (TLS 1.3, AES-256-GCM only, certificate hot-reload, {} days left)", (store.not_after() - std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0)) / 86400); tls256::spawn_reloader(store.clone(), cert_path, key_path); tokio::spawn(tls256::serve_store(l, store, app(st.clone()).layer(hdr("alt-svc", "clear")).layer(axum::middleware::from_fn(fproxy::layer)))); }
             Err(e) => eprintln!("founder: TLS-256 terminator NOT started: bind {a}: {e}"),
+        },
+    }
+    match front::from_env() { // K4.4: SNI front (default OFF), tested on a spare port first; the real :443 is switched only with the founder's "haan"
+        None => {},
+        Some(Err(e)) => eprintln!("founder: SNI front NOT started: {e}"),
+        Some(Ok((a, fcfg))) => match tokio::net::TcpListener::bind(&a).await {
+            Ok(l) => { eprintln!("founder: SNI front ON {a}: {} -> {}, everything else -> {}", fcfg.host, fcfg.tls_backend, fcfg.other_backend); tokio::spawn(front::serve_front(l, fcfg)); }
+            Err(e) => eprintln!("founder: SNI front NOT started: bind {a}: {e}"),
         },
     }
     if let Some(sb) = st.sb.clone() { tls256::spawn_prober(sb); }
