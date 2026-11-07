@@ -8,7 +8,7 @@ const lsGet = (k: string) => { try { return window.localStorage.getItem(k); } ca
 const lsSet = (k: string, v: string | null) => { try { if (v === null) window.localStorage.removeItem(k); else window.localStorage.setItem(k, v); } catch { /* private window: the request still lives on the server */ } };
 
 // J8d — Device vault lease (Settings → Privacy, under Phone alerts). The vault key of this device works only while a short server lease is live; the server renews it only for an approved, un-revoked device.
-// One layout for 390 / 820 / 1200+: .setrow wraps, buttons are 44 px. Honest: nothing is encrypted with the key yet; consumers (session snapshot, mail cache) come in later phases.
+// One layout for 390 / 820 / 1200+: .setrow wraps, buttons are 44 px. G2: the browser-kept session snapshot is sealed with this key (AES-256-GCM) and deleted when the lease ends; the mail cache comes in a later phase.
 const stateWord: Record<StatusDevice["state"], string> = { live: "unlocked", expired: "locked, lease ended", revoked: "revoked, locked for good", none: "never unlocked" };
 
 export function Vault() {
@@ -52,6 +52,6 @@ export function Vault() {
         {stage === "waiting" || stage === "ready" || stage === "approved" ? <Button variant="ghost" size="mini" style={{ minHeight: 44 }} disabled={busy} onClick={() => void cancel()}>Cancel</Button> : null}
       </span></div>
     {note && <p role="status" className={note.ok ? "dim" : "err"}>{note.t}</p>}
-    <div className="panelhead"><p>Not yet: nothing is encrypted with this key today. It is the lock the session snapshot and mail cache will use in later phases.</p></div>
+    <div className="panelhead"><p>{v.hasKey ? "In use: this key seals the session snapshot kept in this browser (AES-256-GCM). It is deleted the moment the lease ends." : "Locked: the session snapshot in this browser is unreadable and is not kept until this device unlocks."}</p></div>
   </section>;
 }

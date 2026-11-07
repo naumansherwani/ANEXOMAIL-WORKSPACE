@@ -9,14 +9,14 @@ Honest base: Proton has years of audits, open-source clients and a real user bas
 | AX-P2 | Calendar + Contacts, encrypted | encrypted calendar, contacts | same PQ keys; per-event signed audit | Rust + SQL + WASM kernel |
 | AX-P3 | Drive (files) | encrypted file storage and sharing | resumable parallel chunks over WebTransport; every share link signed and expiring; dedupe without leaking content | Rust + wtransport (K6) + SQL (ANEXOChat file engine 13-15+61 already built) |
 | AX-P4 | Pass (passwords + passkeys) | password manager, passkeys, 2FA codes | vault opened only by a live device lease (J8) and hardware key; dead-man crypto-shred | WebCrypto + WASM kernel + SQL + Rust |
-| AX-P5 | VPN | no-log VPN | post-quantum key exchange in the tunnel; device-bound (DBSC-style) tunnel credentials | WireGuard + hybrid PQ handshake (Rust) + SQL |
-| AX-P6 | Docs + Sheets (WOPI) | encrypted docs | co-edit with signed change history | Rust WOPI host + React-TS |
-| AX-P7 | Private AI assistant | on-device / zero-retention AI | founder-visible audit of what the AI may read; never trained on user data | Rust + React-TS |
+| AX-P6 | Docs + Sheets (first version, later grows into AnexoSuite P11) | encrypted docs | co-edit with signed change history | Rust WOPI host + React-TS |
 | AX-P8 | Account protection (Sentinel class) | risk engine, alerts | session bound to the device key (K7 DBSC), hardware-key recovery rule, trust map per user | SQL + Rust + passkeys |
 | AX-P9 | Calls / live media | encrypted meetings | Media over QUIC relay of our own (M), PQ-secured | Rust + wtransport/MoQ + WASM kernel |
 | AX-P10 | Transparency | open source clients | served-code seal (X3) + key transparency log + supply-chain board (X4): the user can verify the code they were served | Rust + SQL (Merkle) + WASM kernel |
 
-Order inside AX: P1 (mail, because it is the core product) -> P3 -> P4 -> P2 -> P8 -> P10 -> P9 -> P6 -> P5 -> P7. The founder lane order stays: G2 -> G4 -> G5/G6/G7 -> K5 -> K6 -> K7 -> L -> M -> N -> O -> P -> Q -> R -> S -> T -> U -> V -> X -> then AX-P*.
+Order inside AX (founder 7 Nov 19:48 PKT): P1 Mail -> P3 Drive -> P4 Pass -> P2 Calendar+Contacts -> P8 Account protection -> P10 Transparency -> P9 Calls -> P6 Docs/Sheets -> **P11 AnexoSuite LAST**. NOT in the awam list any more: VPN (founder: "vpn ki zaroorat nahi") and AI (goes to its own product ai.anexomail.com). The founder lane order stays: G2 -> G4 -> G5/G6/G7 -> K5 -> K6 -> K7 -> L -> M -> N..V -> X -> then AX.
+
+| AX-P11 (LAST) | **AnexoSuite**: Word, Excel, Sheets, Docs built in | Proton Docs/Sheets, Microsoft Office / Google Workspace | the most advanced office suite in the world, inside the account: .docx/.xlsx/.pptx import and export, formulas engine, co-edit with signed change history, PQ-sealed documents, everything bound to the device lease | Rust WOPI host + WASM formula/document engine + React-TS + SQL ledgers |
 
 ## RESEARCH (7 Nov 2026 19:35 PKT, Proton's own roadmaps: proton.me/blog/2026-spring-summer-roadmaps and proton.me/blog/2026-autumn-winter-roadmaps)
 What Proton ships or is shipping, and the AX phase where Anexomail MATCHES it (awam gets all of it) and then goes BEYOND it.
@@ -27,9 +27,9 @@ What Proton ships or is shipping, and the AX phase where Anexomail MATCHES it (a
 | Drive | faster up/down via SDK, folder sync macOS, Linux beta (headless daemon), Easy Switch from Google Drive, shared Drive for families/teams, wider search | AX-P3 | parallel resumable chunks over QUIC; signed expiring share links; Easy Switch for Google AND Proton AND Dropbox |
 | Docs / Sheets | table of contents, dark theme, page breaks, ODT import/export, mobile editing, tables, quick stats | AX-P6 | signed change history; co-edit with per-user key |
 | Pass | iFrame autofill, folders, SSH agent with biometric, share logins without revealing passwords, expiring shares/vaults, Monitor v2, credential exchange, org policies, vault transfer on off-boarding | AX-P4 | vault opened only by a live device lease + hardware key; dead-man crypto-shred; two-hardware-key rule for recovery |
-| VPN | new client codebase, Linux GUI, stealth protocol, kill switch, pause/resume, country/city exclusion | AX-P5 | PQ handshake; device-bound tunnel credentials; kill switch tied to the account trust map |
+| VPN | new client codebase, Linux GUI, stealth protocol, kill switch, pause/resume, country/city exclusion | not planned (founder: not needed) | - |
 | Meet | waiting rooms, chat threads (Oct 2026) | AX-P9 | own MoQ relay; PQ media keys |
-| Lumo AI | Lumo API, desktop + mobile apps, creations canvas, Apertus model | AX-P7 | founder-visible audit of what the AI may read; zero-retention proof |
+| Lumo AI (NOT in awam plan: goes to ai.anexomail.com) | Lumo API, desktop + mobile apps, creations canvas, Apertus model | separate product | founder-visible audit of what the AI may read; zero-retention proof |
 | Wallet, Authenticator, Business (SCIM, admin roles, free subdomains) | exists | AX-P4 (Authenticator inside Pass), AX-P8 (Business admin, SCIM) | trust map per user and per org |
 | Sentinel (account protection) | risk engine | AX-P8 | session bound to device key (DBSC), hardware-key recovery |
 Honest note: Proton's real lead is audits, years of trust and open clients. Anexomail's answer is AX-P10 (served-code seal + key transparency + supply-chain board) so the user can VERIFY, not just trust. Nothing here is built yet; no phase of this table is claimed GREEN.

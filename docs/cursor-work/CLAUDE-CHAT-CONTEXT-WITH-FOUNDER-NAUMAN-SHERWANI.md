@@ -2471,3 +2471,6 @@ G2 vault-key consumer coded + built (index-DmKbS7TC), waiting his founder-instal
 
 ## CHECKPOINT 7 Nov 2026 19:50 PKT
 His G2 install paste OK. Live bundle was index-DmKbS7TC; found a legacy plaintext snapshot lingering, fixed by purge-at-load (index-D5tAR5ZQ). G2 stays NOT GREEN until reinstall + my Chrome proof (ciphertext at rest after lease live, gone after lock). Syria plan output SY=243, apply pending his run.
+
+## CHECKPOINT 7 Nov 2026 20:00 PKT
+- 7 Nov 2026 20:00 PKT G2 LIVE PROOF part 1: his install OK, live bundle index-D5tAR5ZQ, lease #27, sessionStorage record = ciphertext {v:1,d,iv,c} no plain text (my Chrome); old plaintext auto-deleted. Settings line made true (index-TIPb62WV pending install). Awam plan: no VPN, no AI (ai.anexomail.com), P11 AnexoSuite last. Syria apply still waits his run.

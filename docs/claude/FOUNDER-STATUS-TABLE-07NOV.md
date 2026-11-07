@@ -64,3 +64,4 @@ GREEN = his pasted server output and/or my own live Chrome look and/or his phone
 
 | G1 phone alerts end to end (delivery + readable + tap) | Rust+SQL+SW+React-TS | GREEN 7 Nov 2026 19:30 PKT | WIRED: YES / REAL: YES (his phone screenshots 6:50-6:51 PM; Windows + Android confirmed) |
 | G2 vault key seals session snapshot | coded+built, bun 134 pass | WIRED: pending install | REAL: pending Chrome proof |
+| G2 ciphertext at rest | his install + my Chrome lease #27 | WIRED: YES | REAL: YES for write (renew/lock proof pending) |

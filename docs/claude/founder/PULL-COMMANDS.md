@@ -752,3 +752,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 7 Nov 2026 19:40 PKT G2 (browser only, no SQL/Rust): founder-install command; awam pull NOT needed. Syria wall: bash <(git -C /opt/anexomail-web show origin/main:server/caddy/geoblock.sh) apply ; rollback: rm -rf /etc/caddy && cp -a /root/i9/caddy-geoblock-<TS> /etc/caddy && systemctl reload caddy
 
 - 7 Nov 2026 19:50 PKT G2 reinstall (browser only): founder-install.sh. Syria apply still waits his run.
+
+- 7 Nov 2026 20:00 PKT G2 last reinstall (browser only) for the true Settings line: founder-install.sh. Syria: geoblock.sh apply.
