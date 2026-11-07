@@ -2356,3 +2356,6 @@ He is on a 1 hour break. Done tonight: see START-HERE s.11 (GREEN / NOT GREEN / 
 
 ### Checkpoint 6 Nov 23:35 PKT
 Audit on his 22:54 order. Found + fixed: (1) deploy gap: non-src deployed files (kernel wasm) never reached the server via pull.sh -> gate check added; (2) E143 issue core bypassed the device-key proof for service_role -> closed in E144 (CHECK_E144 now 5 rows). Live Chrome on his tab: founder bundle index-BAnjULmy.js, kernel 0.13.0 200 on founder host, vault/lease + status + me + flare/key 401 without a token. Pending his two pastes: SQL point then awam pull (PULL-COMMANDS 23:35). Then J8c GREEN check (awam wasm 200), then J8d.
+
+### Checkpoint 7 Nov 13:20 PKT
+His pastes (13:14) all OK: SQL E143+E144+CHECKs (+E65), awam pull.sh (wasm + FeatureGate + app.storage, differ=0). My Chrome (new tab group after the old one froze): anexomail.com wasm 200 / 341396 bytes / hash = pin; founder host same; bundle index-BAnjULmy.js. J8a2 re-run GREEN, J8c GREEN. Tool note: Chrome cannot run JS on a raw .wasm page, open an html page of the host first and fetch from it. NEXT: J8d UI (START-HERE s.11 has the full spec); then K4, K6, K7, L, M, N-V.

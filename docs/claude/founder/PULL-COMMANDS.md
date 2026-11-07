@@ -679,3 +679,5 @@ Then the awam site must carry the SAME kernel (Rule 52, one kernel): `git -C /op
 
 **6 Nov 23:35 SQL point (E144 closes the issue core; CHECK_E143 5 + CHECK_E144 5 = 10 rows OK):** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E143_founder_vault_lease E144_founder_vault_lease_keysplit CHECK_E143 CHECK_E144 2>&1 | tail -18`
 **AWAM point (shared kernel wasm + his 3 Nov plan text), same as 23:20, run it AFTER the SQL point:** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
+
+(7 Nov 13:20: the 23:35 SQL point and the AWAM point were both run by him, outputs OK; nothing pending to pull until J8d is written.)

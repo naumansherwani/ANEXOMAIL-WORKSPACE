@@ -1543,3 +1543,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 6 Nov 23:20 LESSON: public/kernel/*.wasm (and any non-src deployed file) is NOT auto-added to DEPLOY-MANIFEST by manifest-sync; add it by path: `python3 docs/cursor-work/server/manifest-sync.py public/kernel/anexo-kernel-<ver>.wasm founder-web/public/kernel/... founder-web/dist/kernel/...` in the SAME commit as a kernel bump. Then check `curl -I https://anexomail.com/kernel/anexo-kernel-<ver>.wasm` = 200 after his pull.
 
 - 6 Nov 23:35 loopholes: rules-gate 'manifest kernel' check (a kernel wasm / the pinned wasm missing from DEPLOY-MANIFEST fails the commit; negative test proven), E143/E144 issue core closed to service_role (CHECK_E144 row 5), sandbox E143,E144,E143 rerun 10/10 on upgraded + fresh DB.
+
+- 7 Nov 13:20 GREEN: J8a2 re-run (issue core closed), J8c (kernel 0.13.0 on both sites, 200 + pin hash). Awam pull done (differ=0). Do NOT re-run these. Next J8d UI.
