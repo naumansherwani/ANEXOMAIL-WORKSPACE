@@ -2383,3 +2383,6 @@ He said: write world-class advanced SQL (rule). Done: E145_founder_vault_panic_t
 
 ### Checkpoint 7 Nov 14:25 PKT
 - 7 Nov 14:25: HIS PHONE SCREENSHOT (Android Chrome, 390-wide, old build): Device vault lease card shows 'Chrome on Android (this one) unlocked 11 min left lease #1 chain f18b9fc13d' + Windows lease #6 + 3rd device never unlocked: J8d phone proof DONE (real phone lease issued). He found the mobile layout congested ('world class app level'): written PHONE BREATHING block at end of founder-web/src/dx.css (<768 px only: panel padding 16/14, tabs one-line pills with hint kept for screen readers, Explain/Blast/History as 3 equal 44 px buttons, content clears the bottom dock, Renew full width), Settings keeps the chosen tab in view, Vault last line same size as other helper text. Sandbox 390/820/1280: sideways scroll 0 (a first try broke it to 1065, fixed with position:relative). NEW SPA BUILD, not yet installed: needs founder-install, then his phone screenshot again. Same code on every screen; only spacing/type changes under 768 px.
+
+### Checkpoint 7 Nov 14:35 PKT
+- 7 Nov 14:35: his founder-install paste OK (phone breathing build installed). Live Chrome bundle index-C-QmgGnG.js / index-Og622Jck.css = repo build. START-HERE section 13 written (state + next steps). Waiting: his phone screenshot of the new layout, then Step 3 = J6 phone receipt.
