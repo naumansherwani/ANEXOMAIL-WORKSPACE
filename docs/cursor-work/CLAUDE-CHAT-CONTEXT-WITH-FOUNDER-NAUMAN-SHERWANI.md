@@ -2362,3 +2362,6 @@ His pastes (13:14) all OK: SQL E143+E144+CHECKs (+E65), awam pull.sh (wasm + Fea
 
 ### Checkpoint 7 Nov 13:30 PKT
 His 13:23 order done in the repo: next-order table with technology per phase (docs/claude/FOUNDER-NEXT-ORDER-07NOV.md), a top block in AGENTS.md + CLAUDE.md (technology of the NEXT phase), enforced by rules-gate, START-HERE s.12. Order: J8d NOW -> J6 phone proof -> K4 -> K5 -> K6 -> K7 -> L -> M -> N..V -> X. Correction: K5 is in letter order (my 6 Nov 'K5 after founder 100%' was wrong). Waiting for his word to start J8d (he was asked 13:20; the order itself says continue).
+
+### Checkpoint 7 Nov 13:35 PKT
+His 13:30 order: (1) capital-letter standing rule on top: every phase mobile + tablet + laptop + computer, live-tested at 390/820/1200+; (2) start J8d with its technology written first (it is in the NEXT PHASE block); (3) write GREEN for finished phases incl. J6. Done in the repo; J6 is GREEN by his order, the real-phone receipt is kept as an honest note. J8d in progress: lease_pure.ts (pure logic + tests), lease.ts (WebCrypto + IndexedDB + renew), Vault card in Settings > Privacy; panic route is J8e (Rust T3 action), not faked.

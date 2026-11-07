@@ -42,3 +42,5 @@ Before J8, a mobile + tablet pass over every founder tab (Rule 19/34): 390 px an
 Same data on both screens: ONE build, only the layout flexes. Still open: tablet (820) live proof, phone proof of the other tabs (AI, Systems, Control, Release, Move-In, Audit ledger, Profile, Settings Personal/Workspace/Notifications/Privacy/Time machine/Drift), J6 phone alerts.
 
 UPDATE 21:30: parity pass built; sandbox audit clean at 390/768/820/1024. Live proof pending his install.
+
+UPDATE 7 Nov 13:30: J6 GREEN (founder order, real-phone receipt still to be seen), J8a / J8a2 / J8b / J8b2 / J8c GREEN. J8d in progress.

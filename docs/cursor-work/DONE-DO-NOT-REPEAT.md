@@ -1547,3 +1547,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 7 Nov 13:20 GREEN: J8a2 re-run (issue core closed), J8c (kernel 0.13.0 on both sites, 200 + pin hash). Awam pull done (differ=0). Do NOT re-run these. Next J8d UI.
 
 - 7 Nov 13:30 FOUNDER-NEXT-ORDER-07NOV.md written (18 phases with technology + reason), top block NEXT PHASE + ITS TECHNOLOGY in AGENTS/CLAUDE (gate-enforced). Correction recorded: K5 sits in letter order (K4,K5,K6,K7), not after the founder.
+
+- 7 Nov 13:35 CAPITAL rule (mobile, tablet, laptop, computer, live-tested every phase) on top of AGENTS/CLAUDE (gate). J6 + J8b written GREEN (J6 by his order with the honest real-phone note). J8d started.
