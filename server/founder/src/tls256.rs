@@ -35,18 +35,123 @@ pub fn server_config(cert_pem: &[u8], key_pem: &[u8]) -> Result<Arc<ServerConfig
     Ok(Arc::new(c))
 }
 
-/// Serve `router` over TLS on an already bound listener. One task per connection, 10 s to finish the handshake.
-pub async fn serve(listener: TcpListener, cfg: Arc<ServerConfig>, router: axum::Router) {
-    let acceptor = TlsAcceptor::from(cfg);
+/// Serve `router` over TLS on an already bound listener with a FIXED configuration (tests and simple use).
+pub async fn serve(listener: TcpListener, cfg: Arc<ServerConfig>, router: axum::Router) { serve_store(listener, Arc::new(CertStore::fixed(cfg)), router).await }
+
+/// K4.3: serve with a certificate store that can be swapped while running. Every NEW connection takes the store's current config; connections already open keep theirs.
+pub async fn serve_store(listener: TcpListener, store: Arc<CertStore>, router: axum::Router) {
     loop {
         let Ok((tcp, _)) = listener.accept().await else { continue };
-        let (acceptor, router) = (acceptor.clone(), router.clone());
+        let (acceptor, router) = (TlsAcceptor::from(store.current()), router.clone());
         tokio::spawn(async move {
             let Ok(Ok(tls)) = tokio::time::timeout(Duration::from_secs(10), acceptor.accept(tcp)).await else { return };
             let svc = hyper_util::service::TowerToHyperService::new(router);
             let _ = hyper::server::conn::http1::Builder::new().serve_connection(hyper_util::rt::TokioIo::new(tls), svc).await;
         });
     }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+// K4.3 (founder, 7 Nov 2026): the certificate is a COPY of Caddy's Let's Encrypt certificate and Let's Encrypt renews it about every 60 days. The copy must be picked up
+// WITHOUT a restart, and a bad copy (half written, wrong key, expired, not yet valid) must NEVER replace a good one. Pure functions + a small watcher.
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+
+/// The live server configuration plus the end of its certificate. Swapped atomically; readers take a cheap Arc clone.
+pub struct CertStore { cur: std::sync::RwLock<Arc<ServerConfig>>, not_after: std::sync::atomic::AtomicI64 }
+impl CertStore {
+    pub fn fixed(cfg: Arc<ServerConfig>) -> Self { CertStore { cur: std::sync::RwLock::new(cfg), not_after: std::sync::atomic::AtomicI64::new(0) } }
+    pub fn new(cfg: Arc<ServerConfig>, not_after: i64) -> Self { CertStore { cur: std::sync::RwLock::new(cfg), not_after: std::sync::atomic::AtomicI64::new(not_after) } }
+    pub fn current(&self) -> Arc<ServerConfig> { self.cur.read().map(|g| g.clone()).unwrap_or_else(|e| e.into_inner().clone()) }
+    fn swap(&self, cfg: Arc<ServerConfig>, not_after: i64) { *self.cur.write().unwrap_or_else(|e| e.into_inner()) = cfg; self.not_after.store(not_after, std::sync::atomic::Ordering::Relaxed); }
+    /// Unix seconds when the serving certificate ends (0 = unknown).
+    pub fn not_after(&self) -> i64 { self.not_after.load(std::sync::atomic::Ordering::Relaxed) }
+}
+
+/// One DER element: (tag, content, rest). None on any malformed or truncated input.
+fn tlv(b: &[u8]) -> Option<(u8, &[u8], &[u8])> {
+    let (&tag, r) = b.split_first()?;
+    let (&l0, r) = r.split_first()?;
+    let (len, r) = if l0 < 0x80 { (l0 as usize, r) } else {
+        let n = (l0 & 0x7f) as usize;
+        if n == 0 || n > 4 || r.len() < n { return None; }
+        (r[..n].iter().fold(0usize, |a, &x| (a << 8) | x as usize), &r[n..])
+    };
+    if r.len() < len { return None; }
+    Some((tag, &r[..len], &r[len..]))
+}
+
+/// Days from 1970-01-01 for a civil date (proleptic Gregorian, Howard Hinnant's algorithm).
+fn days_from_civil(y: i64, m: i64, d: i64) -> i64 {
+    let y = if m <= 2 { y - 1 } else { y };
+    let era = if y >= 0 { y } else { y - 399 } / 400;
+    let yoe = y - era * 400;
+    let doy = (153 * (if m > 2 { m - 3 } else { m + 9 }) + 2) / 5 + d - 1;
+    era * 146097 + yoe * 365 + yoe / 4 - yoe / 100 + doy - 719468
+}
+
+/// ASN.1 UTCTime (YYMMDDHHMMSSZ, tag 0x17) or GeneralizedTime (YYYYMMDDHHMMSSZ, tag 0x18) -> unix seconds.
+fn asn1_time(tag: u8, c: &[u8]) -> Option<i64> {
+    let t = std::str::from_utf8(c).ok()?;
+    let (yr, rest) = match tag { 0x17 if t.len() == 13 => { let yy: i64 = t[..2].parse().ok()?; (if yy >= 50 { 1900 + yy } else { 2000 + yy }, &t[2..]) }, 0x18 if t.len() == 15 => (t[..4].parse().ok()?, &t[4..]), _ => return None };
+    if !rest.ends_with('Z') { return None; }
+    let n = |i: usize| rest.get(i..i + 2)?.parse::<i64>().ok();
+    let (mo, d, h, mi, se) = (n(0)?, n(2)?, n(4)?, n(6)?, n(8)?);
+    if !(1..=12).contains(&mo) || !(1..=31).contains(&d) || h > 23 || mi > 59 || se > 60 { return None; }
+    Some(days_from_civil(yr, mo, d) * 86400 + h * 3600 + mi * 60 + se)
+}
+
+/// (notBefore, notAfter) of a DER certificate as unix seconds. No X.509 library: only the few fixed fields of the TBS part are walked.
+pub fn cert_validity(der: &[u8]) -> Option<(i64, i64)> {
+    let (_, cert, _) = tlv(der)?;                 // Certificate ::= SEQUENCE
+    let (_, tbs, _) = tlv(cert)?;                 // TBSCertificate ::= SEQUENCE
+    let mut r = tbs;
+    let (t0, _, after) = tlv(r)?;
+    if t0 == 0xA0 { r = after; }                  // [0] version (optional)
+    for _ in 0..3 { r = tlv(r)?.2; }              // serialNumber, signature, issuer
+    let (_, validity, _) = tlv(r)?;               // Validity ::= SEQUENCE { notBefore, notAfter }
+    let (t1, nb, rest) = tlv(validity)?;
+    let (t2, na, _) = tlv(rest)?;
+    Some((asn1_time(t1, nb)?, asn1_time(t2, na)?))
+}
+
+/// Parse + prove a certificate/key pair for serving at `now` (unix seconds). Ok = (config, notAfter). Err = a plain reason; nothing is swapped on Err.
+pub fn load_checked(cert_pem: &[u8], key_pem: &[u8], now: i64) -> Result<(Arc<ServerConfig>, i64), String> {
+    let cfg = server_config(cert_pem, key_pem)?;                                  // also fails when the key does not belong to the certificate
+    let leaf = CertificateDer::pem_slice_iter(cert_pem).next().ok_or("no certificate")?.map_err(|e| format!("certificate: {e}"))?;
+    let (nb, na) = cert_validity(leaf.as_ref()).ok_or("certificate dates unreadable")?;
+    if now < nb { return Err("certificate is not valid yet".into()); }
+    if now >= na { return Err("certificate has expired".into()); }
+    Ok((cfg, na))
+}
+
+fn now_unix() -> i64 { std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0) }
+
+/// Read both files, check them, and swap them in. Err leaves the store exactly as it was.
+pub fn reload_once(store: &CertStore, cert_path: &std::path::Path, key_path: &std::path::Path, now: i64) -> Result<i64, String> {
+    let c = std::fs::read(cert_path).map_err(|e| format!("{}: {e}", cert_path.display()))?;
+    let k = std::fs::read(key_path).map_err(|e| format!("{}: {e}", key_path.display()))?;
+    let (cfg, na) = load_checked(&c, &k, now)?;
+    store.swap(cfg, na);
+    Ok(na)
+}
+
+fn stamp(p: &std::path::Path) -> Option<(std::time::SystemTime, u64)> { let m = std::fs::metadata(p).ok()?; Some((m.modified().ok()?, m.len())) }
+
+/// Every 10 minutes: if the certificate or key file changed (time or size), try to load it. A refused change is logged once and the current certificate keeps serving.
+pub fn spawn_reloader(store: Arc<CertStore>, cert_path: std::path::PathBuf, key_path: std::path::PathBuf) {
+    tokio::spawn(async move {
+        let mut seen = (stamp(&cert_path), stamp(&key_path));
+        loop {
+            tokio::time::sleep(Duration::from_secs(600)).await;
+            let now_s = (stamp(&cert_path), stamp(&key_path));
+            if now_s == seen { continue; }
+            seen = now_s;
+            match reload_once(&store, &cert_path, &key_path, now_unix()) {
+                Ok(na) => eprintln!("founder: TLS-256 certificate RELOADED, valid for {} more days", (na - now_unix()) / 86400),
+                Err(e) => eprintln!("founder: TLS-256 certificate change REFUSED ({e}); the current certificate keeps serving"),
+            }
+        }
+    });
 }
 
 /// What the prober offers. `Browser` mimics a normal browser (AES-128 first), which is exactly what decides what real users get.
@@ -84,11 +189,17 @@ pub async fn probe(host: &str, port: u16, offer: Offer, extra_root: Option<Certi
     }
 }
 
-/// FOUNDER_TLS256_* env -> a running listener. None = switched off (the default); Err = switched on but misconfigured (the caller logs it, the main port is unaffected).
-pub fn from_env() -> Option<Result<(String, Arc<ServerConfig>), String>> {
+/// FOUNDER_TLS256_* env -> (address, store, cert path, key path). None = switched off (the default); Err = switched on but misconfigured (the caller logs it, the main port is unaffected).
+/// The first load is checked like every reload: a start with an expired or mismatched certificate is refused with a plain reason.
+pub fn from_env() -> Option<Result<(String, Arc<CertStore>, std::path::PathBuf, std::path::PathBuf), String>> {
     let addr = std::env::var("FOUNDER_TLS256_ADDR").ok().filter(|a| !a.trim().is_empty())?;
-    let read = |k: &str| std::env::var(k).map_err(|_| format!("{k} is not set")).and_then(|p| std::fs::read(&p).map_err(|e| format!("{p}: {e}")));
-    Some((|| { let cfg = server_config(&read("FOUNDER_TLS256_CERT")?, &read("FOUNDER_TLS256_KEY")?)?; Ok((addr.clone(), cfg)) })())
+    let path = |k: &str| std::env::var(k).map(std::path::PathBuf::from).map_err(|_| format!("{k} is not set"));
+    Some((|| {
+        let (cp, kp) = (path("FOUNDER_TLS256_CERT")?, path("FOUNDER_TLS256_KEY")?);
+        let rd = |p: &std::path::Path| std::fs::read(p).map_err(|e| format!("{}: {e}", p.display()));
+        let (cfg, na) = load_checked(&rd(&cp)?, &rd(&kp)?, now_unix())?;
+        Ok((addr.clone(), Arc::new(CertStore::new(cfg, na)), cp, kp))
+    })())
 }
 
 /// FOUNDER_TLS_PROBE="host:port,host:port" -> targets for the periodic prober.
@@ -184,5 +295,81 @@ mod tests {
         // env parsing of the probe list
         unsafe { std::env::set_var("FOUNDER_TLS_PROBE", "a.example:443, b.example:8443,bad,c:x"); }
         assert_eq!(probe_targets(), vec![("a.example".to_string(), 443), ("b.example".to_string(), 8443)]);
+    }
+
+    #[test]
+    fn k43_dates_are_read_and_a_bad_or_expired_certificate_never_loads() {
+        let Some((c, k)) = test_cert() else { return };
+        let der = CertificateDer::pem_slice_iter(&c).next().unwrap().unwrap();
+        let (nb, na) = cert_validity(der.as_ref()).expect("dates");
+        let now = now_unix();
+        assert!(nb <= now + 5 && now < na, "fresh 1-day certificate is valid now");
+        assert!((na - nb) >= 86_000 && (na - nb) <= 87_000, "one day long");
+        assert!(load_checked(&c, &k, now).is_ok());
+        assert_eq!(load_checked(&c, &k, na + 1).err().as_deref(), Some("certificate has expired"));
+        assert_eq!(load_checked(&c, &k, nb - 10).err().as_deref(), Some("certificate is not valid yet"));
+        assert!(load_checked(&c, b"garbage", now).is_err());
+        let (_, k2) = test_cert().unwrap();               // a different key for the same certificate = inconsistent pair
+        assert!(load_checked(&c, &k2, now).is_err(), "key that does not belong to the certificate");
+        assert!(cert_validity(b"\x30\x03\x02\x01").is_none() && cert_validity(&[]).is_none());
+    }
+
+    #[test]
+    fn k43_asn1_time_forms() {
+        assert_eq!(asn1_time(0x17, b"700101000000Z"), Some(0));
+        assert_eq!(asn1_time(0x18, b"20000101000000Z"), Some(946_684_800));
+        assert_eq!(asn1_time(0x17, b"491231235959Z"), Some(2_524_607_999));   // YY < 50 means 20YY
+        assert!(asn1_time(0x17, b"7001010000Z").is_none() && asn1_time(0x18, b"20001301000000Z").is_none());
+    }
+
+    #[test]
+    fn k43_reload_swaps_a_good_file_and_refuses_a_bad_one_without_touching_the_live_config() {
+        let Some((c1, k1)) = test_cert() else { return };
+        let d = std::env::temp_dir().join(format!("k43-{}-{:?}", std::process::id(), std::thread::current().id()));
+        let _ = std::fs::create_dir_all(&d);
+        let (cp, kp) = (d.join("c.pem"), d.join("k.pem"));
+        std::fs::write(&cp, &c1).unwrap(); std::fs::write(&kp, &k1).unwrap();
+        let now = now_unix();
+        let (cfg, na) = load_checked(&c1, &k1, now).unwrap();
+        let store = CertStore::new(cfg, na);
+        let first = store.current();
+        // a half-written file: refused, the live config is the SAME Arc
+        std::fs::write(&cp, &c1[..40]).unwrap();
+        assert!(reload_once(&store, &cp, &kp, now).is_err());
+        assert!(Arc::ptr_eq(&first, &store.current()));
+        // a wrong key: refused
+        let (_, k2) = test_cert().unwrap();
+        std::fs::write(&cp, &c1).unwrap(); std::fs::write(&kp, &k2).unwrap();
+        assert!(reload_once(&store, &cp, &kp, now).is_err());
+        assert!(Arc::ptr_eq(&first, &store.current()));
+        // an expired certificate: refused
+        std::fs::write(&kp, &k1).unwrap();
+        assert!(reload_once(&store, &cp, &kp, na + 1).is_err());
+        assert!(Arc::ptr_eq(&first, &store.current()));
+        // a new good pair: swapped, and not_after is updated
+        let (c3, k3) = test_cert().unwrap();
+        std::fs::write(&cp, &c3).unwrap(); std::fs::write(&kp, &k3).unwrap();
+        let na3 = reload_once(&store, &cp, &kp, now).expect("good pair loads");
+        assert!(!Arc::ptr_eq(&first, &store.current()));
+        assert_eq!(store.not_after(), na3);
+    }
+
+    #[tokio::test]
+    async fn k43_a_running_server_serves_the_new_certificate_to_new_connections_after_a_reload() {
+        let Some((c1, k1)) = test_cert() else { return };
+        let (c2, k2) = test_cert().unwrap();
+        let (cfg, na) = load_checked(&c1, &k1, now_unix()).unwrap();
+        let store = Arc::new(CertStore::new(cfg, na));
+        let l = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let port = l.local_addr().unwrap().port();
+        tokio::spawn(serve_store(l, store.clone(), axum::Router::new().route("/healthz", axum::routing::get(|| async { "ok" }))));
+        let root1 = CertificateDer::pem_slice_iter(&c1).next().unwrap().unwrap();
+        let root2 = CertificateDer::pem_slice_iter(&c2).next().unwrap().unwrap();
+        assert!(probe("localhost", port, Offer::Browser, Some(root1.clone())).await.ok, "cert 1 trusted before the swap");
+        assert!(!probe("localhost", port, Offer::Browser, Some(root2.clone())).await.ok, "cert 2 is not trusted yet");
+        let (cfg2, na2) = load_checked(&c2, &k2, now_unix()).unwrap();
+        store.swap(cfg2, na2);
+        assert!(probe("localhost", port, Offer::Browser, Some(root2)).await.ok, "new connections now get cert 2, no restart");
+        assert!(!probe("localhost", port, Offer::Browser, Some(root1)).await.ok, "cert 1 no longer served");
     }
 }

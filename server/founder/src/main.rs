@@ -824,8 +824,8 @@ async fn main() {
     match tls256::from_env() { // T256-1: own TLS 1.3 terminator, AES-256-GCM only, on its own port (default OFF); the main port above is never touched
         None => eprintln!("founder: TLS-256 terminator OFF (no FOUNDER_TLS256_ADDR)"),
         Some(Err(e)) => eprintln!("founder: TLS-256 terminator NOT started: {e}"),
-        Some(Ok((a, cfg))) => match tokio::net::TcpListener::bind(&a).await {
-            Ok(l) => { eprintln!("founder: TLS-256 terminator ON {a} (TLS 1.3, AES-256-GCM only)"); tokio::spawn(tls256::serve(l, cfg, app(st.clone()).layer(hdr("alt-svc", "clear")).layer(axum::middleware::from_fn(fproxy::layer)))); }
+        Some(Ok((a, store, cert_path, key_path))) => match tokio::net::TcpListener::bind(&a).await {
+            Ok(l) => { eprintln!("founder: TLS-256 terminator ON {a} (TLS 1.3, AES-256-GCM only, certificate hot-reload, {} days left)", (store.not_after() - std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0)) / 86400); tls256::spawn_reloader(store.clone(), cert_path, key_path); tokio::spawn(tls256::serve_store(l, store, app(st.clone()).layer(hdr("alt-svc", "clear")).layer(axum::middleware::from_fn(fproxy::layer)))); }
             Err(e) => eprintln!("founder: TLS-256 terminator NOT started: bind {a}: {e}"),
         },
     }

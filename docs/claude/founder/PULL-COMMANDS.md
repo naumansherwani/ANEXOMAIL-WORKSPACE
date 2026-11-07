@@ -762,3 +762,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 7 Nov 2026 20:20 PKT compare: git -C /opt/anexomail-web fetch -q origin main && python3 <(git -C /opt/anexomail-web show origin/main:server/caddy/caddy-compare.py)
 
 - 7 Nov 2026 20:25 PKT (server, one line each, in chat): next = G2 reinstall: git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -15
+
+- 7 Nov 2026 22:10 PKT (founder, in chat, one line each): 1) git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -15 ; 2) APPLY=1 founder-tls256.sh (daily cron). Proof: touch cert, wait 10 min, journalctl grep 'TLS-256 certificate RELOADED'.

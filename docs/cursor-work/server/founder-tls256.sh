@@ -4,8 +4,7 @@
 #   git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-tls256.sh)            # dry run
 #   git -C /opt/anexomail-web fetch -q origin main && APPLY=1 bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-tls256.sh)      # do it
 # What APPLY=1 does: (1) copies the founder host certificate + key that Caddy already obtained into /etc/anexomail/tls (0640 root:anexomail-founder, only that host),
-# (2) backs up /etc/anexomail/founder.env, then adds FOUNDER_TLS256_* + FOUNDER_TLS_PROBE lines (idempotent), (3) restarts the founder service, (4) weekly cron keeps the copy fresh
-# (restarts only if the certificate really changed), (5) proves it with openssl: a normal client must land on TLS_AES_256_GCM_SHA384, an AES-128-only client must be refused.
+# (2) backs up /etc/anexomail/founder.env, then adds FOUNDER_TLS256_* + FOUNDER_TLS_PROBE lines (idempotent), (3) restarts the founder service, (4) K4.3: a DAILY cron copies a renewed certificate (atomic rename, key first) and the Rust service picks it up WITHOUT a restart (10-minute watcher, checks key match + dates, refuses a bad file and keeps the old one), (5) proves it with openssl: a normal client must land on TLS_AES_256_GCM_SHA384, an AES-128-only client must be refused.
 # Rollback: restore the .bak env file, `systemctl restart anexomail-founder`; delete /etc/cron.d/anexomail-founder-tls. Needs the Rust binary with tls256.rs (founder-install.sh first).
 set -u
 HOST="${HOST:-founderworkspace.anexomail.com}"; PORT="${TLS_PORT:-8443}"; APPLY="${APPLY:-0}"
@@ -28,7 +27,7 @@ setenv FOUNDER_TLS_PROBE "$HOST:443,$HOST:$PORT,anexomail.com:443"
 if [ "$APPLY" = 1 ]; then
   cat >/etc/cron.d/anexomail-founder-tls <<CRON
 # keeps the founder TLS-256 certificate copy fresh (Caddy renews it); restarts the service only if the certificate changed
-17 4 * * 1 root c="\$(find $CADDY_CERTS -type f -name $HOST.crt | head -1)"; [ -n "\$c" ] && ! cmp -s "\$c" $TLSD/$HOST.crt && install -m 0640 -o root -g anexomail-founder "\$c" $TLSD/$HOST.crt && install -m 0640 -o root -g anexomail-founder "\${c%.crt}.key" $TLSD/$HOST.key && systemctl restart $SVC
+23 4 * * * root c="\$(find $CADDY_CERTS -type f -name $HOST.crt | head -1)"; k="\${c%.crt}.key"; [ -n "\$c" ] && [ -r "\$k" ] && ! cmp -s "\$c" $TLSD/$HOST.crt && install -m 0640 -o root -g anexomail-founder "\$k" $TLSD/$HOST.key.new && install -m 0640 -o root -g anexomail-founder "\$c" $TLSD/$HOST.crt.new && mv -f $TLSD/$HOST.key.new $TLSD/$HOST.key && mv -f $TLSD/$HOST.crt.new $TLSD/$HOST.crt
 CRON
   systemctl restart $SVC; sleep 3
   journalctl -u $SVC -n 40 --no-pager 2>/dev/null | grep -E "TLS-256" | tail -2
