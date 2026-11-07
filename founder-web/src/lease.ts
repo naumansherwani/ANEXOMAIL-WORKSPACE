@@ -1,6 +1,7 @@
 // J8d — the vault lease engine in the browser. Technology: WebCrypto (non-extractable ECDSA P-256 device key in IndexedDB) + WASM kernel lease@1 (judges every lease) + signed answers from the Rust server.
-// This module only holds the key in MEMORY while a lease is live. Nothing is encrypted with it yet (consumers come later); that is said plainly on the card.
-import { deviceUuid, get, post } from "./api";
+// This module only holds the key in MEMORY while a lease is live. G2: its first consumer is the sealed Bridge snapshot (snap_seal.ts, registered below); more consumers get their own derived key.
+import { clearSnap, deviceUuid, get, post, registerSnapKey } from "./api";
+import { snapKey } from "./snap_seal";
 import { leaseCheck, leaseVaultKey, type LeaseData } from "./kernel";
 import { SERIAL_KEY, afterFailure, b64u, nextRenewMs, parseSerial, proofText, secondsLeft, type Phase } from "./lease_pure";
 
@@ -34,8 +35,10 @@ const lsSet = (k: string, v: string) => { try { window.localStorage.setItem(k, v
 
 /** The vault key is readable only while the lease is live; this is the ONLY door to it. */
 export const vaultKey = (): string | null => (view.phase === "live" ? key : null);
+// G2: hand the api layer a per-device AES key for the snapshot, derived from the vault key, only while the lease is live.
+registerSnapKey(async () => { const k = vaultKey(), d = view.device; return k && d ? { key: await snapKey(k, d), device: d } : null; });
 
-function wipe() { key = null; serverHalf = null; data = null; set({ hasKey: false }); }
+function wipe() { key = null; serverHalf = null; data = null; clearSnap(); set({ hasKey: false }); }   // G2: the sealed snapshot is deleted with the key
 function clock() { return { received_wall_ms: rWall, received_mono_ms: rMono, now_wall_ms: Date.now(), now_mono_ms: Math.round(performance.now()) }; }
 
 async function tick() {

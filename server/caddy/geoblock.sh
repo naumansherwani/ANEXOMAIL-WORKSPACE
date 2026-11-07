@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# GEO1 - Caddy country wall: Afghanistan, Israel, North Korea get 403 on every anexomail.com site (founder 2 Nov 2026; Caddy is the edge).
+# GEO1 - Caddy country wall: Afghanistan, Israel, North Korea, Syria get 403 on every anexomail.com site (founder 2 Nov 2026, Syria added 7 Nov 2026 "HAAN"; Caddy is the edge; list = banned-countries/banned.json).
 #   PLAN  (reads only, changes nothing):  git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:server/caddy/geoblock.sh) plan
 #   APPLY (backup -> write -> validate -> reload, restore on failure): ... geoblock.sh apply
-# Needs: curl, python3, caddy. Data: public RIR lists (APNIC for AF + KP, RIPE NCC for IL). No account, no key, no plugin.
+# Needs: curl, python3, caddy. Data: public RIR lists (APNIC for AF + KP, RIPE NCC for IL + SY). No account, no key, no plugin.
 set -uo pipefail
 MODE="${1:-plan}"; REPO="${REPO:-/opt/anexomail-web}"; D="$(mktemp -d)"; trap 'rm -rf "$D"' EXIT
 MAIN=/etc/caddy/Caddyfile; SITES=/etc/caddy/sites; SNIP=/etc/caddy/geoblock.caddy; TS="$(date +%s)"

@@ -2,6 +2,7 @@
 // F1a: the session token is exchanged ONCE per 15 minutes for a founder token (aud=anexo-founder, device-bound) which lives in MEMORY only.
 // If the server has no token service yet (install pending), calls fall back to the session token and the page says so plainly.
 import { verifyBody } from "./kernel";
+import { openSealed, seal } from "./snap_seal";
 import { browserName } from "./devicelabel";
 import { EXPIRES_KEY, REFRESH_KEY, TICK_MS, classifyRefresh, knownExpiry, needsRefresh } from "./session";
 const KEY = "anexo.session.token", DEV = "anexo.founder.device";
@@ -126,14 +127,24 @@ const SIGNED = (path: string) => path.startsWith("/founder/v1/") && !path.starts
 // Instant refresh: the last Bridge answer this TAB verified is kept (session storage, cleared on sign-out/close) and shown straight away after F5,
 // verified AGAIN by the kernel (signature only; age up to a day) and labelled with its real time. The live answer replaces it as soon as it arrives.
 const SNAP_PATH = "/founder/v1/bridge", SNAP = "anexo.f.snap.bridge";
-const saveSnap = (buf: ArrayBuffer) => { try { window.sessionStorage.setItem(SNAP, JSON.stringify({ t: Date.now(), b: new TextDecoder().decode(buf) })); } catch { /* storage blocked: just no instant paint */ } };
+// G2: the snapshot at rest is CIPHERTEXT (AES-256-GCM under a key derived from this device's vault key, snap_seal.ts). The key exists only while the vault lease is live (lease.ts registers it here),
+// so with no live lease nothing is written and nothing can be read. Plain text is never stored. When the lease ends the stored record is deleted (clearSnap).
+let snapKeyFn: (() => Promise<{ key: CryptoKey; device: string } | null>) | null = null;
+export const registerSnapKey = (f: () => Promise<{ key: CryptoKey; device: string } | null>) => { snapKeyFn = f; };
+export const clearSnap = () => { try { window.sessionStorage.removeItem(SNAP); } catch { /* nothing to clear */ } };
+const waitKey = async (ms: number) => { for (let i = 0; i <= ms / 150; i++) { const k = snapKeyFn ? await snapKeyFn() : null; if (k) return k; await new Promise((ok) => setTimeout(ok, 150)); } return null; };
+const saveSnap = async (buf: ArrayBuffer) => {
+  try { const k = snapKeyFn ? await snapKeyFn() : null; if (!k) return; window.sessionStorage.setItem(SNAP, await seal(k.key, new TextDecoder().decode(buf), k.device, Date.now())); }
+  catch { /* storage blocked or no key: just no instant paint */ }
+};
 export async function lastBridge(): Promise<{ data: any; at: Date } | null> {
   try {
     const raw = window.sessionStorage.getItem(SNAP); if (!raw) return null;
-    const { t, b } = JSON.parse(raw) as { t: number; b: string };
-    if (!t || Date.now() - t > 86_400_000) return null;
-    const v = await verifyBody(new TextEncoder().encode(b).buffer as ArrayBuffer, 90_000, true);
-    return v.ok ? { data: JSON.parse(v.data), at: new Date(t) } : null;
+    const k = await waitKey(2500); if (!k) return null;                          // no live lease = the record stays shut
+    const o = await openSealed(k.key, raw, k.device); if (!o) return null;       // tampered / other device / other key = nothing
+    if (Date.now() - o.t > 86_400_000) return null;
+    const v = await verifyBody(new TextEncoder().encode(o.plain).buffer as ArrayBuffer, 90_000, true);
+    return v.ok ? { data: JSON.parse(v.data), at: new Date(o.t) } : null;
   } catch { return null; }
 }
 /** F2b: verify the raw body in the WASM kernel FIRST; only the verified `data` text is parsed. Failure = nothing is shown (enforce). */
@@ -142,7 +153,7 @@ async function readSigned<T>(r: Response, path: string): Promise<Envelope<T>> {
   const raw = await r.arrayBuffer(), keep = path === SNAP_PATH ? raw.slice(0) : null;
   const v = await verifyBody(raw);
   if (!v.ok) throw new Error(`Answer hidden: ${v.reason}`);
-  if (keep) saveSnap(keep);
+  if (keep) void saveSnap(keep);
   return { data: JSON.parse(v.data) as T, verified: true };
 }
 // Same GET asked twice at the same moment (shell + a page) shares one network call and one verification.

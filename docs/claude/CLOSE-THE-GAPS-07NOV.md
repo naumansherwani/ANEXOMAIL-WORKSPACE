@@ -48,3 +48,5 @@ Worker v3 live = repo. Only open G1 item: his tap screenshot ('You opened this a
 ## 7 Nov 19:30 G1 CLOSED
 - 7 Nov 2026 19:30 PKT: G1 CLOSED = GREEN, WIRED: YES / REAL: YES. Proof = his phone screenshots 6:50-6:51 PM: lock-screen alert 'Test alert / Phone alerts work.'; he TAPPED it and Chrome opened the founder Settings > Privacy page scrolled to Phone alerts with 'You opened this alert: Test alert (tick) - The alert reached this phone and the tap brought you here. Phone alerts work end to end.'; list shows 'Chrome on Windows (desktop)' AND 'Chrome on Android (this device)', both 'Confirmed via fcm.googleapis.com, last receipt just now'. Seen: 390 (his phone) + 1200+ (my Chrome); 820 tablet = G7. Chain of fixes that closed G1: Add fingerprint (platform key), E147 approval from a trusted device, E146 banned countries + Alert number, simple one-tap UI, worker v2 (never empty), v3 (tap). NEXT = G2 vault-key consumer (technology below in the NEXT PHASE block).
 G2 is now the open item in progress.
+
+- 7 Nov 2026 19:40 PKT G2: CODED + BUILT, not GREEN (needs his install + Chrome proof).
