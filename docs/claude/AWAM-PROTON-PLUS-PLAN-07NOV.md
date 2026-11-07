@@ -34,3 +34,5 @@ What Proton ships or is shipping, and the AX phase where Anexomail MATCHES it (a
 | Sentinel (account protection) | risk engine | AX-P8 | session bound to device key (DBSC), hardware-key recovery |
 Honest note: Proton's real lead is audits, years of trust and open clients. Anexomail's answer is AX-P10 (served-code seal + key transparency + supply-chain board) so the user can VERIFY, not just trust. Nothing here is built yet; no phase of this table is claimed GREEN.
 Sources: https://proton.me/blog/2026-spring-summer-roadmaps , https://proton.me/blog/2026-autumn-winter-roadmaps
+
+- 7 Nov 2026 22:35 PKT AWAM PACKAGES PROPOSAL saved (docs/claude/AWAM-PACKAGES-PROPOSAL-07NOV.md): proposal only, NOT live, locked values unchanged (Basic 15 GB, Business Pro 60 MB, Business Pro never unlimited, Premium 21,000 cap vs chart 7,000 = his decision A-G). Competitors: Basic is dearer per seat than Google/M365 cheapest plans; Pro/Business competitive; Premium clearly cheaper; Business Pro at 570 seats not cheaper than M365 Basic (£2,622).
