@@ -2377,3 +2377,6 @@ He said: write world-class advanced SQL (rule). Done: E145_founder_vault_panic_t
 
 ### Checkpoint 7 Nov 15:10 PKT
 - 7 Nov 15:10: CHECK_E143 row 5 FAIL cause found from his DIAG: his Postgres prints view option as security_invoker=on (my check wanted =true). Check fixed (accepts true/on/1); view itself was fine. Run CHECK_E143 again.
+
+### Checkpoint 7 Nov 14:20 PKT
+- 7 Nov 14:20: J8d = GREEN (his sql-run E145 4/4 + CHECK_E143 5/5 + founder-install pastes; my live Chrome on founderworkspace.anexomail.com: bundle index-xABp9PqM = repo build, card shows lease #3 live 14 min left, 3 devices with chain heads, key held in memory only; sandbox harness 390/820/1280: no sideways scroll, nothing cut off, every button 44 px high, same code). HONEST NOTES: (1) Chrome window could not be resized to 390 live, phone/tablet were measured in the sandbox harness on the same bundle; his phone screenshot of Settings > Privacy still welcome. (2) Panic lock request/approve/confirm not exercised for real: needs his 2 trusted hardware keys. (3) Vault key encrypts nothing yet (consumers later). (4) Polish: the last 'Not yet' line of the card is slightly larger text than the rest; goes in the next SPA build. J8 as a whole = GREEN except those notes. NEXT: J6 real-phone receipt (his phone) then K4.
