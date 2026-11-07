@@ -51,3 +51,6 @@ GREEN = his pasted server output and/or my own live Chrome look and/or his phone
 
 | E147 pending-key approval (SQL + Rust route) | SQL + Rust | GREEN 7 Nov 2026 18:10 PKT | WIRED: YES / REAL: YES (his CHECK_E147 2/2; live route 401 without token) |
 | Fingerprint -> Waiting for approval -> Approve screens | React-TS | LIVE, NOT GREEN | WIRED: YES (live bundle = repo) / REAL: needs his phone + laptop round trip |
+
+| Second key via approval flow (E147 + screens) | SQL+Rust+React-TS | GREEN 7 Nov 2026 18:35 PKT | WIRED: YES / REAL: YES (my Chrome saw Your keys 2/5, new platform key added just now) |
+| Phone alerts on the Android phone | React-TS+Rust+SQL | OPEN | WIRED: YES / REAL: not yet (phone not listed, no alert received) |

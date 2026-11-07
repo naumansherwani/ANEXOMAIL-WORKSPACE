@@ -23,3 +23,9 @@ E147 GREEN (WIRED YES / REAL YES): his sql-run CHECK_E147 2/2 OK, founder-instal
 
 ## 7 Nov 18:30 G1 simplified UI
 Phone alerts = one Turn on button (auto name); Keys = Add this device's fingerprint + Add security key. Server unchanged. GREEN needs his phone round trip.
+
+## 7 Nov 2026 18:35 PKT STATE (written before a compaction)
+- CLOSED with proof: second key via the E147 approval flow (his key 'Muhammad Nauman Khan Sherwani', platform, synced, 2/5 keys, seen in my Chrome 18:07); E146 banned countries (AF IL KP SY) GREEN; Alert number saved (record + recovery only, reply-confirmation NOT built); Android vault lease running (#11, his 6:10 PM screenshot).
+- G1 STILL OPEN: Android phone not listed in Phone alerts; no real alert received on the phone. His next step: phone -> Settings > Privacy > Phone alerts > 'Turn on' -> Allow -> fingerprint -> 'Send test' -> screenshot.
+- Live bundle = repo: server index.html names index-KKNYbdOm.js (= repo dist), after his founder-install 18:25.
+- G2 vault-key consumer next (seal the session snapshot with AES-256-GCM under the live vault key), then G4 K4.3.., G5, G6, G7, G3 (needs 2 hardware keys). Syria Caddy wall waits for his 'haan'. Email question 1/2 unanswered (default letter order).
