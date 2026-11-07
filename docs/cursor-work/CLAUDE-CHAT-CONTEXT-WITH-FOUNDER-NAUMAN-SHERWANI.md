@@ -2398,3 +2398,6 @@ He said: write world-class advanced SQL (rule). Done: E145_founder_vault_panic_t
 
 ### Checkpoint 7 Nov 15:20 PKT
 - 7 Nov 15:20: his curl on :8443: / 200, /_cc/ 200, bundle 200 (K4.1 works), /founderlogin 404 and /app 404 (they live in Caddy = old awam login). K4.1 = GREEN narrowly (assets/shell through the own TLS terminator); :8443 is NOT a usable full site, so K4 as a whole is NOT green. Design written: docs/claude/K4-REAL-443-DESIGN-07NOV.md (SNI front in Rust + path proxy table + rollback; nothing live changed; waits for his haan before any :443 change). My Chrome look at :8443 landed on the 404 login redirect (error page), which is exactly that limit.
+
+### Checkpoint 7 Nov 15:30 PKT
+- 7 Nov 15:30: his read-only server output for K4 (ports, Caddy v2.11.4 on 443 tcp+udp, Rust 3210 + 8443, cert copy at /etc/anexomail/tls, ufw). 4 findings written in docs/claude/K4-REAL-443-DESIGN-07NOV.md: stale cert copy (renewal timer needed), Caddy QUIC on 443/udp bypass (Alt-Svc clear), reqwest already present (no new crate), SNI by peek + PROXY v1. Nothing live changed. He also asked: shorter replies, commands first; and raised that the email system has not been reached yet (order question asked: 1 = K4.. in order, 2 = email first; waiting for his word).

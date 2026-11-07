@@ -20,3 +20,11 @@ Founder host on :443 negotiates TLS 1.3 AES-256-GCM-SHA384 only (Go/Caddy cannot
 ## Steps
 K4.1 DONE: `/_cc` strip on :8443 (221 tests, his curl 200).
 K4.2 path-proxy table + tests (Rust), tested on :8443.  K4.3 SNI front built, tested on spare ports.  K4.4 switch with rollback ready, his "haan".  K4.5 CHECK + my Chrome at 390/820/1200+ on the real host.
+
+## FACTS FROM HIS SERVER (read-only command, 7 Nov 14:53) — they refine the design
+- Caddy v2.11.4 owns `*:80`, `*:443` (tcp) AND `443/udp` (HTTP/3). Rust owns `127.0.0.1:3210` (plain) and `0.0.0.0:8443` (own TLS, cert `/etc/anexomail/tls/founderworkspace.anexomail.com.crt`). ufw: 80, 443 tcp+udp, 3443/udp (K6 WebTransport, already open), 8443 tcp.
+- FINDING 1 (renewal): the cert Rust uses is a ONE-TIME COPY made by `founder-tls256.sh` from Caddy's Let's Encrypt store. Let's Encrypt renews about every 60 days, so the copy goes STALE and the founder host would show an expired certificate. Before any live switch: an automatic refresh (systemd timer or path unit: copy when Caddy's file changes, then reload Rust's TLS config without dropping connections) + a CHECK that the served cert's notAfter is > 20 days.
+- FINDING 2 (HTTP/3): `443/udp` is Caddy's QUIC. A browser that already learned `Alt-Svc: h3` for the founder host would keep using Caddy's QUIC (AES-128 first) and bypass the AES-256 terminator. Rust's answers must send `Alt-Svc: clear` for the founder host, and the CHECK must prove the cipher a real browser ends on.
+- FINDING 3 (proxy): `reqwest` (rustls) is already a dependency, so the path proxy for `/founderlogin`, `/app*`, `/api/*` needs NO new crate: Caddy gets one extra plain-HTTP listener on `127.0.0.1:8081` for the founder host (same routes as today), Rust forwards those paths there.
+- FINDING 4 (SNI front): SNI is read by peeking the ClientHello (pure parser + tests), no decrypt; other names are copied byte for byte to Caddy on `127.0.0.1:8444` with the PROXY protocol v1 header so Caddy still sees the real client IP.
+- Updated steps: K4.2 path-proxy + Alt-Svc clear + tests (on :8443) -> K4.3 cert refresh timer -> K4.4 SNI front on spare ports -> K4.5 switch with rollback (his "haan") -> K4.6 CHECK + Chrome 390/820/1200+.
