@@ -26,7 +26,7 @@ const swScript = (): string | unknown => {
 
 export function Flare() {
   const [st, setSt] = useState<any>(null), [err, setErr] = useState<string | null>(null), [busy, setBusy] = useState(false), [note, setNote] = useState<{ ok: boolean; t: string } | null>(null);
-  const [last, setLast] = useState<{ ts: number; k: string; tl: number; bl: number; why: string; t: string; b: string } | null>(null), [here, setHere] = useState<string | null>(null);
+  const [tap, setTap] = useState<{ ts: number; k: string; t: string } | null>(null), [last, setLast] = useState<{ ts: number; k: string; tl: number; bl: number; why: string; t: string; b: string } | null>(null), [here, setHere] = useState<string | null>(null);
   const [mob, setMob] = useState<{ registered: boolean; confirmed: boolean; last4: string } | null>(null), [dial, setDial] = useState("92"), [national, setNational] = useState("");
   const countries = useMemo(() => countryList(navigator.language || "en"), []);
   const e164 = toE164(dial, national), bad = national.trim() ? numberProblem(e164) : null;
@@ -37,12 +37,13 @@ export function Flare() {
       setSt(r.body.result); setErr(null);
       try { const k = await loadKeys(); setMob(k.protocol?.mobile ?? null); } catch { setMob(null); }
       try { const reg = await navigator.serviceWorker?.getRegistration(swUrl()); void reg?.update().catch(() => {});
+      try { const c = await caches.open(PENDING_CACHE), tm = await c.match("/__flare/clicked"); if (tm) { const x = await tm.json(); await c.delete("/__flare/clicked"); if (Date.now() - x.ts < 5 * 60000) { setTap(x); setTimeout(() => document.querySelector("[aria-label=\"Phone alerts\"]")?.scrollIntoView({ block: "start", behavior: "smooth" }), 300); } } } catch { /* no cache: no banner */ }
       try { const m = await (await caches.open(PENDING_CACHE)).match("/__flare/last"); setLast(m ? await m.json() : null); } catch { setLast(null); } const s = await reg?.pushManager.getSubscription(); setHere(s ? await sha256Hex(s.endpoint) : null); } catch { setHere(null); }
     } catch (e) { setErr((e as Error).message); }
   }, []);
   useEffect(() => { void reload(); }, [reload]);
   useEffect(() => {   // a push arrived while this page is open: refresh the list
-    const on = (e: MessageEvent) => { if (e.data?.flare) void reload(); };
+    const on = (e: MessageEvent) => { if (e.data?.flare || e.data?.flare_click !== undefined) void reload(); };
     navigator.serviceWorker?.addEventListener("message", on); return () => navigator.serviceWorker?.removeEventListener("message", on);
   }, [reload]);
   const run = async (f: () => Promise<string>) => { setBusy(true); setNote(null); try { setNote({ ok: true, t: await f() }); await reload(); } catch (e) { setNote({ ok: false, t: friendly(e) }); } setBusy(false); };
@@ -93,6 +94,7 @@ export function Flare() {
   return <section className="panel" aria-label="Phone alerts">
     <div className="panelhead"><h2>Phone alerts</h2>
       <p className="dim">An alert on your phone when something protected starts. Encrypted, no SMS.</p></div>
+    {tap && <div className="setrow" role="status" aria-label="You opened an alert"><div><b>You opened this alert: {tap.t || "alert"} ✓</b><p className="dim">The alert reached this phone and the tap brought you here. Phone alerts work end to end.</p></div></div>}
     {unacked.length > 0 && <div className="setrow" role="alert"><div><b className="err">{unacked.length} alert{unacked.length > 1 ? "s" : ""} not confirmed received</b>
       <p className="dim">{unacked.slice(0, 3).map((u) => `${u.kind.replace("t3_", "")} → ${u.phone}, sent ${ago(u.sent_ms)}`).join(" · ")}. The push service accepted them, but the phone never sent its receipt. Check the phone, then send a test.</p></div></div>}
     {ios && <div className="setrow"><div><b>iPhone: one step first</b><p className="dim">Safari only allows alerts for a site on the Home Screen. Tap Share, then "Add to Home Screen", open Anexomail from that icon, and come back to this page.</p></div></div>}

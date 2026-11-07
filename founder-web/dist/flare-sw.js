@@ -15,7 +15,7 @@ self.addEventListener("push", (event) => {
     event.waitUntil(Promise.all([show("Anexomail Founder", "Open the app to see what changed. (code=" + why + ")", { tag: "anexo-unknown" }), note("?", "", "", why)]));
     return;
   }
-  const opts = { body: n.body, tag: n.tag || "anexo", requireInteraction: !!n.requireInteraction, data: { navigate: n.navigate || "/" } };
+  const opts = { body: n.body, tag: n.tag || "anexo", requireInteraction: !!n.requireInteraction, data: { navigate: n.navigate || "/", k: d.k || "" } };
   const work = [note(d.k, n.title, n.body, "ok")];
   if (d.k === "confirm" && typeof d.t === "string" && /^[A-Za-z0-9_-]{32}$/.test(d.t)) {
     work.push(caches.open("anexo-flare").then((c) => c.put("/__flare/pending-confirm", new Response(d.t))).catch(() => {}));
@@ -28,13 +28,22 @@ self.addEventListener("push", (event) => {
   } else work.push(show(n.title, n.body, opts));
   event.waitUntil(Promise.all(work));
 });
+// v3 (7 Nov 2026, "tapping the alert on my phone does nothing"): the tap ALWAYS ends with the app in front. Order: focus a window of this site and tell it which alert was tapped; if there is none or focus is
+// refused (Android can refuse), open a new window. The tap is also written to the cache ("/__flare/clicked"), so a page that opens fresh can show "you opened this alert" and scroll to the Phone alerts card.
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
-  const url = (event.notification.data && event.notification.data.navigate) || "/";
-  let ok = false; try { ok = new URL(url, self.location.origin).origin === self.location.origin; } catch (_) { ok = false; }
-  const target = ok ? url : "/";                       // never navigate off the founder site
-  event.waitUntil(self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((cs) => {
-    for (const c of cs) { if ("focus" in c) { c.navigate(target).catch(() => {}); return c.focus(); } }
-    return self.clients.openWindow(target);
-  }));
+  const d = event.notification.data || {};
+  let target = "/"; try { const u = new URL(d.navigate || "/", self.location.origin); if (u.origin === self.location.origin) target = u.href; } catch (_) { target = "/"; }   // never navigate off the founder site
+  const k = typeof d.k === "string" ? d.k.slice(0, 24) : "";
+  const mark = caches.open("anexo-flare").then((c) => c.put("/__flare/clicked", new Response(JSON.stringify({ ts: Date.now(), k, t: String(event.notification.title || "").slice(0, 60) })))).catch(() => {});
+  const open = async () => {
+    const cs = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+    for (const c of cs) {
+      let same = false; try { same = new URL(c.url).origin === self.location.origin; } catch (_) { same = false; }
+      if (!same) continue;
+      try { const f = (await c.focus()) || c; try { f.postMessage({ flare_click: k }); } catch (_) {} try { await f.navigate(target); } catch (_) {} return; } catch (_) { /* focus refused: open a new window below */ }
+    }
+    await self.clients.openWindow(target);
+  };
+  event.waitUntil(Promise.all([mark, open()]));
 });

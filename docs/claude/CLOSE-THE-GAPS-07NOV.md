@@ -38,3 +38,6 @@ Worker records last received alert; card shows it. GREEN needs his phone screens
 
 ## 7 Nov 19:15 G1
 Alert worker v2 + 'Last alert' row LIVE = repo (his install, my Chrome fetch). OPEN: his phone Send test + screenshot (notification + Last alert row) decides whether the emptiness was content or display.
+
+## 7 Nov 19:00 G1 CLOSED for delivery; tap fix open
+G1 delivery GREEN (his screenshots: Android listed + confirmed, readable alert). Remaining G1 item: notification TAP (worker v3 built). Then 390/820/1200 look of the card.

@@ -2636,3 +2636,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 7 Nov 18:32 (verbatim gist): 'ek enginer ban ke socho aur fix kero super advance level pe codes likhoo'
 
 - 7 Nov 18:39 (verbatim gist): pasted founder-install OK: 'sab kuch claude ke liye update kero aur chat context update kero. codes update kero'
+
+- 7 Nov 18:44 (verbatim gist): 3 phone screenshots (Android listed + confirmed, lock-screen 'Test alert / Phone alerts work.') + '3rd image pe click ker ke kuch nahi hota hai. bus yehi alert ata hai'

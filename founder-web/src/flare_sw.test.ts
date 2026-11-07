@@ -41,3 +41,27 @@ test("the worker records what it received (lengths + short text) for the card to
   const c2 = (globalThis as any).__cached.filter((x: any) => x.k === "/__flare/last").pop();
   expect(c2.v.why).toBe("parse"); expect(c2.v.tl).toBe(0);
 });
+
+// --- the tap -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+function tap(clients: any[], opts: { openFails?: boolean } = {}) {
+  const calls: string[] = [], cached: { k: string; v: any }[] = [], handlers: Record<string, (e: any) => void> = {};
+  const wrap = (c: any) => ({ url: c.url, focus: async () => { calls.push("focus"); if (c.focusFails) throw new Error("refused"); return { ...wrap(c), postMessage: (m: any) => calls.push("msg:" + JSON.stringify(m)), navigate: async (u: string) => { calls.push("nav:" + u); } }; } });
+  const self: any = { addEventListener: (n: string, f: any) => { handlers[n] = f; }, skipWaiting() {}, location: { origin: "https://f.example" },
+    clients: { claim() {}, matchAll: async () => clients.map(wrap), openWindow: async (u: string) => { calls.push("open:" + u); } }, registration: { showNotification: async () => {} } };
+  new Function("self", "caches", "fetch", "Response", code)(self, { open: async () => ({ put: async (k: string, r: any) => { cached.push({ k, v: JSON.parse(r.b) }); } }) }, async () => ({}), class { constructor(public b: string) {} });
+  let waited: Promise<unknown> = Promise.resolve();
+  handlers.notificationclick({ notification: { close() { calls.push("close"); }, title: "Test alert", data: { navigate: "https://f.example/#/settings", k: "test" } }, waitUntil: (p: Promise<unknown>) => { waited = p; } });
+  return waited.then(() => ({ calls, cached }));
+}
+test("tap: a window of this site is focused, told which alert, navigated; the tap is recorded", async () => {
+  const r = await tap([{ url: "https://f.example/#/settings" }]);
+  expect(r.calls).toContain("focus"); expect(r.calls).toContain('msg:{"flare_click":"test"}'); expect(r.calls).toContain("nav:https://f.example/#/settings"); expect(r.calls.some((c) => c.startsWith("open:"))).toBe(false);
+  expect(r.cached.find((c) => c.k === "/__flare/clicked")?.v.k).toBe("test");
+});
+test("tap: no window at all opens a new one", async () => {
+  const r = await tap([]); expect(r.calls).toContain("open:https://f.example/#/settings");
+});
+test("tap: a window that refuses focus falls back to a new window; a foreign-origin window is ignored", async () => {
+  expect((await tap([{ url: "https://f.example/", focusFails: true }])).calls).toContain("open:https://f.example/#/settings");
+  const r = await tap([{ url: "https://evil.example/" }]); expect(r.calls).not.toContain("focus"); expect(r.calls).toContain("open:https://f.example/#/settings");
+});
