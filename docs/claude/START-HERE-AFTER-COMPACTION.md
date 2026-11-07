@@ -102,3 +102,5 @@ Open `docs/claude/FOUNDER-NEXT-ORDER-07NOV.md`: 18-row table (phase, what, techn
 - Sandbox: harness in scratchpad `h/run.mjs` (static server over founder-web/dist + Playwright, API stubbed with unsigned data so "Answer hidden" red lines appear: harness artefact, not a bug). Chrome window cannot be resized to 390: phone proof comes from his screenshots.
 
 - 7 Nov 14:50 UPDATE: J6 GREEN with evidence, mobile Settings>Privacy GREEN, NOW = K4 (see top block of AGENTS.md).
+
+- 7 Nov 15:05: K4 step 1 WRITTEN (not GREEN): Rust main.rs strip_cc middleware (+1 test, 221 pass): the own TLS terminator on :8443 now serves /_cc/assets/* like Caddy does (fixes the K3 note '/_cc 404, page unstyled'). Behind Caddy it is a no-op (Caddy already strips). Proof needed from him: founder-install, then curl of the live bundle through :8443 = 200, then my Chrome look at https://founderworkspace.anexomail.com:8443/ styled. K4 step 2 (real :443 for the founder host) needs an SNI front because Caddy owns :443 for awam too: DESIGN DECISION written for him before any change.

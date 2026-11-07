@@ -736,6 +736,21 @@ pub fn app(st: S) -> Router {
         .layer(hdr("cross-origin-embedder-policy", "require-corp"))
         .layer(hdr("cache-control", "no-store"))
         .layer(axum::middleware::from_fn(asset_cache))
+        .layer(axum::middleware::from_fn(strip_cc)) // K4: the SPA is built for the /_cc/ prefix (Caddy strips it); the own TLS terminator has no Caddy, so it strips it itself
+}
+
+/// `/_cc/assets/x.js` -> `/assets/x.js` (and `/_cc`, `/_cc/` -> `/`). Only a path that starts with exactly `/_cc` + `/` or the end; `/_ccx` and `/a/_cc/` are left alone. The query string is kept.
+pub fn strip_cc_path(p: &str) -> Option<String> {
+    if p == "/_cc" { return Some("/".into()); }
+    p.strip_prefix("/_cc/").map(|rest| format!("/{rest}"))
+}
+async fn strip_cc(mut req: axum::extract::Request, next: axum::middleware::Next) -> axum::response::Response {
+    if let Some(np) = strip_cc_path(req.uri().path()) {
+        let pq = match req.uri().query() { Some(q) => format!("{np}?{q}"), None => np };
+        let mut parts = req.uri().clone().into_parts();
+        if let Ok(v) = pq.parse() { parts.path_and_query = Some(v); if let Ok(u) = axum::http::Uri::from_parts(parts) { *req.uri_mut() = u; } }
+    }
+    next.run(req).await
 }
 
 /// Speed (30 Oct): Vite file names carry a content hash, so `/assets/*` can be cached for a year without ever being stale.
@@ -819,6 +834,15 @@ async fn main() {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn the_cc_prefix_is_stripped_only_when_it_is_the_prefix() {
+        assert_eq!(strip_cc_path("/_cc/assets/index-x.js").as_deref(), Some("/assets/index-x.js"));
+        assert_eq!(strip_cc_path("/_cc/").as_deref(), Some("/"));
+        assert_eq!(strip_cc_path("/_cc").as_deref(), Some("/"));
+        assert_eq!(strip_cc_path("/_cc/kernel/anexo-kernel-0.13.0.wasm").as_deref(), Some("/kernel/anexo-kernel-0.13.0.wasm"));
+        for p in ["/", "/_ccx/a", "/a/_cc/b", "/founder/v1/me", "/assets/a.js", "/_c"] { assert_eq!(strip_cc_path(p), None, "{p}"); }
+    }
+
     use super::*;
     use axum::{body::Body, http::Request};
     use tower::ServiceExt;
