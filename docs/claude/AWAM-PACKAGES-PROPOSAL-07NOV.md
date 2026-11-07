@@ -1,5 +1,5 @@
-# AWAM PACKAGES: PROPOSAL + CEO ASSESSMENT (founder 7 Nov 2026 21:51 PKT; written 22:30 PKT)
-STATUS: PROPOSAL ONLY. Nothing here is live, nothing in code, landing, Polar or prices is touched ("Polar payments, prices, landing = NO TOUCH" stays). Awam side only; the founder lane never reads this. Where a value below differs from a LOCKED founder decision, the locked value wins until he says so (list in section 2).
+# AWAM PACKAGES: PROPOSAL + CEO ASSESSMENT (founder 7 Nov 2026 21:51 PKT; written 22:30 PKT); FOUNDER DECISIONS A-G ANSWERED 7 Nov 2026 22:12 PKT (section 6 = FINAL, read it first)
+STATUS: DECIDED BUT NOT BUILT (nothing live). Nothing here is live, nothing in code, landing, Polar or prices is touched ("Polar payments, prices, landing = NO TOUCH" stays). Awam side only; the founder lane never reads this. Where a value below differs from a LOCKED founder decision, the locked value wins until he says so (list in section 2).
 
 ## 1. The chart he pasted (verbatim values)
 | Package | Flat monthly | User cap | Shared storage | Email attachment | ANEXOChat file | Monthly outbound transfer pool |
@@ -52,3 +52,27 @@ Honest strengths: flat organisation price (no per-seat arithmetic), a clear pool
 ## 5. Decisions needed from him (one line each, he answers with a number or "haan")
 A. Premium cap 7,000 (recommended) or 21,000? B. Premium storage 70 TB (recommended) or 15 TB? C. Business Pro attachment 60 MB (locked) or 100 MB? D. Basic storage 15 GB (locked) or 25 GB? E. Add Business Max at £115,000 (seats unlimited, storage/traffic capped)? F. Free entry plan: yes or no? G. Verify Hetzner egress capacity and cost BEFORE any 350-500 TB number is public.
 Nothing is edited in code, landing, Polar or plans.ts until he answers and says "go".
+
+## 6. FINAL DECISIONS (founder, 7 Nov 2026 22:12 PKT, his words in quotes). Awam side. Nothing is built or live; Premium + Max are added AFTER the founder lane is finished.
+| # | Decision |
+|---|---|
+| A | Business Premium = **7,000 users, FINAL** ("yeh likha aye ga package card pe"). This REPLACES the old 21,000 cap for Premium. |
+| B | Premium storage **70 TB, shared**; "baad main isko zyada karenge jab samajh aye gi" (raise later once capacity is understood). |
+| C | Business Pro email attachment **60 MB**; Business Premium **100 MB**; Business Max **£115,000, unlimited seats, 250 TB*, 250 MB*, 10 GB* ANEXOChat file, 500 TB included*** (the * = limits still to be verified, see G). |
+| D | Basic (and every other plan) card values stay EXACTLY as they are in the repo and on the server (Basic 15 GB shared, 3 mailboxes, etc.). Nothing changes. |
+| E | Business Max £115,000: **YES**, added together with the new Premium values AFTER the founder lane is finished. |
+| F | No separate free plan. The **48-hour trial is the only free entry**. |
+| G | Hetzner egress capacity + cost verified by me (below). |
+Rules he added to the "what I would add" list (all packages unless stated):
+1. **One-click import from Google, Microsoft and Proton in EVERY package.**
+2. **48-hour trial -> paid = only the package changes; everything else the same; features follow the package.** The trial ends with an export option.
+3. **Price lock = 2 YEARS** (not 3), "phir dekhenge"; cancel + full export. Every package gets a **features list shown by the system**; **when a new feature is added the user gets an instant alert in that same place (the features list) and it also shows inside the app on refresh** (a per-package "what's new" feed: SQL table of feature releases per plan + in-app notice; awam lane, to be built).
+3b. **Pass and Calendar in EVERY package.**
+4. Admin screen: pool meter, 70% / 85% alerts, "your data is never deleted" line: **YES**.
+5. Verifiable security (post-quantum mail keys, the user can check which code they were served), uptime SLA + named support from Business Pro up, AnexoSuite last: accepted.
+6. Public wording: "flat price for the whole company"; never "cheapest in the world" without the full same-seats comparison.
+## G: Hetzner egress, checked 7 Nov 2026 22:30 PKT (docs.hetzner.com/robot/general/traffic, egresscost.com/hetzner)
+- Dedicated server with a **1 Gbit uplink: unlimited traffic by default** (the traffic page states no bandwidth limit; its fair-use wording is not on that page: confirm with Hetzner support in writing before relying on it). **10 Gbit uplink: 20 TB per month included, then about EUR 1 per TB**, only OUTGOING traffic counts, calendar months.
+- Cloud servers: 20 TB included in the EU, 1 TB in the US, 0.5 TB in Singapore; overage EUR 1 per TB.
+- **Cost is NOT the problem; capacity is.** A 1 Gbit link running flat out for a month moves about 324 TB (1 Gbit/s x 2.59 million s), so Premium's 350 TB pool and Max's 500 TB pool cannot be carried by one 1 Gbit server even at 100% use. Real traffic peaks, so plan 10 Gbit uplinks or several servers. On a 10 Gbit uplink 500 TB costs about EUR 480 of overage (500 - 20 = 480 TB x EUR 1) and 350 TB about EUR 330: small against £21,000 / £115,000.
+- Rule stays: 350-500 TB figures are NOT a public promise until Hetzner confirms the uplink and fair-use in writing for the chosen server; beyond the pool = an agreed capacity pack, never an automatic bill.
