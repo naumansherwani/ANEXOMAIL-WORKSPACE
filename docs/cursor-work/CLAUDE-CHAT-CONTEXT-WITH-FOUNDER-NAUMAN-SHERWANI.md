@@ -2395,3 +2395,6 @@ He said: write world-class advanced SQL (rule). Done: E145_founder_vault_panic_t
 
 ### Checkpoint 7 Nov 15:05 PKT
 - 7 Nov 15:05: K4 step 1 WRITTEN (not GREEN): Rust main.rs strip_cc middleware (+1 test, 221 pass): the own TLS terminator on :8443 now serves /_cc/assets/* like Caddy does (fixes the K3 note '/_cc 404, page unstyled'). Behind Caddy it is a no-op (Caddy already strips). Proof needed from him: founder-install, then curl of the live bundle through :8443 = 200, then my Chrome look at https://founderworkspace.anexomail.com:8443/ styled. K4 step 2 (real :443 for the founder host) needs an SNI front because Caddy owns :443 for awam too: DESIGN DECISION written for him before any change.
+
+### Checkpoint 7 Nov 15:20 PKT
+- 7 Nov 15:20: his curl on :8443: / 200, /_cc/ 200, bundle 200 (K4.1 works), /founderlogin 404 and /app 404 (they live in Caddy = old awam login). K4.1 = GREEN narrowly (assets/shell through the own TLS terminator); :8443 is NOT a usable full site, so K4 as a whole is NOT green. Design written: docs/claude/K4-REAL-443-DESIGN-07NOV.md (SNI front in Rust + path proxy table + rollback; nothing live changed; waits for his haan before any :443 change). My Chrome look at :8443 landed on the 404 login redirect (error page), which is exactly that limit.
