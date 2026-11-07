@@ -108,7 +108,7 @@ Why this is best for the website: it costs nothing now, keeps the product honest
 ## G5 (8 Nov 2026 03:10 PKT) - his answers to G4 (AWAM side only, nothing built or live)
 
 1. **Near-cap alert thresholds (his numbers, replace my 90/100 proposal):** at **90% = YELLOW watch**: live alerts appear automatically on the founder dashboard. At **95% = HIGH alert**. The account is **NOT blocked** at any point: he reviews the company and raises that company's limit himself. (Founder-lane feature: SQL threshold ledger + Rust alert + dashboard card; not built.)
-2. **Premium/Max mailboxes:** the company creates them for its users (confirmed, end of the plan) with a clean flow, and for each mailbox the company has an **OPTION**: login with an @anexomail.com address or not.
+2. **Premium/Max mailboxes (CORRECTED 8 Nov 2026 03:15 PKT - I had wrongly written an 'option'; he did not say that):** the company creates them for its users (end of the plan, clean flow). Today login is with @anexomail.com addresses (the other packages keep that). For **Business Premium and Business Max there is NO @anexomail.com restriction**: the company uses its OWN domain (user@theircompany.com). No 'option', that is the rule.
 3. **Yearly billing offer:** Business, Business Pro, Business Premium = **2 months free** on yearly. **Business Max = 3 months free** on yearly. The free months are the **FIRST months** of the term and **show in the billing screen as free months**; when the 2 (or 3) free months end, billing continues as **paid months**.
 4. Storage: Alibaba dropped, Hetzner + Storage Box (SFTP/WebDAV/Samba/Borg, not S3; connection limits to confirm in writing).
 5. Kept: no price, Polar, landing or plans.ts change until he says "go"; Business Pro never unlimited.
