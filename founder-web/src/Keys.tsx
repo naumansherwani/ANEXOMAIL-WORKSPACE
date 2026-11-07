@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Flare } from "./Flare";
-import { door, friendly, loadKeys, prove, register, runSignals, supported, type KeysView } from "./passkey";
+import { approvePending, door, friendly, loadKeys, loadPending, prove, register, runSignals, supported, type KeysView, type Pending } from "./passkey";
 
 // J4 — Security keys (inside Settings → Privacy). Everything shown comes from the server (Rust + E117/E118/E139 SQL); nothing is invented here.
 // A protected step (revoke, recovery codes, phone, hardware rule) is proved with a key; the kernel re-derives the digest first (passkey.ts).
@@ -10,12 +10,15 @@ const LEVEL: Record<string, string> = { ok: "Healthy", warn: "Needs a look", fai
 
 export function Keys() {
   const [v, setV] = useState<KeysView | null>(null), [err, setErr] = useState<string | null>(null), [busy, setBusy] = useState(false), [note, setNote] = useState<{ ok: boolean; t: string } | null>(null);
+  const [pend, setPend] = useState<Pending[]>([]);
   const [label, setLabel] = useState(""), [codes, setCodes] = useState<string[] | null>(null), [reason, setReason] = useState<Record<string, string>>({});
   const reload = useCallback(async () => {
     try { const x = await loadKeys(); setV(x); setErr(null); if (x.signals?.length) { const r = await runSignals(x.signals); if (r.done) setNote({ ok: true, t: `Told your passkey provider about ${r.done} change${r.done > 1 ? "s" : ""} (Signal API).` }); } }
     catch (e) { setErr((e as Error).message); }
   }, []);
   useEffect(() => { void reload(); }, [reload]);
+  const loadP = useCallback(async () => { try { setPend(await loadPending()); } catch { setPend([]); } }, []);
+  useEffect(() => { void loadP(); const t = setInterval(() => { void loadP(); }, 5000); return () => clearInterval(t); }, [loadP]);   // a request made on a phone shows up here within seconds; when approved it disappears on both
   const run = async (f: () => Promise<string>) => { setBusy(true); setNote(null); try { setNote({ ok: true, t: await f() }); await reload(); } catch (e) { setNote({ ok: false, t: friendly(e) }); } setBusy(false); };
   /** prove ONE named step with a key, then call its door with the grant */
   const step = async (action: string, target: string, params: Record<string, string>, doorName: string, body: (grant: string, n: string) => Record<string, unknown>): Promise<any> => {
@@ -43,7 +46,10 @@ export function Keys() {
         <Button size="mini" disabled={busy || !supported() || !label.trim() || keys.length >= 5}
           onClick={() => run(async () => { const r = await register(label.trim()); if (!r.ok) throw new Error(r.error); setLabel(""); if (r.recovery_codes?.length) setCodes(r.recovery_codes); return "Key added."; })}>Add key</Button>
         <Button size="mini" variant="ghost" aria-label="Add this phone's fingerprint" disabled={busy || !supported() || !label.trim() || keys.length >= 5}
-          onClick={() => run(async () => { const r = await register(label.trim(), "phone"); if (!r.ok) throw new Error(r.error); setLabel(""); if (r.recovery_codes?.length) setCodes(r.recovery_codes); return "Fingerprint passkey added."; })}>Add fingerprint</Button></span></div>
+          onClick={() => run(async () => { const r = await register(label.trim(), "phone"); if (!r.ok) throw new Error(r.error); setLabel(""); await loadP(); if (r.recovery_codes?.length) setCodes(r.recovery_codes); return r.pending ? "Fingerprint saved on this device. Now open this page on a device that already has a key and press Approve (valid 5 minutes)." : "Fingerprint passkey added."; })}>Add fingerprint</Button></span></div>
+    {pend.map((p) => <div className="setrow waiting" key={p.ceremony} aria-label="Waiting for approval"><div><b>Waiting for approval: {p.label}</b>
+      <p className="dim">{p.attachment === "platform" ? "Fingerprint / screen lock" : "Security key"} …{p.tail} · made on {p.device} · {Math.max(0, p.left_s)} s left. Approve it here with a key you already have; a request nobody approves disappears by itself.</p></div>
+      <Button size="mini" disabled={busy} onClick={() => run(async () => { const r = await approvePending(p); if (!r.ok) throw new Error(r.error); await loadP(); return `${p.label} approved and added.`; })}>Approve</Button></div>)}
     <p className="dim">Add key = a security key (USB / NFC). Add fingerprint = this phone or laptop's own fingerprint or screen lock. A fingerprint passkey never counts as a hardware key, so the two-key panic lock still needs real hardware.</p>
     <div className="setrow"><div><b>Recovery codes</b><p className="dim">Ten one-time codes, shown once. New codes replace the old ones.</p></div>
       <Button variant="ghost" size="mini" disabled={busy || !keys.length}

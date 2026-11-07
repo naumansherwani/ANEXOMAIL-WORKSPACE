@@ -2431,3 +2431,6 @@ He said: write world-class advanced SQL (rule). Done: E145_founder_vault_panic_t
 
 ### Checkpoint 7 Nov 17:25 PKT
 - 7 Nov 2026 17:25 PKT: his server outputs for 7a87410e/6c6f6f51: sql-run CHECK_E146 4/4 OK (WIRED YES / REAL YES = E146 GREEN), founder-install OK (healthz 200, token + Ed25519 ON), awam pull OK (build OK, server==repo src 610/0/0), device approve 'Chrome on Windows' OK. Screens Add fingerprint + Alert number: installed, NOT GREEN until his phone screenshot + live bundle hash = repo (G1 stays open). Syria Caddy wall not live (needs his 'haan').
+
+### Checkpoint 7 Nov 17:55 PKT
+- 7 Nov 17:55 PKT: his 17:27 anger: 'nothing happens on the phone, make this phase really work with advanced code + SQL'. ROOT CAUSE found: 2nd key = T2 step-up by an existing key; phone has none. FIX built: E147_founder_passkey_pending.sql + CHECK_E147 (sandbox 2/2, selftest PASS), Rust pending_ep + finish_ep from any approved device (225 tests), passkey.ts loadPending/approvePending + register(kind phone) returns pending, Keys.tsx 'Waiting for approval' (polls 5 s), test (SPA 119). My live Chrome 17:25: bundle CkP6z8YW = repo, UI renders, 235 countries, 0 banned, no console errors. NOT GREEN until his server run + real round trip.

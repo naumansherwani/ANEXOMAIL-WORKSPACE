@@ -78,6 +78,7 @@ docs/cursor-work/sql/E143_founder_vault_lease.sql
 docs/cursor-work/sql/E144_founder_vault_lease_keysplit.sql
 docs/cursor-work/sql/E145_founder_vault_panic_t3.sql
 docs/cursor-work/sql/E146_founder_banned_countries.sql
+docs/cursor-work/sql/E147_founder_passkey_pending.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/E68_proof.sql
@@ -92,10 +93,10 @@ founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
+founder-web/dist/assets/index-B0BeZYkT.js
+founder-web/dist/assets/index-B0BeZYkT.js.gz
 founder-web/dist/assets/index-ChvGeBvk.css
 founder-web/dist/assets/index-ChvGeBvk.css.gz
-founder-web/dist/assets/index-CkP6z8YW.js
-founder-web/dist/assets/index-CkP6z8YW.js.gz
 founder-web/dist/assets/kernel.worker-lrvwuwuv.js
 founder-web/dist/assets/kernel.worker-lrvwuwuv.js.gz
 founder-web/dist/assets/three.module-Dza5cG3s.js

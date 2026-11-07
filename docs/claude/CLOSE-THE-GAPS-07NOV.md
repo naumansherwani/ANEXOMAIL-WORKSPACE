@@ -14,3 +14,6 @@ Order: G1 now (2 minutes on his phone) while Claude writes G2; then G4 (K4.3..),
 
 ## GREEN with proof (moved out of the open list)
 - E146 banned countries + alert-number wall, 7 Nov 2026 17:25 PKT: WIRED: YES / REAL: YES. Proof: his sql-run output CHECK_E146 4/4 OK, founder-install OK (healthz 200, Ed25519 ON), awam pull OK (build OK, server==repo 610/0/0), repo 7a87410e. Not yet seen on a phone/Chrome, so the SCREENS (Add fingerprint, Alert number) stay OPEN under G1 until his screenshot + live bundle hash = repo build.
+
+## 7 Nov 17:55 G1 root cause + fix (built, not green)
+Root cause: a second key is a T2 step-up proved by an EXISTING key; the phone has no key, so its browser asked for one it does not have (the 'Choose which device has your passkey' screen). Fix: E147 `founder_passkey_pending`, Rust `GET /founder/v1/passkey/pending`, `/passkey/finish` accepts an approver on another approved device, UI: phone 'Add fingerprint' parks the registration, any device with a key shows 'Waiting for approval' + Approve (5 min, expires by itself, no key body ever listed). GREEN needs: his sql-run (E147 CHECK 2/2), founder-install, the real round trip on his phone + laptop, live bundle = repo.

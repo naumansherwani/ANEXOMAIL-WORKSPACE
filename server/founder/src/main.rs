@@ -716,6 +716,7 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/passkey/verify", axum::routing::post(passkey::verify_ep))
         .route("/founder/v1/passkey/finish", axum::routing::post(passkey::finish_ep))
         .route("/founder/v1/passkey/list", get(passkey::list_ep))
+        .route("/founder/v1/passkey/pending", get(passkey::pending_ep))
         .route("/founder/v1/flare/key", get(flare_key_ep))
         .route("/founder/v1/vault/lease", axum::routing::post(vault_lease_ep))
         .route("/founder/v1/vault/status", get(vault_status_ep))

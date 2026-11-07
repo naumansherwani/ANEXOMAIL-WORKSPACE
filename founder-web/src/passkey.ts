@@ -34,7 +34,18 @@ export async function prove(spec?: ActionSpec): Promise<Proved> {
   return { ok: true, result: r.body.result, decision: r.body.decision, risk: r.body.risk, nonce: o.nonce ?? "" };
 }
 
-export type Registered = { ok: true; recovery_codes?: string[]; via: string } | { ok: false; error: string };
+export type Registered = { ok: true; recovery_codes?: string[]; via: string; pending?: boolean } | { ok: false; error: string };
+export type Pending = { ceremony: string; label: string; credential_id: string; tail: string; attachment: string; nonce: string; device: string; device_id: string; left_s: number };
+/** Registrations waiting for a key of an already-trusted device to approve them (E147). */
+export const loadPending = async (): Promise<Pending[]> => { const r = await get<{ pending: Pending[] }>("/founder/v1/passkey/pending"); return r.data?.pending ?? []; };
+/** Approve a waiting registration with a key THIS device holds. The grant is bound to exactly that credential id and the nonce parked on the server; the kernel re-derives the digest first. */
+export async function approvePending(p: Pending): Promise<{ ok: true } | { ok: false; error: string }> {
+  const pr = await prove({ action: "passkey.add", target: p.credential_id, params: { label: p.label }, purpose: "action", nonce: p.nonce });
+  if (!pr.ok) return { ok: false, error: pr.error };
+  const f = await post("/founder/v1/passkey/finish", { ceremony: p.ceremony, grant: pr.result.grant });
+  if (f.status !== 200) return { ok: false, error: f.body?.error || `HTTP ${f.status}` };
+  return { ok: true };
+}
 /** Add a key. The first key needs nothing else; later keys are a protected action ("passkey.add" for the NEW credential id), proved with an existing key. */
 export async function register(label: string, kind: "key" | "phone" = "key"): Promise<Registered> {
   if (!supported()) return { ok: false, error: "This browser has no passkey support." };
@@ -45,6 +56,7 @@ export async function register(label: string, kind: "key" | "phone" = "key"): Pr
   const j = credToJson(cred); j.clientExtensionResults = cleanExt(j.clientExtensionResults);
   const r = await post("/founder/v1/passkey/verify", { ceremony: o.ceremony, credential: j });
   if (r.status !== 200) return { ok: false, error: r.body?.error || `HTTP ${r.status}` };
+  if (r.body.needs_stepup && kind === "phone") return { ok: true, via: "pending", pending: true };   // a phone with no key yet cannot approve itself: a trusted device approves it (Keys card, "Waiting for approval")
   if (r.body.needs_stepup) {
     const p = await prove({ action: r.body.action, target: r.body.target, params: r.body.params, purpose: "action" });
     if (!p.ok) return { ok: false, error: p.error };

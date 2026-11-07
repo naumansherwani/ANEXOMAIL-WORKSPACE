@@ -524,13 +524,21 @@ pub async fn finish_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Byte
     let sb = match sbx(&st) { Ok(s) => s, Err(r) => return r };
     let b = match body_json(&body) { Ok(b) => b, Err(r) => return r };
     let state = match ceremony_take(sb, &uid, b["ceremony"].as_str().unwrap_or(""), "register").await { Ok(s) => s, Err(r) => return r };
-    if state["purpose"] != "register_pending" || state["device"].as_str() != Some(did.as_str()) { return refuse(StatusCode::FORBIDDEN, "not a pending registration of this device"); }
+    // E147: the registration may have been made on ANOTHER approved device (a phone with no key yet); the approving device is the caller (an approved device, proved by its own key through the grant)
+    if state["purpose"] != "register_pending" { return refuse(StatusCode::FORBIDDEN, "not a pending registration"); }
     let grant = b["grant"].as_str().filter(|g| is_uuid(g));
     if grant.is_none() { return refuse(StatusCode::FORBIDDEN, "the step-up grant is missing"); }
     let r = &state["reg"];
     let reg = Reg { credential_id: st_s(r, "credential_id"), key: r["key"].clone(), facts: r["facts"].clone(), sign_count: 0 };
     let nonce = st_s(&state, "nonce");
     finish_register(&st, sb, &uid, &did, &reg, &st_s(&state, "label"), grant, Some(&nonce), "t2").await
+}
+
+/// GET /founder/v1/passkey/pending — registrations waiting for a key of an already-trusted device to approve them (E147). Never carries a key body.
+pub async fn pending_ep(State(st): State<S>, h: HeaderMap) -> Response {
+    let (uid, _e, _d) = match ctx(&st, &h, "/founder/v1/passkey/pending", b"", false).await { Ok(x) => x, Err(r) => return r };
+    let sb = match sbx(&st) { Ok(s) => s, Err(r) => return r };
+    match sb.rpc_msg("founder_passkey_pending", json!({"p_uid": uid})).await { Ok(v) => crate::signed(&st, json!({"pending": v})), Err(e) => sql_err(e) }
 }
 
 /// GET /founder/v1/passkey/list — keys, E139 status, open Signal API calls, protocol status. One signed answer.

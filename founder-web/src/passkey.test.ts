@@ -125,3 +125,15 @@ test("Add fingerprint registers a phone passkey (platform), Add key stays the ha
   const p = require("fs").readFileSync(new URL("./passkey.ts", import.meta.url), "utf8");
   expect(p).toContain('kind: "key" | "phone" = "key"');
 });
+
+test("E147: a fingerprint made on a phone waits for approval by a trusted device instead of asking the phone for a key it does not have", () => {
+  const fs = require("fs");
+  const p = fs.readFileSync(new URL("./passkey.ts", import.meta.url), "utf8");
+  expect(p).toContain('needs_stepup && kind === "phone") return { ok: true, via: "pending", pending: true }');
+  expect(p).toContain('/founder/v1/passkey/pending');
+  expect(p).toContain('action: "passkey.add", target: p.credential_id');
+  expect(p).toContain("nonce: p.nonce");
+  const k = fs.readFileSync(new URL("./Keys.tsx", import.meta.url), "utf8");
+  expect(k).toContain("Waiting for approval");
+  expect(k).toContain("approvePending(p)");
+});
