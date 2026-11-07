@@ -48,3 +48,6 @@ GREEN = his pasted server output and/or my own live Chrome look and/or his phone
 
 | E146 banned countries + alert number (SQL) | SQL | GREEN 7 Nov 2026 17:25 PKT | WIRED: YES / REAL: YES (his CHECK_E146 4/4 on the server) |
 | Add fingerprint + Alert number screens | React-TS + Rust | DEPLOYED, NOT GREEN | WIRED: YES (installed) / REAL: NOT PROVEN (needs his phone screenshot + live bundle = repo) |
+
+| E147 pending-key approval (SQL + Rust route) | SQL + Rust | GREEN 7 Nov 2026 18:10 PKT | WIRED: YES / REAL: YES (his CHECK_E147 2/2; live route 401 without token) |
+| Fingerprint -> Waiting for approval -> Approve screens | React-TS | LIVE, NOT GREEN | WIRED: YES (live bundle = repo) / REAL: needs his phone + laptop round trip |

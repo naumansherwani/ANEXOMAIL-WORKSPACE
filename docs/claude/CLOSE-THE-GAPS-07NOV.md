@@ -17,3 +17,6 @@ Order: G1 now (2 minutes on his phone) while Claude writes G2; then G4 (K4.3..),
 
 ## 7 Nov 17:55 G1 root cause + fix (built, not green)
 Root cause: a second key is a T2 step-up proved by an EXISTING key; the phone has no key, so its browser asked for one it does not have (the 'Choose which device has your passkey' screen). Fix: E147 `founder_passkey_pending`, Rust `GET /founder/v1/passkey/pending`, `/passkey/finish` accepts an approver on another approved device, UI: phone 'Add fingerprint' parks the registration, any device with a key shows 'Waiting for approval' + Approve (5 min, expires by itself, no key body ever listed). GREEN needs: his sql-run (E147 CHECK 2/2), founder-install, the real round trip on his phone + laptop, live bundle = repo.
+
+## 7 Nov 18:10 G1 status
+E147 GREEN (WIRED YES / REAL YES): his sql-run CHECK_E147 2/2 OK, founder-install OK, live Chrome bundle index-B0BeZYkT = repo build with the feature, /founder/v1/passkey/pending live (401 without token). OPEN: the real round trip on his phone + laptop (phone Add fingerprint -> laptop Approve -> phone Add this phone / Send test), then 390/820/1200 look. Until his screenshot G1 stays open.
