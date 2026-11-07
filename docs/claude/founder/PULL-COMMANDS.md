@@ -758,3 +758,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 7 Nov 2026 20:08 PKT NEVER give a rollback command containing <TS> as a literal: always a ready-to-run form (ls -dt /root/i9/caddy-geoblock-* | head -1). Caddy recovery pending.
 
 - 7 Nov 2026 20:12 PKT Caddy recovery step 1: cp -a /root/i9/caddy-geoblock-1793599658 /etc/caddy + adapt/host diff vs /root/caddy-save/running.json.
+
+- 7 Nov 2026 20:20 PKT compare: git -C /opt/anexomail-web fetch -q origin main && python3 <(git -C /opt/anexomail-web show origin/main:server/caddy/caddy-compare.py)

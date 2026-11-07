@@ -290,3 +290,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 7 Nov 2026 20:08 PKT: AX-P11 AnexoSuite tech plan = docs/claude/AX-P11-ANEXOSUITE-TECH-PLAN-07NOV.md (awam, last).
 
 7 Nov 2026 20:12 PKT: AnexoSuite target set by founder = 2 months; Caddy recovery in progress.
+
+- 7 Nov 2026 20:20 PKT Caddy recovery: restore cp done on his server; compare script moved to repo server/caddy/caddy-compare.py (heredoc paste got stuck). RULE: no multi-line heredocs in commands for him; always a repo script.

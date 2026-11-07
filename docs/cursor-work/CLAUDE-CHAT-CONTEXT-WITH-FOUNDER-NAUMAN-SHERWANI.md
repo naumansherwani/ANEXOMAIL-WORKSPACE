@@ -2480,3 +2480,6 @@ His G2 install paste OK. Live bundle was index-DmKbS7TC; found a legacy plaintex
 
 ## CHECKPOINT 7 Nov 2026 20:12 PKT
 - 7 Nov 2026 20:12 PKT CADDY RECOVERY: /etc/caddy missing (his <TS> paste), caddy active from memory, running.json + autosave.json saved in /root/caddy-save, old full backup /root/i9/caddy-geoblock-1793599658 found; restore cp + adapt/host diff given to him, NO reload until diff is clean. AnexoSuite target 2 months (his order).
+
+## CHECKPOINT 7 Nov 2026 20:20 PKT
+- 7 Nov 2026 20:20 PKT Caddy recovery: restore cp done on his server; compare script moved to repo server/caddy/caddy-compare.py (heredoc paste got stuck). RULE: no multi-line heredocs in commands for him; always a repo script.

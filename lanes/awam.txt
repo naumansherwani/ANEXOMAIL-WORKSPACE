@@ -500,6 +500,7 @@ server/caddy/aicrm.Caddyfile
 server/caddy/anexochat.Caddyfile
 server/caddy/anexomail-main-block.txt
 server/caddy/anexovideocall.Caddyfile
+server/caddy/caddy-compare.py
 server/caddy/crm.Caddyfile
 server/caddy/deploy-sites.sh
 server/caddy/founder-host.sh

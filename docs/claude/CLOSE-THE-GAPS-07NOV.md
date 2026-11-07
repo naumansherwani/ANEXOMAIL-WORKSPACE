@@ -58,3 +58,5 @@ G2 is now the open item in progress.
 - 7 Nov 2026 20:08 PKT INCIDENT (Syria apply NOT run): his pasted rollback with literal <TS> deleted /etc/caddy; caddy running from memory; recovery pending his ls/running.json output. AX-P11 AnexoSuite tech plan written (Lexical/ProseMirror, own canvas grid, Rust->WASM formula engine, Yjs + E2E AES-256-GCM, Rust WOPI).
 
 - 7 Nov 2026 20:12 PKT CADDY RECOVERY: /etc/caddy missing (his <TS> paste), caddy active from memory, running.json + autosave.json saved in /root/caddy-save, old full backup /root/i9/caddy-geoblock-1793599658 found; restore cp + adapt/host diff given to him, NO reload until diff is clean. AnexoSuite target 2 months (his order).
+
+- 7 Nov 2026 20:20 PKT Caddy recovery: restore cp done on his server; compare script moved to repo server/caddy/caddy-compare.py (heredoc paste got stuck). RULE: no multi-line heredocs in commands for him; always a repo script.
