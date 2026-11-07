@@ -100,3 +100,5 @@ Open `docs/claude/FOUNDER-NEXT-ORDER-07NOV.md`: 18-row table (phase, what, techn
 - NEXT, one step at a time (he does each step and pastes): Step 3 = J6 real-phone receipt (phone: Settings > Privacy > Phone alerts > add this phone > Test). Then K4 (Rust rustls AES-256 on :443; technology is in the top block), K5, K6, K7, L...X. Also open: tablet 820 on a real tablet, phone proof of AI/Systems/Control/Release/Move-In/Audit.
 - Gate lessons: read rules-gate output (never `| tail` alone), DONE-DO-NOT-REPEAT must be updated in docs/cursor-work/ AND docs/cursor-work/founder/ (gate checks docs/cursor-work/DONE-DO-NOT-REPEAT.md); PULL-COMMANDS is docs/claude/founder/PULL-COMMANDS.md; manifest-sync twice after build.
 - Sandbox: harness in scratchpad `h/run.mjs` (static server over founder-web/dist + Playwright, API stubbed with unsigned data so "Answer hidden" red lines appear: harness artefact, not a bug). Chrome window cannot be resized to 390: phone proof comes from his screenshots.
+
+- 7 Nov 14:50 UPDATE: J6 GREEN with evidence, mobile Settings>Privacy GREEN, NOW = K4 (see top block of AGENTS.md).
