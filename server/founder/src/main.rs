@@ -29,6 +29,7 @@ mod signedcp;
 mod anchors;
 mod portable;
 mod tls256;
+mod fproxy;
 #[path = "../../rust/passkey_core.rs"]
 #[allow(dead_code)]
 mod passkey_core;
@@ -732,11 +733,13 @@ pub fn app(st: S) -> Router {
         .layer(hdr("x-frame-options", "DENY"))
         .layer(hdr("permissions-policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), bluetooth=(), publickey-credentials-get=(self), publickey-credentials-create=(self)"))
         .layer(hdr("referrer-policy", "no-referrer"))
+        .layer(hdr("alt-svc", "clear")) // K4.2: a browser that learned h3 from Caddy forgets it and stops bypassing the AES-256 terminator
         .layer(hdr("cross-origin-opener-policy", "same-origin"))
         .layer(hdr("cross-origin-embedder-policy", "require-corp"))
         .layer(hdr("cache-control", "no-store"))
         .layer(axum::middleware::from_fn(asset_cache))
         .layer(axum::middleware::from_fn(strip_cc)) // K4: the SPA is built for the /_cc/ prefix (Caddy strips it); the own TLS terminator has no Caddy, so it strips it itself
+        .layer(axum::middleware::from_fn(fproxy::layer)) // K4.2: outermost: /founderlogin /app /api go to the old app (only when FOUNDER_LEGACY_UPSTREAM is set), their answer keeps the old app's own headers
 }
 
 /// `/_cc/assets/x.js` -> `/assets/x.js` (and `/_cc`, `/_cc/` -> `/`). Only a path that starts with exactly `/_cc` + `/` or the end; `/_ccx` and `/a/_cc/` are left alone. The query string is kept.
@@ -818,6 +821,7 @@ async fn main() {
     match (&sb, flare::Cfg::from_env()) { (Some(s), Some(c)) => flare::spawn(s.clone(), c), (_, None) => eprintln!("founder: flare sender OFF (FOUNDER_FLARE=off or no usable VAPID key)"), _ => {} }
     if let Some(s) = &sb { live::start(s.clone()); } // 4b-2: the one process-wide live tick
     let st = Arc::new(St { sb, hmac_key: key.into_bytes(), jwks: RwLock::new(jwks), lim: Default::default(), ft, legacy, polar, hook: Default::default(), ed, reqsig, gate: authcache::AuthCache::new(std::time::Duration::from_secs(5)) });
+    fproxy::init_from_env(std::env::var("FOUNDER_TLS256_ADDR").ok().as_deref());
     match tls256::from_env() { // T256-1: own TLS 1.3 terminator, AES-256-GCM only, on its own port (default OFF); the main port above is never touched
         None => eprintln!("founder: TLS-256 terminator OFF (no FOUNDER_TLS256_ADDR)"),
         Some(Err(e)) => eprintln!("founder: TLS-256 terminator NOT started: {e}"),

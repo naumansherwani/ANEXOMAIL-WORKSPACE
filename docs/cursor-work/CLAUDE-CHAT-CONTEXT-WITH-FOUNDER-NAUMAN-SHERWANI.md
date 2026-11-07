@@ -2401,3 +2401,6 @@ He said: write world-class advanced SQL (rule). Done: E145_founder_vault_panic_t
 
 ### Checkpoint 7 Nov 15:30 PKT
 - 7 Nov 15:30: his read-only server output for K4 (ports, Caddy v2.11.4 on 443 tcp+udp, Rust 3210 + 8443, cert copy at /etc/anexomail/tls, ufw). 4 findings written in docs/claude/K4-REAL-443-DESIGN-07NOV.md: stale cert copy (renewal timer needed), Caddy QUIC on 443/udp bypass (Alt-Svc clear), reqwest already present (no new crate), SNI by peek + PROXY v1. Nothing live changed. He also asked: shorter replies, commands first; and raised that the email system has not been reached yet (order question asked: 1 = K4.. in order, 2 = email first; waiting for his word).
+
+### Checkpoint 7 Nov 15:50 PKT
+- 7 Nov 15:50: K4.2 WRITTEN (not GREEN): server/founder/src/fproxy.rs (closed path table /founderlogin /app /api, validated upstream host:port, never own port, hop-by-hop + forwarding headers stripped both ways, redirects not followed, 25 MB cap, answer streamed chunk by chunk, Alt-Svc: clear on every founder answer), outermost layer in main.rs, env FOUNDER_LEGACY_UPSTREAM (installer adds 127.0.0.1:443 = Caddy today; moves to the internal port at K4.5), futures-util direct dep. 225 Rust tests pass (+4). NEEDS: founder-install, then curl :8443/founderlogin = 200 (was 404) and /app, then my Chrome on :8443 login page. Nothing on :443 changed.

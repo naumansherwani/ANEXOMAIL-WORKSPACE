@@ -203,6 +203,7 @@ server/founder/src/authcache.rs
 server/founder/src/bridge.rs
 server/founder/src/data.rs
 server/founder/src/flare.rs
+server/founder/src/fproxy.rs
 server/founder/src/ftoken.rs
 server/founder/src/gate.rs
 server/founder/src/hostproof.rs
