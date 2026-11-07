@@ -286,3 +286,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 ## AWAM PHASES AX-P1..P10 (founder 7 Nov 19:29): start ONLY after the founder lane (X) is finished; awam side only, never mixed into founder code. Order (changed 7 Nov 19:48): P1 Mail, P3 Drive, P4 Pass, P2 Calendar+Contacts, P8 Account protection, P10 Transparency, P9 Calls, P6 Docs/Sheets, then P11 AnexoSuite (Word/Excel/Sheets/Docs built in) LAST. NO VPN (not needed); AI goes to ai.anexomail.com, not awam. Research + table: docs/claude/AWAM-PROTON-PLUS-PLAN-07NOV.md. None built yet (no GREEN claimed).
 
 7 Nov 2026 19:50 PKT blueprint order unbroken: G2 -> G4 -> G5 -> G6 -> G7 -> G3 -> K5.. (AX phases after X).
+
+7 Nov 2026 20:08 PKT: AX-P11 AnexoSuite tech plan = docs/claude/AX-P11-ANEXOSUITE-TECH-PLAN-07NOV.md (awam, last).

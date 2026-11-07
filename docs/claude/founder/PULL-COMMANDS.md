@@ -754,3 +754,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 7 Nov 2026 19:50 PKT G2 reinstall (browser only): founder-install.sh. Syria apply still waits his run.
 
 - 7 Nov 2026 20:00 PKT G2 last reinstall (browser only) for the true Settings line: founder-install.sh. Syria: geoblock.sh apply.
+
+- 7 Nov 2026 20:08 PKT NEVER give a rollback command containing <TS> as a literal: always a ready-to-run form (ls -dt /root/i9/caddy-geoblock-* | head -1). Caddy recovery pending.

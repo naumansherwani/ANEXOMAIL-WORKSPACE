@@ -16,7 +16,7 @@ Honest base: Proton has years of audits, open-source clients and a real user bas
 
 Order inside AX (founder 7 Nov 19:48 PKT): P1 Mail -> P3 Drive -> P4 Pass -> P2 Calendar+Contacts -> P8 Account protection -> P10 Transparency -> P9 Calls -> P6 Docs/Sheets -> **P11 AnexoSuite LAST**. NOT in the awam list any more: VPN (founder: "vpn ki zaroorat nahi") and AI (goes to its own product ai.anexomail.com). The founder lane order stays: G2 -> G4 -> G5/G6/G7 -> K5 -> K6 -> K7 -> L -> M -> N..V -> X -> then AX.
 
-| AX-P11 (LAST) | **AnexoSuite**: Word, Excel, Sheets, Docs built in | Proton Docs/Sheets, Microsoft Office / Google Workspace | the most advanced office suite in the world, inside the account: .docx/.xlsx/.pptx import and export, formulas engine, co-edit with signed change history, PQ-sealed documents, everything bound to the device lease | Rust WOPI host + WASM formula/document engine + React-TS + SQL ledgers |
+| AX-P11 (LAST) | **AnexoSuite** (full technology plan: docs/claude/AX-P11-ANEXOSUITE-TECH-PLAN-07NOV.md): Word, Excel, Sheets, Docs built in | Proton Docs/Sheets, Microsoft Office / Google Workspace | the most advanced office suite in the world, inside the account: .docx/.xlsx/.pptx import and export, formulas engine, co-edit with signed change history, PQ-sealed documents, everything bound to the device lease | Rust WOPI host + WASM formula/document engine + React-TS + SQL ledgers |
 
 ## RESEARCH (7 Nov 2026 19:35 PKT, Proton's own roadmaps: proton.me/blog/2026-spring-summer-roadmaps and proton.me/blog/2026-autumn-winter-roadmaps)
 What Proton ships or is shipping, and the AX phase where Anexomail MATCHES it (awam gets all of it) and then goes BEYOND it.

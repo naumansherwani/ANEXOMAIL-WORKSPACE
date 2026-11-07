@@ -160,3 +160,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 7 Nov 2026 19:50 PKT: G2 plaintext purge fix, reinstall then Chrome proof; letter order unbroken.
 
 - 7 Nov 2026 20:00 PKT G2 LIVE PROOF part 1: his install OK, live bundle index-D5tAR5ZQ, lease #27, sessionStorage record = ciphertext {v:1,d,iv,c} no plain text (my Chrome); old plaintext auto-deleted. Settings line made true (index-TIPb62WV pending install). Awam plan: no VPN, no AI (ai.anexomail.com), P11 AnexoSuite last. Syria apply still waits his run.
+
+- 7 Nov 2026 20:08 PKT INCIDENT (Syria apply NOT run): his pasted rollback with literal <TS> deleted /etc/caddy; caddy running from memory; recovery pending his ls/running.json output. AX-P11 AnexoSuite tech plan written (Lexical/ProseMirror, own canvas grid, Rust->WASM formula engine, Yjs + E2E AES-256-GCM, Rust WOPI).

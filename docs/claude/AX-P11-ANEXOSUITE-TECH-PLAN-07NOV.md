@@ -1,0 +1,19 @@
+# AX-P11 ANEXOSUITE: technology plan (founder 7 Nov 2026 19:55 PKT). AWAM side, LAST phase, starts only after the founder lane (X) and AX-P1..P10.
+Founder question: "yeh tum bana saktay ho kya?" HONEST ANSWER: yes, in stages, each stage GREEN only with wired + real proof. Not in one prompt. The first usable version (ANEXOWord + ANEXOSheet with real-time sync) is realistic; full Microsoft-Office parity (every Excel function, every Word layout case, pixel-perfect .docx) is a multi-year gap that we close by stages, never claimed early.
+## Stages (order never breaks)
+| Stage | What | Technology (layer) | Why this choice |
+|---|---|---|---|
+| S1 ANEXOWord core | rich-text editor: bold/italic/fonts/headings/lists/tables/images, comments, undo | React-TS + Lexical (Meta, MIT) or ProseMirror/Tiptap (MIT), custom toolbar in the awam look | both are open source with a CRDT binding for Yjs; we decide in S1 by a one-day spike (bundle size, table support, a11y) |
+| S2 ANEXOSheet grid | 100k-row virtual grid, canvas-drawn, selection, fill, freeze panes, charts | React-TS + own canvas virtual-scroll renderer (FortuneSheet MIT only as a reference/fallback; Luckysheet is no longer maintained) | canvas windowing keeps 10,000+ rows smooth on a phone (390) and a desktop (1200+) with the same code |
+| S3 Formula engine | Excel-compatible functions (start with the ~200 most used: SUM, IF, VLOOKUP/XLOOKUP, INDEX/MATCH, dates, text, finance) | Rust compiled to WASM (shared kernel pattern, runs in the browser; same crate runs on the server for import/export checks) | HyperFormula is GPL/commercial: licence risk, so we do not depend on it; own engine = no licence trap, full control, tested against a golden file of Excel results |
+| S4 Real-time sync | 2-3+ people edit one file live | Yjs (CRDT, MIT) over the existing ANEXOChat realtime channel; later WebTransport (K6) | CRDT needs no central lock: offline edits merge; the server only relays bytes |
+| S5 Privacy | server never sees document text | each update is encrypted in the browser (AES-256-GCM, key per document wrapped to members' keys, post-quantum hybrid as in AX-P1); the server stores and relays ciphertext only; document key bound to the device lease (J8) | "zero-access": even the founder cannot read a user's file |
+| S6 Files in/out | open and save .docx .xlsx .pptx .odt .csv .pdf | Rust WOPI host (standard protocol, so Office-format engines can plug in) + import/export converters in WASM; PDF export | formats are where Office parity is won or lost; staged by format |
+| S7 Signed history | every change is attributable and tamper-evident | SQL append-only ledger + hash chain + Merkle (same pattern as founder audit), verified in the browser by the WASM kernel | beyond Office: proof of who changed what |
+| S8 Slides (Anexo deck) | presentations | same editor + canvas stack | last |
+## Layers never mixed
+SQL = permissions, document index, history ledger (advance level, selftests, CHECK). Rust = WOPI host, key wrapping, relay, import/export. WASM = formula engine + verification in the browser. React-TS = editor and grid UI. One website, one build, same code on 390 / 820 / 1200+.
+## Rules that apply
+Awam lane only (Rule 73), awam pull command with every change, no mock data, no fake GREEN, each stage live-tested on phone/tablet/laptop. Needs the prior phases first (AX-P1 keys, AX-P3 Drive storage, AX-P4 device lease for keys).
+## Known risks (said now, not later)
+1. Excel formula parity is long work: we publish the supported-function count honestly. 2. .docx layout fidelity is hard: we start with import/export of the common 90% and show what is not supported. 3. Canvas grids need their own accessibility layer (screen-reader mirror) or they fail a11y. 4. Encrypted collaborative editing means server-side search/preview is impossible by design: search is on-device.
