@@ -2371,3 +2371,6 @@ J8d written: lease_pure.ts (tested, 111 bun tests total), lease.ts (engine), Vau
 
 ### Checkpoint 7 Nov 14:40 PKT
 He said: write world-class advanced SQL (rule). Done: E145_founder_vault_panic_t3.sql + CHECK_E145.sql (sandbox e143b with E103-E118 applied: selftest PASS, CHECK 4/4, E143/E144/E145 re-run safe). E143 re-run no longer re-grants the raw panic once E145 exists. Rust: passkey.rs t3_execute for action vault.panic_lock calls founder_vault_panic_run. UI: Vault.tsx panic stages (lease_pure.ts panicStage/parsePanic, 113 bun tests). T3 needs 2 trusted hardware keys + 10 min delay: that is by design (his table said "behind T3"). Not GREEN until his server output and live Chrome.
+
+### Checkpoint 7 Nov 15:00 PKT
+- 7 Nov 15:00: his E143/E145 paste: E145 CHECK 4/4 OK, E143 selftest OK, SPA install OK (vault master exists). CHECK_E143 row 2 FAILED only because the raw panic is now (correctly) closed by E145 -> CHECK fixed. Row 5 FAIL on his DB only (sandbox passes): DIAG_E143_row5.sql asked. J8d NOT GREEN yet: row 5 + live Chrome 390/820/1200+.

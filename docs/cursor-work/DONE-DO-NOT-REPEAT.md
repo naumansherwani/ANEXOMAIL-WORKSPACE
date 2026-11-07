@@ -1553,3 +1553,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 7 Nov 14:10: J8d vault lease UI written (SPA only), not GREEN until live Chrome 390/820/1200+. See docs/claude/DONE-DO-NOT-REPEAT.md.
 
 - 7 Nov 14:40: J8d panic lock (E145 SQL + Rust t3_execute arm + UI). Commands: sql-run.sh E143 E144 E145 (+CHECK_E145), then founder-install.sh. Awam pull NOT needed. Not GREEN until live Chrome 390/820/1200+.
+
+- 7 Nov 15:00: his E143/E145 paste: E145 CHECK 4/4 OK, E143 selftest OK, SPA install OK (vault master exists). CHECK_E143 row 2 FAILED only because the raw panic is now (correctly) closed by E145 -> CHECK fixed. Row 5 FAIL on his DB only (sandbox passes): DIAG_E143_row5.sql asked. J8d NOT GREEN yet: row 5 + live Chrome 390/820/1200+.

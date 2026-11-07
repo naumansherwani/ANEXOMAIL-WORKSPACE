@@ -2582,3 +2582,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 7 Nov 14:10: (continuing his 13:30 order) J8d code written: vault lease UI + engine. Awam command NOT needed (founder-web only, no shared file changed).
 
 - 7 Nov 14:40: J8d panic lock (E145 SQL + Rust t3_execute arm + UI). Commands: sql-run.sh E143 E144 E145 (+CHECK_E145), then founder-install.sh. Awam pull NOT needed. Not GREEN until live Chrome 390/820/1200+.
+
+- 7 Nov 15:00: his E143/E145 paste: E145 CHECK 4/4 OK, E143 selftest OK, SPA install OK (vault master exists). CHECK_E143 row 2 FAILED only because the raw panic is now (correctly) closed by E145 -> CHECK fixed. Row 5 FAIL on his DB only (sandbox passes): DIAG_E143_row5.sql asked. J8d NOT GREEN yet: row 5 + live Chrome 390/820/1200+.

@@ -336,6 +336,7 @@ docs/cursor-work/sql/CHECK_G5B_LIVE.sql
 docs/cursor-work/sql/CHECK_G5D_LIVE.sql
 docs/cursor-work/sql/CHECK_PX0B_TEST_FOOTPRINT.sql
 docs/cursor-work/sql/CHECK_PX0_PERSONAL_LIST.sql
+docs/cursor-work/sql/DIAG_E143_row5.sql
 docs/cursor-work/sql/DIAG_crm_pipeline_update.sql
 docs/cursor-work/sql/E100_plan_interop_matrix.sql
 docs/cursor-work/sql/E101_activity_feed_writers.sql
