@@ -118,7 +118,7 @@ src/lib/settings.ts b6ed27fd6d2c994a
 src/components/app/settings/SettingsBits.tsx 34207b0ce33787a9
 server/rust/cal_core.rs 5770133e95524592
 server/rust/cal_glue.rs 1b9885a7994aeebe
-AGENTS.md 098df16ff7f0ca5e
+AGENTS.md 6fa5f6e87fa178b3
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
@@ -947,7 +947,7 @@ founder-web/src/fonts/Inter-Medium.woff2 c8f84bf00cbd6136
 founder-web/src/fonts/Inter-Regular.woff2 21d73733fb1fbfe6
 founder-web/src/fonts/Inter-SemiBold.woff2 43443e801ec3cb75
 docs/cursor-work/server/rules-gate.py c21e8069f8aceb91
-CLAUDE.md d525f0dfd60e80a4
+CLAUDE.md ce42406bb94b881d
 docs/claude/FOUNDER-KILLER-FEATURES-28OCT.md 8f8bb489bc473a7c
 founder-web/src/cinema.css 312474c073e9860d
 docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md af209f4adf209b87
