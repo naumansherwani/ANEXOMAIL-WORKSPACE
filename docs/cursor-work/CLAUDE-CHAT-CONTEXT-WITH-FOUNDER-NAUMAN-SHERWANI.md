@@ -2419,3 +2419,6 @@ He said: write world-class advanced SQL (rule). Done: E145_founder_vault_panic_t
 
 ### Checkpoint 7 Nov 15:45 PKT
 - 7 Nov 15:45: audit asked: 'kitna founder kaam ho chuka hai  0x0p+0ur kitna baki'. Answer in docs/claude/FOUNDER-AUDIT-PERCENT-07NOV.md: 45 y phase count (13 of 29), about 36 y effort (63 of 177 units, my estimate), ~64  0.000000e+00ft; Q (mail + calendar) is the largest block.
+
+### Checkpoint 7 Nov 15:50 PKT
+- 7 Nov 15:36: NEW STANDING RULE (top of AGENTS.md/CLAUDE.md, gate-enforced, head window 9500 chars): NO UNFINISHED WORK: GREEN only when wired AND really working; every GREEN says wired/real with proof; gaps live in docs/claude/CLOSE-THE-GAPS-07NOV.md (G1 Android phone alerts, G2 vault key consumer, G3 T3/panic with 2 hardware keys, G4 real :443, G5 ANEXOChat founder screen, G6 phone proof all tabs, G7 real tablet) until closed. His words: 'adhoora kaam nahi kerna hai, jaise bhi kerna hai steps batao'.
