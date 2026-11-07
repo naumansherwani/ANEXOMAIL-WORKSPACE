@@ -12,3 +12,5 @@
 - 1 Nov 11:00: Step 6 Rust+UI installed on server (105 tests, 4/4). Rule 71: AI founder-only, step 16 (last). Do not build AI earlier; do not touch awam AI code.
 
 - 1 Nov 11:05: STEP 6 GREEN in founder Chrome (Time machine 18 versions proven, Drift 92/100). Do not rebuild. AI label fixed.
+
+- 7 Nov 14:10: J8d WRITTEN (not yet GREEN): founder-web/src/lease_pure.ts (+10 bun tests), lease.ts (WebCrypto non-extractable ECDSA P-256 key in IndexedDB, auto-renew, kernel lease@1 judges every lease, vault key in memory only), Vault.tsx card in Settings > Privacy, api.ts deviceUuid(). GREEN only after founder-install + live Chrome at 390/820/1200+. Nothing is encrypted with the vault key yet (honest). J8e panic route not built.

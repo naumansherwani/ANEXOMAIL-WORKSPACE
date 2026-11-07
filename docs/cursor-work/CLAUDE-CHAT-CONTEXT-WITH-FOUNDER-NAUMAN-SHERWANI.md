@@ -2365,3 +2365,6 @@ His 13:23 order done in the repo: next-order table with technology per phase (do
 
 ### Checkpoint 7 Nov 13:35 PKT
 His 13:30 order: (1) capital-letter standing rule on top: every phase mobile + tablet + laptop + computer, live-tested at 390/820/1200+; (2) start J8d with its technology written first (it is in the NEXT PHASE block); (3) write GREEN for finished phases incl. J6. Done in the repo; J6 is GREEN by his order, the real-phone receipt is kept as an honest note. J8d in progress: lease_pure.ts (pure logic + tests), lease.ts (WebCrypto + IndexedDB + renew), Vault card in Settings > Privacy; panic route is J8e (Rust T3 action), not faked.
+
+### Checkpoint 7 Nov 14:10 PKT
+J8d written: lease_pure.ts (tested, 111 bun tests total), lease.ts (engine), Vault.tsx (card under Phone alerts), api.ts deviceUuid(). SPA only: founder-install gives it to him; awam pull NOT needed. NOT GREEN until live Chrome at 390/820/1200+. J8e (panic route) and vault-key consumers are later.

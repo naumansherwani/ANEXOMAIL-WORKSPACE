@@ -99,6 +99,11 @@ async function bearer(): Promise<string | null> {
   const x = await inflight;
   return x || tok();
 }
+/** J8d: the id of THIS device, read from the founder token (`did`). Not a secret and not trusted for anything: the server checks the signed token itself. null = no device token (legacy sign-in). */
+export async function deviceUuid(): Promise<string | null> {
+  const t = await bearer(); if (!t || mode !== "device") return null;
+  try { const p = t.split(".")[1].replace(/-/g, "+").replace(/_/g, "/"); const j = JSON.parse(atob(p + "=".repeat((4 - (p.length % 4)) % 4))); return typeof j.did === "string" && /^[0-9a-f-]{36}$/i.test(j.did) ? j.did.toLowerCase() : null; } catch { return null; }
+}
 /** Get the founder token ready (one shared exchange) so timings measure the answer, not the sign-in. */
 export const warm = async () => { try { await bearer(); } catch { /* the probes below report the real error */ } };
 export const forget = () => { ft = null; fexp = 0; rk = null; };

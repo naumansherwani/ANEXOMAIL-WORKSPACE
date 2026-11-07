@@ -90,8 +90,8 @@ founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
-founder-web/dist/assets/index-BAnjULmy.js
-founder-web/dist/assets/index-BAnjULmy.js.gz
+founder-web/dist/assets/index-CrnXDiS_.js
+founder-web/dist/assets/index-CrnXDiS_.js.gz
 founder-web/dist/assets/index-hpDUCFZB.css
 founder-web/dist/assets/index-hpDUCFZB.css.gz
 founder-web/dist/assets/kernel.worker-lrvwuwuv.js
@@ -137,6 +137,7 @@ founder-web/src/Settings.tsx
 founder-web/src/SettingsS2.tsx
 founder-web/src/Surface.tsx
 founder-web/src/Trust.tsx
+founder-web/src/Vault.tsx
 founder-web/src/ambient.ts
 founder-web/src/anchorgauge.test.ts
 founder-web/src/anchorgauge.ts
@@ -162,6 +163,9 @@ founder-web/src/kernel.pin.ts
 founder-web/src/kernel.test.ts
 founder-web/src/kernel.ts
 founder-web/src/kernel.worker.ts
+founder-web/src/lease.ts
+founder-web/src/lease_pure.test.ts
+founder-web/src/lease_pure.ts
 founder-web/src/lib/utils.ts
 founder-web/src/livefeed.test.ts
 founder-web/src/livefeed.ts

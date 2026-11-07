@@ -681,3 +681,5 @@ Then the awam site must carry the SAME kernel (Rule 52, one kernel): `git -C /op
 **AWAM point (shared kernel wasm + his 3 Nov plan text), same as 23:20, run it AFTER the SQL point:** `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
 
 (7 Nov 13:20: the 23:35 SQL point and the AWAM point were both run by him, outputs OK; nothing pending to pull until J8d is written.)
+
+- 7 Nov 14:10: J8d vault lease UI written (SPA only). Command: founder-install.sh. Awam pull NOT needed. Not GREEN until live Chrome 390/820/1200+.
