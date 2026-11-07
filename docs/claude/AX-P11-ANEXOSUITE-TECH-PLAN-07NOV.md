@@ -1,5 +1,5 @@
 # AX-P11 ANEXOSUITE: technology plan (founder 7 Nov 2026 19:55 PKT). AWAM side, LAST phase, starts only after the founder lane (X) and AX-P1..P10.
-Founder question: "yeh tum bana saktay ho kya?" HONEST ANSWER: yes, in stages, each stage GREEN only with wired + real proof. Not in one prompt. The first usable version (ANEXOWord + ANEXOSheet with real-time sync) is realistic; full Microsoft-Office parity (every Excel function, every Word layout case, pixel-perfect .docx) is a multi-year gap that we close by stages, never claimed early.
+FOUNDER TARGET (7 Nov 20:00): AnexoSuite finished in 2 MONTHS ("saalon wala kaam main nahi kerta, main 2 months main complete kerun ga"); the stages below are scheduled inside that window, each still GREEN only with proof. Founder question: "yeh tum bana saktay ho kya?" HONEST ANSWER: yes, in stages, each stage GREEN only with wired + real proof. Not in one prompt. The first usable version (ANEXOWord + ANEXOSheet with real-time sync) is realistic; full Microsoft-Office parity (every Excel function, every Word layout case, pixel-perfect .docx) is a multi-year gap that we close by stages, never claimed early.
 ## Stages (order never breaks)
 | Stage | What | Technology (layer) | Why this choice |
 |---|---|---|---|

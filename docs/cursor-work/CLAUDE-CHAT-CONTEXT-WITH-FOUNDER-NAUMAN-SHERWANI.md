@@ -2477,3 +2477,6 @@ His G2 install paste OK. Live bundle was index-DmKbS7TC; found a legacy plaintex
 
 ## CHECKPOINT 7 Nov 2026 20:08 PKT
 - 7 Nov 2026 20:08 PKT INCIDENT (Syria apply NOT run): his pasted rollback with literal <TS> deleted /etc/caddy; caddy running from memory; recovery pending his ls/running.json output. AX-P11 AnexoSuite tech plan written (Lexical/ProseMirror, own canvas grid, Rust->WASM formula engine, Yjs + E2E AES-256-GCM, Rust WOPI).
+
+## CHECKPOINT 7 Nov 2026 20:12 PKT
+- 7 Nov 2026 20:12 PKT CADDY RECOVERY: /etc/caddy missing (his <TS> paste), caddy active from memory, running.json + autosave.json saved in /root/caddy-save, old full backup /root/i9/caddy-geoblock-1793599658 found; restore cp + adapt/host diff given to him, NO reload until diff is clean. AnexoSuite target 2 months (his order).

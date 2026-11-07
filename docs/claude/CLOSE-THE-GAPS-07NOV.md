@@ -56,3 +56,5 @@ G2 is now the open item in progress.
 - 7 Nov 2026 20:00 PKT G2 LIVE PROOF part 1: his install OK, live bundle index-D5tAR5ZQ, lease #27, sessionStorage record = ciphertext {v:1,d,iv,c} no plain text (my Chrome); old plaintext auto-deleted. Settings line made true (index-TIPb62WV pending install). Awam plan: no VPN, no AI (ai.anexomail.com), P11 AnexoSuite last. Syria apply still waits his run.
 
 - 7 Nov 2026 20:08 PKT INCIDENT (Syria apply NOT run): his pasted rollback with literal <TS> deleted /etc/caddy; caddy running from memory; recovery pending his ls/running.json output. AX-P11 AnexoSuite tech plan written (Lexical/ProseMirror, own canvas grid, Rust->WASM formula engine, Yjs + E2E AES-256-GCM, Rust WOPI).
+
+- 7 Nov 2026 20:12 PKT CADDY RECOVERY: /etc/caddy missing (his <TS> paste), caddy active from memory, running.json + autosave.json saved in /root/caddy-save, old full backup /root/i9/caddy-geoblock-1793599658 found; restore cp + adapt/host diff given to him, NO reload until diff is clean. AnexoSuite target 2 months (his order).
