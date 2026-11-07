@@ -36,9 +36,9 @@ export async function prove(spec?: ActionSpec): Promise<Proved> {
 
 export type Registered = { ok: true; recovery_codes?: string[]; via: string } | { ok: false; error: string };
 /** Add a key. The first key needs nothing else; later keys are a protected action ("passkey.add" for the NEW credential id), proved with an existing key. */
-export async function register(label: string): Promise<Registered> {
+export async function register(label: string, kind: "key" | "phone" = "key"): Promise<Registered> {
   if (!supported()) return { ok: false, error: "This browser has no passkey support." };
-  const o = await begin({ purpose: "register", label });
+  const o = await begin({ purpose: "register", label, kind });
   let cred: PublicKeyCredential | null;
   try { cred = (await navigator.credentials.create({ publicKey: prepareCreate(o.options) })) as PublicKeyCredential | null; } catch (e) { return { ok: false, error: friendly(e) }; }
   if (!cred) return { ok: false, error: "No key was created." };

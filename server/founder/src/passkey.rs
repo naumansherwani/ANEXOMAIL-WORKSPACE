@@ -182,15 +182,21 @@ pub fn challenge_of_action_hash(hex_hash: &str) -> Result<String, &'static str> 
 }
 
 /// Options for `navigator.credentials.create()`. `policy` is the E139 policy row; nothing is invented here.
-pub fn create_options(policy: &Value, challenge: &str, uid: &str, email: &str, exclude: &[String], timeout_ms: u64) -> Value {
+pub fn create_options(policy: &Value, challenge: &str, uid: &str, email: &str, exclude: &[String], timeout_ms: u64, phone: bool) -> Value {
     let algs: Vec<Value> = policy["allowed_algs"].as_array().cloned().unwrap_or_default().into_iter().map(|a| json!({"type": "public-key", "alg": a})).collect();
+    // phone = this device's own fingerprint / screen-lock passkey (platform authenticator). Hardware keys keep the exact old options. A phone passkey can never be "hardware" (E142 allow-list only) so it can never satisfy T3.
+    let (sel, hints) = if phone {
+        (json!({"authenticatorAttachment": "platform", "residentKey": "required", "requireResidentKey": true, "userVerification": "required"}), json!(["client-device"]))
+    } else {
+        (json!({"residentKey": "required", "requireResidentKey": true, "userVerification": "required"}), json!(["security-key", "client-device", "hybrid"]))
+    };
     json!({"rp": {"id": policy["rp_id"], "name": "Anexomail Founder"},
         "user": {"id": pc::b64url_encode(uid.as_bytes()), "name": email, "displayName": "Founder"},
         "challenge": challenge, "pubKeyCredParams": algs, "timeout": timeout_ms,
         "excludeCredentials": exclude.iter().map(|c| json!({"type": "public-key", "id": c})).collect::<Vec<_>>(),
-        "authenticatorSelection": {"residentKey": "required", "requireResidentKey": true, "userVerification": "required"},
+        "authenticatorSelection": sel,
         "attestation": policy["attestation_pref"], "extensions": {"credProps": true, "prf": {}, "largeBlob": {"support": "preferred"}},
-        "hints": ["security-key", "client-device", "hybrid"]})
+        "hints": hints})
 }
 
 /// Options for `navigator.credentials.get()`.
@@ -338,7 +344,10 @@ mod tests {
         assert_ne!(c1, c2);
         assert!(pc::is_b64url_token(&c1, 64));
         let pol = json!({"rp_id": RP, "allowed_algs": [-7, -8], "attestation_pref": "direct"});
-        let o = create_options(&pol, "c", "u1", "a@b.com", &["id1".to_string()], 60000);
+        let o = create_options(&pol, "c", "u1", "a@b.com", &["id1".to_string()], 60000, false);
+        assert_eq!(o["hints"][0], "security-key"); assert!(o["authenticatorSelection"].get("authenticatorAttachment").is_none());
+        let ph = create_options(&pol, "c", "u1", "a@b.com", &[], 60000, true);
+        assert_eq!(ph["authenticatorSelection"]["authenticatorAttachment"], "platform"); assert_eq!(ph["authenticatorSelection"]["userVerification"], "required"); assert_eq!(ph["hints"][0], "client-device");
         assert_eq!(o["pubKeyCredParams"].as_array().unwrap().len(), 2);
         assert_eq!(o["authenticatorSelection"]["userVerification"], "required");
         assert_eq!(o["excludeCredentials"][0]["id"], "id1");
@@ -420,10 +429,11 @@ pub async fn options_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Byt
         ch
     } else { match random_challenge() { Ok(c) => c, Err(e) => return refuse(StatusCode::INTERNAL_SERVER_ERROR, e) } };
     state["challenge"] = json!(challenge); state["rp_id"] = pol["rp_id"].clone();
+    if purpose == "register" && txt(&b, "kind", 8).as_deref() == Some("phone") { state["phone"] = json!(true); }
     if purpose == "register" { match txt(&b, "label", 80).and_then(|l| clean_label(&l)) { Some(l) => state["label"] = json!(l), None => return refuse(StatusCode::BAD_REQUEST, "passkey name: 1 to 40 characters") } }
     let kind = if purpose == "register" { "register" } else { "authenticate" };
     let Some(Value::String(cid)) = sb.rpc("founder_passkey_ceremony_begin", json!({"p_uid": uid, "p_kind": kind, "p_state": state})).await else { return refuse(StatusCode::TOO_MANY_REQUESTS, "too many open ceremonies or the maximum of 5 passkeys") };
-    let opts = if purpose == "register" { create_options(&pol, &challenge, &uid, &email, &ids, secs * 1000) } else { get_options(&pol, &challenge, &ids, secs * 1000) };
+    let opts = if purpose == "register" { create_options(&pol, &challenge, &uid, &email, &ids, secs * 1000, state["phone"] == true) } else { get_options(&pol, &challenge, &ids, secs * 1000) };
     crate::signed(&st, json!({"ceremony": cid, "purpose": purpose, "options": opts, "nonce": state["nonce"], "hash": state["hash"]}))
 }
 
@@ -451,6 +461,7 @@ fn st_s(v: &Value, k: &str) -> String { v.get(k).and_then(|x| x.as_str()).unwrap
 async fn register_step(st: &St, sb: &crate::data::Sb, uid: &str, did: &str, cred: &Value, state: &Value, (ch, origin, rp): (&str, &str, &str)) -> Response {
     let reg = match verify_registration(cred, ch, origin, rp) { Ok(r) => r, Err(e) => return refuse(StatusCode::BAD_REQUEST, e) };
     let label = st_s(state, "label");
+    if state["phone"] == true && reg.facts["attachment"] != "platform" { return refuse(StatusCode::BAD_REQUEST, "this was not the phone's own fingerprint passkey: use Add key for a security key"); }
     let first = active(sb, uid).await.is_empty();
     if first { return finish_register(st, sb, uid, did, &reg, &label, None, None, "first").await; }
     // 2nd and later keys are a T2 action on the NEW credential id: park the verified registration in a fresh ceremony, the browser then proves a step-up for it

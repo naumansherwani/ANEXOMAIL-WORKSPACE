@@ -117,3 +117,11 @@ describe("phone and laptop run the SAME code (founder 6 Nov 2026: only the layou
   });
   test("the device trust label stays visible on a phone", () => { expect(fs.readFileSync(path.join(dir, "ui.css"), "utf8")).not.toMatch(/\.trustbtn \.tt\s*\{[^}]*display:\s*none/); });
 });
+
+test("Add fingerprint registers a phone passkey (platform), Add key stays the hardware path", () => {
+  const k = require("fs").readFileSync(new URL("./Keys.tsx", import.meta.url), "utf8");
+  expect(k).toContain('register(label.trim(), "phone")');
+  expect(k).toContain('register(label.trim())');
+  const p = require("fs").readFileSync(new URL("./passkey.ts", import.meta.url), "utf8");
+  expect(p).toContain('kind: "key" | "phone" = "key"');
+});

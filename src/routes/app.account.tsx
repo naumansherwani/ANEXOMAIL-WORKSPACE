@@ -337,6 +337,27 @@ function AccountPage() {
               <KeyRound className="size-4" />
               Add a passkey
             </Button>
+            <Button
+              variant="outline"
+              className="ax-press"
+              onClick={() =>
+                void enrolPasskey(undefined, "platform")
+                  .then((res) => {
+                    void queryClient.invalidateQueries({ queryKey: ["auth", "passkeys"] });
+                    void queryClient.invalidateQueries({ queryKey: PASSKEY_STATUS_KEY });
+                    if (res.recovery_codes) setNewCodes(res.recovery_codes);
+                    else notify.done("Passkey added", "You can now sign in without a password.");
+                  })
+                  .catch((error: unknown) => {
+                    notify.failed("Passkey not added", {
+                      description: error instanceof Error ? error.message : "Please try again.",
+                    });
+                  })
+              }
+            >
+              <KeyRound className="size-4" />
+              Add this device's fingerprint
+            </Button>
           </div>
           <TwoStepCard />
         </section>

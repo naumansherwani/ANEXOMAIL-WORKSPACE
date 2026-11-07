@@ -66,12 +66,12 @@ export function passkeySupported(): boolean {
 export type EnrolResult = { passkey_count: number; recovery_codes: string[] | null; token?: string };
 
 /** WebAuthn create: server challenge → browser → server verify. Pehla passkey 10 recovery codes bhi deta hai (sirf ek baar). */
-export async function enrolPasskey(label?: string): Promise<EnrolResult> {
+export async function enrolPasskey(label?: string, attachment?: "platform"): Promise<EnrolResult> {
   if (!passkeySupported()) throw new Error("This browser can't create passkeys. Use a phone or laptop with Face ID, Touch ID, fingerprint or Windows Hello.");
   const options = await rpcOrRest<{ publicKey: PublicKeyCredentialCreationOptionsJSON }>(
     "auth.passkey.register.options",
-    { path: "/api/auth/passkey/register/options", method: "POST", body: {} },
-    {},
+    { path: "/api/auth/passkey/register/options", method: "POST", body: attachment ? { attachment } : {} },
+    attachment ? { attachment } : {},
   );
   const credential = await navigator.credentials.create({
     publicKey: PublicKeyCredential.parseCreationOptionsFromJSON(options.publicKey),

@@ -41,7 +41,10 @@ export function Keys() {
     <div className="setrow"><div><b>Add a key</b><p className="dim">Name it, then use the key. A new key is a protected step: an existing key must approve it.</p></div>
       <span style={{ display: "flex", gap: 6 }}><input aria-label="Key name" placeholder="Name (e.g. YubiKey 5C)" value={label} maxLength={40} onChange={(e) => setLabel(e.target.value)} />
         <Button size="mini" disabled={busy || !supported() || !label.trim() || keys.length >= 5}
-          onClick={() => run(async () => { const r = await register(label.trim()); if (!r.ok) throw new Error(r.error); setLabel(""); if (r.recovery_codes?.length) setCodes(r.recovery_codes); return "Key added."; })}>Add key</Button></span></div>
+          onClick={() => run(async () => { const r = await register(label.trim()); if (!r.ok) throw new Error(r.error); setLabel(""); if (r.recovery_codes?.length) setCodes(r.recovery_codes); return "Key added."; })}>Add key</Button>
+        <Button size="mini" variant="ghost" aria-label="Add this phone's fingerprint" disabled={busy || !supported() || !label.trim() || keys.length >= 5}
+          onClick={() => run(async () => { const r = await register(label.trim(), "phone"); if (!r.ok) throw new Error(r.error); setLabel(""); if (r.recovery_codes?.length) setCodes(r.recovery_codes); return "Fingerprint passkey added."; })}>Add fingerprint</Button></span></div>
+    <p className="dim">Add key = a security key (USB / NFC). Add fingerprint = this phone or laptop's own fingerprint or screen lock. A fingerprint passkey never counts as a hardware key, so the two-key panic lock still needs real hardware.</p>
     <div className="setrow"><div><b>Recovery codes</b><p className="dim">Ten one-time codes, shown once. New codes replace the old ones.</p></div>
       <Button variant="ghost" size="mini" disabled={busy || !keys.length}
         onClick={() => run(async () => { const r = await step("recovery.codes", "new batch", {}, "recovery_codes", (g, n) => ({ p_grant: g, p_nonce: n })); setCodes(r?.codes ?? r); return "New recovery codes made. Save them now."; })}>Make new codes</Button></div>

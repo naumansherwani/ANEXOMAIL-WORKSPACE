@@ -2616,3 +2616,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 7 Nov 15:45: audit asked: 'kitna founder kaam ho chuka hai  0x0p+0ur kitna baki'. Answer in docs/claude/FOUNDER-AUDIT-PERCENT-07NOV.md: 45 y phase count (13 of 29), about 36 y effort (63 of 177 units, my estimate), ~64  0.000000e+00ft; Q (mail + calendar) is the largest block.
 
 - 7 Nov 15:36 (verbatim): 'baki is ko green kero ab se rule hai ke adhoora kaam nahi kerna hai ... is ko green kero jaise bhi kerna hai, stesps batao. claude ke llye context update kero'
+
+- 7 Nov 16:14 (verbatim gist): image of passkey chooser; 'mujhe mobile fingerprint aur passkey jo mobile ka pehle se hota hai wohi intact rakho, advance codes, user ke liye bhi option dalo lekin founder ka user ke saath mix nahi kerna'

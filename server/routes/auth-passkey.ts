@@ -126,6 +126,8 @@ export function mountPasskeyRoutes(
             id: String(c.credential_id),
           })),
           authenticatorSelection: {
+            // default = unchanged (phone, laptop, security key all allowed); the optional "this device" button asks for the platform passkey only (fingerprint / Face ID / Windows Hello)
+            ...(req.body?.attachment === "platform" ? { authenticatorAttachment: "platform" } : {}),
             residentKey: "preferred",
             userVerification: "required",
           },
