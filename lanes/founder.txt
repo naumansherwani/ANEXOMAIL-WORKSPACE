@@ -91,10 +91,10 @@ founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
-founder-web/dist/assets/index-hpDUCFZB.css
-founder-web/dist/assets/index-hpDUCFZB.css.gz
-founder-web/dist/assets/index-xABp9PqM.js
-founder-web/dist/assets/index-xABp9PqM.js.gz
+founder-web/dist/assets/index-C-QmgGnG.js
+founder-web/dist/assets/index-C-QmgGnG.js.gz
+founder-web/dist/assets/index-Og622Jck.css
+founder-web/dist/assets/index-Og622Jck.css.gz
 founder-web/dist/assets/kernel.worker-lrvwuwuv.js
 founder-web/dist/assets/kernel.worker-lrvwuwuv.js.gz
 founder-web/dist/assets/three.module-Dza5cG3s.js

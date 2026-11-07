@@ -137,3 +137,25 @@ button.dx-card{cursor:pointer;width:100%}button.dx-card:hover{transform:translat
   .tabs::-webkit-scrollbar { display: none; }
   .tabs > * { flex: 0 0 auto; white-space: nowrap; }
 }
+
+/* PHONE BREATHING (founder 7 Nov 2026 14:20: "mobile ka layout bohat congested, world class app level"): same markup and same code as the laptop, only the spacing, type and tab strip change under 768 px.
+   Measured problem: a card lost ~46 px a side to padding, the settings tabs were two-line boxes that were cut off, the bottom dock covered the last card, helper text was cramped. */
+@media (max-width:767px) {
+  .pg { gap: 14px; padding-top: 14px; padding-bottom: calc(var(--tabh) + 52px + env(safe-area-inset-bottom)); }
+  .panel { padding: 16px 14px; gap: 10px; border-radius: 14px; }
+  .panelhead h2 { font-size: 17px; letter-spacing: -.01em; }
+  .panelhead p, .setrow p { font-size: 13px; line-height: 1.5; }
+  .setrow { padding: 12px 0; gap: 10px; }
+  .setrow > button.mini, .setrow > .mini { width: 100%; justify-content: center; }
+  .setrow > span { min-width: 0; }
+  /* settings tab strip: one line of clean pills; the one-line hint under each name stays for screen readers, it is not drawn */
+  .setnav { gap: 6px; padding: 5px; border-radius: 16px; -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent 100%); mask-image: linear-gradient(90deg, #000 88%, transparent 100%); }
+  .setnav .setitem { position: relative; overflow: hidden; padding: 0 14px; gap: 8px; min-height: 44px; border-radius: 12px; }
+  .setnav .setitem > span { gap: 0; }
+  .setnav .setitem b { font-size: 14px; }
+  .setnav .setitem small { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  /* Explain / Blast radius / History: three equal touch targets in one tidy row instead of three underlined scraps */
+  .s2tools { margin: 0 0 4px; padding: 2px 0 12px; }
+  .s2tbtn { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .s2tbtn button { min-height: 44px; padding: 0 6px; font-size: 12.5px; text-decoration: none; border: 1px solid var(--line); border-radius: 12px; background: #12151b; justify-content: center; }
+}

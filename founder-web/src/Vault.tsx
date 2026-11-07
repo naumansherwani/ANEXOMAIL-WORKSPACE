@@ -52,6 +52,6 @@ export function Vault() {
         {stage === "waiting" || stage === "ready" || stage === "approved" ? <Button variant="ghost" size="mini" style={{ minHeight: 44 }} disabled={busy} onClick={() => void cancel()}>Cancel</Button> : null}
       </span></div>
     {note && <p role="status" className={note.ok ? "dim" : "err"}>{note.t}</p>}
-    <p className="dim">Not yet: nothing is encrypted with this key today. It is the lock the session snapshot and mail cache will use in later phases.</p>
+    <div className="panelhead"><p>Not yet: nothing is encrypted with this key today. It is the lock the session snapshot and mail cache will use in later phases.</p></div>
   </section>;
 }

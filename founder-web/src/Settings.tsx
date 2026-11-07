@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { setSetting } from "./api";
 import { useCity } from "./city";
 import { nearestPlace, placeLabel, searchPlaces, type Place } from "./places";
@@ -51,6 +51,8 @@ function Seg<T extends string | number>({ value, options, label, disabled, onPic
 }
 export function SettingsView({ p, fx, setFx, slim, setSlim, reload, go, preview, setPreview }: Props) {
   const [tab, setTab] = useState("personal"), [nameDraft, setNameDraft] = useState<string | null>(null), [hkey, setHkey] = useState<string | null>(null), [busy, setBusy] = useState(false), [msg, setMsg] = useState<MsgT>(null);
+  // the strip scrolls sideways on a phone: keep the chosen tab in view (does nothing when the strip does not scroll)
+  useEffect(() => { document.querySelector(".setnav .setitem.on")?.scrollIntoView({ inline: "center", block: "nearest" }); }, [tab]);
   const city = useCity(), [q, setQ] = useState(""), [found, setFound] = useState<{ place: Place; km: number } | null>(null), [problem, setProblem] = useState<string | null>(null), [locating, setLocating] = useState(false);
   const hits = searchPlaces(q);
   const pick = (pl: Place) => { setFound(null); setQ(""); setProblem(null); save("personal.home", { city: pl.city, country: pl.country, iana: pl.iana, lat: pl.lat, lon: pl.lon }); };
