@@ -1,0 +1,28 @@
+# FOUNDER NEXT ORDER + TECHNOLOGY PER PHASE (founder 7 Nov 2026 13:23 PKT: "tarteeb nahi tootay; next phase ki technology top pe likho")
+
+Letter order is never broken (blueprint Rule 0). One phase at a time: GREEN = his paste + my Chrome look (+ phone/tablet, Rule 34) before the next starts. Awam commands are always a separate point (SHARED-CODE RULE).
+Correction 7 Nov: on 6 Nov I told him K5 comes after the founder is 100%. The blueprint says K4 -> K5 -> K6 -> K7 (K5 = awam T256-2, "HAAN" 1 Nov); the blueprint wins. K5 is built in its letter, as an awam command point, kept apart from the founder code.
+
+| # | Phase | What it is | Technology (layer) | Why this technology |
+|---|---|---|---|---|
+| 1 | **J8d** (NOW) | Vault lease on screen: device key, proof, auto-renew, Settings > Privacy card (live / expired / revoked, seconds left), panic lock behind T3 | React 19 + TypeScript strict + TanStack Router + Tailwind 4 + shadcn; **WebCrypto** non-extractable ECDSA P-256 key in IndexedDB; WASM kernel `lease@1` through `kernel.ts` (already GREEN); CINEMATIC look; one layout for 390/820/1200 | the device key must never leave the browser; the kernel (not the page) decides live/expired; server half lives in memory only |
+| 2 | **J6 phone proof** | real alert on his phone (Add to Home Screen, allow notifications, test alert, receipt) | Web Push (VAPID, RFC 8291) + service worker; SQL E140/E141 receipts (already GREEN); his phone | proves delivery end to end; needs his phone |
+| 3 | **K4** | AES-256-GCM on :443 per host (also fixes the :8443 `/_cc` 404) | Rust `tls256.rs` (rustls, TLS 1.3, AES-256-GCM only, X25519MLKEM768) + Caddy host change (`founder-host.sh`); SQL E119 posture ledger | K2 proved it on :8443; K4 moves it to the real port |
+| 4 | **K5** | awam T256-2 AES-256 on the user site | same Rust terminator, awam host; awam pull command as its own point | founder-approved 1 Nov ("HAAN"), same proof as K4 |
+| 5 | **K6** | WebTransport over QUIC/UDP | Rust `wtransport` (HTTP/3, QUIC), UDP port open in ufw; WASM kernel frames; React live feed | live push without polling; first user is N |
+| 6 | **K7** | DBSC (Device Bound Session Credentials) | Rust routes + SQL ledger; Chrome binds the session to a TPM key | a stolen cookie cannot be replayed on another machine |
+| 7 | **L** | Look: L1 Framer Motion + GSAP, L2 Three.js WebGPU (CINEMATIC stays pixel-equal) | React-TS UI only (lazy-loaded three.js) | motion and 3D without changing what he loves |
+| 8 | **M** | MoQ (Media over QUIC, IETF draft), own relay on staging | Rust relay on top of `wtransport` + WASM kernel + React | live media / pulse at low latency; awam MQ0-MQ4 later |
+| 9 | **N** (+N1) | Decide + Live Pulse + S4 push; Device Trust Map | SQL + Rust (push, K6/M transport) + React-TS | one screen to decide; trust map from E102/E143 data |
+| 10 | **O** | Finance deck (Polar, revenue, billing, release, move-in) | Rust (Polar webhook verify) + SQL + React-TS | real data only, no mock |
+| 11 | **P** (+P1, P2) | People: org, CRM, team, account 360, work; chain dependencies; insider guard | SQL (RLS, ledgers) + Rust + React-TS | |
+| 12 | **Q** (Q1-Q6) | Mail + Calendar, attachments (dedupe, resumable chunks, signed links), parallel chunks over WebTransport, PQM OpenPGP RFC 9980, PQN, sealed agreements | Rust + SQL + WASM kernel (post-quantum) + React-TS | |
+| 13 | **R** (+R1-R3) | Systems: health, analytics, mesh sync, Mail<->Chat bridge, Admin Mail Desk | Rust + SQL + React-TS | |
+| 14 | **S** (+S1) | Control: kill switch, flags, executor, poison pill (T3 two-key) | Rust + SQL + passkeys (J3-J5) + React-TS | |
+| 15 | **T** | CUTOVER: remove old Lovable founder routes after Rust == Bun | Rust, repo cleanup, lane-sync | |
+| 16 | **U** | Docs + Sheets (WOPI; engine after a licence read) | WOPI host in Rust + React-TS | last |
+| 17 | **V** | Founder AI (founder only) | Rust + React-TS | |
+| 18 | **X1-X4** | proof of restore, founder continuity, served-code seal, supply-chain board | Rust + SQL + kernel | after V |
+J7 (CAMARA QoD) and J9 (SIM-aware identity) wait until he names an operator/aggregator.
+
+Layer rule (never mixed): SQL = decisions + ledgers (above super advanced); Rust = server, signing, keys; WASM kernel = browser-side verification; React-TS = screens. Each reply states the technology of the phase it touches.

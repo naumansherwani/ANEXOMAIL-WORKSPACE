@@ -225,3 +225,5 @@ SQL E114 14/14 (his paste 1 Nov), Rust + UI installed by his founder-install 08:
 
 **J8a2 re-run + issue core closed = GREEN (7 Nov 13:14 PKT):** his paste, CHECK_E143 + CHECK_E144 all OK (E144 row 5: the issue core is not callable by service_role/anon/authenticated), E65 6/6 OK.
 **J8c = GREEN (7 Nov 13:20 PKT):** his founder-install 22:53 paste (220 tests, service up) + his awam pull.sh paste 13:14 (wasm written, src same=610 differ=0, build OK) + my Chrome look: `anexomail.com/kernel/anexo-kernel-0.13.0.wasm` = 200, 341396 bytes, SHA-256 equals the pin 73aaa53d...3da5; founder host `/_cc/kernel/anexo-kernel-0.13.0.wasm` = 200, same bytes and hash, founder bundle index-BAnjULmy.js = repo dist. ONE kernel on both sites (Rule 52). Awam also now carries his 3 Nov Business Pro 570 / Premium 21,000 text (FeatureGate.tsx, app.storage.tsx). The kernel lease@1 itself is exercised end to end by J8d. NEXT: J8d UI.
+
+**ORDER 7 Nov 13:30:** J8d -> J6 phone proof -> K4 -> K5 -> K6 -> K7 -> L -> M -> N -> O -> P -> Q -> R -> S -> T -> U -> V -> X. Technology per phase: `docs/claude/FOUNDER-NEXT-ORDER-07NOV.md`.

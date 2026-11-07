@@ -84,3 +84,7 @@ Any founder change that also changes a file the awam site carries (kernel pin, s
 - Server facts: master file /etc/anexomail/founder-vault-master.key (NEVER delete); installer creates it once; vault lease key ON in journal.
 - His standing rules this evening: ONE WEBSITE ONE BUILD; LIVE CHROME = REPO (founder and awam); SHARED-CODE RULE (give the awam pull.sh as a separate point whenever shared files change); founder SQL = world-class (above super advanced); technology named per layer in every answer; Rule-70 table at the end of every reply plus 'Abhi code mein NAHI' line; no padding; Roman Urdu; do not repeat the FOUNDER_PASSWORD line; never touch the landing footer; Business Premium cap 21,000 users.
 - Commit procedure reminder: lane-sync, git add -A, manifest-sync for PURANI + explicit paths for non-src deployed files, manifest-verify 0 bad, rules-gate --staged 0 fail (the pipe to tail hides failures: read it before pushing).
+
+
+## 12. NEXT ORDER + TECHNOLOGY (founder 7 Nov 13:23)
+Open `docs/claude/FOUNDER-NEXT-ORDER-07NOV.md`: 18-row table (phase, what, technology per layer, why). The same one-paragraph version is at the very top of AGENTS.md and CLAUDE.md and the gate keeps it there. Next = J8d.
