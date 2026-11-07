@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Flare } from "./Flare";
+import { deviceLabel } from "./api";
 import { approvePending, door, friendly, loadKeys, loadPending, prove, register, runSignals, supported, type KeysView, type Pending } from "./passkey";
 
 // J4 — Security keys (inside Settings → Privacy). Everything shown comes from the server (Rust + E117/E118/E139 SQL); nothing is invented here.
@@ -41,16 +42,16 @@ export function Keys() {
         <input aria-label={`Why remove ${k.label}`} placeholder="Why (8+ letters)" value={reason[k.id] ?? ""} onChange={(e) => setReason({ ...reason, [k.id]: e.target.value })} style={{ width: 150 }} />
         <Button variant="ghost" size="mini" disabled={busy || keys.length <= 1 || (reason[k.id] ?? "").trim().length < 8}
           onClick={() => run(async () => { const r = (reason[k.id] ?? "").trim(); await step("passkey.revoke", (v.keys.find((x) => x.id === k.id)?.credential_id ?? ""), { reason: r }, "revoke", (g, n) => ({ p_id: k.id, p_reason: r, p_grant: g, p_nonce: n })); return `${k.label} removed.`; })}>Remove</Button></span></div>)}
-    <div className="setrow"><div><b>Add a key</b><p className="dim">Name it, then use the key. A new key is a protected step: an existing key must approve it.</p></div>
-      <span style={{ display: "flex", gap: 6 }}><input aria-label="Key name" placeholder="Name (e.g. YubiKey 5C)" value={label} maxLength={40} onChange={(e) => setLabel(e.target.value)} />
-        <Button size="mini" disabled={busy || !supported() || !label.trim() || keys.length >= 5}
-          onClick={() => run(async () => { const r = await register(label.trim()); if (!r.ok) throw new Error(r.error); setLabel(""); if (r.recovery_codes?.length) setCodes(r.recovery_codes); return "Key added."; })}>Add key</Button>
-        <Button size="mini" variant="ghost" aria-label="Add this phone's fingerprint" disabled={busy || !supported() || !label.trim() || keys.length >= 5}
-          onClick={() => run(async () => { const r = await register(label.trim(), "phone"); if (!r.ok) throw new Error(r.error); setLabel(""); await loadP(); if (r.recovery_codes?.length) setCodes(r.recovery_codes); return r.pending ? "Fingerprint saved on this device. Now open this page on a device that already has a key and press Approve (valid 5 minutes)." : "Fingerprint passkey added."; })}>Add fingerprint</Button></span></div>
+    <div className="setrow"><div><b>Add a key</b><p className="dim">Fingerprint or screen lock of this device, or a USB/NFC security key. The first needs one tap on a device that already has a key.</p></div>
+      <span style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+        <Button size="mini" aria-label="Add this device's fingerprint" disabled={busy || !supported() || keys.length >= 5}
+          onClick={() => run(async () => { const r = await register((label.trim() || deviceLabel()).slice(0, 40), "phone"); if (!r.ok) throw new Error(r.error); setLabel(""); await loadP(); if (r.recovery_codes?.length) setCodes(r.recovery_codes); return r.pending ? "Saved. Now press Approve on a device that already has a key (5 minutes)." : "Fingerprint added."; })}>Add this device's fingerprint</Button>
+        <Button size="mini" variant="ghost" disabled={busy || !supported() || keys.length >= 5}
+          onClick={() => run(async () => { const r = await register((label.trim() || "Security key").slice(0, 40)); if (!r.ok) throw new Error(r.error); setLabel(""); if (r.recovery_codes?.length) setCodes(r.recovery_codes); return "Key added."; })}>Add security key</Button></span></div>
     {pend.map((p) => <div className="setrow waiting" key={p.ceremony} aria-label="Waiting for approval"><div><b>Waiting for approval: {p.label}</b>
       <p className="dim">{p.attachment === "platform" ? "Fingerprint / screen lock" : "Security key"} …{p.tail} · made on {p.device} · {Math.max(0, p.left_s)} s left. Approve it here with a key you already have; a request nobody approves disappears by itself.</p></div>
       <Button size="mini" disabled={busy} onClick={() => run(async () => { const r = await approvePending(p); if (!r.ok) throw new Error(r.error); await loadP(); return `${p.label} approved and added.`; })}>Approve</Button></div>)}
-    <p className="dim">Add key = a security key (USB / NFC). Add fingerprint = this phone or laptop's own fingerprint or screen lock. A fingerprint passkey never counts as a hardware key, so the two-key panic lock still needs real hardware.</p>
+
     <div className="setrow"><div><b>Recovery codes</b><p className="dim">Ten one-time codes, shown once. New codes replace the old ones.</p></div>
       <Button variant="ghost" size="mini" disabled={busy || !keys.length}
         onClick={() => run(async () => { const r = await step("recovery.codes", "new batch", {}, "recovery_codes", (g, n) => ({ p_grant: g, p_nonce: n })); setCodes(r?.codes ?? r); return "New recovery codes made. Save them now."; })}>Make new codes</Button></div>

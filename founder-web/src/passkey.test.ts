@@ -120,8 +120,8 @@ describe("phone and laptop run the SAME code (founder 6 Nov 2026: only the layou
 
 test("Add fingerprint registers a phone passkey (platform), Add key stays the hardware path", () => {
   const k = require("fs").readFileSync(new URL("./Keys.tsx", import.meta.url), "utf8");
-  expect(k).toContain('register(label.trim(), "phone")');
-  expect(k).toContain('register(label.trim())');
+  expect(k).toContain('"phone")');
+  expect(k).toContain('Add security key');
   const p = require("fs").readFileSync(new URL("./passkey.ts", import.meta.url), "utf8");
   expect(p).toContain('kind: "key" | "phone" = "key"');
 });

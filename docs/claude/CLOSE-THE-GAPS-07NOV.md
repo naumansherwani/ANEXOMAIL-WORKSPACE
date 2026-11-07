@@ -20,3 +20,6 @@ Root cause: a second key is a T2 step-up proved by an EXISTING key; the phone ha
 
 ## 7 Nov 18:10 G1 status
 E147 GREEN (WIRED YES / REAL YES): his sql-run CHECK_E147 2/2 OK, founder-install OK, live Chrome bundle index-B0BeZYkT = repo build with the feature, /founder/v1/passkey/pending live (401 without token). OPEN: the real round trip on his phone + laptop (phone Add fingerprint -> laptop Approve -> phone Add this phone / Send test), then 390/820/1200 look. Until his screenshot G1 stays open.
+
+## 7 Nov 18:30 G1 simplified UI
+Phone alerts = one Turn on button (auto name); Keys = Add this device's fingerprint + Add security key. Server unchanged. GREEN needs his phone round trip.

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { get } from "./api";
+import { deviceLabel, get } from "./api";
 import { door, friendly, loadKeys, prove } from "./passkey";
 import { countryList, numberProblem, toE164 } from "./countries";
 import { PENDING_CACHE, PENDING_KEY, b64uBytes, isConfirmToken, pushSupported, sha256Hex, subscriptionFields } from "./flare_pure";
@@ -26,7 +26,7 @@ const swScript = (): string | unknown => {
 
 export function Flare() {
   const [st, setSt] = useState<any>(null), [err, setErr] = useState<string | null>(null), [busy, setBusy] = useState(false), [note, setNote] = useState<{ ok: boolean; t: string } | null>(null);
-  const [label, setLabel] = useState(""), [here, setHere] = useState<string | null>(null);
+  const [here, setHere] = useState<string | null>(null);
   const [mob, setMob] = useState<{ registered: boolean; confirmed: boolean; last4: string } | null>(null), [dial, setDial] = useState("92"), [national, setNational] = useState("");
   const countries = useMemo(() => countryList(navigator.language || "en"), []);
   const e164 = toE164(dial, national), bad = national.trim() ? numberProblem(e164) : null;
@@ -71,9 +71,8 @@ export function Flare() {
     const target = await sha256Hex(f.endpoint);
     const p = await prove({ action: "flare.push", target, params: {} });
     if (!p.ok) { await sub.unsubscribe().catch(() => {}); throw new Error(p.error); }
-    const r = await door("push_subscribe", { p_endpoint: f.endpoint, p_p256dh: f.p256dh, p_auth: f.auth, p_label: label.trim() || "My phone", p_grant: p.result.grant, p_nonce: p.nonce });
+    const r = await door("push_subscribe", { p_endpoint: f.endpoint, p_p256dh: f.p256dh, p_auth: f.auth, p_label: deviceLabel().slice(0, 40), p_grant: p.result.grant, p_nonce: p.nonce });
     if (r.status !== 200) { await sub.unsubscribe().catch(() => {}); throw new Error(r.body?.error || `HTTP ${r.status}`); }
-    setLabel("");
     return (await confirmFromCache()) ? "Phone confirmed. Alerts are on." : "Phone added. The confirmation push has not arrived yet — keep this page open; it finishes when the push lands (10 minutes).";
   });
 
@@ -92,7 +91,7 @@ export function Flare() {
   const ios = /iPhone|iPad/.test(navigator.userAgent) && !(navigator as any).standalone && !matchMedia("(display-mode: standalone)").matches;
   return <section className="panel" aria-label="Phone alerts">
     <div className="panelhead"><h2>Phone alerts</h2>
-      <p className="dim">When a protected action starts, your phone gets an encrypted push (Web Push). The alert itself is Web Push: no text message is sent. The alert is advice; the waiting time and the cancel button stay the real protection.</p></div>
+      <p className="dim">An alert on your phone when something protected starts. Encrypted, no SMS.</p></div>
     {unacked.length > 0 && <div className="setrow" role="alert"><div><b className="err">{unacked.length} alert{unacked.length > 1 ? "s" : ""} not confirmed received</b>
       <p className="dim">{unacked.slice(0, 3).map((u) => `${u.kind.replace("t3_", "")} → ${u.phone}, sent ${ago(u.sent_ms)}`).join(" · ")}. The push service accepted them, but the phone never sent its receipt. Check the phone, then send a test.</p></div></div>}
     {ios && <div className="setrow"><div><b>iPhone: one step first</b><p className="dim">Safari only allows alerts for a site on the Home Screen. Tap Share, then "Add to Home Screen", open Anexomail from that icon, and come back to this page.</p></div></div>}
@@ -100,10 +99,9 @@ export function Flare() {
     {phones.map((p) => <div className="setrow" key={p.id}><div><b>{p.label}{p.sha === here ? " (this device)" : ""}</b>
       <p className="dim">{p.confirmed ? "Confirmed" : p.waiting ? "Waiting for the confirmation push" : "Not confirmed"} · via {p.service} · last receipt {ago(p.last_ack_ms)}{p.fail_count ? ` · ${p.fail_count} failed` : ""}</p></div>
       <Button variant="ghost" size="mini" disabled={busy} onClick={() => remove(p)}>Remove</Button></div>)}
-    <div className="setrow"><div><b>Add this phone</b><p className="dim">Name it, allow notifications, then use a key. The key approves exactly this phone.</p></div>
-      <span style={{ display: "flex", gap: 6 }}><input aria-label="Phone name" placeholder="My phone" maxLength={40} value={label} onChange={(e) => setLabel(e.target.value)} />
-        <Button size="mini" disabled={busy || !pushSupported(window)} title={pushSupported(window) ? undefined : "This browser cannot receive push alerts"} onClick={add}>Add</Button></span></div>
-    <div className="setrow"><div><b>Alert number</b><p className="dim">{mob?.registered ? `Saved: ••••${mob.last4}${mob.confirmed ? " · confirmed" : " · not confirmed yet"}. ` : "No number saved. "}Kept as your record and recovery contact; no text message is sent to it. Every country is allowed except Afghanistan, Israel, North Korea and Syria.</p></div>
+    {!phones.some((p) => p.sha === here) && <div className="setrow"><div><b>Alerts on this device</b><p className="dim">One tap. Allow notifications, then touch your key.</p></div>
+      <Button size="mini" disabled={busy || !pushSupported(window)} title={pushSupported(window) ? undefined : "This browser cannot receive push alerts"} onClick={add}>Turn on</Button></div>}
+    <div className="setrow"><div><b>Alert number</b><p className="dim">{mob?.registered ? `Saved: ••••${mob.last4}${mob.confirmed ? " · confirmed" : " · not confirmed yet"}. ` : "No number saved. "}Record and recovery contact only. No SMS.</p></div>
       <span className="numrow"><select aria-label="Country code" value={dial} onChange={(e) => setDial(e.target.value)}>
           {countries.map((c) => <option key={c.iso2} value={c.dial}>{c.flag} {c.name} +{c.dial}</option>)}</select>
         <input aria-label="Mobile number" inputMode="tel" autoComplete="tel-national" placeholder="300 1234567" maxLength={20} value={national} onChange={(e) => setNational(e.target.value)} />

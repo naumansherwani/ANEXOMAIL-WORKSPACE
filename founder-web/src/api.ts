@@ -25,7 +25,7 @@ function deviceId() {
     return d;
   } catch { return null; }
 }
-function deviceLabel() {
+export function deviceLabel() {
   const ua = navigator.userAgent || "", p = (navigator as Navigator & { userAgentData?: { platform?: string } }).userAgentData?.platform || navigator.platform || "";
   const br = browserName(ua);
   return `${br} on ${String(p).replace(/[^ -~]/g, "").slice(0, 30) || "device"}`.slice(0, 80);

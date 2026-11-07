@@ -2437,3 +2437,6 @@ He said: write world-class advanced SQL (rule). Done: E145_founder_vault_panic_t
 
 ### Checkpoint 7 Nov 18:10 PKT
 - 7 Nov 2026 18:10 PKT: his server outputs for aef198c3: sql-run CHECK_E147 2/2 OK + E65 sweep OK (E147 = WIRED YES / REAL YES), founder-install OK (healthz 200, Ed25519 ON). My live Chrome 18:10: bundle index-B0BeZYkT = repo build (has 'Waiting for approval' and /founder/v1/passkey/pending), route answers 401 without a token. Screens stay NOT GREEN until his real phone + laptop round trip.
+
+### Checkpoint 7 Nov 18:30 PKT
+- 7 Nov 18:11 PKT: his phone screenshots 6:09/6:10 (Phone alerts list still only 'Chrome on Windows (desktop)'; 'Test queued'; Vault lease Android #11 unlocked, Windows #19) + anger 'bahut complicated banaya, simple banate, advance bhi nazar aata'. SIMPLIFIED (same code, fewer controls): Phone alerts = ONE 'Turn on' button for this device (name auto = device label, no name box, hidden once this device is listed), copy cut to one line; Keys = 'Add this device's fingerprint' (auto name) + 'Add security key', one help line; Vault copy 2 lines. SPA 119 tests, tsc clean, built. Server logic unchanged (no new SQL/Rust). NOT GREEN until his phone: Turn on -> fingerprint -> Send test.

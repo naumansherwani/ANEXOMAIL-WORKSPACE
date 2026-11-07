@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 11fc6d6172686dc4
+docs/cursor-work/founder/founder-commands.md 0881f76519cdc512
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 62314b99ae13136e
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 29512eeb03f7c497
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs da5c3db196fbe81d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 4d8507f8062e3c4f
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md c2ef631416ca61c4
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -383,7 +383,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 691dd687144f0b9c
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 1a2f1b8e542e4c20
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -895,7 +895,7 @@ founder-web/index.html 57ec52ccf0276bdb
 founder-web/package.json c0b915b8e44a6271
 founder-web/src/styles.css ac9d21692fb16843
 server/founder/src/login.rs 465011eb25e7daac
-founder-web/dist/index.html 08835db71333bdac
+founder-web/dist/index.html b2862478bc5b74a7
 docs/claude/founder/LEGACY-FOUNDER-FILES.md b379225e91ecfe5e
 docs/cursor-work/sql/E102_founder_audit_actions_devices.sql 98efcf0605642fcc
 docs/cursor-work/sql/CHECK_E102.sql 08c02fd1d918d4dc
@@ -914,7 +914,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md eb1ba2a7a3861722
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md 54739a5c4e27a003
+docs/claude/founder/PULL-COMMANDS.md 1066a55c627dce05
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 6f67741f87811209
@@ -966,7 +966,7 @@ founder-web/src/Palette.tsx bec5fe14e9404b25
 founder-web/src/Profile.tsx c126bff40c79c25f
 founder-web/src/Settings.tsx dd2664834c606512
 founder-web/src/Trust.tsx 469c9361b0cc7f80
-founder-web/src/api.ts 7a58e08fc9c8abd0
+founder-web/src/api.ts f35f70791a5f025a
 founder-web/src/catalog.ts 1b0a697b0c31b723
 founder-web/src/city.ts e7afcb3f10f04904
 founder-web/src/components/ui/button.tsx a9c90e045dcb8831
@@ -1029,7 +1029,7 @@ server/founder/src/ledger.rs 7b089b4c149de768
 server/rust/merkle_core.rs 10a8a9caa5aa4b73
 anexochat/docs/anexochat-blueprint-original.md ba6c31517ce290e1
 docs/claude/TECH-CHART-01NOV.md 84d8473550011286
-docs/claude/DONE-DO-NOT-REPEAT.md 7f37e6a7cbd9d17a
+docs/claude/DONE-DO-NOT-REPEAT.md 93ea98f87ecf0666
 docs/cursor-work/sql/CHECK_E113.sql ac2a10b397d6d386
 docs/cursor-work/sql/E113_founder_settings_timemachine.sql f685f2dd91178faf
 docs/claude/FOUNDER-SETTINGS-CENTER-DECISION-01NOV.md 70427a3adb10f5ac
@@ -1064,7 +1064,7 @@ docs/cursor-work/sql/CHECK_E119.sql 8a79e357ded727d0
 src/components/app/CommandPalette.tsx 12a0fd1cf3105c1a
 src/lib/dashboard.ts 66e8a7d64fa8e599
 src/routes/app.admin.addresses.tsx cb8efe1f397d00f0
-docs/claude/BLUEPRINT-ABC-01NOV.md d81192b846d57df0
+docs/claude/BLUEPRINT-ABC-01NOV.md 515fe41d887fe642
 docs/cursor-work/sql/E122_founder_seal_interval.sql be0edb2538f82051
 docs/cursor-work/sql/CHECK_E122.sql d10212a8dfda8472
 founder-web/src/routes.test.ts 3f007995613c3568
@@ -1182,17 +1182,17 @@ docs/claude/FOUNDER-PASSKEY-J3-RESEARCH-03NOV.md 77a46c8bc712b000
 docs/cursor-work/sql/CHECK_E139.sql f969219394070654
 docs/cursor-work/sql/E139_founder_webauthn_l3.sql 4720f5f376e0206d
 founder-web/dist/assets/three.module-Dza5cG3s.js.gz d643a41fb753888f
-founder-web/src/Keys.tsx 00f0d52b773eb388
-founder-web/src/passkey.test.ts 09758dddc75a1560
+founder-web/src/Keys.tsx 2c22e758f7d59383
+founder-web/src/passkey.test.ts 59defb5d63d661a0
 founder-web/src/passkey.ts 8e57a98cdddb31f5
 founder-web/src/passkey_pure.ts 18c84406d0b26eb9
 server/founder/src/passkey.rs 40e7f754234dafb3
 server/rust/j3_action_vectors.json d90c898ebb69d9ea
 web-wasm/src/action.rs eda7722b529a2887
-lanes/ALL-FILES.csv 3b732276ae11e63b
+lanes/ALL-FILES.csv 531a6397f7e0fe6c
 lanes/awam.txt e522614232d1aa68
 lanes/docs.txt 50cdb12ad9fe0068
-lanes/founder.txt 5ff0dc94ab30a32b
+lanes/founder.txt b517a89398b33752
 lanes/shared.txt d2d40821bbcd66a0
 lovable-gold/README.md c3aed59e97d1bd04
 docs/claude/FOUNDER-FLARE-J6-RESEARCH-03NOV.md 5e7c593fa4db1406
@@ -1200,7 +1200,7 @@ docs/cursor-work/sql/CHECK_E140.sql 0aa343c84820214f
 docs/cursor-work/sql/E140_founder_flare_push.sql 3c95ae9963ebd5bf
 founder-web/dist/flare-sw.js 18117831d20c2b4e
 founder-web/public/flare-sw.js 18117831d20c2b4e
-founder-web/src/Flare.tsx e99135fc58eb141f
+founder-web/src/Flare.tsx c357ad480d33c2ca
 founder-web/src/flare_pure.ts 3ac17e75d23d0f6f
 server/founder/src/flare.rs e2abd00ce1dcbdf3
 lovable-gold/awam/anexochat/docs/anexochat-blueprint-original.md ba6c31517ce290e1

@@ -38,7 +38,7 @@ export function Vault() {
   const confirm = () => act(async () => { if (!pan || !v.device) throw new Error("No request."); const r = await prove({ action: PANIC_ACTION, target: v.device, purpose: "t3_execute", request: pan.request, nonce: pan.nonce }); if (!r.ok) throw new Error(r.error); save(null); setRows(null); return `Locked ${r.result?.locked ?? 0} other device(s). Only this one is left.`; });
   const cancel = () => act(async () => { if (!pan) return ""; const x = await door("t3_cancel", { p_request: pan.request, p_reason: "cancelled from Device vault lease" }); if (x.status !== 200) throw new Error(x.body?.error || "refused"); save(null); return "Cancelled."; });
   return <section className="panel" aria-label="Device vault lease">
-    <div className="panelhead"><h2>Device vault lease</h2><p className="dim">This device's vault key works only while a short lease from the server is live (15 minutes, renewed on its own). If this device is removed, or goes offline, it locks itself. The key lives in this page's memory only and is wiped when the lease ends.</p></div>
+    <div className="panelhead"><h2>Device vault lease</h2><p className="dim">Unlocks while the server trusts this device. Locks itself if it is removed or goes offline.</p></div>
     <div className="setrow" role="status"><div><b>This device: {t.title}</b><p className="dim">{v.text || t.sub}{v.serial ? ` · lease #${v.serial}` : ""}{v.hasKey ? " · key held in memory only" : ""}</p></div>
       <Button size="mini" style={{ minHeight: 44 }} disabled={v.renewing || !v.device || v.phase === "locked"} onClick={() => void renew()}>{v.renewing ? "Renewing…" : "Renew now"}</Button></div>
     {err && <p className="err" role="alert">{err}</p>}
