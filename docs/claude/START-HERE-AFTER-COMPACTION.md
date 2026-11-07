@@ -197,3 +197,5 @@ AWAM DECISIONS (docs/claude/AWAM-PACKAGES-PROPOSAL-07NOV.md section 6 + G2): Pre
 
 ## AWAM PACKAGE FACTS TO KEEP (updated 8 Nov 2026 02:55 PKT, newest wins)
 Business Max £125,000/month (NOT 115,000), card = unlimited users, backend/SQL strict cap 125,000 users per company, reviewed per company by him, near-cap high alert in founder admin + dashboard; Business Premium £21,000, 7,000 users FINAL, 70 TB shared; Alibaba DROPPED, Hetzner + Storage Box; Premium/Max mailboxes created by the company for its users (end of plan); everything AFTER the founder lane; nothing built.
+
+- 8 Nov 2026 03:10 PKT FOUNDER: K4.4 spare-port run on his server: SNI front ON 127.0.0.1:8445, routing proven by certificates (founder host -> founder cert, anexomail.com -> Caddy cert, AES-128 = Caddy). NOT GREEN: founder-host cipher line missing in the output, AES-256 through the front still to prove (one more openssl check). Next after proof: K4.5 (needs his 'haan' for the live switch).

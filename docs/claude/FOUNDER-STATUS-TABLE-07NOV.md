@@ -71,3 +71,5 @@ GREEN = his pasted server output and/or my own live Chrome look and/or his phone
 | K4.4 SNI front (spare port) | Rust tests 234 pass | WIRED: pending install + spare-port run | REAL: pending |
 | K4.3 cert hot-reload: load + dates + AES-256 only | his server journal '58 days left' + openssl proof | WIRED: YES | REAL: reload part pending a clean touch test |
 | K4.3 cert hot-reload (RELOADED, 58 days) | his journal 21:03:28 + openssl | WIRED: YES | REAL: YES (GREEN) |
+
+- 8 Nov 2026 03:10 PKT FOUNDER: K4.4 spare-port run on his server: SNI front ON 127.0.0.1:8445, routing proven by certificates (founder host -> founder cert, anexomail.com -> Caddy cert, AES-128 = Caddy). NOT GREEN: founder-host cipher line missing in the output, AES-256 through the front still to prove (one more openssl check). Next after proof: K4.5 (needs his 'haan' for the live switch).
