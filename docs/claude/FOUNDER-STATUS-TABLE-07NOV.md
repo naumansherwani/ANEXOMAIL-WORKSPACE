@@ -45,3 +45,6 @@ GREEN = his pasted server output and/or my own live Chrome look and/or his phone
 | K4.1 | GREEN narrow | YES | YES (assets 200 on :8443) |
 | K4.2 | GREEN (7 Nov 15:30) | YES (Rust proxy to the old app, ON in the journal) | YES on :8443: full styled login, 51/51 files 200, secure context (my Chrome); the real :443 is still Caddy |
 | ANEXOChat 13-15+61 (files, quotas) | GREEN (SQL) | SQL only: tables, quotas, 21,000 cap | NOT proven as a screen: no UI for it in the founder app yet |
+
+| E146 banned countries + alert number (SQL) | SQL | GREEN 7 Nov 2026 17:25 PKT | WIRED: YES / REAL: YES (his CHECK_E146 4/4 on the server) |
+| Add fingerprint + Alert number screens | React-TS + Rust | DEPLOYED, NOT GREEN | WIRED: YES (installed) / REAL: NOT PROVEN (needs his phone screenshot + live bundle = repo) |
