@@ -20,7 +20,7 @@ GREEN = his pasted server output and/or my own live Chrome look and/or his phone
 | Mobile pass | Settings > Privacy roomier phone layout | CSS, same code every screen | GREEN | his Android screenshots 14:31 / 14:35, live bundle = repo |
 | K1-K3 | PQ key exchange, AES-256 terminator :8443, padlock | Rust rustls + SQL E119 | GREEN | earlier pastes + Chrome |
 | K4.1 | /_cc assets through the own TLS terminator | Rust | GREEN (narrow) | his curl 200 |
-| K4.2 | Legacy-path proxy + Alt-Svc clear on :8443 | Rust (axum, reqwest) | WRITTEN, fixed after Chrome showed old-app assets 404 (is_ours table, TLS router only); waits his install |
+| K4.2 | Legacy-path proxy + Alt-Svc clear on :8443 | Rust (axum, reqwest) | GREEN | his curl 200 x3 + journal + my Chrome 51/51 |
 | K4.3-K4.6 | cert refresh timer, SNI front, live :443 switch, CHECK | Rust + Caddy + SQL | NOT STARTED (switch needs his haan) |
 | ANEXOChat 13-15+61 | File engine, quotas | SQL | GREEN | 3 Nov |
 | NOT GREEN | K5 (awam AES-256), K6 (wtransport QUIC), K7 (DBSC), L (Cinematic motion/WebGPU), M (MoQ), N..V, X, J7, J9; tablet on a real tablet; phone proof of AI/Systems/Control/Release/Move-In/Audit; panic lock for real | | | |
@@ -43,5 +43,5 @@ GREEN = his pasted server output and/or my own live Chrome look and/or his phone
 | Mobile pass (Privacy) | GREEN | YES (same CSS everywhere) | YES (his phone); other tabs and a real tablet not proven |
 | K1-K3 AES-256 on :8443 | GREEN | YES (own Rust terminator running) | YES on :8443 only; the real site on :443 is still Caddy (AES-128 first) |
 | K4.1 | GREEN narrow | YES | YES (assets 200 on :8443) |
-| K4.2 | written | proxy ON in the journal | login page opened but unstyled; fix waits his install; NOT proven |
+| K4.2 | GREEN (7 Nov 15:30) | YES (Rust proxy to the old app, ON in the journal) | YES on :8443: full styled login, 51/51 files 200, secure context (my Chrome); the real :443 is still Caddy |
 | ANEXOChat 13-15+61 (files, quotas) | GREEN (SQL) | SQL only: tables, quotas, 21,000 cap | NOT proven as a screen: no UI for it in the founder app yet |
