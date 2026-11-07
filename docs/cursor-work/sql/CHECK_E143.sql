@@ -15,6 +15,6 @@ union all select 'E143 the lease ledger chain re-checks clean and the revoke tri
 union all select 'E143 serial uniqueness index, per-device chain column, live view (security_invoker) and the lease shape CHECKs are in place',
        exists (select 1 from pg_indexes where indexname = 'founder_vault_lease_event_once')
        and exists (select 1 from information_schema.columns where table_name = 'founder_vault_lease_event' and column_name = 'dev_prev_hash')
-       and exists (select 1 from pg_class where relname = 'founder_vault_lease_live' and reloptions::text like '%security_invoker=true%')
+       and exists (select 1 from pg_class c, unnest(c.reloptions) o where c.relname = 'founder_vault_lease_live' and o in ('security_invoker=true', 'security_invoker=on', 'security_invoker=1'))
        and (select count(*) from pg_constraint where conrelid = 'public.founder_vault_lease'::regclass and conname in ('founder_vault_lease_live_shape', 'founder_vault_lease_cut_shape') and convalidated) = 2, 5
 ) t order by ord;

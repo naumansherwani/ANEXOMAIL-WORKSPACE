@@ -18,3 +18,5 @@
 - 7 Nov 14:40: J8d panic lock written: SQL E145 (vault.panic_lock = T3, founder_vault_panic_run = only door, raw panic closed, in-transaction proof, selftest PASS in sandbox, CHECK_E145 4/4), Rust passkey.rs t3_execute arm for it (220 tests), UI panic flow in Vault.tsx (begin / approve / confirm / cancel), passkey.ts nonce pass-through. NOT GREEN until his sql-run E143+E144+E145 output and live Chrome. Needs 2 trusted hardware keys to actually run (T3).
 
 - 7 Nov 15:00: his E143/E145 paste: E145 CHECK 4/4 OK, E143 selftest OK, SPA install OK (vault master exists). CHECK_E143 row 2 FAILED only because the raw panic is now (correctly) closed by E145 -> CHECK fixed. Row 5 FAIL on his DB only (sandbox passes): DIAG_E143_row5.sql asked. J8d NOT GREEN yet: row 5 + live Chrome 390/820/1200+.
+
+- 7 Nov 15:10: CHECK_E143 row 5 FAIL cause found from his DIAG: his Postgres prints view option as security_invoker=on (my check wanted =true). Check fixed (accepts true/on/1); view itself was fine. Run CHECK_E143 again.

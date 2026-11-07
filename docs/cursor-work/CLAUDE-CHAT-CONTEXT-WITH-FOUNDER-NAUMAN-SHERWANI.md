@@ -2374,3 +2374,6 @@ He said: write world-class advanced SQL (rule). Done: E145_founder_vault_panic_t
 
 ### Checkpoint 7 Nov 15:00 PKT
 - 7 Nov 15:00: his E143/E145 paste: E145 CHECK 4/4 OK, E143 selftest OK, SPA install OK (vault master exists). CHECK_E143 row 2 FAILED only because the raw panic is now (correctly) closed by E145 -> CHECK fixed. Row 5 FAIL on his DB only (sandbox passes): DIAG_E143_row5.sql asked. J8d NOT GREEN yet: row 5 + live Chrome 390/820/1200+.
+
+### Checkpoint 7 Nov 15:10 PKT
+- 7 Nov 15:10: CHECK_E143 row 5 FAIL cause found from his DIAG: his Postgres prints view option as security_invoker=on (my check wanted =true). Check fixed (accepts true/on/1); view itself was fine. Run CHECK_E143 again.
