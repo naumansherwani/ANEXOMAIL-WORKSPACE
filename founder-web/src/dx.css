@@ -162,3 +162,8 @@ button.dx-card{cursor:pointer;width:100%}button.dx-card:hover{transform:translat
   .s2tbtn { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
   .s2tbtn button { min-height: 44px; padding: 0 6px; font-size: 12.5px; text-decoration: none; border: 1px solid var(--line); border-radius: 12px; background: #12151b; justify-content: center; }
 }
+
+/* Alert number row: country select + number + buttons wrap on a phone, one line on a laptop (same markup everywhere) */
+.numrow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-width:0}
+.numrow select{max-width:min(100%,260px);min-height:44px}.numrow input{flex:1 1 140px;min-width:0;min-height:44px}
+@media (max-width:767px){.numrow{width:100%}.numrow select{max-width:100%;flex:1 1 100%}.numrow .mini,.numrow button{min-height:44px}}

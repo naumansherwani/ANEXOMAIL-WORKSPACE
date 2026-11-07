@@ -10,7 +10,7 @@ export type Contact = { country_iso2: string; national: string };
 
 /** Country (required) + mobile number (optional here; more numbers later in Settings). Blocked countries are not in the list. */
 export function ContactFields({ value, onChange, locale = "en" }: { value: Contact; onChange: (c: Contact) => void; locale?: string }) {
-  const [blocked, setBlocked] = useState<string[]>(["AF", "IL", "KP"]);
+  const [blocked, setBlocked] = useState<string[]>(["AF", "IL", "KP", "SY"]);
   useEffect(() => {
     let live = true;
     getPolicy()

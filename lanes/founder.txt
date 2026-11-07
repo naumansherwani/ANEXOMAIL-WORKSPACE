@@ -77,6 +77,7 @@ docs/cursor-work/sql/E142_founder_hardware_truth.sql
 docs/cursor-work/sql/E143_founder_vault_lease.sql
 docs/cursor-work/sql/E144_founder_vault_lease_keysplit.sql
 docs/cursor-work/sql/E145_founder_vault_panic_t3.sql
+docs/cursor-work/sql/E146_founder_banned_countries.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/E68_proof.sql
@@ -91,10 +92,10 @@ founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
-founder-web/dist/assets/index-Bx3AsXaQ.css
-founder-web/dist/assets/index-Bx3AsXaQ.css.gz
-founder-web/dist/assets/index-Dy-iWuRm.js
-founder-web/dist/assets/index-Dy-iWuRm.js.gz
+founder-web/dist/assets/index-ChvGeBvk.css
+founder-web/dist/assets/index-ChvGeBvk.css.gz
+founder-web/dist/assets/index-CkP6z8YW.js
+founder-web/dist/assets/index-CkP6z8YW.js.gz
 founder-web/dist/assets/kernel.worker-lrvwuwuv.js
 founder-web/dist/assets/kernel.worker-lrvwuwuv.js.gz
 founder-web/dist/assets/three.module-Dza5cG3s.js
@@ -145,11 +146,14 @@ founder-web/src/anchorgauge.ts
 founder-web/src/api.ts
 founder-web/src/appearance.test.ts
 founder-web/src/appearance.ts
+founder-web/src/banned.test.ts
+founder-web/src/banned.ts
 founder-web/src/catalog.ts
 founder-web/src/cinema.css
 founder-web/src/city.ts
 founder-web/src/components/ui/button.tsx
 founder-web/src/components/ui/switch.tsx
+founder-web/src/countries.ts
 founder-web/src/devicelabel.ts
 founder-web/src/dx.css
 founder-web/src/flare_pure.ts

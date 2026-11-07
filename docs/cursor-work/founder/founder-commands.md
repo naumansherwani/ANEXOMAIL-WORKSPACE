@@ -2618,3 +2618,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 7 Nov 15:36 (verbatim): 'baki is ko green kero ab se rule hai ke adhoora kaam nahi kerna hai ... is ko green kero jaise bhi kerna hai, stesps batao. claude ke llye context update kero'
 
 - 7 Nov 16:14 (verbatim gist): image of passkey chooser; 'mujhe mobile fingerprint aur passkey jo mobile ka pehle se hota hai wohi intact rakho, advance codes, user ke liye bhi option dalo lekin founder ka user ke saath mix nahi kerna'
+
+- 7 Nov 16:22 (verbatim gist): 'Phone alerts mein Add this phone ke andar mobile number hoga with country code, sab countries aye gi sirf woh nahi jin ko banned bataya repo mein; banned countries ke naam se folder; north korea, afghanistan, israel hai baki dekh lo' + answers: 'syria bhi add kero', number = 'Sirf record + recovery contact'.

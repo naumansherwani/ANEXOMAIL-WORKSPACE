@@ -2,10 +2,10 @@
 // signx_core.rs — the pure half of the sign-up / create-account doors (PX2b, founder 2 Nov 2026). Rust ONLY (no Bun twin: "bun banned hai").
 //
 // What is decided here (std-only, unit-tested with `rustc --edition 2024 --test signx_core.rs`):
-//   * GEO1 country wall: Afghanistan (AF), Israel (IL), North Korea (KP) are not available. Same three dial prefixes: +93, +972, +850 (Palestine +970 is NOT touched).
-//   * E.164 phone numbers: a person may keep several; we only check the shape (+, 7-15 digits, no leading 0) and refuse the three prefixes.
+//   * GEO1 country wall: Afghanistan (AF), Israel (IL), North Korea (KP), Syria (SY) are not available (list: banned-countries/banned.json). Same four dial prefixes: +93, +972, +850, +963 (Palestine +970 is NOT touched).
+//   * E.164 phone numbers: a person may keep several; we only check the shape (+, 7-15 digits, no leading 0) and refuse the four prefixes.
 //   * Gmail-style suggestions: when an ANEXOMAIL name is taken, give a few valid alternatives (the glue then keeps only the ones that are free right now).
-//   * Browser-timezone signal for the best-effort VPN layer (AF/IL/KP timezones).
+//   * Browser-timezone signal for the best-effort VPN layer (AF/IL/KP/SY timezones).
 // Nothing here talks to a database; nothing here is invented data.
 // ============================================================================
 
@@ -18,11 +18,11 @@ use crate::vault_core;
 use std::collections::HashMap;
 
 /// Countries that are not available (ISO 3166-1 alpha-2, upper case).
-pub const BLOCKED_COUNTRIES: [&str; 3] = ["AF", "IL", "KP"];
+pub const BLOCKED_COUNTRIES: [&str; 4] = ["AF", "IL", "KP", "SY"];
 /// E.164 country calling codes of those countries (digits only, no plus).
-pub const BLOCKED_DIALS: [&str; 3] = ["93", "972", "850"];
+pub const BLOCKED_DIALS: [&str; 4] = ["93", "972", "850", "963"];
 /// IANA time zones of those countries (best-effort signal for the VPN layer, never the only reason).
-pub const BLOCKED_TIMEZONES: [&str; 5] = ["Asia/Kabul", "Asia/Jerusalem", "Asia/Tel_Aviv", "Israel", "Asia/Pyongyang"];
+pub const BLOCKED_TIMEZONES: [&str; 6] = ["Asia/Kabul", "Asia/Jerusalem", "Asia/Tel_Aviv", "Israel", "Asia/Pyongyang", "Asia/Damascus"];
 
 /// ISO alpha-2 shape: exactly two ASCII letters (the caller upper-cases first).
 pub fn country_shape_ok(iso2: &str) -> bool {
@@ -225,21 +225,21 @@ mod tests {
     use super::*;
 
     #[test]
-    fn three_countries_are_blocked_and_nobody_else() {
-        for c in ["AF", "il", "KP", " af "] {
+    fn four_countries_are_blocked_and_nobody_else() {
+        for c in ["AF", "il", "KP", " af ", "SY", "sy"] {
             assert!(country_blocked(c), "{c}");
         }
-        for c in ["PK", "GB", "PS", "IR", "AE", "IN", "US", "JO", ""] {
+        for c in ["PK", "GB", "PS", "IR", "AE", "IN", "US", "JO", "LB", ""] {
             assert!(!country_blocked(c), "{c}");
         }
     }
 
     #[test]
     fn dial_prefixes_are_exact() {
-        for n in ["+93701234567", "+972501234567", "+850191234567", "93701234567"] {
+        for n in ["+93701234567", "+972501234567", "+850191234567", "+963944123456", "93701234567"] {
             assert!(dial_blocked(n), "{n}");
         }
-        for n in ["+923001234567", "+970599123456", "+971501234567", "+447700900123", "+12025550100", "+98912345678", "+962791234567"] {
+        for n in ["+923001234567", "+970599123456", "+971501234567", "+447700900123", "+12025550100", "+98912345678", "+962791234567", "+96171123456"] {
             assert!(!dial_blocked(n), "{n}");
         }
     }
@@ -256,7 +256,7 @@ mod tests {
 
     #[test]
     fn timezones() {
-        assert!(timezone_blocked("Asia/Kabul") && timezone_blocked("Asia/Jerusalem") && timezone_blocked("Asia/Pyongyang"));
+        assert!(timezone_blocked("Asia/Kabul") && timezone_blocked("Asia/Jerusalem") && timezone_blocked("Asia/Pyongyang") && timezone_blocked("Asia/Damascus"));
         assert!(!timezone_blocked("Asia/Karachi") && !timezone_blocked("Asia/Gaza") && !timezone_blocked("Europe/London"));
     }
 

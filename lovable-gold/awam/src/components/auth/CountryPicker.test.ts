@@ -22,8 +22,8 @@ describe("country search", () => {
     expect(rankCountries(list, "+92").some((c) => c.iso2 === "PK")).toBe(true);
   });
   test("blocked countries are never offered", () => {
-    for (const q of ["afg", "isr", "korea", "AF", "IL", "KP"]) {
-      expect(rankCountries(list, q).some((c) => ["AF", "IL", "KP"].includes(c.iso2))).toBe(false);
+    for (const q of ["afg", "isr", "korea", "syria", "AF", "IL", "KP", "SY"]) {
+      expect(rankCountries(list, q).some((c) => ["AF", "IL", "KP", "SY"].includes(c.iso2))).toBe(false);
     }
   });
   test("empty query returns everything, sorted by name", () => {

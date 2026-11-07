@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { get } from "./api";
-import { door, friendly, prove } from "./passkey";
+import { door, friendly, loadKeys, prove } from "./passkey";
+import { countryList, numberProblem, toE164 } from "./countries";
 import { PENDING_CACHE, PENDING_KEY, b64uBytes, isConfirmToken, pushSupported, sha256Hex, subscriptionFields } from "./flare_pure";
 
 // J6 — Phone alerts (inside Settings → Privacy, under Security keys). A push message, encrypted to THIS phone's browser, tells you when a protected action starts.
@@ -26,11 +27,15 @@ const swScript = (): string | unknown => {
 export function Flare() {
   const [st, setSt] = useState<any>(null), [err, setErr] = useState<string | null>(null), [busy, setBusy] = useState(false), [note, setNote] = useState<{ ok: boolean; t: string } | null>(null);
   const [label, setLabel] = useState(""), [here, setHere] = useState<string | null>(null);
+  const [mob, setMob] = useState<{ registered: boolean; confirmed: boolean; last4: string } | null>(null), [dial, setDial] = useState("92"), [national, setNational] = useState("");
+  const countries = useMemo(() => countryList(navigator.language || "en"), []);
+  const e164 = toE164(dial, national), bad = national.trim() ? numberProblem(e164) : null;
   const reload = useCallback(async () => {
     try {
       const r = await door("push_status", {});
       if (r.status !== 200) throw new Error(r.body?.error || `HTTP ${r.status}`);
       setSt(r.body.result); setErr(null);
+      try { const k = await loadKeys(); setMob(k.protocol?.mobile ?? null); } catch { setMob(null); }
       try { const reg = await navigator.serviceWorker?.getRegistration(swUrl()); const s = await reg?.pushManager.getSubscription(); setHere(s ? await sha256Hex(s.endpoint) : null); } catch { setHere(null); }
     } catch (e) { setErr((e as Error).message); }
   }, []);
@@ -87,7 +92,7 @@ export function Flare() {
   const ios = /iPhone|iPad/.test(navigator.userAgent) && !(navigator as any).standalone && !matchMedia("(display-mode: standalone)").matches;
   return <section className="panel" aria-label="Phone alerts">
     <div className="panelhead"><h2>Phone alerts</h2>
-      <p className="dim">When a protected action starts, your phone gets an encrypted push (Web Push). No text message and no phone number are involved. The alert is advice; the waiting time and the cancel button stay the real protection.</p></div>
+      <p className="dim">When a protected action starts, your phone gets an encrypted push (Web Push). The alert itself is Web Push: no text message is sent. The alert is advice; the waiting time and the cancel button stay the real protection.</p></div>
     {unacked.length > 0 && <div className="setrow" role="alert"><div><b className="err">{unacked.length} alert{unacked.length > 1 ? "s" : ""} not confirmed received</b>
       <p className="dim">{unacked.slice(0, 3).map((u) => `${u.kind.replace("t3_", "")} → ${u.phone}, sent ${ago(u.sent_ms)}`).join(" · ")}. The push service accepted them, but the phone never sent its receipt. Check the phone, then send a test.</p></div></div>}
     {ios && <div className="setrow"><div><b>iPhone: one step first</b><p className="dim">Safari only allows alerts for a site on the Home Screen. Tap Share, then "Add to Home Screen", open Anexomail from that icon, and come back to this page.</p></div></div>}
@@ -98,6 +103,19 @@ export function Flare() {
     <div className="setrow"><div><b>Add this phone</b><p className="dim">Name it, allow notifications, then use a key. The key approves exactly this phone.</p></div>
       <span style={{ display: "flex", gap: 6 }}><input aria-label="Phone name" placeholder="My phone" maxLength={40} value={label} onChange={(e) => setLabel(e.target.value)} />
         <Button size="mini" disabled={busy || !pushSupported(window)} title={pushSupported(window) ? undefined : "This browser cannot receive push alerts"} onClick={add}>Add</Button></span></div>
+    <div className="setrow"><div><b>Alert number</b><p className="dim">{mob?.registered ? `Saved: ••••${mob.last4}${mob.confirmed ? " · confirmed" : " · not confirmed yet"}. ` : "No number saved. "}Kept as your record and recovery contact; no text message is sent to it. Every country is allowed except Afghanistan, Israel, North Korea and Syria.</p></div>
+      <span className="numrow"><select aria-label="Country code" value={dial} onChange={(e) => setDial(e.target.value)}>
+          {countries.map((c) => <option key={c.iso2} value={c.dial}>{c.flag} {c.name} +{c.dial}</option>)}</select>
+        <input aria-label="Mobile number" inputMode="tel" autoComplete="tel-national" placeholder="300 1234567" maxLength={20} value={national} onChange={(e) => setNational(e.target.value)} />
+        <Button size="mini" disabled={busy || !e164 || !!bad} onClick={() => run(async () => {
+          const n = e164!; const p = await prove({ action: "mobile.flare", target: "alert number", params: { last4: n.slice(-4) } }); if (!p.ok) throw new Error(p.error);
+          const r = await door("flare_set", { p_e164: n, p_grant: p.result.grant, p_nonce: p.nonce }); if (r.status !== 200) throw new Error(r.body?.error || `HTTP ${r.status}`);
+          setNational(""); return `Number saved (••••${n.slice(-4)}).`; })}>Save number</Button>
+        {mob?.registered && <Button variant="ghost" size="mini" disabled={busy} onClick={() => run(async () => {
+          const p = await prove({ action: "mobile.flare", target: "alert number", params: { last4: "none" } }); if (!p.ok) throw new Error(p.error);
+          const r = await door("flare_remove", { p_grant: p.result.grant, p_nonce: p.nonce }); if (r.status !== 200) throw new Error(r.body?.error || `HTTP ${r.status}`);
+          return "Number removed."; })}>Remove</Button>}</span></div>
+    {bad && <p role="status" className="err">{bad}</p>}
     {phones.some((p) => p.confirmed) && <div className="setrow"><div><b>Send a test</b><p className="dim">One test per phone per minute.</p></div>
       <Button variant="ghost" size="mini" disabled={busy} onClick={() => run(async () => { const r = await door("push_test", {}); if (r.status !== 200) throw new Error(r.body?.error || `HTTP ${r.status}`); return r.body.result?.queued ? "Test queued; it arrives in a few seconds." : "A test was just sent; wait a minute."; })}>Send test</Button></div>}
     <div className="setrow"><div><b>Delivery</b><p className="dim">Queue: {Object.entries(q).map(([k, n]) => `${k} ${n}`).join(" · ") || "empty"} · ledger {st.chain?.ok ? `intact (${st.chain.checked} checked)` : "BROKEN"}.</p>

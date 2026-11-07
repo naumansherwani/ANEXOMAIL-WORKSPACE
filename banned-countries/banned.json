@@ -1,0 +1,9 @@
+{
+  "_why": "ONE list of the countries where ANEXOMAIL is not available (GEO1). Founder order 7 Nov 2026: Afghanistan, Israel, North Korea (7 earlier) + Syria (7 Nov 16:30). Every copy in the code (Rust signx_core.rs, awam src/lib/countries.ts, founder-web/src/banned.ts, Caddy geoblock-gen.py, SQL E146) must match this file; the tests read it and fail on any drift. Palestine (PS, +970) is NOT banned.",
+  "countries": [
+    { "iso2": "AF", "name": "Afghanistan",  "dial": "93",  "rir": "apnic", "timezones": ["Asia/Kabul"] },
+    { "iso2": "IL", "name": "Israel",       "dial": "972", "rir": "ripe",  "timezones": ["Asia/Jerusalem", "Asia/Tel_Aviv", "Israel"] },
+    { "iso2": "KP", "name": "North Korea",  "dial": "850", "rir": "apnic", "timezones": ["Asia/Pyongyang"] },
+    { "iso2": "SY", "name": "Syria",        "dial": "963", "rir": "ripe",  "timezones": ["Asia/Damascus"] }
+  ]
+}

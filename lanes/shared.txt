@@ -5,6 +5,8 @@ AGENTS.md
 CLAUDE.md
 README.md
 anexomail inboxes to build/README.md
+banned-countries/README.md
+banned-countries/banned.json
 bun.lock
 bunfig.toml
 components.json

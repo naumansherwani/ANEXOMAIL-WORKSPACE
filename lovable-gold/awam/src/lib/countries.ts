@@ -1,7 +1,7 @@
 /**
  * Country list for create-account (PX2c, founder 2 Nov 2026). ISO 3166-1 alpha-2 + E.164 calling code.
  * Names come from the browser (Intl.DisplayNames), so they follow the page language and nothing is typed twice.
- * Afghanistan (AF), Israel (IL) and North Korea (KP) are NOT in this list: ANEXOMAIL is not available there (GEO1). The Rust door signx.policy
+ * Afghanistan (AF), Israel (IL), North Korea (KP) and Syria (SY) are NOT in this list (banned-countries/banned.json): ANEXOMAIL is not available there (GEO1). The Rust door signx.policy
  * says the same and is applied on top (see filterBlocked), so the list can never drift from the server's rule.
  * +1 is shared by the NANP countries; the number the person types after the code is checked by the server (E.164, 7-15 digits).
  */
@@ -16,7 +16,7 @@ const RAW =
   "LK:94,BL:590,SH:290,KN:1,LC:1,MF:590,PM:508,VC:1,SD:249,SR:597,SE:46,CH:41,SY:963,TW:886,TJ:992,TZ:255,TH:66,TL:670,TG:228,TK:690,TO:676,TT:1,TN:216,TR:90,TM:993,TC:1,TV:688,UG:256," +
   "UA:380,AE:971,GB:44,US:1,UY:598,UZ:998,VU:678,VA:39,VE:58,VN:84,VI:1,WF:681,EH:212,YE:967,ZM:260,ZW:263,AX:358";
 
-export const LOCAL_BLOCKED = ["AF", "IL", "KP"] as const;
+export const LOCAL_BLOCKED = ["AF", "IL", "KP", "SY"] as const;
 
 export type Country = { iso2: string; dial: string; name: string; flag: string };
 
@@ -52,4 +52,4 @@ export function toE164(dial: string, national: string): string | null {
 }
 
 /** Country calling codes of the blocked countries (client-side mirror of signx.policy, used only to give a friendly message early). */
-export const LOCAL_BLOCKED_DIALS = ["93", "972", "850"] as const;
+export const LOCAL_BLOCKED_DIALS = ["93", "972", "850", "963"] as const;

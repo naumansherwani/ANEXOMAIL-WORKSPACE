@@ -9,7 +9,7 @@ Honest limit: an address space that is registered with another RIR (transfers) i
 """
 import ipaddress, re, sys, os
 
-COUNTRIES = {"AF": "apnic", "KP": "apnic", "IL": "ripe"}
+COUNTRIES = {"AF": "apnic", "KP": "apnic", "IL": "ripe", "SY": "ripe"}
 
 
 def cidrs_from_delegated(text, want):
