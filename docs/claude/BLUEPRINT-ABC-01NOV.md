@@ -3,7 +3,23 @@
 One letter per step, in build order. **GREEN** only where the proof exists (server output and/or the founder's Chrome). Old master-order numbers stay in `[brackets]` so nothing is duplicated. Source of truth for detail: `FOUNDER-MASTER-ORDER-28OCT.md`. The website says only what `tech-proof.py` shows PROVEN.
 > **TOP PRIORITY (founder 3 Nov 12:37, he said C1 is NOT to wander again): Polar C1 = DROPPED. It EMERGES inside letter O (Finance): existing webhook endpoints -> hash-chained ledger -> advanced verified layer, plan `FOUNDER-FINANCE-POLAR-LIVE-PLAN-02NOV.md`. No token, no `founder-polar.sh`, no side road before O.**
 
-## GREEN LEDGER (6 Nov 2026 19:30 PKT; nothing new since 3 Nov 14:05; ORDER: J6 phone proof + MOBILE/TABLET pass -> J8 -> K4 -> K5 -> K6 -> K7 -> L -> M -> N -> O -> P -> Q -> R -> S -> T -> U -> V; no letter is skipped; every GREEN needs his paste + my Chrome look; this table is the quick read for a new chat)
+## CURRENT GREEN LEDGER (7 Nov 2026 15:30 PKT) — NEWEST WINS over the older table below. Every GREEN says wired + really working (his order 7 Nov 15:12). Technology per layer in `FOUNDER-STATUS-TABLE-07NOV.md`.
+| Phase | GREEN | Wired / really working | Proof (time) |
+|---|---|---|---|
+| A, B, D, E, F, G1-G5d, H, I | GREEN | yes / yes | 3 Nov Chrome + pastes (see older table) |
+| J1-J5 passkey, step-up, T2/T3, E142 | GREEN | yes / partly: T3 (2 hardware keys + 10 min) never run for real | 3 Nov |
+| J6 phone alerts | GREEN | yes / yes on desktop (Windows Chrome via fcm, last receipt 4 days ago, sent 2); Android phone not added | his screenshot 7 Nov 14:35 |
+| J8a E143, J8a2 E144, J8b, J8b2, J8c | GREEN | yes / yes | 6-7 Nov pastes + Chrome |
+| J8d vault lease screen + panic lock T3 (E145) | GREEN | yes / partly: vault key encrypts nothing yet, panic not run for real | his sql-run (E145 4/4, CHECK_E143 5/5 after my check accepted `security_invoker=on`), live Chrome lease #3, his Android lease #1 (7 Nov 14:20-14:35) |
+| Mobile pass, Settings > Privacy (phone breathing build) | GREEN | yes / yes on his phone; other tabs + real tablet not seen | his screenshots 14:31, 14:35; bundle index-oVsXeRgj = repo |
+| K1-K3 | GREEN | yes / on :8443 only | earlier |
+| K4.1 `/_cc` on the own TLS terminator | GREEN | yes / :8443 only | his curl 200, 7 Nov 14:50 |
+| K4.2 legacy-path proxy (`fproxy.rs`, is_ours table, TLS router only, Alt-Svc clear) | GREEN | yes / :8443 only; real :443 still Caddy | his install + curl 200 x3 + journal + my Chrome 51/51 files 200, styled login, 7 Nov 15:30 |
+| ANEXOChat 13-15+61 | GREEN (SQL only) | SQL only / no founder screen | 3 Nov |
+| NOW: K4.3 cert refresh timer -> K4.4 SNI front (spare ports) -> K4.5 live :443 switch (ONLY with his haan + rollback) -> K4.6 CHECK + Chrome 390/820/1200+ | NOT GREEN | | design `K4-REAL-443-DESIGN-07NOV.md` |
+| K5, K6, K7, L, M, N..V, X, J7, J9, email system (Mail Desk) | NOT GREEN | not built | his email-first question (1/2) unanswered; default = keep letter order |
+
+## (OLDER) GREEN LEDGER (6 Nov 2026 19:30 PKT; nothing new since 3 Nov 14:05; ORDER: J6 phone proof + MOBILE/TABLET pass -> J8 -> K4 -> K5 -> K6 -> K7 -> L -> M -> N -> O -> P -> Q -> R -> S -> T -> U -> V; no letter is skipped; every GREEN needs his paste + my Chrome look; this table is the quick read for a new chat)
 | Phase | GREEN | Proof (time) |
 |---|---|---|
 | A device approval + signatures | GREEN | Chrome (earlier); 3 Nov 12:19 'Approved device Chrome on Windows' |
