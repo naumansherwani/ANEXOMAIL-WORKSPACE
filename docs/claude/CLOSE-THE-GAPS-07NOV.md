@@ -32,3 +32,6 @@ Phone alerts = one Turn on button (auto name); Keys = Add this device's fingerpr
 
 ## 7 Nov 18:50 G1: empty alert
 SW v2 built (never an empty notification, reason code in odd pushes, update on card open) + real-worker test. GREEN needs his phone to show a readable 'Test alert / Phone alerts work.'.
+
+## 7 Nov 19:05 G1: empty alert, observability
+Worker records last received alert; card shows it. GREEN needs his phone screenshot.

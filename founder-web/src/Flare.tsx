@@ -26,7 +26,7 @@ const swScript = (): string | unknown => {
 
 export function Flare() {
   const [st, setSt] = useState<any>(null), [err, setErr] = useState<string | null>(null), [busy, setBusy] = useState(false), [note, setNote] = useState<{ ok: boolean; t: string } | null>(null);
-  const [here, setHere] = useState<string | null>(null);
+  const [last, setLast] = useState<{ ts: number; k: string; tl: number; bl: number; why: string; t: string; b: string } | null>(null), [here, setHere] = useState<string | null>(null);
   const [mob, setMob] = useState<{ registered: boolean; confirmed: boolean; last4: string } | null>(null), [dial, setDial] = useState("92"), [national, setNational] = useState("");
   const countries = useMemo(() => countryList(navigator.language || "en"), []);
   const e164 = toE164(dial, national), bad = national.trim() ? numberProblem(e164) : null;
@@ -36,7 +36,8 @@ export function Flare() {
       if (r.status !== 200) throw new Error(r.body?.error || `HTTP ${r.status}`);
       setSt(r.body.result); setErr(null);
       try { const k = await loadKeys(); setMob(k.protocol?.mobile ?? null); } catch { setMob(null); }
-      try { const reg = await navigator.serviceWorker?.getRegistration(swUrl()); void reg?.update().catch(() => {}); const s = await reg?.pushManager.getSubscription(); setHere(s ? await sha256Hex(s.endpoint) : null); } catch { setHere(null); }
+      try { const reg = await navigator.serviceWorker?.getRegistration(swUrl()); void reg?.update().catch(() => {});
+      try { const m = await (await caches.open(PENDING_CACHE)).match("/__flare/last"); setLast(m ? await m.json() : null); } catch { setLast(null); } const s = await reg?.pushManager.getSubscription(); setHere(s ? await sha256Hex(s.endpoint) : null); } catch { setHere(null); }
     } catch (e) { setErr((e as Error).message); }
   }, []);
   useEffect(() => { void reload(); }, [reload]);
@@ -114,6 +115,7 @@ export function Flare() {
           const r = await door("flare_remove", { p_grant: p.result.grant, p_nonce: p.nonce }); if (r.status !== 200) throw new Error(r.body?.error || `HTTP ${r.status}`);
           return "Number removed."; })}>Remove</Button>}</span></div>
     {bad && <p role="status" className="err">{bad}</p>}
+    {last && <div className="setrow" aria-label="Last alert on this device"><div><b>Last alert on this device</b><p className="dim">{last.why === "ok" ? `“${last.t}” — ${last.b || "(no text)"}` : `Not one of ours (${last.why})`} · {ago(last.ts)} · title {last.tl} / text {last.bl} characters</p></div></div>}
     {phones.some((p) => p.confirmed) && <div className="setrow"><div><b>Send a test</b><p className="dim">One test per phone per minute.</p></div>
       <Button variant="ghost" size="mini" disabled={busy} onClick={() => run(async () => { const r = await door("push_test", {}); if (r.status !== 200) throw new Error(r.body?.error || `HTTP ${r.status}`); return r.body.result?.queued ? "Test queued; it arrives in a few seconds." : "A test was just sent; wait a minute."; })}>Send test</Button></div>}
     <div className="setrow"><div><b>Delivery</b><p className="dim">Queue: {Object.entries(q).map(([k, n]) => `${k} ${n}`).join(" · ") || "empty"} · ledger {st.chain?.ok ? `intact (${st.chain.checked} checked)` : "BROKEN"}.</p>

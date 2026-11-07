@@ -5,16 +5,18 @@ self.addEventListener("activate", (e) => e.waitUntil(self.clients.claim()));
 // v2 (7 Nov 2026, "the alert on my phone was empty"): EVERY push shows a notification with a real title and body, whatever the payload looks like. If the payload is not ours the body
 // says why in two words (code=...), so an odd alert can be read from the phone itself instead of guessed. The title is never empty, the body is never empty.
 const show = (title, body, o) => { const opts = Object.assign({ tag: "anexo", data: { navigate: "/" } }, o || {}); opts.body = String(body || "").trim() || "Open the app to see what changed."; return self.registration.showNotification(String(title || "").trim() || "Anexomail Founder", opts); };
+// what THIS phone actually received, kept in the page-readable cache so the Phone alerts card can print it ("last alert on this device"). Lengths only, never the secret tokens.
+const note = (k, title, body, why) => caches.open("anexo-flare").then((c) => c.put("/__flare/last", new Response(JSON.stringify({ ts: Date.now(), k: k || "?", tl: String(title || "").length, bl: String(body || "").length, why: why || "ok", t: String(title || "").slice(0, 60), b: String(body || "").slice(0, 90) })))).catch(() => {});
 self.addEventListener("push", (event) => {
   let d = null, why = "none";
   try { if (event.data) { d = event.data.json(); why = "shape"; } } catch (_) { d = null; why = "parse"; }
   const n = d && d.notification;
   if (!d || d.web_push !== 8030 || !n || !n.title) {
-    event.waitUntil(show("Anexomail Founder", "Open the app to see what changed. (code=" + why + ")", { tag: "anexo-unknown" }));
+    event.waitUntil(Promise.all([show("Anexomail Founder", "Open the app to see what changed. (code=" + why + ")", { tag: "anexo-unknown" }), note("?", "", "", why)]));
     return;
   }
   const opts = { body: n.body, tag: n.tag || "anexo", requireInteraction: !!n.requireInteraction, data: { navigate: n.navigate || "/" } };
-  const work = [];
+  const work = [note(d.k, n.title, n.body, "ok")];
   if (d.k === "confirm" && typeof d.t === "string" && /^[A-Za-z0-9_-]{32}$/.test(d.t)) {
     work.push(caches.open("anexo-flare").then((c) => c.put("/__flare/pending-confirm", new Response(d.t))).catch(() => {}));
   }
