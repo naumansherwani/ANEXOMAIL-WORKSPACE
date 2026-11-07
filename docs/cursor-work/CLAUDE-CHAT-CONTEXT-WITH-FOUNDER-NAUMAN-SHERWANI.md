@@ -2520,3 +2520,5 @@ Caddy incident CLOSED: /etc/caddy restored from backup 1793599658, validate OK, 
 - 8 Nov 2026 03:10 PKT FOUNDER: K4.4 spare-port run on his server: SNI front ON 127.0.0.1:8445, routing proven by certificates (founder host -> founder cert, anexomail.com -> Caddy cert, AES-128 = Caddy). NOT GREEN: founder-host cipher line missing in the output, AES-256 through the front still to prove (one more openssl check). Next after proof: K4.5 (needs his 'haan' for the live switch).
 
 - 8 Nov 2026 03:15 PKT FOUNDER: K4.4 = GREEN (WIRED: YES / REAL: YES on spare port 8445): AES-256 asked -> TLS_AES_256_GCM_SHA384; AES-128 only -> handshake failure. Real :443 still Caddy. Next K4.5.
+
+- 8 Nov 2026 03:20 PKT FOUNDER: OPEN GAP: live founderworkspace :443 serves bundle index-Bqhlal5C but the repo build is index-TIPb62WV (not equal, so no GREEN on the :443 page). :8443 check needs curl -a (binary output). Reminder from him: every feature visible on mobile 390, tablet 820, laptop 1200+ (same code, layout flexes only).
