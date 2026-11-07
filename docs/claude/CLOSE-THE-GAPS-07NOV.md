@@ -50,3 +50,5 @@ Worker v3 live = repo. Only open G1 item: his tap screenshot ('You opened this a
 G2 is now the open item in progress.
 
 - 7 Nov 2026 19:40 PKT G2: CODED + BUILT, not GREEN (needs his install + Chrome proof).
+
+- 7 Nov 2026 19:50 PKT G2: install done, purge fix built (index-D5tAR5ZQ), NOT GREEN until reinstall + Chrome proof.

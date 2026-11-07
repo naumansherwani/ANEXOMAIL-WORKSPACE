@@ -2468,3 +2468,6 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 ## CHECKPOINT 7 Nov 2026 19:40 PKT
 G2 vault-key consumer coded + built (index-DmKbS7TC), waiting his founder-install then Chrome proof (ciphertext at rest, back after renew, gone after lock). Syria 'HAAN' given: geoblock.sh apply command + rollback given to him, GREEN only after his output. Proton research done: awam plan AX-P1..P10 in docs/claude/AWAM-PROTON-PLUS-PLAN-07NOV.md and BLUEPRINT; awam side only, after founder lane. Email 1/2 question still open (default letter order). K4.5 needs its own haan.
+
+## CHECKPOINT 7 Nov 2026 19:50 PKT
+His G2 install paste OK. Live bundle was index-DmKbS7TC; found a legacy plaintext snapshot lingering, fixed by purge-at-load (index-D5tAR5ZQ). G2 stays NOT GREEN until reinstall + my Chrome proof (ciphertext at rest after lease live, gone after lock). Syria plan output SY=243, apply pending his run.

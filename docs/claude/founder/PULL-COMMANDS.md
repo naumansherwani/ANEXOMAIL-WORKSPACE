@@ -750,3 +750,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 7 Nov 2026 19:35 PKT: he asked for the blueprint (green / wired / technology), the order, the next-phase detail + impact, and Proton-level ambition. Sent in chat: GREEN list, OPEN list (G2 vault-key consumer, G3 panic, G4 K4.3-K4.6, G5, G6, G7, Syria wall), order G2 -> G4 -> G5/G6/G7 -> K5 -> K6 -> K7 -> L -> M -> N..X, honest Proton comparison (Mail Q1-Q6 not started; our edge = PQ, DBSC, dead-man vault, 2-hardware-key rule, hash-chain/Merkle, MoQ). Email 1/2 still unanswered ('2' = Mail first).
 
 - 7 Nov 2026 19:40 PKT G2 (browser only, no SQL/Rust): founder-install command; awam pull NOT needed. Syria wall: bash <(git -C /opt/anexomail-web show origin/main:server/caddy/geoblock.sh) apply ; rollback: rm -rf /etc/caddy && cp -a /root/i9/caddy-geoblock-<TS> /etc/caddy && systemctl reload caddy
+
+- 7 Nov 2026 19:50 PKT G2 reinstall (browser only): founder-install.sh. Syria apply still waits his run.

@@ -51,3 +51,9 @@ test("wiring: api.ts never stores plain text any more; the lease wipe deletes th
   expect(lease).toContain("registerSnapKey(");
   expect(lease).toContain("const k = vaultKey()");   // vaultKey() is null unless the phase is live
 });
+
+test("api.ts deletes a legacy plain-text snapshot at load", async () => {
+  const src = await Bun.file(new URL("./api.ts", import.meta.url)).text();
+  expect(src).toContain("anything that is not a sealed {v:1,iv,c} record is deleted at load");
+  expect(src).toMatch(/o\.v === 1 && typeof o\.iv === "string" && typeof o\.c === "string"/);
+});

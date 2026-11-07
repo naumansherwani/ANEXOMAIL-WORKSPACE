@@ -284,3 +284,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 7 Nov 2026 19:35 PKT: he asked for the blueprint (green / wired / technology), the order, the next-phase detail + impact, and Proton-level ambition. Sent in chat: GREEN list, OPEN list (G2 vault-key consumer, G3 panic, G4 K4.3-K4.6, G5, G6, G7, Syria wall), order G2 -> G4 -> G5/G6/G7 -> K5 -> K6 -> K7 -> L -> M -> N..X, honest Proton comparison (Mail Q1-Q6 not started; our edge = PQ, DBSC, dead-man vault, 2-hardware-key rule, hash-chain/Merkle, MoQ). Email 1/2 still unanswered ('2' = Mail first).
 
 ## AWAM PHASES AX-P1..P10 (founder 7 Nov 19:29): start ONLY after the founder lane (X) is finished; awam side only, never mixed into founder code. Order: P1 Mail, P3 Drive, P4 Pass, P2 Calendar+Contacts, P8 Account protection, P10 Transparency, P9 Calls, P6 Docs/Sheets, P5 VPN, P7 Private AI. Research + table: docs/claude/AWAM-PROTON-PLUS-PLAN-07NOV.md. None built yet (no GREEN claimed).
+
+7 Nov 2026 19:50 PKT blueprint order unbroken: G2 -> G4 -> G5 -> G6 -> G7 -> G3 -> K5.. (AX phases after X).

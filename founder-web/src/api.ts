@@ -131,6 +131,8 @@ const SNAP_PATH = "/founder/v1/bridge", SNAP = "anexo.f.snap.bridge";
 // so with no live lease nothing is written and nothing can be read. Plain text is never stored. When the lease ends the stored record is deleted (clearSnap).
 let snapKeyFn: (() => Promise<{ key: CryptoKey; device: string } | null>) | null = null;
 export const registerSnapKey = (f: () => Promise<{ key: CryptoKey; device: string } | null>) => { snapKeyFn = f; };
+// G2: a record written by an older build is plain text; anything that is not a sealed {v:1,iv,c} record is deleted at load, so no plain snapshot can linger.
+(() => { try { const raw = window.sessionStorage.getItem(SNAP); if (!raw) return; let ok = false; try { const o = JSON.parse(raw); ok = o && o.v === 1 && typeof o.iv === "string" && typeof o.c === "string"; } catch { ok = false; } if (!ok) window.sessionStorage.removeItem(SNAP); } catch { /* storage shut */ } })();
 export const clearSnap = () => { try { window.sessionStorage.removeItem(SNAP); } catch { /* nothing to clear */ } };
 const waitKey = async (ms: number) => { for (let i = 0; i <= ms / 150; i++) { const k = snapKeyFn ? await snapKeyFn() : null; if (k) return k; await new Promise((ok) => setTimeout(ok, 150)); } return null; };
 const saveSnap = async (buf: ArrayBuffer) => {
