@@ -733,13 +733,11 @@ pub fn app(st: S) -> Router {
         .layer(hdr("x-frame-options", "DENY"))
         .layer(hdr("permissions-policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), bluetooth=(), publickey-credentials-get=(self), publickey-credentials-create=(self)"))
         .layer(hdr("referrer-policy", "no-referrer"))
-        .layer(hdr("alt-svc", "clear")) // K4.2: a browser that learned h3 from Caddy forgets it and stops bypassing the AES-256 terminator
         .layer(hdr("cross-origin-opener-policy", "same-origin"))
         .layer(hdr("cross-origin-embedder-policy", "require-corp"))
         .layer(hdr("cache-control", "no-store"))
         .layer(axum::middleware::from_fn(asset_cache))
         .layer(axum::middleware::from_fn(strip_cc)) // K4: the SPA is built for the /_cc/ prefix (Caddy strips it); the own TLS terminator has no Caddy, so it strips it itself
-        .layer(axum::middleware::from_fn(fproxy::layer)) // K4.2: outermost: /founderlogin /app /api go to the old app (only when FOUNDER_LEGACY_UPSTREAM is set), their answer keeps the old app's own headers
 }
 
 /// `/_cc/assets/x.js` -> `/assets/x.js` (and `/_cc`, `/_cc/` -> `/`). Only a path that starts with exactly `/_cc` + `/` or the end; `/_ccx` and `/a/_cc/` are left alone. The query string is kept.
@@ -826,7 +824,7 @@ async fn main() {
         None => eprintln!("founder: TLS-256 terminator OFF (no FOUNDER_TLS256_ADDR)"),
         Some(Err(e)) => eprintln!("founder: TLS-256 terminator NOT started: {e}"),
         Some(Ok((a, cfg))) => match tokio::net::TcpListener::bind(&a).await {
-            Ok(l) => { eprintln!("founder: TLS-256 terminator ON {a} (TLS 1.3, AES-256-GCM only)"); tokio::spawn(tls256::serve(l, cfg, app(st.clone()))); }
+            Ok(l) => { eprintln!("founder: TLS-256 terminator ON {a} (TLS 1.3, AES-256-GCM only)"); tokio::spawn(tls256::serve(l, cfg, app(st.clone()).layer(hdr("alt-svc", "clear")).layer(axum::middleware::from_fn(fproxy::layer)))); }
             Err(e) => eprintln!("founder: TLS-256 terminator NOT started: bind {a}: {e}"),
         },
     }

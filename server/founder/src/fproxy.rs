@@ -1,7 +1,7 @@
 //! K4.2 (founder, 7 Nov 2026): the legacy-path proxy of the own TLS terminator. Technology: Rust (axum middleware + reqwest/rustls), inside the founder binary.
-//! Why: Caddy still owns the OLD founder-host routes (`/founderlogin`, `/app*`, `/api/*` = the old awam-app login). When the AES-256 terminator takes the real :443 for this host (K4.5) it must hand exactly those paths to the
-//! upstream, and nothing else. Everything the terminator itself serves (`/`, `/_cc/*`, `/founder/v1/*`) never leaves this process.
-//! Safety rules, all pure and tested: (1) a closed path table, never "everything else"; (2) the upstream is explicit (FOUNDER_LEGACY_UPSTREAM=host:port), OFF when unset, and it can never be our own listener (no loop);
+//! Why: Caddy still owns the OLD founder-host routes (`/founderlogin`, `/app*`, `/api/*` = the old awam-app login). When the AES-256 terminator takes the real :443 for this host (K4.5) it must hand every path that is not ours to the
+//! upstream. Everything the terminator itself serves (`/`, `/_cc/*`, `/founder/v1/*`) never leaves this process.
+//! Safety rules, all pure and tested: (1) a closed table of what WE serve (everything else is the old app's, as in Caddy); (2) the upstream is explicit (FOUNDER_LEGACY_UPSTREAM=host:port), OFF when unset, and it can never be our own listener (no loop);
 //! (3) hop-by-hop and client-supplied forwarding headers are stripped both ways, so a client cannot spoof its address to the old app; (4) redirects are not followed (the browser follows them); (5) bodies are capped;
 //! (6) the proxied answer keeps the OLD app's own headers (its CSP, cookies) and only gets `Alt-Svc: clear`, so a browser that learned h3 from Caddy forgets it and stops bypassing the AES-256 terminator.
 use axum::body::Body;
@@ -19,10 +19,12 @@ const MAX_BODY: usize = 25 * 1024 * 1024;
 struct Up { client: reqwest::Client, base: String }
 static UP: OnceLock<Up> = OnceLock::new();
 
-/// Closed table: exactly these prefixes, at a path-segment boundary. `/apple`, `/founderloginx`, `/api2` are NOT matched.
-pub fn is_legacy(path: &str) -> bool {
-    ["/founderlogin", "/app", "/api"].iter().any(|p| path == *p || path.strip_prefix(p).is_some_and(|r| r.starts_with('/')))
+/// What THIS process answers itself on the real host (exactly Caddy's routes today: `/` alone, `/_cc/*`, `/founder/v1/*`, the old `/f` bookmarks). Everything else on that host belongs to the old app
+/// (`/founderlogin`, `/app*`, `/api/*`, its `/assets/*`, icons, manifest ...), so it is handed upstream. The table is closed on OUR side: a new path is never served by accident.
+pub fn is_ours(path: &str) -> bool {
+    path == "/" || path == "/f" || path == "/f/" || path == "/_cc" || path.starts_with("/_cc/") || path.starts_with("/founder/v1/")
 }
+pub fn is_legacy(path: &str) -> bool { !is_ours(path) }
 
 /// `host:port` -> validated address. Rejects empty, no port, a port of 0, and anything that is not a plain host:port (no scheme, no path).
 pub fn parse_upstream(v: &str) -> Result<(String, u16), String> {
@@ -101,9 +103,9 @@ pub async fn layer(req: Request, next: Next) -> Response {
 mod tests {
     use super::*;
     #[test]
-    fn the_path_table_is_closed_and_segment_exact() {
-        for p in ["/founderlogin", "/founderlogin/", "/app", "/app/founder", "/app/founder/x?y", "/api/auth/refresh", "/api"] { assert!(is_legacy(p.split('?').next().unwrap()), "{p}"); }
-        for p in ["/", "/_cc/", "/founder/v1/me", "/apple", "/founderloginx", "/api2", "/application", "/a/app", "/App", "/founder/v1/app"] { assert!(!is_legacy(p), "{p}"); }
+    fn we_serve_only_our_own_routes_and_everything_else_is_the_old_apps() {
+        for p in ["/", "/f", "/f/", "/_cc", "/_cc/", "/_cc/assets/index-x.js", "/_cc/kernel/anexo-kernel-0.13.0.wasm", "/founder/v1/me", "/founder/v1/vault/lease"] { assert!(is_ours(p) && !is_legacy(p), "{p}"); }
+        for p in ["/founderlogin", "/app", "/app/founder", "/api/auth/refresh", "/assets/index-CyAOzGvs.js", "/favicon.svg", "/manifest.webmanifest", "/apple-touch-icon.png", "/_ccx/a", "/founder/v1", "/founder", "/f2", "/healthz"] { assert!(is_legacy(p), "{p}"); }
     }
     #[test]
     fn the_upstream_is_a_plain_host_port_and_never_our_own_port() {
