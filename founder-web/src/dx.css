@@ -145,6 +145,9 @@ button.dx-card{cursor:pointer;width:100%}button.dx-card:hover{transform:translat
   .panel { padding: 16px 14px; gap: 10px; border-radius: 14px; }
   .panelhead h2 { font-size: 17px; letter-spacing: -.01em; }
   .panelhead p, .setrow p { font-size: 13px; line-height: 1.5; }
+  .panelhead p { margin-top: 6px; }
+  .setrow b + p { margin-top: 3px; }
+  .panelhead { padding-bottom: 2px; }
   .setrow { padding: 12px 0; gap: 10px; }
   .setrow > button.mini, .setrow > .mini { width: 100%; justify-content: center; }
   .setrow > span { min-width: 0; }

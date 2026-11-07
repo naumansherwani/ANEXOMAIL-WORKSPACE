@@ -2386,3 +2386,6 @@ He said: write world-class advanced SQL (rule). Done: E145_founder_vault_panic_t
 
 ### Checkpoint 7 Nov 14:35 PKT
 - 7 Nov 14:35: his founder-install paste OK (phone breathing build installed). Live Chrome bundle index-C-QmgGnG.js / index-Og622Jck.css = repo build. START-HERE section 13 written (state + next steps). Waiting: his phone screenshot of the new layout, then Step 3 = J6 phone receipt.
+
+### Checkpoint 7 Nov 14:40 PKT
+- 7 Nov 14:40: his phone screenshot of the breathing build (Android 390): tabs one-line pills, wide text, 3 equal tool buttons = looks right. Remaining: card title stuck to its first line -> added 6 px gap (dx.css, phone only). New SPA build needs founder-install once more; then Step 3 = J6 phone receipt.
