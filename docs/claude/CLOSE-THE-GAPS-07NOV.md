@@ -29,3 +29,6 @@ Phone alerts = one Turn on button (auto name); Keys = Add this device's fingerpr
 - G1 STILL OPEN: Android phone not listed in Phone alerts; no real alert received on the phone. His next step: phone -> Settings > Privacy > Phone alerts > 'Turn on' -> Allow -> fingerprint -> 'Send test' -> screenshot.
 - Live bundle = repo: server index.html names index-KKNYbdOm.js (= repo dist), after his founder-install 18:25.
 - G2 vault-key consumer next (seal the session snapshot with AES-256-GCM under the live vault key), then G4 K4.3.., G5, G6, G7, G3 (needs 2 hardware keys). Syria Caddy wall waits for his 'haan'. Email question 1/2 unanswered (default letter order).
+
+## 7 Nov 18:50 G1: empty alert
+SW v2 built (never an empty notification, reason code in odd pushes, update on card open) + real-worker test. GREEN needs his phone to show a readable 'Test alert / Phone alerts work.'.

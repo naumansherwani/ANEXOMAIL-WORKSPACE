@@ -36,7 +36,7 @@ export function Flare() {
       if (r.status !== 200) throw new Error(r.body?.error || `HTTP ${r.status}`);
       setSt(r.body.result); setErr(null);
       try { const k = await loadKeys(); setMob(k.protocol?.mobile ?? null); } catch { setMob(null); }
-      try { const reg = await navigator.serviceWorker?.getRegistration(swUrl()); const s = await reg?.pushManager.getSubscription(); setHere(s ? await sha256Hex(s.endpoint) : null); } catch { setHere(null); }
+      try { const reg = await navigator.serviceWorker?.getRegistration(swUrl()); void reg?.update().catch(() => {}); const s = await reg?.pushManager.getSubscription(); setHere(s ? await sha256Hex(s.endpoint) : null); } catch { setHere(null); }
     } catch (e) { setErr((e as Error).message); }
   }, []);
   useEffect(() => { void reload(); }, [reload]);
