@@ -59,3 +59,5 @@ GREEN = his pasted server output and/or my own live Chrome look and/or his phone
 
 | Phone alert delivery to the Android phone | Rust+SQL+SW+React-TS | GREEN 7 Nov 2026 19:00 PKT | WIRED: YES / REAL: YES (his screenshots: listed, confirmed via fcm, readable alert) |
 | Notification tap (worker v3) | JS service worker | BUILT, NOT GREEN | WIRED: after install / REAL: needs his tap screenshot |
+
+| Notification tap (worker v3) | JS service worker + React-TS | LIVE, NOT GREEN | WIRED: YES (live bundle jOBLJfV_ = repo, sw v3 served) / REAL: needs his tap screenshot 7 Nov 2026 19:20 PKT |

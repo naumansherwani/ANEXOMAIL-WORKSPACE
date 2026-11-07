@@ -2638,3 +2638,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 7 Nov 18:39 (verbatim gist): pasted founder-install OK: 'sab kuch claude ke liye update kero aur chat context update kero. codes update kero'
 
 - 7 Nov 18:44 (verbatim gist): 3 phone screenshots (Android listed + confirmed, lock-screen 'Test alert / Phone alerts work.') + '3rd image pe click ker ke kuch nahi hota hai. bus yehi alert ata hai'
+
+- 7 Nov 18:50 (verbatim gist): pasted founder-install OK: 'claude ke liye context mere se bina poochay sab kuch alert rakho update kero aur repo main update kero aur chat context codes claude ke liye update kero.' (STANDING: update after every step, never ask)

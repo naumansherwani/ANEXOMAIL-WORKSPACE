@@ -41,3 +41,6 @@ Alert worker v2 + 'Last alert' row LIVE = repo (his install, my Chrome fetch). O
 
 ## 7 Nov 19:00 G1 CLOSED for delivery; tap fix open
 G1 delivery GREEN (his screenshots: Android listed + confirmed, readable alert). Remaining G1 item: notification TAP (worker v3 built). Then 390/820/1200 look of the card.
+
+## 7 Nov 19:20 G1
+Worker v3 live = repo. Only open G1 item: his tap screenshot ('You opened this alert'). Then the 390/820/1200 look of the Phone alerts card, then G2.
