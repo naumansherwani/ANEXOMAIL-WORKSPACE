@@ -46,3 +46,22 @@ Sources: https://proton.me/blog/2026-spring-summer-roadmaps , https://proton.me/
 - 8 Nov 2026 03:15 PKT AWAM CORRECTION: Business Premium + Business Max mailboxes use the company's own domain (user@theircompany.com), no @anexomail.com restriction; no 'option' (my G5 wording was wrong, fixed). Not built.
 
 - 8 Nov 2026 13:30 PKT FOUNDER+AWAM RULE (his 8 Nov 13:07): phase detail summary + 'what awam gets' written in docs/claude/PHASE-SUMMARY-WITH-AWAM-08NOV.md; founder code is preserved, awam gets a molded copy later in the awam lane (separate awam command). His second K4.5 founder-install output (13:07) was OK. Next: spare-port proof of the real client IP.
+
+## AWAM PHASES IN ORDER (his order 8 Nov 13:14: "awam ke liye phases kaun se aye gay yeh important hai; humne Proton se advance chalna hai"; written 8 Nov 2026 13:45 PKT; AWAM LANE ONLY, nothing built or live)
+Start only AFTER the founder lane. Each row = the founder code is PRESERVED, then molded into the awam pattern on the latest technology, with its OWN awam command, seen at 390 / 820 / 1200+. Source of the mapping: docs/claude/PHASE-SUMMARY-WITH-AWAM-08NOV.md.
+
+| Order | Awam phase | What users get | Comes from founder phase | Beyond Proton (to be proven before it is claimed) |
+|---|---|---|---|---|
+| 1 | AW-K5 | AES-256-GCM-only TLS on anexomail.com | K4 / K5 | a measured cipher posture, not a promise |
+| 2 | AW-G | device alerts (new mail, calendar) + optional sealed browser snapshot | G1, G2 | key lives only while a short device lease is live |
+| 3 | AW-K6 | live inbox and calendar without refresh (QUIC) | K6 | no polling |
+| 4 | AW-K7 | session bound to the device key (DBSC) | K7 | stolen cookie useless |
+| 5 | AW-O | billing portal: invoices, free months shown FIRST (2 months, Business Max 3 months, then paid months), price lock 2 years | O | clear ledger of every charge |
+| 6 | AW-Q | mail engine depth: attachments (dedupe, resumable, signed links), PQ OpenPGP, sealed agreements; Premium/Max company mailboxes on the company's OWN domain | Q | post-quantum from day one |
+| 7 | AW-R | public status page, Mail<->Chat bridge | R | |
+| 8 | AX-P1 .. AX-P10 | the Proton-plus list above (mail, calendar+contacts, Drive, Pass, docs/sheets first version, account protection, calls, transparency) | various | see each row |
+| 9 | AX-P11 | AnexoSuite (Word/Excel/Docs/Sheets), LAST, target 2 months | U | |
+AI is NOT in this list: it is a separate product at ai.anexomail.com. No VPN.
+
+### WEBSITE FOOTER: "Beyond Proton" (his order 8 Nov 13:14: write on the website, in the footer, what is more advanced than Proton)
+PLAN ONLY. The landing footer is NOT touched until he says "go" (standing rule). When he says go: a short, factual "Beyond Proton" block in the footer that lists ONLY features that are LIVE and VERIFIED (each line checked against the running product and against Proton's own pages that day; never a claim before it is live, never a false comparison). Candidate lines, each unlocked by its phase: AES-256-only TLS posture (AW-K5), device-lease keys (AW-G), device-bound sessions (AW-K7), post-quantum mail from day one (AW-Q), signed share links and booking pages, key transparency + served-code seal (AX-P10), built-in office suite (AX-P11). Footer layout follows the 390 / 820 / 1200+ rule.
