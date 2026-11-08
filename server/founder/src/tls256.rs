@@ -39,12 +39,84 @@ pub fn server_config(cert_pem: &[u8], key_pem: &[u8]) -> Result<Arc<ServerConfig
 pub async fn serve(listener: TcpListener, cfg: Arc<ServerConfig>, router: axum::Router) { serve_store(listener, Arc::new(CertStore::fixed(cfg)), router).await }
 
 /// K4.3: serve with a certificate store that can be swapped while running. Every NEW connection takes the store's current config; connections already open keep theirs.
-pub async fn serve_store(listener: TcpListener, store: Arc<CertStore>, router: axum::Router) {
+pub async fn serve_store(listener: TcpListener, store: Arc<CertStore>, router: axum::Router) { serve_store_px(listener, store, router, false).await }
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+// K4.5 (founder, 8 Nov 2026): behind the SNI front every client would look like 127.0.0.1. The front sends a PROXY protocol v1 line first; the terminator reads it BEFORE the
+// TLS handshake, but only from a loopback peer (the front), and only when switched on (FOUNDER_TLS_PROXY=on). A TLS record never starts with 'P' (0x16), so a direct
+// connection and a fronted one are told apart by the first bytes. The real client IP is handed to the app as `x-real-ip` (a client-sent one is always overwritten).
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+#[derive(Debug, PartialEq)]
+pub enum Px { Need, Ok(Option<std::net::SocketAddr>, usize), Bad }
+
+/// Strict PROXY v1 parser: "PROXY TCP4|TCP6 src dst sport dport\r\n" (<= 107 bytes) or "PROXY UNKNOWN\r\n". LF-only, v2 signature, wrong family, bad numbers = Bad.
+pub fn parse_proxy_v1(b: &[u8]) -> Px {
+    const SIG: &[u8] = b"PROXY ";
+    let m = b.len().min(SIG.len());
+    if b[..m] != SIG[..m] { return Px::Bad; }
+    let lim = b.len().min(107);
+    // The line ends at the first CR or LF: it must be exactly CR LF. A lone LF, a CR followed by anything else, or a control/non-ASCII byte is refused at once (no waiting for a timeout).
+    let mut p = None;
+    for (i, &c) in b[..lim].iter().enumerate() {
+        match c {
+            b'\r' => { match b.get(i + 1) { Some(b'\n') => { p = Some(i); break; } Some(_) => return Px::Bad, None => return Px::Need } }
+            b'\n' => return Px::Bad,
+            0x20..=0x7e => {}
+            _ => return Px::Bad,
+        }
+    }
+    let Some(p) = p else { return if b.len() >= 107 { Px::Bad } else { Px::Need } };
+    let Ok(line) = std::str::from_utf8(&b[..p]) else { return Px::Bad };
+    let used = p + 2;
+    let f: Vec<&str> = line.split(' ').collect();
+    if f.len() == 2 && f[1] == "UNKNOWN" { return Px::Ok(None, used); }
+    if f.len() != 6 { return Px::Bad; }
+    let (Ok(sp), Ok(_dp)) = (f[4].parse::<u16>(), f[5].parse::<u16>()) else { return Px::Bad };
+    let ip: std::net::IpAddr = match f[1] {
+        "TCP4" => match f[2].parse::<std::net::Ipv4Addr>() { Ok(a) if f[3].parse::<std::net::Ipv4Addr>().is_ok() => a.into(), _ => return Px::Bad },
+        "TCP6" => match f[2].parse::<std::net::Ipv6Addr>() { Ok(a) if f[3].parse::<std::net::Ipv6Addr>().is_ok() => a.into(), _ => return Px::Bad },
+        _ => return Px::Bad,
+    };
+    Px::Ok(Some(std::net::SocketAddr::new(ip, sp)), used)
+}
+
+/// FOUNDER_TLS_PROXY=on -> read the PROXY line from loopback peers. Default off.
+pub fn proxy_from_env() -> bool { std::env::var("FOUNDER_TLS_PROXY").map(|v| v.eq_ignore_ascii_case("on")).unwrap_or(false) }
+
+/// Decide the real client address of a fresh connection. Ok(addr) = go on with TLS (header bytes already consumed); Err = drop the connection.
+async fn real_client(tcp: &mut TcpStream, peer: std::net::SocketAddr) -> Result<std::net::SocketAddr, ()> {
+    let mut first = [0u8; 1];
+    let n = tokio::time::timeout(Duration::from_secs(3), tcp.peek(&mut first)).await.map_err(|_| ())?.map_err(|_| ())?;
+    if n == 0 { return Err(()); }
+    if first[0] != b'P' { return Ok(peer); } // a TLS record starts with 0x16: direct connection, nothing to read
+    if !peer.ip().is_loopback() { return Err(()); } // the internet may never send a PROXY line
+    let mut buf = [0u8; 107];
+    let read = async {
+        loop {
+            let got = tcp.peek(&mut buf).await.map_err(|_| ())?;
+            match parse_proxy_v1(&buf[..got]) {
+                Px::Ok(a, used) => { let mut sink = vec![0u8; used]; tokio::io::AsyncReadExt::read_exact(tcp, &mut sink).await.map_err(|_| ())?; return Ok(a.unwrap_or(peer)); }
+                Px::Bad => return Err(()),
+                Px::Need => { if got == 107 { return Err(()); } tokio::time::sleep(Duration::from_millis(10)).await; }
+            }
+        }
+    };
+    tokio::time::timeout(Duration::from_secs(3), read).await.map_err(|_| ())?
+}
+
+/// Same as `serve_store`; with `px` on, a loopback peer's PROXY v1 line gives the real client IP, which the app sees as `x-real-ip`.
+pub async fn serve_store_px(listener: TcpListener, store: Arc<CertStore>, router: axum::Router, px: bool) {
     loop {
-        let Ok((tcp, _)) = listener.accept().await else { continue };
+        let Ok((mut tcp, peer)) = listener.accept().await else { continue };
         let (acceptor, router) = (TlsAcceptor::from(store.current()), router.clone());
         tokio::spawn(async move {
+            let client = if px { match real_client(&mut tcp, peer).await { Ok(a) => a, Err(()) => return } } else { peer };
             let Ok(Ok(tls)) = tokio::time::timeout(Duration::from_secs(10), acceptor.accept(tcp)).await else { return };
+            let ip = client.ip().to_string();
+            let router = router.layer(axum::middleware::from_fn(move |mut req: axum::extract::Request, next: axum::middleware::Next| {
+                let ip = ip.clone();
+                async move { if let Ok(v) = axum::http::HeaderValue::from_str(&ip) { req.headers_mut().insert("x-real-ip", v); } next.run(req).await }
+            }));
             let svc = hyper_util::service::TowerToHyperService::new(router);
             let _ = hyper::server::conn::http1::Builder::new().serve_connection(hyper_util::rt::TokioIo::new(tls), svc).await;
         });
@@ -371,5 +443,65 @@ mod tests {
         store.swap(cfg2, na2);
         assert!(probe("localhost", port, Offer::Browser, Some(root2)).await.ok, "new connections now get cert 2, no restart");
         assert!(!probe("localhost", port, Offer::Browser, Some(root1)).await.ok, "cert 1 no longer served");
+    }
+
+    #[test]
+    fn k45_proxy_v1_parser_is_strict() {
+        assert_eq!(parse_proxy_v1(b"PROXY TCP4 1.2.3.4 9.9.9.9 5555 443\r\nXX"), Px::Ok(Some("1.2.3.4:5555".parse().unwrap()), 37));
+        assert_eq!(parse_proxy_v1(b"PROXY TCP6 2001:db8::1 ::2 1 443\r\n"), Px::Ok(Some("[2001:db8::1]:1".parse().unwrap()), 34));
+        assert_eq!(parse_proxy_v1(b"PROXY UNKNOWN\r\n"), Px::Ok(None, 15));
+        // prefixes need more bytes, never a verdict
+        for n in 0..37 { assert_eq!(parse_proxy_v1(&b"PROXY TCP4 1.2.3.4 9.9.9.9 5555 443\r\n"[..n]), Px::Need, "{n}"); }
+        // everything wrong is Bad
+        for bad in [&b"GET / HTTP/1.1\r\n"[..], b"\x16\x03\x01", b"PROXY TCP4 1.2.3.4 9.9.9.9 5555 443\n", b"PROXY TCP4 1.2.3.4 9.9.9.9 99999 443\r\n", b"PROXY TCP4 ::1 ::2 1 443\r\n", b"PROXY TCP6 1.2.3.4 9.9.9.9 1 443\r\n", b"PROXY UDP4 1.2.3.4 9.9.9.9 1 443\r\n", b"PROXY TCP4 1.2.3.4 9.9.9.9 1\r\n", b"\r\n\r\n\0\r\nQUIT\n\x21\x11", b"PROXY TCP4 \xff\xfe 1 2 3\r\n"] { assert_eq!(parse_proxy_v1(bad), Px::Bad, "{:?}", String::from_utf8_lossy(bad)); }
+        // a line that never ends is Bad once it is as long as the spec allows
+        assert_eq!(parse_proxy_v1(&[b"PROXY TCP4 ".as_slice(), &[b'1'; 200]].concat()), Px::Bad);
+    }
+
+    #[tokio::test]
+    async fn k45_real_client_rules() {
+        use tokio::io::AsyncWriteExt;
+        async fn pair() -> (TcpStream, TcpStream) { let l = TcpListener::bind("127.0.0.1:0").await.unwrap(); let a = l.local_addr().unwrap(); let c = TcpStream::connect(a).await.unwrap(); let (s, _) = l.accept().await.unwrap(); (c, s) }
+        let lo: std::net::SocketAddr = "127.0.0.1:40000".parse().unwrap();
+        let net: std::net::SocketAddr = "203.0.113.9:40000".parse().unwrap();
+        // loopback + valid line: the real address, line consumed, TLS bytes left untouched
+        let (mut c, mut s) = pair().await; c.write_all(b"PROXY TCP4 198.51.100.7 10.0.0.1 5555 443\r\n\x16\x03\x01").await.unwrap();
+        assert_eq!(real_client(&mut s, lo).await, Ok("198.51.100.7:5555".parse().unwrap()));
+        let mut rest = [0u8; 3]; tokio::io::AsyncReadExt::read_exact(&mut s, &mut rest).await.unwrap(); assert_eq!(rest, [0x16, 3, 1]);
+        // the internet may never send a line
+        let (mut c, mut s) = pair().await; c.write_all(b"PROXY TCP4 198.51.100.7 10.0.0.1 5555 443\r\n").await.unwrap();
+        assert_eq!(real_client(&mut s, net).await, Err(()));
+        // junk after P from loopback is dropped
+        let (mut c, mut s) = pair().await; c.write_all(b"PUT / HTTP/1.1\r\n").await.unwrap();
+        assert_eq!(real_client(&mut s, lo).await, Err(()));
+        // a plain TLS start is a direct connection: peer address, nothing consumed
+        let (mut c, mut s) = pair().await; c.write_all(&[0x16, 3, 1]).await.unwrap();
+        assert_eq!(real_client(&mut s, net).await, Ok(net));
+        let mut rest = [0u8; 3]; tokio::io::AsyncReadExt::read_exact(&mut s, &mut rest).await.unwrap(); assert_eq!(rest, [0x16, 3, 1]);
+    }
+
+    #[tokio::test]
+    async fn k45_the_app_sees_the_real_client_ip_and_a_forged_header_never_wins() {
+        let Some((c, k)) = test_cert() else { eprintln!("openssl missing: skipped"); return };
+        let l = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let port = l.local_addr().unwrap().port();
+        let router = axum::Router::new().route("/ip", axum::routing::get(|h: axum::http::HeaderMap| async move { h.get("x-real-ip").and_then(|v| v.to_str().ok()).unwrap_or("-").to_string() }));
+        tokio::spawn(serve_store_px(l, Arc::new(CertStore::fixed(server_config(&c, &k).unwrap())), router, true));
+        let root = CertificateDer::pem_slice_iter(&c).next().unwrap().unwrap();
+        let mut roots = RootCertStore::empty(); roots.add(root).unwrap();
+        let conn = TlsConnector::from(Arc::new(ClientConfig::builder_with_provider(provider(vec![AES256])).with_protocol_versions(&[&rustls::version::TLS13]).unwrap().with_root_certificates(roots).with_no_client_auth()));
+        let ask = |prefix: &'static [u8]| { let conn = conn.clone(); async move {
+            let mut tcp = TcpStream::connect(("127.0.0.1", port)).await.unwrap();
+            tcp.write_all(prefix).await.unwrap();
+            let mut tls = conn.connect(ServerName::try_from("localhost").unwrap(), tcp).await.unwrap();
+            tls.write_all(b"GET /ip HTTP/1.1\r\nHost: localhost\r\nx-real-ip: 6.6.6.6\r\nConnection: close\r\n\r\n").await.unwrap();
+            let mut out = String::new(); let _ = tls.read_to_string(&mut out).await; out
+        } };
+        // fronted: the PROXY line carries the real client, the forged header from the client is overwritten
+        let a = ask(b"PROXY TCP4 198.51.100.7 10.0.0.1 5555 443\r\n").await;
+        assert!(a.ends_with("198.51.100.7"), "{a}");
+        // direct (no line): the peer address, the forged header is overwritten too
+        let b = ask(b"").await;
+        assert!(b.ends_with("127.0.0.1"), "{b}");
     }
 }

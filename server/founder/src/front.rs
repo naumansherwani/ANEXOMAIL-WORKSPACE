@@ -71,13 +71,13 @@ pub fn proxy_v1(src: SocketAddr, dst: SocketAddr) -> String {
 }
 
 /// Where each kind of connection goes.
-pub struct FrontCfg { pub host: String, pub tls_backend: String, pub other_backend: String, pub proxy_other: bool }
+pub struct FrontCfg { pub host: String, pub tls_backend: String, pub other_backend: String, pub proxy_other: bool, pub proxy_tls: bool }
 
 /// FOUNDER_FRONT_ADDR + FOUNDER_FRONT_HOST + FOUNDER_FRONT_TLS + FOUNDER_FRONT_OTHER -> (listen address, config). None = off (the default).
 pub fn from_env() -> Option<Result<(String, Arc<FrontCfg>), String>> {
     let addr = std::env::var("FOUNDER_FRONT_ADDR").ok().filter(|a| !a.trim().is_empty())?;
     let get = |k: &str| std::env::var(k).ok().filter(|v| !v.trim().is_empty()).ok_or(format!("{k} is not set"));
-    Some((|| Ok((addr.clone(), Arc::new(FrontCfg { host: get("FOUNDER_FRONT_HOST")?.to_ascii_lowercase(), tls_backend: get("FOUNDER_FRONT_TLS")?, other_backend: get("FOUNDER_FRONT_OTHER")?, proxy_other: std::env::var("FOUNDER_FRONT_PROXY").map(|v| !matches!(v.trim().to_ascii_lowercase().as_str(), "off" | "0" | "no")).unwrap_or(true) }))))())
+    Some((|| Ok((addr.clone(), Arc::new(FrontCfg { host: get("FOUNDER_FRONT_HOST")?.to_ascii_lowercase(), tls_backend: get("FOUNDER_FRONT_TLS")?, other_backend: get("FOUNDER_FRONT_OTHER")?, proxy_other: std::env::var("FOUNDER_FRONT_PROXY").map(|v| !matches!(v.trim().to_ascii_lowercase().as_str(), "off" | "0" | "no")).unwrap_or(true), proxy_tls: std::env::var("FOUNDER_FRONT_PROXY_TLS").map(|v| v.eq_ignore_ascii_case("on")).unwrap_or(false) }))))())
 }
 
 /// Decide the backend for one connection from its first bytes, then forward both directions until either side closes. 5 s to show a server name.
@@ -101,7 +101,7 @@ async fn handle(mut client: TcpStream, peer: SocketAddr, cfg: &FrontCfg) -> std:
     }).await;
     let to_terminator = matches!(verdict, Ok(Ok(Peek::Name(ref n))) if *n == cfg.host);
     let mut backend = TcpStream::connect(if to_terminator { &cfg.tls_backend } else { &cfg.other_backend }).await?;
-    if !to_terminator && cfg.proxy_other { backend.write_all(proxy_v1(peer, client.local_addr().unwrap_or(peer)).as_bytes()).await?; }
+    if (to_terminator && cfg.proxy_tls) || (!to_terminator && cfg.proxy_other) { backend.write_all(proxy_v1(peer, client.local_addr().unwrap_or(peer)).as_bytes()).await?; }
     tokio::io::copy_bidirectional(&mut client, &mut backend).await.map(|_| ())
 }
 
@@ -165,7 +165,7 @@ mod tests {
     #[tokio::test]
     async fn the_founder_host_goes_to_the_terminator_and_every_other_name_goes_to_caddy_with_a_proxy_line() {
         let (t, o) = (backend("TERMINATOR").await, backend("CADDY").await);
-        let cfg = Arc::new(FrontCfg { host: "founderworkspace.anexomail.com".into(), tls_backend: t, other_backend: o, proxy_other: true });
+        let cfg = Arc::new(FrontCfg { host: "founderworkspace.anexomail.com".into(), tls_backend: t, other_backend: o, proxy_other: true, proxy_tls: false });
         assert_eq!(through_front(cfg.clone(), hello("founderworkspace.anexomail.com")).await, "TERMINATOR|tls-bytes", "founder host: plain bytes, the terminator sees the untouched ClientHello");
         let other = through_front(cfg.clone(), hello("anexomail.com")).await;
         assert!(other.starts_with("CADDY|PROXY TCP4 127.0.0.1 127.0.0.1 "), "other host: PROXY line first: {other}");
@@ -176,7 +176,7 @@ mod tests {
     #[tokio::test]
     async fn with_the_proxy_line_switched_off_the_other_backend_gets_the_untouched_bytes() {
         let (t, o) = (backend("TERMINATOR").await, backend("CADDY").await);
-        let cfg = Arc::new(FrontCfg { host: "founderworkspace.anexomail.com".into(), tls_backend: t, other_backend: o, proxy_other: false });
+        let cfg = Arc::new(FrontCfg { host: "founderworkspace.anexomail.com".into(), tls_backend: t, other_backend: o, proxy_other: false, proxy_tls: false });
         assert_eq!(through_front(cfg, hello("anexomail.com")).await, "CADDY|tls-bytes", "spare-port test mode: Caddy's normal :443 can be the other backend");
     }
 

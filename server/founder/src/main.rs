@@ -826,7 +826,7 @@ async fn main() {
         None => eprintln!("founder: TLS-256 terminator OFF (no FOUNDER_TLS256_ADDR)"),
         Some(Err(e)) => eprintln!("founder: TLS-256 terminator NOT started: {e}"),
         Some(Ok((a, store, cert_path, key_path))) => match tokio::net::TcpListener::bind(&a).await {
-            Ok(l) => { eprintln!("founder: TLS-256 terminator ON {a} (TLS 1.3, AES-256-GCM only, certificate hot-reload, {} days left)", (store.not_after() - std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0)) / 86400); tls256::spawn_reloader(store.clone(), cert_path, key_path); tokio::spawn(tls256::serve_store(l, store, app(st.clone()).layer(hdr("alt-svc", "clear")).layer(axum::middleware::from_fn(fproxy::layer)))); }
+            Ok(l) => { eprintln!("founder: TLS-256 terminator ON {a} (TLS 1.3, AES-256-GCM only, certificate hot-reload, {} days left)", (store.not_after() - std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0)) / 86400); tls256::spawn_reloader(store.clone(), cert_path, key_path); tokio::spawn(tls256::serve_store_px(l, store, app(st.clone()).layer(hdr("alt-svc", "clear")).layer(axum::middleware::from_fn(fproxy::layer)), tls256::proxy_from_env())); }
             Err(e) => eprintln!("founder: TLS-256 terminator NOT started: bind {a}: {e}"),
         },
     }
