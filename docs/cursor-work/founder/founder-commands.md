@@ -2710,3 +2710,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 8 Nov 2026 14:35 PKT his order (sent 13:31, in anger): 'IN PORTS KO REPO MAIN SAVE KERO YEH TOP PE RAKHO YEH PORTS KUCH MERE SERVER 1 AUR SERVER 2 KE TUNNEL AUR HANDSHAKE PE CHALTA HAI YEH TUNE DEKH LE PEHLE MERE SERVER PE DIRECT COMMAND DAI KE YEH RED LINE CROSSED NAHI HO'.
 
 - 8 Nov 2026 14:50 PKT his paste (sent 13:33): he ran the Caddy copy + validate line (Valid configuration) before the process-name check I had asked for.
+
+- 8 Nov 2026 15:05 PKT his paste (13:33): ss -ltnup + established + ephemeral range, saved in the red-line file.
