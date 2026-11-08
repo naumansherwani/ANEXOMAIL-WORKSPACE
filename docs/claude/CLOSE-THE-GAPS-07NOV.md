@@ -112,3 +112,5 @@ G2 is now the open item in progress.
 - 8 Nov 2026 15:25 PKT FOUNDER: Caddy mini test PASSED; STRICT CADDY RULE (never touch his Caddy or used ports); real :443 switch PARKED/OPEN (needs one Caddy reload, his word); K6 technology written; next phase K6. Details in K4-REAL-443-DESIGN-07NOV.md.
 
 - 8 Nov 2026 15:55 PKT FOUNDER: his 13:45 order = real :443 switch GO, done safely (plan S0-S6 in K4-REAL-443-DESIGN-07NOV.md). Code: front.rs writes plain IPv4 in the PROXY line for ::ffff: clients (238 tests pass). Parked state of the earlier entry is replaced. Nothing changed on the server yet.
+
+- 8 Nov 2026 13:57 PKT FOUNDER S0 (read-only) RESULT: no top-level ':80', ':443' or 'http://' lines in /etc/caddy/Caddyfile (all sites are named blocks, so Caddy's auto redirect does the http->https today); ufw has 443/tcp, 80/tcp, 25/465/587/143/993/110/995, 3478, 5349, 49152:65535/udp ALLOW (first 20 lines; 443/udp not in them); service runs User=anexomail-founder, EnvironmentFile=/etc/anexomail/founder.env, ExecStart=/opt/anexomail-founder/anexomail-founder. Next = S1 (copy of the Caddyfile + validate + diff), nothing changed on the server.
