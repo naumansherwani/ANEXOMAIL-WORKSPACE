@@ -111,6 +111,7 @@ pub async fn serve_store_px(listener: TcpListener, store: Arc<CertStore>, router
         let (acceptor, router) = (TlsAcceptor::from(store.current()), router.clone());
         tokio::spawn(async move {
             let client = if px { match real_client(&mut tcp, peer).await { Ok(a) => a, Err(()) => return } } else { peer };
+            if px && client != peer { static SEEN: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0); let n = SEEN.fetch_add(1, std::sync::atomic::Ordering::Relaxed) + 1; if n <= 5 || n % 1000 == 0 { eprintln!("founder: PROXY v1 accepted from {peer}: real client {client} (connection #{n})"); } } // proof line for the journal; quiet after the first five
             let Ok(Ok(tls)) = tokio::time::timeout(Duration::from_secs(10), acceptor.accept(tcp)).await else { return };
             let ip = client.ip().to_string();
             let router = router.layer(axum::middleware::from_fn(move |mut req: axum::extract::Request, next: axum::middleware::Next| {
