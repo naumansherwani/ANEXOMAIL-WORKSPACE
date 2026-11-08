@@ -782,3 +782,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 8 Nov 2026 13:50 PKT Next server step: read-only look at the current founder block of /etc/caddy/Caddyfile; nothing is changed until the exact edit + rollback line are shown. Awam pull: not needed.
 
 - 8 Nov 2026 14:00 PKT Next server step is READ ONLY (sed -n 1,9p /etc/caddy/Caddyfile). Any Caddy change goes to a COPY under /root/i9 first. Awam pull: not needed.
+
+- 8 Nov 2026 15:55 PKT K4.5 live :443 switch steps S0-S6 are given one or two lines at a time (K4-REAL-443-DESIGN-07NOV.md). S3 = founder-install.sh again. Awam pull: not needed (awam hosts only get the Caddy port move, no awam code changes).

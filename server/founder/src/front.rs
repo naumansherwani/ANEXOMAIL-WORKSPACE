@@ -61,8 +61,14 @@ pub fn peek_sni(b: &[u8]) -> Peek {
     match r { Some(Some(n)) => Peek::Name(n), Some(None) => Peek::NoName, None => Peek::NotTls }
 }
 
+/// A dual-stack listener ([::]:443) reports an IPv4 client as ::ffff:a.b.c.d. The PROXY line must carry the plain IPv4 address (logs, limiters and Caddy all expect that).
+fn canon(a: SocketAddr) -> SocketAddr {
+    match a { SocketAddr::V6(v) => match v.ip().to_ipv4_mapped() { Some(v4) => SocketAddr::new(std::net::IpAddr::V4(v4), v.port()), None => a }, _ => a }
+}
+
 /// PROXY protocol v1 line for a connection from `src` to `dst` (what Caddy's proxy_protocol listener wrapper reads).
 pub fn proxy_v1(src: SocketAddr, dst: SocketAddr) -> String {
+    let (src, dst) = (canon(src), canon(dst));
     match (src, dst) {
         (SocketAddr::V4(s), SocketAddr::V4(d)) => format!("PROXY TCP4 {} {} {} {}\r\n", s.ip(), d.ip(), s.port(), d.port()),
         (SocketAddr::V6(s), SocketAddr::V6(d)) => format!("PROXY TCP6 {} {} {} {}\r\n", s.ip(), d.ip(), s.port(), d.port()),
@@ -144,6 +150,9 @@ mod tests {
         assert_eq!(proxy_v1("1.2.3.4:5555".parse().unwrap(), "9.9.9.9:443".parse().unwrap()), "PROXY TCP4 1.2.3.4 9.9.9.9 5555 443\r\n");
         assert_eq!(proxy_v1("[::1]:1".parse().unwrap(), "[::2]:443".parse().unwrap()), "PROXY TCP6 ::1 ::2 1 443\r\n");
         assert_eq!(proxy_v1("1.2.3.4:1".parse().unwrap(), "[::2]:443".parse().unwrap()), "PROXY UNKNOWN\r\n");
+        // K4.5: a dual-stack listener shows an IPv4 client as ::ffff:a.b.c.d; the line must carry the plain IPv4 address
+        assert_eq!(proxy_v1("[::ffff:203.0.113.9]:4000".parse().unwrap(), "[::ffff:62.238.98.98]:443".parse().unwrap()), "PROXY TCP4 203.0.113.9 62.238.98.98 4000 443\r\n");
+        assert_eq!(proxy_v1("[2001:db8::9]:4000".parse().unwrap(), "[2a01:4f9:c014:5df6::1]:443".parse().unwrap()), "PROXY TCP6 2001:db8::9 2a01:4f9:c014:5df6::1 4000 443\r\n");
     }
 
     /// A backend that answers "<tag>|<first line or first bytes>" once it has read something.

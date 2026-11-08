@@ -110,3 +110,5 @@ G2 is now the open item in progress.
 - 8 Nov 2026 15:05 PKT FOUNDER: his process-name port list (13:33) read and written to docs/claude/SERVER-PORTS-RED-LINE-08NOV.md. 18443 (tcp+udp) and 12019 are free and below the ephemeral range 32768-60999; the Caddy test uses a MINI config (no ACME, own certificate files, bind 127.0.0.1) so the live Caddy's certificates and Let's Encrypt limits are never touched. Nothing changed on the server.
 
 - 8 Nov 2026 15:25 PKT FOUNDER: Caddy mini test PASSED; STRICT CADDY RULE (never touch his Caddy or used ports); real :443 switch PARKED/OPEN (needs one Caddy reload, his word); K6 technology written; next phase K6. Details in K4-REAL-443-DESIGN-07NOV.md.
+
+- 8 Nov 2026 15:55 PKT FOUNDER: his 13:45 order = real :443 switch GO, done safely (plan S0-S6 in K4-REAL-443-DESIGN-07NOV.md). Code: front.rs writes plain IPv4 in the PROXY line for ::ffff: clients (238 tests pass). Parked state of the earlier entry is replaced. Nothing changed on the server yet.
