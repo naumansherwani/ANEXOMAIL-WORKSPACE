@@ -2706,3 +2706,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 8 Nov 2026 14:10 PKT his order (sent 13:26): 'is ko safe port pe le jao... server 1 ke saath bhi ports connect hain, pehle repo se bahar aao aur ports free dekho kaun si hain'. Answer: ports are read from the SERVER (ss -ltnup), not from the repo; spare ports for the Caddy test copy are chosen only from ports the server shows free. Nothing changed.
 
 - 8 Nov 2026 14:20 PKT his order (sent 13:28, in anger): 'tune ports fix ker di hai woh apas main clash ker gaye hogi' + ss output + Caddyfile lines 1-9. Answer: ports re-chosen from his ss list only (18443 / 18080 / 12019).
+
+- 8 Nov 2026 14:35 PKT his order (sent 13:31, in anger): 'IN PORTS KO REPO MAIN SAVE KERO YEH TOP PE RAKHO YEH PORTS KUCH MERE SERVER 1 AUR SERVER 2 KE TUNNEL AUR HANDSHAKE PE CHALTA HAI YEH TUNE DEKH LE PEHLE MERE SERVER PE DIRECT COMMAND DAI KE YEH RED LINE CROSSED NAHI HO'.

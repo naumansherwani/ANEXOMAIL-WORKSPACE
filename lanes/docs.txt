@@ -122,6 +122,7 @@ docs/claude/PRO-LIVE-GREEN-26OCT.md
 docs/claude/README.md
 docs/claude/REPO-AUDIT-03NOV.md
 docs/claude/SERVER-COMMANDS-FOR-CLAUDE.md
+docs/claude/SERVER-PORTS-RED-LINE-08NOV.md
 docs/claude/SIGNUP-SECURITY-MILITARY-GRADE-02NOV.md
 docs/claude/START-HERE-AFTER-COMPACTION.md
 docs/claude/T-SERIES-BLUEPRINT.md
