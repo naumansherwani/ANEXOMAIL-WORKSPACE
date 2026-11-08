@@ -780,3 +780,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 8 Nov 2026 13:45 PKT K4.5 spare-port env on (backup founder.env.bak.k45), rollback: cp -p /etc/anexomail/founder.env.bak.k45 /etc/anexomail/founder.env && systemctl restart anexomail-founder. Awam pull: not needed.
 
 - 8 Nov 2026 13:50 PKT Next server step: read-only look at the current founder block of /etc/caddy/Caddyfile; nothing is changed until the exact edit + rollback line are shown. Awam pull: not needed.
+
+- 8 Nov 2026 14:00 PKT Next server step is READ ONLY (sed -n 1,9p /etc/caddy/Caddyfile). Any Caddy change goes to a COPY under /root/i9 first. Awam pull: not needed.
