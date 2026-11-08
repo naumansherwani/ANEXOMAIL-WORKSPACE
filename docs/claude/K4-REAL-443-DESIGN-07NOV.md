@@ -40,3 +40,12 @@ K4.2 path-proxy table + tests (Rust), tested on :8443.  K4.3 SNI front built, te
 - 8 Nov 2026 03:10 PKT FOUNDER: K4.4 spare-port run on his server: SNI front ON 127.0.0.1:8445, routing proven by certificates (founder host -> founder cert, anexomail.com -> Caddy cert, AES-128 = Caddy). NOT GREEN: founder-host cipher line missing in the output, AES-256 through the front still to prove (one more openssl check). Next after proof: K4.5 (needs his 'haan' for the live switch).
 
 - 8 Nov 2026 03:15 PKT FOUNDER: K4.4 = GREEN (WIRED: YES / REAL: YES on spare port 8445): AES-256 asked -> TLS_AES_256_GCM_SHA384; AES-128 only -> handshake failure. Real :443 still Caddy. Next K4.5.
+
+
+## K4.5 TECHNOLOGY (written before the phase starts, founder rule; 8 Nov 2026 12:55 PKT)
+- **Layers (never mixed):** Rust only (`server/founder/src/tls256.rs` reader, `front.rs` sender, `main.rs` env wiring) + server-side Caddy config text applied by his single-line commands. NO SQL, NO React/UI, NO WASM change. Same SPA on 390/820/1200+ (no UI change).
+- **Technology:** PROXY protocol **v1** (text line `PROXY TCP4|TCP6 src dst sport dport
+`, max 107 bytes, strict parse, v2 refused), tokio, rustls (AES-256-GCM only, unchanged), Caddy `listener_wrappers { proxy_protocol }` on 127.0.0.1:8444 (+ `tls` listener), founder host plain HTTP on 127.0.0.1:8081 for the path proxy. No new crate.
+- **Why:** behind the SNI front every client looks like 127.0.0.1, which breaks the login limiter, audit and device records. The front already sends v1 to Caddy for other hosts; K4.5 makes the terminator read it too, so the real client IP survives.
+- **Safety design:** the header is read BEFORE the TLS handshake, only from loopback peers (the front), 3 s timeout, malformed/oversized/non-loopback = connection dropped, never trusted from the internet. Default OFF (env `FOUNDER_TLS_PROXY=on` terminator, `FOUNDER_FRONT_PROXY_TLS=on` front). Pure parser + tests (valid v4/v6, short, long, junk, wrong proto, LF only, v2 signature). Verified on spare ports first (8445), real :443 switch ONLY with his "haan" and the rollback ready (`/root/i9/caddy-restored-safe`, `founder.env.bak.front`).
+- **Order:** (1) code + tests in the sandbox, (2) install, spare-port proof of the real client IP in the journal, (3) Caddy listeners (8444/8081) prepared without moving :443, (4) switch with his "haan" + rollback line in hand, (5) K4.6 CHECK + Chrome 390/820/1200+, SQL E119.

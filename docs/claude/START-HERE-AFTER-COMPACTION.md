@@ -207,3 +207,5 @@ Business Max £125,000/month (NOT 115,000), card = unlimited users, backend/SQL 
 - 8 Nov 2026 03:40 PKT FOUNDER CORRECTION of the 'bundle mismatch' gap: /founderlogin, /app, /api are the OLD Caddy-owned login pages (fproxy.rs hands them upstream), so index-Bqhlal5C is the OLD login bundle, NOT our founder-web build. The new SPA (index-TIPb62WV) lives under /_cc/. My comparison used the wrong page. The right check is /_cc/ on :443 and :8443 (asked of him). Gap stays OPEN until that check matches the repo.
 
 - 8 Nov 2026 03:45 PKT FOUNDER: bundle gap CLOSED. LIVE = REPO: founderworkspace /_cc/ serves index-TIPb62WV on BOTH :443 and :8443 (his curl output) = repo build index-TIPb62WV. K4.4 stays GREEN (spare port 8445). Next: K4.5.
+
+- 8 Nov 2026 12:55 PKT FOUNDER: K4.5 TECHNOLOGY written (see K4-REAL-443-DESIGN-07NOV.md section 'K4.5 TECHNOLOGY'): Rust only, PROXY protocol v1 reader (loopback-only, before TLS, 3 s, default OFF) + front sender + Caddy proxy_protocol listener 8444 / plain 8081; no SQL/UI/WASM; live :443 switch only with his 'haan' + rollback. Coding starts now.

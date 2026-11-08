@@ -77,3 +77,5 @@ GREEN = his pasted server output and/or my own live Chrome look and/or his phone
 - 8 Nov 2026 03:15 PKT FOUNDER: K4.4 = GREEN (WIRED: YES / REAL: YES on spare port 8445): AES-256 asked -> TLS_AES_256_GCM_SHA384; AES-128 only -> handshake failure. Real :443 still Caddy. Next K4.5.
 
 - 8 Nov 2026 03:45 PKT FOUNDER: bundle gap CLOSED. LIVE = REPO: founderworkspace /_cc/ serves index-TIPb62WV on BOTH :443 and :8443 (his curl output) = repo build index-TIPb62WV. K4.4 stays GREEN (spare port 8445). Next: K4.5.
+
+- 8 Nov 2026 12:55 PKT FOUNDER: K4.5 TECHNOLOGY written (see K4-REAL-443-DESIGN-07NOV.md section 'K4.5 TECHNOLOGY'): Rust only, PROXY protocol v1 reader (loopback-only, before TLS, 3 s, default OFF) + front sender + Caddy proxy_protocol listener 8444 / plain 8081; no SQL/UI/WASM; live :443 switch only with his 'haan' + rollback. Coding starts now.
