@@ -882,3 +882,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 8 Nov 2026 13:10 PKT K4.5 CODED (Rust, 238 tests pass, NOT GREEN): PROXY v1 reader in tls256.rs (loopback-only, before TLS, strict parser, x-real-ip), front.rs proxy_tls, main.rs wiring; default OFF. Do not rewrite; next is his spare-port proof.
 
 - 8 Nov 2026 13:20 PKT FOUNDER: K4.5 installed on his server (founder-install output: SPA 200, healthz 200, service alive; default OFF). Added a journal proof line 'PROXY v1 accepted from ...: real client ...' (first 5 connections, then every 1000th); 238 tests pass. His 'HAAN HAI' for the live :443 switch recorded (12:58); the switch still waits for the spare-port proof and a ready rollback. NOT GREEN.
+
+- 8 Nov 2026 13:30 PKT FOUNDER+AWAM RULE (his 8 Nov 13:07): phase detail summary + 'what awam gets' written in docs/claude/PHASE-SUMMARY-WITH-AWAM-08NOV.md; founder code is preserved, awam gets a molded copy later in the awam lane (separate awam command). His second K4.5 founder-install output (13:07) was OK. Next: spare-port proof of the real client IP.

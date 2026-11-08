@@ -44,3 +44,5 @@ Sources: https://proton.me/blog/2026-spring-summer-roadmaps , https://proton.me/
 - 8 Nov 2026 03:10 PKT AWAM: G5 recorded in AWAM-PACKAGES-PROPOSAL-07NOV.md (alert 90% yellow / 95% high, no block; mailbox @anexomail.com login option; yearly free months 2 / Max 3, shown as first months in billing). Not built.
 
 - 8 Nov 2026 03:15 PKT AWAM CORRECTION: Business Premium + Business Max mailboxes use the company's own domain (user@theircompany.com), no @anexomail.com restriction; no 'option' (my G5 wording was wrong, fixed). Not built.
+
+- 8 Nov 2026 13:30 PKT FOUNDER+AWAM RULE (his 8 Nov 13:07): phase detail summary + 'what awam gets' written in docs/claude/PHASE-SUMMARY-WITH-AWAM-08NOV.md; founder code is preserved, awam gets a molded copy later in the awam lane (separate awam command). His second K4.5 founder-install output (13:07) was OK. Next: spare-port proof of the real client IP.

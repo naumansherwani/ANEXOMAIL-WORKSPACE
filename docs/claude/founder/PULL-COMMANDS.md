@@ -774,3 +774,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 8 Nov 2026 13:10 PKT K4.5 (after the code is installed; NOTHING is switched on by the install, default OFF): (1) founder-install.sh (new Rust: PROXY v1 reader); then spare-port proof lines (env FOUNDER_TLS_PROXY=on and FOUNDER_FRONT_PROXY_TLS=on, restart, curl through 8445, journal shows the real client IP) are given one line at a time; rollback: cp -p /etc/anexomail/founder.env.bak.front /etc/anexomail/founder.env && systemctl restart anexomail-founder. Awam pull: not needed.
 
 - 8 Nov 2026 13:20 PKT K4.5 reinstall (adds the journal proof line): founder-install.sh again; then spare-port env + restart + proof lines one at a time. Awam pull: not needed.
+
+- 8 Nov 2026 13:30 PKT K4.5 reinstall done by him (13:07, OK). Next: spare-port proof lines, one at a time. Awam pull: not needed.
