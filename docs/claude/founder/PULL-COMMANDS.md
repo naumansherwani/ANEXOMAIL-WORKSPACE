@@ -788,3 +788,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 9 Nov 2026 14:46 PKT K4.5 S3 = founder-install.sh (installs the front IPv4 fix; nothing is switched on). Awam pull: not needed.
 
 - 9 Nov 2026 14:58 PKT K4.5 S4 (drop-in 443.conf) and S5 (switch line) are server-only lines in chat, no pull script. Awam pull: not needed.
+
+- 9 Nov 2026 15:55 PKT E119 :443 rows check (read-only, safe to repeat): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E119_founder_tls_posture CHECK_E119_443 2>&1 | tail -8. Awam pull: not needed.

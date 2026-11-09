@@ -258,6 +258,7 @@ docs/cursor-work/sql/CHECK_E116.sql
 docs/cursor-work/sql/CHECK_E117.sql
 docs/cursor-work/sql/CHECK_E118.sql
 docs/cursor-work/sql/CHECK_E119.sql
+docs/cursor-work/sql/CHECK_E119_443.sql
 docs/cursor-work/sql/CHECK_E120.sql
 docs/cursor-work/sql/CHECK_E121.sql
 docs/cursor-work/sql/CHECK_E122.sql

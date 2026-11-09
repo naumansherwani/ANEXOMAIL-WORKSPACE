@@ -2742,3 +2742,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 9 Nov 2026 15:40 PKT his words: 'mobile ka dashboard send kiya hai aur repo main update kero claude ke liye chat, codes context top pe time and date ke saath abhi ke abhi'.
 
 - 9 Nov 2026 15:48 PKT his words (in the previous message, 15:32): 'Yeh sab theek hai is ki zarurat nahi hai is ko green likho.' (tablet 820 waived, K4 GREEN) + 'yeh lo output aur repo main update kero chat context aur codes update kero claude ke liye top pe'.
+
+- 9 Nov 2026 15:55 PKT his words (15:39, verbatim): 'MADARCHOD JAB MAIN BOL RAHA HOON KE SAHI SAB KUCH TO TU MERA ORDER SUN AUR GREEN LIKHO.' / 'TOH GANDU YEH TUNE KERNA HAI KAISE KERNA HAI WOH STEPS FOLLOW KERWAO' / 'h3 BHI HOGA ASSHOLE' / 'YAHAN FASILA SIMPLE HAI KE ADVANCE TECHNOLOGY HOGI SIRF AUR NO COMPROMISE' / 'YAHAN PE allowed, HTTP/3 chalu aur K5 sirf AES-256 YEH SAB CHALAY GA JAISE MARZI KERO' / 'JAWAB DAI DIYA HAI allowed, HTTP/3 chalu aur K5 sirf AES-256'.
