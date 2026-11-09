@@ -26,6 +26,14 @@ pub fn is_ours(path: &str) -> bool {
 }
 pub fn is_legacy(path: &str) -> bool { !is_ours(path) }
 
+/// G-MIX (founder 9 Nov 2026, SEPARATION LAW): the awam workspace must never open on the founder host. The old app is a single-page app, so `/app*` (dashboard, inbox, calendar) and the awam sign-in `/auth`, `/signup`
+/// would render the AWAM product here. They are NOT handed upstream: `/app*` goes to our own Command Center `/`, `/auth` and `/signup` go to the founder sign-in. Only the old founder sign-in page and its `/api/auth*` calls still cross, until the native login (G-MIX stage 2) replaces them.
+pub fn awam_redirect(path: &str) -> Option<&'static str> {
+    if path == "/app" || path.starts_with("/app/") { return Some("/"); }
+    if path == "/auth" || path.starts_with("/auth/") || path == "/signup" || path.starts_with("/signup/") { return Some("/founderlogin"); }
+    None
+}
+
 /// `host:port` -> validated address. Rejects empty, no port, a port of 0, and anything that is not a plain host:port (no scheme, no path).
 pub fn parse_upstream(v: &str) -> Result<(String, u16), String> {
     let v = v.trim();
@@ -81,6 +89,12 @@ fn bad_gateway() -> Response { (StatusCode::BAD_GATEWAY, [(header::CACHE_CONTROL
 
 /// Outermost middleware: legacy paths go upstream, everything else continues untouched. When the proxy is off, nothing changes.
 pub async fn layer(req: Request, next: Next) -> Response {
+    if let Some(to) = awam_redirect(req.uri().path()) {
+        let mut r = Response::new(Body::empty()); *r.status_mut() = StatusCode::FOUND;
+        r.headers_mut().insert(header::LOCATION, HeaderValue::from_static(to)); r.headers_mut().insert(header::CACHE_CONTROL, HeaderValue::from_static("no-store"));
+        r.headers_mut().insert(HeaderName::from_static("alt-svc"), HeaderValue::from_static("clear"));
+        return r;
+    }
     let (Some(up), true) = (UP.get(), is_legacy(req.uri().path())) else { return next.run(req).await };
     let (parts, body) = req.into_parts();
     let url = format!("{}{}", up.base, parts.uri.path_and_query().map(|p| p.as_str()).unwrap_or("/"));
@@ -106,6 +120,11 @@ mod tests {
     fn we_serve_only_our_own_routes_and_everything_else_is_the_old_apps() {
         for p in ["/", "/f", "/f/", "/_cc", "/_cc/", "/_cc/assets/index-x.js", "/_cc/kernel/anexo-kernel-0.13.0.wasm", "/founder/v1/me", "/founder/v1/vault/lease"] { assert!(is_ours(p) && !is_legacy(p), "{p}"); }
         for p in ["/founderlogin", "/app", "/app/founder", "/api/auth/refresh", "/assets/index-CyAOzGvs.js", "/favicon.svg", "/manifest.webmanifest", "/apple-touch-icon.png", "/_ccx/a", "/founder/v1", "/founder", "/f2", "/healthz"] { assert!(is_legacy(p), "{p}"); }
+    }
+    #[test]
+    fn the_awam_app_never_opens_on_the_founder_host() {
+        for (p, to) in [("/app", "/"), ("/app/", "/"), ("/app/inbox", "/"), ("/app/founder/ai", "/"), ("/auth", "/founderlogin"), ("/auth/x", "/founderlogin"), ("/signup", "/founderlogin")] { assert_eq!(awam_redirect(p), Some(to), "{p}"); }
+        for p in ["/", "/founderlogin", "/api/auth/refresh", "/assets/a.js", "/application", "/authx", "/f", "/_cc/a", "/founder/v1/me"] { assert_eq!(awam_redirect(p), None, "{p}"); }
     }
     #[test]
     fn the_upstream_is_a_plain_host_port_and_never_our_own_port() {

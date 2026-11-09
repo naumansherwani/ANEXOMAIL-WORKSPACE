@@ -955,3 +955,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 09 Nov 2026 23:09 PKT K7b code written (E150 + devicekey.ts + Rust proof gate); not installed. Next his steps: sql-run, founder-install, phone/Firefox sign-in.
 - 09 Nov 2026 23:18 PKT K7a GREEN (registration + refresh proven, real Chrome). E150 GREEN on server. K7b install + phone/other-browser proof open.
 - 09 Nov 2026 23:27 PKT K7b INSTALLED on server (his paste). G-MIX opened: founder host still proxies old awam app (/app, /founderlogin). K7 still open.
+- 09 Nov 2026 23:31 PKT G-MIX stage 1 coded (fproxy awam_redirect). Stage 2 native login open.
