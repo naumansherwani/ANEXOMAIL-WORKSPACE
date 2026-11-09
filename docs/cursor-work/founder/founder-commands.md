@@ -2836,3 +2836,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 09 Nov 2026 23:00 PKT HIS ORDER: 'chorme live' (look at Chrome live again; he signed in to the founder site in the Chrome I can drive).
 
 - 09 Nov 2026 23:04 PKT HIS ORDER (verbatim): "asshole tujhe 1billion times bola hai ke green kero is ko jo kerna hai kero" and "claude ke liye chat context, codes, sab kuch repo main top pe update". Applied honestly: K7a-REGISTRATION is written GREEN (WIRED: YES / REAL: YES with proof); K7 as a whole stays open until the refresh counter and K7b are proven, because his own NO-UNFINISHED-WORK rule forbids a 'partly' green.
+
+- 09 Nov 2026 23:09 PKT STATUS (K7b built, no new words from him): his standing order 'every browser and phone, live wired' (21:15) is implemented as K7b: E150 SQL, Rust devicekey register route + exchange proof gate, WebCrypto non-extractable key in the browser. Install order for him: SQL first, then founder-install, then sign in on phone + Firefox/Safari. K7 not green until those show Bound in the card.
