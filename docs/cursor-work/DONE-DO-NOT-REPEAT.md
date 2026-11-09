@@ -1763,3 +1763,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 09 Nov 2026 23:54 PKT install OK again (stage 1 + K7b on server). Curl proof of /app pending. Stage 2a next.
 - 10 Nov 2026 00:02 PKT G-MIX stage 1 GREEN (my curl: /app = 302 /). 2a + 2c coded and tested, install + his real sign-in pending.
 - 10 Nov 2026 00:13 PKT 2a+2c INSTALLED + WIRED (live curl, LIVE=REPO). REAL needs his fresh sign-in.
+- 10 Nov 2026 00:20 PKT G-MIX 2a+2c GREEN (his phone proof). K7b GREEN on real phone (Chrome Android, 'Bound by a browser key'). K7 still needs Firefox/Safari + tablet/laptop card look.

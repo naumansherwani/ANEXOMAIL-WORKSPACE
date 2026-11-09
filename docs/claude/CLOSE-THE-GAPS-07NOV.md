@@ -224,3 +224,4 @@ G2 is now the open item in progress.
 - 09 Nov 2026 23:54 PKT G-MIX stage 1 installed, curl proof pending; stage 2a next.
 - 10 Nov 2026 00:02 PKT G-MIX: stage 1 CLOSED (green). Open: 2a/2c install + his real sign-in proof; 2b passkey/recovery/magic/MFA; 2d cut (unset FOUNDER_LEGACY_UPSTREAM, /founderlogin -> /).
 - 10 Nov 2026 00:13 PKT G-MIX 2a/2c installed + wired; REAL pending his fresh sign-in. 2b, 2d, K7 phone proof open.
+- 10 Nov 2026 00:20 PKT CLOSED: G-MIX 2a + 2c (green), K7b phone. OPEN: K7 Firefox/Safari proof + tablet/laptop real look; card wording 'computer' -> 'device'; G-MIX 2b + 2d.
