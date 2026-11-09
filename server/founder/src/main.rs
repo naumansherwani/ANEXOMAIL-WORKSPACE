@@ -29,7 +29,6 @@ mod signedcp;
 mod anchors;
 mod portable;
 mod tls256;
-mod awamtls;
 mod front;
 mod fproxy;
 #[path = "../../rust/passkey_core.rs"]
@@ -837,14 +836,6 @@ async fn main() {
         Some(Ok((a, fcfg))) => match tokio::net::TcpListener::bind(&a).await {
             Ok(l) => { eprintln!("founder: SNI front ON {a}: {} -> {}, everything else -> {}", fcfg.host, fcfg.tls_backend, fcfg.other_backend); tokio::spawn(front::serve_front(l, fcfg)); }
             Err(e) => eprintln!("founder: SNI front NOT started: bind {a}: {e}"),
-        },
-    }
-    match awamtls::from_env() { // K5a: AES-256-only terminator + re-origination tunnel for the awam hosts (default OFF); the K4 front sends the non-founder names here
-        None => {},
-        Some(Err(e)) => eprintln!("founder: awam TLS-256 NOT started: {e}"),
-        Some(Ok(a)) => match tokio::net::TcpListener::bind(&a.addr).await {
-            Ok(l) => { eprintln!("founder: awam TLS-256 ON {} ({} hosts, TLS 1.3, AES-256-GCM only, h2 + http/1.1, tunnel to {}, first certificate ends in {} days)", a.addr, a.certs.len(), a.tunnel.upstream, (a.certs.soonest_end() - std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0)) / 86400); awamtls::spawn_reloader(a.certs.clone(), a.dir.clone()); tokio::spawn(awamtls::serve_tunnel(l, a.cfg, a.tunnel)); }
-            Err(e) => eprintln!("founder: awam TLS-256 NOT started: bind {}: {e}", a.addr),
         },
     }
     if let Some(sb) = st.sb.clone() { tls256::spawn_prober(sb); }

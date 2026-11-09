@@ -208,7 +208,6 @@ server/founder/src/ambient.rs
 server/founder/src/anchors.rs
 server/founder/src/audit.rs
 server/founder/src/authcache.rs
-server/founder/src/awamtls.rs
 server/founder/src/bridge.rs
 server/founder/src/data.rs
 server/founder/src/flare.rs

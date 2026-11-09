@@ -12,11 +12,11 @@ use rustls::{ClientConfig, RootCertStore, ServerConfig, SupportedCipherSuite};
 use tokio::net::{TcpListener, TcpStream};
 use tokio_rustls::{TlsAcceptor, TlsConnector};
 
-pub(crate) const AES256: SupportedCipherSuite = rp::cipher_suite::TLS13_AES_256_GCM_SHA384;
+const AES256: SupportedCipherSuite = rp::cipher_suite::TLS13_AES_256_GCM_SHA384;
 const AES128: SupportedCipherSuite = rp::cipher_suite::TLS13_AES_128_GCM_SHA256;
 const CHACHA: SupportedCipherSuite = rp::cipher_suite::TLS13_CHACHA20_POLY1305_SHA256;
 
-pub(crate) fn provider(suites: Vec<SupportedCipherSuite>) -> Arc<CryptoProvider> {
+fn provider(suites: Vec<SupportedCipherSuite>) -> Arc<CryptoProvider> {
     let mut p = rp::default_provider();
     p.cipher_suites = suites;
     Arc::new(p)
@@ -84,7 +84,7 @@ pub fn parse_proxy_v1(b: &[u8]) -> Px {
 pub fn proxy_from_env() -> bool { std::env::var("FOUNDER_TLS_PROXY").map(|v| v.eq_ignore_ascii_case("on")).unwrap_or(false) }
 
 /// Decide the real client address of a fresh connection. Ok(addr) = go on with TLS (header bytes already consumed); Err = drop the connection.
-pub(crate) async fn real_client(tcp: &mut TcpStream, peer: std::net::SocketAddr) -> Result<std::net::SocketAddr, ()> {
+async fn real_client(tcp: &mut TcpStream, peer: std::net::SocketAddr) -> Result<std::net::SocketAddr, ()> {
     let mut first = [0u8; 1];
     let n = tokio::time::timeout(Duration::from_secs(3), tcp.peek(&mut first)).await.map_err(|_| ())?.map_err(|_| ())?;
     if n == 0 { return Err(()); }

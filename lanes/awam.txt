@@ -43,7 +43,7 @@ docs/cursor-work/server/attach-gc/anexomail-attach-gc.service
 docs/cursor-work/server/attach-gc/anexomail-attach-gc.timer
 docs/cursor-work/server/attach-gc/install.sh
 docs/cursor-work/server/attach-limit-measure.sh
-docs/cursor-work/server/awam-tls256.sh
+docs/cursor-work/server/awam-edge-install.sh
 docs/cursor-work/server/axum-scratch-check.sh
 docs/cursor-work/server/axum-upgrade.sh
 docs/cursor-work/server/axum8_patch.py
@@ -496,6 +496,10 @@ server/README.md
 server/accounts/create-accounts.sh
 server/accounts/create-accounts.ts
 server/anexochat.ts
+server/awam-edge/.gitignore
+server/awam-edge/Cargo.lock
+server/awam-edge/Cargo.toml
+server/awam-edge/src/main.rs
 server/caddy/__pycache__/patch-main-caddyfile.cpython-313.pyc
 server/caddy/__pycache__/strip-dup-hosts.cpython-313.pyc
 server/caddy/aicrm.Caddyfile

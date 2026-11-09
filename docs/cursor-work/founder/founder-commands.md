@@ -2750,3 +2750,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 9 Nov 2026 17:10 PKT status: K5a coded in the sandbox on his order (15:39 / 15:52: HTTP/3 stays, AES-256 no compromise, whole awam website, awam rows in the AWAM blueprint); awamtls.rs + awam-tls256.sh, 242 Rust tests pass; waits for his founder-install + APPLY on the spare port 18081.
 
 - 9 Nov 2026 17:20 PKT his words: 'yeh repo main update kero aur chat context aur codes update kero.' (with the K5a founder-install paste, OK).
+
+- 9 Nov 2026 17:50 PKT his words (16:14, verbatim): 'madarccccchoddddd tu awam ke gates se mera founder ko dalay harmi asssholeeee mix nahiiii kerooo.' (with the spare-port proof paste: 23 awam hosts copied, awam TLS-256 ON 127.0.0.1:18081, anexomail.com + app.anexomail.com Verification OK, ALPN h2, AES-128 refused alert 40, request via the tunnel 200 2).

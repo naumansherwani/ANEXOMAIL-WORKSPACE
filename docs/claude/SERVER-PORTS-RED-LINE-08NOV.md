@@ -18,3 +18,5 @@ HTTPS 18443, HTTP 18080, admin 127.0.0.1:12019. They stay a proposal until his f
 - Established connections seen: Cloudflare (172.64.149.246:443, 104.18.38.10:443), AWS Singapore 52.74.252.201:5432 (Postgres), ONE outbound connection 62.238.98.98 -> 91.98.240.58 port 23 (probably the server-to-server link; NOT confirmed, never touched), ssh sessions, loopback.
 - Ephemeral range (outgoing ports) = 32768-60999.
 ## RESULT: 18443 (tcp+udp), 12019 (tcp) are in NO list above and below the ephemeral range, so they are FREE. 18080 is free but NOT needed (the test config has no http listener). Nothing of the server 1 / server 2 link listens on them.
+
+- 9 Nov 2026 17:50 PKT 18081/tcp (127.0.0.1 only) = anexomail-awam-edge (K5a spare port, free in his 9 Nov 15:52 ss list, proven on 16:14 by the first build; now owned by the separate awam-edge service). 18443 tcp+udp = Caddy (since 9 Nov 15:15). 18080, 18444 stay free.

@@ -1,5 +1,5 @@
 //! K5a (9 Nov 2026, founder order: "AES-256 + no compromise, the technology is for the WHOLE awam website").
-//! Technology: Rust (rustls + tokio-rustls, ring), inside the founder binary, beside the K4 front. Go/Caddy cannot be told to speak AES-256 only (golang/go#29349),
+//! Technology: Rust (rustls + tokio-rustls, ring), as its OWN program (separate crate, separate user, separate env, separate service: the awam lane, never inside the founder binary, his order 9 Nov 2026 'founder aur awam ka mix nahi'). Go/Caddy cannot be told to speak AES-256 only (golang/go#29349),
 //! so the awam hosts go through this terminator: TLS 1.3 with ONE cipher suite (AES-256-GCM-SHA384), the certificate chosen by SNI from a directory of Caddy's own
 //! Let's Encrypt copies (hot reload, a bad file never replaces a good one), ALPN h2 + http/1.1, and then a RE-ORIGINATION TUNNEL: an inner TLS connection to Caddy
 //! (127.0.0.1:18443) with the SAME SNI and the SAME ALPN, a PROXY v1 line first (real client IP), and bytes copied both ways. Nothing is parsed, so h2, WebSockets,
@@ -10,15 +10,144 @@ use std::path::{Path, PathBuf};
 use std::sync::{Arc, RwLock};
 use std::time::Duration;
 
+use rustls::crypto::{ring as rp, CryptoProvider};
 use rustls::pki_types::{pem::PemObject, CertificateDer, PrivateKeyDer, ServerName};
 use rustls::server::{ClientHello, ResolvesServerCert};
 use rustls::sign::CertifiedKey;
-use rustls::{ClientConfig, RootCertStore, ServerConfig};
+use rustls::{ClientConfig, RootCertStore, ServerConfig, SupportedCipherSuite};
 use tokio::io::AsyncWriteExt;
 use tokio::net::{TcpListener, TcpStream};
 use tokio_rustls::{TlsAcceptor, TlsConnector};
 
-use crate::tls256::{cert_validity, provider, real_client, AES256};
+
+const AES256: SupportedCipherSuite = rp::cipher_suite::TLS13_AES_256_GCM_SHA384;
+
+pub(crate) fn provider(suites: Vec<SupportedCipherSuite>) -> Arc<CryptoProvider> {
+    let mut p = rp::default_provider();
+    p.cipher_suites = suites;
+    Arc::new(p)
+}
+
+// ---- PROXY protocol v1 (the front's header, read only from loopback) + the line written to Caddy ----
+#[derive(Debug, PartialEq)]
+pub enum Px { Need, Ok(Option<std::net::SocketAddr>, usize), Bad }
+
+/// Strict PROXY v1 parser: "PROXY TCP4|TCP6 src dst sport dport\r\n" (<= 107 bytes) or "PROXY UNKNOWN\r\n". LF-only, v2 signature, wrong family, bad numbers = Bad.
+pub fn parse_proxy_v1(b: &[u8]) -> Px {
+    const SIG: &[u8] = b"PROXY ";
+    let m = b.len().min(SIG.len());
+    if b[..m] != SIG[..m] { return Px::Bad; }
+    let lim = b.len().min(107);
+    // The line ends at the first CR or LF: it must be exactly CR LF. A lone LF, a CR followed by anything else, or a control/non-ASCII byte is refused at once (no waiting for a timeout).
+    let mut p = None;
+    for (i, &c) in b[..lim].iter().enumerate() {
+        match c {
+            b'\r' => { match b.get(i + 1) { Some(b'\n') => { p = Some(i); break; } Some(_) => return Px::Bad, None => return Px::Need } }
+            b'\n' => return Px::Bad,
+            0x20..=0x7e => {}
+            _ => return Px::Bad,
+        }
+    }
+    let Some(p) = p else { return if b.len() >= 107 { Px::Bad } else { Px::Need } };
+    let Ok(line) = std::str::from_utf8(&b[..p]) else { return Px::Bad };
+    let used = p + 2;
+    let f: Vec<&str> = line.split(' ').collect();
+    if f.len() == 2 && f[1] == "UNKNOWN" { return Px::Ok(None, used); }
+    if f.len() != 6 { return Px::Bad; }
+    let (Ok(sp), Ok(_dp)) = (f[4].parse::<u16>(), f[5].parse::<u16>()) else { return Px::Bad };
+    let ip: std::net::IpAddr = match f[1] {
+        "TCP4" => match f[2].parse::<std::net::Ipv4Addr>() { Ok(a) if f[3].parse::<std::net::Ipv4Addr>().is_ok() => a.into(), _ => return Px::Bad },
+        "TCP6" => match f[2].parse::<std::net::Ipv6Addr>() { Ok(a) if f[3].parse::<std::net::Ipv6Addr>().is_ok() => a.into(), _ => return Px::Bad },
+        _ => return Px::Bad,
+    };
+    Px::Ok(Some(std::net::SocketAddr::new(ip, sp)), used)
+}
+
+
+/// Decide the real client address of a fresh connection. Ok(addr) = go on with TLS (header bytes already consumed); Err = drop the connection.
+pub(crate) async fn real_client(tcp: &mut TcpStream, peer: std::net::SocketAddr) -> Result<std::net::SocketAddr, ()> {
+    let mut first = [0u8; 1];
+    let n = tokio::time::timeout(Duration::from_secs(3), tcp.peek(&mut first)).await.map_err(|_| ())?.map_err(|_| ())?;
+    if n == 0 { return Err(()); }
+    if first[0] != b'P' { return Ok(peer); } // a TLS record starts with 0x16: direct connection, nothing to read
+    if !peer.ip().is_loopback() { return Err(()); } // the internet may never send a PROXY line
+    let mut buf = [0u8; 107];
+    let read = async {
+        loop {
+            let got = tcp.peek(&mut buf).await.map_err(|_| ())?;
+            match parse_proxy_v1(&buf[..got]) {
+                Px::Ok(a, used) => { let mut sink = vec![0u8; used]; tokio::io::AsyncReadExt::read_exact(tcp, &mut sink).await.map_err(|_| ())?; return Ok(a.unwrap_or(peer)); }
+                Px::Bad => return Err(()),
+                Px::Need => { if got == 107 { return Err(()); } tokio::time::sleep(Duration::from_millis(10)).await; }
+            }
+        }
+    };
+    tokio::time::timeout(Duration::from_secs(3), read).await.map_err(|_| ())?
+}
+
+
+fn canon(a: std::net::SocketAddr) -> std::net::SocketAddr {
+    match a { std::net::SocketAddr::V6(v) => match v.ip().to_ipv4_mapped() { Some(v4) => std::net::SocketAddr::new(std::net::IpAddr::V4(v4), v.port()), None => a }, _ => a }
+}
+
+/// PROXY protocol v1 line for a connection from `src` to `dst` (what Caddy's proxy_protocol listener wrapper reads).
+pub fn proxy_v1(src: std::net::SocketAddr, dst: std::net::SocketAddr) -> String {
+    let (src, dst) = (canon(src), canon(dst));
+    match (src, dst) {
+        (std::net::SocketAddr::V4(s), std::net::SocketAddr::V4(d)) => format!("PROXY TCP4 {} {} {} {}\r\n", s.ip(), d.ip(), s.port(), d.port()),
+        (std::net::SocketAddr::V6(s), std::net::SocketAddr::V6(d)) => format!("PROXY TCP6 {} {} {} {}\r\n", s.ip(), d.ip(), s.port(), d.port()),
+        _ => "PROXY UNKNOWN\r\n".to_string(),
+    }
+}
+
+// ---- minimal DER walker: the validity dates of a certificate, no X.509 library ----
+/// One DER element: (tag, content, rest). None on any malformed or truncated input.
+fn tlv(b: &[u8]) -> Option<(u8, &[u8], &[u8])> {
+    let (&tag, r) = b.split_first()?;
+    let (&l0, r) = r.split_first()?;
+    let (len, r) = if l0 < 0x80 { (l0 as usize, r) } else {
+        let n = (l0 & 0x7f) as usize;
+        if n == 0 || n > 4 || r.len() < n { return None; }
+        (r[..n].iter().fold(0usize, |a, &x| (a << 8) | x as usize), &r[n..])
+    };
+    if r.len() < len { return None; }
+    Some((tag, &r[..len], &r[len..]))
+}
+
+/// Days from 1970-01-01 for a civil date (proleptic Gregorian, Howard Hinnant's algorithm).
+fn days_from_civil(y: i64, m: i64, d: i64) -> i64 {
+    let y = if m <= 2 { y - 1 } else { y };
+    let era = if y >= 0 { y } else { y - 399 } / 400;
+    let yoe = y - era * 400;
+    let doy = (153 * (if m > 2 { m - 3 } else { m + 9 }) + 2) / 5 + d - 1;
+    era * 146097 + yoe * 365 + yoe / 4 - yoe / 100 + doy - 719468
+}
+
+/// ASN.1 UTCTime (YYMMDDHHMMSSZ, tag 0x17) or GeneralizedTime (YYYYMMDDHHMMSSZ, tag 0x18) -> unix seconds.
+fn asn1_time(tag: u8, c: &[u8]) -> Option<i64> {
+    let t = std::str::from_utf8(c).ok()?;
+    let (yr, rest) = match tag { 0x17 if t.len() == 13 => { let yy: i64 = t[..2].parse().ok()?; (if yy >= 50 { 1900 + yy } else { 2000 + yy }, &t[2..]) }, 0x18 if t.len() == 15 => (t[..4].parse().ok()?, &t[4..]), _ => return None };
+    if !rest.ends_with('Z') { return None; }
+    let n = |i: usize| rest.get(i..i + 2)?.parse::<i64>().ok();
+    let (mo, d, h, mi, se) = (n(0)?, n(2)?, n(4)?, n(6)?, n(8)?);
+    if !(1..=12).contains(&mo) || !(1..=31).contains(&d) || h > 23 || mi > 59 || se > 60 { return None; }
+    Some(days_from_civil(yr, mo, d) * 86400 + h * 3600 + mi * 60 + se)
+}
+
+/// (notBefore, notAfter) of a DER certificate as unix seconds. No X.509 library: only the few fixed fields of the TBS part are walked.
+pub fn cert_validity(der: &[u8]) -> Option<(i64, i64)> {
+    let (_, cert, _) = tlv(der)?;                 // Certificate ::= SEQUENCE
+    let (_, tbs, _) = tlv(cert)?;                 // TBSCertificate ::= SEQUENCE
+    let mut r = tbs;
+    let (t0, _, after) = tlv(r)?;
+    if t0 == 0xA0 { r = after; }                  // [0] version (optional)
+    for _ in 0..3 { r = tlv(r)?.2; }              // serialNumber, signature, issuer
+    let (_, validity, _) = tlv(r)?;               // Validity ::= SEQUENCE { notBefore, notAfter }
+    let (t1, nb, rest) = tlv(validity)?;
+    let (t2, na, _) = tlv(rest)?;
+    Some((asn1_time(t1, nb)?, asn1_time(t2, na)?))
+}
+
 
 fn now_unix() -> i64 { std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0) }
 
@@ -131,7 +260,7 @@ async fn tunnel_one(mut tcp: TcpStream, peer: SocketAddr, acceptor: TlsAcceptor,
     let name = ServerName::try_from(sni.clone()).map_err(|_| ())?;
     let mut up = tokio::time::timeout(Duration::from_secs(5), TcpStream::connect(t.upstream)).await.map_err(|_| ())?.map_err(|_| ())?;
     let _ = up.set_nodelay(true);
-    let line = crate::front::proxy_v1(client, up.peer_addr().map_err(|_| ())?);
+    let line = proxy_v1(client, up.peer_addr().map_err(|_| ())?);
     up.write_all(line.as_bytes()).await.map_err(|_| ())?;
     let mut outbound = tokio::time::timeout(Duration::from_secs(10), TlsConnector::from(t.inner_for(alpn.as_deref()).clone()).connect(name, up)).await.map_err(|_| ())?.map_err(|_| ())?;
     if outbound.get_ref().1.alpn_protocol() != alpn.as_deref() { return Err(()); } // both legs must speak the same protocol, else the bytes would not match
@@ -139,7 +268,7 @@ async fn tunnel_one(mut tcp: TcpStream, peer: SocketAddr, acceptor: TlsAcceptor,
     let n = SEEN.fetch_add(1, std::sync::atomic::Ordering::Relaxed) + 1;
     if n <= 5 || n % 1000 == 0 {
         let cipher = inbound.get_ref().1.negotiated_cipher_suite().map(|s| format!("{:?}", s.suite())).unwrap_or_default();
-        eprintln!("founder: awam tunnel #{n}: {sni} client {client} {cipher} alpn {}", alpn.as_deref().map(|a| String::from_utf8_lossy(a).into_owned()).unwrap_or_else(|| "none".into()));
+        eprintln!("awam-edge: tunnel #{n}: {sni} client {client} {cipher} alpn {}", alpn.as_deref().map(|a| String::from_utf8_lossy(a).into_owned()).unwrap_or_else(|| "none".into()));
     }
     tokio::io::copy_bidirectional(&mut inbound, &mut outbound).await.map(|_| ()).map_err(|_| ())
 }
@@ -151,30 +280,47 @@ pub fn spawn_reloader(certs: Arc<HostCerts>, dir: PathBuf) {
         loop {
             tokio::time::sleep(Duration::from_secs(600)).await;
             match certs.reload(&dir, now_unix()) {
-                Ok((n, bad)) => { let msg = format!("{n}|{}", bad.join(";")); if msg != last { if bad.is_empty() { eprintln!("founder: awam TLS-256 certificates reloaded: {n} hosts, first end in {} days", (certs.soonest_end() - now_unix()) / 86400); } else { eprintln!("founder: awam TLS-256 certificates reloaded: {n} hosts; REFUSED (old copy keeps serving): {}", bad.join("; ")); } last = msg; } }
-                Err(e) => { if e != last { eprintln!("founder: awam TLS-256 reload FAILED ({e}); the old certificates keep serving"); last = e; } }
+                Ok((n, bad)) => { let msg = format!("{n}|{}", bad.join(";")); if msg != last { if bad.is_empty() { eprintln!("awam-edge: TLS-256 certificates reloaded: {n} hosts, first end in {} days", (certs.soonest_end() - now_unix()) / 86400); } else { eprintln!("awam-edge: TLS-256 certificates reloaded: {n} hosts; REFUSED (old copy keeps serving): {}", bad.join("; ")); } last = msg; } }
+                Err(e) => { if e != last { eprintln!("awam-edge: TLS-256 reload FAILED ({e}); the old certificates keep serving"); last = e; } }
             }
         }
     });
 }
 
 pub struct Setup { pub addr: String, pub certs: Arc<HostCerts>, pub cfg: Arc<ServerConfig>, pub tunnel: Arc<TunnelCfg>, pub dir: PathBuf }
-/// FOUNDER_AWAM_TLS_ADDR (listen, e.g. 127.0.0.1:18081) + FOUNDER_AWAM_TLS_DIR (<host>.crt/.key copies) [+ FOUNDER_AWAM_TLS_UPSTREAM default 127.0.0.1:18443,
-/// FOUNDER_AWAM_TLS_PROXY=on to read the front's PROXY line, FOUNDER_AWAM_TLS_MAX default 20000]. None = off (the default); Err = on but misconfigured (the caller logs it).
+/// AWAM_EDGE_ADDR (listen, e.g. 127.0.0.1:18081) + AWAM_EDGE_DIR (<host>.crt/.key copies) [+ AWAM_EDGE_UPSTREAM default 127.0.0.1:18443,
+/// AWAM_EDGE_PROXY=on to read the front's PROXY line, AWAM_EDGE_MAX default 20000]. None = off (the default); Err = on but misconfigured (the caller logs it).
 pub fn from_env() -> Option<Result<Setup, String>> {
-    let addr = std::env::var("FOUNDER_AWAM_TLS_ADDR").ok().filter(|a| !a.trim().is_empty())?;
+    let addr = std::env::var("AWAM_EDGE_ADDR").ok().filter(|a| !a.trim().is_empty())?;
     Some((|| {
-        let dir = PathBuf::from(std::env::var("FOUNDER_AWAM_TLS_DIR").map_err(|_| "FOUNDER_AWAM_TLS_DIR is not set".to_string())?);
-        let upstream: SocketAddr = std::env::var("FOUNDER_AWAM_TLS_UPSTREAM").unwrap_or_else(|_| "127.0.0.1:18443".into()).parse().map_err(|_| "FOUNDER_AWAM_TLS_UPSTREAM must be ip:port".to_string())?;
-        if !upstream.ip().is_loopback() { return Err("FOUNDER_AWAM_TLS_UPSTREAM must be a loopback address".into()); }
-        let px = std::env::var("FOUNDER_AWAM_TLS_PROXY").map(|v| v.eq_ignore_ascii_case("on")).unwrap_or(false);
-        let max = std::env::var("FOUNDER_AWAM_TLS_MAX").ok().and_then(|v| v.parse().ok()).unwrap_or(20000usize);
+        let dir = PathBuf::from(std::env::var("AWAM_EDGE_DIR").map_err(|_| "AWAM_EDGE_DIR is not set".to_string())?);
+        let upstream: SocketAddr = std::env::var("AWAM_EDGE_UPSTREAM").unwrap_or_else(|_| "127.0.0.1:18443".into()).parse().map_err(|_| "AWAM_EDGE_UPSTREAM must be ip:port".to_string())?;
+        if !upstream.ip().is_loopback() { return Err("AWAM_EDGE_UPSTREAM must be a loopback address".into()); }
+        let px = std::env::var("AWAM_EDGE_PROXY").map(|v| v.eq_ignore_ascii_case("on")).unwrap_or(false);
+        let max = std::env::var("AWAM_EDGE_MAX").ok().and_then(|v| v.parse().ok()).unwrap_or(20000usize);
         let certs = Arc::new(HostCerts::default());
         let (n, bad) = certs.reload(&dir, now_unix())?;
-        if !bad.is_empty() { eprintln!("founder: awam TLS-256: {n} hosts loaded, REFUSED at start: {}", bad.join("; ")); }
+        if !bad.is_empty() { eprintln!("awam-edge: TLS-256: {n} hosts loaded, REFUSED at start: {}", bad.join("; ")); }
         let cfg = server_config(certs.clone())?;
         Ok(Setup { addr: addr.clone(), certs, cfg, tunnel: Arc::new(TunnelCfg::new(upstream, px, max, None)?), dir })
     })())
+}
+
+
+#[tokio::main]
+async fn main() {
+    match from_env() {
+        None => { eprintln!("awam-edge: OFF (no AWAM_EDGE_ADDR)"); std::process::exit(1); }
+        Some(Err(e)) => { eprintln!("awam-edge: NOT started: {e}"); std::process::exit(1); }
+        Some(Ok(a)) => match TcpListener::bind(&a.addr).await {
+            Ok(l) => {
+                eprintln!("awam-edge: ON {} ({} hosts, TLS 1.3, AES-256-GCM only, h2 + http/1.1, tunnel to {}, first certificate ends in {} days)", a.addr, a.certs.len(), a.tunnel.upstream, (a.certs.soonest_end() - now_unix()) / 86400);
+                spawn_reloader(a.certs.clone(), a.dir.clone());
+                serve_tunnel(l, a.cfg, a.tunnel).await;
+            }
+            Err(e) => { eprintln!("awam-edge: NOT started: bind {}: {e}", a.addr); std::process::exit(1); }
+        },
+    }
 }
 
 #[cfg(test)]
@@ -310,10 +456,38 @@ mod tests {
 
     #[test]
     fn the_default_is_off_and_the_upstream_must_be_loopback() {
-        unsafe { std::env::remove_var("FOUNDER_AWAM_TLS_ADDR"); }
+        unsafe { std::env::remove_var("AWAM_EDGE_ADDR"); }
         assert!(from_env().is_none());
-        unsafe { std::env::set_var("FOUNDER_AWAM_TLS_ADDR", "127.0.0.1:0"); std::env::set_var("FOUNDER_AWAM_TLS_DIR", "/nonexistent-awam-dir"); std::env::set_var("FOUNDER_AWAM_TLS_UPSTREAM", "8.8.8.8:443"); }
+        unsafe { std::env::set_var("AWAM_EDGE_ADDR", "127.0.0.1:0"); std::env::set_var("AWAM_EDGE_DIR", "/nonexistent-awam-dir"); std::env::set_var("AWAM_EDGE_UPSTREAM", "8.8.8.8:443"); }
         assert!(matches!(from_env(), Some(Err(e)) if e.contains("loopback")));
-        unsafe { std::env::remove_var("FOUNDER_AWAM_TLS_ADDR"); std::env::remove_var("FOUNDER_AWAM_TLS_DIR"); std::env::remove_var("FOUNDER_AWAM_TLS_UPSTREAM"); }
+        unsafe { std::env::remove_var("AWAM_EDGE_ADDR"); std::env::remove_var("AWAM_EDGE_DIR"); std::env::remove_var("AWAM_EDGE_UPSTREAM"); }
+    }
+}
+
+#[cfg(test)]
+mod helper_tests {
+    use super::*;
+
+    #[test]
+    fn proxy_v1_parser_is_strict_and_the_written_line_is_plain_ipv4() {
+        assert_eq!(parse_proxy_v1(b"PROXY TCP4 203.0.113.9 1.2.3.4 4000 443\r\n"), Px::Ok(Some("203.0.113.9:4000".parse().unwrap()), 41));
+        assert_eq!(parse_proxy_v1(b"PROXY UNKNOWN\r\n"), Px::Ok(None, 15));
+        for bad in [&b"PROXY TCP4 1.2.3.4 1.2.3.4 1 2\n"[..], b"PROXY TCP4 1.2.3.4 1.2.3.4 1 2\rX", b"PROXY TCP9 1.2.3.4 1.2.3.4 1 2\r\n", b"PROXY TCP4 1.2.3.4 ::1 1 2\r\n", b"PROXY \xff\r\n", b"GET / HTTP/1.1\r\n"] { assert_eq!(parse_proxy_v1(bad), Px::Bad, "{:?}", String::from_utf8_lossy(bad)); }
+        assert_eq!(parse_proxy_v1(b"PROXY TCP4 1.2"), Px::Need);
+        let (src, dst): (std::net::SocketAddr, std::net::SocketAddr) = ("[::ffff:203.0.113.9]:4000".parse().unwrap(), "[::ffff:62.238.98.98]:443".parse().unwrap());
+        assert_eq!(proxy_v1(src, dst), "PROXY TCP4 203.0.113.9 62.238.98.98 4000 443\r\n");
+        assert_eq!(proxy_v1("[2001:db8::1]:5".parse().unwrap(), "[2001:db8::2]:443".parse().unwrap()), "PROXY TCP6 2001:db8::1 2001:db8::2 5 443\r\n");
+    }
+
+    #[test]
+    fn certificate_dates_are_read_without_a_library_and_junk_never_panics() {
+        let d = std::env::temp_dir().join(format!("awam-der-{}", std::process::id())); let _ = std::fs::create_dir_all(&d);
+        let ok = std::process::Command::new("openssl").args(["req", "-x509", "-newkey", "ec", "-pkeyopt", "ec_paramgen_curve:prime256v1", "-nodes", "-days", "3", "-subj", "/CN=d.test", "-keyout", d.join("k").to_str().unwrap(), "-out", d.join("c").to_str().unwrap()]).output().map(|o| o.status.success()).unwrap_or(false);
+        if !ok { eprintln!("openssl missing: skipped"); return; }
+        let der = CertificateDer::pem_slice_iter(&std::fs::read(d.join("c")).unwrap()).next().unwrap().unwrap();
+        let (nb, na) = cert_validity(der.as_ref()).unwrap();
+        assert!(na - nb >= 3 * 86400 - 5 && na - nb <= 3 * 86400 + 5, "{nb} {na}");
+        for junk in [&[][..], &[0x30], &[0x30, 0x84, 0xff, 0xff, 0xff, 0xff], &[0xff; 64]] { assert!(cert_validity(junk).is_none()); }
+        let mut flipped = der.as_ref().to_vec(); for i in (0..flipped.len()).step_by(7) { flipped[i] ^= 0x55; } let _ = cert_validity(&flipped);
     }
 }
