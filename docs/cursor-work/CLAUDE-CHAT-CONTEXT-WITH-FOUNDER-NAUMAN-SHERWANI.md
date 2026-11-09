@@ -2743,3 +2743,5 @@ Checkpoint 10 Nov 2026 01:48 PKT RESUME HERE: founder SignIn CSS matched to his 
 Checkpoint 10 Nov 2026 02:03 PKT RESUME HERE: founder SignIn rebuilt from the awam login code itself (founder-web/src/signin/*, awam.css scoped .fa imported by tailwind.css) + URL /founderlogin. He must install + look. LOGIN UI LAW absolute: never redesign, never edit awam/lovable-gold.
 
 Checkpoint 10 Nov 2026 02:06 PKT RESUME HERE: backups taken (founder + awam separate, commit 1b94ed4f, law docs/claude/FOUNDER-BACKUP-LAW-10NOV.md). Next: he installs login; then 2b S2.
+
+Checkpoint 10 Nov 2026 02:12 PKT RESUME HERE: live login verified in my Chrome (repo bundle, awam look); hash-strip fix pending install. Next after his OK: 2b S2 Rust signin.rs.

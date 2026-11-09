@@ -2884,3 +2884,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 10 Nov 2026 02:03 PKT: ORDER (verbatim gist): "user wala same codes use kero phir latest technology pe leke jao founder side pe UI" + "founderlogin URL kero". DONE: login rebuilt from awam login code in founder lane; URL /founderlogin. Status: installed? NO (he must install). Not GREEN yet.
 
 - 10 Nov 2026 02:06 PKT: BACKUP LAW added (docs/claude/FOUNDER-BACKUP-LAW-10NOV.md); founder + awam archives sent separately; restore point commit 1b94ed4f.
+
+- 10 Nov 2026 02:12 PKT: my Chrome on his live founderworkspace /founderlogin: bundle index-C8CXTOLP = repo build, awam-code login live (card r20 p24, btn r16 h40, aside present); address showed /founderlogin#/dashboard -> hash strip fix built (new bundle, needs install). E151 = GREEN (his word 02:11).

@@ -844,3 +844,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 10 Nov 2026 02:03 PKT: founder login now = the awam login CODE (auth.tsx markup, AuthCinema, BrandMark, shadcn Button/Input/Label, Tailwind classes) copied into founder-web/src/signin, on motion + lucide-react + Tailwind 4.2; sign-in URL /founderlogin (not /#/dashboard); computed styles equal his live awam page (card r20 p24, btn r16 h40, input r10). Awam code untouched. Founder pulls: founder-install.sh.
 
 - 10 Nov 2026 02:06 PKT: BACKUP LAW added (docs/claude/FOUNDER-BACKUP-LAW-10NOV.md); founder + awam archives sent separately; restore point commit 1b94ed4f.
+
+- 10 Nov 2026 02:12 PKT: my Chrome on his live founderworkspace /founderlogin: bundle index-C8CXTOLP = repo build, awam-code login live (card r20 p24, btn r16 h40, aside present); address showed /founderlogin#/dashboard -> hash strip fix built (new bundle, needs install). E151 = GREEN (his word 02:11).
