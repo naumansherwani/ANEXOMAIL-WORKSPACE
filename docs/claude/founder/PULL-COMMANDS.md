@@ -798,3 +798,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 9 Nov 2026 18:15 K6 install retry (founder lane): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -15 (test gate fixed: wt tests use 127.0.0.1); then founder-wt.sh. Awam pull: NOT needed.
 - 9 Nov 2026 18:40 K6 step 3 (server bash, founder lane): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-wt.sh) 2>&1 | tail -12  (awam pull NOT needed)
 - 9 Nov 2026 18:55 K6 CSP build (founder lane): founder-install.sh again (binary with csp_for), then my live Chrome test from the real origin. Awam pull NOT needed yet (needed later for the kernel pin in K6.3).
+- 9 Nov 2026 19:10 local K6 CSP build installed (his paste OK); nothing new to run until K6.3 kernel client. Awam pull: NOT needed yet.

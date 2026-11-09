@@ -176,3 +176,5 @@ G2 is now the open item in progress.
 - 9 Nov 2026 (18:05 local) K6: SQL E148 applied on his server (DONE: sab theek.), E148 rows to be shown by a grep re-run. OPEN: founder-install, founder-wt.sh, live proof, SPA client, looks.
 
 - 9 Nov 2026 (18:40 local) K6: step 1 SQL E148 done, step 2 founder-install done (binary with wt.rs live, WT OFF). OPEN: step 3 founder-wt.sh, live proof, SPA client, looks.
+
+- 9 Nov 2026 19:10 local K6.1 live proof from the real origin: CSP ok, WebTransport ready, hello without token -> ERR 401 (WIRED: YES / REAL: YES for the server leg). K6 stays OPEN until K6.3 kernel client + K6.4 frames and looks. MASTER WORKING RULES block added at the top of CLAUDE.md, AGENTS.md, START-HERE.

@@ -1,5 +1,16 @@
 # START HERE after a compaction or a new chat (updated 6 Nov 2026 20:30 PKT, founder order 20:00 "rules her cheese top pe rakho")
 
+> ## >>> MASTER WORKING RULES, EVERY CLAUDE MUST READ AND OBEY BEFORE ANY WORK (founder 9 Nov 2026 19:00 local, in anger after a compaction: 'rules saray top pe likho, har Claude pe farz hai') <<<
+> 1. AFTER ANY COMPACTION OR NEW CHAT: read this block, then `docs/claude/START-HERE-AFTER-COMPACTION.md`, then the newest 'RESUME HERE' checkpoint at the bottom of `docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md`, then `docs/claude/FOUNDER-DEADLINE-25NOV-PLAN.md`. Resume from there, never ask him to repeat.
+> 2. REPLY STYLE: short Roman Urdu, 'Aap' / 'Nauman bhai', his task first, ONE server command at a time. Server lines are ONE line with NO quotes at all (chat turns quotes into curly quotes and breaks the command). No guessing and no assumptions stated as fact: give him the direct command and read the real output. No lists of problems: fix them. End EVERY reply with the Rule-70 table (Kya badla / Technology / Phase) and a line 'Abhi code mein NAHI: ...'.
+> 3. AFTER EVERY STEP, same commit: repo + chat context checkpoint + codes docs (DONE-DO-NOT-REPEAT both files, PULL-COMMANDS, CLOSE-THE-GAPS, START-HERE, top blocks of CLAUDE.md and AGENTS.md) updated WITH DATE AND TIME. His words go verbatim into founder-commands.md first.
+> 4. GREEN = WIRED: YES / REAL: YES with proof (his server paste + my own live Chrome look + 390 / 820 / 1200+ looks). Never fake GREEN. No new phase while a gap of the previous one is open and closable by Claude.
+> 5. DEADLINES: whole FOUNDER blueprint GREEN by 25 Nov 2026 (day plan FOUNDER-DEADLINE-25NOV-PLAN.md, K6 by 10 Nov); whole AWAM website 100% by 16 Dec 2026 with tests and AnexoChat. He works 15 hours a day: no slow, no padding.
+> 6. SEPARATION LAW: founder lane and awam lane never mix (own crate, user, env, service; awam code never in the founder binary). Founder technology reaches awam as a molded advanced rewrite AFTER the founder lane, with its own awam pull command (said plainly when NOT needed).
+> 7. CODE: founder code SUPER ADVANCED, SQL above that, technology per phase, pull command per technology (SQL sql-run.sh, Rust founder-install.sh, server bash). Rule 52: browser WebTransport/crypto clients live INSIDE the Rust/Tokio/async WASM kernel (web-wasm/), never in TypeScript. No mock data. ONE website one build.
+> 8. SAFETY: PORT RED LINE (fresh ss first, SERVER-PORTS-RED-LINE-08NOV.md), Caddy law (copy first, rollback file), never type his passwords, never touch the footer.
+
+
 ## BEFORE EVERY REPLY (checklist, founder 6 Nov 20:45; the rules-gate enforces the machine-checkable parts)
 1. His order pasted verbatim into founder-commands.md first. 2. ONE website, ONE build; mobile + tablet + laptop at 390 / 820 / 1200+ for anything visual. 3. Chat context checkpoint + DONE line + PULL-COMMANDS note in the SAME commit as the code (gate fails otherwise). 4. At most 1-2 pull points, in Rule 46 order. 5. Roman Urdu, short, no padding, no repeated lists; his own task stated in ONE line. 6. End with the Rule-70 table and "Abhi code mein NAHI". 7. Never fake GREEN; never touch the footer; never offer the Polar token.
 
