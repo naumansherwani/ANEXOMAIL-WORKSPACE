@@ -226,3 +226,4 @@ G2 is now the open item in progress.
 - 10 Nov 2026 00:13 PKT G-MIX 2a/2c installed + wired; REAL pending his fresh sign-in. 2b, 2d, K7 phone proof open.
 - 10 Nov 2026 00:20 PKT CLOSED: G-MIX 2a + 2c (green), K7b phone. OPEN: K7 Firefox/Safari proof + tablet/laptop real look; card wording 'computer' -> 'device'; G-MIX 2b + 2d.
 - 10 Nov 2026 00:25 PKT OPEN K7: Firefox/Safari 'Bound by a browser key' screenshot; real tablet 820 + laptop 1200 card screenshots; reason of the 1 refused proof. Polish done (install pending). Then G-MIX 2b + 2d.
+- 10 Nov 2026 00:26 PKT K7 laptop look CLOSED (green). Open: Firefox/Safari binding proof, tablet 820 screenshot.

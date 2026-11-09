@@ -1765,3 +1765,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 10 Nov 2026 00:13 PKT 2a+2c INSTALLED + WIRED (live curl, LIVE=REPO). REAL needs his fresh sign-in.
 - 10 Nov 2026 00:20 PKT G-MIX 2a+2c GREEN (his phone proof). K7b GREEN on real phone (Chrome Android, 'Bound by a browser key'). K7 still needs Firefox/Safari + tablet/laptop card look.
 - 10 Nov 2026 00:25 PKT card wording polish done (install pending). Firefox/Safari + tablet/laptop real look NOT green (no proof yet). '1 refused proof' = real logged event, reason not yet shown.
+- 10 Nov 2026 00:26 PKT K7 laptop 1536 look GREEN (my live Chrome read). Open: Firefox/Safari binding, tablet 820 look.
