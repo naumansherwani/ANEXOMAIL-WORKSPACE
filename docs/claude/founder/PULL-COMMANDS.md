@@ -841,3 +841,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 - 10 Nov 2026 01:44 PKT: login UI exactness pass: run founder-install.sh, hard refresh founderworkspace.anexomail.com.
 - 10 Nov 2026 01:48 PKT: login CSS exactness pass vs live awam page (card radius 20px, buttons 16px, input 10px, .8px borders, label sizes); build index-Cp1UWHxY; awam code untouched.
+- 10 Nov 2026 02:03 PKT: founder login now = the awam login CODE (auth.tsx markup, AuthCinema, BrandMark, shadcn Button/Input/Label, Tailwind classes) copied into founder-web/src/signin, on motion + lucide-react + Tailwind 4.2; sign-in URL /founderlogin (not /#/dashboard); computed styles equal his live awam page (card r20 p24, btn r16 h40, input r10). Awam code untouched. Founder pulls: founder-install.sh.

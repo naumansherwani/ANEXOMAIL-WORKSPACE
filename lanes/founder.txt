@@ -104,8 +104,8 @@ founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
-founder-web/dist/assets/index-CEPnYOGf.css
-founder-web/dist/assets/index-Cp1UWHxY.js
+founder-web/dist/assets/index-C8CXTOLP.js
+founder-web/dist/assets/index-QcU_utQ_.css
 founder-web/dist/assets/kernel.worker-BiR_tP7H.js
 founder-web/dist/assets/three.module-C0S06CcT.js
 founder-web/dist/boot.css
@@ -120,6 +120,7 @@ founder-web/dist/kernel/anexo-kernel-0.14.0.wasm
 founder-web/dist/manifest.webmanifest
 founder-web/index.html
 founder-web/kernel-sync.sh
+founder-web/package-lock.json
 founder-web/package.json
 founder-web/precompress.sh
 founder-web/public/boot.css
@@ -208,7 +209,13 @@ founder-web/src/sealpin.ts
 founder-web/src/session.test.ts
 founder-web/src/session.ts
 founder-web/src/settingsS2.test.ts
-founder-web/src/signin.css
+founder-web/src/signin/AuthCinema.tsx
+founder-web/src/signin/BrandLoader.tsx
+founder-web/src/signin/BrandMark.tsx
+founder-web/src/signin/awam.css
+founder-web/src/signin/ui/button.tsx
+founder-web/src/signin/ui/input.tsx
+founder-web/src/signin/ui/label.tsx
 founder-web/src/signin_pure.test.ts
 founder-web/src/signin_pure.ts
 founder-web/src/snap_seal.test.ts

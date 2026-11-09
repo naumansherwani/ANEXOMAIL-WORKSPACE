@@ -981,3 +981,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 10 Nov 2026 01:28 PKT: old login look restored in SignIn.tsx/signin.css; install + his eyes pending.
 
 - 10 Nov 2026 01:44 PKT: LOGIN UI LAW written; exactness pass (button, HoverA, dots); demo discarded; install + his eyes pending.
+
+- 10 Nov 2026 02:03 PKT: founder login = awam login code copied into founder-web/src/signin (motion+lucide+Tailwind 4.2), URL /founderlogin. Do not hand-port CSS again.

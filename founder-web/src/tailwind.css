@@ -3,6 +3,7 @@
 @layer theme, base, components, utilities;
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
+@import "./signin/awam.css"; /* the awam login tokens + utilities (founder lane copy), scoped under .fa */
 @theme inline {
   --color-bg: var(--bg);
   --color-ac: var(--ac);

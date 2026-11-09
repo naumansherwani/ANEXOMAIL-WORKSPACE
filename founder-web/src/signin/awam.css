@@ -1,0 +1,346 @@
+/* FOUNDER LANE: awam login tokens + utilities copied (read-only) from lovable-gold/awam/src/styles.css, scoped under .fa so no other founder screen changes (founder order 10 Nov 2026: same codes, latest technology). */
+
+@theme inline {
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-navy: var(--navy);
+  --color-navy-deep: var(--navy-deep);
+  --color-platinum: var(--platinum);
+  --color-steel: var(--steel);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-cyan-accent: var(--cyan-accent);
+  --color-danger: var(--danger);
+  --color-surface-2: var(--surface-2);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-inter);
+  --shadow-elev-1: var(--shadow-elev-1);
+  --shadow-elev-2: var(--shadow-elev-2);
+  --shadow-stage: var(--shadow-stage);
+  --ease-cine: var(--ease-cine);
+  /* Spacing rhythm — 8px base scale, locked. */
+  --spacing-ax-1: var(--ax-1);
+  --spacing-ax-2: var(--ax-2);
+  --spacing-ax-3: var(--ax-3);
+  --spacing-ax-4: var(--ax-4);
+  --spacing-ax-5: var(--ax-5);
+  --spacing-ax-6: var(--ax-6);
+  --spacing-ax-7: var(--ax-7);
+  --spacing-ax-8: var(--ax-8);
+  --ease-ax-out: var(--ax-ease-out);
+  --ease-ax-inout: var(--ax-ease-inout);
+  --ease-ax-exit: var(--ax-ease-exit);
+}
+
+.fa {
+  --radius: 0.75rem;
+  --font-inter:
+    "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ease-cine: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /*
+   * Motion language — Phase 4. Four durations, three curves. Nothing else.
+   * instant → state flip · quick → hover / press · calm → panel + reveal ·
+   * cinematic → stage entrance. Motion explains a change, it never decorates.
+   */
+  --ax-dur-instant: 90ms;
+  --ax-dur-quick: 180ms;
+  --ax-dur-calm: 380ms;
+  --ax-dur-cinematic: 700ms;
+  --ax-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ax-ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --ax-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  /* Spacing rhythm — every gap on this scale, nothing off-grid. */
+  --ax-1: 0.25rem; /* 4  — icon to label */
+  --ax-2: 0.5rem; /* 8  — inside a control */
+  --ax-3: 0.75rem; /* 12 — list row padding */
+  --ax-4: 1rem; /* 16 — card padding */
+  --ax-5: 1.5rem; /* 24 — card gap */
+  --ax-6: 2rem; /* 32 — block gap */
+  --ax-7: 3rem; /* 48 — sub-section gap */
+  --ax-8: 5rem; /* 80 — section gap (120 on md via ax-section) */
+
+  /* Stage — near-black, cool. Light comes from one place only. */
+  --background: oklch(0.135 0.005 265);
+  --foreground: oklch(0.955 0.004 250);
+  --card: oklch(0.185 0.008 264);
+  --card-foreground: oklch(0.955 0.004 250);
+  --surface-2: oklch(0.225 0.010 264);
+  --popover: oklch(0.185 0.008 264);
+  --popover-foreground: oklch(0.955 0.004 250);
+
+  /* Brand mark colours */
+  --navy: oklch(0.455 0.093 258);
+  --navy-deep: oklch(0.325 0.070 258);
+  --platinum: oklch(0.885 0.008 250);
+  --steel: oklch(0.735 0.017 252);
+
+  --primary: oklch(0.455 0.093 258);
+  --primary-foreground: oklch(0.975 0.004 250);
+  --secondary: oklch(0.225 0.010 264);
+  --secondary-foreground: oklch(0.955 0.004 250);
+  --muted: oklch(0.225 0.010 264);
+  --muted-foreground: oklch(0.665 0.014 253);
+  --accent: oklch(0.245 0.012 264);
+  --accent-foreground: oklch(0.955 0.004 250);
+  --destructive: oklch(0.61 0.19 25);
+  --destructive-foreground: oklch(0.975 0.004 250);
+  --success: oklch(0.70 0.115 165);
+  --warning: oklch(0.775 0.135 75);
+  /* Accent set — cyan signal, success, warning, danger. Stage colours untouched. */
+  --cyan-accent: oklch(0.735 0.121 213);
+  --danger: oklch(0.635 0.204 25);
+  --border: oklch(0.285 0.011 264);
+  --input: oklch(0.285 0.011 264);
+  --ring: oklch(0.60 0.085 255);
+
+  --shadow-elev-1: 0 1px 2px 0 oklch(0 0 0 / 55%);
+  --shadow-elev-2: 0 30px 70px -34px oklch(0 0 0 / 85%);
+  --shadow-stage: 0 60px 140px -70px oklch(0.455 0.093 258 / 55%);
+
+  --chart-1: oklch(0.455 0.093 258);
+  --chart-2: oklch(0.735 0.017 252);
+  --chart-3: oklch(0.70 0.115 165);
+  --chart-4: oklch(0.775 0.135 75);
+  --chart-5: oklch(0.325 0.070 258);
+  --sidebar: oklch(0.165 0.007 264);
+  --sidebar-foreground: oklch(0.955 0.004 250);
+  --sidebar-primary: oklch(0.455 0.093 258);
+  --sidebar-primary-foreground: oklch(0.975 0.004 250);
+  --sidebar-accent: oklch(0.225 0.010 264);
+  --sidebar-accent-foreground: oklch(0.955 0.004 250);
+  --sidebar-border: oklch(0.285 0.011 264);
+  --sidebar-ring: oklch(0.60 0.085 255);
+}
+
+@utility ax-in {
+  animation: ax-in var(--ax-dur-calm) var(--ax-ease-out) both;
+}
+
+@utility ax-heading {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.014em;
+  line-height: 1.35;
+}
+
+@utility ax-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.006em;
+  line-height: 1.25;
+}
+
+@utility ax-caption {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+
+@utility ax-press {
+  transition:
+    transform var(--ax-dur-instant) var(--ax-ease-out),
+    background-color var(--ax-dur-quick) var(--ax-ease-out),
+    border-color var(--ax-dur-quick) var(--ax-ease-out),
+    color var(--ax-dur-quick) var(--ax-ease-out),
+    opacity var(--ax-dur-quick) var(--ax-ease-out);
+
+  &:active {
+    transform: scale(0.985);
+  }
+}
+
+@utility ax-focus {
+  outline: none;
+
+  &:focus-visible {
+    box-shadow:
+      0 0 0 2px var(--background),
+      0 0 0 4px oklch(0.60 0.085 255 / 70%);
+  }
+}
+
+@utility ax-hit {
+  @media (pointer: coarse) {
+    /* Pehle se positioned (absolute/fixed/sticky/relative) element ko relative NAHI banate — layout na tute. */
+    &:not(.absolute, .fixed, .sticky, .relative) {
+      position: relative;
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      inset: -0.6rem -0.3rem;
+    }
+  }
+}
+
+@utility ax-hairline {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    oklch(0.885 0.008 250 / 26%),
+    transparent
+  );
+}
+
+@utility ax-platinum-text {
+  background-image: linear-gradient(
+    170deg,
+    oklch(0.985 0.003 250) 0%,
+    oklch(0.855 0.010 252) 52%,
+    oklch(0.665 0.014 253) 100%
+  );
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes ax-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ax-a-pulse {
+  animation: ax-a-pulse 1.1s ease-in-out infinite;
+}
+
+/* Chhote A ka navy neele button par bhi saaf dikhe: platinum chamak */
+.ax-a-pulse svg {
+  filter: brightness(1.9) saturate(0.85) drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.55));
+}
+
+@keyframes ax-a-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+.ax-auth-cinema-bg {
+  background: linear-gradient(135deg, #0b1220 0%, #1e3a8a 35%, #312e81 65%, #0b1220 100%);
+  background-size: 400% 400%;
+  animation: ax-cinema-breathe 12s ease infinite;
+}
+
+@keyframes ax-cinema-breathe {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Radial mesh — soft light sources */
+.ax-auth-cinema-mesh {
+  background-image:
+    radial-gradient(ellipse 60% 50% at 30% 30%, rgba(37, 99, 235, 0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 75% 70%, rgba(79, 70, 229, 0.14) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 60% 20%, rgba(6, 182, 212, 0.08) 0%, transparent 60%);
+}
+
+/* Grain texture overlay */
+.ax-auth-cinema-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ax-auth-cinema-bg {
+    animation: none;
+    background-position: 50% 50%;
+  }
+}
+
+.ax-a-hover .ax-a-slot {
+  display: inline-flex;
+  width: 0;
+  height: 1rem;
+  margin-inline-end: -0.5rem; /* collapsed: button ka gap na bane */
+  opacity: 0;
+  overflow: visible;
+  transition: width 0.25s ease, margin 0.25s ease, opacity 0.2s ease;
+}
+.ax-a-hover .ax-a-slot svg {
+  width: 1rem;
+  height: 1rem;
+  filter: brightness(1.9) saturate(0.85) drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+}
+.ax-a-hover:hover:not(:disabled) .ax-a-slot,
+.ax-a-hover:focus-visible .ax-a-slot {
+  width: 1.25rem;
+  margin-inline-end: 0;
+  opacity: 1;
+}
+.ax-a-hover:hover:not(:disabled) .ax-a-slot svg,
+.ax-a-hover:focus-visible .ax-a-slot svg {
+  animation: ax-a-sway 1.8s ease-in-out infinite;
+}
+@keyframes ax-a-sway {
+  0%, 100% { transform: perspective(300px) rotateY(-18deg) translateY(0); }
+  50% { transform: perspective(300px) rotateY(18deg) translateY(-1.5px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ax-a-hover .ax-a-slot svg { animation: none !important; }
+}
+html[data-ax-fx="off"] .ax-a-hover .ax-a-slot svg,
+html[data-ax-calm] .ax-a-hover .ax-a-slot svg { animation: none !important; }
+
+.ax-a-hover:disabled {
+  cursor: pointer !important;
+}
+
+/* awam radius scale inside the login only (md 10, lg 12): founder tailwind.css defines its own, so the login restates them */
+.fa .rounded-md{border-radius:10px}.fa .rounded-lg{border-radius:12px}
+/* scoped preflight (the founder app has no Tailwind preflight): same reset the awam site gets */
+@layer base{.fa,.fa *,.fa ::before,.fa ::after{box-sizing:border-box;border:0 solid var(--border);margin:0;padding:0}
+.fa{font-family:var(--font-inter);line-height:1.5;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased;background:var(--background);color:var(--foreground)}
+.fa h1,.fa h2,.fa h3,.fa p{font-size:inherit;font-weight:inherit}
+.fa button,.fa input,.fa select,.fa textarea{font:inherit;letter-spacing:inherit;color:inherit;background:transparent;border-radius:0}
+.fa button{cursor:pointer;text-align:inherit}.fa svg{display:block;vertical-align:middle}.fa label{display:block}
+.fa ::placeholder{opacity:1}}
+/* neutralise the founder app's bare element rules (styles.css input/button) inside the login, so the Tailwind utilities decide */
+.fa button,.fa input{all:revert-layer}

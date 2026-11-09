@@ -21,6 +21,8 @@ import { SignIn } from "./SignIn";
 
 function Gate() {
   // No session: the founder's OWN sign-in (G-MIX 2c, Rust /founder/v1/auth/login). The old awam app is never involved.
+  // The sign-in lives at /founderlogin (founder order 10 Nov 2026 02:01): the address bar must not show /#/dashboard on a login page.
+  useEffect(() => { if (window.location.pathname !== "/founderlogin") window.history.replaceState(null, "", "/founderlogin"); }, []);
   return <SignIn />;
 }
 
@@ -127,6 +129,7 @@ export default function App() {
     window.addEventListener("keydown", on); return () => window.removeEventListener("keydown", on);
   }, [setView]);
 
+  useEffect(() => { if (authed && window.location.pathname === "/founderlogin") window.history.replaceState(null, "", "/#/dashboard"); }, [authed]);
   if (!authed) return <Gate />;
   if (pend) return <DeviceScreen code={pend.code} revoked={pend.revoked} retry={load} />;
   const title = view === "bridge" ? "Bridge" : view === "profile" ? "Profile" : view === "settings" ? "Settings" : (CC.find((n) => n[0] === view) || ["", ""])[1];
