@@ -40,6 +40,7 @@ docs/cursor-work/founder/tools/plan-surface-matrix.mjs
 docs/cursor-work/server/founder-device.sh
 docs/cursor-work/server/founder-hostguard.sh
 docs/cursor-work/server/founder-install.sh
+docs/cursor-work/server/founder-k5-front-switch.sh
 docs/cursor-work/server/founder-polar.sh
 docs/cursor-work/server/founder-tls256.sh
 docs/cursor-work/sql/E102_founder_audit_actions_devices.sql

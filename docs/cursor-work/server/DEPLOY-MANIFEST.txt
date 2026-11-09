@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 27ae08613ecb40f8
+docs/cursor-work/founder/founder-commands.md 732afe2d7c348389
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs da5c3db196fbe81d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md c8f4e11795da4874
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md d769f0e5080694a0
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -1189,12 +1189,12 @@ founder-web/src/passkey_pure.ts 18c84406d0b26eb9
 server/founder/src/passkey.rs 40e7f754234dafb3
 server/rust/j3_action_vectors.json d90c898ebb69d9ea
 web-wasm/src/action.rs eda7722b529a2887
-lanes/ALL-FILES.csv 5bfd7af92865c24b
+lanes/ALL-FILES.csv 97ee69175f1938dd
 lanes/awam.txt 5d62748c8ccd768b
 lanes/docs.txt 27d88eff51c081bc
-lanes/founder.txt f6620765c01f3638
+lanes/founder.txt 7e5a0a0a401d98e0
 lanes/shared.txt d2d40821bbcd66a0
-lovable-gold/README.md 2caf1ebadf1a7ce1
+lovable-gold/README.md dd2f9a6605dc3e58
 docs/claude/FOUNDER-FLARE-J6-RESEARCH-03NOV.md 5e7c593fa4db1406
 docs/cursor-work/sql/CHECK_E140.sql 0aa343c84820214f
 docs/cursor-work/sql/E140_founder_flare_push.sql 3c95ae9963ebd5bf
@@ -1236,3 +1236,4 @@ server/awam-edge/Cargo.lock b3345990590a69ef
 server/awam-edge/src/main.rs 28877ebf4de053aa
 docs/cursor-work/server/awam-edge-install.sh 9ecb77407d0079e6
 server/awam-edge/.gitignore b53ee26e6ff1da21
+docs/cursor-work/server/founder-k5-front-switch.sh f55c9a02d1438f7f
