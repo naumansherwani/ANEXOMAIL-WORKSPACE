@@ -118,7 +118,7 @@ src/lib/settings.ts b6ed27fd6d2c994a
 src/components/app/settings/SettingsBits.tsx 34207b0ce33787a9
 server/rust/cal_core.rs 5770133e95524592
 server/rust/cal_glue.rs 1b9885a7994aeebe
-AGENTS.md 71b1a583d8a3496b
+AGENTS.md 43f4e0de7de56172
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
@@ -947,7 +947,7 @@ founder-web/src/fonts/Inter-Medium.woff2 c8f84bf00cbd6136
 founder-web/src/fonts/Inter-Regular.woff2 21d73733fb1fbfe6
 founder-web/src/fonts/Inter-SemiBold.woff2 43443e801ec3cb75
 docs/cursor-work/server/rules-gate.py 2a5905157688451a
-CLAUDE.md befdc2c7f533cad1
+CLAUDE.md 3e866a2a518b2494
 docs/claude/FOUNDER-KILLER-FEATURES-28OCT.md 8f8bb489bc473a7c
 founder-web/src/cinema.css 312474c073e9860d
 docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md af209f4adf209b87
@@ -1218,7 +1218,7 @@ src/components/app/FeatureGate.tsx f0ae35c8646cb436
 src/routes/app.storage.tsx 78ca91241d265b0f
 docs/claude/CLOSE-THE-GAPS-07NOV.md 77738e40e72f10c6
 docs/claude/FOUNDER-STATUS-TABLE-07NOV.md b6b2df6961b00f1a
-docs/claude/START-HERE-AFTER-COMPACTION.md 71b32f91f2799960
+docs/claude/START-HERE-AFTER-COMPACTION.md a83d353821128433
 docs/claude/K4-REAL-443-DESIGN-07NOV.md 9e5b0e2f1f1d764f
 docs/claude/AWAM-PACKAGES-PROPOSAL-07NOV.md ad9be171a6790419
 docs/claude/AWAM-PROTON-PLUS-PLAN-07NOV.md 3604e569c579d5de
@@ -1250,4 +1250,3 @@ web-wasm/src/flive.rs d15befbd3862d623
 docs/cursor-work/sql/CHECK_E148_LIVE.sql 329b4db8aaf88b09
 docs/cursor-work/sql/CHECK_E148_LIVE_FN.sql 1bd229c8317b7a75
 docs/cursor-work/sql/E148_LIVE.sql 8fa973224f5ba1f0
-docs/cursor-work/server/DEPLOY-MANIFEST.txt 64c0486e7cd7f90e
