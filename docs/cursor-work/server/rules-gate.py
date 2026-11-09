@@ -64,6 +64,14 @@ for top in ("AGENTS.md", "CLAUDE.md"):
         head = ""
     if "ONE WEBSITE, ONE BUILD" not in head or "RULE 34" not in head or "LIVE CHROME = REPO" not in head or "SHARED-CODE RULE" not in head or "NEXT PHASE + ITS TECHNOLOGY" not in head or "EVERY PHASE IS WRITTEN AND LIVE-TESTED" not in head or "NO UNFINISHED WORK" not in head:
         fail("34 ONE BUILD", top + ": the ONE WEBSITE, ONE BUILD and RULE 34 blocks must stay at the very top (founder 6 Nov 2026)")
+# Founder 9 Nov 2026 19:47 ("websocket banned hai"): WebSocket is BANNED in every lane. Transport = WebTransport (QUIC) with SSE as the honest fallback, nothing else.
+_ws = re.compile(r"new\s+WebSocket|tokio[-_]tungstenite|\btungstenite\b|axum::extract::ws|WebSocketUpgrade|\bwss?://|\bsocket\.io\b|\bsockjs\b", re.I)
+for f in ([] if ALL else staged):
+    if re.match(r"(founder-web/src|web-wasm/src|server/founder/src|server/awam-edge/src|src)/.*\.(rs|ts|tsx|toml)$", f) and os.path.exists(f):
+        for i, l in enumerate(open(f, encoding="utf-8", errors="ignore"), 1):
+            if _ws.search(l):
+                fail("WEBSOCKET BANNED", f + ":" + str(i) + ": WebSocket is banned (founder 9 Nov 2026). Use WebTransport (QUIC) with SSE fallback.")
+                break
 srv = [] if ALL else [f for f in staged if re.match(r"(founder-web/src|founder-web/dist|server/founder/src|docs/cursor-work/sql)/", f)]
 if srv and "docs/claude/founder/PULL-COMMANDS.md" not in staged:
     fail("24 pull command", "server-affecting change but PULL-COMMANDS.md not updated")

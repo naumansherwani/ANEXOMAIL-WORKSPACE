@@ -2,7 +2,7 @@
 //! Technology: Rust (rustls + tokio-rustls, ring), as its OWN program (separate crate, separate user, separate env, separate service: the awam lane, never inside the founder binary, his order 9 Nov 2026 'founder aur awam ka mix nahi'). Go/Caddy cannot be told to speak AES-256 only (golang/go#29349),
 //! so the awam hosts go through this terminator: TLS 1.3 with ONE cipher suite (AES-256-GCM-SHA384), the certificate chosen by SNI from a directory of Caddy's own
 //! Let's Encrypt copies (hot reload, a bad file never replaces a good one), ALPN h2 + http/1.1, and then a RE-ORIGINATION TUNNEL: an inner TLS connection to Caddy
-//! (127.0.0.1:18443) with the SAME SNI and the SAME ALPN, a PROXY v1 line first (real client IP), and bytes copied both ways. Nothing is parsed, so h2, WebSockets,
+//! (127.0.0.1:18443) with the SAME SNI and the SAME ALPN, a PROXY v1 line first (real client IP), and bytes copied both ways. Nothing is parsed, so h2 and other long-lived streams,
 //! SSE and streaming pass unchanged. Default OFF. Behind the K4 front: FOUNDER_FRONT_OTHER points here, the front sends the PROXY line.
 use std::collections::HashMap;
 use std::net::SocketAddr;
@@ -241,7 +241,7 @@ impl TunnelCfg {
     fn inner_for(&self, alpn: Option<&[u8]>) -> &Arc<ClientConfig> { match alpn { Some(b"h2") => &self.inner_h2, Some(b"http/1.1") => &self.inner_h1, _ => &self.inner_none } }
 }
 
-/// Accept loop. At most `max_conn` tunnels at once (more are dropped at once, never queued); every step has a timeout except the byte copy itself (WebSockets live long).
+/// Accept loop. At most `max_conn` tunnels at once (more are dropped at once, never queued); every step has a timeout except the byte copy itself (long-lived streams live long).
 pub async fn serve_tunnel(listener: TcpListener, cfg: Arc<ServerConfig>, t: Arc<TunnelCfg>) {
     let sem = Arc::new(tokio::sync::Semaphore::new(t.max_conn));
     loop {

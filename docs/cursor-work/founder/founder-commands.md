@@ -2804,3 +2804,7 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 9 Nov 2026 20:00 local FOUNDER ran the telemetry command: output active. Then: 'chat context codes her cheeze repo main update kero claude ke liye abhi ke abhi'
 
 - 9 Nov 2026 20:15 local FOUNDER: 'CHECK_E148_LIVE.sql is sql ko sql editor ke liye super advance likho'
+
+- 9 Nov 2026 20:25 local FOUNDER: pasted CHECK_E148_LIVE result (3 WT sessions, 23 frames, all closed with frames, 100% WebTransport, SSE none; #30 74835 ms 21 frames, #31/#32 ~900 ms 1 frame). Orders: 'E148_LIVE.sql ... is ke neechay tu likho sql E148_LIVE.sql'; mid-turn: 'khbardar jo websocket use kiya' + 'websocket banned hai. samjha' (WEBSOCKET IS BANNED in every lane).
+
+- 9 Nov 2026 20:35 local FOUNDER mid-turn: 'bun banned hai samjh.' 'node baaned hai'

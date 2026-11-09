@@ -9,6 +9,8 @@
 > 6. SEPARATION LAW: founder lane and awam lane never mix (own crate, user, env, service; awam code never in the founder binary). Founder technology reaches awam as a molded advanced rewrite AFTER the founder lane, with its own awam pull command (said plainly when NOT needed).
 > 7. CODE: founder code SUPER ADVANCED, SQL above that, technology per phase, pull command per technology (SQL sql-run.sh, Rust founder-install.sh, server bash). Rule 52: browser WebTransport/crypto clients live INSIDE the Rust/Tokio/async WASM kernel (web-wasm/), never in TypeScript. No mock data. ONE website one build.
 > 8. SAFETY: PORT RED LINE (fresh ss first, SERVER-PORTS-RED-LINE-08NOV.md), Caddy law (copy first, rollback file), never type his passwords, never touch the footer.
+> 9. WEBSOCKET IS BANNED (founder 9 Nov 2026 19:47): never WebSocket / ws:// / wss:// / socket.io / tungstenite in any lane (rules-gate fails it). Transport = WebTransport (QUIC) with SSE as the honest fallback.
+> 10. BUN AND NODE ARE BANNED (founder 9 Nov 19:48, 'bun banned hai', 'node banned hai'): never in server runtime code, services, scripts or the founder/awam-edge binaries (Rust only). Sandbox-only build/test tooling for the React-TS UI (vite build, bun test files) is NOT a server runtime; any wish to remove it from the sandbox too = his word first. The legacy awam pm2 site (Node/Bun today) goes away in the awam migration (16 Dec).
 
 
 ## BEFORE EVERY REPLY (checklist, founder 6 Nov 20:45; the rules-gate enforces the machine-checkable parts)

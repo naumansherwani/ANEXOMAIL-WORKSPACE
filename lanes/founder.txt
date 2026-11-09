@@ -81,6 +81,7 @@ docs/cursor-work/sql/E144_founder_vault_lease_keysplit.sql
 docs/cursor-work/sql/E145_founder_vault_panic_t3.sql
 docs/cursor-work/sql/E146_founder_banned_countries.sql
 docs/cursor-work/sql/E147_founder_passkey_pending.sql
+docs/cursor-work/sql/E148_LIVE.sql
 docs/cursor-work/sql/E148_founder_webtransport_sessions.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql

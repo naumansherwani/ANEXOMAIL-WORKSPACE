@@ -195,3 +195,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 9 Nov 2026 20:00 local FOUNDER_TELEMETRY=on set on his server (backup founder.env.bak.tel); do not ask again.
 
 - 9 Nov 2026 20:15 local CHECK_E148_LIVE.sql = advanced read-only SQL (11 rows, SQL editor + sql-run), tested on a real Postgres engine.
+
+- 9 Nov 2026 20:25 local K6.4 server proof (3 WT sessions, 23 frames, 100% WT); E148_LIVE.sql + CHECK_E148_LIVE_FN.sql added; WEBSOCKET BANNED (rules-gate enforces). Do not use WebSocket, ever.
+
+- 9 Nov 2026 20:35 local BUN and NODE banned in any server runtime (his order); recorded at the top. Sandbox build/test tooling question open.
