@@ -14,7 +14,7 @@
 
 
 ## BEFORE EVERY REPLY (checklist, founder 6 Nov 20:45; the rules-gate enforces the machine-checkable parts)
-1. His order pasted verbatim into founder-commands.md first. 2. ONE website, ONE build; mobile + tablet + laptop at 390 / 820 / 1200+ for anything visual. 3. Chat context checkpoint + DONE line + PULL-COMMANDS note in the SAME commit as the code (gate fails otherwise). 4. At most 1-2 pull points, in Rule 46 order. 5. Roman Urdu, short, no padding, no repeated lists; his own task stated in ONE line. 6. End with the Rule-70 table and "Abhi code mein NAHI". 7. Never fake GREEN; never touch the footer; never offer the Polar token.
+1. His order pasted verbatim into founder-commands.md first. 2. ONE website, ONE build; mobile + tablet + laptop at 390 / 820 / 1200+ for anything visual. 3. Chat context checkpoint + DONE line + PULL-COMMANDS note in the SAME commit as the code (gate fails otherwise). 4. At most 1-2 pull points, in Rule 46 order. 5. Roman Urdu, short, no padding, no repeated lists; his own task stated in ONE line. 6. End with the Rule-70 table and "Abhi code mein NAHI". 7. Never fake GREEN; never touch the footer; never offer the Polar token. 8. NEW SQL: first line EMPTY, lock_timeout/statement_timeout inside, CHECK = one SELECT, sql-editor-lint.py, run twice (Rules 38/42). 9. Server commands: script in the repo FIRST, sandbox-tested, logged in founder-commands.md, only then to him (Rule 48). 10. Words: only DONE / READY / TODO (Rule 5), no 'green-grade'.
 
 
 ## ONE WEBSITE, ONE BUILD (top of everything, founder 6 Nov 20:38)

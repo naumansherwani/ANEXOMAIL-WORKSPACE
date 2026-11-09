@@ -1,3 +1,4 @@
+
 -- ==============================================================================================================================
 -- E148 (K6, 9 Nov 2026) — FOUNDER: WebTransport sessions in the live-session ledger (founder lane, SQL).
 -- Rust (server/founder/src/wt.rs) carries the same live frames over QUIC/HTTP3 (AES-256). This file makes the transport PROVABLE in SQL:
@@ -8,6 +9,9 @@
 -- PRIVACY (Rule 69 / FC18): no uid, IP, token, user agent, message body. Only transport kind, counts, times, reasons.
 -- Idempotent: safe to run twice. Needs E111 first.
 -- ==============================================================================================================================
+set lock_timeout = '5s';
+set statement_timeout = '30s';
+
 do $$
 begin
   perform pg_advisory_xact_lock(hashtextextended('founder_wt:ddl', 0));

@@ -1,3 +1,4 @@
+
 -- ==============================================================================================================================
 -- CHECK_E148_LIVE (K6.4, founder lane) — READ-ONLY proof report: does the founder page really get its live data over WebTransport?
 -- Works the same in the Supabase SQL editor (paste and Run, ONE statement) and through sql-run.sh (two columns item | ok; ok=false => FAIL).

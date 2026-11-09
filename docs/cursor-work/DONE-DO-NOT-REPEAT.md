@@ -1736,3 +1736,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 9 Nov 2026 20:25 local K6.4 server proof (3 WT sessions, 23 frames, 100% WT); E148_LIVE.sql + CHECK_E148_LIVE_FN.sql added; WEBSOCKET BANNED (rules-gate enforces). Do not use WebSocket, ever.
 
 - 9 Nov 2026 20:35 local BUN and NODE banned in any server runtime (his order); recorded at the top. Sandbox build/test tooling question open.
+
+- 9 Nov 2026 21:05 local Rules re-read in full; fixed my Rule 42/38 (SQL first line + timeouts), Rule 48 (founder-telemetry.sh, founder-wt-proof.sh), gate check for SQL first line. Do not give inline server commands again.

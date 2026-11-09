@@ -42,7 +42,9 @@ docs/cursor-work/server/founder-hostguard.sh
 docs/cursor-work/server/founder-install.sh
 docs/cursor-work/server/founder-k5-front-switch.sh
 docs/cursor-work/server/founder-polar.sh
+docs/cursor-work/server/founder-telemetry.sh
 docs/cursor-work/server/founder-tls256.sh
+docs/cursor-work/server/founder-wt-proof.sh
 docs/cursor-work/server/founder-wt.sh
 docs/cursor-work/sql/E102_founder_audit_actions_devices.sql
 docs/cursor-work/sql/E103_founder_actions_english.sql

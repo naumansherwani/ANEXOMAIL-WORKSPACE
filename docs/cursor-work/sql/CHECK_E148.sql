@@ -1,3 +1,4 @@
+
 -- CHECK E148 — nothing persists (selftest rolls back). Every row ok = true.
 select item, ok from (
 select 'E148 transport column NOT NULL + CHECK + immutable trigger' as item,

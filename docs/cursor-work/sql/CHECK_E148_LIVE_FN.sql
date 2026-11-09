@@ -1,3 +1,4 @@
+
 -- CHECK E148_LIVE — read-only; the selftest rolls back. Every row ok = true.
 select item, ok from (
 select 'E148_LIVE report function exists, security definer, search_path + statement_timeout pinned' as item,

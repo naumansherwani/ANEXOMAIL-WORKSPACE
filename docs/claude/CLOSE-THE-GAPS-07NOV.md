@@ -194,3 +194,5 @@ G2 is now the open item in progress.
 - 9 Nov 2026 20:25 local K6.4 server proof done (3/3 WT sessions with frames, 23 frames). OPEN for K6 GREEN: 390/820/1200+ looks + his phone. E148_LIVE.sql waits for his run (sql-run E148_LIVE CHECK_E148_LIVE_FN). WebSocket ban added + enforced in rules-gate.
 
 - 9 Nov 2026 20:35 local Bun/Node ban recorded. OPEN question to him: does it also cover sandbox build/test (vite build, bun test)? Awam pm2 site (Node/Bun) leaves with the awam migration.
+
+- 9 Nov 2026 21:05 local Rules re-read; breaks fixed (SQL first line + timeouts, Rule 48 scripts, wording). Open for K6 GREEN: 390/820/1200+ looks + his phone. Open question: bun:test files / vite build in the sandbox vs his Bun/Node ban.

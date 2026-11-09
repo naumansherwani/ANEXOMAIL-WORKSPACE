@@ -72,6 +72,11 @@ for f in ([] if ALL else staged):
             if _ws.search(l):
                 fail("WEBSOCKET BANNED", f + ":" + str(i) + ": WebSocket is banned (founder 9 Nov 2026). Use WebTransport (QUIC) with SSE fallback.")
                 break
+# Founder rule 42/38 (22 Oct 2026): every NEW SQL (E100+ and its CHECK) starts with an EMPTY first line (the Supabase editor can eat the first character). Found 9 Nov: five of my files broke it.
+for f in ([] if ALL else staged):
+    m = re.match(r"docs/cursor-work/sql/(?:CHECK_)?E(\d+)\w*\.sql$", f)
+    if m and int(m.group(1)) >= 100 and os.path.exists(f) and not open(f, encoding="utf-8", errors="ignore").read(1) == "\n":
+        fail("42 SQL first line", f + ": the first line must be EMPTY (Rule 42.1); then run sql-editor-lint.py")
 srv = [] if ALL else [f for f in staged if re.match(r"(founder-web/src|founder-web/dist|server/founder/src|docs/cursor-work/sql)/", f)]
 if srv and "docs/claude/founder/PULL-COMMANDS.md" not in staged:
     fail("24 pull command", "server-affecting change but PULL-COMMANDS.md not updated")

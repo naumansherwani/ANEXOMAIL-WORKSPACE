@@ -1,3 +1,4 @@
+
 -- ==============================================================================================================================
 -- E148_LIVE — founder WebTransport LIVE HEALTH (K6.4, founder lane). Sits under E148 (needs E111 + E148 first). ADVANCED, idempotent, read-only data.
 -- WHY: K6 is GREEN only when signed frames really flow over WebTransport. This puts the proof into the database as ONE function the Rust service
@@ -9,6 +10,9 @@
 -- SECURITY: security definer, search_path pinned, statement_timeout pinned, hours clamped 1..720, execute only for service_role (RLS table untouched).
 -- Same in the Supabase SQL editor (paste, Run) and through sql-run.sh (E148_LIVE then CHECK_E148_LIVE_FN).
 -- ==============================================================================================================================
+set lock_timeout = '5s';
+set statement_timeout = '30s';
+
 do $$ begin
   if to_regclass('public.founder_live_sessions') is null then raise exception 'E111 pehle chalao (founder_live_sessions nahi hai)' using errcode = '55000'; end if;
   if not exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'founder_live_sessions' and column_name = 'transport') then
