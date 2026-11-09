@@ -1762,3 +1762,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 09 Nov 2026 23:44 PKT install script fixed (test retry x3, real output). G-MIX stage 1 install = re-run. Stage 2 not coded.
 - 09 Nov 2026 23:54 PKT install OK again (stage 1 + K7b on server). Curl proof of /app pending. Stage 2a next.
 - 10 Nov 2026 00:02 PKT G-MIX stage 1 GREEN (my curl: /app = 302 /). 2a + 2c coded and tested, install + his real sign-in pending.
+- 10 Nov 2026 00:13 PKT 2a+2c INSTALLED + WIRED (live curl, LIVE=REPO). REAL needs his fresh sign-in.
