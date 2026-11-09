@@ -1,0 +1,63 @@
+/* G-MIX 2b: the founder sign-in keeps the OLD /founderlogin look (cinematic split panel, "Founder protocol / Welcome, Founder", one card).
+   Values are copied from the frozen original (lovable-gold/awam styles.css + auth.tsx), scoped under .fa so nothing else moves. One build: the split panel
+   appears from 1024px by CSS only (no JavaScript size switch). */
+.fa{--fa-bg:oklch(0.135 0.005 265);--fa-fg:oklch(0.955 0.004 250);--fa-card:oklch(0.185 0.008 264);--fa-border:oklch(0.285 0.011 264);--fa-muted:oklch(0.665 0.014 253);--fa-steel:oklch(0.735 0.017 252);--fa-cyan:oklch(0.735 0.121 213);--fa-primary:oklch(0.455 0.093 258);--fa-secondary:oklch(0.225 0.010 264);--fa-bad:oklch(0.61 0.19 25);
+  position:relative;z-index:1;display:flex;min-height:100vh;min-height:100dvh;overflow:hidden;background:var(--fa-bg);color:var(--fa-fg);font-family:inherit}
+.fa *{box-sizing:border-box}
+.fa-side{display:none;position:relative;width:440px;flex:none;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+@media (min-width:1024px){.fa-side{display:flex}.fa-mobilebrand{display:none!important}}
+.fa-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0b1220 0%,#1e3a8a 35%,#312e81 65%,#0b1220 100%);background-size:400% 400%;animation:fa-breathe 12s ease infinite}
+@keyframes fa-breathe{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.fa-mesh{position:absolute;inset:0;background-image:radial-gradient(ellipse 60% 50% at 30% 30%,rgba(37,99,235,.18) 0%,transparent 70%),radial-gradient(ellipse 50% 60% at 75% 70%,rgba(79,70,229,.14) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 60% 20%,rgba(6,182,212,.08) 0%,transparent 60%)}
+.fa-grain{position:absolute;inset:0;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E")}
+.fa-fade{position:absolute;left:0;right:0;bottom:0;height:8rem;background:linear-gradient(to top,rgba(0,0,0,.2),transparent)}
+.fa-sidein{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:2.5rem;padding:0 3.5rem;text-align:center}
+.fa-sidein .fa-brand{transform:scale(1.3)}
+.fa-tag{position:relative;height:1.75rem;width:100%;overflow:hidden}
+.fa-tag p{position:absolute;left:0;right:0;margin:0;font-size:17px;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.85);opacity:0;animation:fa-tag 9.6s infinite}
+.fa-tag p:nth-child(2){animation-delay:3.2s}.fa-tag p:nth-child(3){animation-delay:6.4s}
+@keyframes fa-tag{0%{opacity:0;transform:translateY(14px)}6%,30%{opacity:1;transform:none}36%,100%{opacity:0;transform:translateY(-14px)}}
+.fa-dots{display:flex;gap:.5rem}.fa-dots i{width:6px;height:6px;border-radius:99px;background:#fff;opacity:.3}
+.fa-rule{height:1px;width:5rem;background:rgba(255,255,255,.15)}
+.fa-trust{display:flex;flex-direction:column;gap:1rem}
+.fa-trust div{display:flex;align-items:center;gap:.65rem;color:rgba(255,255,255,.5);font-size:13px;letter-spacing:-.01em}
+.fa-trust svg{width:15px;height:15px;flex:none;color:rgba(255,255,255,.4)}
+.fa-main{display:flex;flex:1;align-items:center;justify-content:center;padding:3rem 1.5rem}
+@media (min-width:1024px){.fa-main{padding:3rem 3.5rem}}
+.fa-col{width:100%;max-width:28rem}
+.fa-mobilebrand{margin-bottom:1.5rem;display:flex}
+.fa-brand{display:inline-flex;align-items:center;gap:.65rem}
+.fa-brand svg{width:2rem;height:2rem;flex:none}
+.fa-word{display:inline-flex;flex-direction:column;line-height:1}
+.fa-word b{display:block;font-size:15px;font-weight:800;letter-spacing:-.02em;white-space:nowrap;background-image:linear-gradient(170deg,oklch(0.985 0.003 250) 0%,oklch(0.855 0.010 252) 52%,oklch(0.665 0.014 253) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fa-word span{margin-top:5px;display:flex;width:100%;justify-content:space-between;font-size:8px;font-weight:600;color:var(--fa-steel)}
+.fa-head{margin-bottom:1.5rem;text-align:center}
+.fa-head p{margin:0;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.2em;color:var(--fa-muted)}
+.fa-head h1{margin:.25rem 0 0;font-size:1.875rem;font-weight:600;letter-spacing:-.02em;color:var(--fa-fg)}
+.fa-card{border:1px solid var(--fa-border);border-radius:1rem;background:var(--fa-card);padding:1.5rem;box-shadow:0 25px 50px -12px rgba(0,0,0,.5)}
+.fa-card h2{margin:0;text-align:center;font-size:1.0625rem;font-weight:700;letter-spacing:-.014em;line-height:1.35}
+.fa-cap{margin:.25rem 0 0;font-size:.75rem;line-height:1.5;color:var(--fa-muted)}
+.fa-card h2+.fa-cap{text-align:center}
+.fa-form{margin-top:1.5rem;display:grid;gap:.75rem}
+.fa-field{display:grid;gap:.4rem}.fa-field>span{font-size:.75rem;color:var(--fa-fg)}
+.fa-inp{display:flex;height:2.5rem;min-height:44px;overflow:hidden;border-radius:6px;border:1px solid var(--fa-border);background:#F9FAFB}
+.fa-inp:focus-within{outline:2px solid var(--fa-cyan);outline-offset:1px}
+.fa-inp input{width:0;min-width:0;flex:1;border:0;background:transparent;padding:0 .75rem;font:inherit;font-size:15px;font-weight:600;color:#0B1220;outline:none}
+.fa-inp input::placeholder{font-weight:400;color:#6B7280}
+.fa-suffix{display:flex;flex:none;align-items:center;border-left:1px solid #E5E7EB;background:#E5E7EB;padding:0 .75rem;font-size:15px;font-weight:600;color:#0B1220;user-select:none}
+.fa-eye{display:flex;width:2.75rem;flex:none;align-items:center;justify-content:center;border:0;background:transparent;color:#6B7280;cursor:pointer}
+.fa-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;min-height:44px;border-radius:6px;border:1px solid transparent;font:inherit;font-size:14px;font-weight:600;cursor:pointer;background:var(--fa-primary);color:#fff}
+.fa-btn:disabled{opacity:.6;cursor:default}
+.fa-btn.out{background:transparent;border-color:var(--fa-border);color:var(--fa-fg)}
+.fa-btn.ghost{background:transparent;color:var(--fa-fg)}
+.fa-btn svg{width:16px;height:16px;flex:none}
+.fa-err{margin:0;font-size:.75rem;line-height:1.5;color:var(--fa-bad);min-height:1.1em}
+.fa-or{margin:1.5rem 0;display:flex;align-items:center;gap:.75rem}.fa-or i{height:1px;flex:1;background:linear-gradient(90deg,transparent,var(--fa-border),transparent)}
+.fa-stack{display:grid;gap:.5rem}
+.fa-note{margin:.75rem 0 0;font-size:.75rem;line-height:1.5;color:var(--fa-muted);text-align:center}
+.fa-foot{margin:1.5rem 0 0;display:flex;align-items:center;justify-content:center;gap:.4rem;font-size:.75rem;color:var(--fa-muted);text-align:center}
+.fa-foot svg{width:14px;height:14px;flex:none;color:var(--fa-cyan)}
+.fa-splash{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;background:var(--fa-bg)}
+.fa-splash p{margin:0}.fa-splash .k{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.25em;color:var(--fa-muted)}.fa-splash .v{font-size:1.5rem;font-weight:600;letter-spacing:-.02em}
+.fa-bar{height:4px;width:12rem;overflow:hidden;border-radius:99px;background:var(--fa-border)}.fa-bar i{display:block;height:100%;border-radius:99px;background:var(--fa-cyan);transition:width 1.4s ease-out}
+@media (prefers-reduced-motion:reduce){.fa-bg{animation:none;background-position:50% 50%}.fa-tag p{animation:none}.fa-tag p:first-child{opacity:1}}

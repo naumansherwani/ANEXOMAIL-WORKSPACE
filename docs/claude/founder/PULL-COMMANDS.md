@@ -836,3 +836,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 10 Nov 2026 01:14 PKT: E151 (sign-in ceremony SQL, G-MIX 2b S1): run the AUTO SQL line above (sql-run.sh bare); expect E151 + CHECK_E151 6/6. SQL only, no restart, no awam pull.
 
 - 10 Nov 2026 01:23 PKT: E151 ran GREEN on his server; never re-send it.
+
+- 10 Nov 2026 01:28 PKT: SPA login look restored: run founder-install.sh (Rust+SPA), then Ctrl+Shift+R on founderworkspace.anexomail.com.

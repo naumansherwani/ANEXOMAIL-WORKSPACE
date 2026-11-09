@@ -104,8 +104,8 @@ founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
-founder-web/dist/assets/index-ChvGeBvk.css
-founder-web/dist/assets/index-s92TBGza.js
+founder-web/dist/assets/index-BR3mV_m9.js
+founder-web/dist/assets/index-CO2RPyZd.css
 founder-web/dist/assets/kernel.worker-BiR_tP7H.js
 founder-web/dist/assets/three.module-C0S06CcT.js
 founder-web/dist/boot.css
@@ -208,6 +208,7 @@ founder-web/src/sealpin.ts
 founder-web/src/session.test.ts
 founder-web/src/session.ts
 founder-web/src/settingsS2.test.ts
+founder-web/src/signin.css
 founder-web/src/signin_pure.test.ts
 founder-web/src/signin_pure.ts
 founder-web/src/snap_seal.test.ts
