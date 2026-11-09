@@ -1,5 +1,7 @@
 # SQL — docs/cursor-work/sql/
 
+> **RUN ORDER (10 Nov 2026 00:40 PKT):** one number line, E37 upward, strictly by number. `server/sql-run.sh` with no name = AUTO: every E-file not yet in the ledger (by sha), in NUMBER order (sort -n), then its CHECK_E<n>; CHECK files always run. Founder series in the repo: E100..E150 are continuous (E104..E106, E108, E120, E122.. exist as listed below). Last = **E150**, next = **E151**. Never edit a GREEN file (E149 is frozen); a fix = a new file or a new function name (E150 uses `founder_dbsc_register_src` beside E149's `founder_dbsc_register`). First line of every SQL file is EMPTY (Rule 42); CHECK = ONE SELECT.
+
 Do tracks. Mix **banned**.
 
 ## Phase 60s — founder blueprint (NO TOUCH)
@@ -76,6 +78,15 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E140 | J6: FLARE v2 = phone Web Push (RFC 8291/8292): push subscription (endpoint allow-list, key shapes, T2 flare.push, confirm token hash), outbox state machine, hash-chained event ledger, T3 alert triggers, sender doors claim/report, selftest. CHECK_E140 (6). |
 | E141 | J6 hardening: end-to-end DELIVERY RECEIPTS (one-time ack token inside the encrypted push, hash only in SQL), one escalation reminder after 90 s, status of unacknowledged alerts. CHECK_E141 (5). |
 | E142 | J hardening: a key is HARDWARE only if its model is trusted AND its facts say device-bound (BE=0, not platform); class re-decided by triggers; `founder_hardware_readiness()` says why a key does not count + next step. CHECK_E142 (4). |
+| E143 | J8 DEAD-MAN VAULT LEASE: short server-signed lease, race-safe, tamper-evident, self-auditing. CHECK_E143. **GREEN on his server** |
+| E144 | J8 lease key split (vault key never sits whole with the server). CHECK_E144. **GREEN on his server** |
+| E145 | J8 panic lock (T3): two hardware keys, ledger. CHECK_E145. **GREEN on his server (panic needs his 2 hardware keys to run for real)** |
+| E146 | Banned countries ledger (Syria wall data). CHECK_E146. **GREEN on his server** |
+| E147 | Passkey pending ledger. CHECK_E147. **GREEN on his server** |
+| E148 | K6 WebTransport sessions ledger. CHECK_E148. **GREEN on his server** |
+| E148_LIVE | K6.4 WebTransport live health (read-only, needs E111 + E148). CHECK_E148_LIVE + CHECK_E148_LIVE_FN (5/5). **GREEN on his server** |
+| E149 | K7a DBSC: device-bound sessions, jti replay cache, hash-chained events, revoke trigger. CHECK_E149 (8/8). **GREEN on his server (09 Nov 2026)** |
+| E150 | **K7b device key for every browser and phone** (source column dbsc / webcrypto, `founder_dbsc_register_src`, report by_source). File: `docs/cursor-work/sql/E150_founder_devicekey.sql`, check: `CHECK_E150.sql` (7/7). **GREEN on his server (09 Nov 2026 23:18 PKT)**. Next free number: **E151** |
 | CHECK_G5D_LIVE | G5d part 2 live proof (read only): the Rust tick wrote rows, newest < 5 min, observer pulse ok, horizon observed, chains clean | 5 checks |
 
 | anexochat PHASE 61 | `anexochat/sql/phase61_file_limits_quota.sql`: ANEXOChat file chart 500MB/1.5GB/4GB + per-user monthly quota 50/150/400GB (throttle never block, dedup, drift guard). `anexochat/sql/CHECK_phase61.sql` (5). Awam SQL: runs with the awam migration, after phase13_15. |
