@@ -179,3 +179,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 9 Nov 2026 17:50 K6 day 1 (founder lane): server/founder/src/wt.rs (WebTransport over QUIC/HTTP3, AES-256-only via QuicServerConfig::with_initial, hello line auth, same handler as SSE), SQL E148 + CHECK_E148, docs/cursor-work/server/founder-wt.sh (UDP 4443). Do NOT redo: the AES-256-only QUIC config problem (wtransport build() refuses it) is solved with build_with_quic_config. Not green until his server steps + live proof.
 
 - 9 Nov 2026 18:15 K6 wt tests: connect to 127.0.0.1 (IP SAN), not localhost (his server resolves localhost to ::1 and the installer test gate stopped). Do not switch back to localhost.
+
+- 9 Nov 2026 18:40 K6 step 2 done on his server (founder-install OK, binary with wt.rs). Do not ask him to re-run founder-install for K6.
