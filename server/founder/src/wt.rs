@@ -195,7 +195,9 @@ mod tests {
     }
 
     fn test_cert() -> Option<(Vec<u8>, Vec<u8>)> {
-        let dir = std::env::temp_dir().join(format!("anx-wt-{}", std::process::id()));
+        // one directory PER CALL: the tests run in parallel, and sharing c.pem/k.pem let one test overwrite another's pair (flaky "server_config unwrap" on his server, 10 Nov 2026)
+        static N: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+        let dir = std::env::temp_dir().join(format!("anx-wt-{}-{}", std::process::id(), N.fetch_add(1, std::sync::atomic::Ordering::SeqCst)));
         std::fs::create_dir_all(&dir).ok()?;
         let (c, k) = (dir.join("c.pem"), dir.join("k.pem"));
         let ok = std::process::Command::new("openssl").args(["req", "-x509", "-newkey", "ec", "-pkeyopt", "ec_paramgen_curve:prime256v1", "-nodes", "-days", "1", "-subj", "/CN=localhost", "-addext", "subjectAltName=DNS:localhost,IP:127.0.0.1", "-addext", "basicConstraints=critical,CA:FALSE", "-addext", "extendedKeyUsage=serverAuth", "-keyout"]).arg(&k).arg("-out").arg(&c).output().ok()?.status.success();

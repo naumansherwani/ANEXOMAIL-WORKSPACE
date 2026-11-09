@@ -2888,3 +2888,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 10 Nov 2026 02:12 PKT: my Chrome on his live founderworkspace /founderlogin: bundle index-C8CXTOLP = repo build, awam-code login live (card r20 p24, btn r16 h40, aside present); address showed /founderlogin#/dashboard -> hash strip fix built (new bundle, needs install). E151 = GREEN (his word 02:11).
 
 - 10 Nov 2026 02:18 PKT: his phone photos awam vs founder: awam shows Save password row; founder lacked it -> added (awam Checkbox copy + same behaviour, key anexo.founder.savepw). Forgot-password + Create-account NOT added (founder host hides them in the awam code; asked him). Built, not installed.
+
+- 10 Nov 2026 02:27 PKT: founder-install.sh FAILED on his server (tests 3x, different tests each time: wt.rs:232 + tls256 k43). Cause: 2 flaky TESTS (not product code): wt test_cert shared one dir between parallel tests; k43 used a stale clock for a freshly minted cert. Fixed (per-call dir, fresh clock); 264/264 x5 in sandbox. Install must be re-run.

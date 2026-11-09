@@ -422,7 +422,7 @@ mod tests {
         // a new good pair: swapped, and not_after is updated
         let (c3, k3) = test_cert().unwrap();
         std::fs::write(&cp, &c3).unwrap(); std::fs::write(&kp, &k3).unwrap();
-        let na3 = reload_once(&store, &cp, &kp, now).expect("good pair loads");
+        let na3 = reload_once(&store, &cp, &kp, now_unix()).expect("good pair loads"); // a clock read AFTER the cert was made: a cert minted in the next second is "not yet valid" for the old `now` (flaky)
         assert!(!Arc::ptr_eq(&first, &store.current()));
         assert_eq!(store.not_after(), na3);
     }
