@@ -164,3 +164,5 @@ G2 is now the open item in progress.
 - 9 Nov 2026 (17:03 local) K5a looks: laptop OK (Claude, live Chrome), PHONE OK (his screenshot 17:03). OPEN: tablet 820; awam bundle index-Bqhlal5C vs repo (server line given); 9 hosts 502; K5b.
 
 - 9 Nov 2026 (17:24 local) K5a bundle check: awam server src == repo (610 same, 0 differ, 0 missing), build skipped (code unchanged). OPEN: compiled file find (quote-free line), tablet 820, 9 hosts 502, pm2 anexomail-web restarts=500 (read-only look at whether it flaps), K5b. Rule: server lines without quotes.
+
+- 9 Nov 2026 (17:28 local) K5a = GREEN, WIRED: YES / REAL: YES. Proof: real :443 23 hosts AES-256 + AES-128 refused + http equal to before (fails=0), laptop look (Claude, live Chrome), phone look (his screenshot), awam server src == repo (610/0/0), compiled bundle file found (.output/public/assets/index-Bqhlal5C.js). Open one-tap: tablet 820. Side: 9 hosts 502, pm2 restarts=500. Next: K5b.
