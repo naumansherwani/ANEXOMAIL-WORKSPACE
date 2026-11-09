@@ -203,3 +203,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 9 Nov 2026 21:05 local Rules re-read in full; fixed my Rule 42/38 (SQL first line + timeouts), Rule 48 (founder-telemetry.sh, founder-wt-proof.sh), gate check for SQL first line. Do not give inline server commands again.
 
 - 9 Nov 2026 21:20 local His ruling: sandbox/test tools are NOT banned; the website and servers use only the latest technology (no Bun/Node/WebSocket). Do not ask this again.
+
+- 9 Nov 2026 20:08 PKT (REAL clock, from `date`) DONE on his server: E148 fixed file rerun (sha 798c937f6ef56c21) + CHECK_E148 7/7; telemetry ON; K6.1-K6.3 installed; K6.4 server leg. Do not redo these.

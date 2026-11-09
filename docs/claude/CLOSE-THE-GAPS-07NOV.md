@@ -198,3 +198,5 @@ G2 is now the open item in progress.
 - 9 Nov 2026 21:05 local Rules re-read; breaks fixed (SQL first line + timeouts, Rule 48 scripts, wording). Open for K6 GREEN: 390/820/1200+ looks + his phone. Open question: bun:test files / vite build in the sandbox vs his Bun/Node ban.
 
 - 9 Nov 2026 21:20 local CLOSED: Bun/Node sandbox question (his answer: sandbox/test tools free, website latest only). OPEN for K6 GREEN: (1) rerun of fixed E148 + E148_LIVE + CHECKs with visible rows, (2) his phone screenshot, (3) my 390/820/1200+ looks.
+
+- 9 Nov 2026 20:08 PKT (REAL clock, from `date`) E148 rerun OK (CHECK_E148 7/7). OPEN K6: verify E148_LIVE rows (read-only), his phone screenshot, my 390/820/1200+ looks. NOTE: earlier 19:55-21:20 stamps in the chat context were estimates; real order = file position.
