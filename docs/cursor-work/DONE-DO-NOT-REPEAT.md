@@ -1742,3 +1742,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 9 Nov 2026 21:20 local His ruling: sandbox/test tools are NOT banned; the website and servers use only the latest technology (no Bun/Node/WebSocket). Do not ask this again.
 
 - 9 Nov 2026 20:08 PKT (REAL clock, from `date`) DONE on his server: E148 fixed file rerun (sha 798c937f6ef56c21) + CHECK_E148 7/7; telemetry ON; K6.1-K6.3 installed; K6.4 server leg. Do not redo these.
+- 9 Nov 2026 20:17 PKT K6.4 looks measured in sandbox (390/820/1280, no page overflow, same dist index-C1zOmM1I); K6 still NOT green: needs his CHECK_E148_LIVE rows + phone screenshot.
