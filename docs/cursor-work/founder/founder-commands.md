@@ -2870,3 +2870,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 10 Nov 2026 00:57 PKT: founder-legacy.sh STATUS run by him: native login 401 alive, legacy line still set; cut (MODE=off) is next.
 
 - 10 Nov 2026 01:02 PKT: G-MIX legacy cut GREEN (his MODE=off + my live curl). Open: 2b.
+
+- 10 Nov 2026 01:08 PKT: G-MIX 2b plan written, S1 E151 SQL next.

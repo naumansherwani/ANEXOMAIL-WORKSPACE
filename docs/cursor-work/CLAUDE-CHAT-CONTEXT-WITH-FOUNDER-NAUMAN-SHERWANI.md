@@ -2722,3 +2722,6 @@ STATE at 9 Nov 2026 20:08 PKT (REAL clock, from `date`): DONE on his server: K6.
 
 
 ## Checkpoint 10 Nov 2026 01:02 PKT RESUME HERE: G-MIX legacy cut = GREEN (WIRED: YES / REAL: YES). His MODE=off run: OK legacy upstream cut, service active, healthz 200, backup /etc/anexomail/founder.env.bak.legacy.1794254337, junk login 401. My live curl on founderworkspace.anexomail.com: / 200, /app /founderlogin /auth /signup = 302 to /, POST login 401. G-MIX OPEN ONLY 2b (passkey, recovery, magic link, MFA in Rust). NEXT founder order: 2b, then L (12-13 Nov), M, N..V, X by 25 Nov. Awam pull NOT needed.
+
+
+## Checkpoint 10 Nov 2026 01:08 PKT RESUME HERE: G-MIX 2b STARTED. Plan docs/claude/G-MIX-2B-PLAN-10NOV.md (S1 E151 SQL 900+ lines first, then Rust ticket+passkey, TOTP, recovery, magic link, UI, live proof). Founder order: L (Cinematic/WebGPU) starts TODAY 10 Nov after/alongside 2b; M 14-15 Nov; N..V,X to 25 Nov. Pull commands given per technology, one at a time.
