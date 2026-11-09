@@ -118,14 +118,14 @@ src/lib/settings.ts b6ed27fd6d2c994a
 src/components/app/settings/SettingsBits.tsx 34207b0ce33787a9
 server/rust/cal_core.rs 5770133e95524592
 server/rust/cal_glue.rs 1b9885a7994aeebe
-AGENTS.md 551199cd3a605315
+AGENTS.md 0d35d63489591b31
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 69d553cdda0cd8d1
+docs/cursor-work/founder/founder-commands.md b211e6bd6bebe751
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md ef784b0e17e46c0c
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 8fb96e08d65dd90b
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs da5c3db196fbe81d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 91da0eae6c1892ee
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 14d0a05dc4bc37a8
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -383,7 +383,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 537dd657bd232ad0
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 00084bbce2d08080
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -947,7 +947,7 @@ founder-web/src/fonts/Inter-Medium.woff2 c8f84bf00cbd6136
 founder-web/src/fonts/Inter-Regular.woff2 21d73733fb1fbfe6
 founder-web/src/fonts/Inter-SemiBold.woff2 43443e801ec3cb75
 docs/cursor-work/server/rules-gate.py c21e8069f8aceb91
-CLAUDE.md 6c5c940723c8a485
+CLAUDE.md 98cdd6f5825d3a2d
 docs/claude/FOUNDER-KILLER-FEATURES-28OCT.md 8f8bb489bc473a7c
 founder-web/src/cinema.css 312474c073e9860d
 docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md af209f4adf209b87
@@ -1029,7 +1029,7 @@ server/founder/src/ledger.rs 7b089b4c149de768
 server/rust/merkle_core.rs 10a8a9caa5aa4b73
 anexochat/docs/anexochat-blueprint-original.md ba6c31517ce290e1
 docs/claude/TECH-CHART-01NOV.md 84d8473550011286
-docs/claude/DONE-DO-NOT-REPEAT.md 2ce091b89da88afb
+docs/claude/DONE-DO-NOT-REPEAT.md 1b4633545c4825ff
 docs/cursor-work/sql/CHECK_E113.sql ac2a10b397d6d386
 docs/cursor-work/sql/E113_founder_settings_timemachine.sql f685f2dd91178faf
 docs/claude/FOUNDER-SETTINGS-CENTER-DECISION-01NOV.md 70427a3adb10f5ac
@@ -1220,10 +1220,10 @@ founder-web/public/kernel/anexo-kernel-0.13.0.wasm 73aaa53dd0823591
 founder-web/dist/kernel/anexo-kernel-0.13.0.wasm 73aaa53dd0823591
 src/components/app/FeatureGate.tsx f0ae35c8646cb436
 src/routes/app.storage.tsx 78ca91241d265b0f
-docs/claude/CLOSE-THE-GAPS-07NOV.md 8e8ba57659db2a09
-docs/claude/FOUNDER-STATUS-TABLE-07NOV.md 9b367c7802c59a80
-docs/claude/START-HERE-AFTER-COMPACTION.md a4f10a1165d1b549
-docs/claude/K4-REAL-443-DESIGN-07NOV.md dae47a1242d14246
+docs/claude/CLOSE-THE-GAPS-07NOV.md 4842bfb771d36ca1
+docs/claude/FOUNDER-STATUS-TABLE-07NOV.md 13ea2c2f0772beca
+docs/claude/START-HERE-AFTER-COMPACTION.md 03f3e2acf76c0bb7
+docs/claude/K4-REAL-443-DESIGN-07NOV.md 02c95f655617045a
 docs/claude/AWAM-PACKAGES-PROPOSAL-07NOV.md ad9be171a6790419
 docs/claude/AWAM-PROTON-PLUS-PLAN-07NOV.md b043e1f1ef81e645
 server/founder/src/front.rs cc586c0b52266d61
