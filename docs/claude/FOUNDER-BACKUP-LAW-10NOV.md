@@ -12,3 +12,6 @@
 - Founder archive: 691 files, SHA-256 `4d42267510bcf9d97540a82b01cb5e79f87e33615d5e14b2ae99fc65d371f3be`.
 - Awam archive: 1722 files, SHA-256 `2c57f013a89c22eb5c0a95a5d96ff32860e7d5477b5295198e5e81b69414dcaf`.
 - Delivered to the Chairman in chat as two files.
+
+## Backup #2 — 10 Nov 2026 02:53 PKT (after the login rebuild + incident fix; the founder saw the site healthy 3 times)
+- Commit **3450d945**. Founder archive 694 files, SHA-256 `bbff9ff2d8adec6416e33e17fdde68ea4293a96f7262881f1c65784931b37d49`. Awam archive 1724 files, SHA-256 `87e92022d07f724087bb18d5a02edd38fe5d71a337c30524db7f3ae1c046937d`. Sent to him as two files. Restore point = this commit.

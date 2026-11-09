@@ -2755,3 +2755,5 @@ Checkpoint 10 Nov 2026 02:35 PKT RESUME HERE: install OK (bundle Dq5xQ70p). His 
 Checkpoint 10 Nov 2026 02:45 PKT RESUME HERE: INCIDENT: founder-install.sh re-added FOUNDER_LEGACY_UPSTREAM=127.0.0.1:443 -> self-loop after K4.5. Installer fixed (never adds, deletes a loop line). He runs founder-legacy.sh MODE=off, then checks site. LAW: after ANY cut/switch, grep every installer for the line it removed.
 
 Checkpoint 10 Nov 2026 02:50 PKT RESUME HERE: INCIDENT CLOSED (server cut re-applied, live proven). Law file FOUNDER-INSTALLER-AFTER-CUT-LAW-10NOV.md. Waiting: his browser check (login, sign-out), answer on Forgot password. UI untouched. Next: 2b S2 Rust signin.rs.
+
+Checkpoint 10 Nov 2026 02:53 PKT RESUME HERE: backup #2 sent (3450d945). Incident closed, he saw the site OK 3 times. ORDER: same login codes -> latest technology (security path: 2b S2 Rust signin.rs ticket + passkey WebAuthn, conditional UI), look NEVER changes.
