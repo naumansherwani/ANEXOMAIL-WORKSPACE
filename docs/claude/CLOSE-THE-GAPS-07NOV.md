@@ -207,3 +207,4 @@ G2 is now the open item in progress.
 - 09 Nov 2026 20:57 PKT K7 gap: E149 selftest fix 2 in repo (new sha), his bare sql-run rerun pending.
 - 09 Nov 2026 21:15 PKT K7 OPEN: E149 GREEN on server; install + observe + K7b (every browser) + real Chrome/phone/Firefox-or-Safari proof + card at 390/820/1200+ still open.
 - 09 Nov 2026 21:23 PKT K7 gap: install DONE; observe, Chrome/phone/other-browser proof, K7b, card screenshots open.
+- 09 Nov 2026 22:47 PKT K7 gap: observe not yet switched on (his run was status). 404 does not prove the routes exist.

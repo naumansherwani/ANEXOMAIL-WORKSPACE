@@ -947,3 +947,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 09 Nov 2026 20:57 PKT K7 E149 selftest fixed again (does not assume an empty device list; stub carries other real devices). Rerun pending.
 - 09 Nov 2026 21:15 PKT K7 SQL step GREEN on his server (E149 8/8). K7b (every browser) added to the order; K7 not green.
 - 09 Nov 2026 21:23 PKT K7 step 2 DONE on his server (install OK). Step 3 observe next.
+- 09 Nov 2026 22:47 PKT K7 step 3 not done (his paste was status mode). Repeat with the MODE=observe prefix.

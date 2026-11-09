@@ -815,3 +815,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 09 Nov 2026 20:57 PKT K7 step 1 rerun again (same bare line as before, new sha reruns E149).
 - 09 Nov 2026 21:15 PKT K7 step 2 (install new Rust binary + SPA): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -15 ; then step 3 MODE=observe founder-dbsc.sh. Awam pull: NOT needed.
 - 09 Nov 2026 21:23 PKT K7 step 3 (one line, no quotes): MODE=observe bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-dbsc.sh)   then proof: MODE=status bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-dbsc.sh)
+- 09 Nov 2026 22:47 PKT K7 step 3 repeat, the line must START with MODE=observe: MODE=observe bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-dbsc.sh)  (without the prefix it only shows status)
