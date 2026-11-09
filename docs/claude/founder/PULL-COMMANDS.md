@@ -803,3 +803,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 9 Nov 2026 19:45 local K6.3 install DONE by him (founder-install + awam pull). Next (read-only proof, founder lane): journalctl -u anexomail-founder --since=-20min --no-pager | grep -i WebTransport | tail -8
 - 9 Nov 2026 19:40 local K6.4 report (read-only SQL, founder lane): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) CHECK_E148_LIVE 2>&1 | tail -8
 - 9 Nov 2026 20:00 local server env done by him: FOUNDER_TELEMETRY=on (backup founder.env.bak.tel). Next: CHECK_E148_LIVE re-run after a page load.
+- 9 Nov 2026 20:15 local K6.4 (SQL, read-only, also pasteable in the Supabase SQL editor): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) CHECK_E148_LIVE 2>&1 | tail -14

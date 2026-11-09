@@ -188,3 +188,5 @@ G2 is now the open item in progress.
 - 9 Nov 2026 19:50 local K6.4: CHECK_E148_LIVE FAIL (no session rows, any transport) -> telemetry probably off; verify FOUNDER_TELEMETRY, then prove frames flow. K6 stays OPEN.
 
 - 9 Nov 2026 20:00 local K6.4: telemetry turned ON by him (backup founder.env.bak.tel). Waiting for CHECK_E148_LIVE with real rows. K6 OPEN.
+
+- 9 Nov 2026 20:15 local K6.4: CHECK_E148_LIVE rewritten (advanced SQL, editor + sql-run), verified on pglite; waiting for his run (row 2 = frames over WT). K6 OPEN.

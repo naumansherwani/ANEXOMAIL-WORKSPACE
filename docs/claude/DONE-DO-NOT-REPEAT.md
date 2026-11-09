@@ -193,3 +193,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 9 Nov 2026 19:40 local K6.4 part 1: journal shows real WebTransport sessions #1-#3 from the new bundle; CHECK_E148_LIVE.sql (read-only) added.
 
 - 9 Nov 2026 20:00 local FOUNDER_TELEMETRY=on set on his server (backup founder.env.bak.tel); do not ask again.
+
+- 9 Nov 2026 20:15 local CHECK_E148_LIVE.sql = advanced read-only SQL (11 rows, SQL editor + sql-run), tested on a real Postgres engine.
