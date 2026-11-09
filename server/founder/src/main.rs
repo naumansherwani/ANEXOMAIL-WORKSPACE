@@ -39,6 +39,7 @@ mod passkey;
 mod flare;
 mod lease;
 mod dbsc;
+mod auth;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -724,6 +725,9 @@ pub fn app(st: S) -> Router {
     let static_dir = std::env::var("FOUNDER_STATIC").unwrap_or_else(|_| "/opt/anexomail-founder/web".into());
     Router::new()
         .route("/healthz", get(|| async { "ok" }))
+        .route("/founder/v1/auth/login", axum::routing::post(auth::login_ep))
+        .route("/founder/v1/auth/refresh", axum::routing::post(auth::refresh_ep))
+        .route("/founder/v1/auth/logout", axum::routing::post(auth::logout_ep))
         .route("/founder/v1/exchange", axum::routing::post(exchange_ep))
         .route("/founder/v1/dbsc/start", axum::routing::post(dbsc::start_ep))
         .route("/founder/v1/dbsc/refresh", axum::routing::post(dbsc::refresh_ep))

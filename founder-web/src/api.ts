@@ -45,7 +45,7 @@ export function renewSession(): Promise<boolean> {
   const rt = lsGet(REFRESH_KEY); if (!rt) return Promise.resolve(false);
   renewing = (async () => {
     try {
-      const r = await fetch("/api/auth/refresh", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ refresh_token: rt }), cache: "no-store" });
+      const r = await fetch("/founder/v1/auth/refresh", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ refresh_token: rt }), cache: "no-store" });
       let j: { token?: unknown; refresh_token?: unknown; expires_at?: unknown } = {}; try { j = await r.json(); } catch { /* not json */ }
       const got = typeof j.token === "string" && j.token.length > 20;
       const out = classifyRefresh(r.status, got);
@@ -210,7 +210,7 @@ export async function put(path: string, body: unknown): Promise<WriteResult> {
   return { status: r.status, body: j };
 }
 // Sign out of THIS browser only: drops the session copy + the in-memory founder token. The device approval stays (server side).
-export function signOut() { forget(); try { window.sessionStorage.removeItem(SNAP); } catch {} try { window.localStorage.removeItem(KEY); window.localStorage.removeItem("anexo.session.last"); } catch {} window.location.replace("/founderlogin"); }
+export function signOut() { const tk = tok(); forget(); try { window.sessionStorage.removeItem(SNAP); } catch {} try { window.localStorage.removeItem(KEY); window.localStorage.removeItem("anexo.session.last"); } catch {} try { void fetch("/founder/v1/auth/logout", { method: "POST", headers: tk ? { authorization: `Bearer ${tk}` } : {}, keepalive: true }); } catch {} window.location.replace("/"); }
 
 // Founder settings (E108): one signed write per change; value null = back to default.
 export const setSetting = (key: string, value: unknown) => put("/founder/v1/settings", { key, value });

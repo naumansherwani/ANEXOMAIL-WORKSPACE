@@ -222,3 +222,4 @@ G2 is now the open item in progress.
 - 09 Nov 2026 23:38 PKT G-MIX stage 2 (2a-2d) open, nothing coded; stage 1 install blocked (test fail on server).
 - 09 Nov 2026 23:44 PKT G-MIX stage 1 install pending re-run (script fixed); stage 2 open.
 - 09 Nov 2026 23:54 PKT G-MIX stage 1 installed, curl proof pending; stage 2a next.
+- 10 Nov 2026 00:02 PKT G-MIX: stage 1 CLOSED (green). Open: 2a/2c install + his real sign-in proof; 2b passkey/recovery/magic/MFA; 2d cut (unset FOUNDER_LEGACY_UPSTREAM, /founderlogin -> /).

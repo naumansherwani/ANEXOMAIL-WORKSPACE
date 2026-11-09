@@ -15,21 +15,13 @@ import { BridgeView, DashboardView } from "./Bridge";
 import { Palette, type NavItem } from "./Palette";
 import type { Prof } from "./types";
 import { Trust } from "./Trust";
+import { SignIn } from "./SignIn";
 
 
 
 function Gate() {
-  // No session at all: go straight to the founder sign-in (default entry). A stale token shows this card instead (no redirect loop).
-  useEffect(() => { if (!hasToken()) window.location.replace("/founderlogin"); }, []);
-  return (
-    <div className="loginwrap"><div className="login">
-      <div className="brand">ANEXOMAIL · FOUNDER</div>
-      <h1>Command Center</h1>
-      <p className="dim">Sign in with your founder account to continue. The same sign-in you already use — passkey included.</p>
-      <a className="btn" href="/founderlogin">Go to founder sign in</a>
-      <p className="dim small">After signing in you land here automatically.</p>
-    </div></div>
-  );
+  // No session: the founder's OWN sign-in (G-MIX 2c, Rust /founder/v1/auth/login). The old awam app is never involved.
+  return <SignIn />;
 }
 
 function DeviceScreen({ code, revoked, retry }: { code: string | null; revoked: boolean; retry: () => void }) {

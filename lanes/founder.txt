@@ -103,7 +103,7 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/index-ChvGeBvk.css
-founder-web/dist/assets/index-GbaO3ls3.js
+founder-web/dist/assets/index-D9cctke1.js
 founder-web/dist/assets/kernel.worker-BiR_tP7H.js
 founder-web/dist/assets/three.module-C0S06CcT.js
 founder-web/dist/boot.css
@@ -145,6 +145,7 @@ founder-web/src/Profile.tsx
 founder-web/src/Scene3D.tsx
 founder-web/src/Settings.tsx
 founder-web/src/SettingsS2.tsx
+founder-web/src/SignIn.tsx
 founder-web/src/Surface.tsx
 founder-web/src/Trust.tsx
 founder-web/src/Vault.tsx
@@ -205,6 +206,8 @@ founder-web/src/sealpin.ts
 founder-web/src/session.test.ts
 founder-web/src/session.ts
 founder-web/src/settingsS2.test.ts
+founder-web/src/signin_pure.test.ts
+founder-web/src/signin_pure.ts
 founder-web/src/snap_seal.test.ts
 founder-web/src/snap_seal.ts
 founder-web/src/sse.ts
@@ -221,6 +224,7 @@ server/founder/src/actions.rs
 server/founder/src/ambient.rs
 server/founder/src/anchors.rs
 server/founder/src/audit.rs
+server/founder/src/auth.rs
 server/founder/src/authcache.rs
 server/founder/src/bridge.rs
 server/founder/src/data.rs
