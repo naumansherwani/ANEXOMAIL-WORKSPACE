@@ -1,5 +1,5 @@
 // K7 — Device-bound sessions (DBSC), the pure part: turn the server's /founder/v1/dbsc/status answer into words. No fetch, no DOM, nothing invented.
-export type DbscDevice = { id: string; label: string; bound: boolean; since: string | null; refreshes: number; last_refresh_at: string | null };
+export type DbscDevice = { id: string; label: string; bound: boolean; source?: "dbsc" | "webcrypto" | null; since: string | null; refreshes: number; last_refresh_at: string | null };
 export type DbscStatus = {
   mode: "off" | "observe" | "enforce"; available: boolean; this_device?: string | null; devices?: DbscDevice[]; note?: string; limit?: string;
   report?: { verdict: string; sessions_active: number; refreshes_24h: number; rejects_24h: number; would_block_24h: number; blocked_24h: number; chain?: { ok: boolean; checked: number } };

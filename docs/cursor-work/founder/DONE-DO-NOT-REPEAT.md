@@ -952,3 +952,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 09 Nov 2026 22:53 PKT K7 step 4 DONE: dbsc routes 400/400 on his server, observe live.
 - 09 Nov 2026 23:00 PKT K7a registration PROVEN in real Chrome on Windows (card: Bound just now, 1 of 4 devices, ledger chain intact). Refresh proof + K7b open.
 - 09 Nov 2026 23:04 PKT K7a-REGISTRATION GREEN (WIRED YES / REAL YES: real Chrome Windows Bound, E149 8/8, observe ON). K7 overall open: refresh counter, K7b, card at 390/820.
+- 09 Nov 2026 23:09 PKT K7b code written (E150 + devicekey.ts + Rust proof gate); not installed. Next his steps: sql-run, founder-install, phone/Firefox sign-in.

@@ -77,16 +77,19 @@ if (typeof window !== "undefined") {
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") tick(); });
 }
 
+import * as dk from "./devicekey";
 async function exchange(again = true): Promise<string | null> {
   await keepSessionFresh();
   const t = tok(); if (!t) throw expired();
   const id = deviceId();
   if (!id) { mode = "legacy"; return null; }
   let r: Response;
-  try { r = await fetch("/founder/v1/exchange", { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${t}` }, body: JSON.stringify({ device_id: id, label: deviceLabel() }), cache: "no-store" }); }
+  const proof = await dk.exchangeProof(id).catch(() => null);   // K7b: only when this device already has a key; otherwise the exchange is exactly as before
+  try { r = await fetch("/founder/v1/exchange", { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${t}`, ...(proof ? { "x-device-proof": proof } : {}) }, body: JSON.stringify({ device_id: id, label: deviceLabel() }), cache: "no-store" }); }
   catch { mode = "legacy"; return null; }
   if (r.status === 401) { if (again && (await renewSession())) return exchange(false); throw expired(); } // an expired session token: renew once, then ask again
   let j: any = {}; try { j = await r.json(); } catch {}
+  if (r.status === 200 && j.token && j.dk && j.dk.mode && j.dk.mode !== "off" && !j.dk.bound) void dk.register(id, t);   // K7b: the server asks an unbound device to bind (any browser, any phone); fire and forget
   if (r.status === 200 && j.token) { ft = j.token; rk = j.req_key || null; fexp = j.exp * 1000; mode = "device"; dlabel = j.device || ""; return ft; }
   if (r.status === 403 && j.error === "device_pending") throw new DevicePending(j.code, false);
   if (r.status === 403 && j.error === "device_revoked") throw new DevicePending(null, true);

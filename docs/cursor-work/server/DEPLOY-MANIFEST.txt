@@ -118,7 +118,7 @@ src/lib/settings.ts b6ed27fd6d2c994a
 src/components/app/settings/SettingsBits.tsx 34207b0ce33787a9
 server/rust/cal_core.rs 5770133e95524592
 server/rust/cal_glue.rs 1b9885a7994aeebe
-AGENTS.md d1e0d9ad1d941155
+AGENTS.md 1a1ca7d1ac621f9b
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 00eb5570fbfaa380
+docs/cursor-work/DONE-DO-NOT-REPEAT.md e149d679c18c4e12
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs da5c3db196fbe81d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 3318c5b1fe55412f
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 45514282b7b10a5c
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -383,7 +383,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 1046d6363127fb33
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 31fa3f300c92f160
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -878,7 +878,7 @@ server/founder/.gitignore b53ee26e6ff1da21
 server/founder/Cargo.lock c800dc213e8af97e
 server/founder/Cargo.toml 2eaecf0e7fc197ef
 server/founder/src/audit.rs b68fb02fcadadac3
-server/founder/src/main.rs 185a6f6d6aca3f44
+server/founder/src/main.rs b936144b75d04ab5
 docs/claude/OFFICE-HR-ACCOUNTING-MIGRATION-28OCT.md bc57767804dcab4e
 docs/claude/founder/design-f0/Action.dc.html 74ecac9376091b71
 docs/claude/founder/design-f0/Login.dc.html 4970172916db14e5
@@ -895,7 +895,7 @@ founder-web/index.html 57ec52ccf0276bdb
 founder-web/package.json c0b915b8e44a6271
 founder-web/src/styles.css ac9d21692fb16843
 server/founder/src/login.rs 465011eb25e7daac
-founder-web/dist/index.html 630e9df0291158bd
+founder-web/dist/index.html 87fd1a9b81a625bb
 docs/claude/founder/LEGACY-FOUNDER-FILES.md b379225e91ecfe5e
 docs/cursor-work/sql/E102_founder_audit_actions_devices.sql 98efcf0605642fcc
 docs/cursor-work/sql/CHECK_E102.sql 08c02fd1d918d4dc
@@ -914,7 +914,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md eb1ba2a7a3861722
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md 3830b57b2b61d12f
+docs/claude/founder/PULL-COMMANDS.md 76fe2f09da3c1fe2
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 6f67741f87811209
@@ -947,7 +947,7 @@ founder-web/src/fonts/Inter-Medium.woff2 c8f84bf00cbd6136
 founder-web/src/fonts/Inter-Regular.woff2 21d73733fb1fbfe6
 founder-web/src/fonts/Inter-SemiBold.woff2 43443e801ec3cb75
 docs/cursor-work/server/rules-gate.py 15a705ace9128332
-CLAUDE.md 1d0ae8d0cfcb8471
+CLAUDE.md 454e1af0fdd9fb3e
 docs/claude/FOUNDER-KILLER-FEATURES-28OCT.md 8f8bb489bc473a7c
 founder-web/src/cinema.css 312474c073e9860d
 docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md af209f4adf209b87
@@ -966,7 +966,7 @@ founder-web/src/Palette.tsx bec5fe14e9404b25
 founder-web/src/Profile.tsx c126bff40c79c25f
 founder-web/src/Settings.tsx 7965e8495dd6424e
 founder-web/src/Trust.tsx 469c9361b0cc7f80
-founder-web/src/api.ts 4fd8eab020d14efc
+founder-web/src/api.ts 0f87383e79f7a10b
 founder-web/src/catalog.ts 1b0a697b0c31b723
 founder-web/src/city.ts e7afcb3f10f04904
 founder-web/src/components/ui/button.tsx a9c90e045dcb8831
@@ -1188,12 +1188,12 @@ founder-web/src/passkey_pure.ts 18c84406d0b26eb9
 server/founder/src/passkey.rs 40e7f754234dafb3
 server/rust/j3_action_vectors.json d90c898ebb69d9ea
 web-wasm/src/action.rs eda7722b529a2887
-lanes/ALL-FILES.csv ac79398a92fed99e
-lanes/awam.txt 31e2a8e16d53aad2
+lanes/ALL-FILES.csv 64b3df6cf942498f
+lanes/awam.txt 4356cd48b1bc089f
 lanes/docs.txt 2ad381adc1748bbe
-lanes/founder.txt 324108a04edd73cf
+lanes/founder.txt 92b9d40d5d0b9249
 lanes/shared.txt ac603063d8560876
-lovable-gold/README.md c0c76ad9db6219f7
+lovable-gold/README.md 8d5ca055aaa11c8c
 docs/claude/FOUNDER-FLARE-J6-RESEARCH-03NOV.md 5e7c593fa4db1406
 docs/cursor-work/sql/CHECK_E140.sql 0aa343c84820214f
 docs/cursor-work/sql/E140_founder_flare_push.sql 3c95ae9963ebd5bf
@@ -1216,7 +1216,7 @@ founder-web/public/icon-512.png f1fdd95ddefb9b35
 founder-web/public/manifest.webmanifest c13e42ef147a304c
 src/components/app/FeatureGate.tsx f0ae35c8646cb436
 src/routes/app.storage.tsx 78ca91241d265b0f
-docs/claude/CLOSE-THE-GAPS-07NOV.md 45081b0c18b09300
+docs/claude/CLOSE-THE-GAPS-07NOV.md 4eed20ff61a3db8c
 docs/claude/FOUNDER-STATUS-TABLE-07NOV.md 89c7afde0ede8607
 docs/claude/START-HERE-AFTER-COMPACTION.md f899d52ab1eb9626
 docs/claude/K4-REAL-443-DESIGN-07NOV.md 9e5b0e2f1f1d764f
@@ -1252,3 +1252,4 @@ docs/cursor-work/sql/CHECK_E148.sql 348a2798a6dad48e
 docs/cursor-work/sql/E148_founder_webtransport_sessions.sql 798c937f6ef56c21
 docs/cursor-work/sql/E149_founder_dbsc.sql a70ed6746029be3b
 docs/cursor-work/server/founder-dbsc.sh c6688bc0b782f1c1
+docs/cursor-work/sql/E150_founder_devicekey.sql f47ee32a28ae14c3

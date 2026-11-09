@@ -215,3 +215,4 @@ G2 is now the open item in progress.
 - 09 Nov 2026 22:59 PKT K7: live SPA shows the Device-bound panel (seen in my Chrome); data needs a founder-signed browser.
 - 09 Nov 2026 23:00 PKT K7 gap: registration proven (Chrome Windows). Open: first refresh (counter 0->1), K7b for phones/Firefox/Safari, card with data at 390/820.
 - 09 Nov 2026 23:04 PKT K7a-registration GREEN. Still open (K7): refresh 0->1, K7b every browser/phone, card at 390/820 with data.
+- 09 Nov 2026 23:09 PKT K7b gap: installed? no. Open: sql E150 on server, install, phone + Firefox/Safari binding proof, refresh 0->1, card at 390/820/1200 with data.

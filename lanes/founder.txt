@@ -87,6 +87,7 @@ docs/cursor-work/sql/E147_founder_passkey_pending.sql
 docs/cursor-work/sql/E148_LIVE.sql
 docs/cursor-work/sql/E148_founder_webtransport_sessions.sql
 docs/cursor-work/sql/E149_founder_dbsc.sql
+docs/cursor-work/sql/E150_founder_devicekey.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/E68_proof.sql
@@ -102,7 +103,7 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/index-ChvGeBvk.css
-founder-web/dist/assets/index-y_loAxQL.js
+founder-web/dist/assets/index-GbaO3ls3.js
 founder-web/dist/assets/kernel.worker-BiR_tP7H.js
 founder-web/dist/assets/three.module-C0S06CcT.js
 founder-web/dist/boot.css
@@ -163,6 +164,9 @@ founder-web/src/components/ui/switch.tsx
 founder-web/src/countries.ts
 founder-web/src/dbsc_pure.test.ts
 founder-web/src/dbsc_pure.ts
+founder-web/src/devicekey.ts
+founder-web/src/devicekey_pure.test.ts
+founder-web/src/devicekey_pure.ts
 founder-web/src/devicelabel.ts
 founder-web/src/dx.css
 founder-web/src/flare_pure.ts

@@ -35,3 +35,12 @@ Truth first: the DBSC PROTOCOL (Secure-Session-Registration / Secure-Session-Res
 
 ## Where he takes the phone screenshot
 After founder-install (new SPA) and founder-dbsc.sh observe: founder site on the phone > More > Settings > Privacy tab > scroll under Security keys to the card "Device-bound sessions". Screenshot that card (it lists each device and Bound / Not bound).
+
+## K7b BUILT (09 Nov 2026 23:09 PKT): device key for every browser and phone
+- No challenge round trip (DPoP-style): proof JWT = header {alg ES256, typ dbsc+jwt, jwk only at registration}, payload {jti random nonce (single use, E149 jti ledger >= 1 day), iat within 120 s, aud = the exact route, dh = sha-256 of the device id}. Replay-proof, route-bound, device-bound.
+- Browser: `founder-web/src/devicekey.ts` (WebCrypto ECDSA P-256, extractable=false, CryptoKey in IndexedDB) + `devicekey_pure.ts` (proof builder, tested against node crypto verify, raw r||s). Hooked in `api.ts` exchange: sends `x-device-proof` when the device has a key; when the server answers `dk.bound=false` with mode != off it makes the key and registers (fire and forget, never breaks sign-in).
+- Server: `dbsc.rs` verify_proof + route POST /founder/v1/devicekey/register (session token + proof); exchange accepts the proof instead of the cookie for a device bound by webcrypto (consumes the nonce, counts a refresh). dbsc outranks webcrypto (E150 register_src: a software key never replaces a secure-chip session).
+- SQL: `E150_founder_devicekey.sql` + `CHECK_E150.sql` (source column frozen, register_src, device_state with source+key, devices + report by_source, selftest that rolls back and looks only for its own device).
+- Card: shows 'Bound by the secure chip' or 'Bound by a browser key'.
+- Install order matters: SQL E150 first, then founder-install (the new Rust calls founder_dbsc_register_src).
+- Tests: cargo 258 pass (+2 K7b), bun 148 pass (+4), pglite E149 + E150 twice, CHECK 8/8 + 7/7.

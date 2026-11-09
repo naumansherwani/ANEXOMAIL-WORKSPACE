@@ -29,6 +29,8 @@ pub const COOKIE_TTL: i64 = 600;
 pub const CH_TTL: i64 = 60;
 pub const REG_PATH: &str = "/founder/v1/dbsc/start";
 pub const REFRESH_PATH: &str = "/founder/v1/dbsc/refresh";
+pub const EXCHANGE_PATH: &str = "/founder/v1/exchange";
+pub const DK_REG_PATH: &str = "/founder/v1/devicekey/register";
 const SKEW: i64 = 120;
 const COOKIE_ATTRS: &str = "Path=/; Secure; HttpOnly; SameSite=Strict";
 
@@ -40,7 +42,7 @@ impl Mode {
 }
 
 #[derive(Debug, PartialEq)]
-pub enum DErr { Malformed, Alg, Typ, Key, Signature, Jti, Iat, Aud, Challenge, Expired, Purpose }
+pub enum DErr { Malformed, Alg, Typ, Key, Signature, Jti, Iat, Aud, Challenge, Expired, Purpose, Device }
 
 type HmacSha = Hmac<Sha256>;
 /// Sub-keys from the server secret, one label each (a leaked cookie key is not a challenge key).
@@ -155,6 +157,25 @@ pub fn verify_refresh(jwt: &str, challenge: &str, stored: &[u8], now: i64) -> Re
     verify_sig(stored, &j)
 }
 
+
+// ------------------------------------------------------------------ K7b: device-key proof for EVERY browser (WebCrypto non-extractable P-256, same ES256 JWT shape)
+/// DPoP-style proof, no challenge round trip: `jti` = a random client nonce (single use, kept >= 1 day in the E149 jti ledger), `iat` within 120 s, `aud` = the exact route,
+/// `dh` = sha-256 of the device id (the proof is only good for THIS device). `stored` = the key registered earlier (exchange); None = registration, the key comes from the header jwk
+/// and the signature proves possession. Returns (jti, 65-byte key).
+pub fn verify_proof(jwt: &str, path: &str, stored: Option<&[u8]>, dev_hash: &str, now: i64) -> Result<(String, [u8; 65]), DErr> {
+    let j = parse_jwt(jwt)?;
+    if j.header["alg"].as_str() != Some("ES256") { return Err(DErr::Alg); }
+    if j.header["typ"].as_str() != Some("dbsc+jwt") { return Err(DErr::Typ); }
+    let jti = j.payload["jti"].as_str().filter(|x| (16..=64).contains(&x.len()) && x.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'-' || b == b'_')).ok_or(DErr::Jti)?.to_string();
+    let iat = j.payload["iat"].as_i64().ok_or(DErr::Iat)?;
+    if (now - iat).abs() > SKEW { return Err(DErr::Iat); }
+    if !j.payload["aud"].as_str().is_some_and(|a| a.starts_with("https://") && a.ends_with(path)) { return Err(DErr::Aud); }
+    if j.payload["dh"].as_str() != Some(dev_hash) { return Err(DErr::Device); }
+    let key: [u8; 65] = match stored { Some(k) => k.try_into().map_err(|_| DErr::Key)?, None => jwk_to_sec1(&j.header["jwk"])? };
+    verify_sig(&key, &j)?;
+    Ok((jti, key))
+}
+
 // ------------------------------------------------------------------ the exchange decision (pure)
 #[derive(Debug, PartialEq)]
 pub enum Decision { Allow, AllowWould(&'static str), Block(&'static str) }
@@ -235,6 +256,28 @@ pub async fn refresh_ep(State(st): State<crate::S>, h: HeaderMap) -> Response {
         }
         Some(v) => err(StatusCode::BAD_REQUEST, v["error"].as_str().unwrap_or("refused")),
         None => err(StatusCode::SERVICE_UNAVAILABLE, "ledger unavailable"),
+    }
+}
+
+
+#[derive(serde::Deserialize)]
+pub struct DeviceIn { pub device_id: String }
+
+/// POST /founder/v1/devicekey/register — K7b: any browser registers the PUBLIC half of its non-extractable WebCrypto key. Same trust as the exchange (the signed-in session
+/// token), plus a proof signed by the key itself. A secure-chip (dbsc) session on the same device is never replaced (E150).
+pub async fn devicekey_register_ep(State(st): State<crate::S>, h: HeaderMap, Json(b): Json<DeviceIn>) -> Response {
+    if st.dbsc == Mode::Off { return StatusCode::NOT_FOUND.into_response(); }
+    let c = match crate::authed_session(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
+    let Some(sb) = st.sb.as_ref() else { return err(StatusCode::SERVICE_UNAVAILABLE, "database not configured") };
+    if !crate::ftoken::valid_device_id(&b.device_id) { return err(StatusCode::BAD_REQUEST, "invalid device id"); }
+    let Some(proof) = hv(&h, "x-device-proof") else { return err(StatusCode::BAD_REQUEST, "missing proof") };
+    let dev_hash = crate::ftoken::device_hash(&b.device_id);
+    let (jti, key) = match verify_proof(proof, DK_REG_PATH, None, &dev_hash, now_s()) { Ok(x) => x, Err(e) => return err(StatusCode::BAD_REQUEST, &format!("proof refused: {e:?}").to_ascii_lowercase()) };
+    let Some(sid) = new_sid() else { return err(StatusCode::INTERNAL_SERVER_ERROR, "no session id") };
+    match sb.rpc("founder_dbsc_register_src", json!({"p_uid": c.sub, "p_device_hash": dev_hash, "p_sid": sid, "p_pub": hex::encode(key), "p_jti_hash": sha256_hex(&jti), "p_source": "webcrypto"})).await {
+        Some(v) if v["ok"].as_bool() == Some(true) => no_store(Json(json!({"ok": true, "source": v["source"], "kept": v["kept"]})).into_response()),
+        Some(v) => err(StatusCode::CONFLICT, v["error"].as_str().unwrap_or("refused")),
+        None => err(StatusCode::SERVICE_UNAVAILABLE, "ledger unavailable: run the E150 SQL (sql-run.sh)"),
     }
 }
 
@@ -379,6 +422,37 @@ mod tests {
         assert!(s.starts_with("(ES256); path=\"/founder/v1/dbsc/start\"; challenge=\"") && s.ends_with('"') && !s.contains("RS256"));
         let ch = s.split("challenge=\"").nth(1).unwrap().trim_end_matches('"');
         assert_eq!(check_challenge(&k, ch, 'r', NOW).unwrap().a, UID);
+    }
+    fn proof_jwt(p: &EcdsaKeyPair, with_jwk: bool, payload: Value) -> String {
+        let mut h = json!({"alg": "ES256", "typ": "dbsc+jwt"}); if with_jwk { h["jwk"] = jwk(p); }
+        jwt(p, h, payload)
+    }
+    #[test]
+    fn k7b_proof_registers_and_then_proves_with_the_stored_key() {
+        let p = pair(); let dh = dev();
+        let reg = proof_jwt(&p, true, json!({"jti": "nonce-0123456789abcdef", "iat": NOW, "aud": "https://f.example.com/founder/v1/devicekey/register", "dh": dh}));
+        let (jti, key) = verify_proof(&reg, DK_REG_PATH, None, &dh, NOW).unwrap();
+        assert_eq!(jti, "nonce-0123456789abcdef"); assert_eq!(&key[..], p.public_key().as_ref());
+        let ex = proof_jwt(&p, false, json!({"jti": "another-nonce-0123456789", "iat": NOW + 30, "aud": "https://f.example.com/founder/v1/exchange", "dh": dh}));
+        assert!(verify_proof(&ex, EXCHANGE_PATH, Some(&key), &dh, NOW).is_ok());
+    }
+    #[test]
+    fn k7b_proof_refuses_every_bad_shape() {
+        let (p, evil) = (pair(), pair()); let dh = dev();
+        let ok = json!({"jti": "nonce-0123456789abcdef", "iat": NOW, "aud": "https://f.example.com/founder/v1/exchange", "dh": dh});
+        let key: [u8; 65] = p.public_key().as_ref().try_into().unwrap();
+        assert_eq!(verify_proof(&proof_jwt(&evil, false, ok.clone()), EXCHANGE_PATH, Some(&key), &dh, NOW), Err(DErr::Signature)); // stolen login on another machine: no key
+        assert_eq!(verify_proof(&proof_jwt(&evil, true, ok.clone()), EXCHANGE_PATH, Some(&key), &dh, NOW), Err(DErr::Signature)); // his own jwk is ignored when a key is stored
+        assert_eq!(verify_proof(&proof_jwt(&p, false, json!({"jti": "nonce-0123456789abcdef", "iat": NOW - 300, "aud": "https://f/founder/v1/exchange", "dh": dh})), EXCHANGE_PATH, Some(&key), &dh, NOW), Err(DErr::Iat));
+        assert_eq!(verify_proof(&proof_jwt(&p, false, json!({"jti": "nonce-0123456789abcdef", "aud": "https://f/founder/v1/exchange", "dh": dh})), EXCHANGE_PATH, Some(&key), &dh, NOW), Err(DErr::Iat));
+        assert_eq!(verify_proof(&proof_jwt(&p, false, json!({"jti": "nonce-0123456789abcdef", "iat": NOW, "aud": "https://f/founder/v1/settings", "dh": dh})), EXCHANGE_PATH, Some(&key), &dh, NOW), Err(DErr::Aud)); // a proof for one route is not good for another
+        assert_eq!(verify_proof(&proof_jwt(&p, false, json!({"jti": "nonce-0123456789abcdef", "iat": NOW, "aud": "http://f/founder/v1/exchange", "dh": dh})), EXCHANGE_PATH, Some(&key), &dh, NOW), Err(DErr::Aud));
+        assert_eq!(verify_proof(&proof_jwt(&p, false, ok.clone()), EXCHANGE_PATH, Some(&key), &sha256_hex("another-device"), NOW), Err(DErr::Device)); // good for THIS device only
+        assert_eq!(verify_proof(&proof_jwt(&p, false, json!({"jti": "short", "iat": NOW, "aud": "https://f/founder/v1/exchange", "dh": dh})), EXCHANGE_PATH, Some(&key), &dh, NOW), Err(DErr::Jti));
+        assert_eq!(verify_proof(&proof_jwt(&p, false, ok.clone()), EXCHANGE_PATH, Some(&[4u8; 10]), &dh, NOW), Err(DErr::Key));
+        assert_eq!(verify_proof(&proof_jwt(&p, false, ok.clone()), DK_REG_PATH, None, &dh, NOW), Err(DErr::Aud));      // registration needs the registration route
+        assert_eq!(verify_proof(&jwt(&p, json!({"alg": "RS256", "typ": "dbsc+jwt"}), ok.clone()), EXCHANGE_PATH, Some(&key), &dh, NOW), Err(DErr::Alg));
+        assert_eq!(verify_proof("junk", EXCHANGE_PATH, Some(&key), &dh, NOW), Err(DErr::Malformed));
     }
     #[test]
     fn small_validators() {

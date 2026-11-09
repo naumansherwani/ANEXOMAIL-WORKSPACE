@@ -345,7 +345,18 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
                 let state = sb.rpc("founder_dbsc_device_state", json!({"p_uid": c.sub, "p_device_hash": dev_hash})).await;
                 let bound_sid = state.as_ref().filter(|v| v["bound"].as_bool() == Some(true)).and_then(|v| v["sid"].as_str().map(String::from));
                 bound = bound_sid.is_some();
-                let cookie_sid = dbsc::cookie_from(&h).and_then(|v| dbsc::check_cookie(&dbsc::subkey(&st.hmac_key, "cookie"), &v, now_s()));
+                let mut cookie_sid = dbsc::cookie_from(&h).and_then(|v| dbsc::check_cookie(&dbsc::subkey(&st.hmac_key, "cookie"), &v, now_s()));
+                // K7b: a device bound by a WebCrypto key shows a signed proof instead of the cookie (any browser, any phone)
+                if cookie_sid.is_none() && state.as_ref().and_then(|v| v["source"].as_str()) == Some("webcrypto") {
+                    let stored = state.as_ref().and_then(|v| v["pub"].as_str()).and_then(|p| hex::decode(p).ok());
+                    let proof = h.get("x-device-proof").and_then(|v| v.to_str().ok());
+                    if let (Some(sid), Some(stored), Some(proof)) = (bound_sid.as_deref(), stored, proof) {
+                        if let Ok((jti, _)) = dbsc::verify_proof(proof, dbsc::EXCHANGE_PATH, Some(&stored), &dev_hash, now_s()) {
+                            let ok = sb.rpc("founder_dbsc_refreshed", json!({"p_sid": sid, "p_jti_hash": dbsc::sha256_hex(&jti)})).await;   // consumes the nonce once, counts the proof
+                            if ok.is_some_and(|v| v["ok"].as_bool() == Some(true)) { cookie_sid = Some(sid.to_string()); }
+                        }
+                    }
+                }
                 let decision = dbsc::gate_exchange(st.dbsc, bound_sid.as_deref(), cookie_sid.as_deref());
                 let (kind, why) = match &decision { dbsc::Decision::Block(w) => ("blocked", *w), dbsc::Decision::AllowWould(w) => ("would_block", *w), dbsc::Decision::Allow => ("", "") };
                 if !kind.is_empty() {
@@ -363,7 +374,8 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
                 tokio::spawn(async move { let _ = sb2.rpc("founder_host_record", json!({"p_source": "rust", "p_kind": "exchange", "p_host": host, "p_founder_host": fh, "p_is_founder": true, "p_mode": "n/a", "p_decision": "allow"})).await; });
             }
             let req_key = B64.encode(sign::req_key(&st.hmac_key, &token));
-            let mut resp = Json(json!({"token": token, "req_key": req_key, "exp": exp, "expires_in": ftoken::TTL_SECS, "device": r["label"], "first": r["first"].as_bool().unwrap_or(false)})).into_response();
+            let mut resp = Json(json!({"token": token, "req_key": req_key, "exp": exp, "expires_in": ftoken::TTL_SECS, "device": r["label"], "first": r["first"].as_bool().unwrap_or(false),
+                "dk": {"mode": st.dbsc.as_str(), "bound": bound}})).into_response();
             if st.dbsc != dbsc::Mode::Off && !bound { // an unbound device is offered the binding; browsers without secure key storage simply ignore this header
                 if let Some(v) = dbsc::registration_header(&dbsc::subkey(&st.hmac_key, "challenge"), &c.sub, &dev_hash, now_s()) { resp.headers_mut().insert("secure-session-registration", v); }
             }
@@ -716,6 +728,7 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/dbsc/start", axum::routing::post(dbsc::start_ep))
         .route("/founder/v1/dbsc/refresh", axum::routing::post(dbsc::refresh_ep))
         .route("/founder/v1/dbsc/status", get(dbsc::status_ep))
+        .route("/founder/v1/devicekey/register", axum::routing::post(dbsc::devicekey_register_ep))
         .route("/founder/v1/keys", get(keys_ep))
         .route("/founder/v1/me", get(me))
         .route("/founder/v1/bridge", get(bridge_ep))
