@@ -8,13 +8,19 @@ import { AuthCinema } from "./signin/AuthCinema";
 import { Button } from "./signin/ui/button";
 import { Input } from "./signin/ui/input";
 import { Label } from "./signin/ui/label";
+import { Checkbox } from "./signin/ui/checkbox";
 
 /** The founder's own sign-in. LOOK + CODE = the awam login (auth.tsx, AuthCinema, BrandMark, shadcn Button/Input/Label, same Tailwind classes), copied into the founder lane (the awam files are only read, never edited),
  *  moved onto the founder stack (React 19, Tailwind 4.2, motion, lucide-react, TypeScript strict). Only the line "Founder protocol / Welcome, Founder" is added (founder order 10 Nov 2026 01:13/01:24/01:58).
  *  Talks only to /founder/v1/auth/login (Rust). One build for every screen: the side panel appears from lg (1024px), controls are 44px on touch. */
 const PENDING = "This step is being moved into the new founder sign-in and is not available yet. Use your password for now.";
 
+const SAVE_KEY = "anexo.founder.savepw"; // same behaviour as the awam page: ON by default, remembered per browser
+const readSave = () => { try { return window.localStorage.getItem(SAVE_KEY) !== "0"; } catch { return true; } };
+const writeSave = (on: boolean) => { try { window.localStorage.setItem(SAVE_KEY, on ? "1" : "0"); } catch { /* ignore */ } };
+
 export function SignIn() {
+  const [savePassword, setSavePassword] = useState(readSave);
   const [email, setEmail] = useState(""), [password, setPassword] = useState(""), [busy, setBusy] = useState(false), [msg, setMsg] = useState(""), [show, setShow] = useState(false), [splash, setSplash] = useState(false), [minDone, setMinDone] = useState(false);
   useEffect(() => {
     if (!splash) return;
@@ -54,7 +60,7 @@ export function SignIn() {
                 <h2 className="ax-heading text-foreground">Sign in</h2>
                 <p className="ax-caption mt-1">Your mail, people, calendar and work — one surface.</p>
               </div>
-              <form onSubmit={submit} noValidate name="login" method="post" className="mt-ax-4 space-y-ax-3">
+              <form onSubmit={submit} noValidate name="login" method="post" autoComplete={savePassword ? "on" : "off"} className="mt-ax-4 space-y-ax-3">
                 <div className="space-y-1.5">
                   <Label htmlFor="email" className="text-[13px] font-semibold text-foreground">Email</Label>
                   <div className="flex h-10 overflow-hidden rounded-md border border-border bg-[#F9FAFB] ring-offset-background focus-within:ring-1 focus-within:ring-ring">
@@ -66,13 +72,17 @@ export function SignIn() {
                 <div className="space-y-1.5">
                   <Label htmlFor="password" className="ax-caption text-foreground">Password</Label>
                   <div className="relative">
-                    <Input id="password" name="password" type={show ? "text" : "password"} value={password} required autoComplete="current-password"
+                    <Input id="password" name="password" type={show ? "text" : "password"} value={password} required autoComplete={savePassword ? "current-password" : "off"}
                       className="pr-10 bg-[#F9FAFB] text-[15px] font-semibold text-[#0B1220] placeholder:font-normal placeholder:text-[#6B7280]" onChange={(e) => setPassword(e.target.value)} />
                     <button type="button" className="absolute inset-y-0 right-0 flex w-10 items-center justify-center text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none" aria-label={show ? "Hide password" : "Show password"} title={show ? "Hide password" : "Show password"} onClick={() => setShow((v) => !v)}>
                       {show ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                     </button>
                   </div>
                 </div>
+                <label htmlFor="save-password" className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-border bg-secondary/40 px-3 py-2.5">
+                  <Checkbox id="save-password" checked={savePassword} onCheckedChange={(v) => { const on = v === true; setSavePassword(on); writeSave(on); }} />
+                  <span className="text-[13px] font-semibold text-foreground">Save password</span>
+                </label>
                 {msg && (
                   <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} role="alert" className="ax-caption text-destructive">{msg}</motion.p>
                 )}

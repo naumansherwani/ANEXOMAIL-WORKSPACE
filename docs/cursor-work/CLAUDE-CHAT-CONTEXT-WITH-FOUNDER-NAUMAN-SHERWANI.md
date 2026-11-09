@@ -2745,3 +2745,5 @@ Checkpoint 10 Nov 2026 02:03 PKT RESUME HERE: founder SignIn rebuilt from the aw
 Checkpoint 10 Nov 2026 02:06 PKT RESUME HERE: backups taken (founder + awam separate, commit 1b94ed4f, law docs/claude/FOUNDER-BACKUP-LAW-10NOV.md). Next: he installs login; then 2b S2.
 
 Checkpoint 10 Nov 2026 02:12 PKT RESUME HERE: live login verified in my Chrome (repo bundle, awam look); hash-strip fix pending install. Next after his OK: 2b S2 Rust signin.rs.
+
+Checkpoint 10 Nov 2026 02:18 PKT RESUME HERE: Save password row added to founder login (awam parity after his photo compare); install pending. Open question to him: Forgot password / Create account on founder login? default = hidden as in the awam founderHost code.

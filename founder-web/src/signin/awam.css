@@ -344,3 +344,5 @@ html[data-ax-calm] .ax-a-hover .ax-a-slot svg { animation: none !important; }
 .fa ::placeholder{opacity:1}}
 /* neutralise the founder app's bare element rules (styles.css input/button) inside the login, so the Tailwind utilities decide */
 .fa button,.fa input{all:revert-layer}
+/* shadcn Checkbox is a 16px grid: without the awam preflight its single track grew to 290px and pushed the tick out of the box */
+.fa button[role="checkbox"],.fa button[role="checkbox"]>span{grid-template-columns:100%}
