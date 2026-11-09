@@ -23,7 +23,7 @@ GREEN = his pasted server output and/or my own live Chrome look and/or his phone
 | K4.2 | Legacy-path proxy + Alt-Svc clear on :8443 | Rust (axum, reqwest) | GREEN | his curl 200 x3 + journal + my Chrome 51/51 |
 | K4.3-K4.6 | cert refresh timer, SNI front, live :443 switch, CHECK | Rust + Caddy + SQL | NOT STARTED (switch needs his haan) |
 | ANEXOChat 13-15+61 | File engine, quotas | SQL | GREEN | 3 Nov |
-| NOT GREEN | K5 (awam AES-256), K6 (wtransport QUIC), K7 (DBSC), L (Cinematic motion/WebGPU), M (MoQ), N..V, X, J7, J9; tablet on a real tablet; phone proof of AI/Systems/Control/Release/Move-In/Audit; panic lock for real | | | |
+| NOT GREEN (K6 GREEN 9 Nov 20:25: WIRED YES, REAL YES) | K5b, K7 (DBSC), L (Cinematic motion/WebGPU), M (MoQ), N..V, X, J7, J9; tablet on a real tablet; phone proof of AI/Systems/Control/Release/Move-In/Audit; panic lock for real | | | |
 
 
 ## WIRED / REAL WORKING column (founder 7 Nov 15:12: "green ke agay likho wired hai real working"). Honest, from the proofs we have; "not proven" is said where we only have a server/SQL proof.
