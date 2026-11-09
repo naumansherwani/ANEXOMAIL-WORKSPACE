@@ -2741,3 +2741,5 @@ STATE at 9 Nov 2026 20:08 PKT (REAL clock, from `date`): DONE on his server: K6.
 Checkpoint 10 Nov 2026 01:48 PKT RESUME HERE: founder SignIn CSS matched to his live awam tab computed styles (card r20, btn r16, input r10, border .8px). Next: he installs (founder-install.sh), Ctrl+Shift+R, confirms same look; then 2b S2 Rust signin.rs. LOGIN UI LAW still absolute.
 
 Checkpoint 10 Nov 2026 02:03 PKT RESUME HERE: founder SignIn rebuilt from the awam login code itself (founder-web/src/signin/*, awam.css scoped .fa imported by tailwind.css) + URL /founderlogin. He must install + look. LOGIN UI LAW absolute: never redesign, never edit awam/lovable-gold.
+
+Checkpoint 10 Nov 2026 02:06 PKT RESUME HERE: backups taken (founder + awam separate, commit 1b94ed4f, law docs/claude/FOUNDER-BACKUP-LAW-10NOV.md). Next: he installs login; then 2b S2.

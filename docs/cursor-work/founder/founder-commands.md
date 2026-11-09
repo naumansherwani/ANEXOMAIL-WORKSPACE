@@ -2882,3 +2882,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 10 Nov 2026 01:44 PKT: LOGIN UI LAW written; exactness pass (button, HoverA, dots); demo discarded; install + his eyes pending.
 
 - 10 Nov 2026 02:03 PKT: ORDER (verbatim gist): "user wala same codes use kero phir latest technology pe leke jao founder side pe UI" + "founderlogin URL kero". DONE: login rebuilt from awam login code in founder lane; URL /founderlogin. Status: installed? NO (he must install). Not GREEN yet.
+
+- 10 Nov 2026 02:06 PKT: BACKUP LAW added (docs/claude/FOUNDER-BACKUP-LAW-10NOV.md); founder + awam archives sent separately; restore point commit 1b94ed4f.
