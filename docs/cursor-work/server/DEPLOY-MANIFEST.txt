@@ -1193,7 +1193,7 @@ lanes/awam.txt d6878a1a7cdf33c4
 lanes/docs.txt 78f7fbd10331a2b0
 lanes/founder.txt 212a1be9acefb34a
 lanes/shared.txt ac603063d8560876
-lovable-gold/README.md 60709b36e2eda591
+lovable-gold/README.md 7699b0b3d303df78
 docs/claude/FOUNDER-FLARE-J6-RESEARCH-03NOV.md 5e7c593fa4db1406
 docs/cursor-work/sql/CHECK_E140.sql 0aa343c84820214f
 docs/cursor-work/sql/E140_founder_flare_push.sql 3c95ae9963ebd5bf
