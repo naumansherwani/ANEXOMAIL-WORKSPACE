@@ -154,3 +154,5 @@ G2 is now the open item in progress.
 - 9 Nov 2026 (his 16:26 local) K5a Step 1 GREEN (WIRED: YES / REAL: YES): founder-install.sh without awam code ran on his server: SPA 200, exchange w/o token 401, Ed25519 ON, healthz 200, me/bridge 401, 'founder service zinda'. OPEN: Step 2 awam-edge-install.sh (spare-port 18081 proof), then awam front switch (rollback file first), K5b.
 
 - 9 Nov 2026 (16:40 local) K5a Step 2 = spare-port GREEN (WIRED: YES / REAL on 18081: YES): anexomail-awam-edge active, 23 hosts, AES-256 only, AES-128 refused, tunnel 200. OPEN (not green yet): the real-:443 switch for the 23 awam hosts (Step 3 rollback file, Step 4 switch, per-host proof, Chrome 390/820/1200+), K5b.
+
+- 9 Nov 2026 (16:51 local) K5a real-:443 switch: tried, auto-rolled back by the script (my proof-parser bug, NOT a service failure; journal showed AES-256 + h2 tunnels). Script fixed (cipher parse + before/after http baseline). STILL OPEN: re-run apply, per-host proof, Chrome 390/820/1200+ with his business test account. Not green until then.

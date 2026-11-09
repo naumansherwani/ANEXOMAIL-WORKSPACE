@@ -13,16 +13,19 @@ fi
 [ -x "$RB" ] && [ -f "$BAK" ] || { echo "FAIL: run MODE=prep first"; exit 2; }
 ss -tln | grep -q '127.0.0.1:18081' || { echo "FAIL: awam-edge not listening on 18081"; exit 3; }
 grep -q '^FOUNDER_FRONT_PROXY_TLS=on' "$ENVF" || { echo "FAIL: FOUNDER_FRONT_PROXY_TLS is not on"; exit 3; }
+declare -A BASE
+for crt in "$AWD"/*.crt; do h="$(basename "$crt" .crt)"; BASE[$h]="$(curl -s -o /dev/null -m 10 -w '%{http_code}' --resolve "$h:443:127.0.0.1" "https://$h/" 2>/dev/null)"; done
+echo "baseline taken for ${#BASE[@]} hosts (http code BEFORE the switch, via Caddy)"
 if grep -q '^FOUNDER_FRONT_OTHER=' "$ENVF"; then sed -i 's|^FOUNDER_FRONT_OTHER=.*|FOUNDER_FRONT_OTHER=127.0.0.1:18081|' "$ENVF"; else echo 'FOUNDER_FRONT_OTHER=127.0.0.1:18081' >> "$ENVF"; fi
 systemctl restart anexomail-founder; sleep 6
 FAILS=0; N=0
 for crt in "$AWD"/*.crt; do
   h="$(basename "$crt" .crt)"; N=$((N+1))
-  c256="$(echo | timeout 8 openssl s_client -connect 127.0.0.1:443 -servername "$h" -tls1_3 -alpn h2 2>/dev/null | grep -m1 'Cipher    :' | awk '{print $3}')"
+  c256="$(echo | timeout 8 openssl s_client -connect 127.0.0.1:443 -servername "$h" -tls1_3 -alpn h2 2>&1 | grep -o -E 'Cipher( is|    :) +TLS_[A-Z0-9_]+' | tail -1 | awk '{print $NF}')"
   c128="$(echo | timeout 8 openssl s_client -connect 127.0.0.1:443 -servername "$h" -tls1_3 -ciphersuites TLS_AES_128_GCM_SHA256 2>&1 | grep -c 'alert handshake failure')"
   code="$(curl -s -o /dev/null -m 10 -w '%{http_code}' --resolve "$h:443:127.0.0.1" "https://$h/" 2>/dev/null)"
-  echo "$h  cipher=$c256  aes128_refused=$([ "$c128" -ge 1 ] && echo yes || echo NO)  http=$code"
-  [ "$c256" = TLS_AES_256_GCM_SHA384 ] && [ "$c128" -ge 1 ] || FAILS=$((FAILS+1))
+  echo "$h  cipher=$c256  aes128_refused=$([ "$c128" -ge 1 ] && echo yes || echo NO)  http=$code  before=${BASE[$h]:-?}"
+  [ "$c256" = TLS_AES_256_GCM_SHA384 ] && [ "$c128" -ge 1 ] && [ "$code" = "${BASE[$h]:-x}" ] || FAILS=$((FAILS+1))
 done
 HC="$(curl -s -o /dev/null -m 10 -w '%{http_code}' --resolve anexomail.com:443:127.0.0.1 https://anexomail.com/ 2>/dev/null)"
 FC="$(curl -s -o /dev/null -m 10 -w '%{http_code}' --resolve founderworkspace.anexomail.com:443:127.0.0.1 https://founderworkspace.anexomail.com/ 2>/dev/null)"

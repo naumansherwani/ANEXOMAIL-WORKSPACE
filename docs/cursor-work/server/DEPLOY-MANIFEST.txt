@@ -118,14 +118,14 @@ src/lib/settings.ts b6ed27fd6d2c994a
 src/components/app/settings/SettingsBits.tsx 34207b0ce33787a9
 server/rust/cal_core.rs 5770133e95524592
 server/rust/cal_glue.rs 1b9885a7994aeebe
-AGENTS.md 3a21a48e3d1ed8f0
+AGENTS.md f1bfaeb1e6c29fcc
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 060a5517334095ce
+docs/cursor-work/founder/founder-commands.md 2a52ac890a8c253a
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs da5c3db196fbe81d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md e1e41bfe70225c6f
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 28a55f42f1d9c2b5
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -947,7 +947,7 @@ founder-web/src/fonts/Inter-Medium.woff2 c8f84bf00cbd6136
 founder-web/src/fonts/Inter-Regular.woff2 21d73733fb1fbfe6
 founder-web/src/fonts/Inter-SemiBold.woff2 43443e801ec3cb75
 docs/cursor-work/server/rules-gate.py c21e8069f8aceb91
-CLAUDE.md 38b573aa8dab6fcc
+CLAUDE.md d3ed7db13cc3834f
 docs/claude/FOUNDER-KILLER-FEATURES-28OCT.md 8f8bb489bc473a7c
 founder-web/src/cinema.css 312474c073e9860d
 docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md af209f4adf209b87
@@ -1220,7 +1220,7 @@ founder-web/public/kernel/anexo-kernel-0.13.0.wasm 73aaa53dd0823591
 founder-web/dist/kernel/anexo-kernel-0.13.0.wasm 73aaa53dd0823591
 src/components/app/FeatureGate.tsx f0ae35c8646cb436
 src/routes/app.storage.tsx 78ca91241d265b0f
-docs/claude/CLOSE-THE-GAPS-07NOV.md d81b84a6e56a4916
+docs/claude/CLOSE-THE-GAPS-07NOV.md 6770876187bfce2f
 docs/claude/FOUNDER-STATUS-TABLE-07NOV.md b6b2df6961b00f1a
 docs/claude/START-HERE-AFTER-COMPACTION.md bf7479d6cd99383d
 docs/claude/K4-REAL-443-DESIGN-07NOV.md 9e5b0e2f1f1d764f
@@ -1236,4 +1236,4 @@ server/awam-edge/Cargo.lock b3345990590a69ef
 server/awam-edge/src/main.rs 28877ebf4de053aa
 docs/cursor-work/server/awam-edge-install.sh 9ecb77407d0079e6
 server/awam-edge/.gitignore b53ee26e6ff1da21
-docs/cursor-work/server/founder-k5-front-switch.sh f55c9a02d1438f7f
+docs/cursor-work/server/founder-k5-front-switch.sh d73bd9ad6b10dbf4
