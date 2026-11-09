@@ -2749,3 +2749,5 @@ Checkpoint 10 Nov 2026 02:12 PKT RESUME HERE: live login verified in my Chrome (
 Checkpoint 10 Nov 2026 02:18 PKT RESUME HERE: Save password row added to founder login (awam parity after his photo compare); install pending. Open question to him: Forgot password / Create account on founder login? default = hidden as in the awam founderHost code.
 
 Checkpoint 10 Nov 2026 02:27 PKT RESUME HERE: his install failed on flaky tests (wt.rs test_cert shared dir, tls256 k43 clock); fixed + pushed; he re-runs founder-install.sh. UI untouched (law). Login look/Save password still waits for install + his eyes.
+
+Checkpoint 10 Nov 2026 02:35 PKT RESUME HERE: install OK (bundle Dq5xQ70p). His sign-out error photo not reproduced after install (curl + real Chromium). If it repeats: read-only journalctl + his exact steps. UI NOT to be touched (his word 02:33). Hash #/dashboard cosmetic open. Next: his look at login + answer on Forgot password; then 2b S2.
