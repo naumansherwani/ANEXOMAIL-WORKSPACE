@@ -25,7 +25,7 @@ public/apple-touch-icon.png
 public/favicon.svg
 public/icon-192.png
 public/icon-512.png
-public/kernel/anexo-kernel-0.13.0.wasm
+public/kernel/anexo-kernel-0.14.0.wasm
 public/manifest.webmanifest
 public/robots.txt
 public/sw.js
@@ -55,6 +55,7 @@ web-wasm/src/action.rs
 web-wasm/src/ed.rs
 web-wasm/src/exec.rs
 web-wasm/src/filectx.rs
+web-wasm/src/flive.rs
 web-wasm/src/frame.rs
 web-wasm/src/hash.rs
 web-wasm/src/host.rs

@@ -176,6 +176,8 @@ async function getOnce<T = any>(path: string, retry = true): Promise<Envelope<T>
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
   return readSigned<T>(r, path);
 }
+/** K6.3: the current founder token for the kernel's WebTransport hello (same token as the SSE header). null = signed out. */
+export const liveToken = () => auth("/founder/v1/live/stream");
 /** 4b-3: open a Server-Sent-Events stream with the founder token (EventSource cannot send an Authorization header). The caller reads `response.body`; every frame is verified by the kernel in live.ts. */
 export async function openStream(path: string, lastId: number, signal: AbortSignal, retry = true): Promise<Response> {
   const t = await auth(path); if (!t) throw expired();

@@ -27,7 +27,7 @@ function w(): Worker {
   if (!worker) {
     const href = workerUrl, early = (window as unknown as { __kw?: Worker }).__kw; // early.js may already have started it
     worker = early ?? new Worker((ttPolicy ? ttPolicy.createScriptURL(href) : href) as string, { type: "module" });
-    worker.onmessage = (ev) => { const f = waiting.get(ev.data.id); if (f) { waiting.delete(ev.data.id); f(ev.data); } };
+    worker.onmessage = (ev) => { if (ev.data.flive) { liveEmit(ev.data.kind, ev.data.a, ev.data.data); return; } const f = waiting.get(ev.data.id); if (f) { waiting.delete(ev.data.id); f(ev.data); } };
     worker.onerror = () => { for (const [id, f] of waiting) { waiting.delete(id); f({ code: 100 }); } };
   }
   return worker;
@@ -141,4 +141,24 @@ export function leaseVaultKey(localHalf: string, serverHalf: string, deviceId: s
     waiting.set(id, (m) => { resolve(m.code === 0 && typeof m.data === "string" && m.data[0] === "1" ? m.data.slice(1) : undefined); });
     w().postMessage({ id, lease: { op: "key", input: JSON.stringify({ local: localHalf, half: serverHalf, device_id: deviceId }) } });
   });
+}
+
+/* ---- K6.3: live over WebTransport, run INSIDE the kernel (flive@1: Rust/Tokio async; hello, framing and Ed25519 verification all happen there). This is only the handle. ---- */
+export type KernelLive = { state(webtransport: boolean, detail: string): void; frame(event: "snapshot" | "tick" | "events", data: string): void; drop(code: number): void };
+let liveCb: KernelLive | null = null;
+const EV = ["", "snapshot", "tick", "events"] as const;
+function liveEmit(kind: number, a: number, data: Uint8Array) {
+  const cb = liveCb; if (!cb) return;
+  if (kind === 6) cb.state(a === 1, new TextDecoder().decode(data));
+  else if (kind === 7 && EV[a]) cb.frame(EV[a] as "snapshot" | "tick" | "events", new TextDecoder().decode(data)); // already verified by the kernel: this is the exact signed data slice
+  else if (kind === 8) cb.drop(a);
+}
+export const wtSupported = () => typeof (globalThis as { WebTransport?: unknown }).WebTransport === "function";
+const call = (flive: { op: "start" | "token" | "stop"; url?: string; token?: string; h?: number }) => new Promise<{ code: number; data?: string }>((res) => { const id = ++seq; waiting.set(id, res); w().postMessage({ id, flive }); });
+/** Start the kernel's WebTransport live session. Resolves with a handle, or null if the kernel could not start (the caller then uses SSE). One live session at a time. */
+export async function kernelLiveStart(url: string, token: string, cb: KernelLive): Promise<{ stop(): void; setToken(t: string): void } | null> {
+  liveCb = cb; const r = await call({ op: "start", url, token });
+  if (r.code !== 0 || !r.data) { liveCb = null; return null; }
+  const h = Number(r.data);
+  return { stop() { if (liveCb === cb) liveCb = null; void call({ op: "stop", h }); }, setToken(t: string) { void call({ op: "token", token: t, h }); } };
 }

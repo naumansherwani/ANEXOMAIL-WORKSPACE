@@ -96,14 +96,14 @@ founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
+founder-web/dist/assets/index-C1zOmM1I.js
+founder-web/dist/assets/index-C1zOmM1I.js.gz
 founder-web/dist/assets/index-ChvGeBvk.css
 founder-web/dist/assets/index-ChvGeBvk.css.gz
-founder-web/dist/assets/index-TIPb62WV.js
-founder-web/dist/assets/index-TIPb62WV.js.gz
-founder-web/dist/assets/kernel.worker-lrvwuwuv.js
-founder-web/dist/assets/kernel.worker-lrvwuwuv.js.gz
-founder-web/dist/assets/three.module-Dza5cG3s.js
-founder-web/dist/assets/three.module-Dza5cG3s.js.gz
+founder-web/dist/assets/kernel.worker-BiR_tP7H.js
+founder-web/dist/assets/kernel.worker-BiR_tP7H.js.gz
+founder-web/dist/assets/three.module-C0S06CcT.js
+founder-web/dist/assets/three.module-C0S06CcT.js.gz
 founder-web/dist/boot.css
 founder-web/dist/early.js
 founder-web/dist/favicon.svg
@@ -112,7 +112,7 @@ founder-web/dist/icon-180.png
 founder-web/dist/icon-192.png
 founder-web/dist/icon-512.png
 founder-web/dist/index.html
-founder-web/dist/kernel/anexo-kernel-0.13.0.wasm
+founder-web/dist/kernel/anexo-kernel-0.14.0.wasm
 founder-web/dist/manifest.webmanifest
 founder-web/index.html
 founder-web/kernel-sync.sh
@@ -125,7 +125,7 @@ founder-web/public/flare-sw.js
 founder-web/public/icon-180.png
 founder-web/public/icon-192.png
 founder-web/public/icon-512.png
-founder-web/public/kernel/anexo-kernel-0.13.0.wasm
+founder-web/public/kernel/anexo-kernel-0.14.0.wasm
 founder-web/public/manifest.webmanifest
 founder-web/src/AmbientStudio.tsx
 founder-web/src/App.tsx
@@ -169,6 +169,8 @@ founder-web/src/fonts/Inter-Medium.woff2
 founder-web/src/fonts/Inter-Regular.woff2
 founder-web/src/fonts/Inter-SemiBold.woff2
 founder-web/src/greeting.ts
+founder-web/src/kernel.host.test.ts
+founder-web/src/kernel.host.ts
 founder-web/src/kernel.pin.ts
 founder-web/src/kernel.test.ts
 founder-web/src/kernel.ts

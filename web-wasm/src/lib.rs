@@ -10,6 +10,7 @@
 pub mod ed;
 pub mod exec;
 pub mod filectx;
+pub mod flive;
 pub mod frame;
 pub mod hash;
 pub mod intent;
@@ -36,14 +37,15 @@ use std::collections::HashMap;
 use std::rc::Rc;
 
 pub const ABI: u32 = 1;
-pub const VERSION: (u32, u32, u32) = (0, 13, 0);
+pub const VERSION: (u32, u32, u32) = (0, 14, 0);
 /// Naam@module-version. Naya module ya badla hua module => yahan entry + VERSION bump (Cargo.toml bhi).
-pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1", "merkle@2", "checkpoint@1", "anchor@1", "portable@1", "action@1", "lease@1"];
+pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1", "merkle@2", "checkpoint@1", "anchor@1", "portable@1", "action@1", "lease@1", "flive@1"];
 
 thread_local! {
     static OUT: RefCell<Vec<u8>> = const { RefCell::new(Vec::new()) };
     static LIVES: RefCell<HashMap<u32, Live>> = RefCell::new(HashMap::new());
     static NEXT_LIVE: Cell<u32> = const { Cell::new(1) };
+    static FLIVES: RefCell<HashMap<u32, Live>> = RefCell::new(HashMap::new());
 }
 
 struct Live {
@@ -299,6 +301,42 @@ pub extern "C" fn live_stop(h: u32) {
         }
     });
     exec::spawn(async {}); // ek tick: soye hue loop ko jagao
+}
+
+/* ------------------------------------------------------- flive@1 (K6.3, founder live over WebTransport) */
+/// url = the full WebTransport url (https://host:4443/wt/live), token = the founder session token. Frames come back through host_emit (EMIT_FLIVE_*), already verified.
+#[unsafe(no_mangle)]
+pub extern "C" fn flive_start(url_ptr: u32, url_len: u32, tok_ptr: u32, tok_len: u32, seed: u32) -> u32 {
+    let cfg = Rc::new(RefCell::new(live::Cfg { url: unsafe { text(url_ptr, url_len) }.to_string(), token: unsafe { text(tok_ptr, tok_len) }.to_string() }));
+    let stop = Rc::new(Cell::new(false));
+    let id = NEXT_LIVE.with(|n| {
+        let id = n.get();
+        n.set(id + 1);
+        id
+    });
+    FLIVES.with(|l| l.borrow_mut().insert(id, Live { cfg: cfg.clone(), stop: stop.clone() }));
+    let verify: Rc<dyn Fn(&[u8], i64, i64) -> Result<(usize, usize), u32>> = Rc::new(ed::envelope_verify);
+    exec::spawn(async move {
+        flive::run(cfg, host::WtTransport::new, host::HostEnv::new(seed), host::HostFSink, stop, verify).await;
+    });
+    id
+}
+#[unsafe(no_mangle)]
+pub extern "C" fn flive_set_token(h: u32, tok_ptr: u32, tok_len: u32) {
+    FLIVES.with(|l| {
+        if let Some(x) = l.borrow().get(&h) {
+            x.cfg.borrow_mut().token = unsafe { text(tok_ptr, tok_len) }.to_string();
+        }
+    })
+}
+#[unsafe(no_mangle)]
+pub extern "C" fn flive_stop(h: u32) {
+    FLIVES.with(|l| {
+        if let Some(x) = l.borrow_mut().remove(&h) {
+            x.stop.set(true);
+        }
+    });
+    exec::spawn(async {}); // one tick: wake the sleeping loop
 }
 
 /* --------------------------------------------------------------------- rpc */

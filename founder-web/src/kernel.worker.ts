@@ -1,7 +1,8 @@
 // F2b: the WASM kernel runs here, off the UI thread (Rule 52: Worker). It only verifies; it never touches the DOM or the network except to fetch its own .wasm.
 import { KERNEL } from "./kernel.pin";
+import { createHost, type HostExports, type WtCtor } from "./kernel.host";
 
-type Ex = { memory: WebAssembly.Memory; kernel_alloc(n: number): number; kernel_free(p: number, n: number): void; kernel_out_ptr(): number; kernel_out_len(): number; envelope_verify(p: number, l: number, now: number, skew: number): number; merkle_verify(r: number, rl: number, p: number, pl: number, o: number, ol: number): number; merkle_consistency_verify(a: number, b: number, fr: number, frl: number, sr: number, srl: number, p: number, pl: number): number; anchor_inspect(kind: number, e: number, el: number, d: number, dl: number): number; checkpoint_verify(n: number, nl: number, nm: number, nml: number, pk: number, pkl: number, sz: number, szl: number, rt: number, rtl: number): number; portable_verify(t: number, tl: number, s: number, sl: number): number; lease_check(p: number, l: number): number; lease_vault_key(p: number, l: number): number; action_check(p: number, l: number): number };
+type Ex = { memory: WebAssembly.Memory; kernel_alloc(n: number): number; kernel_free(p: number, n: number): void; kernel_out_ptr(): number; kernel_out_len(): number; envelope_verify(p: number, l: number, now: number, skew: number): number; merkle_verify(r: number, rl: number, p: number, pl: number, o: number, ol: number): number; merkle_consistency_verify(a: number, b: number, fr: number, frl: number, sr: number, srl: number, p: number, pl: number): number; anchor_inspect(kind: number, e: number, el: number, d: number, dl: number): number; checkpoint_verify(n: number, nl: number, nm: number, nml: number, pk: number, pkl: number, sz: number, szl: number, rt: number, rtl: number): number; portable_verify(t: number, tl: number, s: number, sl: number): number; lease_check(p: number, l: number): number; lease_vault_key(p: number, l: number): number; action_check(p: number, l: number): number; flive_start(u: number, ul: number, t: number, tl: number, seed: number): number; flive_set_token(h: number, t: number, tl: number): void; flive_stop(h: number): void } & HostExports;
 const hex = (b: ArrayBuffer) => [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join("");
 let ex: Promise<Ex> | null = null;
 
@@ -9,13 +10,28 @@ function load(): Promise<Ex> {
   ex ??= (async () => {
     const buf = await (await fetch(KERNEL.url, { cache: "force-cache" })).arrayBuffer();
     if (hex(await crypto.subtle.digest("SHA-256", buf)) !== KERNEL.sha256) throw new Error("kernel hash mismatch"); // pinned: wrong bytes never run
-    const { instance } = await WebAssembly.instantiate(buf, { env: { host_wake() {}, host_call() {}, host_emit() {} } });
-    return instance.exports as unknown as Ex;
+    let kx: Ex | null = null; // K6.3: the REAL host ABI (WebTransport, timers, clock) for the kernel's async modules (flive@1); verify-only calls never use it
+    const host = createHost((self as unknown as { WebTransport?: WtCtor }).WebTransport ?? null, () => kx as Ex, (kind, a, b, data) => (self as unknown as Worker).postMessage({ flive: true, kind, a, b, data }, [data.buffer]));
+    const { instance } = await WebAssembly.instantiate(buf, host as unknown as WebAssembly.Imports);
+    kx = instance.exports as unknown as Ex;
+    return kx;
   })();
   return ex;
 }
 
-self.onmessage = async (ev: MessageEvent<{ id: number; body: ArrayBuffer; now: number; skew: number; warm?: boolean; merkle?: { row: string; path: string; root: string }; portable?: { text: string; sha: string }; lease?: { op: "check" | "key"; input: string }; action?: { input: string }; consistency?: { first: number; second: number; fr: string; sr: string; proof: string }; checkpoint?: { note: string; name: string; pub: string; size: string; root: string }; anchor?: { kind: number; ev: string; digest: string } }>) => {
+self.onmessage = async (ev: MessageEvent<{ id: number; flive?: { op: "start" | "token" | "stop"; url?: string; token?: string; h?: number }; body: ArrayBuffer; now: number; skew: number; warm?: boolean; merkle?: { row: string; path: string; root: string }; portable?: { text: string; sha: string }; lease?: { op: "check" | "key"; input: string }; action?: { input: string }; consistency?: { first: number; second: number; fr: string; sr: string; proof: string }; checkpoint?: { note: string; name: string; pub: string; size: string; root: string }; anchor?: { kind: number; ev: string; digest: string } }>) => {
+  if (ev.data.flive) { // K6.3: live over WebTransport, run by the kernel (flive@1, Rust/Tokio); this only starts/stops it and forwards its emits
+    const { id, flive: a } = ev.data;
+    try {
+      const k = await load(), enc = new TextEncoder(), put = (t: string) => { const b = enc.encode(t), p = k.kernel_alloc(Math.max(b.length, 1)); new Uint8Array(k.memory.buffer, p, b.length).set(b); return [p, b.length] as const; };
+      let h = a.h ?? 0;
+      if (a.op === "start") { const [u, t] = [put(a.url ?? ""), put(a.token ?? "")]; h = k.flive_start(u[0], u[1], t[0], t[1], (crypto.getRandomValues(new Uint32Array(1))[0] | 1) >>> 0); for (const x of [u, t]) k.kernel_free(x[0], Math.max(x[1], 1)); }
+      else if (a.op === "token") { const t = put(a.token ?? ""); k.flive_set_token(h, t[0], t[1]); k.kernel_free(t[0], Math.max(t[1], 1)); }
+      else k.flive_stop(h);
+      (self as unknown as Worker).postMessage({ id, code: 0, data: String(h) });
+    } catch (e) { (self as unknown as Worker).postMessage({ id, code: 100, error: String(e) }); }
+    return;
+  }
   if (ev.data.merkle) { // step 5K: audit-ledger inclusion proof checked by the kernel (merkle@1) in this browser
     const { id, merkle: m } = ev.data;
     try {

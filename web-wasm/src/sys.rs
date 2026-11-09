@@ -19,12 +19,16 @@ pub const OP_READ: u32 = 4; // handle=stream -> chunk; status 0 + khali = EOF
 pub const OP_FINISH: u32 = 5; // handle=stream: likhna band
 pub const OP_CLOSE: u32 = 6; // handle=stream ya session
 pub const OP_SLEEP: u32 = 7; // handle=ms
+pub const OP_NOW: u32 = 8; // -> unix seconds (8 bytes LE), the browser clock (flive@1 checks the signed-frame clock skew with it)
 
 pub const EMIT_LIVE_STATE: u32 = 1; // a=1 webtransport / 0 poll, data=detail
 pub const EMIT_LIVE_EVENT: u32 = 2; // a=topic index
 pub const EMIT_LIVE_RESYNC: u32 = 3;
 pub const EMIT_RPC_STATE: u32 = 4; // a=1 up / 0 down
 pub const EMIT_RPC_DONE: u32 = 5; // a=call id, b=status, data=jawab
+pub const EMIT_FLIVE_STATE: u32 = 6; // flive@1: a=1 webtransport / 0 not, data=detail
+pub const EMIT_FLIVE_FRAME: u32 = 7; // flive@1: a=kind (1 snapshot, 2 tick, 3 events), data=the VERIFIED signed data slice
+pub const EMIT_FLIVE_DROP: u32 = 8; // flive@1: a=verify error code (frame failed verification, never shown)
 
 #[cfg(target_arch = "wasm32")]
 pub fn wake() {

@@ -185,3 +185,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 9 Nov 2026 18:55 K6.3 prep: founder page CSP connect-src allows exactly https://<FOUNDER_WT_HOST>:<udp port> when WT is on (main.rs csp_for, 245 tests). The WebTransport CLIENT goes INTO the WASM kernel (Rule 52), not TypeScript. K6.1 server + K6.2 SQL are live on his server.
 
 - 9 Nov 2026 19:10 local K6.1 CSP build installed on his server; live Chrome proof from the real origin: WT ready, ERR 401 on no-token hello. MASTER WORKING RULES block at the top of CLAUDE.md/AGENTS.md/START-HERE.
+
+- 9 Nov 2026 19:55 local K6.3 coded: kernel 0.14.0 module flive@1 (Rust async, verifies every frame in the kernel), founder-web host shim kernel.host.ts, worker/kernel.ts/livefeed.ts wiring, WT-first with SSE fallback; 121 Rust + 139 bun tests; sandbox end-to-end with the real wasm. Not green until K6.4.

@@ -1,5 +1,6 @@
 //! Host-backed (browser) implementations: WebTransport JS ke paas, Rust usay `sys` ABI se chalata hai.
 use crate::exec::{self, Reply};
+use crate::flive::{Clock, FSink};
 use crate::live::{Host, Sink, Transport};
 use crate::sys;
 use std::cell::Cell;
@@ -84,5 +85,25 @@ impl Sink for HostSink {
     }
     fn resync(&self) {
         sys::emit(sys::EMIT_LIVE_RESYNC, 0, 0, &[]);
+    }
+}
+
+impl Clock for HostEnv {
+    async fn now_s(&self) -> i64 {
+        let r = call(sys::OP_NOW, 0, &[]).await;
+        (r.status == 0).then(|| r.data.get(..8).and_then(|b| b.try_into().ok()).map(i64::from_le_bytes)).flatten().unwrap_or(0) // 0 = every frame reads as stale: refused, never trusted
+    }
+}
+
+pub struct HostFSink;
+impl FSink for HostFSink {
+    fn state(&self, webtransport: bool, detail: &str) {
+        sys::emit(sys::EMIT_FLIVE_STATE, webtransport as u32, 0, detail.as_bytes());
+    }
+    fn frame(&self, kind: u32, data: &[u8]) {
+        sys::emit(sys::EMIT_FLIVE_FRAME, kind, 0, data);
+    }
+    fn dropped(&self, code: u32) {
+        sys::emit(sys::EMIT_FLIVE_DROP, code, 0, &[]);
     }
 }

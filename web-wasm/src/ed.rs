@@ -121,7 +121,7 @@ pub fn envelope_verify_with(body: &[u8], now_s: i64, skew_s: i64, keys: &[(&str,
 fn hex(b: &[u8]) -> String { b.iter().map(|x| format!("{x:02x}")).collect() }
 
 #[cfg(test)]
-mod tests {
+pub(crate) mod tests {
     use super::*;
     use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
     use ring::signature::{Ed25519KeyPair, KeyPair};
@@ -141,9 +141,9 @@ mod tests {
         assert!(!verify(&pk2[..31], &[0x72], &sig2)); // chhoti key
     }
 
-    fn pair(seed: u8) -> Ed25519KeyPair { Ed25519KeyPair::from_seed_unchecked(&[seed; 32]).unwrap() }
+    pub(crate) fn pair(seed: u8) -> Ed25519KeyPair { Ed25519KeyPair::from_seed_unchecked(&[seed; 32]).unwrap() }
     /// Server jaisa jawab banao (ring se sign), sirf test ke liye: PINNED key ke bajaye test key chahiye, isliye envelope_with.
-    fn envelope_with(kp: &Ed25519KeyPair, kid: &str, ts: i64, data: &str) -> String {
+    pub(crate) fn envelope_with(kp: &Ed25519KeyPair, kid: &str, ts: i64, data: &str) -> String {
         let msg = format!("{}.{}", ts, hex(&Sha256::digest(data.as_bytes())));
         let sig = B64.encode(kp.sign(msg.as_bytes()).as_ref());
         format!("{{\"alg\":\"ed25519\",\"data\":{data},\"kid\":\"{kid}\",\"sig\":\"x\",\"sig_ed\":\"{sig}\",\"ts\":{ts}}}")
