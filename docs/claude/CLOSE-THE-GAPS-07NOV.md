@@ -172,3 +172,5 @@ G2 is now the open item in progress.
 - 9 Nov 2026 (17:37 local) DEADLINES SAVED: founder 25 Nov (every phase has its own day), awam whole website 16 Dec with tests + AnexoChat. K6 in progress (waiting for his fresh ss paste).
 
 - 9 Nov 2026 (17:50 local) K6 CODED, NOT GREEN: wt.rs + E148 + founder-wt.sh written, Rust 244 tests pass, real QUIC test client OK. OPEN: his 3 server steps (sql-run E148 + CHECK_E148, founder-install, founder-wt.sh), live proof (my Chrome WebTransport to udp 4443: expect ERR 401 without a token = QUIC+h3+WT alive; with his session the live frames), 390/820/1200+ looks of the live feed, the UI client (SPA uses WebTransport with SSE fallback) still to write.
+
+- 9 Nov 2026 (18:05 local) K6: SQL E148 applied on his server (DONE: sab theek.), E148 rows to be shown by a grep re-run. OPEN: founder-install, founder-wt.sh, live proof, SPA client, looks.

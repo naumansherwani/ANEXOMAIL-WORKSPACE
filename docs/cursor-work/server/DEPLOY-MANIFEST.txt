@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md ca4987b5b8673d4c
+docs/cursor-work/founder/founder-commands.md 9639350678da8d13
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs da5c3db196fbe81d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 87ef97a2511bbb5a
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 113a010ee3f8ca75
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -1220,7 +1220,7 @@ founder-web/public/kernel/anexo-kernel-0.13.0.wasm 73aaa53dd0823591
 founder-web/dist/kernel/anexo-kernel-0.13.0.wasm 73aaa53dd0823591
 src/components/app/FeatureGate.tsx f0ae35c8646cb436
 src/routes/app.storage.tsx 78ca91241d265b0f
-docs/claude/CLOSE-THE-GAPS-07NOV.md c9f8d124c9d86a39
+docs/claude/CLOSE-THE-GAPS-07NOV.md a778882ae31ddb39
 docs/claude/FOUNDER-STATUS-TABLE-07NOV.md b6b2df6961b00f1a
 docs/claude/START-HERE-AFTER-COMPACTION.md f062840dc2d4ef75
 docs/claude/K4-REAL-443-DESIGN-07NOV.md 9e5b0e2f1f1d764f
