@@ -37,6 +37,7 @@ docs/cursor-work/founder/plan-experience-2026-10-17.md
 docs/cursor-work/founder/plan-surface-matrix.md
 docs/cursor-work/founder/tools/founder-stack-audit.py
 docs/cursor-work/founder/tools/plan-surface-matrix.mjs
+docs/cursor-work/server/founder-dbsc.sh
 docs/cursor-work/server/founder-device.sh
 docs/cursor-work/server/founder-hostguard.sh
 docs/cursor-work/server/founder-install.sh
@@ -85,6 +86,7 @@ docs/cursor-work/sql/E146_founder_banned_countries.sql
 docs/cursor-work/sql/E147_founder_passkey_pending.sql
 docs/cursor-work/sql/E148_LIVE.sql
 docs/cursor-work/sql/E148_founder_webtransport_sessions.sql
+docs/cursor-work/sql/E149_founder_dbsc.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/E68_proof.sql
@@ -99,14 +101,10 @@ founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
-founder-web/dist/assets/index-C1zOmM1I.js
-founder-web/dist/assets/index-C1zOmM1I.js.gz
 founder-web/dist/assets/index-ChvGeBvk.css
-founder-web/dist/assets/index-ChvGeBvk.css.gz
+founder-web/dist/assets/index-y_loAxQL.js
 founder-web/dist/assets/kernel.worker-BiR_tP7H.js
-founder-web/dist/assets/kernel.worker-BiR_tP7H.js.gz
 founder-web/dist/assets/three.module-C0S06CcT.js
-founder-web/dist/assets/three.module-C0S06CcT.js.gz
 founder-web/dist/boot.css
 founder-web/dist/early.js
 founder-web/dist/favicon.svg
@@ -134,6 +132,8 @@ founder-web/src/AmbientStudio.tsx
 founder-web/src/App.tsx
 founder-web/src/Brand.tsx
 founder-web/src/Bridge.tsx
+founder-web/src/Dbsc.tsx
+founder-web/src/DbscCard.tsx
 founder-web/src/Decks.tsx
 founder-web/src/Finance.tsx
 founder-web/src/Flare.tsx
@@ -161,6 +161,8 @@ founder-web/src/city.ts
 founder-web/src/components/ui/button.tsx
 founder-web/src/components/ui/switch.tsx
 founder-web/src/countries.ts
+founder-web/src/dbsc_pure.test.ts
+founder-web/src/dbsc_pure.ts
 founder-web/src/devicelabel.ts
 founder-web/src/dx.css
 founder-web/src/flare_pure.ts
@@ -218,6 +220,7 @@ server/founder/src/audit.rs
 server/founder/src/authcache.rs
 server/founder/src/bridge.rs
 server/founder/src/data.rs
+server/founder/src/dbsc.rs
 server/founder/src/flare.rs
 server/founder/src/fproxy.rs
 server/founder/src/front.rs

@@ -38,6 +38,7 @@ mod passkey_core;
 mod passkey;
 mod flare;
 mod lease;
+mod dbsc;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -61,7 +62,7 @@ fn hdr(n: &'static str, v: &'static str) -> SetResponseHeaderLayer<HeaderValue> 
     SetResponseHeaderLayer::overriding(HeaderName::from_static(n), HeaderValue::from_static(v))
 }
 
-pub struct St { pub sb: Option<data::Sb>, pub hmac_key: Vec<u8>, pub jwks: RwLock<Vec<jwt_core::Jwk>>, pub lim: std::sync::Mutex<login::Limiter>, pub ft: Option<ftoken::Keys>, pub legacy: bool, pub polar: Arc<polar::Live>, pub hook: std::sync::Mutex<Option<(i64, Value)>>, pub ed: Option<sign::EdKeys>, pub reqsig: bool, pub gate: authcache::AuthCache }
+pub struct St { pub sb: Option<data::Sb>, pub hmac_key: Vec<u8>, pub jwks: RwLock<Vec<jwt_core::Jwk>>, pub lim: std::sync::Mutex<login::Limiter>, pub ft: Option<ftoken::Keys>, pub legacy: bool, pub polar: Arc<polar::Live>, pub hook: std::sync::Mutex<Option<(i64, Value)>>, pub ed: Option<sign::EdKeys>, pub reqsig: bool, pub gate: authcache::AuthCache, pub dbsc: dbsc::Mode }
 type S = Arc<St>;
 
 fn now_s() -> i64 { std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0) }
@@ -337,6 +338,24 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
     match r["state"].as_str() {
         Some("approved") => {
             let did = r["device_id"].as_str().unwrap_or("");
+            // K7 DBSC: a device that is bound to a TPM key must present the short-lived bound cookie to get a founder token (mode enforce); observe only records.
+            let dev_hash = ftoken::device_hash(&b.device_id);
+            let mut bound = false;
+            if st.dbsc != dbsc::Mode::Off {
+                let state = sb.rpc("founder_dbsc_device_state", json!({"p_uid": c.sub, "p_device_hash": dev_hash})).await;
+                let bound_sid = state.as_ref().filter(|v| v["bound"].as_bool() == Some(true)).and_then(|v| v["sid"].as_str().map(String::from));
+                bound = bound_sid.is_some();
+                let cookie_sid = dbsc::cookie_from(&h).and_then(|v| dbsc::check_cookie(&dbsc::subkey(&st.hmac_key, "cookie"), &v, now_s()));
+                let decision = dbsc::gate_exchange(st.dbsc, bound_sid.as_deref(), cookie_sid.as_deref());
+                let (kind, why) = match &decision { dbsc::Decision::Block(w) => ("blocked", *w), dbsc::Decision::AllowWould(w) => ("would_block", *w), dbsc::Decision::Allow => ("", "") };
+                if !kind.is_empty() {
+                    let (sb2, uid2, sid2) = (sb.clone(), c.sub.clone(), bound_sid.clone().unwrap_or_default());
+                    tokio::spawn(async move { let _ = sb2.rpc("founder_dbsc_event", json!({"p_uid": uid2, "p_sid": sid2, "p_kind": kind, "p_facts": {"why": why}})).await; });
+                }
+                if let dbsc::Decision::Block(w) = decision {
+                    return (StatusCode::UNAUTHORIZED, Json(json!({"error": "dbsc_required", "why": w, "note": "this device is bound to its secure key; reload the page so the browser refreshes the bound cookie, or revoke the binding from another approved device"}))).into_response();
+                }
+            }
             let Some((token, exp)) = keys.mint(&c.sub, &c.email, did, now_s()) else { return StatusCode::INTERNAL_SERVER_ERROR.into_response(); };
             st.lim.lock().unwrap().clear(&key);
             { // L5 v2: where was this founder session made? (fire and forget, never slows or fails the sign-in)
@@ -344,7 +363,11 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
                 tokio::spawn(async move { let _ = sb2.rpc("founder_host_record", json!({"p_source": "rust", "p_kind": "exchange", "p_host": host, "p_founder_host": fh, "p_is_founder": true, "p_mode": "n/a", "p_decision": "allow"})).await; });
             }
             let req_key = B64.encode(sign::req_key(&st.hmac_key, &token));
-            Json(json!({"token": token, "req_key": req_key, "exp": exp, "expires_in": ftoken::TTL_SECS, "device": r["label"], "first": r["first"].as_bool().unwrap_or(false)})).into_response()
+            let mut resp = Json(json!({"token": token, "req_key": req_key, "exp": exp, "expires_in": ftoken::TTL_SECS, "device": r["label"], "first": r["first"].as_bool().unwrap_or(false)})).into_response();
+            if st.dbsc != dbsc::Mode::Off && !bound { // an unbound device is offered the binding; browsers without secure key storage simply ignore this header
+                if let Some(v) = dbsc::registration_header(&dbsc::subkey(&st.hmac_key, "challenge"), &c.sub, &dev_hash, now_s()) { resp.headers_mut().insert("secure-session-registration", v); }
+            }
+            resp
         }
         Some("pending") => { st.lim.lock().unwrap().fail(&key, now); (StatusCode::FORBIDDEN, Json(json!({"error": "device_pending", "code": r["code"]}))).into_response() }
         Some("revoked") => { st.lim.lock().unwrap().fail(&key, now); (StatusCode::FORBIDDEN, Json(json!({"error": "device_revoked"}))).into_response() }
@@ -690,6 +713,9 @@ pub fn app(st: S) -> Router {
     Router::new()
         .route("/healthz", get(|| async { "ok" }))
         .route("/founder/v1/exchange", axum::routing::post(exchange_ep))
+        .route("/founder/v1/dbsc/start", axum::routing::post(dbsc::start_ep))
+        .route("/founder/v1/dbsc/refresh", axum::routing::post(dbsc::refresh_ep))
+        .route("/founder/v1/dbsc/status", get(dbsc::status_ep))
         .route("/founder/v1/keys", get(keys_ep))
         .route("/founder/v1/me", get(me))
         .route("/founder/v1/bridge", get(bridge_ep))
@@ -836,7 +862,7 @@ async fn main() {
     if let Some(s) = &sb { lease::spawn_sweep(s.clone()); }
     match (&sb, flare::Cfg::from_env()) { (Some(s), Some(c)) => flare::spawn(s.clone(), c), (_, None) => eprintln!("founder: flare sender OFF (FOUNDER_FLARE=off or no usable VAPID key)"), _ => {} }
     if let Some(s) = &sb { live::start(s.clone()); } // 4b-2: the one process-wide live tick
-    let st = Arc::new(St { sb, hmac_key: key.into_bytes(), jwks: RwLock::new(jwks), lim: Default::default(), ft, legacy, polar, hook: Default::default(), ed, reqsig, gate: authcache::AuthCache::new(std::time::Duration::from_secs(5)) });
+    let st = Arc::new(St { sb, hmac_key: key.into_bytes(), jwks: RwLock::new(jwks), lim: Default::default(), ft, legacy, polar, hook: Default::default(), ed, reqsig, gate: authcache::AuthCache::new(std::time::Duration::from_secs(5)), dbsc: dbsc::Mode::parse(&std::env::var("FOUNDER_DBSC").unwrap_or_default()) });
     fproxy::init_from_env(std::env::var("FOUNDER_TLS256_ADDR").ok().as_deref());
     match tls256::from_env() { // T256-1: own TLS 1.3 terminator, AES-256-GCM only, on its own port (default OFF); the main port above is never touched
         None => eprintln!("founder: TLS-256 terminator OFF (no FOUNDER_TLS256_ADDR)"),
@@ -905,7 +931,7 @@ mod tests {
     }
     #[tokio::test]
     async fn health_has_hardening_headers() {
-        let r = app(Arc::new(St{sb:None,hmac_key:b"k".to_vec(),jwks:RwLock::new(vec![]),lim:Default::default(),ft:None,legacy:true,polar:polar::Live::off(),hook:Default::default(),ed:None,reqsig:true, gate:authcache::AuthCache::new(std::time::Duration::from_secs(5))})).oneshot(Request::get("/healthz").body(Body::empty()).unwrap()).await.unwrap();
+        let r = app(Arc::new(St{sb:None,hmac_key:b"k".to_vec(),jwks:RwLock::new(vec![]),lim:Default::default(),ft:None,legacy:true,polar:polar::Live::off(),hook:Default::default(),ed:None,reqsig:true, gate:authcache::AuthCache::new(std::time::Duration::from_secs(5)), dbsc: dbsc::Mode::Off})).oneshot(Request::get("/healthz").body(Body::empty()).unwrap()).await.unwrap();
         assert_eq!(r.status(), 200);
         let h = r.headers();
         assert!(h["content-security-policy"].to_str().unwrap().contains("frame-ancestors 'none'"));
@@ -926,7 +952,7 @@ mod tests {
         std::fs::write(dir.join("assets/a-1.js"), b"x").unwrap();
         std::fs::write(dir.join("index.html"), b"<html></html>").unwrap();
         unsafe { std::env::set_var("FOUNDER_STATIC", &dir); }
-        let st = || Arc::new(St{sb:None,hmac_key:b"k".to_vec(),jwks:RwLock::new(vec![]),lim:Default::default(),ft:None,legacy:true,polar:polar::Live::off(),hook:Default::default(),ed:None,reqsig:Default::default(), gate:authcache::AuthCache::new(std::time::Duration::from_secs(5))});
+        let st = || Arc::new(St{sb:None,hmac_key:b"k".to_vec(),jwks:RwLock::new(vec![]),lim:Default::default(),ft:None,legacy:true,polar:polar::Live::off(),hook:Default::default(),ed:None,reqsig:Default::default(), gate:authcache::AuthCache::new(std::time::Duration::from_secs(5)), dbsc: dbsc::Mode::Off});
         let get = |p: &'static str| { let r = app(st()); async move { r.oneshot(Request::builder().uri(p).body(Body::empty()).unwrap()).await.unwrap() } };
         assert_eq!(get("/assets/a-1.js").await.headers()["cache-control"], "public, max-age=31536000, immutable");
         assert_eq!(get("/kernel/anexo-kernel-9.9.9.wasm").await.headers()["cache-control"], "public, max-age=31536000, immutable");
@@ -937,7 +963,7 @@ mod tests {
 
     fn st_with_sb() -> S {
         let sb = data::Sb { url: "http://127.0.0.1:1".into(), key: "k".into(), http: reqwest::Client::new() };
-        Arc::new(St { sb: Some(sb), hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: polar::Live::off(), hook: Default::default(), ed: None, reqsig: true, gate: authcache::AuthCache::new(std::time::Duration::from_secs(5)) })
+        Arc::new(St { sb: Some(sb), hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: polar::Live::off(), hook: Default::default(), ed: None, reqsig: true, gate: authcache::AuthCache::new(std::time::Duration::from_secs(5)), dbsc: dbsc::Mode::Off })
     }
     #[tokio::test]
     async fn founder_routes_need_bearer() {
@@ -950,7 +976,7 @@ mod tests {
     }
     #[tokio::test]
     async fn unconfigured_is_503_not_open() {
-        let st = Arc::new(St { sb: None, hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: polar::Live::off(), hook: Default::default(), ed: None, reqsig: true, gate: authcache::AuthCache::new(std::time::Duration::from_secs(5)) });
+        let st = Arc::new(St { sb: None, hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: polar::Live::off(), hook: Default::default(), ed: None, reqsig: true, gate: authcache::AuthCache::new(std::time::Duration::from_secs(5)), dbsc: dbsc::Mode::Off });
         let r = app(st).oneshot(Request::get("/founder/v1/me").header("authorization", "Bearer a.b.c").body(Body::empty()).unwrap()).await.unwrap();
         assert_eq!(r.status(), 503);
     }

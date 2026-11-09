@@ -1,0 +1,390 @@
+//! K7 — Device Bound Session Credentials (DBSC), Rust half. SQL (E149) is the memory and the rulebook; this file speaks the Chrome protocol and decides.
+//!
+//! WHAT IT BUYS: the founder token is minted by `/founder/v1/exchange` every 15 minutes. With DBSC the browser binds the founder DEVICE to a private key it keeps
+//! in the TPM / secure hardware (never exportable). A short-lived cookie (`__Host-anx_fdbsc`, 10 min) can only be refreshed by signing a server challenge with
+//! that key, so a stolen device id + login token replayed from another machine has no cookie and cannot mint a founder token (mode `enforce`).
+//!
+//! PROTOCOL (Chrome DBSC, checked 9 Nov 2026 against developer.chrome.com + a protocol write-up; JWT claim names that the sources disagree on are accepted
+//! in both places, the signature is what proves the key):
+//!   1. exchange answers 200 + `Secure-Session-Registration: (ES256); path="/founder/v1/dbsc/start"; challenge="<stateless signed challenge>"` for an unbound device.
+//!   2. Chrome (TPM key) POSTs `/founder/v1/dbsc/start` with header `Secure-Session-Response: <JWT typ dbsc+jwt, alg ES256, jwk, jti = challenge>`.
+//!      The registration carries NO bearer (the browser makes it), so the identity (account + device) is INSIDE the HMAC-signed challenge, minted only on an
+//!      authenticated, approved exchange. 60 s life, single use (SQL jti ledger). We verify the ES256 proof-of-possession, store the public key, answer the session JSON.
+//!   3. Refresh: Chrome POSTs `/founder/v1/dbsc/refresh` with `Sec-Secure-Session-Id`; we answer 403 + `Secure-Session-Challenge: "<ch>";id="<sid>"`;
+//!      Chrome signs it with the same key and re-POSTs `Secure-Session-Response`; we verify against the STORED key (a key in the JWT is ignored), consume the jti, Set-Cookie.
+//!   4. exchange checks the cookie against the device's bound session (`gate_exchange`).
+//! MODES (env FOUNDER_DBSC): `off` (default: every route 404, nothing changes), `observe` (register + refresh + ledger, never block; would-block is logged),
+//! `enforce` (a bound device without a valid cookie gets 401 dbsc_required). Unbound devices (phones, Firefox, Safari) are never blocked: honest limit, DBSC is Chromium.
+//! Crypto: only audited `ring` (ES256 verify) + `hmac`/`sha2`; no own crypto (FC15). No secret is ever logged or stored: SQL holds the PUBLIC key only.
+use axum::{Json, extract::State, http::{HeaderMap, HeaderValue, StatusCode, header}, response::{IntoResponse, Response}};
+use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
+use hmac::{Hmac, Mac};
+use ring::rand::{SecureRandom, SystemRandom};
+use ring::signature::{ECDSA_P256_SHA256_FIXED, UnparsedPublicKey};
+use serde_json::{Value, json};
+use sha2::{Digest, Sha256};
+
+pub const COOKIE: &str = "__Host-anx_fdbsc";
+pub const COOKIE_TTL: i64 = 600;
+pub const CH_TTL: i64 = 60;
+pub const REG_PATH: &str = "/founder/v1/dbsc/start";
+pub const REFRESH_PATH: &str = "/founder/v1/dbsc/refresh";
+const SKEW: i64 = 120;
+const COOKIE_ATTRS: &str = "Path=/; Secure; HttpOnly; SameSite=Strict";
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Mode { Off, Observe, Enforce }
+impl Mode {
+    pub fn parse(s: &str) -> Mode { match s.trim().to_ascii_lowercase().as_str() { "observe" => Mode::Observe, "enforce" => Mode::Enforce, _ => Mode::Off } }
+    pub fn as_str(self) -> &'static str { match self { Mode::Off => "off", Mode::Observe => "observe", Mode::Enforce => "enforce" } }
+}
+
+#[derive(Debug, PartialEq)]
+pub enum DErr { Malformed, Alg, Typ, Key, Signature, Jti, Iat, Aud, Challenge, Expired, Purpose }
+
+type HmacSha = Hmac<Sha256>;
+/// Sub-keys from the server secret, one label each (a leaked cookie key is not a challenge key).
+pub fn subkey(master: &[u8], label: &str) -> Vec<u8> {
+    let mut m = HmacSha::new_from_slice(master).expect("hmac takes any key length");
+    m.update(b"anexo-founder-dbsc-v1|"); m.update(label.as_bytes());
+    m.finalize().into_bytes().to_vec()
+}
+fn mac(key: &[u8], msg: &[u8]) -> Vec<u8> { let mut m = HmacSha::new_from_slice(key).expect("hmac"); m.update(msg); m.finalize().into_bytes().to_vec() }
+fn mac_ok(key: &[u8], msg: &[u8], tag: &[u8]) -> bool { let mut m = HmacSha::new_from_slice(key).expect("hmac"); m.update(msg); m.verify_slice(tag).is_ok() }
+pub fn sha256_hex(s: &str) -> String { hex::encode(Sha256::digest(s.as_bytes())) }
+fn rand_bytes<const N: usize>() -> Option<[u8; N]> { let mut b = [0u8; N]; SystemRandom::new().fill(&mut b).ok()?; Some(b) }
+pub fn new_sid() -> Option<String> { rand_bytes::<18>().map(|b| B64.encode(b)) }
+
+// ------------------------------------------------------------------ challenges (stateless, signed, 60 s, single use via the SQL jti ledger)
+#[derive(Debug, PartialEq)]
+pub struct Ch { pub purpose: char, pub a: String, pub b: String }
+
+/// purpose 'r' (registration): a = account uid, b = device hash. purpose 'f' (refresh): a = session id, b = "".
+pub fn mint_challenge(key: &[u8], purpose: char, a: &str, b: &str, now: i64) -> Option<String> {
+    if a.contains('|') || b.contains('|') || a.is_empty() { return None; }
+    let nonce = hex::encode(rand_bytes::<16>()?);
+    let payload = format!("{purpose}|{}|{nonce}|{a}|{b}", now + CH_TTL);
+    Some(format!("{}.{}", B64.encode(payload.as_bytes()), B64.encode(mac(key, payload.as_bytes()))))
+}
+pub fn check_challenge(key: &[u8], token: &str, want: char, now: i64) -> Result<Ch, DErr> {
+    if token.len() > 600 { return Err(DErr::Malformed); }
+    let (p, t) = token.split_once('.').ok_or(DErr::Malformed)?;
+    let payload = B64.decode(p).map_err(|_| DErr::Malformed)?;
+    let tag = B64.decode(t).map_err(|_| DErr::Malformed)?;
+    if !mac_ok(key, &payload, &tag) { return Err(DErr::Challenge); }
+    let s = String::from_utf8(payload).map_err(|_| DErr::Malformed)?;
+    let f: Vec<&str> = s.splitn(5, '|').collect();
+    if f.len() != 5 { return Err(DErr::Malformed); }
+    let purpose = f[0].chars().next().ok_or(DErr::Malformed)?;
+    if purpose != want { return Err(DErr::Purpose); }
+    let exp: i64 = f[1].parse().map_err(|_| DErr::Malformed)?;
+    if now > exp { return Err(DErr::Expired); }
+    if exp - now > CH_TTL + SKEW { return Err(DErr::Malformed); } // a challenge from the far future is not ours
+    Ok(Ch { purpose, a: f[3].to_string(), b: f[4].to_string() })
+}
+
+// ------------------------------------------------------------------ the short-lived cookie
+pub fn mint_cookie(key: &[u8], sid: &str, now: i64) -> String {
+    let exp = now + COOKIE_TTL;
+    let msg = format!("c|{sid}|{exp}");
+    format!("v1.{sid}.{exp}.{}", B64.encode(mac(key, msg.as_bytes())))
+}
+/// The session id inside a valid, unexpired cookie value (None for anything else).
+pub fn check_cookie(key: &[u8], value: &str, now: i64) -> Option<String> {
+    let f: Vec<&str> = value.split('.').collect();
+    if f.len() != 4 || f[0] != "v1" || value.len() > 200 { return None; }
+    let exp: i64 = f[2].parse().ok()?;
+    if now >= exp || exp - now > COOKIE_TTL + SKEW { return None; }
+    let tag = B64.decode(f[3]).ok()?;
+    if !mac_ok(key, format!("c|{}|{exp}", f[1]).as_bytes(), &tag) { return None; }
+    Some(f[1].to_string())
+}
+pub fn set_cookie_value(value: &str) -> String { format!("{COOKIE}={value}; Max-Age={COOKIE_TTL}; {COOKIE_ATTRS}") }
+/// Find our cookie in a `Cookie:` header.
+pub fn cookie_from(h: &HeaderMap) -> Option<String> {
+    for v in h.get_all(header::COOKIE) {
+        for part in v.to_str().ok()?.split(';') {
+            if let Some(val) = part.trim().strip_prefix(COOKIE).and_then(|r| r.strip_prefix('=')) { return Some(val.to_string()); }
+        }
+    }
+    None
+}
+
+// ------------------------------------------------------------------ JWT (ES256, typ dbsc+jwt)
+pub struct Jwt { pub header: Value, pub payload: Value, input: String, sig: Vec<u8> }
+pub fn parse_jwt(t: &str) -> Result<Jwt, DErr> {
+    if t.len() > 4096 { return Err(DErr::Malformed); }
+    let p: Vec<&str> = t.split('.').collect();
+    if p.len() != 3 { return Err(DErr::Malformed); }
+    let dec = |s: &str| B64.decode(s).map_err(|_| DErr::Malformed);
+    Ok(Jwt { header: serde_json::from_slice(&dec(p[0])?).map_err(|_| DErr::Malformed)?, payload: serde_json::from_slice(&dec(p[1])?).map_err(|_| DErr::Malformed)?,
+             input: format!("{}.{}", p[0], p[1]), sig: dec(p[2])? })
+}
+/// The `jti` of a JWT BEFORE it is verified: only used to find the challenge (which is itself MAC-checked) and never trusted on its own.
+pub fn peek_jti(t: &str) -> Option<String> { parse_jwt(t).ok()?.payload["jti"].as_str().map(String::from) }
+
+fn jwk_to_sec1(jwk: &Value) -> Result<[u8; 65], DErr> {
+    if jwk["kty"].as_str() != Some("EC") || jwk["crv"].as_str() != Some("P-256") { return Err(DErr::Key); }
+    let (x, y) = (B64.decode(jwk["x"].as_str().ok_or(DErr::Key)?).map_err(|_| DErr::Key)?, B64.decode(jwk["y"].as_str().ok_or(DErr::Key)?).map_err(|_| DErr::Key)?);
+    if x.len() != 32 || y.len() != 32 { return Err(DErr::Key); }
+    let mut out = [0u8; 65]; out[0] = 4; out[1..33].copy_from_slice(&x); out[33..].copy_from_slice(&y);
+    Ok(out)
+}
+fn verify_sig(pubkey: &[u8], j: &Jwt) -> Result<(), DErr> { UnparsedPublicKey::new(&ECDSA_P256_SHA256_FIXED, pubkey).verify(j.input.as_bytes(), &j.sig).map_err(|_| DErr::Signature) }
+fn common(j: &Jwt, challenge: &str, now: i64, path: &str) -> Result<(), DErr> {
+    if j.header["alg"].as_str() != Some("ES256") { return Err(DErr::Alg); }   // none / HS256 / RS256: never
+    if j.header["typ"].as_str() != Some("dbsc+jwt") { return Err(DErr::Typ); }
+    if j.payload["jti"].as_str() != Some(challenge) { return Err(DErr::Jti); }
+    if let Some(iat) = j.payload.get("iat") { if iat.as_i64().is_none_or(|i| (now - i).abs() > SKEW) { return Err(DErr::Iat); } }
+    if let Some(aud) = j.payload.get("aud") { if !aud.as_str().is_some_and(|a| a.starts_with("https://") && a.ends_with(path)) { return Err(DErr::Aud); } }
+    Ok(())
+}
+/// Registration proof: the JWT is signed by the key it carries (proof of possession). Returns the 65-byte SEC1 public key.
+pub fn verify_registration(jwt: &str, challenge: &str, now: i64) -> Result<[u8; 65], DErr> {
+    let j = parse_jwt(jwt)?;
+    common(&j, challenge, now, REG_PATH)?;
+    let jwk = if j.header.get("jwk").is_some() { &j.header["jwk"] } else { &j.payload["key"] };
+    let key = jwk_to_sec1(jwk)?;
+    verify_sig(&key, &j)?;
+    Ok(key)
+}
+/// Refresh proof: checked ONLY against the key stored at registration; a key inside the JWT is ignored.
+pub fn verify_refresh(jwt: &str, challenge: &str, stored: &[u8], now: i64) -> Result<(), DErr> {
+    let j = parse_jwt(jwt)?;
+    common(&j, challenge, now, REFRESH_PATH)?;
+    verify_sig(stored, &j)
+}
+
+// ------------------------------------------------------------------ the exchange decision (pure)
+#[derive(Debug, PartialEq)]
+pub enum Decision { Allow, AllowWould(&'static str), Block(&'static str) }
+pub fn gate_exchange(mode: Mode, bound_sid: Option<&str>, cookie_sid: Option<&str>) -> Decision {
+    let Some(bound) = bound_sid else { return Decision::Allow };   // unbound device (phone, Firefox, Safari): never blocked
+    if mode == Mode::Off || cookie_sid == Some(bound) { return Decision::Allow; }
+    let why = if cookie_sid.is_none() { "no_cookie" } else { "wrong_session" };
+    if mode == Mode::Enforce { Decision::Block(why) } else { Decision::AllowWould(why) }
+}
+
+pub fn registration_header(key: &[u8], uid: &str, dev_hash: &str, now: i64) -> Option<HeaderValue> {
+    let ch = mint_challenge(key, 'r', uid, dev_hash, now)?;
+    HeaderValue::from_str(&format!("(ES256); path=\"{REG_PATH}\"; challenge=\"{ch}\"")).ok()
+}
+
+// ------------------------------------------------------------------ routes
+fn now_s() -> i64 { std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0) }
+fn no_store(mut r: Response) -> Response { r.headers_mut().insert(header::CACHE_CONTROL, HeaderValue::from_static("no-store")); r }
+fn err(code: StatusCode, why: &str) -> Response { no_store((code, Json(json!({"error": why}))).into_response()) }
+fn hv<'a>(h: &'a HeaderMap, k: &str) -> Option<&'a str> { h.get(k).and_then(|v| v.to_str().ok()) }
+fn sid_ok(s: &str) -> bool { (16..=64).contains(&s.len()) && s.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'-' || b == b'_') }
+fn host_ok(h: &str) -> bool { !h.is_empty() && h.len() <= 253 && h.bytes().all(|b| b.is_ascii_lowercase() || b.is_ascii_digit() || b == b'.' || b == b'-' || b == b':') }
+
+/// POST /founder/v1/dbsc/start — the browser registers its TPM key. No bearer: the signed challenge carries the account + device.
+pub async fn start_ep(State(st): State<crate::S>, h: HeaderMap) -> Response {
+    if st.dbsc == Mode::Off { return StatusCode::NOT_FOUND.into_response(); }
+    let Some(sb) = st.sb.as_ref() else { return err(StatusCode::SERVICE_UNAVAILABLE, "database not configured") };
+    let Some(jwt) = hv(&h, "secure-session-response") else { return err(StatusCode::BAD_REQUEST, "missing proof") };
+    let Some(jti) = peek_jti(jwt) else { return err(StatusCode::BAD_REQUEST, "malformed proof") };
+    let (ck, cookie_key, now) = (subkey(&st.hmac_key, "challenge"), subkey(&st.hmac_key, "cookie"), now_s());
+    let ch = match check_challenge(&ck, &jti, 'r', now) { Ok(c) => c, Err(_) => return err(StatusCode::FORBIDDEN, "challenge refused") };
+    let pubkey = match verify_registration(jwt, &jti, now) { Ok(k) => k, Err(e) => return err(StatusCode::BAD_REQUEST, &format!("proof refused: {e:?}").to_ascii_lowercase()) };
+    let (Some(sid), Ok(uid)) = (new_sid(), uuid_like(&ch.a)) else { return err(StatusCode::INTERNAL_SERVER_ERROR, "no session id") };
+    let r = sb.rpc("founder_dbsc_register", json!({"p_uid": uid, "p_device_hash": ch.b, "p_sid": sid, "p_pub": hex::encode(pubkey), "p_jti_hash": sha256_hex(&jti)})).await;
+    match r {
+        Some(v) if v["ok"].as_bool() == Some(true) => {
+            let host = crate::hostproof::host_of(&h);
+            let origin = if host_ok(&host) { format!("https://{host}") } else { return err(StatusCode::BAD_REQUEST, "bad host") };
+            let body = json!({"session_identifier": sid, "refresh_url": REFRESH_PATH,
+                "scope": {"origin": origin, "include_site": false},
+                "credentials": [{"type": "cookie", "name": COOKIE, "attributes": COOKIE_ATTRS}]});
+            let mut resp = no_store(Json(body).into_response());
+            if let Ok(c) = HeaderValue::from_str(&set_cookie_value(&mint_cookie(&cookie_key, &sid, now))) { resp.headers_mut().append(header::SET_COOKIE, c); }
+            resp
+        }
+        Some(v) => err(StatusCode::CONFLICT, v["error"].as_str().unwrap_or("refused")),
+        None => err(StatusCode::SERVICE_UNAVAILABLE, "ledger unavailable: run the E149 SQL (sql-run.sh)"),
+    }
+}
+
+fn uuid_like(s: &str) -> Result<String, ()> { if s.len() == 36 && s.bytes().all(|b| b.is_ascii_hexdigit() || b == b'-') { Ok(s.to_string()) } else { Err(()) } }
+
+/// POST /founder/v1/dbsc/refresh — 403 + challenge, then verify the signed answer against the STORED key and hand out a fresh cookie.
+pub async fn refresh_ep(State(st): State<crate::S>, h: HeaderMap) -> Response {
+    if st.dbsc == Mode::Off { return StatusCode::NOT_FOUND.into_response(); }
+    let Some(sb) = st.sb.as_ref() else { return err(StatusCode::SERVICE_UNAVAILABLE, "database not configured") };
+    let Some(sid) = hv(&h, "sec-secure-session-id").map(|s| s.trim().trim_matches('"').to_string()).filter(|s| sid_ok(s)) else { return err(StatusCode::BAD_REQUEST, "bad session id") };
+    let Some(s) = sb.rpc("founder_dbsc_get", json!({"p_sid": sid})).await else { return err(StatusCode::SERVICE_UNAVAILABLE, "ledger unavailable") };
+    if s["found"].as_bool() != Some(true) || s["revoked"].as_bool() == Some(true) { return err(StatusCode::BAD_REQUEST, "unknown or ended session"); }
+    let (ck, cookie_key, now) = (subkey(&st.hmac_key, "challenge"), subkey(&st.hmac_key, "cookie"), now_s());
+    let uid = s["uid"].as_str().unwrap_or("").to_string();
+    let Some(jwt) = hv(&h, "secure-session-response") else {
+        let Some(ch) = mint_challenge(&ck, 'f', &sid, "", now) else { return err(StatusCode::INTERNAL_SERVER_ERROR, "no challenge") };
+        let mut r = err(StatusCode::FORBIDDEN, "challenge");
+        if let Ok(v) = HeaderValue::from_str(&format!("\"{ch}\";id=\"{sid}\"")) { r.headers_mut().insert("secure-session-challenge", v); }
+        return r;
+    };
+    let log = |kind: &'static str, why: &'static str| { let (sb, uid, sid) = (sb.clone(), uid.clone(), sid.clone()); tokio::spawn(async move { let _ = sb.rpc("founder_dbsc_event", json!({"p_uid": uid, "p_sid": sid, "p_kind": kind, "p_facts": {"why": why}})).await; }); };
+    let Some(jti) = peek_jti(jwt) else { log("reject_challenge", "malformed"); return err(StatusCode::BAD_REQUEST, "malformed proof") };
+    match check_challenge(&ck, &jti, 'f', now) { Ok(c) if c.a == sid => {} _ => { log("reject_challenge", "bad_or_expired"); return err(StatusCode::BAD_REQUEST, "challenge refused") } }
+    let stored = hex::decode(s["pub"].as_str().unwrap_or("")).unwrap_or_default();
+    if verify_refresh(jwt, &jti, &stored, now).is_err() { log("reject_signature", "bad_proof"); return err(StatusCode::BAD_REQUEST, "proof refused"); }
+    match sb.rpc("founder_dbsc_refreshed", json!({"p_sid": sid, "p_jti_hash": sha256_hex(&jti)})).await {
+        Some(v) if v["ok"].as_bool() == Some(true) => {
+            let mut r = no_store(StatusCode::OK.into_response());
+            if let Ok(c) = HeaderValue::from_str(&set_cookie_value(&mint_cookie(&cookie_key, &sid, now))) { r.headers_mut().append(header::SET_COOKIE, c); }
+            r
+        }
+        Some(v) => err(StatusCode::BAD_REQUEST, v["error"].as_str().unwrap_or("refused")),
+        None => err(StatusCode::SERVICE_UNAVAILABLE, "ledger unavailable"),
+    }
+}
+
+/// GET /founder/v1/dbsc/status — for the founder screen: mode, this founder's devices with their binding, and the ledger report (signed like every answer).
+pub async fn status_ep(State(st): State<crate::S>, h: HeaderMap) -> Response {
+    let c = match crate::authed(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
+    let did = crate::passkey::did_of(&st, &h);
+    let Some(sb) = st.sb.as_ref() else { return crate::signed(&st, json!({"mode": st.dbsc.as_str(), "available": false, "note": "database not configured"})) };
+    let (devs, rep) = tokio::join!(sb.rpc("founder_dbsc_devices", json!({"p_uid": c.sub})), sb.rpc("founder_dbsc_report", json!({"p_uid": c.sub})));
+    match (devs, rep) {
+        (Some(d), Some(r)) => crate::signed(&st, json!({"mode": st.dbsc.as_str(), "available": true, "this_device": did, "devices": d, "report": r,
+            "limit": "DBSC is a Chromium feature on devices with secure key storage (TPM / Secure Enclave). Other browsers stay on the device approval + passkey rules."})),
+        _ => crate::signed(&st, json!({"mode": st.dbsc.as_str(), "available": false, "note": "ledger not found: run the E149 SQL (sql-run.sh)"})),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use ring::signature::{ECDSA_P256_SHA256_FIXED_SIGNING, EcdsaKeyPair, KeyPair};
+    const NOW: i64 = 1_800_000_000;
+    fn pair() -> EcdsaKeyPair { let r = SystemRandom::new(); EcdsaKeyPair::from_pkcs8(&ECDSA_P256_SHA256_FIXED_SIGNING, EcdsaKeyPair::generate_pkcs8(&ECDSA_P256_SHA256_FIXED_SIGNING, &r).unwrap().as_ref(), &r).unwrap() }
+    fn jwk(p: &EcdsaKeyPair) -> Value { let k = p.public_key().as_ref(); json!({"kty": "EC", "crv": "P-256", "x": B64.encode(&k[1..33]), "y": B64.encode(&k[33..])}) }
+    fn jwt(p: &EcdsaKeyPair, header: Value, payload: Value) -> String {
+        let input = format!("{}.{}", B64.encode(header.to_string()), B64.encode(payload.to_string()));
+        format!("{input}.{}", B64.encode(p.sign(&SystemRandom::new(), input.as_bytes()).unwrap().as_ref()))
+    }
+    fn reg_jwt(p: &EcdsaKeyPair, ch: &str) -> String { jwt(p, json!({"alg": "ES256", "typ": "dbsc+jwt", "jwk": jwk(p)}), json!({"jti": ch, "iat": NOW, "aud": "https://founder.example.com/founder/v1/dbsc/start"})) }
+    fn ref_jwt(p: &EcdsaKeyPair, ch: &str) -> String { jwt(p, json!({"alg": "ES256", "typ": "dbsc+jwt"}), json!({"jti": ch, "iat": NOW})) }
+    const UID: &str = "11111111-2222-3333-4444-555555555555";
+    fn dev() -> String { sha256_hex("device-a") }
+
+    #[test]
+    fn modes_parse_and_default_off() {
+        assert_eq!(Mode::parse(""), Mode::Off); assert_eq!(Mode::parse("garbage"), Mode::Off);
+        assert_eq!(Mode::parse(" Observe "), Mode::Observe); assert_eq!(Mode::parse("ENFORCE"), Mode::Enforce);
+    }
+    #[test]
+    fn subkeys_differ_per_label_and_master() {
+        assert_ne!(subkey(b"m", "challenge"), subkey(b"m", "cookie"));
+        assert_ne!(subkey(b"m", "cookie"), subkey(b"n", "cookie"));
+        assert_eq!(subkey(b"m", "cookie"), subkey(b"m", "cookie"));
+    }
+    #[test]
+    fn challenge_round_trip_and_binding() {
+        let k = subkey(b"m", "challenge");
+        let t = mint_challenge(&k, 'r', UID, &dev(), NOW).unwrap();
+        assert_eq!(check_challenge(&k, &t, 'r', NOW + 10), Ok(Ch { purpose: 'r', a: UID.into(), b: dev() }));
+        assert_eq!(check_challenge(&k, &t, 'f', NOW), Err(DErr::Purpose));            // a registration challenge is not a refresh challenge
+        assert_eq!(check_challenge(&k, &t, 'r', NOW + CH_TTL + 1), Err(DErr::Expired));
+        assert_eq!(check_challenge(&subkey(b"other", "challenge"), &t, 'r', NOW), Err(DErr::Challenge));
+        let (p, tag) = t.split_once('.').unwrap();
+        let forged = format!("{}.{tag}", B64.encode(String::from_utf8(B64.decode(p).unwrap()).unwrap().replace(UID, "99999999-2222-3333-4444-555555555555")));
+        assert_eq!(check_challenge(&k, &forged, 'r', NOW), Err(DErr::Challenge));     // swapping the account inside breaks the MAC
+        for bad in ["", "x", "a.b", &"A".repeat(700)] { assert!(check_challenge(&k, bad, 'r', NOW).is_err()); }
+        assert!(mint_challenge(&k, 'r', "a|b", "", NOW).is_none() && mint_challenge(&k, 'r', "", "", NOW).is_none());
+        assert_ne!(t, mint_challenge(&k, 'r', UID, &dev(), NOW).unwrap());           // nonce: two challenges never equal
+    }
+    #[test]
+    fn cookie_round_trip_expiry_forgery() {
+        let k = subkey(b"m", "cookie");
+        let c = mint_cookie(&k, "SID1234567890123456", NOW);
+        assert_eq!(check_cookie(&k, &c, NOW + 5).as_deref(), Some("SID1234567890123456"));
+        assert_eq!(check_cookie(&k, &c, NOW + COOKIE_TTL), None);                      // expired exactly at the edge
+        assert_eq!(check_cookie(&subkey(b"x", "cookie"), &c, NOW), None);
+        assert_eq!(check_cookie(&k, &c.replace("SID1234567890123456", "SID9999999999999999"), NOW), None);
+        assert_eq!(check_cookie(&k, &c.replace(&format!(".{}.", NOW + COOKIE_TTL), &format!(".{}.", NOW + 999_999)), NOW), None);
+        for bad in ["", "v1.a.b", "v2.a.1.c", "v1.a.notnum.c"] { assert_eq!(check_cookie(&k, bad, NOW), None); }
+        assert!(set_cookie_value(&c).starts_with("__Host-anx_fdbsc=") && set_cookie_value(&c).contains("Secure; HttpOnly; SameSite=Strict") && !set_cookie_value(&c).contains("Domain"));
+    }
+    #[test]
+    fn cookie_header_parsing() {
+        let mut h = HeaderMap::new();
+        h.append(header::COOKIE, HeaderValue::from_static("a=1; __Host-anx_fdbsc=v1.x.2.y; b=2"));
+        assert_eq!(cookie_from(&h).as_deref(), Some("v1.x.2.y"));
+        let mut h2 = HeaderMap::new(); h2.append(header::COOKIE, HeaderValue::from_static("__Host-anx_fdbsc_other=zzz; a=1"));
+        assert_eq!(cookie_from(&h2), None);
+        assert_eq!(cookie_from(&HeaderMap::new()), None);
+    }
+    #[test]
+    fn registration_accepts_real_proof_and_returns_the_key() {
+        let p = pair(); let k = subkey(b"m", "challenge");
+        let ch = mint_challenge(&k, 'r', UID, &dev(), NOW).unwrap();
+        let key = verify_registration(&reg_jwt(&p, &ch), &ch, NOW).unwrap();
+        assert_eq!(&key[..], p.public_key().as_ref());
+        // the claim names sources disagree on: key in the payload instead of the header jwk, and no iat/aud at all
+        let alt = jwt(&p, json!({"alg": "ES256", "typ": "dbsc+jwt"}), json!({"jti": ch, "key": jwk(&p)}));
+        assert_eq!(verify_registration(&alt, &ch, NOW).unwrap()[..], key[..]);
+    }
+    #[test]
+    fn registration_refuses_every_bad_proof() {
+        let (p, other) = (pair(), pair()); let k = subkey(b"m", "challenge");
+        let ch = mint_challenge(&k, 'r', UID, &dev(), NOW).unwrap();
+        let good_h = json!({"alg": "ES256", "typ": "dbsc+jwt", "jwk": jwk(&p)});
+        assert_eq!(verify_registration(&jwt(&p, json!({"alg": "none", "typ": "dbsc+jwt", "jwk": jwk(&p)}), json!({"jti": ch})), &ch, NOW), Err(DErr::Alg));
+        assert_eq!(verify_registration(&jwt(&p, json!({"alg": "HS256", "typ": "dbsc+jwt", "jwk": jwk(&p)}), json!({"jti": ch})), &ch, NOW), Err(DErr::Alg));
+        assert_eq!(verify_registration(&jwt(&p, json!({"alg": "ES256", "typ": "JWT", "jwk": jwk(&p)}), json!({"jti": ch})), &ch, NOW), Err(DErr::Typ));
+        assert_eq!(verify_registration(&jwt(&p, good_h.clone(), json!({"jti": "someone-elses"})), &ch, NOW), Err(DErr::Jti));
+        assert_eq!(verify_registration(&jwt(&p, good_h.clone(), json!({"jti": ch, "iat": NOW - 500})), &ch, NOW), Err(DErr::Iat));
+        assert_eq!(verify_registration(&jwt(&p, good_h.clone(), json!({"jti": ch, "iat": "now"})), &ch, NOW), Err(DErr::Iat));
+        assert_eq!(verify_registration(&jwt(&p, good_h.clone(), json!({"jti": ch, "aud": "https://evil.example/other"})), &ch, NOW), Err(DErr::Aud));
+        assert_eq!(verify_registration(&jwt(&p, good_h.clone(), json!({"jti": ch, "aud": "http://x/founder/v1/dbsc/start"})), &ch, NOW), Err(DErr::Aud));
+        // signed by a DIFFERENT key than the jwk it presents: no proof of possession
+        assert_eq!(verify_registration(&jwt(&other, good_h.clone(), json!({"jti": ch})), &ch, NOW), Err(DErr::Signature));
+        // wrong curve / short coordinates / no key
+        assert_eq!(verify_registration(&jwt(&p, json!({"alg": "ES256", "typ": "dbsc+jwt", "jwk": {"kty": "EC", "crv": "P-384", "x": "AA", "y": "AA"}}), json!({"jti": ch})), &ch, NOW), Err(DErr::Key));
+        assert_eq!(verify_registration(&jwt(&p, json!({"alg": "ES256", "typ": "dbsc+jwt", "jwk": {"kty": "EC", "crv": "P-256", "x": "AA", "y": "AA"}}), json!({"jti": ch})), &ch, NOW), Err(DErr::Key));
+        assert_eq!(verify_registration(&jwt(&p, json!({"alg": "ES256", "typ": "dbsc+jwt"}), json!({"jti": ch})), &ch, NOW), Err(DErr::Key));
+        // tampered payload after signing
+        let t = reg_jwt(&p, &ch); let parts: Vec<&str> = t.split('.').collect();
+        let tam = format!("{}.{}.{}", parts[0], B64.encode(json!({"jti": ch, "iat": NOW + 1, "aud": "https://x/founder/v1/dbsc/start"}).to_string()), parts[2]);
+        assert_eq!(verify_registration(&tam, &ch, NOW), Err(DErr::Signature));
+        for bad in ["", "a.b", "a.b.c.d", &"x".repeat(5000)] { assert!(verify_registration(bad, &ch, NOW).is_err()); }
+    }
+    #[test]
+    fn refresh_uses_the_stored_key_only() {
+        let (p, attacker) = (pair(), pair()); let k = subkey(b"m", "challenge");
+        let ch = mint_challenge(&k, 'f', "SID1234567890123456", "", NOW).unwrap();
+        assert_eq!(verify_refresh(&ref_jwt(&p, &ch), &ch, p.public_key().as_ref(), NOW), Ok(()));
+        // the attacker signs with HIS key and even puts his jwk in the header: refused, the stored key decides
+        let evil = jwt(&attacker, json!({"alg": "ES256", "typ": "dbsc+jwt", "jwk": jwk(&attacker)}), json!({"jti": ch, "iat": NOW}));
+        assert_eq!(verify_refresh(&evil, &ch, p.public_key().as_ref(), NOW), Err(DErr::Signature));
+        assert_eq!(verify_refresh(&ref_jwt(&p, "other"), &ch, p.public_key().as_ref(), NOW), Err(DErr::Jti));
+        assert_eq!(verify_refresh(&ref_jwt(&p, &ch), &ch, &[4u8; 65], NOW), Err(DErr::Signature));
+        assert_eq!(verify_refresh(&ref_jwt(&p, &ch), &ch, &[], NOW), Err(DErr::Signature));
+    }
+    #[test]
+    fn exchange_decision_matrix() {
+        use Decision::*;
+        for m in [Mode::Off, Mode::Observe, Mode::Enforce] { assert_eq!(gate_exchange(m, None, None), Allow); assert_eq!(gate_exchange(m, None, Some("s")), Allow); } // unbound: never blocked
+        assert_eq!(gate_exchange(Mode::Off, Some("s"), None), Allow);
+        assert_eq!(gate_exchange(Mode::Observe, Some("s"), None), AllowWould("no_cookie"));
+        assert_eq!(gate_exchange(Mode::Observe, Some("s"), Some("t")), AllowWould("wrong_session"));
+        assert_eq!(gate_exchange(Mode::Enforce, Some("s"), None), Block("no_cookie"));
+        assert_eq!(gate_exchange(Mode::Enforce, Some("s"), Some("t")), Block("wrong_session"));
+        assert_eq!(gate_exchange(Mode::Enforce, Some("s"), Some("s")), Allow);
+    }
+    #[test]
+    fn registration_header_shape() {
+        let k = subkey(b"m", "challenge");
+        let v = registration_header(&k, UID, &dev(), NOW).unwrap(); let s = v.to_str().unwrap().to_string();
+        assert!(s.starts_with("(ES256); path=\"/founder/v1/dbsc/start\"; challenge=\"") && s.ends_with('"') && !s.contains("RS256"));
+        let ch = s.split("challenge=\"").nth(1).unwrap().trim_end_matches('"');
+        assert_eq!(check_challenge(&k, ch, 'r', NOW).unwrap().a, UID);
+    }
+    #[test]
+    fn small_validators() {
+        assert!(sid_ok("abcdefghijklmnop") && !sid_ok("short") && !sid_ok("bad sid bad sid bad sid") && !sid_ok(&"a".repeat(65)));
+        assert!(host_ok("founder.anexomail.com") && host_ok("localhost:8443") && !host_ok("") && !host_ok("a b") && !host_ok("EVIL.com/x"));
+        assert!(uuid_like(UID).is_ok() && uuid_like("x").is_err() && uuid_like(&format!("{UID}; drop")).is_err());
+        assert!(new_sid().is_some_and(|s| sid_ok(&s)));
+    }
+}
