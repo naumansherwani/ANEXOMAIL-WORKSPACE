@@ -198,7 +198,7 @@ mod tests {
         let dir = std::env::temp_dir().join(format!("anx-wt-{}", std::process::id()));
         std::fs::create_dir_all(&dir).ok()?;
         let (c, k) = (dir.join("c.pem"), dir.join("k.pem"));
-        let ok = std::process::Command::new("openssl").args(["req", "-x509", "-newkey", "ec", "-pkeyopt", "ec_paramgen_curve:prime256v1", "-nodes", "-days", "1", "-subj", "/CN=localhost", "-addext", "subjectAltName=DNS:localhost", "-addext", "basicConstraints=critical,CA:FALSE", "-addext", "extendedKeyUsage=serverAuth", "-keyout"]).arg(&k).arg("-out").arg(&c).output().ok()?.status.success();
+        let ok = std::process::Command::new("openssl").args(["req", "-x509", "-newkey", "ec", "-pkeyopt", "ec_paramgen_curve:prime256v1", "-nodes", "-days", "1", "-subj", "/CN=localhost", "-addext", "subjectAltName=DNS:localhost,IP:127.0.0.1", "-addext", "basicConstraints=critical,CA:FALSE", "-addext", "extendedKeyUsage=serverAuth", "-keyout"]).arg(&k).arg("-out").arg(&c).output().ok()?.status.success();
         if !ok { return None; }
         Some((std::fs::read(c).ok()?, std::fs::read(k).ok()?))
     }
@@ -233,13 +233,13 @@ mod tests {
         let ep = endpoint("127.0.0.1:0".parse().unwrap(), &tls).unwrap();
         let port = ep.local_addr().unwrap().port();
         let store = Arc::new(CertStore::fixed(tls));
-        tokio::spawn(serve(ep, store, Arc::new(Cfg { host: "localhost".into(), handler: handler(seen, status) })));
+        tokio::spawn(serve(ep, store, Arc::new(Cfg { host: "127.0.0.1".into(), handler: handler(seen, status) })));
         Some((port, c))
     }
 
     async fn talk(port: u16, cert: &[u8], suite: rustls::SupportedCipherSuite, path: &str, hello: &[u8]) -> Result<Vec<u8>, String> {
         let cl = client(cert, suite);
-        let conn = tokio::time::timeout(Duration::from_secs(5), cl.connect(format!("https://localhost:{port}{path}"))).await.map_err(|_| "connect timeout".to_string())?.map_err(|e| format!("connect: {e}"))?;
+        let conn = tokio::time::timeout(Duration::from_secs(5), cl.connect(format!("https://127.0.0.1:{port}{path}"))).await.map_err(|_| "connect timeout".to_string())?.map_err(|e| format!("connect: {e}"))?;
         let opening = conn.open_bi().await.map_err(|e| e.to_string())?;
         let (mut s, mut r) = opening.await.map_err(|e| e.to_string())?;
         s.write_all(hello).await.map_err(|e| e.to_string())?;
