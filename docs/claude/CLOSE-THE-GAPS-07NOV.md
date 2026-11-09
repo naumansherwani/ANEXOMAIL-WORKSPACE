@@ -168,3 +168,5 @@ G2 is now the open item in progress.
 - 9 Nov 2026 (17:28 local) K5a = GREEN, WIRED: YES / REAL: YES. Proof: real :443 23 hosts AES-256 + AES-128 refused + http equal to before (fails=0), laptop look (Claude, live Chrome), phone look (his screenshot), awam server src == repo (610/0/0), compiled bundle file found (.output/public/assets/index-Bqhlal5C.js). Open one-tap: tablet 820. Side: 9 hosts 502, pm2 restarts=500. Next: K5b.
 
 - 9 Nov 2026 (17:32 local) NEW DEADLINE: whole founder blueprint by 25 Nov (FOUNDER-DEADLINE-25NOV-PLAN.md). K6 starts next (fresh ss). Awam K5b/migration after the founder lane.
+
+- 9 Nov 2026 (17:37 local) DEADLINES SAVED: founder 25 Nov (every phase has its own day), awam whole website 16 Dec with tests + AnexoChat. K6 in progress (waiting for his fresh ss paste).

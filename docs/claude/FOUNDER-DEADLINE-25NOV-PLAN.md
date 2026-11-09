@@ -19,3 +19,9 @@ Supersedes the 20 Nov window in NEXT-ORDER-09NOV-K5B-TO-20NOV.md for the founder
 ## What I cannot force (said once, plainly; each is given to him as ONE numbered step when it comes)
 - S (T3 two-key) and G3 need his 2 hardware keys; Q mailboxes need his Hetzner written confirmations (open since 7 Nov); U Sheets engine needs the licence read; looks 820 need his tablet. If one of these is late, that line stays on the OPEN list, never written green.
 - Day plan is tight: if a phase fails its proof it is fixed the same day, the next one does not start (his rule), and the day plan shifts; the list stays honest.
+
+## STANDING RULE (his 9 Nov 17:37, verbatim: 'IS PLAN KO SAVE KERO ISI TARGET PE HUM KAAM KARAY GAY YEH RULE TOP PE LIKHO KE HER PHASE KE LIYE DEADLINE PE KAAM HOGA')
+EVERY PHASE HAS ITS OWN DEADLINE (the day column above) AND WORK RUNS TO IT. Each reply starts from the day plan: which phase is today, how far it is, what is left. A phase that slips is fixed the same day, and the list is shifted honestly, never written green.
+
+## AWAM DEADLINE (his 9 Nov 17:37, verbatim: 'AUR YEH WEBSITE AWAM KE LIYE 16TH DECEMBER TAK 100% COMPLETE KERNI HAI WITH TEST ANEXOCHAT SAB KUCH')
+The whole awam website 100% complete by 16 DEC 2026, WITH TESTS, AnexoChat and everything. Works in the awam lane AFTER the founder lane (26 Nov to 16 Dec): awam K5b (h3 AES-256), AW-K6, AW-K7, awam rows of every founder phase molded to the awam pattern (own awam pull commands), AnexoChat, mailboxes for awam, full test pass at 390 / 820 / 1200+ with his business test account. Day plan for awam is written on 25 Nov when the founder lane closes (unless he asks earlier).
