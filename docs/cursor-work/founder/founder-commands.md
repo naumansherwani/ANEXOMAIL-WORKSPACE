@@ -2748,3 +2748,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 9 Nov 2026 16:05 PKT his words (15:52, verbatim): 'GANDU JO AWAM SIDE KA HAI WOH AWAM SIDE KE BLUEPRINT MAIN ADD KERNA HAI AUR US KE SAAMNE LIKHNA HAI AUR YEH TECHNOLOGY AWAM KO PURI WEBSITE KE LIYE HOGI. claude ke chat context aur repo update kero.' (+ CHECK_E119 / CHECK_E119_443 / certificate-list pastes)
 
 - 9 Nov 2026 17:10 PKT status: K5a coded in the sandbox on his order (15:39 / 15:52: HTTP/3 stays, AES-256 no compromise, whole awam website, awam rows in the AWAM blueprint); awamtls.rs + awam-tls256.sh, 242 Rust tests pass; waits for his founder-install + APPLY on the spare port 18081.
+
+- 9 Nov 2026 17:20 PKT his words: 'yeh repo main update kero aur chat context aur codes update kero.' (with the K5a founder-install paste, OK).
