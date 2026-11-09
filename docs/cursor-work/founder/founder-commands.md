@@ -2796,3 +2796,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 9 Nov 2026 19:55 local FOUNDER: 'K6 abhi GREEN nahi hai ... Deadline 10 Nov hai gandu green kero tarteeb se chalo asshole'
 
 - 9 Nov 2026 19:45 local FOUNDER: pasted founder-install OK (SPA + kernel 0.14.0) and awam pull.sh OK (server==repo src same=610 differ=0, web 200, pm2 restarts=501, wrote kernel 0.14.0 wasm); 'sab kuch update kero' (claude chat context, codes, phases, top, technology)
+
+- 9 Nov 2026 19:40 local FOUNDER pasted journal: WebTransport ON udp 4443; WebTransport session #1 from 182.185.164.253 (19:26:49 PKT), #2 (19:27:30), #3 (19:27:39), QUIC TLS 1.3 AES-256.

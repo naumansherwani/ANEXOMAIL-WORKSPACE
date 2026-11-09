@@ -182,3 +182,5 @@ G2 is now the open item in progress.
 - 9 Nov 2026 19:55 local K6.3 coded + sandbox-proven (kernel 0.14.0 flive@1, host shim, livefeed WT-first/SSE-fallback). K6 OPEN until he installs and K6.4 (live verified frames over WT in my Chrome, his phone, 390/820/1200+). Awam: the shared kernel pin moved to 0.14.0 -> awam pull needed (separate point).
 
 - 9 Nov 2026 19:45 local K6.3 installed (founder + awam). K6.4 OPEN: need journal proof of a WebTransport session from the new page + E148 transport row + 390/820/1200+ looks + his phone. Bundle index-C1zOmM1I == repo.
+
+- 9 Nov 2026 19:40 local K6.4 part 1 done (journal: 3 real WT sessions). Open: why #2/#3 9 s apart, frames_sent > 0, 390/820/1200+ looks, phone.
