@@ -162,3 +162,5 @@ G2 is now the open item in progress.
 - 9 Nov 2026 (16:58 local) K5a laptop look DONE by Claude in live Chrome: anexomail.com/auth -> /app dashboard (Business account already signed in), 1536 wide, secure, h2, no sideways scroll. STILL OPEN for GREEN: phone 390 + tablet 820 look on his devices; awam bundle index-Bqhlal5C vs awam repo build not compared (awam build is server-side).
 
 - 9 Nov 2026 (17:03 local) K5a looks: laptop OK (Claude, live Chrome), PHONE OK (his screenshot 17:03). OPEN: tablet 820; awam bundle index-Bqhlal5C vs repo (server line given); 9 hosts 502; K5b.
+
+- 9 Nov 2026 (17:24 local) K5a bundle check: awam server src == repo (610 same, 0 differ, 0 missing), build skipped (code unchanged). OPEN: compiled file find (quote-free line), tablet 820, 9 hosts 502, pm2 anexomail-web restarts=500 (read-only look at whether it flaps), K5b. Rule: server lines without quotes.
