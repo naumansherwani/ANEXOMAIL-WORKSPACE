@@ -29,6 +29,8 @@ webpki-roots = "1"
 hyper = { version = "1", features = ["server", "http1"] }
 hyper-util = { version = "0.1", features = ["tokio", "service"] }
 tower = { version = "0.5", features = ["util"] }
+# K6 (WebTransport over QUIC/HTTP3): ring provider (same as rustls above), no aws-lc, no self-signed generator. AES-256-only config is built by hand in wt.rs.
+wtransport = { version = "0.7", default-features = false, features = ["quinn", "ring"] }
 
 [profile.release]
 opt-level = 3

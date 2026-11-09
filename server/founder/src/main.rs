@@ -29,6 +29,7 @@ mod signedcp;
 mod anchors;
 mod portable;
 mod tls256;
+mod wt;
 mod front;
 mod fproxy;
 #[path = "../../rust/passkey_core.rs"]
@@ -406,7 +407,11 @@ async fn live_snapshot(sb: &data::Sb) -> Value {
 /// 4b-2: SSE stream of signed frames. Connect = `snapshot` frame (everything now), then a `tick` frame per tick (+ an `events` frame with the real changes
 /// since the last id when something changed), `: hb` heartbeat every 15 s. Ends after 10 minutes (the browser reconnects and is re-authorised).
 /// Needs the same token as every other endpoint; the SPA reads it with fetch (EventSource cannot send the Authorization header).
-async fn live_stream_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
+async fn live_stream_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response { live_stream_core(st, h, "sse").await }
+
+/// The one live stream, whatever carries it: `transport` is "sse" (HTTP) or "webtransport" (QUIC, K6/wt.rs). It is a PARAMETER, never read from a header,
+/// so a client cannot label its own session.
+async fn live_stream_core(st: S, h: HeaderMap, transport: &'static str) -> axum::response::Response {
     if let Err(code) = authed(&st, &h).await { return code.into_response(); }
     let Some(sb) = st.sb.clone() else { return StatusCode::SERVICE_UNAVAILABLE.into_response() };
     let hub = live::hub();
@@ -417,7 +422,7 @@ async fn live_stream_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Re
     let kind = if st.ft.is_some() { "device" } else { "legacy" };
     tokio::spawn(async move {
         let _slot = slot;
-        let sid = live::session_open(&sb, kind).await; // E111 telemetry, fire-and-forget: None = off or not installed, the stream is unaffected
+        let sid = live::session_open(&sb, kind, transport).await; // E111 telemetry, fire-and-forget: None = off or not installed, the stream is unaffected
         let mut frames: i32 = 0;
         let reason: &'static str = async {
         let gone = || if tx.is_closed() { "client_gone" } else { "slow_client" }; // receiver dropped = browser left; queue full = it could not keep up
@@ -836,6 +841,20 @@ async fn main() {
         Some(Ok((a, fcfg))) => match tokio::net::TcpListener::bind(&a).await {
             Ok(l) => { eprintln!("founder: SNI front ON {a}: {} -> {}, everything else -> {}", fcfg.host, fcfg.tls_backend, fcfg.other_backend); tokio::spawn(front::serve_front(l, fcfg)); }
             Err(e) => eprintln!("founder: SNI front NOT started: bind {a}: {e}"),
+        },
+    }
+    match wt::from_env() { // K6: WebTransport (QUIC/HTTP3, AES-256) carrying the same live frames as the SSE stream; UDP port of its own (default OFF)
+        None => eprintln!("founder: WebTransport OFF (no FOUNDER_WT_ADDR)"),
+        Some(Err(e)) => eprintln!("founder: WebTransport NOT started: {e}"),
+        Some(Ok((a, host, store, cp, kp))) => match a.parse::<std::net::SocketAddr>().map_err(|e| e.to_string()).and_then(|sa| wt::endpoint(sa, &store.current())) {
+            Ok(ep) => {
+                eprintln!("founder: WebTransport ON udp {a} for {host}{} (QUIC, TLS 1.3, AES-256-GCM, certificate hot-reload)", wt::PATH);
+                tls256::spawn_reloader(store.clone(), cp, kp);
+                let stw = st.clone();
+                let handler: wt::Handler = Arc::new(move |h: HeaderMap| { let stw = stw.clone(); Box::pin(async move { live_stream_core(stw, h, "webtransport").await }) });
+                tokio::spawn(wt::serve(ep, store, Arc::new(wt::Cfg { host, handler })));
+            }
+            Err(e) => eprintln!("founder: WebTransport NOT started: {e}"),
         },
     }
     if let Some(sb) = st.sb.clone() { tls256::spawn_prober(sb); }

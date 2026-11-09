@@ -43,6 +43,7 @@ docs/cursor-work/server/founder-install.sh
 docs/cursor-work/server/founder-k5-front-switch.sh
 docs/cursor-work/server/founder-polar.sh
 docs/cursor-work/server/founder-tls256.sh
+docs/cursor-work/server/founder-wt.sh
 docs/cursor-work/sql/E102_founder_audit_actions_devices.sql
 docs/cursor-work/sql/E103_founder_actions_english.sql
 docs/cursor-work/sql/E104_founder_device_approval.sql
@@ -80,6 +81,7 @@ docs/cursor-work/sql/E144_founder_vault_lease_keysplit.sql
 docs/cursor-work/sql/E145_founder_vault_panic_t3.sql
 docs/cursor-work/sql/E146_founder_banned_countries.sql
 docs/cursor-work/sql/E147_founder_passkey_pending.sql
+docs/cursor-work/sql/E148_founder_webtransport_sessions.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/E68_proof.sql
@@ -231,6 +233,7 @@ server/founder/src/settings_s2.rs
 server/founder/src/sign.rs
 server/founder/src/signedcp.rs
 server/founder/src/tls256.rs
+server/founder/src/wt.rs
 server/founder/tests/e2e_exchange.py
 server/founder/tests/e2e_live_stream.py
 server/lib/founder-gate-core.ts

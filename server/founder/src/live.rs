@@ -49,9 +49,11 @@ fn now_s() -> i64 { std::time::SystemTime::now().duration_since(std::time::UNIX_
 pub fn telemetry_on() -> bool { std::env::var("FOUNDER_TELEMETRY").map(|v| v == "on").unwrap_or(false) }
 
 /// Open a stream session row. None = telemetry off / E111 missing / database slow (2 s cap): never blocks or breaks the stream.
-pub async fn session_open(sb: &Sb, kind: &str) -> Option<i64> {
+pub async fn session_open(sb: &Sb, kind: &str, transport: &str) -> Option<i64> {
     if !telemetry_on() { return None; }
-    let r = tokio::time::timeout(Duration::from_secs(2), sb.rpc("founder_live_session_open", json!({"p_auth_kind": kind}))).await.ok()??;
+    // E111 one-argument function for the plain SSE path (unchanged), E148 `_t` for every other transport
+    let call = if transport == "sse" { sb.rpc("founder_live_session_open", json!({"p_auth_kind": kind})) } else { sb.rpc("founder_live_session_open_t", json!({"p_auth_kind": kind, "p_transport": transport})) };
+    let r = tokio::time::timeout(Duration::from_secs(2), call).await.ok()??;
     r.as_i64()
 }
 
