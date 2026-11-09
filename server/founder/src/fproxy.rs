@@ -30,7 +30,8 @@ pub fn is_legacy(path: &str) -> bool { !is_ours(path) }
 /// would render the AWAM product here. They are NOT handed upstream: `/app*` goes to our own Command Center `/`, `/auth` and `/signup` go to the founder sign-in. Only the old founder sign-in page and its `/api/auth*` calls still cross, until the native login (G-MIX stage 2) replaces them.
 pub fn awam_redirect(path: &str) -> Option<&'static str> {
     if path == "/app" || path.starts_with("/app/") { return Some("/"); }
-    if path == "/auth" || path.starts_with("/auth/") || path == "/signup" || path.starts_with("/signup/") { return Some("/founderlogin"); }
+    // G-MIX 2d: the founder sign-in is native now (SignIn.tsx on "/"), so the old sign-in page and the awam sign-in / sign-up all land on "/".
+    if path == "/founderlogin" || path.starts_with("/founderlogin/") || path == "/auth" || path.starts_with("/auth/") || path == "/signup" || path.starts_with("/signup/") { return Some("/"); }
     None
 }
 
@@ -123,8 +124,8 @@ mod tests {
     }
     #[test]
     fn the_awam_app_never_opens_on_the_founder_host() {
-        for (p, to) in [("/app", "/"), ("/app/", "/"), ("/app/inbox", "/"), ("/app/founder/ai", "/"), ("/auth", "/founderlogin"), ("/auth/x", "/founderlogin"), ("/signup", "/founderlogin")] { assert_eq!(awam_redirect(p), Some(to), "{p}"); }
-        for p in ["/", "/founderlogin", "/api/auth/refresh", "/assets/a.js", "/application", "/authx", "/f", "/_cc/a", "/founder/v1/me"] { assert_eq!(awam_redirect(p), None, "{p}"); }
+        for (p, to) in [("/app", "/"), ("/app/", "/"), ("/app/inbox", "/"), ("/app/founder/ai", "/"), ("/auth", "/"), ("/auth/x", "/"), ("/signup", "/"), ("/founderlogin", "/"), ("/founderlogin/", "/")] { assert_eq!(awam_redirect(p), Some(to), "{p}"); }
+        for p in ["/", "/founderloginx", "/api/auth/refresh", "/assets/a.js", "/application", "/authx", "/f", "/_cc/a", "/founder/v1/me"] { assert_eq!(awam_redirect(p), None, "{p}"); }
     }
     #[test]
     fn the_upstream_is_a_plain_host_port_and_never_our_own_port() {

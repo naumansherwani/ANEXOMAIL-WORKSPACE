@@ -1767,3 +1767,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 10 Nov 2026 00:25 PKT card wording polish done (install pending). Firefox/Safari + tablet/laptop real look NOT green (no proof yet). '1 refused proof' = real logged event, reason not yet shown.
 - 10 Nov 2026 00:26 PKT K7 laptop 1536 look GREEN (my live Chrome read). Open: Firefox/Safari binding, tablet 820 look.
 - 10 Nov 2026 00:32 PKT sql/index.md repaired (E143..E150 + run order). E150 file path recorded. Polish installed.
+- 10 Nov 2026 00:38 PKT K7 GREEN (founder attestation for Firefox/Safari + tablet 820). SQL ledger complete. G-MIX 2d code written, install pending.
