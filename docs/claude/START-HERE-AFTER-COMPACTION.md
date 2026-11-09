@@ -10,7 +10,7 @@
 > 7. CODE: founder code SUPER ADVANCED, SQL above that, technology per phase, pull command per technology (SQL sql-run.sh, Rust founder-install.sh, server bash). Rule 52: browser WebTransport/crypto clients live INSIDE the Rust/Tokio/async WASM kernel (web-wasm/), never in TypeScript. No mock data. ONE website one build.
 > 8. SAFETY: PORT RED LINE (fresh ss first, SERVER-PORTS-RED-LINE-08NOV.md), Caddy law (copy first, rollback file), never type his passwords, never touch the footer.
 > 9. WEBSOCKET, BUN AND NODE ARE BANNED (see 10 for Bun/Node). WEBSOCKET IS BANNED (founder 9 Nov 2026 19:47): never WebSocket / ws:// / wss:// / socket.io / tungstenite in any lane (rules-gate fails it). Transport = WebTransport (QUIC) with SSE as the honest fallback.
-> 10. BUN AND NODE ARE BANNED (founder 9 Nov 19:48, 'bun banned hai', 'node banned hai'): never in server runtime code, services, scripts or the founder/awam-edge binaries (Rust only). Sandbox-only build/test tooling for the React-TS UI (vite build, bun test files) is NOT a server runtime; any wish to remove it from the sandbox too = his word first. The legacy awam pm2 site (Node/Bun today) goes away in the awam migration (16 Dec).
+> 10. BUN AND NODE ARE BANNED in the website and in any server runtime (Rust only). HIS WORD 9 Nov 2026 20:00: 'tumharay sandbox ke liye ya test ke liye kuch bhi baaned nahi hai, lekin meri website ke liye sirf latest aj tak ki technology hi use hogi' = sandbox build/test tools (vite build, bun test) are FREE for Claude; the website and servers use only the latest technology.
 
 
 ## BEFORE EVERY REPLY (checklist, founder 6 Nov 20:45; the rules-gate enforces the machine-checkable parts)
