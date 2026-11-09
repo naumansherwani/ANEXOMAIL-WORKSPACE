@@ -76,7 +76,9 @@ VMASTER=/etc/anexomail/founder-vault-master.key
 "$ROOT/anexomail-founder" --gen-vault-master "$VMASTER" | sed 's/^/   vault master: /'; chown anexomail-founder:anexomail-founder "$VMASTER"; chmod 400 "$VMASTER"
 grep -q '^FOUNDER_VAULT_MASTER_FILE=' "$ENVF" || echo "FOUNDER_VAULT_MASTER_FILE=$VMASTER" >>"$ENVF"
 # K4.2: the own TLS terminator hands /founderlogin /app /api to Caddy (the old app). Today Caddy answers the host on 127.0.0.1:443; after the K4.5 switch this line moves to the internal port. Only affects the :8443 terminator.
-grep -q "^FOUNDER_LEGACY_UPSTREAM=" "$ENVF" || echo "FOUNDER_LEGACY_UPSTREAM=127.0.0.1:443" >>"$ENVF"
+# 10 Nov 2026 02:50 (his site broke after an install): this line used to be RE-ADDED here, which undid the G-MIX 2d legacy cut. Since K4.5 127.0.0.1:443 is the Rust front itself, so the old-path proxy
+# forwarded to itself in a loop (500, resets, ERR_INVALID_RESPONSE). The installer now NEVER adds it, and removes a loop line that points at the front. A real old-app upstream is set only by hand.
+sed -i '/^FOUNDER_LEGACY_UPSTREAM=127\.0\.0\.1:443$/d' "$ENVF"
 grep -q '^FOUNDER_VAPID_KEY_FILE=' "$ENVF" || echo "FOUNDER_VAPID_KEY_FILE=$VAPIDF" >>"$ENVF"
 grep -q '^FOUNDER_SIGN_KEY_FILE=' "$ENVF" || echo "FOUNDER_SIGN_KEY_FILE=$SIGNF" >>"$ENVF"
 grep -q '^FOUNDER_LEGACY_TOKEN=' "$ENVF" || echo "FOUNDER_LEGACY_TOKEN=1" >>"$ENVF"   # 1 = purana session token abhi bhi chalta (grace); Chrome proof ke baad 0
