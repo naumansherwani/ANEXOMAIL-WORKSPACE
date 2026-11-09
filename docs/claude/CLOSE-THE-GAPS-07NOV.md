@@ -180,3 +180,5 @@ G2 is now the open item in progress.
 - 9 Nov 2026 19:10 local K6.1 live proof from the real origin: CSP ok, WebTransport ready, hello without token -> ERR 401 (WIRED: YES / REAL: YES for the server leg). K6 stays OPEN until K6.3 kernel client + K6.4 frames and looks. MASTER WORKING RULES block added at the top of CLAUDE.md, AGENTS.md, START-HERE.
 
 - 9 Nov 2026 19:55 local K6.3 coded + sandbox-proven (kernel 0.14.0 flive@1, host shim, livefeed WT-first/SSE-fallback). K6 OPEN until he installs and K6.4 (live verified frames over WT in my Chrome, his phone, 390/820/1200+). Awam: the shared kernel pin moved to 0.14.0 -> awam pull needed (separate point).
+
+- 9 Nov 2026 19:45 local K6.3 installed (founder + awam). K6.4 OPEN: need journal proof of a WebTransport session from the new page + E148 transport row + 390/820/1200+ looks + his phone. Bundle index-C1zOmM1I == repo.

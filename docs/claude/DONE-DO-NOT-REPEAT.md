@@ -187,3 +187,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 9 Nov 2026 19:10 local K6.1 CSP build installed on his server; live Chrome proof from the real origin: WT ready, ERR 401 on no-token hello. MASTER WORKING RULES block at the top of CLAUDE.md/AGENTS.md/START-HERE.
 
 - 9 Nov 2026 19:55 local K6.3 coded: kernel 0.14.0 module flive@1 (Rust async, verifies every frame in the kernel), founder-web host shim kernel.host.ts, worker/kernel.ts/livefeed.ts wiring, WT-first with SSE fallback; 121 Rust + 139 bun tests; sandbox end-to-end with the real wasm. Not green until K6.4.
+
+- 9 Nov 2026 19:45 local K6.3 installed on his server (founder-install + awam pull.sh both OK); live bundle index-C1zOmM1I == repo; K6.4 proof pending.
