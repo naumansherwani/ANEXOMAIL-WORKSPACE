@@ -219,3 +219,4 @@ G2 is now the open item in progress.
 - 09 Nov 2026 23:18 PKT K7 gaps: K7a refresh CLOSED (proven). E150 GREEN. Open: founder-install of K7b, phone + Firefox/Safari 'Bound by a browser key', card at 390/820/1200 with data, enforce (his word).
 - 09 Nov 2026 23:27 PKT OPEN G-MIX: founderworkspace host serves old awam app on /app and old /founderlogin via fproxy.rs legacy proxy. Close = native founder login + routes in Rust SPA, retire proxy (rollback first, his go). Also K7b phone/Firefox/Safari proof.
 - 09 Nov 2026 23:31 PKT G-MIX stage 1 coded, install + curl proof pending; stage 2 native login not built (design G-MIX-SEPARATION-09NOV.md).
+- 09 Nov 2026 23:38 PKT G-MIX stage 2 (2a-2d) open, nothing coded; stage 1 install blocked (test fail on server).
