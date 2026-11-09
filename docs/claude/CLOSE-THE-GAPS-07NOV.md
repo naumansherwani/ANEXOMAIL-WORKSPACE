@@ -184,3 +184,5 @@ G2 is now the open item in progress.
 - 9 Nov 2026 19:45 local K6.3 installed (founder + awam). K6.4 OPEN: need journal proof of a WebTransport session from the new page + E148 transport row + 390/820/1200+ looks + his phone. Bundle index-C1zOmM1I == repo.
 
 - 9 Nov 2026 19:40 local K6.4 part 1 done (journal: 3 real WT sessions). Open: why #2/#3 9 s apart, frames_sent > 0, 390/820/1200+ looks, phone.
+
+- 9 Nov 2026 19:50 local K6.4: CHECK_E148_LIVE FAIL (no session rows, any transport) -> telemetry probably off; verify FOUNDER_TELEMETRY, then prove frames flow. K6 stays OPEN.
