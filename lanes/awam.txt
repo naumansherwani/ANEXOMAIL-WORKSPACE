@@ -43,6 +43,7 @@ docs/cursor-work/server/attach-gc/anexomail-attach-gc.service
 docs/cursor-work/server/attach-gc/anexomail-attach-gc.timer
 docs/cursor-work/server/attach-gc/install.sh
 docs/cursor-work/server/attach-limit-measure.sh
+docs/cursor-work/server/awam-tls256.sh
 docs/cursor-work/server/axum-scratch-check.sh
 docs/cursor-work/server/axum-upgrade.sh
 docs/cursor-work/server/axum8_patch.py
