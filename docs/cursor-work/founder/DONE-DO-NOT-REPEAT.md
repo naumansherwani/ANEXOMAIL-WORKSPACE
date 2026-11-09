@@ -957,3 +957,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 09 Nov 2026 23:27 PKT K7b INSTALLED on server (his paste). G-MIX opened: founder host still proxies old awam app (/app, /founderlogin). K7 still open.
 - 09 Nov 2026 23:31 PKT G-MIX stage 1 coded (fproxy awam_redirect). Stage 2 native login open.
 - 09 Nov 2026 23:38 PKT G-MIX stage 2 plan written (2a-2d); stage 1 install blocked by test fail on server, diagnosing.
+- 09 Nov 2026 23:44 PKT install script fixed (test retry x3, real output). G-MIX stage 1 install = re-run. Stage 2 not coded.

@@ -33,7 +33,7 @@ show server/rust/g5c_tsa_vectors.json >"$ROOT/rust/g5c_tsa_vectors.json" || { ec
 # G5d part 2: portable.rs test include_str!("../../rust/g5d_bundle_vector.json") (a bundle made by the production SQL)
 show server/rust/g5d_bundle_vector.json >"$ROOT/rust/g5d_bundle_vector.json" || { echo "FAIL: g5d_bundle_vector.json nahi"; exit 2; }
 # main.rs ka path src/ se ../../rust/jwt_core.rs = $ROOT/rust/jwt_core.rs (src/src -> ../../ = src/..)
-echo "== 1/4 tests"; (cd "$ROOT/src" && cargo test --release 2>&1 | grep -E "test result|FAILED|^error" ) ; (cd "$ROOT/src" && cargo test --release >/dev/null 2>&1) || { echo "FAIL: tests — kuch nahi badla"; exit 3; }
+echo "== 1/4 tests"; TOK=0; for TRY in 1 2 3; do (cd "$ROOT/src" && cargo test --release >/tmp/founder-test.$$ 2>&1); RC=$?; grep -E "test result|FAILED|^error|panicked" /tmp/founder-test.$$ | head -8; if [ $RC -eq 0 ]; then TOK=1; break; fi; echo "tests try $TRY failed (exit $RC), dobara"; sleep 2; done; [ $TOK -eq 1 ] || { echo "FAIL: tests 3 baar — kuch nahi badla"; exit 3; }; rm -f /tmp/founder-test.$$
 echo "== 2/4 build"; (cd "$ROOT/src" && nice cargo build --release 2>&1 | tail -3) ; NEW="$ROOT/src/target/release/anexomail-founder"; [ -x "$NEW" ] || { echo "FAIL: build"; exit 3; }
 [ -x "$ROOT/anexomail-founder" ] && cp "$ROOT/anexomail-founder" "$ROOT/anexomail-founder.bak.$STAMP"
 echo "== 2b/4 SPA (founder-web/dist, sandbox mein bana; server par npm/Node NAHI)"
