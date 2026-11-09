@@ -160,3 +160,5 @@ G2 is now the open item in progress.
 - 9 Nov 2026 (16:56 local) K5a real-:443 switch = LIVE, server proof WIRED: YES / REAL: YES (23 hosts AES-256, AES-128 refused, http equal to baseline, fails=0). OPEN: (1) browser look 390/820/1200+ with his business test account, live bundle = repo build; (2) 9 hosts 502 before and after (admin auth docs preview runtime sandbox settings status storage): read-only check of which backends are down; (3) K5b h3 AES-256. Until (1) K5a is not GREEN.
 
 - 9 Nov 2026 (16:58 local) K5a laptop look DONE by Claude in live Chrome: anexomail.com/auth -> /app dashboard (Business account already signed in), 1536 wide, secure, h2, no sideways scroll. STILL OPEN for GREEN: phone 390 + tablet 820 look on his devices; awam bundle index-Bqhlal5C vs awam repo build not compared (awam build is server-side).
+
+- 9 Nov 2026 (17:03 local) K5a looks: laptop OK (Claude, live Chrome), PHONE OK (his screenshot 17:03). OPEN: tablet 820; awam bundle index-Bqhlal5C vs repo (server line given); 9 hosts 502; K5b.
