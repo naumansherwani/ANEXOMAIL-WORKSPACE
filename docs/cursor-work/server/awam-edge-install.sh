@@ -27,6 +27,11 @@ for f in Cargo.toml Cargo.lock src/main.rs; do git -C "$REPO" show "origin/main:
 echo "== 2/5 user + certificates"
 id "$USERN" >/dev/null 2>&1 || useradd --system --no-create-home --shell /usr/sbin/nologin "$USERN"
 install -d -m 0750 -o root -g "$USERN" "$AWD"
+# the awam user must be able to REACH $AWD: give it traverse-only (x, no list/read) on every parent dir; the founder certs stay unreadable to it
+P="$(dirname "$AWD")"; while [ "$P" != "/" ]; do
+  if command -v setfacl >/dev/null 2>&1; then setfacl -m "u:$USERN:--x" "$P"; else [ "$(stat -c %a "$P" | tail -c 2 | head -c 1)" -ge 1 ] || chmod o+x "$P"; fi
+  P="$(dirname "$P")"; done
+sudo -u "$USERN" -- test -r "$AWD" 2>/dev/null || runuser -u "$USERN" -- ls "$AWD" >/dev/null 2>&1 || { echo "FAIL: $USERN cannot read $AWD"; ls -ld /etc/anexomail /etc/anexomail/tls "$AWD"; exit 4; }
 N=0
 while IFS= read -r crt; do
   host="$(basename "$crt" .crt)"; key="${crt%.crt}.key"
