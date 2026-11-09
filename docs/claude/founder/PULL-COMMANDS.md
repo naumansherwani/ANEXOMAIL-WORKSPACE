@@ -834,3 +834,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 10 Nov 2026 00:48 PKT next (two lines, one at a time): (1) read-only: git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-legacy.sh) 2>&1 | tail -15   (2) the cut: MODE=off git -C /opt/anexomail-web fetch -q origin main && MODE=off bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-legacy.sh) 2>&1 | tail -15   Rollback built in. Awam pull NOT needed.
 
 - 10 Nov 2026 01:14 PKT: E151 (sign-in ceremony SQL, G-MIX 2b S1): run the AUTO SQL line above (sql-run.sh bare); expect E151 + CHECK_E151 6/6. SQL only, no restart, no awam pull.
+
+- 10 Nov 2026 01:23 PKT: E151 ran GREEN on his server; never re-send it.

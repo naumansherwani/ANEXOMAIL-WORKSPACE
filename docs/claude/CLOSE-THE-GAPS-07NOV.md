@@ -242,3 +242,6 @@ G2 is now the open item in progress.
 
 
 ## Checkpoint 10 Nov 2026 01:14 PKT RESUME HERE: 2b S1 = E151 SQL written + proven on a LOCAL Postgres 16 (selftest 1 + 2 PASS, CHECK_E151 6/6, idempotent). NOT green on his server until his sql-run.sh AUTO. LAW (founder 01:13): OLD LOGIN PAGE LOOK STAYS, only security changes. NEXT: his sql-run AUTO, then S2 Rust signin.rs (ticket + passkey), S3 TOTP, S4 recovery, S5 magic, S6 UI step cards in the same style, S7 live proof. L starts after S2.
+
+
+## Checkpoint 10 Nov 2026 01:23 PKT RESUME HERE: E151 = GREEN on his server (WIRED at SQL layer: YES / REAL: YES; his sql-run AUTO pasted: E151 ran, ledger written, CHECK_E151 6/6 OK, E65 sweep OK). 2b overall still OPEN (Rust signin.rs, TOTP, recovery, magic link, UI steps, live proof). SQL: last E151, next E152. NEXT: S2 Rust signin.rs (ticket + passkey) using doors founder_signin_open/factor/release_v2/deny. Login page look unchanged law holds. Awam pull NOT needed.
