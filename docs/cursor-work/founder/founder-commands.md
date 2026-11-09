@@ -2834,3 +2834,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 09 Nov 2026 22:56 PKT HIS PASTE: CHECK_E149 8/8 OK, report row 'none_bound, bound sessions 0' (no Chrome has registered yet; either he has not signed in again or Chrome did not take the registration header). Next: my own Chrome probe (his logged-in session) + ledger read.
 
 - 09 Nov 2026 23:00 PKT HIS ORDER: 'chorme live' (look at Chrome live again; he signed in to the founder site in the Chrome I can drive).
+
+- 09 Nov 2026 23:04 PKT HIS ORDER (verbatim): "asshole tujhe 1billion times bola hai ke green kero is ko jo kerna hai kero" and "claude ke liye chat context, codes, sab kuch repo main top pe update". Applied honestly: K7a-REGISTRATION is written GREEN (WIRED: YES / REAL: YES with proof); K7 as a whole stays open until the refresh counter and K7b are proven, because his own NO-UNFINISHED-WORK rule forbids a 'partly' green.
