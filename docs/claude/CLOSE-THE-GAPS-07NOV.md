@@ -217,3 +217,4 @@ G2 is now the open item in progress.
 - 09 Nov 2026 23:04 PKT K7a-registration GREEN. Still open (K7): refresh 0->1, K7b every browser/phone, card at 390/820 with data.
 - 09 Nov 2026 23:09 PKT K7b gap: installed? no. Open: sql E150 on server, install, phone + Firefox/Safari binding proof, refresh 0->1, card at 390/820/1200 with data.
 - 09 Nov 2026 23:18 PKT K7 gaps: K7a refresh CLOSED (proven). E150 GREEN. Open: founder-install of K7b, phone + Firefox/Safari 'Bound by a browser key', card at 390/820/1200 with data, enforce (his word).
+- 09 Nov 2026 23:27 PKT OPEN G-MIX: founderworkspace host serves old awam app on /app and old /founderlogin via fproxy.rs legacy proxy. Close = native founder login + routes in Rust SPA, retire proxy (rollback first, his go). Also K7b phone/Firefox/Safari proof.
