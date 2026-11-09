@@ -2753,3 +2753,5 @@ Checkpoint 10 Nov 2026 02:27 PKT RESUME HERE: his install failed on flaky tests 
 Checkpoint 10 Nov 2026 02:35 PKT RESUME HERE: install OK (bundle Dq5xQ70p). His sign-out error photo not reproduced after install (curl + real Chromium). If it repeats: read-only journalctl + his exact steps. UI NOT to be touched (his word 02:33). Hash #/dashboard cosmetic open. Next: his look at login + answer on Forgot password; then 2b S2.
 
 Checkpoint 10 Nov 2026 02:45 PKT RESUME HERE: INCIDENT: founder-install.sh re-added FOUNDER_LEGACY_UPSTREAM=127.0.0.1:443 -> self-loop after K4.5. Installer fixed (never adds, deletes a loop line). He runs founder-legacy.sh MODE=off, then checks site. LAW: after ANY cut/switch, grep every installer for the line it removed.
+
+Checkpoint 10 Nov 2026 02:50 PKT RESUME HERE: INCIDENT CLOSED (server cut re-applied, live proven). Law file FOUNDER-INSTALLER-AFTER-CUT-LAW-10NOV.md. Waiting: his browser check (login, sign-out), answer on Forgot password. UI untouched. Next: 2b S2 Rust signin.rs.
