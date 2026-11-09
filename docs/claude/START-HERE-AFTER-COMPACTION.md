@@ -290,3 +290,5 @@ K4 GREEN. K5a LIVE on the real :443 (awam-edge, separate program, 23 hosts AES-2
 - 9 Nov 2026 20:25 PKT: K6 GREEN (proof in chat context checkpoint 20:25). NOW = K7 DBSC. He never wants the same green SQL re-sent.
 - 09 Nov 2026 20:41 PKT: K7 DBSC code written (see K7-DBSC-DESIGN-09NOV.md), NOT green. Next: his 3 server steps + Chrome proof.
 - 09 Nov 2026 21:15 PKT: K7 = a (DBSC, Chrome) + b (WebCrypto device key, every browser/phone). E149 green. See K7 design doc UPDATE section.
+
+> **LOGIN UI LAW (founder 10 Nov 2026 01:41): see docs/claude/FOUNDER-LOGIN-UI-LAW-10NOV.md. The founder login = the exact old awam login look + the Founder protocol line. Never redesign, never touch awam code or lovable-gold.**

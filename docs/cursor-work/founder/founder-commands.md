@@ -2878,3 +2878,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 10 Nov 2026 01:23 PKT: E151 GREEN on his server (CHECK 6/6). Do NOT re-send. Next S2 Rust.
 
 - 10 Nov 2026 01:28 PKT: old login look restored in SignIn.tsx/signin.css; install + his eyes pending.
+
+- 10 Nov 2026 01:44 PKT: LOGIN UI LAW written; exactness pass (button, HoverA, dots); demo discarded; install + his eyes pending.

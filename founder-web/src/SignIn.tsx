@@ -12,7 +12,7 @@ const DbI = () => <I d={<><ellipse cx="12" cy="5" rx="9" ry="3" /><path d="M3 5v
 const ZapI = () => <I d={<path d="M4 14a1 1 0 0 1-.8-1.6l9.9-10.2a.5.5 0 0 1 .9.4l-1.9 6a1 1 0 0 0 .9 1.4H20a1 1 0 0 1 .8 1.6l-9.9 10.2a.5.5 0 0 1-.9-.4l1.9-6a1 1 0 0 0-.9-1.4z" />} />;
 const EyeI = ({ off }: { off: boolean }) => off ? <I d={<><path d="M10.7 5.1A10.9 10.9 0 0 1 12 5c7 0 10 7 10 7a13 13 0 0 1-1.7 2.7M6.6 6.6A13.5 13.5 0 0 0 2 12s3 7 10 7a9.7 9.7 0 0 0 5.4-1.6M2 2l20 20M14.1 14.1a3 3 0 1 1-4.2-4.2" /></>} /> : <I d={<><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z" /><circle cx="12" cy="12" r="3" /></>} />;
 
-function Brand() {
+function Brand({ compact = false }: { compact?: boolean }) {
   const u = useId().replace(/[^a-zA-Z0-9]/g, ""), A = `fa-a${u}`, B = `fa-b${u}`, E = `fa-e${u}`; // unique ids per instance: a hidden copy must not steal the fills
   return (
     <span className="fa-brand">
@@ -27,7 +27,7 @@ function Brand() {
         <path d="M9 52 L56 33" stroke={`url(#${E})`} strokeWidth="1.1" strokeLinecap="round" opacity="0.9" />
         <circle cx="15" cy="49.6" r="2.4" fill="oklch(0.975 0.004 250)" /><circle cx="32" cy="42.7" r="2.4" fill="oklch(0.975 0.004 250)" /><circle cx="50" cy="35.4" r="2.4" fill="oklch(0.975 0.004 250)" />
       </svg>
-      <span className="fa-word"><b>ANEXOMAIL</b><span aria-hidden>{"WORKSPACE".split("").map((c, i) => <span key={i}>{c}</span>)}</span></span>
+      {!compact && <span className="fa-word"><b>ANEXOMAIL</b><span aria-hidden>{"WORKSPACE".split("").map((c, i) => <span key={i}>{c}</span>)}</span></span>}
     </span>
   );
 }
@@ -96,13 +96,13 @@ export function SignIn() {
                 </span>
               </label>
               <p role="alert" aria-live="polite" className="fa-err">{msg}</p>
-              <button type="submit" className="fa-btn" disabled={busy}>{busy ? "Signing in…" : "Sign in"}</button>
+              <button type="submit" className="fa-btn fa-press fa-a-hover" disabled={busy}>{busy ? <span role="status" aria-label="Loading" className="fa-a-pulse"><Brand compact /></span> : <span className="fa-a-slot" aria-hidden="true"><Brand compact /></span>}Sign in</button>
             </form>
             <div className="fa-or"><i /><span className="fa-cap">or</span><i /></div>
             <div className="fa-stack">
-              <button type="button" className="fa-btn out" onClick={() => setMsg(PENDING)}><KeyI />Continue with a passkey</button>
-              <button type="button" className="fa-btn ghost" onClick={() => setMsg(PENDING)}><MailI />Email me a sign-in link</button>
-              <button type="button" className="fa-btn ghost" onClick={() => setMsg(PENDING)}><ShieldI />Lost your passkey? Use a recovery code</button>
+              <button type="button" className="fa-btn out fa-press" onClick={() => setMsg(PENDING)}><KeyI />Continue with a passkey</button>
+              <button type="button" className="fa-btn ghost fa-press" onClick={() => setMsg(PENDING)}><MailI />Email me a sign-in link</button>
+              <button type="button" className="fa-btn ghost fa-press" onClick={() => setMsg(PENDING)}><ShieldI />Lost your passkey? Use a recovery code</button>
             </div>
           </div>
           <p className="fa-foot"><ShieldI />Sessions are device-bound and revocable from your account at any time.</p>

@@ -46,10 +46,10 @@
 .fa-inp input::placeholder{font-weight:400;color:#6B7280}
 .fa-suffix{display:flex;flex:none;align-items:center;border-left:1px solid #E5E7EB;background:#E5E7EB;padding:0 .75rem;font-size:15px;font-weight:600;color:#0B1220;user-select:none}
 .fa-eye{display:flex;width:2.75rem;flex:none;align-items:center;justify-content:center;border:0;background:transparent;color:#6B7280;cursor:pointer}
-.fa-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;min-height:44px;border-radius:6px;border:1px solid transparent;font:inherit;font-size:14px;font-weight:600;cursor:pointer;background:var(--fa-primary);color:#fff}
-.fa-btn:disabled{opacity:.6;cursor:default}
-.fa-btn.out{background:transparent;border-color:var(--fa-border);color:var(--fa-fg)}
-.fa-btn.ghost{background:transparent;color:var(--fa-fg)}
+.fa-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;height:2.5rem;min-height:44px;border-radius:.75rem;border:1px solid transparent;font:inherit;font-size:.875rem;font-weight:600;white-space:nowrap;cursor:pointer;background:var(--fa-primary);color:oklch(0.975 0.004 250);box-shadow:0 1px 2px 0 oklch(0 0 0/55%);transition:background-color .5s cubic-bezier(.16,1,.3,1),border-color .5s cubic-bezier(.16,1,.3,1),box-shadow .5s cubic-bezier(.16,1,.3,1)}.fa-btn:hover:not(:disabled){background:color-mix(in oklch,var(--fa-primary) 90%,transparent);box-shadow:0 30px 70px -34px oklch(0 0 0/85%)}.fa-btn:focus-visible{outline:2px solid oklch(0.60 0.085 255);outline-offset:2px}
+.fa-btn:disabled{opacity:.5;cursor:not-allowed}.fa-btn.fa-a-hover:disabled{cursor:pointer}.fa-press{transition:transform 90ms cubic-bezier(.22,1,.36,1),background-color .18s cubic-bezier(.22,1,.36,1),border-color .18s cubic-bezier(.22,1,.36,1)}.fa-press:active{transform:scale(.985)}
+.fa-btn.out{background:transparent;border-color:var(--fa-border);color:var(--fa-fg);box-shadow:none}.fa-btn.out:hover:not(:disabled){border-color:oklch(0.60 0.085 255/45%);background:var(--fa-secondary);box-shadow:none}
+.fa-btn.ghost{background:transparent;color:var(--fa-fg);box-shadow:none}.fa-btn.ghost:hover:not(:disabled){background:var(--fa-secondary);box-shadow:none}
 .fa-btn svg{width:16px;height:16px;flex:none}
 .fa-err{margin:0;font-size:.75rem;line-height:1.5;color:var(--fa-bad);min-height:1.1em}
 .fa-or{margin:1.5rem 0;display:flex;align-items:center;gap:.75rem}.fa-or i{height:1px;flex:1;background:linear-gradient(90deg,transparent,var(--fa-border),transparent)}
@@ -61,3 +61,16 @@
 .fa-splash p{margin:0}.fa-splash .k{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.25em;color:var(--fa-muted)}.fa-splash .v{font-size:1.5rem;font-weight:600;letter-spacing:-.02em}
 .fa-bar{height:4px;width:12rem;overflow:hidden;border-radius:99px;background:var(--fa-border)}.fa-bar i{display:block;height:100%;border-radius:99px;background:var(--fa-cyan);transition:width 1.4s ease-out}
 @media (prefers-reduced-motion:reduce){.fa-bg{animation:none;background-position:50% 50%}.fa-tag p{animation:none}.fa-tag p:first-child{opacity:1}}
+
+/* HoverA (founder lock 22 Oct 2026, Rule 39): the A mark slides out on the Sign in button and sways; pulses while busy. Copied from the frozen original. */
+.fa-a-slot{display:inline-flex;width:0;height:1rem;margin-inline-end:-.5rem;opacity:0;overflow:visible;transition:width .25s ease,margin .25s ease,opacity .2s ease}
+.fa-a-slot .fa-brand,.fa-a-pulse .fa-brand{width:100%;height:100%;gap:0}.fa-a-slot svg,.fa-a-pulse svg{width:1rem;height:1rem;filter:brightness(1.9) saturate(.85) drop-shadow(0 0 2px rgba(255,255,255,.5))}
+.fa-a-hover:hover:not(:disabled) .fa-a-slot,.fa-a-hover:focus-visible .fa-a-slot{width:1.25rem;margin-inline-end:0;opacity:1}
+.fa-a-hover:hover:not(:disabled) .fa-a-slot svg,.fa-a-hover:focus-visible .fa-a-slot svg{animation:fa-sway 1.8s ease-in-out infinite}
+@keyframes fa-sway{0%,100%{transform:perspective(300px) rotateY(-18deg) translateY(0)}50%{transform:perspective(300px) rotateY(18deg) translateY(-1.5px)}}
+.fa-a-pulse{display:inline-flex;width:1rem;height:1rem;flex:none;animation:fa-pulse 1.1s ease-in-out infinite}
+@keyframes fa-pulse{0%,100%{opacity:.55;transform:scale(.9)}50%{opacity:1;transform:scale(1.06)}}
+.fa-dots i{animation:fa-dot 9.6s infinite}.fa-dots i:nth-child(2){animation-delay:3.2s}.fa-dots i:nth-child(3){animation-delay:6.4s}
+@keyframes fa-dot{0%,33%{opacity:1;transform:scale(1)}34%,100%{opacity:.3;transform:scale(.75)}}
+.fa-col{animation:fa-in .5s cubic-bezier(.16,1,.3,1) both}@keyframes fa-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.fa-a-slot svg,.fa-a-pulse,.fa-dots i,.fa-col{animation:none!important}}
