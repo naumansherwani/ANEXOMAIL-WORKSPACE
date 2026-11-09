@@ -2752,3 +2752,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 9 Nov 2026 17:20 PKT his words: 'yeh repo main update kero aur chat context aur codes update kero.' (with the K5a founder-install paste, OK).
 
 - 9 Nov 2026 17:50 PKT his words (16:14, verbatim): 'madarccccchoddddd tu awam ke gates se mera founder ko dalay harmi asssholeeee mix nahiiii kerooo.' (with the spare-port proof paste: 23 awam hosts copied, awam TLS-256 ON 127.0.0.1:18081, anexomail.com + app.anexomail.com Verification OK, ALPN h2, AES-128 refused alert 40, request via the tunnel 200 2).
+
+- 9 Nov 2026 18:05 PKT his words (16:20, verbatim): 'rule mainay batya bhi tha ke founder ki tecnology awam ko mile gi lekin jo codes perserve hain woh awam ke mutabiq mold ker ke phir codes ko phir awam ke liye advance level pe codes likh ke pull command daini hai lekin founder se mix nahi kerna hai madarchod repo main read kero'. Read: PHASE-SUMMARY-WITH-AWAM-08NOV.md line 5 has the rule. Answer: awam-edge = own crate/user/env/service in the awam lane (lanes/awam.txt), awam command is its OWN numbered point, founder binary has no awam code (238 tests).
