@@ -1718,3 +1718,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 9 Nov 2026 18:15 K6 wt tests: connect to 127.0.0.1 (IP SAN), not localhost (his server resolves localhost to ::1 and the installer test gate stopped). Do not switch back to localhost.
 
 - 9 Nov 2026 18:40 K6 step 2 done on his server (founder-install OK, binary with wt.rs). Do not ask him to re-run founder-install for K6.
+
+- 9 Nov 2026 18:55 K6.3 prep: founder page CSP connect-src allows exactly https://<FOUNDER_WT_HOST>:<udp port> when WT is on (main.rs csp_for, 245 tests). The WebTransport CLIENT goes INTO the WASM kernel (Rule 52), not TypeScript. K6.1 server + K6.2 SQL are live on his server.

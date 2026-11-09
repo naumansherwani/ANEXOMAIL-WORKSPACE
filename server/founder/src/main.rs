@@ -46,6 +46,17 @@ use std::sync::Arc;
 use tokio::sync::RwLock;
 use tower_http::set_header::SetResponseHeaderLayer;
 
+/// The page CSP. `connect-src` is 'self' plus, ONLY when WebTransport is switched on (FOUNDER_WT_ADDR + FOUNDER_WT_HOST), that one exact origin
+/// https://<host>:<udp port> (K6): the browser may open its WebTransport session there and nowhere else. Nothing else is widened.
+fn csp_for(wt: Option<(&str, &str)>) -> String {
+    let extra = match wt { Some((host, port)) if !host.is_empty() && host.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'.' || b == b'-') && !port.is_empty() && port.bytes().all(|b| b.is_ascii_digit()) => format!(" https://{host}:{port}"), _ => String::new() };
+    format!("default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'{extra}; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'")
+}
+fn csp_header() -> HeaderValue {
+    let (addr, host) = (std::env::var("FOUNDER_WT_ADDR").unwrap_or_default(), std::env::var("FOUNDER_WT_HOST").unwrap_or_default().to_ascii_lowercase());
+    let port = addr.rsplit_once(':').map(|(_, p)| p.to_string()).unwrap_or_default();
+    HeaderValue::from_str(&csp_for(Some((&host, &port)))).unwrap_or_else(|_| HeaderValue::from_static("default-src 'none'"))
+}
 fn hdr(n: &'static str, v: &'static str) -> SetResponseHeaderLayer<HeaderValue> {
     SetResponseHeaderLayer::overriding(HeaderName::from_static(n), HeaderValue::from_static(v))
 }
@@ -734,7 +745,7 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/action", axum::routing::post(action_ep))
         .fallback_service(tower_http::services::ServeDir::new(static_dir).append_index_html_on_directories(true).precompressed_gzip())
         .with_state(st)
-        .layer(hdr("content-security-policy", "default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'"))
+        .layer(SetResponseHeaderLayer::overriding(HeaderName::from_static("content-security-policy"), csp_header()))
         .layer(hdr("strict-transport-security", "max-age=63072000; includeSubDomains; preload"))
         .layer(hdr("x-content-type-options", "nosniff"))
         .layer(hdr("x-frame-options", "DENY"))
@@ -865,6 +876,14 @@ async fn main() {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn csp_widens_connect_src_only_for_the_exact_webtransport_origin() {
+        assert!(csp_for(None).contains("connect-src 'self';"));
+        assert!(csp_for(Some(("", ""))).contains("connect-src 'self';"));
+        assert!(csp_for(Some(("f.example.com", "4443"))).contains("connect-src 'self' https://f.example.com:4443;"));
+        for (h, p) in [("f.example.com/evil", "4443"), ("f.example.com", "44 43"), ("f.example.com;x", "1"), ("*", "4443"), ("a b", "1"), ("f.example.com", "")] { assert!(csp_for(Some((h, p))).contains("connect-src 'self';"), "{h}:{p}"); }
+        assert!(csp_for(Some(("f.example.com", "4443"))).contains("frame-ancestors 'none'"));
+    }
     #[test]
     fn the_cc_prefix_is_stripped_only_when_it_is_the_prefix() {
         assert_eq!(strip_cc_path("/_cc/assets/index-x.js").as_deref(), Some("/assets/index-x.js"));
