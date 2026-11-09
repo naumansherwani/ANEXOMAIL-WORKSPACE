@@ -2719,3 +2719,6 @@ STATE at 9 Nov 2026 20:08 PKT (REAL clock, from `date`): DONE on his server: K6.
 
 
 ## Checkpoint 10 Nov 2026 00:57 PKT RESUME HERE: founder-legacy.sh STATUS run on his server (his paste): legacy line FOUNDER_LEGACY_UPSTREAM=127.0.0.1:18443, service active, GET / 200, /founderlogin 404, /app 404, /api/auth/login 404, POST /founder/v1/auth/login junk = 401 (native sign-in alive). Cut precondition met. NEXT: his MODE=off line. K4 tablet 820 = GREEN (WAIVED by founder 9 Nov, his word repeated 10 Nov 2026 00:57 PKT). K7 Firefox/Safari + tablet = GREEN (founder-attested). Blueprints: Docs UQSYGVYC6HHkmY7wbSmtiW (founder), PrymoiZwdiHJUwx6Aya9YZ (awam). Awam pull NOT needed.
+
+
+## Checkpoint 10 Nov 2026 01:02 PKT RESUME HERE: G-MIX legacy cut = GREEN (WIRED: YES / REAL: YES). His MODE=off run: OK legacy upstream cut, service active, healthz 200, backup /etc/anexomail/founder.env.bak.legacy.1794254337, junk login 401. My live curl on founderworkspace.anexomail.com: / 200, /app /founderlogin /auth /signup = 302 to /, POST login 401. G-MIX OPEN ONLY 2b (passkey, recovery, magic link, MFA in Rust). NEXT founder order: 2b, then L (12-13 Nov), M, N..V, X by 25 Nov. Awam pull NOT needed.

@@ -969,3 +969,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 10 Nov 2026 00:48 PKT G-MIX 2d redirects GREEN (live curl). Cut script founder-legacy.sh written (not run).
 
 - 10 Nov 2026 00:57 PKT: founder-legacy.sh STATUS run by him: native login 401 alive, legacy line still set; cut (MODE=off) is next.
+
+- 10 Nov 2026 01:02 PKT: G-MIX legacy cut GREEN (his MODE=off + my live curl). Open: 2b.

@@ -2868,3 +2868,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 10 Nov 2026 00:48 PKT HIS PASTE: founder-install.sh OK (G-MIX 2d INSTALLED). HIS ORDER: update chat context/codes/rules/technology/phases at the top of the repo FIRST. PROOF by me (curl -sI, live): /founderlogin = 302 location /, /auth = 302 /, /signup = 302 /, /app = 302 /; live bundle index-s92TBGza = repo build. => G-MIX 2d redirects GREEN (WIRED YES / REAL YES). Cut script written: docs/cursor-work/server/founder-legacy.sh (MODE=status read-only; MODE=off removes FOUNDER_LEGACY_UPSTREAM, refuses unless native sign-in answers 401, backup + auto rollback).
 
 - 10 Nov 2026 00:57 PKT: founder-legacy.sh STATUS run by him: native login 401 alive, legacy line still set; cut (MODE=off) is next.
+
+- 10 Nov 2026 01:02 PKT: G-MIX legacy cut GREEN (his MODE=off + my live curl). Open: 2b.
