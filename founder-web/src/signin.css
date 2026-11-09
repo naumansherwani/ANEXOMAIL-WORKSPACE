@@ -34,19 +34,21 @@
 .fa-head{margin-bottom:1.5rem;text-align:center}
 .fa-head p{margin:0;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.2em;color:var(--fa-muted)}
 .fa-head h1{margin:.25rem 0 0;font-size:1.875rem;font-weight:600;letter-spacing:-.02em;color:var(--fa-fg)}
-.fa-card{border:1px solid var(--fa-border);border-radius:1rem;background:var(--fa-card);padding:1.5rem;box-shadow:0 25px 50px -12px rgba(0,0,0,.5)}
+.fa-card{border:.8px solid var(--fa-border);border-radius:20px;background:var(--fa-card);padding:1.5rem;box-shadow:0 25px 50px -12px rgba(0,0,0,.5)}
 .fa-card h2{margin:0;text-align:center;font-size:1.0625rem;font-weight:700;letter-spacing:-.014em;line-height:1.35}
 .fa-cap{margin:.25rem 0 0;font-size:.75rem;line-height:1.5;color:var(--fa-muted)}
 .fa-card h2+.fa-cap{text-align:center}
 .fa-form{margin-top:1.5rem;display:grid;gap:.75rem}
 .fa-field{display:grid;gap:.4rem}.fa-field>span{font-size:.75rem;color:var(--fa-fg)}
-.fa-inp{display:flex;height:2.5rem;min-height:44px;overflow:hidden;border-radius:6px;border:1px solid var(--fa-border);background:#F9FAFB}
+.fa-inp{display:flex;height:2.5rem;min-height:44px;overflow:hidden;border-radius:10px;border:.8px solid var(--fa-border);background:#F9FAFB}
 .fa-inp:focus-within{outline:2px solid var(--fa-cyan);outline-offset:1px}
 .fa-inp input{width:0;min-width:0;flex:1;border:0;background:transparent;padding:0 .75rem;font:inherit;font-size:15px;font-weight:600;color:#0B1220;outline:none}
+.fa-inp input[type=password]{font-size:14px}
+.fa-field>span{font-size:14px;font-weight:500}.fa-form .fa-field:first-of-type>span{font-size:13px;font-weight:600}
 .fa-inp input::placeholder{font-weight:400;color:#6B7280}
 .fa-suffix{display:flex;flex:none;align-items:center;border-left:1px solid #E5E7EB;background:#E5E7EB;padding:0 .75rem;font-size:15px;font-weight:600;color:#0B1220;user-select:none}
 .fa-eye{display:flex;width:2.75rem;flex:none;align-items:center;justify-content:center;border:0;background:transparent;color:#6B7280;cursor:pointer}
-.fa-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;height:2.5rem;min-height:44px;border-radius:.75rem;border:1px solid transparent;font:inherit;font-size:.875rem;font-weight:600;white-space:nowrap;cursor:pointer;background:var(--fa-primary);color:oklch(0.975 0.004 250);box-shadow:0 1px 2px 0 oklch(0 0 0/55%);transition:background-color .5s cubic-bezier(.16,1,.3,1),border-color .5s cubic-bezier(.16,1,.3,1),box-shadow .5s cubic-bezier(.16,1,.3,1)}.fa-btn:hover:not(:disabled){background:color-mix(in oklch,var(--fa-primary) 90%,transparent);box-shadow:0 30px 70px -34px oklch(0 0 0/85%)}.fa-btn:focus-visible{outline:2px solid oklch(0.60 0.085 255);outline-offset:2px}
+.fa-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;height:2.5rem;min-height:44px;border-radius:16px;border:.8px solid transparent;font:inherit;font-size:.875rem;font-weight:600;white-space:nowrap;cursor:pointer;background:var(--fa-primary);color:oklch(0.975 0.004 250);box-shadow:0 1px 2px 0 oklch(0 0 0/55%);transition:background-color .5s cubic-bezier(.16,1,.3,1),border-color .5s cubic-bezier(.16,1,.3,1),box-shadow .5s cubic-bezier(.16,1,.3,1)}.fa-btn:hover:not(:disabled){background:color-mix(in oklch,var(--fa-primary) 90%,transparent);box-shadow:0 30px 70px -34px oklch(0 0 0/85%)}.fa-btn:focus-visible{outline:2px solid oklch(0.60 0.085 255);outline-offset:2px}
 .fa-btn:disabled{opacity:.5;cursor:not-allowed}.fa-btn.fa-a-hover:disabled{cursor:pointer}.fa-press{transition:transform 90ms cubic-bezier(.22,1,.36,1),background-color .18s cubic-bezier(.22,1,.36,1),border-color .18s cubic-bezier(.22,1,.36,1)}.fa-press:active{transform:scale(.985)}
 .fa-btn.out{background:transparent;border-color:var(--fa-border);color:var(--fa-fg);box-shadow:none}.fa-btn.out:hover:not(:disabled){border-color:oklch(0.60 0.085 255/45%);background:var(--fa-secondary);box-shadow:none}
 .fa-btn.ghost{background:transparent;color:var(--fa-fg);box-shadow:none}.fa-btn.ghost:hover:not(:disabled){background:var(--fa-secondary);box-shadow:none}

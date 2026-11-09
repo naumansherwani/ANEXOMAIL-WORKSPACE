@@ -840,3 +840,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 10 Nov 2026 01:28 PKT: SPA login look restored: run founder-install.sh (Rust+SPA), then Ctrl+Shift+R on founderworkspace.anexomail.com.
 
 - 10 Nov 2026 01:44 PKT: login UI exactness pass: run founder-install.sh, hard refresh founderworkspace.anexomail.com.
+- 10 Nov 2026 01:48 PKT: login CSS exactness pass vs live awam page (card radius 20px, buttons 16px, input 10px, .8px borders, label sizes); build index-Cp1UWHxY; awam code untouched.
