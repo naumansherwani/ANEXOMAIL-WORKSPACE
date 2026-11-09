@@ -211,3 +211,4 @@ G2 is now the open item in progress.
 - 09 Nov 2026 22:50 PKT K7 gap: observe ON. Open: status 400 proof, real Chrome registration, K7b every browser/phone, card at 390/820/1200+.
 - 09 Nov 2026 22:53 PKT K7 gap: routes proven (400/400). Open: real Chrome registration, K7b every browser/phone, card at 390/820/1200+.
 - 09 Nov 2026 22:56 PKT K7 step 5 first CHECK: none_bound (0 sessions). Probing.
+- 09 Nov 2026 22:57 PKT K7 gap: real Chrome registration proof must come from HIS founder-signed laptop Chrome (my Chrome = awam account).
