@@ -328,7 +328,7 @@ begin
     update public.founder_devices set revoked_at = now() where user_id = v_uid and ua_hash = v_dev;
     if (public.founder_dbsc_device_state(v_uid, v_dev)) ->> 'bound' <> 'false' then raise exception 'revoked device still bound'; end if;
     -- 8 device list shape + report shape
-    if jsonb_array_length(public.founder_dbsc_devices(v_uid)) <> 0 then raise exception 'revoked device still listed'; end if;
+    if exists (select 1 from jsonb_array_elements(public.founder_dbsc_devices(v_uid)) e where e ->> 'label' = 'e149 selftest') then raise exception 'revoked device still listed'; end if;   -- the founder has other real devices: look only for ours
     v_r := public.founder_dbsc_report(v_uid);
     if not (v_r ? 'verdict' and v_r ? 'chain' and v_r ? 'sessions_active') then raise exception 'report shape'; end if;
     raise exception using errcode = 'P0001', message = 'E149_SELFTEST_OK';

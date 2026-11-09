@@ -2818,3 +2818,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 9 Nov 2026 20:28 PKT HIS ORDER (verbatim): "Ab main K7 DBSC ki technology likh raha hoon, phir code shuru hoga. (likho repo ke top claude read katay duniya ke super advance codes aur sql agar zarurat hai likho, duniya ka best kero meri website ke liye. yaad rakho" and 20:26 "sse ka faida hai latest technology pe ya nahi?" (answered: SSE = fallback only, kept unless he says remove) and 20:25 "bar bar mujhe sql mat send kero yeh green hai mainay supabase main sucess hai ... madarchod green likho" (K6 written GREEN).
 
 - 09 Nov 2026 20:54 PKT HIS PASTE: sql-run AUTO E149_founder_dbsc: CHECK_E149 7/8 OK, selftest FAIL 'founder_devices_user_id_fkey' (my selftest used a random uuid; the table has a foreign key to the real account). Tables, RPCs, triggers, chain, report all OK on his server.
+
+- 09 Nov 2026 20:57 PKT HIS PASTE: E149 rerun: selftest FAIL 'revoked device still listed', CHECK_E149 7/8 (all structure rows OK). My selftest asserted the founder has ZERO listed devices; he has 4 real ones.

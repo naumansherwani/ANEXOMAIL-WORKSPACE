@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md eec3b35e87dd2ae0
+docs/cursor-work/founder/founder-commands.md 9514c33da882afdc
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md edb62ad41716cdb7
+docs/cursor-work/DONE-DO-NOT-REPEAT.md e1902483f9293ed4
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs da5c3db196fbe81d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md fe27a01749a83445
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 8946dc986793755e
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -383,7 +383,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 6ceb81ed86cd2393
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md d1ae83854bbc7dcb
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -914,7 +914,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md eb1ba2a7a3861722
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md be466c26f88c7640
+docs/claude/founder/PULL-COMMANDS.md 63d86dff96d78df0
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 5bdd70df074101a4
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md 6f67741f87811209
@@ -1216,7 +1216,7 @@ founder-web/public/icon-512.png f1fdd95ddefb9b35
 founder-web/public/manifest.webmanifest c13e42ef147a304c
 src/components/app/FeatureGate.tsx f0ae35c8646cb436
 src/routes/app.storage.tsx 78ca91241d265b0f
-docs/claude/CLOSE-THE-GAPS-07NOV.md 60492e2029e6e67b
+docs/claude/CLOSE-THE-GAPS-07NOV.md e71fa42d1ba64da4
 docs/claude/FOUNDER-STATUS-TABLE-07NOV.md 89c7afde0ede8607
 docs/claude/START-HERE-AFTER-COMPACTION.md 69ee9539f4ccc1fb
 docs/claude/K4-REAL-443-DESIGN-07NOV.md 9e5b0e2f1f1d764f
@@ -1250,5 +1250,5 @@ docs/cursor-work/server/founder-telemetry.sh 32071da1ad57ac9b
 docs/cursor-work/server/founder-wt-proof.sh 9d617b82becb37c2
 docs/cursor-work/sql/CHECK_E148.sql 348a2798a6dad48e
 docs/cursor-work/sql/E148_founder_webtransport_sessions.sql 798c937f6ef56c21
-docs/cursor-work/sql/E149_founder_dbsc.sql 0d91aadd55bce577
+docs/cursor-work/sql/E149_founder_dbsc.sql a70ed6746029be3b
 docs/cursor-work/server/founder-dbsc.sh c6688bc0b782f1c1

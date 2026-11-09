@@ -204,3 +204,4 @@ G2 is now the open item in progress.
 - 9 Nov 2026 20:25 PKT K6 CLOSED = GREEN (his CHECK rows + phone screenshot). Gap list for K6: none.
 - 09 Nov 2026 20:41 PKT K7 OPEN (code in repo, not green): needs his E149+CHECK_E149, founder-install, founder-dbsc.sh observe, real Chrome TPM registration proof, card seen on laptop + phone.
 - 09 Nov 2026 20:54 PKT K7 gap: E149 selftest FK fixed in repo, his rerun pending.
+- 09 Nov 2026 20:57 PKT K7 gap: E149 selftest fix 2 in repo (new sha), his bare sql-run rerun pending.
