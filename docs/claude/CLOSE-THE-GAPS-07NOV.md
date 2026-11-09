@@ -213,3 +213,4 @@ G2 is now the open item in progress.
 - 09 Nov 2026 22:56 PKT K7 step 5 first CHECK: none_bound (0 sessions). Probing.
 - 09 Nov 2026 22:57 PKT K7 gap: real Chrome registration proof must come from HIS founder-signed laptop Chrome (my Chrome = awam account).
 - 09 Nov 2026 22:59 PKT K7: live SPA shows the Device-bound panel (seen in my Chrome); data needs a founder-signed browser.
+- 09 Nov 2026 23:00 PKT K7 gap: registration proven (Chrome Windows). Open: first refresh (counter 0->1), K7b for phones/Firefox/Safari, card with data at 390/820.
