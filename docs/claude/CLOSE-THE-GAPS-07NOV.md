@@ -205,3 +205,4 @@ G2 is now the open item in progress.
 - 09 Nov 2026 20:41 PKT K7 OPEN (code in repo, not green): needs his E149+CHECK_E149, founder-install, founder-dbsc.sh observe, real Chrome TPM registration proof, card seen on laptop + phone.
 - 09 Nov 2026 20:54 PKT K7 gap: E149 selftest FK fixed in repo, his rerun pending.
 - 09 Nov 2026 20:57 PKT K7 gap: E149 selftest fix 2 in repo (new sha), his bare sql-run rerun pending.
+- 09 Nov 2026 21:15 PKT K7 OPEN: E149 GREEN on server; install + observe + K7b (every browser) + real Chrome/phone/Firefox-or-Safari proof + card at 390/820/1200+ still open.

@@ -289,3 +289,4 @@ Business Max £125,000/month (NOT 115,000), card = unlimited users, backend/SQL 
 K4 GREEN. K5a LIVE on the real :443 (awam-edge, separate program, 23 hosts AES-256), server proof done; browser look with his business test account is the one open item for GREEN. Then 502-hosts check, K5b + K6, K7, awam migration, 20 Nov target. Rollback FILE /root/i9/k5-rollback.sh. Details: last checkpoint in CLAUDE-CHAT-CONTEXT and CLOSE-THE-GAPS-07NOV.md.
 - 9 Nov 2026 20:25 PKT: K6 GREEN (proof in chat context checkpoint 20:25). NOW = K7 DBSC. He never wants the same green SQL re-sent.
 - 09 Nov 2026 20:41 PKT: K7 DBSC code written (see K7-DBSC-DESIGN-09NOV.md), NOT green. Next: his 3 server steps + Chrome proof.
+- 09 Nov 2026 21:15 PKT: K7 = a (DBSC, Chrome) + b (WebCrypto device key, every browser/phone). E149 green. See K7 design doc UPDATE section.

@@ -2820,3 +2820,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 09 Nov 2026 20:54 PKT HIS PASTE: sql-run AUTO E149_founder_dbsc: CHECK_E149 7/8 OK, selftest FAIL 'founder_devices_user_id_fkey' (my selftest used a random uuid; the table has a foreign key to the real account). Tables, RPCs, triggers, chain, report all OK on his server.
 
 - 09 Nov 2026 20:57 PKT HIS PASTE: E149 rerun: selftest FAIL 'revoked device still listed', CHECK_E149 7/8 (all structure rows OK). My selftest asserted the founder has ZERO listed devices; he has 4 real ones.
+
+- 09 Nov 2026 21:15 PKT HIS PASTE + ORDER: E149 rerun = selftest OK, CHECK_E149 8/8 OK, DONE sab theek (K7 SQL step GREEN on his server). His order (verbatim): "DBSC sirf Chrome par chalta hai ... Phone aur Firefox/Safari par ye kaam nahi karega ... (yeh her browser aur Phone aur Firefox/Safari par ye kaam kerna chaiye hain woh bhi live wire working ke saath samjha tu.)" and "mobile ka screenshot kahan se lena hai batao."

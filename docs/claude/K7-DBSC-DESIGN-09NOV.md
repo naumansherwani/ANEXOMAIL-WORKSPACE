@@ -24,3 +24,14 @@ A stolen cookie or login token is useless on another machine because it cannot r
 
 ## GREEN means (WIRED: YES / REAL: YES)
 E149 + CHECK_E149 green on his server; new binary installed; `founder-dbsc.sh MODE=observe`; a REAL Chrome with a TPM signs in and the card + ledger show `registered` then `refreshed` (his paste of CHECK_E149 + the card seen on his laptop and phone at 390/820/1200+). `enforce` is a separate step with his word.
+
+## UPDATE 09 Nov 2026 21:15 PKT: his order = EVERY browser and phone (verbatim: "yeh her browser aur Phone aur Firefox/Safari par ye kaam kerna chaiye hain woh bhi live wire working ke saath")
+Truth first: the DBSC PROTOCOL (Secure-Session-Registration / Secure-Session-Response) is implemented only by Chromium today. Firefox and Safari have no implementation, so no server code can make DBSC "work" there. What CAN work everywhere is the same security property with the same ledger:
+- **K7a (done in repo): DBSC** for Chrome/Edge with secure key storage (TPM). Hardware-bound key, browser-driven refresh.
+- **K7b (next, same ledger E149, same deadline): WebCrypto device key.** Every browser (Chrome, Edge, Firefox, Safari, Android, iPhone) makes an ECDSA P-256 key with extractable:false (WebCrypto, kept as a CryptoKey in IndexedDB, the private bytes can never be read, not even by the page). Exchange sends a signed server challenge (60 s, single use, same jti ledger) as proof; the server verifies against the stored public key (same ES256 code path in dbsc.rs) and writes registered/refreshed rows with kind source 'webcrypto'. A stolen login + device id replayed from another machine cannot sign. Honest limit: this key lives in the browser profile (software), not the TPM; malware ON the same device could still ask the browser to sign. Hardware strength on phones comes from the passkeys already in the product (Secure Enclave / StrongBox, J4).
+- Mode enforce applies per device by its strongest proof (dbsc > webcrypto); a device with no proof yet is never blocked, it is invited to bind at its next exchange.
+- Rule 52: the proof payload is built by a tiny pure TS helper + the browser's own WebCrypto signing (a CryptoKey cannot live in WASM); verification stays in Rust on the server. Said plainly, no pretence.
+- GREEN for K7 = ledger rows from a real Chrome (DBSC), a real phone and one more browser (Firefox or Safari), plus the card on 390 / 820 / 1200+.
+
+## Where he takes the phone screenshot
+After founder-install (new SPA) and founder-dbsc.sh observe: founder site on the phone > More > Settings > Privacy tab > scroll under Security keys to the card "Device-bound sessions". Screenshot that card (it lists each device and Bound / Not bound).

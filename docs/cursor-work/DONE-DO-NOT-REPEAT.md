@@ -1747,3 +1747,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 09 Nov 2026 20:41 PKT K7 DBSC code in repo (E149 + CHECK_E149, dbsc.rs, Dbsc card, founder-dbsc.sh); NOT green until his server steps + a real Chrome TPM registration.
 - 09 Nov 2026 20:54 PKT K7 E149 selftest FK bug fixed in E149_founder_dbsc.sql (his CHECK_E149 7/8 before fix); rerun needed, then founder-install, founder-dbsc.sh observe, Chrome proof.
 - 09 Nov 2026 20:57 PKT K7 E149 selftest fixed again (does not assume an empty device list; stub carries other real devices). Rerun pending.
+- 09 Nov 2026 21:15 PKT K7 SQL step GREEN on his server (E149 8/8). K7b (every browser) added to the order; K7 not green.
