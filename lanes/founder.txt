@@ -103,7 +103,7 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/index-ChvGeBvk.css
-founder-web/dist/assets/index-D9cctke1.js
+founder-web/dist/assets/index-s92TBGza.js
 founder-web/dist/assets/kernel.worker-BiR_tP7H.js
 founder-web/dist/assets/three.module-C0S06CcT.js
 founder-web/dist/boot.css

@@ -289,7 +289,7 @@ pub async fn status_ep(State(st): State<crate::S>, h: HeaderMap) -> Response {
     let (devs, rep) = tokio::join!(sb.rpc("founder_dbsc_devices", json!({"p_uid": c.sub})), sb.rpc("founder_dbsc_report", json!({"p_uid": c.sub})));
     match (devs, rep) {
         (Some(d), Some(r)) => crate::signed(&st, json!({"mode": st.dbsc.as_str(), "available": true, "this_device": did, "devices": d, "report": r,
-            "limit": "DBSC is a Chromium feature on devices with secure key storage (TPM / Secure Enclave). Other browsers stay on the device approval + passkey rules."})),
+            "limit": "DBSC (secure chip) exists only in Chromium. Every other browser and phone is bound by a non-extractable browser key; both show here."})),
         _ => crate::signed(&st, json!({"mode": st.dbsc.as_str(), "available": false, "note": "ledger not found: run the E149 SQL (sql-run.sh)"})),
     }
 }

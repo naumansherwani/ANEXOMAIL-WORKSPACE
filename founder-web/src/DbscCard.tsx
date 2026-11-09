@@ -5,7 +5,7 @@ export function DbscCard({ s }: { s: DbscStatus }) {
   const v = view(s), devs = s.devices ?? [];
   return <section className="panel" aria-label="Device-bound sessions">
     <div className="panelhead"><h2>Device-bound sessions</h2>
-      <p className="dim">The login is tied to a key inside this computer's secure chip. {s.limit ?? ""}</p></div>
+      <p className="dim">Each sign-in is tied to a key that never leaves this device: the secure chip where the browser supports it (Chrome with TPM / Secure Enclave), otherwise a non-extractable key inside the browser. {s.limit ?? ""}</p></div>
     <div className="setrow"><div><b>{v.headline}</b><p className="dim">{v.detail}</p></div></div>
     {devs.map((d) => <div className="setrow" key={d.id}><div><b>{d.label}{d.id === s.this_device ? " (this device)" : ""}</b>
       <p className="dim">{d.bound ? `${d.source === "webcrypto" ? "Bound by a browser key" : "Bound by the secure chip"} ${ago(d.since)} · refreshed ${d.refreshes} time${d.refreshes === 1 ? "" : "s"}, last ${ago(d.last_refresh_at)}` : "Not bound yet (binds at its next sign-in)"}</p></div>

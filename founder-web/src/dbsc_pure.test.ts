@@ -9,7 +9,7 @@ describe("dbsc view", () => {
   });
   test("observe with nothing bound is a warning that explains who binds", () => {
     const v = view({ mode: "observe", available: true, devices: [dev(false)], report: { ...rep, sessions_active: 0 } });
-    expect(v.tone).toBe("warn"); expect(v.headline).toContain("no device bound"); expect(v.detail).toContain("Phones");
+    expect(v.tone).toBe("warn"); expect(v.headline).toContain("no device bound"); expect(v.detail).toContain("non-extractable browser key");
   });
   test("bound device in enforce is ok, rejects turn it into a warning", () => {
     const s: DbscStatus = { mode: "enforce", available: true, devices: [dev(true), dev(false)], report: rep };
