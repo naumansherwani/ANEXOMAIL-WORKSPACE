@@ -1760,3 +1760,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 09 Nov 2026 23:31 PKT G-MIX stage 1 coded (fproxy awam_redirect). Stage 2 native login open.
 - 09 Nov 2026 23:38 PKT G-MIX stage 2 plan written (2a-2d); stage 1 install blocked by test fail on server, diagnosing.
 - 09 Nov 2026 23:44 PKT install script fixed (test retry x3, real output). G-MIX stage 1 install = re-run. Stage 2 not coded.
+- 09 Nov 2026 23:54 PKT install OK again (stage 1 + K7b on server). Curl proof of /app pending. Stage 2a next.

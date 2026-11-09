@@ -824,3 +824,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 09 Nov 2026 23:31 PKT G-MIX stage 1 install: git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -15 ; then: curl -sI https://founderworkspace.anexomail.com/app . Awam pull NOT needed.
 - 09 Nov 2026 23:38 PKT install blocked: founder-install step1 FAIL tests. Diagnose: cd /opt/anexomail-founder/src && cargo test --release 2>&1 | tail -25
 - 09 Nov 2026 23:44 PKT RE-RUN install (fixed script): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -15 ; then curl -sI https://founderworkspace.anexomail.com/app . Awam pull NOT needed.
+- 09 Nov 2026 23:54 PKT install done (his paste). Next one line from him: curl -sI https://founderworkspace.anexomail.com/app . Awam pull NOT needed.
