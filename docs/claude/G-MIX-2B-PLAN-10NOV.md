@@ -36,3 +36,9 @@ Goal: password, passkey, recovery code, magic link and MFA all run in the founde
 - Magic link and TOTP need the identity service endpoints on his server; each is probed live before it is called GREEN.
 - Passkey sign-in REAL proof needs his hands (phone or key) once.
 - Deadline: founder blueprint GREEN by 25 Nov; L starts 10 Nov (today) per his order.
+
+## LAW added 10 Nov 2026 01:14 PKT (founder 10 Nov 01:13): OLD LOGIN PAGE STAYS THE SAME
+The sign-in page look (SignIn.tsx, Cinematic) does NOT change. Only the security behind it goes to the next level. A second step (passkey / TOTP / recovery) appears as the SAME card style only when the account needs it; password-only founders see exactly today's page.
+
+## S1 status (10 Nov 2026 01:14 PKT)
+E151 written (797 lines): tables policy/tickets/factors/magic_links/events/nets/handoffs, doors open/factor/release(+v2)/deny/magic_issue/magic_land/locked/risk/report/verify/tick/net_label/nets_list, two selftests. Local Postgres 16: both selftests PASS, second run clean, CHECK_E151 6/6. Server run by him pending (sql-run.sh AUTO).

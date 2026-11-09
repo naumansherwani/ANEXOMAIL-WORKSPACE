@@ -1,6 +1,6 @@
 # SQL — docs/cursor-work/sql/
 
-> **RUN ORDER (10 Nov 2026 00:40 PKT):** one number line, E37 upward, strictly by number. `server/sql-run.sh` with no name = AUTO: every E-file not yet in the ledger (by sha), in NUMBER order (sort -n), then its CHECK_E<n>; CHECK files always run. Founder series in the repo: E100..E150 are continuous (E104..E106, E108, E120, E122.. exist as listed below). Last = **E150**, next = **E151**. Never edit a GREEN file (E149 is frozen); a fix = a new file or a new function name (E150 uses `founder_dbsc_register_src` beside E149's `founder_dbsc_register`). First line of every SQL file is EMPTY (Rule 42); CHECK = ONE SELECT.
+> **RUN ORDER (10 Nov 2026 00:40 PKT):** one number line, E37 upward, strictly by number. `server/sql-run.sh` with no name = AUTO: every E-file not yet in the ledger (by sha), in NUMBER order (sort -n), then its CHECK_E<n>; CHECK files always run. Founder series in the repo: E100..E150 are continuous (E104..E106, E108, E120, E122.. exist as listed below). Last = **E151** (written, awaiting his run), next = **E152**. Never edit a GREEN file (E149 is frozen); a fix = a new file or a new function name (E150 uses `founder_dbsc_register_src` beside E149's `founder_dbsc_register`). First line of every SQL file is EMPTY (Rule 42); CHECK = ONE SELECT.
 
 Do tracks. Mix **banned**.
 
@@ -87,6 +87,7 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E148_LIVE | K6.4 WebTransport live health (read-only, needs E111 + E148). CHECK_E148_LIVE + CHECK_E148_LIVE_FN (5/5). **GREEN on his server** |
 | E149 | K7a DBSC: device-bound sessions, jti replay cache, hash-chained events, revoke trigger. CHECK_E149 (8/8). **GREEN on his server (09 Nov 2026)** |
 | E150 | **K7b device key for every browser and phone** (source column dbsc / webcrypto, `founder_dbsc_register_src`, report by_source). File: `docs/cursor-work/sql/E150_founder_devicekey.sql`, check: `CHECK_E150.sql` (7/7). **GREEN on his server (09 Nov 2026 23:18 PKT)**. Next free number: **E151** |
+| E151 | **G-MIX 2b sign-in ceremony brain** (tickets, factors, magic links, hash-chained events, known networks, hand-off, risk, 2 selftests, 797 lines). File: `docs/cursor-work/sql/E151_founder_signin_ceremony.sql`, check: `CHECK_E151.sql` (6 checks). Tested here on a local Postgres 16 (both selftests PASS, runs twice cleanly). **NOT yet on his server** (written 10 Nov 2026 01:14 PKT). Next free number: **E152** |
 | CHECK_G5D_LIVE | G5d part 2 live proof (read only): the Rust tick wrote rows, newest < 5 min, observer pulse ok, horizon observed, chains clean | 5 checks |
 
 | anexochat PHASE 61 | `anexochat/sql/phase61_file_limits_quota.sql`: ANEXOChat file chart 500MB/1.5GB/4GB + per-user monthly quota 50/150/400GB (throttle never block, dedup, drift guard). `anexochat/sql/CHECK_phase61.sql` (5). Awam SQL: runs with the awam migration, after phase13_15. |

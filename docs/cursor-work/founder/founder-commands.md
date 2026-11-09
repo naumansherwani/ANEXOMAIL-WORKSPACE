@@ -2872,3 +2872,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 10 Nov 2026 01:02 PKT: G-MIX legacy cut GREEN (his MODE=off + my live curl). Open: 2b.
 
 - 10 Nov 2026 01:08 PKT: G-MIX 2b plan written, S1 E151 SQL next.
+
+- 10 Nov 2026 01:14 PKT: E151 written + local proof; awaiting his sql-run AUTO. Login page look stays.

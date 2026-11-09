@@ -291,6 +291,7 @@ docs/cursor-work/sql/CHECK_E148_LIVE.sql
 docs/cursor-work/sql/CHECK_E148_LIVE_FN.sql
 docs/cursor-work/sql/CHECK_E149.sql
 docs/cursor-work/sql/CHECK_E150.sql
+docs/cursor-work/sql/CHECK_E151.sql
 docs/cursor-work/sql/CHECK_E42_E47.sql
 docs/cursor-work/sql/CHECK_E48.sql
 docs/cursor-work/sql/CHECK_E50.sql

@@ -89,6 +89,7 @@ docs/cursor-work/sql/E148_LIVE.sql
 docs/cursor-work/sql/E148_founder_webtransport_sessions.sql
 docs/cursor-work/sql/E149_founder_dbsc.sql
 docs/cursor-work/sql/E150_founder_devicekey.sql
+docs/cursor-work/sql/E151_founder_signin_ceremony.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/E68_proof.sql
