@@ -229,3 +229,4 @@ G2 is now the open item in progress.
 - 10 Nov 2026 00:26 PKT K7 laptop look CLOSED (green). Open: Firefox/Safari binding proof, tablet 820 screenshot.
 - 10 Nov 2026 00:32 PKT CLOSED: sql index.md order repaired; card polish installed. OPEN: K7 Firefox/Safari + tablet 820; refused-proof reason (E151 optional); G-MIX 2b + 2d.
 - 10 Nov 2026 00:38 PKT CLOSED: K7 (green, founder attestation for Firefox/Safari + tablet). OPEN: G-MIX 2d install + legacy upstream cut; G-MIX 2b passkey/recovery/magic/MFA; refused-proof reason (E151 optional).
+- 10 Nov 2026 00:48 PKT CLOSED: G-MIX 2d redirects (green). OPEN: legacy upstream cut (founder-legacy.sh, his run); G-MIX 2b passkey/recovery/magic/MFA; E151 refused-proof reason (optional).
