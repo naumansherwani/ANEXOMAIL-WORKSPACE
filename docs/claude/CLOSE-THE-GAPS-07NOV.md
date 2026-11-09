@@ -203,3 +203,4 @@ G2 is now the open item in progress.
 - 9 Nov 2026 20:17 PKT K6 OPEN (not green): server leg DONE, sandbox looks 390/820/1280 measured (no page overflow). Closing needs: his CHECK_E148_LIVE_FN + CHECK_E148_LIVE rows and his phone screenshot of Live. Then K7.
 - 9 Nov 2026 20:25 PKT K6 CLOSED = GREEN (his CHECK rows + phone screenshot). Gap list for K6: none.
 - 09 Nov 2026 20:41 PKT K7 OPEN (code in repo, not green): needs his E149+CHECK_E149, founder-install, founder-dbsc.sh observe, real Chrome TPM registration proof, card seen on laptop + phone.
+- 09 Nov 2026 20:54 PKT K7 gap: E149 selftest FK fixed in repo, his rerun pending.

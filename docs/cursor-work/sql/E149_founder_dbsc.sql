@@ -288,11 +288,13 @@ end $$;
 create or replace function public.founder_dbsc_selftest() returns text
 language plpgsql security definer set search_path = pg_catalog, public, extensions set statement_timeout = '20s' as $$
 declare
-  v_uid uuid := gen_random_uuid(); v_dev text := encode(extensions.digest('e149-dev', 'sha256'), 'hex');
+  v_uid uuid; v_dev text := encode(extensions.digest('e149-dev', 'sha256'), 'hex');
   v_pub text := '04' || repeat('ab', 64); v_sid text := 'e149selftestsid0001'; v_sid2 text := 'e149selftestsid0002';
   v_j1 text := encode(extensions.digest('e149-j1', 'sha256'), 'hex'); v_j2 text := encode(extensions.digest('e149-j2', 'sha256'), 'hex'); v_j3 text := encode(extensions.digest('e149-j3', 'sha256'), 'hex');
   v_r jsonb; v_ok boolean; v_msg text := 'E149 selftest FAIL: unknown';
 begin
+  select user_id into v_uid from public.founder_accounts order by user_id limit 1;   -- founder_devices has a foreign key to the real account
+  if v_uid is null then return 'E149 selftest SKIP — no founder account'; end if;
   begin
     insert into public.founder_devices (user_id, label, ua_hash, approved_at) values (v_uid, 'e149 selftest', v_dev, now());
     -- 1 register ok, replay refused, bad shape refused
