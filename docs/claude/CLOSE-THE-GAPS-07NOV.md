@@ -230,3 +230,6 @@ G2 is now the open item in progress.
 - 10 Nov 2026 00:32 PKT CLOSED: sql index.md order repaired; card polish installed. OPEN: K7 Firefox/Safari + tablet 820; refused-proof reason (E151 optional); G-MIX 2b + 2d.
 - 10 Nov 2026 00:38 PKT CLOSED: K7 (green, founder attestation for Firefox/Safari + tablet). OPEN: G-MIX 2d install + legacy upstream cut; G-MIX 2b passkey/recovery/magic/MFA; refused-proof reason (E151 optional).
 - 10 Nov 2026 00:48 PKT CLOSED: G-MIX 2d redirects (green). OPEN: legacy upstream cut (founder-legacy.sh, his run); G-MIX 2b passkey/recovery/magic/MFA; E151 refused-proof reason (optional).
+
+
+## Checkpoint 10 Nov 2026 00:57 PKT RESUME HERE: founder-legacy.sh STATUS run on his server (his paste): legacy line FOUNDER_LEGACY_UPSTREAM=127.0.0.1:18443, service active, GET / 200, /founderlogin 404, /app 404, /api/auth/login 404, POST /founder/v1/auth/login junk = 401 (native sign-in alive). Cut precondition met. NEXT: his MODE=off line. K4 tablet 820 = GREEN (WAIVED by founder 9 Nov, his word repeated 10 Nov 2026 00:57 PKT). K7 Firefox/Safari + tablet = GREEN (founder-attested). Blueprints: Docs UQSYGVYC6HHkmY7wbSmtiW (founder), PrymoiZwdiHJUwx6Aya9YZ (awam). Awam pull NOT needed.

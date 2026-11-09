@@ -2716,3 +2716,6 @@ STATE at 9 Nov 2026 20:08 PKT (REAL clock, from `date`): DONE on his server: K6.
 
 
 ## Checkpoint 10 Nov 2026 00:54 PKT RESUME HERE: two blueprints published as Docs (founder UQSYGVYC6HHkmY7wbSmtiW, awam PrymoiZwdiHJUwx6Aya9YZ) after clean audit (264 Rust, 6 awam-edge, 153 bun, rules-gate 0/0, manifest 0 bad). Open: founder-legacy.sh cut (his run), G-MIX 2b, E151 optional, L..X, awam K5b + migration. Awam pull NOT needed.
+
+
+## Checkpoint 10 Nov 2026 00:57 PKT RESUME HERE: founder-legacy.sh STATUS run on his server (his paste): legacy line FOUNDER_LEGACY_UPSTREAM=127.0.0.1:18443, service active, GET / 200, /founderlogin 404, /app 404, /api/auth/login 404, POST /founder/v1/auth/login junk = 401 (native sign-in alive). Cut precondition met. NEXT: his MODE=off line. K4 tablet 820 = GREEN (WAIVED by founder 9 Nov, his word repeated 10 Nov 2026 00:57 PKT). K7 Firefox/Safari + tablet = GREEN (founder-attested). Blueprints: Docs UQSYGVYC6HHkmY7wbSmtiW (founder), PrymoiZwdiHJUwx6Aya9YZ (awam). Awam pull NOT needed.
