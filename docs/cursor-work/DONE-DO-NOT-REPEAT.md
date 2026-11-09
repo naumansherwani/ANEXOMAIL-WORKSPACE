@@ -1751,3 +1751,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 09 Nov 2026 21:23 PKT K7 step 2 DONE on his server (install OK). Step 3 observe next.
 - 09 Nov 2026 22:47 PKT K7 step 3 not done (his paste was status mode). Repeat with the MODE=observe prefix.
 - 09 Nov 2026 22:50 PKT K7 step 3 DONE on his server: FOUNDER_DBSC=observe ON. Next: status 400 proof, Chrome sign-in registration proof, K7b.
+- 09 Nov 2026 22:53 PKT K7 step 4 DONE: dbsc routes 400/400 on his server, observe live.
