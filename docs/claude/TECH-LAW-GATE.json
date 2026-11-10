@@ -1,107 +1,123 @@
 {
-"_why": "HIS LAST WARNING 11 NOV 2026: FOUNDER TECHNOLOGY = ONLY SUPER ADVANCED LATEST AS LISTED. These are MACHINE CHECKS run by rules-gate.py on EVERY commit. status ok = must hold forever (a commit that breaks it FAILS). status open = a KNOWN gap with a deadline (printed as a warning on every commit until closed; closing it = change status to ok in the same commit). Add a line here whenever a phase lists a technology.",
-"checks": [
-{
-"id": "K8b-h3-crate",
-"file": "server/founder/Cargo.toml",
-"must": "h3-quinn",
-"status": "ok",
-"why": "HTTP/3 server stack present",
-"live": "HTTP/3 ON udp [::]:443, Path card HTTP/3 QUIC, proven 11 Nov 04:05"
-},
-{
-"id": "K8b-h3-wired",
-"file": "server/founder/src/main.rs",
-"must": "h3::from_env",
-"status": "ok",
-"why": "HTTP/3 listener wired into the founder binary",
-"live": "HTTP/3 ON udp [::]:443, Path card HTTP/3 QUIC, proven 11 Nov 04:05"
-},
-{
-"id": "K8b-h3-alpn",
-"file": "server/founder/src/wt.rs",
-"must": "b\"h3\"",
-"status": "ok",
-"why": "QUIC ALPN h3",
-"live": "HTTP/3 ON udp [::]:443, Path card HTTP/3 QUIC, proven 11 Nov 04:05"
-},
-{
-"id": "K8a-h2-fallback",
-"live": "proven 11 Nov 03:40",
-"file": "server/founder/src/tls256.rs",
-"must": "b\"h2\"",
-"status": "ok",
-"why": "h2 is at least the fallback on TCP"
-},
-{
-"id": "K8a-no-h1-only",
-"file": "server/founder/src/tls256.rs",
-"mustnot": "http1::Builder::new()",
-"status": "ok",
-"why": "the terminator never goes back to HTTP/1.1-only"
-},
-{
-"id": "K8c-pq",
-"file": "server/founder/Cargo.toml",
-"must": "rustls-post-quantum",
-"status": "ok",
-"why": "X25519MLKEM768 post-quantum hybrid key exchange (listed for K4)",
-"live": "external client: ML-KEM-only -> X25519MLKEM768 + AES-256, proven 11 Nov 04:05"
-},
-{
-"id": "K8c-pq-first",
-"file": "server/founder/src/tls256.rs",
-"must": "X25519MLKEM768",
-"status": "ok",
-"why": "hybrid group offered first",
-"live": "external client: ML-KEM-only -> X25519MLKEM768 + AES-256, proven 11 Nov 04:05"
-},
-{
-"id": "no-websocket",
-"file": "server/founder/Cargo.toml",
-"mustnot": "tungstenite",
-"status": "ok",
-"why": "WebSocket banned"
-},
-{
-"id": "K8d-api-not-fetch",
-"file": "founder-web/src/api.ts",
-"mustnot": "await fetch(",
-"status": "open",
-"deadline": "14 Nov 2026",
-"why": "RULE 52: every API call goes kernel -> WebTransport/HTTP3; fetch only as fallback (api.ts still uses raw fetch)"
-},
-{
-"id": "L-gsap",
-"file": "founder-web/package.json",
-"must": "\"gsap\"",
-"status": "open",
-"deadline": "L phase (12 Nov start)",
-"why": "Framer Motion + GSAP listed for L"
-},
-{
-"id": "L-webgpu",
-"file": "founder-web/src/Scene3D.tsx",
-"must": "WebGPURenderer",
-"status": "open",
-"deadline": "L phase",
-"why": "Three.js WebGPU listed for L"
-},
-{
-"id": "M-moq",
-"file": "server/founder/Cargo.toml",
-"must": "moq",
-"status": "open",
-"deadline": "M phase",
-"why": "Media over QUIC relay listed for M"
-},
-{
-"id": "Q-pq-sign",
-"file": "server/founder/Cargo.toml",
-"must": "ml-dsa",
-"status": "open",
-"deadline": "Q phase",
-"why": "post-quantum signatures (ML-DSA hybrid with Ed25519) listed for Q"
-}
-]
+ "_why": "HIS LAST WARNING 11 NOV 2026: FOUNDER TECHNOLOGY = ONLY SUPER ADVANCED LATEST AS LISTED. These are MACHINE CHECKS run by rules-gate.py on EVERY commit. status ok = must hold forever (a commit that breaks it FAILS). status open = a KNOWN gap with a deadline (printed as a warning on every commit until closed; closing it = change status to ok in the same commit). Add a line here whenever a phase lists a technology.",
+ "checks": [
+  {
+   "id": "K8b-h3-crate",
+   "file": "server/founder/Cargo.toml",
+   "must": "h3-quinn",
+   "status": "ok",
+   "why": "HTTP/3 server stack present",
+   "live": "HTTP/3 ON udp [::]:443, Path card HTTP/3 QUIC, proven 11 Nov 04:05"
+  },
+  {
+   "id": "K8b-h3-wired",
+   "file": "server/founder/src/main.rs",
+   "must": "h3::from_env",
+   "status": "ok",
+   "why": "HTTP/3 listener wired into the founder binary",
+   "live": "HTTP/3 ON udp [::]:443, Path card HTTP/3 QUIC, proven 11 Nov 04:05"
+  },
+  {
+   "id": "K8b-h3-alpn",
+   "file": "server/founder/src/wt.rs",
+   "must": "b\"h3\"",
+   "status": "ok",
+   "why": "QUIC ALPN h3",
+   "live": "HTTP/3 ON udp [::]:443, Path card HTTP/3 QUIC, proven 11 Nov 04:05"
+  },
+  {
+   "id": "K8a-h2-fallback",
+   "live": "proven 11 Nov 03:40",
+   "file": "server/founder/src/tls256.rs",
+   "must": "b\"h2\"",
+   "status": "ok",
+   "why": "h2 is at least the fallback on TCP"
+  },
+  {
+   "id": "K8a-no-h1-only",
+   "file": "server/founder/src/tls256.rs",
+   "mustnot": "http1::Builder::new()",
+   "status": "ok",
+   "why": "the terminator never goes back to HTTP/1.1-only"
+  },
+  {
+   "id": "K8c-pq",
+   "file": "server/founder/Cargo.toml",
+   "must": "rustls-post-quantum",
+   "status": "ok",
+   "why": "X25519MLKEM768 post-quantum hybrid key exchange (listed for K4)",
+   "live": "external client: ML-KEM-only -> X25519MLKEM768 + AES-256, proven 11 Nov 04:05"
+  },
+  {
+   "id": "K8c-pq-first",
+   "file": "server/founder/src/tls256.rs",
+   "must": "X25519MLKEM768",
+   "status": "ok",
+   "why": "hybrid group offered first",
+   "live": "external client: ML-KEM-only -> X25519MLKEM768 + AES-256, proven 11 Nov 04:05"
+  },
+  {
+   "id": "no-websocket",
+   "file": "server/founder/Cargo.toml",
+   "mustnot": "tungstenite",
+   "status": "ok",
+   "why": "WebSocket banned"
+  },
+  {
+   "id": "K8d-api-not-fetch",
+   "file": "founder-web/src/api.ts",
+   "mustnot": "await fetch(",
+   "status": "open",
+   "deadline": "14 Nov 2026",
+   "why": "RULE 52: every API call goes kernel -> WebTransport/HTTP3; fetch only as fallback (api.ts still uses raw fetch)"
+  },
+  {
+   "id": "L-gsap",
+   "file": "founder-web/package.json",
+   "must": "\"gsap\"",
+   "status": "open",
+   "deadline": "L phase (12 Nov start)",
+   "why": "Framer Motion + GSAP listed for L"
+  },
+  {
+   "id": "L-webgpu",
+   "file": "founder-web/src/Scene3D.tsx",
+   "must": "WebGPURenderer",
+   "status": "open",
+   "deadline": "L phase",
+   "why": "Three.js WebGPU listed for L"
+  },
+  {
+   "id": "M-moq",
+   "file": "server/founder/Cargo.toml",
+   "must": "moq",
+   "status": "open",
+   "deadline": "M phase",
+   "why": "Media over QUIC relay listed for M"
+  },
+  {
+   "id": "Q-pq-sign",
+   "file": "server/founder/Cargo.toml",
+   "must": "ml-dsa",
+   "status": "open",
+   "deadline": "Q phase",
+   "why": "post-quantum signatures (ML-DSA hybrid with Ed25519) listed for Q"
+  },
+  {
+   "id": "K7-devicekey-fetch",
+   "file": "founder-web/src/devicekey.ts",
+   "must": "rpc@1",
+   "status": "open",
+   "deadline": "14 Nov 2026",
+   "why": "RULE 52: the device-key register + exchange proof calls must go kernel -> WebTransport/HTTP3; devicekey.ts register() and api.ts exchange() still use raw fetch (HTTP/3 on the wire, but not the kernel)"
+  },
+  {
+   "id": "K7-devicekey-pq",
+   "file": "founder-web/src/devicekey_pure.ts",
+   "must": "ML-DSA",
+   "status": "open",
+   "deadline": "Q phase",
+   "why": "TECH LAW: post-quantum signatures (ML-DSA hybrid with Ed25519) listed; the device key is ECDSA P-256 (WebCrypto) and DBSC is ES256 (browser standard, cannot change); the hybrid proof is a Q item"
+  }
+ ]
 }
