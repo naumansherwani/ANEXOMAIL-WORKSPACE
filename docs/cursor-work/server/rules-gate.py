@@ -198,6 +198,11 @@ for led in ("docs/cursor-work/DONE-DO-NOT-REPEAT.md", "docs/claude/CLOSE-THE-GAP
                     fail("TECH GREEN WORDS", f"{led}: a line says GREEN without 'TECH-LAW CHECKED' (and WIRED: YES / REAL: YES): {l[1:90]}")
         except OSError:
             pass
+
+# RESUME POINT (founder 11 Nov 2026 04:45, "compact chat ka masla forever solve kero"): docs/claude/RESUME-POINT.md must travel with every code/ledger change, so a new chat always finds the real state.
+rp = "docs/claude/RESUME-POINT.md"
+if (code_staged or "docs/cursor-work/DONE-DO-NOT-REPEAT.md" in staged) and rp not in staged:
+    fail("RESUME POINT", "code or the DONE ledger changed but docs/claude/RESUME-POINT.md (where we stopped + tomorrow's order) is not in this commit")
 for w in warns:
     print(w)
 for x in fails:
