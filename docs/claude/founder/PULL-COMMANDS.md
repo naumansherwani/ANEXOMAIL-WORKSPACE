@@ -894,3 +894,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 10 Nov 2026 20:39 PKT: E154 upgraded to advanced SQL (founder-only join, no-oracle null, posture154 catalog proof, selftest154 rolled back); local 4/4; repo only, he still runs sql-run.sh then founder-install.
 
 - 10 Nov 2026 20:44 PKT: E154 GREEN on his server (SQL layer: WIRED: YES / REAL: YES for the door; CHECK 4/4, selftest PASS, sha caa9de051d3e4517). Passkey sign-in as a whole NOT green: next ONE step = founder-install (Rust that calls the door), then phone passkey (S7). SQL last E154, next E155.
+
+- 10 Nov 2026 20:46 PKT: his 20:46 message carried a screenshot (8:45 on phone) still showing the old busy error and NO founder-install output, so the E154-using Rust is assumed NOT installed yet. Waiting for his founder-install paste; do not mark S7 until a passkey ledger row exists.
