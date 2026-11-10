@@ -2832,3 +2832,6 @@ Checkpoint 10 Nov 2026 22:16 PKT RESUME HERE: E155 GREEN on his server (SQL). NE
 
 ## RESUME HERE (10 Nov 2026 22:50 PKT)
 E155 GREEN 22:16. E156 (docs/cursor-work/sql/E156_founder_sessions_advanced.sql + CHECK_E156.sql) written, local Postgres proof twice. Next: he runs sql-run.sh (grep E156) and pastes; then D2b Rust (plan docs/claude/G-MIX-D2-PLAN-10NOV.md), D3 UI, D4 live 390/820/1200. Awam passkey block waits for founder-complete.
+
+## RESUME HERE (11 Nov 2026 00:40 PKT)
+E155 + E156 GREEN on his server (SQL). Open: D2b Rust (signin.rs: founder_session_register at release with sid hash/device hash K7/net hash/protocol/kernel header/UA family/Sec-CH-UA/country from local GeoIP file, null if no file; auth gate: founder_session_check every verified request cached 3 s; endpoints board/revoke/revoke-others/ledger/policy-set needing passkey touch; hourly tick + anchor; cargo tests with a World stand-in that models real column grants), then founder-install, D3 UI card in Settings > Devices (one build, 390/820/1200+, 44 px, no sideways scroll, cinematic look), D4 live. Then L on Thu 12 Nov (Framer Motion + GSAP, Three.js WebGPU lazy). Roman Urdu short, one-line command on top, Rule-70 table at the end. Awam passkey block waits for founder-complete.
