@@ -12,6 +12,9 @@ A rule written in prose is read once and forgotten after compaction. K4 was writ
 4. CODE. Every code commit must stage `tech-contracts/CURRENT.md` (gate 2). Raw network calls in the founder UI may only go down (gate 1).
 5. GREEN only when: every row says YES, the gate checks are `ok`, live Chrome proof at 390/820/1200+, and the ledger line contains `TECH-LAW CHECKED` + `WIRED: YES / REAL: YES` (gate 3). Then STATE: GREEN.
 
+## THE TECHNOLOGY RULE IS IN FRONT OF EVERY GATE (his 11 Nov 04:39)
+rules-gate.py prints the TECH RULE as the first line of every run and appends it to EVERY fail and EVERY warning (constant TECH_RULE at the top of the file), so no gate can be read without the phase-technology rule next to it. Each gate below also names the contract file.
+
 ## THE THREE GATES (what refuses the commit)
 - GATE 1 RATCHET: `docs/claude/TECH-RATCHET.json` counts raw `fetch(` / XMLHttpRequest / `new WebSocket` in `founder-web/src` (not tests). The number may only fall. K8d drives it to the fallback-only count. New old-style network code = commit refused.
 - GATE 2 CONTRACT: founder code (`founder-web/src`, `server/founder/src`, SQL) changed => `docs/claude/tech-contracts/CURRENT.md` must be in the commit, must say `TECH CONTRACT FOR PHASE`, and if `STATE: GREEN` no row may say `NO`.

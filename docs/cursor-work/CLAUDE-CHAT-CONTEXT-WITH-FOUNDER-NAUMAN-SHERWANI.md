@@ -2908,3 +2908,6 @@ His 04:33 order (capitals): after compaction Claude reads ONE thing first and th
 
 ## RESUME HERE (11 Nov 2026 04:50 PKT) HE SLEEPS; COMPACTION PROBLEM SOLVED FOR GOOD
 His 04:39: the gaps are fixed TOMORROW, then the next order; when he says "shuru kero" Claude resumes from the repo. DONE: docs/claude/RESUME-POINT.md = the ONE resume file (facts, open gaps, tomorrow's order, technology capitals, mobile/tablet/laptop rule, codes pointers, "no pending server command"); a 4th gate in rules-gate.py refuses any code or DONE-ledger commit that does not also update RESUME-POINT.md, so it can never go stale; pointers at the top of CLAUDE.md, AGENTS.md and START-HERE (RULE ZERO-A). Open on waking: K8d first (contract in tech-contracts/CURRENT.md), then K7c enforce, then L, M, N..X, Q.
+
+## RESUME HERE (11 Nov 2026 04:55 PKT) TECH RULE IN FRONT OF EVERY GATE
+His 04:39: "her gate ke agay technology phase wala rule likho". rules-gate.py now prints the TECH RULE (listed technology of the phase first, HTTP/3, Rust WASM kernel, WebTransport, ML-KEM, latest only; contract in tech-contracts/CURRENT.md) as the first line of every run and appends it to every FAIL and every warning. Documented in TECH-FIRST-PROTOCOL.md. Everything else unchanged: resume from docs/claude/RESUME-POINT.md.

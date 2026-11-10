@@ -1880,3 +1880,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 04:40 PKT: TECH-LAW-GATE.json +2 open gaps (K7-devicekey-fetch, K7-devicekey-pq). Do not remove until K8d / Q land.
 - 11 Nov 2026 04:45 PKT WRITTEN: TECH-FIRST-PROTOCOL.md + tech-contracts/CURRENT.md (K8d) + TECH-RATCHET.json + 3 rules-gate gates (tested). Do not rewrite; K8d is the next code.
 - 11 Nov 2026 04:50 PKT WRITTEN: docs/claude/RESUME-POINT.md + gate 4 (RESUME POINT). Do not rewrite; update the file at every step.
+- 11 Nov 2026 04:55 PKT WRITTEN: TECH_RULE constant in rules-gate.py: printed first on every run and appended to every fail and warning (his 04:39). TECH-FIRST-PROTOCOL updated.

@@ -3037,3 +3037,6 @@ His verbatim (04:33, capitals): 'MUJHE FOREVER SOLUTION DO ... CLAUDE COMPACT KE
 
 ## 11 Nov 2026 04:50 PKT
 His 04:39: gaps get fixed tomorrow; 'shuru kero' = resume from the repo; solve the compaction problem forever. Done: RESUME-POINT.md + gate 4.
+
+## 11 Nov 2026 04:55 PKT
+His 04:39: write the technology/phase rule in front of every gate. Done in rules-gate.py (TECH_RULE on every run, fail, warn).

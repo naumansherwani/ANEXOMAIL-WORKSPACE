@@ -18,12 +18,17 @@ if "--all" in sys.argv:  # audit the whole founder tree, not just a commit
 fails, warns = [], []
 
 
+# THE TECHNOLOGY RULE IN FRONT OF EVERY GATE (founder 11 Nov 2026 04:39, "her gate ke agay technology phase wala rule likho"):
+# every FAIL and every warning carries it, and the whole run prints it first, so no gate is ever read without it.
+TECH_RULE = "TECH RULE: the phase's LISTED technology (CLAUDE.md line 18 + TECH LAW cell in BLUEPRINT-ABC-01NOV.md) must be in code BEFORE green: HTTP/3 primary, Rust WASM kernel, WebTransport, ML-KEM, latest only; contract = docs/claude/tech-contracts/CURRENT.md"
+
+
 def fail(rule, msg):
-    fails.append(f"FAIL [{rule}] {msg}")
+    fails.append(f"FAIL [{rule}] {msg}  || {TECH_RULE}")
 
 
 def warn(rule, msg):
-    warns.append(f"warn [{rule}] {msg}")
+    warns.append(f"warn [{rule}] {msg}  || TECH RULE: listed technology first (docs/claude/tech-contracts/CURRENT.md)")
 
 
 code = [f for f in staged if re.match(r"(founder-web/src|server/founder/src)/.*\.(jsx?|css|rs)$", f) and os.path.exists(f)]
@@ -203,6 +208,7 @@ for led in ("docs/cursor-work/DONE-DO-NOT-REPEAT.md", "docs/claude/CLOSE-THE-GAP
 rp = "docs/claude/RESUME-POINT.md"
 if (code_staged or "docs/cursor-work/DONE-DO-NOT-REPEAT.md" in staged) and rp not in staged:
     fail("RESUME POINT", "code or the DONE ledger changed but docs/claude/RESUME-POINT.md (where we stopped + tomorrow's order) is not in this commit")
+print("== " + TECH_RULE)
 for w in warns:
     print(w)
 for x in fails:

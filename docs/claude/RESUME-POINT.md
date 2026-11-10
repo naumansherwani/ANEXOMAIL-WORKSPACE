@@ -1,6 +1,6 @@
 <!--TECHLAW-->
 # RESUME POINT (the ONE file to open when the founder says "shuru kero / jahan rukay thay"; kept current by rules-gate)
-LAST UPDATED: 11 Nov 2026 04:50 PKT. Founder went to sleep at ~04:40 PKT; he restarts from here.
+LAST UPDATED: 11 Nov 2026 04:55 PKT (TECH RULE now printed in front of EVERY gate, fail and warning). Founder went to sleep at ~04:40 PKT; he restarts from here.
 
 ## STEP 0 (every Claude, after compaction or a new chat, in this order)
 1. docs/claude/TECH-FIRST-PROTOCOL.md  2. docs/claude/tech-contracts/CURRENT.md  3. this file  4. newest "RESUME HERE" at the bottom of docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md  5. docs/claude/START-HERE-AFTER-COMPACTION.md (8 rules). Then talk: Roman Urdu, short, "Aap / Nauman bhai", end with the Rule-70 table + "Abhi code mein NAHI".
