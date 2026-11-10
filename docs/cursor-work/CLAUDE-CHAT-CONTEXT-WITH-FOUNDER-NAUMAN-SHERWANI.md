@@ -2835,3 +2835,6 @@ E155 GREEN 22:16. E156 (docs/cursor-work/sql/E156_founder_sessions_advanced.sql 
 
 ## RESUME HERE (11 Nov 2026 00:40 PKT)
 E155 + E156 GREEN on his server (SQL). Open: D2b Rust (signin.rs: founder_session_register at release with sid hash/device hash K7/net hash/protocol/kernel header/UA family/Sec-CH-UA/country from local GeoIP file, null if no file; auth gate: founder_session_check every verified request cached 3 s; endpoints board/revoke/revoke-others/ledger/policy-set needing passkey touch; hourly tick + anchor; cargo tests with a World stand-in that models real column grants), then founder-install, D3 UI card in Settings > Devices (one build, 390/820/1200+, 44 px, no sideways scroll, cinematic look), D4 live. Then L on Thu 12 Nov (Framer Motion + GSAP, Three.js WebGPU lazy). Roman Urdu short, one-line command on top, Rule-70 table at the end. Awam passkey block waits for founder-complete.
+
+## RESUME HERE (11 Nov 2026 00:50 PKT)
+STANDING RULE 9 (his 00:44): each founder phase also updates its awam blueprint line. NOW D2b Rust: plan + technology written (docs/claude/G-MIX-D2B-PLAN-11NOV.md), no SQL. Next: write server/founder/src/sessions.rs with stand-in tests, wire into signin.rs release + auth gate, endpoints, tick; then founder-install line; D3 UI; D4 live 390/820/1200+. Then L on 12 Nov.

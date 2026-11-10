@@ -2952,3 +2952,6 @@ D2 Rust with technology on top and every loophole fixed; edit E155 keep it intac
 
 ## 11 Nov 2026 00:40 PKT - his paste: E156 sql-run
 CHECK_E156 5/5 OK, DONE sab theek. He also ordered (again): update context/codes/technology/mobile/tablet/rules for compaction, and tell today's phase vs the date plan + next phase technology. Done in this commit.
+
+## 11 Nov 2026 00:50 PKT - his order 00:44
+New standing rule: every founder phase also updates the awam blueprint (so awam code is easy later). Next founder phase: technology at repo top, world-advanced plan, SQL only if needed, then code. Update context/codes/technology/mobile/tablet/rules now. Done: START-HERE rule 9, G-MIX-D2B-PLAN-11NOV.md, AP9 note.

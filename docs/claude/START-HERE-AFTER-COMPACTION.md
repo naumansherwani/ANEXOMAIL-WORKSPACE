@@ -294,3 +294,6 @@ K4 GREEN. K5a LIVE on the real :443 (awam-edge, separate program, 23 hosts AES-2
 - 09 Nov 2026 21:15 PKT: K7 = a (DBSC, Chrome) + b (WebCrypto device key, every browser/phone). E149 green. See K7 design doc UPDATE section.
 
 > **LOGIN UI LAW (founder 10 Nov 2026 01:41): see docs/claude/FOUNDER-LOGIN-UI-LAW-10NOV.md. The founder login = the exact old awam login look + the Founder protocol line. Never redesign, never touch awam code or lovable-gold.**
+
+## STANDING RULE 9 (founder 11 Nov 2026 00:44 PKT): EVERY FOUNDER PHASE ALSO UPDATES THE AWAM BLUEPRINT
+When a founder phase is planned or turns GREEN, the SAME commit adds/updates its awam line (what awam gets, moulded for awam: own tables, own SQL numbers, customer wording, no 2FA, no founder wording, GREEN stamp blank) in docs/claude/AWAM-PASSKEY-ONLY-PLAN-10NOV.md (AP lines) so the awam code later is easy to write. Never mix founder and awam code. Order for a phase: (1) technology written at the repo top, (2) plan, (3) SQL only if needed (super advanced), (4) Rust/UI code, (5) records + chat context + codes + mobile/tablet notes updated right after EVERY step.
