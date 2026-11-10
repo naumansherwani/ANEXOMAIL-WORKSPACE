@@ -263,6 +263,7 @@ server/founder/src/main.rs
 server/founder/src/passkey.rs
 server/founder/src/polar.rs
 server/founder/src/portable.rs
+server/founder/src/sessions.rs
 server/founder/src/settings.rs
 server/founder/src/settings_s2.rs
 server/founder/src/sign.rs

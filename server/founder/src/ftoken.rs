@@ -13,7 +13,7 @@ const SKEW: i64 = 60;
 pub struct Keys { pair: EcdsaKeyPair, public: Vec<u8> }
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct FClaims { pub sub: String, pub email: String, pub did: String, pub exp: i64 }
+pub struct FClaims { pub sub: String, pub email: String, pub did: String, pub exp: i64, pub sid: Option<String> }
 
 #[derive(Debug, PartialEq)]
 pub enum FErr { Malformed, Alg, Kid, Signature, Aud, Expired, NotYet, Ttl }
@@ -29,12 +29,14 @@ impl Keys {
     pub fn generate_pkcs8() -> Option<Vec<u8>> {
         EcdsaKeyPair::generate_pkcs8(&ECDSA_P256_SHA256_FIXED_SIGNING, &SystemRandom::new()).ok().map(|d| d.as_ref().to_vec())
     }
-    pub fn mint(&self, sub: &str, email: &str, did: &str, now: i64) -> Option<(String, i64)> {
+    pub fn mint(&self, sub: &str, email: &str, did: &str, now: i64) -> Option<(String, i64)> { self.mint_sid(sub, email, did, None, now) }
+    /// D2b: `sid` = sha-256 of the session identity (64 hex), the key of the Devices & Sessions registry. A token without one is a pre-D2b token (15 min life).
+    pub fn mint_sid(&self, sub: &str, email: &str, did: &str, sid: Option<&str>, now: i64) -> Option<(String, i64)> {
         let exp = now + TTL_SECS;
         let mut jti = [0u8; 16];
         ring::rand::SecureRandom::fill(&SystemRandom::new(), &mut jti).ok()?;
         let h = B64.encode(json!({"alg": "ES256", "typ": "JWT", "kid": KID}).to_string());
-        let p = B64.encode(json!({"iss": AUD, "aud": AUD, "sub": sub, "email": email, "did": did, "iat": now, "exp": exp, "jti": B64.encode(jti)}).to_string());
+        let p = B64.encode(json!({"iss": AUD, "aud": AUD, "sub": sub, "email": email, "did": did, "sid": sid, "iat": now, "exp": exp, "jti": B64.encode(jti)}).to_string());
         let msg = format!("{h}.{p}");
         let sig = self.pair.sign(&SystemRandom::new(), msg.as_bytes()).ok()?;
         Some((format!("{msg}.{}", B64.encode(sig.as_ref())), exp))
@@ -65,7 +67,7 @@ pub fn verify(token: &str, public: &[u8], now: i64) -> Result<FClaims, FErr> {
     if iat > now + SKEW { return Err(FErr::NotYet); }
     if exp - iat > TTL_SECS { return Err(FErr::Ttl); }
     let s = |k: &str| c[k].as_str().filter(|x| !x.is_empty()).map(String::from).ok_or(FErr::Malformed);
-    Ok(FClaims { sub: s("sub")?, email: c["email"].as_str().unwrap_or("").to_string(), did: s("did")?, exp })
+    Ok(FClaims { sub: s("sub")?, email: c["email"].as_str().unwrap_or("").to_string(), did: s("did")?, exp, sid: c["sid"].as_str().filter(|x| x.len() == 64 && x.bytes().all(|b| b.is_ascii_hexdigit())).map(String::from) })
 }
 
 /// sha256(device_id) hex — DB mein raw device_id kabhi nahi.

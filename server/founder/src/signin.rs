@@ -151,7 +151,7 @@ fn session_answer(p: &Parked, rel: &Value) -> Response {
 /// The one door out: release (once), then and only then the tokens. A released ticket of another founder than the session's is never answered.
 async fn release(sb: &Sb, th: &str, p: &Parked) -> Response {
     match sb.rpc_msg("founder_signin_release_v2", json!({"p_ticket_hash": th, "p_net_hash": p.net})).await {
-        Ok(v) if v["ok"].as_bool() == Some(true) && v["uid"].as_str().map(|u| u.eq_ignore_ascii_case(&p.uid)).unwrap_or(false) => session_answer(p, &v),
+        Ok(v) if v["ok"].as_bool() == Some(true) && v["uid"].as_str().map(|u| u.eq_ignore_ascii_case(&p.uid)).unwrap_or(false) => { crate::sessions::note_method(&p.uid, v["method"].as_str().unwrap_or("password")); session_answer(p, &v) }
         Ok(_) => { end_session(sb, &p.token).await; generic_401() }
         Err(_) => { end_session(sb, &p.token).await; busy_503() }
     }

@@ -2838,3 +2838,6 @@ E155 + E156 GREEN on his server (SQL). Open: D2b Rust (signin.rs: founder_sessio
 
 ## RESUME HERE (11 Nov 2026 00:50 PKT)
 STANDING RULE 9 (his 00:44): each founder phase also updates its awam blueprint line. NOW D2b Rust: plan + technology written (docs/claude/G-MIX-D2B-PLAN-11NOV.md), no SQL. Next: write server/founder/src/sessions.rs with stand-in tests, wire into signin.rs release + auth gate, endpoints, tick; then founder-install line; D3 UI; D4 live 390/820/1200+. Then L on 12 Nov.
+
+## RESUME HERE (11 Nov 2026 01:05 PKT)
+D2b Rust WRITTEN + tested, pushed. Next ONE step for him: founder-install line (see PULL-COMMANDS.md), then sign in once and check Settings: board endpoint /founder/v1/sessions/board shows his session. Then D3 UI card (Settings > Devices, one build, 390/820/1200+), D4 live proof, then D2b-5 policy endpoint with passkey touch. Then L (Thu 12 Nov).

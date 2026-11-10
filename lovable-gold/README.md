@@ -12,4 +12,4 @@ polish it and migrate it to the latest technology (Rust). The live files stay wh
 * `MANIFEST.sha256` = sha256 of every file here. READ-ONLY: the rules-gate fails if this folder differs from the live files or from the manifest.
 * Refresh only through `python3 lanes/lane-sync.py`, after a live file was changed on purpose. Cutover T may delete a LIVE file only on the founder's word; the copy here stays.
 * The migration plan and counts: `docs/claude/LOVABLE-BUN-MIGRATION-PLAN-03NOV.md`. Lane lists: `lanes/{founder,awam,shared,docs}.txt` (every tracked file in exactly one), `lanes/lovable-awam.txt`, `lanes/lovable-founder.txt`.
-Counts at generation: {'founder': 321, 'awam': 1348, 'shared': 70, 'docs': 331}.
+Counts at generation: {'founder': 322, 'awam': 1348, 'shared': 70, 'docs': 331}.

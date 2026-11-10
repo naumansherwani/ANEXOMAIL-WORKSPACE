@@ -41,6 +41,7 @@ mod lease;
 mod dbsc;
 mod auth;
 mod signin;
+mod sessions;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -102,7 +103,16 @@ fn write_ok(st: &St, h: &HeaderMap, method: &str, path: &str, body: &[u8]) -> Re
     let key = sign::req_key(&st.hmac_key, tok);
     match (ts, sig) {
         (Some(ts), Some(sig)) if sign::req_verify(&key, method, path, ts, body, sig, now_s()) => Ok(()),
-        _ => Err((StatusCode::UNAUTHORIZED, Json(json!({"error": "request signature missing or invalid"}))).into_response()),
+        _ => {
+            // D2b L6: a bad signature counts against this session's failure streak (fire and forget; ten in a row end the session)
+            if let (Some(sb), Some(k)) = (&st.sb, &st.ft) {
+                if let Some(sid) = k.verify(tok, now_s()).ok().and_then(|c| c.sid) {
+                    let (sb2, f) = (sb.clone(), sessions::facts(h, &st.hmac_key));
+                    tokio::spawn(async move { let _ = sessions::check(&sb2, &sid, &f, false, None).await; });
+                }
+            }
+            Err((StatusCode::UNAUTHORIZED, Json(json!({"error": "request signature missing or invalid"}))).into_response())
+        }
     }
 }
 
@@ -135,6 +145,11 @@ async fn authed_with(st: &St, h: &HeaderMap, fresh: bool) -> Result<jwt_core::Cl
     if ftoken::looks_founder(tok) {
         let Some(k) = &st.ft else { return Err(StatusCode::UNAUTHORIZED) };
         let c = k.verify(tok, now_s()).map_err(|_| StatusCode::UNAUTHORIZED)?;
+        // D2b: a token that carries a session id is only good while the Devices & Sessions door says `live` (revoked / expired / drift / location / flapping all end here).
+        if let Some(sid) = &c.sid {
+            if fresh { sessions::cache_drop(sid); } // writes always ask the database fresh
+            if sessions::check(sb, sid, &sessions::facts(h, &st.hmac_key), true, None).await != sessions::Verdict::Live { return Err(StatusCode::UNAUTHORIZED); }
+        }
         // L2 (30 Oct): dono DB checks ek saath (pehle line se, 2 round-trip); natija wahi: founder nahi => 403, device revoke => 401 (foran band)
         if !fresh && st.gate.ok(&c.sub, &c.did, || async { let (f, d) = tokio::join!(sb.is_founder(&c.sub), sb.device_ok(&c.sub, &c.did)); f && d }).await {
             return Ok(jwt_core::Claims { sub: c.sub, email: c.email, session_id: None, exp: c.exp }); // 30 Oct refresh speed: same (account, device) shares one answer for 5 s
@@ -343,6 +358,7 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
             // K7 DBSC: a device that is bound to a TPM key must present the short-lived bound cookie to get a founder token (mode enforce); observe only records.
             let dev_hash = ftoken::device_hash(&b.device_id);
             let mut bound = false;
+            let mut key_info: Option<(String, String)> = None; // (source, sha-256 of the public key): only when THIS exchange proved the key
             if st.dbsc != dbsc::Mode::Off {
                 let state = sb.rpc("founder_dbsc_device_state", json!({"p_uid": c.sub, "p_device_hash": dev_hash})).await;
                 let bound_sid = state.as_ref().filter(|v| v["bound"].as_bool() == Some(true)).and_then(|v| v["sid"].as_str().map(String::from));
@@ -359,6 +375,11 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
                         }
                     }
                 }
+                if cookie_sid.is_some() {
+                    let src = state.as_ref().and_then(|v| v["source"].as_str()).filter(|x| matches!(*x, "dbsc" | "webcrypto")).unwrap_or("dbsc").to_string();
+                    let basis = state.as_ref().and_then(|v| v["pub"].as_str()).map(String::from).or_else(|| bound_sid.clone()).unwrap_or_default();
+                    if !basis.is_empty() { key_info = Some((src, dbsc::sha256_hex(&basis))); }
+                }
                 let decision = dbsc::gate_exchange(st.dbsc, bound_sid.as_deref(), cookie_sid.as_deref());
                 let (kind, why) = match &decision { dbsc::Decision::Block(w) => ("blocked", *w), dbsc::Decision::AllowWould(w) => ("would_block", *w), dbsc::Decision::Allow => ("", "") };
                 if !kind.is_empty() {
@@ -369,7 +390,17 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
                     return (StatusCode::UNAUTHORIZED, Json(json!({"error": "dbsc_required", "why": w, "note": "this device is bound to its secure key; reload the page so the browser refreshes the bound cookie, or revoke the binding from another approved device"}))).into_response();
                 }
             }
-            let Some((token, exp)) = keys.mint(&c.sub, &c.email, did, now_s()) else { return StatusCode::INTERNAL_SERVER_ERROR.into_response(); };
+            // D2b R1: the session is recorded BEFORE any token exists; a refusal here means no token, never a half-signed-in session.
+            let sid = sessions::sid_hash(&c.sub, c.session_id.as_deref(), &dev_hash);
+            let sf = sessions::facts(&h, &st.hmac_key);
+            match sessions::register(sb, &c.sub, &sid, &dev_hash, &sf, key_info.as_ref().map(|(a, b)| (a.as_str(), b.as_str()))).await {
+                Ok(()) => {}
+                Err("door_down") => return (StatusCode::SERVICE_UNAVAILABLE, Json(json!({"error": "session service unavailable", "retry": true}))).into_response(),
+                Err(_) => return (StatusCode::UNAUTHORIZED, Json(json!({"error": "invalid_credentials"}))).into_response(),
+            }
+            sessions::cache_drop(&sid); // idle/absolute lifetime and key drift are judged now, not from a cached answer
+            if sessions::check(sb, &sid, &sf, true, key_info.as_ref().map(|(_, b)| b.as_str())).await != sessions::Verdict::Live { return (StatusCode::UNAUTHORIZED, Json(json!({"error": "invalid_credentials"}))).into_response(); }
+            let Some((token, exp)) = keys.mint_sid(&c.sub, &c.email, did, Some(&sid), now_s()) else { return StatusCode::INTERNAL_SERVER_ERROR.into_response(); };
             st.lim.lock().unwrap().clear(&key);
             { // L5 v2: where was this founder session made? (fire and forget, never slows or fails the sign-in)
                 let (sb2, host) = (sb.clone(), hostproof::host_of(&h)); let fh = hostproof::is_founder_host(&host, &hostproof::founder_hosts());
@@ -722,6 +753,62 @@ async fn action_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Bytes) -
     (StatusCode::CONFLICT, Json(json!({"error": "executor not enabled yet (F8) — attempt recorded in audit", "audit": a}))).into_response()
 }
 
+// ---------- D2b: Devices & Sessions endpoints (SQL E155 + E156 doors; everything signed like the other founder answers) ----------
+fn cur_sid(st: &St, h: &HeaderMap) -> Option<String> {
+    let tok = gate::bearer(h.get("authorization").and_then(|v| v.to_str().ok()))?;
+    st.ft.as_ref()?.verify(tok, now_s()).ok()?.sid
+}
+fn is_h64(x: &str) -> bool { x.len() == 64 && x.bytes().all(|b| b.is_ascii_hexdigit()) }
+fn sess_missing() -> Value { json!({"available": false, "note": "Devices & Sessions SQL (E155 + E156) is not answering. Run sql-run.sh once, then reload."}) }
+
+async fn sess_board_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
+    let c = match authed(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
+    match sessions::board(st.sb.as_ref().unwrap(), &c.sub, cur_sid(&st, &h).as_deref()).await {
+        Some(v) if !v.is_null() => signed(&st, json!({"available": true, "data": v})),
+        _ => signed(&st, sess_missing()),
+    }
+}
+#[derive(serde::Deserialize)]
+struct LedgerQ { #[serde(default)] limit: Option<i64>, #[serde(default)] before: Option<i64> }
+async fn sess_ledger_ep(State(st): State<S>, h: HeaderMap, axum::extract::Query(q): axum::extract::Query<LedgerQ>) -> axum::response::Response {
+    let c = match authed(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
+    match sessions::ledger_page(st.sb.as_ref().unwrap(), &c.sub, q.limit.unwrap_or(50), q.before.filter(|b| *b > 0)).await {
+        Some(v) if !v.is_null() => signed(&st, json!({"available": true, "data": v})),
+        _ => signed(&st, sess_missing()),
+    }
+}
+#[derive(serde::Deserialize)]
+struct RevokeIn { sid_hash: String }
+/// POST {sid_hash}: close one session (the nuke button). Signed write; takes effect on that session's very next request.
+async fn sess_revoke_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Bytes) -> axum::response::Response {
+    let c = match authed_w(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
+    if let Err(r) = write_ok(&st, &h, "POST", "/founder/v1/sessions/revoke", &body) { return r; }
+    let Ok(b) = serde_json::from_slice::<RevokeIn>(&body) else { return bad("invalid body") };
+    if !is_h64(&b.sid_hash) { return bad("invalid session"); }
+    match sessions::revoke(st.sb.as_ref().unwrap(), &c.sub, &b.sid_hash.to_ascii_lowercase()).await {
+        Some(v) if !v.is_null() => signed(&st, json!({"ok": v["ok"].as_bool().unwrap_or(false), "data": v})),
+        _ => (StatusCode::BAD_GATEWAY, Json(sess_missing())).into_response(),
+    }
+}
+/// POST: close every session except the one making the request.
+async fn sess_revoke_others_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Bytes) -> axum::response::Response {
+    let c = match authed_w(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
+    if let Err(r) = write_ok(&st, &h, "POST", "/founder/v1/sessions/revoke-others", &body) { return r; }
+    let Some(keep) = cur_sid(&st, &h) else { return bad("this token has no session; sign in again") };
+    match sessions::revoke_others(st.sb.as_ref().unwrap(), &c.sub, &keep).await {
+        Some(v) if !v.is_null() => signed(&st, json!({"ok": v["ok"].as_bool().unwrap_or(false), "data": v})),
+        _ => (StatusCode::BAD_GATEWAY, Json(sess_missing())).into_response(),
+    }
+}
+// The location-lock / policy endpoint (founder_session_policy_set_v2) is NOT routed yet on purpose: it needs a fresh passkey touch (D2b-5, open gap in docs/claude/G-MIX-D2B-PLAN-11NOV.md).
+
+/// D2b: stamp the protocol the SERVER saw (h3 / h2 / h1) and drop any client-sent copy; the Devices & Sessions badge is never the browser's word.
+async fn stamp_proto(mut req: axum::extract::Request, next: axum::middleware::Next) -> axum::response::Response {
+    let v = match req.version() { axum::http::Version::HTTP_3 => "h3", axum::http::Version::HTTP_2 => "h2", _ => "h1" };
+    req.headers_mut().insert(HeaderName::from_static("x-fo-proto"), HeaderValue::from_static(v));
+    next.run(req).await
+}
+
 pub fn app(st: S) -> Router {
     let static_dir = std::env::var("FOUNDER_STATIC").unwrap_or_else(|_| "/opt/anexomail-founder/web".into());
     Router::new()
@@ -738,6 +825,10 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/devicekey/register", axum::routing::post(dbsc::devicekey_register_ep))
         .route("/founder/v1/keys", get(keys_ep))
         .route("/founder/v1/me", get(me))
+        .route("/founder/v1/sessions/board", get(sess_board_ep))
+        .route("/founder/v1/sessions/ledger", get(sess_ledger_ep))
+        .route("/founder/v1/sessions/revoke", axum::routing::post(sess_revoke_ep))
+        .route("/founder/v1/sessions/revoke-others", axum::routing::post(sess_revoke_others_ep))
         .route("/founder/v1/bridge", get(bridge_ep))
         .route("/founder/v1/settings", get(settings_ep).put(settings_put))
         .route("/founder/v1/settings/history", get(s2_history_ep))
@@ -801,6 +892,7 @@ pub fn app(st: S) -> Router {
         .layer(hdr("cross-origin-embedder-policy", "require-corp"))
         .layer(hdr("cache-control", "no-store"))
         .layer(axum::middleware::from_fn(asset_cache))
+        .layer(axum::middleware::from_fn(stamp_proto))
         .layer(axum::middleware::from_fn(strip_cc)) // K4: the SPA is built for the /_cc/ prefix (Caddy strips it); the own TLS terminator has no Caddy, so it strips it itself
 }
 
@@ -864,7 +956,7 @@ async fn main() {
         return;
     }
     let sb = data::Sb::from_env();
-    if let Some(s) = &sb { s.keepalive(); }
+    if let Some(s) = &sb { s.keepalive(); sessions::spawn_upkeep(s.clone()); }
     let ft = std::env::var("FOUNDER_TOKEN_KEY_FILE").unwrap_or_else(|_| "/etc/anexomail/founder-token.p8".into());
     let ft = std::fs::read(&ft).ok().and_then(|d| ftoken::Keys::from_pkcs8(&d));
     let legacy = std::env::var("FOUNDER_LEGACY_TOKEN").map(|v| v != "0").unwrap_or(true);
@@ -943,6 +1035,67 @@ mod tests {
     use super::*;
     use axum::{body::Body, http::Request};
     use tower::ServiceExt;
+    // ---- D2b: the gate end to end against a loopback database that only answers SQL doors ----
+    #[derive(Clone, Default)]
+    struct SWorld { rpc: Arc<std::sync::Mutex<Vec<(String, Value)>>>, state: Arc<std::sync::Mutex<String>> }
+    async fn sworld() -> (data::Sb, SWorld) {
+        use axum::extract::{Path as P2, State as S2};
+        let w = SWorld::default();
+        *w.state.lock().unwrap() = "live".into();
+        let r = Router::new()
+            .route("/rest/v1/founder_accounts", get(|| async { Json(json!([{"user_id": "a1b2c3d4-0000-4000-8000-000000000001"}])) }))
+            .route("/rest/v1/rpc/{name}", axum::routing::post(|S2(w): S2<SWorld>, P2(n): P2<String>, Json(b): Json<Value>| async move {
+                w.rpc.lock().unwrap().push((n.clone(), b));
+                let v = match n.as_str() {
+                    "founder_device_ok" => json!(true),
+                    "founder_session_check" => { let s = w.state.lock().unwrap().clone(); json!({"ok": s == "live", "state": s}) }
+                    "founder_sessions_board" => json!({"ok": true, "sessions": []}),
+                    _ => json!({"ok": true}),
+                };
+                Json(v)
+            })).with_state(w.clone());
+        let l = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let url = format!("http://{}", l.local_addr().unwrap());
+        tokio::spawn(async move { axum::serve(l, r).await.unwrap(); });
+        (data::Sb { url, key: "svc".into(), http: reqwest::Client::new() }, w)
+    }
+    fn cnt(w: &SWorld, n: &str) -> usize { w.rpc.lock().unwrap().iter().filter(|(x, _)| x == n).count() }
+    #[tokio::test]
+    async fn the_gate_closes_a_session_the_database_closes_and_cannot_be_talked_round() {
+        let (sb, w) = sworld().await;
+        let keys = ftoken::Keys::from_pkcs8(&ftoken::Keys::generate_pkcs8().unwrap()).unwrap();
+        let sid = "a".repeat(64);
+        let (tok, _) = keys.mint_sid("a1b2c3d4-0000-4000-8000-000000000001", "e@x.com", "de01", Some(&sid), now_s()).unwrap();
+        let (old, _) = keys.mint("a1b2c3d4-0000-4000-8000-000000000001", "e@x.com", "de01", now_s()).unwrap();
+        let st = Arc::new(St { sb: Some(sb), hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default(), ft: Some(keys), legacy: false, polar: polar::Live::off(), hook: Default::default(), ed: None, reqsig: false, gate: authcache::AuthCache::new(std::time::Duration::from_secs(5)), dbsc: dbsc::Mode::Off });
+        let get_board = |t: String, extra: Option<(&'static str, &'static str)>| { let st = st.clone(); async move {
+            let mut rq = Request::get("/founder/v1/sessions/board").header("authorization", format!("Bearer {t}")).header("user-agent", "Mozilla/5.0 Chrome/130.0 Safari/537.36");
+            if let Some((k, v)) = extra { rq = rq.header(k, v); }
+            app(st).oneshot(rq.body(Body::empty()).unwrap()).await.unwrap() } };
+        sessions::cache_drop(&sid);
+        assert_eq!(get_board(tok.clone(), Some(("x-fo-proto", "h3"))).await.status(), StatusCode::OK);
+        let a = w.rpc.lock().unwrap().iter().find(|(n, _)| n == "founder_session_check").unwrap().1.clone();
+        assert_eq!((a["p_protocol"].as_str(), a["p_ua_family"].as_str(), a["p_sid_hash"].as_str()), (Some("h1"), Some("chrome"), Some(sid.as_str())), "a client-sent protocol header is overwritten by the real connection");
+        assert_eq!(cnt(&w, "founder_sessions_board"), 1);
+        assert_eq!(get_board(tok.clone(), None).await.status(), StatusCode::OK);
+        assert_eq!(cnt(&w, "founder_session_check"), 1, "the second request within 3 s rides the cache");
+        // the database closes the session: the very next fresh read is refused with the same 401 as a bad token
+        sessions::cache_drop(&sid);
+        *w.state.lock().unwrap() = "geo_outside".into();
+        assert_eq!(get_board(tok.clone(), None).await.status(), StatusCode::UNAUTHORIZED);
+        // a token minted before D2b (no sid) is still accepted until its own 15 minutes end, and never reaches the check door
+        let before = cnt(&w, "founder_session_check");
+        assert_eq!(get_board(old, None).await.status(), StatusCode::OK);
+        assert_eq!(cnt(&w, "founder_session_check"), before);
+        // revoke: signed-write is off in this world; the door is called with the nuke reason and the cache is dropped
+        *w.state.lock().unwrap() = "live".into();
+        sessions::cache_put(&sid, std::time::Instant::now());
+        let r = app(st.clone()).oneshot(Request::post("/founder/v1/sessions/revoke").header("authorization", format!("Bearer {tok}")).header("content-type", "application/json").body(Body::from(json!({"sid_hash": "b".repeat(64)}).to_string())).unwrap()).await.unwrap();
+        assert_eq!(r.status(), StatusCode::OK);
+        assert_eq!(w.rpc.lock().unwrap().iter().rev().find(|(n, _)| n == "founder_session_revoke").unwrap().1["p_reason"], "founder_nuke");
+        let bad = app(st.clone()).oneshot(Request::post("/founder/v1/sessions/revoke").header("authorization", format!("Bearer {tok}")).header("content-type", "application/json").body(Body::from(json!({"sid_hash": "nothex"}).to_string())).unwrap()).await.unwrap();
+        assert_eq!(bad.status(), StatusCode::BAD_REQUEST);
+    }
     #[test]
     fn live_missing_never_pretends() {
         let v = live_missing();

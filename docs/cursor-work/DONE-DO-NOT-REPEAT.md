@@ -1855,3 +1855,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 00:40 PKT: E156 GREEN on his server (SQL layer). Never re-send E155 or E156. Next: D2b Rust.
 
 - 11 Nov 2026 00:50 PKT: D2b plan written, rule 9 recorded. No Rust written yet.
+
+- 11 Nov 2026 01:05 PKT: D2b Rust written (sessions.rs, exchange register, gate check, 4 endpoints, kernel header). 286 cargo + 159 bun tests. Needs founder-install + live proof; policy endpoint open.

@@ -2,6 +2,9 @@
 // F1a: the session token is exchanged ONCE per 15 minutes for a founder token (aud=anexo-founder, device-bound) which lives in MEMORY only.
 // If the server has no token service yet (install pending), calls fall back to the session token and the page says so plainly.
 import { verifyBody } from "./kernel";
+import { KERNEL } from "./kernel.pin";
+// D2b: the kernel build this browser runs travels with every founder request, so Devices & Sessions can see a build change inside one session (a claim, never proof).
+const KV = { "x-founder-kernel": KERNEL.version } as const;
 import { openSealed, seal } from "./snap_seal";
 import { browserName } from "./devicelabel";
 import { EXPIRES_KEY, REFRESH_KEY, TICK_MS, classifyRefresh, knownExpiry, needsRefresh } from "./session";
@@ -85,7 +88,7 @@ async function exchange(again = true): Promise<string | null> {
   if (!id) { mode = "legacy"; return null; }
   let r: Response;
   const proof = await dk.exchangeProof(id).catch(() => null);   // K7b: only when this device already has a key; otherwise the exchange is exactly as before
-  try { r = await fetch("/founder/v1/exchange", { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${t}`, ...(proof ? { "x-device-proof": proof } : {}) }, body: JSON.stringify({ device_id: id, label: deviceLabel() }), cache: "no-store" }); }
+  try { r = await fetch("/founder/v1/exchange", { method: "POST", headers: { ...KV, "content-type": "application/json", authorization: `Bearer ${t}`, ...(proof ? { "x-device-proof": proof } : {}) }, body: JSON.stringify({ device_id: id, label: deviceLabel() }), cache: "no-store" }); }
   catch { mode = "legacy"; return null; }
   if (r.status === 401) { if (again && (await renewSession())) return exchange(false); throw expired(); } // an expired session token: renew once, then ask again
   let j: any = {}; try { j = await r.json(); } catch {}
@@ -116,7 +119,7 @@ export const forget = () => { ft = null; fexp = 0; rk = null; };
 const b64u = (s: string) => Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/")), (c) => c.charCodeAt(0));
 const hex = (buf: ArrayBuffer) => [...new Uint8Array(buf)].map((x) => x.toString(16).padStart(2, "0")).join("");
 async function writeHeaders(method: string, path: string, bodyStr: string, token: string): Promise<Record<string, string>> {
-  const h: Record<string, string> = { "content-type": "application/json", authorization: `Bearer ${token}` };
+  const h: Record<string, string> = { ...KV, "content-type": "application/json", authorization: `Bearer ${token}` };
   if (!rk || token !== ft) return h; // legacy session token (grace): no request key exists
   const ts = Math.floor(Date.now() / 1000), enc = new TextEncoder();
   const bh = hex(await crypto.subtle.digest("SHA-256", enc.encode(bodyStr)));
@@ -172,7 +175,7 @@ export function get<T = any>(path: string, retry = true): Promise<Envelope<T>> {
 }
 async function getOnce<T = any>(path: string, retry = true): Promise<Envelope<T>> {
   const t = await auth(path); if (!t) throw expired();
-  const r = await fetch(path, { headers: { authorization: `Bearer ${t}` }, cache: "no-store" });
+  const r = await fetch(path, { headers: { ...KV, authorization: `Bearer ${t}` }, cache: "no-store" });
   if (r.status === 401 && retry && ft && t === ft) { forget(); return getOnce(path, false); } // revoked / expired founder token -> one fresh exchange
   if (r.status === 401) throw expired();
   if (r.status === 403) throw new Error("This account is not a founder account");
@@ -184,7 +187,7 @@ export const liveToken = () => auth("/founder/v1/live/stream");
 /** 4b-3: open a Server-Sent-Events stream with the founder token (EventSource cannot send an Authorization header). The caller reads `response.body`; every frame is verified by the kernel in live.ts. */
 export async function openStream(path: string, lastId: number, signal: AbortSignal, retry = true): Promise<Response> {
   const t = await auth(path); if (!t) throw expired();
-  const r = await fetch(path, { headers: { authorization: `Bearer ${t}`, accept: "text/event-stream", ...(lastId > 0 ? { "last-event-id": String(lastId) } : {}) }, cache: "no-store", signal });
+  const r = await fetch(path, { headers: { ...KV, authorization: `Bearer ${t}`, accept: "text/event-stream", ...(lastId > 0 ? { "last-event-id": String(lastId) } : {}) }, cache: "no-store", signal });
   if (r.status === 401 && retry && ft && t === ft) { forget(); return openStream(path, lastId, signal, false); } // revoked / expired founder token -> one fresh exchange
   if (r.status === 401) throw expired();
   if (r.status === 403) throw new Error("This account is not a founder account");
