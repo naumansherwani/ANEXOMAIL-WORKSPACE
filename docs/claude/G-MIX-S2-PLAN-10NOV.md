@@ -1,0 +1,19 @@
+
+# G-MIX 2b / S2: THE FOUNDER SIGN-IN DOOR IN RUST (plan written 10 Nov 2026 18:53 PKT, founder order 10 Nov 18:52: "advance technology, advance codes, advance SQL, UI/UX NOT touched, plan on top of the repo, read it, then start")
+Technology: Rust only (axum 0.8 + tokio + ring + reqwest/rustls) in `server/founder/src/signin.rs`. SQL = E151 + E152 (GREEN) decide, Rust only does the bytes. UI/UX: NOT touched (SignIn.tsx stays; LOGIN UI LAW). No Bun, no Node, no WebSocket. No new crate (ring, hmac, sha2, hex, reqwest already in).
+
+## What is wired (all through the E151/E152 doors, a bug in Rust cannot open a door the SQL keeps shut)
+1. **Password path** (`POST /founder/v1/auth/login`, same URL, same answer shape): identity-service password check -> founder check -> NEW: network hash = HMAC-SHA256(server key, client address) (no raw IP in the database) -> `founder_signin_locked` -> random 256-bit ticket (SHA-256 stored only) -> `founder_signin_open('password')`. Word off (his choice): ticket is born complete -> `founder_signin_release_v2` (hand-off row, risk reading, known-network memory) -> tokens go out. Word required: the identity session is PARKED in memory (120 s, single use, bound to the network) and the answer is `{step:"passkey", ticket}`. Fail closed: any SQL/identity error = 503 and the identity session is ended.
+2. **Passkey path** (NEW, pre-login, no account oracle): `POST /founder/v1/auth/passkey/begin` (discoverable credential: the browser offers HIS passkey, the server never names an account) -> in-memory ceremony (random challenge, 120 s, single use, bound to origin + network, cap 256). `POST /founder/v1/auth/passkey/finish` -> credential id -> founder passkey row (active, not revoked) -> WebAuthn assertion verified with the existing `verify_assertion` (user verification REQUIRED, challenge, origin, rp id, signature, flags) -> E139 `founder_webauthn_assert` must say allow (sign counter, clone detect, MDS) -> E151/E152 `open('passkey')` + `factor(ok)` + `release_v2` -> a session is minted by the identity service ADMIN API (generate_link + verify, nothing is mailed; this is NOT the magic-link feature) -> tokens. Failures count in the ledger (`factor_fail`) and lock the founder AND the network.
+3. **Second step when the word is required**: the same finish door accepts a ceremony tied to a parked ticket and completes it with `founder_signin_factor`.
+4. **Magic link**: still refused by SQL; no Rust door is opened for it (S5 stays "refused, honest message").
+5. Unchanged on purpose: refresh, logout, exchange (device token), DBSC/device key (K7 observe). The 5-per-15-minute memory limiter stays IN FRONT of the SQL lock (two locks, cheap one first).
+
+## Proof order (nothing is GREEN without all of it)
+a) `cargo test` (pure units: network hash, ticket, parked store single-use + expiry + cap, ceremony store, answer reducers; end-to-end axum tests against loopback stand-ins of the identity service and PostgREST for password-off, password-required, passkey happy path with a real software authenticator key, wrong challenge, foreign credential, revoked, replay, locked, SQL down).
+b) rules-gate + manifest + lanes, then his `founder-install.sh` (tests 3 tries, build, restart) and a live curl: password sign-in still 200 and a new ledger row (`founder_signin_report`).
+c) REAL passkey proof needs HIS phone or key once (UI wiring of the button = S6, look unchanged). S7 = my Chrome + his phone, 390 / 820 / 1200+.
+
+## Honest limits
+- The passkey door is live only after S6 wires the button; until then the password path is the only one the page uses.
+- I cannot touch his passkey; the real-device proof is his one numbered step.

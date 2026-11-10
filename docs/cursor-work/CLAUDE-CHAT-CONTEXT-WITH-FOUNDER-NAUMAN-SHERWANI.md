@@ -2775,3 +2775,7 @@ Checkpoint 10 Nov 2026 18:47 PKT RESUME HERE: 25 Nov = LAST day, target = as ear
 - 10 Nov 2026 18:49 PKT: HIS WORD 10 Nov 18:49: SEMINAR LAUNCH = 16 JANUARY 2027. Founder last day stays 25 Nov 2026, awam 16 Dec 2026; the weeks 17 Dec - 15 Jan are test/polish/rehearsal buffer before the launch. NEXT PHASE = S2 (G-MIX 2b), Rust signin.rs.
 
 Checkpoint 10 Nov 2026 18:49 PKT RESUME HERE: seminar launch 16 Jan 2027. Next = S2 Rust signin.rs.
+
+- 10 Nov 2026 18:53 PKT: HIS ORDER 10 Nov 18:52 (gist): advance technology + advance Rust + advance SQL, DO NOT touch UI/UX, write the plan on top in the repo, read it, then start S2 fast. DONE: plan docs/claude/G-MIX-S2-PLAN-10NOV.md written BEFORE code. Next: signin.rs.
+
+Checkpoint 10 Nov 2026 18:53 PKT RESUME HERE: S2 plan written (docs/claude/G-MIX-S2-PLAN-10NOV.md), coding signin.rs now.
