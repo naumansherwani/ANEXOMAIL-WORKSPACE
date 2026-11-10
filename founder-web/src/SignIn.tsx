@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { motion } from "motion/react";
 import { Eye, EyeOff, KeyRound, Mail, ShieldCheck } from "lucide-react";
 import { canSubmit, classifyLogin, cleanEmail, messageFor, sessionEntries, type LoginOutcome } from "./signin_pure";
+import { runPasskey } from "./signin_passkey";
 import { BrandMark } from "./signin/BrandMark";
 import { HoverA } from "./signin/BrandLoader";
 import { AuthCinema } from "./signin/AuthCinema";
@@ -13,7 +14,9 @@ import { Checkbox } from "./signin/ui/checkbox";
 /** The founder's own sign-in. LOOK + CODE = the awam login (auth.tsx, AuthCinema, BrandMark, shadcn Button/Input/Label, same Tailwind classes), copied into the founder lane (the awam files are only read, never edited),
  *  moved onto the founder stack (React 19, Tailwind 4.2, motion, lucide-react, TypeScript strict). Only the line "Founder protocol / Welcome, Founder" is added (founder order 10 Nov 2026 01:13/01:24/01:58).
  *  Talks only to /founder/v1/auth/login (Rust). One build for every screen: the side panel appears from lg (1024px), controls are 44px on touch. */
-const PENDING = "This step is being moved into the new founder sign-in and is not available yet. Use your password for now.";
+// What the two other buttons answer (nothing is sent). One factor by his word: a password signs in alone, so a lost passkey never locks him out, and an email link never signs the founder in.
+const MAGIC_OFF = "Email links never sign the founder in. Use your password or your passkey.";
+const RECOVERY_NOTE = "You do not need a recovery code to get in: your password signs you in on its own. Recovery codes only matter if a second step is ever switched on.";
 
 const SAVE_KEY = "anexo.founder.savepw"; // same behaviour as the awam page: ON by default, remembered per browser
 const readSave = () => { try { return window.localStorage.getItem(SAVE_KEY) !== "0"; } catch { return true; } };
@@ -38,11 +41,21 @@ export function SignIn() {
       let j: unknown = null; try { j = await r.json(); } catch { /* not json */ }
       out = classifyLogin(r.status, j);
     } catch { out = { kind: "offline" }; }
+    await settle(out);
+  }
+  /** One ending for every way in (password or passkey): store the session and show the splash, or say plainly what happened. */
+  async function settle(out: LoginOutcome) {
     if (out.kind === "ok") {
       try { for (const [k, v] of sessionEntries(out)) window.localStorage.setItem(k, v); } catch { setBusy(false); setMsg("This browser blocks storage, so the sign-in cannot be kept. Allow site data and try again."); return; }
       setPassword(""); setSplash(true); return;
     }
+    if (out.kind === "step") { setMsg("Touch your passkey to finish signing in."); setPassword(""); await settle(await runPasskey(out.ticket)); return; } // only if a second step is ever switched on
     setBusy(false); setPassword(""); setMsg(messageFor(out.kind));
+  }
+  async function viaPasskey() {
+    if (busy) return;
+    setBusy(true); setMsg("");
+    await settle(await runPasskey());
   }
   return (
     <>
@@ -97,9 +110,9 @@ export function SignIn() {
                 <div aria-hidden className="ax-hairline h-px flex-1" />
               </div>
               <div className="space-y-ax-2">
-                <Button type="button" variant="outline" className="ax-press w-full" onClick={() => setMsg(PENDING)} disabled={busy}><KeyRound className="size-4" />Continue with a passkey</Button>
-                <Button type="button" variant="ghost" className="w-full" onClick={() => setMsg(PENDING)}><Mail className="size-4" />Email me a sign-in link</Button>
-                <Button type="button" variant="ghost" className="w-full" onClick={() => setMsg(PENDING)}><ShieldCheck className="size-4" />Lost your passkey? Use a recovery code</Button>
+                <Button type="button" variant="outline" className="ax-press w-full" onClick={() => void viaPasskey()} disabled={busy}><KeyRound className="size-4" />Continue with a passkey</Button>
+                <Button type="button" variant="ghost" className="w-full" onClick={() => setMsg(MAGIC_OFF)}><Mail className="size-4" />Email me a sign-in link</Button>
+                <Button type="button" variant="ghost" className="w-full" onClick={() => setMsg(RECOVERY_NOTE)}><ShieldCheck className="size-4" />Lost your passkey? Use a recovery code</Button>
               </div>
             </div>
             <p className="ax-caption mt-ax-4 flex items-center justify-center gap-1.5">

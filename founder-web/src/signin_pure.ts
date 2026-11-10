@@ -3,7 +3,7 @@
 import { EXPIRES_KEY, REFRESH_KEY } from "./session";
 
 export const SESSION_KEY = "anexo.session.token";
-export type LoginOutcome = { kind: "ok"; token: string; refresh: string; expires: number | null } | { kind: "invalid" | "locked" | "busy" | "offline" | "bad_input" };
+export type LoginOutcome = { kind: "ok"; token: string; refresh: string; expires: number | null } | { kind: "step"; ticket: string } | { kind: "invalid" | "locked" | "busy" | "offline" | "bad_input" | "passkey_invalid" | "cancelled" | "unsupported" | "no_key" };
 
 export function cleanEmail(v: string): string { return v.trim().toLowerCase(); }
 /** Same shape rule as the server (one @, no spaces/control chars, <= 254). The server decides for real; this only saves a round trip. */
@@ -17,6 +17,9 @@ export function canSubmit(email: string, password: string, busy: boolean): boole
 export function classifyLogin(status: number, j: unknown): LoginOutcome {
   const o = (j && typeof j === "object" ? j : {}) as { token?: unknown; refresh_token?: unknown; expires_at?: unknown };
   if (status === 200) {
+    // S6: if the founder ever switches the second step on, a correct password answers {step:"passkey", ticket} and no token; the page then asks for the passkey
+    const st = (j && typeof j === "object" ? j : {}) as { step?: unknown; ticket?: unknown };
+    if (st.step === "passkey" && typeof st.ticket === "string" && st.ticket.length >= 20 && st.ticket.length <= 128 && typeof o.token !== "string") return { kind: "step", ticket: st.ticket };
     if (typeof o.token === "string" && o.token.length > 20 && typeof o.refresh_token === "string" && o.refresh_token.length > 0)
       return { kind: "ok", token: o.token, refresh: o.refresh_token, expires: typeof o.expires_at === "number" ? o.expires_at : null };
     return { kind: "busy" };
@@ -33,6 +36,10 @@ export function messageFor(k: LoginOutcome["kind"]): string {
     case "busy": return "The sign-in service is not answering right now. Nothing is wrong with your password. Try again in a moment.";
     case "offline": return "You look offline. Check your connection and try again.";
     case "bad_input": return "Enter your founder email and password.";
+    case "passkey_invalid": return "That passkey was not accepted. Try again, or use your password.";
+    case "cancelled": return "The passkey was not used (cancelled or timed out). Nothing was changed.";
+    case "unsupported": return "This browser cannot use a passkey here. Use your password.";
+    case "no_key": return "No passkey was chosen. Use your password, or try again.";
     default: return "";
   }
 }

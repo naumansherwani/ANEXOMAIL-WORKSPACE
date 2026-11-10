@@ -98,6 +98,9 @@ pub async fn login_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<LoginIn>)
     if b.password.is_empty() || b.password.len() > 1024 { return generic_401(); }
     let (keys, now) = (lock_keys(&h, &email), std::time::Instant::now());
     if { let mut l = st.lim.lock().unwrap(); keys.iter().any(|k| l.locked(k, now)) } { return locked_429(); }
+    // S6 loophole fix (E153): the ledger lock of the NETWORK is asked BEFORE any password is tried, and a down door is closed (503), never "try anyway".
+    let net = crate::signin::net_hash(&st.hmac_key, &crate::signin::client_ip(&h));
+    match crate::signin::net_locked(sb, &net).await { Ok(false) => {} Ok(true) => return locked_429(), Err(()) => return busy_503() }
     let Ok((code, body)) = gotrue(sb, "token?grant_type=password", Some(json!({"email": email, "password": b.password})), None).await else { return busy_503() };
     match decide(sb, parse_grant(code, &body)).await {
         // S2 (10 Nov 2026): a correct password is only the FIRST step. The sign-in ceremony (E151/E152 doors, signin.rs) decides whether a session is handed out.
@@ -106,7 +109,13 @@ pub async fn login_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<LoginIn>)
             if resp.status() == StatusCode::OK { let mut l = st.lim.lock().unwrap(); for k in &keys { l.clear(k); } }
             resp
         }
-        Err(resp) => { if resp.status() == StatusCode::UNAUTHORIZED { let mut l = st.lim.lock().unwrap(); for k in &keys { l.fail(k, now); } } resp }
+        Err(resp) => {
+            if resp.status() == StatusCode::UNAUTHORIZED {
+                { let mut l = st.lim.lock().unwrap(); for k in &keys { l.fail(k, now); } }
+                crate::signin::note_bad_password(sb, &net).await; // the append-only ledger remembers it (E153)
+            }
+            resp
+        }
     }
 }
 

@@ -95,6 +95,21 @@ impl<T> TtlMap<T> {
         self.m.insert(k, (now + ttl, v));
         true
     }
+    /// Like `put`, but when the map is full the heaviest owner pays: the OLDEST entry of the owner that holds the most is dropped, so one address
+    /// (or a few) can never fill the map and lock everyone else out; a stranger only ever evicts his own entries.
+    pub fn put_fair(&mut self, k: String, v: T, now: Instant, ttl: Duration, owner: &dyn Fn(&T) -> String) -> bool {
+        self.m.retain(|_, (e, _)| *e > now);
+        if self.m.contains_key(&k) { return false; }
+        if self.m.len() >= self.cap {
+            let mut counts: HashMap<String, usize> = HashMap::new();
+            for (_, (_, t)) in self.m.iter() { *counts.entry(owner(t)).or_default() += 1; }
+            let Some((heavy, _)) = counts.into_iter().max_by_key(|(_, c)| *c) else { return false };
+            let victim = self.m.iter().filter(|(_, (_, t))| owner(t) == heavy).min_by_key(|(_, (e, _))| *e).map(|(k, _)| k.clone());
+            match victim { Some(vk) => { self.m.remove(&vk); } None => return false }
+        }
+        self.m.insert(k, (now + ttl, v));
+        true
+    }
     pub fn take(&mut self, k: &str, now: Instant) -> Option<T> {
         match self.m.remove(k) { Some((e, v)) if e > now => Some(v), _ => None }
     }
@@ -141,6 +156,11 @@ async fn release(sb: &Sb, th: &str, p: &Parked) -> Response {
         Err(_) => { end_session(sb, &p.token).await; busy_503() }
     }
 }
+
+/// Is this NETWORK locked in the ledger (E151/E153)? Asked BEFORE any password is tried. Err = the door is down (closed).
+pub async fn net_locked(sb: &Sb, net: &str) -> Result<bool, ()> { locked(sb, None, net).await }
+/// A wrong password goes into the append-only ledger (E153), so five from one network lock that network even after a restart. Best effort: a down door never blocks the 401.
+pub async fn note_bad_password(sb: &Sb, net: &str) { let _ = sb.rpc_msg("founder_signin_password_fail", json!({"p_net_hash": net})).await; }
 
 // ------------------------------------------------------------------------------------------------------------------------------
 // password path (called by auth::login_ep after the identity service said yes and the account is a founder)
@@ -201,7 +221,7 @@ pub async fn passkey_begin_ep(State(st): State<S>, h: HeaderMap, body: axum::bod
     let cer = Cer { challenge: challenge.clone(), origin, rp: pol["rp_id"].as_str().unwrap_or("").to_string(), net: net.clone(), ticket };
     {
         let mut m = cer_store().lock().unwrap();
-        if m.count_where(now, |c| c.net == net) >= CER_PER_NET || !m.put(id.clone(), cer, now, Duration::from_secs(secs)) { return locked_429(); }
+        if m.count_where(now, |c| c.net == net) >= CER_PER_NET || !m.put_fair(id.clone(), cer, now, Duration::from_secs(secs), &|c: &Cer| c.net.clone()) { return locked_429(); }
     }
     no_store(Json(json!({"ceremony": id, "options": crate::passkey::get_options(&pol, &challenge, &allow, secs * 1000)})).into_response())
 }
@@ -376,6 +396,17 @@ mod tests {
         assert!(m.put("c".into(), 3, t0 + Duration::from_secs(20), Duration::from_secs(1))); // expired entries do not hold the cap
     }
     #[test]
+    fn a_full_map_evicts_the_heaviest_owner_never_a_stranger() {
+        let mut m: TtlMap<&'static str> = TtlMap::new(4); let t0 = Instant::now(); let own = |v: &&'static str| v.to_string();
+        for (i, o) in ["a", "a", "a", "b"].iter().enumerate() { assert!(m.put_fair(format!("k{i}"), *o, t0 + Duration::from_millis(i as u64), Duration::from_secs(10), &own)); }
+        assert!(m.put_fair("c0".into(), "c", t0, Duration::from_secs(10), &own)); // full: the heavy owner "a" pays, with its OLDEST entry
+        assert_eq!(m.peek("k0", t0), None); assert_eq!(m.peek("k1", t0), Some(&"a")); assert_eq!(m.peek("k3", t0), Some(&"b")); assert_eq!(m.len(), 4);
+        // the attacker keeps pushing: only "a" entries ever disappear, "b" and "c" stay
+        for i in 0..6 { assert!(m.put_fair(format!("x{i}"), "a", t0, Duration::from_secs(10), &own)); }
+        assert_eq!(m.peek("k3", t0), Some(&"b")); assert_eq!(m.peek("c0", t0), Some(&"c"));
+        assert!(!m.put_fair("c0".into(), "c", t0, Duration::from_secs(10), &own)); // same key is never overwritten
+    }
+    #[test]
     fn release_extras_carry_no_secret() {
         let e = release_extras(&json!({"ok": true, "uid": "u", "method": "password", "new_net": true, "risk": {"level": "medium", "score": 35}, "device_hash": "x"}));
         assert_eq!(e, json!({"method": "password", "new_network": true, "risk": "medium"}));
@@ -388,7 +419,7 @@ mod tests {
     const CID: &str = "AbCdEf_-0123456789";
 
     #[derive(Clone)]
-    struct World { rpc: Arc<Mutex<Vec<(String, Value)>>>, word_required: Arc<Mutex<bool>>, sql_down: Arc<Mutex<bool>>, logouts: Arc<Mutex<Vec<String>>>, key: Value, active: Arc<Mutex<bool>> }
+    struct World { rpc: Arc<Mutex<Vec<(String, Value)>>>, word_required: Arc<Mutex<bool>>, sql_down: Arc<Mutex<bool>>, logouts: Arc<Mutex<Vec<String>>>, key: Value, active: Arc<Mutex<bool>>, open_down: Arc<Mutex<bool>>, net_locked: Arc<Mutex<bool>>, bad_pw: Arc<Mutex<bool>>, idp_calls: Arc<Mutex<u32>> }
 
     fn software_key() -> (Ed25519KeyPair, Value) {
         let kp = Ed25519KeyPair::from_seed_unchecked(&[5u8; 32]).unwrap();
@@ -405,10 +436,14 @@ mod tests {
 
     async fn spawn_world() -> (String, World) {
         let (_kp, jwk) = software_key();
-        let w = World { rpc: Default::default(), word_required: Default::default(), sql_down: Default::default(), logouts: Default::default(), key: jwk, active: Arc::new(Mutex::new(true)) };
+        let w = World { rpc: Default::default(), word_required: Default::default(), sql_down: Default::default(), logouts: Default::default(), key: jwk, active: Arc::new(Mutex::new(true)), open_down: Default::default(), net_locked: Default::default(), bad_pw: Default::default(), idp_calls: Default::default() };
         let app = Router::new()
             // identity service
-            .route("/auth/v1/token", post(|| async { (StatusCode::OK, Json(json!({"access_token": "pw-session-token-0123456789", "refresh_token": "pw-refresh", "expires_at": 4102444800i64, "user": {"id": UID, "factors": []}}))) }))
+            .route("/auth/v1/token", post(|St2(w): St2<World>| async move {
+                *w.idp_calls.lock().unwrap() += 1;
+                if *w.bad_pw.lock().unwrap() { return (StatusCode::BAD_REQUEST, Json(json!({"error": "invalid_grant"}))); }
+                (StatusCode::OK, Json(json!({"access_token": "pw-session-token-0123456789", "refresh_token": "pw-refresh", "expires_at": 4102444800i64, "user": {"id": UID, "factors": []}})))
+            }))
             .route("/auth/v1/logout", post(|St2(w): St2<World>, h: HeaderMap| async move { w.logouts.lock().unwrap().push(h.get("authorization").and_then(|v| v.to_str().ok()).unwrap_or("").to_string()); StatusCode::NO_CONTENT }))
             .route("/auth/v1/admin/users/{id}", get(|Path(id): Path<String>| async move { Json(json!({"id": id, "email": "founder@x.com"})) }))
             .route("/auth/v1/admin/generate_link", post(|| async { Json(json!({"hashed_token": "hashed-otp-1"})) }))
@@ -426,12 +461,12 @@ mod tests {
             // SQL doors
             .route("/rest/v1/rpc/{name}", post(|St2(w): St2<World>, Path(name): Path<String>, Json(b): Json<Value>| async move {
                 w.rpc.lock().unwrap().push((name.clone(), b.clone()));
-                if *w.sql_down.lock().unwrap() && name.starts_with("founder_signin") { return (StatusCode::BAD_GATEWAY, Json(json!({"message": "down"}))); }
+                if (*w.sql_down.lock().unwrap() && name.starts_with("founder_signin")) || (*w.open_down.lock().unwrap() && name == "founder_signin_open") { return (StatusCode::BAD_GATEWAY, Json(json!({"message": "down"}))); }
                 let req = *w.word_required.lock().unwrap();
                 let v = match name.as_str() {
                     "founder_webauthn_origin_ok" => json!(true),
                     "founder_passkey_active" => json!([{"credential_id": CID, "passkey": w.key}]),
-                    "founder_signin_locked" => json!({"locked": false, "fails": 0, "retry_s": 0}),
+                    "founder_signin_locked" => json!({"locked": *w.net_locked.lock().unwrap(), "fails": 0, "retry_s": 0}),
                     "founder_signin_open" => {
                         let m = b["p_method"].as_str().unwrap_or("");
                         if m == "passkey" || (m == "password" && req) { json!({"ok": true, "state": "open", "second_required": true, "need": ["passkey"], "expires_ms": 1}) }
@@ -468,7 +503,7 @@ mod tests {
         let (url, w) = spawn_world().await; let st = st_for(&url);
         let (s, j) = call(&st, "/founder/v1/auth/login", json!({"email": "founder@x.com", "password": "right"}), "198.51.100.1").await;
         assert_eq!(s, StatusCode::OK); assert_eq!(j["token"], "pw-session-token-0123456789"); assert_eq!(j["signin"]["new_network"], true); assert_eq!(j["signin"]["risk"], "low");
-        assert_eq!(names(&w), ["founder_signin_locked", "founder_signin_open", "founder_signin_release_v2"]);
+        assert_eq!(names(&w), ["founder_signin_locked", "founder_signin_locked", "founder_signin_open", "founder_signin_release_v2"]); // network lock first, then the founder + network lock, then the ceremony
         let o = &args(&w, "founder_signin_open")[0];
         assert_eq!(o["p_method"], "password"); assert_eq!(o["p_uid"], UID);
         let net = o["p_net_hash"].as_str().unwrap(); assert_eq!(net.len(), 64); assert!(!net.contains("198")); // no raw address in the ledger
@@ -478,10 +513,34 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn sql_down_is_503_and_the_identity_session_is_ended_never_a_session() {
+    async fn a_locked_network_is_refused_before_any_password_is_tried_and_wrong_passwords_reach_the_ledger() {
         let (url, w) = spawn_world().await; let st = st_for(&url);
+        // wrong password: 401 AND the append-only ledger is told (E153)
+        *w.bad_pw.lock().unwrap() = true;
+        assert_eq!(call(&st, "/founder/v1/auth/login", json!({"email": "founder@x.com", "password": "nope"}), "198.51.100.60").await.0, StatusCode::UNAUTHORIZED);
+        let fails = args(&w, "founder_signin_password_fail");
+        assert_eq!(fails.len(), 1); assert_eq!(fails[0]["p_net_hash"].as_str().unwrap().len(), 64);
+        // the network is locked in the ledger: refused with 429 and the identity service was NEVER asked
+        *w.bad_pw.lock().unwrap() = false; *w.net_locked.lock().unwrap() = true;
+        let before = *w.idp_calls.lock().unwrap();
+        assert_eq!(call(&st, "/founder/v1/auth/login", json!({"email": "founder@x.com", "password": "right"}), "198.51.100.61").await.0, StatusCode::TOO_MANY_REQUESTS);
+        assert_eq!(*w.idp_calls.lock().unwrap(), before);
+        // the lock door down: 503, still no password tried
+        *w.net_locked.lock().unwrap() = false; *w.sql_down.lock().unwrap() = true;
+        assert_eq!(call(&st, "/founder/v1/auth/login", json!({"email": "founder@x.com", "password": "right"}), "198.51.100.62").await.0, StatusCode::SERVICE_UNAVAILABLE);
+        assert_eq!(*w.idp_calls.lock().unwrap(), before);
+    }
+
+    #[tokio::test]
+    async fn sql_down_is_503_never_a_session_and_a_late_failure_ends_the_identity_session() {
+        let (url, w) = spawn_world().await; let st = st_for(&url);
+        // the rulebook is down BEFORE the password: 503 and the identity service is not even asked (see the lock test), nothing to end
         *w.sql_down.lock().unwrap() = true;
         let (s, j) = call(&st, "/founder/v1/auth/login", json!({"email": "founder@x.com", "password": "right"}), "198.51.100.2").await;
+        assert_eq!(s, StatusCode::SERVICE_UNAVAILABLE); assert!(j.get("token").is_none()); assert_eq!(*w.idp_calls.lock().unwrap(), 0);
+        // the door fails AFTER the password was accepted (ticket cannot be opened): 503, no token, the identity session is ended
+        *w.sql_down.lock().unwrap() = false; *w.open_down.lock().unwrap() = true;
+        let (s, j) = call(&st, "/founder/v1/auth/login", json!({"email": "founder@x.com", "password": "right"}), "198.51.100.3").await;
         assert_eq!(s, StatusCode::SERVICE_UNAVAILABLE); assert!(j.get("token").is_none());
         assert_eq!(w.logouts.lock().unwrap().as_slice(), ["Bearer pw-session-token-0123456789"]);
     }

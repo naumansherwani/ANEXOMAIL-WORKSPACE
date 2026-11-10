@@ -23,3 +23,12 @@ One build, no new element, no new size rule: the passkey button already exists a
 
 ## Proof order
 a) bun test + tsc + vite build + cargo test; b) harness 390 / 820 / 1200; c) rules-gate; d) his founder-install (Rust + SPA) + live probe of the live bundle hash = repo build; e) S7: his phone passkey once (REAL). GREEN only after (e).
+
+
+## RESULT 10 Nov 2026 19:52 PKT (coded, tested locally, NOT on his server yet)
+- L1 became E153 (SQL) + Rust: a wrong password is written to the ledger (\`reject_ip\` / 'bad_password', network hash only, NO user id so a stranger can never lock the founder), and \`founder_signin_locked(null, network)\` is asked BEFORE the identity service sees a password. Down door = 503 (closed). Tests: cargo 278 pass (new: locked network refused with the identity service never called; wrong password reaches the ledger; down door before and after the password).
+- L2 done: \`TtlMap::put_fair\`: a full ceremony map evicts the OLDEST entry of the HEAVIEST network, so a stranger only ever evicts his own (unit-tested).
+- S6: \`signin_passkey.ts\` + \`signin_pure.ts\` ("step" answer, 4 new plain messages) + handlers in SignIn.tsx (markup and classes untouched). bun test: 159 pass (11 new). vite build OK (bundle index-P9z4PDu).
+- S5: the email-link button answers honestly, nothing is sent. S4: the recovery button says the password signs in alone (one factor); recovery codes matter only if a second step is ever switched on.
+- Look at 390 / 820 / 1280 (sandbox Chromium, built dist): no sideways scroll at any width, every action button 44 px high (Sign in, passkey, email link, recovery), no JS errors, the three buttons answer in plain words. Inputs stay 36-38 px because the page is the verbatim awam look (LOGIN UI LAW).
+- Still needed for GREEN: his SQL E153 + founder-install, the live bundle = repo build, and S7: his phone passkey once.

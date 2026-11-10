@@ -2795,3 +2795,7 @@ Checkpoint 10 Nov 2026 19:23 PKT RESUME HERE: S2 password path GREEN (ledger pro
 - 10 Nov 2026 19:42 PKT: HIS ORDER 10 Nov 19:42 (gist): S6/S7 happen TODAY, no work waits for tomorrow; write technology plan + rules + mobile/tablet on top of the repo first; any loophole seen = fix it without asking; deliver GREEN phases. DONE: docs/claude/G-MIX-S6-PLAN-10NOV.md written BEFORE code.
 
 Checkpoint 10 Nov 2026 19:42 PKT RESUME HERE: S6 plan written (docs/claude/G-MIX-S6-PLAN-10NOV.md); coding signin_passkey.ts + SignIn handlers + Rust loophole fixes L1/L2.
+
+- 10 Nov 2026 19:52 PKT: S6+S5+S4 CODED + loophole fixes L1 (E153 + Rust) and L2 (fair ceremony eviction), repo only: cargo 278 pass, bun 159 pass, vite build OK (index-P9z4PDu), sandbox 390/820/1280 no sideways scroll, action buttons 44 px. Order for him: SQL E153 line, then founder-install, then S7 (his phone passkey). NOT GREEN until live.
+
+Checkpoint 10 Nov 2026 19:52 PKT RESUME HERE: S6/S5/S4 + E153 coded, tests green, waiting for his E153 SQL line, founder-install, then S7 phone passkey.

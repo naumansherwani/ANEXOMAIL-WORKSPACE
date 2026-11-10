@@ -92,6 +92,7 @@ docs/cursor-work/sql/E149_founder_dbsc.sql
 docs/cursor-work/sql/E150_founder_devicekey.sql
 docs/cursor-work/sql/E151_founder_signin_ceremony.sql
 docs/cursor-work/sql/E152_founder_signin_one_factor.sql
+docs/cursor-work/sql/E153_founder_signin_password_fail.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/E68_proof.sql
@@ -107,7 +108,7 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/index-BUUmHuYG.css
-founder-web/dist/assets/index-Dq5xQ70p.js
+founder-web/dist/assets/index-P9z4PDu-.js
 founder-web/dist/assets/kernel.worker-BiR_tP7H.js
 founder-web/dist/assets/three.module-C0S06CcT.js
 founder-web/dist/boot.css
@@ -219,6 +220,8 @@ founder-web/src/signin/ui/button.tsx
 founder-web/src/signin/ui/checkbox.tsx
 founder-web/src/signin/ui/input.tsx
 founder-web/src/signin/ui/label.tsx
+founder-web/src/signin_passkey.test.ts
+founder-web/src/signin_passkey.ts
 founder-web/src/signin_pure.test.ts
 founder-web/src/signin_pure.ts
 founder-web/src/snap_seal.test.ts

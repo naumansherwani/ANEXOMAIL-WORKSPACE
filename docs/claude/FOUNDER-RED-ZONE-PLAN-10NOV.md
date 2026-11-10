@@ -6,7 +6,7 @@ Rule: every phase below has ONE date = the day it must be GREEN (WIRED: YES / RE
 | Date | Phases that must be GREEN that day | Count | Needs his hands |
 |---|---|---|---|
 | Tue 10 Nov (today) | S2 live: GREEN 19:25 (his sign-in + peek paste) | 1 | done |
-| Wed 11 Nov | S6 passkey button (same look), S4 recovery, S5 magic = honest refusal, S7 live proof (G-MIX 2b closes) | 4 | his phone passkey once |
+| Tue 10 Nov (MOVED TO TODAY by his order 19:42) | S6 passkey button (same look), S4 recovery, S5 magic = honest refusal, S7 live proof with his phone (G-MIX 2b closes) | 4 | his phone passkey once |
 | Thu 12 Nov | L (Cinematic: Framer Motion + GSAP, Three.js WebGPU lazy) | 1 | |
 | Fri 13 Nov | M (MoQ relay, Rust on wtransport + kernel) | 1 | |
 | Sat 14 Nov | N, N1 (Decide, Live Pulse, Device Trust Map) | 2 | |
