@@ -288,9 +288,9 @@ async fn finish_inner(st: &St, sb: &Sb, b: &Value, net: &str) -> Response {
     let cred = &b["credential"];
     let cid = cred.get("id").and_then(|x| x.as_str()).unwrap_or("");
     if !pc::is_b64url_token(cid, 1400) { return generic_401(); }
-    let Some(rows) = sb.rows(&format!("founder_passkeys?select=user_id,passkey&credential_id=eq.{cid}&revoked_at=is.null&limit=1")).await else { trace("passkey_rows", "founder_passkeys read failed"); return busy_503() };
-    let Some(row) = rows.into_iter().next() else { return generic_401() };
-    let (Some(uid), key) = (row["user_id"].as_str().map(str::to_string), row["passkey"].clone()) else { return generic_401() };
+    // E154: the key body is readable only through this SQL door (E117 gives service_role no select on the column)
+    let found = match sb.rpc_msg("founder_passkey_by_credential", json!({"p_credential_id": cid})).await { Ok(v) => v, Err(_) => { trace("passkey_rows", "founder_passkey_by_credential door failed"); return busy_503() } };
+    let (Some(uid), key) = (found["user_id"].as_str().map(str::to_string), found["passkey"].clone()) else { return generic_401() };
     if !sb.is_founder(&uid).await { return generic_401(); }
     match locked(sb, Some(&uid), net).await { Ok(false) => {} Ok(true) => return locked_429(), Err(()) => return busy_503() }
     // 3 which ticket: the parked one (second step) or a fresh passkey ticket (first step)
@@ -473,6 +473,7 @@ mod tests {
                 let v = match name.as_str() {
                     "founder_webauthn_origin_ok" => json!(true),
                     "founder_passkey_active" => json!([{"credential_id": CID, "passkey": w.key}]),
+                    "founder_passkey_by_credential" => if b["p_credential_id"] == CID && *w.active.lock().unwrap() { json!({"user_id": UID, "passkey": w.key}) } else { Value::Null },
                     "founder_signin_locked" => json!({"locked": *w.net_locked.lock().unwrap(), "fails": 0, "retry_s": 0}),
                     "founder_signin_open" => {
                         let m = b["p_method"].as_str().unwrap_or("");
