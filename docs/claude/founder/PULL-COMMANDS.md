@@ -931,3 +931,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 04:25 PKT: E159 (DBSC chain fix) written. ABHI PENDING 1 step: git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) 2>&1 | grep -e E159 -e E158 -e FAIL -e DONE   (runs E159 then CHECK_E158 and CHECK_E159; then founder-install)
 - 11 Nov 2026 04:20 PKT: E159 DONE (do not re-send). ABHI PENDING 1 step: git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -15
 - 11 Nov 2026 04:35 PKT: founder-install DONE (K7 wire fix live). No pending server command. Next pending command comes with K8d. Plan: docs/claude/FOUNDER-WAKEUP-ORDER-11NOV.md
+- 11 Nov 2026 04:45 PKT: forever solution written (TECH-FIRST-PROTOCOL + 3 gates). Not a phase, no server command.

@@ -159,6 +159,45 @@ try:
             warn("TECH LAW", f'{c["id"]} now holds: change its status to ok in docs/claude/TECH-LAW-GATE.json')
 except FileNotFoundError:
     fail("TECH LAW", "docs/claude/TECH-LAW-GATE.json is missing")
+
+# TECH-FIRST PROTOCOL (founder 11 Nov 2026 04:33, "forever solution"): docs/claude/TECH-FIRST-PROTOCOL.md. Three mechanical gates so the listed technology can never be skipped again.
+import glob as _glob, subprocess as _sp
+def _raw_net():
+    n = 0
+    for f in _glob.glob("founder-web/src/**/*", recursive=True):
+        if f.endswith((".ts", ".tsx")) and ".test." not in f:
+            n += len(re.findall(r"(?<![\w.])fetch\(|XMLHttpRequest|new WebSocket", open(f, errors="ignore").read()))
+    return n
+try:
+    base = json.load(open("docs/claude/TECH-RATCHET.json"))["raw_network_calls"]
+    now = _raw_net()
+    if now > base:
+        fail("TECH RATCHET", f"raw fetch/XHR/WebSocket in founder-web/src rose {base} -> {now}: Rule 52 = browser -> kernel -> WebTransport/HTTP3, fetch only as fallback (docs/claude/TECH-FIRST-PROTOCOL.md)")
+    elif now < base:
+        warn("TECH RATCHET", f"raw network calls fell {base} -> {now}: lower raw_network_calls in docs/claude/TECH-RATCHET.json")
+except FileNotFoundError:
+    fail("TECH RATCHET", "docs/claude/TECH-RATCHET.json is missing")
+cur = "docs/claude/tech-contracts/CURRENT.md"
+code_staged = [f for f in staged if re.match(r"(founder-web/src|server/founder/src|docs/cursor-work/sql)/", f)]
+if code_staged and cur not in staged:
+    fail("TECH CONTRACT", "founder code changed but docs/claude/tech-contracts/CURRENT.md is not in this commit: write the phase's technology contract FIRST (docs/claude/TECH-FIRST-PROTOCOL.md)")
+if os.path.exists(cur):
+    ct = open(cur, errors="ignore").read()
+    if "TECH CONTRACT FOR PHASE" not in ct:
+        fail("TECH CONTRACT", "CURRENT.md must start with 'TECH CONTRACT FOR PHASE: <letter>'")
+    if re.search(r"^STATE:\s*GREEN", ct, re.M):
+        nos = [l for l in ct.splitlines() if l.startswith("|") and len(l.split("|")) > 4 and l.split("|")[3].strip() == "NO"]
+        if nos:
+            fail("TECH CONTRACT", f"STATE is GREEN but {len(nos)} listed technolog(y/ies) say NO in CURRENT.md")
+for led in ("docs/cursor-work/DONE-DO-NOT-REPEAT.md", "docs/claude/CLOSE-THE-GAPS-07NOV.md"):
+    if led in staged:
+        try:
+            d = _sp.run(["git", "diff", "--cached", "-U0", "--", led], capture_output=True, text=True).stdout
+            for l in d.splitlines():
+                if l.startswith("+") and not l.startswith("+++") and re.search(r"\bGREEN\b", l) and "TECH-LAW CHECKED" not in l and "OPEN" not in l.upper().split("GREEN")[0][-40:]:
+                    fail("TECH GREEN WORDS", f"{led}: a line says GREEN without 'TECH-LAW CHECKED' (and WIRED: YES / REAL: YES): {l[1:90]}")
+        except OSError:
+            pass
 for w in warns:
     print(w)
 for x in fails:

@@ -152,7 +152,9 @@ docs/claude/SIGNUP-SECURITY-MILITARY-GRADE-02NOV.md
 docs/claude/START-HERE-AFTER-COMPACTION.md
 docs/claude/T-SERIES-BLUEPRINT.md
 docs/claude/TECH-CHART-01NOV.md
+docs/claude/TECH-FIRST-PROTOCOL.md
 docs/claude/TECH-LAW-GATE.json
+docs/claude/TECH-RATCHET.json
 docs/claude/TECH-STACK-BEAST.md
 docs/claude/TECHNOLOGY-MAP-27OCT.md
 docs/claude/TECHNOLOGY-PROOF-LEDGER-01NOV.md
@@ -170,6 +172,7 @@ docs/claude/endpoint-package-map.py
 docs/claude/inventory/INV-1-CALENDAR-MAIL.md
 docs/claude/inventory/INV-2-CHAT-CRM-WORK-ANALYTICS.md
 docs/claude/inventory/INV-3-ORG-SECURITY-STORAGE-LANDING.md
+docs/claude/tech-contracts/CURRENT.md
 docs/cursor-work/AI-EXECUTE.md
 docs/cursor-work/ANEXOCHAT-VS-MASTER-AUDIT.md
 docs/cursor-work/ANEXOMAIL-EXECUTE.md
