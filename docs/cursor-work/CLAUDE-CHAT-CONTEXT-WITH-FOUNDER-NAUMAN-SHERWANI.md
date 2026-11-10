@@ -2841,3 +2841,6 @@ STANDING RULE 9 (his 00:44): each founder phase also updates its awam blueprint 
 
 ## RESUME HERE (11 Nov 2026 01:05 PKT)
 D2b Rust WRITTEN + tested, pushed. Next ONE step for him: founder-install line (see PULL-COMMANDS.md), then sign in once and check Settings: board endpoint /founder/v1/sessions/board shows his session. Then D3 UI card (Settings > Devices, one build, 390/820/1200+), D4 live proof, then D2b-5 policy endpoint with passkey touch. Then L (Thu 12 Nov).
+
+## RESUME HERE (11 Nov 2026 01:15 PKT)
+D2b installed on his server 01:11 (4/4 saboot OK). His screenshot shows Profile page + menu "Devices & sessions" but the Devices screen is the OLD placeholder ("after F2c"): not advanced. NEXT: D3 UI (spec in G-MIX-D1-PLAN-10NOV.md last block): hero card, live list, revoke, ledger timeline, alert strip, location card read-only; React 19.2 + Tailwind, cinematic, one build 390/820/1200+. Then D4 live proof, D2b-5 policy + passkey touch, country file, then L (12 Nov). D2b becomes GREEN only when his re-sign-in session shows in the board.

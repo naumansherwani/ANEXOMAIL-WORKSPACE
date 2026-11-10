@@ -21,3 +21,5 @@ Awam gets the same advanced engine as the founder D1/D2 (E155/E156 design: sessi
 - 11 Nov 2026 00:50 PKT AP9 update: founder D2b Rust plan written (docs/claude/G-MIX-D2B-PLAN-11NOV.md). Awam copy later = same module shape, awam tables, per-user principal, plan-based cap, wording for customers. Stamp blank.
 
 - 11 Nov 2026 01:05 PKT AP9: founder D2b Rust is written (sessions.rs shape: sid hash, families, cache, register-before-token, gate check, signed write failures feed a streak). Awam copy later = same module with awam tables and per-user principal. Stamp blank.
+
+- 11 Nov 2026 01:15 PKT AP9 UI line: awam "Your devices" card = the same D3 anatomy in customer wording (this device, list, sign out one / everywhere, new-device alert), no ledger jargon, no location-lock by default. Stamp blank.
