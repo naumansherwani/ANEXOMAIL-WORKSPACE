@@ -2967,3 +2967,10 @@ D3 plan first at the repo top (research, as advanced as possible), then code; up
 
 ## 11 Nov 2026 01:45 PKT - D3 UI written
 Plan first (done 01:30), then code: sessions_pure.ts + Devices.tsx + devices.css, 12-run sandbox measurement at 390/820/1280 clean. Next: his founder-install, sign out/in, look at #/devices; D4 live proof.
+
+## 11 Nov 2026 01:36 PKT - his order (verbatim gist)
+"yeh advance level codes likhna hai passkey ko touch kerne se pehle research kero advance tareeka kya hai phir codes likho aur ab phase main ek bhi loophole nahi chodna hai. same next phases ka bhi research ker le super advance codes likho aur yeh jitne bhi D series ke codes hai yeh awam ke liye preserve kerna hai bus awam side pe likho ke yeh codes baad main awam ke hisab se use hogay mold ker ke. compact chat aye ga toh claude ke liye codes context technology mobile tablet rules sab kuch update kero abhi ke abhi, codes ka plan banao technology research sab jo likha hai ek ek line read kero ke top pe repo pe claude ke liye likho phir shuru kero ab." Also his D3 install paste: 4/4 saboot OK (SPA index 200, exchange 401, ed25519 ON).
+Done: plan first = docs/claude/G-MIX-D2B5-PLAN-11NOV.md, then SQL E157, Rust, UI.
+
+## 11 Nov 2026 02:10 PKT - D2b-5 built per his 01:36 order
+Plan first (01:50), research of the step-up design, then E157 SQL, Rust begin/finish, UI. His question 01:49 "kab do gay pull command": given now (2 steps: sql-run then founder-install).

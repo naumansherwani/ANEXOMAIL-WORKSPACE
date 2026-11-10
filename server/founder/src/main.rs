@@ -42,6 +42,7 @@ mod dbsc;
 mod auth;
 mod signin;
 mod sessions;
+mod policy_step;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -758,6 +759,7 @@ fn cur_sid(st: &St, h: &HeaderMap) -> Option<String> {
     let tok = gate::bearer(h.get("authorization").and_then(|v| v.to_str().ok()))?;
     st.ft.as_ref()?.verify(tok, now_s()).ok()?.sid
 }
+pub(crate) fn cur_sid_pub(st: &St, h: &HeaderMap) -> Option<String> { cur_sid(st, h) }
 fn is_h64(x: &str) -> bool { x.len() == 64 && x.bytes().all(|b| b.is_ascii_hexdigit()) }
 fn sess_missing() -> Value { json!({"available": false, "note": "Devices & Sessions SQL (E155 + E156) is not answering. Run sql-run.sh once, then reload."}) }
 
@@ -800,7 +802,7 @@ async fn sess_revoke_others_ep(State(st): State<S>, h: HeaderMap, body: axum::bo
         _ => (StatusCode::BAD_GATEWAY, Json(sess_missing())).into_response(),
     }
 }
-// The location-lock / policy endpoint (founder_session_policy_set_v2) is NOT routed yet on purpose: it needs a fresh passkey touch (D2b-5, open gap in docs/claude/G-MIX-D2B-PLAN-11NOV.md).
+// The policy change (E157) has its own begin/finish pair in policy_step.rs: a fresh passkey touch signs the exact change. founder_session_policy_set_v2 itself is never routed.
 
 /// D2b: stamp the protocol the SERVER saw (h3 / h2 / h1) and drop any client-sent copy; the Devices & Sessions badge is never the browser's word.
 async fn stamp_proto(mut req: axum::extract::Request, next: axum::middleware::Next) -> axum::response::Response {
@@ -829,6 +831,8 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/sessions/ledger", get(sess_ledger_ep))
         .route("/founder/v1/sessions/revoke", axum::routing::post(sess_revoke_ep))
         .route("/founder/v1/sessions/revoke-others", axum::routing::post(sess_revoke_others_ep))
+        .route("/founder/v1/sessions/policy/begin", axum::routing::post(policy_step::begin_ep))
+        .route("/founder/v1/sessions/policy/finish", axum::routing::post(policy_step::finish_ep))
         .route("/founder/v1/bridge", get(bridge_ep))
         .route("/founder/v1/settings", get(settings_ep).put(settings_put))
         .route("/founder/v1/settings/history", get(s2_history_ep))

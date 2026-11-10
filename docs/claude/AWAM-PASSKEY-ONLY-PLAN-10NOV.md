@@ -27,3 +27,6 @@ Awam gets the same advanced engine as the founder D1/D2 (E155/E156 design: sessi
 - 11 Nov 2026 01:30 PKT AP9 UI: founder D3 plan written (docs/claude/G-MIX-D3-PLAN-11NOV.md): Trust Ring, live rows, two-step close, alert strip, ledger timeline, honest states. Awam copy = same pure module + customer labels. Stamp blank.
 
 - 11 Nov 2026 01:45 PKT AP9 UI: founder D3 screen written (sessions_pure.ts logic is label-free: awam copy swaps Founder wording only; Devices.tsx anatomy = Trust Ring, rows, two-step close, ledger). Stamp blank.
+
+## AP9b (11 Nov 2026 01:52 PKT, his order 01:36): PRESERVE THE D-SERIES FOR AWAM + step-up policy change (blueprint line, GREEN stamp blank)
+- ALL founder D-series code is PRESERVED for awam and will be reused LATER, moulded for awam (not now, not copied blindly): SQL E155/E156/E157 -> awam_session_* tables with their own numbers; server/founder/src/sessions.rs -> awam module (per-user principal, plan-based cap); founder-web sessions_pure.ts + Devices.tsx + devices.css -> awam "Your devices" in customer words; the passkey touch for a policy change -> awam "confirm with your passkey" (passkey only, NO 2FA ever). Plan: docs/claude/G-MIX-D2B5-PLAN-11NOV.md. Stamp blank until founder-complete.

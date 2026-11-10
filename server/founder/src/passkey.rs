@@ -360,9 +360,9 @@ mod tests {
 use crate::{S, St};
 use axum::{Json, extract::State, http::{HeaderMap, StatusCode}, response::{IntoResponse, Response}};
 
-fn refuse(code: StatusCode, msg: &str) -> Response { (code, Json(json!({"error": msg}))).into_response() }
+pub(crate) fn refuse(code: StatusCode, msg: &str) -> Response { (code, Json(json!({"error": msg}))).into_response() }
 /// SQL refusal (PostgREST status + the database's own words) -> the same class of HTTP status, never a 500 for a rule that said no.
-fn sql_err((status, msg): (u16, String)) -> Response {
+pub(crate) fn sql_err((status, msg): (u16, String)) -> Response {
     let code = match status { 400 => StatusCode::BAD_REQUEST, 401 => StatusCode::UNAUTHORIZED, 403 => StatusCode::FORBIDDEN, 404 | 409 => StatusCode::CONFLICT, 0 => StatusCode::SERVICE_UNAVAILABLE, _ => StatusCode::BAD_GATEWAY };
     refuse(code, if msg.is_empty() { "the database refused" } else { &msg })
 }
@@ -386,9 +386,9 @@ pub(crate) fn did_of(st: &St, h: &HeaderMap) -> Option<String> {
 pub enum TierGate { Open, NeedGrant, T3Only }
 pub fn tier_gate(tier: Option<i64>) -> TierGate { match tier { Some(2) => TierGate::NeedGrant, Some(t) if t >= 3 => TierGate::T3Only, _ => TierGate::Open } }
 
-fn sbx(st: &St) -> Result<&crate::data::Sb, Response> { st.sb.as_ref().ok_or_else(|| refuse(StatusCode::SERVICE_UNAVAILABLE, "database not configured")) }
-fn body_json(body: &[u8]) -> Result<Value, Response> { serde_json::from_slice(body).map_err(|_| refuse(StatusCode::BAD_REQUEST, "invalid body")) }
-fn txt(v: &Value, k: &str, max: usize) -> Option<String> { v.get(k).and_then(|x| x.as_str()).filter(|s| s.chars().count() <= max).map(String::from) }
+pub(crate) fn sbx(st: &St) -> Result<&crate::data::Sb, Response> { st.sb.as_ref().ok_or_else(|| refuse(StatusCode::SERVICE_UNAVAILABLE, "database not configured")) }
+pub(crate) fn body_json(body: &[u8]) -> Result<Value, Response> { serde_json::from_slice(body).map_err(|_| refuse(StatusCode::BAD_REQUEST, "invalid body")) }
+pub(crate) fn txt(v: &Value, k: &str, max: usize) -> Option<String> { v.get(k).and_then(|x| x.as_str()).filter(|s| s.chars().count() <= max).map(String::from) }
 
 pub(crate) async fn policy(sb: &crate::data::Sb) -> Result<Value, Response> {
     sb.rows("founder_webauthn_policy?select=rp_id,origins,challenge_secs,allowed_algs,attestation_pref&limit=1").await.and_then(|r| r.into_iter().next())
@@ -420,6 +420,8 @@ pub async fn options_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Byt
     let mut state = json!({"purpose": purpose, "origin": origin, "device": did});
     let challenge = if matches!(purpose.as_str(), "action" | "t3_begin" | "t3_approve" | "t3_execute") {
         let (Some(action), Some(target)) = (txt(&b, "action", 64), txt(&b, "target", 200)) else { return refuse(StatusCode::BAD_REQUEST, "action and target are needed") };
+        // D2b-5 (P6): session.* actions are built ONLY by their own endpoint pair (the payload lives on the server); the generic door never signs them
+        if action.starts_with("session.") { return refuse(StatusCode::FORBIDDEN, "this action has its own endpoint"); }
         let params = if b["params"].is_object() { b["params"].clone() } else { json!({}) };
         let nonce = match txt(&b, "nonce", 64) { Some(n) if n.len() >= 8 => n, _ => match random_challenge() { Ok(c) => c, Err(e) => return refuse(StatusCode::INTERNAL_SERVER_ERROR, e) } };
         let Some(Value::String(hash)) = sb.rpc("founder_action_hash", json!({"p_action": action, "p_target": target, "p_params": params, "p_nonce": nonce})).await else { return refuse(StatusCode::BAD_GATEWAY, "action digest unavailable - run the E118 SQL step") };
@@ -437,7 +439,7 @@ pub async fn options_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Byt
     crate::signed(&st, json!({"ceremony": cid, "purpose": purpose, "options": opts, "nonce": state["nonce"], "hash": state["hash"]}))
 }
 
-async fn ceremony_take(sb: &crate::data::Sb, uid: &str, id: &str, kind: &str) -> Result<Value, Response> {
+pub(crate) async fn ceremony_take(sb: &crate::data::Sb, uid: &str, id: &str, kind: &str) -> Result<Value, Response> {
     if !is_uuid(id) { return Err(refuse(StatusCode::BAD_REQUEST, "bad ceremony id")); }
     sb.rpc_msg("founder_passkey_ceremony_take", json!({"p_uid": uid, "p_id": id, "p_kind": kind})).await.map_err(sql_err)
 }
@@ -456,7 +458,7 @@ pub async fn verify_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Byte
     if is_reg || state["purpose"] == "register" { return refuse(StatusCode::BAD_REQUEST, "this answer does not match the ceremony"); }
     assert_step(&st, sb, &uid, &did, cred, &state, (&ch, &origin, &rp)).await
 }
-fn st_s(v: &Value, k: &str) -> String { v.get(k).and_then(|x| x.as_str()).unwrap_or("").to_string() }
+pub(crate) fn st_s(v: &Value, k: &str) -> String { v.get(k).and_then(|x| x.as_str()).unwrap_or("").to_string() }
 
 async fn register_step(st: &St, sb: &crate::data::Sb, uid: &str, did: &str, cred: &Value, state: &Value, (ch, origin, rp): (&str, &str, &str)) -> Response {
     let reg = match verify_registration(cred, ch, origin, rp) { Ok(r) => r, Err(e) => return refuse(StatusCode::BAD_REQUEST, e) };

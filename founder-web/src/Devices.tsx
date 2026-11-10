@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { get, post, signOut } from "./api";
+import { PolicyEditor } from "./PolicyEditor";
 import {
   ago, alerts, browserText, canClose, closeWarning, countryName, flag, freshness, hasAlert, INTEGRITY_TEXT, KEY_TEXT, kindInfo, methodText, othersLive, parseBoard, parseLedger, pathShort, reasonText, remaining, revokeText, ring, rowText, span, visible,
   type Board, type Filter, type Policy, type Ring, type Row, type Sess,
@@ -31,7 +32,8 @@ function TrustRing({ r }: { r: Ring }) {
   );
 }
 
-function PolicyCard({ p, limits }: { p: Policy | null; limits: string[] }) {
+function PolicyCard({ p, limits, reload }: { p: Policy | null; limits: string[]; reload: () => void }) {
+  const [editing, setEditing] = useState(false);
   if (!p) return <section className="dx-card dv-card"><h2 className="dv-h">Session policy</h2><p className="dim">The policy is not available.</p></section>;
   const geo = p.geoMode === "enforce" ? "Enforced" : p.geoMode === "observe" ? "Observe only" : p.geoMode === "off" ? "Off" : "Unknown";
   return (
@@ -45,7 +47,8 @@ function PolicyCard({ p, limits }: { p: Policy | null; limits: string[] }) {
         <div><dt>Shared-session alarm</dt><dd>{p.flapLimit} network changes in 10 min ({p.flapAction})</dd></div>
         <div><dt>Browser mismatch</dt><dd>{p.spoofAction}</dd></div>
       </dl>
-      <p className="src">Changing these needs a fresh passkey touch and arrives with the next step (D2b-5). {limits.includes("vpn_inside_an_allowed_country_passes_the_location_lock") ? "Honest limit: a VPN inside an allowed country passes the location lock." : ""}</p>
+      <p className="src">Changing these needs a fresh passkey touch that signs the exact change. {limits.includes("vpn_inside_an_allowed_country_passes_the_location_lock") ? "Honest limit: a VPN inside an allowed country passes the location lock." : ""}</p>
+      {editing ? <PolicyEditor p={p} onDone={() => { setEditing(false); reload(); }} /> : <div className="dv-actions"><button type="button" className="dv-btn ghost" onClick={() => setEditing(true)}>Change policy…</button></div>}
     </section>
   );
 }
@@ -201,7 +204,7 @@ export function DevicesView() {
         </div>
       </section>
 
-      <PolicyCard p={board.policy} limits={board.limits} />
+      <PolicyCard p={board.policy} limits={board.limits} reload={() => void loadBoard()} />
 
       <section className="dx-card dv-card" aria-label="Session ledger">
         <div className="dv-ledhead"><h2 className="dv-h">Ledger</h2>

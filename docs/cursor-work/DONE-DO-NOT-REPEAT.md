@@ -1861,3 +1861,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 01:15 PKT: founder-install of D2b DONE on his server (do not re-send). Next: his sign-out/in, then D3 UI card.
 
 - 11 Nov 2026 01:45 PKT: D3 screen (Devices & sessions) written and measured in the sandbox; needs founder-install + his look (D4).
+- 11 Nov 2026 02:10 PKT: D2b-5 written (plan G-MIX-D2B5-PLAN-11NOV.md, SQL E157 + CHECK_E157, Rust policy_step.rs begin/finish, UI PolicyEditor/policy_change/policy_flow). Local: E157 selftest PASS, Rust 291, bun 176, 390/820/1280 clean. Needs his sql-run (E157) then founder-install; GREEN only after a real policy change with his key (D4).

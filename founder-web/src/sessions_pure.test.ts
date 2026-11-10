@@ -141,3 +141,43 @@ describe("list, alerts, actions", () => {
     expect(freshness(1000, 1000 + 40000)).toBe("stale");
   });
 });
+
+import { bodyOf, changeText, changed, draftOf, parseBegun, parseCountries, refusalText, validate } from "./policy_change";
+describe("D2b-5 policy change (pure)", () => {
+  const pol = { geoMode: "off", countries: [], spoofAction: "alert", staleAfterS: 900, maxLive: 20, failLimit: 10, flapLimit: 4, flapAction: "alert", idleS: 86400, absoluteS: 604800 } as const;
+  test("countries are parsed, upper-cased, de-duplicated, sorted; junk is named", () => {
+    expect(parseCountries("pk, US  us;pk")).toEqual({ ok: ["PK", "US"], bad: [] });
+    expect(parseCountries("PK, PAK, 1")).toEqual({ ok: ["PK"], bad: ["PAK", "1"] });
+    expect(parseCountries("")).toEqual({ ok: [], bad: [] });
+  });
+  test("validate says the first problem in words and accepts a good change", () => {
+    const d = { ...draftOf(pol), maxLive: 15 };
+    expect(validate(d, "tightening the cap", pol)).toBe("");
+    expect(validate(d, "short", pol)).toContain("8 to 200");
+    expect(validate(d, "has <tag> inside", pol)).toContain("8 to 200");
+    expect(validate(draftOf(pol), "no change at all here", pol)).toContain("Nothing is different");
+    expect(validate({ ...d, geoMode: "enforce" }, "enforce without country", pol)).toContain("at least one allowed country");
+    expect(validate({ ...d, countries: "PAK" }, "bad country code here", pol)).toContain("not a country code");
+    expect(validate({ ...d, maxLive: 1 }, "cap too small here", pol)).toContain("Live sessions must be between 2 and 200");
+    expect(validate({ ...d, idleS: 604801, absoluteS: 3600 }, "absolute below idle", pol)).toContain("absolute limit cannot be shorter");
+  });
+  test("changed ignores country order/case and body carries only the named fields", () => {
+    const withC = { ...pol, countries: ["PK", "US"] };
+    expect(changed({ ...draftOf(withC), countries: "us, pk" }, withC)).toBe(false);
+    expect(changed({ ...draftOf(withC), countries: "pk" }, withC)).toBe(true);
+    const b = bodyOf({ ...draftOf(pol), geoMode: "observe", countries: "pk, us" }, "  watching first  ");
+    expect(b).toEqual({ geo_mode: "observe", countries: ["PK", "US"], spoof_action: "alert", stale_after_s: 900, max_live: 20, fail_limit: 10, flap_limit: 4, flap_action: "alert", idle_s: 86400, absolute_s: 604800, reason: "watching first" });
+  });
+  test("a begin answer is parsed only when complete; refusals never leak raw errors", () => {
+    expect(parseBegun({})).toBeNull();
+    expect(parseBegun({ ceremony: "c", hash: "h", options: {}, nonce: "n" })).toBeNull();
+    const ok = parseBegun({ ceremony: "c", hash: "h", options: { challenge: "x" }, nonce: "n", params: { a: "1" }, changes: [{ field: "geo_mode", label: "Location lock", from: "off", to: "enforce" }, { nope: 1 }] });
+    expect(ok?.changes.length).toBe(1);
+    expect(changeText(ok!.changes[0])).toBe("Location lock: off → enforce");
+    expect(changeText({ field: "countries", label: "Allowed countries", from: [], to: ["PK"] })).toBe("Allowed countries: none → PK");
+    expect(refusalText(422, { error: "would_lock_you_out", note: "Refused: lock-out." })).toBe("Refused: lock-out.");
+    expect(refusalText(429, null)).toContain("Too many");
+    expect(refusalText(500, { error: "x".repeat(300) })).toBe("The change was not made.");
+    expect(refusalText(403, { error: "your network changed while you were confirming: start again" })).toContain("network changed");
+  });
+});

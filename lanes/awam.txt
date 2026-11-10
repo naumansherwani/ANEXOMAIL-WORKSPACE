@@ -298,6 +298,7 @@ docs/cursor-work/sql/CHECK_E153.sql
 docs/cursor-work/sql/CHECK_E154.sql
 docs/cursor-work/sql/CHECK_E155.sql
 docs/cursor-work/sql/CHECK_E156.sql
+docs/cursor-work/sql/CHECK_E157.sql
 docs/cursor-work/sql/CHECK_E42_E47.sql
 docs/cursor-work/sql/CHECK_E48.sql
 docs/cursor-work/sql/CHECK_E50.sql

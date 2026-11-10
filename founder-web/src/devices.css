@@ -60,3 +60,13 @@
 @container dv (max-width:520px){.dv-ringbox{grid-template-columns:1fr}.dv-dl div{grid-template-columns:1fr;gap:2px}.dv-card{padding:16px}.dv-confirm .dv-btn{flex:1 1 140px}.dv-act,.dv-act .dv-btn{width:100%}}
 @media (prefers-reduced-motion:reduce){.dv-skel{animation:none}.dv-ring .arc{transition:none}}
 @media (forced-colors:active){.dv-ring .arc{stroke:CanvasText}.dv-chip[aria-pressed=true],.dv-tag.me{outline:2px solid Highlight}.dv-row.sp-spoof{outline:2px solid Mark}}
+/* D2b-5 policy editor (same container-query rules; 44px targets; no sideways scroll) */
+.dv-edit{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);display:grid;gap:12px;container-type:inline-size}
+.dv-h3{margin:0;font:600 15px Inter,sans-serif}
+.dv-field{display:grid;gap:4px;min-width:0}.dv-field label{font:600 13px Inter,sans-serif}.dv-field small{color:var(--dim,#9aa3b2);font:12px Inter,sans-serif}
+.dv-field input,.dv-field select{min-height:44px;width:100%;box-sizing:border-box;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--fg);font:14px Inter,sans-serif}
+.dv-field input:focus-visible,.dv-field select:focus-visible{outline:2px solid #6b9bf2;outline-offset:2px}
+.dv-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.dv-changes{margin:0;padding-left:20px;display:grid;gap:6px;font:14px Inter,sans-serif;overflow-wrap:anywhere}
+.dv-ok{margin:0;font:600 14px Inter,sans-serif;display:flex;gap:8px;align-items:center}.dv-ok i{font-style:normal;color:#5bd08a}
+@container (min-width:560px){.dv-edit{grid-template-columns:1fr 1fr}.dv-edit>.dv-h3,.dv-edit>.dv-actions,.dv-edit>.err,.dv-edit>.dv-changes,.dv-edit>p{grid-column:1/-1}}
