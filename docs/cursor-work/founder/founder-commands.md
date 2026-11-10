@@ -2995,3 +2995,9 @@ His install paste (SPA 200, signing ON) + "ab live chrome pe dekho, loophole ho 
 
 ## 11 Nov 2026 03:11 PKT (HIS LAST WARNING, capital letters)
 "folllow tha fucking RULES ... meri founder technology sirf aur sirf super advance hai aur maine phases ke agay mentioned hai fucking audit it and fucking fix it ... compact ke liye codes context technology mobile tablet rules sab kuch update abhi" -> audit done: docs/claude/FOUNDER-TECH-AUDIT-11NOV.md; fixes K8a-K8d queued in that order.
+
+## 11 Nov 2026 03:15-03:18 PKT
+"i hate h2 h1.1 yeh fallback hai sirf only https 3 aur jo bhi latest technology duniya main hai woh us phase ko do" + "her phase ke samne founder ke blueprint ke samne advance technology rules capital letters pe likho claude ke liye abhi ke abhi, ajj ke baad yeh mistake nahi honi chahiye". Done: TECH LAW column on every phase row (BLUEPRINT-ABC-01NOV.md), K8a-K8c code.
+
+## 11 Nov 2026 03:21 PKT
+His technology statement (verbatim list: Rust WASM kernel, Rust/Tokio/Axum, WebTransport/QUIC/HTTP3/MoQ with HTTP fallback, React 19/TS/TanStack Start & Router/Vite 8/Tailwind 4/Radix-shadcn/Framer Motion/GSAP/Three.js, PostgreSQL RLS/Hetzner Storage Box/ClamAV) "captial letters pe likho, aur is se bhi zyada post quantum jis ke codes likh rahay ho, repo ke her page pe likho". Done: the TECHNOLOGY LAW block (capitals, incl. ML-KEM-768 hybrid, ML-DSA/OpenPGP PQC as next) is at the top of every .md under docs/ + README/roadmap + CLAUDE.md/AGENTS.md (marker TECHLAW). Question kept open: TanStack Start vs Router (see audit).

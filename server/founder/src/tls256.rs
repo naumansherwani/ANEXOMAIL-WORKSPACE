@@ -2,7 +2,7 @@
 //! Technology: Rust (rustls + tokio-rustls + hyper, ring provider), inside the founder binary. Caddy keeps 80/443; this listens on its own port (test: 8443).
 //! Why it exists: Go's TLS 1.3 (Caddy) fixes the suite order (AES-128 first) and cannot be configured (golang/go#29349). Here the suite list has ONE entry,
 //! so a client that offers AES-128 only is refused and everyone else lands on TLS_AES_256_GCM_SHA384. Off unless FOUNDER_TLS256_ADDR is set.
-//! The prober never claims more than it saw: it reports the protocol, cipher and key-exchange group the handshake really ended on (ring has no ML-KEM, so it never claims post-quantum).
+//! The prober never claims more than it saw: it reports the protocol, cipher and key-exchange group the handshake really ended on (K8c: the hybrid group X25519MLKEM768 is offered first; the prober still only reports the group the handshake REALLY ended on).
 use std::sync::Arc;
 use std::time::Duration;
 
@@ -19,10 +19,12 @@ const CHACHA: SupportedCipherSuite = rp::cipher_suite::TLS13_CHACHA20_POLY1305_S
 fn provider(suites: Vec<SupportedCipherSuite>) -> Arc<CryptoProvider> {
     let mut p = rp::default_provider();
     p.cipher_suites = suites;
+    // K8c (11 Nov 2026): post-quantum hybrid key exchange FIRST (X25519MLKEM768, from aws-lc-rs: ring has no ML-KEM), then the classic groups for clients that lack it. Ciphers stay ring.
+    p.kx_groups.insert(0, rustls_post_quantum::X25519MLKEM768);
     Arc::new(p)
 }
 
-/// Server side: TLS 1.3 only, ONE cipher suite (AES-256-GCM-SHA384), HTTP/1.1.
+/// Server side: TLS 1.3 only, ONE cipher suite (AES-256-GCM-SHA384); ALPN h2 first, http/1.1 fallback (K8a, 11 Nov 2026: his rule HTTP/3 primary, h2 + h1 fallback; h3 = K8b).
 pub fn server_config(cert_pem: &[u8], key_pem: &[u8]) -> Result<Arc<ServerConfig>, String> {
     let certs: Vec<CertificateDer<'static>> = CertificateDer::pem_slice_iter(cert_pem).collect::<Result<_, _>>().map_err(|e| format!("certificate: {e}"))?;
     if certs.is_empty() { return Err("certificate file has no certificate".into()); }
@@ -31,7 +33,7 @@ pub fn server_config(cert_pem: &[u8], key_pem: &[u8]) -> Result<Arc<ServerConfig
         .with_protocol_versions(&[&rustls::version::TLS13]).map_err(|e| e.to_string())?
         .with_no_client_auth()
         .with_single_cert(certs, key).map_err(|e| e.to_string())?;
-    c.alpn_protocols = vec![b"http/1.1".to_vec()];
+    c.alpn_protocols = vec![b"h2".to_vec(), b"http/1.1".to_vec()];
     Ok(Arc::new(c))
 }
 
@@ -104,6 +106,12 @@ async fn real_client(tcp: &mut TcpStream, peer: std::net::SocketAddr) -> Result<
     tokio::time::timeout(Duration::from_secs(3), read).await.map_err(|_| ())?
 }
 
+/// K8a: an h2 (and h3) request carries its host in `:authority`, not in a Host header; the app (host proof, device records) reads the Host header, so it is filled in from the authority when absent.
+pub fn host_from_authority<B>(req: &mut axum::http::Request<B>) {
+    if req.headers().contains_key(axum::http::header::HOST) { return; }
+    if let Some(a) = req.uri().authority().and_then(|a| axum::http::HeaderValue::from_str(a.as_str()).ok()) { req.headers_mut().insert(axum::http::header::HOST, a); }
+}
+
 /// Same as `serve_store`; with `px` on, a loopback peer's PROXY v1 line gives the real client IP, which the app sees as `x-real-ip`.
 pub async fn serve_store_px(listener: TcpListener, store: Arc<CertStore>, router: axum::Router, px: bool) {
     loop {
@@ -116,10 +124,10 @@ pub async fn serve_store_px(listener: TcpListener, store: Arc<CertStore>, router
             let ip = client.ip().to_string();
             let router = router.layer(axum::middleware::from_fn(move |mut req: axum::extract::Request, next: axum::middleware::Next| {
                 let ip = ip.clone();
-                async move { if let Ok(v) = axum::http::HeaderValue::from_str(&ip) { req.headers_mut().insert("x-real-ip", v); } next.run(req).await }
+                async move { if let Ok(v) = axum::http::HeaderValue::from_str(&ip) { req.headers_mut().insert("x-real-ip", v); } host_from_authority(&mut req); next.run(req).await }
             }));
             let svc = hyper_util::service::TowerToHyperService::new(router);
-            let _ = hyper::server::conn::http1::Builder::new().serve_connection(hyper_util::rt::TokioIo::new(tls), svc).await;
+            let _ = hyper_util::server::conn::auto::Builder::new(hyper_util::rt::TokioExecutor::new()).serve_connection(hyper_util::rt::TokioIo::new(tls), svc).await; // K8a: h2 or h1 by ALPN
         });
     }
 }
@@ -340,6 +348,54 @@ mod tests {
         // a client that can ONLY do AES-128 is refused (that is the point of "256 at every cost")
         let p = probe("localhost", port, Offer::Aes128Only, Some(root)).await;
         assert!(!p.ok && p.error.is_some() && p.cipher.is_none(), "{p:?}");
+    }
+
+    /// K8a (11 Nov 2026): the terminator negotiates h2 when the client offers it, and the h2 connection really answers (a SETTINGS frame after the client preface); http/1.1 still works (test above).
+    #[tokio::test]
+    async fn the_terminator_speaks_h2_when_offered_and_http1_otherwise() {
+        let Some((c, k)) = test_cert() else { eprintln!("openssl missing: skipped"); return };
+        let port = up(&c, &k).await;
+        let root = CertificateDer::pem_slice_iter(&c).next().unwrap().unwrap();
+        let mut roots = RootCertStore::empty(); roots.add(root).unwrap();
+        let mut cfg = ClientConfig::builder_with_provider(provider(vec![AES256])).with_protocol_versions(&[&rustls::version::TLS13]).unwrap().with_root_certificates(roots).with_no_client_auth();
+        cfg.alpn_protocols = vec![b"h2".to_vec(), b"http/1.1".to_vec()];
+        let tcp = TcpStream::connect(("localhost", port)).await.unwrap();
+        let mut tls = TlsConnector::from(Arc::new(cfg)).connect(ServerName::try_from("localhost").unwrap(), tcp).await.unwrap();
+        assert_eq!(tls.get_ref().1.alpn_protocol(), Some(&b"h2"[..]));
+        tls.write_all(b"PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n").await.unwrap();
+        tls.write_all(&[0, 0, 0, 4, 0, 0, 0, 0, 0]).await.unwrap(); // empty SETTINGS frame
+        let mut hdr = [0u8; 9]; tls.read_exact(&mut hdr).await.unwrap();
+        assert_eq!(hdr[3], 4, "the first server frame must be SETTINGS, got {hdr:?}");
+    }
+
+    #[test]
+    fn h2_authority_becomes_the_host_header_and_a_real_host_is_never_overwritten() {
+        let mut r = axum::http::Request::builder().uri("https://founderworkspace.anexomail.com/x").body(()).unwrap();
+        host_from_authority(&mut r); assert_eq!(r.headers().get("host").unwrap(), "founderworkspace.anexomail.com");
+        let mut r = axum::http::Request::builder().uri("https://a.example/x").header("host", "b.example").body(()).unwrap();
+        host_from_authority(&mut r); assert_eq!(r.headers().get("host").unwrap(), "b.example");
+        let mut r = axum::http::Request::builder().uri("/x").body(()).unwrap();
+        host_from_authority(&mut r); assert!(r.headers().get("host").is_none());
+    }
+
+    /// K8c: a client that offers ONLY X25519MLKEM768 completes the handshake and the group that was really negotiated is the post-quantum hybrid; a classic X25519-only client still works.
+    #[tokio::test]
+    async fn post_quantum_hybrid_group_is_negotiated_and_classic_clients_still_work() {
+        let Some((c, k)) = test_cert() else { eprintln!("openssl missing: skipped"); return };
+        let port = up(&c, &k).await;
+        let root = CertificateDer::pem_slice_iter(&c).next().unwrap().unwrap();
+        let mut roots = RootCertStore::empty(); roots.add(root).unwrap();
+        let go = |groups: Vec<&'static dyn rustls::crypto::SupportedKxGroup>| {
+            let mut p = rp::default_provider(); p.cipher_suites = vec![AES256]; p.kx_groups = groups;
+            ClientConfig::builder_with_provider(Arc::new(p)).with_protocol_versions(&[&rustls::version::TLS13]).unwrap().with_root_certificates(roots.clone()).with_no_client_auth()
+        };
+        let tcp = TcpStream::connect(("localhost", port)).await.unwrap();
+        let tls = TlsConnector::from(Arc::new(go(vec![rustls_post_quantum::X25519MLKEM768]))).connect(ServerName::try_from("localhost").unwrap(), tcp).await.unwrap();
+        let g = format!("{:?}", tls.get_ref().1.negotiated_key_exchange_group().unwrap().name());
+        assert!(g.contains("MLKEM768"), "negotiated {g}");
+        let tcp = TcpStream::connect(("localhost", port)).await.unwrap();
+        let tls = TlsConnector::from(Arc::new(go(vec![rp::kx_group::X25519]))).connect(ServerName::try_from("localhost").unwrap(), tcp).await.unwrap();
+        assert_eq!(format!("{:?}", tls.get_ref().1.negotiated_key_exchange_group().unwrap().name()), "X25519");
     }
 
     #[tokio::test]

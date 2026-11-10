@@ -26,6 +26,8 @@ futures-util = { version = "0.3", default-features = false }
 rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12"] }
 tokio-rustls = { version = "0.26", default-features = false, features = ["ring"] }
 webpki-roots = "1"
+# K8c (11 Nov 2026): X25519MLKEM768 (post-quantum hybrid key exchange, listed for K4). ring has no ML-KEM, so ONLY the key-exchange group comes from aws-lc-rs; ciphers stay ring AES-256-GCM.
+rustls-post-quantum = "0.2"
 hyper = { version = "1", features = ["server", "http1", "http2"] }
 hyper-util = { version = "0.1", features = ["tokio", "service", "server-auto", "http1", "http2"] }
 tower = { version = "0.5", features = ["util"] }
@@ -35,6 +37,7 @@ h3 = "0.0.8"
 h3-quinn = "0.0.10"
 quinn = { version = "0.11", default-features = false, features = ["ring", "rustls-ring", "runtime-tokio"] }
 http-body-util = "0.1"
+bytes = "1"
 wtransport = { version = "0.7", default-features = false, features = ["quinn", "ring"] }
 
 [profile.release]

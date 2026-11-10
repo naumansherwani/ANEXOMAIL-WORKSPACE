@@ -924,3 +924,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 11 Nov 2026 02:30 PKT: UI pass 2 founder-install DONE (his paste 02:24). ABHI PENDING (UI pass 3, SPA only): 1. git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -15   (awam pull.sh NOT needed)
 - 11 Nov 02:58 founder-install.sh (SPA only) for Aurora seal; awam pull.sh NOT needed
 - 11 Nov 03:20 K8 (h2/h3/ML-KEM/kernel RPC) = founder-install.sh each; awam pull NOT needed
+- 11 Nov 03:45 K8a+K8b+K8c Rust: founder-install.sh (h2 fallback + ML-KEM on the TCP terminator take effect; HTTP/3 stays OFF until FOUNDER_H3_ADDR). Read-only before enabling h3 (PORTS RED LINE): ss -ulpn | grep 443; ss -tlpn | grep 443

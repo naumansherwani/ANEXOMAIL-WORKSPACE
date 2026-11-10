@@ -43,6 +43,7 @@ mod auth;
 mod signin;
 mod sessions;
 mod policy_step;
+mod h3;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -985,7 +986,20 @@ async fn main() {
         None => eprintln!("founder: TLS-256 terminator OFF (no FOUNDER_TLS256_ADDR)"),
         Some(Err(e)) => eprintln!("founder: TLS-256 terminator NOT started: {e}"),
         Some(Ok((a, store, cert_path, key_path))) => match tokio::net::TcpListener::bind(&a).await {
-            Ok(l) => { eprintln!("founder: TLS-256 terminator ON {a} (TLS 1.3, AES-256-GCM only, certificate hot-reload, {} days left)", (store.not_after() - std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0)) / 86400); tls256::spawn_reloader(store.clone(), cert_path, key_path); tokio::spawn(tls256::serve_store_px(l, store, app(st.clone()).layer(hdr("alt-svc", "clear")).layer(axum::middleware::from_fn(fproxy::layer)), tls256::proxy_from_env())); }
+            Ok(l) => { eprintln!("founder: TLS-256 terminator ON {a} (TLS 1.3, AES-256-GCM only, certificate hot-reload, {} days left)", (store.not_after() - std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0)) / 86400); tls256::spawn_reloader(store.clone(), cert_path, key_path); // K8b: HTTP/3 is PRIMARY (his rule): bind the QUIC endpoint first; Alt-Svc advertises h3 only when it really bound
+                let mut alt: &'static str = "clear"; let mut h3ep = None;
+                match h3::from_env() {
+                    None => eprintln!("founder: HTTP/3 OFF (no FOUNDER_H3_ADDR)"),
+                    Some(Err(e)) => eprintln!("founder: HTTP/3 NOT started: {e}"),
+                    Some(Ok((sa, host))) => match h3::endpoint(sa, &store.current()) {
+                        Ok(ep) => { eprintln!("founder: HTTP/3 ON udp {sa} for {host} (QUIC, TLS 1.3, AES-256-GCM, Retry address validation, ALPN h3; h2 + http/1.1 = fallback on tcp)"); alt = Box::leak(h3::alt_svc_value(sa.port()).into_boxed_str()); h3ep = Some((ep, host)); }
+                        Err(e) => eprintln!("founder: HTTP/3 NOT started: {e}"),
+                    },
+                }
+                fproxy::set_alt(alt);
+                let rt = app(st.clone()).layer(hdr("alt-svc", alt)).layer(axum::middleware::from_fn(fproxy::layer));
+                if let Some((ep, host)) = h3ep { tokio::spawn(h3::serve(ep, store.clone(), rt.clone(), host)); }
+                tokio::spawn(tls256::serve_store_px(l, store, rt, tls256::proxy_from_env())); }
             Err(e) => eprintln!("founder: TLS-256 terminator NOT started: bind {a}: {e}"),
         },
     }

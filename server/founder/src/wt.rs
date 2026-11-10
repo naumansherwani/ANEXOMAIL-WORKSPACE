@@ -63,7 +63,10 @@ pub fn origin_ok(origin: Option<&str>, host: &str) -> bool { match origin { None
 pub fn authority_host(a: &str) -> String { a.rsplit_once(':').filter(|(h, p)| !h.contains(':') && p.bytes().all(|b| b.is_ascii_digit())).map(|(h, _)| h).unwrap_or(a).to_ascii_lowercase() }
 
 /// QUIC server configuration from the K4 rustls config (AES-256-GCM only). ALPN is switched to h3; the Initial packet gets AES-128 as RFC 9001 demands.
-pub fn quic_config(tls: &rustls::ServerConfig) -> Result<quinn::ServerConfig, String> {
+pub fn quic_config(tls: &rustls::ServerConfig) -> Result<quinn::ServerConfig, String> { quic_config_n(tls, 4, 4) }
+
+/// Same, with the number of concurrent request (bidi) and unidirectional streams (the HTTP/3 API needs many, WebTransport live few).
+pub fn quic_config_n(tls: &rustls::ServerConfig, bidi: u32, uni: u32) -> Result<quinn::ServerConfig, String> {
     let mut c = tls.clone();
     c.alpn_protocols = vec![b"h3".to_vec()];
     let initial = TLS13_AES_128_GCM_SHA256.tls13().and_then(|s| s.quic_suite()).ok_or("no QUIC initial suite")?;
@@ -72,8 +75,8 @@ pub fn quic_config(tls: &rustls::ServerConfig) -> Result<quinn::ServerConfig, St
     let mut t = quinn::TransportConfig::default();
     t.max_idle_timeout(Some(Duration::from_secs(30).try_into().map_err(|_| "idle timeout")?));
     t.keep_alive_interval(Some(Duration::from_secs(10)));
-    t.max_concurrent_bidi_streams(4u32.into());
-    t.max_concurrent_uni_streams(4u32.into());
+    t.max_concurrent_bidi_streams(bidi.into());
+    t.max_concurrent_uni_streams(uni.into());
     sc.transport_config(Arc::new(t));
     Ok(sc)
 }

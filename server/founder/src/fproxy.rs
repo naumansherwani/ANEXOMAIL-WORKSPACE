@@ -13,6 +13,10 @@ use std::sync::OnceLock;
 use std::time::Duration;
 
 /// The host name the old app answers to (SNI + Host header towards the upstream).
+/// K8b: the Alt-Svc value of the founder host ("clear" until the HTTP/3 endpoint really bound, then h3=":<udp port>"); set once at start.
+static ALT: std::sync::OnceLock<&'static str> = std::sync::OnceLock::new();
+pub fn set_alt(v: &'static str) { let _ = ALT.set(v); }
+fn alt() -> HeaderValue { HeaderValue::from_static(ALT.get().copied().unwrap_or("clear")) }
 pub const HOST: &str = "founderworkspace.anexomail.com";
 const MAX_BODY: usize = 25 * 1024 * 1024;
 
@@ -68,7 +72,7 @@ pub fn response_headers(h: &HeaderMap) -> HeaderMap {
         if HOP.contains(&n) || n == "alt-svc" || n == "content-length" { continue; }
         o.append(k.clone(), v.clone());
     }
-    o.insert(HeaderName::from_static("alt-svc"), HeaderValue::from_static("clear"));
+    o.insert(HeaderName::from_static("alt-svc"), alt());
     o
 }
 
@@ -93,7 +97,7 @@ pub async fn layer(req: Request, next: Next) -> Response {
     if let Some(to) = awam_redirect(req.uri().path()) {
         let mut r = Response::new(Body::empty()); *r.status_mut() = StatusCode::FOUND;
         r.headers_mut().insert(header::LOCATION, HeaderValue::from_static(to)); r.headers_mut().insert(header::CACHE_CONTROL, HeaderValue::from_static("no-store"));
-        r.headers_mut().insert(HeaderName::from_static("alt-svc"), HeaderValue::from_static("clear"));
+        r.headers_mut().insert(HeaderName::from_static("alt-svc"), alt());
         return r;
     }
     let (Some(up), true) = (UP.get(), is_legacy(req.uri().path())) else { return next.run(req).await };
