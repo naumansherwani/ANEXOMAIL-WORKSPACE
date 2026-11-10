@@ -44,6 +44,7 @@ docs/cursor-work/server/founder-install.sh
 docs/cursor-work/server/founder-k5-front-switch.sh
 docs/cursor-work/server/founder-legacy.sh
 docs/cursor-work/server/founder-polar.sh
+docs/cursor-work/server/founder-signin-peek.sh
 docs/cursor-work/server/founder-telemetry.sh
 docs/cursor-work/server/founder-tls256.sh
 docs/cursor-work/server/founder-wt-proof.sh

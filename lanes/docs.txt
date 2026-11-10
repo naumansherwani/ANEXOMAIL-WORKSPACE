@@ -27,10 +27,10 @@ docs/anexomail-blueprint.md
 docs/anexomail-security-blueprint.md
 docs/caddy-payments-host.md
 docs/claude/ANEXOCHAT-CINEMATIC-VOICE-BLUEPRINT.md
-docs/claude/AWAM-2FA-OPTIONAL-10NOV.md
 docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md
 docs/claude/AWAM-FEATURES-BUN-TO-LATEST-03NOV.md
 docs/claude/AWAM-MOBILE-LOGIN-COUNTRY-REQUIREMENT-01NOV.md
+docs/claude/AWAM-NO-2FA-10NOV.md
 docs/claude/AWAM-PACKAGES-PROPOSAL-07NOV.md
 docs/claude/AWAM-PARKED-ORDER-02NOV.md
 docs/claude/AWAM-PROTON-PLUS-PLAN-07NOV.md
@@ -90,6 +90,7 @@ docs/claude/FOUNDER-PASSKEY-F2D-DESIGN-01NOV.md
 docs/claude/FOUNDER-PASSKEY-J3-RESEARCH-03NOV.md
 docs/claude/FOUNDER-PORT-ORDER-30OCT.md
 docs/claude/FOUNDER-PROTOCOL-28OCT.md
+docs/claude/FOUNDER-RED-ZONE-PLAN-10NOV.md
 docs/claude/FOUNDER-SERVER-STATE-30OCT.md
 docs/claude/FOUNDER-SETTINGS-CENTER-DECISION-01NOV.md
 docs/claude/FOUNDER-SETTINGS-CENTER-PORT-28OCT.md
