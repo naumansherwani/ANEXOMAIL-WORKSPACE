@@ -918,3 +918,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 11 Nov 2026 01:45 PKT ABHI PENDING (D3 UI): 1. git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -15   (SPA only changed; awam pull.sh NOT needed)
 
 11 Nov 2026 02:10 PKT ABHI PENDING (D2b-5, 2 steps in this order): 1. git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) 2>&1 | grep -e E157 -e FAIL -e DONE   2. git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -15   (awam pull.sh NOT needed)
+
+11 Nov 2026 02:22 PKT: E157 sql-run DONE (his paste 02:07, 4/4 OK, do not re-send) and founder-install of D2b-5 DONE. ABHI PENDING (UI pass 2, SPA only): 1. git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -15   (awam pull.sh NOT needed)

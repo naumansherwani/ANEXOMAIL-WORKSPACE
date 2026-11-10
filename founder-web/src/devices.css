@@ -17,7 +17,7 @@
 .dv-legend li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
 .dv-legend i{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;font:700 14px Inter,sans-serif;font-style:normal;border:1.5px solid currentColor}
 .dv-legend .s-good i{color:var(--ok)}.dv-legend .s-warn i{color:var(--wn)}.dv-legend .s-bad i{color:var(--bad)}.dv-legend .s-unknown i{color:var(--faint)}
-.dv-legend b{font-size:14px;margin-right:8px}.dv-legend em{font:600 11px Inter,sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}.dv-legend small{display:block;color:var(--dim);font-size:12.5px;margin-top:2px}
+.dv-legend b{font-size:14px;margin-right:8px}.dv-legend em{font:600 12px Inter,sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}.dv-legend small{display:block;color:var(--dim);font-size:13px;margin-top:2px}
 .dv-chips,.dv-filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .dv-chip{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:rgba(18,20,26,.7);color:var(--dim);font:500 13px Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
 .dv-chip:hover{color:var(--fg);border-color:#34405a}.dv-chip.on,.dv-chip[aria-pressed=true]{color:var(--fg);border-color:var(--ac);background:rgba(107,155,242,.14)}
@@ -25,14 +25,14 @@
 .dv-bar{display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between;align-items:center}
 .dv-search{flex:1 1 220px;min-height:44px;background:#0e1015;color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:0 12px;font:500 14px Inter,sans-serif}
 .dv-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
-.dv-row{display:grid;gap:14px;padding:16px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02)}
+.dv-row{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;padding:16px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02)}
 .dv-row.me{border-color:rgba(107,155,242,.55)}.dv-row.closed{opacity:.72}.dv-row.sp-spoof{border-color:#5a3226;background:rgba(242,112,95,.06)}.dv-row.sp-suspect{border-color:#5a4a26}
 .dv-title{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.dv-title b{font-size:16px}
-.dv-tag{font:600 10.5px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--dim)}
+.dv-tag{font:600 12px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--dim)}
 .dv-tag.me{color:#9db9e6;border-color:rgba(107,155,242,.5);background:rgba(74,115,179,.2)}.dv-tag.ok{color:var(--ok);border-color:#1f5a40}.dv-tag.off{color:var(--faint)}
-.dv-facts,.dv-times{display:flex;flex-wrap:wrap;gap:6px 14px;margin:8px 0 0;font-size:13px;color:var(--dim)}.dv-times{font-size:12.5px;color:var(--faint)}
+.dv-facts,.dv-times{display:flex;flex-wrap:wrap;gap:6px 14px;margin:8px 0 0;font-size:13px;color:var(--dim)}.dv-times{font-size:13px;color:var(--faint)}
 .mono{font-family:ui-monospace,Menlo,monospace;font-size:12px}
-.dv-warn{margin:8px 0 0;color:var(--wn);font-size:13.5px}
+.dv-warn{margin:8px 0 0;color:var(--wn);font-size:14px}
 .dv-spoof{margin-top:10px;padding:10px 12px;border-radius:10px;background:rgba(242,112,95,.08);border:1px solid #5a3226;font-size:13px}
 .dv-spoof ul{margin:6px 0 0;padding-left:18px;color:var(--dim)}.dv-spoof .meter{display:block;height:6px;border-radius:99px;background:rgba(255,255,255,.08);margin-bottom:8px;overflow:hidden}.dv-spoof .meter i{display:block;height:100%;background:var(--bad)}
 .dv-act{display:flex;align-items:flex-start}
@@ -40,7 +40,7 @@
 .dv-btn.danger{background:#a23a2c;border-color:#c95a49}.dv-btn.danger:hover:not(:disabled){background:#bb4636}.dv-btn.ghost{background:transparent;color:var(--fg)}
 .dv-btn:disabled{opacity:.5;cursor:not-allowed}
 .dv-btn:focus-visible,.dv-chip:focus-visible,.dv-search:focus-visible,.dv-link:focus-visible{outline:2px solid #6b9bf2;outline-offset:3px}
-.dv-confirm{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.dv-confirm p{margin:0;flex:1 1 100%;font-size:13.5px}
+.dv-confirm{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.dv-confirm p{margin:0;flex:1 1 100%;font-size:14px}
 .dv-foot{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding-top:4px}
 .dv-msg{margin:0}.dv-msg.ok{color:var(--ok)}
 .dv-empty{padding:14px 0;margin:0}
@@ -52,7 +52,7 @@
 .dv-tl li{display:grid;grid-template-columns:30px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}.dv-tl li:last-child{border-bottom:0}
 .dv-tl i{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;border:1.5px solid currentColor;font:700 13px Inter,sans-serif;font-style:normal;color:var(--faint)}
 .dv-tl .tone-warn i{color:var(--wn)}.dv-tl .tone-bad i{color:var(--bad)}.dv-tl .tone-info i{color:#9db9e6}
-.dv-tl p{margin:0;font-size:14px}.dv-tl time{font-size:12.5px;color:var(--dim)}.dv-tl .mono{color:var(--faint)}
+.dv-tl p{margin:0;font-size:14px}.dv-tl time{font-size:13px;color:var(--dim)}.dv-tl .mono{color:var(--faint)}
 .dv-link{background:none;border:0;color:var(--ac);cursor:pointer;font:inherit;text-decoration:underline;min-height:24px;padding:0}
 .dv-skel{min-height:140px;background:linear-gradient(90deg,rgba(255,255,255,.03),rgba(255,255,255,.07),rgba(255,255,255,.03));background-size:200% 100%;animation:dvsk 1.4s linear infinite}.dv-skel.tall{min-height:260px}
 @keyframes dvsk{to{background-position:-200% 0}}
@@ -62,7 +62,7 @@
 @media (forced-colors:active){.dv-ring .arc{stroke:CanvasText}.dv-chip[aria-pressed=true],.dv-tag.me{outline:2px solid Highlight}.dv-row.sp-spoof{outline:2px solid Mark}}
 /* D2b-5 policy editor (same container-query rules; 44px targets; no sideways scroll) */
 .dv-edit{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);display:grid;gap:12px;container-type:inline-size}
-.dv-h3{margin:0;font:600 15px Inter,sans-serif}
+.dv-h3{margin:0;font:600 16px Inter,sans-serif}
 .dv-field{display:grid;gap:4px;min-width:0}.dv-field label{font:600 13px Inter,sans-serif}.dv-field small{color:var(--dim,#9aa3b2);font:12px Inter,sans-serif}
 .dv-field input,.dv-field select{min-height:44px;width:100%;box-sizing:border-box;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--fg);font:14px Inter,sans-serif}
 .dv-field input:focus-visible,.dv-field select:focus-visible{outline:2px solid #6b9bf2;outline-offset:2px}
@@ -70,3 +70,35 @@
 .dv-changes{margin:0;padding-left:20px;display:grid;gap:6px;font:14px Inter,sans-serif;overflow-wrap:anywhere}
 .dv-ok{margin:0;font:600 14px Inter,sans-serif;display:flex;gap:8px;align-items:center}.dv-ok i{font-style:normal;color:#5bd08a}
 @container (min-width:560px){.dv-edit{grid-template-columns:1fr 1fr}.dv-edit>.dv-h3,.dv-edit>.dv-actions,.dv-edit>.err,.dv-edit>.dv-changes,.dv-edit>p{grid-column:1/-1}}
+/* 11 Nov live-Chrome fixes: titles left like everything else, ring centre never clipped, calmer routine rows */
+.dv-card .dv-h{margin:0;display:block;text-align:left}
+.dv-ring .rw{font-size:11.5px;letter-spacing:-.01em}
+/* ---- design pass 2 (11 Nov, after reading it live in his Chrome): hierarchy, calmer buttons, finer ring, tabular numbers ---- */
+.dv{font-variant-numeric:tabular-nums}
+.dv-herohead .dv-h{font:650 22px/1.15 Inter,system-ui,sans-serif;letter-spacing:-.022em;text-transform:none;color:var(--fg)}
+.dv-herohead p{font-size:14px;line-height:1.5;color:var(--dim);margin-top:8px}
+.dv-card{gap:16px;padding:22px 24px}
+.dv-ring .trk{stroke:rgba(255,255,255,.06);stroke-width:5}.dv-ring .arc{stroke-width:5}
+.dv-ring .rw{font:650 12px Inter,sans-serif;letter-spacing:-.01em}.dv-ring .rs{font:500 8px Inter,sans-serif;letter-spacing:.04em;text-transform:uppercase}
+.dv-legend li{padding:2px 0}.dv-legend small{line-height:1.4}
+.dv-row{transition:border-color .15s,background .15s}.dv-row:hover:not(.closed){border-color:#34405a;background:rgba(255,255,255,.035)}.dv-row.me:hover{border-color:rgba(107,155,242,.8)}
+/* row actions: quiet outline buttons; danger colour only for other people's sessions, filled red only on the confirm step */
+.dv-act .dv-btn:not(.danger):not(.ghost){background:transparent;color:var(--fg);border-color:var(--line)}
+.dv-act .dv-btn:not(.danger):not(.ghost):hover:not(:disabled){background:rgba(255,255,255,.06);border-color:#4a5675}
+.dv-row:not(.me) .dv-act .dv-btn:not(.danger):not(.ghost){color:#f08a7c;border-color:#5a3226}
+.dv-row:not(.me) .dv-act .dv-btn:not(.danger):not(.ghost):hover:not(:disabled){background:rgba(242,112,95,.1);border-color:#8a4a3c}
+.dv-actions .dv-btn.ghost{border-color:var(--line)}.dv-actions .dv-btn.ghost:hover:not(:disabled){background:rgba(255,255,255,.06)}
+.dv-spoof{padding:12px 14px}.dv-spoof li{margin:0 0 4px;line-height:1.4}.dv-spoof ul{margin:8px 0 0}
+.dv-ledsub{display:flex;flex-wrap:wrap;gap:0 8px;align-items:center}
+.dv-link{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;background:none;border:0;color:#9db9e6;font:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.dv-tl li{padding-block:12px}
+.dv-dl dt{font-size:13px}.dv-dl dd{font-size:14px}
+.dv-spoof ul{list-style:disc;padding-left:18px}.dv-spoof li{padding:0;margin:0 0 3px;border:0;display:list-item}
+.dv-row.me .dv-act .dv-btn:not(.danger):not(.ghost){border-color:#3b4a6e}
+.dv-btn.soft{background:transparent;color:#f08a7c;border-color:#5a3226}.dv-btn.soft:hover:not(:disabled){background:rgba(242,112,95,.1);border-color:#8a4a3c}
+.dv-btn.soft:disabled{color:var(--faint);border-color:var(--line)}
+/* provenance (Rule 52 in the UI): the kernel's verdict is shown, never assumed */
+.dv-prov{display:grid;gap:6px;justify-items:end;text-align:right}
+.dv-verified{display:inline-flex;align-items:center;gap:6px;font:500 12px Inter,sans-serif;color:var(--ok);padding:4px 10px;border:1px solid #1f5a40;border-radius:999px;background:rgba(61,214,140,.06)}
+.dv-verified i{font-style:normal;font-weight:700}
+@container dv (max-width:520px){.dv-prov{justify-items:start;text-align:left}}

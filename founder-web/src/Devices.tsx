@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { get, post, signOut } from "./api";
 import { PolicyEditor } from "./PolicyEditor";
+import { KERNEL } from "./kernel.pin";
 import {
   ago, alerts, browserText, canClose, closeWarning, countryName, flag, freshness, hasAlert, INTEGRITY_TEXT, KEY_TEXT, kindInfo, methodText, othersLive, parseBoard, parseLedger, pathShort, reasonText, remaining, revokeText, ring, rowText, span, visible,
   type Board, type Filter, type Policy, type Ring, type Row, type Sess,
@@ -22,8 +23,9 @@ function TrustRing({ r }: { r: Ring }) {
       <svg className={`dv-ring v-${r.verdict}`} viewBox="0 0 120 120" role="img" aria-label={`Session trust: ${r.word}. ${r.arcs.map((a) => `${a.label}: ${STATE_WORD[a.state]}`).join(", ")}`}>
         <circle cx="60" cy="60" r="44" className="trk" />
         {r.arcs.map((a, i) => <circle key={a.id} cx="60" cy="60" r="44" className={`arc s-${a.state}`} strokeDasharray={`${len} ${C - len}`} transform={`rotate(${-90 + i * 90 + 3.5} 60 60)`} />)}
-        <text x="60" y="57" textAnchor="middle" className="rw">{r.word}</text>
-        <text x="60" y="73" textAnchor="middle" className="rs">this session</text>
+        {(() => { const w = r.word.split(" "); const two = r.word.length > 9 && w.length > 1; return two
+          ? <><text x="60" y="53" textAnchor="middle" className="rw">{w[0]}</text><text x="60" y="67" textAnchor="middle" className="rw">{w.slice(1).join(" ")}</text><text x="60" y="81" textAnchor="middle" className="rs">this session</text></>
+          : <><text x="60" y="58" textAnchor="middle" className="rw">{r.word}</text><text x="60" y="74" textAnchor="middle" className="rs">this session</text></>; })()}
       </svg>
       <ul className="dv-legend">
         {r.arcs.map((a) => <li key={a.id} className={`s-${a.state}`}><i aria-hidden="true">{STATE_ICON[a.state]}</i><span><b>{a.label}</b><em>{STATE_WORD[a.state]}</em><small>{a.detail}</small></span></li>)}
@@ -44,8 +46,8 @@ function PolicyCard({ p, limits, reload }: { p: Policy | null; limits: string[];
         <div><dt>Idle limit</dt><dd>{span(p.idleS)}</dd></div>
         <div><dt>Absolute limit</dt><dd>{span(p.absoluteS)}</dd></div>
         <div><dt>Live sessions</dt><dd>at most {p.maxLive}</dd></div>
-        <div><dt>Shared-session alarm</dt><dd>{p.flapLimit} network changes in 10 min ({p.flapAction})</dd></div>
-        <div><dt>Browser mismatch</dt><dd>{p.spoofAction}</dd></div>
+        <div><dt>Shared-session alarm</dt><dd>{p.flapLimit} network changes in 10 min · {p.flapAction === "revoke" ? "closes the session" : "alert only"}</dd></div>
+        <div><dt>Browser mismatch</dt><dd>{p.spoofAction === "block" ? "Blocked" : "Alert only"}</dd></div>
       </dl>
       <p className="src">Changing these needs a fresh passkey touch that signs the exact change. {limits.includes("vpn_inside_an_allowed_country_passes_the_location_lock") ? "Honest limit: a VPN inside an allowed country passes the location lock." : ""}</p>
       {editing ? <PolicyEditor p={p} onDone={() => { setEditing(false); reload(); }} /> : <div className="dv-actions"><button type="button" className="dv-btn ghost" onClick={() => setEditing(true)}>Change policy…</button></div>}
@@ -102,7 +104,7 @@ function SessionRow({ s, pol, now, busy, confirm, setConfirm, close }: { s: Sess
 }
 
 export function DevicesView() {
-  const [board, setBoard] = useState<Board | null>(null), [down, setDown] = useState(false), [err, setErr] = useState(""), [loadedAt, setLoadedAt] = useState<number | null>(null), [loading, setLoading] = useState(true);
+  const [verified, setVerified] = useState(false), [board, setBoard] = useState<Board | null>(null), [down, setDown] = useState(false), [err, setErr] = useState(""), [loadedAt, setLoadedAt] = useState<number | null>(null), [loading, setLoading] = useState(true);
   const [rows, setRows] = useState<Row[]>([]), [more, setMore] = useState(true), [ledgerErr, setLedgerErr] = useState(""), [kind, setKind] = useState<string | null>(null);
   const [filter, setFilter] = useState<Filter>("all"), [q, setQ] = useState(""), [confirm, setConfirm] = useState<string | null>(null), [confirmOthers, setConfirmOthers] = useState(false);
   const [shown, setShown] = useState(10), [busy, setBusy] = useState<string | null>(null), [msg, setMsg] = useState<{ ok: boolean; t: string } | null>(null);
@@ -114,6 +116,7 @@ export function DevicesView() {
       const e = await get("/founder/v1/sessions/board");
       if (!alive.current) return;
       const b = (e.data as { available?: boolean })?.available === false ? null : parseBoard(e.data);
+      setVerified(e.verified === true);
       if (!b) { setDown(true); setBoard(null); } else { setDown(false); setBoard(b); setLoadedAt(Date.now()); }
       setErr("");
     } catch (x) { if (alive.current) setErr((x as Error).message || "The server did not answer"); } // keep the last good data, mark it stale
@@ -156,7 +159,9 @@ export function DevicesView() {
   const r = useMemo(() => ring(cur, board), [cur, board]);
   const list = useMemo(() => (board ? visible(board.sessions, filter, q) : []), [board, filter, q]);
   const strip = useMemo(() => alerts(rows, now), [rows, now]);
-  const filtered = kind ? rows.filter((x) => x.kind === kind) : rows, shownRows = filtered.slice(0, shown);
+  const [routine, setRoutine] = useState(false);
+  const hiddenRoutine = kind ? 0 : rows.filter((x) => x.kind === "seen").length;
+  const filtered = kind ? rows.filter((x) => x.kind === kind) : routine ? rows : rows.filter((x) => x.kind !== "seen"), shownRows = filtered.slice(0, shown);
   const fresh = freshness(loadedAt, now, EVERY);
   const others = othersLive(board);
 
@@ -172,7 +177,8 @@ export function DevicesView() {
       <section className="dx-card dv-card dv-hero" aria-label="This session">
         <div className="dv-herohead"><div><h2 className="dv-h">Devices &amp; sessions</h2>
           <p className="dim">Every sign-in is a session. Close any you do not recognise; it stops on its very next request. {board.live} live{board.liveWithAlert > 0 ? `, ${board.liveWithAlert} with an alert` : ""}.</p></div>
-          <p className={`dv-fresh ${fresh}`} role="status" aria-live="polite">{fresh === "fresh" ? `Updated ${loadedAt ? new Date(loadedAt).toLocaleTimeString() : ""} · refreshes every 15 s` : `Stale: last update ${loadedAt ? new Date(loadedAt).toLocaleTimeString() : "never"}${err ? ` (${err})` : ""}`}</p></div>
+          <div className="dv-prov"><p className={`dv-fresh ${fresh}`} role="status" aria-live="polite">{fresh === "fresh" ? `Updated ${loadedAt ? new Date(loadedAt).toLocaleTimeString() : ""} · refreshes every 15 s` : `Stale: last update ${loadedAt ? new Date(loadedAt).toLocaleTimeString() : "never"}${err ? ` (${err})` : ""}`}</p>
+          {verified && <span className="dv-verified" title={`Every figure on this screen was signed by the server and checked inside your browser by the security kernel (build ${KERNEL.version}). A wrong signature hides the answer instead of showing it.`}><i aria-hidden="true">✓</i> Verified in this browser · kernel {KERNEL.version}</span>}</div></div>
         <TrustRing r={r} />
       </section>
 
@@ -196,7 +202,7 @@ export function DevicesView() {
           : <ul className="dv-list">{list.map((s) => <SessionRow key={s.sidHash} s={s} pol={board.policy} now={now} busy={busy} confirm={confirm} setConfirm={setConfirm} close={close} />)}</ul>}
         <div className="dv-foot">
           {!confirmOthers
-            ? <button type="button" className="dv-btn" disabled={busy !== null || others === 0} onClick={() => setConfirmOthers(true)}>Sign out everywhere else{others > 0 ? ` (${others})` : ""}</button>
+            ? <button type="button" className="dv-btn soft" disabled={busy !== null || others === 0} onClick={() => setConfirmOthers(true)}>Sign out everywhere else{others > 0 ? ` (${others})` : ""}</button>
             : <div className="dv-confirm" role="group" aria-label="Confirm sign out everywhere else"><p>Close {others} other live session{others === 1 ? "" : "s"}? This browser stays signed in.</p>
                 <button type="button" className="dv-btn danger" disabled={busy !== null} onClick={closeOthers} autoFocus>{busy === "others" ? "Closing…" : "Confirm"}</button>
                 <button type="button" className="dv-btn ghost" disabled={busy !== null} onClick={() => setConfirmOthers(false)}>Cancel</button></div>}
@@ -212,15 +218,15 @@ export function DevicesView() {
             <span className={`dv-badge ${board.chainOk === true ? "good" : board.chainOk === false ? "bad" : "unknown"}`}><i aria-hidden="true">{board.chainOk === true ? "✓" : board.chainOk === false ? "✕" : "?"}</i>{board.chainOk === true ? "Chain verified" : board.chainOk === false ? `Chain broken${board.chainBrokenAt != null ? ` at row ${board.chainBrokenAt}` : ""}` : "Chain not checked"}</span>
             <span className={`dv-badge ${board.anchorOk === true ? "good" : board.anchorOk === false ? "bad" : "unknown"}`}><i aria-hidden="true">{board.anchorOk === true ? "✓" : board.anchorOk === false ? "✕" : "?"}</i>{board.anchorOk === true ? "Anchor matches the audit chain" : board.anchorOk === false ? `Anchor mismatch${board.anchorWhy ? ` (${board.anchorWhy})` : ""}` : "Anchor not checked"}</span>
           </p></div>
-        <p className="dim small">Every event is hash-chained and append-only. {kind ? <>Showing only “{kindInfo(kind).text}”. <button type="button" className="dv-link" onClick={() => setKind(null)}>Show all</button></> : "Newest first."}</p>
+        <p className="dim small dv-ledsub">Every event is hash-chained and append-only. {kind ? <>Showing only “{kindInfo(kind).text}”. <button type="button" className="dv-link" onClick={() => setKind(null)}>Show all</button></> : <>Newest first. {routine ? <button type="button" className="dv-link" onClick={() => setRoutine(false)}>Hide routine check-ins</button> : hiddenRoutine > 0 && <button type="button" className="dv-link" onClick={() => setRoutine(true)}>Show {hiddenRoutine} routine check-ins</button>}</>}</p>
         {ledgerErr && <p className="err" role="alert">{ledgerErr}</p>}
-        {filtered.length === 0 && !ledgerErr ? <p className="dim dv-empty">No events yet.</p>
+        {filtered.length === 0 && !ledgerErr ? <p className="dim dv-empty">{hiddenRoutine > 0 ? "Nothing important yet: only routine check-ins so far." : "No events yet."}</p>
           : <ol className="dv-tl">{shownRows.map((x) => { const k = kindInfo(x.kind); return (
               <li key={x.id} className={`tone-${k.tone}`}><i aria-hidden="true">{k.icon}</i>
                 <div><p>{rowText(x)}</p>
                   <time dateTime={x.atMs ? new Date(x.atMs).toISOString() : undefined} title={x.atMs ? new Date(x.atMs).toLocaleString() : ""}>{ago(x.atMs, now)}</time>
                   <span className="mono"> · row {x.id}{x.sid ? ` · session ${x.sid}` : ""}{x.kernel !== "unknown" ? ` · build ${x.kernel}` : ""}</span></div></li>); })}</ol>}
-        {filtered.length > shown && <button type="button" className="dv-btn ghost" onClick={() => setShown((n) => n + 20)}>Show more ({filtered.length - shown} loaded)</button>}
+        {filtered.length > shown && <button type="button" className="dv-btn ghost" onClick={() => setShown((n) => n + 20)}>Show {Math.min(20, filtered.length - shown)} more ({filtered.length - shown} left)</button>}
         {filtered.length <= shown && more && !kind && rows.length < DOM_CAP && rows.length > 0 && <button type="button" className="dv-btn ghost" onClick={() => void loadLedger(rows[rows.length - 1].id)}>Load older events</button>}
       </section>
     </div>

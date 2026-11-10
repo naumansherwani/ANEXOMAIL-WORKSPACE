@@ -2974,3 +2974,6 @@ Done: plan first = docs/claude/G-MIX-D2B5-PLAN-11NOV.md, then SQL E157, Rust, UI
 
 ## 11 Nov 2026 02:10 PKT - D2b-5 built per his 01:36 order
 Plan first (01:50), research of the step-up design, then E157 SQL, Rust begin/finish, UI. His question 01:49 "kab do gay pull command": given now (2 steps: sql-run then founder-install).
+
+## 11 Nov 2026 02:09-02:11 PKT - his orders
+"pehle UI UX banao phir live testing kero phir jab tum satisfied ho jao ke yeh APPLE aur vercel jitna best hai phir mujhe pull commands do mobile tablet sab ke liye live demo test kero" + "UI UX main rules main technology frontend advance level likhne ka rule hai woh research kero aur phir banao ... WASM KERNEL ke saath socho deep UI ka". Done: rules read (FOUNDER-UI-DESIGN-28OCT, CINEMATIC-FRONTEND-STACK, Rule 52/60/61), live Chrome read, UI pass 2 built (D3 plan section).
