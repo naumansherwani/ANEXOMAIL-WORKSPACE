@@ -2771,3 +2771,7 @@ Checkpoint 10 Nov 2026 18:42 PKT RESUME HERE: E152 GREEN on his server. Next = S
 - 10 Nov 2026 18:47 PKT: HIS ORDER 10 Nov 18:47 (verbatim gist): '25th november tak chalay ga ZARURI NAHI, yeh LAST DIN hai; target yeh hai ke 25th november se PEHLE jitni jaldi ho sakay complete kerna hai; mujhe yeh product SEMINAR mein LAUNCH kerna hai; sab kuch date ke saath chat codes phases context update kero.' MEANING: 25 Nov 2026 = HARD LAST DAY, not the plan. Work runs as fast as possible, every phase pulled EARLIER than its day in FOUNDER-DEADLINE-25NOV-PLAN.md; the day column is now the latest allowed day. Launch = seminar product launch (date not told yet: I ask him once). Quality rules unchanged: GREEN only WIRED: YES / REAL: YES with proof, 390/820/1200+. Fast does not mean fake green.
 
 Checkpoint 10 Nov 2026 18:47 PKT RESUME HERE: 25 Nov = LAST day, target = as early as possible (seminar launch). Next = S2 Rust signin.rs.
+
+- 10 Nov 2026 18:49 PKT: HIS WORD 10 Nov 18:49: SEMINAR LAUNCH = 16 JANUARY 2027. Founder last day stays 25 Nov 2026, awam 16 Dec 2026; the weeks 17 Dec - 15 Jan are test/polish/rehearsal buffer before the launch. NEXT PHASE = S2 (G-MIX 2b), Rust signin.rs.
+
+Checkpoint 10 Nov 2026 18:49 PKT RESUME HERE: seminar launch 16 Jan 2027. Next = S2 Rust signin.rs.
