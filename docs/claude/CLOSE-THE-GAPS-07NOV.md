@@ -300,3 +300,5 @@ G2 is now the open item in progress.
 - 11 Nov 2026 03:20 PKT OPEN GAPS (tech audit, docs/claude/FOUNDER-TECH-AUDIT-11NOV.md): K8a h2, K8b h3, K8c X25519MLKEM768, K8d Rule 52 kernel WebTransport RPC for all API calls, K7c enforce, L, GEOIP. K4 stays GREEN for AES-256 but its listed ML-KEM is OPEN.
 - 11 Nov 2026 03:55 PKT OPEN: K8b h3 enable (his env line), K8c live ML-KEM proof, K8d kernel RPC (api.ts, devicekey.ts, Surface.tsx). UDP 443 FREE in his fresh ss 03:40 (Caddy moved to 18443).
 - 11 Nov 2026 04:05 PKT CLOSED: K8b HTTP/3 (UDP 443) and K8c ML-KEM live. OPEN K-series: K8d, K7c.
+
+- 11 Nov 2026 04:00 PKT OPEN: K7 wire fix "No device key" (E158 + Rust + UI written, tests green, NOT on his server, NOT live-proven) and DBSC ledger chain break (founder_dbsc_report chain broken_at 150, ok:false) = investigate next. Neither is green.

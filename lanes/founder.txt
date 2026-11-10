@@ -97,6 +97,7 @@ docs/cursor-work/sql/E154_founder_passkey_by_credential.sql
 docs/cursor-work/sql/E155_founder_devices_sessions.sql
 docs/cursor-work/sql/E156_founder_sessions_advanced.sql
 docs/cursor-work/sql/E157_founder_session_policy_stepup.sql
+docs/cursor-work/sql/E158_founder_session_key_attach.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/E68_proof.sql
@@ -111,8 +112,8 @@ founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
+founder-web/dist/assets/index-B1Xr8xEC.js
 founder-web/dist/assets/index-qqidgRWh.css
-founder-web/dist/assets/index-rfjfFxHn.js
 founder-web/dist/assets/kernel.worker-BiR_tP7H.js
 founder-web/dist/assets/three.module-C0S06CcT.js
 founder-web/dist/boot.css

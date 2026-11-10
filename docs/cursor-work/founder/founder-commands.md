@@ -3013,3 +3013,6 @@ His fresh ss (UDP: 4443 founder WT, 18443 Caddy h3, 3443 anexomail-rust; TCP 443
 
 ## 11 Nov 2026 03:45-04:05 PKT
 His env-line paste: journal 'founder: HTTP/3 ON udp [::]:443 for founderworkspace.anexomail.com (QUIC, TLS 1.3, AES-256-GCM, Retry address validation, ALPN h3; h2 + http/1.1 = fallback on tcp)'. His order: "K series ke masle ek ek ker tarteeb se theek kero, technology jo bola hai us pe leke jao" + asks for the BEST advice on TanStack Start vs Router (best for founder, latest, advanced) + records for compaction. Done: K8b + K8c GREEN with proof (below), advice given, K8d next.
+
+## 11 Nov 2026 04:00 PKT
+His 03:46: "Device key Check No device key yeh likha ata hai is ko real wire kero aur sahi kero live dekhao". His 03:53: "repo saath ke saath read kero claude ka context chat update kero". Work: K7 WIRE FIX = Rust dbsc::offer_binding + dk.key in the exchange JSON + sessions::register calls founder_session_key_attach on an existing row; UI shouldRegister + re-exchange after a registered key (one try per page load); SQL E158 (key attach once, stale chip session replaceable after 30 min) + CHECK_E158. Rust 301 tests, bun 177 tests. Waits: his sql-run E158, then founder-install, then live proof in his Chrome.

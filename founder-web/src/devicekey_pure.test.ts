@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { createPublicKey, verify } from "node:crypto";
-import { b64u, makeProof, nonce, publicJwk, sha256Hex } from "./devicekey_pure";
+import { b64u, shouldRegister, makeProof, nonce, publicJwk, sha256Hex } from "./devicekey_pure";
 
 const b64d = (s: string) => Buffer.from(s.replace(/-/g, "+").replace(/_/g, "/"), "base64");
 async function pair() { return crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-256" }, false, ["sign", "verify"]); }
@@ -35,4 +35,13 @@ describe("device key proof (what dbsc.rs verify_proof expects)", () => {
     await expect(makeProof({ kind: "exchange", origin: "https://x", deviceHash: "a", sign: async () => new Uint8Array(70) })).rejects.toThrow();
   });
   test("nonces are url-safe and never repeat", () => { const a = nonce(), b = nonce(); expect(a).not.toBe(b); expect(/^[A-Za-z0-9_-]{24}$/.test(a)).toBe(true); expect(b64u(new Uint8Array([251, 255]))).toBe("-_8"); });
+});
+
+test("K7 wire fix: a bound device with no proven key re-registers; a keyed one, or mode off, does not", () => {
+  expect(shouldRegister({ mode: "observe", bound: false })).toBe(true);
+  expect(shouldRegister({ mode: "observe", bound: true, key: false })).toBe(true);
+  expect(shouldRegister({ mode: "observe", bound: true })).toBe(true);
+  expect(shouldRegister({ mode: "enforce", bound: true, key: true })).toBe(false);
+  expect(shouldRegister({ mode: "off", bound: false })).toBe(false);
+  expect(shouldRegister(null)).toBe(false);
 });

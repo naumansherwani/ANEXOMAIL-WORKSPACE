@@ -35,6 +35,7 @@ export function deviceLabel() {
   return `${br} on ${String(p).replace(/[^ -~]/g, "").slice(0, 30) || "device"}`.slice(0, 80);
 }
 
+let keyTried = false;   // E158: one key registration per page load, so a live chip session that keeps the slot can never loop
 let ft: string | null = null, fexp = 0, inflight: Promise<string | null> | null = null, mode = "none", dlabel = "", rk: string | null = null; // rk = per-token request key (memory only)
 export const deviceStatus = () => ({ mode, label: dlabel }); // "device" = founder token in use · "legacy" = fallback to session token · "none"
 
@@ -81,6 +82,7 @@ if (typeof window !== "undefined") {
 }
 
 import * as dk from "./devicekey";
+import { shouldRegister } from "./devicekey_pure";
 async function exchange(again = true): Promise<string | null> {
   await keepSessionFresh();
   const t = tok(); if (!t) throw expired();
@@ -92,7 +94,7 @@ async function exchange(again = true): Promise<string | null> {
   catch { mode = "legacy"; return null; }
   if (r.status === 401) { if (again && (await renewSession())) return exchange(false); throw expired(); } // an expired session token: renew once, then ask again
   let j: any = {}; try { j = await r.json(); } catch {}
-  if (r.status === 200 && j.token && j.dk && j.dk.mode && j.dk.mode !== "off" && !j.dk.bound) void dk.register(id, t);   // K7b: the server asks an unbound device to bind (any browser, any phone); fire and forget
+  if (r.status === 200 && j.token && shouldRegister(j.dk) && !keyTried) { keyTried = true; void dk.register(id, t).then((ok) => { if (ok) forget(); }); }   // E158: once the key is registered, the next call re-exchanges WITH the proof so the session row gets its key; K7b: an unbound device binds; K7 wire fix: a bound device that proved no key this time re-binds (any browser, any phone); fire and forget
   if (r.status === 200 && j.token) { ft = j.token; rk = j.req_key || null; fexp = j.exp * 1000; mode = "device"; dlabel = j.device || ""; return ft; }
   if (r.status === 403 && j.error === "device_pending") throw new DevicePending(j.code, false);
   if (r.status === 403 && j.error === "device_revoked") throw new DevicePending(null, true);

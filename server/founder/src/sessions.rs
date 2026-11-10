@@ -173,7 +173,15 @@ pub async fn register(sb: &Sb, uid: &str, sid: &str, device_hash: &str, f: &Fact
     let a = json!({"p_uid": uid, "p_sid_hash": sid, "p_device_hash": device_hash, "p_net_hash": f.net, "p_method": method_for(uid), "p_protocol": f.protocol, "p_kernel": f.kernel,
         "p_key_source": src, "p_key_fp": fp, "p_ua_family": f.ua, "p_hint_family": f.hint, "p_country": f.country});
     match sb.rpc_msg("founder_session_register", a).await {
-        Ok(v) if v["ok"].as_bool() == Some(true) && v["decision"].as_str() == Some("allow") => { cache_put(sid, Instant::now()); Ok(()) }
+        Ok(v) if v["ok"].as_bool() == Some(true) && v["decision"].as_str() == Some("allow") => {
+            // E158 (K7 wire fix): the row already existed (a later exchange of the same session) and THIS exchange proved a key -> attach it once (none -> key; a real key is never swapped)
+            if v["existing"].as_bool() == Some(true) { if let Some((s, fp)) = key { match sb.rpc("founder_session_key_attach", json!({"p_sid_hash": sid, "p_key_source": s, "p_key_fp": fp})).await {
+                Some(a) if a["attached"].as_bool() == Some(true) => trace("key_attach", &format!("attached source={s}")),
+                Some(a) if a["ok"].as_bool() == Some(true) => {}
+                Some(a) => trace("key_attach", &format!("refused error={}", a["error"].as_str().unwrap_or("?"))),
+                None => trace("key_attach", "door_down"), } } }
+            cache_put(sid, Instant::now()); Ok(())
+        }
         Ok(v) if v["ok"].as_bool() == Some(true) => { trace("register", &format!("denied reason={}", v["reason"].as_str().unwrap_or("?"))); Err("denied") }
         Ok(v) => { trace("register", &format!("refused error={}", v["error"].as_str().unwrap_or("?"))); Err("refused") }
         Err((c, _)) => { trace("register", &format!("door_down http={c}")); Err("door_down") }
@@ -295,7 +303,7 @@ mod tests {
 
     // ---- a loopback database that models the REAL grants: only the SQL doors answer; there is no table to read around them ----
     #[derive(Clone, Default)]
-    struct World { rpc: std::sync::Arc<Mutex<Vec<(String, Value)>>>, state: std::sync::Arc<Mutex<String>>, down: std::sync::Arc<Mutex<bool>>, deny: std::sync::Arc<Mutex<bool>> }
+    struct World { rpc: std::sync::Arc<Mutex<Vec<(String, Value)>>>, state: std::sync::Arc<Mutex<String>>, down: std::sync::Arc<Mutex<bool>>, deny: std::sync::Arc<Mutex<bool>>, existing: std::sync::Arc<Mutex<bool>> }
     async fn world() -> (Sb, World) {
         let w = World::default();
         *w.state.lock().unwrap() = "live".into();
@@ -303,7 +311,8 @@ mod tests {
             w.rpc.lock().unwrap().push((n.clone(), b));
             if *w.down.lock().unwrap() { return (StatusCode::BAD_GATEWAY, Json(json!({"message": "down"}))); }
             let v = match n.as_str() {
-                "founder_session_register" => if *w.deny.lock().unwrap() { json!({"ok": true, "decision": "deny", "reason": "location"}) } else { json!({"ok": true, "decision": "allow"}) },
+                "founder_session_register" => if *w.deny.lock().unwrap() { json!({"ok": true, "decision": "deny", "reason": "location"}) } else { json!({"ok": true, "decision": "allow", "existing": *w.existing.lock().unwrap()}) },
+                "founder_session_key_attach" => json!({"ok": true, "attached": true}),
                 "founder_session_check" => { let s = w.state.lock().unwrap().clone(); json!({"ok": s == "live", "state": s, "drift": []}) }
                 _ => json!({"ok": true}),
             };
@@ -329,6 +338,24 @@ mod tests {
         assert_eq!(register(&sb, "u-r", &sid, &"d".repeat(64), &f(), Some(("webcrypto", &"a".repeat(64)))).await, Err("denied"));
         *w.down.lock().unwrap() = true;
         assert_eq!(register(&sb, "u-r", &sid, &"d".repeat(64), &f(), None).await, Err("door_down"));
+    }
+
+    #[tokio::test]
+    async fn a_key_proved_on_a_later_exchange_is_attached_once_to_the_existing_session_and_never_to_a_new_one() {
+        let (sb, w) = world().await;
+        let sid = sid_hash("u-k", Some("s"), &"d".repeat(64));
+        // first exchange of a session (row is new): no attach call, the key travels inside register itself
+        assert_eq!(register(&sb, "u-k", &sid, &"d".repeat(64), &f(), Some(("dbsc", &"a".repeat(64)))).await, Ok(()));
+        assert_eq!(n(&w, "founder_session_key_attach"), 0);
+        // a later exchange of the same session (row exists) with a proven key -> exactly one attach with that key
+        *w.existing.lock().unwrap() = true;
+        assert_eq!(register(&sb, "u-k", &sid, &"d".repeat(64), &f(), Some(("webcrypto", &"b".repeat(64)))).await, Ok(()));
+        assert_eq!(n(&w, "founder_session_key_attach"), 1);
+        let a = w.rpc.lock().unwrap().iter().find(|(x, _)| x == "founder_session_key_attach").unwrap().1.clone();
+        assert_eq!((a["p_sid_hash"].as_str(), a["p_key_source"].as_str(), a["p_key_fp"].as_str()), (Some(sid.as_str()), Some("webcrypto"), Some("b".repeat(64).as_str())));
+        // a later exchange WITHOUT a proven key never touches the key
+        assert_eq!(register(&sb, "u-k", &sid, &"d".repeat(64), &f(), None).await, Ok(()));
+        assert_eq!(n(&w, "founder_session_key_attach"), 1);
     }
 
     #[tokio::test]

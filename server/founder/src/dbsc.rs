@@ -179,6 +179,10 @@ pub fn verify_proof(jwt: &str, path: &str, stored: Option<&[u8]>, dev_hash: &str
 // ------------------------------------------------------------------ the exchange decision (pure)
 #[derive(Debug, PartialEq)]
 pub enum Decision { Allow, AllowWould(&'static str), Block(&'static str) }
+/// K7 wire fix: the registration header goes to a device with no binding, and in OBSERVE mode also to a bound device whose browser showed no live key this time (its old session is
+/// replaced, so the Trust seal's Device key becomes real). Never in enforce: there a stolen token could otherwise re-bind a device to the thief's key.
+pub fn offer_binding(mode: Mode, bound: bool, has_key: bool) -> bool { mode != Mode::Off && (!bound || (mode == Mode::Observe && !has_key)) }
+
 pub fn gate_exchange(mode: Mode, bound_sid: Option<&str>, cookie_sid: Option<&str>) -> Decision {
     let Some(bound) = bound_sid else { return Decision::Allow };   // unbound device (phone, Firefox, Safari): never blocked
     if mode == Mode::Off || cookie_sid == Some(bound) { return Decision::Allow; }
@@ -392,6 +396,12 @@ mod tests {
         assert_eq!(verify_registration(&tam, &ch, NOW), Err(DErr::Signature));
         for bad in ["", "a.b", "a.b.c.d", &"x".repeat(5000)] { assert!(verify_registration(bad, &ch, NOW).is_err()); }
     }
+    #[test]
+    fn binding_is_reoffered_only_in_observe_to_a_keyless_bound_device() {
+        assert!(offer_binding(Mode::Observe, false, false) && offer_binding(Mode::Observe, true, false) && !offer_binding(Mode::Observe, true, true));
+        assert!(offer_binding(Mode::Enforce, false, false) && !offer_binding(Mode::Enforce, true, false) && !offer_binding(Mode::Off, false, false));
+    }
+
     #[test]
     fn refresh_uses_the_stored_key_only() {
         let (p, attacker) = (pair(), pair()); let k = subkey(b"m", "challenge");

@@ -1871,3 +1871,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 03:40 K8a h2 LIVE (Path card HTTP/2 over TCP + curl http2 200)
 - 11 Nov 03:55 FOUNDER-FILE-AUDIT-11NOV.md (148 files), ORDER written, D-series paused; H3 enable line given
 - 11 Nov 04:05 K8b HTTP/3 LIVE + K8c ML-KEM LIVE proven (Path card HTTP/3 QUIC; external rustls probe MLKEM768)
+
+- 11 Nov 2026 04:00 PKT WRITTEN, NOT yet on his server: K7 wire fix (E158 key attach + Rust offer_binding/key_attach + UI shouldRegister). Wait for his sql-run E158 + founder-install pastes, then live proof. See docs/claude/DONE-DO-NOT-REPEAT.md.

@@ -30,3 +30,10 @@ export async function makeProof(o: { kind: "register" | "exchange"; origin: stri
   if (sig.length !== 64) throw new Error("signature is not raw r||s");
   return `${input}.${b64u(sig)}`;
 }
+
+/** K7 wire fix: should this browser make/register its own WebCrypto key after an exchange? Yes when the server has the key feature on and this exchange carried NO proven key
+ *  (device unbound, or bound but keyless this time: the old session is stale, e.g. a secure-chip session the browser dropped). The server decides the rest (E150: a live chip session is kept). */
+export function shouldRegister(dk: { mode?: string; bound?: boolean; key?: boolean } | null | undefined): boolean {
+  if (!dk || !dk.mode || dk.mode === "off") return false;
+  return !dk.bound || dk.key !== true;
+}
