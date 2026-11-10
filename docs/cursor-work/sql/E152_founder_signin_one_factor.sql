@@ -126,6 +126,8 @@ begin
     if (select second_step from public.founder_signin_policy) <> 'off' then raise exception 'the default is not off'; end if;
     -- 1 no passkey: a passkey ticket is refused, a password ticket completes at once
     delete from public.founder_passkeys where user_id = v_uid and credential_id in (v_cred, v_other);
+    -- his real passkeys (he has enrolled some) must not leak into the test: park them as revoked INSIDE this rolled-back block
+    update public.founder_passkeys set revoked_at = now(), revoked_reason = 'e152 selftest park' where user_id = v_uid and revoked_at is null;
     if public.founder_signin_open(v_uid, v_t1, v_net, null, 'passkey', false) ->> 'ok' = 'true' then raise exception 'a passkey ticket opened with no passkey'; end if;
     v_r := public.founder_signin_open(v_uid, v_t2, v_net, null, 'password', false);
     if v_r ->> 'state' <> 'complete' or (v_r ->> 'second_required')::boolean then raise exception 'password did not complete alone: %', v_r; end if;

@@ -2759,3 +2759,7 @@ Checkpoint 10 Nov 2026 02:50 PKT RESUME HERE: INCIDENT CLOSED (server cut re-app
 Checkpoint 10 Nov 2026 02:53 PKT RESUME HERE: backup #2 sent (3450d945). Incident closed, he saw the site OK 3 times. ORDER: same login codes -> latest technology (security path: 2b S2 Rust signin.rs ticket + passkey WebAuthn, conditional UI), look NEVER changes.
 
 Checkpoint 10 Nov 2026 18:29 PKT RESUME HERE: founder = ONE FACTOR by his word (no 2FA/TOTP). E152 written + locally GREEN (6/6), his sql-run AUTO pending. NEXT: S2 Rust signin.rs (password ticket + passkey sign-in), UI passkey button same look. Awam 2FA = option (docs/claude/AWAM-2FA-OPTIONAL-10NOV.md, awam lane). Phase order after 2b: L, M, N/N1, O, P, Q, R, S, T+U, V/X per FOUNDER-DEADLINE-25NOV-PLAN.md.
+
+- 10 Nov 2026 18:37 PKT: E152 on his server: checks 1-4 OK, selftest FAIL 'a passkey ticket opened with no passkey' = TEST bug (he already has a real passkey; test assumed none). Product SQL unchanged. Selftest now parks his real passkeys as revoked INSIDE its rolled-back block. Re-proved locally WITH a real passkey present: all 6 CHECK true, his passkey stays live. E152 NOT green until his re-run is 6/6.
+
+Checkpoint 10 Nov 2026 18:37 PKT RESUME HERE: E152 selftest fix (real passkey case) pushed; his sql-run re-run pending; then S2 Rust signin.rs.
