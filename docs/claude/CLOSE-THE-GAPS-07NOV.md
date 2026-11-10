@@ -298,3 +298,4 @@ G2 is now the open item in progress.
 
 - 10 Nov 2026 22:16 PKT: E155 = GREEN on his server (SQL layer, WIRED: YES / REAL: YES for the doors): CHECK 5/5 OK incl. selftest PASS, sha 7138217396e7e0b1, DONE sab theek. D1-D4 block NOT green until D2 Rust, D3 UI, D4 live 390/820/1200+. His word 22:16: quality = ADVANCED SQL, not line count. SQL last E155, next E156. Next: D2 Rust (register at release, touch in gate, revoke/board/ledger/policy endpoints, GeoIP file).
 - 11 Nov 2026 03:20 PKT OPEN GAPS (tech audit, docs/claude/FOUNDER-TECH-AUDIT-11NOV.md): K8a h2, K8b h3, K8c X25519MLKEM768, K8d Rule 52 kernel WebTransport RPC for all API calls, K7c enforce, L, GEOIP. K4 stays GREEN for AES-256 but its listed ML-KEM is OPEN.
+- 11 Nov 2026 03:55 PKT OPEN: K8b h3 enable (his env line), K8c live ML-KEM proof, K8d kernel RPC (api.ts, devicekey.ts, Surface.tsx). UDP 443 FREE in his fresh ss 03:40 (Caddy moved to 18443).

@@ -54,6 +54,8 @@ One letter per step, in build order. **GREEN** only where the proof exists (serv
 > **G5d part 1 = GREEN on the server (3 Nov 05:49 PKT, his paste: E131 CHECK_E131 5/5 OK, sha 1459c4016dc5df26 already in the ledger). G5d as a whole is NOT GREEN: part 2 (Rust route + tick) and part 3 (TS decision logic + kernel calls + gauge sentence) are not on the server.**
 > **STATUS CORRECTION (3 Nov 04:50): in row G, G5b is GREEN (2 Nov 06:58: E123 CHECK 5/5, CHECK_G5B_LIVE 4/4, founder-install 144 tests, my Chrome look) and G5c is GREEN (2 Nov 07:45: E124 CHECK 5/5, 160 tests, Chrome: Seal 3 time-anchored). The row text below is older. NEXT founder letter = G5d, then I2. Quality law: super advanced code, SQL above super advanced.**
 
+> **NEW ORDER 11 NOV 03:40 (HIS WORD, CAPITALS): K8B HTTP/3 ENABLE -> K8C ML-KEM LIVE PROOF -> K8D KERNEL WEBTRANSPORT RPC -> K7C -> L -> M -> N..V, X (LETTER ORDER NEVER BREAKS). D-SERIES PAUSED. FILE-BY-FILE AUDIT: docs/claude/FOUNDER-FILE-AUDIT-11NOV.md.**
+
 ## FOUNDER lane (founderworkspace.anexomail.com)
 > **TECH LAW (HIS LAST WARNING 11 NOV 03:11/03:18, CAPITALS): FOUNDER TECHNOLOGY = ONLY SUPER ADVANCED LATEST. HTTP/3 (QUIC) PRIMARY, H2/H1.1 FALLBACK ONLY. EVERY PHASE ROW BELOW HAS ITS OWN TECH LAW COLUMN: READ IT BEFORE WRITING CODE AND COMPARE THE CODE TO IT BEFORE WRITING GREEN. AUDIT: docs/claude/FOUNDER-TECH-AUDIT-11NOV.md.**
 

@@ -22,3 +22,4 @@ HTTPS 18443, HTTP 18080, admin 127.0.0.1:12019. They stay a proposal until his f
 ## RESULT: 18443 (tcp+udp), 12019 (tcp) are in NO list above and below the ephemeral range, so they are FREE. 18080 is free but NOT needed (the test config has no http listener). Nothing of the server 1 / server 2 link listens on them.
 
 - 9 Nov 2026 17:50 PKT 18081/tcp (127.0.0.1 only) = anexomail-awam-edge (K5a spare port, free in his 9 Nov 15:52 ss list, proven on 16:14 by the first build; now owned by the separate awam-edge service). 18443 tcp+udp = Caddy (since 9 Nov 15:15). 18080, 18444 stay free.
+- UDP 443 is FREE since the K4 switch (his fresh ss 11 Nov 03:40: udp 4443 founder, 18443 caddy, 3443 anexomail-rust); older lines above that list Caddy on UDP 443 are superseded.

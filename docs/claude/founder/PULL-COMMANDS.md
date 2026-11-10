@@ -925,3 +925,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 02:58 founder-install.sh (SPA only) for Aurora seal; awam pull.sh NOT needed
 - 11 Nov 03:20 K8 (h2/h3/ML-KEM/kernel RPC) = founder-install.sh each; awam pull NOT needed
 - 11 Nov 03:45 K8a+K8b+K8c Rust: founder-install.sh (h2 fallback + ML-KEM on the TCP terminator take effect; HTTP/3 stays OFF until FOUNDER_H3_ADDR). Read-only before enabling h3 (PORTS RED LINE): ss -ulpn | grep 443; ss -tlpn | grep 443
+- 11 Nov 03:55 K8b enable: cp /etc/anexomail/founder.env /etc/anexomail/founder.env.bak.h3 && echo FOUNDER_H3_ADDR=[::]:443 >> /etc/anexomail/founder.env && systemctl restart anexomail-founder (UDP 443 free per his 03:40 ss; ufw already 443/udp; rollback = restore the .bak.h3 file and restart)
