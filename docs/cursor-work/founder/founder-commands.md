@@ -2980,3 +2980,6 @@ Plan first (01:50), research of the step-up design, then E157 SQL, Rust begin/fi
 
 ## 11 Nov 2026 02:24 PKT - his order
 "ab UI chorme pe dekho phir khudi faisla kero ke UI worth it hai ya nahi" + "compact chat aye ga toh ... rules rules rules sab kuch update kero abhi ke abhi". Done: live Chrome read after his install (bundle = repo), verdict + pass 3 (editor polish), records updated.
+
+## 11 Nov 2026 02:34-02:36 PKT
+"MUJHE RING BAQWAS COLOUR MAIN LAGA HAI ... green yellow ka ring ghatiya hai, tumhara UI baqwas hai baki intact hai, mujhe demo dekhao ke kaise apple se better ker saktay ho?" + "duniya ka advance technology UI jo repo main likha hai rules frontend us ko samne rakh ke website pe research kero ... backend ke rules bhi repo technology sab read kero top pe repo pe rakho". Done: docs/claude/FOUNDER-UI-WOW-RULES-11NOV.md + 3-option demo artifact.

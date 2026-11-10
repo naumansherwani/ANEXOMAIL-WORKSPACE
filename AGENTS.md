@@ -540,4 +540,5 @@ UPDATE 2 Nov 2026 08:14 PKT (founder): **PERSONAL PACKAGES ARE RETIRED** (Person
 ## Rule 74 (STRICT, founder 3 Nov 2026 08:48 PKT) — FOUNDER KAAM PINPOINT, TECHNOLOGY HAR PHASE KE AAGE
 - Founder ka kaam shuru karne se pehle `lanes/FOUNDER-INDEX.md` kholo (feature -> SQL, CHECK, Rust, UI, test files) aur seedha wahan jao. Repo mein dhundna band. `lane-sync.py --check` index ki har file ka wujood check karta hai.
 - Nayi file ya feature aaye to index mein ek row, aur blueprint ke "TECHNOLOGY PER PHASE" table mein us phase ki technology (frontend, backend, data, kernel) likhi jaye.
-- Lovable (Bun) code gold hai: `lovable-gold/`; usay latest technology par le jana hi baqi kaam hai (LOVABLE-BUN-MIGRATION-PLAN-03NOV.md).
+- Lovable (Bun) code gold hai: `lovable-gold/`; usay latest technology par le jana hi baqi kaam hai (LOVABLE-BUN-MIGRATION-PLAN-03NOV.md).> ## >>> UI WOW RULES (founder 11 Nov 02:36): before ANY founder UI work read docs/claude/FOUNDER-UI-WOW-RULES-11NOV.md (tech + Apple-beating rules; ring = one hue, no green/yellow arcs; demo artifact first, his pick, then code). <<<
+
