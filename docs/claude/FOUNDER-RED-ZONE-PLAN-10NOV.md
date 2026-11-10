@@ -23,3 +23,5 @@ Rule: every phase below has ONE date = the day it must be GREEN (WIRED: YES / RE
 Total: 1+4+1+1+2+1+3+3+3+4+2+2+5+1 = 33.
 Then (not part of the 33): awam lane 26 Nov - 16 Dec (NO 2FA, docs/claude/AWAM-NO-2FA-10NOV.md; K5b, migration, AnexoChat, full tests); 17 Dec - 15 Jan test / polish / rehearsal; 16 Jan 2027 seminar launch.
 Honest limits, said once: phases marked "needs his hands" turn RED if his step is late; I never write a green that is not proven.
+
+- 10 Nov 2026 20:06 PKT: founder-install OK; live bundle index-P9z4PDu = repo build (probed). S6/S5/S4 installed, NOT GREEN until S7 phone passkey. Next: S7 then founder-signin-peek.sh.
