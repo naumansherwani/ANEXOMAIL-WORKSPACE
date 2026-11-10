@@ -26,10 +26,15 @@ futures-util = { version = "0.3", default-features = false }
 rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12"] }
 tokio-rustls = { version = "0.26", default-features = false, features = ["ring"] }
 webpki-roots = "1"
-hyper = { version = "1", features = ["server", "http1"] }
-hyper-util = { version = "0.1", features = ["tokio", "service"] }
+hyper = { version = "1", features = ["server", "http1", "http2"] }
+hyper-util = { version = "0.1", features = ["tokio", "service", "server-auto", "http1", "http2"] }
 tower = { version = "0.5", features = ["util"] }
 # K6 (WebTransport over QUIC/HTTP3): ring provider (same as rustls above), no aws-lc, no self-signed generator. AES-256-only config is built by hand in wt.rs.
+# K8 (11 Nov 2026): real HTTP/3 for the founder API on its own UDP port: h3 + h3-quinn on the SAME quinn as wtransport (ring, AES-256-only config from wt::quic_config)
+h3 = "0.0.8"
+h3-quinn = "0.0.10"
+quinn = { version = "0.11", default-features = false, features = ["ring", "rustls-ring", "runtime-tokio"] }
+http-body-util = "0.1"
 wtransport = { version = "0.7", default-features = false, features = ["quinn", "ring"] }
 
 [profile.release]

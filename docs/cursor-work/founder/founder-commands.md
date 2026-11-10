@@ -2989,3 +2989,6 @@ He pasted advice choosing Option A (Aurora seal) + "compact ho chuka, rules/phas
 
 ## 11 Nov 2026 02:55-03:05 PKT
 His install paste (SPA 200, signing ON) + "ab live chrome pe dekho, loophole ho to seedha fix, ek ek button hard test kero, compact ke liye sab update". Done: live Chrome test (below in context file).
+
+## 11 Nov 2026 03:04-03:10 PKT (HIS ORDER, verbatim gist)
+"(HTTP/1.1 over TCP) yeh kab hai repo main bata ... https 3 hai?" then "fucking asshole founder technology sirf advance latest pe chalti hai fucking fix it" + "bhosidke ja ke pura rules book technology ka detail main read kero pura repo read kero phir ana mere pass". = founder host API must be HTTP/3 primary, h2/h1 fallback (his 8 Nov 14:02 rule). Plan: docs/claude/G-MIX-K8-H3-PLAN-11NOV.md (K8 = h2 on the terminator + real HTTP/3 listener, Rust only, default OFF until his env lines).
