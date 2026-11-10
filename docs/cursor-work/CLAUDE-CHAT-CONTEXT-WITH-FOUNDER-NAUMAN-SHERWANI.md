@@ -2844,3 +2844,6 @@ D2b Rust WRITTEN + tested, pushed. Next ONE step for him: founder-install line (
 
 ## RESUME HERE (11 Nov 2026 01:15 PKT)
 D2b installed on his server 01:11 (4/4 saboot OK). His screenshot shows Profile page + menu "Devices & sessions" but the Devices screen is the OLD placeholder ("after F2c"): not advanced. NEXT: D3 UI (spec in G-MIX-D1-PLAN-10NOV.md last block): hero card, live list, revoke, ledger timeline, alert strip, location card read-only; React 19.2 + Tailwind, cinematic, one build 390/820/1200+. Then D4 live proof, D2b-5 policy + passkey touch, country file, then L (12 Nov). D2b becomes GREEN only when his re-sign-in session shows in the board.
+
+## RESUME HERE (11 Nov 2026 01:30 PKT)
+D3 plan WRITTEN (docs/claude/G-MIX-D3-PLAN-11NOV.md). Code order D3a sessions_pure.ts(+test) -> D3b Devices.tsx + route "devices" + menu item -> D3c bun/tsc/vite -> D3d 390/820/1280 sandbox -> push -> his founder-install. Data = existing signed endpoints /founder/v1/sessions/{board,ledger,revoke,revoke-others}. Founder-install already done for D2b (01:11).

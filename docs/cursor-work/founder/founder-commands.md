@@ -2961,3 +2961,6 @@ D2b Rust written and tested (286). Pull commands given in the reply (founder-ins
 
 ## 11 Nov 2026 01:15 PKT - his paste 01:11 + screenshot
 founder-install OK (4/4). He asked: is the Devices & sessions UI the world's most advanced? Answer given: NO, it is the old placeholder; D3 builds the real one. Update everything for compaction: done.
+
+## 11 Nov 2026 01:30 PKT - his order 01:14
+D3 plan first at the repo top (research, as advanced as possible), then code; update everything for compaction. Plan written: docs/claude/G-MIX-D3-PLAN-11NOV.md.
