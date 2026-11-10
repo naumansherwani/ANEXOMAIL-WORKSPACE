@@ -2926,3 +2926,5 @@ Plan: (1) hardware toggle: make the guard lock-out-proof instead of count-blind 
 - 10 Nov 2026 20:06 PKT: founder-install OK; live bundle index-P9z4PDu = repo build (probed). S6/S5/S4 installed, NOT GREEN until S7 phone passkey. Next: S7 then founder-signin-peek.sh.
 
 - 10 Nov 2026 20:18 PKT: passkey tap on phone showed 'not answering' (busy). Cause unknown until ledger/journal. Added journald stage lines (founder-signin stage=...) in signin.rs; cargo signin 15 pass. Devices & Sessions plan: docs/claude/FOUNDER-DEVICES-SESSIONS-PLAN-10NOV.md. NOT installed yet. Next: his peek paste, then founder-install of the logging build.
+
+- 10 Nov 2026 20:31 PKT: logging build INSTALLED on his server (founder-install OK 4/4). Passkey tap on phone still shows busy (screenshot 20:30). Read-only log command: journalctl -u anexomail-founder -n 300 --no-pager | grep founder-signin | tail -15 . If no stage lines: failure is before finish (begin 403/503 or phone browser error). Next: fix from the log, then S7.
