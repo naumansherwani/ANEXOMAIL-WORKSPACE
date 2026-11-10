@@ -205,8 +205,8 @@ pub async fn passkey_begin_ep(State(st): State<S>, h: HeaderMap, body: axum::bod
     let ip = client_ip(&h);
     let (ipkey, net, now) = (format!("flogin:ip:{ip}"), net_hash(&st.hmac_key, &ip), Instant::now());
     if st.lim.lock().unwrap().locked(&ipkey, now) { return locked_429(); }
-    let origin = match crate::passkey::origin_of(sb, &h).await { Ok(o) => o, Err(r) => return r };
-    let pol = match crate::passkey::policy(sb).await { Ok(p) => p, Err(r) => return r };
+    // speed: the two database reads are independent, so they run at the same time (was one after the other)
+    let (origin, pol) = match tokio::join!(crate::passkey::origin_of(sb, &h), crate::passkey::policy(sb)) { (Ok(o), Ok(p)) => (o, p), (Err(r), _) | (_, Err(r)) => return r };
     let (mut allow, mut ticket) = (Vec::<String>::new(), None);
     if let Some(t) = b["ticket"].as_str().filter(|t| t.len() <= 128) {
         let th = hash_hex(t);

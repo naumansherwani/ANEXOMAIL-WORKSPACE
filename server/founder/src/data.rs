@@ -8,7 +8,16 @@ impl Sb {
     pub fn from_env() -> Option<Sb> {
         let url = std::env::var("SUPABASE4_URL").ok()?.trim_end_matches('/').to_string();
         let key = std::env::var("SUPABASE4_SERVICE_ROLE_KEY").ok()?;
-        Some(Sb { url, key, http: reqwest::Client::builder().timeout(std::time::Duration::from_secs(8)).build().ok()? })
+        Some(Sb { url, key, http: reqwest::Client::builder().timeout(std::time::Duration::from_secs(8)).connect_timeout(std::time::Duration::from_secs(3))
+            // speed (10 Nov 20:55): sign-ins are rare, so a default pool let the link to the database go cold between them and every sign-in paid a fresh TCP+TLS handshake.
+            // Keep the connections warm for 10 minutes, no Nagle delay, TCP keep-alive; main.rs pings the database every 30 s (keepalive()).
+            .pool_idle_timeout(std::time::Duration::from_secs(600)).pool_max_idle_per_host(16).tcp_nodelay(true).tcp_keepalive(std::time::Duration::from_secs(30))
+            .build().ok()? })
+    }
+    /// One cheap read every 30 s keeps the warm connections to the database alive (no secret, no write). Called once from main.
+    pub fn keepalive(&self) {
+        let sb = self.clone();
+        tokio::spawn(async move { loop { let _ = sb.http.get(format!("{}/rest/v1/", sb.url)).header("apikey", &sb.key).send().await; let _ = sb.http.get(format!("{}/auth/v1/health", sb.url)).send().await; tokio::time::sleep(std::time::Duration::from_secs(30)).await; } });
     }
     fn req(&self, path: &str) -> reqwest::RequestBuilder {
         self.http.get(format!("{}/rest/v1/{}", self.url, path)).header("apikey", &self.key).header("authorization", format!("Bearer {}", self.key))

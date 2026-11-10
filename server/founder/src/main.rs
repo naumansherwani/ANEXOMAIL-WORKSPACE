@@ -864,6 +864,7 @@ async fn main() {
         return;
     }
     let sb = data::Sb::from_env();
+    if let Some(s) = &sb { s.keepalive(); }
     let ft = std::env::var("FOUNDER_TOKEN_KEY_FILE").unwrap_or_else(|_| "/etc/anexomail/founder-token.p8".into());
     let ft = std::fs::read(&ft).ok().and_then(|d| ftoken::Keys::from_pkcs8(&d));
     let legacy = std::env::var("FOUNDER_LEGACY_TOKEN").map(|v| v != "0").unwrap_or(true);
