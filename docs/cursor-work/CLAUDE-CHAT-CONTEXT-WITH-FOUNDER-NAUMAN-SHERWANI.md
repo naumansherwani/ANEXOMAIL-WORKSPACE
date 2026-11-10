@@ -2874,3 +2874,6 @@ READ docs/claude/FOUNDER-TECH-AUDIT-11NOV.md FIRST. Gaps vs his listed technolog
 
 ## RESUME HERE (11 Nov 2026 03:45 PKT) K8a/K8b/K8c CODED
 His orders 03:11/03:15/03:18: HTTP/3 PRIMARY (h2/h1.1 fallback only), latest technology per phase, capital-letter TECH LAW column added to EVERY phase row of docs/claude/BLUEPRINT-ABC-01NOV.md. Code (Rust, 299 tests pass, repo only): h3.rs real HTTP/3 listener (e2e test with a real h3 client), tls256 h2 fallback, X25519MLKEM768 group (PQ was lost on the founder host at the K4 switch: Caddy had it, the ring terminator did not). Next: his founder-install (safe, h3 stays OFF), then his read-only ss for UDP 443, then env FOUNDER_H3_ADDR + ufw (one line each), then my Chrome proof: Path card must say QUIC. K8d (kernel WebTransport RPC for all API calls) is next to code. Audit: docs/claude/FOUNDER-TECH-AUDIT-11NOV.md.
+
+## RESUME HERE (11 Nov 2026 03:30 PKT) TECH-LAW GATE
+rules-gate.py now reads docs/claude/TECH-LAW-GATE.json: status ok = must hold forever (commit FAILS if broken: h3 wired, h2 fallback, ML-KEM, no WebSocket, no http1-only), status open = known gaps with deadline, printed on every commit (api.ts raw fetch = K8d 14 Nov, GSAP/WebGPU = L, MoQ = M, ML-DSA = Q). When a phase lists a technology, ADD a check there in the same commit. Next: his founder-install + ss paste for UDP 443 (h3 on), then K8d.

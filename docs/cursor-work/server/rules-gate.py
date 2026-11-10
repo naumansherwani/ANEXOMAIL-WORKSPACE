@@ -144,9 +144,25 @@ try:
 except OSError:
     pass
 
+# TECH LAW (founder 11 Nov 2026, last warning): the technology LISTED per phase must be in the code. Checks live in docs/claude/TECH-LAW-GATE.json.
+# status ok = enforced on every commit; status open = known gap with a deadline (warning until closed).
+import json
+try:
+    for c in json.load(open("docs/claude/TECH-LAW-GATE.json"))["checks"]:
+        txt = open(c["file"], errors="ignore").read().lower() if os.path.exists(c["file"]) else ""
+        good = (c["must"].lower() in txt) if "must" in c else (c["mustnot"].lower() not in txt)
+        if c["status"] == "ok" and not good:
+            fail("TECH LAW", f'{c["id"]}: {c["why"]} ({c["file"]})')
+        elif c["status"] == "open" and not good:
+            warn("TECH LAW OPEN", f'{c["id"]} until {c.get("deadline", "?")}: {c["why"]}')
+        elif c["status"] == "open" and good:
+            warn("TECH LAW", f'{c["id"]} now holds: change its status to ok in docs/claude/TECH-LAW-GATE.json')
+except FileNotFoundError:
+    fail("TECH LAW", "docs/claude/TECH-LAW-GATE.json is missing")
 for w in warns:
     print(w)
 for x in fails:
     print(x)
+
 print(f"rules-gate: {len(fails)} fail, {len(warns)} warn, {len(staged)} staged file(s)")
 sys.exit(1 if fails else 0)

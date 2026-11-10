@@ -3001,3 +3001,6 @@ His install paste (SPA 200, signing ON) + "ab live chrome pe dekho, loophole ho 
 
 ## 11 Nov 2026 03:21 PKT
 His technology statement (verbatim list: Rust WASM kernel, Rust/Tokio/Axum, WebTransport/QUIC/HTTP3/MoQ with HTTP fallback, React 19/TS/TanStack Start & Router/Vite 8/Tailwind 4/Radix-shadcn/Framer Motion/GSAP/Three.js, PostgreSQL RLS/Hetzner Storage Box/ClamAV) "captial letters pe likho, aur is se bhi zyada post quantum jis ke codes likh rahay ho, repo ke her page pe likho". Done: the TECHNOLOGY LAW block (capitals, incl. ML-KEM-768 hybrid, ML-DSA/OpenPGP PQC as next) is at the top of every .md under docs/ + README/roadmap + CLAUDE.md/AGENTS.md (marker TECHLAW). Question kept open: TanStack Start vs Router (see audit).
+
+## 11 Nov 2026 03:24 PKT
+"mujhe insaaf do ... kya puri founder phases old technology pe hai, audit, lovable wali carbon copy mistakes, is ka maslay ka haal batao yeh kaise hoga kaam theek". Answer + permanent fix: docs/claude/FOUNDER-TECH-AUDIT-11NOV.md + machine gate docs/claude/TECH-LAW-GATE.json run by rules-gate.py on every commit (ok = enforced, open = known gap with deadline).
