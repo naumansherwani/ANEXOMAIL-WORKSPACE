@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { changeText, changed, draftOf, LIMITS, validate, type Begun, type Draft } from "./policy_change";
 import { confirm, prepare } from "./policy_flow";
-import type { Policy } from "./sessions_pure";
+import { span, type Policy } from "./sessions_pure";
 
 // D2b-5: the policy card's editor. Three steps, all in words: (1) edit + say why, (2) read exactly what will change, (3) touch the key.
 // Nothing here changes anything by itself: the server holds the payload and only a fresh passkey touch applies it.
@@ -78,7 +78,7 @@ export function PolicyEditor({ p, onDone }: { p: Policy; onDone: () => void }) {
         <div className="dv-field" key={f.k}>
           <label htmlFor={`pe-${f.k}`}>{f.label}</label>
           <input id={`pe-${f.k}`} type="number" inputMode="numeric" min={LIMITS[f.k][0]} max={LIMITS[f.k][1]} value={d[f.k]} onChange={(e) => set(f.k, Number(e.target.value))} />
-          <small>{f.help} ({LIMITS[f.k][0]}–{LIMITS[f.k][1]})</small>
+          <small>{f.help} {f.k.endsWith("S") && Number.isFinite(d[f.k]) ? <b className="dv-eq">= {span(d[f.k])}</b> : null} <span className="dv-rng">({LIMITS[f.k][0]}–{LIMITS[f.k][1]})</span></small>
         </div>
       ))}
       <div className="dv-field">

@@ -2856,3 +2856,6 @@ D2b-5 WRITTEN + pushed: policy change needs a fresh passkey touch that signs the
 
 ## RESUME HERE (11 Nov 2026 02:22 PKT)
 E157 GREEN (SQL) + D2b-5 Rust/UI installed on his server. His live Chrome showed the real session in Devices & sessions. UI pass 2 written (D3 plan, "UI pass 2"). ONE step for him: founder-install (SPA only), hard refresh, look at #/devices on phone 390 / tablet 820 / laptop, then Change policy with his key (real touch) for D4/D2b-5 GREEN. Still open: FOUNDER_GEOIP file (country unknown, Enforce inert), awam AP1-AP9, then L (Thu 12 Nov).
+
+## RESUME HERE (11 Nov 2026 02:30 PKT)
+UI pass 2 installed and seen live (bundle = repo). Pass 3 (editor select height + human "= 24 h") pushed; one more founder-install (SPA only). Then his phone 390 / tablet 820 / laptop screenshots and one real key-touched policy change = D2b-5/D4 GREEN. Honest: Path card says HTTP/1.1 because his API calls really are h1 (truth, not bug); device key none (K7 observe). Open: FOUNDER_GEOIP file, awam AP1-AP9, L (Thu 12 Nov).

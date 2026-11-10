@@ -102,3 +102,6 @@
 .dv-verified{display:inline-flex;align-items:center;gap:6px;font:500 12px Inter,sans-serif;color:var(--ok);padding:4px 10px;border:1px solid #1f5a40;border-radius:999px;background:rgba(61,214,140,.06)}
 .dv-verified i{font-style:normal;font-weight:700}
 @container dv (max-width:520px){.dv-prov{justify-items:start;text-align:left}}
+.dv-field{align-content:start}
+.dv-field select{appearance:none;-webkit-appearance:none;height:44px;background-image:linear-gradient(45deg,transparent 50%,var(--dim) 50%),linear-gradient(135deg,var(--dim) 50%,transparent 50%);background-position:calc(100% - 20px) 19px,calc(100% - 14px) 19px;background-size:6px 6px;background-repeat:no-repeat;padding-right:36px}
+.dv-eq{color:var(--fg);font-weight:600}.dv-rng{color:var(--faint)}

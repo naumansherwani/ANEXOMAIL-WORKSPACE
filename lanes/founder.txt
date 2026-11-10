@@ -111,8 +111,8 @@ founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
-founder-web/dist/assets/index-CrMhJANl.css
-founder-web/dist/assets/index-iO5ttgjj.js
+founder-web/dist/assets/index-Bm5F6kAr.js
+founder-web/dist/assets/index-DyLwWNWk.css
 founder-web/dist/assets/kernel.worker-BiR_tP7H.js
 founder-web/dist/assets/three.module-C0S06CcT.js
 founder-web/dist/boot.css
