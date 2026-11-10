@@ -1875,3 +1875,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 04:00 PKT WRITTEN, NOT yet on his server: K7 wire fix (E158 key attach + Rust offer_binding/key_attach + UI shouldRegister). Wait for his sql-run E158 + founder-install pastes, then live proof. See docs/claude/DONE-DO-NOT-REPEAT.md.
 - 11 Nov 2026 04:10 PKT CHECK_E158 row 4 fixed to read the E150 selftest text; E158 SQL already applied on his server (do not re-send).
 - 11 Nov 2026 04:25 PKT WRITTEN: E159 DBSC chain fix (not yet on his server). Do not rewrite; wait for his sql-run paste.
+- 11 Nov 2026 04:20 PKT: E159 sql-run DONE + CHECK_E159 4/4 OK (his paste 04:16); do not re-send. ABHI PENDING: founder-install (K7 wire fix Rust+SPA).

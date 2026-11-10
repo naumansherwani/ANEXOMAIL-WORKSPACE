@@ -303,3 +303,4 @@ G2 is now the open item in progress.
 
 - 11 Nov 2026 04:00 PKT OPEN: K7 wire fix "No device key" (E158 + Rust + UI written, tests green, NOT on his server, NOT live-proven) and DBSC ledger chain break (founder_dbsc_report chain broken_at 150, ok:false) = investigate next. Neither is green.
 - 11 Nov 2026 04:25 PKT: DBSC chain break = root cause found, fix E159 written (open until his sql-run + CHECK_E159 all OK).
+- 11 Nov 2026 04:20 PKT: DBSC chain break CLOSED (E159 GREEN, chain verifies 120/120).

@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 7259bb42cd3a136a
 docs/cursor-work/PROMISES.md 5684f6a751539c8b
-docs/cursor-work/founder/founder-commands.md 471192b401fb4dbc
+docs/cursor-work/founder/founder-commands.md b39d74ff489c5920
 docs/anexomail-blueprint.md 97689fb3af84ce36
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 7e3f58397354e64d
-docs/cursor-work/DONE-DO-NOT-REPEAT.md b7474f1134eed4d6
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 6eece0d607fa9587
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -245,7 +245,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs da5c3db196fbe81d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md dcfd5035b3966f0c
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 7bd93e8512a42a92
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -914,7 +914,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md 5e01d40d67b68003
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md cdfd0bfb6ac017cc
+docs/claude/founder/PULL-COMMANDS.md 0e8651ccd00f3668
 src/routes/founderlogin.tsx 2146604b56bdedaf
 docs/claude/FOUNDER-FEATURE-MAP-28OCT.md 62746301d78c6cd5
 docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md ec4d51424905581d
@@ -1216,7 +1216,7 @@ founder-web/public/icon-512.png f1fdd95ddefb9b35
 founder-web/public/manifest.webmanifest c13e42ef147a304c
 src/components/app/FeatureGate.tsx f0ae35c8646cb436
 src/routes/app.storage.tsx 78ca91241d265b0f
-docs/claude/CLOSE-THE-GAPS-07NOV.md ace54772cc0e82b7
+docs/claude/CLOSE-THE-GAPS-07NOV.md d11644da43131dd0
 docs/claude/FOUNDER-STATUS-TABLE-07NOV.md 9c074ad25a6c9ad0
 docs/claude/START-HERE-AFTER-COMPACTION.md eb5e799e16299c6d
 docs/claude/K4-REAL-443-DESIGN-07NOV.md 209686fae89766e5
