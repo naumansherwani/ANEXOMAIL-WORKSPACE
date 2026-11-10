@@ -1,6 +1,6 @@
 <!--TECHLAW-->
 # RESUME POINT (the ONE file to open when the founder says "shuru kero / jahan rukay thay"; kept current by rules-gate)
-LAST UPDATED: 11 Nov 2026 04:55 PKT (TECH RULE now printed in front of EVERY gate, fail and warning). Founder went to sleep at ~04:40 PKT; he restarts from here.
+LAST UPDATED: 11 Nov 2026 05:00 PKT (TECH RULE now printed in front of EVERY gate, fail and warning). Founder went to sleep at ~04:40 PKT; he restarts from here.
 
 ## STEP 0 (every Claude, after compaction or a new chat, in this order)
 1. docs/claude/TECH-FIRST-PROTOCOL.md  2. docs/claude/tech-contracts/CURRENT.md  3. this file  4. newest "RESUME HERE" at the bottom of docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md  5. docs/claude/START-HERE-AFTER-COMPACTION.md (8 rules). Then talk: Roman Urdu, short, "Aap / Nauman bhai", end with the Rule-70 table + "Abhi code mein NAHI".
@@ -9,6 +9,11 @@ LAST UPDATED: 11 Nov 2026 04:55 PKT (TECH RULE now printed in front of EVERY gat
 - GREEN and live-proven (11 Nov): K8a h2 fallback, K8b HTTP/3 on UDP 443, K8c X25519MLKEM768, K7 wire fix (Devices & sessions "All clear 4/4", Device key GOOD, his Chrome 04:24), E158 key attach, E159 DBSC chain fix (chain 120/120), aurora seal UI.
 - OPEN GAPS (visible in rules-gate as TECH LAW OPEN warnings): K8d kernel WebTransport RPC (api.ts/devicekey.ts still raw fetch: ratchet 11), K7-devicekey-pq (ML-DSA hybrid, Q phase), L-gsap, L-webgpu, M-moq, Q-pq-sign, Scene3D three types (tsc).
 - His words: "pehle jo gaps hain unko KAL fix kiya jaye ga, uske baad agli tarteeb se kaam"; K8d "aaj/kal"; K7c enforce: his "haan" is given ("read the technology rules first").
+
+## TOMORROW STARTS HERE (his 04:43 word): THE TWO K7 GAPS, in this order
+- GAP 1 = K7-devicekey-fetch = K8d: the device-key register (devicekey.ts) and the exchange (api.ts) leave the raw fetch and go kernel -> WebTransport/HTTP3 (Rule 52).
+- GAP 2 = K7-devicekey-pq: the device proof becomes post-quantum HYBRID (ML-DSA with the existing ECDSA P-256 proof; the DBSC cookie path stays ES256 because that is the browser standard). Technology first: research the current ML-DSA support (Rust crate + WebCrypto/WASM) and write the choice into tech-contracts/CURRENT.md BEFORE code.
+Only after both gaps are green does the order below continue.
 
 ## TOMORROW'S ORDER (letter order never breaks)
 1. FIX THE GAPS FIRST: K8d (contract already in tech-contracts/CURRENT.md: /wt/rpc in wt.rs through the same router gates; kernel rpc@1 in kernel.worker.ts/kernel.ts; wasm rebuild + version bump + pin sha; api.ts get/getOnce/post/put, devicekey.ts register, Surface.tsx on it; fetch = fallback only; lower TECH-RATCHET.json; flip K8d-api-not-fetch + K7-devicekey-fetch to ok). Then his founder-install, my live Chrome proof (network panel shows WebTransport, not fetch).

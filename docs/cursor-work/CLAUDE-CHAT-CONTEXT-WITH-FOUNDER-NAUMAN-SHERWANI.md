@@ -2911,3 +2911,6 @@ His 04:39: the gaps are fixed TOMORROW, then the next order; when he says "shuru
 
 ## RESUME HERE (11 Nov 2026 04:55 PKT) TECH RULE IN FRONT OF EVERY GATE
 His 04:39: "her gate ke agay technology phase wala rule likho". rules-gate.py now prints the TECH RULE (listed technology of the phase first, HTTP/3, Rust WASM kernel, WebTransport, ML-KEM, latest only; contract in tech-contracts/CURRENT.md) as the first line of every run and appends it to every FAIL and every warning. Documented in TECH-FIRST-PROTOCOL.md. Everything else unchanged: resume from docs/claude/RESUME-POINT.md.
+
+## RESUME HERE (11 Nov 2026 05:00 PKT) TOMORROW STARTS WITH THE TWO K7 GAPS (his 04:43)
+When he says "shuru kero": open docs/claude/RESUME-POINT.md, then tech-contracts/CURRENT.md. GAP 1 = K7-devicekey-fetch = K8d (kernel WebTransport RPC: devicekey.ts register + api.ts exchange off raw fetch; ratchet 11 must fall). GAP 2 = K7-devicekey-pq (device proof becomes ML-DSA + ECDSA hybrid; DBSC cookie path stays ES256; research the current ML-DSA Rust crate + browser/WASM support and write the choice into CURRENT.md BEFORE code). Then K7c enforce (his haan, rollback), then L, M, N..X, Q. No server command pending. State: K8a/b/c, K7 wire fix, E158, E159, aurora seal all GREEN with live proof; gates: TECH RULE on every gate, ratchet, contract, GREEN words, RESUME POINT.
