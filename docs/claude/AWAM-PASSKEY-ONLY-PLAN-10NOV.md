@@ -25,3 +25,5 @@ Awam gets the same advanced engine as the founder D1/D2 (E155/E156 design: sessi
 - 11 Nov 2026 01:15 PKT AP9 UI line: awam "Your devices" card = the same D3 anatomy in customer wording (this device, list, sign out one / everywhere, new-device alert), no ledger jargon, no location-lock by default. Stamp blank.
 
 - 11 Nov 2026 01:30 PKT AP9 UI: founder D3 plan written (docs/claude/G-MIX-D3-PLAN-11NOV.md): Trust Ring, live rows, two-step close, alert strip, ledger timeline, honest states. Awam copy = same pure module + customer labels. Stamp blank.
+
+- 11 Nov 2026 01:45 PKT AP9 UI: founder D3 screen written (sessions_pure.ts logic is label-free: awam copy swaps Founder wording only; Devices.tsx anatomy = Trust Ring, rows, two-step close, ledger). Stamp blank.

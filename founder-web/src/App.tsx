@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback, createContext, useContext, type React
 import { Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { get, hasToken, deviceStatus, setSetting, lastBridge } from "./api";
 import { AccountMenu, ProfileView } from "./Profile";
+import { DevicesView } from "./Devices";
 import { SettingsView } from "./Settings";
 import { AmbientLayer, useCatalog } from "./AmbientStudio";
 import { applyAppearance, effectiveMotion, osReducedMotion, readAppearance } from "./appearance";
@@ -43,7 +44,7 @@ function DeviceScreen({ code, revoked, retry }: { code: string | null; revoked: 
 
 const CC: [string, string][] = [["dashboard", "Dashboard"], ["bridge", "Bridge"], ...ORDER.map((k): [string, string] => [k, DECK_META[k].title]), ["audit", "Audit ledger"]];
 /** Every page the router knows (TanStack Router, hash history: #/finance). Unknown names redirect to the Dashboard (front page). */
-export const KNOWN = new Set([...CC.map((x) => x[0]), "profile", "settings"]);
+export const KNOWN = new Set([...CC.map((x) => x[0]), "profile", "settings", "devices"]);
 const TABS: [string, string][] = [["dashboard", "Home"], ["bridge", "Bridge"], ["finance", "Finance"], ["people", "People"]];
 
 /** Everything the page bodies need from the shell (profile, live bridge data, appearance). Provided by the shell, read by the routed pages. */
@@ -54,7 +55,7 @@ export const useShell = () => { const c = useContext(ShellCtx); if (!c) throw ne
 /** The routed page body for the current view. */
 export function ViewBody() {
   const { view, d, at, prof, loadProf, fx, setFx, slim, setSlim, setView, preview, setPreview } = useShell();
-  return (view === "bridge" ? <BridgeView d={d} at={at} me={prof} go={setView} /> : view === "dashboard" ? <DashboardView d={d} at={at} go={setView} me={prof} /> : view === "profile" ? <ProfileView p={prof} reload={loadProf} /> : view === "settings" ? <SettingsView preview={preview} setPreview={setPreview} go={setView} p={prof} fx={fx} setFx={setFx} slim={slim} setSlim={setSlim} reload={loadProf} /> : DECK_META[view] ? <><DeckPage deck={view} money={d?.money} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : <div className="grid"><Deck key={view} deck={view} /></div>);
+  return (view === "bridge" ? <BridgeView d={d} at={at} me={prof} go={setView} /> : view === "dashboard" ? <DashboardView d={d} at={at} go={setView} me={prof} /> : view === "profile" ? <ProfileView p={prof} reload={loadProf} /> : view === "devices" ? <DevicesView /> : view === "settings" ? <SettingsView preview={preview} setPreview={setPreview} go={setView} p={prof} fx={fx} setFx={setFx} slim={slim} setSlim={setSlim} reload={loadProf} /> : DECK_META[view] ? <><DeckPage deck={view} money={d?.money} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : <div className="grid"><Deck key={view} deck={view} /></div>);
 }
 
 /** Loading screen with the logo on every refresh, on every page: stays until the first fresh signed answer (min 0.7 s, max 4 s), then fades out. */
@@ -132,8 +133,8 @@ export default function App() {
   useEffect(() => { if (authed && window.location.pathname === "/founderlogin") window.history.replaceState(null, "", "/#/dashboard"); }, [authed]);
   if (!authed) return <Gate />;
   if (pend) return <DeviceScreen code={pend.code} revoked={pend.revoked} retry={load} />;
-  const title = view === "bridge" ? "Bridge" : view === "profile" ? "Profile" : view === "settings" ? "Settings" : (CC.find((n) => n[0] === view) || ["", ""])[1];
-  const items: (NavItem & { href?: string })[] = [...CC.map(([k, n]) => ({ id: k, name: n, group: ["dashboard", "bridge"].includes(k) ? "Command center" : "Founder Workspace", icon: k, view: k })), { id: "settings", name: "Settings", group: "Account", icon: "settings", view: "settings" }, { id: "profile", name: "Profile & photo", group: "Account", icon: "people", view: "profile" }];
+  const title = view === "bridge" ? "Bridge" : view === "profile" ? "Profile" : view === "devices" ? "Devices & sessions" : view === "settings" ? "Settings" : (CC.find((n) => n[0] === view) || ["", ""])[1];
+  const items: (NavItem & { href?: string })[] = [...CC.map(([k, n]) => ({ id: k, name: n, group: ["dashboard", "bridge"].includes(k) ? "Command center" : "Founder Workspace", icon: k, view: k })), { id: "settings", name: "Settings", group: "Account", icon: "settings", view: "settings" }, { id: "profile", name: "Profile & photo", group: "Account", icon: "people", view: "profile" }, { id: "devices", name: "Devices & sessions", group: "Account", icon: "settings", view: "devices" }];
   const pick = (x: NavItem & { href?: string }) => { setPal(false); if (x.href) window.open(x.href, "_blank", "noopener,noreferrer"); else setView(x.view); };
   const spot = (e: React.PointerEvent<HTMLElement>) => { const r = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`); e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`); };
   const nvBtn = (k: string, n: string, i = 0) => <button key={k} className="nv" style={{ "--i": i } as React.CSSProperties} onPointerMove={spot} title={n} aria-current={view === k ? "page" : undefined} onClick={() => setView(k)}><Icon k={k} /><span className="lbl">{n}</span></button>;
@@ -169,7 +170,7 @@ export default function App() {
           </div>
         </header>
         <main className="pg" id="main" key={view}>
-          {view !== "bridge" && view !== "dashboard" && view !== "settings" && view !== "profile" && <div className="titleblock"><h1>{title}</h1></div>}
+          {view !== "bridge" && view !== "dashboard" && view !== "settings" && view !== "profile" && view !== "devices" && <div className="titleblock"><h1>{title}</h1></div>}
           {err && <div className="err banner" role="alert">{err}</div>}
           <Outlet />
           <footer className="pgfoot">{at ? `Updated ${fmtTime(at)} · refreshes every 15 s` : "Loading…"}</footer>

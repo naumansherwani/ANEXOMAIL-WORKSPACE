@@ -1859,3 +1859,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 01:05 PKT: D2b Rust written (sessions.rs, exchange register, gate check, 4 endpoints, kernel header). 286 cargo + 159 bun tests. Needs founder-install + live proof; policy endpoint open.
 
 - 11 Nov 2026 01:15 PKT: founder-install of D2b DONE on his server (do not re-send). Next: his sign-out/in, then D3 UI card.
+
+- 11 Nov 2026 01:45 PKT: D3 screen (Devices & sessions) written and measured in the sandbox; needs founder-install + his look (D4).

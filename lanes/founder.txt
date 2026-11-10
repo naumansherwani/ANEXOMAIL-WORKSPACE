@@ -110,8 +110,8 @@ founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
-founder-web/dist/assets/index-BUUmHuYG.css
-founder-web/dist/assets/index-P9z4PDu-.js
+founder-web/dist/assets/index-CLFgxYcT.js
+founder-web/dist/assets/index-DnvOC67U.css
 founder-web/dist/assets/kernel.worker-BiR_tP7H.js
 founder-web/dist/assets/three.module-C0S06CcT.js
 founder-web/dist/boot.css
@@ -145,6 +145,7 @@ founder-web/src/Bridge.tsx
 founder-web/src/Dbsc.tsx
 founder-web/src/DbscCard.tsx
 founder-web/src/Decks.tsx
+founder-web/src/Devices.tsx
 founder-web/src/Finance.tsx
 founder-web/src/Flare.tsx
 founder-web/src/Keys.tsx
@@ -178,6 +179,7 @@ founder-web/src/devicekey.ts
 founder-web/src/devicekey_pure.test.ts
 founder-web/src/devicekey_pure.ts
 founder-web/src/devicelabel.ts
+founder-web/src/devices.css
 founder-web/src/dx.css
 founder-web/src/flare_pure.ts
 founder-web/src/flare_sw.test.ts
@@ -214,6 +216,8 @@ founder-web/src/sealpin.test.ts
 founder-web/src/sealpin.ts
 founder-web/src/session.test.ts
 founder-web/src/session.ts
+founder-web/src/sessions_pure.test.ts
+founder-web/src/sessions_pure.ts
 founder-web/src/settingsS2.test.ts
 founder-web/src/signin/AuthCinema.tsx
 founder-web/src/signin/BrandLoader.tsx

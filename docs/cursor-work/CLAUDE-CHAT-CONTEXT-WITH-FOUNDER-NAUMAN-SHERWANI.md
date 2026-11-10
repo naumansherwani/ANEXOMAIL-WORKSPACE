@@ -2847,3 +2847,6 @@ D2b installed on his server 01:11 (4/4 saboot OK). His screenshot shows Profile 
 
 ## RESUME HERE (11 Nov 2026 01:30 PKT)
 D3 plan WRITTEN (docs/claude/G-MIX-D3-PLAN-11NOV.md). Code order D3a sessions_pure.ts(+test) -> D3b Devices.tsx + route "devices" + menu item -> D3c bun/tsc/vite -> D3d 390/820/1280 sandbox -> push -> his founder-install. Data = existing signed endpoints /founder/v1/sessions/{board,ledger,revoke,revoke-others}. Founder-install already done for D2b (01:11).
+
+## RESUME HERE (11 Nov 2026 01:45 PKT)
+D3 screen WRITTEN + pushed: founder-web/src/{sessions_pure.ts,sessions_pure.test.ts,Devices.tsx,devices.css}, route #/devices, menu item opens it. 172 bun tests, 12-run measurement clean. ONE step for him: founder-install, then sign out and in, open account menu > Devices & sessions (or #/devices) and send a phone screenshot (390) + laptop. D4 = GREEN only when his REAL session shows and the three sizes are seen live. Then D2b-5 (policy + passkey touch), country file, then L (12 Nov).

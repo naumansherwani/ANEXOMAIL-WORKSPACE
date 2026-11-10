@@ -2964,3 +2964,6 @@ founder-install OK (4/4). He asked: is the Devices & sessions UI the world's mos
 
 ## 11 Nov 2026 01:30 PKT - his order 01:14
 D3 plan first at the repo top (research, as advanced as possible), then code; update everything for compaction. Plan written: docs/claude/G-MIX-D3-PLAN-11NOV.md.
+
+## 11 Nov 2026 01:45 PKT - D3 UI written
+Plan first (done 01:30), then code: sessions_pure.ts + Devices.tsx + devices.css, 12-run sandbox measurement at 390/820/1280 clean. Next: his founder-install, sign out/in, look at #/devices; D4 live proof.

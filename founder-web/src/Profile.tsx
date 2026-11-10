@@ -62,7 +62,7 @@ export function AccountMenu({ p, go }: { p: Prof | null; go: (v: string) => void
         <div className="mhead"><Avatar p={p} size={44} /><div><b>{nameOf(p) || "Founder"}</b><span>{p?.email || ""}</span><i className="rolechip">Founder · Chairman</i></div></div>
         {item("Profile & photo", () => go("profile"))}
         {item("Settings", () => go("settings"))}
-        {item("Devices & sessions", () => go("profile"))}
+        {item("Devices & sessions", () => go("devices"))}
         <div className="msep" />
         <div className="mnote">This browser: {ds.mode === "device" ? `approved · ${ds.label}` : ds.mode === "legacy" ? "approval not active yet" : "checking"}</div>
         {item("Sign out", signOut)}
@@ -118,7 +118,7 @@ export function ProfileView({ p, reload }: { p: Prof | null; reload: () => Promi
         <div className="kicker">THIS DEVICE</div>
         <div className="big" style={{ fontSize: 20 }}>{ds.mode === "device" ? "Approved" : ds.mode === "legacy" ? "Approval not active" : "Checking"}</div>
         <div className="dim">{ds.label || "—"}</div>
-        <div className="src">The full list of your approved devices, with one-click revoke, arrives with the Devices screen (after F2c). Until then, list and revoke on the server with founder-device.sh.</div>
+        <button type="button" className="btn" style={{ marginTop: 12 }} onClick={() => { window.location.hash = "#/devices"; }}>Open Devices &amp; sessions</button>
       </section>
     </div>
   );

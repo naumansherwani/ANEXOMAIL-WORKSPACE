@@ -914,3 +914,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 11 Nov 2026 01:05 PKT ABHI PENDING (D2b Rust): 1. git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -15   (awam pull.sh NOT needed)
 
 11 Nov 2026 01:15 PKT: D2b founder-install DONE (his paste 01:11). No pending server command; next one comes with D3 (founder-install again).
+
+11 Nov 2026 01:45 PKT ABHI PENDING (D3 UI): 1. git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -15   (SPA only changed; awam pull.sh NOT needed)
