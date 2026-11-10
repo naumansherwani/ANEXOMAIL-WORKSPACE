@@ -107,6 +107,7 @@ docs/claude/FOUNDER-WORKSPACE-PLAN.md
 docs/claude/FRONTEND-TECHNOLOGY-PLAN-27OCT.md
 docs/claude/G-MIX-2B-PLAN-10NOV.md
 docs/claude/G-MIX-D1-PLAN-10NOV.md
+docs/claude/G-MIX-D2-PLAN-10NOV.md
 docs/claude/G-MIX-S2-PLAN-10NOV.md
 docs/claude/G-MIX-S6-PLAN-10NOV.md
 docs/claude/G-MIX-SEPARATION-09NOV.md
