@@ -98,6 +98,7 @@ docs/cursor-work/sql/E155_founder_devices_sessions.sql
 docs/cursor-work/sql/E156_founder_sessions_advanced.sql
 docs/cursor-work/sql/E157_founder_session_policy_stepup.sql
 docs/cursor-work/sql/E158_founder_session_key_attach.sql
+docs/cursor-work/sql/E159_founder_dbsc_chain_fix.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/E68_proof.sql
