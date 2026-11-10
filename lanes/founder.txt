@@ -94,6 +94,7 @@ docs/cursor-work/sql/E151_founder_signin_ceremony.sql
 docs/cursor-work/sql/E152_founder_signin_one_factor.sql
 docs/cursor-work/sql/E153_founder_signin_password_fail.sql
 docs/cursor-work/sql/E154_founder_passkey_by_credential.sql
+docs/cursor-work/sql/E155_founder_devices_sessions.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/E68_proof.sql
