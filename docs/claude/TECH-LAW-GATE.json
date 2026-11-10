@@ -3,7 +3,7 @@
 {"id":"K8b-h3-crate","file":"server/founder/Cargo.toml","must":"h3-quinn","status":"ok","why":"HTTP/3 server stack present"},
 {"id":"K8b-h3-wired","file":"server/founder/src/main.rs","must":"h3::from_env","status":"ok","why":"HTTP/3 listener wired into the founder binary"},
 {"id":"K8b-h3-alpn","file":"server/founder/src/wt.rs","must":"b\"h3\"","status":"ok","why":"QUIC ALPN h3"},
-{"id":"K8a-h2-fallback","file":"server/founder/src/tls256.rs","must":"b\"h2\"","status":"ok","why":"h2 is at least the fallback on TCP"},
+{"id":"K8a-h2-fallback","live":"proven 11 Nov 03:40","file":"server/founder/src/tls256.rs","must":"b\"h2\"","status":"ok","why":"h2 is at least the fallback on TCP"},
 {"id":"K8a-no-h1-only","file":"server/founder/src/tls256.rs","mustnot":"http1::Builder::new()","status":"ok","why":"the terminator never goes back to HTTP/1.1-only"},
 {"id":"K8c-pq","file":"server/founder/Cargo.toml","must":"rustls-post-quantum","status":"ok","why":"X25519MLKEM768 post-quantum hybrid key exchange (listed for K4)"},
 {"id":"K8c-pq-first","file":"server/founder/src/tls256.rs","must":"X25519MLKEM768","status":"ok","why":"hybrid group offered first"},
