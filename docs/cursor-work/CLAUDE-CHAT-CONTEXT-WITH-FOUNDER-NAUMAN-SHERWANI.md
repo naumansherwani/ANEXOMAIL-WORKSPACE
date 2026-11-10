@@ -2763,3 +2763,7 @@ Checkpoint 10 Nov 2026 18:29 PKT RESUME HERE: founder = ONE FACTOR by his word (
 - 10 Nov 2026 18:37 PKT: E152 on his server: checks 1-4 OK, selftest FAIL 'a passkey ticket opened with no passkey' = TEST bug (he already has a real passkey; test assumed none). Product SQL unchanged. Selftest now parks his real passkeys as revoked INSIDE its rolled-back block. Re-proved locally WITH a real passkey present: all 6 CHECK true, his passkey stays live. E152 NOT green until his re-run is 6/6.
 
 Checkpoint 10 Nov 2026 18:37 PKT RESUME HERE: E152 selftest fix (real passkey case) pushed; his sql-run re-run pending; then S2 Rust signin.rs.
+
+- 10 Nov 2026 18:42 PKT: E152 = GREEN (WIRED: YES / REAL: YES for the SQL layer): his server paste 10 Nov: CHECK_E152 5/5 OK incl. selftest PASS with his real passkey present, 'DONE: sab theek' (sha 42e11ab453e9346f). Founder sign-in = one factor in the database. NOT yet reachable from the UI (needs S2 Rust signin.rs): so the 2b phase as a whole stays OPEN. Next free SQL number: E153. NEXT: S2 Rust signin.rs, S4 recovery, S5 magic (refused), S6 UI passkey wiring, S7 live proof 390/820/1200+; then L, M, N, O, P, Q, R, S, T+U, V/X by 25 Nov.
+
+Checkpoint 10 Nov 2026 18:42 PKT RESUME HERE: E152 GREEN on his server. Next = S2 Rust signin.rs (reuse passkey.rs, E151/E152 doors, login.rs Limiter, dbsc.rs). Look of SignIn.tsx unchanged.
