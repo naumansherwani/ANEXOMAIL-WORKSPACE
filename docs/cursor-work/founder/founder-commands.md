@@ -2992,3 +2992,6 @@ His install paste (SPA 200, signing ON) + "ab live chrome pe dekho, loophole ho 
 
 ## 11 Nov 2026 03:04-03:10 PKT (HIS ORDER, verbatim gist)
 "(HTTP/1.1 over TCP) yeh kab hai repo main bata ... https 3 hai?" then "fucking asshole founder technology sirf advance latest pe chalti hai fucking fix it" + "bhosidke ja ke pura rules book technology ka detail main read kero pura repo read kero phir ana mere pass". = founder host API must be HTTP/3 primary, h2/h1 fallback (his 8 Nov 14:02 rule). Plan: docs/claude/G-MIX-K8-H3-PLAN-11NOV.md (K8 = h2 on the terminator + real HTTP/3 listener, Rust only, default OFF until his env lines).
+
+## 11 Nov 2026 03:11 PKT (HIS LAST WARNING, capital letters)
+"folllow tha fucking RULES ... meri founder technology sirf aur sirf super advance hai aur maine phases ke agay mentioned hai fucking audit it and fucking fix it ... compact ke liye codes context technology mobile tablet rules sab kuch update abhi" -> audit done: docs/claude/FOUNDER-TECH-AUDIT-11NOV.md; fixes K8a-K8d queued in that order.

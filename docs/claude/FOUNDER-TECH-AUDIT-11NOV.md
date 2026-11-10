@@ -1,0 +1,20 @@
+# FOUNDER TECHNOLOGY AUDIT vs HIS RULES (his order 11 Nov 2026 03:11 PKT, "last warning": founder technology = ONLY super advanced latest, as written next to every phase; audit it and fix it)
+Sources: AGENTS.md Rules 52/61/62/66, docs/claude/FOUNDER-NEXT-ORDER-07NOV.md (technology per phase), his 8 Nov 14:02 word "meri website https3 hai yeh primary hai, http 1 aur 2 fallback". Method: each phase's LISTED technology vs the code in the repo today (grep/read, no guessing). WIRED/REAL words stay with the phase docs; this file lists only GAPS against the listed technology.
+
+| # | Phase / area | Listed technology (his rule) | What the code really is (verified 11 Nov) | GAP | Fix (id) |
+|---|---|---|---|---|---|
+| 1 | K4 AES-256 terminator `tls256.rs` | Rust rustls TLS 1.3 AES-256-GCM **X25519MLKEM768** (post-quantum hybrid) | AES-256 only: YES. Key exchange: `ring` provider has NO ML-KEM, code comment says it never claims post-quantum; zero MLKEM in `server/founder/src` | **X25519MLKEM768 NOT delivered** though listed | K8c: add the ML-KEM hybrid group (rustls + aws-lc-rs group via `rustls-post-quantum`), prober records the real group, CHECK proves it |
+| 2 | Founder host HTTP version | HTTP/3 primary, h2 + h1 fallback (8 Nov 14:02) | terminator ALPN `http/1.1`, hyper feature `http1` only; live measured: board/ledger/bridge = http/1.1 | **no h2, no h3** on the founder host | K8a h2 on the terminator (h1 fallback); K8b real HTTP/3 listener (h3 + quinn, same AES-256 config, `Alt-Svc`), UDP port from a FRESH `ss` list |
+| 3 | Browser -> server transport (Rule 52: every browser call goes kernel -> WebTransport/QUIC -> Rust; fetch = fallback only) | kernel WebTransport RPC | `founder-web/src/api.ts` get/post/put = plain `fetch`; kernel only VERIFIES the body; only the live feed uses WebTransport | **all founder API calls are fetch (HTTP/1.1)** | K8d: kernel `rpc.rs` path over WebTransport for get/post/put with fetch fallback; `anexoKernel.stats.fetch` ~0 |
+| 4 | K6 WebTransport | wtransport HTTP/3 QUIC + kernel frames | server `wt.rs` live (UDP 4443), kernel client + SSE fallback in `livefeed.ts` | live feed OK; API not on it (row 3) | covered by K8d |
+| 5 | K7 DBSC | cookie bound to a TPM key | code + E149 green, **observe mode**; his own session has no device key ("No device key" on the seal) | not enforcing, his session unbound | K7c: his browser registers the key, then enforce (his go) |
+| 6 | L Look (L1 Framer Motion + GSAP, L2 Three.js WebGPU lazy) | motion + WebGPU | `motion` + `three` are dependencies; GSAP missing; no WebGPU scene; Scene3D.tsx has tsc type errors | **L not built**; Scene3D untyped | L (Thu 12 Nov) + fix `@types`/declarations first |
+| 7 | M MoQ, N Live Pulse, O..V, X | per FOUNDER-NEXT-ORDER table | not built yet (planned) | pending, not violations | stay in the date plan |
+| 8 | Geo policy | server country | `FOUNDER_GEOIP` file not installed, country unknown, Enforce inert | **feature inert** | G-GEO: install the country file (his command) then observe -> enforce |
+| 9 | D3 Devices UI | UI rules + Rule 52 provenance | done (Aurora seal); transport = row 3 | only row 3 | K8d |
+| 10 | Passkey (J3 / D2b-5) | WebAuthn L3 | done, action-hash challenge, kernel re-derives | real key-touch change not yet done by him | his hands |
+
+## Order of fixes (deadlines are my plan, inside his 25 Nov last day)
+1. K8a h2 on the terminator: 11 Nov. 2. K8b HTTP/3 listener + Alt-Svc: 11-12 Nov (needs his read-only `ss` first, ports red line). 3. K8c ML-KEM hybrid: 12 Nov. 4. K8d kernel WebTransport RPC for every API call: 12-14 Nov. 5. K7c enforce: after his key registration. 6. L: 12 Nov start. A phase is GREEN only with WIRED: YES / REAL: YES proof (his live journal/curl output + my Chrome showing `h3` in the Path card).
+## Rule for every Claude from now
+Before calling ANY phase green, compare the technology LISTED for it (FOUNDER-NEXT-ORDER + this file) with the code. A listed technology that is not in the code is an OPEN GAP in CLOSE-THE-GAPS, never "green but partly". Never ship h1/ring-only/fetch-only where the rule lists h3/ML-KEM/WebTransport.

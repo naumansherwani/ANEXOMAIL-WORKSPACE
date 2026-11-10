@@ -31,3 +31,4 @@ Awam gets the same advanced engine as the founder D1/D2 (E155/E156 design: sessi
 ## AP9b (11 Nov 2026 01:52 PKT, his order 01:36): PRESERVE THE D-SERIES FOR AWAM + step-up policy change (blueprint line, GREEN stamp blank)
 - ALL founder D-series code is PRESERVED for awam and will be reused LATER, moulded for awam (not now, not copied blindly): SQL E155/E156/E157 -> awam_session_* tables with their own numbers; server/founder/src/sessions.rs -> awam module (per-user principal, plan-based cap); founder-web sessions_pure.ts + Devices.tsx + devices.css -> awam "Your devices" in customer words; the passkey touch for a policy change -> awam "confirm with your passkey" (passkey only, NO 2FA ever). Plan: docs/claude/G-MIX-D2B5-PLAN-11NOV.md. Stamp blank until founder-complete.
 - 11 Nov 02:58 AP9: Aurora seal hero becomes awam 'Your devices' look later (RULE 9)
+- 11 Nov 03:20 RULE 9 (awam AP9): awam inherits K8 transport (h2/h3/ML-KEM/kernel RPC) when molded (K5b)
