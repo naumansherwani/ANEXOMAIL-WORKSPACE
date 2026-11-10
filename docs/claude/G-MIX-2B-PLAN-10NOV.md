@@ -42,3 +42,11 @@ The sign-in page look (SignIn.tsx, Cinematic) does NOT change. Only the security
 
 ## S1 status (10 Nov 2026 01:14 PKT)
 E151 written (797 lines): tables policy/tickets/factors/magic_links/events/nets/handoffs, doors open/factor/release(+v2)/deny/magic_issue/magic_land/locked/risk/report/verify/tick/net_label/nets_list, two selftests. Local Postgres 16: both selftests PASS, second run clean, CHECK_E151 6/6. Server run by him pending (sql-run.sh AUTO).
+
+
+## REVISION 10 Nov 2026 18:29 PKT (founder 10 Nov 18:26: "mujhe apne liye 2fa nahi chaiye"): THE FOUNDER SIGN-IN IS ONE FACTOR
+- Founder: NO 2FA, NO TOTP. S3 (TOTP) is DROPPED. A passkey he enrols is NOT a hidden second step: it is a first-step alternative ("Continue with a passkey" signs in alone; user verification = something you have + you are).
+- E152 (written, tested locally, 6/6 CHECK) = policy word `founder_signin_policy.second_step` default 'off' ('required' stays possible only by a chained, audited change), method 'passkey', E151 selftests carried. Magic link: still NEVER alone (frozen): with the word off the link is refused outright, the button answers honestly.
+- What guards a password-only founder instead: the login Limiter + E151 lockout (5 fails / 900 s per founder and per network), the new-device approval gate on the server (a new browser sees "This device needs approval" and only HIS server command can approve it), DBSC / device key binding (K7), AES-256 TLS 1.3 + X25519MLKEM768, hash-chained sign-in ledger with risk reading.
+- Order now: S1 E151 (GREEN) -> S1b E152 (SQL, his run) -> S2 Rust signin.rs (password ticket + passkey sign-in, UI wiring of the passkey button in the SAME look) -> S4 recovery door (E117, delay kept) -> S5 magic link (stays refused while the word is off; honest message) -> S7 live proof (his phone passkey, my Chrome, 390/820/1280). S3 TOTP removed.
+- AWAM (not founder): 2FA/passkey becomes an OPTION for users, see docs/claude/AWAM-2FA-OPTIONAL-10NOV.md (awam lane, after the founder lane).

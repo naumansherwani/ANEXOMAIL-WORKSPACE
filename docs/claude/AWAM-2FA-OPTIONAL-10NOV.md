@@ -1,0 +1,8 @@
+
+# AWAM: 2FA / PASSKEY AS AN OPTION FOR USERS (founder order 10 Nov 2026 18:26, written 10 Nov 2026 18:29 PKT)
+His words (gist): "mujhe apne liye 2fa nahi chaiye; awam side ke liye de do option, kyun ke already bohat zyada security di hai; agar koi security lapse ya loophole hai us ko fix kar dena."
+
+- **Founder lane:** no 2FA (see G-MIX-2B-PLAN-10NOV.md revision, E152). Nothing here touches the founder binary (SEPARATION LAW).
+- **Awam lane (runs AFTER the founder lane, awam deadline 16 Dec 2026):** today the awam signup REQUIRES a passkey together with the password ("A passkey is required, together with your password", the enrolment screen of the awam login). The change he asked for: a user CHOOSES a second step (passkey and/or authenticator app): off by default or on by default is his call at that time (I ask once, as a numbered question), never forced, switchable in Settings > Security with a step-up, every change written to the awam audit ledger. Business plans may later let a company admin REQUIRE it for its own users (company policy), still an option, never a global force.
+- **Loophole pass (in the same awam item):** while turning the requirement into an option the whole awam sign-in is audited: signup enrolment gate, recovery codes, magic link (never alone), password reset (not a bypass of the second step when the user chose one), device trust, lockout, rate limits, session revoke. Anything found is fixed in the same change and listed with proof, nothing is called "fixed" without a test and a live probe.
+- **Not touched now:** no awam file is edited today (his LOGIN UI LAW + SEPARATION LAW). The founder login page is a copy in the founder lane.

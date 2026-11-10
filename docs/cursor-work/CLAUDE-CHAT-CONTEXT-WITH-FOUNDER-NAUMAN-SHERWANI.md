@@ -2757,3 +2757,5 @@ Checkpoint 10 Nov 2026 02:45 PKT RESUME HERE: INCIDENT: founder-install.sh re-ad
 Checkpoint 10 Nov 2026 02:50 PKT RESUME HERE: INCIDENT CLOSED (server cut re-applied, live proven). Law file FOUNDER-INSTALLER-AFTER-CUT-LAW-10NOV.md. Waiting: his browser check (login, sign-out), answer on Forgot password. UI untouched. Next: 2b S2 Rust signin.rs.
 
 Checkpoint 10 Nov 2026 02:53 PKT RESUME HERE: backup #2 sent (3450d945). Incident closed, he saw the site OK 3 times. ORDER: same login codes -> latest technology (security path: 2b S2 Rust signin.rs ticket + passkey WebAuthn, conditional UI), look NEVER changes.
+
+Checkpoint 10 Nov 2026 18:29 PKT RESUME HERE: founder = ONE FACTOR by his word (no 2FA/TOTP). E152 written + locally GREEN (6/6), his sql-run AUTO pending. NEXT: S2 Rust signin.rs (password ticket + passkey sign-in), UI passkey button same look. Awam 2FA = option (docs/claude/AWAM-2FA-OPTIONAL-10NOV.md, awam lane). Phase order after 2b: L, M, N/N1, O, P, Q, R, S, T+U, V/X per FOUNDER-DEADLINE-25NOV-PLAN.md.
