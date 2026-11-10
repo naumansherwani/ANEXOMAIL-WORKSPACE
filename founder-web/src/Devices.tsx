@@ -15,18 +15,17 @@ const STATE_WORD = { good: "Good", warn: "Check", bad: "Problem", unknown: "Unkn
 
 function useNow(everyMs = 1000) { const [n, setN] = useState(() => Date.now()); useEffect(() => { const t = window.setInterval(() => setN(Date.now()), everyMs); return () => window.clearInterval(t); }, [everyMs]); return n; }
 
-/** Four real facts about this session as four arcs; the centre says one honest word. Icon + word + colour, never colour alone. */
+/** Aurora seal (his pick A, 11 Nov): ONE luminous blue orb. State = luminance + one word + one symbol (+ a small warm rim for attention/alert), never a red/green arc.
+ *  The four real facts sit beside it as a legend (symbol + word + detail). Pure CSS, no GPU needed. */
+const SEAL_MARK = { clear: "✓", attention: "!", alert: "✕", unknown: "?" } as const;
 function TrustRing({ r }: { r: Ring }) {
-  const C = 2 * Math.PI * 44, len = C / 4 - 7;
+  const good = r.arcs.filter((a) => a.state === "good").length;
   return (
     <div className="dv-ringbox">
-      <svg className={`dv-ring v-${r.verdict}`} viewBox="0 0 120 120" role="img" aria-label={`Session trust: ${r.word}. ${r.arcs.map((a) => `${a.label}: ${STATE_WORD[a.state]}`).join(", ")}`}>
-        <circle cx="60" cy="60" r="44" className="trk" />
-        {r.arcs.map((a, i) => <circle key={a.id} cx="60" cy="60" r="44" className={`arc s-${a.state}`} strokeDasharray={`${len} ${C - len}`} transform={`rotate(${-90 + i * 90 + 3.5} 60 60)`} />)}
-        {(() => { const w = r.word.split(" "); const two = r.word.length > 9 && w.length > 1; return two
-          ? <><text x="60" y="53" textAnchor="middle" className="rw">{w[0]}</text><text x="60" y="67" textAnchor="middle" className="rw">{w.slice(1).join(" ")}</text><text x="60" y="81" textAnchor="middle" className="rs">this session</text></>
-          : <><text x="60" y="58" textAnchor="middle" className="rw">{r.word}</text><text x="60" y="74" textAnchor="middle" className="rs">this session</text></>; })()}
-      </svg>
+      <div className={`dv-seal v-${r.verdict}`} role="img" aria-label={`Session trust: ${r.word}. ${r.arcs.map((a) => `${a.label}: ${STATE_WORD[a.state]}`).join(", ")}`}>
+        <i className="halo" aria-hidden="true" /><i className="orb" aria-hidden="true" /><i className="gloss" aria-hidden="true" />
+        <div className="core"><b className="mk" aria-hidden="true">{SEAL_MARK[r.verdict]}</b><strong>{r.word}</strong><small>{good} of {r.arcs.length} checks good</small></div>
+      </div>
       <ul className="dv-legend">
         {r.arcs.map((a) => <li key={a.id} className={`s-${a.state}`}><i aria-hidden="true">{STATE_ICON[a.state]}</i><span><b>{a.label}</b><em>{STATE_WORD[a.state]}</em><small>{a.detail}</small></span></li>)}
       </ul>

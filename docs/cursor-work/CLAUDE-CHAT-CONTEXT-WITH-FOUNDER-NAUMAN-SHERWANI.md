@@ -2862,3 +2862,6 @@ UI pass 2 installed and seen live (bundle = repo). Pass 3 (editor select height 
 
 ## RESUME HERE (11 Nov 2026 02:50 PKT)
 He rejected the green/yellow ring. Demo artifact (3 hero options) published; rules in docs/claude/FOUNDER-UI-WOW-RULES-11NOV.md. NEXT: wait for his pick (A/B/C), implement in Devices.tsx + devices.css only, bun test/tsc/vite build, rm .gz, gate, commit, ONE founder-install command. D2b-5 still needs his real key-touched policy change; D4 needs phone/tablet screenshots.
+
+## RESUME HERE (11 Nov 2026 02:58 PKT)
+Option A Aurora seal IMPLEMENTED (CSS orb: halo/orb/gloss, state = luminance+word+symbol, warm rim only attention/alert; reduced-motion + forced-colors; legend icons blue/amber/orange). 176 bun tests pass, 12 sandbox runs no sideways scroll, targets ok. Pre-existing tsc errors only in Scene3D.tsx (three types), not mine. NOT GREEN until his install + phone 390 / tablet 820 / laptop look. Next: his reaction, D2b-5 real policy change, D4.

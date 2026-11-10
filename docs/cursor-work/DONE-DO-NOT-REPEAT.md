@@ -1864,3 +1864,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 02:10 PKT: D2b-5 written (plan G-MIX-D2B5-PLAN-11NOV.md, SQL E157 + CHECK_E157, Rust policy_step.rs begin/finish, UI PolicyEditor/policy_change/policy_flow). Local: E157 selftest PASS, Rust 291, bun 176, 390/820/1280 clean. Needs his sql-run (E157) then founder-install; GREEN only after a real policy change with his key (D4).
 - 11 Nov 2026 02:22 PKT: E157 GREEN on his server (SQL layer, his paste 02:07 4/4 OK) - do not re-send. D2b-5 Rust+UI installed. Devices UI pass 2 written (needs founder-install only).
 - 11 Nov 2026 02:30 PKT: UI pass 2 founder-install DONE (do not re-send); live Chrome checked, bundle = repo. Pass 3 pending install.
+- 11 Nov 02:58 Aurora seal Trust hero (his pick A) written; waits his phone look
