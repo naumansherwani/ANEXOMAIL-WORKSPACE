@@ -2791,3 +2791,7 @@ Checkpoint 10 Nov 2026 19:17 PKT RESUME HERE: S2 INSTALLED on his server (live p
 - 10 Nov 2026 19:23 PKT: S2 PASSWORD PATH = GREEN, WIRED: YES / REAL: YES (his founder-signin-peek paste 10 Nov 19:23): ledger events opened/completed/released method password at 19:19:29-30 and 19:19:38-39 (two sign-ins 9 s apart: the second reads release_burst, risk 10; first reads new_network, risk 35), hand-off rows written, chain verifies true; he signed in on the live site (dashboard opened). STILL OPEN (not green): the PASSKEY door is live and probed (begin 200 / wrong origin 403 / junk finish 401) but not used by any button yet and not tried with his real key: that is S6 (button wiring, same look) + S7 (his phone), 11 Nov.
 
 Checkpoint 10 Nov 2026 19:23 PKT RESUME HERE: S2 password path GREEN (ledger proof). Next S6: passkey button wiring (same look), then S4, S5, S7.
+
+- 10 Nov 2026 19:42 PKT: HIS ORDER 10 Nov 19:42 (gist): S6/S7 happen TODAY, no work waits for tomorrow; write technology plan + rules + mobile/tablet on top of the repo first; any loophole seen = fix it without asking; deliver GREEN phases. DONE: docs/claude/G-MIX-S6-PLAN-10NOV.md written BEFORE code.
+
+Checkpoint 10 Nov 2026 19:42 PKT RESUME HERE: S6 plan written (docs/claude/G-MIX-S6-PLAN-10NOV.md); coding signin_passkey.ts + SignIn handlers + Rust loophole fixes L1/L2.
