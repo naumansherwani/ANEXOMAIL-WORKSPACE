@@ -260,6 +260,7 @@ server/founder/src/settings.rs
 server/founder/src/settings_s2.rs
 server/founder/src/sign.rs
 server/founder/src/signedcp.rs
+server/founder/src/signin.rs
 server/founder/src/tls256.rs
 server/founder/src/wt.rs
 server/founder/tests/e2e_exchange.py

@@ -55,13 +55,13 @@ pub fn parse_grant(status: u16, body: &Value) -> Grant {
     }
 }
 
-fn generic_401() -> Response { (StatusCode::UNAUTHORIZED, Json(json!({"error": "invalid_credentials"}))).into_response() }
-fn busy_503() -> Response { (StatusCode::SERVICE_UNAVAILABLE, Json(json!({"error": "auth_temporarily_unavailable", "retry": true}))).into_response() }
-fn locked_429() -> Response { (StatusCode::TOO_MANY_REQUESTS, Json(json!({"error": "too_many_attempts", "message": "Too many attempts. Try again in 15 minutes."}))).into_response() }
-fn no_store(mut r: Response) -> Response { r.headers_mut().insert(axum::http::header::CACHE_CONTROL, axum::http::HeaderValue::from_static("no-store")); r }
+pub(crate) fn generic_401() -> Response { (StatusCode::UNAUTHORIZED, Json(json!({"error": "invalid_credentials"}))).into_response() }
+pub(crate) fn busy_503() -> Response { (StatusCode::SERVICE_UNAVAILABLE, Json(json!({"error": "auth_temporarily_unavailable", "retry": true}))).into_response() }
+pub(crate) fn locked_429() -> Response { (StatusCode::TOO_MANY_REQUESTS, Json(json!({"error": "too_many_attempts", "message": "Too many attempts. Try again in 15 minutes."}))).into_response() }
+pub(crate) fn no_store(mut r: Response) -> Response { r.headers_mut().insert(axum::http::header::CACHE_CONTROL, axum::http::HeaderValue::from_static("no-store")); r }
 
 /// One call to the identity service. Err = unreachable/unreadable.
-async fn gotrue(sb: &crate::data::Sb, path_q: &str, body: Option<Value>, bearer: Option<&str>) -> Result<(u16, Value), ()> {
+pub(crate) async fn gotrue(sb: &crate::data::Sb, path_q: &str, body: Option<Value>, bearer: Option<&str>) -> Result<(u16, Value), ()> {
     let mut rq = sb.http.post(format!("{}/auth/v1/{}", sb.url, path_q)).header("apikey", &sb.key);
     if let Some(b) = bearer { rq = rq.header("authorization", format!("Bearer {b}")); }
     if let Some(b) = body { rq = rq.json(&b); }
@@ -71,14 +71,14 @@ async fn gotrue(sb: &crate::data::Sb, path_q: &str, body: Option<Value>, bearer:
     Ok((st, v))
 }
 
-async fn end_session(sb: &crate::data::Sb, token: &str) { let _ = gotrue(sb, "logout", None, Some(token)).await; }
+pub(crate) async fn end_session(sb: &crate::data::Sb, token: &str) { let _ = gotrue(sb, "logout", None, Some(token)).await; }
 
 fn session_json(token: &str, refresh: &str, expires_at: Option<i64>) -> Response {
     no_store(Json(json!({"token": token, "refresh_token": refresh, "expires_at": expires_at})).into_response())
 }
 
 /// Shared tail of login and refresh: founder-only, no second factor path here, else the same generic denial.
-async fn decide(sb: &crate::data::Sb, g: Grant) -> Result<(String, String, Option<i64>), Response> {
+async fn decide(sb: &crate::data::Sb, g: Grant) -> Result<(String, String, Option<i64>, String), Response> {
     match g {
         Grant::Transient => Err(busy_503()),
         Grant::Invalid => Err(generic_401()),
@@ -87,7 +87,7 @@ async fn decide(sb: &crate::data::Sb, g: Grant) -> Result<(String, String, Optio
                 end_session(sb, &token).await; // a non-founder (or a factor we cannot honour here yet) leaves no live session behind
                 return Err(generic_401());
             }
-            Ok((token, refresh, expires_at))
+            Ok((token, refresh, expires_at, uid))
         }
     }
 }
@@ -100,7 +100,12 @@ pub async fn login_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<LoginIn>)
     if { let mut l = st.lim.lock().unwrap(); keys.iter().any(|k| l.locked(k, now)) } { return locked_429(); }
     let Ok((code, body)) = gotrue(sb, "token?grant_type=password", Some(json!({"email": email, "password": b.password})), None).await else { return busy_503() };
     match decide(sb, parse_grant(code, &body)).await {
-        Ok((t, r, e)) => { { let mut l = st.lim.lock().unwrap(); for k in &keys { l.clear(k); } } session_json(&t, &r, e) }
+        // S2 (10 Nov 2026): a correct password is only the FIRST step. The sign-in ceremony (E151/E152 doors, signin.rs) decides whether a session is handed out.
+        Ok((t, r, e, uid)) => {
+            let resp = crate::signin::after_password(&st, &h, uid, t, r, e).await;
+            if resp.status() == StatusCode::OK { let mut l = st.lim.lock().unwrap(); for k in &keys { l.clear(k); } }
+            resp
+        }
         Err(resp) => { if resp.status() == StatusCode::UNAUTHORIZED { let mut l = st.lim.lock().unwrap(); for k in &keys { l.fail(k, now); } } resp }
     }
 }
@@ -111,7 +116,7 @@ pub async fn refresh_ep(State(st): State<S>, Json(b): Json<RefreshIn>) -> Respon
     if rt.is_empty() || rt.len() > 512 { return (StatusCode::BAD_REQUEST, Json(json!({"error": "refresh_token_required"}))).into_response(); }
     let Ok((code, body)) = gotrue(sb, "token?grant_type=refresh_token", Some(json!({"refresh_token": rt})), None).await else { return busy_503() };
     match decide(sb, parse_grant(code, &body)).await {
-        Ok((t, r, e)) => session_json(&t, &r, e),
+        Ok((t, r, e, _uid)) => session_json(&t, &r, e),
         Err(resp) if resp.status() == StatusCode::UNAUTHORIZED => no_store((StatusCode::UNAUTHORIZED, Json(json!({"error": "refresh_invalid"}))).into_response()),
         Err(resp) => resp,
     }
@@ -181,6 +186,15 @@ mod tests {
             }))
             .route("/auth/v1/logout", post(|St2(m): St2<Standin>, h: HeaderMap| async move {
                 m.logouts.lock().unwrap().push(h.get("authorization").and_then(|v| v.to_str().ok()).unwrap_or("").to_string()); StatusCode::NO_CONTENT
+            }))
+            // S2: the sign-in ceremony doors (E151/E152) the password path now goes through; this stand-in says "one factor, complete, released"
+            .route("/rest/v1/rpc/{name}", post(|axum::extract::Path(name): axum::extract::Path<String>| async move {
+                Json(match name.as_str() {
+                    "founder_signin_locked" => json!({"locked": false}),
+                    "founder_signin_open" => json!({"ok": true, "state": "complete", "need": [], "second_required": false}),
+                    "founder_signin_release_v2" => json!({"ok": true, "uid": "11111111-1111-1111-1111-111111111111", "method": "password", "new_net": false, "risk": {"level": "low"}}),
+                    _ => json!({"ok": true}),
+                })
             }))
             .route("/rest/v1/founder_accounts", get(|Query(q): Query<std::collections::HashMap<String, String>>| async move {
                 let is = q.get("user_id").map(|v| v.contains("11111111-1111")).unwrap_or(false);

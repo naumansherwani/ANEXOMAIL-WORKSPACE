@@ -40,6 +40,7 @@ mod flare;
 mod lease;
 mod dbsc;
 mod auth;
+mod signin;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -727,6 +728,8 @@ pub fn app(st: S) -> Router {
         .route("/healthz", get(|| async { "ok" }))
         .route("/founder/v1/auth/login", axum::routing::post(auth::login_ep))
         .route("/founder/v1/auth/refresh", axum::routing::post(auth::refresh_ep))
+        .route("/founder/v1/auth/passkey/begin", axum::routing::post(signin::passkey_begin_ep))
+        .route("/founder/v1/auth/passkey/finish", axum::routing::post(signin::passkey_finish_ep))
         .route("/founder/v1/auth/logout", axum::routing::post(auth::logout_ep))
         .route("/founder/v1/exchange", axum::routing::post(exchange_ep))
         .route("/founder/v1/dbsc/start", axum::routing::post(dbsc::start_ep))

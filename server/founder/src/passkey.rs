@@ -390,17 +390,17 @@ fn sbx(st: &St) -> Result<&crate::data::Sb, Response> { st.sb.as_ref().ok_or_els
 fn body_json(body: &[u8]) -> Result<Value, Response> { serde_json::from_slice(body).map_err(|_| refuse(StatusCode::BAD_REQUEST, "invalid body")) }
 fn txt(v: &Value, k: &str, max: usize) -> Option<String> { v.get(k).and_then(|x| x.as_str()).filter(|s| s.chars().count() <= max).map(String::from) }
 
-async fn policy(sb: &crate::data::Sb) -> Result<Value, Response> {
+pub(crate) async fn policy(sb: &crate::data::Sb) -> Result<Value, Response> {
     sb.rows("founder_webauthn_policy?select=rp_id,origins,challenge_secs,allowed_algs,attestation_pref&limit=1").await.and_then(|r| r.into_iter().next())
         .ok_or_else(|| refuse(StatusCode::BAD_GATEWAY, "WebAuthn policy missing - run the E139 SQL step (sql-run.sh)"))
 }
 /// The browser's Origin must be one the policy lists (SQL decides); the exact string is then bound into the ceremony.
-async fn origin_of(sb: &crate::data::Sb, h: &HeaderMap) -> Result<String, Response> {
+pub(crate) async fn origin_of(sb: &crate::data::Sb, h: &HeaderMap) -> Result<String, Response> {
     let o = h.get("origin").and_then(|v| v.to_str().ok()).unwrap_or("").to_string();
     if o.is_empty() || o.len() > 200 { return Err(refuse(StatusCode::BAD_REQUEST, "no origin")); }
     match sb.rpc("founder_webauthn_origin_ok", json!({"p_origin": o})).await { Some(Value::Bool(true)) => Ok(o), _ => Err(refuse(StatusCode::FORBIDDEN, "this origin is not allowed for founder passkeys")) }
 }
-async fn active(sb: &crate::data::Sb, uid: &str) -> Vec<Value> { sb.rpc("founder_passkey_active", json!({"p_uid": uid})).await.and_then(|v| v.as_array().cloned()).unwrap_or_default() }
+pub(crate) async fn active(sb: &crate::data::Sb, uid: &str) -> Vec<Value> { sb.rpc("founder_passkey_active", json!({"p_uid": uid})).await.and_then(|v| v.as_array().cloned()).unwrap_or_default() }
 
 /// Purposes a ceremony can have, and the action fields each one needs.
 const PURPOSES: [&str; 6] = ["register", "signin", "action", "t3_begin", "t3_approve", "t3_execute"];
