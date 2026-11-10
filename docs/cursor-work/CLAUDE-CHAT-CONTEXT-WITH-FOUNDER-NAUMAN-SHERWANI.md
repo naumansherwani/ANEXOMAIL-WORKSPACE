@@ -2799,3 +2799,7 @@ Checkpoint 10 Nov 2026 19:42 PKT RESUME HERE: S6 plan written (docs/claude/G-MIX
 - 10 Nov 2026 19:52 PKT: S6+S5+S4 CODED + loophole fixes L1 (E153 + Rust) and L2 (fair ceremony eviction), repo only: cargo 278 pass, bun 159 pass, vite build OK (index-P9z4PDu), sandbox 390/820/1280 no sideways scroll, action buttons 44 px. Order for him: SQL E153 line, then founder-install, then S7 (his phone passkey). NOT GREEN until live.
 
 Checkpoint 10 Nov 2026 19:52 PKT RESUME HERE: S6/S5/S4 + E153 coded, tests green, waiting for his E153 SQL line, founder-install, then S7 phone passkey.
+
+- 10 Nov 2026 20:00 PKT: E153 = GREEN on his server, WIRED: YES / REAL: YES for the SQL layer (his paste 10 Nov 20:00, sha 4a0693f9eecfefe3): CHECK_E153 3/3 OK (door for service_role only; selftest PASS: 5 wrong passwords lock the network only, founder never locked by a stranger, no id stored, chain verifies; E151 + E152 selftests still pass), 'DONE: sab theek'. SQL: last E153 (GREEN), next E154. NEXT (one line at a time): his founder-install (Rust + SPA bundle index-P9z4PDu), then S7 with his phone passkey. S6/S5/S4 stay NOT GREEN until the live bundle = repo build and his phone passkey signs in.
+
+Checkpoint 10 Nov 2026 20:00 PKT RESUME HERE: E153 GREEN. Waiting for his founder-install paste, then live bundle check (index-P9z4PDu), then S7 phone passkey.
