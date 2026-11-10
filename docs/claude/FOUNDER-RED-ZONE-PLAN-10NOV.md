@@ -25,3 +25,5 @@ Then (not part of the 33): awam lane 26 Nov - 16 Dec (NO 2FA, docs/claude/AWAM-N
 Honest limits, said once: phases marked "needs his hands" turn RED if his step is late; I never write a green that is not proven.
 
 - 10 Nov 2026 20:06 PKT: founder-install OK; live bundle index-P9z4PDu = repo build (probed). S6/S5/S4 installed, NOT GREEN until S7 phone passkey. Next: S7 then founder-signin-peek.sh.
+
+- 10 Nov 2026 20:18 PKT: passkey tap on phone showed 'not answering' (busy). Cause unknown until ledger/journal. Added journald stage lines (founder-signin stage=...) in signin.rs; cargo signin 15 pass. Devices & Sessions plan: docs/claude/FOUNDER-DEVICES-SESSIONS-PLAN-10NOV.md. NOT installed yet. Next: his peek paste, then founder-install of the logging build.

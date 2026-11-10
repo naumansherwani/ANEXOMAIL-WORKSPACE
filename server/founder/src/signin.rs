@@ -234,6 +234,7 @@ pub async fn passkey_finish_ep(State(st): State<S>, h: HeaderMap, body: axum::bo
     let (ipkey, net, now) = (format!("flogin:ip:{ip}"), net_hash(&st.hmac_key, &ip), Instant::now());
     if st.lim.lock().unwrap().locked(&ipkey, now) { return locked_429(); }
     let resp = finish_inner(&st, sb, &b, &net).await;
+    trace("finish", &format!("http={}", resp.status().as_u16()));
     let mut l = st.lim.lock().unwrap();
     match resp.status() { StatusCode::OK => l.clear(&ipkey), StatusCode::UNAUTHORIZED => l.fail(&ipkey, now), _ => {} }
     resp
@@ -254,15 +255,21 @@ async fn prove(sb: &Sb, uid: &str, cid: &str, cred: &Value, key: &Value, cer: &C
 }
 
 /// Mint a session for a founder whose passkey just proved it: identity-service admin API, nothing mailed. Err = no session.
+/// One journald line per refusal stage (no ticket, token, key or address in it): the only way to tell which door said no when a phone shows 'not answering'.
+fn trace(stage: &str, detail: &str) { eprintln!("founder-signin stage={stage} detail={detail}"); }
+
 async fn mint(sb: &Sb, uid: &str) -> Result<Parked, ()> {
     if uid.is_empty() || !uid.chars().all(|c| c.is_ascii_hexdigit() || c == '-') { return Err(()); }
-    let u: Value = sb.http.get(format!("{}/auth/v1/admin/users/{uid}", sb.url)).header("apikey", &sb.key).header("authorization", format!("Bearer {}", sb.key))
-        .send().await.map_err(|_| ())?.json().await.map_err(|_| ())?;
-    let email = u["email"].as_str().filter(|e| crate::login::valid_email(e)).ok_or(())?.to_string();
-    let (c1, link) = gotrue(sb, "admin/generate_link", Some(json!({"type": "magiclink", "email": email})), Some(&sb.key)).await?;
-    if !(200..300).contains(&c1) { return Err(()); }
-    let th = link["hashed_token"].as_str().or_else(|| link["properties"]["hashed_token"].as_str()).filter(|t| !t.is_empty() && t.len() <= 256).ok_or(())?.to_string();
-    let (c2, sess) = gotrue(sb, "verify", Some(json!({"type": "magiclink", "token_hash": th})), None).await?;
+    let r = sb.http.get(format!("{}/auth/v1/admin/users/{uid}", sb.url)).header("apikey", &sb.key).header("authorization", format!("Bearer {}", sb.key))
+        .send().await.map_err(|_| trace("mint_user", "send_failed"))?;
+    let c0 = r.status().as_u16();
+    let u: Value = r.json().await.map_err(|_| trace("mint_user", &format!("not_json http={c0}")))?;
+    let email = u["email"].as_str().filter(|e| crate::login::valid_email(e)).ok_or_else(|| trace("mint_user", &format!("no_email http={c0}")))?.to_string();
+    let (c1, link) = gotrue(sb, "admin/generate_link", Some(json!({"type": "magiclink", "email": email})), Some(&sb.key)).await.map_err(|_| trace("mint_link", "send_failed"))?;
+    if !(200..300).contains(&c1) { trace("mint_link", &format!("http={c1}")); return Err(()); }
+    let th = link["hashed_token"].as_str().or_else(|| link["properties"]["hashed_token"].as_str()).filter(|t| !t.is_empty() && t.len() <= 256).ok_or_else(|| trace("mint_link", "no_hashed_token"))?.to_string();
+    let (c2, sess) = gotrue(sb, "verify", Some(json!({"type": "magiclink", "token_hash": th})), None).await.map_err(|_| trace("mint_verify", "send_failed"))?;
+    if !(200..300).contains(&c2) { trace("mint_verify", &format!("http={c2}")); }
     match parse_grant(c2, &sess) {
         Grant::Session { token, refresh, expires_at, uid: got, second_factor } => {
             if second_factor || !got.eq_ignore_ascii_case(uid) { end_session(sb, &token).await; return Err(()); }
@@ -281,7 +288,7 @@ async fn finish_inner(st: &St, sb: &Sb, b: &Value, net: &str) -> Response {
     let cred = &b["credential"];
     let cid = cred.get("id").and_then(|x| x.as_str()).unwrap_or("");
     if !pc::is_b64url_token(cid, 1400) { return generic_401(); }
-    let Some(rows) = sb.rows(&format!("founder_passkeys?select=user_id,passkey&credential_id=eq.{cid}&revoked_at=is.null&limit=1")).await else { return busy_503() };
+    let Some(rows) = sb.rows(&format!("founder_passkeys?select=user_id,passkey&credential_id=eq.{cid}&revoked_at=is.null&limit=1")).await else { trace("passkey_rows", "founder_passkeys read failed"); return busy_503() };
     let Some(row) = rows.into_iter().next() else { return generic_401() };
     let (Some(uid), key) = (row["user_id"].as_str().map(str::to_string), row["passkey"].clone()) else { return generic_401() };
     if !sb.is_founder(&uid).await { return generic_401(); }
@@ -324,7 +331,7 @@ async fn finish_inner(st: &St, sb: &Sb, b: &Value, net: &str) -> Response {
         Some(p) => p,
         None => match mint(sb, &uid).await {
             Ok(p) => p,
-            Err(()) => { deny(sb, &th, net, "session_not_minted").await; return busy_503(); }
+            Err(()) => { trace("session_not_minted", "see mint_* line above"); deny(sb, &th, net, "session_not_minted").await; return busy_503(); }
         },
     };
     session.net = net.to_string();
