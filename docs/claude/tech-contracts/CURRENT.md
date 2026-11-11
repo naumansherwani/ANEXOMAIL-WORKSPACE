@@ -16,3 +16,15 @@ Source of the list: CLAUDE.md line 18 (FOUNDER TECHNOLOGY LAW) + the TECH LAW ce
 
 ## K8d EXCHANGE DECISION (19:45 PKT, needs his word, not decided by Claude)
 Fact (Chrome resource timing 19:36): /founder/v1/exchange is already HTTP/3 (nextHopProtocol h3). Question: also through the kernel/WebTransport? NO, and why: the DBSC chip cookie and the Secure-Session-Registration / Secure-Session-Challenge headers exist ONLY in the browser HTTP stack (spec); a WebTransport stream carries neither, so moving the exchange there would remove the hardware-chip proof. Option A (recommended): exchange stays ONE h3 fetch, documented exception; every other call is on the kernel. Option B: exchange on the kernel with only the software WebCrypto key (weaker, no chip). Gate stays: raw fetch count may only fall; exchange is the allowed one.
+
+## GAP 2 RESEARCH + CHOICE (11 Nov 20:55 PKT, written BEFORE any code; needs his haan before coding)
+Researched (docs.rs, Chrome notes, 11 Nov 2026):
+- Rust server+kernel crate: `fips204` 0.5.0 (23 Oct 2026): pure Rust, no_std, no unsafe, no heap, ML-DSA-44/65/87, NIST ACVP + Wycheproof vectors, dudect timing tests, WASM browser demo in its repo, Apache-2.0/MIT. NOT independently audited (same for RustCrypto `ml-dsa` 0.1.2, 31 Oct 2026, also unaudited). CHOICE: `fips204`, parameter set ML-DSA-65 (security category 3, matches the AES-256 / ML-KEM-768 level of this site).
+- Browser: Chrome 154 added ML-DSA-44/65/87 to WebCrypto (beta 2 Sep 2026; check stable in his Chrome by feature detect). Exact algorithm string and non-extractable key support to be verified live in his Chrome BEFORE code (generateKey with ML-DSA-65, extractable false).
+Design (hybrid, both must verify, AND not OR):
+1. Device proof = ECDSA P-256 signature (WebCrypto, already live) + ML-DSA-65 signature over the SAME message (the exact bytes the proof signs today). Server accepts only when BOTH verify; either one failing = refused.
+2. ML-DSA key preferred in WebCrypto, non-extractable (hardware-grade as the browser allows). Fallback when the browser lacks it: ML-DSA key made by the Rust WASM kernel (fips204), kept in IndexedDB, source labelled `kernel` so the board shows it as weaker. No silent downgrade: the ring says which.
+3. Server: fips204 verify in dbsc.rs (devicekey register + per-request proof); public key stored next to the P-256 key (new SQL E162: column + hybrid flag + posture/selftest/CHECK). Old bindings stay valid until K7c enforce.
+4. DBSC cookie path stays ES256 (browser standard, cannot change).
+5. Gate: K7-devicekey-pq goes `ok` only when devicekey_pure.ts has ML-DSA AND dbsc.rs verifies both AND live Chrome proof.
+Open question for him: haan = code GAP 2 as above (E162 + Rust + TS). He may change the parameter set.
