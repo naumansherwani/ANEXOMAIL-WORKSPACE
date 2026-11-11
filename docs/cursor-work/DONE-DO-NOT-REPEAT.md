@@ -1882,3 +1882,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 04:50 PKT WRITTEN: docs/claude/RESUME-POINT.md + gate 4 (RESUME POINT). Do not rewrite; update the file at every step.
 - 11 Nov 2026 04:55 PKT WRITTEN: TECH_RULE constant in rules-gate.py: printed first on every run and appended to every fail and warning (his 04:39). TECH-FIRST-PROTOCOL updated.
 - 11 Nov 2026 05:00 PKT: RESUME-POINT + CURRENT.md now say: tomorrow starts with GAP 1 (K8d fetch) and GAP 2 (ML-DSA hybrid device proof). Not green, not coded.
+- 11 Nov 2026 17:30 PKT WRITTEN: FOUNDER-PHASES-TECH-STATUS-11NOV.md (order + TECH-GREEN vs BEHAVIOUR-GREEN). Docs only.
