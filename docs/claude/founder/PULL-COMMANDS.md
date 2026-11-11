@@ -968,3 +968,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 [11 Nov 2026 20:25 PKT] founder-install (DBSC fresh challenge): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -15
 
 [11 Nov 2026 21:20 PKT] E162 (SQL FIRST, then the install): bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E162_founder_dbsc_hybrid_pq   then   bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) CHECK_E162
+
+[11 Nov 2026 21:50 PKT] after E162 SQL: founder-install (Rust hybrid verify + SPA with ML-DSA key).

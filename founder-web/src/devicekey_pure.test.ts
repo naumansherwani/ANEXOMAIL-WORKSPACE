@@ -47,3 +47,28 @@ test("K7 wire fix: a bound device with no proven key re-registers; a keyed one, 
 });
 
 test("a chip-bound device never registers a software key", () => { expect(shouldRegister({ mode: "observe", bound: true, key: false, chip: true })).toBe(false); expect(shouldRegister({ mode: "observe", bound: true, key: false })).toBe(true); });
+
+describe("GAP 2 hybrid proof (ML-DSA-65 + ES256), the shape mldsa.rs / dbsc.rs verify_proof_hybrid expects", () => {
+  const pqSigner = (seen: Uint8Array[]) => async (d: Uint8Array) => { seen.push(d); return new Uint8Array(3309).fill(7); };
+  test("registration declares the ML-DSA key inside the signed payload and appends a 4th segment that signs input + ES256 signature", async () => {
+    const kp = await pair(); const jwk = publicJwk(await crypto.subtle.exportKey("jwk", kp.publicKey)); const seen: Uint8Array[] = [];
+    const t = await makeProof({ kind: "register", origin: "https://f.example.com", deviceHash: "a".repeat(64), jwk, sign: signer(kp.privateKey), pq: { pk: new Uint8Array(1952).fill(3), sign: pqSigner(seen) } });
+    const seg = t.split("."); expect(seg.length).toBe(4);
+    const pay = JSON.parse(b64d(seg[1]).toString()); expect(pay.pq.alg).toBe("ML-DSA-65"); expect(b64d(pay.pq.pk).length).toBe(1952);
+    expect(new TextDecoder().decode(seen[0])).toBe(`${seg[0]}.${seg[1]}.${seg[2]}`);   // the pq half covers the ES256 signature too
+    expect(b64d(seg[3]).length).toBe(3309);
+  });
+  test("an exchange proof is hybrid too but never carries the pq key; wrong sizes are refused", async () => {
+    const kp = await pair();
+    const t = await makeProof({ kind: "exchange", origin: "https://f.example.com", deviceHash: "a".repeat(64), sign: signer(kp.privateKey), pq: { pk: new Uint8Array(1952), sign: pqSigner([]) } });
+    expect(t.split(".").length).toBe(4); expect(JSON.parse(b64d(t.split(".")[1]).toString()).pq).toBeUndefined();
+    await expect(makeProof({ kind: "exchange", origin: "https://f", deviceHash: "a", sign: signer(kp.privateKey), pq: { pk: new Uint8Array(10), sign: pqSigner([]) } })).rejects.toThrow();
+    await expect(makeProof({ kind: "exchange", origin: "https://f", deviceHash: "a", sign: signer(kp.privateKey), pq: { pk: new Uint8Array(1952), sign: async () => new Uint8Array(5) } })).rejects.toThrow();
+  });
+  test("a proven classical key is upgraded once when the browser can do ML-DSA; chip keys and hybrid keys are left alone", () => {
+    expect(shouldRegister({ mode: "observe", bound: true, key: true, pq: false }, true)).toBe(true);
+    expect(shouldRegister({ mode: "observe", bound: true, key: true, pq: false }, false)).toBe(false);
+    expect(shouldRegister({ mode: "observe", bound: true, key: true, pq: true }, true)).toBe(false);
+    expect(shouldRegister({ mode: "observe", bound: true, key: true, chip: true, pq: false }, true)).toBe(false);
+  });
+});

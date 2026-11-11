@@ -18,6 +18,7 @@ LAST UPDATED: 11 Nov 2026 18:22 PKT. K8d REOPENED 18:15 (ring Alert, drift risin
 - 20:55 GAP 2 research written in CURRENT.md (fips204 0.5.0 ML-DSA-65, WebCrypto ML-DSA Chrome 154, hybrid AND). Waits his haan to code; next SQL = E162.
 - 11 Nov 2026 20:35 PKT HIS ANSWERS: hybrid YES, exchange on kernel, TanStack Start YES. Plan S1-S5 in CURRENT.md (S1 Rust fips204 hybrid verify -> S2 SQL E162 -> S3 browser ML-DSA -> S4 exchange on kernel -> S5 TanStack Start SPA mode). Pending: K8d GREEN needs ring proof.
 - 11 Nov 2026 21:20 PKT S1 (mldsa.rs + dbsc.rs hybrid verify) + S2 (E162) DONE, not installed. INSTALL ORDER: sql-run E162 first, then founder-install. Next S3 browser ML-DSA.
+- 11 Nov 2026 21:50 PKT S3 browser hybrid DONE (not installed). Install: sql-run E162 FIRST, then founder-install; then live proof (Chrome 155 has WebCrypto ML-DSA). Next S4 exchange on kernel.
 ## >>> STATE AT 20:10 PKT (READ THIS FIRST AFTER COMPACTION) <<<
 - LIVE ON HIS SERVER: K8d (founder API over kernel WebTransport /wt/rpc, HTTP/3), E158, E159, E160, E161 (all CHECK OK), DBSC permanent heal (dbsc.rs: refresh 403 + fresh challenge, chip binding silent 20 min is re-offered, a live one never), chip never re-offered while alive.
 - HIS CHROME 19:46: ONE live session, ring BLUE (All clear 4/4, Device key GOOD, HTTP/3 QUIC), old alert sessions closed. K8d is NOT written GREEN yet: needs ring blue at 20:10+ for 2 DBSC cycles (his CHECK_DRIFT_NOW: no reject_challenge, no new drift) AND the network-flip fix installed.

@@ -20,21 +20,32 @@ export function publicJwk(j: JsonWebKey): PublicJwk {
 }
 
 export type Signer = (data: Uint8Array) => Promise<Uint8Array>;
-export async function makeProof(o: { kind: "register" | "exchange"; origin: string; deviceHash: string; jwk?: PublicJwk; sign: Signer; now?: number; jtiNonce?: string }): Promise<string> {
+/** GAP 2: the ML-DSA-65 half of the hybrid proof. `context` must equal mldsa.rs CTX; sizes are FIPS 204 ML-DSA-65 (public key 1952, signature 3309). */
+export const PQ_ALG = "ML-DSA-65", PQ_CONTEXT = "anexo-founder-device-proof-v1", PQ_PK_LEN = 1952, PQ_SIG_LEN = 3309;
+export type PqHalf = { pk: Uint8Array; sign: Signer };
+export async function makeProof(o: { kind: "register" | "exchange"; origin: string; deviceHash: string; jwk?: PublicJwk; sign: Signer; pq?: PqHalf; now?: number; jtiNonce?: string }): Promise<string> {
   if (o.kind === "register" && !o.jwk) throw new Error("registration needs the public key");
   const path = o.kind === "register" ? REGISTER_PATH : EXCHANGE_PATH;
   const header = { alg: "ES256", typ: "dbsc+jwt", ...(o.kind === "register" ? { jwk: o.jwk } : {}) };
-  const payload = { jti: o.jtiNonce ?? nonce(), iat: Math.floor((o.now ?? Date.now()) / 1000), aud: `${o.origin}${path}`, dh: o.deviceHash };
+  if (o.pq && o.pq.pk.length !== PQ_PK_LEN) throw new Error("not an ML-DSA-65 public key");
+  // registration declares the ML-DSA public key INSIDE the ES256-signed payload; the exchange never carries it (the server uses the stored one)
+  const payload = { jti: o.jtiNonce ?? nonce(), iat: Math.floor((o.now ?? Date.now()) / 1000), aud: `${o.origin}${path}`, dh: o.deviceHash, ...(o.pq && o.kind === "register" ? { pq: { alg: PQ_ALG, pk: b64u(o.pq.pk) } } : {}) };
   const input = `${b64uText(JSON.stringify(header))}.${b64uText(JSON.stringify(payload))}`;
   const sig = await o.sign(new TextEncoder().encode(input));
   if (sig.length !== 64) throw new Error("signature is not raw r||s");
-  return `${input}.${b64u(sig)}`;
+  const es = `${input}.${b64u(sig)}`;
+  if (!o.pq) return es;
+  // the ML-DSA signature covers input + the ES256 signature: the two halves cannot be separated or re-paired
+  const pqSig = await o.pq.sign(new TextEncoder().encode(es));
+  if (pqSig.length !== PQ_SIG_LEN) throw new Error("not an ML-DSA-65 signature");
+  return `${es}.${b64u(pqSig)}`;
 }
 
 /** K7 wire fix: should this browser make/register its own WebCrypto key after an exchange? Yes when the server has the key feature on and this exchange carried NO proven key
  *  (device unbound, or bound but keyless this time: the old session is stale, e.g. a secure-chip session the browser dropped). The server decides the rest (E150: a live chip session is kept). */
-export function shouldRegister(dk: { mode?: string; bound?: boolean; key?: boolean; chip?: boolean } | null | undefined): boolean {
+export function shouldRegister(dk: { mode?: string; bound?: boolean; key?: boolean; chip?: boolean; pq?: boolean } | null | undefined, pqCapable = false): boolean {
   if (!dk || !dk.mode || dk.mode === "off") return false;
-  if (dk.chip === true) return false; // 11 Nov 18:25: a chip-bound device keeps its chip key; a software key must never replace it (fingerprint churn = device_key_changed)
+  if (dk.chip === true) return false;
+  if (pqCapable && dk.bound && dk.key === true && dk.pq === false) return true;   // GAP 2 upgrade: a proven classical key is raised to the hybrid once, by a new registration // 11 Nov 18:25: a chip-bound device keeps its chip key; a software key must never replace it (fingerprint churn = device_key_changed)
   return !dk.bound || dk.key !== true;
 }

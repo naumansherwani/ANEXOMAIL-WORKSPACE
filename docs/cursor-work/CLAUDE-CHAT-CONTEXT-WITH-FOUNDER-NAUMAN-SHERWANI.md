@@ -2968,3 +2968,6 @@ Installed: coarse_net flip fix. Written, not installed: dbsc.rs fresh Secure-Ses
 
 ## RESUME HERE (11 Nov 2026 21:20 PKT)
 GAP 2 S1 (Rust) + S2 (SQL E162) written and tested, NOT installed. His order of install: sql-run E162 FIRST, then founder-install (Rust calls founder_dbsc_register_pq). Next: S3 browser ML-DSA key (feature-detect WebCrypto in his Chrome first), S4 exchange on kernel, S5 TanStack Start. K8d GREEN still waits the ring proof.
+
+## RESUME HERE (11 Nov 2026 21:50 PKT)
+S3 browser half written. His Chrome 155 supports WebCrypto ML-DSA-65 (probed live). Install order: sql-run E162, then founder-install (Rust + SPA). Live proof after install: Devices page + CHECK_E162/CHECK_DRIFT_NOW show hybrid. Next S4 (exchange on kernel), S5 TanStack Start. Kernel ML-DSA fallback for browsers without WebCrypto ML-DSA is open.

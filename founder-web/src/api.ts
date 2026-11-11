@@ -94,7 +94,8 @@ async function exchange(again = true): Promise<string | null> {
   catch { mode = "legacy"; return null; }
   if (r.status === 401) { if (again && (await renewSession())) return exchange(false); throw expired(); } // an expired session token: renew once, then ask again
   let j: any = {}; try { j = await r.json(); } catch {}
-  if (r.status === 200 && j.token && shouldRegister(j.dk) && !keyTried) { keyTried = true; void dk.register(id, t, net).then((ok) => { if (ok) forget(); }); }   // E158: once the key is registered, the next call re-exchanges WITH the proof so the session row gets its key; K7b: an unbound device binds; K7 wire fix: a bound device that proved no key this time re-binds (any browser, any phone); fire and forget
+  const pqOk = await dk.pqCapable().catch(() => false);
+  if (r.status === 200 && j.token && shouldRegister(j.dk, pqOk) && !keyTried) { keyTried = true; void dk.register(id, t, net, pqOk && j.dk?.pq === false).then((ok) => { if (ok) forget(); }); }   // E158: once the key is registered, the next call re-exchanges WITH the proof so the session row gets its key; K7b: an unbound device binds; K7 wire fix: a bound device that proved no key this time re-binds (any browser, any phone); fire and forget
   if (r.status === 200 && j.token) { ft = j.token; rk = j.req_key || null; fexp = j.exp * 1000; mode = "device"; dlabel = j.device || ""; return ft; }
   if (r.status === 403 && j.error === "device_pending") throw new DevicePending(j.code, false);
   if (r.status === 403 && j.error === "device_revoked") throw new DevicePending(null, true);
