@@ -582,9 +582,9 @@ e5b885bb1f9e0ba817e836fb905cee66eae5f30fd702b3770d60d529cc769523  awam/src/lib/i
 3a5925950c2b5547c62c02a5e0a242538ad3524af17cfdef74392907926777c3  awam/src/lib/integrations.ts
 5cf67ef47762e3adf963279f9321df99d07e8595a384fccaf78aba0a23c19c97  awam/src/lib/kernel/00-FOUNDER-TECH-RULE.md
 e4d44a95c9d7182f37ca5f039fbc2b153add84477606648d5660052050f211c2  awam/src/lib/kernel/boot.ts
-8f6bcd44a0ba84b8feb0b21047295112a178945623468de95e79e8cb7a214637  awam/src/lib/kernel/kernel.test.ts
+56edae51cbc2b4ef5d2149c5f6ff78e3a6549be277f59066cfff58be6c56a8d8  awam/src/lib/kernel/kernel.test.ts
 90797af61aa4eeb684414905d4423747ad243a582ceb95743787cbdb19268c7a  awam/src/lib/kernel/kernel.ts
-e3b576e9d136e064a8c9554350678a440eb6691df9f6eb70709cb4293ec0db87  awam/src/lib/kernel/pin.gen.ts
+c1345cf7ecf580cd541c340f45b06debc52beaf6930fe513739789bb5cbd300b  awam/src/lib/kernel/pin.gen.ts
 60ace6e83788204a2ef93d90f6b081c720b1dbad903b2903e08107e95e9be4f5  awam/src/lib/kernel/rule52.test.ts
 f581c3bb16b5163449eae4a3f43055938d5f4499af3b658640a45b1ac837ea99  awam/src/lib/knowledge.ts
 836a79e2c4d846ec849adae8ff004ba1a7a8f00ec1fb672acd1929a8f19e0d06  awam/src/lib/live-core.test.ts

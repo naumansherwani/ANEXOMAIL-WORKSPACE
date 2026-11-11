@@ -1,12 +1,13 @@
-import { ago, view, type DbscStatus } from "./dbsc_pure";
+import { ago, pqLine, view, type DbscStatus } from "./dbsc_pure";
 
 /** The card itself: pure presentation of one status answer (the layout harness renders it with sample states). */
-export function DbscCard({ s }: { s: DbscStatus }) {
-  const v = view(s), devs = s.devices ?? [];
+export function DbscCard({ s, pqSrc }: { s: DbscStatus; pqSrc?: string | null }) {
+  const v = view(s), devs = s.devices ?? [], pq = pqLine(pqSrc);
   return <section className="panel" aria-label="Device-bound sessions">
     <div className="panelhead"><h2>Device-bound sessions</h2>
       <p className="dim">Each sign-in is tied to a key that never leaves this device: the secure chip where the browser supports it (Chrome with TPM / Secure Enclave), otherwise a non-extractable key inside the browser. {s.limit ?? ""}</p></div>
     <div className="setrow"><div><b>{v.headline}</b><p className="dim">{v.detail}</p></div></div>
+    <div className="setrow"><div><b>{pq.headline}</b><p className="dim">{pq.detail}</p></div><em className={pq.tone === "ok" ? "ok" : "no"}>{pq.tone === "ok" ? "Strong" : pq.tone === "warn" ? "Weaker" : "Classical"}</em></div>
     {devs.map((d) => <div className="setrow" key={d.id}><div><b>{d.label}{d.id === s.this_device ? " (this device)" : ""}</b>
       <p className="dim">{d.bound ? `${d.source === "webcrypto" ? "Bound by a browser key" : "Bound by the secure chip"} ${ago(d.since)} · refreshed ${d.refreshes} time${d.refreshes === 1 ? "" : "s"}, last ${ago(d.last_refresh_at)}` : "Not bound yet (binds at its next sign-in)"}</p></div>
       <em className={d.bound ? "ok" : "no"}>{d.bound ? "Bound" : "Not bound"}</em></div>)}

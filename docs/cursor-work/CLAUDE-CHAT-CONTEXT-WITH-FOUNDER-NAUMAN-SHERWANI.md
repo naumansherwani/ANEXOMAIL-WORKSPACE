@@ -2977,3 +2977,5 @@ E162 is in his ledger, selftest162 failed (my bug), E163 fixes it. His next: sql
 
 ## RESUME HERE (11 Nov 2026 21:50 PKT)
 S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CHECK_E164 must be 3 OK), 2 founder-install. Then my Chrome look: proof key registered, exchange over kernel (response dk.wt true), ring blue, CHECK_DRIFT_NOW no new reject. Open: S3b kernel ML-DSA for non-Chrome, S5 TanStack Start, K8d GREEN needs 2 DBSC cycles.
+
+- 11 Nov 2026 22:05 PKT S3b DONE in repo (kernel ML-DSA fallback, kernel 0.15.0 shared with awam, E165 pq_src, board label), NOT installed. INSTALL: 1 sql-run (E164 then E165 auto), 2 founder-install, 3 CHECK_DRIFT_NOW; awam pull as separate point (shared kernel). SQL next free E166.

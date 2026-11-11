@@ -143,6 +143,19 @@ export function leaseVaultKey(localHalf: string, serverHalf: string, deviceId: s
   });
 }
 
+/* ---- K7 GAP 2 / S3b: ML-DSA-65 in the kernel (mldsa@1) for browsers without WebCrypto ML-DSA. Seed (32 bytes) is the whole private key; undefined = no kernel / refused. ---- */
+const unhex = (h: string) => Uint8Array.from(h.match(/../g) ?? [], (x) => parseInt(x, 16));
+function mldsaCall(m: { op: "public" | "sign"; seed: Uint8Array; rnd?: Uint8Array; msg?: Uint8Array }): Promise<Uint8Array | undefined> {
+  return new Promise((resolve) => {
+    const id = ++seq;
+    waiting.set(id, (r) => { resolve(r.code === 0 && typeof r.data === "string" && r.data.length > 0 ? unhex(r.data) : undefined); });
+    w().postMessage({ id, mldsa: m });
+  });
+}
+export const mldsaPublic = (seed: Uint8Array) => mldsaCall({ op: "public", seed });
+/** Fresh 32 random bytes per signature (FIPS 204 hedged signing); the kernel itself has no randomness. */
+export const mldsaSign = (seed: Uint8Array, msg: Uint8Array) => mldsaCall({ op: "sign", seed, rnd: crypto.getRandomValues(new Uint8Array(32)), msg });
+
 /* ---- K6.3: live over WebTransport, run INSIDE the kernel (flive@1: Rust/Tokio async; hello, framing and Ed25519 verification all happen there). This is only the handle. ---- */
 export type KernelLive = { state(webtransport: boolean, detail: string): void; frame(event: "snapshot" | "tick" | "events", data: string): void; drop(code: number): void };
 let liveCb: KernelLive | null = null;

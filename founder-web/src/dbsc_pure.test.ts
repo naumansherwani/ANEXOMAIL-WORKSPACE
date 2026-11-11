@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { ago, view, type DbscStatus } from "./dbsc_pure";
+import { ago, pqLine, view, type DbscStatus } from "./dbsc_pure";
 const dev = (b: boolean) => ({ id: "d", label: "Laptop", bound: b, since: null, refreshes: 0, last_refresh_at: null });
 const rep = { verdict: "bound", sessions_active: 1, refreshes_24h: 3, rejects_24h: 0, would_block_24h: 0, blocked_24h: 0, chain: { ok: true, checked: 4 } };
 describe("dbsc view", () => {
@@ -22,5 +22,13 @@ describe("dbsc view", () => {
     const now = Date.parse("2026-11-09T12:00:00Z");
     expect(ago(null, now)).toBe("never"); expect(ago("junk", now)).toBe("never"); expect(ago("2026-11-09T11:59:30Z", now)).toBe("just now");
     expect(ago("2026-11-09T10:00:00Z", now)).toBe("2 h ago"); expect(ago("2026-11-06T12:00:00Z", now)).toBe("3 d ago");
+  });
+});
+
+describe("S3b post-quantum key line", () => {
+  test("a kernel key is called weaker, a WebCrypto key strong, none classical", () => {
+    expect(pqLine("webcrypto").tone).toBe("ok");
+    expect(pqLine("kernel").tone).toBe("warn"); expect(pqLine("kernel").headline).toContain("weaker");
+    expect(pqLine("").tone).toBe("off"); expect(pqLine(undefined).headline).toContain("not set up");
   });
 });

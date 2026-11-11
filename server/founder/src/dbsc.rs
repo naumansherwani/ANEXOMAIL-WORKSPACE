@@ -205,6 +205,12 @@ pub fn verify_proof_hybrid(jwt: &str, path: &str, stored: Option<&[u8]>, stored_
     Ok((jti, key, pq_key))
 }
 
+/// S3b: where the ML-DSA key lives, as declared by the browser INSIDE the ES256-signed registration payload: "kernel" (seed-based key made by the WASM kernel, readable by page script = weaker)
+/// or "webcrypto" (non-extractable). Anything else or absent = "webcrypto" (the default of every key made before S3b). A label for the founder's board, never a security gate.
+pub fn pq_src_of(jwt: &str) -> &'static str {
+    match parse_jwt(jwt) { Ok(j) if j.payload["pq"]["src"].as_str() == Some("kernel") => "kernel", _ => "webcrypto" }
+}
+
 // ------------------------------------------------------------------ the exchange decision (pure)
 #[derive(Debug, PartialEq)]
 pub enum Decision { Allow, AllowWould(&'static str), Block(&'static str) }
@@ -340,8 +346,8 @@ pub async fn proofkey_register_ep(State(st): State<crate::S>, h: HeaderMap, Json
     let state = sb.rpc("founder_dbsc_device_state", json!({"p_uid": c.sub, "p_device_hash": dev_hash})).await;
     let chip = state.as_ref().is_some_and(|v| v["bound"].as_bool() == Some(true) && v["source"].as_str() == Some("dbsc"));
     let replace_ok = chip_alive(chip, state.as_ref().and_then(|v| v["idle_s"].as_i64())) && chip;
-    match sb.rpc("founder_proofkey_register", json!({"p_uid": c.sub, "p_device_hash": dev_hash, "p_es": hex::encode(es), "p_pq": hex::encode(pq), "p_jti_hash": sha256_hex(&jti), "p_allow_replace": replace_ok})).await {
-        Some(v) if v["ok"].as_bool() == Some(true) => no_store(Json(json!({"ok": true, "replaced": v["replaced"]})).into_response()),
+    match sb.rpc("founder_proofkey_register_src", json!({"p_uid": c.sub, "p_device_hash": dev_hash, "p_es": hex::encode(es), "p_pq": hex::encode(pq), "p_jti_hash": sha256_hex(&jti), "p_allow_replace": replace_ok, "p_src": pq_src_of(proof)})).await {
+        Some(v) if v["ok"].as_bool() == Some(true) => no_store(Json(json!({"ok": true, "replaced": v["replaced"], "src": pq_src_of(proof)})).into_response()),
         Some(v) if v["error"].as_str() == Some("exists") => err(StatusCode::CONFLICT, "a proof key already exists for this device"),
         Some(v) => err(StatusCode::CONFLICT, v["error"].as_str().unwrap_or("refused")),
         None => err(StatusCode::SERVICE_UNAVAILABLE, "ledger unavailable: run the E164 SQL (sql-run.sh)"),
@@ -361,7 +367,10 @@ pub async fn devicekey_register_ep(State(st): State<crate::S>, h: HeaderMap, Jso
     let Some(sid) = new_sid() else { return err(StatusCode::INTERNAL_SERVER_ERROR, "no session id") };
     // GAP 2: a hybrid proof registers BOTH keys (E162 door); a classical proof for a hybrid-bound device is refused by the SQL (pq_downgrade)
     match sb.rpc("founder_dbsc_register_pq", json!({"p_uid": c.sub, "p_device_hash": dev_hash, "p_sid": sid, "p_pub": hex::encode(key), "p_jti_hash": sha256_hex(&jti), "p_source": "webcrypto", "p_pq": pq.as_ref().map(hex::encode)})).await {
-        Some(v) if v["ok"].as_bool() == Some(true) => no_store(Json(json!({"ok": true, "source": v["source"], "kept": v["kept"], "hybrid": v["hybrid"]})).into_response()),
+        Some(v) if v["ok"].as_bool() == Some(true) => {
+            if pq.is_some() && pq_src_of(proof) == "kernel" { let _ = sb.rpc("founder_dbsc_set_pq_src", json!({"p_uid": c.sub, "p_device_hash": dev_hash, "p_sid": sid, "p_src": "kernel"})).await; }   // E165 (a missing E165 only loses the label)
+            no_store(Json(json!({"ok": true, "source": v["source"], "kept": v["kept"], "hybrid": v["hybrid"]})).into_response())
+        }
         Some(v) => err(StatusCode::CONFLICT, v["error"].as_str().unwrap_or("refused")),
         None => err(StatusCode::SERVICE_UNAVAILABLE, "ledger unavailable: run the E150 SQL (sql-run.sh)"),
     }
@@ -382,6 +391,16 @@ pub async fn status_ep(State(st): State<crate::S>, h: HeaderMap) -> Response {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn the_key_source_label_is_read_from_the_signed_payload_and_defaults_to_webcrypto() {
+        let p = ring::signature::EcdsaKeyPair::from_pkcs8(&ring::signature::ECDSA_P256_SHA256_FIXED_SIGNING, ring::signature::EcdsaKeyPair::generate_pkcs8(&ring::signature::ECDSA_P256_SHA256_FIXED_SIGNING, &ring::rand::SystemRandom::new()).unwrap().as_ref(), &ring::rand::SystemRandom::new()).unwrap();
+        let mk = |pl: Value| proof_jwt(&p, false, pl);
+        assert_eq!(pq_src_of(&mk(json!({"pq": {"alg": "ML-DSA-65", "src": "kernel"}}))), "kernel");
+        assert_eq!(pq_src_of(&mk(json!({"pq": {"alg": "ML-DSA-65", "src": "webcrypto"}}))), "webcrypto");
+        assert_eq!(pq_src_of(&mk(json!({"pq": {"alg": "ML-DSA-65", "src": "hardware"}}))), "webcrypto", "unknown label never becomes a stronger claim");
+        assert_eq!(pq_src_of(&mk(json!({}))), "webcrypto");
+        assert_eq!(pq_src_of("not a jwt"), "webcrypto");
+    }
     fn hybrid_jwt(p: &EcdsaKeyPair, with_jwk: bool, payload: Value, sk: &fips204::ml_dsa_65::PrivateKey, pq_over: Option<&str>) -> String {
         let mut h = json!({"alg": "ES256", "typ": "dbsc+jwt"}); if with_jwk { h["jwk"] = jwk(p); }
         let es = jwt(p, h, payload);

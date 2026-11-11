@@ -25,6 +25,7 @@ pub mod checkpoint;
 pub mod anchor;
 pub mod action;
 pub mod lease;
+pub mod mldsa;
 #[path = "../../server/rust/merkle_core.rs"]
 pub mod merkle;
 pub mod rank;
@@ -37,9 +38,9 @@ use std::collections::HashMap;
 use std::rc::Rc;
 
 pub const ABI: u32 = 1;
-pub const VERSION: (u32, u32, u32) = (0, 14, 0);
+pub const VERSION: (u32, u32, u32) = (0, 15, 0);
 /// Naam@module-version. Naya module ya badla hua module => yahan entry + VERSION bump (Cargo.toml bhi).
-pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1", "merkle@2", "checkpoint@1", "anchor@1", "portable@1", "action@1", "lease@1", "flive@1"];
+pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "mldsa@1", "merkle@1", "merkle@2", "checkpoint@1", "anchor@1", "portable@1", "action@1", "lease@1", "flive@1"];
 
 thread_local! {
     static OUT: RefCell<Vec<u8>> = const { RefCell::new(Vec::new()) };
@@ -187,6 +188,23 @@ pub extern "C" fn envelope_verify(body: u32, len: u32, now_s: u32, skew_s: u32) 
         Ok((s, e)) => { let mut o = (s as u32).to_le_bytes().to_vec(); o.extend((e as u32).to_le_bytes()); set_out(o); ed::OK }
         Err(c) => { set_out(Vec::new()); c }
     }
+}
+
+/* ------------------------------------------------------- mldsa@1 (K7 GAP 2 / S3b): ML-DSA-65 for browsers without WebCrypto ML-DSA */
+/// Public key (1952 bytes in the out buffer) for a 32-byte seed. Returns the length, 0 = refused.
+#[unsafe(no_mangle)]
+pub extern "C" fn mldsa65_public(seed: u32, seedl: u32) -> u32 {
+    match mldsa::public_key(unsafe { bytes(seed, seedl) }) { Some(pk) => set_out(pk), None => { set_out(Vec::new()); 0 } }
+}
+/// Signature (3309 bytes in the out buffer) over msg with the key of `seed`, hedged by 32 fresh bytes `rnd` from the browser. Returns the length, 0 = refused.
+#[unsafe(no_mangle)]
+pub extern "C" fn mldsa65_sign(seed: u32, seedl: u32, rnd: u32, rndl: u32, msg: u32, ml: u32) -> u32 {
+    match mldsa::sign(unsafe { bytes(seed, seedl) }, unsafe { bytes(rnd, rndl) }, unsafe { bytes(msg, ml) }) { Some(s) => set_out(s), None => { set_out(Vec::new()); 0 } }
+}
+/// 1 = valid ML-DSA-65 signature, 0 = anything else.
+#[unsafe(no_mangle)]
+pub extern "C" fn mldsa65_verify(pk: u32, pkl: u32, msg: u32, ml: u32, sig: u32, sl: u32) -> u32 {
+    mldsa::verify(unsafe { bytes(pk, pkl) }, unsafe { bytes(msg, ml) }, unsafe { bytes(sig, sl) }) as u32
 }
 
 /* ------------------------------------------------------- portable@1 (G5d part 3) */

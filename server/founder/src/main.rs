@@ -361,7 +361,7 @@ async fn exchange_ep(State(st): State<S>, wt: Option<axum::Extension<wtrpc::WtCa
             let did = r["device_id"].as_str().unwrap_or("");
             // K7 DBSC: a device that is bound to a TPM key must present the short-lived bound cookie to get a founder token (mode enforce); observe only records.
             let dev_hash = ftoken::device_hash(&b.device_id);
-            let mut bound = false; let mut has_key = false; let mut chip_bound = false; let mut chip_live = false; let mut hybrid = false; let mut proof_key = false;
+            let mut bound = false; let mut has_key = false; let mut chip_bound = false; let mut chip_live = false; let mut hybrid = false; let mut proof_key = false; let mut proof_src = "";
             let mut key_info: Option<(String, String)> = None; // (source, sha-256 of the public key): only when THIS exchange proved the key
             if st.dbsc != dbsc::Mode::Off {
                 let state = sb.rpc("founder_dbsc_device_state", json!({"p_uid": c.sub, "p_device_hash": dev_hash})).await;
@@ -386,7 +386,7 @@ async fn exchange_ep(State(st): State<S>, wt: Option<axum::Extension<wtrpc::WtCa
                 // K8d-S4: the HYBRID PROOF KEY (E164) kept beside the chip. A valid ES256 + ML-DSA-65 proof stands in for the cookie, which a WebTransport stream cannot carry; a chip-bound device
                 // additionally needs its chip ALIVE (dbsc::proof_satisfies), so the TPM stays in the loop. The session keeps the CHIP identity (no key drift).
                 if let Some(pk) = sb.rpc("founder_proofkey_get", json!({"p_uid": c.sub, "p_device_hash": dev_hash})).await.filter(|v| v["found"].as_bool() == Some(true)) {
-                    proof_key = true;
+                    proof_key = true; proof_src = if pk["src"].as_str() == Some("kernel") { "kernel" } else { "webcrypto" };
                     if cookie_sid.is_none() {
                         let (es, pq) = (pk["es"].as_str().and_then(|x| hex::decode(x).ok()), pk["pq"].as_str().and_then(|x| hex::decode(x).ok()));
                         let (id, proof) = (pk["id"].as_str().filter(|x| x.len() == 36 && x.bytes().all(|b| b.is_ascii_hexdigit() || b == b'-')).map(String::from), h.get("x-device-proof").and_then(|v| v.to_str().ok()));
@@ -435,7 +435,7 @@ async fn exchange_ep(State(st): State<S>, wt: Option<axum::Extension<wtrpc::WtCa
             }
             let req_key = B64.encode(sign::req_key(&st.hmac_key, &token));
             let mut resp = Json(json!({"token": token, "req_key": req_key, "exp": exp, "expires_in": ftoken::TTL_SECS, "device": r["label"], "first": r["first"].as_bool().unwrap_or(false),
-                "dk": {"mode": st.dbsc.as_str(), "bound": bound, "key": has_key, "chip": chip_bound, "pq": hybrid, "proof": proof_key, "wt": wt.is_some()}})).into_response();
+                "dk": {"mode": st.dbsc.as_str(), "bound": bound, "key": has_key, "chip": chip_bound, "pq": hybrid, "proof": proof_key, "psrc": proof_src, "wt": wt.is_some()}})).into_response();
             if dbsc::offer_binding(st.dbsc, bound, has_key, chip_live) { // an unbound device (or, in observe mode only, a bound one whose browser shows no live key: the old key session is replaced) is offered the binding; an unbound device is offered the binding; browsers without secure key storage simply ignore this header
                 if let Some(v) = dbsc::registration_header(&dbsc::subkey(&st.hmac_key, "challenge"), &c.sub, &dev_hash, now_s()) { resp.headers_mut().insert("secure-session-registration", v); }
             }

@@ -86,3 +86,17 @@ describe("K8d-S4 proof key registration proof", () => {
     await expect(makeProof({ kind: "proofkey", origin: "https://f", deviceHash: "a", sign: signer(kp.privateKey), pq })).rejects.toThrow();
   });
 });
+
+describe("S3b kernel key label", () => {
+  test("the registration declares where the ML-DSA key lives inside the signed payload; default webcrypto", async () => {
+    const kp = await crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-256" }, true, ["sign", "verify"]) as CryptoKeyPair;
+    const jwk = publicJwk(await crypto.subtle.exportKey("jwk", kp.publicKey));
+    const sign = async (d: Uint8Array) => new Uint8Array(await crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, kp.privateKey, d as BufferSource));
+    const pqs = async () => new Uint8Array(3309);
+    const pay = (t: string) => JSON.parse(Buffer.from(t.split(".")[1].replace(/-/g, "+").replace(/_/g, "/"), "base64").toString());
+    const k = await makeProof({ kind: "register", origin: "https://f.example.com", deviceHash: "a".repeat(64), jwk, sign, pq: { pk: new Uint8Array(1952), sign: pqs, src: "kernel" } });
+    const w = await makeProof({ kind: "register", origin: "https://f.example.com", deviceHash: "a".repeat(64), jwk, sign, pq: { pk: new Uint8Array(1952), sign: pqs } });
+    expect(pay(k).pq.src).toBe("kernel"); expect(pay(w).pq.src).toBe("webcrypto");
+  });
+});
+

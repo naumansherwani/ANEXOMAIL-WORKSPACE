@@ -3,7 +3,7 @@
 # (wasm-bindgen ke bina: sandbox mein CLI nahi, aur ABI chhota/auditable rehta hai). Version har naye module ke saath badhta hai.
 [package]
 name = "anexo-kernel"
-version = "0.14.0"
+version = "0.15.0"
 edition = "2024"
 publish = false
 
@@ -15,6 +15,8 @@ tokio = { version = "1", default-features = false, features = ["rt", "sync", "ma
 sha2 = "0.10"
 ed25519-dalek = { version = "2", default-features = false }
 serde_json = "1"
+# S3b (11 Nov 2026): ML-DSA-65 for browsers without WebCrypto ML-DSA. no_std, no rng feature (the browser supplies every random byte), same crate as the server.
+fips204 = { version = "0.5", default-features = false, features = ["ml-dsa-65"] }
 
 [dev-dependencies]
 base64 = "0.22"

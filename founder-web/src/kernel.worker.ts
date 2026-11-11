@@ -2,7 +2,7 @@
 import { KERNEL } from "./kernel.pin";
 import { createHost, type HostExports, type WtCtor } from "./kernel.host";
 
-type Ex = { memory: WebAssembly.Memory; kernel_alloc(n: number): number; kernel_free(p: number, n: number): void; kernel_out_ptr(): number; kernel_out_len(): number; envelope_verify(p: number, l: number, now: number, skew: number): number; merkle_verify(r: number, rl: number, p: number, pl: number, o: number, ol: number): number; merkle_consistency_verify(a: number, b: number, fr: number, frl: number, sr: number, srl: number, p: number, pl: number): number; anchor_inspect(kind: number, e: number, el: number, d: number, dl: number): number; checkpoint_verify(n: number, nl: number, nm: number, nml: number, pk: number, pkl: number, sz: number, szl: number, rt: number, rtl: number): number; portable_verify(t: number, tl: number, s: number, sl: number): number; lease_check(p: number, l: number): number; lease_vault_key(p: number, l: number): number; action_check(p: number, l: number): number; flive_start(u: number, ul: number, t: number, tl: number, seed: number): number; flive_set_token(h: number, t: number, tl: number): void; flive_stop(h: number): void } & HostExports;
+type Ex = { memory: WebAssembly.Memory; kernel_alloc(n: number): number; kernel_free(p: number, n: number): void; kernel_out_ptr(): number; kernel_out_len(): number; envelope_verify(p: number, l: number, now: number, skew: number): number; merkle_verify(r: number, rl: number, p: number, pl: number, o: number, ol: number): number; merkle_consistency_verify(a: number, b: number, fr: number, frl: number, sr: number, srl: number, p: number, pl: number): number; anchor_inspect(kind: number, e: number, el: number, d: number, dl: number): number; checkpoint_verify(n: number, nl: number, nm: number, nml: number, pk: number, pkl: number, sz: number, szl: number, rt: number, rtl: number): number; portable_verify(t: number, tl: number, s: number, sl: number): number; lease_check(p: number, l: number): number; lease_vault_key(p: number, l: number): number; action_check(p: number, l: number): number; flive_start(u: number, ul: number, t: number, tl: number, seed: number): number; flive_set_token(h: number, t: number, tl: number): void; flive_stop(h: number): void; mldsa65_public(s: number, sl: number): number; mldsa65_sign(s: number, sl: number, r: number, rl: number, m: number, ml: number): number } & HostExports;
 const hex = (b: ArrayBuffer) => [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join("");
 let ex: Promise<Ex> | null = null;
 
@@ -19,7 +19,7 @@ function load(): Promise<Ex> {
   return ex;
 }
 
-self.onmessage = async (ev: MessageEvent<{ id: number; flive?: { op: "start" | "token" | "stop"; url?: string; token?: string; h?: number }; body: ArrayBuffer; now: number; skew: number; warm?: boolean; merkle?: { row: string; path: string; root: string }; portable?: { text: string; sha: string }; lease?: { op: "check" | "key"; input: string }; action?: { input: string }; consistency?: { first: number; second: number; fr: string; sr: string; proof: string }; checkpoint?: { note: string; name: string; pub: string; size: string; root: string }; anchor?: { kind: number; ev: string; digest: string } }>) => {
+self.onmessage = async (ev: MessageEvent<{ id: number; flive?: { op: "start" | "token" | "stop"; url?: string; token?: string; h?: number }; body: ArrayBuffer; now: number; skew: number; warm?: boolean; merkle?: { row: string; path: string; root: string }; portable?: { text: string; sha: string }; lease?: { op: "check" | "key"; input: string }; mldsa?: { op: "public" | "sign"; seed: Uint8Array; rnd?: Uint8Array; msg?: Uint8Array }; action?: { input: string }; consistency?: { first: number; second: number; fr: string; sr: string; proof: string }; checkpoint?: { note: string; name: string; pub: string; size: string; root: string }; anchor?: { kind: number; ev: string; digest: string } }>) => {
   if (ev.data.flive) { // K6.3: live over WebTransport, run by the kernel (flive@1, Rust/Tokio); this only starts/stops it and forwards its emits
     const { id, flive: a } = ev.data;
     try {
@@ -72,6 +72,19 @@ self.onmessage = async (ev: MessageEvent<{ id: number; flive?: { op: "start" | "
       const a = [put(c.note), put(c.name), put(c.pub), put(c.size), put(c.root)], code = k.checkpoint_verify(a[0][0], a[0][1], a[1][0], a[1][1], a[2][0], a[2][1], a[3][0], a[3][1], a[4][0], a[4][1]);
       for (const x of a) k.kernel_free(x[0], Math.max(x[1], 1));
       (self as unknown as Worker).postMessage({ id, code: code === 1 ? 0 : 1, data: code === 1 ? "1" : "0" });
+    } catch (e) { (self as unknown as Worker).postMessage({ id, code: 100, error: String(e) }); }
+    return;
+  }
+  if (ev.data.mldsa) { // K7 GAP 2 / S3b: ML-DSA-65 key + signature made by the kernel (mldsa@1, Rust fips204) for browsers whose WebCrypto has no ML-DSA; answer = hex of the out buffer
+    const { id, mldsa: a } = ev.data;
+    try {
+      const k = await load(), put = (b: Uint8Array) => { const q = k.kernel_alloc(Math.max(b.length, 1)); new Uint8Array(k.memory.buffer, q, b.length).set(b); return q; };
+      const sp = put(a.seed), rp = put(a.rnd ?? new Uint8Array(0)), mp = put(a.msg ?? new Uint8Array(0));
+      const n = a.op === "public" ? k.mldsa65_public(sp, a.seed.length) : k.mldsa65_sign(sp, a.seed.length, rp, (a.rnd ?? new Uint8Array(0)).length, mp, (a.msg ?? new Uint8Array(0)).length);
+      const out = n === 0 ? "" : hex(new Uint8Array(k.memory.buffer, k.kernel_out_ptr(), k.kernel_out_len()).slice().buffer);
+      new Uint8Array(k.memory.buffer, sp, a.seed.length).fill(0);   // the seed never lingers in kernel memory
+      k.kernel_free(sp, Math.max(a.seed.length, 1)); k.kernel_free(rp, Math.max((a.rnd ?? new Uint8Array(0)).length, 1)); k.kernel_free(mp, Math.max((a.msg ?? new Uint8Array(0)).length, 1));
+      (self as unknown as Worker).postMessage({ id, code: n === 0 ? 1 : 0, data: out });
     } catch (e) { (self as unknown as Worker).postMessage({ id, code: 100, error: String(e) }); }
     return;
   }

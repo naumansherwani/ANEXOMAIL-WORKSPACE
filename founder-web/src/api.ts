@@ -37,8 +37,9 @@ export function deviceLabel() {
 
 let keyTried = false;   // E158: one key registration per page load, so a live chip session that keeps the slot can never loop
 let proofTried = false;   // K8d-S4: one proof-key registration per page load
+let psrc = "";   // S3b: where this device's ML-DSA key lives, as the server reports it ("webcrypto" | "kernel" | "" = no hybrid key yet)
 let ft: string | null = null, fexp = 0, inflight: Promise<string | null> | null = null, mode = "none", dlabel = "", rk: string | null = null; // rk = per-token request key (memory only)
-export const deviceStatus = () => ({ mode, label: dlabel }); // "device" = founder token in use · "legacy" = fallback to session token · "none"
+export const deviceStatus = () => ({ mode, label: dlabel, psrc }); // "device" = founder token in use · "legacy" = fallback to session token · "none"
 
 // FS1: the sign-in is RENEWED, not allowed to die. One shared refresh (single flight); the session only ends when the refresh token itself is dead (see session.ts).
 const lsGet = (k: string) => { try { return window.localStorage.getItem(k); } catch { return null; } };
@@ -103,7 +104,8 @@ async function exchange(again = true): Promise<string | null> {
   catch { mode = "legacy"; return null; }
   if (r.status === 401) { if (again && (await renewSession())) return exchange(false); throw expired(); } // an expired session token: renew once, then ask again
   let j: any = {}; try { j = await r.json(); } catch {}
-  const pqOk = await dk.pqCapable().catch(() => false);
+  if (r.status === 200 && j.dk) psrc = typeof j.dk.psrc === "string" ? j.dk.psrc : "";
+  const pqOk = await dk.hybridCapable().catch(() => false);   // S3b: WebCrypto ML-DSA or the kernel fallback
   if (r.status === 200 && j.dk && j.dk.proof === false) dk.proofKeyForget();   // the server has no proof key for this device: the local flag is stale
   if (r.status === 200 && j.token && pqOk && j.dk && j.dk.mode !== "off" && j.dk.proof === false && !proofTried) { proofTried = true; void dk.registerProofKey(id, t, net); }   // next exchange goes over the kernel
   if (r.status === 200 && j.token && shouldRegister(j.dk, pqOk) && !keyTried) { keyTried = true; void dk.register(id, t, net, pqOk && j.dk?.pq === false).then((ok) => { if (ok) forget(); }); }   // E158: once the key is registered, the next call re-exchanges WITH the proof so the session row gets its key; K7b: an unbound device binds; K7 wire fix: a bound device that proved no key this time re-binds (any browser, any phone); fire and forget

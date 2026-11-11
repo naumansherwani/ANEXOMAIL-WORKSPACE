@@ -974,3 +974,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 [11 Nov 2026 21:15 PKT] 1: sql-run (auto E163) 2: founder-install. Always give BOTH, numbered (his order).
 
 [11 Nov 2026 21:50 PKT] 1: sql-run (auto E164) then CHECK_E164   2: founder-install (S4).
+
+- 11 Nov 22:05 S3b: 1: bash sql-run (E164 + E165), 2: bash founder-install, 3: CHECK_DRIFT_NOW; separate awam point: git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15

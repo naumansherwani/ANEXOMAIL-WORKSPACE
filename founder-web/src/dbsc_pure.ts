@@ -24,3 +24,10 @@ export function view(s: DbscStatus): DbscView {
   const would = s.mode === "observe" && r && r.would_block_24h > 0 ? ` ${r.would_block_24h} request${r.would_block_24h > 1 ? "s" : ""} would have been blocked.` : "";
   return { tone: extra ? "warn" : "ok", headline: `${mode}: ${bound} of ${total} device${total > 1 ? "s" : ""} bound`, detail: `A stolen login cannot mint a founder token from another machine on a bound device.${extra}${would}` };
 }
+
+/** S3b: the Devices board tells the truth about where this device's post-quantum key lives. "kernel" = made by the WASM kernel, readable by page script: WEAKER than a non-extractable WebCrypto key. */
+export function pqLine(src: string | null | undefined): { tone: "ok" | "warn" | "off"; headline: string; detail: string } {
+  if (src === "webcrypto") return { tone: "ok", headline: "Post-quantum key: ML-DSA-65, non-extractable", detail: "Hybrid with ECDSA P-256. The private key lives inside the browser and can never be read, not even by this page." };
+  if (src === "kernel") return { tone: "warn", headline: "Post-quantum key: ML-DSA-65, software (weaker)", detail: "This browser cannot make ML-DSA keys itself yet, so the Rust kernel made one. It is hybrid with ECDSA P-256, but the key seed is readable by page script. Use Chrome 154+ for a non-extractable key." };
+  return { tone: "off", headline: "Post-quantum key: not set up on this device yet", detail: "The proof is classical (ECDSA P-256) until this device registers its hybrid key at the next sign-in." };
+}

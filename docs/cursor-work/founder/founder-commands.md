@@ -3089,3 +3089,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 [11 Nov 2026 21:15 PKT] His paste: E162 ran, CHECK_E162 selftest FAIL (revoke_reason check); his order: always give install command too, numbered 1: 2:.
 
 [11 Nov 2026 21:50 PKT] His order: loopholes fixed at once with advanced design; codes intact; super advanced code + SQL; records for compaction (done).
+
+- 11 Nov 2026 22:05 PKT S3b DONE in repo (kernel ML-DSA fallback, kernel 0.15.0 shared with awam, E165 pq_src, board label), NOT installed. INSTALL: 1 sql-run (E164 then E165 auto), 2 founder-install, 3 CHECK_DRIFT_NOW; awam pull as separate point (shared kernel). SQL next free E166.

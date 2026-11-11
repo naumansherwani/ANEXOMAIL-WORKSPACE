@@ -147,7 +147,7 @@
    "id": "K7-devicekey-pq-kernel",
    "file": "web-wasm/Cargo.toml",
    "must": "fips204",
-   "status": "open",
+   "status": "ok",
    "deadline": "S3b (after S4)",
    "why": "browsers without WebCrypto ML-DSA need the ML-DSA half from the Rust WASM kernel (fips204); until then their exchange stays on fetch and the board says classical"
   }

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { get } from "./api";
+import { deviceStatus, get } from "./api";
 import type { DbscStatus } from "./dbsc_pure";
 import { DbscCard } from "./DbscCard";
 
@@ -11,5 +11,5 @@ export function Dbsc() {
   useEffect(() => { void reload(); const t = setInterval(() => { void reload(); }, 30000); return () => clearInterval(t); }, [reload]);
   if (err) return <section className="panel" aria-label="Device-bound sessions"><div className="panelhead"><h2>Device-bound sessions</h2><p className="dim">{err}</p></div></section>;
   if (!s) return <section className="panel" aria-label="Device-bound sessions"><div className="panelhead"><h2>Device-bound sessions</h2><p className="dim">Loading…</p></div></section>;
-  return <DbscCard s={s} />;
+  return <DbscCard s={s} pqSrc={deviceStatus().psrc} />;
 }

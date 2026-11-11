@@ -159,6 +159,7 @@ HOW TO READ: number = the order; file = the SQL; CHECK = has a read-only proof f
 | E162 | E162_founder_dbsc_hybrid_pq.sql | yes (CHECK_E162) | HYBRID device key (ML-DSA-65 + ECDSA): pq_pub column (immutable), register_pq door with NO DOWNGRADE, device_state returns pq, event kind reject_downgrade |
 | E163 | E163_founder_dbsc_selftest162_fix.sql | yes (CHECK_E162) | fixes only the E162 selftest (revoke_reason must be an allowed value; his server had a live chip binding) |
 | E164 | E164_founder_device_proofkeys.sql | yes (CHECK_E164) | hybrid proof key store beside the DBSC chip: get / register (replace only with chip alive) / use (nonce once); revoked device = inert key |
+| E165 | E165_founder_pq_src.sql | yes (CHECK_E165) | pq_src label (webcrypto / kernel) on proof keys and bindings; kernel software key is shown as weaker; label written once |
 
 Numbers never used (no file): E1, E3, E4, E8, E9, E10, E11, E12, E16, E21, E25, E26, E29, E55.
 
