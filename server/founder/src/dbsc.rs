@@ -232,7 +232,7 @@ pub async fn start_ep(State(st): State<crate::S>, h: HeaderMap) -> Response {
                 "credentials": [{"type": "cookie", "name": COOKIE, "attributes": COOKIE_ATTRS}]});
             let mut resp = no_store(Json(body).into_response());
             if let Ok(c) = HeaderValue::from_str(&set_cookie_value(&mint_cookie(&cookie_key, &sid, now))) { resp.headers_mut().append(header::SET_COOKIE, c); }
-            resp
+            with_fresh_challenge(resp, &ck, &sid, now)
         }
         Some(v) => err(StatusCode::CONFLICT, v["error"].as_str().unwrap_or("refused")),
         None => err(StatusCode::SERVICE_UNAVAILABLE, "ledger unavailable: run the E149 SQL (sql-run.sh)"),
@@ -240,6 +240,15 @@ pub async fn start_ep(State(st): State<crate::S>, h: HeaderMap) -> Response {
 }
 
 fn uuid_like(s: &str) -> Result<String, ()> { if s.len() == 36 && s.bytes().all(|b| b.is_ascii_hexdigit() || b == b'-') { Ok(s.to_string()) } else { Err(()) } }
+
+/// Attach a FRESH refresh challenge to any response of this session (DBSC allows `Secure-Session-Challenge` on every response). 11 Nov 20:15: without it Chrome kept using the
+/// challenge it already spent (reject_replay at 20:01:11 -> 400 -> session ended -> no_cookie). Every 200 now hands over the next one.
+fn with_fresh_challenge(mut r: Response, ck: &[u8], sid: &str, now: i64) -> Response {
+    if let Some(ch) = mint_challenge(ck, 'f', sid, "", now) {
+        if let Ok(v) = HeaderValue::from_str(&format!("\"{ch}\";id=\"{sid}\"")) { r.headers_mut().insert("secure-session-challenge", v); }
+    }
+    r
+}
 
 /// 403 + a FRESH refresh challenge. 11 Nov 19:25: Chrome ends a DBSC session for good on any other 4xx (a 400 on refresh = no cookie ever again until a new registration), so every
 /// refusal that a new challenge can cure (expired, cached, other session) answers THIS, never 400. Chrome retries once with the new challenge.
@@ -275,8 +284,9 @@ pub async fn refresh_ep(State(st): State<crate::S>, h: HeaderMap) -> Response {
         Some(v) if v["ok"].as_bool() == Some(true) => {
             let mut r = no_store(StatusCode::OK.into_response());
             if let Ok(c) = HeaderValue::from_str(&set_cookie_value(&mint_cookie(&cookie_key, &sid, now))) { r.headers_mut().append(header::SET_COOKIE, c); }
-            r
+            with_fresh_challenge(r, &ck, &sid, now)
         }
+        Some(v) if v["error"].as_str() == Some("replay") => challenge_403(&ck, &sid, now),
         Some(v) => err(StatusCode::BAD_REQUEST, v["error"].as_str().unwrap_or("refused")),
         None => err(StatusCode::SERVICE_UNAVAILABLE, "ledger unavailable"),
     }
@@ -319,6 +329,19 @@ pub async fn status_ep(State(st): State<crate::S>, h: HeaderMap) -> Response {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn every_success_hands_over_the_next_challenge() {
+        let ck = b"challenge-key-challenge-key-0123".to_vec();
+        let sid = "abcdefghijklmnopqrstuvwx";
+        let r = with_fresh_challenge(StatusCode::OK.into_response(), &ck, sid, NOW);
+        let hv = r.headers().get("secure-session-challenge").unwrap().to_str().unwrap().to_string();
+        let (ch, id) = hv.split_once("\";id=\"").unwrap();
+        assert_eq!(id.trim_end_matches('"'), sid);
+        let c = check_challenge(&ck, ch.trim_start_matches('"'), 'f', NOW).unwrap();
+        assert_eq!(c.a, sid);
+        // and a refusal that a new challenge cures is 403, never 400 (Chrome ends the session on 400)
+        assert_eq!(challenge_403(&ck, sid, NOW).status(), StatusCode::FORBIDDEN);
+    }
     use super::*;
     use ring::signature::{ECDSA_P256_SHA256_FIXED_SIGNING, EcdsaKeyPair, KeyPair};
     const NOW: i64 = 1_800_000_000;

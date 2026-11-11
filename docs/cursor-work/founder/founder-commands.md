@@ -3077,3 +3077,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 [11 Nov 2026 19:58 PKT] His message: did Sign out everywhere else + refresh; orders: records updated, continue.
 
 [11 Nov 2026 20:10 PKT] His paste CHECK_DRIFT_NOW v4 (net 56e5ca / d01d8e alternate, all quic) + order: compaction coming, everything ready, rules first.
+
+[11 Nov 2026 20:25 PKT] His paste: install OK + CHECK_DRIFT_NOW (reject_replay 20:01:11, would_block no_cookie 20:01:12); order: rules read, records updated, fix now.

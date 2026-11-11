@@ -2962,3 +2962,6 @@ Ring blue, 1 live session. Open: network flips x6 (needs his CHECK_DRIFT_NOW pas
 
 ## RESUME HERE (11 Nov 2026 20:10 PKT)
 STATE AT 20:10 block is at the top of docs/claude/RESUME-POINT.md. Next: his founder-install (flip fix), then 20:10+ ring check, exchange decision, K8d GREEN, GAP 2.
+
+## RESUME HERE (11 Nov 2026 20:25 PKT)
+Installed: coarse_net flip fix. Written, not installed: dbsc.rs fresh Secure-Session-Challenge on refresh 200 + registration, replay -> 403 (cause of reject_replay 20:01:11 then no_cookie). Next: his founder-install + CHECK_DRIFT_NOW, Chrome look (ring + whole page), exchange haan/nahi, K8d GREEN, GAP 2.

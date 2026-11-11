@@ -235,3 +235,4 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 19:58 PKT his Chrome: 1 live session, ring blue, old alert sessions closed; network flips x6 still open (CHECK_DRIFT_NOW now shows net hashes). Not green.
 
 - 11 Nov 2026 20:10 PKT network flip fix written (sessions.rs coarse_net), CGNAT proof from his ledger; waits install. Not green.
+- 11 Nov 2026 20:25 PKT K8d ring: network-flip fix (coarse_net) INSTALLED on his server 20:05 (his founder-install OK); DBSC fresh challenge on every 200 + replay answered 403 written (dbsc.rs, test every_success_hands_over_the_next_challenge). Not green until ring stays blue 2 DBSC cycles.
