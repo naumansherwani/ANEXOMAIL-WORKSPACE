@@ -28,3 +28,11 @@ Design (hybrid, both must verify, AND not OR):
 4. DBSC cookie path stays ES256 (browser standard, cannot change).
 5. Gate: K7-devicekey-pq goes `ok` only when devicekey_pure.ts has ML-DSA AND dbsc.rs verifies both AND live Chrome proof.
 Open question for him: haan = code GAP 2 as above (E162 + Rust + TS). He may change the parameter set.
+
+## HIS DECISIONS 11 Nov 2026 20:35 PKT (verbatim in founder-commands.md): hybrid YES, exchange ON THE KERNEL, TanStack Start YES. STAGES (one at a time, each proven before the next; GAP 1 then GAP 2 order kept, they meet in S4):
+- S1 Rust (DONE 21:15, 311 tests, not installed): `fips204` ML-DSA-65 verify (pq.rs) + hybrid proof in dbsc.rs verify_proof (4th JWT segment = ML-DSA signature over the same signing input; header `pq` carries the ML-DSA public key at registration; a binding that HAS a pq key REQUIRES the pq signature = no downgrade). Tests incl. tamper, strip, wrong key.
+- S2 SQL E162 (DONE 21:15, real Postgres 16 selftest PASS, waits his sql-run): binding column pq_pub + pq flag, register function takes it, posture/selftest/CHECK_E162, ledger shows "hybrid".
+- S3 Browser: ML-DSA-65 key in WebCrypto non-extractable when `generateKey` accepts it (feature detect in his Chrome first); else ML-DSA key from the Rust WASM kernel (fips204 inside web-wasm), IndexedDB, labelled `kernel` (weaker, shown on the board).
+- S4 EXCHANGE ON THE KERNEL (GAP 1 end): /founder/v1/exchange allowed on /wt/rpc. HONEST TRADE-OFF (he must know): the DBSC chip COOKIE cannot ride a WebTransport stream (browser HTTP stack only). Replacement that keeps the hardware in the loop: the exchange carries the HYBRID proof (ECDSA + ML-DSA, server nonce) AND the server requires that the device's DBSC chip session refreshed within CHIP_DEAD_S (E161 `idle_s`, TPM-signed refresh arrives on its own h3 call). DBSC registration/refresh stay browser-driven h3 (not our fetch, spec). api.ts exchange fetch removed, ratchet falls.
+- S5 TanStack Start for the founder UI in SPA mode (static prerendered shell; NO Node/Bun server at runtime, build tools in the sandbox only, banned runtime rule intact); one build, 390/820/1200+ unchanged; migration proven by identical bundle behaviour + his look.
+- Gates: K7-devicekey-pq stays open until S1-S4 + live proof; A-tanstack-start until S5; K8d-api-not-fetch re-checked at S4.

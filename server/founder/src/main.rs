@@ -2,6 +2,7 @@
 #[allow(dead_code)]
 #[path = "../../rust/jwt_core.rs"]
 mod jwt_core;
+mod mldsa;
 mod audit;
 mod gate;
 mod sign;
@@ -373,8 +374,9 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
                 if cookie_sid.is_none() && state.as_ref().and_then(|v| v["source"].as_str()) == Some("webcrypto") {
                     let stored = state.as_ref().and_then(|v| v["pub"].as_str()).and_then(|p| hex::decode(p).ok());
                     let proof = h.get("x-device-proof").and_then(|v| v.to_str().ok());
+                    let stored_pq = state.as_ref().and_then(|v| v["pq"].as_str()).and_then(|p| hex::decode(p).ok());   // GAP 2: a hybrid binding REQUIRES the ML-DSA signature too
                     if let (Some(sid), Some(stored), Some(proof)) = (bound_sid.as_deref(), stored, proof) {
-                        if let Ok((jti, _)) = dbsc::verify_proof(proof, dbsc::EXCHANGE_PATH, Some(&stored), &dev_hash, now_s()) {
+                        if let Ok((jti, _, _)) = dbsc::verify_proof_hybrid(proof, dbsc::EXCHANGE_PATH, Some(&stored), stored_pq.as_deref(), &dev_hash, now_s()) {
                             let ok = sb.rpc("founder_dbsc_refreshed", json!({"p_sid": sid, "p_jti_hash": dbsc::sha256_hex(&jti)})).await;   // consumes the nonce once, counts the proof
                             if ok.is_some_and(|v| v["ok"].as_bool() == Some(true)) { cookie_sid = Some(sid.to_string()); }
                         }

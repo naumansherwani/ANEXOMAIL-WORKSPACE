@@ -2965,3 +2965,6 @@ STATE AT 20:10 block is at the top of docs/claude/RESUME-POINT.md. Next: his fou
 
 ## RESUME HERE (11 Nov 2026 20:25 PKT)
 Installed: coarse_net flip fix. Written, not installed: dbsc.rs fresh Secure-Session-Challenge on refresh 200 + registration, replay -> 403 (cause of reject_replay 20:01:11 then no_cookie). Next: his founder-install + CHECK_DRIFT_NOW, Chrome look (ring + whole page), exchange haan/nahi, K8d GREEN, GAP 2.
+
+## RESUME HERE (11 Nov 2026 21:20 PKT)
+GAP 2 S1 (Rust) + S2 (SQL E162) written and tested, NOT installed. His order of install: sql-run E162 FIRST, then founder-install (Rust calls founder_dbsc_register_pq). Next: S3 browser ML-DSA key (feature-detect WebCrypto in his Chrome first), S4 exchange on kernel, S5 TanStack Start. K8d GREEN still waits the ring proof.

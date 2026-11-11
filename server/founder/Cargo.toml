@@ -39,6 +39,7 @@ quinn = { version = "0.11", default-features = false, features = ["ring", "rustl
 http-body-util = "0.1"
 bytes = "1"
 wtransport = { version = "0.7", default-features = false, features = ["quinn", "ring"] }
+fips204 = { version = "0.5", default-features = false, features = ["ml-dsa-65", "default-rng"] }
 
 [profile.release]
 opt-level = 3

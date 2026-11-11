@@ -46,7 +46,7 @@ impl Mode {
 }
 
 #[derive(Debug, PartialEq)]
-pub enum DErr { Malformed, Alg, Typ, Key, Signature, Jti, Iat, Aud, Challenge, Expired, Purpose, Device }
+pub enum DErr { Malformed, Alg, Typ, Key, Signature, Jti, Iat, Aud, Challenge, Expired, Purpose, Device, Pq }
 
 type HmacSha = Hmac<Sha256>;
 /// Sub-keys from the server secret, one label each (a leaked cookie key is not a challenge key).
@@ -117,14 +117,14 @@ pub fn cookie_from(h: &HeaderMap) -> Option<String> {
 }
 
 // ------------------------------------------------------------------ JWT (ES256, typ dbsc+jwt)
-pub struct Jwt { pub header: Value, pub payload: Value, input: String, sig: Vec<u8> }
+pub struct Jwt { pub header: Value, pub payload: Value, input: String, sig: Vec<u8>, sig_b64: String, pq_sig: Option<Vec<u8>> }
 pub fn parse_jwt(t: &str) -> Result<Jwt, DErr> {
-    if t.len() > 4096 { return Err(DErr::Malformed); }
+    if t.len() > 12288 { return Err(DErr::Malformed); }   // a hybrid proof carries an ML-DSA-65 signature (3309 bytes) and, at registration, its public key (1952 bytes)
     let p: Vec<&str> = t.split('.').collect();
-    if p.len() != 3 { return Err(DErr::Malformed); }
+    if p.len() != 3 && p.len() != 4 { return Err(DErr::Malformed); }
     let dec = |s: &str| B64.decode(s).map_err(|_| DErr::Malformed);
     Ok(Jwt { header: serde_json::from_slice(&dec(p[0])?).map_err(|_| DErr::Malformed)?, payload: serde_json::from_slice(&dec(p[1])?).map_err(|_| DErr::Malformed)?,
-             input: format!("{}.{}", p[0], p[1]), sig: dec(p[2])? })
+             input: format!("{}.{}", p[0], p[1]), sig: dec(p[2])?, sig_b64: p[2].to_string(), pq_sig: if p.len() == 4 { Some(dec(p[3])?) } else { None } })
 }
 /// The `jti` of a JWT BEFORE it is verified: only used to find the challenge (which is itself MAC-checked) and never trusted on its own.
 pub fn peek_jti(t: &str) -> Option<String> { parse_jwt(t).ok()?.payload["jti"].as_str().map(String::from) }
@@ -138,6 +138,7 @@ fn jwk_to_sec1(jwk: &Value) -> Result<[u8; 65], DErr> {
 }
 fn verify_sig(pubkey: &[u8], j: &Jwt) -> Result<(), DErr> { UnparsedPublicKey::new(&ECDSA_P256_SHA256_FIXED, pubkey).verify(j.input.as_bytes(), &j.sig).map_err(|_| DErr::Signature) }
 fn common(j: &Jwt, challenge: &str, now: i64, path: &str) -> Result<(), DErr> {
+    if j.pq_sig.is_some() { return Err(DErr::Malformed); }   // the DBSC cookie path is ES256 only (browser standard); a hybrid proof never rides it
     if j.header["alg"].as_str() != Some("ES256") { return Err(DErr::Alg); }   // none / HS256 / RS256: never
     if j.header["typ"].as_str() != Some("dbsc+jwt") { return Err(DErr::Typ); }
     if j.payload["jti"].as_str() != Some(challenge) { return Err(DErr::Jti); }
@@ -167,6 +168,13 @@ pub fn verify_refresh(jwt: &str, challenge: &str, stored: &[u8], now: i64) -> Re
 /// `dh` = sha-256 of the device id (the proof is only good for THIS device). `stored` = the key registered earlier (exchange); None = registration, the key comes from the header jwk
 /// and the signature proves possession. Returns (jti, 65-byte key).
 pub fn verify_proof(jwt: &str, path: &str, stored: Option<&[u8]>, dev_hash: &str, now: i64) -> Result<(String, [u8; 65]), DErr> {
+    verify_proof_hybrid(jwt, path, stored, None, dev_hash, now).map(|(j, k, _)| (j, k))
+}
+/// GAP 2: the HYBRID device proof. JWT with a 4th segment = ML-DSA-65 signature over `<signing input>.<ES256 signature>` (so the two cannot be separated or re-paired).
+/// Registration (`stored` None): a `pq` member in the payload (covered by the ES256 signature) carries the ML-DSA public key; if present the 4th segment is REQUIRED and must verify.
+/// Exchange (`stored` Some): when the binding HAS a stored ML-DSA key the 4th segment is REQUIRED and is checked ONLY against the stored key (no downgrade by stripping, no key swap).
+/// Returns (jti, ES256 key, ML-DSA public key if the proof was hybrid at registration).
+pub fn verify_proof_hybrid(jwt: &str, path: &str, stored: Option<&[u8]>, stored_pq: Option<&[u8]>, dev_hash: &str, now: i64) -> Result<(String, [u8; 65], Option<Vec<u8>>), DErr> {
     let j = parse_jwt(jwt)?;
     if j.header["alg"].as_str() != Some("ES256") { return Err(DErr::Alg); }
     if j.header["typ"].as_str() != Some("dbsc+jwt") { return Err(DErr::Typ); }
@@ -177,7 +185,23 @@ pub fn verify_proof(jwt: &str, path: &str, stored: Option<&[u8]>, dev_hash: &str
     if j.payload["dh"].as_str() != Some(dev_hash) { return Err(DErr::Device); }
     let key: [u8; 65] = match stored { Some(k) => k.try_into().map_err(|_| DErr::Key)?, None => jwk_to_sec1(&j.header["jwk"])? };
     verify_sig(&key, &j)?;
-    Ok((jti, key))
+    let msg = format!("{}.{}", j.input, j.sig_b64);
+    let pq_key: Option<Vec<u8>> = match (stored, stored_pq) {
+        (Some(_), Some(spk)) => {   // bound hybrid device: the ML-DSA signature is mandatory and is checked against the STORED key only
+            let sig = j.pq_sig.as_deref().ok_or(DErr::Pq)?;
+            if !crate::mldsa::verify(spk, msg.as_bytes(), sig) { return Err(DErr::Pq); }
+            Some(spk.to_vec())
+        }
+        (None, _) if j.payload.get("pq").is_some() => {   // registration with a post-quantum key: proof of possession of BOTH keys
+            let pk = B64.decode(j.payload["pq"]["pk"].as_str().ok_or(DErr::Pq)?).map_err(|_| DErr::Pq)?;
+            if j.payload["pq"]["alg"].as_str() != Some("ML-DSA-65") || !crate::mldsa::key_ok(&pk) { return Err(DErr::Pq); }
+            let sig = j.pq_sig.as_deref().ok_or(DErr::Pq)?;
+            if !crate::mldsa::verify(&pk, msg.as_bytes(), sig) { return Err(DErr::Pq); }
+            Some(pk)
+        }
+        _ => { if j.pq_sig.is_some() && stored.is_none() { return Err(DErr::Pq); } None }   // classical device (until K7c enforce): a stray pq signature without a declared key is refused at registration
+    };
+    Ok((jti, key, pq_key))
 }
 
 // ------------------------------------------------------------------ the exchange decision (pure)
@@ -305,10 +329,11 @@ pub async fn devicekey_register_ep(State(st): State<crate::S>, h: HeaderMap, Jso
     if !crate::ftoken::valid_device_id(&b.device_id) { return err(StatusCode::BAD_REQUEST, "invalid device id"); }
     let Some(proof) = hv(&h, "x-device-proof") else { return err(StatusCode::BAD_REQUEST, "missing proof") };
     let dev_hash = crate::ftoken::device_hash(&b.device_id);
-    let (jti, key) = match verify_proof(proof, DK_REG_PATH, None, &dev_hash, now_s()) { Ok(x) => x, Err(e) => return err(StatusCode::BAD_REQUEST, &format!("proof refused: {e:?}").to_ascii_lowercase()) };
+    let (jti, key, pq) = match verify_proof_hybrid(proof, DK_REG_PATH, None, None, &dev_hash, now_s()) { Ok(x) => x, Err(e) => return err(StatusCode::BAD_REQUEST, &format!("proof refused: {e:?}").to_ascii_lowercase()) };
     let Some(sid) = new_sid() else { return err(StatusCode::INTERNAL_SERVER_ERROR, "no session id") };
-    match sb.rpc("founder_dbsc_register_src", json!({"p_uid": c.sub, "p_device_hash": dev_hash, "p_sid": sid, "p_pub": hex::encode(key), "p_jti_hash": sha256_hex(&jti), "p_source": "webcrypto"})).await {
-        Some(v) if v["ok"].as_bool() == Some(true) => no_store(Json(json!({"ok": true, "source": v["source"], "kept": v["kept"]})).into_response()),
+    // GAP 2: a hybrid proof registers BOTH keys (E162 door); a classical proof for a hybrid-bound device is refused by the SQL (pq_downgrade)
+    match sb.rpc("founder_dbsc_register_pq", json!({"p_uid": c.sub, "p_device_hash": dev_hash, "p_sid": sid, "p_pub": hex::encode(key), "p_jti_hash": sha256_hex(&jti), "p_source": "webcrypto", "p_pq": pq.as_ref().map(hex::encode)})).await {
+        Some(v) if v["ok"].as_bool() == Some(true) => no_store(Json(json!({"ok": true, "source": v["source"], "kept": v["kept"], "hybrid": v["hybrid"]})).into_response()),
         Some(v) => err(StatusCode::CONFLICT, v["error"].as_str().unwrap_or("refused")),
         None => err(StatusCode::SERVICE_UNAVAILABLE, "ledger unavailable: run the E150 SQL (sql-run.sh)"),
     }
@@ -329,6 +354,41 @@ pub async fn status_ep(State(st): State<crate::S>, h: HeaderMap) -> Response {
 
 #[cfg(test)]
 mod tests {
+    fn hybrid_jwt(p: &EcdsaKeyPair, with_jwk: bool, payload: Value, sk: &fips204::ml_dsa_65::PrivateKey, pq_over: Option<&str>) -> String {
+        let mut h = json!({"alg": "ES256", "typ": "dbsc+jwt"}); if with_jwk { h["jwk"] = jwk(p); }
+        let es = jwt(p, h, payload);
+        let (input, sigb) = es.rsplit_once('.').unwrap();
+        let msg = format!("{input}.{}", pq_over.unwrap_or(sigb));
+        format!("{es}.{}", B64.encode(crate::mldsa::tests::sign(sk, msg.as_bytes())))
+    }
+    #[test]
+    fn the_hybrid_device_proof_needs_both_signatures_and_cannot_be_downgraded() {
+        let (p, (pqpk, sk)) = (pair(), crate::mldsa::tests::pair());
+        let dh = dev();
+        let reg_payload = json!({"jti": "nonce-0123456789abcdef", "iat": NOW, "aud": "https://f/founder/v1/devicekey/register", "dh": dh, "pq": {"alg": "ML-DSA-65", "pk": B64.encode(&pqpk)}});
+        let reg = hybrid_jwt(&p, true, reg_payload.clone(), &sk, None);
+        let (_, key, pq) = verify_proof_hybrid(&reg, DK_REG_PATH, None, None, &dh, NOW).unwrap();
+        assert_eq!(pq.as_deref(), Some(&pqpk[..]));
+        // registration without the second signature, with a flipped one, or with a key that is not the signer: refused
+        let stripped = reg.rsplit_once('.').unwrap().0.to_string();
+        assert_eq!(verify_proof_hybrid(&stripped, DK_REG_PATH, None, None, &dh, NOW), Err(DErr::Pq));
+        let (_, sk2) = crate::mldsa::tests::pair();
+        assert_eq!(verify_proof_hybrid(&hybrid_jwt(&p, true, reg_payload.clone(), &sk2, None), DK_REG_PATH, None, None, &dh, NOW), Err(DErr::Pq), "pq key declared is not the signer");
+        // exchange against the stored pair
+        let ex_payload = json!({"jti": "nonce-abcdef0123456789", "iat": NOW, "aud": "https://f/founder/v1/exchange", "dh": dh});
+        let ex = hybrid_jwt(&p, false, ex_payload.clone(), &sk, None);
+        assert!(verify_proof_hybrid(&ex, EXCHANGE_PATH, Some(&key), Some(&pqpk), &dh, NOW).is_ok());
+        // DOWNGRADE: a classical-only proof for a hybrid-bound device is refused
+        assert_eq!(verify_proof_hybrid(&proof_jwt(&p, false, ex_payload.clone()), EXCHANGE_PATH, Some(&key), Some(&pqpk), &dh, NOW), Err(DErr::Pq));
+        // strip, wrong pq key, pq signature over a different ES signature (re-pairing)
+        assert_eq!(verify_proof_hybrid(ex.rsplit_once('.').unwrap().0, EXCHANGE_PATH, Some(&key), Some(&pqpk), &dh, NOW), Err(DErr::Pq));
+        assert_eq!(verify_proof_hybrid(&hybrid_jwt(&p, false, ex_payload.clone(), &sk2, None), EXCHANGE_PATH, Some(&key), Some(&pqpk), &dh, NOW), Err(DErr::Pq));
+        assert_eq!(verify_proof_hybrid(&hybrid_jwt(&p, false, ex_payload.clone(), &sk, Some("AAAA")), EXCHANGE_PATH, Some(&key), Some(&pqpk), &dh, NOW), Err(DErr::Pq));
+        // a classical binding still works with a classical proof; the ES256 half alone is never enough when a pq key is stored; a pq key inside the payload is ignored at exchange
+        assert!(verify_proof_hybrid(&proof_jwt(&p, false, ex_payload.clone()), EXCHANGE_PATH, Some(&key), None, &dh, NOW).is_ok());
+        // the DBSC cookie path never accepts a hybrid proof
+        assert_eq!(parse_jwt(&ex).map(|j| common(&j, "nonce-abcdef0123456789", NOW, EXCHANGE_PATH)).unwrap(), Err(DErr::Malformed));
+    }
     #[test]
     fn every_success_hands_over_the_next_challenge() {
         let ck = b"challenge-key-challenge-key-0123".to_vec();

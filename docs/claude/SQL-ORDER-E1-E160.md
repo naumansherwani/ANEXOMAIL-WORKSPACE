@@ -156,6 +156,7 @@ HOW TO READ: number = the order; file = the SQL; CHECK = has a read-only proof f
 | E159 | E159_founder_dbsc_chain_fix.sql | yes | DBSC ledger chain fix : E149 chose the chain head by `id` but ids are handed out BEFORE the lock, so two simultaneous events chained out of id order and `founder_dbsc_ver |
 | E160 | E160_founder_key_rotation_not_drift.sql | yes | Key rotation is not theft (his Devices ring stayed Alert): a device key registered through the authenticated binding path AFTER a session began no longer counts as `devic |
 | E161 | E161_founder_dbsc_heal.sql | yes | DBSC heal: device_state idle_s, key attach removes the two missing-key reasons when the key is proved later |
+| E162 | E162_founder_dbsc_hybrid_pq.sql | yes (CHECK_E162) | HYBRID device key (ML-DSA-65 + ECDSA): pq_pub column (immutable), register_pq door with NO DOWNGRADE, device_state returns pq, event kind reject_downgrade |
 
 Numbers never used (no file): E1, E3, E4, E8, E9, E10, E11, E12, E16, E21, E25, E26, E29, E55.
 

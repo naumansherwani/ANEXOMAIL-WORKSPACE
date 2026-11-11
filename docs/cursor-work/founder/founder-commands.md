@@ -3079,3 +3079,7 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 [11 Nov 2026 20:10 PKT] His paste CHECK_DRIFT_NOW v4 (net 56e5ca / d01d8e alternate, all quic) + order: compaction coming, everything ready, rules first.
 
 [11 Nov 2026 20:25 PKT] His paste: install OK + CHECK_DRIFT_NOW (reject_replay 20:01:11, would_block no_cookie 20:01:12); order: rules read, records updated, fix now.
+
+[11 Nov 2026 20:35 PKT] HIS ORDER VERBATIM (answers to my 3 questions): 1) GAP 2 ML-DSA hybrid: "YEH MAINAY HYBRID BOLA THA" (= haan, hybrid ML-DSA + ECDSA). 2) Exchange: "DUNIYA KI ADVANCE TECHNOLOGY JO HAI WOH KERO" (= exchange also on kernel/WebTransport, no raw fetch). 3) TanStack Start: "DUNIYA KI ADVANCE TECHNOLOGY HAI WOH BUS KERO FOUNDER KE LIYE" (= adopt TanStack Start for founder). Also: "do K7 gaps, isi tarteeb se: GAP 1 K8d (device-key register + exchange raw fetch -> kernel WebTransport/HTTP3), GAP 2 post-quantum (ML-DSA + ECDSA hybrid; DBSC cookie path stays ES256). YEH DO GAPS KO SAMNE RAKH KE REPO MAIN DEKHO JO HAI YA HO ADVANCE KERNA HAI KERO".
+
+[11 Nov 2026 21:20 PKT] Work done on his 20:26 order (hybrid + exchange on kernel + TanStack Start): S1 + S2 coded.

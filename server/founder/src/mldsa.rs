@@ -1,0 +1,39 @@
+//! GAP 2 (K7, post-quantum): ML-DSA-65 (FIPS 204) verification for the device proof. Pure Rust (`fips204`, no unsafe, no heap, constant-time verify not needed: public data only).
+//! The device proof is a HYBRID: ECDSA P-256 (WebCrypto, live) AND ML-DSA-65, both must verify (dbsc.rs `verify_proof_hybrid`). The DBSC cookie path stays ES256 (browser standard).
+use fips204::ml_dsa_65 as m;
+use fips204::traits::{SerDes, Verifier};
+
+pub const PK_LEN: usize = m::PK_LEN;
+pub const SIG_LEN: usize = m::SIG_LEN;
+/// FIPS 204 context string: a signature made for another purpose never verifies here.
+pub const CTX: &[u8] = b"anexo-founder-device-proof-v1";
+
+/// True only for a well-formed key, a well-formed signature and a valid ML-DSA-65 signature over `msg`.
+pub fn verify(pk: &[u8], msg: &[u8], sig: &[u8]) -> bool {
+    let Ok(pk): Result<[u8; PK_LEN], _> = pk.try_into() else { return false };
+    let Ok(sig): Result<[u8; SIG_LEN], _> = sig.try_into() else { return false };
+    let Ok(pk) = m::PublicKey::try_from_bytes(pk) else { return false };
+    pk.verify(msg, &sig, CTX)
+}
+/// A public key that parses (length + decoding), used at registration before it is stored.
+pub fn key_ok(pk: &[u8]) -> bool { <[u8; PK_LEN]>::try_from(pk).ok().is_some_and(|k| m::PublicKey::try_from_bytes(k).is_ok()) }
+
+#[cfg(test)]
+pub(crate) mod tests {
+    use super::*;
+    use fips204::traits::{KeyGen, Signer};
+    pub fn pair() -> (Vec<u8>, m::PrivateKey) { let (pk, sk) = m::KG::try_keygen().unwrap(); (pk.into_bytes().to_vec(), sk) }
+    pub fn sign(sk: &m::PrivateKey, msg: &[u8]) -> Vec<u8> { sk.try_sign(msg, CTX).unwrap().to_vec() }
+    #[test]
+    fn ml_dsa_65_verifies_and_refuses() {
+        let (pk, sk) = pair();
+        let sig = sign(&sk, b"device proof");
+        assert!(verify(&pk, b"device proof", &sig) && key_ok(&pk));
+        assert!(!verify(&pk, b"device proof!", &sig), "other message");
+        let mut bad = sig.clone(); bad[10] ^= 1; assert!(!verify(&pk, b"device proof", &bad), "flipped bit");
+        let (pk2, _) = pair(); assert!(!verify(&pk2, b"device proof", &sig), "other key");
+        assert!(!verify(&pk[..100], b"device proof", &sig) && !verify(&pk, b"device proof", &sig[..100]) && !key_ok(&[0u8; 5]), "short inputs");
+        let other_ctx = sk.try_sign(b"device proof", b"another-purpose").unwrap(); assert!(!verify(&pk, b"device proof", &other_ctx), "other context");
+        assert_eq!((PK_LEN, SIG_LEN), (1952, 3309));
+    }
+}

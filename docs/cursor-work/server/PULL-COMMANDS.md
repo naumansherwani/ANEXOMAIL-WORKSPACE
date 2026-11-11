@@ -30,3 +30,5 @@
 - 11 Nov 2026 20:10 PKT founder-install (network flip fix).
 
 [11 Nov 2026 20:25 PKT] founder-install (DBSC fresh challenge): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -15
+
+[11 Nov 2026 21:20 PKT] E162 (SQL FIRST, then the install): bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E162_founder_dbsc_hybrid_pq   then   bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) CHECK_E162
