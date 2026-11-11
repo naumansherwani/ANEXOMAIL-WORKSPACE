@@ -970,3 +970,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 [11 Nov 2026 21:20 PKT] E162 (SQL FIRST, then the install): bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E162_founder_dbsc_hybrid_pq   then   bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) CHECK_E162
 
 [11 Nov 2026 21:50 PKT] after E162 SQL: founder-install (Rust hybrid verify + SPA with ML-DSA key).
+
+[11 Nov 2026 21:15 PKT] 1: sql-run (auto E163) 2: founder-install. Always give BOTH, numbered (his order).

@@ -242,3 +242,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 21:20 PKT GAP 2 stage 1+2 written + tested (not installed): Rust mldsa.rs (fips204 ML-DSA-65) + dbsc.rs verify_proof_hybrid (no downgrade, no re-pairing), 311 tests; SQL E162 hybrid door tested on real Postgres 16 (selftest PASS, idempotent). Browser half (S3) and exchange on kernel (S4) still open. Not green.
 
 - 11 Nov 2026 21:50 PKT GAP 2 stage 3 (browser) written + tested (bun 183, tsc clean), not installed: devicekey.ts makes a non-extractable ML-DSA-65 key when WebCrypto has it (PROVED in his Chrome 155: sig 3309, pub 1952, extractable false, context works), hybrid proof 4th segment, one-time upgrade of a proven classical key; server dk.pq. Kernel fallback (Safari/Firefox) still open. Not green.
+
+- 11 Nov 2026 21:15 PKT E162 applied on his server (posture OK); its selftest FAILED on his live chip binding (my test used an invalid revoke_reason; sandbox had no live binding). E163 fixes the selftest, reproduced + fixed locally. Lesson: sandbox test must include a LIVE binding. Not green.

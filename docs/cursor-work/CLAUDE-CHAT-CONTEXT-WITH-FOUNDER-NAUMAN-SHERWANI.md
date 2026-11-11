@@ -2971,3 +2971,6 @@ GAP 2 S1 (Rust) + S2 (SQL E162) written and tested, NOT installed. His order of 
 
 ## RESUME HERE (11 Nov 2026 21:50 PKT)
 S3 browser half written. His Chrome 155 supports WebCrypto ML-DSA-65 (probed live). Install order: sql-run E162, then founder-install (Rust + SPA). Live proof after install: Devices page + CHECK_E162/CHECK_DRIFT_NOW show hybrid. Next S4 (exchange on kernel), S5 TanStack Start. Kernel ML-DSA fallback for browsers without WebCrypto ML-DSA is open.
+
+## RESUME HERE (11 Nov 2026 21:15 PKT)
+E162 is in his ledger, selftest162 failed (my bug), E163 fixes it. His next: sql-run (auto order runs E163), CHECK_E162 must be 3 OK, THEN founder-install. Next S4/S5.

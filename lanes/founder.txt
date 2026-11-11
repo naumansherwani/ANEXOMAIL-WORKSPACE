@@ -109,6 +109,7 @@ docs/cursor-work/sql/E159_founder_dbsc_chain_fix.sql
 docs/cursor-work/sql/E160_founder_key_rotation_not_drift.sql
 docs/cursor-work/sql/E161_founder_dbsc_heal.sql
 docs/cursor-work/sql/E162_founder_dbsc_hybrid_pq.sql
+docs/cursor-work/sql/E163_founder_dbsc_selftest162_fix.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/00-FOUNDER-TECH-RULE.md
