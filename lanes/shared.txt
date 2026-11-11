@@ -1,10 +1,14 @@
 .gitignore
 .prettierignore
 .prettierrc
+00-FOUNDER-TECH-RULE.md
 AGENTS.md
 CLAUDE.md
+LICENSE
 README.md
+anexomail inboxes to build/00-FOUNDER-TECH-RULE.md
 anexomail inboxes to build/README.md
+banned-countries/00-FOUNDER-TECH-RULE.md
 banned-countries/README.md
 banned-countries/banned.json
 bun.lock
@@ -30,6 +34,7 @@ public/manifest.webmanifest
 public/robots.txt
 public/sw.js
 roadmap.md
+scripts/00-FOUNDER-TECH-RULE.md
 scripts/build-kernel.sh
 scripts/i18n-extract.mjs
 scripts/wire-audit.py
@@ -42,6 +47,7 @@ server/rust/g5d_bundle_vector.json
 server/rust/g5d_kernel_vector.json
 server/rust/jwt_core.rs
 server/rust/merkle_core.rs
+src/lib/kernel/00-FOUNDER-TECH-RULE.md
 src/lib/kernel/boot.ts
 src/lib/kernel/kernel.test.ts
 src/lib/kernel/kernel.ts
@@ -49,8 +55,10 @@ src/lib/kernel/pin.gen.ts
 src/lib/kernel/rule52.test.ts
 tsconfig.json
 vite.config.ts
+web-wasm/00-FOUNDER-TECH-RULE.md
 web-wasm/Cargo.lock
 web-wasm/Cargo.toml
+web-wasm/src/00-FOUNDER-TECH-RULE.md
 web-wasm/src/action.rs
 web-wasm/src/ed.rs
 web-wasm/src/exec.rs

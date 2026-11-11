@@ -56,6 +56,21 @@ One letter per step, in build order. **GREEN** only where the proof exists (serv
 
 > **NEW ORDER 11 NOV 03:40 (HIS WORD, CAPITALS): K8B HTTP/3 ENABLE -> K8C ML-KEM LIVE PROOF -> K8D KERNEL WEBTRANSPORT RPC -> K7C -> L -> M -> N..V, X (LETTER ORDER NEVER BREAKS). D-SERIES PAUSED. FILE-BY-FILE AUDIT: docs/claude/FOUNDER-FILE-AUDIT-11NOV.md.**
 
+> **D-SERIES (DEVICES & SESSIONS) = CONTINUES AFTER THE GAPS, COMPLETE TODAY 11 NOV (HIS WORD 11 NOV 17:27, CAPITALS). ORDER, EACH ROW ITS OWN TECH LAW:**
+>
+> | Order | Step | Technology that MUST be in this code (latest) | State |
+> |---|---|---|---|
+> | 0 | GAPS FIRST: K8d kernel WebTransport RPC, then ML-DSA hybrid device proof | **RUST WASM KERNEL rpc@1 + WEBTRANSPORT/HTTP3 + ML-DSA HYBRID** | OPEN, today |
+> | 1 | D1 SQL E154/E155 session ledger + registry | POSTGRESQL RLS, hash chain, selftests | GREEN |
+> | 2 | D2a SQL E156 advanced (drift, geo, cap, anchors) | POSTGRESQL RLS, append-only | GREEN |
+> | 3 | D2b Rust: register/check/revoke/board/ledger/policy doors | **RUST AXUM/TOKIO, HTTP/3** | INSTALLED, his sign-in is in the board |
+> | 4 | D2b-5 policy change = fresh passkey touch (E157) | **WEBAUTHN L3, kernel re-derives action hash** | WRITTEN + installed; waits HIS real key touch (his hands) |
+> | 5 | D3 UI: aurora seal, board, ledger, policy editor | **REACT 19/TS, TAILWIND 4, FRAMER MOTION, ONE BUILD 390/820/1200+** | GREEN on laptop; phone/tablet = his screenshots |
+> | 6 | D3 geo: FOUNDER_GEOIP country file, observe -> enforce | **RUST + POSTGRESQL** | INERT until the country file (his command) |
+> | 7 | D4 live proof: all 8 of his features seen live, every button hard-tested, mobile+tablet | **LIVE CHROME = REPO, 390/820/1200+** | OPEN, today after 0-6 |
+> | 8 | K7c enforce (Device key required) with rollback | **TPM/DBSC + WEBCRYPTO + ML-DSA HYBRID** | after 0 |
+> | 9 | awam line AP9 "Your devices" (RULE 9) | awam never mixed | after founder-complete |
+
 ## FOUNDER lane (founderworkspace.anexomail.com)
 > **TECH LAW (HIS LAST WARNING 11 NOV 03:11/03:18, CAPITALS): FOUNDER TECHNOLOGY = ONLY SUPER ADVANCED LATEST. HTTP/3 (QUIC) PRIMARY, H2/H1.1 FALLBACK ONLY. EVERY PHASE ROW BELOW HAS ITS OWN TECH LAW COLUMN: READ IT BEFORE WRITING CODE AND COMPARE THE CODE TO IT BEFORE WRITING GREEN. AUDIT: docs/claude/FOUNDER-TECH-AUDIT-11NOV.md.**
 

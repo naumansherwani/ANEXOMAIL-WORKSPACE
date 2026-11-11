@@ -1,3 +1,5 @@
+docs/claude/founder/00-FOUNDER-TECH-RULE.md
+docs/claude/founder/CODES/00-FOUNDER-TECH-RULE.md
 docs/claude/founder/CODES/00-README-RULES.md
 docs/claude/founder/CODES/01-FILES.md
 docs/claude/founder/CODES/02-ENDPOINTS.md
@@ -12,11 +14,13 @@ docs/claude/founder/FOUNDER-SECURITY-28OCT.md
 docs/claude/founder/INDEX.md
 docs/claude/founder/LEGACY-FOUNDER-FILES.md
 docs/claude/founder/PULL-COMMANDS.md
+docs/claude/founder/design-f0/00-FOUNDER-TECH-RULE.md
 docs/claude/founder/design-f0/Action.dc.html
 docs/claude/founder/design-f0/Login.dc.html
 docs/claude/founder/design-f0/Main.dc.html
 docs/claude/founder/design-f0/README.md
 docs/claude/founder/design-f0/canvas.json
+docs/cursor-work/founder/00-FOUNDER-TECH-RULE.md
 docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md
 docs/cursor-work/founder/TECH-MAP.md
 docs/cursor-work/founder/aap-sirf-yeh.md
@@ -31,10 +35,12 @@ docs/cursor-work/founder/founder-stack-audit.md
 docs/cursor-work/founder/index.md
 docs/cursor-work/founder/loophole-ledger.md
 docs/cursor-work/founder/mail-identities-locked-2026-10-14.md
+docs/cursor-work/founder/orders/00-FOUNDER-TECH-RULE.md
 docs/cursor-work/founder/orders/2026-10-28-1310-mail-chat-bridge-VERBATIM.md
 docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md
 docs/cursor-work/founder/plan-experience-2026-10-17.md
 docs/cursor-work/founder/plan-surface-matrix.md
+docs/cursor-work/founder/tools/00-FOUNDER-TECH-RULE.md
 docs/cursor-work/founder/tools/founder-stack-audit.py
 docs/cursor-work/founder/tools/plan-surface-matrix.mjs
 docs/cursor-work/server/founder-dbsc.sh
@@ -49,6 +55,7 @@ docs/cursor-work/server/founder-telemetry.sh
 docs/cursor-work/server/founder-tls256.sh
 docs/cursor-work/server/founder-wt-proof.sh
 docs/cursor-work/server/founder-wt.sh
+docs/cursor-work/sql/00-FOUNDER-TECH-RULE.md
 docs/cursor-work/sql/E102_founder_audit_actions_devices.sql
 docs/cursor-work/sql/E103_founder_actions_english.sql
 docs/cursor-work/sql/E104_founder_device_approval.sql
@@ -101,12 +108,15 @@ docs/cursor-work/sql/E158_founder_session_key_attach.sql
 docs/cursor-work/sql/E159_founder_dbsc_chain_fix.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
+docs/cursor-work/sql/proofs/00-FOUNDER-TECH-RULE.md
 docs/cursor-work/sql/proofs/E68_proof.sql
 docs/cursor-work/sql/proofs/E69_proof.sql
 docs/cursor-work/sql/proofs/E70_proof.sql
 docs/cursor-work/sql/proofs/E71_proof.sql
 docs/cursor-work/sql/proofs/E72_proof.sql
+docs/cursor-work/sql/tools/00-FOUNDER-TECH-RULE.md
 founder-web/.gitignore
+founder-web/00-FOUNDER-TECH-RULE.md
 founder-web/dist/assets/Inter-Bold-sbKixbcS.woff2
 founder-web/dist/assets/Inter-ExtraLight-BhvJvErM.woff2
 founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
@@ -141,6 +151,7 @@ founder-web/public/icon-192.png
 founder-web/public/icon-512.png
 founder-web/public/kernel/anexo-kernel-0.14.0.wasm
 founder-web/public/manifest.webmanifest
+founder-web/src/00-FOUNDER-TECH-RULE.md
 founder-web/src/AmbientStudio.tsx
 founder-web/src/App.tsx
 founder-web/src/Brand.tsx
@@ -174,6 +185,8 @@ founder-web/src/banned.ts
 founder-web/src/catalog.ts
 founder-web/src/cinema.css
 founder-web/src/city.ts
+founder-web/src/components/00-FOUNDER-TECH-RULE.md
+founder-web/src/components/ui/00-FOUNDER-TECH-RULE.md
 founder-web/src/components/ui/button.tsx
 founder-web/src/components/ui/switch.tsx
 founder-web/src/countries.ts
@@ -187,6 +200,7 @@ founder-web/src/devices.css
 founder-web/src/dx.css
 founder-web/src/flare_pure.ts
 founder-web/src/flare_sw.test.ts
+founder-web/src/fonts/00-FOUNDER-TECH-RULE.md
 founder-web/src/fonts/Inter-Bold.woff2
 founder-web/src/fonts/Inter-ExtraLight.woff2
 founder-web/src/fonts/Inter-Light.woff2
@@ -203,6 +217,7 @@ founder-web/src/kernel.worker.ts
 founder-web/src/lease.ts
 founder-web/src/lease_pure.test.ts
 founder-web/src/lease_pure.ts
+founder-web/src/lib/00-FOUNDER-TECH-RULE.md
 founder-web/src/lib/utils.ts
 founder-web/src/livefeed.test.ts
 founder-web/src/livefeed.ts
@@ -225,10 +240,12 @@ founder-web/src/session.ts
 founder-web/src/sessions_pure.test.ts
 founder-web/src/sessions_pure.ts
 founder-web/src/settingsS2.test.ts
+founder-web/src/signin/00-FOUNDER-TECH-RULE.md
 founder-web/src/signin/AuthCinema.tsx
 founder-web/src/signin/BrandLoader.tsx
 founder-web/src/signin/BrandMark.tsx
 founder-web/src/signin/awam.css
+founder-web/src/signin/ui/00-FOUNDER-TECH-RULE.md
 founder-web/src/signin/ui/button.tsx
 founder-web/src/signin/ui/checkbox.tsx
 founder-web/src/signin/ui/input.tsx
@@ -247,8 +264,10 @@ founder-web/src/ui.css
 founder-web/tsconfig.json
 founder-web/vite.config.ts
 server/founder/.gitignore
+server/founder/00-FOUNDER-TECH-RULE.md
 server/founder/Cargo.lock
 server/founder/Cargo.toml
+server/founder/src/00-FOUNDER-TECH-RULE.md
 server/founder/src/actions.rs
 server/founder/src/ambient.rs
 server/founder/src/anchors.rs
@@ -283,6 +302,7 @@ server/founder/src/signedcp.rs
 server/founder/src/signin.rs
 server/founder/src/tls256.rs
 server/founder/src/wt.rs
+server/founder/tests/00-FOUNDER-TECH-RULE.md
 server/founder/tests/e2e_exchange.py
 server/founder/tests/e2e_live_stream.py
 server/lib/founder-gate-core.ts

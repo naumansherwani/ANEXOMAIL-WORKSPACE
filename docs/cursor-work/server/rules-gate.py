@@ -209,6 +209,21 @@ rp = "docs/claude/RESUME-POINT.md"
 if (code_staged or "docs/cursor-work/DONE-DO-NOT-REPEAT.md" in staged) and rp not in staged:
     fail("RESUME POINT", "code or the DONE ledger changed but docs/claude/RESUME-POINT.md (where we stopped + tomorrow's order) is not in this commit")
 print("== " + TECH_RULE)
+
+# FOLDER RULE (founder 11 Nov 2026 17:27): the technology rule file sits at the top of EVERY folder; AUDIT COUNTER: the auto audit after every 3 phases.
+import importlib.util as _iu
+_spec = _iu.spec_from_file_location("frs", "docs/cursor-work/server/folder-rule-sync.py"); _frs = _iu.module_from_spec(_spec); _spec.loader.exec_module(_frs)
+_bad = _frs.main(check=True)
+if _bad:
+    fail("FOLDER RULE", f"{len(_bad)} folder(s) lack or have a stale 00-FOUNDER-TECH-RULE.md (run python3 docs/cursor-work/server/folder-rule-sync.py): {', '.join(_bad[:3])}")
+try:
+    _ac = json.load(open("docs/claude/AUDIT-COUNTER.json"))
+    if _ac["phases_since_audit"] > 3:
+        fail("AUDIT EVERY 3 PHASES", f"{_ac['phases_since_audit']} phases since the last audit: run the auto audit + loophole fix first (docs/claude/AUDIT-EVERY-3-PHASES.md)")
+    elif _ac["phases_since_audit"] == 3:
+        warn("AUDIT EVERY 3 PHASES", "3 phases since the last audit: the audit is DUE now, before the next phase")
+except FileNotFoundError:
+    fail("AUDIT EVERY 3 PHASES", "docs/claude/AUDIT-COUNTER.json is missing")
 for w in warns:
     print(w)
 for x in fails:

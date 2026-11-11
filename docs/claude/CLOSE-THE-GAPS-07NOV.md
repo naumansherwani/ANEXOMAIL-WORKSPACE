@@ -307,3 +307,4 @@ G2 is now the open item in progress.
 - 11 Nov 2026 04:35 PKT: K7 wire fix GREEN (live proof). Open: K8d (today), K7c (enforce), L-gsap, L-webgpu, M-moq, Q-pq-sign, Scene3D three types.
 - 11 Nov 2026 04:40 PKT (his 04:27 anger: I forgot the technology law again): re-audited tonight's K7 wire fix against the law and registered 2 OPEN gaps in TECH-LAW-GATE.json: K7-devicekey-fetch (K8d, 14 Nov, target TODAY) and K7-devicekey-pq (Q). K7 stays functionally green (live proof) but those two are open on the list, not hidden.
 - 11 Nov 2026 05:00 PKT OPEN: tomorrow = K7-devicekey-fetch (K8d) then K7-devicekey-pq (ML-DSA hybrid).
+- 11 Nov 2026 17:50 PKT OPEN: repo public (theft defence steps 1-4), D-series rows 4-7, K8d, ML-DSA hybrid.

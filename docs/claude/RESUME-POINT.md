@@ -15,7 +15,10 @@ LAST UPDATED: 11 Nov 2026 17:30 PKT. Per-phase technology status table: docs/cla
 - GAP 2 = K7-devicekey-pq: the device proof becomes post-quantum HYBRID (ML-DSA with the existing ECDSA P-256 proof; the DBSC cookie path stays ES256 because that is the browser standard). Technology first: research the current ML-DSA support (Rust crate + WebCrypto/WASM) and write the choice into tech-contracts/CURRENT.md BEFORE code.
 Only after both gaps are green does the order below continue.
 
-## TOMORROW'S ORDER (letter order never breaks)
+## TODAY'S ORDER (his 11 Nov 17:27: everything TODAY, no phase waits)
+0. GAP 1 K8d, GAP 2 ML-DSA hybrid. 1. D-series continues and COMPLETES today: order in the blueprint block 'D-SERIES (DEVICES & SESSIONS)' (policy touch + phone/tablet screenshots are his hands; geo file = his command; D4 live proof). 2. K7c enforce. 3. L, M, N..X, Q. EVERY 3 PHASES: auto audit + autofix + pull command (docs/claude/AUDIT-EVERY-3-PHASES.md, counter docs/claude/AUDIT-COUNTER.json). Repo is PUBLIC: docs/claude/REPO-THEFT-DEFENCE-11NOV.md (private + deploy key = his hands, steps A/B).
+
+## OLDER ORDER (letter order never breaks)
 1. FIX THE GAPS FIRST: K8d (contract already in tech-contracts/CURRENT.md: /wt/rpc in wt.rs through the same router gates; kernel rpc@1 in kernel.worker.ts/kernel.ts; wasm rebuild + version bump + pin sha; api.ts get/getOnce/post/put, devicekey.ts register, Surface.tsx on it; fetch = fallback only; lower TECH-RATCHET.json; flip K8d-api-not-fetch + K7-devicekey-fetch to ok). Then his founder-install, my live Chrome proof (network panel shows WebTransport, not fetch).
 2. K7c enforce (FOUNDER_DBSC=enforce) with rollback (founder.env.bak) after he confirms the Devices page shows his browser key.
 3. Then the next letters: L (Framer Motion + GSAP + WebGPU renderer, fix Scene3D three types), M (MoQ), N..V, X, Q (ML-DSA hybrid, OpenPGP PQC).
