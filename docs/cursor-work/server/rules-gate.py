@@ -177,6 +177,17 @@ for _f in _g2.glob("server/founder/src/**/*.rs", recursive=True):
         _t = _m.group(2) or _m.group(3)
         if ".." in _t.replace("../", "", 0) and os.path.normpath(os.path.join(os.path.dirname(_f), _t)).split(os.sep)[0] != "server":
             fail("SERVER SELF-CONTAINED", f"{_f}: {_t} reaches outside server/ (his server builds only the server/ folder), install would fail")
+
+# RULES-READ RECEIPT (founder 11 Nov 22:05): after a compaction Claude must have READ the rules + the phase technology; the proof is a fresh receipt written by rules-read.py (it prints them).
+# Missing / older than 2 h / protocol, contract, resume or gate file changed by someone else since = the COMMIT FAILS. (Files edited in THIS commit are fine: they are re-hashed by the next rules-read.py.)
+if "--staged" in sys.argv:
+    import json as _j3, time as _t3, hashlib as _h3
+    try:
+        _r = _j3.load(open(".git/rules-read-receipt.json"))
+        _age = _t3.time() - _r["time"]
+        if _age > 7200: fail("RULES NOT READ", "receipt is older than 2 hours: run python3 docs/cursor-work/server/rules-read.py and READ its output (RESUME-POINT, TECH-FIRST-PROTOCOL, CURRENT.md, open technologies)")
+    except Exception:
+        fail("RULES NOT READ", "no receipt: after a compaction or new chat run python3 docs/cursor-work/server/rules-read.py FIRST and READ its output; the phase technology in the blueprint is the founder's, not optional")
 import glob as _glob, subprocess as _sp
 def _raw_net():
     n = 0

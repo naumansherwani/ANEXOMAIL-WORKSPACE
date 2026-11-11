@@ -199,6 +199,7 @@ docs/cursor-work/server/pull-20260921-web.md
 docs/cursor-work/server/repo-capture-server.sh
 docs/cursor-work/server/repo-vs-server-audit.sh
 docs/cursor-work/server/rls-open-check.sh
+docs/cursor-work/server/rules-read.py
 docs/cursor-work/server/rust-auth-harden.sh
 docs/cursor-work/server/rust-calendar-install.sh
 docs/cursor-work/server/rust-cores-test.sh

@@ -616,6 +616,7 @@ docs/cursor-work/server/repo-capture-server.sh,awam,"awam deploy / brain scripts
 docs/cursor-work/server/repo-vs-server-audit.sh,awam,"awam deploy / brain scripts"
 docs/cursor-work/server/rls-open-check.sh,awam,"awam deploy / brain scripts"
 docs/cursor-work/server/rules-gate.py,shared,"deploy/gate tooling used by both"
+docs/cursor-work/server/rules-read.py,awam,"awam deploy / brain scripts"
 docs/cursor-work/server/rust-auth-harden.sh,awam,"awam deploy / brain scripts"
 docs/cursor-work/server/rust-calendar-install.sh,awam,"awam deploy / brain scripts"
 docs/cursor-work/server/rust-cores-test.sh,awam,"awam deploy / brain scripts"

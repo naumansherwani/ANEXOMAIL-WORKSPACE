@@ -29,3 +29,6 @@ rules-gate.py prints the TECH RULE as the first line of every run and appends it
 
 ## STATE AT WRITING (11 Nov 04:40)
 Open gaps: K8d (kernel RPC, today), K7-devicekey-fetch (14 Nov), K7-devicekey-pq (Q), L-gsap, L-webgpu, M-moq, Q-pq-sign. Current contract: docs/claude/tech-contracts/CURRENT.md (K8d).
+
+## GATE 4 RULES-READ RECEIPT (11 Nov 22:15)
+First command after every compaction: python3 docs/cursor-work/server/rules-read.py (prints and receipts the rules). rules-gate --staged FAILS the commit without a receipt younger than 2 h. Honest limit: a hook can be skipped with --no-verify; that is a breach of his law and must never be used.
