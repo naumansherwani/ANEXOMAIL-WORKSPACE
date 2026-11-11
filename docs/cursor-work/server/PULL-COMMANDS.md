@@ -20,3 +20,5 @@
 - 11 Nov 2026 19:20 PKT no new command; E160 sql-run still waits.
 
 - 11 Nov 2026 19:50 PKT E161 sql-run then founder-install (two lines, one at a time).
+
+- 11 Nov 2026 19:32 PKT next: founder-install.

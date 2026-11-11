@@ -159,4 +159,4 @@ HOW TO READ: number = the order; file = the SQL; CHECK = has a read-only proof f
 
 Numbers never used (no file): E1, E3, E4, E8, E9, E10, E11, E12, E16, E21, E25, E26, E29, E55.
 
-LATEST (11 Nov): E155 + E156 sessions, E157 policy step-up, E158 key attach, E159 DBSC chain fix, E160 key rotation is not theft (waits his sql-run). E161 DBSC heal (permanent ring fix, written 11 Nov 19:40, waits his sql-run). Next free number: E162.
+LATEST (11 Nov): E155 + E156 sessions, E157 policy step-up, E158 key attach, E159 DBSC chain fix, E160 key rotation is not theft (waits his sql-run). E161 DBSC heal (permanent ring fix, GREEN on his server 11 Nov 19:30). Next free number: E162.
