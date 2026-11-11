@@ -1065,3 +1065,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 19:10 PKT K8d ring: E160 written + tested locally (rotated key no longer spoof/drift). Not green until his ring is blue.
 
 - 11 Nov 2026 19:20 PKT SQL order E1-E160 written as one file (docs/claude/SQL-ORDER-E1-E160.md), pointers at the top of repo files. No SQL changed.
+
+- 11 Nov 2026 19:50 PKT K8d ring PERMANENT fix: refresh 403+fresh challenge, dead chip binding re-offered, E161 heal. Not green until the ring stays blue.

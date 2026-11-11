@@ -360,13 +360,14 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
             let did = r["device_id"].as_str().unwrap_or("");
             // K7 DBSC: a device that is bound to a TPM key must present the short-lived bound cookie to get a founder token (mode enforce); observe only records.
             let dev_hash = ftoken::device_hash(&b.device_id);
-            let mut bound = false; let mut has_key = false; let mut chip_bound = false;
+            let mut bound = false; let mut has_key = false; let mut chip_bound = false; let mut chip_live = false;
             let mut key_info: Option<(String, String)> = None; // (source, sha-256 of the public key): only when THIS exchange proved the key
             if st.dbsc != dbsc::Mode::Off {
                 let state = sb.rpc("founder_dbsc_device_state", json!({"p_uid": c.sub, "p_device_hash": dev_hash})).await;
                 let bound_sid = state.as_ref().filter(|v| v["bound"].as_bool() == Some(true)).and_then(|v| v["sid"].as_str().map(String::from));
                 bound = bound_sid.is_some();
                 chip_bound = bound && state.as_ref().and_then(|v| v["source"].as_str()) == Some("dbsc");
+                chip_live = dbsc::chip_alive(chip_bound, state.as_ref().and_then(|v| v["idle_s"].as_i64()));
                 let mut cookie_sid = dbsc::cookie_from(&h).and_then(|v| dbsc::check_cookie(&dbsc::subkey(&st.hmac_key, "cookie"), &v, now_s()));
                 // K7b: a device bound by a WebCrypto key shows a signed proof instead of the cookie (any browser, any phone)
                 if cookie_sid.is_none() && state.as_ref().and_then(|v| v["source"].as_str()) == Some("webcrypto") {
@@ -414,7 +415,7 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
             let req_key = B64.encode(sign::req_key(&st.hmac_key, &token));
             let mut resp = Json(json!({"token": token, "req_key": req_key, "exp": exp, "expires_in": ftoken::TTL_SECS, "device": r["label"], "first": r["first"].as_bool().unwrap_or(false),
                 "dk": {"mode": st.dbsc.as_str(), "bound": bound, "key": has_key, "chip": chip_bound}})).into_response();
-            if dbsc::offer_binding(st.dbsc, bound, has_key, chip_bound) { // an unbound device (or, in observe mode only, a bound one whose browser shows no live key: the old key session is replaced) is offered the binding; an unbound device is offered the binding; browsers without secure key storage simply ignore this header
+            if dbsc::offer_binding(st.dbsc, bound, has_key, chip_live) { // an unbound device (or, in observe mode only, a bound one whose browser shows no live key: the old key session is replaced) is offered the binding; an unbound device is offered the binding; browsers without secure key storage simply ignore this header
                 if let Some(v) = dbsc::registration_header(&dbsc::subkey(&st.hmac_key, "challenge"), &c.sub, &dev_hash, now_s()) { resp.headers_mut().insert("secure-session-registration", v); }
             }
             resp

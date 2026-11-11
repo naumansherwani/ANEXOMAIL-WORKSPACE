@@ -155,7 +155,8 @@ HOW TO READ: number = the order; file = the SQL; CHECK = has a read-only proof f
 | E158 | E158_founder_session_key_attach.sql | yes | K7 WIRE FIX: a founder session recorded without a device key gets its verified key ONCE later (`founder_session_key_attach`, none -> dbsc/webcrypto, never a swap; ledger  |
 | E159 | E159_founder_dbsc_chain_fix.sql | yes | DBSC ledger chain fix : E149 chose the chain head by `id` but ids are handed out BEFORE the lock, so two simultaneous events chained out of id order and `founder_dbsc_ver |
 | E160 | E160_founder_key_rotation_not_drift.sql | yes | Key rotation is not theft (his Devices ring stayed Alert): a device key registered through the authenticated binding path AFTER a session began no longer counts as `devic |
+| E161 | E161_founder_dbsc_heal.sql | yes | DBSC heal: device_state idle_s, key attach removes the two missing-key reasons when the key is proved later |
 
 Numbers never used (no file): E1, E3, E4, E8, E9, E10, E11, E12, E16, E21, E25, E26, E29, E55.
 
-LATEST (11 Nov): E155 + E156 sessions, E157 policy step-up, E158 key attach, E159 DBSC chain fix, E160 key rotation is not theft (waits his sql-run). Next free number: E161.
+LATEST (11 Nov): E155 + E156 sessions, E157 policy step-up, E158 key attach, E159 DBSC chain fix, E160 key rotation is not theft (waits his sql-run). E161 DBSC heal (permanent ring fix, written 11 Nov 19:40, waits his sql-run). Next free number: E162.

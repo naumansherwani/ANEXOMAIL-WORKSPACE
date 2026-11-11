@@ -2947,3 +2947,6 @@ E160 written (key rotation is not theft). Waits his sql-run, then sign out both 
 
 ## RESUME HERE (11 Nov 2026 19:20 PKT)
 SQL order file written. Still waiting his sql-run for E160, then sign-out of both sessions + sign in, ring check.
+
+## RESUME HERE (11 Nov 2026 19:50 PKT)
+Permanent ring fix written (E161 + dbsc.rs). Waits his sql-run + founder-install + sign out/in; watch ring through 2 DBSC cycles.

@@ -185,9 +185,12 @@ pub fn verify_proof(jwt: &str, path: &str, stored: Option<&[u8]>, dev_hash: &str
 pub enum Decision { Allow, AllowWould(&'static str), Block(&'static str) }
 /// K7 wire fix: the registration header goes to a device with no binding, and in OBSERVE mode also to a bound device whose browser showed no live key this time (its old session is
 /// replaced, so the Trust seal's Device key becomes real). Never in enforce: there a stolen token could otherwise re-bind a device to the thief's key.
-/// 11 Nov 18:20 fix (his ring turned Alert): a device bound by a secure-chip key (`chip`) is NEVER re-offered a new key. Every re-offer replaced the binding, so the key fingerprint of a live session no longer matched
-/// at its next exchange (device_key_changed, x9 and rising). The chip's own refresh keeps its cookie alive; a lost chip key is a founder decision (revoke the binding), never a silent re-bind.
-pub fn offer_binding(mode: Mode, bound: bool, has_key: bool, chip: bool) -> bool { mode != Mode::Off && (!bound || (mode == Mode::Observe && !has_key && !chip)) }
+/// 11 Nov 19:45: a device bound by a LIVE secure-chip key (`chip_alive`) is NEVER re-offered a new key (every re-offer replaced the binding = churn). A chip binding that has been silent for
+/// `CHIP_DEAD_S` (Chrome ended its DBSC session after a 4xx, cookie gone for good) is NOT alive: in observe mode it is offered a fresh registration, so the device heals by itself. Enforce never re-offers.
+pub const CHIP_DEAD_S: i64 = 1200;
+pub fn offer_binding(mode: Mode, bound: bool, has_key: bool, chip_alive: bool) -> bool { mode != Mode::Off && (!bound || (mode == Mode::Observe && !has_key && !chip_alive)) }
+/// Pure: is this chip binding alive? (`idle_s` = seconds since it last refreshed or was made; unknown = alive, never a surprise re-bind.)
+pub fn chip_alive(is_chip: bool, idle_s: Option<i64>) -> bool { is_chip && idle_s.map_or(true, |s| s < CHIP_DEAD_S) }
 
 pub fn gate_exchange(mode: Mode, bound_sid: Option<&str>, cookie_sid: Option<&str>) -> Decision {
     let Some(bound) = bound_sid else { return Decision::Allow };   // unbound device (phone, Firefox, Safari): never blocked
@@ -238,6 +241,15 @@ pub async fn start_ep(State(st): State<crate::S>, h: HeaderMap) -> Response {
 
 fn uuid_like(s: &str) -> Result<String, ()> { if s.len() == 36 && s.bytes().all(|b| b.is_ascii_hexdigit() || b == b'-') { Ok(s.to_string()) } else { Err(()) } }
 
+/// 403 + a FRESH refresh challenge. 11 Nov 19:25: Chrome ends a DBSC session for good on any other 4xx (a 400 on refresh = no cookie ever again until a new registration), so every
+/// refusal that a new challenge can cure (expired, cached, other session) answers THIS, never 400. Chrome retries once with the new challenge.
+fn challenge_403(ck: &[u8], sid: &str, now: i64) -> Response {
+    let Some(ch) = mint_challenge(ck, 'f', sid, "", now) else { return err(StatusCode::INTERNAL_SERVER_ERROR, "no challenge") };
+    let mut r = err(StatusCode::FORBIDDEN, "challenge");
+    if let Ok(v) = HeaderValue::from_str(&format!("\"{ch}\";id=\"{sid}\"")) { r.headers_mut().insert("secure-session-challenge", v); }
+    r
+}
+
 /// POST /founder/v1/dbsc/refresh — 403 + challenge, then verify the signed answer against the STORED key and hand out a fresh cookie.
 pub async fn refresh_ep(State(st): State<crate::S>, h: HeaderMap) -> Response {
     if st.dbsc == Mode::Off { return StatusCode::NOT_FOUND.into_response(); }
@@ -247,20 +259,15 @@ pub async fn refresh_ep(State(st): State<crate::S>, h: HeaderMap) -> Response {
     if s["found"].as_bool() != Some(true) || s["revoked"].as_bool() == Some(true) { return err(StatusCode::BAD_REQUEST, "unknown or ended session"); }
     let (ck, cookie_key, now) = (subkey(&st.hmac_key, "challenge"), subkey(&st.hmac_key, "cookie"), now_s());
     let uid = s["uid"].as_str().unwrap_or("").to_string();
-    let Some(jwt) = hv(&h, "secure-session-response") else {
-        let Some(ch) = mint_challenge(&ck, 'f', &sid, "", now) else { return err(StatusCode::INTERNAL_SERVER_ERROR, "no challenge") };
-        let mut r = err(StatusCode::FORBIDDEN, "challenge");
-        if let Ok(v) = HeaderValue::from_str(&format!("\"{ch}\";id=\"{sid}\"")) { r.headers_mut().insert("secure-session-challenge", v); }
-        return r;
-    };
+    let Some(jwt) = hv(&h, "secure-session-response") else { return challenge_403(&ck, &sid, now) };
     let log = |kind: &'static str, why: &'static str| { let (sb, uid, sid) = (sb.clone(), uid.clone(), sid.clone()); tokio::spawn(async move { let _ = sb.rpc("founder_dbsc_event", json!({"p_uid": uid, "p_sid": sid, "p_kind": kind, "p_facts": {"why": why}})).await; }); };
     let Some(jti) = peek_jti(jwt) else { log("reject_challenge", "malformed"); return err(StatusCode::BAD_REQUEST, "malformed proof") };
     match check_challenge(&ck, &jti, 'f', now) {
         Ok(c) if c.a == sid => {}
-        Ok(_) => { log("reject_challenge", "other_session"); return err(StatusCode::BAD_REQUEST, "challenge refused") }
-        Err(DErr::Expired) => { log("reject_challenge", "expired"); return err(StatusCode::BAD_REQUEST, "challenge refused") }
-        Err(DErr::Challenge) => { log("reject_challenge", "bad_mac"); return err(StatusCode::BAD_REQUEST, "challenge refused") }
-        Err(_) => { log("reject_challenge", "bad_or_expired"); return err(StatusCode::BAD_REQUEST, "challenge refused") }
+        Ok(_) => { log("reject_challenge", "other_session"); return challenge_403(&ck, &sid, now) }
+        Err(DErr::Expired) => { log("reject_challenge", "expired"); return challenge_403(&ck, &sid, now) }
+        Err(DErr::Challenge) => { log("reject_challenge", "bad_mac"); return challenge_403(&ck, &sid, now) }
+        Err(_) => { log("reject_challenge", "bad_or_expired"); return challenge_403(&ck, &sid, now) }
     }
     let stored = hex::decode(s["pub"].as_str().unwrap_or("")).unwrap_or_default();
     if verify_refresh(jwt, &jti, &stored, now).is_err() { log("reject_signature", "bad_proof"); return err(StatusCode::BAD_REQUEST, "proof refused"); }
@@ -415,7 +422,10 @@ mod tests {
     fn binding_is_reoffered_only_in_observe_to_a_keyless_bound_device() {
         assert!(offer_binding(Mode::Observe, false, false, false) && offer_binding(Mode::Observe, true, false, false) && !offer_binding(Mode::Observe, true, true, false));
         assert!(offer_binding(Mode::Enforce, false, false, false) && !offer_binding(Mode::Enforce, true, false, false) && !offer_binding(Mode::Off, false, false, false));
-        assert!(!offer_binding(Mode::Observe, true, false, true), "a chip-bound device keeps its key: no re-offer, no fingerprint churn");
+        assert!(!offer_binding(Mode::Observe, true, false, true), "a LIVE chip-bound device keeps its key: no re-offer, no fingerprint churn");
+        assert!(offer_binding(Mode::Observe, true, false, chip_alive(true, Some(CHIP_DEAD_S + 1))), "a chip binding silent for 20 min is dead: it is offered a new registration");
+        assert!(!offer_binding(Mode::Observe, true, false, chip_alive(true, Some(30))) && !offer_binding(Mode::Observe, true, false, chip_alive(true, None)));
+        assert!(!offer_binding(Mode::Enforce, true, false, false), "enforce never re-offers");
         assert!(offer_binding(Mode::Observe, false, false, true), "an unbound device is still offered the binding");
     }
 
