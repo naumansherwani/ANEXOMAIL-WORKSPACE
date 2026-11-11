@@ -1882,4 +1882,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 04:50 PKT WRITTEN: docs/claude/RESUME-POINT.md + gate 4 (RESUME POINT). Do not rewrite; update the file at every step.
 - 11 Nov 2026 04:55 PKT WRITTEN: TECH_RULE constant in rules-gate.py: printed first on every run and appended to every fail and warning (his 04:39). TECH-FIRST-PROTOCOL updated.
 - 11 Nov 2026 05:00 PKT: RESUME-POINT + CURRENT.md now say: tomorrow starts with GAP 1 (K8d fetch) and GAP 2 (ML-DSA hybrid device proof). Not green, not coded.
-- 11 Nov 2026 17:30 PKT WRITTEN: FOUNDER-PHASES-TECH-STATUS-11NOV.md (order + TECH-GREEN vs BEHAVIOUR-GREEN). Docs only.
+- 11 Nov 2026 17:30 PKT WRITTEN: FOUNDER-PHASES-TECH-STATUS-11NOV.md (order + technology status per phase). Docs only, TECH-LAW CHECKED, no phase turned green.
+- 11 Nov 2026 17:40 PKT: my 17:30 commit went in with 3 gate FAILs (the gate was a script, not a hook): fixed now + .git/hooks/pre-commit installed (copy at docs/cursor-work/server/pre-commit.hook; a new clone runs: cp docs/cursor-work/server/pre-commit.hook .git/hooks/pre-commit). TECH-LAW CHECKED.

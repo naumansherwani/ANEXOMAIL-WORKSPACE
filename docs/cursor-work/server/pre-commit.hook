@@ -1,0 +1,6 @@
+#!/bin/sh
+# founder 11 Nov 2026: the gate is a HOOK, a failing gate blocks the commit (docs/claude/TECH-FIRST-PROTOCOL.md)
+python3 docs/cursor-work/server/rules-gate.py --staged > /tmp/rules-gate.out 2>&1
+rc=$?
+grep -E "^FAIL|rules-gate:" /tmp/rules-gate.out
+exit $rc

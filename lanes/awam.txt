@@ -177,6 +177,7 @@ docs/cursor-work/server/polar-nonroot-install.sh
 docs/cursor-work/server/polar-product-ids-update.sh
 docs/cursor-work/server/polar-secrets-install.sh
 docs/cursor-work/server/polar-secrets-proof.py
+docs/cursor-work/server/pre-commit.hook
 docs/cursor-work/server/pro-second-user.sh
 docs/cursor-work/server/pro-team-probe.sh
 docs/cursor-work/server/pull-20260921-web.md

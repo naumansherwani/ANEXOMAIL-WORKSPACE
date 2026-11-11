@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 7e3f58397354e64d
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 00307d04c8e77491
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 94f0d7313b585f55
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -1188,12 +1188,12 @@ founder-web/src/passkey_pure.ts 18c84406d0b26eb9
 server/founder/src/passkey.rs fc1644aca0233454
 server/rust/j3_action_vectors.json d90c898ebb69d9ea
 web-wasm/src/action.rs eda7722b529a2887
-lanes/ALL-FILES.csv 8911a72ed9f3ed53
-lanes/awam.txt 56436d01757dc2a7
-lanes/docs.txt b8d0f485014cf4fa
+lanes/ALL-FILES.csv 5f3f4685ea5f3da1
+lanes/awam.txt 73fd108cc3016ab9
+lanes/docs.txt ab9e8fe94cef187b
 lanes/founder.txt 61cd510e825c1e7f
 lanes/shared.txt ac603063d8560876
-lovable-gold/README.md 745d72c5a8aeea48
+lovable-gold/README.md a277b23634a77112
 docs/claude/FOUNDER-FLARE-J6-RESEARCH-03NOV.md 5e65d9f84cbbc643
 docs/cursor-work/sql/CHECK_E140.sql 0aa343c84820214f
 docs/cursor-work/sql/E140_founder_flare_push.sql 3c95ae9963ebd5bf

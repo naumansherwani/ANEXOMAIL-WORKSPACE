@@ -31,3 +31,4 @@ ONE build, same code on all four, only the layout flexes. No phase is green unti
 AGENTS.md (Rules 1-73), docs/claude/founder/CODES/00-README-RULES.md (FC1-FC42), docs/claude/BLUEPRINT-ABC-01NOV.md (TECH LAW cell per phase), docs/claude/TECH-LAW-GATE.json, docs/claude/FOUNDER-TECH-AUDIT-11NOV.md, docs/claude/FOUNDER-FILE-AUDIT-11NOV.md, docs/claude/FOUNDER-UI-WOW-RULES-11NOV.md, docs/cursor-work/founder/founder-commands.md, PULL-COMMANDS.md. Server law: PORTS RED LINE (docs/claude/SERVER-PORTS-RED-LINE-08NOV.md), Caddy law, one server command at a time, one line, no quotes; SQL only via sql-run.sh (never the Supabase dashboard: it clips long lines).
 
 ## PENDING SERVER COMMANDS: none (everything above is installed). The next command arrives with K8d.
+- hook installed 11 Nov 17:40 PKT (pre-commit: a failing gate blocks the commit).
