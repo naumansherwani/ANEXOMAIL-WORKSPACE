@@ -75,6 +75,8 @@ export async function proofKeyReady(): Promise<boolean> {
   try { if (window.localStorage.getItem(PK_FLAG) !== "1") return false; } catch { return false; }
   const k = await existing(); return hasPq(k);
 }
+/** The server says it HAS this device's proof key and this browser holds a hybrid pair: remember it (a registration whose answer was lost, or made from another path, must not leave the exchange on fetch for ever). */
+export async function proofKeyMark(): Promise<void> { const k = await existing(); if (hasPq(k)) { try { window.localStorage.setItem(PK_FLAG, "1"); } catch { /* hint only */ } } }
 export const proofKeyForget = () => { try { window.localStorage.removeItem(PK_FLAG); } catch { /* storage blocked: the flag is only a hint */ } };
 /** Make the hybrid pair (once) and register its public halves. Never throws into the page. false = not registered (no ML-DSA in this browser, a key already exists server side, or the call failed). */
 export async function registerProofKey(deviceId: string, sessionToken: string, send: Send): Promise<boolean> {

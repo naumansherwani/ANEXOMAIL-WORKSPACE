@@ -982,3 +982,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 22:15 PKT gate-only change, nothing to install on his server.
 
 - 11 Nov 2026 23:30 PKT re-run: 1: founder-install (vector file fix) 2: CHECK_DRIFT_NOW; awam pull separate. Number is NOT typed into the shell.
+
+- 11 Nov 2026 23:58 PKT 1: founder-install (3 loophole fixes, new SPA) 2: CHECK_DRIFT_NOW; awam pull optional (only pull.sh change). Paste the command only, no number.

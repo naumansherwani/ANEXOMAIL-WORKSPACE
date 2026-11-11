@@ -1,7 +1,7 @@
 // Founder API (same origin). The existing sign-in is the ONLY login (Rule 68); this file never stores or copies its token.
 // F1a: the session token is exchanged ONCE per 15 minutes for a founder token (aud=anexo-founder, device-bound) which lives in MEMORY only.
 // If the server has no token service yet (install pending), calls fall back to the session token and the page says so plainly.
-import { verifyBody, kernelRpc, rpcAvailable } from "./kernel";
+import { verifyBody, kernelRpc, rpcAvailable, kernelRpcStart } from "./kernel";
 import { KERNEL } from "./kernel.pin";
 // D2b: the kernel build this browser runs travels with every founder request, so Devices & Sessions can see a build change inside one session (a claim, never proof).
 const KV = { "x-founder-kernel": KERNEL.version } as const;
@@ -96,7 +96,9 @@ async function exchange(again = true): Promise<string | null> {
   // K8d-S4: once this device holds a hybrid PROOF KEY (ES256 + ML-DSA-65, beside its chip key) the exchange goes over the KERNEL (WebTransport). fetch stays ONLY for the bootstrap of a new
   // device / the DBSC chip registration (browser HTTP stack, by spec) and as the fallback when the kernel is down or the chip needs a browser re-registration.
   const viaFetch = () => fetch("/founder/v1/exchange", { ...init(), cache: "no-store" } as RequestInit);
-  const kernelFirst = !!proof && (await dk.proofKeyReady().catch(() => false)) && rpcAvailable();
+  const ready = !!proof && (await dk.proofKeyReady().catch(() => false));
+  if (ready && !rpcAvailable()) await kernelRpcStart(3000).catch(() => false);   // the kernel session is still opening at page start: wait for it (3 s at most) instead of silently taking fetch
+  const kernelFirst = ready && rpcAvailable();
   try {
     r = kernelFirst ? await net("/founder/v1/exchange", init()).catch(() => viaFetch()) : await viaFetch();
     if (kernelFirst && (r.status === 404 || r.status === 502 || r.status === 503 || (r.status === 401 && (await r.clone().json().catch(() => ({}))).error === "dbsc_required"))) r = await viaFetch();
@@ -106,6 +108,7 @@ async function exchange(again = true): Promise<string | null> {
   let j: any = {}; try { j = await r.json(); } catch {}
   if (r.status === 200 && j.dk) psrc = typeof j.dk.psrc === "string" ? j.dk.psrc : "";
   const pqOk = await dk.hybridCapable().catch(() => false);   // S3b: WebCrypto ML-DSA or the kernel fallback
+  if (r.status === 200 && j.dk && j.dk.proof === true) void dk.proofKeyMark();   // the server has the key: make sure this browser knows
   if (r.status === 200 && j.dk && j.dk.proof === false) dk.proofKeyForget();   // the server has no proof key for this device: the local flag is stale
   if (r.status === 200 && j.token && pqOk && j.dk && j.dk.mode !== "off" && j.dk.proof === false && !proofTried) { proofTried = true; void dk.registerProofKey(id, t, net); }   // next exchange goes over the kernel
   if (r.status === 200 && j.token && shouldRegister(j.dk, pqOk) && !keyTried) { keyTried = true; void dk.register(id, t, net, pqOk && j.dk?.pq === false).then((ok) => { if (ok) forget(); }); }   // E158: once the key is registered, the next call re-exchanges WITH the proof so the session row gets its key; K7b: an unbound device binds; K7 wire fix: a bound device that proved no key this time re-binds (any browser, any phone); fire and forget

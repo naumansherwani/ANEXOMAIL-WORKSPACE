@@ -8,7 +8,7 @@
 //!   request  = one JSON line `{"m":"GET|POST|PUT","p":"/founder/v1/...","h":{"authorization":"Bearer ..",...}}` + LF + the raw body bytes (stream end = request end)
 //!   response = `S <status> <content-type>` + LF + the raw body bytes (stream end = response end)
 //! Security shape (no loophole):
-//! - Path must be `/founder/v1/...`, plain characters only, no `..`, no `//`, no `#`; never `/founder/v1/live/stream` (own WebTransport path), never `/founder/v1/dbsc/` (Chrome calls those itself).
+//! - Path must be `/founder/v1/...`, plain characters only, no `..`, no `//`, no `#`; never `/founder/v1/live/stream` (own WebTransport path), never `/founder/v1/dbsc/start` or `/dbsc/refresh` (Chrome calls those itself with its own cookie); `/dbsc/status` is an ordinary signed read and DOES go over the kernel (11 Nov 23:50: the old whole-prefix refusal made the Device-bound sessions card show HTTP 404).
 //!   `/founder/v1/exchange` IS allowed since K8d-S4 (11 Nov 21:40): a device with a hybrid PROOF KEY (ES256 + ML-DSA-65, E164) proves itself with a signed proof instead of the cookie; the DBSC
 //!   chip stays in the loop because the server also requires the chip to be alive. Every call that arrives here carries the request EXTENSION `WtCall` (set by this file only, never a header,
 //!   so no client can forge it), which is how the exchange knows it came over the kernel.
@@ -25,7 +25,7 @@ pub const MAX_REQ: usize = 1 << 20;
 pub const MAX_RESP: usize = 8 << 20;
 const MAX_HEAD: usize = 16384;
 /// The hybrid device proof (ES256 + ML-DSA-65 signature) is about 5 KB; every other header stays small.
-const MAX_PROOF: usize = 8192;
+const MAX_PROOF: usize = 12288;   // = dbsc.rs parse_jwt limit: a hybrid REGISTRATION proof (ES256 + ML-DSA-65 key + signature) is ~8.5 KB; 8192 refused it live (11 Nov 23:50)
 /// Marker stamped into the request EXTENSIONS of every call that came over the WebTransport kernel path.
 #[derive(Clone, Copy, Debug)]
 pub struct WtCall;
@@ -37,7 +37,7 @@ const ALLOW: &[&str] = &["authorization", "content-type", "accept", "x-fo-ts", "
 fn path_ok(p: &str) -> bool {
     p.len() <= 1024 && p.starts_with("/founder/v1/") && !p.contains("..") && !p.contains("//") && !p.contains('#')
         && p.bytes().all(|b| b.is_ascii_alphanumeric() || b"/_-.?=&%:~,+".contains(&b))
-        && !p.starts_with("/founder/v1/live/stream") && !p.starts_with("/founder/v1/dbsc/")
+        && !p.starts_with("/founder/v1/live/stream") && !p.starts_with("/founder/v1/dbsc/start") && !p.starts_with("/founder/v1/dbsc/refresh")
 }
 
 /// Pure: bytes of one stream -> the request the router will see. Err = the HTTP status to answer.
@@ -156,6 +156,18 @@ mod tests {
         }
     }
     #[test]
+    fn a_hybrid_registration_proof_of_8_5_kb_passes_and_a_giant_one_does_not() {
+        let ok = format!(r#"{{"m":"POST","p":"/founder/v1/proofkey/register","h":{{"authorization":"Bearer t","x-device-proof":"{}"}}}}"#, "a".repeat(8600));
+        assert!(p(&ok, b"{}").is_ok(), "the real registration proof is 8525 bytes");
+        let big = format!(r#"{{"m":"POST","p":"/founder/v1/proofkey/register","h":{{"x-device-proof":"{}"}}}}"#, "a".repeat(12300));
+        assert_eq!(p(&big, b"{}").err(), Some(400));
+    }
+    #[test]
+    fn the_dbsc_status_read_goes_over_the_kernel_but_chromes_own_start_and_refresh_never_do() {
+        assert!(p(r#"{"m":"GET","p":"/founder/v1/dbsc/status"}"#, b"").is_ok(), "the board's status read must not 404 over the kernel");
+        for bad in ["/founder/v1/dbsc/start", "/founder/v1/dbsc/refresh", "/founder/v1/dbsc/refresh?x=1"] { assert_eq!(p(&format!(r#"{{"m":"POST","p":"{bad}"}}"#), b"").err(), Some(404), "{bad}"); }
+    }
+    #[test]
     fn the_exchange_may_come_over_the_kernel_and_is_marked_so_but_only_by_the_server() {
         let r = p(r#"{"m":"POST","p":"/founder/v1/exchange","h":{"authorization":"Bearer t","x-device-proof":"a.b.c.d","x-wt-call":"1"}}"#, b"{}").unwrap();
         assert!(r.extensions().get::<WtCall>().is_some(), "the server stamps the kernel marker");
@@ -163,7 +175,7 @@ mod tests {
         let big = "A".repeat(6000);
         assert!(p(&format!(r#"{{"m":"POST","p":"/founder/v1/exchange","h":{{"x-device-proof":"{big}"}}}}"#), b"{}").is_ok(), "a hybrid proof (~5 KB) fits");
         assert_eq!(p(&format!(r#"{{"m":"POST","p":"/founder/v1/exchange","h":{{"authorization":"{big}"}}}}"#), b"{}").err(), Some(400), "every other header stays at 4 KB");
-        assert_eq!(p(&format!(r#"{{"m":"POST","p":"/founder/v1/exchange","h":{{"x-device-proof":"{}"}}}}"#, "A".repeat(9000)), b"{}").err(), Some(400), "even the proof has a cap");
+        assert_eq!(p(&format!(r#"{{"m":"POST","p":"/founder/v1/exchange","h":{{"x-device-proof":"{}"}}}}"#, "A".repeat(13000)), b"{}").err(), Some(400), "even the proof has a cap");
     }
     #[test]
     fn methods_bodies_and_shapes_are_checked() {

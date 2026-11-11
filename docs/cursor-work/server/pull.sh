@@ -94,6 +94,7 @@ d="$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 "http://127.0.0.1:3000/
 same=0; differ=0; missing=0; dl=()
 while IFS= read -r -d '' rec; do
   meta="${rec%%$'\t'*}"; path="${rec#*$'\t'}"; want="${meta##* }"
+  case "$path" in *.md) continue;; esac   # rule/readme files are repo-only, never synced: not part of the server==repo proof (11 Nov: 38 false MISSING lines)
   if [ ! -f "$path" ]; then missing=$((missing + 1)); dl+=("MISSING $path"); continue; fi
   if [ "$(git hash-object -- "$path" 2>/dev/null </dev/null)" = "$want" ]; then same=$((same + 1)); else differ=$((differ + 1)); dl+=("DIFF    $path"); fi
 done < <(git ls-tree -r -z origin/main -- src </dev/null)
