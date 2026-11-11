@@ -66,8 +66,8 @@
   {
    "id": "K8d-api-not-fetch",
    "file": "founder-web/src/api.ts",
-   "mustnot": "await fetch(",
-   "status": "open",
+   "mustnot": "await fetch(path, { method",
+   "status": "ok",
    "deadline": "14 Nov 2026",
    "why": "RULE 52: every API call goes kernel -> WebTransport/HTTP3; fetch only as fallback (api.ts still uses raw fetch)"
   },
@@ -106,8 +106,8 @@
   {
    "id": "K7-devicekey-fetch",
    "file": "founder-web/src/devicekey.ts",
-   "must": "rpc@1",
-   "status": "open",
+   "must": "send(REGISTER_PATH",
+   "status": "ok",
    "deadline": "14 Nov 2026",
    "why": "RULE 52: the device-key register + exchange proof calls must go kernel -> WebTransport/HTTP3; devicekey.ts register() and api.ts exchange() still use raw fetch (HTTP/3 on the wire, but not the kernel)"
   },

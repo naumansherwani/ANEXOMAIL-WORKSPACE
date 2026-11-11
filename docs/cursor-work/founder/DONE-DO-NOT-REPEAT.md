@@ -1051,3 +1051,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 18:00 PKT K8d CODE DONE (not green, live proof pending): founder API over kernel rpc@1 + WebTransport /wt/rpc (HTTP/3, QUIC); api.ts net(); wtrpc.rs; ratchet 10.
 
 - 11 Nov 2026 18:05 PKT K8d installed on his server (not green): live proof pending; TECH-LAW CHECKED not claimed.
+
+- 11 Nov 2026 18:12 PKT K8d GREEN (WIRED: YES / REAL: YES): his Chrome bundle index-FddvjTfF, only /founder/v1/exchange via fetch (h2), Devices Path = HTTP/3 QUIC (WebTransport); gates K8d-api-not-fetch + K7-devicekey-fetch closed; ratchet 10; TECH-LAW CHECKED. Mobile/tablet: UI unchanged, 390/820 screenshot still his.

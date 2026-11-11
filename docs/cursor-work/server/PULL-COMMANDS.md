@@ -4,3 +4,5 @@
 - 11 Nov 2026 18:00 PKT K8d: founder-install (Rust + SPA): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -15
 
 - 11 Nov 2026 18:05 PKT K8d verify (read-only): journalctl -u anexomail-founder --since "5 min ago" --no-pager | grep -i "WebTransport RPC"
+
+- 11 Nov 2026 18:12 PKT K8d green, no new install needed. (verify line without quotes: journalctl -u anexomail-founder -n 300 --no-pager | grep -i WebTransport)

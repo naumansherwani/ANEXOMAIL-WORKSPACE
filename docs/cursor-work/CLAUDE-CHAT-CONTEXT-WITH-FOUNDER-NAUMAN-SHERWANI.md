@@ -2926,3 +2926,6 @@ K8d code done: browser net() + server /wt/rpc. Next: his founder-install, live C
 
 ## RESUME HERE (11 Nov 2026 18:05 PKT)
 K8d INSTALLED on his server (founder-install OK). Live proof open. Snapshot of rules/tech/mobile in docs/claude/RESUME-POINT.md COMPACTION SNAPSHOT.
+
+## RESUME HERE (11 Nov 2026 18:12 PKT)
+K8d GREEN live-proven. Next GAP 2 ML-DSA hybrid (research crate + browser support in CURRENT.md first), then D-series, K7c, L.
