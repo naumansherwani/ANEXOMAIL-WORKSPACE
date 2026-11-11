@@ -158,6 +158,7 @@ HOW TO READ: number = the order; file = the SQL; CHECK = has a read-only proof f
 | E161 | E161_founder_dbsc_heal.sql | yes | DBSC heal: device_state idle_s, key attach removes the two missing-key reasons when the key is proved later |
 | E162 | E162_founder_dbsc_hybrid_pq.sql | yes (CHECK_E162) | HYBRID device key (ML-DSA-65 + ECDSA): pq_pub column (immutable), register_pq door with NO DOWNGRADE, device_state returns pq, event kind reject_downgrade |
 | E163 | E163_founder_dbsc_selftest162_fix.sql | yes (CHECK_E162) | fixes only the E162 selftest (revoke_reason must be an allowed value; his server had a live chip binding) |
+| E164 | E164_founder_device_proofkeys.sql | yes (CHECK_E164) | hybrid proof key store beside the DBSC chip: get / register (replace only with chip alive) / use (nonce once); revoked device = inert key |
 
 Numbers never used (no file): E1, E3, E4, E8, E9, E10, E11, E12, E16, E21, E25, E26, E29, E55.
 

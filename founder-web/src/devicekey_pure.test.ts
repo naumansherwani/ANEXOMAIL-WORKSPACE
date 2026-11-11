@@ -72,3 +72,17 @@ describe("GAP 2 hybrid proof (ML-DSA-65 + ES256), the shape mldsa.rs / dbsc.rs v
     expect(shouldRegister({ mode: "observe", bound: true, key: true, chip: true, pq: false }, true)).toBe(false);
   });
 });
+
+describe("K8d-S4 proof key registration proof", () => {
+  test("a proof-key proof names its own route, declares BOTH public keys, and refuses to be made without the ML-DSA half", async () => {
+    const kp = await pair(); const jwk = publicJwk(await crypto.subtle.exportKey("jwk", kp.publicKey));
+    const pq = { pk: new Uint8Array(1952).fill(5), sign: async () => new Uint8Array(3309).fill(1) };
+    const t = await makeProof({ kind: "proofkey", origin: "https://f.example.com", deviceHash: "b".repeat(64), jwk, sign: signer(kp.privateKey), pq });
+    const seg = t.split("."); expect(seg.length).toBe(4);
+    expect(JSON.parse(b64d(seg[0]).toString()).jwk).toEqual(jwk);
+    const pay = JSON.parse(b64d(seg[1]).toString());
+    expect(pay.aud).toBe("https://f.example.com/founder/v1/proofkey/register"); expect(pay.pq.alg).toBe("ML-DSA-65");
+    await expect(makeProof({ kind: "proofkey", origin: "https://f", deviceHash: "a", jwk, sign: signer(kp.privateKey) })).rejects.toThrow();
+    await expect(makeProof({ kind: "proofkey", origin: "https://f", deviceHash: "a", sign: signer(kp.privateKey), pq })).rejects.toThrow();
+  });
+});

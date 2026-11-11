@@ -3,6 +3,7 @@
 // The signature is raw r||s (WebCrypto ECDSA output = what ring's ECDSA_P256_SHA256_FIXED verifies). The private key is a non-extractable CryptoKey: nothing here can read it.
 export const REGISTER_PATH = "/founder/v1/devicekey/register";
 export const EXCHANGE_PATH = "/founder/v1/exchange";
+export const PROOFKEY_PATH = "/founder/v1/proofkey/register";
 
 export const b64u = (b: Uint8Array): string => { let s = ""; for (const x of b) s += String.fromCharCode(x); return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); };
 export const b64uText = (t: string): string => b64u(new TextEncoder().encode(t));
@@ -23,13 +24,15 @@ export type Signer = (data: Uint8Array) => Promise<Uint8Array>;
 /** GAP 2: the ML-DSA-65 half of the hybrid proof. `context` must equal mldsa.rs CTX; sizes are FIPS 204 ML-DSA-65 (public key 1952, signature 3309). */
 export const PQ_ALG = "ML-DSA-65", PQ_CONTEXT = "anexo-founder-device-proof-v1", PQ_PK_LEN = 1952, PQ_SIG_LEN = 3309;
 export type PqHalf = { pk: Uint8Array; sign: Signer };
-export async function makeProof(o: { kind: "register" | "exchange"; origin: string; deviceHash: string; jwk?: PublicJwk; sign: Signer; pq?: PqHalf; now?: number; jtiNonce?: string }): Promise<string> {
-  if (o.kind === "register" && !o.jwk) throw new Error("registration needs the public key");
-  const path = o.kind === "register" ? REGISTER_PATH : EXCHANGE_PATH;
-  const header = { alg: "ES256", typ: "dbsc+jwt", ...(o.kind === "register" ? { jwk: o.jwk } : {}) };
+export async function makeProof(o: { kind: "register" | "exchange" | "proofkey"; origin: string; deviceHash: string; jwk?: PublicJwk; sign: Signer; pq?: PqHalf; now?: number; jtiNonce?: string }): Promise<string> {
+  const declares = o.kind === "register" || o.kind === "proofkey";   // these two carry the public key(s); the exchange never does
+  if (declares && !o.jwk) throw new Error("registration needs the public key");
+  if (o.kind === "proofkey" && !o.pq) throw new Error("a proof key is hybrid: the ML-DSA half is mandatory");
+  const path = o.kind === "register" ? REGISTER_PATH : o.kind === "proofkey" ? PROOFKEY_PATH : EXCHANGE_PATH;
+  const header = { alg: "ES256", typ: "dbsc+jwt", ...(declares ? { jwk: o.jwk } : {}) };
   if (o.pq && o.pq.pk.length !== PQ_PK_LEN) throw new Error("not an ML-DSA-65 public key");
   // registration declares the ML-DSA public key INSIDE the ES256-signed payload; the exchange never carries it (the server uses the stored one)
-  const payload = { jti: o.jtiNonce ?? nonce(), iat: Math.floor((o.now ?? Date.now()) / 1000), aud: `${o.origin}${path}`, dh: o.deviceHash, ...(o.pq && o.kind === "register" ? { pq: { alg: PQ_ALG, pk: b64u(o.pq.pk) } } : {}) };
+  const payload = { jti: o.jtiNonce ?? nonce(), iat: Math.floor((o.now ?? Date.now()) / 1000), aud: `${o.origin}${path}`, dh: o.deviceHash, ...(o.pq && declares ? { pq: { alg: PQ_ALG, pk: b64u(o.pq.pk) } } : {}) };
   const input = `${b64uText(JSON.stringify(header))}.${b64uText(JSON.stringify(payload))}`;
   const sig = await o.sign(new TextEncoder().encode(input));
   if (sig.length !== 64) throw new Error("signature is not raw r||s");

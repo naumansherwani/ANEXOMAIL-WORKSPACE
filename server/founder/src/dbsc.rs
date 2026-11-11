@@ -35,6 +35,7 @@ pub const REG_PATH: &str = "/founder/v1/dbsc/start";
 pub const REFRESH_PATH: &str = "/founder/v1/dbsc/refresh";
 pub const EXCHANGE_PATH: &str = "/founder/v1/exchange";
 pub const DK_REG_PATH: &str = "/founder/v1/devicekey/register";
+pub const PK_REG_PATH: &str = "/founder/v1/proofkey/register";
 const SKEW: i64 = 120;
 const COOKIE_ATTRS: &str = "Path=/; Secure; HttpOnly; SameSite=Strict";
 
@@ -214,6 +215,9 @@ pub enum Decision { Allow, AllowWould(&'static str), Block(&'static str) }
 pub const CHIP_DEAD_S: i64 = 1200;
 pub fn offer_binding(mode: Mode, bound: bool, has_key: bool, chip_alive: bool) -> bool { mode != Mode::Off && (!bound || (mode == Mode::Observe && !has_key && !chip_alive)) }
 /// Pure: is this chip binding alive? (`idle_s` = seconds since it last refreshed or was made; unknown = alive, never a surprise re-bind.)
+/// K8d-S4 (pure): does a VALID hybrid proof stand in for the DBSC cookie? Unbound device: nothing to satisfy. Software-bound: the proof is the proof. CHIP-bound: only while the chip is
+/// ALIVE, so the TPM stays in the loop although a WebTransport stream cannot carry the cookie. A dead chip must re-register through the browser (fetch) exchange, never through a proof.
+pub fn proof_satisfies(bound: bool, chip_bound: bool, chip_alive: bool) -> bool { !bound || !chip_bound || chip_alive }
 pub fn chip_alive(is_chip: bool, idle_s: Option<i64>) -> bool { is_chip && idle_s.map_or(true, |s| s < CHIP_DEAD_S) }
 
 pub fn gate_exchange(mode: Mode, bound_sid: Option<&str>, cookie_sid: Option<&str>) -> Decision {
@@ -320,6 +324,30 @@ pub async fn refresh_ep(State(st): State<crate::S>, h: HeaderMap) -> Response {
 #[derive(serde::Deserialize)]
 pub struct DeviceIn { pub device_id: String }
 
+
+/// POST /founder/v1/proofkey/register — K8d-S4: the device registers its HYBRID proof key (ES256 P-256 + ML-DSA-65, BOTH mandatory) BESIDE its DBSC chip key. Same trust as the exchange
+/// (the signed-in session), plus a hybrid proof of possession of both keys. A first key is accepted; a REPLACEMENT only while the device's chip is alive (a stolen bearer token on another
+/// machine has no chip, so it cannot swap the key). Works over fetch and over the kernel.
+pub async fn proofkey_register_ep(State(st): State<crate::S>, h: HeaderMap, Json(b): Json<DeviceIn>) -> Response {
+    if st.dbsc == Mode::Off { return StatusCode::NOT_FOUND.into_response(); }
+    let c = match crate::authed_session(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
+    let Some(sb) = st.sb.as_ref() else { return err(StatusCode::SERVICE_UNAVAILABLE, "database not configured") };
+    if !crate::ftoken::valid_device_id(&b.device_id) { return err(StatusCode::BAD_REQUEST, "invalid device id"); }
+    let Some(proof) = hv(&h, "x-device-proof") else { return err(StatusCode::BAD_REQUEST, "missing proof") };
+    let dev_hash = crate::ftoken::device_hash(&b.device_id);
+    let (jti, es, pq) = match verify_proof_hybrid(proof, PK_REG_PATH, None, None, &dev_hash, now_s()) { Ok(x) => x, Err(e) => return err(StatusCode::BAD_REQUEST, &format!("proof refused: {e:?}").to_ascii_lowercase()) };
+    let Some(pq) = pq else { return err(StatusCode::BAD_REQUEST, "proof refused: the post-quantum half is mandatory") };
+    let state = sb.rpc("founder_dbsc_device_state", json!({"p_uid": c.sub, "p_device_hash": dev_hash})).await;
+    let chip = state.as_ref().is_some_and(|v| v["bound"].as_bool() == Some(true) && v["source"].as_str() == Some("dbsc"));
+    let replace_ok = chip_alive(chip, state.as_ref().and_then(|v| v["idle_s"].as_i64())) && chip;
+    match sb.rpc("founder_proofkey_register", json!({"p_uid": c.sub, "p_device_hash": dev_hash, "p_es": hex::encode(es), "p_pq": hex::encode(pq), "p_jti_hash": sha256_hex(&jti), "p_allow_replace": replace_ok})).await {
+        Some(v) if v["ok"].as_bool() == Some(true) => no_store(Json(json!({"ok": true, "replaced": v["replaced"]})).into_response()),
+        Some(v) if v["error"].as_str() == Some("exists") => err(StatusCode::CONFLICT, "a proof key already exists for this device"),
+        Some(v) => err(StatusCode::CONFLICT, v["error"].as_str().unwrap_or("refused")),
+        None => err(StatusCode::SERVICE_UNAVAILABLE, "ledger unavailable: run the E164 SQL (sql-run.sh)"),
+    }
+}
+
 /// POST /founder/v1/devicekey/register — K7b: any browser registers the PUBLIC half of its non-extractable WebCrypto key. Same trust as the exchange (the signed-in session
 /// token), plus a proof signed by the key itself. A secure-chip (dbsc) session on the same device is never replaced (E150).
 pub async fn devicekey_register_ep(State(st): State<crate::S>, h: HeaderMap, Json(b): Json<DeviceIn>) -> Response {
@@ -388,6 +416,13 @@ mod tests {
         assert!(verify_proof_hybrid(&proof_jwt(&p, false, ex_payload.clone()), EXCHANGE_PATH, Some(&key), None, &dh, NOW).is_ok());
         // the DBSC cookie path never accepts a hybrid proof
         assert_eq!(parse_jwt(&ex).map(|j| common(&j, "nonce-abcdef0123456789", NOW, EXCHANGE_PATH)).unwrap(), Err(DErr::Malformed));
+    }
+    #[test]
+    fn a_valid_proof_stands_in_for_the_cookie_but_a_dead_chip_never_does() {
+        assert!(proof_satisfies(false, false, false), "unbound: nothing to satisfy");
+        assert!(proof_satisfies(true, false, false), "software key: the proof is the proof");
+        assert!(proof_satisfies(true, true, true), "chip alive: the TPM is still in the loop");
+        assert!(!proof_satisfies(true, true, false), "chip silent for 20 min: the proof is not enough, the browser must re-register");
     }
     #[test]
     fn every_success_hands_over_the_next_challenge() {

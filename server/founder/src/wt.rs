@@ -291,11 +291,11 @@ mod tests {
     }
 
     #[tokio::test(flavor = "multi_thread")]
-    async fn k8d_the_api_runs_over_quic_through_the_router_and_the_exchange_path_is_refused() {
+    async fn k8d_the_api_runs_over_quic_through_the_router_and_the_exchange_now_runs_there_marked_as_a_kernel_call() {
         use axum::{routing::{get, post}, Router, http::HeaderMap as H};
         let router = Router::new()
             .route("/founder/v1/echo", post(|h: H, b: axum::body::Bytes| async move { format!("{}|{}|{}|{}", h.get("authorization").and_then(|v| v.to_str().ok()).unwrap_or(""), h.get("host").and_then(|v| v.to_str().ok()).unwrap_or(""), h.get("x-real-ip").and_then(|v| v.to_str().ok()).unwrap_or(""), String::from_utf8_lossy(&b)) }))
-            .route("/founder/v1/exchange", get(|| async { "must never be reached over WebTransport" }))
+            .route("/founder/v1/exchange", get(|wt: Option<axum::Extension<crate::wtrpc::WtCall>>| async move { if wt.is_some() { "kernel-call" } else { "plain" } }))
             .route("/founder/v1/big", get(|| async { vec![b'a'; 1000] }));
         let Some((c, k)) = test_cert() else { eprintln!("openssl missing: skipped"); return };
         let tls = crate::tls256::server_config(&c, &k).unwrap();
@@ -317,7 +317,9 @@ mod tests {
         let a = call(&conn, r#"{"m":"POST","p":"/founder/v1/echo","h":{"authorization":"Bearer t1","host":"evil"}}"#, b"hello").await;
         assert_eq!(String::from_utf8(a).unwrap(), "S 200 text/plain; charset=utf-8\nBearer t1|127.0.0.1|127.0.0.1|hello");
         let b = call(&conn, r#"{"m":"GET","p":"/founder/v1/exchange"}"#, b"").await;
-        assert!(String::from_utf8(b).unwrap().starts_with("S 404 "), "the exchange path never runs over WebTransport");
+        assert!(String::from_utf8(b).unwrap().ends_with("kernel-call"), "K8d-S4: the exchange runs over WebTransport and the handler sees the server-stamped kernel marker");
+        let b = call(&conn, r#"{"m":"GET","p":"/founder/v1/dbsc/start"}"#, b"").await;
+        assert!(String::from_utf8(b).unwrap().starts_with("S 404 "), "the DBSC routes stay browser-only");
         let c3 = call(&conn, r#"{"m":"GET","p":"/founder/v1/big"}"#, b"").await;
         assert!(c3.starts_with(b"S 200 ") && c3.ends_with(&[b'a'; 1000]));
         let d = call(&conn, r#"{"m":"GET","p":"/founder/v1/nothere"}"#, b"").await;

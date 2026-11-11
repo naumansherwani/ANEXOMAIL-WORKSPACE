@@ -1,7 +1,7 @@
 // K7b — the browser half: a WebCrypto ECDSA P-256 key with extractable=false, kept as a CryptoKey in IndexedDB (the private bytes can never be read, not even by this page).
 // Works in Chrome, Edge, Firefox, Safari, Android and iPhone browsers. Rule 52 (said plainly): a CryptoKey cannot live in the WASM kernel, so the browser itself signs;
 // the pure proof builder is devicekey_pure.ts and the VERIFICATION is Rust on the server (dbsc.rs). Honest limit: a software key in the browser profile, not the TPM.
-import { EXCHANGE_PATH, PQ_ALG, PQ_CONTEXT, REGISTER_PATH, makeProof, publicJwk, sha256Hex, type PqHalf, type PublicJwk } from "./devicekey_pure";
+import { EXCHANGE_PATH, PROOFKEY_PATH, PQ_ALG, PQ_CONTEXT, REGISTER_PATH, makeProof, publicJwk, sha256Hex, type PqHalf, type PublicJwk } from "./devicekey_pure";
 
 const DB = "anexo-founder-devkey", STORE = "k", SLOT = "v1";
 type Pair = { priv: CryptoKey; pub: PublicJwk; pqPriv?: CryptoKey; pqPub?: Uint8Array };   // pq* = the ML-DSA-65 half (GAP 2); absent on browsers without WebCrypto ML-DSA
@@ -52,3 +52,23 @@ export async function register(deviceId: string, sessionToken: string, send: Sen
   } catch { return false; }
 }
 export { EXCHANGE_PATH };
+
+// K8d-S4 — the HYBRID PROOF KEY (ES256 + ML-DSA-65, both non-extractable) kept BESIDE the DBSC chip key. It lets the exchange travel over the kernel (WebTransport), where the cookie cannot go.
+const PK_FLAG = "anexo.proofkey.v1";
+/** True only when THIS browser holds a hybrid pair AND the server accepted its public half (flag set after a 200). Never guessed from the server's word alone: the local key must exist. */
+export async function proofKeyReady(): Promise<boolean> {
+  try { if (window.localStorage.getItem(PK_FLAG) !== "1") return false; } catch { return false; }
+  const k = await existing(); return !!(k && k.pqPriv && k.pqPub);
+}
+export const proofKeyForget = () => { try { window.localStorage.removeItem(PK_FLAG); } catch { /* storage blocked: the flag is only a hint */ } };
+/** Make the hybrid pair (once) and register its public halves. Never throws into the page. false = not registered (no ML-DSA in this browser, a key already exists server side, or the call failed). */
+export async function registerProofKey(deviceId: string, sessionToken: string, send: Send): Promise<boolean> {
+  if (!supported() || !(await pqCapable())) return false;
+  try {
+    const k = await ensure(true); const pq = pqHalf(k); if (!pq) return false;
+    const proof = await makeProof({ kind: "proofkey", origin: location.origin, deviceHash: await sha256Hex(deviceId), jwk: k.pub, sign: signer(k.priv), pq });
+    const r = await send(PROOFKEY_PATH, { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${sessionToken}`, "x-device-proof": proof }, body: JSON.stringify({ device_id: deviceId }) });
+    if (r.status === 200) { try { window.localStorage.setItem(PK_FLAG, "1"); } catch { /* hint only */ } return true; }
+    return false;
+  } catch { return false; }
+}

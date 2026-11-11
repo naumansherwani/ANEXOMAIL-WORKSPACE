@@ -344,7 +344,7 @@ async fn read_expiry(path: &str) -> Option<Value> {
 struct ExchangeIn { device_id: String, #[serde(default)] label: String }
 
 /// POST /founder/v1/exchange — maujooda session (Bearer) -> founder token (15 min, device-bound). Naya device => pending (server par approve), pehla device => trust-on-first-use.
-async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn>) -> axum::response::Response {
+async fn exchange_ep(State(st): State<S>, wt: Option<axum::Extension<wtrpc::WtCall>>, h: HeaderMap, Json(b): Json<ExchangeIn>) -> axum::response::Response {
     let c = match authed_session(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
     let (Some(sb), Some(keys)) = (st.sb.as_ref(), st.ft.as_ref()) else {
         return (StatusCode::SERVICE_UNAVAILABLE, Json(json!({"error": "token service not configured"}))).into_response();
@@ -361,7 +361,7 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
             let did = r["device_id"].as_str().unwrap_or("");
             // K7 DBSC: a device that is bound to a TPM key must present the short-lived bound cookie to get a founder token (mode enforce); observe only records.
             let dev_hash = ftoken::device_hash(&b.device_id);
-            let mut bound = false; let mut has_key = false; let mut chip_bound = false; let mut chip_live = false; let mut hybrid = false;
+            let mut bound = false; let mut has_key = false; let mut chip_bound = false; let mut chip_live = false; let mut hybrid = false; let mut proof_key = false;
             let mut key_info: Option<(String, String)> = None; // (source, sha-256 of the public key): only when THIS exchange proved the key
             if st.dbsc != dbsc::Mode::Off {
                 let state = sb.rpc("founder_dbsc_device_state", json!({"p_uid": c.sub, "p_device_hash": dev_hash})).await;
@@ -380,6 +380,24 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
                         if let Ok((jti, _, _)) = dbsc::verify_proof_hybrid(proof, dbsc::EXCHANGE_PATH, Some(&stored), stored_pq.as_deref(), &dev_hash, now_s()) {
                             let ok = sb.rpc("founder_dbsc_refreshed", json!({"p_sid": sid, "p_jti_hash": dbsc::sha256_hex(&jti)})).await;   // consumes the nonce once, counts the proof
                             if ok.is_some_and(|v| v["ok"].as_bool() == Some(true)) { cookie_sid = Some(sid.to_string()); }
+                        }
+                    }
+                }
+                // K8d-S4: the HYBRID PROOF KEY (E164) kept beside the chip. A valid ES256 + ML-DSA-65 proof stands in for the cookie, which a WebTransport stream cannot carry; a chip-bound device
+                // additionally needs its chip ALIVE (dbsc::proof_satisfies), so the TPM stays in the loop. The session keeps the CHIP identity (no key drift).
+                if let Some(pk) = sb.rpc("founder_proofkey_get", json!({"p_uid": c.sub, "p_device_hash": dev_hash})).await.filter(|v| v["found"].as_bool() == Some(true)) {
+                    proof_key = true;
+                    if cookie_sid.is_none() {
+                        let (es, pq) = (pk["es"].as_str().and_then(|x| hex::decode(x).ok()), pk["pq"].as_str().and_then(|x| hex::decode(x).ok()));
+                        let (id, proof) = (pk["id"].as_str().filter(|x| x.len() == 36 && x.bytes().all(|b| b.is_ascii_hexdigit() || b == b'-')).map(String::from), h.get("x-device-proof").and_then(|v| v.to_str().ok()));
+                        if let (Some(es), Some(pq), Some(id), Some(proof)) = (es, pq, id, proof) {
+                            match dbsc::verify_proof_hybrid(proof, dbsc::EXCHANGE_PATH, Some(&es), Some(&pq), &dev_hash, now_s()) {
+                                Ok((jti, _, _)) => {
+                                    let used = sb.rpc("founder_proofkey_use", json!({"p_id": id, "p_jti_hash": dbsc::sha256_hex(&jti)})).await;
+                                    if used.is_some_and(|v| v["ok"].as_bool() == Some(true)) && dbsc::proof_satisfies(bound, chip_bound, chip_live) { cookie_sid = bound_sid.clone(); }
+                                }
+                                Err(_) => { let (sb2, uid2) = (sb.clone(), c.sub.clone()); tokio::spawn(async move { let _ = sb2.rpc("founder_dbsc_event", json!({"p_uid": uid2, "p_sid": "", "p_kind": "reject_proofkey", "p_facts": {"why": "bad_proof"}})).await; }); }
+                            }
                         }
                     }
                 }
@@ -417,7 +435,7 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
             }
             let req_key = B64.encode(sign::req_key(&st.hmac_key, &token));
             let mut resp = Json(json!({"token": token, "req_key": req_key, "exp": exp, "expires_in": ftoken::TTL_SECS, "device": r["label"], "first": r["first"].as_bool().unwrap_or(false),
-                "dk": {"mode": st.dbsc.as_str(), "bound": bound, "key": has_key, "chip": chip_bound, "pq": hybrid}})).into_response();
+                "dk": {"mode": st.dbsc.as_str(), "bound": bound, "key": has_key, "chip": chip_bound, "pq": hybrid, "proof": proof_key, "wt": wt.is_some()}})).into_response();
             if dbsc::offer_binding(st.dbsc, bound, has_key, chip_live) { // an unbound device (or, in observe mode only, a bound one whose browser shows no live key: the old key session is replaced) is offered the binding; an unbound device is offered the binding; browsers without secure key storage simply ignore this header
                 if let Some(v) = dbsc::registration_header(&dbsc::subkey(&st.hmac_key, "challenge"), &c.sub, &dev_hash, now_s()) { resp.headers_mut().insert("secure-session-registration", v); }
             }
@@ -833,6 +851,7 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/dbsc/refresh", axum::routing::post(dbsc::refresh_ep))
         .route("/founder/v1/dbsc/status", get(dbsc::status_ep))
         .route("/founder/v1/devicekey/register", axum::routing::post(dbsc::devicekey_register_ep))
+        .route("/founder/v1/proofkey/register", axum::routing::post(dbsc::proofkey_register_ep))
         .route("/founder/v1/keys", get(keys_ep))
         .route("/founder/v1/me", get(me))
         .route("/founder/v1/sessions/board", get(sess_board_ep))

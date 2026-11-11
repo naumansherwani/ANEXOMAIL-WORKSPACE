@@ -110,6 +110,7 @@ docs/cursor-work/sql/E160_founder_key_rotation_not_drift.sql
 docs/cursor-work/sql/E161_founder_dbsc_heal.sql
 docs/cursor-work/sql/E162_founder_dbsc_hybrid_pq.sql
 docs/cursor-work/sql/E163_founder_dbsc_selftest162_fix.sql
+docs/cursor-work/sql/E164_founder_device_proofkeys.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/00-FOUNDER-TECH-RULE.md
@@ -127,8 +128,8 @@ founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
-founder-web/dist/assets/index-NaXn6xLq.js
-founder-web/dist/assets/index-NaXn6xLq.js.gz
+founder-web/dist/assets/index-DD7Ze_iw.js
+founder-web/dist/assets/index-DD7Ze_iw.js.gz
 founder-web/dist/assets/index-qqidgRWh.css
 founder-web/dist/assets/index-qqidgRWh.css.gz
 founder-web/dist/assets/kernel.worker-o4rrLcaV.js

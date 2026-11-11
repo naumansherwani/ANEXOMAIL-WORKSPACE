@@ -2974,3 +2974,6 @@ S3 browser half written. His Chrome 155 supports WebCrypto ML-DSA-65 (probed liv
 
 ## RESUME HERE (11 Nov 2026 21:15 PKT)
 E162 is in his ledger, selftest162 failed (my bug), E163 fixes it. His next: sql-run (auto order runs E163), CHECK_E162 must be 3 OK, THEN founder-install. Next S4/S5.
+
+## RESUME HERE (11 Nov 2026 21:50 PKT)
+S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CHECK_E164 must be 3 OK), 2 founder-install. Then my Chrome look: proof key registered, exchange over kernel (response dk.wt true), ring blue, CHECK_DRIFT_NOW no new reject. Open: S3b kernel ML-DSA for non-Chrome, S5 TanStack Start, K8d GREEN needs 2 DBSC cycles.

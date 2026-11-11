@@ -36,6 +36,7 @@ export function deviceLabel() {
 }
 
 let keyTried = false;   // E158: one key registration per page load, so a live chip session that keeps the slot can never loop
+let proofTried = false;   // K8d-S4: one proof-key registration per page load
 let ft: string | null = null, fexp = 0, inflight: Promise<string | null> | null = null, mode = "none", dlabel = "", rk: string | null = null; // rk = per-token request key (memory only)
 export const deviceStatus = () => ({ mode, label: dlabel }); // "device" = founder token in use · "legacy" = fallback to session token · "none"
 
@@ -90,11 +91,21 @@ async function exchange(again = true): Promise<string | null> {
   if (!id) { mode = "legacy"; return null; }
   let r: Response;
   const proof = await dk.exchangeProof(id).catch(() => null);   // K7b: only when this device already has a key; otherwise the exchange is exactly as before
-  try { r = await fetch("/founder/v1/exchange", { method: "POST", headers: { ...KV, "content-type": "application/json", authorization: `Bearer ${t}`, ...(proof ? { "x-device-proof": proof } : {}) }, body: JSON.stringify({ device_id: id, label: deviceLabel() }), cache: "no-store" }); }
+  const init = () => ({ method: "POST", headers: { ...KV, "content-type": "application/json", authorization: `Bearer ${t}`, ...(proof ? { "x-device-proof": proof } : {}) }, body: JSON.stringify({ device_id: id, label: deviceLabel() }) });
+  // K8d-S4: once this device holds a hybrid PROOF KEY (ES256 + ML-DSA-65, beside its chip key) the exchange goes over the KERNEL (WebTransport). fetch stays ONLY for the bootstrap of a new
+  // device / the DBSC chip registration (browser HTTP stack, by spec) and as the fallback when the kernel is down or the chip needs a browser re-registration.
+  const viaFetch = () => fetch("/founder/v1/exchange", { ...init(), cache: "no-store" } as RequestInit);
+  const kernelFirst = !!proof && (await dk.proofKeyReady().catch(() => false)) && rpcAvailable();
+  try {
+    r = kernelFirst ? await net("/founder/v1/exchange", init()).catch(() => viaFetch()) : await viaFetch();
+    if (kernelFirst && (r.status === 404 || r.status === 502 || r.status === 503 || (r.status === 401 && (await r.clone().json().catch(() => ({}))).error === "dbsc_required"))) r = await viaFetch();
+  }
   catch { mode = "legacy"; return null; }
   if (r.status === 401) { if (again && (await renewSession())) return exchange(false); throw expired(); } // an expired session token: renew once, then ask again
   let j: any = {}; try { j = await r.json(); } catch {}
   const pqOk = await dk.pqCapable().catch(() => false);
+  if (r.status === 200 && j.dk && j.dk.proof === false) dk.proofKeyForget();   // the server has no proof key for this device: the local flag is stale
+  if (r.status === 200 && j.token && pqOk && j.dk && j.dk.mode !== "off" && j.dk.proof === false && !proofTried) { proofTried = true; void dk.registerProofKey(id, t, net); }   // next exchange goes over the kernel
   if (r.status === 200 && j.token && shouldRegister(j.dk, pqOk) && !keyTried) { keyTried = true; void dk.register(id, t, net, pqOk && j.dk?.pq === false).then((ok) => { if (ok) forget(); }); }   // E158: once the key is registered, the next call re-exchanges WITH the proof so the session row gets its key; K7b: an unbound device binds; K7 wire fix: a bound device that proved no key this time re-binds (any browser, any phone); fire and forget
   if (r.status === 200 && j.token) { ft = j.token; rk = j.req_key || null; fexp = j.exp * 1000; mode = "device"; dlabel = j.device || ""; return ft; }
   if (r.status === 403 && j.error === "device_pending") throw new DevicePending(j.code, false);

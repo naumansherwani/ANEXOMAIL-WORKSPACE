@@ -8,8 +8,10 @@
 //!   request  = one JSON line `{"m":"GET|POST|PUT","p":"/founder/v1/...","h":{"authorization":"Bearer ..",...}}` + LF + the raw body bytes (stream end = request end)
 //!   response = `S <status> <content-type>` + LF + the raw body bytes (stream end = response end)
 //! Security shape (no loophole):
-//! - Path must be `/founder/v1/...`, plain characters only, no `..`, no `//`, no `#`; NEVER `/founder/v1/exchange` (it needs the browser's cookie and returns the browser-mediated
-//!   `Secure-Session-Registration` header, so it stays on plain HTTPS), never `/founder/v1/live/stream` (own WebTransport path), never `/founder/v1/dbsc/` (Chrome calls those itself).
+//! - Path must be `/founder/v1/...`, plain characters only, no `..`, no `//`, no `#`; never `/founder/v1/live/stream` (own WebTransport path), never `/founder/v1/dbsc/` (Chrome calls those itself).
+//!   `/founder/v1/exchange` IS allowed since K8d-S4 (11 Nov 21:40): a device with a hybrid PROOF KEY (ES256 + ML-DSA-65, E164) proves itself with a signed proof instead of the cookie; the DBSC
+//!   chip stays in the loop because the server also requires the chip to be alive. Every call that arrives here carries the request EXTENSION `WtCall` (set by this file only, never a header,
+//!   so no client can forge it), which is how the exchange knows it came over the kernel.
 //! - Only these request headers pass: authorization, content-type, accept, x-fo-ts, x-fo-sig, x-founder-kernel, x-device-proof. `host`, `x-real-ip`, `x-fo-proto`, cookies are never
 //!   taken from the caller: the server sets host + the real peer address + user-agent/client-hints from the WebTransport handshake, and the protocol layer marks the call h3 (QUIC).
 //! - Caps: request 1 MiB, response 8 MiB, 32 calls in flight per session, 15 s per call, session life 10 minutes (the kernel reconnects).
@@ -21,7 +23,12 @@ use wtransport::{Connection, VarInt};
 
 pub const MAX_REQ: usize = 1 << 20;
 pub const MAX_RESP: usize = 8 << 20;
-const MAX_HEAD: usize = 8192;
+const MAX_HEAD: usize = 16384;
+/// The hybrid device proof (ES256 + ML-DSA-65 signature) is about 5 KB; every other header stays small.
+const MAX_PROOF: usize = 8192;
+/// Marker stamped into the request EXTENSIONS of every call that came over the WebTransport kernel path.
+#[derive(Clone, Copy, Debug)]
+pub struct WtCall;
 const MAX_INFLIGHT: usize = 32;
 const CALL_WAIT: Duration = Duration::from_secs(15);
 const LIFE: Duration = Duration::from_secs(600);
@@ -30,7 +37,7 @@ const ALLOW: &[&str] = &["authorization", "content-type", "accept", "x-fo-ts", "
 fn path_ok(p: &str) -> bool {
     p.len() <= 1024 && p.starts_with("/founder/v1/") && !p.contains("..") && !p.contains("//") && !p.contains('#')
         && p.bytes().all(|b| b.is_ascii_alphanumeric() || b"/_-.?=&%:~,+".contains(&b))
-        && !p.starts_with("/founder/v1/exchange") && !p.starts_with("/founder/v1/live/stream") && !p.starts_with("/founder/v1/dbsc/")
+        && !p.starts_with("/founder/v1/live/stream") && !p.starts_with("/founder/v1/dbsc/")
 }
 
 /// Pure: bytes of one stream -> the request the router will see. Err = the HTTP status to answer.
@@ -51,7 +58,7 @@ pub fn parse(raw: &[u8], host: &str, peer: IpAddr, ua: Option<&str>, hint: Optio
             let k = k.to_ascii_lowercase();
             if !ALLOW.contains(&k.as_str()) { continue; }
             let v = v.as_str().ok_or(400u16)?;
-            if v.len() > 4096 || !v.bytes().all(|b| (0x20..0x7f).contains(&b)) { return Err(400); }
+            if v.len() > (if k == "x-device-proof" { MAX_PROOF } else { 4096 }) || !v.bytes().all(|b| (0x20..0x7f).contains(&b)) { return Err(400); }
             hm.insert(HeaderName::from_bytes(k.as_bytes()).map_err(|_| 400u16)?, HeaderValue::from_str(v).map_err(|_| 400u16)?);
         }
     }
@@ -60,7 +67,9 @@ pub fn parse(raw: &[u8], host: &str, peer: IpAddr, ua: Option<&str>, hint: Optio
     for (n, v) in [("user-agent", ua), ("sec-ch-ua", hint)] {
         if let Some(v) = v.filter(|v| v.len() <= 512 && v.bytes().all(|b| (0x20..0x7f).contains(&b))) { if let Ok(hv) = HeaderValue::from_str(v) { hm.insert(HeaderName::from_static(n), hv); } }
     }
-    req.body(Body::from(body.to_vec())).map_err(|_| 400u16)
+    let mut req = req.body(Body::from(body.to_vec())).map_err(|_| 400u16)?;
+    req.extensions_mut().insert(WtCall);
+    Ok(req)
 }
 
 /// Pure: the answer as the kernel receives it.
@@ -142,9 +151,19 @@ mod tests {
     }
     #[test]
     fn the_paths_that_must_stay_on_plain_https_or_leave_the_api_are_refused() {
-        for bad in ["/founder/v1/exchange", "/founder/v1/exchange/x", "/founder/v1/live/stream", "/founder/v1/dbsc/start", "/founder/v1/dbsc/refresh", "/other", "/founder/v1/../x", "/founder/v1//x", "/founder/v1/a#b", "founder/v1/x", "/founder/v1/a b", "/founder/v1/é"] {
+        for bad in ["/founder/v1/live/stream", "/founder/v1/dbsc/start", "/founder/v1/dbsc/refresh", "/other", "/founder/v1/../x", "/founder/v1//x", "/founder/v1/a#b", "founder/v1/x", "/founder/v1/a b", "/founder/v1/é"] {
             assert_eq!(p(&format!(r#"{{"m":"GET","p":"{bad}"}}"#), b"").err(), Some(404), "{bad}");
         }
+    }
+    #[test]
+    fn the_exchange_may_come_over_the_kernel_and_is_marked_so_but_only_by_the_server() {
+        let r = p(r#"{"m":"POST","p":"/founder/v1/exchange","h":{"authorization":"Bearer t","x-device-proof":"a.b.c.d","x-wt-call":"1"}}"#, b"{}").unwrap();
+        assert!(r.extensions().get::<WtCall>().is_some(), "the server stamps the kernel marker");
+        assert!(r.headers().get("x-wt-call").is_none(), "a header can never fake the marker");
+        let big = "A".repeat(6000);
+        assert!(p(&format!(r#"{{"m":"POST","p":"/founder/v1/exchange","h":{{"x-device-proof":"{big}"}}}}"#), b"{}").is_ok(), "a hybrid proof (~5 KB) fits");
+        assert_eq!(p(&format!(r#"{{"m":"POST","p":"/founder/v1/exchange","h":{{"authorization":"{big}"}}}}"#), b"{}").err(), Some(400), "every other header stays at 4 KB");
+        assert_eq!(p(&format!(r#"{{"m":"POST","p":"/founder/v1/exchange","h":{{"x-device-proof":"{}"}}}}"#, "A".repeat(9000)), b"{}").err(), Some(400), "even the proof has a cap");
     }
     #[test]
     fn methods_bodies_and_shapes_are_checked() {
