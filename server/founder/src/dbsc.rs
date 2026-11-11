@@ -635,4 +635,21 @@ mod tests {
         assert!(uuid_like(UID).is_ok() && uuid_like("x").is_err() && uuid_like(&format!("{UID}; drop")).is_err());
         assert!(new_sid().is_some_and(|s| sid_ok(&s)));
     }
+
+    #[test]
+    fn k7c_enforce_blocks_a_thief_but_never_locks_out_the_live_chip_device() {
+        use Decision::*;
+        // the owner: chip-bound, chip alive, valid hybrid proof (kernel path, no cookie) -> proof satisfies -> cookie_sid = bound -> Allow
+        assert!(proof_satisfies(true, true, chip_alive(true, Some(30))));
+        assert_eq!(gate_exchange(Mode::Enforce, Some("s"), Some("s")), Allow);
+        // a thief with a stolen token on another machine: no cookie, no proof -> Block, and enforce never re-offers a binding to him
+        assert_eq!(gate_exchange(Mode::Enforce, Some("s"), None), Block("no_cookie"));
+        assert!(!offer_binding(Mode::Enforce, true, false, false));
+        // a chip silent for CHIP_DEAD_S no longer lets a proof stand in (the TPM stays in the loop)
+        assert!(!proof_satisfies(true, true, chip_alive(true, Some(CHIP_DEAD_S))));
+        // unbound devices (phone, Firefox, Safari) are never blocked, even in enforce
+        assert_eq!(gate_exchange(Mode::Enforce, None, None), Allow);
+        // observe never blocks the same cases
+        assert_eq!(gate_exchange(Mode::Observe, Some("s"), None), AllowWould("no_cookie"));
+    }
 }

@@ -988,3 +988,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 12 Nov 2026 00:12 PKT nothing new to install; after ~00:40 he runs CHECK_DRIFT_NOW (2 DBSC cycles proof).
 
 - 12 Nov 2026 00:25 PKT no new install (records only).
+
+- 12 Nov 2026 K7c (NOT green yet): enforce contract + test written; switch founder-dbsc.sh MODE=enforce, rollback MODE=observe.

@@ -52,3 +52,5 @@
 - 12 Nov 2026 00:12 PKT nothing new to install; after ~00:40 he runs CHECK_DRIFT_NOW (2 DBSC cycles proof).
 
 - 12 Nov 2026 00:25 PKT no new install (records only).
+
+- 12 Nov 2026 K7c (NOT green yet): enforce contract + test k7c_enforce_blocks_a_thief_but_never_locks_out_the_live_chip_device written; switch = founder-dbsc.sh MODE=enforce, rollback MODE=observe. Awam pull: not needed.
