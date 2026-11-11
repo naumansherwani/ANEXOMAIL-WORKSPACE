@@ -2956,3 +2956,6 @@ E161 GREEN on his server. Next: his founder-install (Rust 403 fresh challenge + 
 
 ## RESUME HERE (11 Nov 2026 19:45 PKT)
 Ring blue for this session; old sessions still show old alerts (his Sign out everywhere else). Watch 2 DBSC cycles, then K8d GREEN. Exchange decision in CURRENT.md awaits his word.
+
+## RESUME HERE (11 Nov 2026 19:58 PKT)
+Ring blue, 1 live session. Open: network flips x6 (needs his CHECK_DRIFT_NOW paste), 20:10 ring recheck, exchange decision, then GAP 2.

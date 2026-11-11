@@ -24,3 +24,5 @@
 - 11 Nov 2026 19:32 PKT next: founder-install.
 
 - 11 Nov 2026 19:45 PKT no new command: he presses Sign out everywhere else on the Devices page.
+
+- 11 Nov 2026 19:58 PKT CHECK_DRIFT_NOW (v4 with net hashes): sql-run.sh CHECK_DRIFT_NOW.
