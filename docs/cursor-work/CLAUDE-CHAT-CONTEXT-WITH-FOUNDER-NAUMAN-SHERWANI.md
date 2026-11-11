@@ -2959,3 +2959,6 @@ Ring blue for this session; old sessions still show old alerts (his Sign out eve
 
 ## RESUME HERE (11 Nov 2026 19:58 PKT)
 Ring blue, 1 live session. Open: network flips x6 (needs his CHECK_DRIFT_NOW paste), 20:10 ring recheck, exchange decision, then GAP 2.
+
+## RESUME HERE (11 Nov 2026 20:10 PKT)
+STATE AT 20:10 block is at the top of docs/claude/RESUME-POINT.md. Next: his founder-install (flip fix), then 20:10+ ring check, exchange decision, K8d GREEN, GAP 2.

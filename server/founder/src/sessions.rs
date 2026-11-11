@@ -72,11 +72,27 @@ pub fn kernel_of(h: &HeaderMap) -> String {
 #[derive(Debug, Clone, PartialEq)]
 pub struct Facts { pub net: String, pub protocol: &'static str, pub kernel: String, pub ua: &'static str, pub hint: &'static str, pub country: Option<String> }
 
+/// 11 Nov 2026 20:05 (his Devices ring: "network keeps flipping"): the NETWORK of a session is the provider area, not the single address. His ISP (carrier-grade NAT) hands the SAME laptop
+/// 182.185.161.113 on one QUIC connection and 182.185.172.75 on the next (proof: two live-session net hashes alternating in the ledger, both QUIC, and the WebTransport logs). An address-exact network
+/// therefore "flips" on every new connection of a real person. So a session's network = IPv4 /16, IPv6 /48 (an IPv4-mapped IPv6 address counts as its IPv4); anything that is not an address stays as written.
+/// A thief on ANOTHER provider still changes the network; the location lock, the device key and the ledger stay exact. The sign-in ceremony and the password lock keep the exact address (signin::net_hash).
+pub fn coarse_net(ip: &str) -> String {
+    match ip.trim().parse::<IpAddr>() {
+        Ok(IpAddr::V4(a)) => { let o = a.octets(); format!("v4/16:{}.{}", o[0], o[1]) }
+        Ok(IpAddr::V6(a)) => match a.to_ipv4_mapped() {
+            Some(m) => { let o = m.octets(); format!("v4/16:{}.{}", o[0], o[1]) }
+            None => { let g = a.segments(); format!("v6/48:{:x}:{:x}:{:x}", g[0], g[1], g[2]) }
+        },
+        Err(_) => ip.trim().to_string(),
+    }
+}
+pub fn session_net(key: &[u8], ip: &str) -> String { crate::signin::net_hash(key, &coarse_net(ip)) }
+
 pub fn facts(h: &HeaderMap, net_key: &[u8]) -> Facts {
     let ip = crate::signin::client_ip(h);
     let hv = |n: &str| h.get(n).and_then(|v| v.to_str().ok()).unwrap_or("").chars().take(512).collect::<String>();
     Facts {
-        net: crate::signin::net_hash(net_key, &ip), protocol: protocol_of(h), kernel: kernel_of(h),
+        net: session_net(net_key, &ip), protocol: protocol_of(h), kernel: kernel_of(h),
         ua: ua_family(&hv("user-agent")), hint: hint_family(&hv("sec-ch-ua")),
         country: ip.parse::<IpAddr>().ok().and_then(|a| geo().lookup(a)),
     }
@@ -233,6 +249,20 @@ pub fn spawn_upkeep(sb: Sb) {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn a_session_network_is_the_provider_area_not_one_address() {
+        let k = b"net-key";
+        // his two real addresses from the live logs: one person, one ISP, two connections
+        assert_eq!(session_net(k, "182.185.161.113"), session_net(k, "182.185.172.75"));
+        assert_ne!(session_net(k, "182.185.161.113"), session_net(k, "182.186.161.113"), "another provider area is another network");
+        assert_eq!(session_net(k, "::ffff:182.185.161.113"), session_net(k, "182.185.161.113"), "an IPv4-mapped address is its IPv4");
+        assert_eq!(session_net(k, "2001:db8:1:1::1"), session_net(k, "2001:db8:1:ffff::9"), "IPv6 /48: privacy addresses and neighbours do not flip");
+        assert_ne!(session_net(k, "2001:db8:1::1"), session_net(k, "2001:db8:2::1"));
+        assert_eq!(session_net(k, "-"), session_net(k, "-"));
+        assert_ne!(session_net(k, "182.185.1.1"), session_net(b"other-key", "182.185.1.1"), "the key still separates deployments");
+        assert_ne!(crate::signin::net_hash(k, "182.185.161.113"), crate::signin::net_hash(k, "182.185.172.75"), "the sign-in ceremony keeps the exact address");
+    }
+
     use super::*;
     use axum::{extract::{Path, State as St2}, routing::post, Json, Router};
     use axum::http::StatusCode;

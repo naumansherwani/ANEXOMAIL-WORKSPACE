@@ -3075,3 +3075,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 [11 Nov 2026 19:45 PKT] His paste: founder-install OK; order: Chrome live then next order, 3 hours wasted.
 
 [11 Nov 2026 19:58 PKT] His message: did Sign out everywhere else + refresh; orders: records updated, continue.
+
+[11 Nov 2026 20:10 PKT] His paste CHECK_DRIFT_NOW v4 (net 56e5ca / d01d8e alternate, all quic) + order: compaction coming, everything ready, rules first.

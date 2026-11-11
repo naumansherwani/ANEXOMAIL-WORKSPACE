@@ -1,7 +1,7 @@
 <!--TECHLAW-->
 # TECH CONTRACT FOR PHASE: K8d (kernel WebTransport RPC) + K7 GAP 2 (post-quantum device proof)
 STATE: IN PROGRESS
-Opened: 11 Nov 2026 04:40 PKT, updated 19:58 PKT (E161 live) (permanent DBSC heal: 403 fresh challenge, dead chip re-offer, E161) (E160 key rotation not theft) (refresh challenge 15 min; ring still Alert after sign-in) (ring-alert fix: chip-bound device never re-offered a key) (K8d REOPENED: ring Alert after K8d, cause being checked, not green). Rule: rewritten at the START of every phase and BEFORE any code; a code commit without this file is refused; STATE may be GREEN only when no row says NO. Every commit carries `Phase:` and `Tech:` lines.
+Opened: 11 Nov 2026 04:40 PKT, updated 20:10 PKT (network = provider area for sessions) (E161 live) (permanent DBSC heal: 403 fresh challenge, dead chip re-offer, E161) (E160 key rotation not theft) (refresh challenge 15 min; ring still Alert after sign-in) (ring-alert fix: chip-bound device never re-offered a key) (K8d REOPENED: ring Alert after K8d, cause being checked, not green). Rule: rewritten at the START of every phase and BEFORE any code; a code commit without this file is refused; STATE may be GREEN only when no row says NO. Every commit carries `Phase:` and `Tech:` lines.
 Source of the list: CLAUDE.md line 18 (FOUNDER TECHNOLOGY LAW) + the TECH LAW cell of this phase in docs/claude/BLUEPRINT-ABC-01NOV.md.
 
 | Listed technology | Where it must live in code | IN CODE | Proof command / live proof |
