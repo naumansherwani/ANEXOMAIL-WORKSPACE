@@ -302,6 +302,7 @@ server/founder/src/live.rs
 server/founder/src/login.rs
 server/founder/src/main.rs
 server/founder/src/mldsa.rs
+server/founder/src/mldsa_kernel_vector.txt
 server/founder/src/passkey.rs
 server/founder/src/polar.rs
 server/founder/src/policy_step.rs

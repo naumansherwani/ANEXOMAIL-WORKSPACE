@@ -77,7 +77,8 @@
    "must": "\"gsap\"",
    "status": "open",
    "deadline": "L phase (12 Nov start)",
-   "why": "Framer Motion + GSAP listed for L"
+   "why": "Framer Motion + GSAP listed for L",
+   "fail_after": "2026-11-13"
   },
   {
    "id": "L-webgpu",
@@ -85,7 +86,8 @@
    "must": "WebGPURenderer",
    "status": "open",
    "deadline": "L phase",
-   "why": "Three.js WebGPU listed for L"
+   "why": "Three.js WebGPU listed for L",
+   "fail_after": "2026-11-13"
   },
   {
    "id": "M-moq",
@@ -93,13 +95,14 @@
    "must": "moq",
    "status": "open",
    "deadline": "M phase",
-   "why": "Media over QUIC relay listed for M"
+   "why": "Media over QUIC relay listed for M",
+   "fail_after": "2026-11-16"
   },
   {
    "id": "Q-pq-sign",
    "file": "server/founder/Cargo.toml",
    "must": "ml-dsa",
-   "status": "open",
+   "status": "ok",
    "deadline": "Q phase",
    "why": "post-quantum signatures (ML-DSA hybrid with Ed25519) listed for Q"
   },
@@ -115,7 +118,7 @@
    "id": "K7-devicekey-pq",
    "file": "founder-web/src/devicekey_pure.ts",
    "must": "ML-DSA",
-   "status": "open",
+   "status": "ok",
    "deadline": "Q phase",
    "why": "TECH LAW: post-quantum signatures (ML-DSA hybrid with Ed25519) listed; the device key is ECDSA P-256 (WebCrypto) and DBSC is ES256 (browser standard, cannot change); the hybrid proof is a Q item"
   },
@@ -125,7 +128,8 @@
    "must": "clam",
    "status": "open",
    "deadline": "before attachments (N..V)",
-   "why": "ClamAV virus scanning listed in the DATA & FILES line; no scanner call in founder server code (audit 11 Nov 20:40)"
+   "why": "ClamAV virus scanning listed in the DATA & FILES line; no scanner call in founder server code (audit 11 Nov 20:40)",
+   "fail_after": "2026-11-20"
   },
   {
    "id": "D-hetzner-storagebox",
@@ -133,7 +137,8 @@
    "must": "storagebox",
    "status": "open",
    "deadline": "before attachments (N..V)",
-   "why": "Hetzner Storage Box for attachments listed; not in founder server code (audit 11 Nov 20:40)"
+   "why": "Hetzner Storage Box for attachments listed; not in founder server code (audit 11 Nov 20:40)",
+   "fail_after": "2026-11-20"
   },
   {
    "id": "A-tanstack-start",
@@ -141,7 +146,8 @@
    "must": "@tanstack/react-start",
    "status": "open",
    "deadline": "his word needed",
-   "why": "TANSTACK START & ROUTER listed; founder is Router-only static SPA (Start needs an SSR runtime = Node/Bun, banned). Decision for him: keep Router-only as the documented exception or not"
+   "why": "TANSTACK START & ROUTER listed; founder is Router-only static SPA (Start needs an SSR runtime = Node/Bun, banned). Decision for him: keep Router-only as the documented exception or not",
+   "fail_after": "2026-11-14"
   },
   {
    "id": "K7-devicekey-pq-kernel",

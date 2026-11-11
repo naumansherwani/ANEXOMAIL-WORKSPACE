@@ -150,7 +150,7 @@ except OSError:
     pass
 
 # TECH LAW (founder 11 Nov 2026, last warning): the technology LISTED per phase must be in the code. Checks live in docs/claude/TECH-LAW-GATE.json.
-# status ok = enforced on every commit; status open = known gap with a deadline (warning until closed).
+# status ok = enforced on every commit; status open = known gap with a deadline (warning until closed); "fail_after" (ISO date) turns the warning into a FAIL from that day.
 import json
 try:
     for c in json.load(open("docs/claude/TECH-LAW-GATE.json"))["checks"]:
@@ -158,6 +158,8 @@ try:
         good = (c["must"].lower() in txt) if "must" in c else (c["mustnot"].lower() not in txt)
         if c["status"] == "ok" and not good:
             fail("TECH LAW", f'{c["id"]}: {c["why"]} ({c["file"]})')
+        elif c["status"] == "open" and not good and c.get("fail_after") and __import__("datetime").date.today().isoformat() >= c["fail_after"]:
+            fail("TECH LAW OVERDUE", f'{c["id"]}: the listed technology is still missing and its date {c["fail_after"]} has come: {c["why"]} (his 11 Nov 21:59 word: no advanced technology = the gate FAILS)')
         elif c["status"] == "open" and not good:
             warn("TECH LAW OPEN", f'{c["id"]} until {c.get("deadline", "?")}: {c["why"]}')
         elif c["status"] == "open" and good:
@@ -166,6 +168,15 @@ except FileNotFoundError:
     fail("TECH LAW", "docs/claude/TECH-LAW-GATE.json is missing")
 
 # TECH-FIRST PROTOCOL (founder 11 Nov 2026 04:33, "forever solution"): docs/claude/TECH-FIRST-PROTOCOL.md. Three mechanical gates so the listed technology can never be skipped again.
+
+# SERVER-SELF-CONTAINED (11 Nov 22:00, incident: founder-install failed on his server because a test pulled web-wasm/src/mldsa.rs via #[path]): his server builds ONLY the server/ folder.
+# No #[path], include_str! or include_bytes! in server/founder may reach outside server/ (a test vector file goes INSIDE the crate).
+import glob as _g2
+for _f in _g2.glob("server/founder/src/**/*.rs", recursive=True):
+    for _m in re.finditer(r'(#\[path\s*=\s*"([^"]+)"\]|include_(?:str|bytes)!\(\s*"([^"]+)")', open(_f, errors="ignore").read()):
+        _t = _m.group(2) or _m.group(3)
+        if ".." in _t.replace("../", "", 0) and os.path.normpath(os.path.join(os.path.dirname(_f), _t)).split(os.sep)[0] != "server":
+            fail("SERVER SELF-CONTAINED", f"{_f}: {_t} reaches outside server/ (his server builds only the server/ folder), install would fail")
 import glob as _glob, subprocess as _sp
 def _raw_net():
     n = 0

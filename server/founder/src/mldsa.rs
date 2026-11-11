@@ -20,24 +20,22 @@ pub fn key_ok(pk: &[u8]) -> bool { <[u8; PK_LEN]>::try_from(pk).ok().is_some_and
 
 /// S3b cross-check: the KERNEL's ML-DSA code (web-wasm/src/mldsa.rs, compiled into the browser wasm) is included here and its signatures must verify with the SERVER's verify.
 #[cfg(test)]
-#[path = "../../../web-wasm/src/mldsa.rs"]
-mod kernel_side;
-
-#[cfg(test)]
 pub(crate) mod tests {
     use super::*;
     use fips204::traits::{KeyGen, Signer};
     pub fn pair() -> (Vec<u8>, m::PrivateKey) { let (pk, sk) = m::KG::try_keygen().unwrap(); (pk.into_bytes().to_vec(), sk) }
     pub fn sign(sk: &m::PrivateKey, msg: &[u8]) -> Vec<u8> { sk.try_sign(msg, CTX).unwrap().to_vec() }
+    /// Bytes made by the Rust WASM kernel (web-wasm/src/mldsa.rs, seed [42;32]) verify here, with the server's FIPS 204 context; the kernel crate has the matching test that keeps the file current.
     #[test]
     fn a_signature_made_by_the_browser_kernel_verifies_on_the_server_and_nothing_else_does() {
-        let (seed, rnd) = ([42u8; 32], [43u8; 32]);
-        let pk = super::kernel_side::public_key(&seed).unwrap();
-        let sig = super::kernel_side::sign(&seed, &rnd, b"hybrid proof bytes").unwrap();
+        let v = include_str!("mldsa_kernel_vector.txt");
+        let un = |h: &str| -> Vec<u8> { (0..h.len() / 2).map(|i| u8::from_str_radix(&h[2 * i..2 * i + 2], 16).unwrap()).collect() };
+        let mut l = v.lines();
+        let (pk, sig) = (un(l.next().unwrap()), un(l.next().unwrap()));
+        assert_eq!((pk.len(), sig.len()), (PK_LEN, SIG_LEN));
         assert!(verify(&pk, b"hybrid proof bytes", &sig) && key_ok(&pk), "kernel signature, server verify");
         assert!(!verify(&pk, b"other bytes", &sig));
-        assert_eq!(super::kernel_side::CTX, CTX, "same FIPS 204 context on both sides");
-        assert!(super::kernel_side::verify(&pk, b"hybrid proof bytes", &sig));
+        let mut bad = sig.clone(); bad[7] ^= 1; assert!(!verify(&pk, b"hybrid proof bytes", &bad));
     }
     #[test]
     fn ml_dsa_65_verifies_and_refuses() {
