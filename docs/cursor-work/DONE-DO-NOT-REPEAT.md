@@ -1891,3 +1891,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 18:05 PKT K8d installed on his server (not green): live proof pending; TECH-LAW CHECKED not claimed.
 
 - 11 Nov 2026 18:12 PKT K8d GREEN (WIRED: YES / REAL: YES): his Chrome bundle index-FddvjTfF, only /founder/v1/exchange via fetch (h2), Devices Path = HTTP/3 QUIC (WebTransport); gates K8d-api-not-fetch + K7-devicekey-fetch closed; ratchet 10; TECH-LAW CHECKED. Mobile/tablet: UI unchanged, 390/820 screenshot still his.
+
+- 11 Nov 2026 18:16 PKT K8d REOPENED, ring Alert after K8d, drift x9 rising; cause being checked.

@@ -2929,3 +2929,6 @@ K8d INSTALLED on his server (founder-install OK). Live proof open. Snapshot of r
 
 ## RESUME HERE (11 Nov 2026 18:12 PKT)
 K8d GREEN live-proven. Next GAP 2 ML-DSA hybrid (research crate + browser support in CURRENT.md first), then D-series, K7c, L.
+
+## RESUME HERE (11 Nov 2026 18:16 PKT)
+K8d REOPENED: his phone shows ring Alert + drift x9 rising after K8d. Run CHECK_DRIFT_NOW to see ua/hint/key facts, then fix. Do not call K8d green until the ring is blue again.

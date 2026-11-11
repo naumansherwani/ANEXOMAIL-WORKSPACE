@@ -683,6 +683,7 @@ docs/cursor-work/sql/00-FOUNDER-TECH-RULE.md,founder,"founder SQL (defines found
 docs/cursor-work/sql/CHECK_ANCHOR_JOBS.sql,awam,"awam/shared SQL"
 docs/cursor-work/sql/CHECK_CAL_CREATE.sql,awam,"awam/shared SQL"
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql,awam,"awam/shared SQL"
+docs/cursor-work/sql/CHECK_DRIFT_NOW.sql,awam,"awam/shared SQL"
 docs/cursor-work/sql/CHECK_E100.sql,awam,"awam/shared SQL"
 docs/cursor-work/sql/CHECK_E101.sql,awam,"awam/shared SQL"
 docs/cursor-work/sql/CHECK_E102.sql,awam,"awam/shared SQL"

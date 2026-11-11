@@ -6,3 +6,5 @@
 - 11 Nov 2026 18:05 PKT K8d verify (read-only): journalctl -u anexomail-founder --since "5 min ago" --no-pager | grep -i "WebTransport RPC"
 
 - 11 Nov 2026 18:12 PKT K8d green, no new install needed. (verify line without quotes: journalctl -u anexomail-founder -n 300 --no-pager | grep -i WebTransport)
+
+- 11 Nov 2026 18:15 PKT K8d ring Alert: read-only look: bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) CHECK_DRIFT_NOW

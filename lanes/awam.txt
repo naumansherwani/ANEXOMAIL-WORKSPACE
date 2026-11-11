@@ -264,6 +264,7 @@ docs/cursor-work/server/wtransport-upgrade.sh
 docs/cursor-work/sql/CHECK_ANCHOR_JOBS.sql
 docs/cursor-work/sql/CHECK_CAL_CREATE.sql
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql
+docs/cursor-work/sql/CHECK_DRIFT_NOW.sql
 docs/cursor-work/sql/CHECK_E100.sql
 docs/cursor-work/sql/CHECK_E101.sql
 docs/cursor-work/sql/CHECK_E102.sql
