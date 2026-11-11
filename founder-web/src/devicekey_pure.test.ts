@@ -45,3 +45,5 @@ test("K7 wire fix: a bound device with no proven key re-registers; a keyed one, 
   expect(shouldRegister({ mode: "off", bound: false })).toBe(false);
   expect(shouldRegister(null)).toBe(false);
 });
+
+test("a chip-bound device never registers a software key", () => { expect(shouldRegister({ mode: "observe", bound: true, key: false, chip: true })).toBe(false); expect(shouldRegister({ mode: "observe", bound: true, key: false })).toBe(true); });

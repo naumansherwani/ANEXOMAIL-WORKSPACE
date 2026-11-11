@@ -181,7 +181,9 @@ pub fn verify_proof(jwt: &str, path: &str, stored: Option<&[u8]>, dev_hash: &str
 pub enum Decision { Allow, AllowWould(&'static str), Block(&'static str) }
 /// K7 wire fix: the registration header goes to a device with no binding, and in OBSERVE mode also to a bound device whose browser showed no live key this time (its old session is
 /// replaced, so the Trust seal's Device key becomes real). Never in enforce: there a stolen token could otherwise re-bind a device to the thief's key.
-pub fn offer_binding(mode: Mode, bound: bool, has_key: bool) -> bool { mode != Mode::Off && (!bound || (mode == Mode::Observe && !has_key)) }
+/// 11 Nov 18:20 fix (his ring turned Alert): a device bound by a secure-chip key (`chip`) is NEVER re-offered a new key. Every re-offer replaced the binding, so the key fingerprint of a live session no longer matched
+/// at its next exchange (device_key_changed, x9 and rising). The chip's own refresh keeps its cookie alive; a lost chip key is a founder decision (revoke the binding), never a silent re-bind.
+pub fn offer_binding(mode: Mode, bound: bool, has_key: bool, chip: bool) -> bool { mode != Mode::Off && (!bound || (mode == Mode::Observe && !has_key && !chip)) }
 
 pub fn gate_exchange(mode: Mode, bound_sid: Option<&str>, cookie_sid: Option<&str>) -> Decision {
     let Some(bound) = bound_sid else { return Decision::Allow };   // unbound device (phone, Firefox, Safari): never blocked
@@ -398,8 +400,10 @@ mod tests {
     }
     #[test]
     fn binding_is_reoffered_only_in_observe_to_a_keyless_bound_device() {
-        assert!(offer_binding(Mode::Observe, false, false) && offer_binding(Mode::Observe, true, false) && !offer_binding(Mode::Observe, true, true));
-        assert!(offer_binding(Mode::Enforce, false, false) && !offer_binding(Mode::Enforce, true, false) && !offer_binding(Mode::Off, false, false));
+        assert!(offer_binding(Mode::Observe, false, false, false) && offer_binding(Mode::Observe, true, false, false) && !offer_binding(Mode::Observe, true, true, false));
+        assert!(offer_binding(Mode::Enforce, false, false, false) && !offer_binding(Mode::Enforce, true, false, false) && !offer_binding(Mode::Off, false, false, false));
+        assert!(!offer_binding(Mode::Observe, true, false, true), "a chip-bound device keeps its key: no re-offer, no fingerprint churn");
+        assert!(offer_binding(Mode::Observe, false, false, true), "an unbound device is still offered the binding");
     }
 
     #[test]

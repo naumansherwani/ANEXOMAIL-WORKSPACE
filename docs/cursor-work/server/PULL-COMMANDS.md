@@ -10,3 +10,5 @@
 - 11 Nov 2026 18:15 PKT K8d ring Alert: read-only look: bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) CHECK_DRIFT_NOW
 
 - 11 Nov 2026 18:22 PKT CHECK_DRIFT_NOW v2 same command as before (file updated).
+
+- 11 Nov 2026 18:32 PKT ring fix install: founder-install line as before, then he signs out and in once.

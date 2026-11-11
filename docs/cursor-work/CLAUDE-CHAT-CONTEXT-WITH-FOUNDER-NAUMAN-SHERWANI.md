@@ -2935,3 +2935,6 @@ K8d REOPENED: his phone shows ring Alert + drift x9 rising after K8d. Run CHECK_
 
 ## RESUME HERE (11 Nov 2026 18:22 PKT)
 K8d still REOPENED. Drift = device_key_changed only (ua/hint fine). Run CHECK_DRIFT_NOW v2 (bindings, events, ledger with times) then fix the fp/source flip. Not green until ring blue.
+
+## RESUME HERE (11 Nov 2026 18:32 PKT)
+Ring fix written (chip never re-offered). Waiting his founder-install + sign out/in once; then check ring blue + CHECK_DRIFT_NOW shows no new binding. Open next: DBSC refresh reject_challenge bad_or_expired.

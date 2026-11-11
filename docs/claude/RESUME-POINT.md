@@ -10,7 +10,10 @@ LAST UPDATED: 11 Nov 2026 18:22 PKT. K8d REOPENED 18:15 (ring Alert, drift risin
 - CODES kept intact: only fetch( -> net( in api.ts/devicekey.ts; exchange, refresh, SSE, login, passkey, logout stay on fetch (browser cookie), ratchet = 10.
 - PROCESS: commit needs Phase:/Tech: lines; gate must show 0 fail; every step updates RESUME-POINT, DONE, chat context, PULL-COMMANDS, founder-commands with real clock. Next: live proof, then GAP 2 (research ML-DSA crate + browser support, write choice in CURRENT.md first), D-series, K7c, L, M.
 
-## STEP 0 (every Claude, after compaction or a new chat, in this order)
+## K8d RING ALERT: CAUSE + FIX (18:32 PKT)
+- CAUSE (from his CHECK_DRIFT_NOW v2): observe mode re-offered a new key to a chip-bound device whose exchange showed no cookie (17:25, 17:47); Chrome registered a new TPM key, the binding was replaced, the live session kept the old key fp, so every exchange = device_key_changed (x9 rising). Also reject_challenge bad_or_expired every ~22 min on DBSC refresh = OPEN, look at it next.
+- FIX: dbsc::offer_binding(mode,bound,has_key,chip); exchange sends dk.chip; browser shouldRegister false when chip. The EXISTING session keeps the old fp: he signs out and in once (his hands) to get a clean session; ring must turn blue; then K8d GREEN again.
+ (every Claude, after compaction or a new chat, in this order)
 1. docs/claude/TECH-FIRST-PROTOCOL.md  2. docs/claude/tech-contracts/CURRENT.md  3. this file  4. newest "RESUME HERE" at the bottom of docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md  5. docs/claude/START-HERE-AFTER-COMPACTION.md (8 rules). Then talk: Roman Urdu, short, "Aap / Nauman bhai", end with the Rule-70 table + "Abhi code mein NAHI".
 
 ## WHERE WE STOPPED (facts, with proof)
