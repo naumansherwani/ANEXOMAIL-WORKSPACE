@@ -50,3 +50,5 @@
 - 11 Nov 2026 23:58 PKT 1: founder-install (3 loophole fixes, new SPA) 2: CHECK_DRIFT_NOW; awam pull optional (only pull.sh change). Paste the command only, no number.
 
 - 12 Nov 2026 00:12 PKT nothing new to install; after ~00:40 he runs CHECK_DRIFT_NOW (2 DBSC cycles proof).
+
+- 12 Nov 2026 00:25 PKT no new install (records only).

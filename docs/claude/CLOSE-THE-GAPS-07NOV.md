@@ -308,3 +308,5 @@ G2 is now the open item in progress.
 - 11 Nov 2026 04:40 PKT (his 04:27 anger: I forgot the technology law again): re-audited tonight's K7 wire fix against the law and registered 2 OPEN gaps in TECH-LAW-GATE.json: K7-devicekey-fetch (K8d, 14 Nov, target TODAY) and K7-devicekey-pq (Q). K7 stays functionally green (live proof) but those two are open on the list, not hidden.
 - 11 Nov 2026 05:00 PKT OPEN: tomorrow = K7-devicekey-fetch (K8d) then K7-devicekey-pq (ML-DSA hybrid).
 - 11 Nov 2026 17:50 PKT OPEN: repo public (theft defence steps 1-4), D-series rows 4-7, K8d, ML-DSA hybrid.
+
+- 12 Nov 2026 00:25 PKT OPEN after K8d + K7 GAP2 green: (1) kernel ML-DSA key live proof on Safari/Firefox (his device or a tester), (2) K7c enforce with rollback, (3) net() waits <=1.2 s for the kernel session before a fetch fallback (hardening), (4) tsc Scene3D three types, (5) S5 TanStack Start (gate 14 Nov), GSAP/WebGPU 13 Nov, MoQ 16 Nov, ClamAV/Hetzner 20 Nov.

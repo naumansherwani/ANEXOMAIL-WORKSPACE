@@ -1,6 +1,6 @@
 <!--TECHLAW-->
 # TECH CONTRACT FOR PHASE: K8d (kernel WebTransport RPC) + K7 GAP 2 (post-quantum device proof)
-STATE: IN PROGRESS
+STATE: GREEN (12 Nov 2026 00:25 PKT: WIRED: YES / REAL: YES / TECH-LAW CHECKED; open item = live proof of the kernel ML-DSA key on Safari/Firefox, K7c enforce)
 Opened: 11 Nov 2026 04:40 PKT, updated 20:25 PKT (DBSC fresh challenge on every 200) (network = provider area for sessions) (E161 live) (permanent DBSC heal: 403 fresh challenge, dead chip re-offer, E161) (E160 key rotation not theft) (refresh challenge 15 min; ring still Alert after sign-in) (ring-alert fix: chip-bound device never re-offered a key) (K8d REOPENED: ring Alert after K8d, cause being checked, not green). Rule: rewritten at the START of every phase and BEFORE any code; a code commit without this file is refused; STATE may be GREEN only when no row says NO. Every commit carries `Phase:` and `Tech:` lines.
 Source of the list: CLAUDE.md line 18 (FOUNDER TECHNOLOGY LAW) + the TECH LAW cell of this phase in docs/claude/BLUEPRINT-ABC-01NOV.md.
 
@@ -10,8 +10,9 @@ Source of the list: CLAUDE.md line 18 (FOUNDER TECHNOLOGY LAW) + the TECH LAW ce
 | X25519MLKEM768 + AES-256-GCM | tls256.rs, h3.rs, wt.rs | YES | external client probe (11 Nov) |
 | Rust WASM kernel rpc@1 carries every API call | founder-web/src/kernel.worker.ts, kernel.ts, web-wasm | DONE, LIVE 11 Nov 18:10 | network panel: no fetch for /founder/v1 |
 | WebTransport RPC endpoint | server/founder/src/wt.rs (/wt/rpc through the same router gates) | DONE, LIVE 11 Nov 18:10 | Rust test + live |
-| api.ts get/getOnce/post/put + devicekey.ts register on the kernel (fetch = fallback only) | founder-web/src/api.ts, devicekey.ts, Surface.tsx | CODE DONE 17:55 (10 raw calls left: exchange, refresh, SSE, login, passkey, logout, kernel load), LIVE 11 Nov 18:10 | TECH-RATCHET.json count falls |
-| Post-quantum HYBRID device proof (ML-DSA + ECDSA P-256; DBSC cookie path stays ES256 = browser standard) | founder-web/src/devicekey_pure.ts + server/founder/src/dbsc.rs + mldsa.rs + SQL E162 | CODE DONE (S1-S3), NOT INSTALLED, no live proof yet | Rust test + live; gate K7-devicekey-pq |
+| api.ts get/getOnce/post/put + devicekey.ts register + the EXCHANGE on the kernel (fetch only for: first exchange of a new device, DBSC chip registration (browser rule), /auth/refresh (cookie), kernel down) | founder-web/src/api.ts, devicekey.ts, Surface.tsx, server wtrpc.rs | YES, LIVE 12 Nov 00:02-00:23 | his Chrome: resource timing has NO /founder/v1 fetch (exchange included), Devices page load 0 fetches, Device-bound card works (dbsc/status 404 fixed), bundle index-CYB3b-5n = repo |
+| Post-quantum HYBRID device proof (ML-DSA-65 + ECDSA P-256; DBSC cookie path stays ES256 = browser standard) | founder-web/src/devicekey*.ts + server/founder/src/dbsc.rs + mldsa.rs + SQL E162-E165 + kernel mldsa@1 | YES, LIVE 11 Nov 23:45 + 12 Nov 00:02 | event proofkey_registered ES256+ML-DSA-65 (23:45:08); exchange over the kernel with the hybrid proof; board line 'ML-DSA-65, non-extractable = Strong'; CHECK_E162/E164/E165 OK |
+| ML-DSA-65 in the Rust WASM kernel for browsers without WebCrypto ML-DSA (Safari/Firefox) | web-wasm/src/mldsa.rs (kernel 0.15.0), kernel.ts, devicekey.ts, E165 pq_src | YES (code + tests: kernel 123, server 317, cross-vector); live browser proof OPEN: needs Safari/Firefox | board would say 'software (weaker)' |
 
 
 ## K8d EXCHANGE DECISION (19:45 PKT, needs his word, not decided by Claude)
