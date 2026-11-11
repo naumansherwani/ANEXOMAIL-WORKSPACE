@@ -27,6 +27,10 @@ use sha2::{Digest, Sha256};
 pub const COOKIE: &str = "__Host-anx_fdbsc";
 pub const COOKIE_TTL: i64 = 600;
 pub const CH_TTL: i64 = 60;
+/// 11 Nov 18:40: the refresh challenge lives 15 min (was 60 s). Chrome sometimes answers with a challenge it cached earlier (reject_challenge bad_or_expired every ~22 min in his ledger). Safe: the answer is signed by the
+/// chip key, bound to the session id, and its jti is single use (SQL ledger), so a longer window gives a thief nothing.
+pub const CH_TTL_REFRESH: i64 = 900;
+fn ttl_of(purpose: char) -> i64 { if purpose == 'f' { CH_TTL_REFRESH } else { CH_TTL } }
 pub const REG_PATH: &str = "/founder/v1/dbsc/start";
 pub const REFRESH_PATH: &str = "/founder/v1/dbsc/refresh";
 pub const EXCHANGE_PATH: &str = "/founder/v1/exchange";
@@ -65,7 +69,7 @@ pub struct Ch { pub purpose: char, pub a: String, pub b: String }
 pub fn mint_challenge(key: &[u8], purpose: char, a: &str, b: &str, now: i64) -> Option<String> {
     if a.contains('|') || b.contains('|') || a.is_empty() { return None; }
     let nonce = hex::encode(rand_bytes::<16>()?);
-    let payload = format!("{purpose}|{}|{nonce}|{a}|{b}", now + CH_TTL);
+    let payload = format!("{purpose}|{}|{nonce}|{a}|{b}", now + ttl_of(purpose));
     Some(format!("{}.{}", B64.encode(payload.as_bytes()), B64.encode(mac(key, payload.as_bytes()))))
 }
 pub fn check_challenge(key: &[u8], token: &str, want: char, now: i64) -> Result<Ch, DErr> {
@@ -81,7 +85,7 @@ pub fn check_challenge(key: &[u8], token: &str, want: char, now: i64) -> Result<
     if purpose != want { return Err(DErr::Purpose); }
     let exp: i64 = f[1].parse().map_err(|_| DErr::Malformed)?;
     if now > exp { return Err(DErr::Expired); }
-    if exp - now > CH_TTL + SKEW { return Err(DErr::Malformed); } // a challenge from the far future is not ours
+    if exp - now > ttl_of(purpose) + SKEW { return Err(DErr::Malformed); } // a challenge from the far future is not ours
     Ok(Ch { purpose, a: f[3].to_string(), b: f[4].to_string() })
 }
 
@@ -251,7 +255,13 @@ pub async fn refresh_ep(State(st): State<crate::S>, h: HeaderMap) -> Response {
     };
     let log = |kind: &'static str, why: &'static str| { let (sb, uid, sid) = (sb.clone(), uid.clone(), sid.clone()); tokio::spawn(async move { let _ = sb.rpc("founder_dbsc_event", json!({"p_uid": uid, "p_sid": sid, "p_kind": kind, "p_facts": {"why": why}})).await; }); };
     let Some(jti) = peek_jti(jwt) else { log("reject_challenge", "malformed"); return err(StatusCode::BAD_REQUEST, "malformed proof") };
-    match check_challenge(&ck, &jti, 'f', now) { Ok(c) if c.a == sid => {} _ => { log("reject_challenge", "bad_or_expired"); return err(StatusCode::BAD_REQUEST, "challenge refused") } }
+    match check_challenge(&ck, &jti, 'f', now) {
+        Ok(c) if c.a == sid => {}
+        Ok(_) => { log("reject_challenge", "other_session"); return err(StatusCode::BAD_REQUEST, "challenge refused") }
+        Err(DErr::Expired) => { log("reject_challenge", "expired"); return err(StatusCode::BAD_REQUEST, "challenge refused") }
+        Err(DErr::Challenge) => { log("reject_challenge", "bad_mac"); return err(StatusCode::BAD_REQUEST, "challenge refused") }
+        Err(_) => { log("reject_challenge", "bad_or_expired"); return err(StatusCode::BAD_REQUEST, "challenge refused") }
+    }
     let stored = hex::decode(s["pub"].as_str().unwrap_or("")).unwrap_or_default();
     if verify_refresh(jwt, &jti, &stored, now).is_err() { log("reject_signature", "bad_proof"); return err(StatusCode::BAD_REQUEST, "proof refused"); }
     match sb.rpc("founder_dbsc_refreshed", json!({"p_sid": sid, "p_jti_hash": sha256_hex(&jti)})).await {
@@ -334,6 +344,9 @@ mod tests {
         assert_eq!(check_challenge(&k, &t, 'r', NOW + 10), Ok(Ch { purpose: 'r', a: UID.into(), b: dev() }));
         assert_eq!(check_challenge(&k, &t, 'f', NOW), Err(DErr::Purpose));            // a registration challenge is not a refresh challenge
         assert_eq!(check_challenge(&k, &t, 'r', NOW + CH_TTL + 1), Err(DErr::Expired));
+        let f = mint_challenge(&k, 'f', "sid-aaaaaaaaaaaaaaaa", "", NOW).unwrap();   // refresh challenge: 15 min, not 60 s
+        assert!(check_challenge(&k, &f, 'f', NOW + 800).is_ok());
+        assert_eq!(check_challenge(&k, &f, 'f', NOW + CH_TTL_REFRESH + 1), Err(DErr::Expired));
         assert_eq!(check_challenge(&subkey(b"other", "challenge"), &t, 'r', NOW), Err(DErr::Challenge));
         let (p, tag) = t.split_once('.').unwrap();
         let forged = format!("{}.{tag}", B64.encode(String::from_utf8(B64.decode(p).unwrap()).unwrap().replace(UID, "99999999-2222-3333-4444-555555555555")));

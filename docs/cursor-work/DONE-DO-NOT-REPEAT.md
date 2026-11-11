@@ -1897,3 +1897,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 18:22 PKT his CHECK_DRIFT_NOW v1: live session ua=chrome hint=chrome proto=quic key_source=dbsc key=ba13ddf8; every drift = device_key_changed; protocol flips h2<->quic. Suspect: binding pub changes (webcrypto vs dbsc replace) -> fp differs. v2 look added (bindings + events).
 
 - 11 Nov 2026 18:32 PKT K8d ring fix: chip-bound device never re-offered a key (dbsc.rs offer_binding chip), dk.chip, shouldRegister false for chip; cause = replaced bindings 17:25/17:47. Not green until his ring is blue.
+
+- 11 Nov 2026 18:45 PKT K8d: refresh challenge 15 min + reject reasons; his fresh session still Device key PROBLEM, CHECK_DRIFT_NOW v3 asked. Not green.

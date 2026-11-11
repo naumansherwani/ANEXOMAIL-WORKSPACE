@@ -3061,3 +3061,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 [11 Nov 2026 18:22 PKT] His paste of CHECK_DRIFT_NOW v1 (device_key_changed only).
 
 [11 Nov 2026 18:32 PKT] His CHECK_DRIFT_NOW v2 paste; order: fix directly, no time wasted.
+
+[11 Nov 2026 18:45 PKT] His order: loopholes auto-fix now, Device & sessions must be 100%.

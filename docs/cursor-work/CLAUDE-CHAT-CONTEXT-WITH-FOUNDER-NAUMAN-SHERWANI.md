@@ -2938,3 +2938,6 @@ K8d still REOPENED. Drift = device_key_changed only (ua/hint fine). Run CHECK_DR
 
 ## RESUME HERE (11 Nov 2026 18:32 PKT)
 Ring fix written (chip never re-offered). Waiting his founder-install + sign out/in once; then check ring blue + CHECK_DRIFT_NOW shows no new binding. Open next: DBSC refresh reject_challenge bad_or_expired.
+
+## RESUME HERE (11 Nov 2026 18:45 PKT)
+Ring still Alert after sign-in (key 39c0b97a changed). Refresh challenge TTL fix written. Need CHECK_DRIFT_NOW v3 output.

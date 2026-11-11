@@ -12,3 +12,5 @@
 - 11 Nov 2026 18:22 PKT CHECK_DRIFT_NOW v2 same command as before (file updated).
 
 - 11 Nov 2026 18:32 PKT ring fix install: founder-install line as before, then he signs out and in once.
+
+- 11 Nov 2026 18:45 PKT install + CHECK_DRIFT_NOW v3.
