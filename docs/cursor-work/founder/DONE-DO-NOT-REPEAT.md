@@ -1061,3 +1061,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 18:32 PKT K8d ring fix: chip-bound device never re-offered a key (dbsc.rs offer_binding chip), dk.chip, shouldRegister false for chip; cause = replaced bindings 17:25/17:47. Not green until his ring is blue.
 
 - 11 Nov 2026 18:45 PKT K8d: refresh challenge 15 min + reject reasons; his fresh session still Device key PROBLEM, CHECK_DRIFT_NOW v3 asked. Not green.
+
+- 11 Nov 2026 19:10 PKT K8d ring: E160 written + tested locally (rotated key no longer spoof/drift). Not green until his ring is blue.

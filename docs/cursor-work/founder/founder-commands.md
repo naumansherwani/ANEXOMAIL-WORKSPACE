@@ -3063,3 +3063,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 [11 Nov 2026 18:32 PKT] His CHECK_DRIFT_NOW v2 paste; order: fix directly, no time wasted.
 
 [11 Nov 2026 18:45 PKT] His order: loopholes auto-fix now, Device & sessions must be 100%.
+
+[11 Nov 2026 19:10 PKT] His CHECK_DRIFT_NOW v3 paste; order: write the order at top of blueprint + repo.

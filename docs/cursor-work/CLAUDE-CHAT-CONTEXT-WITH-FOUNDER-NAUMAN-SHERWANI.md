@@ -2941,3 +2941,6 @@ Ring fix written (chip never re-offered). Waiting his founder-install + sign out
 
 ## RESUME HERE (11 Nov 2026 18:45 PKT)
 Ring still Alert after sign-in (key 39c0b97a changed). Refresh challenge TTL fix written. Need CHECK_DRIFT_NOW v3 output.
+
+## RESUME HERE (11 Nov 2026 19:10 PKT)
+E160 written (key rotation is not theft). Waits his sql-run, then sign out both sessions, sign in, Chrome check ring blue. Then exchange-on-kernel design, GAP 2.
