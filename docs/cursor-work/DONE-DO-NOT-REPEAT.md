@@ -1915,3 +1915,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 20:10 PKT network flip fix written (sessions.rs coarse_net), CGNAT proof from his ledger; waits install. Not green.
 
 - 11 Nov 2026 20:25 PKT K8d ring: network-flip fix (coarse_net) INSTALLED on his server 20:05 (his founder-install OK); DBSC fresh challenge on every 200 + replay answered 403 written (dbsc.rs, test every_success_hands_over_the_next_challenge). Not green until ring stays blue 2 DBSC cycles.
+
+- 11 Nov 2026 20:45 PKT AUDIT 2 (full): found: ML-DSA, GSAP, WebGPU, MoQ, ClamAV, Hetzner Storage Box missing from code (registered open in TECH-LAW-GATE.json, ClamAV/Hetzner/TanStack Start new); SQL E158-E161 all definer+search_path+service_role only; cargo 309 pass, bun 180 pass, tsc only the known three.js typing errors; raw fetch 10 = exchange, refresh, SSE, login, passkey, logout, keys, kernel wasm load, fallback; fixed: gate now lists every missing technology. TECH-LAW CHECKED. Counter reset to 0.

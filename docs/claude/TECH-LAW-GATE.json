@@ -118,6 +118,30 @@
    "status": "open",
    "deadline": "Q phase",
    "why": "TECH LAW: post-quantum signatures (ML-DSA hybrid with Ed25519) listed; the device key is ECDSA P-256 (WebCrypto) and DBSC is ES256 (browser standard, cannot change); the hybrid proof is a Q item"
+  },
+  {
+   "id": "D-clamav",
+   "file": "server/founder/Cargo.toml",
+   "must": "clam",
+   "status": "open",
+   "deadline": "before attachments (N..V)",
+   "why": "ClamAV virus scanning listed in the DATA & FILES line; no scanner call in founder server code (audit 11 Nov 20:40)"
+  },
+  {
+   "id": "D-hetzner-storagebox",
+   "file": "server/founder/src/main.rs",
+   "must": "storagebox",
+   "status": "open",
+   "deadline": "before attachments (N..V)",
+   "why": "Hetzner Storage Box for attachments listed; not in founder server code (audit 11 Nov 20:40)"
+  },
+  {
+   "id": "A-tanstack-start",
+   "file": "founder-web/package.json",
+   "must": "@tanstack/react-start",
+   "status": "open",
+   "deadline": "his word needed",
+   "why": "TANSTACK START & ROUTER listed; founder is Router-only static SPA (Start needs an SSR runtime = Node/Bun, banned). Decision for him: keep Router-only as the documented exception or not"
   }
  ]
 }

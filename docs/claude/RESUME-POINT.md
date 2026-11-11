@@ -14,6 +14,7 @@ LAST UPDATED: 11 Nov 2026 18:22 PKT. K8d REOPENED 18:15 (ring Alert, drift risin
 - CODES kept intact: only fetch( -> net( in api.ts/devicekey.ts; exchange, refresh, SSE, login, passkey, logout stay on fetch (browser cookie), ratchet = 10.
 - PROCESS: commit needs Phase:/Tech: lines; gate must show 0 fail; every step updates RESUME-POINT, DONE, chat context, PULL-COMMANDS, founder-commands with real clock. Next: live proof, then GAP 2 (research ML-DSA crate + browser support, write choice in CURRENT.md first), D-series, K7c, L, M.
 
+- 20:45 AUDIT 2 DONE (counter 0): missing tech registered in TECH-LAW-GATE.json (ML-DSA, GSAP, WebGPU, MoQ, ClamAV, Hetzner, TanStack Start); ratchet 8. Next: GAP 2 research -> CURRENT.md.
 ## >>> STATE AT 20:10 PKT (READ THIS FIRST AFTER COMPACTION) <<<
 - LIVE ON HIS SERVER: K8d (founder API over kernel WebTransport /wt/rpc, HTTP/3), E158, E159, E160, E161 (all CHECK OK), DBSC permanent heal (dbsc.rs: refresh 403 + fresh challenge, chip binding silent 20 min is re-offered, a live one never), chip never re-offered while alive.
 - HIS CHROME 19:46: ONE live session, ring BLUE (All clear 4/4, Device key GOOD, HTTP/3 QUIC), old alert sessions closed. K8d is NOT written GREEN yet: needs ring blue at 20:10+ for 2 DBSC cycles (his CHECK_DRIFT_NOW: no reject_challenge, no new drift) AND the network-flip fix installed.
