@@ -2932,3 +2932,6 @@ K8d GREEN live-proven. Next GAP 2 ML-DSA hybrid (research crate + browser suppor
 
 ## RESUME HERE (11 Nov 2026 18:16 PKT)
 K8d REOPENED: his phone shows ring Alert + drift x9 rising after K8d. Run CHECK_DRIFT_NOW to see ua/hint/key facts, then fix. Do not call K8d green until the ring is blue again.
+
+## RESUME HERE (11 Nov 2026 18:22 PKT)
+K8d still REOPENED. Drift = device_key_changed only (ua/hint fine). Run CHECK_DRIFT_NOW v2 (bindings, events, ledger with times) then fix the fp/source flip. Not green until ring blue.

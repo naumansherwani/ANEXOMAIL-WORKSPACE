@@ -1893,3 +1893,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 18:12 PKT K8d GREEN (WIRED: YES / REAL: YES): his Chrome bundle index-FddvjTfF, only /founder/v1/exchange via fetch (h2), Devices Path = HTTP/3 QUIC (WebTransport); gates K8d-api-not-fetch + K7-devicekey-fetch closed; ratchet 10; TECH-LAW CHECKED. Mobile/tablet: UI unchanged, 390/820 screenshot still his.
 
 - 11 Nov 2026 18:16 PKT K8d REOPENED, ring Alert after K8d, drift x9 rising; cause being checked.
+
+- 11 Nov 2026 18:22 PKT his CHECK_DRIFT_NOW v1: live session ua=chrome hint=chrome proto=quic key_source=dbsc key=ba13ddf8; every drift = device_key_changed; protocol flips h2<->quic. Suspect: binding pub changes (webcrypto vs dbsc replace) -> fp differs. v2 look added (bindings + events).
