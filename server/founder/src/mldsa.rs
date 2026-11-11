@@ -20,6 +20,10 @@ pub fn key_ok(pk: &[u8]) -> bool { <[u8; PK_LEN]>::try_from(pk).ok().is_some_and
 
 /// S3b cross-check: the KERNEL's ML-DSA code (web-wasm/src/mldsa.rs, compiled into the browser wasm) is included here and its signatures must verify with the SERVER's verify.
 #[cfg(test)]
+#[path = "mldsa_kernel_vector.rs"]
+mod mldsa_kernel_vector;
+
+#[cfg(test)]
 pub(crate) mod tests {
     use super::*;
     use fips204::traits::{KeyGen, Signer};
@@ -28,10 +32,8 @@ pub(crate) mod tests {
     /// Bytes made by the Rust WASM kernel (web-wasm/src/mldsa.rs, seed [42;32]) verify here, with the server's FIPS 204 context; the kernel crate has the matching test that keeps the file current.
     #[test]
     fn a_signature_made_by_the_browser_kernel_verifies_on_the_server_and_nothing_else_does() {
-        let v = include_str!("mldsa_kernel_vector.txt");
         let un = |h: &str| -> Vec<u8> { (0..h.len() / 2).map(|i| u8::from_str_radix(&h[2 * i..2 * i + 2], 16).unwrap()).collect() };
-        let mut l = v.lines();
-        let (pk, sig) = (un(l.next().unwrap()), un(l.next().unwrap()));
+        let (pk, sig) = (un(super::mldsa_kernel_vector::PK), un(super::mldsa_kernel_vector::SIG));
         assert_eq!((pk.len(), sig.len()), (PK_LEN, SIG_LEN));
         assert!(verify(&pk, b"hybrid proof bytes", &sig) && key_ok(&pk), "kernel signature, server verify");
         assert!(!verify(&pk, b"other bytes", &sig));

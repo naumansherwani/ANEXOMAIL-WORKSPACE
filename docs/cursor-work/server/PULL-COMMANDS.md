@@ -44,3 +44,5 @@
 - 11 Nov 2026 22:10 PKT re-run: 1: founder-install (E164/E165 already applied) 2: CHECK_DRIFT_NOW; awam pull as separate point.
 
 - 11 Nov 2026 22:15 PKT gate-only change, nothing to install on his server.
+
+- 11 Nov 2026 23:30 PKT re-run: 1: founder-install (vector file fix) 2: CHECK_DRIFT_NOW; awam pull separate. Number is NOT typed into the shell.

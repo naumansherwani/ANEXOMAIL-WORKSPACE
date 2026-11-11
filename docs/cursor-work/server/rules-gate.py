@@ -172,6 +172,8 @@ except FileNotFoundError:
 # SERVER-SELF-CONTAINED (11 Nov 22:00, incident: founder-install failed on his server because a test pulled web-wasm/src/mldsa.rs via #[path]): his server builds ONLY the server/ folder.
 # No #[path], include_str! or include_bytes! in server/founder may reach outside server/ (a test vector file goes INSIDE the crate).
 import glob as _g2
+for _f in [x for x in _g2.glob("server/founder/src/**/*", recursive=True) if os.path.isfile(x) and not x.endswith((".rs", ".md"))]:
+    fail("SERVER SELF-CONTAINED", f"{_f}: founder-install.sh copies ONLY *.rs from server/founder/src (incident 11 Nov 23:10: a .txt vector file never reached his server); make it a .rs file")
 for _f in _g2.glob("server/founder/src/**/*.rs", recursive=True):
     for _m in re.finditer(r'(#\[path\s*=\s*"([^"]+)"\]|include_(?:str|bytes)!\(\s*"([^"]+)")', open(_f, errors="ignore").read()):
         _t = _m.group(2) or _m.group(3)

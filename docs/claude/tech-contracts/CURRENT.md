@@ -53,3 +53,5 @@ LIVE FINDING (his Chrome 21:15, bundle index-NaXn6xLq = repo build): his device 
 - 11 Nov 2026 22:10 PKT S3b install fix: server cross-check test now self-contained (mldsa_kernel_vector.txt). Gate: fail_after dates on open technologies; SERVER SELF-CONTAINED check.
 
 - 11 Nov 2026 22:15 PKT NEW GATE 'RULES NOT READ' (his word 22:05): rules-read.py prints rules + writes .git receipt (2 h); rules-gate --staged fails without it. Top lines of CLAUDE.md/AGENTS.md/RESUME-POINT say run it first.
+
+- 11 Nov 2026 23:30 PKT 2ND INSTALL FAILURE FIXED: founder-install.sh copies ONLY *.rs from server/founder/src, so mldsa_kernel_vector.txt never reached his server ("couldn't read src/mldsa_kernel_vector.txt"). Vector is now mldsa_kernel_vector.rs; gate SERVER SELF-CONTAINED also fails any non-.rs/.md file in server/founder/src. PROOF this time: cargo test in an installer-faithful clean copy (/tmp/sim: Cargo.toml, Cargo.lock, src/*.rs only + server/rust) = 315 pass. RULE FOR ME: before giving an install command, test in that clean-copy layout, never only in the repo tree.

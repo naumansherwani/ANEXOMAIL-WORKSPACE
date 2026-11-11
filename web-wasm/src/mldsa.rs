@@ -47,13 +47,13 @@ mod tests {
         assert!(public_key(&[0u8; 31]).is_none() && sign(&seed, &[0u8; 5], b"x").is_none() && sign(&[1u8; 3], &[0u8; 32], b"x").is_none(), "wrong sizes are refused");
         assert!(!verify(&pk[..10], b"proof", &sig) && !verify(&pk, b"proof", &sig[..10]));
     }
-    /// The cross-implementation vector shared with the server crate (server/founder/src/mldsa_kernel_vector.txt): line 1 = public key hex, line 2 = signature hex, made by THIS code
+    /// The cross-implementation vector shared with the server crate (server/founder/src/mldsa_kernel_vector.rs): line 1 = public key hex, line 2 = signature hex, made by THIS code
     /// from seed [42;32], randomness [43;32], message "hybrid proof bytes". The server test verifies the same bytes without compiling any kernel source (his server has no web-wasm folder).
     #[test]
     fn the_kernel_output_equals_the_vector_the_server_verifies() {
-        let v = include_str!("../../server/founder/src/mldsa_kernel_vector.txt");
-        let mut l = v.lines();
-        let (pk, sig) = (l.next().unwrap(), l.next().unwrap());
+        let v = include_str!("../../server/founder/src/mldsa_kernel_vector.rs");
+        let field = |name: &str| -> String { let a = v.find(&format!("pub const {name}: &str = \"")).unwrap() + format!("pub const {name}: &str = \"").len(); v[a..a + v[a..].find('"').unwrap()].to_string() };
+        let (pk, sig) = (field("PK"), field("SIG"));
         let hex = |b: &[u8]| b.iter().map(|x| format!("{x:02x}")).collect::<String>();
         assert_eq!(hex(&public_key(&[42u8; 32]).unwrap()), pk, "kernel public key changed: regenerate the vector");
         assert_eq!(hex(&sign(&[42u8; 32], &[43u8; 32], b"hybrid proof bytes").unwrap()), sig, "kernel signature changed: regenerate the vector");
@@ -62,6 +62,6 @@ mod tests {
     #[ignore]
     fn print_the_vector() {
         let hex = |b: &[u8]| b.iter().map(|x| format!("{x:02x}")).collect::<String>();
-        std::fs::write("../server/founder/src/mldsa_kernel_vector.txt", format!("{}\n{}\n", hex(&public_key(&[42u8; 32]).unwrap()), hex(&sign(&[42u8; 32], &[43u8; 32], b"hybrid proof bytes").unwrap()))).unwrap();
+        let old = std::fs::read_to_string("../server/founder/src/mldsa_kernel_vector.rs").unwrap(); let head = old[..old.find("pub const PK").unwrap()].to_string(); std::fs::write("../server/founder/src/mldsa_kernel_vector.rs", format!("{head}pub const PK: &str = \"{}\";\npub const SIG: &str = \"{}\";\n", hex(&public_key(&[42u8; 32]).unwrap()), hex(&sign(&[42u8; 32], &[43u8; 32], b"hybrid proof bytes").unwrap()))).unwrap();
     }
 }
