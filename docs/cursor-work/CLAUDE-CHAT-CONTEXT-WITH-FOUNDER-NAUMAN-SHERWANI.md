@@ -2923,3 +2923,6 @@ Answered honestly in chat; the table is docs/claude/FOUNDER-PHASES-TECH-STATUS-1
 
 ## RESUME HERE (11 Nov 2026 18:00 PKT)
 K8d code done: browser net() + server /wt/rpc. Next: his founder-install, live Chrome proof, then GAP 2 ML-DSA hybrid. Open docs/claude/RESUME-POINT.md.
+
+## RESUME HERE (11 Nov 2026 18:05 PKT)
+K8d INSTALLED on his server (founder-install OK). Live proof open. Snapshot of rules/tech/mobile in docs/claude/RESUME-POINT.md COMPACTION SNAPSHOT.
