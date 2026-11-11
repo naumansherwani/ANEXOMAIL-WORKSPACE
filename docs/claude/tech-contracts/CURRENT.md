@@ -12,3 +12,7 @@ Source of the list: CLAUDE.md line 18 (FOUNDER TECHNOLOGY LAW) + the TECH LAW ce
 | WebTransport RPC endpoint | server/founder/src/wt.rs (/wt/rpc through the same router gates) | DONE, LIVE 11 Nov 18:10 | Rust test + live |
 | api.ts get/getOnce/post/put + devicekey.ts register on the kernel (fetch = fallback only) | founder-web/src/api.ts, devicekey.ts, Surface.tsx | CODE DONE 17:55 (10 raw calls left: exchange, refresh, SSE, login, passkey, logout, kernel load), LIVE 11 Nov 18:10 | TECH-RATCHET.json count falls |
 | Post-quantum HYBRID device proof (ML-DSA + ECDSA P-256; DBSC cookie path stays ES256 = browser standard) | founder-web/src/devicekey_pure.ts + server/founder/src/dbsc.rs + SQL | NO | Rust test + live; gate K7-devicekey-pq |
+
+
+## K8d EXCHANGE DECISION (19:45 PKT, needs his word, not decided by Claude)
+Fact (Chrome resource timing 19:36): /founder/v1/exchange is already HTTP/3 (nextHopProtocol h3). Question: also through the kernel/WebTransport? NO, and why: the DBSC chip cookie and the Secure-Session-Registration / Secure-Session-Challenge headers exist ONLY in the browser HTTP stack (spec); a WebTransport stream carries neither, so moving the exchange there would remove the hardware-chip proof. Option A (recommended): exchange stays ONE h3 fetch, documented exception; every other call is on the kernel. Option B: exchange on the kernel with only the software WebCrypto key (weaker, no chip). Gate stays: raw fetch count may only fall; exchange is the allowed one.

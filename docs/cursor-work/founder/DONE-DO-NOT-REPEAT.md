@@ -1069,3 +1069,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 19:50 PKT K8d ring PERMANENT fix: refresh 403+fresh challenge, dead chip binding re-offered, E161 heal. Not green until the ring stays blue.
 
 - 11 Nov 2026 19:32 PKT E161 SQL GREEN on his server, WIRED: YES / REAL: YES (his CHECK_E161 3/3 OK), TECH-LAW CHECKED (PostgreSQL RLS). Rust half waits his founder-install.
+
+- 11 Nov 2026 19:45 PKT K8d ring BLUE for this session after the permanent fix (his Chrome look 19:36); not green until 2 DBSC cycles and old alerts closed.

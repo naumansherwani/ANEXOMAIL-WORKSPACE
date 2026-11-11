@@ -22,3 +22,5 @@
 - 11 Nov 2026 19:50 PKT E161 sql-run then founder-install (two lines, one at a time).
 
 - 11 Nov 2026 19:32 PKT next: founder-install.
+
+- 11 Nov 2026 19:45 PKT no new command: he presses Sign out everywhere else on the Devices page.
