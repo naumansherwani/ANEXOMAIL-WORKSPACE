@@ -16,3 +16,5 @@
 - 11 Nov 2026 18:45 PKT install + CHECK_DRIFT_NOW v3.
 
 - 11 Nov 2026 19:10 PKT E160: bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) (auto picks E160 + CHECK_E160).
+
+- 11 Nov 2026 19:20 PKT no new command; E160 sql-run still waits.
