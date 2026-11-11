@@ -23,6 +23,8 @@ use rustls::crypto::ring::cipher_suite::TLS13_AES_128_GCM_SHA256;
 use crate::tls256::CertStore;
 
 pub const PATH: &str = "/wt/live";
+/// K8d: the founder API over WebTransport (see wtrpc.rs). Only served when the router is given.
+pub const RPC_PATH: &str = "/wt/rpc";
 pub const MAX_SESSIONS: usize = 64;
 const HELLO_MAX: usize = 4096;
 const HELLO_WAIT: Duration = Duration::from_secs(5);
@@ -32,7 +34,7 @@ const MAX_LIFE: Duration = Duration::from_secs(600);
 /// The live handler of the SSE endpoint, given the headers the hello built.
 pub type Handler = Arc<dyn Fn(HeaderMap) -> Pin<Box<dyn Future<Output = Response> + Send>> + Send + Sync>;
 
-pub struct Cfg { pub host: String, pub handler: Handler }
+pub struct Cfg { pub host: String, pub handler: Handler, pub rpc: Option<axum::Router> }
 
 static ACTIVE: AtomicUsize = AtomicUsize::new(0);
 static TOTAL: AtomicUsize = AtomicUsize::new(0);
@@ -63,7 +65,7 @@ pub fn origin_ok(origin: Option<&str>, host: &str) -> bool { match origin { None
 pub fn authority_host(a: &str) -> String { a.rsplit_once(':').filter(|(h, p)| !h.contains(':') && p.bytes().all(|b| b.is_ascii_digit())).map(|(h, _)| h).unwrap_or(a).to_ascii_lowercase() }
 
 /// QUIC server configuration from the K4 rustls config (AES-256-GCM only). ALPN is switched to h3; the Initial packet gets AES-128 as RFC 9001 demands.
-pub fn quic_config(tls: &rustls::ServerConfig) -> Result<quinn::ServerConfig, String> { quic_config_n(tls, 4, 4) }
+pub fn quic_config(tls: &rustls::ServerConfig) -> Result<quinn::ServerConfig, String> { quic_config_n(tls, 64, 4) } // K8d: up to 64 concurrent calls (bidi streams) per session
 
 /// Same, with the number of concurrent request (bidi) and unidirectional streams (the HTTP/3 API needs many, WebTransport live few).
 pub fn quic_config_n(tls: &rustls::ServerConfig, bidi: u32, uni: u32) -> Result<quinn::ServerConfig, String> {
@@ -131,10 +133,13 @@ impl Drop for Active { fn drop(&mut self) { ACTIVE.fetch_sub(1, Ordering::SeqCst
 
 async fn one_session(incoming: wtransport::endpoint::IncomingSession, cfg: Arc<Cfg>) {
     let Ok(Ok(req)) = tokio::time::timeout(HANDSHAKE_WAIT, incoming).await else { return };
-    if authority_host(req.authority()) != cfg.host || req.path() != PATH { req.not_found().await; return; }
+    let rpc = req.path() == RPC_PATH && cfg.rpc.is_some();
+    if authority_host(req.authority()) != cfg.host || (req.path() != PATH && !rpc) { req.not_found().await; return; }
     if !origin_ok(req.origin(), &cfg.host) { req.forbidden().await; return; }
     let Some(_slot) = Active::take() else { req.too_many_requests().await; return };
+    let (ua, hint) = (req.user_agent().map(String::from), req.headers().get("sec-ch-ua").cloned());
     let Ok(conn) = req.accept().await else { return };
+    if rpc { if let Some(router) = cfg.rpc.clone() { crate::wtrpc::run(conn, router, Arc::new(cfg.host.clone()), ua, hint).await; } return; }
     let n = TOTAL.fetch_add(1, Ordering::Relaxed) + 1;
     if n <= 5 || n % 1000 == 0 { eprintln!("founder: WebTransport session #{n} from {} (QUIC, TLS 1.3 AES-256)", conn.remote_address()); }
     let Ok(Ok((mut send, mut recv))) = tokio::time::timeout(HELLO_WAIT, conn.accept_bi()).await else { conn.close(VarInt::from_u32(1), b"no stream"); return };
@@ -238,7 +243,7 @@ mod tests {
         let ep = endpoint("127.0.0.1:0".parse().unwrap(), &tls).unwrap();
         let port = ep.local_addr().unwrap().port();
         let store = Arc::new(CertStore::fixed(tls));
-        tokio::spawn(serve(ep, store, Arc::new(Cfg { host: "127.0.0.1".into(), handler: handler(seen, status) })));
+        tokio::spawn(serve(ep, store, Arc::new(Cfg { host: "127.0.0.1".into(), handler: handler(seen, status), rpc: None })));
         Some((port, c))
     }
 
@@ -283,6 +288,40 @@ mod tests {
         assert!(talk(port, &cert, a256, "/other", b"ANX1 tok\n").await.is_err(), "wrong path must be refused");
         assert!(talk(port, &cert, a128, PATH, b"ANX1 tok\n").await.is_err(), "AES-128-only client must be refused");
         assert!(seen.lock().unwrap().is_empty());
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn k8d_the_api_runs_over_quic_through_the_router_and_the_exchange_path_is_refused() {
+        use axum::{routing::{get, post}, Router, http::HeaderMap as H};
+        let router = Router::new()
+            .route("/founder/v1/echo", post(|h: H, b: axum::body::Bytes| async move { format!("{}|{}|{}|{}", h.get("authorization").and_then(|v| v.to_str().ok()).unwrap_or(""), h.get("host").and_then(|v| v.to_str().ok()).unwrap_or(""), h.get("x-real-ip").and_then(|v| v.to_str().ok()).unwrap_or(""), String::from_utf8_lossy(&b)) }))
+            .route("/founder/v1/exchange", get(|| async { "must never be reached over WebTransport" }))
+            .route("/founder/v1/big", get(|| async { vec![b'a'; 1000] }));
+        let Some((c, k)) = test_cert() else { eprintln!("openssl missing: skipped"); return };
+        let tls = crate::tls256::server_config(&c, &k).unwrap();
+        let ep = endpoint("127.0.0.1:0".parse().unwrap(), &tls).unwrap();
+        let port = ep.local_addr().unwrap().port();
+        let seen = Arc::new(std::sync::Mutex::new(vec![]));
+        tokio::spawn(serve(ep, Arc::new(CertStore::fixed(tls)), Arc::new(Cfg { host: "127.0.0.1".into(), handler: handler(seen, 200), rpc: Some(router) })));
+        let cl = client(&c, rustls::crypto::ring::cipher_suite::TLS13_AES_256_GCM_SHA384);
+        let conn = tokio::time::timeout(Duration::from_secs(5), cl.connect(format!("https://127.0.0.1:{port}{RPC_PATH}"))).await.unwrap().unwrap();
+        async fn call(conn: &wtransport::Connection, head: &str, body: &[u8]) -> Vec<u8> {
+            let (mut s, mut r) = conn.open_bi().await.unwrap().await.unwrap();
+            let mut req = head.as_bytes().to_vec(); req.push(b'\n'); req.extend_from_slice(body);
+            s.write_all(&req).await.unwrap(); s.finish().await.unwrap();
+            let mut out = Vec::new(); let mut b = [0u8; 4096];
+            loop { match tokio::time::timeout(Duration::from_secs(5), r.read(&mut b)).await { Ok(Ok(Some(n))) => out.extend_from_slice(&b[..n]), _ => break } }
+            out
+        }
+        // two calls on ONE session, one after the other, each its own stream
+        let a = call(&conn, r#"{"m":"POST","p":"/founder/v1/echo","h":{"authorization":"Bearer t1","host":"evil"}}"#, b"hello").await;
+        assert_eq!(String::from_utf8(a).unwrap(), "S 200 text/plain; charset=utf-8\nBearer t1|127.0.0.1|127.0.0.1|hello");
+        let b = call(&conn, r#"{"m":"GET","p":"/founder/v1/exchange"}"#, b"").await;
+        assert!(String::from_utf8(b).unwrap().starts_with("S 404 "), "the exchange path never runs over WebTransport");
+        let c3 = call(&conn, r#"{"m":"GET","p":"/founder/v1/big"}"#, b"").await;
+        assert!(c3.starts_with(b"S 200 ") && c3.ends_with(&[b'a'; 1000]));
+        let d = call(&conn, r#"{"m":"GET","p":"/founder/v1/nothere"}"#, b"").await;
+        assert!(String::from_utf8(d).unwrap().starts_with("S 404 "), "an unknown route is the router's own 404");
     }
 
     #[test]

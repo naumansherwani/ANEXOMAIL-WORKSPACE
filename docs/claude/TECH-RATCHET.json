@@ -1,4 +1,4 @@
 {
  "_why": "RATCHET (founder 11 Nov 2026 04:33, 'forever solution'): raw network calls in the founder UI may only go DOWN. Rule 52: browser -> Rust WASM kernel -> WebTransport/HTTP3; fetch is a FALLBACK only. K8d takes this to the fallback-only count. rules-gate fails when the count rises, warns when it falls (lower the number).",
- "raw_network_calls": 11
+ "raw_network_calls": 10
 }

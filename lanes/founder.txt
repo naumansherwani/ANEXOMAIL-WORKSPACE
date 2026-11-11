@@ -123,9 +123,9 @@ founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
-founder-web/dist/assets/index-B1Xr8xEC.js
+founder-web/dist/assets/index-FddvjTfF.js
 founder-web/dist/assets/index-qqidgRWh.css
-founder-web/dist/assets/kernel.worker-BiR_tP7H.js
+founder-web/dist/assets/kernel.worker-o4rrLcaV.js
 founder-web/dist/assets/three.module-C0S06CcT.js
 founder-web/dist/boot.css
 founder-web/dist/early.js
@@ -222,6 +222,7 @@ founder-web/src/lib/utils.ts
 founder-web/src/livefeed.test.ts
 founder-web/src/livefeed.ts
 founder-web/src/main.tsx
+founder-web/src/net.test.ts
 founder-web/src/passkey.test.ts
 founder-web/src/passkey.ts
 founder-web/src/passkey_pure.ts
@@ -302,6 +303,7 @@ server/founder/src/signedcp.rs
 server/founder/src/signin.rs
 server/founder/src/tls256.rs
 server/founder/src/wt.rs
+server/founder/src/wtrpc.rs
 server/founder/tests/00-FOUNDER-TECH-RULE.md
 server/founder/tests/e2e_exchange.py
 server/founder/tests/e2e_live_stream.py

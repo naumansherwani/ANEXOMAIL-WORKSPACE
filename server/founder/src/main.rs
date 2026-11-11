@@ -44,6 +44,7 @@ mod signin;
 mod sessions;
 mod policy_step;
 mod h3;
+mod wtrpc;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -1021,7 +1022,9 @@ async fn main() {
                 tls256::spawn_reloader(store.clone(), cp, kp);
                 let stw = st.clone();
                 let handler: wt::Handler = Arc::new(move |h: HeaderMap| { let stw = stw.clone(); Box::pin(async move { live_stream_core(stw, h, "webtransport").await }) });
-                tokio::spawn(wt::serve(ep, store, Arc::new(wt::Cfg { host, handler })));
+                let rpc_router = app(st.clone()).layer(axum::middleware::from_fn(fproxy::layer)); // K8d: the SAME router + layers as the HTTP paths (host proof, signature, token and session gates)
+                eprintln!("founder: WebTransport RPC ON {} (the founder API over QUIC; plain HTTPS stays the fallback)", wt::RPC_PATH);
+                tokio::spawn(wt::serve(ep, store, Arc::new(wt::Cfg { host, handler, rpc: Some(rpc_router) })));
             }
             Err(e) => eprintln!("founder: WebTransport NOT started: {e}"),
         },

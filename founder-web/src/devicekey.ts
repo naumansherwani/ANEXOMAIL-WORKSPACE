@@ -27,12 +27,13 @@ export async function exchangeProof(deviceId: string): Promise<string | null> {
   return makeProof({ kind: "exchange", origin: location.origin, deviceHash: await sha256Hex(deviceId), sign: signer(k.priv) });
 }
 /** Make the key (once) and register its PUBLIC half. `sessionToken` = the same session token the exchange uses. Never throws into the page: false = not registered. */
-export async function register(deviceId: string, sessionToken: string): Promise<boolean> {
+export type Send = (path: string, init: { method?: string; headers?: Record<string, string>; body?: string }) => Promise<Response>;
+export async function register(deviceId: string, sessionToken: string, send: Send): Promise<boolean> {
   if (!supported()) return false;
   try {
     const k = await ensure();
     const proof = await makeProof({ kind: "register", origin: location.origin, deviceHash: await sha256Hex(deviceId), jwk: k.pub, sign: signer(k.priv) });
-    const r = await fetch(REGISTER_PATH, { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${sessionToken}`, "x-device-proof": proof }, body: JSON.stringify({ device_id: deviceId }), cache: "no-store" });
+    const r = await send(REGISTER_PATH, { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${sessionToken}`, "x-device-proof": proof }, body: JSON.stringify({ device_id: deviceId }) });
     return r.status === 200;
   } catch { return false; }
 }

@@ -32,6 +32,19 @@ self.onmessage = async (ev: MessageEvent<{ id: number; flive?: { op: "start" | "
     } catch (e) { (self as unknown as Worker).postMessage({ id, code: 100, error: String(e) }); }
     return;
   }
+  const rp = (ev.data as unknown as { id: number; rpc?: { op: "start" | "call" | "stop"; base?: string; cid?: number; bytes?: ArrayBuffer } }); // K8d: the founder API over the kernel's WebTransport session (rpc@1, Rust/Tokio)
+  if (rp.rpc) {
+    const { id, rpc: a } = rp;
+    try {
+      const k = (await load()) as unknown as { memory: WebAssembly.Memory; kernel_alloc(n: number): number; kernel_free(p: number, n: number): void; rpc_start(p: number, l: number, seed: number): void; rpc_call(cid: number, p: number, l: number): void; rpc_stop(): void };
+      const put = (b: Uint8Array) => { const p = k.kernel_alloc(Math.max(b.length, 1)); new Uint8Array(k.memory.buffer, p, b.length).set(b); return [p, b.length] as const; };
+      if (a.op === "start") { const u = put(new TextEncoder().encode(a.base ?? "")); k.rpc_start(u[0], u[1], (crypto.getRandomValues(new Uint32Array(1))[0] | 1) >>> 0); k.kernel_free(u[0], Math.max(u[1], 1)); }
+      else if (a.op === "call") { const b = put(new Uint8Array(a.bytes ?? new ArrayBuffer(0))); k.rpc_call(a.cid ?? 0, b[0], b[1]); k.kernel_free(b[0], Math.max(b[1], 1)); }
+      else k.rpc_stop();
+      (self as unknown as Worker).postMessage({ id, code: 0, data: "ok" });
+    } catch (e) { (self as unknown as Worker).postMessage({ id, code: 100, error: String(e) }); }
+    return;
+  }
   if (ev.data.merkle) { // step 5K: audit-ledger inclusion proof checked by the kernel (merkle@1) in this browser
     const { id, merkle: m } = ev.data;
     try {

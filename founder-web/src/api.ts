@@ -1,7 +1,7 @@
 // Founder API (same origin). The existing sign-in is the ONLY login (Rule 68); this file never stores or copies its token.
 // F1a: the session token is exchanged ONCE per 15 minutes for a founder token (aud=anexo-founder, device-bound) which lives in MEMORY only.
 // If the server has no token service yet (install pending), calls fall back to the session token and the page says so plainly.
-import { verifyBody } from "./kernel";
+import { verifyBody, kernelRpc, rpcAvailable } from "./kernel";
 import { KERNEL } from "./kernel.pin";
 // D2b: the kernel build this browser runs travels with every founder request, so Devices & Sessions can see a build change inside one session (a claim, never proof).
 const KV = { "x-founder-kernel": KERNEL.version } as const;
@@ -94,7 +94,7 @@ async function exchange(again = true): Promise<string | null> {
   catch { mode = "legacy"; return null; }
   if (r.status === 401) { if (again && (await renewSession())) return exchange(false); throw expired(); } // an expired session token: renew once, then ask again
   let j: any = {}; try { j = await r.json(); } catch {}
-  if (r.status === 200 && j.token && shouldRegister(j.dk) && !keyTried) { keyTried = true; void dk.register(id, t).then((ok) => { if (ok) forget(); }); }   // E158: once the key is registered, the next call re-exchanges WITH the proof so the session row gets its key; K7b: an unbound device binds; K7 wire fix: a bound device that proved no key this time re-binds (any browser, any phone); fire and forget
+  if (r.status === 200 && j.token && shouldRegister(j.dk) && !keyTried) { keyTried = true; void dk.register(id, t, net).then((ok) => { if (ok) forget(); }); }   // E158: once the key is registered, the next call re-exchanges WITH the proof so the session row gets its key; K7b: an unbound device binds; K7 wire fix: a bound device that proved no key this time re-binds (any browser, any phone); fire and forget
   if (r.status === 200 && j.token) { ft = j.token; rk = j.req_key || null; fexp = j.exp * 1000; mode = "device"; dlabel = j.device || ""; return ft; }
   if (r.status === 403 && j.error === "device_pending") throw new DevicePending(j.code, false);
   if (r.status === 403 && j.error === "device_revoked") throw new DevicePending(null, true);
@@ -167,6 +167,18 @@ async function readSigned<T>(r: Response, path: string): Promise<Envelope<T>> {
   return { data: JSON.parse(v.data) as T, verified: true };
 }
 // Same GET asked twice at the same moment (shell + a page) shares one network call and one verification.
+
+/** K8d (Rule 52): every founder API call travels through the Rust WASM kernel over WebTransport (HTTP/3, QUIC). fetch is only the read fallback when the kernel session is not up BEFORE sending; a write is never repeated after an ambiguous break. */
+export async function net(path: string, init: { method?: string; headers?: Record<string, string>; body?: string }): Promise<Response> {
+  const m = (init.method || "GET").toUpperCase();
+  if ((m === "GET" || m === "POST" || m === "PUT") && rpcAvailable()) {
+    const body = init.body == null ? null : new TextEncoder().encode(init.body);
+    const r = await kernelRpc(m, path, init.headers || {}, body);
+    if (r) return new Response(r.body.length ? (r.body as unknown as BodyInit) : null, { status: r.status, headers: { "content-type": r.contentType || "application/json" } });
+    if (m !== "GET") throw new Error("The connection broke while saving. Not repeated automatically; check and try again.");
+  }
+  return fetch(path, { ...init, cache: "no-store" } as RequestInit);
+}
 const liveGets = new Map<string, Promise<Envelope<any>>>();
 export function get<T = any>(path: string, retry = true): Promise<Envelope<T>> {
   const k = retry ? path : "";
@@ -177,7 +189,7 @@ export function get<T = any>(path: string, retry = true): Promise<Envelope<T>> {
 }
 async function getOnce<T = any>(path: string, retry = true): Promise<Envelope<T>> {
   const t = await auth(path); if (!t) throw expired();
-  const r = await fetch(path, { headers: { ...KV, authorization: `Bearer ${t}` }, cache: "no-store" });
+  const r = await net(path, { headers: { ...KV, authorization: `Bearer ${t}` } });
   if (r.status === 401 && retry && ft && t === ft) { forget(); return getOnce(path, false); } // revoked / expired founder token -> one fresh exchange
   if (r.status === 401) throw expired();
   if (r.status === 403) throw new Error("This account is not a founder account");
@@ -199,7 +211,7 @@ export async function openStream(path: string, lastId: number, signal: AbortSign
 export async function post(path: string, body: unknown): Promise<WriteResult> {
   const t = await auth(path); if (!t) throw expired();
   const bs = JSON.stringify(body);
-  const r = await fetch(path, { method: "POST", headers: await writeHeaders("POST", path, bs, t), body: bs });
+  const r = await net(path, { method: "POST", headers: await writeHeaders("POST", path, bs, t), body: bs });
   if (r.status === 401) { forget(); throw expired(); }
   let j: any = null;
   try { j = r.ok && SIGNED(path) ? (await readSigned(r, path)).data : await r.json(); } catch (e) { if (r.ok) throw e; }
@@ -208,7 +220,7 @@ export async function post(path: string, body: unknown): Promise<WriteResult> {
 export async function put(path: string, body: unknown): Promise<WriteResult> {
   const t = await auth(path); if (!t) throw expired();
   const bs = JSON.stringify(body);
-  const r = await fetch(path, { method: "PUT", headers: await writeHeaders("PUT", path, bs, t), body: bs });
+  const r = await net(path, { method: "PUT", headers: await writeHeaders("PUT", path, bs, t), body: bs });
   if (r.status === 401) { forget(); throw expired(); }
   let j: any = null;
   try { j = r.ok && SIGNED(path) ? (await readSigned(r, path)).data : await r.json(); } catch (e) { if (r.ok) throw e; }

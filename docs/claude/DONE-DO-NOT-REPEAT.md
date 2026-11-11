@@ -207,3 +207,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 9 Nov 2026 20:08 PKT (REAL clock, from `date`) DONE on his server: E148 fixed file rerun (sha 798c937f6ef56c21) + CHECK_E148 7/7; telemetry ON; K6.1-K6.3 installed; K6.4 server leg. Do not redo these.
 
 - 11 Nov 2026 04:00 PKT WRITTEN (not yet on his server): E158 founder_session_key_attach + CHECK_E158; Rust offer_binding/dk.key/key_attach call; UI shouldRegister + re-exchange. Do not rewrite; wait for his sql-run E158 paste + founder-install paste, then prove live (Trust seal Device key = Good, board key_source dbsc/webcrypto).
+
+- 11 Nov 2026 18:00 PKT K8d CODE DONE (not green, live proof pending): founder API over kernel rpc@1 + WebTransport /wt/rpc (HTTP/3, QUIC); api.ts net(); wtrpc.rs; ratchet 10.

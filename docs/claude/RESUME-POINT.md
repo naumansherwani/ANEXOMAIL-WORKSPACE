@@ -1,6 +1,6 @@
 <!--TECHLAW-->
 # RESUME POINT (the ONE file to open when the founder says "shuru kero / jahan rukay thay"; kept current by rules-gate)
-LAST UPDATED: 11 Nov 2026 17:30 PKT. Per-phase technology status table: docs/claude/FOUNDER-PHASES-TECH-STATUS-11NOV.md. Tomorrow = GAP 1 (K8d) then GAP 2 (ML-DSA hybrid), see below.
+LAST UPDATED: 11 Nov 2026 17:58 PKT. K8d CODE DONE (server wtrpc.rs + browser net() in api.ts, devicekey register via net, boot kernelRpcStart; bun 179 pass; ratchet 10); WAITING his founder-install + live Chrome proof (network panel: /founder/v1 over WebTransport, journal WebTransport RPC ON). Then GAP 2. Per-phase technology status table: docs/claude/FOUNDER-PHASES-TECH-STATUS-11NOV.md. Tomorrow = GAP 1 (K8d) then GAP 2 (ML-DSA hybrid), see below.
 
 ## STEP 0 (every Claude, after compaction or a new chat, in this order)
 1. docs/claude/TECH-FIRST-PROTOCOL.md  2. docs/claude/tech-contracts/CURRENT.md  3. this file  4. newest "RESUME HERE" at the bottom of docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md  5. docs/claude/START-HERE-AFTER-COMPACTION.md (8 rules). Then talk: Roman Urdu, short, "Aap / Nauman bhai", end with the Rule-70 table + "Abhi code mein NAHI".

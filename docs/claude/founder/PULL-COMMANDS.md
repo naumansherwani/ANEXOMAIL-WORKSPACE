@@ -937,3 +937,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 11 Nov 2026 05:00 PKT: no server command pending; tomorrow's first command comes with GAP 1.
 - 11 Nov 2026 17:30 PKT: docs only, no server command.
 - 11 Nov 2026 17:50 PKT: no server command pending (docs + gates). HIS HANDS later: repo private needs deploy key steps A/B (REPO-THEFT-DEFENCE-11NOV.md).
+
+- 11 Nov 2026 18:00 PKT K8d: founder-install (Rust + SPA): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -15

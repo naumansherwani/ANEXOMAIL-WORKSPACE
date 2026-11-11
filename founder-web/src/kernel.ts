@@ -27,7 +27,7 @@ function w(): Worker {
   if (!worker) {
     const href = workerUrl, early = (window as unknown as { __kw?: Worker }).__kw; // early.js may already have started it
     worker = early ?? new Worker((ttPolicy ? ttPolicy.createScriptURL(href) : href) as string, { type: "module" });
-    worker.onmessage = (ev) => { if (ev.data.flive) { liveEmit(ev.data.kind, ev.data.a, ev.data.data); return; } const f = waiting.get(ev.data.id); if (f) { waiting.delete(ev.data.id); f(ev.data); } };
+    worker.onmessage = (ev) => { if (ev.data.flive) { if (ev.data.kind === 4 || ev.data.kind === 5) { rpcEmit(ev.data.kind, ev.data.a, ev.data.b, ev.data.data); return; } liveEmit(ev.data.kind, ev.data.a, ev.data.data); return; } const f = waiting.get(ev.data.id); if (f) { waiting.delete(ev.data.id); f(ev.data); } };
     worker.onerror = () => { for (const [id, f] of waiting) { waiting.delete(id); f({ code: 100 }); } };
   }
   return worker;
@@ -161,4 +161,42 @@ export async function kernelLiveStart(url: string, token: string, cb: KernelLive
   if (r.code !== 0 || !r.data) { liveCb = null; return null; }
   const h = Number(r.data);
   return { stop() { if (liveCb === cb) liveCb = null; void call({ op: "stop", h }); }, setToken(t: string) { void call({ op: "token", token: t, h }); } };
+}
+
+/* ---- K8d (Rule 52): the founder API over the kernel's WebTransport session (rpc@1). The kernel opens ONE QUIC session to /wt/rpc and sends every call as its own stream;
+ *      the answer comes back as `S <status> <content-type>\n<body>`. fetch stays the FALLBACK. A WRITE is never repeated by itself: if the kernel session breaks mid-call the caller is told. ---- */
+const RPC_PORT = 4443;
+let rpcUp = false, rpcStarted = false, rpcCid = 0;
+const rpcWait = new Map<number, (r: { status: number; data: Uint8Array }) => void>();
+function rpcEmit(kind: number, a: number, b: number, data: Uint8Array) {
+  if (kind === 4) { rpcUp = a === 1; return; }
+  const f = rpcWait.get(a); if (f) { rpcWait.delete(a); f({ status: b, data }); }
+}
+const rpcCall = (rpc: { op: "start" | "call" | "stop"; base?: string; cid?: number; bytes?: ArrayBuffer }) => new Promise<{ code: number }>((res) => { const id = ++seq; waiting.set(id, res); const t = rpc.bytes ? [rpc.bytes] : []; w().postMessage({ id, rpc }, t); });
+export const rpcAvailable = () => wtSupported() && rpcUp;
+/** Start the kernel's API session once (idempotent). Resolves true when the QUIC session is up within `waitMs`; false = use fetch. */
+export async function kernelRpcStart(waitMs = 1500): Promise<boolean> {
+  if (!wtSupported()) return false;
+  if (!rpcStarted) { rpcStarted = true; const r = await rpcCall({ op: "start", base: `https://${location.hostname}:${RPC_PORT}` }); if (r.code !== 0) { rpcStarted = false; return false; } }
+  const t0 = Date.now(); while (!rpcUp && Date.now() - t0 < waitMs) await new Promise((ok) => setTimeout(ok, 50));
+  return rpcUp;
+}
+export type RpcReply = { status: number; contentType: string; body: Uint8Array };
+/** One API call over the kernel. null = the kernel could not carry it (session not up, or it broke): the caller decides between fetch (reads) and an honest error (writes). */
+export function kernelRpc(method: "GET" | "POST" | "PUT", path: string, headers: Record<string, string>, body: Uint8Array | null, timeoutMs = 20000): Promise<RpcReply | null> {
+  return new Promise((resolve) => {
+    if (!rpcUp) { resolve(null); return; }
+    const head = new TextEncoder().encode(JSON.stringify({ m: method, p: path, h: headers }) + "\n"), req = new Uint8Array(head.length + (body?.length ?? 0));
+    req.set(head, 0); if (body) req.set(body, head.length);
+    const cid = ++rpcCid;
+    const timer = setTimeout(() => { if (rpcWait.delete(cid)) resolve(null); }, timeoutMs);
+    rpcWait.set(cid, (r) => {
+      clearTimeout(timer);
+      if (r.status !== 200) { resolve(null); return; }
+      const nl = r.data.indexOf(10); if (nl < 3) { resolve(null); return; }
+      const m = /^S (\d{3}) (.*)$/.exec(new TextDecoder().decode(r.data.subarray(0, nl)));
+      resolve(m ? { status: Number(m[1]), contentType: m[2], body: r.data.slice(nl + 1) } : null);
+    });
+    void rpcCall({ op: "call", cid, bytes: req.buffer as ArrayBuffer });
+  });
 }
