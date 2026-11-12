@@ -1,0 +1,5 @@
+.orbline{margin:2px 0 0;font-size:12px;line-height:1.4;color:var(--dim,#8a93a6);letter-spacing:.01em}
+.orbline b{font-weight:500;color:inherit}
+.orbline b[data-tone="warn"]{color:#e8b04a}
+.orbline i{font-style:normal;opacity:.55}
+@media (forced-colors:active){.orbline b[data-tone="warn"]{color:CanvasText;text-decoration:underline}}

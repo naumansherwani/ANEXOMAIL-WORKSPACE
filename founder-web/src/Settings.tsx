@@ -1,3 +1,4 @@
+import { OrbLineSwitch } from "./OrbLine";
 import { useEffect, useState, type ReactNode } from "react";
 import { setSetting } from "./api";
 import { useCity } from "./city";
@@ -181,6 +182,7 @@ export function SettingsView({ p, fx, setFx, slim, setSlim, reload, go, preview,
               <div className="setrow"><div><b>Graphics &amp; visual effects</b><p className="dim">Glows, aurora backgrounds, ambient looks and floating cards (and 3D scenes). Turn off for a flat, fast, battery-friendly look.</p></div>
                 <Switch checked={fx} aria-label="Graphics" disabled={busy} onCheckedChange={(v) => save("appearance.graphics", v, () => setFx(v))} /></div>
               <RowTools k="appearance.graphics" onHistory={openHistory} />
+              <OrbLineSwitch />
               <div className="setrow"><div><b>Celebration (earned delight)</b><p className="dim">On by default. Fires only when work is genuinely finished — a proof completing, a queue reaching zero.</p></div>
                 <Switch checked={ap.celebration} aria-label="Celebration" disabled={busy} onCheckedChange={(v) => put("appearance.celebration", v, { celebration: v })} /></div>
               <RowTools k="appearance.celebration" onHistory={openHistory} />
