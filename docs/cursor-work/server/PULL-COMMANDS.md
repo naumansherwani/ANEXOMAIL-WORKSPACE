@@ -104,3 +104,5 @@
 - Q1b-3 step 1c 13 Nov 04:18: his run applied the Postfix per-address entry (transport_maps founder-transport, lookup lmtp:inet:127.0.0.1:18025, others unchanged, postfix check ok). Service plus routing proven; real mail not yet received, so not REAL.
 
 - Q1b-3 audit 13 Nov 04:26: 2 loopholes in our intake fixed in Rust (skipped went to inbox; encrypted ZIP/PDF/Office trusted as clean), crate tests for fmail_in 11 pass; fmail-intake-audit.sh (read-only clamd limits, EICAR, Postfix/OpenSSL PQ handshake) written; residual encrypted 7z/RAR needs clamd AlertEncrypted (his haan). Not on his server yet.
+
+- Q1b-3 audit result 13 Nov 04:35 from his server: fixes L1+L2 installed (391 tests, healthz 200); EICAR = FOUND; clamd AlertEncrypted/AlertExceedsMax unset; Postfix 3.10.6 + OpenSSL 3.5.5 but tls_eecdh_auto_curves has no ML-KEM so inbound PQ handshake failed = open gap Q-in-tls-pq. Tomorrow evening T1 Postfix curves, T2 clamd alerts, T3 his real test mail, T4 E171; Q1b-3 not REAL until T3.

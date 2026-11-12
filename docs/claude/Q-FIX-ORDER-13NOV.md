@@ -35,3 +35,14 @@ LOOPHOLES FOUND IN OUR OWN CODE + FIXED (Rust, fmail_in.rs, tests 11 pass):
 - L2 ClamAV trusts password-protected ZIP / PDF / Office as clean (AlertEncrypted default NO). New opaque_attachment(): encrypted ZIP (flag bit 0 in any local header), PDF /Encrypt, OLE EncryptedPackage/EncryptionInfo -> a clean verdict is not trusted, mail is quarantined (state error).
 RESIDUAL (open, not green): encrypted 7z / RAR undetectable in Rust without unpacking -> clamd AlertEncrypted yes + AlertExceedsMax yes (clamd is shared with awam: needs his haan); scan state has no 'opaque' value (E171 could add it); a poisoned mail that crashes clamd lands in quarantine (safe); inbound Postfix TLS post-quantum depends on Postfix >= 3.10 + OpenSSL >= 3.5: measured by docs/cursor-work/server/fmail-intake-audit.sh (read-only, section C).
 Not on his server until founder-install runs. After that: fmail-intake-audit.sh output, then his real test mail (1d).
+
+## STEP 1 AUDIT RESULT from his server (13 Nov 04:35 PKT) - loopholes L1+L2 INSTALLED, rest OPEN for tomorrow evening
+- founder-install 04:3x: 391 tests passed, build ok, healthz 200 => L1 (only clean reaches the inbox) + L2 (opaque_attachment) are LIVE.
+- clamd read: StreamMaxLength 64M, MaxScanSize 100M, MaxFileSize 64M, MaxRecursion 16, ScanMail/ScanArchive true, AlertEncrypted + AlertExceedsMax NOT set (default no). EICAR straight to clamd = "Eicar-Test-Signature FOUND" (scanner works).
+- Postfix 3.10.6 + OpenSSL 3.5.5 = capable of X25519MLKEM768, BUT tls_eecdh_auto_curves is pinned to "X25519 X448 prime256v1 secp384r1 secp521r1" (no ML-KEM), so the local PQ-only handshake FAILED (alert 40, group NULL). Inbound mail TLS is NOT post-quantum yet = OPEN GAP (TECH-LAW-GATE Q-smtp-mtasts line widened).
+TOMORROW EVENING, in this order, each needs his haan because awam shares the Postfix + clamd:
+ T1 Postfix: tls_eecdh_auto_curves = X25519MLKEM768 X25519 X448 prime256v1 secp384r1 secp521r1 (hybrid first, classic stays for old senders), backup + postfix check + reload + the same handshake test must show "Negotiated TLS1.3 group: X25519MLKEM768".
+ T2 clamd: AlertEncrypted yes + AlertExceedsMax yes (closes encrypted 7z/RAR + zip-bombs), backup + restart + EICAR re-test; effect on awam: encrypted or over-limit attachments are flagged.
+ T3 his real test mail from his other address (1d), then 1e live look 390/820/1200 + U1.
+ T4 SQL E171: scan state 'opaque'.
+Q1b-3 is NOT REAL until T3 is proven. Q1d (DKIM key + FMAIL_SEND) comes after, step 2.

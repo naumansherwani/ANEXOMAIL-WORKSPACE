@@ -246,6 +246,14 @@
    "status": "open",
    "deadline": "2026-11-27",
    "why": "MTA-STS (RFC 8461) / DANE (RFC 7672) / TLS-RPT for outgoing mail: only named in the file header as an open gap, not implemented (Q1d audit)"
+  },
+  {
+   "id": "Q-in-tls-pq",
+   "file": "docs/claude/Q-FIX-ORDER-13NOV.md",
+   "must": "INBOUND-TLS-PQ-DONE",
+   "status": "open",
+   "deadline": "2026-11-20",
+   "why": "inbound mail TLS must negotiate X25519MLKEM768: Postfix 3.10.6 + OpenSSL 3.5.5 can, but tls_eecdh_auto_curves is pinned without ML-KEM (his server 13 Nov 04:35, local handshake failed)"
   }
  ]
 }
