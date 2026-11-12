@@ -10,7 +10,7 @@
 > | AUDIT 3 | DONE (counter 0) | chip-registration cookie rule, kernel-wait in `net()` |
 > | L-A LA-1, LA-5, LA-3 | GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED | React 19 TS, Radix Popover (shadcn), GSAP (lazy chunk), reduced-motion + forced-colors |
 > | L-A LA-4 | GREEN on laptop + sandbox 390/820/1200 (his phone screenshot of this build still wanted), WIRED: YES / REAL: YES / TECH-LAW CHECKED | live 20:5x: bundle index-DZBk0i0y, 'No blocked requests in the last 24 h' from /dbsc/status; amber/red states by tests |
-> | L-A LA-2, LA-6 | NEXT (LA-2 data audit first) | React TS, Radix, new files + one-line mounts |
+> | L-A LA-2, LA-6 | GREEN 12 Nov 21:25, WIRED: YES / REAL: YES / TECH-LAW CHECKED (live: real E166 times in the tooltip, click filter works) | SQL E166 read-only RPC, Rust bridge.rs, React TS, Radix Popover, GSAP; new files, Scene3D.tsx untouched |
 > | L-A LA-7 idle dimming + L2 Three.js WebGPU | HIS HAAN 12 Nov 20:30 ('yeh haan hai'): the whole L series completes TODAY | Three.js WebGPURenderer + TSL (parked stash), GSAP, Framer Motion; pixel-equal proof first (sandbox mean RGB identical already shown) |
 > | S5 TanStack Start | gate 14 Nov, his decision | TanStack Router now; Start needs an SSR runtime (Node/Bun banned) |
 > | M MoQ | gate 16 Nov | own Rust MoQ relay on wtransport/QUIC + kernel |
