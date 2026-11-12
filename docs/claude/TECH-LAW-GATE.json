@@ -84,7 +84,7 @@
    "id": "L-webgpu",
    "file": "founder-web/src/Scene3D.tsx",
    "must": "WebGPURenderer",
-   "status": "open",
+   "status": "ok",
    "deadline": "L phase",
    "why": "Three.js WebGPU listed for L",
    "fail_after": "2026-11-13"
