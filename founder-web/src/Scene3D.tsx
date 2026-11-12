@@ -6,9 +6,6 @@ import type * as TT from "three";
 // canvas is off screen (no CPU/GPU burn overnight), (3) data comes ONLY from kernel-verified answers (callers pass `tone` / counts; unknown = grey, never a guess),
 // (4) Settings > Graphics off or prefers-reduced-motion = one still frame, (5) any failure shows the CSS fallback, never a blank hole.
 type Three = typeof TT;
-type Gsap = typeof import("gsap")["gsap"];
-let gsapLoaded: Gsap | null = null;   // L1: GSAP loads LAZILY with the 3D layer (never on the first paint); until it arrives a colour change is applied at once
-const loadGsap = () => import("gsap").then((m) => { gsapLoaded = m.gsap; }).catch(() => {});
 export type Built = { scene: TT.Scene; camera: TT.Camera; tick: (t: number, dt: number) => void; resize?: (w: number, h: number) => void; pointer?: (x: number, y: number) => void; dispose: () => void };
 export type Tone = "ok" | "warn" | "fail" | "unknown";
 export const TONE_HEX: Record<Tone, number> = { ok: 0x3dd598, warn: 0xf2b84b, fail: 0xef6a58, unknown: 0x6b7a99 };
@@ -54,7 +51,7 @@ export function HealthOrb({ tone, label }: { tone: Tone; label?: string }) {
   const toneRef = useRef<Tone>(tone); toneRef.current = tone;
   const { host, state } = useScene((T) => {
     const scene = new T.Scene(), camera = new T.PerspectiveCamera(32, 1, 0.1, 20); camera.position.set(0, 0, 4.2);
-    const col = new T.Color(TONE_HEX[toneRef.current]), target = new T.Color(TONE_HEX[toneRef.current]); let shown: Tone = toneRef.current; void loadGsap();
+    const col = new T.Color(TONE_HEX[toneRef.current]), target = new T.Color(TONE_HEX[toneRef.current]);
     const noise = `float h(vec3 p){p=fract(p*0.3183099+.1);p*=17.;return fract(p.x*p.y*p.z*(p.x+p.y+p.z));}
       float n3(vec3 x){vec3 i=floor(x),f=fract(x);f=f*f*(3.-2.*f);return mix(mix(mix(h(i),h(i+vec3(1,0,0)),f.x),mix(h(i+vec3(0,1,0)),h(i+vec3(1,1,0)),f.x),f.y),mix(mix(h(i+vec3(0,0,1)),h(i+vec3(1,0,1)),f.x),mix(h(i+vec3(0,1,1)),h(i+vec3(1,1,1)),f.x),f.y),f.z);}`;
     const mat = new T.ShaderMaterial({
@@ -70,15 +67,13 @@ export function HealthOrb({ tone, label }: { tone: Tone; label?: string }) {
     return {
       scene, camera,
       tick(t, dt) {
-        const tn = toneRef.current;
-        if (tn !== shown) { shown = tn; target.setHex(TONE_HEX[tn]); gsapLoaded?.killTweensOf(col); const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;   // L1 GSAP: the colour eases to the new health in ~1 s (instant for reduced motion)
-          if (reduce || !gsapLoaded) col.copy(target); else gsapLoaded.to(col, { r: target.r, g: target.g, b: target.b, duration: 1, ease: "power2.out" }); }
+        const tn = toneRef.current; target.setHex(TONE_HEX[tn]); col.lerp(target, Math.min(1, dt * 3));          // colour eases to the new health in ~1 s
         const hz = tn === "fail" ? 2.2 : tn === "warn" ? 1.1 : tn === "unknown" ? 0.5 : 0.7, amp = tn === "fail" ? 0.12 : tn === "warn" ? 0.09 : 0.06;
         mat.uniforms.uT.value = t; mat.uniforms.uA.value = amp;
         const s = 1 + Math.sin(t * hz * Math.PI * 2) * (tn === "fail" ? 0.045 : 0.025); orb.scale.setScalar(s); halo.scale.setScalar(s);
       },
       resize(w, h) { (camera as TT.PerspectiveCamera).aspect = w / h; (camera as TT.PerspectiveCamera).updateProjectionMatrix(); },
-      dispose() { gsapLoaded?.killTweensOf(col); orb.geometry.dispose(); mat.dispose(); halo.geometry.dispose(); (halo.material as TT.Material).dispose(); },
+      dispose() { orb.geometry.dispose(); mat.dispose(); halo.geometry.dispose(); (halo.material as TT.Material).dispose(); },
     };
   }, []);
   return (

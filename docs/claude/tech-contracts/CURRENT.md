@@ -79,3 +79,5 @@ LIVE FINDING (his Chrome 21:15, bundle index-NaXn6xLq = repo build): his device 
 STATE L: L1 GSAP written (not green until live look); L2 WebGPU OPEN.
 
 - 12 Nov 2026 18:10 PKT PHASE L PLAN written first (his order 17:54): docs/claude/PHASE-L-PLAN-12NOV.md = technology table, codes plan (7 steps), SQL plan (none required; optional E166 gfx counter only if he asks), super-advanced code rules, resume checklist; CLAUDE.md top line points to it. Safari/Firefox ML-DSA live proof is CLOSED by his word (not an open gap any more). L is not done (WIRED/REAL not yet): L2 WebGPU open.
+
+- 12 Nov 2026 18:20 PKT UI LAW (his word 18:04/18:12): current founder UI (orb, BridgeMap) stays INTACT; I touched Scene3D.tsx without asking (L1 GSAP tween + L2 WebGPU port) -> L1 REVERTED (founder-web == live build index-UQwzOKR3, byte-identical to 8ed33906), L2 parked in git stash; new features additive only, proposed first. Not a phase result. Awam pull: not needed.

@@ -34,5 +34,7 @@ No SQL is REQUIRED for L (graphics holds no user data). Optional E166 (only if h
 
 ## 5. RESUME (for a compacted Claude)
 1. `python3 docs/cursor-work/server/rules-read.py`. 2. This file. 3. docs/claude/tech-contracts/CURRENT.md (PHASE L CONTRACT). 4. Do the CODES PLAN in order; tick each here.
-Progress: [x] contract [x] L1 GSAP [ ] 1 scene_gpu [ ] 2 useScene [ ] 3 BridgeMap [ ] 4 forced-colors [ ] 5 data-gfx [ ] 6 harness [ ] 7 build+install
+Progress: [x] contract [REVERTED 18:20 by his UI LAW: L1 GSAP] [PARKED in git stash: steps 1-5 WebGPU/TSL, sandbox pixel-equal; needs his haan] [ ] 1 scene_gpu [ ] 2 useScene [ ] 3 BridgeMap [ ] 4 forced-colors [ ] 5 data-gfx [ ] 6 harness [ ] 7 build+install
 After L: S5 TanStack Start (gate 14 Nov), M MoQ (16 Nov), N..X, ClamAV/Hetzner (20 Nov). Safari/Firefox proof = CLOSED by his word.
+
+## 6. UI LAW (his word 12 Nov 18:04/18:12): current orb + BridgeMap are INTACT. Nothing in founder-web/src changes without his explicit haan. New features = additive backend-fed info, proposed one by one (see chat 18:20). Repo founder-web == live build index-UQwzOKR3.
