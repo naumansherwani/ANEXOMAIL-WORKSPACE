@@ -96,7 +96,7 @@
    "status": "open",
    "deadline": "M phase",
    "why": "Media over QUIC relay listed for M",
-   "fail_after": "2026-11-16"
+   "fail_after": "2026-11-20"
   },
   {
    "id": "Q-pq-sign",
@@ -147,7 +147,7 @@
    "status": "open",
    "deadline": "his word needed",
    "why": "TANSTACK START & ROUTER listed; founder is Router-only static SPA (Start needs an SSR runtime = Node/Bun, banned). Decision for him: keep Router-only as the documented exception or not",
-   "fail_after": "2026-11-14"
+   "fail_after": "2026-11-18"
   },
   {
    "id": "K7-devicekey-pq-kernel",
