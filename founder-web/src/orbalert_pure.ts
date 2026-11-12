@@ -11,6 +11,8 @@ export function orbAlert(s: DbscStatus | null | undefined): OrbAlertView | null 
   if (r.chain && r.chain.ok === false) return { tone: "fail", text: "Device ledger chain broken: treat as an incident", sr: "Alert: the device event ledger failed its hash check." };
   const blocked = n(r.blocked_24h), would = n(r.would_block_24h);
   if (blocked > 0) return { tone: "fail", text: `${plural(blocked, "request", "requests")} blocked in the last 24 h`, sr: `Alert: ${plural(blocked, "request was", "requests were")} blocked in the last 24 hours.` };
-  if (would > 0) return { tone: "warn", text: `${plural(would, "request", "requests")} would have been blocked in the last 24 h`, sr: `Notice: ${plural(would, "request would have been", "requests would have been")} blocked in the last 24 hours.` };
+  // Enforce mode never logs would_block (server: AllowWould exists only in observe), so in enforce this count is from the observe period before enforcement and ages out of the 24 h window on its own.
+  const old = s.mode === "enforce" ? " (logged before enforcement began)" : "";
+  if (would > 0) return { tone: "warn", text: `${plural(would, "request", "requests")} would have been blocked in the last 24 h${old}`, sr: `Notice: ${plural(would, "request would have been", "requests would have been")} blocked in the last 24 hours${old}.` };
   return { tone: "ok", text: "No blocked requests in the last 24 h", sr: "All clear: no requests were blocked in the last 24 hours." };
 }

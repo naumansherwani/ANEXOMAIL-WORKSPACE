@@ -131,8 +131,8 @@ founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
 founder-web/dist/assets/gsap-OWHkPl-m.js.gz
-founder-web/dist/assets/index-CCABRapy.js
-founder-web/dist/assets/index-CCABRapy.js.gz
+founder-web/dist/assets/index-DZBk0i0y.js
+founder-web/dist/assets/index-DZBk0i0y.js.gz
 founder-web/dist/assets/index-DgP8Xc1G.css
 founder-web/dist/assets/index-DgP8Xc1G.css.gz
 founder-web/dist/assets/kernel.worker-mprshus0.js
