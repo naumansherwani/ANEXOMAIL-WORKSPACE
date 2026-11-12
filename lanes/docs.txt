@@ -156,6 +156,7 @@ docs/claude/PP1-FULL-GATE-TABLE-26OCT.md
 docs/claude/PRICING-AND-PLANS-PHASE-26OCT.md
 docs/claude/PRICING-POSITIONING-26OCT.md
 docs/claude/PRO-LIVE-GREEN-26OCT.md
+docs/claude/Q-FIX-ORDER-13NOV.md
 docs/claude/README.md
 docs/claude/REPO-AUDIT-03NOV.md
 docs/claude/REPO-THEFT-DEFENCE-11NOV.md

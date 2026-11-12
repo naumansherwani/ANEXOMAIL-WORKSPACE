@@ -180,3 +180,5 @@ STATE L-A: PLAN WRITTEN, no code yet. Full table: docs/claude/PHASE-L-PLAN-12NOV
 - Q1d UI polish 13 Nov 03:46: reading pane fills the height (no empty void at 1280), status pill wraps whole at 390 (was cut). Sandbox 390/820/1280: no sideways scroll, no console errors. SPA only.
 
 - Q-series live audit 13 Nov 04:00 (his Chrome, bundle BKdnTGPQ = repo e3e8cec5): Q1a and Q1b-1/2 stay as recorded (WIRED: YES / REAL: YES / TECH-LAW CHECKED); Q1c MATCHES (kernel RPC, no fetch except /auth/refresh, ledger chain verified up to row 1, LogoMark, pill QUIC/DBSC/AES-256); Q1d not done (needs DKIM+DNS+FMAIL_SEND+real mail); Q1b-3 intake OFF; live stream is SSE fetch over h3, not WebTransport = open gap Q-live-wt (Q3); pill has no PQC segment, only a PQC tag per message. No new loophole.
+
+- Q fix order written 13 Nov 04:03 (his 04:02 word): docs/claude/Q-FIX-ORDER-13NOV.md, step 1 = Q1b-3 intake ON; needs his read-only ss list, then FMAIL_LMTP_BIND, clamd, Postfix hook with his haan.
