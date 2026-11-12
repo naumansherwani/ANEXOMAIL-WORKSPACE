@@ -88,10 +88,11 @@ export type Pill = { quic: { ok: boolean; text: string }; dbsc: { ok: boolean; t
 /** The header pill. Each segment is a measured fact; a failed or unknown check is shown as "not verified" with a hollow dot, never hidden and never green.
  *  h3: performance navigation `nextHopProtocol` of THIS page ("h3" = QUIC). dbsc: this device's row of /founder/v1/dbsc/status. box: the open mailbox. */
 export function pill(h3: string | null | undefined, dbscBound: boolean | null | undefined, box: Pick<Box, "seal_mode" | "key_id"> | null | undefined): Pill {
-  const quic = h3 === "h3" || (typeof h3 === "string" && h3.startsWith("h3"));
+  const wt = h3 === "wt";
+  const quic = wt || h3 === "h3" || (typeof h3 === "string" && h3.startsWith("h3"));
   const seal = !!box && (box.seal_mode === "vault" || (box.seal_mode === "recipient_pq" && !!box.key_id));
   return {
-    quic: { ok: quic, text: quic ? "QUIC" : h3 ? `${h3.toUpperCase()} (not QUIC)` : "transport unknown" },
+    quic: { ok: quic, text: wt ? "QUIC · WebTransport" : quic ? "QUIC" : h3 ? `${h3.toUpperCase()} (not QUIC)` : "transport unknown" },
     dbsc: { ok: dbscBound === true, text: dbscBound === true ? "DBSC verified" : "DBSC not verified" },
     seal: { ok: seal, text: !box ? "not sealed" : box.seal_mode === "recipient_pq" ? (seal ? "PQC sealed" : "PQC key missing") : "AES-256 sealed" },
   };
@@ -104,7 +105,7 @@ export const touchAction = (folder: string, vault: boolean) => ({ action: "mail.
 export function keyCmd(k: string, mods: { ctrl?: boolean; meta?: boolean; alt?: boolean }, pending: string | null): { cmd: string; arg?: string } | { pending: string } | null {
   if (mods.ctrl || mods.meta || mods.alt) return null;
   if (pending === "g") { const m: Record<string, string> = { i: "inbox", s: "sent", d: "drafts", a: "archive", q: "quarantine", v: "vault", t: "trash", p: "spam" }; return m[k] ? { cmd: "folder", arg: m[k] } : null; }
-  switch (k) { case "j": return { cmd: "next" }; case "k": return { cmd: "prev" }; case "Enter": return { cmd: "open" }; case "e": return { cmd: "move", arg: "archive" }; case "#": return { cmd: "move", arg: "trash" };
+  switch (k) { case "c": return { cmd: "compose" }; case "j": return { cmd: "next" }; case "k": return { cmd: "prev" }; case "Enter": return { cmd: "open" }; case "e": return { cmd: "move", arg: "archive" }; case "#": return { cmd: "move", arg: "trash" };
     case "s": return { cmd: "star" }; case "u": return { cmd: "unread" }; case "g": return { pending: "g" }; case "Escape": return { cmd: "close" }; default: return null; }
 }
 
@@ -122,3 +123,51 @@ export function initials(name: string | undefined, addr: string | undefined): st
 }
 /** A stable hue 0..359 from the sender (same sender, same colour, on every screen). */
 export function hue(key: string | undefined): number { let h = 7; for (const c of key ?? "") h = (h * 31 + c.codePointAt(0)!) % 360; return h; }
+
+// ================================================================== Q1d: compose + send (pure; the Rust twin is server/founder/src/fmail_mime.rs)
+
+export type Compose = { to: string[]; cc: string[]; bcc: string[]; subject: string; text: string; in_reply_to?: string };
+const LABEL = /^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$/;
+/** Same grammar as fmail_mime::norm_addr: dot-atom local part, a host with a dot, no quotes, no comments, no IP literals. Returns the lower-case address or null. */
+export function normAddr(a: string): string | null {
+  const s = a.trim().toLowerCase(); const at = s.indexOf("@"); if (at < 1 || at !== s.lastIndexOf("@")) return null;
+  const l = s.slice(0, at), d = s.slice(at + 1);
+  if (l.length > 64 || d.length > 253 || l.startsWith(".") || l.endsWith(".") || l.includes("..") || !/^[a-z0-9._%+-]+$/.test(l)) return null;
+  const parts = d.split("."); if (parts.length < 2 || !parts.every((p) => LABEL.test(p))) return null;
+  const tld = parts[parts.length - 1]; if (tld.length < 2 || /^[0-9]+$/.test(tld)) return null;
+  return s;
+}
+/** "a@x.com, B@y.org; c@z.net" -> valid, de-duplicated (order kept) and the pieces that are not addresses. */
+export function parseAddrs(input: string): { ok: string[]; bad: string[] } {
+  const ok: string[] = [], bad: string[] = [];
+  for (const piece of input.split(/[\s,;]+/).map((x) => x.replace(/^<|>$/g, "")).filter(Boolean)) { const n = normAddr(piece); if (n) { if (!ok.includes(n)) ok.push(n); } else bad.push(piece); }
+  return { ok, bad };
+}
+/** What the form can know before the server is asked. The server checks all of it again. */
+export function composeProblem(c: Compose): string | null {
+  if (!c.to.length) return "Add at least one recipient in To.";
+  if (new Set([...c.to, ...c.cc, ...c.bcc]).size > 100) return "At most 100 recipients.";
+  if (c.subject.length > 300) return "The subject is too long.";
+  if (/[\u0000-\u0008\u000a-\u001f\u007f]/.test(c.subject)) return "The subject has a control character.";
+  if (!c.subject.trim() && !c.text.trim()) return "An empty mail with no subject is not sent.";
+  if (c.text.length > 2 * 1024 * 1024) return "The message is too long.";
+  return null;
+}
+const enc = new TextEncoder();
+/** The touch target of a send: SHA-256 over the length-prefixed fields; byte for byte the same as fmail_mime::send_target (golden vector in both test files). */
+export async function sendTarget(mailbox: string, c: Compose, schedule: string): Promise<string> {
+  const fields = ["fmail-send-v1", mailbox, c.to.join(","), c.cc.join(","), c.bcc.join(","), c.subject.trim(), c.text, schedule];
+  const parts: Uint8Array[] = [];
+  for (const f of fields) { const b = enc.encode(f); const len = new Uint8Array(8); new DataView(len.buffer).setBigUint64(0, BigInt(b.length)); parts.push(len, b); }
+  const all = new Uint8Array(parts.reduce((n, p) => n + p.length, 0)); let o = 0; for (const p of parts) { all.set(p, o); o += p.length; }
+  return [...new Uint8Array(await crypto.subtle.digest("SHA-256", all))].map((x) => x.toString(16).padStart(2, "0")).join("");
+}
+/** Seconds left in the undo window (never negative). */
+export const undoLeft = (undoUntilMs: number, nowMs: number): number => Math.max(0, Math.ceil((undoUntilMs - nowMs) / 1000));
+/** "Re: " once, never "Re: Re: ". */
+export const replySubject = (s: string): string => (/^\s*re:/i.test(s) ? s.trim() : `Re: ${s.trim()}`);
+/** A quoted reply body: "On <date>, <who> wrote:" and every line prefixed "> ". */
+export function quoteReply(who: string, date: string, text: string): string {
+  return `\n\nOn ${date}, ${who} wrote:\n${text.split(/\r?\n/).map((l) => `> ${l}`).join("\n")}`;
+}
+export const OUTBOX_STATE: Record<string, string> = { queued: "Waiting for the undo window", scheduled: "Scheduled", sending: "Sending…", sent: "Delivered", failed: "Failed - will retry", cancelled: "Cancelled", undone: "Undone" };

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { compact, glide, merge, pill, proofChip, rowText, verdicts, keyCmd, matchRow, initials, hue, when, ago, isGatedView, FOLDERS, type Row } from "./mail_pure";
+import { normAddr, parseAddrs, composeProblem, sendTarget, undoLeft, replySubject, quoteReply, compact, glide, merge, pill, proofChip, rowText, verdicts, keyCmd, matchRow, initials, hue, when, ago, isGatedView, FOLDERS, type Row } from "./mail_pure";
 
 const R = (o: Partial<Row>): Row => ({ id: "a", thread_id: "t", folder: "inbox", direction: "in", received_ms: 1, size: 10, attach: 0, read: false, starred: false, draft: false, thread_count: 1, spf: "none", dkim: "none", dmarc: "none", arc: "none", lookalike: false, scan: "clean", tls: null, domain: null, seal_mode: "vault", gated: false, ...o });
 describe("numbers", () => {
@@ -32,6 +32,7 @@ describe("ledger anchor chip", () => {
   });
 });
 describe("header pill", () => {
+  test("kernel WebTransport session is QUIC and says so", () => { const p = pill("wt", true, { seal_mode: "vault" }); expect(p.quic).toEqual({ ok: true, text: "QUIC · WebTransport" }); });
   test("all three measured", () => { const p = pill("h3", true, { seal_mode: "recipient_pq", key_id: "k1" }); expect([p.quic.ok, p.dbsc.ok, p.seal.ok]).toEqual([true, true, true]); expect(p.seal.text).toBe("PQC sealed"); });
   test("a failed check is stated, not hidden", () => { const p = pill("h2", false, { seal_mode: "recipient_pq", key_id: null }); expect(p.quic).toEqual({ ok: false, text: "H2 (not QUIC)" }); expect(p.dbsc.text).toBe("DBSC not verified"); expect(p.seal).toEqual({ ok: false, text: "PQC key missing" }); });
   test("vault mode says AES-256, not PQC", () => { expect(pill("h3", true, { seal_mode: "vault" }).seal.text).toBe("AES-256 sealed"); expect(pill(null, null, null).seal.ok).toBe(false); });
@@ -50,4 +51,31 @@ describe("search", () => {
 describe("avatars", () => {
   test("initials", () => { expect(initials("Hana Ortega", "h@x.org")).toBe("HO"); expect(initials("Venue", "v@x.org")).toBe("VE"); expect(initials("", "imran@x.org")).toBe("IM"); expect(initials(undefined, undefined)).toBe("?"); });
   test("hue is stable and in range", () => { expect(hue("a@b.co")).toBe(hue("a@b.co")); for (const k of ["", "x", "hana@example.org", "ü"]) { const h = hue(k); expect(h).toBeGreaterThanOrEqual(0); expect(h).toBeLessThan(360); } expect(hue("a@b.co")).not.toBe(hue("z@y.io")); });
+});
+
+describe("Q1d compose (pure)", () => {
+  test("address grammar matches the Rust twin", () => {
+    expect(normAddr(" A.B+c@Example.ORG ")).toBe("a.b+c@example.org");
+    for (const bad of ["", "a", "a@b", "a@b.c", "@x.com", "a b@x.com", "a@x..com", '"a"@x.com', "a@[127.0.0.1]", ".a@x.com", "a.@x.com", "a@-x.com", "a@x.123", "<a@x.com>", "a@x.com\r\nBcc: z@z.com"]) expect(normAddr(bad)).toBeNull();
+  });
+  test("parseAddrs splits, lowercases, de-duplicates and reports the bad pieces", () => {
+    expect(parseAddrs("A@x.com, b@y.org; a@x.com <c@z.net> nope")).toEqual({ ok: ["a@x.com", "b@y.org", "c@z.net"], bad: ["nope"] });
+  });
+  test("problems are said before the server is asked", () => {
+    const c = { to: ["a@x.com"], cc: [], bcc: [], subject: "Hi", text: "x" };
+    expect(composeProblem(c)).toBeNull(); expect(composeProblem({ ...c, to: [] })).toContain("recipient");
+    expect(composeProblem({ ...c, subject: "", text: " " })).toContain("empty"); expect(composeProblem({ ...c, subject: "a\nb" })).toContain("control");
+    expect(composeProblem({ ...c, to: Array.from({ length: 101 }, (_, i) => `u${i}@x.com`) })).toContain("100");
+  });
+  test("send target equals the Rust golden vectors (the touch names exactly this mail)", async () => {
+    expect(await sendTarget("mb1", { to: ["a@x.com"], cc: [], bcc: [], subject: "Hi", text: "body" }, "")).toBe("9ffbc152919d43cc0c97cc688c722fb24361db540ebde020685ca9e6fe36f523");
+    expect(await sendTarget("mb1", { to: ["a@x.com", "b@y.org"], cc: [], bcc: ["c@z.net"], subject: "Grüße", text: "line\n.dot" }, "2026-12-01T00:00:00Z")).toBe("2e90639f113e4e64ce55ea935cd21b045d89fd1e4bf17d383c91b11f02821140");
+    const a = await sendTarget("m", { to: ["a@x.com"], cc: [], bcc: [], subject: "ab", text: "c" }, ""), b = await sendTarget("m", { to: ["a@x.com"], cc: [], bcc: [], subject: "a", text: "bc" }, "");
+    expect(a).not.toBe(b);
+  });
+  test("undo clock and reply helpers", () => {
+    expect(undoLeft(10_000, 0)).toBe(10); expect(undoLeft(10_000, 9_001)).toBe(1); expect(undoLeft(10_000, 20_000)).toBe(0);
+    expect(replySubject("Hello")).toBe("Re: Hello"); expect(replySubject("RE: Hello")).toBe("RE: Hello");
+    expect(quoteReply("Ali", "13 Nov", "a\nb")).toBe("\n\nOn 13 Nov, Ali wrote:\n> a\n> b");
+  });
 });

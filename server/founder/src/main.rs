@@ -51,6 +51,10 @@ mod fmail_kem;
 mod fmail_core;
 mod fmail_in;
 mod fmail_ep;
+mod fmail_dkim;
+mod fmail_mime;
+mod fmail_smtp;
+mod fmail_out;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -925,6 +929,14 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/mail/flag", axum::routing::post(fmail_ep::flag_ep))
         .route("/founder/v1/mail/move", axum::routing::post(fmail_ep::move_ep))
         .route("/founder/v1/mail/vault", axum::routing::post(fmail_ep::vault_ep))
+        .route("/founder/v1/mail/send", axum::routing::post(fmail_out::send_ep))
+        .route("/founder/v1/mail/undo", axum::routing::post(fmail_out::undo_ep))
+        .route("/founder/v1/mail/cancel", axum::routing::post(fmail_out::cancel_ep))
+        .route("/founder/v1/mail/outbox", get(fmail_out::outbox_ep))
+        .route("/founder/v1/mail/draft", axum::routing::post(fmail_out::draft_save_ep))
+        .route("/founder/v1/mail/draft/discard", axum::routing::post(fmail_out::draft_discard_ep))
+        .route("/founder/v1/mail/drafts", get(fmail_out::drafts_ep))
+        .route("/founder/v1/mail/dkim", get(fmail_out::dkim_get_ep).post(fmail_out::dkim_set_ep))
         .route("/founder/v1/inbox", get(inbox_ep))
         .route("/founder/v1/inbox/list", get(inbox_list_ep))
         .route("/founder/v1/inbox/group", get(inbox_group_ep))
@@ -1028,6 +1040,14 @@ async fn main() {
         (Some(Err(e)), _, _) => eprintln!("founder: mail intake (LMTP) NOT started: {e}"),
         (Some(Ok(c)), Some(s), Some(m)) => { fmail_in::spawn(s.clone(), *m, c).await; }
         (Some(Ok(_)), _, _) => eprintln!("founder: mail intake (LMTP) NOT started: needs the database and the vault master key"),
+    }
+
+    // Q1d: mail SENDER. OFF unless FMAIL_SEND=on AND the database and the vault master are there (installing the code never sends a mail by itself).
+    match (fmail_out::from_env(), &sb, lease::MASTER.get()) {
+        (None, _, _) => eprintln!("founder: mail sender OFF (no FMAIL_SEND=on)"),
+        (Some(Err(e)), _, _) => eprintln!("founder: mail sender NOT started: {e}"),
+        (Some(Ok(c)), Some(s), Some(m)) => { fmail_out::spawn(s.clone(), *m, c).await; }
+        (Some(Ok(_)), _, _) => eprintln!("founder: mail sender NOT started: needs the database and the vault master key"),
     }
 
     match (&sb, flare::Cfg::from_env()) { (Some(s), Some(c)) => flare::spawn(s.clone(), c), (_, None) => eprintln!("founder: flare sender OFF (FOUNDER_FLARE=off or no usable VAPID key)"), _ => {} }

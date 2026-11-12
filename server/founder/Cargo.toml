@@ -44,6 +44,9 @@ fips204 = { version = "0.5", default-features = false, features = ["ml-dsa-65", 
 # Q1b (founder mailbox, 13 Nov 2026): ML-KEM-768 (FIPS 203, pure Rust, same authors as fips204) for the post-quantum key wrap in fmail_kem.rs. mail-parser 0.11.5 + mail-auth 0.9.2 come with fmail_in.rs (newer ones need Rust 1.98)
 zeroize = "1"   # wipe wrap secrets (shared secrets, derived keys) from memory when they go out of scope
 fips203 = { version = "0.4", default-features = false, features = ["ml-kem-768", "default-rng"] }
+hickory-resolver = { version = "0.25", default-features = false, features = ["tokio", "system-config"] }
+rand_core = { version = "0.6", features = ["getrandom"] }
+rsa = { version = "0.9", default-features = false, features = ["std"] }
 
 [profile.release]
 opt-level = 3

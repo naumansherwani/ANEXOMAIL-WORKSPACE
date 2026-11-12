@@ -3,6 +3,8 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import * as Popover from "@radix-ui/react-popover";
 import { LogoMark } from "./Brand";
 import * as api from "./mail_api";
+import { MailCompose, UndoBar, type Start } from "./MailCompose";
+import { quoteReply, replySubject } from "./mail_pure";
 import { FOLDERS, ago, compact, fmtSize, glide, isGatedView, keyCmd, merge, pill, proofChip, hue, initials, matchRow, rowText, touchAction, verdicts, when, folderLabel, type Box, type Counts, type Lane, type Proof, type Row } from "./mail_pure";
 import "./mail.css";
 
@@ -92,8 +94,11 @@ export function MailView() {
   const [pinned, setPinned] = useState(() => { try { return window.localStorage.getItem("mail.rail") === "1"; } catch { return false; } });
   const [q, setQ] = useState(""), [copied, setCopied] = useState(false);
   const pending = useRef<string | null>(null);
+  const [compose, setCompose] = useState<Start | null>(null), [queued, setQueued] = useState<api.Queued | null>(null);
   const box = useMemo(() => boxes?.find((b) => b.id === boxId) ?? null, [boxes, boxId]);
-  const h3 = useMemo(() => api.pageProtocol(), []);
+  const [h3, setH3] = useState(() => api.mailTransport());
+  // the kernel QUIC session comes up a moment after the page: look again for a while, so the pill states the channel that really carries the mail calls
+  useEffect(() => { let n = 0; const t = window.setInterval(() => { setH3(api.mailTransport()); if (++n >= 15) window.clearInterval(t); }, 2000); return () => window.clearInterval(t); }, []);
   const viewRef = useRef(view); viewRef.current = view;
 
   useEffect(() => { try { window.localStorage.setItem("mail.rail", pinned ? "1" : "0"); } catch { /* optional */ } }, [pinned]);
@@ -148,7 +153,7 @@ export function MailView() {
       if ("pending" in c) { pending.current = c.pending; window.setTimeout(() => { pending.current = null; }, 1200); return; }
       const i = rows.findIndex((x) => x.id === sel);
       if (c.cmd === "next" && rows.length) void select(rows[Math.min(rows.length - 1, i + 1)]); else if (c.cmd === "prev" && rows.length) void select(rows[Math.max(0, i - 1)]);
-      else if (c.cmd === "folder" && c.arg) setView(c.arg); else if (c.cmd === "close") { setSel(null); setOpened(null); }
+      else if (c.cmd === "compose") setCompose({}); else if (c.cmd === "folder" && c.arg) setView(c.arg); else if (c.cmd === "close") { setSel(null); setOpened(null); }
       else if (c.cmd === "move" && sel) void act(c.arg as "archive" | "trash"); else if (c.cmd === "star" && sel) void act("star"); else if (c.cmd === "unread" && sel) void act("unread");
     };
     window.addEventListener("keydown", onKey); return () => window.removeEventListener("keydown", onKey);
@@ -163,9 +168,10 @@ export function MailView() {
   return (
     <section className="mail" aria-label="Mail">
       <header className="mh">
-        <div className="mh-brand"><LogoMark size={36} title="ANEXOMAIL" /><div><h1>ANEXOMAIL <span>Mail</span></h1>
+        <div className="mh-brand"><LogoMark size={36} title="ANEXOMAIL" /><div><h1>ANEXOMAIL</h1>
           {boxes && boxes.length > 1 ? <select className="mh-box" value={boxId} onChange={(e) => setBoxId(e.target.value)} aria-label="Mailbox">{boxes.map((b) => <option key={b.id} value={b.id}>{b.address}</option>)}</select> : <p className="dim small">{box?.address ?? (conn === false ? "mail not set up" : "…")}</p>}</div></div>
         <div className="mh-right">
+          {box && <button type="button" className="mx-btn" onClick={() => setCompose({})} title="New email (c)">New email</button>}
           <PillBar box={box} bound={bound} h3={h3} />
           <span className={`mh-live ${liveState}`} title="Live channel"><i aria-hidden="true" />{liveState === "live" ? "Live" : liveState === "reconnecting" ? "Reconnecting" : "Offline"}</span>
         </div>
@@ -234,6 +240,8 @@ export function MailView() {
                     {opened.touched && <span className="mx-chip ok">Opened with your key</span>}
                   </div>
                   <div className="mp-act">
+                    {cur.direction === "in" && opened.sum.from && <button type="button" className="mx-btn" onClick={() => setCompose({ to: opened.sum.from, subject: replySubject(opened.sum.subject ?? ""), text: quoteReply(opened.sum.from_name || opened.sum.from || "", opened.sum.date ? new Date(opened.sum.date).toLocaleString() : "", opened.view.text || ""), in_reply_to: opened.sum.message_id, reply_to: cur.id })}>Reply</button>}
+                    {cur.folder === "drafts" && <button type="button" className="mx-btn" onClick={() => api.drafts(boxId).then((d) => d?.[0] && setCompose({ draft: d[0].id }))}>Continue latest draft</button>}
                     <button type="button" className="mx-btn alt" onClick={() => void act("archive")}>Archive</button>
                     <button type="button" className="mx-btn alt" onClick={() => void act("trash")}>Trash</button>
                     <button type="button" className="mx-btn alt" onClick={() => void act("star")}>{cur.starred ? "Unstar" : "Star"}</button>
@@ -251,6 +259,8 @@ export function MailView() {
           )}
         </article>
       </div>
+      <AnimatePresence>{compose && box && <MailCompose key="mc" box={box} start={compose} onClose={() => setCompose(null)} onQueued={(q) => { setQueued(q); void loadCounts(); void loadList(); }} />}</AnimatePresence>
+      {queued && box && <UndoBar key={queued.outbox_id} box={box.id} q={queued} onGone={() => { setQueued(null); void loadCounts(); }} onUndone={() => { void loadCounts(); void loadList(); }} />}
     </section>
   );
 }

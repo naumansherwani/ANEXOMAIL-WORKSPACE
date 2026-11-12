@@ -1,6 +1,6 @@
 // Q1c: the Mail page's only network door. GET answers are signature-checked by api.get (WASM kernel); the live stream frames are verified by the kernel too and dropped if they fail.
 import { get, post, openStream } from "./api";
-import { verifyBody } from "./kernel";
+import { rpcAvailable, verifyBody } from "./kernel";
 import { prove } from "./passkey";
 import { takeFrames } from "./sse";
 import type { Box, Counts, Lane, Proof, Row, Sum } from "./mail_pure";
@@ -29,6 +29,9 @@ export function pageProtocol(): string {
     return res.length ? res[res.length - 1].nextHopProtocol : "";
   } catch { return ""; }
 }
+
+/** The channel that REALLY carries the mail calls: the kernel's WebTransport (QUIC) session when it is up ("wt"), else what this page load speaks. */
+export function mailTransport(): string { try { if (rpcAvailable()) return "wt"; } catch { /* kernel not loaded */ } return pageProtocol(); }
 
 /** Open a message. A gated one answers needs_touch; then the key is touched (prove) and the call is repeated with the spent grant. Nothing is retried without the person touching. */
 export async function open(box: string, id: string): Promise<{ r: OpenAnswer; touched: boolean }> {
@@ -87,4 +90,53 @@ export function live(box: string, on: (m: LiveMsg) => void, state: (s: "live" | 
     }
   })();
   return () => ac.abort();
+}
+
+// ================================================================== Q1d: compose, send, undo, drafts, DKIM (every call goes through the same kernel doors as the rest)
+import { sendTarget, type Compose } from "./mail_pure";
+
+export type Queued = { outbox_id: string; message_id: string; state: "queued" | "scheduled"; not_before: string; undo_until: string };
+export type SendResult = { ok: true; queued: Queued } | { ok: false; error: string; needsDkim?: boolean };
+/** Send. The server answers needs_touch with the exact target; the browser computes the SAME target itself and refuses to touch for anything else (a hostile answer cannot make you approve another mail). */
+export async function send(box: string, c: Compose, o: { schedule?: string; draft?: string } = {}): Promise<SendResult> {
+  const body = { box, ...c, ...(o.schedule ? { schedule_at: o.schedule } : {}), ...(o.draft ? { draft: o.draft } : {}) };
+  let r = await post("/founder/v1/mail/send", body);
+  if (r.status === 200 && r.body?.needs_touch) {
+    const mine = await sendTarget(box, c, o.schedule ?? "");
+    if (r.body.action !== "mail.send" || r.body.target !== mine) return { ok: false, error: "The server asked for a touch on a different mail than the one on your screen. Nothing was sent." };
+    const p = await prove({ action: "mail.send", target: mine });
+    if (!p.ok) return { ok: false, error: p.error };
+    r = await post("/founder/v1/mail/send", { ...body, grant: p.result?.grant, nonce: p.nonce });
+  }
+  if (r.status === 200 && r.body?.ok && r.body.queued) return { ok: true, queued: r.body.queued as Queued };
+  return { ok: false, error: r.body?.error || `HTTP ${r.status}`, needsDkim: !!r.body?.needs_dkim };
+}
+export async function undo(box: string, outbox: string): Promise<{ ok: boolean; error?: string }> { const r = await post("/founder/v1/mail/undo", { box, outbox }); return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` }; }
+export async function cancel(box: string, outbox: string): Promise<{ ok: boolean; error?: string }> { const r = await post("/founder/v1/mail/cancel", { box, outbox }); return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` }; }
+export type OutRow = { outbox_id: string; message_id: string; state: string; not_before: string; undo_until: string; rcpt: number; attempts: number; last_error: string | null; tls: string | null; dkim: boolean; finished_at: string | null };
+export async function outbox(box: string): Promise<OutRow[] | null> { const r = (await get(`/founder/v1/mail/outbox?box=${encodeURIComponent(box)}`)).data; return r?.connected ? (r.outbox as OutRow[]) : null; }
+
+export type DraftContent = Partial<Compose> & { to?: string[] };
+export type DraftHead = { id: string; version: number; reply_to: string | null; updated_at: string };
+export async function draftSave(box: string, c: Partial<Compose>, d: { draft?: string; expected: number; reply_to?: string }): Promise<{ ok: true; id: string; version: number } | { ok: false; stale: boolean; error: string }> {
+  const r = await post("/founder/v1/mail/draft", { box, ...c, draft: d.draft, expected: d.expected, reply_to: d.reply_to });
+  if (r.status === 200 && r.body?.ok) return { ok: true, id: r.body.draft.draft_id, version: r.body.draft.version };
+  return { ok: false, stale: r.status === 409 || !!r.body?.stale, error: r.body?.error || `HTTP ${r.status}` };
+}
+export async function drafts(box: string): Promise<DraftHead[] | null> { const r = (await get(`/founder/v1/mail/drafts?box=${encodeURIComponent(box)}`)).data; return r?.connected ? (r.drafts as DraftHead[]) : null; }
+export async function draftOpen(box: string, id: string): Promise<{ id: string; version: number; reply_to: string | null; content: DraftContent } | null> { const r = (await get(`/founder/v1/mail/drafts?box=${encodeURIComponent(box)}&id=${encodeURIComponent(id)}`)).data; return r?.draft ?? null; }
+export async function draftDiscard(box: string, draft: string): Promise<boolean> { const r = await post("/founder/v1/mail/draft/discard", { box, draft }); return r.status === 200 && !!r.body?.ok; }
+
+export type DkimRow = { id: string; selector: string; alg: string; dns_name: string; dns_type: string; dns_value: string; created_at: string };
+export async function dkimKeys(box: string): Promise<DkimRow[] | null> { const r = (await get(`/founder/v1/mail/dkim?box=${encodeURIComponent(box)}`)).data; return r?.connected ? (r.keys as DkimRow[]) : null; }
+/** Create a signing key (the key pair is made on the server; only the public half comes back as the DNS record). Needs a touch on this exact box + selector + algorithm. */
+export async function dkimCreate(box: string, selector: string, alg: "ed25519-sha256" | "rsa-sha256"): Promise<{ ok: true; name: string; value: string } | { ok: false; error: string }> {
+  const body = { box, selector, alg }; let r = await post("/founder/v1/mail/dkim", body);
+  if (r.status === 200 && r.body?.needs_touch) {
+    const want = `dkim:${box}:${selector}:${alg}`;
+    if (r.body.action !== "mail.key" || r.body.target !== want) return { ok: false, error: "The server asked for a touch on something else. Nothing was created." };
+    const p = await prove({ action: "mail.key", target: want }); if (!p.ok) return { ok: false, error: p.error };
+    r = await post("/founder/v1/mail/dkim", { ...body, grant: p.result?.grant, nonce: p.nonce });
+  }
+  return r.status === 200 && r.body?.ok ? { ok: true, name: r.body.dns_name, value: r.body.dns_value } : { ok: false, error: r.body?.error || `HTTP ${r.status}` };
 }
