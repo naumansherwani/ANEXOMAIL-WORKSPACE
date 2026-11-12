@@ -38,13 +38,15 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(-
 .btn:hover{border-color:var(--blue)}
 kbd{font-family:var(--f-m);font-size:11px;padding:1px 6px;border:1px solid var(--line);border-radius:6px;color:var(--mute)}
 /* bridge lane strip */
-.lanes{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px;padding:8px;overflow:hidden}
-.lane{position:relative;padding:6px 10px 8px;min-width:0}
-.lane b{font-family:var(--f-d);font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;display:block;line-height:1.1}
-.lane span{font-size:11px;color:var(--mute);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lane canvas{display:block;width:100%;height:14px;margin-top:4px}
+.lanes{display:grid;grid-template-columns:repeat(7,minmax(104px,1fr));gap:0;padding:2px 4px;overflow-x:auto;scrollbar-width:none}
+.lane{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"l l" "n c";align-items:center;gap:0 8px;padding:5px 10px;min-width:0;border-left:1px solid var(--line)}
+.lane:first-child{border-left:0}
+.lane b{grid-area:n;font-family:var(--f-d);font-size:17px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+.lane span{grid-area:l;font-size:10.5px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lane canvas{grid-area:c;display:block;width:100%;height:12px}
 .lane.warn b{color:var(--warm)}
-.lane .tag{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.lane.flash b{animation:fl .9s ease-out}
+@keyframes fl{0%{color:var(--blue2);text-shadow:0 0 14px var(--blue)}100%{text-shadow:none}}
 /* panes */
 .panes{display:grid;grid-template-columns:230px minmax(280px,380px) minmax(0,1fr);gap:10px;min-height:0}
 .pane{min-height:0;min-width:0;overflow:hidden;display:flex;flex-direction:column}
@@ -107,7 +109,7 @@ svg.ring{width:26px;height:26px;transform:rotate(-90deg)}
 .sheet .in{width:min(720px,100%);padding:16px;display:grid;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -20px 60px rgba(0,0,0,.35)}
 .field{border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--fg);padding:0 12px;min-height:44px;font:inherit;width:100%}
 textarea.field{padding:10px 12px;min-height:90px;resize:vertical}
-.river{height:64px;width:100%;border:1px solid var(--line);border-radius:12px;display:block}
+.river{height:76px;width:100%;border:1px solid var(--line);border-radius:12px;display:block}
 .rline{display:flex;justify-content:space-between;font-size:12px;color:var(--mute);gap:8px;flex-wrap:wrap}
 /* undo */
 .undo{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;display:none;align-items:center;gap:12px;padding:10px 14px;min-width:min(340px,calc(100% - 32px))}
@@ -120,36 +122,62 @@ textarea.field{padding:10px 12px;min-height:90px;resize:vertical}
 .pal .in{width:min(560px,100%);padding:10px;display:grid;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:16px}
 .pal .opt{display:flex;justify-content:space-between;min-height:44px;align-items:center;padding:0 12px;border-radius:10px;width:100%;text-align:left}
 .pal .opt:hover,.pal .opt.hot{background:var(--sel)}
+.pill{display:inline-flex;align-items:center;gap:7px;min-height:30px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-size:11.5px;font-family:var(--f-m);letter-spacing:.01em}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 0 var(--blue);animation:ping 2.4s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
 .back{display:none}
+.qa{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+.ledger-sheet{position:absolute;right:14px;top:92px;width:min(380px,calc(100% - 28px));padding:14px;z-index:5;display:none;font-size:12px;line-height:1.55}
+.ledger-sheet.open{display:block}
+.ledger-sheet code{display:block;font-family:var(--f-m);font-size:10.5px;word-break:break-all;color:var(--mute);margin-bottom:6px}
+.gate{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center;padding:24px}
+.gate .lock{width:56px;height:56px;border-radius:50%;border:1.5px solid var(--warm);display:grid;place-items:center;margin:0 auto 10px;font-size:22px;color:var(--warm)}
+.th.new{animation:slidein .5s ease-out}
+@keyframes slidein{from{opacity:0;transform:translateY(-14px);background:var(--sel)}to{opacity:1;transform:none}}
+.streams{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;font-size:10.5px;color:var(--mute);font-variant-numeric:tabular-nums}
+.streams span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.streams b{color:var(--fg);font-weight:600}
 @media (max-width:1000px){
   .panes{grid-template-columns:72px minmax(240px,340px) minmax(0,1fr)}
-  .side .fold span.l,.side .keyline,.box{display:none}
-  .side{padding:8px}
+  .side{padding:8px;width:72px;position:relative;z-index:6;transition:width .18s ease}
+  .side .keyline,.box{display:none}
   .fold{justify-content:center;padding:0;position:relative}
   .fold em{position:absolute;right:2px;top:2px;font-size:10px}
-  .fold .ic{display:inline}
-  .lanes{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .side .fold .ic{display:inline;font-size:17px}
+  .side:not(:hover):not(:focus-within):not(.pin) .l{display:none}
+  .side:hover,.side:focus-within,.side.pin{width:230px;background:var(--card);box-shadow:0 18px 50px rgba(0,0,0,.35)}
+  .side:hover .fold,.side:focus-within .fold,.side.pin .fold{justify-content:flex-start;padding:0 12px}
+  .side:hover .fold em,.side:focus-within .fold em,.side.pin .fold em{position:static;margin-left:auto;font-size:12px}
+  .side:hover .keyline,.side:focus-within .keyline,.side.pin .keyline,.side:hover .box,.side:focus-within .box,.side.pin .box{display:block}
+  .side:hover .box,.side:focus-within .box,.side.pin .box{display:flex}
 }
 @media (max-width:700px){
   .panes{grid-template-columns:1fr}
-  .side{flex-direction:row;overflow-x:auto;padding:6px}
-  .side .fold{min-width:56px}
+  .side,.side:hover,.side:focus-within,.side.pin{flex-direction:row;overflow-x:auto;padding:6px;width:auto;box-shadow:none;background:var(--glass)}
+  .side .fold,.side:hover .fold,.side:focus-within .fold{min-width:64px;flex-direction:column;justify-content:center;gap:0;padding:0 4px;width:auto;flex:0 0 auto}
+  .side .l,.side:not(:hover):not(:focus-within):not(.pin) .l{display:block!important;font-size:10px}
+  .side .keyline,.side .box,.side:hover .keyline,.side:hover .box,.side .pinbtn{display:none!important}
+  .fold em,.side:hover .fold em{position:absolute;right:4px;top:2px}
   .reader{display:none}
   .app.reading .reader{display:flex}
   .app.reading .list,.app.reading .side{display:none}
   .back{display:inline-flex}
-  .lanes{grid-template-columns:repeat(2,minmax(0,1fr))}
   .app{height:auto;min-height:100%}
   .pane{min-height:60vh}
+  .pane.side{min-height:0;height:auto;align-self:start}
+  .side .fold,.side:hover .fold{min-height:52px}
   .top .hide-s{display:none}
 }
 .fold .ic{display:none;font-size:15px}
+.pinbtn{display:none;min-height:36px;border:1px solid var(--line);border-radius:10px;font-size:11px;color:var(--mute);margin-bottom:6px}
+@media (max-width:1000px) and (min-width:701px){.pinbtn{display:block}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
 <div class="app" id="app">
   <header class="glass top">
     <div class="brand"><i></i>Anexomail <span style="color:var(--mute);font-weight:400">Founder Mail</span></div>
+    <span class="pill hide-s" title="Example: in the real build the WASM kernel reports this from the live WebTransport session"><i></i>QUIC · DBSC verified · PQC sealed</span>
     <span class="chip hide-s">Example data</span>
     <button class="chip" id="themeBtn" type="button" aria-label="Switch theme">Theme</button>
     <button class="btn" id="palBtn" type="button">Command <kbd>Ctrl K</kbd></button>
@@ -165,7 +193,7 @@ textarea.field{padding:10px 12px;min-height:90px;resize:vertical}
       <div class="threads" id="threads"></div>
     </section>
     <article class="glass pane reader" id="reader">
-      <div class="empty" id="empty"><div><div style="font-family:var(--f-d);font-size:18px;color:var(--fg)">Pick a message</div>It opens on this device only. The server keeps it sealed.</div></div>
+      
     </article>
   </main>
 </div>
@@ -176,8 +204,8 @@ textarea.field{padding:10px 12px;min-height:90px;resize:vertical}
     <input class="field" id="cTo" aria-label="To" value="amir.k@example-partner.org">
     <input class="field" id="cSub" aria-label="Subject" value="Seminar venue contract">
     <textarea class="field" id="cBody" aria-label="Message">Venue contract attached. Please confirm by Friday.</textarea>
-    <canvas class="river" id="river" aria-label="Attachment upload lanes"></canvas>
-    <div class="rline"><span id="rtxt">Contract-signed.pdf · 48 MB · 8 parallel streams · ready</span><span>Sealed + virus scanned before it leaves</span></div>
+    <canvas class="river" id="river" style="height:76px" aria-label="Attachment upload: 8 parallel streams"></canvas><div class="streams" id="streams"></div>
+    <div class="rline"><span id="rtxt">Venue-pack.zip · 100 MB · 8 parallel streams · ready</span><span>Sealed + virus scanned before it leaves</span></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="upBtn" type="button">Attach file</button><button class="btn pri" id="sendBtn" type="button">Send with passkey</button></div>
   </div>
 </div>
@@ -192,63 +220,83 @@ textarea.field{padding:10px 12px;min-height:90px;resize:vertical}
 <script>
 (function(){
   // ---- EXAMPLE DATA (marked as examples in the UI; the real build reads sealed rows from the founder API) ----
-  var FOLDERS=[["inbox","Inbox","▣",4],["sent","Sent","➤",0],["drafts","Drafts","✎",1],["outbox","Outbox","⇡",1],["archive","Archive","▤",0],["snoozed","Snoozed","◷",2],["spam","Spam","⊘",3],["quarantine","Quarantine","◈",1],["trash","Trash","▯",0]];
+  var FOLDERS=[["inbox","Inbox","▣",4],["sent","Sent","➤",0],["drafts","Drafts","✎",1],["outbox","Outbox","⇡",1],["archive","Archive","▤",0],["snoozed","Snoozed","◷",2],["spam","Spam","⊘",3],["quarantine","Quarantine","◈",1],["vault","Vault","⌘",1],["trash","Trash","▯",0]];
   var T=[
-    {id:1,f:"inbox",who:"Hana Ortega",org:"Ortega Legal",sub:"Seminar contract: clause 7",time:"09:41",unread:1,spf:1,dkim:1,dmarc:1,scan:1,att:"Contract-v3.pdf · 2.1 MB",body:["Clause 7 on cancellation needs one change: 30 days, not 14.","If you agree, I will send the signed copy tomorrow morning."]},
+    {id:1,gate:1,f:"inbox",who:"Hana Ortega",org:"Ortega Legal",sub:"Seminar contract: clause 7",time:"09:41",unread:1,spf:1,dkim:1,dmarc:1,scan:1,att:"Contract-v3.pdf · 2.1 MB",body:["Clause 7 on cancellation needs one change: 30 days, not 14.","If you agree, I will send the signed copy tomorrow morning."]},
     {id:2,f:"inbox",who:"Billing",org:"Hetzner",sub:"Storage Box invoice for November",time:"08:12",unread:1,spf:1,dkim:1,dmarc:1,scan:1,body:["Your invoice is ready. Amount is in the attached statement.","Nothing else is required."]},
     {id:3,f:"inbox",who:"Support Desk",org:"unknown-sender.biz",sub:"Verify your Anexomail account now",time:"Yesterday",unread:1,spf:0,dkim:0,dmarc:0,scan:1,body:["This message failed SPF, DKIM and DMARC.","The sender domain looks like a copy of a name you know. Remote content stays blocked."]},
     {id:4,f:"inbox",who:"Faisal Rehman",org:"Nexatect",sub:"Board notes, Monday",time:"Yesterday",unread:0,spf:1,dkim:1,dmarc:1,scan:1,body:["Notes are in the shared folder. Two items need your decision before Friday."]},
-    {id:5,f:"quarantine",who:"Sana Qureshi",org:"vendor-mail.net",sub:"Updated price list",time:"Mon",unread:1,spf:1,dkim:1,dmarc:1,scan:0,att:"prices.xlsm · 640 KB · macro found",body:["The scanner found a macro in the attachment. The file is held, the message text is safe to read."]}
+    {id:5,gate:1,f:"quarantine",who:"Sana Qureshi",org:"vendor-mail.net",sub:"Updated price list",time:"Mon",unread:1,spf:1,dkim:1,dmarc:1,scan:0,att:"prices.xlsm · 640 KB · macro found",body:["The scanner found a macro in the attachment. The file is held, the message text is safe to read."]}
+    ,{id:6,gate:1,f:"vault",who:"Board",org:"Nexatect",sub:"Highly confidential: share structure",time:"Tue",unread:1,spf:1,dkim:1,dmarc:1,scan:1,body:["Cap table draft for the founder only.","This thread asks for a passkey touch every time it opens."]}
   ];
-  var LANES=[["Mail in",14,"in",0],["Quarantined",1,"in",1],["Rejected",3,"in",0],["Mail out",6,"out",0],["Send failed",0,"out",0],["Queued",1,"out",0],["Virus scan",0,"in",0]];
+  var ARRIVALS=[{who:"Imran Siddiqui",org:"Partner Org",sub:"Venue photos",time:"now"},{who:"Zara Malik",org:"Press Desk",sub:"Interview request",time:"now"},{who:"Noreply",org:"Hetzner",sub:"Storage Box backup finished",time:"now"}];
+  var shown=[],LANES=[["Mail in",14,"in",0],["Quarantined",1,"in",1],["Rejected",3,"in",0],["Mail out",6,"out",0],["Send failed",0,"out",0],["Queued",1,"out",0],["Virus scan",0,"in",0]];
   var cur="inbox", sel=null, $=function(i){return document.getElementById(i)};
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
   function ring(t){var n=t.spf+t.dkim+t.dmarc+t.scan,C=2*Math.PI*10,len=C*n/4;
     return '<svg class="ring'+(n<4?' warn':'')+'" viewBox="0 0 26 26" aria-hidden="true"><circle class="bg" cx="13" cy="13" r="10"/><circle class="fg" cx="13" cy="13" r="10" stroke-dasharray="'+len.toFixed(1)+' '+C.toFixed(1)+'"/></svg>'}
   // ---- folders ----
-  function drawSide(){var h='<div class="box"><button class="on" type="button">anexomail.com</button><button type="button">nexatect.com</button></div>';
+  function drawSide(){var h='<button class="pinbtn" id="pinBtn" type="button">Pin labels</button><div class="box"><button class="on" type="button">anexomail.com</button><button type="button">nexatect.com</button></div>';
     FOLDERS.forEach(function(f){h+='<button class="fold'+(f[0]===cur?' on':'')+(f[0]==='quarantine'?' q':'')+'" data-f="'+f[0]+'" type="button" aria-label="'+f[1]+'"><span class="ic">'+f[2]+'</span><span class="l">'+f[1]+'</span>'+(f[3]?'<em>'+f[3]+'</em>':'')+'</button>'});
     h+='<div class="keyline">Sealing key<br><b>pqk-2026-1</b><br>ML-KEM-768 + X25519<br>Only this device opens mail.</div>';
     $('side').innerHTML=h;
+    var pb=$('pinBtn');if(pb)pb.onclick=function(){$('side').classList.toggle('pin')};
     $('side').querySelectorAll('.fold').forEach(function(b){b.onclick=function(){cur=b.dataset.f;sel=null;$('app').classList.remove('reading');drawSide();drawList();clearReader()}});
     var bx=$('side').querySelectorAll('.box button');bx.forEach(function(b){b.onclick=function(){bx.forEach(function(x){x.classList.remove('on')});b.classList.add('on')}})}
   function drawList(){var items=T.filter(function(t){return t.f===cur});var fl=FOLDERS.filter(function(f){return f[0]===cur})[0];
     $('fname').textContent=fl[1];$('fcount').textContent=items.length+' of '+(fl[3]||items.length);
     if(!items.length){$('threads').innerHTML='<div class="empty"><div>Nothing in '+fl[1]+'.</div></div>';return}
-    $('threads').innerHTML=items.map(function(t){return '<button class="th'+(t.unread?' unread':'')+(sel===t.id?' on':'')+'" data-id="'+t.id+'" type="button">'+ring(t)+'<span style="min-width:0"><span class="who" style="display:block">'+esc(t.who)+' <span style="color:var(--mute);font-weight:400">· '+esc(t.org)+'</span></span><span class="who" style="display:block;font-weight:500">'+esc(t.sub)+'</span><span class="snip sealed-snip" style="display:block">sealed · opens on this device</span></span><span class="time">'+t.time+'</span></button>'}).join('');
+    $('threads').innerHTML=items.map(function(t){return '<button class="th'+(t.unread?' unread':'')+(sel===t.id?' on':'')+(t.fresh?' new':'')+'" data-id="'+t.id+'" type="button">'+ring(t)+'<span style="min-width:0"><span class="who" style="display:block">'+esc(t.who)+' <span style="color:var(--mute);font-weight:400">· '+esc(t.org)+'</span></span><span class="who" style="display:block;font-weight:500">'+esc(t.sub)+'</span><span class="snip sealed-snip" style="display:block">'+(t.gate?'touch passkey to open':'sealed · opens on this device')+'</span></span><span class="time">'+t.time+'</span></button>'}).join('');
+    items.forEach(function(t){t.fresh=0});
     $('threads').querySelectorAll('.th').forEach(function(b){b.onclick=function(){open(+b.dataset.id)}})}
-  function clearReader(){$('reader').innerHTML='<div class="empty"><div><div style="font-family:var(--f-d);font-size:18px;color:var(--fg)">Pick a message</div>It opens on this device only. The server keeps it sealed.</div></div>'}
+  function clearReader(){$('reader').innerHTML='<div class="empty"><div><div style="font-family:var(--f-d);font-size:18px;color:var(--fg)">Pick a message</div>It opens on this device only. The server keeps it sealed.<div class="qa"><button class="btn" id="qaV" type="button">Verify ledger anchor</button><button class="btn" id="qaVault" type="button">Open encrypted vault</button></div><div id="qaOut" style="margin-top:12px;font-family:var(--f-m);font-size:11px;word-break:break-all"></div></div></div>';
+    $('qaV').onclick=function(){var o=$('qaOut');o.textContent='Checking the chain…';setTimeout(function(){o.innerHTML='Chain verified from seq 1 to 4,812 · head '+hx(4812,16)+'… · anchored in the founder audit at seq 9,377 <br>(example numbers)'},700)};
+    $('qaVault').onclick=function(){cur='vault';drawSide();drawList()}}
+  function hx(n,len){var h='',x=n*2654435761>>>0;for(var i=0;i<len;i++){x=(x*1664525+1013904223)>>>0;h+=(x>>>28).toString(16)}return h}
   // ---- reader with unseal ----
-  function open(id){var t=T.filter(function(x){return x.id===id})[0];sel=id;t.unread=0;$('app').classList.add('reading');drawList();
+  function gateView(t){sel=t.id;$('app').classList.add('reading');drawList();
+    $('reader').innerHTML='<div class="rhead"><button class="btn back" id="bk" type="button">Back</button><h1>'+esc(t.sub)+'</h1><div class="meta"><span class="v hollow">touch required</span><span class="v">sealed end to end</span></div></div><div class="gate"><div><div class="lock">&#9099;</div><b style="font-family:var(--f-d);font-size:16px">Highly confidential thread</b><p style="color:var(--mute);max-width:36ch;margin:6px auto 14px">This thread opens only with your passkey, even on a device that is already unlocked.</p><button class="btn pri" id="touch" type="button">Touch passkey to open</button></div></div>';
+    $('bk').onclick=function(){$('app').classList.remove('reading')};
+    $('touch').onclick=function(){this.textContent='Waiting for your passkey…';setTimeout(function(){open(t.id,true)},900)}}
+  function open(id,passed){var t=T.filter(function(x){return x.id===id})[0];if(t.gate&&!passed){gateView(t);return}sel=id;t.unread=0;$('app').classList.add('reading');drawList();
     var v=function(ok,l){return '<span class="v'+(ok?'':' hollow')+'">'+l+(ok?' pass':' fail')+'</span>'};
     $('reader').innerHTML='<div class="rhead"><button class="btn back" id="bk" type="button">Back</button><h1>'+esc(t.sub)+'</h1><div class="meta"><b style="color:var(--fg)">'+esc(t.who)+'</b> '+esc(t.org)+' · '+t.time+'</div>'
-     +'<div class="meta">'+v(t.spf,'SPF')+v(t.dkim,'DKIM')+v(t.dmarc,'DMARC')+'<span class="v'+(t.scan?'':' hollow')+'">'+(t.scan?'scanned clean':'attachment held')+'</span><span class="v">sealed end to end</span><button class="v" id="whoBtn" type="button" style="cursor:pointer">Who can read this?</button></div></div>'
+     +'<div class="meta">'+v(t.spf,'SPF')+v(t.dkim,'DKIM')+v(t.dmarc,'DMARC')+'<span class="v'+(t.scan?'':' hollow')+'">'+(t.scan?'scanned clean':'attachment held')+'</span><span class="v">sealed end to end</span><button class="v" id="whoBtn" type="button" style="cursor:pointer">Who can read this?</button><button class="v" id="ledBtn" type="button" style="cursor:pointer">Ledger anchor verified · SHA-256</button></div></div>'
+     +'<div class="ledger-sheet glass" id="ledSheet" style="background:var(--card)"><h3 style="margin:0 0 6px;font-family:var(--f-d);font-size:14px">Ledger proof (example values)</h3>Row hash<code>'+hx(t.id*7,64)+'</code>Previous hash<code>'+hx(t.id*7-1,64)+'</code>Ledger seq '+(4800+t.id)+' · anchored in the founder audit chain at seq '+(9370+t.id)+'<br>Merkle root of the anchor batch<code>'+hx(t.id*13,64)+'</code>The browser kernel recomputes these hashes; a mismatch turns this chip hollow.</div>'
      +'<div class="who-sheet glass" id="whoSheet" style="background:var(--card)"><h3>Only this device</h3>The message key is wrapped to your public key (ML-KEM-768 + X25519). The server cannot open it again. Subject and sender are stored as sealed data plus blind indexes for threading.</div>'
      +'<div class="body"><div class="seal" id="seal"><div><div class="env"></div>Opening on this device…<br>ML-KEM-768 + X25519 → AES-256-GCM</div></div>'
      +t.body.map(function(p){return '<p>'+esc(p)+'</p>'}).join('')
      +(t.att?'<div class="att"><b>'+esc(t.att)+'</b><small>'+(t.scan?'Scanned clean · sealed':'Held in quarantine by the virus scan')+'</small></div>':'')+'</div>'
      +'<div class="actions"><button class="btn" type="button">Reply</button><button class="btn" type="button">Snooze</button><button class="btn" type="button">Archive</button></div>';
     setTimeout(function(){var s=$('seal');if(s)s.classList.add('gone')},800);
-    $('whoBtn').onclick=function(){$('whoSheet').classList.toggle('open')};
+    $('whoBtn').onclick=function(){$('ledSheet').classList.remove('open');$('whoSheet').classList.toggle('open')};
+    $('ledBtn').onclick=function(){$('whoSheet').classList.remove('open');$('ledSheet').classList.toggle('open')};
     $('bk').onclick=function(){$('app').classList.remove('reading')}}
   // ---- bridge lanes ----
-  function drawLanes(){$('lanes').innerHTML=LANES.map(function(l,i){return '<div class="lane'+(l[3]?' warn':'')+'"><span class="tag">'+l[2]+'</span><b>'+l[1]+'</b><span>'+l[0]+'</span><canvas data-i="'+i+'" height="14"></canvas></div>'}).join('')}
+  function drawLanes(){LANES.forEach(function(l,i){shown[i]=l[1]});$('lanes').innerHTML=LANES.map(function(l,i){return '<div class="lane'+(l[3]?' warn':'')+'" id="ln'+i+'"><span>'+l[0]+'</span><b id="lb'+i+'">'+l[1]+'</b><canvas data-i="'+i+'" height="12"></canvas></div>'}).join('')}
+  function bump(i,d){LANES[i][1]+=d;var e=$('ln'+i);if(e){e.classList.remove('flash');void e.offsetWidth;e.classList.add('flash')}}
+  function tweenLanes(){LANES.forEach(function(l,i){var d=l[1]-shown[i];if(Math.abs(d)>.01){shown[i]+=d*.14;if(Math.abs(l[1]-shown[i])<.05)shown[i]=l[1];var e=$('lb'+i);if(e)e.textContent=Math.round(shown[i])}})}
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   function cssv(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()}
-  function tickLanes(t){document.querySelectorAll('#lanes canvas').forEach(function(c){var w=c.clientWidth,h=14,d=window.devicePixelRatio||1;if(c.width!==w*d){c.width=w*d;c.height=h*d}
+  function tickLanes(t){document.querySelectorAll('#lanes canvas').forEach(function(c){var w=c.clientWidth,h=12,d=window.devicePixelRatio||1;if(c.width!==w*d){c.width=w*d;c.height=h*d}
       var x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);x.clearRect(0,0,w,h);var i=+c.dataset.i,n=LANES[i][1],col=LANES[i][3]?cssv('--warm'):cssv('--blue');
       x.strokeStyle=cssv('--line');x.lineWidth=1;x.beginPath();x.moveTo(0,h/2);x.lineTo(w,h/2);x.stroke();
       var dots=Math.min(n,8);x.fillStyle=col;for(var k=0;k<dots;k++){var p=((t/2600+k/Math.max(dots,1))%1);if(LANES[i][2]==='out')p=1-p;x.globalAlpha=.35+.65*Math.sin(p*Math.PI);x.beginPath();x.arc(p*w,h/2,2.2,0,6.283);x.fill()}x.globalAlpha=1})}
   // ---- compose + river + undo ----
-  var riverT=0,upl=false,prog=0;
-  function river(t){var c=$('river');if(!c.offsetParent)return;var w=c.clientWidth,h=64,d=window.devicePixelRatio||1;if(c.width!==w*d){c.width=w*d;c.height=h*d}
-    var x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);x.clearRect(0,0,w,h);var col=cssv('--blue'),ln=cssv('--line');
-    for(var i=0;i<8;i++){var y=6+i*7.4;x.strokeStyle=ln;x.beginPath();x.moveTo(8,y);x.lineTo(w-70,y);x.stroke();
-      if(upl){x.fillStyle=col;for(var k=0;k<5;k++){var p=((t/900+k/5+i*.13)%1);x.globalAlpha=.8;x.fillRect(8+p*(w-78),y-1.5,10,3)}}}
-    x.globalAlpha=1;x.beginPath();x.arc(w-34,h/2,20,0,6.283);x.strokeStyle=ln;x.lineWidth=4;x.stroke();
-    x.strokeStyle=col;x.beginPath();x.arc(w-34,h/2,20,-Math.PI/2,-Math.PI/2+6.283*prog);x.stroke();x.lineWidth=1;
-    x.fillStyle=cssv('--fg');x.font='11px '+cssv('--f-ui');x.textAlign='center';x.fillText(Math.round(prog*100)+'%',w-34,h/2+4)}
-  $('upBtn').onclick=function(){if(upl)return;upl=true;prog=0;$('rtxt').textContent='Uploading 8 streams · sealing each 1 MiB chunk…';var iv=setInterval(function(){prog=Math.min(1,prog+.025);if(prog>=1){clearInterval(iv);upl=false;$('rtxt').textContent='Contract-signed.pdf · sealed + scanned clean · ready'}},90)};
+  var upl=false,ST=[];
+  function resetST(){ST=[];for(var i=0;i<8;i++)ST.push({p:0,sp:9+Math.random()*7})}resetST();
+  function total(){return ST.reduce(function(a,x){return a+x.p},0)/8}
+  function river(t){var c=$('river');if(!c.offsetParent)return;var w=c.clientWidth,h=76,d=window.devicePixelRatio||1;if(c.width!==w*d||c.height!==h*d){c.width=w*d;c.height=h*d}
+    var x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);x.clearRect(0,0,w,h);var col=cssv('--blue'),ln=cssv('--line'),cx=w-46,cy=h/2,R=30;
+    for(var i=0;i<8;i++){var y=8+i*8.6;x.strokeStyle=ln;x.lineWidth=1;x.beginPath();x.moveTo(10,y);x.lineTo(cx-R-14,y);x.stroke();
+      if(upl&&ST[i].p<1){x.fillStyle=col;for(var k=0;k<4;k++){var q=((t/700*(ST[i].sp/12)+k/4+i*.11)%1);x.globalAlpha=.85;x.fillRect(10+q*(cx-R-34),y-1.5,10,3)}}}
+    x.globalAlpha=1;var seg=Math.PI/4,gap=.14;
+    for(var j=0;j<8;j++){var a0=-Math.PI/2+j*seg+gap/2,a1=a0+seg-gap;x.lineWidth=6;x.lineCap='butt';x.strokeStyle=ln;x.beginPath();x.arc(cx,cy,R,a0,a1);x.stroke();
+      if(ST[j].p>0){x.strokeStyle=ST[j].p>=1?col:cssv('--blue2');x.beginPath();x.arc(cx,cy,R,a0,a0+(a1-a0)*ST[j].p);x.stroke()}}
+    x.lineWidth=1;x.fillStyle=cssv('--fg');x.font='600 12px '+cssv('--f-ui');x.textAlign='center';x.fillText(Math.round(total()*100)+'%',cx,cy+4)}
+  function stDraw(){$('streams').innerHTML=ST.map(function(s,i){return '<span>S'+(i+1)+' <b>'+(upl&&s.p<1?s.sp.toFixed(1)+' MB/s':(s.p>=1?'done':'idle'))+'</b> '+(s.p>=1?'sealed':(s.p>0?'GCM':''))+'</span>'}).join('')}
+  $('upBtn').onclick=function(){if(upl)return;upl=true;resetST();$('rtxt').textContent='Venue-pack.zip · 100 MB · 8 streams · each 1 MiB chunk sealed with AES-256-GCM';
+    var iv=setInterval(function(){ST.forEach(function(s){if(s.p<1)s.p=Math.min(1,s.p+s.sp/12.5/10*0.9*(0.6+Math.random()*.8))});stDraw();if(total()>=1){clearInterval(iv);upl=false;stDraw();$('rtxt').textContent='Venue-pack.zip · 100 MB · sealed + virus scanned clean · ready'}},100)};
   var undoTimer=null;
   $('sendBtn').onclick=function(){$('compose').classList.remove('open');var left=10,bar=$('undoBar');$('undo').classList.add('open');bar.style.transition='none';bar.style.width='100%';
     requestAnimationFrame(function(){requestAnimationFrame(function(){bar.style.transition='width 10s linear';bar.style.width='0%'})});
@@ -279,7 +327,13 @@ textarea.field{padding:10px 12px;min-height:90px;resize:vertical}
   function toggleTheme(){var r=document.documentElement,d=r.getAttribute('data-theme')==='dark'||(!r.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: dark)').matches);r.setAttribute('data-theme',d?'light':'dark')}
   $('themeBtn').onclick=toggleTheme;
   // ---- boot ----
-  drawSide();drawList();drawLanes();
-  function loop(t){tickLanes(reduce?0:t);river(reduce?0:t);requestAnimationFrame(loop)}requestAnimationFrame(loop);
+  drawSide();drawList();drawLanes();clearReader();stDraw();
+  var liveN=0,nid=100;
+  setInterval(function(){liveN++;
+    if(liveN%4===0){bump(1,1);bump(6,1);FOLDERS.forEach(function(f){if(f[0]==='quarantine')f[3]++});setTimeout(function(){LANES[6][1]=Math.max(0,LANES[6][1]-1)},3000)}
+    else{var a=ARRIVALS[liveN%ARRIVALS.length];T.unshift({id:nid++,fresh:1,f:'inbox',who:a.who,org:a.org,sub:a.sub,time:a.time,unread:1,spf:1,dkim:1,dmarc:1,scan:1,body:['Example arrival over the live stream. No page refresh, no spinner.']});
+      bump(0,1);FOLDERS.forEach(function(f){if(f[0]==='inbox')f[3]++})}
+    drawSide();drawList();},6500);
+  function loop(t){tweenLanes();tickLanes(reduce?0:t);river(reduce?0:t);requestAnimationFrame(loop)}requestAnimationFrame(loop);
 })();
 </script>
