@@ -70,8 +70,8 @@ button.ml-c{cursor:pointer}button.ml-c:hover{background:var(--surf2)}
 .mx-cap{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}.mx-addr-act{display:flex;gap:8px;flex-wrap:wrap}
 
 /* reader */
-.mp{min-width:0;border:1px solid var(--mh);border-radius:18px;background:var(--surf);min-height:340px;position:sticky;top:8px}
-.mp-empty{display:flex;flex-direction:column;align-items:center;gap:10px;padding:56px 24px;text-align:center}.mp-empty h2{margin:6px 0 0;font-size:18px;letter-spacing:-.01em}.mp-empty p{margin:0;max-width:44ch;font-size:13.5px;line-height:1.5}
+.mp{min-width:0;border:1px solid var(--mh);border-radius:18px;background:var(--surf);min-height:max(340px,calc(100dvh - 300px));position:sticky;top:8px}
+.mp-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:inherit;gap:10px;padding:56px 24px;text-align:center}.mp-empty h2{margin:6px 0 0;font-size:18px;letter-spacing:-.01em}.mp-empty p{margin:0;max-width:44ch;font-size:13.5px;line-height:1.5}
 .mp-qa{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px}
 .mx-btn{min-height:44px;padding:0 18px;border-radius:12px;border:1px solid var(--ac);background:var(--ac);color:#08101e;font-size:13.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:filter .12s,border-color .12s,background .12s}
 .mx-btn:hover{filter:brightness(1.08)}.mx-btn.alt{background:transparent;color:var(--fg);border-color:var(--mh2);font-weight:500}.mx-btn.alt:hover{border-color:var(--ac);filter:none;background:var(--surf2)}.mx-btn:disabled{opacity:.55;cursor:default}
@@ -120,3 +120,5 @@ button.ml-c{cursor:pointer}button.ml-c:hover{background:var(--surf2)}
 .mu .mx-btn{min-height:40px}.mu-x{width:40px;height:40px;border:0;background:transparent;color:var(--dim);font-size:20px;cursor:pointer;border-radius:10px}
 .mh-right .mx-btn{min-height:40px;padding:0 16px}
 .mh-right{max-width:100%;min-width:0}.mh-right .mp-pill{flex:1 1 auto;min-width:0}
+
+@media (max-width:520px){.mp-pill{flex-wrap:wrap;white-space:normal;border-radius:16px;row-gap:4px;overflow:visible}.mp-pill b{display:none}}
