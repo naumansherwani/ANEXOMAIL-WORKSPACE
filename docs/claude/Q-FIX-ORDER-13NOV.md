@@ -28,3 +28,10 @@ Step 1b written: docs/cursor-work/server/fmail-intake-on.sh (service only; port 
 - [ ] 1d real mail from his other address appears in the Inbox sealed, ledger row grows, ClamAV verdict stored (not 'skipped')
 - [ ] 1e live Chrome look 390/820/1200 with a real message: U1 (ledger proof pill, Touch-to-Unseal) proven on it
 - Rollbacks: service = cp /etc/anexomail/founder.env.pre-intake /etc/anexomail/founder.env && systemctl restart anexomail-founder ; Postfix = cp /etc/postfix/main.cf.pre-founder-intake /etc/postfix/main.cf && systemctl reload postfix
+
+## STEP 1 AUDIT 13 Nov 04:30 (his word: 'itna bara loophole', fix automatically). Researched: clamd.conf man page (AlertEncrypted default no, AlertExceedsMax default no, StreamMaxLength default 100M, MaxScanSize 400M), Postfix 3.10 notes (OpenSSL 3.5 forward compatibility; groups come from tls_eecdh_auto_curves, empty = OpenSSL decides).
+LOOPHOLES FOUND IN OUR OWN CODE + FIXED (Rust, fmail_in.rs, tests 11 pass):
+- L1 "skipped" (no scanner configured) went to the INBOX = fail OPEN. Now only "clean" reaches the inbox; skipped, error, infected = quarantine.
+- L2 ClamAV trusts password-protected ZIP / PDF / Office as clean (AlertEncrypted default NO). New opaque_attachment(): encrypted ZIP (flag bit 0 in any local header), PDF /Encrypt, OLE EncryptedPackage/EncryptionInfo -> a clean verdict is not trusted, mail is quarantined (state error).
+RESIDUAL (open, not green): encrypted 7z / RAR undetectable in Rust without unpacking -> clamd AlertEncrypted yes + AlertExceedsMax yes (clamd is shared with awam: needs his haan); scan state has no 'opaque' value (E171 could add it); a poisoned mail that crashes clamd lands in quarantine (safe); inbound Postfix TLS post-quantum depends on Postfix >= 3.10 + OpenSSL >= 3.5: measured by docs/cursor-work/server/fmail-intake-audit.sh (read-only, section C).
+Not on his server until founder-install runs. After that: fmail-intake-audit.sh output, then his real test mail (1d).

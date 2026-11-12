@@ -78,8 +78,35 @@ pub fn clam_state(reply: &str) -> &'static str {
     let r = reply.trim_matches(|c: char| c == '\0' || c.is_whitespace());
     if r.ends_with("FOUND") { "infected" } else if r.ends_with(": OK") || r == "OK" { "clean" } else { "error" }
 }
-/// Where a mail lands: only a verified-clean or not-scanned mail may reach the inbox.
-pub fn folder_for(scan: &str) -> &'static str { match scan { "clean" | "skipped" => "inbox", _ => "quarantine" } }
+/// Where a mail lands: ONLY a verified-clean mail reaches the inbox. Not scanned ("skipped"), scanner trouble ("error") and "infected" all go to quarantine (fail closed; Q1b-3 audit 13 Nov 04:30: "skipped" used to reach the inbox).
+pub fn folder_for(scan: &str) -> &'static str { match scan { "clean" => "inbox", _ => "quarantine" } }
+
+/// ClamAV cannot look inside what it cannot open, and its AlertEncrypted / AlertExceedsMax are OFF by default (clamd is shared with the awam side, so its config is not ours to change).
+/// So the founder intake spots attachments that hide their content itself: password-protected ZIP (general-purpose bit 0 of any local header), encrypted PDF (/Encrypt),
+/// encrypted Office files (an OLE container holding EncryptedPackage / EncryptionInfo). A "clean" verdict on such a mail is not trusted: it is quarantined.
+/// Not detectable here without unpacking: encrypted 7z / RAR (named in Q-FIX-ORDER as a residual gap; clamd AlertEncrypted yes closes it, needs his haan because awam shares clamd).
+pub fn opaque_attachment(raw: &[u8]) -> bool {
+    use mail_parser::MimeHeaders;
+    let Some(m) = mail_parser::MessageParser::default().parse(raw) else { return false };
+    m.attachments().any(|a| is_opaque(a.contents()))
+}
+pub fn is_opaque(b: &[u8]) -> bool {
+    if b.len() >= 4 && &b[..4] == b"PK\x03\x04" || b.windows(4).take(1 << 20).any(|w| w == b"PK\x03\x04") {
+        let mut i = 0;
+        while let Some(p) = b[i..].windows(4).position(|w| w == b"PK\x03\x04") {
+            let h = i + p;
+            if h + 8 <= b.len() && b[h + 6] & 1 == 1 { return true; }
+            i = h + 4;
+            if i >= b.len() { break; }
+        }
+    }
+    if b.starts_with(b"%PDF") && b.windows(8).any(|w| w == b"/Encrypt") { return true; }
+    if b.starts_with(&[0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1]) {
+        let u16le = |t: &str| -> Vec<u8> { t.encode_utf16().flat_map(|c| c.to_le_bytes()).collect() };
+        for t in ["EncryptedPackage", "EncryptionInfo"] { let n = u16le(t); if b.windows(n.len()).any(|w| w == n.as_slice()) { return true; } }
+    }
+    false
+}
 /// PostgREST bytea literal.
 pub fn bytea(b: &[u8]) -> String { format!("\\x{}", hex::encode(b)) }
 
@@ -191,6 +218,8 @@ impl Backend for Live {
     async fn deliver(&self, raw: &[u8], r: &Rcpt) -> Result<(), String> {
         let s = core::summarize(raw);
         let scan = match &self.clamd { Some(a) => clam_scan(a, raw).await, None => "skipped" };
+        // a "clean" verdict is not trusted when an attachment hides its content (encrypted ZIP / PDF / Office): quarantine it, recorded as "error" (the scan could not look inside)
+        let scan = if scan == "clean" && opaque_attachment(raw) { "error" } else { scan };
         let pubkey = match (&*r.seal_mode, &r.pub_hex) { ("recipient_pq", Some(h)) => Some(hex::decode(h).map_err(|_| "bad stored key")?), ("recipient_pq", None) => return Err("mailbox key not ready".into()), _ => None };
         let wrap = match &pubkey { Some(p) => core::Wrap::Recipient { public: p, key_id: &r.key_id }, None => core::Wrap::Vault { master: &self.master, key_id: &r.key_id } };
         let sealed = core::seal_message(&self.master, &r.mailbox_id, "in", wrap, raw, &s).map_err(|e| e.to_string())?;
@@ -247,6 +276,28 @@ pub async fn spawn(sb: Sb, master: seal::Key, cfg: Cfg) {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn opaque_attachments_are_caught() {
+        // ZIP local header with the encrypted flag (bit 0 of general purpose flags at offset 6)
+        let mut z = b"PK\x03\x04\x14\x00".to_vec(); z.extend_from_slice(&[0x01, 0x00]); z.extend_from_slice(&[0u8; 20]);
+        assert!(is_opaque(&z));
+        let mut plain = b"PK\x03\x04\x14\x00".to_vec(); plain.extend_from_slice(&[0x00, 0x00]); plain.extend_from_slice(&[0u8; 20]);
+        assert!(!is_opaque(&plain));
+        // second entry encrypted, first plain
+        let mut two = plain.clone(); two.extend_from_slice(&z); assert!(is_opaque(&two));
+        assert!(is_opaque(b"%PDF-1.7\n1 0 obj\n<< /Encrypt 9 0 R >>")); assert!(!is_opaque(b"%PDF-1.7\n1 0 obj\n<< /Type /Catalog >>"));
+        let mut ole = vec![0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1]; ole.extend("EncryptedPackage".encode_utf16().flat_map(|c| c.to_le_bytes())); assert!(is_opaque(&ole));
+        assert!(!is_opaque(b"hello world")); assert!(!is_opaque(b""));
+    }
+    #[test]
+    fn opaque_inside_a_real_mime_mail() {
+        let mut z = b"PK\x03\x04\x14\x00".to_vec(); z.extend_from_slice(&[0x09, 0x00]); z.extend_from_slice(&[0u8; 20]);
+        let b64 = { use base64::Engine; base64::engine::general_purpose::STANDARD.encode(&z) };
+        let mail = format!("From: a@b.co\r\nTo: c@d.co\r\nSubject: x\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"B\"\r\n\r\n--B\r\nContent-Type: text/plain\r\n\r\nhi\r\n--B\r\nContent-Type: application/zip\r\nContent-Disposition: attachment; filename=\"a.zip\"\r\nContent-Transfer-Encoding: base64\r\n\r\n{b64}\r\n--B--\r\n");
+        assert!(opaque_attachment(mail.as_bytes()));
+        assert!(!opaque_attachment(b"From: a@b.co\r\nSubject: x\r\n\r\nplain\r\n"));
+    }
+
     use super::*;
     use std::sync::Mutex;
     #[test]
@@ -274,7 +325,7 @@ mod tests {
     fn scanner_replies_fail_closed() {
         assert_eq!(clam_state("stream: OK\0"), "clean"); assert_eq!(clam_state("stream: Eicar-Test-Signature FOUND\0"), "infected");
         for e in ["INSTREAM size limit exceeded. ERROR", "", "stream: lstat() failed ERROR", "garbage", "OKAY not"] { assert_eq!(clam_state(e), "error", "{e}"); }
-        assert_eq!(folder_for("clean"), "inbox"); assert_eq!(folder_for("skipped"), "inbox"); assert_eq!(folder_for("infected"), "quarantine"); assert_eq!(folder_for("error"), "quarantine"); assert_eq!(folder_for("whatever"), "quarantine");
+        assert_eq!(folder_for("clean"), "inbox"); assert_eq!(folder_for("skipped"), "quarantine"); assert_eq!(folder_for("infected"), "quarantine"); assert_eq!(folder_for("error"), "quarantine"); assert_eq!(folder_for("whatever"), "quarantine");
         assert_eq!(bytea(&[0xab, 0x01]), "\\xab01");
     }
     #[tokio::test]

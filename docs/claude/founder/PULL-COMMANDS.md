@@ -1082,3 +1082,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Q1b-3 step 1b 13 Nov 04:16: his output 04:15 = intake service ON (LMTP 127.0.0.1:18025 loopback, ClamAV 127.0.0.1:3310, listener anexomail-founder, healthz 200, self-test founder 250 / unknown 550); service proof only, Postfix untouched. 1c fmail-intake-postfix.sh written, needs his haan. Checklist 1a-1e in Q-FIX-ORDER-13NOV.md.
 
 - Q1b-3 step 1c 13 Nov 04:18: his run applied the Postfix per-address entry (transport_maps founder-transport, lookup lmtp:inet:127.0.0.1:18025, others unchanged, postfix check ok). Service plus routing proven; real mail not yet received, so not REAL.
+
+- Q1b-3 audit 13 Nov 04:26: 2 loopholes in our intake fixed in Rust (skipped went to inbox; encrypted ZIP/PDF/Office trusted as clean), crate tests for fmail_in 11 pass; fmail-intake-audit.sh (read-only clamd limits, EICAR, Postfix/OpenSSL PQ handshake) written; residual encrypted 7z/RAR needs clamd AlertEncrypted (his haan). Not on his server yet.
