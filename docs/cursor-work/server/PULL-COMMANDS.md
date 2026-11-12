@@ -100,3 +100,5 @@
 - Q1b-3 step 1b 13 Nov 04:12: his preflight output read (port 18025 free, clamd 127.0.0.1:3310, Postfix anexopipe, transport_maps empty); fmail-intake-on.sh written, LMTP self-test logic proven against a fake LMTP server in the sandbox; U5 approved by his haan 04:11. Not run on his server yet, intake still OFF.
 
 - Q1b-3 step 1b 13 Nov 04:16: his output 04:15 = intake service ON (LMTP 127.0.0.1:18025 loopback, ClamAV 127.0.0.1:3310, listener anexomail-founder, healthz 200, self-test founder 250 / unknown 550); service proof only, Postfix untouched. 1c fmail-intake-postfix.sh written, needs his haan. Checklist 1a-1e in Q-FIX-ORDER-13NOV.md.
+
+- Q1b-3 step 1c 13 Nov 04:18: his run applied the Postfix per-address entry (transport_maps founder-transport, lookup lmtp:inet:127.0.0.1:18025, others unchanged, postfix check ok). Service plus routing proven; real mail not yet received, so not REAL.
