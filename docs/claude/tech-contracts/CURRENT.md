@@ -81,3 +81,14 @@ STATE L: L1 GSAP written (not green until live look); L2 WebGPU OPEN.
 - 12 Nov 2026 18:10 PKT PHASE L PLAN written first (his order 17:54): docs/claude/PHASE-L-PLAN-12NOV.md = technology table, codes plan (7 steps), SQL plan (none required; optional E166 gfx counter only if he asks), super-advanced code rules, resume checklist; CLAUDE.md top line points to it. Safari/Firefox ML-DSA live proof is CLOSED by his word (not an open gap any more). L is not done (WIRED/REAL not yet): L2 WebGPU open.
 
 - 12 Nov 2026 18:20 PKT UI LAW (his word 18:04/18:12): current founder UI (orb, BridgeMap) stays INTACT; I touched Scene3D.tsx without asking (L1 GSAP tween + L2 WebGPU port) -> L1 REVERTED (founder-web == live build index-UQwzOKR3, byte-identical to 8ed33906), L2 parked in git stash; new features additive only, proposed first. Not a phase result. Awam pull: not needed.
+
+
+## PHASE L-A CONTRACT (12 Nov 2026 18:35 PKT, written BEFORE code; his haan 18:21 for F1..F6; UI LAW: orb + BridgeMap untouched, additive only)
+| Listed technology | Where it must live in code | IN CODE | Proof |
+|---|---|---|---|
+| Framer Motion / GSAP | OrbWhy.tsx entrance via lazy gsap chunk (F1) | NO (open: L-gsap) | build shows gsap chunk; live look |
+| Radix / shadcn | Popover for F1/F2 | check at F1 | live |
+| React 19 + TypeScript strict | all new files, pure logic in *_pure.ts with bun tests | planned | bun test, tsc 0 |
+| Three.js WebGPU | PARKED (git stash), his decision pending | NO (open: L-webgpu) | n/a |
+| Backend data | Surface t.items, deviceStatus, /sessions/board | existing | no mock, unknown = hidden |
+STATE L-A: PLAN WRITTEN, no code yet. Full table: docs/claude/PHASE-L-PLAN-12NOV.md section 7.
