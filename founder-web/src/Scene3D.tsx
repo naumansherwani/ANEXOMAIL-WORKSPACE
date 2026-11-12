@@ -1,46 +1,95 @@
 import { useEffect, useRef, useState } from "react";
 import type * as TT from "three";
+import type * as TW from "three/webgpu";
+import type * as TSLNS from "three/tsl";
+import { TONE_HEX, orbParams, orbScale, pickRenderer, nextGfx, type Gfx, type Tone } from "./scene_pure";
+import { createToneColor } from "./scene_fx";
+import { buildOrbGpu } from "./scene_gpu";
 
-// 3D layer of the founder UI. Technology: React-TS + Three.js (WebGL2 renderer first; the WebGPU renderer swaps in later without touching callers).
-// Rules it keeps (24-hour sessions, Rule 52/69): (1) three.js loads LAZILY, never on the first paint, (2) the render loop stops when the tab is hidden or the
+// 3D layer of the founder UI. Technology: React-TS + Three.js. L2: WebGPU renderer (three/webgpu + TSL node materials, scene_gpu.ts) FIRST when the browser has a WebGPU adapter, then the WebGL2 renderer
+// (the GLSL builds below), then the CSS fallback. A failure steps down one level, never a blank hole. The host carries data-gfx = webgpu | webgl | css so the live look can READ which one ran.
+// Rules it keeps (24-hour sessions, Rule 52/69): (1) three.js (and gsap, and the GPU code) load LAZILY, never on the first paint, (2) the render loop stops when the tab is hidden or the
 // canvas is off screen (no CPU/GPU burn overnight), (3) data comes ONLY from kernel-verified answers (callers pass `tone` / counts; unknown = grey, never a guess),
 // (4) Settings > Graphics off or prefers-reduced-motion = one still frame, (5) any failure shows the CSS fallback, never a blank hole.
 type Three = typeof TT;
 export type Built = { scene: TT.Scene; camera: TT.Camera; tick: (t: number, dt: number) => void; resize?: (w: number, h: number) => void; pointer?: (x: number, y: number) => void; dispose: () => void };
-export type Tone = "ok" | "warn" | "fail" | "unknown";
-export const TONE_HEX: Record<Tone, number> = { ok: 0x3dd598, warn: 0xf2b84b, fail: 0xef6a58, unknown: 0x6b7a99 };
+/** What the render loop needs from a scene of either renderer (the GPU build has three/webgpu types, the GLSL build three types). */
+type Live = { scene: unknown; camera: unknown; tick: (t: number, dt: number) => void; resize?: (w: number, h: number) => void; pointer?: (x: number, y: number) => void; dispose: () => void };
+/** What both renderers (WebGLRenderer, WebGPURenderer) give us. */
+type GPUDeviceLike = { lost?: Promise<unknown>; addEventListener?: (t: string, f: () => void) => void; removeEventListener?: (t: string, f: () => void) => void };
+type Rndr = { domElement: HTMLCanvasElement; setPixelRatio(r: number): void; setSize(w: number, h: number): void; setClearColor(c: number, a: number): void; render(s: never, c: never): unknown; dispose(): void; init?: () => Promise<unknown> };
+export type { Tone, Gfx };
+export { TONE_HEX };
+/** TSL twin of a scene (L2). Receives the three/webgpu namespace and the TSL namespace. */
+export type BuildGpu = (T: typeof TW, S: typeof TSLNS, w: number, h: number) => Live;
 
-export function useScene(build: (T: Three, w: number, h: number) => Built, deps: unknown[] = []) {
+export function useScene(build: (T: Three, w: number, h: number) => Built, deps: unknown[] = [], buildGpu?: BuildGpu) {
   const host = useRef<HTMLDivElement>(null), [state, setState] = useState<"loading" | "ready" | "off" | "fail">("loading");
   useEffect(() => {
     const el = host.current; if (!el) return;
-    let dead = false, raf = 0, built: Built | null = null, renderer: TT.WebGLRenderer | null = null, ro: ResizeObserver | null = null, io: IntersectionObserver | null = null;
+    let dead = false, raf = 0, built: Live | null = null, renderer: Rndr | null = null, ro: ResizeObserver | null = null, io: IntersectionObserver | null = null;
     let visible = true, last = 0;
     const still = document.documentElement.getAttribute("data-fx") === "off" || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const boot = async () => {
-      try {
+    el.setAttribute("data-gfx", "css");
+    const w0 = () => Math.max(1, el.clientWidth), h0 = () => Math.max(1, el.clientHeight);
+    const drop = () => { try { built?.dispose(); } catch { /* already gone */ } try { renderer?.dispose(); } catch { /* already gone */ } renderer?.domElement.remove(); built = null; renderer = null; };
+    /** Start one graphics level. Throws when that level cannot start; the caller steps down. */
+    let real = false;
+    const start = async (g: Gfx): Promise<void> => {
+      const w = w0(), h = h0(); real = false;
+      if (g === "webgpu" && buildGpu) {
+        const [T, S] = await Promise.all([import("three/webgpu"), import("three/tsl")]); if (dead) return;
+        const r = new T.WebGPURenderer({ antialias: true, alpha: true, powerPreference: "low-power" }) as unknown as Rndr; renderer = r;
+        await r.init?.(); if (dead) return;
+        (r as unknown as { outputColorSpace: string }).outputColorSpace = T.LinearSRGBColorSpace;   // the GLSL build writes raw colour values with no sRGB encode; the same here keeps the cinematic look pixel-equal
+        r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75)); r.setSize(w, h); r.setClearColor(0x000000, 0);
+        el.appendChild(r.domElement); r.domElement.setAttribute("aria-hidden", "true");
+        built = buildGpu(T, S, w, h);
+        // WebGPURenderer quietly runs its own WebGL2 backend when the GPU is not really there: the label says what REALLY paints
+        real = (r as unknown as { backend?: { isWebGPUBackend?: boolean } }).backend?.isWebGPUBackend === true;
+      } else {
         const T = await import("three"); if (dead) return;
-        const w = Math.max(1, el.clientWidth), h = Math.max(1, el.clientHeight);
-        renderer = new T.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "low-power" });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75)); renderer.setSize(w, h); renderer.setClearColor(0x000000, 0);
-        el.appendChild(renderer.domElement); renderer.domElement.setAttribute("aria-hidden", "true");
-        built = build(T, w, h); setState(still ? "off" : "ready");
+        const r = new T.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "low-power" }) as unknown as Rndr; renderer = r;
+        r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75)); r.setSize(w, h); r.setClearColor(0x000000, 0);
+        el.appendChild(r.domElement); r.domElement.setAttribute("aria-hidden", "true");
+        built = build(T, w, h);
+      }
+      el.setAttribute("data-gfx", g === "webgpu" && !real ? "webgl" : g);
+    };
+    const offs: (() => void)[] = [];   // listeners of the running level, removed on every step down and on unmount
+    const stop = () => { cancelAnimationFrame(raf); ro?.disconnect(); io?.disconnect(); while (offs.length) offs.pop()?.(); };
+    /** Level g could not keep painting (device lost, uncaptured GPU error): stop it and start the level below. WebGPU can "start" and still not paint, so this guard is part of the contract. */
+    const stepDown = (g: Gfx) => { if (dead) return; stop(); drop(); const n = nextGfx(g); if (n === "css") { el.setAttribute("data-gfx", "css"); setState("fail"); } else void boot(n); };
+    const boot = async (first?: Gfx) => {
+      let g: Gfx = first ?? pickRenderer(buildGpu ? await import("./scene_gpu").then((m) => m.gpuAvailable()).catch(() => false) : false, !!buildGpu);
+      for (;;) {
+        try { await start(g); break; }
+        catch { drop(); g = nextGfx(g); if (dead) return; if (g === "css") { el.setAttribute("data-gfx", "css"); setState("fail"); return; } }
+      }
+      if (dead || !renderer || !built) return;
+      const level = g;
+      try {
+        if (level === "webgpu" && real) {   // WebGPU reports device loss and shader/pipeline errors as events, not exceptions
+          const dev = (renderer as unknown as { backend?: { device?: GPUDeviceLike } }).backend?.device;
+          if (dev) { const bad = () => stepDown("webgpu"); dev.lost?.then(bad).catch(() => {}); dev.addEventListener?.("uncapturederror", bad); offs.push(() => dev.removeEventListener?.("uncapturederror", bad)); }
+        }
+        setState(still ? "off" : "ready");
         const draw = (now: number) => {
           if (dead || !renderer || !built) return;
           const dt = last ? Math.min(0.05, (now - last) / 1000) : 0.016; last = now;
-          built.tick(now / 1000, dt); renderer.render(built.scene, built.camera);
+          built.tick(now / 1000, dt); renderer.render(built.scene as never, built.camera as never);
           if (!still && visible && !document.hidden) raf = requestAnimationFrame(draw);
         };
         const kick = () => { cancelAnimationFrame(raf); last = 0; raf = requestAnimationFrame(draw); };
-        ro = new ResizeObserver(() => { const nw = Math.max(1, el.clientWidth), nh = Math.max(1, el.clientHeight); renderer?.setSize(nw, nh); built?.resize?.(nw, nh); kick(); }); ro.observe(el);
+        ro = new ResizeObserver(() => { const nw = w0(), nh = h0(); renderer?.setSize(nw, nh); built?.resize?.(nw, nh); kick(); }); ro.observe(el);
         io = new IntersectionObserver((e) => { visible = !!e[0]?.isIntersecting; if (visible) kick(); }); io.observe(el);
-        document.addEventListener("visibilitychange", () => { if (!document.hidden) kick(); });
+        const vis = () => { if (!document.hidden) kick(); }; document.addEventListener("visibilitychange", vis); offs.push(() => document.removeEventListener("visibilitychange", vis));
         const mv = (e: PointerEvent) => { const r = el.getBoundingClientRect(); built?.pointer?.(((e.clientX - r.left) / r.width) * 2 - 1, ((e.clientY - r.top) / r.height) * 2 - 1); if (still) kick(); };
-        el.addEventListener("pointermove", mv); kick();
-      } catch { if (!dead) setState("fail"); }
+        el.addEventListener("pointermove", mv); offs.push(() => el.removeEventListener("pointermove", mv)); kick();
+      } catch { if (!dead) stepDown(level); }
     };
     void boot();
-    return () => { dead = true; cancelAnimationFrame(raf); ro?.disconnect(); io?.disconnect(); built?.dispose(); renderer?.dispose(); renderer?.domElement.remove(); };
+    return () => { dead = true; stop(); drop(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
   return { host, state };
@@ -51,7 +100,7 @@ export function HealthOrb({ tone, label }: { tone: Tone; label?: string }) {
   const toneRef = useRef<Tone>(tone); toneRef.current = tone;
   const { host, state } = useScene((T) => {
     const scene = new T.Scene(), camera = new T.PerspectiveCamera(32, 1, 0.1, 20); camera.position.set(0, 0, 4.2);
-    const col = new T.Color(TONE_HEX[toneRef.current]), target = new T.Color(TONE_HEX[toneRef.current]);
+    const tc = createToneColor((hex) => new T.Color(hex), toneRef.current), col = tc.col;
     const noise = `float h(vec3 p){p=fract(p*0.3183099+.1);p*=17.;return fract(p.x*p.y*p.z*(p.x+p.y+p.z));}
       float n3(vec3 x){vec3 i=floor(x),f=fract(x);f=f*f*(3.-2.*f);return mix(mix(mix(h(i),h(i+vec3(1,0,0)),f.x),mix(h(i+vec3(0,1,0)),h(i+vec3(1,1,0)),f.x),f.y),mix(mix(h(i+vec3(0,0,1)),h(i+vec3(1,0,1)),f.x),mix(h(i+vec3(0,1,1)),h(i+vec3(1,1,1)),f.x),f.y),f.z);}`;
     const mat = new T.ShaderMaterial({
@@ -66,16 +115,15 @@ export function HealthOrb({ tone, label }: { tone: Tone; label?: string }) {
     scene.add(halo);
     return {
       scene, camera,
-      tick(t, dt) {
-        const tn = toneRef.current; target.setHex(TONE_HEX[tn]); col.lerp(target, Math.min(1, dt * 3));          // colour eases to the new health in ~1 s
-        const hz = tn === "fail" ? 2.2 : tn === "warn" ? 1.1 : tn === "unknown" ? 0.5 : 0.7, amp = tn === "fail" ? 0.12 : tn === "warn" ? 0.09 : 0.06;
-        mat.uniforms.uT.value = t; mat.uniforms.uA.value = amp;
-        const s = 1 + Math.sin(t * hz * Math.PI * 2) * (tn === "fail" ? 0.045 : 0.025); orb.scale.setScalar(s); halo.scale.setScalar(s);
+      tick(t) {
+        const tn = toneRef.current; tc.update(tn);                       // L1 GSAP: the colour eases to the new health in ~1 s (instant for reduced motion)
+        mat.uniforms.uT.value = t; mat.uniforms.uA.value = orbParams(tn).amp;
+        const s = orbScale(t, tn); orb.scale.setScalar(s); halo.scale.setScalar(s);
       },
       resize(w, h) { (camera as TT.PerspectiveCamera).aspect = w / h; (camera as TT.PerspectiveCamera).updateProjectionMatrix(); },
-      dispose() { orb.geometry.dispose(); mat.dispose(); halo.geometry.dispose(); (halo.material as TT.Material).dispose(); },
+      dispose() { tc.dispose(); orb.geometry.dispose(); mat.dispose(); halo.geometry.dispose(); (halo.material as TT.Material).dispose(); },
     };
-  }, []);
+  }, [], (T, S) => buildOrbGpu(T, S, () => toneRef.current));
   return (
     <div className={`orb ${tone}`} role="img" aria-label={label || `Company health: ${tone}`}>
       <div className="orb-fallback" /><div className={`orb-gl ${state === "ready" || state === "off" ? "on" : ""}`} ref={host} />
