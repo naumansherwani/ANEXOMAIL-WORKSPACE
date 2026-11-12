@@ -20,7 +20,7 @@ PORT=""; for p in 18025 18026 18027 18028 18029 18030; do
 echo "== 2) ClamAV"; CL=""
 for u in clamav-daemon clamd@scan clamd; do systemctl is-active --quiet "$u" 2>/dev/null && { say OK "service $u active"; CL="$u"; }; done
 for s in /var/run/clamav/clamd.ctl /run/clamav/clamd.ctl /var/run/clamd.scan/clamd.sock; do [ -S "$s" ] && { say OK "clamd socket $s ($(stat -c %U:%G "$s"))"; SOCK="$s"; }; done
-echo "$SS" | grep -E ':3310\b' | head -1 | grep -q . && say INFO "something listens on 3310 (see list above; red line: not ours)"
+echo "$SS" | grep -E '127\.0\.0\.1:3310 .*clamd' | head -1 | grep -q . && say OK "clamd itself listens on 127.0.0.1:3310 (TCP): FMAIL_CLAMD=127.0.0.1:3310 (the socket is clamav-owned, the founder user cannot open it)"
 [ -z "$CL" ] && say WARN "no clamd service active: intake would store scan='skipped'. Decide: install clamav-daemon first (recommended) or accept skipped (not advance, not recommended)"
 echo "== 3) Postfix (read only)"
 if command -v postconf >/dev/null 2>&1; then
