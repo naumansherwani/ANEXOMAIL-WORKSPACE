@@ -335,6 +335,7 @@ docs/cursor-work/sql/CHECK_E164.sql
 docs/cursor-work/sql/CHECK_E165.sql
 docs/cursor-work/sql/CHECK_E166.sql
 docs/cursor-work/sql/CHECK_E167.sql
+docs/cursor-work/sql/CHECK_E168.sql
 docs/cursor-work/sql/CHECK_E42_E47.sql
 docs/cursor-work/sql/CHECK_E48.sql
 docs/cursor-work/sql/CHECK_E50.sql

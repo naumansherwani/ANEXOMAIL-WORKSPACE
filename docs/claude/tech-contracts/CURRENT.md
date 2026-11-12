@@ -147,3 +147,7 @@ STATE L-A: PLAN WRITTEN, no code yet. Full table: docs/claude/PHASE-L-PLAN-12NOV
 - NEXT (Q1b-2): fmail_in.rs (LMTP Tokio server loopback only, MIME parse, SPF/DKIM/DMARC, ClamAV INSTREAM, seal, fmail_deliver_inbound), E168 (recipient_pub 1216 bytes on fmail_mailboxes), read endpoints `/founder/v1/mail/*` (authed + signed), gates (authed_w for writes, passkey touch hash for send/delete). Port for LMTP only after the fresh ss list (PORT RED LINE).
 
 - AUDIT AUTOFIX 13 Nov 01:30: kem KDF salt = ct || eph || SHA-256(recipient 1216-byte key); zeroize on shared secrets. Format unchanged in length (1181).
+
+## PHASE Q1b-2 SQL (13 Nov 2026 01:55 PKT): E168 keys + RCPT door + bridge feed
+- TECHNOLOGY: SQL (PostgreSQL 16, RLS forced, append-only registry, ledger-anchored doors, self-rolling-back selftest). Rust (fmail_in.rs) will call fmail_rcpt_resolve for every RCPT and read recipient_pub_hex for fmail_kem::wrap; BridgeMap reads fmail_bridge_feed through the founder API (read-only, signed).
+- CONTRACT: key install/rotate/revoke need a passkey touch hash; mailbox key columns change only through the two doors; RCPT answers 450 for paused/no key (mail waits), 550 unknown/retired, 501 bad address. INHERITABLE BY AWAM: the key registry + door pattern.

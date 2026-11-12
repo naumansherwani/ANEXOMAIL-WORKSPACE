@@ -1,0 +1,285 @@
+<title>Founder Mailbox Demo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout concept: three panes that breathe (folders | threads | reader). Tablet folds folders into a rail, phone shows one pane at a time. A live mail-lane strip on top feeds the Bridge. */
+:root{
+  --bg:#eef1f6; --bg2:#e4e9f1; --glass:rgba(255,255,255,.72); --line:rgba(20,40,80,.12);
+  --fg:#0c1730; --mute:#56637d; --blue:#2f6bff; --blue2:#6f9bff; --warm:#d9731a; --ok:#2f6bff;
+  --card:#ffffff; --sel:rgba(47,107,255,.10); --aur1:rgba(47,107,255,.22); --aur2:rgba(120,90,255,.16);
+  --f-ui:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif; --f-d:"Space Grotesk","Inter",system-ui,sans-serif; --f-m:ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#070b16; --bg2:#0b1224; --glass:rgba(16,24,46,.66); --line:rgba(150,180,255,.14);
+  --fg:#e8eeff; --mute:#8d9bbd; --blue:#5b8cff; --blue2:#8fb0ff; --warm:#ffa24d; --ok:#5b8cff;
+  --card:#0e1630; --sel:rgba(91,140,255,.16); --aur1:rgba(60,110,255,.30); --aur2:rgba(130,90,255,.22); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#070b16; --bg2:#0b1224; --glass:rgba(16,24,46,.66); --line:rgba(150,180,255,.14);
+  --fg:#e8eeff; --mute:#8d9bbd; --blue:#5b8cff; --blue2:#8fb0ff; --warm:#ffa24d; --ok:#5b8cff;
+  --card:#0e1630; --sel:rgba(91,140,255,.16); --aur1:rgba(60,110,255,.30); --aur2:rgba(130,90,255,.22); color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-ui);font-size:14px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(60vmax 40vmax at 8% -10%,var(--aur1),transparent 60%),radial-gradient(50vmax 40vmax at 100% 10%,var(--aur2),transparent 60%),var(--bg)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.app{display:grid;grid-template-rows:auto auto 1fr;gap:10px;height:calc(100% - 0px);max-width:1500px;margin:0 auto;min-height:0}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:16px;backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3)}
+/* top bar */
+.top{display:flex;align-items:center;gap:10px;padding:8px 12px;flex-wrap:wrap}
+.brand{font-family:var(--f-d);font-weight:600;letter-spacing:.01em;font-size:16px;display:flex;align-items:center;gap:8px;margin-right:auto}
+.brand i{width:10px;height:10px;border-radius:50%;background:var(--blue);box-shadow:0 0 12px var(--blue);animation:br 3.2s ease-in-out infinite}
+@keyframes br{50%{transform:scale(.7);opacity:.7}}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 12px;border:1px solid var(--line);border-radius:999px;font-size:12px;color:var(--mute);background:var(--card)}
+.chip.on{color:var(--fg);border-color:var(--blue)}
+.btn{min-height:44px;padding:0 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);display:inline-flex;align-items:center;gap:8px}
+.btn.pri{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+.btn:hover{border-color:var(--blue)}
+kbd{font-family:var(--f-m);font-size:11px;padding:1px 6px;border:1px solid var(--line);border-radius:6px;color:var(--mute)}
+/* bridge lane strip */
+.lanes{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px;padding:8px;overflow:hidden}
+.lane{position:relative;padding:6px 10px 8px;min-width:0}
+.lane b{font-family:var(--f-d);font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;display:block;line-height:1.1}
+.lane span{font-size:11px;color:var(--mute);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lane canvas{display:block;width:100%;height:14px;margin-top:4px}
+.lane.warn b{color:var(--warm)}
+.lane .tag{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+/* panes */
+.panes{display:grid;grid-template-columns:230px minmax(280px,380px) minmax(0,1fr);gap:10px;min-height:0}
+.pane{min-height:0;min-width:0;overflow:hidden;display:flex;flex-direction:column}
+.side{padding:12px;gap:4px;overflow:auto}
+.box{display:flex;gap:8px;margin-bottom:8px}
+.box button{flex:1;min-height:36px;border:1px solid var(--line);border-radius:10px;font-size:12px;color:var(--mute)}
+.box button.on{color:var(--fg);border-color:var(--blue);background:var(--sel)}
+.fold{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;padding:0 12px;border-radius:10px;color:var(--mute);width:100%;text-align:left}
+.fold:hover{background:var(--sel);color:var(--fg)}
+.fold.on{background:var(--sel);color:var(--fg);font-weight:600}
+.fold em{font-style:normal;font-variant-numeric:tabular-nums;font-size:12px}
+.fold.q em{color:var(--warm)}
+.keyline{margin-top:auto;padding:10px;border:1px dashed var(--line);border-radius:12px;font-size:11px;color:var(--mute);line-height:1.5}
+.keyline b{color:var(--fg);font-family:var(--f-m);font-weight:500}
+.listhead{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.listhead h2{margin:0;font-family:var(--f-d);font-size:16px;font-weight:600}
+.threads{overflow:auto;flex:1;min-height:0}
+.th{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:start;padding:12px 14px;border-bottom:1px solid var(--line);width:100%;text-align:left;min-height:64px;position:relative}
+.th:hover{background:var(--sel)}
+.th.on{background:var(--sel)}
+.th.unread .who{font-weight:700}
+.th.unread::after{content:"";position:absolute;left:5px;top:22px;width:6px;height:6px;border-radius:50%;background:var(--blue)}
+.who{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.snip{font-size:12px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.time{font-size:11px;color:var(--mute);font-variant-numeric:tabular-nums}
+.sealed-snip{font-family:var(--f-m);letter-spacing:.02em}
+svg.ring{width:26px;height:26px;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:3}
+.ring .bg{stroke:var(--line)}
+.ring .fg{stroke:var(--blue);stroke-linecap:round}
+.ring.warn .fg{stroke:var(--warm)}
+/* reader */
+.reader{position:relative}
+.rhead{padding:16px 18px;border-bottom:1px solid var(--line);display:grid;gap:8px}
+.rhead h1{margin:0;font-family:var(--f-d);font-size:20px;line-height:1.2;text-wrap:balance}
+.meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;color:var(--mute);font-size:12px}
+.v{display:inline-flex;align-items:center;gap:5px;min-height:26px;padding:0 9px;border-radius:999px;border:1px solid var(--line);font-size:11px;color:var(--mute)}
+.v::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--blue)}
+.v.hollow::before{background:none;border:2px solid var(--warm)}
+.v.hollow{color:var(--warm);border-color:var(--warm)}
+.body{padding:18px;overflow:auto;flex:1;min-height:0;position:relative}
+.body p{max-width:62ch;margin:0 0 12px}
+.empty{display:grid;place-items:center;height:100%;color:var(--mute);text-align:center;padding:24px}
+.seal{position:absolute;inset:0;display:grid;place-items:center;background:var(--bg2);z-index:2;transition:opacity .35s}
+.seal.gone{opacity:0;pointer-events:none}
+.seal div{display:grid;gap:10px;justify-items:center;text-align:center;font-size:12px;color:var(--mute)}
+.env{width:92px;height:62px;border:1.5px solid var(--blue);border-radius:8px;position:relative;overflow:hidden;background:var(--card)}
+.env::before{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,var(--blue2) 50%,transparent 60%);transform:translateX(-120%);animation:sweep .7s .1s ease-out forwards;opacity:.7}
+.env::after{content:"";position:absolute;left:0;right:0;top:0;height:50%;border-bottom:1.5px solid var(--blue);clip-path:polygon(0 0,100% 0,50% 100%);}
+@keyframes sweep{to{transform:translateX(120%)}}
+.att{margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:12px;display:grid;gap:8px;max-width:62ch}
+.att small{color:var(--mute)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;padding:12px 18px;border-top:1px solid var(--line)}
+.who-sheet{position:absolute;right:14px;top:70px;width:min(300px,calc(100% - 28px));padding:14px;z-index:5;display:none;font-size:12px;line-height:1.55}
+.who-sheet.open{display:block}
+.who-sheet h3{margin:0 0 6px;font-family:var(--f-d);font-size:14px}
+/* compose + river */
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:30;display:none;justify-content:center;padding:0 max(16px,env(safe-area-inset-left,0px)) env(safe-area-inset-bottom,0px)}
+.sheet.open{display:flex}
+.sheet .in{width:min(720px,100%);padding:16px;display:grid;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -20px 60px rgba(0,0,0,.35)}
+.field{border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--fg);padding:0 12px;min-height:44px;font:inherit;width:100%}
+textarea.field{padding:10px 12px;min-height:90px;resize:vertical}
+.river{height:64px;width:100%;border:1px solid var(--line);border-radius:12px;display:block}
+.rline{display:flex;justify-content:space-between;font-size:12px;color:var(--mute);gap:8px;flex-wrap:wrap}
+/* undo */
+.undo{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;display:none;align-items:center;gap:12px;padding:10px 14px;min-width:min(340px,calc(100% - 32px))}
+.undo.open{display:flex}
+.undo .bar{flex:1;height:4px;border-radius:4px;background:var(--line);overflow:hidden}
+.undo .bar i{display:block;height:100%;background:var(--blue);width:100%}
+/* palette */
+.pal{position:fixed;inset:0;z-index:50;display:none;align-items:flex-start;justify-content:center;padding:12vh 16px 16px;background:rgba(3,6,14,.55)}
+.pal.open{display:flex}
+.pal .in{width:min(560px,100%);padding:10px;display:grid;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:16px}
+.pal .opt{display:flex;justify-content:space-between;min-height:44px;align-items:center;padding:0 12px;border-radius:10px;width:100%;text-align:left}
+.pal .opt:hover,.pal .opt.hot{background:var(--sel)}
+.back{display:none}
+@media (max-width:1000px){
+  .panes{grid-template-columns:72px minmax(240px,340px) minmax(0,1fr)}
+  .side .fold span.l,.side .keyline,.box{display:none}
+  .side{padding:8px}
+  .fold{justify-content:center;padding:0;position:relative}
+  .fold em{position:absolute;right:2px;top:2px;font-size:10px}
+  .fold .ic{display:inline}
+  .lanes{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media (max-width:700px){
+  .panes{grid-template-columns:1fr}
+  .side{flex-direction:row;overflow-x:auto;padding:6px}
+  .side .fold{min-width:56px}
+  .reader{display:none}
+  .app.reading .reader{display:flex}
+  .app.reading .list,.app.reading .side{display:none}
+  .back{display:inline-flex}
+  .lanes{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .app{height:auto;min-height:100%}
+  .pane{min-height:60vh}
+  .top .hide-s{display:none}
+}
+.fold .ic{display:none;font-size:15px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="app" id="app">
+  <header class="glass top">
+    <div class="brand"><i></i>Anexomail <span style="color:var(--mute);font-weight:400">Founder Mail</span></div>
+    <span class="chip hide-s">Example data</span>
+    <button class="chip" id="themeBtn" type="button" aria-label="Switch theme">Theme</button>
+    <button class="btn" id="palBtn" type="button">Command <kbd>Ctrl K</kbd></button>
+    <button class="btn pri" id="newBtn" type="button">New message</button>
+  </header>
+
+  <section class="glass lanes" id="lanes" aria-label="Mail lanes, last 24 hours"></section>
+
+  <main class="panes">
+    <nav class="glass pane side" id="side" aria-label="Folders"></nav>
+    <section class="glass pane list list-pane">
+      <div class="listhead"><h2 id="fname">Inbox</h2><span class="time" id="fcount"></span></div>
+      <div class="threads" id="threads"></div>
+    </section>
+    <article class="glass pane reader" id="reader">
+      <div class="empty" id="empty"><div><div style="font-family:var(--f-d);font-size:18px;color:var(--fg)">Pick a message</div>It opens on this device only. The server keeps it sealed.</div></div>
+    </article>
+  </main>
+</div>
+
+<div class="sheet" id="compose">
+  <div class="in">
+    <div style="display:flex;justify-content:space-between;align-items:center"><b style="font-family:var(--f-d)">New message</b><button class="btn" id="cClose" type="button">Close</button></div>
+    <input class="field" id="cTo" aria-label="To" value="amir.k@example-partner.org">
+    <input class="field" id="cSub" aria-label="Subject" value="Seminar venue contract">
+    <textarea class="field" id="cBody" aria-label="Message">Venue contract attached. Please confirm by Friday.</textarea>
+    <canvas class="river" id="river" aria-label="Attachment upload lanes"></canvas>
+    <div class="rline"><span id="rtxt">Contract-signed.pdf · 48 MB · 8 parallel streams · ready</span><span>Sealed + virus scanned before it leaves</span></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="upBtn" type="button">Attach file</button><button class="btn pri" id="sendBtn" type="button">Send with passkey</button></div>
+  </div>
+</div>
+
+<div class="glass undo" id="undo" role="status"><span id="undoTxt">Sent. Undo in 10 s</span><div class="bar"><i id="undoBar"></i></div><button class="btn" id="undoBtn" type="button">Undo</button></div>
+
+<div class="pal" id="pal"><div class="glass in" style="background:var(--card)">
+  <input class="field" id="palIn" aria-label="Command" placeholder="Type a command: snooze, send, quarantine…">
+  <div id="palList"></div>
+</div></div>
+
+<script>
+(function(){
+  // ---- EXAMPLE DATA (marked as examples in the UI; the real build reads sealed rows from the founder API) ----
+  var FOLDERS=[["inbox","Inbox","▣",4],["sent","Sent","➤",0],["drafts","Drafts","✎",1],["outbox","Outbox","⇡",1],["archive","Archive","▤",0],["snoozed","Snoozed","◷",2],["spam","Spam","⊘",3],["quarantine","Quarantine","◈",1],["trash","Trash","▯",0]];
+  var T=[
+    {id:1,f:"inbox",who:"Hana Ortega",org:"Ortega Legal",sub:"Seminar contract: clause 7",time:"09:41",unread:1,spf:1,dkim:1,dmarc:1,scan:1,att:"Contract-v3.pdf · 2.1 MB",body:["Clause 7 on cancellation needs one change: 30 days, not 14.","If you agree, I will send the signed copy tomorrow morning."]},
+    {id:2,f:"inbox",who:"Billing",org:"Hetzner",sub:"Storage Box invoice for November",time:"08:12",unread:1,spf:1,dkim:1,dmarc:1,scan:1,body:["Your invoice is ready. Amount is in the attached statement.","Nothing else is required."]},
+    {id:3,f:"inbox",who:"Support Desk",org:"unknown-sender.biz",sub:"Verify your Anexomail account now",time:"Yesterday",unread:1,spf:0,dkim:0,dmarc:0,scan:1,body:["This message failed SPF, DKIM and DMARC.","The sender domain looks like a copy of a name you know. Remote content stays blocked."]},
+    {id:4,f:"inbox",who:"Faisal Rehman",org:"Nexatect",sub:"Board notes, Monday",time:"Yesterday",unread:0,spf:1,dkim:1,dmarc:1,scan:1,body:["Notes are in the shared folder. Two items need your decision before Friday."]},
+    {id:5,f:"quarantine",who:"Sana Qureshi",org:"vendor-mail.net",sub:"Updated price list",time:"Mon",unread:1,spf:1,dkim:1,dmarc:1,scan:0,att:"prices.xlsm · 640 KB · macro found",body:["The scanner found a macro in the attachment. The file is held, the message text is safe to read."]}
+  ];
+  var LANES=[["Mail in",14,"in",0],["Quarantined",1,"in",1],["Rejected",3,"in",0],["Mail out",6,"out",0],["Send failed",0,"out",0],["Queued",1,"out",0],["Virus scan",0,"in",0]];
+  var cur="inbox", sel=null, $=function(i){return document.getElementById(i)};
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+  function ring(t){var n=t.spf+t.dkim+t.dmarc+t.scan,C=2*Math.PI*10,len=C*n/4;
+    return '<svg class="ring'+(n<4?' warn':'')+'" viewBox="0 0 26 26" aria-hidden="true"><circle class="bg" cx="13" cy="13" r="10"/><circle class="fg" cx="13" cy="13" r="10" stroke-dasharray="'+len.toFixed(1)+' '+C.toFixed(1)+'"/></svg>'}
+  // ---- folders ----
+  function drawSide(){var h='<div class="box"><button class="on" type="button">anexomail.com</button><button type="button">nexatect.com</button></div>';
+    FOLDERS.forEach(function(f){h+='<button class="fold'+(f[0]===cur?' on':'')+(f[0]==='quarantine'?' q':'')+'" data-f="'+f[0]+'" type="button" aria-label="'+f[1]+'"><span class="ic">'+f[2]+'</span><span class="l">'+f[1]+'</span>'+(f[3]?'<em>'+f[3]+'</em>':'')+'</button>'});
+    h+='<div class="keyline">Sealing key<br><b>pqk-2026-1</b><br>ML-KEM-768 + X25519<br>Only this device opens mail.</div>';
+    $('side').innerHTML=h;
+    $('side').querySelectorAll('.fold').forEach(function(b){b.onclick=function(){cur=b.dataset.f;sel=null;$('app').classList.remove('reading');drawSide();drawList();clearReader()}});
+    var bx=$('side').querySelectorAll('.box button');bx.forEach(function(b){b.onclick=function(){bx.forEach(function(x){x.classList.remove('on')});b.classList.add('on')}})}
+  function drawList(){var items=T.filter(function(t){return t.f===cur});var fl=FOLDERS.filter(function(f){return f[0]===cur})[0];
+    $('fname').textContent=fl[1];$('fcount').textContent=items.length+' of '+(fl[3]||items.length);
+    if(!items.length){$('threads').innerHTML='<div class="empty"><div>Nothing in '+fl[1]+'.</div></div>';return}
+    $('threads').innerHTML=items.map(function(t){return '<button class="th'+(t.unread?' unread':'')+(sel===t.id?' on':'')+'" data-id="'+t.id+'" type="button">'+ring(t)+'<span style="min-width:0"><span class="who" style="display:block">'+esc(t.who)+' <span style="color:var(--mute);font-weight:400">· '+esc(t.org)+'</span></span><span class="who" style="display:block;font-weight:500">'+esc(t.sub)+'</span><span class="snip sealed-snip" style="display:block">sealed · opens on this device</span></span><span class="time">'+t.time+'</span></button>'}).join('');
+    $('threads').querySelectorAll('.th').forEach(function(b){b.onclick=function(){open(+b.dataset.id)}})}
+  function clearReader(){$('reader').innerHTML='<div class="empty"><div><div style="font-family:var(--f-d);font-size:18px;color:var(--fg)">Pick a message</div>It opens on this device only. The server keeps it sealed.</div></div>'}
+  // ---- reader with unseal ----
+  function open(id){var t=T.filter(function(x){return x.id===id})[0];sel=id;t.unread=0;$('app').classList.add('reading');drawList();
+    var v=function(ok,l){return '<span class="v'+(ok?'':' hollow')+'">'+l+(ok?' pass':' fail')+'</span>'};
+    $('reader').innerHTML='<div class="rhead"><button class="btn back" id="bk" type="button">Back</button><h1>'+esc(t.sub)+'</h1><div class="meta"><b style="color:var(--fg)">'+esc(t.who)+'</b> '+esc(t.org)+' · '+t.time+'</div>'
+     +'<div class="meta">'+v(t.spf,'SPF')+v(t.dkim,'DKIM')+v(t.dmarc,'DMARC')+'<span class="v'+(t.scan?'':' hollow')+'">'+(t.scan?'scanned clean':'attachment held')+'</span><span class="v">sealed end to end</span><button class="v" id="whoBtn" type="button" style="cursor:pointer">Who can read this?</button></div></div>'
+     +'<div class="who-sheet glass" id="whoSheet" style="background:var(--card)"><h3>Only this device</h3>The message key is wrapped to your public key (ML-KEM-768 + X25519). The server cannot open it again. Subject and sender are stored as sealed data plus blind indexes for threading.</div>'
+     +'<div class="body"><div class="seal" id="seal"><div><div class="env"></div>Opening on this device…<br>ML-KEM-768 + X25519 → AES-256-GCM</div></div>'
+     +t.body.map(function(p){return '<p>'+esc(p)+'</p>'}).join('')
+     +(t.att?'<div class="att"><b>'+esc(t.att)+'</b><small>'+(t.scan?'Scanned clean · sealed':'Held in quarantine by the virus scan')+'</small></div>':'')+'</div>'
+     +'<div class="actions"><button class="btn" type="button">Reply</button><button class="btn" type="button">Snooze</button><button class="btn" type="button">Archive</button></div>';
+    setTimeout(function(){var s=$('seal');if(s)s.classList.add('gone')},800);
+    $('whoBtn').onclick=function(){$('whoSheet').classList.toggle('open')};
+    $('bk').onclick=function(){$('app').classList.remove('reading')}}
+  // ---- bridge lanes ----
+  function drawLanes(){$('lanes').innerHTML=LANES.map(function(l,i){return '<div class="lane'+(l[3]?' warn':'')+'"><span class="tag">'+l[2]+'</span><b>'+l[1]+'</b><span>'+l[0]+'</span><canvas data-i="'+i+'" height="14"></canvas></div>'}).join('')}
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function cssv(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()}
+  function tickLanes(t){document.querySelectorAll('#lanes canvas').forEach(function(c){var w=c.clientWidth,h=14,d=window.devicePixelRatio||1;if(c.width!==w*d){c.width=w*d;c.height=h*d}
+      var x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);x.clearRect(0,0,w,h);var i=+c.dataset.i,n=LANES[i][1],col=LANES[i][3]?cssv('--warm'):cssv('--blue');
+      x.strokeStyle=cssv('--line');x.lineWidth=1;x.beginPath();x.moveTo(0,h/2);x.lineTo(w,h/2);x.stroke();
+      var dots=Math.min(n,8);x.fillStyle=col;for(var k=0;k<dots;k++){var p=((t/2600+k/Math.max(dots,1))%1);if(LANES[i][2]==='out')p=1-p;x.globalAlpha=.35+.65*Math.sin(p*Math.PI);x.beginPath();x.arc(p*w,h/2,2.2,0,6.283);x.fill()}x.globalAlpha=1})}
+  // ---- compose + river + undo ----
+  var riverT=0,upl=false,prog=0;
+  function river(t){var c=$('river');if(!c.offsetParent)return;var w=c.clientWidth,h=64,d=window.devicePixelRatio||1;if(c.width!==w*d){c.width=w*d;c.height=h*d}
+    var x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);x.clearRect(0,0,w,h);var col=cssv('--blue'),ln=cssv('--line');
+    for(var i=0;i<8;i++){var y=6+i*7.4;x.strokeStyle=ln;x.beginPath();x.moveTo(8,y);x.lineTo(w-70,y);x.stroke();
+      if(upl){x.fillStyle=col;for(var k=0;k<5;k++){var p=((t/900+k/5+i*.13)%1);x.globalAlpha=.8;x.fillRect(8+p*(w-78),y-1.5,10,3)}}}
+    x.globalAlpha=1;x.beginPath();x.arc(w-34,h/2,20,0,6.283);x.strokeStyle=ln;x.lineWidth=4;x.stroke();
+    x.strokeStyle=col;x.beginPath();x.arc(w-34,h/2,20,-Math.PI/2,-Math.PI/2+6.283*prog);x.stroke();x.lineWidth=1;
+    x.fillStyle=cssv('--fg');x.font='11px '+cssv('--f-ui');x.textAlign='center';x.fillText(Math.round(prog*100)+'%',w-34,h/2+4)}
+  $('upBtn').onclick=function(){if(upl)return;upl=true;prog=0;$('rtxt').textContent='Uploading 8 streams · sealing each 1 MiB chunk…';var iv=setInterval(function(){prog=Math.min(1,prog+.025);if(prog>=1){clearInterval(iv);upl=false;$('rtxt').textContent='Contract-signed.pdf · sealed + scanned clean · ready'}},90)};
+  var undoTimer=null;
+  $('sendBtn').onclick=function(){$('compose').classList.remove('open');var left=10,bar=$('undoBar');$('undo').classList.add('open');bar.style.transition='none';bar.style.width='100%';
+    requestAnimationFrame(function(){requestAnimationFrame(function(){bar.style.transition='width 10s linear';bar.style.width='0%'})});
+    $('undoTxt').textContent='Sent. Undo in '+left+' s';clearInterval(undoTimer);
+    undoTimer=setInterval(function(){left--;if(left<=0){clearInterval(undoTimer);$('undo').classList.remove('open')}else $('undoTxt').textContent='Sent. Undo in '+left+' s'},1000)};
+  $('undoBtn').onclick=function(){clearInterval(undoTimer);$('undo').classList.remove('open');$('compose').classList.add('open')};
+  $('newBtn').onclick=function(){$('compose').classList.add('open')};
+  $('cClose').onclick=function(){$('compose').classList.remove('open')};
+  // ---- command palette ----
+  var CMD=[["Compose a message","c"],["Go to Inbox","g i"],["Go to Quarantine","g q"],["Snooze until Monday 9:00","b"],["Archive","e"],["Switch theme",""]];
+  function palDraw(q){var l=CMD.filter(function(c){return c[0].toLowerCase().indexOf((q||'').toLowerCase())>-1});
+    $('palList').innerHTML=l.map(function(c,i){return '<button class="opt'+(i===0?' hot':'')+'" data-c="'+esc(c[0])+'" type="button"><span>'+esc(c[0])+'</span><kbd>'+esc(c[1]||'—')+'</kbd></button>'}).join('')||'<div class="empty">No command</div>';
+    $('palList').querySelectorAll('.opt').forEach(function(b){b.onclick=function(){run(b.dataset.c)}})}
+  function run(c){closePal();if(c==='Compose a message')$('compose').classList.add('open');else if(c==='Go to Inbox'){cur='inbox';drawSide();drawList();clearReader()}else if(c==='Go to Quarantine'){cur='quarantine';drawSide();drawList();clearReader()}else if(c==='Switch theme')toggleTheme()}
+  function openPal(){$('pal').classList.add('open');$('palIn').value='';palDraw('');$('palIn').focus()}
+  function closePal(){$('pal').classList.remove('open')}
+  $('palBtn').onclick=openPal;$('palIn').oninput=function(){palDraw(this.value)};
+  $('pal').onclick=function(e){if(e.target===$('pal'))closePal()};
+  $('palIn').onkeydown=function(e){if(e.key==='Enter'){var h=$('palList').querySelector('.opt');if(h)run(h.dataset.c)}};
+  document.addEventListener('keydown',function(e){
+    if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openPal();return}
+    if(e.key==='Escape'){closePal();$('compose').classList.remove('open')}
+    var tag=(e.target.tagName||'').toLowerCase();if(tag==='input'||tag==='textarea')return;
+    var items=T.filter(function(t){return t.f===cur}),i=items.findIndex(function(t){return t.id===sel});
+    if(e.key==='j'&&items.length)open(items[Math.min(items.length-1,i+1)].id);
+    if(e.key==='k'&&items.length)open(items[Math.max(0,i-1)].id);
+    if(e.key==='c')$('compose').classList.add('open')});
+  function toggleTheme(){var r=document.documentElement,d=r.getAttribute('data-theme')==='dark'||(!r.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: dark)').matches);r.setAttribute('data-theme',d?'light':'dark')}
+  $('themeBtn').onclick=toggleTheme;
+  // ---- boot ----
+  drawSide();drawList();drawLanes();
+  function loop(t){tickLanes(reduce?0:t);river(reduce?0:t);requestAnimationFrame(loop)}requestAnimationFrame(loop);
+})();
+</script>

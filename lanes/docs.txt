@@ -278,6 +278,8 @@ docs/cursor-work/frontend/f3b-awam-onboarding-polish.md
 docs/cursor-work/frontend/f3b-cinematic-mail-ideas.md
 docs/cursor-work/frontend/f3b-plan-feel.md
 docs/cursor-work/frontend/index.md
+docs/cursor-work/frontend/mailbox-demo/00-FOUNDER-TECH-RULE.md
+docs/cursor-work/frontend/mailbox-demo/founder-mailbox-demo.html
 docs/cursor-work/frontend/package-surfaces.md
 docs/cursor-work/frontend/personal-business-kind.md
 docs/cursor-work/frontend/personal-polar-map.md
