@@ -1188,9 +1188,9 @@ founder-web/src/passkey_pure.ts 18c84406d0b26eb9
 server/founder/src/passkey.rs fc1644aca0233454
 server/rust/j3_action_vectors.json d90c898ebb69d9ea
 web-wasm/src/action.rs eda7722b529a2887
-lanes/ALL-FILES.csv b196b319a05d29b9
+lanes/ALL-FILES.csv 8011960197445629
 lanes/awam.txt 819e2ba87980fdd9
-lanes/docs.txt 68be8bf925e0ae18
+lanes/docs.txt 163ffd417121d88f
 lanes/founder.txt a78f27daf13ad369
 lanes/shared.txt 0a4bbf5bd73b5898
 lovable-gold/README.md 67bf25cda31f9c28
