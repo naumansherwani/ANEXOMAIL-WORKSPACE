@@ -176,6 +176,9 @@ pub async fn send_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::bo
     let bx = match own_box(sb, &uid, &b).await { Ok(x) => x, Err(r) => return r };
     let master = match need_master() { Ok(m) => m, Err(r) => return r };
     if bx.seal_mode != "vault" && bx.seal_mode != "recipient_pq" { return bad("this mailbox cannot send"); }
+    // AUDIT FIX (13 Nov 03:50): check the signing key BEFORE asking for a touch, so a key touch is never spent on a mail that cannot be sent
+    let has_key = sb.rpc("fmail_dkim_active170", json!({"p_mailbox": b})).await.and_then(|v| v.as_array().map(|a| !a.is_empty())).unwrap_or(false);
+    if !has_key { return crate::signed(&st, json!({"ok": false, "needs_dkim": true, "error": "Install a DKIM signing key for this mailbox first (Compose shows the button). Unsigned mail is never sent."})); }
     let target = mime::send_target(&b, &c, sched.as_deref().unwrap_or(""));
     let Some(t) = touch else { return crate::signed(&st, json!({"needs_touch": true, "action": "mail.send", "target": target})) };
     // build + seal BEFORE spending the touch: a mail that cannot be built must not burn a grant
