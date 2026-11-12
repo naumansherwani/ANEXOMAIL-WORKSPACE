@@ -1,4 +1,4 @@
-.orbline{margin:2px 0 0;font-size:clamp(10.5px,2.9vw,12px);line-height:1.4;color:var(--dim,#8a93a6);letter-spacing:.01em}
+.orbline{margin:2px 0 0;font-size:clamp(10.5px,2.9vw,12px);line-height:1.4;color:var(--dim,#8a93a6);letter-spacing:.01em;min-width:0;max-width:100%;overflow-wrap:anywhere}
 .orbline span{white-space:nowrap}
 .orbline b{font-weight:500;color:inherit}
 .orbline b[data-tone="warn"]{color:#e8b04a}

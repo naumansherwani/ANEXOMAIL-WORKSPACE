@@ -1,4 +1,4 @@
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { Fragment, useEffect, useState, useSyncExternalStore } from "react";
 import { deviceStatus, get } from "./api";
 import { parseBoard } from "./sessions_pure";
 import { orbLine, orbLineHidden, setOrbLineHidden, type OrbLine as Line } from "./orbline_pure";
@@ -28,7 +28,7 @@ export function OrbLine() {
   if (hidden || !line) return null;
   return (
     <p className="orbline" data-tone={line.tone} aria-label={line.sr}>
-      {line.parts.map((p, i) => <span key={p.text}>{i > 0 && <i aria-hidden="true"> · </i>}<b data-tone={p.tone}>{p.text}</b></span>)}
+      {line.parts.map((p, i) => <Fragment key={p.text}>{i > 0 && " "}<span><b data-tone={p.tone}>{p.text}</b>{i < line.parts.length - 1 && <i aria-hidden="true"> ·</i>}</span></Fragment>)}
     </p>
   );
 }
