@@ -185,7 +185,7 @@
    "id": "Q-lmtp",
    "file": "server/founder/src/fmail_in.rs",
    "must": "Lmtp",
-   "status": "open",
+   "status": "ok",
    "deadline": "Q1b",
    "why": "Rust LMTP inbound (Tokio), mail-parser 0.11.5, mail-auth 0.9.2 SPF/DKIM/DMARC, ClamAV, sealing, delivery",
    "fail_after": "2026-11-17"

@@ -48,6 +48,8 @@ mod h3;
 mod wtrpc;
 mod fmail_seal;
 mod fmail_kem;
+mod fmail_core;
+mod fmail_in;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -1009,6 +1011,14 @@ async fn main() {
     { let mp = std::env::var("FOUNDER_VAULT_MASTER_FILE").unwrap_or_else(|_| "/etc/anexomail/founder-vault-master.key".into());
       if lease::load_master(&mp) { eprintln!("founder: vault lease key ON (server half = HKDF, master file loaded)"); } else { eprintln!("founder: vault lease key OFF (no usable {mp}); POST /founder/v1/vault/lease answers 503"); } }
     if let Some(s) = &sb { lease::spawn_sweep(s.clone()); }
+    // Q1b-3: mail intake. OFF unless FMAIL_LMTP_BIND (loopback) is set AND the vault master and the database are there.
+    match (fmail_in::from_env(), &sb, lease::MASTER.get()) {
+        (None, _, _) => eprintln!("founder: mail intake (LMTP) OFF (no FMAIL_LMTP_BIND)"),
+        (Some(Err(e)), _, _) => eprintln!("founder: mail intake (LMTP) NOT started: {e}"),
+        (Some(Ok(c)), Some(s), Some(m)) => { fmail_in::spawn(s.clone(), *m, c).await; }
+        (Some(Ok(_)), _, _) => eprintln!("founder: mail intake (LMTP) NOT started: needs the database and the vault master key"),
+    }
+
     match (&sb, flare::Cfg::from_env()) { (Some(s), Some(c)) => flare::spawn(s.clone(), c), (_, None) => eprintln!("founder: flare sender OFF (FOUNDER_FLARE=off or no usable VAPID key)"), _ => {} }
     if let Some(s) = &sb { live::start(s.clone()); } // 4b-2: the one process-wide live tick
     let st = Arc::new(St { sb, hmac_key: key.into_bytes(), jwks: RwLock::new(jwks), lim: Default::default(), ft, legacy, polar, hook: Default::default(), ed, reqsig, gate: authcache::AuthCache::new(std::time::Duration::from_secs(5)), dbsc: dbsc::Mode::parse(&std::env::var("FOUNDER_DBSC").unwrap_or_default()) });

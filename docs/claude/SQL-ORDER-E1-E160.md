@@ -167,3 +167,4 @@ Numbers never used (no file): E1, E3, E4, E8, E9, E10, E11, E12, E16, E21, E25, 
 
 LATEST (11 Nov): E155 + E156 sessions, E157 policy step-up, E158 key attach, E159 DBSC chain fix, E160 key rotation is not theft (waits his sql-run). E161 DBSC heal (permanent ring fix, GREEN on his server 11 Nov 19:30). Next free number: E162.
 | E168 | E168_founder_mail_keys_bridge.sql | yes (CHECK_E168) | FOUNDER MAILBOX KEYS + RCPT DOOR + BRIDGE FEED (Q1b-2): recipient_pub, fmail_keys registry, key register/revoke with passkey touch, fmail_rcpt_resolve, fmail_bridge_feed, selftest 28; sandbox PG16 7/7; NOT yet run on his server |
+| E169 | E169_founder_mail_read_gates.sql | yes (CHECK_E169) | FOUNDER MAILBOX READ DOORS + TOUCH GATES + LEDGER PROOF (Q1b-3): 5 mail actions T2, fmail_list169/get169/counts169, vault_set, inbound_note, scan_set, proof, mailboxes, selftest 31; sandbox PG16 7/7; NOT yet run on his server. Next free = E170 |
