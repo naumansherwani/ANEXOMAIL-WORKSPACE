@@ -4,7 +4,7 @@ import type { DbscStatus } from "./dbsc_pure";
 import { orbAlert, type OrbAlertView } from "./orbalert_pure";
 import "./orbline.css";
 
-// LA-4 (additive): drawn only when /dbsc/status reports blocked or would-be-blocked requests in 24 h. Quiet = renders nothing. Links to the Devices board.
+// LA-4 (additive): always says the state from /dbsc/status: calm green sentence when clear, amber/red when blocked or would-be-blocked in 24 h. No server answer = nothing (no fake all-clear). Links to the Devices board.
 export function OrbAlert({ go }: { go?: (v: string) => void }) {
   const [v, setV] = useState<OrbAlertView | null>(null);
   useEffect(() => {
@@ -17,7 +17,7 @@ export function OrbAlert({ go }: { go?: (v: string) => void }) {
   return (
     <p className="orbalert" data-tone={v.tone} role="status">
       <span className="orbalert-dot" aria-hidden="true" />
-      <a href="#/devices" aria-label={v.sr} onClick={go ? (e) => { e.preventDefault(); go("devices"); } : undefined}>{v.text}</a>
+      {v.tone === "ok" ? <span aria-label={v.sr}>{v.text}</span> : <a href="#/devices" aria-label={v.sr} onClick={go ? (e) => { e.preventDefault(); go("devices"); } : undefined}>{v.text}</a>}
     </p>
   );
 }

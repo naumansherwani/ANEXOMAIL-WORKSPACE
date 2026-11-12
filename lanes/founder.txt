@@ -131,10 +131,10 @@ founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
 founder-web/dist/assets/gsap-OWHkPl-m.js.gz
-founder-web/dist/assets/index-C20Hl7Av.js
-founder-web/dist/assets/index-C20Hl7Av.js.gz
-founder-web/dist/assets/index-wDzQWKYV.css
-founder-web/dist/assets/index-wDzQWKYV.css.gz
+founder-web/dist/assets/index-CCABRapy.js
+founder-web/dist/assets/index-CCABRapy.js.gz
+founder-web/dist/assets/index-DgP8Xc1G.css
+founder-web/dist/assets/index-DgP8Xc1G.css.gz
 founder-web/dist/assets/kernel.worker-mprshus0.js
 founder-web/dist/assets/kernel.worker-mprshus0.js.gz
 founder-web/dist/assets/three.module-C0S06CcT.js

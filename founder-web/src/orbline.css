@@ -1,11 +1,14 @@
-.orbline{margin:2px 0 0;font-size:12px;line-height:1.4;color:var(--dim,#8a93a6);letter-spacing:.01em}
+.orbline{margin:2px 0 0;font-size:clamp(10.5px,2.9vw,12px);line-height:1.4;color:var(--dim,#8a93a6);letter-spacing:.01em}
+.orbline span{white-space:nowrap}
 .orbline b{font-weight:500;color:inherit}
 .orbline b[data-tone="warn"]{color:#e8b04a}
 .orbline i{font-style:normal;opacity:.55}
 @media (forced-colors:active){.orbline b[data-tone="warn"]{color:CanvasText;text-decoration:underline}}
-.orbalert{display:flex;align-items:center;gap:8px;margin:4px 0 0;font-size:12px;line-height:1.4}
+.orbalert{font-size:clamp(10.5px,2.9vw,12px);display:flex;align-items:center;gap:8px;margin:4px 0 0;line-height:1.4}
 .orbalert a{color:inherit;text-decoration:underline;text-underline-offset:2px;min-height:24px;display:inline-flex;align-items:center}
 .orbalert-dot{width:8px;height:8px;border-radius:50%;flex:none;background:#e8b04a}
 .orbalert[data-tone="fail"]{color:#ff7a7a}.orbalert[data-tone="fail"] .orbalert-dot{background:#ff5d5d}
 .orbalert[data-tone="warn"]{color:#e8b04a}
+.orbalert[data-tone="ok"]{color:var(--dim,#8a93a6)}.orbalert[data-tone="ok"] .orbalert-dot{background:#3dd598}
+.orbalert[data-tone="ok"] a{text-decoration:none;pointer-events:none}
 @media (forced-colors:active){.orbalert-dot{background:CanvasText}}
