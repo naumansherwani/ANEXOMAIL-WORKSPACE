@@ -71,6 +71,8 @@ export { EXCHANGE_PATH };
 // K8d-S4 — the HYBRID PROOF KEY (ES256 + ML-DSA-65, both non-extractable) kept BESIDE the DBSC chip key. It lets the exchange travel over the kernel (WebTransport), where the cookie cannot go.
 const PK_FLAG = "anexo.proofkey.v1";
 /** True only when THIS browser holds a hybrid pair AND the server accepted its public half (flag set after a 200). Never guessed from the server's word alone: the local key must exist. */
+/** Sync hint: this browser has registered a proof key, so the kernel is its normal road (net() waits for it briefly instead of falling to fetch). */
+export function proofKeyWanted(): boolean { try { return window.localStorage.getItem(PK_FLAG) === "1"; } catch { return false; } }
 export async function proofKeyReady(): Promise<boolean> {
   try { if (window.localStorage.getItem(PK_FLAG) !== "1") return false; } catch { return false; }
   const k = await existing(); return hasPq(k);

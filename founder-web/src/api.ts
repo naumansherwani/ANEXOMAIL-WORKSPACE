@@ -84,7 +84,7 @@ if (typeof window !== "undefined") {
 }
 
 import * as dk from "./devicekey";
-import { shouldRegister } from "./devicekey_pure";
+import { shouldRegister, shouldWaitForKernel, KERNEL_WAIT_MS } from "./devicekey_pure";
 async function exchange(again = true): Promise<string | null> {
   await keepSessionFresh();
   const t = tok(); if (!t) throw expired();
@@ -186,8 +186,14 @@ async function readSigned<T>(r: Response, path: string): Promise<Envelope<T>> {
 // Same GET asked twice at the same moment (shell + a page) shares one network call and one verification.
 
 /** K8d (Rule 52): every founder API call travels through the Rust WASM kernel over WebTransport (HTTP/3, QUIC). fetch is only the read fallback when the kernel session is not up BEFORE sending; a write is never repeated after an ambiguous break. */
+let kernelWaitFailedAt = 0;
+/** AUDIT 3 (12 Nov): while the kernel session is reconnecting a call used to fall straight to fetch (seen live 00:22: /sessions/board, /sessions/ledger). Now it waits up to 1.2 s for the kernel first;
+ *  if the kernel does not come back, the next 30 s go to fetch at once (no repeated waiting), so the page never stalls. Only once this browser has used the kernel (proof key ready). */
 export async function net(path: string, init: { method?: string; headers?: Record<string, string>; body?: string }): Promise<Response> {
   const m = (init.method || "GET").toUpperCase();
+  if ((m === "GET" || m === "POST" || m === "PUT") && shouldWaitForKernel(rpcAvailable(), dk.proofKeyWanted(), Date.now(), kernelWaitFailedAt)) {
+    if (!(await kernelRpcStart(KERNEL_WAIT_MS).catch(() => false))) kernelWaitFailedAt = Date.now();
+  }
   if ((m === "GET" || m === "POST" || m === "PUT") && rpcAvailable()) {
     const body = init.body == null ? null : new TextEncoder().encode(init.body);
     const r = await kernelRpc(m, path, init.headers || {}, body);

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { createPublicKey, verify } from "node:crypto";
-import { b64u, shouldRegister, makeProof, nonce, publicJwk, sha256Hex } from "./devicekey_pure";
+import { b64u, shouldRegister, shouldWaitForKernel, KERNEL_WAIT_COOLDOWN_MS, makeProof, nonce, publicJwk, sha256Hex } from "./devicekey_pure";
 
 const b64d = (s: string) => Buffer.from(s.replace(/-/g, "+").replace(/_/g, "/"), "base64");
 async function pair() { return crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-256" }, false, ["sign", "verify"]); }
@@ -100,3 +100,13 @@ describe("S3b kernel key label", () => {
   });
 });
 
+
+describe("AUDIT 3: wait for the kernel before a fetch fallback", () => {
+  test("waits only when the kernel is down, this browser uses it, and the cooldown has passed", () => {
+    expect(shouldWaitForKernel(false, true, 100000, 0)).toBe(true);
+    expect(shouldWaitForKernel(true, true, 100000, 0)).toBe(false);
+    expect(shouldWaitForKernel(false, false, 100000, 0)).toBe(false);
+    expect(shouldWaitForKernel(false, true, 100000, 100000 - KERNEL_WAIT_COOLDOWN_MS + 1)).toBe(false);
+    expect(shouldWaitForKernel(false, true, 100000, 100000 - KERNEL_WAIT_COOLDOWN_MS)).toBe(true);
+  });
+});

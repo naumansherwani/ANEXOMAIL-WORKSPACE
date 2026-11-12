@@ -1,10 +1,6 @@
 {
  "_why": "phases_since_audit counts phases turned green since the last auto audit (docs/claude/AUDIT-EVERY-3-PHASES.md). rules-gate FAILS above 3. After the audit set it to 0 and stamp last_audit.",
- "phases_since_audit": 3,
- "last_audit": "11 Nov 2026 20:45 PKT (AUDIT 2: K8a-d + K7 + E158-E161 + DBSC ring)",
- "phases_green_since": [
-  "K8d (12 Nov 00:25)",
-  "K7 GAP 2 (12 Nov 00:25)",
-  "K7c enforce (12 Nov 17:20)"
- ]
+ "phases_since_audit": 0,
+ "last_audit": "12 Nov 2026 18:00 PKT (AUDIT 3: K8d + K7 GAP 2 + K7c)",
+ "phases_green_since": []
 }

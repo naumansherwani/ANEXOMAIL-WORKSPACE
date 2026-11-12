@@ -54,3 +54,7 @@ export function shouldRegister(dk: { mode?: string; bound?: boolean; key?: boole
   if (pqCapable && dk.bound && dk.key === true && dk.pq === false) return true;   // GAP 2 upgrade: a proven classical key is raised to the hybrid once, by a new registration // 11 Nov 18:25: a chip-bound device keeps its chip key; a software key must never replace it (fingerprint churn = device_key_changed)
   return !dk.bound || dk.key !== true;
 }
+
+/** AUDIT 3: wait for the kernel session (<= KERNEL_WAIT_MS) before a fetch fallback, but not again within the cooldown after a failed wait. */
+export const KERNEL_WAIT_MS = 1200, KERNEL_WAIT_COOLDOWN_MS = 30000;
+export function shouldWaitForKernel(up: boolean, wanted: boolean, now: number, failedAt: number): boolean { return !up && wanted && now - failedAt >= KERNEL_WAIT_COOLDOWN_MS; }

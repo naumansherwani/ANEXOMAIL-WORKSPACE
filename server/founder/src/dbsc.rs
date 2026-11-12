@@ -224,6 +224,8 @@ pub fn offer_binding(mode: Mode, bound: bool, has_key: bool, chip_alive: bool) -
 /// K8d-S4 (pure): does a VALID hybrid proof stand in for the DBSC cookie? Unbound device: nothing to satisfy. Software-bound: the proof is the proof. CHIP-bound: only while the chip is
 /// ALIVE, so the TPM stays in the loop although a WebTransport stream cannot carry the cookie. A dead chip must re-register through the browser (fetch) exchange, never through a proof.
 pub fn proof_satisfies(bound: bool, chip_bound: bool, chip_alive: bool) -> bool { !bound || !chip_bound || chip_alive }
+/// AUDIT 3 (pure): must a proof-key registration be refused for lack of the chip cookie? Only a chip-bound device, and only unless the cookie names the bound session.
+pub fn chip_registration_needs_cookie(chip_bound: bool, bound_sid: Option<&str>, cookie_sid: Option<&str>) -> bool { chip_bound && (bound_sid.is_none() || cookie_sid != bound_sid) }
 pub fn chip_alive(is_chip: bool, idle_s: Option<i64>) -> bool { is_chip && idle_s.map_or(true, |s| s < CHIP_DEAD_S) }
 
 pub fn gate_exchange(mode: Mode, bound_sid: Option<&str>, cookie_sid: Option<&str>) -> Decision {
@@ -345,6 +347,12 @@ pub async fn proofkey_register_ep(State(st): State<crate::S>, h: HeaderMap, Json
     let Some(pq) = pq else { return err(StatusCode::BAD_REQUEST, "proof refused: the post-quantum half is mandatory") };
     let state = sb.rpc("founder_dbsc_device_state", json!({"p_uid": c.sub, "p_device_hash": dev_hash})).await;
     let chip = state.as_ref().is_some_and(|v| v["bound"].as_bool() == Some(true) && v["source"].as_str() == Some("dbsc"));
+    // AUDIT 3 (12 Nov): on a CHIP-bound device a proof key may only be made or replaced while the browser shows the chip's cookie for the bound session. Without it a thief holding
+    // the session token + device id could swap in his own proof key while the owner's chip is alive, and the proof would then stand in for the cookie. 401 dbsc_required makes the
+    // client retry over fetch, where Chrome attaches the cookie (api.ts net()). Webcrypto-bound and unbound devices are untouched.
+    if chip_registration_needs_cookie(chip, state.as_ref().and_then(|v| v["sid"].as_str()), cookie_from(&h).and_then(|v| check_cookie(&subkey(&st.hmac_key, "cookie"), &v, now_s())).as_deref()) {
+        return no_store((StatusCode::UNAUTHORIZED, Json(json!({"error": "dbsc_required", "why": "chip_cookie_needed"}))).into_response());
+    }
     let replace_ok = chip_alive(chip, state.as_ref().and_then(|v| v["idle_s"].as_i64())) && chip;
     match sb.rpc("founder_proofkey_register_src", json!({"p_uid": c.sub, "p_device_hash": dev_hash, "p_es": hex::encode(es), "p_pq": hex::encode(pq), "p_jti_hash": sha256_hex(&jti), "p_allow_replace": replace_ok, "p_src": pq_src_of(proof)})).await {
         Some(v) if v["ok"].as_bool() == Some(true) => no_store(Json(json!({"ok": true, "replaced": v["replaced"], "src": pq_src_of(proof)})).into_response()),
@@ -651,5 +659,14 @@ mod tests {
         assert_eq!(gate_exchange(Mode::Enforce, None, None), Allow);
         // observe never blocks the same cases
         assert_eq!(gate_exchange(Mode::Observe, Some("s"), None), AllowWould("no_cookie"));
+    }
+
+    #[test]
+    fn audit3_a_thief_cannot_swap_the_proof_key_of_a_chip_device_without_the_chip_cookie() {
+        assert!(chip_registration_needs_cookie(true, Some("s"), None), "no cookie");
+        assert!(chip_registration_needs_cookie(true, Some("s"), Some("t")), "someone else's cookie");
+        assert!(chip_registration_needs_cookie(true, None, Some("s")), "no bound sid known");
+        assert!(!chip_registration_needs_cookie(true, Some("s"), Some("s")), "the owner's browser with the chip cookie");
+        assert!(!chip_registration_needs_cookie(false, None, None), "webcrypto-bound or unbound device: not this door's business");
     }
 }
