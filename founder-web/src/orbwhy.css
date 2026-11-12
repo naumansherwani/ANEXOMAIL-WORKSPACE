@@ -1,0 +1,13 @@
+/* LA-1 / LA-5: the "why this colour" popover. NEW file: it styles only .owhy-* classes; the orb and every existing class are untouched. */
+.owhy-hit{position:absolute;inset:0;border:0;padding:0;margin:0;background:transparent;border-radius:50%;cursor:help;-webkit-tap-highlight-color:transparent}
+.owhy-hit:focus-visible{outline:2px solid var(--oc,#3dd598);outline-offset:3px}
+.owhy-sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.owhy-card{box-sizing:border-box;z-index:60;width:min(320px,calc(100vw - 24px));padding:14px 16px;border-radius:16px;color:#e9eefb;font-size:13px;line-height:1.45;font-family:inherit;background:linear-gradient(180deg,rgba(26,32,52,.97),rgba(16,20,34,.97));border:1px solid rgba(255,255,255,.12);box-shadow:0 18px 50px rgba(0,0,0,.45);outline:0}
+.owhy-h{margin:0 0 6px;font-weight:650;font-size:14px;letter-spacing:.01em}
+.owhy-p{margin:0;color:#b5bfd6}
+.owhy-ul{list-style:none;margin:8px 0 8px;padding:0;display:grid;gap:6px}
+.owhy-li{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;align-items:baseline}
+.owhy-dot{width:8px;height:8px;border-radius:50%;background:#f2b84b;translate:0 -1px}.owhy-li.fail .owhy-dot{background:#ef6a58}
+.owhy-n{font-weight:600}.owhy-d{grid-column:2;color:#b5bfd6;font-size:12px;overflow-wrap:anywhere}
+@media (forced-colors:active){.owhy-card{background:Canvas;color:CanvasText;border:1px solid CanvasText;box-shadow:none}.owhy-p,.owhy-d{color:CanvasText}.owhy-dot{background:CanvasText;forced-color-adjust:none}.owhy-hit:focus-visible{outline-color:Highlight}}
+@media (prefers-reduced-motion:reduce){.owhy-card{animation:none!important}}

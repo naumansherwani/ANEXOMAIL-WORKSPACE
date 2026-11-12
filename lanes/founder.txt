@@ -129,10 +129,12 @@ founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
-founder-web/dist/assets/index-UQwzOKR3.js
-founder-web/dist/assets/index-UQwzOKR3.js.gz
-founder-web/dist/assets/index-qqidgRWh.css
-founder-web/dist/assets/index-qqidgRWh.css.gz
+founder-web/dist/assets/gsap-OWHkPl-m.js
+founder-web/dist/assets/gsap-OWHkPl-m.js.gz
+founder-web/dist/assets/index-nA6sJSPO.js
+founder-web/dist/assets/index-nA6sJSPO.js.gz
+founder-web/dist/assets/index-uLPkDbUh.css
+founder-web/dist/assets/index-uLPkDbUh.css.gz
 founder-web/dist/assets/kernel.worker-mprshus0.js
 founder-web/dist/assets/kernel.worker-mprshus0.js.gz
 founder-web/dist/assets/three.module-C0S06CcT.js
@@ -174,6 +176,7 @@ founder-web/src/Finance.tsx
 founder-web/src/Flare.tsx
 founder-web/src/Keys.tsx
 founder-web/src/Live.tsx
+founder-web/src/OrbWhy.tsx
 founder-web/src/Palette.tsx
 founder-web/src/PolicyEditor.tsx
 founder-web/src/Profile.tsx
@@ -198,6 +201,7 @@ founder-web/src/city.ts
 founder-web/src/components/00-FOUNDER-TECH-RULE.md
 founder-web/src/components/ui/00-FOUNDER-TECH-RULE.md
 founder-web/src/components/ui/button.tsx
+founder-web/src/components/ui/popover.tsx
 founder-web/src/components/ui/switch.tsx
 founder-web/src/countries.ts
 founder-web/src/dbsc_pure.test.ts
@@ -233,6 +237,9 @@ founder-web/src/livefeed.test.ts
 founder-web/src/livefeed.ts
 founder-web/src/main.tsx
 founder-web/src/net.test.ts
+founder-web/src/orbwhy.css
+founder-web/src/orbwhy_pure.test.ts
+founder-web/src/orbwhy_pure.ts
 founder-web/src/passkey.test.ts
 founder-web/src/passkey.ts
 founder-web/src/passkey_pure.ts

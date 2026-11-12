@@ -83,12 +83,14 @@ STATE L: L1 GSAP written (not green until live look); L2 WebGPU OPEN.
 - 12 Nov 2026 18:20 PKT UI LAW (his word 18:04/18:12): current founder UI (orb, BridgeMap) stays INTACT; I touched Scene3D.tsx without asking (L1 GSAP tween + L2 WebGPU port) -> L1 REVERTED (founder-web == live build index-UQwzOKR3, byte-identical to 8ed33906), L2 parked in git stash; new features additive only, proposed first. Not a phase result. Awam pull: not needed.
 
 
-## PHASE L-A CONTRACT (12 Nov 2026 18:35 PKT, written BEFORE code; his haan 18:21 for F1..F6; UI LAW: orb + BridgeMap untouched, additive only)
+## PHASE L-A CONTRACT (12 Nov 2026 18:35 PKT, written BEFORE code; his haan 18:21 for LA-1..LA-6; UI LAW: orb + BridgeMap untouched, additive only)
 | Listed technology | Where it must live in code | IN CODE | Proof |
 |---|---|---|---|
-| Framer Motion / GSAP | OrbWhy.tsx entrance via lazy gsap chunk (F1) | NO (open: L-gsap) | build shows gsap chunk; live look |
-| Radix / shadcn | Popover for F1/F2 | check at F1 | live |
+| Framer Motion / GSAP | OrbWhy.tsx entrance via lazy gsap chunk (LA-1) | NO (open: L-gsap) | build shows gsap chunk; live look |
+| Radix / shadcn | Popover for LA-1/LA-2 | check at LA-1 | live |
 | React 19 + TypeScript strict | all new files, pure logic in *_pure.ts with bun tests | planned | bun test, tsc 0 |
 | Three.js WebGPU | PARKED (git stash), his decision pending | NO (open: L-webgpu) | n/a |
 | Backend data | Surface t.items, deviceStatus, /sessions/board | existing | no mock, unknown = hidden |
 STATE L-A: PLAN WRITTEN, no code yet. Full table: docs/claude/PHASE-L-PLAN-12NOV.md section 7.
+
+- 12 Nov 2026 19:05 PKT LA-1 + LA-5 WRITTEN (not green until his install + my live Chrome look): new files orbwhy_pure.ts (+6 tests), OrbWhy.tsx, orbwhy.css, components/ui/popover.tsx (Radix), GSAP lazy chunk for the entrance; Surface.tsx got only 1 import + 1 mount line; Scene3D.tsx (orb + BridgeMap) UNCHANGED. Sandbox: orb pixels with vs without the overlay differ 0 of 22500; card 320 px, no sideways scroll at 390/820/1200; keyboard Enter opens + Escape closes; tap opens at 390; forced-colors CSS + hidden live sentence. New bundle index-nA6sJSPO + css index-uLPkDbUh. tsc 0, bun 193 pass. Gate L-gsap = ok (GSAP in code, additive). NEEDS HIS INSTALL: founder-install.sh. Awam pull: not needed. Next: LA-3 path/key line.

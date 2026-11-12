@@ -7,6 +7,7 @@ import { fmtHM, fmtTime, fmtStamp } from "./city";
 import { asPortableView, judgePortable, type PortableVerdict } from "./portable";
 import { onLiveChange, useLive, type LiveStatus } from "./livefeed";
 import { HealthOrb, type Tone } from "./Scene3D";
+import { OrbWhy } from "./OrbWhy";
 
 // The Dashboard body. Everything on it is measured in THIS browser, right now (Rule 69: no mock data): the signed Rust answers, the gates from the
 // action registry, the endpoints with their real response time. Technology: React-TS + CSS (glass cards, one entrance motion); the WASM kernel verifies every answer.
@@ -235,7 +236,7 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
   return (
     <div className="dx">
       <section className="dx-card dx-hero" style={{ "--i": 0 } as React.CSSProperties} aria-label="Company status">
-        <div className="dx-orbwrap"><HealthOrb tone={orbTone} label={`Company health: ${headline}`} /><span className="num">{tot ? `${tot - bad}/${tot}` : "–"}</span></div>
+        <div className="dx-orbwrap"><HealthOrb tone={orbTone} label={`Company health: ${headline}`} /><span className="num">{tot ? `${tot - bad}/${tot}` : "–"}</span><OrbWhy tone={orbTone} ks={ks} items={t ? t.items : null} endpointsOk={rows ? okN : null} endpointsAll={rows ? live.length : null} /></div>
         <div className="dx-herotx">
           <h2 className="dx-h">{headline}</h2>
           <p className="dx-p">{subline || "Nothing measured yet"}{at ? `  ·  checked ${fmtHM(at)}` : ""}</p>

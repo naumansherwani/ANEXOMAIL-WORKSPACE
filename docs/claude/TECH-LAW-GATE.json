@@ -75,7 +75,7 @@
    "id": "L-gsap",
    "file": "founder-web/package.json",
    "must": "\"gsap\"",
-   "status": "open",
+   "status": "ok",
    "deadline": "L phase (12 Nov start)",
    "why": "Framer Motion + GSAP listed for L (12 Nov: removed again by his UI LAW; comes back only where he says haan, ADDITIVE features, never inside the current orb)",
    "fail_after": "2026-11-13"
