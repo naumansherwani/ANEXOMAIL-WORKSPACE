@@ -123,3 +123,17 @@ E167_founder_mail_core.sql WRITTEN, 1130 lines + CHECK_E167.sql. Tested in a fre
 DONE and intact (do not rewrite): E167 SQL (applied on his server, ledger OK; CHECK_E167 rerun pending), server/founder/src/fmail_seal.rs + fmail_kem.rs (11 tests, crate 331 pass), AWAM-INHERITS law, CORE-FREEZE gate, TECH-LAW-GATE rows Q-seal / Q-kem / Q-sql ok, Q-lmtp / Q-att-wt / Q-pqmail open with dates.
 NEXT, in this order, each with its CURRENT.md row first: (1) E168 SQL: `recipient_pub bytea check (octet_length = 1216)` on fmail_mailboxes + `fmail_deliver_inbound` unchanged. (2) `fmail_in.rs`: pure LMTP state machine (LHLO, XFORWARD, MAIL, RCPT, DATA, dot-unstuffing, caps) + MIME summary (mail-parser 0.11.5) + verdicts (mail-auth 0.9.2, trait so tests need no DNS) + ClamAV INSTREAM + seal whole raw message into sealed_body (<= policy 25 MiB; attachments inside; the chunked WebTransport path is for OUTBOUND and large files, Q3) + deliver via `sb.rpc("fmail_deliver_inbound")`; loopback-only listener, env FMAIL_LMTP_BIND, OFF by default. (3) `fmail_ep.rs` read side: folders, thread page (keyset), message fetch (sealed blobs), flag, move; every query parameter whitelisted like inbox.rs; `authed` for reads, `authed_w` for writes; send / delete-hard need `touch_hash` from the existing passkey step-up. (4) kernel `pqmail@1` + UI demo artifact (Q1c step 0), then UI. (5) Postfix hook script `fmail-postfix-hook.sh` (NEW file, deploy-mail.sh is frozen): dry-run first.
 Pull commands per technology: SQL = sql-run.sh <file without .sql>; Rust + SPA = founder-install.sh (full line with fetch).
+
+## 15. WHEN WHAT IS VISIBLE (his anger 13 Nov 01:23: "kab advance technology, kab UI UX nazar aye ga, awam kab migrate"). PROPOSED dates, he can change them.
+Installed + proven on his server 13 Nov 01:25: Rust founder service with fmail_seal + fmail_kem (install output all OK, healthz 200). Not yet visible in the UI because no endpoint/UI uses them yet.
+| When | Phase | What he SEES | Advance technology in it |
+|---|---|---|---|
+| 13 Nov (today) | E168 + mailbox UI DEMO artifact | cinematic mailbox demo on screen (his pick before code) | UI WOW rules, Three.js/Framer, glass, 390/820/1200 |
+| 14 Nov | Q1b-2 fmail_in.rs + read endpoints | real mail arrives SEALED (ML-KEM + AES-256-GCM), folder counts live | Rust Tokio LMTP behind Postfix, mail-auth SPF/DKIM/DMARC, ClamAV, PG RLS |
+| 15-16 Nov | Q1c reader UI | mailbox INSIDE the founder app, real mail, phone/tablet/laptop | React 19 + TanStack, kernel opens the sealed message in the browser |
+| 17 Nov | Q1d compose/send/outbox | send with passkey touch, undo send, DKIM signed | Rust, passkey step-up, DKIM |
+| 18-19 Nov | Q2/Q3 attachments | big files chunked | Tokio + Rust + WebTransport (QUIC), ClamAV, Storage Box |
+| 20 Nov | Q1e calendar | calendar next to mail | E172-E173 SQL |
+| 21-22 Nov | Q4 pqmail | PQ mail between founders, OpenPGP RFC 9980 | rPGP in the WASM kernel, ML-DSA hybrid |
+| 23-25 Nov | S5, M (MoQ), N, O, P | rest of the blueprint | TanStack Start SPA, MoQ |
+AWAM MIGRATION (awam pro package is preserved, frozen): starts only AFTER the founder blueprint (25 Nov): phase AM-Q, 26 Nov to 16 Dec = lift fmail_seal, fmail_kem and the E167 patterns into the awam mailbox, move Bun/Node to Rust one endpoint at a time, awam UI keeps its look. Port 25: Postfix stays front until native Rust SMTP (Q7), after the above; this is a deliberate safety order, not a downgrade.
