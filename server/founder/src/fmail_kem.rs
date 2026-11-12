@@ -4,10 +4,12 @@
 //! (wrapped by his passkey) and are used by the browser kernel to open the wrap (decapsulation is in the kernel, not here). After this wrap the server can
 //! NOT open the message again: that is the zero-knowledge point of seal_mode 'recipient_pq'.
 //! Blob layout (v1, 1181 bytes): 0x01 | ML-KEM ct (1088) | ephemeral X25519 pub (32) | nonce (12) | AES-256-GCM(msg key) (48).
-//! KDF: HKDF-SHA256(salt = ct || eph pub || recipient x25519 pub, ikm = mlkem_ss || x25519_ss, info = "fmail-kem-wrap-v1" || key id).
+//! KDF: HKDF-SHA256(salt = ct || eph pub || SHA-256(whole 1216-byte recipient key), ikm = mlkem_ss || x25519_ss, info = "fmail-kem-wrap-v1" || key id).
 use fips203::ml_kem_768::{CipherText, EncapsKey, CT_LEN, EK_LEN};
 use fips203::traits::{Encaps, SerDes};
 use ring::{agreement, hkdf, rand::SystemRandom};
+use sha2::{Digest, Sha256};
+use zeroize::{Zeroize, Zeroizing};
 use crate::fmail_seal as seal;
 
 pub const PUB_LEN: usize = EK_LEN + 32;           // 1216
@@ -16,12 +18,13 @@ const VER: u8 = 1;
 struct Len(usize);
 impl hkdf::KeyType for Len { fn len(&self) -> usize { self.0 } }
 
-fn kdf(ss_kem: &[u8], ss_x: &[u8], ct: &[u8], eph: &[u8], rcpt_x: &[u8], key_id: &str) -> Result<seal::Key, &'static str> {
-    let mut salt = Vec::with_capacity(ct.len() + 64); salt.extend_from_slice(ct); salt.extend_from_slice(eph); salt.extend_from_slice(rcpt_x);
-    let mut ikm = Vec::with_capacity(64); ikm.extend_from_slice(ss_kem); ikm.extend_from_slice(ss_x);
+/// `rcpt_pub` is the WHOLE 1216-byte recipient key: its SHA-256 goes into the salt, so the derived key is bound to both recipient halves (ML-KEM key and X25519 key), like the X-Wing combiner.
+fn kdf(ss_kem: &[u8], ss_x: &[u8], ct: &[u8], eph: &[u8], rcpt_pub: &[u8], key_id: &str) -> Result<seal::Key, &'static str> {
+    let mut salt = Vec::with_capacity(ct.len() + 64); salt.extend_from_slice(ct); salt.extend_from_slice(eph); salt.extend_from_slice(&Sha256::digest(rcpt_pub));
+    let mut ikm = Zeroizing::new(Vec::with_capacity(64)); ikm.extend_from_slice(ss_kem); ikm.extend_from_slice(ss_x);
     let prk = hkdf::Salt::new(hkdf::HKDF_SHA256, &salt).extract(&ikm);
     let info = [b"fmail-kem-wrap-v1".as_slice(), key_id.as_bytes()];
-    let mut out = [0u8; 32]; prk.expand(&info, Len(32)).map_err(|_| "hkdf")?.fill(&mut out).map_err(|_| "hkdf")?; Ok(out)
+    let mut out = [0u8; 32]; prk.expand(&info, Len(32)).map_err(|_| "hkdf")?.fill(&mut out).map_err(|_| "hkdf")?; salt.zeroize(); Ok(out)
 }
 
 /// Wrap `msg_key` to the recipient public key (1216 bytes). `key_id` is bound into the KDF and the AAD, so a wrap made for key A never opens under key B.
@@ -35,9 +38,10 @@ pub fn wrap(recipient_pub: &[u8], key_id: &str, msg_key: &seal::Key) -> Result<V
     let rng = SystemRandom::new();
     let eph = agreement::EphemeralPrivateKey::generate(&agreement::X25519, &rng).map_err(|_| "x25519 keygen")?;
     let eph_pub = eph.compute_public_key().map_err(|_| "x25519 pub")?;
-    let ss_x = agreement::agree_ephemeral(eph, &agreement::UnparsedPublicKey::new(&agreement::X25519, &rcpt_x), |s| s.to_vec()).map_err(|_| "x25519 agree (low-order key?)")?;
-    let wk = kdf(&ss_kem.into_bytes(), &ss_x, &ct_b, eph_pub.as_ref(), &rcpt_x, key_id)?;
-    let (n, sealed) = seal::seal(&wk, &seal::aad(&["kem-wrap", key_id]), msg_key)?;
+    let ss_x = agreement::agree_ephemeral(eph, &agreement::UnparsedPublicKey::new(&agreement::X25519, &rcpt_x), |s| Zeroizing::new(s.to_vec())).map_err(|_| "x25519 agree (low-order key?)")?;
+    let ss_kem_b = Zeroizing::new(ss_kem.into_bytes());
+    let wk = Zeroizing::new(kdf(&*ss_kem_b, &ss_x, &ct_b, eph_pub.as_ref(), recipient_pub, key_id)?);
+    let (n, sealed) = seal::seal(&*wk, &seal::aad(&["kem-wrap", key_id]), msg_key)?;
     let mut out = Vec::with_capacity(BLOB_LEN); out.push(VER); out.extend_from_slice(&ct_b); out.extend_from_slice(eph_pub.as_ref()); out.extend_from_slice(&n); out.extend_from_slice(&sealed);
     debug_assert_eq!(out.len(), BLOB_LEN); Ok(out)
 }
@@ -64,7 +68,7 @@ mod tests {
         let (ct, eph, nonce, sealed) = parts(blob)?;
         let ctb: [u8; CT_LEN] = ct.try_into().ok()?; let ss_kem = dk.try_decaps(&CipherText::try_from_bytes(ctb).ok()?).ok()?;
         let ss_x = agreement::agree_ephemeral(x, &agreement::UnparsedPublicKey::new(&agreement::X25519, eph), |s| s.to_vec()).ok()?;
-        let wk = kdf(&ss_kem.into_bytes(), &ss_x, ct, eph, &pubk[EK_LEN..], key_id).ok()?;
+        let wk = kdf(&ss_kem.into_bytes(), &ss_x, ct, eph, pubk, key_id).ok()?;
         seal::open(&wk, nonce, &seal::aad(&["kem-wrap", key_id]), sealed)?.try_into().ok()
     }
     #[test]
