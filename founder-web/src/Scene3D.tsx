@@ -5,6 +5,7 @@ import type * as TSLNS from "three/tsl";
 import { TONE_HEX, orbParams, orbScale, pickRenderer, nextGfx, type Gfx, type Tone } from "./scene_pure";
 import { createToneColor } from "./scene_fx";
 import { buildOrbGpu } from "./scene_gpu";
+import { flow, dotShade } from "./laneflow_pure";
 
 // 3D layer of the founder UI. Technology: React-TS + Three.js. L2: WebGPU renderer (three/webgpu + TSL node materials, scene_gpu.ts) FIRST when the browser has a WebGPU adapter, then the WebGL2 renderer
 // (the GLSL builds below), then the CSS fallback. A failure steps down one level, never a blank hole. The host carries data-gfx = webgpu | webgl | css so the live look can READ which one ran.
@@ -133,9 +134,10 @@ export function HealthOrb({ tone, label }: { tone: Tone; label?: string }) {
 
 export type Lane = { label: string; n: number | null };
 /** 2. Bridge map "-> <-": real counts. Left-to-right lane = what is arriving, right-to-left lane = what is leaving. A lane with zero draws no particles (quiet is quiet). */
-export function BridgeMap({ inbound, outbound }: { inbound: Lane[]; outbound: Lane[] }) {
+export function BridgeMap({ inbound, outbound, idle }: { inbound: Lane[]; outbound: Lane[]; idle?: ReadonlySet<string> }) {
   const inN = inbound.reduce((a, x) => a + (x.n || 0), 0), outN = outbound.reduce((a, x) => a + (x.n || 0), 0);
-  const ref = useRef({ inN, outN }); ref.current = { inN, outN };
+  const none = useRef(new Set<string>()).current;
+  const ref = useRef({ inN, outN, fi: flow(inbound, idle ?? none), fo: flow(outbound, idle ?? none) }); ref.current = { inN, outN, fi: flow(inbound, idle ?? none), fo: flow(outbound, idle ?? none) };   // LA-7: live + dim dots from laneflow_pure (no idle lane = the old drawing)
   const { host, state } = useScene((T) => {
     const scene = new T.Scene(), camera = new T.PerspectiveCamera(34, 2.6, 0.1, 50); camera.position.set(0, 0.7, 9); camera.lookAt(0, 0.3, 0);
     const metal = new T.LineBasicMaterial({ color: 0xc3c9d3, transparent: true, opacity: 0.85 }), soft = new T.LineBasicMaterial({ color: 0x6b9bf2, transparent: true, opacity: 0.45 });
@@ -153,17 +155,16 @@ export function BridgeMap({ inbound, outbound }: { inbound: Lane[]; outbound: La
     const pm = new T.PointsMaterial({ size: 0.11, vertexColors: true, transparent: true, opacity: 0.95, depthWrite: false, blending: T.AdditiveBlending, sizeAttenuation: true });
     const pts = new T.Points(geo, pm); g.add(pts);
     const IN = new T.Color(0x5fe3ae), OUT = new T.Color(0xf2b84b);
-    const act = (n: number) => (n <= 0 ? 0 : Math.round(6 + Math.min(1, Math.log1p(n) / Math.log1p(60)) * 64));
     return {
       scene, camera,
       tick(t, dt) {
-        const { inN: a, outN: o } = ref.current, ai = act(a), ao = act(o); let ci = 0, co = 0;
+        const { fi, fo } = ref.current; let ci = 0, co = 0;
         for (let i = 0; i < N; i++) {
-          const s = seed[i], inbound = s.lane === 0, on = inbound ? ci++ < ai : co++ < ao;
-          if (!on) { pos[i * 3 + 1] = 99; continue; }
+          const s = seed[i], inbound = s.lane === 0, k = inbound ? ci++ : co++, shade = dotShade(k, inbound ? fi : fo);
+          if (shade === 0) { pos[i * 3 + 1] = 99; continue; }
           s.u = (s.u + dt * s.sp * (inbound ? 1 : -1) + 1) % 1;
           pos[i * 3] = -5 + s.u * 10; pos[i * 3 + 1] = inbound ? 0.02 : -0.12; pos[i * 3 + 2] = (inbound ? 0.05 : -0.05) + Math.sin(t * 2 + i) * 0.02;
-          const c = inbound ? IN : OUT; col[i * 3] = c.r; col[i * 3 + 1] = c.g; col[i * 3 + 2] = c.b;
+          const c = inbound ? IN : OUT; col[i * 3] = c.r * shade; col[i * 3 + 1] = c.g * shade; col[i * 3 + 2] = c.b * shade;
         }
         geo.attributes.position.needsUpdate = true; geo.attributes.color.needsUpdate = true;
         g.rotation.y = Math.sin(t * 0.25) * 0.04;                                                           // 2 degrees of drift only, no spinning

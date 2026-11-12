@@ -6,6 +6,7 @@ import type { Prof } from "./types";
 import { Surface } from "./Surface";
 import { BridgeMap, type Lane } from "./Scene3D";
 import { BridgeLanes } from "./BridgeLanes";
+import { idleLabels } from "./laneflow_pure";
 import { filterNote, laneKey, showSection, type LaneKey } from "./bridgelane_pure";
 
 // Shapes of the signed /founder/v1/bridge data and the Polar/finance reads. Fields are optional because each source can be "not connected" (Rule 69).
@@ -96,10 +97,11 @@ export function BridgeView({ d, at, me, go }: { d: any; at: At; me: Prof | null;
   const rej7 = hk?.rejects?.connected ? (hk.rejects.daily_7d || []).reduce((s: number, x: { n?: number }) => s + (x.n || 0), 0) : null;
   const inbound: Lane[] = [{ label: "New leads", n: d?.voice?.connected ? d.voice.new_leads : null }, { label: "Polar events, 24 h", n: wh?.connected ? wh.events_24h : null }, { label: "New subscriptions, 30 d", n: subs?.connected ? (subs.new_30d ?? null) : null }];
   const outbound: Lane[] = [{ label: "Mail waiting or failed", n: mailN }, { label: "Webhook errors, 24 h", n: wh?.connected ? wh.errors_24h : null }, { label: "Rejected signatures, 7 d", n: rej7 }];
+  const idle = idleLabels([...inbound, ...outbound], d?.lane_times);   // LA-7: idle lanes dim their map dots
   return (
     <>
       <Greeting t={t} at={at} me={me} />
-      <BridgeLanes inbound={inbound} outbound={outbound} times={d?.lane_times} active={lane} onPick={setLane}><BridgeMap inbound={inbound} outbound={outbound} /></BridgeLanes>
+      <BridgeLanes inbound={inbound} outbound={outbound} times={d?.lane_times} active={lane} onPick={setLane}><BridgeMap inbound={inbound} outbound={outbound} idle={idle} /></BridgeLanes>
       {lane && <div className="blane-chip" role="status"><span>Showing only: <b>{[...inbound, ...outbound].find((l) => laneKey(l.label) === lane)?.label}</b>{filterNote(lane) ? ` · ${filterNote(lane)}` : ""}</span><button type="button" className="dx-pill" onClick={() => setLane(null)}>Show everything</button></div>}
       {showSection(lane, "money") && subs?.connected && (subs.by_status?.past_due > 0 || (subs.by_product || []).some((x: any) => x.grace)) && <>
         <h2>Money exceptions</h2>

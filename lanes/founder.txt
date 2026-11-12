@@ -131,8 +131,8 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-DBNAUBJ9.js
-founder-web/dist/assets/index-DBNAUBJ9.js.gz
+founder-web/dist/assets/index-B0ZmCi7C.js
+founder-web/dist/assets/index-B0ZmCi7C.js.gz
 founder-web/dist/assets/index-vbcBRdeL.css
 founder-web/dist/assets/index-vbcBRdeL.css.gz
 founder-web/dist/assets/kernel.worker-mprshus0.js
@@ -235,6 +235,8 @@ founder-web/src/kernel.pin.ts
 founder-web/src/kernel.test.ts
 founder-web/src/kernel.ts
 founder-web/src/kernel.worker.ts
+founder-web/src/laneflow_pure.test.ts
+founder-web/src/laneflow_pure.ts
 founder-web/src/lease.ts
 founder-web/src/lease_pure.test.ts
 founder-web/src/lease_pure.ts
