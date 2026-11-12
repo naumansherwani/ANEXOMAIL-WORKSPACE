@@ -20,3 +20,11 @@ Never start a step while the one before it is open. Technology per step = the bl
 
 ## Step 1 facts read from his server (13 Nov 04:11 PKT): Postfix virtual_transport = anexopipe, transport_maps EMPTY, founder address = vmailbox entry; 127.0.0.1:18025 free; clamd on 127.0.0.1:3310 (+ socket clamav:clamav, unusable by the founder user -> TCP loopback); rspamd, postgrey, opendkim 127.0.0.1:8891 in the path.
 Step 1b written: docs/cursor-work/server/fmail-intake-on.sh (service only; port re-check, clamd PONG, env backup, restart, listener proof, LMTP self-test, auto rollback). Step 1c (his haan needed): ONE per-address transport_maps entry -> lmtp:inet:127.0.0.1:18025, then a real mail from his other address.
+
+## STEP 1 CHECKLIST (his 13 Nov 04:15 word: every point written in the phase so context loss cannot drop it)
+- [x] 1a preflight read-only (fmail-intake-check.sh) - his output 04:11
+- [x] 1b intake service ON - his output 04:15: LMTP ON 127.0.0.1:18025 loopback, ClamAV 127.0.0.1:3310, listener = anexomail-founder, healthz 200, self-test: founder RCPT 250, unknown 550. Postfix untouched. (Service proof only: NOT REAL until a real mail is stored.)
+- [ ] 1c Postfix per-address entry (fmail-intake-postfix.sh, WRITTEN 04:20, needs his HAAN; main.cf backup, postfix check, auto rollback)
+- [ ] 1d real mail from his other address appears in the Inbox sealed, ledger row grows, ClamAV verdict stored (not 'skipped')
+- [ ] 1e live Chrome look 390/820/1200 with a real message: U1 (ledger proof pill, Touch-to-Unseal) proven on it
+- Rollbacks: service = cp /etc/anexomail/founder.env.pre-intake /etc/anexomail/founder.env && systemctl restart anexomail-founder ; Postfix = cp /etc/postfix/main.cf.pre-founder-intake /etc/postfix/main.cf && systemctl reload postfix
