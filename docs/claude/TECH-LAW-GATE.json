@@ -156,6 +156,57 @@
    "status": "ok",
    "deadline": "S3b (after S4)",
    "why": "browsers without WebCrypto ML-DSA need the ML-DSA half from the Rust WASM kernel (fips204); until then their exchange stays on fetch and the board says classical"
+  },
+  {
+   "id": "Q-seal",
+   "file": "server/founder/src/fmail_seal.rs",
+   "must": "AES_256_GCM",
+   "status": "ok",
+   "why": "founder mailbox sealing (AES-256-GCM, bound AAD, blind indexes) in code, 7 tests",
+   "live": "unit tests 13 Nov 2026"
+  },
+  {
+   "id": "Q-kem",
+   "file": "server/founder/src/fmail_kem.rs",
+   "must": "ml_kem_768",
+   "status": "ok",
+   "why": "post-quantum hybrid key wrap ML-KEM-768 + X25519 (FIPS 203) in code, 4 tests",
+   "live": "unit tests 13 Nov 2026"
+  },
+  {
+   "id": "Q-sql",
+   "file": "docs/cursor-work/sql/E167_founder_mail_core.sql",
+   "must": "fmail_ledger_append",
+   "status": "ok",
+   "why": "mailbox database, sandbox PG16 selftest 36/36, CHECK 8/8; applied on his server 13 Nov (E167 ledger OK), CHECK rerun pending",
+   "live": "his sql-run 13 Nov"
+  },
+  {
+   "id": "Q-lmtp",
+   "file": "server/founder/src/fmail_in.rs",
+   "must": "Lmtp",
+   "status": "open",
+   "deadline": "Q1b",
+   "why": "Rust LMTP inbound (Tokio), mail-parser 0.11.5, mail-auth 0.9.2 SPF/DKIM/DMARC, ClamAV, sealing, delivery",
+   "fail_after": "2026-11-17"
+  },
+  {
+   "id": "Q-att-wt",
+   "file": "server/founder/src/fmail_att.rs",
+   "must": "WebTransport",
+   "status": "open",
+   "deadline": "Q3",
+   "why": "attachments over Tokio + Rust + WebTransport, chunked sealed streams",
+   "fail_after": "2026-11-20"
+  },
+  {
+   "id": "Q-pqmail",
+   "file": "web-wasm/src/lib.rs",
+   "must": "pqmail",
+   "status": "open",
+   "deadline": "Q4",
+   "why": "OpenPGP RFC 9980 in the one WASM kernel",
+   "fail_after": "2026-11-23"
   }
  ]
 }

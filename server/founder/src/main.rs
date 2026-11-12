@@ -46,6 +46,8 @@ mod sessions;
 mod policy_step;
 mod h3;
 mod wtrpc;
+mod fmail_seal;
+mod fmail_kem;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};

@@ -315,6 +315,8 @@ server/founder/src/bridge.rs
 server/founder/src/data.rs
 server/founder/src/dbsc.rs
 server/founder/src/flare.rs
+server/founder/src/fmail_kem.rs
+server/founder/src/fmail_seal.rs
 server/founder/src/fproxy.rs
 server/founder/src/front.rs
 server/founder/src/ftoken.rs
