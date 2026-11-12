@@ -59,21 +59,23 @@ if [ ! -f "$ENVF" ]; then
 fi
 id anexomail-founder >/dev/null 2>&1 || useradd --system --no-create-home --shell /usr/sbin/nologin anexomail-founder
 install -m 755 "$NEW" "$ROOT/anexomail-founder"
+# 12 Nov 2026 19:30: key files are created ONCE; when one exists the shell says so itself and does not start the binary (his installs printed "line 70: Permission denied" on an existing key)
+genkey() { if [ -e "$2" ]; then echo "   $3: exists"; else "$ROOT/anexomail-founder" "$1" "$2" | sed "s/^/   $3: /"; fi; }
 # F1a: founder token signing key (ES256, file 0400, sirf service user padh sakta hai) + env (dobara chalane par maujooda values NAHI badalte)
 KEYF=/etc/anexomail/founder-token.p8; mkdir -p /etc/anexomail
-"$ROOT/anexomail-founder" --gen-token-key "$KEYF" | sed 's/^/   token key: /'; chown anexomail-founder:anexomail-founder "$KEYF"; chmod 400 "$KEYF"
+genkey --gen-token-key "$KEYF" "token key"; chown anexomail-founder:anexomail-founder "$KEYF"; chmod 400 "$KEYF"
 grep -q '^FOUNDER_TOKEN_KEY_FILE=' "$ENVF" || echo "FOUNDER_TOKEN_KEY_FILE=$KEYF" >>"$ENVF"
 # F2a: Ed25519 response-signing key (file 0400); public key is served at /founder/v1/keys
 SIGNF=/etc/anexomail/founder-sign.p8
-"$ROOT/anexomail-founder" --gen-sign-key "$SIGNF" | sed 's/^/   sign key: /'; chown anexomail-founder:anexomail-founder "$SIGNF"; chmod 400 "$SIGNF"
+genkey --gen-sign-key "$SIGNF" "sign key"; chown anexomail-founder:anexomail-founder "$SIGNF"; chmod 400 "$SIGNF"
 AUDLK=/etc/anexomail/founder-auditlog.p8   # G5b: the audit log's OWN signing key (not the response key above); public half is registered in the database by the sealer
-"$ROOT/anexomail-founder" --gen-sign-key "$AUDLK" | sed 's/^/   audit-log key: /'; chown anexomail-founder:anexomail-founder "$AUDLK"; chmod 400 "$AUDLK"
+genkey --gen-sign-key "$AUDLK" "audit-log key"; chown anexomail-founder:anexomail-founder "$AUDLK"; chmod 400 "$AUDLK"
 # J6: Web Push (VAPID, P-256) key for the phone alerts; the private half never leaves this file (0400)
 VAPIDF=/etc/anexomail/founder-vapid.p8
-"$ROOT/anexomail-founder" --gen-vapid-key "$VAPIDF" | sed 's/^/   vapid key: /'; chown anexomail-founder:anexomail-founder "$VAPIDF"; chmod 400 "$VAPIDF"
+genkey --gen-vapid-key "$VAPIDF" "vapid key"; chown anexomail-founder:anexomail-founder "$VAPIDF"; chmod 400 "$VAPIDF"
 # J8b2: master secret for the vault key half (file 0400, hex; the database never sees it; losing it locks every vault, so it is created ONCE and never replaced)
 VMASTER=/etc/anexomail/founder-vault-master.key
-"$ROOT/anexomail-founder" --gen-vault-master "$VMASTER" | sed 's/^/   vault master: /'; chown anexomail-founder:anexomail-founder "$VMASTER"; chmod 400 "$VMASTER"
+genkey --gen-vault-master "$VMASTER" "vault master"; chown anexomail-founder:anexomail-founder "$VMASTER"; chmod 400 "$VMASTER"
 grep -q '^FOUNDER_VAULT_MASTER_FILE=' "$ENVF" || echo "FOUNDER_VAULT_MASTER_FILE=$VMASTER" >>"$ENVF"
 # K4.2: the own TLS terminator hands /founderlogin /app /api to Caddy (the old app). Today Caddy answers the host on 127.0.0.1:443; after the K4.5 switch this line moves to the internal port. Only affects the :8443 terminator.
 # 10 Nov 2026 02:50 (his site broke after an install): this line used to be RE-ADDED here, which undid the G-MIX 2d legacy cut. Since K4.5 127.0.0.1:443 is the Rust front itself, so the old-path proxy

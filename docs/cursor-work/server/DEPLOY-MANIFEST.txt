@@ -125,7 +125,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 7259bb42cd3a136a
 docs/cursor-work/PROMISES.md 5684f6a751539c8b
-docs/cursor-work/founder/founder-commands.md c917751785cd547a
+docs/cursor-work/founder/founder-commands.md bfc0ad5c0f6d2233
 docs/anexomail-blueprint.md 97689fb3af84ce36
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -152,7 +152,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 7e3f58397354e64d
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 059d8d2a88e6393c
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 500d7a9dcf704840
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -889,7 +889,7 @@ server/founder/src/bridge.rs 12ea8228b6829893
 server/founder/src/data.rs 939084cf896c265b
 server/founder/src/gate.rs c3b8fbb573facca1
 server/founder/src/sign.rs 1e37d229d78842fb
-docs/cursor-work/server/founder-install.sh 69b8b736822292d4
+docs/cursor-work/server/founder-install.sh da670174b9af3b7f
 founder-web/.gitignore aaccff71fadbb13b
 founder-web/index.html 57ec52ccf0276bdb
 founder-web/package.json 9e11a1e7596cee80
@@ -947,7 +947,7 @@ founder-web/src/fonts/Inter-Medium.woff2 c8f84bf00cbd6136
 founder-web/src/fonts/Inter-Regular.woff2 21d73733fb1fbfe6
 founder-web/src/fonts/Inter-SemiBold.woff2 43443e801ec3cb75
 docs/cursor-work/server/rules-gate.py 158b1db8d243f504
-CLAUDE.md 4dc8eee145cf596d
+CLAUDE.md 46bfd054a20726d9
 docs/claude/FOUNDER-KILLER-FEATURES-28OCT.md 9273a2bfb9183f48
 founder-web/src/cinema.css 312474c073e9860d
 docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md 9dbae25b3c61c93d
@@ -1188,12 +1188,12 @@ founder-web/src/passkey_pure.ts 18c84406d0b26eb9
 server/founder/src/passkey.rs fc1644aca0233454
 server/rust/j3_action_vectors.json d90c898ebb69d9ea
 web-wasm/src/action.rs eda7722b529a2887
-lanes/ALL-FILES.csv a56115b93414996a
+lanes/ALL-FILES.csv 920173a107423c8e
 lanes/awam.txt 975d47511286d37a
-lanes/docs.txt 829ecdb677fd78b0
+lanes/docs.txt c632e6e7ac3780df
 lanes/founder.txt 5a34e5b6972fb81b
 lanes/shared.txt 0a4bbf5bd73b5898
-lovable-gold/README.md 4e6bd54c6ae4daa2
+lovable-gold/README.md 0379e9f0ce56e029
 docs/claude/FOUNDER-FLARE-J6-RESEARCH-03NOV.md 5e65d9f84cbbc643
 docs/cursor-work/sql/CHECK_E140.sql 0aa343c84820214f
 docs/cursor-work/sql/E140_founder_flare_push.sql 3c95ae9963ebd5bf
@@ -1258,7 +1258,7 @@ docs/cursor-work/sql/CHECK_E162.sql 580f0ee0bd152f1f
 server/founder/src/mldsa.rs 4f64ed54eebca2aa
 server/founder/src/dbsc.rs 1066b35a5e50e2a8
 docs/claude/tech-contracts/CURRENT.md a056454af9cc80ad
-docs/claude/RESUME-POINT.md ad93a8573203e93f
+docs/claude/RESUME-POINT.md ddb22961976bd799
 docs/claude/SQL-ORDER-E1-E160.md da2d86a7bcf2edd0
 docs/claude/TECH-LAW-GATE.json f9c2ac0ae2840605
 docs/cursor-work/sql/CHECK_E164.sql ee63c38fb8533b78
