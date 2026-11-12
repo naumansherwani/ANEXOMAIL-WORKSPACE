@@ -77,3 +77,5 @@ LIVE FINDING (his Chrome 21:15, bundle index-NaXn6xLq = repo build): his device 
 | Three.js WebGPU renderer (lazy), WebGL2 fallback, 2D CSS fallback | Scene3D.tsx useScene + TSL node materials (raw GLSL ShaderMaterial does NOT run on WebGPURenderer, so each scene needs a TSL port) | OPEN (L2: HealthOrb first, then BridgeMap; gate L-webgpu fails 13 Nov) | live: renderer name in console + Chrome look 390/820/1200 |
 | Reduced motion + forced colors | Scene3D.tsx (matchMedia) | reduced-motion YES; forced-colors check in L2 | sandbox |
 STATE L: L1 GSAP written (not green until live look); L2 WebGPU OPEN.
+
+- 12 Nov 2026 18:10 PKT PHASE L PLAN written first (his order 17:54): docs/claude/PHASE-L-PLAN-12NOV.md = technology table, codes plan (7 steps), SQL plan (none required; optional E166 gfx counter only if he asks), super-advanced code rules, resume checklist; CLAUDE.md top line points to it. Safari/Firefox ML-DSA live proof is CLOSED by his word (not an open gap any more). L is not done (WIRED/REAL not yet): L2 WebGPU open.
