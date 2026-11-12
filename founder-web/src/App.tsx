@@ -171,7 +171,7 @@ export default function App() {
           </div>
         </header>
         <main className="pg" id="main" key={view}>
-          {view !== "bridge" && view !== "dashboard" && view !== "settings" && view !== "profile" && view !== "devices" && <div className="titleblock"><h1>{title}</h1></div>}
+          {view !== "bridge" && view !== "dashboard" && view !== "settings" && view !== "profile" && view !== "devices" && view !== "mail" && <div className="titleblock"><h1>{title}</h1></div>}
           {err && <div className="err banner" role="alert">{err}</div>}
           <Outlet />
           <footer className="pgfoot">{at ? `Updated ${fmtTime(at)} · refreshes every 15 s` : "Loading…"}</footer>

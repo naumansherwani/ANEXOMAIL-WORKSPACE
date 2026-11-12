@@ -207,6 +207,23 @@
    "deadline": "Q4",
    "why": "OpenPGP RFC 9980 in the one WASM kernel",
    "fail_after": "2026-11-23"
+  },
+  {
+   "id": "Q-live-wt",
+   "file": "server/founder/src/fmail_wt.rs",
+   "must": "WebTransport",
+   "status": "open",
+   "deadline": "Q3",
+   "why": "the mail live channel runs over the kernel WebTransport session (same frames as the SSE fallback fmail_ep::stream_ep); found by the 13 Nov audit: mail live is SSE only",
+   "fail_after": "2026-11-20"
+  },
+  {
+   "id": "Q-clamd",
+   "file": "server/founder/src/fmail_in.rs",
+   "must": "INSTREAM",
+   "status": "ok",
+   "deadline": "Q1b-3",
+   "why": "ClamAV INSTREAM client is in code; the clamd daemon on his server is checked read-only before FMAIL_CLAMD is set (open item for him)"
   }
  ]
 }

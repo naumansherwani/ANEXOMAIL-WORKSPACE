@@ -27,3 +27,5 @@ ORIGINAL ANEXOMAIL LOGO (his 02:02 word): the Mail page header uses `LogoMark` f
 - Frontend: founder-web/src/Mail*.tsx, mail.css, mail_pure.ts (+ bun tests), mounted in App.tsx with ONE nav entry; Orb / BridgeMap code untouched (UI LAW).
 ## 3. Order of the pull commands (per technology)
 SQL: E169 then CHECK_E169 (sql-run.sh). Rust + SPA: founder-install.sh. Postfix hook: only after his fresh `ss` list and his haan.
+
+See FOUNDER-MAILBOX-Q-BLUEPRINT-13NOV.md for the phase table and the technology audit of 13 Nov 03:05.

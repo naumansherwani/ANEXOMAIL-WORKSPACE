@@ -107,3 +107,18 @@ export function keyCmd(k: string, mods: { ctrl?: boolean; meta?: boolean; alt?: 
   switch (k) { case "j": return { cmd: "next" }; case "k": return { cmd: "prev" }; case "Enter": return { cmd: "open" }; case "e": return { cmd: "move", arg: "archive" }; case "#": return { cmd: "move", arg: "trash" };
     case "s": return { cmd: "star" }; case "u": return { cmd: "unread" }; case "g": return { pending: "g" }; case "Escape": return { cmd: "close" }; default: return null; }
 }
+
+/** Search over the rows that are already loaded and opened (sender, subject, snippet). Sealed rows are never matched: their text is not on this page. */
+export function matchRow(r: Row, q: string): boolean {
+  const n = q.trim().toLowerCase(); if (!n) return true; if (r.gated || r.broken || !r.sum) return false;
+  return [r.sum.subject, r.sum.from, r.sum.from_name, r.sum.snippet].some((x) => (x ?? "").toLowerCase().includes(n));
+}
+
+/** Two-letter avatar text: first letters of the first two words of the name, else the first two letters of the address. Never empty. */
+export function initials(name: string | undefined, addr: string | undefined): string {
+  const w = (name ?? "").replace(/[^\p{L}\p{N} ]/gu, " ").split(/\s+/).filter(Boolean);
+  const t = w.length >= 2 ? w[0][0] + w[1][0] : w.length === 1 ? w[0].slice(0, 2) : (addr ?? "?").replace(/[^\p{L}\p{N}]/gu, "").slice(0, 2) || "?";
+  return t.toUpperCase();
+}
+/** A stable hue 0..359 from the sender (same sender, same colour, on every screen). */
+export function hue(key: string | undefined): number { let h = 7; for (const c of key ?? "") h = (h * 31 + c.codePointAt(0)!) % 360; return h; }

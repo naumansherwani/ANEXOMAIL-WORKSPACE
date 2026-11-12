@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import * as Popover from "@radix-ui/react-popover";
 import { LogoMark } from "./Brand";
 import * as api from "./mail_api";
-import { FOLDERS, ago, compact, fmtSize, glide, isGatedView, keyCmd, merge, pill, proofChip, rowText, touchAction, verdicts, when, folderLabel, type Box, type Counts, type Lane, type Proof, type Row } from "./mail_pure";
+import { FOLDERS, ago, compact, fmtSize, glide, isGatedView, keyCmd, merge, pill, proofChip, hue, initials, matchRow, rowText, touchAction, verdicts, when, folderLabel, type Box, type Counts, type Lane, type Proof, type Row } from "./mail_pure";
 import "./mail.css";
 
 // Q1c — the founder Mail page. Everything on it is read from the Rust mail doors (E167-E169): lanes, folder counts, rows, the ledger proof, the live channel.
@@ -69,12 +70,14 @@ function Rail({ view, set, counts, pinned, setPinned }: { view: string; set: (v:
 }
 
 function ProofChip({ p, busy }: { p: Proof | null; busy: boolean }) {
-  const [openIt, setOpenIt] = useState(false); const c = proofChip(p);
+  const c = proofChip(p);
   return (
-    <span className="mx-proofwrap">
-      <button type="button" className={`mx-proof ${busy ? "busy" : c.state}`} onClick={() => setOpenIt((x) => !x)} aria-expanded={openIt}><i aria-hidden="true" />{busy ? "Checking the ledger…" : c.text}</button>
-      <AnimatePresence>{openIt && !busy && <motion.ul className="mx-pop" initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>{c.detail.map((d, i) => <li key={i}>{d}</li>)}</motion.ul>}</AnimatePresence>
-    </span>
+    <Popover.Root>
+      <Popover.Trigger asChild><button type="button" className={`mx-proof ${busy ? "busy" : c.state}`}><i aria-hidden="true" />{busy ? "Checking the ledger…" : c.text}</button></Popover.Trigger>
+      <Popover.Portal><Popover.Content className="mx-pop" side="bottom" align="start" sideOffset={8} collisionPadding={12}>
+        <b>{busy ? "Checking…" : c.text}</b>{!busy && c.detail.map((d, i) => <span key={i}>{d}</span>)}<Popover.Arrow className="mx-arrow" />
+      </Popover.Content></Popover.Portal>
+    </Popover.Root>
   );
 }
 
@@ -87,6 +90,7 @@ export function MailView() {
   const [proof, setProof] = useState<Proof | null>(null), [proofBusy, setProofBusy] = useState(false), [chain, setChain] = useState<Proof | null>(null), [chainBusy, setChainBusy] = useState(false);
   const [bound, setBound] = useState<boolean | null>(null), [liveState, setLiveState] = useState<"live" | "reconnecting" | "off">("off"), [fresh, setFresh] = useState(0);
   const [pinned, setPinned] = useState(() => { try { return window.localStorage.getItem("mail.rail") === "1"; } catch { return false; } });
+  const [q, setQ] = useState(""), [copied, setCopied] = useState(false);
   const pending = useRef<string | null>(null);
   const box = useMemo(() => boxes?.find((b) => b.id === boxId) ?? null, [boxes, boxId]);
   const h3 = useMemo(() => api.pageProtocol(), []);
@@ -153,6 +157,9 @@ export function MailView() {
   async function verifyChain() { setChainBusy(true); setChain(null); try { setChain(await api.proof(boxId)); } catch { setChain(null); } setChainBusy(false); }
 
   const cur = rows.find((r) => r.id === sel) ?? null;
+  const shown = useMemo(() => rows.filter((r) => matchRow(r, q)), [rows, q]);
+  const copyAddr = async () => { try { await navigator.clipboard.writeText(box?.address ?? ""); setCopied(true); window.setTimeout(() => setCopied(false), 1800); } catch { /* clipboard refused */ } };
+  const shareAddr = async () => { try { if (navigator.share) await navigator.share({ title: "My ANEXOMAIL address", text: box?.address ?? "" }); else await copyAddr(); } catch { /* cancelled */ } };
   return (
     <section className="mail" aria-label="Mail">
       <header className="mh">
@@ -170,21 +177,32 @@ export function MailView() {
         <Rail view={view} set={(v) => { setView(v); if (v === "inbox") setFresh(0); }} counts={counts} pinned={pinned} setPinned={setPinned} />
         <div className="ml" aria-label={`${folderLabel(view)} messages`}>
           <div className="ml-h"><h2>{folderLabel(view)}</h2>{fresh > 0 && view === "inbox" && <button type="button" className="ml-new" onClick={() => { setFresh(0); void loadList(); }}>{fresh} new</button>}</div>
+          <label className="ml-search"><span className="sr">Search this mailbox</span><input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search loaded mail…" /></label>
           {isGatedView(view) && <p className="mx-note"><I k="lock" s={13} /> {view === "vault" ? "Vault threads" : "Quarantined mail"} stay sealed in the list. Each one needs a key touch to open.</p>}
           <ul className="ml-list">
             <AnimatePresence initial={false}>
-              {rows.map((r) => { const t = rowText(r); return (
+              {shown.map((r) => { const t = rowText(r); return (
                 <motion.li key={r.id} layout={!reduce} initial={reduce ? false : { opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.22 }}>
                   <button type="button" className={`mi ${sel === r.id ? "on" : ""} ${r.read ? "" : "unread"} ${t.locked ? "locked" : ""}`} onClick={() => void select(r)}>
-                    <span className="mi-top"><b>{t.locked && <I k="lock" s={13} />}{t.who}</b><time>{when(r.received_ms)}</time></span>
-                    <span className="mi-sub">{t.subject}</span>
+                    <span className={`mi-av ${t.locked ? "lk" : ""}`} style={{ ["--h" as string]: hue(r.sum?.from) }} aria-hidden="true">{t.locked ? <I k="lock" s={15} /> : initials(r.sum?.from_name, r.sum?.from)}</span>
+                    <span className="mi-bd">
+                    <span className="mi-top"><b>{t.who}</b><time>{when(r.received_ms)}</time></span>
+                    <span className="mi-sub">{!r.read && <i className="mi-dot" aria-label="unread" />}{t.subject}</span>
                     {t.snippet && <span className="mi-snip">{t.snippet}</span>}
                     <span className="mi-meta">{r.starred && <I k="star" s={12} />}{r.attach > 0 && <><I k="clip" s={12} />{r.attach}</>}{r.thread_count > 1 && <span>{r.thread_count} in thread</span>}{r.seal_mode === "recipient_pq" && <span>PQC</span>}</span>
+                    </span>
                   </button>
                 </motion.li>); })}
             </AnimatePresence>
           </ul>
-          {!loading && rows.length === 0 && conn && <p className="mx-empty">{view === "inbox" ? "Nothing in the inbox." : `${folderLabel(view)} is empty.`}</p>}
+          {!loading && rows.length === 0 && conn && view === "inbox" && box && (
+            <div className="mx-ready">
+              <h3>Your inbox is ready</h3><p className="dim">Anything sent to your address lands here the moment it is delivered, already sealed.</p>
+              <div className="mx-addr"><span className="mx-cap">Your address</span><b>{box.address}</b>
+                <div className="mx-addr-act"><button type="button" className="mx-btn alt" onClick={() => void copyAddr()}>{copied ? "Copied" : "Copy"}</button><button type="button" className="mx-btn alt" onClick={() => void shareAddr()}>Share</button></div></div>
+            </div>)}
+          {!loading && rows.length === 0 && conn && view !== "inbox" && <p className="mx-empty">{`${folderLabel(view)} is empty.`}</p>}
+          {!loading && rows.length > 0 && shown.length === 0 && <p className="mx-empty">No loaded message matches “{q}”.</p>}
           {more && <button type="button" className="mx-more" disabled={loading} onClick={() => void loadList(more)}>{loading ? "Loading…" : "Older messages"}</button>}
         </div>
         <article className="mp" aria-live="polite">
@@ -208,7 +226,7 @@ export function MailView() {
               {opened && (
                 <>
                   <h2 className="mp-subj">{opened.sum.subject || "(no subject)"}</h2>
-                  <div className="mp-from"><b>{opened.sum.from_name || opened.sum.from}</b><span className="dim"> &lt;{opened.sum.from}&gt;</span><time>{opened.sum.date ? new Date(opened.sum.date).toLocaleString() : ""}</time></div>
+                  <div className="mp-from"><span className="mi-av lg" style={{ ["--h" as string]: hue(opened.sum.from) }} aria-hidden="true">{initials(opened.sum.from_name, opened.sum.from)}</span><b>{opened.sum.from_name || opened.sum.from}</b><span className="dim"> &lt;{opened.sum.from}&gt;</span><time>{opened.sum.date ? new Date(opened.sum.date).toLocaleString() : ""}</time></div>
                   <p className="dim small">To {(opened.sum.to ?? []).join(", ") || "—"}{opened.sum.cc?.length ? ` · Cc ${opened.sum.cc.join(", ")}` : ""} · {fmtSize(opened.facts.size)}</p>
                   <div className="mp-chips">
                     <ProofChip p={proof} busy={proofBusy} />

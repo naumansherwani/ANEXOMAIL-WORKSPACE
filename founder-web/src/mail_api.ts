@@ -21,7 +21,14 @@ export async function dbscBound(): Promise<boolean | null> {
   try { const s = (await get("/founder/v1/dbsc/status")).data; if (!s?.available) return null; return !!(s.devices ?? []).find((x: any) => x.id === s.this_device)?.bound; } catch { return null; }
 }
 /** nextHopProtocol of THIS page load ("h3" = QUIC). Empty string if the browser does not say. */
-export function pageProtocol(): string { try { return ((performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined)?.nextHopProtocol) || ""; } catch { return ""; } }
+export function pageProtocol(): string {
+  try {
+    const nav = (performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined)?.nextHopProtocol; if (nav) return nav;
+    // the page entry can be blank (cached or restored page): the newest same-origin request says what this connection speaks
+    const res = (performance.getEntriesByType("resource") as PerformanceResourceTiming[]).filter((r) => r.nextHopProtocol && r.name.startsWith(location.origin));
+    return res.length ? res[res.length - 1].nextHopProtocol : "";
+  } catch { return ""; }
+}
 
 /** Open a message. A gated one answers needs_touch; then the key is touched (prove) and the call is repeated with the spent grant. Nothing is retried without the person touching. */
 export async function open(box: string, id: string): Promise<{ r: OpenAnswer; touched: boolean }> {

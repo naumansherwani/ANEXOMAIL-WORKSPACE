@@ -8,6 +8,7 @@ use crate::{fmail_core as core, lease, live, passkey as pk, S};
 use axum::{extract::State, http::{HeaderMap, StatusCode, Uri}, response::{IntoResponse, Response}};
 use base64::{engine::general_purpose::STANDARD as B64, Engine};
 use serde_json::{json, Value};
+use sha2::{Digest, Sha256};
 
 pub const VIEWS: [&str; 10] = ["inbox", "sent", "drafts", "outbox", "archive", "snoozed", "spam", "quarantine", "trash", "vault"];
 pub const MOVE_TO: [&str; 4] = ["inbox", "archive", "spam", "trash"];
@@ -61,6 +62,9 @@ pub fn touch_of(v: &Value) -> Result<Option<(String, String)>, &'static str> {
         _ => Err("a touch needs a valid grant and nonce together"),
     }
 }
+
+/// The target a move-out touch is bound to: sha256 of the SORTED id list. The touch names exactly this set, never a cut-off prefix of it.
+pub fn move_target(ids: &[String]) -> String { let mut v = ids.to_vec(); v.sort(); hex::encode(Sha256::digest(v.join(",").as_bytes())) }
 
 // ---------------------------------------------------------------- pure: opening rows
 
@@ -206,10 +210,10 @@ pub async fn move_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::bo
     let Some(to) = pk::txt(&j, "to", 16).filter(|t| MOVE_TO.contains(&t.as_str())) else { return bad("invalid target folder") };
     let touch = match touch_of(&j) { Ok(t) => t, Err(e) => return bad(e) };
     if let Err(r) = own(sb, &uid, &b).await { return r; }
-    let hash = match &touch { Some(t) => match spend(&st, sb, &uid, &did, t, "mail.unseal", &ids.join(",").chars().take(200).collect::<String>()).await { Ok(h) => Some(h), Err(r) => return r }, None => None };
+    let hash = match &touch { Some(t) => match spend(&st, sb, &uid, &did, t, "mail.unseal", &move_target(&ids)).await { Ok(h) => Some(h), Err(r) => return r }, None => None };
     match sb.rpc_msg("fmail_move169", json!({"p_actor": uid, "p_mailbox": b, "p_ids": ids, "p_to_kind": to, "p_touch_hash": hash})).await {
         Ok(v) => crate::signed(&st, json!({"ok": true, "result": v})),
-        Err((403, m)) | Err((401, m)) | Err((400, m)) if m.contains("touch") => crate::signed(&st, json!({"needs_touch": true, "action": "mail.unseal", "target": ids.join(",").chars().take(200).collect::<String>()})),
+        Err((403, m)) | Err((401, m)) | Err((400, m)) if m.contains("touch") => crate::signed(&st, json!({"needs_touch": true, "action": "mail.unseal", "target": move_target(&ids)})),
         Err(e) => pk::sql_err(e),
     }
 }
@@ -293,6 +297,13 @@ mod tests {
         let q = parse_list(Some(&format!("box={BOX}&ts=2026-11-13T09:41:00.123456Z&id={U1}"))).unwrap(); assert!(q.after.is_some());
         for bad in [format!("box={BOX}&view=drop"), format!("box={BOX}&ts=2026-11-13T09:41:00.123456Z"), format!("box={BOX}&id={U1}"), format!("box={BOX}&ts=x'--&id={U1}"), format!("box={BOX}&evil=1"), format!("view=inbox")] { assert!(parse_list(Some(&bad)).is_err(), "{bad}"); }
         assert_eq!(parse_proof(Some(&format!("box={BOX}"))).unwrap().1, None); assert!(parse_proof(Some(&format!("box={BOX}&id=zz"))).is_err());
+    }
+    #[test]
+    fn a_move_touch_is_bound_to_the_exact_id_set() {
+        let a = vec![U1.to_string(), "22222222-2222-4333-8444-555555555555".to_string()]; let mut b = a.clone(); b.reverse();
+        assert_eq!(move_target(&a), move_target(&b), "order does not matter"); assert_eq!(move_target(&a).len(), 64);
+        assert_ne!(move_target(&a), move_target(&a[..1].to_vec()), "a different set needs its own touch");
+        let many: Vec<String> = (0..100).map(|i| format!("00000000-0000-4000-8000-{:012}", i)).collect(); let mut more = many.clone(); more.pop(); assert_ne!(move_target(&many), move_target(&more), "even the 100th id counts");
     }
     #[test]
     fn bodies_are_checked() {

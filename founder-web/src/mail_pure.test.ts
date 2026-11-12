@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { compact, glide, merge, pill, proofChip, rowText, verdicts, keyCmd, when, ago, isGatedView, FOLDERS, type Row } from "./mail_pure";
+import { compact, glide, merge, pill, proofChip, rowText, verdicts, keyCmd, matchRow, initials, hue, when, ago, isGatedView, FOLDERS, type Row } from "./mail_pure";
 
 const R = (o: Partial<Row>): Row => ({ id: "a", thread_id: "t", folder: "inbox", direction: "in", received_ms: 1, size: 10, attach: 0, read: false, starred: false, draft: false, thread_count: 1, spf: "none", dkim: "none", dmarc: "none", arc: "none", lookalike: false, scan: "clean", tls: null, domain: null, seal_mode: "vault", gated: false, ...o });
 describe("numbers", () => {
@@ -38,4 +38,16 @@ describe("header pill", () => {
 });
 describe("keys", () => {
   test("single keys, g-prefix, modifiers ignored", () => { expect(keyCmd("j", {}, null)).toEqual({ cmd: "next" }); expect(keyCmd("g", {}, null)).toEqual({ pending: "g" }); expect(keyCmd("v", {}, "g")).toEqual({ cmd: "folder", arg: "vault" }); expect(keyCmd("j", { ctrl: true }, null)).toBeNull(); expect(keyCmd("x", {}, "g")).toBeNull(); });
+});
+
+describe("search", () => {
+  test("matches opened text, never sealed rows", () => {
+    expect(matchRow(R({ sum: { subject: "Clause 7", from: "h@x.org" } }), "clause")).toBe(true); expect(matchRow(R({ sum: { subject: "Clause 7" } }), "invoice")).toBe(false);
+    expect(matchRow(R({ gated: true, sum: { subject: "Clause 7" } }), "clause")).toBe(false); expect(matchRow(R({ broken: true, sum: null }), "x")).toBe(false); expect(matchRow(R({ gated: true }), "")).toBe(true);
+  });
+});
+
+describe("avatars", () => {
+  test("initials", () => { expect(initials("Hana Ortega", "h@x.org")).toBe("HO"); expect(initials("Venue", "v@x.org")).toBe("VE"); expect(initials("", "imran@x.org")).toBe("IM"); expect(initials(undefined, undefined)).toBe("?"); });
+  test("hue is stable and in range", () => { expect(hue("a@b.co")).toBe(hue("a@b.co")); for (const k of ["", "x", "hana@example.org", "ü"]) { const h = hue(k); expect(h).toBeGreaterThanOrEqual(0); expect(h).toBeLessThan(360); } expect(hue("a@b.co")).not.toBe(hue("z@y.io")); });
 });

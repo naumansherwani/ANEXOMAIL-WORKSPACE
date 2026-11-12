@@ -16,6 +16,7 @@ pub const MAX_RCPT: usize = 50;
 pub const MAX_LINE: u64 = 100_000;      // one protocol line (RFC 5321 says 998 for message lines; some senders break it, 100k is the hard stop)
 pub const CMD_IDLE_S: u64 = 120;
 pub const DATA_IDLE_S: u64 = 300;
+pub const DATA_TOTAL_S: u64 = 900;      // a sender that trickles bytes forever is cut after 15 minutes in total
 pub const MAX_CONN: usize = 32;
 
 // ---------------------------------------------------------------- pure: commands
@@ -156,7 +157,8 @@ pub async fn session<S: AsyncRead + AsyncWrite + Unpin + Send, B: Backend>(strea
                 else {
                     if say(&mut wr, "354 end with <CRLF>.<CRLF>").await.is_err() { return; }
                     let mut d = DataBuf::new(be.max_bytes());
-                    loop { let Some(l) = read_line(&mut rd, DATA_IDLE_S).await else { return }; if d.push_line(&l) { break; } }
+                    let t0 = std::time::Instant::now();
+                    loop { if t0.elapsed().as_secs() > DATA_TOTAL_S { return; } let Some(l) = read_line(&mut rd, DATA_IDLE_S).await else { return }; if d.push_line(&l) { break; } }
                     // LMTP: one reply per accepted recipient, in the order of the RCPT commands
                     for rc in &rcpts {
                         let reply = if d.over { "552 5.3.4 message too big".to_string() }
