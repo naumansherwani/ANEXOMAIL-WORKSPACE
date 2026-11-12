@@ -112,6 +112,7 @@ docs/cursor-work/sql/E162_founder_dbsc_hybrid_pq.sql
 docs/cursor-work/sql/E163_founder_dbsc_selftest162_fix.sql
 docs/cursor-work/sql/E164_founder_device_proofkeys.sql
 docs/cursor-work/sql/E165_founder_pq_src.sql
+docs/cursor-work/sql/E166_founder_bridge_lane_times.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/00-FOUNDER-TECH-RULE.md
@@ -131,10 +132,10 @@ founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
 founder-web/dist/assets/gsap-OWHkPl-m.js.gz
-founder-web/dist/assets/index-DZBk0i0y.js
-founder-web/dist/assets/index-DZBk0i0y.js.gz
-founder-web/dist/assets/index-DgP8Xc1G.css
-founder-web/dist/assets/index-DgP8Xc1G.css.gz
+founder-web/dist/assets/index-BjRlRHfX.js
+founder-web/dist/assets/index-BjRlRHfX.js.gz
+founder-web/dist/assets/index-cHetqUD-.css
+founder-web/dist/assets/index-cHetqUD-.css.gz
 founder-web/dist/assets/kernel.worker-mprshus0.js
 founder-web/dist/assets/kernel.worker-mprshus0.js.gz
 founder-web/dist/assets/three.module-C0S06CcT.js
@@ -168,6 +169,7 @@ founder-web/src/AmbientStudio.tsx
 founder-web/src/App.tsx
 founder-web/src/Brand.tsx
 founder-web/src/Bridge.tsx
+founder-web/src/BridgeLanes.tsx
 founder-web/src/Dbsc.tsx
 founder-web/src/DbscCard.tsx
 founder-web/src/Decks.tsx
@@ -197,6 +199,9 @@ founder-web/src/appearance.test.ts
 founder-web/src/appearance.ts
 founder-web/src/banned.test.ts
 founder-web/src/banned.ts
+founder-web/src/bridgelane_pure.test.ts
+founder-web/src/bridgelane_pure.ts
+founder-web/src/bridgelanes.css
 founder-web/src/catalog.ts
 founder-web/src/cinema.css
 founder-web/src/city.ts

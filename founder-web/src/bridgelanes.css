@@ -1,0 +1,12 @@
+.blanes{display:contents}
+.bmap li[data-lane]{cursor:pointer;border-radius:8px;transition:opacity .25s}
+.bmap li[data-lane]:hover{background:color-mix(in srgb,currentColor 7%,transparent)}
+.bmap li[data-lane][aria-pressed="true"]{background:color-mix(in srgb,#5fe3ae 14%,transparent);outline:1px solid color-mix(in srgb,#5fe3ae 55%,transparent)}
+.bmap li[data-lane]:focus{outline:none}
+.bmap li[data-lane]:focus-visible{outline:2px solid #5fe3ae;outline-offset:2px}
+.bmap li[data-idle="1"]{opacity:.5}
+.bmap li[data-idle="1"][aria-pressed="true"],.bmap li[data-idle="1"]:hover,.bmap li[data-idle="1"]:focus-visible{opacity:.85}
+.blane-chip{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:6px 0 2px;font-size:13px}
+.blane-chip button{min-height:44px;padding:0 14px;border-radius:999px}
+@media (forced-colors:active){.bmap li[data-lane][aria-pressed="true"]{outline:2px solid Highlight}.bmap li[data-idle="1"]{opacity:1}}
+@media (prefers-reduced-motion:reduce){.bmap li[data-lane]{transition:none}}

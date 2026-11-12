@@ -72,6 +72,28 @@ pub fn pending_from(v: &Value) -> Option<Vec<String>> {
     Some(out)
 }
 
+/// E166: the per-lane "when" answer. Only the six known lanes, only counts and ages (numbers) and ISO-looking times survive; a negative or absurd age, an
+/// unknown lane or a lane that is not `connected:true` is dropped. None = E166 not installed or the database did not answer: the Bridge then shows counts only.
+pub const LANES: [&str; 6] = ["leads", "polar_events", "subscriptions", "mail_waiting", "webhook_errors", "sig_rejects"];
+pub fn lane_times_clean(v: &Value) -> Option<Value> {
+    let lanes = v.get("lanes")?.as_object()?;
+    let ok_time = |x: &Value| x.as_str().map(|t| t.len() >= 20 && t.len() <= 40 && t.bytes().all(|b| b.is_ascii_digit() || b"-:T.+Z ".contains(&b))).unwrap_or(false);
+    let ok_age = |x: &Value| x.as_i64().filter(|a| (0..=3_153_600_000).contains(a));
+    let mut out = serde_json::Map::new();
+    for k in LANES {
+        let Some(l) = lanes.get(k).and_then(|l| l.as_object()) else { continue };
+        if l.get("connected").and_then(|c| c.as_bool()) != Some(true) { continue; }
+        let mut o = serde_json::Map::new();
+        if let Some(c) = l.get("count").and_then(|c| c.as_i64()).filter(|c| *c >= 0) { o.insert("count".into(), json!(c)); }
+        for (t, a) in [("last_at", "age_secs"), ("oldest_at", "oldest_age_secs")] {
+            if let (Some(tv), Some(av)) = (l.get(t), l.get(a)) { if ok_time(tv) { if let Some(age) = ok_age(av) { o.insert(t.into(), tv.clone()); o.insert(a.into(), json!(age)); } } }
+        }
+        if let Some(w) = l.get("window").and_then(|w| w.as_str()).filter(|w| w.len() <= 60 && w.chars().all(|c| c.is_ascii_alphanumeric() || " ()-,".contains(c))) { o.insert("window".into(), json!(w)); }
+        out.insert(k.into(), Value::Object(o));
+    }
+    Some(Value::Object(out))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -118,5 +140,20 @@ mod tests {
         assert_eq!(trouble(Some(3), Some(&ok))["level"], "warn");
         assert_eq!(trouble(Some(500), Some(&ok))["level"], "fail");
         assert_eq!(trouble(None, Some(&ok))["level"], "unknown");
+    }
+    #[test]
+    fn lane_times_keep_only_clean_numbers_and_times() {
+        let raw = json!({"lanes": {
+            "leads": {"connected": true, "count": 2, "window": "waiting now (stage new)", "last_at": "2026-11-12T20:26:31.242737+05:00", "age_secs": 604, "oldest_at": "2026-11-12T17:36:31+05:00", "oldest_age_secs": 10804},
+            "mail_waiting": {"connected": false},
+            "sig_rejects": {"connected": true, "count": -4, "last_at": "<script>", "age_secs": 5},
+            "polar_events": {"connected": true, "count": 1, "last_at": "2026-11-12T20:31:31+05:00", "age_secs": -9},
+            "evil": {"connected": true, "count": 1}}});
+        let c = lane_times_clean(&raw).unwrap();
+        assert_eq!(c["leads"]["age_secs"], 604); assert_eq!(c["leads"]["oldest_age_secs"], 10804); assert_eq!(c["leads"]["window"], "waiting now (stage new)");
+        assert!(c.get("mail_waiting").is_none()); assert!(c.get("evil").is_none());
+        assert!(c["sig_rejects"].get("count").is_none() && c["sig_rejects"].get("last_at").is_none());
+        assert!(c["polar_events"].get("last_at").is_none() && c["polar_events"]["count"] == 1);
+        assert!(lane_times_clean(&json!({"error": "42883"})).is_none());
     }
 }

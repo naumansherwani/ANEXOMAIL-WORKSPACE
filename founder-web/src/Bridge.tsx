@@ -5,6 +5,8 @@ import { callName, nameOf } from "./Profile";
 import type { Prof } from "./types";
 import { Surface } from "./Surface";
 import { BridgeMap, type Lane } from "./Scene3D";
+import { BridgeLanes } from "./BridgeLanes";
+import { filterNote, laneKey, showSection, type LaneKey } from "./bridgelane_pure";
 
 // Shapes of the signed /founder/v1/bridge data and the Polar/finance reads. Fields are optional because each source can be "not connected" (Rule 69).
 type Check = { name: string; state: "ok" | "warn" | "fail" | "unknown"; detail: string };
@@ -86,6 +88,7 @@ function Greeting({ t, at, me }: { t: Trouble | null | undefined; at: At; me: Pr
 const cap = (s: unknown) => String(s || "").replace(/\b\w/g, (c) => c.toUpperCase());  // title-case names that arrive as snake_case ids
 export function BridgeView({ d, at, me, go }: { d: any; at: At; me: Prof | null; go: (v: string) => void }) {
   const t = d?.trouble, hk = d?.polar_hook;
+  const [lane, setLane] = useState<LaneKey | null>(null);   // LA-6: the lane picked on the map (null = show everything)
   const subs = hk?.subscriptions;
   const wh = hk?.webhook;
   // Real counts only: a source that is not connected gives null ("Not connected"), never 0. Nothing here is estimated.
@@ -96,18 +99,21 @@ export function BridgeView({ d, at, me, go }: { d: any; at: At; me: Prof | null;
   return (
     <>
       <Greeting t={t} at={at} me={me} />
-      <BridgeMap inbound={inbound} outbound={outbound} />
-      {subs?.connected && (subs.by_status?.past_due > 0 || (subs.by_product || []).some((x: any) => x.grace)) && <>
+      <BridgeLanes inbound={inbound} outbound={outbound} times={d?.lane_times} active={lane} onPick={setLane}><BridgeMap inbound={inbound} outbound={outbound} /></BridgeLanes>
+      {lane && <div className="blane-chip" role="status"><span>Showing only: <b>{[...inbound, ...outbound].find((l) => laneKey(l.label) === lane)?.label}</b>{filterNote(lane) ? ` · ${filterNote(lane)}` : ""}</span><button type="button" className="dx-pill" onClick={() => setLane(null)}>Show everything</button></div>}
+      {showSection(lane, "money") && subs?.connected && (subs.by_status?.past_due > 0 || (subs.by_product || []).some((x: any) => x.grace)) && <>
         <h2>Money exceptions</h2>
         <div className="ledger">{(subs.by_product || []).filter((x: any) => x.past_due || x.grace).map((x: any) => <div className="lrow" key={x.product}><i className="sdot warn" /><div><div className="lt">{cap(x.product)}</div><div className="ld">{x.past_due ? `${x.past_due} past due` : ""}{x.past_due && x.grace ? " · " : ""}{x.grace ? `${x.grace} in grace` : ""}</div></div><span /></div>)}</div>
       </>}
+      {showSection(lane, "attention") && <>
       <h2>Needs attention <span>{t ? `${t.items.length} ${t.items.length === 1 ? "check" : "checks"}` : ""}</span></h2>
       <div className="ledger">
         {!t ? <div className="lrow"><i className="sdot unknown" /><div className="lt skel w" /><span /></div> :
           t.items.length === 0 ? <div className="lrow empty">No checks reported.</div> :
           t.items.map((i: Check) => <div className="lrow" key={i.name}><i className={`sdot ${i.state}`} /><div><div className="lt">{cap(i.name.replace(/_/g, " "))}</div><div className="ld">{i.detail}</div></div><span className={`lstate ${i.state}`}>{STATE[i.state] || i.state}</span></div>)}
       </div>
-      {(wh?.connected || (hk?.rejects?.connected && hk.rejects.total > 0)) && <>
+      </>}
+      {showSection(lane, "polar") && (wh?.connected || (hk?.rejects?.connected && hk.rejects.total > 0)) && <>
         <h2>Polar webhook</h2>
         <div className="ledger">
           {wh?.connected && <div className="lrow"><i className={`sdot ${wh.errors_24h ? "warn" : "ok"}`} /><div><div className="lt">{wh.events_24h} {wh.events_24h === 1 ? "event" : "events"} in 24 h</div><div className="ld">API 2026-10 · last {wh.age_secs == null ? "never" : wh.age_secs < 120 ? `${wh.age_secs} s ago` : `${Math.round(wh.age_secs / 60)} min ago`}{wh.unprocessed ? ` · ${wh.unprocessed} waiting` : ""}{wh.errors_24h ? ` · ${wh.errors_24h} error(s)` : ""}{hk.integrity?.signature_rejects_unreviewed ? ` · ${hk.integrity.signature_rejects_unreviewed} unreviewed signature reject(s)` : ""}</div></div><span /></div>}

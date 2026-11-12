@@ -311,7 +311,7 @@ async fn bridge_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Respons
     if let Err(code) = authed(&st, &h).await { return code.into_response(); }
     let sb = st.sb.as_ref().unwrap();
     let path = std::env::var("EXPIRY_WATCH_FILE").unwrap_or_else(|_| "/var/lib/anexomail/expiry-watch.json".into());
-    let (accs, target, queue, leads, expiry, polar_hook, pending) = tokio::join!(
+    let (accs, target, queue, leads, expiry, polar_hook, pending, lane_times) = tokio::join!(
         sb.rows("revenue_accounts?select=status,mrr_gbp"),
         sb.rows("revenue_targets?select=target_gbp&order=month.desc&limit=1"),
         sb.count("mail_outbox?select=id&state=in.(queued,failed)"),
@@ -319,7 +319,9 @@ async fn bridge_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Respons
         read_expiry(&path),
         hook_view(&st),
         sb.rpc("founder_channels_pending", json!({})),
+        sb.rpc("founder_bridge_lane_times", json!({})),   // E166 (LA-2/LA-7): real last-event time per lane; absent until E166 is applied
     );
+    let lane_times = lane_times.as_ref().and_then(bridge::lane_times_clean);
     let pending = pending.as_ref().and_then(bridge::pending_from);
     let tgt = target.and_then(|r| r.first().cloned()).and_then(|r| r.get("target_gbp").and_then(|v| v.as_f64().or_else(|| v.as_str().and_then(|s| s.parse().ok()))));
     signed(&st, json!({
@@ -328,6 +330,7 @@ async fn bridge_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Respons
         "voice": bridge::voice(leads, pending),
         "polar": st.polar.view(now_s()),
         "polar_hook": polar_hook,
+        "lane_times": lane_times,
     }))
 }
 

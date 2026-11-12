@@ -160,6 +160,7 @@ HOW TO READ: number = the order; file = the SQL; CHECK = has a read-only proof f
 | E163 | E163_founder_dbsc_selftest162_fix.sql | yes (CHECK_E162) | fixes only the E162 selftest (revoke_reason must be an allowed value; his server had a live chip binding) |
 | E164 | E164_founder_device_proofkeys.sql | yes (CHECK_E164) | hybrid proof key store beside the DBSC chip: get / register (replace only with chip alive) / use (nonce once); revoked device = inert key |
 | E165 | E165_founder_pq_src.sql | yes (CHECK_E165) | pq_src label (webcrypto / kernel) on proof keys and bindings; kernel software key is shown as weaker; label written once |
+| E166 | E166_founder_bridge_lane_times.sql | yes (CHECK_E166) | read-only real last-event / oldest-waiting time per Bridge lane (leads, Polar events, subscriptions, mail waiting, webhook errors, signature rejects); closed identifier + filter lists; no PII; degrades to 'not connected' per lane (LA-2 / LA-7) |
 
 Numbers never used (no file): E1, E3, E4, E8, E9, E10, E11, E12, E16, E21, E25, E26, E29, E55.
 
