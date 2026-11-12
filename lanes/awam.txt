@@ -135,6 +135,7 @@ docs/cursor-work/server/facts-tech-map.sh
 docs/cursor-work/server/family-env-once.md
 docs/cursor-work/server/file-safety-check.sh
 docs/cursor-work/server/fix-buyer-kind.sh
+docs/cursor-work/server/fmail-intake-check.sh
 docs/cursor-work/server/folder-rule-sync.py
 docs/cursor-work/server/full-backup.sh
 docs/cursor-work/server/g5a-reference.py

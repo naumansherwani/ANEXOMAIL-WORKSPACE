@@ -1072,3 +1072,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Q-series live audit 13 Nov 04:00 (his Chrome, bundle BKdnTGPQ = repo e3e8cec5): Q1a and Q1b-1/2 stay as recorded (WIRED: YES / REAL: YES / TECH-LAW CHECKED); Q1c MATCHES (kernel RPC, no fetch except /auth/refresh, ledger chain verified up to row 1, LogoMark, pill QUIC/DBSC/AES-256); Q1d not done (needs DKIM+DNS+FMAIL_SEND+real mail); Q1b-3 intake OFF; live stream is SSE fetch over h3, not WebTransport = open gap Q-live-wt (Q3); pill has no PQC segment, only a PQC tag per message. No new loophole.
 
 - Q fix order written 13 Nov 04:03 (his 04:02 word): docs/claude/Q-FIX-ORDER-13NOV.md, step 1 = Q1b-3 intake ON; needs his read-only ss list, then FMAIL_LMTP_BIND, clamd, Postfix hook with his haan.
+
+- Q1b-3 step 1 plan + code 13 Nov 04:08: fmail-intake-check.sh written (read-only preflight: free loopback port, ClamAV, Postfix per-address lookup, env); UI gaps U1-U5 added to Q-FIX-ORDER-13NOV.md with technology. Not on his server yet, intake still OFF.
