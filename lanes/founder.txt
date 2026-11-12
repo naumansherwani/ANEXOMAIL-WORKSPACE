@@ -318,6 +318,7 @@ server/founder/src/data.rs
 server/founder/src/dbsc.rs
 server/founder/src/flare.rs
 server/founder/src/fmail_core.rs
+server/founder/src/fmail_ep.rs
 server/founder/src/fmail_in.rs
 server/founder/src/fmail_kem.rs
 server/founder/src/fmail_seal.rs

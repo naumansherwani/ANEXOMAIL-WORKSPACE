@@ -237,6 +237,25 @@ end $$;
 revoke all on function public.fmail_scan_set169(uuid, uuid, text) from public, anon, authenticated;
 grant execute on function public.fmail_scan_set169(uuid, uuid, text) to service_role;
 
+-- 9c) MOVE with a gate. A mail that sits in Quarantine or in a Vault thread may only be moved BACK to the inbox or the archive with a passkey touch (a move to spam or trash needs none).
+--     The plain fmail_move of E167 stays for everything else; the Rust engine calls THIS door for every move.
+create or replace function public.fmail_move169(p_actor uuid, p_mailbox uuid, p_ids uuid[], p_to_kind text, p_touch_hash text default null)
+returns jsonb language plpgsql security definer set search_path = pg_catalog, public, extensions as $$
+declare g int; n int;
+begin
+  if cardinality(p_ids) is null or cardinality(p_ids) > 500 then raise exception 'E169: 1..500 ids per call' using errcode = '22023'; end if;
+  select count(*) into g from public.fmail_messages m join public.fmail_folders f on f.id = m.folder_id join public.fmail_threads t on t.id = m.thread_id
+   where m.mailbox_id = p_mailbox and m.id = any (p_ids) and (t.vault or f.kind = 'quarantine');
+  if g > 0 and p_to_kind in ('inbox', 'archive') then
+    if p_touch_hash is null or p_touch_hash !~ '^[0-9a-f]{64}$' then raise exception 'E169: moving a confidential or quarantined mail out needs a passkey touch' using errcode = '42501'; end if;
+    perform public.fmail_ledger_append(p_actor, p_mailbox, 'unseal_gated', array_to_string(p_ids, ','), 'confidential or quarantined mail moved out (passkey touched)', jsonb_build_object('touch', p_touch_hash, 'to', p_to_kind), false);
+  end if;
+  n := public.fmail_move(p_mailbox, p_ids, p_to_kind);
+  return jsonb_build_object('moved', n, 'gated', g);
+end $$;
+revoke all on function public.fmail_move169(uuid, uuid, uuid[], text, text) from public, anon, authenticated;
+grant execute on function public.fmail_move169(uuid, uuid, uuid[], text, text) to service_role;
+
 create or replace function public.fmail_proof169(p_mailbox uuid, p_message uuid default null)
 returns jsonb language plpgsql stable security definer set search_path = pg_catalog, public, extensions as $$
 declare r public.fmail_ledger%rowtype; m public.fmail_messages%rowtype; v_head bigint; v_hash text; v_ok boolean; v_now text; v_chain_ok boolean; v_prev_ok boolean;
@@ -381,6 +400,10 @@ begin
     exception when others then res := res || jsonb_build_object('name', 'a recorded scan result cannot be changed', 'ok', true); end;
     v_out := public.fmail_scan_set169(v_box, v_m2, 'infected');
     res := res || jsonb_build_object('name', 'an infected message is moved to quarantine by the database', 'ok', (v_out ->> 'quarantined') = 'true' and (select f.kind from public.fmail_messages mm join public.fmail_folders f on f.id = mm.folder_id where mm.id = v_m2) = 'quarantine');
+    begin perform public.fmail_move169(v_actor, v_box, array[v_m2], 'inbox', null); res := res || jsonb_build_object('name', 'a quarantined mail cannot be moved to the inbox without a touch', 'ok', false);
+    exception when others then res := res || jsonb_build_object('name', 'a quarantined mail cannot be moved to the inbox without a touch', 'ok', true); end;
+    v_out := public.fmail_move169(v_actor, v_box, array[v_m2], 'trash', null);
+    res := res || jsonb_build_object('name', 'a quarantined mail may go to trash without a touch', 'ok', (v_out ->> 'moved') = '1');
     v_j := public.fmail_proof169(v_box, v_m1);
     res := res || jsonb_build_object('name', 'proof: anchored, hash matches the stored ciphertext, chain verifies from that row', 'ok', (v_j ->> 'anchored') = 'true' and (v_j ->> 'match') = 'true' and (v_j ->> 'chain_ok_from_here') = 'true');
     v_j := public.fmail_proof169(v_box, v_m2);

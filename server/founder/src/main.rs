@@ -50,6 +50,7 @@ mod fmail_seal;
 mod fmail_kem;
 mod fmail_core;
 mod fmail_in;
+mod fmail_ep;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -914,6 +915,16 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/vault/status", get(vault_status_ep))
         .route("/founder/v1/flare/ack", axum::routing::post(flare_ack_ep))
         .route("/founder/v1/chairman/{door}", axum::routing::post(passkey::door_ep))
+        .route("/founder/v1/mail/boxes", get(fmail_ep::boxes_ep))
+        .route("/founder/v1/mail/counts", get(fmail_ep::counts_ep))
+        .route("/founder/v1/mail/list", get(fmail_ep::list_ep))
+        .route("/founder/v1/mail/lanes", get(fmail_ep::lanes_ep))
+        .route("/founder/v1/mail/proof", get(fmail_ep::proof_ep))
+        .route("/founder/v1/mail/stream", get(fmail_ep::stream_ep))
+        .route("/founder/v1/mail/open", axum::routing::post(fmail_ep::open_ep))
+        .route("/founder/v1/mail/flag", axum::routing::post(fmail_ep::flag_ep))
+        .route("/founder/v1/mail/move", axum::routing::post(fmail_ep::move_ep))
+        .route("/founder/v1/mail/vault", axum::routing::post(fmail_ep::vault_ep))
         .route("/founder/v1/inbox", get(inbox_ep))
         .route("/founder/v1/inbox/list", get(inbox_list_ep))
         .route("/founder/v1/inbox/group", get(inbox_group_ep))
