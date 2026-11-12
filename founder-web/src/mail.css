@@ -1,0 +1,69 @@
+/* Q1c founder Mail page. Same cinematic tokens as the rest of the Command Center (--bg/--card/--line/--ac...). Layout flexes; nothing exists on one size only. */
+.mail{display:flex;flex-direction:column;gap:12px;padding:4px 0 24px;min-width:0}
+.mail .dim{color:var(--dim)}.mail .small{font-size:12px}
+.mh{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.mh-brand{display:flex;align-items:center;gap:12px;min-width:0}.mh-brand h1{margin:0;font-size:20px;letter-spacing:.04em}.mh-brand h1 span{color:var(--dim);font-weight:500}.mh-brand p{margin:2px 0 0}
+.mh-box{background:var(--s2);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:4px 8px;max-width:100%;min-height:32px}
+.mh-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mp-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--s1);font-size:12px;white-space:nowrap;overflow-x:auto;max-width:100%}
+.mp-pill b{color:var(--faint)}.mp-seg{display:inline-flex;align-items:center;gap:6px}.mp-seg i{width:8px;height:8px;border-radius:50%;background:var(--ok)}.mp-seg.no{color:var(--dim)}.mp-seg.no i{background:transparent;border:1.5px solid var(--w)}
+.mh-live{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--dim)}.mh-live i{width:8px;height:8px;border-radius:50%;background:var(--faint)}.mh-live.live i{background:var(--ok);animation:mpulse 2.4s ease-in-out infinite}.mh-live.reconnecting i{background:var(--w)}
+@keyframes mpulse{50%{opacity:.35}}
+/* lanes: ONE row, always. Narrow screens scroll it sideways inside its own box. */
+.ml-row{list-style:none;margin:0;padding:2px 0 6px;display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;scrollbar-width:thin}
+.ml-row li{flex:1 0 128px;min-width:128px}
+.ml-c{width:100%;display:grid;grid-template-columns:auto 1fr;grid-template-areas:"d n" "l l" "t t";column-gap:8px;align-items:center;text-align:left;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:var(--s1);color:var(--fg);font:inherit;min-height:44px}
+button.ml-c{cursor:pointer}button.ml-c:hover,button.ml-c:focus-visible{border-color:var(--ac)}
+.ml-dot{grid-area:d;width:8px;height:8px;border-radius:50%;background:var(--ok)}.ml-dot.warn{background:var(--w)}.ml-dot.bad{background:var(--r)}
+.ml-n{grid-area:n;font-size:20px;font-weight:600;font-variant-numeric:tabular-nums}.ml-l{grid-area:l;font-size:12px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ml-t{grid-area:t;font-size:11px;color:var(--faint);min-height:13px}
+/* body: rail | list | reader */
+.mb{display:grid;grid-template-columns:auto minmax(260px,380px) minmax(0,1fr);gap:12px;align-items:start;min-width:0}
+.mr{position:sticky;top:8px;display:flex;flex-direction:column;gap:2px;padding:8px;border:1px solid var(--line);border-radius:14px;background:var(--s1);width:64px;overflow:hidden;transition:width .18s ease}
+.mr:hover,.mr:focus-within,.mr.pin{width:208px}
+.mr-b,.mr-pin{display:flex;align-items:center;gap:10px;min-height:44px;padding:0 10px;border:0;background:transparent;color:var(--dim);border-radius:10px;cursor:pointer;font:inherit;text-align:left;white-space:nowrap;position:relative}
+.mr-b:hover,.mr-pin:hover{background:var(--s2);color:var(--fg)}.mr-b.on{background:var(--s2);color:var(--fg);box-shadow:inset 2px 0 0 var(--ac)}
+.mr-i{display:inline-flex;flex:none}.mr-l{flex:1;opacity:0;transition:opacity .12s}.mr:hover .mr-l,.mr:focus-within .mr-l,.mr.pin .mr-l{opacity:1}
+.mr-lock{opacity:0;color:var(--w)}.mr:hover .mr-lock,.mr.pin .mr-lock{opacity:1}
+.mr-c{font-size:11px;min-width:18px;text-align:right;color:var(--faint);font-variant-numeric:tabular-nums}.mr-c.u{color:var(--fg);font-weight:600}
+.ml{display:flex;flex-direction:column;gap:8px;min-width:0}.ml-h{display:flex;align-items:center;justify-content:space-between;gap:8px}.ml-h h2{margin:0;font-size:16px}
+.ml-new{border:0;border-radius:999px;padding:4px 12px;background:var(--ac);color:#08101e;font-weight:600;cursor:pointer;min-height:32px}
+.ml-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.mi{width:100%;display:flex;flex-direction:column;gap:3px;text-align:left;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--s1);color:var(--fg);font:inherit;cursor:pointer;min-height:44px}
+.mi:hover,.mi:focus-visible{border-color:var(--p2)}.mi.on{border-color:var(--ac);background:var(--s2)}
+.mi-top{display:flex;justify-content:space-between;gap:8px}.mi-top b{display:inline-flex;align-items:center;gap:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}.mi.unread .mi-top b,.mi.unread .mi-sub{font-weight:700}
+.mi-top time{font-size:11px;color:var(--faint);white-space:nowrap}.mi-sub{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mi-snip{font-size:12px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mi-meta{display:flex;gap:8px;align-items:center;font-size:11px;color:var(--faint)}.mi.locked{border-style:dashed}.mi.locked .mi-sub{color:var(--w)}
+.mx-more{align-self:center;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer}
+.mx-empty,.mx-note,.mx-warn,.mx-gate{margin:0;padding:10px 12px;border-radius:10px;font-size:13px}
+.mx-empty{color:var(--dim);text-align:center}.mx-note{background:var(--s2);color:var(--dim);display:flex;gap:8px;align-items:center}
+.mx-warn{background:rgba(242,112,95,.12);border:1px solid var(--r);color:var(--fg)}.mx-gate{background:rgba(242,184,75,.12);border:1px solid var(--w);display:flex;gap:8px;align-items:center}
+.mp{min-width:0;border:1px solid var(--line);border-radius:16px;background:var(--s1);min-height:320px}
+.mp-empty{display:flex;flex-direction:column;align-items:center;gap:10px;padding:48px 20px;text-align:center}.mp-empty h2{margin:0}
+.mp-qa{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+.mx-btn{min-height:44px;padding:0 18px;border-radius:12px;border:1px solid var(--ac);background:var(--ac);color:#08101e;font:inherit;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.mx-btn.alt{background:transparent;color:var(--fg);border-color:var(--line)}.mx-btn.alt:hover{border-color:var(--ac)}.mx-btn:disabled{opacity:.6;cursor:default}
+.mx-chain{display:flex;gap:8px;align-items:center;margin:4px 0 0;font-size:13px}.mx-chain i{width:9px;height:9px;border-radius:50%}.mx-chain.ok i{background:var(--ok)}.mx-chain.bad i{background:var(--r)}
+.mp-in{padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}.mp-back{display:none;align-items:center;gap:6px;border:0;background:transparent;color:var(--fg);min-height:44px;cursor:pointer;font:inherit}
+.mp-subj{margin:0;font-size:20px;overflow-wrap:anywhere}.mp-from{display:flex;gap:6px;flex-wrap:wrap;align-items:baseline}.mp-from time{margin-left:auto;font-size:12px;color:var(--faint)}
+.mp-chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.mp-act{display:flex;flex-wrap:wrap;gap:8px}
+.mx-chip,.mx-proof{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);font-size:12px;background:transparent;color:var(--fg);font-family:inherit}
+.mx-chip.ok{border-color:rgba(61,213,152,.5)}.mx-chip.warn{border-color:var(--w)}.mx-chip.bad{border-color:var(--r);color:var(--r)}.mx-chip.off{color:var(--dim)}
+.mx-proofwrap{position:relative}.mx-proof{cursor:pointer;min-height:32px}.mx-proof i{width:8px;height:8px;border-radius:50%;background:var(--faint)}.mx-proof.verified{border-color:rgba(61,213,152,.6)}.mx-proof.verified i{background:var(--ok)}
+.mx-proof.unanchored i,.mx-proof.unknown i{background:transparent;border:1.5px solid var(--w)}.mx-proof.mismatch,.mx-proof.broken{border-color:var(--r);color:var(--r)}.mx-proof.mismatch i,.mx-proof.broken i{background:var(--r)}
+.mx-pop{position:absolute;z-index:5;top:calc(100% + 6px);left:0;list-style:none;margin:0;padding:10px 12px;min-width:260px;max-width:min(92vw,420px);border:1px solid var(--line);border-radius:12px;background:var(--s2);font-size:12px;display:flex;flex-direction:column;gap:4px;font-family:ui-monospace,monospace;overflow-wrap:anywhere}
+.mp-body{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;line-height:1.55;padding:12px;border-radius:10px;background:var(--bg);max-height:60vh;overflow:auto}
+.mp-att{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}.mp-att li{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+/* tablet: rail stays an icon strip (expands on hover/focus/pin), list narrower */
+@media (max-width:1100px){.mb{grid-template-columns:auto minmax(220px,320px) minmax(0,1fr)}}
+/* phone: one pane at a time; folders become a horizontal bar; the reader replaces the list */
+@media (max-width:760px){
+  .mb{grid-template-columns:minmax(0,1fr)}
+  .mr{position:static;width:auto;flex-direction:row;overflow-x:auto;padding:6px}.mr:hover,.mr:focus-within,.mr.pin{width:auto}
+  .mr-b{padding:0 12px}.mr-l{opacity:1;flex:none}.mr-lock{opacity:1}.mr-pin{display:none}
+  .mb.has-sel .mr,.mb.has-sel .ml{display:none}.mb:not(.has-sel) .mp{display:none}.mp-back{display:inline-flex}
+  .mp{min-height:0}
+}
+/* fixes found in the 390/820/1280 look: grid children must be allowed to shrink; no inherited list rules */
+.mail li{border:0;min-width:0}.mail ul{border:0}
+.ml-list>li{min-width:0;max-width:100%}.mi{min-width:0;max-width:100%;overflow:hidden}.mi-top b,.mi-sub,.mi-snip{min-width:0;max-width:100%;display:block}.mi-top b{display:inline-flex}
+.ml-row li{min-width:128px}

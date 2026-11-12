@@ -16,6 +16,7 @@ import { BridgeView, DashboardView } from "./Bridge";
 import { Palette, type NavItem } from "./Palette";
 import type { Prof } from "./types";
 import { Trust } from "./Trust";
+import { MailView } from "./MailView";
 import { SignIn } from "./SignIn";
 
 
@@ -55,7 +56,7 @@ export const useShell = () => { const c = useContext(ShellCtx); if (!c) throw ne
 /** The routed page body for the current view. */
 export function ViewBody() {
   const { view, d, at, prof, loadProf, fx, setFx, slim, setSlim, setView, preview, setPreview } = useShell();
-  return (view === "bridge" ? <BridgeView d={d} at={at} me={prof} go={setView} /> : view === "dashboard" ? <DashboardView d={d} at={at} go={setView} me={prof} /> : view === "profile" ? <ProfileView p={prof} reload={loadProf} /> : view === "devices" ? <DevicesView /> : view === "settings" ? <SettingsView preview={preview} setPreview={setPreview} go={setView} p={prof} fx={fx} setFx={setFx} slim={slim} setSlim={setSlim} reload={loadProf} /> : DECK_META[view] ? <><DeckPage deck={view} money={d?.money} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : <div className="grid"><Deck key={view} deck={view} /></div>);
+  return (view === "bridge" ? <BridgeView d={d} at={at} me={prof} go={setView} /> : view === "dashboard" ? <DashboardView d={d} at={at} go={setView} me={prof} /> : view === "profile" ? <ProfileView p={prof} reload={loadProf} /> : view === "devices" ? <DevicesView /> : view === "mail" ? <MailView /> : view === "settings" ? <SettingsView preview={preview} setPreview={setPreview} go={setView} p={prof} fx={fx} setFx={setFx} slim={slim} setSlim={setSlim} reload={loadProf} /> : DECK_META[view] ? <><DeckPage deck={view} money={d?.money} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : <div className="grid"><Deck key={view} deck={view} /></div>);
 }
 
 /** Loading screen with the logo on every refresh, on every page: stays until the first fresh signed answer (min 0.7 s, max 4 s), then fades out. */

@@ -134,10 +134,8 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-B0ZmCi7C.js
-founder-web/dist/assets/index-B0ZmCi7C.js.gz
-founder-web/dist/assets/index-vbcBRdeL.css
-founder-web/dist/assets/index-vbcBRdeL.css.gz
+founder-web/dist/assets/index-Bwf3PEBI.js
+founder-web/dist/assets/index-WWBlqsbV.css
 founder-web/dist/assets/kernel.worker-mprshus0.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
@@ -181,6 +179,7 @@ founder-web/src/Finance.tsx
 founder-web/src/Flare.tsx
 founder-web/src/Keys.tsx
 founder-web/src/Live.tsx
+founder-web/src/MailView.tsx
 founder-web/src/OrbAlert.tsx
 founder-web/src/OrbLine.tsx
 founder-web/src/OrbWhy.tsx
@@ -247,6 +246,10 @@ founder-web/src/lib/00-FOUNDER-TECH-RULE.md
 founder-web/src/lib/utils.ts
 founder-web/src/livefeed.test.ts
 founder-web/src/livefeed.ts
+founder-web/src/mail.css
+founder-web/src/mail_api.ts
+founder-web/src/mail_pure.test.ts
+founder-web/src/mail_pure.ts
 founder-web/src/main.tsx
 founder-web/src/net.test.ts
 founder-web/src/orbalert_pure.test.ts
