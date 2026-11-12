@@ -90,3 +90,31 @@ His words: the awam pro package is 100% done on the latest technology; the found
 | Attachment dedupe vs end-to-end | founder default: dedupe OFF for sealed files (a hash of plaintext would leak equality) | PQN0 note | recorded |
 Rules for every crate: exact version pinned, `cargo deny` (licence allow list Apache-2.0 / MIT / BSD / ISC / Unicode), `cargo audit` clean before the install, listed in CURRENT.md row PHASE Q, registered in TECH-LAW-GATE.json.
 Open: rPGP WASM build + licence line (Q4a); aws-lc-rs vs ring choice must match the rustls provider already in the founder binary (read Cargo.lock in Q1b, never two crypto stacks).
+
+## 11. DECISIONS ON HIS 13 NOV 00:34 MESSAGE (a pasted proposal: own Rust SMTP on port 25, lettre, client side sealing). Kept, changed, and why
+| Proposal | Decision | Reason (checked against the repo and the laws) |
+|---|---|---|
+| Rust + Tokio, native, no IMAP/POP3, browser kernel talks WebTransport | KEPT (already the plan) | matches the technology law |
+| Replace Postfix/Dovecot by an own Rust listener on port 25 | NOT NOW. Postfix stays as the port-25 FRONT, mail goes to the Rust LMTP handler on a loopback port | port 25 abuse handling, TLS quirks, bounce and greylisting rules took Postfix years; a mistake loses mail or gets the IP listed. Postfix also serves awam and the company boxes on the same host (CORE FREEZE: deploy-mail.sh is frozen). A native Rust SMTP receiver is recorded as phase Q7 (own IP or own port first, mirror the traffic, switch only with his haan and a rollback). Everything behind the front (parse, verdicts, ClamAV, sealing, storage) is 100% Rust from day one. |
+| lettre for outbound | OPEN, decided in Q1d after reading Cargo.lock | the engine must use ONE crypto provider with the existing rustls build; lettre (MIT) can send raw bytes, mail-auth signs DKIM, so either works. Never two TLS stacks. |
+| "disk par plain file kabhi na bane", body AES-256-GCM before insert | KEPT, and the SQL enforces it (E167: no plain column, selftest + CHECK look for one) | |
+| "server admin / Hetzner cannot read your email" | KEPT with the honest limit: mail from OUTSIDE arrives as plain text over SMTP, so the Rust engine sees it for a moment (RAM) to check SPF/DKIM/DMARC, scan with ClamAV and SEAL it to the founder's ML-KEM-768 + X25519 public key (seal_mode recipient_pq). After that the server cannot open it again; only his device (private key wrapped by his passkey) can. Mail he SENDS is sealed in his browser. | consequence he must know: the server cannot search sealed mail, so search runs in the browser kernel over a local index (blind indexes give sender / subject equality on the server). Mode `vault` (server can open, server search) stays available per mailbox only if he switches it on. |
+| 1 MiB chunks, 8 parallel streams, ClamAV, Storage Box ciphertext | KEPT (E167 holds the chunk map, arithmetic chunk count, frozen map after completion, hash per chunk, manifest hash) | |
+| PQC OpenPGP RFC 9980 | KEPT (Q4, rPGP candidate, WASM + licence proof first) | |
+| awam vs founder table | KEPT; awam stays Postfix/Dovecot + IMAP/SMTP as is (frozen) | |
+BRANDING (his word 13 Nov): the PRODUCT is ANEXOMAIL, the parent company is NEXATECT. The mailbox shows the ANEXOMAIL addresses; a nexatect.com mailbox exists as brand 'nexatect' (E167 closed list) and is founder-internal, never shown to awam, until he says so.
+
+## 12. UI / UX (cinematic, advanced) RESEARCH + CONCEPT. Rule: DEMO FIRST (FOUNDER-UI-WOW-RULES-11NOV.md): I build a clickable demo artifact of the mailbox, he picks, then code. No existing screen is restyled (UI LAW).
+Ideas that make it feel from another level, each tied to a real capability (nothing decorative that lies):
+1. **The sealed-mail flow**: a message arrives as a small sealed envelope glyph (GSAP), the kernel opens it on his device (a 250 ms unseal sweep), the text appears. Because the server cannot open it, the unseal is REAL, not an effect.
+2. **Trust ring per thread** (one hue, per UI WOW rules): sender verdict (SPF/DKIM/DMARC), scan, sealed; one glance, tap for the why (the same why-tooltip pattern as the orb, LA-1).
+3. **Attachment river**: while a file uploads, the parallel streams show as up to 8 thin lanes flowing into one ring; pause / resume; end state "sealed + scanned clean". Uses the real chunk map (fmail_att_missing).
+4. **Undo as time**: after Send, a bar drains over the undo window (policy undo_seconds); Undo is one tap; the message flies back to drafts (real state machine).
+5. **Three Panes that breathe**: laptop 3 panes, tablet 2, phone 1 (one build); list virtualised on keyset pages; Framer Motion layout transitions; j/k/e/#/r/f/c and Ctrl K; every action also has a 44 px control.
+6. **Command palette as the mailbox brain**: "send to Ahmed at 9am", "snooze until Monday" typed, run by the same gates (touch where required).
+7. **Calm density modes**: comfortable / compact; dark cinematic default; forced-colors + reduced-motion honoured.
+8. **Security as a visible layer, not a settings page**: "sealed end to end", "no remote content", "scanned" chips; a one-tap "who can read this?" sheet that says the truth (only this device).
+Demo artifact = Q1c step 0 (before any UI code), with 390 / 820 / 1200 views.
+
+## 13. Q1a STATUS (13 Nov 03:10 PKT)
+E167_founder_mail_core.sql WRITTEN, 1130 lines + CHECK_E167.sql. Tested in a fresh Postgres 16 (REAL E102 audit chain, stub founder_accounts only): selftest 36/36, CHECK 8/8, rerun idempotent, mutation test (dropping a trigger makes the selftest fail), selftest leaves 0 rows. NOT run on his server yet. His command (one, in a code block): sql-run.sh with E167_founder_mail_core. Not GREEN until his sql-run shows 8/8 + I read the result. Next: Q1b Rust inbound (`fmail_in.rs`, LMTP) with its contract in CURRENT.md first.

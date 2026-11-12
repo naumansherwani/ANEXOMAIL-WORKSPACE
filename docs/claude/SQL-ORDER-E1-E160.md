@@ -161,6 +161,7 @@ HOW TO READ: number = the order; file = the SQL; CHECK = has a read-only proof f
 | E164 | E164_founder_device_proofkeys.sql | yes (CHECK_E164) | hybrid proof key store beside the DBSC chip: get / register (replace only with chip alive) / use (nonce once); revoked device = inert key |
 | E165 | E165_founder_pq_src.sql | yes (CHECK_E165) | pq_src label (webcrypto / kernel) on proof keys and bindings; kernel software key is shown as weaker; label written once |
 | E166 | E166_founder_bridge_lane_times.sql | yes (CHECK_E166) | read-only real last-event / oldest-waiting time per Bridge lane (leads, Polar events, subscriptions, mail waiting, webhook errors, signature rejects); closed identifier + filter lists; no PII; degrades to 'not connected' per lane (LA-2 / LA-7) |
+| E167 | E167_founder_mail_core.sql | yes (CHECK_E167) | FOUNDER MAILBOX CORE (Q1a): 13 fmail_* tables, sealed bodies + blind indexes, send state machine, attachment chunk map, append-only hash-chained ledger anchored in founder_audit (E102), keyset thread list, selftest 36 checks that rolls itself back; 1130 lines; written 13 Nov, sandbox PG16 8/8 CHECK, NOT yet run on his server |
 
 Numbers never used (no file): E1, E3, E4, E8, E9, E10, E11, E12, E16, E21, E25, E26, E29, E55.
 

@@ -113,6 +113,7 @@ docs/cursor-work/sql/E163_founder_dbsc_selftest162_fix.sql
 docs/cursor-work/sql/E164_founder_device_proofkeys.sql
 docs/cursor-work/sql/E165_founder_pq_src.sql
 docs/cursor-work/sql/E166_founder_bridge_lane_times.sql
+docs/cursor-work/sql/E167_founder_mail_core.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/00-FOUNDER-TECH-RULE.md
