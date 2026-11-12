@@ -99,6 +99,7 @@ docs/cursor-work/server/cargo_migration_deps.py
 docs/cursor-work/server/checks-all.sh
 docs/cursor-work/server/clamd-tcp-fix.sh
 docs/cursor-work/server/commit-msg.hook
+docs/cursor-work/server/core-freeze.py
 docs/cursor-work/server/count-endpoints.py
 docs/cursor-work/server/crm-tenant-check.sh
 docs/cursor-work/server/cron-root-mail-fix.sh

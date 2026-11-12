@@ -67,3 +67,26 @@ Q0 research note (crate choices after licence + audit read: MIME parse, DKIM, ma
 Because Q now runs first, TECH-LAW-GATE fail dates move: A-tanstack-start 14 Nov -> 18 Nov, M-moq 16 Nov -> 20 Nov; clamav + storagebox (20 Nov) are closed by Q3, kept at 20 Nov. Deadline for the whole founder blueprint stays 25 Nov.
 
 Abhi code mein NAHI: all of the above (plan only). Q0 starts next.
+
+## 9. PRESERVATION + AWAM MIGRATION LAW (his word 13 Nov 2026 00:26; written so a compacted Claude cannot lose it)
+His words: the awam pro package is 100% done on the latest technology; the founder codes must be written so that LATER the awam site migrates from Bun/Node to advanced technology; the awam codes are PRESERVED; the founder codes preserve the awam codes and put GATES and ENDPOINTS around them. Earlier K-series mistakes cost him one week of redone work: NO mistakes here.
+1. **Awam files are FROZEN.** `docs/claude/CORE-FREEZE.json` holds the SHA-256 of 43 awam files (mail, mailx, attach, cal, calexp, calfile cores + glue, inbound_attach, src/lib mail/compose/calendar/caldav, src/routes/app.mail.* + app.calendar, ComposeStudio, deploy-mail.sh, mount-box.sh). `core-freeze.py` checks them; rules-gate FAILS ("CORE FREEZE") when one changes. Changing one on purpose needs HIS written word, then a line in `docs/claude/CORE-UNFREEZE-OK.txt`, then `core-freeze.py --refreeze`.
+2. **The founder build INCLUDES the pure cores with `#[path]`** (mail_core, mailx_core, attach_core, cal_core, calexp_core, calfile_core) and wraps them in founder glue `fmail_*.rs` / `fcal_*.rs`. Wrapper = gate (DBSC session, passkey step-up where listed) + endpoint (`/founder/v1/mail/*`, `/founder/v1/cal/*`) + founder tables. The cores never learn about the founder.
+3. **Golden tests:** the awam core unit tests (cargo test of those files) run unchanged inside the founder build; if the founder wrapper breaks a core test, the install stops. A founder test per wrapper proves the gate (refused without session, refused without touch).
+4. **Migration-ready by design:** the cores are pure (no IO, no Bun/Node, no Supabase), so the later awam migration can call the SAME cores from the new Rust awam service. Nothing in the founder glue is copied into the awam files and nothing in the awam files points at founder code (separation law, Rule 73 lanes).
+5. **Every Q step starts with:** `python3 docs/cursor-work/server/core-freeze.py` = 0 changed, and ends with the same, in the commit.
+6. **Resume for a compacted Claude:** rules-read.py -> RESUME-POINT.md line 2 -> this file (sections 3, 6, 9, 10) -> `CURRENT.md` row "PHASE Q" -> the first unchecked Q step.
+
+## 10. Q0 RESEARCH NOTE (13 Nov 2026 01:30 PKT; sources read today, nothing chosen from memory)
+| Need | Choice | Evidence (read 13 Nov) | Status |
+|---|---|---|---|
+| MIME / RFC 5322 parse | `mail-parser` 1.0.0 (24 Oct 2026), Apache-2.0 OR MIT, Stalwart Labs, 41 charsets, every function fuzzed + Miri | docs.rs mail-parser | chosen for Q1b, pin exact version, `cargo deny` licence check |
+| SPF / DKIM verify, DKIM sign, DMARC, ARC | `mail-auth` 0.14.1 (26 Oct 2026), Apache-2.0 OR MIT, Stalwart Labs; DKIM Ed25519-SHA256 + RSA-SHA256 (+ DKIM2), SPF, DMARC; ARC is historic and opt-in feature; crypto backend aws-lc-rs (default) or ring or pure rust-crypto | docs.rs mail-auth | chosen for Q1b (verify) and Q1d (sign); ARC off by default (shown only when the feature is on) |
+| OpenPGP post-quantum | `pgp` (rPGP) 0.21.1: PQC section cites RFC 9980, ML-KEM-768+X25519, ML-DSA-65+Ed25519 (also ML-KEM-1024+X448, ML-DSA-87+Ed448, SLH-DSA) implemented | docs.rs pgp IMPL_STATUS | candidate for the kernel `pqmail@1` (must compile to WASM: to be proven in Q4a; licence line to be read in the crate manifest before use) ; Sequoia also has PQC (blog 15 Nov 2025) as the second option |
+| Virus scan | ClamAV clamd INSTREAM (parser already in attach_core.rs) | repo | reuse, no new crate |
+| LMTP inbound | own small Tokio LMTP server (RFC 2033) in `fmail_in.rs`, Postfix `virtual_transport = lmtp:inet:127.0.0.1:<free port>`; port chosen ONLY after the fresh `ss` list (PORT RED LINE) | repo + Postfix config | design; no crate needed |
+| Outbound SMTP | own Tokio SMTP submission client with `mail-auth` DKIM signing; TLS 1.3 via rustls with X25519MLKEM768 where the peer offers it; MTA-STS + DANE lookups | repo (smtp_send exists in mail_core, blocking: the async client is new) | Q1d |
+| Whole-MTA alternative (Stalwart mail-server) | NOT chosen: it would replace Postfix/Dovecot that already serve awam and the company boxes; we reuse its libraries only | decision | recorded |
+| Attachment dedupe vs end-to-end | founder default: dedupe OFF for sealed files (a hash of plaintext would leak equality) | PQN0 note | recorded |
+Rules for every crate: exact version pinned, `cargo deny` (licence allow list Apache-2.0 / MIT / BSD / ISC / Unicode), `cargo audit` clean before the install, listed in CURRENT.md row PHASE Q, registered in TECH-LAW-GATE.json.
+Open: rPGP WASM build + licence line (Q4a); aws-lc-rs vs ring choice must match the rustls provider already in the founder binary (read Cargo.lock in Q1b, never two crypto stacks).

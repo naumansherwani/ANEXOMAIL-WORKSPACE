@@ -52,6 +52,10 @@ for f in [c for c in code if c.startswith("founder-web/src") and c.endswith(".js
             if URDU.search(t) and " " in t:
                 fail("67 UI English", f"{f}:{n}: {t[:80]}")
 
+# CORE FREEZE (founder 13 Nov 2026): the awam mail/calendar/attachment code is preserved for the later awam migration; the founder wraps it, never edits it.
+_cf = subprocess.run([sys.executable, "docs/cursor-work/server/core-freeze.py"], capture_output=True, text=True) if os.path.exists("docs/claude/CORE-FREEZE.json") else None
+if _cf is not None and _cf.returncode != 0:
+    fail("CORE FREEZE", "awam mail/calendar core changed without his word: " + " ".join(l.split(": ", 1)[1] for l in _cf.stdout.splitlines() if l.startswith("FROZEN"))[:300])
 # Rule 24: the founder's order + status are recorded with the work; the pull command is updated with the work
 ALL = "--all" in sys.argv
 big = [] if ALL else [f for f in staged if re.match(r"(founder-web/src|server/founder/src|docs/cursor-work/sql)/", f)]

@@ -56,6 +56,7 @@ docs/claude/CEO-DECISIONS-AND-FIX-PHASES-26OCT.md
 docs/claude/CINEMATIC-FRONTEND-STACK-27OCT.md
 docs/claude/CLOSE-THE-GAPS-07NOV.md
 docs/claude/CODES-WRITTEN-LEDGER-27OCT.md
+docs/claude/CORE-FREEZE.json
 docs/claude/DONE-DO-NOT-REPEAT.md
 docs/claude/ENDPOINT-MIGRATION-24OCT.csv
 docs/claude/ENDPOINT-PACKAGE-MAP-26OCT.md
