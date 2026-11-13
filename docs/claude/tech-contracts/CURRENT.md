@@ -262,3 +262,18 @@ Technology: hash-chained SHA-256 receipt ledger (serverfirst.py, same design as 
 Technology: Bash read-only audit using /proc/<pid>/exe for real process names, Caddy admin API (read), dig HTTPS (RFC 9460) + A/AAAA vs own addresses, ufw/iptables per UDP port; gate for the K8e HTTP/3-only install. Changes nothing on the server. Source of truth for ports: his pastes (20:49 receipt 1) + SERVER-PORTS-RED-LINE-08NOV.md. TECH-LAW CHECKED.
 
 - 13 Nov 21:28: KP1 written: founder-ports-audit.sh (read-only: real owners from /proc, Caddy admin listen, founder ports, journal, dig HTTPS + A/AAAA vs this server, ufw/iptables udp 443 + 4443, GO/STOP for K8e); sandbox-tested with a stub ss; PHASE-NOW.md = the one place Claude opens first (wired into rules-read + SessionStart hook). Waits: his run of the audit + DNS HTTPS record.
+
+## TECH CONTRACT FOR PHASE KP1b: OWN RUST AUTHORITATIVE DNS (13 Nov 2026 22:15 PKT) STATE: IN PROGRESS
+| Listed technology | Where it must live | IN CODE | Proof |
+|---|---|---|---|
+| Rust + Tokio async runtime | server/founder-dns/ (new crate, not in the founder binary, no Bun/Node) | OPEN | cargo test |
+| DNS wire format (hickory-proto), authoritative only, no recursion | founder-dns/src | OPEN | wire tests: query -> answer bytes, REFUSED for other zones |
+| HTTPS RR type 65 `1 . alpn="h3"` (RFC 9460) | zone data + encoder test | OPEN | dig +short HTTPS founderworkspace.anexomail.com on his server shows h3 |
+| UDP + TCP 53, EDNS0, TC bit, bound to 62.238.98.98 and 2a01:4f9:c014:5df6::1 (never wildcard) | main.rs | OPEN | his ss output |
+| DNSSEC Ed25519 + NSEC3 | founder-dns/src/sign.rs | OPEN | dig +dnssec validates with the zone key |
+| DNS cookies (RFC 7873) + response rate limiting | founder-dns/src | OPEN | tests |
+| PostgreSQL zone table + append-only hash-chain ledger | SQL E-number next free, sql-run, CHECK | OPEN | his CHECK output |
+| AES-256-GCM / HTTP/3 / ML-KEM | not applicable to port 53 (plain DNS); the HTTPS record is what makes H3 reachable | n/a | K8e |
+Rollback: remove the NS record at Namecheap; stop the unit. Server-first: nothing is opened or installed before his word + a read-only receipt.
+
+- 13 Nov 2026 22:15 PKT: KP1 DONE (his audit output, SF receipts 2-4). His Namecheap has NO HTTPS record type (screenshots 22:03). KP1b started: own Rust authoritative DNS for founderworkspace only, no third-party vendor (law + VENDOR-BAN-LIST gate). His port-53 audit output = GO (receipt 4): only systemd-resolved on 127.0.0.53/54, bind public addresses never wildcard; ns1/ns2.anexomail.com already A = 62.238.98.98. Contract KP1b in CURRENT.md. Waits: Rust DNS code, SQL, install with his word, Namecheap NS step, K8e, KP2.
