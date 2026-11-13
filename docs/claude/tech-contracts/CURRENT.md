@@ -250,3 +250,5 @@ Technology: Rust quinn + h3 (HTTP/3, QUIC, TLS 1.3 AES-256-GCM, X25519MLKEM768),
 Proof: cargo test 390 pass incl. k8e_alpn_is_h3_only_and_tcp_speaks_no_http and k8e_tcp_closed_drops_at_once. Safety: docs/cursor-work/server/founder-h3-check.sh (read-only GO/STOP: UDP owner, HTTP/3 ON, DNS HTTPS alpn=h3, firewall); rollback = fmail-ui-rollback.sh (binary + SPA backup). Risk said plainly: a network that blocks UDP 443 cannot reach the founder site any more. TECH-LAW CHECKED.
 
 - 13 Nov 20:40: K8e H3-ONLY written (his order: no HTTP/1.1, no h2): ALPN h3 only, tcp 443 closed on purpose, Alt-Svc 1 year persist, cargo 390 pass. Waits: his DNS HTTPS record alpn=h3, founder-h3-check.sh GO, then founder-install; then live Chrome must show h3 for assets. QUI-H3 next.
+
+- 13 Nov 20:42: K8e registered in qstate (started).
