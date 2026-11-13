@@ -8,10 +8,11 @@ export type HostExports = { memory: WebAssembly.Memory; kernel_alloc(n: number):
 export type Timers = { setTimeout(fn: () => void, ms: number): unknown };
 
 export const OP = { CONNECT: 1, BIDI: 2, WRITE: 3, READ: 4, FINISH: 5, CLOSE: 6, SLEEP: 7, NOW: 8 } as const;
-export const EMIT = { FLIVE_STATE: 6, FLIVE_FRAME: 7, FLIVE_DROP: 8 } as const;
+export const EMIT = { FLIVE_STATE: 6, FLIVE_FRAME: 7, FLIVE_DROP: 8, PATH_RTT: 9, PATH_FAIL: 10, PATH_UP: 11 } as const; // 9-11 are made by this shim itself (KP3 step 3 path health), not by the kernel
 const MAX_CHUNK = 4 << 20; // a single read larger than this is not a live frame: refuse (the kernel reconnects)
 
-type Handle = { kind: "session"; wt: WtSession } | { kind: "stream"; w: WritableStreamDefaultWriter<Uint8Array>; r: ReadableStreamDefaultReader<Uint8Array> };
+type Handle = { kind: "session"; wt: WtSession } | { kind: "stream"; w: WritableStreamDefaultWriter<Uint8Array>; r: ReadableStreamDefaultReader<Uint8Array>; sentAt: number | null };
+export const HANDSHAKE_MS = 8000; // no QUIC reply in this long = a visible failure (stage handshake_timeout), never a silent wait
 
 export function createHost(WT: WtCtor | null, getEx: () => HostExports, onEmit: (kind: number, a: number, b: number, data: Uint8Array) => void, timers: Timers = { setTimeout: (f, ms) => setTimeout(f, ms) }, nowMs: () => number = Date.now) {
   const handles = new Map<number, Handle>();
@@ -33,6 +34,7 @@ export function createHost(WT: WtCtor | null, getEx: () => HostExports, onEmit: 
     const run = () => { scheduled = false; burst = 0; getEx().kernel_tick(); };
     if (++burst > 200) { burst = 0; timers.setTimeout(run, 0); } else queueMicrotask(run); // a long run of wake-ups gives the page room to breathe
   };
+  const emitPath = (kind: number, a: number) => { try { onEmit(kind, a, 0, new Uint8Array(0)); } catch { /* the page is gone */ } };
   const call = (op: number, id: number, handle: number, ptr: number, len: number) => {
     const arg = new Uint8Array(getEx().memory.buffer).slice(ptr, ptr + len); // the kernel may reuse its buffer after this call returns
     void (async () => {
@@ -43,24 +45,28 @@ export function createHost(WT: WtCtor | null, getEx: () => HostExports, onEmit: 
             if (!WT) return complete(id, -1);
             const url = new TextDecoder().decode(arg), early = pre.get(url); pre.delete(url);
             let wt: WtSession | null = null;
-            if (early) { try { await early.ready; wt = early; } catch { wt = null; } } // a failed early dial is not an error: dial fresh below
-            if (!wt) { wt = new WT(url); await wt.ready; }
+            const within = (w: WtSession) => new Promise<boolean>((ok) => { let done = false; const fin = (v: boolean) => { if (!done) { done = true; ok(v); } }; timers.setTimeout(() => { if (!done) { try { w.close(); } catch { /* gone */ } emitPath(EMIT.PATH_FAIL, 0); } fin(false); }, HANDSHAKE_MS); w.ready.then(() => fin(true), () => { emitPath(EMIT.PATH_FAIL, 1); fin(false); }); });
+            if (early) { wt = (await within(early)) ? early : null; } // a failed early dial is not an error: dial fresh below
+            if (!wt) { const fresh = new WT(url); if (!(await within(fresh))) return complete(id, -1); wt = fresh; }
+            emitPath(EMIT.PATH_UP, 0);
             const h = next++; handles.set(h, { kind: "session", wt });
-            void wt.closed.then(() => handles.delete(h), () => handles.delete(h));
+            const gone = () => { if (handles.delete(h)) emitPath(EMIT.PATH_FAIL, 2); }; // only a close WE did not ask for (closeHandle already removed it) is a failure
+            void wt.closed.then(gone, gone);
             return complete(id, 0, le32(h));
           }
           case OP.BIDI: {
             const s = handles.get(handle); if (!s || s.kind !== "session") return complete(id, -1);
             const bi = await s.wt.createBidirectionalStream(), h = next++;
-            handles.set(h, { kind: "stream", w: bi.writable.getWriter(), r: bi.readable.getReader() });
+            handles.set(h, { kind: "stream", w: bi.writable.getWriter(), r: bi.readable.getReader(), sentAt: null });
             return complete(id, 0, le32(h));
           }
-          case OP.WRITE: { const s = handles.get(handle); if (!s || s.kind !== "stream") return complete(id, -1); await s.w.write(arg); return complete(id, 0); }
+          case OP.WRITE: { const s = handles.get(handle); if (!s || s.kind !== "stream") return complete(id, -1); if (s.sentAt === null) s.sentAt = nowMs(); await s.w.write(arg); return complete(id, 0); }
           case OP.FINISH: { const s = handles.get(handle); if (!s || s.kind !== "stream") return complete(id, -1); await s.w.close(); return complete(id, 0); }
           case OP.READ: {
             const s = handles.get(handle); if (!s || s.kind !== "stream") return complete(id, -1);
             const { value, done } = await s.r.read();
             if (value && value.length > MAX_CHUNK) return complete(id, -1);
+            if (value && value.length && s.sentAt !== null) { emitPath(EMIT.PATH_RTT, Math.max(0, Math.round(nowMs() - s.sentAt))); s.sentAt = null; } // write -> first reply = the measured round trip
             return complete(id, 0, done || !value ? new Uint8Array(0) : value);
           }
           case OP.CLOSE: closeHandle(handle); return complete(id, 0);

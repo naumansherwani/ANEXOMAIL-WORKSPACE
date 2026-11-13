@@ -69,3 +69,20 @@ test("KP3 pre-connect: a session dialled early is the one the kernel's CONNECT g
   h.env.host_call(OP.CONNECT, 2, 0, u[0], u[1]); await settle(); expect(dials).toBe(2); expect(f.done[1]).toMatchObject({ id: 2, status: 0 }); // early dial failed: fresh dial answered
   failFirst = false; dials = 0; closes = 0; timers.length = 0; h = mk(); h.preconnect("https://f.example/wt/rpc"); timers[0](); expect(closes).toBe(1); // never used: closed
 });
+
+test("KP3 step 3 path health: connect emits UP, a write->first-reply is a measured RTT, a silent server fails visibly after 8 s (handshake_timeout), an unasked close is a failure but our own close is not", async () => {
+  const f = fake(); const em: [number, number][] = []; const timers: [() => void, number][] = []; let clock = 1000; let hang = false, close!: () => void; let closes = 0;
+  const WT: WtCtor = class { ready: Promise<unknown> = hang ? new Promise(() => undefined) : Promise.resolve(); closed = new Promise<void>((r) => { close = r; });
+    async createBidirectionalStream() { let i = 0; return { readable: new ReadableStream<Uint8Array>({ async pull(c) { clock += 180; if (i++ === 0) c.enqueue(new Uint8Array([1])); else c.close(); } }), writable: new WritableStream<Uint8Array>({ write() { /* sent */ } }) }; }
+    close() { closes++; } } as unknown as WtCtor;
+  const mk = () => createHost(WT, () => f.ex, (k, a) => em.push([k, a]), { setTimeout: (fn, ms) => { timers.push([fn, ms]); return 0; } }, () => clock);
+  const u = f.put(new TextEncoder().encode("https://f.example/wt/rpc"));
+  let h = mk(); h.env.host_call(OP.CONNECT, 1, 0, u[0], u[1]); await settle(); expect(em).toContainEqual([EMIT.PATH_UP, 0]);
+  h.env.host_call(OP.BIDI, 2, 1, 0, 0); await settle(); const w = f.put(new Uint8Array([9]));
+  h.env.host_call(OP.WRITE, 3, 2, w[0], w[1]); await settle(); h.env.host_call(OP.READ, 4, 2, 0, 0); await settle();
+  expect(em.find(([k]) => k === EMIT.PATH_RTT)).toEqual([EMIT.PATH_RTT, 180]); // the pull moved the fake clock 180 ms between write and first reply
+  close(); await settle(); expect(em).toContainEqual([EMIT.PATH_FAIL, 2]); // session closed by the server = visible failure
+  em.length = 0; h = mk(); h.env.host_call(OP.CONNECT, 5, 0, u[0], u[1]); await settle(); h.env.host_call(OP.CLOSE, 0, 1, 0, 0); await settle(); expect(em.some(([k, a]) => k === EMIT.PATH_FAIL && a === 2)).toBe(false); // our own close is not a failure
+  em.length = 0; hang = true; timers.length = 0; closes = 0; h = mk(); h.env.host_call(OP.CONNECT, 6, 0, u[0], u[1]); await settle();
+  timers.find(([, ms]) => ms === 8000)![0](); await settle(); expect(em).toContainEqual([EMIT.PATH_FAIL, 0]); expect(closes).toBe(1); expect(f.done.at(-1)).toMatchObject({ id: 6, status: -1 });
+});

@@ -357,3 +357,18 @@ Source facts (MDN, W3C): allowPooling default false = dedicated connection (meas
 - 14 Nov 2026 02:40 PKT: KP3 table: steps 1+2 LIVE, pre-connect built (4d066bba), step 3 design shown to him first (UI law), steps 4+5 after. TECH-LAW CHECKED
 
 - 14 Nov 2026 02:40 PKT: KP3 roadmap status written in PHASE-NOW (steps 1+2 live, pre-connect built, step 3 design shown to him first per UI law, 4+5 after). TECH-LAW CHECKED
+
+## KP3 STEP 3 = PATH HEALTH (his haan 14 Nov 02:22 on Claude's alternative; replaces the "UDP blocked" chip)
+Why not "UDP blocked": the founder host is HTTP/3 only (tcp 443 closed), so a network that blocks UDP 443 never loads the page; the chip would only ever show after a mid-session break, and the browser cannot know the cause. So it states facts only.
+MEASURED 14 Nov 02:30 in my Chrome 157: WebTransport.getStats is NOT available (typeof prototype.getStats not a function; prototype members: datagrams, ready, closed, close, reliability, protocol, responseHeaders + stream/datagram methods). So the plan's getStats RTT is dropped; no loss % is shown anywhere (the browser cannot see it, never invented).
+| Part | Technology | State |
+|---|---|---|
+| RTT = write -> first reply of every kernel stream (min = network floor), emitted by the host shim (kinds 9/10/11) | React-TS Worker host (kernel.host.ts) | BUILT + 8 bun tests, not live |
+| Failure STAGE: handshake_timeout (8 s, visible), connect_failed, closed (only an unasked close) | kernel.host.ts + pathhealth.ts | BUILT + tested |
+| pathhealth.ts store + exact label ("QUIC · 178 ms" / "No QUIC reply in 8 s · 5 s ago") | React-TS | BUILT + tested; NOT yet shown on screen |
+| the chip text on screen (additive, one line next to the existing Live chip, 390/820/1200+) | React-TS UI | WAITS his look at the mockup (UI law) |
+| visible reconnect countdown + Cancel / Retry now | needs the kernel's retry schedule | kernel build, separate step |
+| QUIC keep-alive 10 s + migration ON (wt.rs quic_config_n, both endpoints) | Rust quinn | CONFIRMED in code; migration now explicit sc.migration(true); idle timeout 30 s |
+TECH-LAW CHECKED.
+
+- 14 Nov 2026 03:00 PKT: KP3 STEP 3 PATH HEALTH built (not live, no screen change yet): his haan on the alternative to the UDP-blocked chip. Measured in my Chrome 157: WebTransport.getStats does NOT exist, so RTT = write to first reply per kernel stream (host shim kinds 9/10/11), failure STAGE named (handshake_timeout 8 s, connect_failed, closed only if unasked), no loss % ever shown. pathhealth.ts + 8 bun tests, 263 tests pass, tsc clean, dist rebuilt. Server: QUIC keep-alive 10 s + migration confirmed, migration now explicit. The chip on screen waits his look at the mockup (UI law). TECH-LAW CHECKED

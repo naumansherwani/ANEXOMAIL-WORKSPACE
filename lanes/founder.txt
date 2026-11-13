@@ -143,8 +143,8 @@ founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
 founder-web/dist/assets/index-BrTqkftU.css
-founder-web/dist/assets/index-C_eAWYZJ.js
-founder-web/dist/assets/kernel.worker-C2cYuthH.js
+founder-web/dist/assets/index-DbflE30Q.js
+founder-web/dist/assets/kernel.worker-CkxF1Sm0.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
 founder-web/dist/assets/three.tsl-Cy7l4cF4.js
@@ -274,6 +274,8 @@ founder-web/src/orbwhy_pure.ts
 founder-web/src/passkey.test.ts
 founder-web/src/passkey.ts
 founder-web/src/passkey_pure.ts
+founder-web/src/pathhealth.test.ts
+founder-web/src/pathhealth.ts
 founder-web/src/places.ts
 founder-web/src/policy_change.ts
 founder-web/src/policy_flow.ts

@@ -80,6 +80,7 @@ pub fn quic_config_n(tls: &rustls::ServerConfig, bidi: u32, uni: u32) -> Result<
     t.max_concurrent_bidi_streams(bidi.into());
     t.max_concurrent_uni_streams(uni.into());
     sc.transport_config(Arc::new(t));
+    sc.migration(true); // KP3: QUIC connection migration stays ON explicitly (Wi-Fi -> mobile data keeps the session: same connection ids, new address); quinn's default is true, this line stops it being lost silently
     Ok(sc)
 }
 
