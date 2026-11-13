@@ -316,3 +316,17 @@ Technology: Bash read-only audit (kp2-audit.sh) of the loopback listener 127.0.0
 - 14 Nov 2026 00:30 PKT: K8e GREEN by HIS ORDER (00:21): WIRED: YES / REAL: YES / TECH-LAW CHECKED; 820 tablet not seen, waived by his word and written so. KP2 step 1 done (his audit output, SF receipt 13): 3210 loopback-only, sshd forwarding yes; findings: CSP connect-src, passkey RP ID on localhost, sshd password+root login open (his decision). Laptop SSH test next
 
 - 14 Nov 2026 00:50 PKT: his H2 same-origin race suggestion recorded, NOT built: conflicts with his H3-only law (13 Nov 20:30); research: WT-over-H2 still IETF draft, RFC 9220 is WebSocket over H3, Chrome support unconfirmed; waits his decision. TECH-LAW CHECKED
+
+## KP3 CONTRACT 14 Nov 2026 01:05 PKT (WebTransport on UDP 443 'self', no fallback; his typed order 00:41 answer to the H2 question: "H3-only law stays, no SSE, no H2, honest 'QUIC UDP blocked by network', WebTransport on 443 as well as 4443")
+Technology: ONE quinn endpoint on UDP 443 (h3 0.0.8 + h3-quinn 0.0.10 + h3-webtransport 0.1.2, spike resolved and compiled together 14 Nov 01:00; ALPN h3, TLS 1.3 AES-256-GCM, X25519MLKEM768) serves BOTH the normal HTTP/3 requests (existing h3.rs, same axum router) AND WebTransport sessions (RFC 9220-style extended CONNECT `:protocol webtransport`, draft-ietf-webtrans-http3) at /wt/live and /wt/rpc; the browser kernel and live feed use https://<founder host>/wt/... = same origin, so the page CSP `connect-src 'self'` needs no extra origin. NO HTTP/2, NO HTTP/1.1, NO SSE, NO WebSocket added. When UDP is blocked the UI says so honestly ("QUIC / UDP is blocked on this network"), it never downgrades.
+Steps (each its own commit; the live site keeps working between them; 4443 stays until 443 is proven live, then is removed):
+| # | KP3 step | State |
+|---|---|---|
+| 1 | Rust: WebTransport sessions accepted inside the h3.rs connection loop on the same UDP 443 endpoint; the /wt/live hello handler and the /wt/rpc call loop move off wtransport types onto a small stream trait so BOTH endpoints (4443 and 443) run the SAME code; sandbox tests (real QUIC client, AES-256, refused paths) | OPEN |
+| 2 | Browser/kernel: WT URL = same origin 443 first (URL built from location.host, no port); 4443 only as a bridge until step 1 is live; kernel pin/SRI update if the kernel Rust changes | OPEN |
+| 3 | Honest status: a "QUIC blocked by network" state with the real reason in the Bridge/Mail chips (no hidden retry loops, no SSE) | OPEN |
+| 4 | Remove the SSE fallback (livefeed.ts WT_FAILS_BEFORE_SSE, api.ts openStream, fmail_ep stream path) AFTER 2+3 are live and proven; his install + my live Chrome look + his phone | OPEN |
+| 5 | Drop 4443 from CSP, env and ufw ONLY after 4 is proven (port red line: fresh ss first) | OPEN |
+Side notes from his answer: a MASQUE / WireGuard UDP tunnel is the future UDP-blocked-network break-glass (KP2 stays measured first: the SSH forward to 127.0.0.1:3210 carries TCP only and cannot carry QUIC). TECH-LAW CHECKED.
+
+- 14 Nov 2026 01:05 PKT: KP3 STARTED (his typed order 00:41): WebTransport on UDP 443 same-origin, NO SSE/H2/H1 fallback, honest QUIC-blocked status. Contract + 5 steps in CURRENT.md; spike: h3 0.0.8 + h3-quinn 0.0.10 + h3-webtransport 0.1.2 compile together. KP2 laptop test still pending. TECH-LAW CHECKED

@@ -3157,3 +3157,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 14 Nov 2026 00:30 PKT: K8e GREEN by HIS ORDER (00:21): WIRED: YES / REAL: YES / TECH-LAW CHECKED; 820 tablet not seen, waived by his word and written so. KP2 step 1 done (his audit output, SF receipt 13): 3210 loopback-only, sshd forwarding yes; findings: CSP connect-src, passkey RP ID on localhost, sshd password+root login open (his decision). Laptop SSH test next
 
 - 14 Nov 2026 00:50 PKT: his H2 same-origin race suggestion recorded, NOT built: conflicts with his H3-only law (13 Nov 20:30); research: WT-over-H2 still IETF draft, RFC 9220 is WebSocket over H3, Chrome support unconfirmed; waits his decision. TECH-LAW CHECKED
+
+- 14 Nov 2026 01:05 PKT: KP3 STARTED (his typed order 00:41): WebTransport on UDP 443 same-origin, NO SSE/H2/H1 fallback, honest QUIC-blocked status. Contract + 5 steps in CURRENT.md; spike: h3 0.0.8 + h3-quinn 0.0.10 + h3-webtransport 0.1.2 compile together. KP2 laptop test still pending. TECH-LAW CHECKED

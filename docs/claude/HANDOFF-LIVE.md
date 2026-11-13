@@ -41,6 +41,7 @@ NOW: KP1b - own Rust authoritative DNS for founderworkspace.anexomail.com only (
 - [x] QUI-H2: sub-phase: Bridge 'Mail ledger' audit card + deep link into the mailbox folder  (React 19 TS, E168 bridge feed, new file + one-line mount (Scene3D.tsx untouched))  PROOF: my live Chrome: Bridge shows 'Mail ledger' card (Ledger verified #8, Mail in 3, Quarantined 2); tapping Quarantined opened Mail on the Quarantine folder (deep link works). Cosmetic: heading was centered, fixed left in next build.
 - [x] K8e: HTTP/3 ONLY: h1 and h2 removed for ever (his order 13 Nov 20:30)  (quinn + h3, ALPN h3 only, tcp 443 closed, Alt-Svc 1y persist, DNS HTTPS record alpn=h3 (RFC 9460), TLS 1.3 AES-256-GCM X25519MLKEM768)  PROOF: GREEN by HIS ORDER 14 Nov 00:2x ('tum meri order suno k8e green likho'): WIRED: YES / REAL: YES / TECH-LAW CHECKED. Proof: server install 390 Rust tests, assets over h3 in my Chrome 1536, awam unaffected, 390 by his phone (receipt 12). 820 tablet NOT seen: waived by the founder's own word, recorded here honestly, not proven
 - [>] KP2: UDP-blocked network break-glass: SSH tunnel to the loopback listener, tested at home first (the khatra he asked to make a phase)  (SSH local forward to 127.0.0.1:3210, host-proof + DBSC behaviour measured, never assumed)  PROOF: step 1 audit done (receipt 13): 3210 loopback-only, sshd forwarding yes; laptop SSH test next
+- [>] KP3: WebTransport on UDP 443 same-origin (CSP 'self'), no SSE / H2 / H1 fallback, honest 'QUIC blocked by network' status (his typed order 14 Nov 00:41)  (h3 0.0.8 + h3-quinn 0.0.10 + h3-webtransport 0.1.2 on the ONE quinn UDP 443 endpoint (HTTP/3 requests and WebTransport sessions together), TLS 1.3 AES-256-GCM X25519MLKEM768, Rust Tokio, kernel WebTransport RPC, React 19 TS honest status)  PROOF: contract written in CURRENT.md; step 1 Rust next
 - [>] QUI-H3: sub-phase: Q-ledger-kernel, the WASM kernel re-hashes the whole chain in the browser (SQL E172 door, Rust Tokio door, kernel sha256 chain check)  (Rust WASM kernel SHA-256 (web-wasm/src/hash.rs), length-prefixed fmail-ledger-v1 formula, rows streamed over the kernel WebTransport RPC, PostgreSQL RLS door)  PROOF: researched + contract written; SQL E172 door, Rust door, kernel chain verify
 - [ ] QUI-H4: sub-phase: per-message Merkle inclusion proof (U1 link) against the founder audit batch  (RFC 6962 style Merkle audit path verified in the WASM kernel, founder_audit anchor)
 - [ ] QPERF: mail latency percentiles p50/p90/p95/p99/p99.9 + SLO burn (his 13 Nov 20:01: p90, p95 and more advanced; SQL E173)  (PostgreSQL percentile_cont + append-only mail_latency samples (SQL E172), Rust Tokio timing at LMTP accept/scan/seal/commit, HDR-histogram style buckets, Bridge card)
@@ -53,7 +54,7 @@ NOW: KP1b - own Rust authoritative DNS for founderworkspace.anexomail.com only (
 - [ ] Q4: kernel pqmail OpenPGP RFC 9980  (Rust WASM kernel ML-KEM-768 + X25519, ML-DSA-65 + Ed25519)
 - [ ] U5: Who-can-read-this sheet, Ctrl K mail actions, light theme (approved)  (Radix Dialog, command palette, React 19 TS)
 - [ ] Q1e: calendar E174-E175  (Rust + SQL RLS + React TS, same sealing)
-chain head: adc88e1201d83c5b (19 events)
+chain head: dd0d5c0831d8dcc6 (20 events)
 <!--/QSTATE-->
 
 ## SERVER-FIRST LAW (his 13 Nov 21:08, ONE YEAR, AUTOMATIC, STRICT) + H3 ONLY
