@@ -8,10 +8,11 @@ let ex: Promise<Ex> | null = null;
 
 function load(): Promise<Ex> {
   ex ??= (async () => {
-    const buf = await (await fetch(KERNEL.url, { cache: "force-cache" })).arrayBuffer();
-    if (hex(await crypto.subtle.digest("SHA-256", buf)) !== KERNEL.sha256) throw new Error("kernel hash mismatch"); // pinned: wrong bytes never run
     let kx: Ex | null = null; // K6.3: the REAL host ABI (WebTransport, timers, clock) for the kernel's async modules (flive@1); verify-only calls never use it
     const host = createHost((self as unknown as { WebTransport?: WtCtor }).WebTransport ?? null, () => kx as Ex, (kind, a, b, data) => (self as unknown as Worker).postMessage({ flive: true, kind, a, b, data }, [data.buffer]));
+    try { host.preconnect(`${self.location.origin}/wt/rpc`); } catch { /* no origin: the kernel dials itself */ } // KP3 pre-connect: the QUIC + WebTransport handshake runs WHILE the wasm downloads, hashes and compiles (same URL the kernel dials: base + /wt/rpc)
+    const buf = await (await fetch(KERNEL.url, { cache: "force-cache" })).arrayBuffer();
+    if (hex(await crypto.subtle.digest("SHA-256", buf)) !== KERNEL.sha256) throw new Error("kernel hash mismatch"); // pinned: wrong bytes never run
     const { instance } = await WebAssembly.instantiate(buf, host as unknown as WebAssembly.Imports);
     kx = instance.exports as unknown as Ex;
     return kx;

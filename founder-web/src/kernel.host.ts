@@ -15,6 +15,7 @@ type Handle = { kind: "session"; wt: WtSession } | { kind: "stream"; w: Writable
 
 export function createHost(WT: WtCtor | null, getEx: () => HostExports, onEmit: (kind: number, a: number, b: number, data: Uint8Array) => void, timers: Timers = { setTimeout: (f, ms) => setTimeout(f, ms) }, nowMs: () => number = Date.now) {
   const handles = new Map<number, Handle>();
+  const pre = new Map<string, WtSession>(); // KP3 pre-connect: a session dialled while the wasm still downloads; the kernel's CONNECT for the same URL takes it (single use, 15 s life)
   let next = 1, scheduled = false, burst = 0;
   const le32 = (n: number) => new Uint8Array([n & 255, (n >>> 8) & 255, (n >>> 16) & 255, (n >>> 24) & 255]);
   const complete = (id: number, status: number, data: Uint8Array = new Uint8Array(0)) => {
@@ -40,7 +41,10 @@ export function createHost(WT: WtCtor | null, getEx: () => HostExports, onEmit: 
         switch (op) {
           case OP.CONNECT: {
             if (!WT) return complete(id, -1);
-            const wt = new WT(new TextDecoder().decode(arg)); await wt.ready;
+            const url = new TextDecoder().decode(arg), early = pre.get(url); pre.delete(url);
+            let wt: WtSession | null = null;
+            if (early) { try { await early.ready; wt = early; } catch { wt = null; } } // a failed early dial is not an error: dial fresh below
+            if (!wt) { wt = new WT(url); await wt.ready; }
             const h = next++; handles.set(h, { kind: "session", wt });
             void wt.closed.then(() => handles.delete(h), () => handles.delete(h));
             return complete(id, 0, le32(h));
@@ -67,7 +71,16 @@ export function createHost(WT: WtCtor | null, getEx: () => HostExports, onEmit: 
       } catch { complete(id, -1); }
     })();
   };
+  const preconnect = (url: string) => {
+    if (!WT || pre.has(url)) return;
+    try {
+      const wt = new WT(url); pre.set(url, wt);
+      wt.ready.catch(() => { if (pre.get(url) === wt) pre.delete(url); }); wt.closed.catch(() => undefined);
+      timers.setTimeout(() => { if (pre.get(url) === wt) { pre.delete(url); try { wt.close(); } catch { /* gone */ } } }, 15000);
+    } catch { /* unsupported: the kernel dials itself */ }
+  };
   return {
+    preconnect,
     env: {
       host_wake: wake,
       host_call: call,

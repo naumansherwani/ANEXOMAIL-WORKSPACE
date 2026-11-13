@@ -55,3 +55,17 @@ test("wake schedules exactly one kernel tick, emits are copied out of kernel mem
   const p = f.put(new TextEncoder().encode("{\"v\":1}")); h.env.host_emit(EMIT.FLIVE_FRAME, 2, 0, p[0], p[1]);
   new Uint8Array(f.ex.memory.buffer).fill(0, p[0], p[0] + p[1]); expect(seen).toEqual([[7, 2, "{\"v\":1}"]]); // later changes of kernel memory do not alter what was forwarded
 });
+
+test("KP3 pre-connect: a session dialled early is the one the kernel's CONNECT gets (one dial), a failed early dial falls back to a fresh dial, an unused one is closed after 15 s", async () => {
+  const f = fake(); let dials = 0, closes = 0; let failFirst = false; const timers: (() => void)[] = [];
+  const WT: WtCtor = class { ready: Promise<unknown>; closed = new Promise(() => undefined); constructor(_u: string) { dials++; const bad = failFirst && dials === 1; this.ready = bad ? Promise.reject(new Error("x")) : Promise.resolve(); }
+    async createBidirectionalStream() { return { readable: new ReadableStream<Uint8Array>(), writable: new WritableStream<Uint8Array>() }; }
+    close() { closes++; } } as unknown as WtCtor;
+  const mk = () => createHost(WT, () => f.ex, () => undefined, { setTimeout: (fn) => { timers.push(fn); return 0; } });
+  const u = f.put(new TextEncoder().encode("https://f.example/wt/rpc"));
+  let h = mk(); h.preconnect("https://f.example/wt/rpc"); h.preconnect("https://f.example/wt/rpc"); expect(dials).toBe(1); // no double dial
+  h.env.host_call(OP.CONNECT, 1, 0, u[0], u[1]); await settle(); expect(dials).toBe(1); expect(f.done[0]).toMatchObject({ id: 1, status: 0 });
+  dials = 0; failFirst = true; h = mk(); h.preconnect("https://f.example/wt/rpc"); await settle();
+  h.env.host_call(OP.CONNECT, 2, 0, u[0], u[1]); await settle(); expect(dials).toBe(2); expect(f.done[1]).toMatchObject({ id: 2, status: 0 }); // early dial failed: fresh dial answered
+  failFirst = false; dials = 0; closes = 0; timers.length = 0; h = mk(); h.preconnect("https://f.example/wt/rpc"); timers[0](); expect(closes).toBe(1); // never used: closed
+});
