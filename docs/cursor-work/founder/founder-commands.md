@@ -3276,3 +3276,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - 14 Nov 2026 01:05 PKT: KP3 STARTED (his typed order 00:41): WebTransport on UDP 443 same-origin, NO SSE/H2/H1 fallback, honest QUIC-blocked status. Contract + 5 steps in CURRENT.md; spike: h3 0.0.8 + h3-quinn 0.0.10 + h3-webtransport 0.1.2 compile together. KP2 laptop test still pending. TECH-LAW CHECKED
 
 - 14 Nov 2026 01:35 PKT: KP3 step 1 CODE DONE: WebTransport on the HTTP/3 endpoint (UDP 443, same origin) via h3-webtransport 0.1.2; live_session + run_with generic so 4443 and 443 run the SAME code; 393 Rust tests pass incl 3 KP3 tests (real QUIC client, AES-256, refused token/path/AES-128, RPC through the same router). NOT installed yet, 4443 untouched. TECH-LAW CHECKED
+
+- 14 Nov 2026 01:50 PKT: KP3 step 1 self-audit by his order: fixed idle-slot hold after browser leaves (close watched via session) and 421 for pooled plain requests on a WebTransport connection; rest checked OK; 393 tests pass; still not installed. TECH-LAW CHECKED

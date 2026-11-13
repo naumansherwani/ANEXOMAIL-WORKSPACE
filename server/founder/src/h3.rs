@@ -100,7 +100,7 @@ async fn webtransport(req: Request<()>, mut stream: h3::server::RequestStream<h3
     if rpc {
         if let Some(router) = cfg.rpc.clone() {
             let s = session.clone();
-            crate::wtrpc::run_with(move || { let s = s.clone(); async move { loop { match s.accept_bi().await { Ok(Some(h3_webtransport::server::AcceptedBi::BidiStream(_, bi))) => { let (r, w) = tokio::io::split(bi); return Some((w, r)); } Ok(Some(_)) => continue, _ => return None } } } }, peer.ip(), router, Arc::new(cfg.host.clone()), ua, hint).await;
+            crate::wtrpc::run_with(move || { let s = s.clone(); async move { loop { match s.accept_bi().await { Ok(Some(h3_webtransport::server::AcceptedBi::BidiStream(_, bi))) => { let (r, w) = tokio::io::split(bi); return Some((w, r)); } Ok(Some(h3_webtransport::server::AcceptedBi::Request(_, mut st))) => { tokio::spawn(async move { reply(&mut st, StatusCode::MISDIRECTED_REQUEST, "Open a new connection.").await }); continue } _ => return None } } } }, peer.ip(), router, Arc::new(cfg.host.clone()), ua, hint).await;
         }
         return;
     }
@@ -108,7 +108,10 @@ async fn webtransport(req: Request<()>, mut stream: h3::server::RequestStream<h3
     let first = tokio::time::timeout(crate::wt::HELLO_WAIT, session.accept_bi()).await;
     let Ok(Ok(Some(h3_webtransport::server::AcceptedBi::BidiStream(_, bi)))) = first else { return };
     let (mut recv, mut send) = tokio::io::split(bi);
-    let _ = crate::wt::live_session(&mut send, &mut recv, &cfg, std::future::pending::<()>()).await;
+    // `closed` = the peer closed the session (audit 14 Nov: without it an idle stream held its slot for the whole 10 minutes after the browser left); a pooled plain request on this connection gets 421
+    let s2 = session.clone();
+    let closed = async move { loop { match s2.accept_bi().await { Ok(Some(h3_webtransport::server::AcceptedBi::Request(_, mut st))) => { tokio::spawn(async move { reply(&mut st, StatusCode::MISDIRECTED_REQUEST, "Open a new connection.").await }); } Ok(Some(_)) => continue, _ => break } } };
+    let _ = crate::wt::live_session(&mut send, &mut recv, &cfg, closed).await;
     // graceful end: the stream is finished, now give the peer a moment to read the last frames and close; dropping the session at once would cut them off
     let _ = tokio::time::timeout(Duration::from_secs(5), async { loop { match session.accept_bi().await { Ok(Some(_)) => continue, _ => break } } }).await;
 }
