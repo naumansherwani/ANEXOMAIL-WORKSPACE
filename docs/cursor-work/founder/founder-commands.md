@@ -3230,3 +3230,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - 13 Nov 20:10: his orders: QUI-H hybrid P1+P2 (backup done, building) and QPERF p90/p95/p99/p99.9 latency percentiles (SQL E172, calendar -> E173-E174) added to the qstate plan; after QUI-H and before Q1d-1.
 
 - 13 Nov 20:40: QUI-H built + sandbox-proven (ledger chip auto-verify, Bridge Mail ledger card, empty pane slimmed; bun 259, tsc clean, 390/820/1280 clean). Gap Q-ledger-kernel registered. Waits his founder-install then my live Chrome look; rollback = fmail-ui-rollback.sh.
+
+- 13 Nov 20:12: his request: order with technology in front of each phase + where the P1/P2 advance code is, written to the repo: docs/claude/Q-ORDER-AND-TECH-13NOV.md (15-phase table, QUI-H file map, honest gaps Q-ledger-kernel / U1 Merkle).

@@ -234,3 +234,5 @@ HONEST GAP (registered, not hidden): the chain recompute is done by the server (
 TECH-LAW CHECKED.
 
 - 13 Nov 20:40: QUI-H built + sandbox-proven (ledger chip auto-verify, Bridge Mail ledger card, empty pane slimmed; bun 259, tsc clean, 390/820/1280 clean). Gap Q-ledger-kernel registered. Waits his founder-install then my live Chrome look; rollback = fmail-ui-rollback.sh.
+
+- 13 Nov 20:12: his request: order with technology in front of each phase + where the P1/P2 advance code is, written to the repo: docs/claude/Q-ORDER-AND-TECH-13NOV.md (15-phase table, QUI-H file map, honest gaps Q-ledger-kernel / U1 Merkle).
