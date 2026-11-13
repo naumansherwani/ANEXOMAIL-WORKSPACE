@@ -28,11 +28,11 @@
 
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-NOW: Q1b3-T4 - SQL E171: scan state 'opaque'  [PostgreSQL RLS, append-only ledger, selftest + CHECK]
+NOW: Q1d-1 - DKIM key from Compose + DNS TXT  [Ed25519 + RSA DKIM, passkey touch (mail.key)]
 - [x] Q1b3-T1: Postfix inbound TLS X25519MLKEM768 first  (Postfix 3.10 + OpenSSL 3.5, ML-KEM-768 hybrid, TLS 1.3 AES-256-GCM)  PROOF: his output 13 Nov 18:5x: PQ client Negotiated TLS1.3 group X25519MLKEM768, classic X25519, default X25519MLKEM768; setting kept (c2b284fc..1b843b15)
 - [x] Q1b3-T2: clamd AlertEncrypted + AlertExceedsMax  (ClamAV INSTREAM, fail-closed quarantine)  PROOF: his output 13 Nov 18:5x: clamd PONG ~10 s, EICAR FOUND, clean OK, Heuristics.Encrypted.Zip FOUND
 - [x] Q1b3-T3: first real mail through the intake  (Postfix per-address LMTP RFC 2033, ClamAV, seal on arrival, ledger; end-to-end self-test mails sent by Postfix itself (NOT deferred, his order 19:11))  PROOF: all 3 selftest mails status=sent (250 2.0.0 stored) via Postfix; live Chrome: Inbox 1 (ledger anchor verified SHA-256, virus scan clean), Quarantine 2; found lane bug -> E171
-- [>] Q1b3-T4: SQL E171: scan state 'opaque'  (PostgreSQL RLS, append-only ledger, selftest + CHECK)  PROOF: E171 + Rust opaque guard + UI verdict written; sandbox CHECK 5/5, selftest 9/0, cargo fmail_in 11 pass, bun 26 pass; waits his sql-run + founder-install
+- [x] Q1b3-T4: SQL E171: scan state 'opaque'  (PostgreSQL RLS, append-only ledger, selftest + CHECK)  PROOF: his output 13 Nov 19:5x: sql-run E171 OK; CHECK_E171 5/5 OK (selftest 9/0, ledger head 8); founder-install OK (SPA 200, healthz 200, signing ON). My live Chrome look after reload: Quarantined tile = 2 (amber), Quarantine folder 2, Inbox 1.
 - [ ] Q1d-1: DKIM key from Compose + DNS TXT  (Ed25519 + RSA DKIM, passkey touch (mail.key))
 - [ ] Q1d-2: FMAIL_SEND=on + real outgoing mail  (Rust Tokio SMTP, STARTTLS TLS 1.3 X25519MLKEM768, undo window, outgoing PQ TLS proof)
 - [ ] Q1b4: SPF / DKIM / DMARC verdicts + trust ring (U3)  (Rust mail-auth, Framer Motion ring)
@@ -42,5 +42,5 @@ NOW: Q1b3-T4 - SQL E171: scan state 'opaque'  [PostgreSQL RLS, append-only ledge
 - [ ] Q4: kernel pqmail OpenPGP RFC 9980  (Rust WASM kernel ML-KEM-768 + X25519, ML-DSA-65 + Ed25519)
 - [ ] U5: Who-can-read-this sheet, Ctrl K mail actions, light theme (approved)  (Radix Dialog, command palette, React 19 TS)
 - [ ] Q1e: calendar E172-E173  (Rust + SQL RLS + React TS, same sealing)
-chain head: 1cf0f09f08b96e74 (6 events)
+chain head: 1de1367458bdd9db (7 events)
 <!--/QSTATE-->

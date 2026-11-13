@@ -220,3 +220,5 @@ STATE L-A: PLAN WRITTEN, no code yet. Full table: docs/claude/PHASE-L-PLAN-12NOV
 - 13 Nov: T3 DONE (3 mails stored, live Chrome Inbox 1 / Quarantine 2). T4 written: SQL E171 opaque + quarantine_in ledger + backfill, Rust opaque guard, UI verdict; sandbox CHECK 5/5 selftest 9/0, cargo 11, bun 26. Waits his sql-run E171 then founder-install.
 
 - 13 Nov 19:25: his question on the ledger box: proposal docs/claude/MAILBOX-BRIDGE-LEDGER-PROPOSAL-13NOV.md (Bridge lane card P1 + slim empty state P2), waits his haan; E171 CHECK first line fixed.
+
+- 13 Nov 20:05: T4 DONE (his sql-run E171 + CHECK_E171 5/5 + founder-install; my live Chrome: Quarantined lane = 2, was 0). Q1b-3 intake = WIRED: YES / REAL: YES / TECH-LAW CHECKED (LMTP loopback RFC 2033, ClamAV INSTREAM fail-closed + opaque guard, AES-256-GCM seal, RLS + hash-chain ledger); mobile/tablet look of a real message still to do. Ledger-box P1+P2 = one hybrid (research in proposal doc), waits his haan. Next: Q1d-1 DKIM.
