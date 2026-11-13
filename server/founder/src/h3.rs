@@ -54,15 +54,25 @@ fn follow_store(ep: quinn::Endpoint, store: Arc<CertStore>) {
     });
 }
 
+/// Handshakes in flight right now, and the number above which an unvalidated address must prove itself with a Retry.
+static HANDSHAKES: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+pub const RETRY_ABOVE: usize = 32;
+/// Pure policy: a validated address never needs a Retry; an unvalidated one only when the server is busy with handshakes (flood).
+pub fn need_retry(validated: bool, in_flight: usize) -> bool { !validated && in_flight >= RETRY_ABOVE }
+
 pub async fn serve(ep: quinn::Endpoint, store: Arc<CertStore>, router: axum::Router, host: String, wt: Option<Arc<crate::wt::Cfg>>) {
     follow_store(ep.clone(), store);
     let host = Arc::new(host);
     while let Some(incoming) = ep.accept().await {
         // address validation: an unvalidated source gets a Retry first (anti-amplification); a validated one proceeds
-        if !incoming.remote_address_validated() { let _ = incoming.retry(); continue; }
+        // KP3 latency (his 14 Nov order, 50-200 ms target): Retry costs one full round trip (175 ms from his Chrome), so it is demanded only while many handshakes are in flight (flood); a quiet server answers at once, QUIC's 3x anti-amplification limit still protects a spoofed source
+        if need_retry(incoming.remote_address_validated(), HANDSHAKES.load(std::sync::atomic::Ordering::Relaxed)) { let _ = incoming.retry(); continue; }
         let (router, host, wt) = (router.clone(), host.clone(), wt.clone());
+        HANDSHAKES.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
         tokio::spawn(async move {
-            let Ok(Ok(conn)) = tokio::time::timeout(Duration::from_secs(10), async { incoming.await }).await else { return };
+            let hs = tokio::time::timeout(Duration::from_secs(10), async { incoming.await }).await;
+            HANDSHAKES.fetch_sub(1, std::sync::atomic::Ordering::Relaxed);
+            let Ok(Ok(conn)) = hs else { return };
             let peer = conn.remote_address();
             let mut b = h3::server::builder();
             if wt.is_some() { b.enable_webtransport(true).enable_extended_connect(true).enable_datagram(true).max_webtransport_sessions(crate::wt::MAX_SESSIONS as u64); }
@@ -232,6 +242,7 @@ mod tests {
         assert_eq!(st.as_u16(), 421);
         let _ = &mut send;
     }
+    #[test] fn retry_only_under_a_handshake_flood() { assert!(!need_retry(false, 0) && !need_retry(false, RETRY_ABOVE - 1) && !need_retry(true, 10_000)); assert!(need_retry(false, RETRY_ABOVE) && need_retry(false, 10_000)); }
     #[test] fn env_off_by_default_and_bad_host_refused() {
         assert!(std::env::var("FOUNDER_H3_ADDR").is_err() || from_env().is_some());
     }

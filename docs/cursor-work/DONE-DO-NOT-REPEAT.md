@@ -2117,3 +2117,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 14 Nov 2026 01:50 PKT: KP3 step 1 self-audit by his order: fixed idle-slot hold after browser leaves (close watched via session) and 421 for pooled plain requests on a WebTransport connection; rest checked OK; 393 tests pass; still not installed. TECH-LAW CHECKED
 
 - 14 Nov 2026 01:45 PKT: KP3 step 1 INSTALLED + PROVEN LIVE (his install output, SF receipt 14; my Chrome WebTransport to /wt/live on UDP 443: ready 868 ms, supports-unreliable, bad token ERR 401). Step 2 code done + built: kernel RPC and live feed use same-origin https://location.host; tsc clean, 259 bun tests pass. Not installed yet. TECH-LAW CHECKED
+
+- 14 Nov 2026 02:00 PKT: KP3 step 2 INSTALLED + live look (bundle index-Ddm8jgPK, chips green, no :4443 request). Latency measured: h3 RTT ~175 ms, new WebTransport session ~700 ms (4 RTT); Retry now only under handshake flood (saves 1 RTT), 394 tests, not installed. TECH-LAW CHECKED
