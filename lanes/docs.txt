@@ -195,6 +195,7 @@ docs/claude/inventory/INV-2-CHAT-CRM-WORK-ANALYTICS.md
 docs/claude/inventory/INV-3-ORG-SECURITY-STORAGE-LANDING.md
 docs/claude/state/00-FOUNDER-TECH-RULE.md
 docs/claude/state/Q-STATE.jsonl
+docs/claude/state/SERVER-FIRST.jsonl
 docs/claude/tech-contracts/00-FOUNDER-TECH-RULE.md
 docs/claude/tech-contracts/CURRENT.md
 docs/cursor-work/00-FOUNDER-TECH-RULE.md

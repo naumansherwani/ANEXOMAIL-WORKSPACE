@@ -233,6 +233,7 @@ docs/cursor-work/server/rust-safe-deploy.sh
 docs/cursor-work/server/rustc-edition-upgrade.sh
 docs/cursor-work/server/security-blueprint.md
 docs/cursor-work/server/server-git-sync.sh
+docs/cursor-work/server/serverfirst.py
 docs/cursor-work/server/switch-journey-check.sh
 docs/cursor-work/server/t16-accounts-look.sh
 docs/cursor-work/server/t7-send-identity-test.sh

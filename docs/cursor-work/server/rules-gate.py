@@ -240,6 +240,12 @@ try:
     if _qe: fail("Q STATE", _qe + " (python3 docs/cursor-work/server/qstate.py verify / render)")
 except Exception as _x:
     fail("Q STATE", "qstate.py cannot run: " + str(_x)[:120])
+# SERVER FIRST + H3 ONLY (founder 13 Nov 2026 21:08, one year, automatic): a change to the live server surface needs a fresh receipt of HIS pasted read-only output; no new h1/h2 serving code.
+try:
+    _sf = _iu.spec_from_file_location("serverfirst", "docs/cursor-work/server/serverfirst.py"); _sfm = _iu.module_from_spec(_sf); _sf.loader.exec_module(_sfm)
+    for _e in _sfm.check(staged): fail("SERVER FIRST", _e)
+except Exception as _x:
+    fail("SERVER FIRST", "serverfirst.py cannot run: " + str(_x)[:120])
 # RESUME POINT (founder 11 Nov 2026 04:45, "compact chat ka masla forever solve kero"): docs/claude/RESUME-POINT.md must travel with every code/ledger change, so a new chat always finds the real state.
 rp = "docs/claude/RESUME-POINT.md"
 if (code_staged or "docs/cursor-work/DONE-DO-NOT-REPEAT.md" in staged) and rp not in staged:

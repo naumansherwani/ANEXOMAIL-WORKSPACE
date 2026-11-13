@@ -119,6 +119,7 @@ docs/cursor-work/sql/E168_founder_mail_keys_bridge.sql
 docs/cursor-work/sql/E169_founder_mail_read_gates.sql
 docs/cursor-work/sql/E170_founder_mail_compose_send.sql
 docs/cursor-work/sql/E171_founder_mail_quarantine_ledger.sql
+docs/cursor-work/sql/E172_founder_mail_ledger_rows.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/00-FOUNDER-TECH-RULE.md

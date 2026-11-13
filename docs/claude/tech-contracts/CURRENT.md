@@ -252,3 +252,8 @@ Proof: cargo test 390 pass incl. k8e_alpn_is_h3_only_and_tcp_speaks_no_http and 
 - 13 Nov 20:40: K8e H3-ONLY written (his order: no HTTP/1.1, no h2): ALPN h3 only, tcp 443 closed on purpose, Alt-Svc 1 year persist, cargo 390 pass. Waits: his DNS HTTPS record alpn=h3, founder-h3-check.sh GO, then founder-install; then live Chrome must show h3 for assets. QUI-H3 next.
 
 - 13 Nov 20:42: K8e registered in qstate (started).
+
+## SF CONTRACT 13 Nov 21:10 (SERVER-FIRST + H3-ONLY law, his order 21:08 + 21:10: advance technology stays intact, H3 only)
+Technology: hash-chained SHA-256 receipt ledger (serverfirst.py, same design as the mail ledger and the Q state ledger), pre-commit gate rules in rules-gate.py ("SERVER FIRST", "H3 ONLY"), TECH LAW text updated to HTTP/3 only. No server code changes in this phase. TECH-LAW CHECKED.
+
+- 13 Nov 21:12: SF DONE: SERVER-FIRST law (serverfirst.py, receipt ledger, gates SERVER FIRST + H3 ONLY), TECH LAW text = HTTP/3 only with all other advance tech intact, order SF -> KP1 -> K8e install -> KP2 -> QUI-H3 -> QUI-H4 -> QPERF -> Q1d-1. E172 SQL (ledger rows door) is in the sandbox + this commit, proven by an independent re-hash (7 rows, 0 bad), NOT yet on his server.
