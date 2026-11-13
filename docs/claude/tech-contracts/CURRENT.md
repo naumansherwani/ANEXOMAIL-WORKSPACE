@@ -323,7 +323,7 @@ Steps (each its own commit; the live site keeps working between them; 4443 stays
 | # | KP3 step | State |
 |---|---|---|
 | 1 | Rust: WebTransport sessions accepted inside the h3.rs connection loop on the same UDP 443 endpoint (h3 + h3-webtransport, extended CONNECT); wt::live_session and wtrpc::run_with are now generic over tokio streams so the 4443 endpoint and UDP 443 run the SAME code (every gate and cap); FOUNDER_H3_WT=off is the rollback switch; 393 Rust tests pass in the sandbox incl. 3 new KP3 tests with a real QUIC client (AES-256, hello, refused token, wrong path, AES-128 refused, RPC through the same router, dbsc routes refused) | CODE DONE + SANDBOX PROVEN, NOT yet on his server |
-| 2 | Browser/kernel: WT URL = same origin 443 first (URL built from location.host, no port); 4443 only as a bridge until step 1 is live; kernel pin/SRI update if the kernel Rust changes | OPEN |
+| 2 | Browser/kernel: kernel RPC base and live-feed WebTransport URL = `https://${location.host}` (same origin, UDP 443, no port); CSP 'self' covers it; tsc clean, 259 bun tests pass, vite build ok | CODE DONE + BUILT, step 1 PROVEN LIVE in my Chrome (WebTransport to /wt/live on 443: ready 868 ms, reliability supports-unreliable = real QUIC, bad token ERR 401; SF receipt 14); NOT yet installed |
 | 3 | Honest status: a "QUIC blocked by network" state with the real reason in the Bridge/Mail chips (no hidden retry loops, no SSE) | OPEN |
 | 4 | Remove the SSE fallback (livefeed.ts WT_FAILS_BEFORE_SSE, api.ts openStream, fmail_ep stream path) AFTER 2+3 are live and proven; his install + my live Chrome look + his phone | OPEN |
 | 5 | Drop 4443 from CSP, env and ufw ONLY after 4 is proven (port red line: fresh ss first) | OPEN |
@@ -334,3 +334,5 @@ Side notes from his answer: a MASQUE / WireGuard UDP tunnel is the future UDP-bl
 - 14 Nov 2026 01:35 PKT: KP3 step 1 CODE DONE: WebTransport on the HTTP/3 endpoint (UDP 443, same origin) via h3-webtransport 0.1.2; live_session + run_with generic so 4443 and 443 run the SAME code; 393 Rust tests pass incl 3 KP3 tests (real QUIC client, AES-256, refused token/path/AES-128, RPC through the same router). NOT installed yet, 4443 untouched. TECH-LAW CHECKED
 
 - 14 Nov 2026 01:50 PKT: KP3 step 1 self-audit by his order: fixed idle-slot hold after browser leaves (close watched via session) and 421 for pooled plain requests on a WebTransport connection; rest checked OK; 393 tests pass; still not installed. TECH-LAW CHECKED
+
+- 14 Nov 2026 01:45 PKT: KP3 step 1 INSTALLED + PROVEN LIVE (his install output, SF receipt 14; my Chrome WebTransport to /wt/live on UDP 443: ready 868 ms, supports-unreliable, bad token ERR 401). Step 2 code done + built: kernel RPC and live feed use same-origin https://location.host; tsc clean, 259 bun tests pass. Not installed yet. TECH-LAW CHECKED

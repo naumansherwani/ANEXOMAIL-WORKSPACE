@@ -15,8 +15,8 @@ export type LiveState = {
   events: LiveEvent[]; dropped: number; since: number | null; openedAt: number | null;
 };
 
-// K6.3: the WebTransport endpoint (UDP, same host; wt.rs). Port = FOUNDER_WT_ADDR on the server and the one origin the page CSP allows.
-const WT_PORT = 4443, WT_PATH = "/wt/live", WT_RETRY_MS = 5 * 60_000, WT_FAILS_BEFORE_SSE = 3;
+// K6.3 + KP3 step 2: the WebTransport endpoint is the SAME ORIGIN (UDP 443 = the HTTP/3 endpoint, wt.rs/h3.rs), so the page CSP connect-src 'self' covers it.
+const WT_PATH = "/wt/live", WT_RETRY_MS = 5 * 60_000, WT_FAILS_BEFORE_SSE = 3;
 const PATH = "/founder/v1/live", STREAM = "/founder/v1/live/stream", WATCHDOG_MS = 40_000, POLL_MS = 15_000, POLL_AFTER_FAILS = 3;
 const blank = (): LiveState => ({ status: "connecting", snapshot: null, version: 0, lastTickAt: null, lastTickOk: null, events: [], dropped: 0, since: null, openedAt: null });
 let S: LiveState = blank();
@@ -76,7 +76,7 @@ async function runWt(my: number): Promise<"sse" | "again"> {
     const end = (r: "sse" | "again") => { if (ended) return; ended = true; handle?.stop(); wtStop = null; wtRestart = null; resolve(r); };
     wtStop = () => end("again"); wtRestart = () => end("again");
     emit({ status: S.snapshot ? "reconnecting" : "connecting" });
-    void kernelLiveStart(`https://${location.hostname}:${WT_PORT}${WT_PATH}`, token, {
+    void kernelLiveStart(`https://${location.host}${WT_PATH}`, token, {
       state: (wt, detail) => {
         if (my !== gen) return end("again");
         if (wt) { fails = 0; return; }

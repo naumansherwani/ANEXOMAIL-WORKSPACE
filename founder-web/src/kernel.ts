@@ -178,7 +178,7 @@ export async function kernelLiveStart(url: string, token: string, cb: KernelLive
 
 /* ---- K8d (Rule 52): the founder API over the kernel's WebTransport session (rpc@1). The kernel opens ONE QUIC session to /wt/rpc and sends every call as its own stream;
  *      the answer comes back as `S <status> <content-type>\n<body>`. fetch stays the FALLBACK. A WRITE is never repeated by itself: if the kernel session breaks mid-call the caller is told. ---- */
-const RPC_PORT = 4443;
+// KP3 step 2 (14 Nov 2026): the kernel RPC session goes to the SAME ORIGIN (UDP 443, the HTTP/3 endpoint), so the page CSP connect-src 'self' covers it; no separate port, no fallback protocol
 let rpcUp = false, rpcStarted = false, rpcCid = 0;
 const rpcWait = new Map<number, (r: { status: number; data: Uint8Array }) => void>();
 function rpcEmit(kind: number, a: number, b: number, data: Uint8Array) {
@@ -190,7 +190,7 @@ export const rpcAvailable = () => wtSupported() && rpcUp;
 /** Start the kernel's API session once (idempotent). Resolves true when the QUIC session is up within `waitMs`; false = use fetch. */
 export async function kernelRpcStart(waitMs = 1500): Promise<boolean> {
   if (!wtSupported()) return false;
-  if (!rpcStarted) { rpcStarted = true; const r = await rpcCall({ op: "start", base: `https://${location.hostname}:${RPC_PORT}` }); if (r.code !== 0) { rpcStarted = false; return false; } }
+  if (!rpcStarted) { rpcStarted = true; const r = await rpcCall({ op: "start", base: `https://${location.host}` }); if (r.code !== 0) { rpcStarted = false; return false; } }
   const t0 = Date.now(); while (!rpcUp && Date.now() - t0 < waitMs) await new Promise((ok) => setTimeout(ok, 50));
   return rpcUp;
 }
