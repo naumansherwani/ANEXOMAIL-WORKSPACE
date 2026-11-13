@@ -8,7 +8,7 @@ export type HostExports = { memory: WebAssembly.Memory; kernel_alloc(n: number):
 export type Timers = { setTimeout(fn: () => void, ms: number): unknown };
 
 export const OP = { CONNECT: 1, BIDI: 2, WRITE: 3, READ: 4, FINISH: 5, CLOSE: 6, SLEEP: 7, NOW: 8 } as const;
-export const EMIT = { FLIVE_STATE: 6, FLIVE_FRAME: 7, FLIVE_DROP: 8, PATH_RTT: 9, PATH_FAIL: 10, PATH_UP: 11 } as const; // 9-11 are made by this shim itself (KP3 step 3 path health), not by the kernel
+export const EMIT = { FLIVE_STATE: 6, FLIVE_FRAME: 7, FLIVE_DROP: 8, PATH_RTT: 9, PATH_FAIL: 10, PATH_UP: 11, PATH_RETRY: 12 } as const; // 9-11 are made by this shim itself (KP3 step 3 path health), not by the kernel
 const MAX_CHUNK = 4 << 20; // a single read larger than this is not a live frame: refuse (the kernel reconnects)
 
 type Handle = { kind: "session"; wt: WtSession } | { kind: "stream"; w: WritableStreamDefaultWriter<Uint8Array>; r: ReadableStreamDefaultReader<Uint8Array>; sentAt: number | null };
@@ -16,6 +16,7 @@ export const HANDSHAKE_MS = 8000; // no QUIC reply in this long = a visible fail
 
 export function createHost(WT: WtCtor | null, getEx: () => HostExports, onEmit: (kind: number, a: number, b: number, data: Uint8Array) => void, timers: Timers = { setTimeout: (f, ms) => setTimeout(f, ms) }, nowMs: () => number = Date.now) {
   const handles = new Map<number, Handle>();
+  let down = false; // the path failed and has not come back: a kernel SLEEP now is its retry wait
   const pre = new Map<string, WtSession>(); // KP3 pre-connect: a session dialled while the wasm still downloads; the kernel's CONNECT for the same URL takes it (single use, 15 s life)
   let next = 1, scheduled = false, burst = 0;
   const le32 = (n: number) => new Uint8Array([n & 255, (n >>> 8) & 255, (n >>> 16) & 255, (n >>> 24) & 255]);
@@ -34,7 +35,7 @@ export function createHost(WT: WtCtor | null, getEx: () => HostExports, onEmit: 
     const run = () => { scheduled = false; burst = 0; getEx().kernel_tick(); };
     if (++burst > 200) { burst = 0; timers.setTimeout(run, 0); } else queueMicrotask(run); // a long run of wake-ups gives the page room to breathe
   };
-  const emitPath = (kind: number, a: number) => { try { onEmit(kind, a, 0, new Uint8Array(0)); } catch { /* the page is gone */ } };
+  const emitPath = (kind: number, a: number) => { if (kind === EMIT.PATH_FAIL) down = true; else if (kind === EMIT.PATH_UP) down = false; try { onEmit(kind, a, 0, new Uint8Array(0)); } catch { /* the page is gone */ } };
   const call = (op: number, id: number, handle: number, ptr: number, len: number) => {
     const arg = new Uint8Array(getEx().memory.buffer).slice(ptr, ptr + len); // the kernel may reuse its buffer after this call returns
     void (async () => {
@@ -70,7 +71,7 @@ export function createHost(WT: WtCtor | null, getEx: () => HostExports, onEmit: 
             return complete(id, 0, done || !value ? new Uint8Array(0) : value);
           }
           case OP.CLOSE: closeHandle(handle); return complete(id, 0);
-          case OP.SLEEP: timers.setTimeout(() => complete(id, 0), handle); return;
+          case OP.SLEEP: if (down && handle >= 1000) emitPath(EMIT.PATH_RETRY, handle); timers.setTimeout(() => complete(id, 0), handle); return;
           case OP.NOW: { const b = new Uint8Array(8); new DataView(b.buffer).setBigInt64(0, BigInt(Math.floor(nowMs() / 1000)), true); return complete(id, 0, b); }
           default: return complete(id, -1);
         }

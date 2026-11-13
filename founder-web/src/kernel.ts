@@ -1,5 +1,5 @@
 // F2b (Rule 52): every /founder/v1 answer is verified by the WASM kernel (Rust, Ed25519, pinned key) BEFORE any of it is parsed or shown.
-import { PATH_EMIT, pathFail, pathRtt, pathUp } from "./pathhealth";
+import { PATH_EMIT, pathFail, pathRetry, pathRtt, pathUp } from "./pathhealth";
 // Enforce mode: if the kernel cannot start or the check fails, no data reaches the screen.
 import workerUrl from "./kernel.worker.ts?worker&url"; // Vite bundles the worker as its own file and gives its URL
 
@@ -28,7 +28,7 @@ function w(): Worker {
   if (!worker) {
     const href = workerUrl, early = (window as unknown as { __kw?: Worker }).__kw; // early.js may already have started it
     worker = early ?? new Worker((ttPolicy ? ttPolicy.createScriptURL(href) : href) as string, { type: "module" });
-    worker.onmessage = (ev) => { if (ev.data.flive) { if (ev.data.kind === 4 || ev.data.kind === 5) { rpcEmit(ev.data.kind, ev.data.a, ev.data.b, ev.data.data); return; } if (ev.data.kind === PATH_EMIT.RTT) { pathRtt(ev.data.a); return; } if (ev.data.kind === PATH_EMIT.UP) { pathUp(); return; } if (ev.data.kind === PATH_EMIT.FAIL) { pathFail(ev.data.a); return; } liveEmit(ev.data.kind, ev.data.a, ev.data.data); return; } const f = waiting.get(ev.data.id); if (f) { waiting.delete(ev.data.id); f(ev.data); } };
+    worker.onmessage = (ev) => { if (ev.data.flive) { if (ev.data.kind === 4 || ev.data.kind === 5) { rpcEmit(ev.data.kind, ev.data.a, ev.data.b, ev.data.data); return; } if (ev.data.kind === PATH_EMIT.RTT) { pathRtt(ev.data.a); return; } if (ev.data.kind === PATH_EMIT.UP) { pathUp(); return; } if (ev.data.kind === PATH_EMIT.FAIL) { pathFail(ev.data.a); return; } if (ev.data.kind === PATH_EMIT.RETRY) { pathRetry(ev.data.a); return; } liveEmit(ev.data.kind, ev.data.a, ev.data.data); return; } const f = waiting.get(ev.data.id); if (f) { waiting.delete(ev.data.id); f(ev.data); } };
     worker.onerror = () => { for (const [id, f] of waiting) { waiting.delete(id); f({ code: 100 }); } };
   }
   return worker;

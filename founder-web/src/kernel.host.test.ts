@@ -86,3 +86,13 @@ test("KP3 step 3 path health: connect emits UP, a write->first-reply is a measur
   em.length = 0; hang = true; timers.length = 0; closes = 0; h = mk(); h.env.host_call(OP.CONNECT, 6, 0, u[0], u[1]); await settle();
   timers.find(([, ms]) => ms === 8000)![0](); await settle(); expect(em).toContainEqual([EMIT.PATH_FAIL, 0]); expect(closes).toBe(1); expect(f.done.at(-1)).toMatchObject({ id: 6, status: -1 });
 });
+
+test("KP3 step 3: a kernel SLEEP while the path is down is announced as its retry wait; a normal SLEEP is not", async () => {
+  const f = fake(); const em: [number, number][] = []; const timers: (() => void)[] = []; let hang = false;
+  const WT: WtCtor = class { ready: Promise<unknown> = hang ? new Promise(() => undefined) : Promise.resolve(); closed = new Promise(() => undefined); close() { /* gone */ } } as unknown as WtCtor;
+  const h = createHost(WT, () => f.ex, (k, a) => em.push([k, a]), { setTimeout: (fn, ms) => { timers.push(fn); void ms; return 0; } });
+  h.env.host_call(OP.SLEEP, 0, 30_000, 0, 0); await settle(); expect(em.some(([k]) => k === EMIT.PATH_RETRY)).toBe(false); // path not down: a plain timer
+  hang = true; const u = f.put(new TextEncoder().encode("https://f/wt/rpc")); h.env.host_call(OP.CONNECT, 1, 0, u[0], u[1]); await settle();
+  const t8 = timers.find((_, i) => i === timers.length - 1)!; t8(); await settle(); expect(em).toContainEqual([EMIT.PATH_FAIL, 0]);
+  h.env.host_call(OP.SLEEP, 0, 12_000, 0, 0); await settle(); expect(em).toContainEqual([EMIT.PATH_RETRY, 12_000]);
+});

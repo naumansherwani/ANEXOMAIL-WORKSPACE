@@ -24,6 +24,8 @@ const subs = new Set<() => void>(), changeFns = new Set<(changed: string[]) => v
 const emit = (patch: Partial<LiveState>) => { S = { ...S, ...patch }; subs.forEach((f) => f()); };
 export const live = { get: () => S, sub: (f: () => void) => { subs.add(f); return () => { subs.delete(f); }; } };
 /** Called when a real source changed (tick `changed` not empty, or an events frame). The Dashboard re-reads its numbers then. */
+/** "Retry now" on the QUIC path row: end the current live attempt and dial again at once (no waiting out the kernel's timer). Only the live session; the API session redials by itself. */
+export const liveRetryNow = () => { wtRestart?.(); wake?.(); };
 export const onLiveChange = (f: (changed: string[]) => void) => { changeFns.add(f); return () => { changeFns.delete(f); }; };
 
 async function accept(frame: Extract<Frame, { kind: "frame" }>) {
