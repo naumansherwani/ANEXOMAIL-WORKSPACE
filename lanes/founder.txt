@@ -135,6 +135,7 @@ docs/cursor-work/sql/proofs/E72_proof.sql
 docs/cursor-work/sql/tools/00-FOUNDER-TECH-RULE.md
 founder-web/.gitignore
 founder-web/00-FOUNDER-TECH-RULE.md
+founder-web/READ-FIRST-FOUNDER-LAW.md
 founder-web/dist/assets/Inter-Bold-sbKixbcS.woff2
 founder-web/dist/assets/Inter-ExtraLight-BhvJvErM.woff2
 founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
@@ -164,6 +165,7 @@ founder-web/kernel-sync.sh
 founder-web/package-lock.json
 founder-web/package.json
 founder-web/precompress.sh
+founder-web/public/READ-FIRST-FOUNDER-LAW.md
 founder-web/public/boot.css
 founder-web/public/early.js
 founder-web/public/favicon.svg
@@ -196,6 +198,7 @@ founder-web/src/OrbWhy.tsx
 founder-web/src/Palette.tsx
 founder-web/src/PolicyEditor.tsx
 founder-web/src/Profile.tsx
+founder-web/src/READ-FIRST-FOUNDER-LAW.md
 founder-web/src/Scene3D.tsx
 founder-web/src/Settings.tsx
 founder-web/src/SettingsS2.tsx
@@ -324,6 +327,7 @@ server/founder/.gitignore
 server/founder/00-FOUNDER-TECH-RULE.md
 server/founder/Cargo.lock
 server/founder/Cargo.toml
+server/founder/READ-FIRST-FOUNDER-LAW.md
 server/founder/src/00-FOUNDER-TECH-RULE.md
 server/founder/src/actions.rs
 server/founder/src/ambient.rs

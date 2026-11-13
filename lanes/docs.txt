@@ -21,6 +21,7 @@
 docs/00-FOUNDER-TECH-RULE.md
 docs/BLUEPRINT-SUPERSEDE-PLAN.md
 docs/MASTER-BUILD-PLAN.md
+docs/READ-FIRST-FOUNDER-LAW.md
 docs/absm-billing-mesh.md
 docs/ai-packages.md
 docs/ai-parallel-build.md
@@ -162,6 +163,7 @@ docs/claude/PRICING-POSITIONING-26OCT.md
 docs/claude/PRO-LIVE-GREEN-26OCT.md
 docs/claude/Q-FIX-ORDER-13NOV.md
 docs/claude/Q-ORDER-AND-TECH-13NOV.md
+docs/claude/READ-FIRST-FOUNDER-LAW.md
 docs/claude/README.md
 docs/claude/REPO-AUDIT-03NOV.md
 docs/claude/REPO-THEFT-DEFENCE-11NOV.md
@@ -245,6 +247,7 @@ docs/cursor-work/NEXT-TASKS.md
 docs/cursor-work/PACKAGE-FEATURE-FORMULA.md
 docs/cursor-work/PLAN-3D-PARKED.md
 docs/cursor-work/PROMISES.md
+docs/cursor-work/READ-FIRST-FOUNDER-LAW.md
 docs/cursor-work/README.md
 docs/cursor-work/RULE-52-PROOF.md
 docs/cursor-work/RULE-52-REST-INVENTORY.md
@@ -390,4 +393,5 @@ docs/wire/25-account-recovery.md
 docs/wire/26-live-login-chat-call.md
 docs/wire/27-blueprint-match-1-31a.md
 docs/wire/28-org-calendar-contacts.md
+docs/wire/READ-FIRST-FOUNDER-LAW.md
 docs/wire/README.md

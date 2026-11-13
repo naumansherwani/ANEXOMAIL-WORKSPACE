@@ -1,6 +1,8 @@
 anexochat/00-FOUNDER-TECH-RULE.md
+anexochat/READ-FIRST-FOUNDER-LAW.md
 anexochat/README.md
 anexochat/docs/00-FOUNDER-TECH-RULE.md
+anexochat/docs/READ-FIRST-FOUNDER-LAW.md
 anexochat/docs/anexochat-blueprint-original-with-added-features.md
 anexochat/docs/anexochat-blueprint-original.md
 anexochat/docs/anexochat-file-engine.md
@@ -8,8 +10,10 @@ anexochat/docs/anexovideochat-turn.md
 anexochat/docs/caddy-anexochat.md
 anexochat/packages/00-FOUNDER-TECH-RULE.md
 anexochat/packages/ANEXOCHAT-PACKAGES-PHASEWISE.md
+anexochat/packages/READ-FIRST-FOUNDER-LAW.md
 anexochat/sql/00-FOUNDER-TECH-RULE.md
 anexochat/sql/CHECK_phase61.sql
+anexochat/sql/READ-FIRST-FOUNDER-LAW.md
 anexochat/sql/README.md
 anexochat/sql/anexochat_phase03_message_engine.sql
 anexochat/sql/anexochat_phase07_cinema_video.sql
@@ -532,6 +536,7 @@ docs/cursor-work/sql/tools/create_test_account.sql
 docs/packages/00-FOUNDER-TECH-RULE.md
 docs/packages/FEATURE-CATALOG.md
 docs/packages/GREEN-LEDGER.md
+docs/packages/READ-FIRST-FOUNDER-LAW.md
 docs/packages/README.md
 docs/packages/TRIAL-48H-DESIGN.md
 docs/packages/WIRE-AUDIT-26OCT.md
@@ -567,8 +572,10 @@ docs/packages/trial/FEATURES-AND-GATES.md
 docs/packages/trial/NO-MOCK-AND-ONBOARDING.md
 docs/packages/trial/README.md
 server/00-FOUNDER-TECH-RULE.md
+server/READ-FIRST-FOUNDER-LAW.md
 server/README.md
 server/accounts/00-FOUNDER-TECH-RULE.md
+server/accounts/READ-FIRST-FOUNDER-LAW.md
 server/accounts/create-accounts.sh
 server/accounts/create-accounts.ts
 server/anexochat.ts
@@ -576,9 +583,11 @@ server/awam-edge/.gitignore
 server/awam-edge/00-FOUNDER-TECH-RULE.md
 server/awam-edge/Cargo.lock
 server/awam-edge/Cargo.toml
+server/awam-edge/READ-FIRST-FOUNDER-LAW.md
 server/awam-edge/src/00-FOUNDER-TECH-RULE.md
 server/awam-edge/src/main.rs
 server/caddy/00-FOUNDER-TECH-RULE.md
+server/caddy/READ-FIRST-FOUNDER-LAW.md
 server/caddy/__pycache__/patch-main-caddyfile.cpython-313.pyc
 server/caddy/__pycache__/strip-dup-hosts.cpython-313.pyc
 server/caddy/aicrm.Caddyfile
@@ -595,6 +604,7 @@ server/caddy/patch-founder-host.py
 server/caddy/patch-main-caddyfile.py
 server/caddy/strip-dup-hosts.py
 server/config/00-FOUNDER-TECH-RULE.md
+server/config/READ-FIRST-FOUNDER-LAW.md
 server/config/ai-models.ts
 server/config/billing-products.test.ts
 server/config/billing-products.ts
@@ -603,6 +613,7 @@ server/deploy-brain.sh
 server/founder-dns/00-FOUNDER-TECH-RULE.md
 server/founder-dns/Cargo.lock
 server/founder-dns/Cargo.toml
+server/founder-dns/READ-FIRST-FOUNDER-LAW.md
 server/founder-dns/src/00-FOUNDER-TECH-RULE.md
 server/founder-dns/src/auth.rs
 server/founder-dns/src/lib.rs
@@ -613,6 +624,7 @@ server/founder-dns/src/zone.rs
 server/founder-dns/tests/00-FOUNDER-TECH-RULE.md
 server/founder-dns/tests/wire.rs
 server/gates/00-FOUNDER-TECH-RULE.md
+server/gates/READ-FIRST-FOUNDER-LAW.md
 server/gates/__pycache__/sfu-packet-proof.cpython-313.pyc
 server/gates/all-gates.sh
 server/gates/chat-gate.sh
@@ -626,11 +638,13 @@ server/gates/storage-gate.sh
 server/gates/videocall-gate.sh
 server/gates/web-gate.sh
 server/i18n/00-FOUNDER-TECH-RULE.md
+server/i18n/READ-FIRST-FOUNDER-LAW.md
 server/i18n/__pycache__/translate.cpython-313.pyc
 server/i18n/translate.py
 server/index.order.test.ts
 server/index.ts
 server/lib/00-FOUNDER-TECH-RULE.md
+server/lib/READ-FIRST-FOUNDER-LAW.md
 server/lib/analytics-gate.test.ts
 server/lib/analytics-gate.ts
 server/lib/auth-harden.test.ts
@@ -657,6 +671,7 @@ server/lib/supa.ts
 server/lib/webauthn.ts
 server/mail-worker.ts
 server/mail/00-FOUNDER-TECH-RULE.md
+server/mail/READ-FIRST-FOUNDER-LAW.md
 server/mail/attachments.test.ts
 server/mail/attachments.ts
 server/mail/deliver-to-supabase.ts
@@ -670,6 +685,7 @@ server/mail/remove-address.sh
 server/mail/sendmail.attach.test.ts
 server/mail/sendmail.ts
 server/routes/00-FOUNDER-TECH-RULE.md
+server/routes/READ-FIRST-FOUNDER-LAW.md
 server/routes/account-deletion.ts
 server/routes/admin.ts
 server/routes/ai-automation.ts
@@ -713,6 +729,7 @@ server/routes/trial.ts
 server/routes/workspace.ts
 server/rust/00-FOUNDER-TECH-RULE.md
 server/rust/Cargo.toml
+server/rust/READ-FIRST-FOUNDER-LAW.md
 server/rust/analytics_core.rs
 server/rust/analytics_glue.rs
 server/rust/attach_core.rs
@@ -814,13 +831,16 @@ server/rust/wsx_glue.rs
 server/rust/wtrpc_core.rs
 server/rust/wtrpc_glue.rs
 server/storage/00-FOUNDER-TECH-RULE.md
+server/storage/READ-FIRST-FOUNDER-LAW.md
 server/storage/mount-box.sh
 server/storage/register-box.sh
 sql/00-FOUNDER-TECH-RULE.md
+sql/READ-FIRST-FOUNDER-LAW.md
 sql/README.md
 sql/apply-all.sh
 sql/connect.sh
 sql/editor/00-FOUNDER-TECH-RULE.md
+sql/editor/READ-FIRST-FOUNDER-LAW.md
 sql/editor/anexochat_phase01_foundation.sql
 sql/editor/phase34_billing_support.sql
 sql/editor/phase38_movein_hardening.sql

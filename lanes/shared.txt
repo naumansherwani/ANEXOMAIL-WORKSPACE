@@ -6,10 +6,13 @@
 AGENTS.md
 CLAUDE.md
 LICENSE
+READ-FIRST-FOUNDER-LAW.md
 README.md
 anexomail inboxes to build/00-FOUNDER-TECH-RULE.md
+anexomail inboxes to build/READ-FIRST-FOUNDER-LAW.md
 anexomail inboxes to build/README.md
 banned-countries/00-FOUNDER-TECH-RULE.md
+banned-countries/READ-FIRST-FOUNDER-LAW.md
 banned-countries/README.md
 banned-countries/banned.json
 bun.lock
@@ -26,16 +29,19 @@ ecosystem.config.cjs
 eslint.config.js
 package.json
 portal/public/index.html
+public/READ-FIRST-FOUNDER-LAW.md
 public/apple-touch-icon.png
 public/favicon.svg
 public/icon-192.png
 public/icon-512.png
+public/kernel/READ-FIRST-FOUNDER-LAW.md
 public/kernel/anexo-kernel-0.15.0.wasm
 public/manifest.webmanifest
 public/robots.txt
 public/sw.js
 roadmap.md
 scripts/00-FOUNDER-TECH-RULE.md
+scripts/READ-FIRST-FOUNDER-LAW.md
 scripts/build-kernel.sh
 scripts/i18n-extract.mjs
 scripts/wire-audit.py
@@ -59,7 +65,9 @@ vite.config.ts
 web-wasm/00-FOUNDER-TECH-RULE.md
 web-wasm/Cargo.lock
 web-wasm/Cargo.toml
+web-wasm/READ-FIRST-FOUNDER-LAW.md
 web-wasm/src/00-FOUNDER-TECH-RULE.md
+web-wasm/src/READ-FIRST-FOUNDER-LAW.md
 web-wasm/src/action.rs
 web-wasm/src/ed.rs
 web-wasm/src/exec.rs
