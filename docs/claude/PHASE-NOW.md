@@ -1,0 +1,14 @@
+# PHASE NOW (ONE phase only; Claude opens THIS file first after any compaction / new chat). Written 13 Nov 2026 21:25 PKT, his order 21:14.
+## Phase: KP1 = PORTS / CADDY / SNI FRONT / UDP / DNS AUDIT (read-only), the gate in front of K8e (HTTP/3 only)
+## Advance technology of this phase
+HTTP/3 ONLY (no h2, no HTTP/1.1), QUIC on UDP 443 (anexomail-founder, quinn + h3, TLS 1.3 AES-256-GCM, X25519MLKEM768), WebTransport on UDP 4443, DNS HTTPS record (RFC 9460) alpn=h3, Alt-Svc 1 year persist. Everything else advance stays intact (Rust WASM kernel, kernel WebTransport RPC, DBSC, ML-DSA hybrid).
+## Summary (why)
+Port scares came from guessing. His server facts (his paste 13 Nov 20:49): udp 443 = anexomail-founder (HTTP/3, FOUNDER_H3_ADDR=[::]:443), udp 4443 = anexomail-founder (WebTransport), udp 3443 + 3501 = anexomail-rust, udp 18443 = caddy, tcp 8443 = founder TLS terminator. UFW has udp 443; 4443 not yet seen. DNS HTTPS record is missing. The old founder-h3-check.sh gave a FALSE STOP (ss cuts names at 15 chars).
+## Codes (detail)
+- `docs/cursor-work/server/founder-ports-audit.sh` (READ-ONLY, changes nothing): 7 parts: (1) real owner of tcp 443/8443/3210 and udp 443/4443/3443/18443 from /proc/<pid>/exe, exact-name checks for udp 443 + 4443; (2) every listener on those ports; (3) Caddy's own admin API listen addresses; (4) founder.env H3/TLS256/WT/FRONT ports only, secrets filtered; (5) journal lines (HTTP/3 ON, terminator, WebTransport, tcp closed); (6) dig HTTPS must name h3, A/AAAA compared with this server's own addresses; (7) firewall per port (udp 443 and udp 4443). Ends GO / STOP for K8e.
+- Sandbox-tested with a stub `ss` (parsing of `*:443`, `0.0.0.0:4443`, real name from /proc): works; ss itself is absent in the sandbox, the real proof is HIS output.
+- SERVER-FIRST gate (done, phase SF): serverfirst.py receipts, rules-gate "SERVER FIRST" + "H3 ONLY".
+## Plan (strict order, one at a time)
+1. KP1: he runs the audit, pastes the output (receipt recorded). 2. His DNS HTTPS record (Type HTTPS, Name founderworkspace, Priority 1, Target ., Value alpn="h3", TTL 300); audit again until GO. 3. K8e install (founder-install.sh), my live Chrome look: assets on h3. 4. KP2 UDP-blocked break-glass (SSH tunnel to 127.0.0.1:3210), tested at home. 5. QUI-H3 (E172 on server, Rust ledger-rows door, kernel chain hash). 6. QUI-H4, QPERF (E173), Q1d-1 ...
+## Rules that always apply (his words)
+Roman Urdu, short; ONE phase at a time; every doubt of 0.1% about the server = a read-only command to his server FIRST (SERVER-FIRST law, one year); K-series code never touched outside its own phase; no push/commit surprises: every server step is command-first; repo + state ledger + this file updated after every step; mobile 390 / tablet 820 / laptop 1200+ before any green; end every reply with the Rule-70 table + "Abhi code mein NAHI".

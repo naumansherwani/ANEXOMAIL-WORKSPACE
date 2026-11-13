@@ -1122,3 +1122,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 13 Nov 20:42: K8e registered in qstate (started).
 
 - 13 Nov 21:12: SF DONE: SERVER-FIRST law (serverfirst.py, receipt ledger, gates SERVER FIRST + H3 ONLY), TECH LAW text = HTTP/3 only with all other advance tech intact, order SF -> KP1 -> K8e install -> KP2 -> QUI-H3 -> QUI-H4 -> QPERF -> Q1d-1. E172 SQL (ledger rows door) is in the sandbox + this commit, proven by an independent re-hash (7 rows, 0 bad), NOT yet on his server.
+
+- 13 Nov 21:28: KP1 written: founder-ports-audit.sh (read-only: real owners from /proc, Caddy admin listen, founder ports, journal, dig HTTPS + A/AAAA vs this server, ufw/iptables udp 443 + 4443, GO/STOP for K8e); sandbox-tested with a stub ss; PHASE-NOW.md = the one place Claude opens first (wired into rules-read + SessionStart hook). Waits: his run of the audit + DNS HTTPS record.

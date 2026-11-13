@@ -14,6 +14,7 @@ if __name__ == "__main__":
     t = open("docs/claude/RESUME-POINT.md", errors="ignore").read().split("\n")
     i = next((k for k, l in enumerate(t) if "STATE AT" in l and l.startswith("##")), 0); print("\n##### RESUME-POINT state block"); print("\n".join(x[:300] for x in t[i:i + 8]))
     head("docs/claude/tech-contracts/CURRENT.md", 0, 20)
+    print("\n##### PHASE NOW (ONE phase, read first: docs/claude/PHASE-NOW.md)"); print(open("docs/claude/PHASE-NOW.md", errors="ignore").read()[:5000])
     print("\n##### HANDOFF LIVE (current step + his standing rules + tools; docs/claude/HANDOFF-LIVE.md)"); print(open("docs/claude/HANDOFF-LIVE.md", errors="ignore").read()[:7000])
     print("\n##### OPEN / OVERDUE technologies (TECH-LAW-GATE.json)")
     for c in json.load(open("docs/claude/TECH-LAW-GATE.json"))["checks"]:

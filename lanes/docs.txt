@@ -146,6 +146,7 @@ docs/claude/OFFICE-HR-ACCOUNTING-MIGRATION-28OCT.md
 docs/claude/ONE-ORDER-27OCT.md
 docs/claude/PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md
 docs/claude/PHASE-L-PLAN-12NOV.md
+docs/claude/PHASE-NOW.md
 docs/claude/PHASE-SUMMARY-WITH-AWAM-08NOV.md
 docs/claude/POLAR-CONTROL-PLANE-PLAN.md
 docs/claude/POLAR-COPY-V6-BASIC.md

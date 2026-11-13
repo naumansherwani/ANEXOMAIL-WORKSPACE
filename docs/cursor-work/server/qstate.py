@@ -95,5 +95,5 @@ if __name__ == "__main__":
         if c != "start" and not pr: sys.exit("FAIL: a proof / reason text is required")
         add(sys.argv[2], {"start": "started", "done": "done", "defer": "deferred"}[c], pr); print(block())
     elif c == "brief":
-        print("=== Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===\n" + block() + "\nRead " + RULES + " before any reply (his standing rules: Roman Urdu, one phase at a time, no history rewrite, no Co-Authored line, GREEN only with proof, Rule-70 table + 'Abhi code mein NAHI').")
+        print("=== PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===\n" + open(os.path.join(ROOT, "docs/claude/PHASE-NOW.md"), errors="ignore").read()[:2500] + "\n=== Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===\n" + block() + "\nRead " + RULES + " before any reply (his standing rules: Roman Urdu, one phase at a time, no history rewrite, no Co-Authored line, GREEN only with proof, Rule-70 table + 'Abhi code mein NAHI').")
     else: print(block()); print("\nRules/tools/server facts: " + RULES)

@@ -257,3 +257,8 @@ Proof: cargo test 390 pass incl. k8e_alpn_is_h3_only_and_tcp_speaks_no_http and 
 Technology: hash-chained SHA-256 receipt ledger (serverfirst.py, same design as the mail ledger and the Q state ledger), pre-commit gate rules in rules-gate.py ("SERVER FIRST", "H3 ONLY"), TECH LAW text updated to HTTP/3 only. No server code changes in this phase. TECH-LAW CHECKED.
 
 - 13 Nov 21:12: SF DONE: SERVER-FIRST law (serverfirst.py, receipt ledger, gates SERVER FIRST + H3 ONLY), TECH LAW text = HTTP/3 only with all other advance tech intact, order SF -> KP1 -> K8e install -> KP2 -> QUI-H3 -> QUI-H4 -> QPERF -> Q1d-1. E172 SQL (ledger rows door) is in the sandbox + this commit, proven by an independent re-hash (7 rows, 0 bad), NOT yet on his server.
+
+## KP1 CONTRACT 13 Nov 21:25 (ports / Caddy / UDP / DNS audit, read-only; his order 21:14: every 0.1% doubt about the server = a command on his server first)
+Technology: Bash read-only audit using /proc/<pid>/exe for real process names, Caddy admin API (read), dig HTTPS (RFC 9460) + A/AAAA vs own addresses, ufw/iptables per UDP port; gate for the K8e HTTP/3-only install. Changes nothing on the server. Source of truth for ports: his pastes (20:49 receipt 1) + SERVER-PORTS-RED-LINE-08NOV.md. TECH-LAW CHECKED.
+
+- 13 Nov 21:28: KP1 written: founder-ports-audit.sh (read-only: real owners from /proc, Caddy admin listen, founder ports, journal, dig HTTPS + A/AAAA vs this server, ufw/iptables udp 443 + 4443, GO/STOP for K8e); sandbox-tested with a stub ss; PHASE-NOW.md = the one place Claude opens first (wired into rules-read + SessionStart hook). Waits: his run of the audit + DNS HTTPS record.
