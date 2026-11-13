@@ -6,6 +6,7 @@ import { asSeal, asSignedView, judgeKey, judgePin, judgeSigned, ledgerGauge, loa
 import { fmtHM, fmtTime, fmtStamp } from "./city";
 import { asPortableView, judgePortable, type PortableVerdict } from "./portable";
 import { onLiveChange, useLive, type LiveStatus } from "./livefeed";
+import { pathLabel, pathState, pathSubscribe, STAGE_TEXT } from "./pathhealth"; // KP3 step 3: measured QUIC path health, shown as one additive row
 import { HealthOrb, type Tone } from "./Scene3D";
 import { OrbWhy } from "./OrbWhy";
 import { OrbLine } from "./OrbLine";
@@ -78,7 +79,7 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
   }, []);
   useEffect(() => { void run(); }, [run]);
   // 4b-3: the live stream. A real change in a source (tick `changed` / events frame) re-reads every number now instead of waiting.
-  const L = useLive(), again = useRef(false);
+  const L = useLive(), again = useRef(false), PH = useSyncExternalStore(pathSubscribe, pathState);
   useEffect(() => onLiveChange(() => { if (again.current) return; again.current = true; void run().finally(() => { again.current = false; }); }), [run]);
 
   const by = (p: string) => rows?.find((r) => r.ep.path === p && r.ep.method === "GET");
@@ -220,6 +221,8 @@ export function Surface({ d: d0, at, go }: { d: any; at: Date | string | number 
       text: !hg ? "Not answering" : !hg.connected ? hg.note || "Not connected" : hg.state === "warn" ? "A founder sign-in was seen on a user host" : hg.ready_to_enforce ? `Founder session made on the founder host${hg.last_founder_host_at ? `, ${fmtHM(hg.last_founder_host_at)}` : ""}` : hg.note || "No founder session recorded yet" },
     { name: "Live feed", state: LSTATE(L.status, lv), chip: LCHIP[L.status],
       text: !lv ? "Not answering" : lv.connected === false ? lv.note || "Not connected" : `Version ${lv.version ?? "?"}, ${(lv.sources || []).length} source${(lv.sources || []).length === 1 ? "" : "s"}${(lv.sources || []).some((x: any) => x.stale) ? ", some not updating" : ", all fresh"}${L.lastTickAt ? ` · last check ${fmtTime(new Date(L.lastTickAt))}${L.lastTickOk === false ? " (failed)" : ""}` : ""}` },
+    { name: "QUIC path", state: PH.up ? ((PH.avgMs ?? 0) > 400 ? "warn" : "ok") : PH.fail ? "warn" : "unknown", chip: pathLabel(PH),
+      text: PH.up ? (PH.samples ? `Lowest ${PH.minMs} ms (the network floor), average ${Math.round(PH.avgMs ?? 0)} ms over ${PH.samples} call${PH.samples === 1 ? "" : "s"}. Loss is not shown: the browser cannot measure it.` : "Session open, waiting for the first call to measure") : PH.fail ? `${STAGE_TEXT[PH.fail.stage]}. This is only what the browser saw; the cause is not guessed.` : "Opening the QUIC session" },
     { name: "Channels", state: !lv ? "fail" : !Array.isArray(lv.channels) ? "unknown" : lv.channel_chain?.ok === false ? "fail" : lv.channels.some((c: any) => c.state === "degraded" || c.looks_stale) ? "warn" : lv.channels.some((c: any) => c.state === "connected") ? "ok" : "unknown",
       chip: Array.isArray(lv?.channels) ? `${lv.channels.filter((c: any) => c.state === "connected").length} of ${lv.channels.length}` : undefined,
       text: !lv ? "Not answering" : !Array.isArray(lv.channels) ? "Channel list is installed with the E111 SQL step" : lv.channel_chain?.ok === false ? "History chain broken, do not trust channel states" : `${lv.channels.filter((c: any) => c.state === "connected").length} of ${lv.channels.length} connected${lv.channels.some((c: any) => c.state === "degraded" || c.looks_stale) ? ", one is not updating" : ""}${lv.channels.some((c: any) => c.state !== "connected") ? `. Wiring next: ${lv.channels.filter((c: any) => c.state !== "connected" && c.state !== "disabled").map((c: any) => c.label).join(", ")}` : ""}` },

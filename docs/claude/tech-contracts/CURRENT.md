@@ -366,9 +366,11 @@ MEASURED 14 Nov 02:30 in my Chrome 157: WebTransport.getStats is NOT available (
 | RTT = write -> first reply of every kernel stream (min = network floor), emitted by the host shim (kinds 9/10/11) | React-TS Worker host (kernel.host.ts) | BUILT + 8 bun tests, not live |
 | Failure STAGE: handshake_timeout (8 s, visible), connect_failed, closed (only an unasked close) | kernel.host.ts + pathhealth.ts | BUILT + tested |
 | pathhealth.ts store + exact label ("QUIC · 178 ms" / "No QUIC reply in 8 s · 5 s ago") | React-TS | BUILT + tested; NOT yet shown on screen |
-| the chip text on screen (additive, one line next to the existing Live chip, 390/820/1200+) | React-TS UI | WAITS his look at the mockup (UI law) |
+| the chip on screen: ONE additive row "QUIC path" in the Surface status list right after Live feed (same row component, so the same layout on 390/820/1200+; no existing row touched) | React-TS UI | BUILT 14 Nov 03:20 (index-BgGuGUyx), his word "step 3 jaldi complete kero" after the mockup; waits install + my Chrome look at 390/820/1200+ |
 | visible reconnect countdown + Cancel / Retry now | needs the kernel's retry schedule | kernel build, separate step |
 | QUIC keep-alive 10 s + migration ON (wt.rs quic_config_n, both endpoints) | Rust quinn | CONFIRMED in code; migration now explicit sc.migration(true); idle timeout 30 s |
 TECH-LAW CHECKED.
 
 - 14 Nov 2026 03:00 PKT: KP3 STEP 3 PATH HEALTH built (not live, no screen change yet): his haan on the alternative to the UDP-blocked chip. Measured in my Chrome 157: WebTransport.getStats does NOT exist, so RTT = write to first reply per kernel stream (host shim kinds 9/10/11), failure STAGE named (handshake_timeout 8 s, connect_failed, closed only if unasked), no loss % ever shown. pathhealth.ts + 8 bun tests, 263 tests pass, tsc clean, dist rebuilt. Server: QUIC keep-alive 10 s + migration confirmed, migration now explicit. The chip on screen waits his look at the mockup (UI law). TECH-LAW CHECKED
+
+- 14 Nov 2026 03:20 PKT: KP3 install of pre-connect + path-health logic + explicit migration DONE on his server (SF receipt 16); live bundle = repo build (index-DbflE30Q); manual new WebTransport dial still 539-557 ms as expected (pre-connect shortens the kernel's own start, not a fresh dial; not separately measurable from outside). Step 3 UI built on his order after the mockup: ONE additive row QUIC path (measured ms or named failure stage) after Live feed, no other row touched, 263 tests, tsc clean, dist index-BgGuGUyx. Not installed. TECH-LAW CHECKED
