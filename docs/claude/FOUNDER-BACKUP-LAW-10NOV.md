@@ -17,3 +17,9 @@
 
 ## Backup #2 — 10 Nov 2026 02:53 PKT (after the login rebuild + incident fix; the founder saw the site healthy 3 times)
 - Commit **3450d945**. Founder archive 694 files, SHA-256 `bbff9ff2d8adec6416e33e17fdde68ea4293a96f7262881f1c65784931b37d49`. Awam archive 1724 files, SHA-256 `87e92022d07f724087bb18d5a02edd38fe5d71a337c30524db7f3ae1c046937d`. Sent to him as two files. Restore point = this commit.
+
+6. **BACKUP RECORDS ARE KEPT FOREVER (his word 14 Nov 2026 03:00 PKT: "backup records hamesha rakho").** Every backup gets a numbered record in THIS file the same hour (commit, file count, SHA-256 of each archive, where it was delivered); a record is never deleted or shortened. Archives are built by the lane lists exactly as rule 1.
+
+## Backup #3 — 14 Nov 2026 03:00 PKT (end of KP3 step 3 code, before the install of the QUIC path row)
+- Commit **07699cdb**. Founder archive anexomail-founder-backup-20261114-0300-07699cdb.tar.gz: 894 files, SHA-256 `bce673bd35b2808ef9a8fc66382357c3cf34063804eaa9195c16a25a6f8e335b`. Awam archive anexomail-awam-backup-20261114-0300-07699cdb.tar.gz: 1949 files, SHA-256 `72b9d8256c3c11253c23c529905b1880a4ec25f97e723d42f6042dfd38ec449e`. Built from lanes/*.txt (founder = founder + shared + docs + lovable-founder; awam = awam + shared + docs + lovable-awam). Sent to him as files. Restore point = this commit on origin/main.
+
