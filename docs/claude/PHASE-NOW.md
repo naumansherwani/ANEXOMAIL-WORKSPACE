@@ -22,3 +22,7 @@ Roman Urdu, short; ONE phase at a time; every doubt of 0.1% about the server = a
 ## ALWAYS (his 13 Nov 21:54): the banned CDN/DNS-proxy vendor (docs/claude/FOUNDER-VENDOR-BAN-13NOV.md) is never named to him and never offered. The 21:48 reply offered it by mistake: RETRACTED. KP1 DNS answers: his Namecheap panel (HTTPS type?), or his own Rust authoritative DNS for the one subdomain `founderworkspace` delegated by NS (read-only port 53 check first). Caddy cannot publish DNS records.
 
 ## ALWAYS (his 13 Nov 21:59): no third-party vendor, lifetime. Allowed: Caddy, Namecheap (his hands), Hetzner, own Rust. Steps are given for HIS Namecheap panel and HIS server; he does them.
+
+## STATUS 13 Nov 22:08 PKT (KP1b)
+- His screenshots (22:03): Namecheap Add New Record dropdown = A, A+Dynamic, AAAA, ALIAS, CAA, CNAME, NS, SRV, TXT, URL Redirect. NO HTTPS TYPE. DECISION (Claude, he said "faisla tum ker lo"): his OWN Rust authoritative DNS for the ONE zone founderworkspace.anexomail.com, delegated by NS records at Namecheap (mail records untouched), no third-party vendor.
+- Step now: `founder-dns-audit.sh` (read-only, port 53 + DS + what the subdomain holds today). Next after GO: Rust DNS (tokio, UDP+TCP 53, HTTPS RR type 65 alpn=h3, A/AAAA/NS/SOA/CAA copy), contract in CURRENT.md first, sandbox-proven with dig-style tests; then his Namecheap steps (A record ns1, NS record for founderworkspace), then K8e.
