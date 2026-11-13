@@ -5,7 +5,7 @@ import { LogoMark } from "./Brand";
 import * as api from "./mail_api";
 import { MailCompose, UndoBar, type Start } from "./MailCompose";
 import { quoteReply, replySubject } from "./mail_pure";
-import { FOLDERS, ago, compact, fmtSize, glide, isGatedView, keyCmd, merge, pill, proofChip, hue, initials, matchRow, rowText, touchAction, verdicts, when, folderLabel, type Box, type Counts, type Lane, type Proof, type Row } from "./mail_pure";
+import { FOLDERS, ago, compact, fmtSize, glide, isGatedView, keyCmd, merge, pill, proofChip, ledgerChip, hue, initials, matchRow, rowText, touchAction, verdicts, when, folderLabel, type Box, type Counts, type Lane, type Proof, type Row } from "./mail_pure";
 import "./mail.css";
 
 // Q1c — the founder Mail page. Everything on it is read from the Rust mail doors (E167-E169): lanes, folder counts, rows, the ledger proof, the live channel.
@@ -86,7 +86,7 @@ function ProofChip({ p, busy }: { p: Proof | null; busy: boolean }) {
 export function MailView() {
   const reduce = !!useReducedMotion();
   const [boxes, setBoxes] = useState<Box[] | null>(null), [boxId, setBoxId] = useState(""), [conn, setConn] = useState<boolean | null>(null), [err, setErr] = useState("");
-  const [view, setView] = useState("inbox"), [rows, setRows] = useState<Row[]>([]), [more, setMore] = useState<{ ts: string; id: string } | null>(null), [loading, setLoading] = useState(false);
+  const [view, setView] = useState(() => { try { const v = window.sessionStorage.getItem("mail.openview"); window.sessionStorage.removeItem("mail.openview"); return v && FOLDERS.some((f) => f.key === v) ? v : "inbox"; } catch { return "inbox"; } }), [rows, setRows] = useState<Row[]>([]), [more, setMore] = useState<{ ts: string; id: string } | null>(null), [loading, setLoading] = useState(false);
   const [counts, setCounts] = useState<Counts | null>(null), [lanes, setLanes] = useState<Lane[] | null>(null), [ledgerHead, setLedgerHead] = useState<number | null>(null);
   const [sel, setSel] = useState<string | null>(null), [opened, setOpened] = useState<api.Opened | null>(null), [openErr, setOpenErr] = useState(""), [opening, setOpening] = useState(false);
   const [proof, setProof] = useState<Proof | null>(null), [proofBusy, setProofBusy] = useState(false), [chain, setChain] = useState<Proof | null>(null), [chainBusy, setChainBusy] = useState(false);
@@ -159,6 +159,8 @@ export function MailView() {
     window.addEventListener("keydown", onKey); return () => window.removeEventListener("keydown", onKey);
   }, [rows, sel, select, act]);
 
+  // QUI-H: the ledger is checked by itself when the mailbox opens and whenever the ledger head moves; no button to remember.
+  useEffect(() => { if (boxId) void verifyChain(); }, [boxId, ledgerHead]);   // eslint-disable-line react-hooks/exhaustive-deps
   async function verifyChain() { setChainBusy(true); setChain(null); try { setChain(await api.proof(boxId)); } catch { setChain(null); } setChainBusy(false); }
 
   const cur = rows.find((r) => r.id === sel) ?? null;
@@ -173,6 +175,7 @@ export function MailView() {
         <div className="mh-right">
           {box && <button type="button" className="mx-btn" onClick={() => setCompose({})} title="New email (c)">New email</button>}
           <PillBar box={box} bound={bound} h3={h3} />
+          {box && (() => { const c = ledgerChip(chain, chainBusy, ledgerHead); return <button type="button" className={`mx-chip lg ${c.tone}`} onClick={() => void verifyChain()} disabled={chainBusy} title={c.title} aria-label={c.title}><i aria-hidden="true" />{c.text}</button>; })()}
           <span className={`mh-live ${liveState}`} title="Live channel"><i aria-hidden="true" />{liveState === "live" ? "Live" : liveState === "reconnecting" ? "Reconnecting" : "Offline"}</span>
         </div>
       </header>
@@ -217,11 +220,6 @@ export function MailView() {
               <LogoMark size={56} />
               <h2>Select a message</h2>
               <p className="dim">Every message is sealed before it is stored. The server opens it only for you, only after the checks.</p>
-              <div className="mp-qa">
-                <button type="button" className="mx-btn" onClick={() => void verifyChain()} disabled={chainBusy}>{chainBusy ? "Checking…" : "Verify ledger anchor"}</button>
-                <button type="button" className="mx-btn alt" onClick={() => setView("vault")}><I k="vault" s={16} /> Open encrypted vault</button>
-              </div>
-              {chain && <p className={`mx-chain ${chain.chain_ok ? "ok" : "bad"}`} role="status"><i aria-hidden="true" />{chain.chain_ok ? `Mail ledger chain verified up to row #${chain.head_seq}.` : "The mail ledger chain FAILED its check."}{ledgerHead != null && <span> Head #{ledgerHead}.</span>}</p>}
             </div>
           )}
           {cur && (

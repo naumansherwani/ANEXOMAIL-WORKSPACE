@@ -82,6 +82,16 @@ export function proofChip(p: Proof | null | undefined): ProofChip {
   if (p.chain_ok_from_here === false) return { state: "broken", text: "Ledger chain broken", detail: [`Ledger row #${p.seq}`, "A later row fails its hash check."] };
   return { state: "verified", text: "Ledger anchor verified · SHA-256", detail: [`Ledger row #${p.seq}`, `Row hash: ${short(p.row_hash)}`, `Previous: ${short(p.prev_hash)}`, `Ciphertext SHA-256: ${short(p.body_sha256_ledger)}`, p.audit_seq ? `Founder audit anchor #${p.audit_seq}` : "Hash chain only: no audit batch yet, so no Merkle proof is claimed."] };
 }
+export type LedgerChip = { tone: "ok" | "bad" | "wait" | "off"; text: string; title: string };
+/** The passive mailbox ledger chip (QUI-H). "ok" ONLY when the server answered a ledger-scope proof and the chain is intact; a failed check is "bad" with the reason; nothing answered = "off", never a green tick.
+ *  busy: a check is running. head: the newest ledger row the lanes feed knows (shown when the proof has none). */
+export function ledgerChip(p: Proof | null | undefined, busy: boolean, head?: number | null): LedgerChip {
+  if (busy) return { tone: "wait", text: "Checking ledger…", title: "The mail ledger chain is being checked." };
+  if (!p || p.scope !== "ledger") return { tone: "off", text: "Ledger not checked", title: "The server did not return a ledger proof. Click to check again." };
+  if (p.chain_ok === false) return { tone: "bad", text: "Ledger chain FAILED", title: `A row fails its hash check${p.head_seq != null ? ` (head #${p.head_seq})` : ""}. Click to check again.` };
+  const n = p.head_seq ?? head ?? null;
+  return { tone: "ok", text: n != null ? `Ledger verified · #${n}` : "Ledger verified", title: `Mail ledger chain verified${n != null ? ` up to row #${n}` : ""} (SHA-256 hash chain). Click to check again.` };
+}
 export const short = (h: string | null | undefined) => (h && h.length > 20 ? `${h.slice(0, 10)}…${h.slice(-8)}` : h || "n/a");
 
 export type Pill = { quic: { ok: boolean; text: string }; dbsc: { ok: boolean; text: string }; seal: { ok: boolean; text: string } };

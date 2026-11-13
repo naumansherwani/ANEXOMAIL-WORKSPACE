@@ -226,3 +226,11 @@ STATE L-A: PLAN WRITTEN, no code yet. Full table: docs/claude/PHASE-L-PLAN-12NOV
 - 13 Nov 20:15: his order: backup on the server BEFORE the ledger-box hybrid (P1+P2). fmail-ui-backup.sh (copies live SPA + binary to /root/backups/ledger-hybrid-13nov with SHA-256 manifest) + fmail-ui-rollback.sh (verifies manifest, restores, restarts). Repo restore point = commit 9fe8155e. Hybrid build starts after his backup output; his word counts as the haan for P1+P2.
 
 - 13 Nov 20:10: his orders: QUI-H hybrid P1+P2 (backup done, building) and QPERF p90/p95/p99/p99.9 latency percentiles (SQL E172, calendar -> E173-E174) added to the qstate plan; after QUI-H and before Q1d-1.
+
+## QUI-H CONTRACT 13 Nov 20:15 (ledger-box hybrid P1+P2, his word 19:55; backup /root/backups/ledger-hybrid-13nov; restore = fmail-ui-rollback.sh / commit 9fe8155e)
+Technology: React 19 TS + Framer Motion + Radix (existing), kernel-verified signed founder responses (the mail proof door answers over the kernel channel and is signature-checked like every founder call), Bridge card = NEW file BridgeMailLedger.tsx + one-line mount in Bridge.tsx (Scene3D.tsx / BridgeLanes.tsx NOT edited).
+Behaviour: (1) Mailbox header shows a passive chip "Ledger verified up to #N": api.proof runs automatically when the mailbox opens and again when the ledger head moves; failure = red chip with the reason; a click re-checks. (2) The two big buttons leave the empty reading pane (vault stays in the folder list). (3) Bridge card "Mail ledger": head, verify now, counts, click a count = opens the mailbox on that folder. Mobile 390 / tablet 820 / 1200+ one build.
+HONEST GAP (registered, not hidden): the chain recompute is done by the server (fmail_proof), the answer is kernel-verified; hashing the whole chain INSIDE the browser WASM kernel (rows streamed to the kernel) = open item Q-ledger-kernel in TECH-LAW-GATE.json, never green until built.
+TECH-LAW CHECKED.
+
+- 13 Nov 20:40: QUI-H built + sandbox-proven (ledger chip auto-verify, Bridge Mail ledger card, empty pane slimmed; bun 259, tsc clean, 390/820/1280 clean). Gap Q-ledger-kernel registered. Waits his founder-install then my live Chrome look; rollback = fmail-ui-rollback.sh.

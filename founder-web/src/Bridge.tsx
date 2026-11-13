@@ -6,6 +6,7 @@ import type { Prof } from "./types";
 import { Surface } from "./Surface";
 import { BridgeMap, type Lane } from "./Scene3D";
 import { BridgeLanes } from "./BridgeLanes";
+import { BridgeMailLedger } from "./BridgeMailLedger";
 import { idleLabels } from "./laneflow_pure";
 import { filterNote, laneKey, showSection, type LaneKey } from "./bridgelane_pure";
 
@@ -103,6 +104,7 @@ export function BridgeView({ d, at, me, go }: { d: any; at: At; me: Prof | null;
       <Greeting t={t} at={at} me={me} />
       <BridgeLanes inbound={inbound} outbound={outbound} times={d?.lane_times} active={lane} onPick={setLane}><BridgeMap inbound={inbound} outbound={outbound} idle={idle} /></BridgeLanes>
       {lane && <div className="blane-chip" role="status"><span>Showing only: <b>{[...inbound, ...outbound].find((l) => laneKey(l.label) === lane)?.label}</b>{filterNote(lane) ? ` · ${filterNote(lane)}` : ""}</span><button type="button" className="dx-pill" onClick={() => setLane(null)}>Show everything</button></div>}
+      {!lane && <BridgeMailLedger />}
       {showSection(lane, "money") && subs?.connected && (subs.by_status?.past_due > 0 || (subs.by_product || []).some((x: any) => x.grace)) && <>
         <h2>Money exceptions</h2>
         <div className="ledger">{(subs.by_product || []).filter((x: any) => x.past_due || x.grace).map((x: any) => <div className="lrow" key={x.product}><i className="sdot warn" /><div><div className="lt">{cap(x.product)}</div><div className="ld">{x.past_due ? `${x.past_due} past due` : ""}{x.past_due && x.grace ? " · " : ""}{x.grace ? `${x.grace} in grace` : ""}</div></div><span /></div>)}</div>

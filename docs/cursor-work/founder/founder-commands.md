@@ -3228,3 +3228,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - 13 Nov 20:15: his order: backup on the server BEFORE the ledger-box hybrid (P1+P2). fmail-ui-backup.sh (copies live SPA + binary to /root/backups/ledger-hybrid-13nov with SHA-256 manifest) + fmail-ui-rollback.sh (verifies manifest, restores, restarts). Repo restore point = commit 9fe8155e. Hybrid build starts after his backup output; his word counts as the haan for P1+P2.
 
 - 13 Nov 20:10: his orders: QUI-H hybrid P1+P2 (backup done, building) and QPERF p90/p95/p99/p99.9 latency percentiles (SQL E172, calendar -> E173-E174) added to the qstate plan; after QUI-H and before Q1d-1.
+
+- 13 Nov 20:40: QUI-H built + sandbox-proven (ledger chip auto-verify, Bridge Mail ledger card, empty pane slimmed; bun 259, tsc clean, 390/820/1280 clean). Gap Q-ledger-kernel registered. Waits his founder-install then my live Chrome look; rollback = fmail-ui-rollback.sh.

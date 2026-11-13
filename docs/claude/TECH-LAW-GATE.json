@@ -254,6 +254,14 @@
    "status": "ok",
    "deadline": "2026-11-20",
    "why": "inbound mail TLS must negotiate X25519MLKEM768: Postfix 3.10.6 + OpenSSL 3.5.5 can, but tls_eecdh_auto_curves is pinned without ML-KEM (his server 13 Nov 04:35, local handshake failed)"
+  },
+  {
+   "id": "Q-ledger-kernel",
+   "file": "founder-web/src/mail_pure.ts",
+   "must": "KERNEL-CHAIN-VERIFY",
+   "status": "open",
+   "deadline": "2026-11-25",
+   "why": "QUI-H: the mail ledger chain is recomputed by the server (fmail_proof) and the answer is kernel-verified; hashing the whole chain inside the browser WASM kernel (rows streamed to it) is still to build"
   }
  ]
 }

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { normAddr, parseAddrs, composeProblem, sendTarget, undoLeft, replySubject, quoteReply, compact, glide, merge, pill, proofChip, rowText, verdicts, keyCmd, matchRow, initials, hue, when, ago, isGatedView, FOLDERS, type Row } from "./mail_pure";
+import { normAddr, parseAddrs, composeProblem, sendTarget, undoLeft, replySubject, quoteReply, compact, glide, merge, pill, proofChip, ledgerChip, rowText, verdicts, keyCmd, matchRow, initials, hue, when, ago, isGatedView, FOLDERS, type Row } from "./mail_pure";
 
 const R = (o: Partial<Row>): Row => ({ id: "a", thread_id: "t", folder: "inbox", direction: "in", received_ms: 1, size: 10, attach: 0, read: false, starred: false, draft: false, thread_count: 1, spf: "none", dkim: "none", dmarc: "none", arc: "none", lookalike: false, scan: "clean", tls: null, domain: null, seal_mode: "vault", gated: false, ...o });
 describe("numbers", () => {
@@ -78,4 +78,12 @@ describe("Q1d compose (pure)", () => {
     expect(replySubject("Hello")).toBe("Re: Hello"); expect(replySubject("RE: Hello")).toBe("RE: Hello");
     expect(quoteReply("Ali", "13 Nov", "a\nb")).toBe("\n\nOn 13 Nov, Ali wrote:\n> a\n> b");
   });
+});
+
+describe("ledgerChip (QUI-H)", () => {
+  const ok = { scope: "ledger" as const, chain_ok: true, head_seq: 8 };
+  test("verified only with an intact ledger proof", () => { expect(ledgerChip(ok, false).tone).toBe("ok"); expect(ledgerChip(ok, false).text).toBe("Ledger verified · #8"); });
+  test("a broken chain is bad", () => { const c = ledgerChip({ ...ok, chain_ok: false }, false); expect(c.tone).toBe("bad"); expect(c.text).toContain("FAILED"); });
+  test("no answer or a message-scope proof is never green", () => { expect(ledgerChip(null, false).tone).toBe("off"); expect(ledgerChip({ scope: "message" } as any, false).tone).toBe("off"); });
+  test("busy wins; head falls back to the feed", () => { expect(ledgerChip(null, true).tone).toBe("wait"); expect(ledgerChip({ scope: "ledger", chain_ok: true }, false, 5).text).toBe("Ledger verified · #5"); });
 });
