@@ -244,3 +244,9 @@ Numbering: E172 = ledger rows door (QUI-H3), E173 = QPERF, E174-E175 = calendar.
 Technology: Rust WASM kernel + Tokio/axum + PostgreSQL RLS + React 19 TS. TECH-LAW CHECKED.
 
 - 13 Nov 20:40: his founder-install OK. QUI-H1 + QUI-H2 DONE (my live Chrome, bundle index-b0IiA99: chip 'Ledger verified #8', Bridge Mail ledger card, Quarantined tap opens Mail on Quarantine). 390/820 live not possible with this browser (resize keeps viewport): sandbox measured, waits his phone screenshot. QUI-H3 Q-ledger-kernel contract written (SQL E172 rows door, Rust door, kernel SHA-256 chain recompute); QPERF moves to E173, calendar E174-E175. Heading-left CSS fix rebuilt.
+
+## K8e CONTRACT 13 Nov 20:40 (his order: HTTP/1.1 and h2 are gone for ever, HTTP/3 is the ONLY way in)
+Technology: Rust quinn + h3 (HTTP/3, QUIC, TLS 1.3 AES-256-GCM, X25519MLKEM768), ALPN h3 only (tls256::server_config), tcp 443 closed on purpose (tls256::tcp_closed), Alt-Svc h3 ma=31536000 persist=1, DNS HTTPS record (RFC 9460) alpn=h3 so a first visit needs no TCP. No hyper http1/h2 serving path remains on the public side. The loopback-only plain listener 127.0.0.1:3210 (health checks, installer, Caddy for the awam site) is internal and never public.
+Proof: cargo test 390 pass incl. k8e_alpn_is_h3_only_and_tcp_speaks_no_http and k8e_tcp_closed_drops_at_once. Safety: docs/cursor-work/server/founder-h3-check.sh (read-only GO/STOP: UDP owner, HTTP/3 ON, DNS HTTPS alpn=h3, firewall); rollback = fmail-ui-rollback.sh (binary + SPA backup). Risk said plainly: a network that blocks UDP 443 cannot reach the founder site any more. TECH-LAW CHECKED.
+
+- 13 Nov 20:40: K8e H3-ONLY written (his order: no HTTP/1.1, no h2): ALPN h3 only, tcp 443 closed on purpose, Alt-Svc 1 year persist, cargo 390 pass. Waits: his DNS HTTPS record alpn=h3, founder-h3-check.sh GO, then founder-install; then live Chrome must show h3 for assets. QUI-H3 next.

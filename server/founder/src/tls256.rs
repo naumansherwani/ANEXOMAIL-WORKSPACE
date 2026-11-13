@@ -24,7 +24,7 @@ fn provider(suites: Vec<SupportedCipherSuite>) -> Arc<CryptoProvider> {
     Arc::new(p)
 }
 
-/// Server side: TLS 1.3 only, ONE cipher suite (AES-256-GCM-SHA384); ALPN h2 first, http/1.1 fallback (K8a, 11 Nov 2026: his rule HTTP/3 primary, h2 + h1 fallback; h3 = K8b).
+/// Server side: TLS 1.3 only, ONE cipher suite (AES-256-GCM-SHA384); ALPN h3 ONLY (K8e, 13 Nov 2026, his order: HTTP/1.1 and h2 are removed for ever).
 pub fn server_config(cert_pem: &[u8], key_pem: &[u8]) -> Result<Arc<ServerConfig>, String> {
     let certs: Vec<CertificateDer<'static>> = CertificateDer::pem_slice_iter(cert_pem).collect::<Result<_, _>>().map_err(|e| format!("certificate: {e}"))?;
     if certs.is_empty() { return Err("certificate file has no certificate".into()); }
@@ -33,15 +33,31 @@ pub fn server_config(cert_pem: &[u8], key_pem: &[u8]) -> Result<Arc<ServerConfig
         .with_protocol_versions(&[&rustls::version::TLS13]).map_err(|e| e.to_string())?
         .with_no_client_auth()
         .with_single_cert(certs, key).map_err(|e| e.to_string())?;
-    c.alpn_protocols = vec![b"h2".to_vec(), b"http/1.1".to_vec()];
+    c.alpn_protocols = vec![b"h3".to_vec()];   // K8e: HTTP/3 is the only protocol; no h2, no http/1.1 anywhere
     Ok(Arc::new(c))
 }
 
-/// Serve `router` over TLS on an already bound listener with a FIXED configuration (tests and simple use).
-pub async fn serve(listener: TcpListener, cfg: Arc<ServerConfig>, router: axum::Router) { serve_store(listener, Arc::new(CertStore::fixed(cfg)), router).await }
+/// K8e (13 Nov 2026, his order: HTTP/1.1 AND h2 are gone for ever, HTTP/3 is the ONLY way in). The TCP side never speaks HTTP any more.
+/// PRODUCTION: `tcp_closed` accepts and drops at once (the browser's TCP attempt fails fast and it uses QUIC, found through the DNS HTTPS record `alpn=h3` or the 1-year Alt-Svc).
+pub async fn tcp_closed(listener: TcpListener) {
+    static DROPPED: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+    loop {
+        let Ok((tcp, _)) = listener.accept().await else { continue };
+        drop(tcp);
+        let n = DROPPED.fetch_add(1, std::sync::atomic::Ordering::Relaxed) + 1;
+        if n == 1 || n % 1000 == 0 { eprintln!("founder: tcp 443 is closed on purpose (HTTP/3 only), {n} tcp attempt(s) dropped so far"); }
+    }
+}
 
-/// K4.3: serve with a certificate store that can be swapped while running. Every NEW connection takes the store's current config; connections already open keep theirs.
-pub async fn serve_store(listener: TcpListener, store: Arc<CertStore>, router: axum::Router) { serve_store_px(listener, store, router, false).await }
+/// TESTS ONLY: a TLS 1.3 handshake acceptor (cipher / key-exchange / certificate-reload proofs) that answers NO HTTP at all.
+pub async fn serve(listener: TcpListener, cfg: Arc<ServerConfig>, _router: axum::Router) { serve_store(listener, Arc::new(CertStore::fixed(cfg)), _router).await }
+pub async fn serve_store(listener: TcpListener, store: Arc<CertStore>, _router: axum::Router) {
+    loop {
+        let Ok((tcp, _)) = listener.accept().await else { continue };
+        let acceptor = TlsAcceptor::from(store.current());
+        tokio::spawn(async move { let _ = tokio::time::timeout(Duration::from_secs(10), acceptor.accept(tcp)).await; });
+    }
+}
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 // K4.5 (founder, 8 Nov 2026): behind the SNI front every client would look like 127.0.0.1. The front sends a PROXY protocol v1 line first; the terminator reads it BEFORE the
@@ -83,7 +99,6 @@ pub fn parse_proxy_v1(b: &[u8]) -> Px {
 }
 
 /// FOUNDER_TLS_PROXY=on -> read the PROXY line from loopback peers. Default off.
-pub fn proxy_from_env() -> bool { std::env::var("FOUNDER_TLS_PROXY").map(|v| v.eq_ignore_ascii_case("on")).unwrap_or(false) }
 
 /// Decide the real client address of a fresh connection. Ok(addr) = go on with TLS (header bytes already consumed); Err = drop the connection.
 async fn real_client(tcp: &mut TcpStream, peer: std::net::SocketAddr) -> Result<std::net::SocketAddr, ()> {
@@ -110,26 +125,6 @@ async fn real_client(tcp: &mut TcpStream, peer: std::net::SocketAddr) -> Result<
 pub fn host_from_authority<B>(req: &mut axum::http::Request<B>) {
     if req.headers().contains_key(axum::http::header::HOST) { return; }
     if let Some(a) = req.uri().authority().and_then(|a| axum::http::HeaderValue::from_str(a.as_str()).ok()) { req.headers_mut().insert(axum::http::header::HOST, a); }
-}
-
-/// Same as `serve_store`; with `px` on, a loopback peer's PROXY v1 line gives the real client IP, which the app sees as `x-real-ip`.
-pub async fn serve_store_px(listener: TcpListener, store: Arc<CertStore>, router: axum::Router, px: bool) {
-    loop {
-        let Ok((mut tcp, peer)) = listener.accept().await else { continue };
-        let (acceptor, router) = (TlsAcceptor::from(store.current()), router.clone());
-        tokio::spawn(async move {
-            let client = if px { match real_client(&mut tcp, peer).await { Ok(a) => a, Err(()) => return } } else { peer };
-            if px && client != peer { static SEEN: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0); let n = SEEN.fetch_add(1, std::sync::atomic::Ordering::Relaxed) + 1; if n <= 5 || n % 1000 == 0 { eprintln!("founder: PROXY v1 accepted from {peer}: real client {client} (connection #{n})"); } } // proof line for the journal; quiet after the first five
-            let Ok(Ok(tls)) = tokio::time::timeout(Duration::from_secs(10), acceptor.accept(tcp)).await else { return };
-            let ip = client.ip().to_string();
-            let router = router.layer(axum::middleware::from_fn(move |mut req: axum::extract::Request, next: axum::middleware::Next| {
-                let ip = ip.clone();
-                async move { if let Ok(v) = axum::http::HeaderValue::from_str(&ip) { req.headers_mut().insert("x-real-ip", v); } host_from_authority(&mut req); next.run(req).await }
-            }));
-            let svc = hyper_util::service::TowerToHyperService::new(router);
-            let _ = hyper_util::server::conn::auto::Builder::new(hyper_util::rt::TokioExecutor::new()).serve_connection(hyper_util::rt::TokioIo::new(tls), svc).await; // K8a: h2 or h1 by ALPN
-        });
-    }
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -324,6 +319,7 @@ mod tests {
         Some((std::fs::read(c).ok()?, std::fs::read(k).ok()?))
     }
 
+
     async fn up(cert: &[u8], key: &[u8]) -> u16 {
         let l = TcpListener::bind("127.0.0.1:0").await.unwrap();
         let port = l.local_addr().unwrap().port();
@@ -350,23 +346,7 @@ mod tests {
         assert!(!p.ok && p.error.is_some() && p.cipher.is_none(), "{p:?}");
     }
 
-    /// K8a (11 Nov 2026): the terminator negotiates h2 when the client offers it, and the h2 connection really answers (a SETTINGS frame after the client preface); http/1.1 still works (test above).
-    #[tokio::test]
-    async fn the_terminator_speaks_h2_when_offered_and_http1_otherwise() {
-        let Some((c, k)) = test_cert() else { eprintln!("openssl missing: skipped"); return };
-        let port = up(&c, &k).await;
-        let root = CertificateDer::pem_slice_iter(&c).next().unwrap().unwrap();
-        let mut roots = RootCertStore::empty(); roots.add(root).unwrap();
-        let mut cfg = ClientConfig::builder_with_provider(provider(vec![AES256])).with_protocol_versions(&[&rustls::version::TLS13]).unwrap().with_root_certificates(roots).with_no_client_auth();
-        cfg.alpn_protocols = vec![b"h2".to_vec(), b"http/1.1".to_vec()];
-        let tcp = TcpStream::connect(("localhost", port)).await.unwrap();
-        let mut tls = TlsConnector::from(Arc::new(cfg)).connect(ServerName::try_from("localhost").unwrap(), tcp).await.unwrap();
-        assert_eq!(tls.get_ref().1.alpn_protocol(), Some(&b"h2"[..]));
-        tls.write_all(b"PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n").await.unwrap();
-        tls.write_all(&[0, 0, 0, 4, 0, 0, 0, 0, 0]).await.unwrap(); // empty SETTINGS frame
-        let mut hdr = [0u8; 9]; tls.read_exact(&mut hdr).await.unwrap();
-        assert_eq!(hdr[3], 4, "the first server frame must be SETTINGS, got {hdr:?}");
-    }
+
 
     #[test]
     fn h2_authority_becomes_the_host_header_and_a_real_host_is_never_overwritten() {
@@ -379,6 +359,38 @@ mod tests {
     }
 
     /// K8c: a client that offers ONLY X25519MLKEM768 completes the handshake and the group that was really negotiated is the post-quantum hybrid; a classic X25519-only client still works.
+    /// K8e (13 Nov 2026, his order): the server's only ALPN is h3, and the TCP side never answers HTTP. A client offering h2 or http/1.1 gets no_application_protocol; a client with no ALPN completes TLS and then gets nothing.
+    #[tokio::test]
+    async fn k8e_alpn_is_h3_only_and_tcp_speaks_no_http() {
+        let Some((c, k)) = test_cert() else { eprintln!("openssl missing: skipped"); return };
+        assert_eq!(server_config(&c, &k).unwrap().alpn_protocols, vec![b"h3".to_vec()]);
+        let port = up(&c, &k).await;
+        let root = CertificateDer::pem_slice_iter(&c).next().unwrap().unwrap();
+        let mut roots = RootCertStore::empty(); roots.add(root).unwrap();
+        for alpn in [vec![b"h2".to_vec(), b"http/1.1".to_vec()], vec![b"http/1.1".to_vec()], vec![]] {
+            let mut cfg = ClientConfig::builder_with_provider(provider(vec![AES256])).with_protocol_versions(&[&rustls::version::TLS13]).unwrap().with_root_certificates(roots.clone()).with_no_client_auth();
+            cfg.alpn_protocols = alpn.clone();
+            let tcp = TcpStream::connect(("localhost", port)).await.unwrap();
+            match TlsConnector::from(Arc::new(cfg)).connect(ServerName::try_from("localhost").unwrap(), tcp).await {
+                Err(_) => {}   // no_application_protocol
+                Ok(mut tls) => { let _ = tls.write_all(b"GET /healthz HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n").await; let mut out = String::new(); let _ = tls.read_to_string(&mut out).await; assert!(out.is_empty(), "TCP answered HTTP for alpn {alpn:?}: {out}"); }
+            }
+        }
+        // an untrusted certificate is still refused
+        let p = probe("localhost", port, Offer::Browser, None).await;
+        assert!(!p.ok, "an unknown certificate was accepted: {p:?}");
+    }
+
+    /// K8e production side: tcp_closed drops every TCP connection at once (no TLS bytes, no HTTP).
+    #[tokio::test]
+    async fn k8e_tcp_closed_drops_at_once() {
+        let l = TcpListener::bind("127.0.0.1:0").await.unwrap(); let port = l.local_addr().unwrap().port();
+        tokio::spawn(tcp_closed(l));
+        let mut t = TcpStream::connect(("127.0.0.1", port)).await.unwrap();
+        let mut buf = [0u8; 8]; let n = tokio::time::timeout(Duration::from_secs(3), t.read(&mut buf)).await.expect("not closed in 3 s").unwrap_or(0);
+        assert_eq!(n, 0, "tcp 443 sent bytes");
+    }
+
     #[tokio::test]
     async fn post_quantum_hybrid_group_is_negotiated_and_classic_clients_still_work() {
         let Some((c, k)) = test_cert() else { eprintln!("openssl missing: skipped"); return };
@@ -398,22 +410,6 @@ mod tests {
         assert_eq!(format!("{:?}", tls.get_ref().1.negotiated_key_exchange_group().unwrap().name()), "X25519");
     }
 
-    #[tokio::test]
-    async fn the_terminator_really_serves_the_app_and_refuses_an_untrusted_certificate() {
-        let Some((c, k)) = test_cert() else { eprintln!("openssl missing: skipped"); return };
-        let port = up(&c, &k).await;
-        let root = CertificateDer::pem_slice_iter(&c).next().unwrap().unwrap();
-        let mut roots = RootCertStore::empty(); roots.add(root).unwrap();
-        let cfg = ClientConfig::builder_with_provider(provider(vec![AES256])).with_protocol_versions(&[&rustls::version::TLS13]).unwrap().with_root_certificates(roots).with_no_client_auth();
-        let tcp = TcpStream::connect(("localhost", port)).await.unwrap();
-        let mut tls = TlsConnector::from(Arc::new(cfg)).connect(ServerName::try_from("localhost").unwrap(), tcp).await.unwrap();
-        tls.write_all(b"GET /healthz HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n").await.unwrap();
-        let mut out = String::new(); let _ = tls.read_to_string(&mut out).await;
-        assert!(out.starts_with("HTTP/1.1 200") && out.ends_with("ok"), "{out}");
-        // without the test root the self-signed certificate must NOT verify
-        let p = probe("localhost", port, Offer::Browser, None).await;
-        assert!(!p.ok, "an unknown certificate was accepted: {p:?}");
-    }
 
     #[test]
     fn config_errors_are_plain_and_the_default_is_off() {
@@ -537,28 +533,4 @@ mod tests {
         let mut rest = [0u8; 3]; tokio::io::AsyncReadExt::read_exact(&mut s, &mut rest).await.unwrap(); assert_eq!(rest, [0x16, 3, 1]);
     }
 
-    #[tokio::test]
-    async fn k45_the_app_sees_the_real_client_ip_and_a_forged_header_never_wins() {
-        let Some((c, k)) = test_cert() else { eprintln!("openssl missing: skipped"); return };
-        let l = TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let port = l.local_addr().unwrap().port();
-        let router = axum::Router::new().route("/ip", axum::routing::get(|h: axum::http::HeaderMap| async move { h.get("x-real-ip").and_then(|v| v.to_str().ok()).unwrap_or("-").to_string() }));
-        tokio::spawn(serve_store_px(l, Arc::new(CertStore::fixed(server_config(&c, &k).unwrap())), router, true));
-        let root = CertificateDer::pem_slice_iter(&c).next().unwrap().unwrap();
-        let mut roots = RootCertStore::empty(); roots.add(root).unwrap();
-        let conn = TlsConnector::from(Arc::new(ClientConfig::builder_with_provider(provider(vec![AES256])).with_protocol_versions(&[&rustls::version::TLS13]).unwrap().with_root_certificates(roots).with_no_client_auth()));
-        let ask = |prefix: &'static [u8]| { let conn = conn.clone(); async move {
-            let mut tcp = TcpStream::connect(("127.0.0.1", port)).await.unwrap();
-            tcp.write_all(prefix).await.unwrap();
-            let mut tls = conn.connect(ServerName::try_from("localhost").unwrap(), tcp).await.unwrap();
-            tls.write_all(b"GET /ip HTTP/1.1\r\nHost: localhost\r\nx-real-ip: 6.6.6.6\r\nConnection: close\r\n\r\n").await.unwrap();
-            let mut out = String::new(); let _ = tls.read_to_string(&mut out).await; out
-        } };
-        // fronted: the PROXY line carries the real client, the forged header from the client is overwritten
-        let a = ask(b"PROXY TCP4 198.51.100.7 10.0.0.1 5555 443\r\n").await;
-        assert!(a.ends_with("198.51.100.7"), "{a}");
-        // direct (no line): the peer address, the forged header is overwritten too
-        let b = ask(b"").await;
-        assert!(b.ends_with("127.0.0.1"), "{b}");
-    }
 }

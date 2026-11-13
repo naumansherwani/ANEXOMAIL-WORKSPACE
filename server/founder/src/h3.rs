@@ -20,8 +20,8 @@ const HEADER_WAIT: Duration = Duration::from_secs(10);
 const BODY_WAIT: Duration = Duration::from_secs(30);
 const HOP: [&str; 6] = ["connection", "keep-alive", "proxy-connection", "transfer-encoding", "upgrade", "te"];
 
-/// The Alt-Svc value that tells a browser "the same host speaks h3 on this UDP port" (24 h; refreshed on every answer).
-pub fn alt_svc_value(port: u16) -> String { format!("h3=\":{port}\"; ma=86400") }
+/// The Alt-Svc value that tells a browser "the same host speaks h3 on this UDP port" (K8e: 1 year + persist=1, so a browser keeps preferring h3 across restarts; refreshed on every answer).
+pub fn alt_svc_value(port: u16) -> String { format!("h3=\":{port}\"; ma=31536000; persist=1") }
 
 /// Response headers allowed on an HTTP/3 stream (no connection-specific headers, RFC 9114 §4.2).
 pub fn h3_response_headers(h: &axum::http::HeaderMap) -> axum::http::HeaderMap {
@@ -128,7 +128,7 @@ pub fn from_env() -> Option<Result<(SocketAddr, String), String>> {
 mod tests {
     use super::*;
     use rustls::pki_types::pem::PemObject;
-    #[test] fn alt_svc_names_the_udp_port() { assert_eq!(alt_svc_value(443), "h3=\":443\"; ma=86400"); }
+    #[test] fn alt_svc_names_the_udp_port() { assert_eq!(alt_svc_value(443), "h3=\":443\"; ma=31536000; persist=1"); }
     #[test] fn only_the_founder_host_is_served() { assert!(host_ok(Some("FounderWorkspace.anexomail.com"), "founderworkspace.anexomail.com")); assert!(!host_ok(Some("anexomail.com"), "founderworkspace.anexomail.com")); assert!(!host_ok(None, "x")); }
     #[test] fn connection_headers_never_go_on_an_h3_stream() {
         let mut h = axum::http::HeaderMap::new();

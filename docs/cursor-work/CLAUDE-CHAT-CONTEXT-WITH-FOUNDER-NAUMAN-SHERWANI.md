@@ -3119,3 +3119,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 13 Nov 20:12: his request: order with technology in front of each phase + where the P1/P2 advance code is, written to the repo: docs/claude/Q-ORDER-AND-TECH-13NOV.md (15-phase table, QUI-H file map, honest gaps Q-ledger-kernel / U1 Merkle).
 
 - 13 Nov 20:40: his founder-install OK. QUI-H1 + QUI-H2 DONE (my live Chrome, bundle index-b0IiA99: chip 'Ledger verified #8', Bridge Mail ledger card, Quarantined tap opens Mail on Quarantine). 390/820 live not possible with this browser (resize keeps viewport): sandbox measured, waits his phone screenshot. QUI-H3 Q-ledger-kernel contract written (SQL E172 rows door, Rust door, kernel SHA-256 chain recompute); QPERF moves to E173, calendar E174-E175. Heading-left CSS fix rebuilt.
+
+- 13 Nov 20:40: K8e H3-ONLY written (his order: no HTTP/1.1, no h2): ALPN h3 only, tcp 443 closed on purpose, Alt-Svc 1 year persist, cargo 390 pass. Waits: his DNS HTTPS record alpn=h3, founder-h3-check.sh GO, then founder-install; then live Chrome must show h3 for assets. QUI-H3 next.
