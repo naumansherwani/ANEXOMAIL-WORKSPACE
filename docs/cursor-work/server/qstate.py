@@ -17,7 +17,7 @@ BEG, END = "<!--QSTATE-->", "<!--/QSTATE-->"
 PLAN = [  # (id, title, advance technology)
  ("Q1b3-T1", "Postfix inbound TLS X25519MLKEM768 first", "Postfix 3.10 + OpenSSL 3.5, ML-KEM-768 hybrid, TLS 1.3 AES-256-GCM"),
  ("Q1b3-T2", "clamd AlertEncrypted + AlertExceedsMax", "ClamAV INSTREAM, fail-closed quarantine"),
- ("Q1b3-T3", "first real mail through the intake", "Postfix per-address LMTP RFC 2033, seal on arrival, ledger (proof deferred by him to Q1d)"),
+ ("Q1b3-T3", "first real mail through the intake", "Postfix per-address LMTP RFC 2033, ClamAV, seal on arrival, ledger; end-to-end self-test mails sent by Postfix itself (NOT deferred, his order 19:11)"),
  ("Q1b3-T4", "SQL E171: scan state 'opaque'", "PostgreSQL RLS, append-only ledger, selftest + CHECK"),
  ("Q1d-1", "DKIM key from Compose + DNS TXT", "Ed25519 + RSA DKIM, passkey touch (mail.key)"),
  ("Q1d-2", "FMAIL_SEND=on + real outgoing mail", "Rust Tokio SMTP, STARTTLS TLS 1.3 X25519MLKEM768, undo window, outgoing PQ TLS proof"),

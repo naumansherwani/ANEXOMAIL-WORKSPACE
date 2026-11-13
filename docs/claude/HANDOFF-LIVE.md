@@ -1,7 +1,7 @@
 # HANDOFF LIVE (printed by rules-read.py, the first command after every compaction / new chat). Written 13 Nov 2026 19:05 PKT. Update it with every step (rec.sh does the one-line parts; the STEP block below is edited by hand).
 
 ## STEP NOW = see the generated Q-SERIES STATE block at the bottom of this file (single source of truth: docs/claude/state/Q-STATE.jsonl, hash-chained; update it ONLY with `python3 docs/cursor-work/server/qstate.py start|done|defer <id> "<proof>"`).
-- His rule for green (13 Nov 19:06): the advance technology CODE installed and proven on HIS SERVER is what counts; a real mail arriving is proven later at its own turn (Q1d), it is not a blocker for Q1b-3.
+- His rule for green (13 Nov 19:06): the advance technology CODE installed and proven on HIS SERVER is what counts. CORRECTION 19:11: I wrongly DEFERRED T3 (first real mail); he never said that. T3 stays a required step: fmail-intake-selftest.sh sends 3 real mails through Postfix itself (plain, EICAR, encrypted-zip stub), no outside sender needed.
 - Phase order = the PLAN list in docs/cursor-work/server/qstate.py (Q1b-3 T4, Q1d, Q1b-4, Q3, MTA-STS/DANE, U1/U2, Q4, U5, Q1e).
 
 ## HIS STANDING RULES FOR THIS WORK (distilled; he is often angry, wants zero mistakes)
@@ -28,10 +28,10 @@
 
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-NOW: Q1b3-T4 - SQL E171: scan state 'opaque'  [PostgreSQL RLS, append-only ledger, selftest + CHECK]
+NOW: Q1b3-T3 - first real mail through the intake  [Postfix per-address LMTP RFC 2033, ClamAV, seal on arrival, ledger; end-to-end self-test mails sent by Postfix itself (NOT deferred, his order 19:11)]
 - [x] Q1b3-T1: Postfix inbound TLS X25519MLKEM768 first  (Postfix 3.10 + OpenSSL 3.5, ML-KEM-768 hybrid, TLS 1.3 AES-256-GCM)  PROOF: his output 13 Nov 18:5x: PQ client Negotiated TLS1.3 group X25519MLKEM768, classic X25519, default X25519MLKEM768; setting kept (c2b284fc..1b843b15)
 - [x] Q1b3-T2: clamd AlertEncrypted + AlertExceedsMax  (ClamAV INSTREAM, fail-closed quarantine)  PROOF: his output 13 Nov 18:5x: clamd PONG ~10 s, EICAR FOUND, clean OK, Heuristics.Encrypted.Zip FOUND
-- [~] Q1b3-T3: first real mail through the intake  (Postfix per-address LMTP RFC 2033, seal on arrival, ledger (proof deferred by him to Q1d))  PROOF: his order 13 Nov 19:06: technology on the server is what counts for Q1b-3; the first real mail is proven at its turn (Q1d). Server proof so far: intake ON 127.0.0.1:18025 after install, Postfix per-address entry applied, LMTP self-test founder 250 / unknown 550.
+- [>] Q1b3-T3: first real mail through the intake  (Postfix per-address LMTP RFC 2033, ClamAV, seal on arrival, ledger; end-to-end self-test mails sent by Postfix itself (NOT deferred, his order 19:11))  PROOF: REOPENED by his order 13 Nov 19:11: I had wrongly deferred it. Real end-to-end proof = fmail-intake-selftest.sh (3 mails sent by Postfix itself through transport_maps -> LMTP -> ClamAV -> seal -> DB), waits his run.
 - [ ] Q1b3-T4: SQL E171: scan state 'opaque'  (PostgreSQL RLS, append-only ledger, selftest + CHECK)
 - [ ] Q1d-1: DKIM key from Compose + DNS TXT  (Ed25519 + RSA DKIM, passkey touch (mail.key))
 - [ ] Q1d-2: FMAIL_SEND=on + real outgoing mail  (Rust Tokio SMTP, STARTTLS TLS 1.3 X25519MLKEM768, undo window, outgoing PQ TLS proof)
@@ -42,5 +42,5 @@ NOW: Q1b3-T4 - SQL E171: scan state 'opaque'  [PostgreSQL RLS, append-only ledge
 - [ ] Q4: kernel pqmail OpenPGP RFC 9980  (Rust WASM kernel ML-KEM-768 + X25519, ML-DSA-65 + Ed25519)
 - [ ] U5: Who-can-read-this sheet, Ctrl K mail actions, light theme (approved)  (Radix Dialog, command palette, React 19 TS)
 - [ ] Q1e: calendar E172-E173  (Rust + SQL RLS + React TS, same sealing)
-chain head: a90df9f34e41b14f (3 events)
+chain head: ad9918d4be8cca34 (4 events)
 <!--/QSTATE-->
