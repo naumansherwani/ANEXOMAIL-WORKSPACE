@@ -1192,3 +1192,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 14 Nov 2026 03:58 PKT: his order WRITTEN at the top of CLAUDE.md, PHASE-NOW, START-HERE, RESUME-POINT, founder-commands: never ask to commit (commit+push every step myself), server-command form, no unread server facts; ss receipt 21 recorded; unused live import removed (Rust release build OK); K8e = TCP accept-and-drop, not closed
 
 - 14 Nov 2026 04:00 PKT: his order WRITTEN at the top of 4 files: 0.1% doubt about his server = one read-only command, his paste, then the fact; never a guess
+
+- 14 Nov 2026 04:02 PKT: his curl on his server: TCP 443 founder host = TLS alert access_denied, http code 000 (K8e: TCP speaks no HTTP, confirmed REAL on his server); receipt 22
