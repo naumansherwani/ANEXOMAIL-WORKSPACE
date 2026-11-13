@@ -268,8 +268,8 @@ Technology: Bash read-only audit using /proc/<pid>/exe for real process names, C
 |---|---|---|---|
 | Rust + Tokio async runtime | server/founder-dns/ (new crate, not in the founder binary, no Bun/Node) | YES (13 Nov 22:40, sandbox) | cargo test 13/13 |
 | DNS wire format (hickory-proto), authoritative only, no recursion | founder-dns/src/auth.rs | YES (sandbox) | wire tests + independent dnspython client: other zones REFUSED, NXDOMAIN/NODATA carry SOA |
-| HTTPS RR type 65 `1 . alpn="h3"` (RFC 9460) | zone.rs | YES in code (sandbox: dnspython shows `HTTPS 1 . alpn="h3"` over UDP and TCP); live proof OPEN | dig +short HTTPS founderworkspace.anexomail.com on his server shows h3 |
-| UDP + TCP 53, EDNS0, TC bit, bound to explicit addresses (wildcard refused by code) | net.rs, main.rs | YES in code (sandbox); live proof OPEN | his ss output after install |
+| HTTPS RR type 65 `1 . alpn="h3"` (RFC 9460) | zone.rs | YES, LIVE on his server (his dig @62.238.98.98: HTTPS 1 . alpn="h3", UDP and TCP, 22:17); public DNS proof (via NS delegation) OPEN | dig +short HTTPS founderworkspace.anexomail.com on his server shows h3 |
+| UDP + TCP 53, EDNS0, TC bit, bound to explicit addresses (wildcard refused by code) | net.rs, main.rs | YES in code (sandbox); LIVE ON HIS SERVER (his output 13 Nov 22:17, SF receipt 5: ss shows founder-dns on 62.238.98.98:53 + [2a01:4f9:c014:5df6::1]:53 udp+tcp; outside-the-server proof after STEP B OPEN) | his ss output |
 | DNSSEC Ed25519 + NSEC3 | founder-dns/src/sign.rs | OPEN | dig +dnssec validates with the zone key |
 | DNS cookies (RFC 7873) + response rate limiting (slip) | auth.rs, rrl.rs | YES (sandbox, tests incl. spoofed-IP cookie) | cargo test |
 | PostgreSQL zone table + append-only hash-chain ledger | SQL E-number next free, sql-run, CHECK | OPEN | his CHECK output |
@@ -277,3 +277,5 @@ Technology: Bash read-only audit using /proc/<pid>/exe for real process names, C
 Rollback: remove the NS record at Namecheap; stop the unit. Server-first: nothing is opened or installed before his word + a read-only receipt.
 
 - 13 Nov 2026 22:15 PKT: KP1 DONE (his audit output, SF receipts 2-4). His Namecheap has NO HTTPS record type (screenshots 22:03). KP1b started: own Rust authoritative DNS for founderworkspace only, no third-party vendor (law + VENDOR-BAN-LIST gate). His port-53 audit output = GO (receipt 4): only systemd-resolved on 127.0.0.53/54, bind public addresses never wildcard; ns1/ns2.anexomail.com already A = 62.238.98.98. Contract KP1b in CURRENT.md. Waits: Rust DNS code, SQL, install with his word, Namecheap NS step, K8e, KP2.
+
+- 13 Nov 2026 22:25 PKT: KP1b STEP A DONE ON HIS SERVER (his output 22:17, SF receipt 5): founder-dns active (own service, user founder-dns), udp+tcp 53 on 62.238.98.98 + [2a01:4f9:c014:5df6::1]; his dig @62.238.98.98: HTTPS 1 . alpn=h3, A, AAAA, SOA, NS, REFUSED other zone, NXDOMAIN, TCP ok; firewall not opened, no delegation yet. STEP B script founder-dns-firewall.sh written (ufw 53 only to the two addresses). Waits: his STEP B run, his outside PowerShell proof, Namecheap NS step, DNSSEC, SQL zone ledger, K8e, KP2. WIRED: YES for the DNS service / REAL: after public delegation; TECH-LAW CHECKED
