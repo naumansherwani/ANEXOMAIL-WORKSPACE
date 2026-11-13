@@ -359,3 +359,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 13 Nov 19:25: his question on the ledger box: proposal docs/claude/MAILBOX-BRIDGE-LEDGER-PROPOSAL-13NOV.md (Bridge lane card P1 + slim empty state P2), waits his haan; E171 CHECK first line fixed.
 
 - 13 Nov 20:05: T4 DONE (his sql-run E171 + CHECK_E171 5/5 + founder-install; my live Chrome: Quarantined lane = 2, was 0). Q1b-3 intake = WIRED: YES / REAL: YES / TECH-LAW CHECKED (LMTP loopback RFC 2033, ClamAV INSTREAM fail-closed + opaque guard, AES-256-GCM seal, RLS + hash-chain ledger); mobile/tablet look of a real message still to do. Ledger-box P1+P2 = one hybrid (research in proposal doc), waits his haan. Next: Q1d-1 DKIM.
+
+- 13 Nov 20:15: his order: backup on the server BEFORE the ledger-box hybrid (P1+P2). fmail-ui-backup.sh (copies live SPA + binary to /root/backups/ledger-hybrid-13nov with SHA-256 manifest) + fmail-ui-rollback.sh (verifies manifest, restores, restarts). Repo restore point = commit 9fe8155e. Hybrid build starts after his backup output; his word counts as the haan for P1+P2.

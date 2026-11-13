@@ -559,6 +559,8 @@ docs/cursor-work/server/fmail-intake-postfix.sh,awam,"awam deploy / brain script
 docs/cursor-work/server/fmail-intake-selftest.sh,awam,"awam deploy / brain scripts"
 docs/cursor-work/server/fmail-intake-watch.sh,awam,"awam deploy / brain scripts"
 docs/cursor-work/server/fmail-postfix-pq.sh,awam,"awam deploy / brain scripts"
+docs/cursor-work/server/fmail-ui-backup.sh,awam,"awam deploy / brain scripts"
+docs/cursor-work/server/fmail-ui-rollback.sh,awam,"awam deploy / brain scripts"
 docs/cursor-work/server/folder-rule-sync.py,awam,"awam deploy / brain scripts"
 docs/cursor-work/server/founder-dbsc.sh,founder,"founder deploy tooling"
 docs/cursor-work/server/founder-device.sh,founder,"founder deploy tooling"
