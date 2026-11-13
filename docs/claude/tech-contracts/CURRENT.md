@@ -421,3 +421,9 @@ STEP 5 PLAN (14 Nov 2026 04:35 PKT, his ss list = receipt 21; WRITTEN BEFORE COD
 STEP 5 SHELVED (14 Nov 2026 04:31 PKT, his order): the plan above is NOT to be built unless he reopens it; udp 4443 stays as it is. KP3 is closed: steps 1,2,3,4,4b GREEN, step 5 closed by his order.
 
 - 14 Nov 2026 04:31 PKT: his order: KP3 step 5 DROPPED (nothing built, plan SHELVED in CURRENT.md, udp 4443 stays open and unused); KP3 closed; next KP2 laptop test (his hands), Q3, API-latency audit
+
+STEP 5 REOPENED (14 Nov 2026 04:51 PKT, his order, replaces the 04:31 shelving): plan A-D above stands, executed as the 6 steps at the top of CLAUDE.md. Step 1 (csp() self-only) done in main.rs.
+
+- 14 Nov 2026 04:55 PKT: his order: KP3 step 5 REOPENED, 6-step plan with technology per step at the top of 4 files; STEP 1 DONE in code: main.rs csp() = connect-src 'self' only, test passes; steps 2-6 open
+
+- 14 Nov 2026 04:56 PKT: CLAUDE.md law blocks compacted so the gate top-of-file check passes (full text stays in READ-FIRST-FOUNDER-LAW.md, PHASE-NOW, START-HERE); step 5 reopened, step 1 done (CSP self-only, test passes)

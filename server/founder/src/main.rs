@@ -63,16 +63,13 @@ use std::sync::Arc;
 use tokio::sync::RwLock;
 use tower_http::set_header::SetResponseHeaderLayer;
 
-/// The page CSP. `connect-src` is 'self' plus, ONLY when WebTransport is switched on (FOUNDER_WT_ADDR + FOUNDER_WT_HOST), that one exact origin
-/// https://<host>:<udp port> (K6): the browser may open its WebTransport session there and nowhere else. Nothing else is widened.
-fn csp_for(wt: Option<(&str, &str)>) -> String {
-    let extra = match wt { Some((host, port)) if !host.is_empty() && host.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'.' || b == b'-') && !port.is_empty() && port.bytes().all(|b| b.is_ascii_digit()) => format!(" https://{host}:{port}"), _ => String::new() };
-    format!("default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'{extra}; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'")
+/// The page CSP. KP3 step 5 (his order 14 Nov 2026): `connect-src` is 'self' ONLY. WebTransport and HTTP/3 live on the one UDP 443 endpoint of the SAME origin,
+/// so the page never needs another origin (the old https://<host>:4443 widening is gone, and FOUNDER_WT_* is no longer read here). Nothing is widened.
+fn csp() -> String {
+    "default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'".to_string()
 }
 fn csp_header() -> HeaderValue {
-    let (addr, host) = (std::env::var("FOUNDER_WT_ADDR").unwrap_or_default(), std::env::var("FOUNDER_WT_HOST").unwrap_or_default().to_ascii_lowercase());
-    let port = addr.rsplit_once(':').map(|(_, p)| p.to_string()).unwrap_or_default();
-    HeaderValue::from_str(&csp_for(Some((&host, &port)))).unwrap_or_else(|_| HeaderValue::from_static("default-src 'none'"))
+    HeaderValue::from_str(&csp()).unwrap_or_else(|_| HeaderValue::from_static("default-src 'none'"))
 }
 fn hdr(n: &'static str, v: &'static str) -> SetResponseHeaderLayer<HeaderValue> {
     SetResponseHeaderLayer::overriding(HeaderName::from_static(n), HeaderValue::from_static(v))
@@ -1113,12 +1110,14 @@ async fn main() {
 #[cfg(test)]
 mod tests {
     #[test]
-    fn csp_widens_connect_src_only_for_the_exact_webtransport_origin() {
-        assert!(csp_for(None).contains("connect-src 'self';"));
-        assert!(csp_for(Some(("", ""))).contains("connect-src 'self';"));
-        assert!(csp_for(Some(("f.example.com", "4443"))).contains("connect-src 'self' https://f.example.com:4443;"));
-        for (h, p) in [("f.example.com/evil", "4443"), ("f.example.com", "44 43"), ("f.example.com;x", "1"), ("*", "4443"), ("a b", "1"), ("f.example.com", "")] { assert!(csp_for(Some((h, p))).contains("connect-src 'self';"), "{h}:{p}"); }
-        assert!(csp_for(Some(("f.example.com", "4443"))).contains("frame-ancestors 'none'"));
+    fn csp_connect_src_is_self_only_even_if_the_old_wt_env_is_set() {
+        unsafe { std::env::set_var("FOUNDER_WT_ADDR", "0.0.0.0:4443"); std::env::set_var("FOUNDER_WT_HOST", "f.example.com"); }
+        let c = csp();
+        unsafe { std::env::remove_var("FOUNDER_WT_ADDR"); std::env::remove_var("FOUNDER_WT_HOST"); }
+        assert!(c.contains("connect-src 'self';"), "{c}");
+        assert!(!c.contains(":4443") && !c.contains("https://f.example.com"), "{c}");
+        assert!(c.contains("frame-ancestors 'none'") && c.contains("default-src 'none'"));
+        assert!(format!("{:?}", csp_header()).contains("connect-src 'self';"));
     }
     #[test]
     fn the_cc_prefix_is_stripped_only_when_it_is_the_prefix() {
