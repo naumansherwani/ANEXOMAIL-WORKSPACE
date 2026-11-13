@@ -117,7 +117,7 @@ export function MailView() {
   useEffect(() => { setRows([]); setMore(null); setSel(null); setOpened(null); setOpenErr(""); void loadList(); }, [boxId, view, loadList]);
   useEffect(() => { void loadCounts(); }, [loadCounts]);
 
-  // live channel (SSE now; the same frames ride WebTransport in Q3). Counts and lanes glide; an arrival refreshes the open list.
+  // live channel (signed GETs over the kernel WebTransport session every 5 s; a pushed WebTransport stream comes in Q3). Counts and lanes glide; an arrival refreshes the open list.
   useEffect(() => {
     if (!boxId) return;
     const stop = api.live(boxId, (m) => {

@@ -235,53 +235,7 @@ pub async fn vault_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::b
     match sb.rpc_msg("fmail_vault_set169", json!({"p_actor": uid, "p_mailbox": b, "p_thread": t, "p_vault": vault, "p_touch_hash": hash})).await { Ok(v) => crate::signed(&st, json!({"ok": true, "result": v})), Err(e) => pk::sql_err(e) }
 }
 
-/// GET /founder/v1/mail/stream?box=<uuid>: Server-Sent Events (the HTTP fallback of the live channel; WebTransport carries the same frames in Q3). One snapshot, then a frame only when the
-/// counts, lanes or ledger head CHANGED, plus an `arrival` frame when the inbox grew. Heartbeat 15 s, lifetime 10 min, the browser reconnects with Last-Event-ID.
-pub async fn stream_ep(State(st): State<S>, uri: Uri, h: HeaderMap) -> Response {
-    let c = match crate::authed(&st, &h).await { Ok(c) => c, Err(e) => return e.into_response() };
-    let b = match parse_box(uri.query()) { Ok(b) => b, Err(e) => return bad(e) };
-    let Some(sb) = st.sb.clone() else { return StatusCode::SERVICE_UNAVAILABLE.into_response() };
-    if let Err(r) = own(&sb, &c.sub, &b).await { return r; }
-    let Some(slot) = live::Slot::take(&live::hub()) else { return (StatusCode::SERVICE_UNAVAILABLE, "too many live streams").into_response() };
-    let (tx, rx) = tokio::sync::mpsc::channel::<axum::body::Bytes>(8);
-    tokio::spawn(async move {
-        let _slot = slot;
-        let end = tokio::time::Instant::now() + live::MAX_LIFETIME;
-        let (mut last, mut last_inbox, mut first) = (String::new(), -1i64, true);
-        let mut poll = tokio::time::interval(std::time::Duration::from_secs(3));
-        let mut hb = tokio::time::interval(live::HEARTBEAT);
-        hb.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Delay);
-        hb.tick().await;
-        loop {
-            tokio::select! {
-                _ = tokio::time::sleep_until(end) => return,
-                _ = tx.closed() => return,
-                _ = hb.tick() => { if tx.try_send(axum::body::Bytes::from(": hb\n\n")).is_err() { return; } }
-                _ = poll.tick() => {
-                    let (counts, feed) = tokio::join!(sb.rpc("fmail_counts169", json!({"p_mailbox": b})), sb.rpc("fmail_bridge_feed", json!({"p_hours": 24})));
-                    let (Some(counts), Some(feed)) = (counts, feed) else { continue };
-                    let data = json!({"counts": counts, "feed": feed}).to_string();
-                    if data == last { continue; }
-                    let inbox = counts["inbox"]["total"].as_i64().unwrap_or(0);
-                    let seq = feed["ledger_head"].as_i64();
-                    let arrived = !first && inbox > last_inbox;
-                    let sign = |d: &Value| serde_json::to_string(&crate::envelope(&st, d)).unwrap_or_default();
-                    let v: Value = serde_json::from_str(&data).unwrap_or(Value::Null);
-                    let frame = live::sse_frame(seq, if first { "snapshot" } else { "counts" }, &sign(&v));
-                    if tx.try_send(axum::body::Bytes::from(frame)).is_err() { return; }
-                    if arrived && tx.try_send(axum::body::Bytes::from(live::sse_frame(seq, "arrival", &sign(&json!({"inbox_total": inbox, "new": inbox - last_inbox}))))).is_err() { return; }
-                    last = data; last_inbox = inbox; first = false;
-                }
-            }
-        }
-    });
-    let mut res = axum::body::Body::from_stream(live::RxStream(rx)).into_response();
-    let hd = res.headers_mut();
-    hd.insert(axum::http::header::CONTENT_TYPE, axum::http::HeaderValue::from_static("text/event-stream"));
-    hd.insert(axum::http::header::CACHE_CONTROL, axum::http::HeaderValue::from_static("no-store"));
-    hd.insert(axum::http::HeaderName::from_static("x-accel-buffering"), axum::http::HeaderValue::from_static("no"));
-    res
-}
+// KP3 step 4 (14 Nov 2026, his word): the founder has NO Server-Sent-Events endpoint. The Mail live channel is signed GETs of /mail/counts + /mail/lanes over the kernel's WebTransport session; Q3 makes it a pushed WebTransport stream.
 
 #[cfg(test)]
 mod tests {

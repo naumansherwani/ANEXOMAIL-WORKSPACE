@@ -1,8 +1,7 @@
 // Q1c: the Mail page's only network door. GET answers are signature-checked by api.get (WASM kernel); the live stream frames are verified by the kernel too and dropped if they fail.
-import { get, post, openStream } from "./api";
-import { rpcAvailable, verifyBody } from "./kernel";
+import { get, post } from "./api";
+import { rpcAvailable } from "./kernel";
 import { prove } from "./passkey";
-import { takeFrames } from "./sse";
 import type { Box, Counts, Lane, Proof, Row, Sum } from "./mail_pure";
 
 const q = (o: Record<string, string | number | undefined | null>) => Object.entries(o).filter(([, v]) => v !== undefined && v !== null && v !== "").map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join("&");
@@ -66,30 +65,31 @@ export async function setVault(box: string, thread: string, vault: boolean): Pro
 }
 
 export type LiveMsg = { event: "snapshot" | "counts" | "arrival"; data: any };
-/** The live channel (SSE fallback of the QUIC channel; same frames). Every frame is verified by the kernel first. Returns stop(). Reconnects with a short back-off. */
+/** The Mail live channel. KP3 step 4 (14 Nov 2026, his word: no SSE for the founder): there is NO Server-Sent-Events stream any more. Counts and lanes are two signed GETs over the kernel's WebTransport API session
+ *  every 5 s while the tab is visible (each answer is signature-checked by the kernel inside api.get); an arrival = the inbox total grew. Phase Q3 replaces this with a pushed WebTransport stream. Returns stop(). */
+export const MAIL_POLL_MS = 5000;
 export function live(box: string, on: (m: LiveMsg) => void, state: (s: "live" | "reconnecting") => void): () => void {
-  const ac = new AbortController(); let lastId = 0, wait = 1000;
-  (async () => {
-    while (!ac.signal.aborted) {
+  let stopped = false, lastInbox = -1, first = true, last = "", timer: ReturnType<typeof setTimeout> | null = null, fails = 0;
+  const tick = async () => {
+    if (stopped) return;
+    if (!document.hidden) {
       try {
-        const res = await openStream(`/founder/v1/mail/stream?${q({ box })}`, lastId, ac.signal); state("live"); wait = 1000;
-        const rd = res.body!.getReader(), dec = new TextDecoder(); let buf = "";
-        for (;;) {
-          const { done, value } = await rd.read(); if (done) break;
-          buf += dec.decode(value, { stream: true }); const t = takeFrames(buf); buf = t.rest;
-          for (const f of t.frames) {
-            if (f.kind !== "frame") continue;
-            const v = await verifyBody(new TextEncoder().encode(f.data).buffer as ArrayBuffer, 120, true); if (!v.ok) continue;
-            if (f.id) lastId = Number(f.id) || lastId;
-            try { on({ event: f.event as LiveMsg["event"], data: JSON.parse(v.data) }); } catch { /* a frame that is not JSON is dropped */ }
+        const [c, l] = await Promise.all([counts(box), lanes()]); if (stopped) return;
+        if (c && l) {
+          fails = 0; state("live");
+          const data = { counts: c, feed: l }, key = JSON.stringify(data), inbox = Number((c as { inbox?: { total?: number } }).inbox?.total ?? 0);
+          if (key !== last) {
+            on({ event: first ? "snapshot" : "counts", data });
+            if (!first && lastInbox >= 0 && inbox > lastInbox) on({ event: "arrival", data: { inbox_total: inbox, new: inbox - lastInbox } });
+            last = key; lastInbox = inbox; first = false;
           }
-        }
-      } catch { /* network or sign-in trouble: back off below */ }
-      if (ac.signal.aborted) return; state("reconnecting");
-      await new Promise((r) => setTimeout(r, wait)); wait = Math.min(wait * 2, 15000);
+        } else { fails += 1; state("reconnecting"); }
+      } catch { fails += 1; state("reconnecting"); }
     }
-  })();
-  return () => ac.abort();
+    if (!stopped) timer = setTimeout(() => void tick(), fails ? Math.min(MAIL_POLL_MS * 2 ** Math.min(fails, 3), 30_000) : MAIL_POLL_MS);
+  };
+  void tick();
+  return () => { stopped = true; if (timer) clearTimeout(timer); };
 }
 
 // ================================================================== Q1d: compose, send, undo, drafts, DKIM (every call goes through the same kernel doors as the rest)

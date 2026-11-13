@@ -6,8 +6,8 @@
 import { useEffect, useSyncExternalStore } from "react";
 import { get, liveToken } from "./api";
 import { kernelLiveStart, wtSupported } from "./kernel";
-import { backoffMs, mergeEvents, type LiveEvent } from "./sse";
-export type { LiveEvent } from "./sse";
+import { backoffMs, mergeEvents, type LiveEvent } from "./livemerge";
+export type { LiveEvent } from "./livemerge";
 
 export type LiveStatus = "connecting" | "live" | "reconnecting" | "polling" | "paused";
 export type LiveState = {

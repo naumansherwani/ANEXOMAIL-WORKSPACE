@@ -143,7 +143,7 @@ founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
 founder-web/dist/assets/index-BrTqkftU.css
-founder-web/dist/assets/index-_LGoJYLw.js
+founder-web/dist/assets/index-CVaJk1v6.js
 founder-web/dist/assets/kernel.worker--gREvz7o.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
@@ -257,6 +257,7 @@ founder-web/src/lib/00-FOUNDER-TECH-RULE.md
 founder-web/src/lib/utils.ts
 founder-web/src/livefeed.test.ts
 founder-web/src/livefeed.ts
+founder-web/src/livemerge.ts
 founder-web/src/mail.css
 founder-web/src/mail_api.ts
 founder-web/src/mail_pure.test.ts
@@ -313,7 +314,6 @@ founder-web/src/signin_pure.test.ts
 founder-web/src/signin_pure.ts
 founder-web/src/snap_seal.test.ts
 founder-web/src/snap_seal.ts
-founder-web/src/sse.ts
 founder-web/src/styles.css
 founder-web/src/tailwind.css
 founder-web/src/types.ts

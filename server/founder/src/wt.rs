@@ -1,7 +1,7 @@
 //! K6 (founder lane, 9 Nov 2026): WebTransport (HTTP/3 over QUIC) for the founder live feed. Default OFF (needs FOUNDER_WT_ADDR).
 //!
 //! What it is: the SAME signed live frames the SSE stream (`/founder/v1/live/stream`) already sends, carried over ONE WebTransport bidirectional stream.
-//! Nothing is duplicated: the session calls the very same handler (`live_stream_ep`) and pipes its body into the QUIC stream, so the gate, the signing, the
+//! Nothing is duplicated: the session calls the very same handler (`live_stream_core`) and pipes its body into the QUIC stream, so the gate, the signing, the
 //! snapshot, the ticks, the 100-event catch-up, the slot limit and the 10-minute lifetime are exactly the SSE ones.
 //!
 //! Security shape (no loophole):

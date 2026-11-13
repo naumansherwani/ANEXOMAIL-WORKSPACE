@@ -522,10 +522,7 @@ async fn live_snapshot(sb: &data::Sb) -> Value {
     match sb.rpc("founder_live_snapshot", json!({})).await { Some(v) if v.is_object() => v, _ => live_missing() }
 }
 
-/// 4b-2: SSE stream of signed frames. Connect = `snapshot` frame (everything now), then a `tick` frame per tick (+ an `events` frame with the real changes
-/// since the last id when something changed), `: hb` heartbeat every 15 s. Ends after 10 minutes (the browser reconnects and is re-authorised).
-/// Needs the same token as every other endpoint; the SPA reads it with fetch (EventSource cannot send the Authorization header).
-async fn live_stream_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response { live_stream_core(st, h, "sse").await }
+// KP3 step 4: the HTTP SSE endpoint /founder/v1/live/stream is gone; live_stream_core below is called ONLY by the WebTransport handlers (wt.rs, h3.rs), with transport = "webtransport".
 
 /// The one live stream, whatever carries it: `transport` is "sse" (HTTP) or "webtransport" (QUIC, K6/wt.rs). It is a PARAMETER, never read from a header,
 /// so a client cannot label its own session.
@@ -898,7 +895,6 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/hostguard", get(hostguard_ep))
         .route("/founder/v1/tls", get(tls_ep))
         .route("/founder/v1/live", get(live_ep))
-        .route("/founder/v1/live/stream", get(live_stream_ep))
         .route("/founder/v1/audit/merkle", get(merkle_ep))
         .route("/founder/v1/audit/merkle/stats", get(merkle_stats_ep))
         .route("/founder/v1/audit/proof", get(merkle_proof_ep))
@@ -924,7 +920,6 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/mail/list", get(fmail_ep::list_ep))
         .route("/founder/v1/mail/lanes", get(fmail_ep::lanes_ep))
         .route("/founder/v1/mail/proof", get(fmail_ep::proof_ep))
-        .route("/founder/v1/mail/stream", get(fmail_ep::stream_ep))
         .route("/founder/v1/mail/open", axum::routing::post(fmail_ep::open_ep))
         .route("/founder/v1/mail/flag", axum::routing::post(fmail_ep::flag_ep))
         .route("/founder/v1/mail/move", axum::routing::post(fmail_ep::move_ep))
