@@ -83,3 +83,7 @@ MOBILE / TABLET / LAPTOP RULE (his 7 Nov 13:30 + 6 Nov 20:38, standing): ONE cod
 
 ## STATUS 14 Nov 00:15 PKT: UI FIX LIVE + 390 PROVEN (his install output + his phone screenshot 12:09, SF receipt 12). Bottom bar = Home, Bridge, Mail (3rd, selected), Finance, People, More, all labels fit; Mail folder row no longer overlaps (Inbox 1, Sent 0, Drafts 0 in a row, the rest scrolls sideways). Transport chips all green.
 - K8e / QUI-H UI still NOT GREEN: law needs 820 (tablet) too. Ask: his laptop Chrome F12 -> device toolbar -> iPad (820) screenshot of Mail and of the bottom bar. 1200+ = my Chrome 1536 look (h3, bundle = repo) is done earlier. Then KP2.
+
+## STATUS 14 Nov 00:35 PKT: WHERE WE STAND (his order "tarteeb send kero") + KP2 STARTED.
+- ORDER (docs/cursor-work/server/qstate.py PLAN): SF done, KP1 done, KP1b main goal done, QUI-H1/H2 done, K8e = installed + 390 + 1200 proven, 820 look pending (my Chrome cannot resize or open a popup at 820; his F12 iPad shot or his tablet is the proof; no false GREEN). KP2 = NOW (contract in CURRENT.md, kp2-audit.sh written, waits his run). Then QUI-H3 (E172 on his server, Rust door, kernel chain hash), QUI-H4, QPERF E173, Q1d-1 DKIM, Q1d-2, Q1b-4, Q3, Qtls, U1/U2, Q4, U5, Q1e (calendar). Back to D3 after Q. NS TTL + old A record go automatic after K8e GREEN + KP2 (no one-week wait).
+- His command for KP2 step 1: git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/kp2-audit.sh)

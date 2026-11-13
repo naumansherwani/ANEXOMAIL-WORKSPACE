@@ -301,3 +301,14 @@ Rollback: remove the NS record at Namecheap; stop the unit. Server-first: nothin
 - 14 Nov 2026 00:10 PKT: UI fix built (his haan): Mail folder row overlap at 390 fixed (mail.css), Mail is the 3rd mobile tab after Bridge (App.tsx TABS, ui.css 6 columns); bun 259 tests pass; sandbox 360/390: no overlap, 44 px, every tab label fits; bundle index-yWVGoTjQ.js. NOT installed yet: waits his founder-install + phone screenshot (390/820). TECH-LAW CHECKED
 
 - 14 Nov 2026 00:15 PKT: UI fix LIVE on his server (his founder-install output, SF receipt 12) and 390 PROVEN by his phone screenshot 12:09: bottom bar Home/Bridge/Mail/Finance/People/More, Mail folder row no overlap, chips green. 820 tablet look pending (F12 iPad on his laptop), 1200+ done (my Chrome 1536). Then K8e GREEN decision, KP2. TECH-LAW CHECKED
+
+## KP2 CONTRACT 14 Nov 2026 00:35 PKT (UDP-blocked network break-glass; his order 00:18 "KP2 shuru kero")
+Technology: Bash read-only audit (kp2-audit.sh) of the loopback listener 127.0.0.1:3210 + sshd effective config (sshd -T) + ufw; later his laptop test with an SSH local forward. HTTP/3 stays the only public protocol (no h2/h1 added back); the tunnel carries the loopback listener only and changes nothing public. Open questions to MEASURE, not assume: does the loopback listener answer for Host localhost:3210, do host-proof / DBSC / passkey (RP ID = founderworkspace.anexomail.com) work through a localhost origin, what CSP/HSTS the tunnelled browser enforces. If passkey sign-in cannot work on localhost, the answer is a documented limit (already-signed device only) or a design step, written here first. Changes nothing on the server in step 1. TECH-LAW CHECKED.
+
+| # | KP2 item | State |
+|---|---|---|
+| 1 | read-only audit script kp2-audit.sh | WRITTEN, waits his run |
+| 2 | his laptop SSH forward test | OPEN |
+| 3 | result + decision written here | OPEN |
+
+- 14 Nov 2026 00:35 PKT: KP2 STARTED: contract in CURRENT.md, read-only kp2-audit.sh written (loopback 3210, sshd forwarding, Host answers, headers), waits his run. K8e still not green: 820 look pending (my Chrome cannot resize/popup 820). Loophole ledger updated: DNS khatra closed, honest open list. TECH-LAW CHECKED

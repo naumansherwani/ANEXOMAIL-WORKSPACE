@@ -1148,3 +1148,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 14 Nov 2026 00:10 PKT: UI fix built (his haan): Mail folder row overlap at 390 fixed (mail.css), Mail is the 3rd mobile tab after Bridge (App.tsx TABS, ui.css 6 columns); bun 259 tests pass; sandbox 360/390: no overlap, 44 px, every tab label fits; bundle index-yWVGoTjQ.js. NOT installed yet: waits his founder-install + phone screenshot (390/820). TECH-LAW CHECKED
 
 - 14 Nov 2026 00:15 PKT: UI fix LIVE on his server (his founder-install output, SF receipt 12) and 390 PROVEN by his phone screenshot 12:09: bottom bar Home/Bridge/Mail/Finance/People/More, Mail folder row no overlap, chips green. 820 tablet look pending (F12 iPad on his laptop), 1200+ done (my Chrome 1536). Then K8e GREEN decision, KP2. TECH-LAW CHECKED
+
+- 14 Nov 2026 00:35 PKT: KP2 STARTED: contract in CURRENT.md, read-only kp2-audit.sh written (loopback 3210, sshd forwarding, Host answers, headers), waits his run. K8e still not green: 820 look pending (my Chrome cannot resize/popup 820). Loophole ledger updated: DNS khatra closed, honest open list. TECH-LAW CHECKED

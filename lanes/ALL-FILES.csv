@@ -614,6 +614,7 @@ docs/cursor-work/server/integrity-purge/anexomail-integrity-purge.timer,awam,"aw
 docs/cursor-work/server/integrity-purge/install.sh,awam,"awam deploy / brain scripts"
 docs/cursor-work/server/jwt-life-probe.sh,awam,"awam deploy / brain scripts"
 docs/cursor-work/server/kernel-check.sh,awam,"awam deploy / brain scripts"
+docs/cursor-work/server/kp2-audit.sh,awam,"awam deploy / brain scripts"
 docs/cursor-work/server/live-facts-2026-10-20.md,awam,"awam deploy / brain scripts"
 docs/cursor-work/server/login-probe.sh,awam,"awam deploy / brain scripts"
 docs/cursor-work/server/mail-cert/00-FOUNDER-TECH-RULE.md,awam,"awam deploy / brain scripts"
