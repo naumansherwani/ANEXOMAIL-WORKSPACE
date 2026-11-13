@@ -15,3 +15,6 @@ Namecheap BasicDNS shows no HTTPS record type in its docs (his screen decides). 
 - B. His own authoritative DNS in Rust (hickory-dns style, tokio, on his Hetzner server) for ONE subdomain only (`founderworkspace`), delegated from Namecheap with NS records; mail records stay at Namecheap untouched. Needs UDP+TCP 53 free on his server (port red line: read-only `ss` first).
 - C. Another registrar-independent authoritative DNS host that is NOT the banned vendor, only if he names it.
 Caddy cannot publish DNS records; it stays on 18443/80 and is not part of this answer.
+
+## WIDENED 13 Nov 2026 21:59 (his word): NO BUSINESS WITH ANY THIRD-PARTY VENDOR, LIFETIME
+Allowed only: **Caddy** (his web server), **Namecheap** (his registrar, he does the steps by hand), **Hetzner** (his server and Storage Box), and his own Rust code. Any other company is a vendor: Claude does not suggest it, does not put it in an option list, does not add it to code. Claude gives steps for HIS Namecheap panel and HIS server (Caddy where Caddy is the right tool), and he does them. When he names a vendor, Claude adds its lowercase name to `docs/claude/VENDOR-BAN-LIST.json` ("banned"); the VENDOR BAN gate reads that file and refuses any added line naming it.

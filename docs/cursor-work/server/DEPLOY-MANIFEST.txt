@@ -118,7 +118,7 @@ src/lib/settings.ts b6ed27fd6d2c994a
 src/components/app/settings/SettingsBits.tsx 34207b0ce33787a9
 server/rust/cal_core.rs 5770133e95524592
 server/rust/cal_glue.rs 1b9885a7994aeebe
-AGENTS.md 93f17ee44f9c704d
+AGENTS.md 07c113ba44e8ce83
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
@@ -946,8 +946,8 @@ founder-web/src/fonts/Inter-Bold.woff2 7a2cfbc25078d618
 founder-web/src/fonts/Inter-Medium.woff2 c8f84bf00cbd6136
 founder-web/src/fonts/Inter-Regular.woff2 21d73733fb1fbfe6
 founder-web/src/fonts/Inter-SemiBold.woff2 43443e801ec3cb75
-docs/cursor-work/server/rules-gate.py 5a9d5ee363f88ad2
-CLAUDE.md 4df04a430875746f
+docs/cursor-work/server/rules-gate.py 17b25640b7662a31
+CLAUDE.md 0f175c38d4892eef
 docs/claude/FOUNDER-KILLER-FEATURES-28OCT.md 9273a2bfb9183f48
 founder-web/src/cinema.css 312474c073e9860d
 docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md 9dbae25b3c61c93d
@@ -1188,12 +1188,12 @@ founder-web/src/passkey_pure.ts 18c84406d0b26eb9
 server/founder/src/passkey.rs fc1644aca0233454
 server/rust/j3_action_vectors.json d90c898ebb69d9ea
 web-wasm/src/action.rs eda7722b529a2887
-lanes/ALL-FILES.csv 8e899baaca72a8b9
+lanes/ALL-FILES.csv 2d6e3376f651b0a4
 lanes/awam.txt 63c4be756b518a94
-lanes/docs.txt 8298300e2897448f
+lanes/docs.txt 5cef02c5444c99cb
 lanes/founder.txt e09b5b1e18929883
 lanes/shared.txt da1e27665dfc38d1
-lovable-gold/README.md c3d87aaa606b971a
+lovable-gold/README.md 4fc9a6b5709c92e8
 docs/claude/FOUNDER-FLARE-J6-RESEARCH-03NOV.md 5e65d9f84cbbc643
 docs/cursor-work/sql/CHECK_E140.sql 0aa343c84820214f
 docs/cursor-work/sql/E140_founder_flare_push.sql 3c95ae9963ebd5bf

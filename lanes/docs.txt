@@ -180,6 +180,7 @@ docs/claude/TECH-STACK-BEAST.md
 docs/claude/TECHNOLOGY-MAP-27OCT.md
 docs/claude/TECHNOLOGY-PROOF-LEDGER-01NOV.md
 docs/claude/TLS-AES256-PLAN-01NOV.md
+docs/claude/VENDOR-BAN-LIST.json
 docs/claude/WORLD-CLOCK-BLUEPRINT.md
 docs/claude/awam-passkey-reference/00-FOUNDER-TECH-RULE.md
 docs/claude/awam-passkey-reference/E139_founder_webauthn_l3.sql.txt

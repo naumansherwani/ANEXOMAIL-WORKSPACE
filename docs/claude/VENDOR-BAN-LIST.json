@@ -1,0 +1,11 @@
+{
+ "banned": [
+  "cloudflare"
+ ],
+ "allowed": [
+  "Caddy (his web server)",
+  "Namecheap (his registrar)",
+  "Hetzner (his server and Storage Box)"
+ ],
+ "rule": "founder 13 Nov 2026 21:59: no business with any third-party vendor, lifetime. When he names a vendor, add its lowercase name to banned. Never name a banned vendor to him."
+}
