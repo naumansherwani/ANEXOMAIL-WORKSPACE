@@ -3286,3 +3286,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - 14 Nov 2026 02:10 PKT: KP3 latency fix INSTALLED (his output, SF receipt 15) and measured: new WebTransport session ~700 ms -> ~520 ms, h3 RTT ~185 ms is the floor. His 4-point latency list evaluated in CURRENT.md (0-RTT research first, /wt/core later, pre-connect after step 3, MTU idea rejected). KP3 steps 1+2 live; next step 3 honest QUIC-blocked status. TECH-LAW CHECKED
 
 - 14 Nov 2026 02:25 PKT: KP3 PRE-CONNECT BUILT (not live): the kernel Worker dials /wt/rpc in parallel with the wasm download, the host hands it to the kernel CONNECT (single use, 15 s, fallback fresh dial), 5 bun tests green, dist rebuilt (index-C_eAWYZJ). Web research on 0-RTT: no source says Chrome resumes WebTransport with early data, so no 0-RTT code until measured. Context updated for compaction (tech, mobile/tablet/laptop rules unchanged). Waits his founder-install + my Chrome timing. TECH-LAW CHECKED
+
+- 14 Nov 2026 02:40 PKT: KP3 roadmap status written in PHASE-NOW (steps 1+2 live, pre-connect built, step 3 design shown to him first per UI law, 4+5 after). TECH-LAW CHECKED
