@@ -142,8 +142,8 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-BmCdOllP.css
-founder-web/dist/assets/index-DOhUtV6G.js
+founder-web/dist/assets/index-BrTqkftU.css
+founder-web/dist/assets/index-yWVGoTjQ.js
 founder-web/dist/assets/kernel.worker-mprshus0.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js

@@ -86,7 +86,7 @@ html.slim .nv{width:44px;height:44px;justify-content:center;padding:0}html.slim 
   .titleblock h1,.bhead h1,.sethead h1{font-size:28px}
   .bsub{gap:4px 10px}
   .strip{grid-template-columns:minmax(0,1fr)}.cell{border-right:0;border-bottom:1px solid var(--line)}.cell:last-child{border-bottom:0}
-  .tabbar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;z-index:20;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));height:var(--tabh);padding:4px;background:rgba(16,19,26,.94);backdrop-filter:blur(14px);border:1px solid #2a3144;border-radius:22px;box-shadow:0 12px 36px rgba(0,0,0,.5)}
+  .tabbar{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));position:fixed;z-index:20;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));height:var(--tabh);padding:4px;background:rgba(16,19,26,.94);backdrop-filter:blur(14px);border:1px solid #2a3144;border-radius:22px;box-shadow:0 12px 36px rgba(0,0,0,.5)}
   .tabbar button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:48px;padding:0;background:none;color:var(--dim);font:500 11px Inter,sans-serif;border-radius:18px}
   .tabbar button[aria-current="page"]{background:var(--s2);color:var(--fg)}.tabbar button[aria-current="page"] svg{color:var(--ac)}
   .pgfoot{text-align:left}.tpop{position:fixed;left:12px;right:12px;top:64px;width:auto}

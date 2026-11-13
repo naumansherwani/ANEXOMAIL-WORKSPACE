@@ -46,7 +46,7 @@ function DeviceScreen({ code, revoked, retry }: { code: string | null; revoked: 
 const CC: [string, string][] = [["dashboard", "Dashboard"], ["bridge", "Bridge"], ...ORDER.map((k): [string, string] => [k, DECK_META[k].title]), ["audit", "Audit ledger"]];
 /** Every page the router knows (TanStack Router, hash history: #/finance). Unknown names redirect to the Dashboard (front page). */
 export const KNOWN = new Set([...CC.map((x) => x[0]), "profile", "settings", "devices"]);
-const TABS: [string, string][] = [["dashboard", "Home"], ["bridge", "Bridge"], ["finance", "Finance"], ["people", "People"]];
+const TABS: [string, string][] = [["dashboard", "Home"], ["bridge", "Bridge"], ["mail", "Mail"], ["finance", "Finance"], ["people", "People"]];
 
 /** Everything the page bodies need from the shell (profile, live bridge data, appearance). Provided by the shell, read by the routed pages. */
 type ShellData = { view: string; d: any; at: Date | null; prof: Prof | null; loadProf: () => Promise<void>; fx: boolean; setFx: (v: boolean) => void; slim: boolean; setSlim: (v: boolean) => void; err: string; setView: (v: string) => void; preview: Recipe | null; setPreview: (r: Recipe | null) => void };

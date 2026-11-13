@@ -164,3 +164,5 @@
 - 13 Nov 2026 23:58 PKT: K8e live Chrome look: founder site over h3 (13 resources h3; 4 fonts http/1.1 were cache entries, re-fetched all 6 = h3, 200), bundle index-DOhUtV6G = repo build, secure context; anexomail.com (awam) still 200 through the SNI front. NOT GREEN: needs his phone 390 / tablet 820 screenshot; KP2 next. SF receipt 11 = his install output. TECH-LAW CHECKED
 
 - 14 Nov 2026 00:05 PKT: his phone screenshot 390 (23:52): founder site loads, chips QUIC WebTransport / DBSC verified / AES-256 sealed / Ledger verified #8 all green. FINDING: Mail folder tab row labels overlap at 390 (my mail UI bug, needs his haan before the CSS fix). K8e not green until that and 820 are settled. NS records stay (permanent), TTL raise later. TECH-LAW CHECKED
+
+- 14 Nov 2026 00:10 PKT: UI fix built (his haan): Mail folder row overlap at 390 fixed (mail.css), Mail is the 3rd mobile tab after Bridge (App.tsx TABS, ui.css 6 columns); bun 259 tests pass; sandbox 360/390: no overlap, 44 px, every tab label fits; bundle index-yWVGoTjQ.js. NOT installed yet: waits his founder-install + phone screenshot (390/820). TECH-LAW CHECKED

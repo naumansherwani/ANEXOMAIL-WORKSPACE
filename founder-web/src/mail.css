@@ -95,7 +95,7 @@ button.ml-c{cursor:pointer}button.ml-c:hover{background:var(--surf2)}
 @media (max-width:760px){
   .mb{grid-template-columns:minmax(0,1fr)}
   .mr{position:static;width:auto;flex-direction:row;overflow-x:auto;padding:5px;scrollbar-width:none}.mr:hover,.mr:focus-within,.mr.pin{width:auto}
-  .mr-b{padding:0 12px}.mr-l{opacity:1;flex:none}.mr-lock{opacity:1}.mr-c{opacity:1}.mr-pin{display:none}.mr-b.on::after{display:none}
+  .mr-b{padding:0 12px;flex:none;white-space:nowrap}.mr-l{opacity:1;flex:none}.mr-lock{opacity:1}.mr-c{opacity:1}.mr-pin{display:none}.mr-b.on::after{display:none}
   .mb.has-sel .mr,.mb.has-sel .ml{display:none}.mb:not(.has-sel) .mp{display:none}.mp-back{display:inline-flex}.mp{min-height:0}.mp-subj{font-size:21px}
 }
 @media (prefers-reduced-motion:reduce){.mail *{transition:none!important;animation:none!important}}
