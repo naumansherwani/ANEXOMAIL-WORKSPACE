@@ -3310,3 +3310,7 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - 14 Nov 2026 03:58 PKT (his order, verbatim in substance): 'update this right now; I spent 3 hours on rules and server-command rules, I said it to the whole repo, write it at the top of every folder and place, and you still asked me again.' DONE: the FOUNDER LAW block (never ask to commit, server-command form, no unread server facts) is at the top of CLAUDE.md, PHASE-NOW.md, START-HERE-AFTER-COMPACTION.md, RESUME-POINT.md.
 
 - 14 Nov 2026 03:58 PKT: his order WRITTEN at the top of CLAUDE.md, PHASE-NOW, START-HERE, RESUME-POINT, founder-commands: never ask to commit (commit+push every step myself), server-command form, no unread server facts; ss receipt 21 recorded; unused live import removed (Rust release build OK); K8e = TCP accept-and-drop, not closed
+
+- 14 Nov 2026 04:00 PKT (his words): 'I said give a direct command on my server if there is 0.1% doubt, do not guess; why is it not written in the repo.' WRITTEN at the top of CLAUDE.md, PHASE-NOW.md, START-HERE-AFTER-COMPACTION.md, RESUME-POINT.md (FOUNDER LAW 14 NOV 04:00).
+
+- 14 Nov 2026 04:00 PKT: his order WRITTEN at the top of 4 files: 0.1% doubt about his server = one read-only command, his paste, then the fact; never a guess

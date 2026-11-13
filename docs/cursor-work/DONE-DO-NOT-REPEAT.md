@@ -2145,3 +2145,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 14 Nov 2026 04:15 PKT: his 03:48 word 'founder ke liye SSE bilkul nahi' WRITTEN: Rust SSE routes + handlers deleted (main.rs, fmail_ep.rs), browser SSE reader + parser deleted (api.ts openStream, sse.ts -> livemerge.ts), Mail live = signed GETs /mail/counts + /mail/lanes every 5 s over the kernel WebTransport session. Bundle index-CVaJk1v6 has no EventSource / text/event-stream; bun 264 tests pass, tsc clean. Rust build/tests were still running at commit time (result written next); not installed. TECH-LAW CHECKED
 
 - 14 Nov 2026 03:58 PKT: his order WRITTEN at the top of CLAUDE.md, PHASE-NOW, START-HERE, RESUME-POINT, founder-commands: never ask to commit (commit+push every step myself), server-command form, no unread server facts; ss receipt 21 recorded; unused live import removed (Rust release build OK); K8e = TCP accept-and-drop, not closed
+
+- 14 Nov 2026 04:00 PKT: his order WRITTEN at the top of 4 files: 0.1% doubt about his server = one read-only command, his paste, then the fact; never a guess
