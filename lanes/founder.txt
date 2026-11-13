@@ -46,6 +46,7 @@ docs/cursor-work/founder/tools/plan-surface-matrix.mjs
 docs/cursor-work/server/founder-dbsc.sh
 docs/cursor-work/server/founder-device.sh
 docs/cursor-work/server/founder-dns-audit.sh
+docs/cursor-work/server/founder-dns-install.sh
 docs/cursor-work/server/founder-h3-check.sh
 docs/cursor-work/server/founder-hostguard.sh
 docs/cursor-work/server/founder-install.sh

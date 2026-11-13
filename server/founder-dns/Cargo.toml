@@ -2,6 +2,7 @@
 name = "founder-dns"
 version = "0.1.0"
 edition = "2021"
+rust-version = "1.85"
 description = "KP1b: the founder's OWN authoritative DNS for ONE zone (founderworkspace.anexomail.com). Rust + tokio, no recursion, no third-party vendor."
 
 [dependencies]

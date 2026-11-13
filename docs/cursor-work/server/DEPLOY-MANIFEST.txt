@@ -1188,12 +1188,12 @@ founder-web/src/passkey_pure.ts 18c84406d0b26eb9
 server/founder/src/passkey.rs fc1644aca0233454
 server/rust/j3_action_vectors.json d90c898ebb69d9ea
 web-wasm/src/action.rs eda7722b529a2887
-lanes/ALL-FILES.csv 2c316979c51b8822
+lanes/ALL-FILES.csv 98f9328feb89479e
 lanes/awam.txt 8095248b06c0b68e
 lanes/docs.txt 5cef02c5444c99cb
-lanes/founder.txt 67cd8ba6d4dd3c94
+lanes/founder.txt 8f3c104a958f1d53
 lanes/shared.txt da1e27665dfc38d1
-lovable-gold/README.md 58852e056cd7f574
+lovable-gold/README.md ab241ce77a1f17b6
 docs/claude/FOUNDER-FLARE-J6-RESEARCH-03NOV.md 5e65d9f84cbbc643
 docs/cursor-work/sql/CHECK_E140.sql 0aa343c84820214f
 docs/cursor-work/sql/E140_founder_flare_push.sql 3c95ae9963ebd5bf

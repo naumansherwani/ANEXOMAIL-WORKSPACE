@@ -9,7 +9,7 @@ Receipts: docs/claude/state/SERVER-FIRST.jsonl, SHA-256 hash-chained like the Q 
 import hashlib, json, os, re, subprocess, sys, time
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 LED = os.path.join(ROOT, "docs/claude/state/SERVER-FIRST.jsonl"); FRESH = 6 * 3600
-SURFACE = [r"^server/founder/src/(main|tls256|h3|front|wt|wtrpc|fproxy|hostproof|dbsc)\.rs$", r"^docs/cursor-work/server/(founder-install|founder-host|geoblock|fmail-intake-postfix|fmail-postfix-pq|fmail-clamd-alerts|fmail-intake-on)\.sh$",
+SURFACE = [r"^server/founder/src/(main|tls256|h3|front|wt|wtrpc|fproxy|hostproof|dbsc)\.rs$", r"^docs/cursor-work/server/(founder-install|founder-dns-install|founder-host|geoblock|fmail-intake-postfix|fmail-postfix-pq|fmail-clamd-alerts|fmail-intake-on)\.sh$",
            r"(?i)caddy", r"(?i)ufw|firewall|iptables|nftables", r"(?i)^docs/claude/SERVER-PORTS-RED-LINE"]
 def sha(b): return hashlib.sha256(b).hexdigest()
 def events(): return [json.loads(l) for l in open(LED, encoding="utf-8")] if os.path.exists(LED) else []
