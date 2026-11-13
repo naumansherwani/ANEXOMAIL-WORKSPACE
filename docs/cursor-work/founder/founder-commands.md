@@ -3282,3 +3282,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - 14 Nov 2026 01:45 PKT: KP3 step 1 INSTALLED + PROVEN LIVE (his install output, SF receipt 14; my Chrome WebTransport to /wt/live on UDP 443: ready 868 ms, supports-unreliable, bad token ERR 401). Step 2 code done + built: kernel RPC and live feed use same-origin https://location.host; tsc clean, 259 bun tests pass. Not installed yet. TECH-LAW CHECKED
 
 - 14 Nov 2026 02:00 PKT: KP3 step 2 INSTALLED + live look (bundle index-Ddm8jgPK, chips green, no :4443 request). Latency measured: h3 RTT ~175 ms, new WebTransport session ~700 ms (4 RTT); Retry now only under handshake flood (saves 1 RTT), 394 tests, not installed. TECH-LAW CHECKED
+
+- 14 Nov 2026 02:10 PKT: KP3 latency fix INSTALLED (his output, SF receipt 15) and measured: new WebTransport session ~700 ms -> ~520 ms, h3 RTT ~185 ms is the floor. His 4-point latency list evaluated in CURRENT.md (0-RTT research first, /wt/core later, pre-connect after step 3, MTU idea rejected). KP3 steps 1+2 live; next step 3 honest QUIC-blocked status. TECH-LAW CHECKED

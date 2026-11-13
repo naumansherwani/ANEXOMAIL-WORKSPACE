@@ -338,3 +338,15 @@ Side notes from his answer: a MASQUE / WireGuard UDP tunnel is the future UDP-bl
 - 14 Nov 2026 01:45 PKT: KP3 step 1 INSTALLED + PROVEN LIVE (his install output, SF receipt 14; my Chrome WebTransport to /wt/live on UDP 443: ready 868 ms, supports-unreliable, bad token ERR 401). Step 2 code done + built: kernel RPC and live feed use same-origin https://location.host; tsc clean, 259 bun tests pass. Not installed yet. TECH-LAW CHECKED
 
 - 14 Nov 2026 02:00 PKT: KP3 step 2 INSTALLED + live look (bundle index-Ddm8jgPK, chips green, no :4443 request). Latency measured: h3 RTT ~175 ms, new WebTransport session ~700 ms (4 RTT); Retry now only under handshake flood (saves 1 RTT), 394 tests, not installed. TECH-LAW CHECKED
+
+## KP3 LATENCY NOTES 14 Nov 2026 02:10 PKT (his order "50 ms to 200 ms" + his pasted 4-point list; MEASURED, not assumed)
+Technology: Rust quinn/h3 server + kernel WebTransport client; no new protocol. Measured from my Chrome to Hetzner: one request on an open h3 connection = ~185 ms (the network round trip = the floor per call from here); a NEW WebTransport session was ~700 ms, after the adaptive QUIC Retry fix (installed, SF receipt 15) it is ~520 ms (3 round trips). The kernel keeps ONE long session, so each API call is one round trip.
+| # | latency idea (his list) | verdict | State |
+|---|---|---|---|
+| 1 | QUIC 0-RTT resumption | possible only for replay-safe reads; needs rustls max_early_data + quinn into_0rtt and a measurement that Chrome really resumes WebTransport with it; today's config says no 0-RTT on purpose (replay risk) | OPEN, research + measure first |
+| 2 | one multiplexed /wt/core session (live + rpc) | valid design, saves a second handshake (not time to first data: the two open in parallel); protocol change = its own phase | OPEN, after KP3 step 4 |
+| 3 | pre-connect while the WASM loads | valid and cheap: a tiny first script (page CSP forbids inline script) that starts the session early | OPEN, after step 3 |
+| 4 | initial_mtu 1350 for the PQ ClientHello | NOT valid: the QUIC Initial minimum is 1200 and a bigger ClientHello is split over Initial packets without an extra round trip | REJECTED (measure first if he insists) |
+TECH-LAW CHECKED.
+
+- 14 Nov 2026 02:10 PKT: KP3 latency fix INSTALLED (his output, SF receipt 15) and measured: new WebTransport session ~700 ms -> ~520 ms, h3 RTT ~185 ms is the floor. His 4-point latency list evaluated in CURRENT.md (0-RTT research first, /wt/core later, pre-connect after step 3, MTU idea rejected). KP3 steps 1+2 live; next step 3 honest QUIC-blocked status. TECH-LAW CHECKED
