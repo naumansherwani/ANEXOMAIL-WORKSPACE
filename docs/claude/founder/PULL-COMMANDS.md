@@ -1086,3 +1086,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Q1b-3 audit 13 Nov 04:26: 2 loopholes in our intake fixed in Rust (skipped went to inbox; encrypted ZIP/PDF/Office trusted as clean), crate tests for fmail_in 11 pass; fmail-intake-audit.sh (read-only clamd limits, EICAR, Postfix/OpenSSL PQ handshake) written; residual encrypted 7z/RAR needs clamd AlertEncrypted (his haan). Not on his server yet.
 
 - Q1b-3 audit result 13 Nov 04:35 from his server: fixes L1+L2 installed (391 tests, healthz 200); EICAR = FOUND; clamd AlertEncrypted/AlertExceedsMax unset; Postfix 3.10.6 + OpenSSL 3.5.5 but tls_eecdh_auto_curves has no ML-KEM so inbound PQ handshake failed = open gap Q-in-tls-pq. Tomorrow evening T1 Postfix curves, T2 clamd alerts, T3 his real test mail, T4 E171; Q1b-3 not REAL until T3.
+
+- Q1b-3 T1 started 13 Nov 18:41 (his big haan 18:40 for T1-T4): fmail-postfix-pq.sh written (tls_eecdh_auto_curves with X25519MLKEM768 first, 3 handshake proofs, auto rollback); contract in CURRENT.md; waits his run.

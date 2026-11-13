@@ -46,3 +46,5 @@ TOMORROW EVENING, in this order, each needs his haan because awam shares the Pos
  T3 his real test mail from his other address (1d), then 1e live look 390/820/1200 + U1.
  T4 SQL E171: scan state 'opaque'.
 Q1b-3 is NOT REAL until T3 is proven. Q1d (DKIM key + FMAIL_SEND) comes after, step 2.
+
+## HIS BIG HAAN 13 Nov 18:40 PKT for T1, T2, T3, T4 (one by one, in order, each with advance technology + time). T1 started 18:40 (fmail-postfix-pq.sh written, waits his run). INBOUND-TLS-PQ-DONE is written here only after his output shows 'Negotiated TLS1.3 group: X25519MLKEM768'.
