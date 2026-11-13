@@ -18,3 +18,5 @@ Roman Urdu, short; ONE phase at a time; every doubt of 0.1% about the server = a
 
 ## STATUS 13 Nov 21:55 PKT
 - His dig (SF receipt 3): NS = dns1/dns2.registrar-servers.com (Namecheap BasicDNS); HTTPS record empty at 1.1.1.1. Namecheap docs list no HTTPS/SVCB type (not 100% sure; his screen decides: Advanced DNS > Add New Record dropdown). LOOPHOLE: tcp 443 closed + no HTTPS RR = new browsers cannot reach the site. K8e install HELD. Options for him: 1) DNS to Cloudflare DNS-only (own phase, full record dump first), 2) delegate only founderworkspace, 3) keep tcp 443 (breaks his H3-only order, needs his word).
+
+## ALWAYS (his 13 Nov 21:54): the banned CDN/DNS-proxy vendor (docs/claude/FOUNDER-VENDOR-BAN-13NOV.md) is never named to him and never offered. The 21:48 reply offered it by mistake: RETRACTED. KP1 DNS answers: his Namecheap panel (HTTPS type?), or his own Rust authoritative DNS for the one subdomain `founderworkspace` delegated by NS (read-only port 53 check first). Caddy cannot publish DNS records.

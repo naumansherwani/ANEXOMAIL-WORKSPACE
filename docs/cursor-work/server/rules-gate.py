@@ -68,7 +68,7 @@ if big and "docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
     fail("context", "code changed but CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md (new checkpoint) not updated in this commit")
 for top in ("AGENTS.md", "CLAUDE.md"):
     try:
-        head = open(top, encoding="utf-8").read(14000)
+        head = open(top, encoding="utf-8").read(15000)
     except OSError:
         head = ""
     if "ONE WEBSITE, ONE BUILD" not in head or "RULE 34" not in head or "LIVE CHROME = REPO" not in head or "SHARED-CODE RULE" not in head or "NEXT PHASE + ITS TECHNOLOGY" not in head or "EVERY PHASE IS WRITTEN AND LIVE-TESTED" not in head or "NO UNFINISHED WORK" not in head:
@@ -246,6 +246,19 @@ try:
     for _e in _sfm.check(staged): fail("SERVER FIRST", _e)
 except Exception as _x:
     fail("SERVER FIRST", "serverfirst.py cannot run: " + str(_x)[:120])
+# VENDOR BAN (founder 13 Nov 2026 21:54): the banned CDN/DNS-proxy vendor may not appear in ANY added line except docs/claude/FOUNDER-VENDOR-BAN-13NOV.md.
+try:
+    import subprocess as _sp
+    _pat = ("cloud" + "flare")
+    _d = _sp.run(["git", "diff", "--cached", "-U0", "--no-color"], capture_output=True, text=True).stdout
+    _cur = ""
+    for _ln in _d.splitlines():
+        if _ln.startswith("+++ b/"): _cur = _ln[6:]
+        elif _ln.startswith("+") and not _ln.startswith("+++") and _pat in _ln.lower() and _cur not in ("docs/claude/FOUNDER-VENDOR-BAN-13NOV.md", "docs/cursor-work/server/rules-gate.py"):
+            fail("VENDOR BAN", "an added line in " + _cur + " names the banned vendor (docs/claude/FOUNDER-VENDOR-BAN-13NOV.md): remove it")
+            break
+except Exception as _x:
+    fail("VENDOR BAN", "check cannot run: " + str(_x)[:120])
 # RESUME POINT (founder 11 Nov 2026 04:45, "compact chat ka masla forever solve kero"): docs/claude/RESUME-POINT.md must travel with every code/ledger change, so a new chat always finds the real state.
 rp = "docs/claude/RESUME-POINT.md"
 if (code_staged or "docs/cursor-work/DONE-DO-NOT-REPEAT.md" in staged) and rp not in staged:
