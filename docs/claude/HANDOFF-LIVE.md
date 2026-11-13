@@ -1,10 +1,8 @@
 # HANDOFF LIVE (printed by rules-read.py, the first command after every compaction / new chat). Written 13 Nov 2026 19:05 PKT. Update it with every step (rec.sh does the one-line parts; the STEP block below is edited by hand).
 
-## STEP NOW (Q1b-3, his big haan 13 Nov 18:40 for T1-T4, one by one; full checklist = docs/claude/Q-FIX-ORDER-13NOV.md)
-- T1 DONE (Postfix X25519MLKEM768 first, live). T2 DONE (clamd AlertEncrypted + AlertExceedsMax, EICAR/clean/encrypted-zip proven).
-- T3 = HE sends ONE plain mail from his other address to naumansherwani.founder@anexomail.com; then he runs docs/cursor-work/server/fmail-intake-watch.sh (read-only); then my live Chrome look (390/820/1200, ledger proof pill U1, Touch-to-Unseal). His 18:59 output showed intake ON after the install but NO Postfix lines = no mail had arrived yet. Q1b-3 is NOT REAL until a real mail is stored sealed.
-- T4 = SQL E171 ('opaque' scan state), sql-run.sh strictly by number, next free E171.
-- THEN step 2: Q1d send REAL (DKIM key from Compose, DNS TXT fe/fr._domainkey, FMAIL_SEND=on, test mail out), then Q1b-4, Q3, MTA-STS/DANE, Q4, Q1e, UI U1-U5 (U5 approved).
+## STEP NOW = see the generated Q-SERIES STATE block at the bottom of this file (single source of truth: docs/claude/state/Q-STATE.jsonl, hash-chained; update it ONLY with `python3 docs/cursor-work/server/qstate.py start|done|defer <id> "<proof>"`).
+- His rule for green (13 Nov 19:06): the advance technology CODE installed and proven on HIS SERVER is what counts; a real mail arriving is proven later at its own turn (Q1d), it is not a blocker for Q1b-3.
+- Phase order = the PLAN list in docs/cursor-work/server/qstate.py (Q1b-3 T4, Q1d, Q1b-4, Q3, MTA-STS/DANE, U1/U2, Q4, U5, Q1e).
 
 ## HIS STANDING RULES FOR THIS WORK (distilled; he is often angry, wants zero mistakes)
 1. Roman Urdu, short, "Nauman bhai". ONE phase at a time, only that phase's technology; never list many phases. Commands to him: ONE line, pull command given the moment the commit is pushed.
@@ -18,6 +16,7 @@
 9. No WebSocket, no Bun/Node in the server runtime. Sandbox tools are fine.
 
 ## TOOLS THAT LIVE IN THE REPO (so they survive)
+- docs/cursor-work/server/qstate.py = the automatic state machine (hash-chained ledger, generates the block below, gate-verified, printed by the SessionStart hook in .claude/settings.json after every start/resume/compaction).
 - docs/cursor-work/server/rec.sh "<ledger line>" "<CLAUDE.md line-1 text>" "<commit subject>" = updates founder-commands, both DONE ledgers, chat context, both PULL-COMMANDS, CURRENT.md, RESUME-POINT, CLAUDE.md line 1, runs lane/manifest syncs + rules-read + rules-gate, commits (Phase/Tech lines only) and pushes. Do NOT put the word GREEN in a ledger line unless it also says 'WIRED: YES / REAL: YES / TECH-LAW CHECKED' (gate fails). Do not add lines to the top of CLAUDE.md (the ONE BUILD gate reads its head).
 - Server scripts written for Q1b-3 (all under docs/cursor-work/server/): fmail-intake-check.sh (read-only), fmail-intake-on.sh, fmail-intake-postfix.sh, fmail-intake-audit.sh (read-only), fmail-postfix-pq.sh, fmail-clamd-alerts.sh, fmail-intake-watch.sh (read-only). Rust+SPA install = founder-install.sh; SQL = sql-run.sh.
 - Sandbox (recreate if /tmp is gone): cargo tests in a copy of server/founder (cp src/*.rs then cargo test --release, ~3 min full build), PG16 sandbox for SQL selftests (port 55432, db t167), Playwright harness for 390/820/1280 screenshots (NODE_PATH=/opt/npm-tools/node_modules, vite dev server restarted with --force after CSS edits).
@@ -26,3 +25,22 @@
 ## FACTS OF HIS SERVER (13 Nov)
 - Postfix 3.10.6 + OpenSSL 3.5.5, virtual_transport anexopipe (awam), transport_maps = hash:/etc/postfix/founder-transport with ONE line: the founder address -> lmtp:inet:127.0.0.1:18025. clamd on 127.0.0.1:3310 (+ socket clamav:clamav). Founder LMTP intake ON 127.0.0.1:18025 (env FMAIL_LMTP_BIND, FMAIL_CLAMD in /etc/anexomail/founder.env; backups *.pre-intake). Mail sender OFF (no FMAIL_SEND=on). opendkim 127.0.0.1:8891 (awam). Backups: /etc/postfix/main.cf.pre-pq, /etc/postfix/main.cf.pre-founder-intake, /etc/clamav/clamd.conf.pre-alerts.
 - Founder bundle live = founder-web/dist (index-BKdnTGPQ.js at 13 Nov 04:00). Mail page tech: kernel WebTransport RPC (no fetch except /auth/refresh); live channel is SSE (open gap Q-live-wt, Q3).
+
+<!--QSTATE-->
+## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
+NOW: Q1b3-T4 - SQL E171: scan state 'opaque'  [PostgreSQL RLS, append-only ledger, selftest + CHECK]
+- [x] Q1b3-T1: Postfix inbound TLS X25519MLKEM768 first  (Postfix 3.10 + OpenSSL 3.5, ML-KEM-768 hybrid, TLS 1.3 AES-256-GCM)  PROOF: his output 13 Nov 18:5x: PQ client Negotiated TLS1.3 group X25519MLKEM768, classic X25519, default X25519MLKEM768; setting kept (c2b284fc..1b843b15)
+- [x] Q1b3-T2: clamd AlertEncrypted + AlertExceedsMax  (ClamAV INSTREAM, fail-closed quarantine)  PROOF: his output 13 Nov 18:5x: clamd PONG ~10 s, EICAR FOUND, clean OK, Heuristics.Encrypted.Zip FOUND
+- [~] Q1b3-T3: first real mail through the intake  (Postfix per-address LMTP RFC 2033, seal on arrival, ledger (proof deferred by him to Q1d))  PROOF: his order 13 Nov 19:06: technology on the server is what counts for Q1b-3; the first real mail is proven at its turn (Q1d). Server proof so far: intake ON 127.0.0.1:18025 after install, Postfix per-address entry applied, LMTP self-test founder 250 / unknown 550.
+- [ ] Q1b3-T4: SQL E171: scan state 'opaque'  (PostgreSQL RLS, append-only ledger, selftest + CHECK)
+- [ ] Q1d-1: DKIM key from Compose + DNS TXT  (Ed25519 + RSA DKIM, passkey touch (mail.key))
+- [ ] Q1d-2: FMAIL_SEND=on + real outgoing mail  (Rust Tokio SMTP, STARTTLS TLS 1.3 X25519MLKEM768, undo window, outgoing PQ TLS proof)
+- [ ] Q1b4: SPF / DKIM / DMARC verdicts + trust ring (U3)  (Rust mail-auth, Framer Motion ring)
+- [ ] Q3: attachments + live over WebTransport + 8-segment ring (U4)  (Rust Tokio WebTransport, Hetzner Storage Box, ClamAV, WASM kernel)
+- [ ] Qtls: MTA-STS / DANE / TLS-RPT  (RFC 8461 / 7672 / 8460)
+- [ ] U1U2: ledger proof pill + Touch-to-Unseal live proof (U1), PQC pill segment (U2)  (kernel SHA-256/Merkle verify, passkey touch, React 19 TS)
+- [ ] Q4: kernel pqmail OpenPGP RFC 9980  (Rust WASM kernel ML-KEM-768 + X25519, ML-DSA-65 + Ed25519)
+- [ ] U5: Who-can-read-this sheet, Ctrl K mail actions, light theme (approved)  (Radix Dialog, command palette, React 19 TS)
+- [ ] Q1e: calendar E172-E173  (Rust + SQL RLS + React TS, same sealing)
+chain head: a90df9f34e41b14f (3 events)
+<!--/QSTATE-->

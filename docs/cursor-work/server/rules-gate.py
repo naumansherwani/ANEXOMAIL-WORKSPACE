@@ -232,6 +232,14 @@ for led in ("docs/cursor-work/DONE-DO-NOT-REPEAT.md", "docs/claude/CLOSE-THE-GAP
         except OSError:
             pass
 
+# Q-SERIES STATE (his 13 Nov 2026 19:06 "advance automatic system"): the hash-chained step ledger must verify and HANDOFF-LIVE.md's generated block must match it, so a compaction can never hand the next chat a stale place.
+try:
+    import importlib.util as _iu
+    _sp = _iu.spec_from_file_location("qstate", "docs/cursor-work/server/qstate.py"); _qs = _iu.module_from_spec(_sp); _sp.loader.exec_module(_qs)
+    _qe = _qs.check()
+    if _qe: fail("Q STATE", _qe + " (python3 docs/cursor-work/server/qstate.py verify / render)")
+except Exception as _x:
+    fail("Q STATE", "qstate.py cannot run: " + str(_x)[:120])
 # RESUME POINT (founder 11 Nov 2026 04:45, "compact chat ka masla forever solve kero"): docs/claude/RESUME-POINT.md must travel with every code/ledger change, so a new chat always finds the real state.
 rp = "docs/claude/RESUME-POINT.md"
 if (code_staged or "docs/cursor-work/DONE-DO-NOT-REPEAT.md" in staged) and rp not in staged:

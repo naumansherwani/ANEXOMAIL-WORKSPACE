@@ -1,0 +1,15 @@
+{
+ "hooks": {
+  "SessionStart": [
+   {
+    "matcher": "startup|resume|compact|clear",
+    "hooks": [
+     {
+      "type": "command",
+      "command": "cd \"$CLAUDE_PROJECT_DIR\" && python3 docs/cursor-work/server/rules-read.py >/dev/null 2>&1; python3 docs/cursor-work/server/qstate.py brief"
+     }
+    ]
+   }
+  ]
+ }
+}
