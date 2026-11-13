@@ -202,3 +202,7 @@ STATE L-A: PLAN WRITTEN, no code yet. Full table: docs/claude/PHASE-L-PLAN-12NOV
 - Q1b-3 T1 started 13 Nov 18:41 (his big haan 18:40 for T1-T4): fmail-postfix-pq.sh written (tls_eecdh_auto_curves with X25519MLKEM768 first, 3 handshake proofs, auto rollback); contract in CURRENT.md; waits his run.
 
 - Q1b-3 T1 first run 13 Nov 18:47: Postfix accepted X25519MLKEM768 (PQ handshake negotiated), classic handshake also completed, but my script asserted a group line s_client does not print for classic groups, so it auto rolled back a working config; main.cf back to old curves. Script test B fixed, re-run needed. Q-in-tls-pq still open.
+
+- 13 Nov 2026 18:5x PKT Q1b-3 T2 CONTRACT (his big haan 18:40): ClamAV (clamd shared with awam) AlertEncrypted yes + AlertExceedsMax yes, so encrypted 7z/RAR/ZIP/PDF and limit-exceeded (zip-bomb) attachments answer "Heuristics... FOUND" and the founder LMTP intake quarantines them (clam_state FOUND = infected; fail closed). Proof = EICAR FOUND, clean text OK, encrypted ZIP stub FOUND, auto rollback. Script docs/cursor-work/server/fmail-clamd-alerts.sh. T1 (Postfix X25519MLKEM768) DONE on his server 18:5x.
+
+- Q1b-3 T1 DONE 13 Nov 18:50 by his output: inbound TLS X25519MLKEM768 first kept on his server, classic and default clients fine; Q-in-tls-pq closed (WIRED: YES / REAL: YES / TECH-LAW CHECKED for inbound TLS only). T2 started: fmail-clamd-alerts.sh written, waits his run.
