@@ -65,7 +65,7 @@ export function verdicts(r: Pick<Row, "spf" | "dkim" | "dmarc" | "scan" | "looka
   const out: { k: string; text: string; tone: "ok" | "warn" | "bad" | "off" }[] = [
     { k: "spf", text: `SPF ${r.spf === "none" ? "not checked" : r.spf}`, tone: t(r.spf) }, { k: "dkim", text: `DKIM ${r.dkim === "none" ? "not checked" : r.dkim}`, tone: t(r.dkim) },
     { k: "dmarc", text: `DMARC ${r.dmarc === "none" ? "not checked" : r.dmarc}`, tone: t(r.dmarc) },
-    { k: "scan", text: r.scan === "clean" ? "Virus scan clean" : r.scan === "infected" ? "Virus found" : r.scan === "pending" ? "Scan pending" : r.scan === "skipped" ? "Not scanned" : "Scan error", tone: r.scan === "clean" ? "ok" : r.scan === "pending" || r.scan === "skipped" ? "off" : "bad" },
+    { k: "scan", text: r.scan === "clean" ? "Virus scan clean" : r.scan === "infected" ? "Virus found" : r.scan === "pending" ? "Scan pending" : r.scan === "skipped" ? "Not scanned" : r.scan === "opaque" ? "Hidden content (encrypted)" : "Scan error", tone: r.scan === "clean" ? "ok" : r.scan === "pending" || r.scan === "skipped" ? "off" : "bad" },
   ];
   if (r.lookalike) out.push({ k: "look", text: "Look-alike domain", tone: "bad" });
   if (r.tls) out.push({ k: "tls", text: r.tls === "tls13_pq" ? "TLS 1.3 post-quantum" : r.tls === "tls13" ? "TLS 1.3" : r.tls === "tls12" ? "TLS 1.2" : "No TLS", tone: r.tls === "none" ? "bad" : r.tls === "tls12" ? "warn" : "ok" });

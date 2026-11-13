@@ -218,8 +218,8 @@ impl Backend for Live {
     async fn deliver(&self, raw: &[u8], r: &Rcpt) -> Result<(), String> {
         let s = core::summarize(raw);
         let scan = match &self.clamd { Some(a) => clam_scan(a, raw).await, None => "skipped" };
-        // a "clean" verdict is not trusted when an attachment hides its content (encrypted ZIP / PDF / Office): quarantine it, recorded as "error" (the scan could not look inside)
-        let scan = if scan == "clean" && opaque_attachment(raw) { "error" } else { scan };
+        // a "clean" verdict is not trusted when an attachment hides its content (encrypted ZIP / PDF / Office): quarantine it, recorded as "opaque" (E171; the scan could not look inside)
+        let scan = if scan == "clean" && opaque_attachment(raw) { "opaque" } else { scan };
         let pubkey = match (&*r.seal_mode, &r.pub_hex) { ("recipient_pq", Some(h)) => Some(hex::decode(h).map_err(|_| "bad stored key")?), ("recipient_pq", None) => return Err("mailbox key not ready".into()), _ => None };
         let wrap = match &pubkey { Some(p) => core::Wrap::Recipient { public: p, key_id: &r.key_id }, None => core::Wrap::Vault { master: &self.master, key_id: &r.key_id } };
         let sealed = core::seal_message(&self.master, &r.mailbox_id, "in", wrap, raw, &s).map_err(|e| e.to_string())?;
@@ -239,7 +239,7 @@ impl Backend for Live {
         let Some(mid) = out["message_id"].as_str() else { return Err("no message id".into()) };
         // the ledger row (the database recomputes the hash of the stored ciphertext) and the scan result; a failure here is retried by the sweep, the mail itself is already safe
         let _ = self.sb.rpc("fmail_inbound_note169", json!({"p_mailbox": r.mailbox_id, "p_message": mid, "p_body_sha256": hex::encode(Sha256::digest(&sealed.sealed_body))})).await;
-        let _ = self.sb.rpc("fmail_scan_set169", json!({"p_mailbox": r.mailbox_id, "p_message": mid, "p_state": scan})).await;
+        let _ = self.sb.rpc("fmail_scan_set171", json!({"p_mailbox": r.mailbox_id, "p_message": mid, "p_state": scan})).await;
         Ok(())
     }
 }
@@ -325,7 +325,7 @@ mod tests {
     fn scanner_replies_fail_closed() {
         assert_eq!(clam_state("stream: OK\0"), "clean"); assert_eq!(clam_state("stream: Eicar-Test-Signature FOUND\0"), "infected");
         for e in ["INSTREAM size limit exceeded. ERROR", "", "stream: lstat() failed ERROR", "garbage", "OKAY not"] { assert_eq!(clam_state(e), "error", "{e}"); }
-        assert_eq!(folder_for("clean"), "inbox"); assert_eq!(folder_for("skipped"), "quarantine"); assert_eq!(folder_for("infected"), "quarantine"); assert_eq!(folder_for("error"), "quarantine"); assert_eq!(folder_for("whatever"), "quarantine");
+        assert_eq!(folder_for("clean"), "inbox"); assert_eq!(folder_for("skipped"), "quarantine"); assert_eq!(folder_for("infected"), "quarantine"); assert_eq!(folder_for("error"), "quarantine"); assert_eq!(folder_for("opaque"), "quarantine"); assert_eq!(folder_for("whatever"), "quarantine");
         assert_eq!(bytea(&[0xab, 0x01]), "\\xab01");
     }
     #[tokio::test]

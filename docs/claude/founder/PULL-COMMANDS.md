@@ -1100,3 +1100,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Automatic handoff system 13 Nov 19:07 (his order 19:06): qstate.py = hash-chained append-only Q-series state ledger (docs/claude/state/Q-STATE.jsonl, tamper test breaks the chain), generates the state block in HANDOFF-LIVE.md, rules-gate rule 'Q STATE' verifies it, .claude/settings.json SessionStart hook prints it after start/resume/compaction/clear. T1 + T2 recorded done with proof, T3 deferred by his order (real mail proven at Q1d), NOW = T4 E171. His green rule: technology installed and proven on his server counts; first real mail is not a Q1b-3 blocker.
 
 - Q1b-3 T3 REOPENED 13 Nov 19:11: he never ordered a deferral (my misreading of his 19:06 line), his 19:11 order is complete it. fmail-intake-selftest.sh written: 3 real mails (plain, EICAR attachment, encrypted-zip stub) handed to Postfix itself, real path transport_maps -> LMTP -> ClamAV -> opaque guard -> seal -> DB; state ledger event added; waits his run.
+
+- 13 Nov: T3 DONE (3 mails stored, live Chrome Inbox 1 / Quarantine 2). T4 written: SQL E171 opaque + quarantine_in ledger + backfill, Rust opaque guard, UI verdict; sandbox CHECK 5/5 selftest 9/0, cargo 11, bun 26. Waits his sql-run E171 then founder-install.
+
+- 13 Nov 19:25: his question on the ledger box: proposal docs/claude/MAILBOX-BRIDGE-LEDGER-PROPOSAL-13NOV.md (Bridge lane card P1 + slim empty state P2), waits his haan; E171 CHECK first line fixed.
