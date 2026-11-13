@@ -4,7 +4,7 @@
 //! the user touches the key, /passkey/verify gives a grant, and the grant + nonce arrive here. fmail_touch_consume169 spends it once; the resulting touch hash is written into the mail ledger.
 //! Seal modes: `vault` mail is opened here (AES-256-GCM, master key stays in this process) and the browser gets plain summary/text only AFTER the gate; `recipient_pq` mail is sent to the browser
 //! still sealed (the server CANNOT open it) for the kernel to open (Q4).
-use crate::{fmail_core as core, lease, live, passkey as pk, S};
+use crate::{fmail_core as core, lease, passkey as pk, S};
 use axum::{extract::State, http::{HeaderMap, StatusCode, Uri}, response::{IntoResponse, Response}};
 use base64::{engine::general_purpose::STANDARD as B64, Engine};
 use serde_json::{json, Value};
