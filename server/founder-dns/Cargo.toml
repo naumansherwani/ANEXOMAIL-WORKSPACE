@@ -1,0 +1,16 @@
+[package]
+name = "founder-dns"
+version = "0.1.0"
+edition = "2021"
+description = "KP1b: the founder's OWN authoritative DNS for ONE zone (founderworkspace.anexomail.com). Rust + tokio, no recursion, no third-party vendor."
+
+[dependencies]
+hickory-proto = { version = "0.25", default-features = false, features = ["std"] }
+tokio = { version = "1", features = ["rt-multi-thread", "net", "time", "io-util", "macros", "sync", "signal"] }
+hmac = "0.12"
+sha2 = "0.10"
+getrandom = "0.2"
+
+[profile.release]
+opt-level = 3
+lto = true

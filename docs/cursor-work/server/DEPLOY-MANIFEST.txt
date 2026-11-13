@@ -718,7 +718,7 @@ web-wasm/src/rank.rs 9588d32f0dabc948
 web-wasm/src/rpc.rs 1c21df12fab245ce
 web-wasm/src/sniff.rs 69e696003e8230e7
 web-wasm/src/sys.rs 64f4fe21e8ab449c
-.gitignore 004965a3147f512f
+.gitignore 356004f1bb6627fc
 src/routes/app.founder_.revenue.tsx 4b73773e692eb17e
 src/routes/app.founder_.revenue_.pipeline.tsx 2a46abe02222de78
 src/routes/docs.tsx 5787709c59d1c392
@@ -1188,12 +1188,12 @@ founder-web/src/passkey_pure.ts 18c84406d0b26eb9
 server/founder/src/passkey.rs fc1644aca0233454
 server/rust/j3_action_vectors.json d90c898ebb69d9ea
 web-wasm/src/action.rs eda7722b529a2887
-lanes/ALL-FILES.csv 19a6708cb4d892ef
-lanes/awam.txt 63c4be756b518a94
+lanes/ALL-FILES.csv 2c316979c51b8822
+lanes/awam.txt 8095248b06c0b68e
 lanes/docs.txt 5cef02c5444c99cb
 lanes/founder.txt 67cd8ba6d4dd3c94
 lanes/shared.txt da1e27665dfc38d1
-lovable-gold/README.md 8925e203755ec3b8
+lovable-gold/README.md 58852e056cd7f574
 docs/claude/FOUNDER-FLARE-J6-RESEARCH-03NOV.md 5e65d9f84cbbc643
 docs/cursor-work/sql/CHECK_E140.sql 0aa343c84820214f
 docs/cursor-work/sql/E140_founder_flare_push.sql 3c95ae9963ebd5bf
@@ -1257,7 +1257,7 @@ docs/cursor-work/sql/E162_founder_dbsc_hybrid_pq.sql 33cb2dc2244947e1
 docs/cursor-work/sql/CHECK_E162.sql 580f0ee0bd152f1f
 server/founder/src/mldsa.rs 4f64ed54eebca2aa
 server/founder/src/dbsc.rs 1066b35a5e50e2a8
-docs/claude/tech-contracts/CURRENT.md 23835f429a45e5d6
+docs/claude/tech-contracts/CURRENT.md c85716c10c18e0dc
 docs/claude/RESUME-POINT.md f6c0a2b6882b7c05
 docs/claude/SQL-ORDER-E1-E160.md a22f85baaf08e344
 docs/claude/TECH-LAW-GATE.json b891dba710bbc668

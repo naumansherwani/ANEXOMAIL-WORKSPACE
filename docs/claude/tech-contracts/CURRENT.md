@@ -266,12 +266,12 @@ Technology: Bash read-only audit using /proc/<pid>/exe for real process names, C
 ## TECH CONTRACT FOR PHASE KP1b: OWN RUST AUTHORITATIVE DNS (13 Nov 2026 22:15 PKT) STATE: IN PROGRESS
 | Listed technology | Where it must live | IN CODE | Proof |
 |---|---|---|---|
-| Rust + Tokio async runtime | server/founder-dns/ (new crate, not in the founder binary, no Bun/Node) | OPEN | cargo test |
-| DNS wire format (hickory-proto), authoritative only, no recursion | founder-dns/src | OPEN | wire tests: query -> answer bytes, REFUSED for other zones |
-| HTTPS RR type 65 `1 . alpn="h3"` (RFC 9460) | zone data + encoder test | OPEN | dig +short HTTPS founderworkspace.anexomail.com on his server shows h3 |
-| UDP + TCP 53, EDNS0, TC bit, bound to 62.238.98.98 and 2a01:4f9:c014:5df6::1 (never wildcard) | main.rs | OPEN | his ss output |
+| Rust + Tokio async runtime | server/founder-dns/ (new crate, not in the founder binary, no Bun/Node) | YES (13 Nov 22:40, sandbox) | cargo test 13/13 |
+| DNS wire format (hickory-proto), authoritative only, no recursion | founder-dns/src/auth.rs | YES (sandbox) | wire tests + independent dnspython client: other zones REFUSED, NXDOMAIN/NODATA carry SOA |
+| HTTPS RR type 65 `1 . alpn="h3"` (RFC 9460) | zone.rs | YES in code (sandbox: dnspython shows `HTTPS 1 . alpn="h3"` over UDP and TCP); live proof OPEN | dig +short HTTPS founderworkspace.anexomail.com on his server shows h3 |
+| UDP + TCP 53, EDNS0, TC bit, bound to explicit addresses (wildcard refused by code) | net.rs, main.rs | YES in code (sandbox); live proof OPEN | his ss output after install |
 | DNSSEC Ed25519 + NSEC3 | founder-dns/src/sign.rs | OPEN | dig +dnssec validates with the zone key |
-| DNS cookies (RFC 7873) + response rate limiting | founder-dns/src | OPEN | tests |
+| DNS cookies (RFC 7873) + response rate limiting (slip) | auth.rs, rrl.rs | YES (sandbox, tests incl. spoofed-IP cookie) | cargo test |
 | PostgreSQL zone table + append-only hash-chain ledger | SQL E-number next free, sql-run, CHECK | OPEN | his CHECK output |
 | AES-256-GCM / HTTP/3 / ML-KEM | not applicable to port 53 (plain DNS); the HTTPS record is what makes H3 reachable | n/a | K8e |
 Rollback: remove the NS record at Namecheap; stop the unit. Server-first: nothing is opened or installed before his word + a read-only receipt.
