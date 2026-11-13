@@ -4,8 +4,8 @@
 export const PATH_EMIT = { RTT: 9, FAIL: 10, UP: 11, RETRY: 12 } as const;
 export type PathStage = "handshake_timeout" | "connect_failed" | "closed";
 export const STAGES: readonly PathStage[] = ["handshake_timeout", "connect_failed", "closed"];
-export type PathState = { up: boolean; rttMs: number | null; minMs: number | null; avgMs: number | null; samples: number; upSince: number | null; fail: { stage: PathStage; at: number } | null; retryAt: number | null };
-const blank = (): PathState => ({ up: false, rttMs: null, minMs: null, avgMs: null, samples: 0, upSince: null, fail: null, retryAt: null });
+export type PathState = { up: boolean; rttMs: number | null; minMs: number | null; avgMs: number | null; probeMs: number | null; probeMin: number | null; probes: number; samples: number; upSince: number | null; fail: { stage: PathStage; at: number } | null; retryAt: number | null };
+const blank = (): PathState => ({ up: false, rttMs: null, minMs: null, avgMs: null, probeMs: null, probeMin: null, probes: 0, samples: 0, upSince: null, fail: null, retryAt: null });
 let S: PathState = blank();
 const subs = new Set<() => void>();
 const set = (p: Partial<PathState>) => { S = { ...S, ...p }; subs.forEach((f) => f()); };
@@ -18,6 +18,8 @@ export function pathRtt(ms: number): void {
   const avg = S.avgMs === null ? ms : S.avgMs + (ms - S.avgMs) / 8;
   set({ rttMs: ms, minMs: S.minMs === null ? ms : Math.min(S.minMs, ms), avgMs: Math.round(avg * 10) / 10, samples: S.samples + 1, fail: S.up ? null : S.fail });
 }
+/** One probe round trip: a tiny GET /healthz over the kernel session (the server does no work), so this is the path itself. Its minimum is the honest floor. */
+export function pathProbe(ms: number): void { if (!Number.isFinite(ms) || ms < 0 || ms > 60_000) return; set({ probeMs: ms, probeMin: S.probeMin === null ? ms : Math.min(S.probeMin, ms), probes: S.probes + 1 }); }
 export function pathUp(now = Date.now()): void { set({ up: true, upSince: S.upSince ?? now, fail: null, retryAt: null }); }
 /** The kernel asked the host to sleep `ms` while the path is down: that is its own next attempt, shown as a countdown (read from the kernel's timer, not invented). */
 export function pathRetry(ms: number, now = Date.now()): void { if (Number.isFinite(ms) && ms >= 1000 && ms <= 600_000) set({ retryAt: now + ms }); }
@@ -26,7 +28,7 @@ export function pathFail(code: number, now = Date.now()): void { set({ up: false
 export const STAGE_TEXT: Record<PathStage, string> = { handshake_timeout: "No QUIC reply in 8 s", connect_failed: "QUIC connect refused or failed", closed: "QUIC session closed" };
 /** The exact words for the chip. Only facts: up + measured ms, or the failed stage + how long ago. */
 export function pathLabel(s: PathState, now = Date.now()): string {
-  if (s.up && s.minMs !== null) return `QUIC · ${s.minMs} ms`; // the LOWEST measured round trip = the network floor; slower calls are server work and are shown in the row text
+  if (s.up && s.probeMs !== null) return `QUIC · ${s.probeMs} ms`; // the probe (a call with no server work) = the path; slower API calls are server work and are shown in the row text
   if (s.up) return "QUIC · connected";
   if (s.fail) { const ago = Math.max(0, Math.round((now - s.fail.at) / 1000)); const r = retrySecs(s, now); return `${STAGE_TEXT[s.fail.stage]} · ${ago} s ago${r !== null ? ` · retry in ${r} s` : ""}`; }
   return "QUIC · connecting";

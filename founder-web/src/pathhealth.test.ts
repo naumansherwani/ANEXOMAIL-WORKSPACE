@@ -1,12 +1,13 @@
 import { expect, test } from "bun:test";
-import { pathFail, pathLabel, pathRetry, pathRtt, pathReset, pathState, pathUp, retrySecs, STAGE_TEXT } from "./pathhealth";
+import { pathFail, pathLabel, pathProbe, pathRetry, pathRtt, pathReset, pathState, pathUp, retrySecs, STAGE_TEXT } from "./pathhealth";
 
 test("path health: only measured facts reach the label (connecting -> connected -> ms; a failure names its stage and age)", () => {
   pathReset(); expect(pathLabel(pathState(), 0)).toBe("QUIC · connecting");
   pathUp(1000); expect(pathLabel(pathState(), 1000)).toBe("QUIC · connected");
   pathRtt(185); pathRtt(175); pathRtt(400);
   const s = pathState(); expect(s.rttMs).toBe(400); expect(s.minMs).toBe(175); expect(s.samples).toBe(3); expect(s.avgMs).toBeCloseTo(185 + (-10 / 8) + (400 - (185 - 10 / 8)) / 8, 1);
-  expect(pathLabel(s, 1)).toBe("QUIC · 175 ms"); // the chip shows the network floor (lowest), never a slow call as if it were the network
+  expect(pathLabel(s, 1)).toBe("QUIC · connected"); // slow API calls never become the path number: only the ping does
+  pathProbe(181); pathProbe(190); expect(pathLabel(pathState(), 1)).toBe("QUIC · 190 ms"); expect(pathState().probeMin).toBe(181); pathProbe(-5); pathProbe(Number.NaN); expect(pathState().probes).toBe(2);
   pathFail(0, 10_000); expect(pathLabel(pathState(), 15_000)).toBe(`${STAGE_TEXT.handshake_timeout} · 5 s ago`); expect(pathState().up).toBe(false);
   pathFail(9, 20_000); expect(pathState().fail?.stage).toBe("closed"); // an unknown code is never invented into a cause
   pathUp(30_000); expect(pathState().fail).toBeNull();
