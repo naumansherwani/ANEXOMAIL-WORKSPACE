@@ -409,3 +409,5 @@ TECH-LAW CHECKED.
 - 14 Nov 2026 04:02 PKT: his curl on his server: TCP 443 founder host = TLS alert access_denied, http code 000 (K8e: TCP speaks no HTTP, confirmed REAL on his server); receipt 22
 
 - 14 Nov 2026 04:05 PKT: K8e GREEN in capitals in the blueprint (WIRED: YES / REAL: YES / TECH-LAW CHECKED, proven on his server, receipt 22); his order: READ-FIRST-FOUNDER-LAW.md written at the top of 37 folders (root + 2 levels, not frozen lovable-gold/src/dist)
+
+- 14 Nov 2026 04:20 PKT: his install run FAILED on his server at 1/4 tests: founder_routes_need_bearer listed the deleted /founder/v1/live/stream (now 404, not 401). I had only built, never run the tests. Fixed (route removed from the test list); full suite 394/394 pass in my sandbox; install must be re-run by him
