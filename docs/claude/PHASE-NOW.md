@@ -15,3 +15,6 @@ Roman Urdu, short; ONE phase at a time; every doubt of 0.1% about the server = a
 
 ## STATUS 13 Nov 21:30 PKT
 - KP1 step 1 DONE: his audit output received (SF receipt 2). OK: udp 443 + 4443 = anexomail-founder, firewall open both. tcp 443 still anexomail-founder (old binary, K8e not installed). Caddy only on 18443/80. STOP reason: DNS HTTPS record missing (A 62.238.98.98 = this server, no AAAA). NEXT (his hands): add the HTTPS record, then dig + audit again until GO.
+
+## STATUS 13 Nov 21:55 PKT
+- His dig (SF receipt 3): NS = dns1/dns2.registrar-servers.com (Namecheap BasicDNS); HTTPS record empty at 1.1.1.1. Namecheap docs list no HTTPS/SVCB type (not 100% sure; his screen decides: Advanced DNS > Add New Record dropdown). LOOPHOLE: tcp 443 closed + no HTTPS RR = new browsers cannot reach the site. K8e install HELD. Options for him: 1) DNS to Cloudflare DNS-only (own phase, full record dump first), 2) delegate only founderworkspace, 3) keep tcp 443 (breaks his H3-only order, needs his word).
