@@ -134,3 +134,5 @@
 - 13 Nov 20:40: QUI-H built + sandbox-proven (ledger chip auto-verify, Bridge Mail ledger card, empty pane slimmed; bun 259, tsc clean, 390/820/1280 clean). Gap Q-ledger-kernel registered. Waits his founder-install then my live Chrome look; rollback = fmail-ui-rollback.sh.
 
 - 13 Nov 20:12: his request: order with technology in front of each phase + where the P1/P2 advance code is, written to the repo: docs/claude/Q-ORDER-AND-TECH-13NOV.md (15-phase table, QUI-H file map, honest gaps Q-ledger-kernel / U1 Merkle).
+
+- 13 Nov 20:40: his founder-install OK. QUI-H1 + QUI-H2 DONE (my live Chrome, bundle index-b0IiA99: chip 'Ledger verified #8', Bridge Mail ledger card, Quarantined tap opens Mail on Quarantine). 390/820 live not possible with this browser (resize keeps viewport): sandbox measured, waits his phone screenshot. QUI-H3 Q-ledger-kernel contract written (SQL E172 rows door, Rust door, kernel SHA-256 chain recompute); QPERF moves to E173, calendar E174-E175. Heading-left CSS fix rebuilt.

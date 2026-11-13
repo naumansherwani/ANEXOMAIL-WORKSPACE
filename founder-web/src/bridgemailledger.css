@@ -7,3 +7,4 @@
 .bml-lanes button{width:100%;min-height:44px;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 12px;border-radius:12px;border:1px solid var(--mh,rgba(255,255,255,.12));background:transparent;color:inherit;font:inherit;cursor:pointer}
 .bml-lanes button:hover,.bml-lanes button:focus-visible{border-color:var(--ok,#3dd598)}.bml-lanes b.warn{color:#f2b84b}
 .bml-lanes li{border:0;padding:0;margin:0;background:none;box-shadow:none}.bml-lanes li::after,.bml-lanes li::before{content:none}
+.bml header h2{text-align:left}

@@ -20,7 +20,11 @@ PLAN = [  # (id, title, advance technology)
  ("Q1b3-T3", "first real mail through the intake", "Postfix per-address LMTP RFC 2033, ClamAV, seal on arrival, ledger; end-to-end self-test mails sent by Postfix itself (NOT deferred, his order 19:11)"),
  ("Q1b3-T4", "SQL E171: scan state 'opaque'", "PostgreSQL RLS, append-only ledger, selftest + CHECK"),
  ("QUI-H", "ledger-box hybrid P1+P2 (his haan 13 Nov 19:55, backup /root/backups/ledger-hybrid-13nov taken, restore = fmail-ui-rollback.sh or commit 9fe8155e)", "kernel WASM SHA-256 chain verify in the background, passive status chip, Bridge Mail-ledger card (new file + one-line mount, Scene3D.tsx never edited), React 19 TS"),
- ("QPERF", "mail latency percentiles p50/p90/p95/p99/p99.9 + SLO burn (his 13 Nov 20:01: p90, p95 and more advanced)", "PostgreSQL percentile_cont + append-only mail_latency samples (SQL E172), Rust Tokio timing at LMTP accept/scan/seal/commit, HDR-histogram style buckets, Bridge card"),
+ ("QUI-H1", "sub-phase: passive ledger chip + auto verify + slim empty pane", "React 19 TS, signed kernel-verified proof door, hash-chain SHA-256 ledger (Proton KT / Apple CKV style: automatic, passive status)"),
+ ("QUI-H2", "sub-phase: Bridge 'Mail ledger' audit card + deep link into the mailbox folder", "React 19 TS, E168 bridge feed, new file + one-line mount (Scene3D.tsx untouched)"),
+ ("QUI-H3", "sub-phase: Q-ledger-kernel, the WASM kernel re-hashes the whole chain in the browser (SQL E172 door, Rust Tokio door, kernel sha256 chain check)", "Rust WASM kernel SHA-256 (web-wasm/src/hash.rs), length-prefixed fmail-ledger-v1 formula, rows streamed over the kernel WebTransport RPC, PostgreSQL RLS door"),
+ ("QUI-H4", "sub-phase: per-message Merkle inclusion proof (U1 link) against the founder audit batch", "RFC 6962 style Merkle audit path verified in the WASM kernel, founder_audit anchor"),
+ ("QPERF", "mail latency percentiles p50/p90/p95/p99/p99.9 + SLO burn (his 13 Nov 20:01: p90, p95 and more advanced; SQL E173)", "PostgreSQL percentile_cont + append-only mail_latency samples (SQL E172), Rust Tokio timing at LMTP accept/scan/seal/commit, HDR-histogram style buckets, Bridge card"),
  ("Q1d-1", "DKIM key from Compose + DNS TXT", "Ed25519 + RSA DKIM, passkey touch (mail.key)"),
  ("Q1d-2", "FMAIL_SEND=on + real outgoing mail", "Rust Tokio SMTP, STARTTLS TLS 1.3 X25519MLKEM768, undo window, outgoing PQ TLS proof"),
  ("Q1b4", "SPF / DKIM / DMARC verdicts + trust ring (U3)", "Rust mail-auth, Framer Motion ring"),
@@ -29,7 +33,7 @@ PLAN = [  # (id, title, advance technology)
  ("U1U2", "ledger proof pill + Touch-to-Unseal live proof (U1), PQC pill segment (U2)", "kernel SHA-256/Merkle verify, passkey touch, React 19 TS"),
  ("Q4", "kernel pqmail OpenPGP RFC 9980", "Rust WASM kernel ML-KEM-768 + X25519, ML-DSA-65 + Ed25519"),
  ("U5", "Who-can-read-this sheet, Ctrl K mail actions, light theme (approved)", "Radix Dialog, command palette, React 19 TS"),
- ("Q1e", "calendar E173-E174", "Rust + SQL RLS + React TS, same sealing"),
+ ("Q1e", "calendar E174-E175", "Rust + SQL RLS + React TS, same sealing"),
 ]
 RULES = "docs/claude/HANDOFF-LIVE.md (his standing rules, tools, server facts) + docs/claude/Q-FIX-ORDER-13NOV.md"
 def sha(b): return hashlib.sha256(b).hexdigest()

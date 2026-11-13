@@ -18,7 +18,7 @@ Rule (his): ONE phase at a time; the technology is written in front of every pha
 | 12 | U1/U2 proof pill + Touch-to-Unseal live proof, PQC pill | kernel SHA-256/Merkle verify, passkey | not started |
 | 13 | Q4 kernel pqmail | OpenPGP RFC 9980, ML-KEM-768 + X25519, ML-DSA-65 + Ed25519 | not started |
 | 14 | U5 Who-can-read-this, Ctrl K, light theme (approved) | Radix Dialog, command palette | not started |
-| 15 | Q1e calendar (E173-E174) | Rust + SQL RLS + React TS, same sealing | not started |
+| 15 | Q1e calendar (E174-E175) | Rust + SQL RLS + React TS, same sealing | not started |
 
 ## What we were doing: P1+P2 hybrid (his question: where is the advance-level code?)
 Why hybrid: research (Proton Key Transparency, Apple iMessage Contact Key Verification, IETF keytrans) = verification runs automatically in the background, the user sees a passive status, deep audit lives on an audit surface.
