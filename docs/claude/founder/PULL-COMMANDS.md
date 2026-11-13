@@ -1094,3 +1094,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Q1b-3 T1 DONE 13 Nov 18:50 by his output: inbound TLS X25519MLKEM768 first kept on his server, classic and default clients fine; Q-in-tls-pq closed (WIRED: YES / REAL: YES / TECH-LAW CHECKED for inbound TLS only). T2 started: fmail-clamd-alerts.sh written, waits his run.
 
 - Q1b-3 T2 DONE 13 Nov 18:53 by his output: clamd AlertEncrypted + AlertExceedsMax yes kept, EICAR FOUND, clean OK, encrypted ZIP stub Heuristics.Encrypted.Zip FOUND (WIRED: YES / REAL: YES / TECH-LAW CHECKED for the scanner gate). T3 started: fmail-intake-watch.sh written, waits his real test mail.
+
+- Handoff system 13 Nov 19:00 (his order 18:59, no more compaction loss): docs/claude/HANDOFF-LIVE.md (current step, his standing rules, tools, server facts) is printed by rules-read.py; rec.sh moved into the repo (docs/cursor-work/server/rec.sh) and no longer adds any Co-Authored-By line. T3 status: intake still ON after the install, but his watch output showed NO Postfix lines = no test mail has arrived yet; Q1b-3 not REAL.

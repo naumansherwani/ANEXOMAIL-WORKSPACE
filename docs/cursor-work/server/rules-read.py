@@ -3,7 +3,7 @@
 Run this FIRST after every compaction / new chat / every 2 hours. It PRINTS the rules the commit gate stands on (so they are in Claude's context) and writes
 .git/rules-read-receipt.json. rules-gate.py --staged FAILS the commit when the receipt is missing, older than 2 hours, or the protocol / contract / gate files changed since it was written."""
 import hashlib, json, os, re, sys, time
-FILES = ["docs/claude/RESUME-POINT.md", "docs/claude/TECH-FIRST-PROTOCOL.md", "docs/claude/tech-contracts/CURRENT.md", "docs/claude/TECH-LAW-GATE.json"]
+FILES = ["docs/claude/HANDOFF-LIVE.md", "docs/claude/RESUME-POINT.md", "docs/claude/TECH-FIRST-PROTOCOL.md", "docs/claude/tech-contracts/CURRENT.md", "docs/claude/TECH-LAW-GATE.json"]
 RECEIPT = ".git/rules-read-receipt.json"
 def sha(p): return hashlib.sha256(open(p, "rb").read()).hexdigest() if os.path.exists(p) else ""
 def head(p, a, b):
@@ -14,6 +14,7 @@ if __name__ == "__main__":
     t = open("docs/claude/RESUME-POINT.md", errors="ignore").read().split("\n")
     i = next((k for k, l in enumerate(t) if "STATE AT" in l and l.startswith("##")), 0); print("\n##### RESUME-POINT state block"); print("\n".join(x[:300] for x in t[i:i + 8]))
     head("docs/claude/tech-contracts/CURRENT.md", 0, 20)
+    print("\n##### HANDOFF LIVE (current step + his standing rules + tools; docs/claude/HANDOFF-LIVE.md)"); print(open("docs/claude/HANDOFF-LIVE.md", errors="ignore").read()[:7000])
     print("\n##### OPEN / OVERDUE technologies (TECH-LAW-GATE.json)")
     for c in json.load(open("docs/claude/TECH-LAW-GATE.json"))["checks"]:
         if c["status"] == "open": print(f'  OPEN {c["id"]}: fails from {c.get("fail_after", "?")} - {c["why"][:140]}')
