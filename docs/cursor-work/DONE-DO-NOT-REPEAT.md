@@ -2155,3 +2155,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 14 Nov 2026 04:20 PKT: his install run FAILED on his server at 1/4 tests: founder_routes_need_bearer listed the deleted /founder/v1/live/stream (now 404, not 401). I had only built, never run the tests. Fixed (route removed from the test list); full suite 394/394 pass in my sandbox; install must be re-run by him
 
 - 14 Nov 2026 04:25 PKT: KP3 steps 4 + 4b GREEN WIRED: YES / REAL: YES / TECH-LAW CHECKED: his install 04:20 (tests 394/394, build, healthz 200) + my live Chrome (live stream + mail stream 404, chip QUIC 178 ms, live feed fresh, 0 requests to :4443, bundle index-CVaJk1v6). Next: step 5 (:4443 removal), ss receipt 21 fresh
+
+- 14 Nov 2026 04:35 PKT: his order (phone screenshots 04:21 + 'GREEN mark and advance technology in front of the phase in the blueprint' + 'update context so Claude understands the point after compaction'): KP3 step 5 PLAN A-D written in tech-contracts/CURRENT.md before code; blueprint rows carry GREEN + technology; his phone 390 look added as evidence to step 4 (WIRED: YES / REAL: YES / TECH-LAW CHECKED)
