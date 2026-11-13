@@ -54,23 +54,63 @@ fn follow_store(ep: quinn::Endpoint, store: Arc<CertStore>) {
     });
 }
 
-pub async fn serve(ep: quinn::Endpoint, store: Arc<CertStore>, router: axum::Router, host: String) {
+pub async fn serve(ep: quinn::Endpoint, store: Arc<CertStore>, router: axum::Router, host: String, wt: Option<Arc<crate::wt::Cfg>>) {
     follow_store(ep.clone(), store);
     let host = Arc::new(host);
     while let Some(incoming) = ep.accept().await {
         // address validation: an unvalidated source gets a Retry first (anti-amplification); a validated one proceeds
         if !incoming.remote_address_validated() { let _ = incoming.retry(); continue; }
-        let (router, host) = (router.clone(), host.clone());
+        let (router, host, wt) = (router.clone(), host.clone(), wt.clone());
         tokio::spawn(async move {
             let Ok(Ok(conn)) = tokio::time::timeout(Duration::from_secs(10), async { incoming.await }).await else { return };
             let peer = conn.remote_address();
-            let Ok(mut h3c) = h3::server::Connection::new(h3_quinn::Connection::new(conn)).await else { return };
-            while let Ok(Some(resolver)) = h3c.accept().await {
+            let mut b = h3::server::builder();
+            if wt.is_some() { b.enable_webtransport(true).enable_extended_connect(true).enable_datagram(true).max_webtransport_sessions(crate::wt::MAX_SESSIONS as u64); }
+            let Ok(mut h3c) = b.build::<_, Bytes>(h3_quinn::Connection::new(conn)).await else { return };
+            loop {
+                let Ok(Some(resolver)) = h3c.accept().await else { break };
+                // the request head is read here (not in a task) so a WebTransport CONNECT can take the connection over; a slow head only delays this one connection
+                let Ok(Ok((req, stream))) = tokio::time::timeout(HEADER_WAIT, resolver.resolve_request()).await else { continue };
+                if req.method() == axum::http::Method::CONNECT && req.extensions().get::<h3::ext::Protocol>() == Some(&h3::ext::Protocol::WEB_TRANSPORT) {
+                    let Some(cfg) = wt.clone() else { let mut s = stream; reply(&mut s, StatusCode::NOT_IMPLEMENTED, "Not served.").await; continue };
+                    webtransport(req, stream, h3c, cfg, peer).await;
+                    return; // the connection now belongs to the WebTransport session
+                }
                 let (router, host) = (router.clone(), host.clone());
-                tokio::spawn(async move { request(resolver, router, peer, host).await });
+                tokio::spawn(async move { request(req, stream, router, peer, host).await });
             }
         });
     }
+}
+
+/// A WebTransport CONNECT on the HTTP/3 endpoint. The same rules as the separate WebTransport port: exact host, only /wt/live or /wt/rpc, same-origin Origin, session cap.
+async fn webtransport(req: Request<()>, mut stream: h3::server::RequestStream<h3_quinn::BidiStream<Bytes>, Bytes>, h3c: h3::server::Connection<h3_quinn::Connection, Bytes>, cfg: Arc<crate::wt::Cfg>, peer: SocketAddr) {
+    use crate::wt::{authority_host, origin_ok, PATH, RPC_PATH};
+    let path = req.uri().path().to_string();
+    let rpc = path == RPC_PATH && cfg.rpc.is_some();
+    let host_ok = req.uri().authority().map(|a| authority_host(a.as_str()) == cfg.host).unwrap_or(false);
+    if !host_ok || (path != PATH && !rpc) { reply(&mut stream, StatusCode::NOT_FOUND, "Not found.").await; return; }
+    let origin = req.headers().get(header::ORIGIN).and_then(|v| v.to_str().ok());
+    if !origin_ok(origin, &cfg.host) { reply(&mut stream, StatusCode::FORBIDDEN, "Wrong origin.").await; return; }
+    let Some(_slot) = crate::wt::Active::take() else { reply(&mut stream, StatusCode::TOO_MANY_REQUESTS, "Busy.").await; return };
+    let ua = req.headers().get(header::USER_AGENT).and_then(|v| v.to_str().ok()).map(String::from);
+    let hint = req.headers().get("sec-ch-ua").and_then(|v| v.to_str().ok()).map(String::from);
+    let Ok(session) = h3_webtransport::server::WebTransportSession::accept(req, stream, h3c).await else { return };
+    let session = Arc::new(session);
+    if rpc {
+        if let Some(router) = cfg.rpc.clone() {
+            let s = session.clone();
+            crate::wtrpc::run_with(move || { let s = s.clone(); async move { loop { match s.accept_bi().await { Ok(Some(h3_webtransport::server::AcceptedBi::BidiStream(_, bi))) => { let (r, w) = tokio::io::split(bi); return Some((w, r)); } Ok(Some(_)) => continue, _ => return None } } } }, peer.ip(), router, Arc::new(cfg.host.clone()), ua, hint).await;
+        }
+        return;
+    }
+    crate::wt::count_session(peer);
+    let first = tokio::time::timeout(crate::wt::HELLO_WAIT, session.accept_bi()).await;
+    let Ok(Ok(Some(h3_webtransport::server::AcceptedBi::BidiStream(_, bi)))) = first else { return };
+    let (mut recv, mut send) = tokio::io::split(bi);
+    let _ = crate::wt::live_session(&mut send, &mut recv, &cfg, std::future::pending::<()>()).await;
+    // graceful end: the stream is finished, now give the peer a moment to read the last frames and close; dropping the session at once would cut them off
+    let _ = tokio::time::timeout(Duration::from_secs(5), async { loop { match session.accept_bi().await { Ok(Some(_)) => continue, _ => break } } }).await;
 }
 
 async fn reply<S: h3::quic::SendStream<Bytes>>(s: &mut h3::server::RequestStream<S, Bytes>, code: StatusCode, msg: &'static str) {
@@ -78,8 +118,7 @@ async fn reply<S: h3::quic::SendStream<Bytes>>(s: &mut h3::server::RequestStream
     if s.send_response(r).await.is_ok() { let _ = s.send_data(Bytes::from_static(msg.as_bytes())).await; let _ = s.finish().await; }
 }
 
-async fn request(resolver: h3::server::RequestResolver<h3_quinn::Connection, Bytes>, router: axum::Router, peer: SocketAddr, host: Arc<String>) {
-    let Ok(Ok((req, mut stream))) = tokio::time::timeout(HEADER_WAIT, resolver.resolve_request()).await else { return };
+async fn request(req: Request<()>, mut stream: h3::server::RequestStream<h3_quinn::BidiStream<Bytes>, Bytes>, router: axum::Router, peer: SocketAddr, host: Arc<String>) {
     let want = req.uri().authority().map(|a| a.host().to_string());
     if !host_ok(want.as_deref(), &host) { reply(&mut stream, StatusCode::MISDIRECTED_REQUEST, "Wrong host.").await; return; }
     let mut body = BytesMut::new();
@@ -160,7 +199,8 @@ mod tests {
         let app = axum::Router::new()
             .route("/v", axum::routing::get(|req: Request<Body>| async move { format!("{:?} {}", req.version(), req.headers().get("x-real-ip").and_then(|v| v.to_str().ok()).unwrap_or("-")) }))
             .route("/echo", axum::routing::post(|b: axum::body::Bytes| async move { format!("{}", b.len()) }));
-        tokio::spawn(serve(ep, store, app, "localhost".into()));
+        let wtc = Arc::new(crate::wt::Cfg { host: "localhost".into(), handler: Arc::new(|_h| Box::pin(async { Response::builder().status(200).body(Body::empty()).unwrap() })), rpc: None });
+        tokio::spawn(serve(ep, store, app, "localhost".into(), Some(wtc))); // WebTransport ON must not disturb plain HTTP/3 requests
         // client
         let root = rustls::pki_types::CertificateDer::from_pem_slice(&c).unwrap();
         let mut roots = rustls::RootCertStore::empty(); roots.add(root).unwrap();

@@ -27,7 +27,7 @@ pub const PATH: &str = "/wt/live";
 pub const RPC_PATH: &str = "/wt/rpc";
 pub const MAX_SESSIONS: usize = 64;
 const HELLO_MAX: usize = 4096;
-const HELLO_WAIT: Duration = Duration::from_secs(5);
+pub const HELLO_WAIT: Duration = Duration::from_secs(5);
 const HANDSHAKE_WAIT: Duration = Duration::from_secs(10);
 const MAX_LIFE: Duration = Duration::from_secs(600);
 
@@ -127,8 +127,8 @@ pub async fn serve(ep: Endpoint<Server>, store: Arc<CertStore>, cfg: Arc<Cfg>) {
     }
 }
 
-struct Active;
-impl Active { fn take() -> Option<Active> { let n = ACTIVE.fetch_add(1, Ordering::SeqCst); if n >= MAX_SESSIONS { ACTIVE.fetch_sub(1, Ordering::SeqCst); return None; } Some(Active) } }
+pub struct Active;
+impl Active { pub fn take() -> Option<Active> { let n = ACTIVE.fetch_add(1, Ordering::SeqCst); if n >= MAX_SESSIONS { ACTIVE.fetch_sub(1, Ordering::SeqCst); return None; } Some(Active) } }
 impl Drop for Active { fn drop(&mut self) { ACTIVE.fetch_sub(1, Ordering::SeqCst); } }
 
 async fn one_session(incoming: wtransport::endpoint::IncomingSession, cfg: Arc<Cfg>) {
@@ -139,42 +139,55 @@ async fn one_session(incoming: wtransport::endpoint::IncomingSession, cfg: Arc<C
     let Some(_slot) = Active::take() else { req.too_many_requests().await; return };
     let (ua, hint) = (req.user_agent().map(String::from), req.headers().get("sec-ch-ua").cloned());
     let Ok(conn) = req.accept().await else { return };
-    if rpc { if let Some(router) = cfg.rpc.clone() { crate::wtrpc::run(conn, router, Arc::new(cfg.host.clone()), ua, hint).await; } return; }
-    let n = TOTAL.fetch_add(1, Ordering::Relaxed) + 1;
-    if n <= 5 || n % 1000 == 0 { eprintln!("founder: WebTransport session #{n} from {} (QUIC, TLS 1.3 AES-256)", conn.remote_address()); }
+    let peer = conn.remote_address();
+    if rpc { if let Some(router) = cfg.rpc.clone() { let c = conn.clone(); crate::wtrpc::run_with(|| { let c = c.clone(); async move { c.accept_bi().await.ok() } }, peer.ip(), router, Arc::new(cfg.host.clone()), ua, hint).await; } conn.close(VarInt::from_u32(0), b"done"); return; }
+    count_session(peer);
     let Ok(Ok((mut send, mut recv))) = tokio::time::timeout(HELLO_WAIT, conn.accept_bi()).await else { conn.close(VarInt::from_u32(1), b"no stream"); return };
-    // hello line
+    let code = live_session(&mut send, &mut recv, &cfg, conn.closed()).await;
+    // graceful end (tokio shutdown only finishes the stream): give the peer a moment to read the last frames and close, then close ourselves
+    let _ = tokio::time::timeout(Duration::from_secs(5), conn.closed()).await;
+    conn.close(VarInt::from_u32(code), b"done");
+}
+
+/// One /wt/live session on one bidirectional stream, the SAME code for every transport (wtransport on its own UDP port, h3-webtransport on UDP 443): hello line -> token check
+/// through the live handler -> frames until the stream ends, the 10-minute life is over or the peer closes. Returns the QUIC application close code (0 done, 2 bad hello, 3 refused).
+/// Count + log a new live session (first five, then every thousandth).
+pub fn count_session(peer: SocketAddr) { let n = TOTAL.fetch_add(1, Ordering::Relaxed) + 1; if n <= 5 || n % 1000 == 0 { eprintln!("founder: WebTransport session #{n} from {peer} (QUIC UDP 443, TLS 1.3 AES-256)"); } }
+
+pub async fn live_session<W, R, C>(send: &mut W, recv: &mut R, cfg: &Cfg, closed: C) -> u32
+where W: tokio::io::AsyncWrite + Unpin, R: tokio::io::AsyncRead + Unpin, C: std::future::Future {
+    use tokio::io::{AsyncReadExt, AsyncWriteExt};
     let mut buf = Vec::with_capacity(256);
     let hello = tokio::time::timeout(HELLO_WAIT, async {
         let mut one = [0u8; 256];
         loop {
-            match recv.read(&mut one).await { Ok(Some(k)) if k > 0 => { buf.extend_from_slice(&one[..k]); if buf.contains(&b'\n') { return true; } if buf.len() > HELLO_MAX { return false; } } _ => return false }
+            match recv.read(&mut one).await { Ok(k) if k > 0 => { buf.extend_from_slice(&one[..k]); if buf.contains(&b'\n') { return true; } if buf.len() > HELLO_MAX { return false; } } _ => return false }
         }
     }).await.unwrap_or(false);
-    if !hello { let _ = send.write_all(b"ERR 400\n").await; let _ = send.finish().await; conn.close(VarInt::from_u32(2), b"hello"); return; }
+    if !hello { let _ = send.write_all(b"ERR 400\n").await; let _ = send.shutdown().await; return 2; }
     let end = buf.iter().position(|b| *b == b'\n').map(|i| i + 1).unwrap_or(buf.len());
-    let (tok, last) = match parse_hello(&buf[..end]) { Ok(v) => v, Err(_) => { let _ = send.write_all(b"ERR 400\n").await; let _ = send.finish().await; conn.close(VarInt::from_u32(2), b"hello"); return; } };
+    let (tok, last) = match parse_hello(&buf[..end]) { Ok(v) => v, Err(_) => { let _ = send.write_all(b"ERR 400\n").await; let _ = send.shutdown().await; return 2; } };
     let mut h = HeaderMap::new();
-    let Ok(av) = HeaderValue::from_str(&format!("Bearer {tok}")) else { conn.close(VarInt::from_u32(2), b"hello"); return };
+    let Ok(av) = HeaderValue::from_str(&format!("Bearer {tok}")) else { return 2 };
     h.insert(HeaderName::from_static("authorization"), av);
     if let Some(l) = last { if let Ok(v) = HeaderValue::from_str(&l.to_string()) { h.insert(HeaderName::from_static("last-event-id"), v); } }
     let res = (cfg.handler)(h).await;
     if !res.status().is_success() {
-        let _ = send.write_all(format!("ERR {}\n", res.status().as_u16()).as_bytes()).await; let _ = send.finish().await;
-        conn.close(VarInt::from_u32(3), b"refused"); return;
+        let _ = send.write_all(format!("ERR {}\n", res.status().as_u16()).as_bytes()).await; let _ = send.shutdown().await;
+        return 3;
     }
     let mut body = Body::into_data_stream(res.into_body());
     let life = tokio::time::sleep(MAX_LIFE);
-    tokio::pin!(life);
+    tokio::pin!(life); tokio::pin!(closed);
     loop {
         tokio::select! {
             c = body.next() => match c { Some(Ok(b)) => { if send.write_all(&b).await.is_err() { break; } } _ => break },
             _ = &mut life => break,
-            _ = conn.closed() => break,
+            _ = &mut closed => break,
         }
     }
-    let _ = send.finish().await;
-    conn.close(VarInt::from_u32(0), b"done");
+    let _ = send.shutdown().await;
+    0
 }
 
 #[cfg(test)]
@@ -330,5 +343,66 @@ mod tests {
     fn off_by_default_and_plain_host_only() {
         unsafe { std::env::remove_var("FOUNDER_WT_ADDR"); }
         assert!(from_env().is_none());
+    }
+
+    /// KP3: the SAME live and RPC code, but on the HTTP/3 endpoint (one UDP socket, h3 + h3-webtransport), reached by a real QUIC client with AES-256.
+    async fn start_h3(status: u16, seen: Arc<std::sync::Mutex<Vec<(String, String)>>>, rpc: Option<axum::Router>) -> Option<(u16, Vec<u8>)> {
+        let (c, k) = test_cert()?;
+        let tls = crate::tls256::server_config(&c, &k).unwrap();
+        let ep = crate::h3::endpoint("127.0.0.1:0".parse().unwrap(), &tls).unwrap();
+        let port = ep.local_addr().unwrap().port();
+        let app = axum::Router::new().route("/v", axum::routing::get(|| async { "plain" }));
+        let cfg = Arc::new(Cfg { host: "127.0.0.1".into(), handler: handler(seen, status), rpc });
+        tokio::spawn(crate::h3::serve(ep, Arc::new(CertStore::fixed(tls)), app, "127.0.0.1".into(), Some(cfg)));
+        Some((port, c))
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn kp3_live_frames_flow_on_the_http3_endpoint_with_aes256() {
+        let seen = Arc::new(std::sync::Mutex::new(vec![]));
+        let Some((port, cert)) = start_h3(200, seen.clone(), None).await else { eprintln!("openssl missing: skipped"); return };
+        let out = talk(port, &cert, rustls::crypto::ring::cipher_suite::TLS13_AES_256_GCM_SHA384, PATH, b"ANX1 tok123 42\n").await.unwrap();
+        assert_eq!(String::from_utf8(out).unwrap(), "event: snapshot\ndata: {}\n\nevent: tick\ndata: {\"version\":1}\n\n");
+        assert_eq!(seen.lock().unwrap().clone(), vec![("Bearer tok123".to_string(), "42".to_string())]);
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn kp3_refused_token_bad_hello_wrong_path_and_aes128_are_all_refused_on_the_http3_endpoint() {
+        let seen = Arc::new(std::sync::Mutex::new(vec![]));
+        let Some((port, cert)) = start_h3(401, seen.clone(), None).await else { eprintln!("openssl missing: skipped"); return };
+        let a256 = rustls::crypto::ring::cipher_suite::TLS13_AES_256_GCM_SHA384;
+        let a128 = rustls::crypto::ring::cipher_suite::TLS13_AES_128_GCM_SHA256;
+        assert_eq!(String::from_utf8(talk(port, &cert, a256, PATH, b"ANX1 bad\n").await.unwrap()).unwrap(), "ERR 401\n");
+        assert_eq!(String::from_utf8(talk(port, &cert, a256, PATH, b"GET / HTTP/1.1\n").await.unwrap()).unwrap(), "ERR 400\n");
+        assert!(talk(port, &cert, a256, "/other", b"ANX1 tok\n").await.is_err(), "a path that is not /wt/live or /wt/rpc is refused");
+        assert!(talk(port, &cert, a256, RPC_PATH, b"ANX1 tok\n").await.is_err(), "/wt/rpc is refused when no router is given");
+        assert!(talk(port, &cert, a128, PATH, b"ANX1 tok\n").await.is_err(), "AES-128-only client must be refused");
+        assert_eq!(seen.lock().unwrap().len(), 1, "only the well-formed hello reached the handler");
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn kp3_the_founder_api_runs_over_the_http3_endpoint_through_the_same_router_and_gates() {
+        use axum::{routing::{get, post}, Router, http::HeaderMap as H};
+        let router = Router::new()
+            .route("/founder/v1/echo", post(|h: H, b: axum::body::Bytes| async move { format!("{}|{}|{}", h.get("authorization").and_then(|v| v.to_str().ok()).unwrap_or(""), h.get("host").and_then(|v| v.to_str().ok()).unwrap_or(""), String::from_utf8_lossy(&b)) }))
+            .route("/founder/v1/exchange", get(|wt: Option<axum::Extension<crate::wtrpc::WtCall>>| async move { if wt.is_some() { "kernel-call" } else { "plain" } }));
+        let seen = Arc::new(std::sync::Mutex::new(vec![]));
+        let Some((port, c)) = start_h3(200, seen, Some(router)).await else { eprintln!("openssl missing: skipped"); return };
+        let cl = client(&c, rustls::crypto::ring::cipher_suite::TLS13_AES_256_GCM_SHA384);
+        let conn = tokio::time::timeout(Duration::from_secs(5), cl.connect(format!("https://127.0.0.1:{port}{RPC_PATH}"))).await.unwrap().unwrap();
+        async fn call(conn: &wtransport::Connection, head: &str, body: &[u8]) -> Vec<u8> {
+            let (mut s, mut r) = conn.open_bi().await.unwrap().await.unwrap();
+            let mut req = head.as_bytes().to_vec(); req.push(b'\n'); req.extend_from_slice(body);
+            s.write_all(&req).await.unwrap(); s.finish().await.unwrap();
+            let mut out = Vec::new(); let mut b = [0u8; 4096];
+            loop { match tokio::time::timeout(Duration::from_secs(5), r.read(&mut b)).await { Ok(Ok(Some(n))) => out.extend_from_slice(&b[..n]), _ => break } }
+            out
+        }
+        let a = call(&conn, r#"{"m":"POST","p":"/founder/v1/echo","h":{"authorization":"Bearer t1","host":"evil"}}"#, b"hello").await;
+        assert_eq!(String::from_utf8(a).unwrap(), "S 200 text/plain; charset=utf-8\nBearer t1|127.0.0.1|hello", "the caller never sets the host");
+        let b = call(&conn, r#"{"m":"GET","p":"/founder/v1/exchange"}"#, b"").await;
+        assert!(String::from_utf8(b).unwrap().ends_with("kernel-call"));
+        let d = call(&conn, r#"{"m":"GET","p":"/founder/v1/dbsc/start"}"#, b"").await;
+        assert!(String::from_utf8(d).unwrap().starts_with("S 404 "), "the browser-only DBSC routes stay refused");
     }
 }

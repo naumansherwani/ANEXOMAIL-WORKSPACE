@@ -34,8 +34,10 @@ hyper-util = { version = "0.1", features = ["tokio", "service", "server-auto", "
 tower = { version = "0.5", features = ["util"] }
 # K6 (WebTransport over QUIC/HTTP3): ring provider (same as rustls above), no aws-lc, no self-signed generator. AES-256-only config is built by hand in wt.rs.
 # K8 (11 Nov 2026): real HTTP/3 for the founder API on its own UDP port: h3 + h3-quinn on the SAME quinn as wtransport (ring, AES-256-only config from wt::quic_config)
-h3 = "0.0.8"
-h3-quinn = "0.0.10"
+h3 = { version = "0.0.8", features = ["i-implement-a-third-party-backend-and-opt-into-breaking-changes"] }
+h3-quinn = { version = "0.0.10", features = ["datagram"] }
+# KP3 (14 Nov 2026): WebTransport on the SAME UDP 443 endpoint as HTTP/3 (extended CONNECT, draft-ietf-webtrans-http3), no second port, no fallback protocol
+h3-webtransport = "0.1.2"
 quinn = { version = "0.11", default-features = false, features = ["ring", "rustls-ring", "runtime-tokio"] }
 http-body-util = "0.1"
 bytes = "1"

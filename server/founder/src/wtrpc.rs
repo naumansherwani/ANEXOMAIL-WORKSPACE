@@ -19,7 +19,7 @@ use std::{net::IpAddr, sync::Arc, time::Duration};
 use axum::{body::Body, http::{HeaderName, HeaderValue, Method, Request, StatusCode, Version}, Router};
 use http_body_util::BodyExt;
 use tower::ServiceExt;
-use wtransport::{Connection, VarInt};
+use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
 
 pub const MAX_REQ: usize = 1 << 20;
 pub const MAX_RESP: usize = 8 << 20;
@@ -80,9 +80,9 @@ pub fn encode(status: u16, ctype: &str, body: &[u8]) -> Vec<u8> {
     out
 }
 
-async fn one_call(router: Router, host: Arc<String>, peer: IpAddr, ua: Option<String>, hint: Option<String>, mut send: wtransport::SendStream, mut recv: wtransport::RecvStream) {
+async fn one_call<W: AsyncWrite + Unpin, R: AsyncRead + Unpin>(router: Router, host: Arc<String>, peer: IpAddr, ua: Option<String>, hint: Option<String>, mut send: W, mut recv: R) {
     let mut raw = Vec::new(); let mut buf = [0u8; 16384];
-    let got = tokio::time::timeout(CALL_WAIT, async { loop { match recv.read(&mut buf).await { Ok(Some(n)) if n > 0 => { raw.extend_from_slice(&buf[..n]); if raw.len() > MAX_REQ + MAX_HEAD + 1 { return false; } } Ok(_) => return true, Err(_) => return false } } }).await.unwrap_or(false);
+    let got = tokio::time::timeout(CALL_WAIT, async { loop { match recv.read(&mut buf).await { Ok(n) if n > 0 => { raw.extend_from_slice(&buf[..n]); if raw.len() > MAX_REQ + MAX_HEAD + 1 { return false; } } Ok(_) => return true, Err(_) => return false } } }).await.unwrap_or(false);
     let answer = if !got { encode(413, "text/plain", b"The request was not accepted.") } else {
         match parse(&raw, &host, peer, ua.as_deref(), hint.as_deref()) {
             Err(c) => encode(c, "text/plain", b"The request was refused.\n"),
@@ -96,29 +96,29 @@ async fn one_call(router: Router, host: Arc<String>, peer: IpAddr, ua: Option<St
             },
         }
     };
-    if send.write_all(&answer).await.is_ok() { let _ = send.finish().await; }
+    if send.write_all(&answer).await.is_ok() { let _ = send.shutdown().await; }
 }
 
-/// One WebTransport session = many calls (one bidirectional stream each).
-pub async fn run(conn: Connection, router: Router, host: Arc<String>, ua: Option<String>, hint: Option<String>) {
-    let peer = conn.remote_address().ip();
+/// One WebTransport session = many calls (one bidirectional stream each). `accept` hands out the next bidirectional stream (None = the session is over). The SAME code runs for the
+/// wtransport endpoint (its own UDP port) and for h3-webtransport on UDP 443, so both carry every gate and cap above.
+pub async fn run_with<A, F, W, R>(mut accept: A, peer: IpAddr, router: Router, host: Arc<String>, ua: Option<String>, hint: Option<String>)
+where A: FnMut() -> F, F: std::future::Future<Output = Option<(W, R)>>, W: AsyncWrite + Unpin + Send + 'static, R: AsyncRead + Unpin + Send + 'static {
     let gate = Arc::new(tokio::sync::Semaphore::new(MAX_INFLIGHT));
     let life = tokio::time::sleep(LIFE);
     tokio::pin!(life);
     loop {
         tokio::select! {
-            s = conn.accept_bi() => match s {
-                Ok((send, recv)) => {
+            s = accept() => match s {
+                Some((send, recv)) => {
                     let Ok(permit) = gate.clone().acquire_owned().await else { break };
                     let (r, h, u, c) = (router.clone(), host.clone(), ua.clone(), hint.clone());
                     tokio::spawn(async move { one_call(r, h, peer, u, c, send, recv).await; drop(permit); });
                 }
-                Err(_) => break,
+                None => break,
             },
             _ = &mut life => break,
         }
     }
-    conn.close(VarInt::from_u32(0), b"done");
 }
 
 #[allow(dead_code)]

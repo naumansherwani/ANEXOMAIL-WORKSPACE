@@ -322,7 +322,7 @@ Technology: ONE quinn endpoint on UDP 443 (h3 0.0.8 + h3-quinn 0.0.10 + h3-webtr
 Steps (each its own commit; the live site keeps working between them; 4443 stays until 443 is proven live, then is removed):
 | # | KP3 step | State |
 |---|---|---|
-| 1 | Rust: WebTransport sessions accepted inside the h3.rs connection loop on the same UDP 443 endpoint; the /wt/live hello handler and the /wt/rpc call loop move off wtransport types onto a small stream trait so BOTH endpoints (4443 and 443) run the SAME code; sandbox tests (real QUIC client, AES-256, refused paths) | OPEN |
+| 1 | Rust: WebTransport sessions accepted inside the h3.rs connection loop on the same UDP 443 endpoint (h3 + h3-webtransport, extended CONNECT); wt::live_session and wtrpc::run_with are now generic over tokio streams so the 4443 endpoint and UDP 443 run the SAME code (every gate and cap); FOUNDER_H3_WT=off is the rollback switch; 393 Rust tests pass in the sandbox incl. 3 new KP3 tests with a real QUIC client (AES-256, hello, refused token, wrong path, AES-128 refused, RPC through the same router, dbsc routes refused) | CODE DONE + SANDBOX PROVEN, NOT yet on his server |
 | 2 | Browser/kernel: WT URL = same origin 443 first (URL built from location.host, no port); 4443 only as a bridge until step 1 is live; kernel pin/SRI update if the kernel Rust changes | OPEN |
 | 3 | Honest status: a "QUIC blocked by network" state with the real reason in the Bridge/Mail chips (no hidden retry loops, no SSE) | OPEN |
 | 4 | Remove the SSE fallback (livefeed.ts WT_FAILS_BEFORE_SSE, api.ts openStream, fmail_ep stream path) AFTER 2+3 are live and proven; his install + my live Chrome look + his phone | OPEN |
@@ -330,3 +330,5 @@ Steps (each its own commit; the live site keeps working between them; 4443 stays
 Side notes from his answer: a MASQUE / WireGuard UDP tunnel is the future UDP-blocked-network break-glass (KP2 stays measured first: the SSH forward to 127.0.0.1:3210 carries TCP only and cannot carry QUIC). TECH-LAW CHECKED.
 
 - 14 Nov 2026 01:05 PKT: KP3 STARTED (his typed order 00:41): WebTransport on UDP 443 same-origin, NO SSE/H2/H1 fallback, honest QUIC-blocked status. Contract + 5 steps in CURRENT.md; spike: h3 0.0.8 + h3-quinn 0.0.10 + h3-webtransport 0.1.2 compile together. KP2 laptop test still pending. TECH-LAW CHECKED
+
+- 14 Nov 2026 01:35 PKT: KP3 step 1 CODE DONE: WebTransport on the HTTP/3 endpoint (UDP 443, same origin) via h3-webtransport 0.1.2; live_session + run_with generic so 4443 and 443 run the SAME code; 393 Rust tests pass incl 3 KP3 tests (real QUIC client, AES-256, refused token/path/AES-128, RPC through the same router). NOT installed yet, 4443 untouched. TECH-LAW CHECKED

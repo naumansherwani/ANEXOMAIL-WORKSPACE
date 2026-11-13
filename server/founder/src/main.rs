@@ -1070,7 +1070,17 @@ async fn main() {
                 }
                 fproxy::set_alt(alt);
                 let rt = app(st.clone()).layer(hdr("alt-svc", alt)).layer(axum::middleware::from_fn(fproxy::layer));
-                if let Some((ep, host)) = h3ep { tokio::spawn(h3::serve(ep, store.clone(), rt.clone(), host)); }
+                if let Some((ep, host)) = h3ep {
+                    // KP3: WebTransport on the SAME UDP endpoint as HTTP/3 (same origin = CSP 'self'), the same live handler + the same RPC router as the separate port. FOUNDER_H3_WT=off is the rollback switch.
+                    let wt_on = std::env::var("FOUNDER_H3_WT").map(|v| !v.eq_ignore_ascii_case("off")).unwrap_or(true);
+                    let wtc = if wt_on {
+                        let stw = st.clone();
+                        let handler: wt::Handler = Arc::new(move |h: HeaderMap| { let stw = stw.clone(); Box::pin(async move { live_stream_core(stw, h, "webtransport").await }) });
+                        eprintln!("founder: WebTransport ON the HTTP/3 endpoint (same UDP port, same origin): {} and {}", wt::PATH, wt::RPC_PATH);
+                        Some(Arc::new(wt::Cfg { host: host.clone(), handler, rpc: Some(app(st.clone()).layer(axum::middleware::from_fn(fproxy::layer))) }))
+                    } else { eprintln!("founder: WebTransport on the HTTP/3 endpoint is OFF (FOUNDER_H3_WT=off)"); None };
+                    tokio::spawn(h3::serve(ep, store.clone(), rt.clone(), host, wtc));
+                }
                 tokio::spawn(tls256::tcp_closed(l)); }   // K8e: tcp 443 closed on purpose, HTTP/3 only
             Err(e) => eprintln!("founder: TLS-256 terminator NOT started: bind {a}: {e}"),
         },
