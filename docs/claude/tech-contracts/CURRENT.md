@@ -312,3 +312,5 @@ Technology: Bash read-only audit (kp2-audit.sh) of the loopback listener 127.0.0
 | 3 | result + decision written here | OPEN |
 
 - 14 Nov 2026 00:35 PKT: KP2 STARTED: contract in CURRENT.md, read-only kp2-audit.sh written (loopback 3210, sshd forwarding, Host answers, headers), waits his run. K8e still not green: 820 look pending (my Chrome cannot resize/popup 820). Loophole ledger updated: DNS khatra closed, honest open list. TECH-LAW CHECKED
+
+- 14 Nov 2026 00:30 PKT: K8e GREEN by HIS ORDER (00:21): WIRED: YES / REAL: YES / TECH-LAW CHECKED; 820 tablet not seen, waived by his word and written so. KP2 step 1 done (his audit output, SF receipt 13): 3210 loopback-only, sshd forwarding yes; findings: CSP connect-src, passkey RP ID on localhost, sshd password+root login open (his decision). Laptop SSH test next
