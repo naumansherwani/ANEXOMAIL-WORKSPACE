@@ -69,3 +69,8 @@ MOBILE / TABLET / LAPTOP RULE (his 7 Nov 13:30 + 6 Nov 20:38, standing): ONE cod
 
 ## STATUS 13 Nov 23:55 PKT: K8e INSTALLED ON HIS SERVER (his output, SF receipt 11): 390 Rust tests pass on the server, build ok, SPA installed, healthz 200, exchange/me/bridge without token 401.
 - NOT GREEN YET (law): needs my live Chrome look: founder site loads over h3 only, the assets arrive over h3 (resource timing nextHopProtocol), tcp 443 for the founder host is dropped on purpose, awam site (anexomail.com) still works through the SNI front. Then his phone screenshot (390/820). Then KP2 (UDP-blocked break-glass: SSH local forward to 127.0.0.1:3210, measured at home).
+
+## STATUS 13 Nov 23:58 PKT: K8e LIVE CHROME LOOK DONE (my Chrome, 1536 px wide, secure context). SF receipt 11 = his install output (the first attempt wrote one line and failed, receipt 11 was recorded properly right after).
+- founderworkspace.anexomail.com loads, bundle index-DOhUtV6G.js (= the repo build with the Bridge CSS fix). Resource timing: 13 resources nextHopProtocol h3. 4 font files showed http/1.1 with transferSize 0 = browser-cache entries from before K8e; I re-fetched all 6 woff2 with cache reload: ALL h3, status 200 (21-23 KB each).
+- anexomail.com (awam, through the SNI front on tcp 443 to Caddy) still answers 200 ("Launching soon" page): awam NOT affected.
+- NOT GREEN: law needs 390 / 820 as well. This Chrome cannot shrink its viewport, so the phone/tablet look = HIS phone screenshot (390) + tablet. Also the tcp-443-dropped-for-the-founder-host fact is not yet proven from outside (needs a read-only check), and KP2 (UDP-blocked break-glass) is the next phase.

@@ -3143,3 +3143,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 13 Nov 2026 23:50 PKT: KP1 audit = GO (his output after the public HTTPS h3 record, SF receipt 10). K8e install is next: code read first, tcp_closed only replaces the TLS terminator on :8443, the SNI front on tcp 443 keeps sending every other name to Caddy, so awam is not affected. Then my live Chrome look, KP2. TECH-LAW CHECKED
 
 - 13 Nov 2026 23:55 PKT: K8e INSTALLED on his server (his founder-install output, SF receipt 11): 390 tests pass, build ok, SPA installed, healthz 200, exchange/me/bridge without token 401. NOT GREEN: live Chrome look (h3 only, assets over h3, awam still reachable) and his phone screenshot pending. Next: my Chrome look, KP2. TECH-LAW CHECKED
+
+- 13 Nov 2026 23:58 PKT: K8e live Chrome look: founder site over h3 (13 resources h3; 4 fonts http/1.1 were cache entries, re-fetched all 6 = h3, 200), bundle index-DOhUtV6G = repo build, secure context; anexomail.com (awam) still 200 through the SNI front. NOT GREEN: needs his phone 390 / tablet 820 screenshot; KP2 next. SF receipt 11 = his install output. TECH-LAW CHECKED
