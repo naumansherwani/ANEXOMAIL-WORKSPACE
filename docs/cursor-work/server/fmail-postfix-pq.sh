@@ -19,8 +19,10 @@ echo "== 3/8 postfix check"; postfix check 2>&1 | grep -v "not owned by root: /v
 echo "== 4/8 reload"; systemctl reload postfix || undo reload; sleep 3
 echo "== 5/8 A: post-quantum client"; A="$(hs -groups X25519MLKEM768)"; echo "$A" | grep -E "Protocol|Negotiated TLS1.3 group|Cipher is|alert" | sed 's/^/  /'
 echo "$A" | grep -q "Negotiated TLS1.3 group: X25519MLKEM768" || undo "PQ handshake did not negotiate X25519MLKEM768"
-echo "== 6/8 B: classic-only client (old senders)"; B="$(hs -groups X25519)"; echo "$B" | grep -E "Negotiated TLS1.3 group|Cipher is|alert" | sed 's/^/  /'
-echo "$B" | grep -q "Cipher is (NONE)" && undo "classic client broke"; echo "$B" | grep -q "Negotiated TLS1.3 group: X25519" || undo "classic client did not get X25519"
+echo "== 6/8 B: classic-only client (old senders)"; B="$(hs -groups X25519)"; echo "$B" | grep -E "Protocol|Negotiated TLS1.3 group|Peer Temp Key|Server Temp Key|Cipher is|alert" | sed 's/^/  /'
+# a classic client must complete a TLS 1.3 handshake with a real cipher (s_client 3.5 does not always print the group line for classic groups; his first run proved that: handshake fine, line absent)
+echo "$B" | grep -Eq "Cipher is \(NONE\)|alert" && undo "classic client broke"; echo "$B" | grep -q "Cipher is TLS_AES_256_GCM_SHA384" || undo "classic client did not complete the handshake"
+echo "$B" | grep -Eq "Negotiated TLS1.3 group: .*MLKEM" && undo "classic-only client was given ML-KEM (impossible, check)"
 echo "== 7/8 C: default client"; C="$(hs)"; echo "$C" | grep -E "Negotiated TLS1.3 group|Cipher is|alert" | sed 's/^/  /'
 echo "$C" | grep -q "Cipher is (NONE)" && undo "default client broke"
 echo "== 8/8 Postfix's own client (outgoing mail path) against itself"; if command -v posttls-finger >/dev/null; then posttls-finger -l may "[127.0.0.1]:$PORT" 2>&1 | grep -Ei "TLS|handshake|fail|error" | head -4 | sed 's/^/  /'; else echo "  posttls-finger not installed (skipped)"; fi

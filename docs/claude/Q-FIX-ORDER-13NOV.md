@@ -48,3 +48,5 @@ TOMORROW EVENING, in this order, each needs his haan because awam shares the Pos
 Q1b-3 is NOT REAL until T3 is proven. Q1d (DKIM key + FMAIL_SEND) comes after, step 2.
 
 ## HIS BIG HAAN 13 Nov 18:40 PKT for T1, T2, T3, T4 (one by one, in order, each with advance technology + time). T1 started 18:40 (fmail-postfix-pq.sh written, waits his run). INBOUND-TLS-PQ-DONE is written here only after his output shows 'Negotiated TLS1.3 group: X25519MLKEM768'.
+
+## T1 FIRST RUN 13 Nov 18:47 (his output): Postfix ACCEPTED the ML-KEM name: PQ-only client = "Negotiated TLS1.3 group: X25519MLKEM768", TLS_AES_256_GCM_SHA384. The classic-only handshake ALSO completed (TLSv1.3, AES-256-GCM) but my script asserted a group line that OpenSSL 3.5 s_client does not print for classic groups => the script rolled back a WORKING config (script bug, not a Postfix problem; main.cf is back to the old curves, backup main.cf.pre-pq kept). Fixed: test B now requires a completed TLS 1.3 handshake with AES-256-GCM, no alert, no ML-KEM given to a classic client. Re-run needed.
