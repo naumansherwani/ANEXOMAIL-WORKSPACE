@@ -236,3 +236,5 @@
 - 14 Nov 2026 05:30 PKT: his warning (4443 was made to keep the founder apart from the awam world, use only free ports) checked in docs + ss receipt 21: 4443 was K6's spare port when UDP 443 was Caddy's; now founder owns 443 and Caddy sits on 18443, step 5 touches neither
 
 - 14 Nov 2026 05:26 PKT: his curl on his server (receipt 24): awam = HTTP/2 200 over TCP 443 and alt-svc h3=:18443 (Caddy); founder = UDP 443, so founder and awam are separate by port and by process; step 5 changes neither
+
+- 14 Nov 2026 05:36 PKT: his install of steps 1+2 OK (tests 394/394, build, healthz 200) + my live Chrome: live CSP = connect-src self only, chip QUIC 183 ms, live feed fresh, 0 requests to :4443 = KP3 step 5 STEPS 1 + 2 GREEN WIRED: YES / REAL: YES / TECH-LAW CHECKED; his separation order written word for word in docs/claude/FOUNDER-AWAM-SEPARATION-LAW-14NOV.md (awam problems = awam blueprint only, founder code preserved and adapted for awam); next ONE STEP: step 3 installers

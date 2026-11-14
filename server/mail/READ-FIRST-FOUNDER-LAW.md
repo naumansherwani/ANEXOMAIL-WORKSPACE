@@ -6,3 +6,4 @@
 4. HTTP/3 ONLY on the founder host. No SSE, no WebSocket, no H2, no HTTP/1.1, no Bun/Node on his server. Proven on his server 14 Nov 04:02 (receipt 22): TCP 443 of the founder host = TLS alert access_denied, http code 000.
 5. No vendor, ever: allowed only Caddy, Namecheap (his hands), Hetzner, his own Rust.
 6. Full text: CLAUDE.md top, docs/claude/START-HERE-AFTER-COMPACTION.md, docs/claude/PHASE-NOW.md.
+7. Founder and awam are SEPARATE (port + process), proven on his server 14 Nov 05:25. Never re-discuss: docs/claude/FOUNDER-AWAM-SEPARATION-LAW-14NOV.md. Awam problems = the AWAM blueprint only.
