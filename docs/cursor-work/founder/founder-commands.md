@@ -3344,3 +3344,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - 14 Nov 2026 05:36 PKT: his install of steps 1+2 OK (tests 394/394, build, healthz 200) + my live Chrome: live CSP = connect-src self only, chip QUIC 183 ms, live feed fresh, 0 requests to :4443 = KP3 step 5 STEPS 1 + 2 GREEN WIRED: YES / REAL: YES / TECH-LAW CHECKED; his separation order written word for word in docs/claude/FOUNDER-AWAM-SEPARATION-LAW-14NOV.md (awam problems = awam blueprint only, founder code preserved and adapted for awam); next ONE STEP: step 3 installers
 
 - 14 Nov 2026 05:53 PKT: KP3 step 5 STEP 3 WRITTEN (one step at a time): founder-wt-off.sh (env 4 lines + ufw 4443/udp + proof + auto rollback), founder-wt.sh and founder-wt-proof.sh deleted, ports audit wants udp 4443 absent, installer-after-cut grep clean, bash -n + dry run OK; NOT run on his server; correction: step-2 binary no longer binds 4443, listener probably already gone (unverified until his ss)
+
+- 14 Nov 2026 05:55 PKT: step 3 status block added to START-HERE and RESUME-POINT so the next Claude sees it
