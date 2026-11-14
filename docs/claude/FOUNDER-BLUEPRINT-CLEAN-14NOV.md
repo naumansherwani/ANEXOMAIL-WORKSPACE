@@ -28,13 +28,13 @@ Stack that every phase inherits (founder technology law, 11 Nov 03:21 and 13 Nov
 | 18 | KP3 step 1 | WebTransport on UDP 443 | Rust quinn + h3 + h3-webtransport on the one endpoint | YES | GREEN |
 | 19 | KP3 step 2 | Browser + kernel same origin | Rust WASM kernel dials the page origin; CSP `connect-src 'self'` | YES | GREEN |
 | 20 | KP3 latency | Adaptive QUIC Retry | Rust quinn | YES | GREEN |
-| 21 | KP3 pre-connect | Worker dials /wt/rpc while the kernel loads | React-TS Worker + Rust WASM kernel | YES | INSTALLED, NOT GREEN (its own effect cannot be measured from outside) |
+| 21 | KP3 pre-connect | Worker dials /wt/rpc while the kernel loads | React-TS Worker + Rust WASM kernel | YES | GREEN by HIS ORDER 14 Nov 06:33 (installed on his server, receipt 16, live bundle = repo; its own effect cannot be measured from outside, written honestly) |
 | 22 | KP3 step 3 | QUIC path row (honest chip, measured RTT) | React-TS + Worker + kernel session | YES | GREEN by his order |
 | 23 | KP3 step 4 | Dashboard live feed over WebTransport only | kernel `flive@1` over QUIC | YES | GREEN |
 | 24 | KP3 step 4b | No SSE anywhere for the founder | Rust axum (SSE routes deleted), kernel WebTransport | YES | GREEN |
 | 25 | KP3 step 5 | UDP 4443 removed (CSP, env, ufw, listener) | Rust quinn + h3-webtransport on the one UDP 443 endpoint; shell installer with rollback | YES | GREEN 14 Nov 06:01 (receipts 25, 26, my live Chrome) |
 | 26 | KP3 audit A | API latency audit: slow-call log | Rust axum, `wtrpc.rs` | YES in repo | NOT GREEN: install failed once and rolled back (receipt 27), retry pending |
-| 27 | L | Look: Framer Motion + GSAP + Three.js WebGPU; LA-1..LA-7 orb and Bridge map features | WebGPU + TSL (orb pixel-equal), GSAP, Radix Popover, SQL E166, Rust `bridge.rs` | YES | PARTLY: L2 WebGPU, LA-1/2/3/5/6 GREEN; LA-4 looked live; LA-7b map particles written, not proven |
+| 27 | L | Look: Framer Motion + GSAP + Three.js WebGPU; LA-1..LA-7 orb and Bridge map features | WebGPU + TSL (orb pixel-equal), GSAP, Radix Popover, SQL E166, Rust `bridge.rs` | YES | NEXT (his order 14 Nov 06:33). PARTLY: L2 WebGPU, LA-1/2/3/5/6 GREEN; STEP 1 = LA-4 fresh live look; STEP 2 = LA-7b idle dimming live proof; then L is closed |
 | 28 | S5 | TanStack Start in SPA mode (decided 13 Nov) | TanStack Start, static shell, Rust serves it, no Node/Bun | NO | NOT GREEN (decided, not built) |
 | 29 | Q | Mail + Calendar (Q0 research done, Q1 mailbox, Q2 attachments, Q3 parallel chunks over WebTransport, Q4 OpenPGP PQC RFC 9980, Q5 PQ network, Q6 sealed agreements) | Rust + SQL + kernel, ML-KEM / ML-DSA, resumable chunks over WebTransport, ClamAV, Hetzner Storage Box | PARTLY (plan written, mail intake and Mail page exist, Q3 pushed stream not built) | NOT GREEN |
 | 30 | M | MoQ (Media over QUIC) relay | Rust relay on QUIC + kernel | NO | NOT GREEN |

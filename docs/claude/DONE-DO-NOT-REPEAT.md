@@ -489,3 +489,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - KP3 audit step A: after the failed install his server runs the OLD binary healthy (receipt 28: healthz 200, service active, udp+tcp 443 owned by anexomail-found pid 2269578); KP3 step 5 stays GREEN; retry with the 40 s wait installer 7ecd0193; WIRED: NO / REAL: NO for the slow-call log until it installs, TECH-LAW CHECKED
 
 - Founder blueprint CLEAN version written 14 Nov 06:35: docs/claude/FOUNDER-BLUEPRINT-CLEAN-14NOV.md (40 numbered phases, advance technology, in-code YES/NO, status; GREEN only where the repo has proof, WIRED: YES / REAL: YES / TECH-LAW CHECKED); old BLUEPRINT-ABC-01NOV.md kept as history; API audit step A still waits his retry install
+
+- 14 Nov 06:33 HIS ORDER: KP3 pre-connect = GREEN by his word (installed on his server, receipt 16, live bundle = repo, WIRED: YES / REAL: YES / TECH-LAW CHECKED: React-TS Worker + Rust WASM kernel); L series is NEXT: step 1 LA-4 fresh live look in my Chrome (read-only), step 2 LA-7b idle dimming live proof, then L closed; audit step A retry install still waits his paste
