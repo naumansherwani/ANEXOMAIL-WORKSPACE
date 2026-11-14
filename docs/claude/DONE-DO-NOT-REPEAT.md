@@ -475,3 +475,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 14 Nov 2026 05:53 PKT: KP3 step 5 STEP 3 WRITTEN (one step at a time): founder-wt-off.sh (env 4 lines + ufw 4443/udp + proof + auto rollback), founder-wt.sh and founder-wt-proof.sh deleted, ports audit wants udp 4443 absent, installer-after-cut grep clean, bash -n + dry run OK; NOT run on his server; correction: step-2 binary no longer binds 4443, listener probably already gone (unverified until his ss)
 
 - 14 Nov 2026 05:55 PKT: step 3 status block added to START-HERE and RESUME-POINT so the next Claude sees it
+
+- 14 Nov 2026 06:05 PKT: KP3 step 5 STEP 4 DONE in my sandbox: Rust release build OK + 394/394, bash -n clean on all server scripts, bun 264/264, tsc clean; fixed a stale web route test (routes.test.ts, live/stream is now a WebTransport-only token label); next step 5 = his ONE command founder-wt-off.sh

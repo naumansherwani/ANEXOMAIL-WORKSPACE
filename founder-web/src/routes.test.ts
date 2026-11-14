@@ -7,7 +7,9 @@ const all = [...main.matchAll(/\.route\("(\/founder\/v1[^"]*)"/g)].map((m) => m[
 const routed = new Set(all.filter((r) => !r.includes("{")));
 // J3: a route with a path parameter (e.g. /founder/v1/chairman/{door}) accepts any one segment, and the bare prefix is what a template string like `${name}` leaves
 const patterns = all.filter((r) => r.includes("{")).map((r) => ({ re: new RegExp("^" + r.replace(/\{[a-z_]+\}/g, "[a-z0-9_-]+") + "$"), prefix: r.slice(0, r.indexOf("/{")) }));
-const known = (p: string) => routed.has(p) || patterns.some((x) => x.re.test(p) || x.prefix === p);
+// KP3 step 4b (14 Nov 2026): there is NO HTTP route for the live feed any more (SSE deleted). "/founder/v1/live/stream" survives ONLY as the label the page signs its WebTransport hello token with (api.ts liveToken); it is not fetched.
+const WT_ONLY_LABELS = new Set(["/founder/v1/live/stream"]);
+const known = (p: string) => WT_ONLY_LABELS.has(p) || routed.has(p) || patterns.some((x) => x.re.test(p) || x.prefix === p);
 test("every /founder/v1 path called by the UI exists as a server route", () => {
   const missing: string[] = [];
   for (const f of readdirSync(new URL(".", import.meta.url))) {

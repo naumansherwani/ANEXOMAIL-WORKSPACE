@@ -445,3 +445,7 @@ STEP 5 / STEP 3 WRITTEN (14 Nov 2026 05:52 PKT, one step at a time by his order)
 - 14 Nov 2026 05:53 PKT: KP3 step 5 STEP 3 WRITTEN (one step at a time): founder-wt-off.sh (env 4 lines + ufw 4443/udp + proof + auto rollback), founder-wt.sh and founder-wt-proof.sh deleted, ports audit wants udp 4443 absent, installer-after-cut grep clean, bash -n + dry run OK; NOT run on his server; correction: step-2 binary no longer binds 4443, listener probably already gone (unverified until his ss)
 
 - 14 Nov 2026 05:55 PKT: step 3 status block added to START-HERE and RESUME-POINT so the next Claude sees it
+
+STEP 5 / STEP 4 DONE (14 Nov 2026 06:05 PKT, sandbox): cargo build --release OK, cargo test 394/394, bash -n clean on all docs/cursor-work/server/*.sh, bun test 264/264, tsc --noEmit clean. Found by this run: founder-web/src/routes.test.ts failed because api.ts liveToken still names /founder/v1/live/stream (the label the WebTransport hello token is signed with) while the HTTP route is deleted; fixed IN THE TEST with an explicit WT_ONLY_LABELS allow-list (UI code untouched, UI law). Next: step 5 = his ONE command founder-wt-off.sh.
+
+- 14 Nov 2026 06:05 PKT: KP3 step 5 STEP 4 DONE in my sandbox: Rust release build OK + 394/394, bash -n clean on all server scripts, bun 264/264, tsc clean; fixed a stale web route test (routes.test.ts, live/stream is now a WebTransport-only token label); next step 5 = his ONE command founder-wt-off.sh
