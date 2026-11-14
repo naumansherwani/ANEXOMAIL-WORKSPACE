@@ -431,3 +431,5 @@ STEP 5 REOPENED (14 Nov 2026 04:51 PKT, his order, replaces the 04:31 shelving):
 STEP 5 / STEP 2 DONE (14 Nov 2026 05:10 PKT): main.rs no longer starts the UDP 4443 endpoint; wt.rs endpoint/from_env/serve/one_session/quic_config are #[cfg(test)] only; release build OK, 394/394 tests. His server facts for step 3 = SERVER-FIRST receipt 23 (founder.env WT lines + ufw 4443/udp v4+v6). He ordered ONE STEP AT A TIME: step 3 starts only after step 2 is accepted.
 
 - 14 Nov 2026 05:10 PKT: KP3 step 5 / STEP 2 DONE in code (his one-step-at-a-time order): main.rs no longer starts the UDP 4443 WebTransport endpoint, wt.rs 4443 code is cfg(test) only, release build OK, 394/394 tests pass; not installed; receipt 23 = his founder.env WT lines + ufw 4443 rules for step 3
+
+- 14 Nov 2026 05:25 PKT: his order full audit + context so nobody rewrites codes: docs/claude/KP3-CODE-MAP-14NOV.md written (what exists per file, Rust + Tokio + WebTransport all stay, step 5 removes only the 2nd UDP 4443 listener); rollback fact corrected (installer keeps anexomail-founder.bak.<STAMP>, not .prev, and rolls back by itself on a failed check)

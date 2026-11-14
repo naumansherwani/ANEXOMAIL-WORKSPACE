@@ -463,3 +463,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 14 Nov 2026 04:56 PKT: CLAUDE.md law blocks compacted so the gate top-of-file check passes (full text stays in READ-FIRST-FOUNDER-LAW.md, PHASE-NOW, START-HERE); step 5 reopened, step 1 done (CSP self-only, test passes)
 
 - 14 Nov 2026 05:10 PKT: KP3 step 5 / STEP 2 DONE in code (his one-step-at-a-time order): main.rs no longer starts the UDP 4443 WebTransport endpoint, wt.rs 4443 code is cfg(test) only, release build OK, 394/394 tests pass; not installed; receipt 23 = his founder.env WT lines + ufw 4443 rules for step 3
+
+- 14 Nov 2026 05:25 PKT: his order full audit + context so nobody rewrites codes: docs/claude/KP3-CODE-MAP-14NOV.md written (what exists per file, Rust + Tokio + WebTransport all stay, step 5 removes only the 2nd UDP 4443 listener); rollback fact corrected (installer keeps anexomail-founder.bak.<STAMP>, not .prev, and rolls back by itself on a failed check)
