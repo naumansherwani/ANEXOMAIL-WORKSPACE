@@ -8,7 +8,7 @@ owner(){ # $1 proto(tcp|udp) $2 port -> real binary name(s) listening there
 echo "== 1/7 who owns the ports that matter (real names from /proc, not cut at 15 letters)"
 for pp in tcp:443 udp:443 udp:4443 tcp:8443 udp:3443 udp:18443 tcp:3210; do pr=${pp%%:*}; po=${pp##*:}; o="$(owner $pr $po)"; printf '   %-4s %-6s %s\n' "$pr" "$po" "${o:-<nobody>}"; done
 [ "$(owner udp 443)" = "anexomail-founder " ] && echo "OK: udp 443 = anexomail-founder (HTTP/3)" || stop "udp 443 is not owned by anexomail-founder alone: [$(owner udp 443)]"
-[ "$(owner udp 4443)" = "anexomail-founder " ] && echo "OK: udp 4443 = anexomail-founder (WebTransport)" || stop "udp 4443 is not owned by anexomail-founder alone: [$(owner udp 4443)]"
+[ -z "$(owner udp 4443)" ] && echo "OK: udp 4443 is closed (KP3 step 5: WebTransport runs on udp 443 only)" || stop "udp 4443 is still listening: [$(owner udp 4443)] (run founder-wt-off.sh)"
 echo "== 2/7 every listener on 443 / 4443 / 8443 / 3443 / 18443 (anything unexpected shows here)"
 ss -H -lntup 2>/dev/null | awk '$5 ~ /:(443|4443|8443|3443|18443)$/ {print "   " $1, $5}' | sort -u
 echo "== 3/7 Caddy (its own admin API, read-only): which addresses it listens on"
@@ -28,6 +28,6 @@ R="$( (dig +short HTTPS $H 2>/dev/null || host -t type65 $H 2>/dev/null) | head 
 echo "$R" | grep -qi 'h3' || stop "no HTTPS record with alpn=h3 for $H (add: Type HTTPS, Name founderworkspace, Priority 1, Target ., Value alpn=\"h3\", TTL 300)"
 MY="$(ip -o addr show scope global 2>/dev/null | awk '{print $4}' | cut -d/ -f1)"
 for t in A AAAA; do d="$(dig +short $t $H 2>/dev/null | head -2 | tr '\n' ' ')"; echo "   $t: ${d:-<none>}"; for a in $d; do echo "$MY" | grep -qxF "$a" && echo "      $a = this server" || echo "      $a is NOT an address of this server (a proxy/CDN in front would stop QUIC: check)"; done; done
-echo "== 7/7 firewall, per port (udp 443 and 4443 must be open)"
-for p in 443 4443; do if ufw status 2>/dev/null | grep -qE "^$p/udp .*ALLOW" || iptables -S 2>/dev/null | grep -qE -- "-p udp .*--dport $p .*ACCEPT"; then echo "   udp $p: open"; else stop "udp $p: no ALLOW rule found in ufw/iptables"; fi; done
+echo "== 7/7 firewall, per port (udp 443 must be open; 4443 is gone since KP3 step 5)"
+for p in 443; do if ufw status 2>/dev/null | grep -qE "^$p/udp .*ALLOW" || iptables -S 2>/dev/null | grep -qE -- "-p udp .*--dport $p .*ACCEPT"; then echo "   udp $p: open"; else stop "udp $p: no ALLOW rule found in ufw/iptables"; fi; done
 echo; [ "$ok" = 1 ] && echo "GO: the K8e install (HTTP/3 only) is safe to run" || echo "STOP: do not run the K8e install yet. Send this output to Claude. Nothing was changed by this audit."

@@ -58,8 +58,7 @@ docs/cursor-work/server/founder-ports-audit.sh
 docs/cursor-work/server/founder-signin-peek.sh
 docs/cursor-work/server/founder-telemetry.sh
 docs/cursor-work/server/founder-tls256.sh
-docs/cursor-work/server/founder-wt-proof.sh
-docs/cursor-work/server/founder-wt.sh
+docs/cursor-work/server/founder-wt-off.sh
 docs/cursor-work/sql/00-FOUNDER-TECH-RULE.md
 docs/cursor-work/sql/E102_founder_audit_actions_devices.sql
 docs/cursor-work/sql/E103_founder_actions_english.sql
