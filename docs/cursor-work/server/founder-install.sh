@@ -107,7 +107,7 @@ ReadOnlyPaths=/var/lib/anexomail
 [Install]
 WantedBy=multi-user.target
 UNIT
-systemctl daemon-reload && systemctl enable $SVC >/dev/null 2>&1; systemctl restart $SVC; sleep 2
+systemctl daemon-reload && systemctl enable $SVC >/dev/null 2>&1; systemctl restart $SVC; for W in $(seq 1 40); do [ "$(curl -s -o /dev/null -w %{http_code} http://127.0.0.1:3210/healthz)" = 200 ] && break; sleep 1; done; echo "   service listening after ${W}s (up to 40s allowed; a slow start is not a failure, a service that never answers is)"
 echo "== 4/4 saboot"
 H="$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3210/healthz)"; M="$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3210/founder/v1/me)"; B="$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3210/founder/v1/bridge)"
 S="$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3210/)"; echo "SPA index=$S (200)"; X="$(curl -s -o /dev/null -w '%{http_code}' -X POST -H 'content-type: application/json' -d '{"device_id":"x"}' http://127.0.0.1:3210/founder/v1/exchange)"; echo "exchange bina token=$X (401)"; journalctl -u $SVC -n 20 --no-pager 2>/dev/null | grep -o "founder: token service.*" | tail -1; journalctl -u $SVC -n 30 --no-pager 2>/dev/null | grep -o "founder: Ed25519.*" | sed 's/pub [A-Za-z0-9_-]*/pub (public key)/' | tail -1; K="$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3210/founder/v1/keys)"; echo "public key endpoint=$K (200)"; echo "healthz=$H (200 chahiye)  me bina token=$M (401)  bridge bina token=$B (401)"
