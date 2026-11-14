@@ -17,10 +17,11 @@
 use std::{future::Future, net::SocketAddr, pin::Pin, sync::Arc, sync::atomic::{AtomicUsize, Ordering}, time::Duration};
 use axum::{body::Body, http::{HeaderMap, HeaderName, HeaderValue}, response::Response};
 use futures_util::StreamExt;
-use wtransport::{Endpoint, ServerConfig, VarInt, endpoint::endpoint_side::Server, quinn};
+#[cfg(test)] use wtransport::{Endpoint, ServerConfig, VarInt, endpoint::endpoint_side::Server};
+use wtransport::quinn;
 use rustls::crypto::ring::cipher_suite::TLS13_AES_128_GCM_SHA256;
 
-use crate::tls256::CertStore;
+#[cfg(test)] use crate::tls256::CertStore;
 
 pub const PATH: &str = "/wt/live";
 /// K8d: the founder API over WebTransport (see wtrpc.rs). Only served when the router is given.
@@ -28,7 +29,7 @@ pub const RPC_PATH: &str = "/wt/rpc";
 pub const MAX_SESSIONS: usize = 64;
 const HELLO_MAX: usize = 4096;
 pub const HELLO_WAIT: Duration = Duration::from_secs(5);
-const HANDSHAKE_WAIT: Duration = Duration::from_secs(10);
+#[cfg(test)] const HANDSHAKE_WAIT: Duration = Duration::from_secs(10);
 const MAX_LIFE: Duration = Duration::from_secs(600);
 
 /// The live handler of the SSE endpoint, given the headers the hello built.
@@ -65,7 +66,7 @@ pub fn origin_ok(origin: Option<&str>, host: &str) -> bool { match origin { None
 pub fn authority_host(a: &str) -> String { a.rsplit_once(':').filter(|(h, p)| !h.contains(':') && p.bytes().all(|b| b.is_ascii_digit())).map(|(h, _)| h).unwrap_or(a).to_ascii_lowercase() }
 
 /// QUIC server configuration from the K4 rustls config (AES-256-GCM only). ALPN is switched to h3; the Initial packet gets AES-128 as RFC 9001 demands.
-pub fn quic_config(tls: &rustls::ServerConfig) -> Result<quinn::ServerConfig, String> { quic_config_n(tls, 64, 4) } // K8d: up to 64 concurrent calls (bidi streams) per session
+#[cfg(test)] pub fn quic_config(tls: &rustls::ServerConfig) -> Result<quinn::ServerConfig, String> { quic_config_n(tls, 64, 4) } // K8d: up to 64 concurrent calls (bidi streams) per session
 
 /// Same, with the number of concurrent request (bidi) and unidirectional streams (the HTTP/3 API needs many, WebTransport live few).
 pub fn quic_config_n(tls: &rustls::ServerConfig, bidi: u32, uni: u32) -> Result<quinn::ServerConfig, String> {
@@ -84,12 +85,14 @@ pub fn quic_config_n(tls: &rustls::ServerConfig, bidi: u32, uni: u32) -> Result<
     Ok(sc)
 }
 
+#[cfg(test)] // KP3 step 5: the UDP 4443 endpoint is not in the release binary any more; kept only as the test harness of the shared session code
 pub fn endpoint(addr: SocketAddr, tls: &rustls::ServerConfig) -> Result<Endpoint<Server>, String> {
     let cfg = ServerConfig::builder().with_bind_address(addr).build_with_quic_config(quic_config(tls)?);
     Endpoint::server(cfg).map_err(|e| format!("bind {addr}: {e}"))
 }
 
 /// FOUNDER_WT_ADDR + FOUNDER_WT_HOST + FOUNDER_WT_CERT + FOUNDER_WT_KEY -> (address, host, certificate store, cert path, key path). None = off (default).
+#[cfg(test)] // KP3 step 5: the UDP 4443 endpoint is not in the release binary any more; kept only as the test harness of the shared session code
 pub fn from_env() -> Option<Result<(String, String, Arc<CertStore>, std::path::PathBuf, std::path::PathBuf), String>> {
     let addr = std::env::var("FOUNDER_WT_ADDR").ok().filter(|a| !a.trim().is_empty())?;
     let get = |k: &str| std::env::var(k).map_err(|_| format!("{k} is not set"));
@@ -105,6 +108,7 @@ pub fn from_env() -> Option<Result<(String, String, Arc<CertStore>, std::path::P
 }
 
 /// Run the endpoint: accept loop + the certificate follower (a new certificate in the store becomes the QUIC config without a restart).
+#[cfg(test)] // KP3 step 5: the UDP 4443 endpoint is not in the release binary any more; kept only as the test harness of the shared session code
 pub async fn serve(ep: Endpoint<Server>, store: Arc<CertStore>, cfg: Arc<Cfg>) {
     let ep = Arc::new(ep);
     { let ep = ep.clone(); let store = store.clone();
@@ -132,6 +136,7 @@ pub struct Active;
 impl Active { pub fn take() -> Option<Active> { let n = ACTIVE.fetch_add(1, Ordering::SeqCst); if n >= MAX_SESSIONS { ACTIVE.fetch_sub(1, Ordering::SeqCst); return None; } Some(Active) } }
 impl Drop for Active { fn drop(&mut self) { ACTIVE.fetch_sub(1, Ordering::SeqCst); } }
 
+#[cfg(test)] // KP3 step 5: the UDP 4443 endpoint is not in the release binary any more; kept only as the test harness of the shared session code
 async fn one_session(incoming: wtransport::endpoint::IncomingSession, cfg: Arc<Cfg>) {
     let Ok(Ok(req)) = tokio::time::timeout(HANDSHAKE_WAIT, incoming).await else { return };
     let rpc = req.path() == RPC_PATH && cfg.rpc.is_some();

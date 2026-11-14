@@ -427,3 +427,7 @@ STEP 5 REOPENED (14 Nov 2026 04:51 PKT, his order, replaces the 04:31 shelving):
 - 14 Nov 2026 04:55 PKT: his order: KP3 step 5 REOPENED, 6-step plan with technology per step at the top of 4 files; STEP 1 DONE in code: main.rs csp() = connect-src 'self' only, test passes; steps 2-6 open
 
 - 14 Nov 2026 04:56 PKT: CLAUDE.md law blocks compacted so the gate top-of-file check passes (full text stays in READ-FIRST-FOUNDER-LAW.md, PHASE-NOW, START-HERE); step 5 reopened, step 1 done (CSP self-only, test passes)
+
+STEP 5 / STEP 2 DONE (14 Nov 2026 05:10 PKT): main.rs no longer starts the UDP 4443 endpoint; wt.rs endpoint/from_env/serve/one_session/quic_config are #[cfg(test)] only; release build OK, 394/394 tests. His server facts for step 3 = SERVER-FIRST receipt 23 (founder.env WT lines + ufw 4443/udp v4+v6). He ordered ONE STEP AT A TIME: step 3 starts only after step 2 is accepted.
+
+- 14 Nov 2026 05:10 PKT: KP3 step 5 / STEP 2 DONE in code (his one-step-at-a-time order): main.rs no longer starts the UDP 4443 WebTransport endpoint, wt.rs 4443 code is cfg(test) only, release build OK, 394/394 tests pass; not installed; receipt 23 = his founder.env WT lines + ufw 4443 rules for step 3

@@ -1208,3 +1208,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 14 Nov 2026 04:55 PKT: his order: KP3 step 5 REOPENED, 6-step plan with technology per step at the top of 4 files; STEP 1 DONE in code: main.rs csp() = connect-src 'self' only, test passes; steps 2-6 open
 
 - 14 Nov 2026 04:56 PKT: CLAUDE.md law blocks compacted so the gate top-of-file check passes (full text stays in READ-FIRST-FOUNDER-LAW.md, PHASE-NOW, START-HERE); step 5 reopened, step 1 done (CSP self-only, test passes)
+
+- 14 Nov 2026 05:10 PKT: KP3 step 5 / STEP 2 DONE in code (his one-step-at-a-time order): main.rs no longer starts the UDP 4443 WebTransport endpoint, wt.rs 4443 code is cfg(test) only, release build OK, 394/394 tests pass; not installed; receipt 23 = his founder.env WT lines + ufw 4443 rules for step 3

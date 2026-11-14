@@ -1085,22 +1085,8 @@ async fn main() {
             Err(e) => eprintln!("founder: SNI front NOT started: bind {a}: {e}"),
         },
     }
-    match wt::from_env() { // K6: WebTransport (QUIC/HTTP3, AES-256) carrying the same live frames as the SSE stream; UDP port of its own (default OFF)
-        None => eprintln!("founder: WebTransport OFF (no FOUNDER_WT_ADDR)"),
-        Some(Err(e)) => eprintln!("founder: WebTransport NOT started: {e}"),
-        Some(Ok((a, host, store, cp, kp))) => match a.parse::<std::net::SocketAddr>().map_err(|e| e.to_string()).and_then(|sa| wt::endpoint(sa, &store.current())) {
-            Ok(ep) => {
-                eprintln!("founder: WebTransport ON udp {a} for {host}{} (QUIC, TLS 1.3, AES-256-GCM, certificate hot-reload)", wt::PATH);
-                tls256::spawn_reloader(store.clone(), cp, kp);
-                let stw = st.clone();
-                let handler: wt::Handler = Arc::new(move |h: HeaderMap| { let stw = stw.clone(); Box::pin(async move { live_stream_core(stw, h, "webtransport").await }) });
-                let rpc_router = app(st.clone()).layer(axum::middleware::from_fn(fproxy::layer)); // K8d: the SAME router + layers as the HTTP paths (host proof, signature, token and session gates)
-                eprintln!("founder: WebTransport RPC ON {} (the founder API over QUIC; plain HTTPS stays the fallback)", wt::RPC_PATH);
-                tokio::spawn(wt::serve(ep, store, Arc::new(wt::Cfg { host, handler, rpc: Some(rpc_router) })));
-            }
-            Err(e) => eprintln!("founder: WebTransport NOT started: {e}"),
-        },
-    }
+    // KP3 step 5 (his order 14 Nov 2026): the separate WebTransport endpoint on UDP 4443 (FOUNDER_WT_*) is GONE. WebTransport (/wt/live, /wt/rpc) runs ONLY on the HTTP/3 endpoint above (UDP 443, same origin).
+    if std::env::var("FOUNDER_WT_ADDR").map(|v| !v.trim().is_empty()).unwrap_or(false) { eprintln!("founder: FOUNDER_WT_ADDR is set but ignored: the UDP 4443 WebTransport endpoint was removed (KP3 step 5); run founder-wt-off.sh to clean the env and ufw"); }
     if let Some(sb) = st.sb.clone() { tls256::spawn_prober(sb); }
     let addr = std::env::var("FOUNDER_BIND").unwrap_or_else(|_| "127.0.0.1:3210".into());
     let l = tokio::net::TcpListener::bind(&addr).await.expect("bind");
