@@ -246,3 +246,5 @@
 - 14 Nov 2026 06:05 PKT: KP3 step 5 STEP 4 DONE in my sandbox: Rust release build OK + 394/394, bash -n clean on all server scripts, bun 264/264, tsc clean; fixed a stale web route test (routes.test.ts, live/stream is now a WebTransport-only token label); next step 5 = his ONE command founder-wt-off.sh
 
 - 14 Nov 2026 05:56 PKT: KP3 step 5 STEP 5 STARTED by his order: his ONE command given = the founder-wt-off.sh pull line (on origin/main); it proves itself and rolls back by itself; waiting for his paste, then step 6 (my live Chrome + his ss); the phase is closed only with proof
+
+- KP3 step 5 GREEN 14 Nov 06:01, WIRED: YES / REAL: YES / TECH-LAW CHECKED: UDP 4443 removed (receipts 25+26: founder-wt-off.sh output, env WT lines 0, no udp 4443 listener, ufw rule gone, HTTP/3 + WebTransport on UDP 443); my live Chrome: CSP connect-src self, QUIC 185 ms, live feed fresh, 0 requests to :4443. Next only on his word: KP2 laptop SSH test, Q3 pushed mail stream, API ~1.1 s audit, 0-RTT, /wt/core
