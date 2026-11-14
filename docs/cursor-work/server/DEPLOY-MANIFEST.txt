@@ -1218,7 +1218,7 @@ src/components/app/FeatureGate.tsx f0ae35c8646cb436
 src/routes/app.storage.tsx 78ca91241d265b0f
 docs/claude/CLOSE-THE-GAPS-07NOV.md cd15597fbd91f33e
 docs/claude/FOUNDER-STATUS-TABLE-07NOV.md 9c074ad25a6c9ad0
-docs/claude/START-HERE-AFTER-COMPACTION.md bb9685c8d54aa0f2
+docs/claude/START-HERE-AFTER-COMPACTION.md 71003d28294328ec
 docs/claude/K4-REAL-443-DESIGN-07NOV.md 209686fae89766e5
 docs/claude/AWAM-PACKAGES-PROPOSAL-07NOV.md 97116b18bfbcffac
 docs/claude/AWAM-PROTON-PLUS-PLAN-07NOV.md 282f406d4d67b9e2
@@ -1257,8 +1257,8 @@ docs/cursor-work/sql/E162_founder_dbsc_hybrid_pq.sql 33cb2dc2244947e1
 docs/cursor-work/sql/CHECK_E162.sql 580f0ee0bd152f1f
 server/founder/src/mldsa.rs 4f64ed54eebca2aa
 server/founder/src/dbsc.rs 1066b35a5e50e2a8
-docs/claude/tech-contracts/CURRENT.md 3ba849c89f340645
-docs/claude/RESUME-POINT.md 802e80b5793e0fc2
+docs/claude/tech-contracts/CURRENT.md 5bea492c491cfe5f
+docs/claude/RESUME-POINT.md f7f86c103ca3a877
 docs/claude/SQL-ORDER-E1-E160.md a22f85baaf08e344
 docs/claude/TECH-LAW-GATE.json b891dba710bbc668
 docs/cursor-work/sql/CHECK_E164.sql ee63c38fb8533b78
