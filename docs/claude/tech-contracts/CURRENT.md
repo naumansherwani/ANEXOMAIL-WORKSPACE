@@ -435,3 +435,5 @@ STEP 5 / STEP 2 DONE (14 Nov 2026 05:10 PKT): main.rs no longer starts the UDP 4
 - 14 Nov 2026 05:25 PKT: his order full audit + context so nobody rewrites codes: docs/claude/KP3-CODE-MAP-14NOV.md written (what exists per file, Rust + Tokio + WebTransport all stay, step 5 removes only the 2nd UDP 4443 listener); rollback fact corrected (installer keeps anexomail-founder.bak.<STAMP>, not .prev, and rolls back by itself on a failed check)
 
 - 14 Nov 2026 05:30 PKT: his warning (4443 was made to keep the founder apart from the awam world, use only free ports) checked in docs + ss receipt 21: 4443 was K6's spare port when UDP 443 was Caddy's; now founder owns 443 and Caddy sits on 18443, step 5 touches neither
+
+- 14 Nov 2026 05:26 PKT: his curl on his server (receipt 24): awam = HTTP/2 200 over TCP 443 and alt-svc h3=:18443 (Caddy); founder = UDP 443, so founder and awam are separate by port and by process; step 5 changes neither
