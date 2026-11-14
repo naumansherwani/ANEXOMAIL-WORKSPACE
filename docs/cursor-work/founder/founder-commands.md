@@ -3336,3 +3336,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - 14 Nov 2026 05:10 PKT: KP3 step 5 / STEP 2 DONE in code (his one-step-at-a-time order): main.rs no longer starts the UDP 4443 WebTransport endpoint, wt.rs 4443 code is cfg(test) only, release build OK, 394/394 tests pass; not installed; receipt 23 = his founder.env WT lines + ufw 4443 rules for step 3
 
 - 14 Nov 2026 05:25 PKT: his order full audit + context so nobody rewrites codes: docs/claude/KP3-CODE-MAP-14NOV.md written (what exists per file, Rust + Tokio + WebTransport all stay, step 5 removes only the 2nd UDP 4443 listener); rollback fact corrected (installer keeps anexomail-founder.bak.<STAMP>, not .prev, and rolls back by itself on a failed check)
+
+- 14 Nov 2026 05:30 PKT: his warning (4443 was made to keep the founder apart from the awam world, use only free ports) checked in docs + ss receipt 21: 4443 was K6's spare port when UDP 443 was Caddy's; now founder owns 443 and Caddy sits on 18443, step 5 touches neither
