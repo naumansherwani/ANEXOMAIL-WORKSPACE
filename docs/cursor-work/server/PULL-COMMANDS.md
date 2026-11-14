@@ -244,3 +244,5 @@
 - 14 Nov 2026 05:55 PKT: step 3 status block added to START-HERE and RESUME-POINT so the next Claude sees it
 
 - 14 Nov 2026 06:05 PKT: KP3 step 5 STEP 4 DONE in my sandbox: Rust release build OK + 394/394, bash -n clean on all server scripts, bun 264/264, tsc clean; fixed a stale web route test (routes.test.ts, live/stream is now a WebTransport-only token label); next step 5 = his ONE command founder-wt-off.sh
+
+- 14 Nov 2026 05:56 PKT: KP3 step 5 STEP 5 STARTED by his order: his ONE command given = the founder-wt-off.sh pull line (on origin/main); it proves itself and rolls back by itself; waiting for his paste, then step 6 (my live Chrome + his ss); the phase is closed only with proof
