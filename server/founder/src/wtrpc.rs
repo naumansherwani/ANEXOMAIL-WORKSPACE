@@ -80,13 +80,17 @@ pub fn encode(status: u16, ctype: &str, body: &[u8]) -> Vec<u8> {
     out
 }
 
+/// KP3 audit (14 Nov): the kernel shows ~1 s per API call against a ~185 ms ping. This line names WHICH call is slow and how long the handler itself took (path only, no query, no body), so the cause is measured, never guessed. Only calls over SLOW_MS are logged.
+pub const SLOW_MS: u128 = 300;
+fn slow_call(m: &Method, path: &str, status: u16, d: Duration) { if d.as_millis() >= SLOW_MS { eprintln!("founder: SLOW kernel call {} {} -> {} in {} ms (handler only, network not included)", m, path, status, d.as_millis()); } }
+
 async fn one_call<W: AsyncWrite + Unpin, R: AsyncRead + Unpin>(router: Router, host: Arc<String>, peer: IpAddr, ua: Option<String>, hint: Option<String>, mut send: W, mut recv: R) {
     let mut raw = Vec::new(); let mut buf = [0u8; 16384];
     let got = tokio::time::timeout(CALL_WAIT, async { loop { match recv.read(&mut buf).await { Ok(n) if n > 0 => { raw.extend_from_slice(&buf[..n]); if raw.len() > MAX_REQ + MAX_HEAD + 1 { return false; } } Ok(_) => return true, Err(_) => return false } } }).await.unwrap_or(false);
     let answer = if !got { encode(413, "text/plain", b"The request was not accepted.") } else {
         match parse(&raw, &host, peer, ua.as_deref(), hint.as_deref()) {
             Err(c) => encode(c, "text/plain", b"The request was refused.\n"),
-            Ok(req) => match tokio::time::timeout(CALL_WAIT, async { let resp = match router.oneshot(req).await { Ok(r) => r, Err(n) => match n {} }; let (parts, mut b) = resp.into_parts();
+            Ok(req) => match tokio::time::timeout(CALL_WAIT, async { let (m, p, t0) = (req.method().clone(), req.uri().path().to_string(), std::time::Instant::now()); let resp = match router.oneshot(req).await { Ok(r) => r, Err(n) => match n {} }; slow_call(&m, &p, resp.status().as_u16(), t0.elapsed()); let (parts, mut b) = resp.into_parts();
                     let mut out = Vec::new();
                     while let Some(f) = b.frame().await { match f { Ok(f) => if let Ok(d) = f.into_data() { if out.len() + d.len() > MAX_RESP { return None; } out.extend_from_slice(&d); }, Err(_) => return None } }
                     Some((parts.status.as_u16(), parts.headers.get("content-type").and_then(|v| v.to_str().ok()).unwrap_or("").to_string(), out)) }).await {

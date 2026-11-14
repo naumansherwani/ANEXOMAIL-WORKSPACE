@@ -481,3 +481,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 14 Nov 2026 05:56 PKT: KP3 step 5 STEP 5 STARTED by his order: his ONE command given = the founder-wt-off.sh pull line (on origin/main); it proves itself and rolls back by itself; waiting for his paste, then step 6 (my live Chrome + his ss); the phase is closed only with proof
 
 - KP3 step 5 GREEN 14 Nov 06:01, WIRED: YES / REAL: YES / TECH-LAW CHECKED: UDP 4443 removed (receipts 25+26: founder-wt-off.sh output, env WT lines 0, no udp 4443 listener, ufw rule gone, HTTP/3 + WebTransport on UDP 443); my live Chrome: CSP connect-src self, QUIC 185 ms, live feed fresh, 0 requests to :4443. Next only on his word: KP2 laptop SSH test, Q3 pushed mail stream, API ~1.1 s audit, 0-RTT, /wt/core
+
+- KP3 audit step A 14 Nov: slow-call timing log in wtrpc.rs (calls over 300 ms print path + handler ms; no body, no query); build + 394/394 pass in sandbox; NOT yet on his server, WIRED: NO / REAL: NO until his install and journal read; TECH-LAW CHECKED: Rust axum on the h3 WebTransport path
