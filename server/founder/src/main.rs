@@ -158,7 +158,10 @@ async fn authed_with(st: &St, h: &HeaderMap, fresh: bool) -> Result<jwt_core::Cl
         // D2b: a token that carries a session id is only good while the Devices & Sessions door says `live` (revoked / expired / drift / location / flapping all end here).
         if let Some(sid) = &c.sid {
             if fresh { sessions::cache_drop(sid); } // writes always ask the database fresh
-            if sessions::check(sb, sid, &sessions::facts(h, &st.hmac_key), true, None).await != sessions::Verdict::Live { return Err(StatusCode::UNAUTHORIZED); }
+            let t_sess = std::time::Instant::now();
+            let live = sessions::check(sb, sid, &sessions::facts(h, &st.hmac_key), true, None).await == sessions::Verdict::Live;
+            data::slow_db("auth", "sessions_check", t_sess);
+            if !live { return Err(StatusCode::UNAUTHORIZED); }
         }
         // L2 (30 Oct): dono DB checks ek saath (pehle line se, 2 round-trip); natija wahi: founder nahi => 403, device revoke => 401 (foran band)
         if !fresh && st.gate.ok(&c.sub, &c.did, || async { let (f, d) = tokio::join!(sb.is_founder(&c.sub), sb.device_ok(&c.sub, &c.did)); f && d }).await {

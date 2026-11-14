@@ -4,6 +4,13 @@ use serde_json::Value;
 #[derive(Clone)]
 pub struct Sb { pub url: String, pub key: String, pub http: reqwest::Client }
 
+/// KP3 audit step C (14 Nov): which database call is slow. Prints ONLY the table or function name (no filter, no value, no key) and the milliseconds, and only when a call took SLOW_DB_MS or more.
+pub const SLOW_DB_MS: u128 = 250;
+pub fn slow_db(kind: &str, path: &str, t0: std::time::Instant) {
+    let ms = t0.elapsed().as_millis();
+    if ms >= SLOW_DB_MS { let name: String = path.split('?').next().unwrap_or("").chars().filter(|c| c.is_ascii_alphanumeric() || *c == '_' || *c == '/').take(60).collect(); eprintln!("founder: SLOW database {kind} {name} in {ms} ms"); }
+}
+
 impl Sb {
     pub fn from_env() -> Option<Sb> {
         let url = std::env::var("SUPABASE4_URL").ok()?.trim_end_matches('/').to_string();
@@ -23,19 +30,25 @@ impl Sb {
         self.http.get(format!("{}/rest/v1/{}", self.url, path)).header("apikey", &self.key).header("authorization", format!("Bearer {}", self.key))
     }
     pub async fn rows(&self, path: &str) -> Option<Vec<Value>> {
+        let t0 = std::time::Instant::now();
         let r = self.req(path).send().await.ok()?;
+        slow_db("read", path, t0);
         if !r.status().is_success() { return None; }
         r.json::<Vec<Value>>().await.ok()
     }
     pub async fn count(&self, path: &str) -> Option<i64> {
+        let t0 = std::time::Instant::now();
         let r = self.req(path).header("prefer", "count=exact").header("range", "0-0").send().await.ok()?;
+        slow_db("count", path, t0);
         if !r.status().is_success() && r.status().as_u16() != 416 { return None; }
         r.headers().get("content-range")?.to_str().ok()?.split('/').nth(1)?.parse().ok()
     }
     /// PostgREST RPC (service_role). Jawab JSON value (null bhi valid) ya None (error).
     pub async fn rpc(&self, name: &str, body: Value) -> Option<Value> {
+        let t0 = std::time::Instant::now();
         let r = self.http.post(format!("{}/rest/v1/rpc/{}", self.url, name)).header("apikey", &self.key)
             .header("authorization", format!("Bearer {}", self.key)).json(&body).send().await.ok()?;
+        slow_db("rpc", name, t0);
         if !r.status().is_success() { return None; }
         r.json::<Value>().await.ok()
     }
