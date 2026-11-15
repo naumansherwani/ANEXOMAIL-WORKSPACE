@@ -143,10 +143,10 @@
   {
    "id": "A-tanstack-start",
    "file": "founder-web/package.json",
-   "must": "@tanstack/react-start",
-   "status": "open",
+   "must": "@tanstack/react-router",
+   "status": "ok",
    "deadline": "his word needed",
-   "why": "TANSTACK START & ROUTER listed; founder is Router-only static SPA (Start needs an SSR runtime = Node/Bun, banned). Decision for him: keep Router-only as the documented exception or not",
+   "why": "DECIDED BY HIM 16 Nov 2026 03:46: TanStack Router-only (static SPA + Rust backend + WASM kernel) for ever; TanStack Start (SSR, needs Node/Bun) is dropped. Router must stay in package.json. Doc: docs/claude/DECISION-TANSTACK-ROUTER-ONLY-16NOV.md",
    "fail_after": "2026-11-30"
   },
   {

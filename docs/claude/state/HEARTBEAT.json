@@ -1,7 +1,7 @@
 {
- "generated": "16 Nov 2026 03:40 +0500",
- "head": "a0ed8fe2",
- "head_subject": "Q1d-1a: E176 health fix, audit step, Systems live look recorded",
+ "generated": "16 Nov 2026 03:47 +0500",
+ "head": "3120e9b8",
+ "head_subject": "E176 on his server, gate dates to 30 Nov, order of steps recorded",
  "now": "Q1d-1a",
  "phases": {
   "GREEN": 27,
@@ -11,12 +11,11 @@
  },
  "q_done": 20,
  "q_open": 2,
- "checks_ok": 23,
+ "checks_ok": 24,
  "checks_open": [
   "M-moq",
   "D-clamav",
   "D-hetzner-storagebox",
-  "A-tanstack-start",
   "Q-att-wt",
   "Q-pqmail",
   "Q-live-wt",

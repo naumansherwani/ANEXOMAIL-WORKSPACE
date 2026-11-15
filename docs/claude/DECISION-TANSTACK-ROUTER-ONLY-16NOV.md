@@ -1,0 +1,5 @@
+# DECISION (founder Nauman Sherwani, 16 Nov 2026 03:46): TanStack Router-only, TanStack Start dropped for ever
+His words: "TanStack Router-only (Static SPA + Rust Backend + WASM Kernel) hi aap ke architecture ke liye 100% best aur sab se tez raasta hai. TanStack Start (SSR) ko hamesha ke liye chhor diya hai. Baki research se polish aur bhi ker lena, maqsad hai duniya ka advance level reach kerna hai."
+- Architecture = static SPA (founder-web/dist, served by the Rust server) + Rust Tokio axum backend + the one Rust WASM kernel in the browser. No SSR runtime (Node/Bun is banned in any server runtime).
+- The TECH LAW line "TANSTACK START & ROUTER" is therefore read as "TANSTACK ROUTER". TECH-LAW-GATE check A-tanstack-start is now status ok and enforces that @tanstack/react-router stays in founder-web/package.json. Nobody re-opens this question.
+- "Polish further by research" (his standing aim = world-advanced level): router side = type-safe routes, code-split lazy routes, View Transitions, preload on intent; to be done as research items inside the phases that touch routing, never as a rewrite.

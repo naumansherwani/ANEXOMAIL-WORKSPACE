@@ -24,6 +24,7 @@ FEATURES = [
  ("Real outgoing mail", "FMAIL_SEND on: the first real mail leaves, only with your word", ["rust"], "off", "fmail_out.rs sender worker", "Rust Tokio SMTP"),
  ("DKIM2 / ML-DSA-44", "Next-generation signature with a post-quantum algorithm. Tracked only: no receiver verifies it yet", ["tracked"], "tracked", "qstate step Q1d-DKIM2", "IETF draft, FIPS 204 ML-DSA-44"),
  ("Attachments over WebTransport", "Large files in sealed chunks over Tokio + WebTransport + Hetzner Storage Box", ["tracked"], "tracked", "TECH-LAW-GATE Q-att-wt", "Tokio, WebTransport, Hetzner"),
+ ("Website framework", "Static single-page app with TanStack Router, Rust backend, one WASM kernel in the browser. TanStack Start (server rendering) is dropped for ever by your decision", ["ui", "rust", "kernel"], "live", "founder-web (React 19 + TanStack Router + Vite 8 + Tailwind 4), docs/claude/DECISION-TANSTACK-ROUTER-ONLY-16NOV.md", "React 19, TanStack Router, Vite, Tailwind"),
  ("Media over QUIC", "Live media relay", ["tracked"], "tracked", "TECH-LAW-GATE M-moq", "MoQ, IETF"),
 ]
 def main():
