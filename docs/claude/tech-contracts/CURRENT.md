@@ -619,3 +619,14 @@ Colour: ONE blue family only (blue / blue-violet / cyan), no pink, no green+yell
 - QUI-LIVE live look 16 Nov 02:05 (his founder-install OK paste): my Chrome 1536 wide on founderworkspace, live bundle index-B5pJDX1M + css CYOquduq = repo build d19ece58 (same hashes); original LogoMark 36 px + ANEXOMAIL + naumansherwani.founder@anexomail.com intact; search box = only the word Search; health card in the left rail, top strip hidden; Mail speed 1.2 s from 1 real mail; 0 targets under 44 px; the Q lines for his backup-b are unconfirmed. 1200+ SEEN. Still missing for the phase close: his phone shots of THIS bundle at 390 and 820 (my window cannot resize).
 
 - GREEN 16 Nov 02:10: QUI-LIVE + QPERF-2 + QPERF-3 + QPERF, WIRED: YES / REAL: YES, TECH-LAW CHECKED. Proof: live bundle index-B5pJDX1M = repo build d19ece58; my Chrome 1536 look; his phone screenshot 390 at 01:57 (original logo, ANEXOMAIL, his email, one plain Search box, one-line pills, no sideways scroll); 820 = sandbox measurement (no overflow, 44 px targets); E174 CHECK 6 OK + selftest 12 ok (his paste 01:13); Mail speed 1.2 s from 1 real mail, p99 and p99.9 dash until enough samples. Awam: this UI preserved for Business Premium + MAX. NEXT = Q1d-1a (DKIM key + DNS TXT), one sub-phase at a time.
+
+## Q1d-1a CONTRACT (16 Nov 02:20, written before any step): DKIM key + DNS TXT
+| Part | Technology | Where it already is | Proof to close |
+|---|---|---|---|
+| Key registry + wrapped private half | PostgreSQL RLS (E170), AES-256-GCM wrap under vault master | E170, fmail_dkim_keys | his read-only CHECK_E170 output |
+| Keygen + door | Rust Tokio axum, Ed25519 (RFC 8463) + RSA-2048, mail-auth | fmail_dkim.rs, fmail_out.rs dkim_get_ep / dkim_set_ep | key made on his server |
+| Touch gate | passkey WebAuthn action mail.key, kernel-signed request | mail_api.ts dkimCreate | his touch in Compose |
+| UI | React 19 TS, DkimSetup inside MailCompose (unchanged) | MailCompose.tsx | my Chrome look: DNS TXT name + value shown |
+Order: 1 his CHECK_E170 (read-only) -> 2 he opens Compose, makes the key with a touch (his hands) -> 3 I look in Chrome and copy the exact TXT -> 4 his Namecheap paste (hands) -> Q1d-1b outside verification. No code is rewritten; nothing is sent; FMAIL_SEND stays off.
+
+- Q1d-1a started 16 Nov 02:20: contract written in CURRENT.md; the DKIM backend + UI already exist (E170, fmail_dkim.rs, fmail_out.rs doors, DkimSetup in MailCompose), nothing is rewritten. Step 1 = his read-only CHECK_E170, step 2 = his key touch in Compose, step 3 = my Chrome look for the TXT, step 4 = his Namecheap paste.
