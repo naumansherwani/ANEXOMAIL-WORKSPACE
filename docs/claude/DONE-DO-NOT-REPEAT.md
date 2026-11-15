@@ -579,3 +579,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Founder UI server backup + rollback scripts written 16 Nov 00:35 PKT (his order 00:32): founder-ui-backup-16nov.sh / founder-ui-rollback-16nov.sh, backup record #4 in FOUNDER-BACKUP-LAW. Not yet run on his server.
 
 - QUI-LIVE installed on his server (his founder-install 16 Nov 00:4x OK). My live Chrome on his founderworkspace (bundle index-BfY28Qop = repo build 8895d233): new mailbox shown at 1536 wide, real mail 'hi / hello founder!' opens with Ledger anchor verified SHA-256, Mail speed card shows 1.2 s median from 1 real mail (first real QPERF measurement). FOUND BY HIM 00:50: the original ANEXOMAIL logo had been replaced by a plain A square: FIXED (LogoMark from Brand.tsx in header and empty reader), targets now 44 px on every size, AWAM-INHERIT gate + manifest + law doc added. Still open: 390 and 820 live look (Chrome window cannot be resized), his install of the logo fix.
+
+- QUI-LIVE 16 Nov 01:10: logo was squeezed to width 0 by flex (his photo), fixed flex 0 0 36px + 14px gap, build index-pwsndB6l; brand block style recorded; SLO targets stand; next Q1d-1a

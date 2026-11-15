@@ -26,7 +26,7 @@
 
 /* top: brand, ask-your-mail box, live */
 .mbx-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,560px) minmax(0,1fr);align-items:center;gap:12px;padding:8px 12px;border:1px solid var(--mh);border-radius:16px;background:var(--surf);backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2);position:relative;z-index:30}
-.mbx-brand{display:flex;align-items:center;gap:10px;min-width:0}.mbx-brand b{display:block;font-size:14px;letter-spacing:.08em;font-weight:650}.mbx-brand small{display:block;color:var(--dim);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mbx-brand{display:flex;align-items:center;gap:14px;min-width:0}.mbx-brand>svg{flex:0 0 36px;width:36px;height:36px}.mbx-brand>div{min-width:0}.mbx-brand b{display:block;font-size:14px;letter-spacing:.08em;font-weight:650}.mbx-brand small{display:block;color:var(--dim);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mbx-sbox{position:relative;border-radius:14px;background:var(--bg,#0b0c10)}
 .mbx-sin{display:flex;align-items:center;gap:9px;min-height:44px;padding:0 12px;border-radius:14px;background:color-mix(in srgb,var(--bg,#0b0c10) 70%,transparent);border:1px solid var(--mh2);color:var(--dim);cursor:text}
 .mbx-sin input{flex:1;min-width:0;border:0;background:transparent;color:var(--fg);font-size:14px;outline:0;min-height:44px;padding:0}.mbx-sin input::placeholder{color:var(--dim)}
