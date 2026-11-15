@@ -611,3 +611,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Q1d-1a a3 Rust wiring written 16 Nov 02:5x: send gate + sign_all_rec + sign_record175 before SMTP, doors dkim/health, dkim/check (DNS probe), dkim/proof, dkim/policy (touch), fmail_dkim::parse_sig; cargo 408/408 (5 new tests); NOT on his server until founder-install; sender still OFF
 
 - Q1d-1a a3 Rust wiring written 16 Nov 02:5x: send gate + sign_all_rec + sign_record175 before SMTP, door fns dkim health/check/proof/policy, fmail_dkim::parse_sig; cargo 408/408; 4 route lines in main.rs WAIT (SERVER FIRST gate wants his read-only paste; patch saved in docs/claude/state/PENDING-main-rs-dkim-routes.patch); NOT on his server
+
+- Q1d-1a a3 COMPLETE in repo 16 Nov 02:36: 4 DKIM doors routed in main.rs (dkim/health, check, proof, policy) after his ss paste (SERVER-FIRST receipt 42); cargo 408/408; no new listener; NOT on his server until founder-install; sender OFF
