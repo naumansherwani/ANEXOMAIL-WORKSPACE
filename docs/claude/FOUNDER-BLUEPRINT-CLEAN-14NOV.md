@@ -83,13 +83,14 @@ Stack that every phase inherits (founder technology law, 11 Nov 03:21 and 13 Nov
 | Q1d-2b | sub-phase: FMAIL_SEND=on with his haan, first real mail, undo window, signed sent log | Rust Tokio SMTP, undo window, hash-chained sent log | todo |  |
 | Q1d-DKIM2 | TRACKED ONLY: DKIM2 / ML-DSA-44 (draft-ietf-dkim-dkim2-spec-09, WG draft, expires 5 May 2027; no receiver verifies it yet, so nothing is built; opens when a receiver or an RFC exists) | IETF draft, FIPS 204 ML-DSA-44 | his hands, closed by his word | DKIM2 / ML-DSA-44 sirf tracked / IETF draft, FIPS 204 / Q1d (OPEN). Draft-09 only, no receiver verifies it; reopen when one does (his 16 Nov 02:12 order to write it in the phase). |
 | Q1d-2 | FMAIL_SEND=on + real outgoing mail | Rust Tokio SMTP, STARTTLS TLS 1.3 X25519MLKEM768, undo window, outgoing PQ TLS proof | todo |  |
+| AUDIT-Q1d | AUDIT after Q1d is complete (his 16 Nov word): is every LISTED advance technology really in the code of Q1d (Rust, Tokio, WASM kernel, WebTransport, HTTP/3, X25519MLKEM768, AES-256-GCM, PostgreSQL RLS hash chains)? compare TECH-LAW-GATE + FOUNDER-TECH-AUDIT with the repo, list gaps | audit: Rust, Tokio, WASM kernel, WebTransport, X25519MLKEM768 vs code | todo |  |
 | Q1b4 | SPF / DKIM / DMARC verdicts + trust ring (U3) | Rust mail-auth, Framer Motion ring | todo |  |
 | Q3 | attachments + live over WebTransport + 8-segment ring (U4) | Rust Tokio WebTransport, Hetzner Storage Box, ClamAV, WASM kernel | todo |  |
 | Qtls | MTA-STS / DANE / TLS-RPT | RFC 8461 / 7672 / 8460 | todo |  |
 | U1U2 | ledger proof pill + Touch-to-Unseal live proof (U1), PQC pill segment (U2) | kernel SHA-256/Merkle verify, passkey touch, React 19 TS | todo |  |
 | Q4 | kernel pqmail OpenPGP RFC 9980 | Rust WASM kernel ML-KEM-768 + X25519, ML-DSA-65 + Ed25519 | todo |  |
 | U5 | Who-can-read-this sheet, Ctrl K mail actions, light theme (approved) | Radix Dialog, command palette, React 19 TS | todo |  |
-| Q1e | calendar E174-E175 | Rust + SQL RLS + React TS, same sealing | todo |  |
+| Q1e | calendar (SQL numbers from the then-next free one, E177 onward) | Rust + SQL RLS + React TS, same sealing | todo |  |
 <!--PHASES-END-->
 
 Order of work from here (his word 15 Nov 19:19, one step at a time): Q series (mail + calendar) until complete, THEN S5, THEN M and N in letter order, then the Lovable-migration phases O, P, R, S, V, then T (cutover) and U. Parked on his word: audit FIX (fewer database calls), repo private + deploy key, D3.

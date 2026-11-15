@@ -113,3 +113,4 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 
 | anexochat PHASE 61 | `anexochat/sql/phase61_file_limits_quota.sql`: ANEXOChat file chart 500MB/1.5GB/4GB + per-user monthly quota 50/150/400GB (throttle never block, dedup, drift guard). `anexochat/sql/CHECK_phase61.sql` (5). Awam SQL: runs with the awam migration, after phase13_15. |
 - E175 (16 Nov 2026) E175_founder_mail_dkim_lifecycle.sql | yes (CHECK_E175) | DKIM KEY LIFECYCLE (Q1d-1a): policy with 3 one-way ratchets, dated selectors, rotation report, DNS confirmation chain, signature log (over-sign re-computed from h=), outside-receiver proof parsed in SQL, health + send gate, selftest 28. Next free = E176.
+- E176_fix_dkim_health_text_cast.sql (+ CHECK_E176.sql): FIX of fmail_dkim_health175 (text[] || 'literal' was read as an array literal, the health read failed for a mailbox with no key) + selftest176 (4 checks, rolls back). Needs E175. Next free SQL = E177.
