@@ -3381,3 +3381,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - His decision 16 Nov 03:46: TanStack Router-only for ever (static SPA + Rust + WASM kernel), gate A-tanstack-start now ok; dkim-dns-print.sh (read-only, sandbox-tested) written for the Namecheap step; waits his key touches in Systems > Mail signing
 
 - 16 Nov 04:10 SYSTEMS LAYOUT FIX (his live photo): Mail health class clash .mh renamed .sysmh, headings no longer sit on content (.pg h2 -6px margin reset for .card.sm), Tap 1/2 sheet is a portal on document.body (was trapped inside a card and covered by the next card). Sandbox 390/820/1280 measured, WIRED: YES / REAL: YES for the layout; live look after his founder-install. TECH-LAW CHECKED.
+
+- 16 Nov 04:20 SYSTEMS LAYOUT FIX LIVE: his founder-install paste (4/4 saboot) + my live Chrome: bundle index-DWFDojyK = repo build, sysmh present, heading/content no overlap, Tap sheet on body and on top. WIRED: YES / REAL: YES (1536 live; 390/820 sandbox only). Namecheap steps stay OPEN until Check DNS confirms both keys. TECH-LAW CHECKED.
