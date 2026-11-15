@@ -1,8 +1,8 @@
 {
  "heartbeat": {
   "generated": "16 Nov 2026 04:11 +0500",
-  "head": "0d4c16ad",
-  "head_subject": "Record Systems layout fix live, Namecheap steps open",
+  "head": "7e1b259f",
+  "head_subject": "DKIM panel: calm start-here line when no key",
   "now": "Q1d-1a",
   "phases": {
    "GREEN": 27,

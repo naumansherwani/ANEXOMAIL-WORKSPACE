@@ -1382,3 +1382,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 16 Nov 04:20 SYSTEMS LAYOUT FIX LIVE: his founder-install paste (4/4 saboot) + my live Chrome: bundle index-DWFDojyK = repo build, sysmh present, heading/content no overlap, Tap sheet on body and on top. WIRED: YES / REAL: YES (1536 live; 390/820 sandbox only). Namecheap steps stay OPEN until Check DNS confirms both keys. TECH-LAW CHECKED.
 
 - 16 Nov 04:12 DKIM panel, zero keys: the red blocker line is replaced by a calm start-here line (his confusion at 04:10: 'there is no active DKIM key'); live Chrome showed the two buttons present. Needs founder-install. TECH-LAW CHECKED.
+
+- 16 Nov 04:14 DKIM panel: the rotation line (180/14/7 days) now says it is a fixed rule set once, nothing to do now, only a 'new key due' button about twice a year (his 04:11: why must I do this, keep it permanent). Needs founder-install. TECH-LAW CHECKED.

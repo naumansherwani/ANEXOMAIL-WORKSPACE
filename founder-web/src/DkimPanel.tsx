@@ -44,7 +44,7 @@ export function DkimPanel({ box }: { box: string }) {
             {p && (<div className="dk-pol"><span className="mx-cap">Policy (switches only turn on)</span>
               {([["oversign", "Over-sign From, To, Subject, Date, Message-ID", p.require_oversign], ["dual", "Both Ed25519 and RSA keys required", p.require_dual], ["dns_match", "DNS record must be confirmed before sending", p.require_dns_match]] as const).map(([k, t, on]) => (
                 <div className="dk-sw" key={k}><span>{t}<small className="dim"> {ratchetWords(on)}</small></span>{!on && <button type="button" className="mx-btn alt" disabled={!!busy} onClick={() => void run("pol" + k, () => dkimPolicy(box, { [k]: true }), () => "Switched on.")}>Turn on (touch)</button>}</div>))}
-              <p className="dim small">Rotate every {p.rotate_days} days, keep the old DNS record {p.overlap_days} days, signatures live {p.sig_ttl_days} days.</p></div>)}
+              <p className="dim small">Fixed rules, set once, nothing for you to do now: a key lasts {p.rotate_days} days, the old DNS record stays {p.overlap_days} days by itself, each signature expires after {p.sig_ttl_days} days. About twice a year this panel will say "new key due" and you press one button.</p></div>)}
             <div className="dk-proof"><span className="mx-cap">Outside receiver proof</span>
               <p className="dim small">Send a mail to the receiver, open Show original, copy the Authentication-Results header and paste it here.</p>
               <div className="dk-row"><select value={rcv} onChange={(e) => setRcv(e.target.value)} aria-label="Receiver">{RECEIVERS.map((x) => <option key={x}>{x}</option>)}</select>

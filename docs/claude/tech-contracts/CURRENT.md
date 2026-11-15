@@ -715,3 +715,5 @@ Layer: React 19 TS UI + CSS only (no Rust, no SQL, no new technology). Causes fo
 React 19 TS UI only. With zero keys the panel showed the server blocker in red and he read it as a fault. Now: calm line "Nothing is wrong... press New Ed25519 key, then New RSA-2048 key", tone warn. bun dkim_pure 6/6. TECH-LAW CHECKED.
 
 - 16 Nov 04:12 DKIM panel, zero keys: the red blocker line is replaced by a calm start-here line (his confusion at 04:10: 'there is no active DKIM key'); live Chrome showed the two buttons present. Needs founder-install. TECH-LAW CHECKED.
+
+- 16 Nov 04:14 DKIM panel: the rotation line (180/14/7 days) now says it is a fixed rule set once, nothing to do now, only a 'new key due' button about twice a year (his 04:11: why must I do this, keep it permanent). Needs founder-install. TECH-LAW CHECKED.
