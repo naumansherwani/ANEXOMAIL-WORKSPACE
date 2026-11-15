@@ -380,3 +380,5 @@
 - Q1d-1a a3 Rust wiring written 16 Nov 02:5x: send gate + sign_all_rec + sign_record175 before SMTP, door fns dkim health/check/proof/policy, fmail_dkim::parse_sig; cargo 408/408; 4 route lines in main.rs WAIT (SERVER FIRST gate wants his read-only paste; patch saved in docs/claude/state/PENDING-main-rs-dkim-routes.patch); NOT on his server
 
 - Q1d-1a a3 COMPLETE in repo 16 Nov 02:36: 4 DKIM doors routed in main.rs (dkim/health, check, proof, policy) after his ss paste (SERVER-FIRST receipt 42); cargo 408/408; no new listener; NOT on his server until founder-install; sender OFF
+
+- Q1d-1a a3 INSTALLED on his server 16 Nov 02:5x: founder-install OK (his paste: SPA 200, healthz 200, signing ON, 4/4); my Chrome look: live bundle index-B5pJDX1M + css CYOquduq = repo build, dkim/health 401 (route live), dkim/nope 404; NOT green: no key yet, no real signed mail (sender OFF), no dkim=pass; his haan for a4 UI with existing UI intact, founder separate from awam
