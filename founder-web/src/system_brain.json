@@ -1,8 +1,8 @@
 {
  "heartbeat": {
-  "generated": "16 Nov 2026 04:11 +0500",
-  "head": "7e1b259f",
-  "head_subject": "DKIM panel: calm start-here line when no key",
+  "generated": "16 Nov 2026 04:16 +0500",
+  "head": "701ee2e2",
+  "head_subject": "DKIM panel: rotation rules worded as fixed",
   "now": "Q1d-1a",
   "phases": {
    "GREEN": 27,

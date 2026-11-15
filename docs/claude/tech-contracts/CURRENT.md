@@ -717,3 +717,8 @@ React 19 TS UI only. With zero keys the panel showed the server blocker in red a
 - 16 Nov 04:12 DKIM panel, zero keys: the red blocker line is replaced by a calm start-here line (his confusion at 04:10: 'there is no active DKIM key'); live Chrome showed the two buttons present. Needs founder-install. TECH-LAW CHECKED.
 
 - 16 Nov 04:14 DKIM panel: the rotation line (180/14/7 days) now says it is a fixed rule set once, nothing to do now, only a 'new key due' button about twice a year (his 04:11: why must I do this, keep it permanent). Needs founder-install. TECH-LAW CHECKED.
+
+## Live audit of the founder side (16 Nov 04:25, his order: every feature, every corner, auto fix)
+React 19 TS UI + CSS only. Live Chrome walk of 14 views at 1536: Dashboard, Bridge, Mail, Move-In, Audit, Settings, Devices, Profile clean. 21 "from today's app" cards (People 3, AI 1, Systems 5, Control 2, Finance 5, Release 5) read /api/founder/* (the old app's API) and answer HTTP 404 on the founder host: their Rust doors (F3/F4/F6/F8, catalog.ts) do not exist yet. NOT faked: the card now says "Not connected yet, waits for its Rust door (Fx)" instead of a raw HTTP 404. The Rust doors stay OPEN work (list in docs/claude/Q1D-1A-SUMMARY-16NOV.md). Also: DKIM receiver select dropdown was a white native box, now color-scheme dark (.dk only). TECH-LAW CHECKED.
+
+- 16 Nov 04:25 FOUNDER LIVE AUDIT (his order): 14 views walked live; 8 clean; 21 old-app cards = real open gaps (no Rust door, 404), listed in Q1D-1A-SUMMARY, card wording now honest; DKIM select dropdown dark. NOT green: those 21 stay OPEN. TECH-LAW CHECKED.

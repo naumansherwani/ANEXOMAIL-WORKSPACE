@@ -33,7 +33,7 @@ export function DeckPage({ deck, money }: { deck: string; money?: any }) {
         </div>
         {tab === "Live" ? (
           <div className="lives"><p className="dim small">Real data from the original features, shown here on the new page. Read-only. Original pages stay as they are.</p>
-            {items.filter((i) => i.legacy).map((i) => <LiveFeature key={i.title} title={i.title} summary={i.summary} path={i.legacy ?? ""} />)}</div>
+            {items.filter((i) => i.legacy).map((i) => <LiveFeature key={i.title} title={i.title} summary={i.summary} path={i.legacy ?? ""} phase={i.phase} />)}</div>
         ) : tab === "Gates" ? (
           <div className="list"><h3>How the three gates work</h3>
             {([1, 2, 3] as GateLevel[]).map((g) => <div className="rowcard" key={g}><div><b>{GATES[g].tag} <span className="plan">· {n(g)} feature(s) in {meta.title}</span></b><em>{GATES[g].text}</em></div></div>)}

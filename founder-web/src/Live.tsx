@@ -52,7 +52,7 @@ function Value({ v, name, depth = 0 }: { v: any; name?: string; depth?: number }
   return <div className="tiles"><div className="tile"><span>{human(name || "Value")}</span><b>{fmt(name || "", v)}</b></div></div>;
 }
 
-export function LiveFeature({ title, summary, path }: { title: string; summary: string; path: string }) {
+export function LiveFeature({ title, summary, path, phase }: { title: string; summary: string; path: string; phase?: string }) {
   const [st, setSt] = useState<{ s: "load" | "ok" | "err"; d?: any; m?: string }>({ s: "load" });
   useEffect(() => {
     let off = false;
@@ -64,7 +64,7 @@ export function LiveFeature({ title, summary, path }: { title: string; summary: 
       <header><h3>{title}</h3><span className="src">{path}</span></header>
       <p className="dim small">{summary}</p>
       {st.s === "load" && <p className="dim">Loading…</p>}
-      {st.s === "err" && <p className="note">Could not load this one: {st.m}. The original page still works.</p>}
+      {st.s === "err" && (/404/.test(st.m ?? "") ? <p className="note">Not connected yet. This one waits for its own Rust door{phase ? ` (${phase})` : ""}; nothing is lost and the original page still works.</p> : <p className="note">Could not load this one: {st.m}. The original page still works.</p>)}
       {st.s === "ok" && (st.d === null || st.d === undefined || (isObj(st.d) && !Object.keys(st.d).length) ? <p className="dim">Nothing recorded yet.</p> : <Value v={st.d} name={title} />)}
     </section>
   );

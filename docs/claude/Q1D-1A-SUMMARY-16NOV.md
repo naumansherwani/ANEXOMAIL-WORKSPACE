@@ -55,3 +55,6 @@ Live bundle index-DWFDojyK (was index-5UaK8Jzq). Measured live at 1536: .sysmh p
 
 ## NAMECHEAP STEPS = STILL OPEN (his 16 Nov 04:07 word: keep it open in the repo, give the steps in chat)
 Order: keys (touch) -> dkim-dns-print.sh (one line, his paste) -> TXT at the DNS that answers anexomail.com (Namecheap only if the NS lines say Namecheap) -> Check DNS -> switch "DNS record must be confirmed". Do not close this item until Check DNS shows confirmed for BOTH keys.
+
+## 16 Nov 04:25 FOUNDER LIVE AUDIT: 21 OPEN CARDS (real gaps, not green)
+These cards read the old app's /api/founder/* and answer 404 on the founder host (no Rust door yet): People: org/list, crm/state, security/overview. AI: ai-agents. Systems: admin/overview, storage/volumes, perf/overview, integrations/overview, analytics/overview. Control: settings/overview, org/state. Finance: revenue/overview, revenue/pipeline, billing/revenue, support/replies, ai/credits/overview. Release: release/overview, checklist, deployments, checks, roadmap. Fix = the Rust doors listed in founder-web/src/catalog.ts (F3 release/finance, F4 people, F6 systems, F8 control), each with E-series SQL; due before 30 Nov, order after Q1d. The card text is now honest ("Not connected yet, waits for its Rust door").
