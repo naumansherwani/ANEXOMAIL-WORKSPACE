@@ -136,6 +136,7 @@ docs/cursor-work/sql/tools/00-FOUNDER-TECH-RULE.md
 founder-web/.gitignore
 founder-web/00-FOUNDER-TECH-RULE.md
 founder-web/READ-FIRST-FOUNDER-LAW.md
+founder-web/dist/READ-FIRST-FOUNDER-LAW.md
 founder-web/dist/assets/Inter-Bold-sbKixbcS.woff2
 founder-web/dist/assets/Inter-ExtraLight-BhvJvErM.woff2
 founder-web/dist/assets/Inter-Light-Czry1CUT.woff2
@@ -144,8 +145,8 @@ founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
 founder-web/dist/assets/index-BrTqkftU.css
-founder-web/dist/assets/index-CVaJk1v6.js
-founder-web/dist/assets/kernel.worker--gREvz7o.js
+founder-web/dist/assets/index-Ca1ryHZo.js
+founder-web/dist/assets/kernel.worker-_Eggcec3.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
 founder-web/dist/assets/three.tsl-Cy7l4cF4.js
@@ -158,7 +159,7 @@ founder-web/dist/icon-180.png
 founder-web/dist/icon-192.png
 founder-web/dist/icon-512.png
 founder-web/dist/index.html
-founder-web/dist/kernel/anexo-kernel-0.15.0.wasm
+founder-web/dist/kernel/anexo-kernel-0.16.0.wasm
 founder-web/dist/manifest.webmanifest
 founder-web/index.html
 founder-web/kernel-sync.sh
@@ -173,7 +174,7 @@ founder-web/public/flare-sw.js
 founder-web/public/icon-180.png
 founder-web/public/icon-192.png
 founder-web/public/icon-512.png
-founder-web/public/kernel/anexo-kernel-0.15.0.wasm
+founder-web/public/kernel/anexo-kernel-0.16.0.wasm
 founder-web/public/manifest.webmanifest
 founder-web/src/00-FOUNDER-TECH-RULE.md
 founder-web/src/AmbientStudio.tsx

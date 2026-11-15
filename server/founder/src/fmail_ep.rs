@@ -48,6 +48,15 @@ pub fn parse_proof(q: Option<&str>) -> Result<(String, Option<String>), &'static
     for (k, v) in pairs(q) { match k { "box" => { if !pk::is_uuid(v) { return Err("invalid box"); } b = Some(v.to_string()); } "id" => { if !pk::is_uuid(v) { return Err("invalid id"); } i = Some(v.to_string()); } _ => return Err("unknown parameter") } }
     Ok((b.ok_or("missing box")?, i))
 }
+/// QUI-H3: `after=<seq>&limit=<n>` for the ledger rows door. after = digits only, 0..=9_000_000_000_000 (default 0); limit = 1..=1000 (default 500). Anything else is refused before SQL.
+pub fn parse_rows(q: Option<&str>) -> Result<(i64, i64), &'static str> {
+    let (mut after, mut limit) = (0i64, 500i64);
+    for (k, v) in pairs(q) {
+        let n = if !v.is_empty() && v.len() <= 16 && v.bytes().all(|b| b.is_ascii_digit()) { v.parse::<i64>().map_err(|_| "invalid number")? } else { return Err("invalid number") };
+        match k { "after" => { if n > 9_000_000_000_000 { return Err("invalid after"); } after = n; } "limit" => { if !(1..=1000).contains(&n) { return Err("limit must be 1..1000"); } limit = n; } _ => return Err("unknown parameter") }
+    }
+    Ok((after, limit))
+}
 /// 1..=100 uuids from a JSON array.
 pub fn ids_of(v: &Value, key: &str) -> Result<Vec<String>, &'static str> {
     let a = v.get(key).and_then(|x| x.as_array()).ok_or("missing ids")?;
@@ -139,6 +148,13 @@ pub async fn lanes_ep(State(st): State<S>, h: HeaderMap) -> Response {
     if let Err(e) = crate::authed(&st, &h).await { return e.into_response(); }
     let sb = st.sb.as_ref().unwrap();
     match sb.rpc("fmail_bridge_feed", json!({"p_hours": 24})).await { Some(v) if v.is_object() => crate::signed(&st, json!({"connected": true, "feed": v})), _ => crate::signed(&st, missing()) }
+}
+/// QUI-H3 door: the raw mail-ledger rows (E172 `fmail_ledger_rows172`), signed like every answer, so the browser KERNEL re-hashes the chain itself (mailledger@1). Founder session only; read-only; keyset paging.
+pub async fn ledger_rows_ep(State(st): State<S>, uri: Uri, h: HeaderMap) -> Response {
+    if let Err(e) = crate::authed(&st, &h).await { return e.into_response(); }
+    let (after, limit) = match parse_rows(uri.query()) { Ok(x) => x, Err(e) => return bad(e) };
+    let sb = st.sb.as_ref().unwrap();
+    match sb.rpc("fmail_ledger_rows172", json!({"p_after": after, "p_limit": limit})).await { Some(v) if v.get("rows").map_or(false, |r| r.is_array()) => crate::signed(&st, json!({"connected": true, "ledger": v})), _ => crate::signed(&st, missing()) }
 }
 pub async fn proof_ep(State(st): State<S>, uri: Uri, h: HeaderMap) -> Response {
     let c = match crate::authed(&st, &h).await { Ok(c) => c, Err(e) => return e.into_response() };
@@ -250,6 +266,8 @@ mod tests {
         let q = parse_list(Some(&format!("box={BOX}&view=vault&limit=9999"))).unwrap(); assert_eq!((q.view.as_str(), q.limit, q.after.is_none()), ("vault", 100, true));
         let q = parse_list(Some(&format!("box={BOX}&ts=2026-11-13T09:41:00.123456Z&id={U1}"))).unwrap(); assert!(q.after.is_some());
         for bad in [format!("box={BOX}&view=drop"), format!("box={BOX}&ts=2026-11-13T09:41:00.123456Z"), format!("box={BOX}&id={U1}"), format!("box={BOX}&ts=x'--&id={U1}"), format!("box={BOX}&evil=1"), format!("view=inbox")] { assert!(parse_list(Some(&bad)).is_err(), "{bad}"); }
+        assert_eq!(parse_rows(None).unwrap(), (0, 500)); assert_eq!(parse_rows(Some("after=12&limit=1000")).unwrap(), (12, 1000));
+        for bad in ["after=-1", "limit=0", "limit=1001", "after=9000000000001", "after=", "after=1a", "x=1", "limit=99999999999999999"] { assert!(parse_rows(Some(bad)).is_err(), "{bad}"); }
         assert_eq!(parse_proof(Some(&format!("box={BOX}"))).unwrap().1, None); assert!(parse_proof(Some(&format!("box={BOX}&id=zz"))).is_err());
     }
     #[test]

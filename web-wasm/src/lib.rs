@@ -25,6 +25,7 @@ pub mod checkpoint;
 pub mod anchor;
 pub mod action;
 pub mod lease;
+pub mod mailledger;
 pub mod mldsa;
 #[path = "../../server/rust/merkle_core.rs"]
 pub mod merkle;
@@ -38,9 +39,9 @@ use std::collections::HashMap;
 use std::rc::Rc;
 
 pub const ABI: u32 = 1;
-pub const VERSION: (u32, u32, u32) = (0, 15, 0);
+pub const VERSION: (u32, u32, u32) = (0, 16, 0);
 /// Naam@module-version. Naya module ya badla hua module => yahan entry + VERSION bump (Cargo.toml bhi).
-pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "mldsa@1", "merkle@1", "merkle@2", "checkpoint@1", "anchor@1", "portable@1", "action@1", "lease@1", "flive@1"];
+pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "mldsa@1", "merkle@1", "merkle@2", "checkpoint@1", "anchor@1", "portable@1", "mailledger@1", "action@1", "lease@1", "flive@1", "mailledger@1"];
 
 thread_local! {
     static OUT: RefCell<Vec<u8>> = const { RefCell::new(Vec::new()) };
@@ -226,6 +227,16 @@ pub extern "C" fn action_check(ptr: u32, len: u32) -> u32 {
     ok as u32
 }
 
+/* ------------------------------------------------------- mailledger@1 (QUI-H3) */
+/// 1 = every row of this page of the founder mail ledger re-hashes to its row_hash with the SQL formula, links to the row before it, and (if given) the server's claimed head is a real row; 0 = anything else.
+/// JSON report (checked rows, last seq, head hash, or the first bad seq and the plain-language problem) in the out buffer either way.
+#[unsafe(no_mangle)]
+pub extern "C" fn mail_ledger_check(ptr: u32, len: u32) -> u32 {
+    let (ok, rep) = mailledger::check(unsafe { text(ptr, len) });
+    set_out(rep.into_bytes());
+    ok as u32
+}
+
 /* ------------------------------------------------------- lease@1 (J8c) */
 /// 1 = the vault lease is good for this device right now (shape, serial, clock skew, monotonic time left); 0 = refused or expired. JSON report in the out buffer either way.
 #[unsafe(no_mangle)]
@@ -390,7 +401,7 @@ mod tests {
         let ver = j.iter().find(|(k, _)| k == "version").unwrap().1.clone();
         assert_eq!(ver, env!("CARGO_PKG_VERSION"), "VERSION bump Cargo.toml ke saath");
         assert!(info_json().contains("\"abi\":1"));
-        for m in ["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1", "merkle@2", "checkpoint@1", "anchor@1", "portable@1", "action@1", "lease@1"] {
+        for m in ["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "merkle@1", "merkle@2", "checkpoint@1", "anchor@1", "portable@1", "mailledger@1", "action@1", "lease@1"] {
             assert!(info_json().contains(m), "{m}");
         }
     }

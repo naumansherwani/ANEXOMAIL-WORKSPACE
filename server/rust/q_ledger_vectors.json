@@ -1,0 +1,54 @@
+{
+ "note": "made by the production SQL (E167 fmail_ledger_append + E172 fmail_ledger_rows172) in a PG16 sandbox, 15 Nov 2026; rows include 2-byte, 3-byte and 4-byte UTF-8 characters, quotes, backslash, newline, null",
+ "door": {
+  "v": "fmail-ledger-v1",
+  "more": false,
+  "rows": [
+   {
+    "ts": "1794754642752",
+    "seq": "1",
+    "hash": "860d7ecb3be245932745760e6c339817263a4511d1d890ce30d3ac1e4fe698a1",
+    "meta": "{\"b\": [1, 2], \"k\": 1}",
+    "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+    "actor": "00000000-0000-0000-0000-000000000001",
+    "action": "send_ok",
+    "reason": "plain ascii reason text",
+    "target": "msg-1"
+   },
+   {
+    "ts": "1794754642754",
+    "seq": "2",
+    "hash": "be483b7847bcca4f7377b52ccc745c60db34ba5e8e48da4c722caa719a0c8c8b",
+    "meta": "{\"n\": null, \"t\": true, \"u\": \"é日😀\"}",
+    "prev": "860d7ecb3be245932745760e6c339817263a4511d1d890ce30d3ac1e4fe698a1",
+    "actor": "00000000-0000-0000-0000-000000000001",
+    "action": "send_fail",
+    "reason": "reason with é and 日本語 and emoji 😀 chars",
+    "target": "é-ünïcode-日本"
+   },
+   {
+    "ts": "1794754642755",
+    "seq": "3",
+    "hash": "dde495c9c2d43202d0c440e84440263df8bc344fb5bdc94eef355b35f083b4af",
+    "meta": "{\"a\": {\"b\": [{\"c\": 1.50}]}, \"s\": \"line\\nbreak\"}",
+    "prev": "be483b7847bcca4f7377b52ccc745c60db34ba5e8e48da4c722caa719a0c8c8b",
+    "actor": "00000000-0000-0000-0000-000000000001",
+    "action": "send_cancel",
+    "reason": "reason with \"quotes\" and back\\\\slash",
+    "target": "quote\"back\\\\slash"
+   },
+   {
+    "ts": "1794754642755",
+    "seq": "4",
+    "hash": "f79371a8177eccb7be19bf7285d974de6dfa96170adb07d12a23c2c845f79f78",
+    "meta": "{}",
+    "prev": "dde495c9c2d43202d0c440e84440263df8bc344fb5bdc94eef355b35f083b4af",
+    "actor": "00000000-0000-0000-0000-000000000001",
+    "action": "send_ok",
+    "reason": "twelve chars!",
+    "target": "x"
+   }
+  ],
+  "zero": "0000000000000000000000000000000000000000000000000000000000000000"
+ }
+}

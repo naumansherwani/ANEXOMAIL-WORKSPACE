@@ -89,7 +89,7 @@ export function MailView() {
   const [view, setView] = useState(() => { try { const v = window.sessionStorage.getItem("mail.openview"); window.sessionStorage.removeItem("mail.openview"); return v && FOLDERS.some((f) => f.key === v) ? v : "inbox"; } catch { return "inbox"; } }), [rows, setRows] = useState<Row[]>([]), [more, setMore] = useState<{ ts: string; id: string } | null>(null), [loading, setLoading] = useState(false);
   const [counts, setCounts] = useState<Counts | null>(null), [lanes, setLanes] = useState<Lane[] | null>(null), [ledgerHead, setLedgerHead] = useState<number | null>(null);
   const [sel, setSel] = useState<string | null>(null), [opened, setOpened] = useState<api.Opened | null>(null), [openErr, setOpenErr] = useState(""), [opening, setOpening] = useState(false);
-  const [proof, setProof] = useState<Proof | null>(null), [proofBusy, setProofBusy] = useState(false), [chain, setChain] = useState<Proof | null>(null), [chainBusy, setChainBusy] = useState(false);
+  const [proof, setProof] = useState<Proof | null>(null), [proofBusy, setProofBusy] = useState(false), [chain, setChain] = useState<Proof | null>(null), [chainBusy, setChainBusy] = useState(false), [kernelLedger, setKernelLedger] = useState<Awaited<ReturnType<typeof api.verifyLedgerInKernel>>>(null);
   const [bound, setBound] = useState<boolean | null>(null), [liveState, setLiveState] = useState<"live" | "reconnecting" | "off">("off"), [fresh, setFresh] = useState(0);
   const [pinned, setPinned] = useState(() => { try { return window.localStorage.getItem("mail.rail") === "1"; } catch { return false; } });
   const [q, setQ] = useState(""), [copied, setCopied] = useState(false);
@@ -161,7 +161,7 @@ export function MailView() {
 
   // QUI-H: the ledger is checked by itself when the mailbox opens and whenever the ledger head moves; no button to remember.
   useEffect(() => { if (boxId) void verifyChain(); }, [boxId, ledgerHead]);   // eslint-disable-line react-hooks/exhaustive-deps
-  async function verifyChain() { setChainBusy(true); setChain(null); try { setChain(await api.proof(boxId)); } catch { setChain(null); } setChainBusy(false); }
+  async function verifyChain() { setChainBusy(true); setChain(null); setKernelLedger(null); try { const pr = await api.proof(boxId); setChain(pr); setKernelLedger(await api.verifyLedgerInKernel(pr?.head_seq ?? null, (pr as any)?.head_hash ?? null)); } catch { setChain(null); } setChainBusy(false); }
 
   const cur = rows.find((r) => r.id === sel) ?? null;
   const shown = useMemo(() => rows.filter((r) => matchRow(r, q)), [rows, q]);
@@ -175,7 +175,7 @@ export function MailView() {
         <div className="mh-right">
           {box && <button type="button" className="mx-btn" onClick={() => setCompose({})} title="New email (c)">New email</button>}
           <PillBar box={box} bound={bound} h3={h3} />
-          {box && (() => { const c = ledgerChip(chain, chainBusy, ledgerHead); return <button type="button" className={`mx-chip lg ${c.tone}`} onClick={() => void verifyChain()} disabled={chainBusy} title={c.title} aria-label={c.title}><i aria-hidden="true" />{c.text}</button>; })()}
+          {box && (() => { const c = ledgerChip(chain, chainBusy, ledgerHead, kernelLedger); return <button type="button" className={`mx-chip lg ${c.tone}`} onClick={() => void verifyChain()} disabled={chainBusy} title={c.title} aria-label={c.title}><i aria-hidden="true" />{c.text}</button>; })()}
           <span className={`mh-live ${liveState}`} title="Live channel"><i aria-hidden="true" />{liveState === "live" ? "Live" : liveState === "reconnecting" ? "Reconnecting" : "Offline"}</span>
         </div>
       </header>

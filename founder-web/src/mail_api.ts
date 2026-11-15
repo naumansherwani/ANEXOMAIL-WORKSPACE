@@ -1,6 +1,6 @@
 // Q1c: the Mail page's only network door. GET answers are signature-checked by api.get (WASM kernel); the live stream frames are verified by the kernel too and dropped if they fail.
 import { get, post } from "./api";
-import { rpcAvailable } from "./kernel";
+import { rpcAvailable, mailLedgerCheck } from "./kernel";
 import { prove } from "./passkey";
 import type { Box, Counts, Lane, Proof, Row, Sum } from "./mail_pure";
 
@@ -16,6 +16,24 @@ export async function list(box: string, view: string, after?: { ts: string; id: 
 }
 export async function lanes(): Promise<{ lanes: Lane[]; unread: number; ledger_head: number; mailboxes_without_key: number } | null> { const d = (await get("/founder/v1/mail/lanes")).data; return d?.connected ? d.feed : null; }
 export async function proof(box: string, id?: string): Promise<Proof | null> { const d = (await get(`/founder/v1/mail/proof?${q({ box, id })}`)).data; return d?.connected ? d.proof : null; }
+/** QUI-H3: one page of raw ledger rows (E172 door, signed answer). */
+export async function ledgerRows(after: number, limit = 500): Promise<any | null> { const d = (await get(`/founder/v1/mail/ledger-rows?after=${after}&limit=${limit}`)).data; return d?.connected ? d.ledger : null; }
+/** QUI-H3: the browser KERNEL re-hashes the whole mail ledger chain page by page (mailledger@1) and checks it ends at the head the server claims.
+ *  Returns the kernel report, or null when the kernel/door is unavailable (the chip then says "verified by the server", never "in your browser"). */
+export async function verifyLedgerInKernel(claimHeadSeq?: number | null, claimHeadHash?: string | null): Promise<{ ok: boolean; checked: number; head_seq: number | null; problem?: string } | null> {
+  try {
+    let after = 0, afterHash: string | undefined, checked = 0, last: number | null = null;
+    for (let page = 0; page < 10000; page++) {
+      const door = await ledgerRows(after, 500); if (!door) return null;
+      const last_page = !door.more;
+      const r = await mailLedgerCheck({ ...door, after_seq: after, after_hash: afterHash, ...(last_page && claimHeadSeq != null ? { claim_head_seq: claimHeadSeq, claim_head_hash: claimHeadHash ?? undefined } : {}) });
+      if (!r) return null; if (!r.ok) return { ok: false, checked, head_seq: last, problem: (r as any).problem };
+      checked += r.checked ?? 0; last = r.last_seq ?? last; afterHash = r.head_hash; after = r.last_seq ?? after;
+      if (last_page) return { ok: true, checked, head_seq: last };
+    }
+    return null;
+  } catch { return null; }
+}
 export async function dbscBound(): Promise<boolean | null> {
   try { const s = (await get("/founder/v1/dbsc/status")).data; if (!s?.available) return null; return !!(s.devices ?? []).find((x: any) => x.id === s.this_device)?.bound; } catch { return null; }
 }

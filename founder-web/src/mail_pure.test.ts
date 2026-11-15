@@ -87,3 +87,12 @@ describe("ledgerChip (QUI-H)", () => {
   test("no answer or a message-scope proof is never green", () => { expect(ledgerChip(null, false).tone).toBe("off"); expect(ledgerChip({ scope: "message" } as any, false).tone).toBe("off"); });
   test("busy wins; head falls back to the feed", () => { expect(ledgerChip(null, true).tone).toBe("wait"); expect(ledgerChip({ scope: "ledger", chain_ok: true }, false, 5).text).toBe("Ledger verified · #5"); });
 });
+
+import { ledgerChip as _lc } from "./mail_pure";
+import { test as _t, expect as _e } from "bun:test";
+_t("QUI-H3: chip says 'in your browser' only when the kernel verified", () => {
+  const p: any = { scope: "ledger", chain_ok: true, head_seq: 9 };
+  _e(_lc(p, false, null, { ok: true, checked: 9, head_seq: 9 }).text).toBe("Ledger verified in your browser · #9");
+  _e(_lc(p, false, null, null).text).toBe("Ledger verified · #9");
+  _e(_lc(p, false, null, { ok: false, checked: 3, head_seq: 3, problem: "x" }).tone).toBe("bad");
+});

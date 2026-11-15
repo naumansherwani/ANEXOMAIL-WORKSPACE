@@ -121,6 +121,19 @@ export function actionCheck(input: { action: string; target: string; params: Rec
   });
 }
 
+export type MailLedgerReport = { ok: boolean; checked?: number; first_seq?: number | null; last_seq?: number; head_hash?: string; more?: boolean; problem?: string; bad_seq?: number };
+/** QUI-H3: re-hash one page of the founder mail ledger in the kernel (mailledger@1, the SQL formula in Rust). Resolves with the report; undefined = the kernel could not run (never shown as a failed chain). */
+export function mailLedgerCheck(input: unknown): Promise<MailLedgerReport | undefined> {
+  return new Promise((resolve) => {
+    const id = ++seq;
+    waiting.set(id, (m) => {
+      if (m.code !== 0 || typeof m.data !== "string") { resolve(undefined); return; }
+      try { const r = JSON.parse(m.data.slice(1)) as MailLedgerReport; resolve(typeof r?.ok === "boolean" && r.ok === (m.data[0] === "1") ? r : undefined); } catch { resolve(undefined); }
+    });
+    w().postMessage({ id, mailledger: { input: JSON.stringify(input) } });
+  });
+}
+
 export type LeaseData = { type: "vault-lease@1"; device_id: string; serial: number; issued_ms: number; expires_ms: number; ttl_s: number; nonce: string; key_thumb: string; half: string };
 export type LeaseClocks = { received_wall_ms: number; received_mono_ms: number; now_wall_ms: number; now_mono_ms: number };
 export type LeaseReport = { ok: boolean; state: "live" | "expired" | "refused"; remaining_ms: number; serial?: number; reason?: string };

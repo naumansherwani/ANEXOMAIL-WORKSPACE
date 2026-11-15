@@ -814,6 +814,7 @@ server/rust/polar-payment/polarpayments.Caddyfile
 server/rust/polar-payment/test-event.sh
 server/rust/promx_core.rs
 server/rust/promx_glue.rs
+server/rust/q_ledger_vectors.json
 server/rust/rooms_core.rs
 server/rust/rooms_glue.rs
 server/rust/rust-toolchain.toml
