@@ -28,15 +28,22 @@ revoke all on public.fmail_perf_sample from public, anon, authenticated;
 create or replace function public._fp_immutable() returns trigger language plpgsql set search_path = pg_catalog, public as $$
 begin raise exception 'E174: the mail speed ledger is append-only (% refused)', tg_op using errcode = '42501'; end $$;
 
--- 2) THE PARTITION MANAGER: yesterday .. today+2 exist; anything older than 35 days is DETACHED (kept as a table, never deleted silently).
+-- 2) THE PARTITION MANAGER: the day before yesterday .. today+2 exist; anything older than 35 days is DETACHED (kept as a table, never deleted silently).
 create or replace function public.fmail_perf_partitions174() returns jsonb
-language plpgsql security definer set search_path = pg_catalog, public, extensions as $$
-declare d date; v_name text; v_made int := 0; v_detached int := 0; r record;
+language plpgsql security definer set search_path = pg_catalog, public, extensions set timezone = 'UTC' as $$
+declare d date; v_name text; v_made int := 0; v_detached int := 0; r record; v_empty boolean;
 begin
-  for d in select generate_series((now() at time zone 'utc')::date - 1, (now() at time zone 'utc')::date + 2, interval '1 day')::date loop
+  perform pg_advisory_xact_lock(hashtext('fmail_perf_partitions'));
+  -- heal: a partition made with non-UTC bounds (a session in another time zone) and still EMPTY is dropped and recreated aligned to UTC midnight; one with samples is never touched
+  for r in select c.oid::regclass as rel, c.relname from pg_inherits i join pg_class c on c.oid = i.inhrelid join pg_class p on p.oid = i.inhparent
+           where p.relname = 'fmail_perf_sample' and c.relname ~ '^fmail_perf_sample_y[0-9]{8}$' and pg_get_expr(c.relpartbound, c.oid) !~ '00:00:00\+00' loop
+    execute format('select not exists (select 1 from %s)', r.rel) into v_empty;
+    if v_empty then execute format('drop table %s', r.rel); end if;
+  end loop;
+  for d in select generate_series((now() at time zone 'utc')::date - 2, (now() at time zone 'utc')::date + 2, interval '1 day')::date loop
     v_name := 'fmail_perf_sample_y' || to_char(d, 'YYYYMMDD');
     if to_regclass('public.' || v_name) is null then
-      execute format('create table public.%I partition of public.fmail_perf_sample for values from (%L) to (%L)', v_name, d::timestamptz, (d + 1)::timestamptz);
+      execute format('create table public.%I partition of public.fmail_perf_sample for values from (%L) to (%L)', v_name, (d::timestamp at time zone 'UTC'), ((d + 1)::timestamp at time zone 'UTC'));
       execute format('create index %I on public.%I using brin (ts)', v_name || '_brin', v_name);
       execute format('alter table public.%I enable row level security', v_name);
       execute format('alter table public.%I force row level security', v_name);
@@ -56,6 +63,12 @@ begin
 end $$;
 revoke all on function public.fmail_perf_partitions174() from public, anon, authenticated;
 grant execute on function public.fmail_perf_partitions174() to service_role;
+create or replace function public.fmail_perf_partitions_ok174() returns boolean
+language sql stable security definer set search_path = pg_catalog, public set timezone = 'UTC' as $$
+  select not exists (select 1 from pg_inherits i join pg_class c on c.oid = i.inhrelid where i.inhparent = 'public.fmail_perf_sample'::regclass and pg_get_expr(c.relpartbound, c.oid) !~ '00:00:00\+00')
+$$;
+revoke all on function public.fmail_perf_partitions_ok174() from public, anon, authenticated;
+grant execute on function public.fmail_perf_partitions_ok174() to service_role;
 select public.fmail_perf_partitions174();
 
 -- E65 law: every RLS-on table carries an explicit policy (service_role only; anon/authenticated have no grant and no policy). Idempotent; also covers partitions made before this fix.
@@ -71,7 +84,7 @@ end $$;
 -- 3) THE INGEST DOOR: the Rust batch writer sends up to 500 samples; every element is checked against the closed lists; nothing is guessed.
 -- ===========================================================================================================================================
 create or replace function public.fmail_perf_ingest174(p_batch jsonb) returns jsonb
-language plpgsql security definer set search_path = pg_catalog, public, extensions as $$
+language plpgsql security definer set search_path = pg_catalog, public, extensions set timezone = 'UTC' as $$
 declare v_n int; v_ok int; v_now bigint := (extract(epoch from clock_timestamp()) * 1000)::bigint;
 begin
   if p_batch is null or jsonb_typeof(p_batch) <> 'array' then raise exception 'E174: batch must be a JSON array' using errcode = '22023'; end if;
@@ -85,7 +98,9 @@ begin
     select to_timestamp(ts_ms::bigint / 1000.0) as ts, stage, outcome, sz as size_bucket, dur::bigint as dur_us from t
     where ts_ms ~ '^[0-9]{10,14}$' and dur ~ '^[0-9]{1,10}$' and dur::bigint <= 3600000000
       and stage in ('accept', 'scan', 'seal', 'commit', 'total') and outcome in ('ok', 'quarantine', 'reject', 'error') and sz in ('xs', 's', 'm', 'l', 'xl')
-      and ts_ms::bigint between v_now - 86400000 and v_now + 60000)
+      and ts_ms::bigint between v_now - 86400000 and v_now + 60000
+      and to_timestamp(ts_ms::bigint / 1000.0) >= (select rolled_to from public.fmail_perf_state)
+      and not exists (select 1 from public.fmail_perf_seal z where z.day = (to_timestamp(ts_ms::bigint / 1000.0) at time zone 'UTC')::date))
   insert into public.fmail_perf_sample (ts, stage, outcome, size_bucket, dur_us) select ts, stage, outcome, size_bucket, dur_us from good;
   get diagnostics v_ok = row_count;
   return jsonb_build_object('accepted', v_ok, 'rejected', v_n - v_ok);
@@ -108,20 +123,20 @@ drop trigger if exists fmail_perf_seal_tr on public.fmail_perf_seal;
 create trigger fmail_perf_seal_tr before truncate on public.fmail_perf_seal for each statement execute function public._fp_immutable();
 
 create or replace function public._fp_digest(p_day date) returns table (n bigint, digest text)
-language sql stable set search_path = pg_catalog, public, extensions as $$
-  select count(*), encode(extensions.digest(convert_to(coalesce(string_agg(s.ts::text || ':' || s.stage || ':' || s.outcome || ':' || s.size_bucket || ':' || s.dur_us::text, E'\n' order by s.ts, s.stage, s.dur_us, s.outcome, s.size_bucket), ''), 'UTF8'), 'sha256'), 'hex')
-  from public.fmail_perf_sample s where s.ts >= p_day::timestamptz and s.ts < (p_day + 1)::timestamptz
+language sql stable set search_path = pg_catalog, public, extensions set timezone = 'UTC' as $$
+  select count(*), encode(extensions.digest(convert_to(coalesce(string_agg(floor(extract(epoch from s.ts) * 1000000)::bigint::text || ':' || s.stage || ':' || s.outcome || ':' || s.size_bucket || ':' || s.dur_us::text, E'\n' order by s.ts, s.stage, s.dur_us, s.outcome, s.size_bucket), ''), 'UTF8'), 'sha256'), 'hex')
+  from public.fmail_perf_sample s where s.ts >= (p_day::timestamp at time zone 'UTC') and s.ts < ((p_day + 1)::timestamp at time zone 'UTC')
 $$;
 create or replace function public._fp_seal_hash(p_prev text, p_day date, p_n bigint, p_digest text) returns text
-language sql immutable set search_path = pg_catalog, public, extensions as $$
+language sql immutable set search_path = pg_catalog, public, extensions set timezone = 'UTC' as $$
   select encode(extensions.digest(public._fa_lp(p_prev) || public._fa_lp(p_day::text) || public._fa_lp(p_n::text) || public._fa_lp(p_digest), 'sha256'), 'hex')
 $$;
 
 create or replace function public.fmail_perf_seal174(p_day date) returns jsonb
-language plpgsql security definer set search_path = pg_catalog, public, extensions as $$
+language plpgsql security definer set search_path = pg_catalog, public, extensions set timezone = 'UTC' as $$
 declare v_prev text; v_last date; v_n bigint; v_dig text; v_seal text;
 begin
-  if p_day is null or p_day >= (now() at time zone 'utc')::date then raise exception 'E174: only a closed UTC day can be sealed' using errcode = '22023'; end if;
+  if p_day is null or now() < ((p_day + 1)::timestamp at time zone 'UTC') + interval '15 minutes' then raise exception 'E174: a UTC day can be sealed 15 minutes after it closes' using errcode = '22023'; end if;
   if exists (select 1 from public.fmail_perf_seal where day = p_day) then return jsonb_build_object('ok', true, 'already', true); end if;
   select day, seal into v_last, v_prev from public.fmail_perf_seal order by day desc limit 1;
   if v_last is not null and p_day < v_last then raise exception 'E174: days are sealed in order (last sealed %)', v_last using errcode = '22023'; end if;
@@ -136,7 +151,7 @@ grant execute on function public.fmail_perf_seal174(date) to service_role;
 
 -- verify: the chain links, every seal re-hashes, and every sealed day whose partition is still attached still hashes to its digest. Returns the number of seals; raises on the first problem.
 create or replace function public.fmail_perf_seal_verify174() returns int
-language plpgsql stable security definer set search_path = pg_catalog, public, extensions as $$
+language plpgsql stable security definer set search_path = pg_catalog, public, extensions set timezone = 'UTC' as $$
 declare r record; v_prev text := repeat('0', 64); v_cnt int := 0; v_n bigint; v_dig text;
 begin
   for r in select * from public.fmail_perf_seal order by day loop
@@ -192,8 +207,8 @@ insert into public.fmail_perf_state (rolled_to) values (date_trunc('minute', now
 
 -- rollup: closed minutes only, from the watermark; idempotent (the watermark moves in the same transaction as the insert)
 create or replace function public.fmail_perf_rollup174() returns jsonb
-language plpgsql security definer set search_path = pg_catalog, public, extensions as $$
-declare v_from timestamptz; v_to timestamptz := date_trunc('minute', now()); v_rows int;
+language plpgsql security definer set search_path = pg_catalog, public, extensions set timezone = 'UTC' as $$
+declare v_from timestamptz; v_to timestamptz := date_trunc('minute', now() - interval '1 minute'); v_rows int;
 begin
   perform pg_advisory_xact_lock(hashtext('fmail_perf_rollup'));
   select rolled_to into v_from from public.fmail_perf_state;
@@ -214,12 +229,12 @@ grant execute on function public.fmail_perf_rollup174() to service_role;
 --    p50 needs 1, p90 needs 10, p95 needs 20, p99 needs 100, p99.9 needs 1000 samples.
 -- ===========================================================================================================================================
 create or replace function public.fmail_perf_pct174(p_stage text, p_from timestamptz, p_to timestamptz) returns jsonb
-language plpgsql stable security definer set search_path = pg_catalog, public, extensions as $$
+language plpgsql stable security definer set search_path = pg_catalog, public, extensions set timezone = 'UTC' as $$
 declare v_n bigint; v_src text; v_p double precision[] := array[0.5, 0.9, 0.95, 0.99, 0.999]; v_need int[] := array[1, 10, 20, 100, 1000]; v_names text[] := array['p50', 'p90', 'p95', 'p99', 'p999'];
         v_val double precision[]; v_out jsonb := '{}'::jsonb; i int; r record; v_cum bigint; v_target bigint;
 begin
   if p_stage not in ('accept', 'scan', 'seal', 'commit', 'total') then raise exception 'E174: unknown stage' using errcode = '22023'; end if;
-  if p_to - p_from <= interval '24 hours' then
+  if p_to - p_from <= interval '24 hours 5 minutes' then
     v_src := 'raw';
     select count(*), percentile_disc(v_p) within group (order by dur_us) into v_n, v_val from public.fmail_perf_sample where stage = p_stage and ts >= p_from and ts < p_to;
   else
@@ -262,15 +277,15 @@ insert into public.fmail_perf_slo (stage, threshold_ms, target, note) values
 on conflict (stage) do nothing;
 
 create or replace function public._fp_burn(p_stage text, p_window interval, p_now timestamptz) returns jsonb
-language sql stable set search_path = pg_catalog, public as $$
-  select jsonb_build_object('n', count(*), 'bad', count(*) filter (where s.dur_us > o.threshold_ms * 1000 or s.outcome = 'error'),
-    'burn', case when count(*) = 0 then null else round(((count(*) filter (where s.dur_us > o.threshold_ms * 1000 or s.outcome = 'error'))::numeric / count(*)) / (1 - o.target), 3) end)
+language sql stable set search_path = pg_catalog, public set timezone = 'UTC' as $$
+  select jsonb_build_object('n', count(s.ts), 'bad', count(s.ts) filter (where s.dur_us > o.threshold_ms * 1000 or s.outcome = 'error'),
+    'burn', case when count(s.ts) = 0 then null else round(((count(s.ts) filter (where s.dur_us > o.threshold_ms * 1000 or s.outcome = 'error'))::numeric / count(s.ts)) / (1 - o.target), 3) end)
   from public.fmail_perf_slo o left join public.fmail_perf_sample s on s.stage = o.stage and s.ts > p_now - p_window and s.ts <= p_now
   where o.stage = p_stage group by o.threshold_ms, o.target
 $$;
 
 create or replace function public.fmail_perf_burn174(p_stage text) returns jsonb
-language plpgsql stable security definer set search_path = pg_catalog, public, extensions as $$
+language plpgsql stable security definer set search_path = pg_catalog, public, extensions set timezone = 'UTC' as $$
 declare v_now timestamptz := now(); w jsonb := '{}'::jsonb; v_state text := 'ok'; v_o public.fmail_perf_slo%rowtype;
   b1h jsonb; b5m jsonb; b6h jsonb; b30m jsonb; b3d jsonb;
 begin
@@ -293,7 +308,7 @@ grant execute on function public.fmail_perf_burn174(text) to service_role;
 -- 8) THE READ DOOR for the Bridge card "Mail speed" (signed by the Rust door, read by the kernel over WebTransport)
 -- ===========================================================================================================================================
 create or replace function public.fmail_perf_door174(p_window text default '1h') returns jsonb
-language plpgsql stable security definer set search_path = pg_catalog, public, extensions as $$
+language plpgsql stable security definer set search_path = pg_catalog, public, extensions set timezone = 'UTC' as $$
 declare v_w interval; v_st jsonb := '{}'::jsonb; v_slo jsonb := '[]'::jsonb; s text; v_seal record;
 begin
   v_w := case p_window when '1h' then interval '1 hour' when '6h' then interval '6 hours' when '24h' then interval '24 hours' when '7d' then interval '7 days' end;
@@ -312,8 +327,8 @@ grant execute on function public.fmail_perf_door174(text) to service_role;
 -- 9) THE SELFTEST (rolls everything back): 12 cases. Returns 'E174 selftest: 12 ok, 0 failed' or the first failure.
 -- ===========================================================================================================================================
 create or replace function public.fmail_perf_selftest174() returns text
-language plpgsql security definer set search_path = pg_catalog, public, extensions as $$
-declare v_ok int := 0; v_bad text := ''; v_j jsonb; v_x bigint; v_err numeric; v_worst numeric := 0; i int; v_now bigint := (extract(epoch from clock_timestamp()) * 1000)::bigint;
+language plpgsql security definer set search_path = pg_catalog, public, extensions set timezone = 'UTC' as $$
+declare v_ok int := 0; v_bad text := ''; v_dig text; v_j jsonb; v_x bigint; v_err numeric; v_worst numeric := 0; i int; v_now bigint := (extract(epoch from clock_timestamp()) * 1000)::bigint;
 begin
   begin
     perform public.fmail_perf_partitions174();
@@ -354,11 +369,23 @@ begin
     if v_j ->> 'state' = 'page' then v_ok := v_ok + 1; else v_bad := v_bad || ' burn-page ' || v_j::text; end if;
     v_j := public.fmail_perf_burn174('accept');
     if v_j ->> 'state' = 'too_few' then v_ok := v_ok + 1; else v_bad := v_bad || ' burn-toofew ' || v_j::text; end if;
-    -- 8 the seal: today cannot be sealed; a closed day with samples seals, and the chain verifies; a second seal of the same day is a no-op
+    -- 8 the seal: a day that is not closed 15 minutes ago is refused; the digest is a pure function of the samples (timezone free); a real seal chain verifies; with no seals yet the full seal flow runs on the day before yesterday
     begin perform public.fmail_perf_seal174((now() at time zone 'utc')::date); v_bad := v_bad || ' sealed-today'; exception when others then v_ok := v_ok + 1; end;
-    insert into public.fmail_perf_sample (ts, stage, outcome, size_bucket, dur_us) values (((now() at time zone 'utc')::date - 1)::timestamptz + interval '3 hours', 'total', 'ok', 'm', 2500);
-    v_j := public.fmail_perf_seal174((now() at time zone 'utc')::date - 1);
-    if (v_j ->> 'ok')::boolean and public.fmail_perf_seal_verify174() >= 1 and coalesce((public.fmail_perf_seal174((now() at time zone 'utc')::date - 1) ->> 'already')::boolean, false) then v_ok := v_ok + 1; else v_bad := v_bad || ' seal ' || v_j::text; end if;
+    insert into public.fmail_perf_sample (ts, stage, outcome, size_bucket, dur_us) values ((((now() at time zone 'utc')::date - 2)::timestamp at time zone 'UTC') + interval '3 hours', 'total', 'ok', 'm', 2500);
+    if (select n from public._fp_digest((now() at time zone 'utc')::date - 2)) <> 1 then v_bad := v_bad || ' digest-n'; end if;
+    set local timezone = 'Asia/Karachi'; v_dig := (select digest from public._fp_digest((now() at time zone 'utc')::date - 2)); set local timezone = 'America/Los_Angeles';
+    if v_dig is distinct from (select digest from public._fp_digest((now() at time zone 'utc')::date - 2)) then v_bad := v_bad || ' digest-depends-on-timezone'; end if;
+    if not exists (select 1 from public.fmail_perf_seal) then
+      v_j := public.fmail_perf_seal174((now() at time zone 'utc')::date - 2);
+      if (v_j ->> 'ok')::boolean and public.fmail_perf_seal_verify174() = 1 and coalesce((public.fmail_perf_seal174((now() at time zone 'utc')::date - 2) ->> 'already')::boolean, false) then
+        -- a late sample for the sealed day is refused by the ingest door
+        v_j := public.fmail_perf_ingest174(jsonb_build_array(jsonb_build_object('ts_ms', ((extract(epoch from (((now() at time zone 'utc')::date - 2)::timestamp at time zone 'UTC')) + 10800)::bigint * 1000), 'stage', 'total', 'outcome', 'ok', 'size', 'm', 'dur_us', 1)));
+        if (v_j ->> 'accepted')::int = 0 then v_ok := v_ok + 1; else v_bad := v_bad || ' late-for-sealed-accepted'; end if;
+      else v_bad := v_bad || ' seal ' || v_j::text; end if;
+    else
+      if public.fmail_perf_seal_verify174() >= 1 then v_ok := v_ok + 1; else v_bad := v_bad || ' seal-chain'; end if;
+    end if;
+    set local timezone = 'UTC';
     -- 9 the door answers with the five stages and the five SLOs
     v_j := public.fmail_perf_door174('1h');
     if jsonb_array_length(v_j -> 'slo') = 5 and (select count(*) from jsonb_object_keys(v_j -> 'stages')) = 5 then v_ok := v_ok + 1; else v_bad := v_bad || ' door'; end if;

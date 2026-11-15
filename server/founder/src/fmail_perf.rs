@@ -23,6 +23,7 @@ static TX: OnceLock<mpsc::Sender<Sample>> = OnceLock::new();
 pub static DROPPED: AtomicU64 = AtomicU64::new(0);
 pub static LOST: AtomicU64 = AtomicU64::new(0);
 pub static SENT: AtomicU64 = AtomicU64::new(0);
+pub static REFUSED: AtomicU64 = AtomicU64::new(0);   // the database refused them (a sealed day, a rolled-up minute, a bad value): shown, never hidden
 
 /// The closed lists of E174 (the database refuses anything else, so this file never invents a value).
 pub const STAGES: [&str; 5] = ["accept", "scan", "seal", "commit", "total"];
@@ -56,6 +57,12 @@ pub fn civil_from_days(z: i64) -> (i64, u32, u32) {
 /// "YYYY-MM-DD" of the UTC day that `back` days before the day of `now_ms`.
 pub fn utc_day(now_ms: u64, back: i64) -> String { let (y, m, d) = civil_from_days((now_ms / 86_400_000) as i64 - back); format!("{y:04}-{m:02}-{d:02}") }
 
+/// What the database says about a batch: (accepted, refused). A missing or odd answer counts the whole batch as accepted-unknown = refused 0 (never a made-up number).
+pub fn accepted_refused(v: &Value, n: usize) -> (u64, u64) {
+    let a = v["accepted"].as_u64().unwrap_or(n as u64).min(n as u64);
+    (a, v["rejected"].as_u64().unwrap_or(n as u64 - a).min(n as u64))
+}
+
 /// Take what is waiting, up to BATCH_MAX, without blocking.
 pub fn drain(rx: &mut mpsc::Receiver<Sample>, out: &mut Vec<Sample>) { while out.len() < BATCH_MAX { match rx.try_recv() { Ok(s) => out.push(s), Err(_) => break } } }
 
@@ -72,9 +79,12 @@ pub fn start(sb: Sb) {
                 drain(&mut rx, &mut buf);
                 if buf.is_empty() { break; }
                 let body = json!({"p_batch": batch_json(&buf)});
-                let mut ok = sb.rpc("fmail_perf_ingest174", body.clone()).await.is_some();
-                if !ok { tokio::time::sleep(Duration::from_millis(500)).await; ok = sb.rpc("fmail_perf_ingest174", body).await.is_some(); }
-                if ok { SENT.fetch_add(buf.len() as u64, Ordering::Relaxed); } else { LOST.fetch_add(buf.len() as u64, Ordering::Relaxed); eprintln!("founder: mail speed meter: {} samples lost (database not answering twice)", buf.len()); }
+                let mut ans = sb.rpc("fmail_perf_ingest174", body.clone()).await;
+                if ans.is_none() { tokio::time::sleep(Duration::from_millis(500)).await; ans = sb.rpc("fmail_perf_ingest174", body).await; }
+                match ans {
+                    Some(v) => { let (a, r) = accepted_refused(&v, buf.len()); SENT.fetch_add(a, Ordering::Relaxed); REFUSED.fetch_add(r, Ordering::Relaxed); }
+                    None => { LOST.fetch_add(buf.len() as u64, Ordering::Relaxed); eprintln!("founder: mail speed meter: {} samples lost (database not answering twice)", buf.len()); }
+                }
                 buf.clear();
             }
             if last_roll.elapsed() >= Duration::from_secs(60) {
@@ -125,6 +135,11 @@ mod tests {
         let mut out = vec![]; drain(&mut rx, &mut out); assert_eq!(out.len(), BATCH_MAX);
         out.clear(); drain(&mut rx, &mut out); assert_eq!(out.len(), BATCH_MAX);
         out.clear(); drain(&mut rx, &mut out); assert_eq!(out.len(), 200);
+    }
+    #[test] fn the_database_answer_is_read_exactly() {
+        assert_eq!(accepted_refused(&json!({"accepted": 3, "rejected": 1}), 4), (3, 1));
+        assert_eq!(accepted_refused(&json!({}), 4), (4, 0));
+        assert_eq!(accepted_refused(&json!({"accepted": 99, "rejected": 99}), 4), (4, 4));
     }
     #[test] fn record_before_start_is_a_noop() { record("total", "ok", "xs", Instant::now()); }
 }
