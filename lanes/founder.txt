@@ -51,6 +51,7 @@ docs/cursor-work/server/founder-dns-install.sh
 docs/cursor-work/server/founder-h3-check.sh
 docs/cursor-work/server/founder-hostguard.sh
 docs/cursor-work/server/founder-install.sh
+docs/cursor-work/server/founder-k-proof.sh
 docs/cursor-work/server/founder-k5-front-switch.sh
 docs/cursor-work/server/founder-legacy.sh
 docs/cursor-work/server/founder-polar.sh
