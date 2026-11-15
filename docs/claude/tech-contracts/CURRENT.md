@@ -710,3 +710,8 @@ Layer: React 19 TS UI + CSS only (no Rust, no SQL, no new technology). Causes fo
 - 16 Nov 04:10 SYSTEMS LAYOUT FIX (his live photo): Mail health class clash .mh renamed .sysmh, headings no longer sit on content (.pg h2 -6px margin reset for .card.sm), Tap 1/2 sheet is a portal on document.body (was trapped inside a card and covered by the next card). Sandbox 390/820/1280 measured, WIRED: YES / REAL: YES for the layout; live look after his founder-install. TECH-LAW CHECKED.
 
 - 16 Nov 04:20 SYSTEMS LAYOUT FIX LIVE: his founder-install paste (4/4 saboot) + my live Chrome: bundle index-DWFDojyK = repo build, sysmh present, heading/content no overlap, Tap sheet on body and on top. WIRED: YES / REAL: YES (1536 live; 390/820 sandbox only). Namecheap steps stay OPEN until Check DNS confirms both keys. TECH-LAW CHECKED.
+
+## DKIM panel wording, no key yet (16 Nov 04:12, his "there is no active DKIM key, mujhe nahi ata")
+React 19 TS UI only. With zero keys the panel showed the server blocker in red and he read it as a fault. Now: calm line "Nothing is wrong... press New Ed25519 key, then New RSA-2048 key", tone warn. bun dkim_pure 6/6. TECH-LAW CHECKED.
+
+- 16 Nov 04:12 DKIM panel, zero keys: the red blocker line is replaced by a calm start-here line (his confusion at 04:10: 'there is no active DKIM key'); live Chrome showed the two buttons present. Needs founder-install. TECH-LAW CHECKED.

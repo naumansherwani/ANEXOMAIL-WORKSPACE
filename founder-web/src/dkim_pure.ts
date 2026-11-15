@@ -24,7 +24,7 @@ export function dnsWords(r: string | undefined | null): { text: string; tone: "o
 }
 export function headline(h: Health | null): { text: string; tone: "ok" | "warn" | "bad" | "idle" } {
   if (!h) return { text: "Signing status unavailable", tone: "idle" };
-  if (!h.send_ready) return { text: h.keys.length === 0 ? "No signing key yet" : "Sending blocked", tone: "bad" };
+  if (!h.send_ready) return { text: h.keys.length === 0 ? "No signing key yet" : "Sending blocked", tone: h.keys.length === 0 ? "warn" : "bad" };
   return h.warnings.length ? { text: "Ready, with advice", tone: "warn" } : { text: "Signing ready", tone: "ok" };
 }
 export function rotationWords(r: Rotation): string {

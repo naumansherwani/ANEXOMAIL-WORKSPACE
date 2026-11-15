@@ -28,7 +28,7 @@ export function DkimPanel({ box }: { box: string }) {
           {h === undefined && <p className="dim small">Reading the signing state…</p>}
           {h === null && <p className="mx-warn" role="alert">The signing state is not available. Run the E175 SQL step, then reload.</p>}
           {h && (<>
-            {h.blockers.map((b) => <p key={b} className="dk-b">{b}</p>)}{h.warnings.map((w) => <p key={w} className="dk-w">{w}</p>)}
+            {h.keys.length === 0 ? <p className="dk-ok"><b>Nothing is wrong.</b> You just have no key yet. Start here: press <b>New Ed25519 key</b> (touch your key), then <b>New RSA-2048 key</b> (touch again).</p> : h.blockers.map((b) => <p key={b} className="dk-b">{b}</p>)}{h.warnings.map((w) => <p key={w} className="dk-w">{w}</p>)}
             <div className="dk-act">
               <button type="button" className="mx-btn" disabled={!!busy} onClick={() => make("ed25519-sha256")}>{busy === "ed25519-sha256" ? "Touch your key…" : "New Ed25519 key"}</button>
               <button type="button" className="mx-btn alt" disabled={!!busy} onClick={() => make("rsa-sha256")}>{busy === "rsa-sha256" ? "Touch your key…" : "New RSA-2048 key"}</button>
