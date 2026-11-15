@@ -3291,3 +3291,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - SQL command form written at the top (his 15 Nov 20:15): sql-run.sh with no name, 2>&1 | tail -25 (AUTO runs new E files then CHECKs)
 
 - Top rule: founder-install form with 2>&1 | tail -12 added next to sql-run form (his 15 Nov 20:16); gate head window 17000
+
+- QUI-H3 live proof so far (15 Nov 20:3x): E172 in his sql ledger; my Chrome: bundle index-Ca1ryHZo = repo build, chip 'Ledger verified in your browser #9' (kernel WASM SHA-256 re-hashed 9 rows, WebTransport RPC, h3); NOT green yet: needs his CHECK_E172 paste and 390/820 look
