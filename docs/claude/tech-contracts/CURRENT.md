@@ -523,3 +523,5 @@ STEP 5 / STEP 4 DONE (14 Nov 2026 06:05 PKT, sandbox): cargo build --release OK,
 - Top rule: founder-install form with 2>&1 | tail -12 added next to sql-run form (his 15 Nov 20:16); gate head window 17000
 
 - QUI-H3 live proof so far (15 Nov 20:3x): E172 in his sql ledger; my Chrome: bundle index-Ca1ryHZo = repo build, chip 'Ledger verified in your browser #9' (kernel WASM SHA-256 re-hashed 9 rows, WebTransport RPC, h3); NOT green yet: needs his CHECK_E172 paste and 390/820 look
+
+- Target dates beside every open blueprint phase; founder 100% target 30 Nov 2026 (his word 15 Nov 20:35): Q 22, S5 23, M 25, N 26, O 26, P 27, R+R3 28, S 28, U 29, V 29, X+T 30; dates are targets, green only with proof

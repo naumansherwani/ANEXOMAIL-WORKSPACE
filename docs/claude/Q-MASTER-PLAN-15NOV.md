@@ -52,3 +52,6 @@ Each file = blank first line (Rule 42.1), `sql-editor-lint.py` clean, own `CHECK
 - Admin Mail Desk = row R3 in the blueprint (after R), target 22 Nov by the day plan, NOT started, comes after Q.
 - Needs from his hands, one numbered step at a time: E172 sql-run paste (now), DKIM DNS TXT (Q1d-1), `FMAIL_SEND=on` haan (Q1d-2), Hetzner written confirmations (Q3), two hardware keys for T3, his phone screenshots for 390 and his tablet for 820 (or the sandbox measurement he waives).
 - Looks: every Q step is seen at 390 / 820 / 1200+ (sandbox harness measurement + his phone screenshot) before it is closed.
+
+
+## FOUNDER 100% TARGET = 30 NOV 2026 (his word 15 Nov 20:35). Day targets live in docs/claude/state/PHASES.json (Target column of the blueprint): Q 22, S5 23, M 25, N 26, O 26, P 27, R+R3 28, S 28, U 29, V 29, X and T 30. Dates are targets; a phase turns green only with proof (his server paste + my Chrome + 390/820/1200+). If a date slips it is moved honestly here, never written green.

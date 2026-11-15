@@ -301,7 +301,7 @@
    "in_code": "PARTLY (intake, Mail page, ledger chip, Bridge card live; E172 SQL written, not on his server)",
    "status": "IN PROGRESS",
    "proof": "NOW (his order 15 Nov 19:19): Q series starts at QUI-H3; live step list below (qstate.py)",
-   "target": "20-21 Nov (day plan); started 15 Nov"
+   "target": "22 Nov (target; Q1d needs his DNS TXT + FMAIL_SEND haan, Q3 Hetzner confirmation)"
   },
   {
    "n": 29,
@@ -311,7 +311,7 @@
    "in_code": "NO",
    "status": "NOT GREEN",
    "proof": "NOT GREEN (decided, not built). STARTS AFTER THE Q SERIES IS COMPLETE (his word 15 Nov 19:19)",
-   "target": "gate 18 Nov (after Q by his word)"
+   "target": "23 Nov (target)"
   },
   {
    "n": 30,
@@ -321,7 +321,7 @@
    "in_code": "NO",
    "status": "NOT GREEN",
    "proof": "NOT GREEN",
-   "target": "14-15 Nov (day plan), not started"
+   "target": "25 Nov (target)"
   },
   {
    "n": 31,
@@ -331,7 +331,7 @@
    "in_code": "NO",
    "status": "NOT GREEN",
    "proof": "NOT GREEN",
-   "target": "16-17 Nov (day plan), not started"
+   "target": "26 Nov (target)"
   },
   {
    "n": 32,
@@ -341,7 +341,7 @@
    "in_code": "NO",
    "status": "NOT GREEN",
    "proof": "NOT GREEN",
-   "target": "18 Nov (day plan), not started"
+   "target": "26 Nov (target)"
   },
   {
    "n": 33,
@@ -351,7 +351,7 @@
    "in_code": "NO",
    "status": "NOT GREEN",
    "proof": "NOT GREEN",
-   "target": "19 Nov (day plan), not started"
+   "target": "27 Nov (target)"
   },
   {
    "n": 34,
@@ -361,7 +361,7 @@
    "in_code": "NO",
    "status": "NOT GREEN",
    "proof": "NOT GREEN",
-   "target": "22 Nov (day plan), not started"
+   "target": "28 Nov (target)"
   },
   {
    "n": 35,
@@ -371,7 +371,7 @@
    "in_code": "NO (plan only; Admin Inbox inbox.rs is only its first piece)",
    "status": "NOT GREEN",
    "proof": "NOT GREEN. Plan: docs/claude/Q-MASTER-PLAN-15NOV.md section 4. Comes after Q and after the Lovable phases of R",
-   "target": "22 Nov (inside R, day plan), not started"
+   "target": "28 Nov (target, inside R)"
   },
   {
    "n": 36,
@@ -381,7 +381,7 @@
    "in_code": "NO",
    "status": "NOT GREEN",
    "proof": "NOT GREEN",
-   "target": "23 Nov (day plan), not started"
+   "target": "28 Nov (target)"
   },
   {
    "n": 37,
@@ -391,7 +391,7 @@
    "in_code": "NO",
    "status": "NOT GREEN",
    "proof": "NOT GREEN",
-   "target": "24 Nov (day plan), not started"
+   "target": "30 Nov (target, cutover last)"
   },
   {
    "n": 38,
@@ -401,7 +401,7 @@
    "in_code": "NO",
    "status": "NOT GREEN",
    "proof": "NOT GREEN",
-   "target": "24 Nov (day plan), not started"
+   "target": "29 Nov (target)"
   },
   {
    "n": 39,
@@ -411,7 +411,7 @@
    "in_code": "NO",
    "status": "NOT GREEN",
    "proof": "NOT GREEN",
-   "target": "25 Nov (day plan), not started"
+   "target": "29 Nov (target)"
   },
   {
    "n": 40,
@@ -421,7 +421,7 @@
    "in_code": "NO",
    "status": "NOT GREEN",
    "proof": "NOT GREEN",
-   "target": "25 Nov (day plan), not started"
+   "target": "30 Nov (target) | FOUNDER 100% TARGET 30 Nov (his 15 Nov 20:35)"
   },
   {
    "n": 41,
@@ -431,7 +431,7 @@
    "in_code": "PARTLY (D1, D2b installed; D2b-5 written)",
    "status": "PAUSED",
    "proof": "PAUSED by him, resumes after Q",
-   "target": "after Q, his word"
+   "target": "after 30 Nov unless his word"
   }
  ]
 }
