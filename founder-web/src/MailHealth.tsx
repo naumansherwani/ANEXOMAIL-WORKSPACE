@@ -15,13 +15,13 @@ export function MailHealth() {
   const verify = useCallback(async () => { if (!box) return; setBusy(true); setChain(null); setKern(null); try { const pr = await api.proof(box.id); setChain(pr); setKern(await api.verifyLedgerInKernel(pr?.head_seq ?? null, (pr as any)?.head_hash ?? null)); } catch { setChain(null); } setBusy(false); }, [box]);
   const p = pill(h3, bound, box), lc = ledgerChip(chain, busy, head, kern);
   return (
-    <div className="mh">
-      <div className="mh-speed"><span className="sm-k">Mail speed</span>{speed ? <><p className="mh-v"><b>{speed.value}</b> {speed.unit}</p><p className="dim small">Arrival to sealed and stored, {speed.note}.</p></> : <><p className="mh-v"><b>-</b></p><p className="dim small">No real mail measured yet. It appears after the first mail arrives.</p></>}</div>
-      <div className="mh-pills" role="status" aria-label="Mail health">
+    <div className="sysmh">
+      <div className="sysmh-speed"><span className="sm-k">Mail speed</span>{speed ? <><p className="sysmh-v"><b>{speed.value}</b> {speed.unit}</p><p className="dim small">Arrival to sealed and stored, {speed.note}.</p></> : <><p className="sysmh-v"><b>-</b></p><p className="dim small">No real mail measured yet. It appears after the first mail arrives.</p></>}</div>
+      <div className="sysmh-pills" role="status" aria-label="Mail health">
         {([p.quic, p.dbsc, p.seal] as { ok: boolean; text: string }[]).map((x) => <span key={x.text} className={`mp-seg ${x.ok ? "ok" : "no"}`}><i aria-hidden="true" />{x.text}</span>)}
         {box && <button type="button" className={`mx-chip lg ${lc.tone}`} onClick={() => void verify()} disabled={busy} title={lc.title} aria-label={lc.title}><i aria-hidden="true" />{lc.text}</button>}
       </div>
-      {lanes && <ul className="mh-lanes" aria-label="Mail lanes, last 24 hours">{lanes.map((l) => <li key={l.lane}><i className={`ml-dot ${l.tone}`} aria-hidden="true" /><b>{l.count}</b><span>{l.label}</span>{l.last_ms ? <small>{ago(l.last_ms)}</small> : null}</li>)}</ul>}
+      {lanes && <ul className="sysmh-lanes" aria-label="Mail lanes, last 24 hours">{lanes.map((l) => <li key={l.lane}><i className={`ml-dot ${l.tone}`} aria-hidden="true" /><b>{l.count}</b><span>{l.label}</span>{l.last_ms ? <small>{ago(l.last_ms)}</small> : null}</li>)}</ul>}
     </div>
   );
 }

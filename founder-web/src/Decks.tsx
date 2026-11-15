@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { fmtDateTime } from "./city";
 import { get, post, type WriteResult } from "./api";
 
@@ -24,7 +25,7 @@ function Sheet({ action, onClose, onDone }: { action: FounderAction; onClose: ()
     catch (x) { setRes({ status: 0, body: { error: (x as Error).message } }); }
     finally { setBusy(false); }
   };
-  return (
+  return createPortal(
     <div className="overlay" role="dialog" aria-modal="true" aria-label={action.title} onKeyDown={(e) => e.key === "Escape" && onClose()}>
       <div className="sheet">
         <div className={`kicker ${action.danger === "high" ? "lv-fail" : "lv-warn"}`}>TAP 1 / 2 · {DANGER[action.danger]}</div>
@@ -38,7 +39,8 @@ function Sheet({ action, onClose, onDone }: { action: FounderAction; onClose: ()
           <button disabled={!ok || busy || !!res} onClick={go}>{busy ? "…" : "Tap 2: confirm"}</button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 

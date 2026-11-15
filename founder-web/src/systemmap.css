@@ -13,9 +13,18 @@
 .sm .dk-dock{margin:0;max-width:none}
 .sm .sm-list li{display:block}.sm .sm-list li .sm-top{display:flex}
 /* Mail health (Systems) */
-.mh{display:flex;flex-direction:column;gap:12px;min-width:0}.mh-v{margin:2px 0;font-size:15px}.mh-v b{font-size:24px}
-.mh-speed{padding:10px 12px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.025)}.mh-speed p{margin:2px 0}
-.mh-pills{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.mh-lanes{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
-.mh-lanes li{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.02);min-height:44px;min-width:0}
-.mh-lanes small{margin-left:auto;opacity:.6;font-size:11px}
+.sysmh{display:flex;flex-direction:column;gap:12px;min-width:0}.sysmh-v{margin:2px 0;font-size:15px}.sysmh-v b{font-size:24px}
+.sysmh-speed{padding:10px 12px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.025)}.sysmh-speed p{margin:2px 0}
+.sysmh-pills{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.sysmh-lanes{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+.sysmh-lanes li{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.02);min-height:44px;min-width:0}
+.sysmh-lanes small{margin-left:auto;opacity:.6;font-size:11px}
+
+/* Systems cards: the page-wide ".pg h2" has a -6px bottom margin that made headings sit on top of the content; scoped reset for our cards only. */
+.card.sm>h2{display:block;margin:0 0 14px;font-size:12px;letter-spacing:.12em;text-align:left}
+.card.sm{min-height:0;overflow:visible}.card.sm:hover{transform:none}
+.sysmh>*{align-self:stretch;justify-self:stretch}
+/* the two-tap sheet is now mounted on document.body (portal); keep it above the tab bar and every card */
+.overlay{z-index:200}
+.overlay .sheet{width:min(520px,100%);max-height:calc(100dvh - 32px)}
+.sysmh-pills{font-size:13px;gap:8px 14px}.sysmh-pills .mx-chip{font-size:12px}

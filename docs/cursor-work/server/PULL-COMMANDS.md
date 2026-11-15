@@ -396,3 +396,5 @@
 - E176 ON HIS SERVER 16 Nov 04:05: his paste sql-run AUTO = E176 selftest 4 ok 0 failed, CHECK_E176 3/3 OK, E65 sweep OK (sha d807ff0c9f629eff); my live Chrome Systems > Mail signing answers (No signing key yet, policy switches off, key buttons); WIRED: YES / REAL: YES / TECH-LAW CHECKED for the Mail signing panel read (not the phase); gate dates moved to fit 30 Nov (his order); AUDIT-Q1d = auto fix; next = his key touches in Systems > Mail signing
 
 - His decision 16 Nov 03:46: TanStack Router-only for ever (static SPA + Rust + WASM kernel), gate A-tanstack-start now ok; dkim-dns-print.sh (read-only, sandbox-tested) written for the Namecheap step; waits his key touches in Systems > Mail signing
+
+- 16 Nov 04:10 SYSTEMS LAYOUT FIX (his live photo): Mail health class clash .mh renamed .sysmh, headings no longer sit on content (.pg h2 -6px margin reset for .card.sm), Tap 1/2 sheet is a portal on document.body (was trapped inside a card and covered by the next card). Sandbox 390/820/1280 measured, WIRED: YES / REAL: YES for the layout; live look after his founder-install. TECH-LAW CHECKED.
