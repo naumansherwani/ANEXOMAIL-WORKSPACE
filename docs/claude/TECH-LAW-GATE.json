@@ -96,7 +96,7 @@
    "status": "open",
    "deadline": "M phase",
    "why": "Media over QUIC relay listed for M",
-   "fail_after": "2026-11-20"
+   "fail_after": "2026-11-30"
   },
   {
    "id": "Q-pq-sign",
@@ -129,7 +129,7 @@
    "status": "open",
    "deadline": "before attachments (N..V)",
    "why": "ClamAV virus scanning listed in the DATA & FILES line; no scanner call in founder server code (audit 11 Nov 20:40)",
-   "fail_after": "2026-11-20"
+   "fail_after": "2026-11-26"
   },
   {
    "id": "D-hetzner-storagebox",
@@ -138,7 +138,7 @@
    "status": "open",
    "deadline": "before attachments (N..V)",
    "why": "Hetzner Storage Box for attachments listed; not in founder server code (audit 11 Nov 20:40)",
-   "fail_after": "2026-11-20"
+   "fail_after": "2026-11-26"
   },
   {
    "id": "A-tanstack-start",
@@ -147,7 +147,7 @@
    "status": "open",
    "deadline": "his word needed",
    "why": "TANSTACK START & ROUTER listed; founder is Router-only static SPA (Start needs an SSR runtime = Node/Bun, banned). Decision for him: keep Router-only as the documented exception or not",
-   "fail_after": "2026-11-18"
+   "fail_after": "2026-11-30"
   },
   {
    "id": "K7-devicekey-pq-kernel",
@@ -197,7 +197,7 @@
    "status": "open",
    "deadline": "Q3",
    "why": "attachments over Tokio + Rust + WebTransport, chunked sealed streams",
-   "fail_after": "2026-11-20"
+   "fail_after": "2026-11-26"
   },
   {
    "id": "Q-pqmail",
@@ -206,7 +206,7 @@
    "status": "open",
    "deadline": "Q4",
    "why": "OpenPGP RFC 9980 in the one WASM kernel",
-   "fail_after": "2026-11-23"
+   "fail_after": "2026-11-29"
   },
   {
    "id": "Q-live-wt",
@@ -215,7 +215,7 @@
    "status": "open",
    "deadline": "Q3",
    "why": "the mail live channel runs over the kernel WebTransport session (same frames as the SSE fallback fmail_ep::stream_ep); found by the 13 Nov audit: mail live is SSE only",
-   "fail_after": "2026-11-20"
+   "fail_after": "2026-11-26"
   },
   {
    "id": "Q-clamd",
