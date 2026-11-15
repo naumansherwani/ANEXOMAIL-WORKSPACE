@@ -51,10 +51,10 @@ def errors():
 def cell(x): return str(x).replace("|", "/").replace("\n", " ")
 def block():
     ph = load(); o = [BEG, "<!-- GENERATED from docs/claude/state/PHASES.json + Q-STATE.jsonl by docs/cursor-work/server/phases.py: never edit by hand. A phase with no advance technology blocks the commit. -->", "",
-        "| # | Phase | What it is | Advance technology | In code | Status | Proof |", "|---|---|---|---|---|---|---|"]
-    for r in ph: o.append("| %s | %s | %s | %s | %s | **%s** | %s |" % (r["n"], cell(r["id"]), cell(r["what"]), cell(r["tech"]), cell(r["in_code"]), r["status"], cell(r["proof"])))
+        "| # | Phase | What it is | Advance technology | In code | Status | Target (his day plan; a date is a TARGET, a phase closes only with proof) | Proof |", "|---|---|---|---|---|---|---|---|"]
+    for r in ph: o.append("| %s | %s | %s | %s | %s | **%s** | %s | %s |" % (r["n"], cell(r["id"]), cell(r["what"]), cell(r["tech"]), cell(r["in_code"]), r["status"], cell(r.get("target", "")), cell(r["proof"])))
     o += ["", "### Q series (live from qstate.py, step by step; a step is done only with his paste + my live look)", "", "| Step | What | Advance technology | Status | Proof |", "|---|---|---|---|---|"]
-    for i, t, tech, s, p in qrows(): o.append("| %s | %s | %s | %s | %s |" % (cell(i), cell(t), cell(tech), {"done": "GREEN/done", "started": "IN PROGRESS", "deferred": "his hands, closed by his word", "todo": "todo"}.get(s, s), cell(p)[:260]))
+    for i, t, tech, s, p in qrows(): o.append("| %s | %s | %s | %s | %s |" % (cell(i), cell(t), cell(tech), {"done": "GREEN", "started": "IN PROGRESS", "deferred": "his hands, closed by his word", "todo": "todo"}.get(s, s), cell(p)[:260]))
     o.append(END); return "\n".join(o)
 def render():
     cur = open(BP, encoding="utf-8").read()

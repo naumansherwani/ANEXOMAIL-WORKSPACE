@@ -8,7 +8,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 2,
@@ -18,7 +19,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 3,
@@ -28,7 +30,8 @@
    "in_code": "YES (C1 dropped, C2 parked)",
    "status": "GREEN",
    "proof": "GREEN (as scoped)",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 4,
@@ -38,7 +41,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 5,
@@ -48,7 +52,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN except L5 (parked) and lockfile (open)",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 6,
@@ -58,7 +63,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 7,
@@ -68,7 +74,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 8,
@@ -78,7 +85,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 9,
@@ -88,7 +96,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 10,
@@ -98,7 +107,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN (T3 two-hardware-key flow never run for real)",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 11,
@@ -108,7 +118,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN on desktop Chrome (real phone optional)",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 12,
@@ -118,7 +129,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN (panic lock not run for real; vault key encrypts nothing yet)",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 13,
@@ -127,7 +139,8 @@
    "tech": "Rust `tls256.rs` (rustls, TLS 1.3, AES-256-GCM only), X25519MLKEM768, SQL E119",
    "in_code": "YES",
    "status": "GREEN",
-   "proof": "RE-VERIFIED 15 Nov 19:55 on his server (receipt 41, founder-k-proof.sh) and in my live Chrome: TCP 443 code 000, udp 443 = anexomail-founder, cert to 5 Jan 2027, Chrome 16 resources h3, WIRED: YES / REAL: YES / TECH-LAW CHECKED [15 Nov 19:41]"
+   "proof": "RE-VERIFIED 15 Nov 19:55 on his server (receipt 41, founder-k-proof.sh) and in my live Chrome: TCP 443 code 000, udp 443 = anexomail-founder, cert to 5 Jan 2027, Chrome 16 resources h3, WIRED: YES / REAL: YES / TECH-LAW CHECKED [15 Nov 19:41]",
+   "target": "done"
   },
   {
    "n": 14,
@@ -137,7 +150,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 15,
@@ -147,7 +161,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN (Safari/Firefox ML-DSA proof closed by his word, not live-proven)",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 16,
@@ -156,7 +171,8 @@
    "tech": "Rust quinn + h3, kernel `rpc@1` over WebTransport",
    "in_code": "YES",
    "status": "GREEN",
-   "proof": "RE-VERIFIED 15 Nov 19:55 receipt 41 + my Chrome (kernel rpc over WebTransport, live feed fresh v1032, audit entry 256 = server founder_audit rows 256), WIRED: YES / REAL: YES / TECH-LAW CHECKED [15 Nov 19:41]"
+   "proof": "RE-VERIFIED 15 Nov 19:55 receipt 41 + my Chrome (kernel rpc over WebTransport, live feed fresh v1032, audit entry 256 = server founder_audit rows 256), WIRED: YES / REAL: YES / TECH-LAW CHECKED [15 Nov 19:41]",
+   "target": "done"
   },
   {
    "n": 17,
@@ -165,7 +181,8 @@
    "tech": "own Rust authoritative DNS with HTTPS record alpn=h3, Rust SNI front",
    "in_code": "YES",
    "status": "GREEN",
-   "proof": "RE-VERIFIED 15 Nov 19:55 receipt 41: TCP 443 code 000 (no HTTP), udp 443 = anexomail-founder, founder-dns active; Chrome: assets over h3, a forced font reload came over h3, WIRED: YES / REAL: YES / TECH-LAW CHECKED [15 Nov 19:41]"
+   "proof": "RE-VERIFIED 15 Nov 19:55 receipt 41: TCP 443 code 000 (no HTTP), udp 443 = anexomail-founder, founder-dns active; Chrome: assets over h3, a forced font reload came over h3, WIRED: YES / REAL: YES / TECH-LAW CHECKED [15 Nov 19:41]",
+   "target": "done"
   },
   {
    "n": 18,
@@ -175,7 +192,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 19,
@@ -185,7 +203,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 20,
@@ -195,7 +214,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 21,
@@ -205,7 +225,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN by HIS ORDER 14 Nov 06:33 (installed on his server, receipt 16, live bundle = repo; its own effect cannot be measured from outside, written honestly)",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 22,
@@ -215,7 +236,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN by his order",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 23,
@@ -225,7 +247,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 24,
@@ -235,7 +258,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "GREEN",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 25,
@@ -244,7 +268,8 @@
    "tech": "Rust quinn + h3-webtransport on the one UDP 443 endpoint; shell installer with rollback",
    "in_code": "YES",
    "status": "GREEN",
-   "proof": "RE-VERIFIED 15 Nov 19:55 receipt 41: udp 4443 nobody, FOUNDER_WT_ lines 0; Chrome CSP connect-src self, WebTransport present, WIRED: YES / REAL: YES / TECH-LAW CHECKED [15 Nov 19:41]"
+   "proof": "RE-VERIFIED 15 Nov 19:55 receipt 41: udp 4443 nobody, FOUNDER_WT_ lines 0; Chrome CSP connect-src self, WebTransport present, WIRED: YES / REAL: YES / TECH-LAW CHECKED [15 Nov 19:41]",
+   "target": "done"
   },
   {
    "n": 26,
@@ -254,7 +279,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "**GREEN 15 Nov 19:00 by HIS ORDER, WIRED: YES / REAL: YES / TECH-LAW CHECKED, the audit is CLOSED as a measurement.** Findings: the ping is 185 ms; the handler is 0.5-3 s (receipt 33); the database health URL answers in 0.04 s (receipt 34) but ONE database read costs ~0.27 s from his server (receipt 38, five in a row 263-292 ms); 25 at once cost 0.33-0.83 s with fresh connections; the dashboard load shows 0.6 s growing to 2.5 s (receipt 37) because one page load sends ~25 kernel calls and each makes several database calls, so 100+ database requests land together. The FIX (fewer database calls per page load: cache, one combined call) is a separate later phase, not part of this audit",
-   "legacy": true
+   "legacy": true,
+   "target": "done"
   },
   {
    "n": 27,
@@ -264,7 +290,8 @@
    "in_code": "YES",
    "status": "GREEN",
    "proof": "**GREEN 15 Nov 19:12, WIRED: YES / REAL: YES / TECH-LAW CHECKED.** L2 WebGPU, LA-1..LA-6 GREEN with live proof (LA-4 my Chrome 15 Nov 19:05, bundle index-CVaJk1v6 = repo). LA-7b GREEN BY HIS ORDER: rule proven by tests, live dim picture not observable on real data (all event lanes count 0, receipt 39)",
-   "legacy": true
+   "legacy": true,
+   "target": "12-13 Nov (closed 15 Nov, 2 days late)"
   },
   {
    "n": 28,
@@ -273,7 +300,8 @@
    "tech": "Rust + SQL + kernel, ML-KEM / ML-DSA, resumable chunks over WebTransport, ClamAV, Hetzner Storage Box",
    "in_code": "PARTLY (intake, Mail page, ledger chip, Bridge card live; E172 SQL written, not on his server)",
    "status": "IN PROGRESS",
-   "proof": "NOW (his order 15 Nov 19:19): Q series starts at QUI-H3; live step list below (qstate.py)"
+   "proof": "NOW (his order 15 Nov 19:19): Q series starts at QUI-H3; live step list below (qstate.py)",
+   "target": "20-21 Nov (day plan); started 15 Nov"
   },
   {
    "n": 29,
@@ -282,7 +310,8 @@
    "tech": "TanStack Start, static shell, Rust serves it, no Node/Bun",
    "in_code": "NO",
    "status": "NOT GREEN",
-   "proof": "NOT GREEN (decided, not built). STARTS AFTER THE Q SERIES IS COMPLETE (his word 15 Nov 19:19)"
+   "proof": "NOT GREEN (decided, not built). STARTS AFTER THE Q SERIES IS COMPLETE (his word 15 Nov 19:19)",
+   "target": "gate 18 Nov (after Q by his word)"
   },
   {
    "n": 30,
@@ -291,7 +320,8 @@
    "tech": "Rust relay on QUIC + kernel",
    "in_code": "NO",
    "status": "NOT GREEN",
-   "proof": "NOT GREEN"
+   "proof": "NOT GREEN",
+   "target": "14-15 Nov (day plan), not started"
   },
   {
    "n": 31,
@@ -300,7 +330,8 @@
    "tech": "Rust push + kernel WebTransport, SQL",
    "in_code": "NO",
    "status": "NOT GREEN",
-   "proof": "NOT GREEN"
+   "proof": "NOT GREEN",
+   "target": "16-17 Nov (day plan), not started"
   },
   {
    "n": 32,
@@ -309,7 +340,8 @@
    "tech": "Rust webhook verify + SQL ledger + React",
    "in_code": "NO",
    "status": "NOT GREEN",
-   "proof": "NOT GREEN"
+   "proof": "NOT GREEN",
+   "target": "18 Nov (day plan), not started"
   },
   {
    "n": 33,
@@ -318,7 +350,8 @@
    "tech": "SQL RLS + ledgers, Rust, React",
    "in_code": "NO",
    "status": "NOT GREEN",
-   "proof": "NOT GREEN"
+   "proof": "NOT GREEN",
+   "target": "19 Nov (day plan), not started"
   },
   {
    "n": 34,
@@ -327,61 +360,78 @@
    "tech": "Rust probes, mesh sync over QUIC",
    "in_code": "NO",
    "status": "NOT GREEN",
-   "proof": "NOT GREEN"
+   "proof": "NOT GREEN",
+   "target": "22 Nov (day plan), not started"
   },
   {
    "n": 35,
+   "id": "R3 Admin Mail Desk",
+   "what": "Admin > Mail Desk > Mail: the company mailboxes (support, billing, abuse, glitch, appeals) in their own folder, separate from the founder Mail (his order 3 Nov 12:37)",
+   "tech": "Rust + Tokio + axum on the one HTTP/3 UDP 443 endpoint, kernel rpc@1 over WebTransport, PostgreSQL RLS fadm_mail_* + own hash-chained ledger, ClamAV, Hetzner Storage Box, X25519MLKEM768 + AES-256-GCM, passkey touch, React 19 TS",
+   "in_code": "NO (plan only; Admin Inbox inbox.rs is only its first piece)",
+   "status": "NOT GREEN",
+   "proof": "NOT GREEN. Plan: docs/claude/Q-MASTER-PLAN-15NOV.md section 4. Comes after Q and after the Lovable phases of R",
+   "target": "22 Nov (inside R, day plan), not started"
+  },
+  {
+   "n": 36,
    "id": "S",
    "what": "Control: kill switch, flags, executor, poison pill",
    "tech": "Rust + SQL + passkey two-key gates",
    "in_code": "NO",
    "status": "NOT GREEN",
-   "proof": "NOT GREEN"
+   "proof": "NOT GREEN",
+   "target": "23 Nov (day plan), not started"
   },
   {
-   "n": 36,
+   "n": 37,
    "id": "T",
    "what": "Cutover: remove old Lovable/Bun founder routes",
    "tech": "Rust only (the old Bun founder routes are removed after the Rust == Bun parity proof and his word)",
    "in_code": "NO",
    "status": "NOT GREEN",
-   "proof": "NOT GREEN"
+   "proof": "NOT GREEN",
+   "target": "24 Nov (day plan), not started"
   },
   {
-   "n": 37,
+   "n": 38,
    "id": "U",
    "what": "Docs + Sheets",
    "tech": "WOPI host in Rust",
    "in_code": "NO",
    "status": "NOT GREEN",
-   "proof": "NOT GREEN"
+   "proof": "NOT GREEN",
+   "target": "24 Nov (day plan), not started"
   },
   {
-   "n": 38,
+   "n": 39,
    "id": "V",
    "what": "Founder AI (founder only)",
    "tech": "Rust + React, kernel",
    "in_code": "NO",
    "status": "NOT GREEN",
-   "proof": "NOT GREEN"
+   "proof": "NOT GREEN",
+   "target": "25 Nov (day plan), not started"
   },
   {
-   "n": 39,
+   "n": 40,
    "id": "X",
    "what": "Extra advanced: proof of restore, continuity, served-code seal, supply-chain board",
    "tech": "Rust + SQL + kernel, PQ signatures",
    "in_code": "NO",
    "status": "NOT GREEN",
-   "proof": "NOT GREEN"
+   "proof": "NOT GREEN",
+   "target": "25 Nov (day plan), not started"
   },
   {
-   "n": 40,
+   "n": 41,
    "id": "D-series",
    "what": "D3 UI and D2b Rust (policy change needs a fresh passkey touch)",
    "tech": "Rust + SQL E155-E157 + React",
    "in_code": "PARTLY (D1, D2b installed; D2b-5 written)",
    "status": "PAUSED",
-   "proof": "PAUSED by him, resumes after Q"
+   "proof": "PAUSED by him, resumes after Q",
+   "target": "after Q, his word"
   }
  ]
 }
