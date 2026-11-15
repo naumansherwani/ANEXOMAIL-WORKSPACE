@@ -57,6 +57,12 @@ pub fn parse_rows(q: Option<&str>) -> Result<(i64, i64), &'static str> {
     }
     Ok((after, limit))
 }
+/// QPERF-3: the one query parameter of the speed door, a CLOSED list (1h, 6h, 24h, 7d), default 1h; anything else is refused.
+pub fn parse_window(q: Option<&str>) -> Result<&'static str, &'static str> {
+    let mut w = "1h";
+    for (k, v) in pairs(q) { match (k, v) { ("window", "1h") => w = "1h", ("window", "6h") => w = "6h", ("window", "24h") => w = "24h", ("window", "7d") => w = "7d", ("window", _) => return Err("window must be 1h, 6h, 24h or 7d"), _ => return Err("unknown parameter") } }
+    Ok(w)
+}
 /// 1..=100 uuids from a JSON array.
 pub fn ids_of(v: &Value, key: &str) -> Result<Vec<String>, &'static str> {
     let a = v.get(key).and_then(|x| x.as_array()).ok_or("missing ids")?;
@@ -168,6 +174,14 @@ pub async fn anchor_ep(State(st): State<S>, uri: Uri, h: HeaderMap) -> Response 
         if sb.rpc("fmail_ledger_checkpoint173", json!({"p_mailbox": b})).await.is_some() { v = sb.rpc("fmail_anchor_proof173", args).await; }
     }
     match v { Some(v) if v.is_object() => crate::signed(&st, json!({"connected": true, "anchor": v})), _ => crate::signed(&st, missing()) }
+}
+/// QPERF-3 door: the mail speed numbers (E174 `fmail_perf_door174`) plus this process's own meter counters (sent / lost / dropped / refused), so a loss is never hidden. Founder session only; read-only.
+pub async fn perf_ep(State(st): State<S>, uri: Uri, h: HeaderMap) -> Response {
+    if let Err(e) = crate::authed(&st, &h).await { return e.into_response(); }
+    let w = match parse_window(uri.query()) { Ok(w) => w, Err(e) => return bad(e) };
+    let sb = st.sb.as_ref().unwrap();
+    let meter = { use std::sync::atomic::Ordering::Relaxed; use crate::fmail_perf as p; json!({"sent": p::SENT.load(Relaxed), "lost": p::LOST.load(Relaxed), "dropped": p::DROPPED.load(Relaxed), "refused": p::REFUSED.load(Relaxed)}) };
+    match sb.rpc("fmail_perf_door174", json!({"p_window": w})).await { Some(v) if v.get("stages").is_some() => crate::signed(&st, json!({"connected": true, "perf": v, "meter": meter})), _ => crate::signed(&st, missing()) }
 }
 pub async fn proof_ep(State(st): State<S>, uri: Uri, h: HeaderMap) -> Response {
     let c = match crate::authed(&st, &h).await { Ok(c) => c, Err(e) => return e.into_response() };
@@ -282,6 +296,8 @@ mod tests {
         assert!(matches!(parse_proof(Some(&format!("box={BOX}&id={BOX}"))), Ok((_, Some(_))))); assert!(parse_proof(Some("id=x")).is_err());
         assert_eq!(parse_rows(None).unwrap(), (0, 500)); assert_eq!(parse_rows(Some("after=12&limit=1000")).unwrap(), (12, 1000));
         for bad in ["after=-1", "limit=0", "limit=1001", "after=9000000000001", "after=", "after=1a", "x=1", "limit=99999999999999999"] { assert!(parse_rows(Some(bad)).is_err(), "{bad}"); }
+        assert_eq!(parse_window(None).unwrap(), "1h"); assert_eq!(parse_window(Some("window=7d")).unwrap(), "7d"); assert_eq!(parse_window(Some("window=24h")).unwrap(), "24h");
+        for bad in ["window=2h", "window=", "window=1h&x=1", "x=1", "window=1H", "window=1h'--"] { assert!(parse_window(Some(bad)).is_err(), "{bad}"); }
         assert_eq!(parse_proof(Some(&format!("box={BOX}"))).unwrap().1, None); assert!(parse_proof(Some(&format!("box={BOX}&id=zz"))).is_err());
     }
     #[test]

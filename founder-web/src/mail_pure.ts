@@ -183,3 +183,36 @@ export function quoteReply(who: string, date: string, text: string): string {
   return `\n\nOn ${date}, ${who} wrote:\n${text.split(/\r?\n/).map((l) => `> ${l}`).join("\n")}`;
 }
 export const OUTBOX_STATE: Record<string, string> = { queued: "Waiting for the undo window", scheduled: "Scheduled", sending: "Sending…", sent: "Delivered", failed: "Failed - will retry", cancelled: "Cancelled", undone: "Undone" };
+
+// ---- QPERF-3: the Mail speed card (Bridge, additive). Pure helpers, no network.
+export type PerfPct = { p50: number | null; p90: number | null; p95: number | null; p99: number | null; p999: number | null; n: number; unit: "ms"; source: "raw" | "histogram"; needs: number[] };
+export type PerfSlo = { stage: string; threshold_ms: number; target: number; note: string; state: "ok" | "too_few" | "ticket" | "page"; windows: Record<string, { n: number; bad: number; burn: number | null }> };
+export type PerfDoor = { v: string; window: string; stages: Record<string, PerfPct>; slo: PerfSlo[]; seals: { count: number; head_day: string | null } };
+export type PerfMeter = { sent: number; lost: number; dropped: number; refused: number };
+export const PERF_STAGES = ["accept", "scan", "seal", "commit", "total"] as const;
+export const PERF_STAGE_LABEL: Record<string, string> = { accept: "Receive", scan: "Virus scan", seal: "Seal", commit: "Store", total: "Whole mail" };
+export const PERF_WINDOWS = ["1h", "6h", "24h", "7d"] as const;
+/** A time in ms for people: "—" when the server gave none (too few samples), never 0. */
+export function ms(v: number | null | undefined): string {
+  if (v === null || v === undefined || !Number.isFinite(v) || v < 0) return "—";
+  if (v < 1) return "<1 ms"; if (v < 100) return `${v.toFixed(v < 10 ? 1 : 0).replace(/\.0$/, "")} ms`; if (v < 1000) return `${Math.round(v)} ms`;
+  if (v < 60_000) return `${(v / 1000).toFixed(v < 10_000 ? 2 : 1).replace(/\.?0+$/, "")} s`; return `${Math.round(v / 60_000)} min`;
+}
+/** The state of one SLO as a chip: tone drives the colour, text is plain. "too_few" is honest grey, never green. */
+export function sloChip(s: PerfSlo | undefined): { tone: "ok" | "warn" | "bad" | "off"; text: string } {
+  if (!s) return { tone: "off", text: "no data" };
+  const pct = (s.target * 100).toFixed(s.target >= 0.999 ? 1 : 0).replace(/\.0$/, "");
+  const goal = `${pct}% under ${ms(s.threshold_ms)}`;
+  switch (s.state) { case "ok": return { tone: "ok", text: `Keeping the promise: ${goal}` }; case "ticket": return { tone: "warn", text: `Slowly burning: ${goal}` }; case "page": return { tone: "bad", text: `Promise at risk: ${goal}` }; default: return { tone: "off", text: `Too few mails to judge: ${goal}` }; }
+}
+/** What to tell the founder about the meter itself: a loss is shown, a clean meter says nothing extra. */
+export function meterNote(m: PerfMeter | null | undefined): string | null {
+  if (!m) return null; const bits: string[] = [];
+  if (m.lost > 0) bits.push(`${compact(m.lost)} measurements lost (database)`); if (m.dropped > 0) bits.push(`${compact(m.dropped)} dropped (queue full)`); if (m.refused > 0) bits.push(`${compact(m.refused)} refused as too late`);
+  return bits.length ? `Meter: ${bits.join(", ")}.` : null;
+}
+/** The percentile rows of one stage, in order, each with its honest reason when missing. */
+export function pctRows(p: PerfPct | undefined): { k: string; label: string; value: string; why: string | null }[] {
+  const defs: [keyof PerfPct, string, number][] = [["p50", "p50", 0], ["p90", "p90", 1], ["p95", "p95", 2], ["p99", "p99", 3], ["p999", "p99.9", 4]];
+  return defs.map(([k, label, i]) => { const v = p ? (p[k] as number | null) : null; const need = p?.needs?.[i]; return { k: String(k), label, value: ms(v), why: v === null && p && need ? `needs ${compact(need)} mails (has ${compact(p.n)})` : null }; });
+}

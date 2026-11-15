@@ -1,0 +1,12 @@
+/* QPERF-3 Bridge card. Fluid grid, the same on 390 / 820 / 1200+. */
+.bms{margin:18px 0;padding:16px;border:1px solid var(--mh,rgba(255,255,255,.12));border-radius:16px;background:var(--surf,rgba(255,255,255,.03))}
+.bms header{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.bms h2{margin:0 auto 0 0;font-size:16px;letter-spacing:-.01em;text-align:left}
+.bms-win{display:inline-flex;border:1px solid var(--mh,rgba(255,255,255,.12));border-radius:12px;overflow:hidden}
+.bms-win button{min-width:44px;min-height:44px;padding:0 12px;border:0;background:transparent;color:inherit;font:inherit;cursor:pointer}.bms-win button.on{background:rgba(61,213,152,.16);color:var(--ok,#3dd598)}
+.bms-note,.bms-foot{margin:8px 0 12px;font-size:13px;opacity:.75}.bms-foot{margin:12px 0 0;font-size:12.5px}
+.bms-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px}
+.bms-card{padding:12px;border:1px solid var(--mh,rgba(255,255,255,.12));border-radius:12px;min-width:0}
+.bms-card h3{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:0 0 6px;font-size:14px}.bms-card h3 small{font-weight:400;font-size:12px;opacity:.65}
+.bms-chip{display:flex;gap:7px;align-items:flex-start;font-size:12.5px;line-height:1.35}.bms-chip i{flex:none;width:8px;height:8px;margin-top:5px;border-radius:50%;background:var(--dim,#888)}
+.bms-chip.ok i{background:var(--ok,#3dd598)}.bms-chip.warn i{background:#f2b84b}.bms-chip.bad{color:var(--r,#f2705f)}.bms-chip.bad i{background:var(--r,#f2705f)}
+.bms dl{margin:10px 0 0;display:grid;gap:4px}.bms dl div{display:flex;justify-content:space-between;gap:8px;font-variant-numeric:tabular-nums}.bms dt{opacity:.7}.bms dd{margin:0;font-weight:600}.bms dd.na{opacity:.45;font-weight:400}

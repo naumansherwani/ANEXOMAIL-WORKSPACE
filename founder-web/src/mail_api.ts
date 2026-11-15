@@ -44,6 +44,10 @@ export async function verifyAnchorInKernel(box: string, id: string): Promise<{ s
     return r.ok ? { state: "proven", text: `inside the audit Merkle tree (checkpoint #${r.checkpoint_seq}, ${r.ledger_rows} ledger rows, ${r.hops} hops), checked in your browser`, report: r } : { state: "failed", text: r.problem ?? "the proof failed", report: r };
   } catch { return null; }
 }
+/** QPERF-3: the mail speed numbers (E174) + the meter's own loss counters. Signed answer; null when the door is not answering (the card then hides itself). */
+export async function perf(window: string): Promise<{ perf: import("./mail_pure").PerfDoor; meter: import("./mail_pure").PerfMeter } | null> {
+  try { const d = (await get(`/founder/v1/mail/perf?${q({ window })}`)).data; return d?.connected && d.perf?.stages ? { perf: d.perf, meter: d.meter } : null; } catch { return null; }
+}
 export async function dbscBound(): Promise<boolean | null> {
   try { const s = (await get("/founder/v1/dbsc/status")).data; if (!s?.available) return null; return !!(s.devices ?? []).find((x: any) => x.id === s.this_device)?.bound; } catch { return null; }
 }

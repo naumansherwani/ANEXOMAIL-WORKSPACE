@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { normAddr, parseAddrs, composeProblem, sendTarget, undoLeft, replySubject, quoteReply, compact, glide, merge, pill, proofChip, ledgerChip, rowText, verdicts, keyCmd, matchRow, initials, hue, when, ago, isGatedView, FOLDERS, type Row } from "./mail_pure";
+import { normAddr, parseAddrs, composeProblem, sendTarget, undoLeft, replySubject, quoteReply, compact, glide, merge, pill, proofChip, ledgerChip, ms, sloChip, meterNote, pctRows, rowText, verdicts, keyCmd, matchRow, initials, hue, when, ago, isGatedView, FOLDERS, type Row } from "./mail_pure";
 
 const R = (o: Partial<Row>): Row => ({ id: "a", thread_id: "t", folder: "inbox", direction: "in", received_ms: 1, size: 10, attach: 0, read: false, starred: false, draft: false, thread_count: 1, spf: "none", dkim: "none", dmarc: "none", arc: "none", lookalike: false, scan: "clean", tls: null, domain: null, seal_mode: "vault", gated: false, ...o });
 describe("numbers", () => {
@@ -95,4 +95,23 @@ _t("QUI-H3: chip says 'in your browser' only when the kernel verified", () => {
   _e(_lc(p, false, null, { ok: true, checked: 9, head_seq: 9 }).text).toBe("Ledger verified in your browser · #9");
   _e(_lc(p, false, null, null).text).toBe("Ledger verified · #9");
   _e(_lc(p, false, null, { ok: false, checked: 3, head_seq: 3, problem: "x" }).tone).toBe("bad");
+});
+
+describe("QPERF-3 mail speed helpers", () => {
+  test("ms never shows 0 for a missing number", () => { expect([null, undefined, NaN, -1, 0.4, 4.2, 42, 420, 1500, 12_000, 125_000].map(ms)).toEqual(["—", "—", "—", "—", "<1 ms", "4.2 ms", "42 ms", "420 ms", "1.5 s", "12 s", "2 min"]); });
+  test("sloChip is honest: too_few is grey, page is red", () => {
+    const s = (state: any) => ({ stage: "total", threshold_ms: 5000, target: 0.99, note: "", state, windows: {} });
+    expect(sloChip(s("ok"))).toEqual({ tone: "ok", text: "Keeping the promise: 99% under 5 s" });
+    expect(sloChip(s("too_few")).tone).toBe("off"); expect(sloChip(s("ticket")).tone).toBe("warn"); expect(sloChip(s("page")).tone).toBe("bad"); expect(sloChip(undefined).tone).toBe("off");
+    expect(sloChip({ ...s("ok"), target: 0.999, threshold_ms: 500 }).text).toBe("Keeping the promise: 99.9% under 500 ms");
+  });
+  test("meterNote says nothing when clean and names every loss", () => {
+    expect(meterNote({ sent: 9, lost: 0, dropped: 0, refused: 0 })).toBeNull(); expect(meterNote(null)).toBeNull();
+    expect(meterNote({ sent: 9, lost: 3, dropped: 2, refused: 1 })).toBe("Meter: 3 measurements lost (database), 2 dropped (queue full), 1 refused as too late.");
+  });
+  test("pctRows gives the reason when a percentile is missing", () => {
+    const r = pctRows({ p50: 120, p90: 300, p95: null, p99: null, p999: null, n: 12, unit: "ms", source: "raw", needs: [1, 10, 20, 100, 1000] });
+    expect(r.map((x) => x.value)).toEqual(["120 ms", "300 ms", "—", "—", "—"]); expect(r[0].why).toBeNull(); expect(r[2].why).toBe("needs 20 mails (has 12)"); expect(r[4].why).toBe("needs 1k mails (has 12)");
+    expect(pctRows(undefined).every((x) => x.value === "—")).toBe(true);
+  });
 });

@@ -146,8 +146,8 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-BoaIsayG.css
-founder-web/dist/assets/index-C8UY87r7.js
+founder-web/dist/assets/index-IcR_9v6Z.css
+founder-web/dist/assets/index-_QM2SkrN.js
 founder-web/dist/assets/kernel.worker-CmgLpPuh.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
@@ -185,6 +185,7 @@ founder-web/src/Brand.tsx
 founder-web/src/Bridge.tsx
 founder-web/src/BridgeLanes.tsx
 founder-web/src/BridgeMailLedger.tsx
+founder-web/src/BridgeMailSpeed.tsx
 founder-web/src/Dbsc.tsx
 founder-web/src/DbscCard.tsx
 founder-web/src/Decks.tsx
@@ -222,6 +223,7 @@ founder-web/src/bridgelane_pure.test.ts
 founder-web/src/bridgelane_pure.ts
 founder-web/src/bridgelanes.css
 founder-web/src/bridgemailledger.css
+founder-web/src/bridgemailspeed.css
 founder-web/src/catalog.ts
 founder-web/src/cinema.css
 founder-web/src/city.ts

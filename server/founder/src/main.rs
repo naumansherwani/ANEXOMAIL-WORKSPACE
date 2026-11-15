@@ -923,6 +923,7 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/mail/proof", get(fmail_ep::proof_ep))
         .route("/founder/v1/mail/ledger-rows", get(fmail_ep::ledger_rows_ep))
         .route("/founder/v1/mail/anchor-proof", get(fmail_ep::anchor_ep))
+        .route("/founder/v1/mail/perf", get(fmail_ep::perf_ep))
         .route("/founder/v1/mail/open", axum::routing::post(fmail_ep::open_ep))
         .route("/founder/v1/mail/flag", axum::routing::post(fmail_ep::flag_ep))
         .route("/founder/v1/mail/move", axum::routing::post(fmail_ep::move_ep))
