@@ -3410,3 +3410,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - LAW CHANGE 15 Nov 20:14 (his word): server commands may be given TOGETHER as numbered 1, 2 in one reply, each still one line; replaces one per reply
 
 - SQL command form written at the top (his 15 Nov 20:15): sql-run.sh with no name, 2>&1 | tail -25 (AUTO runs new E files then CHECKs)
+
+- Top rule: founder-install form with 2>&1 | tail -12 added next to sql-run form (his 15 Nov 20:16); gate head window 17000
