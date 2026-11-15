@@ -3458,3 +3458,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - QUI-LIVE declutter 16 Nov 01:35 (his phone screenshots: too congested, two searches): mailbox search moved INTO the list pane under the Inbox head (global Ctrl K top search untouched), header = brand + Live only, phone pills and lanes = one side-scroll line. Sandbox 390/820/1360 no sideways scroll, tsc clean. Needs his founder-install, then my Chrome look and his phone shot.
 
 - Second backup script founder-ui-backup-16nov-b.sh 16 Nov 01:30 (own folder /root/backups/founder-ui-16nov-0130-before-declutter, never overwrites the first restore point); his order: backup first, then install.
+
+- QUI-LIVE search identity + side health 16 Nov 01:55: search box = only the word Search (magnifier, nothing else), dropdown says it runs in the browser and sealed mail is never read; trust pills + lane stats moved into a Mail health card in the left rail (desktop/tablet), one scroll line on phone. Sandbox 390/820/1360 clean, tsc clean, 14 tests. Waits his backup-b + founder-install, my Chrome look, his phone shots. Awam: preserved for Business Premium + MAX.

@@ -133,3 +133,13 @@
 
 .mbx-srow{padding:8px 12px;border-bottom:1px solid var(--mh)}.mbx-srow .mbx-dd{position:static;margin-top:8px;box-shadow:none}
 .mbx-sin input:focus,.mbx-sin input:focus-visible{outline:0!important;box-shadow:none!important;border-radius:0}
+
+/* 16 Nov 01:50: health facts live in the rail on desktop/tablet (his image-3 side layout), one scroll line on phone */
+.mbx-health{display:none}
+@media (min-width:761px){
+  .mbx-strip-top{display:none}
+  .mbx-health{display:flex;flex-direction:column;align-items:stretch;gap:8px;flex-wrap:nowrap;margin-top:12px;padding:12px;border:1px solid var(--mh);border-radius:14px;background:var(--surf);white-space:normal}
+  .mbx-health b[aria-hidden]{display:none}.mbx-health .mbx-lanes{flex-direction:column;align-items:stretch;gap:6px;margin:0;padding:0;list-style:none;overflow:visible}
+  .mbx-health .mbx-lanes button,.mbx-health .mbx-lanes span{width:100%;justify-content:flex-start}
+  .mbx-health .mx-chip{justify-content:flex-start}
+}

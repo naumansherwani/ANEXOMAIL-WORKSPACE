@@ -161,6 +161,13 @@ export function MailBox() {
   const said = describeQuery(query);
   const phoneNav = ["inbox", "sent", "drafts", "quarantine", "vault"];
 
+  const health = (<>
+        <span className={`mp-seg ${p.quic.ok ? "ok" : "no"}`}><i aria-hidden="true" />{p.quic.text}</span><b aria-hidden="true">·</b>
+        <span className={`mp-seg ${p.dbsc.ok ? "ok" : "no"}`}><i aria-hidden="true" />{p.dbsc.text}</span><b aria-hidden="true">·</b>
+        <span className={`mp-seg ${p.seal.ok ? "ok" : "no"}`}><i aria-hidden="true" />{p.seal.text}</span>
+        {box && <button type="button" className={`mx-chip lg ${lc.tone}`} onClick={() => void verifyChain()} disabled={chainBusy} title={lc.title} aria-label={lc.title}><i aria-hidden="true" />{lc.text}</button>}
+        {lanes && <ul className="mbx-lanes" aria-label="Mail lanes, last 24 hours">{lanes.map((l) => { const v = LANE_TO_VIEW[l.lane]; const body = <><i className={`ml-dot ${l.tone}`} aria-hidden="true" /><b><Num n={l.count} off={reduce} /></b>{l.label}{l.last_ms ? <small>{ago(l.last_ms)}</small> : null}</>; return <li key={l.lane}>{v ? <button type="button" onClick={() => setView(v)} title={`Open ${folderLabel(v)}`}>{body}</button> : <span>{body}</span>}</li>; })}</ul>}
+  </>);
   return (
     <section className={`mbx ${sel ? "has-sel" : ""}`} aria-label="Mail">
       <div key={flash} className={`mbx-edge ${flash ? "on" : ""}`} aria-hidden="true" />
@@ -171,13 +178,7 @@ export function MailBox() {
         </div>
       </header>
 
-      <div className="mbx-strip" role="status" aria-label={`${p.quic.text}, ${p.dbsc.text}, ${p.seal.text}`}>
-        <span className={`mp-seg ${p.quic.ok ? "ok" : "no"}`}><i aria-hidden="true" />{p.quic.text}</span><b aria-hidden="true">·</b>
-        <span className={`mp-seg ${p.dbsc.ok ? "ok" : "no"}`}><i aria-hidden="true" />{p.dbsc.text}</span><b aria-hidden="true">·</b>
-        <span className={`mp-seg ${p.seal.ok ? "ok" : "no"}`}><i aria-hidden="true" />{p.seal.text}</span>
-        {box && <button type="button" className={`mx-chip lg ${lc.tone}`} onClick={() => void verifyChain()} disabled={chainBusy} title={lc.title} aria-label={lc.title}><i aria-hidden="true" />{lc.text}</button>}
-        {lanes && <ul className="mbx-lanes" aria-label="Mail lanes, last 24 hours">{lanes.map((l) => { const v = LANE_TO_VIEW[l.lane]; const body = <><i className={`ml-dot ${l.tone}`} aria-hidden="true" /><b><Num n={l.count} off={reduce} /></b>{l.label}{l.last_ms ? <small>{ago(l.last_ms)}</small> : null}</>; return <li key={l.lane}>{v ? <button type="button" onClick={() => setView(v)} title={`Open ${folderLabel(v)}`}>{body}</button> : <span>{body}</span>}</li>; })}</ul>}
-      </div>
+      <div className="mbx-strip mbx-strip-top" role="status" aria-label={`${p.quic.text}, ${p.dbsc.text}, ${p.seal.text}`}>{health}</div>
       {conn === false && <p className="mx-warn" role="alert">The mail doors did not answer. {err || "Run the E167, E168 and E169 SQL steps (sql-run.sh), then install the Rust service."}</p>}
       {conn && boxes && boxes.length === 0 && <p className="mx-warn">No mailbox exists for this account yet (E169 seeds the founder mailbox).</p>}
 
@@ -194,6 +195,7 @@ export function MailBox() {
             <p className="mbx-cap"><Ic k="gauge" s={14} /> Mail speed</p>
             {speed ? <><p className="mbx-sv"><b>{speed.value}</b> {speed.unit}</p><p className="mbx-sn">Arrival to sealed and stored, {speed.note}.</p></> : <><p className="mbx-sv"><b>-</b></p><p className="mbx-sn">No real mail measured yet. It appears after the first mail arrives.</p></>}
           </div>
+          <div className="mbx-strip mbx-health" role="status" aria-label="Mail health"><p className="mbx-cap">Mail health</p>{health}</div>
         </nav>
 
         <div className="mbx-list" aria-label={`${folderLabel(view)} messages`}>
@@ -211,8 +213,8 @@ export function MailBox() {
           </div>
           <div className="mbx-srow">
           <div className={`mbx-sbox mbx-glow ${qFocus ? "on" : "idle"} ${qText ? "has" : ""}`}>
-            <label className="mbx-sin"><span className="sr">Search mail</span><Ic k="spark" s={18} /><input ref={searchRef} value={qText} onChange={(e) => setQText(e.target.value)} onFocus={() => setQFocus(true)} onBlur={() => window.setTimeout(() => setQFocus(false), 140)} placeholder="Search mail: unread from bilal with a file" autoComplete="off" spellCheck={false} />{qText ? <button type="button" className="mbx-x" onClick={() => setQText("")} aria-label="Clear search"><Ic k="close" s={16} /></button> : <kbd>/</kbd>}</label>
-            {qFocus && (said || sugg.length > 0) && <div className="mbx-dd" role="listbox">{said && <p>{said}</p>}{sugg.length > 0 && <div>{sugg.map((s) => <button key={s} type="button" onMouseDown={(e) => { e.preventDefault(); setQText((t) => (t.match(/\S+$/) ? t.replace(/\S+$/, s) : t + s) + " "); }}>{s}</button>)}</div>}</div>}
+            <label className="mbx-sin"><span className="sr">Search mail</span><Ic k="search" s={18} /><input ref={searchRef} value={qText} onChange={(e) => setQText(e.target.value)} onFocus={() => setQFocus(true)} onBlur={() => window.setTimeout(() => setQFocus(false), 140)} placeholder="Search" autoComplete="off" spellCheck={false} />{qText ? <button type="button" className="mbx-x" onClick={() => setQText("")} aria-label="Clear search"><Ic k="close" s={16} /></button> : null}</label>
+            {qFocus && <div className="mbx-dd" role="listbox">{said ? <p>{said}</p> : <p>Searched inside your browser. Sealed mail is never read.</p>}{sugg.length > 0 && <div>{sugg.map((s) => <button key={s} type="button" onMouseDown={(e) => { e.preventDefault(); setQText((t) => (t.match(/\S+$/) ? t.replace(/\S+$/, s) : t + s) + " "); }}>{s}</button>)}</div>}</div>}
           </div>
           </div>
           {isGatedView(view) && <p className="mx-note"><Ic k="lock" s={14} /> {view === "vault" ? "Vault threads" : "Quarantined mail"} stay sealed in the list. Each one needs a key touch to open.</p>}

@@ -26,3 +26,5 @@ Header of the mailbox = the ORIGINAL ANEXOMAIL logo (LogoMark from Brand.tsx, ne
 SLO decision (his word "jo founder ke liye best hai woh kero"): my proposed QPERF SLO targets stand.
 
 16 Nov 01:35 (his phone screenshots, "bohat congested"): ONE search only. The global top search (Ctrl K) stays intact; the mailbox search lives INSIDE the list pane under the Inbox head (Outlook style), never in the header. Header = brand block + Live only. On phone the trust pills and lane stats are ONE side-scrolling line.
+
+16 Nov 01:55 (his word): the search box prints NOTHING but the word Search (magnifier, no hint text, no key badge; "/" still focuses it). Its dropdown (only while focused) = operator chips + "Searched inside your browser. Sealed mail is never read." Search identity = runs in the browser over the loaded mail, never sends the query out, sealed mail never matched. Trust pills + lane stats = "Mail health" card in the left rail on desktop/tablet (the side layout of the awam image 3), one scroll line on phone. This UI is preserved for Business Premium and Business MAX; the current awam UI (image 3) stays as it is until then.
