@@ -166,10 +166,6 @@ export function MailBox() {
       <div key={flash} className={`mbx-edge ${flash ? "on" : ""}`} aria-hidden="true" />
       <header className="mbx-top">
         <div className="mbx-brand"><LogoMark size={36} title="ANEXOMAIL" /><div><b>ANEXOMAIL</b>{boxes && boxes.length > 1 ? <select className="mh-box" value={boxId} onChange={(e) => setBoxId(e.target.value)} aria-label="Mailbox">{boxes.map((b) => <option key={b.id} value={b.id}>{b.address}</option>)}</select> : <small>{box?.address ?? (conn === false ? "mail not set up" : "…")}</small>}</div></div>
-        <div className={`mbx-sbox mbx-glow ${qFocus ? "on" : "idle"} ${qText ? "has" : ""}`}>
-          <label className="mbx-sin"><span className="sr">Ask your mail</span><Ic k="spark" s={18} /><input ref={searchRef} value={qText} onChange={(e) => setQText(e.target.value)} onFocus={() => setQFocus(true)} onBlur={() => window.setTimeout(() => setQFocus(false), 140)} placeholder="Ask your mail: unread from bilal with a file" autoComplete="off" spellCheck={false} />{qText ? <button type="button" className="mbx-x" onClick={() => setQText("")} aria-label="Clear search"><Ic k="close" s={16} /></button> : <kbd>/</kbd>}</label>
-          {qFocus && (said || sugg.length > 0) && <div className="mbx-dd" role="listbox">{said && <p>{said}</p>}{sugg.length > 0 && <div>{sugg.map((s) => <button key={s} type="button" onMouseDown={(e) => { e.preventDefault(); setQText((t) => (t.match(/\S+$/) ? t.replace(/\S+$/, s) : t + s) + " "); }}>{s}</button>)}</div>}</div>}
-        </div>
         <div className="mbx-status">
           <span className={`mbx-live ${liveState}`} title="Live channel"><i aria-hidden="true" />{liveState === "live" ? "Live" : liveState === "reconnecting" ? "Reconnecting" : "Offline"}</span>
         </div>
@@ -212,6 +208,12 @@ export function MailBox() {
               <button type="button" className="mbx-ib" disabled={!sel} onClick={() => void act("unread")} title="Mark unread (u)" aria-label="Mark unread"><Ic k="unread" /></button>
               <button type="button" className="mbx-ib" disabled={!sel} onClick={() => void act("vault")} title={view === "vault" ? "Take out of Vault" : "Move to Vault"} aria-label="Vault"><Ic k="vault" /></button>
             </div>
+          </div>
+          <div className="mbx-srow">
+          <div className={`mbx-sbox mbx-glow ${qFocus ? "on" : "idle"} ${qText ? "has" : ""}`}>
+            <label className="mbx-sin"><span className="sr">Search mail</span><Ic k="spark" s={18} /><input ref={searchRef} value={qText} onChange={(e) => setQText(e.target.value)} onFocus={() => setQFocus(true)} onBlur={() => window.setTimeout(() => setQFocus(false), 140)} placeholder="Search mail: unread from bilal with a file" autoComplete="off" spellCheck={false} />{qText ? <button type="button" className="mbx-x" onClick={() => setQText("")} aria-label="Clear search"><Ic k="close" s={16} /></button> : <kbd>/</kbd>}</label>
+            {qFocus && (said || sugg.length > 0) && <div className="mbx-dd" role="listbox">{said && <p>{said}</p>}{sugg.length > 0 && <div>{sugg.map((s) => <button key={s} type="button" onMouseDown={(e) => { e.preventDefault(); setQText((t) => (t.match(/\S+$/) ? t.replace(/\S+$/, s) : t + s) + " "); }}>{s}</button>)}</div>}</div>}
+          </div>
           </div>
           {isGatedView(view) && <p className="mx-note"><Ic k="lock" s={14} /> {view === "vault" ? "Vault threads" : "Quarantined mail"} stay sealed in the list. Each one needs a key touch to open.</p>}
           {!isEmptyQuery(query) && <p className="mbx-qnote">{shown.length} of {rows.length} loaded</p>}

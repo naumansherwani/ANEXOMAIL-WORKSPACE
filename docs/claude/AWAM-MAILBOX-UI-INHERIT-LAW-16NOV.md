@@ -24,3 +24,5 @@ Every call goes through the Rust WASM kernel: server answers carry an Ed25519 si
 ## BRAND BLOCK STYLE (founder 16 Nov 01:03/01:04, "mujhe yehi style chaiye hai yaad rakho")
 Header of the mailbox = the ORIGINAL ANEXOMAIL logo (LogoMark from Brand.tsx, never a redrawn A) on the LEFT, then a clear gap (14 px), then "ANEXOMAIL" with the mailbox address underneath. Bug found 16 Nov 01:04: the logo svg was squeezed to width 0 by flex (his phone photo showed no logo); fixed with `.mbx-brand>svg{flex:0 0 36px}`. Check on every build: svg width = 36 in live Chrome. Awam inherits the same block with its own address.
 SLO decision (his word "jo founder ke liye best hai woh kero"): my proposed QPERF SLO targets stand.
+
+16 Nov 01:35 (his phone screenshots, "bohat congested"): ONE search only. The global top search (Ctrl K) stays intact; the mailbox search lives INSIDE the list pane under the Inbox head (Outlook style), never in the header. Header = brand block + Live only. On phone the trust pills and lane stats are ONE side-scrolling line.

@@ -3454,3 +3454,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - QUI-LIVE 16 Nov 01:10: logo was squeezed to width 0 by flex (his photo), fixed flex 0 0 36px + 14px gap, build index-pwsndB6l; brand block style recorded; SLO targets stand; next Q1d-1a
 
 - Q1D plan written at repo top 16 Nov 01:10 (docs/claude/Q1D-PLAN-16NOV.md): Q1d-1a, 1b, 2a, 2b one at a time after QPERF-3; SLO targets stay as proposed (his delegation); brand block = original logo + ANEXOMAIL + email below. Logo-fix commit 7116c29b waits his founder-install (live server still runs 2d15a7ba: logo squeezed to 0 px).
+
+- QUI-LIVE declutter 16 Nov 01:35 (his phone screenshots: too congested, two searches): mailbox search moved INTO the list pane under the Inbox head (global Ctrl K top search untouched), header = brand + Live only, phone pills and lanes = one side-scroll line. Sandbox 390/820/1360 no sideways scroll, tsc clean. Needs his founder-install, then my Chrome look and his phone shot.
