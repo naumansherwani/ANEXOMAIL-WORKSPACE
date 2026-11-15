@@ -165,3 +165,6 @@ Landing page shows a "Launching soon" notice at the very top (`LaunchBanner.tsx`
 
 ## 3. Not in this file
 Plan prices, plan caps, Polar products and the plan copy on `/plans` are **not touched** here. Putting any AX row onto a plan card is a separate order from the founder after the row is GREEN.
+
+## AWAM LINE FROM THE FOUNDER PHASE QUI-LIVE (16 Nov 2026 00:48 PKT, RULE 9)
+Business Premium and Business MAX get the SAME living mailbox UI as the founder (blue, cinematic, ask-your-mail search, arrival flash, send comet, icon set, three layouts), moulded for awam later: own tables, own SQL numbers, customer wording, no founder trust strip, GREEN stamp BLANK until built. Codes preserved with a SHA-256 manifest and a gate: docs/claude/AWAM-MAILBOX-UI-INHERIT-LAW-16NOV.md. Awam files stay frozen until the awam migration phase.

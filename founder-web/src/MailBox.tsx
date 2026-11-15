@@ -5,6 +5,7 @@ import * as Popover from "@radix-ui/react-popover";
 import * as api from "./mail_api";
 import { MailCompose, UndoBar, type Start } from "./MailCompose";
 import { MailAnchorLine } from "./MailAnchorLine";
+import { LogoMark } from "./Brand";
 import { Ic, FOLDER_ICON } from "./mailbox_icons";
 import { arrivalLine, describeQuery, freshRows, isEmptyQuery, matchQuery, parseQuery, speedWords, suggest } from "./mailbox_pure";
 import { FOLDERS, ago, compact, fmtSize, glide, hue, initials, isGatedView, keyCmd, ledgerChip, merge, pill, proofChip, quoteReply, replySubject, rowText, touchAction, verdicts, when, folderLabel, type Box, type Counts, type Lane, type Proof, type Row } from "./mail_pure";
@@ -164,7 +165,7 @@ export function MailBox() {
     <section className={`mbx ${sel ? "has-sel" : ""}`} aria-label="Mail">
       <div key={flash} className={`mbx-edge ${flash ? "on" : ""}`} aria-hidden="true" />
       <header className="mbx-top">
-        <div className="mbx-brand"><span className="mbx-logo" aria-hidden="true">A</span><div><b>ANEXOMAIL</b>{boxes && boxes.length > 1 ? <select className="mh-box" value={boxId} onChange={(e) => setBoxId(e.target.value)} aria-label="Mailbox">{boxes.map((b) => <option key={b.id} value={b.id}>{b.address}</option>)}</select> : <small>{box?.address ?? (conn === false ? "mail not set up" : "…")}</small>}</div></div>
+        <div className="mbx-brand"><LogoMark size={36} title="ANEXOMAIL" /><div><b>ANEXOMAIL</b>{boxes && boxes.length > 1 ? <select className="mh-box" value={boxId} onChange={(e) => setBoxId(e.target.value)} aria-label="Mailbox">{boxes.map((b) => <option key={b.id} value={b.id}>{b.address}</option>)}</select> : <small>{box?.address ?? (conn === false ? "mail not set up" : "…")}</small>}</div></div>
         <div className={`mbx-sbox mbx-glow ${qFocus ? "on" : "idle"} ${qText ? "has" : ""}`}>
           <label className="mbx-sin"><span className="sr">Ask your mail</span><Ic k="spark" s={18} /><input ref={searchRef} value={qText} onChange={(e) => setQText(e.target.value)} onFocus={() => setQFocus(true)} onBlur={() => window.setTimeout(() => setQFocus(false), 140)} placeholder="Ask your mail: unread from bilal with a file" autoComplete="off" spellCheck={false} />{qText ? <button type="button" className="mbx-x" onClick={() => setQText("")} aria-label="Clear search"><Ic k="close" s={16} /></button> : <kbd>/</kbd>}</label>
           {qFocus && (said || sugg.length > 0) && <div className="mbx-dd" role="listbox">{said && <p>{said}</p>}{sugg.length > 0 && <div>{sugg.map((s) => <button key={s} type="button" onMouseDown={(e) => { e.preventDefault(); setQText((t) => (t.match(/\S+$/) ? t.replace(/\S+$/, s) : t + s) + " "); }}>{s}</button>)}</div>}</div>}
@@ -241,7 +242,7 @@ export function MailBox() {
         </div>
 
         <article className="mbx-read" aria-live="polite">
-          {!cur && <div className="mbx-empty"><span className="mbx-logo lg" aria-hidden="true">A</span><h2>Select a message</h2><p>Every message is sealed before it is stored. The server opens it only for you, only after the checks.</p></div>}
+          {!cur && <div className="mbx-empty"><LogoMark size={56} /><h2>Select a message</h2><p>Every message is sealed before it is stored. The server opens it only for you, only after the checks.</p></div>}
           {cur && (
             <div className="mbx-in">
               <div className="mbx-rbar">

@@ -253,6 +253,12 @@ try:
     for _e in _sfm.check(staged): fail("SERVER FIRST", _e)
 except Exception as _x:
     fail("SERVER FIRST", "serverfirst.py cannot run: " + str(_x)[:120])
+# AWAM INHERIT (founder 16 Nov 2026 00:48): the mailbox UI codes are preserved for Business Premium + Business MAX; a change needs the manifest updated in the same commit.
+try:
+    _ai = _iu.spec_from_file_location("awam_inherit", "docs/cursor-work/server/awam_inherit.py"); _aim = _iu.module_from_spec(_ai); _ai.loader.exec_module(_aim)
+    for _e in _aim.check(staged): fail("AWAM INHERIT", _e)
+except Exception as _x:
+    fail("AWAM INHERIT", "awam_inherit.py cannot run: " + str(_x)[:120])
 # VENDOR BAN (founder 13 Nov 2026 21:54): the banned CDN/DNS-proxy vendor may not appear in ANY added line except docs/claude/FOUNDER-VENDOR-BAN-13NOV.md.
 try:
     import subprocess as _sp

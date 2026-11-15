@@ -48,6 +48,7 @@ NOW: QPERF - mail latency percentiles p50/p90/p95/p99/p99.9 + SLO burn (his 13 N
 - [x] QPERF-1: sub-phase: SQL E174 + CHECK_E174 (the speed ledger)  (PostgreSQL 16 day partitions + BRIN, append-only, daily SHA-256 seal chain, HDR-style log-linear histogram (<1% error), exact percentile_disc, Google SRE 3-tier multi-window burn rate, security-definer doors, forced RLS)  PROOF: his sql-run 15 Nov 23:05: E174 ran (sha 70a385cb), CHECK_E65 6/6 OK, CHECK_E174 6/6 OK (4 partitions, selftest 12/0); founder-install OK (SPA 200, healthz 200)
 - [>] QPERF-2: sub-phase: Rust timing points + batch writer (fmail_perf.rs)  (Rust Tokio bounded mpsc, batch every 2 s, mail path never waits, overflow counted)
 - [ ] QPERF-3: sub-phase: Rust door /founder/v1/mail/perf + additive Bridge card 'Mail speed'  (Rust Tokio/Axum, kernel WebTransport RPC (HTTP/3), React 19 TS (new file + one-line mount), 390/820/1200+)
+- [>] QUI-LIVE: sub-phase: the living mailbox UI (his haan 16 Nov 00:22: blue not pink, exactly the demo look) + awam inherit law (Business Premium + MAX, SHA-256 manifest gate)  (React 19 TS + Framer Motion, @property conic ring, View Transitions API, Web Animations API, kernel signed doors (Ed25519 verify, HMAC-SHA256+HKDF, SHA-256 chains), new files + one-line mount, 390/820/1200+)
 - [ ] Q1d-1a: sub-phase: DKIM key made in Compose (passkey touch) + the DNS TXT text for his Namecheap hands  (Ed25519 + RSA DKIM (mail-auth 0.14.1), passkey touch (mail.key), E170 key registry)
 - [ ] Q1d-1b: sub-phase: DKIM signature verified by an outside receiver (his Gmail 'Show original' paste)  (DKIM RFC 6376 / Ed25519 RFC 8463, DNS TXT live)
 - [ ] Q1d-2a: sub-phase: outgoing TLS to a real server proven post-quantum, send OFF still (read-only probe)  (Tokio SMTP STARTTLS TLS 1.3 X25519MLKEM768, rustls)
@@ -60,7 +61,7 @@ NOW: QPERF - mail latency percentiles p50/p90/p95/p99/p99.9 + SLO burn (his 13 N
 - [ ] Q4: kernel pqmail OpenPGP RFC 9980  (Rust WASM kernel ML-KEM-768 + X25519, ML-DSA-65 + Ed25519)
 - [ ] U5: Who-can-read-this sheet, Ctrl K mail actions, light theme (approved)  (Radix Dialog, command palette, React 19 TS)
 - [ ] Q1e: calendar E174-E175  (Rust + SQL RLS + React TS, same sealing)
-chain head: 6258489ed56a6e8d (39 events)
+chain head: b04a5675eab32b3e (40 events)
 <!--/QSTATE-->
 
 ## SERVER-FIRST LAW (his 13 Nov 21:08, ONE YEAR, AUTOMATIC, STRICT) + H3 ONLY
