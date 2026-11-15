@@ -5,6 +5,7 @@ import { LogoMark } from "./Brand";
 import * as api from "./mail_api";
 import { MailCompose, UndoBar, type Start } from "./MailCompose";
 import { quoteReply, replySubject } from "./mail_pure";
+import { MailAnchorLine } from "./MailAnchorLine";
 import { FOLDERS, ago, compact, fmtSize, glide, isGatedView, keyCmd, merge, pill, proofChip, ledgerChip, hue, initials, matchRow, rowText, touchAction, verdicts, when, folderLabel, type Box, type Counts, type Lane, type Proof, type Row } from "./mail_pure";
 import "./mail.css";
 
@@ -71,13 +72,13 @@ function Rail({ view, set, counts, pinned, setPinned }: { view: string; set: (v:
   );
 }
 
-function ProofChip({ p, busy }: { p: Proof | null; busy: boolean }) {
+function ProofChip({ p, busy, box, id }: { p: Proof | null; busy: boolean; box?: string; id?: string }) {
   const c = proofChip(p);
   return (
     <Popover.Root>
       <Popover.Trigger asChild><button type="button" className={`mx-proof ${busy ? "busy" : c.state}`}><i aria-hidden="true" />{busy ? "Checking the ledger…" : c.text}</button></Popover.Trigger>
       <Popover.Portal><Popover.Content className="mx-pop" side="bottom" align="start" sideOffset={8} collisionPadding={12}>
-        <b>{busy ? "Checking…" : c.text}</b>{!busy && c.detail.map((d, i) => <span key={i}>{d}</span>)}<Popover.Arrow className="mx-arrow" />
+        <b>{busy ? "Checking…" : c.text}</b>{!busy && c.detail.map((d, i) => <span key={i}>{d}</span>)}{!busy && box && id && <MailAnchorLine box={box} id={id} />}<Popover.Arrow className="mx-arrow" />
       </Popover.Content></Popover.Portal>
     </Popover.Root>
   );
@@ -233,7 +234,7 @@ export function MailView() {
                   <div className="mp-from"><span className="mi-av lg" style={{ ["--h" as string]: hue(opened.sum.from) }} aria-hidden="true">{initials(opened.sum.from_name, opened.sum.from)}</span><b>{opened.sum.from_name || opened.sum.from}</b><span className="dim"> &lt;{opened.sum.from}&gt;</span><time>{opened.sum.date ? new Date(opened.sum.date).toLocaleString() : ""}</time></div>
                   <p className="dim small">To {(opened.sum.to ?? []).join(", ") || "—"}{opened.sum.cc?.length ? ` · Cc ${opened.sum.cc.join(", ")}` : ""} · {fmtSize(opened.facts.size)}</p>
                   <div className="mp-chips">
-                    <ProofChip p={proof} busy={proofBusy} />
+                    <ProofChip p={proof} busy={proofBusy} box={boxId} id={opened.facts.id} />
                     {verdicts(opened.facts).map((v) => <span key={v.k} className={`mx-chip ${v.tone}`}>{v.text}</span>)}
                     {opened.touched && <span className="mx-chip ok">Opened with your key</span>}
                   </div>

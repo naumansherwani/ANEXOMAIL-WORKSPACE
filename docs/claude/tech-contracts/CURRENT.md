@@ -529,3 +529,14 @@ STEP 5 / STEP 4 DONE (14 Nov 2026 06:05 PKT, sandbox): cargo build --release OK,
 - QUI-H3 done with proof: his CHECK_E172 4/4 OK, my Chrome bundle = repo, his phone screenshot shows chip 'Ledger verified in your browser #9'; 820 not seen (honest). QUI-H4 started
 
 - AWAM pull of shared kernel 0.16.0 done (his paste 15 Nov 20:5x: pull.sh build OK, health 200, server==repo 609 same 0 differ). QUI-H4 is NOT done: code not written, only started; honest correction of the wording
+
+## QUI-H4 (15 Nov 21:3x PKT): one mail proven inside the audit Merkle tree by the browser kernel
+| Listed technology | Where | IN CODE | Proof |
+|---|---|---|---|
+| Rust WASM kernel auditproof@1 (kernel 0.17.0): mail ledger slice re-hash + E102 audit row re-hash (byte-length formula) + RFC 6962 inclusion path | web-wasm/src/auditproof.rs, kernel.worker.ts, kernel.ts | YES (5 tests incl. REAL PostgreSQL door answer q_anchor_vector.json, 14 tamper cases) | live Chrome pending |
+| PostgreSQL RLS closed action list + anchored ledger checkpoint writer + read door (E173, CHECK_E173 6 checks, tamper-tested in sandbox) | docs/cursor-work/sql/E173_*.sql, CHECK_E173.sql | YES in repo | NOT on his server yet |
+| Rust Tokio/Axum door /founder/v1/mail/anchor-proof over the kernel WebTransport RPC (HTTP/3) | server/founder/src/fmail_ep.rs, main.rs | YES (parse tests, 394 server tests pass) | waits install |
+| React 19 TS additive line in the proof popover (no existing UI changed) | MailAnchorLine.tsx, one-line mount in MailView.tsx | YES | live Chrome pending |
+HONEST LIMIT: root_signed=false (the audit-key signature of the root is the existing checkpoint verify, not wired into this line yet).
+
+- QUI-H4 code written, NOT green: E173 + CHECK_E173, kernel 0.17.0 auditproof@1, Rust door anchor-proof, additive UI line; waits his sql-run + founder-install + awam pull + my Chrome look

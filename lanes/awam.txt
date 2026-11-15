@@ -361,6 +361,7 @@ docs/cursor-work/sql/CHECK_E168.sql
 docs/cursor-work/sql/CHECK_E169.sql
 docs/cursor-work/sql/CHECK_E171.sql
 docs/cursor-work/sql/CHECK_E172.sql
+docs/cursor-work/sql/CHECK_E173.sql
 docs/cursor-work/sql/CHECK_E42_E47.sql
 docs/cursor-work/sql/CHECK_E48.sql
 docs/cursor-work/sql/CHECK_E50.sql
@@ -814,6 +815,7 @@ server/rust/polar-payment/polarpayments.Caddyfile
 server/rust/polar-payment/test-event.sh
 server/rust/promx_core.rs
 server/rust/promx_glue.rs
+server/rust/q_anchor_vector.json
 server/rust/q_ledger_vectors.json
 server/rust/rooms_core.rs
 server/rust/rooms_glue.rs

@@ -124,6 +124,7 @@ docs/cursor-work/sql/E169_founder_mail_read_gates.sql
 docs/cursor-work/sql/E170_founder_mail_compose_send.sql
 docs/cursor-work/sql/E171_founder_mail_quarantine_ledger.sql
 docs/cursor-work/sql/E172_founder_mail_ledger_rows.sql
+docs/cursor-work/sql/E173_founder_mail_anchor_proof.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/00-FOUNDER-TECH-RULE.md
@@ -144,9 +145,9 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-BrTqkftU.css
-founder-web/dist/assets/index-Ca1ryHZo.js
-founder-web/dist/assets/kernel.worker-_Eggcec3.js
+founder-web/dist/assets/index-Cvfrw1Ck.css
+founder-web/dist/assets/index-DPjKJB-W.js
+founder-web/dist/assets/kernel.worker-CmgLpPuh.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
 founder-web/dist/assets/three.tsl-Cy7l4cF4.js
@@ -159,7 +160,7 @@ founder-web/dist/icon-180.png
 founder-web/dist/icon-192.png
 founder-web/dist/icon-512.png
 founder-web/dist/index.html
-founder-web/dist/kernel/anexo-kernel-0.16.0.wasm
+founder-web/dist/kernel/anexo-kernel-0.17.0.wasm
 founder-web/dist/manifest.webmanifest
 founder-web/index.html
 founder-web/kernel-sync.sh
@@ -174,7 +175,7 @@ founder-web/public/flare-sw.js
 founder-web/public/icon-180.png
 founder-web/public/icon-192.png
 founder-web/public/icon-512.png
-founder-web/public/kernel/anexo-kernel-0.16.0.wasm
+founder-web/public/kernel/anexo-kernel-0.17.0.wasm
 founder-web/public/manifest.webmanifest
 founder-web/src/00-FOUNDER-TECH-RULE.md
 founder-web/src/AmbientStudio.tsx
@@ -191,6 +192,7 @@ founder-web/src/Finance.tsx
 founder-web/src/Flare.tsx
 founder-web/src/Keys.tsx
 founder-web/src/Live.tsx
+founder-web/src/MailAnchorLine.tsx
 founder-web/src/MailCompose.tsx
 founder-web/src/MailView.tsx
 founder-web/src/OrbAlert.tsx

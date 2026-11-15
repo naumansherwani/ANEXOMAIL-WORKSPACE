@@ -127,3 +127,4 @@ button.ml-c{cursor:pointer}button.ml-c:hover{background:var(--surf2)}
 .mx-chip.lg.ok i{background:var(--ok)}.mx-chip.lg.bad i{background:var(--r)}.mx-chip.lg.wait i{background:var(--dim);animation:mxlg 1s ease-in-out infinite}
 .mx-chip.lg:disabled{cursor:progress}@keyframes mxlg{50%{opacity:.35}}@media (prefers-reduced-motion:reduce){.mx-chip.lg.wait i{animation:none}}
 @media (pointer:coarse){.mx-chip.lg{min-height:44px}}
+.mx-anchor{font-size:12px;opacity:.9;border-top:1px solid var(--mh2);padding-top:6px;margin-top:2px}.mx-anchor[data-state="failed"]{color:var(--bad,#ff6b6b)}.mx-anchor[data-state="proven"]{color:var(--ok)}

@@ -1,6 +1,6 @@
 // Q1c: the Mail page's only network door. GET answers are signature-checked by api.get (WASM kernel); the live stream frames are verified by the kernel too and dropped if they fail.
 import { get, post } from "./api";
-import { rpcAvailable, mailLedgerCheck } from "./kernel";
+import { rpcAvailable, mailLedgerCheck, anchorCheck, type AnchorReport } from "./kernel";
 import { prove } from "./passkey";
 import type { Box, Counts, Lane, Proof, Row, Sum } from "./mail_pure";
 
@@ -32,6 +32,16 @@ export async function verifyLedgerInKernel(claimHeadSeq?: number | null, claimHe
       if (last_page) return { ok: true, checked, head_seq: last };
     }
     return null;
+  } catch { return null; }
+}
+/** QUI-H4: fetch the anchor proof door for ONE mail and let the browser KERNEL prove it is inside the audit Merkle tree. null = not available (never a fake tick). */
+export async function verifyAnchorInKernel(box: string, id: string): Promise<{ state: "proven" | "pending" | "failed"; text: string; report?: AnchorReport } | null> {
+  try {
+    const d = (await get(`/founder/v1/mail/anchor-proof?${q({ box, id })}`)).data; if (!d?.connected) return null;
+    const door = d.anchor; if (!door || door.found === false) return null;
+    if (door.anchored === false) return { state: "pending", text: door.reason ?? "not anchored yet" };
+    const r = await anchorCheck(door); if (!r) return null;
+    return r.ok ? { state: "proven", text: `inside the audit Merkle tree (checkpoint #${r.checkpoint_seq}, ${r.ledger_rows} ledger rows, ${r.hops} hops), checked in your browser`, report: r } : { state: "failed", text: r.problem ?? "the proof failed", report: r };
   } catch { return null; }
 }
 export async function dbscBound(): Promise<boolean | null> {

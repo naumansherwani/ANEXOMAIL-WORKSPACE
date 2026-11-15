@@ -156,6 +156,19 @@ pub async fn ledger_rows_ep(State(st): State<S>, uri: Uri, h: HeaderMap) -> Resp
     let sb = st.sb.as_ref().unwrap();
     match sb.rpc("fmail_ledger_rows172", json!({"p_after": after, "p_limit": limit})).await { Some(v) if v.get("rows").map_or(false, |r| r.is_array()) => crate::signed(&st, json!({"connected": true, "ledger": v})), _ => crate::signed(&st, missing()) }
 }
+/// QUI-H4 door: everything the browser kernel needs to prove ONE mail is inside the audit Merkle tree (E173). If no checkpoint covers the mail yet, ONE idempotent anchored checkpoint is written (ledger_checkpoint, the only write here) and the door is asked again. Founder session + own mailbox only.
+pub async fn anchor_ep(State(st): State<S>, uri: Uri, h: HeaderMap) -> Response {
+    let c = match crate::authed(&st, &h).await { Ok(c) => c, Err(e) => return e.into_response() };
+    let (b, id) = match parse_proof(uri.query()) { Ok((b, Some(i))) => (b, i), Ok(_) => return bad("missing id"), Err(e) => return bad(e) };
+    let sb = st.sb.as_ref().unwrap();
+    if let Err(r) = own(sb, &c.sub, &b).await { return r; }
+    let args = json!({"p_mailbox": b, "p_message": id});
+    let mut v = sb.rpc("fmail_anchor_proof173", args.clone()).await;
+    if v.as_ref().map_or(false, |x| x.get("found").and_then(Value::as_bool) == Some(true) && x.get("reason").and_then(Value::as_str) == Some("no checkpoint covers this mail yet")) {
+        if sb.rpc("fmail_ledger_checkpoint173", json!({"p_mailbox": b})).await.is_some() { v = sb.rpc("fmail_anchor_proof173", args).await; }
+    }
+    match v { Some(v) if v.is_object() => crate::signed(&st, json!({"connected": true, "anchor": v})), _ => crate::signed(&st, missing()) }
+}
 pub async fn proof_ep(State(st): State<S>, uri: Uri, h: HeaderMap) -> Response {
     let c = match crate::authed(&st, &h).await { Ok(c) => c, Err(e) => return e.into_response() };
     let (b, id) = match parse_proof(uri.query()) { Ok(x) => x, Err(e) => return bad(e) };
@@ -266,6 +279,7 @@ mod tests {
         let q = parse_list(Some(&format!("box={BOX}&view=vault&limit=9999"))).unwrap(); assert_eq!((q.view.as_str(), q.limit, q.after.is_none()), ("vault", 100, true));
         let q = parse_list(Some(&format!("box={BOX}&ts=2026-11-13T09:41:00.123456Z&id={U1}"))).unwrap(); assert!(q.after.is_some());
         for bad in [format!("box={BOX}&view=drop"), format!("box={BOX}&ts=2026-11-13T09:41:00.123456Z"), format!("box={BOX}&id={U1}"), format!("box={BOX}&ts=x'--&id={U1}"), format!("box={BOX}&evil=1"), format!("view=inbox")] { assert!(parse_list(Some(&bad)).is_err(), "{bad}"); }
+        assert!(matches!(parse_proof(Some(&format!("box={BOX}&id={BOX}"))), Ok((_, Some(_))))); assert!(parse_proof(Some("id=x")).is_err());
         assert_eq!(parse_rows(None).unwrap(), (0, 500)); assert_eq!(parse_rows(Some("after=12&limit=1000")).unwrap(), (12, 1000));
         for bad in ["after=-1", "limit=0", "limit=1001", "after=9000000000001", "after=", "after=1a", "x=1", "limit=99999999999999999"] { assert!(parse_rows(Some(bad)).is_err(), "{bad}"); }
         assert_eq!(parse_proof(Some(&format!("box={BOX}"))).unwrap().1, None); assert!(parse_proof(Some(&format!("box={BOX}&id=zz"))).is_err());

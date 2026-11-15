@@ -3299,3 +3299,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - QUI-H3 done with proof: his CHECK_E172 4/4 OK, my Chrome bundle = repo, his phone screenshot shows chip 'Ledger verified in your browser #9'; 820 not seen (honest). QUI-H4 started
 
 - AWAM pull of shared kernel 0.16.0 done (his paste 15 Nov 20:5x: pull.sh build OK, health 200, server==repo 609 same 0 differ). QUI-H4 is NOT done: code not written, only started; honest correction of the wording
+
+- QUI-H4 code written, NOT green: E173 + CHECK_E173, kernel 0.17.0 auditproof@1, Rust door anchor-proof, additive UI line; waits his sql-run + founder-install + awam pull + my Chrome look

@@ -35,7 +35,7 @@ public/favicon.svg
 public/icon-192.png
 public/icon-512.png
 public/kernel/READ-FIRST-FOUNDER-LAW.md
-public/kernel/anexo-kernel-0.16.0.wasm
+public/kernel/anexo-kernel-0.17.0.wasm
 public/manifest.webmanifest
 public/robots.txt
 public/sw.js
@@ -69,6 +69,7 @@ web-wasm/READ-FIRST-FOUNDER-LAW.md
 web-wasm/src/00-FOUNDER-TECH-RULE.md
 web-wasm/src/READ-FIRST-FOUNDER-LAW.md
 web-wasm/src/action.rs
+web-wasm/src/auditproof.rs
 web-wasm/src/ed.rs
 web-wasm/src/exec.rs
 web-wasm/src/filectx.rs

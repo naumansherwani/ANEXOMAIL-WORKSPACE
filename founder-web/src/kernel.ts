@@ -134,6 +134,19 @@ export function mailLedgerCheck(input: unknown): Promise<MailLedgerReport | unde
   });
 }
 
+export type AnchorReport = { ok: boolean; mail_seq?: number; checkpoint_seq?: string; audit_seq?: string; ledger_rows?: number; root?: string; upto?: number; hops?: number; root_signed?: boolean; problem?: string };
+/** QUI-H4: prove in the kernel (auditproof@1) that ONE mail's ledger row is inside the founder audit Merkle tree. undefined = the kernel could not run (never shown as a failed check). */
+export function anchorCheck(input: unknown): Promise<AnchorReport | undefined> {
+  return new Promise((resolve) => {
+    const id = ++seq;
+    waiting.set(id, (m) => {
+      if (m.code !== 0 || typeof m.data !== "string") { resolve(undefined); return; }
+      try { const r = JSON.parse(m.data.slice(1)) as AnchorReport; resolve(typeof r?.ok === "boolean" && r.ok === (m.data[0] === "1") ? r : undefined); } catch { resolve(undefined); }
+    });
+    w().postMessage({ id, anchorproof: { input: JSON.stringify(input) } });
+  });
+}
+
 export type LeaseData = { type: "vault-lease@1"; device_id: string; serial: number; issued_ms: number; expires_ms: number; ttl_s: number; nonce: string; key_thumb: string; half: string };
 export type LeaseClocks = { received_wall_ms: number; received_mono_ms: number; now_wall_ms: number; now_mono_ms: number };
 export type LeaseReport = { ok: boolean; state: "live" | "expired" | "refused"; remaining_ms: number; serial?: number; reason?: string };

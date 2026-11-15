@@ -1,4 +1,4 @@
-> ## >>> RESUME HERE: NOW = QUI-H4 design + code (per-message Merkle proof): read founder_audit anchors + merkle_core.rs; awam kernel 0.16.0 pulled (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
+> ## >>> RESUME HERE: NOW = QUI-H4 written, waits his 1 sql-run (AUTO) 2 founder-install, 3 awam pull (kernel 0.17.0), then my Chrome look (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
 > ## >>> SERVER CMDS, HIS EXACT FORMS (15 Nov 20:15/20:16), each = git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/X.sh) : X=sql-run then 2>&1 | tail -25 (no name = AUTO); X=founder-install then 2>&1 | tail -12. They run the newest origin/main commit. <<<
 ## >>> FOUNDER/AWAM SEPARATION (his 14 Nov 05:34): docs/claude/FOUNDER-AWAM-SEPARATION-LAW-14NOV.md, awam problems = awam blueprint only, NEVER re-discuss. <<<
 ## >>> KP3 CODE MAP (all exists, do not rewrite): docs/claude/KP3-CODE-MAP-14NOV.md <<<
