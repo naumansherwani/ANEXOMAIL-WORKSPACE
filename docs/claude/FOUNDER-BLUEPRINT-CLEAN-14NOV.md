@@ -81,6 +81,7 @@ Stack that every phase inherits (founder technology law, 11 Nov 03:21 and 13 Nov
 | Q1d-1b | sub-phase: DKIM signature verified by an outside receiver (his Gmail 'Show original' paste) | DKIM RFC 6376 / Ed25519 RFC 8463, DNS TXT live | todo |  |
 | Q1d-2a | sub-phase: outgoing TLS to a real server proven post-quantum, send OFF still (read-only probe) | Tokio SMTP STARTTLS TLS 1.3 X25519MLKEM768, rustls | todo |  |
 | Q1d-2b | sub-phase: FMAIL_SEND=on with his haan, first real mail, undo window, signed sent log | Rust Tokio SMTP, undo window, hash-chained sent log | todo |  |
+| Q1d-DKIM2 | TRACKED ONLY: DKIM2 / ML-DSA-44 (draft-ietf-dkim-dkim2-spec-09, WG draft, expires 5 May 2027; no receiver verifies it yet, so nothing is built; opens when a receiver or an RFC exists) | IETF draft, FIPS 204 ML-DSA-44 | his hands, closed by his word | DKIM2 / ML-DSA-44 sirf tracked / IETF draft, FIPS 204 / Q1d (OPEN). Draft-09 only, no receiver verifies it; reopen when one does (his 16 Nov 02:12 order to write it in the phase). |
 | Q1d-2 | FMAIL_SEND=on + real outgoing mail | Rust Tokio SMTP, STARTTLS TLS 1.3 X25519MLKEM768, undo window, outgoing PQ TLS proof | todo |  |
 | Q1b4 | SPF / DKIM / DMARC verdicts + trust ring (U3) | Rust mail-auth, Framer Motion ring | todo |  |
 | Q3 | attachments + live over WebTransport + 8-segment ring (U4) | Rust Tokio WebTransport, Hetzner Storage Box, ClamAV, WASM kernel | todo |  |

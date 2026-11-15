@@ -53,6 +53,7 @@ NOW: Q1d-1a - sub-phase: DKIM key made in Compose (passkey touch) + the DNS TXT 
 - [ ] Q1d-1b: sub-phase: DKIM signature verified by an outside receiver (his Gmail 'Show original' paste)  (DKIM RFC 6376 / Ed25519 RFC 8463, DNS TXT live)
 - [ ] Q1d-2a: sub-phase: outgoing TLS to a real server proven post-quantum, send OFF still (read-only probe)  (Tokio SMTP STARTTLS TLS 1.3 X25519MLKEM768, rustls)
 - [ ] Q1d-2b: sub-phase: FMAIL_SEND=on with his haan, first real mail, undo window, signed sent log  (Rust Tokio SMTP, undo window, hash-chained sent log)
+- [~] Q1d-DKIM2: TRACKED ONLY: DKIM2 / ML-DSA-44 (draft-ietf-dkim-dkim2-spec-09, WG draft, expires 5 May 2027; no receiver verifies it yet, so nothing is built; opens when a receiver or an RFC exists)  (IETF draft, FIPS 204 ML-DSA-44)  PROOF: DKIM2 / ML-DSA-44 sirf tracked | IETF draft, FIPS 204 | Q1d (OPEN). Draft-09 only, no receiver verifies it; reopen when one does (his 16 Nov 02:12 order to write it in the phase).
 - [ ] Q1d-2: FMAIL_SEND=on + real outgoing mail  (Rust Tokio SMTP, STARTTLS TLS 1.3 X25519MLKEM768, undo window, outgoing PQ TLS proof)
 - [ ] Q1b4: SPF / DKIM / DMARC verdicts + trust ring (U3)  (Rust mail-auth, Framer Motion ring)
 - [ ] Q3: attachments + live over WebTransport + 8-segment ring (U4)  (Rust Tokio WebTransport, Hetzner Storage Box, ClamAV, WASM kernel)
@@ -61,7 +62,7 @@ NOW: Q1d-1a - sub-phase: DKIM key made in Compose (passkey touch) + the DNS TXT 
 - [ ] Q4: kernel pqmail OpenPGP RFC 9980  (Rust WASM kernel ML-KEM-768 + X25519, ML-DSA-65 + Ed25519)
 - [ ] U5: Who-can-read-this sheet, Ctrl K mail actions, light theme (approved)  (Radix Dialog, command palette, React 19 TS)
 - [ ] Q1e: calendar E174-E175  (Rust + SQL RLS + React TS, same sealing)
-chain head: 016bfb76a64bbef9 (45 events)
+chain head: 6a6007c434effd47 (46 events)
 <!--/QSTATE-->
 
 ## SERVER-FIRST LAW (his 13 Nov 21:08, ONE YEAR, AUTOMATIC, STRICT) + H3 ONLY

@@ -10,8 +10,12 @@ use sha2::{Digest, Sha256};
 
 pub const ALG_ED: &str = "ed25519-sha256";
 pub const ALG_RSA: &str = "rsa-sha256";
-/// The headers that are signed when present (From is mandatory). Nothing is over-signed.
+/// The headers that are signed when present (From is mandatory).
 pub const SIGNED: [&str; 11] = ["from", "to", "cc", "subject", "date", "message-id", "in-reply-to", "references", "mime-version", "content-type", "content-transfer-encoding"];
+
+/// OVER-SIGNING (RFC 6376 section 8.15): these five are listed in h= once MORE than they exist (twice when absent), so a header added after signing cannot pass as the real one.
+/// E175 (fmail_dkim_oversigned175) re-computes this fact from the h= list, so the database never trusts the signer's word.
+pub const OVERSIGN: [&str; 5] = ["from", "to", "subject", "date", "message-id"];
 
 // ---------------------------------------------------------------- canonicalization (relaxed)
 
@@ -103,6 +107,8 @@ pub fn sign(raw: &[u8], s: &Signer, now: u64) -> Result<String, &'static str> {
         // every instance of the header, bottom-up (RFC 6376 section 5.4.2): the last one is signed first
         let inst: Vec<&(String, String)> = fields.iter().filter(|(n, _)| n.eq_ignore_ascii_case(want)).collect();
         for f in inst.iter().rev() { canon.push_str(&header_relaxed(&f.0, &f.1)); canon.push_str("\r\n"); h_names.push(want); }
+        // the extra names sign the NULL string: nothing joins the canonical data, but a real header added later now takes that slot and breaks the signature
+        if OVERSIGN.contains(&want) { for _ in 0..(if inst.is_empty() { 2 } else { 1 }) { h_names.push(want); } }
     }
     let bh = body_hash_b64(body);
     let head = format!("v=1; a={}; c=relaxed/relaxed; d={}; s={}; t={}; x={}; h={}; bh={}; b=", s.alg, s.domain, s.selector, now, now + 7 * 86400, h_names.join(":"), bh);
@@ -189,7 +195,7 @@ mod tests {
     #[test] fn ed25519_sign_verify_and_tamper() {
         let k = gen_ed25519().unwrap();
         let sig = sign(MSG, &Signer { domain: "anexomail.com", selector: "s1", alg: ALG_ED, pkcs8: &k.pkcs8 }, 1_800_000_000).unwrap();
-        assert!(sig.starts_with("DKIM-Signature: v=1;")); assert!(sig.contains("a=ed25519-sha256")); assert!(sig.contains("h=from:to:subject:date:message-id:mime-version:content-type"));
+        assert!(sig.starts_with("DKIM-Signature: v=1;")); assert!(sig.contains("a=ed25519-sha256")); assert!(sig.contains("h=from:from:to:to:subject:subject:date:date:message-id:message-id:mime-version:content-type"));
         let mut signed = sig.clone().into_bytes(); signed.extend_from_slice(MSG);
         assert!(verify(&signed, ALG_ED, &k.public));
         let t = String::from_utf8(signed.clone()).unwrap().replace("Hello  world", "Hello world!");
@@ -198,6 +204,28 @@ mod tests {
         assert!(!verify(t.as_bytes(), ALG_ED, &k.public), "a changed body must break the signature");
         let other = gen_ed25519().unwrap();
         assert!(!verify(&signed, ALG_ED, &other.public), "another key must not verify");
+    }
+    fn h_of(sig: &str) -> Vec<String> { sig.replace("\r\n\t", "").split("h=").nth(1).unwrap().split(';').next().unwrap().split(':').map(|x| x.trim().to_string()).collect() }
+    #[test] fn oversigned_header_added_after_signing_breaks_both_algorithms() {
+        for (k, sel) in [(gen_ed25519().unwrap(), "e1"), (gen_rsa(2048).unwrap(), "r1")] {
+            let sig = sign(MSG, &Signer { domain: "anexomail.com", selector: sel, alg: k.alg, pkcs8: &k.pkcs8 }, 1_800_000_000).unwrap();
+            let h = h_of(&sig);
+            for n in OVERSIGN { assert!(h.iter().filter(|x| *x == n).count() >= 2, "{n} must be listed at least twice (the E175 rule)"); }
+            let mut ok = sig.clone().into_bytes(); ok.extend_from_slice(MSG); assert!(verify(&ok, k.alg, &k.public));
+            for evil in ["Subject: pay this invoice\r\n", "From: ceo@anexomail.com\r\n", "To: attacker@example.net\r\n", "Date: Mon, 01 Jan 2029 00:00:00 +0000\r\n", "Message-ID: <evil@x>\r\n"] {
+                let mut bad = sig.clone().into_bytes(); bad.extend_from_slice(evil.as_bytes()); bad.extend_from_slice(MSG);
+                assert!(!verify(&bad, k.alg, &k.public), "a second {evil:?} added after signing must break the signature");
+            }
+        }
+    }
+    #[test] fn an_absent_to_is_listed_twice_and_a_later_to_breaks_it() {
+        let msg: &[u8] = b"From: a@anexomail.com\r\nSubject: s\r\nDate: Fri, 13 Nov 2026 03:00:00 +0000\r\nMessage-ID: <2@anexomail.com>\r\n\r\nbody\r\n";
+        let k = gen_ed25519().unwrap();
+        let sig = sign(msg, &Signer { domain: "anexomail.com", selector: "e1", alg: ALG_ED, pkcs8: &k.pkcs8 }, 1_800_000_000).unwrap();
+        assert_eq!(h_of(&sig).iter().filter(|x| *x == "to").count(), 2);
+        let mut ok = sig.clone().into_bytes(); ok.extend_from_slice(msg); assert!(verify(&ok, ALG_ED, &k.public));
+        let mut bad = sig.into_bytes(); bad.extend_from_slice(b"To: attacker@example.net\r\n"); bad.extend_from_slice(msg);
+        assert!(!verify(&bad, ALG_ED, &k.public));
     }
     #[test] fn rsa_sign_verify() {
         let k = gen_rsa(2048).unwrap();

@@ -638,3 +638,18 @@ Order: 1 his CHECK_E170 (read-only) -> 2 he opens Compose, makes the key with a 
 4. TRACKED, NOT BUILT: DKIM2 (draft-ietf-dkim-dkim2-spec-09, WG draft, expires 5 May 2027, per-hop chain, ML-DSA-44 "mldsa44"). No receiver verifies it yet, so signing it today proves nothing; it stays an OPEN item until a receiver or an RFC exists.
 
 - Q1d-1a technology decision 16 Nov 02:30 written in CURRENT.md: keep dual Ed25519 + RSA-2048 DKIM (in code), ADD oversigning of From/To/Subject/Date/Message-ID (open gap found in fmail_dkim.rs), then DMARC reject + selector rotation + DNSSEC (his hands); DKIM2 with ML-DSA-44 tracked only (WG draft-09, no receiver).
+
+## Q1d-1a EXECUTION RECORD 16 Nov 02:20 (plan -> code, one sub-step at a time)
+| Step | What | Technology | State |
+|---|---|---|---|
+| a1 | OVERSIGN: From/To/Subject/Date/Message-ID listed once more than they exist (twice when absent); tests: a header added after signing breaks Ed25519 AND RSA | Rust, ring, RFC 6376 s8.15 | CODE + 10/10 cargo tests; goes live with the next founder-install |
+| a2 | E175 SQL (513 lines): policy ratchets, selectors, rotation, DNS chain, signature log, proof parser, health, send gate | PostgreSQL 16 RLS, SHA-256 chains, advisory locks | sandbox PostgreSQL 16: selftest 28 ok, 7/7 CHECK, re-run safe; NOT on his server until his sql-run |
+| a3 | Rust wiring: send gate before claim, sign_record after each signature, dns probe, proof door | Rust Tokio axum, fmail_out.rs, kernel RPC doors over WebTransport | NEXT |
+| a4 | UI: DkimSetup shows key, TXT, DNS state, rotation, proof paste (additive, new file + one-line mount) | React 19 TS | after a3 |
+Where each technology sits: Rust = signer (fmail_dkim.rs). Tokio = sender worker + blocking RSA keygen + SQL doors. WASM kernel = signs and verifies every browser request and answer, later re-hashes the signature log chain in the browser; it NEVER holds a DKIM private key (they stay wrapped on the server). WebTransport = the browser to server doors (Compose, key touch, health); mail itself leaves by SMTP STARTTLS TLS 1.3, not WebTransport. DKIM2 / ML-DSA-44 sirf tracked | IETF draft, FIPS 204 | Q1d (OPEN).
+
+- Q1d-1a execution 16 Nov 02:20: a1 OVERSIGN in fmail_dkim.rs (10/10 cargo tests, header added after signing breaks Ed25519 + RSA); a2 E175 SQL written (513 lines + CHECK_E175, sandbox PostgreSQL 16 selftest 28 ok, 7/7 CHECK, re-run safe); next free SQL = E176; DKIM2 / ML-DSA-44 sirf tracked | IETF draft, FIPS 204 | Q1d (OPEN) written as phase step Q1d-DKIM2. NOT on his server yet: his sql-run first, Rust oversign goes live with the next founder-install after a3 wiring.
+
+- Q1d-1a execution 16 Nov 02:20: a1 OVERSIGN in fmail_dkim.rs (10/10 cargo tests, header added after signing breaks Ed25519 + RSA); a2 E175 SQL written (513 lines + CHECK_E175, sandbox PostgreSQL 16 selftest 28 ok, 7/7 CHECK, re-run safe); next free SQL = E176; DKIM2 / ML-DSA-44 sirf tracked | IETF draft, FIPS 204 ML-DSA-44 | Q1d (OPEN) written as phase step Q1d-DKIM2. NOT on his server yet: his sql-run first, Rust oversign goes live with the next founder-install after a3 wiring.
+
+- Q1d-1a execution 16 Nov 02:25: a1 OVERSIGN in fmail_dkim.rs (10/10 cargo tests, a header added after signing breaks Ed25519 + RSA); a2 E175 SQL (513 lines + CHECK_E175, sandbox PostgreSQL 16: selftest 28 ok, 7/7 CHECK, re-run safe, sql-editor-lint OK); next free SQL = E176; DKIM2 / ML-DSA-44 sirf tracked | IETF draft, FIPS 204 ML-DSA-44 | Q1d (OPEN) written as phase step Q1d-DKIM2. NOT on his server yet: his sql-run first, Rust oversign goes live with the next founder-install after the a3 wiring.
