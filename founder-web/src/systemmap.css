@@ -1,0 +1,21 @@
+/* Systems page: Heartbeat + Brain. New file, scoped to .sm; no existing rule is changed. */
+.sm .sm-hb{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.sm .sm-hb>div{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.025);min-width:0}
+.sm-k{font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.6}.sm-hb b{font-size:16px;overflow-wrap:anywhere}.sm-hb em{font-style:normal;font-size:12px;opacity:.7;overflow-wrap:anywhere}
+.sm-chips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 12px}
+.sm-chip{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:transparent;color:inherit;font:inherit;font-size:13px;cursor:pointer}.sm-chip.on{background:rgba(110,168,255,.18);border-color:rgba(110,168,255,.55)}
+.sm-list{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column;gap:8px}
+.sm-list li{padding:10px 12px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.02);min-width:0}
+.sm-list p{margin:4px 0 0;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+.sm-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.sm-st{font-size:12px;padding:3px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.14)}.sm-st[data-tone=ok]{color:#8fb8f5;border-color:rgba(110,168,255,.5)}.sm-st[data-tone=warn]{color:#d9a441;border-color:rgba(217,164,65,.5)}.sm-st[data-tone=idle]{opacity:.7}
+.sm-tech{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;opacity:.72}
+.sm .dk-dock{margin:0;max-width:none}
+.sm .sm-list li{display:block}.sm .sm-list li .sm-top{display:flex}
+/* Mail health (Systems) */
+.mh{display:flex;flex-direction:column;gap:12px;min-width:0}.mh-v{margin:2px 0;font-size:15px}.mh-v b{font-size:24px}
+.mh-speed{padding:10px 12px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.025)}.mh-speed p{margin:2px 0}
+.mh-pills{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.mh-lanes{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+.mh-lanes li{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.02);min-height:44px;min-width:0}
+.mh-lanes small{margin-left:auto;opacity:.6;font-size:11px}

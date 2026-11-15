@@ -1,0 +1,2 @@
+/* Founder only (imported by App.tsx, never by awam): backend/system cards leave the Mailbox screen and live in Systems > Mail health. The mailbox component itself is untouched. */
+.mbx-health,.mbx-strip-top,.mbx-speed{display:none!important}

@@ -150,8 +150,8 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-BSIOhyaI.css
-founder-web/dist/assets/index-C6QpdR7_.js
+founder-web/dist/assets/index-5UaK8Jzq.js
+founder-web/dist/assets/index-Cj2UpRs-.css
 founder-web/dist/assets/kernel.worker-CmgLpPuh.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
@@ -203,6 +203,7 @@ founder-web/src/Live.tsx
 founder-web/src/MailAnchorLine.tsx
 founder-web/src/MailBox.tsx
 founder-web/src/MailCompose.tsx
+founder-web/src/MailHealth.tsx
 founder-web/src/MailView.tsx
 founder-web/src/OrbAlert.tsx
 founder-web/src/OrbLine.tsx
@@ -216,6 +217,7 @@ founder-web/src/Settings.tsx
 founder-web/src/SettingsS2.tsx
 founder-web/src/SignIn.tsx
 founder-web/src/Surface.tsx
+founder-web/src/SystemMap.tsx
 founder-web/src/Trust.tsx
 founder-web/src/Vault.tsx
 founder-web/src/ambient.ts
@@ -261,6 +263,7 @@ founder-web/src/fonts/Inter-Light.woff2
 founder-web/src/fonts/Inter-Medium.woff2
 founder-web/src/fonts/Inter-Regular.woff2
 founder-web/src/fonts/Inter-SemiBold.woff2
+founder-web/src/founder_mail_quiet.css
 founder-web/src/greeting.ts
 founder-web/src/kernel.host.test.ts
 founder-web/src/kernel.host.ts
@@ -339,6 +342,8 @@ founder-web/src/signin_pure.ts
 founder-web/src/snap_seal.test.ts
 founder-web/src/snap_seal.ts
 founder-web/src/styles.css
+founder-web/src/system_brain.json
+founder-web/src/systemmap.css
 founder-web/src/tailwind.css
 founder-web/src/types.ts
 founder-web/src/ui.css

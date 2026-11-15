@@ -388,3 +388,5 @@
 - Q1d-1a a4 UI written 16 Nov 03:15 (repo, not on his server): DkimPanel + dkim_api + dkim_pure (bun 6/6), additive (1 import + 2 mount lines in MailBox.tsx, existing UI intact), sandbox look 390/820/1280 OK; waits his founder-install then my live Chrome look
 
 - Q1d-1a a4 UI written 16 Nov 03:25 (repo, not on his server): DkimPanel + DkimDock + dkim_api + dkim_pure (bun 289/289, tsc clean), MailBox.tsx NOT edited (awam-preserved), mounted by App.tsx under the mailbox, sandbox look 390/820/1280 OK; waits his founder-install then my live Chrome look
+
+- Systems page 16 Nov 03:40: Mail health + DKIM moved off the mailbox into Systems (founder_mail_quiet.css, MailBox.tsx untouched), Heartbeat + Brain panel (brain.py, system_brain.json, HEARTBEAT.json), avatar colours calmed, rec.sh rebuilds dist; sandbox 390/820/1280 OK; waits his founder-install then my live Chrome look

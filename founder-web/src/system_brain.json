@@ -1,0 +1,431 @@
+{
+ "heartbeat": {
+  "generated": "16 Nov 2026 03:16 +0500",
+  "head": "9ba8686e",
+  "head_subject": "Q1d-1a a4: DKIM panel under the mailbox (founder only)",
+  "now": "Q1d-1a",
+  "phases": {
+   "GREEN": 27,
+   "IN PROGRESS": 1,
+   "NOT GREEN": 12,
+   "PAUSED": 1
+  },
+  "q_done": 20,
+  "q_open": 2,
+  "checks_ok": 23,
+  "checks_open": [
+   "M-moq",
+   "D-clamav",
+   "D-hetzner-storagebox",
+   "A-tanstack-start",
+   "Q-att-wt",
+   "Q-pqmail",
+   "Q-live-wt",
+   "Q-smtp-mtasts",
+   "Q-ledger-kernel"
+  ]
+ },
+ "features": [
+  {
+   "name": "Mail sealed on arrival",
+   "what": "Every inbound mail is encrypted (AES-256-GCM) before it is stored; the server opens it only for you",
+   "layers": [
+    "rust",
+    "sql"
+   ],
+   "status": "live",
+   "where": "fmail_in.rs, fmail_seal.rs, E167-E169",
+   "tech": "Rust + PostgreSQL RLS"
+  },
+  {
+   "name": "Virus scan before the inbox",
+   "what": "ClamAV scans every mail; anything unsafe goes to Quarantine",
+   "layers": [
+    "rust"
+   ],
+   "status": "live",
+   "where": "fmail_in.rs (clamd INSTREAM), E171",
+   "tech": "ClamAV"
+  },
+  {
+   "name": "Ledger verified in your browser",
+   "what": "The mail ledger chain is re-checked by the WASM kernel in your browser, not trusted from the server",
+   "layers": [
+    "kernel",
+    "sql",
+    "rust"
+   ],
+   "status": "live",
+   "where": "kernel.ts, fmail_proof, E169/E170",
+   "tech": "Rust WASM kernel, SHA-256 hash chain, Merkle"
+  },
+  {
+   "name": "Arrival to stored speed",
+   "what": "How long a real mail took from arrival to sealed and stored",
+   "layers": [
+    "sql",
+    "rust",
+    "ui"
+   ],
+   "status": "live",
+   "where": "fmail_perf.rs, E174, BridgeMailSpeed.tsx",
+   "tech": "PostgreSQL, Tokio"
+  },
+  {
+   "name": "Transport to your browser",
+   "what": "QUIC + WebTransport, HTTP/3 only, DBSC bound session, AES-256 TLS 1.3 with X25519MLKEM768",
+   "layers": [
+    "rust",
+    "kernel"
+   ],
+   "status": "live",
+   "where": "main.rs, tls256.rs, h3, kernel RPC",
+   "tech": "Rust Tokio axum, HTTP/3, WebTransport, ML-KEM"
+  },
+  {
+   "name": "Passkey touch for risky actions",
+   "what": "Send, key creation and policy changes need a physical key touch on that exact action",
+   "layers": [
+    "rust",
+    "kernel",
+    "ui"
+   ],
+   "status": "live",
+   "where": "passkey.rs, passkey.ts",
+   "tech": "WebAuthn, Rust"
+  },
+  {
+   "name": "Compose, undo window, outbox",
+   "what": "Write mail, undo before it leaves, scheduled send, sealed drafts",
+   "layers": [
+    "rust",
+    "sql",
+    "ui"
+   ],
+   "status": "installed",
+   "where": "fmail_out.rs, E170, MailCompose.tsx",
+   "tech": "Rust Tokio, PostgreSQL"
+  },
+  {
+   "name": "DKIM dual signature + oversigning",
+   "what": "Ed25519 and RSA-2048 signatures; From, To, Subject, Date, Message-ID signed once more so nothing can be added after",
+   "layers": [
+    "rust"
+   ],
+   "status": "installed",
+   "where": "fmail_dkim.rs",
+   "tech": "Rust ring, RFC 6376 / RFC 8463"
+  },
+  {
+   "name": "DKIM key lifecycle and evidence",
+   "what": "Dated selectors, rotation report, DNS check log, signature log, outside-receiver proof, one-way policy switches, send gate",
+   "layers": [
+    "sql",
+    "rust",
+    "ui"
+   ],
+   "status": "installed",
+   "where": "E175, fmail_out.rs doors, DkimPanel.tsx",
+   "tech": "PostgreSQL 16 RLS hash chains, Tokio, hickory DNS"
+  },
+  {
+   "name": "Outgoing TLS to other servers",
+   "what": "Mail leaves over SMTP STARTTLS TLS 1.3 with the post-quantum key exchange; never plain",
+   "layers": [
+    "mail",
+    "rust"
+   ],
+   "status": "written",
+   "where": "fmail_smtp.rs (rustls)",
+   "tech": "rustls, X25519MLKEM768"
+  },
+  {
+   "name": "Real outgoing mail",
+   "what": "FMAIL_SEND on: the first real mail leaves, only with your word",
+   "layers": [
+    "rust"
+   ],
+   "status": "off",
+   "where": "fmail_out.rs sender worker",
+   "tech": "Rust Tokio SMTP"
+  },
+  {
+   "name": "DKIM2 / ML-DSA-44",
+   "what": "Next-generation signature with a post-quantum algorithm. Tracked only: no receiver verifies it yet",
+   "layers": [
+    "tracked"
+   ],
+   "status": "tracked",
+   "where": "qstate step Q1d-DKIM2",
+   "tech": "IETF draft, FIPS 204 ML-DSA-44"
+  },
+  {
+   "name": "Attachments over WebTransport",
+   "what": "Large files in sealed chunks over Tokio + WebTransport + Hetzner Storage Box",
+   "layers": [
+    "tracked"
+   ],
+   "status": "tracked",
+   "where": "TECH-LAW-GATE Q-att-wt",
+   "tech": "Tokio, WebTransport, Hetzner"
+  },
+  {
+   "name": "Media over QUIC",
+   "what": "Live media relay",
+   "layers": [
+    "tracked"
+   ],
+   "status": "tracked",
+   "where": "TECH-LAW-GATE M-moq",
+   "tech": "MoQ, IETF"
+  }
+ ],
+ "phases": [
+  {
+   "id": "A",
+   "what": "Device approval + request signatures",
+   "tech": "Rust Ed25519/ES256, WebAuthn L3, kernel `envelope@1`",
+   "status": "GREEN"
+  },
+  {
+   "id": "B",
+   "what": "Settings S1 (photo, name, city, graphics, sidebar)",
+   "tech": "React 19 + TS strict + Tailwind 4 + shadcn; data over the kernel",
+   "status": "GREEN"
+  },
+  {
+   "id": "C",
+   "what": "Server leftovers (Polar token DROPPED by him; data via webhook ledger in O)",
+   "tech": "Rust + SQL",
+   "status": "GREEN"
+  },
+  {
+   "id": "D",
+   "what": "UI stack",
+   "tech": "React 19, Vite 8, TanStack Router, Tailwind 4, shadcn, TS strict",
+   "status": "GREEN"
+  },
+  {
+   "id": "E",
+   "what": "Loophole fixes L1-L12",
+   "tech": "CSP, Trusted Types, hash-pinned WASM",
+   "status": "GREEN"
+  },
+  {
+   "id": "F",
+   "what": "WASM kernel verifies in the browser",
+   "tech": "Rust WASM kernel, Worker, pinned SHA-256",
+   "status": "GREEN"
+  },
+  {
+   "id": "G",
+   "what": "Audit ledger, Merkle, seals, anchors (G1-G5d)",
+   "tech": "SQL hash chain, RFC 9162 consistency proofs, C2SP signed checkpoints, kernel `merkle@2`, OpenTimestamps + RFC 3161",
+   "status": "GREEN"
+  },
+  {
+   "id": "H",
+   "what": "Settings S2: time machine + drift",
+   "tech": "SQL + Rust + kernel verify",
+   "status": "GREEN"
+  },
+  {
+   "id": "I",
+   "what": "Appearance, Ambient Studio, key registry",
+   "tech": "Rust + SQL + React CSS layers",
+   "status": "GREEN"
+  },
+  {
+   "id": "J1-J5",
+   "what": "Passkey + Privacy (one factor, no 2FA)",
+   "tech": "WebAuthn L3, Rust `passkey.rs`, kernel `action@1`",
+   "status": "GREEN"
+  },
+  {
+   "id": "J6",
+   "what": "Phone alerts",
+   "tech": "Web Push (VAPID) from Rust",
+   "status": "GREEN"
+  },
+  {
+   "id": "J8",
+   "what": "Vault lease + panic lock",
+   "tech": "SQL E143-E145 + Rust + kernel",
+   "status": "GREEN"
+  },
+  {
+   "id": "K1-K4",
+   "what": "Post-quantum key exchange, AES-256 on :443",
+   "tech": "Rust `tls256.rs` (rustls, TLS 1.3, AES-256-GCM only), X25519MLKEM768, SQL E119",
+   "status": "GREEN"
+  },
+  {
+   "id": "K5-K6",
+   "what": "AES-256 for awam (separate lane); QUIC",
+   "tech": "Rust quinn / wtransport",
+   "status": "GREEN"
+  },
+  {
+   "id": "K7, K7c",
+   "what": "Device-bound sessions (DBSC), enforce mode",
+   "tech": "hybrid ML-DSA-65 + ECDSA P-256 device proof, kernel `mldsa@1`",
+   "status": "GREEN"
+  },
+  {
+   "id": "K8a-K8d",
+   "what": "HTTP/3 primary, ML-KEM proof, kernel RPC",
+   "tech": "Rust quinn + h3, kernel `rpc@1` over WebTransport",
+   "status": "GREEN"
+  },
+  {
+   "id": "K8e",
+   "what": "ALPN h3 only; TCP 443 of the founder host speaks no HTTP",
+   "tech": "own Rust authoritative DNS with HTTPS record alpn=h3, Rust SNI front",
+   "status": "GREEN"
+  },
+  {
+   "id": "KP3 step 1",
+   "what": "WebTransport on UDP 443",
+   "tech": "Rust quinn + h3 + h3-webtransport on the one endpoint",
+   "status": "GREEN"
+  },
+  {
+   "id": "KP3 step 2",
+   "what": "Browser + kernel same origin",
+   "tech": "Rust WASM kernel dials the page origin; CSP `connect-src 'self'`",
+   "status": "GREEN"
+  },
+  {
+   "id": "KP3 latency",
+   "what": "Adaptive QUIC Retry",
+   "tech": "Rust quinn",
+   "status": "GREEN"
+  },
+  {
+   "id": "KP3 pre-connect",
+   "what": "Worker dials /wt/rpc while the kernel loads",
+   "tech": "React-TS Worker + Rust WASM kernel",
+   "status": "GREEN"
+  },
+  {
+   "id": "KP3 step 3",
+   "what": "QUIC path row (honest chip, measured RTT)",
+   "tech": "React-TS + Worker + kernel session",
+   "status": "GREEN"
+  },
+  {
+   "id": "KP3 step 4",
+   "what": "Dashboard live feed over WebTransport only",
+   "tech": "kernel `flive@1` over QUIC",
+   "status": "GREEN"
+  },
+  {
+   "id": "KP3 step 4b",
+   "what": "No SSE anywhere for the founder",
+   "tech": "Rust axum (SSE routes deleted), kernel WebTransport",
+   "status": "GREEN"
+  },
+  {
+   "id": "KP3 step 5",
+   "what": "UDP 4443 removed (CSP, env, ufw, listener)",
+   "tech": "Rust quinn + h3-webtransport on the one UDP 443 endpoint; shell installer with rollback",
+   "status": "GREEN"
+  },
+  {
+   "id": "KP3 API latency audit (A, B, C, D)",
+   "what": "Why one API call takes ~1-3 s while the ping is 185 ms",
+   "tech": "Rust axum + reqwest (Supabase REST), `wtrpc.rs`, `data.rs`; shell probes with rollback installer",
+   "status": "GREEN"
+  },
+  {
+   "id": "L",
+   "what": "Look: Framer Motion + GSAP + Three.js WebGPU; LA-1..LA-7 orb and Bridge map features",
+   "tech": "WebGPU + TSL (orb pixel-equal), GSAP, Radix Popover, SQL E166, Rust `bridge.rs`",
+   "status": "GREEN"
+  },
+  {
+   "id": "Q",
+   "what": "Mail + Calendar (Q0 research done, Q1 mailbox, Q2 attachments, Q3 parallel chunks over WebTransport, Q4 OpenPGP PQC RFC 9980, Q5 PQ network, Q6 sealed agreements)",
+   "tech": "Rust + SQL + kernel, ML-KEM / ML-DSA, resumable chunks over WebTransport, ClamAV, Hetzner Storage Box",
+   "status": "IN PROGRESS"
+  },
+  {
+   "id": "S5",
+   "what": "TanStack Start in SPA mode (decided 13 Nov)",
+   "tech": "TanStack Start, static shell, Rust serves it, no Node/Bun",
+   "status": "NOT GREEN"
+  },
+  {
+   "id": "M",
+   "what": "MoQ (Media over QUIC) relay",
+   "tech": "Rust relay on QUIC + kernel",
+   "status": "NOT GREEN"
+  },
+  {
+   "id": "N",
+   "what": "Decide + Live Pulse + push, Device Trust Map",
+   "tech": "Rust push + kernel WebTransport, SQL",
+   "status": "NOT GREEN"
+  },
+  {
+   "id": "O",
+   "what": "Finance deck (Polar webhook ledger, revenue, billing, release)",
+   "tech": "Rust webhook verify + SQL ledger + React",
+   "status": "NOT GREEN"
+  },
+  {
+   "id": "P",
+   "what": "People: Org, CRM, Team, Account 360, Work, Insider Guard",
+   "tech": "SQL RLS + ledgers, Rust, React",
+   "status": "NOT GREEN"
+  },
+  {
+   "id": "R",
+   "what": "Systems: health, analytics, speed, admin, safety, chat, Mail Desk (R3)",
+   "tech": "Rust probes, mesh sync over QUIC",
+   "status": "NOT GREEN"
+  },
+  {
+   "id": "R3 Admin Mail Desk",
+   "what": "Admin > Mail Desk > Mail: the company mailboxes (support, billing, abuse, glitch, appeals) in their own folder, separate from the founder Mail (his order 3 Nov 12:37)",
+   "tech": "Rust + Tokio + axum on the one HTTP/3 UDP 443 endpoint, kernel rpc@1 over WebTransport, PostgreSQL RLS fadm_mail_* + own hash-chained ledger, ClamAV, Hetzner Storage Box, X25519MLKEM768 + AES-256-GCM, passkey touch, React 19 TS",
+   "status": "NOT GREEN"
+  },
+  {
+   "id": "S",
+   "what": "Control: kill switch, flags, executor, poison pill",
+   "tech": "Rust + SQL + passkey two-key gates",
+   "status": "NOT GREEN"
+  },
+  {
+   "id": "T",
+   "what": "Cutover: remove old Lovable/Bun founder routes",
+   "tech": "Rust only (the old Bun founder routes are removed after the Rust == Bun parity proof and his word)",
+   "status": "NOT GREEN"
+  },
+  {
+   "id": "U",
+   "what": "Docs + Sheets",
+   "tech": "WOPI host in Rust",
+   "status": "NOT GREEN"
+  },
+  {
+   "id": "V",
+   "what": "Founder AI (founder only)",
+   "tech": "Rust + React, kernel",
+   "status": "NOT GREEN"
+  },
+  {
+   "id": "X",
+   "what": "Extra advanced: proof of restore, continuity, served-code seal, supply-chain board",
+   "tech": "Rust + SQL + kernel, PQ signatures",
+   "status": "NOT GREEN"
+  },
+  {
+   "id": "D-series",
+   "what": "D3 UI and D2b Rust (policy change needs a fresh passkey touch)",
+   "tech": "Rust + SQL E155-E157 + React",
+   "status": "PAUSED"
+  }
+ ]
+}

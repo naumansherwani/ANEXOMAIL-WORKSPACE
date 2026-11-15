@@ -1,0 +1,26 @@
+{
+ "generated": "16 Nov 2026 03:16 +0500",
+ "head": "9ba8686e",
+ "head_subject": "Q1d-1a a4: DKIM panel under the mailbox (founder only)",
+ "now": "Q1d-1a",
+ "phases": {
+  "GREEN": 27,
+  "IN PROGRESS": 1,
+  "NOT GREEN": 12,
+  "PAUSED": 1
+ },
+ "q_done": 20,
+ "q_open": 2,
+ "checks_ok": 23,
+ "checks_open": [
+  "M-moq",
+  "D-clamav",
+  "D-hetzner-storagebox",
+  "A-tanstack-start",
+  "Q-att-wt",
+  "Q-pqmail",
+  "Q-live-wt",
+  "Q-smtp-mtasts",
+  "Q-ledger-kernel"
+ ]
+}

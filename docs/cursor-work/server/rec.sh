@@ -15,6 +15,9 @@ P
 if [ -n "${4:-}" ] && [ -n "${5:-}" ]; then python3 docs/cursor-work/server/phases.py set "$4" "$5" "${6:-$1}" || exit 1; fi
 python3 docs/cursor-work/server/qstate.py render >/dev/null 2>&1 || true
 python3 docs/cursor-work/server/phases.py render >/dev/null
+# HEARTBEAT + BRAIN (16 Nov 03:3x): refresh the repo heartbeat and the Systems page brain data, then rebuild the SPA so founder-web/dist is never older than src (live = repo build)
+python3 docs/cursor-work/server/brain.py >/dev/null 2>&1 || true
+if [ -d founder-web/node_modules ]; then (cd founder-web && npx vite build >/dev/null 2>&1) || echo "WARN: vite build failed, dist not refreshed"; fi
 git add -A; for i in 1 2; do python3 lanes/lane-sync.py >/dev/null; git add -A; done
 python3 docs/cursor-work/server/manifest-verify.py | awk '/PURANI/{print $2}' | xargs -r python3 docs/cursor-work/server/manifest-sync.py >/dev/null
 python3 lanes/lane-sync.py >/dev/null
