@@ -3,7 +3,7 @@ Phase: Q1d-1a = the founder mail DKIM lifecycle (key, DNS TXT, signing, proof). 
 ## Status (a1..a4)
 - a1 DONE (repo): oversigning in server/founder/src/fmail_dkim.rs (From/To/Subject/Date/Message-ID listed once extra in h=, twice if absent; header added after signing breaks Ed25519 AND RSA; cargo 10/10).
 - a2 DONE and ON HIS SERVER (his paste 16 Nov 02:3x: E175 selftest 28 ok, 0 failed; CHECK_E175 7/7 OK, E65 sweep OK; sha 3dd4fbff6069e7a9). Written in sandbox PG16 first: docs/cursor-work/sql/E175_founder_mail_dkim_lifecycle.sql (513 lines, needs E167/E169/E170) + CHECK_E175.sql (7 checks). selftest 28 ok. Chain tables hold 0 rows until a3 wires Rust (0 rows checked, 0 broken).
-- a3 NEXT: Rust wiring in fmail_out.rs: call fmail_dkim_send_gate175 before claiming; fmail_dkim_sign_record175 after each signature; read-only DNS probe -> fmail_dkim_dns_record175; proof door -> fmail_dkim_proof175; policy/health door. Contract note in CURRENT.md FIRST.
+- a3 DONE in repo 16 Nov 02:5x (cargo 408/408 incl. 5 new tests; NOT on his server until founder-install): Rust wiring in fmail_out.rs: call fmail_dkim_send_gate175 before claiming; fmail_dkim_sign_record175 after each signature; read-only DNS probe -> fmail_dkim_dns_record175; proof door -> fmail_dkim_proof175; policy/health door. Contract note in CURRENT.md FIRST.
 - a4 AFTER (needs his haan, additive only): new React file + one-line mount: key, TXT, DNS state, rotation, proof paste.
 - Then: founder-install (oversign Rust live), his Compose key touch (hands), his Namecheap TXT (hands), Q1d-1b Gmail Show original paste, Q1d-2a, Q1d-2b (FMAIL_SEND=on only with his haan).
 ## Features
@@ -23,3 +23,7 @@ draft-ietf-dkim-dkim2-spec-09 (WG draft, expires 5 May 2027): per-hop chain, mf=
 ## (old) His ONE command was
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) 2>&1 | tail -25
 Expect: E175 selftest 28 ok + CHECK_E175 7 OK. No awam pull (kernel unchanged).
+
+## a3 as built: fmail_out.rs process() = send gate (fmail_dkim_send_gate175) -> sign_all_rec -> fmail_dkim_sign_record175 per signature BEFORE SMTP (refusal = Retry). Doors: GET mail/dkim/health, POST mail/dkim/check (DNS TXT probe), POST mail/dkim/proof, POST mail/dkim/policy (touch). fmail_dkim::parse_sig. Contract = CURRENT.md Q1d-1a a3 CONTRACT. NEXT: his founder-install (sender is still OFF, FMAIL_SEND not on), then a4 UI (additive, needs his haan: mail_api.ts door calls + DkimSetup panel), then his Compose key touch, Namecheap TXT, Q1d-1b.
+
+## PENDING (gate SERVER FIRST): the 4 route lines in main.rs are saved as docs/claude/state/PENDING-main-rs-dkim-routes.patch (git apply it). main.rs is a server-surface file: needs a fresh read-only paste from him (ss -tulpn | grep -E ':443|:25|:8443' style), then `python3 docs/cursor-work/server/serverfirst.py record "<cmd>" <paste file>`, then git apply the patch, cargo test, rec.sh, THEN give him founder-install. Without these routes the doors are dead code; send gate + sign log in fmail_out.rs already work.

@@ -65,15 +65,39 @@ pub fn open_job(master: &[u8; 32], job: &Value) -> Result<Vec<u8>, &'static str>
                         aad_hash_hex: js(job, "aad_hash").ok_or("no aad")?, key_wrap: &wrap, nonce_meta: &nm, meta: &meta, body: Some((&nb, &body)) };
     core::open_vault(master, &r)?.1.ok_or("the body did not open")
 }
-/// DKIM-sign `wire` with every active key of the mailbox; returns the signed message and how many signatures were added.
-pub fn sign_all(master: &[u8; 32], mailbox: &str, domain: &str, keys: &Value, wire: &[u8], now: u64) -> (Vec<u8>, usize) {
-    let mut sigs = String::new(); let mut n = 0;
+/// One signature as the E175 log wants it: which key, and the facts parsed back out of the real header.
+pub struct SigRec { pub key_id: String, pub info: dkim::SigInfo }
+/// DKIM-sign `wire` with every active key of the mailbox; returns the signed message and one record per signature added.
+pub fn sign_all_rec(master: &[u8; 32], mailbox: &str, domain: &str, keys: &Value, wire: &[u8], now: u64) -> (Vec<u8>, Vec<SigRec>) {
+    let mut sigs = String::new(); let mut recs = Vec::new();
     for k in keys.as_array().map(|a| a.as_slice()).unwrap_or(&[]) {
         let (Some(sel), Some(alg), Some(nonce), Some(wrapped)) = (js(k, "selector"), js(k, "alg"), jb(k, "nonce"), jb(k, "wrapped")) else { continue };
         let Some(pk8) = dkim::unwrap_private(master, mailbox, sel, alg, &nonce, &wrapped) else { continue };
-        if let Ok(h) = dkim::sign(wire, &dkim::Signer { domain, selector: sel, alg: if alg == dkim::ALG_ED { dkim::ALG_ED } else { dkim::ALG_RSA }, pkcs8: &pk8 }, now) { sigs.push_str(&h); n += 1; }
+        if let Ok(h) = dkim::sign(wire, &dkim::Signer { domain, selector: sel, alg: if alg == dkim::ALG_ED { dkim::ALG_ED } else { dkim::ALG_RSA }, pkcs8: &pk8 }, now) {
+            let Some(info) = dkim::parse_sig(&h) else { continue };
+            recs.push(SigRec { key_id: js(k, "id").unwrap_or("").to_string(), info }); sigs.push_str(&h);
+        }
     }
-    let mut out = sigs.into_bytes(); out.extend_from_slice(wire); (out, n)
+    let mut out = sigs.into_bytes(); out.extend_from_slice(wire); (out, recs)
+}
+/// DKIM-sign `wire` with every active key of the mailbox; returns the signed message and how many signatures were added.
+pub fn sign_all(master: &[u8; 32], mailbox: &str, domain: &str, keys: &Value, wire: &[u8], now: u64) -> (Vec<u8>, usize) { let (o, r) = sign_all_rec(master, mailbox, domain, keys, wire, now); (o, r.len()) }
+/// Text of the SQL send gate's refusal, for the Retry row.
+pub fn gate_reason(g: &Option<Value>) -> Option<String> {
+    match g {
+        Some(v) if v["ok"] == true => None,
+        Some(v) => Some(v["reasons"].as_array().map(|a| a.iter().filter_map(|x| x.as_str()).collect::<Vec<_>>().join("; ")).filter(|x| !x.is_empty()).unwrap_or_else(|| "DKIM send gate closed".into())),
+        None => Some("the DKIM gate did not answer (run the E175 SQL step)".into()),
+    }
+}
+/// The p= value of the DKIM record among the TXT answers (each answer = its character-strings joined). None = no TXT at all (absent).
+pub fn p_of_txt(records: &[String]) -> Option<String> {
+    if records.is_empty() { return None; }
+    for r in records {
+        let tags: Vec<(String, String)> = r.split(';').filter_map(|t| t.split_once('=')).map(|(k, v)| (k.trim().to_ascii_lowercase(), v.split_whitespace().collect::<String>())).collect();
+        if tags.iter().any(|(k, v)| k == "v" && v.eq_ignore_ascii_case("DKIM1")) { return Some(tags.into_iter().find(|(k, _)| k == "p").map(|(_, v)| v).unwrap_or_else(|| "(no p= tag)".into())); }
+    }
+    Some("(not a DKIM record)".into())
 }
 
 async fn run_domain(cfg: &Cfg, res: Option<&hickory_resolver::TokioResolver>, up: &smtp::RustlsUpgrade, domain: &str, from: &str, rcpts: &[String], payload: &[u8]) -> Result<smtp::Outcome, smtp::Fail> {
@@ -113,8 +137,16 @@ async fn process(sb: &crate::data::Sb, master: &[u8; 32], cfg: &Cfg, res: Option
     if from != addr { report(dead("the From address is not this mailbox"), false).await; return }
     let wire = mime::strip_bcc(&raw);
     let now = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs()).unwrap_or(0);
-    let (signed, nsig) = sign_all(master, mailbox, mime::domain_of(&from), &job["dkim"], &wire, now);
-    if nsig == 0 { report(Verdict::Retry { reply: "no usable DKIM key".into(), error: "no active DKIM key; install one, then the mail goes".into() }, false).await; return }
+    // E175 send gate: SQL decides whether this mailbox may send now (keys, policy, DNS); closed = Retry with the reasons, nothing leaves
+    if let Some(why) = gate_reason(&sb.rpc("fmail_dkim_send_gate175", json!({"p_mailbox": mailbox})).await) { report(Verdict::Retry { reply: why.chars().take(250).collect(), error: "the DKIM send gate is closed".into() }, false).await; return }
+    let (signed, recs) = sign_all_rec(master, mailbox, mime::domain_of(&from), &job["dkim"], &wire, now);
+    if recs.is_empty() { report(Verdict::Retry { reply: "no usable DKIM key".into(), error: "no active DKIM key; install one, then the mail goes".into() }, false).await; return }
+    // E175 signature log BEFORE the SMTP session: SQL re-computes over-signing from h= and may refuse (policy); a refusal means the mail does not go
+    for r in &recs {
+        if let Err((_, m)) = sb.rpc_msg("fmail_dkim_sign_record175", json!({"p_outbox": id, "p_key": r.key_id, "p_h": r.info.h, "p_bh": r.info.bh, "p_sig_hash": r.info.sig_hash, "p_t": r.info.t, "p_x": r.info.x})).await {
+            report(Verdict::Retry { reply: m.chars().take(250).collect(), error: "the DKIM signature log refused this signature".into() }, false).await; return
+        }
+    }
     let payload = mime::data_payload(&signed);
     let mut parts = Vec::new();
     if cfg.relay.is_some() { parts.push(run_domain(cfg, res, up, "", &from, &rcpts, &payload).await); }
@@ -331,6 +363,67 @@ pub async fn dkim_set_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum
     }
 }
 
+// ---- E175 doors: health, DNS probe, outside-receiver proof, policy
+static PROBE: std::sync::OnceLock<Option<hickory_resolver::TokioResolver>> = std::sync::OnceLock::new();
+fn probe_resolver() -> Option<&'static hickory_resolver::TokioResolver> { PROBE.get_or_init(|| hickory_resolver::TokioResolver::builder_tokio().ok().map(|b| b.build())).as_ref() }
+fn num(j: &Value, k: &str) -> Value { j.get(k).and_then(|x| x.as_i64()).map(Value::from).unwrap_or(Value::Null) }
+fn flag(j: &Value, k: &str) -> Value { j.get(k).and_then(|x| x.as_bool()).map(Value::from).unwrap_or(Value::Null) }
+/// GET /founder/v1/mail/dkim/health?box=<uuid>: one read for the Compose panel (keys, DNS state, rotation, policy, blockers, warnings).
+pub async fn dkim_health_ep(State(st): State<S>, uri: Uri, h: HeaderMap) -> Response {
+    let c = match crate::authed(&st, &h).await { Ok(c) => c, Err(e) => return e.into_response() };
+    let b = match crate::fmail_ep::parse_box(uri.query()) { Ok(b) => b, Err(e) => return bad(e) };
+    let sb = st.sb.as_ref().unwrap();
+    if let Err(r) = own_box(sb, &c.sub, &b).await { return r }
+    match sb.rpc("fmail_dkim_health175", json!({"p_mailbox": b})).await { Some(v) if v.is_object() => crate::signed(&st, json!({"connected": true, "health": v})), _ => crate::signed(&st, json!({"connected": false, "note": "run the E175 SQL step (sql-run.sh)"})) }
+}
+/// POST /founder/v1/mail/dkim/check {box, key}: read-only DNS TXT probe of <selector>._domainkey.<domain>; the answer is recorded in the hash-chained observation log (SQL decides match / mismatch).
+pub async fn dkim_check_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::body::Bytes) -> Response {
+    let (uid, _e, _d) = match pk::ctx(&st, &h, uri.path(), &body, true).await { Ok(x) => x, Err(r) => return r };
+    let sb = match pk::sbx(&st) { Ok(s) => s, Err(r) => return r };
+    let j = match pk::body_json(&body) { Ok(j) => j, Err(r) => return r };
+    let Some(b) = pk::txt(&j, "box", 40).filter(|x| pk::is_uuid(x)) else { return bad("box is needed") };
+    let Some(key) = pk::txt(&j, "key", 40).filter(|x| pk::is_uuid(x)) else { return bad("key is needed") };
+    let bx = match own_box(sb, &uid, &b).await { Ok(x) => x, Err(r) => return r };
+    let Some(keys) = sb.rpc("fmail_dkim_active170", json!({"p_mailbox": b})).await else { return pk::refuse(StatusCode::SERVICE_UNAVAILABLE, "mail database not answering") };
+    let Some(sel) = keys.as_array().and_then(|a| a.iter().find(|k| k["id"] == key.as_str())).and_then(|k| js(k, "selector")).map(|x| x.to_string()) else { return bad("no such active key in this mailbox") };
+    let Some(res) = probe_resolver() else { return pk::refuse(StatusCode::SERVICE_UNAVAILABLE, "no DNS resolver") };
+    let name = format!("{sel}._domainkey.{}.", mime::domain_of(&bx.address));
+    let (ok, observed) = match res.txt_lookup(name).await {
+        Ok(l) => (true, p_of_txt(&l.iter().map(|t| t.txt_data().iter().map(|d| String::from_utf8_lossy(d).into_owned()).collect::<String>()).collect::<Vec<_>>())),
+        Err(e) if e.is_no_records_found() => (true, None),
+        Err(_) => (false, None),
+    };
+    match sb.rpc_msg("fmail_dkim_dns_record175", json!({"p_actor": uid, "p_key": key, "p_observed": observed, "p_lookup_ok": ok, "p_resolver": "system-resolver", "p_dnssec": "unknown"})).await {
+        Ok(v) => crate::signed(&st, json!({"ok": true, "check": v})),
+        Err(e) => pk::sql_err(e),
+    }
+}
+/// POST /founder/v1/mail/dkim/proof {box, receiver, authres}: the Authentication-Results header pasted from the receiver's "Show original"; SQL parses it and keeps the parsed facts + its hash.
+pub async fn dkim_proof_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::body::Bytes) -> Response {
+    let (uid, _e, _d) = match pk::ctx(&st, &h, uri.path(), &body, true).await { Ok(x) => x, Err(r) => return r };
+    let sb = match pk::sbx(&st) { Ok(s) => s, Err(r) => return r };
+    let j = match pk::body_json(&body) { Ok(j) => j, Err(r) => return r };
+    let Some(b) = pk::txt(&j, "box", 40).filter(|x| pk::is_uuid(x)) else { return bad("box is needed") };
+    let Some(rcv) = pk::txt(&j, "receiver", 20) else { return bad("receiver is needed") };
+    let Some(ar) = pk::txt(&j, "authres", 6000) else { return bad("authres is needed (the whole Authentication-Results header)") };
+    if let Err(r) = own_box(sb, &uid, &b).await { return r }
+    match sb.rpc_msg("fmail_dkim_proof175", json!({"p_actor": uid, "p_mailbox": b, "p_receiver": rcv, "p_authres": ar})).await { Ok(v) => crate::signed(&st, json!({"ok": true, "proof": v})), Err(e) => pk::sql_err(e) }
+}
+/// POST /founder/v1/mail/dkim/policy {box, rotate_days?, overlap_days?, sig_ttl_days?, oversign?, dual?, dns_match?, grant?, nonce?}: needs a passkey touch (action mail.key); SQL ratchets are one-way.
+pub async fn dkim_policy_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::body::Bytes) -> Response {
+    let (uid, _e, did) = match pk::ctx(&st, &h, uri.path(), &body, true).await { Ok(x) => x, Err(r) => return r };
+    let sb = match pk::sbx(&st) { Ok(s) => s, Err(r) => return r };
+    let j = match pk::body_json(&body) { Ok(j) => j, Err(r) => return r };
+    let Some(b) = pk::txt(&j, "box", 40).filter(|x| pk::is_uuid(x)) else { return bad("box is needed") };
+    let touch = match touch_of(&j) { Ok(t) => t, Err(e) => return bad(e) };
+    if let Err(r) = own_box(sb, &uid, &b).await { return r }
+    let target = format!("dkimpolicy:{b}");
+    let Some(t) = touch else { return crate::signed(&st, json!({"needs_touch": true, "action": "mail.key", "target": target})) };
+    let hash = match spend(&st, sb, &uid, &did, &t, "mail.key", &target).await { Ok(h) => h, Err(r) => return r };
+    match sb.rpc_msg("fmail_dkim_policy_set175", json!({"p_actor": uid, "p_mailbox": b, "p_rotate_days": num(&j, "rotate_days"), "p_overlap_days": num(&j, "overlap_days"), "p_sig_ttl_days": num(&j, "sig_ttl_days"),
+        "p_oversign": flag(&j, "oversign"), "p_dual": flag(&j, "dual"), "p_dns_match": flag(&j, "dns_match"), "p_touch_hash": hash})).await { Ok(v) => crate::signed(&st, json!({"ok": true, "policy": v})), Err(e) => pk::sql_err(e) }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -379,5 +472,29 @@ mod tests {
         let mut other = job.clone(); other["mailbox_id"] = json!("22222222-2222-2222-2222-222222222222"); assert!(open_job(&master, &other).is_err(), "a sealed mail cannot be opened as another mailbox");
         let mut pq = job.clone(); pq["seal_mode"] = json!("recipient_pq"); assert!(open_job(&master, &pq).is_err());
         assert_eq!(sign_all(&[1u8; 32], mailbox, "anexomail.com", &job["dkim"], &wire, 1).1, 0, "a wrong master unwraps no key");
+    }
+    #[test] fn p_of_txt_reads_the_dkim_record() {
+        assert_eq!(p_of_txt(&[]), None);
+        assert_eq!(p_of_txt(&["v=DKIM1; k=ed25519; p=AbC=".into()]).as_deref(), Some("AbC="));
+        assert_eq!(p_of_txt(&["v=spf1 -all".into(), "v=DKIM1;k=rsa;p=AA BB".into()]).as_deref(), Some("AABB"));
+        assert_eq!(p_of_txt(&["v=spf1 -all".into()]).as_deref(), Some("(not a DKIM record)"));
+        assert_eq!(p_of_txt(&["v=DKIM1; k=rsa".into()]).as_deref(), Some("(no p= tag)"));
+        assert_eq!(p_of_txt(&["v=DKIM1; k=rsa; p=".into()]).as_deref(), Some(""));
+    }
+    #[test] fn gate_reason_closed_open_and_silent() {
+        assert_eq!(gate_reason(&Some(json!({"ok": true, "reasons": []}))), None);
+        assert_eq!(gate_reason(&Some(json!({"ok": false, "reasons": ["a", "b"]}))).as_deref(), Some("a; b"));
+        assert!(gate_reason(&None).unwrap().contains("E175"));
+    }
+    #[test] fn sign_all_rec_gives_one_record_per_key_with_its_id() {
+        let master = [7u8; 32]; let mailbox = "00000000-0000-4000-8000-000000000001";
+        let (k1, k2) = (dkim::gen_ed25519().unwrap(), dkim::gen_ed25519().unwrap());
+        let mk = |id: &str, sel: &str, k: &dkim::NewKey| { let (n, w) = dkim::wrap_private(&master, mailbox, sel, dkim::ALG_ED, &k.pkcs8).unwrap(); json!({"id": id, "selector": sel, "alg": "ed25519-sha256", "nonce": B64.encode(n), "wrapped": B64.encode(&w), "public": B64.encode(&k.public)}) };
+        let keys = json!([mk("id-1", "e2611a", &k1), mk("id-2", "e2611b", &k2)]);
+        let wire = b"From: a@anexomail.com\r\nTo: b@y.com\r\nSubject: hi\r\nDate: Mon, 16 Nov 2026 02:00:00 +0000\r\nMessage-ID: <1@anexomail.com>\r\n\r\nbody\r\n";
+        let (signed, recs) = sign_all_rec(&master, mailbox, "anexomail.com", &keys, wire, 1_794_538_800);
+        assert_eq!(recs.len(), 2); assert_eq!(recs[0].key_id, "id-1"); assert_eq!(recs[1].key_id, "id-2");
+        assert!(recs.iter().all(|r| r.info.h.starts_with("from:from:to:to:subject:subject:date:date:message-id:message-id")));
+        assert!(dkim::verify(&signed, dkim::ALG_ED, &k1.public));
     }
 }

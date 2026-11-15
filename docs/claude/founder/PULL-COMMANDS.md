@@ -1354,3 +1354,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Q1d-1a summary written 16 Nov 02:35: docs/claude/Q1D-1A-SUMMARY-16NOV.md (features, a1-a4 status, tech per layer, DKIM2 tracked); waits his sql-run AUTO (E175 + CHECK), then a3 Rust wiring
 
 - Q1d-1a a2 SQL E175 OK on his server 16 Nov 02:3x: his paste sql-run AUTO = E175 selftest 28 ok 0 failed, CHECK_E175 7/7 OK, E65 sweep OK (sha 3dd4fbff6069e7a9); chains 0 rows until a3. Rust oversign NOT live yet (no founder-install asked); next = a3 Rust wiring in fmail_out.rs, then founder-install
+
+- Q1d-1a a3 Rust wiring written 16 Nov 02:5x: send gate + sign_all_rec + sign_record175 before SMTP, doors dkim/health, dkim/check (DNS probe), dkim/proof, dkim/policy (touch), fmail_dkim::parse_sig; cargo 408/408 (5 new tests); NOT on his server until founder-install; sender still OFF
+
+- Q1d-1a a3 Rust wiring written 16 Nov 02:5x: send gate + sign_all_rec + sign_record175 before SMTP, door fns dkim health/check/proof/policy, fmail_dkim::parse_sig; cargo 408/408; 4 route lines in main.rs WAIT (SERVER FIRST gate wants his read-only paste; patch saved in docs/claude/state/PENDING-main-rs-dkim-routes.patch); NOT on his server

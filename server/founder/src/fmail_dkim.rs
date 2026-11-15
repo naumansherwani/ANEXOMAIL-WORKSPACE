@@ -126,6 +126,18 @@ pub fn sign(raw: &[u8], s: &Signer, now: u64) -> Result<String, &'static str> {
     Ok(format!("DKIM-Signature: {}{}\r\n", head.replace("; ", ";\r\n\t"), fold_b(&b)))
 }
 
+/// The facts of one `DKIM-Signature:` header that the E175 signature log records (h=, bh=, SHA-256 of b=, t=, x=). Folding whitespace is removed first.
+pub struct SigInfo { pub h: String, pub bh: String, pub sig_hash: String, pub t: i64, pub x: i64 }
+pub fn parse_sig(header: &str) -> Option<SigInfo> {
+    use std::fmt::Write;
+    let flat: String = header.trim_start_matches(|c: char| c.is_ascii_alphabetic() || c == '-').trim_start_matches(':').replace("\r\n", "");
+    let tags: std::collections::HashMap<String, String> = flat.split(';').filter_map(|t| t.split_once('=')).map(|(k, v)| (k.trim().to_string(), v.split_whitespace().collect::<String>())).collect();
+    let (h, bh, b) = (tags.get("h")?.to_ascii_lowercase(), tags.get("bh")?.clone(), tags.get("b")?);
+    if b.is_empty() { return None; }
+    let mut sig_hash = String::new(); for x in Sha256::digest(b.as_bytes()) { let _ = write!(sig_hash, "{x:02x}"); }
+    Some(SigInfo { h, bh, sig_hash, t: tags.get("t")?.parse().ok()?, x: tags.get("x")?.parse().ok()? })
+}
+
 /// Verify one `DKIM-Signature` against a public key (used by the tests and by the self-check before a key is installed). Returns true only when body hash AND signature match.
 pub fn verify(signed_raw: &[u8], alg: &str, public: &[u8]) -> bool {
     use ring::signature::{UnparsedPublicKey, ED25519, RSA_PKCS1_2048_8192_SHA256};
@@ -257,5 +269,15 @@ mod tests {
         assert!(unwrap_private(&master, "mb", "s2", ALG_ED, &n, &ct).is_none(), "another selector must not open it");
         assert!(unwrap_private(&master, "other", "s1", ALG_ED, &n, &ct).is_none(), "another mailbox must not open it");
         assert!(unwrap_private(&[8u8; 32], "mb", "s1", ALG_ED, &n, &ct).is_none(), "another master must not open it");
+    }
+    #[test] fn parse_sig_reads_what_the_log_records() {
+        let k = gen_ed25519().unwrap();
+        let raw = b"From: a@x.com\r\nTo: b@y.com\r\nSubject: hi\r\nDate: Mon, 16 Nov 2026 02:00:00 +0000\r\nMessage-ID: <1@x.com>\r\n\r\nbody\r\n";
+        let h = sign(raw, &Signer { domain: "x.com", selector: "e2611a", alg: ALG_ED, pkcs8: &k.pkcs8 }, 1_794_538_800).unwrap();
+        let i = parse_sig(&h).unwrap();
+        assert!(i.h.starts_with("from:from:to:to:subject:subject:date:date:message-id:message-id"));
+        assert_eq!((i.t, i.x), (1_794_538_800, 1_794_538_800 + 7 * 86400));
+        assert_eq!(i.bh, body_hash_b64(b"body\r\n")); assert_eq!(i.sig_hash.len(), 64);
+        assert!(parse_sig("DKIM-Signature: v=1; a=x").is_none());
     }
 }
