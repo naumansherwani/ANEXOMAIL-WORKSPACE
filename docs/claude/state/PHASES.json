@@ -127,8 +127,7 @@
    "tech": "Rust `tls256.rs` (rustls, TLS 1.3, AES-256-GCM only), X25519MLKEM768, SQL E119",
    "in_code": "YES",
    "status": "GREEN",
-   "proof": "GREEN",
-   "legacy": true
+   "proof": "RE-VERIFIED 15 Nov 19:55 on his server (receipt 41, founder-k-proof.sh) and in my live Chrome: TCP 443 code 000, udp 443 = anexomail-founder, cert to 5 Jan 2027, Chrome 16 resources h3, WIRED: YES / REAL: YES / TECH-LAW CHECKED [15 Nov 19:41]"
   },
   {
    "n": 14,
@@ -157,8 +156,7 @@
    "tech": "Rust quinn + h3, kernel `rpc@1` over WebTransport",
    "in_code": "YES",
    "status": "GREEN",
-   "proof": "GREEN",
-   "legacy": true
+   "proof": "RE-VERIFIED 15 Nov 19:55 receipt 41 + my Chrome (kernel rpc over WebTransport, live feed fresh v1032, audit entry 256 = server founder_audit rows 256), WIRED: YES / REAL: YES / TECH-LAW CHECKED [15 Nov 19:41]"
   },
   {
    "n": 17,
@@ -167,8 +165,7 @@
    "tech": "own Rust authoritative DNS with HTTPS record alpn=h3, Rust SNI front",
    "in_code": "YES",
    "status": "GREEN",
-   "proof": "GREEN by his order 14 Nov (820 tablet waived by him)",
-   "legacy": true
+   "proof": "RE-VERIFIED 15 Nov 19:55 receipt 41: TCP 443 code 000 (no HTTP), udp 443 = anexomail-founder, founder-dns active; Chrome: assets over h3, a forced font reload came over h3, WIRED: YES / REAL: YES / TECH-LAW CHECKED [15 Nov 19:41]"
   },
   {
    "n": 18,
@@ -247,8 +244,7 @@
    "tech": "Rust quinn + h3-webtransport on the one UDP 443 endpoint; shell installer with rollback",
    "in_code": "YES",
    "status": "GREEN",
-   "proof": "GREEN 14 Nov 06:01 (receipts 25, 26, my live Chrome)",
-   "legacy": true
+   "proof": "RE-VERIFIED 15 Nov 19:55 receipt 41: udp 4443 nobody, FOUNDER_WT_ lines 0; Chrome CSP connect-src self, WebTransport present, WIRED: YES / REAL: YES / TECH-LAW CHECKED [15 Nov 19:41]"
   },
   {
    "n": 26,
