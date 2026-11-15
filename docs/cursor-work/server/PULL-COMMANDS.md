@@ -326,3 +326,5 @@
 - QUI-H4 GREEN by his order 15 Nov 21:29, WIRED: YES / REAL: YES, TECH-LAW CHECKED: kernel auditproof@1 0.17.0 + E173 + Rust door anchor-proof + additive UI line; proof = his E173/CHECK_E173 6/6, install and awam pull pastes, my Chrome (bundle = repo) and his screen photo; 390/820 not separately seen (waived by his order, honest); open: stale popover line, root signature. QPERF started
 
 - QUI-H4 popover polish written (his haan 15 Nov 21:35): max-height by Radix available-height + inner scroll + soft fade, old 'no audit batch yet' line hides only when the kernel proved the Merkle line; blur skipped (popover background is already opaque); tsc clean, bun 265/265; waits his founder-install + my Chrome look
+
+- QUI-H4 popover polish live-proven (his founder-install paste 15 Nov 22:2x + my Chrome: bundle index-C8UY87r7 = repo build, popover overflow-y auto, max-height 423px, stale line display none, Merkle line proven with the kernel). QPERF plan written (docs/claude/QPERF-PLAN-15NOV.md), waits his haan; WIRED: YES / REAL: YES / TECH-LAW CHECKED for the polish
