@@ -71,3 +71,9 @@ Nameservers of anexomail.com = dns1.registrar-servers.com + dns2.registrar-serve
 - Record 1: Host `e2611a._domainkey`, Type TXT, Value `v=DKIM1; k=ed25519; p=ItjuwBXT+HXAZ5GianL4owoDtoAUAYwMgHDPE3KKXVM=`
 - Record 2: Host `r2611a._domainkey`, Type TXT, Value `v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxrMMhER+Wp3CapmN6y8rIvSmXACbK1ixXwrplNJlFtuWAG+vF3rRhaNpcbPGT419psyh9gJdQyx3z1w4WNfYyrYvN4hrw+MR/rTiJW9eIMRmjDO3G6LWLgoZ4YpyFbdwQcYZtugP/t9rHHLIT92gI/xkiDU5GyiZiOTDejSj1ZCAhLwSz8iMNST8eXzX+yvDvPiZuRS6F/gUAXx0uOS9fXb6Rzy0hHe5Ruc43Vf9HeV0Oycd7BXU1OfP0ltf1oxOdxagJoToKOz+h273dT3KPZN19qWd59K9LfmG1USR13ib5pX30ZWWruWtOf1HxqRRIQWXdCAF94HeGIBgCKTSSQIDAQAB`
 - DNS answer at 05:05: both KHALI. Progress: step 1 (open Advanced DNS) given; then record 1, record 2, save, wait, Check DNS in the panel, DNS switch.
+
+## 16 Nov 05:20 NAMECHEAP: HE PASTED BOTH TXT RECORDS; PANEL CHECK DNS (pressed by me in his Chrome, read-only probe through the server resolver)
+- e2611a (Ed25519): **DNS record confirmed** (panel status, my live Chrome).
+- r2611a (RSA-2048): "Not in DNS yet" at 05:20 (can be propagation, or the long value pasted wrongly in Namecheap: the TXT value must be ONE line with no quotes and no spaces around it). Re-check in 5-10 minutes with "Check DNS" on that row; if still empty after 30 minutes, ask him for a Namecheap Advanced DNS screenshot of the r2611a row (do not guess).
+- My sandbox cannot resolve DNS (allowlist), so the only proofs are the panel's Check DNS and his dkim-dns-print.sh paste (the script also prints what DNS answers now).
+- NEXT: when BOTH rows say "DNS record confirmed": he/I switch "DNS record must be confirmed before sending" (Turn on, touch). Then Q1d-2a (outgoing TLS read-only proof), Q1d-2b FMAIL_SEND on, first real mail to his Gmail, he pastes the Authentication-Results header (Record proof) = dkim=pass. Only then is Q1d-1a GREEN.

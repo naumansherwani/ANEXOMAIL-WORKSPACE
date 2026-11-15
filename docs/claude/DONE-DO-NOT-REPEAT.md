@@ -647,3 +647,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 16 Nov 04:58 POLICY: Over-sign ON and Both keys required ON (one-way ratchets, his touch each, live panel 'On. It can never be turned off.'). Keys e2611a + r2611a. Phase Q1d-1a NOT green: DNS TXT, Check DNS, DNS switch, signed mail dkim=pass still open. TECH-LAW CHECKED.
 
 - 16 Nov 05:05 his dkim-dns-print paste saved: nameservers = registrar-servers.com (Namecheap), TXT e2611a._domainkey (ed25519) and r2611a._domainkey (rsa) values in Q1D-1A-SUMMARY; Namecheap steps given one at a time; DNS answers empty so far. TECH-LAW CHECKED.
+
+- 16 Nov 05:20 DNS: his Namecheap paste done; panel Check DNS (my press, his Chrome): e2611a = DNS record confirmed, r2611a = Not in DNS yet (re-check, possible paste/propagation). Q1d-1a NOT green. TECH-LAW CHECKED.
