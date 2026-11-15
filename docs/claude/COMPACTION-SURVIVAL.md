@@ -1,5 +1,7 @@
 # COMPACTION SURVIVAL (his order 15 Nov 2026 19:25 PKT). Printed by the SessionStart hook after EVERY start / resume / compaction / clear. Short on purpose: read it, then open the named files.
 
+> **AFTER THIS FILE, READ docs/claude/Q-MASTER-PLAN-15NOV.md (the Q series, its advance technology and code, the world-class SQL standard, Admin > Mail Desk) AND CONTINUE FROM ITS 'NEXT ACTION'.**
+
 ## 1. WHO AND HOW
 Founder Nauman Sherwani. Roman Urdu, short, "Nauman bhai", often angry, London seminar in January so finishing phases is the priority. Every reply ends with the Rule-70 table (Code | Technology | Phase) and a line "Abhi code mein NAHI: ...". I commit and push myself after every step (rec.sh), never ask "commit kero?".
 
