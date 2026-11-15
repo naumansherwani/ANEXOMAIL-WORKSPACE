@@ -2307,3 +2307,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Q1d-1a execution 16 Nov 02:25: a1 OVERSIGN in fmail_dkim.rs (10/10 cargo tests, a header added after signing breaks Ed25519 + RSA); a2 E175 SQL (513 lines + CHECK_E175, sandbox PostgreSQL 16: selftest 28 ok, 7/7 CHECK, re-run safe, sql-editor-lint OK); next free SQL = E176; DKIM2 / ML-DSA-44 sirf tracked | IETF draft, FIPS 204 ML-DSA-44 | Q1d (OPEN) written as phase step Q1d-DKIM2. NOT on his server yet: his sql-run first, Rust oversign goes live with the next founder-install after the a3 wiring.
 
 - Q1d-1a summary written 16 Nov 02:35: docs/claude/Q1D-1A-SUMMARY-16NOV.md (features, a1-a4 status, tech per layer, DKIM2 tracked); waits his sql-run AUTO (E175 + CHECK), then a3 Rust wiring
+
+- Q1d-1a a2 SQL E175 OK on his server 16 Nov 02:3x: his paste sql-run AUTO = E175 selftest 28 ok 0 failed, CHECK_E175 7/7 OK, E65 sweep OK (sha 3dd4fbff6069e7a9); chains 0 rows until a3. Rust oversign NOT live yet (no founder-install asked); next = a3 Rust wiring in fmail_out.rs, then founder-install

@@ -2,7 +2,7 @@
 Phase: Q1d-1a = the founder mail DKIM lifecycle (key, DNS TXT, signing, proof). Sub-phase 1 of Q1d (1a, 1b, 2a, 2b). Plan: Q1D-PLAN-16NOV.md. Contract + EXECUTION RECORD: tech-contracts/CURRENT.md.
 ## Status (a1..a4)
 - a1 DONE (repo): oversigning in server/founder/src/fmail_dkim.rs (From/To/Subject/Date/Message-ID listed once extra in h=, twice if absent; header added after signing breaks Ed25519 AND RSA; cargo 10/10).
-- a2 DONE in sandbox PG16 only: docs/cursor-work/sql/E175_founder_mail_dkim_lifecycle.sql (513 lines, needs E167/E169/E170) + CHECK_E175.sql (7 checks). selftest 28 ok. NOT on his server until his sql-run AUTO paste.
+- a2 DONE and ON HIS SERVER (his paste 16 Nov 02:3x: E175 selftest 28 ok, 0 failed; CHECK_E175 7/7 OK, E65 sweep OK; sha 3dd4fbff6069e7a9). Written in sandbox PG16 first: docs/cursor-work/sql/E175_founder_mail_dkim_lifecycle.sql (513 lines, needs E167/E169/E170) + CHECK_E175.sql (7 checks). selftest 28 ok. Chain tables hold 0 rows until a3 wires Rust (0 rows checked, 0 broken).
 - a3 NEXT: Rust wiring in fmail_out.rs: call fmail_dkim_send_gate175 before claiming; fmail_dkim_sign_record175 after each signature; read-only DNS probe -> fmail_dkim_dns_record175; proof door -> fmail_dkim_proof175; policy/health door. Contract note in CURRENT.md FIRST.
 - a4 AFTER (needs his haan, additive only): new React file + one-line mount: key, TXT, DNS state, rotation, proof paste.
 - Then: founder-install (oversign Rust live), his Compose key touch (hands), his Namecheap TXT (hands), Q1d-1b Gmail Show original paste, Q1d-2a, Q1d-2b (FMAIL_SEND=on only with his haan).
@@ -19,6 +19,7 @@ Phase: Q1d-1a = the founder mail DKIM lifecycle (key, DNS TXT, signing, proof). 
 Rust = signer (ring/mail-auth). Tokio = sender worker, blocking RSA keygen thread, SQL doors. WASM kernel = signs/verifies browser requests and answers, later re-hashes the sign-log chain; NEVER holds a DKIM private key. WebTransport = browser<->server doors only (Compose, key touch, health); mail itself leaves by SMTP STARTTLS TLS 1.3 (Q1d-2a proves X25519MLKEM768). PostgreSQL 16 RLS, SHA-256 hash chains, triggers.
 ## DKIM2 / ML-DSA-44 sirf tracked | IETF draft, FIPS 204 | Q1d (OPEN)
 draft-ietf-dkim-dkim2-spec-09 (WG draft, expires 5 May 2027): per-hop chain, mf=/rt= binding, RSA-SHA256, Ed25519-SHA256, ML-DSA-44. No receiver verifies it: NOT built. Build later in Rust + kernel verify when a receiver does. qstate step Q1d-DKIM2 (deferred).
-## His ONE command now
+## His command: DONE (sql-run AUTO). NO founder-install asked yet: Rust oversign + wiring go live with the founder-install AFTER a3. Next command to him = founder-install, only then.
+## (old) His ONE command was
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) 2>&1 | tail -25
 Expect: E175 selftest 28 ok + CHECK_E175 7 OK. No awam pull (kernel unchanged).
