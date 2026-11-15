@@ -1,12 +1,12 @@
 {
- "generated": "16 Nov 2026 04:24 +0500",
- "head": "3f03b4c3",
- "head_subject": "Founder live audit: honest 404 cards, dark select, open list",
+ "generated": "16 Nov 2026 04:37 +0500",
+ "head": "a33a0a89",
+ "head_subject": "Fix key-touch no origin (wtrpc), Systems button look",
  "now": "Q1d-1a",
  "phases": {
-  "GREEN": 27,
+  "GREEN": 28,
   "IN PROGRESS": 1,
-  "NOT GREEN": 12,
+  "NOT GREEN": 11,
   "PAUSED": 1
  },
  "q_done": 20,

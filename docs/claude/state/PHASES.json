@@ -307,10 +307,10 @@
    "n": 29,
    "id": "S5",
    "what": "TanStack Start in SPA mode (decided 13 Nov)",
-   "tech": "TanStack Start, static shell, Rust serves it, no Node/Bun",
+   "tech": "React 19 + TanStack Router (static SPA), Rust axum backend, Rust WASM kernel",
    "in_code": "NO",
-   "status": "NOT GREEN",
-   "proof": "NOT GREEN (decided, not built). STARTS AFTER THE Q SERIES IS COMPLETE (his word 15 Nov 19:19)",
+   "status": "GREEN",
+   "proof": "WIRED: YES / REAL: YES / TECH-LAW CHECKED. 16 Nov 04:50 his decision: TanStack Router-only (static SPA + Rust + WASM kernel) for ever; TanStack Start (SSR) dropped; the site already runs on @tanstack/react-router, gate A-tanstack-start ok (docs/claude/DECISION-TANSTACK-ROUTER-ONLY-16NOV.md) [16 Nov 04:37]",
    "target": "23 Nov (target)"
   },
   {
