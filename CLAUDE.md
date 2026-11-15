@@ -1,4 +1,4 @@
-> ## >>> RESUME HERE: NOW = QPERF PLAN written, waits his haan; then E174 + Rust timings + additive Bridge card; target Q 22 Nov, founder 100% 30 Nov (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
+> ## >>> RESUME HERE: NOW = QPERF-1 E174 written, waits his sql-run paste; then QPERF-2 Rust timings, QPERF-3 door + Bridge card; target Q 22 Nov (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
 > ## >>> SERVER CMDS, HIS EXACT FORMS (15 Nov 20:15/20:16), each = git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/X.sh) : X=sql-run then 2>&1 | tail -25 (no name = AUTO); X=founder-install then 2>&1 | tail -12. They run the newest origin/main commit. <<<
 ## >>> FOUNDER/AWAM SEPARATION (his 14 Nov 05:34): docs/claude/FOUNDER-AWAM-SEPARATION-LAW-14NOV.md, awam problems = awam blueprint only, NEVER re-discuss. <<<
 ## >>> KP3 CODE MAP (all exists, do not rewrite): docs/claude/KP3-CODE-MAP-14NOV.md <<<

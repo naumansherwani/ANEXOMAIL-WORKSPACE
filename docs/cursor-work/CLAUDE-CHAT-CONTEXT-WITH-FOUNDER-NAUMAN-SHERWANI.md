@@ -3311,3 +3311,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - QUI-H4 popover polish written (his haan 15 Nov 21:35): max-height by Radix available-height + inner scroll + soft fade, old 'no audit batch yet' line hides only when the kernel proved the Merkle line; blur skipped (popover background is already opaque); tsc clean, bun 265/265; waits his founder-install + my Chrome look
 
 - QUI-H4 popover polish live-proven (his founder-install paste 15 Nov 22:2x + my Chrome: bundle index-C8UY87r7 = repo build, popover overflow-y auto, max-height 423px, stale line display none, Merkle line proven with the kernel). QPERF plan written (docs/claude/QPERF-PLAN-15NOV.md), waits his haan; WIRED: YES / REAL: YES / TECH-LAW CHECKED for the polish
+
+- QPERF-1: SQL E174 + CHECK_E174 written (partitioned append-only samples, daily seal chain, log-linear histogram, exact percentiles, 3-tier burn rate, 12-case selftest); sandbox PG16: selftest 12/12, CHECK 6/6, lint OK; NOT run on his server yet
