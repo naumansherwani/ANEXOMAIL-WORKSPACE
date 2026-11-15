@@ -3422,3 +3422,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - AWAM pull of shared kernel 0.16.0 done (his paste 15 Nov 20:5x: pull.sh build OK, health 200, server==repo 609 same 0 differ). QUI-H4 is NOT done: code not written, only started; honest correction of the wording
 
 - QUI-H4 code written, NOT green: E173 + CHECK_E173, kernel 0.17.0 auditproof@1, Rust door anchor-proof, additive UI line; waits his sql-run + founder-install + awam pull + my Chrome look
+
+- QUI-H4 state files synced after push (generated Q state and contract), still NOT green
