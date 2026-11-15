@@ -186,6 +186,7 @@ pub async fn session<S: AsyncRead + AsyncWrite + Unpin + Send, B: Backend>(strea
                     let mut d = DataBuf::new(be.max_bytes());
                     let t0 = std::time::Instant::now();
                     loop { if t0.elapsed().as_secs() > DATA_TOTAL_S { return; } let Some(l) = read_line(&mut rd, DATA_IDLE_S).await else { return }; if d.push_line(&l) { break; } }
+                    crate::fmail_perf::record("accept", if d.over { "reject" } else { "ok" }, crate::fmail_perf::size_bucket(d.seen), t0);
                     // LMTP: one reply per accepted recipient, in the order of the RCPT commands
                     for rc in &rcpts {
                         let reply = if d.over { "552 5.3.4 message too big".to_string() }
@@ -216,13 +217,26 @@ impl Backend for Live {
         rcpt_from_json(addr, &v).ok_or_else(|| (v["smtp"].as_u64().unwrap_or(550) as u16, match v["reason"].as_str() { Some("paused") => "mailbox paused".into(), Some("no_key") => "mailbox key not ready".into(), _ => "no such mailbox".into() }))
     }
     async fn deliver(&self, raw: &[u8], r: &Rcpt) -> Result<(), String> {
+        let (t_all, sz) = (std::time::Instant::now(), crate::fmail_perf::size_bucket(raw.len()));
+        let r_all = self.deliver_timed(raw, r, t_all, sz).await;
+        crate::fmail_perf::record("total", if r_all.is_ok() { "ok" } else { "error" }, sz, t_all);
+        r_all
+    }
+}
+impl Live {
+    async fn deliver_timed(&self, raw: &[u8], r: &Rcpt, _t_all: std::time::Instant, sz: &'static str) -> Result<(), String> {
         let s = core::summarize(raw);
+        let t_scan = std::time::Instant::now();
         let scan = match &self.clamd { Some(a) => clam_scan(a, raw).await, None => "skipped" };
         // a "clean" verdict is not trusted when an attachment hides its content (encrypted ZIP / PDF / Office): quarantine it, recorded as "opaque" (E171; the scan could not look inside)
         let scan = if scan == "clean" && opaque_attachment(raw) { "opaque" } else { scan };
+        crate::fmail_perf::record("scan", match scan { "clean" | "skipped" => "ok", "error" => "error", _ => "quarantine" }, sz, t_scan);
         let pubkey = match (&*r.seal_mode, &r.pub_hex) { ("recipient_pq", Some(h)) => Some(hex::decode(h).map_err(|_| "bad stored key")?), ("recipient_pq", None) => return Err("mailbox key not ready".into()), _ => None };
         let wrap = match &pubkey { Some(p) => core::Wrap::Recipient { public: p, key_id: &r.key_id }, None => core::Wrap::Vault { master: &self.master, key_id: &r.key_id } };
+        let t_seal = std::time::Instant::now();
         let sealed = core::seal_message(&self.master, &r.mailbox_id, "in", wrap, raw, &s).map_err(|e| e.to_string())?;
+        crate::fmail_perf::record("seal", "ok", sz, t_seal);
+        let t_commit = std::time::Instant::now();
         let opt = |b: &Option<[u8; 32]>| b.as_ref().map(|x| Value::String(bytea(x))).unwrap_or(Value::Null);
         let out = self.sb.rpc_msg("fmail_deliver_inbound", json!({
             "p_mailbox": r.mailbox_id, "p_folder_kind": folder_for(scan), "p_seal_mode": r.seal_mode,
@@ -231,7 +245,8 @@ impl Backend for Live {
             "p_msgid_blind": bytea(&sealed.msgid_blind), "p_parent_blind": opt(&sealed.parent_blind), "p_subject_blind": bytea(&sealed.subject_blind), "p_sender_blind": opt(&sealed.sender_blind),
             "p_sender_domain": sealed.sender_domain, "p_size": raw.len() as i64, "p_spf": "none", "p_dkim": "none", "p_dmarc": "none", "p_arc": "none",
             "p_lookalike": false, "p_spam": Value::Null, "p_tls": Value::Null,
-        })).await.map_err(|(c, m)| format!("database {c}: {m}"))?;
+        })).await.map_err(|(c, m)| { crate::fmail_perf::record("commit", "error", sz, t_commit); format!("database {c}: {m}") })?;
+        crate::fmail_perf::record("commit", if folder_for(scan) == "inbox" { "ok" } else { "quarantine" }, sz, t_commit);
         if out["stored"] != true {
             // a duplicate is fine (the mail is already stored); a full or locked mailbox is a temporary no
             return if out["reason"] == "duplicate" { Ok(()) } else { Err(format!("not stored: {}", out["reason"].as_str().unwrap_or("unknown"))) };

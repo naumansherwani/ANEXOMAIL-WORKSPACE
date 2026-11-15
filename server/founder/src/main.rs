@@ -50,6 +50,7 @@ mod fmail_seal;
 mod fmail_kem;
 mod fmail_core;
 mod fmail_in;
+mod fmail_perf;
 mod fmail_ep;
 mod fmail_dkim;
 mod fmail_mime;
@@ -1035,7 +1036,7 @@ async fn main() {
     match (fmail_in::from_env(), &sb, lease::MASTER.get()) {
         (None, _, _) => eprintln!("founder: mail intake (LMTP) OFF (no FMAIL_LMTP_BIND)"),
         (Some(Err(e)), _, _) => eprintln!("founder: mail intake (LMTP) NOT started: {e}"),
-        (Some(Ok(c)), Some(s), Some(m)) => { fmail_in::spawn(s.clone(), *m, c).await; }
+        (Some(Ok(c)), Some(s), Some(m)) => { fmail_perf::start(s.clone()); fmail_in::spawn(s.clone(), *m, c).await; }
         (Some(Ok(_)), _, _) => eprintln!("founder: mail intake (LMTP) NOT started: needs the database and the vault master key"),
     }
 

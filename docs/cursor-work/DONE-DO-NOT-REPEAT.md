@@ -2267,3 +2267,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - QPERF-1: SQL E174 + CHECK_E174 written (partitioned append-only samples, daily seal chain, log-linear histogram, exact percentiles, 3-tier burn rate, 12-case selftest); sandbox PG16: selftest 12/12, CHECK 6/6, lint OK; NOT run on his server yet
 
 - QPERF-1: E174 ran on his server (partitions created) but CHECK_E65 FAILED: new RLS tables had no explicit policy; E174 fixed in place (service_role_internal_access policy on every table + every partition, also in the partition manager), sandbox: selftest 12/12, CHECK 6/6, no RLS table without policy; waits his sql-run again
+
+- QPERF-1 GREEN - WIRED: YES / REAL: YES / TECH-LAW CHECKED: his sql-run 15 Nov 23:05 shows E174 applied (sha 70a385cb, 4 partitions), CHECK_E65 all OK, CHECK_E174 6/6 OK (selftest 12 ok 0 failed); founder-install OK (SPA 200, healthz 200). QPERF-2 written: fmail_perf.rs (Tokio mpsc + batch writer, never blocks the mail path) + timing points in fmail_in.rs, 401/401 Rust tests; NOT installed yet
