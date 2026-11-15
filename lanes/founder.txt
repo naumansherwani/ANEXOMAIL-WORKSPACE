@@ -59,6 +59,7 @@ docs/cursor-work/server/founder-ports-audit.sh
 docs/cursor-work/server/founder-signin-peek.sh
 docs/cursor-work/server/founder-telemetry.sh
 docs/cursor-work/server/founder-tls256.sh
+docs/cursor-work/server/founder-ui-backup-16nov-b.sh
 docs/cursor-work/server/founder-ui-backup-16nov.sh
 docs/cursor-work/server/founder-ui-rollback-16nov.sh
 docs/cursor-work/server/founder-wt-off.sh

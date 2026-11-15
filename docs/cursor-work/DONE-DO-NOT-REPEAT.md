@@ -2287,3 +2287,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Q1D plan written at repo top 16 Nov 01:10 (docs/claude/Q1D-PLAN-16NOV.md): Q1d-1a, 1b, 2a, 2b one at a time after QPERF-3; SLO targets stay as proposed (his delegation); brand block = original logo + ANEXOMAIL + email below. Logo-fix commit 7116c29b waits his founder-install (live server still runs 2d15a7ba: logo squeezed to 0 px).
 
 - QUI-LIVE declutter 16 Nov 01:35 (his phone screenshots: too congested, two searches): mailbox search moved INTO the list pane under the Inbox head (global Ctrl K top search untouched), header = brand + Live only, phone pills and lanes = one side-scroll line. Sandbox 390/820/1360 no sideways scroll, tsc clean. Needs his founder-install, then my Chrome look and his phone shot.
+
+- Second backup script founder-ui-backup-16nov-b.sh 16 Nov 01:30 (own folder /root/backups/founder-ui-16nov-0130-before-declutter, never overwrites the first restore point); his order: backup first, then install.
