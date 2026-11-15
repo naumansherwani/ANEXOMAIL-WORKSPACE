@@ -575,3 +575,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - QPERF-3 INSTALLED on his server (his founder-install paste 16 Nov 00:04: service alive, door closed, healthz 200). Still open: one real mail not measured yet, my live Chrome look 390/820/1200+ not done. UI demo (living mailbox, sandbox only): his word = pink gradient not professional, rest approved; pink removed from demo, real UI untouched until his haan.
 
 - QUI-LIVE written 16 Nov 2026 00:40 PKT (his haan 00:22: live banao, blue not pink): new MailBox.tsx + mailbox.css + mailbox_icons.tsx + mailbox_pure.ts(+14 tests); App.tsx mounts MailBox (one line); MailView.tsx, MailCompose.tsx, mail_api.ts, Scene3D.tsx not edited; backup of the old UI sent to him (SHA-256 097018f9) and commit e22020ab. Tests 295 of 295, tsc clean, vite build OK, sandbox look 390/820/1360 (stub rows, harness only). NOT installed on his server, my live Chrome look not done.
+
+- Founder UI server backup + rollback scripts written 16 Nov 00:35 PKT (his order 00:32): founder-ui-backup-16nov.sh / founder-ui-rollback-16nov.sh, backup record #4 in FOUNDER-BACKUP-LAW. Not yet run on his server.

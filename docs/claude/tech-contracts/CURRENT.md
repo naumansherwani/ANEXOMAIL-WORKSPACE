@@ -601,3 +601,5 @@ Phase: Q mailbox UI, the "living mailbox" look made real. UI LAW kept: NEW files
 Colour: ONE blue family only (blue / blue-violet / cyan), no pink, no green+yellow arcs (UI WOW RULES). Icons: one 24 grid, 1.5 stroke, same set everywhere. Responsive: one build; 390 = one pane + bottom bar + FAB, 820 = rail + list + reader, 1200+ = full.
 
 - QUI-LIVE written 16 Nov 2026 00:40 PKT (his haan 00:22: live banao, blue not pink): new MailBox.tsx + mailbox.css + mailbox_icons.tsx + mailbox_pure.ts(+14 tests); App.tsx mounts MailBox (one line); MailView.tsx, MailCompose.tsx, mail_api.ts, Scene3D.tsx not edited; backup of the old UI sent to him (SHA-256 097018f9) and commit e22020ab. Tests 295 of 295, tsc clean, vite build OK, sandbox look 390/820/1360 (stub rows, harness only). NOT installed on his server, my live Chrome look not done.
+
+- Founder UI server backup + rollback scripts written 16 Nov 00:35 PKT (his order 00:32): founder-ui-backup-16nov.sh / founder-ui-rollback-16nov.sh, backup record #4 in FOUNDER-BACKUP-LAW. Not yet run on his server.

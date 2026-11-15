@@ -23,3 +23,6 @@
 ## Backup #3 — 14 Nov 2026 03:00 PKT (end of KP3 step 3 code, before the install of the QUIC path row)
 - Commit **07699cdb**. Founder archive anexomail-founder-backup-20261114-0300-07699cdb.tar.gz: 894 files, SHA-256 `bce673bd35b2808ef9a8fc66382357c3cf34063804eaa9195c16a25a6f8e335b`. Awam archive anexomail-awam-backup-20261114-0300-07699cdb.tar.gz: 1949 files, SHA-256 `72b9d8256c3c11253c23c529905b1880a4ec25f97e723d42f6042dfd38ec449e`. Built from lanes/*.txt (founder = founder + shared + docs + lovable-founder; awam = awam + shared + docs + lovable-awam). Sent to him as files. Restore point = this commit on origin/main.
 
+
+## Backup #4 - 16 Nov 2026 00:32 PKT (before the living mailbox QUI-LIVE goes onto his server)
+- Commit **e22020ab** (the founder UI as it was live). Chat delivery to him 00:15: founder-web-src-FULL-backup-16nov-e22020ab.tar.gz (SHA-256 `097018f9433698330d7fdf8190a1a3629347efddcae0a111f047ae487a40c081`) and founder-mail-ui-backup-16nov-e22020ab.tar.gz (SHA-256 `f4f71586eb37e3852072abfa9eef52aca0b82debfb04c99d3e77b75fb5c0d586`). Server copy (his order 00:32): script docs/cursor-work/server/founder-ui-backup-16nov.sh copies the live SPA + binary to /root/backups/founder-ui-16nov and writes the e22020ab source tar.gz with MANIFEST.sha256; rollback = founder-ui-rollback-16nov.sh (manifest-checked, bad copy kept aside).
