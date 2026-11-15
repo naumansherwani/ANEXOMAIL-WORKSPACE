@@ -182,6 +182,7 @@ docs/cursor-work/server/integrity-purge/install.sh
 docs/cursor-work/server/jwt-life-probe.sh
 docs/cursor-work/server/kernel-check.sh
 docs/cursor-work/server/kp2-audit.sh
+docs/cursor-work/server/lane-times-check.sh
 docs/cursor-work/server/live-facts-2026-10-20.md
 docs/cursor-work/server/login-probe.sh
 docs/cursor-work/server/mail-cert/00-FOUNDER-TECH-RULE.md
