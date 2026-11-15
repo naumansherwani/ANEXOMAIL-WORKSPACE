@@ -78,7 +78,7 @@ function ProofChip({ p, busy, box, id }: { p: Proof | null; busy: boolean; box?:
     <Popover.Root>
       <Popover.Trigger asChild><button type="button" className={`mx-proof ${busy ? "busy" : c.state}`}><i aria-hidden="true" />{busy ? "Checking the ledger…" : c.text}</button></Popover.Trigger>
       <Popover.Portal><Popover.Content className="mx-pop" side="bottom" align="start" sideOffset={8} collisionPadding={12}>
-        <b>{busy ? "Checking…" : c.text}</b>{!busy && c.detail.map((d, i) => <span key={i}>{d}</span>)}{!busy && box && id && <MailAnchorLine box={box} id={id} />}<Popover.Arrow className="mx-arrow" />
+        <b>{busy ? "Checking…" : c.text}</b>{!busy && c.detail.map((d, i) => <span key={i} className={d.startsWith("Hash chain only") ? "mx-stale" : undefined}>{d}</span>)}{!busy && box && id && <MailAnchorLine box={box} id={id} />}<Popover.Arrow className="mx-arrow" />
       </Popover.Content></Popover.Portal>
     </Popover.Root>
   );

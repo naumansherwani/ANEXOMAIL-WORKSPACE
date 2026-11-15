@@ -128,3 +128,8 @@ button.ml-c{cursor:pointer}button.ml-c:hover{background:var(--surf2)}
 .mx-chip.lg:disabled{cursor:progress}@keyframes mxlg{50%{opacity:.35}}@media (prefers-reduced-motion:reduce){.mx-chip.lg.wait i{animation:none}}
 @media (pointer:coarse){.mx-chip.lg{min-height:44px}}
 .mx-anchor{font-size:12px;opacity:.9;border-top:1px solid var(--mh2);padding-top:6px;margin-top:2px}.mx-anchor[data-state="failed"]{color:var(--bad,#ff6b6b)}.mx-anchor[data-state="proven"]{color:var(--ok)}
+
+/* QUI-H4 polish (his haan 15 Nov 21:35): the proof popover never leaves the screen (Radix available-height), scrolls inside with a soft fade, and the old "no audit batch yet" line steps aside once the kernel has proven the Merkle line */
+.mx-pop{max-height:min(70vh,var(--radix-popover-content-available-height,70vh));overflow-y:auto;scrollbar-width:none;overscroll-behavior:contain}.mx-pop::-webkit-scrollbar{display:none}
+.mx-pop::after{content:"";position:sticky;bottom:-12px;flex:none;height:18px;margin-top:-18px;background:linear-gradient(transparent,#121620);pointer-events:none}
+.mx-pop:has(.mx-anchor[data-state="proven"]) .mx-stale{display:none}
