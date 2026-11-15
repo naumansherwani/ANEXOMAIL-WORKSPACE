@@ -563,3 +563,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - QUI-H4 popover polish live-proven (his founder-install paste 15 Nov 22:2x + my Chrome: bundle index-C8UY87r7 = repo build, popover overflow-y auto, max-height 423px, stale line display none, Merkle line proven with the kernel). QPERF plan written (docs/claude/QPERF-PLAN-15NOV.md), waits his haan; WIRED: YES / REAL: YES / TECH-LAW CHECKED for the polish
 
 - QPERF-1: SQL E174 + CHECK_E174 written (partitioned append-only samples, daily seal chain, log-linear histogram, exact percentiles, 3-tier burn rate, 12-case selftest); sandbox PG16: selftest 12/12, CHECK 6/6, lint OK; NOT run on his server yet
+
+- QPERF-1: E174 ran on his server (partitions created) but CHECK_E65 FAILED: new RLS tables had no explicit policy; E174 fixed in place (service_role_internal_access policy on every table + every partition, also in the partition manager), sandbox: selftest 12/12, CHECK 6/6, no RLS table without policy; waits his sql-run again

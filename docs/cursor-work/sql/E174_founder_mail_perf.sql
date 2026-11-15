@@ -41,6 +41,7 @@ begin
       execute format('alter table public.%I enable row level security', v_name);
       execute format('alter table public.%I force row level security', v_name);
       execute format('revoke all on public.%I from public, anon, authenticated', v_name);
+      execute format('create policy "service_role_internal_access" on public.%I for all to service_role using (true) with check (true)', v_name);
       execute format('create trigger %I before update or delete on public.%I for each row execute function public._fp_immutable()', v_name || '_row', v_name);
       execute format('create trigger %I before truncate on public.%I for each statement execute function public._fp_immutable()', v_name || '_trunc', v_name);
       v_made := v_made + 1;
@@ -56,6 +57,15 @@ end $$;
 revoke all on function public.fmail_perf_partitions174() from public, anon, authenticated;
 grant execute on function public.fmail_perf_partitions174() to service_role;
 select public.fmail_perf_partitions174();
+
+-- E65 law: every RLS-on table carries an explicit policy (service_role only; anon/authenticated have no grant and no policy). Idempotent; also covers partitions made before this fix.
+do $$ declare r record; begin
+  for r in select c.relname from pg_class c where c.relnamespace = 'public'::regnamespace and c.relkind in ('r', 'p') and c.relrowsecurity
+             and (c.relname in ('fmail_perf_sample', 'fmail_perf_seal', 'fmail_perf_hist', 'fmail_perf_state', 'fmail_perf_slo') or c.relname ~ '^fmail_perf_sample_y[0-9]{8}$') loop
+    execute format('drop policy if exists "service_role_internal_access" on public.%I', r.relname);
+    execute format('create policy "service_role_internal_access" on public.%I for all to service_role using (true) with check (true)', r.relname);
+  end loop;
+end $$;
 
 -- ===========================================================================================================================================
 -- 3) THE INGEST DOOR: the Rust batch writer sends up to 500 samples; every element is checked against the closed lists; nothing is guessed.
@@ -361,3 +371,12 @@ begin
 end $$;
 revoke all on function public.fmail_perf_selftest174() from public, anon, authenticated;
 grant execute on function public.fmail_perf_selftest174() to service_role;
+
+-- the tables created after the first backfill (seal, hist, state, slo) get their policy here (same E65 law)
+do $$ declare r record; begin
+  for r in select c.relname from pg_class c where c.relnamespace = 'public'::regnamespace and c.relkind in ('r', 'p') and c.relrowsecurity
+             and (c.relname in ('fmail_perf_sample', 'fmail_perf_seal', 'fmail_perf_hist', 'fmail_perf_state', 'fmail_perf_slo') or c.relname ~ '^fmail_perf_sample_y[0-9]{8}$') loop
+    execute format('drop policy if exists "service_role_internal_access" on public.%I', r.relname);
+    execute format('create policy "service_role_internal_access" on public.%I for all to service_role using (true) with check (true)', r.relname);
+  end loop;
+end $$;
