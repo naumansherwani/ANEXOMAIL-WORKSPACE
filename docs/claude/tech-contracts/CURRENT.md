@@ -674,3 +674,12 @@ Where each technology sits: Rust = signer (fmail_dkim.rs). Tokio = sender worker
 - Q1d-1a a3 INSTALLED on his server 16 Nov 02:5x: founder-install OK (his paste: SPA 200, healthz 200, signing ON, 4/4); my Chrome look: live bundle index-B5pJDX1M + css CYOquduq = repo build, dkim/health 401 (route live), dkim/nope 404; NOT green: no key yet, no real signed mail (sender OFF), no dkim=pass; his haan for a4 UI with existing UI intact, founder separate from awam
 
 - Q1d-1a phase tech text and blueprint row matched to the code (oversign, E175 hash chains, Tokio, hickory, kernel-signed doors, DKIM2 tracked) 16 Nov 03:00
+
+## Q1d-1a a4 CONTRACT (16 Nov 2026 03:10, his haan 02:49: "EXISTING UI INTACT, founder separate from awam"): DKIM panel, additive
+- TECHNOLOGY: React 19.2 + TypeScript strict + motion-free plain CSS tokens; every call over the kernel doors (founder-web/src/dkim_api.ts uses api.get/post = kernel-signed WebTransport/H3 path with kernel-verified answers; passkey touch via passkey.prove for key creation and policy switches). Pure logic in dkim_pure.ts (twin of E175 fmail_dkim_selector175, bun tests 6/6). No fetch, no WebSocket, no key material in the browser.
+- NEW FILES ONLY: DkimPanel.tsx, DkimDock.tsx, dkim_api.ts, dkim_pure.ts, dkim_pure.test.ts, dkimpanel.css. MOUNT (corrected 03:25): MailBox.tsx is PRESERVED for awam (AWAM INHERIT gate), so it is NOT edited. New DkimDock.tsx is rendered by App.tsx beside <MailBox /> (one import + one JSX change), under the mailbox, same on every screen. mail_api.ts, MailCompose.tsx (old DkimSetup), Scene3D, orb untouched. Founder only: NOT added to the awam inherit manifest.
+- LOOK: collapsed by default (one 44 px row "Signing (DKIM)"), opens to: blockers/warnings, new dated key (e/r + YYMM + letter), per key DNS state + TXT + Check DNS, rotation words, one-way policy switches (touch), outside-receiver proof paste. Sandbox look 1280/820/390: no sideways scroll, no button under 44 px. Live look after his founder-install.
+
+- Q1d-1a a4 UI written 16 Nov 03:15 (repo, not on his server): DkimPanel + dkim_api + dkim_pure (bun 6/6), additive (1 import + 2 mount lines in MailBox.tsx, existing UI intact), sandbox look 390/820/1280 OK; waits his founder-install then my live Chrome look
+
+- Q1d-1a a4 UI written 16 Nov 03:25 (repo, not on his server): DkimPanel + DkimDock + dkim_api + dkim_pure (bun 289/289, tsc clean), MailBox.tsx NOT edited (awam-preserved), mounted by App.tsx under the mailbox, sandbox look 390/820/1280 OK; waits his founder-install then my live Chrome look

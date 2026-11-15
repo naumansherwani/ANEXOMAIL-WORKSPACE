@@ -1364,3 +1364,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Q1d-1a a3 INSTALLED on his server 16 Nov 02:5x: founder-install OK (his paste: SPA 200, healthz 200, signing ON, 4/4); my Chrome look: live bundle index-B5pJDX1M + css CYOquduq = repo build, dkim/health 401 (route live), dkim/nope 404; NOT green: no key yet, no real signed mail (sender OFF), no dkim=pass; his haan for a4 UI with existing UI intact, founder separate from awam
 
 - Q1d-1a phase tech text and blueprint row matched to the code (oversign, E175 hash chains, Tokio, hickory, kernel-signed doors, DKIM2 tracked) 16 Nov 03:00
+
+- Q1d-1a a4 UI written 16 Nov 03:15 (repo, not on his server): DkimPanel + dkim_api + dkim_pure (bun 6/6), additive (1 import + 2 mount lines in MailBox.tsx, existing UI intact), sandbox look 390/820/1280 OK; waits his founder-install then my live Chrome look
+
+- Q1d-1a a4 UI written 16 Nov 03:25 (repo, not on his server): DkimPanel + DkimDock + dkim_api + dkim_pure (bun 289/289, tsc clean), MailBox.tsx NOT edited (awam-preserved), mounted by App.tsx under the mailbox, sandbox look 390/820/1280 OK; waits his founder-install then my live Chrome look

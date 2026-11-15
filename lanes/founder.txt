@@ -150,8 +150,8 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-B5pJDX1M.js
-founder-web/dist/assets/index-CYOquduq.css
+founder-web/dist/assets/index-BSIOhyaI.css
+founder-web/dist/assets/index-C6QpdR7_.js
 founder-web/dist/assets/kernel.worker-CmgLpPuh.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
@@ -194,6 +194,8 @@ founder-web/src/Dbsc.tsx
 founder-web/src/DbscCard.tsx
 founder-web/src/Decks.tsx
 founder-web/src/Devices.tsx
+founder-web/src/DkimDock.tsx
+founder-web/src/DkimPanel.tsx
 founder-web/src/Finance.tsx
 founder-web/src/Flare.tsx
 founder-web/src/Keys.tsx
@@ -245,6 +247,10 @@ founder-web/src/devicekey_pure.test.ts
 founder-web/src/devicekey_pure.ts
 founder-web/src/devicelabel.ts
 founder-web/src/devices.css
+founder-web/src/dkim_api.ts
+founder-web/src/dkim_pure.test.ts
+founder-web/src/dkim_pure.ts
+founder-web/src/dkimpanel.css
 founder-web/src/dx.css
 founder-web/src/flare_pure.ts
 founder-web/src/flare_sw.test.ts

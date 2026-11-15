@@ -1,0 +1,18 @@
+/* Q1d-1a a4: DKIM panel. New file, scoped to .dk; uses the mailbox tokens, no existing rule is changed. */
+.dk{border:1px solid var(--mh2,rgba(255,255,255,.12));border-radius:14px;background:var(--surf,rgba(255,255,255,.025));min-width:0}
+.dk-head{display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:8px 12px;background:none;border:0;color:inherit;cursor:pointer;text-align:left;font:inherit}
+.dk-t{white-space:nowrap}.dk-sum{margin-left:auto;font-size:12px;opacity:.75;text-align:right;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dk-dot{width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.4;flex:0 0 8px}.dk-dot[data-tone=ok]{background:var(--ac,#6ea8ff);opacity:1}.dk-dot[data-tone=warn]{background:#d9a441;opacity:1}.dk-dot[data-tone=bad]{background:#e0675f;opacity:1}
+.dk-body{display:flex;flex-direction:column;gap:10px;padding:0 12px 12px;min-width:0}
+.dk-body p{margin:0;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+.dk-b{color:#e0675f}.dk-w{color:#d9a441}.dk-ok{color:var(--ac,#6ea8ff)}
+.dk-act,.dk-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.dk-key,.dk-pol,.dk-proof{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--mh,rgba(255,255,255,.07));padding-top:10px;min-width:0}
+.dk-st[data-tone=ok]{color:var(--ac,#6ea8ff)}.dk-st[data-tone=warn]{color:#d9a441}.dk-st[data-tone=bad]{color:#e0675f}
+.dk-dns b,.dk-key b{overflow-wrap:anywhere;word-break:break-all}.dk-dns{display:flex;flex-direction:column;gap:4px;min-width:0}.dk-dns code{font-size:11.5px;word-break:break-all;background:var(--surf2,rgba(255,255,255,.05));border-radius:8px;padding:8px}
+.dk-sw{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;font-size:13px}.dk-sw small{display:block}
+.dk select,.dk textarea{min-height:44px;border-radius:10px;border:1px solid var(--mh2,rgba(255,255,255,.12));background:var(--surf2,rgba(255,255,255,.05));color:inherit;padding:8px 10px;font:inherit;font-size:13px;max-width:100%}
+.dk textarea{width:100%;resize:vertical;font-family:ui-monospace,monospace;font-size:12px;box-sizing:border-box}
+
+/* mounted under the mailbox by DkimDock (App.tsx), full width on every screen, narrower reading width on large ones */
+.dk-dock{display:flex;flex-direction:column;gap:12px;margin:14px 0 96px;max-width:760px}.dk-for{margin:0 0 6px;padding-left:4px}
