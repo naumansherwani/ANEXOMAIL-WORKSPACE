@@ -1,4 +1,5 @@
-> ## >>> RESUME HERE: NEXT = his E172 sql-run + founder-install (given together as 1, 2), then CHECK_E172, Chrome look for QUI-H3 (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
+> ## >>> RESUME HERE: NEXT = his sql-run (no-name AUTO form) + founder-install together, then Chrome look for QUI-H3 (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
+> ## >>> SQL (his 15 Nov 20:15, no name): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) 2>&1 | tail -25 <<<
 ## >>> FOUNDER/AWAM SEPARATION (his 14 Nov 05:34): docs/claude/FOUNDER-AWAM-SEPARATION-LAW-14NOV.md, awam problems = awam blueprint only, NEVER re-discuss. <<<
 ## >>> KP3 CODE MAP (all exists, do not rewrite): docs/claude/KP3-CODE-MAP-14NOV.md <<<
 ## >>> KP3 STEP 5 REOPENED (his 14 Nov 04:51): remove UDP 4443. 6 steps, each closes with proof: 1 CSP self-only (GREEN on his server) / 2 delete the 4443 listener (GREEN on his server) / 3 founder-wt-off.sh + delete founder-wt.sh (WRITTEN, not run on his server) / 4 build AND all tests (DONE 394/394, bun 264/264) / 5 his ONE install + ss paste / 6 my live Chrome, then GREEN. FULL PLAN = top of docs/claude/PHASE-NOW.md + tech-contracts/CURRENT.md. <<<

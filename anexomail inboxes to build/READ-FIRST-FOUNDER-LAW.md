@@ -1,3 +1,4 @@
+> ## >>> SQL COMMAND, HIS EXACT FORM (his 15 Nov 20:15): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) 2>&1 | tail -25   (no name = AUTO: runs every new E file then its CHECK; always give THIS form, no file name) <<<
 # READ THIS FIRST, BEFORE ASKING THE FOUNDER ANY QUESTION (his word, 14 Nov 2026 04:04 PKT)
 
 1. NEVER ask him 'haan commit kero?'. Commit and push yourself after every step (docs/cursor-work/server/rec.sh).

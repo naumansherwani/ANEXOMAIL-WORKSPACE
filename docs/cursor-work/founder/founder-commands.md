@@ -3408,3 +3408,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - QUI-H3 code written, NOT green: kernel mailledger@1 0.16.0, Rust door ledger-rows, UI chip in-browser verify; waits his E172 sql-run + founder-install + my Chrome look
 
 - LAW CHANGE 15 Nov 20:14 (his word): server commands may be given TOGETHER as numbered 1, 2 in one reply, each still one line; replaces one per reply
+
+- SQL command form written at the top (his 15 Nov 20:15): sql-run.sh with no name, 2>&1 | tail -25 (AUTO runs new E files then CHECKs)
