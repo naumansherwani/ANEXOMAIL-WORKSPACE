@@ -6,50 +6,84 @@ Written on the founder's order 14 Nov 06:24: phases in order, numbered, the adva
 
 Stack that every phase inherits (founder technology law, 11 Nov 03:21 and 13 Nov 20:30): Rust WebAssembly kernel (one kernel), Rust + Tokio + Axum backend, HTTP/3 only (quinn + h3), WebTransport over UDP 443, AES-256-GCM only, X25519MLKEM768, React 19 + TypeScript + TanStack + Vite + Tailwind 4 + Radix/shadcn, PostgreSQL with RLS. No WebSocket, no SSE, no H2/H1, no Bun/Node on the server, no third-party vendor.
 
-| # | Phase | What it is | Advance technology | In code | Status |
-|---|---|---|---|---|---|
-| 1 | A | Device approval + request signatures | Rust Ed25519/ES256, WebAuthn L3, kernel `envelope@1` | YES | GREEN |
-| 2 | B | Settings S1 (photo, name, city, graphics, sidebar) | React 19 + TS strict + Tailwind 4 + shadcn; data over the kernel | YES | GREEN |
-| 3 | C | Server leftovers (Polar token DROPPED by him; data via webhook ledger in O) | Rust + SQL | YES (C1 dropped, C2 parked) | GREEN (as scoped) |
-| 4 | D | UI stack | React 19, Vite 8, TanStack Router, Tailwind 4, shadcn, TS strict | YES | GREEN |
-| 5 | E | Loophole fixes L1-L12 | CSP, Trusted Types, hash-pinned WASM | YES | GREEN except L5 (parked) and lockfile (open) |
-| 6 | F | WASM kernel verifies in the browser | Rust WASM kernel, Worker, pinned SHA-256 | YES | GREEN |
-| 7 | G | Audit ledger, Merkle, seals, anchors (G1-G5d) | SQL hash chain, RFC 9162 consistency proofs, C2SP signed checkpoints, kernel `merkle@2`, OpenTimestamps + RFC 3161 | YES | GREEN |
-| 8 | H | Settings S2: time machine + drift | SQL + Rust + kernel verify | YES | GREEN |
-| 9 | I | Appearance, Ambient Studio, key registry | Rust + SQL + React CSS layers | YES | GREEN |
-| 10 | J1-J5 | Passkey + Privacy (one factor, no 2FA) | WebAuthn L3, Rust `passkey.rs`, kernel `action@1` | YES | GREEN (T3 two-hardware-key flow never run for real) |
-| 11 | J6 | Phone alerts | Web Push (VAPID) from Rust | YES | GREEN on desktop Chrome (real phone optional) |
-| 12 | J8 | Vault lease + panic lock | SQL E143-E145 + Rust + kernel | YES | GREEN (panic lock not run for real; vault key encrypts nothing yet) |
-| 13 | K1-K4 | Post-quantum key exchange, AES-256 on :443 | Rust `tls256.rs` (rustls, TLS 1.3, AES-256-GCM only), X25519MLKEM768, SQL E119 | YES | GREEN |
-| 14 | K5-K6 | AES-256 for awam (separate lane); QUIC | Rust quinn / wtransport | YES | GREEN |
-| 15 | K7, K7c | Device-bound sessions (DBSC), enforce mode | hybrid ML-DSA-65 + ECDSA P-256 device proof, kernel `mldsa@1` | YES | GREEN (Safari/Firefox ML-DSA proof closed by his word, not live-proven) |
-| 16 | K8a-K8d | HTTP/3 primary, ML-KEM proof, kernel RPC | Rust quinn + h3, kernel `rpc@1` over WebTransport | YES | GREEN |
-| 17 | K8e | ALPN h3 only; TCP 443 of the founder host speaks no HTTP | own Rust authoritative DNS with HTTPS record alpn=h3, Rust SNI front | YES | GREEN by his order 14 Nov (820 tablet waived by him) |
-| 18 | KP3 step 1 | WebTransport on UDP 443 | Rust quinn + h3 + h3-webtransport on the one endpoint | YES | GREEN |
-| 19 | KP3 step 2 | Browser + kernel same origin | Rust WASM kernel dials the page origin; CSP `connect-src 'self'` | YES | GREEN |
-| 20 | KP3 latency | Adaptive QUIC Retry | Rust quinn | YES | GREEN |
-| 21 | KP3 pre-connect | Worker dials /wt/rpc while the kernel loads | React-TS Worker + Rust WASM kernel | YES | GREEN by HIS ORDER 14 Nov 06:33 (installed on his server, receipt 16, live bundle = repo; its own effect cannot be measured from outside, written honestly) |
-| 22 | KP3 step 3 | QUIC path row (honest chip, measured RTT) | React-TS + Worker + kernel session | YES | GREEN by his order |
-| 23 | KP3 step 4 | Dashboard live feed over WebTransport only | kernel `flive@1` over QUIC | YES | GREEN |
-| 24 | KP3 step 4b | No SSE anywhere for the founder | Rust axum (SSE routes deleted), kernel WebTransport | YES | GREEN |
-| 25 | KP3 step 5 | UDP 4443 removed (CSP, env, ufw, listener) | Rust quinn + h3-webtransport on the one UDP 443 endpoint; shell installer with rollback | YES | GREEN 14 Nov 06:01 (receipts 25, 26, my live Chrome) |
-| 26 | KP3 API latency audit (A, B, C, D) | Why one API call takes ~1-3 s while the ping is 185 ms | Rust axum + reqwest (Supabase REST), `wtrpc.rs`, `data.rs`; shell probes with rollback installer | YES | **GREEN 15 Nov 19:00 by HIS ORDER, WIRED: YES / REAL: YES / TECH-LAW CHECKED, the audit is CLOSED as a measurement.** Findings: the ping is 185 ms; the handler is 0.5-3 s (receipt 33); the database health URL answers in 0.04 s (receipt 34) but ONE database read costs ~0.27 s from his server (receipt 38, five in a row 263-292 ms); 25 at once cost 0.33-0.83 s with fresh connections; the dashboard load shows 0.6 s growing to 2.5 s (receipt 37) because one page load sends ~25 kernel calls and each makes several database calls, so 100+ database requests land together. The FIX (fewer database calls per page load: cache, one combined call) is a separate later phase, not part of this audit |
-| 27 | L | Look: Framer Motion + GSAP + Three.js WebGPU; LA-1..LA-7 orb and Bridge map features | WebGPU + TSL (orb pixel-equal), GSAP, Radix Popover, SQL E166, Rust `bridge.rs` | YES | **GREEN 15 Nov 19:12, WIRED: YES / REAL: YES / TECH-LAW CHECKED.** L2 WebGPU, LA-1..LA-6 GREEN with live proof (LA-4 my Chrome 15 Nov 19:05, bundle index-CVaJk1v6 = repo). LA-7b GREEN BY HIS ORDER: rule proven by tests, live dim picture not observable on real data (all event lanes count 0, receipt 39) |
-| 28 | S5 | TanStack Start in SPA mode (decided 13 Nov) | TanStack Start, static shell, Rust serves it, no Node/Bun | NO | NOT GREEN (decided, not built). **STARTS AFTER THE Q SERIES IS COMPLETE (his word 15 Nov 19:19)** |
-| 29 | Q | Mail + Calendar (Q0 research done, Q1 mailbox, Q2 attachments, Q3 parallel chunks over WebTransport, Q4 OpenPGP PQC RFC 9980, Q5 PQ network, Q6 sealed agreements) | Rust + SQL + kernel, ML-KEM / ML-DSA, resumable chunks over WebTransport, ClamAV, Hetzner Storage Box | PARTLY (plan written, mail intake and Mail page exist, Q3 pushed stream not built) | NOT GREEN |
-| 30 | M | MoQ (Media over QUIC) relay | Rust relay on QUIC + kernel | NO | NOT GREEN |
-| 31 | N | Decide + Live Pulse + push, Device Trust Map | Rust push + kernel WebTransport, SQL | NO | NOT GREEN |
-| 32 | O | Finance deck (Polar webhook ledger, revenue, billing, release) | Rust webhook verify + SQL ledger + React | NO | NOT GREEN |
-| 33 | P | People: Org, CRM, Team, Account 360, Work, Insider Guard | SQL RLS + ledgers, Rust, React | NO | NOT GREEN |
-| 34 | R | Systems: health, analytics, speed, admin, safety, chat, Mail Desk (R3) | Rust probes, mesh sync over QUIC | NO | NOT GREEN |
-| 35 | S | Control: kill switch, flags, executor, poison pill | Rust + SQL + passkey two-key gates | NO | NOT GREEN |
-| 36 | T | Cutover: remove old Lovable/Bun founder routes | Rust only, after Rust == Bun proof | NO | NOT GREEN |
-| 37 | U | Docs + Sheets | WOPI host in Rust | NO | NOT GREEN |
-| 38 | V | Founder AI (founder only) | Rust + React, kernel | NO | NOT GREEN |
-| 39 | X | Extra advanced: proof of restore, continuity, served-code seal, supply-chain board | Rust + SQL + kernel, PQ signatures | NO | NOT GREEN |
-| 40 | D-series | D3 UI and D2b Rust (policy change needs a fresh passkey touch) | Rust + SQL E155-E157 + React | PARTLY (D1, D2b installed; D2b-5 written) | PAUSED by him, resumes after Q |
+<!--PHASES-BEGIN-->
+<!-- GENERATED from docs/claude/state/PHASES.json + Q-STATE.jsonl by docs/cursor-work/server/phases.py: never edit by hand. A phase with no advance technology blocks the commit. -->
 
-Order of work from here (his word 15 Nov 19:19, one step at a time): Q series (mail + calendar) until complete, THEN S5, THEN M and N in letter order, then the Lovable-migration phases O, P, R, S, V, then T (cutover) and U. Parked on his word: audit FIX (fewer database calls), repo private + deploy key, KP2 laptop SSH test, D3.
+| # | Phase | What it is | Advance technology | In code | Status | Proof |
+|---|---|---|---|---|---|---|
+| 1 | A | Device approval + request signatures | Rust Ed25519/ES256, WebAuthn L3, kernel `envelope@1` | YES | **GREEN** | GREEN |
+| 2 | B | Settings S1 (photo, name, city, graphics, sidebar) | React 19 + TS strict + Tailwind 4 + shadcn; data over the kernel | YES | **GREEN** | GREEN |
+| 3 | C | Server leftovers (Polar token DROPPED by him; data via webhook ledger in O) | Rust + SQL | YES (C1 dropped, C2 parked) | **GREEN** | GREEN (as scoped) |
+| 4 | D | UI stack | React 19, Vite 8, TanStack Router, Tailwind 4, shadcn, TS strict | YES | **GREEN** | GREEN |
+| 5 | E | Loophole fixes L1-L12 | CSP, Trusted Types, hash-pinned WASM | YES | **GREEN** | GREEN except L5 (parked) and lockfile (open) |
+| 6 | F | WASM kernel verifies in the browser | Rust WASM kernel, Worker, pinned SHA-256 | YES | **GREEN** | GREEN |
+| 7 | G | Audit ledger, Merkle, seals, anchors (G1-G5d) | SQL hash chain, RFC 9162 consistency proofs, C2SP signed checkpoints, kernel `merkle@2`, OpenTimestamps + RFC 3161 | YES | **GREEN** | GREEN |
+| 8 | H | Settings S2: time machine + drift | SQL + Rust + kernel verify | YES | **GREEN** | GREEN |
+| 9 | I | Appearance, Ambient Studio, key registry | Rust + SQL + React CSS layers | YES | **GREEN** | GREEN |
+| 10 | J1-J5 | Passkey + Privacy (one factor, no 2FA) | WebAuthn L3, Rust `passkey.rs`, kernel `action@1` | YES | **GREEN** | GREEN (T3 two-hardware-key flow never run for real) |
+| 11 | J6 | Phone alerts | Web Push (VAPID) from Rust | YES | **GREEN** | GREEN on desktop Chrome (real phone optional) |
+| 12 | J8 | Vault lease + panic lock | SQL E143-E145 + Rust + kernel | YES | **GREEN** | GREEN (panic lock not run for real; vault key encrypts nothing yet) |
+| 13 | K1-K4 | Post-quantum key exchange, AES-256 on :443 | Rust `tls256.rs` (rustls, TLS 1.3, AES-256-GCM only), X25519MLKEM768, SQL E119 | YES | **GREEN** | GREEN |
+| 14 | K5-K6 | AES-256 for awam (separate lane); QUIC | Rust quinn / wtransport | YES | **GREEN** | GREEN |
+| 15 | K7, K7c | Device-bound sessions (DBSC), enforce mode | hybrid ML-DSA-65 + ECDSA P-256 device proof, kernel `mldsa@1` | YES | **GREEN** | GREEN (Safari/Firefox ML-DSA proof closed by his word, not live-proven) |
+| 16 | K8a-K8d | HTTP/3 primary, ML-KEM proof, kernel RPC | Rust quinn + h3, kernel `rpc@1` over WebTransport | YES | **GREEN** | GREEN |
+| 17 | K8e | ALPN h3 only; TCP 443 of the founder host speaks no HTTP | own Rust authoritative DNS with HTTPS record alpn=h3, Rust SNI front | YES | **GREEN** | GREEN by his order 14 Nov (820 tablet waived by him) |
+| 18 | KP3 step 1 | WebTransport on UDP 443 | Rust quinn + h3 + h3-webtransport on the one endpoint | YES | **GREEN** | GREEN |
+| 19 | KP3 step 2 | Browser + kernel same origin | Rust WASM kernel dials the page origin; CSP `connect-src 'self'` | YES | **GREEN** | GREEN |
+| 20 | KP3 latency | Adaptive QUIC Retry | Rust quinn | YES | **GREEN** | GREEN |
+| 21 | KP3 pre-connect | Worker dials /wt/rpc while the kernel loads | React-TS Worker + Rust WASM kernel | YES | **GREEN** | GREEN by HIS ORDER 14 Nov 06:33 (installed on his server, receipt 16, live bundle = repo; its own effect cannot be measured from outside, written honestly) |
+| 22 | KP3 step 3 | QUIC path row (honest chip, measured RTT) | React-TS + Worker + kernel session | YES | **GREEN** | GREEN by his order |
+| 23 | KP3 step 4 | Dashboard live feed over WebTransport only | kernel `flive@1` over QUIC | YES | **GREEN** | GREEN |
+| 24 | KP3 step 4b | No SSE anywhere for the founder | Rust axum (SSE routes deleted), kernel WebTransport | YES | **GREEN** | GREEN |
+| 25 | KP3 step 5 | UDP 4443 removed (CSP, env, ufw, listener) | Rust quinn + h3-webtransport on the one UDP 443 endpoint; shell installer with rollback | YES | **GREEN** | GREEN 14 Nov 06:01 (receipts 25, 26, my live Chrome) |
+| 26 | KP3 API latency audit (A, B, C, D) | Why one API call takes ~1-3 s while the ping is 185 ms | Rust axum + reqwest (Supabase REST), `wtrpc.rs`, `data.rs`; shell probes with rollback installer | YES | **GREEN** | **GREEN 15 Nov 19:00 by HIS ORDER, WIRED: YES / REAL: YES / TECH-LAW CHECKED, the audit is CLOSED as a measurement.** Findings: the ping is 185 ms; the handler is 0.5-3 s (receipt 33); the database health URL answers in 0.04 s (receipt 34) but ONE database read costs ~0.27 s from his server (receipt 38, five in a row 263-292 ms); 25 at once cost 0.33-0.83 s with fresh connections; the dashboard load shows 0.6 s growing to 2.5 s (receipt 37) because one page load sends ~25 kernel calls and each makes several database calls, so 100+ database requests land together. The FIX (fewer database calls per page load: cache, one combined call) is a separate later phase, not part of this audit |
+| 27 | L | Look: Framer Motion + GSAP + Three.js WebGPU; LA-1..LA-7 orb and Bridge map features | WebGPU + TSL (orb pixel-equal), GSAP, Radix Popover, SQL E166, Rust `bridge.rs` | YES | **GREEN** | **GREEN 15 Nov 19:12, WIRED: YES / REAL: YES / TECH-LAW CHECKED.** L2 WebGPU, LA-1..LA-6 GREEN with live proof (LA-4 my Chrome 15 Nov 19:05, bundle index-CVaJk1v6 = repo). LA-7b GREEN BY HIS ORDER: rule proven by tests, live dim picture not observable on real data (all event lanes count 0, receipt 39) |
+| 28 | Q | Mail + Calendar (Q0 research done, Q1 mailbox, Q2 attachments, Q3 parallel chunks over WebTransport, Q4 OpenPGP PQC RFC 9980, Q5 PQ network, Q6 sealed agreements) | Rust + SQL + kernel, ML-KEM / ML-DSA, resumable chunks over WebTransport, ClamAV, Hetzner Storage Box | PARTLY (intake, Mail page, ledger chip, Bridge card live; E172 SQL written, not on his server) | **IN PROGRESS** | NOW (his order 15 Nov 19:19): Q series starts at QUI-H3; live step list below (qstate.py) |
+| 29 | S5 | TanStack Start in SPA mode (decided 13 Nov) | TanStack Start, static shell, Rust serves it, no Node/Bun | NO | **NOT GREEN** | NOT GREEN (decided, not built). STARTS AFTER THE Q SERIES IS COMPLETE (his word 15 Nov 19:19) |
+| 30 | M | MoQ (Media over QUIC) relay | Rust relay on QUIC + kernel | NO | **NOT GREEN** | NOT GREEN |
+| 31 | N | Decide + Live Pulse + push, Device Trust Map | Rust push + kernel WebTransport, SQL | NO | **NOT GREEN** | NOT GREEN |
+| 32 | O | Finance deck (Polar webhook ledger, revenue, billing, release) | Rust webhook verify + SQL ledger + React | NO | **NOT GREEN** | NOT GREEN |
+| 33 | P | People: Org, CRM, Team, Account 360, Work, Insider Guard | SQL RLS + ledgers, Rust, React | NO | **NOT GREEN** | NOT GREEN |
+| 34 | R | Systems: health, analytics, speed, admin, safety, chat, Mail Desk (R3) | Rust probes, mesh sync over QUIC | NO | **NOT GREEN** | NOT GREEN |
+| 35 | S | Control: kill switch, flags, executor, poison pill | Rust + SQL + passkey two-key gates | NO | **NOT GREEN** | NOT GREEN |
+| 36 | T | Cutover: remove old Lovable/Bun founder routes | Rust only (the old Bun founder routes are removed after the Rust == Bun parity proof and his word) | NO | **NOT GREEN** | NOT GREEN |
+| 37 | U | Docs + Sheets | WOPI host in Rust | NO | **NOT GREEN** | NOT GREEN |
+| 38 | V | Founder AI (founder only) | Rust + React, kernel | NO | **NOT GREEN** | NOT GREEN |
+| 39 | X | Extra advanced: proof of restore, continuity, served-code seal, supply-chain board | Rust + SQL + kernel, PQ signatures | NO | **NOT GREEN** | NOT GREEN |
+| 40 | D-series | D3 UI and D2b Rust (policy change needs a fresh passkey touch) | Rust + SQL E155-E157 + React | PARTLY (D1, D2b installed; D2b-5 written) | **PAUSED** | PAUSED by him, resumes after Q |
+
+### Q series (live from qstate.py, step by step; a step is done only with his paste + my live look)
+
+| Step | What | Advance technology | Status | Proof |
+|---|---|---|---|---|
+| Q1b3-T1 | Postfix inbound TLS X25519MLKEM768 first | Postfix 3.10 + OpenSSL 3.5, ML-KEM-768 hybrid, TLS 1.3 AES-256-GCM | GREEN/done | his output 13 Nov 18:5x: PQ client Negotiated TLS1.3 group X25519MLKEM768, classic X25519, default X25519MLKEM768; setting kept (c2b284fc..1b843b15) |
+| Q1b3-T2 | clamd AlertEncrypted + AlertExceedsMax | ClamAV INSTREAM, fail-closed quarantine | GREEN/done | his output 13 Nov 18:5x: clamd PONG ~10 s, EICAR FOUND, clean OK, Heuristics.Encrypted.Zip FOUND |
+| Q1b3-T3 | first real mail through the intake | Postfix per-address LMTP RFC 2033, ClamAV, seal on arrival, ledger; end-to-end self-test mails sent by Postfix itself (NOT deferred, his order 19:11) | GREEN/done | all 3 selftest mails status=sent (250 2.0.0 stored) via Postfix; live Chrome: Inbox 1 (ledger anchor verified SHA-256, virus scan clean), Quarantine 2; found lane bug -> E171 |
+| Q1b3-T4 | SQL E171: scan state 'opaque' | PostgreSQL RLS, append-only ledger, selftest + CHECK | GREEN/done | his output 13 Nov 19:5x: sql-run E171 OK; CHECK_E171 5/5 OK (selftest 9/0, ledger head 8); founder-install OK (SPA 200, healthz 200, signing ON). My live Chrome look after reload: Quarantined tile = 2 (amber), Quarantine folder 2, Inbox 1. |
+| SF | SERVER-FIRST law + H3-ONLY gate, automatic for one year (his 13 Nov 21:08) | hash-chained receipt ledger of his pasted read-only server output (serverfirst.py), pre-commit gate SERVER FIRST + H3 ONLY, TECH LAW text = HTTP/3 only | GREEN/done | law + gates written; first receipt = his 20:49 ss/env paste (receipt 1); gate tested: server-surface file refused without a receipt, accepted with one |
+| KP1 | ports / Caddy / SNI front / UDP / DNS audit, read-only (replaces the false-STOP founder-h3-check.sh) | Rust founder-dns + HTTP/3 UDP 443 audit: ss -H with /proc exe names (no 15-char cut), Caddy admin config read, founder.env ports, dig HTTPS, ufw, GO/STOP table | GREEN/done | his output 13 Nov 20:49 (ss/env) + 21:2x (founder-ports-audit.sh: udp 443 + 4443 = anexomail-founder, firewall open, Caddy 18443/80, STOP only for the missing DNS HTTPS record) + SF receipts 2-4 |
+| KP1b | own Rust authoritative DNS for founderworkspace.anexomail.com only (Namecheap has no HTTPS record type: his screenshot 13 Nov 22:03; no third-party vendor, ever) | Rust + tokio, hickory-proto, UDP+TCP 53 bound to 62.238.98.98 and 2a01:4f9:c014:5df6::1 (never wildcard: systemd-resolved owns 127.0.0.53/54:53), SOA/NS/A/AAAA/CAA/HTTPS type 65 alpn=h3 (RFC 9460), DNSSEC Ed25519 NSEC3, DNS cookies + RRL, zone in PostgreSQL + hash-chain ledger, NS delegation from Namecheap (ns1/ns2.anexomail.com A = 62.238.98.98 already exist) | GREEN/done | his outputs 13 Nov 22:17, 23:20, 23:25 (receipts 5-7): own Rust DNS founder-dns active, HTTPS alpn=h3 answered, outside proof from his Windows laptop; K8e GREEN used it |
+| QUI-H | ledger-box hybrid P1+P2 (his haan 13 Nov 19:55, backup /root/backups/ledger-hybrid-13nov taken, restore = fmail-ui-rollback.sh or commit 9fe8155e) | kernel WASM SHA-256 chain verify in the background, passive status chip, Bridge Mail-ledger card (new file + one-line mount, Scene3D.tsx never edited), React 19 TS | GREEN/done | QUI-H1 + QUI-H2 done with my live Chrome look (13 Nov 20:40); H3 and H4 are their own steps below |
+| QUI-H1 | sub-phase: passive ledger chip + auto verify + slim empty pane | React 19 TS, signed kernel-verified proof door, hash-chain SHA-256 ledger (Proton KT / Apple CKV style: automatic, passive status) | GREEN/done | his founder-install output 13 Nov 20:2x OK; my live Chrome (bundle index-b0IiA99 = repo build): Mail header chip 'Ledger verified · #8' (real head 8), big buttons gone. 390 live: window resize does not shrink this browser's viewport, so 390/820 = sandbox measu |
+| QUI-H2 | sub-phase: Bridge 'Mail ledger' audit card + deep link into the mailbox folder | React 19 TS, E168 bridge feed, new file + one-line mount (Scene3D.tsx untouched) | GREEN/done | my live Chrome: Bridge shows 'Mail ledger' card (Ledger verified #8, Mail in 3, Quarantined 2); tapping Quarantined opened Mail on the Quarantine folder (deep link works). Cosmetic: heading was centered, fixed left in next build. |
+| K8e | HTTP/3 ONLY: h1 and h2 removed for ever (his order 13 Nov 20:30) | quinn + h3, ALPN h3 only, tcp 443 closed, Alt-Svc 1y persist, DNS HTTPS record alpn=h3 (RFC 9460), TLS 1.3 AES-256-GCM X25519MLKEM768 | GREEN/done | GREEN by HIS ORDER 14 Nov 00:2x ('tum meri order suno k8e green likho'): WIRED: YES / REAL: YES / TECH-LAW CHECKED. Proof: server install 390 Rust tests, assets over h3 in my Chrome 1536, awam unaffected, 390 by his phone (receipt 12). 820 tablet NOT seen: wai |
+| KP2 | UDP-blocked network break-glass: SSH tunnel to the loopback listener, tested at home first (the khatra he asked to make a phase) | SSH local forward to 127.0.0.1:3210, host-proof + DBSC behaviour measured, never assumed | GREEN/done | closed by HIS WORD 15 Nov 19:30 ('KP2 aur is se related sab green hai mere pass'); his hands, not repeated again |
+| KP3 | WebTransport on UDP 443 same-origin (CSP 'self'), no SSE / H2 / H1 fallback, honest 'QUIC blocked by network' status (his typed order 14 Nov 00:41) | h3 0.0.8 + h3-quinn 0.0.10 + h3-webtransport 0.1.2 on the ONE quinn UDP 443 endpoint (HTTP/3 requests and WebTransport sessions together), TLS 1.3 AES-256-GCM X25519MLKEM768, Rust Tokio, kernel WebTransport RPC, React 19 TS honest status | GREEN/done | all KP3 steps GREEN: step 1-5 with his server pastes + my live Chrome (receipts 25, 26), pre-connect GREEN by his order, audit closed 15 Nov 19:00 |
+| QUI-H3 | sub-phase: Q-ledger-kernel, the WASM kernel re-hashes the whole chain in the browser (SQL E172 door, Rust Tokio door, kernel sha256 chain check) | Rust WASM kernel SHA-256 (web-wasm/src/hash.rs), length-prefixed fmail-ledger-v1 formula, rows streamed over the kernel WebTransport RPC, PostgreSQL RLS door | IN PROGRESS | E172 SQL written + independent re-hash proven in sandbox (7 rows, 0 bad), NOT yet on his server; next: sql-run E172 by him, Rust door, kernel SHA-256 chain recompute |
+| QUI-H4 | sub-phase: per-message Merkle inclusion proof (U1 link) against the founder audit batch | RFC 6962 style Merkle audit path verified in the WASM kernel, founder_audit anchor | todo |  |
+| QPERF | mail latency percentiles p50/p90/p95/p99/p99.9 + SLO burn (his 13 Nov 20:01: p90, p95 and more advanced; SQL E173) | PostgreSQL percentile_cont + append-only mail_latency samples (SQL E172), Rust Tokio timing at LMTP accept/scan/seal/commit, HDR-histogram style buckets, Bridge card | todo |  |
+| Q1d-1 | DKIM key from Compose + DNS TXT | Ed25519 + RSA DKIM, passkey touch (mail.key) | todo |  |
+| Q1d-2 | FMAIL_SEND=on + real outgoing mail | Rust Tokio SMTP, STARTTLS TLS 1.3 X25519MLKEM768, undo window, outgoing PQ TLS proof | todo |  |
+| Q1b4 | SPF / DKIM / DMARC verdicts + trust ring (U3) | Rust mail-auth, Framer Motion ring | todo |  |
+| Q3 | attachments + live over WebTransport + 8-segment ring (U4) | Rust Tokio WebTransport, Hetzner Storage Box, ClamAV, WASM kernel | todo |  |
+| Qtls | MTA-STS / DANE / TLS-RPT | RFC 8461 / 7672 / 8460 | todo |  |
+| U1U2 | ledger proof pill + Touch-to-Unseal live proof (U1), PQC pill segment (U2) | kernel SHA-256/Merkle verify, passkey touch, React 19 TS | todo |  |
+| Q4 | kernel pqmail OpenPGP RFC 9980 | Rust WASM kernel ML-KEM-768 + X25519, ML-DSA-65 + Ed25519 | todo |  |
+| U5 | Who-can-read-this sheet, Ctrl K mail actions, light theme (approved) | Radix Dialog, command palette, React 19 TS | todo |  |
+| Q1e | calendar E174-E175 | Rust + SQL RLS + React TS, same sealing | todo |  |
+<!--PHASES-END-->
+
+Order of work from here (his word 15 Nov 19:19, one step at a time): Q series (mail + calendar) until complete, THEN S5, THEN M and N in letter order, then the Lovable-migration phases O, P, R, S, V, then T (cutover) and U. Parked on his word: audit FIX (fewer database calls), repo private + deploy key, D3.
 
 ## LOVABLE CODES MIGRATION PHASE (his order 15 Nov 19:19): the written Lovable codes are preserved as written (`lovable-gold/founder/`, 47 files, 48 endpoints); the only job is to move each to the advance technology, FIX its loopholes, POLISH it, and deliver it. Full map file -> phase, the recipe, the start rule: `docs/claude/FOUNDER-LOVABLE-MIGRATION-15NOV.md`. Phases that carry it: O (billing, revenue, release, move-in), P (org, crm, mailboxes), R (admin, analytics, perf, integrations, safety, calls, security), S (kill switch, impersonate), V (9 AI pages), T (remove the Bun routes only after Rust == Bun and his word). Already rebuilt and GREEN: login, gate, host separation, dashboard, settings. Awam twin: `docs/claude/AWAM-LOVABLE-MIGRATION-15NOV.md`.
 

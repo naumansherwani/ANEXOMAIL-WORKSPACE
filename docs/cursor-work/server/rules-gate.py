@@ -240,6 +240,13 @@ try:
     if _qe: fail("Q STATE", _qe + " (python3 docs/cursor-work/server/qstate.py verify / render)")
 except Exception as _x:
     fail("Q STATE", "qstate.py cannot run: " + str(_x)[:120])
+# PHASE TECH (his order 15 Nov 2026 19:30): every phase in docs/claude/state/PHASES.json (and every Q step) names an ADVANCE technology, no old technology as a choice, GREEN needs WIRED/REAL/TECH-LAW CHECKED, and the generated blueprint equals the ledger. A violation blocks the commit.
+try:
+    _sp2 = _iu.spec_from_file_location("phases", "docs/cursor-work/server/phases.py"); _ph = _iu.module_from_spec(_sp2); _sp2.loader.exec_module(_ph)
+    for _e in _ph.errors(): fail("PHASE TECH", _e + " (python3 docs/cursor-work/server/phases.py check / render / set)")
+except Exception as _x:
+    fail("PHASE TECH", "phases.py cannot run: " + str(_x)[:120])
+
 # SERVER FIRST + H3 ONLY (founder 13 Nov 2026 21:08, one year, automatic): a change to the live server surface needs a fresh receipt of HIS pasted read-only output; no new h1/h2 serving code.
 try:
     _sf = _iu.spec_from_file_location("serverfirst", "docs/cursor-work/server/serverfirst.py"); _sfm = _iu.module_from_spec(_sf); _sf.loader.exec_module(_sfm)

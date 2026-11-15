@@ -11,6 +11,10 @@ for p in ['docs/cursor-work/founder/founder-commands.md','docs/claude/DONE-DO-NO
 L=open('docs/claude/RESUME-POINT.md').read().split('\n'); L.insert(2,"- "+sys.argv[1]); open('docs/claude/RESUME-POINT.md','w').write('\n'.join(L))
 c=open('CLAUDE.md').read().split('\n'); c[0]="> ## >>> RESUME HERE: "+sys.argv[2]+" (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<"; open('CLAUDE.md','w').write('\n'.join(c))
 P
+# AUTO LEDGER (15 Nov 19:30): optional 4th/5th/6th args = phase id, status, proof -> phases.py set; always re-render the generated blueprint + Q block
+if [ -n "${4:-}" ] && [ -n "${5:-}" ]; then python3 docs/cursor-work/server/phases.py set "$4" "$5" "${6:-$1}" || exit 1; fi
+python3 docs/cursor-work/server/qstate.py render >/dev/null 2>&1 || true
+python3 docs/cursor-work/server/phases.py render >/dev/null
 git add -A; for i in 1 2; do python3 lanes/lane-sync.py >/dev/null; git add -A; done
 python3 docs/cursor-work/server/manifest-verify.py | awk '/PURANI/{print $2}' | xargs -r python3 docs/cursor-work/server/manifest-sync.py >/dev/null
 python3 lanes/lane-sync.py >/dev/null

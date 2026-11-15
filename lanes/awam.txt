@@ -204,6 +204,7 @@ docs/cursor-work/server/passkey-proof.py
 docs/cursor-work/server/passkey_patch.py
 docs/cursor-work/server/people-check.sh
 docs/cursor-work/server/personal-polar-products.md
+docs/cursor-work/server/phases.py
 docs/cursor-work/server/polar-control-plane-install.sh
 docs/cursor-work/server/polar-cp-proof.py
 docs/cursor-work/server/polar-nonroot-install.sh

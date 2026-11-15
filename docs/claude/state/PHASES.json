@@ -1,0 +1,391 @@
+{
+ "phases": [
+  {
+   "n": 1,
+   "id": "A",
+   "what": "Device approval + request signatures",
+   "tech": "Rust Ed25519/ES256, WebAuthn L3, kernel `envelope@1`",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN",
+   "legacy": true
+  },
+  {
+   "n": 2,
+   "id": "B",
+   "what": "Settings S1 (photo, name, city, graphics, sidebar)",
+   "tech": "React 19 + TS strict + Tailwind 4 + shadcn; data over the kernel",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN",
+   "legacy": true
+  },
+  {
+   "n": 3,
+   "id": "C",
+   "what": "Server leftovers (Polar token DROPPED by him; data via webhook ledger in O)",
+   "tech": "Rust + SQL",
+   "in_code": "YES (C1 dropped, C2 parked)",
+   "status": "GREEN",
+   "proof": "GREEN (as scoped)",
+   "legacy": true
+  },
+  {
+   "n": 4,
+   "id": "D",
+   "what": "UI stack",
+   "tech": "React 19, Vite 8, TanStack Router, Tailwind 4, shadcn, TS strict",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN",
+   "legacy": true
+  },
+  {
+   "n": 5,
+   "id": "E",
+   "what": "Loophole fixes L1-L12",
+   "tech": "CSP, Trusted Types, hash-pinned WASM",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN except L5 (parked) and lockfile (open)",
+   "legacy": true
+  },
+  {
+   "n": 6,
+   "id": "F",
+   "what": "WASM kernel verifies in the browser",
+   "tech": "Rust WASM kernel, Worker, pinned SHA-256",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN",
+   "legacy": true
+  },
+  {
+   "n": 7,
+   "id": "G",
+   "what": "Audit ledger, Merkle, seals, anchors (G1-G5d)",
+   "tech": "SQL hash chain, RFC 9162 consistency proofs, C2SP signed checkpoints, kernel `merkle@2`, OpenTimestamps + RFC 3161",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN",
+   "legacy": true
+  },
+  {
+   "n": 8,
+   "id": "H",
+   "what": "Settings S2: time machine + drift",
+   "tech": "SQL + Rust + kernel verify",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN",
+   "legacy": true
+  },
+  {
+   "n": 9,
+   "id": "I",
+   "what": "Appearance, Ambient Studio, key registry",
+   "tech": "Rust + SQL + React CSS layers",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN",
+   "legacy": true
+  },
+  {
+   "n": 10,
+   "id": "J1-J5",
+   "what": "Passkey + Privacy (one factor, no 2FA)",
+   "tech": "WebAuthn L3, Rust `passkey.rs`, kernel `action@1`",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN (T3 two-hardware-key flow never run for real)",
+   "legacy": true
+  },
+  {
+   "n": 11,
+   "id": "J6",
+   "what": "Phone alerts",
+   "tech": "Web Push (VAPID) from Rust",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN on desktop Chrome (real phone optional)",
+   "legacy": true
+  },
+  {
+   "n": 12,
+   "id": "J8",
+   "what": "Vault lease + panic lock",
+   "tech": "SQL E143-E145 + Rust + kernel",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN (panic lock not run for real; vault key encrypts nothing yet)",
+   "legacy": true
+  },
+  {
+   "n": 13,
+   "id": "K1-K4",
+   "what": "Post-quantum key exchange, AES-256 on :443",
+   "tech": "Rust `tls256.rs` (rustls, TLS 1.3, AES-256-GCM only), X25519MLKEM768, SQL E119",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN",
+   "legacy": true
+  },
+  {
+   "n": 14,
+   "id": "K5-K6",
+   "what": "AES-256 for awam (separate lane); QUIC",
+   "tech": "Rust quinn / wtransport",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN",
+   "legacy": true
+  },
+  {
+   "n": 15,
+   "id": "K7, K7c",
+   "what": "Device-bound sessions (DBSC), enforce mode",
+   "tech": "hybrid ML-DSA-65 + ECDSA P-256 device proof, kernel `mldsa@1`",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN (Safari/Firefox ML-DSA proof closed by his word, not live-proven)",
+   "legacy": true
+  },
+  {
+   "n": 16,
+   "id": "K8a-K8d",
+   "what": "HTTP/3 primary, ML-KEM proof, kernel RPC",
+   "tech": "Rust quinn + h3, kernel `rpc@1` over WebTransport",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN",
+   "legacy": true
+  },
+  {
+   "n": 17,
+   "id": "K8e",
+   "what": "ALPN h3 only; TCP 443 of the founder host speaks no HTTP",
+   "tech": "own Rust authoritative DNS with HTTPS record alpn=h3, Rust SNI front",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN by his order 14 Nov (820 tablet waived by him)",
+   "legacy": true
+  },
+  {
+   "n": 18,
+   "id": "KP3 step 1",
+   "what": "WebTransport on UDP 443",
+   "tech": "Rust quinn + h3 + h3-webtransport on the one endpoint",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN",
+   "legacy": true
+  },
+  {
+   "n": 19,
+   "id": "KP3 step 2",
+   "what": "Browser + kernel same origin",
+   "tech": "Rust WASM kernel dials the page origin; CSP `connect-src 'self'`",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN",
+   "legacy": true
+  },
+  {
+   "n": 20,
+   "id": "KP3 latency",
+   "what": "Adaptive QUIC Retry",
+   "tech": "Rust quinn",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN",
+   "legacy": true
+  },
+  {
+   "n": 21,
+   "id": "KP3 pre-connect",
+   "what": "Worker dials /wt/rpc while the kernel loads",
+   "tech": "React-TS Worker + Rust WASM kernel",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN by HIS ORDER 14 Nov 06:33 (installed on his server, receipt 16, live bundle = repo; its own effect cannot be measured from outside, written honestly)",
+   "legacy": true
+  },
+  {
+   "n": 22,
+   "id": "KP3 step 3",
+   "what": "QUIC path row (honest chip, measured RTT)",
+   "tech": "React-TS + Worker + kernel session",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN by his order",
+   "legacy": true
+  },
+  {
+   "n": 23,
+   "id": "KP3 step 4",
+   "what": "Dashboard live feed over WebTransport only",
+   "tech": "kernel `flive@1` over QUIC",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN",
+   "legacy": true
+  },
+  {
+   "n": 24,
+   "id": "KP3 step 4b",
+   "what": "No SSE anywhere for the founder",
+   "tech": "Rust axum (SSE routes deleted), kernel WebTransport",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN",
+   "legacy": true
+  },
+  {
+   "n": 25,
+   "id": "KP3 step 5",
+   "what": "UDP 4443 removed (CSP, env, ufw, listener)",
+   "tech": "Rust quinn + h3-webtransport on the one UDP 443 endpoint; shell installer with rollback",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "GREEN 14 Nov 06:01 (receipts 25, 26, my live Chrome)",
+   "legacy": true
+  },
+  {
+   "n": 26,
+   "id": "KP3 API latency audit (A, B, C, D)",
+   "what": "Why one API call takes ~1-3 s while the ping is 185 ms",
+   "tech": "Rust axum + reqwest (Supabase REST), `wtrpc.rs`, `data.rs`; shell probes with rollback installer",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "**GREEN 15 Nov 19:00 by HIS ORDER, WIRED: YES / REAL: YES / TECH-LAW CHECKED, the audit is CLOSED as a measurement.** Findings: the ping is 185 ms; the handler is 0.5-3 s (receipt 33); the database health URL answers in 0.04 s (receipt 34) but ONE database read costs ~0.27 s from his server (receipt 38, five in a row 263-292 ms); 25 at once cost 0.33-0.83 s with fresh connections; the dashboard load shows 0.6 s growing to 2.5 s (receipt 37) because one page load sends ~25 kernel calls and each makes several database calls, so 100+ database requests land together. The FIX (fewer database calls per page load: cache, one combined call) is a separate later phase, not part of this audit",
+   "legacy": true
+  },
+  {
+   "n": 27,
+   "id": "L",
+   "what": "Look: Framer Motion + GSAP + Three.js WebGPU; LA-1..LA-7 orb and Bridge map features",
+   "tech": "WebGPU + TSL (orb pixel-equal), GSAP, Radix Popover, SQL E166, Rust `bridge.rs`",
+   "in_code": "YES",
+   "status": "GREEN",
+   "proof": "**GREEN 15 Nov 19:12, WIRED: YES / REAL: YES / TECH-LAW CHECKED.** L2 WebGPU, LA-1..LA-6 GREEN with live proof (LA-4 my Chrome 15 Nov 19:05, bundle index-CVaJk1v6 = repo). LA-7b GREEN BY HIS ORDER: rule proven by tests, live dim picture not observable on real data (all event lanes count 0, receipt 39)",
+   "legacy": true
+  },
+  {
+   "n": 28,
+   "id": "Q",
+   "what": "Mail + Calendar (Q0 research done, Q1 mailbox, Q2 attachments, Q3 parallel chunks over WebTransport, Q4 OpenPGP PQC RFC 9980, Q5 PQ network, Q6 sealed agreements)",
+   "tech": "Rust + SQL + kernel, ML-KEM / ML-DSA, resumable chunks over WebTransport, ClamAV, Hetzner Storage Box",
+   "in_code": "PARTLY (intake, Mail page, ledger chip, Bridge card live; E172 SQL written, not on his server)",
+   "status": "IN PROGRESS",
+   "proof": "NOW (his order 15 Nov 19:19): Q series starts at QUI-H3; live step list below (qstate.py)"
+  },
+  {
+   "n": 29,
+   "id": "S5",
+   "what": "TanStack Start in SPA mode (decided 13 Nov)",
+   "tech": "TanStack Start, static shell, Rust serves it, no Node/Bun",
+   "in_code": "NO",
+   "status": "NOT GREEN",
+   "proof": "NOT GREEN (decided, not built). STARTS AFTER THE Q SERIES IS COMPLETE (his word 15 Nov 19:19)"
+  },
+  {
+   "n": 30,
+   "id": "M",
+   "what": "MoQ (Media over QUIC) relay",
+   "tech": "Rust relay on QUIC + kernel",
+   "in_code": "NO",
+   "status": "NOT GREEN",
+   "proof": "NOT GREEN"
+  },
+  {
+   "n": 31,
+   "id": "N",
+   "what": "Decide + Live Pulse + push, Device Trust Map",
+   "tech": "Rust push + kernel WebTransport, SQL",
+   "in_code": "NO",
+   "status": "NOT GREEN",
+   "proof": "NOT GREEN"
+  },
+  {
+   "n": 32,
+   "id": "O",
+   "what": "Finance deck (Polar webhook ledger, revenue, billing, release)",
+   "tech": "Rust webhook verify + SQL ledger + React",
+   "in_code": "NO",
+   "status": "NOT GREEN",
+   "proof": "NOT GREEN"
+  },
+  {
+   "n": 33,
+   "id": "P",
+   "what": "People: Org, CRM, Team, Account 360, Work, Insider Guard",
+   "tech": "SQL RLS + ledgers, Rust, React",
+   "in_code": "NO",
+   "status": "NOT GREEN",
+   "proof": "NOT GREEN"
+  },
+  {
+   "n": 34,
+   "id": "R",
+   "what": "Systems: health, analytics, speed, admin, safety, chat, Mail Desk (R3)",
+   "tech": "Rust probes, mesh sync over QUIC",
+   "in_code": "NO",
+   "status": "NOT GREEN",
+   "proof": "NOT GREEN"
+  },
+  {
+   "n": 35,
+   "id": "S",
+   "what": "Control: kill switch, flags, executor, poison pill",
+   "tech": "Rust + SQL + passkey two-key gates",
+   "in_code": "NO",
+   "status": "NOT GREEN",
+   "proof": "NOT GREEN"
+  },
+  {
+   "n": 36,
+   "id": "T",
+   "what": "Cutover: remove old Lovable/Bun founder routes",
+   "tech": "Rust only (the old Bun founder routes are removed after the Rust == Bun parity proof and his word)",
+   "in_code": "NO",
+   "status": "NOT GREEN",
+   "proof": "NOT GREEN"
+  },
+  {
+   "n": 37,
+   "id": "U",
+   "what": "Docs + Sheets",
+   "tech": "WOPI host in Rust",
+   "in_code": "NO",
+   "status": "NOT GREEN",
+   "proof": "NOT GREEN"
+  },
+  {
+   "n": 38,
+   "id": "V",
+   "what": "Founder AI (founder only)",
+   "tech": "Rust + React, kernel",
+   "in_code": "NO",
+   "status": "NOT GREEN",
+   "proof": "NOT GREEN"
+  },
+  {
+   "n": 39,
+   "id": "X",
+   "what": "Extra advanced: proof of restore, continuity, served-code seal, supply-chain board",
+   "tech": "Rust + SQL + kernel, PQ signatures",
+   "in_code": "NO",
+   "status": "NOT GREEN",
+   "proof": "NOT GREEN"
+  },
+  {
+   "n": 40,
+   "id": "D-series",
+   "what": "D3 UI and D2b Rust (policy change needs a fresh passkey touch)",
+   "tech": "Rust + SQL E155-E157 + React",
+   "in_code": "PARTLY (D1, D2b installed; D2b-5 written)",
+   "status": "PAUSED",
+   "proof": "PAUSED by him, resumes after Q"
+  }
+ ]
+}
