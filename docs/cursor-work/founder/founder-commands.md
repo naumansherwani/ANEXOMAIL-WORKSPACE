@@ -3516,3 +3516,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - 16 Nov 04:50 KEYS CREATED (his touch): Ed25519 e2611a + RSA-2048 r2611a, live Chrome panel proof after his founder-install (kernel Origin fix live, bundle index-CTELgn2B). Phase Q1d-1a NOT green (needs policy switches, TXT in DNS, Check DNS, signed mail with dkim=pass). F-series order written (docs/claude/FOUNDER-F-SERIES-ORDER-16NOV.md); S5 closed (Router-only). TECH-LAW CHECKED.
 
 - 16 Nov 04:58 POLICY: Over-sign ON and Both keys required ON (one-way ratchets, his touch each, live panel 'On. It can never be turned off.'). Keys e2611a + r2611a. Phase Q1d-1a NOT green: DNS TXT, Check DNS, DNS switch, signed mail dkim=pass still open. TECH-LAW CHECKED.
+
+- 16 Nov 05:05 his dkim-dns-print paste saved: nameservers = registrar-servers.com (Namecheap), TXT e2611a._domainkey (ed25519) and r2611a._domainkey (rsa) values in Q1D-1A-SUMMARY; Namecheap steps given one at a time; DNS answers empty so far. TECH-LAW CHECKED.

@@ -65,3 +65,9 @@ These cards read the old app's /api/founder/* and answer 404 on the founder host
 - NEXT (his hands, ONE step at a time): (a) policy switches in Systems > Mail signing: "Over-sign" and "Both Ed25519 and RSA keys required" (Turn on (touch), each one touch; I can press the button in his Chrome, he touches); NOT "DNS record must be confirmed" yet. (b) he runs dkim-dns-print.sh (command above) and pastes the output; I give the Namecheap Host/Value in chat; (c) TXT at the DNS that answers anexomail.com; (d) Check DNS in the panel, then the DNS switch; (e) Q1d-2a, Q1d-2b FMAIL_SEND on, Gmail proof.
 - Systems buttons look = his image 2 (dark, thin blue hover border); DKIM title visible on narrow screens.
 - F-SERIES explained and ordered with dates: docs/claude/FOUNDER-F-SERIES-ORDER-16NOV.md (21 cards without Rust doors = phases O, P, R, S, V). S5 closed (Router-only).
+
+## 16 Nov 05:05 DKIM DNS PRINT = HIS PASTE (public values, safe to keep). NAMECHEAP STEPS IN PROGRESS, ONE AT A TIME
+Nameservers of anexomail.com = dns1.registrar-servers.com + dns2.registrar-servers.com = NAMECHEAP, so the TXT records are pasted in Namecheap > Domain List > anexomail.com > Manage > Advanced DNS > Add New Record (TXT).
+- Record 1: Host `e2611a._domainkey`, Type TXT, Value `v=DKIM1; k=ed25519; p=ItjuwBXT+HXAZ5GianL4owoDtoAUAYwMgHDPE3KKXVM=`
+- Record 2: Host `r2611a._domainkey`, Type TXT, Value `v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxrMMhER+Wp3CapmN6y8rIvSmXACbK1ixXwrplNJlFtuWAG+vF3rRhaNpcbPGT419psyh9gJdQyx3z1w4WNfYyrYvN4hrw+MR/rTiJW9eIMRmjDO3G6LWLgoZ4YpyFbdwQcYZtugP/t9rHHLIT92gI/xkiDU5GyiZiOTDejSj1ZCAhLwSz8iMNST8eXzX+yvDvPiZuRS6F/gUAXx0uOS9fXb6Rzy0hHe5Ruc43Vf9HeV0Oycd7BXU1OfP0ltf1oxOdxagJoToKOz+h273dT3KPZN19qWd59K9LfmG1USR13ib5pX30ZWWruWtOf1HxqRRIQWXdCAF94HeGIBgCKTSSQIDAQAB`
+- DNS answer at 05:05: both KHALI. Progress: step 1 (open Advanced DNS) given; then record 1, record 2, save, wait, Check DNS in the panel, DNS switch.
