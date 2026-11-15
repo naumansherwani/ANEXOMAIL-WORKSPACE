@@ -672,3 +672,5 @@ Where each technology sits: Rust = signer (fmail_dkim.rs). Tokio = sender worker
 - Q1d-1a a3 COMPLETE in repo 16 Nov 02:36: 4 DKIM doors routed in main.rs (dkim/health, check, proof, policy) after his ss paste (SERVER-FIRST receipt 42); cargo 408/408; no new listener; NOT on his server until founder-install; sender OFF
 
 - Q1d-1a a3 INSTALLED on his server 16 Nov 02:5x: founder-install OK (his paste: SPA 200, healthz 200, signing ON, 4/4); my Chrome look: live bundle index-B5pJDX1M + css CYOquduq = repo build, dkim/health 401 (route live), dkim/nope 404; NOT green: no key yet, no real signed mail (sender OFF), no dkim=pass; his haan for a4 UI with existing UI intact, founder separate from awam
+
+- Q1d-1a phase tech text and blueprint row matched to the code (oversign, E175 hash chains, Tokio, hickory, kernel-signed doors, DKIM2 tracked) 16 Nov 03:00
