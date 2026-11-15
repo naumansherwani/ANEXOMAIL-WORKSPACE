@@ -63,6 +63,8 @@ pub fn parse(raw: &[u8], host: &str, peer: IpAddr, ua: Option<&str>, hint: Optio
         }
     }
     hm.insert(HeaderName::from_static("host"), HeaderValue::from_str(host).map_err(|_| 400u16)?);
+    // 16 Nov 04:25: a passkey ceremony binds the Origin (passkey::origin_of). A WebTransport call carries no Origin header, so key touches failed with "no origin". The session already passed the exact-host Origin check at CONNECT (wt.rs / h3.rs); the caller can never set this header (it is not in ALLOW), the server sets it from its own host.
+    hm.insert(HeaderName::from_static("origin"), HeaderValue::from_str(&format!("https://{host}")).map_err(|_| 400u16)?);
     hm.insert(HeaderName::from_static("x-real-ip"), HeaderValue::from_str(&peer.to_string()).map_err(|_| 400u16)?);
     for (n, v) in [("user-agent", ua), ("sec-ch-ua", hint)] {
         if let Some(v) = v.filter(|v| v.len() <= 512 && v.bytes().all(|b| (0x20..0x7f).contains(&b))) { if let Ok(hv) = HeaderValue::from_str(v) { hm.insert(HeaderName::from_static(n), hv); } }
@@ -152,6 +154,13 @@ mod tests {
         assert_eq!(h["x-real-ip"], IP);
         assert!(h.get("x-fo-proto").is_none() && h.get("cookie").is_none());
         assert!(h["user-agent"].to_str().unwrap().contains("Mozilla"), "the user-agent comes from the QUIC handshake, not the caller");
+    }
+    #[test]
+    fn the_origin_comes_from_the_server_host_never_from_the_caller() {
+        let r = p(r#"{"m":"POST","p":"/founder/v1/passkey/options","h":{"origin":"https://evil.example","authorization":"Bearer t"}}"#, b"{}").unwrap();
+        assert_eq!(r.headers()["origin"], "https://founderworkspace.anexomail.com");
+        let r = p(r#"{"m":"GET","p":"/founder/v1/bridge"}"#, b"").unwrap();
+        assert_eq!(r.headers()["origin"], "https://founderworkspace.anexomail.com");
     }
     #[test]
     fn the_paths_that_must_stay_on_plain_https_or_leave_the_api_are_refused() {

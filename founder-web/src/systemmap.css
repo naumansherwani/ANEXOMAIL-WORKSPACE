@@ -28,3 +28,12 @@
 .overlay{z-index:200}
 .overlay .sheet{width:min(520px,100%);max-height:calc(100dvh - 32px)}
 .sysmh-pills{font-size:13px;gap:8px 14px}.sysmh-pills .mx-chip{font-size:12px}
+/* His 04:20/04:23 words: the global "button:hover{background:blue}" turned the DKIM header into a bright blue bar with invisible text, and the primary button was too bright/too dark. Look he picked (his image 2): dark transparent button, light text, thin blue border on hover. Scoped to .sm; the mailbox buttons are untouched. */
+.sm button:hover,.sm button:focus-visible{background:transparent}
+.sm .dk-head:hover,.sm .dk-head:focus-visible{background:rgba(255,255,255,.03);color:inherit;box-shadow:inset 0 0 0 1px rgba(120,170,255,.7);border-radius:14px;outline:0}
+.sm .mx-btn:not(.alt){background:transparent;color:#f2f7ff;border:1px solid rgba(120,170,255,.65);font-weight:600}
+.sm .mx-btn,.sm .mx-btn.alt{background:transparent;color:#eef2f9}
+.sm .mx-btn:hover,.sm .mx-btn.alt:hover,.sm .mx-btn:focus-visible{background:rgba(255,255,255,.04);border-color:rgba(120,170,255,.95);filter:none;outline:0}
+.sm .mx-btn:disabled{opacity:.8;color:#dfe9fb;cursor:default}
+.sm .sm-chip:hover,.sm .sm-chip:focus-visible{background:rgba(110,168,255,.12);border-color:rgba(120,170,255,.7);color:inherit;outline:0}.sm .sm-chip.on:hover{background:rgba(110,168,255,.18)}
+.sm .mini:hover{background:var(--p2)}

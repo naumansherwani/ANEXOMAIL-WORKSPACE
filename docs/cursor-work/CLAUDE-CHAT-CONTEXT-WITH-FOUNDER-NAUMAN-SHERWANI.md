@@ -3389,3 +3389,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 16 Nov 04:14 DKIM panel: the rotation line (180/14/7 days) now says it is a fixed rule set once, nothing to do now, only a 'new key due' button about twice a year (his 04:11: why must I do this, keep it permanent). Needs founder-install. TECH-LAW CHECKED.
 
 - 16 Nov 04:25 FOUNDER LIVE AUDIT (his order): 14 views walked live; 8 clean; 21 old-app cards = real open gaps (no Rust door, 404), listed in Q1D-1A-SUMMARY, card wording now honest; DKIM select dropdown dark. NOT green: those 21 stay OPEN. TECH-LAW CHECKED.
+
+- 16 Nov 04:35 KEY TOUCH FIX + BUTTON LOOK: found live (I pressed New Ed25519 key): 'no origin' = kernel RPC never passed Origin to passkey::origin_of, so every key touch over the kernel failed; wtrpc.rs now sets origin from the server host (cargo 409/409, new test). Systems buttons: his image-2 look (dark, thin blue hover border), DKIM header no longer a bright blue bar, title visible on narrow screens. Needs founder-install (Rust + SPA), then the key touch. TECH-LAW CHECKED.

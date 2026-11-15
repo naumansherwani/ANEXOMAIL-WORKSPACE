@@ -18,3 +18,5 @@
 .dk-dock{display:flex;flex-direction:column;gap:12px;margin:14px 0 96px;max-width:760px}.dk-for{margin:0 0 6px;padding-left:4px}
 /* native dropdown list was a white box on the dark panel (his 04:14 photo) */
 .dk select{color-scheme:dark}.dk select option{background:#14171e;color:#e8ecf3}
+/* the mailbox rule ".mbx-cap{display:none}" (narrow screens) also hid this title on tablet/phone */
+.dk .dk-t{display:inline-flex;margin:0;white-space:nowrap}
