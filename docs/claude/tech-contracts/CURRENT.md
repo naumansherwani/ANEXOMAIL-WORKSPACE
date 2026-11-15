@@ -630,3 +630,11 @@ Colour: ONE blue family only (blue / blue-violet / cyan), no pink, no green+yell
 Order: 1 his CHECK_E170 (read-only) -> 2 he opens Compose, makes the key with a touch (his hands) -> 3 I look in Chrome and copy the exact TXT -> 4 his Namecheap paste (hands) -> Q1d-1b outside verification. No code is rewritten; nothing is sent; FMAIL_SEND stays off.
 
 - Q1d-1a started 16 Nov 02:20: contract written in CURRENT.md; the DKIM backend + UI already exist (E170, fmail_dkim.rs, fmail_out.rs doors, DkimSetup in MailCompose), nothing is rewritten. Step 1 = his read-only CHECK_E170, step 2 = his key touch in Compose, step 3 = my Chrome look for the TXT, step 4 = his Namecheap paste.
+
+## Q1d-1a TECHNOLOGY DECISION (16 Nov 02:30, researched; his question: which advance technology goes with DKIM)
+1. NOW (in code): DKIM RFC 6376 relaxed/relaxed, DUAL signature Ed25519-SHA256 (RFC 8463) + RSA-2048-SHA256, x= expiry 7 days, private halves AES-256-GCM wrapped under the vault master, key creation needs a passkey touch.
+2. HARDENING TO ADD in Q1d-1a (open gap, fmail_dkim.rs SIGNED says "nothing is over-signed"): oversign From, To, Subject, Date, Message-ID (name listed twice in h=, so an added duplicate header breaks the signature). Test vectors first.
+3. NEXT in Q1d-1b..: DMARC p=reject with alignment, key ROTATION by dated selector (old revoked not deleted, already in E170), DNSSEC on the zone if his registrar offers it (his hands).
+4. TRACKED, NOT BUILT: DKIM2 (draft-ietf-dkim-dkim2-spec-09, WG draft, expires 5 May 2027, per-hop chain, ML-DSA-44 "mldsa44"). No receiver verifies it yet, so signing it today proves nothing; it stays an OPEN item until a receiver or an RFC exists.
+
+- Q1d-1a technology decision 16 Nov 02:30 written in CURRENT.md: keep dual Ed25519 + RSA-2048 DKIM (in code), ADD oversigning of From/To/Subject/Date/Message-ID (open gap found in fmail_dkim.rs), then DMARC reject + selector rotation + DNSSEC (his hands); DKIM2 with ML-DSA-44 tracked only (WG draft-09, no receiver).
