@@ -41,3 +41,6 @@ Cinematic glass card like the rest of the founder site (not a copy of Gmail's gr
 3 Write the technology contract in CURRENT.md, register any missing technology in TECH-LAW-GATE.json.
 4 After Q1b4 (the current phase): C1, C2, C3, C4 one at a time, each: SQL (if any) -> Rust door -> kernel -> UI -> tests -> his ONE command -> my live Chrome look at 390/820/1200 -> GREEN with "WIRED: YES / REAL: YES / TECH-LAW CHECKED".
 5 C5 with Q3, C6 with Q4, C7 and C8 after, then the audit.
+
+## QC1e - EMOJI IN COMPOSE (his word 17 Nov 2026 04:0x)
+Every emoji that exists in the world is available while composing a mail: all Unicode emoji groups, skin tones, flags, ZWJ families, search by name and keyword, a recents row, and a `:name:` shortcut in the body. Compose box only (additive one-line mount; the current founder UI is not touched). The emoji data is the newest Unicode CLDR set bundled with the app: no third-party service, no CDN (vendor ban). Cursor and delete work per grapheme (Intl.Segmenter) so one emoji is never cut in half. Mail goes out as UTF-8 (subject as RFC 2047, body as UTF-8) and is proven end to end (DKIM-signed, receiver shows it right). Placed after QC1 in the order. Proof = my live Chrome at 390 / 820 / 1200 + a real mail with emojis received.

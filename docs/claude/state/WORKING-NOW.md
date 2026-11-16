@@ -1,18 +1,24 @@
-# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 03:58 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Q1b4 e: E184 ran OK (sending ON, CHECK 4/4), founder-install OK with reason+Received fixes; Outbox test mail STILL stuck (cause unknown, needs his journalctl paste); no new inbound mail yet so SPF/TLS verdict unproven
-NEXT STEP: his Gmail mail to founder address OR his journalctl paste; then verdict look + 390/820/1200, then close Q1b4 e
-HIS LAST WORD: GREEN e abhi ke abhi (refused: no proof yet)
+# WORKING NOW (manual checkpoint, 17 Nov 2026 04:04 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Q1b4 e: new 04:00 Gmail mail still SPF not checked + No TLS on the fixed build; verifier now trusts the FIRST Received of the header block (milter headers above it) + logs header names if none; cargo 430/430; QC1e emoji phase added; Outbox mail stuck cause unknown (journal shows claim calls only)
+NEXT STEP: his founder-install, then a NEW Gmail mail, then ring look; if still empty read journalctl for 'mail auth: no Received'
+HIS LAST WORD: emoji in compose; blueprint update with what is green on server
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- e0167772 17 Nov 03:58 ledger line 828df137
 - 828df137 17 Nov 03:58 Q1b4 e: record E184 run and install, step e still open
 - c9f5df89 17 Nov 03:41 ledger line 255931b2
 - 255931b2 17 Nov 03:41 Q1b4 e: reason delta fix, Received skip LMTP headers, E184 sending ON by default
 - 8f409718 17 Nov 03:28 ledger line 1d37ddc6
-- 1d37ddc6 17 Nov 03:28 Q1b4: no mailbox shortcuts while compose is open; Move to Inbox for archived mail
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/FOUNDER-BLUEPRINT-CLEAN-14NOV.md
+ M docs/claude/FOUNDER-COMPOSE-PLAN-17NOV.md
+ M docs/claude/HANDOFF-LIVE.md
+ M docs/claude/state/Q-STATE.jsonl
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/server/qstate.py
+ M server/founder/src/fmail_auth.rs
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===

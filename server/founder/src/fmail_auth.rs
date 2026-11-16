@@ -22,22 +22,17 @@ pub const VERIFY_TIMEOUT_S: u64 = 12;      // a slow DNS never holds a mail long
 #[derive(Debug, PartialEq, Clone, Default)]
 pub struct Recv { pub ip: Option<IpAddr>, pub helo: Option<String>, pub rdns: Option<String>, pub tls_version: Option<String>, pub tls_cipher: Option<String>, pub tls_group: Option<String>, pub tls_class: &'static str }
 
-/// First header of the message, unfolded to one line, only when it is a `Received:`. Anything else = None (the mail did not come through our Postfix, so nothing is believed).
+/// The first `Received:` header of the header block (the one our own Postfix wrote), unfolded to one line. None = no such header, so nothing is believed
 pub fn top_received(raw: &[u8]) -> Option<String> {
     let head = &raw[..raw.len().min(16_384)];
     let text = String::from_utf8_lossy(head);
     let mut lines = text.split('\n').map(|l| l.trim_end_matches('\r')).peekable();
-    // Only our own LMTP/Postfix lines may sit above the Received line we trust; any other header first = refuse.
-    loop {
-        let l = *lines.peek()?;
-        let low = l.to_ascii_lowercase();
-        if low.starts_with("received:") { break; }
-        if low.starts_with("return-path:") || low.starts_with("delivered-to:") || low.starts_with("x-original-to:") || low.starts_with("envelope-to:") {
-            lines.next();
-            while let Some(n) = lines.peek() { if n.starts_with(' ') || n.starts_with('\t') { lines.next(); } else { break; } }
-            continue;
-        }
-        return None;
+    // Our Postfix always writes its own `Received:` ABOVE every header the sender supplied. Anything above it was added by our own side (LMTP Return-Path / Delivered-To, a milter's
+    // Authentication-Results ...). So the FIRST `Received:` of the header block is the one we trust; every later one is sender-written and never read.
+    while let Some(l) = lines.peek() {
+        if l.is_empty() { return None; }
+        if l.to_ascii_lowercase().starts_with("received:") { break; }
+        lines.next();
     }
     let first = lines.next()?;
     let mut out = first["received:".len()..].trim().to_string();
@@ -217,7 +212,12 @@ impl Verifier {
         let msg = AuthenticatedMessage::parse(raw)?;
         let from_raw = msg.from.first()?.clone();
         let (display, from_dom) = from_parts(&from_raw).or_else(|| from_parts(&format!("<{from_raw}>")))?;
-        let recv = top_received(raw).map(|h| parse_received(&h)).unwrap_or(Recv { tls_class: "none", ..Default::default() });
+        let top = top_received(raw);
+        if top.is_none() { // observability only: header NAMES (never values) so a layout surprise is visible in the journal
+            let names: Vec<String> = String::from_utf8_lossy(&raw[..raw.len().min(4096)]).lines().take_while(|l| !l.is_empty()).filter(|l| !l.starts_with(' ') && !l.starts_with('\t')).filter_map(|l| l.split(':').next()).take(12).map(|n| n.chars().take(40).collect()).collect();
+            eprintln!("founder: mail auth: no Received header found; top header names: {}", names.join(","));
+        }
+        let recv = top.map(|h| parse_received(&h)).unwrap_or(Recv { tls_class: "none", ..Default::default() });
         // display name comes from the raw From header (mail-auth keeps addresses only)
         let disp = raw_from_header(raw).and_then(|h| from_parts(&h)).map(|p| p.0).unwrap_or(display);
         let spoof = display_spoof(&disp, &from_dom);
@@ -300,8 +300,9 @@ mod tests {
     fn lmtp_headers_above_postfix_received_are_skipped_but_other_headers_refuse() {
         let ok = format!("Return-Path: <a@b.c>\r\nDelivered-To: f@x\r\nX-Original-To: f@x\r\n{}", PF);
         assert!(top_received(ok.as_bytes()).unwrap().contains("mail-wr1-f41.google.com"));
-        let bad = format!("X-Spam: yes\r\n{}", PF);
-        assert!(top_received(bad.as_bytes()).is_none());
+        let milter = format!("Authentication-Results: mx; dkim=pass\r\nX-Spam: no\r\n{}", PF);
+        assert!(top_received(milter.as_bytes()).unwrap().contains("209.85.221.41"));
+        assert!(top_received(b"X-Spam: yes\r\n\r\nReceived: from x (x [1.1.1.1]) by y\r\n").is_none());   // a Received in the body is never read
     }
 
     #[test]
@@ -314,7 +315,7 @@ mod tests {
     #[test]
     fn only_the_top_received_is_believed_an_older_forged_one_is_ignored() {
         let h = top_received(PF.as_bytes()).unwrap(); assert!(!h.contains("6.6.6.6"));
-        assert!(top_received(b"From: a@b.c\r\nReceived: from x (x [1.1.1.1]) by y\r\n\r\n").is_none());   // not on top = not ours
+        assert!(top_received(b"From: a@b.c\r\n\r\nReceived: from x (x [1.1.1.1]) by y\r\n").is_none());   // in the body = never read
     }
     #[test]
     fn plain_tls12_no_tls_unknown_rdns_and_ipv6() {
