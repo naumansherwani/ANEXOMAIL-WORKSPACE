@@ -50,5 +50,5 @@ BIMI (needs a VMC certificate, vendor), DMARC aggregate-report ingestion (RFC 99
 | a | master plan + CURRENT.md contract | DONE (this commit) |
 | b | SQL E183 (786 lines) + CHECK_E183 + sandbox proof (selftest 52 ok, door audit clean) | DONE 17 Nov 02:5x |
 | c | Rust fmail_auth.rs + intake + doors + tests (cargo 429/429) | DONE 17 Nov 02:3x |
-| d | UI TrustRing + outgoing facts + tests | todo |
+| d | UI TrustRing + outgoing facts + delete-confirm + tests (bun 311, tsc clean, vite build ok; plan Q1B4-UI-PLAN-17NOV.md) | DONE (written) 17 Nov 03:0x |
 | e | his sql-run E183, founder-install, Chrome look, GREEN | todo |

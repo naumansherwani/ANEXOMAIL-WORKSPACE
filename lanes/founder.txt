@@ -154,8 +154,8 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-BASDxWQY.js
-founder-web/dist/assets/index-CC7KJUFk.css
+founder-web/dist/assets/index-ByMigQM_.js
+founder-web/dist/assets/index-Mgaz76CE.css
 founder-web/dist/assets/kernel.worker-CmgLpPuh.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
@@ -194,6 +194,7 @@ founder-web/src/Bridge.tsx
 founder-web/src/BridgeLanes.tsx
 founder-web/src/BridgeMailLedger.tsx
 founder-web/src/BridgeMailSpeed.tsx
+founder-web/src/ConfirmSheet.tsx
 founder-web/src/Dbsc.tsx
 founder-web/src/DbscCard.tsx
 founder-web/src/Decks.tsx
@@ -225,6 +226,7 @@ founder-web/src/SignIn.tsx
 founder-web/src/Surface.tsx
 founder-web/src/SystemMap.tsx
 founder-web/src/Trust.tsx
+founder-web/src/TrustRing.tsx
 founder-web/src/Vault.tsx
 founder-web/src/ambient.ts
 founder-web/src/anchorgauge.test.ts
@@ -247,6 +249,9 @@ founder-web/src/components/ui/00-FOUNDER-TECH-RULE.md
 founder-web/src/components/ui/button.tsx
 founder-web/src/components/ui/popover.tsx
 founder-web/src/components/ui/switch.tsx
+founder-web/src/confirm.css
+founder-web/src/confirm_pure.test.ts
+founder-web/src/confirm_pure.ts
 founder-web/src/countries.ts
 founder-web/src/dbsc_pure.test.ts
 founder-web/src/dbsc_pure.ts
@@ -355,6 +360,9 @@ founder-web/src/styles.css
 founder-web/src/system_brain.json
 founder-web/src/systemmap.css
 founder-web/src/tailwind.css
+founder-web/src/trust.css
+founder-web/src/trust_pure.test.ts
+founder-web/src/trust_pure.ts
 founder-web/src/types.ts
 founder-web/src/ui.css
 founder-web/tsconfig.json

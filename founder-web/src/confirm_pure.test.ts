@@ -1,0 +1,10 @@
+import { describe, expect, test } from "bun:test";
+import { deleteQuestion, confirmKey } from "./confirm_pure";
+describe("delete question", () => {
+  test("inbox mail: move to Trash, says it can be restored, verbs not OK/Cancel", () => { const q = deleteQuestion("inbox", "in", "Draft agreement"); expect(q.title).toBe("Move to Trash?"); expect(q.body).toContain("You can restore it"); expect(q.body).toContain('"Draft agreement"'); expect(q.yes).toBe("Move to Trash"); expect(q.no).toBe("Keep it"); expect(q.danger).toBe(true); });
+  test("unsent mail: discard, never sent", () => { const q = deleteQuestion("outbox", "out"); expect(q.title).toBe("Discard this unsent mail?"); expect(q.body).toContain("never be sent"); expect(q.yes).toBe("Discard mail"); expect(deleteQuestion("drafts", "out").yes).toBe("Discard mail"); });
+  test("sent mail: honest that recipients keep their copy", () => { expect(deleteQuestion("sent", "out").body).toContain("still have it"); });
+  test("already in Trash: nothing dangerous, no destructive button", () => { const q = deleteQuestion("trash", "in"); expect(q.danger).toBe(false); expect(q.skip).toBe(true); });
+  test("subject is trimmed and capped; empty subject falls back", () => { expect(deleteQuestion("inbox", "in", "x".repeat(200)).body.length).toBeLessThan(140); expect(deleteQuestion("inbox", "in", "  ").body).toContain("this mail"); expect(deleteQuestion("inbox", "in", null).body).toContain("this mail"); });
+  test("keys: Esc keeps, Enter only on the red button", () => { expect(confirmKey("Escape", false)).toBe("no"); expect(confirmKey("Enter", false)).toBe("none"); expect(confirmKey("Enter", true)).toBe("yes"); expect(confirmKey("a", true)).toBe("none"); });
+});

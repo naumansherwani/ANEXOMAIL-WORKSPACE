@@ -9,6 +9,10 @@ import { LogoMark } from "./Brand";
 import { Ic, FOLDER_ICON } from "./mailbox_icons";
 import { arrivalLine, describeQuery, freshRows, isEmptyQuery, matchQuery, parseQuery, speedWords, suggest } from "./mailbox_pure";
 import { FOLDERS, ago, compact, fmtSize, glide, hue, initials, isGatedView, keyCmd, ledgerChip, merge, pill, proofChip, quoteReply, replySubject, rowText, touchAction, verdicts, when, folderLabel, type Box, type Counts, type Lane, type Proof, type Row } from "./mail_pure";
+import { TrustRing, OutFactsLine } from "./TrustRing";
+import { ConfirmSheet } from "./ConfirmSheet";
+import { deleteQuestion, type Ask } from "./confirm_pure";
+import { sentMs } from "./trust_pure";
 import "./mail.css";
 import "./mailbox.css";
 
@@ -110,7 +114,7 @@ export function MailBox() {
     else setOpenErr(a.error);
   }, [boxId, loadCounts, swap]);
 
-  const act = useCallback(async (what: "archive" | "trash" | "star" | "unread" | "vault") => {
+  const doAct = useCallback(async (what: "archive" | "trash" | "star" | "unread" | "vault") => {
     const r = rows.find((x) => x.id === sel); if (!r) return;
     if (what === "star" || what === "unread") { await api.flag(boxId, [r.id], what === "star" ? { starred: !r.starred } : { read: false }); setRows((o) => o.map((x) => (x.id === r.id ? { ...x, starred: what === "star" ? !x.starred : x.starred, read: what === "unread" ? false : x.read } : x))); void loadCounts(); return; }
     const res = what === "vault" ? await api.setVault(boxId, r.thread_id, view !== "vault") : what === "trash" && r.direction === "out" ? await api.discard(boxId, r.id) : await api.move(boxId, [r.id], what);
@@ -119,6 +123,13 @@ export function MailBox() {
   }, [rows, sel, boxId, view, loadList, loadCounts]);
 
   const cur = rows.find((r) => r.id === sel) ?? null;
+  // Q1b4: Delete asks first (his 17 Nov order). Trash is the only destructive door here; every other action stays one click.
+  const [ask, setAsk] = useState<Ask | null>(null);
+  const act = useCallback((what: "archive" | "trash" | "star" | "unread" | "vault") => {
+    if (what !== "trash") return doAct(what);
+    const r = rows.find((x) => x.id === sel); if (!r) return Promise.resolve();
+    setAsk(deleteQuestion(r.folder, r.direction, r.sum?.subject)); return Promise.resolve();
+  }, [rows, sel, doAct]);
   const query = useMemo(() => parseQuery(qText), [qText]);
   const shown = useMemo(() => rows.filter((r) => matchQuery(r, query)), [rows, query]);
   const reply = useCallback(() => { if (!opened || !cur) return; setCompose({ to: opened.sum.from, subject: replySubject(opened.sum.subject ?? ""), text: quoteReply(opened.sum.from_name || opened.sum.from || "", opened.sum.date ? new Date(opened.sum.date).toLocaleString() : "", opened.view.text || ""), in_reply_to: opened.sum.message_id, reply_to: cur.id }); }, [opened, cur]);
@@ -226,7 +237,7 @@ export function MailBox() {
                   <button type="button" className={`mbx-r ${sel === r.id ? "on" : ""} ${r.read ? "" : "unread"} ${t.locked ? "locked" : ""} ${flashRows.includes(r.id) ? "fresh" : ""}`} onClick={() => void select(r)}>
                     <span className={`mbx-av ${t.locked ? "lk" : ""}`} style={{ ["--h" as string]: hue(r.sum?.from) }} aria-hidden="true">{t.locked ? <Ic k="lock" s={16} /> : initials(r.sum?.from_name, r.sum?.from)}</span>
                     <span className="mbx-rb">
-                      <span className="mbx-r1"><b>{!r.read && <i className="mbx-dot" aria-label="unread" />}{t.who}</b><span className="mbx-rm">{r.attach > 0 && <Ic k="clip" s={14} />}{r.starred && <Ic k="flag" s={14} fill />}<time>{when(r.received_ms)}</time></span></span>
+                      <span className="mbx-r1"><b>{!r.read && <i className="mbx-dot" aria-label="unread" />}{t.who}</b><span className="mbx-rm">{r.attach > 0 && <Ic k="clip" s={14} />}{r.starred && <Ic k="flag" s={14} fill />}<time>{when(sentMs(r) ?? r.received_ms)}</time></span></span>
                       <span className="mbx-r2">{t.subject}</span>
                       {t.snippet && <span className="mbx-r3">{t.snippet}</span>}
                       {(r.thread_count > 1 || r.seal_mode === "recipient_pq") && <span className="mbx-r4">{r.thread_count > 1 && <span>{r.thread_count} in thread</span>}{r.seal_mode === "recipient_pq" && <span>PQC</span>}</span>}
@@ -266,9 +277,11 @@ export function MailBox() {
                   <div className="mbx-from"><span className="mbx-av lg" style={{ ["--h" as string]: hue(opened.sum.from) }} aria-hidden="true">{initials(opened.sum.from_name, opened.sum.from)}</span><div><b>{opened.sum.from_name || opened.sum.from}</b><small>&lt;{opened.sum.from}&gt; · {opened.sum.date ? new Date(opened.sum.date).toLocaleString() : ""}</small><small>To {(opened.sum.to ?? []).join(", ") || "-"}{opened.sum.cc?.length ? ` · Cc ${opened.sum.cc.join(", ")}` : ""} · {fmtSize(opened.facts.size)}</small></div></div>
                   <div className="mbx-chips">
                     <ProofChip p={proof} busy={proofBusy} box={boxId} id={opened.facts.id} />
-                    {verdicts(opened.facts).map((v) => <span key={v.k} className={`mx-chip ${v.tone}`}>{v.text}</span>)}
+                    {cur.direction === "in" && <TrustRing box={boxId} id={opened.facts.id} facts={opened.facts} />}
+                    {cur.direction === "in" && verdicts(opened.facts).map((v) => <span key={v.k} className={`mx-chip ${v.tone}`}>{v.text}</span>)}
                     {opened.touched && <span className="mx-chip ok">Opened with your key</span>}
                   </div>
+                  {cur.direction === "out" && <OutFactsLine box={boxId} id={opened.facts.id} />}
                   {opened.view.remote_content_blocked && <p className="mx-note">Remote images and scripts in this message were not loaded. You are reading its text only.</p>}
                   <pre className="mbx-body-t">{opened.view.text || "(empty message)"}</pre>
                   {opened.view.attachments.length > 0 && (
@@ -282,6 +295,7 @@ export function MailBox() {
       </div>
 
       <nav className="mbx-bottom" aria-label="Mail folders (phone)">{phoneNav.map((k) => { const c = counts?.[k]; return <button key={k} type="button" className={view === k ? "on" : ""} onClick={() => { setView(k); setSel(null); setOpened(null); }} aria-label={folderLabel(k)}><Ic k={FOLDER_ICON[k]} fill={view === k} /><span>{folderLabel(k)}</span>{c?.unread ? <em>{compact(c.unread)}</em> : null}</button>; })}</nav>
+      <ConfirmSheet ask={ask} onNo={() => setAsk(null)} onYes={() => { const a = ask; setAsk(null); if (a && !a.skip) void doAct("trash"); }} />
       {box && <button type="button" className="mbx-fab mbx-glow idle" onClick={() => setCompose({})} aria-label="New email"><Ic k="pen" s={22} /></button>}
 
       <AnimatePresence>{arrival && <motion.div key={arrival.k} className="mbx-pill" role="status" initial={reduce ? false : { opacity: 0, y: 16, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 8 }} transition={{ type: "spring", stiffness: 380, damping: 30 }}><Ic k="spark" s={16} /><b>{arrival.who}</b><span>{arrival.what}</span></motion.div>}</AnimatePresence>

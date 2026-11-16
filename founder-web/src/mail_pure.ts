@@ -5,7 +5,7 @@ export type Sum = { subject?: string; from?: string; from_name?: string; to?: st
 export type Row = {
   id: string; thread_id: string; folder: string; direction: "in" | "out"; received_ms: number; size: number; attach: number; read: boolean; starred: boolean; draft: boolean; thread_count: number;
   spf: string; dkim: string; dmarc: string; arc: string; lookalike: boolean; scan: string; tls: string | null; domain: string | null; seal_mode: Seal; gated: boolean;
-  sum?: Sum | null; broken?: boolean;
+  sum?: Sum | null; broken?: boolean; score?: number | null; grade?: string | null; sent_ms?: number | null;
 };
 export type Box = { id: string; address: string; brand?: string; display_name?: string; seal_mode: Seal; status: string; key_id?: string | null; vault_key_id?: string | null };
 export type Lane = { lane: string; label: string; dir: "in" | "out"; count: number; last_ms: number; tone: "ok" | "warn" | "bad" };
