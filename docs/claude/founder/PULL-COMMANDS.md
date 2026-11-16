@@ -1432,3 +1432,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 16 Nov 06:20 E179 DONE on HIS server (his paste): applied, selftest 5 ok 0 failed, CHECK_E179 5/5 OK (gate volatile, answers for every mailbox, service_role only, door audit no offender), CHECK_E65 all OK. NEXT: my Chrome look Outbox/Sent, his new mail to Gmail + Show original -> Record proof. NOT green. TECH-LAW CHECKED.
 
 - 16 Nov 06:25 Q1d-F my live Chrome look after E179: Mail Outbox 1, Sent 0, Bridge 'Send failed 3', Queued 0. The failed mail is either waiting its retry backoff or has a new error: next = his fmail-send-why.sh paste. NOT green. TECH-LAW CHECKED.
+
+- 16 Nov 06:30 OUTBOX DELETE FIX written: E180 fmail_discard180 (cancel outbox row first then Trash; Sent -> Trash; sending refused; ledgered) + CHECK_E180 + selftest180, Rust POST /founder/v1/mail/discard, api.discard + MailBox Delete branch for outgoing mail; cargo all pass, tsc clean. His fmail-send-why paste: failed mail attempts 3, next retry 06:15:27, old error text (E179 live; retry pending). NOT on his server yet, NOT green. TECH-LAW CHECKED.
+
+- 16 Nov 06:35 OUTBOX DELETE FIX written: E180 fmail_discard180 (cancel outbox row first then Trash; Sent -> Trash; sending refused; ledgered) + CHECK_E180 + selftest180, Rust POST /founder/v1/mail/discard, api.discard + MailBox Delete branch for outgoing mail; cargo 410 pass, tsc clean. His fmail-send-why paste: failed mail attempts 3, next retry 06:15:27, old error text (E179 live; retry pending). NOT on his server yet, NOT green. TECH-LAW CHECKED.

@@ -113,7 +113,7 @@ export function MailBox() {
   const act = useCallback(async (what: "archive" | "trash" | "star" | "unread" | "vault") => {
     const r = rows.find((x) => x.id === sel); if (!r) return;
     if (what === "star" || what === "unread") { await api.flag(boxId, [r.id], what === "star" ? { starred: !r.starred } : { read: false }); setRows((o) => o.map((x) => (x.id === r.id ? { ...x, starred: what === "star" ? !x.starred : x.starred, read: what === "unread" ? false : x.read } : x))); void loadCounts(); return; }
-    const res = what === "vault" ? await api.setVault(boxId, r.thread_id, view !== "vault") : await api.move(boxId, [r.id], what);
+    const res = what === "vault" ? await api.setVault(boxId, r.thread_id, view !== "vault") : what === "trash" && r.direction === "out" ? await api.discard(boxId, r.id) : await api.move(boxId, [r.id], what);
     if (!res.ok) { setOpenErr(res.error || "That did not work."); return; }
     setSel(null); setOpened(null); void loadList(); void loadCounts();
   }, [rows, sel, boxId, view, loadList, loadCounts]);

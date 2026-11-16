@@ -131,6 +131,7 @@ docs/cursor-work/sql/E173_founder_mail_anchor_proof.sql
 docs/cursor-work/sql/E174_founder_mail_perf.sql
 docs/cursor-work/sql/E175_founder_mail_dkim_lifecycle.sql
 docs/cursor-work/sql/E177_founder_mail_normal_send.sql
+docs/cursor-work/sql/E180_founder_mail_discard_out.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/00-FOUNDER-TECH-RULE.md
@@ -152,7 +153,7 @@ founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
 founder-web/dist/assets/index-BGuiqClp.css
-founder-web/dist/assets/index-CdlmmPum.js
+founder-web/dist/assets/index-DXPqECl0.js
 founder-web/dist/assets/kernel.worker-CmgLpPuh.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js

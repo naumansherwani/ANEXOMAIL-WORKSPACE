@@ -145,6 +145,7 @@ export async function send(box: string, c: Compose, o: { schedule?: string; draf
 }
 export async function undo(box: string, outbox: string): Promise<{ ok: boolean; error?: string }> { const r = await post("/founder/v1/mail/undo", { box, outbox }); return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` }; }
 export async function cancel(box: string, outbox: string): Promise<{ ok: boolean; error?: string }> { const r = await post("/founder/v1/mail/cancel", { box, outbox }); return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` }; }
+export async function discard(box: string, message: string): Promise<{ ok: boolean; error?: string }> { const r = await post("/founder/v1/mail/discard", { box, message }); return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` }; }
 export type OutRow = { outbox_id: string; message_id: string; state: string; not_before: string; undo_until: string; rcpt: number; attempts: number; last_error: string | null; tls: string | null; dkim: boolean; finished_at: string | null };
 export async function outbox(box: string): Promise<OutRow[] | null> { const r = (await get(`/founder/v1/mail/outbox?box=${encodeURIComponent(box)}`)).data; return r?.connected ? (r.outbox as OutRow[]) : null; }
 
