@@ -310,7 +310,7 @@
    "tech": "React 19 + TanStack Router (static SPA), Rust axum backend, Rust WASM kernel",
    "in_code": "NO",
    "status": "GREEN",
-   "proof": "WIRED: YES / REAL: YES / TECH-LAW CHECKED. 16 Nov 04:50 his decision: TanStack Router-only (static SPA + Rust + WASM kernel) for ever; TanStack Start (SSR) dropped; the site already runs on @tanstack/react-router, gate A-tanstack-start ok (docs/claude/DECISION-TANSTACK-ROUTER-ONLY-16NOV.md) [16 Nov 04:37]",
+   "proof": "WIRED: YES / REAL: YES / TECH-LAW CHECKED. 16 Nov 07:25 my live Chrome proof: bundle index-BvXt11Li = repo dist, TanStack Router signatures present (__root__, tsr-, hashchange), zero Start/SSR strings, zero WebSocket; router.tsx createRouter + createHashHistory; his decision 16 Nov 03:46 docs/claude/DECISION-TANSTACK-ROUTER-ONLY-16NOV.md [16 Nov 07:07]",
    "target": "23 Nov (target)"
   },
   {
