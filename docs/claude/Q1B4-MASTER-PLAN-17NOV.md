@@ -48,7 +48,7 @@ BIMI (needs a VMC certificate, vendor), DMARC aggregate-report ingestion (RFC 99
 | Step | What | State |
 |---|---|---|
 | a | master plan + CURRENT.md contract | DONE (this commit) |
-| b | SQL E183 (786 lines) + CHECK_E183 + sandbox proof (selftest 52 ok, door audit clean) | DONE 17 Nov 02:5x |
-| c | Rust fmail_auth.rs + intake + doors + tests (cargo 429/429) | DONE 17 Nov 02:3x |
-| d | UI TrustRing + outgoing facts + delete-confirm + tests (bun 311, tsc clean, vite build ok; plan Q1B4-UI-PLAN-17NOV.md) | DONE (written) 17 Nov 03:0x |
-| e | his sql-run E183, founder-install, Chrome look, GREEN | todo |
+| b | SQL E183 (786 lines) + CHECK_E183 + sandbox proof (selftest 52 ok, door audit clean) | DONE + run OK on his server (CHECK_E183 9/9) 17 Nov 02:45 |
+| c | Rust fmail_auth.rs + intake + doors + tests (cargo 429/429) | DONE + INSTALLED on his server 17 Nov 03:1x |
+| d | UI TrustRing + outgoing facts + delete-confirm + tests (bun 311, tsc clean, vite build ok; plan Q1B4-UI-PLAN-17NOV.md) | DONE + INSTALLED on his server 17 Nov 03:15 |
+| e | his sql-run E183 (OK 03:0x) + founder-install x2 (OK 03:1x) done; my live Chrome look 390/820/1200 with a real Gmail mail, then GREEN | IN PROGRESS 17 Nov 03:2x |
