@@ -3524,3 +3524,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - 16 Nov 05:05 NORMAL SEND: per-send touch off by policy (E177, ledgered), 30 s hold stays, exact-time sender (Notify + next-due), probe + send-on scripts; cargo 410/410; NOT green: needs sql-run E177, founder-install, FMAIL_SEND on, DNS both keys, Gmail dkim=pass. TECH-LAW CHECKED.
 
 - 16 Nov 05:22 sql-run AUTO said no new SQL on his server (E177 is on origin/main 66094d0d); added read-only sql-why.sh to see what his server sees. E177 NOT run yet. TECH-LAW CHECKED.
+
+- 16 Nov 05:25 E177 IS ALREADY ON HIS SERVER: sql-why paste shows ledger row E177 sha 002213b2e31c94b2 at 00:04Z (= 05:04 PKT), same sha as origin/main file; so sql-run AUTO was right, my doubt was wrong. DKIM: both TXT records are in Namecheap (e2611a confirmed; r2611a re-check). NOW = MAIL SEND: next his commands: 1 CHECK_E177, 2 founder-install, 3 fmail-send-probe, 4 fmail-send-on. NOT green. TECH-LAW CHECKED.
