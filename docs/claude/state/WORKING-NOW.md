@@ -5,11 +5,11 @@ HIS LAST WORD: his 06:21 photo of Systems pills + toggle request
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 9aefb729 16 Nov 07:07 S5 proof with live Chrome look recorded in blueprint
+- a192df78 16 Nov 07:07 ledger line d92501e2
 - d92501e2 16 Nov 07:07 E182 switch green with live Chrome proof; S5 proof recorded
 - 98b33f07 16 Nov 06:54 ledger line 0702bff9
 - 0702bff9 16 Nov 06:54 Rule: address the founder only as Aap
-- b74f782c 16 Nov 06:54 ledger line 408cc966
-- 408cc966 16 Nov 06:54 Rule: address the founder only as Aap, never tum
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
