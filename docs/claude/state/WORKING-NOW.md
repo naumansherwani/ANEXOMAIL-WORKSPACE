@@ -1,22 +1,18 @@
-# WORKING NOW (manual checkpoint, 17 Nov 2026 04:08 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 04:08 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: TLS line on founder login page + app footer written (tls_line.ts); awam line WAITS: awam is on Caddy HTTP/2, K5b not green, no proof it is AES-256 only
 NEXT STEP: his founder-install; his read-only openssl check on the awam host before any awam wording
 HIS LAST WORD: TLS 1.3 AES-256-GCM only on login + footer, professional wording
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 4a802e35 17 Nov 04:08 Founder login and footer: TLS 1.3 only, AES-256-GCM only line
 - 2a7df41d 17 Nov 04:05 ledger line ce2a048f
 - ce2a048f 17 Nov 04:05 Q1b4 e: first-Received lookup + header-name log; QC1e emoji phase in blueprint
 - e0167772 17 Nov 03:58 ledger line 828df137
 - 828df137 17 Nov 03:58 Q1b4 e: record E184 run and install, step e still open
-- c9f5df89 17 Nov 03:41 ledger line 255931b2
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
- M founder-web/src/App.tsx
- M founder-web/src/SignIn.tsx
-?? founder-web/src/tls_line.test.ts
-?? founder-web/src/tls_line.ts
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
