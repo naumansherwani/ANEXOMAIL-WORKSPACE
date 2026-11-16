@@ -173,3 +173,8 @@ export async function dkimCreate(box: string, selector: string, alg: "ed25519-sh
   }
   return r.status === 200 && r.body?.ok ? { ok: true, name: r.body.dns_name, value: r.body.dns_value } : { ok: false, error: r.body?.error || `HTTP ${r.status}` };
 }
+
+/** E182: the real ON/OFF switch for sending. null = door unavailable (E182 not run), never a guess. */
+export type Sending = { send_enabled: boolean; undo_seconds: number; waiting: number; changed_at_ms: number | null };
+export async function sendingState(): Promise<Sending | null> { const d = (await get("/founder/v1/mail/sending")).data; return d?.connected && d.sending ? d.sending as Sending : null; }
+export async function sendingSet(on: boolean): Promise<{ ok: boolean; error?: string }> { const r = await post("/founder/v1/mail/sending", { on }); return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` }; }

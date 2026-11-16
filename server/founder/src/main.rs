@@ -935,6 +935,8 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/mail/draft", axum::routing::post(fmail_out::draft_save_ep))
         .route("/founder/v1/mail/draft/discard", axum::routing::post(fmail_out::draft_discard_ep))
         .route("/founder/v1/mail/drafts", get(fmail_out::drafts_ep))
+        .route("/founder/v1/mail/discard", axum::routing::post(fmail_out::discard_ep))
+        .route("/founder/v1/mail/sending", get(fmail_out::sending_get_ep).post(fmail_out::sending_set_ep))
         .route("/founder/v1/mail/dkim", get(fmail_out::dkim_get_ep).post(fmail_out::dkim_set_ep))
         .route("/founder/v1/mail/dkim/health", get(fmail_out::dkim_health_ep))
         .route("/founder/v1/mail/dkim/check", axum::routing::post(fmail_out::dkim_check_ep))

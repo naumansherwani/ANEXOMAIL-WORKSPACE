@@ -37,3 +37,4 @@
 .sm .mx-btn:disabled{opacity:.8;color:#dfe9fb;cursor:default}
 .sm .sm-chip:hover,.sm .sm-chip:focus-visible{background:rgba(110,168,255,.12);border-color:rgba(120,170,255,.7);color:inherit;outline:0}.sm .sm-chip.on:hover{background:rgba(110,168,255,.18)}
 .sm .mini:hover{background:var(--p2)}
+.sm-send{display:flex;flex-direction:column;gap:6px;margin:6px 0 14px}

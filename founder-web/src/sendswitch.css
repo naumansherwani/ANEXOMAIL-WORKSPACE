@@ -1,0 +1,10 @@
+.ss{display:inline-flex;align-items:center;flex-wrap:wrap;gap:10px;max-width:100%}
+.ss-sw{display:inline-flex;align-items:center;gap:10px;min-height:44px;min-width:44px;padding:0 16px 0 12px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:inherit;font:inherit;font-size:14px;cursor:pointer;position:relative;transition:border-color .2s,background .2s}
+.ss-sw:hover{border-color:rgba(110,168,255,.6)}.ss-sw:focus-visible{outline:2px solid rgba(110,168,255,.8);outline-offset:2px}.ss-sw:disabled{opacity:.6;cursor:progress}
+.ss-hand{width:20px;height:20px;flex:none;opacity:.85}
+.ss-knob{width:34px;height:20px;border-radius:999px;background:rgba(255,255,255,.14);position:relative;flex:none;transition:background .2s}
+.ss-knob::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s}
+.ss-sw.on .ss-knob{background:rgba(110,168,255,.85)}.ss-sw.on .ss-knob::after{transform:translateX(14px)}
+.ss-sw.on{border-color:rgba(110,168,255,.45)}.ss-t{white-space:nowrap}.ss-err{color:#ff9a9a}.ss-note{overflow-wrap:anywhere}
+.ss-c .ss-sw{min-height:44px}
+@media (prefers-reduced-motion:reduce){.ss-knob,.ss-knob::after,.ss-sw{transition:none}}

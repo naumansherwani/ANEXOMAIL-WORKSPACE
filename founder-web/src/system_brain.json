@@ -1,8 +1,8 @@
 {
  "heartbeat": {
-  "generated": "16 Nov 2026 06:33 +0500",
-  "head": "60fc8ee9",
-  "head_subject": "ledger line 0f4d3e7f",
+  "generated": "16 Nov 2026 06:50 +0500",
+  "head": "950cfd0b",
+  "head_subject": "ledger line 4db8f85c",
   "now": "-",
   "phases": {
    "GREEN": 28,
@@ -147,6 +147,18 @@
    "status": "live",
    "where": "fmail_out.rs sender worker",
    "tech": "Rust Tokio SMTP"
+  },
+  {
+   "name": "Sending ON/OFF switch",
+   "what": "Real switch for outgoing mail: OFF = mails wait in the Outbox and nothing is sent, ON = the exact-time sender takes them; every change is a hash-chained ledger line, no touch",
+   "layers": [
+    "rust",
+    "sql",
+    "ui"
+   ],
+   "status": "written",
+   "where": "E182, fmail_out.rs sending_ep, SendSwitch.tsx",
+   "tech": "PostgreSQL policy + Rust Tokio door + React"
   },
   {
    "name": "DKIM2 / ML-DSA-44",

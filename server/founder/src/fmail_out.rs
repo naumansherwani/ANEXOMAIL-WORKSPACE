@@ -436,6 +436,36 @@ pub async fn dkim_policy_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: a
         "p_oversign": flag(&j, "oversign"), "p_dual": flag(&j, "dual"), "p_dns_match": flag(&j, "dns_match"), "p_touch_hash": hash})).await { Ok(v) => crate::signed(&st, json!({"ok": true, "policy": v})), Err(e) => pk::sql_err(e) }
 }
 
+/// POST /founder/v1/mail/discard {box, message}: Delete for OUTGOING mail (E180). A mail still waiting in the Outbox (queued, scheduled, failed) is cancelled first, then it goes to Trash; Sent goes to Trash.
+/// A mail that is being sent right now is refused by the SQL door. No passkey touch (normal-send policy); the ledger records it.
+pub async fn discard_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::body::Bytes) -> Response {
+    let (uid, _e, _d) = match pk::ctx(&st, &h, uri.path(), &body, true).await { Ok(x) => x, Err(r) => return r };
+    let sb = match pk::sbx(&st) { Ok(s) => s, Err(r) => return r };
+    let j = match pk::body_json(&body) { Ok(j) => j, Err(r) => return r };
+    let Some(b) = pk::txt(&j, "box", 40).filter(|x| pk::is_uuid(x)) else { return bad("box is needed") };
+    let Some(m) = pk::txt(&j, "message", 40).filter(|x| pk::is_uuid(x)) else { return bad("message is needed") };
+    if let Err(r) = own_box(sb, &uid, &b).await { return r }
+    match sb.rpc_msg("fmail_discard180", json!({"p_actor": uid, "p_mailbox": b, "p_message": m})).await { Ok(v) => { WAKE.notify_one(); crate::signed(&st, json!({"ok": true, "result": v})) }, Err(e) => pk::sql_err(e) }
+}
+/// GET /founder/v1/mail/sending: is real sending ON or OFF (E182), how many mails wait. Read-only, signed.
+pub async fn sending_get_ep(State(st): State<S>, h: HeaderMap) -> Response {
+    if let Err(e) = crate::authed(&st, &h).await { return e.into_response() }
+    let sb = st.sb.as_ref().unwrap();
+    match sb.rpc("fmail_sending_state182", json!({})).await { Some(v) if v.is_object() => crate::signed(&st, json!({"connected": true, "sending": v})), _ => crate::signed(&st, json!({"connected": false, "note": "run the E182 SQL step (sql-run.sh)"})) }
+}
+/// POST /founder/v1/mail/sending {on: bool}: the real ON/OFF switch for sending (E182). OFF = mails keep waiting in the Outbox, nothing is sent, incoming mail untouched. ON = the exact-time sender takes them at once.
+/// No touch (his normal-send word); every change is a hash-chained ledger line (policy_change send_enabled).
+pub async fn sending_set_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::body::Bytes) -> Response {
+    let (uid, _e, _d) = match pk::ctx(&st, &h, uri.path(), &body, true).await { Ok(x) => x, Err(r) => return r };
+    let sb = match pk::sbx(&st) { Ok(s) => s, Err(r) => return r };
+    let j = match pk::body_json(&body) { Ok(j) => j, Err(r) => return r };
+    let Some(on) = j.get("on").and_then(|v| v.as_bool()) else { return bad("on (true or false) is needed") };
+    match sb.rpc_msg("fmail_sending_set182", json!({"p_actor": uid, "p_on": on, "p_reason": null})).await {
+        Ok(v) => { if on { WAKE.notify_one(); } crate::signed(&st, json!({"ok": true, "result": v})) }
+        Err(e) => pk::sql_err(e)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

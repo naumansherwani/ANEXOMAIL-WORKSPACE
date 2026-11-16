@@ -4,6 +4,7 @@ import { useState } from "react";
 import brain from "./system_brain.json";
 import { DkimDock } from "./DkimDock";
 import { MailHealth } from "./MailHealth";
+import { SendSwitch } from "./SendSwitch";
 import "./systemmap.css";
 
 const LAYERS: Record<string, string> = { rust: "Rust server", kernel: "WASM kernel (your browser)", sql: "PostgreSQL", ui: "React screen", mail: "Mail wire (SMTP)", tracked: "Tracked, not built" };
@@ -14,7 +15,7 @@ export function SystemMap() {
   const hb = brain.heartbeat, feats = brain.features.filter((x) => f === "all" || x.layers.includes(f));
   return (
     <div className="grid">
-      <section className="card wide sm" aria-label="Mail health"><h2>MAIL HEALTH · SPEED, TRANSPORT, LEDGER, LANES</h2><MailHealth /></section>
+      <section className="card wide sm" aria-label="Mail health"><h2>MAIL HEALTH · SPEED, TRANSPORT, LEDGER, LANES</h2><div className="sm-send"><span className="sm-k">Real outgoing mail</span><SendSwitch /></div><MailHealth /></section>
       <section className="card wide sm" aria-label="Repo heartbeat">
         <h2>HEARTBEAT · WHERE THE SYSTEM IS NOW</h2>
         <div className="sm-hb">
@@ -31,7 +32,7 @@ export function SystemMap() {
         <div className="sm-chips" role="group" aria-label="Filter by layer">{["all", ...Object.keys(LAYERS)].map((k) => <button key={k} type="button" className={`sm-chip ${f === k ? "on" : ""}`} onClick={() => setF(k)}>{k === "all" ? "All" : LAYERS[k]}</button>)}</div>
         <ul className="sm-list">{feats.map((x) => { const s = STATUS[x.status] ?? ["", "idle"]; return (
           <li key={x.name}><div className="sm-top"><b>{x.name}</b><span className="sm-st" data-tone={s[1]}>{s[0]}</span></div>
-            <p>{x.what}</p><p className="sm-tech"><span>{x.tech}</span><span>{x.layers.map((l) => LAYERS[l]).join(" · ")}</span><span>{x.where}</span></p></li>); })}</ul>
+            <p>{x.what}</p>{x.name === "Real outgoing mail" && <SendSwitch compact />}<p className="sm-tech"><span>{x.tech}</span><span>{x.layers.map((l) => LAYERS[l]).join(" · ")}</span><span>{x.where}</span></p></li>); })}</ul>
         <button type="button" className="mx-btn alt" aria-expanded={ph} onClick={() => setPh((o) => !o)}>{ph ? "Hide" : "Show"} all {brain.phases.length} phases and their technology</button>
         {ph && <ul className="sm-list sm-ph">{brain.phases.map((p) => <li key={p.id}><div className="sm-top"><b>{p.id}</b><span className="sm-st" data-tone={p.status === "GREEN" ? "ok" : p.status === "PAUSED" ? "idle" : "warn"}>{p.status}</span></div><p>{p.what}</p><p className="sm-tech"><span>{p.tech}</span></p></li>)}</ul>}
       </section>

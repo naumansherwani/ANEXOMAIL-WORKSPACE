@@ -119,3 +119,4 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 - E179_fix_dkim_gate_volatile.sql (+ CHECK_E179.sql): FIX the first real send failure: send_gate175 was STABLE, PostgREST ran it read-only, the health call writes (25006). Now VOLATILE. Next free SQL = E182.
 - E180_founder_mail_discard_out.sql (+ CHECK_E180.sql): DELETE for outgoing mail (Outbox failed/queued/scheduled -> cancel row first, then Trash; Sent -> Trash), ledgered; fmail_move only ever moved incoming mail. Next free SQL = E182.
 - E181_fix_send_ledger_text.sql (+ CHECK_E181.sql): AUDIT FIX: the enqueue ledger line no longer claims "passkey touched" when the normal-send policy needs no touch. Next free SQL = E182.
+- E182_founder_mail_sending_switch.sql (+ CHECK_E182.sql): REAL ON/OFF SWITCH for sending (policy send_enabled, claim + exact-time wake honour it, ledgered door fmail_sending_set182, state door fmail_sending_state182, selftest 8). Next free SQL = E183.
