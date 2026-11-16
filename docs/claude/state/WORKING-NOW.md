@@ -1,23 +1,18 @@
-# WORKING NOW (manual checkpoint, 17 Nov 2026 01:44 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 01:44 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 17 Nov 01:45 PKT: AUDIT-Q1d = GREEN (his install OK build e3fc05d4; my Chrome: Check evidence chains = 10 rows checked, none broken). Auto 5-min refresh added (autoref.sh + UserPromptSubmit hook). NOW = Q1b4 (SPF/DKIM/DMARC verdicts + trust ring).
 NEXT STEP: start Q1b4: G3 outgoing mail must not show receive-side badges + real Sent time (not compose time), G4 use the mail-auth crate; read FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md Q1b4 first, write the CURRENT.md contract first, then code; ONE phase, ONE command at a time
 HIS LAST WORD: 17 Nov 01:43 install paste OK; look at Chrome, green, update everything, auto-update every 5 min
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 941e1c39 17 Nov 01:44 AUDIT-Q1d GREEN (live Chrome: 10 rows checked, none broken) + autoref.sh 5-min auto refresh + hook
 - 6b290bea 17 Nov 01:34 ledger line 3227c696
 - 3227c696 17 Nov 01:34 WORKING-NOW: note that the Q1d audit context was running (17 Nov 01:37)
 - e3fc05d4 17 Nov 01:32 ledger line 9dee297d
 - 9dee297d 17 Nov 01:32 WORKING-NOW: current state 17 Nov 01:35 for compaction
-- b71c3915 17 Nov 01:29 ledger line 867b4ba2
 
 ## Uncommitted files (half-done work if any)
- M .claude/settings.json
- M docs/claude/HANDOFF-LIVE.md
- M docs/claude/state/Q-STATE.jsonl
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/server/brain.py
-?? docs/cursor-work/server/autoref.sh
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
