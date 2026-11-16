@@ -1,29 +1,24 @@
-# WORKING NOW (manual checkpoint, 17 Nov 2026 04:51 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 04:51 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Q1b4 e: after install, his Gmail mail 04:49 shows SPF pass, DKIM pass, DMARC pass, ARC, score 79 C, reasons clean, IP+rDNS; TLS 'not recorded' (Postfix Received has no TLS detail); my test mail 'Q1b4 verdict test 2' sent 04:50 (30 s hold) to see Outbox fix
 NEXT STEP: check my test mail leaves + returns; then read-only postconf smtpd_tls_received_header for the TLS fact; then close Q1b4 e at 390/820/1200
 HIS LAST WORD: PRO package done, no AI in awam, mid-edit compaction way
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 583d0775 17 Nov 04:51 Awam order (packages, no AI), editlog.sh mid-edit safety, ckpt WIP snapshot
 - 225409b5 17 Nov 04:38 ledger line 92a13b6c
 - 92a13b6c 17 Nov 04:38 Blueprint: Q1b4 a-d done; Outbox cause confirmed
 - acd3b55b 17 Nov 04:32 ledger line 44da0d5d
 - 44da0d5d 17 Nov 04:32 Q1b4 e: sender uses public DNS only (own domain no longer looks private)
-- f45d0e3a 17 Nov 04:27 ledger line deb20c99
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/server/ckpt.sh
-?? docs/cursor-work/server/editlog.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md |  6 +++---
- docs/claude/state/WORKING-NOW.md           | 25 +++++++++++--------------
- docs/cursor-work/server/ckpt.sh            |  4 ++++
- 3 files changed, 18 insertions(+), 17 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 22 ++--------------------
+ 1 file changed, 2 insertions(+), 20 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -34,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (4020fcb0594cc7940ac19861fbd32f37484d3b77)
+WIP snapshot: refs/wip/last (364aca230d63294a6f9bd05aef392179b7415c2e)
