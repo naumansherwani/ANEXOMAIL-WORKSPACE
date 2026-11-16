@@ -388,6 +388,7 @@ docs/cursor-work/sql/CHECK_E180.sql
 docs/cursor-work/sql/CHECK_E181.sql
 docs/cursor-work/sql/CHECK_E182.sql
 docs/cursor-work/sql/CHECK_E183.sql
+docs/cursor-work/sql/CHECK_E184.sql
 docs/cursor-work/sql/CHECK_E42_E47.sql
 docs/cursor-work/sql/CHECK_E48.sql
 docs/cursor-work/sql/CHECK_E50.sql

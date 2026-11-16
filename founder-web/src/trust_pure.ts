@@ -1,7 +1,7 @@
 // Q1b4 step d: pure logic of the TRUST RING (no React, no network). Every word on the ring comes from facts the Rust verifier + SQL E183 produced; a value the server did not give is "not checked" (grey), never a made-up tick.
 export type Tone = "ok" | "warn" | "bad" | "off";
 export type Seg = { key: string; label: string; tone: Tone; text: string };
-export type Reason = { code: string; pts: number; text: string };
+export type Reason = { code: string; delta: number; text: string };
 export type RingFacts = { spf: string; dkim: string; dmarc: string; arc: string; lookalike: boolean; scan: string; tls: string | null; score?: number | null; grade?: string | null };
 export type Evidence = {
   found?: boolean; score?: number; grade?: string; reasons?: Reason[]; chain_ok?: boolean; seq?: number; row_hash?: string; authres?: string;
@@ -39,7 +39,7 @@ export function unrated(f: Pick<RingFacts, "score" | "grade">): boolean { return
 export function ringLabel(f: RingFacts): string { return unrated(f) ? "Trust: not checked" : `Trust ${f.score} of 100, grade ${f.grade}`; }
 /** Arc fractions of the full circle for the eight segments (equal slices with a small gap), start angle in degrees. Pure so it is tested. */
 export function arcs(n = 8, gapDeg = 6): { start: number; end: number }[] { const w = 360 / n; return Array.from({ length: n }, (_, i) => ({ start: i * w + gapDeg / 2, end: (i + 1) * w - gapDeg / 2 })); }
-export function reasonLine(r: Reason): string { return `${r.pts > 0 ? "+" : r.pts < 0 ? "" : "·"}${r.pts !== 0 ? r.pts + " " : ""}${r.text}`; }
+export function reasonLine(r: Reason): string { return `${r.delta > 0 ? "+" : r.delta < 0 ? "" : "·"}${r.delta !== 0 ? r.delta + " " : ""}${r.text}`; }
 export function hhmmss(ms: number): string { const d = new Date(ms); const p = (n: number) => String(n).padStart(2, "0"); return `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`; }
 const TLS_WORD: Record<string, string> = { tls13_pq: "TLS 1.3 post-quantum", tls13: "TLS 1.3", tls12: "TLS 1.2", none: "no TLS" };
 /** The sentence under an OUTGOING mail (gap G3): what we signed, how it travelled, when the receiver said 250. A mail not yet accepted never shows a sent time. */

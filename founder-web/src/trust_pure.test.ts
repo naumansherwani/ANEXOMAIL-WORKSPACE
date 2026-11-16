@@ -10,7 +10,7 @@ describe("ring", () => {
   test("grades and the unrated state", () => { expect(["A+", "A", "B"].map(gradeTone)).toEqual(["ok", "ok", "ok"]); expect(["C", "D"].map(gradeTone)).toEqual(["warn", "warn"]); expect(gradeTone("F")).toBe("bad"); expect(gradeTone(null)).toBe("off");
     expect(unrated({ score: null, grade: null })).toBe(true); expect(unrated({ score: 0, grade: "F" })).toBe(false); expect(ringLabel(F())).toBe("Trust 100 of 100, grade A+"); expect(ringLabel(F({ score: null, grade: null }))).toBe("Trust: not checked"); });
   test("arcs cover the circle with gaps and never overlap", () => { const a = arcs(); expect(a).toHaveLength(8); for (let i = 0; i < 8; i++) { expect(a[i].end).toBeGreaterThan(a[i].start); if (i) expect(a[i].start).toBeGreaterThan(a[i - 1].end); } expect(a[7].end).toBeLessThan(360); });
-  test("reason lines carry the points", () => { expect(reasonLine({ code: "x", pts: 55, text: "DMARC passed" })).toBe("+55 DMARC passed"); expect(reasonLine({ code: "x", pts: 0, text: "No DMARC" })).toBe("·No DMARC"); });
+  test("reason lines carry the points", () => { expect(reasonLine({ code: "x", delta: 55, text: "DMARC passed" })).toBe("+55 DMARC passed"); expect(reasonLine({ code: "x", delta: 0, text: "No DMARC" })).toBe("·No DMARC"); });
 });
 describe("outgoing facts (G3)", () => {
   const d = new Date(2026, 10, 17, 2, 41, 7).getTime();

@@ -26,12 +26,22 @@ pub struct Recv { pub ip: Option<IpAddr>, pub helo: Option<String>, pub rdns: Op
 pub fn top_received(raw: &[u8]) -> Option<String> {
     let head = &raw[..raw.len().min(16_384)];
     let text = String::from_utf8_lossy(head);
-    let mut lines = text.split('\n');
-    let first = lines.next()?.trim_end_matches('\r');
-    if !first.to_ascii_lowercase().starts_with("received:") { return None; }
+    let mut lines = text.split('\n').map(|l| l.trim_end_matches('\r')).peekable();
+    // Only our own LMTP/Postfix lines may sit above the Received line we trust; any other header first = refuse.
+    loop {
+        let l = *lines.peek()?;
+        let low = l.to_ascii_lowercase();
+        if low.starts_with("received:") { break; }
+        if low.starts_with("return-path:") || low.starts_with("delivered-to:") || low.starts_with("x-original-to:") || low.starts_with("envelope-to:") {
+            lines.next();
+            while let Some(n) = lines.peek() { if n.starts_with(' ') || n.starts_with('\t') { lines.next(); } else { break; } }
+            continue;
+        }
+        return None;
+    }
+    let first = lines.next()?;
     let mut out = first["received:".len()..].trim().to_string();
     for l in lines {
-        let l = l.trim_end_matches('\r');
         if l.starts_with(' ') || l.starts_with('\t') { out.push(' '); out.push_str(l.trim()); } else { break; }
     }
     Some(out)
@@ -285,6 +295,14 @@ pub fn raw_from_header(raw: &[u8]) -> Option<String> {
 mod tests {
     use super::*;
     const PF: &str = "Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])\r\n\t(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits) key-exchange X25519MLKEM768 server-signature RSA-PSS (2048 bits))\r\n\tby mx.anexomail.com (Postfix) with ESMTPS id 4abc\r\n\tfor <founder@anexomail.com>; Tue, 17 Nov 2026 02:00:00 +0500 (PKT)\r\nReceived: from forged.example (forged.example [6.6.6.6]) by x\r\nFrom: A <a@b.c>\r\n\r\nbody";
+
+    #[test]
+    fn lmtp_headers_above_postfix_received_are_skipped_but_other_headers_refuse() {
+        let ok = format!("Return-Path: <a@b.c>\r\nDelivered-To: f@x\r\nX-Original-To: f@x\r\n{}", PF);
+        assert!(top_received(ok.as_bytes()).unwrap().contains("mail-wr1-f41.google.com"));
+        let bad = format!("X-Spam: yes\r\n{}", PF);
+        assert!(top_received(bad.as_bytes()).is_none());
+    }
 
     #[test]
     fn postfix_top_header_is_read_with_ip_helo_rdns_and_post_quantum_tls() {

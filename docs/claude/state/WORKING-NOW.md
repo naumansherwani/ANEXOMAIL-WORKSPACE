@@ -1,18 +1,24 @@
-# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 03:28 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Q1b4 step c: Rust fmail_auth.rs (mail-auth =0.9.2, Received parser, RFC 9989 tree walk, display spoof, mixed-script) + fmail_in.rs intake + doors
-NEXT STEP: step d UI TrustRing, then step e his sql-run E183 + founder-install
-HIS LAST WORD: 02:21 compact safe, update every 5 min
+# WORKING NOW (manual checkpoint, 17 Nov 2026 03:41 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Q1b4 e: fixes written (reason delta text, Postfix top Received skipping LMTP headers, E184 sending ON by default); install of 03:4x was OK
+NEXT STEP: his sql-run (E184) then founder-install; then check verdict on his Gmail mail (SPF/TLS real), restore Archive mail, then close Q1b4 e
+HIS LAST WORD: sending ON by default; mail sent by him via Gmail
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 8f409718 17 Nov 03:28 ledger line 1d37ddc6
 - 1d37ddc6 17 Nov 03:28 Q1b4: no mailbox shortcuts while compose is open; Move to Inbox for archived mail
 - b245e190 17 Nov 03:21 ledger line ee5bc470
 - ee5bc470 17 Nov 03:21 Q1b4: Esc inside dialog no longer closes the mail
 - 88e1bf29 17 Nov 03:20 ledger line 40a91e07
-- 40a91e07 17 Nov 03:20 Q1b4: blueprint sub-steps a-e, QC5 delete forever, installed state
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/sql/index.md
+ M founder-web/src/trust_pure.test.ts
+ M founder-web/src/trust_pure.ts
+ M server/founder/src/fmail_auth.rs
+?? docs/cursor-work/sql/CHECK_E184.sql
+?? docs/cursor-work/sql/E184_founder_sending_on_by_default.sql
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
