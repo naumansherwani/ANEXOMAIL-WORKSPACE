@@ -1,8 +1,8 @@
 {
  "heartbeat": {
-  "generated": "16 Nov 2026 06:54 +0500",
-  "head": "6a4c2a17",
-  "head_subject": "ledger line 8bab1861",
+  "generated": "16 Nov 2026 07:08 +0500",
+  "head": "553b1b0b",
+  "head_subject": "ledger line 9aefb729",
   "now": "-",
   "phases": {
    "GREEN": 28,
@@ -156,7 +156,7 @@
     "sql",
     "ui"
    ],
-   "status": "written",
+   "status": "live",
    "where": "E182, fmail_out.rs sending_ep, SendSwitch.tsx",
    "tech": "PostgreSQL policy + Rust Tokio door + React"
   },
