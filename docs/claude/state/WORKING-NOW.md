@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 01:24 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 01:29 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: his 06:21 order: (1) audit 30 s hold code + auto fix = E181 written (ledger text truth), (2) Systems pills stale -> Outgoing TLS + Real outgoing mail set live in brain.py, (3) NEXT: real ON/OFF toggle switch (his 'hand icon toggle'): plan = E182 sending pause/resume door (mailbox status active<->paused, ledgered, no touch), Rust POST /founder/v1/mail/sending, UI toggle on Systems 'Real outgoing mail' + Mail header; look in Chrome where else a real toggle belongs (DKIM policy switches already exist)
 NEXT STEP: he runs sql-run (E181) + founder-install (brain data + new pills); then I build E182 toggle
 HIS LAST WORD: his 06:21 photo of Systems pills + toggle request
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 867b4ba2 17 Nov 01:29 AUDIT-Q1d G1: DKIM evidence chain door route in main.rs after his ss paste (receipt 43), cargo 413/413
+- 70b7325a 17 Nov 01:24 ledger line 9818718f
 - 9818718f 17 Nov 01:24 Delete live test green with his haan
 - 5c5c39cd 17 Nov 01:19 ledger line 6f751697
 - 6f751697 17 Nov 01:19 AUDIT-Q1d: audit table, G1 door fn + button, route patch pending
-- 4b0d4d89 17 Nov 01:11 ledger line 2408ba15
-- 2408ba15 17 Nov 01:11 Context refresh 17 Nov 01:15
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
