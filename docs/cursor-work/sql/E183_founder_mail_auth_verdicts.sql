@@ -39,7 +39,7 @@ insert into public.fmail_brand_domains183 (domain) values
 on conflict (domain) do nothing;
 alter table public.fmail_brand_domains183 enable row level security;
 alter table public.fmail_brand_domains183 force row level security;
-revoke all on public.fmail_brand_domains183 from public, anon, authenticated;
+revoke all on public.fmail_brand_domains183 from public, anon, authenticated, service_role;
 grant select on public.fmail_brand_domains183 to service_role;
 
 -- ===============================================================================================================================================
@@ -276,7 +276,7 @@ begin
   foreach t in array array['fmail_auth_evidence', 'fmail_auth_sig'] loop
     execute format('alter table public.%I enable row level security', t);
     execute format('alter table public.%I force row level security', t);
-    execute format('revoke all on public.%I from public, anon, authenticated', t);
+    execute format('revoke all on public.%I from public, anon, authenticated, service_role', t);
     execute format('grant select, insert on public.%I to service_role', t);
     execute format('drop trigger if exists %I on public.%I', t || '_row_imm', t);
     execute format('create trigger %I before update or delete on public.%I for each row execute function public.fmail_auth_immutable183()', t || '_row_imm', t);
