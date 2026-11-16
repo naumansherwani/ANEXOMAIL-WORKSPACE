@@ -16,16 +16,22 @@ begin
     if d not like '%''send_enabled'',''require_touch_send''%' or d not like '%in (''send_enabled'',''require_touch_send'',%' then raise exception 'E182: fmail_policy_set text not found, nothing changed'; end if;
     execute d;
   end if;
-  select pg_get_functiondef('public.fmail_outbox_claim(integer)'::regprocedure) into d;
-  if d not like '%send_enabled%' then
-    d := replace(d, 'begin
-  if p_max < 1', 'begin
-  if not (select send_enabled from public.fmail_policy where id = 1) then return; end if;
-  if p_max < 1');
-    if d not like '%send_enabled%' then raise exception 'E182: fmail_outbox_claim text not found, nothing changed'; end if;
-    execute d;
-  end if;
 end $p$;
+
+-- The claim door is re-created whole (same signature, same body as E167 + the switch line): no text patching of a function whose stored text could differ.
+create or replace function public.fmail_outbox_claim(p_max int default 10)
+returns setof uuid language plpgsql security definer set search_path = pg_catalog, public as $$
+declare r record;
+begin
+  if not (select send_enabled from public.fmail_policy where id = 1) then return; end if;
+  if p_max < 1 or p_max > 50 then raise exception 'E167: claim 1..50' using errcode = '22023'; end if;
+  for r in select id from public.fmail_outbox where state in ('queued', 'scheduled') and not_before <= now() order by not_before, id for update skip locked limit p_max loop
+    update public.fmail_outbox set state = 'sending' where id = r.id;
+    return next r.id;
+  end loop;
+end $$;
+revoke all on function public.fmail_outbox_claim(int) from public, anon, authenticated;
+grant execute on function public.fmail_outbox_claim(int) to service_role;
 
 create or replace function public.fmail_outbox_next_due177() returns double precision language sql stable security definer set search_path = pg_catalog, public as $f$
   select extract(epoch from (min(o.not_before) - now()))::double precision from public.fmail_outbox o where o.state in ('queued', 'scheduled') and (select send_enabled from public.fmail_policy where id = 1)
