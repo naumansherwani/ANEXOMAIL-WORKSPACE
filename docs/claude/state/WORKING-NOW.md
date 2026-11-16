@@ -1,15 +1,15 @@
-# WORKING NOW (manual checkpoint, 16 Nov 2026 05:53 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 16 Nov 2026 05:53 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Q1d-F: after E179 my Chrome 05:58: Mail Outbox 1, Sent 0, Bridge 'Send failed 3' (still failed; maybe waiting its backoff 1m/5m/30m, or a new error)
 NEXT STEP: he runs fmail-send-why.sh again (shows state, attempts, next_try, new error); fix; if only backoff, a NEW mail sends at once
 HIS LAST WORD: his 05:52 chrome pe jao
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- ccb6f961 16 Nov 05:53 Chrome look after E179
 - 36cdcd4e 16 Nov 05:52 ledger line 0deef067
 - 0deef067 16 Nov 05:52 E179 applied on his server
 - 75a2cb19 16 Nov 05:49 ledger line 879cea83
 - 879cea83 16 Nov 05:49 E179 advanced SQL: volatile fix, door audit, selftest
-- b8c1a816 16 Nov 05:47 ledger line 443a53e9
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
