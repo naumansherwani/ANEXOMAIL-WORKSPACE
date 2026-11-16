@@ -73,6 +73,11 @@ pub fn parse_received(h: &str) -> Recv {
         let pq = r.tls_group.as_deref().map_or(false, |g| g.to_ascii_uppercase().contains("MLKEM") || g.to_ascii_uppercase().contains("KYBER"));
         r.tls_class = if v.starts_with("TLSV1.3") { if pq { "tls13_pq" } else { "tls13" } } else if v.starts_with("TLSV1.2") { "tls12" } else { "none" };
     }
+    // "with ESMTPS" / "ESMTPSA" says TLS was used, but without the "(using ...)" detail we cannot tell the version: that is UNKNOWN (null), never a false "none" that would lower the score
+    if r.tls_class == "none" && r.tls_version.is_none() {
+        let w = low.split(" with ").nth(1).and_then(|x| x.split_whitespace().next()).unwrap_or("");
+        if w.starts_with("esmtps") || w.starts_with("lmtps") { r.tls_class = "unknown"; }
+    }
     r
 }
 
@@ -255,7 +260,7 @@ impl Verifier {
             "dkim_result": dkim_overall(&words), "dmarc_result": dm_word, "dmarc_policy": policy, "dmarc_disposition": disp_w, "dmarc_spf_aligned": dsp, "dmarc_dkim_aligned": ddk,
             "dmarc_walk": queries as i64, "dmarc_record_domain": found.iter().min_by_key(|f| labels(&f.name).len()).map(|f| f.name.clone()),
             "arc_result": arc_w, "arc_instances": arc.sets().len() as i64, "iprev_result": iprev,
-            "tls_class": recv.tls_class, "tls_version": recv.tls_version, "tls_cipher": recv.tls_cipher, "tls_group": recv.tls_group, "first_dkim_domain": first_dom});
+            "tls_class": if recv.tls_class == "unknown" { Value::Null } else { Value::from(recv.tls_class) }, "tls_version": recv.tls_version, "tls_cipher": recv.tls_cipher, "tls_group": recv.tls_group, "first_dkim_domain": first_dom});
         let mut ev = ev;
         ev["authres"] = Value::from(authres_line(&self.host, &ev));
         if let Some(o) = ev.as_object_mut() { o.remove("first_dkim_domain"); }
@@ -300,6 +305,8 @@ mod tests {
         let r = parse_received("from h.example (h.example [192.0.2.1]) by mx (Postfix) with ESMTP id 1"); assert_eq!(r.tls_class, "none"); assert_eq!(r.tls_version, None);
         let r = parse_received("by mx (Postfix, from userid 0) id 5"); assert_eq!(r.ip, None); assert_eq!(r.helo, None);
         let r = parse_received("from a (b [not-an-ip]) by mx"); assert_eq!(r.ip, None);
+        let r = parse_received("from h.example (h.example [192.0.2.1]) by mx (Postfix) with ESMTPS id 9"); assert_eq!(r.tls_class, "unknown", "TLS was used but Postfix did not log how: unknown, not none");
+        let r = parse_received("from h.example (h.example [192.0.2.1]) by mx (Postfix) with ESMTPSA id 9"); assert_eq!(r.tls_class, "unknown");
         let r = parse_received("from x (x [1.2.3.4]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits) key-exchange X25519 server-signature ECDSA) by mx"); assert_eq!(r.tls_class, "tls13");
     }
     #[test]
