@@ -2,7 +2,8 @@
 
 His order (17 Nov 01:45, photo of the Gmail compose box): "yeh compose mail ka box gmail ka hai mujhe bhi bana ke do, duniya ka advance level research ker ke features, technology advance level, kaun se features kaun se phase main, steps ke saath, kaun si technology, UI UX kya hoga".
 
-STATUS: PROPOSAL ONLY. UI LAW (12 Nov): the current founder UI is never touched without his haan. Nothing below is built. Step C0 = a demo (artifact) first, his pick, then code.
+STATUS 17 Nov 01:55: HIS HAAN GIVEN (01:53: 'duniya ka advance jo bhi hai woh kero'; editor = the most advanced by proof = Lexical + Rust ammonia, final proof written in the C2 contract; design = FOUNDER ORIGINAL cinematic glass, NOT a Gmail copy; this is FOUNDER side only). Written into the blueprint as QC0..QC8 (docs/cursor-work/server/qstate.py PLAN). Starts ONLY AFTER Q1b4 is complete; C5 = Q3, C6 = Q4. Old text kept below:
+OLD STATUS: PROPOSAL ONLY. UI LAW (12 Nov): the current founder UI is never touched without his haan. Nothing below is built. Step C0 = a demo (artifact) first, his pick, then code.
 
 ## What already exists (do not rewrite): founder-web/src/MailCompose.tsx (113 lines, Q1d)
 To, Cc/Bcc, Subject, plain textarea, sealed draft autosave with stale-save detection, schedule time, Send, Ctrl+Enter, UndoBar (30 s hold, E177 per-send touch OFF), Discard (E180). Backend: fmail_out.rs doors, fmail_outbox state machine, DKIM dual signature, TLS 1.3 + X25519MLKEM768 out.
