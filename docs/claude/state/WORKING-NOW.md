@@ -1,15 +1,15 @@
-# WORKING NOW (manual checkpoint, 16 Nov 2026 06:15 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 16 Nov 2026 06:15 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Q1d-F: E180 + new Rust/SPA INSTALLED on his server (his pastes 06:14: selftest180 4/0, CHECK_E180 5/5 OK, founder-install OK healthz 200). Next: my Chrome look Outbox/Sent + Delete; his Gmail proof
 NEXT STEP: Chrome look: Outbox/Sent counts, failed mail retry result; Delete test on the old failed mail with his word; Gmail Show original -> Record proof; DNS switch touch
 HIS LAST WORD: 06:14 he is under family/investor pressure and said he may delete the site: stay calm, short, ONE step
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 5579b949 16 Nov 06:15 E180 and new Rust installed on his server
 - 4eca8dfb 16 Nov 05:58 ledger line 1ab18469
 - 1ab18469 16 Nov 05:58 Outbox delete fix E180 + discard door
 - 479b65df 16 Nov 05:53 ledger line ccb6f961
 - ccb6f961 16 Nov 05:53 Chrome look after E179
-- 36cdcd4e 16 Nov 05:52 ledger line 0deef067
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
