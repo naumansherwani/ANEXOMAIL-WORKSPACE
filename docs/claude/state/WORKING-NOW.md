@@ -1,17 +1,19 @@
-# WORKING NOW (auto snapshot before a compaction, 16 Nov 2026 06:15 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Q1d-F: E180 + new Rust/SPA INSTALLED on his server (his pastes 06:14: selftest180 4/0, CHECK_E180 5/5 OK, founder-install OK healthz 200). Next: my Chrome look Outbox/Sent + Delete; his Gmail proof
-NEXT STEP: Chrome look: Outbox/Sent counts, failed mail retry result; Delete test on the old failed mail with his word; Gmail Show original -> Record proof; DNS switch touch
-HIS LAST WORD: 06:14 he is under family/investor pressure and said he may delete the site: stay calm, short, ONE step
+# WORKING NOW (manual checkpoint, 16 Nov 2026 06:19 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Q1d-1b + Q1d-2b DONE (Gmail photo: signed-by anexomail.com, TLS; my Chrome: Sent 1 Outbox 0). Next in plan: Q1d-DKIM2 tracked, Q1d-2, AUDIT-Q1d (auto-fix), then Q1b4, Q3, Qtls, U1U2, Q4, U5, Q1e. Pending small: DNS switch touch, Record proof header paste, Outbox delete live test, Systems page Q1d cards 'Real outgoing mail' status
+NEXT STEP: AUDIT-Q1d: is every LISTED advance technology of Q1d really in code; auto-fix gaps
+HIS LAST WORD: his 06:18: mail reached Gmail, write GREEN, compact-safe
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 109e31fc 16 Nov 06:15 ledger line 5579b949
 - 5579b949 16 Nov 06:15 E180 and new Rust installed on his server
 - 4eca8dfb 16 Nov 05:58 ledger line 1ab18469
 - 1ab18469 16 Nov 05:58 Outbox delete fix E180 + discard door
 - 479b65df 16 Nov 05:53 ledger line ccb6f961
-- ccb6f961 16 Nov 05:53 Chrome look after E179
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/HANDOFF-LIVE.md
+ M docs/claude/state/Q-STATE.jsonl
  M docs/claude/state/WORKING-NOW.md
 
 ## Q state
