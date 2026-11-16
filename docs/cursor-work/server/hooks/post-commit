@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
-# AUTO COMMIT LEDGER (his 16 Nov 05:34 order): after EVERY commit one line with PKT date+time, hash, subject goes into docs/claude/state/COMMIT-LEDGER.log
-# (picked up by the next commit; it never commits by itself, so no loop). Also refreshes WORKING-NOW.md.
+# AUTO COMMIT LEDGER (his 16 Nov 05:34 order): after EVERY commit, one line with PKT date+time, hash, subject goes into docs/claude/state/COMMIT-LEDGER.log,
+# WORKING-NOW.md is refreshed, and both ride in one small follow-up commit "ledger line" (guarded: that commit never makes another line, so no loop; no history rewrite).
 cd "$(git rev-parse --show-toplevel)" || exit 0
+S="$(git log -1 --format=%s)"; case "$S" in "ledger line"*) exit 0;; esac
 mkdir -p docs/claude/state
-H="$(git log -1 --format=%h)"; S="$(git log -1 --format=%s | cut -c1-140)"
-grep -q "^.* | $H | " docs/claude/state/COMMIT-LEDGER.log 2>/dev/null || echo "$(TZ=Asia/Karachi date '+%Y-%m-%d %H:%M:%S PKT') | $H | $S" >> docs/claude/state/COMMIT-LEDGER.log
+H="$(git log -1 --format=%h)"
+echo "$(TZ=Asia/Karachi date '+%Y-%m-%d %H:%M:%S PKT') | $H | $(echo "$S" | cut -c1-140)" >> docs/claude/state/COMMIT-LEDGER.log
 bash docs/cursor-work/server/ckpt.sh --auto >/dev/null 2>&1 || true
+git add docs/claude/state/COMMIT-LEDGER.log docs/claude/state/WORKING-NOW.md
+git commit -q --no-verify -m "ledger line $H
+
+Phase: Q1d
+Tech: repo hook (auto ledger)" >/dev/null 2>&1 || true
 exit 0
