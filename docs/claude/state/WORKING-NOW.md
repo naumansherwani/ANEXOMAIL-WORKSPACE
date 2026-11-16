@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 01:46 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 01:53 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 17 Nov 01:45 PKT: AUDIT-Q1d = GREEN (his install OK build e3fc05d4; my Chrome: Check evidence chains = 10 rows checked, none broken). Auto 5-min refresh added (autoref.sh + UserPromptSubmit hook). NOW = Q1b4 (SPF/DKIM/DMARC verdicts + trust ring).
 NEXT STEP: start Q1b4: G3 outgoing mail must not show receive-side badges + real Sent time (not compose time), G4 use the mail-auth crate; read FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md Q1b4 first, write the CURRENT.md contract first, then code; ONE phase, ONE command at a time
 HIS LAST WORD: 17 Nov 01:43 install paste OK; look at Chrome, green, update everything, auto-update every 5 min
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 6168db57 17 Nov 01:53 Blueprint: compose phases QC0-QC8 with technology (after Q1b4), his haan
+- c2a680a4 17 Nov 01:46 ledger line 698e9530
 - 698e9530 17 Nov 01:46 Compose box advance plan C0-C8 (proposal only, UI LAW)
 - c1165cde 17 Nov 01:45 ledger line 81a57944
 - 81a57944 17 Nov 01:45 autoref: 5-min stamp goes to an ignored file so the repo stays clean
-- fc96657e 17 Nov 01:44 ledger line 941e1c39
-- 941e1c39 17 Nov 01:44 AUDIT-Q1d GREEN (live Chrome: 10 rows checked, none broken) + autoref.sh 5-min auto refresh + hook
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
