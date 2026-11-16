@@ -1,15 +1,15 @@
-# WORKING NOW (manual checkpoint, 16 Nov 2026 05:52 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 16 Nov 2026 05:52 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Q1d-F: E179 DONE on his server (selftest 5/0, CHECK_E179 5/5 OK, door audit finds no offender). Now my Chrome look: failed mail should retry -> Sent
 NEXT STEP: Chrome: Mail Outbox/Sent counts; then he sends a NEW mail to Gmail, 30 s, Show original -> Record proof dkim=pass; then Outbox delete fix E180; DNS switch touch
 HIS LAST WORD: his 05:52 'bus chrome pe jao'
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 0deef067 16 Nov 05:52 E179 applied on his server
 - 75a2cb19 16 Nov 05:49 ledger line 879cea83
 - 879cea83 16 Nov 05:49 E179 advanced SQL: volatile fix, door audit, selftest
 - b8c1a816 16 Nov 05:47 ledger line 443a53e9
 - 443a53e9 16 Nov 05:47 E179 gate volatile fix, outbox delete cause
-- 09960e35 16 Nov 05:44 ledger line 348ac179
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
