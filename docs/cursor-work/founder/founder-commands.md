@@ -3542,3 +3542,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - 16 Nov 05:45 HIS HAAN for FMAIL_SEND=on (05:38 'mail send on ker de bus'); giving fmail-send-on.sh, no relay (port 25 open). Q1d not green until Gmail dkim=pass. TECH-LAW CHECKED.
 
 - 16 Nov 05:47 Q1d-E DONE on HIS server (his paste): fmail-send-on.sh OK, journal 'mail sender ON (direct MX, STARTTLS TLS 1.3 required)', healthz 200, FMAIL_SEND=on, backup founder.env.pre-send. NEXT = Q1d-F: Outbox->Sent (my Chrome look), new mail to his Gmail, Show original -> Record proof (dkim=pass), DNS switch touch. Q1d NOT green yet. TECH-LAW CHECKED.
+
+- 16 Nov 05:52 Q1d-F: sender ON, my Chrome look: his Outbox mail (hi, 04:48) shows Send failed, Sent 0. Reason not shown in the UI; wrote read-only fmail-send-why.sh (outbox row error + journal). NOT green. TECH-LAW CHECKED.

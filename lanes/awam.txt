@@ -155,6 +155,7 @@ docs/cursor-work/server/fmail-intake-watch.sh
 docs/cursor-work/server/fmail-postfix-pq.sh
 docs/cursor-work/server/fmail-send-on.sh
 docs/cursor-work/server/fmail-send-probe.sh
+docs/cursor-work/server/fmail-send-why.sh
 docs/cursor-work/server/fmail-ui-backup.sh
 docs/cursor-work/server/fmail-ui-rollback.sh
 docs/cursor-work/server/folder-rule-sync.py
