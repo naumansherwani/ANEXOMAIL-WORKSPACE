@@ -1,19 +1,17 @@
-# WORKING NOW (manual checkpoint, 16 Nov 2026 06:19 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 16 Nov 2026 06:19 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Q1d-2 done. NOW per plan: Q1d-DKIM2 is TRACKED ONLY (nothing to build), so go to AUDIT-Q1d
 NEXT STEP: AUDIT-Q1d: check each listed Q1d technology exists in code (Rust, Tokio, WASM kernel, WebTransport, HTTP/3, X25519MLKEM768, AES-256-GCM, Ed25519+RSA DKIM, PostgreSQL RLS ledger); auto-fix gaps; ONE command at a time
 HIS LAST WORD: his 06:18
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 569da163 16 Nov 06:19 Q1d-2 done; blueprint table rendered
 - f3b4b30f 16 Nov 06:19 ledger line f297d3e1
 - f297d3e1 16 Nov 06:19 Q1d-1b and Q1d-2b green: first real mail reached Gmail
 - 109e31fc 16 Nov 06:15 ledger line 5579b949
 - 5579b949 16 Nov 06:15 E180 and new Rust installed on his server
-- 4eca8dfb 16 Nov 05:58 ledger line 1ab18469
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/HANDOFF-LIVE.md
- M docs/claude/state/Q-STATE.jsonl
  M docs/claude/state/WORKING-NOW.md
 
 ## Q state
