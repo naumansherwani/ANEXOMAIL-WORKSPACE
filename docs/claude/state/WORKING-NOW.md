@@ -1,18 +1,20 @@
-# WORKING NOW (auto snapshot before a compaction, 16 Nov 2026 05:47 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Q1d-F: ROOT CAUSE of failed send found (his gate-probe paste 05:50): send_gate175 STABLE -> PostgREST read-only txn -> 25006 INSERT. Wrote E179 (volatile) + CHECK_E179. ALSO his request: Outbox mail cannot be deleted: cause = fmail_move only moves direction='in' non-draft rows (outgoing ones silently move 0), so Delete does nothing in Outbox/Sent
-NEXT STEP: he runs sql-run (AUTO E179) then CHECK_E179; mail resends by itself (requeue_failed) -> Sent; THEN fix Outbox delete (discard of a failed/cancelled outbox mail, cancel the row first so the worker does not retry), then Gmail Show original proof
-HIS LAST WORD: his 05:46 outbox delete + compact safety
+# WORKING NOW (manual checkpoint, 16 Nov 2026 05:49 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Q1d-F: E179 upgraded to advanced (fix + fmail_door_audit179 guard + selftest179 5 checks), sandbox-tested on a stub DB (5/5, regression caught, rerun heals)
+NEXT STEP: he runs sql-run AUTO (E179) then paste; if CHECK shows other offenders I fix them; mail retries -> Sent; then Outbox delete fix; Gmail proof
+HIS LAST WORD: his 05:48 'sql ko advance likho'
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- b8c1a816 16 Nov 05:47 ledger line 443a53e9
 - 443a53e9 16 Nov 05:47 E179 gate volatile fix, outbox delete cause
 - 09960e35 16 Nov 05:44 ledger line 348ac179
 - 348ac179 16 Nov 05:44 fmail-gate-probe diagnostic
 - 55f2e4a9 16 Nov 05:42 ledger line fcf8d4af
-- fcf8d4af 16 Nov 05:42 CHECK_E175G gate diagnostic
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/sql/CHECK_E179.sql
+ M docs/cursor-work/sql/E179_fix_dkim_gate_volatile.sql
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
