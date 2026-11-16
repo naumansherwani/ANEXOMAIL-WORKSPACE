@@ -1,19 +1,18 @@
-# WORKING NOW (manual checkpoint, 17 Nov 2026 04:32 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 04:32 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Q1b4 e: Outbox cause FOUND from his CHECK_OUTBOX_LOOK: refused 'anexomail.com points to a private address; not contacted' (state failed, attempts 1). Fix written: sender resolver ignores /etc/hosts (public DNS only), cargo ok; waits his read-only hosts check + founder-install + a new mail
 NEXT STEP: his one-line hosts check, then founder-install, then queue a new test mail to himself (goes via Postfix = real SPF/TLS verdict) + his Gmail mail
 HIS LAST WORD: Outbox cause fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 44da0d5d 17 Nov 04:32 Q1b4 e: sender uses public DNS only (own domain no longer looks private)
 - f45d0e3a 17 Nov 04:27 ledger line deb20c99
 - deb20c99 17 Nov 04:27 CHECK_OUTBOX_LOOK read-only outbox state
 - f20a2b5f 17 Nov 04:16 ledger line 71130f55
 - 71130f55 17 Nov 04:16 Awam blueprint order AW0-AW6 with advance technology per phase
-- 20eab2c1 17 Nov 04:11 ledger line 3fb554c3
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
- M server/founder/src/fmail_out.rs
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
