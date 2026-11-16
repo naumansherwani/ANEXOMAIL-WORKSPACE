@@ -1,8 +1,8 @@
 {
  "heartbeat": {
-  "generated": "16 Nov 2026 05:23 +0500",
-  "head": "f5c4b20f",
-  "head_subject": "CHECK_E177C failing inner checks",
+  "generated": "16 Nov 2026 05:26 +0500",
+  "head": "2cab2521",
+  "head_subject": "E178 selftest scope fix and Q1d sub-phase plan",
   "now": "Q1d-1a",
   "phases": {
    "GREEN": 28,

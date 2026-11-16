@@ -7,7 +7,7 @@ ONE sub-phase at a time. The next starts only when the one before has its proof.
 - Q1d-E  Sender ON: fmail-send-on.sh (backup + rollback). DONE when: journal "mail sender ON" + healthz.
 - Q1d-F  First real mail to his Gmail (30 s hold, then out in ~50 ms, Outbox -> Sent) + Gmail Show original pasted (Record proof) = dkim=pass. ONLY THEN Q1d-1a/1b/2a/2b = GREEN (WIRED: YES / REAL: YES).
 - Then AUDIT-Q1d, Q1b4, Q3, F-series O,P,R,S,V to 30 NOV (docs/claude/FOUNDER-F-SERIES-ORDER-16NOV.md).
-Where we are 16 Nov 05:45: Q1d-A written (E178 pushed), his server still shows the old selftest; Q1d-B..F not started.
+Where we are 16 Nov 05:50: Q1d-A DONE (his paste: E178 applied, selftest177 5/0, CHECK_E178 3/3 OK, CHECK_E65 all OK). NEXT = Q1d-B founder-install. Q1d-C..F not started.
 
 # Q1d-1a SUMMARY (16 Nov 2026 02:35) - what the phase is, features, advance technology
 Phase: Q1d-1a = the founder mail DKIM lifecycle (key, DNS TXT, signing, proof). Sub-phase 1 of Q1d (1a, 1b, 2a, 2b). Plan: Q1D-PLAN-16NOV.md. Contract + EXECUTION RECORD: tech-contracts/CURRENT.md.

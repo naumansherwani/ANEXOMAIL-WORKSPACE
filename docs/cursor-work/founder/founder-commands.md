@@ -3532,3 +3532,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - 16 Nov 05:35 CHECK_E177B on his server: ledger row OK; E167 selftest returns ok:false (one inner check fails on real data, output cut at 600 chars). Added CHECK_E177C listing only the failing inner checks. NOT green. TECH-LAW CHECKED.
 
 - 16 Nov 05:45 FOUND: E167 selftest check 'a row inside its undo window is not claimed yet' failed on his server because it counted ALL claimable rows (his real queued mail), not a code bug (selftest runs in a rolled-back subtransaction, real mail untouched). FIX E178 + CHECK_E178 written. Q1d SUB-PHASE PLAN A..F written at the TOP of Q1D-1A-SUMMARY. NOT green. TECH-LAW CHECKED.
+
+- 16 Nov 05:50 Q1d-A DONE on HIS server (his paste): E178 applied, E177 selftest 5 ok 0 failed, CHECK_E178 3/3 OK, CHECK_E65 all OK. NEXT = Q1d-B founder-install (new Rust: no-touch send + exact-time sender), then C probe, D DNS r2611a + switch, E send-on, F Gmail proof. Q1d not green. TECH-LAW CHECKED.
