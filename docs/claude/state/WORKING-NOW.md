@@ -1,19 +1,18 @@
-# WORKING NOW (manual checkpoint, 16 Nov 2026 05:44 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 16 Nov 2026 05:44 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Q1d-F: CHECK_E175G says gate ok:true in psql, but the Rust sender got no answer; wrote fmail-gate-probe.sh (calls the gate via PostgREST like the sender)
 NEXT STEP: he pastes it: HTTP status/time/body of the gate rpc; fix (grant, cache, timeout or parse); resend; Gmail proof
 HIS LAST WORD: his paste 05:44 + 'jaldi Q series complete'
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 348ac179 16 Nov 05:44 fmail-gate-probe diagnostic
 - 55f2e4a9 16 Nov 05:42 ledger line fcf8d4af
 - fcf8d4af 16 Nov 05:42 CHECK_E175G gate diagnostic
 - aa10da53 16 Nov 05:40 ledger line ca0604ea
 - ca0604ea 16 Nov 05:40 send failed diagnostic
-- 61829109 16 Nov 05:39 ledger line f8be1b9d
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
-?? docs/cursor-work/server/fmail-gate-probe.sh
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
