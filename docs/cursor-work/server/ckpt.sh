@@ -17,6 +17,10 @@ echo "HIS LAST WORD: $WORD"
 echo "RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time."
 echo; echo "## Last 5 commits"; git log -5 --format='- %h %ad %s' --date=format:'%d %b %H:%M' 2>/dev/null
 echo; echo "## Uncommitted files (half-done work if any)"; git status --short 2>/dev/null | head -40
+echo; echo "## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)"; cat docs/claude/state/EDIT-INTENT.md 2>/dev/null | head -20
+echo; echo "## Uncommitted size"; git diff --stat HEAD 2>/dev/null | tail -8
 echo; echo "## Q state"; python3 docs/cursor-work/server/qstate.py brief 2>/dev/null | head -8 | cut -c1-300
 } > $F
+# snapshot of every uncommitted file as a git object (tree untouched, never pushed): restore with git checkout refs/wip/last -- <file>
+W="$(git stash create 2>/dev/null)"; [ -n "$W" ] && git update-ref refs/wip/last "$W" && echo "WIP snapshot: refs/wip/last ($W)" >> $F
 echo "checkpoint written: $F ($NOW)"

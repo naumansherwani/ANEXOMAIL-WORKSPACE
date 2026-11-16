@@ -5,15 +5,15 @@
 >
 > | Awam phase | What | Advance technology (from the founder proven set, moulded to awam) |
 > |---|---|---|
-> | AW0 | Business packages (ladder up to Business Max, 125,000-user cap with 90 / 95 % alerts, mailbox on the company's own domain) | PostgreSQL 16 with forced RLS per company, server-side plan limits, append-only hash-chained billing ledger, Rust axum + Tokio doors; any payment partner only by his word (vendor ban) |
+> | AW0 | Business packages in this order: Basic, Business, Business Pro, Business Premium, Business Max (125,000-user cap with 90 / 95 % alerts, mailbox on the company's own domain). The PRO package is 100% GREEN already (his word 17 Nov 04:5x; it was made earlier and is not redone) | PostgreSQL 16 with forced RLS per company, server-side plan limits, append-only hash-chained billing ledger, Rust axum + Tokio doors; any payment partner only by his word (vendor ban) |
 > | AW1 | Migration of the 822 frozen Lovable files (475 endpoints) to Rust twins, file by file (AWAM-LOVABLE-MIGRATION-15NOV.md) | Rust + Tokio + axum, parity tests Rust == Bun, loophole pass per file, then Bun endpoint removed only with his word |
 > | AW2 | Awam transport (closes WEBSITE-PROMISES P2: "TLS 1.3 only, AES-256-GCM only" on the awam site) | K5b: Rust rustls terminator, TLS 1.3 + AES-256-GCM only, X25519MLKEM768 hybrid, HTTP/3 + HTTP fallback, the awam's own ports, his openssl proof before the line is shown |
 > | AW3 | Awam sign-in: passkey-only (no 2FA, his 10 Nov word), device-bound sessions | WebAuthn (webauthn-rs), DBSC session binding, signed requests, WASM kernel verify (Rule 52) |
 > | AW4 | Awam mailbox = the founder mailbox moulded (trust ring SPF/DKIM/DMARC/ARC/TLS verdict, Delete-asks-first, compose with chips + emoji, attachments over WebTransport, real send ON/OFF) | Rust mail-auth + own DNS tree walk, ClamAV INSTREAM, AES-256-GCM / ML-KEM-768 sealed mail, DKIM Ed25519 + RSA dual sign, React 19 TS + Framer Motion, kernel WebTransport RPC |
-> | AW5 | Calendar, CRM, AI, AnexoChat (141 endpoints), live feeds | Rust twins, WebTransport (QUIC) + SSE fallback, Media over QUIC for chat media, PostgreSQL RLS + hash-chained audit |
+> | AW5 | Calendar, CRM, AnexoChat (141 endpoints), live feeds. NO AI in the awam: the AI is a separate product (his word 17 Nov 04:5x), so the 21 + 14 Lovable ai.ts / ai-automation.ts endpoints are NOT part of the awam site | Rust twins, WebTransport (QUIC) + SSE fallback, Media over QUIC for chat media, PostgreSQL RLS + hash-chained audit |
 > | AW6 | AnexoSuite (last, 2-month target) and the Lovable-code removal sweep | same set; every phase seen at 390 / 820 / 1200+ before GREEN |
 >
-> Every awam phase: its technology is written in the contract FIRST; GREEN only with WIRED: YES / REAL: YES / TECH-LAW CHECKED; every founder phase also updates this block (Rule 9). Updated 17 Nov 2026 04:2x PKT. <<<
+> Every awam phase: its technology is written in the contract FIRST; GREEN only with WIRED: YES / REAL: YES / TECH-LAW CHECKED; every founder phase also updates this block (Rule 9). Updated 17 Nov 2026 04:5x PKT (packages order + PRO done + no AI in awam, his word). <<<
 
 
 > ## >>> LOVABLE CODES MIGRATION PHASE (his order 15 Nov 2026 19:19): the written Lovable awam codes (822 files, 475 endpoints, `lovable-gold/awam/`) are preserved as written; the only job is advance technology + loophole fixes + polish, delivered to the awam. Map, recipe, start rule, honest warning: `docs/claude/AWAM-LOVABLE-MIGRATION-15NOV.md`. Starts after the founder lane is GREEN (awam work 26 Nov to 16 Dec). <<<
