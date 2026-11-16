@@ -1,18 +1,21 @@
-# WORKING NOW (auto snapshot before a compaction, 16 Nov 2026 05:44 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Q1d-F: CHECK_E175G says gate ok:true in psql, but the Rust sender got no answer; wrote fmail-gate-probe.sh (calls the gate via PostgREST like the sender)
-NEXT STEP: he pastes it: HTTP status/time/body of the gate rpc; fix (grant, cache, timeout or parse); resend; Gmail proof
-HIS LAST WORD: his paste 05:44 + 'jaldi Q series complete'
+# WORKING NOW (manual checkpoint, 16 Nov 2026 05:47 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Q1d-F: ROOT CAUSE of failed send found (his gate-probe paste 05:50): send_gate175 STABLE -> PostgREST read-only txn -> 25006 INSERT. Wrote E179 (volatile) + CHECK_E179. ALSO his request: Outbox mail cannot be deleted: cause = fmail_move only moves direction='in' non-draft rows (outgoing ones silently move 0), so Delete does nothing in Outbox/Sent
+NEXT STEP: he runs sql-run (AUTO E179) then CHECK_E179; mail resends by itself (requeue_failed) -> Sent; THEN fix Outbox delete (discard of a failed/cancelled outbox mail, cancel the row first so the worker does not retry), then Gmail Show original proof
+HIS LAST WORD: his 05:46 outbox delete + compact safety
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 09960e35 16 Nov 05:44 ledger line 348ac179
 - 348ac179 16 Nov 05:44 fmail-gate-probe diagnostic
 - 55f2e4a9 16 Nov 05:42 ledger line fcf8d4af
 - fcf8d4af 16 Nov 05:42 CHECK_E175G gate diagnostic
 - aa10da53 16 Nov 05:40 ledger line ca0604ea
-- ca0604ea 16 Nov 05:40 send failed diagnostic
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/sql/index.md
+?? docs/cursor-work/sql/CHECK_E179.sql
+?? docs/cursor-work/sql/E179_fix_dkim_gate_volatile.sql
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
