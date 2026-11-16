@@ -718,7 +718,7 @@ web-wasm/src/rank.rs 9588d32f0dabc948
 web-wasm/src/rpc.rs 1c21df12fab245ce
 web-wasm/src/sniff.rs 69e696003e8230e7
 web-wasm/src/sys.rs 64f4fe21e8ab449c
-.gitignore 356004f1bb6627fc
+.gitignore 612ca8f315cb7dd5
 src/routes/app.founder_.revenue.tsx 4b73773e692eb17e
 src/routes/app.founder_.revenue_.pipeline.tsx 2a46abe02222de78
 src/routes/docs.tsx 5787709c59d1c392

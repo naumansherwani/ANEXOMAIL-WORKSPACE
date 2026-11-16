@@ -42,3 +42,4 @@ __pycache__/
 # WASM kernel build output (the shipped .wasm lives in public/kernel/)
 web-wasm/target
 server/founder-dns/target/
+docs/claude/state/LIVE-5MIN.txt

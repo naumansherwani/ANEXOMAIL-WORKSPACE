@@ -5,11 +5,11 @@ HIS LAST WORD: 17 Nov 01:43 install paste OK; look at Chrome, green, update ever
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- fc96657e 17 Nov 01:44 ledger line 941e1c39
 - 941e1c39 17 Nov 01:44 AUDIT-Q1d GREEN (live Chrome: 10 rows checked, none broken) + autoref.sh 5-min auto refresh + hook
 - 6b290bea 17 Nov 01:34 ledger line 3227c696
 - 3227c696 17 Nov 01:34 WORKING-NOW: note that the Q1d audit context was running (17 Nov 01:37)
 - e3fc05d4 17 Nov 01:32 ledger line 9dee297d
-- 9dee297d 17 Nov 01:32 WORKING-NOW: current state 17 Nov 01:35 for compaction
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md

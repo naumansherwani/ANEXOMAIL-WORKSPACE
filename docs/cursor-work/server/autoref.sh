@@ -3,10 +3,10 @@
 #   hook (UserPromptSubmit, every message):  bash docs/cursor-work/server/autoref.sh --remind     (refreshes only if the file is older than 5 min, prints a short reminder into Claude's context)
 #   loop (background in a session):          bash docs/cursor-work/server/autoref.sh --loop       (every 300 s)
 cd "${CLAUDE_PROJECT_DIR:-/home/claude/anexomail-workspace}" || exit 0
-F=docs/claude/state/WORKING-NOW.md
+F=docs/claude/state/WORKING-NOW.md; L=docs/claude/state/LIVE-5MIN.txt   # L is git-ignored: the 5-min stamp never dirties the repo; F is committed by rec.sh/ckpt.sh at each step
 refresh() {
-  local age=999999; [ -f "$F" ] && age=$(( $(date +%s) - $(stat -c %Y "$F") ))
-  if [ "$age" -ge 300 ] || [ "${1:-}" = "force" ]; then bash docs/cursor-work/server/ckpt.sh --auto >/dev/null 2>&1; python3 docs/cursor-work/server/rules-read.py >/dev/null 2>&1; fi
+  local age=999999; [ -f "$L" ] && age=$(( $(date +%s) - $(stat -c %Y "$L") ))
+  if [ "$age" -ge 300 ] || [ "${1:-}" = "force" ]; then { echo "5-min stamp $(TZ=Asia/Karachi date '+%d %b %Y %H:%M:%S PKT')"; git log -1 --format='last commit %h %s' 2>/dev/null; python3 docs/cursor-work/server/qstate.py brief 2>/dev/null | grep -m1 "^NOW:" | cut -c1-300; } > "$L"; python3 docs/cursor-work/server/rules-read.py >/dev/null 2>&1; fi
 }
 remind() {
   echo "##### AUTO REMINDER $(TZ=Asia/Karachi date '+%d %b %H:%M PKT') (refreshed every 5 min): address him ONLY as Aap / Nauman bhai (never tum). Roman Urdu short, ONE server command one line, end with Rule-70 table + 'Abhi code mein NAHI'."
