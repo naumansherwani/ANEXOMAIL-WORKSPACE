@@ -20,6 +20,16 @@
      }
     ]
    }
+  ],
+  "UserPromptSubmit": [
+   {
+    "hooks": [
+     {
+      "type": "command",
+      "command": "cd \"$CLAUDE_PROJECT_DIR\" && bash docs/cursor-work/server/autoref.sh --remind"
+     }
+    ]
+   }
   ]
  }
 }

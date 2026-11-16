@@ -1,17 +1,17 @@
 {
  "heartbeat": {
-  "generated": "17 Nov 2026 01:29 +0500",
-  "head": "70b7325a",
-  "head_subject": "ledger line 9818718f",
-  "now": "AUDIT-Q1d",
+  "generated": "17 Nov 2026 01:44 +0500",
+  "head": "6b290bea",
+  "head_subject": "ledger line 3227c696",
+  "now": "-",
   "phases": {
    "GREEN": 28,
    "IN PROGRESS": 1,
    "NOT GREEN": 11,
    "PAUSED": 1
   },
-  "q_done": 26,
-  "q_open": 2,
+  "q_done": 27,
+  "q_open": 1,
   "checks_ok": 24,
   "checks_open": [
    "M-moq",
@@ -168,7 +168,7 @@
     "sql",
     "ui"
    ],
-   "status": "written",
+   "status": "live",
    "where": "fmail_out.rs dkim_chain_ep, DkimPanel.tsx",
    "tech": "Rust Tokio signed door + PostgreSQL hash chains + React"
   },

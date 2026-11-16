@@ -1,18 +1,23 @@
-# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 01:34 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 17 Nov 01:35 PKT: AUDIT-Q1d G1 (DKIM evidence chain door) is COMMITTED + PUSHED (867b4ba2, route /founder/v1/mail/dkim/chain, SERVER FIRST receipt 43, cargo 413/413). Delete live test GREEN (9818718f). E181, E182, S5, Q1d, SYS-LIVE GREEN.
-NEXT STEP: he runs ONE founder-install (git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12); then my Chrome look Systems > Mail signing > Check evidence chains = AUDIT-Q1d GREEN; then Q1b4 (outgoing badges + real sent time G3, mail-auth crate G4), Q3, Qtls, U1U2 (G2), Q4, U5, Q1e; DKIM2 research crate (signing OFF).
-HIS LAST WORD: 17 Nov 01:30 'sab kuch date time ke saath update kero, compact hone wala hai, pull command do'. ADDRESS HIM ONLY AS AAP (never tum/tumhay).
+# WORKING NOW (manual checkpoint, 17 Nov 2026 01:44 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 17 Nov 01:45 PKT: AUDIT-Q1d = GREEN (his install OK build e3fc05d4; my Chrome: Check evidence chains = 10 rows checked, none broken). Auto 5-min refresh added (autoref.sh + UserPromptSubmit hook). NOW = Q1b4 (SPF/DKIM/DMARC verdicts + trust ring).
+NEXT STEP: start Q1b4: G3 outgoing mail must not show receive-side badges + real Sent time (not compose time), G4 use the mail-auth crate; read FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md Q1b4 first, write the CURRENT.md contract first, then code; ONE phase, ONE command at a time
+HIS LAST WORD: 17 Nov 01:43 install paste OK; look at Chrome, green, update everything, auto-update every 5 min
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 6b290bea 17 Nov 01:34 ledger line 3227c696
 - 3227c696 17 Nov 01:34 WORKING-NOW: note that the Q1d audit context was running (17 Nov 01:37)
 - e3fc05d4 17 Nov 01:32 ledger line 9dee297d
 - 9dee297d 17 Nov 01:32 WORKING-NOW: current state 17 Nov 01:35 for compaction
 - b71c3915 17 Nov 01:29 ledger line 867b4ba2
-- 867b4ba2 17 Nov 01:29 AUDIT-Q1d G1: DKIM evidence chain door route in main.rs after his ss paste (receipt 43), cargo 413/413
 
 ## Uncommitted files (half-done work if any)
+ M .claude/settings.json
+ M docs/claude/HANDOFF-LIVE.md
+ M docs/claude/state/Q-STATE.jsonl
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/server/brain.py
+?? docs/cursor-work/server/autoref.sh
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
