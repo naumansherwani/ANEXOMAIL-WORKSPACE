@@ -154,21 +154,31 @@ async fn process(sb: &crate::data::Sb, master: &[u8; 32], cfg: &Cfg, res: Option
     report(decide(&parts), true).await;
 }
 
-/// Start the sender. Every 5 s: put failed rows whose backoff passed back in the queue, claim up to 5 due rows, send them one after the other (a slow server never blocks the clock).
+/// Start the sender. Every 1 s: put failed rows whose backoff passed back in the queue, claim up to 5 due rows, send them one after the other (a slow server never blocks the clock).
 pub async fn spawn(sb: crate::data::Sb, master: [u8; 32], cfg: Cfg) {
     let up = match smtp::RustlsUpgrade::new() { Ok(u) => Arc::new(u), Err(e) => { eprintln!("founder: mail sender NOT started: TLS config: {e}"); return } };
     let res = if cfg.relay.is_none() { match hickory_resolver::TokioResolver::builder_tokio() { Ok(b) => Some(Arc::new(b.build())), Err(e) => { eprintln!("founder: mail sender NOT started: DNS resolver: {e}"); return } } } else { None };
     eprintln!("founder: mail sender ON ({})", match cfg.relay { Some(a) => format!("relay {a}"), None => "direct MX, STARTTLS TLS 1.3 required".into() });
     tokio::spawn(async move {
-        let mut tick = tokio::time::interval(Duration::from_secs(5));
-        tick.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Delay);
+        // 16 Nov 04:57 (his word: advance technology, advance code): no polling tick. The database says how many seconds until the earliest mail is due (E177 fmail_outbox_next_due177);
+        // the worker sleeps exactly that long, and wakes at once when send_ep queues a mail (WAKE). So a mail leaves the moment its 30 s hold ends. The sleep is capped at 5 s so failed rows
+        // whose backoff passed are still requeued, and floored at 50 ms so a busy loop is impossible.
         loop {
-            tick.tick().await;
             let _ = sb.rpc("fmail_outbox_requeue_failed", json!({})).await;
-            let Some(Value::Array(ids)) = sb.rpc("fmail_outbox_claim", json!({"p_max": 5})).await else { continue };
+            let ids = match sb.rpc("fmail_outbox_claim", json!({"p_max": 5})).await { Some(Value::Array(a)) => a, _ => Vec::new() };
             for id in ids.iter().filter_map(|x| x.as_str()) { process(&sb, &master, &cfg, res.as_deref(), &up, id).await; }
+            if !ids.is_empty() { continue; }
+            let wait = wake_in(sb.rpc("fmail_outbox_next_due177", json!({})).await.and_then(|v| v.as_f64()));
+            tokio::select! { _ = tokio::time::sleep(wait) => {}, _ = WAKE.notified() => {} }
         }
     });
+}
+
+/// Woken by send_ep right after a mail is queued, so the worker recomputes its next due time at once.
+pub static WAKE: tokio::sync::Notify = tokio::sync::Notify::const_new();
+/// Pure: how long the worker sleeps. None (nothing waits) = 5 s (backoff requeue still runs); a due or overdue mail = 50 ms; otherwise exactly the seconds to the earliest due mail, capped at 5 s.
+pub fn wake_in(secs: Option<f64>) -> Duration {
+    match secs { None => Duration::from_secs(5), Some(s) if !s.is_finite() || s <= 0.05 => Duration::from_millis(50), Some(s) => Duration::from_secs_f64(s.min(5.0) + 0.02) }
 }
 
 // ---------------------------------------------------------------- HTTP doors
@@ -212,7 +222,9 @@ pub async fn send_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::bo
     let has_key = sb.rpc("fmail_dkim_active170", json!({"p_mailbox": b})).await.and_then(|v| v.as_array().map(|a| !a.is_empty())).unwrap_or(false);
     if !has_key { return crate::signed(&st, json!({"ok": false, "needs_dkim": true, "error": "Install a DKIM signing key for this mailbox first (Compose shows the button). Unsigned mail is never sent."})); }
     let target = mime::send_target(&b, &c, sched.as_deref().unwrap_or(""));
-    let Some(t) = touch else { return crate::signed(&st, json!({"needs_touch": true, "action": "mail.send", "target": target})) };
+    // 16 Nov 04:55, his word: a normal send needs NO key touch (policy require_touch_send, changed through the ledgered door, E177); the undo window stays. If the policy still says touch, the old rule holds.
+    let need_touch = sb.rows("fmail_policy?select=require_touch_send&id=eq.1&limit=1").await.and_then(|r| r.into_iter().next()).map(|r| r["require_touch_send"] != json!(false)).unwrap_or(true);
+    if need_touch && touch.is_none() { return crate::signed(&st, json!({"needs_touch": true, "action": "mail.send", "target": target})) }
     // build + seal BEFORE spending the touch: a mail that cannot be built must not burn a grant
     let domain = mime::domain_of(&bx.address).to_string();
     let mid = match mime::new_message_id(&domain) { Ok(m) => m, Err(e) => return pk::refuse(StatusCode::INTERNAL_SERVER_ERROR, e) };
@@ -223,14 +235,14 @@ pub async fn send_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::bo
     let bk = match seal::blind_key(master, &b) { Ok(k) => k, Err(e) => return pk::refuse(StatusCode::INTERNAL_SERVER_ERROR, e) };
     let mut all: Vec<&String> = c.to.iter().chain(c.cc.iter()).chain(c.bcc.iter()).collect(); all.sort(); all.dedup();
     let rcpt_hex: Vec<String> = all.iter().map(|a| hex::encode(seal::blind(&bk, "rcpt", a))).collect();
-    let hash = match spend(&st, sb, &uid, &did, &t, "mail.send", &target).await { Ok(h) => h, Err(r) => return r };
+    let hash: Option<String> = match (need_touch, touch.as_ref()) { (true, Some(t)) => match spend(&st, sb, &uid, &did, t, "mail.send", &target).await { Ok(h) => Some(h), Err(r) => return r }, _ => None };
     let opt = |b: &Option<[u8; 32]>| b.as_ref().map(|x| Value::String(bytea(x))).unwrap_or(Value::Null);
     match sb.rpc_msg("fmail_compose_send170", json!({
         "p_actor": uid, "p_mailbox": b, "p_sealed_body": bytea(&sealed.sealed_body), "p_sealed_meta": bytea(&sealed.sealed_meta), "p_nonce_body": bytea(&sealed.nonce_body), "p_nonce_meta": bytea(&sealed.nonce_meta),
         "p_key_id": sealed.key_id, "p_key_wrap": bytea(&sealed.key_wrap), "p_aad_hash": bytea(&sealed.aad_hash), "p_msgid_blind": bytea(&sealed.msgid_blind), "p_parent_blind": opt(&sealed.parent_blind),
         "p_subject_blind": bytea(&sealed.subject_blind), "p_size": raw.len() as i64, "p_attach": 0, "p_rcpt_hex": rcpt_hex, "p_schedule_at": sched, "p_touch_hash": hash, "p_draft": draft,
     })).await {
-        Ok(v) => crate::signed(&st, json!({"ok": true, "queued": v})),
+        Ok(v) => { WAKE.notify_one(); crate::signed(&st, json!({"ok": true, "queued": v})) }
         Err((_, m)) if m.contains("DKIM") => crate::signed(&st, json!({"ok": false, "needs_dkim": true, "error": "Install a DKIM signing key for this mailbox first (Mail > Domain keys). Unsigned mail is never sent."})),
         Err(e) => pk::sql_err(e),
     }
@@ -472,6 +484,13 @@ mod tests {
         let mut other = job.clone(); other["mailbox_id"] = json!("22222222-2222-2222-2222-222222222222"); assert!(open_job(&master, &other).is_err(), "a sealed mail cannot be opened as another mailbox");
         let mut pq = job.clone(); pq["seal_mode"] = json!("recipient_pq"); assert!(open_job(&master, &pq).is_err());
         assert_eq!(sign_all(&[1u8; 32], mailbox, "anexomail.com", &job["dkim"], &wire, 1).1, 0, "a wrong master unwraps no key");
+    }
+    #[test] fn the_worker_sleeps_exactly_until_the_next_mail_is_due() {
+        assert_eq!(wake_in(None), Duration::from_secs(5));
+        assert_eq!(wake_in(Some(-3.0)), Duration::from_millis(50));
+        assert_eq!(wake_in(Some(f64::NAN)), Duration::from_millis(50));
+        let d = wake_in(Some(1.5)); assert!(d > Duration::from_millis(1500) && d < Duration::from_millis(1600));
+        assert_eq!(wake_in(Some(29.0)), Duration::from_millis(5020), "capped at 5 s so failed rows are still requeued");
     }
     #[test] fn p_of_txt_reads_the_dkim_record() {
         assert_eq!(p_of_txt(&[]), None);

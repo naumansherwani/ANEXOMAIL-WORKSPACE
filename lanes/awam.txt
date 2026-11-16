@@ -152,6 +152,8 @@ docs/cursor-work/server/fmail-intake-postfix.sh
 docs/cursor-work/server/fmail-intake-selftest.sh
 docs/cursor-work/server/fmail-intake-watch.sh
 docs/cursor-work/server/fmail-postfix-pq.sh
+docs/cursor-work/server/fmail-send-on.sh
+docs/cursor-work/server/fmail-send-probe.sh
 docs/cursor-work/server/fmail-ui-backup.sh
 docs/cursor-work/server/fmail-ui-rollback.sh
 docs/cursor-work/server/folder-rule-sync.py
@@ -368,6 +370,7 @@ docs/cursor-work/sql/CHECK_E173.sql
 docs/cursor-work/sql/CHECK_E174.sql
 docs/cursor-work/sql/CHECK_E175.sql
 docs/cursor-work/sql/CHECK_E176.sql
+docs/cursor-work/sql/CHECK_E177.sql
 docs/cursor-work/sql/CHECK_E42_E47.sql
 docs/cursor-work/sql/CHECK_E48.sql
 docs/cursor-work/sql/CHECK_E50.sql
