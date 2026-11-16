@@ -136,7 +136,8 @@ export function MailBox() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      const t = e.target as HTMLElement | null; if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+      const t = e.target as HTMLElement | null; if (t?.closest?.("dialog")) return;   // Q1b4: keys inside the ring sheet or the delete question belong to that dialog (Esc must not also close the mail)
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
       if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey) { e.preventDefault(); searchRef.current?.focus(); return; }
       if (e.key === "r" && !e.ctrlKey && !e.metaKey && !e.altKey && cur?.direction === "in" && opened) { e.preventDefault(); reply(); return; }
       const c = keyCmd(e.key, { ctrl: e.ctrlKey, meta: e.metaKey, alt: e.altKey }, pending.current); pending.current = null; if (!c) return;
