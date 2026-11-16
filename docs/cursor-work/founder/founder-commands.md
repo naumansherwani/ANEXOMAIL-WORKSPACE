@@ -3544,3 +3544,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - 16 Nov 05:47 Q1d-E DONE on HIS server (his paste): fmail-send-on.sh OK, journal 'mail sender ON (direct MX, STARTTLS TLS 1.3 required)', healthz 200, FMAIL_SEND=on, backup founder.env.pre-send. NEXT = Q1d-F: Outbox->Sent (my Chrome look), new mail to his Gmail, Show original -> Record proof (dkim=pass), DNS switch touch. Q1d NOT green yet. TECH-LAW CHECKED.
 
 - 16 Nov 05:52 Q1d-F: sender ON, my Chrome look: his Outbox mail (hi, 04:48) shows Send failed, Sent 0. Reason not shown in the UI; wrote read-only fmail-send-why.sh (outbox row error + journal). NOT green. TECH-LAW CHECKED.
+
+- 16 Nov 05:56 Q1d-F: his paste: outbox row failed attempts 2, error 'the DKIM send gate is closed', reply 'the DKIM gate did not answer (run the E175 SQL step)', dkim_signed f, tls -. E175 IS applied, so the rpc fmail_dkim_send_gate175 returned an error or non-object on his data. Wrote read-only CHECK_E175G (gate + blockers per mailbox). NOT green. TECH-LAW CHECKED.

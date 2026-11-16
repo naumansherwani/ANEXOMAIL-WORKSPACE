@@ -1,4 +1,4 @@
-> ## >>> RESUME HERE: Q1d-F: sender ON but first mail FAILED (my Chrome); he runs fmail-send-why.sh, I fix the real cause; then resend, Gmail dkim=pass proof. READ FIRST docs/claude/state/WORKING-NOW.md (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
+> ## >>> RESUME HERE: Q1d-F: first send failed (DKIM gate did not answer); he runs sql-run CHECK_E175G paste; fix cause; resend; Gmail dkim=pass. READ FIRST docs/claude/state/WORKING-NOW.md (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
 > ## >>> SERVER CMDS, HIS EXACT FORMS (15 Nov 20:15/20:16), each = git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/X.sh) : X=sql-run then 2>&1 | tail -25 (no name = AUTO); X=founder-install then 2>&1 | tail -12. They run the newest origin/main commit. <<<
 ## >>> FOUNDER/AWAM SEPARATION (his 14 Nov 05:34): docs/claude/FOUNDER-AWAM-SEPARATION-LAW-14NOV.md, awam problems = awam blueprint only, NEVER re-discuss. <<<
 ## >>> KP3 CODE MAP (all exists, do not rewrite): docs/claude/KP3-CODE-MAP-14NOV.md <<<
