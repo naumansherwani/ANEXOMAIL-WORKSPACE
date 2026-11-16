@@ -1,24 +1,18 @@
-# WORKING NOW (manual checkpoint, 16 Nov 2026 06:22 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 16 Nov 2026 06:22 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: his 06:21 order: (1) audit 30 s hold code + auto fix = E181 written (ledger text truth), (2) Systems pills stale -> Outgoing TLS + Real outgoing mail set live in brain.py, (3) NEXT: real ON/OFF toggle switch (his 'hand icon toggle'): plan = E182 sending pause/resume door (mailbox status active<->paused, ledgered, no touch), Rust POST /founder/v1/mail/sending, UI toggle on Systems 'Real outgoing mail' + Mail header; look in Chrome where else a real toggle belongs (DKIM policy switches already exist)
 NEXT STEP: he runs sql-run (E181) + founder-install (brain data + new pills); then I build E182 toggle
 HIS LAST WORD: his 06:21 photo of Systems pills + toggle request
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 288e3bf7 16 Nov 06:22 Send audit fix E181 and live pills
 - 3b2ef8b1 16 Nov 06:19 ledger line 569da163
 - 569da163 16 Nov 06:19 Q1d-2 done; blueprint table rendered
 - f3b4b30f 16 Nov 06:19 ledger line f297d3e1
 - f297d3e1 16 Nov 06:19 Q1d-1b and Q1d-2b green: first real mail reached Gmail
-- 109e31fc 16 Nov 06:15 ledger line 5579b949
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/state/HEARTBEAT.json
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/server/brain.py
- M docs/cursor-work/sql/index.md
- M founder-web/src/system_brain.json
-?? docs/cursor-work/sql/CHECK_E181.sql
-?? docs/cursor-work/sql/E181_fix_send_ledger_text.sql
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
