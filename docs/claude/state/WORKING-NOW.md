@@ -5,11 +5,11 @@ HIS LAST WORD: his 06:21 photo of Systems pills + toggle request
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 0702bff9 16 Nov 06:54 Rule: address the founder only as Aap
+- b74f782c 16 Nov 06:54 ledger line 408cc966
 - 408cc966 16 Nov 06:54 Rule: address the founder only as Aap, never tum
 - 6a4c2a17 16 Nov 06:53 ledger line 8bab1861
 - 8bab1861 16 Nov 06:53 E182 fix: recreate claim door whole instead of text patch
-- d6a12ae8 16 Nov 06:52 ledger line dff1a515
-- dff1a515 16 Nov 06:52 Record founder-install OK and S5 answer
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
