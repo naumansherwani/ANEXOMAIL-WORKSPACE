@@ -1,22 +1,18 @@
-# WORKING NOW (manual checkpoint, 16 Nov 2026 05:34 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Q1d-B done; giving him Q1d-C probe command
-NEXT STEP: he pastes fmail-send-probe.sh output, then Q1d-D DNS r2611a + switch
-HIS LAST WORD: his 05:34: compaction-safe auto system + ledger with date/time after every commit
+# WORKING NOW (manual checkpoint, 16 Nov 2026 05:35 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Q1d-C: he runs fmail-send-probe.sh
+NEXT STEP: read his paste: port 25 open or relay; then Q1d-D DNS r2611a + switch
+HIS LAST WORD: 05:34 compaction-safe auto system done; now probe
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 35e23c8a 16 Nov 05:35 Q1d-B done; auto compaction system (WORKING-NOW, PreCompact, commit ledger)
 - c3cfe614 16 Nov 05:26 Q1d-A done, Q1d-B next
 - 2cab2521 16 Nov 05:23 E178 selftest scope fix and Q1d sub-phase plan
 - f5c4b20f 16 Nov 05:20 CHECK_E177C failing inner checks
 - ed2545ec 16 Nov 05:19 CHECK_E177B diagnostic: which E177 selftest check fails on his server
-- 085aae36 16 Nov 05:17 E177 confirmed applied, mail send is the active step
 
 ## Uncommitted files (half-done work if any)
- M .claude/settings.json
-?? docs/claude/state/WORKING-NOW.md
-?? docs/cursor-work/server/ckpt.sh
-?? docs/cursor-work/server/hooks-install.sh
-?? docs/cursor-work/server/hooks/
+ M docs/claude/state/WORKING-NOW.md
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
