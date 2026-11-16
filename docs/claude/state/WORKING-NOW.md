@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 01:32 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 01:34 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 17 Nov 01:35 PKT: AUDIT-Q1d G1 (DKIM evidence chain door) is COMMITTED + PUSHED (867b4ba2, route /founder/v1/mail/dkim/chain, SERVER FIRST receipt 43, cargo 413/413). Delete live test GREEN (9818718f). E181, E182, S5, Q1d, SYS-LIVE GREEN.
 NEXT STEP: he runs ONE founder-install (git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12); then my Chrome look Systems > Mail signing > Check evidence chains = AUDIT-Q1d GREEN; then Q1b4 (outgoing badges + real sent time G3, mail-auth crate G4), Q3, Qtls, U1U2 (G2), Q4, U5, Q1e; DKIM2 research crate (signing OFF).
 HIS LAST WORD: 17 Nov 01:30 'sab kuch date time ke saath update kero, compact hone wala hai, pull command do'. ADDRESS HIM ONLY AS AAP (never tum/tumhay).
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 3227c696 17 Nov 01:34 WORKING-NOW: note that the Q1d audit context was running (17 Nov 01:37)
+- e3fc05d4 17 Nov 01:32 ledger line 9dee297d
 - 9dee297d 17 Nov 01:32 WORKING-NOW: current state 17 Nov 01:35 for compaction
 - b71c3915 17 Nov 01:29 ledger line 867b4ba2
 - 867b4ba2 17 Nov 01:29 AUDIT-Q1d G1: DKIM evidence chain door route in main.rs after his ss paste (receipt 43), cargo 413/413
-- 70b7325a 17 Nov 01:24 ledger line 9818718f
-- 9818718f 17 Nov 01:24 Delete live test green with his haan
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -23,5 +23,3 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-
-NOTE 17 Nov 2026 01:37 PKT (his order: sirf note kero): this chat context was running: audit Q1d table + G1..G6, Delete live test GREEN (9818718f), his ss paste = SERVER FIRST receipt 43, route /founder/v1/mail/dkim/chain committed (867b4ba2), one founder-install pull command given and WAITING for his paste, then Chrome look Check evidence chains = AUDIT-Q1d GREEN, then Q1b4. He pasted the whole chat back to confirm; nothing new to build. ADDRESS HIM ONLY AS AAP.
