@@ -1,8 +1,8 @@
 {
- "generated": "16 Nov 2026 07:08 +0500",
- "head": "553b1b0b",
- "head_subject": "ledger line 9aefb729",
- "now": "-",
+ "generated": "16 Nov 2026 07:15 +0500",
+ "head": "d395b4fc",
+ "head_subject": "ledger line d7064da5",
+ "now": "SYS-LIVE",
  "phases": {
   "GREEN": 28,
   "IN PROGRESS": 1,
@@ -10,7 +10,7 @@
   "PAUSED": 1
  },
  "q_done": 25,
- "q_open": 1,
+ "q_open": 2,
  "checks_ok": 24,
  "checks_open": [
   "M-moq",

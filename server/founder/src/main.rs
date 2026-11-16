@@ -4,6 +4,7 @@
 mod jwt_core;
 mod mldsa;
 mod audit;
+mod pulse;
 mod gate;
 mod sign;
 mod bridge;
@@ -317,6 +318,11 @@ async fn s2_confirm_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Byte
     }).await
 }
 
+/// SYS-LIVE: GET /founder/v1/system/pulse, the live pulse of this process (signed answer, read at request time).
+async fn pulse_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
+    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    signed(&st, pulse::read(st.sb.as_ref()).await)
+}
 async fn bridge_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
     if let Err(code) = authed(&st, &h).await { return code.into_response(); }
     let sb = st.sb.as_ref().unwrap();
@@ -871,6 +877,7 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/sessions/policy/begin", axum::routing::post(policy_step::begin_ep))
         .route("/founder/v1/sessions/policy/finish", axum::routing::post(policy_step::finish_ep))
         .route("/founder/v1/bridge", get(bridge_ep))
+        .route("/founder/v1/system/pulse", get(pulse_ep))
         .route("/founder/v1/settings", get(settings_ep).put(settings_put))
         .route("/founder/v1/settings/history", get(s2_history_ep))
         .route("/founder/v1/settings/at", get(s2_at_ep))
@@ -990,6 +997,7 @@ async fn asset_cache(req: axum::extract::Request, next: axum::middleware::Next) 
 
 #[tokio::main]
 async fn main() {
+    pulse::mark_start();
     if let Some(i) = std::env::args().position(|a| a == "--gen-token-key") { // installer: ek baar, key file 0400 (service user ke liye chown installer karta hai)
         let path = std::env::args().nth(i + 1).expect("path lazmi");
         if std::path::Path::new(&path).exists() { println!("exists"); return; }

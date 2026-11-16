@@ -1,0 +1,6 @@
+.pl{display:flex;flex-direction:column;gap:12px}.pl-top{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+.pl-clock{font-variant-numeric:tabular-nums;font-size:26px;font-weight:600;letter-spacing:.02em}
+.pl-badge{display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,255,255,.14);font-size:13px}
+.pl-badge i{width:8px;height:8px;border-radius:50%;background:#7a8aa0}.pl-badge.live i{background:#5aa2ff;box-shadow:0 0 0 0 rgba(90,162,255,.6);animation:plb 2s infinite}.pl-badge.stale i{background:#ffb454}
+@keyframes plb{70%{box-shadow:0 0 0 8px rgba(90,162,255,0)}100%{box-shadow:0 0 0 0 rgba(90,162,255,0)}}
+@media (prefers-reduced-motion:reduce){.pl-badge.live i{animation:none}}

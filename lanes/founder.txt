@@ -153,8 +153,8 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-BBrRLYCO.js
-founder-web/dist/assets/index-DovGlQ49.css
+founder-web/dist/assets/index-2xu97hI6.js
+founder-web/dist/assets/index-CC7KJUFk.css
 founder-web/dist/assets/kernel.worker-CmgLpPuh.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
@@ -214,6 +214,7 @@ founder-web/src/OrbWhy.tsx
 founder-web/src/Palette.tsx
 founder-web/src/PolicyEditor.tsx
 founder-web/src/Profile.tsx
+founder-web/src/PulseCard.tsx
 founder-web/src/READ-FIRST-FOUNDER-LAW.md
 founder-web/src/Scene3D.tsx
 founder-web/src/SendSwitch.tsx
@@ -315,6 +316,9 @@ founder-web/src/policy_change.ts
 founder-web/src/policy_flow.ts
 founder-web/src/portable.test.ts
 founder-web/src/portable.ts
+founder-web/src/pulse.css
+founder-web/src/pulse_pure.test.ts
+founder-web/src/pulse_pure.ts
 founder-web/src/router.tsx
 founder-web/src/routes.test.ts
 founder-web/src/s2lib.ts
@@ -359,6 +363,7 @@ server/founder/00-FOUNDER-TECH-RULE.md
 server/founder/Cargo.lock
 server/founder/Cargo.toml
 server/founder/READ-FIRST-FOUNDER-LAW.md
+server/founder/build.rs
 server/founder/src/00-FOUNDER-TECH-RULE.md
 server/founder/src/actions.rs
 server/founder/src/ambient.rs
@@ -398,6 +403,7 @@ server/founder/src/passkey.rs
 server/founder/src/polar.rs
 server/founder/src/policy_step.rs
 server/founder/src/portable.rs
+server/founder/src/pulse.rs
 server/founder/src/sessions.rs
 server/founder/src/settings.rs
 server/founder/src/settings_s2.rs

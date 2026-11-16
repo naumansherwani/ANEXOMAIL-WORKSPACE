@@ -16,7 +16,7 @@ command -v cargo >/dev/null 2>&1 || { echo "FAIL: cargo nahi mila"; exit 2; }
 show() { git -C "$REPO" show "origin/main:$1"; }
 mkdir -p "$ROOT/src/src" "$ROOT/web" /etc/anexomail
 # har src/*.rs repo se khud (nayi file chhoot nahi sakti: ftoken.rs wali galti dobara nahi)
-FILES="Cargo.toml Cargo.lock $(git -C "$REPO" ls-tree --name-only origin/main server/founder/src/ | sed "s#^server/founder/##" | grep -E "\.rs$" | tr "\n" " ")"
+FILES="Cargo.toml Cargo.lock build.rs $(git -C "$REPO" ls-tree --name-only origin/main server/founder/src/ | sed "s#^server/founder/##" | grep -E "\.rs$" | tr "\n" " ")"
 for f in $FILES; do show "server/founder/$f" >"$ROOT/src/$f" || { echo "FAIL: repo mein server/founder/$f nahi"; exit 2; }; done
 # jwt_core ko main.rs `../../rust/jwt_core.rs` se leta hai
 mkdir -p "$ROOT/rust" && show server/rust/jwt_core.rs >"$ROOT/rust/jwt_core.rs" || { echo "FAIL: jwt_core.rs nahi"; exit 2; }
@@ -34,7 +34,7 @@ show server/rust/g5c_tsa_vectors.json >"$ROOT/rust/g5c_tsa_vectors.json" || { ec
 show server/rust/g5d_bundle_vector.json >"$ROOT/rust/g5d_bundle_vector.json" || { echo "FAIL: g5d_bundle_vector.json nahi"; exit 2; }
 # main.rs ka path src/ se ../../rust/jwt_core.rs = $ROOT/rust/jwt_core.rs (src/src -> ../../ = src/..)
 echo "== 1/4 tests"; TOK=0; for TRY in 1 2 3; do (cd "$ROOT/src" && cargo test --release >/tmp/founder-test.$$ 2>&1); RC=$?; grep -E "test result|FAILED|^error|panicked" /tmp/founder-test.$$ | head -8; if [ $RC -eq 0 ]; then TOK=1; break; fi; echo "tests try $TRY failed (exit $RC), dobara"; sleep 2; done; [ $TOK -eq 1 ] || { echo "FAIL: tests 3 baar — kuch nahi badla"; exit 3; }; rm -f /tmp/founder-test.$$
-echo "== 2/4 build"; (cd "$ROOT/src" && nice cargo build --release 2>&1 | tail -3) ; NEW="$ROOT/src/target/release/anexomail-founder"; [ -x "$NEW" ] || { echo "FAIL: build"; exit 3; }
+echo "== 2/4 build"; export ANX_BUILD="$(git -C "$REPO" rev-parse --short origin/main)" ANX_BUILD_TIME="$(date -u +%Y-%m-%dT%H:%M:%SZ)"; (cd "$ROOT/src" && nice cargo build --release 2>&1 | tail -3) ; NEW="$ROOT/src/target/release/anexomail-founder"; [ -x "$NEW" ] || { echo "FAIL: build"; exit 3; }
 [ -x "$ROOT/anexomail-founder" ] && cp "$ROOT/anexomail-founder" "$ROOT/anexomail-founder.bak.$STAMP"
 echo "== 2b/4 SPA (founder-web/dist, sandbox mein bana; server par npm/Node NAHI)"
 NEWWEB="$ROOT/web.new.$STAMP"; mkdir -p "$NEWWEB"

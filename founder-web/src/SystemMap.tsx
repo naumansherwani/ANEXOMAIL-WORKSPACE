@@ -5,6 +5,8 @@ import brain from "./system_brain.json";
 import { DkimDock } from "./DkimDock";
 import { MailHealth } from "./MailHealth";
 import { SendSwitch } from "./SendSwitch";
+import { PulseCard } from "./PulseCard";
+import "./pulse.css";
 import "./systemmap.css";
 
 const LAYERS: Record<string, string> = { rust: "Rust server", kernel: "WASM kernel (your browser)", sql: "PostgreSQL", ui: "React screen", mail: "Mail wire (SMTP)", tracked: "Tracked, not built" };
@@ -16,8 +18,9 @@ export function SystemMap() {
   return (
     <div className="grid">
       <section className="card wide sm" aria-label="Mail health"><h2>MAIL HEALTH · SPEED, TRANSPORT, LEDGER, LANES</h2><div className="sm-send"><span className="sm-k">Real outgoing mail</span><SendSwitch /></div><MailHealth /></section>
+      <section className="card wide sm" aria-label="Live pulse"><h2>LIVE PULSE · THE RUNNING SERVER, EVERY 5 SECONDS</h2><PulseCard /></section>
       <section className="card wide sm" aria-label="Repo heartbeat">
-        <h2>HEARTBEAT · WHERE THE SYSTEM IS NOW</h2>
+        <h2>REPO HEARTBEAT · THE CODE AS WRITTEN WHEN THIS PAGE WAS BUILT</h2>
         <div className="sm-hb">
           <div><span className="sm-k">Repo commit</span><b>{hb.head}</b><em>{hb.head_subject}</em></div>
           <div><span className="sm-k">Working on</span><b>{hb.now}</b><em>one sub-phase at a time</em></div>
@@ -25,7 +28,7 @@ export function SystemMap() {
           <div><span className="sm-k">Mail steps</span><b>{hb.q_done} done</b><em>{hb.q_open} open</em></div>
           <div><span className="sm-k">Technology checks</span><b>{hb.checks_ok} hold</b><em>{hb.checks_open.length ? `${hb.checks_open.length} open` : "none open"}</em></div>
         </div>
-        <p className="dim small">Written {hb.generated} from the repo. It is the state of the code, not a live probe of the server.</p>
+        <p className="dim small">Written {hb.generated} from the repo when this page was built. The live server is the pulse card above.</p>
       </section>
       <section className="card wide sm" aria-label="Technology brain">
         <h2>BRAIN · WHICH TECHNOLOGY, WHICH FEATURE, WHERE IT RUNS</h2>

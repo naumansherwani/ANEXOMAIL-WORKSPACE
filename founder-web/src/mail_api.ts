@@ -178,3 +178,7 @@ export async function dkimCreate(box: string, selector: string, alg: "ed25519-sh
 export type Sending = { send_enabled: boolean; undo_seconds: number; waiting: number; changed_at_ms: number | null };
 export async function sendingState(): Promise<Sending | null> { const d = (await get("/founder/v1/mail/sending")).data; return d?.connected && d.sending ? d.sending as Sending : null; }
 export async function sendingSet(on: boolean): Promise<{ ok: boolean; error?: string }> { const r = await post("/founder/v1/mail/sending", { on }); return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` }; }
+
+/** SYS-LIVE: the live pulse of the running Rust process (signed answer, verified by the kernel in api.get). null = door unavailable. */
+export type Pulse = { seq: number; now_ms: number; started_ms: number; uptime_s: number; build: string; build_time: string; tokio: { workers: number; alive_tasks: number; queue_depth: number }; db_ms: number | null; sending: Sending | null };
+export async function pulse(): Promise<Pulse | null> { const d = (await get("/founder/v1/system/pulse")).data; return d?.connected && typeof d.now_ms === "number" ? d as Pulse : null; }
