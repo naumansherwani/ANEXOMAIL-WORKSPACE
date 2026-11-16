@@ -504,3 +504,5 @@
 - 17 Nov 2026 02:05 PKT: HIS ORDER (02:03): the compose box phases are COMPLETE FIRST, then Q3 (attachments = C5, plugged into the finished box). FINAL blueprint order: Q1b4, QC0, QC1, QC2, QC3, QC4, QC7, QC8, Q3, Qtls, U1U2, Q4 (= C6), U5, Q1e. Written in qstate.py PLAN + docs/claude/FOUNDER-COMPOSE-PLAN-17NOV.md. NOW = Q1b4. Auto refresh every 5 min = docs/cursor-work/server/autoref.sh (UserPromptSubmit hook + background loop).
 
 - 17 Nov 2026 02:23 PKT: Q1b4 STEP a DONE: master plan docs/claude/Q1B4-MASTER-PLAN-17NOV.md (research: RFC 9989 DMARCbis tree walk replaces PSL, mail-auth 0.9.2, trust ring design, sub-steps a-e) + contract in CURRENT.md. NEXT step b = SQL E183 + CHECK_E183 (sandbox PG16 port 5441).
+
+- 17 Nov 2026 02:5x PKT: Q1b4 STEP b DONE: SQL E183 (docs/cursor-work/sql/E183_founder_mail_auth_verdicts.sql, 786 lines, verdict evidence + hash chain + trust score + lookalike + out facts + get/list sent_ms/score/grade) + CHECK_E183.sql proven in sandbox PG16: selftest 52 ok, door audit clean, CHECK 9/9. NOT yet run on his server. NEXT step c: Rust fmail_auth.rs (mail-auth =0.9.2).

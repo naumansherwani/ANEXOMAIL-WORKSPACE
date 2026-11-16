@@ -1,18 +1,19 @@
-# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 02:12 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 17 Nov 02:22 PKT Q1b4 STEP a DONE: master plan docs/claude/Q1B4-MASTER-PLAN-17NOV.md (step table in section 7) + CURRENT.md contract. Now STEP b: SQL E183 (~800 lines) + CHECK_E183, proven in sandbox PG16 port 5441 (cluster /tmp/pg175, start with /usr/lib/postgresql/16/bin/pg_ctl -D /tmp/pg175/data -o '-p 5441' start, E167-E182 loaded).
-NEXT STEP: STEP b: write docs/cursor-work/sql/E183_founder_mail_auth_verdicts.sql (first line EMPTY) per plan section 5, then CHECK_E183.sql, load into sandbox PG, run fmail_selftest183; then rec.sh; then step c Rust
-HIS LAST WORD: 17 Nov 02:10: master plan first, then SQL 800 lines advance, research, compaction-proof
+# WORKING NOW (manual checkpoint, 17 Nov 2026 02:21 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Q1b4 step b: SQL E183 file assembled (docs/cursor-work/sql/E183_founder_mail_auth_verdicts.sql, 782 lines), fixing selftest in sandbox PG 5441 db t; parts also in scratchpad e183_a-d
+NEXT STEP: finish E183 selftest green, door audit, CHECK_E183.sql, rec.sh; then step c Rust fmail_auth.rs (docs/claude/Q1B4-MASTER-PLAN-17NOV.md section 7)
+HIS LAST WORD: 02:21 jo codes likhe un ko intact rakho, repo detail main padho, WORKING-NOW/ledger top pe update, har 5 min refresh
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- e84f78d8 17 Nov 02:12 ledger line 6df94163
 - 6df94163 17 Nov 02:12 Q1b4 step a: master plan + contract (RFC 9989 tree walk, mail-auth, trust ring)
 - 4c49e179 17 Nov 02:03 ledger line 2ef8593f
 - 2ef8593f 17 Nov 02:03 Blueprint order: compose QC0-QC8 complete before Q3 (his word 02:03)
 - 64f8996b 17 Nov 01:53 ledger line 6168db57
-- 6168db57 17 Nov 01:53 Blueprint: compose phases QC0-QC8 with technology (after Q1b4), his haan
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+?? docs/cursor-work/sql/E183_founder_mail_auth_verdicts.sql
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
