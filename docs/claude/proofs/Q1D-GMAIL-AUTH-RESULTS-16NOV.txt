@@ -1,0 +1,14 @@
+PROOF (his paste 16 Nov 2026 06:26 PKT, Gmail "Show original" of the first real mail from the founder mailbox to his Gmail, sent 06:15 PKT = Sun 15 Nov 2026 17:15:34 PST).
+Kept here for ever (public headers only, no secrets). Also recorded in the server evidence ledger through Systems > Mail signing > Record proof (append-only fmail_dkim_proof).
+
+Authentication-Results: mx.google.com; dkim=neutral (no key) header.i=@anexomail.com header.s=e2611a header.b=+t1ekPnM; dkim=pass header.i=@anexomail.com header.s=r2611a header.b=uWekDjur; spf=pass (google.com: domain of naumansherwani.founder@anexomail.com designates 62.238.98.98 as permitted sender) smtp.mailfrom=naumansherwani.founder@anexomail.com; dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=anexomail.com
+Received: from mail.anexomail.com (mail.anexomail.com. [62.238.98.98]) by mx.google.com with ESMTPS ... (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256)
+Received-SPF: pass (google.com: domain of naumansherwani.founder@anexomail.com designates 62.238.98.98 as permitted sender) client-ip=62.238.98.98
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=anexomail.com; s=e2611a; t=1794791733; x=1795396533; h=from:from:to:to:subject:subject:date:date:message-id:message-id:mime-version:content-type:content-transfer-encoding; (oversigned headers, x = t + 7 days)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anexomail.com; s=r2611a; t=1794791733; x=1795396533; h=(same oversigned list)
+
+READING (facts):
+- dkim=pass for the RSA-2048 key r2611a, header.i=@anexomail.com, aligned with From.
+- dkim=neutral (no key) for the Ed25519 key e2611a: Gmail does not verify Ed25519 (RFC 8463) yet and ignores that key. The signature is present and the DNS record is confirmed; receivers that support RFC 8463 will verify it. This is why BOTH keys are sent (dual signature).
+- spf=pass (62.238.98.98), dmarc=pass with the policy p=REJECT sp=REJECT.
+- Received over TLS 1.3 TLS_AES_256_GCM_SHA384 (Gmail's header does not show the key-exchange group; the group X25519MLKEM768 was proven by the server probe fmail-send-probe.sh, his paste 16 Nov 05:37).
