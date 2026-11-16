@@ -156,6 +156,7 @@ docs/cursor-work/server/fmail-intake-postfix.sh
 docs/cursor-work/server/fmail-intake-selftest.sh
 docs/cursor-work/server/fmail-intake-watch.sh
 docs/cursor-work/server/fmail-postfix-pq.sh
+docs/cursor-work/server/fmail-postfix-tlshdr.sh
 docs/cursor-work/server/fmail-send-on.sh
 docs/cursor-work/server/fmail-send-probe.sh
 docs/cursor-work/server/fmail-send-why.sh
