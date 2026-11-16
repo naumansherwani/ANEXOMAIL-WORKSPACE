@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 02:23 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Q1b4 step b: SQL E183 file assembled (docs/cursor-work/sql/E183_founder_mail_auth_verdicts.sql, 782 lines), fixing selftest in sandbox PG 5441 db t; parts also in scratchpad e183_a-d
-NEXT STEP: finish E183 selftest green, door audit, CHECK_E183.sql, rec.sh; then step c Rust fmail_auth.rs (docs/claude/Q1B4-MASTER-PLAN-17NOV.md section 7)
-HIS LAST WORD: 02:21 jo codes likhe un ko intact rakho, repo detail main padho, WORKING-NOW/ledger top pe update, har 5 min refresh
+# WORKING NOW (manual checkpoint, 17 Nov 2026 02:23 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Q1b4 step c: Rust fmail_auth.rs (mail-auth =0.9.2, Received parser, RFC 9989 tree walk, display spoof, mixed-script) + fmail_in.rs intake + doors
+NEXT STEP: step d UI TrustRing, then step e his sql-run E183 + founder-install
+HIS LAST WORD: 02:21 compact safe, update every 5 min
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 38f13a0d 17 Nov 02:23 ledger line 28c32850
 - 28c32850 17 Nov 02:23 Q1b4 step b: SQL E183 mail auth verdicts, trust score, lookalike, chain (sandbox selftest 52 ok)
 - e84f78d8 17 Nov 02:12 ledger line 6df94163
 - 6df94163 17 Nov 02:12 Q1b4 step a: master plan + contract (RFC 9989 tree walk, mail-auth, trust ring)
 - 4c49e179 17 Nov 02:03 ledger line 2ef8593f
-- 2ef8593f 17 Nov 02:03 Blueprint order: compose QC0-QC8 complete before Q3 (his word 02:03)
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md

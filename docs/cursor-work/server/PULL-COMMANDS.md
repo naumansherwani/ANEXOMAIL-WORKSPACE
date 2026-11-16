@@ -506,3 +506,5 @@
 - 17 Nov 2026 02:23 PKT: Q1b4 STEP a DONE: master plan docs/claude/Q1B4-MASTER-PLAN-17NOV.md (research: RFC 9989 DMARCbis tree walk replaces PSL, mail-auth 0.9.2, trust ring design, sub-steps a-e) + contract in CURRENT.md. NEXT step b = SQL E183 + CHECK_E183 (sandbox PG16 port 5441).
 
 - 17 Nov 2026 02:5x PKT: Q1b4 STEP b DONE: SQL E183 (docs/cursor-work/sql/E183_founder_mail_auth_verdicts.sql, 786 lines, verdict evidence + hash chain + trust score + lookalike + out facts + get/list sent_ms/score/grade) + CHECK_E183.sql proven in sandbox PG16: selftest 52 ok, door audit clean, CHECK 9/9. NOT yet run on his server. NEXT step c: Rust fmail_auth.rs (mail-auth =0.9.2).
+
+- 17 Nov 2026 02:3x PKT: Q1b4 STEP c DONE: server/founder/src/fmail_auth.rs (mail-auth =0.9.2 ring, Postfix top-Received parser, RFC 9989 tree walk, display spoof, mixed script, Authentication-Results) + fmail_in.rs keeps MAIL FROM and records the verdict via fmail_auth_record183 (observe mode) + doors GET /founder/v1/mail/auth, /auth/summary, /auth/chain. cargo 429/429. Waits his sql-run (E183) then founder-install. NEXT step d UI TrustRing.

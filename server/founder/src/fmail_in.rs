@@ -24,6 +24,13 @@ pub const MAX_CONN: usize = 32;
 #[derive(Debug, PartialEq)]
 pub enum Cmd { Lhlo, Mail { size: Option<u64> }, Rcpt(String), Data, Rset, Noop, Quit, Vrfy, Bad(&'static str) }
 
+/// The envelope sender of a `MAIL FROM:<x>` line ("" for the null sender or anything unreadable).
+pub fn mail_from_addr(line: &str) -> String {
+    let l = line.trim_end_matches(['\r', '\n']); let rest = l.split_once(' ').map(|x| x.1).unwrap_or("");
+    if rest.len() < 5 || !rest[..5].eq_ignore_ascii_case("FROM:") { return String::new(); }
+    path_addr(&rest[5..]).unwrap_or_default()
+}
+
 /// "<a@b.c>" -> a@b.c (lower-cased, bracket required, no spaces or control characters). "<>" (null sender) -> Some("").
 pub fn path_addr(rest: &str) -> Option<String> {
     let rest = rest.trim_start();
@@ -142,7 +149,7 @@ pub trait Backend: Send + Sync {
     /// Ok(recipient) = accept; Err((smtp code, text)) = the answer for RCPT.
     fn rcpt(&self, addr: &str) -> impl std::future::Future<Output = Result<Rcpt, (u16, String)>> + Send;
     /// Store one mail for one recipient. Ok = stored sealed (or a duplicate that already is). Err = try again later (451).
-    fn deliver(&self, raw: &[u8], r: &Rcpt) -> impl std::future::Future<Output = Result<(), String>> + Send;
+    fn deliver(&self, raw: &[u8], r: &Rcpt, mail_from: &str) -> impl std::future::Future<Output = Result<(), String>> + Send;
     fn max_bytes(&self) -> usize;
 }
 
@@ -163,6 +170,7 @@ pub async fn session<S: AsyncRead + AsyncWrite + Unpin + Send, B: Backend>(strea
     let mut rd = BufReader::new(rd);
     if say(&mut wr, "220 anexomail-founder LMTP ready").await.is_err() { return; }
     let (mut from_ok, mut rcpts): (bool, Vec<Rcpt>) = (false, vec![]);
+    let mut mail_from = String::new();      // Q1b4: the envelope sender stays for SPF ("" = the null sender)
     loop {
         let Some(line) = read_line(&mut rd, CMD_IDLE_S).await else { return };
         let text = String::from_utf8_lossy(&line).into_owned();
@@ -171,7 +179,7 @@ pub async fn session<S: AsyncRead + AsyncWrite + Unpin + Send, B: Backend>(strea
             Cmd::Mail { size } => {
                 if from_ok { say(&mut wr, "503 5.5.1 sender already given").await }
                 else if size.map_or(false, |s| s as usize > be.max_bytes()) { say(&mut wr, "552 5.3.4 message too big").await }
-                else { from_ok = true; rcpts.clear(); say(&mut wr, "250 2.1.0 ok").await }
+                else { from_ok = true; rcpts.clear(); mail_from = mail_from_addr(&text); say(&mut wr, "250 2.1.0 ok").await }
             }
             Cmd::Rcpt(a) => {
                 if !from_ok { say(&mut wr, "503 5.5.1 MAIL first").await }
@@ -190,10 +198,10 @@ pub async fn session<S: AsyncRead + AsyncWrite + Unpin + Send, B: Backend>(strea
                     // LMTP: one reply per accepted recipient, in the order of the RCPT commands
                     for rc in &rcpts {
                         let reply = if d.over { "552 5.3.4 message too big".to_string() }
-                                    else { match be.deliver(&d.buf, rc).await { Ok(()) => "250 2.0.0 stored".to_string(), Err(e) => format!("451 4.3.0 try again later ({})", e.chars().take(80).collect::<String>().replace(['\r', '\n'], " ")) } };
+                                    else { match be.deliver(&d.buf, rc, &mail_from).await { Ok(()) => "250 2.0.0 stored".to_string(), Err(e) => format!("451 4.3.0 try again later ({})", e.chars().take(80).collect::<String>().replace(['\r', '\n'], " ")) } };
                         if say(&mut wr, &reply).await.is_err() { return; }
                     }
-                    from_ok = false; rcpts.clear(); Ok(())
+                    from_ok = false; rcpts.clear(); mail_from.clear(); Ok(())
                 }
             }
             Cmd::Rset => { from_ok = false; rcpts.clear(); say(&mut wr, "250 2.0.0 ok").await }
@@ -208,7 +216,7 @@ pub async fn session<S: AsyncRead + AsyncWrite + Unpin + Send, B: Backend>(strea
 
 // ---------------------------------------------------------------- the real backend
 
-pub struct Live { pub sb: Sb, pub master: seal::Key, pub clamd: Option<String>, pub max: usize }
+pub struct Live { pub sb: Sb, pub master: seal::Key, pub clamd: Option<String>, pub max: usize, pub verifier: Option<crate::fmail_auth::Verifier> }
 
 impl Backend for Live {
     fn max_bytes(&self) -> usize { self.max }
@@ -216,15 +224,15 @@ impl Backend for Live {
         let v = self.sb.rpc("fmail_rcpt_resolve", json!({"p_address": addr})).await.ok_or((451u16, "database not answering".to_string()))?;
         rcpt_from_json(addr, &v).ok_or_else(|| (v["smtp"].as_u64().unwrap_or(550) as u16, match v["reason"].as_str() { Some("paused") => "mailbox paused".into(), Some("no_key") => "mailbox key not ready".into(), _ => "no such mailbox".into() }))
     }
-    async fn deliver(&self, raw: &[u8], r: &Rcpt) -> Result<(), String> {
+    async fn deliver(&self, raw: &[u8], r: &Rcpt, mail_from: &str) -> Result<(), String> {
         let (t_all, sz) = (std::time::Instant::now(), crate::fmail_perf::size_bucket(raw.len()));
-        let r_all = self.deliver_timed(raw, r, t_all, sz).await;
+        let r_all = self.deliver_timed(raw, r, mail_from, t_all, sz).await;
         crate::fmail_perf::record("total", if r_all.is_ok() { "ok" } else { "error" }, sz, t_all);
         r_all
     }
 }
 impl Live {
-    async fn deliver_timed(&self, raw: &[u8], r: &Rcpt, _t_all: std::time::Instant, sz: &'static str) -> Result<(), String> {
+    async fn deliver_timed(&self, raw: &[u8], r: &Rcpt, mail_from: &str, _t_all: std::time::Instant, sz: &'static str) -> Result<(), String> {
         let s = core::summarize(raw);
         let t_scan = std::time::Instant::now();
         let scan = match &self.clamd { Some(a) => clam_scan(a, raw).await, None => "skipped" };
@@ -255,6 +263,16 @@ impl Live {
         // the ledger row (the database recomputes the hash of the stored ciphertext) and the scan result; a failure here is retried by the sweep, the mail itself is already safe
         let _ = self.sb.rpc("fmail_inbound_note169", json!({"p_mailbox": r.mailbox_id, "p_message": mid, "p_body_sha256": hex::encode(Sha256::digest(&sealed.sealed_body))})).await;
         let _ = self.sb.rpc("fmail_scan_set171", json!({"p_mailbox": r.mailbox_id, "p_message": mid, "p_state": scan})).await;
+        // Q1b4: the verdict (SPF, DKIM, DMARC by tree walk, ARC, iprev, TLS) AFTER the mail is safe and scanned, so the trust score sees the scan result. OBSERVE MODE: any failure here is logged and
+        // never costs the mail; the evidence is then simply missing and the screen says "not checked".
+        if let Some(v) = &self.verifier {
+            let t_auth = std::time::Instant::now();
+            let ok = match v.verify(raw, mail_from).await {
+                Some((ev, sigs)) => self.sb.rpc_msg("fmail_auth_record183", json!({"p_mailbox": r.mailbox_id, "p_message": mid, "p_ev": ev, "p_sigs": sigs})).await.is_ok(),
+                None => false,
+            };
+            if !ok { eprintln!("founder: mail verdict not recorded for {} ({} ms)", mid, t_auth.elapsed().as_millis()); }
+        }
         Ok(())
     }
 }
@@ -276,7 +294,10 @@ pub async fn spawn(sb: Sb, master: seal::Key, cfg: Cfg) {
     // the size limit comes from the policy row, read once; if it cannot be read the 25 MiB default of E167 applies
     let max = sb.rows("fmail_policy?select=max_message_bytes&id=eq.1").await.and_then(|r| r.first().and_then(|x| x["max_message_bytes"].as_u64())).unwrap_or(26_214_400) as usize;
     eprintln!("founder: mail intake (LMTP) ON {} (loopback only, max {} MiB, ClamAV {}, sealed on arrival)", cfg.bind, max / 1_048_576, cfg.clamd.as_deref().unwrap_or("not configured: scan = skipped"));
-    let be = Arc::new(Live { sb, master, clamd: cfg.clamd, max });
+    let host = std::env::var("FMAIL_AUTHRES_HOST").unwrap_or_else(|_| "anexomail.com".into());
+    let verifier = crate::fmail_auth::Verifier::new(&host);
+    if verifier.is_none() { eprintln!("founder: mail verdicts OFF (system DNS resolver could not be set up): mail is stored without SPF/DKIM/DMARC evidence"); }
+    let be = Arc::new(Live { sb, master, clamd: cfg.clamd, max, verifier });
     let gate = Arc::new(tokio::sync::Semaphore::new(MAX_CONN));
     tokio::spawn(async move {
         loop {
@@ -323,6 +344,10 @@ mod tests {
         assert_eq!(path_addr(&format!("<{}@x.co>", "a".repeat(300))), None);
     }
     #[test]
+    fn envelope_sender_is_kept_for_spf() {
+        assert_eq!(mail_from_addr("MAIL FROM:<Bob@Example.COM> SIZE=10\r\n"), "bob@example.com"); assert_eq!(mail_from_addr("MAIL FROM:<>\r\n"), ""); assert_eq!(mail_from_addr("MAIL FROM:junk\r\n"), ""); assert_eq!(mail_from_addr("NOOP\r\n"), "");
+    }
+    #[test]
     fn commands_parse_and_junk_is_refused() {
         assert_eq!(parse_cmd("LHLO mx.example\r\n"), Cmd::Lhlo); assert_eq!(parse_cmd("quit\r\n"), Cmd::Quit);
         assert_eq!(parse_cmd("MAIL FROM:<a@b.co> SIZE=1234\r\n"), Cmd::Mail { size: Some(1234) }); assert_eq!(parse_cmd("MAIL FROM:<>\r\n"), Cmd::Mail { size: None });
@@ -363,7 +388,7 @@ mod tests {
     impl Backend for Probe {
         fn max_bytes(&self) -> usize { 2000 }
         async fn rcpt(&self, a: &str) -> Result<Rcpt, (u16, String)> { if a.starts_with("nobody@") { Err((550, "no such mailbox".into())) } else { Ok(Rcpt { addr: a.into(), mailbox_id: "m".into(), seal_mode: "vault".into(), key_id: "k".into(), pub_hex: None }) } }
-        async fn deliver(&self, raw: &[u8], r: &Rcpt) -> Result<(), String> { if self.fail { return Err("db down".into()); } self.got.lock().unwrap().push((r.addr.clone(), raw.to_vec())); Ok(()) }
+        async fn deliver(&self, raw: &[u8], r: &Rcpt, _mf: &str) -> Result<(), String> { if self.fail { return Err("db down".into()); } self.got.lock().unwrap().push((r.addr.clone(), raw.to_vec())); Ok(()) }
     }
     async fn talk(be: &Probe, script: &str) -> String {
         let script = script.to_string();

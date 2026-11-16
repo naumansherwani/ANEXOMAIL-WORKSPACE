@@ -27,6 +27,16 @@ pub fn parse_box(q: Option<&str>) -> Result<String, &'static str> {
     for (k, v) in pairs(q) { match k { "box" => { if !pk::is_uuid(v) { return Err("invalid box"); } m = Some(v.to_string()); } _ => return Err("unknown parameter") } }
     m.ok_or("missing box")
 }
+/// ?box=<uuid>&message=<uuid> (the message is optional), ?days=1..365 (optional). Q1b4 doors.
+pub fn parse_auth(q: Option<&str>) -> Result<(String, Option<String>, i64), &'static str> {
+    let (mut b, mut m, mut days) = (None, None, 30i64);
+    for (k, v) in pairs(q) { match k {
+        "box" => { if !pk::is_uuid(v) { return Err("invalid box"); } b = Some(v.to_string()); }
+        "message" => { if !pk::is_uuid(v) { return Err("invalid message"); } m = Some(v.to_string()); }
+        "days" => { days = v.parse::<i64>().map_err(|_| "invalid days")?.clamp(1, 365); }
+        _ => return Err("unknown parameter") } }
+    Ok((b.ok_or("missing box")?, m, days))
+}
 pub fn parse_list(q: Option<&str>) -> Result<ListQ, &'static str> {
     let (mut mailbox, mut view, mut ts, mut id, mut limit) = (None, "inbox".to_string(), None, None, 50i64);
     for (k, v) in pairs(q) {
@@ -137,6 +147,34 @@ pub async fn counts_ep(State(st): State<S>, uri: Uri, h: HeaderMap) -> Response 
     let sb = st.sb.as_ref().unwrap();
     if let Err(r) = own(sb, &c.sub, &b).await { return r; }
     match sb.rpc("fmail_counts169", json!({"p_mailbox": b})).await { Some(v) if v.is_object() => crate::signed(&st, json!({"connected": true, "counts": v})), _ => crate::signed(&st, missing()) }
+}
+/// GET /founder/v1/mail/auth?box=&message= : the evidence behind one mail's trust ring (inbound: SPF, DKIM, DMARC, ARC, iprev, TLS, score and reasons; outbound: the sending facts). Read-only, signed.
+pub async fn auth_ep(State(st): State<S>, uri: Uri, h: HeaderMap) -> Response {
+    let c = match crate::authed(&st, &h).await { Ok(c) => c, Err(e) => return e.into_response() };
+    let (b, m, _) = match parse_auth(uri.query()) { Ok(x) => x, Err(e) => return bad(e) };
+    let Some(m) = m else { return bad("missing message") };
+    let sb = st.sb.as_ref().unwrap();
+    if let Err(r) = own(sb, &c.sub, &b).await { return r; }
+    let Some(f) = sb.rpc("fmail_out_facts183", json!({"p_mailbox": b, "p_message": m})).await.filter(|v| v.is_object()) else { return crate::signed(&st, json!({"connected": false, "note": "run the E183 SQL step (sql-run.sh)"})) };
+    if f["found"] != true { return pk::refuse(StatusCode::NOT_FOUND, "no such message"); }
+    if f["direction"] == "out" { return crate::signed(&st, json!({"connected": true, "direction": "out", "facts": f})); }
+    match sb.rpc("fmail_auth_get183", json!({"p_mailbox": b, "p_message": m})).await { Some(v) if v.is_object() => crate::signed(&st, json!({"connected": true, "direction": "in", "evidence": v})), _ => crate::signed(&st, json!({"connected": false, "note": "run the E183 SQL step (sql-run.sh)"})) }
+}
+/// GET /founder/v1/mail/auth/summary?box=&days= : grades, DMARC outcomes, TLS mix and the newest bad mails of one mailbox, plus the head of the verdict hash chain.
+pub async fn auth_summary_ep(State(st): State<S>, uri: Uri, h: HeaderMap) -> Response {
+    let c = match crate::authed(&st, &h).await { Ok(c) => c, Err(e) => return e.into_response() };
+    let (b, _, days) = match parse_auth(uri.query()) { Ok(x) => x, Err(e) => return bad(e) };
+    let sb = st.sb.as_ref().unwrap();
+    if let Err(r) = own(sb, &c.sub, &b).await { return r; }
+    match sb.rpc("fmail_auth_summary183", json!({"p_mailbox": b, "p_days": days})).await { Some(v) if v.get("total").is_some() => crate::signed(&st, json!({"connected": true, "summary": v})), _ => crate::signed(&st, json!({"connected": false, "note": "run the E183 SQL step (sql-run.sh)"})) }
+}
+/// GET /founder/v1/mail/auth/chain?box= : re-checks the verdict hash chain (every row hash, every link, every signature digest) in SQL.
+pub async fn auth_chain_ep(State(st): State<S>, uri: Uri, h: HeaderMap) -> Response {
+    let c = match crate::authed(&st, &h).await { Ok(c) => c, Err(e) => return e.into_response() };
+    let (b, _, _) = match parse_auth(uri.query()) { Ok(x) => x, Err(e) => return bad(e) };
+    let sb = st.sb.as_ref().unwrap();
+    if let Err(r) = own(sb, &c.sub, &b).await { return r; }
+    match sb.rpc("fmail_auth_chain_verify183", json!({"p_mailbox": b})).await { Some(v) if v.get("checked").is_some() => crate::signed(&st, json!({"connected": true, "chain": v})), _ => crate::signed(&st, json!({"connected": false, "note": "run the E183 SQL step (sql-run.sh)"})) }
 }
 pub async fn list_ep(State(st): State<S>, uri: Uri, h: HeaderMap) -> Response {
     let c = match crate::authed(&st, &h).await { Ok(c) => c, Err(e) => return e.into_response() };
@@ -282,6 +320,12 @@ pub async fn vault_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::b
 
 #[cfg(test)]
 mod tests {
+    #[test] fn auth_query_is_strict() {
+        let b = "123e4567-e89b-12d3-a456-426614174000";
+        assert_eq!(parse_auth(Some(&format!("box={b}&message={b}&days=999"))).unwrap(), (b.to_string(), Some(b.to_string()), 365));
+        assert_eq!(parse_auth(Some(&format!("box={b}"))).unwrap(), (b.to_string(), None, 30));
+        assert!(parse_auth(Some("box=nope")).is_err()); assert!(parse_auth(Some(&format!("box={b}&x=1"))).is_err()); assert!(parse_auth(None).is_err()); assert!(parse_auth(Some(&format!("box={b}&days=x"))).is_err());
+    }
     use super::*;
     use crate::fmail_seal as seal;
     const BOX: &str = "0b9d1c2e-0000-4000-8000-000000000001";

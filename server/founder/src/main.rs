@@ -51,6 +51,7 @@ mod fmail_seal;
 mod fmail_kem;
 mod fmail_core;
 mod fmail_in;
+mod fmail_auth;
 mod fmail_perf;
 mod fmail_ep;
 mod fmail_dkim;
@@ -947,6 +948,9 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/mail/dkim", get(fmail_out::dkim_get_ep).post(fmail_out::dkim_set_ep))
         .route("/founder/v1/mail/dkim/health", get(fmail_out::dkim_health_ep))
         .route("/founder/v1/mail/dkim/chain", get(fmail_out::dkim_chain_ep))
+        .route("/founder/v1/mail/auth", get(fmail_ep::auth_ep))
+        .route("/founder/v1/mail/auth/summary", get(fmail_ep::auth_summary_ep))
+        .route("/founder/v1/mail/auth/chain", get(fmail_ep::auth_chain_ep))
         .route("/founder/v1/mail/dkim/check", axum::routing::post(fmail_out::dkim_check_ep))
         .route("/founder/v1/mail/dkim/proof", axum::routing::post(fmail_out::dkim_proof_ep))
         .route("/founder/v1/mail/dkim/policy", axum::routing::post(fmail_out::dkim_policy_ep))
