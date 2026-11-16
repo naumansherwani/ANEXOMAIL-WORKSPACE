@@ -1,9 +1,9 @@
 {
  "heartbeat": {
-  "generated": "17 Nov 2026 01:10 +0500",
-  "head": "647ef71a",
-  "head_subject": "ledger line d6ceb970",
-  "now": "-",
+  "generated": "17 Nov 2026 01:19 +0500",
+  "head": "4b0d4d89",
+  "head_subject": "ledger line 2408ba15",
+  "now": "AUDIT-Q1d",
   "phases": {
    "GREEN": 28,
    "IN PROGRESS": 1,
@@ -11,7 +11,7 @@
    "PAUSED": 1
   },
   "q_done": 26,
-  "q_open": 1,
+  "q_open": 2,
   "checks_ok": 24,
   "checks_open": [
    "M-moq",
@@ -159,6 +159,18 @@
    "status": "live",
    "where": "pulse.rs, build.rs, PulseCard.tsx, SYS-LIVE",
    "tech": "Rust Tokio RuntimeMetrics + Ed25519 signed door verified by the WASM kernel + React"
+  },
+  {
+   "name": "DKIM evidence chain check",
+   "what": "Button in Systems > Mail signing re-checks the three DKIM evidence hash chains (DNS observations, signature log, receiver proofs) and says how many rows were checked and how many broke",
+   "layers": [
+    "rust",
+    "sql",
+    "ui"
+   ],
+   "status": "written",
+   "where": "fmail_out.rs dkim_chain_ep, DkimPanel.tsx",
+   "tech": "Rust Tokio signed door + PostgreSQL hash chains + React"
   },
   {
    "name": "Sending ON/OFF switch",

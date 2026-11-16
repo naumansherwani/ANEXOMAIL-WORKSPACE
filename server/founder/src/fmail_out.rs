@@ -466,6 +466,12 @@ pub async fn sending_set_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: a
     }
 }
 
+/// GET /founder/v1/mail/dkim/chain: re-checks the three DKIM evidence hash chains (DNS observations, signature log, outside-receiver proofs) in SQL and answers how many rows were checked and how many are broken (AUDIT-Q1d G1: this check lived only in the selftest, nothing showed it).
+pub async fn dkim_chain_ep(State(st): State<S>, h: HeaderMap) -> Response {
+    if let Err(e) = crate::authed(&st, &h).await { return e.into_response() }
+    let sb = st.sb.as_ref().unwrap();
+    match sb.rpc("fmail_dkim_chain_verify175", json!({})).await { Some(v) if v.get("checked").is_some() => crate::signed(&st, json!({"connected": true, "chain": v})), _ => crate::signed(&st, json!({"connected": false, "note": "run the E175 SQL step (sql-run.sh)"})) }
+}
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -24,3 +24,6 @@ export async function dkimPolicy(box: string, change: { oversign?: boolean; dual
   }
   return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` };
 }
+
+/** AUDIT-Q1d G1: the three DKIM evidence hash chains re-checked on the server (null = door not available). */
+export async function dkimChain(): Promise<{ checked: number; broken: number } | null> { const r = (await get("/founder/v1/mail/dkim/chain")).data; return r?.connected && r.chain && typeof r.chain.checked === "number" ? { checked: r.chain.checked, broken: r.chain.broken } : null; }

@@ -56,7 +56,7 @@ NOW: AUDIT-Q1d - AUDIT after Q1d is complete (his 16 Nov word): is every LISTED 
 - [~] Q1d-DKIM2: TRACKED ONLY: DKIM2 / ML-DSA-44 (draft-ietf-dkim-dkim2-spec-09, WG draft, expires 5 May 2027; no receiver verifies it yet, so nothing is built; opens when a receiver or an RFC exists)  (IETF draft, FIPS 204 ML-DSA-44)  PROOF: DKIM2 / ML-DSA-44 sirf tracked | IETF draft, FIPS 204 | Q1d (OPEN). Draft-09 only, no receiver verifies it; reopen when one does (his 16 Nov 02:12 order to write it in the phase).
 - [x] Q1d-2: FMAIL_SEND=on + real outgoing mail  (Rust Tokio SMTP, STARTTLS TLS 1.3 X25519MLKEM768, undo window, outgoing PQ TLS proof)  PROOF: WIRED: YES / REAL: YES / TECH-LAW CHECKED. Real outgoing mail live: sender ON, first mail reached Gmail (his photo 06:18, signed-by anexomail.com, TLS), my Chrome Sent 1 Outbox 0; outgoing PQ TLS X25519MLKEM768 proven by his probe paste 05:37
 - [x] SYS-LIVE: sub-phase: LIVE heartbeat on Systems (his 16 Nov 07:09 order): signed server beat with server clock, running build vs newest repo commit, LIVE/LATE/LOST staleness, auto refresh, PKT date+time  (Rust Tokio axum signed door, kernel WebTransport RPC, React 19 TS, installer build stamp; plan docs/claude/SYS-LIVE-HEARTBEAT-PLAN-16NOV.md)  PROOF: WIRED: YES / REAL: YES / TECH-LAW CHECKED. His founder-install paste 16 Nov 07:3x OK (4/4 saboot, healthz 200). My live Chrome 07:31 (his Systems page): LIVE PULSE card badge Live, server clock 07:31:37 then 07:31:49 ticking, beat #4 then #6 (5 s door answers), running 1 min 48 s then 2 min 1 s, server build 43fc7a34 installed 07:26:55 (= the repo commit, install stamp works), database round trip 264 ms then 227 ms, Tokio 45 then 46 tasks, 8 workers, queue 0, outgoing mail ON 0 waiting; the old card is now labelled REPO HEARTBEAT. NOT proven: the Stale badge by really blocking the door (pure test only), 390/820 phone look (sandbox only).
-- [ ] AUDIT-Q1d: AUDIT after Q1d is complete (his 16 Nov word): is every LISTED advance technology really in the code of Q1d (Rust, Tokio, WASM kernel, WebTransport, HTTP/3, X25519MLKEM768, AES-256-GCM, PostgreSQL RLS hash chains)? compare TECH-LAW-GATE + FOUNDER-TECH-AUDIT with the repo, list gaps  (audit: Rust, Tokio, WASM kernel, WebTransport, X25519MLKEM768 vs code)
+- [>] AUDIT-Q1d: AUDIT after Q1d is complete (his 16 Nov word): is every LISTED advance technology really in the code of Q1d (Rust, Tokio, WASM kernel, WebTransport, HTTP/3, X25519MLKEM768, AES-256-GCM, PostgreSQL RLS hash chains)? compare TECH-LAW-GATE + FOUNDER-TECH-AUDIT with the repo, list gaps  (audit: Rust, Tokio, WASM kernel, WebTransport, X25519MLKEM768 vs code)
 - [ ] Q1b4: SPF / DKIM / DMARC verdicts + trust ring (U3)  (Rust mail-auth, Framer Motion ring)
 - [ ] Q3: attachments + live over WebTransport + 8-segment ring (U4)  (Rust Tokio WebTransport, Hetzner Storage Box, ClamAV, WASM kernel)
 - [ ] Qtls: MTA-STS / DANE / TLS-RPT  (RFC 8461 / 7672 / 8460)
@@ -64,7 +64,7 @@ NOW: AUDIT-Q1d - AUDIT after Q1d is complete (his 16 Nov word): is every LISTED 
 - [ ] Q4: kernel pqmail OpenPGP RFC 9980  (Rust WASM kernel ML-KEM-768 + X25519, ML-DSA-65 + Ed25519)
 - [ ] U5: Who-can-read-this sheet, Ctrl K mail actions, light theme (approved)  (Radix Dialog, command palette, React 19 TS)
 - [ ] Q1e: calendar (SQL numbers from the then-next free one, E177 onward)  (Rust + SQL RLS + React TS, same sealing)
-chain head: fc31660f1b98654a (53 events)
+chain head: a2448f2c8557c8b4 (54 events)
 <!--/QSTATE-->
 
 ## SERVER-FIRST LAW (his 13 Nov 21:08, ONE YEAR, AUTOMATIC, STRICT) + H3 ONLY

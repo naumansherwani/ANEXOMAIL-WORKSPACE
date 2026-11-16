@@ -1,0 +1,1 @@
+PENDING (gate SERVER FIRST): apply with git apply docs/claude/state/PENDING-main-rs-dkim-chain-route.patch after his ss paste is recorded (serverfirst.py record), then commit, then his founder-install; the Rust door fn is already in fmail_out.rs (unrouted until then).

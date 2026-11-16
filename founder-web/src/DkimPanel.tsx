@@ -2,11 +2,12 @@
 // Data: E175 health read (keys, DNS state, rotation, policy, blockers) + E170 key rows for the TXT text. Every call goes through the kernel-signed doors.
 import { useCallback, useEffect, useState } from "react";
 import { dkimKeys, dkimCreate, type DkimRow } from "./mail_api";
-import { dkimCheck, dkimHealth, dkimPolicy, dkimProof } from "./dkim_api";
+import { dkimChain, dkimCheck, dkimHealth, dkimPolicy, dkimProof } from "./dkim_api";
 import { RECEIVERS, dnsWords, headline, nextSelector, ratchetWords, rotationWords, type Alg, type Health } from "./dkim_pure";
 import "./dkimpanel.css";
 
 export function DkimPanel({ box }: { box: string }) {
+  const [chain, setChain] = useState<{ checked: number; broken: number } | "none" | null>(null), [chainBusy, setChainBusy] = useState(false);
   const [open, setOpen] = useState(false), [h, setH] = useState<Health | null | undefined>(undefined), [rows, setRows] = useState<DkimRow[]>([]);
   const [busy, setBusy] = useState(""), [err, setErr] = useState(""), [note, setNote] = useState(""), [rcv, setRcv] = useState<string>("gmail"), [paste, setPaste] = useState("");
   const load = useCallback(() => { Promise.all([dkimHealth(box), dkimKeys(box)]).then(([a, b]) => { setH(a); setRows(b ?? []); }).catch(() => setH(null)); }, [box]);
@@ -45,6 +46,9 @@ export function DkimPanel({ box }: { box: string }) {
               {([["oversign", "Over-sign From, To, Subject, Date, Message-ID", p.require_oversign], ["dual", "Both Ed25519 and RSA keys required", p.require_dual], ["dns_match", "DNS record must be confirmed before sending", p.require_dns_match]] as const).map(([k, t, on]) => (
                 <div className="dk-sw" key={k}><span>{t}<small className="dim"> {ratchetWords(on)}</small></span>{!on && <button type="button" className="mx-btn alt" disabled={!!busy} onClick={() => void run("pol" + k, () => dkimPolicy(box, { [k]: true }), () => "Switched on.")}>Turn on (touch)</button>}</div>))}
               <p className="dim small">Fixed rules, set once, nothing for you to do now: a key lasts {p.rotate_days} days, the old DNS record stays {p.overlap_days} days by itself, each signature expires after {p.sig_ttl_days} days. About twice a year this panel will say "new key due" and you press one button.</p></div>)}
+            <div className="dk-proof"><span className="mx-cap">Evidence chains</span>
+              <div className="dk-row"><button type="button" className="mx-btn alt" disabled={chainBusy} onClick={() => { setChainBusy(true); dkimChain().then((c) => setChain(c ?? "none")).catch(() => setChain("none")).finally(() => setChainBusy(false)); }}>{chainBusy ? "Checking…" : "Check evidence chains"}</button>
+                <span className="dim small" role="status">{chain === null ? "Re-checks the DNS, signature and proof logs (hash chains)." : chain === "none" ? "The check door did not answer." : chain.broken === 0 ? `${chain.checked} rows checked, none broken.` : `${chain.broken} of ${chain.checked} rows BROKEN.`}</span></div></div>
             <div className="dk-proof"><span className="mx-cap">Outside receiver proof</span>
               <p className="dim small">Send a mail to the receiver, open Show original, copy the Authentication-Results header and paste it here.</p>
               <div className="dk-row"><select value={rcv} onChange={(e) => setRcv(e.target.value)} aria-label="Receiver">{RECEIVERS.map((x) => <option key={x}>{x}</option>)}</select>
