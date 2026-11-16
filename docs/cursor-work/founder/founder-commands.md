@@ -3528,3 +3528,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - 16 Nov 05:25 E177 IS ALREADY ON HIS SERVER: sql-why paste shows ledger row E177 sha 002213b2e31c94b2 at 00:04Z (= 05:04 PKT), same sha as origin/main file; so sql-run AUTO was right, my doubt was wrong. DKIM: both TXT records are in Namecheap (e2611a confirmed; r2611a re-check). NOW = MAIL SEND: next his commands: 1 CHECK_E177, 2 founder-install, 3 fmail-send-probe, 4 fmail-send-on. NOT green. TECH-LAW CHECKED.
 
 - 16 Nov 05:30 CHECK_E177 on HIS server: selftest177 = 4 ok, 1 failed (policy, undo 30 s, service_role door, delete/export touch all OK; failing = ledger row policy_change or E167 selftest on real data). Sandbox was 5/5. Added read-only CHECK_E177B to see which. NOT green. TECH-LAW CHECKED.
+
+- 16 Nov 05:35 CHECK_E177B on his server: ledger row OK; E167 selftest returns ok:false (one inner check fails on real data, output cut at 600 chars). Added CHECK_E177C listing only the failing inner checks. NOT green. TECH-LAW CHECKED.
