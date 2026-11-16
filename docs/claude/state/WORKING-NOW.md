@@ -1,19 +1,18 @@
-# WORKING NOW (manual checkpoint, 16 Nov 2026 05:42 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 16 Nov 2026 05:42 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Q1d-F: send failed = 'DKIM gate did not answer' (fmail_dkim_send_gate175 rpc returned nothing/error on his server); wrote CHECK_E175G to read the gate + blockers
 NEXT STEP: he pastes sql-run CHECK_E175G; fix real cause (SQL error or Rust parse), then resend
 HIS LAST WORD: his paste 05:42
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- fcf8d4af 16 Nov 05:42 CHECK_E175G gate diagnostic
 - aa10da53 16 Nov 05:40 ledger line ca0604ea
 - ca0604ea 16 Nov 05:40 send failed diagnostic
 - 61829109 16 Nov 05:39 ledger line f8be1b9d
 - f8be1b9d 16 Nov 05:39 Q1d-E done, sender ON
-- 9eeff6d8 16 Nov 05:38 ledger line 2a77e240
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
-?? docs/cursor-work/sql/CHECK_E175G.sql
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
