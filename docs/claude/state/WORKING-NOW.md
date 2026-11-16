@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 16 Nov 2026 07:15 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 16 Nov 2026 07:32 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: his 06:21 order: (1) audit 30 s hold code + auto fix = E181 written (ledger text truth), (2) Systems pills stale -> Outgoing TLS + Real outgoing mail set live in brain.py, (3) NEXT: real ON/OFF toggle switch (his 'hand icon toggle'): plan = E182 sending pause/resume door (mailbox status active<->paused, ledgered, no touch), Rust POST /founder/v1/mail/sending, UI toggle on Systems 'Real outgoing mail' + Mail header; look in Chrome where else a real toggle belongs (DKIM policy switches already exist)
 NEXT STEP: he runs sql-run (E181) + founder-install (brain data + new pills); then I build E182 toggle
 HIS LAST WORD: his 06:21 photo of Systems pills + toggle request
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- b0e1b4ec 16 Nov 07:32 SYS-LIVE green: live Chrome proof; state to 07:40
+- 43fc7a34 16 Nov 07:15 ledger line e87976e3
 - e87976e3 16 Nov 07:15 SYS-LIVE: live pulse door, PulseCard, build stamp, plan
 - d395b4fc 16 Nov 07:08 ledger line d7064da5
 - d7064da5 16 Nov 07:08 Systems page data + SPA build match the repo
-- 553b1b0b 16 Nov 07:07 ledger line 9aefb729
-- 9aefb729 16 Nov 07:07 S5 proof with live Chrome look recorded in blueprint
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
