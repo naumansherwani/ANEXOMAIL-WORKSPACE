@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# AUTO COMMIT LEDGER (his 16 Nov 05:34 order): after EVERY commit one line with PKT date+time, hash, subject goes into docs/claude/state/COMMIT-LEDGER.log
+# (picked up by the next commit; it never commits by itself, so no loop). Also refreshes WORKING-NOW.md.
+cd "$(git rev-parse --show-toplevel)" || exit 0
+mkdir -p docs/claude/state
+H="$(git log -1 --format=%h)"; S="$(git log -1 --format=%s | cut -c1-140)"
+grep -q "^.* | $H | " docs/claude/state/COMMIT-LEDGER.log 2>/dev/null || echo "$(TZ=Asia/Karachi date '+%Y-%m-%d %H:%M:%S PKT') | $H | $S" >> docs/claude/state/COMMIT-LEDGER.log
+bash docs/cursor-work/server/ckpt.sh --auto >/dev/null 2>&1 || true
+exit 0

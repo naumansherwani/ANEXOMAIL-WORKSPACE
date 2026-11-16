@@ -104,6 +104,7 @@ docs/cursor-work/server/calendar-status.sh
 docs/cursor-work/server/cargo_migration_deps.py
 docs/cursor-work/server/cert-refresh-check.sh
 docs/cursor-work/server/checks-all.sh
+docs/cursor-work/server/ckpt.sh
 docs/cursor-work/server/clamd-tcp-fix.sh
 docs/cursor-work/server/commit-msg.hook
 docs/cursor-work/server/core-freeze.py
@@ -168,6 +169,9 @@ docs/cursor-work/server/g5c-oracle/g5c_tsa_vectors.json
 docs/cursor-work/server/g5c-oracle/make-vectors.sh
 docs/cursor-work/server/g5d-oracle/00-FOUNDER-TECH-RULE.md
 docs/cursor-work/server/g5d-oracle/make-bundle-vector.sh
+docs/cursor-work/server/hooks-install.sh
+docs/cursor-work/server/hooks/00-FOUNDER-TECH-RULE.md
+docs/cursor-work/server/hooks/post-commit
 docs/cursor-work/server/i8-build-installer.py
 docs/cursor-work/server/i8-domains-install.mjs
 docs/cursor-work/server/i8-install.tpl.mjs
