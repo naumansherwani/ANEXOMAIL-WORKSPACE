@@ -532,3 +532,5 @@
 - 17 Nov 04:2x his word: what the website says is his promise. docs/claude/WEBSITE-PROMISES.md written: P1 founder TLS line (written), P2 awam TLS line OPEN until K5b is proven; CLAUDE.md line 2 points to it
 
 - 17 Nov 04:2x his word: AWAM blueprint order written at the top of AWAM-ENGINE-BLUEPRINT-02NOV.md: starts after the founder is complete, AW0 business packages, AW1 Lovable migration, AW2 transport (closes promise P2), AW3 passkey-only sign-in, AW4 mailbox = founder mailbox moulded, AW5 calendar/CRM/AI/chat, AW6 AnexoSuite; advance technology per phase from the founder proven set
+
+- 17 Nov 04:3x his founder-install OK (Rust first-Received fix live); no new inbound mail yet; Outbox mail still stuck; wrote CHECK_OUTBOX_LOOK.sql (read only) to read the real outbox state instead of guessing
