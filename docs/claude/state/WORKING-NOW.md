@@ -1,7 +1,7 @@
 # WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 01:29 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: his 06:21 order: (1) audit 30 s hold code + auto fix = E181 written (ledger text truth), (2) Systems pills stale -> Outgoing TLS + Real outgoing mail set live in brain.py, (3) NEXT: real ON/OFF toggle switch (his 'hand icon toggle'): plan = E182 sending pause/resume door (mailbox status active<->paused, ledgered, no touch), Rust POST /founder/v1/mail/sending, UI toggle on Systems 'Real outgoing mail' + Mail header; look in Chrome where else a real toggle belongs (DKIM policy switches already exist)
-NEXT STEP: he runs sql-run (E181) + founder-install (brain data + new pills); then I build E182 toggle
-HIS LAST WORD: his 06:21 photo of Systems pills + toggle request
+DOING: 17 Nov 01:35 PKT: AUDIT-Q1d G1 (DKIM evidence chain door) is COMMITTED + PUSHED (867b4ba2, route /founder/v1/mail/dkim/chain, SERVER FIRST receipt 43, cargo 413/413). Delete live test GREEN (9818718f). E181, E182, S5, Q1d, SYS-LIVE GREEN.
+NEXT STEP: he runs ONE founder-install (git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12); then my Chrome look Systems > Mail signing > Check evidence chains = AUDIT-Q1d GREEN; then Q1b4 (outgoing badges + real sent time G3, mail-auth crate G4), Q3, Qtls, U1U2 (G2), Q4, U5, Q1e; DKIM2 research crate (signing OFF).
+HIS LAST WORD: 17 Nov 01:30 'sab kuch date time ke saath update kero, compact hone wala hai, pull command do'. ADDRESS HIM ONLY AS AAP (never tum/tumhay).
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
