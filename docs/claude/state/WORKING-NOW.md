@@ -23,3 +23,5 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
+
+NOTE 17 Nov 2026 01:37 PKT (his order: sirf note kero): this chat context was running: audit Q1d table + G1..G6, Delete live test GREEN (9818718f), his ss paste = SERVER FIRST receipt 43, route /founder/v1/mail/dkim/chain committed (867b4ba2), one founder-install pull command given and WAITING for his paste, then Chrome look Check evidence chains = AUDIT-Q1d GREEN, then Q1b4. He pasted the whole chat back to confirm; nothing new to build. ADDRESS HIM ONLY AS AAP.
