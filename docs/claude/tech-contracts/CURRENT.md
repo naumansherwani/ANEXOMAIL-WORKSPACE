@@ -761,3 +761,5 @@ Layers: SQL (E177, PostgreSQL 16, ledgered policy door, selftest) + Rust (Tokio,
 - 16 Nov 05:42 Q1d-2a done (his paste: port 25 to Gmail OPEN, STARTTLS TLS1.3 AES-256-GCM, group X25519MLKEM768, PTR mail.anexomail.com.; no loopback relay). Q1d-1a done (my live Chrome look: BOTH keys e2611a + r2611a = DNS record confirmed). NEXT = Q1d-D switch DNS record must be confirmed (his touch), then E send-on, F Gmail proof. Q1d not green. TECH-LAW CHECKED.
 
 - 16 Nov 05:45 HIS HAAN for FMAIL_SEND=on (05:38 'mail send on ker de bus'); giving fmail-send-on.sh, no relay (port 25 open). Q1d not green until Gmail dkim=pass. TECH-LAW CHECKED.
+
+- 16 Nov 05:47 Q1d-E DONE on HIS server (his paste): fmail-send-on.sh OK, journal 'mail sender ON (direct MX, STARTTLS TLS 1.3 required)', healthz 200, FMAIL_SEND=on, backup founder.env.pre-send. NEXT = Q1d-F: Outbox->Sent (my Chrome look), new mail to his Gmail, Show original -> Record proof (dkim=pass), DNS switch touch. Q1d NOT green yet. TECH-LAW CHECKED.
