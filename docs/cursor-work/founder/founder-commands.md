@@ -3522,3 +3522,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - 16 Nov 05:20 DNS: his Namecheap paste done; panel Check DNS (my press, his Chrome): e2611a = DNS record confirmed, r2611a = Not in DNS yet (re-check, possible paste/propagation). Q1d-1a NOT green. TECH-LAW CHECKED.
 
 - 16 Nov 05:05 NORMAL SEND: per-send touch off by policy (E177, ledgered), 30 s hold stays, exact-time sender (Notify + next-due), probe + send-on scripts; cargo 410/410; NOT green: needs sql-run E177, founder-install, FMAIL_SEND on, DNS both keys, Gmail dkim=pass. TECH-LAW CHECKED.
+
+- 16 Nov 05:22 sql-run AUTO said no new SQL on his server (E177 is on origin/main 66094d0d); added read-only sql-why.sh to see what his server sees. E177 NOT run yet. TECH-LAW CHECKED.
