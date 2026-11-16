@@ -1,3 +1,4 @@
+> ## >>> ADDRESS HIM ONLY AS "AAP" / "Nauman bhai" (his 16 Nov 06:54, said countless times): NEVER tum / tumhara / tumhare / tumhari / tujhe, in chat or in any text for him. Re-read each reply before sending. <<<
 > ## >>> RESUME HERE: ADDRESS HIM ONLY AS AAP (never tum/tumhara/tumhare/tumhari). Then his sql-run E182 + founder-install, DKIM2, AUDIT-Q1d, Q1b4, Q3, Qtls (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
 > ## >>> SERVER CMDS, HIS EXACT FORMS (15 Nov 20:15/20:16), each = git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/X.sh) : X=sql-run then 2>&1 | tail -25 (no name = AUTO); X=founder-install then 2>&1 | tail -12. They run the newest origin/main commit. <<<
 ## >>> FOUNDER/AWAM SEPARATION (his 14 Nov 05:34): docs/claude/FOUNDER-AWAM-SEPARATION-LAW-14NOV.md, awam problems = awam blueprint only, NEVER re-discuss. <<<
