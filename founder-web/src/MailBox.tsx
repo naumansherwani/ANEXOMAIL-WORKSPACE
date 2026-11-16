@@ -117,7 +117,7 @@ export function MailBox() {
   const doAct = useCallback(async (what: "archive" | "trash" | "star" | "unread" | "vault") => {
     const r = rows.find((x) => x.id === sel); if (!r) return;
     if (what === "star" || what === "unread") { await api.flag(boxId, [r.id], what === "star" ? { starred: !r.starred } : { read: false }); setRows((o) => o.map((x) => (x.id === r.id ? { ...x, starred: what === "star" ? !x.starred : x.starred, read: what === "unread" ? false : x.read } : x))); void loadCounts(); return; }
-    const res = what === "vault" ? await api.setVault(boxId, r.thread_id, view !== "vault") : what === "trash" && r.direction === "out" ? await api.discard(boxId, r.id) : await api.move(boxId, [r.id], what);
+    const res = what === "vault" ? await api.setVault(boxId, r.thread_id, view !== "vault") : what === "trash" && r.direction === "out" ? await api.discard(boxId, r.id) : await api.move(boxId, [r.id], what === "archive" && r.folder === "archive" ? "inbox" : what);   // Q1b4: Archive on an archived mail puts it back in the Inbox (nothing was able to restore it before)
     if (!res.ok) { setOpenErr(res.error || "That did not work."); return; }
     setSel(null); setOpened(null); void loadList(); void loadCounts();
   }, [rows, sel, boxId, view, loadList, loadCounts]);
@@ -125,6 +125,7 @@ export function MailBox() {
   const cur = rows.find((r) => r.id === sel) ?? null;
   // Q1b4: Delete asks first (his 17 Nov order). Trash is the only destructive door here; every other action stays one click.
   const [ask, setAsk] = useState<Ask | null>(null);
+  const composeOpen = useRef(false); composeOpen.current = compose !== null || ask !== null;
   const act = useCallback((what: "archive" | "trash" | "star" | "unread" | "vault") => {
     if (what !== "trash") return doAct(what);
     const r = rows.find((x) => x.id === sel); if (!r) return Promise.resolve();
@@ -136,6 +137,7 @@ export function MailBox() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (composeOpen.current) return;   // Q1b4: while the compose box is open NO mailbox shortcut may fire (typed letters were archiving / starring the selected mail)
       const t = e.target as HTMLElement | null; if (t?.closest?.("dialog")) return;   // Q1b4: keys inside the ring sheet or the delete question belong to that dialog (Esc must not also close the mail)
       if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
       if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey) { e.preventDefault(); searchRef.current?.focus(); return; }
@@ -266,7 +268,7 @@ export function MailBox() {
                 {cur.direction === "in" && opened && <button type="button" className="mbx-ib" onClick={reply} title="Reply (r)" aria-label="Reply"><Ic k="reply" /></button>}
                 {cur.folder === "drafts" && <button type="button" className="mx-btn" onClick={() => api.drafts(boxId).then((d) => d?.[0] && setCompose({ draft: d[0].id }))}>Continue latest draft</button>}
                 <span className="mbx-sp" />
-                <button type="button" className="mbx-ib mbx-ra" onClick={() => void act("archive")} title="Archive (e)" aria-label="Archive"><Ic k="archive" /></button>
+                <button type="button" className="mbx-ib mbx-ra" onClick={() => void act("archive")} title={cur.folder === "archive" ? "Move to Inbox (e)" : "Archive (e)"} aria-label={cur.folder === "archive" ? "Move to Inbox" : "Archive"}><Ic k="archive" /></button>
                 <button type="button" className="mbx-ib mbx-ra" onClick={() => void act("trash")} title="Delete (#)" aria-label="Delete"><Ic k="trash" /></button>
                 <button type="button" className="mbx-ib" onClick={() => void act("star")} aria-pressed={cur.starred} title="Star (s)" aria-label="Star"><Ic k="flag" fill={cur.starred} /></button>
               </div>
