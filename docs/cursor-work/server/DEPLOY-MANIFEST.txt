@@ -947,7 +947,7 @@ founder-web/src/fonts/Inter-Medium.woff2 c8f84bf00cbd6136
 founder-web/src/fonts/Inter-Regular.woff2 21d73733fb1fbfe6
 founder-web/src/fonts/Inter-SemiBold.woff2 43443e801ec3cb75
 docs/cursor-work/server/rules-gate.py b2eac09163227876
-CLAUDE.md 0afbcecd0f61af13
+CLAUDE.md ea612eb9228fee6a
 docs/claude/FOUNDER-KILLER-FEATURES-28OCT.md 9273a2bfb9183f48
 founder-web/src/cinema.css 312474c073e9860d
 docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md 9dbae25b3c61c93d
