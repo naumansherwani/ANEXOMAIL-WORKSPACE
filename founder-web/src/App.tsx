@@ -20,6 +20,7 @@ import { MailBox } from "./MailBox";
 import { SystemMap } from "./SystemMap";
 import "./founder_mail_quiet.css";
 import { SignIn } from "./SignIn";
+import { TLS_LINE } from "./tls_line";
 
 
 
@@ -176,7 +177,7 @@ export default function App() {
           {view !== "bridge" && view !== "dashboard" && view !== "settings" && view !== "profile" && view !== "devices" && view !== "mail" && <div className="titleblock"><h1>{title}</h1></div>}
           {err && <div className="err banner" role="alert">{err}</div>}
           <Outlet />
-          <footer className="pgfoot">{at ? `Updated ${fmtTime(at)} · refreshes every 15 s` : "Loading…"}</footer>
+          <footer className="pgfoot">{at ? `Updated ${fmtTime(at)} · refreshes every 15 s` : "Loading…"} · {TLS_LINE}</footer>
         </main>
       </div>
       <nav className="tabbar" aria-label="Main">

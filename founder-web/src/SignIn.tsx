@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { motion } from "motion/react";
-import { Eye, EyeOff, KeyRound, Mail, ShieldCheck } from "lucide-react";
+import { Eye, EyeOff, KeyRound, Lock, Mail, ShieldCheck } from "lucide-react";
+import { TLS_LINE } from "./tls_line";
 import { canSubmit, classifyLogin, cleanEmail, messageFor, sessionEntries, type LoginOutcome } from "./signin_pure";
 import { runPasskey } from "./signin_passkey";
 import { BrandMark } from "./signin/BrandMark";
@@ -118,6 +119,10 @@ export function SignIn() {
             <p className="ax-caption mt-ax-4 flex items-center justify-center gap-1.5">
               <ShieldCheck className="size-3.5 text-cyan-accent" />
               Sessions are device-bound and revocable from your account at any time.
+            </p>
+            <p className="ax-caption mt-ax-2 flex items-center justify-center gap-1.5 text-center" data-testid="tls-line">
+              <Lock className="size-3.5 text-cyan-accent" />
+              {TLS_LINE}
             </p>
           </div>
         </div>

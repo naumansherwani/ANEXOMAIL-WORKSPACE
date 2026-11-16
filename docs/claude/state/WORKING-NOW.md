@@ -1,18 +1,22 @@
-# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 04:05 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Q1b4 e: new 04:00 Gmail mail still SPF not checked + No TLS on the fixed build; verifier now trusts the FIRST Received of the header block (milter headers above it) + logs header names if none; cargo 430/430; QC1e emoji phase added; Outbox mail stuck cause unknown (journal shows claim calls only)
-NEXT STEP: his founder-install, then a NEW Gmail mail, then ring look; if still empty read journalctl for 'mail auth: no Received'
-HIS LAST WORD: emoji in compose; blueprint update with what is green on server
+# WORKING NOW (manual checkpoint, 17 Nov 2026 04:08 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: TLS line on founder login page + app footer written (tls_line.ts); awam line WAITS: awam is on Caddy HTTP/2, K5b not green, no proof it is AES-256 only
+NEXT STEP: his founder-install; his read-only openssl check on the awam host before any awam wording
+HIS LAST WORD: TLS 1.3 AES-256-GCM only on login + footer, professional wording
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 2a7df41d 17 Nov 04:05 ledger line ce2a048f
 - ce2a048f 17 Nov 04:05 Q1b4 e: first-Received lookup + header-name log; QC1e emoji phase in blueprint
 - e0167772 17 Nov 03:58 ledger line 828df137
 - 828df137 17 Nov 03:58 Q1b4 e: record E184 run and install, step e still open
 - c9f5df89 17 Nov 03:41 ledger line 255931b2
-- 255931b2 17 Nov 03:41 Q1b4 e: reason delta fix, Received skip LMTP headers, E184 sending ON by default
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+ M founder-web/src/App.tsx
+ M founder-web/src/SignIn.tsx
+?? founder-web/src/tls_line.test.ts
+?? founder-web/src/tls_line.ts
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===

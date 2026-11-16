@@ -155,8 +155,8 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-DjtaWwXE.js
-founder-web/dist/assets/index-Mgaz76CE.css
+founder-web/dist/assets/index-BCJSSTVX.css
+founder-web/dist/assets/index-C1oAFScQ.js
 founder-web/dist/assets/kernel.worker-CmgLpPuh.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
@@ -361,6 +361,8 @@ founder-web/src/styles.css
 founder-web/src/system_brain.json
 founder-web/src/systemmap.css
 founder-web/src/tailwind.css
+founder-web/src/tls_line.test.ts
+founder-web/src/tls_line.ts
 founder-web/src/trust.css
 founder-web/src/trust_pure.test.ts
 founder-web/src/trust_pure.ts
