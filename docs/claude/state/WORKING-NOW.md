@@ -1,18 +1,20 @@
-# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 01:53 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 17 Nov 01:45 PKT: AUDIT-Q1d = GREEN (his install OK build e3fc05d4; my Chrome: Check evidence chains = 10 rows checked, none broken). Auto 5-min refresh added (autoref.sh + UserPromptSubmit hook). NOW = Q1b4 (SPF/DKIM/DMARC verdicts + trust ring).
-NEXT STEP: start Q1b4: G3 outgoing mail must not show receive-side badges + real Sent time (not compose time), G4 use the mail-auth crate; read FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md Q1b4 first, write the CURRENT.md contract first, then code; ONE phase, ONE command at a time
-HIS LAST WORD: 17 Nov 01:43 install paste OK; look at Chrome, green, update everything, auto-update every 5 min
+# WORKING NOW (manual checkpoint, 17 Nov 2026 02:03 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 17 Nov 02:05 PKT: blueprint ORDER FIXED by his word 02:03: Q1b4 -> QC0..QC4 -> QC7 -> QC8 (whole compose box complete) -> Q3 attachments (= C5, plugged into the finished box) -> Qtls -> U1U2 -> Q4 -> U5 -> Q1e. Current phase NOW = Q1b4. AUDIT-Q1d GREEN. autoref.sh runs every 5 min (hook + loop).
+NEXT STEP: start Q1b4: write its contract in CURRENT.md first; G3 outgoing mail must not show receive-side badges + real Sent time, G4 use the mail-auth crate; ONE phase, ONE command at a time
+HIS LAST WORD: 17 Nov 02:03: compose phases come BEFORE Q3; update blueprint, repo, WORKING-NOW with date+time, compact coming
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 64f8996b 17 Nov 01:53 ledger line 6168db57
 - 6168db57 17 Nov 01:53 Blueprint: compose phases QC0-QC8 with technology (after Q1b4), his haan
 - c2a680a4 17 Nov 01:46 ledger line 698e9530
 - 698e9530 17 Nov 01:46 Compose box advance plan C0-C8 (proposal only, UI LAW)
 - c1165cde 17 Nov 01:45 ledger line 81a57944
-- 81a57944 17 Nov 01:45 autoref: 5-min stamp goes to an ignored file so the repo stays clean
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/FOUNDER-COMPOSE-PLAN-17NOV.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/server/qstate.py
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===

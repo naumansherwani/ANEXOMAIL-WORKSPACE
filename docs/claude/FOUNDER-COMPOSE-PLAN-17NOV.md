@@ -2,6 +2,7 @@
 
 His order (17 Nov 01:45, photo of the Gmail compose box): "yeh compose mail ka box gmail ka hai mujhe bhi bana ke do, duniya ka advance level research ker ke features, technology advance level, kaun se features kaun se phase main, steps ke saath, kaun si technology, UI UX kya hoga".
 
+ORDER (his word 17 Nov 02:03, FINAL): Q1b4 -> QC0 -> QC1 -> QC2 -> QC3 -> QC4 -> QC7 -> QC8 (the whole compose box COMPLETE first) -> THEN Q3 (= C5 attachments, plugged into the finished box) -> Qtls -> U1U2 -> Q4 (= C6) -> U5 -> Q1e.
 STATUS 17 Nov 01:55: HIS HAAN GIVEN (01:53: 'duniya ka advance jo bhi hai woh kero'; editor = the most advanced by proof = Lexical + Rust ammonia, final proof written in the C2 contract; design = FOUNDER ORIGINAL cinematic glass, NOT a Gmail copy; this is FOUNDER side only). Written into the blueprint as QC0..QC8 (docs/cursor-work/server/qstate.py PLAN). Starts ONLY AFTER Q1b4 is complete; C5 = Q3, C6 = Q4. Old text kept below:
 OLD STATUS: PROPOSAL ONLY. UI LAW (12 Nov): the current founder UI is never touched without his haan. Nothing below is built. Step C0 = a demo (artifact) first, his pick, then code.
 
