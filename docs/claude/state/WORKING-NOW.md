@@ -5,11 +5,11 @@ HIS LAST WORD: his 06:21 photo of Systems pills + toggle request
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- c0726d58 16 Nov 07:32 SYS-LIVE green with live Chrome proof; state to 07:40
+- 53cbe0f6 16 Nov 07:32 ledger line b0e1b4ec
 - b0e1b4ec 16 Nov 07:32 SYS-LIVE green: live Chrome proof; state to 07:40
 - 43fc7a34 16 Nov 07:15 ledger line e87976e3
 - e87976e3 16 Nov 07:15 SYS-LIVE: live pulse door, PulseCard, build stamp, plan
-- d395b4fc 16 Nov 07:08 ledger line d7064da5
-- d7064da5 16 Nov 07:08 Systems page data + SPA build match the repo
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
