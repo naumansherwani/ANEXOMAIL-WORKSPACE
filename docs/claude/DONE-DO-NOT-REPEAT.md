@@ -675,3 +675,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 16 Nov 05:52 Q1d-F: sender ON, my Chrome look: his Outbox mail (hi, 04:48) shows Send failed, Sent 0. Reason not shown in the UI; wrote read-only fmail-send-why.sh (outbox row error + journal). NOT green. TECH-LAW CHECKED.
 
 - 16 Nov 05:56 Q1d-F: his paste: outbox row failed attempts 2, error 'the DKIM send gate is closed', reply 'the DKIM gate did not answer (run the E175 SQL step)', dkim_signed f, tls -. E175 IS applied, so the rpc fmail_dkim_send_gate175 returned an error or non-object on his data. Wrote read-only CHECK_E175G (gate + blockers per mailbox). NOT green. TECH-LAW CHECKED.
+
+- 16 Nov 06:00 Q1d-F: CHECK_E175G (his paste): gate {ok:true, reasons:[]}, blockers [] in psql, yet the sender row failed 'DKIM gate did not answer' = the PostgREST rpc as service_role returned no JSON (HTTP error, timeout 8 s, or schema cache). Wrote read-only fmail-gate-probe.sh to call it like the sender. NOT green. TECH-LAW CHECKED.
