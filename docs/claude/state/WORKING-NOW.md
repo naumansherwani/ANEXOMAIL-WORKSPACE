@@ -1,15 +1,15 @@
-# WORKING NOW (manual checkpoint, 16 Nov 2026 05:39 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 16 Nov 2026 05:39 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Q1d-E DONE: sender ON on his server (his paste 05:39: mail sender ON direct MX STARTTLS TLS1.3 required, healthz 200, FMAIL_SEND=on)
 NEXT STEP: my live Chrome: Outbox -> Sent for his waiting mail; he sends a new mail to Gmail; Show original -> Record proof; DNS switch touch
 HIS LAST WORD: tarteeb update, compact-safe
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- f8be1b9d 16 Nov 05:39 Q1d-E done, sender ON
 - 9eeff6d8 16 Nov 05:38 ledger line 2a77e240
 - 2a77e240 16 Nov 05:38 Q1d-E haan, send-on command given
 - 171d894d 16 Nov 05:38 ledger line 4293e640
 - 4293e640 16 Nov 05:38 Q1d-C and DNS both confirmed
-- 815db0eb 16 Nov 05:36 ledger line 4788f57c
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
