@@ -683,3 +683,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 16 Nov 06:15 E179 UPGRADED (his word: advance SQL): fix (gate VOLATILE) + GUARD fmail_door_audit179() (lists any service_role door that is STABLE/IMMUTABLE yet writes, own body or one call deep; false positive on itself removed) + fmail_selftest179 (5 checks) + CHECK_E179 5 rows. Sandbox stub DB: 5/5, a regression (gate stable again) is caught by the audit, re-run heals. NOT yet on his server. NOT green. TECH-LAW CHECKED.
 
 - 16 Nov 06:20 E179 DONE on HIS server (his paste): applied, selftest 5 ok 0 failed, CHECK_E179 5/5 OK (gate volatile, answers for every mailbox, service_role only, door audit no offender), CHECK_E65 all OK. NEXT: my Chrome look Outbox/Sent, his new mail to Gmail + Show original -> Record proof. NOT green. TECH-LAW CHECKED.
+
+- 16 Nov 06:25 Q1d-F my live Chrome look after E179: Mail Outbox 1, Sent 0, Bridge 'Send failed 3', Queued 0. The failed mail is either waiting its retry backoff or has a new error: next = his fmail-send-why.sh paste. NOT green. TECH-LAW CHECKED.
