@@ -1,19 +1,18 @@
-# WORKING NOW (manual checkpoint, 16 Nov 2026 05:40 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 16 Nov 2026 05:40 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Q1d-F: sender ON but his Outbox mail shows 'Send failed' (my Chrome 05:49, reason not in UI); wrote fmail-send-why.sh (read-only)
 NEXT STEP: he pastes fmail-send-why.sh; fix the real cause; then resend
 HIS LAST WORD: sender on, mail failed
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- ca0604ea 16 Nov 05:40 send failed diagnostic
 - 61829109 16 Nov 05:39 ledger line f8be1b9d
 - f8be1b9d 16 Nov 05:39 Q1d-E done, sender ON
 - 9eeff6d8 16 Nov 05:38 ledger line 2a77e240
 - 2a77e240 16 Nov 05:38 Q1d-E haan, send-on command given
-- 171d894d 16 Nov 05:38 ledger line 4293e640
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
-?? docs/cursor-work/server/fmail-send-why.sh
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
