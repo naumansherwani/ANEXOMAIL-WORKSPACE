@@ -536,3 +536,5 @@
 - 17 Nov 04:3x his founder-install OK (Rust first-Received fix live); no new inbound mail yet; Outbox mail still stuck; wrote CHECK_OUTBOX_LOOK.sql (read only) to read the real outbox state instead of guessing
 
 - 17 Nov 04:4x OUTBOX CAUSE FOUND (his CHECK_OUTBOX_LOOK paste 04:28): the test mail failed with 'anexomail.com points to a private address; not contacted'. The SSRF guard is_public judged an answer from the machine's own /etc/hosts (host name -> 127.0.1.1). FIX (Rust fmail_out.rs public_dns_builder): the sender asks public DNS only, the guard stays. cargo all ok. His read-only hosts check confirms the cause; install then a new test mail to himself comes back through Postfix with a real SPF/TLS verdict
+
+- 17 Nov 04:4x his hosts paste (127.0.1.1 mail.anexomail.com in /etc/hosts, getent the same) CONFIRMS the Outbox cause. Blueprint now: Q1b4 a, b, c, d done with proof (server + my Chrome), e open (needs real SPF/TLS on a new mail). Fix for the Outbox is in the repo (public DNS only) and waits his founder-install
