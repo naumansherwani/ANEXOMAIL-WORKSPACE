@@ -1402,3 +1402,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 16 Nov 05:22 sql-run AUTO said no new SQL on his server (E177 is on origin/main 66094d0d); added read-only sql-why.sh to see what his server sees. E177 NOT run yet. TECH-LAW CHECKED.
 
 - 16 Nov 05:25 E177 IS ALREADY ON HIS SERVER: sql-why paste shows ledger row E177 sha 002213b2e31c94b2 at 00:04Z (= 05:04 PKT), same sha as origin/main file; so sql-run AUTO was right, my doubt was wrong. DKIM: both TXT records are in Namecheap (e2611a confirmed; r2611a re-check). NOW = MAIL SEND: next his commands: 1 CHECK_E177, 2 founder-install, 3 fmail-send-probe, 4 fmail-send-on. NOT green. TECH-LAW CHECKED.
+
+- 16 Nov 05:30 CHECK_E177 on HIS server: selftest177 = 4 ok, 1 failed (policy, undo 30 s, service_role door, delete/export touch all OK; failing = ledger row policy_change or E167 selftest on real data). Sandbox was 5/5. Added read-only CHECK_E177B to see which. NOT green. TECH-LAW CHECKED.
