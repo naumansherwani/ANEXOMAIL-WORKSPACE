@@ -28,7 +28,7 @@
 
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-NOW: Q1d-2 - FMAIL_SEND=on + real outgoing mail  [Rust Tokio SMTP, STARTTLS TLS 1.3 X25519MLKEM768, undo window, outgoing PQ TLS proof]
+NOW: AUDIT-Q1d - AUDIT after Q1d is complete (his 16 Nov word): is every LISTED advance technology really in the code of Q1d (Rust, Tokio, WASM kernel, WebTransport, HTTP/3, X25519MLKEM768, AES-256-GCM, PostgreSQL RLS hash chains)? compare TECH-LAW-GATE + FOUNDER-TECH-AUDIT with the repo, list gaps  [audit: Rust, Tokio, WASM kernel, WebTransport, X25519MLKEM768 vs code]
 - [x] Q1b3-T1: Postfix inbound TLS X25519MLKEM768 first  (Postfix 3.10 + OpenSSL 3.5, ML-KEM-768 hybrid, TLS 1.3 AES-256-GCM)  PROOF: his output 13 Nov 18:5x: PQ client Negotiated TLS1.3 group X25519MLKEM768, classic X25519, default X25519MLKEM768; setting kept (c2b284fc..1b843b15)
 - [x] Q1b3-T2: clamd AlertEncrypted + AlertExceedsMax  (ClamAV INSTREAM, fail-closed quarantine)  PROOF: his output 13 Nov 18:5x: clamd PONG ~10 s, EICAR FOUND, clean OK, Heuristics.Encrypted.Zip FOUND
 - [x] Q1b3-T3: first real mail through the intake  (Postfix per-address LMTP RFC 2033, ClamAV, seal on arrival, ledger; end-to-end self-test mails sent by Postfix itself (NOT deferred, his order 19:11))  PROOF: all 3 selftest mails status=sent (250 2.0.0 stored) via Postfix; live Chrome: Inbox 1 (ledger anchor verified SHA-256, virus scan clean), Quarantine 2; found lane bug -> E171
@@ -54,7 +54,7 @@ NOW: Q1d-2 - FMAIL_SEND=on + real outgoing mail  [Rust Tokio SMTP, STARTTLS TLS 
 - [x] Q1d-2a: sub-phase: outgoing TLS to a real server proven post-quantum, send OFF still (read-only probe)  (Tokio SMTP STARTTLS TLS 1.3 X25519MLKEM768, rustls)  PROOF: his paste 16 Nov 05:37: port 25 to gmail-smtp-in OPEN (220); STARTTLS TLS1.3 TLS_AES_256_GCM_SHA384, verification OK, group X25519MLKEM768; no loopback relay; PTR mail.anexomail.com. (62.238.98.98); sender OFF
 - [x] Q1d-2b: sub-phase: FMAIL_SEND=on with his haan, first real mail, undo window, signed sent log  (Rust Tokio SMTP, undo window, hash-chained sent log)  PROOF: WIRED: YES / REAL: YES / TECH-LAW CHECKED. His Gmail photo 16 Nov 06:18: mail from naumansherwani.founder@anexomail.com arrived in hostflowaibuilder@gmail.com Inbox, date 6:15 AM, mailed-by anexomail.com, signed-by anexomail.com, security Standard encryption (TLS); my live Chrome look 06:5x: Mail Sent 1, Outbox 0 (failed mail left by itself after E179); sender ON (his paste: mail sender ON direct MX STARTTLS TLS 1.3 required); 30 s undo hold kept; port 25 + X25519MLKEM768 to Gmail proven by his probe paste
 - [~] Q1d-DKIM2: TRACKED ONLY: DKIM2 / ML-DSA-44 (draft-ietf-dkim-dkim2-spec-09, WG draft, expires 5 May 2027; no receiver verifies it yet, so nothing is built; opens when a receiver or an RFC exists)  (IETF draft, FIPS 204 ML-DSA-44)  PROOF: DKIM2 / ML-DSA-44 sirf tracked | IETF draft, FIPS 204 | Q1d (OPEN). Draft-09 only, no receiver verifies it; reopen when one does (his 16 Nov 02:12 order to write it in the phase).
-- [ ] Q1d-2: FMAIL_SEND=on + real outgoing mail  (Rust Tokio SMTP, STARTTLS TLS 1.3 X25519MLKEM768, undo window, outgoing PQ TLS proof)
+- [x] Q1d-2: FMAIL_SEND=on + real outgoing mail  (Rust Tokio SMTP, STARTTLS TLS 1.3 X25519MLKEM768, undo window, outgoing PQ TLS proof)  PROOF: WIRED: YES / REAL: YES / TECH-LAW CHECKED. Real outgoing mail live: sender ON, first mail reached Gmail (his photo 06:18, signed-by anexomail.com, TLS), my Chrome Sent 1 Outbox 0; outgoing PQ TLS X25519MLKEM768 proven by his probe paste 05:37
 - [ ] AUDIT-Q1d: AUDIT after Q1d is complete (his 16 Nov word): is every LISTED advance technology really in the code of Q1d (Rust, Tokio, WASM kernel, WebTransport, HTTP/3, X25519MLKEM768, AES-256-GCM, PostgreSQL RLS hash chains)? compare TECH-LAW-GATE + FOUNDER-TECH-AUDIT with the repo, list gaps  (audit: Rust, Tokio, WASM kernel, WebTransport, X25519MLKEM768 vs code)
 - [ ] Q1b4: SPF / DKIM / DMARC verdicts + trust ring (U3)  (Rust mail-auth, Framer Motion ring)
 - [ ] Q3: attachments + live over WebTransport + 8-segment ring (U4)  (Rust Tokio WebTransport, Hetzner Storage Box, ClamAV, WASM kernel)
@@ -63,7 +63,7 @@ NOW: Q1d-2 - FMAIL_SEND=on + real outgoing mail  [Rust Tokio SMTP, STARTTLS TLS 
 - [ ] Q4: kernel pqmail OpenPGP RFC 9980  (Rust WASM kernel ML-KEM-768 + X25519, ML-DSA-65 + Ed25519)
 - [ ] U5: Who-can-read-this sheet, Ctrl K mail actions, light theme (approved)  (Radix Dialog, command palette, React 19 TS)
 - [ ] Q1e: calendar (SQL numbers from the then-next free one, E177 onward)  (Rust + SQL RLS + React TS, same sealing)
-chain head: 86bdc1ba05059236 (50 events)
+chain head: 4d8d73cfd98a3995 (51 events)
 <!--/QSTATE-->
 
 ## SERVER-FIRST LAW (his 13 Nov 21:08, ONE YEAR, AUTOMATIC, STRICT) + H3 ONLY
