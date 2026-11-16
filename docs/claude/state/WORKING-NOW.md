@@ -1,32 +1,24 @@
-# WORKING NOW (manual checkpoint, 17 Nov 2026 04:58 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 04:58 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Q1b4 e: his postconf paste: smtpd_tls_received_header = no. Script fmail-postfix-tlshdr.sh written (sets yes, proves handshake, rolls back on failure); CHECK_OUTBOX_LOOK now lists all outbox states of 6 h because my 04:50 test mail is not in active states; AWAM-BLUEPRINT-CLEAN-17NOV.md written
 NEXT STEP: his two lines: fmail-postfix-tlshdr.sh and CHECK_OUTBOX_LOOK; then a Gmail mail shows TLS; then close Q1b4 e
 HIS LAST WORD: no time on Outbox; clean awam blueprint with his instructions
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 2754b9a1 17 Nov 04:58 Postfix TLS header script, CHECK_OUTBOX_LOOK all states, clean awam blueprint
 - 35df3be7 17 Nov 04:51 ledger line 583d0775
 - 583d0775 17 Nov 04:51 Awam order (packages, no AI), editlog.sh mid-edit safety, ckpt WIP snapshot
 - 225409b5 17 Nov 04:38 ledger line 92a13b6c
 - 92a13b6c 17 Nov 04:38 Blueprint: Q1b4 a-d done; Outbox cause confirmed
-- acd3b55b 17 Nov 04:32 ledger line 44da0d5d
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md
- M docs/claude/state/SERVER-FIRST.jsonl
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/sql/CHECK_OUTBOX_LOOK.sql
-?? docs/claude/AWAM-BLUEPRINT-CLEAN-17NOV.md
-?? docs/cursor-work/server/fmail-postfix-tlshdr.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/AWAM-ENGINE-BLUEPRINT-02NOV.md |  1 +
- docs/claude/state/SERVER-FIRST.jsonl       |  1 +
- docs/claude/state/WORKING-NOW.md           | 28 ++++++++++------------------
- docs/cursor-work/sql/CHECK_OUTBOX_LOOK.sql | 11 ++++++-----
- 4 files changed, 18 insertions(+), 23 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 25 ++-----------------------
+ 1 file changed, 2 insertions(+), 23 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -37,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (75173aefd64c5322124e545dc48ec64cabe8a485)
+WIP snapshot: refs/wip/last (d4466921e0b9bf47a30d4c158d0b8dccf47b2498)
