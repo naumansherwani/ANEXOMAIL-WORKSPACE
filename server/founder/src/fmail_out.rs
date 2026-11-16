@@ -154,10 +154,18 @@ async fn process(sb: &crate::data::Sb, master: &[u8; 32], cfg: &Cfg, res: Option
     report(decide(&parts), true).await;
 }
 
+/// The sender asks PUBLIC DNS only. The machine's own /etc/hosts (Debian maps the host name to 127.0.1.1) must never decide where our outgoing mail goes: with it, our own domain looked
+/// "private" to the SSRF guard (is_public) and a mail to ourselves was refused. The guard stays; the answer it judges is now the one the world sees. (Found 17 Nov 04:3x from his CHECK_OUTBOX_LOOK paste.)
+fn public_dns_builder() -> Result<hickory_resolver::ResolverBuilder<hickory_resolver::name_server::TokioConnectionProvider>, hickory_resolver::ResolveError> {
+    let mut b = hickory_resolver::TokioResolver::builder_tokio()?;
+    b.options_mut().use_hosts_file = hickory_resolver::config::ResolveHosts::Never;
+    Ok(b)
+}
+
 /// Start the sender. Every 1 s: put failed rows whose backoff passed back in the queue, claim up to 5 due rows, send them one after the other (a slow server never blocks the clock).
 pub async fn spawn(sb: crate::data::Sb, master: [u8; 32], cfg: Cfg) {
     let up = match smtp::RustlsUpgrade::new() { Ok(u) => Arc::new(u), Err(e) => { eprintln!("founder: mail sender NOT started: TLS config: {e}"); return } };
-    let res = if cfg.relay.is_none() { match hickory_resolver::TokioResolver::builder_tokio() { Ok(b) => Some(Arc::new(b.build())), Err(e) => { eprintln!("founder: mail sender NOT started: DNS resolver: {e}"); return } } } else { None };
+    let res = if cfg.relay.is_none() { match public_dns_builder() { Ok(b) => Some(Arc::new(b.build())), Err(e) => { eprintln!("founder: mail sender NOT started: DNS resolver: {e}"); return } } } else { None };
     eprintln!("founder: mail sender ON ({})", match cfg.relay { Some(a) => format!("relay {a}"), None => "direct MX, STARTTLS TLS 1.3 required".into() });
     tokio::spawn(async move {
         // 16 Nov 04:57 (his word: advance technology, advance code): no polling tick. The database says how many seconds until the earliest mail is due (E177 fmail_outbox_next_due177);
@@ -377,7 +385,7 @@ pub async fn dkim_set_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum
 
 // ---- E175 doors: health, DNS probe, outside-receiver proof, policy
 static PROBE: std::sync::OnceLock<Option<hickory_resolver::TokioResolver>> = std::sync::OnceLock::new();
-fn probe_resolver() -> Option<&'static hickory_resolver::TokioResolver> { PROBE.get_or_init(|| hickory_resolver::TokioResolver::builder_tokio().ok().map(|b| b.build())).as_ref() }
+fn probe_resolver() -> Option<&'static hickory_resolver::TokioResolver> { PROBE.get_or_init(|| public_dns_builder().ok().map(|b| b.build())).as_ref() }
 fn num(j: &Value, k: &str) -> Value { j.get(k).and_then(|x| x.as_i64()).map(Value::from).unwrap_or(Value::Null) }
 fn flag(j: &Value, k: &str) -> Value { j.get(k).and_then(|x| x.as_bool()).map(Value::from).unwrap_or(Value::Null) }
 /// GET /founder/v1/mail/dkim/health?box=<uuid>: one read for the Compose panel (keys, DNS state, rotation, policy, blockers, warnings).
