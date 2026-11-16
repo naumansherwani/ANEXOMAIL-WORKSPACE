@@ -374,6 +374,7 @@ docs/cursor-work/sql/CHECK_E176.sql
 docs/cursor-work/sql/CHECK_E177.sql
 docs/cursor-work/sql/CHECK_E177B.sql
 docs/cursor-work/sql/CHECK_E177C.sql
+docs/cursor-work/sql/CHECK_E178.sql
 docs/cursor-work/sql/CHECK_E42_E47.sql
 docs/cursor-work/sql/CHECK_E48.sql
 docs/cursor-work/sql/CHECK_E50.sql
@@ -446,6 +447,7 @@ docs/cursor-work/sql/E14_mail_thread_assign.sql
 docs/cursor-work/sql/E14_security_advisor_clean.sql
 docs/cursor-work/sql/E15_business_domains.sql
 docs/cursor-work/sql/E176_fix_dkim_health_text_cast.sql
+docs/cursor-work/sql/E178_fix_selftest_claim_scope.sql
 docs/cursor-work/sql/E17_trial_provision_workspace.sql
 docs/cursor-work/sql/E18_signup_device_gate_nonblocking.sql
 docs/cursor-work/sql/E19_password_reset_hardening.sql

@@ -1,3 +1,14 @@
+# >>> Q1d SUB-PHASE PLAN (his 16 Nov 05:22: one thing at a time, sub-phases, plan at the TOP) <<<
+ONE sub-phase at a time. The next starts only when the one before has its proof. Never two commands for two sub-phases.
+- Q1d-A  SQL clean: E178 (selftest scoped to its own row; E167 selftest failed on HIS real queued mail, not a code bug) -> sql-run (AUTO) -> sql-run CHECK_E178 = all OK. DONE when: his paste shows 3/3 OK.
+- Q1d-B  New Rust installed: founder-install (no-touch send, exact-time sender). DONE when: his paste ends OK and healthz 200.
+- Q1d-C  Outgoing probe (read-only): fmail-send-probe.sh. DONE when: his paste says port 25 open or a loopback relay exists.
+- Q1d-D  DNS: r2611a re-check (panel Check DNS) -> both rows "DNS record confirmed" -> switch "DNS record must be confirmed" (touch). DONE when: both confirmed + switch ON.
+- Q1d-E  Sender ON: fmail-send-on.sh (backup + rollback). DONE when: journal "mail sender ON" + healthz.
+- Q1d-F  First real mail to his Gmail (30 s hold, then out in ~50 ms, Outbox -> Sent) + Gmail Show original pasted (Record proof) = dkim=pass. ONLY THEN Q1d-1a/1b/2a/2b = GREEN (WIRED: YES / REAL: YES).
+- Then AUDIT-Q1d, Q1b4, Q3, F-series O,P,R,S,V to 30 NOV (docs/claude/FOUNDER-F-SERIES-ORDER-16NOV.md).
+Where we are 16 Nov 05:45: Q1d-A written (E178 pushed), his server still shows the old selftest; Q1d-B..F not started.
+
 # Q1d-1a SUMMARY (16 Nov 2026 02:35) - what the phase is, features, advance technology
 Phase: Q1d-1a = the founder mail DKIM lifecycle (key, DNS TXT, signing, proof). Sub-phase 1 of Q1d (1a, 1b, 2a, 2b). Plan: Q1D-PLAN-16NOV.md. Contract + EXECUTION RECORD: tech-contracts/CURRENT.md.
 ## Status (a1..a4)
