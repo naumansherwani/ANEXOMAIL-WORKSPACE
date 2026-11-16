@@ -1,15 +1,15 @@
-# WORKING NOW (manual checkpoint, 16 Nov 2026 05:38 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 16 Nov 2026 05:38 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Q1d-E: his haan 05:38 'mail send on kar de': giving fmail-send-on.sh (no relay needed, port 25 open)
 NEXT STEP: his paste of send-on; then he sends a mail to Gmail, 30 s hold, Sent; Gmail Show original -> Record proof; DNS switch (touch) can follow
 HIS LAST WORD: mail send kab hogi is ko on ker dai bus
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 2a77e240 16 Nov 05:38 Q1d-E haan, send-on command given
 - 171d894d 16 Nov 05:38 ledger line 4293e640
 - 4293e640 16 Nov 05:38 Q1d-C and DNS both confirmed
 - 815db0eb 16 Nov 05:36 ledger line 4788f57c
 - 4788f57c 16 Nov 05:36 Auto ledger hook commits its own line (no dirty tree)
-- 32ea1ccb 16 Nov 05:35 Checkpoint and commit ledger line
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
