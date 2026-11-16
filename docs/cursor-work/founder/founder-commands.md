@@ -3536,3 +3536,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - 16 Nov 05:50 Q1d-A DONE on HIS server (his paste): E178 applied, E177 selftest 5 ok 0 failed, CHECK_E178 3/3 OK, CHECK_E65 all OK. NEXT = Q1d-B founder-install (new Rust: no-touch send + exact-time sender), then C probe, D DNS r2611a + switch, E send-on, F Gmail proof. Q1d not green. TECH-LAW CHECKED.
 
 - 16 Nov 05:55 Q1d-B DONE on HIS server (his paste: founder-install OK, service listening after 2s, healthz 200, SPA 200, signing ON): new Rust live = no-touch send + exact-time sender; sender still OFF. AUTO SYSTEM written: WORKING-NOW.md + PreCompact snapshot hook + post-commit COMMIT-LEDGER.log with PKT time (COMPACTION-SURVIVAL.md). NEXT = Q1d-C fmail-send-probe.sh. Q1d not green. TECH-LAW CHECKED.
+
+- 16 Nov 05:42 Q1d-2a done (his paste: port 25 to Gmail OPEN, STARTTLS TLS1.3 AES-256-GCM, group X25519MLKEM768, PTR mail.anexomail.com.; no loopback relay). Q1d-1a done (my live Chrome look: BOTH keys e2611a + r2611a = DNS record confirmed). NEXT = Q1d-D switch DNS record must be confirmed (his touch), then E send-on, F Gmail proof. Q1d not green. TECH-LAW CHECKED.

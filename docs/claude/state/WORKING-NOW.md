@@ -1,17 +1,19 @@
-# WORKING NOW (auto snapshot before a compaction, 16 Nov 2026 05:36 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Q1d-C: he runs fmail-send-probe.sh
-NEXT STEP: read his paste: port 25 open or relay; then Q1d-D DNS r2611a + switch
-HIS LAST WORD: 05:34 compaction-safe auto system done; now probe
+# WORKING NOW (manual checkpoint, 16 Nov 2026 05:38 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Q1d-D: both keys DNS confirmed (my Chrome 05:40); asking him to touch for the switch 'DNS record must be confirmed before sending' (I press Turn on (touch), he touches)
+NEXT STEP: after the switch is ON: Q1d-E fmail-send-on.sh, then Q1d-F first real mail + Gmail proof
+HIS LAST WORD: his 05:37: go live Chrome
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 815db0eb 16 Nov 05:36 ledger line 4788f57c
 - 4788f57c 16 Nov 05:36 Auto ledger hook commits its own line (no dirty tree)
 - 32ea1ccb 16 Nov 05:35 Checkpoint and commit ledger line
 - 35e23c8a 16 Nov 05:35 Q1d-B done; auto compaction system (WORKING-NOW, PreCompact, commit ledger)
 - c3cfe614 16 Nov 05:26 Q1d-A done, Q1d-B next
-- 2cab2521 16 Nov 05:23 E178 selftest scope fix and Q1d sub-phase plan
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/HANDOFF-LIVE.md
+ M docs/claude/state/Q-STATE.jsonl
  M docs/claude/state/WORKING-NOW.md
 
 ## Q state
