@@ -194,9 +194,10 @@
   .mbx-compose .mc-wrap[data-mode="large"] .mc{width:100%;height:100%}
 }
 /* QC0e: on SEND a light sweeps once round the box in the ORIGINAL logo colours (steel navy #1E3557 / #2C4C79 with platinum #F5F8FB / #E6EBF1 / #C3CCD8), then the box closes. Conic-gradient + @property angle, compositor-friendly, off under reduced motion. */
-.mbx-compose .mc[data-fx="sent"]::after{display:block;padding:2.5px;opacity:1;animation:mcsent .95s cubic-bezier(.4,.1,.2,1) 1 forwards;background:conic-gradient(from var(--mbx-a),#1E3557 0%,#2C4C79 18%,#C3CCD8 30%,#F5F8FB 36%,#E6EBF1 40%,#2C4C79 55%,#1E3557 100%);filter:drop-shadow(0 0 10px rgba(195,204,216,.55))}
-.mbx-compose .mc[data-fx="sent"]{box-shadow:0 30px 90px rgba(0,0,0,.6),0 0 38px rgba(44,76,121,.55);transition:box-shadow .3s}
-@keyframes mcsent{from{--mbx-a:0deg;opacity:1}85%{opacity:1}to{--mbx-a:360deg;opacity:.0}}
+.mbx-compose .mc[data-fx="sent"]::after{display:block;padding:3.5px;opacity:1;animation:mcsent 1.8s cubic-bezier(.45,.05,.3,1) 1 forwards;background:conic-gradient(from var(--mbx-a),#1E3557 0%,#2C4C79 18%,#C3CCD8 30%,#F5F8FB 36%,#E6EBF1 40%,#2C4C79 55%,#1E3557 100%);filter:drop-shadow(0 0 16px rgba(195,204,216,.75))}
+.mbx-compose .mc[data-fx="sent"]{box-shadow:0 30px 90px rgba(0,0,0,.6),0 0 60px rgba(195,204,216,.28),0 0 30px rgba(44,76,121,.6);transition:box-shadow .4s;animation:mcfade .35s ease-in 1.55s forwards}
+@keyframes mcfade{to{opacity:0;transform:scale(.985)}}
+@keyframes mcsent{from{--mbx-a:0deg;opacity:1}90%{opacity:1}to{--mbx-a:720deg;opacity:0}}
 @media (prefers-reduced-motion:reduce){.mbx-compose .mc[data-fx="sent"]::after{animation:none}}
 .mbx-compose .mc[data-mode="min"] header h2{white-space:nowrap;flex:1}.mbx-compose .mc[data-mode="min"] header .dim{display:none}
 

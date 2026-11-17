@@ -945,3 +945,7 @@ QC0d: compose window states normal / large / min via data-mode; rim moved from a
 ### 17 Nov 2026 07:40 PKT - QC0c start + footer steady (live look: Undo bar was see-through over the list; footer jumped on Sending...). Undo bar = solid glass, above phone tab bar, countdown line in logo palette; Send keeps width + centred text. CSS + one style var, no network.
 
 - QC0c start: solid Undo bar with countdown line in logo colours, steady compose footer; live look notes
+
+### 17 Nov 2026 07:50 PKT - QC0e longer: sweep 1.8 s (two turns, 3.5 px, brighter silver glow), box fades from 1.55 s and closes at 1.9 s (his: 'shimmer ek dum ghayab'). Reduced motion unchanged (closes at once).
+
+- QC0e: send shimmer longer and brighter (1.8 s, two turns, fade-out 1.55 s, close 1.9 s)

@@ -821,3 +821,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - QC0f phone compose fix: no clipped focus ring, send-later label, title no wrap (CSS only)
 
 - QC0c start: solid Undo bar with countdown line in logo colours, steady compose footer; live look notes
+
+- QC0e: send shimmer longer and brighter (1.8 s, two turns, fade-out 1.55 s, close 1.9 s)
