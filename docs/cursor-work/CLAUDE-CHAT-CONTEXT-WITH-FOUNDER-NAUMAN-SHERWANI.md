@@ -3579,3 +3579,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - QC0g: phone compose is a bottom-sheet box (his word), autofill pill fixed; blueprint + CLAUDE.md + RESUME updated
 
 - QC0e: Google-calm border loop 3.6 s linear infinite, send keeps the speed with a brighter logo-palette glow and a slow fade; phone box approved by his screenshot
+
+- QC0e: reduce-motion shows a still silver ring + halo (no 0.2 s flash); blueprint, CLAUDE.md, RESUME evening plan updated
