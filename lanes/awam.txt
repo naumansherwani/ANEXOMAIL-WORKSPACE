@@ -113,6 +113,7 @@ docs/cursor-work/server/count-endpoints.py
 docs/cursor-work/server/crm-tenant-check.sh
 docs/cursor-work/server/cron-root-mail-fix.sh
 docs/cursor-work/server/cron_pct_fix.py
+docs/cursor-work/server/db-latency-check.sh
 docs/cursor-work/server/db-latency-probe.sh
 docs/cursor-work/server/deploy-pro.sh
 docs/cursor-work/server/device-hash-migrate.sh

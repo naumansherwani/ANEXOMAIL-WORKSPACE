@@ -996,3 +996,15 @@ LEFT: his sql-run E185 + founder-install, then my live Chrome look (send a test 
 - Blueprint line 1: QC3a GREEN 18 Nov 2026 03:10 PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED (his Gmail test); next QC1 discuss first
 
 - AUDIT after QC3a 18 Nov 2026 03:35 PKT: live bundle = repo code (Send now, release door), CHECK_E170.sql added (loophole closed), open: Mail lists slow + HTTP 504 after install, waits for his read-only journal paste
+
+### 18 Nov 2026 03:50 PKT - PHASE QSPEED CONTRACT (his order 03:15: "speed 120 ms to 200 ms, hybrid technology, web research"), written BEFORE code
+FACTS (his journal paste 03:14, anexomail-founder): EVERY database call is SLOW (317-1181 ms), even trivial ones (fmail_outbox_requeue_failed 317-348 ms, founder_live_tick 340-573 ms, fmail_outbox_claim 343-535 ms). The connection pool is already warm (data.rs: pool_idle 600 s, tcp_nodelay, keepalive every 30 s). A trivial call that costs 300+ ms means the network round trip to the database is about 300 ms: the database is FAR from his Hetzner server. Code cannot beat distance, only the NUMBER of round trips. The 504 ("The server took too long", wtrpc.rs CALL_WAIT 15 s) is a list door waiting on several sequential round trips queued behind ~12 background loops.
+MEASURE FIRST (law): docs/cursor-work/server/db-latency-check.sh (read-only, masked, no key printed). No code until his paste.
+PLAN by measured RTT (target 120-200 ms per user action):
+ 1) reqwest "http2" feature (rustls ALPN h2 to Supabase): all calls multiplex on ONE TLS connection, no head-of-line wait behind the 12 background loops (hybrid: HTTP/3 to the browser, HTTP/2 multiplexed to the database).
+ 2) Fewer round trips: tokio::join! for independent reads in one door; a short-TTL single-flight cache (moka) for own_box / policy reads (one round trip saved on EVERY signed door); background loops merged into one batched SQL tick door (one call instead of ~12 every 5 s).
+ 3) The big lever if RTT stays ~300 ms: put the database next to the server (Supabase project in the nearest region, or PostgreSQL 16 on his own Hetzner box with tokio-postgres + deadpool + pipelined queries, RLS and E-series SQL unchanged). That moves his data = his explicit word + backup + rollback; never done by guess.
+Technology: Rust Tokio + reqwest/hyper h2 + moka, PostgreSQL RLS unchanged, kernel WebTransport unchanged. Research note (honest): web search returned result lists only (Supabase region/latency docs, Prisma "fast globally", Neon "minimise database latency", PostgREST pool docs); the plan follows the measured facts above, no new vendor.
+ROLLBACK: revert the commit (each step is its own commit).
+
+- QSPEED contract written 18 Nov 2026 03:55 PKT (his order 03:15, 120-200 ms): his journal paste shows every database call 317-1181 ms = distance; db-latency-check.sh (read-only) written, waits for his paste before any code
