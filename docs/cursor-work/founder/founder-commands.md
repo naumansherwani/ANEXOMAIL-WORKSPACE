@@ -3676,3 +3676,5 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - state: Q1b4 done, QC0 discuss only (WIRED: YES / REAL: YES / TECH-LAW CHECKED)
 
 - QC0a+QC0b compose polish: draft kept on close, phone full-screen keyboard-aware, 2-step discard, full name on plaque, compose research + sub-phases (Tiptap 3, send-now X planned E185); code written, awaits his install + look
+
+- DKIM2: his word, Anexomail builds signer + verifier itself (D2a-D2e plan, signing OFF until his haan); Q-series state refreshed

@@ -922,3 +922,5 @@ Technology: React 19 TS (founder-web), pure module presence_pure.ts (Live / Idle
 MailCompose: persist() flushes the sealed draft on Esc / X / close (a draft is always kept); Discard = 2-step confirm; labels "Sending..." / "Draft saved, sealed"; stale key-touch hint replaced (per-send touch OFF since E177). Phone <=760px: full screen following visualViewport (--vvh/--vvt), Send pinned above keyboard, safe-area insets. Same code on 390/820/1280. No Rust/SQL change. Seen in sandbox (static DOM + built CSS): 390 / 820 / 1280 no sideways scroll, Send in footer.
 
 - QC0a+QC0b compose polish: draft kept on close, phone full-screen keyboard-aware, 2-step discard, full name on plaque, compose research + sub-phases (Tiptap 3, send-now X planned E185); code written, awaits his install + look
+
+- DKIM2: his word, Anexomail builds signer + verifier itself (D2a-D2e plan, signing OFF until his haan); Q-series state refreshed
