@@ -44,18 +44,27 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
   // open an existing draft
   useEffect(() => { if (!start.draft) { toRef.current?.focus(); return; } let on = true; api.draftOpen(box.id, start.draft).then((d) => { if (!on || !d) return; draft.current = { id: d.id, v: d.version }; const c = d.content; setTo((c.to ?? []).join(", ")); setCc((c.cc ?? []).join(", ")); setBcc((c.bcc ?? []).join(", ")); setShowCc(!!(c.cc?.length || c.bcc?.length)); setSubject(c.subject ?? ""); setText(c.text ?? ""); last.current = JSON.stringify([c.to ?? [], c.cc ?? [], c.bcc ?? [], c.subject ?? "", c.text ?? ""]); }); return () => { on = false; }; }, [box.id, start.draft]);
 
-  // autosave: 1.5 s after the last change, only when something is typed
+  // autosave: 1.5 s after the last change, only when something is typed. persist() is also called when the box closes, so the last words are never lost (QC0b: a draft is ALWAYS kept).
+  const latest = useRef({ to, cc, bcc, subject, text }); latest.current = { to, cc, bcc, subject, text };
+  const persist = useCallback(async (): Promise<void> => {
+    const v = latest.current; const L = { to: parseAddrs(v.to), cc: parseAddrs(v.cc), bcc: parseAddrs(v.bcc) }; const snap = JSON.stringify([L.to.ok, L.cc.ok, L.bcc.ok, v.subject, v.text]);
+    if (snap === last.current || (!v.subject.trim() && !v.text.trim() && !L.to.ok.length)) return;
+    const r = await api.draftSave(box.id, { to: L.to.ok, cc: L.cc.ok, bcc: L.bcc.ok, subject: v.subject, text: v.text, in_reply_to: start.in_reply_to }, { draft: draft.current.id, expected: draft.current.v, reply_to: start.reply_to });
+    if (r.ok) { draft.current = { id: r.id, v: r.version }; last.current = snap; dirty.current = false; setSaved("Draft saved, sealed"); } else setSaved(r.stale ? "This draft changed elsewhere - close and reopen it" : "Draft not saved");
+  }, [box.id, start.in_reply_to, start.reply_to]);
   useEffect(() => {
     const L = lists(); const snap = JSON.stringify([L.to.ok, L.cc.ok, L.bcc.ok, subject, text]);
     if (snap === last.current || (!subject.trim() && !text.trim() && !L.to.ok.length)) return;
     dirty.current = true;
-    const t = window.setTimeout(async () => {
-      const r = await api.draftSave(box.id, { to: L.to.ok, cc: L.cc.ok, bcc: L.bcc.ok, subject, text, in_reply_to: start.in_reply_to }, { draft: draft.current.id, expected: draft.current.v, reply_to: start.reply_to });
-      if (r.ok) { draft.current = { id: r.id, v: r.version }; last.current = snap; dirty.current = false; setSaved("Draft saved"); } else setSaved(r.stale ? "This draft changed elsewhere - close and reopen it" : "Draft not saved");
-    }, 1500);
+    const t = window.setTimeout(() => { void persist(); }, 1500);
     return () => window.clearTimeout(t);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [to, cc, bcc, subject, text]);
+  const closeKeep = async () => { try { await persist(); } catch { /* the draft stays as last saved */ } onClose(); };
+  // QC0b: on a phone the box is full screen and follows the keyboard (visualViewport), so Send is never hidden behind it
+  const [vv, setVv] = useState<{ h: number; t: number } | null>(null);
+  useEffect(() => { const w = window.visualViewport; if (!w) return; const f = () => setVv({ h: Math.round(w.height), t: Math.round(w.offsetTop) }); f(); w.addEventListener("resize", f); w.addEventListener("scroll", f); return () => { w.removeEventListener("resize", f); w.removeEventListener("scroll", f); }; }, []);
+  const [sure, setSure] = useState(false);
 
   async function send() {
     setErr(""); setNeedsDkim(false);
@@ -69,12 +78,12 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
     setBusy(false);
     if (r.ok) { onQueued(r.queued); onClose(); } else { setErr(r.error); setNeedsDkim(!!r.needsDkim); }
   }
-  async function discard() { if (draft.current.id) await api.draftDiscard(box.id, draft.current.id).catch(() => false); onClose(); }
+  async function discard() { if (!sure) { setSure(true); window.setTimeout(() => setSure(false), 4000); return; } if (draft.current.id) await api.draftDiscard(box.id, draft.current.id).catch(() => false); onClose(); }
 
   return (
-    <motion.div className="mc-wrap" initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} role="dialog" aria-modal="true" aria-label="New email" onKeyDown={(e) => { if (e.key === "Escape") onClose(); if ((e.ctrlKey || e.metaKey) && e.key === "Enter") void send(); }}>
+    <motion.div className="mc-wrap" style={vv ? ({ "--vvh": `${vv.h}px`, "--vvt": `${vv.t}px` } as React.CSSProperties) : undefined} initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} role="dialog" aria-modal="true" aria-label="New email" onKeyDown={(e) => { if (e.key === "Escape") void closeKeep(); if ((e.ctrlKey || e.metaKey) && e.key === "Enter") void send(); }}>
       <motion.form className="mc" initial={reduce ? false : { y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 24, opacity: 0 }} transition={{ type: "spring", stiffness: 420, damping: 36 }} onSubmit={(e) => { e.preventDefault(); void send(); }}>
-        <header><h2>{start.in_reply_to ? "Reply" : "New email"}</h2><span className="dim small" aria-live="polite">{saved}</span><button type="button" className="mc-x" onClick={onClose} aria-label="Close">×</button></header>
+        <header><h2>{start.in_reply_to ? "Reply" : "New email"}</h2><span className="dim small" aria-live="polite">{saved}</span><button type="button" className="mc-x" onClick={() => void closeKeep()} aria-label="Close (the draft is kept)">×</button></header>
         <label className="mc-f"><span>From</span><b>{box.address}</b></label>
         <label className="mc-f"><span>To</span><input ref={toRef} value={to} onChange={(e) => setTo(e.target.value)} placeholder="name@example.com" autoComplete="off" spellCheck={false} inputMode="email" />{!showCc && <button type="button" className="mc-link" onClick={() => setShowCc(true)}>Cc / Bcc</button>}</label>
         {showCc && <><label className="mc-f"><span>Cc</span><input value={cc} onChange={(e) => setCc(e.target.value)} autoComplete="off" spellCheck={false} inputMode="email" /></label>
@@ -85,10 +94,10 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
         <AnimatePresence>{err && <motion.p key="e" className="mx-warn" role="alert" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>{err}</motion.p>}</AnimatePresence>
         {needsDkim && <DkimSetup box={box} onDone={() => setErr("")} />}
         <footer>
-          <button type="submit" className="mx-btn" disabled={busy}>{busy ? "Touch your key…" : when ? "Schedule" : "Send"}</button>
+          <button type="submit" className="mx-btn" disabled={busy}>{busy ? "Sending…" : when ? "Schedule" : "Send"}</button>
           <label className="mc-when"><span className="sr">Send later</span><input type="datetime-local" value={when} onChange={(e) => setWhen(e.target.value)} aria-label="Send later (optional)" /></label>
-          <button type="button" className="mx-btn alt" onClick={() => void discard()}>Discard</button>
-          <span className="dim small mc-hint">Sending asks for your key touch · Ctrl+Enter</span>
+          <button type="button" className="mx-btn alt" onClick={() => void discard()}>{sure ? "Discard this draft? Press again" : "Discard"}</button>
+          <span className="dim small mc-hint">Ctrl+Enter sends · held 30 s, you can undo</span>
         </footer>
       </motion.form>
     </motion.div>

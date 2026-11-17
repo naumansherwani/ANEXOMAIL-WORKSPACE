@@ -131,6 +131,7 @@ docs/claude/CINEMATIC-FRONTEND-STACK-27OCT.md
 docs/claude/CLOSE-THE-GAPS-07NOV.md
 docs/claude/CODES-WRITTEN-LEDGER-27OCT.md
 docs/claude/COMPACTION-SURVIVAL.md
+docs/claude/COMPOSE-RESEARCH-17NOV.md
 docs/claude/CORE-FREEZE.json
 docs/claude/DECISION-TANSTACK-ROUTER-ONLY-16NOV.md
 docs/claude/DONE-DO-NOT-REPEAT.md

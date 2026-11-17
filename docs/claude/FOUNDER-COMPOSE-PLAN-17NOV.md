@@ -44,3 +44,15 @@ Cinematic glass card like the rest of the founder site (not a copy of Gmail's gr
 
 ## QC1e - EMOJI IN COMPOSE (his word 17 Nov 2026 04:0x)
 Every emoji that exists in the world is available while composing a mail: all Unicode emoji groups, skin tones, flags, ZWJ families, search by name and keyword, a recents row, and a `:name:` shortcut in the body. Compose box only (additive one-line mount; the current founder UI is not touched). The emoji data is the newest Unicode CLDR set bundled with the app: no third-party service, no CDN (vendor ban). Cursor and delete work per grapheme (Intl.Segmenter) so one emoji is never cut in half. Mail goes out as UTF-8 (subject as RFC 2047, body as UTF-8) and is proven end to end (DKIM-signed, receiver shows it right). Placed after QC1 in the order. Proof = my live Chrome at 390 / 820 / 1200 + a real mail with emojis received.
+
+## 17 Nov 2026 06:4x PKT: HIS ANSWERS + SUB-PHASES (ONE AT A TIME, each closes with proof, GREEN only WIRED: YES / REAL: YES / TECH-LAW CHECKED)
+His word 06:29: (1) editor = the most advanced by research, written in the repo (done: COMPOSE-RESEARCH-17NOV.md, decision Tiptap 3 / ProseMirror, Lexical fallback); (2) phone = the best by research (decision: FULL-SCREEN, draft always kept, Send pinned above the keyboard); (3) undo stays 30 s and the X on the undo bar = SEND NOW; (4) AI drafting DROPPED until the AI product (July 2027); (5) QC0 = polish the compose UI that is built, no throwaway demo; (6) his full name is shown: Muhammad Nauman Sherwani.
+- QC0a look + layouts of the existing MailCompose (cinematic glass, docked / floating / full-screen by CSS only), stale key-touch hint fixed, labels.
+- QC0b phone: full-screen, visualViewport keyboard-aware pinned Send + format row, Back / swipe keeps the draft, Discard confirm.
+- QC0c undo bar polish: 30 s countdown ring, Undo, dismiss; (the X = send now arrives in QC3a with its server door).
+- QC1a chips + paste many + bad address at once; QC1b autocomplete from People (RLS); QC1c drag chip between To/Cc/Bcc; QC1d TLS lock per chip (needs Qtls results; before that only what our last send proved); QC1e emoji.
+- QC2a Tiptap restricted schema + toolbar; QC2b paste-clean + plain-text mode; QC2c Rust ammonia + text/plain part; QC2d signatures per From; QC2e /snippets with variables.
+- QC3a send now (E185 + door + X); QC3b pre-send calm bar; QC3c schedule presets in his timezone; QC3d real delivery timeline from the ledger.
+- QC4a inline reply + folded quote; QC4b reply to the selected part; QC4c forward inline / .eml.
+- QC7a follow-up reminder; QC7b sealed drafts in the browser (AES-256-GCM via kernel).
+- QC8a docked window with minimize / tabs; QC8b shortcuts; QC8c accessibility audit; then QC5 Delete forever, then Q3 attachments.

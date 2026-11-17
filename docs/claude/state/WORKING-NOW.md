@@ -1,24 +1,47 @@
-# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 06:16 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 17 Nov 06:2x Q1b4 = GREEN (qstate done, honest 820/ring-sheet note). Plaque Founder / Chairman pushed 9085c78d, NOT installed yet. NOW QC0: his order 06:16 = ONLY READ AND DISCUSS the compose plan, give the pull command, nothing built, nothing published (demo draft file exists in scratchpad only, not published).
+# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 06:33 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 17 Nov 06:35 PLAQUE LIVE (his photo 06:29). His orders: (1) plaque name = full 'Muhammad Nauman Sherwani'; (2) QC0 = POLISH the compose UI first, one phase at a time, subphases for each point written in the repo; (3) editor + phone-compose = WEB RESEARCH, write what was researched into the repo with date/time, then the code plan, then advanced code; (4) undo stays 30 s, but the X on the undo bar = deliver NOW (skip the hold); (5) AI drafting DROPPED until the AI product (July 2027). Steps: fix name, research docs/claude/COMPOSE-RESEARCH-17NOV.md, plan+subphases, qstate, then QC0 code.
 NEXT STEP: 
 HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- ec91dc21 17 Nov 06:16 ledger line b1b90746
 - b1b90746 17 Nov 06:16 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - 9085c78d 17 Nov 06:14 ledger line 20854128
 - 20854128 17 Nov 06:14 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - 58ef74c2 17 Nov 05:52 ledger line 4d5febed
-- 4d5febed 17 Nov 05:52 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/FOUNDER-COMPOSE-PLAN-17NOV.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/server/qstate.py
+ D founder-web/dist/assets/index-Ba33f5QE.js
+ D founder-web/dist/assets/index-D9vn5EwM.css
+ M founder-web/dist/index.html
+ M founder-web/src/MailBox.tsx
+ M founder-web/src/MailCompose.tsx
+ M founder-web/src/mailbox.css
+?? docs/claude/COMPOSE-RESEARCH-17NOV.md
+?? docs/claude/state/EDIT-INTENT.md
+?? founder-web/dist/assets/index-Bk3glnqc.js
+?? founder-web/dist/assets/index-DjBOSqMm.css
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
+# EDIT IN PROGRESS (started 17 Nov 2026 06:31 PKT): a compaction may have cut it. Read this, run git status + git diff, finish the edit, then end it.
+WHAT: QC0a+QC0b: polish MailCompose (flush-on-close keeps draft, 2-step discard, stale hint fixed, 'Sending...' text, visualViewport keyboard-aware full-screen phone, glass look)
+FILES: MailCompose.tsx mail.css mailbox.css
+PROGRESS:
+- 17 Nov 2026 06:33 PKT QC0a+QC0b CODE WRITTEN (uncommitted): MailCompose.tsx persist()+closeKeep()+visualViewport+2-step discard+Sending... label+hint fix; mailbox.css QC0a/QC0b block appended. tsc/test(322)/build OK. NEXT: sandbox look 390/820/1280 (scratchpad/h), CURRENT.md note, awam_inherit.py sync, lane-sync, rules-read, rec.sh, then founder-install line.
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 21 ++-------------------
- 1 file changed, 2 insertions(+), 19 deletions(-)
+ docs/cursor-work/server/qstate.py          |  5 +--
+ founder-web/dist/assets/index-Ba33f5QE.js  | 55 ------------------------------
+ founder-web/dist/assets/index-D9vn5EwM.css |  1 -
+ founder-web/dist/index.html                |  4 +--
+ founder-web/src/MailBox.tsx                |  2 +-
+ founder-web/src/MailCompose.tsx            | 31 +++++++++++------
+ founder-web/src/mailbox.css                | 22 ++++++++++++
+ 9 files changed, 80 insertions(+), 88 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -29,4 +52,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (e1582a9ce99455866d75b168a1650e5663a0934d)
+WIP snapshot: refs/wip/last (47cd80e5d535bc1ca4fb0776339d5cda3af3f72a)

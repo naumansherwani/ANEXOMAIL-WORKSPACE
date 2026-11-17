@@ -157,3 +157,25 @@
 .mbx-role b{display:block;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:650;color:var(--fg,#e9edf5);white-space:nowrap}.mbx-role small{display:block;margin-top:1px;font-size:11.5px;color:var(--dim)}
 @media (max-width:760px){.mbx-role small{display:none}.mbx-role{padding:0 10px}.mbx-role b{font-size:10.5px;letter-spacing:.1em}}
 @media (max-width:420px){.mbx-role>svg{display:none}}
+
+/* QC0a: the compose box polish, same glass as the mailbox (his 17 Nov 06:29: polish the built UI) */
+.mbx-compose .mc{padding:0;gap:0;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 90px rgba(0,0,0,.6),0 0 0 3px rgba(90,169,240,.06)}
+.mbx-compose .mc header{padding:12px 14px 12px 18px;border-bottom:1px solid var(--mh);position:sticky;top:0;z-index:2;background:inherit}
+.mbx-compose .mc header h2{font-size:15px;letter-spacing:.02em}
+.mbx-compose .mc-f{padding:0 18px;border-bottom-color:var(--mh)}.mbx-compose .mc-f>span{width:56px}
+.mbx-compose .mc-f:focus-within{background:rgba(90,169,240,.05)}.mbx-compose .mc-f:focus-within>span{color:var(--mbx-ac2)}
+.mbx-compose .mc-t{flex:1;min-height:200px;padding:16px 18px;font-size:15.5px;line-height:1.65;resize:none}
+.mbx-compose .mc>.mx-warn,.mbx-compose .mc>.mc-dkim{margin:0 18px 10px}
+.mbx-compose .mc footer{position:sticky;bottom:0;z-index:2;padding:10px 18px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--mh);background:inherit}
+.mbx-compose .mc footer .mx-btn{min-height:44px;padding:0 22px;border-radius:12px;font-weight:600;box-shadow:0 8px 24px rgba(43,136,216,.3)}.mbx-compose .mc footer .mx-btn.alt{box-shadow:none;font-weight:500}
+.mbx-compose .mc header .dim{font-size:12px}
+/* QC0b phone: FULL SCREEN, follows the keyboard, Send pinned at the bottom of the visible area */
+@media (max-width:760px){
+  .mbx-compose .mc-wrap{align-items:stretch;padding:0;background:var(--bg,#0b0c10);backdrop-filter:none;height:var(--vvh,100dvh);top:var(--vvt,0);bottom:auto;inset-inline:0}
+  .mbx-compose .mc{width:100%;max-width:none;height:100%;max-height:none;border-radius:0;border:0}
+  .mbx-compose .mc::before{display:none}
+  .mbx-compose .mc header{padding-top:max(12px,env(safe-area-inset-top,0px))}
+  .mbx-compose .mc form,.mbx-compose form.mc{overflow:auto}
+  .mbx-compose .mc footer{gap:8px}.mbx-compose .mc-hint{display:none}.mbx-compose .mc-when{order:3;flex:1 1 100%}
+  .mbx-compose .mc-t{min-height:40dvh}
+}
