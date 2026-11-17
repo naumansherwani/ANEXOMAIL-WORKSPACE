@@ -1,28 +1,24 @@
-# WORKING NOW (manual checkpoint, 17 Nov 2026 05:47 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 05:49 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 17 Nov 05:50 PROOF: my test mail 'Q1b4 outbox test' ARRIVED in his Gmail Primary (his photos 05:4x) = Outbox send REAL. His new orders 05:47: (1) Live pill to the top + auto Idle after 30 min no work / offline, (2) phone 390: two bottom bars overlap (mail folders over main nav, shadow), other features unreachable: fix + design the best mobile nav, (3) Outbox stuck row / advance outbox rewrite.
 NEXT STEP: 
 HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 8f09656f 17 Nov 05:49 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - 6b53c3c8 17 Nov 05:31 ledger line 89998774
 - 89998774 17 Nov 05:31 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - 4dfe4956 17 Nov 05:28 ledger line 5da10944
 - 5da10944 17 Nov 05:28 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
-- 6be7b5f5 17 Nov 05:21 ledger line d8a4c4e4
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
-# EDIT IN PROGRESS (started 17 Nov 2026 05:14 PKT): a compaction may have cut it. Read this, run git status + git diff, finish the edit, then end it.
-WHAT: AWAM AUDIT: inventory every file, gather awam pending into docs/awam hub linked to AWAM-BLUEPRINT-CLEAN-17NOV, separate by lanes, no physical code moves
-FILES: docs/awam/
-PROGRESS:
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 21 ++-------------------
+ 1 file changed, 2 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -33,4 +29,4 @@ PROGRESS:
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (226e0e1f4e74f70f4312b5e14d4f35cf25f43e39)
+WIP snapshot: refs/wip/last (92074254ee88155e43ceaf4ea1908b1981a5fc58)
