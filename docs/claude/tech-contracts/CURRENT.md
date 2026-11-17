@@ -903,3 +903,5 @@ Technology: React 19 TS (founder-web), pure module presence_pure.ts (Live / Idle
 17 Nov 2026 06:0x PKT Outbox status board (his order 05:47): React 19 TS reads the existing signed GET /founder/v1/mail/outbox (states and clocks, E170 SQL, answer verified by the WASM kernel) and cancels through the existing signed POST /mail/cancel; pure outbox_pure.ts (plain-words reasons) + tests; no new endpoint, no SQL, no raw fetch. TECH-LAW CHECKED.
 
 - Outbox status board: state, plain reason, attempts, next try, cancel (tests)
+
+- state: WORKING-NOW checkpoint 17 Nov 06:0x

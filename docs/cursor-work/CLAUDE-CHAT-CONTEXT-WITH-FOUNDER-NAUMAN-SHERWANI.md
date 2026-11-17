@@ -3541,3 +3541,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - founder UI: Live/Idle/Offline pill in top bar, phone mail folders as top chips (one bottom bar), presence tests
 
 - Outbox status board: state, plain reason, attempts, next try, cancel (tests)
+
+- state: WORKING-NOW checkpoint 17 Nov 06:0x

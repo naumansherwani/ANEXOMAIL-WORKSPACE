@@ -791,3 +791,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - founder UI: Live/Idle/Offline pill in top bar, phone mail folders as top chips (one bottom bar), presence tests
 
 - Outbox status board: state, plain reason, attempts, next try, cancel (tests)
+
+- state: WORKING-NOW checkpoint 17 Nov 06:0x
