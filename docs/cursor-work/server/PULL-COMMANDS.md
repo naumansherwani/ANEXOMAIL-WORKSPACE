@@ -560,3 +560,5 @@
 - Outbox status board: state, plain reason, attempts, next try, cancel (tests)
 
 - state: WORKING-NOW checkpoint 17 Nov 06:0x
+
+- phone nav: 5 tabs + More sheet with every page as a tile

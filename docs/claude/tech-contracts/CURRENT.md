@@ -905,3 +905,6 @@ Technology: React 19 TS (founder-web), pure module presence_pure.ts (Live / Idle
 - Outbox status board: state, plain reason, attempts, next try, cancel (tests)
 
 - state: WORKING-NOW checkpoint 17 Nov 06:0x
+17 Nov 2026 06:1x PKT Phone navigation (his order 05:51, researched: 3-5 tab destinations, 48 px targets, overflow in a sheet, never two stacked bars): React 19 TS MoreSheet.tsx (all pages as tiles, grouped, same items as the palette), tab bar = Home, Bridge, Mail, People, More; CSS media queries only (sheet is hidden >= 761 px, the palette stays for laptop). No network, no SQL. TECH-LAW CHECKED.
+
+- phone nav: 5 tabs + More sheet with every page as a tile

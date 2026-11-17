@@ -17,6 +17,7 @@ import { Palette, type NavItem } from "./Palette";
 import type { Prof } from "./types";
 import { Trust } from "./Trust";
 import PresencePill from "./Presence";
+import { MoreSheet } from "./MoreSheet";
 import { MailBox } from "./MailBox";
 import { SystemMap } from "./SystemMap";
 import "./founder_mail_quiet.css";
@@ -50,7 +51,7 @@ function DeviceScreen({ code, revoked, retry }: { code: string | null; revoked: 
 const CC: [string, string][] = [["dashboard", "Dashboard"], ["bridge", "Bridge"], ...ORDER.map((k): [string, string] => [k, DECK_META[k].title]), ["audit", "Audit ledger"]];
 /** Every page the router knows (TanStack Router, hash history: #/finance). Unknown names redirect to the Dashboard (front page). */
 export const KNOWN = new Set([...CC.map((x) => x[0]), "profile", "settings", "devices"]);
-const TABS: [string, string][] = [["dashboard", "Home"], ["bridge", "Bridge"], ["mail", "Mail"], ["finance", "Finance"], ["people", "People"]];
+const TABS: [string, string][] = [["dashboard", "Home"], ["bridge", "Bridge"], ["mail", "Mail"], ["people", "People"]];
 
 /** Everything the page bodies need from the shell (profile, live bridge data, appearance). Provided by the shell, read by the routed pages. */
 type ShellData = { view: string; d: any; at: Date | null; prof: Prof | null; loadProf: () => Promise<void>; fx: boolean; setFx: (v: boolean) => void; slim: boolean; setSlim: (v: boolean) => void; err: string; setView: (v: string) => void; preview: Recipe | null; setPreview: (r: Recipe | null) => void };
@@ -83,7 +84,7 @@ export default function App() {
   // TanStack Router (hash history): the current page is the route param, back/forward and deep links come from the router.
   const nav = useNavigate();
   const view = useRouterState({ select: (s) => s.location.pathname.replace(/^\/+/, "").split("/")[0] || "dashboard" });
-  const [pal, setPal] = useState(false);
+  const [pal, setPal] = useState(false); const [more, setMore] = useState(false);
   // Real URLs: #/finance etc. The page area fades in once on change (CSS, no waiting on the browser).
   const setView = useCallback((v: string) => { void nav({ to: "/$view", params: { view: v } }); }, [nav]);
   const [prof, setProf] = useState<Prof | null>(null);
@@ -183,8 +184,9 @@ export default function App() {
       </div>
       <nav className="tabbar" aria-label="Main">
         {TABS.map(([k, n]) => <button key={k} aria-current={view === k ? "page" : undefined} onClick={() => setView(k)}><Icon k={k} /><span>{n}</span></button>)}
-        <button onClick={() => setPal(true)}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true"><circle cx="5" cy="12" r="1.4" /><circle cx="12" cy="12" r="1.4" /><circle cx="19" cy="12" r="1.4" /></svg><span>More</span></button>
+        <button onClick={() => setMore(true)} aria-haspopup="dialog"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true"><circle cx="5" cy="12" r="1.4" /><circle cx="12" cy="12" r="1.4" /><circle cx="19" cy="12" r="1.4" /></svg><span>More</span></button>
       </nav>
+      {more && <MoreSheet items={items} current={view} onPick={(x) => { setMore(false); pick(x); }} onClose={() => setMore(false)} />}
       {pal && <Palette items={items} onPick={pick} onClose={() => setPal(false)} />}
     </div>
     </ShellCtx.Provider>

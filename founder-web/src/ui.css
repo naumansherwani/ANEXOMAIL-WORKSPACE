@@ -86,7 +86,7 @@ html.slim .nv{width:44px;height:44px;justify-content:center;padding:0}html.slim 
   .titleblock h1,.bhead h1,.sethead h1{font-size:28px}
   .bsub{gap:4px 10px}
   .strip{grid-template-columns:minmax(0,1fr)}.cell{border-right:0;border-bottom:1px solid var(--line)}.cell:last-child{border-bottom:0}
-  .tabbar{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));position:fixed;z-index:20;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));height:var(--tabh);padding:4px;background:rgba(16,19,26,.94);backdrop-filter:blur(14px);border:1px solid #2a3144;border-radius:22px;box-shadow:0 12px 36px rgba(0,0,0,.5)}
+  .tabbar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;z-index:20;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));height:var(--tabh);padding:4px;background:rgba(16,19,26,.94);backdrop-filter:blur(14px);border:1px solid #2a3144;border-radius:22px;box-shadow:0 12px 36px rgba(0,0,0,.5)}
   .tabbar button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:48px;padding:0;background:none;color:var(--dim);font:500 11px Inter,sans-serif;border-radius:18px}
   .tabbar button[aria-current="page"]{background:var(--s2);color:var(--fg)}.tabbar button[aria-current="page"] svg{color:var(--ac)}
   .pgfoot{text-align:left}.tpop{position:fixed;left:12px;right:12px;top:64px;width:auto}
@@ -210,3 +210,14 @@ html[data-focus="hc"] :focus-visible{outline:3px solid #fff!important;outline-of
 @keyframes prspulse{50%{box-shadow:0 0 0 6px rgba(90,169,240,0)}}
 @media (prefers-reduced-motion:reduce){.prs.live i{animation:none}}
 @media (max-width:420px){.prs{padding:0 9px}}
+/* phone More sheet: every page as a tile, thumb zone, 5-tab bar stays (research: 3-5 destinations, overflow in a sheet, 48 px targets, one bar only) */
+.msw{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-end;background:rgba(4,6,10,.6);backdrop-filter:blur(3px);animation:mswf .18s ease-out}
+.msh{width:100%;max-height:82dvh;overflow:auto;padding:8px 14px calc(18px + env(safe-area-inset-bottom));background:#10131a;border:1px solid #2a3144;border-bottom:0;border-radius:22px 22px 0 0;box-shadow:0 -12px 40px rgba(0,0,0,.5);animation:msh .22s cubic-bezier(.2,.8,.2,1);outline:none}
+.msg{width:40px;height:4px;margin:2px auto 8px;border-radius:2px;background:#3a4256}
+.msbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}.msbar b{font-size:15px}.msbar button{min-width:44px;min-height:44px;font-size:24px;background:none;color:var(--dim);border-radius:12px}
+.msh h3{margin:12px 2px 8px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:600}
+.msgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.msgrid button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:76px;padding:8px 4px;border:1px solid #2a3144;border-radius:16px;background:#151925;color:var(--fg);font:500 12px Inter,sans-serif;text-align:center}.msgrid button.on{border-color:var(--ac);background:#1a2233}.msgrid svg{color:var(--ac)}
+@keyframes mswf{from{opacity:0}}@keyframes msh{from{transform:translateY(30px);opacity:.6}}
+@media (min-width:761px){.msw{display:none}}
+@media (prefers-reduced-motion:reduce){.msw,.msh{animation:none}}
