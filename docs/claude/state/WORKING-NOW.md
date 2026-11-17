@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 05:50 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 05:52 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 17 Nov 06:0x DONE+PUSHED: presence pill top bar (Live/Idle 30min/Offline), phone mail folder chips (one bottom bar), Outbox status board. NOT LIVE until his founder-install. Mail test PROVEN: arrived Gmail Primary + TLS 1.3 on ring. OPEN Q1b4 e: his install, then my look (Outbox board, chips, pill), ring sheet 390/820, Archive mail back, then GREEN.
 NEXT STEP: 
 HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 4d5febed 17 Nov 05:52 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
+- 759caa15 17 Nov 05:50 ledger line 29eb08ae
 - 29eb08ae 17 Nov 05:50 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - 64161e61 17 Nov 05:50 ledger line b3159414
 - b3159414 17 Nov 05:50 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
-- 108e7c9b 17 Nov 05:49 ledger line 8f09656f
-- 8f09656f 17 Nov 05:49 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -17,8 +17,8 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -29,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (4070678bb255069b228bc7bffa270dc1813616ea)
+WIP snapshot: refs/wip/last (64191c76fb787b1a9180ef053472c8b57f563f89)
