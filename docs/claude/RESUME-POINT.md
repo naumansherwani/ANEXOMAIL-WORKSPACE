@@ -1,5 +1,6 @@
 ## >>> KP3 STEP 5 STATUS 14 Nov 06:05: steps 1+2 GREEN on his server; step 3 WRITTEN (founder-wt-off.sh, not run); STEP 4 DONE (sandbox: Rust release build OK + 394/394, bash -n clean on every docs/cursor-work/server/*.sh, bun 264/264, tsc clean; a stale web test (routes.test.ts) that still wanted the deleted live/stream route was found and fixed: that path is now a WebTransport-only token label). NEXT = step 5 = HIS ONE COMMAND (the founder-wt-off.sh pull line, then he pastes the output; it proves itself and rolls back by itself), then step 6 my live Chrome + his ss, then GREEN. ONE STEP AT A TIME. <<<
 ## >>> KP3 STEP 5 STATUS 14 Nov 05:53 (full text = top of docs/claude/PHASE-NOW.md + tech-contracts/CURRENT.md last block): steps 1+2 GREEN on his server; STEP 3 WRITTEN = docs/cursor-work/server/founder-wt-off.sh (not run on his server; old founder-wt.sh + founder-wt-proof.sh deleted); NEXT = step 4 (checks), then step 5 = his ONE command (founder-wt-off.sh) + ss paste, then step 6 my live Chrome. ONE STEP AT A TIME. Note: the step-2 binary no longer binds udp 4443, so the listener is probably already gone (UNVERIFIED until his ss); what remains is the 4 FOUNDER_WT_* env lines + ufw 4443/udp. <<<
+- QC0a+QC0b installed on his server (his paste OK); live Chrome look next
 - Q1d-DKIM2 wording: no work, not built (his word); chain stays valid
 - Q1d-DKIM2 removed from the open Q list (his word: no work, no confusion); parked plan file stays
 - DKIM2 back to TRACKED ONLY by his word (plan parked, build later)
@@ -399,3 +400,5 @@ AGENTS.md (Rules 1-73), docs/claude/founder/CODES/00-README-RULES.md (FC1-FC42),
 
 ## 17 Nov 2026 06:35 PKT - QC0 compose polish IN PROGRESS (resume here after compaction)
 Q1b4 GREEN done. Plaque = "Founder / Chairman / Muhammad Nauman Sherwani". QC0a+QC0b code is in the working tree (MailCompose.tsx, mailbox.css tail block), tsc + 322 tests + build OK. Left: sandbox look 390/820/1280, CURRENT.md note, awam_inherit.py sync, lane-sync, rules-read.py, rec.sh, then ONE founder-install line. Then QC0c undo bar, QC3a X=send now (E185). AI drafting DROPPED until July 2027.
+
+## 17 Nov 2026 06:55 PKT - QC0a+QC0b INSTALLED on his server (his founder-install paste OK: SPA 200, token ON, Ed25519 ON, healthz 200). NEXT = my live Chrome look at compose 390/820/1200 (open Compose, check phone full-screen, Send pinned, Esc keeps draft, 2-step Discard), then his phone screenshot, then GREEN (WIRED: YES / REAL: YES / TECH-LAW CHECKED). Then QC0c undo bar, QC3a X=send now. DKIM2 = NO WORK (his word).

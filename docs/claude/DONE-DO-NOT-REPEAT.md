@@ -813,3 +813,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Q1d-DKIM2 removed from the open Q list (his word: no work, no confusion); parked plan file stays
 
 - Q1d-DKIM2 wording: no work, not built (his word); chain stays valid
+
+- QC0a+QC0b installed on his server (his paste OK); live Chrome look next
