@@ -610,3 +610,7 @@
 - QC3a route LIVE IN CODE 18 Nov 2026 02:45 PKT: POST /founder/v1/mail/release added to main.rs after his ss paste (SERVER-FIRST receipt 45); cargo check OK; awaits his sql-run E185 + founder-install, then my live Chrome look
 
 - QC3a: his ss paste 18 Nov 02:39 recorded as SERVER-FIRST receipt 46; release route is already in main.rs (committed in 30363592); ready for his sql-run E185 + founder-install
+
+- QC3a INSTALLED 18 Nov 2026 03:00 PKT: his sql-run E185 OK (selftest 12/0, CHECK_E185 5/5 OK, E65 sweep OK) and founder-install OK (SPA 200, healthz 200, signing ON); NOT GREEN yet, awaits my live Chrome Send now test
+
+- QC3a INSTALLED 18 Nov 2026 03:00 PKT: his sql-run E185 OK (selftest 12/0, CHECK_E185 5/5 OK, E65 sweep OK) and founder-install OK (SPA 200, healthz 200, signing ON); not closed yet, awaits my live Chrome Send now test
