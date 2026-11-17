@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 03:13 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 03:16 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 17 Nov 06:35 PLAQUE LIVE (his photo 06:29). His orders: (1) plaque name = full 'Muhammad Nauman Sherwani'; (2) QC0 = POLISH the compose UI first, one phase at a time, subphases for each point written in the repo; (3) editor + phone-compose = WEB RESEARCH, write what was researched into the repo with date/time, then the code plan, then advanced code; (4) undo stays 30 s, but the X on the undo bar = deliver NOW (skip the hold); (5) AI drafting DROPPED until the AI product (July 2027). Steps: fix name, research docs/claude/COMPOSE-RESEARCH-17NOV.md, plan+subphases, qstate, then QC0 code.
 NEXT STEP: 
 HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 844db4c8 18 Nov 03:16 QSPEED: contract + read-only latency check
+- 0428adbb 18 Nov 03:13 ledger line 54adef70
 - 54adef70 18 Nov 03:13 Audit after QC3a: CHECK_E170, open item lists slow + 504
 - 51619737 18 Nov 03:06 ledger line 27b2ea2a
 - 27b2ea2a 18 Nov 03:06 Blueprint: QC3a GREEN, next QC1
-- ee451ee8 18 Nov 03:06 ledger line 0dc17ba5
-- 0dc17ba5 18 Nov 03:06 QC3a Send now: GREEN by his word and Gmail test
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -29,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (65ff73865059d764cf3102b8a137d61453dfeac6)
+WIP snapshot: refs/wip/last (3c77d0d9f76ac184c30779bb530412ff96a153a7)
