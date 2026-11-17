@@ -5,34 +5,20 @@ HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 32bab724 17 Nov 07:25 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - 8071950f 17 Nov 07:07 ledger line 8629ed91
 - 8629ed91 17 Nov 07:07 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - f33cfdcc 17 Nov 06:52 ledger line 66ea67f6
 - 66ea67f6 17 Nov 06:52 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
-- bcc2e529 17 Nov 06:49 ledger line 3e7289b2
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/RESUME-POINT.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- D founder-web/dist/assets/index-BGL55mEc.css
- D founder-web/dist/assets/index-DKuhwH_J.js
- M founder-web/dist/index.html
- M founder-web/src/mailbox.css
-?? founder-web/dist/assets/index-DhRlbSaU.js
-?? founder-web/dist/assets/index-YeVCeIds.css
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/RESUME-POINT.md                |  2 ++
- docs/claude/state/WORKING-NOW.md           | 25 ++++++--------
- docs/claude/tech-contracts/CURRENT.md      |  2 ++
- founder-web/dist/assets/index-BGL55mEc.css |  1 -
- founder-web/dist/assets/index-DKuhwH_J.js  | 55 ------------------------------
- founder-web/dist/index.html                |  4 +--
- founder-web/src/mailbox.css                | 13 +++++++
- 7 files changed, 29 insertions(+), 73 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 29 +----------------------------
+ 1 file changed, 1 insertion(+), 28 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -43,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ee31067e20d16e57ac267949e42487cbe4dd7079)
+WIP snapshot: refs/wip/last (9bf23c8370c6ddb43d44eec1da0d65fa604ef37b)
