@@ -5,22 +5,20 @@ HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 66ea67f6 17 Nov 06:52 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - bcc2e529 17 Nov 06:49 ledger line 3e7289b2
 - 3e7289b2 17 Nov 06:49 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - 38294176 17 Nov 06:47 ledger line b7b458ea
 - b7b458ea 17 Nov 06:47 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
-- f93d059d 17 Nov 06:41 ledger line 1cfa948c
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/RESUME-POINT.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/RESUME-POINT.md      |  2 ++
- docs/claude/state/WORKING-NOW.md | 18 +++---------------
- 2 files changed, 5 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 +----------------
+ 1 file changed, 1 insertion(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -31,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a0fdc8762064e66599e6a4cf5a333789f7cb4725)
+WIP snapshot: refs/wip/last (bd24f4375e8d6f989e5568b98aff7859a4eca04d)
