@@ -2529,3 +2529,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - QC0g: phone compose is a bottom-sheet box (his word), autofill pill fixed; blueprint + CLAUDE.md + RESUME updated
 
 - QC0g: phone compose is a bottom-sheet box (his word), autofill pill fixed; blueprint + CLAUDE.md + RESUME updated
+
+- QC0e: Google-calm border loop 3.6 s linear infinite, send keeps the speed with a brighter logo-palette glow and a slow fade; phone box approved by his screenshot

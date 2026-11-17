@@ -51,3 +51,10 @@ Method note (honest): the web searches of 17 Nov 07:1x returned result lists (ti
 ---
 ## 17 Nov 2026 07:55 PKT - CORRECTION BY HIS WORD (QC0g): phone compose = a BOX (bottom sheet), NOT full screen
 His phone screenshot 07:47 and word: "full screen ka idea mobile pe bad hai, mere mobile pe compose box nahi ata". The 06:4x research line that preferred a full screen on phones is overruled by the founder. Phone now: bottom-sheet card, page dimmed behind, grab handle, rounded top corners, logo-blue rim, follows the keyboard (visualViewport), Send pinned, minimize bar above the tab bar. The Android autofill pill on the To field is neutralised (-webkit-autofill). Seen in the sandbox with the REAL MailCompose at 390; his phone screenshot after install is the proof.
+
+---
+## 17 Nov 2026 08:20 PKT - the Google-calm border loop (his spec 08:12), phone box APPROVED by his screenshot 08:11
+- His phone screenshot 08:11 (bottom-sheet box, handle, rim, To / Subject / Send later): "sahi hai". QC0g phone layout is accepted.
+- His spec for the border: while the box is active, ONE full turn (0 to 360 deg) takes 3 s to 4 s, linear, infinite; it must feel gentle (nazakat) like Google's AI box, not a flash. The 1.8 s two-turn sweep was too fast.
+- Method note: the 17 Nov search (Gemini / AI-mode input border) returned result lists only (CodePen, DEV Community, docs pages on conic-gradient borders); I did not open each page. The numbers used are HIS spec.
+- Built: rim loop 3.6 s linear infinite on the active box with a soft glow (drop-shadow 9 px); on SEND the loop keeps the SAME speed, the light grows brighter in the logo palette (#1E3557 #2C4C79 #C3CCD8 #E6EBF1 #F5F8FB), the box gets a soft halo, holds, then fades from 2.45 s and closes at 2.9 s. No flash, no speed change. Reduced motion: no animation, box closes at once.

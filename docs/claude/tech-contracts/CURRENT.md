@@ -955,3 +955,7 @@ QC0d: compose window states normal / large / min via data-mode; rim moved from a
 - QC0g: phone compose is a bottom-sheet box (his word), autofill pill fixed; blueprint + CLAUDE.md + RESUME updated
 
 - QC0g: phone compose is a bottom-sheet box (his word), autofill pill fixed; blueprint + CLAUDE.md + RESUME updated
+
+### 17 Nov 2026 08:20 PKT - QC0e calm loop: rim 3.6 s linear infinite (his 3-4 s spec), send = same speed, brighter logo-palette light, halo, fade 2.45 s, close 2.9 s. His phone screenshot 08:11 approved the bottom-sheet box. CSS + one timeout.
+
+- QC0e: Google-calm border loop 3.6 s linear infinite, send keeps the speed with a brighter logo-palette glow and a slow fade; phone box approved by his screenshot

@@ -78,7 +78,7 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
     setBusy(true);
     const r = await api.send(box.id, c, { schedule: schedule || undefined, draft: draft.current.id });
     setBusy(false);
-    if (r.ok) { onQueued(r.queued); if (reduce) { onClose(); } else { setFx(true); window.setTimeout(onClose, 1900); } } else { setErr(r.error); setNeedsDkim(!!r.needsDkim); }
+    if (r.ok) { onQueued(r.queued); if (reduce) { onClose(); } else { setFx(true); window.setTimeout(onClose, 2900); } } else { setErr(r.error); setNeedsDkim(!!r.needsDkim); }
   }
   async function discard() { if (!sure) { setSure(true); window.setTimeout(() => setSure(false), 4000); return; } if (draft.current.id) await api.draftDiscard(box.id, draft.current.id).catch(() => false); onClose(); }
 
