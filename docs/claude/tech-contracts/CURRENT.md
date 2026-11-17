@@ -932,3 +932,8 @@ MailCompose: persist() flushes the sealed draft on Esc / X / close (a draft is a
 - Q1d-DKIM2 wording: no work, not built (his word); chain stays valid
 
 - QC0a+QC0b installed on his server (his paste OK); live Chrome look next
+
+### 17 Nov 2026 07:20 PKT - QC0d + QC0e (React 19 TS + CSS only, no network, no Rust/SQL/kernel change)
+QC0d: compose window states normal / large / min via data-mode; rim moved from a layer behind the header to an overlay (z 6) so it reaches the top. QC0e: on send success a one-shot conic-gradient sweep in the logo palette (#1E3557 #2C4C79 #C3CCD8 #E6EBF1 #F5F8FB), @property angle, reduced motion respected, box closes after 950 ms (onQueued fires first so the Undo bar appears at once).
+
+- QC0d+QC0e compose: minimize/expand window states, rim to the very top, send shimmer in logo colours; research table written (code awaits his install + look)

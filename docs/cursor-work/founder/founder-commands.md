@@ -3686,3 +3686,8 @@ His 17:27 verbatim orders: all gaps + D-series today; rule at the top of every f
 - Q1d-DKIM2 wording: no work, not built (his word); chain stays valid
 
 - QC0a+QC0b installed on his server (his paste OK); live Chrome look next
+
+## 17 Nov 2026 07:05 PKT (his order, QC0 compose polish continues)
+Compose box must have all Gmail features: minimize + centre/expand (bigger) like Gmail's window states (his image 2). Research what the world's most advanced compose boxes offer and the technology behind each feature, write it in the repo with date/time, then code. Image 3: the blue border line on the left must go UP to the very top (today it starts under the header). Image 4: when the mail is sent, play an Animated Gradient Border / shimmer glow sweep (like the AI chat box) using the ORIGINAL Anexomail logo colours and colour philosophy; research it for polish. Also: compaction safety, update WORKING-NOW.md/ledger/top of repo every time.
+
+- QC0d+QC0e compose: minimize/expand window states, rim to the very top, send shimmer in logo colours; research table written (code awaits his install + look)

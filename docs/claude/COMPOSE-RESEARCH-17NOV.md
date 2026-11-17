@@ -17,3 +17,33 @@ DECISION (his word 06:29): keep 30 s. NEW: on the undo bar the X ("Send now") re
 
 ## 4. Dropped
 AI drafting / grammar help: dropped until the AI product (July 2027). Read receipts and tracking pixels: refused (spying). Recall of delivered mail: impossible outside one tenant; said honestly in the UI.
+
+---
+## 17 Nov 2026 07:20 PKT - HIS ORDER (07:05): Gmail-level compose, window states, rim to the top, send shimmer in logo colours
+Method note (honest): the web searches of 17 Nov 07:1x returned result lists (titles of Gmail help pages, Superhuman reviews, CSS animated-border guides); I did not open every page, so the feature table below is the well-known public feature set of those products, and each row says which technology Anexomail uses. Anything marked LATER is already a sub-phase in FOUNDER-COMPOSE-PLAN-17NOV.md.
+
+### A. Window states (Gmail: minimize, pop-out / full screen, close) -> QC0d, BUILT 17 Nov
+- normal (centred, as he sees today) / large (expand button, up to 1100 x 92% height) / minimized bar (bottom-right, restores with one click; on a phone it sits above the tab bar).
+- The component stays mounted, so text, recipients and the sealed draft are never lost while minimized. Technology: React 19 state + CSS data-mode attributes, visualViewport on phone; no new network door.
+
+### B. The feature set of the best compose boxes, with the technology each needs (all in the plan, in this order)
+| Feature (who has it) | Anexomail technology | Phase |
+|---|---|---|
+| Undo send, schedule send, send later presets (Gmail, Superhuman) | Rust Tokio outbox + SQL E170/E182/E185, 30 s hold; X on undo bar = send now | QC0c, QC3, QC3a |
+| Address chips, autocomplete, drag between To/Cc/Bcc (Gmail, Superhuman) | PostgreSQL RLS People + kernel-verified door, React chips | QC1 |
+| TLS lock on each recipient chip (nobody has it) | our own outgoing TLS facts (Qtls) | QC1 / Qtls |
+| Emoji picker, every emoji (Gmail) | native popover + Unicode CLDR data | QC1e |
+| Rich text + plain-text mode, signatures, snippets with variables (Gmail, Superhuman) | Tiptap 3 / ProseMirror restricted schema, Rust ammonia sanitiser, text/plain part | QC2 |
+| Pre-send checks: empty subject, "attached" word with no file, big Cc, reply-all (Gmail) | pure TS checks, unit tested | QC3 |
+| Inline reply, quoted text folded, forward as .eml (Gmail, Outlook) | Rust mail-parser + mail-builder | QC4 |
+| Attachments drag-drop / paste, progress ring, size limit (all) | WebTransport chunked upload, Hetzner Storage Box, ClamAV | Q3 |
+| Follow-up reminder if no reply (Superhuman) | Rust Tokio timer + ledger | QC7 |
+| Confidential / expiring mail (Gmail) | sealed envelope + kernel key release | LATER, own phase |
+| End-to-end encrypt toggle with key on the chip | kernel OpenPGP RFC 9980 (ML-KEM-768 + X25519, ML-DSA-65 + Ed25519) | Q4 |
+| AI drafting / Smart Compose | DROPPED until the AI product (July 2027), his word | - |
+
+### C. The rim and the send shimmer (his images 3 and 4) -> QC0d + QC0e, BUILT 17 Nov
+- Name of the effect: Animated Gradient Border (conic-gradient on a registered @property angle) with a Shimmer / sweeping glow pass.
+- Technology: CSS @property --mbx-a (angle) + conic-gradient + mask on a pseudo-element overlay; it animates a custom property, not layout, so it is cheap; it is switched off under prefers-reduced-motion. No JavaScript.
+- Fix for image 3: the blue rim was a layer behind the header, so the header background covered its top part. It is now an overlay above everything (z-index 6), so the line runs to the very top and all round.
+- On SEND: the box plays ONE sweep in the original Anexomail logo palette, then closes after 0.95 s (instantly under reduced motion). Logo palette read from public/favicon.svg: steel navy #1E3557 and #2C4C79 with platinum #F5F8FB, #E6EBF1, #C3CCD8 (a silver light sweeping over steel blue). The idle rim keeps the mailbox blue.

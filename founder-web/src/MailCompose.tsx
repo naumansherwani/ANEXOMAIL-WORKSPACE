@@ -65,6 +65,8 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
   const [vv, setVv] = useState<{ h: number; t: number } | null>(null);
   useEffect(() => { const w = window.visualViewport; if (!w) return; const f = () => setVv({ h: Math.round(w.height), t: Math.round(w.offsetTop) }); f(); w.addEventListener("resize", f); w.addEventListener("scroll", f); return () => { w.removeEventListener("resize", f); w.removeEventListener("scroll", f); }; }, []);
   const [sure, setSure] = useState(false);
+  // QC0d: Gmail-style window states: normal (centred) / large (expand) / min (bar). The component stays mounted, so nothing typed is lost.
+  const [mode, setMode] = useState<"normal" | "large" | "min">("normal"), [fx, setFx] = useState(false);
 
   async function send() {
     setErr(""); setNeedsDkim(false);
@@ -76,14 +78,14 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
     setBusy(true);
     const r = await api.send(box.id, c, { schedule: schedule || undefined, draft: draft.current.id });
     setBusy(false);
-    if (r.ok) { onQueued(r.queued); onClose(); } else { setErr(r.error); setNeedsDkim(!!r.needsDkim); }
+    if (r.ok) { onQueued(r.queued); if (reduce) { onClose(); } else { setFx(true); window.setTimeout(onClose, 950); } } else { setErr(r.error); setNeedsDkim(!!r.needsDkim); }
   }
   async function discard() { if (!sure) { setSure(true); window.setTimeout(() => setSure(false), 4000); return; } if (draft.current.id) await api.draftDiscard(box.id, draft.current.id).catch(() => false); onClose(); }
 
   return (
-    <motion.div className="mc-wrap" style={vv ? ({ "--vvh": `${vv.h}px`, "--vvt": `${vv.t}px` } as React.CSSProperties) : undefined} initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} role="dialog" aria-modal="true" aria-label="New email" onKeyDown={(e) => { if (e.key === "Escape") void closeKeep(); if ((e.ctrlKey || e.metaKey) && e.key === "Enter") void send(); }}>
-      <motion.form className="mc" initial={reduce ? false : { y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 24, opacity: 0 }} transition={{ type: "spring", stiffness: 420, damping: 36 }} onSubmit={(e) => { e.preventDefault(); void send(); }}>
-        <header><h2>{start.in_reply_to ? "Reply" : "New email"}</h2><span className="dim small" aria-live="polite">{saved}</span><button type="button" className="mc-x" onClick={() => void closeKeep()} aria-label="Close (the draft is kept)">×</button></header>
+    <motion.div className="mc-wrap" data-mode={mode} style={vv ? ({ "--vvh": `${vv.h}px`, "--vvt": `${vv.t}px` } as React.CSSProperties) : undefined} initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} role="dialog" aria-modal="true" aria-label="New email" onKeyDown={(e) => { if (e.key === "Escape") void closeKeep(); if ((e.ctrlKey || e.metaKey) && e.key === "Enter") void send(); }}>
+      <motion.form className="mc" data-mode={mode} data-fx={fx ? "sent" : undefined} initial={reduce ? false : { y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 24, opacity: 0 }} transition={{ type: "spring", stiffness: 420, damping: 36 }} onSubmit={(e) => { e.preventDefault(); void send(); }}>
+        <header><h2>{start.in_reply_to ? "Reply" : "New email"}</h2><span className="dim small" aria-live="polite">{saved}</span><button type="button" className="mc-x mc-b" onClick={() => setMode(mode === "min" ? "normal" : "min")} aria-label={mode === "min" ? "Restore" : "Minimize"}>{mode === "min" ? "▢" : "–"}</button><button type="button" className="mc-x mc-b mc-exp" onClick={() => setMode(mode === "large" ? "normal" : "large")} aria-label={mode === "large" ? "Smaller" : "Expand"}>{mode === "large" ? "⤡" : "⤢"}</button><button type="button" className="mc-x" onClick={() => void closeKeep()} aria-label="Close (the draft is kept)">×</button></header>
         <label className="mc-f"><span>From</span><b>{box.address}</b></label>
         <label className="mc-f"><span>To</span><input ref={toRef} value={to} onChange={(e) => setTo(e.target.value)} placeholder="name@example.com" autoComplete="off" spellCheck={false} inputMode="email" />{!showCc && <button type="button" className="mc-link" onClick={() => setShowCc(true)}>Cc / Bcc</button>}</label>
         {showCc && <><label className="mc-f"><span>Cc</span><input value={cc} onChange={(e) => setCc(e.target.value)} autoComplete="off" spellCheck={false} inputMode="email" /></label>

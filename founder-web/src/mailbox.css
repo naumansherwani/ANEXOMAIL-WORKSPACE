@@ -95,7 +95,7 @@
 
 /* compose: the existing dialog gets the living ring and the same blue */
 .mbx-compose .mc{position:relative;isolation:isolate;border-color:transparent}
-.mbx-compose .mc::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;pointer-events:none;z-index:-1;opacity:.9;background:conic-gradient(from var(--mbx-a),var(--g1),var(--g2),var(--g3),var(--g4),var(--g1));animation:mbxspin 5s linear infinite;
+.mbx-compose .mc::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;pointer-events:none;z-index:6;opacity:.9;background:conic-gradient(from var(--mbx-a),var(--g1),var(--g2),var(--g3),var(--g4),var(--g1));animation:mbxspin 5s linear infinite;
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
 .mbx-compose .mc{background:color-mix(in srgb,var(--bg,#0b0c10) 92%,#fff 4%)}
 .mbx-compose .mx-btn{background:linear-gradient(180deg,#4ea0ec,#2b88d8);color:#04101e}.mbx-compose .mx-btn.alt{background:var(--surf2);color:var(--fg)}
@@ -173,9 +173,29 @@
 @media (max-width:760px){
   .mbx-compose .mc-wrap{align-items:stretch;padding:0;background:var(--bg,#0b0c10);backdrop-filter:none;height:var(--vvh,100dvh);top:var(--vvt,0);bottom:auto;inset-inline:0}
   .mbx-compose .mc{width:100%;max-width:none;height:100%;max-height:none;border-radius:0;border:0}
-  .mbx-compose .mc::before{display:none}
+  .mbx-compose .mc::after{display:none}
   .mbx-compose .mc header{padding-top:max(12px,env(safe-area-inset-top,0px))}
   .mbx-compose .mc form,.mbx-compose form.mc{overflow:auto}
   .mbx-compose .mc footer{gap:8px}.mbx-compose .mc-hint{display:none}.mbx-compose .mc-when{order:3;flex:1 1 100%}
   .mbx-compose .mc-t{min-height:40dvh}
 }
+
+/* QC0d: Gmail-style window states (his image 2: minimize + expand). The rim is an overlay now, so it runs to the very top (his image 3). */
+.mbx-compose .mc header .mc-b{font-size:18px;line-height:1;min-width:36px;min-height:36px}
+.mbx-compose .mc-wrap[data-mode="large"] .mc{width:min(1100px,96vw);height:min(92dvh,900px);max-height:none}
+.mbx-compose .mc-wrap[data-mode="min"]{background:transparent;backdrop-filter:none;pointer-events:none;align-items:flex-end;justify-content:flex-end;padding:0 max(16px,env(safe-area-inset-right,0px)) 0 0}
+.mbx-compose .mc[data-mode="min"]{pointer-events:auto;width:min(340px,calc(100vw - 24px));height:auto;max-height:none;margin:0 0 max(16px,env(safe-area-inset-bottom,0px));border-radius:14px 14px 12px 12px;cursor:pointer}
+.mbx-compose .mc[data-mode="min"]>:not(header){display:none}
+.mbx-compose .mc[data-mode="min"] header{border-bottom:0}
+@media (max-width:760px){
+  .mbx-compose .mc-wrap[data-mode="min"]{height:auto;top:auto;bottom:calc(var(--tabh,64px) + 8px + env(safe-area-inset-bottom,0px));inset-inline:8px;padding:0}
+  .mbx-compose .mc[data-mode="min"]{width:100%;margin:0;border-radius:14px}
+  .mbx-compose .mc[data-mode="min"]::after{display:block}
+  .mbx-compose .mc-wrap[data-mode="large"] .mc{width:100%;height:100%}
+}
+/* QC0e: on SEND a light sweeps once round the box in the ORIGINAL logo colours (steel navy #1E3557 / #2C4C79 with platinum #F5F8FB / #E6EBF1 / #C3CCD8), then the box closes. Conic-gradient + @property angle, compositor-friendly, off under reduced motion. */
+.mbx-compose .mc[data-fx="sent"]::after{display:block;padding:2.5px;opacity:1;animation:mcsent .95s cubic-bezier(.4,.1,.2,1) 1 forwards;background:conic-gradient(from var(--mbx-a),#1E3557 0%,#2C4C79 18%,#C3CCD8 30%,#F5F8FB 36%,#E6EBF1 40%,#2C4C79 55%,#1E3557 100%);filter:drop-shadow(0 0 10px rgba(195,204,216,.55))}
+.mbx-compose .mc[data-fx="sent"]{box-shadow:0 30px 90px rgba(0,0,0,.6),0 0 38px rgba(44,76,121,.55);transition:box-shadow .3s}
+@keyframes mcsent{from{--mbx-a:0deg;opacity:1}85%{opacity:1}to{--mbx-a:360deg;opacity:.0}}
+@media (prefers-reduced-motion:reduce){.mbx-compose .mc[data-fx="sent"]::after{animation:none}}
+.mbx-compose .mc[data-mode="min"] header h2{white-space:nowrap;flex:1}.mbx-compose .mc[data-mode="min"] header .dim{display:none}
