@@ -32,4 +32,4 @@ Every awam phase gets the founder's proven technology moulded to the awam (per-c
 12. Lovable codes are preserved as written; the only job is to move each file to the advance technology, fix its loopholes, polish it (AWAM-LOVABLE-MIGRATION-15NOV).
 
 ## 4. STATE TODAY (17 Nov 2026 05:0x PKT)
-Nothing of AW0 to AW6 is being built now; the founder blueprint (Q1b4, then compose QC0 to QC8, Q3 and so on) is the current work. PRO package done. Awam today runs on Caddy HTTP/2 (K5b not done).
+Nothing of AW0 to AW6 is being built now; the founder blueprint (Q1b4, then compose QC0 to QC8, Q3 and so on) is the current work. PRO package done. Awam today: K5a LIVE (23 hosts AES-256-GCM only via awam-edge, h2 + http/1.1); K5b (HTTP/3 AES-256) not done. Index: docs/awam/README.md, open work: docs/awam/PENDING-AWAM.md, mess: docs/awam/MESS-REPORT.md, AI product copy: ai-product/.

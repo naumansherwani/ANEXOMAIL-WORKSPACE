@@ -34,6 +34,7 @@ def lovable_side(p):
 
 def lane(p):
     b = p.split("/")[-1]
+    if p.startswith("ai-product/"): return "docs", "AI product preserved copy (ai.anexomail.com)"
     if p.startswith("founder-web/"): return "founder", "founder SPA built output" if p.startswith("founder-web/dist/") else "founder SPA (React-TS)"
     if p.startswith("server/founder/"): return "founder", "founder Rust (axum)"
     if p.startswith(("web-wasm/", "public/kernel/", "src/lib/kernel/")) or p == "scripts/build-kernel.sh": return "shared", "WASM kernel (one kernel, Rule 52)"

@@ -1,3 +1,13 @@
+ai-product/founder-ai/src/routes/app.founder_.ai.arena.tsx
+ai-product/founder-ai/src/routes/app.founder_.ai.automation.tsx
+ai-product/founder-ai/src/routes/app.founder_.ai.billing.tsx
+ai-product/founder-ai/src/routes/app.founder_.ai.index.tsx
+ai-product/founder-ai/src/routes/app.founder_.ai.knowledge.tsx
+ai-product/founder-ai/src/routes/app.founder_.ai.memory.tsx
+ai-product/founder-ai/src/routes/app.founder_.ai.prompts.tsx
+ai-product/founder-ai/src/routes/app.founder_.ai.receipts.tsx
+ai-product/founder-ai/src/routes/app.founder_.ai.studio.tsx
+ai-product/founder-ai/src/routes/app.founder_.ai.tsx
 server/lib/founder-gate-core.ts
 server/lib/founder-gate.test.ts
 server/lib/founder-gate.ts

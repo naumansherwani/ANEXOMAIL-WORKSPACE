@@ -3527,3 +3527,7 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 17 Nov 05:0x his postconf paste: smtpd_tls_received_header = no (receipt 44), loglevel 0. WRITTEN fmail-postfix-tlshdr.sh: sets it to yes with backup, postfix check, reload, a real handshake test, rollback on any failure. CHECK_OUTBOX_LOOK now prints every outbox row of the last 6 h in any state (my 04:50 test mail was in no active state). CLEAN AWAM BLUEPRINT written: docs/claude/AWAM-BLUEPRINT-CLEAN-17NOV.md (AW0-AW6, technology per phase, his 12 instructions). Nothing awam is built
 
 - 17 Nov 05:1x his pastes: smtpd_tls_received_header now yes (script OK, handshake TLS1.3 AES-256-GCM). CHECK_OUTBOX_LOOK: my 04:50 test mail ea7838e2 was refused again with 'points to a private address' (state cancelled), so the hosts-only fix was not enough. Cause: the systemd-resolved stub 127.0.0.53 also answers from /etc/hosts. FIX (Rust fmail_out.rs): the sender reads the real upstream list /run/systemd/resolve/resolv.conf when the system file is a loopback stub, hosts off, guard kept; unit test; cargo 431. His phone screenshot 04:59 (390 wide inbox, bottom nav, compose button) recorded as the 390 look. Q1b4 e still open: TLS record not yet seen on a new mail
+
+- awam audit: docs/awam index, pending, mess report; ai-product copy folder; blueprint K5a fix
+
+- awam audit: docs/awam index, pending, mess report; ai-product copy folder; blueprint K5a fix
