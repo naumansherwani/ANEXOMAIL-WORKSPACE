@@ -911,3 +911,9 @@ Technology: React 19 TS (founder-web), pure module presence_pure.ts (Live / Idle
 17 Nov 2026 06:2x PKT role plaque "Founder / Chairman" in the mail account header (his order 06:12): React 19 TS + CSS only, static text of his own role, no network, no SQL. TECH-LAW CHECKED.
 
 - mail header: Founder / Chairman role plaque
+
+- state: Q1b4 GREEN, QC0 discuss only
+
+- state: Q1b4 done (WIRED: YES / REAL: YES / TECH-LAW CHECKED), QC0 discuss only
+
+- state: Q1b4 done, QC0 discuss only (WIRED: YES / REAL: YES / TECH-LAW CHECKED)

@@ -2499,3 +2499,9 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - phone nav: 5 tabs + More sheet with every page as a tile
 
 - mail header: Founder / Chairman role plaque
+
+- state: Q1b4 done (WIRED: YES / REAL: YES / TECH-LAW CHECKED), QC0 discuss only (first line)
+
+- state: Q1b4 done (WIRED: YES / REAL: YES / TECH-LAW CHECKED), QC0 discuss only
+
+- state: Q1b4 done, QC0 discuss only (WIRED: YES / REAL: YES / TECH-LAW CHECKED)

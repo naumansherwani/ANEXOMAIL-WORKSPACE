@@ -564,3 +564,9 @@
 - phone nav: 5 tabs + More sheet with every page as a tile
 
 - mail header: Founder / Chairman role plaque
+
+- state: Q1b4 GREEN, QC0 discuss only
+
+- state: Q1b4 done (WIRED: YES / REAL: YES / TECH-LAW CHECKED), QC0 discuss only
+
+- state: Q1b4 done, QC0 discuss only (WIRED: YES / REAL: YES / TECH-LAW CHECKED)

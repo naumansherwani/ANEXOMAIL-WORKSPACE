@@ -1,17 +1,17 @@
 {
  "heartbeat": {
-  "generated": "17 Nov 2026 06:14 +0500",
-  "head": "58ef74c2",
-  "head_subject": "ledger line 4d5febed",
-  "now": "Q1b4",
+  "generated": "17 Nov 2026 06:16 +0500",
+  "head": "9085c78d",
+  "head_subject": "ledger line 20854128",
+  "now": "-",
   "phases": {
    "GREEN": 28,
    "IN PROGRESS": 1,
    "NOT GREEN": 11,
    "PAUSED": 1
   },
-  "q_done": 31,
-  "q_open": 3,
+  "q_done": 33,
+  "q_open": 1,
   "checks_ok": 24,
   "checks_open": [
    "M-moq",
