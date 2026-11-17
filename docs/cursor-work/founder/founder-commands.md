@@ -3731,3 +3731,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - QSPEED contract written 18 Nov 2026 03:55 PKT (his order 03:15, 120-200 ms): his journal paste shows every database call 317-1181 ms = distance; db-latency-check.sh (read-only) written, waits for his paste before any code
 
 - QSPEED contract corrected 18 Nov 2026 03:58 PKT: HTTP/2 idea withdrawn (his word 03:16, HTTP/3 only); plan = fewer round trips + database closer, waits for his db-latency-check paste
+
+- QSPEED finding 1 fixed 18 Nov 2026 04:15 PKT: database keepalive pulled the 1.1 MB OpenAPI schema every 30 s (his paste), now one tiny row; cargo test 431/0, check OK; db-latency-check.sh fixed; not installed yet

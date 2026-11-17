@@ -21,10 +21,11 @@ impl Sb {
             .pool_idle_timeout(std::time::Duration::from_secs(600)).pool_max_idle_per_host(16).tcp_nodelay(true).tcp_keepalive(std::time::Duration::from_secs(30))
             .build().ok()? })
     }
-    /// One cheap read every 30 s keeps the warm connections to the database alive (no secret, no write). Called once from main.
+    /// One TINY read (one row, one column) every 30 s keeps the warm connections to the database alive (no secret, no write). Called once from main.
     pub fn keepalive(&self) {
         let sb = self.clone();
-        tokio::spawn(async move { loop { let _ = sb.http.get(format!("{}/rest/v1/", sb.url)).header("apikey", &sb.key).send().await; let _ = sb.http.get(format!("{}/auth/v1/health", sb.url)).send().await; tokio::time::sleep(std::time::Duration::from_secs(30)).await; } });
+        tokio::spawn(async move { loop { // QSPEED (18 Nov): the root /rest/v1/ answers with the WHOLE OpenAPI schema (measured on his server: about 1.1 MB, up to 2.4 s) every 30 s and PostgREST builds it each time, which clogged the warm connections and slowed every real call. One tiny row read keeps the same connection warm.
+            let _ = sb.http.get(format!("{}/rest/v1/founder_accounts?select=user_id&limit=1", sb.url)).header("apikey", &sb.key).header("authorization", format!("Bearer {}", sb.key)).send().await; let _ = sb.http.get(format!("{}/auth/v1/health", sb.url)).send().await; tokio::time::sleep(std::time::Duration::from_secs(30)).await; } });
     }
     fn req(&self, path: &str) -> reqwest::RequestBuilder {
         self.http.get(format!("{}/rest/v1/{}", self.url, path)).header("apikey", &self.key).header("authorization", format!("Bearer {}", self.key))
