@@ -1041,3 +1041,5 @@ LEFT: code, tests, sandbox look 390/820/1200, his founder-install, his look (pho
 Research: HMAC blind index cannot do prefix (authagonal), client-side filter over a cached list (Nylas cookbook), frecency beats a plain counter (Thunderbird bug 1671679). Plan at the top of COMPOSE-RESEARCH-17NOV.md.
 
 - 18 Nov 2026 04:36 PKT QC1b PLAN written at the top of COMPOSE-RESEARCH-17NOV.md after web research (blind-index prefix limit, Nylas client-side filter + frequency ranking, Thunderbird no-recency); contract in CURRENT.md; open gap Q-contacts-kernel registered; QSPEED moved to run right after the whole Q series (his 04:26 word); STANDING RULE 0 web research first added to TECH-FIRST-PROTOCOL. No code yet
+
+- 18 Nov 2026 04:50 PKT QC1b STEP 1 DONE: SQL E186 sealed address book written (476 lines, docs/cursor-work/sql/E186_founder_mail_address_book.sql + CHECK_E186.sql); sandbox PG16: selftest 32/0, CHECK 8/8, E179 door audit clean, re-run safe; NOT installed on his server; next = Rust fmail_book.rs + doors, then book.ts + suggestion list
