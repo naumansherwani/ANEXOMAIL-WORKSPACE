@@ -1612,3 +1612,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - QC1 plan written 18 Nov 2026 04:20 PKT (chips, sealed address book E186, TLS lock probe E187), waits for his haan, no code
 
 - 18 Nov 2026 04:05 PKT QC1a WRITTEN, not closed: recipient chips (recipients.ts parser + 14 tests, RecipientField.tsx, MailCompose wired, mailbox.css glass chips); tsc clean, bun 336/336, vite build ok, sandbox 390/820/1280 looked at; UI only, no SQL, no Rust; awaits his founder-install, his phone look, my live Chrome look
+
+- 18 Nov 2026 04:22 PKT QC1a = GREEN (his word 04:14 + install saboot + my live Chrome look). WIRED: YES / REAL: YES. Live bundle index-vLv1N_3v = repo build, chips CSS live, pasted 5 addresses -> 4 chips, 1 red with reason, duplicate refused. TECH-LAW CHECKED: React 19 TS + Framer Motion, no backend. QSPEED contents written in the qstate plan (parked until founder and awam complete). NEXT = discuss QC1b with him
