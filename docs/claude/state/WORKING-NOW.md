@@ -5,41 +5,20 @@ HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 8629ed91 17 Nov 07:07 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - f33cfdcc 17 Nov 06:52 ledger line 66ea67f6
 - 66ea67f6 17 Nov 06:52 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - bcc2e529 17 Nov 06:49 ledger line 3e7289b2
 - 3e7289b2 17 Nov 06:49 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
-- 38294176 17 Nov 06:47 ledger line b7b458ea
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/COMPOSE-RESEARCH-17NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- M docs/cursor-work/founder/founder-commands.md
- D founder-web/dist/assets/index-BX0PCQCv.css
- D founder-web/dist/assets/index-D4RV7dJ7.js
- M founder-web/dist/index.html
- M founder-web/src/MailCompose.tsx
- M founder-web/src/mailbox.css
-?? docs/claude/state/EDIT-INTENT.md
-?? founder-web/dist/assets/index-BGL55mEc.css
-?? founder-web/dist/assets/index-DRqSAmFH.js
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
-# EDIT IN PROGRESS (started 17 Nov 2026 07:06 PKT): a compaction may have cut it. Read this, run git status + git diff, finish the edit, then end it.
-WHAT: QC0d/e: compose window states (minimize, expand), rim to the very top, send shimmer in logo colours
-FILES: MailCompose.tsx mailbox.css
-PROGRESS:
 
 ## Uncommitted size
- docs/claude/tech-contracts/CURRENT.md        |  3 ++
- docs/cursor-work/founder/founder-commands.md |  3 ++
- founder-web/dist/assets/index-BX0PCQCv.css   |  1 -
- founder-web/dist/assets/index-D4RV7dJ7.js    | 55 ----------------------------
- founder-web/dist/index.html                  |  4 +-
- founder-web/src/MailCompose.tsx              | 10 +++--
- founder-web/src/mailbox.css                  | 24 +++++++++++-
- 9 files changed, 83 insertions(+), 79 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 36 +-----------------------------------
+ 1 file changed, 1 insertion(+), 35 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -50,4 +29,4 @@ PROGRESS:
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (50a6f45f5157ba597b68f439ded85032ed1748f4)
+WIP snapshot: refs/wip/last (647d29fdf168a08c317757c93b06097a2e28f47a)
