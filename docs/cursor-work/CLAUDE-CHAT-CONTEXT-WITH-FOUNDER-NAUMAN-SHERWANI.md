@@ -3609,3 +3609,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - QSPEED contract corrected 18 Nov 2026 03:58 PKT: HTTP/2 idea withdrawn (his word 03:16, HTTP/3 only); plan = fewer round trips + database closer, waits for his db-latency-check paste
 
 - QSPEED finding 1 fixed 18 Nov 2026 04:15 PKT: database keepalive pulled the 1.1 MB OpenAPI schema every 30 s (his paste), now one tiny row; cargo test 431/0, check OK; db-latency-check.sh fixed; not installed yet
+
+- QSPEED paused 18 Nov 2026 04:05 PKT by his word; measured: ping 1.4 ms, tcp+tls under 35 ms, first byte 350-450 ms = database service time, not distance; keepalive fix installed; next QC1 discussion
