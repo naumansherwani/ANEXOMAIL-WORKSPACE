@@ -3729,3 +3729,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - AUDIT after QC3a 18 Nov 2026 03:35 PKT: live bundle = repo code (Send now, release door), CHECK_E170.sql added (loophole closed), open: Mail lists slow + HTTP 504 after install, waits for his read-only journal paste
 
 - QSPEED contract written 18 Nov 2026 03:55 PKT (his order 03:15, 120-200 ms): his journal paste shows every database call 317-1181 ms = distance; db-latency-check.sh (read-only) written, waits for his paste before any code
+
+- QSPEED contract corrected 18 Nov 2026 03:58 PKT: HTTP/2 idea withdrawn (his word 03:16, HTTP/3 only); plan = fewer round trips + database closer, waits for his db-latency-check paste
