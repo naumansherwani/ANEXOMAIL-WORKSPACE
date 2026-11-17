@@ -937,3 +937,7 @@ MailCompose: persist() flushes the sealed draft on Esc / X / close (a draft is a
 QC0d: compose window states normal / large / min via data-mode; rim moved from a layer behind the header to an overlay (z 6) so it reaches the top. QC0e: on send success a one-shot conic-gradient sweep in the logo palette (#1E3557 #2C4C79 #C3CCD8 #E6EBF1 #F5F8FB), @property angle, reduced motion respected, box closes after 950 ms (onQueued fires first so the Undo bar appears at once).
 
 - QC0d+QC0e compose: minimize/expand window states, rim to the very top, send shimmer in logo colours; research table written (code awaits his install + look)
+
+### 17 Nov 2026 07:35 PKT - QC0f phone fix (his screenshot 07:23): global :focus-visible ring was clipped round the full-width message field; compose fields now take an inner highlight, Send-later has a visible label, title no longer wraps, expand hidden on phone (already full screen). CSS only.
+
+- QC0f phone compose fix: no clipped focus ring, send-later label, title no wrap (CSS only)

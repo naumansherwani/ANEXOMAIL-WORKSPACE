@@ -817,3 +817,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - QC0a+QC0b installed on his server (his paste OK); live Chrome look next
 
 - QC0d+QC0e compose: minimize/expand window states, rim to the very top, send shimmer in logo colours; research table written (code awaits his install + look)
+
+- QC0f phone compose fix: no clipped focus ring, send-later label, title no wrap (CSS only)
