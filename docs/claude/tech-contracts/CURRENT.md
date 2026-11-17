@@ -889,3 +889,5 @@ Plan: docs/claude/Q1B4-MASTER-PLAN-17NOV.md. Technology: Rust + Tokio + mail-aut
 - awam audit: docs/awam index, pending, mess report; ai-product copy folder; blueprint K5a fix
 
 - awam audit: docs/awam index, pending, mess report; ai-product copy folder; blueprint K5a fix
+
+- awam: AI product (July 2027, coming soon only), Polar stays, awam h3 correction

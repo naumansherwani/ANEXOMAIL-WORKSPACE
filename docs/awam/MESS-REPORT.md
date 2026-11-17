@@ -19,13 +19,13 @@ Numbers from docs/awam/INVENTORY.csv (3414 files).
 2. 198 copies of 00-FOUNDER-TECH-RULE.md and 52 of READ-FIRST-FOUNDER-LAW.md sit in nearly every folder (his law: a copy in every folder). Intentional, not clutter; do not delete. Hide them from reading by using this index.
 3. Four overlapping "master plan" generations: ONE-ORDER-27OCT, MASTER-BUILD-PLAN, BLUEPRINT-ABC-01NOV, MIGRATION-PHASES-24OCT/RUST-PRIMARY, GREEN-BOARD (21 Oct). Current truth = AWAM-BLUEPRINT-CLEAN-17NOV (awam) and the founder blueprint. Older ones are history; do not build from them.
 4. docs/cursor-work/server holds 289 scripts: 262 awam (brain-*, caddy-*, attach-*), 20 founder. The awam ones deploy the CURRENT Bun site; keep until AW1.
-5. Polar payment docs/rules (docs/polar-*.md, .cursor/rules/polar-rust-payment.mdc, PACKAGES docs): conflicts with his vendor-ban law. Needs his decision; nothing changed.
+5. Polar payment docs/rules: his word, Polar STAYS, no conflict.
 6. AI files were mixed into awam src/server/sql and the founder pages: now collected in ai-product/ (copy). Live originals untouched so the site still builds.
 7. .lovable (6 files) and .cursor/rules (14) are tooling, not code.
-8. Stale statements found and corrected: the clean blueprint said awam runs on Caddy HTTP/2 with K5b open; truth = K5a AES-256 live, K5b (h3) open.
+8. Corrected by him: awam is HTTP/3 with h2/1.1 fallback on his server; my earlier "HTTP/2 only" and "K5a only" wording were both wrong. K5b = the h3 side under our own Rust.
 
 ## Rules I followed (so nothing breaks)
 No file was moved or deleted: gates, lanes, AWAM-INHERIT-MANIFEST.json and the hash chain read these paths. New tidiness = this index, ai-product/ copy, lanes updated.
 
 ## Safe next cleanups (each needs his word)
-a) At cutover T: delete the live Bun awam files (copy stays in lovable-gold). b) Move the AI live files into ai-product/ when the AI product starts. c) Mark the old plan generations SUPERSEDED at their top. d) Decide Polar.
+a) At cutover T: delete the live Bun awam files (copy stays in lovable-gold). b) Move the AI live files into ai-product/ when the AI product starts. c) Mark the old plan generations SUPERSEDED at their top. d) (Polar decided: stays.) AI files are NEVER deleted: used by the AI product from July 2027.

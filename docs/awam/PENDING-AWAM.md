@@ -6,7 +6,7 @@ Source: docs/packages/features.tsv (26 GATE-TO-BUILD, 12 PROPOSED, 1 LATER, 5 OU
 - PROPOSED (needs his word): N-CRM-04..11 (lead scoring, workflow, quotes, approvals, cadences, forecast, territory, dashboards), N-DOC-01 CRDT docs, N-RET-01/02 legal hold + retention + eDiscovery, N-OFC-01 shared files hub. LATER: I2-35 screen share/recording/captions.
 - Card values: Premium 7,000 users, Premium 70 TB, 100 MB attachments; Business Max unlimited-users card with the strict 125,000 cap (backend + SQL, 90 % / 95 % alerts, no block); Business Pro 60 MB; trial 48 h = only free entry; import from Google/Microsoft/Proton in every package; price lock 2 years; Pass + Calendar in every package; pool meter 70/85 %. Premium and Max cards are NOT built (CLOSE-THE-GAPS-07NOV 22:45).
 - Personal plans retired: SQL retire step in PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md (check if all steps ran).
-- Payment partner: the awam docs name Polar (docs/polar-*.md, .cursor/rules/polar-rust-payment.mdc). His vendor-ban law allows only Caddy, Namecheap, Hetzner, own Rust. DECISION NEEDED FROM HIM (not mine): payments in awam.
+- Payment provider: Polar STAYS (his word 17 Nov 05:2x; not a vendor-ban conflict; added to the allowed list in VENDOR-BAN-LIST.json).
 - Hetzner capacity: 1 Gbit tops ~324 TB/month; 350-500 TB needs 10 Gbit or more servers; written in the proposal.
 
 ## B. Migration of the 822 frozen Lovable files (AW1)
@@ -14,7 +14,7 @@ Source: AWAM-LOVABLE-MIGRATION-15NOV.md, lovable-gold/awam/ENDPOINTS-awam.csv (4
 
 ## C. Transport and promises (AW2)
 - K5a is LIVE: 23 awam hosts AES-256-GCM only through server/awam-edge (AES-128 refused, h2 + http/1.1). Proof 9 Nov 17:28.
-- K5b OPEN: awam HTTP/3 AES-256 on its own UDP port (Caddy keeps h3 on UDP 18443 until then). X25519MLKEM768 on the awam listeners not proven.
+- HIS CORRECTION 17 Nov: awam is HTTP/3 with h2 + HTTP/1.1 fallback on his server (Caddy h3 on UDP 18443). K5b OPEN: the h3 side itself under our own Rust, AES-256 on its own UDP port (Caddy keeps h3 on UDP 18443 until then). X25519MLKEM768 on the awam listeners not proven.
 - WEBSITE-PROMISES P2 OPEN: the awam login + footer TLS line is written only after his openssl proof (TLS 1.3 only, AES-128 refused).
 - 9 hosts return 502 (CLOSE-THE-GAPS 9 Nov 17:24); pm2 anexomail-web restarts = 500 (read-only look not done).
 - Kernel pin: awam pull needed after the kernel moved to 0.14.0 (CLOSE-THE-GAPS 9 Nov 19:55); check it is done.
@@ -35,3 +35,6 @@ AnexoSuite (AX-P11, last, 2-month target): AX-P11-ANEXOSUITE-TECH-PLAN-07NOV. "B
 
 ## G. Deadlines (his words)
 Founder complete 25 Nov 2026; whole awam website 100 % with tests and AnexoChat by 16 Dec 2026; seminar launch 16 Jan 2027.
+
+## H. AI product (his word 17 Nov 05:2x)
+AI codes are kept (ai-product/ copy + live originals) and used in the AI product = same website with AI features added where they belong, product build starts JULY 2027. Until then: awam landing must NOT open ai.anexomail.com, awam users must not see it, the landing shows only "Coming soon". OPEN: audit landing + nav + footer for ai links and the 3 AI hosts (ai, aicrm, aiemail) so they show nothing to the public.

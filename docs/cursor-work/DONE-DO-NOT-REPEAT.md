@@ -2483,3 +2483,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - awam audit: docs/awam index, pending, mess report; ai-product copy folder; blueprint K5a fix
 
 - awam audit: docs/awam index, pending, mess report; ai-product copy folder; blueprint K5a fix
+
+- awam: AI product (July 2027, coming soon only), Polar stays, awam h3 correction

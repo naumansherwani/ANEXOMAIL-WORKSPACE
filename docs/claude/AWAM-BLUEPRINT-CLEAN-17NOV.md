@@ -32,4 +32,11 @@ Every awam phase gets the founder's proven technology moulded to the awam (per-c
 12. Lovable codes are preserved as written; the only job is to move each file to the advance technology, fix its loopholes, polish it (AWAM-LOVABLE-MIGRATION-15NOV).
 
 ## 4. STATE TODAY (17 Nov 2026 05:0x PKT)
-Nothing of AW0 to AW6 is being built now; the founder blueprint (Q1b4, then compose QC0 to QC8, Q3 and so on) is the current work. PRO package done. Awam today: K5a LIVE (23 hosts AES-256-GCM only via awam-edge, h2 + http/1.1); K5b (HTTP/3 AES-256) not done. Index: docs/awam/README.md, open work: docs/awam/PENDING-AWAM.md, mess: docs/awam/MESS-REPORT.md, AI product copy: ai-product/.
+Nothing of AW0 to AW6 is being built now; the founder blueprint (Q1b4, then compose QC0 to QC8, Q3 and so on) is the current work. PRO package done. Awam today (HIS WORD 17 Nov 05:2x, on his server): awam serves HTTP/3 with HTTP/2 + HTTP/1.1 as fallback; K5a = AES-256-GCM-only TLS on the TCP side (23 hosts) via awam-edge. Still open: K5b = the QUIC/HTTP-3 side itself AES-256 + X25519MLKEM768 under our own Rust (QUIC Initial is AES-128 by RFC 9001). Index: docs/awam/README.md, open work: docs/awam/PENDING-AWAM.md, mess: docs/awam/MESS-REPORT.md, AI copy: ai-product/.
+
+## 5. AI PRODUCT (ai.anexomail.com), HIS WORD 17 Nov 2026 05:2x PKT
+- The AI codes are NOT removed. They are used in the AI product: the SAME whole website, with AI features added only where AI belongs. The product is ai.anexomail.com.
+- So the whole website is built first; when it is done, AI features are added in place. Production of the AI product starts JULY 2027.
+- Until then: the awam landing page must not open ai.anexomail.com and the awam must not see the AI product; the landing shows only "Coming soon". (OPEN: check the landing code for AI links; awam files are frozen, so a change is made only in AW phase with his word. Item added to PENDING-AWAM.)
+- Polar stays as the awam payment provider (his word); it is not a vendor-ban conflict.
+- ai-product/ is the preserved copy; live AI files stay where they are.
