@@ -924,3 +924,5 @@ MailCompose: persist() flushes the sealed draft on Esc / X / close (a draft is a
 - QC0a+QC0b compose polish: draft kept on close, phone full-screen keyboard-aware, 2-step discard, full name on plaque, compose research + sub-phases (Tiptap 3, send-now X planned E185); code written, awaits his install + look
 
 - DKIM2: his word, Anexomail builds signer + verifier itself (D2a-D2e plan, signing OFF until his haan); Q-series state refreshed
+
+- DKIM2 back to TRACKED ONLY by his word (plan parked, build later)
