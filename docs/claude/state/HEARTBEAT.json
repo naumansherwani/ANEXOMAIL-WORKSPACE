@@ -1,7 +1,7 @@
 {
  "generated": "18 Nov 2026 02:39 +0500",
- "head": "b8fb49d3",
- "head_subject": "ledger line 30363592",
+ "head": "68edffb6",
+ "head_subject": "QC3a: release route in main.rs after SERVER-FIRST receipt",
  "now": "-",
  "phases": {
   "GREEN": 28,
