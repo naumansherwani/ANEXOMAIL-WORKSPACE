@@ -941,3 +941,7 @@ QC0d: compose window states normal / large / min via data-mode; rim moved from a
 ### 17 Nov 2026 07:35 PKT - QC0f phone fix (his screenshot 07:23): global :focus-visible ring was clipped round the full-width message field; compose fields now take an inner highlight, Send-later has a visible label, title no longer wraps, expand hidden on phone (already full screen). CSS only.
 
 - QC0f phone compose fix: no clipped focus ring, send-later label, title no wrap (CSS only)
+
+### 17 Nov 2026 07:40 PKT - QC0c start + footer steady (live look: Undo bar was see-through over the list; footer jumped on Sending...). Undo bar = solid glass, above phone tab bar, countdown line in logo palette; Send keeps width + centred text. CSS + one style var, no network.
+
+- QC0c start: solid Undo bar with countdown line in logo colours, steady compose footer; live look notes

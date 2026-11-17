@@ -115,7 +115,7 @@ export function UndoBar({ box, q, onGone, onUndone }: { box: string; q: api.Queu
   useEffect(() => { if (scheduled && left === 0 && state === "wait") { const t = window.setTimeout(onGone, 5000); return () => window.clearTimeout(t); } }, [scheduled, left, state, onGone]);
   async function undo() { setState("undoing"); const r = await api.undo(box, q.outbox_id); if (r.ok) { onUndone(); onGone(); } else { setState("failed"); setErr(r.error || "Too late: the mail is already on its way."); } }
   return (
-    <div className="mu" role="status" aria-live="polite">
+    <div className="mu" role="status" aria-live="polite" style={{ "--p": `${Math.max(0, Math.min(1, left / 30))}` } as React.CSSProperties}>
       <span>{state === "undoing" ? "Taking it back…" : state === "failed" ? err : left > 0 ? `${scheduled ? "Scheduled" : "Sent"}. Undo within ${left}s` : scheduled ? `Scheduled for ${new Date(q.not_before).toLocaleString()}.` : "On its way."}</span>
       {left > 0 && state === "wait" && <button type="button" className="mx-btn alt" onClick={() => void undo()}>Undo</button>}
       <button type="button" className="mu-x" onClick={onGone} aria-label="Dismiss">×</button>

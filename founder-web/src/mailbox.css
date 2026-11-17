@@ -212,3 +212,11 @@
 }
 .mbx-compose .mc header h2{white-space:nowrap}
 @media (max-width:760px){.mbx-compose .mc header .mc-exp{display:none}.mbx-compose .mc header .dim{flex:1;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+
+/* QC0c + footer steadiness (live look 07:3x): the Undo bar is solid glass (it was see-through over the list), sits above the phone tab bar, and carries a thin countdown line in the logo palette; the Send button keeps its width so the footer does not jump to "Sending...". */
+.mu{background:#10131a;backdrop-filter:blur(14px) saturate(1.2);border-color:rgba(195,204,216,.22);bottom:calc(var(--tabh,0px) + max(20px,env(safe-area-inset-bottom,0px)));overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.65),0 0 0 1px rgba(44,76,121,.35)}
+.mu::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:calc(var(--p,0) * 100%);background:linear-gradient(90deg,#2C4C79,#C3CCD8,#F5F8FB);transition:width .25s linear}
+.mbx-compose .mc footer>.mx-btn:first-child{min-width:104px}
+.mbx-compose .mc footer{flex-wrap:nowrap}
+@media (max-width:760px){.mbx-compose .mc footer{flex-wrap:wrap}}
+.mbx-compose .mc footer>.mx-btn{display:inline-flex;align-items:center;justify-content:center;text-align:center}
