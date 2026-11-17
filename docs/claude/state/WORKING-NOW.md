@@ -1,15 +1,15 @@
-# WORKING NOW (manual checkpoint, 17 Nov 2026 05:30 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 05:31 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 17 Nov 05:31 Q1b4 e: founder-install of 4b4c054b OK; NEW Gmail mail 05:29 shows SPF/DKIM/DMARC pass + Virus clean + TLS 1.3 in the ring (my Chrome, get_page_text); my test mail 'Q1b4 outbox test' (to hostflowaibuilder@gmail.com) left Outbox into Sent 05:30 (no private-address error). OPEN: his word that it ARRIVED in Gmail, ring sheet 390/820 look, old Outbox row 1, Archive mail back to Inbox. Then GREEN.
 NEXT STEP: 
 HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 89998774 17 Nov 05:31 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - 4dfe4956 17 Nov 05:28 ledger line 5da10944
 - 5da10944 17 Nov 05:28 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - 6be7b5f5 17 Nov 05:21 ledger line d8a4c4e4
 - d8a4c4e4 17 Nov 05:21 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
-- 4b4c054b 17 Nov 05:06 ledger line daad71f0
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -21,8 +21,8 @@ FILES: docs/awam/
 PROGRESS:
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 21 ++++-----------------
- 1 file changed, 4 insertions(+), 17 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -33,4 +33,4 @@ PROGRESS:
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (7240b08b856797611ca084cc10afd0006d1f45bf)
+WIP snapshot: refs/wip/last (6b015fe42b0f17ec9b642f016de2438259ccdeac)
