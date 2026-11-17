@@ -143,3 +143,11 @@
   .mbx-health .mbx-lanes button,.mbx-health .mbx-lanes span{width:100%;justify-content:flex-start}
   .mbx-health .mx-chip{justify-content:flex-start}
 }
+
+/* Outbox status board (his 17 Nov 05:47): a mail never sits in the Outbox without saying why */
+.ob{list-style:none;margin:0;padding:8px 12px;display:grid;gap:8px;border-bottom:1px solid var(--mh)}
+.ob-r{display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:10px;align-items:start;padding:10px 12px;border:1px solid var(--mh2);border-radius:12px}
+.ob-r i{width:8px;height:8px;margin-top:6px;border-radius:50%;background:#6b7384}.ob-r.ok i{background:#4cc38a}.ob-r.go i,.ob-r.wait i{background:#5aa9f0}.ob-r.bad i{background:#e0564a}.ob-r.bad{border-color:rgba(224,86,74,.5)}
+.ob-r b{display:block;font-size:13.5px}.ob-r small{display:block;margin-top:3px;font-size:12.5px;line-height:1.45;color:var(--dim);overflow-wrap:anywhere}
+.ob-r .mx-btn{min-height:44px;align-self:center}.ob-note,.ob-err{margin:0;padding:10px 14px;font-size:12.5px;color:var(--dim)}.ob-err{color:#ff8a7e}
+@media (max-width:760px){.ob-r{grid-template-columns:10px minmax(0,1fr)}.ob-r .mx-btn{grid-column:1/-1}}

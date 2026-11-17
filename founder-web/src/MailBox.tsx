@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import * as Popover from "@radix-ui/react-popover";
 import * as api from "./mail_api";
 import { MailCompose, UndoBar, type Start } from "./MailCompose";
+import { OutboxPanel } from "./OutboxPanel";
 import { MailAnchorLine } from "./MailAnchorLine";
 import { LogoMark } from "./Brand";
 import { Ic, FOLDER_ICON } from "./mailbox_icons";
@@ -222,6 +223,7 @@ export function MailBox() {
               <button type="button" className="mbx-ib" disabled={!sel} onClick={() => void act("vault")} title={view === "vault" ? "Take out of Vault" : "Move to Vault"} aria-label="Vault"><Ic k="vault" /></button>
             </div>
           </div>
+          {view === "outbox" && box && <OutboxPanel box={box.id} onChanged={() => { void loadCounts(); void loadList(); }} />}
           <div className="mbx-srow">
           <div className={`mbx-sbox mbx-glow ${qFocus ? "on" : "idle"} ${qText ? "has" : ""}`}>
             <label className="mbx-sin"><span className="sr">Search mail</span><Ic k="search" s={18} /><input ref={searchRef} value={qText} onChange={(e) => setQText(e.target.value)} onFocus={() => setQFocus(true)} onBlur={() => window.setTimeout(() => setQFocus(false), 140)} placeholder="Search" autoComplete="off" spellCheck={false} />{qText ? <button type="button" className="mbx-x" onClick={() => setQText("")} aria-label="Clear search"><Ic k="close" s={16} /></button> : null}</label>
