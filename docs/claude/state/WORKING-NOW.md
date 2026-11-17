@@ -5,20 +5,28 @@ HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 0fe8697d 17 Nov 08:28 ledger line c3b94d35
 - c3b94d35 17 Nov 08:28 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - bb64e252 17 Nov 08:13 ledger line 042e0f41
 - 042e0f41 17 Nov 08:13 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - c7182a0c 17 Nov 07:51 ledger line 98d7da15
-- 98d7da15 17 Nov 07:51 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 
 ## Uncommitted files (half-done work if any)
+M  CLAUDE.md
+M  docs/claude/COMPOSE-RESEARCH-17NOV.md
+M  docs/claude/RESUME-POINT.md
  M docs/claude/state/WORKING-NOW.md
+M  docs/claude/tech-contracts/CURRENT.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 31 +------------------------------
- 1 file changed, 1 insertion(+), 30 deletions(-)
+ CLAUDE.md                             |  1 +
+ docs/claude/COMPOSE-RESEARCH-17NOV.md |  4 ++++
+ docs/claude/RESUME-POINT.md           |  7 +++++++
+ docs/claude/state/WORKING-NOW.md      | 19 +++++--------------
+ docs/claude/tech-contracts/CURRENT.md |  2 ++
+ 5 files changed, 19 insertions(+), 14 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -29,4 +37,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ce8967f1537342986e823a554d6206c4fc8fb094)
+WIP snapshot: refs/wip/last (f749f92f54a7a8a15739e178a0ebeaf21581c421)

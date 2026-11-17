@@ -58,3 +58,7 @@ His phone screenshot 07:47 and word: "full screen ka idea mobile pe bad hai, mer
 - His spec for the border: while the box is active, ONE full turn (0 to 360 deg) takes 3 s to 4 s, linear, infinite; it must feel gentle (nazakat) like Google's AI box, not a flash. The 1.8 s two-turn sweep was too fast.
 - Method note: the 17 Nov search (Gemini / AI-mode input border) returned result lists only (CodePen, DEV Community, docs pages on conic-gradient borders); I did not open each page. The numbers used are HIS spec.
 - Built: rim loop 3.6 s linear infinite on the active box with a soft glow (drop-shadow 9 px); on SEND the loop keeps the SAME speed, the light grows brighter in the logo palette (#1E3557 #2C4C79 #C3CCD8 #E6EBF1 #F5F8FB), the box gets a soft halo, holds, then fades from 2.45 s and closes at 2.9 s. No flash, no speed change. Reduced motion: no animation, box closes at once.
+
+---
+## 17 Nov 2026 08:30 PKT - LIVE FINDING: Motion = reduced on his side
+In his Chrome the page root carries data-motion="reduced" (appearance.ts: the strictest of the account Animations level, Reduce motion, and the OS setting). ui.css then forces every animation to 0.2 s, one iteration, so the border sweep could only flash. Fix written: under reduced / none motion the send confirmation is a STILL silver ring with a soft halo held 1.3 s (no rotation), never a 0.2 s flash; with Animations = Full the 3.6 s linear loop plays. The OS setting can never be overridden.

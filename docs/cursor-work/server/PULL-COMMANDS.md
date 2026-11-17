@@ -598,3 +598,5 @@
 - QC0e: Google-calm border loop 3.6 s linear infinite, send keeps the speed with a brighter logo-palette glow and a slow fade; phone box approved by his screenshot
 
 - QC0e: reduce-motion shows a still silver ring + halo (no 0.2 s flash); blueprint, CLAUDE.md, RESUME evening plan updated
+
+- QC0 docs: evening plan in RESUME-POINT, reduce-motion finding, CLAUDE.md top line (date-time stamped)

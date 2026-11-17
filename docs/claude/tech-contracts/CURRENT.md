@@ -961,3 +961,7 @@ QC0d: compose window states normal / large / min via data-mode; rim moved from a
 - QC0e: Google-calm border loop 3.6 s linear infinite, send keeps the speed with a brighter logo-palette glow and a slow fade; phone box approved by his screenshot
 
 - QC0e: reduce-motion shows a still silver ring + halo (no 0.2 s flash); blueprint, CLAUDE.md, RESUME evening plan updated
+
+### 17 Nov 2026 08:30 PKT - QC0e reduce-motion: data-motion reduced/none -> still silver ring + halo, close after 1300 ms (calm = OS reduce OR data-motion != full); full -> 3.6 s loop, close 2900 ms. CSS + one timeout.
+
+- QC0 docs: evening plan in RESUME-POINT, reduce-motion finding, CLAUDE.md top line (date-time stamped)
