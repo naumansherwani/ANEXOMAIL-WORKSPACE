@@ -290,7 +290,6 @@ docs/claude/inventory/INV-3-ORG-SECURITY-STORAGE-LANDING.md
 docs/claude/proofs/00-FOUNDER-TECH-RULE.md
 docs/claude/proofs/Q1D-GMAIL-AUTH-RESULTS-16NOV.txt
 docs/claude/state/00-FOUNDER-TECH-RULE.md
-docs/claude/state/EDIT-INTENT.md
 docs/claude/state/HEARTBEAT.json
 docs/claude/state/PHASES.json
 docs/claude/state/Q-STATE.jsonl

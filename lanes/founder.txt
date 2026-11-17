@@ -155,8 +155,8 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-BCJSSTVX.css
-founder-web/dist/assets/index-DOZMeN_u.js
+founder-web/dist/assets/index-Dso71Q9G.css
+founder-web/dist/assets/index-ocf6Q6Iy.js
 founder-web/dist/assets/kernel.worker-CmgLpPuh.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
@@ -216,6 +216,7 @@ founder-web/src/OrbLine.tsx
 founder-web/src/OrbWhy.tsx
 founder-web/src/Palette.tsx
 founder-web/src/PolicyEditor.tsx
+founder-web/src/Presence.tsx
 founder-web/src/Profile.tsx
 founder-web/src/PulseCard.tsx
 founder-web/src/READ-FIRST-FOUNDER-LAW.md
@@ -323,6 +324,8 @@ founder-web/src/policy_change.ts
 founder-web/src/policy_flow.ts
 founder-web/src/portable.test.ts
 founder-web/src/portable.ts
+founder-web/src/presence_pure.test.ts
+founder-web/src/presence_pure.ts
 founder-web/src/pulse.css
 founder-web/src/pulse_pure.test.ts
 founder-web/src/pulse_pure.ts

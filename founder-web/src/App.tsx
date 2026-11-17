@@ -16,6 +16,7 @@ import { BridgeView, DashboardView } from "./Bridge";
 import { Palette, type NavItem } from "./Palette";
 import type { Prof } from "./types";
 import { Trust } from "./Trust";
+import PresencePill from "./Presence";
 import { MailBox } from "./MailBox";
 import { SystemMap } from "./SystemMap";
 import "./founder_mail_quiet.css";
@@ -169,7 +170,7 @@ export default function App() {
           </div>
           <div className="tpr">
             <button className="iconbtn" onClick={() => setPal(true)} aria-label="Search pages"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6" /><path d="m20 20-4-4" /></svg></button>
-            <Trust go={setView} />
+            <PresencePill /><Trust go={setView} />
             <AccountMenu p={prof} go={setView} />
           </div>
         </header>

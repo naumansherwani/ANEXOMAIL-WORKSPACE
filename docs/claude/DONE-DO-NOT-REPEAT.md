@@ -785,3 +785,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - awam: AI product (July 2027, coming soon only), Polar stays, awam h3 correction
 
 - Q1b4 e: TLS 1.3 seen on new Gmail mail, test mail Sent; waits Gmail receipt
+
+- founder UI: Live/Idle/Offline pill in top bar, phone mail folders as top chips (one bottom bar), presence tests
+
+- founder UI: Live/Idle/Offline pill in top bar, phone mail folders as top chips (one bottom bar), presence tests

@@ -3535,3 +3535,7 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - awam: AI product (July 2027, coming soon only), Polar stays, awam h3 correction
 
 - Q1b4 e: TLS 1.3 seen on new Gmail mail, test mail Sent; waits Gmail receipt
+
+- founder UI: Live/Idle/Offline pill in top bar, phone mail folders as top chips (one bottom bar), presence tests
+
+- founder UI: Live/Idle/Offline pill in top bar, phone mail folders as top chips (one bottom bar), presence tests

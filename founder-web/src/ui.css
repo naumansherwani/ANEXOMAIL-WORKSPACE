@@ -203,3 +203,10 @@ html[data-focus="hc"] :focus-visible{outline:3px solid #fff!important;outline-of
 
 /* The "Ctrl K" hint is a keyboard hint: hidden only on touch screens (no keyboard), the one deliberate difference. */
 @media (pointer:coarse){.find kbd{display:none}}
+
+/* presence pill (his 17 Nov 05:47): Live / Idle / Offline, in the top bar beside Trusted */
+.prs{display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:0 12px;border:1px solid var(--line);border-radius:var(--r2);background:var(--bg);color:var(--dim);font:500 13px Inter,sans-serif;white-space:nowrap}
+.prs i{width:8px;height:8px;border-radius:50%;background:#6b7384}.prs.live i{background:#5aa9f0;box-shadow:0 0 0 3px rgba(90,169,240,.2);animation:prspulse 2.6s ease-in-out infinite}.prs.live{color:var(--fg)}.prs.idle i{background:#d9a441}.prs.offline i{background:#e0564a}
+@keyframes prspulse{50%{box-shadow:0 0 0 6px rgba(90,169,240,0)}}
+@media (prefers-reduced-motion:reduce){.prs.live i{animation:none}}
+@media (max-width:420px){.prs{padding:0 9px}}

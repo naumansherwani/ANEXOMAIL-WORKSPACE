@@ -173,7 +173,6 @@ export function MailBox() {
   const lc = ledgerChip(chain, chainBusy, ledgerHead, kernelLedger);
   const sugg = qFocus ? suggest(rows, qText) : [];
   const said = describeQuery(query);
-  const phoneNav = ["inbox", "sent", "drafts", "quarantine", "vault"];
 
   const health = (<>
         <span className={`mp-seg ${p.quic.ok ? "ok" : "no"}`}><i aria-hidden="true" />{p.quic.text}</span><b aria-hidden="true">·</b>
@@ -187,9 +186,6 @@ export function MailBox() {
       <div key={flash} className={`mbx-edge ${flash ? "on" : ""}`} aria-hidden="true" />
       <header className="mbx-top">
         <div className="mbx-brand"><LogoMark size={36} title="ANEXOMAIL" /><div><b>ANEXOMAIL</b>{boxes && boxes.length > 1 ? <select className="mh-box" value={boxId} onChange={(e) => setBoxId(e.target.value)} aria-label="Mailbox">{boxes.map((b) => <option key={b.id} value={b.id}>{b.address}</option>)}</select> : <small>{box?.address ?? (conn === false ? "mail not set up" : "…")}</small>}</div></div>
-        <div className="mbx-status">
-          <span className={`mbx-live ${liveState}`} title="Live channel"><i aria-hidden="true" />{liveState === "live" ? "Live" : liveState === "reconnecting" ? "Reconnecting" : "Offline"}</span>
-        </div>
       </header>
 
       <div className="mbx-strip mbx-strip-top" role="status" aria-label={`${p.quic.text}, ${p.dbsc.text}, ${p.seal.text}`}>{health}</div>
@@ -213,6 +209,7 @@ export function MailBox() {
         </nav>
 
         <div className="mbx-list" aria-label={`${folderLabel(view)} messages`}>
+          <nav className="mbx-fchips" aria-label="Mail folders (phone)">{FOLDERS.map((f) => { const c = counts?.[f.key]; return <button key={f.key} type="button" className={view === f.key ? "on" : ""} aria-current={view === f.key ? "page" : undefined} onClick={() => { setView(f.key); setSel(null); setOpened(null); if (f.key === "inbox") setFresh(0); }}><Ic k={FOLDER_ICON[f.key] ?? "mail"} s={16} fill={view === f.key} /><span>{f.label}</span>{c?.unread ? <em>{compact(c.unread)}</em> : null}</button>; })}</nav>
           <div className="mbx-lh">
             <h2>{folderLabel(view)}</h2>
             {fresh > 0 && view === "inbox" && <button type="button" className="mbx-newn" onClick={() => { setFresh(0); void loadList(); }}>{fresh} new</button>}
@@ -297,7 +294,6 @@ export function MailBox() {
         </article>
       </div>
 
-      <nav className="mbx-bottom" aria-label="Mail folders (phone)">{phoneNav.map((k) => { const c = counts?.[k]; return <button key={k} type="button" className={view === k ? "on" : ""} onClick={() => { setView(k); setSel(null); setOpened(null); }} aria-label={folderLabel(k)}><Ic k={FOLDER_ICON[k]} fill={view === k} /><span>{folderLabel(k)}</span>{c?.unread ? <em>{compact(c.unread)}</em> : null}</button>; })}</nav>
       <ConfirmSheet ask={ask} onNo={() => setAsk(null)} onYes={() => { const a = ask; setAsk(null); if (a && !a.skip) void doAct("trash"); }} />
       {box && <button type="button" className="mbx-fab mbx-glow idle" onClick={() => setCompose({})} aria-label="New email"><Ic k="pen" s={22} /></button>}
 

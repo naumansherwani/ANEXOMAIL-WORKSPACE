@@ -893,3 +893,10 @@ Plan: docs/claude/Q1B4-MASTER-PLAN-17NOV.md. Technology: Rust + Tokio + mail-aut
 - awam: AI product (July 2027, coming soon only), Polar stays, awam h3 correction
 
 - Q1b4 e: TLS 1.3 seen on new Gmail mail, test mail Sent; waits Gmail receipt
+
+## PHASE UI-FIX 17 Nov 2026 05:5x PKT (his orders 05:47): presence pill + one bottom bar on the phone
+Technology: React 19 TS (founder-web), pure module presence_pure.ts (Live / Idle after 30 min without pointer, key, touch, scroll / Offline from navigator.onLine) + tests, CSS only for layout; no new network call, no raw fetch, no WebSocket, no SQL. Phone: mail folders become a scrolling chip row at the top of the list; the ONLY bottom bar is the main tab bar (Home, Bridge, Mail, Finance, People, More), so every feature is reachable. Same code on 390 / 820 / 1280 (CSS media queries only, no JS screen-size switch). TECH-LAW CHECKED: no listed technology added or removed; WASM kernel, WebTransport, HTTP/3 paths untouched.
+
+- founder UI: Live/Idle/Offline pill in top bar, phone mail folders as top chips (one bottom bar), presence tests
+
+- founder UI: Live/Idle/Offline pill in top bar, phone mail folders as top chips (one bottom bar), presence tests
