@@ -1,24 +1,36 @@
-# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 08:28 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 02:12 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 17 Nov 06:35 PLAQUE LIVE (his photo 06:29). His orders: (1) plaque name = full 'Muhammad Nauman Sherwani'; (2) QC0 = POLISH the compose UI first, one phase at a time, subphases for each point written in the repo; (3) editor + phone-compose = WEB RESEARCH, write what was researched into the repo with date/time, then the code plan, then advanced code; (4) undo stays 30 s, but the X on the undo bar = deliver NOW (skip the hold); (5) AI drafting DROPPED until the AI product (July 2027). Steps: fix name, research docs/claude/COMPOSE-RESEARCH-17NOV.md, plan+subphases, qstate, then QC0 code.
 NEXT STEP: 
 HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- b50bf679 17 Nov 08:28 ledger line 79eb942a
 - 79eb942a 17 Nov 08:28 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - 0fe8697d 17 Nov 08:28 ledger line c3b94d35
 - c3b94d35 17 Nov 08:28 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - bb64e252 17 Nov 08:13 ledger line 042e0f41
-- 042e0f41 17 Nov 08:13 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 
 ## Uncommitted files (half-done work if any)
+M  CLAUDE.md
+M  docs/claude/BLUEPRINT-ABC-01NOV.md
+M  docs/claude/HANDOFF-LIVE.md
+M  docs/claude/RESUME-POINT.md
+M  docs/claude/state/Q-STATE.jsonl
  M docs/claude/state/WORKING-NOW.md
+M  docs/claude/tech-contracts/CURRENT.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 +----------------------
- 1 file changed, 1 insertion(+), 22 deletions(-)
+ CLAUDE.md                             |  2 +-
+ docs/claude/BLUEPRINT-ABC-01NOV.md    |  2 +-
+ docs/claude/HANDOFF-LIVE.md           |  6 +++---
+ docs/claude/RESUME-POINT.md           |  4 ++++
+ docs/claude/state/Q-STATE.jsonl       |  1 +
+ docs/claude/state/WORKING-NOW.md      | 23 ++++++++---------------
+ docs/claude/tech-contracts/CURRENT.md |  3 +++
+ 7 files changed, 21 insertions(+), 20 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -29,4 +41,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (e816a3efc3562ea5868e5ceade2e44718e17793d)
+WIP snapshot: refs/wip/last (0d861332d565d1dfc95185dac9c334c6787a40ae)

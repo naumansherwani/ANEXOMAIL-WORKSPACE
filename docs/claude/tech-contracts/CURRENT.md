@@ -965,3 +965,8 @@ QC0d: compose window states normal / large / min via data-mode; rim moved from a
 ### 17 Nov 2026 08:30 PKT - QC0e reduce-motion: data-motion reduced/none -> still silver ring + halo, close after 1300 ms (calm = OS reduce OR data-motion != full); full -> 3.6 s loop, close 2900 ms. CSS + one timeout.
 
 - QC0 docs: evening plan in RESUME-POINT, reduce-motion finding, CLAUDE.md top line (date-time stamped)
+
+### 18 Nov 2026 02:15 PKT - PHASE QC3a CONTRACT (written BEFORE code): Undo bar X = SEND NOW (his word 17 Nov 06:29)
+Technology: PostgreSQL 16 SQL fmail_outbox_release_now (forced RLS, security definer, only rows in state queued, sets not_before to now(), appends a hash-chained ledger line send_release; refuses sent/cancelled/scheduled-by-user); Rust Tokio + axum signed door POST /founder/v1/mail/release (Ed25519 server->browser, HMAC-SHA256+HKDF browser->server, kernel-verified, HTTP/3); WASM kernel RPC call from mail_api.ts; React 19 TS UndoBar: X = deliver now (the 30 s hold and Undo stay), accessible label, 44 px target. The sender worker claim (E182) already takes queued rows with not_before <= now(), so no sender change. No new network library, no raw fetch. Rollback = revert the commit, the SQL function is additive.
+
+- QC0 compose polish GREEN: WIRED: YES / REAL: YES / TECH-LAW CHECKED (his phone screenshots + word 18 Nov 02:11); QC3a contract written, next

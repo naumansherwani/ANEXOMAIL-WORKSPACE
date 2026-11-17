@@ -3583,3 +3583,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - QC0e: reduce-motion shows a still silver ring + halo (no 0.2 s flash); blueprint, CLAUDE.md, RESUME evening plan updated
 
 - QC0 docs: evening plan in RESUME-POINT, reduce-motion finding, CLAUDE.md top line (date-time stamped)
+
+- QC0 compose polish GREEN: WIRED: YES / REAL: YES / TECH-LAW CHECKED (his phone screenshots + word 18 Nov 02:11); QC3a contract written, next
