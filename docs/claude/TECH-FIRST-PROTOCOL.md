@@ -1,5 +1,6 @@
 <!--TECHLAW-->
 # TECH-FIRST PROTOCOL: THE FOREVER SOLUTION (founder 11 Nov 2026 04:33: "1% mistake bardasht nahi")
+**STANDING RULE 0 (his word 18 Nov 2026 04:26, for EVERY phase): WEB RESEARCH FIRST. Search the web for the most advanced current way (standards, RFCs, best implementations), write the findings and the plan at the TOP of the phase plan in the repo, put that plan in front of the code, THEN write the code. SQL = advance level, 300+ lines where he said so. After every step: repo, ledger, chat context, blueprint phase row and the 5-minute reminder are updated with the real clock (rec.sh).**
 READ THIS FIRST AFTER EVERY COMPACTION OR NEW CHAT, BEFORE ANY CODE, BEFORE ANY "GREEN". It is written for Claude. The founder's technology list is in CLAUDE.md line 18 (FOUNDER TECHNOLOGY LAW) and in the TECH LAW cell of every phase row of docs/claude/BLUEPRINT-ABC-01NOV.md.
 
 ## WHY THE MISTAKE KEPT HAPPENING (honest root cause)

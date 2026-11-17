@@ -1029,3 +1029,15 @@ LEFT: code, tests, sandbox look 390/820/1200, his founder-install, his look (pho
 - 18 Nov 2026 04:05 PKT QC1a WRITTEN, not closed: recipient chips (recipients.ts parser + 14 tests, RecipientField.tsx, MailCompose wired, mailbox.css glass chips); tsc clean, bun 336/336, vite build ok, sandbox 390/820/1280 looked at; UI only, no SQL, no Rust; awaits his founder-install, his phone look, my live Chrome look
 
 - 18 Nov 2026 04:22 PKT QC1a = GREEN (his word 04:14 + install saboot + my live Chrome look). WIRED: YES / REAL: YES. Live bundle index-vLv1N_3v = repo build, chips CSS live, pasted 5 addresses -> 4 chips, 1 red with reason, duplicate refused. TECH-LAW CHECKED: React 19 TS + Framer Motion, no backend. QSPEED contents written in the qstate plan (parked until founder and awam complete). NEXT = discuss QC1b with him
+
+### 18 Nov 2026 04:35 PKT - PHASE QC1b CONTRACT (sealed founder address book, his haan 04:26), written BEFORE code
+| Listed technology | Where it lives | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL forced RLS, append-only hash-chained ledger, 300+ lines advance SQL | E186 fmail_contacts + fmail_contact_ledger + doors + selftest + CHECK_E186 | no (next) | sandbox selftest, his sql-run |
+| AES-256-GCM sealed at rest, blind index HMAC-SHA-256 (exact only) | Rust fmail_book.rs using fmail_seal | no (next) | cargo tests |
+| Rust Tokio axum signed doors, kernel WebTransport RPC | /founder/v1/mail/contacts, /contact | no (next) | his install, live Chrome |
+| React 19 TS + Framer Motion suggestion list, HTTP/3 only | RecipientField + book.ts | no (next) | sandbox 390/820/1280, live |
+| Rust WASM kernel filter | OPEN GAP Q-contacts-kernel (kernel is the shared Rule 52 build): TS filter first, registered open | gap | warn in gate |
+Research: HMAC blind index cannot do prefix (authagonal), client-side filter over a cached list (Nylas cookbook), frecency beats a plain counter (Thunderbird bug 1671679). Plan at the top of COMPOSE-RESEARCH-17NOV.md.
+
+- 18 Nov 2026 04:36 PKT QC1b PLAN written at the top of COMPOSE-RESEARCH-17NOV.md after web research (blind-index prefix limit, Nylas client-side filter + frequency ranking, Thunderbird no-recency); contract in CURRENT.md; open gap Q-contacts-kernel registered; QSPEED moved to run right after the whole Q series (his 04:26 word); STANDING RULE 0 web research first added to TECH-FIRST-PROTOCOL. No code yet
