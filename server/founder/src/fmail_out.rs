@@ -154,12 +154,24 @@ async fn process(sb: &crate::data::Sb, master: &[u8; 32], cfg: &Cfg, res: Option
     report(decide(&parts), true).await;
 }
 
-/// The sender asks PUBLIC DNS only. The machine's own /etc/hosts (Debian maps the host name to 127.0.1.1) must never decide where our outgoing mail goes: with it, our own domain looked
-/// "private" to the SSRF guard (is_public) and a mail to ourselves was refused. The guard stays; the answer it judges is now the one the world sees. (Found 17 Nov 04:3x from his CHECK_OUTBOX_LOOK paste.)
+/// The sender asks the REAL upstream DNS, never the machine's own answers. Two local sources can say "127.0.1.1" for our own host name: /etc/hosts (Debian maps the host name to 127.0.1.1) and the
+/// systemd-resolved stub on 127.0.0.53 (it serves /etc/hosts too). Either made our own domain look "private" to the SSRF guard (is_public) and a mail to ourselves was refused (his CHECK_OUTBOX_LOOK paste,
+/// 17 Nov 04:28 and again 05:01 after the hosts-only fix). So: hosts file off, and when systemd-resolved is the stub, its real upstream list (/run/systemd/resolve/resolv.conf) is used instead of the stub.
+/// The guard itself stays; the answer it judges is now the one the world sees.
 fn public_dns_builder() -> Result<hickory_resolver::ResolverBuilder<hickory_resolver::name_server::TokioConnectionProvider>, hickory_resolver::ResolveError> {
-    let mut b = hickory_resolver::TokioResolver::builder_tokio()?;
+    use hickory_resolver::{name_server::TokioConnectionProvider as P, Resolver};
+    let mut b = match upstream_conf(&std::fs::read_to_string("/run/systemd/resolve/resolv.conf").unwrap_or_default()) {
+        Some((cfg, opts)) => { let mut b = Resolver::builder_with_config(cfg, P::default()); *b.options_mut() = opts; b }
+        None => hickory_resolver::TokioResolver::builder_tokio()?,
+    };
     b.options_mut().use_hosts_file = hickory_resolver::config::ResolveHosts::Never;
     Ok(b)
+}
+/// Pure: the upstream resolv.conf text -> a resolver config, only when it names at least one non-loopback nameserver (a stub file pointing at 127.x is no upstream).
+pub fn upstream_conf(text: &str) -> Option<(hickory_resolver::config::ResolverConfig, hickory_resolver::config::ResolverOpts)> {
+    let real = text.lines().filter_map(|l| l.trim().strip_prefix("nameserver ")).filter_map(|a| a.trim().parse::<std::net::IpAddr>().ok()).any(|ip| !ip.is_loopback());
+    if !real { return None; }
+    hickory_resolver::system_conf::parse_resolv_conf(text.as_bytes()).ok()
 }
 
 /// Start the sender. Every 1 s: put failed rows whose backoff passed back in the queue, claim up to 5 due rows, send them one after the other (a slow server never blocks the clock).
@@ -482,6 +494,12 @@ pub async fn dkim_chain_ep(State(st): State<S>, h: HeaderMap) -> Response {
 }
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn upstream_dns_is_used_only_when_it_is_not_a_loopback_stub() {
+        assert!(upstream_conf("nameserver 127.0.0.53\noptions edns0\n").is_none());
+        assert!(upstream_conf("").is_none());
+        assert!(upstream_conf("# resolved\nnameserver 185.12.64.1\nnameserver 185.12.64.2\n").is_some());
+    }
     use super::*;
     use crate::fmail_smtp::{Fail, Outcome, Rcpt};
     fn ok_out(domain_rcpts: &[&str], tls: &'static str) -> Outcome { Outcome { rcpts: domain_rcpts.iter().map(|a| Rcpt { addr: a.to_string(), result: Ok("250 ok".into()) }).collect(), data: Ok("250 queued".into()), tls } }
