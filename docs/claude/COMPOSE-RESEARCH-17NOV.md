@@ -47,3 +47,7 @@ Method note (honest): the web searches of 17 Nov 07:1x returned result lists (ti
 - Technology: CSS @property --mbx-a (angle) + conic-gradient + mask on a pseudo-element overlay; it animates a custom property, not layout, so it is cheap; it is switched off under prefers-reduced-motion. No JavaScript.
 - Fix for image 3: the blue rim was a layer behind the header, so the header background covered its top part. It is now an overlay above everything (z-index 6), so the line runs to the very top and all round.
 - On SEND: the box plays ONE sweep in the original Anexomail logo palette, then closes after 0.95 s (instantly under reduced motion). Logo palette read from public/favicon.svg: steel navy #1E3557 and #2C4C79 with platinum #F5F8FB, #E6EBF1, #C3CCD8 (a silver light sweeping over steel blue). The idle rim keeps the mailbox blue.
+
+---
+## 17 Nov 2026 07:55 PKT - CORRECTION BY HIS WORD (QC0g): phone compose = a BOX (bottom sheet), NOT full screen
+His phone screenshot 07:47 and word: "full screen ka idea mobile pe bad hai, mere mobile pe compose box nahi ata". The 06:4x research line that preferred a full screen on phones is overruled by the founder. Phone now: bottom-sheet card, page dimmed behind, grab handle, rounded top corners, logo-blue rim, follows the keyboard (visualViewport), Send pinned, minimize bar above the tab bar. The Android autofill pill on the To field is neutralised (-webkit-autofill). Seen in the sandbox with the REAL MailCompose at 390; his phone screenshot after install is the proof.

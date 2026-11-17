@@ -949,3 +949,9 @@ QC0d: compose window states normal / large / min via data-mode; rim moved from a
 ### 17 Nov 2026 07:50 PKT - QC0e longer: sweep 1.8 s (two turns, 3.5 px, brighter silver glow), box fades from 1.55 s and closes at 1.9 s (his: 'shimmer ek dum ghayab'). Reduced motion unchanged (closes at once).
 
 - QC0e: send shimmer longer and brighter (1.8 s, two turns, fade-out 1.55 s, close 1.9 s)
+
+### 17 Nov 2026 07:55 PKT - QC0g phone = bottom-sheet BOX again (his word, overrules full screen); autofill pill neutralised. CSS only.
+
+- QC0g: phone compose is a bottom-sheet box (his word), autofill pill fixed; blueprint + CLAUDE.md + RESUME updated
+
+- QC0g: phone compose is a bottom-sheet box (his word), autofill pill fixed; blueprint + CLAUDE.md + RESUME updated

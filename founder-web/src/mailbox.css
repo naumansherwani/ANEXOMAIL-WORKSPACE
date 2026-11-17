@@ -221,3 +221,15 @@
 .mbx-compose .mc footer{flex-wrap:nowrap}
 @media (max-width:760px){.mbx-compose .mc footer{flex-wrap:wrap}}
 .mbx-compose .mc footer>.mx-btn{display:inline-flex;align-items:center;justify-content:center;text-align:center}
+
+/* QC0g (his word 17 Nov 07:50 after his phone screenshot: "full screen ka idea mobile pe bad hai, compose box nahi ata"): on a phone compose is a BOX again, a bottom sheet card with the page dimmed behind it, a grab handle, the logo-blue rim, rounded top corners; it still follows the keyboard (visualViewport) and Send stays pinned. His word overrides the 06:4x research line that preferred full screen. */
+@media (max-width:760px){
+  .mbx-compose .mc-wrap[data-mode="normal"],.mbx-compose .mc-wrap[data-mode="large"]{align-items:flex-end;justify-content:center;padding:max(18px,env(safe-area-inset-top,0px)) 8px 0;background:rgba(5,8,14,.64);backdrop-filter:blur(6px)}
+  .mbx-compose .mc-wrap[data-mode="normal"] .mc,.mbx-compose .mc-wrap[data-mode="large"] .mc{width:100%;max-width:560px;height:auto;max-height:100%;border-radius:22px 22px 0 0;border:1px solid var(--mh2);border-bottom:0;box-shadow:0 -18px 60px rgba(0,0,0,.55)}
+  .mbx-compose .mc-wrap[data-mode="normal"] .mc::after,.mbx-compose .mc-wrap[data-mode="large"] .mc::after{display:block}
+  .mbx-compose .mc[data-mode="normal"]::before{content:"";display:block;width:40px;height:4px;border-radius:4px;background:rgba(195,204,216,.28);margin:8px auto 0;flex:none}
+  .mbx-compose .mc[data-mode="normal"] header{padding-top:6px}
+  .mbx-compose .mc-t{min-height:30dvh}
+}
+/* Android Chrome paints a lighter autofill pill on the To field (his screenshot): keep it the same dark ground */
+.mbx-compose .mc input:-webkit-autofill,.mbx-compose .mc input:-webkit-autofill:focus{-webkit-text-fill-color:var(--fg);caret-color:var(--fg);box-shadow:0 0 0 100px #12151c inset;transition:background-color 99999s}
