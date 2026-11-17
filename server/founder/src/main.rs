@@ -938,6 +938,7 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/mail/vault", axum::routing::post(fmail_ep::vault_ep))
         .route("/founder/v1/mail/send", axum::routing::post(fmail_out::send_ep))
         .route("/founder/v1/mail/undo", axum::routing::post(fmail_out::undo_ep))
+        .route("/founder/v1/mail/release", axum::routing::post(fmail_out::release_ep))
         .route("/founder/v1/mail/cancel", axum::routing::post(fmail_out::cancel_ep))
         .route("/founder/v1/mail/outbox", get(fmail_out::outbox_ep))
         .route("/founder/v1/mail/draft", axum::routing::post(fmail_out::draft_save_ep))
