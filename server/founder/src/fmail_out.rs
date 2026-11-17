@@ -151,7 +151,14 @@ async fn process(sb: &crate::data::Sb, master: &[u8; 32], cfg: &Cfg, res: Option
     let mut parts = Vec::new();
     if cfg.relay.is_some() { parts.push(run_domain(cfg, res, up, "", &from, &rcpts, &payload).await); }
     else { for (d, rs) in group_by_domain(&rcpts) { parts.push(run_domain(cfg, res, up, &d, &from, &rs, &payload).await); } }
-    report(decide(&parts), true).await;
+    let verdict = decide(&parts);
+    let delivered = matches!(verdict, Verdict::Sent { .. });
+    report(verdict, true).await;
+    // QC1b: a mail that REALLY left counts every recipient in the sealed address book (names from the headers when there are any); never costs the mail, errors are only logged
+    if delivered {
+        let names = crate::fmail_book::names_of(&raw); let kid = js(&job, "key_id").unwrap_or("vault-1");
+        for r in &rcpts { crate::fmail_book::touch(sb, master, actor, mailbox, &from, kid, "sent", id, r, names.get(r.as_str()).map(|s| s.as_str()).unwrap_or("")).await; }
+    }
 }
 
 /// The sender asks the REAL upstream DNS, never the machine's own answers. Two local sources can say "127.0.1.1" for our own host name: /etc/hosts (Debian maps the host name to 127.0.1.1) and the

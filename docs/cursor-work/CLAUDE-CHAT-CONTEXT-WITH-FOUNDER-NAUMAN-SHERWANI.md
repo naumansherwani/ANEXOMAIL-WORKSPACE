@@ -3621,3 +3621,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 18 Nov 2026 04:36 PKT QC1b PLAN written at the top of COMPOSE-RESEARCH-17NOV.md after web research (blind-index prefix limit, Nylas client-side filter + frequency ranking, Thunderbird no-recency); contract in CURRENT.md; open gap Q-contacts-kernel registered; QSPEED moved to run right after the whole Q series (his 04:26 word); STANDING RULE 0 web research first added to TECH-FIRST-PROTOCOL. No code yet
 
 - 18 Nov 2026 04:50 PKT QC1b STEP 1 DONE: SQL E186 sealed address book written (476 lines, docs/cursor-work/sql/E186_founder_mail_address_book.sql + CHECK_E186.sql); sandbox PG16: selftest 32/0, CHECK 8/8, E179 door audit clean, re-run safe; NOT installed on his server; next = Rust fmail_book.rs + doors, then book.ts + suggestion list
+
+- 18 Nov 2026 05:05 PKT QC1b WRITTEN, not closed: E186 SQL (sandbox 32/0), Rust fmail_book.rs + doors + touch on real send and clean inbox mail (cargo test 439/0), book.ts + suggestion list in the chips (bun 345/0, tsc clean, sandbox 390/1280 looked). Awaits his sql-run + founder-install, then my live Chrome look

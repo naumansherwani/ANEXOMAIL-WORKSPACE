@@ -157,8 +157,8 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-3qTCKyl6.js
-founder-web/dist/assets/index-BGImRk5O.css
+founder-web/dist/assets/index-Brd5Ya19.css
+founder-web/dist/assets/index-CnUVAfz0.js
 founder-web/dist/assets/kernel.worker-CmgLpPuh.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
@@ -243,6 +243,8 @@ founder-web/src/appearance.test.ts
 founder-web/src/appearance.ts
 founder-web/src/banned.test.ts
 founder-web/src/banned.ts
+founder-web/src/book.test.ts
+founder-web/src/book.ts
 founder-web/src/bridgelane_pure.test.ts
 founder-web/src/bridgelane_pure.ts
 founder-web/src/bridgelanes.css
@@ -400,6 +402,7 @@ server/founder/src/data.rs
 server/founder/src/dbsc.rs
 server/founder/src/flare.rs
 server/founder/src/fmail_auth.rs
+server/founder/src/fmail_book.rs
 server/founder/src/fmail_core.rs
 server/founder/src/fmail_dkim.rs
 server/founder/src/fmail_ep.rs

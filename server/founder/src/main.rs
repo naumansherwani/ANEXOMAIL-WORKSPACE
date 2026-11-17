@@ -58,6 +58,7 @@ mod fmail_dkim;
 mod fmail_mime;
 mod fmail_smtp;
 mod fmail_out;
+mod fmail_book;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -939,6 +940,8 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/mail/send", axum::routing::post(fmail_out::send_ep))
         .route("/founder/v1/mail/undo", axum::routing::post(fmail_out::undo_ep))
         .route("/founder/v1/mail/release", axum::routing::post(fmail_out::release_ep))
+        .route("/founder/v1/mail/contacts", get(fmail_book::top_ep))
+        .route("/founder/v1/mail/contact", axum::routing::post(fmail_book::act_ep))
         .route("/founder/v1/mail/cancel", axum::routing::post(fmail_out::cancel_ep))
         .route("/founder/v1/mail/outbox", get(fmail_out::outbox_ep))
         .route("/founder/v1/mail/draft", axum::routing::post(fmail_out::draft_save_ep))

@@ -144,6 +144,10 @@ export async function send(box: string, c: Compose, o: { schedule?: string; draf
   return { ok: false, error: r.body?.error || `HTTP ${r.status}`, needsDkim: !!r.body?.needs_dkim };
 }
 export async function undo(box: string, outbox: string): Promise<{ ok: boolean; error?: string }> { const r = await post("/founder/v1/mail/undo", { box, outbox }); return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` }; }
+/** QC1b: the sealed address book, opened by the server (top 500 by frecency). Signed GET, kernel-verified. [] = nothing yet or the door is not answering (typing simply shows no suggestions). */
+export async function contacts(box: string): Promise<import("./book").Contact[]> { const d = (await get(`/founder/v1/mail/contacts?${q({ box })}`)).data; return Array.isArray(d?.items) ? d.items.filter((c: any) => c && typeof c.addr === "string") : []; }
+/** QC1b: forget (removed for good, a blind tombstone keeps mail that merely arrives from bringing them back), pin or unpin one contact. */
+export async function contactAct(box: string, contact: string, op: "forget" | "pin" | "unpin"): Promise<{ ok: boolean; error?: string }> { const r = await post("/founder/v1/mail/contact", { box, contact, op }); return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error ?? "could not change this contact" }; }
 /** QC3a: Send now. Skips the rest of the 30 s hold (signed door, E185). Idempotent: pressing twice answers ok both times. */
 export async function release(box: string, outbox: string): Promise<{ ok: boolean; error?: string }> { const r = await post("/founder/v1/mail/release", { box, outbox }); return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` }; }
 export async function cancel(box: string, outbox: string): Promise<{ ok: boolean; error?: string }> { const r = await post("/founder/v1/mail/cancel", { box, outbox }); return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` }; }

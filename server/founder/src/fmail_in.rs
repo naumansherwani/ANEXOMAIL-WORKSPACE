@@ -268,7 +268,15 @@ impl Live {
         if let Some(v) = &self.verifier {
             let t_auth = std::time::Instant::now();
             let ok = match v.verify(raw, mail_from).await {
-                Some((ev, sigs)) => self.sb.rpc_msg("fmail_auth_record183", json!({"p_mailbox": r.mailbox_id, "p_message": mid, "p_ev": ev, "p_sigs": sigs})).await.is_ok(),
+                Some((ev, sigs)) => {
+                    // QC1b: a personal, clean, DMARC-passing mail in the inbox counts its sender in the sealed address book (never bulk, never a display-name spoof, never his own domain); errors are only logged
+                    if folder_for(scan) == "inbox" && crate::fmail_book::received_ok(scan, &ev, raw) && !s.from_addr.is_empty() {
+                        if let Some(owner) = crate::fmail_book::owner_of(&self.sb, &r.mailbox_id).await {
+                            crate::fmail_book::touch(&self.sb, &self.master, &owner, &r.mailbox_id, &r.addr, &r.key_id, "received", mid, &s.from_addr, &s.from_name).await;
+                        }
+                    }
+                    self.sb.rpc_msg("fmail_auth_record183", json!({"p_mailbox": r.mailbox_id, "p_message": mid, "p_ev": ev, "p_sigs": sigs})).await.is_ok()
+                }
                 None => false,
             };
             if !ok { eprintln!("founder: mail verdict not recorded for {} ({} ms)", mid, t_auth.elapsed().as_millis()); }

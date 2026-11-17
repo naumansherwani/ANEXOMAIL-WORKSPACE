@@ -5,6 +5,7 @@
 // Left/Right walk the chips; Delete removes; Enter edits; M or the menu key opens the chip menu. Pointer: double click edits, drag a chip onto another row. Touch: the chip menu (44 px targets).
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { asChipText, DEBOUNCE_MS, suggest, type Contact } from "./book";
 import { addText, chipsOf, initial, joinChips, label, looksComplete, removeChip, type Chip, type Field } from "./recipients";
 
 export const DRAG_MIME = "application/x-anexo-chip";
@@ -17,16 +18,24 @@ export type RowProps = {
   onDragActive?: (on: boolean) => void;                           // the parent shows the Cc / Bcc rows while a chip is being dragged
   inputRef?: React.RefObject<HTMLInputElement | null>;
   trailing?: React.ReactNode; placeholder?: string; autoFocus?: boolean;
+  book?: Contact[];                                               // QC1b: the opened address book (top 500); suggestions are filtered here while typing, no server call
+  onBookAct?: (c: Contact, op: "forget" | "pin" | "unpin") => void;
 };
 
 const key = (c: Chip) => c.addr ?? c.raw;
 const OTHERS: Record<Field, Field[]> = { To: ["Cc", "Bcc"], Cc: ["To", "Bcc"], Bcc: ["To", "Cc"] };
 
-export function RecipientField({ field, value, onChange, taken, onMove, onDragActive, inputRef, trailing, placeholder }: RowProps) {
+export function RecipientField({ field, value, onChange, taken, onMove, onDragActive, inputRef, trailing, placeholder, book, onBookAct }: RowProps) {
   const reduceHook = useReducedMotion(), calm = !!reduceHook || (typeof document !== "undefined" && document.documentElement.dataset.motion !== "full");
   const uid = useId(), own = useRef<HTMLInputElement>(null), box = inputRef ?? own;
   const [text, setText] = useState(""), [sel, setSel] = useState(-1), [menu, setMenu] = useState(-1), [live, setLive] = useState(""), [note, setNote] = useState(""), [over, setOver] = useState(false);
   const chips = useMemo(() => chipsOf(value), [value]);
+  // QC1b suggestions: filtered from the opened book after a 150 ms pause, from 2 characters, never an address that is already in a row, 8 at most
+  const [dq, setDq] = useState(""), [act, setAct] = useState(-1), [shut, setShut] = useState(false);
+  useEffect(() => { const t = window.setTimeout(() => { setDq(text); setAct(-1); setShut(false); }, DEBOUNCE_MS); return () => window.clearTimeout(t); }, [text]);
+  const hits = useMemo(() => (book && book.length ? suggest(book, dq, taken, Date.now()) : []), [book, dq, taken]);
+  const showSug = hits.length > 0 && !shut && text.trim().length >= 2;
+  const pick = (i: number) => { const h = hits[i]; if (!h) return; if (commit(asChipText(h.c))) { setText(""); setDq(""); setAct(-1); } };
   const refs = useRef<(HTMLLIElement | null)[]>([]);
   const bad = chips.filter((c) => !c.addr);
   const tell = useCallback((m: string) => { setLive(""); window.setTimeout(() => setLive(m), 20); }, []);
@@ -55,6 +64,10 @@ export function RecipientField({ field, value, onChange, taken, onMove, onDragAc
   function onKey(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.nativeEvent.isComposing) return;                         // an IME is still choosing characters
     const k = e.key;
+    if (showSug && k === "ArrowDown") { e.preventDefault(); setAct((a) => (a + 1) % hits.length); return; }
+    if (showSug && k === "ArrowUp") { e.preventDefault(); setAct((a) => (a <= 0 ? hits.length - 1 : a - 1)); return; }
+    if (showSug && act >= 0 && (k === "Enter" || k === "Tab")) { e.preventDefault(); pick(act); return; }
+    if (showSug && k === "Escape") { e.stopPropagation(); setShut(true); return; }
     if (k === "Enter" || k === "," || k === ";") { if (text.trim()) { e.preventDefault(); if (commit(text)) setText(""); } else if (k !== "Enter") e.preventDefault(); return; }
     if (k === " " && looksComplete(text)) { e.preventDefault(); if (commit(text)) setText(""); return; }
     if (k === "Backspace" && !text && chips.length) { e.preventDefault(); if (sel === chips.length - 1) drop(sel); else setSel(chips.length - 1); return; }
@@ -118,6 +131,7 @@ export function RecipientField({ field, value, onChange, taken, onMove, onDragAc
           <li className="rf-in" role="presentation">
             <input ref={box} value={text} onChange={(e) => onText(e.target.value)} onKeyDown={onKey} onPaste={onPaste} onBlur={flush}
               placeholder={chips.length ? "" : (placeholder ?? "name@example.com")} autoComplete="off" autoCapitalize="none" autoCorrect="off" spellCheck={false} inputMode="email" enterKeyHint="next"
+              role="combobox" aria-expanded={showSug} aria-controls={`${uid}-sug`} aria-autocomplete="list" aria-activedescendant={showSug && act >= 0 ? `${uid}-s${act}` : undefined}
               aria-label={`Add to ${field}`} aria-describedby={bad.length || note ? `${uid}-why` : undefined} />
           </li>
         </ul>
@@ -129,6 +143,19 @@ export function RecipientField({ field, value, onChange, taken, onMove, onDragAc
         )}
       </div>
       {trailing}
+      {showSug && (
+        <ul className="rf-sug" id={`${uid}-sug`} role="listbox" aria-label={`Suggestions for ${field}`}>
+          {hits.map((h, i) => (
+            <li key={h.c.id} id={`${uid}-s${i}`} role="option" aria-selected={act === i} className={`rf-opt${act === i ? " on" : ""}`}
+                onMouseDown={(e) => { e.preventDefault(); pick(i); }} onMouseEnter={() => setAct(i)}>
+              <i className="rf-dot" aria-hidden="true">{(h.c.name || h.c.addr).replace(/[^\p{L}\p{N}]/gu, "").charAt(0).toUpperCase() || "?"}</i>
+              <span className="rf-ot"><b>{h.c.name || h.c.addr}</b>{h.c.name && <small>{h.c.addr}</small>}</span>
+              {onBookAct && <button type="button" className="rf-pinb" tabIndex={-1} aria-label={h.c.pinned ? `Unpin ${h.c.name || h.c.addr}` : `Pin ${h.c.name || h.c.addr} to the top`} onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); onBookAct(h.c, h.c.pinned ? "unpin" : "pin"); }}>{h.c.pinned ? "★" : "☆"}</button>}
+              {onBookAct && <button type="button" className="rf-forget" tabIndex={-1} aria-label={`Remove ${h.c.name || h.c.addr} from suggestions`} onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); onBookAct(h.c, "forget"); }}>×</button>}
+            </li>
+          ))}
+        </ul>
+      )}
       <span className="sr" role="status" aria-live="polite">{live}</span>
     </div>
   );
