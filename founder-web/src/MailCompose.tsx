@@ -108,16 +108,18 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
 
 /** After a send: a countdown with Undo. When the window closes it says what the sender does next. */
 export function UndoBar({ box, q, onGone, onUndone }: { box: string; q: api.Queued; onGone: () => void; onUndone: () => void }) {
-  const until = Date.parse(q.undo_until), [now, setNow] = useState(Date.now()), [state, setState] = useState<"wait" | "undoing" | "failed">("wait"), [err, setErr] = useState("");
+  const until = Date.parse(q.undo_until), [now, setNow] = useState(Date.now()), [state, setState] = useState<"wait" | "undoing" | "releasing" | "released" | "failed">("wait"), [err, setErr] = useState("");
   useEffect(() => { const t = window.setInterval(() => setNow(Date.now()), 250); return () => window.clearInterval(t); }, []);
   const left = undoLeft(until, now), scheduled = q.state === "scheduled";
   useEffect(() => { if (state === "wait" && left === 0 && !scheduled) { const t = window.setTimeout(onGone, 4000); return () => window.clearTimeout(t); } }, [left, scheduled, state, onGone]);
   useEffect(() => { if (scheduled && left === 0 && state === "wait") { const t = window.setTimeout(onGone, 5000); return () => window.clearTimeout(t); } }, [scheduled, left, state, onGone]);
   async function undo() { setState("undoing"); const r = await api.undo(box, q.outbox_id); if (r.ok) { onUndone(); onGone(); } else { setState("failed"); setErr(r.error || "Too late: the mail is already on its way."); } }
+  async function sendNow() { setState("releasing"); const r = await api.release(box, q.outbox_id); if (r.ok) { setState("released"); window.setTimeout(onGone, 4000); } else { setState("failed"); setErr(r.error || "Could not send now; the mail leaves on its own clock."); window.setTimeout(() => setState("wait"), 3500); } }
   return (
     <div className="mu" role="status" aria-live="polite" style={{ "--p": `${Math.max(0, Math.min(1, left / 30))}` } as React.CSSProperties}>
-      <span>{state === "undoing" ? "Taking it back…" : state === "failed" ? err : left > 0 ? `${scheduled ? "Scheduled" : "Sent"}. Undo within ${left}s` : scheduled ? `Scheduled for ${new Date(q.not_before).toLocaleString()}.` : "On its way."}</span>
+      <span>{state === "undoing" ? "Taking it back…" : state === "releasing" ? "Sending now…" : state === "released" ? "Sent. On its way now." : state === "failed" ? err : left > 0 ? `${scheduled ? "Scheduled" : "Sent"}. Undo within ${left}s` : scheduled ? `Scheduled for ${new Date(q.not_before).toLocaleString()}.` : "On its way."}</span>
       {left > 0 && state === "wait" && <button type="button" className="mx-btn alt" onClick={() => void undo()}>Undo</button>}
+      {left > 0 && state === "wait" && !scheduled && <button type="button" className="mx-btn mu-now" onClick={() => void sendNow()}>Send now</button>}
       <button type="button" className="mu-x" onClick={onGone} aria-label="Dismiss">×</button>
     </div>
   );

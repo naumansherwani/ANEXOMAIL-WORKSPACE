@@ -297,6 +297,7 @@ docs/claude/state/PHASES.json
 docs/claude/state/Q-STATE.jsonl
 docs/claude/state/SERVER-FIRST.jsonl
 docs/claude/state/WORKING-NOW.md
+docs/claude/state/pending-main-rs-release-route.patch
 docs/claude/tech-contracts/00-FOUNDER-TECH-RULE.md
 docs/claude/tech-contracts/CURRENT.md
 docs/cursor-work/00-FOUNDER-TECH-RULE.md

@@ -602,3 +602,7 @@
 - QC0 docs: evening plan in RESUME-POINT, reduce-motion finding, CLAUDE.md top line (date-time stamped)
 
 - QC0 compose polish GREEN: WIRED: YES / REAL: YES / TECH-LAW CHECKED (his phone screenshots + word 18 Nov 02:11); QC3a contract written, next
+
+- QC3a WRITTEN 18 Nov 2026 02:55 PKT (option B, his word 02:26): SQL E185 fmail_outbox_release_now + CHECK_E185 (sandbox PG16 selftest 12/12, E179 audit clean), Rust release_ep + route, mail_api.release, UndoBar Send now button; tsc, bun 322/322, cargo check, vite build OK; NOT installed yet, awaits his sql-run + founder-install + my live Chrome look
+
+- QC3a WRITTEN 18 Nov 2026 03:05 PKT (option B, his word 02:26): SQL E185 + CHECK_E185 (sandbox PG16 selftest 12/12, E179 audit clean), Rust release_ep (route line held in docs/claude/state/pending-main-rs-release-route.patch until a SERVER-FIRST receipt), mail_api.release, UndoBar Send now; tsc, bun 322/322, cargo check, vite build OK; NOT installed, awaits his read-only paste, sql-run, founder-install, my live Chrome look

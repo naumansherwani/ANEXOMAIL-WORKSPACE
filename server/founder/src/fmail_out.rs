@@ -281,6 +281,22 @@ pub async fn undo_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::bo
     if !in_outbox(sb, &b, &ob).await { return pk::refuse(StatusCode::NOT_FOUND, "no such queued mail"); }
     match sb.rpc_msg("fmail_outbox_undo", json!({"p_actor": uid, "p_outbox": ob})).await { Ok(v) => crate::signed(&st, json!({"ok": true, "result": v})), Err(e) => pk::sql_err(e) }
 }
+/// POST /founder/v1/mail/release {box, outbox}: SEND NOW (QC3a, his option B). No touch (the passkey touch was spent at send; this only skips the 30 s hold).
+/// One compare-and-set SQL door (E185, row lock shared with the sender's SKIP LOCKED claim, idempotent), then WAKE so the sender worker leaves its sleep and the mail goes this instant.
+/// The whole call is capped at 8 s (tokio timeout) so a stuck database can never hold the signed channel; a repeat of the same request answers the same thing (already:true).
+pub async fn release_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::body::Bytes) -> Response {
+    let (uid, _e, _d) = match pk::ctx(&st, &h, uri.path(), &body, true).await { Ok(x) => x, Err(r) => return r };
+    let sb = match pk::sbx(&st) { Ok(s) => s, Err(r) => return r };
+    let j = match pk::body_json(&body) { Ok(j) => j, Err(r) => return r };
+    let Some((b, ob)) = ids_ok(&j) else { return bad("box and outbox are needed") };
+    if let Err(r) = own_box(sb, &uid, &b).await { return r; }
+    let call = sb.rpc_msg("fmail_outbox_release_now", json!({"p_actor": uid, "p_mailbox": b, "p_outbox": ob}));
+    match tokio::time::timeout(std::time::Duration::from_secs(8), call).await {
+        Err(_) => pk::refuse(StatusCode::GATEWAY_TIMEOUT, "the database did not answer in time; the mail is still held and will leave on its own clock"),
+        Ok(Ok(v)) => { WAKE.notify_one(); crate::signed(&st, json!({"ok": true, "result": v})) }
+        Ok(Err(e)) => pk::sql_err(e),
+    }
+}
 /// POST /founder/v1/mail/cancel {box, outbox}: cancel a scheduled or failed mail (it goes back to Drafts).
 pub async fn cancel_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::body::Bytes) -> Response {
     let (uid, _e, _d) = match pk::ctx(&st, &h, uri.path(), &body, true).await { Ok(x) => x, Err(r) => return r };

@@ -144,6 +144,8 @@ export async function send(box: string, c: Compose, o: { schedule?: string; draf
   return { ok: false, error: r.body?.error || `HTTP ${r.status}`, needsDkim: !!r.body?.needs_dkim };
 }
 export async function undo(box: string, outbox: string): Promise<{ ok: boolean; error?: string }> { const r = await post("/founder/v1/mail/undo", { box, outbox }); return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` }; }
+/** QC3a: Send now. Skips the rest of the 30 s hold (signed door, E185). Idempotent: pressing twice answers ok both times. */
+export async function release(box: string, outbox: string): Promise<{ ok: boolean; error?: string }> { const r = await post("/founder/v1/mail/release", { box, outbox }); return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` }; }
 export async function cancel(box: string, outbox: string): Promise<{ ok: boolean; error?: string }> { const r = await post("/founder/v1/mail/cancel", { box, outbox }); return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` }; }
 /** Q1b4: the evidence behind one mail's ring (inbound) or the sending facts (outbound). Signed GET, kernel-verified. null = door not answering. */
 export async function authFacts(box: string, message: string): Promise<{ direction: "in" | "out"; evidence?: any; facts?: any } | null> { const d = (await get(`/founder/v1/mail/auth?${q({ box, message })}`)).data; return d?.connected ? d : null; }
