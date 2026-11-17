@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 05:21 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 05:28 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Q1b4 e: Postfix TLS header ON (his paste 05:0x). My 04:50 test mail STILL refused 'points to a private address' (CHECK_OUTBOX_LOOK row ea7838e2 cancelled): the hosts-only fix was not enough; systemd-resolved stub 127.0.0.53 also serves /etc/hosts. Rust now uses /run/systemd/resolve/resolv.conf upstream (tested) + hosts off; needs founder-install, then a new test mail. His phone screenshot 04:59 = 390 inbox look
 NEXT STEP: his founder-install, then my test mail, then Gmail mail for TLS, then close Q1b4 e
 HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 5da10944 17 Nov 05:28 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
+- 6be7b5f5 17 Nov 05:21 ledger line d8a4c4e4
 - d8a4c4e4 17 Nov 05:21 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - 4b4c054b 17 Nov 05:06 ledger line daad71f0
 - daad71f0 17 Nov 05:06 Sender resolver uses real upstream DNS (systemd-resolved stub also served hosts)
-- 77bec486 17 Nov 04:58 ledger line 2754b9a1
-- 2754b9a1 17 Nov 04:58 Postfix TLS header script, CHECK_OUTBOX_LOOK all states, clean awam blueprint
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -21,8 +21,8 @@ FILES: docs/awam/
 PROGRESS:
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 +++++++----------------
- 1 file changed, 7 insertions(+), 16 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -33,4 +33,4 @@ PROGRESS:
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (38371c8bf3a1f77c8c70ddfaa85d412380879bc3)
+WIP snapshot: refs/wip/last (8790ea7e407f12e6913fc5d15ccb8eafbf3b1e55)
