@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 04:29 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 04:34 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 17 Nov 06:35 PLAQUE LIVE (his photo 06:29). His orders: (1) plaque name = full 'Muhammad Nauman Sherwani'; (2) QC0 = POLISH the compose UI first, one phase at a time, subphases for each point written in the repo; (3) editor + phone-compose = WEB RESEARCH, write what was researched into the repo with date/time, then the code plan, then advanced code; (4) undo stays 30 s, but the X on the undo bar = deliver NOW (skip the hold); (5) AI drafting DROPPED until the AI product (July 2027). Steps: fix name, research docs/claude/COMPOSE-RESEARCH-17NOV.md, plan+subphases, qstate, then QC0 code.
 NEXT STEP: 
 HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- c6729e8b 18 Nov 04:34 QC1b step 1: SQL E186 sealed address book (476 lines, sandbox selftest 32/0)
 - 42436ab6 18 Nov 04:28 ledger line f8a7e185
 - f8a7e185 18 Nov 04:28 QC1b plan + contract + open gap, QSPEED after Q series, rule 0 web research first
 - abd7be07 18 Nov 04:15 ledger line c0ca13d4
 - c0ca13d4 18 Nov 04:15 QC1a closed: live Chrome proof, QSPEED contents written in plan
-- 9232ae6c 18 Nov 04:01 ledger line 477f91a0
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -29,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (1cc3b86ec1a0228f605d9d2eb0226ca614df9267)
+WIP snapshot: refs/wip/last (bcce092588783ce4373f20cdcf895cdfd4a7d900)
