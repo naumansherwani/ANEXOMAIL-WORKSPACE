@@ -5,39 +5,20 @@ HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 98d7da15 17 Nov 07:51 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - 13a56249 17 Nov 07:32 ledger line b2989c6a
 - b2989c6a 17 Nov 07:32 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
 - 6cf04574 17 Nov 07:30 ledger line 1b30f365
 - 1b30f365 17 Nov 07:30 Phase: Q Tech: Rust + Tokio + Axum, AES-256-GCM + ML-KEM-768 sealing, passkey touch gates, PostgreSQL RLS, React 19 + Framer Motion
-- 6c68f976 17 Nov 07:25 ledger line 32bab724
 
 ## Uncommitted files (half-done work if any)
-M  CLAUDE.md
-M  docs/claude/AWAM-INHERIT-MANIFEST.json
-M  docs/claude/BLUEPRINT-ABC-01NOV.md
-M  docs/claude/COMPOSE-RESEARCH-17NOV.md
-M  docs/claude/RESUME-POINT.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-R  founder-web/dist/assets/index-BMIlYsXd.js -> founder-web/dist/assets/index-C57pZcNe.js
-D  founder-web/dist/assets/index-D6kCTOhA.css
-A  founder-web/dist/assets/index-YKnMZr3r.css
-M  founder-web/dist/index.html
-M  founder-web/src/mailbox.css
-M  lanes/ALL-FILES.csv
-M  lanes/founder.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- .../{index-BMIlYsXd.js => index-C57pZcNe.js}       |  0
- founder-web/dist/assets/index-D6kCTOhA.css         |  1 -
- founder-web/dist/assets/index-YKnMZr3r.css         |  1 +
- founder-web/dist/index.html                        |  4 +--
- founder-web/src/mailbox.css                        | 12 +++++++++
- lanes/ALL-FILES.csv                                |  4 +--
- lanes/founder.txt                                  |  4 +--
- 14 files changed, 45 insertions(+), 23 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 34 +---------------------------------
+ 1 file changed, 1 insertion(+), 33 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -48,4 +29,4 @@ M  lanes/founder.txt
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (776f3578cf4d085f03cf00a786a32dccb1c99ea8)
+WIP snapshot: refs/wip/last (2d1b1d2a67d74a300a1d83119dea2fa6dcad8358)
