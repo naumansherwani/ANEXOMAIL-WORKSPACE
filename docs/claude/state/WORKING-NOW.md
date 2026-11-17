@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 03:06 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 03:07 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 17 Nov 06:35 PLAQUE LIVE (his photo 06:29). His orders: (1) plaque name = full 'Muhammad Nauman Sherwani'; (2) QC0 = POLISH the compose UI first, one phase at a time, subphases for each point written in the repo; (3) editor + phone-compose = WEB RESEARCH, write what was researched into the repo with date/time, then the code plan, then advanced code; (4) undo stays 30 s, but the X on the undo bar = deliver NOW (skip the hold); (5) AI drafting DROPPED until the AI product (July 2027). Steps: fix name, research docs/claude/COMPOSE-RESEARCH-17NOV.md, plan+subphases, qstate, then QC0 code.
 NEXT STEP: 
 HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 27b2ea2a 18 Nov 03:06 Blueprint: QC3a GREEN, next QC1
+- ee451ee8 18 Nov 03:06 ledger line 0dc17ba5
 - 0dc17ba5 18 Nov 03:06 QC3a Send now: GREEN by his word and Gmail test
 - 7b8cdf54 18 Nov 02:58 ledger line c1b231dd
 - c1b231dd 18 Nov 02:58 QC3a: installed on his server (E185 5/5, install OK), live Chrome test next
-- 990698fc 18 Nov 02:39 ledger line 969a34b5
-- 969a34b5 18 Nov 02:39 QC3a: SERVER-FIRST receipt 46, ready to install
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -29,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ad7ecb0acc8a692fcf1b058f9b9794176c350278)
+WIP snapshot: refs/wip/last (480f97b8a23e7b5b89d75a9e639233ab96703f2b)
