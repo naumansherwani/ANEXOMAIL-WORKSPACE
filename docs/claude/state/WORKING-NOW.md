@@ -1,26 +1,24 @@
-# WORKING NOW (manual checkpoint, 17 Nov 2026 05:06 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 17 Nov 2026 05:06 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Q1b4 e: Postfix TLS header ON (his paste 05:0x). My 04:50 test mail STILL refused 'points to a private address' (CHECK_OUTBOX_LOOK row ea7838e2 cancelled): the hosts-only fix was not enough; systemd-resolved stub 127.0.0.53 also serves /etc/hosts. Rust now uses /run/systemd/resolve/resolv.conf upstream (tested) + hosts off; needs founder-install, then a new test mail. His phone screenshot 04:59 = 390 inbox look
 NEXT STEP: his founder-install, then my test mail, then Gmail mail for TLS, then close Q1b4 e
 HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- daad71f0 17 Nov 05:06 Sender resolver uses real upstream DNS (systemd-resolved stub also served hosts)
 - 77bec486 17 Nov 04:58 ledger line 2754b9a1
 - 2754b9a1 17 Nov 04:58 Postfix TLS header script, CHECK_OUTBOX_LOOK all states, clean awam blueprint
 - 35df3be7 17 Nov 04:51 ledger line 583d0775
 - 583d0775 17 Nov 04:51 Awam order (packages, no AI), editlog.sh mid-edit safety, ckpt WIP snapshot
-- 225409b5 17 Nov 04:38 ledger line 92a13b6c
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
- M server/founder/src/fmail_out.rs
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 24 ++++++------------------
- server/founder/src/fmail_out.rs  | 24 +++++++++++++++++++++---
- 2 files changed, 27 insertions(+), 21 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -31,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ed25b0a2cc0e9ac8c4202d67190093e9c1cf5f4a)
+WIP snapshot: refs/wip/last (a3019800d487d961cafe49f9d8778593255781e9)
