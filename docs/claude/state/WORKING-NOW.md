@@ -5,11 +5,11 @@ HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 5660cbc9 18 Nov 03:16 QSPEED: drop HTTP/2 from the plan
+- fb08ee59 18 Nov 03:16 ledger line 844db4c8
 - 844db4c8 18 Nov 03:16 QSPEED: contract + read-only latency check
 - 0428adbb 18 Nov 03:13 ledger line 54adef70
 - 54adef70 18 Nov 03:13 Audit after QC3a: CHECK_E170, open item lists slow + 504
-- 51619737 18 Nov 03:06 ledger line 27b2ea2a
-- 27b2ea2a 18 Nov 03:06 Blueprint: QC3a GREEN, next QC1
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -17,8 +17,8 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -29,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (3c77d0d9f76ac184c30779bb530412ff96a153a7)
+WIP snapshot: refs/wip/last (74732383b397576ad4144f3297b5918f5f21f7af)
