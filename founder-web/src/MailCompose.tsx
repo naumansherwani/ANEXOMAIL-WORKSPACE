@@ -3,7 +3,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import * as api from "./mail_api";
-import { composeProblem, parseAddrs, undoLeft, type Box } from "./mail_pure";
+import { composeProblem, undoLeft, type Box } from "./mail_pure";
+import { RecipientField } from "./RecipientField";
+import { chipsOf, joinChips, parseAddrs, removeChip, takenMap, type Field } from "./recipients";
 
 export type Start = { to?: string; subject?: string; text?: string; in_reply_to?: string; reply_to?: string; draft?: string };
 
@@ -39,6 +41,12 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
   const draft = useRef<{ id?: string; v: number }>({ v: 0 });
   const last = useRef(""), dirty = useRef(false);
   const toRef = useRef<HTMLInputElement>(null), reduce = !!useReducedMotion();
+  const taken = takenMap({ To: to, Cc: cc, Bcc: bcc });
+  const setters = { To: setTo, Cc: setCc, Bcc: setBcc }, vals = { To: to, Cc: cc, Bcc: bcc };
+  const moveChip = (addr: string, raw: string, from: Field, dest: Field) => {                    // QC1a: a chip moves between To / Cc / Bcc (drag or menu); the address is never duplicated
+    setters[from](joinChips(removeChip(chipsOf(vals[from]), addr)));
+    setters[dest](joinChips([...removeChip(chipsOf(vals[dest]), addr), ...chipsOf(raw)])); if (dest !== "To") setShowCc(true);
+  };
   const lists = () => ({ to: parseAddrs(to), cc: parseAddrs(cc), bcc: parseAddrs(bcc) });
 
   // open an existing draft
@@ -87,9 +95,10 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
       <motion.form className="mc" data-mode={mode} data-fx={fx ? "sent" : undefined} initial={reduce ? false : { y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 24, opacity: 0 }} transition={{ type: "spring", stiffness: 420, damping: 36 }} onSubmit={(e) => { e.preventDefault(); void send(); }}>
         <header><h2>{start.in_reply_to ? "Reply" : "New email"}</h2><span className="dim small" aria-live="polite">{saved}</span><button type="button" className="mc-x mc-b" onClick={() => setMode(mode === "min" ? "normal" : "min")} aria-label={mode === "min" ? "Restore" : "Minimize"}>{mode === "min" ? "▢" : "–"}</button><button type="button" className="mc-x mc-b mc-exp" onClick={() => setMode(mode === "large" ? "normal" : "large")} aria-label={mode === "large" ? "Smaller" : "Expand"}>{mode === "large" ? "⤡" : "⤢"}</button><button type="button" className="mc-x" onClick={() => void closeKeep()} aria-label="Close (the draft is kept)">×</button></header>
         <label className="mc-f"><span>From</span><b>{box.address}</b></label>
-        <label className="mc-f"><span>To</span><input ref={toRef} value={to} onChange={(e) => setTo(e.target.value)} placeholder="name@example.com" autoComplete="off" spellCheck={false} inputMode="email" />{!showCc && <button type="button" className="mc-link" onClick={() => setShowCc(true)}>Cc / Bcc</button>}</label>
-        {showCc && <><label className="mc-f"><span>Cc</span><input value={cc} onChange={(e) => setCc(e.target.value)} autoComplete="off" spellCheck={false} inputMode="email" /></label>
-          <label className="mc-f"><span>Bcc</span><input value={bcc} onChange={(e) => setBcc(e.target.value)} autoComplete="off" spellCheck={false} inputMode="email" /></label></>}
+        <RecipientField field="To" value={to} onChange={setTo} taken={taken} onMove={moveChip} onDragActive={(on) => { if (on) setShowCc(true); }} inputRef={toRef}
+          trailing={!showCc ? <button type="button" className="mc-link" onClick={() => setShowCc(true)}>Cc / Bcc</button> : undefined} />
+        {showCc && <><RecipientField field="Cc" value={cc} onChange={setCc} taken={taken} onMove={moveChip} />
+          <RecipientField field="Bcc" value={bcc} onChange={setBcc} taken={taken} onMove={moveChip} /></>}
         <label className="mc-f"><span>Subject</span><input value={subject} onChange={(e) => setSubject(e.target.value)} maxLength={300} /></label>
         <label className="sr" htmlFor="mc-text">Message</label>
         <textarea id="mc-text" className="mc-t" value={text} onChange={(e) => setText(e.target.value)} placeholder="Write your message…" rows={10} />

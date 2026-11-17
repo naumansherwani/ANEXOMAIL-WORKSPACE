@@ -156,8 +156,8 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-06C9dUXQ.js
-founder-web/dist/assets/index-B5JfGf6K.css
+founder-web/dist/assets/index-BGImRk5O.css
+founder-web/dist/assets/index-vLv1N_3v.js
 founder-web/dist/assets/kernel.worker-CmgLpPuh.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
@@ -223,6 +223,7 @@ founder-web/src/Presence.tsx
 founder-web/src/Profile.tsx
 founder-web/src/PulseCard.tsx
 founder-web/src/READ-FIRST-FOUNDER-LAW.md
+founder-web/src/RecipientField.tsx
 founder-web/src/Scene3D.tsx
 founder-web/src/SendSwitch.tsx
 founder-web/src/Settings.tsx
@@ -334,6 +335,8 @@ founder-web/src/presence_pure.ts
 founder-web/src/pulse.css
 founder-web/src/pulse_pure.test.ts
 founder-web/src/pulse_pure.ts
+founder-web/src/recipients.test.ts
+founder-web/src/recipients.ts
 founder-web/src/router.tsx
 founder-web/src/routes.test.ts
 founder-web/src/s2lib.ts
