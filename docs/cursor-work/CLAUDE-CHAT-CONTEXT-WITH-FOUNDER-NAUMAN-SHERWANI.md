@@ -3559,3 +3559,7 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - DKIM2: his word, Anexomail builds signer + verifier itself (D2a-D2e plan, signing OFF until his haan); Q-series state refreshed
 
 - DKIM2 back to TRACKED ONLY by his word (plan parked, build later)
+
+- Q1d-DKIM2 removed from the open Q list (his word: no work, no confusion); parked plan file stays
+
+- Q1d-DKIM2 wording: no work, not built (his word); chain stays valid
