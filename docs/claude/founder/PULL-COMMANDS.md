@@ -1596,3 +1596,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - QC3a INSTALLED 18 Nov 2026 03:00 PKT: his sql-run E185 OK (selftest 12/0, CHECK_E185 5/5 OK, E65 sweep OK) and founder-install OK (SPA 200, healthz 200, signing ON); not closed yet, awaits my live Chrome Send now test
 
 - QC3a = GREEN 18 Nov 2026 03:06 PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED (his word + his real Gmail test; E185 5/5 and founder-install OK on his server); next QC1 to be discussed with him first
+
+- Blueprint line 1: QC3a GREEN 18 Nov 2026 03:10 PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED (his Gmail test); next QC1 discuss first
