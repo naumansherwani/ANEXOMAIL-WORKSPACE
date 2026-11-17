@@ -3725,3 +3725,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - QC3a = GREEN 18 Nov 2026 03:06 PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED (his word + his real Gmail test; E185 5/5 and founder-install OK on his server); next QC1 to be discussed with him first
 
 - Blueprint line 1: QC3a GREEN 18 Nov 2026 03:10 PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED (his Gmail test); next QC1 discuss first
+
+- AUDIT after QC3a 18 Nov 2026 03:35 PKT: live bundle = repo code (Send now, release door), CHECK_E170.sql added (loophole closed), open: Mail lists slow + HTTP 504 after install, waits for his read-only journal paste

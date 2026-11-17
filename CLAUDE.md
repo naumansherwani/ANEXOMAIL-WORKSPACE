@@ -1,4 +1,4 @@
-> ## >>> RESUME HERE: QC3a GREEN (18 Nov 03:10), next QC1 discuss first (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
+> ## >>> RESUME HERE: AUDIT QC3a (18 Nov 03:35): CHECK_E170 added; open: lists slow + HTTP 504, waits for his journal paste (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
 > ## >>> WEBSITE PROMISES (his 17 Nov 04:11): what is written on a website page is a promise he delivers; docs/claude/WEBSITE-PROMISES.md lists every line with proof or OPEN. P1 founder TLS line written; P2 awam TLS line OPEN until K5b + his openssl proof. <<<
 > ## >>> RESUME HERE: ALL GREEN to 07:40: E181, E182, S5, Q1d, SYS-LIVE. EVENING: DKIM2 research crate (signing OFF), Delete live test with his word, AUDIT-Q1d, Q1b4, Q3, Qtls, U1U2, Q4, U5, Q1e (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
 > ## >>> RESUME HERE: ADDRESS HIM ONLY AS AAP (never tum/tumhara/tumhare/tumhari). Then his sql-run E182 + founder-install, DKIM2, AUDIT-Q1d, Q1b4, Q3, Qtls (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
