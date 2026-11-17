@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 03:45 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 03:46 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 17 Nov 06:35 PLAQUE LIVE (his photo 06:29). His orders: (1) plaque name = full 'Muhammad Nauman Sherwani'; (2) QC0 = POLISH the compose UI first, one phase at a time, subphases for each point written in the repo; (3) editor + phone-compose = WEB RESEARCH, write what was researched into the repo with date/time, then the code plan, then advanced code; (4) undo stays 30 s, but the X on the undo bar = deliver NOW (skip the hold); (5) AI drafting DROPPED until the AI product (July 2027). Steps: fix name, research docs/claude/COMPOSE-RESEARCH-17NOV.md, plan+subphases, qstate, then QC0 code.
 NEXT STEP: 
 HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 0a27c569 18 Nov 03:46 QC1: plan (a chips, b autocomplete, c TLS lock)
+- 5d834493 18 Nov 03:45 ledger line 250aa9b9
 - 250aa9b9 18 Nov 03:45 QSPEED paused: measured facts recorded
 - 812084df 18 Nov 03:27 ledger line 44a5196e
 - 44a5196e 18 Nov 03:27 QSPEED: keepalive reads one tiny row instead of the 1 MB schema
-- 91f803d5 18 Nov 03:16 ledger line 5660cbc9
-- 5660cbc9 18 Nov 03:16 QSPEED: drop HTTP/2 from the plan
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -29,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (af6700bb3bee2d9e97a8f3e357f974b5f9b831fe)
+WIP snapshot: refs/wip/last (2219fc7ef77431a08a729ee2705ab3760a4f5314)
