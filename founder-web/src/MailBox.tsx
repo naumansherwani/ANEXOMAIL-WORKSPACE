@@ -187,6 +187,7 @@ export function MailBox() {
       <div key={flash} className={`mbx-edge ${flash ? "on" : ""}`} aria-hidden="true" />
       <header className="mbx-top">
         <div className="mbx-brand"><LogoMark size={36} title="ANEXOMAIL" /><div><b>ANEXOMAIL</b>{boxes && boxes.length > 1 ? <select className="mh-box" value={boxId} onChange={(e) => setBoxId(e.target.value)} aria-label="Mailbox">{boxes.map((b) => <option key={b.id} value={b.id}>{b.address}</option>)}</select> : <small>{box?.address ?? (conn === false ? "mail not set up" : "…")}</small>}</div></div>
+        <div className="mbx-status"><span className="mbx-role" title="Your role on this workspace"><Ic k="shield" s={16} /><span><b>Founder / Chairman</b><small>Nauman Sherwani</small></span></span></div>
       </header>
 
       <div className="mbx-strip mbx-strip-top" role="status" aria-label={`${p.quic.text}, ${p.dbsc.text}, ${p.seal.text}`}>{health}</div>

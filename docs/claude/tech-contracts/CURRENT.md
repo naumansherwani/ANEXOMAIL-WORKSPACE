@@ -908,3 +908,6 @@ Technology: React 19 TS (founder-web), pure module presence_pure.ts (Live / Idle
 17 Nov 2026 06:1x PKT Phone navigation (his order 05:51, researched: 3-5 tab destinations, 48 px targets, overflow in a sheet, never two stacked bars): React 19 TS MoreSheet.tsx (all pages as tiles, grouped, same items as the palette), tab bar = Home, Bridge, Mail, People, More; CSS media queries only (sheet is hidden >= 761 px, the palette stays for laptop). No network, no SQL. TECH-LAW CHECKED.
 
 - phone nav: 5 tabs + More sheet with every page as a tile
+17 Nov 2026 06:2x PKT role plaque "Founder / Chairman" in the mail account header (his order 06:12): React 19 TS + CSS only, static text of his own role, no network, no SQL. TECH-LAW CHECKED.
+
+- mail header: Founder / Chairman role plaque

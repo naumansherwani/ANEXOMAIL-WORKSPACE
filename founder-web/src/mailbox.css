@@ -151,3 +151,9 @@
 .ob-r b{display:block;font-size:13.5px}.ob-r small{display:block;margin-top:3px;font-size:12.5px;line-height:1.45;color:var(--dim);overflow-wrap:anywhere}
 .ob-r .mx-btn{min-height:44px;align-self:center}.ob-note,.ob-err{margin:0;padding:10px 14px;font-size:12.5px;color:var(--dim)}.ob-err{color:#ff8a7e}
 @media (max-width:760px){.ob-r{grid-template-columns:10px minmax(0,1fr)}.ob-r .mx-btn{grid-column:1/-1}}
+
+/* role plaque (his 17 Nov 06:12): Founder / Chairman, at the right of the account header; hairline gradient border, small caps, name under it on wide screens */
+.mbx-role{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 14px 0 12px;border-radius:14px;color:var(--mbx-ac2);border:1px solid transparent;background:linear-gradient(#0e1118,#0e1118) padding-box,linear-gradient(135deg,rgba(90,169,240,.75),rgba(90,169,240,.12) 55%,rgba(150,120,255,.45)) border-box;box-shadow:0 0 0 3px rgba(90,169,240,.06)}
+.mbx-role b{display:block;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:650;color:var(--fg,#e9edf5);white-space:nowrap}.mbx-role small{display:block;margin-top:1px;font-size:11.5px;color:var(--dim)}
+@media (max-width:760px){.mbx-role small{display:none}.mbx-role{padding:0 10px}.mbx-role b{font-size:10.5px;letter-spacing:.1em}}
+@media (max-width:420px){.mbx-role>svg{display:none}}
