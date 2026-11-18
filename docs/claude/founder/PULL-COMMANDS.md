@@ -1692,3 +1692,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - QC1c: tls check door runs probes detached (a cancelled browser request no longer leaves a chip dotted), 8 s wait then pending; found in live Chrome (github.io stuck checking 2+ min). cargo 479/479. Not GREEN.
 
 - E190 loophole fix: tls trigger SECURITY DEFINER and never undoes the TLS fact if the live line fails; nonsense-kind selftest now a real attempt; sandbox 6/6, second run clean; needs his sql-run E190 re-run
+
+- QC1c live Chrome 18 Nov 10:41-10:43 PKT after his E190 rerun (CHECK_E190 6/6) + founder-install: lock.check@github.io showed amber Cannot reach with named reason (github.io 185.199.111.153 connection timed out), next try 10:42; at 10:42 the retry worker re-probed by itself (chip went dotted then amber again), next try 10:47 (1 then 5 minutes); no refresh. Detached probe fix works (no stuck checking). Still open: none/refused live, 30 min step, real-send proven line, phone 390/820.
