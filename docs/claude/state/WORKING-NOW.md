@@ -1,26 +1,24 @@
-# WORKING NOW (manual checkpoint, 18 Nov 2026 06:16 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 06:18 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 18 Nov 06:2x QLIVE written+installed, NOT green (needs his founder-install of 60f023d4 then my two-tab live test). Blocked-alert fix = dbsc.rs recent_put/recent_get duplicate-refresh window 10s (uncommitted, cargo test running /tmp/cargo_dbsc.txt)
 NEXT STEP: 1) wait cargo pass, rec.sh commit dbsc.rs (cause = duplicate refresh with spent challenge, his CHECK_BLOCKED_TIMELINE 03:56/04:53/05:22), give him ONE founder-install line (awam pull NOT needed) 2) after his install: live two-tab test, qstate done QLIVE, GREEN ledger 3) then Q-contacts-kernel (web research first, shared kernel pin not forked), QC1c E188, QSPEED. Address him as Aap; end replies with Rule-70 table
 HIS LAST WORD: compact ho chuka, latest update kero; blocked alert auto fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 8cb9c7df 18 Nov 06:18 DBSC: idempotent duplicate refresh window (blocked alert fix)
 - 60f023d4 18 Nov 06:09 ledger line ddfd8f0d
 - ddfd8f0d 18 Nov 06:09 QLIVE audit fixes (owner-only ping, prune), blocked timeline check
 - 5d84e9c7 18 Nov 06:03 ledger line 4c072721
 - 4c072721 18 Nov 06:03 QLIVE: fix changes door 400, CHECK_BLOCKED_NOW
-- dea2bb78 18 Nov 05:37 ledger line 5fa1d4b2
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
- M server/founder/src/dbsc.rs
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 24 ++++------------
- server/founder/src/dbsc.rs       | 59 +++++++++++++++++++++++++++++++++++-----
- 2 files changed, 58 insertions(+), 25 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -31,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (76f6bd65f40ed9848640852aeb39ebeb6c75c8ae)
+WIP snapshot: refs/wip/last (f5e9fca9e5d7b4c6b8f6d7339fdc9d3acaf778ff)
