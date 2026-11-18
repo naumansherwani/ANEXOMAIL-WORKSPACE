@@ -592,7 +592,7 @@
    "part": "QC1cF3",
    "title": "SQL E190: the change log learns the kind 'tls' + a trigger on the E189 table writes one tls line (ids only) so the chip updates through QLIVE (the E188 pattern)",
    "tech": "PostgreSQL 16 (E190)",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "docs/cursor-work/sql/E190_founder_mail_tls_change.sql",
