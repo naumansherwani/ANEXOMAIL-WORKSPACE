@@ -303,6 +303,7 @@ docs/cursor-work/server/wtcheck/src/main.rs
 docs/cursor-work/server/wtransport-upgrade.sh
 docs/cursor-work/sql/CHECK_ANCHOR_JOBS.sql
 docs/cursor-work/sql/CHECK_BLOCKED_NOW.sql
+docs/cursor-work/sql/CHECK_BLOCKED_TIMELINE.sql
 docs/cursor-work/sql/CHECK_CAL_CREATE.sql
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql
 docs/cursor-work/sql/CHECK_DRIFT_NOW.sql

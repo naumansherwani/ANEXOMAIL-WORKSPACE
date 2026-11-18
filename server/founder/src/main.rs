@@ -537,7 +537,7 @@ async fn live_snapshot(sb: &data::Sb) -> Value {
 /// The one live stream, whatever carries it: `transport` is "sse" (HTTP) or "webtransport" (QUIC, K6/wt.rs). It is a PARAMETER, never read from a header,
 /// so a client cannot label its own session.
 async fn live_stream_core(st: S, h: HeaderMap, transport: &'static str) -> axum::response::Response {
-    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    let claims = match authed(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
     let Some(sb) = st.sb.clone() else { return StatusCode::SERVICE_UNAVAILABLE.into_response() };
     let hub = live::hub();
     let Some(slot) = live::Slot::take(&hub) else { return (StatusCode::SERVICE_UNAVAILABLE, "too many live streams").into_response() };
@@ -553,6 +553,7 @@ async fn live_stream_core(st: S, h: HeaderMap, transport: &'static str) -> axum:
         let reason: &'static str = async {
         let gone = || if tx.is_closed() { "client_gone" } else { "slow_client" }; // receiver dropped = browser left; queue full = it could not keep up
         let mut send = |frame: String| { frames += 1; tx.try_send(axum::body::Bytes::from(frame)).is_ok() }; // full queue = slow client: drop it, it reconnects with Last-Event-ID
+        let mut owned = fmail_live::Owned::default(); // QLIVE: a ping goes only to the stream of the mailbox's OWNER
         let snap = live_snapshot(&sb).await;
         if let Some(v) = snap.get("version").and_then(|v| v.as_i64()) { last_id = v; }
         let line = |st: &St, d: &Value| serde_json::to_string(&envelope(st, d)).unwrap_or_default();
@@ -567,7 +568,7 @@ async fn live_stream_core(st: S, h: HeaderMap, transport: &'static str) -> axum:
                 _ = tx.closed() => return "client_gone",
                 _ = hb.tick() => { if !send(": hb\n\n".to_string()) { return gone(); } }
                 m = mrx.recv() => match m {
-                    Ok(p) => { if !send(live::sse_frame(Some(last_id), "tick", &line(&st, &fmail_live::frame_json(&p, last_id, now_s())))) { return gone(); } }
+                    Ok(p) => { if !owned.allows(&sb, &claims.sub, &p.mailbox).await { continue; } if !send(live::sse_frame(Some(last_id), "tick", &line(&st, &fmail_live::frame_json(&p, last_id, now_s())))) { return gone(); } }
                     Err(tokio::sync::broadcast::error::RecvError::Lagged(_)) => {} // a prompt only: the next one (or the browser's cursor catch-up) covers it
                     Err(_) => return "server_stop",
                 },

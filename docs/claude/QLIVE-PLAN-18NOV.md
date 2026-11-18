@@ -36,3 +36,14 @@ Founder lane: 20 streams (live.rs MAX_STREAMS), 14 days.
 
 ## 4. SUB-STEPS (each closes with proof)
 a) plan + contract + gate check (this file) b) SQL E187 + CHECK_E187 (sandbox selftest) c) Rust watcher + frame + door + tests d) browser pure module + livefeed + mail_api.live + tests e) build, rules-gate, his two install lines f) my live Chrome: send a mail to himself, watch it appear with NO refresh, 390 / 820 / 1200+, then GREEN (WIRED: YES / REAL: YES / TECH-LAW CHECKED).
+
+## 8. AUDIT 18 Nov 2026 06:2x (his order: full audit, fix every loophole) and LIVE FINDINGS
+| # | Finding | Fix | State |
+|---|---|---|---|
+| 1 | LIVE: `/mail/changes` answered HTTP 400 (the old `parse_box` refuses every parameter but `box`), so the second tab never updated | `parse_query` reads box, after, limit in one strict pass; unit test uses the exact query the browser sends | fixed, needs his founder-install |
+| 2 | A mail ping went to EVERY open stream (tiny metadata leak: "this mailbox is active") | `fmail_live::Owned`: a stream only hears about mailboxes its signed-in user owns | fixed |
+| 3 | The change log was never pruned (unbounded growth) | prune every 6 h by the watcher (14 days / 20000 rows, chain verifies from the floor hash) | fixed |
+| 4 | The 5 s read stays only as fallback; hidden tabs make no calls (by design) | none needed | ok |
+| 5 | Selftest uses `alter table ... disable trigger` inside a rolled-back transaction (short lock on the log table) | accepted: runs on his command only | noted |
+| 6 | His dashboard alert "6 requests blocked in the last 24 h": all 6 = ONE session LbDzb2Iz, `why: no_cookie`, in 3 pairs 2 s apart (03:56, 04:53, 05:22); `reject_replay` = 12, `refreshed` = 114 in the same 24 h. Each pair = the kernel exchange attempt + its fetch fallback, both without a valid bound cookie, right when a DBSC refresh was rejected as a replay. Not an attacker, but real denials. | cause is read from CHECK_BLOCKED_TIMELINE (his paste), not guessed; then a fix in dbsc.rs / api.ts with tests | OPEN, next command given |
+Order after QLIVE is GREEN: Q-contacts-kernel (his 05:00 order, shared Rule 52 kernel rule applies: no fork of the awam pin), then QC1c, the rest of the Q series, QSPEED.

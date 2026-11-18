@@ -11,6 +11,23 @@ use serde_json::{json, Value};
 use std::{collections::HashMap, sync::{Arc, OnceLock}, time::Duration};
 use tokio::sync::{broadcast, Notify};
 
+/// The mailboxes ONE stream may hear about: only those its signed-in user owns (a ping is a tiny metadata leak: "this mailbox is active"). Loaded on the first ping, and re-read at most every 10 s when a ping
+/// names a mailbox not known yet (a new mailbox). If the database does not answer, the set stays empty: no ping is sent and the browser's own cursor / 30 s read still keeps the screen right.
+#[derive(Default)]
+pub struct Owned { ids: std::collections::HashSet<String>, at: Option<tokio::time::Instant> }
+impl Owned {
+    pub async fn allows(&mut self, sb: &Sb, user: &str, mailbox: &str) -> bool {
+        if self.ids.contains(mailbox) { return true; }
+        if !crate::passkey::is_uuid(user) || !crate::passkey::is_uuid(mailbox) { return false; }
+        if self.at.is_some_and(|t| t.elapsed() < Duration::from_secs(10)) { return false; }
+        self.at = Some(tokio::time::Instant::now());
+        if let Some(rows) = tokio::time::timeout(Duration::from_secs(4), sb.rows(&format!("fmail_mailboxes?select=id&owner=eq.{user}"))).await.ok().flatten() {
+            self.ids = rows.iter().filter_map(|r| r["id"].as_str().map(String::from)).collect();
+        }
+        self.ids.contains(mailbox)
+    }
+}
+
 /// How often the watcher re-reads the heads while at least one stream is open.
 pub const SAFETY_EVERY: Duration = Duration::from_secs(2);
 /// Most changes one door answer returns (the browser pages with `more`).
@@ -44,11 +61,22 @@ pub fn moved(seen: &HashMap<String, i64>, now: &[Ping]) -> Vec<Ping> {
     now.iter().filter(|p| seen.get(&p.mailbox).is_none_or(|h| p.head > *h)).cloned().collect()
 }
 
+/// How often the change log is pruned (E187 keeps 14 days / 20000 rows per mailbox, the chain still verifies from the floor hash).
+pub const PRUNE_EVERY: Duration = Duration::from_secs(6 * 3600);
+
 /// Start the one process-wide watcher. FOUNDER_MAIL_LIVE=off disables it (rollback switch): the browser then simply keeps its 5 s read.
 pub fn start(sb: Sb) {
     if std::env::var("FOUNDER_MAIL_LIVE").map(|v| v == "off").unwrap_or(false) { eprintln!("founder: live mail push is OFF (FOUNDER_MAIL_LIVE=off)"); return; }
     let h = hub();
     eprintln!("founder: live mail push ON (poke + {} s safety check while a stream is open)", SAFETY_EVERY.as_secs());
+    let sbp = sb.clone();
+    tokio::spawn(async move {   // the log can never grow without bound: a prune every 6 h (and once at start after 2 minutes)
+        tokio::time::sleep(Duration::from_secs(120)).await;
+        loop {
+            if let Some(v) = sbp.rpc("fmail_change_prune187", json!({"p_keep_days": 14, "p_keep_rows": 20000})).await { if v["pruned"].as_i64().unwrap_or(0) > 0 { eprintln!("founder: mail change log pruned {} old lines", v["pruned"]); } }
+            tokio::time::sleep(PRUNE_EVERY).await;
+        }
+    });
     tokio::spawn(async move {
         let mut seen: HashMap<String, i64> = HashMap::new();
         loop {
