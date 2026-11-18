@@ -714,3 +714,5 @@
 - E190 loophole fix: tls trigger SECURITY DEFINER and never undoes the TLS fact if the live line fails; nonsense-kind selftest now a real attempt; sandbox 6/6, second run clean; needs his sql-run E190 re-run
 
 - QC1c live Chrome 18 Nov 10:41-10:43 PKT after his E190 rerun (CHECK_E190 6/6) + founder-install: lock.check@github.io showed amber Cannot reach with named reason (github.io 185.199.111.153 connection timed out), next try 10:42; at 10:42 the retry worker re-probed by itself (chip went dotted then amber again), next try 10:47 (1 then 5 minutes); no refresh. Detached probe fix works (no stuck checking). Still open: none/refused live, 30 min step, real-send proven line, phone 390/820.
+
+- QC1c live Chrome 18 Nov 10:48 PKT: REAL SEND to his two gmail addresses (his haan); Sent mail shows line 'Proven by the real delivery: gmail.com: post-quantum' (real session group X25519MLKEM768). Phase order file FOUNDER-MAILBOX-PHASES-18NOV.md written. Still open: none/refused live, 30 min, received hint, phone 390/820, Qtls, E191.
