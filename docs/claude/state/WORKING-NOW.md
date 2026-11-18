@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 05:36 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 05:37 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 17 Nov 06:35 PLAQUE LIVE (his photo 06:29). His orders: (1) plaque name = full 'Muhammad Nauman Sherwani'; (2) QC0 = POLISH the compose UI first, one phase at a time, subphases for each point written in the repo; (3) editor + phone-compose = WEB RESEARCH, write what was researched into the repo with date/time, then the code plan, then advanced code; (4) undo stays 30 s, but the X on the undo bar = deliver NOW (skip the hold); (5) AI drafting DROPPED until the AI product (July 2027). Steps: fix name, research docs/claude/COMPOSE-RESEARCH-17NOV.md, plan+subphases, qstate, then QC0 code.
 NEXT STEP: 
 HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 5fa1d4b2 18 Nov 05:37 QLIVE tests all pass, install lines given
+- 7c71eca5 18 Nov 05:36 ledger line 5b9696a7
 - 5b9696a7 18 Nov 05:36 QLIVE steps c+d: Rust watcher + door, browser push-first
 - ac523588 18 Nov 05:28 ledger line 3e23acc8
 - 3e23acc8 18 Nov 05:28 QLIVE step a+b: plan, contract, SQL E187 change log
-- b6563ce5 18 Nov 05:17 ledger line 571ba231
-- 571ba231 18 Nov 05:17 QC1b closed with live proof, QLIVE phase added to the plan
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -29,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (4fcf81a26a4eddca6b560579ac3ed46d29a99fb7)
+WIP snapshot: refs/wip/last (93317e1fd49c3fe84057d068947aa2df7cdf7904)
