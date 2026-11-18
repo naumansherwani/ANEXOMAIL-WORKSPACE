@@ -5,7 +5,7 @@
 -- WHAT IT DOES: (1) widens the E187 kind list with 'tls' (the closed list stays closed; every other kind is unchanged). (2) AFTER INSERT / AFTER UPDATE OF verdict, next_try_at on fmail_domain_tls189 -> one 'tls' line
 --   through the E187 internal door (gapless sequence, hash chain unchanged). The browser refreshes its chips on any kind (E188 rule), then asks the E189 read door for the 50 domains it shows.
 -- PRIVACY: kind only. The line carries NO domain, NO blind index, NO verdict: folder, message and thread stay empty. Which domain changed is learned only through the sealed read door.
--- Run once through sql-run.sh, after E189. Safe to run again (idempotent). Awam is not touched.
+-- Run through sql-run.sh, after E189. Safe to run again (idempotent). Awam is not touched. Re-run after the 18 Nov 10:2x loophole fix: trigger is SECURITY DEFINER and never undoes the fact; the nonsense-kind check is a real attempt.
 
 do $$
 begin
@@ -23,10 +23,16 @@ begin
 exception when duplicate_object then null;
 end $$;
 
-create or replace function public.fmail_change_tls190() returns trigger language plpgsql set search_path = pg_catalog, public as $$
+-- LOOPHOLE FIX (18 Nov 10:2x PKT): (a) SECURITY DEFINER, so the line is written whoever touched the row (a caller without the note187 grant no longer makes the fact write fail);
+-- (b) a failure of the live-tick line must NEVER undo the TLS fact itself: it is caught, reported as a WARNING, and the browser's 15 s re-read still finds the fact.
+create or replace function public.fmail_change_tls190() returns trigger language plpgsql security definer set search_path = pg_catalog, public as $$
 begin
   if tg_op = 'INSERT' or new.verdict is distinct from old.verdict or new.next_try_at is distinct from old.next_try_at then
-    perform public.fmail_change_note187(new.mailbox_id, 'tls', null, null, null);
+    begin
+      perform public.fmail_change_note187(new.mailbox_id, 'tls', null, null, null);
+    exception when others then
+      raise warning 'E190: tls change line not written (%): the fact itself is kept', sqlerrm;
+    end;
   end if;
   return null;
 end $$;
@@ -65,7 +71,13 @@ begin
     v_r := public.fmail_change_since187(v_uid, v_box, 1, 50);
     res := res || jsonb_build_object('name', 'finishing the probe writes the next tls line, number 2', 'ok', (v_r ->> 'head') = '2' and v_r #>> '{changes,0,kind}' = 'tls' and (v_r #>> '{changes,0,seq}') = '2');
     res := res || jsonb_build_object('name', 'the E187 chain still verifies with the new kind', 'ok', coalesce((public.fmail_change_verify187(v_box) ->> 'ok')::boolean, false));
-    res := res || jsonb_build_object('name', 'a kind outside the closed list is still refused', 'ok', (select not exists (select 1 from pg_constraint where conrelid = 'public.fmail_change_log187'::regclass and contype = 'c' and pg_get_constraintdef(oid) like '%''tls''%' and pg_get_constraintdef(oid) like '%''nonsense''%')));
+    -- a REAL attempt through the E187 door (not a text look): a kind outside the closed list must be refused, by the door or by the table
+    begin
+      perform public.fmail_change_note187(v_box, 'nonsense', null, null, null);
+      res := res || jsonb_build_object('name', 'a kind outside the closed list is still refused', 'ok', false);
+    exception when check_violation or raise_exception or invalid_parameter_value then
+      res := res || jsonb_build_object('name', 'a kind outside the closed list is still refused', 'ok', true);
+    end;
     raise exception 'E190_ROLLBACK';
   exception when others then
     if sqlerrm <> 'E190_ROLLBACK' then return jsonb_build_object('ok', false, 'error', sqlerrm, 'passed', 0, 'checks', res); end if;
