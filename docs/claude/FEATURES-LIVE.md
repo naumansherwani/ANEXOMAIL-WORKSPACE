@@ -2,7 +2,7 @@
 
 Every feature of a phase, one line each, checked against the repo (a built feature must be found in the code; a missing one is listed as TODO). Gate: rules-gate FEATURES.
 
-## QC1c: 15 of 42 written (18 Nov 2026 08:1x PKT)
+## QC1c: 15 of 43 written (18 Nov 2026 08:1x PKT)
 
 - QC1cF7-1 [BUILT] closed verdict list pq / classic13 / classic12 / none / refused / unreachable / nomail / checking, NO 'unknown' | PostgreSQL 16 (E189)
 - QC1cF7-2 [BUILT] domain name and host detail sealed (AES-256-GCM, vault-wrapped key), only HMAC + closed words in clear | PostgreSQL 16 (E189)
@@ -11,7 +11,7 @@ Every feature of a phase, one line each, checked against the repo (a built featu
 - QC1cF7-5 [BUILT] CHECK constraints tie verdict to evidence (pq needs TLS 1.3 + ML-KEM, classic13 no ML-KEM, failure no group) | PostgreSQL 16 (E189)
 - QC1cF7-6 [BUILT] read door for up to 50 domains in one call (the chips of one compose box) | PostgreSQL 16 (E189)
 - QC1cF7-7 [BUILT] posture + selftest (31 checks, rolls back) + CHECK_E189 (11 items) | PostgreSQL 16 (E189)
-- QC1cF7-8 [TODO] Rust read-only door /founder/v1/mail/tls (kernel-verified answer) | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver + axum
+- QC1cF7-8 [TODO] Rust doors: GET /founder/v1/mail/tls (read only, kernel-verified) + POST /founder/v1/mail/tls/check (signed, asks for a probe: it is a write, so NOT a read-only door; correction of my earlier wording) | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver + axum
 - QC1cF2-1 [BUILT] claim door: may this domain be probed now (atomic, advisory lock) | PostgreSQL 16 (E189)
 - QC1cF2-2 [BUILT] one probe per domain at a time, 24 h cache, 30 probes per mailbox per hour | PostgreSQL 16 (E189)
 - QC1cF2-3 [TODO] Rust probe: DNS lookup + SMTP connect to the recipient MX from his server IP | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
@@ -22,9 +22,9 @@ Every feature of a phase, one line each, checked against the repo (a built featu
 - QC1cF3-3 [BUILT] due door: which unreachable domains are due, with the sealed name | PostgreSQL 16 (E189)
 - QC1cF3-4 [TODO] Rust retry worker that claims, probes and finishes the due domains | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
 - QC1cF3-5 [TODO] the chip updates by itself (QLIVE signed tick, no refresh) | Rust Tokio + QLIVE tick + React 19 TS
-- QC1cF4-1 [TODO] MX records sorted by priority | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
-- QC1cF4-2 [TODO] no MX: the domain's A/AAAA is the implicit MX (RFC 5321 s5.1) | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
-- QC1cF4-3 [TODO] null MX (RFC 7505) = nomail | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
+- QC1cF4-1 [TODO] MX records sorted by priority (REUSES the existing fmail_smtp::targets + order_mx, no second copy) | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
+- QC1cF4-2 [TODO] no MX: the domain's A/AAAA is the implicit MX (RFC 5321 s5.1); exists in fmail_smtp::targets, the probe test proves it | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
+- QC1cF4-3 [TODO] null MX (RFC 7505) = nomail; exists in fmail_smtp::targets, the probe maps it to the nomail verdict | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
 - QC1cF4-4 [TODO] IPv4 and IPv6, every host tried | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
 - QC1cF4-5 [TODO] 10 s connect and 10 s per command timeouts | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
 - QC1cF4-6 [TODO] handshake offers X25519MLKEM768 first, classic groups behind it | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
@@ -32,17 +32,18 @@ Every feature of a phase, one line each, checked against the repo (a built featu
 - QC1cF4-8 [TODO] all hosts listed with their own result (the verdict is the best-priority host that answered) | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
 - QC1cF1-1 [BUILT] real-send door: a delivered mail records the real fact (rank 3) | PostgreSQL 16 (E189)
 - QC1cF1-2 [BUILT] a received mail is only a weak hint (rank 1), never replaces a probe or a real send | PostgreSQL 16 (E189)
-- QC1cF1-3 [TODO] Rust hook: a delivered mail writes its TLS result into E189 (source sent) | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
-- QC1cF1-4 [TODO] Rust hook: a received mail writes the weak hint (source received) | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
+- QC1cF1-3 [TODO] Rust hook: a delivered mail writes its TLS result into E189 (source sent); fmail_smtp Upgrade returns a TlsFact {verdict, group, version, cipher} instead of a bare word | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
+- QC1cF1-4 [TODO] Rust hook: a received mail writes a weak hint ONLY when the Postfix Received header proves TLS 1.2 or older or no TLS (a TLS 1.3 header names no group, so no pq / classic13 claim is made) | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
 - QC1cF5-1 [BUILT] delivery proves or contradicts the prediction (proven_match / proven_mismatch ledger lines, mismatch flag) | PostgreSQL 16 (E189)
 - QC1cF5-2 [TODO] Rust: at delivery the predicted verdict is compared and the mismatch line is written | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
-- QC1cF5-3 [NEEDS HIS HAAN] UI addition: a 'proven' line on the sent mail (needs his own haan) | React 19 TS + Framer Motion
-- QC1cF6-1 [NEEDS HIS HAAN] UI addition: small lock on each recipient chip, old UI intact (needs his own haan) | React 19 TS + Framer Motion
-- QC1cF6-2 [NEEDS HIS HAAN] colours: blue pq, grey classic, amber none/refused/unreachable, red nomail, dotted checking | React 19 TS
-- QC1cF6-3 [NEEDS HIS HAAN] tooltip: group, version, host, source (sent / received / probe), checked time | React 19 TS, WAI-ARIA
-- QC1cF6-4 [NEEDS HIS HAAN] same code on 390 / 820 / 1200+, 44 px targets | React 19 TS, CSS container queries
-- QC1cF6-5 [NEEDS HIS HAAN] screen reader: lock state spoken, live region on change | React 19 TS, WAI-ARIA
-- QC1cF8-1 [DEFERRED (Qtls)] MTA-STS lookup (RFC 8461) | Qtls
-- QC1cF8-2 [DEFERRED (Qtls)] DANE / TLSA lookup (RFC 7672) | Qtls
-- QC1cF8-3 [DEFERRED (Qtls)] TLS-RPT (RFC 8460) | Qtls
-- QC1cF8-4 [DEFERRED (Qtls)] 'send only if TLS' enforcement | Qtls
+- QC1cF5-3 [TODO] UI addition: a 'proven' line on the sent mail | React 19 TS + Framer Motion
+- QC1cF6-1 [TODO] UI addition: small lock on each recipient chip, old UI intact | React 19 TS + Framer Motion
+- QC1cF6-2 [TODO] colours: blue pq, grey classic, amber none/refused/unreachable, red nomail, dotted checking | React 19 TS
+- QC1cF6-3 [TODO] tooltip: group, version, host, source (sent / received / probe), checked time | React 19 TS, WAI-ARIA
+- QC1cF6-4 [TODO] same code on 390 / 820 / 1200+, 44 px targets | React 19 TS, CSS container queries
+- QC1cF6-5 [TODO] screen reader: lock state spoken, live region on change | React 19 TS, WAI-ARIA
+- QC1cF8-1 [TODO] MTA-STS lookup (RFC 8461) | Rust Tokio + reqwest (rustls) + mail-auth 0.9.2 MtaSts parser (already a dependency) + PostgreSQL
+- QC1cF8-2 [TODO] DANE / TLSA lookup (RFC 7672) | Rust Tokio + hickory-resolver with the dnssec-ring feature (DNSSEC-validated TLSA, RFC 7672)
+- QC1cF8-3 [TODO] TLS-RPT (RFC 8460) | Rust Tokio + mail-auth 0.9.2 tlsrpt structs + our own send path + PostgreSQL counters
+- QC1cF8-4 [TODO] 'send only if TLS' enforcement | Rust policy ratchet + PostgreSQL + passkey touch to loosen
+- QC1cF3-6 [TODO] SQL E190: the change log learns the kind 'tls' + a trigger on the E189 table writes one tls line (ids only) so the chip updates through QLIVE (the E188 pattern) | PostgreSQL 16 (E190)
