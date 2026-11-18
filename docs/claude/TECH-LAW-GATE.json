@@ -273,9 +273,9 @@
   },
   {
    "id": "Q-live",
-   "file": "founder-web/src/mail_live.ts",
+   "file": "founder-web/src/mail_change.ts",
    "must": "mail_live_push",
-   "status": "open",
+   "status": "ok",
    "why": "QLIVE (his word 18 Nov 05:16): new mail appears by itself, no refresh; WebTransport push + kernel opens the sealed row; SSE fallback only",
    "deadline": "2026-11-25"
   }
