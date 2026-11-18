@@ -59,6 +59,7 @@ mod fmail_dkim;
 mod fmail_mime;
 mod fmail_smtp;
 mod fmail_tls;
+mod fmail_qtls;
 mod fmail_out;
 mod fmail_book;
 mod fmail_live;
@@ -954,6 +955,8 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/mail/undo", axum::routing::post(fmail_out::undo_ep))
         .route("/founder/v1/mail/release", axum::routing::post(fmail_out::release_ep))
         .route("/founder/v1/mail/changes", get(fmail_live::changes_ep))
+        .route("/founder/v1/mail/tls", get(fmail_tls::tls_get_ep))
+        .route("/founder/v1/mail/tls/check", axum::routing::post(fmail_tls::tls_check_ep))
         .route("/founder/v1/mail/contacts", get(fmail_book::top_ep))
         .route("/founder/v1/mail/contact", axum::routing::post(fmail_book::act_ep))
         .route("/founder/v1/mail/cancel", axum::routing::post(fmail_out::cancel_ep))
@@ -1083,7 +1086,7 @@ async fn main() {
     match (fmail_out::from_env(), &sb, lease::MASTER.get()) {
         (None, _, _) => eprintln!("founder: mail sender OFF (no FMAIL_SEND=on)"),
         (Some(Err(e)), _, _) => eprintln!("founder: mail sender NOT started: {e}"),
-        (Some(Ok(c)), Some(s), Some(m)) => { fmail_out::spawn(s.clone(), *m, c).await; }
+        (Some(Ok(c)), Some(s), Some(m)) => { fmail_out::spawn(s.clone(), *m, c).await; tokio::spawn(fmail_tls::retry_worker(s.clone())); }
         (Some(Ok(_)), _, _) => eprintln!("founder: mail sender NOT started: needs the database and the vault master key"),
     }
 
