@@ -108,6 +108,8 @@ async fn run_domain(cfg: &Cfg, res: Option<&hickory_resolver::TokioResolver>, up
     }
     let res = res.ok_or(smtp::Fail::Temp("no DNS resolver".into()))?;
     let ts = smtp::targets(res, domain).await?;
+    // MTA-STS (RFC 8461): an enforcing recipient domain is only ever contacted on the MX hosts its policy lists; clear text is refused for every hop already (require_tls)
+    let ts = crate::fmail_qtls::apply_sts(ts, crate::fmail_qtls::policy_for(res, domain).await.as_ref(), domain)?;
     let mut last = smtp::Fail::Temp("no server tried".into());
     for t in ts.iter().take(3) {
         let (io, t) = match smtp::connect(std::slice::from_ref(t)).await { Ok(x) => x, Err(e) => { last = e; continue } };

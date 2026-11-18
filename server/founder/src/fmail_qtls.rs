@@ -132,6 +132,28 @@ pub fn require_tls_for(sts: Option<&StsPolicy>, dane_for_host: bool, mx_host: &s
     if always { Hop::Strict } else { Hop::Opportunistic }
 }
 
+
+// ---------------------------------------------------------------- the sender uses it (QC1c / Qtls wiring, 18 Nov 2026)
+/// MTA-STS applied to the delivery targets: enforce = only the MX hosts the policy lists (RFC 8461 5.1), none left = a TEMPORARY failure (retry later, never clear text, never an unlisted host).
+/// testing / none / no policy = the targets unchanged (the sender already requires a verified TLS 1.3 session for every hop).
+pub fn apply_sts(ts: Vec<smtp::Target>, policy: Option<&StsPolicy>, domain: &str) -> Result<Vec<smtp::Target>, smtp::Fail> {
+    let Some(p) = policy.filter(|p| p.mode == StsMode::Enforce) else { return Ok(ts) };
+    let ok: Vec<smtp::Target> = ts.into_iter().filter(|t| p.allows_host(&t.host)).collect();
+    if ok.is_empty() { Err(smtp::Fail::Temp(format!("{domain} enforces MTA-STS and none of its mail servers is listed in the policy"))) } else { Ok(ok) }
+}
+static STS_CACHE: std::sync::Mutex<Option<std::collections::HashMap<String, (StsPolicy, std::time::Instant)>>> = std::sync::Mutex::new(None);
+fn cache_get(d: &str) -> Option<StsPolicy> { let g = STS_CACHE.lock().ok()?; let (p, until) = g.as_ref()?.get(d)?; if *until > std::time::Instant::now() { Some(p.clone()) } else { None } }
+fn cache_put(d: &str, p: &StsPolicy) { if let Ok(mut g) = STS_CACHE.lock() { let m = g.get_or_insert_with(Default::default); if m.len() > 4096 { m.clear(); } m.insert(d.to_string(), (p.clone(), std::time::Instant::now() + Duration::from_secs(p.max_age.min(86_400)))); } }
+/// The policy for a domain as the sender must see it: a fresh fetch wins; when the fetch fails and an enforce policy is still remembered, the remembered one is used (a downgrade by blocking the fetch does not work, RFC 8461 5.1).
+pub async fn policy_for(res: &hickory_resolver::TokioResolver, domain: &str) -> Option<StsPolicy> {
+    let d = domain.trim_end_matches('.').to_ascii_lowercase();
+    match tokio::time::timeout(Duration::from_secs(12), fetch_mta_sts_policy(res, &d)).await {
+        Ok(Ok(Some(p))) => { cache_put(&d, &p); Some(p) }
+        Ok(Ok(None)) => None,
+        _ => cache_get(&d),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -141,6 +163,15 @@ mod tests {
         for bad in ["", "version: STSv2\nmode: enforce\nmx: a.b\nmax_age: 1", "version: STSv1\nmode: enforce\nmax_age: 1", "version: STSv1\nmode: sometimes\nmx: a.b\nmax_age: 1", "version: STSv1\nmode: enforce\nmx: a.b", "version: STSv1\nmode: enforce\nmx: a.b\nmax_age: 99999999999", "version: STSv1\nmode: enforce\nmode: testing\nmx: a.b\nmax_age: 1", "garbage line"] { assert!(parse_policy(bad).is_none(), "{bad:?}"); }
         assert!(parse_policy("version: STSv1\nmode: none\nmax_age: 0").is_some(), "mode none needs no mx");
         assert!(parse_policy("version: STSv1\nfuture: x\nmode: testing\nmx: a.b\nmax_age: 5").is_some(), "unknown keys are ignored");
+    }
+    #[test] fn sts_filters_targets() {
+        let t = |h: &str| smtp::Target { host: h.into(), addr: "203.0.113.9:25".parse().unwrap() };
+        let enf = parse_policy(POL).unwrap();
+        let r = apply_sts(vec![t("mail.example.com"), t("evil.example.org")], Some(&enf), "example.com").unwrap(); assert_eq!(r.len(), 1); assert_eq!(r[0].host, "mail.example.com");
+        assert!(matches!(apply_sts(vec![t("evil.example.org")], Some(&enf), "example.com"), Err(smtp::Fail::Temp(_))), "no listed MX = temporary failure, never clear text");
+        let test = parse_policy("version: STSv1\nmode: testing\nmx: mail.example.com\nmax_age: 5").unwrap();
+        assert_eq!(apply_sts(vec![t("evil.example.org")], Some(&test), "example.com").unwrap().len(), 1, "testing mode only reports");
+        assert_eq!(apply_sts(vec![t("a.b")], None, "x.y").unwrap().len(), 1);
     }
     #[test] fn mx_patterns() {
         assert!(mx_matches("mail.example.com", "MAIL.example.com.") && !mx_matches("mail.example.com", "x.mail.example.com"));
