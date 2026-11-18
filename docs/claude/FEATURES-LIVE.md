@@ -2,7 +2,7 @@
 
 Every feature of a phase, one line each, checked against the repo (a built feature must be found in the code; a missing one is listed as TODO). Gate: rules-gate FEATURES.
 
-## QC1c: 15 of 43 written (18 Nov 2026 08:1x PKT)
+## QC1c: 26 of 43 written (18 Nov 2026 08:1x PKT)
 
 - QC1cF7-1 [BUILT] closed verdict list pq / classic13 / classic12 / none / refused / unreachable / nomail / checking, NO 'unknown' | PostgreSQL 16 (E189)
 - QC1cF7-2 [BUILT] domain name and host detail sealed (AES-256-GCM, vault-wrapped key), only HMAC + closed words in clear | PostgreSQL 16 (E189)
@@ -14,22 +14,22 @@ Every feature of a phase, one line each, checked against the repo (a built featu
 - QC1cF7-8 [TODO] Rust doors: GET /founder/v1/mail/tls (read only, kernel-verified) + POST /founder/v1/mail/tls/check (signed, asks for a probe: it is a write, so NOT a read-only door; correction of my earlier wording) | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver + axum
 - QC1cF2-1 [BUILT] claim door: may this domain be probed now (atomic, advisory lock) | PostgreSQL 16 (E189)
 - QC1cF2-2 [BUILT] one probe per domain at a time, 24 h cache, 30 probes per mailbox per hour | PostgreSQL 16 (E189)
-- QC1cF2-3 [TODO] Rust probe: DNS lookup + SMTP connect to the recipient MX from his server IP | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
-- QC1cF2-4 [TODO] EHLO mail.anexomail.com, STARTTLS, handshake, QUIT; never MAIL FROM | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
-- QC1cF2-5 [TODO] domain only, never an address (a test proves the address part is dropped) | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
+- QC1cF2-3 [BUILT] Rust probe: DNS lookup + SMTP connect to the recipient MX from his server IP | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
+- QC1cF2-4 [BUILT] EHLO mail.anexomail.com, STARTTLS, handshake, QUIT; never MAIL FROM | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
+- QC1cF2-5 [BUILT] domain only, never an address (a test proves the address part is dropped) | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
 - QC1cF3-1 [BUILT] named reason per host kept sealed in the detail (timeout, refused, no route) | PostgreSQL 16 (E189)
 - QC1cF3-2 [BUILT] retry schedule 1, 5, 30 minutes then stop with the reasons | PostgreSQL 16 (E189)
 - QC1cF3-3 [BUILT] due door: which unreachable domains are due, with the sealed name | PostgreSQL 16 (E189)
 - QC1cF3-4 [TODO] Rust retry worker that claims, probes and finishes the due domains | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
 - QC1cF3-5 [TODO] the chip updates by itself (QLIVE signed tick, no refresh) | Rust Tokio + QLIVE tick + React 19 TS
-- QC1cF4-1 [TODO] MX records sorted by priority (REUSES the existing fmail_smtp::targets + order_mx, no second copy) | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
-- QC1cF4-2 [TODO] no MX: the domain's A/AAAA is the implicit MX (RFC 5321 s5.1); exists in fmail_smtp::targets, the probe test proves it | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
-- QC1cF4-3 [TODO] null MX (RFC 7505) = nomail; exists in fmail_smtp::targets, the probe maps it to the nomail verdict | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
-- QC1cF4-4 [TODO] IPv4 and IPv6, every host tried | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
-- QC1cF4-5 [TODO] 10 s connect and 10 s per command timeouts | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
-- QC1cF4-6 [TODO] handshake offers X25519MLKEM768 first, classic groups behind it | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
-- QC1cF4-7 [TODO] certificate verified yes/no recorded and shown, never hidden | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
-- QC1cF4-8 [TODO] all hosts listed with their own result (the verdict is the best-priority host that answered) | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
+- QC1cF4-1 [BUILT] MX records sorted by priority (REUSES the existing fmail_smtp::targets + order_mx, no second copy) | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
+- QC1cF4-2 [BUILT] no MX: the domain's A/AAAA is the implicit MX (RFC 5321 s5.1); exists in fmail_smtp::targets, the probe test proves it | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
+- QC1cF4-3 [BUILT] null MX (RFC 7505) = nomail; exists in fmail_smtp::targets, the probe maps it to the nomail verdict | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
+- QC1cF4-4 [BUILT] IPv4 and IPv6, every host tried | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
+- QC1cF4-5 [BUILT] 10 s connect and 10 s per command timeouts | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
+- QC1cF4-6 [BUILT] handshake offers X25519MLKEM768 first, classic groups behind it | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
+- QC1cF4-7 [BUILT] certificate verified yes/no recorded and shown, never hidden | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
+- QC1cF4-8 [BUILT] all hosts listed with their own result (the verdict is the best-priority host that answered) | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver
 - QC1cF1-1 [BUILT] real-send door: a delivered mail records the real fact (rank 3) | PostgreSQL 16 (E189)
 - QC1cF1-2 [BUILT] a received mail is only a weak hint (rank 1), never replaces a probe or a real send | PostgreSQL 16 (E189)
 - QC1cF1-3 [TODO] Rust hook: a delivered mail writes its TLS result into E189 (source sent); fmail_smtp Upgrade returns a TlsFact {verdict, group, version, cipher} instead of a bare word | Rust Tokio + rustls + rustls-post-quantum + hickory-resolver

@@ -58,6 +58,7 @@ mod fmail_ep;
 mod fmail_dkim;
 mod fmail_mime;
 mod fmail_smtp;
+mod fmail_tls;
 mod fmail_out;
 mod fmail_book;
 mod fmail_live;

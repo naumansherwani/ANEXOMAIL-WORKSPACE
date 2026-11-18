@@ -162,7 +162,7 @@
    "part": "QC1cF2",
    "title": "Rust probe: DNS lookup + SMTP connect to the recipient MX from his server IP",
    "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "server/founder/src/fmail_tls.rs",
@@ -175,7 +175,7 @@
    "part": "QC1cF2",
    "title": "EHLO mail.anexomail.com, STARTTLS, handshake, QUIT; never MAIL FROM",
    "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "server/founder/src/fmail_tls.rs",
@@ -192,7 +192,7 @@
    "part": "QC1cF2",
    "title": "domain only, never an address (a test proves the address part is dropped)",
    "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "server/founder/src/fmail_tls.rs",
@@ -270,7 +270,7 @@
    "part": "QC1cF4",
    "title": "MX records sorted by priority (REUSES the existing fmail_smtp::targets + order_mx, no second copy)",
    "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "server/founder/src/fmail_tls.rs",
@@ -283,7 +283,7 @@
    "part": "QC1cF4",
    "title": "no MX: the domain's A/AAAA is the implicit MX (RFC 5321 s5.1); exists in fmail_smtp::targets, the probe test proves it",
    "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "server/founder/src/fmail_tls.rs",
@@ -296,7 +296,7 @@
    "part": "QC1cF4",
    "title": "null MX (RFC 7505) = nomail; exists in fmail_smtp::targets, the probe maps it to the nomail verdict",
    "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "server/founder/src/fmail_tls.rs",
@@ -309,7 +309,7 @@
    "part": "QC1cF4",
    "title": "IPv4 and IPv6, every host tried",
    "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "server/founder/src/fmail_tls.rs",
@@ -322,7 +322,7 @@
    "part": "QC1cF4",
    "title": "10 s connect and 10 s per command timeouts",
    "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "server/founder/src/fmail_tls.rs",
@@ -335,7 +335,7 @@
    "part": "QC1cF4",
    "title": "handshake offers X25519MLKEM768 first, classic groups behind it",
    "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "server/founder/src/fmail_tls.rs",
@@ -348,7 +348,7 @@
    "part": "QC1cF4",
    "title": "certificate verified yes/no recorded and shown, never hidden",
    "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "server/founder/src/fmail_tls.rs",
@@ -361,7 +361,7 @@
    "part": "QC1cF4",
    "title": "all hosts listed with their own result (the verdict is the best-priority host that answered)",
    "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "server/founder/src/fmail_tls.rs",
