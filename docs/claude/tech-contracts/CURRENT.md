@@ -1057,3 +1057,15 @@ Research: HMAC blind index cannot do prefix (authagonal), client-side filter ove
 - 18 Nov 2026 05:12 PKT QC1b INSTALLED on his server: his sql-run E186 OK (selftest 32/0, CHECK_E186 8/8 OK, E65 sweep OK) and founder-install OK (SPA 200, token service ON, Ed25519 ON). Phase still open: my live Chrome look + his first real send to fill the book. Research sources are in COMPOSE-RESEARCH-17NOV.md (authagonal HMAC prefix limit, Nylas cookbook, Thunderbird bug 1671679). NEXT after QC1b live proof = Q-contacts-kernel (move filter+frecency into the Rust WASM kernel, his order 05:00)
 
 - 18 Nov 2026 05:2x PKT QC1b = GREEN: WIRED: YES / REAL: YES / TECH-LAW CHECKED. Live Chrome after his real send: typing gm shows the sealed contact (name, address, pin, forget). Phone/tablet live look waived by his word (no time); sandbox 390/820/1280 proven. NEW PHASE QLIVE added (his 05:16 word: live mail, no refresh, WebTransport push, research first); gate check Q-live open. NEXT = Q-contacts-kernel, then QLIVE order to discuss
+
+### 18 Nov 2026 05:50 PKT - PHASE QLIVE CONTRACT (live mail, no refresh; his word 05:16 + 05:24), written BEFORE the Rust and browser code. Plan: docs/claude/QLIVE-PLAN-18NOV.md (research at the top)
+| Listed technology | Where it lives | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL forced RLS, append-only hash-chained log, gapless sequence under a head-row lock, 400+ lines advance SQL | E187 fmail_change_head187 + fmail_change_log187 + triggers + doors + tier table + selftest + CHECK_E187 | YES (written) | sandbox PG16 selftest 33/0, CHECK_E187 9/9, E179 audit clean; NOT yet installed on his server |
+| Rust Tokio axum, change watcher + signed door | server/founder/src/fmail_live.rs, /founder/v1/mail/changes | no (next) | cargo tests |
+| WebTransport / QUIC / HTTP/3 push (the existing signed live stream, new event `mail`) | live stream in main.rs live_stream_core + wt.rs/h3.rs unchanged | no (next) | his install, live Chrome |
+| Rust WASM kernel verifies every frame and the door answer | existing kernel live session + api.get | no (next) | live Chrome |
+| React 19 TS + Framer Motion, new mail slides in, 390/820/1200+ | founder-web/src/mail_change.ts + livefeed.ts onMail + mail_api.live | no (next) | bun tests, sandbox look, live |
+| Hybrid layers | WebTransport when the tab is open (this phase); J6 Web Push when closed (QLIVE-b, after GREEN); awam inherits pure modules later with its OWN pull command and gate | partly (plan) | plan section 2 |
+
+- 18 Nov 2026 05:50 PKT QLIVE step a+b DONE: plan docs/claude/QLIVE-PLAN-18NOV.md (web research first: JMAP push, IMAP NOTIFY, Postgres LISTEN/NOTIFY limits), contract in CURRENT.md, SQL E187 (417 lines, gapless hash-chained change log, tier limits table with Premium and MAX codes kept) sandbox selftest 33/0 CHECK_E187 9/9. NOT installed on his server. NEXT: Rust fmail_live.rs, browser mail_change.ts
