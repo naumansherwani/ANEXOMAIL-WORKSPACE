@@ -536,7 +536,7 @@
    "part": "QC1cF8",
    "title": "MTA-STS lookup (RFC 8461)",
    "tech": "Rust Tokio + reqwest (rustls) + mail-auth 0.9.2 MtaSts parser (already a dependency) + PostgreSQL",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "server/founder/src/fmail_qtls.rs",
@@ -550,7 +550,7 @@
    "part": "QC1cF8",
    "title": "DANE / TLSA lookup (RFC 7672)",
    "tech": "Rust Tokio + hickory-resolver with the dnssec-ring feature (DNSSEC-validated TLSA, RFC 7672)",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "server/founder/src/fmail_qtls.rs",
@@ -564,7 +564,7 @@
    "part": "QC1cF8",
    "title": "TLS-RPT (RFC 8460)",
    "tech": "Rust Tokio + mail-auth 0.9.2 tlsrpt structs + our own send path + PostgreSQL counters",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "server/founder/src/fmail_qtls.rs",
@@ -578,7 +578,7 @@
    "part": "QC1cF8",
    "title": "'send only if TLS' enforcement",
    "tech": "Rust policy ratchet + PostgreSQL + passkey touch to loosen",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "server/founder/src/fmail_qtls.rs",

@@ -2,7 +2,7 @@
 
 Every feature of a phase, one line each, checked against the repo (a built feature must be found in the code; a missing one is listed as TODO). Gate: rules-gate FEATURES.
 
-## QC1c: 39 of 43 written (18 Nov 2026 08:1x PKT)
+## QC1c: 43 of 43 written (18 Nov 2026 08:1x PKT)
 
 - QC1cF7-1 [BUILT] closed verdict list pq / classic13 / classic12 / none / refused / unreachable / nomail / checking, NO 'unknown' | PostgreSQL 16 (E189)
 - QC1cF7-2 [BUILT] domain name and host detail sealed (AES-256-GCM, vault-wrapped key), only HMAC + closed words in clear | PostgreSQL 16 (E189)
@@ -42,8 +42,8 @@ Every feature of a phase, one line each, checked against the repo (a built featu
 - QC1cF6-3 [BUILT] tooltip: group, version, host, source (sent / received / probe), checked time | React 19 TS, WAI-ARIA
 - QC1cF6-4 [BUILT] same code on 390 / 820 / 1200+, 44 px targets | React 19 TS, CSS container queries
 - QC1cF6-5 [BUILT] screen reader: lock state spoken, live region on change | React 19 TS, WAI-ARIA
-- QC1cF8-1 [TODO] MTA-STS lookup (RFC 8461) | Rust Tokio + reqwest (rustls) + mail-auth 0.9.2 MtaSts parser (already a dependency) + PostgreSQL
-- QC1cF8-2 [TODO] DANE / TLSA lookup (RFC 7672) | Rust Tokio + hickory-resolver with the dnssec-ring feature (DNSSEC-validated TLSA, RFC 7672)
-- QC1cF8-3 [TODO] TLS-RPT (RFC 8460) | Rust Tokio + mail-auth 0.9.2 tlsrpt structs + our own send path + PostgreSQL counters
-- QC1cF8-4 [TODO] 'send only if TLS' enforcement | Rust policy ratchet + PostgreSQL + passkey touch to loosen
+- QC1cF8-1 [BUILT] MTA-STS lookup (RFC 8461) | Rust Tokio + reqwest (rustls) + mail-auth 0.9.2 MtaSts parser (already a dependency) + PostgreSQL
+- QC1cF8-2 [BUILT] DANE / TLSA lookup (RFC 7672) | Rust Tokio + hickory-resolver with the dnssec-ring feature (DNSSEC-validated TLSA, RFC 7672)
+- QC1cF8-3 [BUILT] TLS-RPT (RFC 8460) | Rust Tokio + mail-auth 0.9.2 tlsrpt structs + our own send path + PostgreSQL counters
+- QC1cF8-4 [BUILT] 'send only if TLS' enforcement | Rust policy ratchet + PostgreSQL + passkey touch to loosen
 - QC1cF3-6 [BUILT] SQL E190: the change log learns the kind 'tls' + a trigger on the E189 table writes one tls line (ids only) so the chip updates through QLIVE (the E188 pattern) | PostgreSQL 16 (E190)

@@ -184,7 +184,7 @@ pub(crate) fn dtls_mismatch_line(resp: &Value, proven: &str) -> Option<String> {
 /// systemd-resolved stub on 127.0.0.53 (it serves /etc/hosts too). Either made our own domain look "private" to the SSRF guard (is_public) and a mail to ourselves was refused (his CHECK_OUTBOX_LOOK paste,
 /// 17 Nov 04:28 and again 05:01 after the hosts-only fix). So: hosts file off, and when systemd-resolved is the stub, its real upstream list (/run/systemd/resolve/resolv.conf) is used instead of the stub.
 /// The guard itself stays; the answer it judges is now the one the world sees.
-fn public_dns_builder() -> Result<hickory_resolver::ResolverBuilder<hickory_resolver::name_server::TokioConnectionProvider>, hickory_resolver::ResolveError> {
+pub(crate) fn public_dns_builder() -> Result<hickory_resolver::ResolverBuilder<hickory_resolver::name_server::TokioConnectionProvider>, hickory_resolver::ResolveError> {
     use hickory_resolver::{name_server::TokioConnectionProvider as P, Resolver};
     let mut b = match upstream_conf(&std::fs::read_to_string("/run/systemd/resolve/resolv.conf").unwrap_or_default()) {
         Some((cfg, opts)) => { let mut b = Resolver::builder_with_config(cfg, P::default()); *b.options_mut() = opts; b }
