@@ -1,7 +1,7 @@
 {
- "generated": "18 Nov 2026 05:00 +0500",
- "head": "94d69bdd",
- "head_subject": "ledger line 1eb5b380",
+ "generated": "18 Nov 2026 05:17 +0500",
+ "head": "b2fb817d",
+ "head_subject": "ledger line 5f1a8646",
  "now": "-",
  "phases": {
   "GREEN": 28,
@@ -9,7 +9,7 @@
   "NOT GREEN": 11,
   "PAUSED": 1
  },
- "q_done": 36,
+ "q_done": 37,
  "q_open": 1,
  "checks_ok": 24,
  "checks_open": [
@@ -21,6 +21,7 @@
   "Q-live-wt",
   "Q-smtp-mtasts",
   "Q-ledger-kernel",
-  "Q-contacts-kernel"
+  "Q-contacts-kernel",
+  "Q-live"
  ]
 }

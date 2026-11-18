@@ -270,6 +270,14 @@
    "status": "open",
    "deadline": "2026-11-25",
    "why": "QC1b: the recipient suggestion filter + frecency rank runs in the Rust WASM kernel (his plan: top 500 opened in the kernel); first version is TS (book.ts) because the kernel is the shared Rule 52 build; founder-lane kernel op still to build"
+  },
+  {
+   "id": "Q-live",
+   "file": "founder-web/src/mail_live.ts",
+   "must": "mail_live_push",
+   "status": "open",
+   "why": "QLIVE (his word 18 Nov 05:16): new mail appears by itself, no refresh; WebTransport push + kernel opens the sealed row; SSE fallback only",
+   "deadline": "2026-11-25"
   }
  ]
 }
