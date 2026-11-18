@@ -1053,3 +1053,5 @@ Research: HMAC blind index cannot do prefix (authagonal), client-side filter ove
 | Rust WASM kernel filter | OPEN GAP Q-contacts-kernel (deadline 25 Nov) | warn in gate |
 
 - 18 Nov 2026 05:05 PKT QC1b WRITTEN, not closed: E186 SQL (sandbox 32/0), Rust fmail_book.rs + doors + touch on real send and clean inbox mail (cargo test 439/0), book.ts + suggestion list in the chips (bun 345/0, tsc clean, sandbox 390/1280 looked). Awaits his sql-run + founder-install, then my live Chrome look
+
+- 18 Nov 2026 05:12 PKT QC1b INSTALLED on his server: his sql-run E186 OK (selftest 32/0, CHECK_E186 8/8 OK, E65 sweep OK) and founder-install OK (SPA 200, token service ON, Ed25519 ON). Phase still open: my live Chrome look + his first real send to fill the book. Research sources are in COMPOSE-RESEARCH-17NOV.md (authagonal HMAC prefix limit, Nylas cookbook, Thunderbird bug 1671679). NEXT after QC1b live proof = Q-contacts-kernel (move filter+frecency into the Rust WASM kernel, his order 05:00)
