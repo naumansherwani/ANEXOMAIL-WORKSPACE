@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 07:57 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 08:00 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QLIVE-c + Q-contacts-kernel GREEN 07:35; waiting his QC1c talk
 NEXT STEP: QC1c (E189) after his answers; owed: live Chrome look
 HIS LAST WORD: his 07:31 order: green + update everything
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 1c2a9f0a 18 Nov 08:00 QC1cF7: SQL E189 domain TLS facts + CHECK
+- 54ad6946 18 Nov 07:57 ledger line 8eeedef9
 - 8eeedef9 18 Nov 07:57 QC1c sub-phases F1-F8 in blueprint
 - eb61d69e 18 Nov 07:50 ledger line 7a1fc9ce
 - 7a1fc9ce 18 Nov 07:50 QC1c feature points recorded
-- 9c846ab9 18 Nov 07:45 ledger line 100ee8b2
-- 100ee8b2 18 Nov 07:45 QC1c discussion research recorded
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -29,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (f1938a01ef2615b48ef97c6d38461085b70766d9)
+WIP snapshot: refs/wip/last (0a3366493ccc69bcd65576c7c9102fdbff42e3f1)
