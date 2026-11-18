@@ -350,10 +350,15 @@ pub async fn tls_check_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axu
     ds.sort(); ds.dedup();
     if let Err(r) = own(sb, &uid, &b).await { return r; }
     let (Some(master), Some(hs)) = (lease::MASTER.get(), real_hs()) else { return pk::refuse(StatusCode::SERVICE_UNAVAILABLE, "the vault master key or the TLS stack is not ready") };
-    let mut set = tokio::task::JoinSet::new();
-    for d in ds { let (sb2, m, u, bx) = (sb.clone(), *master, uid.clone(), b.clone()); set.spawn(async move { let r = run_check(&sb2, &m, &u, &bx, "vault-1", &d, hs).await; (d, r) }); }
+    // Detached tasks: a browser that gives up on this request (tab closed, fetch aborted) must NOT kill a probe half way, or the row stays 'checking' until its claim runs out.
+    // The door waits at most 8 s for the answers; a probe still running is reported "pending" and finishes by itself (the chip changes through the change log).
+    let mut hs_list = Vec::new();
+    for d in ds { let (sb2, m, u, bx, d2) = (sb.clone(), *master, uid.clone(), b.clone(), d.clone()); hs_list.push((d, tokio::spawn(async move { run_check(&sb2, &m, &u, &bx, "vault-1", &d2, hs).await }))); }
     let mut out = serde_json::Map::new();
-    while let Some(Ok((d, r))) = set.join_next().await { out.insert(d, r); }
+    let deadline = tokio::time::Instant::now() + Duration::from_secs(8);
+    for (d, mut h) in hs_list {
+        match tokio::time::timeout_at(deadline, &mut h).await { Ok(Ok(r)) => { out.insert(d, r); } Ok(Err(_)) => { out.insert(d, json!({"ok": false, "error": "the probe stopped"})); } Err(_) => { out.insert(d, json!({"ok": true, "go": true, "pending": true})); } }
+    }
     crate::signed(&st, json!({"ok": true, "results": out}))
 }
 
