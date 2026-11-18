@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 06:03 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 06:09 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 17 Nov 06:35 PLAQUE LIVE (his photo 06:29). His orders: (1) plaque name = full 'Muhammad Nauman Sherwani'; (2) QC0 = POLISH the compose UI first, one phase at a time, subphases for each point written in the repo; (3) editor + phone-compose = WEB RESEARCH, write what was researched into the repo with date/time, then the code plan, then advanced code; (4) undo stays 30 s, but the X on the undo bar = deliver NOW (skip the hold); (5) AI drafting DROPPED until the AI product (July 2027). Steps: fix name, research docs/claude/COMPOSE-RESEARCH-17NOV.md, plan+subphases, qstate, then QC0 code.
 NEXT STEP: 
 HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- ddfd8f0d 18 Nov 06:09 QLIVE audit fixes (owner-only ping, prune), blocked timeline check
+- 5d84e9c7 18 Nov 06:03 ledger line 4c072721
 - 4c072721 18 Nov 06:03 QLIVE: fix changes door 400, CHECK_BLOCKED_NOW
 - dea2bb78 18 Nov 05:37 ledger line 5fa1d4b2
 - 5fa1d4b2 18 Nov 05:37 QLIVE tests all pass, install lines given
-- 7c71eca5 18 Nov 05:36 ledger line 5b9696a7
-- 5b9696a7 18 Nov 05:36 QLIVE steps c+d: Rust watcher + door, browser push-first
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -29,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (9a59ec4208b63be547c44a1f5c9998c4238efb97)
+WIP snapshot: refs/wip/last (d94666da826049b8d2d53ae0bdfefd43d8cd2403)
