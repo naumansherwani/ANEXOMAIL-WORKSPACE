@@ -7,6 +7,8 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { asChipText, DEBOUNCE_MS, hitsFromKernel, kernelInput, MIN_CHARS, needle, suggest, type Contact, type Hit } from "./book";
 import { contactsSuggest } from "./kernel";
+import { TlsLock } from "./TlsLock";
+import { domainOf, lockView, type TlsFact } from "./tls_pure";
 import { addText, chipsOf, initial, joinChips, label, looksComplete, removeChip, type Chip, type Field } from "./recipients";
 
 export const DRAG_MIME = "application/x-anexo-chip";
@@ -21,12 +23,13 @@ export type RowProps = {
   trailing?: React.ReactNode; placeholder?: string; autoFocus?: boolean;
   book?: Contact[];                                               // QC1b: the opened address book (top 500); suggestions are filtered here while typing, no server call
   onBookAct?: (c: Contact, op: "forget" | "pin" | "unpin") => void;
+  tls?: Record<string, TlsFact>;                                  // QC1c: the lock facts by domain; absent = no lock is drawn (the old chip, unchanged)
 };
 
 const key = (c: Chip) => c.addr ?? c.raw;
 const OTHERS: Record<Field, Field[]> = { To: ["Cc", "Bcc"], Cc: ["To", "Bcc"], Bcc: ["To", "Cc"] };
 
-export function RecipientField({ field, value, onChange, taken, onMove, onDragActive, inputRef, trailing, placeholder, book, onBookAct }: RowProps) {
+export function RecipientField({ field, value, onChange, taken, onMove, onDragActive, inputRef, trailing, placeholder, book, onBookAct, tls }: RowProps) {
   const reduceHook = useReducedMotion(), calm = !!reduceHook || (typeof document !== "undefined" && document.documentElement.dataset.motion !== "full");
   const uid = useId(), own = useRef<HTMLInputElement>(null), box = inputRef ?? own;
   const [text, setText] = useState(""), [sel, setSel] = useState(-1), [menu, setMenu] = useState(-1), [live, setLive] = useState(""), [note, setNote] = useState(""), [over, setOver] = useState(false);
@@ -118,13 +121,14 @@ export function RecipientField({ field, value, onChange, taken, onMove, onDragAc
             {chips.map((c, i) => (
               <motion.li key={key(c)} layout={!calm ? "position" : false} initial={calm ? false : { opacity: 0, scale: 0.86 }} animate={{ opacity: 1, scale: 1 }} exit={calm ? { opacity: 0 } : { opacity: 0, scale: 0.86 }} transition={spring}
                 ref={(el) => { refs.current[i] = el; }} className={`rf-li${sel === i ? " sel" : ""}`} role="listitem" tabIndex={sel === i ? 0 : -1}
-                aria-label={c.addr ? `${label(c)}${c.name ? ", " + c.addr : ""}` : `${c.raw}, not valid: ${c.reason}`} aria-invalid={c.addr ? undefined : true}
+                aria-label={c.addr ? `${label(c)}${c.name ? ", " + c.addr : ""}${tls ? ", " + lockView(tls[domainOf(c.addr)]).aria : ""}` : `${c.raw}, not valid: ${c.reason}`} aria-invalid={c.addr ? undefined : true}
                 onFocus={() => setSel(i)} onKeyDown={(e) => onChipKey(e, i)} onDoubleClick={() => edit(i)}>
                 <div className={`rf-chip${c.addr ? "" : " bad"}`} title={c.addr ? c.addr : `${c.raw}: ${c.reason}`} draggable={!!c.addr}
                   onDragStart={(e) => { if (!c.addr) return; e.dataTransfer.setData(DRAG_MIME, JSON.stringify({ addr: c.addr, raw: c.raw, from: field })); e.dataTransfer.setData("text/plain", c.addr); e.dataTransfer.effectAllowed = "move"; onDragActive?.(true); }}
                   onDragEnd={() => onDragActive?.(false)}>
                 <i className="rf-dot" aria-hidden="true">{c.addr ? initial(c) : "!"}</i>
                 <span className="rf-txt">{label(c)}</span>
+                {tls && c.addr && <TlsLock view={lockView(tls[domainOf(c.addr)])} />}
                 <button type="button" className="rf-act" aria-haspopup="menu" aria-expanded={menu === i} aria-label={`Options for ${label(c)}`} tabIndex={-1} onClick={(e) => { e.stopPropagation(); setSel(i); setMenu(menu === i ? -1 : i); }}>⋯</button>
                 <button type="button" className="rf-x" aria-label={`Remove ${label(c)}`} tabIndex={-1} onClick={(e) => { e.stopPropagation(); drop(i); }}>×</button>
                 </div>

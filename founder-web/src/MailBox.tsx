@@ -1,3 +1,4 @@
+import { TlsProven } from "./TlsLock";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
@@ -288,6 +289,7 @@ export function MailBox() {
                     {opened.touched && <span className="mx-chip ok">Opened with your key</span>}
                   </div>
                   {cur.direction === "out" && <OutFactsLine box={boxId} id={opened.facts.id} />}
+                  {cur.direction === "out" && <TlsProven box={boxId} addrs={[...(opened.sum.to ?? []), ...(opened.sum.cc ?? [])]} />}
                   {opened.view.remote_content_blocked && <p className="mx-note">Remote images and scripts in this message were not loaded. You are reading its text only.</p>}
                   <pre className="mbx-body-t">{opened.view.text || "(empty message)"}</pre>
                   {opened.view.attachments.length > 0 && (

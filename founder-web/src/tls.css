@@ -1,0 +1,20 @@
+/* QC1c F6: the lock on a recipient chip. Additive: nothing here restyles an existing class. Same CSS for 390 / 820 / 1200+, only the touch size changes. */
+.tls-wrap{position:relative;display:inline-flex;align-items:center;flex:none}
+.tls-lock{display:inline-flex;align-items:center;gap:2px;border:0;background:transparent;color:#7b8794;padding:0 3px;height:22px;min-width:22px;border-radius:11px;cursor:pointer;font:inherit}
+.tls-lock:hover{background:rgba(120,140,170,.16)}
+.tls-s{font-style:normal;font-size:10px;font-weight:700;letter-spacing:.02em}
+.tls-wrap[data-tone="pq"] .tls-lock{color:#2f7bff}
+.tls-wrap[data-tone="classic"] .tls-lock{color:#7b8794}
+.tls-wrap[data-tone="old"] .tls-lock{color:#98a2ad;opacity:.85}
+.tls-wrap[data-tone="warn"] .tls-lock{color:#d99200}
+.tls-wrap[data-tone="nomail"] .tls-lock{color:#d23b4b}
+.tls-wrap[data-tone="checking"] .tls-lock{color:#8aa0bd}
+.tls-wrap[data-dotted] .tls-lock{outline:1px dotted currentColor;outline-offset:1px}
+.tls-tip{position:absolute;z-index:30;left:50%;top:calc(100% + 6px);transform:translateX(-50%);display:none;flex-direction:column;gap:2px;min-width:200px;max-width:min(300px,86vw);padding:8px 10px;border-radius:10px;background:#0f1b2d;color:#eef3fa;font-size:12px;line-height:1.35;box-shadow:0 6px 24px rgba(0,0,0,.35);white-space:normal;text-align:left}
+.tls-tip b{font-size:12.5px}
+.tls-tip.on,.rf-li.sel .tls-tip{display:flex}
+.tls-proven{margin:4px 0 0;font-size:12px;color:#5b6b80}
+@media (pointer:coarse),(max-width:640px){.tls-lock{min-width:44px;height:44px;padding:0 6px}.rf .rf-chip:has(.tls-wrap) .rf-txt{max-width:min(36vw,260px)}}
+@media (max-width:640px){.tls-tip{position:fixed;left:16px;right:16px;top:auto;bottom:16px;transform:none;max-width:none;min-width:0}}
+@media (prefers-reduced-motion:reduce){.tls-lock{transition:none}}
+@media (prefers-color-scheme:dark){.tls-wrap[data-tone="pq"] .tls-lock{color:#6ea4ff}.tls-wrap[data-tone="classic"] .tls-lock{color:#a3adba}}

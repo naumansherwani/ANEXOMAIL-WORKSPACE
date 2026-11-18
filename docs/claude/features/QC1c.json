@@ -452,7 +452,7 @@
    "part": "QC1cF5",
    "title": "UI addition: a 'proven' line on the sent mail",
    "tech": "React 19 TS + Framer Motion",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "founder-web/src/TlsLock.tsx",
@@ -466,7 +466,7 @@
    "part": "QC1cF6",
    "title": "UI addition: small lock on each recipient chip, old UI intact",
    "tech": "React 19 TS + Framer Motion",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "founder-web/src/TlsLock.tsx",
@@ -480,7 +480,7 @@
    "part": "QC1cF6",
    "title": "colours: blue pq, grey classic, amber none/refused/unreachable, red nomail, dotted checking",
    "tech": "React 19 TS",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "founder-web/src/TlsLock.tsx",
@@ -494,7 +494,7 @@
    "part": "QC1cF6",
    "title": "tooltip: group, version, host, source (sent / received / probe), checked time",
    "tech": "React 19 TS, WAI-ARIA",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "founder-web/src/TlsLock.tsx",
@@ -508,7 +508,7 @@
    "part": "QC1cF6",
    "title": "same code on 390 / 820 / 1200+, 44 px targets",
    "tech": "React 19 TS, CSS container queries",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "founder-web/src/TlsLock.tsx",
@@ -522,7 +522,7 @@
    "part": "QC1cF6",
    "title": "screen reader: lock state spoken, live region on change",
    "tech": "React 19 TS, WAI-ARIA",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
      "file": "founder-web/src/TlsLock.tsx",

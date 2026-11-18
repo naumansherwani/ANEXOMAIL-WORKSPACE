@@ -162,8 +162,8 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-Brd5Ya19.css
-founder-web/dist/assets/index-WLS9V_zB.js
+founder-web/dist/assets/index-BjHSSH1P.css
+founder-web/dist/assets/index-DWFBpImZ.js
 founder-web/dist/assets/kernel.worker-BLkLR49F.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
@@ -240,6 +240,7 @@ founder-web/src/SettingsS2.tsx
 founder-web/src/SignIn.tsx
 founder-web/src/Surface.tsx
 founder-web/src/SystemMap.tsx
+founder-web/src/TlsLock.tsx
 founder-web/src/Trust.tsx
 founder-web/src/TrustRing.tsx
 founder-web/src/Vault.tsx
@@ -385,8 +386,11 @@ founder-web/src/styles.css
 founder-web/src/system_brain.json
 founder-web/src/systemmap.css
 founder-web/src/tailwind.css
+founder-web/src/tls.css
 founder-web/src/tls_line.test.ts
 founder-web/src/tls_line.ts
+founder-web/src/tls_pure.test.ts
+founder-web/src/tls_pure.ts
 founder-web/src/trust.css
 founder-web/src/trust_pure.test.ts
 founder-web/src/trust_pure.ts
