@@ -1,6 +1,19 @@
 # COMPOSE RESEARCH (17 Nov 2026 06:4x PKT, his order 06:29: "web research kero, repo mein likho kya research kiya, phir codes plan, phir advance codes")
 Scope: founder side only. Three decisions: the editor (QC2), the phone compose layout (QC0b / QC8), the undo window and "send now" (QC3). AI drafting is DROPPED until the AI product (his word 06:29, July 2027).
 
+## >>> QC1c PLAN (written 18 Nov 2026 07:3x PKT BEFORE any code; web research first = STANDING RULE 0; WAITS his answer to question 1 below, it is his decision) <<<
+RESEARCH (read 18 Nov 2026):
+- RFC 8461 (MTA-STS): a receiving domain publishes a DNS TXT `_mta-sts` and an HTTPS policy file (mode enforce / testing, the MX names, max_age); a sender that finds it MUST deliver only over validated TLS to those MX hosts. So "this domain REQUIRES TLS" is a public, checkable fact.
+- RFC 7672 (DANE for SMTP): TLSA records on the MX host, only trusted when the DNS answer is DNSSEC-signed; the strongest form (no CA needed).
+- RFC 8689 (SMTP REQUIRETLS): the sender asks that a message never goes out in clear; it needs the next hop to support the extension.
+- RFC 8460 (TLS-RPT): receivers report TLS failures; not needed for a lock icon.
+- Plain opportunistic STARTTLS (RFC 3207) is what most domains still do: encrypted if both sides agree, silently clear text if not. So an honest lock must come from a real probe of the MX, not from a guess.
+DECISION: the lock is computed by OUR OWN probe and shows four honest states: BLUE = TLS 1.3 with the post-quantum group X25519MLKEM768 negotiated; GREY = TLS 1.3 classic; AMBER = no TLS or the server refused STARTTLS; DOTTED = checking. A small extra tick "policy" when the domain publishes MTA-STS enforce (RFC 8461) or valid DANE. The tooltip names the exact group and the check time. Real data from our own probe, not a label.
+DESIGN (unchanged from the line above, now with the standards named): SQL E189 `fmail_domain_tls` (domain, verdict, group, tls version, mta_sts mode, probed_at, 24 h cache, append-only hash-chained like E187, forced RLS), Rust Tokio probe (rustls + rustls-post-quantum are already in the founder crate, hickory-resolver for MX / TXT / TLSA), rate limited, only for a domain he typed, never for a domain already cached, Rust door `/founder/v1/mail/tls?domain=`, kernel-verified, React lock on the chip (UI addition proposed to him before it is built: UI LAW).
+RISKS WRITTEN HONESTLY: (1) the probe connects to the recipient's MX from HIS server IP (port 25 outbound) and opens a short TLS session, no mail is sent: this leaves a connection log at the recipient. (2) A chip being typed is a signal about WHO he writes to: only domains, never addresses, are probed, and the cache means one probe per domain per day. (3) Many hosts block port 25 outbound: then the verdict is `unknown`, never a fake lock.
+QUESTIONS FOR HIM: (1) QC1c probes the receiving mail server from his server IP (a normal short TLS handshake, no mail sent, domain only): OK? (2) the lock on the chip: add it in the glass look (UI change, needs his haan). Nothing is coded until he answers.
+
+
 ## >>> QC1b PLAN (his haan 18 Nov 2026 04:26; written 04:35 PKT BEFORE any code; web research first = STANDING RULE 0) <<<
 RESEARCH (read 18 Nov 2026):
 - authagonal.io "HMAC ate my autocomplete": a blind index (HMAC) answers ONE question, equality; HMAC("ali") says nothing about HMAC("alistair"), so prefix search silently becomes exact match. The cure there (an index row per prefix 2..16) leaks prefix equality and costs 15 writes per address. https://dev.to/authagonal/hmac-ate-my-autocomplete-type-ahead-search-over-encrypted-emails-4ae0

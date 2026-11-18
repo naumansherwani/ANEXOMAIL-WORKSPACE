@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 07:15 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 18 Nov 07:1x Q-contacts-kernel STARTED (his order 07:10): web research first, plan at top of the plan doc, CURRENT.md contract, then code; shared kernel pin not forked, awam untouched. QLIVE-c: E188 ran OK on his server (CHECK_E188 5/5), founder-install result not yet pasted
-NEXT STEP: 1) research + plan Q-contacts-kernel 2) contract in CURRENT.md 3) code in kernel (version bump, awam pin stays) 4) when he pastes founder-install: live two-tab draft check then QLIVE-c GREEN; 5) QC1c = E189. NO filler messages, NO Monitor watches (his 07:06 anger): one final reply per task
-HIS LAST WORD: E188 ran OK; start Q-contacts-kernel; no filler messages
+# WORKING NOW (manual checkpoint, 18 Nov 2026 07:16 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 18 Nov 07:2x PKT PHASES IN HAND: (1) QLIVE-c = package stream limits (stream_tier.rs) + live drafts E188 + sim test, E188 ran OK on his server, founder-install not yet pasted; (2) Q-contacts-kernel = contacts@1 in Rust WASM kernel 0.18.0, written+pushed 0be0300a, waits his founder-install + my live Chrome look; both then GREEN. NEXT = QC1c (SQL E189) per qstate PLAN. Codes written stay intact. No filler messages, no Monitor watches, one final reply per task. Founder pull and awam pull are always separate points (awam pull NOT needed now)
+NEXT STEP: after his founder-install paste: live look (draft edit two tabs + typing gm suggestions from the kernel) then GREEN both; meanwhile QC1c (E189) web research first
+HIS LAST WORD: which phase + update context; write remaining advanced codes
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 38284a4c 18 Nov 07:15 ledger line 0be0300a
 - 0be0300a 18 Nov 07:15 Q-contacts-kernel: contacts@1 in the Rust WASM kernel 0.18.0, plan + contract
 - 4f8e39f5 18 Nov 07:04 ledger line aa33f486
 - aa33f486 18 Nov 07:04 QLIVE-c fix: tier rows shipped to server, live drafts renumbered E188, awam Premium/MAX reminder gate
 - efafa222 18 Nov 06:51 ledger line f618939b
-- f618939b 18 Nov 06:51 QLIVE-c: package stream limits, live drafts E189, simulation test, awam tiers doc
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -17,8 +17,8 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 23 +++++------------------
+ 1 file changed, 5 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -29,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a5c5c4020cb635578b48485aca70293b4d6e2333)
+WIP snapshot: refs/wip/last (06de05af5a6ceadbabf49c8953dd9858c79c788f)
