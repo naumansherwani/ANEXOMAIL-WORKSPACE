@@ -398,7 +398,7 @@ docs/cursor-work/sql/CHECK_E184.sql
 docs/cursor-work/sql/CHECK_E185.sql
 docs/cursor-work/sql/CHECK_E186.sql
 docs/cursor-work/sql/CHECK_E187.sql
-docs/cursor-work/sql/CHECK_E189.sql
+docs/cursor-work/sql/CHECK_E188.sql
 docs/cursor-work/sql/CHECK_E42_E47.sql
 docs/cursor-work/sql/CHECK_E48.sql
 docs/cursor-work/sql/CHECK_E50.sql
@@ -814,6 +814,7 @@ server/rust/device_core.rs
 server/rust/device_glue.rs
 server/rust/dnsauth_core.rs
 server/rust/dnsauth_glue.rs
+server/rust/e187_tier_rows.sql
 server/rust/events_core.rs
 server/rust/events_glue.rs
 server/rust/evidence_core.rs

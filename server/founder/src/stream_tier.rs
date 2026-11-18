@@ -99,21 +99,30 @@ mod tests {
     fn founder_cap_equals_the_global_stream_ceiling() { assert_eq!(Tier::Founder.limits().live_streams, crate::live::MAX_STREAMS); }
     #[test]
     fn names_round_trip() { for (t, n) in Tier::ALL { assert_eq!(Tier::parse(n), Some(t)); assert_eq!(t.name(), n); } assert_eq!(Tier::parse("gold"), None); }
+    /// The 7 insert rows of E187 `fmail_tier_limits187`, copied to server/rust/e187_tier_rows.sql (the installer ships that file; the SQL file itself is not on the server).
+    const ROWS: &str = include_str!("../../rust/e187_tier_rows.sql");
     #[test]
     fn the_table_equals_the_sql_table() {
-        // E187 is the single source of truth: parse its insert lines `('tier', streams, days, rows, built, '...')` and compare every number.
-        let sql = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/../../docs/cursor-work/sql/E187_founder_mail_live_change_log.sql"));
+        // every row `('tier', streams, days, rows, built, '...')` must equal the Rust numbers
         let mut seen = 0;
-        for line in sql.lines().map(str::trim).filter(|l| l.starts_with("('") && l.contains("', ")) {
-            let inner = line.trim_start_matches('(');
-            let mut p = inner.split(',').map(str::trim);
+        for line in ROWS.lines().map(str::trim).filter(|l| l.starts_with("('")) {
+            let mut p = line.trim_start_matches('(').split(',').map(str::trim);
             let name = p.next().unwrap().trim_matches('\'');
-            let Some(t) = Tier::parse(name) else { continue };
+            let t = Tier::parse(name).unwrap_or_else(|| panic!("unknown tier {name}"));
             let (s, d, k): (usize, i32, i32) = (p.next().unwrap().parse().unwrap(), p.next().unwrap().parse().unwrap(), p.next().unwrap().parse().unwrap());
             let built = p.next().unwrap() == "true";
             assert_eq!(t.limits(), Limits { live_streams: s, keep_days: d, keep_rows: k, built }, "tier {name} drifted from E187");
             seen += 1;
         }
-        assert_eq!(seen, 7, "all 7 tiers must be found in the SQL file");
+        assert_eq!(seen, 7, "all 7 tiers must be in the vector file");
+    }
+    #[test]
+    fn the_vector_file_equals_the_e187_sql_when_the_repo_is_there() {
+        // in the repo checkout (sandbox, CI) the real E187 file exists: the copy must match it line for line. On the server the SQL file is absent and this check is skipped.
+        let p = concat!(env!("CARGO_MANIFEST_DIR"), "/../../docs/cursor-work/sql/E187_founder_mail_live_change_log.sql");
+        let Ok(sql) = std::fs::read_to_string(p) else { return };
+        let want: Vec<&str> = sql.lines().map(str::trim).filter(|l| l.starts_with("('") && ["founder', ", "basic', ", "pro', ", "business', ", "business_pro', ", "business_premium', ", "business_max', "].iter().any(|n| l.starts_with(&format!("('{n}")))).collect();
+        let have: Vec<&str> = ROWS.lines().map(str::trim).filter(|l| !l.is_empty()).collect();
+        assert_eq!(have, want, "server/rust/e187_tier_rows.sql is out of date: regenerate it from E187");
     }
 }

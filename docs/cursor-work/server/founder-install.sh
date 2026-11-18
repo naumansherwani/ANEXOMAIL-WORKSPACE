@@ -32,6 +32,8 @@ show server/rust/passkey_core.rs >"$ROOT/rust/passkey_core.rs" || { echo "FAIL: 
 show server/rust/g5c_tsa_vectors.json >"$ROOT/rust/g5c_tsa_vectors.json" || { echo "FAIL: g5c_tsa_vectors.json nahi"; exit 2; }
 # G5d part 2: portable.rs test include_str!("../../rust/g5d_bundle_vector.json") (a bundle made by the production SQL)
 show server/rust/g5d_bundle_vector.json >"$ROOT/rust/g5d_bundle_vector.json" || { echo "FAIL: g5d_bundle_vector.json nahi"; exit 2; }
+# QLIVE-c: stream_tier.rs test include_str!("../../rust/e187_tier_rows.sql") (the 7 package rows of E187; a repo-side test keeps it equal to the SQL)
+show server/rust/e187_tier_rows.sql >"$ROOT/rust/e187_tier_rows.sql" || { echo "FAIL: e187_tier_rows.sql nahi"; exit 2; }
 # main.rs ka path src/ se ../../rust/jwt_core.rs = $ROOT/rust/jwt_core.rs (src/src -> ../../ = src/..)
 echo "== 1/4 tests"; TOK=0; for TRY in 1 2 3; do (cd "$ROOT/src" && cargo test --release >/tmp/founder-test.$$ 2>&1); RC=$?; grep -E "test result|FAILED|^error|panicked" /tmp/founder-test.$$ | head -8; if [ $RC -eq 0 ]; then TOK=1; break; fi; echo "tests try $TRY failed (exit $RC), dobara"; sleep 2; done; [ $TOK -eq 1 ] || { echo "FAIL: tests 3 baar — kuch nahi badla"; exit 3; }; rm -f /tmp/founder-test.$$
 echo "== 2/4 build"; export ANX_BUILD="$(git -C "$REPO" rev-parse --short origin/main)" ANX_BUILD_TIME="$(date -u +%Y-%m-%dT%H:%M:%SZ)"; (cd "$ROOT/src" && nice cargo build --release 2>&1 | tail -3) ; NEW="$ROOT/src/target/release/anexomail-founder"; [ -x "$NEW" ] || { echo "FAIL: build"; exit 3; }

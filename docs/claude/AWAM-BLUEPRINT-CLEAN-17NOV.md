@@ -1,5 +1,6 @@
 # AWAM BLUEPRINT, CLEAN (founder Nauman Sherwani, 17 Nov 2026 05:0x PKT). Awam only. Never mixed with the founder file.
 Source of truth for the order: his word of 17 Nov 04:15 and 04:5x. Detail of each earlier decision stays in the files named in the last column.
+> REMINDER (his 18 Nov 2026 06:5x order): BUSINESS PREMIUM and BUSINESS MAX live-mail codes (25 / 100 streams, 30 days log) are WRITTEN AND PRESERVED, built = false: docs/claude/AWAM-QLIVE-TIERS-18NOV.md. Gate check AWAM-PREMIUM-MAX-LIVE stays OPEN (shown by rules-read.py and by every rules-gate run) until he builds those packages; Claude must remind him then. Founder and awam pull commands stay separate.
 
 ## 1. WHEN IT STARTS
 The awam starts only after the FOUNDER blueprint is complete (founder target 25 Nov 2026). The whole awam website is 100% complete by 16 Dec 2026 with tests; seminar launch 16 Jan 2027. Awam files stay FROZEN until their phase starts (`lovable-gold/awam/` is the preserved Lovable copy, never edited).

@@ -264,6 +264,14 @@
    "why": "QUI-H: the mail ledger chain is recomputed by the server (fmail_proof) and the answer is kernel-verified; hashing the whole chain inside the browser WASM kernel (rows streamed to it) is still to build"
   },
   {
+   "id": "AWAM-PREMIUM-MAX-LIVE",
+   "file": "docs/claude/AWAM-QLIVE-TIERS-18NOV.md",
+   "must": "BUILT-PREMIUM-MAX: YES",
+   "status": "open",
+   "deadline": "when Business Premium / Business MAX are built on awam (no date yet)",
+   "why": "REMINDER (his 18 Nov 06:5x order): Business Premium (25 live streams) and Business MAX (100) codes are written and preserved with built=false. When he builds those two awam packages: flip built to true in the awam SQL row + the Rust table (stream_tier.rs pattern), write the line BUILT-PREMIUM-MAX: YES in docs/claude/AWAM-QLIVE-TIERS-18NOV.md, then this check turns ok. CLAUDE: tell him about this the moment the awam Premium/MAX work starts."
+  },
+  {
    "id": "Q-contacts-kernel",
    "file": "founder-web/src/book.ts",
    "must": "kernel_contacts_filter",
