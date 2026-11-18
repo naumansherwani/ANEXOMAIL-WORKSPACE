@@ -1091,3 +1091,5 @@ QLIVE audit 18 Nov 2026 06:3x (DBSC blocked alert): his CHECK_BLOCKED_TIMELINE (
 QLIVE hardening 18 Nov 2026 06:5x (React-TS, mail_api.live + mail_change.ts): (1) the cursor moves ONLY after the screen refresh succeeded (a failed read keeps the old cursor, the next catch-up asks again); (2) an arrival the log shows but the counts missed (read + arrive in one burst keeps the inbox total equal) is still announced once (arrivalExtra, bun-tested, never twice). No UI element changed (UI LAW). bun 355/355, tsc clean.
 
 - 18 Nov 2026 07:0x PKT QLIVE hardening written (not green-claimed again): cursor moves only after a successful refresh; an arrival the counts missed is still announced once; bun 355/355 tsc clean; waits his founder-install, then live look
+
+- 18 Nov 2026 06:5x PKT QLIVE line-by-line match (QLIVE-PLAN section 10): every listed feature exists in repo; open honest list = tier stream limits not enforced yet, in-place draft edit not announced, real-mail slide/gap/burst/reconnect not seen live; no code change, no install needed
