@@ -240,6 +240,12 @@ try:
     if _qe: fail("Q STATE", _qe + " (python3 docs/cursor-work/server/qstate.py verify / render)")
 except Exception as _x:
     fail("Q STATE", "qstate.py cannot run: " + str(_x)[:120])
+# FEATURES (his 18 Nov 2026 08:07 order): every feature of a phase is in docs/claude/features/*.json; a feature marked built must be found in the repo, a feature that exists must not be marked todo, a sub-phase that is done needs every feature built, and the generated lists must be fresh
+try:
+    _sp3 = _iu.spec_from_file_location("features", "docs/cursor-work/server/features.py"); _ft = _iu.module_from_spec(_sp3); _sp3.loader.exec_module(_ft)
+    for _e in _ft.errors(): fail("FEATURES", _e)
+except Exception as _x:
+    fail("FEATURES", "features.py cannot run: " + str(_x)[:120])
 # PHASE TECH (his order 15 Nov 2026 19:30): every phase in docs/claude/state/PHASES.json (and every Q step) names an ADVANCE technology, no old technology as a choice, GREEN needs WIRED/REAL/TECH-LAW CHECKED, and the generated blueprint equals the ledger. A violation blocks the commit.
 try:
     _sp2 = _iu.spec_from_file_location("phases", "docs/cursor-work/server/phases.py"); _ph = _iu.module_from_spec(_sp2); _sp2.loader.exec_module(_ph)

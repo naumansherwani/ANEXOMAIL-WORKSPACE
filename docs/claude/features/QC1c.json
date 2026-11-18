@@ -1,0 +1,561 @@
+{
+ "phase": "QC1c",
+ "written": "18 Nov 2026 08:1x PKT",
+ "rule": "his 18 Nov 08:07 order: every feature one by one, matched to the repo; a missing feature is reported and fixed BEFORE commit",
+ "features": [
+  {
+   "id": "QC1cF7-1",
+   "part": "QC1cF7",
+   "title": "closed verdict list pq / classic13 / classic12 / none / refused / unreachable / nomail / checking, NO 'unknown'",
+   "tech": "PostgreSQL 16 (E189)",
+   "status": "built",
+   "markers": [
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "verdict in \\('pq', 'classic13', 'classic12', 'none', 'refused', 'unreachable', 'nomail', 'checking'\\)"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF7-2",
+   "part": "QC1cF7",
+   "title": "domain name and host detail sealed (AES-256-GCM, vault-wrapped key), only HMAC + closed words in clear",
+   "tech": "PostgreSQL 16 (E189)",
+   "status": "built",
+   "markers": [
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "sealed\\s+bytea not null"
+    },
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "detail_sealed"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF7-3",
+   "part": "QC1cF7",
+   "title": "append-only SHA-256 hash-chained log + gapless head row + verify door",
+   "tech": "PostgreSQL 16 (E189)",
+   "status": "built",
+   "markers": [
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "fmail_dtls_verify189"
+    },
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "fmail_dtls_hash189"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF7-4",
+   "part": "QC1cF7",
+   "title": "forced RLS on 3 tables + guard trigger (writes only through doors)",
+   "tech": "PostgreSQL 16 (E189)",
+   "status": "built",
+   "markers": [
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "force row level security"
+    },
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "fmail_dtls_guard189"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF7-5",
+   "part": "QC1cF7",
+   "title": "CHECK constraints tie verdict to evidence (pq needs TLS 1.3 + ML-KEM, classic13 no ML-KEM, failure no group)",
+   "tech": "PostgreSQL 16 (E189)",
+   "status": "built",
+   "markers": [
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "fmail_dtls_pq_ck"
+    },
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "fmail_dtls_c13_ck"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF7-6",
+   "part": "QC1cF7",
+   "title": "read door for up to 50 domains in one call (the chips of one compose box)",
+   "tech": "PostgreSQL 16 (E189)",
+   "status": "built",
+   "markers": [
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "fmail_dtls_get189"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF7-7",
+   "part": "QC1cF7",
+   "title": "posture + selftest (31 checks, rolls back) + CHECK_E189 (11 items)",
+   "tech": "PostgreSQL 16 (E189)",
+   "status": "built",
+   "markers": [
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "fmail_selftest189"
+    },
+    {
+     "file": "docs/cursor-work/sql/CHECK_E189.sql",
+     "pattern": "fmail_posture189"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF7-8",
+   "part": "QC1cF7",
+   "title": "Rust read-only door /founder/v1/mail/tls (kernel-verified answer)",
+   "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver + axum",
+   "status": "todo",
+   "markers": [
+    {
+     "file": "server/founder/src/fmail_tls.rs",
+     "pattern": "/founder/v1/mail/tls"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF2-1",
+   "part": "QC1cF2",
+   "title": "claim door: may this domain be probed now (atomic, advisory lock)",
+   "tech": "PostgreSQL 16 (E189)",
+   "status": "built",
+   "markers": [
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "fmail_dtls_claim189"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF2-2",
+   "part": "QC1cF2",
+   "title": "one probe per domain at a time, 24 h cache, 30 probes per mailbox per hour",
+   "tech": "PostgreSQL 16 (E189)",
+   "status": "built",
+   "markers": [
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "interval '24 hours'"
+    },
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "v_n >= 30"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF2-3",
+   "part": "QC1cF2",
+   "title": "Rust probe: DNS lookup + SMTP connect to the recipient MX from his server IP",
+   "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
+   "status": "todo",
+   "markers": [
+    {
+     "file": "server/founder/src/fmail_tls.rs",
+     "pattern": "async fn probe_domain"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF2-4",
+   "part": "QC1cF2",
+   "title": "EHLO mail.anexomail.com, STARTTLS, handshake, QUIT; never MAIL FROM",
+   "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
+   "status": "todo",
+   "markers": [
+    {
+     "file": "server/founder/src/fmail_tls.rs",
+     "pattern": "mail\\.anexomail\\.com"
+    },
+    {
+     "file": "server/founder/src/fmail_tls.rs",
+     "pattern": "fn never_mail_from"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF2-5",
+   "part": "QC1cF2",
+   "title": "domain only, never an address (a test proves the address part is dropped)",
+   "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
+   "status": "todo",
+   "markers": [
+    {
+     "file": "server/founder/src/fmail_tls.rs",
+     "pattern": "fn domain_only_never_an_address"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF3-1",
+   "part": "QC1cF3",
+   "title": "named reason per host kept sealed in the detail (timeout, refused, no route)",
+   "tech": "PostgreSQL 16 (E189)",
+   "status": "built",
+   "markers": [
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "detail_nonce"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF3-2",
+   "part": "QC1cF3",
+   "title": "retry schedule 1, 5, 30 minutes then stop with the reasons",
+   "tech": "PostgreSQL 16 (E189)",
+   "status": "built",
+   "markers": [
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "fmail_dtls_backoff189"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF3-3",
+   "part": "QC1cF3",
+   "title": "due door: which unreachable domains are due, with the sealed name",
+   "tech": "PostgreSQL 16 (E189)",
+   "status": "built",
+   "markers": [
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "fmail_dtls_due189"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF3-4",
+   "part": "QC1cF3",
+   "title": "Rust retry worker that claims, probes and finishes the due domains",
+   "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
+   "status": "todo",
+   "markers": [
+    {
+     "file": "server/founder/src/fmail_tls.rs",
+     "pattern": "async fn retry_worker"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF3-5",
+   "part": "QC1cF3",
+   "title": "the chip updates by itself (QLIVE signed tick, no refresh)",
+   "tech": "Rust Tokio + QLIVE tick + React 19 TS",
+   "status": "todo",
+   "markers": [
+    {
+     "file": "server/founder/src/fmail_tls.rs",
+     "pattern": "fn notify_chip"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF4-1",
+   "part": "QC1cF4",
+   "title": "MX records sorted by priority",
+   "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
+   "status": "todo",
+   "markers": [
+    {
+     "file": "server/founder/src/fmail_tls.rs",
+     "pattern": "fn mx_by_priority"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF4-2",
+   "part": "QC1cF4",
+   "title": "no MX: the domain's A/AAAA is the implicit MX (RFC 5321 s5.1)",
+   "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
+   "status": "todo",
+   "markers": [
+    {
+     "file": "server/founder/src/fmail_tls.rs",
+     "pattern": "fn implicit_mx"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF4-3",
+   "part": "QC1cF4",
+   "title": "null MX (RFC 7505) = nomail",
+   "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
+   "status": "todo",
+   "markers": [
+    {
+     "file": "server/founder/src/fmail_tls.rs",
+     "pattern": "fn null_mx"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF4-4",
+   "part": "QC1cF4",
+   "title": "IPv4 and IPv6, every host tried",
+   "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
+   "status": "todo",
+   "markers": [
+    {
+     "file": "server/founder/src/fmail_tls.rs",
+     "pattern": "fn try_every_address"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF4-5",
+   "part": "QC1cF4",
+   "title": "10 s connect and 10 s per command timeouts",
+   "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
+   "status": "todo",
+   "markers": [
+    {
+     "file": "server/founder/src/fmail_tls.rs",
+     "pattern": "const CONNECT_TIMEOUT"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF4-6",
+   "part": "QC1cF4",
+   "title": "handshake offers X25519MLKEM768 first, classic groups behind it",
+   "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
+   "status": "todo",
+   "markers": [
+    {
+     "file": "server/founder/src/fmail_tls.rs",
+     "pattern": "X25519MLKEM768"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF4-7",
+   "part": "QC1cF4",
+   "title": "certificate verified yes/no recorded and shown, never hidden",
+   "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
+   "status": "todo",
+   "markers": [
+    {
+     "file": "server/founder/src/fmail_tls.rs",
+     "pattern": "cert_verified"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF4-8",
+   "part": "QC1cF4",
+   "title": "all hosts listed with their own result (the verdict is the best-priority host that answered)",
+   "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
+   "status": "todo",
+   "markers": [
+    {
+     "file": "server/founder/src/fmail_tls.rs",
+     "pattern": "hosts_tried"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF1-1",
+   "part": "QC1cF1",
+   "title": "real-send door: a delivered mail records the real fact (rank 3)",
+   "tech": "PostgreSQL 16 (E189)",
+   "status": "built",
+   "markers": [
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "fmail_dtls_real189"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF1-2",
+   "part": "QC1cF1",
+   "title": "a received mail is only a weak hint (rank 1), never replaces a probe or a real send",
+   "tech": "PostgreSQL 16 (E189)",
+   "status": "built",
+   "markers": [
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "fmail_dtls_rank189\\(o\\.source\\) > 1"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF1-3",
+   "part": "QC1cF1",
+   "title": "Rust hook: a delivered mail writes its TLS result into E189 (source sent)",
+   "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
+   "status": "todo",
+   "markers": [
+    {
+     "file": "server/founder/src/fmail_out.rs",
+     "pattern": "dtls_real_sent"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF1-4",
+   "part": "QC1cF1",
+   "title": "Rust hook: a received mail writes the weak hint (source received)",
+   "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
+   "status": "todo",
+   "markers": [
+    {
+     "file": "server/founder/src/fmail_in.rs",
+     "pattern": "dtls_real_received"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF5-1",
+   "part": "QC1cF5",
+   "title": "delivery proves or contradicts the prediction (proven_match / proven_mismatch ledger lines, mismatch flag)",
+   "tech": "PostgreSQL 16 (E189)",
+   "status": "built",
+   "markers": [
+    {
+     "file": "docs/cursor-work/sql/E189_founder_mail_domain_tls.sql",
+     "pattern": "proven_mismatch"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF5-2",
+   "part": "QC1cF5",
+   "title": "Rust: at delivery the predicted verdict is compared and the mismatch line is written",
+   "tech": "Rust Tokio + rustls + rustls-post-quantum + hickory-resolver",
+   "status": "todo",
+   "markers": [
+    {
+     "file": "server/founder/src/fmail_out.rs",
+     "pattern": "dtls_mismatch_line"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF5-3",
+   "part": "QC1cF5",
+   "title": "UI addition: a 'proven' line on the sent mail (needs his own haan)",
+   "tech": "React 19 TS + Framer Motion",
+   "status": "needs-haan",
+   "markers": [
+    {
+     "file": "founder-web/src/TlsLock.tsx",
+     "pattern": "TlsProven"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF6-1",
+   "part": "QC1cF6",
+   "title": "UI addition: small lock on each recipient chip, old UI intact (needs his own haan)",
+   "tech": "React 19 TS + Framer Motion",
+   "status": "needs-haan",
+   "markers": [
+    {
+     "file": "founder-web/src/TlsLock.tsx",
+     "pattern": "export function TlsLock"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF6-2",
+   "part": "QC1cF6",
+   "title": "colours: blue pq, grey classic, amber none/refused/unreachable, red nomail, dotted checking",
+   "tech": "React 19 TS",
+   "status": "needs-haan",
+   "markers": [
+    {
+     "file": "founder-web/src/TlsLock.tsx",
+     "pattern": "nomail"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF6-3",
+   "part": "QC1cF6",
+   "title": "tooltip: group, version, host, source (sent / received / probe), checked time",
+   "tech": "React 19 TS, WAI-ARIA",
+   "status": "needs-haan",
+   "markers": [
+    {
+     "file": "founder-web/src/TlsLock.tsx",
+     "pattern": "role=\\\"tooltip\\\""
+    }
+   ]
+  },
+  {
+   "id": "QC1cF6-4",
+   "part": "QC1cF6",
+   "title": "same code on 390 / 820 / 1200+, 44 px targets",
+   "tech": "React 19 TS, CSS container queries",
+   "status": "needs-haan",
+   "markers": [
+    {
+     "file": "founder-web/src/TlsLock.tsx",
+     "pattern": "44"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF6-5",
+   "part": "QC1cF6",
+   "title": "screen reader: lock state spoken, live region on change",
+   "tech": "React 19 TS, WAI-ARIA",
+   "status": "needs-haan",
+   "markers": [
+    {
+     "file": "founder-web/src/TlsLock.tsx",
+     "pattern": "aria-live"
+    }
+   ]
+  },
+  {
+   "id": "QC1cF8-1",
+   "part": "QC1cF8",
+   "title": "MTA-STS lookup (RFC 8461)",
+   "tech": "Qtls",
+   "status": "deferred",
+   "markers": []
+  },
+  {
+   "id": "QC1cF8-2",
+   "part": "QC1cF8",
+   "title": "DANE / TLSA lookup (RFC 7672)",
+   "tech": "Qtls",
+   "status": "deferred",
+   "markers": []
+  },
+  {
+   "id": "QC1cF8-3",
+   "part": "QC1cF8",
+   "title": "TLS-RPT (RFC 8460)",
+   "tech": "Qtls",
+   "status": "deferred",
+   "markers": []
+  },
+  {
+   "id": "QC1cF8-4",
+   "part": "QC1cF8",
+   "title": "'send only if TLS' enforcement",
+   "tech": "Qtls",
+   "status": "deferred",
+   "markers": []
+  }
+ ]
+}
