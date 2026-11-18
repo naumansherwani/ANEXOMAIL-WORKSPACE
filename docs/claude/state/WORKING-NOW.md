@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 06:39 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 06:40 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 18 Nov 06:2x QLIVE written+installed, NOT green (needs his founder-install of 60f023d4 then my two-tab live test). Blocked-alert fix = dbsc.rs recent_put/recent_get duplicate-refresh window 10s (uncommitted, cargo test running /tmp/cargo_dbsc.txt)
 NEXT STEP: 1) wait cargo pass, rec.sh commit dbsc.rs (cause = duplicate refresh with spent challenge, his CHECK_BLOCKED_TIMELINE 03:56/04:53/05:22), give him ONE founder-install line (awam pull NOT needed) 2) after his install: live two-tab test, qstate done QLIVE, GREEN ledger 3) then Q-contacts-kernel (web research first, shared kernel pin not forked), QC1c E188, QSPEED. Address him as Aap; end replies with Rule-70 table
 HIS LAST WORD: compact ho chuka, latest update kero; blocked alert auto fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- abf03c4b 18 Nov 06:40 QLIVE hardening: cursor after refresh, arrival from log
+- 9b242e57 18 Nov 06:39 ledger line d68056b1
 - d68056b1 18 Nov 06:39 QLIVE: feature list vs repo vs live table
 - 3aa66316 18 Nov 06:35 ledger line 47ee79d5
 - 47ee79d5 18 Nov 06:35 QLIVE GREEN: gate Q-live ok, live two-tab proof
-- d7f90d8a 18 Nov 06:18 ledger line 8cb9c7df
-- 8cb9c7df 18 Nov 06:18 DBSC: idempotent duplicate refresh window (blocked alert fix)
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -29,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (075e831101fd2f9f6d3ce1d164d7ae0cfdbb4c40)
+WIP snapshot: refs/wip/last (65974d1adee086832e8ad15e624ca1920aa0158b)
