@@ -6,7 +6,7 @@
 use crate::fmail_smtp as smtp;
 use smtp::{BoxIo, Fail};
 use std::{future::Future, pin::Pin, sync::{atomic::{AtomicBool, Ordering}, Arc}, time::Duration};
-use tokio::io::{AsyncBufReadExt, AsyncWriteExt, BufReader};
+use tokio::io::{AsyncWriteExt, BufReader};
 
 const CONNECT_TIMEOUT: u64 = 10;
 const CMD_TIMEOUT: u64 = 10;
@@ -188,6 +188,192 @@ impl Handshake for RustlsProbe {
 /// The detail JSON that gets sealed in the database (never the plain domain).
 pub fn detail_json(p: &Probe) -> String { serde_json::json!({ "detail": p.detail, "hosts_tried": p.hosts_tried }).to_string() }
 
+// ================================================================ FOUNDER GLUE (database, vault, doors). Everything above is inheritable; everything below knows the founder's E189/E190 doors.
+use crate::{fmail_in::bytea, fmail_seal as seal, lease, passkey as pk, S};
+use axum::{extract::State, http::{HeaderMap, StatusCode, Uri}, response::{IntoResponse, Response}};
+use serde_json::{json, Value};
+
+const AAD_TAG: &str = "fmail-dtls-v1";
+const DETAIL_TAG: &str = "fmail-dtls-detail-v1";
+
+/// The domain ready for the E189 doors: a blind index, and the name sealed under a fresh key wrapped by the vault master. Nothing plain.
+#[derive(Debug, Clone)]
+pub struct SealedDomain { pub blind: [u8; 32], pub sealed: Vec<u8>, pub nonce: [u8; 12], pub key_id: String, pub key_wrap: Vec<u8>, pub aad_hash: [u8; 32] }
+pub fn domain_blind(master: &seal::Key, mailbox: &str, domain: &str) -> Result<[u8; 32], &'static str> { Ok(seal::blind(&seal::blind_key(master, mailbox)?, "tlsdomain", domain)) }
+fn tls_aad(mailbox: &str, blind_hex: &str) -> Vec<u8> { seal::aad(&[AAD_TAG, mailbox, blind_hex]) }
+pub fn seal_domain(master: &seal::Key, mailbox: &str, key_id: &str, domain: &str) -> Result<SealedDomain, &'static str> {
+    let d = domain_only(domain).ok_or("not a domain")?;
+    let blind = domain_blind(master, mailbox, &d)?; let aad = tls_aad(mailbox, &hex::encode(blind));
+    let key = seal::new_key()?; let (nonce, sealed) = seal::seal(&key, &aad, d.as_bytes())?;
+    Ok(SealedDomain { blind, sealed, nonce, key_id: key_id.to_string(), key_wrap: seal::wrap_vault(master, key_id, &key)?, aad_hash: seal::aad_hash(&aad) })
+}
+/// Open the sealed name of a row of fmail_dtls_due189 (hex columns). None on ANY mismatch (stored AAD hash, key wrap, seal), never partial text.
+pub fn open_domain(master: &seal::Key, mailbox: &str, row: &Value) -> Option<String> {
+    let hx = |k: &str| row.get(k).and_then(|v| v.as_str()).and_then(|s| hex::decode(s).ok());
+    let (sealed, nonce, wrap, aadh, blind) = (hx("sealed")?, hx("nonce")?, hx("key_wrap")?, hx("aad_hash")?, row.get("domain_blind")?.as_str()?);
+    let aad = tls_aad(mailbox, blind);
+    if seal::aad_hash(&aad).as_slice() != aadh.as_slice() { return None; }
+    let key = seal::unwrap_vault(master, row.get("key_id")?.as_str()?, &wrap)?;
+    let d = String::from_utf8(seal::open(&key, &nonce, &aad, &sealed)?).ok()?;
+    domain_only(&d).filter(|x| *x == d)
+}
+fn detail_key(master: &seal::Key, mailbox: &str, blind_hex: &str) -> Result<seal::Key, &'static str> { seal::derive(master, DETAIL_TAG, &format!("{mailbox}|{blind_hex}")) }
+fn detail_aad(mailbox: &str, blind_hex: &str) -> Vec<u8> { seal::aad(&[DETAIL_TAG, mailbox, blind_hex]) }
+/// The per-host reasons, sealed under a key derived from the vault master for this very row (no key to store, nothing readable in the database).
+pub fn seal_detail(master: &seal::Key, mailbox: &str, blind_hex: &str, p: &Probe) -> Option<(Vec<u8>, [u8; 12])> {
+    let k = detail_key(master, mailbox, blind_hex).ok()?; let (n, s) = seal::seal(&k, &detail_aad(mailbox, blind_hex), detail_json(p).as_bytes()).ok()?; Some((s, n))
+}
+pub fn open_detail(master: &seal::Key, mailbox: &str, blind_hex: &str, d: &Value) -> Option<Value> {
+    let hx = |k: &str| d.get(k).and_then(|v| v.as_str()).and_then(|s| hex::decode(s).ok());
+    let k = detail_key(master, mailbox, blind_hex).ok()?;
+    serde_json::from_slice(&seal::open(&k, &hx("nonce")?, &detail_aad(mailbox, blind_hex), &hx("sealed")?)?).ok()
+}
+
+/// A chip changed: wake the live watcher now, so the signed tick goes out (QC1cF3-5). The change-log line itself is written by the E190 trigger.
+pub fn notify_chip() { crate::fmail_live::poke(); }
+
+/// The human line for a proved lock (QC1cF5-2). Closed words, no "unknown".
+pub fn mismatch_line(proven_verdict: &str, mismatch: bool) -> String {
+    let label = match proven_verdict { "pq" => "post-quantum (X25519MLKEM768)", "classic13" => "classic TLS 1.3", "classic12" => "TLS 1.2 or older", "none" => "no TLS", _ => "a lock of its own" };
+    if mismatch { format!("The probe predicted a different lock; the real delivery was {label}.") } else { format!("The real delivery matched the probe: {label}.") }
+}
+
+async fn rpc(sb: &crate::data::Sb, f: &str, body: Value) -> Result<Value, String> {
+    match tokio::time::timeout(Duration::from_secs(8), sb.rpc_msg(f, body)).await { Ok(Ok(v)) => Ok(v), Ok(Err((_, m))) => Err(m.chars().take(160).collect()), Err(_) => Err("the database did not answer in time".into()) }
+}
+
+/// One domain: claim (atomic, cache, budget) -> probe -> finish. Returns the door's JSON; a claim that says "no" is returned as it is (cached / busy / budget / waiting / final, with the row).
+pub async fn run_check(sb: &crate::data::Sb, master: &seal::Key, actor: &str, mailbox: &str, key_id: &str, domain: &str, hs: &dyn Handshake) -> Value {
+    let Some(d) = domain_only(domain) else { return json!({"ok": false, "error": "not a domain name"}) };
+    let Ok(sd) = seal_domain(master, mailbox, key_id, &d) else { return json!({"ok": false, "error": "the vault master key is not usable"}) };
+    let bh = hex::encode(sd.blind);
+    let claim = match rpc(sb, "fmail_dtls_claim189", json!({"p_actor": actor, "p_mailbox": mailbox, "p_blind": bytea(&sd.blind), "p_sealed": bytea(&sd.sealed), "p_nonce": bytea(&sd.nonce), "p_key_id": sd.key_id, "p_key_wrap": bytea(&sd.key_wrap), "p_aad": bytea(&sd.aad_hash)})).await {
+        Ok(v) => v, Err(e) => return json!({"ok": false, "error": e}),
+    };
+    if claim["go"] != json!(true) { return claim; }
+    notify_chip();   // the dotted "checking" state
+    let Some(res) = crate::fmail_out::probe_resolver() else { return json!({"ok": false, "error": "no DNS resolver"}) };
+    let p = probe_domain(res, &d, "mail.anexomail.com", &TcpDialer, hs).await;
+    let (det, dn) = seal_detail(master, mailbox, &bh, &p).map(|(s, n)| (Value::String(bytea(&s)), Value::String(bytea(&n)))).unwrap_or((Value::Null, Value::Null));
+    let f = p.fact.as_ref();
+    let out = match rpc(sb, "fmail_dtls_finish189", json!({"p_actor": actor, "p_mailbox": mailbox, "p_blind": bytea(&sd.blind), "p_verdict": p.verdict, "p_group": f.map(|x| x.group.clone()), "p_version": f.map(|x| x.version.clone()),
+        "p_cipher": f.map(|x| x.cipher.clone()), "p_cert": f.map(|x| x.cert_verified), "p_detail": det, "p_detail_nonce": dn})).await { Ok(v) => v, Err(e) => json!({"ok": false, "error": e}) };
+    notify_chip();
+    out
+}
+
+/// A real delivery or a real arrival writes its fact (QC1cF1-1/2). sent: version and group came out of the very session that carried the mail.
+pub async fn real_fact(sb: &crate::data::Sb, master: &seal::Key, actor: &str, mailbox: &str, key_id: &str, direction: &str, domain: &str, verdict: &str, group: Option<&str>, version: Option<&str>) -> Option<Value> {
+    let sd = seal_domain(master, mailbox, key_id, domain).ok()?;
+    let r = rpc(sb, "fmail_dtls_real189", json!({"p_actor": actor, "p_mailbox": mailbox, "p_blind": bytea(&sd.blind), "p_sealed": bytea(&sd.sealed), "p_nonce": bytea(&sd.nonce), "p_key_id": sd.key_id, "p_key_wrap": bytea(&sd.key_wrap),
+        "p_aad": bytea(&sd.aad_hash), "p_direction": direction, "p_verdict": verdict, "p_group": group, "p_version": version, "p_cipher": Value::Null, "p_cert": if direction == "sent" { json!(true) } else { Value::Null }})).await;
+    match r { Ok(v) => { notify_chip(); Some(v) } Err(e) => { eprintln!("founder: domain TLS fact ({direction}) refused: {e}"); None } }
+}
+
+static HS: std::sync::OnceLock<Option<RustlsProbe>> = std::sync::OnceLock::new();
+fn real_hs() -> Option<&'static RustlsProbe> { HS.get_or_init(|| RustlsProbe::new().ok()).as_ref() }
+
+/// QC1cF3-4: every 30 s (plus jitter) the due unreachable domains (1, 5, 30 minutes, then stop) are claimed, probed and finished, four at a time. The chip changes by itself (notify_chip).
+pub async fn retry_worker(sb: crate::data::Sb) {
+    let sem = Arc::new(tokio::sync::Semaphore::new(4));
+    eprintln!("founder: domain TLS retry worker ON (1, 5, 30 minutes)");
+    loop {
+        let jitter = (std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.subsec_millis()).unwrap_or(0) % 5000) as u64;
+        tokio::time::sleep(Duration::from_millis(30_000 + jitter)).await;
+        let (Some(master), Some(hs)) = (lease::MASTER.get(), real_hs()) else { continue };
+        let Some(Value::Array(due)) = sb.rpc("fmail_dtls_due189", json!({"p_limit": 20})).await else { continue };
+        let mut set = tokio::task::JoinSet::new();
+        for row in due {
+            let Some(mailbox) = row["mailbox"].as_str().map(|x| x.to_string()) else { continue };
+            let (Some(domain), Some(actor)) = (open_domain(master, &mailbox, &row), crate::fmail_book::owner_of(&sb, &mailbox).await) else { continue };
+            let key_id = row["key_id"].as_str().unwrap_or("vault-1").to_string();
+            let (sb2, sem2, m) = (sb.clone(), sem.clone(), *master);
+            set.spawn(async move { let _p = sem2.acquire().await; run_check(&sb2, &m, &actor, &mailbox, &key_id, &domain, hs).await });
+        }
+        while set.join_next().await.is_some() {}
+    }
+}
+
+// ---------------------------------------------------------------- HTTP doors
+fn bad(e: &str) -> Response { pk::refuse(StatusCode::BAD_REQUEST, e) }
+async fn own(sb: &crate::data::Sb, uid: &str, mailbox: &str) -> Result<(), Response> {
+    let v = sb.rpc("fmail_mailboxes169", json!({"p_uid": uid})).await.ok_or_else(|| pk::refuse(StatusCode::SERVICE_UNAVAILABLE, "mail database not answering - run the E189 SQL step (sql-run.sh)"))?;
+    if v.as_array().map(|a| a.iter().any(|m| m["id"] == mailbox && m["status"] == "active")).unwrap_or(false) { Ok(()) } else { Err(pk::refuse(StatusCode::NOT_FOUND, "no such mailbox")) }
+}
+/// ?box=<uuid>&d=a.com,b.org (at most 50, each a bare domain). Anything else is refused.
+pub fn parse_get(q: Option<&str>) -> Result<(String, Vec<String>), &'static str> {
+    let (mut b, mut ds) = (None, Vec::new());
+    for kv in q.unwrap_or("").split('&').filter(|x| !x.is_empty()) {
+        let (k, v) = kv.split_once('=').unwrap_or((kv, ""));
+        match k {
+            "box" => { if !pk::is_uuid(v) { return Err("invalid box"); } b = Some(v.to_string()); }
+            "d" => { for x in v.replace("%2C", ",").replace("%2c", ",").split(',').filter(|x| !x.is_empty()) { ds.push(domain_only(x).ok_or("not a domain")?); } }
+            _ => return Err("unknown parameter"),
+        }
+    }
+    ds.sort(); ds.dedup();
+    if ds.len() > 50 { return Err("at most 50 domains"); }
+    Ok((b.ok_or("missing box")?, ds))
+}
+
+/// GET /founder/v1/mail/tls?box=<uuid>&d=a.com,b.org : the facts for the chips on screen. Opens the sealed detail here (vault master) and hands plain facts to the browser over the signed channel.
+pub async fn tls_get_ep(State(st): State<S>, uri: Uri, h: HeaderMap) -> Response {
+    let c = match crate::authed(&st, &h).await { Ok(c) => c, Err(e) => return e.into_response() };
+    let (b, ds) = match parse_get(uri.query()) { Ok(x) => x, Err(e) => return bad(e) };
+    let sb = match pk::sbx(&st) { Ok(s) => s, Err(r) => return r };
+    if let Err(r) = own(sb, &c.sub, &b).await { return r; }
+    let Some(master) = lease::MASTER.get() else { return pk::refuse(StatusCode::SERVICE_UNAVAILABLE, "the vault master key is not loaded") };
+    let mut by_blind = std::collections::HashMap::new(); let mut blinds = Vec::new();
+    for d in &ds { if let Ok(bl) = domain_blind(master, &b, d) { by_blind.insert(hex::encode(bl), d.clone()); blinds.push(Value::String(bytea(&bl))); } }
+    let v = match rpc(sb, "fmail_dtls_get189", json!({"p_actor": c.sub, "p_mailbox": b, "p_blinds": blinds})).await { Ok(v) => v, Err(e) => return pk::refuse(StatusCode::BAD_GATEWAY, &e) };
+    let mut seen = std::collections::HashSet::new();
+    let rows: Vec<Value> = v["rows"].as_array().map(|a| a.iter().filter_map(|r| {
+        let bh = r["domain_blind"].as_str()?; let domain = by_blind.get(bh)?; seen.insert(domain.clone());
+        let detail = r.get("detail").filter(|d| d.is_object()).and_then(|d| open_detail(master, &b, bh, d));
+        let proven = r["proven_verdict"].as_str().map(|p| mismatch_line(p, r["mismatch"] == json!(true)));
+        let mut o = r.clone(); o["domain"] = json!(domain); o["detail"] = detail.unwrap_or(Value::Null); o["line"] = proven.map(Value::from).unwrap_or(Value::Null); Some(o)
+    }).collect()).unwrap_or_default();
+    let missing: Vec<&String> = ds.iter().filter(|d| !seen.contains(*d)).collect();
+    crate::signed(&st, json!({"ok": true, "rows": rows, "missing": missing}))
+}
+
+/// POST /founder/v1/mail/tls/check {box, domains:[...<=10]} : probe the domains the chips show that have no fact yet (or are due). A signed write; each domain goes through the claim door (cache, budget, one at a time).
+pub async fn tls_check_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::body::Bytes) -> Response {
+    let (uid, _e, _d) = match pk::ctx(&st, &h, uri.path(), &body, true).await { Ok(x) => x, Err(r) => return r };
+    let sb = match pk::sbx(&st) { Ok(s) => s, Err(r) => return r };
+    let j = match pk::body_json(&body) { Ok(j) => j, Err(r) => return r };
+    let Some(b) = pk::txt(&j, "box", 40).filter(|x| pk::is_uuid(x)) else { return bad("box is needed") };
+    let Some(list) = j.get("domains").and_then(|d| d.as_array()) else { return bad("domains is needed") };
+    if list.is_empty() || list.len() > 10 { return bad("1 to 10 domains per request"); }
+    let mut ds: Vec<String> = Vec::new();
+    for x in list { match x.as_str().and_then(domain_only) { Some(d) => ds.push(d), None => return bad("a domain is not a domain name") } }
+    ds.sort(); ds.dedup();
+    if let Err(r) = own(sb, &uid, &b).await { return r; }
+    let (Some(master), Some(hs)) = (lease::MASTER.get(), real_hs()) else { return pk::refuse(StatusCode::SERVICE_UNAVAILABLE, "the vault master key or the TLS stack is not ready") };
+    let mut set = tokio::task::JoinSet::new();
+    for d in ds { let (sb2, m, u, bx) = (sb.clone(), *master, uid.clone(), b.clone()); set.spawn(async move { let r = run_check(&sb2, &m, &u, &bx, "vault-1", &d, hs).await; (d, r) }); }
+    let mut out = serde_json::Map::new();
+    while let Some(Ok((d, r))) = set.join_next().await { out.insert(d, r); }
+    crate::signed(&st, json!({"ok": true, "results": out}))
+}
+
+/// Postfix's own Received header (the topmost one our MX wrote) proves a weak lock for the arriving mail: TLS 1.2 or older -> classic12, no TLS at all -> none. TLS 1.3 names no group, so it
+/// proves nothing about post-quantum and is never claimed (None). Returns (verdict, version).
+pub fn received_hint(raw: &[u8]) -> Option<(&'static str, Option<&'static str>)> {
+    let head = String::from_utf8_lossy(&raw[..raw.len().min(16 * 1024)]).to_string();
+    let head = head.split("\r\n\r\n").next().unwrap_or("").split("\n\n").next().unwrap_or("").replace("\r\n", "\n");
+    let mut it = head.split('\n'); let mut first = String::new();
+    while let Some(l) = it.next() { if l.to_ascii_lowercase().starts_with("received:") { first = l.to_string(); for n in it.by_ref() { if n.starts_with(' ') || n.starts_with('\t') { first.push(' '); first.push_str(n.trim()); } else { break; } } break; } }
+    if first.is_empty() { return None; }
+    let l = first.to_ascii_lowercase();
+    if l.contains("using tlsv1.3") { return None; }
+    if l.contains("using tlsv1.2") { return Some(("classic12", Some("TLSv1.2"))); }
+    if l.contains("using tlsv1.1") { return Some(("classic12", Some("TLSv1.1"))); }
+    if l.contains("using tlsv1 ") || l.contains("using tlsv1.0") || l.contains("using sslv3") { return Some(("classic12", Some("TLSv1.0"))); }
+    if (l.contains(" with esmtp ") || l.contains(" with smtp ")) && !l.contains("esmtps") && !l.contains("using tls") { return Some(("none", None)); }
+    None
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -308,4 +494,46 @@ mod tests {
     }
     #[test]
     fn real_probe_builds() { assert!(RustlsProbe::new().is_ok()); }
+
+    #[test]
+    fn mismatch_line_is_plain_and_closed() {
+        assert!(mismatch_line("pq", false).contains("matched") && mismatch_line("classic13", true).contains("different") && mismatch_line("none", true).contains("no TLS"));
+    }
+    #[test]
+    fn domains_seal_open_and_cannot_move() {
+        let m = [9u8; 32]; let mb = "11111111-1111-1111-1111-111111111111";
+        let sd = seal_domain(&m, mb, "vault-1", "Example.COM").unwrap();
+        assert!(!String::from_utf8_lossy(&sd.sealed).contains("example"));
+        let row = json!({"sealed": hex::encode(&sd.sealed), "nonce": hex::encode(sd.nonce), "key_id": "vault-1", "key_wrap": hex::encode(&sd.key_wrap), "aad_hash": hex::encode(sd.aad_hash), "domain_blind": hex::encode(sd.blind)});
+        assert_eq!(open_domain(&m, mb, &row).as_deref(), Some("example.com"));
+        assert!(open_domain(&m, "22222222-2222-2222-2222-222222222222", &row).is_none(), "another mailbox");
+        assert!(open_domain(&[1u8; 32], mb, &row).is_none(), "another master");
+        assert!(seal_domain(&m, mb, "k", "a@b.com").is_err(), "an address is never sealed here");
+    }
+    #[test]
+    fn detail_is_sealed_per_row_and_opens_only_there() {
+        let m = [9u8; 32]; let mb = "11111111-1111-1111-1111-111111111111"; let bh = "ab".repeat(32);
+        let p = Probe { verdict: "unreachable", fact: None, detail: "mx.example.com: connection refused".into(), hosts_tried: vec!["mx.example.com".into()] };
+        let (s, n) = seal_detail(&m, mb, &bh, &p).unwrap(); assert!(!String::from_utf8_lossy(&s).contains("refused"));
+        let d = json!({"sealed": hex::encode(&s), "nonce": hex::encode(n)});
+        assert_eq!(open_detail(&m, mb, &bh, &d).unwrap()["hosts_tried"][0], "mx.example.com");
+        assert!(open_detail(&m, mb, &"cd".repeat(32), &d).is_none(), "another row");
+    }
+    #[test]
+    fn get_door_grammar() {
+        let b = "11111111-1111-1111-1111-111111111111";
+        let (bx, ds) = parse_get(Some(&format!("box={b}&d=B.com%2Ca.org,a.org"))).unwrap(); assert_eq!(bx, b); assert_eq!(ds, vec!["a.org", "b.com"]);
+        assert!(parse_get(Some("d=a.com")).is_err() && parse_get(Some(&format!("box={b}&x=1"))).is_err() && parse_get(Some(&format!("box={b}&d=a@b.com"))).is_err());
+        let many = (0..51).map(|i| format!("d{i}.com")).collect::<Vec<_>>().join(",");
+        assert!(parse_get(Some(&format!("box={b}&d={many}"))).is_err());
+    }
+    #[test]
+    fn received_header_proves_only_what_it_proves() {
+        let r = |h: &str| received_hint(format!("Received: {h}\r\nFrom: a@b.com\r\n\r\nhi").as_bytes());
+        assert_eq!(r("from mx.b.com (mx.b.com [1.2.3.4]) (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits)) by mail (Postfix) with ESMTPS id 1"), Some(("classic12", Some("TLSv1.2"))));
+        assert_eq!(r("from mx.b.com (mx.b.com [1.2.3.4]) by mail.anexomail.com (Postfix) with ESMTP id 7"), Some(("none", None)));
+        assert_eq!(r("from mx.b.com (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384) by mail (Postfix) with ESMTPS id 1"), None, "TLS 1.3 names no group: no claim");
+        assert_eq!(received_hint(b"From: a@b.com\r\n\r\nhi"), None);
+        assert_eq!(r("from localhost by mail with LMTP id 3"), None);
+    }
 }

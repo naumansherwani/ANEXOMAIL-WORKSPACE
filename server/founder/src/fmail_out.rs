@@ -148,9 +148,9 @@ async fn process(sb: &crate::data::Sb, master: &[u8; 32], cfg: &Cfg, res: Option
         }
     }
     let payload = mime::data_payload(&signed);
-    let mut parts = Vec::new();
+    let mut parts = Vec::new(); let mut doms: Vec<String> = Vec::new();
     if cfg.relay.is_some() { parts.push(run_domain(cfg, res, up, "", &from, &rcpts, &payload).await); }
-    else { for (d, rs) in group_by_domain(&rcpts) { parts.push(run_domain(cfg, res, up, &d, &from, &rs, &payload).await); } }
+    else { for (d, rs) in group_by_domain(&rcpts) { parts.push(run_domain(cfg, res, up, &d, &from, &rs, &payload).await); doms.push(d); } }
     let verdict = decide(&parts);
     let delivered = matches!(verdict, Verdict::Sent { .. });
     report(verdict, true).await;
@@ -160,6 +160,24 @@ async fn process(sb: &crate::data::Sb, master: &[u8; 32], cfg: &Cfg, res: Option
         let names = crate::fmail_book::names_of(&raw); let kid = js(&job, "key_id").unwrap_or("vault-1");
         for r in &rcpts { crate::fmail_book::touch(sb, master, actor, mailbox, &from, kid, "sent", id, r, names.get(r.as_str()).map(|s| s.as_str()).unwrap_or("")).await; }
     }
+    // QC1c F1/F5: every domain that REALLY took the mail records the lock the session proved (direct delivery only: through a loopback relay the far hop is not ours to see)
+    for (d, p) in doms.iter().zip(parts.iter()) {
+        if let Ok(o) = p { if o.delivered() { let kid = js(&job, "key_id").unwrap_or("vault-1"); if let Some(line) = dtls_real_sent(sb, master, actor, mailbox, kid, d, o).await { eprintln!("founder: {d}: {line}"); } } }
+    }
+}
+
+/// QC1cF1-3: a delivered mail writes its TLS result into E189 (source sent). The group and version come out of the very session that carried the mail. Returns the proved line (None when the
+/// session was not TLS 1.3 or the write was refused: the lock is then simply not proven, never guessed).
+async fn dtls_real_sent(sb: &crate::data::Sb, master: &[u8; 32], actor: &str, mailbox: &str, key_id: &str, domain: &str, o: &smtp::Outcome) -> Option<String> {
+    let verdict = match o.tls { "tls13_pq" => "pq", "tls13" => "classic13", _ => return None };
+    if o.group.is_empty() { return None; }
+    let r = crate::fmail_tls::real_fact(sb, master, actor, mailbox, key_id, "sent", domain, verdict, Some(o.group), Some("TLSv1.3")).await?;
+    dtls_mismatch_line(&r, verdict)
+}
+/// QC1cF5-2: the real189 door says whether the prediction held; this is the plain sentence for the journal and the screen (the proven line).
+pub(crate) fn dtls_mismatch_line(resp: &Value, proven: &str) -> Option<String> {
+    if resp["ok"] != json!(true) { return None; }
+    if resp["predicted"] == json!(true) { Some(crate::fmail_tls::mismatch_line(proven, resp["mismatch"] == json!(true))) } else { Some(crate::fmail_tls::mismatch_line(proven, false)) }
 }
 
 /// The sender asks the REAL upstream DNS, never the machine's own answers. Two local sources can say "127.0.1.1" for our own host name: /etc/hosts (Debian maps the host name to 127.0.1.1) and the
@@ -421,7 +439,7 @@ pub async fn dkim_set_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum
 
 // ---- E175 doors: health, DNS probe, outside-receiver proof, policy
 static PROBE: std::sync::OnceLock<Option<hickory_resolver::TokioResolver>> = std::sync::OnceLock::new();
-fn probe_resolver() -> Option<&'static hickory_resolver::TokioResolver> { PROBE.get_or_init(|| public_dns_builder().ok().map(|b| b.build())).as_ref() }
+pub(crate) fn probe_resolver() -> Option<&'static hickory_resolver::TokioResolver> { PROBE.get_or_init(|| public_dns_builder().ok().map(|b| b.build())).as_ref() }
 fn num(j: &Value, k: &str) -> Value { j.get(k).and_then(|x| x.as_i64()).map(Value::from).unwrap_or(Value::Null) }
 fn flag(j: &Value, k: &str) -> Value { j.get(k).and_then(|x| x.as_bool()).map(Value::from).unwrap_or(Value::Null) }
 /// GET /founder/v1/mail/dkim/health?box=<uuid>: one read for the Compose panel (keys, DNS state, rotation, policy, blockers, warnings).
@@ -526,7 +544,7 @@ mod tests {
     }
     use super::*;
     use crate::fmail_smtp::{Fail, Outcome, Rcpt};
-    fn ok_out(domain_rcpts: &[&str], tls: &'static str) -> Outcome { Outcome { rcpts: domain_rcpts.iter().map(|a| Rcpt { addr: a.to_string(), result: Ok("250 ok".into()) }).collect(), data: Ok("250 queued".into()), tls } }
+    fn ok_out(domain_rcpts: &[&str], tls: &'static str) -> Outcome { Outcome { rcpts: domain_rcpts.iter().map(|a| Rcpt { addr: a.to_string(), result: Ok("250 ok".into()) }).collect(), data: Ok("250 queued".into()), tls, group: if tls == "tls13_pq" { "X25519MLKEM768" } else { "X25519" } } }
     #[test] fn cfg_is_off_unless_asked_and_relay_must_be_loopback() {
         assert!(parse_cfg(None, None, None).is_none()); assert!(parse_cfg(Some("off"), None, None).is_none());
         let c = parse_cfg(Some("on"), Some("127.0.0.1:25"), Some("mail.anexomail.com")).unwrap().unwrap(); assert_eq!(c.relay.unwrap().port(), 25);

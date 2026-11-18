@@ -49,15 +49,15 @@ pub async fn read_reply<R: AsyncBufReadExt + Unpin>(r: &mut R) -> std::io::Resul
     }
 }
 
-/// Upgrades a plain stream to TLS. Returns the new stream and the label stored in the outbox (`tls13` or `tls13_pq`).
+/// Upgrades a plain stream to TLS. Returns the new stream, the label stored in the outbox (`tls13` or `tls13_pq`) and the negotiated key-exchange group name (QC1c: the real fact the lock is proven with).
 pub trait Upgrade: Send + Sync {
-    fn upgrade<'a>(&'a self, s: BoxIo, host: &'a str) -> Pin<Box<dyn Future<Output = std::io::Result<(BoxIo, &'static str)>> + Send + 'a>>;
+    fn upgrade<'a>(&'a self, s: BoxIo, host: &'a str) -> Pin<Box<dyn Future<Output = std::io::Result<(BoxIo, &'static str, &'static str)>> + Send + 'a>>;
 }
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Rcpt { pub addr: String, pub result: Result<String, Fail> }
 #[derive(Debug, Clone, PartialEq)]
-pub struct Outcome { pub rcpts: Vec<Rcpt>, pub data: Result<String, Fail>, pub tls: &'static str }
+pub struct Outcome { pub rcpts: Vec<Rcpt>, pub data: Result<String, Fail>, pub tls: &'static str, pub group: &'static str }
 impl Outcome {
     /// Delivered = the DATA was accepted and at least one recipient took it.
     pub fn delivered(&self) -> bool { self.data.is_ok() && self.rcpts.iter().any(|r| r.result.is_ok()) }
@@ -92,7 +92,7 @@ pub async fn deliver(io: BoxIo, s: &Session<'_>, from: &str, rcpts: &[String], d
     if greet.code != 220 { return Err(greet.fail()); }
     let mut ehlo = c.cmd(&format!("EHLO {}", s.helo), 120).await?;
     if ehlo.code != 250 { return Err(ehlo.fail()); }
-    let mut tls = "none";
+    let mut tls = "none"; let mut grp = "";
     if ehlo.has_ext("STARTTLS") {
         let r = c.cmd("STARTTLS", 120).await?;
         if r.code != 220 { return Err(Fail::Temp(format!("STARTTLS refused: {}", r.text()))); }
@@ -100,7 +100,7 @@ pub async fn deliver(io: BoxIo, s: &Session<'_>, from: &str, rcpts: &[String], d
         if !c.rd.buffer().is_empty() { return Err(Fail::Temp("refused: data arrived before the TLS handshake (possible STARTTLS injection)".into())); }
         let plain = c.rd.into_inner();
         match tokio::time::timeout(Duration::from_secs(60), s.upgrader.upgrade(plain, s.host)).await {
-            Ok(Ok((enc, label))) => { c = Conn { rd: BufReader::new(enc) }; tls = label; }
+            Ok(Ok((enc, label, group))) => { c = Conn { rd: BufReader::new(enc) }; tls = label; grp = group; }
             Ok(Err(e)) => return Err(Fail::Temp(format!("TLS handshake with {} failed: {e}", s.host))),
             Err(_) => return Err(Fail::Temp(format!("TLS handshake with {} timed out", s.host))),
         }
@@ -120,14 +120,14 @@ pub async fn deliver(io: BoxIo, s: &Session<'_>, from: &str, rcpts: &[String], d
     if !out.iter().any(|r| r.result.is_ok()) {
         let _ = c.cmd("RSET", 30).await; let _ = c.send("QUIT", 10).await;
         let data = Err(out.iter().find_map(|r| r.result.as_ref().err().cloned()).unwrap_or(Fail::Perm("no recipient accepted".into())));
-        return Ok(Outcome { rcpts: out, data, tls });
+        return Ok(Outcome { rcpts: out, data, tls, group: grp });
     }
     let r = c.cmd("DATA", 300).await?;
     if r.code != 354 { let _ = c.send("QUIT", 10).await; return Err(r.fail()); }
     timed(600, "send data", async { let w = c.rd.get_mut(); w.write_all(data).await?; w.flush().await }).await?;
     let fin = c.reply(600).await?;
     let _ = c.send("QUIT", 10).await;
-    Ok(Outcome { rcpts: out, data: if fin.code == 250 { Ok(fin.text()) } else { Err(fin.fail()) }, tls })
+    Ok(Outcome { rcpts: out, data: if fin.code == 250 { Ok(fin.text()) } else { Err(fin.fail()) }, tls, group: grp })
 }
 
 // ---------------------------------------------------------------- finding the server
@@ -184,12 +184,15 @@ impl RustlsUpgrade {
     }
 }
 impl Upgrade for RustlsUpgrade {
-    fn upgrade<'a>(&'a self, s: BoxIo, host: &'a str) -> Pin<Box<dyn Future<Output = std::io::Result<(BoxIo, &'static str)>> + Send + 'a>> {
+    fn upgrade<'a>(&'a self, s: BoxIo, host: &'a str) -> Pin<Box<dyn Future<Output = std::io::Result<(BoxIo, &'static str, &'static str)>> + Send + 'a>> {
         Box::pin(async move {
             let name = rustls::pki_types::ServerName::try_from(host.to_string()).map_err(|_| std::io::Error::new(std::io::ErrorKind::InvalidInput, "bad server name"))?;
             let tls = tokio_rustls::TlsConnector::from(self.cfg.clone()).connect(name, s).await?;
-            let pq = tls.get_ref().1.negotiated_key_exchange_group().map_or(false, |g| format!("{:?}", g.name()).contains("MLKEM"));
-            Ok((Box::new(tls) as BoxIo, if pq { "tls13_pq" } else { "tls13" }))
+            let g = tls.get_ref().1.negotiated_key_exchange_group().map(|g| format!("{:?}", g.name())).unwrap_or_default();
+            let pq = g.contains("MLKEM");
+            // the group as a fixed name (the database accepts only a closed alphabet); anything unexpected is stored as the classic default it must be
+            let group: &'static str = if pq { "X25519MLKEM768" } else { match g.as_str() { "secp256r1" => "secp256r1", "secp384r1" => "secp384r1", _ => "X25519" } };
+            Ok((Box::new(tls) as BoxIo, if pq { "tls13_pq" } else { "tls13" }, group))
         })
     }
 }
@@ -212,9 +215,9 @@ mod tests {
     use tokio::io::duplex;
 
     struct NoTls; // test double: the "upgrade" returns the same stream (the scripted server does not speak TLS) and reports tls13
-    impl Upgrade for NoTls { fn upgrade<'a>(&'a self, s: BoxIo, _h: &'a str) -> Pin<Box<dyn Future<Output = std::io::Result<(BoxIo, &'static str)>> + Send + 'a>> { Box::pin(async move { Ok((s, "tls13")) }) } }
+    impl Upgrade for NoTls { fn upgrade<'a>(&'a self, s: BoxIo, _h: &'a str) -> Pin<Box<dyn Future<Output = std::io::Result<(BoxIo, &'static str, &'static str)>> + Send + 'a>> { Box::pin(async move { Ok((s, "tls13", "X25519")) }) } }
     struct FailTls;
-    impl Upgrade for FailTls { fn upgrade<'a>(&'a self, _s: BoxIo, _h: &'a str) -> Pin<Box<dyn Future<Output = std::io::Result<(BoxIo, &'static str)>> + Send + 'a>> { Box::pin(async move { Err(std::io::Error::new(std::io::ErrorKind::Other, "certificate not valid for mx.example.org")) }) } }
+    impl Upgrade for FailTls { fn upgrade<'a>(&'a self, _s: BoxIo, _h: &'a str) -> Pin<Box<dyn Future<Output = std::io::Result<(BoxIo, &'static str, &'static str)>> + Send + 'a>> { Box::pin(async move { Err(std::io::Error::new(std::io::ErrorKind::Other, "certificate not valid for mx.example.org")) }) } }
 
     /// Scripted server: greeting, then for each client line the matching reply. DATA collects up to CRLF.CRLF and returns what it saw.
     async fn serve(mut s: tokio::io::DuplexStream, greet: &str, replies: Vec<(&'static str, &'static str)>, inject_after_starttls: bool) -> (Vec<String>, Vec<u8>) {

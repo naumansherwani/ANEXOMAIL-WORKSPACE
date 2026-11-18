@@ -3803,3 +3803,7 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - 18 Nov 2026 08:35 PKT: QC1c Rust probe core server/founder/src/fmail_tls.rs (F2-3/4/5, F4-1..8: domain_only, never_mail_from, classify, probe_host, probe_targets 3 hosts 45 s, RustlsProbe X25519MLKEM768 + cert_verified), 13 tests ok; NOT green: doors, worker, E190, hooks, UI, Qtls still todo
 
 - 18 Nov 2026 08:4x PKT: QC1cF3-5/F3-6 SQL E190_founder_mail_tls_change.sql + CHECK_E190: change log kind 'tls' + trigger on E189 table; sandbox: CHECK_E190 6/6 (selftest 6 passed), CHECK_E187/E188/E189 still all ok; NOT green: waits his sql-run paste
+
+- 18 Nov 2026 08:5x PKT: QC1c Rust: GET/POST /founder/v1/mail/tls(+/check) doors (sealed domain + sealed detail, kernel-signed), retry_worker 30 s, notify_chip, real-send hook dtls_real_sent (+Upgrade returns the real group), dtls_real_received (Postfix header, TLS1.2/none only), mismatch line; cargo test 472 ok; NOT green: no live proof yet, UI + Qtls todo
+
+- 18 Nov 2026 08:5x PKT: QC1c Rust glue committed WITHOUT main.rs routes (SERVER-FIRST receipt expired 08:39; wiring of GET/POST /founder/v1/mail/tls + retry_worker spawn waits his read-only paste): fmail_tls.rs doors/worker/seal, fmail_out dtls_real_sent + dtls_mismatch_line, fmail_in dtls_real_received, Upgrade returns the real group; cargo test 472 ok; NOT green

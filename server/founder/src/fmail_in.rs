@@ -274,6 +274,7 @@ impl Live {
                     if folder_for(scan) == "inbox" && crate::fmail_book::received_ok(scan, &ev, raw) && !s.from_addr.is_empty() {
                         if let Some(owner) = crate::fmail_book::owner_of(&self.sb, &r.mailbox_id).await {
                             crate::fmail_book::touch(&self.sb, &self.master, &owner, &r.mailbox_id, &r.addr, &r.key_id, "received", mid, &s.from_addr, &s.from_name).await;
+                            dtls_real_received(&self.sb, &self.master, &owner, &r.mailbox_id, &r.key_id, &s.from_addr, raw).await;
                         }
                     }
                     self.sb.rpc_msg("fmail_auth_record183", json!({"p_mailbox": r.mailbox_id, "p_message": mid, "p_ev": ev, "p_sigs": sigs})).await.is_ok()
@@ -431,4 +432,12 @@ mod tests {
         assert!(matches!(p("0.0.0.0:2525"), Some(Err(e)) if e.contains("loopback"))); assert!(matches!(p("10.0.0.5:2525"), Some(Err(_)))); assert!(matches!(p("nonsense"), Some(Err(_))));
         assert!(matches!(p("127.0.0.1:2525"), Some(Ok(_)))); assert!(matches!(p("[::1]:2525"), Some(Ok(_)))); assert!(parse_bind(None, None).is_none()); assert!(parse_bind(Some("  ".into()), None).is_none());
     }
+}
+
+/// QC1cF1-4: a received mail writes a WEAK hint (rank 1, never replaces a probe or a real send) and only when our own Postfix Received header PROVES something: TLS 1.2 or older, or no TLS.
+/// A TLS 1.3 header names no key-exchange group, so it proves nothing about post-quantum and writes nothing. Errors are logged, never returned (it must not cost a mail).
+async fn dtls_real_received(sb: &crate::data::Sb, master: &[u8; 32], owner: &str, mailbox: &str, key_id: &str, from_addr: &str, raw: &[u8]) {
+    let Some((verdict, version)) = crate::fmail_tls::received_hint(raw) else { return };
+    let Some(domain) = from_addr.rsplit_once('@').map(|x| x.1.to_ascii_lowercase()) else { return };
+    let _ = crate::fmail_tls::real_fact(sb, master, owner, mailbox, key_id, "received", &domain, verdict, None, version).await;
 }
