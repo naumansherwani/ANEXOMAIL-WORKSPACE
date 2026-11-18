@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 05:01 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 05:17 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 17 Nov 06:35 PLAQUE LIVE (his photo 06:29). His orders: (1) plaque name = full 'Muhammad Nauman Sherwani'; (2) QC0 = POLISH the compose UI first, one phase at a time, subphases for each point written in the repo; (3) editor + phone-compose = WEB RESEARCH, write what was researched into the repo with date/time, then the code plan, then advanced code; (4) undo stays 30 s, but the X on the undo bar = deliver NOW (skip the hold); (5) AI drafting DROPPED until the AI product (July 2027). Steps: fix name, research docs/claude/COMPOSE-RESEARCH-17NOV.md, plan+subphases, qstate, then QC0 code.
 NEXT STEP: 
 HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 571ba231 18 Nov 05:17 QC1b closed with live proof, QLIVE phase added to the plan
+- b2fb817d 18 Nov 05:01 ledger line 5f1a8646
 - 5f1a8646 18 Nov 05:01 QC1b installed on his server (sql-run E186 32/0 + founder-install OK), live proof next
 - 94d69bdd 18 Nov 04:43 ledger line 1eb5b380
 - 1eb5b380 18 Nov 04:43 QC1b: sealed address book + suggestions (written, awaits install and live proof)
-- b356d54a 18 Nov 04:34 ledger line c6729e8b
-- c6729e8b 18 Nov 04:34 QC1b step 1: SQL E186 sealed address book (476 lines, sandbox selftest 32/0)
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -29,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (c0739d9f221a9a02f4dfa171094620eefda48021)
+WIP snapshot: refs/wip/last (f1fbb2f56cca33fddc01a3c64a2349816213e9aa)
