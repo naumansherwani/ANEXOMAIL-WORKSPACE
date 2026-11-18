@@ -684,3 +684,5 @@
 - 18 Nov 2026 07:5x PKT QC1c DISCUSSION research written at the top of COMPOSE-RESEARCH-17NOV.md (Gmail red lock correction, MTA-STS 0.3 percent, NCSC 1.2, two-layer lock idea, scope split from Qtls); no code, waits his answers
 
 - 18 Nov 2026 07:5x PKT QC1c FEATURE POINTS written at the top of COMPOSE-RESEARCH-17NOV.md with his 07:50 words and the earlier chat points same to same; the 'unknown' verdict is removed (closed verdict list, retries, real-mail facts first); waits his approval, no code
+
+- 18 Nov 2026 07:5x PKT QC1c sub-phases QC1cF1..QC1cF8 added to the blueprint and Q-STATE with advance technology (his order 07:56); build order F7 (SQL E189) -> F2+F3+F4 Rust probe -> F1 -> F5 -> F6 UI (his own haan) ; F8 = Qtls deferred; NOW QC1cF7 started
