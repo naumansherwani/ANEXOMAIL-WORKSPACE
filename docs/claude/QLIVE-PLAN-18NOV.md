@@ -21,6 +21,8 @@ HIS WORDS: "gmail mein mail aati hai to refresh nahi hota, new mail samne aa jat
 5. HYBRID layers (listed honestly): WebTransport/QUIC push when the tab is open (this phase); the existing J6 Web Push when the tab is closed (J6 is already GREEN, wiring `arrive` into it = sub-step QLIVE-b, after this phase is GREEN); ML-DSA hybrid signature on frames = already carried by the existing signed envelope, no new work.
 6. AWAM: awam inherits the PURE modules (`mail_change.ts` logic, the SQL pattern) later through its own blueprint, its own SQL numbers, its own gate and its OWN pull command (separate from the founder one). Founder and awam are never mixed; awam files stay frozen now.
 
+7. FINDING while coding (18 Nov 06:1x): the shared Rule 52 kernel (web-wasm flive.rs) passes only the live events snapshot / tick / events. A new event name would be dropped, and forking the shared kernel would touch the frozen awam pin. So the push is a normal signed `tick` that carries an extra `mail: {box, head}` object (frame_json in fmail_live.rs, mailPart in mail_change.ts): the kernel verifies it exactly like every tick, no kernel change, no awam change. Q-contacts-kernel (later) will face the same shared-kernel rule.
+
 ## 3. tier_limits (codes preserved, enforced later per package)
 | Package | Live streams per account | Change log kept | Build status |
 |---|---|---|---|

@@ -7,6 +7,7 @@ import { useEffect, useSyncExternalStore } from "react";
 import { get, liveToken } from "./api";
 import { kernelLiveStart, wtSupported } from "./kernel";
 import { backoffMs, mergeEvents, type LiveEvent } from "./livemerge";
+import { mailPart } from "./mail_change";
 export type { LiveEvent } from "./livemerge";
 
 export type LiveStatus = "connecting" | "live" | "reconnecting" | "polling" | "paused";
@@ -27,6 +28,9 @@ export const live = { get: () => S, sub: (f: () => void) => { subs.add(f); retur
 /** Called when a real source changed (tick `changed` not empty, or an events frame). The Dashboard re-reads its numbers then. */
 /** "Retry now" on the QUIC path row: end the current live attempt and dial again at once (no waiting out the kernel's timer). Only the live session; the API session redials by itself. */
 export const liveRetryNow = () => { wtRestart?.(); wake?.(); };
+/** QLIVE: a verified tick that carries `mail: {box, head}` = "this mailbox moved to head N". The mail screen then asks the cursor door what changed (mail_change.ts). */
+const mailFns = new Set<(m: { box: string; head: number }) => void>();
+export const onMail = (f: (m: { box: string; head: number }) => void) => { mailFns.add(f); return () => { mailFns.delete(f); }; };
 export const onLiveChange = (f: (changed: string[]) => void) => { changeFns.add(f); return () => { changeFns.delete(f); }; };
 
 /** One verified, parsed payload (from the kernel's WebTransport session, which verified it itself). */
@@ -37,6 +41,7 @@ function apply(event: string, p: any) {
   } else if (event === "tick") {
     const ver = Number(p?.version) || 0, changed: string[] = Array.isArray(p?.changed) ? p.changed.filter((x: unknown) => typeof x === "string") : [];
     emit({ status: "live", lastTickAt: (Number(p?.at) || 0) * 1000 || Date.now(), lastTickOk: p?.ok !== false, version: Math.max(S.version, ver) });
+    const mp = mailPart(p); if (mp) mailFns.forEach((f) => f(mp)); // QLIVE
     if (changed.length) changeFns.forEach((f) => f(changed));
   } else if (event === "events") {
     if (p?.gap) { emit({ version: 0 }); wtRestart?.(); return; } // our last id was pruned: reconnect for a full snapshot, never a silent hole
@@ -90,6 +95,9 @@ async function loop(my: number) {
 const onVis = () => { if (document.hidden) { wtStop?.(); emit({ status: "paused" }); } else wake?.(); };
 function start() { gen += 1; document.addEventListener("visibilitychange", onVis); void loop(gen); }
 function stop() { gen += 1; document.removeEventListener("visibilitychange", onVis); wtStop?.(); wake?.(); S = blank(); }
+
+/** QLIVE: hold the live stream open without a React component (the mail screen's push). Returns release(); the last holder closes it. */
+export function acquireLive(): () => void { if (users++ === 0) start(); let done = false; return () => { if (done) return; done = true; if (--users === 0) stop(); }; }
 
 /** Subscribe a component to the live stream. The first user opens it, the last one closes it. */
 export function useLive(): LiveState {

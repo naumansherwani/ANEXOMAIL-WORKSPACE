@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { titleWith } from "./mail_change";
 import * as Popover from "@radix-ui/react-popover";
 import * as api from "./mail_api";
 import { MailCompose, UndoBar, type Start } from "./MailCompose";
@@ -86,6 +87,7 @@ export function MailBox() {
   const loadCounts = useCallback(async () => { if (!boxId) return; try { const c = await api.counts(boxId); if (c) setCounts(c); } catch { /* the live channel retries */ } }, [boxId]);
   useEffect(() => { setRows([]); setMore(null); setSel(null); setOpened(null); setOpenErr(""); void loadList(); }, [boxId, view, loadList]);
   useEffect(() => { void loadCounts(); }, [loadCounts]);
+  useEffect(() => { const base = "Mail"; const prev = document.title; document.title = titleWith(base, counts?.inbox?.unread ?? 0); return () => { document.title = prev; }; }, [counts]); // QLIVE: "(3) Mail" in the tab, like a mail client
   useEffect(() => { if (!arrival) return; const t = window.setTimeout(() => setArrival(null), 6000); return () => window.clearTimeout(t); }, [arrival]);
 
   useEffect(() => {
@@ -93,6 +95,7 @@ export function MailBox() {
     const stop = api.live(boxId, (m) => {
       if (m.data?.counts) setCounts(m.data.counts);
       if (m.data?.feed?.lanes) { setLanes(m.data.feed.lanes); setLedgerHead(m.data.feed.ledger_head ?? null); }
+      if (m.event === "changes" && ((m.data?.arrived ?? 0) === 0 || viewRef.current !== "inbox")) void loadList(null, false); // QLIVE: a read / move / star / send state changed somewhere (or a mail landed in another folder): the open list follows by itself
       if (m.event === "arrival") { setFresh((n) => n + (m.data?.new > 0 ? m.data.new : 1)); if (viewRef.current === "inbox") void loadList(null, true); }
     }, (s) => setLiveState(s));
     return () => { stop(); setLiveState("off"); };

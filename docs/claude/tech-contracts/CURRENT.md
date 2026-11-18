@@ -1069,3 +1069,7 @@ Research: HMAC blind index cannot do prefix (authagonal), client-side filter ove
 | Hybrid layers | WebTransport when the tab is open (this phase); J6 Web Push when closed (QLIVE-b, after GREEN); awam inherits pure modules later with its OWN pull command and gate | partly (plan) | plan section 2 |
 
 - 18 Nov 2026 05:50 PKT QLIVE step a+b DONE: plan docs/claude/QLIVE-PLAN-18NOV.md (web research first: JMAP push, IMAP NOTIFY, Postgres LISTEN/NOTIFY limits), contract in CURRENT.md, SQL E187 (417 lines, gapless hash-chained change log, tier limits table with Premium and MAX codes kept) sandbox selftest 33/0 CHECK_E187 9/9. NOT installed on his server. NEXT: Rust fmail_live.rs, browser mail_change.ts
+
+- 18 Nov 2026 06:2x PKT QLIVE code written (steps c+d): Rust fmail_live.rs (watcher, poke, tick frame, /founder/v1/mail/changes, 6 unit tests pass), browser mail_change.ts (9 bun tests), livefeed onMail/acquireLive, mail_api.live push-first, MailBox follows changes + tab title. bun 354/354. Full cargo run in progress. Kernel NOT changed (push rides a normal signed tick with a mail part). NOT installed on his server yet.
+
+- 18 Nov 2026 06:2x PKT QLIVE steps c+d written: Rust fmail_live.rs + door /mail/changes + tick frame with mail part, browser mail_change.ts + livefeed onMail + mail_api push-first + MailBox follow; bun 354/354, fmail_live cargo tests 6/6, full cargo run pending. NOT installed on his server. NEXT: full cargo result, his sql-run E187 + founder-install lines, my live Chrome

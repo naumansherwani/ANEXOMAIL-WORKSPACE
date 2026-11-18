@@ -2,6 +2,8 @@
 import { get, post } from "./api";
 import { rpcAvailable, mailLedgerCheck, anchorCheck, type AnchorReport } from "./kernel";
 import { prove } from "./passkey";
+import { acquireLive, live as liveStore, onMail } from "./livefeed";
+import { coalesce, pollMs, readAnswer, shouldFetch, step, type Kind } from "./mail_change";
 import type { Box, Counts, Lane, Proof, Row, Sum } from "./mail_pure";
 
 const q = (o: Record<string, string | number | undefined | null>) => Object.entries(o).filter(([, v]) => v !== undefined && v !== null && v !== "").map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join("&");
@@ -96,32 +98,60 @@ export async function setVault(box: string, thread: string, vault: boolean): Pro
   return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` };
 }
 
-export type LiveMsg = { event: "snapshot" | "counts" | "arrival"; data: any };
-/** The Mail live channel. KP3 step 4 (14 Nov 2026, his word: no SSE for the founder): there is NO Server-Sent-Events stream any more. Counts and lanes are two signed GETs over the kernel's WebTransport API session
- *  every 5 s while the tab is visible (each answer is signature-checked by the kernel inside api.get); an arrival = the inbox total grew. Phase Q3 replaces this with a pushed WebTransport stream. Returns stop(). */
+export type LiveMsg = { event: "snapshot" | "counts" | "arrival" | "changes"; data: any };
+/** The changes after a cursor (E187 via /founder/v1/mail/changes, signed, kernel-verified). `after` 0 with limit 1 is the cheap way to learn the head. */
+export async function changes(box: string, after: number, limit = 200) { return readAnswer((await get(`/founder/v1/mail/changes?${q({ box, after: String(after), limit: String(limit) })}`)).data); }
+
+/** The Mail live channel, PUSH FIRST (QLIVE, 18 Nov 2026). The server pushes "this mailbox is now at head N" on the verified WebTransport stream (a signed tick with a `mail` part); this function then asks the
+ *  cursor door what changed and refreshes counts + lanes ONCE for a whole burst (150 ms coalescing). The 5 s read is only the honest fallback while the stream is not live; while it is live a 30 s safety read
+ *  runs (a lost frame or a gap can never leave the screen stale for long). A gap or a wrong answer = a full refresh, never a silent hole. Returns stop(). Plan: docs/claude/QLIVE-PLAN-18NOV.md. */
 export const MAIL_POLL_MS = 5000;
 export function live(box: string, on: (m: LiveMsg) => void, state: (s: "live" | "reconnecting") => void): () => void {
-  let stopped = false, lastInbox = -1, first = true, last = "", timer: ReturnType<typeof setTimeout> | null = null, fails = 0;
+  let stopped = false, lastInbox = -1, first = true, last = "", timer: ReturnType<typeof setTimeout> | null = null, fails = 0, cursor: number | null = null, busy = false, again = false;
+  const refresh = async (): Promise<boolean> => {
+    try {
+      const [c, l] = await Promise.all([counts(box), lanes()]); if (stopped) return false;
+      if (!(c && l)) { fails += 1; state("reconnecting"); return false; }
+      fails = 0; state("live");
+      const data = { counts: c, feed: l }, key = JSON.stringify(data), inbox = Number((c as { inbox?: { total?: number } }).inbox?.total ?? 0);
+      if (key !== last) {
+        on({ event: first ? "snapshot" : "counts", data });
+        if (!first && lastInbox >= 0 && inbox > lastInbox) on({ event: "arrival", data: { inbox_total: inbox, new: inbox - lastInbox } });
+        last = key; lastInbox = inbox; first = false;
+      }
+      return true;
+    } catch { fails += 1; state("reconnecting"); return false; }
+  };
+  /** Ask what changed since the cursor and bring the screen up to date. Only one runs at a time; a ping that arrives meanwhile makes it run once more. */
+  const catchUp = async () => {
+    if (stopped || document.hidden) return;
+    if (busy) { again = true; return; }
+    busy = true;
+    try {
+      do {
+        again = false;
+        for (let page = 0; page < 10 && !stopped; page++) {
+          const a = await changes(box, cursor ?? 0, cursor === null ? 1 : 200); if (stopped) return;
+          const s = step(cursor, a); cursor = s.cursor;
+          if (s.refresh) { const ok = await refresh(); if (ok && !s.full) on({ event: "changes", data: { kinds: s.kinds as Partial<Record<Kind, number>>, arrived: s.arrived } }); }
+          if (!s.more) break;
+        }
+      } while (again && !stopped);
+    } finally { busy = false; }
+  };
+  const burst = coalesce(() => void catchUp(), 150);
+  const release = acquireLive(), offMail = onMail((m) => { if (m.box === box.toLowerCase() && shouldFetch(cursor, m.head)) burst.poke(); });
+  let wasLive = false;
+  const offState = liveStore.sub(() => { const up = liveStore.get().status === "live"; if (up && !wasLive) burst.poke(); wasLive = up; }); // a (re)connect = one catch-up from the cursor: nothing is missed while it was down
   const tick = async () => {
     if (stopped) return;
-    if (!document.hidden) {
-      try {
-        const [c, l] = await Promise.all([counts(box), lanes()]); if (stopped) return;
-        if (c && l) {
-          fails = 0; state("live");
-          const data = { counts: c, feed: l }, key = JSON.stringify(data), inbox = Number((c as { inbox?: { total?: number } }).inbox?.total ?? 0);
-          if (key !== last) {
-            on({ event: first ? "snapshot" : "counts", data });
-            if (!first && lastInbox >= 0 && inbox > lastInbox) on({ event: "arrival", data: { inbox_total: inbox, new: inbox - lastInbox } });
-            last = key; lastInbox = inbox; first = false;
-          }
-        } else { fails += 1; state("reconnecting"); }
-      } catch { fails += 1; state("reconnecting"); }
-    }
-    if (!stopped) timer = setTimeout(() => void tick(), fails ? Math.min(MAIL_POLL_MS * 2 ** Math.min(fails, 3), 30_000) : MAIL_POLL_MS);
+    if (!document.hidden) { if (cursor === null) await catchUp(); if (cursor !== null) await refresh(); }
+    if (!stopped) timer = setTimeout(() => void tick(), fails ? Math.min(MAIL_POLL_MS * 2 ** Math.min(fails, 3), 30_000) : pollMs(liveStore.get().status === "live"));
   };
+  const onVis = () => { if (!document.hidden) burst.poke(); };
+  document.addEventListener("visibilitychange", onVis);
   void tick();
-  return () => { stopped = true; if (timer) clearTimeout(timer); };
+  return () => { stopped = true; if (timer) clearTimeout(timer); burst.cancel(); offMail(); offState(); release(); document.removeEventListener("visibilitychange", onVis); };
 }
 
 // ================================================================== Q1d: compose, send, undo, drafts, DKIM (every call goes through the same kernel doors as the rest)

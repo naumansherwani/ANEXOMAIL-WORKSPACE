@@ -260,6 +260,7 @@ impl Live {
             return if out["reason"] == "duplicate" { Ok(()) } else { Err(format!("not stored: {}", out["reason"].as_str().unwrap_or("unknown"))) };
         }
         let Some(mid) = out["message_id"].as_str() else { return Err("no message id".into()) };
+        crate::fmail_live::poke(); // QLIVE: the mail is stored: wake the live watcher now (the screen shows it without a refresh)
         // the ledger row (the database recomputes the hash of the stored ciphertext) and the scan result; a failure here is retried by the sweep, the mail itself is already safe
         let _ = self.sb.rpc("fmail_inbound_note169", json!({"p_mailbox": r.mailbox_id, "p_message": mid, "p_body_sha256": hex::encode(Sha256::digest(&sealed.sealed_body))})).await;
         let _ = self.sb.rpc("fmail_scan_set171", json!({"p_mailbox": r.mailbox_id, "p_message": mid, "p_state": scan})).await;
@@ -281,6 +282,7 @@ impl Live {
             };
             if !ok { eprintln!("founder: mail verdict not recorded for {} ({} ms)", mid, t_auth.elapsed().as_millis()); }
         }
+        crate::fmail_live::poke(); // QLIVE: scan state and verdict changed the row too
         Ok(())
     }
 }

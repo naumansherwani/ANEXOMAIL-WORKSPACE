@@ -159,7 +159,7 @@ founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
 founder-web/dist/assets/index-Brd5Ya19.css
-founder-web/dist/assets/index-CBMf-wOU.js
+founder-web/dist/assets/index-CUviSrOh.js
 founder-web/dist/assets/kernel.worker-CmgLpPuh.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
@@ -304,6 +304,8 @@ founder-web/src/livefeed.ts
 founder-web/src/livemerge.ts
 founder-web/src/mail.css
 founder-web/src/mail_api.ts
+founder-web/src/mail_change.test.ts
+founder-web/src/mail_change.ts
 founder-web/src/mail_pure.test.ts
 founder-web/src/mail_pure.ts
 founder-web/src/mailbox.css
@@ -409,6 +411,7 @@ server/founder/src/fmail_dkim.rs
 server/founder/src/fmail_ep.rs
 server/founder/src/fmail_in.rs
 server/founder/src/fmail_kem.rs
+server/founder/src/fmail_live.rs
 server/founder/src/fmail_mime.rs
 server/founder/src/fmail_out.rs
 server/founder/src/fmail_perf.rs

@@ -154,6 +154,7 @@ async fn process(sb: &crate::data::Sb, master: &[u8; 32], cfg: &Cfg, res: Option
     let verdict = decide(&parts);
     let delivered = matches!(verdict, Verdict::Sent { .. });
     report(verdict, true).await;
+    crate::fmail_live::poke(); // QLIVE: the outbox state changed
     // QC1b: a mail that REALLY left counts every recipient in the sealed address book (names from the headers when there are any); never costs the mail, errors are only logged
     if delivered {
         let names = crate::fmail_book::names_of(&raw); let kid = js(&job, "key_id").unwrap_or("vault-1");

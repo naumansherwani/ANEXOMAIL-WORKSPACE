@@ -59,6 +59,7 @@ mod fmail_mime;
 mod fmail_smtp;
 mod fmail_out;
 mod fmail_book;
+mod fmail_live;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -542,6 +543,7 @@ async fn live_stream_core(st: S, h: HeaderMap, transport: &'static str) -> axum:
     let Some(slot) = live::Slot::take(&hub) else { return (StatusCode::SERVICE_UNAVAILABLE, "too many live streams").into_response() };
     let mut last_id: i64 = h.get("last-event-id").and_then(|v| v.to_str().ok()).and_then(|v| v.parse().ok()).unwrap_or(0);
     let mut rx = hub.tx.subscribe(); // subscribe BEFORE the snapshot so no tick is missed in between
+    let mut mrx = fmail_live::hub().tx.subscribe(); // QLIVE: the live-mail pings ride this same signed stream as a `tick` that carries a `mail` part
     let (tx, body_rx) = tokio::sync::mpsc::channel::<axum::body::Bytes>(8);
     let kind = if st.ft.is_some() { "device" } else { "legacy" };
     tokio::spawn(async move {
@@ -564,6 +566,11 @@ async fn live_stream_core(st: S, h: HeaderMap, transport: &'static str) -> axum:
                 _ = tokio::time::sleep_until(end) => return "lifetime",
                 _ = tx.closed() => return "client_gone",
                 _ = hb.tick() => { if !send(": hb\n\n".to_string()) { return gone(); } }
+                m = mrx.recv() => match m {
+                    Ok(p) => { if !send(live::sse_frame(Some(last_id), "tick", &line(&st, &fmail_live::frame_json(&p, last_id, now_s())))) { return gone(); } }
+                    Err(tokio::sync::broadcast::error::RecvError::Lagged(_)) => {} // a prompt only: the next one (or the browser's cursor catch-up) covers it
+                    Err(_) => return "server_stop",
+                },
                 r = rx.recv() => match r {
                     Ok(t) => {
                         if !send(live::sse_frame(Some(t.version), "tick", &line(&st, &live::tick_json(&t)))) { return gone(); }
@@ -940,6 +947,7 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/mail/send", axum::routing::post(fmail_out::send_ep))
         .route("/founder/v1/mail/undo", axum::routing::post(fmail_out::undo_ep))
         .route("/founder/v1/mail/release", axum::routing::post(fmail_out::release_ep))
+        .route("/founder/v1/mail/changes", get(fmail_live::changes_ep))
         .route("/founder/v1/mail/contacts", get(fmail_book::top_ep))
         .route("/founder/v1/mail/contact", axum::routing::post(fmail_book::act_ep))
         .route("/founder/v1/mail/cancel", axum::routing::post(fmail_out::cancel_ep))
@@ -973,6 +981,7 @@ pub fn app(st: S) -> Router {
         .layer(hdr("cross-origin-opener-policy", "same-origin"))
         .layer(hdr("cross-origin-embedder-policy", "require-corp"))
         .layer(hdr("cache-control", "no-store"))
+        .layer(axum::middleware::from_fn(fmail_live::poke_mw)) // QLIVE: any write to a mail door wakes the live watcher
         .layer(axum::middleware::from_fn(asset_cache))
         .layer(axum::middleware::from_fn(stamp_proto))
         .layer(axum::middleware::from_fn(strip_cc)) // K4: the SPA is built for the /_cc/ prefix (Caddy strips it); the own TLS terminator has no Caddy, so it strips it itself
@@ -1073,7 +1082,7 @@ async fn main() {
     }
 
     match (&sb, flare::Cfg::from_env()) { (Some(s), Some(c)) => flare::spawn(s.clone(), c), (_, None) => eprintln!("founder: flare sender OFF (FOUNDER_FLARE=off or no usable VAPID key)"), _ => {} }
-    if let Some(s) = &sb { live::start(s.clone()); } // 4b-2: the one process-wide live tick
+    if let Some(s) = &sb { live::start(s.clone()); fmail_live::start(s.clone()); } // 4b-2: the one process-wide live tick; QLIVE: the one live-mail watcher
     let st = Arc::new(St { sb, hmac_key: key.into_bytes(), jwks: RwLock::new(jwks), lim: Default::default(), ft, legacy, polar, hook: Default::default(), ed, reqsig, gate: authcache::AuthCache::new(std::time::Duration::from_secs(5)), dbsc: dbsc::Mode::parse(&std::env::var("FOUNDER_DBSC").unwrap_or_default()) });
     fproxy::init_from_env(std::env::var("FOUNDER_TLS256_ADDR").ok().as_deref());
     match tls256::from_env() { // T256-1: own TLS 1.3 terminator, AES-256-GCM only, on its own port (default OFF); the main port above is never touched
