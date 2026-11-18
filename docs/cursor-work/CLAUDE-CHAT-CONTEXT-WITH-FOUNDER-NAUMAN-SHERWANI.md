@@ -3633,3 +3633,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 18 Nov 2026 06:2x PKT QLIVE steps c+d written: Rust fmail_live.rs + door /mail/changes + tick frame with mail part, browser mail_change.ts + livefeed onMail + mail_api push-first + MailBox follow; bun 354/354, fmail_live cargo tests 6/6, full cargo run pending. NOT installed on his server. NEXT: full cargo result, his sql-run E187 + founder-install lines, my live Chrome
 
 - 18 Nov 2026 06:3x PKT QLIVE full cargo 445/445 ok, bun 354/354, tsc clean, vite build index-CfZEezUK. Waiting for his sql-run (E187) + founder-install, then my live Chrome proof (send mail to himself, appears with no refresh, 390/820/1200+). Phase still open
+
+- 18 Nov 2026 06:1x PKT QLIVE installed on his server (E187 33/0 CHECK 9/9, founder-install OK). My live Chrome found a bug of mine: /mail/changes answered HTTP 400 (parse_box refuses extra params). Fixed with parse_query + strict test. Needs one more founder-install, then live re-proof. Also CHECK_BLOCKED_NOW.sql (read only) for his dashboard alert 6 blocked. Phase still open

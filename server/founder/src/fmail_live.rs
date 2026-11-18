@@ -69,24 +69,26 @@ pub async fn poke_mw(req: axum::extract::Request, next: axum::middleware::Next) 
     res
 }
 
-/// `after` and `limit` from a query string. after = 0 when absent, limit is capped at MAX_PAGE. A value that is not a plain number is an error (never guessed).
-pub fn parse_cursor(q: Option<&str>) -> Result<(i64, u32), &'static str> {
-    let (mut after, mut limit) = (0i64, 100u32);
-    for kv in q.unwrap_or("").split('&') {
-        match kv.split_once('=') {
-            Some(("after", v)) => after = v.parse::<i64>().ok().filter(|n| (0..=i64::MAX / 2).contains(n)).ok_or("after must be a whole number")?,
-            Some(("limit", v)) => limit = v.parse::<u32>().ok().filter(|n| *n >= 1).ok_or("limit must be a whole number")?.min(MAX_PAGE),
-            _ => {}
+/// The whole query of the changes door: `box=<uuid>` (needed), `after=<seq>` (default 0), `limit=<n>` (default 100, capped at MAX_PAGE). Strict: an unknown key, a repeated key, or a value that is not a plain number is an
+/// error (never guessed). NOTE (found live 18 Nov 06:0x): fmail_ep::parse_box accepts `box` and NOTHING else, so it can not be used here; this parser reads all three keys in one pass.
+pub fn parse_query(q: Option<&str>) -> Result<(String, i64, u32), &'static str> {
+    let (mut b, mut after, mut limit): (Option<String>, Option<i64>, Option<u32>) = (None, None, None);
+    for kv in q.unwrap_or("").split('&').filter(|p| !p.is_empty()) {
+        let (k, v) = kv.split_once('=').unwrap_or((kv, ""));
+        match k {
+            "box" => { if b.is_some() { return Err("box twice"); } if !crate::passkey::is_uuid(v) { return Err("invalid box"); } b = Some(v.to_string()); }
+            "after" => { if after.is_some() { return Err("after twice"); } after = Some(v.parse::<i64>().ok().filter(|n| (0..=i64::MAX / 2).contains(n)).ok_or("after must be a whole number")?); }
+            "limit" => { if limit.is_some() { return Err("limit twice"); } limit = Some(v.parse::<u32>().ok().filter(|n| *n >= 1).ok_or("limit must be a whole number")?.min(MAX_PAGE)); }
+            _ => return Err("unknown parameter"),
         }
     }
-    Ok((after, limit))
+    Ok((b.ok_or("missing box")?, after.unwrap_or(0), limit.unwrap_or(100)))
 }
 
 /// GET /founder/v1/mail/changes?box=<uuid>&after=<seq>&limit=<n>: the changes after a cursor (E187 `fmail_change_since187`). Signed answer (the kernel verifies it). `gap: true` = full refresh.
 pub async fn changes_ep(State(st): State<crate::S>, uri: Uri, h: HeaderMap) -> Response {
     let c = match crate::authed(&st, &h).await { Ok(c) => c, Err(e) => return e.into_response() };
-    let b = match crate::fmail_ep::parse_box(uri.query()) { Ok(b) => b, Err(e) => return (StatusCode::BAD_REQUEST, axum::Json(json!({"error": e}))).into_response() };
-    let (after, limit) = match parse_cursor(uri.query()) { Ok(x) => x, Err(e) => return (StatusCode::BAD_REQUEST, axum::Json(json!({"error": e}))).into_response() };
+    let (b, after, limit) = match parse_query(uri.query()) { Ok(x) => x, Err(e) => return (StatusCode::BAD_REQUEST, axum::Json(json!({"error": e}))).into_response() };
     let Some(sb) = st.sb.as_ref() else { return StatusCode::SERVICE_UNAVAILABLE.into_response() };
     let call = sb.rpc_msg("fmail_change_since187", json!({"p_actor": c.sub, "p_mailbox": b, "p_after": after, "p_limit": limit}));
     match tokio::time::timeout(Duration::from_secs(6), call).await {
@@ -128,13 +130,16 @@ mod tests {
         assert_eq!(f["mail"].as_object().unwrap().len(), 2); // the mail part is only {box, head}
     }
     #[test]
-    fn the_cursor_query_is_strict() {
-        assert_eq!(parse_cursor(Some("box=x")).unwrap(), (0, 100));
-        assert_eq!(parse_cursor(Some("box=x&after=41&limit=50")).unwrap(), (41, 50));
-        assert_eq!(parse_cursor(Some("after=3&limit=99999")).unwrap(), (3, MAX_PAGE));
-        assert!(parse_cursor(Some("after=-1")).is_err()); assert!(parse_cursor(Some("after=abc")).is_err());
-        assert!(parse_cursor(Some("limit=0")).is_err()); assert!(parse_cursor(Some("limit=1.5")).is_err());
-        assert_eq!(parse_cursor(None).unwrap(), (0, 100));
+    fn the_query_is_exactly_what_the_browser_sends_and_stays_strict() {
+        // the browser (mail_api.ts changes()) sends box, after, limit in this form
+        assert_eq!(parse_query(Some(&format!("box={A}&after=0&limit=1"))).unwrap(), (A.to_string(), 0, 1));
+        assert_eq!(parse_query(Some(&format!("box={A}&after=41&limit=200"))).unwrap(), (A.to_string(), 41, 200));
+        assert_eq!(parse_query(Some(&format!("box={A}"))).unwrap(), (A.to_string(), 0, 100));
+        assert_eq!(parse_query(Some(&format!("limit=99999&box={A}&after=3"))).unwrap(), (A.to_string(), 3, MAX_PAGE));
+        for bad in [format!("box={A}&after=-1"), format!("box={A}&after=abc"), format!("box={A}&limit=0"), format!("box={A}&limit=1.5"), format!("box={A}&x=1"), format!("box={A}&box={A}"), format!("box={A}&after=1&after=2"), "after=1".to_string(), "box=nope".to_string(), String::new()] {
+            assert!(parse_query(Some(&bad)).is_err(), "must refuse: {bad}");
+        }
+        assert!(parse_query(None).is_err());
     }
     #[tokio::test]
     async fn a_poke_wakes_the_watcher_and_a_ping_reaches_every_subscriber() {
