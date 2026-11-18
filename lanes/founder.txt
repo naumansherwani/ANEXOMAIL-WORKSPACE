@@ -139,6 +139,7 @@ docs/cursor-work/sql/E185_founder_mail_release_now.sql
 docs/cursor-work/sql/E186_founder_mail_address_book.sql
 docs/cursor-work/sql/E187_founder_mail_live_change_log.sql
 docs/cursor-work/sql/E188_founder_mail_live_drafts.sql
+docs/cursor-work/sql/E189_founder_mail_domain_tls.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/00-FOUNDER-TECH-RULE.md
@@ -161,7 +162,7 @@ founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
 founder-web/dist/assets/index-Brd5Ya19.css
-founder-web/dist/assets/index-D-DyOD7v.js
+founder-web/dist/assets/index-D5LXAm7U.js
 founder-web/dist/assets/kernel.worker-BLkLR49F.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js

@@ -3793,3 +3793,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - 18 Nov 2026 07:5x PKT QC1c FEATURE POINTS written at the top of COMPOSE-RESEARCH-17NOV.md with his 07:50 words and the earlier chat points same to same; the 'unknown' verdict is removed (closed verdict list, retries, real-mail facts first); waits his approval, no code
 
 - 18 Nov 2026 07:5x PKT QC1c sub-phases QC1cF1..QC1cF8 added to the blueprint and Q-STATE with advance technology (his order 07:56); build order F7 (SQL E189) -> F2+F3+F4 Rust probe -> F1 -> F5 -> F6 UI (his own haan) ; F8 = Qtls deferred; NOW QC1cF7 started
+
+- 18 Nov 2026 08:0x PKT QC1cF7 WRITTEN (not green): SQL E189 fmail_domain_tls + CHECK_E189 (sandbox: selftest 31/31, CHECK 11/11, run twice = idempotent, door audit clean); F1 corrected honestly (only a SENT mail is a real fact, a received mail is a weak hint); waits his sql-run E189 + CHECK_E189 paste, then F7 green, then F2-F4 Rust probe
