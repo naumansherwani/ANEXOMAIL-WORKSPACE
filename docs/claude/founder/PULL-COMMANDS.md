@@ -1628,3 +1628,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 18 Nov 2026 05:50 PKT QLIVE step a+b DONE: plan docs/claude/QLIVE-PLAN-18NOV.md (web research first: JMAP push, IMAP NOTIFY, Postgres LISTEN/NOTIFY limits), contract in CURRENT.md, SQL E187 (417 lines, gapless hash-chained change log, tier limits table with Premium and MAX codes kept) sandbox selftest 33/0 CHECK_E187 9/9. NOT installed on his server. NEXT: Rust fmail_live.rs, browser mail_change.ts
 
 - 18 Nov 2026 06:2x PKT QLIVE steps c+d written: Rust fmail_live.rs + door /mail/changes + tick frame with mail part, browser mail_change.ts + livefeed onMail + mail_api push-first + MailBox follow; bun 354/354, fmail_live cargo tests 6/6, full cargo run pending. NOT installed on his server. NEXT: full cargo result, his sql-run E187 + founder-install lines, my live Chrome
+
+- 18 Nov 2026 06:3x PKT QLIVE full cargo 445/445 ok, bun 354/354, tsc clean, vite build index-CfZEezUK. Waiting for his sql-run (E187) + founder-install, then my live Chrome proof (send mail to himself, appears with no refresh, 390/820/1200+). Phase still open
