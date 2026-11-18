@@ -47,3 +47,15 @@ a) plan + contract + gate check (this file) b) SQL E187 + CHECK_E187 (sandbox se
 | 5 | Selftest uses `alter table ... disable trigger` inside a rolled-back transaction (short lock on the log table) | accepted: runs on his command only | noted |
 | 6 | His dashboard alert "6 requests blocked in the last 24 h": all 6 = ONE session LbDzb2Iz, `why: no_cookie`, in 3 pairs 2 s apart (03:56, 04:53, 05:22); `reject_replay` = 12, `refreshed` = 114 in the same 24 h. Each pair = the kernel exchange attempt + its fetch fallback, both without a valid bound cookie, right when a DBSC refresh was rejected as a replay. Not an attacker, but real denials. | cause is read from CHECK_BLOCKED_TIMELINE (his paste), not guessed; then a fix in dbsc.rs / api.ts with tests | FIX WRITTEN 18 Nov 06:3x: dbsc.rs 10 s duplicate-refresh window (same session + same challenge), cargo 447/447; needs his founder-install, then watch blocked_24h stop rising |
 Order after QLIVE is GREEN: Q-contacts-kernel (his 05:00 order, shared Rule 52 kernel rule applies: no fork of the awam pin), then QC1c, the rest of the Q series, QSPEED.
+
+## 9. FEATURE LIST vs REPO vs LIVE CHROME (his 18 Nov 06:38 order, checked 06:5x PKT)
+| Feature he listed | Repo | Live (my Chrome) |
+|---|---|---|
+| Push, not poll (signed tick mail{box,head}) | fmail_live.rs, livefeed.ts mailPart | PROVEN: tab A title (2)->(3) in about 2 s, both directions, Live pill on |
+| Counts + tab title "(3) Mail" | MailBox.tsx titleWith | PROVEN |
+| 14 change kinds | E187 check + KINDS (same list), 33/33 selftest | read/unread proven live; other kinds by SQL selftest |
+| Gap = full refresh, burst = 1 refresh (150 ms), reconnect catch-up, 5 s fallback / 30 s safety | mail_change.ts + 9 bun tests, mail_api.live | by unit tests only, NOT forced live |
+| New mail slides into the list | MailBox.tsx arrival pill + list reload | NOT seen live (needs a real incoming mail) |
+| Privacy (ids + kind only) | E187 columns, CHECK_E187 9/9 | by SQL, door answers 401 without the signed token |
+| Rollback FOUNDER_MAIL_LIVE=off | fmail_live::start | not toggled |
+| Live bundle = repo | live index-BKWy-ioS = repo dist at 8cb9c7df; newer dist (DInNMywS, 47ee79d5) differs ONLY by system_brain.json text, no code | blocked_24h still 6 after the dup-refresh install (not rising) |

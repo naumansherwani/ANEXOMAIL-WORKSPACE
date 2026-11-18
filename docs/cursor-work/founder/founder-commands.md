@@ -3765,3 +3765,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - 18 Nov 2026 06:3x PKT DBSC blocked-alert fix WRITTEN (not green): dbsc.rs duplicate refresh (same session + same challenge, 10 s) answered OK instead of reject_replay; cause from his CHECK_BLOCKED_TIMELINE; cargo 447/447; waits his founder-install, then blocked_24h must stop rising. QLIVE still not green
 
 - 18 Nov 2026 06:4x PKT QLIVE GREEN - WIRED: YES / REAL: YES / TECH-LAW CHECKED: after his founder-install (healthz 200) my live two-tab Chrome test: mark unread in tab B -> tab A title (2)->(3) in about 2 s with no refresh, mark read -> (3)->(2), no console errors; push = signed tick mail{box,head} + cursor door /mail/changes; no new layout element, phone/tablet look not re-measured; gate Q-live ok; blocked-alert dup-refresh fix (8cb9c7df) installed, blocked_24h must stop rising (watch)
+
+- 18 Nov 2026 06:5x PKT QLIVE feature list matched to repo + live Chrome (QLIVE-PLAN section 9): push, counts, title proven live; gap/burst/fallback by unit tests; arrival slide NOT yet seen live; live bundle BKWy = repo 8cb9c7df code; blocked_24h still 6, not rising
