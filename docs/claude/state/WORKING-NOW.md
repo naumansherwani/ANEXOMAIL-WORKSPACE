@@ -1,15 +1,15 @@
-# WORKING NOW (manual checkpoint, 18 Nov 2026 07:10 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 07:15 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 18 Nov 07:1x Q-contacts-kernel STARTED (his order 07:10): web research first, plan at top of the plan doc, CURRENT.md contract, then code; shared kernel pin not forked, awam untouched. QLIVE-c: E188 ran OK on his server (CHECK_E188 5/5), founder-install result not yet pasted
 NEXT STEP: 1) research + plan Q-contacts-kernel 2) contract in CURRENT.md 3) code in kernel (version bump, awam pin stays) 4) when he pastes founder-install: live two-tab draft check then QLIVE-c GREEN; 5) QC1c = E189. NO filler messages, NO Monitor watches (his 07:06 anger): one final reply per task
 HIS LAST WORD: E188 ran OK; start Q-contacts-kernel; no filler messages
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 0be0300a 18 Nov 07:15 Q-contacts-kernel: contacts@1 in the Rust WASM kernel 0.18.0, plan + contract
 - 4f8e39f5 18 Nov 07:04 ledger line aa33f486
 - aa33f486 18 Nov 07:04 QLIVE-c fix: tier rows shipped to server, live drafts renumbered E188, awam Premium/MAX reminder gate
 - efafa222 18 Nov 06:51 ledger line f618939b
 - f618939b 18 Nov 06:51 QLIVE-c: package stream limits, live drafts E189, simulation test, awam tiers doc
-- 709bd8b8 18 Nov 06:41 ledger line 3d3633ae
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -17,8 +17,8 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -29,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (6ac96411ff8c8980e02b4a34c8b3ee4ada56e093)
+WIP snapshot: refs/wip/last (a5c5c4020cb635578b48485aca70293b4d6e2333)
