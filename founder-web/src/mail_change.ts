@@ -61,3 +61,6 @@ export function coalesce(fn: () => void, ms: number, setT: (f: () => void, ms: n
 
 /** Tab title with the unread count, like a mail client: "(3) Mail". */
 export const titleWith = (base: string, unread: number): string => (unread > 0 ? `(${unread > 99 ? "99+" : unread}) ${base}` : base);
+
+/** A mail the log says arrived, but the counts did not show as a rise (a read and an arrival in one burst keep the inbox total equal): the screen still gets its arrival notice, never twice for the same mail. */
+export const arrivalExtra = (arrivedInLog: number, alreadyAnnounced: boolean): number => (alreadyAnnounced || arrivedInLog <= 0 ? 0 : arrivedInLog);

@@ -3,7 +3,7 @@ import { get, post } from "./api";
 import { rpcAvailable, mailLedgerCheck, anchorCheck, type AnchorReport } from "./kernel";
 import { prove } from "./passkey";
 import { acquireLive, live as liveStore, onMail } from "./livefeed";
-import { coalesce, pollMs, readAnswer, shouldFetch, step, type Kind } from "./mail_change";
+import { arrivalExtra, coalesce, pollMs, readAnswer, shouldFetch, step, type Kind } from "./mail_change";
 import type { Box, Counts, Lane, Proof, Row, Sum } from "./mail_pure";
 
 const q = (o: Record<string, string | number | undefined | null>) => Object.entries(o).filter(([, v]) => v !== undefined && v !== null && v !== "").map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join("&");
@@ -107,7 +107,7 @@ export async function changes(box: string, after: number, limit = 200) { return 
  *  runs (a lost frame or a gap can never leave the screen stale for long). A gap or a wrong answer = a full refresh, never a silent hole. Returns stop(). Plan: docs/claude/QLIVE-PLAN-18NOV.md. */
 export const MAIL_POLL_MS = 5000;
 export function live(box: string, on: (m: LiveMsg) => void, state: (s: "live" | "reconnecting") => void): () => void {
-  let stopped = false, lastInbox = -1, first = true, last = "", timer: ReturnType<typeof setTimeout> | null = null, fails = 0, cursor: number | null = null, busy = false, again = false;
+  let stopped = false, lastInbox = -1, first = true, last = "", timer: ReturnType<typeof setTimeout> | null = null, fails = 0, cursor: number | null = null, busy = false, again = false, arrivalSent = false;
   const refresh = async (): Promise<boolean> => {
     try {
       const [c, l] = await Promise.all([counts(box), lanes()]); if (stopped) return false;
@@ -116,7 +116,7 @@ export function live(box: string, on: (m: LiveMsg) => void, state: (s: "live" | 
       const data = { counts: c, feed: l }, key = JSON.stringify(data), inbox = Number((c as { inbox?: { total?: number } }).inbox?.total ?? 0);
       if (key !== last) {
         on({ event: first ? "snapshot" : "counts", data });
-        if (!first && lastInbox >= 0 && inbox > lastInbox) on({ event: "arrival", data: { inbox_total: inbox, new: inbox - lastInbox } });
+        if (!first && lastInbox >= 0 && inbox > lastInbox) { on({ event: "arrival", data: { inbox_total: inbox, new: inbox - lastInbox } }); arrivalSent = true; }
         last = key; lastInbox = inbox; first = false;
       }
       return true;
@@ -132,8 +132,9 @@ export function live(box: string, on: (m: LiveMsg) => void, state: (s: "live" | 
         again = false;
         for (let page = 0; page < 10 && !stopped; page++) {
           const a = await changes(box, cursor ?? 0, cursor === null ? 1 : 200); if (stopped) return;
-          const s = step(cursor, a); cursor = s.cursor;
-          if (s.refresh) { const ok = await refresh(); if (ok && !s.full) on({ event: "changes", data: { kinds: s.kinds as Partial<Record<Kind, number>>, arrived: s.arrived } }); }
+          const s = step(cursor, a); arrivalSent = false;
+          // the cursor moves ONLY after the screen was refreshed: a failed read keeps the old cursor, so the next catch-up asks again (never a stale screen with a cursor already past the change)
+          if (s.refresh) { const ok = await refresh(); if (!ok) break; cursor = s.cursor; if (!s.full) on({ event: "changes", data: { kinds: s.kinds as Partial<Record<Kind, number>>, arrived: s.arrived } }); const x = arrivalExtra(s.arrived, arrivalSent); if (x > 0) on({ event: "arrival", data: { inbox_total: lastInbox, new: x } }); } else cursor = s.cursor;
           if (!s.more) break;
         }
       } while (again && !stopped);

@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { coalesce, mailPart, MAIL_LIVE, pollMs, readAnswer, shouldFetch, step, titleWith, touchesList } from "./mail_change";
+import { arrivalExtra, coalesce, mailPart, MAIL_LIVE, pollMs, readAnswer, shouldFetch, step, titleWith, touchesList } from "./mail_change";
 
 const BOX = "11111111-1111-4111-8111-111111111111";
 const ch = (seq: number, kind: string) => ({ seq, kind, folder: null, message: null, thread: null, at: "2026-11-18T00:00:00Z" });
@@ -49,4 +49,7 @@ test("coalesce: a burst of five pokes runs ONE refresh, after the last", () => {
   for (let i = 0; i < 5; i++) c.poke();
   expect(timers.length).toBe(1); timers.shift()!.f(); expect(n).toBe(1);
   c.poke(); c.cancel(); expect(timers.length).toBe(0); expect(n).toBe(1);
+});
+test("arrivalExtra: an arrival the counts missed is announced once, never twice", () => {
+  expect(arrivalExtra(2, false)).toBe(2); expect(arrivalExtra(2, true)).toBe(0); expect(arrivalExtra(0, false)).toBe(0); expect(arrivalExtra(-1, false)).toBe(0);
 });

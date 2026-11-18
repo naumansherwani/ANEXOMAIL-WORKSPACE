@@ -1640,3 +1640,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 18 Nov 2026 06:4x PKT QLIVE GREEN - WIRED: YES / REAL: YES / TECH-LAW CHECKED: after his founder-install (healthz 200) my live two-tab Chrome test: mark unread in tab B -> tab A title (2)->(3) in about 2 s with no refresh, mark read -> (3)->(2), no console errors; push = signed tick mail{box,head} + cursor door /mail/changes; no new layout element, phone/tablet look not re-measured; gate Q-live ok; blocked-alert dup-refresh fix (8cb9c7df) installed, blocked_24h must stop rising (watch)
 
 - 18 Nov 2026 06:5x PKT QLIVE feature list matched to repo + live Chrome (QLIVE-PLAN section 9): push, counts, title proven live; gap/burst/fallback by unit tests; arrival slide NOT yet seen live; live bundle BKWy = repo 8cb9c7df code; blocked_24h still 6, not rising
+
+- 18 Nov 2026 07:0x PKT QLIVE hardening written (not green-claimed again): cursor moves only after a successful refresh; an arrival the counts missed is still announced once; bun 355/355 tsc clean; waits his founder-install, then live look
