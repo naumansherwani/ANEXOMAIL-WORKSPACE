@@ -138,6 +138,7 @@ docs/cursor-work/sql/E184_founder_sending_on_by_default.sql
 docs/cursor-work/sql/E185_founder_mail_release_now.sql
 docs/cursor-work/sql/E186_founder_mail_address_book.sql
 docs/cursor-work/sql/E187_founder_mail_live_change_log.sql
+docs/cursor-work/sql/E189_founder_mail_live_drafts.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/00-FOUNDER-TECH-RULE.md
@@ -150,6 +151,7 @@ docs/cursor-work/sql/tools/00-FOUNDER-TECH-RULE.md
 founder-web/.gitignore
 founder-web/00-FOUNDER-TECH-RULE.md
 founder-web/READ-FIRST-FOUNDER-LAW.md
+founder-web/bunfig.toml
 founder-web/dist/READ-FIRST-FOUNDER-LAW.md
 founder-web/dist/assets/Inter-Bold-sbKixbcS.woff2
 founder-web/dist/assets/Inter-ExtraLight-BhvJvErM.woff2
@@ -158,8 +160,8 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-BNWv29lU.js
 founder-web/dist/assets/index-Brd5Ya19.css
+founder-web/dist/assets/index-T9pvh-Zn.js
 founder-web/dist/assets/kernel.worker-CmgLpPuh.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
@@ -190,6 +192,8 @@ founder-web/public/icon-192.png
 founder-web/public/icon-512.png
 founder-web/public/kernel/anexo-kernel-0.17.0.wasm
 founder-web/public/manifest.webmanifest
+founder-web/sim/00-FOUNDER-TECH-RULE.md
+founder-web/sim/mail_live.sim.test.ts
 founder-web/src/00-FOUNDER-TECH-RULE.md
 founder-web/src/AmbientStudio.tsx
 founder-web/src/App.tsx
@@ -442,6 +446,7 @@ server/founder/src/settings_s2.rs
 server/founder/src/sign.rs
 server/founder/src/signedcp.rs
 server/founder/src/signin.rs
+server/founder/src/stream_tier.rs
 server/founder/src/tls256.rs
 server/founder/src/wt.rs
 server/founder/src/wtrpc.rs

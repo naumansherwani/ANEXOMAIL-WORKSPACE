@@ -3,7 +3,7 @@ import { get, post } from "./api";
 import { rpcAvailable, mailLedgerCheck, anchorCheck, type AnchorReport } from "./kernel";
 import { prove } from "./passkey";
 import { acquireLive, live as liveStore, onMail } from "./livefeed";
-import { arrivalExtra, coalesce, pollMs, readAnswer, shouldFetch, step, type Kind } from "./mail_change";
+import { arrivalExtra, coalesce, pollMs, readAnswer, shouldFetch, step, type Answer, type Kind } from "./mail_change";
 import type { Box, Counts, Lane, Proof, Row, Sum } from "./mail_pure";
 
 const q = (o: Record<string, string | number | undefined | null>) => Object.entries(o).filter(([, v]) => v !== undefined && v !== null && v !== "").map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join("&");
@@ -131,7 +131,7 @@ export function live(box: string, on: (m: LiveMsg) => void, state: (s: "live" | 
       do {
         again = false;
         for (let page = 0; page < 10 && !stopped; page++) {
-          const a = await changes(box, cursor ?? 0, cursor === null ? 1 : 200); if (stopped) return;
+          const a = await changes(box, cursor ?? 0, cursor === null ? 1 : 200).catch((): Answer => ({ ok: false })); if (stopped) return; // a network error is a wrong answer: a full refresh (which says 'reconnecting' if it fails), never an unhandled rejection
           const s = step(cursor, a); arrivalSent = false;
           // the cursor moves ONLY after the screen was refreshed: a failed read keeps the old cursor, so the next catch-up asks again (never a stale screen with a cursor already past the change)
           if (s.refresh) { const ok = await refresh(); if (!ok) break; cursor = s.cursor; if (!s.full) on({ event: "changes", data: { kinds: s.kinds as Partial<Record<Kind, number>>, arrived: s.arrived } }); const x = arrivalExtra(s.arrived, arrivalSent); if (x > 0) on({ event: "arrival", data: { inbox_total: lastInbox, new: x } }); } else cursor = s.cursor;
@@ -142,8 +142,8 @@ export function live(box: string, on: (m: LiveMsg) => void, state: (s: "live" | 
   };
   const burst = coalesce(() => void catchUp(), 150);
   const release = acquireLive(), offMail = onMail((m) => { if (m.box === box.toLowerCase() && shouldFetch(cursor, m.head)) burst.poke(); });
-  let wasLive = false;
-  const offState = liveStore.sub(() => { const up = liveStore.get().status === "live"; if (up && !wasLive) burst.poke(); wasLive = up; }); // a (re)connect = one catch-up from the cursor: nothing is missed while it was down
+  let wasLive = liveStore.get().status === "live";
+  const offState = liveStore.sub(() => { const up = liveStore.get().status === "live"; if (up && !wasLive) burst.poke(); if (!up && wasLive && !stopped) { if (timer) clearTimeout(timer); timer = setTimeout(() => void tick(), MAIL_POLL_MS); } wasLive = up; }); // the stream dropped: the 30 s safety timer is cut down to the honest 5 s read at once // a (re)connect = one catch-up from the cursor: nothing is missed while it was down
   const tick = async () => {
     if (stopped) return;
     if (!document.hidden) { if (cursor === null) await catchUp(); if (cursor !== null) await refresh(); }

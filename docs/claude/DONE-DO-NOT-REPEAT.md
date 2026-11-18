@@ -896,3 +896,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 18 Nov 2026 07:0x PKT QLIVE hardening written (not green-claimed again): cursor moves only after a successful refresh; an arrival the counts missed is still announced once; bun 355/355 tsc clean; waits his founder-install, then live look
 
 - 18 Nov 2026 06:5x PKT QLIVE line-by-line match (QLIVE-PLAN section 10): every listed feature exists in repo; open honest list = tier stream limits not enforced yet, in-place draft edit not announced, real-mail slide/gap/burst/reconnect not seen live; no code change, no install needed
+
+- 18 Nov 2026 07:0x PKT QLIVE-c WRITTEN (not green): per-package live-stream admission stream_tier.rs (numbers parsed from E187, cargo 453/453), SQL E189 live drafts (sandbox PG16 chain: selftest 7/7, CHECK_E189 5/5), mail_api.ts two real bugs fixed by the new simulation test (founder-web/sim, 9 scenarios), awam Premium/MAX codes written in AWAM-QLIVE-TIERS-18NOV.md; waits his sql-run E189 + founder-install
+
+- 18 Nov 2026 07:0x PKT QLIVE-c WRITTEN (not green): per-package live-stream admission stream_tier.rs (numbers parsed from E187, cargo 453/453), SQL E189 live drafts (sandbox PG16 chain: selftest 7/7, CHECK_E189 5/5), mail_api.ts two real bugs fixed by the new simulation test (founder-web/sim, 9 scenarios), awam Premium/MAX codes written in AWAM-QLIVE-TIERS-18NOV.md; waits his sql-run E189 + founder-install

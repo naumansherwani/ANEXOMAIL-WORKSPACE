@@ -19,6 +19,7 @@ mod ambient;
 mod authcache;
 mod hostproof;
 mod live;
+mod stream_tier;
 mod inbox;
 mod ledger;
 #[path = "../../rust/checkpoint_core.rs"]
@@ -540,6 +541,8 @@ async fn live_stream_core(st: S, h: HeaderMap, transport: &'static str) -> axum:
     let claims = match authed(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
     let Some(sb) = st.sb.clone() else { return StatusCode::SERVICE_UNAVAILABLE.into_response() };
     let hub = live::hub();
+    // QLIVE package limits (stream_tier.rs, numbers = E187 fmail_tier_limits187): admission is per ACCOUNT; the founder lane is the founder package. A refusal says why (`stream_limit`) and the browser keeps its honest 5 s read.
+    let acct = match stream_tier::registry().admit(&claims.sub, stream_tier::Tier::Founder) { Ok(a) => a, Err(d) => return (StatusCode::SERVICE_UNAVAILABLE, [("retry-after", "5")], d.reason()).into_response() };
     let Some(slot) = live::Slot::take(&hub) else { return (StatusCode::SERVICE_UNAVAILABLE, "too many live streams").into_response() };
     let mut last_id: i64 = h.get("last-event-id").and_then(|v| v.to_str().ok()).and_then(|v| v.parse().ok()).unwrap_or(0);
     let mut rx = hub.tx.subscribe(); // subscribe BEFORE the snapshot so no tick is missed in between
@@ -548,6 +551,7 @@ async fn live_stream_core(st: S, h: HeaderMap, transport: &'static str) -> axum:
     let kind = if st.ft.is_some() { "device" } else { "legacy" };
     tokio::spawn(async move {
         let _slot = slot;
+        let _acct = acct; // freed when this stream ends, whatever the reason
         let sid = live::session_open(&sb, kind, transport).await; // E111 telemetry, fire-and-forget: None = off or not installed, the stream is unaffected
         let mut frames: i32 = 0;
         let reason: &'static str = async {
