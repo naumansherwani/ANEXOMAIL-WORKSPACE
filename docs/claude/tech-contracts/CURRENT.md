@@ -1115,3 +1115,5 @@ Q-CONTACTS-KERNEL 18 Nov 2026 07:4x (contract written BEFORE green): the address
 - 18 Nov 2026 07:4x PKT LIVE CHROME LOOK (his order 07:37) for QLIVE-c + Q-contacts-kernel: WIRED: YES / REAL: YES / TECH-LAW CHECKED. His signed-in site, Compose To box, typed gm -> suggestion Muhammad Nauman Sherwani (pin star, forget x); live served anexo-kernel-0.18.0.wasm sha-256 starts 9a0c227d = repo pin, 433676 bytes; live bundle index-DYM0Qn3f carries the 0.18.0 pin. Still owed: draft edit in two tabs (needs a typed draft in his real mailbox); local dist name index-DcY9-j4y differs from live (dist rebuilt after docs commits; worker hash kernel.worker-BLkLR49F equal)
 
 - 18 Nov 2026 07:5x PKT QC1c DISCUSSION research written at the top of COMPOSE-RESEARCH-17NOV.md (Gmail red lock correction, MTA-STS 0.3 percent, NCSC 1.2, two-layer lock idea, scope split from Qtls); no code, waits his answers
+
+- 18 Nov 2026 07:5x PKT QC1c FEATURE POINTS written at the top of COMPOSE-RESEARCH-17NOV.md with his 07:50 words and the earlier chat points same to same; the 'unknown' verdict is removed (closed verdict list, retries, real-mail facts first); waits his approval, no code
