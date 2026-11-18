@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 04:43 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 18 Nov 2026 05:01 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 17 Nov 06:35 PLAQUE LIVE (his photo 06:29). His orders: (1) plaque name = full 'Muhammad Nauman Sherwani'; (2) QC0 = POLISH the compose UI first, one phase at a time, subphases for each point written in the repo; (3) editor + phone-compose = WEB RESEARCH, write what was researched into the repo with date/time, then the code plan, then advanced code; (4) undo stays 30 s, but the X on the undo bar = deliver NOW (skip the hold); (5) AI drafting DROPPED until the AI product (July 2027). Steps: fix name, research docs/claude/COMPOSE-RESEARCH-17NOV.md, plan+subphases, qstate, then QC0 code.
 NEXT STEP: 
 HIS LAST WORD: resolver upstream fix
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 5f1a8646 18 Nov 05:01 QC1b installed on his server (sql-run E186 32/0 + founder-install OK), live proof next
+- 94d69bdd 18 Nov 04:43 ledger line 1eb5b380
 - 1eb5b380 18 Nov 04:43 QC1b: sealed address book + suggestions (written, awaits install and live proof)
 - b356d54a 18 Nov 04:34 ledger line c6729e8b
 - c6729e8b 18 Nov 04:34 QC1b step 1: SQL E186 sealed address book (476 lines, sandbox selftest 32/0)
-- 42436ab6 18 Nov 04:28 ledger line f8a7e185
-- f8a7e185 18 Nov 04:28 QC1b plan + contract + open gap, QSPEED after Q series, rule 0 web research first
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -29,4 +29,4 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (16b08dccff4aa53094984d5bf3f08a57cf808950)
+WIP snapshot: refs/wip/last (c0739d9f221a9a02f4dfa171094620eefda48021)
