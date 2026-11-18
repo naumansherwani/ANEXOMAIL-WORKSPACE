@@ -43,3 +43,12 @@ test("asChipText quotes names that need it", () => {
   expect(asChipText({ addr: "a@b.com", name: "" })).toBe("a@b.com"); expect(asChipText({ addr: "a@b.com", name: "Ali Raza" })).toBe("Ali Raza <a@b.com>");
   expect(asChipText({ addr: "a@b.com", name: "Doe, John" })).toBe('"Doe, John" <a@b.com>');
 });
+
+import { hitsFromKernel, kernelInput } from "./book";
+test("kernelInput reduces a contact to numbers and hitsFromKernel only accepts the promised shape", () => {
+  const cs = [{ id: "1", addr: "a@x.com", name: "A", sent: 1, recv: 2, last_sent: "2026-11-01T00:00:00Z", last_recv: "2026-11-10T00:00:00Z", pinned: false }];
+  const k = kernelInput(cs, "a", new Set(["b@x.com"]), 5, 3);
+  expect(k).toMatchObject({ q: "a", taken: ["b@x.com"], now: 5, max: 3 }); expect(k.c[0]).toEqual({ a: "a@x.com", n: "A", s: 1, r: 2, l: Date.parse("2026-11-10T00:00:00Z"), p: false });
+  expect(hitsFromKernel(cs, { ok: true, hits: [{ i: 0, why: "name", score: 1.5 }] })).toEqual([{ c: cs[0], why: "name", score: 1.5 }]);
+  for (const bad of [null, { ok: false }, { ok: true }, { ok: true, hits: [{ i: 1, why: "name", score: 1 }] }, { ok: true, hits: [{ i: 0, why: "x", score: 1 }] }, { ok: true, hits: [{ i: 0, why: "name", score: "1" }] }]) expect(hitsFromKernel(cs, bad)).toBeUndefined();
+});

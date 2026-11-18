@@ -70,6 +70,8 @@ web-wasm/src/00-FOUNDER-TECH-RULE.md
 web-wasm/src/READ-FIRST-FOUNDER-LAW.md
 web-wasm/src/action.rs
 web-wasm/src/auditproof.rs
+web-wasm/src/contacts.rs
+web-wasm/src/contacts_vectors.json
 web-wasm/src/ed.rs
 web-wasm/src/exec.rs
 web-wasm/src/filectx.rs

@@ -275,7 +275,7 @@
    "id": "Q-contacts-kernel",
    "file": "founder-web/src/book.ts",
    "must": "kernel_contacts_filter",
-   "status": "open",
+   "status": "ok",
    "deadline": "2026-11-25",
    "why": "QC1b: the recipient suggestion filter + frecency rank runs in the Rust WASM kernel (his plan: top 500 opened in the kernel); first version is TS (book.ts) because the kernel is the shared Rule 52 build; founder-lane kernel op still to build"
   },

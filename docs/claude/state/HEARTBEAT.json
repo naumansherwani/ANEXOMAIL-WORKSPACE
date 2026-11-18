@@ -1,7 +1,7 @@
 {
- "generated": "18 Nov 2026 07:04 +0500",
- "head": "efafa222",
- "head_subject": "ledger line f618939b",
+ "generated": "18 Nov 2026 07:15 +0500",
+ "head": "4f8e39f5",
+ "head_subject": "ledger line aa33f486",
  "now": "-",
  "phases": {
   "GREEN": 28,
@@ -11,7 +11,7 @@
  },
  "q_done": 38,
  "q_open": 1,
- "checks_ok": 25,
+ "checks_ok": 26,
  "checks_open": [
   "M-moq",
   "D-clamav",
@@ -21,7 +21,6 @@
   "Q-live-wt",
   "Q-smtp-mtasts",
   "Q-ledger-kernel",
-  "AWAM-PREMIUM-MAX-LIVE",
-  "Q-contacts-kernel"
+  "AWAM-PREMIUM-MAX-LIVE"
  ]
 }

@@ -31,6 +31,7 @@ pub mod mldsa;
 #[path = "../../server/rust/merkle_core.rs"]
 pub mod merkle;
 pub mod rank;
+pub mod contacts;
 pub mod rpc;
 pub mod sniff;
 pub mod sys;
@@ -40,9 +41,9 @@ use std::collections::HashMap;
 use std::rc::Rc;
 
 pub const ABI: u32 = 1;
-pub const VERSION: (u32, u32, u32) = (0, 17, 0);
+pub const VERSION: (u32, u32, u32) = (0, 18, 0);
 /// Naam@module-version. Naya module ya badla hua module => yahan entry + VERSION bump (Cargo.toml bhi).
-pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "mldsa@1", "merkle@1", "merkle@2", "checkpoint@1", "anchor@1", "portable@1", "mailledger@1", "auditproof@1", "action@1", "lease@1", "flive@1", "mailledger@1"];
+pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "mldsa@1", "merkle@1", "merkle@2", "checkpoint@1", "anchor@1", "portable@1", "contacts@1", "mailledger@1", "auditproof@1", "action@1", "lease@1", "flive@1", "mailledger@1"];
 
 thread_local! {
     static OUT: RefCell<Vec<u8>> = const { RefCell::new(Vec::new()) };
@@ -245,6 +246,12 @@ pub extern "C" fn audit_anchor_check(ptr: u32, len: u32) -> u32 {
     let (ok, rep) = auditproof::check(unsafe { text(ptr, len) });
     set_out(rep.into_bytes());
     ok as u32
+}
+
+/// contacts@1 (Q-contacts-kernel): the address-book filter + frecency rank. JSON in, JSON out (kernel_out), length wapas. Twin of founder-web/src/book.ts.
+#[unsafe(no_mangle)]
+pub extern "C" fn contacts_suggest(ptr: u32, len: u32) -> u32 {
+    set_out(contacts::suggest_json(unsafe { text(ptr, len) }).into_bytes())
 }
 
 /* ------------------------------------------------------- lease@1 (J8c) */

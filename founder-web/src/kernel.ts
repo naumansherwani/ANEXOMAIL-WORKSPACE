@@ -134,6 +134,18 @@ export function mailLedgerCheck(input: unknown): Promise<MailLedgerReport | unde
   });
 }
 
+/** Q-contacts-kernel: the address-book filter + frecency rank run IN the kernel (contacts@1). Resolves with the parsed answer; undefined = the kernel could not run (the caller then uses its TypeScript twin, book.ts `suggest`). */
+export function contactsSuggest(input: unknown): Promise<unknown | undefined> {
+  return new Promise((resolve) => {
+    const id = ++seq;
+    waiting.set(id, (m) => {
+      if (m.code !== 0 || typeof m.data !== "string") { resolve(undefined); return; }
+      try { resolve(JSON.parse(m.data)); } catch { resolve(undefined); }
+    });
+    w().postMessage({ id, contacts: { input: JSON.stringify(input) } });
+  });
+}
+
 export type AnchorReport = { ok: boolean; mail_seq?: number; checkpoint_seq?: string; audit_seq?: string; ledger_rows?: number; root?: string; upto?: number; hops?: number; root_signed?: boolean; problem?: string };
 /** QUI-H4: prove in the kernel (auditproof@1) that ONE mail's ledger row is inside the founder audit Merkle tree. undefined = the kernel could not run (never shown as a failed check). */
 export function anchorCheck(input: unknown): Promise<AnchorReport | undefined> {

@@ -7,9 +7,14 @@ import { KERNEL } from "./kernel.pin";
 const bytes = readFileSync(`public/kernel/anexo-kernel-${KERNEL.version}.wasm`);
 const h = (s: string) => Uint8Array.from(s.match(/../g)!.map((x) => parseInt(x, 16)));
 
-test("the shipped wasm is the pinned kernel and the same build as the user site", () => {
+test("the shipped wasm is the pinned kernel; the user site runs the SAME crate: the same build, or an older version of it (never a fork)", () => {
   expect(createHash("sha256").update(bytes).digest("hex")).toBe(KERNEL.sha256);
-  expect(createHash("sha256").update(readFileSync(`../public/kernel/anexo-kernel-${KERNEL.version}.wasm`)).digest("hex")).toBe(KERNEL.sha256);
+  // 18 Nov 2026 (Q-contacts-kernel): the founder kernel may be NEWER than the awam one (additive module contacts@1, one crate in web-wasm). The awam pin is untouched until its own turn.
+  const awam = /version: "(\d+)\.(\d+)\.(\d+)"/.exec(readFileSync("../src/lib/kernel/pin.gen.ts", "utf8"))!.slice(1).map(Number), mine = KERNEL.version.split(".").map(Number);
+  const cmp = mine[0] - awam[0] || mine[1] - awam[1] || mine[2] - awam[2];
+  expect(cmp).toBeGreaterThanOrEqual(0); // founder >= awam
+  if (cmp === 0) expect(createHash("sha256").update(readFileSync(`../public/kernel/anexo-kernel-${KERNEL.version}.wasm`)).digest("hex")).toBe(KERNEL.sha256); // equal versions must be the same bytes
+  else expect(readFileSync(`../public/kernel/anexo-kernel-${awam.join(".")}.wasm`).length).toBeGreaterThan(0); // the older awam build is still where its site expects it
 });
 
 test("ed25519_verify in the real wasm: RFC 8032 vector passes, one changed byte fails", async () => {
@@ -186,4 +191,21 @@ test("lease@1 in the real wasm: RFC 5869 style key schedule is stable, a live le
   expect(run("lease_check", JSON.stringify({ ...base, now_mono_ms: 10_000 + 900_000, now_wall_ms: 1_700_000_900_500 })).ok).toBe(0);
   expect(JSON.parse(run("lease_check", JSON.stringify({ ...base, now_mono_ms: 410_000, now_wall_ms: 1_700_000_010_500 })).out).reason).toContain("turned back");
   expect(JSON.parse(run("lease_check", JSON.stringify({ ...base, pinned_serial: 4 })).out).reason).toContain("replay");
+});
+
+test("contacts@1 in the REAL wasm: the shipped kernel gives the same hits as book.ts for every shared vector (Q-contacts-kernel)", async () => {
+  const v = JSON.parse(readFileSync("../web-wasm/src/contacts_vectors.json", "utf8")) as { cases: { name: string; input: unknown; hits: { i: number; why: string; score: number }[] }[] };
+  const { instance } = await WebAssembly.instantiate(bytes, { env: { host_wake() {}, host_call() {}, host_emit() {} } });
+  const ex = instance.exports as any;
+  expect(v.cases.length).toBeGreaterThanOrEqual(12);
+  for (const c of v.cases) {
+    const x = new TextEncoder().encode(JSON.stringify(c.input)), p = ex.kernel_alloc(x.length);
+    new Uint8Array(ex.memory.buffer, p, x.length).set(x);
+    ex.contacts_suggest(p, x.length);
+    const got = JSON.parse(new TextDecoder().decode(new Uint8Array(ex.memory.buffer, ex.kernel_out_ptr(), ex.kernel_out_len()).slice())) as { ok: boolean; hits: { i: number; why: string; score: number }[] };
+    ex.kernel_free(p, x.length);
+    expect(got.ok).toBe(true);
+    expect(got.hits.map((h) => [h.i, h.why]), c.name).toEqual(c.hits.map((h) => [h.i, h.why]));
+    got.hits.forEach((h, k) => expect(Math.abs(h.score - c.hits[k].score), c.name).toBeLessThan(1e-9));
+  }
 });

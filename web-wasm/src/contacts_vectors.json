@@ -1,0 +1,1973 @@
+{
+ "about": "generated from founder-web/src/book.ts by founder-web/sim/gen_contacts_vectors.ts; do not edit by hand",
+ "cases": [
+  {
+   "name": "name prefix",
+   "input": {
+    "q": "zoy",
+    "taken": [],
+    "now": 1794960000000,
+    "max": 8,
+    "c": [
+     {
+      "a": "zoya.khan@anexomail.com",
+      "n": "Zoyá Khan",
+      "s": 12,
+      "r": 30,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "ali@gmail.com",
+      "n": "Ali Raza",
+      "s": 3,
+      "r": 9,
+      "l": 1794528000000,
+      "p": false
+     },
+     {
+      "a": "alina@work.org",
+      "n": "Alina Shah",
+      "s": 0,
+      "r": 4,
+      "l": 1791504000000,
+      "p": false
+     },
+     {
+      "a": "ahmed.ali@corp.com",
+      "n": "Ahmed Ali",
+      "s": 40,
+      "r": 10,
+      "l": 1794787200000,
+      "p": false
+     },
+     {
+      "a": "noreply@github.com",
+      "n": "",
+      "s": 0,
+      "r": 100,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "müller@example.de",
+      "n": "Élodie Müller",
+      "s": 5,
+      "r": 5,
+      "l": 1789776000000,
+      "p": false
+     },
+     {
+      "a": "tie1@x.com",
+      "n": "Tie One",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "tie2@x.com",
+      "n": "Tie Two",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "boss@company.com",
+      "n": "The Boss",
+      "s": 2,
+      "r": 2,
+      "l": 1760400000000,
+      "p": true
+     },
+     {
+      "a": "نعمان@example.com",
+      "n": "نعمان شیروانی",
+      "s": 7,
+      "r": 3,
+      "l": 1794700800000,
+      "p": false
+     },
+     {
+      "a": "ŁÓDŹ@city.pl",
+      "n": "Łukasz Źródło",
+      "s": 1,
+      "r": 0,
+      "l": 1787184000000,
+      "p": false
+     },
+     {
+      "a": "o.neil+tag@mail.io",
+      "n": "Ó Neil",
+      "s": 2,
+      "r": 6,
+      "l": 1794268800000,
+      "p": false
+     }
+    ]
+   },
+   "hits": [
+    {
+     "i": 0,
+     "why": "name",
+     "score": 4.224692619390965
+    }
+   ]
+  },
+  {
+   "name": "accent typed",
+   "input": {
+    "q": "zoyá",
+    "taken": [],
+    "now": 1794960000000,
+    "max": 8,
+    "c": [
+     {
+      "a": "zoya.khan@anexomail.com",
+      "n": "Zoyá Khan",
+      "s": 12,
+      "r": 30,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "ali@gmail.com",
+      "n": "Ali Raza",
+      "s": 3,
+      "r": 9,
+      "l": 1794528000000,
+      "p": false
+     },
+     {
+      "a": "alina@work.org",
+      "n": "Alina Shah",
+      "s": 0,
+      "r": 4,
+      "l": 1791504000000,
+      "p": false
+     },
+     {
+      "a": "ahmed.ali@corp.com",
+      "n": "Ahmed Ali",
+      "s": 40,
+      "r": 10,
+      "l": 1794787200000,
+      "p": false
+     },
+     {
+      "a": "noreply@github.com",
+      "n": "",
+      "s": 0,
+      "r": 100,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "müller@example.de",
+      "n": "Élodie Müller",
+      "s": 5,
+      "r": 5,
+      "l": 1789776000000,
+      "p": false
+     },
+     {
+      "a": "tie1@x.com",
+      "n": "Tie One",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "tie2@x.com",
+      "n": "Tie Two",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "boss@company.com",
+      "n": "The Boss",
+      "s": 2,
+      "r": 2,
+      "l": 1760400000000,
+      "p": true
+     },
+     {
+      "a": "نعمان@example.com",
+      "n": "نعمان شیروانی",
+      "s": 7,
+      "r": 3,
+      "l": 1794700800000,
+      "p": false
+     },
+     {
+      "a": "ŁÓDŹ@city.pl",
+      "n": "Łukasz Źródło",
+      "s": 1,
+      "r": 0,
+      "l": 1787184000000,
+      "p": false
+     },
+     {
+      "a": "o.neil+tag@mail.io",
+      "n": "Ó Neil",
+      "s": 2,
+      "r": 6,
+      "l": 1794268800000,
+      "p": false
+     }
+    ]
+   },
+   "hits": [
+    {
+     "i": 0,
+     "why": "name",
+     "score": 4.224692619390965
+    }
+   ]
+  },
+  {
+   "name": "upper case",
+   "input": {
+    "q": "ALI",
+    "taken": [],
+    "now": 1794960000000,
+    "max": 8,
+    "c": [
+     {
+      "a": "zoya.khan@anexomail.com",
+      "n": "Zoyá Khan",
+      "s": 12,
+      "r": 30,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "ali@gmail.com",
+      "n": "Ali Raza",
+      "s": 3,
+      "r": 9,
+      "l": 1794528000000,
+      "p": false
+     },
+     {
+      "a": "alina@work.org",
+      "n": "Alina Shah",
+      "s": 0,
+      "r": 4,
+      "l": 1791504000000,
+      "p": false
+     },
+     {
+      "a": "ahmed.ali@corp.com",
+      "n": "Ahmed Ali",
+      "s": 40,
+      "r": 10,
+      "l": 1794787200000,
+      "p": false
+     },
+     {
+      "a": "noreply@github.com",
+      "n": "",
+      "s": 0,
+      "r": 100,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "müller@example.de",
+      "n": "Élodie Müller",
+      "s": 5,
+      "r": 5,
+      "l": 1789776000000,
+      "p": false
+     },
+     {
+      "a": "tie1@x.com",
+      "n": "Tie One",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "tie2@x.com",
+      "n": "Tie Two",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "boss@company.com",
+      "n": "The Boss",
+      "s": 2,
+      "r": 2,
+      "l": 1760400000000,
+      "p": true
+     },
+     {
+      "a": "نعمان@example.com",
+      "n": "نعمان شیروانی",
+      "s": 7,
+      "r": 3,
+      "l": 1794700800000,
+      "p": false
+     },
+     {
+      "a": "ŁÓDŹ@city.pl",
+      "n": "Łukasz Źródło",
+      "s": 1,
+      "r": 0,
+      "l": 1787184000000,
+      "p": false
+     },
+     {
+      "a": "o.neil+tag@mail.io",
+      "n": "Ó Neil",
+      "s": 2,
+      "r": 6,
+      "l": 1794268800000,
+      "p": false
+     }
+    ]
+   },
+   "hits": [
+    {
+     "i": 3,
+     "why": "name",
+     "score": 4.74729916718849
+    },
+    {
+     "i": 1,
+     "why": "name",
+     "score": 2.746181592683211
+    },
+    {
+     "i": 2,
+     "why": "name",
+     "score": 0.8891445457334763
+    }
+   ]
+  },
+  {
+   "name": "word inside name",
+   "input": {
+    "q": "khan",
+    "taken": [],
+    "now": 1794960000000,
+    "max": 8,
+    "c": [
+     {
+      "a": "zoya.khan@anexomail.com",
+      "n": "Zoyá Khan",
+      "s": 12,
+      "r": 30,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "ali@gmail.com",
+      "n": "Ali Raza",
+      "s": 3,
+      "r": 9,
+      "l": 1794528000000,
+      "p": false
+     },
+     {
+      "a": "alina@work.org",
+      "n": "Alina Shah",
+      "s": 0,
+      "r": 4,
+      "l": 1791504000000,
+      "p": false
+     },
+     {
+      "a": "ahmed.ali@corp.com",
+      "n": "Ahmed Ali",
+      "s": 40,
+      "r": 10,
+      "l": 1794787200000,
+      "p": false
+     },
+     {
+      "a": "noreply@github.com",
+      "n": "",
+      "s": 0,
+      "r": 100,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "müller@example.de",
+      "n": "Élodie Müller",
+      "s": 5,
+      "r": 5,
+      "l": 1789776000000,
+      "p": false
+     },
+     {
+      "a": "tie1@x.com",
+      "n": "Tie One",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "tie2@x.com",
+      "n": "Tie Two",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "boss@company.com",
+      "n": "The Boss",
+      "s": 2,
+      "r": 2,
+      "l": 1760400000000,
+      "p": true
+     },
+     {
+      "a": "نعمان@example.com",
+      "n": "نعمان شیروانی",
+      "s": 7,
+      "r": 3,
+      "l": 1794700800000,
+      "p": false
+     },
+     {
+      "a": "ŁÓDŹ@city.pl",
+      "n": "Łukasz Źródło",
+      "s": 1,
+      "r": 0,
+      "l": 1787184000000,
+      "p": false
+     },
+     {
+      "a": "o.neil+tag@mail.io",
+      "n": "Ó Neil",
+      "s": 2,
+      "r": 6,
+      "l": 1794268800000,
+      "p": false
+     }
+    ]
+   },
+   "hits": [
+    {
+     "i": 0,
+     "why": "name",
+     "score": 4.224692619390965
+    }
+   ]
+  },
+  {
+   "name": "address local part",
+   "input": {
+    "q": "o.neil",
+    "taken": [],
+    "now": 1794960000000,
+    "max": 8,
+    "c": [
+     {
+      "a": "zoya.khan@anexomail.com",
+      "n": "Zoyá Khan",
+      "s": 12,
+      "r": 30,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "ali@gmail.com",
+      "n": "Ali Raza",
+      "s": 3,
+      "r": 9,
+      "l": 1794528000000,
+      "p": false
+     },
+     {
+      "a": "alina@work.org",
+      "n": "Alina Shah",
+      "s": 0,
+      "r": 4,
+      "l": 1791504000000,
+      "p": false
+     },
+     {
+      "a": "ahmed.ali@corp.com",
+      "n": "Ahmed Ali",
+      "s": 40,
+      "r": 10,
+      "l": 1794787200000,
+      "p": false
+     },
+     {
+      "a": "noreply@github.com",
+      "n": "",
+      "s": 0,
+      "r": 100,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "müller@example.de",
+      "n": "Élodie Müller",
+      "s": 5,
+      "r": 5,
+      "l": 1789776000000,
+      "p": false
+     },
+     {
+      "a": "tie1@x.com",
+      "n": "Tie One",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "tie2@x.com",
+      "n": "Tie Two",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "boss@company.com",
+      "n": "The Boss",
+      "s": 2,
+      "r": 2,
+      "l": 1760400000000,
+      "p": true
+     },
+     {
+      "a": "نعمان@example.com",
+      "n": "نعمان شیروانی",
+      "s": 7,
+      "r": 3,
+      "l": 1794700800000,
+      "p": false
+     },
+     {
+      "a": "ŁÓDŹ@city.pl",
+      "n": "Łukasz Źródło",
+      "s": 1,
+      "r": 0,
+      "l": 1787184000000,
+      "p": false
+     },
+     {
+      "a": "o.neil+tag@mail.io",
+      "n": "Ó Neil",
+      "s": 2,
+      "r": 6,
+      "l": 1794268800000,
+      "p": false
+     }
+    ]
+   },
+   "hits": [
+    {
+     "i": 11,
+     "why": "address",
+     "score": 2.277578607216068
+    }
+   ]
+  },
+  {
+   "name": "domain prefix",
+   "input": {
+    "q": "gma",
+    "taken": [],
+    "now": 1794960000000,
+    "max": 8,
+    "c": [
+     {
+      "a": "zoya.khan@anexomail.com",
+      "n": "Zoyá Khan",
+      "s": 12,
+      "r": 30,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "ali@gmail.com",
+      "n": "Ali Raza",
+      "s": 3,
+      "r": 9,
+      "l": 1794528000000,
+      "p": false
+     },
+     {
+      "a": "alina@work.org",
+      "n": "Alina Shah",
+      "s": 0,
+      "r": 4,
+      "l": 1791504000000,
+      "p": false
+     },
+     {
+      "a": "ahmed.ali@corp.com",
+      "n": "Ahmed Ali",
+      "s": 40,
+      "r": 10,
+      "l": 1794787200000,
+      "p": false
+     },
+     {
+      "a": "noreply@github.com",
+      "n": "",
+      "s": 0,
+      "r": 100,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "müller@example.de",
+      "n": "Élodie Müller",
+      "s": 5,
+      "r": 5,
+      "l": 1789776000000,
+      "p": false
+     },
+     {
+      "a": "tie1@x.com",
+      "n": "Tie One",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "tie2@x.com",
+      "n": "Tie Two",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "boss@company.com",
+      "n": "The Boss",
+      "s": 2,
+      "r": 2,
+      "l": 1760400000000,
+      "p": true
+     },
+     {
+      "a": "نعمان@example.com",
+      "n": "نعمان شیروانی",
+      "s": 7,
+      "r": 3,
+      "l": 1794700800000,
+      "p": false
+     },
+     {
+      "a": "ŁÓDŹ@city.pl",
+      "n": "Łukasz Źródło",
+      "s": 1,
+      "r": 0,
+      "l": 1787184000000,
+      "p": false
+     },
+     {
+      "a": "o.neil+tag@mail.io",
+      "n": "Ó Neil",
+      "s": 2,
+      "r": 6,
+      "l": 1794268800000,
+      "p": false
+     }
+    ]
+   },
+   "hits": [
+    {
+     "i": 1,
+     "why": "domain",
+     "score": 2.726181592683211
+    }
+   ]
+  },
+  {
+   "name": "at sign",
+   "input": {
+    "q": "ali@g",
+    "taken": [],
+    "now": 1794960000000,
+    "max": 8,
+    "c": [
+     {
+      "a": "zoya.khan@anexomail.com",
+      "n": "Zoyá Khan",
+      "s": 12,
+      "r": 30,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "ali@gmail.com",
+      "n": "Ali Raza",
+      "s": 3,
+      "r": 9,
+      "l": 1794528000000,
+      "p": false
+     },
+     {
+      "a": "alina@work.org",
+      "n": "Alina Shah",
+      "s": 0,
+      "r": 4,
+      "l": 1791504000000,
+      "p": false
+     },
+     {
+      "a": "ahmed.ali@corp.com",
+      "n": "Ahmed Ali",
+      "s": 40,
+      "r": 10,
+      "l": 1794787200000,
+      "p": false
+     },
+     {
+      "a": "noreply@github.com",
+      "n": "",
+      "s": 0,
+      "r": 100,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "müller@example.de",
+      "n": "Élodie Müller",
+      "s": 5,
+      "r": 5,
+      "l": 1789776000000,
+      "p": false
+     },
+     {
+      "a": "tie1@x.com",
+      "n": "Tie One",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "tie2@x.com",
+      "n": "Tie Two",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "boss@company.com",
+      "n": "The Boss",
+      "s": 2,
+      "r": 2,
+      "l": 1760400000000,
+      "p": true
+     },
+     {
+      "a": "نعمان@example.com",
+      "n": "نعمان شیروانی",
+      "s": 7,
+      "r": 3,
+      "l": 1794700800000,
+      "p": false
+     },
+     {
+      "a": "ŁÓDŹ@city.pl",
+      "n": "Łukasz Źródło",
+      "s": 1,
+      "r": 0,
+      "l": 1787184000000,
+      "p": false
+     },
+     {
+      "a": "o.neil+tag@mail.io",
+      "n": "Ó Neil",
+      "s": 2,
+      "r": 6,
+      "l": 1794268800000,
+      "p": false
+     }
+    ]
+   },
+   "hits": [
+    {
+     "i": 1,
+     "why": "address",
+     "score": 2.7361815926832107
+    }
+   ]
+  },
+  {
+   "name": "taken skipped",
+   "input": {
+    "q": "ali",
+    "taken": [
+     "ali@gmail.com"
+    ],
+    "now": 1794960000000,
+    "max": 8,
+    "c": [
+     {
+      "a": "zoya.khan@anexomail.com",
+      "n": "Zoyá Khan",
+      "s": 12,
+      "r": 30,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "ali@gmail.com",
+      "n": "Ali Raza",
+      "s": 3,
+      "r": 9,
+      "l": 1794528000000,
+      "p": false
+     },
+     {
+      "a": "alina@work.org",
+      "n": "Alina Shah",
+      "s": 0,
+      "r": 4,
+      "l": 1791504000000,
+      "p": false
+     },
+     {
+      "a": "ahmed.ali@corp.com",
+      "n": "Ahmed Ali",
+      "s": 40,
+      "r": 10,
+      "l": 1794787200000,
+      "p": false
+     },
+     {
+      "a": "noreply@github.com",
+      "n": "",
+      "s": 0,
+      "r": 100,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "müller@example.de",
+      "n": "Élodie Müller",
+      "s": 5,
+      "r": 5,
+      "l": 1789776000000,
+      "p": false
+     },
+     {
+      "a": "tie1@x.com",
+      "n": "Tie One",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "tie2@x.com",
+      "n": "Tie Two",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "boss@company.com",
+      "n": "The Boss",
+      "s": 2,
+      "r": 2,
+      "l": 1760400000000,
+      "p": true
+     },
+     {
+      "a": "نعمان@example.com",
+      "n": "نعمان شیروانی",
+      "s": 7,
+      "r": 3,
+      "l": 1794700800000,
+      "p": false
+     },
+     {
+      "a": "ŁÓDŹ@city.pl",
+      "n": "Łukasz Źródło",
+      "s": 1,
+      "r": 0,
+      "l": 1787184000000,
+      "p": false
+     },
+     {
+      "a": "o.neil+tag@mail.io",
+      "n": "Ó Neil",
+      "s": 2,
+      "r": 6,
+      "l": 1794268800000,
+      "p": false
+     }
+    ]
+   },
+   "hits": [
+    {
+     "i": 3,
+     "why": "name",
+     "score": 4.74729916718849
+    },
+    {
+     "i": 2,
+     "why": "name",
+     "score": 0.8891445457334763
+    }
+   ]
+  },
+  {
+   "name": "tie order",
+   "input": {
+    "q": "tie",
+    "taken": [],
+    "now": 1794960000000,
+    "max": 8,
+    "c": [
+     {
+      "a": "zoya.khan@anexomail.com",
+      "n": "Zoyá Khan",
+      "s": 12,
+      "r": 30,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "ali@gmail.com",
+      "n": "Ali Raza",
+      "s": 3,
+      "r": 9,
+      "l": 1794528000000,
+      "p": false
+     },
+     {
+      "a": "alina@work.org",
+      "n": "Alina Shah",
+      "s": 0,
+      "r": 4,
+      "l": 1791504000000,
+      "p": false
+     },
+     {
+      "a": "ahmed.ali@corp.com",
+      "n": "Ahmed Ali",
+      "s": 40,
+      "r": 10,
+      "l": 1794787200000,
+      "p": false
+     },
+     {
+      "a": "noreply@github.com",
+      "n": "",
+      "s": 0,
+      "r": 100,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "müller@example.de",
+      "n": "Élodie Müller",
+      "s": 5,
+      "r": 5,
+      "l": 1789776000000,
+      "p": false
+     },
+     {
+      "a": "tie1@x.com",
+      "n": "Tie One",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "tie2@x.com",
+      "n": "Tie Two",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "boss@company.com",
+      "n": "The Boss",
+      "s": 2,
+      "r": 2,
+      "l": 1760400000000,
+      "p": true
+     },
+     {
+      "a": "نعمان@example.com",
+      "n": "نعمان شیروانی",
+      "s": 7,
+      "r": 3,
+      "l": 1794700800000,
+      "p": false
+     },
+     {
+      "a": "ŁÓDŹ@city.pl",
+      "n": "Łukasz Źródło",
+      "s": 1,
+      "r": 0,
+      "l": 1787184000000,
+      "p": false
+     },
+     {
+      "a": "o.neil+tag@mail.io",
+      "n": "Ó Neil",
+      "s": 2,
+      "r": 6,
+      "l": 1794268800000,
+      "p": false
+     }
+    ]
+   },
+   "hits": [
+    {
+     "i": 6,
+     "why": "name",
+     "score": 1.3996809662097431
+    },
+    {
+     "i": 7,
+     "why": "name",
+     "score": 1.3996809662097431
+    }
+   ]
+  },
+  {
+   "name": "pinned first",
+   "input": {
+    "q": "bo",
+    "taken": [],
+    "now": 1794960000000,
+    "max": 8,
+    "c": [
+     {
+      "a": "zoya.khan@anexomail.com",
+      "n": "Zoyá Khan",
+      "s": 12,
+      "r": 30,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "ali@gmail.com",
+      "n": "Ali Raza",
+      "s": 3,
+      "r": 9,
+      "l": 1794528000000,
+      "p": false
+     },
+     {
+      "a": "alina@work.org",
+      "n": "Alina Shah",
+      "s": 0,
+      "r": 4,
+      "l": 1791504000000,
+      "p": false
+     },
+     {
+      "a": "ahmed.ali@corp.com",
+      "n": "Ahmed Ali",
+      "s": 40,
+      "r": 10,
+      "l": 1794787200000,
+      "p": false
+     },
+     {
+      "a": "noreply@github.com",
+      "n": "",
+      "s": 0,
+      "r": 100,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "müller@example.de",
+      "n": "Élodie Müller",
+      "s": 5,
+      "r": 5,
+      "l": 1789776000000,
+      "p": false
+     },
+     {
+      "a": "tie1@x.com",
+      "n": "Tie One",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "tie2@x.com",
+      "n": "Tie Two",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "boss@company.com",
+      "n": "The Boss",
+      "s": 2,
+      "r": 2,
+      "l": 1760400000000,
+      "p": true
+     },
+     {
+      "a": "نعمان@example.com",
+      "n": "نعمان شیروانی",
+      "s": 7,
+      "r": 3,
+      "l": 1794700800000,
+      "p": false
+     },
+     {
+      "a": "ŁÓDŹ@city.pl",
+      "n": "Łukasz Źródło",
+      "s": 1,
+      "r": 0,
+      "l": 1787184000000,
+      "p": false
+     },
+     {
+      "a": "o.neil+tag@mail.io",
+      "n": "Ó Neil",
+      "s": 2,
+      "r": 6,
+      "l": 1794268800000,
+      "p": false
+     }
+    ]
+   },
+   "hits": [
+    {
+     "i": 8,
+     "why": "name",
+     "score": 1000000000.024635
+    }
+   ]
+  },
+  {
+   "name": "short needle",
+   "input": {
+    "q": "a",
+    "taken": [],
+    "now": 1794960000000,
+    "max": 8,
+    "c": [
+     {
+      "a": "zoya.khan@anexomail.com",
+      "n": "Zoyá Khan",
+      "s": 12,
+      "r": 30,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "ali@gmail.com",
+      "n": "Ali Raza",
+      "s": 3,
+      "r": 9,
+      "l": 1794528000000,
+      "p": false
+     },
+     {
+      "a": "alina@work.org",
+      "n": "Alina Shah",
+      "s": 0,
+      "r": 4,
+      "l": 1791504000000,
+      "p": false
+     },
+     {
+      "a": "ahmed.ali@corp.com",
+      "n": "Ahmed Ali",
+      "s": 40,
+      "r": 10,
+      "l": 1794787200000,
+      "p": false
+     },
+     {
+      "a": "noreply@github.com",
+      "n": "",
+      "s": 0,
+      "r": 100,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "müller@example.de",
+      "n": "Élodie Müller",
+      "s": 5,
+      "r": 5,
+      "l": 1789776000000,
+      "p": false
+     },
+     {
+      "a": "tie1@x.com",
+      "n": "Tie One",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "tie2@x.com",
+      "n": "Tie Two",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "boss@company.com",
+      "n": "The Boss",
+      "s": 2,
+      "r": 2,
+      "l": 1760400000000,
+      "p": true
+     },
+     {
+      "a": "نعمان@example.com",
+      "n": "نعمان شیروانی",
+      "s": 7,
+      "r": 3,
+      "l": 1794700800000,
+      "p": false
+     },
+     {
+      "a": "ŁÓDŹ@city.pl",
+      "n": "Łukasz Źródło",
+      "s": 1,
+      "r": 0,
+      "l": 1787184000000,
+      "p": false
+     },
+     {
+      "a": "o.neil+tag@mail.io",
+      "n": "Ó Neil",
+      "s": 2,
+      "r": 6,
+      "l": 1794268800000,
+      "p": false
+     }
+    ]
+   },
+   "hits": []
+  },
+  {
+   "name": "urdu",
+   "input": {
+    "q": "نع",
+    "taken": [],
+    "now": 1794960000000,
+    "max": 8,
+    "c": [
+     {
+      "a": "zoya.khan@anexomail.com",
+      "n": "Zoyá Khan",
+      "s": 12,
+      "r": 30,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "ali@gmail.com",
+      "n": "Ali Raza",
+      "s": 3,
+      "r": 9,
+      "l": 1794528000000,
+      "p": false
+     },
+     {
+      "a": "alina@work.org",
+      "n": "Alina Shah",
+      "s": 0,
+      "r": 4,
+      "l": 1791504000000,
+      "p": false
+     },
+     {
+      "a": "ahmed.ali@corp.com",
+      "n": "Ahmed Ali",
+      "s": 40,
+      "r": 10,
+      "l": 1794787200000,
+      "p": false
+     },
+     {
+      "a": "noreply@github.com",
+      "n": "",
+      "s": 0,
+      "r": 100,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "müller@example.de",
+      "n": "Élodie Müller",
+      "s": 5,
+      "r": 5,
+      "l": 1789776000000,
+      "p": false
+     },
+     {
+      "a": "tie1@x.com",
+      "n": "Tie One",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "tie2@x.com",
+      "n": "Tie Two",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "boss@company.com",
+      "n": "The Boss",
+      "s": 2,
+      "r": 2,
+      "l": 1760400000000,
+      "p": true
+     },
+     {
+      "a": "نعمان@example.com",
+      "n": "نعمان شیروانی",
+      "s": 7,
+      "r": 3,
+      "l": 1794700800000,
+      "p": false
+     },
+     {
+      "a": "ŁÓDŹ@city.pl",
+      "n": "Łukasz Źródło",
+      "s": 1,
+      "r": 0,
+      "l": 1787184000000,
+      "p": false
+     },
+     {
+      "a": "o.neil+tag@mail.io",
+      "n": "Ó Neil",
+      "s": 2,
+      "r": 6,
+      "l": 1794268800000,
+      "p": false
+     }
+    ]
+   },
+   "hits": [
+    {
+     "i": 9,
+     "why": "name",
+     "score": 3.0935165554056177
+    }
+   ]
+  },
+  {
+   "name": "decorated typing",
+   "input": {
+    "q": " \"<Ali",
+    "taken": [],
+    "now": 1794960000000,
+    "max": 8,
+    "c": [
+     {
+      "a": "zoya.khan@anexomail.com",
+      "n": "Zoyá Khan",
+      "s": 12,
+      "r": 30,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "ali@gmail.com",
+      "n": "Ali Raza",
+      "s": 3,
+      "r": 9,
+      "l": 1794528000000,
+      "p": false
+     },
+     {
+      "a": "alina@work.org",
+      "n": "Alina Shah",
+      "s": 0,
+      "r": 4,
+      "l": 1791504000000,
+      "p": false
+     },
+     {
+      "a": "ahmed.ali@corp.com",
+      "n": "Ahmed Ali",
+      "s": 40,
+      "r": 10,
+      "l": 1794787200000,
+      "p": false
+     },
+     {
+      "a": "noreply@github.com",
+      "n": "",
+      "s": 0,
+      "r": 100,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "müller@example.de",
+      "n": "Élodie Müller",
+      "s": 5,
+      "r": 5,
+      "l": 1789776000000,
+      "p": false
+     },
+     {
+      "a": "tie1@x.com",
+      "n": "Tie One",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "tie2@x.com",
+      "n": "Tie Two",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "boss@company.com",
+      "n": "The Boss",
+      "s": 2,
+      "r": 2,
+      "l": 1760400000000,
+      "p": true
+     },
+     {
+      "a": "نعمان@example.com",
+      "n": "نعمان شیروانی",
+      "s": 7,
+      "r": 3,
+      "l": 1794700800000,
+      "p": false
+     },
+     {
+      "a": "ŁÓDŹ@city.pl",
+      "n": "Łukasz Źródło",
+      "s": 1,
+      "r": 0,
+      "l": 1787184000000,
+      "p": false
+     },
+     {
+      "a": "o.neil+tag@mail.io",
+      "n": "Ó Neil",
+      "s": 2,
+      "r": 6,
+      "l": 1794268800000,
+      "p": false
+     }
+    ]
+   },
+   "hits": [
+    {
+     "i": 3,
+     "why": "name",
+     "score": 4.74729916718849
+    },
+    {
+     "i": 1,
+     "why": "name",
+     "score": 2.746181592683211
+    },
+    {
+     "i": 2,
+     "why": "name",
+     "score": 0.8891445457334763
+    }
+   ]
+  },
+  {
+   "name": "no match",
+   "input": {
+    "q": "qqqq",
+    "taken": [],
+    "now": 1794960000000,
+    "max": 8,
+    "c": [
+     {
+      "a": "zoya.khan@anexomail.com",
+      "n": "Zoyá Khan",
+      "s": 12,
+      "r": 30,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "ali@gmail.com",
+      "n": "Ali Raza",
+      "s": 3,
+      "r": 9,
+      "l": 1794528000000,
+      "p": false
+     },
+     {
+      "a": "alina@work.org",
+      "n": "Alina Shah",
+      "s": 0,
+      "r": 4,
+      "l": 1791504000000,
+      "p": false
+     },
+     {
+      "a": "ahmed.ali@corp.com",
+      "n": "Ahmed Ali",
+      "s": 40,
+      "r": 10,
+      "l": 1794787200000,
+      "p": false
+     },
+     {
+      "a": "noreply@github.com",
+      "n": "",
+      "s": 0,
+      "r": 100,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "müller@example.de",
+      "n": "Élodie Müller",
+      "s": 5,
+      "r": 5,
+      "l": 1789776000000,
+      "p": false
+     },
+     {
+      "a": "tie1@x.com",
+      "n": "Tie One",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "tie2@x.com",
+      "n": "Tie Two",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "boss@company.com",
+      "n": "The Boss",
+      "s": 2,
+      "r": 2,
+      "l": 1760400000000,
+      "p": true
+     },
+     {
+      "a": "نعمان@example.com",
+      "n": "نعمان شیروانی",
+      "s": 7,
+      "r": 3,
+      "l": 1794700800000,
+      "p": false
+     },
+     {
+      "a": "ŁÓDŹ@city.pl",
+      "n": "Łukasz Źródło",
+      "s": 1,
+      "r": 0,
+      "l": 1787184000000,
+      "p": false
+     },
+     {
+      "a": "o.neil+tag@mail.io",
+      "n": "Ó Neil",
+      "s": 2,
+      "r": 6,
+      "l": 1794268800000,
+      "p": false
+     }
+    ]
+   },
+   "hits": []
+  },
+  {
+   "name": "elodie",
+   "input": {
+    "q": "elo",
+    "taken": [],
+    "now": 1794960000000,
+    "max": 8,
+    "c": [
+     {
+      "a": "zoya.khan@anexomail.com",
+      "n": "Zoyá Khan",
+      "s": 12,
+      "r": 30,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "ali@gmail.com",
+      "n": "Ali Raza",
+      "s": 3,
+      "r": 9,
+      "l": 1794528000000,
+      "p": false
+     },
+     {
+      "a": "alina@work.org",
+      "n": "Alina Shah",
+      "s": 0,
+      "r": 4,
+      "l": 1791504000000,
+      "p": false
+     },
+     {
+      "a": "ahmed.ali@corp.com",
+      "n": "Ahmed Ali",
+      "s": 40,
+      "r": 10,
+      "l": 1794787200000,
+      "p": false
+     },
+     {
+      "a": "noreply@github.com",
+      "n": "",
+      "s": 0,
+      "r": 100,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "müller@example.de",
+      "n": "Élodie Müller",
+      "s": 5,
+      "r": 5,
+      "l": 1789776000000,
+      "p": false
+     },
+     {
+      "a": "tie1@x.com",
+      "n": "Tie One",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "tie2@x.com",
+      "n": "Tie Two",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "boss@company.com",
+      "n": "The Boss",
+      "s": 2,
+      "r": 2,
+      "l": 1760400000000,
+      "p": true
+     },
+     {
+      "a": "نعمان@example.com",
+      "n": "نعمان شیروانی",
+      "s": 7,
+      "r": 3,
+      "l": 1794700800000,
+      "p": false
+     },
+     {
+      "a": "ŁÓDŹ@city.pl",
+      "n": "Łukasz Źródło",
+      "s": 1,
+      "r": 0,
+      "l": 1787184000000,
+      "p": false
+     },
+     {
+      "a": "o.neil+tag@mail.io",
+      "n": "Ó Neil",
+      "s": 2,
+      "r": 6,
+      "l": 1794268800000,
+      "p": false
+     }
+    ]
+   },
+   "hits": [
+    {
+     "i": 5,
+     "why": "name",
+     "score": 1.2282195300957373
+    }
+   ]
+  },
+  {
+   "name": "muller",
+   "input": {
+    "q": "mull",
+    "taken": [],
+    "now": 1794960000000,
+    "max": 8,
+    "c": [
+     {
+      "a": "zoya.khan@anexomail.com",
+      "n": "Zoyá Khan",
+      "s": 12,
+      "r": 30,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "ali@gmail.com",
+      "n": "Ali Raza",
+      "s": 3,
+      "r": 9,
+      "l": 1794528000000,
+      "p": false
+     },
+     {
+      "a": "alina@work.org",
+      "n": "Alina Shah",
+      "s": 0,
+      "r": 4,
+      "l": 1791504000000,
+      "p": false
+     },
+     {
+      "a": "ahmed.ali@corp.com",
+      "n": "Ahmed Ali",
+      "s": 40,
+      "r": 10,
+      "l": 1794787200000,
+      "p": false
+     },
+     {
+      "a": "noreply@github.com",
+      "n": "",
+      "s": 0,
+      "r": 100,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "müller@example.de",
+      "n": "Élodie Müller",
+      "s": 5,
+      "r": 5,
+      "l": 1789776000000,
+      "p": false
+     },
+     {
+      "a": "tie1@x.com",
+      "n": "Tie One",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "tie2@x.com",
+      "n": "Tie Two",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "boss@company.com",
+      "n": "The Boss",
+      "s": 2,
+      "r": 2,
+      "l": 1760400000000,
+      "p": true
+     },
+     {
+      "a": "نعمان@example.com",
+      "n": "نعمان شیروانی",
+      "s": 7,
+      "r": 3,
+      "l": 1794700800000,
+      "p": false
+     },
+     {
+      "a": "ŁÓDŹ@city.pl",
+      "n": "Łukasz Źródło",
+      "s": 1,
+      "r": 0,
+      "l": 1787184000000,
+      "p": false
+     },
+     {
+      "a": "o.neil+tag@mail.io",
+      "n": "Ó Neil",
+      "s": 2,
+      "r": 6,
+      "l": 1794268800000,
+      "p": false
+     }
+    ]
+   },
+   "hits": [
+    {
+     "i": 5,
+     "why": "name",
+     "score": 1.2282195300957373
+    }
+   ]
+  },
+  {
+   "name": "max cap",
+   "input": {
+    "q": "al",
+    "taken": [],
+    "now": 1794960000000,
+    "max": 3,
+    "c": [
+     {
+      "a": "zoya.khan@anexomail.com",
+      "n": "Zoyá Khan",
+      "s": 12,
+      "r": 30,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "ali@gmail.com",
+      "n": "Ali Raza",
+      "s": 3,
+      "r": 9,
+      "l": 1794528000000,
+      "p": false
+     },
+     {
+      "a": "alina@work.org",
+      "n": "Alina Shah",
+      "s": 0,
+      "r": 4,
+      "l": 1791504000000,
+      "p": false
+     },
+     {
+      "a": "ahmed.ali@corp.com",
+      "n": "Ahmed Ali",
+      "s": 40,
+      "r": 10,
+      "l": 1794787200000,
+      "p": false
+     },
+     {
+      "a": "noreply@github.com",
+      "n": "",
+      "s": 0,
+      "r": 100,
+      "l": 1794960000000,
+      "p": false
+     },
+     {
+      "a": "müller@example.de",
+      "n": "Élodie Müller",
+      "s": 5,
+      "r": 5,
+      "l": 1789776000000,
+      "p": false
+     },
+     {
+      "a": "tie1@x.com",
+      "n": "Tie One",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "tie2@x.com",
+      "n": "Tie Two",
+      "s": 1,
+      "r": 1,
+      "l": 1794096000000,
+      "p": false
+     },
+     {
+      "a": "boss@company.com",
+      "n": "The Boss",
+      "s": 2,
+      "r": 2,
+      "l": 1760400000000,
+      "p": true
+     },
+     {
+      "a": "نعمان@example.com",
+      "n": "نعمان شیروانی",
+      "s": 7,
+      "r": 3,
+      "l": 1794700800000,
+      "p": false
+     },
+     {
+      "a": "ŁÓDŹ@city.pl",
+      "n": "Łukasz Źródło",
+      "s": 1,
+      "r": 0,
+      "l": 1787184000000,
+      "p": false
+     },
+     {
+      "a": "o.neil+tag@mail.io",
+      "n": "Ó Neil",
+      "s": 2,
+      "r": 6,
+      "l": 1794268800000,
+      "p": false
+     }
+    ]
+   },
+   "hits": [
+    {
+     "i": 3,
+     "why": "name",
+     "score": 4.74729916718849
+    },
+    {
+     "i": 1,
+     "why": "name",
+     "score": 2.746181592683211
+    },
+    {
+     "i": 2,
+     "why": "name",
+     "score": 0.8891445457334763
+    }
+   ]
+  }
+ ]
+}

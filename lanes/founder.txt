@@ -161,8 +161,8 @@ founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
 founder-web/dist/assets/index-Brd5Ya19.css
-founder-web/dist/assets/index-CioY34im.js
-founder-web/dist/assets/kernel.worker-CmgLpPuh.js
+founder-web/dist/assets/index-DYM0Qn3f.js
+founder-web/dist/assets/kernel.worker-BLkLR49F.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
 founder-web/dist/assets/three.tsl-Cy7l4cF4.js
@@ -175,7 +175,7 @@ founder-web/dist/icon-180.png
 founder-web/dist/icon-192.png
 founder-web/dist/icon-512.png
 founder-web/dist/index.html
-founder-web/dist/kernel/anexo-kernel-0.17.0.wasm
+founder-web/dist/kernel/anexo-kernel-0.18.0.wasm
 founder-web/dist/manifest.webmanifest
 founder-web/index.html
 founder-web/kernel-sync.sh
@@ -190,9 +190,10 @@ founder-web/public/flare-sw.js
 founder-web/public/icon-180.png
 founder-web/public/icon-192.png
 founder-web/public/icon-512.png
-founder-web/public/kernel/anexo-kernel-0.17.0.wasm
+founder-web/public/kernel/anexo-kernel-0.18.0.wasm
 founder-web/public/manifest.webmanifest
 founder-web/sim/00-FOUNDER-TECH-RULE.md
+founder-web/sim/gen_contacts_vectors.ts
 founder-web/sim/mail_live.sim.test.ts
 founder-web/src/00-FOUNDER-TECH-RULE.md
 founder-web/src/AmbientStudio.tsx

@@ -5,7 +5,8 @@
 // Left/Right walk the chips; Delete removes; Enter edits; M or the menu key opens the chip menu. Pointer: double click edits, drag a chip onto another row. Touch: the chip menu (44 px targets).
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { asChipText, DEBOUNCE_MS, suggest, type Contact } from "./book";
+import { asChipText, DEBOUNCE_MS, hitsFromKernel, kernelInput, MIN_CHARS, needle, suggest, type Contact, type Hit } from "./book";
+import { contactsSuggest } from "./kernel";
 import { addText, chipsOf, initial, joinChips, label, looksComplete, removeChip, type Chip, type Field } from "./recipients";
 
 export const DRAG_MIME = "application/x-anexo-chip";
@@ -33,7 +34,16 @@ export function RecipientField({ field, value, onChange, taken, onMove, onDragAc
   // QC1b suggestions: filtered from the opened book after a 150 ms pause, from 2 characters, never an address that is already in a row, 8 at most
   const [dq, setDq] = useState(""), [act, setAct] = useState(-1), [shut, setShut] = useState(false);
   useEffect(() => { const t = window.setTimeout(() => { setDq(text); setAct(-1); setShut(false); }, DEBOUNCE_MS); return () => window.clearTimeout(t); }, [text]);
-  const hits = useMemo(() => (book && book.length ? suggest(book, dq, taken, Date.now()) : []), [book, dq, taken]);
+  // Q-contacts-kernel: the filter + frecency rank run in the Rust WASM kernel (contacts@1); book.ts `suggest` is the same maths in TypeScript and answers at once while the kernel is not ready, or if it could not run. The visible list is the same either way.
+  const [kHits, setKHits] = useState<{ key: string; hits: Hit[] } | null>(null);
+  const qkey = useMemo(() => `${dq}\u0001${Object.keys(taken).join(",")}\u0001${book?.length ?? 0}`, [dq, taken, book]);
+  useEffect(() => {
+    if (!book || !book.length || needle(dq).length < MIN_CHARS) { setKHits(null); return; }
+    let live = true;
+    void contactsSuggest(kernelInput(book, dq, taken, Date.now())).then((a) => { if (!live) return; const h = hitsFromKernel(book, a); setKHits(h ? { key: qkey, hits: h } : null); });
+    return () => { live = false; };
+  }, [book, dq, taken, qkey]);
+  const hits = useMemo(() => (kHits && kHits.key === qkey ? kHits.hits : book && book.length ? suggest(book, dq, taken, Date.now()) : []), [kHits, qkey, book, dq, taken]);
   const showSug = hits.length > 0 && !shut && text.trim().length >= 2;
   const pick = (i: number) => { const h = hits[i]; if (!h) return; if (commit(asChipText(h.c))) { setText(""); setDq(""); setAct(-1); } };
   const refs = useRef<(HTMLLIElement | null)[]>([]);

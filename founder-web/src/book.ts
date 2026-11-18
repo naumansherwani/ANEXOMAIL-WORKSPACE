@@ -2,6 +2,8 @@
 // The server opens the top 500 (fmail_book.rs) and sends them over the signed channel; THIS file filters and ranks them while the founder types, so typing makes ZERO server calls
 // (research: a blind index can not do prefix search; big mail clients filter a cached list in the client, debounce about 150 ms, show after 2 characters, dedupe by address, 5 to 8 rows).
 // score() mirrors E186 fmail_contact_score186 bit for bit (ln(1 + 3*sent + recv) * 2^(-days/45), pinned +1e9); book.test.ts holds the same hand-calculated numbers as the SQL selftest.
+// Gate marker Q-contacts-kernel: kernel_contacts_filter (the same filter + frecency also runs in the Rust WASM kernel, module contacts@1; this file is its TypeScript twin and the fallback)
+export const KERNEL_CONTACTS = "kernel_contacts_filter";
 export type Contact = { id: string; addr: string; name: string; sent: number; recv: number; last_sent: string | null; last_recv: string | null; pinned: boolean; score?: number | null };
 export type Hit = { c: Contact; why: "name" | "address" | "domain"; score: number };
 
@@ -43,7 +45,7 @@ export function suggest(contacts: Contact[], typed: string, taken: ReadonlySet<s
     const why = matches(c, q);
     if (why) hits.push({ c, why, score: score(c, now) + rank[why] });
   }
-  hits.sort((a, b) => b.score - a.score || a.c.addr.localeCompare(b.c.addr));
+  hits.sort((a, b) => b.score - a.score || (a.c.addr < b.c.addr ? -1 : a.c.addr > b.c.addr ? 1 : 0)); // plain code-unit order, the same as the kernel's (contacts@1): a tie can never be ordered differently on the two sides
   return hits.slice(0, Math.max(1, max));
 }
 
@@ -51,4 +53,23 @@ export function suggest(contacts: Contact[], typed: string, taken: ReadonlySet<s
 export function asChipText(c: Pick<Contact, "addr" | "name">): string {
   const n = c.name.replace(/["<>\\]/g, "").trim();
   return n ? (/[,;@]/.test(n) ? `"${n}" <${c.addr}>` : `${n} <${c.addr}>`) : c.addr;
+}
+
+// ---------------------------------------------------------------- Q-contacts-kernel (18 Nov 2026): the same filter + rank, run in the Rust WASM kernel (contacts@1).
+/** The kernel input: every contact reduced to numbers (the later of last_sent / last_recv as ms, so the kernel never parses a date). */
+export function kernelInput(contacts: Contact[], typed: string, taken: ReadonlySet<string> | Record<string, unknown>, now: number, max = MAX_ROWS) {
+  const ms = (c: Contact) => { const t = [c.last_sent, c.last_recv].map((x) => (x ? Date.parse(x) : NaN)).filter((n) => Number.isFinite(n)); return t.length ? Math.max(...t) : null; };
+  const tk = taken instanceof Set ? [...taken] : Object.keys(taken);
+  return { q: typed, taken: tk, now, max, c: contacts.map((c) => ({ a: c.addr, n: c.name, s: c.sent, r: c.recv, l: ms(c), p: c.pinned })) };
+}
+/** The kernel answer turned back into Hit[] (same shape `suggest` returns). A wrong shape or an index out of range = undefined, and the caller uses `suggest` (the TypeScript twin). */
+export function hitsFromKernel(contacts: Contact[], answer: unknown): Hit[] | undefined {
+  const a = answer as { ok?: unknown; hits?: unknown } | null;
+  if (!a || a.ok !== true || !Array.isArray(a.hits)) return undefined;
+  const out: Hit[] = [];
+  for (const h of a.hits as { i?: unknown; why?: unknown; score?: unknown }[]) {
+    if (!Number.isInteger(h?.i) || (h.i as number) < 0 || (h.i as number) >= contacts.length || (h.why !== "name" && h.why !== "address" && h.why !== "domain") || typeof h.score !== "number") return undefined;
+    out.push({ c: contacts[h.i as number], why: h.why, score: h.score });
+  }
+  return out;
 }
