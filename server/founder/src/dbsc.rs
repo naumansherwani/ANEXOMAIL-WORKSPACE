@@ -295,6 +295,26 @@ fn challenge_403(ck: &[u8], sid: &str, now: i64) -> Response {
     r
 }
 
+// ------------------------------------------------------------------ duplicate refresh (idempotent for a few seconds)
+/// How long a refresh that just succeeded may be repeated with the same challenge (Chrome sometimes sends the same refresh twice).
+pub const RECENT_WINDOW: std::time::Duration = std::time::Duration::from_secs(10);
+const RECENT_MAX: usize = 256;
+static RECENT: std::sync::OnceLock<std::sync::Mutex<std::collections::HashMap<String, (String, std::time::Instant)>>> = std::sync::OnceLock::new();
+fn recent_map() -> &'static std::sync::Mutex<std::collections::HashMap<String, (String, std::time::Instant)>> { RECENT.get_or_init(|| std::sync::Mutex::new(std::collections::HashMap::new())) }
+/// Pure core (time is passed in, so it is unit-tested): remember a successful refresh.
+pub fn recent_put(m: &mut std::collections::HashMap<String, (String, std::time::Instant)>, jti_hash: &str, sid: &str, now: std::time::Instant) {
+    m.retain(|_, (_, t)| now.saturating_duration_since(*t) < RECENT_WINDOW);
+    if m.len() >= RECENT_MAX { return; } // never grows: a flood is simply not remembered, so it stays a plain 403
+    m.insert(jti_hash.to_string(), (sid.to_string(), now));
+}
+/// Pure core: was THIS challenge of THIS session just refreshed successfully (inside the window)?
+pub fn recent_get(m: &std::collections::HashMap<String, (String, std::time::Instant)>, jti_hash: &str, sid: &str, now: std::time::Instant) -> bool {
+    m.get(jti_hash).is_some_and(|(s, t)| s == sid && now.saturating_duration_since(*t) < RECENT_WINDOW)
+}
+fn recent_note(jti_hash: &str, sid: &str) { if let Ok(mut m) = recent_map().lock() { recent_put(&mut m, jti_hash, sid, std::time::Instant::now()); } }
+fn recent_hit(jti_hash: &str, sid: &str) -> bool { recent_map().lock().map(|m| recent_get(&m, jti_hash, sid, std::time::Instant::now())).unwrap_or(false) }
+
+
 /// POST /founder/v1/dbsc/refresh — 403 + challenge, then verify the signed answer against the STORED key and hand out a fresh cookie.
 pub async fn refresh_ep(State(st): State<crate::S>, h: HeaderMap) -> Response {
     if st.dbsc == Mode::Off { return StatusCode::NOT_FOUND.into_response(); }
@@ -316,13 +336,15 @@ pub async fn refresh_ep(State(st): State<crate::S>, h: HeaderMap) -> Response {
     }
     let stored = hex::decode(s["pub"].as_str().unwrap_or("")).unwrap_or_default();
     if verify_refresh(jwt, &jti, &stored, now).is_err() { log("reject_signature", "bad_proof"); return err(StatusCode::BAD_REQUEST, "proof refused"); }
-    match sb.rpc("founder_dbsc_refreshed", json!({"p_sid": sid, "p_jti_hash": sha256_hex(&jti)})).await {
-        Some(v) if v["ok"].as_bool() == Some(true) => {
-            let mut r = no_store(StatusCode::OK.into_response());
-            if let Ok(c) = HeaderValue::from_str(&set_cookie_value(&mint_cookie(&cookie_key, &sid, now))) { r.headers_mut().append(header::SET_COOKIE, c); }
-            with_fresh_challenge(r, &ck, &sid, now)
-        }
-        Some(v) if v["error"].as_str() == Some("replay") => challenge_403(&ck, &sid, now),
+    let jh = sha256_hex(&jti);
+    let ok_response = || { let mut r = no_store(StatusCode::OK.into_response()); if let Ok(c) = HeaderValue::from_str(&set_cookie_value(&mint_cookie(&cookie_key, &sid, now))) { r.headers_mut().append(header::SET_COOKIE, c); } with_fresh_challenge(r, &ck, &sid, now) };
+    match sb.rpc("founder_dbsc_refreshed", json!({"p_sid": sid, "p_jti_hash": jh})).await {
+        Some(v) if v["ok"].as_bool() == Some(true) => { recent_note(&jh, &sid); ok_response() }
+        // 18 Nov 2026 06:2x: his CHECK_BLOCKED_TIMELINE showed the same sequence three times (03:56, 04:53, 05:22): refreshed (ok) -> 1 s later the SAME challenge arrives again (a second refresh of the same
+        // session) -> reject_replay 403 -> Chrome drops the cookie -> two requests blocked no_cookie -> a later refresh succeeds. A DUPLICATE of a refresh that just succeeded (same session, same challenge, the proof
+        // above already verified against the stored key) is answered with the SAME outcome (a cookie + the next challenge) inside RECENT_WINDOW. Exposure is the same as the cookie of the first answer; any
+        // other replay (older, another session, an unknown challenge) stays 403.
+        Some(v) if v["error"].as_str() == Some("replay") => { if recent_hit(&jh, &sid) { log("refresh_dup", "duplicate_within_window"); ok_response() } else { challenge_403(&ck, &sid, now) } }
         Some(v) => err(StatusCode::BAD_REQUEST, v["error"].as_str().unwrap_or("refused")),
         None => err(StatusCode::SERVICE_UNAVAILABLE, "ledger unavailable"),
     }
@@ -668,5 +690,28 @@ mod tests {
         assert!(chip_registration_needs_cookie(true, None, Some("s")), "no bound sid known");
         assert!(!chip_registration_needs_cookie(true, Some("s"), Some("s")), "the owner's browser with the chip cookie");
         assert!(!chip_registration_needs_cookie(false, None, None), "webcrypto-bound or unbound device: not this door's business");
+    }
+
+    #[test]
+    fn a_duplicate_refresh_inside_the_window_is_remembered_for_the_same_session_only() {
+        use std::time::{Duration, Instant};
+        let mut m = std::collections::HashMap::new(); let t0 = Instant::now();
+        assert!(!recent_get(&m, "j1", "s1", t0));                                   // nothing yet
+        recent_put(&mut m, "j1", "s1", t0);
+        assert!(recent_get(&m, "j1", "s1", t0 + Duration::from_secs(1)));           // the duplicate 1 s later
+        assert!(recent_get(&m, "j1", "s1", t0 + Duration::from_secs(9)));
+        assert!(!recent_get(&m, "j1", "s1", t0 + RECENT_WINDOW));                   // the window is closed: a real replay stays a 403
+        assert!(!recent_get(&m, "j1", "s2", t0 + Duration::from_secs(1)));          // another session: never
+        assert!(!recent_get(&m, "j2", "s1", t0 + Duration::from_secs(1)));          // another challenge: never
+    }
+    #[test]
+    fn the_duplicate_memory_forgets_old_entries_and_never_grows_past_its_cap() {
+        use std::time::{Duration, Instant};
+        let mut m = std::collections::HashMap::new(); let t0 = Instant::now();
+        recent_put(&mut m, "old", "s", t0);
+        recent_put(&mut m, "new", "s", t0 + Duration::from_secs(30));               // the put of a later one drops the expired entry
+        assert!(!m.contains_key("old") && m.contains_key("new"));
+        for i in 0..1000 { recent_put(&mut m, &format!("j{i}"), "s", t0 + Duration::from_secs(31)); }
+        assert!(m.len() <= RECENT_MAX);                                             // a flood is not remembered, so it stays a plain 403
     }
 }

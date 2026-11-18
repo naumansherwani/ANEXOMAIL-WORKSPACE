@@ -886,3 +886,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 18 Nov 2026 06:1x PKT QLIVE installed on his server (E187 33/0 CHECK 9/9, founder-install OK). My live Chrome found a bug of mine: /mail/changes answered HTTP 400 (parse_box refuses extra params). Fixed with parse_query + strict test. Needs one more founder-install, then live re-proof. Also CHECK_BLOCKED_NOW.sql (read only) for his dashboard alert 6 blocked. Phase still open
 
 - 18 Nov 2026 06:3x PKT QLIVE audit: ping only to the mailbox owner stream, 6-hour prune, changes door 400 fixed (parse_query). His CHECK_BLOCKED_NOW: 6 blocked = one session LbDzb2Iz no_cookie in 3 pairs, reject_replay 12; CHECK_BLOCKED_TIMELINE given to read the cause. Phase open: needs founder-install then live re-proof. NEXT after QLIVE: Q-contacts-kernel
+
+- 18 Nov 2026 06:3x PKT DBSC blocked-alert fix WRITTEN (not green): dbsc.rs duplicate refresh (same session + same challenge, 10 s) answered OK instead of reject_replay; cause from his CHECK_BLOCKED_TIMELINE; cargo 447/447; waits his founder-install, then blocked_24h must stop rising. QLIVE still not green
