@@ -53,6 +53,7 @@ Same feature as the founder QC1e (docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md), 
 - D1 BUILT 19 Nov 14:05 PKT: picker + new-emoji safety. First awam pull FAILED the build (13:51 paste: dependency not installed and emoji files not in DEPLOY-MANIFEST); FIXED 14:05 (manifest has the 5 files + package.json, pull.sh runs bun install when package.json changes). Not green until his re-pull + my Chrome look at 390 / 820 / 1200.
 - D2 (button in box + ':' typeahead): founder AND awam in the same step, separate gates.
 - D3: search is English by default; Urdu / Roman Urdu keywords come after as an extra layer (founder + awam together).
+- ANEXOCHAT = AWAM SIDE (his word 20 Nov 01:52: everything already done in D1 + D2 stays INTACT in mail compose; ONLY the motion and all advanced work related to it goes to AnexoChat, awam side, not founder): motion/react engine (list fade + rise, shared-layout highlight pill, spring), reduced-motion handling, live Chromium motion proof. Written .
 - ANEXOCHAT RESERVED (, his word 01:50): the animated ":" shortcode list (motion/react fade + rise, shared-layout highlight pill, reduced motion = none) is saved, not mounted, in docs/claude/anexochat-reserved/SHORTCODE-MOTION-RESERVED-20NOV.md. Use it when the ANEXOChat message box gets the emoji box (list of boxes below). Mail compose keeps the instant list.
 - D4 (company emoji pack, Business tiers): LAST.
 
