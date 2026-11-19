@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 03:54 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 04:05 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: D4A code written+pushed (9c11ef3c); waits his 2 commands: rust-engine-install MODULES=emoji, awam pull
 NEXT STEP: after his pastes: live Chrome look (Admin > Company emoji upload, picker Company tab, :ac list); D4B starts after Q3 Mon 23 Nov
 HIS LAST WORD: his 14:46/14:47/14:53: WhatsApp look, 32 recents, founder and awam ledgers separate with time and date, keep everything in repo and context
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- a10828c6 20 Nov 04:05 QC1e D4A: ledger + blueprint (E193 proven, Rust installed, live look bug found)
+- 68f19139 20 Nov 03:54 ledger line 0e174413
 - 0e174413 20 Nov 03:54 QC1e D4B B2 (part): mail_inline_core.rs pure CID inline-image MIME builder + clamd client (awam only, not installed)
 - c38aa91d 20 Nov 03:43 ledger line 392f33d6
 - 392f33d6 20 Nov 03:43 QC1e D4A: checkpoint
-- 9c11ef3c 20 Nov 03:43 ledger line 3b31f676
-- 3b31f676 20 Nov 03:43 QC1e D4A: ledger + blueprint (code written, not deployed)
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -42,4 +42,4 @@ QC1c: 44/44 written. NOT WRITTEN:
 ## >>> 18 NOV 2026 07:2x PKT NOW (his order 07:16, update for Claude after any compaction): PHASES IN HAND = (1) QLIVE-c (package stream limits stream_tier.rs, live drafts SQL E188 [his sql-run OK], simulation test founder-web/sim, 2 real browser bugs fixed) and (2) Q-contacts-kernel (contacts@1 in 
 ## >>> 15 NOV 19:25 HIS ORDER: L closed. NEXT = Q SERIES until complete, THEN S5 (not before). Lovable codes migration phase written in docs/claude/FOUNDER-LOVABLE-MIGRATION-15NOV.md and docs/claude/AWAM-LOVABLE-MIGRATION-15NOV.md (preserve as written, advance technology, fix loopholes, polish). Q s
 ## >>> HANDOFF 14 NOV 07:10 (he is sleeping; read this first tomorrow): DONE and proven: KP3 step 5 GREEN, pre-connect GREEN by his order, clean blueprint (docs/claude/FOUNDER-BLUEPRINT-CLEAN-14NOV.md), audit steps A+B GREEN, audit step C INSTALLED on his server (receipt 35, tests 394, listening aft
-WIP snapshot: refs/wip/last (cab067fa96a2ae034297c6f38abfd274f3e736a6)
+WIP snapshot: refs/wip/last (be5c0d400de7d1944cb9db023ff3997322eaea22)
