@@ -3793,3 +3793,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 19 Nov 14:30 PKT QC1e D1 founder Chrome look (live, signed in): picker opens, search orca finds the Unicode 17 orca, insert at caret works, new-emoji hint appears, Use words gives [orca] and hint goes; fixed: single result cell stretched tall (grid align-content start). Awam look still open
 
 - 19 Nov 14:36 PKT checkpoint, QC1e D1 founder look done, awam look open
+
+- 19 Nov 14:45 PKT QC1e D1 AWAM Chrome look (business.test account, Business plan, live anexomail.com/app/mail): emoji button in compose, picker opens, search orca finds Unicode 17 orca, insert works, new-emoji hint shows, Use words gives [orca]; test text cleared, nothing sent. Not yet seen at 390/820 and not yet with the spacing + tall-cell css
