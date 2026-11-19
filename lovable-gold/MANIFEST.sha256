@@ -308,7 +308,7 @@ fef3186686b9b148ab30a310160291d4c8c3f5ceb07f76578123c4bccf9a0233  awam/src/compo
 5cf67ef47762e3adf963279f9321df99d07e8595a384fccaf78aba0a23c19c97  awam/src/components/app/compose/emoji/00-FOUNDER-TECH-RULE.md
 d3d0d05e5f37436427f4b61112fc7c25778bd22973fd7472e216bbbcf398b17d  awam/src/components/app/compose/emoji/EmojiPicker.tsx
 690d2924a1115e1680b06212145179ba5587649102769d6ce9d4fbdda53b4710  awam/src/components/app/compose/emoji/EmojiSafety.tsx
-8e00bda9173125d751799e8243df8ad0f126231c5108947d0e8bf5ee882bda79  awam/src/components/app/compose/emoji/emoji.css
+c5dc56cad579730568725c2bbb3ca8656ed7f33fc3d2a175edf56f391c382275  awam/src/components/app/compose/emoji/emoji.css
 4c578166ad2b8f84d14b66f0bd18958036906c71611363d8b7b332da5c2fd45d  awam/src/components/app/compose/emoji/emoji_pure.test.ts
 df1eabb1069de858dea6556a446f144c31d6b414aaacce7241e3473af318107e  awam/src/components/app/compose/emoji/emoji_pure.ts
 5cf67ef47762e3adf963279f9321df99d07e8595a384fccaf78aba0a23c19c97  awam/src/components/app/crm/00-FOUNDER-TECH-RULE.md

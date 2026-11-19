@@ -2732,3 +2732,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 19 Nov 14:05 PKT QC1e D1 founder install OK 4/4 (his paste 13:51); awam pull build FAIL fixed (manifest + package.json + bun install); flaky snap_seal test fixed; awam QC1e row added
 
 - 19 Nov 14:12 PKT checkpoint, QC1e awam re-pull awaited
+
+- 19 Nov 14:20 PKT QC1e D1 Chrome look: tab row squashed to 12 px, fixed (flex none), founder + awam css
