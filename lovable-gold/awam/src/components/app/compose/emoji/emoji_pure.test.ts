@@ -72,3 +72,25 @@ describe("QC1e-D1 new-emoji safety", () => {
     expect(rankRecent(l, ["270B", "1F602"]).map((e) => e.hexcode)).toEqual(["270B", "1F602", "1F600"]);
   });
 });
+
+// ---- QC1e-D3: Urdu + Roman Urdu search words
+import { buildUr, foldLatin, foldUrdu, isUrdu } from "./emoji_pure";
+import { UR_DATA } from "./emoji_ur_data";
+describe("D3 urdu search", () => {
+  const all: Emoji[] = [
+    { hexcode: "2764", label: "red heart", unicode: "❤", group: 0, order: 1, tags: ["love"] },
+    { hexcode: "1F602", label: "face with tears of joy", unicode: "😂", group: 0, order: 2, tags: ["laugh"] },
+    { hexcode: "1F54C", label: "mosque", unicode: "🕌", group: 5, order: 3, tags: ["islam"] },
+    { hexcode: "1F1F5-1F1F0", label: "flag: Pakistan", unicode: "🇵🇰", group: 9, order: 4 },
+    { hexcode: "1F4A9", label: "pile of poo", unicode: "💩", group: 0, order: 5 },
+  ];
+  const groups: Group[] = [{ key: "smileys", message: "s", order: 0 }, { key: "travel", message: "t", order: 5 }, { key: "flags", message: "f", order: 9 }];
+  const ur = buildUr(UR_DATA);
+  test("the data parses and covers the main words", () => { expect(ur.size).toBeGreaterThan(400); expect(ur.get("2764")?.latin).toContain(foldLatin("dil")); expect(ur.get("1F1F5-1F1F0")?.urdu).toContain(foldUrdu("پاکستان")); });
+  test("roman spelling variants meet", () => { expect(foldLatin("khush")).toBe(foldLatin("khoosh")); expect(foldLatin("pyar")).toBe(foldLatin("pyaar")); expect(foldLatin("muhabbat")).toBe(foldLatin("mohabbat")); expect(foldLatin("Dil")).toBe("dil"); });
+  test("urdu letter shapes meet", () => { expect(foldUrdu("كتاب")).toBe(foldUrdu("کتاب")); expect(foldUrdu("پيار")).toBe(foldUrdu("پیار")); expect(foldUrdu("مُحَبَّت")).toBe(foldUrdu("محبت")); expect(isUrdu("دل")).toBe(true); expect(isUrdu("dil")).toBe(false); });
+  test("roman urdu finds the emoji", () => { expect(search(all, groups, "dil", 8, ur)[0]?.hexcode).toBe("2764"); expect(search(all, groups, "masjid", 8, ur)[0]?.hexcode).toBe("1F54C"); expect(search(all, groups, "pakistan", 8, ur)[0]?.hexcode).toBe("1F1F5-1F1F0"); expect(search(all, groups, "pyaar", 8, ur)[0]?.hexcode).toBe("2764"); });
+  test("urdu script finds the emoji", () => { expect(search(all, groups, "دل", 8, ur)[0]?.hexcode).toBe("2764"); expect(search(all, groups, "مسجد", 8, ur)[0]?.hexcode).toBe("1F54C"); expect(search(all, groups, "زzz", 8, ur)).toEqual([]); });
+  test("english stays first and works without the urdu list", () => { expect(search(all, groups, "heart", 8, ur)[0]?.hexcode).toBe("2764"); expect(search(all, groups, "dil", 8).length).toBe(0); expect(search(all, groups, "mosque").map((e) => e.hexcode)).toEqual(["1F54C"]); });
+  test("shortcode accepts urdu letters, 12:30 still opens nothing", () => { expect(shortcodeAt("hello :دل", 9)?.query).toBe("دل"); expect(shortcodeAt("at 12:30", 8)).toBeNull(); expect(shortcodeSearch(all, groups, "dil", 8, ur)[0]?.hexcode).toBe("2764"); });
+});

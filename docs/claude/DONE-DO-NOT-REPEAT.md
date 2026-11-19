@@ -1302,3 +1302,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - checkpoint 02:14 PKT
 
 - QC1e D3 FOUNDER gate built 20 Nov 02:50 PKT: Urdu + Roman Urdu search words (574 emoji, emoji_ur_data.ts lazy chunk), search/shortcode use them, English name stays in the row; bun 25/25, tsc clean, build OK; waits founder-install + live Chrome look, not green
+
+- QC1e D3 AWAM gate built 20 Nov 02:58 PKT (separate from the founder gate): same Urdu + Roman Urdu search module + awam EmojiPicker glue (src/components/app/compose/emoji/*); bun 25/25, tsc clean, build:bun OK; waits awam pull.sh + live Chrome look, not green

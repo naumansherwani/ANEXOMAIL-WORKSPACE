@@ -1,11 +1,11 @@
 // QC1e-D2 (20 Nov 2026): ":" shortcode typeahead for the compose message box. Plan: docs/claude/QC1E-D2-PLAN-20NOV.md.
 // React 19 + TypeScript. WAI-ARIA 1.2 combobox (textarea + listbox). Pure logic in emoji_pure.ts. Data = the picker's bundled emojibase chunks, loaded on the first ":xx".
 import { useCallback, useDeferredValue, useEffect, useId, useMemo, useRef, useState } from "react";
-import { acceptShortcode, loadList, loadTone, pushRecent, rankRecent, RECENT_KEY, shortcodeAt, shortcodeSearch, TONE_KEY, withTone, type Emoji, type Group } from "./emoji_pure";
+import { acceptShortcode, loadList, loadTone, pushRecent, rankRecent, RECENT_KEY, shortcodeAt, shortcodeSearch, TONE_KEY, withTone, type Emoji, type Group, type UrIndex } from "./emoji_pure";
 import { loadData } from "./EmojiPicker";
 import "./emoji.css";
 
-type Data = { all: Emoji[]; groups: Group[] };
+type Data = { all: Emoji[]; groups: Group[]; ur: UrIndex };
 const rd = (k: string) => { try { return window.localStorage.getItem(k); } catch { return null; } };
 const wr = (k: string, v: string) => { try { window.localStorage.setItem(k, v); } catch { /* storage may be blocked: the emoji is still inserted */ } };
 
@@ -28,7 +28,7 @@ export function useShortcode({ area, value, onChange }: { area: React.RefObject<
   const q = useDeferredValue(hit?.query ?? "");
   const items = useMemo(() => {
     if (!hit || !data || dismissed === `${hit.start}:${hit.query}`) return [];
-    const tone = loadTone(rd(TONE_KEY)), found = rankRecent(shortcodeSearch(data.all, data.groups, q, 24), loadList(rd(RECENT_KEY))).slice(0, 8);
+    const tone = loadTone(rd(TONE_KEY)), found = rankRecent(shortcodeSearch(data.all, data.groups, q, 24, data.ur), loadList(rd(RECENT_KEY))).slice(0, 8);
     return found.map((e) => { const w = withTone(e, tone); return { e, unicode: w.unicode, label: w.label }; });
   }, [hit, data, q, dismissed]);
   useEffect(() => { setActive(0); }, [q, dismissed]);

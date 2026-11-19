@@ -22,17 +22,59 @@ export function withTone(e: Emoji, tone: Tone): { unicode: string; label: string
   const s = e.skins[k - 1]; return s ? { unicode: s.unicode, label: s.label } : { unicode: e.unicode, label: e.label };
 }
 
-/** Search: every word typed must be found at the start of a word of the label or of a tag. Empty = nothing (the caller shows a group). At most `max` rows, best first (label hit before tag hit). */
-export function search(all: Emoji[], groups: Group[], q: string, max = 120): Emoji[] {
-  const words = fold(q).split(/\s+/).filter(Boolean); if (!words.length) return [];
+// ---- QC1e-D3: URDU + ROMAN URDU SEARCH WORDS. emojibase-data has no Urdu locale, so emoji_ur_data.ts is our own list ("HEX roman words | urdu words"). The rows still show the English name (his word 20 Nov 02:15: global website).
+export type UrEntry = { latin: string[]; urdu: string[]; main: string[] }; // main = words marked with * in the list: the first thing that word should find
+export type UrIndex = Map<string, UrEntry>;
+/** Roman Urdu has no fixed spelling (khush / khoosh / khus; pyar / pyaar): both the typed word and the list word are folded to one shape. */
+export function foldLatin(s: string): string {
+  return fold(s).replace(/q/g, "k").replace(/w/g, "v").replace(/c(?!h)/g, "k").replace(/ou|oo/g, "u").replace(/ee|ie/g, "i").replace(/o/g, "u").replace(/aa/g, "a").replace(/ch+/g, "ch").replace(/([a-z])\1+/g, "$1");
+}
+/** Urdu script: one letter shape per letter (Arabic yeh/kaf/heh to the Urdu ones), no zer-zabar, no tatweel, no joiners. */
+export function foldUrdu(s: string): string {
+  return s.normalize("NFKC").replace(/[\u064B-\u065F\u0670\u0640\u200C\u200D\u200E\u200F]/g, "").replace(/[يىئ]/g, "ی").replace(/ك/g, "ک").replace(/[ةۃھ]/g, "ہ").replace(/[أإآ]/g, "ا").replace(/ؤ/g, "و").replace(/ۓ/g, "ے").trim();
+}
+export const isUrdu = (s: string): boolean => /[\u0600-\u06FF]/.test(s);
+/** "HEX roman words | urdu words" lines -> index. A line without the bar has roman words only. */
+export function buildUr(data: string): UrIndex {
+  const m: UrIndex = new Map();
+  for (const line of data.split("\n")) {
+    const t = line.trim(); if (!t) continue;
+    const sp = t.indexOf(" "); if (sp < 0) continue;
+    const hex = t.slice(0, sp).toUpperCase(), rest = t.slice(sp + 1), bar = rest.indexOf("|");
+    const raw = (bar < 0 ? rest : rest.slice(0, bar)).split(/\s+/).filter(Boolean), lat = raw.map((x) => foldLatin(x.replace(/^\*/, ""))), main = raw.filter((x) => x.startsWith("*")).map((x) => foldLatin(x.slice(1)));
+    const urd = (bar < 0 ? "" : rest.slice(bar + 1)).split(/\s+/).filter(Boolean).map(foldUrdu);
+    const old = m.get(hex); m.set(hex, old ? { latin: [...old.latin, ...lat], urdu: [...old.urdu, ...urd], main: [...old.main, ...main] } : { latin: lat, urdu: urd, main });
+  }
+  return m;
+}
+const urOf = (ur: UrIndex, hex: string): UrEntry | undefined => ur.get(hex) ?? ur.get(hex.replace(/-FE0F/g, ""));
+
+/** Search: every word typed must be found at the start of a word of the label or of a tag (English first), else, when `ur` is given, of a Roman Urdu word. A query in Urdu script looks only at the Urdu words. Empty = nothing (the caller shows a group). At most `max` rows, best first (label hit before tag hit before an Urdu-word hit). */
+export function search(all: Emoji[], groups: Group[], q: string, max = 120, ur?: UrIndex): Emoji[] {
   const comp = new Set(groups.filter((g) => g.key === "component").map((g) => g.order));
-  const hit = (text: string, w: string) => text.split(/[^a-z0-9]+/).some((t) => t.startsWith(w));
   const scored: { e: Emoji; s: number }[] = [];
+  if (ur && isUrdu(q)) {
+    const words = q.split(/\s+/).map(foldUrdu).filter(Boolean); if (!words.length) return [];
+    for (const e of all) {
+      if (e.group !== undefined && comp.has(e.group)) continue;
+      const u = urOf(ur, e.hexcode); if (!u || !words.every((w) => u.urdu.some((x) => x.startsWith(w)))) continue;
+      scored.push({ e, s: 4 });
+    }
+    return scored.sort((a, b) => (a.e.order ?? 0) - (b.e.order ?? 0)).slice(0, max).map((x) => x.e);
+  }
+  const words = fold(q).split(/\s+/).filter(Boolean); if (!words.length) return [];
+  const lw = words.map(foldLatin);
+  const hit = (text: string, w: string) => text.split(/[^a-z0-9]+/).some((t) => t.startsWith(w));
+  const exact = (text: string, w: string) => text.split(/[^a-z0-9]+/).includes(w);
   for (const e of all) {
     if (e.group !== undefined && comp.has(e.group)) continue;
-    const l = fold(e.label), tags = (e.tags ?? []).map(fold);
+    const l = fold(e.label), tags = (e.tags ?? []).map(fold), u = ur ? urOf(ur, e.hexcode) : undefined;
     let s = 0, ok = true;
-    for (const w of words) { if (hit(l, w)) s += 2; else if (tags.some((t) => hit(t, w))) s += 1; else { ok = false; break; } }
+    for (let i = 0; i < words.length; i++) {
+      const w = words[i];
+      // scores: label word 6 / label start 4, tag word 3 / tag start 2; Roman Urdu word 5 (the same word, spelling folded) / start 1. A whole Roman Urdu word ("chai") beats an English start ("chain").
+      if (exact(l, w)) s += 6; else if (u?.latin.includes(lw[i])) s += u.main.includes(lw[i]) ? 6 : 5; else if (hit(l, w)) s += 4; else if (tags.some((t) => exact(t, w))) s += 3; else if (tags.some((t) => hit(t, w))) s += 2; else if (u && u.latin.some((x) => x.startsWith(lw[i]))) s += 1; else { ok = false; break; }
+    }
     if (ok) scored.push({ e, s });
   }
   return scored.sort((a, b) => b.s - a.s || (a.e.order ?? 0) - (b.e.order ?? 0)).slice(0, max).map((x) => x.e);
@@ -93,14 +135,14 @@ export function inWords(text: string, flags: Flag[]): string {
 }
 
 // ---- QC1e-D2: ":" SHORTCODE. Typing ":smi" at the caret offers matching emoji; Enter/Tab puts one in place of the typed ":smi". Pure part only (the popup is EmojiShortcode.tsx).
-/** The ":name" being typed right at the caret: the colon must be at the start of the text or after a space/newline/opening bracket (so "12:30" and "https://x" are never touched), then 2..24 name characters (letters, digits, _ - +). */
+/** The ":name" being typed right at the caret: the colon must be at the start of the text or after a space/newline/opening bracket (so "12:30" and "https://x" are never touched), then 2..24 name characters (letters, Urdu letters, digits, _ - +). */
 export function shortcodeAt(text: string, caret: number): { start: number; query: string } | null {
   const c = Math.max(0, Math.min(caret, text.length)), head = text.slice(0, c);
-  const m = /(^|[\s([{])(:)([A-Za-z0-9_+-]{2,24})$/.exec(head); if (!m) return null;
+  const m = /(^|[\s([{])(:)([A-Za-z0-9_+\u0600-\u06FF-]{2,24})$/.exec(head); if (!m) return null;
   return { start: c - m[3].length - 1, query: m[3] };
 }
 /** Emoji for a typed shortcode name: "_" and "-" count as spaces ("thumbs_up" = "thumbs up"). */
-export function shortcodeSearch(all: Emoji[], groups: Group[], query: string, max = 8): Emoji[] { return search(all, groups, query.replace(/[_-]+/g, " "), max); }
+export function shortcodeSearch(all: Emoji[], groups: Group[], query: string, max = 8, ur?: UrIndex): Emoji[] { return search(all, groups, query.replace(/[_-]+/g, " "), max, ur); }
 /** Replace the typed ":name" (start..caret) by the emoji. Returns the new text and the caret after it. */
 export function acceptShortcode(text: string, start: number, caret: number, emoji: string): { text: string; caret: number } { return insertAt(text, start, caret, emoji); }
 /** Recently used first (in the order they were used), then the rest in the order search gave them. */

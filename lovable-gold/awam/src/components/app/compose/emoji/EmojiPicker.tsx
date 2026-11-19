@@ -2,13 +2,13 @@
 // Pure logic is in emoji_pure.ts (bun-tested). Inserts at the caret of the message box. 44 px targets, keyboard (arrows, Enter, Escape), role=dialog + grid, reduced motion respected.
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { inGroup, insertAt, loadList, loadTone, pushRecent, RECENT_KEY, search, TONE_KEY, TONES, withTone, type Emoji, type Group, type Tone } from "./emoji_pure";
+import { buildUr, inGroup, insertAt, loadList, loadTone, pushRecent, RECENT_KEY, search, TONE_KEY, TONES, withTone, type Emoji, type Group, type Tone, type UrIndex } from "./emoji_pure";
 import "./emoji.css";
 
-type Data = { all: Emoji[]; groups: Group[] };
+type Data = { all: Emoji[]; groups: Group[]; ur: UrIndex }; // ur = QC1e-D3 Urdu + Roman Urdu search words (own list, lazy chunk)
 let cache: Promise<Data> | null = null;
 export function loadData(): Promise<Data> {
-  cache ??= Promise.all([import("emojibase-data/en/compact.json"), import("emojibase-data/en/messages.json")]).then(([c, m]) => ({ all: (c.default as unknown as Emoji[]), groups: (m.default as unknown as { groups: Group[] }).groups }));
+  cache ??= Promise.all([import("emojibase-data/en/compact.json"), import("emojibase-data/en/messages.json"), import("./emoji_ur_data")]).then(([c, m, u]) => ({ all: (c.default as unknown as Emoji[]), groups: (m.default as unknown as { groups: Group[] }).groups, ur: buildUr(u.UR_DATA) }));
   return cache;
 }
 let vcache: Promise<Record<string, string[]>> | null = null;
@@ -54,7 +54,7 @@ function Picker({ onPick, onClose }: { onPick: (e: string) => void; onClose: () 
   const byHex = useMemo(() => new Map((data?.all ?? []).map((e) => [e.hexcode, e])), [data]);
   const list: Emoji[] = useMemo(() => {
     if (!data) return [];
-    if (q.trim()) return search(data.all, data.groups, q);
+    if (q.trim()) return search(data.all, data.groups, q, 120, data.ur);
     if (grp === -1) return recent.map((h) => byHex.get(h)).filter((e): e is Emoji => !!e);
     return inGroup(data.all, grp, data.groups);
   }, [data, q, grp, recent, byHex]);
