@@ -1,16 +1,16 @@
 // ============================================================================
-// emoji_pack_img.rs — the image half of the COMPANY EMOJI PACK (QC1e D4A, AWAM ONLY, 20 Nov 2026).
+// emoji_img.rs — the image half of the COMPANY EMOJI PACK (QC1e D4A, AWAM ONLY, 20 Nov 2026).
 //
 // Pure Rust, two crates only: `image-webp` (decode + lossless encode) and `png` (decode). No C code, no `unsafe`.
 // Flow (every step has a limit BEFORE it runs):
-//   1. emoji_pack_core::gate_upload   (size, magic bytes, header w/h, no animation, no SVG)  — nothing is decoded before this
+//   1. emoji_core::gate_upload   (size, magic bytes, header w/h, no animation, no SVG)  — nothing is decoded before this
 //   2. decode with a hard pixel/alloc limit, ANY colour type -> RGBA8 (metadata chunks are simply never read into the output)
 //   3. area-average downscale to the ladder step (256 -> 192 -> 128 -> 96), never upscale
-//   4. lossless WebP encode, then emoji_pack_core::check_output (RIFF....WEBP, allowed chunks only, <= 64 KB)
+//   4. lossless WebP encode, then emoji_core::check_output (RIFF....WEBP, allowed chunks only, <= 64 KB)
 // The CPU work runs in tokio::task::spawn_blocking behind a 1-permit semaphore in the glue (one picture at a time).
 // ============================================================================
 
-use crate::emoji_pack_core as core;
+use crate::emoji_core as core;
 use std::io::Cursor;
 
 #[derive(Debug)]

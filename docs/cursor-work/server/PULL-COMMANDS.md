@@ -1124,3 +1124,5 @@
 - 20.11.26 04:00 PKT live ports recorded from his ss paste (PORTS-LIVE.md, red-line, blueprints, CLAUDE.md, ckpt.sh + rules-read.py print it)
 
 - 20.11.26 04:05 PKT D4A checkpoint: ports recorded, glue next
+
+- 20.11.26 04:20 PKT QC1e D4A P3: emoji_glue.rs + installer module emoji (opt-in, image-webp+png) written; 21 Rust tests pass in sandbox cargo (stub crate), not installed

@@ -33,6 +33,7 @@
 #   mailx  -> server/rust/mailx_core.rs  + mailx_glue.rs  (Pro mail actions: snooze/status/move/labels/assign, templates, Snoozed folder)  [koi SQL nahi]
 #   b6     -> server/rust/b6_core.rs     + b6_glue.rs     (billing.portal: Polar customer portal — cancel/card/VAT; chaabi /etc/anexomail/pcp.key)  [koi SQL nahi]
 #   b5     -> server/rust/b5_core.rs     + b5_glue.rs     (founder pages: move-in, release gate/lock/roadmap/QA run, revenue pipeline+lead, public status, outbox)  [koi nayi SQL nahi]
+#   emoji  -> server/rust/emoji_core.rs + emoji_glue.rs (+ emoji_img.rs)  (Company emoji pack, AWAM ONLY; SQL E193 PEHLE; [OPT-IN: 2 pure-Rust crates image-webp + png]  MODULES=emoji bash <(...))
 #   mig    -> server/rust/mig_core.rs    + mig_glue.rs (+ mig_imap.rs mig_mime.rs mig_run.rs)  (purana mailbox copy karna — IMAP App Password)
 #             [pehle E35 SQL chalayen] [OPT-IN: default mein NAHI — Cargo.toml mein 2 crate judte hain (rustls, webpki-roots), isliye
 #              sirf tab jab aap khud likhen:  MODULES=mig bash <(...)  ]
@@ -59,7 +60,7 @@ BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
 ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex crmd trialx authx contx basx wsx billx setx calexp promx signx wtrpc latency"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
-extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; ics) echo "cal_core.rs";; evidence) echo "attach_core.rs";; signx) echo "vault_core.rs";; esac; }
+extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; emoji) echo "emoji_img.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; ics) echo "cal_core.rs";; evidence) echo "attach_core.rs";; signx) echo "vault_core.rs";; esac; }
 EXPLICIT="${MODULES:-}"
 WANT="${MODULES:-$ALL_MODULES}"
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
@@ -112,6 +113,8 @@ CFG={
             "need_mods": ["cal_core", "cal_glue"]},
  "people": {"public": False, "label": "people",    "procs": ['"people.import"','"crm.leadsImport"','"crm.leadsMoveToPeople"']},
  "team":   {"public": True,  "label": "team",      "procs": ['"team.members.list"','"team.invites.create"','"team.invite.accept"']},
+ # emoji (QC1e D4A, AWAM ONLY): Company emoji pack `emoji.pack.*`. SQL E193 PEHLE. OPT-IN (2 pure-Rust crates: image-webp + png). emoji_img.rs glue ke andar #[path] se judti hai.
+ "emoji":  {"public": False, "label": "emoji",     "procs": ['"emoji.pack.list"','"emoji.pack.add"','"emoji.pack.quota"']},
  "mig":    {"public": False, "label": "migration", "procs": ['"migration.start"','"migration.providers"','"migration.verify"']},
  "locale": {"public": True,  "label": "locale",    "procs": ['"locale.pref"','"locale.bundle"','"locale.pref.set"']},
  # device: procs khaali JAAN-BOOJH kar — chat arm mein wohi naam hain (dead fallback rehta hai); yeh module unhein chat gate se PEHLE har plan ke liye pakadta hai.
@@ -354,13 +357,18 @@ done
 
 # Cargo.toml — SIRF mig ke liye (2 crate: rustls, webpki-roots; founder ki ijazat G30, 19 Oct 2026). Copy par try; asli file backup ke baad badalti hai.
 NEED_CARGO=0
-case " $MODS " in *" mig "*|*" security "*) NEED_CARGO=1;; esac   # security bhi rustls/webpki-roots (wohi 2 crate) istemal karta hai
+NEED_EMOJI=0
+case " $MODS " in *" mig "*|*" security "*) NEED_CARGO=1;; esac
+case " $MODS " in *" emoji "*) NEED_CARGO=1; NEED_EMOJI=1;; esac   # emoji: image-webp + png (pure Rust, no unsafe, no C)   # security bhi rustls/webpki-roots (wohi 2 crate) istemal karta hai
 cp "$TARGET/Cargo.toml" "$T/Cargo.toml.try"
 if [ "$NEED_CARGO" -eq 1 ]; then
   echo "== 1b) Cargo.toml (sirf mig): 2 crate judte hain — copy par try"
   show docs/cursor-work/server/cargo_migration_deps.py >"$T/cargo_migration_deps.py"
   [ -s "$T/cargo_migration_deps.py" ] || { echo "FAIL: repo (origin/main) mein docs/cursor-work/server/cargo_migration_deps.py nahi — git fetch hua?"; exit 2; }
-  python3 -I "$T/cargo_migration_deps.py" "$T/Cargo.toml.try"; crc=$?
+  # mig/security wale 2 crate sirf tab jab un modules mein se koi maanga ho; emoji ke 2 crate alag (argument "emoji")
+  crc=0
+  case " $MODS " in *" mig "*|*" security "*) python3 -I "$T/cargo_migration_deps.py" "$T/Cargo.toml.try"; crc=$?;; esac
+  if [ "$crc" -eq 0 ] && [ "$NEED_EMOJI" -eq 1 ]; then python3 -I "$T/cargo_migration_deps.py" "$T/Cargo.toml.try" emoji; crc=$?; fi
   [ "$crc" -eq 0 ] || { echo "!! Cargo.toml safe tareeqe se nahi badal sakta — kuch install nahi hua. Upar wali lines Claude ko paste karein."; exit 4; }
 fi
 
@@ -488,6 +496,14 @@ for m in $MODS; do
         *'"unauthorized"'*'"unauthorized"'*'"unauthorized"'*) echo "   -> evidence: Rust ne proc, upload route aur download route teeno pakde (bina asli login ke 401 = theek). SQL E72 chala hona lazmi.";;
         *procedure_not_in_rust*|*unknown_proc*) echo "   -> evidence: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> evidence: jawab upar dekhein";;
+      esac;;
+    emoji)
+      r="$(probe emoji.pack.list '{"input":{}}')"
+      echo "   emoji.pack.list (nakli token): $r"
+      case "$r" in
+        *'"unauthorized"'*) echo "   -> emoji: Rust ne proc pakda (bina asli login ke 401 = theek). SQL E193 pehle chal chuki honi chahiye (asli test: Settings > Company emoji).";;
+        *procedure_not_in_rust*|*unknown_proc*) echo "   -> emoji: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *) echo "   -> emoji: jawab upar dekhein";;
       esac;;
     mig)
       r="$(probe migration.providers '{"input":{}}')"

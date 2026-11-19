@@ -822,8 +822,9 @@ server/rust/device_glue.rs
 server/rust/dnsauth_core.rs
 server/rust/dnsauth_glue.rs
 server/rust/e187_tier_rows.sql
-server/rust/emoji_pack_core.rs
-server/rust/emoji_pack_img.rs
+server/rust/emoji_core.rs
+server/rust/emoji_glue.rs
+server/rust/emoji_img.rs
 server/rust/events_core.rs
 server/rust/events_glue.rs
 server/rust/evidence_core.rs

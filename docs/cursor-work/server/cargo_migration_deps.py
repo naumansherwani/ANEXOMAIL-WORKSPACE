@@ -15,13 +15,17 @@ usage: python3 -I cargo_migration_deps.py <Cargo.toml>
 import re
 import sys
 
+NEED_EMOJI = [   # QC1e D4A (awam only, his word 20 Nov 2026 03:2x: "2 crate jodo"): pure Rust, no unsafe, no C
+    ("image-webp", 'image-webp = "0.2"'),
+    ("png", 'png = "0.18"'),
+]
 NEED = [
     ("rustls", 'rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12"] }'),
     ("webpki-roots", 'webpki-roots = "0.26"'),
 ]
 
 
-def patch(text):
+def patch(text, need=None):
     """returns (new_text, added_names, present_names) or raises ValueError."""
     m = re.search(r"^\[dependencies\][ \t]*\r?$", text, re.M)
     if not m:
@@ -32,7 +36,7 @@ def patch(text):
     if not body.strip():
         raise ValueError("`[dependencies]` khali hai — ajeeb, kuch nahi badla")
     added, present, lines = [], [], []
-    for name, line in NEED:
+    for name, line in (need or NEED):
         if re.search(r"^[ \t]*" + re.escape(name) + r"[ \t]*=", body, re.M):
             present.append(name)
         else:
@@ -49,7 +53,7 @@ def patch(text):
 
 
 def main(argv):
-    if len(argv) != 2:
+    if len(argv) not in (2, 3):
         print("usage: cargo_migration_deps.py <Cargo.toml>")
         return 2
     path = argv[1]
@@ -59,7 +63,7 @@ def main(argv):
         print("Cargo.toml padh nahi saka: %s" % e)
         return 4
     try:
-        new, added, present = patch(text)
+        new, added, present = patch(text, NEED_EMOJI if len(argv) > 2 and argv[2] == 'emoji' else None)
     except ValueError as e:
         print("PATCH FAIL: %s" % e)
         return 4

@@ -1,9 +1,9 @@
 // ============================================================================
-// emoji_pack_core.rs — the pure, testable half of the COMPANY EMOJI PACK (QC1e D4A, AWAM ONLY, 20 Nov 2026).
+// emoji_core.rs — the pure, testable half of the COMPANY EMOJI PACK (QC1e D4A, AWAM ONLY, 20 Nov 2026).
 //
 // std-only (no crates) so the same file is unit-tested on the server by the installer BEFORE anything is changed:
-//     rustc --edition 2021 --test emoji_pack_core.rs -o emoji_pack_core_test && ./emoji_pack_core_test
-// All I/O (Supabase, image decode/encode with the `image-webp` + `png` crates) lives in emoji_pack_glue.rs.
+//     rustc --edition 2021 --test emoji_core.rs -o emoji_core_test && ./emoji_core_test
+// All I/O (Supabase, image decode/encode with the `image-webp` + `png` crates) lives in emoji_glue.rs.
 // Everything that DECIDES something lives here, and mirrors the SQL (E193) so the Rust door and the database can never disagree:
 //   * shortcode shape + reserved names           (SQL: company_emoji_code_chk, company_emoji_reserved)
 //   * the tier table                              (SQL: company_emoji_tier_limit)  Business 10 / Pro 10 / Premium 50 / MAX 200
