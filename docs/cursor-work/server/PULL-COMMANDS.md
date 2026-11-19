@@ -818,3 +818,5 @@
 - 19 Nov 14:42 PKT awam emoji everywhere list written (chat, notes, events) after his 14:17 word
 
 - 19 Nov 14:48 PKT checkpoint, QC1e D2 box layout awaits his pulls
+
+- 19 Nov 14:55 PKT AWAM compose cut off at the bottom (his 14:21): panel scrolled inside, Send bar fell below the fold on sm+; fixed: Send bar sticky on every width, panel raised (bottom-6, max-h min(85vh, 100dvh-3rem)); ComposeOverlay.tsx + ComposeStudio.tsx, awam gate only

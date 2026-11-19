@@ -1069,7 +1069,8 @@ export function ComposeStudio({
             "flex flex-wrap items-center gap-ax-2",
             variant === "overlay" &&
               !zen &&
-              "sticky bottom-0 z-10 -mx-ax-4 border-t border-border bg-card/95 px-ax-4 py-2.5 backdrop-blur sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:p-0 sm:backdrop-blur-none",
+              // his 19 Nov 14:21: the Send bar stays visible on EVERY width (it used to go static on sm+ and fell below the panel fold, cut off)
+              "sticky bottom-0 z-10 -mx-ax-4 border-t border-border bg-card/95 px-ax-4 py-2.5 backdrop-blur",
           )}
         >
           <Button type="submit" className="ax-press ax-tap" disabled={busy}>

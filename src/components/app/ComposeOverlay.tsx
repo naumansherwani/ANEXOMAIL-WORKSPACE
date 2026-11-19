@@ -37,10 +37,10 @@ export function ComposeOverlay({
       className={cn(
         "ax-in fixed z-50 flex flex-col overflow-y-auto border-border bg-card shadow-2xl",
         // Phone (Rule 19): poori screen (dvh + safe-area), keyboard khule to bhi Send nazar aaye. Minimise = nav ke upar patti.
-        "inset-x-0 w-full pb-[env(safe-area-inset-bottom,0px)] sm:inset-x-auto sm:bottom-4 sm:right-4 sm:w-[min(34rem,calc(100vw-2rem))] sm:rounded-2xl sm:border sm:pb-0",
+        "inset-x-0 w-full pb-[env(safe-area-inset-bottom,0px)] sm:inset-x-auto sm:bottom-6 sm:right-4 sm:w-[min(34rem,calc(100vw-2rem))] sm:rounded-2xl sm:border sm:pb-0",
         minimised
           ? "bottom-[calc(3.5rem+env(safe-area-inset-bottom,0px))] rounded-t-2xl border-t"
-          : "top-0 h-dvh rounded-none pt-[env(safe-area-inset-top,0px)] sm:top-auto sm:h-auto sm:max-h-[85vh] sm:pt-0",
+          : "top-0 h-dvh rounded-none pt-[env(safe-area-inset-top,0px)] sm:top-auto sm:h-auto sm:max-h-[min(85vh,calc(100dvh-3rem))] sm:pt-0",
       )}
     >
       <header className="flex items-center gap-ax-2 border-b border-border px-ax-4 py-ax-3">
