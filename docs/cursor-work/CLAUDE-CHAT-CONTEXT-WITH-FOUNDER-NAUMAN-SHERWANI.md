@@ -4063,3 +4063,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - checkpoint 02:27 PKT
 
 - checkpoint 02:34 PKT
+
+- QC1e D3 awam fix 02:45 PKT: new file emoji_ur_data.ts added to DEPLOY-MANIFEST (his pull.sh build FAIL cause), waits his pull.sh again
