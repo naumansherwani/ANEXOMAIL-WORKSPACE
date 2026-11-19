@@ -4133,3 +4133,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 20.11.26 04:42 PKT QC1e D4A G4: remove Bun from awam plan (static SPA by Caddy, sandbox build proven); waits his Caddy paste
 
 - 20.11.26 04:52 PKT QC1e D4A G1+G2: Rust wired (ClamAV fail closed, Hetzner Storage Box sha-addressed); 35 tests; waits his sql-run then Rust install
+
+- QC1e D4A: his 2 server cmds pending (sql-run, emoji Rust)
