@@ -1274,3 +1274,5 @@ Technology: React 19 + TypeScript; pure module founder-web/src/emoji_pure.ts (bu
 - 19 Nov 15:25 PKT QC1e awam fix (his 14:33): picker opened below the panel fold and a click on the panel scrollbar counted as outside click and closed it; now: awam picker opens OVER the message box (emo-over), compact, scrollbar click ignored, sr-only line no longer visible (171 emoji). Founder layout unchanged. His two pulls done 14:28 (founder 4/4, awam build OK)
 
 - 19 Nov 15:36 PKT checkpoint, QC1e awam picker over text, awaits his awam pull
+
+- 19 Nov 15:55 PKT QC1e sandbox live test (his 14:36, real Chromium, compose-panel skeleton with the real EmojiPicker + css, 4 sizes 1536x674 / 1280x720 / 820x1180 / 390x844): found + fixed (1) overlay picker box collapsed to 22 px (top and bottom both set), (2) picker ran past the panel bottom, now scrolls into view on open, (3) phone height; result: picker fully inside the panel and viewport at all 4 sizes, search+insert OK, new-emoji hint OK, X closes, no console errors

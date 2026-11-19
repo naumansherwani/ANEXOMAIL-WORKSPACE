@@ -48,7 +48,7 @@ function Picker({ onPick, onClose }: { onPick: (e: string) => void; onClose: () 
   const [q, setQ] = useState(""), [grp, setGrp] = useState(0), [tone, setTone] = useState<Tone>(() => loadTone(rd(TONE_KEY))), [recent, setRecent] = useState<string[]>(() => loadList(rd(RECENT_KEY)));
   const [act, setAct] = useState(0), box = useRef<HTMLDivElement>(null), inp = useRef<HTMLInputElement>(null);
   useEffect(() => { let live = true; loadData().then((d) => { if (live) setData(d); }).catch(() => { if (live) setFailed(true); }); return () => { live = false; }; }, []);
-  useEffect(() => { inp.current?.focus(); }, []);
+  useEffect(() => { inp.current?.focus({ preventScroll: true }); const id = window.setTimeout(() => box.current?.scrollIntoView({ block: "nearest", behavior: "auto" }), 30); return () => window.clearTimeout(id); }, []); /* the picker opens fully in view, the compose panel scrolls to it */
   useEffect(() => { const h = (e: MouseEvent) => { const el = e.target as HTMLElement; if (el instanceof HTMLElement && (e.offsetX > el.clientWidth || e.offsetY > el.clientHeight) && (el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth)) return; /* a click on a scrollbar is not a click outside */ if (box.current && !box.current.contains(e.target as Node) && !(e.target as HTMLElement).closest(".emo-toggle")) onClose(); }; document.addEventListener("mousedown", h); return () => document.removeEventListener("mousedown", h); }, [onClose]);
   const groups = useMemo(() => (data?.groups ?? []).filter((g) => g.key !== "component"), [data]);
   const byHex = useMemo(() => new Map((data?.all ?? []).map((e) => [e.hexcode, e])), [data]);
@@ -70,7 +70,7 @@ function Picker({ onPick, onClose }: { onPick: (e: string) => void; onClose: () 
   useEffect(() => { box.current?.querySelector<HTMLElement>(`[data-i="${act}"]`)?.scrollIntoView({ block: "nearest" }); }, [act, list]);
   const setT = (t: Tone) => { setTone(t); wr(TONE_KEY, t); };
   return (
-    <motion.div ref={box} className="emo emo-dock" role="dialog" aria-label="Emoji picker" onKeyDown={key} initial={reduce ? false : { opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.16 }}>
+    <motion.div ref={box} className="emo emo-dock" role="dialog" aria-label="Emoji picker" onKeyDown={key} initial={reduce ? false : { opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 6 }} transition={{ duration: 0.14 }}>
       <div className="emo-top">
         <input ref={inp} className="emo-q" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search emoji" aria-label="Search emoji" autoComplete="off" />
         <button type="button" className="emo-x" aria-label="Close emoji picker" title="Close" onClick={onClose}><span aria-hidden="true">✕</span></button>
