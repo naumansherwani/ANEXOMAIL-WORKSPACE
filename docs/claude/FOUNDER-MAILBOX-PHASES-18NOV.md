@@ -1,11 +1,11 @@
-# FOUNDER MAILBOX: PHASE ORDER + STATUS (18 Nov 2026 10:5x PKT, his word: "mujhe updated blueprint send kero")
+# FOUNDER MAILBOX: PHASE ORDER + STATUS (updated 19 Nov 2026 11:1x PKT; first written 18 Nov 10:5x, his word: "mujhe updated blueprint send kero")
 Rule: one phase at a time; GREEN only WIRED: YES / REAL: YES / TECH-LAW CHECKED with proof, seen on 390 / 820 / 1200+. Technology law: Rust + Tokio + axum, WASM kernel, HTTP/3 + WebTransport, X25519MLKEM768, AES-256-GCM, React 19, forced-RLS Postgres.
 
 | # | Phase | What | Status 18 Nov 10:5x |
 |---|---|---|---|
 | 1 | QC0 | Compose polish | GREEN (his word 02:11) |
-| 2 | QC1c | TLS lock on each recipient chip (probe, retry, proven line) | NOT GREEN. Live-proven: pq (Gmail), nomail, unreachable + retry 1/5 min, real send "Proven by the real delivery: gmail.com: post-quantum". Open: none/refused live, 30 min step, received hint, phone 390/820, Qtls sender wiring, E191 |
-| 3 | QC3a | Undo bar X = send now (E185 release door, signed Rust door, kernel RPC) | Contract first, then code. Next after QC1c |
+| 2 | QC1c | TLS lock on each recipient chip (probe, retry, proven line, MTA-STS, DANE) | GREEN BY HIS WORD 19 Nov 11:05. Proven: pq (Gmail), nomail, unreachable + retry 1/5 min, real send proven line, E190 6/6, MTA-STS + DANE wired (cargo 481/481, installed). Open list (not hidden, in CLOSE-THE-GAPS-07NOV.md): none/refused live, retry 30 min step, DANE on a real signed domain, received hint, phone 390/820 |
+| 3 | QC3a | Undo bar X = send now (E185 release door, signed Rust door, kernel RPC) | NEXT. Contract first in CURRENT.md, then SQL E185, Rust door, kernel RPC, React |
 | 4 | QC1 | Recipient chips, People autocomplete (lock part = QC1c) | After QC3a |
 | 5 | QC1e | Emoji picker (all emoji) | Queued |
 | 6 | QC2 | Rich text editor (Tiptap 3), signatures, snippets | Queued |
