@@ -1310,3 +1310,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - checkpoint 02:22 PKT
 
 - checkpoint 02:27 PKT
+
+- checkpoint 02:34 PKT

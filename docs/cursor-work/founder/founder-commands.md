@@ -4185,3 +4185,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - checkpoint 02:22 PKT
 
 - checkpoint 02:27 PKT
+
+- checkpoint 02:34 PKT
