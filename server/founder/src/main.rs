@@ -60,6 +60,7 @@ mod fmail_mime;
 mod fmail_smtp;
 mod fmail_tls;
 mod fmail_qtls;
+mod fmail_rpt;
 mod fmail_out;
 mod fmail_book;
 mod fmail_live;
@@ -1086,7 +1087,7 @@ async fn main() {
     match (fmail_out::from_env(), &sb, lease::MASTER.get()) {
         (None, _, _) => eprintln!("founder: mail sender OFF (no FMAIL_SEND=on)"),
         (Some(Err(e)), _, _) => eprintln!("founder: mail sender NOT started: {e}"),
-        (Some(Ok(c)), Some(s), Some(m)) => { fmail_out::spawn(s.clone(), *m, c).await; tokio::spawn(fmail_tls::retry_worker(s.clone())); }
+        (Some(Ok(c)), Some(s), Some(m)) => { fmail_out::spawn(s.clone(), *m, c).await; tokio::spawn(fmail_tls::retry_worker(s.clone())); tokio::spawn(fmail_rpt::daily_worker(s.clone())); }
         (Some(Ok(_)), _, _) => eprintln!("founder: mail sender NOT started: needs the database and the vault master key"),
     }
 

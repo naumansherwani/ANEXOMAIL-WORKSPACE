@@ -1171,3 +1171,8 @@ QC1cF7 (18 Nov 2026 PKT) CONTRACT: SQL E189 fmail_domain_tls (PostgreSQL 16 forc
 - QC1c honest list 19 Nov 11:50 PKT: live proof github.io 30 min step then 'No more tries scheduled' with reasons; features F8-3 todo (TLS-RPT never sent) and F8-4 needs-haan (sender already always require_tls, only the loosen switch is unbuilt)
 
 - QC1c honest list 19 Nov 11:52 PKT: live proof github.io 30 min step then No more tries scheduled with reasons; F8-3 todo (TLS-RPT never sent), F8-4 needs-haan (sender already always require_tls, only the loosen switch is unbuilt)
+
+## QC1cF8-3 + F8-4 (19 Nov 2026 12:0x PKT, his order 11:49): TLS-RPT is really sent; "send only if TLS" is a strict ratchet
+Listed technology used: Rust (Tokio, axum) = server/founder/src/fmail_rpt.rs (counters, RFC 8460 report JSON, gzip via flate2 rust_backend, multipart/report mail, daily worker, https POST with a public-host SSRF guard and a pinned address); PostgreSQL 16 = docs/cursor-work/sql/E191_founder_mail_tls_rpt_policy.sql (+ CHECK_E191.sql): forced RLS, door-only writes, hash-chained append-only log, atomic claim, 28-check selftest; AES-256-GCM sealed domain and MX host (vault-wrapped key); the report mail goes through the normal outbox: DKIM, strict TLS 1.3 + X25519MLKEM768, MTA-STS, DANE. No UI in this step; the loosen switch (QC1cF8-5) waits for his haan.
+Sandbox proof: E191 selftest 28/28, CHECK_E191 9/9, re-run safe, E179 door audit clean; cargo test 489/489 (fmail_rpt 8).
+Not yet proven live: needs his sql-run (E191) + founder-install, then one real UTC day to end with a Gmail-bound mail (Gmail publishes _smtp._tls). GREEN: NO.
