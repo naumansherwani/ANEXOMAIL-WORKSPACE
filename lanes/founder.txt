@@ -166,7 +166,7 @@ founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-CB5q_n2d.js
+founder-web/dist/assets/index-C4oJEAXa.js
 founder-web/dist/assets/index-CMjmkHYh.css
 founder-web/dist/assets/kernel.worker-BLkLR49F.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
