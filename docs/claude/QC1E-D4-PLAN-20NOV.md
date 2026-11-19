@@ -46,3 +46,40 @@ D4B (separate, after Q3, Mon 23 Nov): real inline cid image inside the mail body
 - E193 not run anywhere yet (no local Postgres): first real run = his sql-run; fix by editing the same file if it fails.
 - `org_plan_of` returns the owner's entitlement plan; real plan strings for Premium/MAX must match `%premium%` / `%max%` (selftest prints `plan_seen`).
 - Lossless WebP of a photo-like picture may not fit 64 KB even at 128 px: then the door answers "too detailed, use a simple logo" (never silently lossy).
+
+---
+## D4A STATUS (20 Nov 2026 03:15 PKT): P1 SQL E193 = PROVEN ON HIS SERVER (his sql-run paste 03:15)
+e193_result: selftest_ok t, 11 passed, 0 failed, doors_service_only t, rls_forced t, anon_no_table_access t, service_role_read_only t, triggers 3; CHECK_E193 all 8 rows OK; CHECK_E65 sweep OK after it. WIRED/REAL for the SQL layer only. **D4A as a PHASE is NOT green** (Rust door, TS module, picker tab, admin screen are not written yet): green line comes only after P2-P8 with his live look.
+
+## D4B DETAIL PLAN (his 03:15 order: "awam side advance technology, duniya ka advance, gates Business tiers ko do") — AWAM ONLY, starts after Q3 (Mon 23 Nov)
+Goal: the company emoji travels INSIDE the real mail as a real inline image, so the recipient (any client, any company) sees the logo, not ":acme:".
+
+### Research findings (what decided D4B)
+1. **Three ways to put an image in mail** (Mailtrap https://mailtrap.io/blog/embedding-images-in-html-email-have-the-rules-changed/amp/): (a) CID part = image is a MIME part referenced by `cid:`; counts toward message size, can show as an attachment in some clients, needs correct MIME nesting; (b) base64 data URI in HTML = Outlook blocks it, most webmail drops it => REJECTED; (c) hosted link = blocked by default in Outlook, breaks if host is down, and is a tracking/privacy hole => REJECTED (also our vendor/no-third-party law). **Decision: CID (RFC 2392 cid: URL, RFC 2387 multipart/related), no hosted images, no tracking pixel, ever.**
+2. **WebP is NOT safe in mail** (https://dev.to/patrickliu/webp-support-for-email-1g09: Apple Mail + Gmail fine, Outlook desktop app struggles; no confirmed fallback). **Decision: the library master stays WebP (D4A), but the mail part is a derived PNG** (lossless, alpha, supported everywhere) rendered at 2x of display size (display 20-24 px => PNG 48x48), produced once per emoji and cached by sha; never a WebP in an outgoing mail.
+3. **Upload hardening** (OWASP File Upload cheat sheet) stays; plus **ClamAV via clamd INSTREAM** with the pure-Rust async `clamav-client` crate (tokio feature, https://docs.rs/crate/clamav-client/latest): every upload is scanned BEFORE it is stored; clamd down = upload refused (fail closed), never skipped.
+4. **Storage**: bytes move from Postgres bytea to Hetzner Storage Box (key = sha256, immutable, content-addressed, dedupe across companies), Postgres keeps row + sha; `storage` column ('pg' | 'hetzner') already exists in E193, so the move is one door + a copy job, no schema break.
+
+### Technology (advance, listed as the phase contract)
+- Rust engine (awam): MIME builder `mail_inline_core.rs` (pure, tested): multipart/mixed > multipart/alternative > [text/plain with ":acme:" fallback, multipart/related > [text/html, image/png parts]]; Content-ID `<sha16@emoji.anexomail>` stable per picture; `Content-Disposition: inline`; `Content-Transfer-Encoding: base64` 76-col lines; `width`/`height`/`alt=":acme:"` on every img; one part per DISTINCT emoji (dedupe), never per use.
+- Sender side: compose keeps `:acme:` token in the draft; at SEND the Rust door swaps tokens to `<img src="cid:..">` ONLY for emoji that exist, are active and are in the sender's company pack (anything else stays literal text: no injection, no foreign cids).
+- Receiver side (our own mailbox): incoming cid images rendered same-origin through a sanitised blob (CSP self-only stays), size/type re-checked, never remote-loaded.
+- DKIM signs the whole body incl. image parts (no change needed); plain-text part keeps :acme: so text-only clients are fine.
+- Security: SQL ledger line for every send that embeds company emoji (count, shas), ClamAV at upload, PNG derived by OUR encoder (never the user's bytes).
+- Post-quantum / transport: unchanged, mail already goes out through the QC1c TLS-pq path.
+
+### TIER GATES (Business tiers only; all numbers = my defaults, his decision, one SQL function `company_emoji_tier_gate(plan)` so one line changes them)
+| Gate | Business | Business Pro | Premium | MAX |
+|---|---|---|---|---|
+| Pack size (D4A, live in E193) | 10 | 10 | 50 | 200 |
+| Inline send in real mail (D4B) | yes | yes | yes | yes |
+| Distinct company emoji per message | 5 | 5 | 12 | 25 |
+| Inline image bytes per message (all parts) | 120 KB | 120 KB | 300 KB | 600 KB |
+| Uploads per day per company (abuse brake) | 20 | 20 | 60 | 200 |
+| Who may upload / remove | owner+admin | owner+admin | owner+admin | owner+admin |
+| Basic / Pro / personal | locked: picker shows "Business feature", ":acme" stays text | | | |
+Over a gate = the send is NOT blocked: extra tokens stay as text ":acme:" and the compose bar says so before sending (never silent loss).
+
+### D4B build points
+B1 SQL E19x: `company_emoji_tier_gate(plan)` + `company_emoji_png` (derived PNG cache by sha, bytes <= 16 KB, 48x48) + `company_emoji_send_ledger` (hash chain, per message: count, bytes, shas) + daily-upload counter; selftest + CHECK. B2 Rust `mail_inline_core.rs` + glue hook in the send path (QC2/Q3 multipart builder reused, not duplicated). B3 clamd client + Storage Box store door (fail closed). B4 compose preview shows the real image + gate warning. B5 receiver render path. B6 matrix test: Gmail web, Outlook desktop + web, Apple Mail, Thunderbird, a plain-text client (his hands + my sandbox MIME parse), MIME validated by an independent parser. B7 GREEN only WIRED: YES / REAL: YES / TECH-LAW CHECKED, laptop live look; 390/820 after Q series by his word.
+Dependency: needs QC2 (rich compose body) + Q3 (Hetzner confirmation, ClamAV) first => Mon 23 Nov.
