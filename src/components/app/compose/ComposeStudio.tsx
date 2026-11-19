@@ -22,7 +22,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { FileContextCard } from "@/components/app/compose/FileContextCard";
 import { GhostTextArea } from "@/components/app/compose/GhostTextArea";
-import { EmojiButton } from "@/components/app/compose/emoji/EmojiPicker";
+import { EmojiBox } from "@/components/app/compose/emoji/EmojiPicker";
 import { EmojiSafety } from "@/components/app/compose/emoji/EmojiSafety";
 import {
   OutcomesBar,
@@ -756,6 +756,7 @@ export function ComposeStudio({
         ) : null}
 
         {/* Phase 12A — inline word prediction (ghost text). Composer wahi hai. */}
+        <EmojiBox area={bodyRef} value={body} onChange={setBody}>
         <GhostTextArea
           id="studio-body"
           ref={bodyRef}
@@ -773,10 +774,8 @@ export function ComposeStudio({
               : "Write the message."
           }
         />
-        {/* QC1e emoji (his order 19 Nov 13:34): same pure module as the founder, awam glue. Additive only. */}
-        <div className="flex flex-wrap items-center gap-2">
-          <EmojiButton area={bodyRef} value={body} onChange={setBody} />
-        </div>
+        </EmojiBox>
+        {/* QC1e emoji (his order 19 Nov 13:34 + 14:16): same pure module as the founder, awam glue. WhatsApp-style: smiley inside the box, picker docked below. Additive only. */}
         <EmojiSafety text={body} onChange={setBody} />
 
         {proMail ? (

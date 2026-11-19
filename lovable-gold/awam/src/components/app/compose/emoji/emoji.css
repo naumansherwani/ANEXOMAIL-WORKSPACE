@@ -23,3 +23,17 @@
 .emo>.emo-q{margin-bottom:5px}
 .emo>.emo-tone{margin-top:5px}
 .emo>.emo-grid{align-content:start;grid-auto-rows:min-content}
+
+/* WhatsApp-style layout (his order 19 Nov 14:16): corner smiley inside the box, docked picker in the page flow, groups bar at the bottom */
+.emo-box{display:block;min-width:0}
+.emo-field{position:relative}
+.emo-corner{position:absolute;right:8px;bottom:8px;z-index:2;width:44px;height:44px;border-radius:50%;border:1px solid var(--mh2,rgba(255,255,255,.16));background:var(--surf2,rgba(16,23,34,.82));color:inherit;font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center;backdrop-filter:blur(6px)}
+.emo-corner:hover,.emo-corner[aria-expanded=true]{border-color:#2b88d8;background:rgba(43,136,216,.22)}
+.emo-corner:focus-visible{outline:2px solid #2b88d8;outline-offset:2px}
+.emo.emo-dock{position:static;width:100%;max-width:none;max-height:none;height:auto;margin-top:8px;box-shadow:none;overflow:hidden;box-sizing:border-box}
+.emo-dock .emo-grid{order:2;height:208px;flex:none;min-height:0}
+.emo-dock .emo-tabs{order:3;justify-content:space-between;border-top:1px solid var(--mh2,rgba(255,255,255,.12));padding-top:4px;margin-bottom:0}
+.emo-dock .emo-tone{order:1;margin-top:0}
+.emo-dock .emo-tab{flex:1 1 0;min-width:0}
+.emo-dock .emo-sw{width:44px;height:44px}
+@media (max-width:640px){.emo.emo-dock{position:static;left:auto;right:auto;bottom:auto;width:100%;max-height:none;padding-bottom:10px}.emo-dock .emo-grid{grid-template-columns:repeat(8,minmax(0,1fr))}}
