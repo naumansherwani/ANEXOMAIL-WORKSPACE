@@ -794,3 +794,5 @@
 - 19 Nov 13:55 PKT checkpoint, QC1e D1 founder+awam built
 
 - 19 Nov 14:02 PKT checkpoint, QC1e D1 waits installs
+
+- 19 Nov 14:05 PKT QC1e D1 founder install OK 4/4 (his paste 13:51); awam pull build FAIL fixed (manifest + package.json + bun install); flaky snap_seal test fixed; awam QC1e row added

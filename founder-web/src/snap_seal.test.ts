@@ -13,7 +13,8 @@ test("round trip: the plain text comes back exactly", async () => {
 });
 test("at rest it is ciphertext: no part of the plain text is in the stored string", async () => {
   const k = await snapKey(vk(), DEV), s = await seal(k, PLAIN, DEV, 1);
-  for (const w of ["BRIDGE-DATA", "secret", "ok", "123"]) expect(s.includes(w)).toBe(false);
+  for (const w of ["BRIDGE-DATA", "secret"])   // longer words only: a 2-3 char word ("ok") can sit inside random base64 by chance (flaky 1 in ~3)
+    expect(s.includes(w)).toBe(false);
   expect(JSON.parse(s).v).toBe(1);
 });
 test("a fresh IV every time: sealing the same text twice gives different records", async () => {

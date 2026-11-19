@@ -46,3 +46,10 @@ Nothing of AW0 to AW6 is being built now; the founder blueprint (Q1b4, then comp
 Day counts, dates and what is live on 30 Dec: docs/claude/AWAM-LAUNCH-PLAN-19NOV.md (46 working days estimated; launch set Basic, Business, Business Pro + AnexoChat core on 30 Dec; Premium + MAX 31 Dec - 3 Jan; full AnexoChat by 11 Jan; looks and rehearsal 12-15 Jan; 16 Jan travel).
 
 (Updated 19 Nov 11:5x PKT, his order: migration package by package, Basic first, then Business, then Business Pro, gates inside each package; Basic 30 Nov-16 Dec, Business 17-26 Dec, Business Pro 27 Dec-5 Jan, Premium + MAX 6-9 Jan, looks and rehearsal 10-15 Jan, seminar 17 Jan. Details: AWAM-LAUNCH-PLAN-19NOV.md section 3.)
+
+## AWAM QC1e COMPOSE STUDIO EMOJI (his order 19 Nov 2026 13:34 and 13:51 PKT; awam gate and awam pull, never mixed with the founder)
+Same feature as the founder QC1e (docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md), awam glue only: src/components/app/compose/emoji/ + one additive mount in ComposeStudio.tsx (unfrozen for this file only, CORE-UNFREEZE-OK.txt). Shared pure module emoji_pure.ts (bun-tested); data = emojibase-data 17, bundled, English by default.
+- D1 BUILT 19 Nov 14:05 PKT: picker + new-emoji safety. First awam pull FAILED the build (13:51 paste: dependency not installed and emoji files not in DEPLOY-MANIFEST); FIXED 14:05 (manifest has the 5 files + package.json, pull.sh runs bun install when package.json changes). Not green until his re-pull + my Chrome look at 390 / 820 / 1200.
+- D2 (button in box + ':' typeahead): founder AND awam in the same step, separate gates.
+- D3: search is English by default; Urdu / Roman Urdu keywords come after as an extra layer (founder + awam together).
+- D4 (company emoji pack, Business tiers): LAST.

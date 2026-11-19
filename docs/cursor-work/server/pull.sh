@@ -71,6 +71,8 @@ done < <(git show "origin/main:$MANIFEST" 2>/dev/null </dev/null)
 
 build="skipped (code nahi badla)"
 if [ "${#changed[@]}" -gt 0 ]; then
+  # a new dependency in package.json (QC1e: emojibase-data) must be installed BEFORE the build, else the build fails and the files are rolled back
+  case " ${changed[*]} " in *" package.json "*) echo "--- package.json badli: bun install"; bun install > "$BK/install.log" 2>&1 </dev/null || { echo "bun install FAIL, aakhri 8 lines:"; tail -8 "$BK/install.log"; }; ;; esac
   if bun run build:bun > "$BK/build.log" 2>&1 </dev/null; then
     build="OK"
   else
