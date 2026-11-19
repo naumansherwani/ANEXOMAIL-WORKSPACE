@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 19 Nov 2026 13:32 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QC1c F8-5 GREEN by his word 13:20; now QC1e emoji DISCUSSION (2 questions to him: plan ok? button next to Send or inside box); stash@{0} untouched until his haan; then QC2+QC3 21 Nov
+# WORKING NOW (manual checkpoint, 19 Nov 2026 13:32 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QC1e D1 built and pushed 5fa7af3c; waits his founder-install + look, then D2
 NEXT STEP: 
 HIS LAST WORD: 19 Nov 11:39 PKT
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 5fa7af3c 19 Nov 13:32 ledger line 7656c59c
 - 7656c59c 19 Nov 13:32 QC1e D1: emoji picker, Unicode 17, new-emoji safety
 - c34db767 19 Nov 13:24 ledger line f1a6325e
 - f1a6325e 19 Nov 13:24 QC1e emoji research plan, F8-5 open list cleared
 - 65ed9ec2 19 Nov 13:22 ledger line c45952b0
-- c45952b0 19 Nov 13:22 checkpoint 13:27
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -29,4 +29,4 @@ QC1c: 44/44 written. NOT WRITTEN:
 ## >>> 18 NOV 2026 07:2x PKT NOW (his order 07:16, update for Claude after any compaction): PHASES IN HAND = (1) QLIVE-c (package stream limits stream_tier.rs, live drafts SQL E188 [his sql-run OK], simulation test founder-web/sim, 2 real browser bugs fixed) and (2) Q-contacts-kernel (contacts@1 in 
 ## >>> 15 NOV 19:25 HIS ORDER: L closed. NEXT = Q SERIES until complete, THEN S5 (not before). Lovable codes migration phase written in docs/claude/FOUNDER-LOVABLE-MIGRATION-15NOV.md and docs/claude/AWAM-LOVABLE-MIGRATION-15NOV.md (preserve as written, advance technology, fix loopholes, polish). Q s
 ## >>> HANDOFF 14 NOV 07:10 (he is sleeping; read this first tomorrow): DONE and proven: KP3 step 5 GREEN, pre-connect GREEN by his order, clean blueprint (docs/claude/FOUNDER-BLUEPRINT-CLEAN-14NOV.md), audit steps A+B GREEN, audit step C INSTALLED on his server (receipt 35, tests 394, listening aft
-WIP snapshot: refs/wip/last (641bc07445fa56dfc357be2ef42899d317d4bc01)
+WIP snapshot: refs/wip/last (504d4447e4324e9ed7b3f9bdfc083fe3c0b9b315)
