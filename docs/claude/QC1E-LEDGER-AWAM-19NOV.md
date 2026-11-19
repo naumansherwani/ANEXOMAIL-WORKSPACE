@@ -25,3 +25,4 @@ Open: awam pull + live Chrome look, ":" shortcode, D3, D4, emoji box in chat / n
 | 20 Nov 2026 01:51 PKT | His word 01:50: motion for the ":" shortcode list is RESERVED for AnexoChat (docs/claude/anexochat-reserved/SHORTCODE-MOTION-RESERVED-20NOV.md, written in the awam blueprint). Awam mail compose list stays instant: NO awam code change in this step, awam gate stays commit 2e4bd81b (waits his pull.sh). |
 
 | 20 Nov 2026 01:52 PKT | His word 01:52: what is done in D1 + D2 stays INTACT; ONLY the motion and the advanced work related to it goes to AnexoChat, AWAM side. Written in the awam blueprint (ANEXOCHAT = AWAM SIDE line) and in docs/claude/anexochat-reserved/. No code change. |
+| 20 Nov 02:08 PKT | QC1e D2 awam live Chrome look (business.test, 1536): ':smi' list opens over box, ArrowDown+Tab inserts emoji, '12:30' opens no list, Escape closes only the list (compose stays), test draft cleared. 390/820 live look still OPEN. Not GREEN yet. |

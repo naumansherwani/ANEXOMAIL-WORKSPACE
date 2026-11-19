@@ -4165,3 +4165,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - 20 Nov 2026 01:52 PKT QC1e D1 + D2 stay intact; only shortcode motion + related advanced work goes to AnexoChat, awam side (his 01:52), blueprints + ledgers updated
 
 - 20 Nov 01:59 PKT checkpoint, QC1e D2 shortcode built founder + awam, motion reserved for AnexoChat awam side, waits his two pulls
+
+- QC1e D2 live looks recorded 02:08 PKT, WIRED partly, not green, TECH-LAW CHECKED pending
