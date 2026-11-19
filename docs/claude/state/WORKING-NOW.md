@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 19 Nov 2026 14:44 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 19 Nov 2026 14:51 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC1e: founder picker squeeze fixed + awam picker over text, sandbox-proven at 4 sizes, pushed af38094e; waits his founder-install + awam pull then Chrome look; next ':' shortcode, D3
 NEXT STEP: 
 HIS LAST WORD: 19 Nov 11:39 PKT
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- b0673770 19 Nov 14:51 QC1e: WhatsApp-style picker, last 32 emoji, separate founder and awam ledgers
+- 5f68a166 19 Nov 14:44 ledger line 104aa5c8
 - 104aa5c8 19 Nov 14:44 checkpoint 16:25
 - af38094e 19 Nov 14:44 ledger line 5d55af34
 - 5d55af34 19 Nov 14:44 QC1e founder: picker no longer squeezed or clipped in the compose form
-- 2e083d6f 19 Nov 14:40 ledger line dcadc086
-- dcadc086 19 Nov 14:40 QC1e: picker overlay collapse fixed, scrolls into view, proven in sandbox at 4 sizes
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -17,8 +17,8 @@ RULE: finish THIS step first (uncommitted files below are the half-done code), t
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -29,4 +29,4 @@ QC1c: 44/44 written. NOT WRITTEN:
 ## >>> 18 NOV 2026 07:2x PKT NOW (his order 07:16, update for Claude after any compaction): PHASES IN HAND = (1) QLIVE-c (package stream limits stream_tier.rs, live drafts SQL E188 [his sql-run OK], simulation test founder-web/sim, 2 real browser bugs fixed) and (2) Q-contacts-kernel (contacts@1 in 
 ## >>> 15 NOV 19:25 HIS ORDER: L closed. NEXT = Q SERIES until complete, THEN S5 (not before). Lovable codes migration phase written in docs/claude/FOUNDER-LOVABLE-MIGRATION-15NOV.md and docs/claude/AWAM-LOVABLE-MIGRATION-15NOV.md (preserve as written, advance technology, fix loopholes, polish). Q s
 ## >>> HANDOFF 14 NOV 07:10 (he is sleeping; read this first tomorrow): DONE and proven: KP3 step 5 GREEN, pre-connect GREEN by his order, clean blueprint (docs/claude/FOUNDER-BLUEPRINT-CLEAN-14NOV.md), audit steps A+B GREEN, audit step C INSTALLED on his server (receipt 35, tests 394, listening aft
-WIP snapshot: refs/wip/last (cb7242e50b9c4a65b9861055faa7e434296a0275)
+WIP snapshot: refs/wip/last (508f5db033879929c59eae6a321f80cc88d4e42f)
