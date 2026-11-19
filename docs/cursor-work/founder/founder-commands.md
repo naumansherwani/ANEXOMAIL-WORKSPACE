@@ -4175,3 +4175,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - QC1e D2 awam hint live look 02:25 PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED; D3 discussion started
 
 - checkpoint 02:14 PKT
+
+- QC1e D3 FOUNDER gate built 20 Nov 02:50 PKT: Urdu + Roman Urdu search words (574 emoji, emoji_ur_data.ts lazy chunk), search/shortcode use them, English name stays in the row; bun 25/25, tsc clean, build OK; waits founder-install + live Chrome look, not green
