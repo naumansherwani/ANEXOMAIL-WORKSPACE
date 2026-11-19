@@ -1,0 +1,20 @@
+/* QC1e emoji picker, additive. Popover above 640 px, bottom sheet below. Touch targets 44 px. */
+.emo-anchor{position:relative;display:inline-flex}
+.emo-btn{min-width:44px;min-height:44px;padding:0 12px;font-size:18px;line-height:1}
+.emo{position:absolute;bottom:calc(100% + 8px);left:0;z-index:30;width:min(360px,92vw);max-height:min(420px,60vh);display:flex;flex-direction:column;gap:6px;padding:10px;border-radius:16px;border:1px solid var(--mh2,rgba(255,255,255,.14));background:var(--surf2,#101722);box-shadow:0 18px 48px rgba(0,0,0,.5);overflow:hidden}
+.emo-q{min-height:44px;border-radius:12px;border:1px solid var(--mh2,rgba(255,255,255,.14));background:var(--surf,#0b111a);color:var(--fg,#e8eef7);padding:0 12px;font-size:14px}
+.emo-tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.emo-tab{flex:0 0 auto;min-width:44px;min-height:44px;border:0;border-radius:10px;background:transparent;font-size:18px;cursor:pointer}
+.emo-tab[aria-selected=true]{background:rgba(43,136,216,.22)}
+.emo-tone{display:flex;gap:6px;align-items:center;padding:0 2px}
+.emo-sw{width:44px;height:44px;border-radius:50%;border:2px solid transparent;cursor:pointer;background-clip:content-box;padding:12px}
+.emo-sw[aria-checked=true]{border-color:#2b88d8}
+.emo-sw.s0{background-color:#ffcc33}.emo-sw.s1{background-color:#f7d7c4}.emo-sw.s2{background-color:#d8b094}.emo-sw.s3{background-color:#b78660}.emo-sw.s4{background-color:#8a5a3b}.emo-sw.s5{background-color:#4a2f1f}
+.emo-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:2px;overflow-y:auto;min-height:132px}
+.emo-c{min-height:44px;min-width:0;border:0;border-radius:10px;background:transparent;font-size:24px;line-height:1;cursor:pointer;font-family:"Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji",sans-serif}
+.emo-c.act,.emo-c:focus-visible{background:rgba(43,136,216,.28);outline:2px solid #2b88d8;outline-offset:-2px}
+.emo-msg{grid-column:1/-1;margin:8px;font-size:13px;opacity:.8}
+@media (max-width:640px){.emo{position:fixed;left:8px;right:8px;bottom:8px;width:auto;max-height:70vh;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}.emo-grid{grid-template-columns:repeat(7,minmax(0,1fr))}}
+@media (prefers-reduced-motion:reduce){.emo{transition:none}}
+.emo-safe{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:6px 0 0;padding:8px 12px;border-radius:12px;border:1px solid rgba(255,196,107,.6);color:inherit;overflow-wrap:anywhere}
+.emo-words{min-height:44px}

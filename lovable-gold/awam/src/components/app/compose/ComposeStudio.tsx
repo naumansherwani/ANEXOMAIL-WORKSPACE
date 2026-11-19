@@ -22,6 +22,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { FileContextCard } from "@/components/app/compose/FileContextCard";
 import { GhostTextArea } from "@/components/app/compose/GhostTextArea";
+import { EmojiButton } from "@/components/app/compose/emoji/EmojiPicker";
+import { EmojiSafety } from "@/components/app/compose/emoji/EmojiSafety";
 import {
   OutcomesBar,
   promiseKey,
@@ -771,6 +773,11 @@ export function ComposeStudio({
               : "Write the message."
           }
         />
+        {/* QC1e emoji (his order 19 Nov 13:34): same pure module as the founder, awam glue. Additive only. */}
+        <div className="flex flex-wrap items-center gap-2">
+          <EmojiButton area={bodyRef} value={body} onChange={setBody} />
+        </div>
+        <EmojiSafety text={body} onChange={setBody} />
 
         {proMail ? (
           <FileContextCard

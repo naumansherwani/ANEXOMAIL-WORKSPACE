@@ -3769,3 +3769,7 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 19 Nov 13:40 PKT QC1e D1 built (emoji picker + new-emoji safety), tests pass, awaits install
 
 - 19 Nov 13:45 PKT checkpoint, QC1e D1 built
+
+- 19 Nov 13:50 PKT QC1e D1 awam glue: same pure module, awam compose mount (his order 13:34, separate awam gate)
+
+- 19 Nov 13:52 PKT QC1e D1 awam glue: same pure module, awam compose mount (his order 13:34)

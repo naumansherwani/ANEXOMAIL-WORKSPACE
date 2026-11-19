@@ -1,0 +1,1 @@
+src/components/app/compose/ComposeStudio.tsx  # his word 19 Nov 2026 13:34 PKT: emoji picker for awam, additive mount only

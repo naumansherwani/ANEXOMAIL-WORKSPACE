@@ -289,6 +289,12 @@ src/components/app/compose/ComposeStudio.tsx
 src/components/app/compose/FileContextCard.tsx
 src/components/app/compose/GhostTextArea.tsx
 src/components/app/compose/OutcomesBar.tsx
+src/components/app/compose/emoji/00-FOUNDER-TECH-RULE.md
+src/components/app/compose/emoji/EmojiPicker.tsx
+src/components/app/compose/emoji/EmojiSafety.tsx
+src/components/app/compose/emoji/emoji.css
+src/components/app/compose/emoji/emoji_pure.test.ts
+src/components/app/compose/emoji/emoji_pure.ts
 src/components/app/crm/00-FOUNDER-TECH-RULE.md
 src/components/app/crm/CrmBits.tsx
 src/components/app/crm/CrmCapture.tsx
