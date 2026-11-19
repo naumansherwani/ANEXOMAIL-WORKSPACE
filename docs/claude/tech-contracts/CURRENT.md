@@ -1550,3 +1550,5 @@ Technology: React 19 + TypeScript; pure module founder-web/src/emoji_pure.ts (bu
 - 20.11.26 03:35 PKT QC1e D4A awam: plan points + web research (image-webp, OWASP upload) written
 
 - 20.11.26 03:50 PKT QC1e D4A checkpoint: waits his sql-run E193 paste
+
+- 20.11.26 03:30 PKT QC1e D4A: E193 first run on his DB: 3 FAIL (service_role write grant, selftest trigger order, trigger count); fixed in same file

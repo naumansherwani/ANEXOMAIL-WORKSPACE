@@ -283,8 +283,8 @@ alter table public.company_emoji        enable row level security;
 alter table public.company_emoji        force  row level security;
 alter table public.company_emoji_ledger enable row level security;
 alter table public.company_emoji_ledger force  row level security;
-revoke all on public.company_emoji        from public, anon, authenticated;
-revoke all on public.company_emoji_ledger from public, anon, authenticated;
+revoke all on public.company_emoji        from public, anon, authenticated, service_role;
+revoke all on public.company_emoji_ledger from public, anon, authenticated, service_role;
 grant select on public.company_emoji        to service_role;     -- likhna sirf doors se
 grant select on public.company_emoji_ledger to service_role;
 
@@ -540,6 +540,7 @@ grant execute on function public.company_emoji_posture193()                     
 notify pgrst, 'reload schema';
 
 -- ============================ PART 2 — self-test (alag transaction, sab rollback) ===============================
+-- (trigger CHECK se pehle chalta hai: company ka plan Business na ho to TIER pehle rokta hai — dono sahi refusal gine jate hain)
 -- Har jaanch ek `t(name, ok)`; aakhir mein sab ka jama. Test data ek sub-block mein banta hai jo aakhir mein jaan-boojh kar fail hota hai (rollback).
 create or replace function public.company_emoji_selftest193()
 returns jsonb
@@ -621,8 +622,8 @@ begin
       begin
         insert into public.company_emoji (org_id, shortcode, sha256, bytes, w, h, data, created_by)
         values (v_org, 'Bad Name!', v_sha, octet_length(v_webp), 64, 64, v_webp, v_owner);
-      exception when check_violation then
-        v_ok := true;
+      exception when others then
+        v_ok := sqlstate in ('23514', 'AX193');
       end;
       res := res || jsonb_build_object('t', 'bad shortcode shape refused by CHECK', 'ok', v_ok);
 
@@ -630,8 +631,8 @@ begin
       begin
         insert into public.company_emoji (org_id, shortcode, sha256, bytes, w, h, data, created_by)
         values (v_org, 'toobig', v_sha, 70000, 64, 64, v_webp, v_owner);
-      exception when check_violation then
-        v_ok := true;
+      exception when others then
+        v_ok := sqlstate in ('23514', 'AX193');
       end;
       res := res || jsonb_build_object('t', 'oversize (>64 KB) refused', 'ok', v_ok);
 
@@ -639,8 +640,8 @@ begin
       begin
         insert into public.company_emoji (org_id, shortcode, sha256, bytes, w, h, data, created_by)
         values (v_org, 'tinyimg', v_sha, octet_length(v_webp), 8, 8, v_webp, v_owner);
-      exception when check_violation then
-        v_ok := true;
+      exception when others then
+        v_ok := sqlstate in ('23514', 'AX193');
       end;
       res := res || jsonb_build_object('t', 'dimension out of 16..256 refused', 'ok', v_ok);
 
