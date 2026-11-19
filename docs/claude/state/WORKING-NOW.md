@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 04:42 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 04:52 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC1e D4A: manifest fix for org emoji route
 NEXT STEP: AWAM TECH LAW: footer tech only; D4A pull again, then live look
 HIS LAST WORD: his 14:46/14:47/14:53: WhatsApp look, 32 recents, founder and awam ledgers separate with time and date, keep everything in repo and context
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- ad74e819 20 Nov 04:52 QC1e D4A: Rust wires ClamAV (fail closed) and Hetzner Storage Box for company emoji (awam only)
+- a12ab362 20 Nov 04:42 ledger line c3b82931
 - c3b82931 20 Nov 04:42 QC1e D4A G4: plan to remove Bun from awam (static SPA bundle served by Caddy)
 - 1fce6473 20 Nov 04:41 ledger line a22d2974
 - a22d2974 20 Nov 04:41 QC1e D4A: Bun audit (zero Bun in D4A code), G4 moved to Bun migration plan
-- a0d60c83 20 Nov 04:36 ledger line 9ae5d391
-- 9ae5d391 20 Nov 04:36 QC1e D4A: E193 advance technology (ClamAV scan state + Storage Box key), awam only
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -42,4 +42,4 @@ QC1c: 44/44 written. NOT WRITTEN:
 ## >>> 18 NOV 2026 07:2x PKT NOW (his order 07:16, update for Claude after any compaction): PHASES IN HAND = (1) QLIVE-c (package stream limits stream_tier.rs, live drafts SQL E188 [his sql-run OK], simulation test founder-web/sim, 2 real browser bugs fixed) and (2) Q-contacts-kernel (contacts@1 in 
 ## >>> 15 NOV 19:25 HIS ORDER: L closed. NEXT = Q SERIES until complete, THEN S5 (not before). Lovable codes migration phase written in docs/claude/FOUNDER-LOVABLE-MIGRATION-15NOV.md and docs/claude/AWAM-LOVABLE-MIGRATION-15NOV.md (preserve as written, advance technology, fix loopholes, polish). Q s
 ## >>> HANDOFF 14 NOV 07:10 (he is sleeping; read this first tomorrow): DONE and proven: KP3 step 5 GREEN, pre-connect GREEN by his order, clean blueprint (docs/claude/FOUNDER-BLUEPRINT-CLEAN-14NOV.md), audit steps A+B GREEN, audit step C INSTALLED on his server (receipt 35, tests 394, listening aft
-WIP snapshot: refs/wip/last (8e3aa08c4e038c1525f30b630ac678cf1fc1069b)
+WIP snapshot: refs/wip/last (eff1407ccd829a738b7be33530a82486d95a788a)
