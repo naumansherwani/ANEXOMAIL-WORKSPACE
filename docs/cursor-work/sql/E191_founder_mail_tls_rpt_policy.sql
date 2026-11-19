@@ -354,8 +354,8 @@ begin
   if p_grant is null then return jsonb_build_object('ok', false, 'error', 'a fresh passkey grant is required'); end if;
   perform pg_advisory_xact_lock(hashtextextended(p_mailbox::text, 191));
   select * into g from public.founder_stepups where id = p_grant;
-  -- the grant must be the founder's own, already CONSUMED for exactly this action in the last 2 minutes, and never used to loosen before
-  if not found or g.user_id is distinct from p_actor or g.used_at is null or g.used_at < now() - interval '2 minutes' or g.used_for is distinct from 'mail.tls.loosen' then
+  -- the grant must be the founder's own (scope g3, E118: it names its action), already CONSUMED for exactly this action in the last 2 minutes, and never used to loosen before
+  if not found or g.user_id is distinct from p_actor or g.used_at is null or g.used_at < now() - interval '2 minutes' or g.used_for is distinct from 'mail.tls.loosen' or g.scope is distinct from 'g3' or g.action is distinct from 'mail.tls.loosen' then
     return jsonb_build_object('ok', false, 'error', 'the passkey grant is missing, not for this action, or too old');
   end if;
   if exists (select 1 from public.fmail_tls_grant191 where grant_id = p_grant) then return jsonb_build_object('ok', false, 'error', 'this passkey grant was already used to loosen'); end if;
@@ -495,8 +495,8 @@ begin
       res := res || jsonb_build_object('name', 'loosening without a grant is refused', 'ok', (public.fmail_tls_policy_loosen191(v_uid, v_box, 2, 'old server of a client', null) ->> 'ok') = 'false');
       res := res || jsonb_build_object('name', 'loosening with a grant that does not exist is refused', 'ok', (public.fmail_tls_policy_loosen191(v_uid, v_box, 2, 'old server of a client', gen_random_uuid()) ->> 'ok') = 'false');
       select id into v_dev from public.founder_devices limit 1;
-      insert into public.founder_stepups (id, user_id, device_id, credential_id, scope, expires_at, used_at, used_for) values (v_g, v_uid, v_dev, 'SELFTEST191CRED00000001', 'g3', now() + interval '5 minutes', now(), 'mail.tls.loosen');
-      insert into public.founder_stepups (id, user_id, device_id, credential_id, scope, expires_at, used_at, used_for) values (v_g2, v_uid, v_dev, 'SELFTEST191CRED00000001', 'g3', now() + interval '5 minutes', now(), 'something.else');
+      insert into public.founder_stepups (id, user_id, device_id, credential_id, scope, action, action_hash, expires_at, used_at, used_for) values (v_g, v_uid, v_dev, 'SELFTEST191CRED00000001', 'g3', 'mail.tls.loosen', repeat('a', 64), now() + interval '5 minutes', now(), 'mail.tls.loosen');
+      insert into public.founder_stepups (id, user_id, device_id, credential_id, scope, action, action_hash, expires_at, used_at, used_for) values (v_g2, v_uid, v_dev, 'SELFTEST191CRED00000001', 'g3', 'something.else', repeat('a', 64), now() + interval '5 minutes', now(), 'something.else');
       res := res || jsonb_build_object('name', 'a grant used for another action can not loosen', 'ok', (public.fmail_tls_policy_loosen191(v_uid, v_box, 2, 'old server of a client', v_g2) ->> 'ok') = 'false');
       res := res || jsonb_build_object('name', 'a reason shorter than 8 characters is refused', 'ok', (public.fmail_tls_policy_loosen191(v_uid, v_box, 2, 'short', v_g) ->> 'ok') = 'false');
       res := res || jsonb_build_object('name', 'more than 24 hours is refused', 'ok', (public.fmail_tls_policy_loosen191(v_uid, v_box, 25, 'old server of a client', v_g) ->> 'ok') = 'false');
@@ -509,7 +509,7 @@ begin
       res := res || jsonb_build_object('name', 'an expired loosening is strict again by itself', 'ok', (public.fmail_tls_policy_get191(v_uid, v_box) ->> 'strict') = 'true');
       v_r := public.fmail_tls_policy_tighten191(v_uid, v_box);
       res := res || jsonb_build_object('name', 'tightening clears the row and notes that it had expired', 'ok', (v_r ->> 'changed') = 'true' and (v_r ->> 'was_expired') = 'true' and not exists (select 1 from public.fmail_tls_policy191 where mailbox_id = v_box and loosened_until is not null));
-      insert into public.founder_stepups (id, user_id, device_id, credential_id, scope, expires_at, used_at, used_for) values (v_g3, v_uid, v_dev, 'SELFTEST191CRED00000001', 'g3', now() + interval '5 minutes', now(), 'mail.tls.loosen');
+      insert into public.founder_stepups (id, user_id, device_id, credential_id, scope, action, action_hash, expires_at, used_at, used_for) values (v_g3, v_uid, v_dev, 'SELFTEST191CRED00000001', 'g3', 'mail.tls.loosen', repeat('a', 64), now() + interval '5 minutes', now(), 'mail.tls.loosen');
       perform public.fmail_tls_policy_loosen191(v_uid, v_box, 1, 'second loosening today', v_g3);
       res := res || jsonb_build_object('name', 'each used grant is remembered once', 'ok', (select count(*) from public.fmail_tls_grant191 where mailbox_id = v_box) = 2);
       begin delete from public.fmail_tls_grant191 where mailbox_id = v_box; v_ok := false; exception when others then v_ok := true; end;
