@@ -438,7 +438,7 @@ begin
     return jsonb_build_object('ok', false, 'error', 'not_found');
   end if;
   return jsonb_build_object('ok', true, 'mime', r.mime, 'etag', r.sha256, 'bytes', r.bytes,
-                            'data_b64', encode(r.data, 'base64'), 'storage', r.storage);
+                            'data_b64', encode(r.data, 'base64'), 'storage', r.storage, 'storage_key', r.storage_key, 'scan_state', r.scan_state);
 end $$;
 
 create or replace function public.company_emoji_verify(p_org uuid)
@@ -479,7 +479,7 @@ declare
     'company_emoji_add(uuid,uuid,text,text,text,integer,integer,bytea)', 'company_emoji_remove(uuid,uuid,text)',
     'company_emoji_rename_alt(uuid,uuid,text,text)', 'company_emoji_list(uuid)', 'company_emoji_get(uuid,text)',
     'company_emoji_verify(uuid)', 'company_emoji_quota(uuid)', 'company_emoji_ledger_append(uuid,text,text,text,uuid,jsonb)',
-    'company_emoji_role(uuid,uuid)'];
+    'company_emoji_role(uuid,uuid)', 'company_emoji_scan_set(uuid,text,text,text)', 'company_emoji_store_move(uuid,text)'];
   d text;
   v_door_ok boolean := true;
 begin
@@ -493,6 +493,9 @@ begin
   end loop;
   return jsonb_build_object(
     'doors_service_only', v_door_ok,
+    'advance_cols', (select count(*) from information_schema.columns where table_schema = 'public' and table_name = 'company_emoji' and column_name in ('scan_state', 'scan_engine', 'scanned_at', 'storage_key')),
+    'advance_checks', (select count(*) from pg_constraint where conrelid = 'public.company_emoji'::regclass and conname in ('company_emoji_scan_chk', 'company_emoji_infected_chk', 'company_emoji_key_chk')),
+    'ledger_actions_ok', exists (select 1 from pg_constraint where conname = 'company_emoji_ledger_action_chk' and conrelid = 'public.company_emoji_ledger'::regclass and pg_get_constraintdef(oid) like '%store%'),
     'rls_forced', (select bool_and(c.relrowsecurity and c.relforcerowsecurity) from pg_class c
                     where c.oid in ('public.company_emoji'::regclass, 'public.company_emoji_ledger'::regclass)),
     'anon_no_table_access', not (has_table_privilege('anon', 'public.company_emoji', 'select') or has_table_privilege('authenticated', 'public.company_emoji', 'select')
@@ -507,6 +510,104 @@ begin
     'tiers', jsonb_build_object('business', public.company_emoji_tier_limit('business'), 'business_pro', public.company_emoji_tier_limit('business_pro'),
                                 'business_premium', public.company_emoji_tier_limit('business_premium'), 'business_max', public.company_emoji_tier_limit('business_max'),
                                 'basic', public.company_emoji_tier_limit('basic'), 'pro', public.company_emoji_tier_limit('pro')));
+end $$;
+
+-- 7b. ADVANCE TECHNOLOGY (founder 20 Nov 2026 04:28 law: awam = landing-footer technology only): ClamAV scan state + Hetzner Storage Box key --------
+--     Additive and idempotent; nothing above changes. Footer list: "PostgreSQL with row-level security · Hetzner Storage Box for attachments · ClamAV virus scanning".
+--     Rule enforced HERE (the last wall): a picture can only move to the Storage Box AFTER ClamAV said clean; an infected picture can never be active.
+alter table public.company_emoji add column if not exists scan_state  text not null default 'unscanned';
+alter table public.company_emoji add column if not exists scan_engine text;
+alter table public.company_emoji add column if not exists scanned_at  timestamptz;
+alter table public.company_emoji add column if not exists storage_key text;
+
+do $$
+begin
+  if not exists (select 1 from pg_constraint where conname = 'company_emoji_scan_chk' and conrelid = 'public.company_emoji'::regclass) then
+    alter table public.company_emoji add constraint company_emoji_scan_chk check (scan_state in ('unscanned', 'clean', 'infected'));
+  end if;
+  -- infected = never active
+  if not exists (select 1 from pg_constraint where conname = 'company_emoji_infected_chk' and conrelid = 'public.company_emoji'::regclass) then
+    alter table public.company_emoji add constraint company_emoji_infected_chk check (scan_state <> 'infected' or status = 'removed');
+  end if;
+  -- Storage Box key: content-addressed by sha256 inside the company, and only for clean pictures
+  if not exists (select 1 from pg_constraint where conname = 'company_emoji_key_chk' and conrelid = 'public.company_emoji'::regclass) then
+    alter table public.company_emoji add constraint company_emoji_key_chk check (
+      (storage = 'pg' and storage_key is null)
+      or (storage = 'hetzner' and storage_key = 'emoji/' || org_id::text || '/' || sha256 || '.webp' and scan_state = 'clean')
+      or status = 'removed');
+  end if;
+  -- the ledger now also records scan and store events (replace the 3-action constraint once)
+  if exists (select 1 from pg_constraint where conname = 'company_emoji_ledger_action_chk' and conrelid = 'public.company_emoji_ledger'::regclass
+             and pg_get_constraintdef(oid) not like '%scan%') then
+    alter table public.company_emoji_ledger drop constraint company_emoji_ledger_action_chk;
+    alter table public.company_emoji_ledger add constraint company_emoji_ledger_action_chk check (action in ('add', 'remove', 'rename', 'scan', 'store'));
+  end if;
+end $$;
+
+-- the Rust door asks ClamAV (clamd INSTREAM, fail closed) and reports here. System door: no actor (ledger actor = all-zero uuid).
+create or replace function public.company_emoji_scan_set(p_org uuid, p_code text, p_state text, p_engine text)
+returns jsonb
+language plpgsql
+volatile
+security definer
+set search_path = public
+as $$
+declare
+  v_code text := lower(btrim(coalesce(p_code, '')));
+  v_sha  text;
+  v_seq  bigint;
+begin
+  if p_state not in ('clean', 'infected') then
+    raise exception 'E193 SCAN: state must be clean or infected' using errcode = 'AX193';
+  end if;
+  if p_state = 'infected' then
+    -- infected: remove at once (bytes cleared), keep the ledger line
+    update public.company_emoji e
+       set scan_state = 'infected', scan_engine = left(coalesce(p_engine, ''), 80), scanned_at = now(),
+           status = 'removed', data = null, removed_by = '00000000-0000-0000-0000-000000000000', removed_at = now()
+     where e.org_id = p_org and e.shortcode = v_code and e.status = 'active' returning e.sha256 into v_sha;
+  else
+    update public.company_emoji e
+       set scan_state = 'clean', scan_engine = left(coalesce(p_engine, ''), 80), scanned_at = now()
+     where e.org_id = p_org and e.shortcode = v_code and e.status = 'active' returning e.sha256 into v_sha;
+  end if;
+  if v_sha is null then
+    return jsonb_build_object('ok', false, 'error', 'not_found');
+  end if;
+  v_seq := public.company_emoji_ledger_append(p_org, 'scan', v_code, v_sha, '00000000-0000-0000-0000-000000000000'::uuid,
+             jsonb_build_object('state', p_state, 'engine', left(coalesce(p_engine, ''), 80)));
+  return jsonb_build_object('ok', true, 'shortcode', v_code, 'scan_state', p_state, 'ledger_seq', v_seq);
+end $$;
+
+-- after the Storage Box accepted the bytes (key = emoji/<org>/<sha256>.webp), move the row: bytes leave Postgres. ONLY after clean.
+create or replace function public.company_emoji_store_move(p_org uuid, p_code text)
+returns jsonb
+language plpgsql
+volatile
+security definer
+set search_path = public
+as $$
+declare
+  v_code text := lower(btrim(coalesce(p_code, '')));
+  r      public.company_emoji%rowtype;
+  v_seq  bigint;
+begin
+  select * into r from public.company_emoji e where e.org_id = p_org and e.shortcode = v_code and e.status = 'active' for update;
+  if not found then
+    return jsonb_build_object('ok', false, 'error', 'not_found');
+  end if;
+  if r.scan_state <> 'clean' then
+    raise exception 'E193 SCAN: only a ClamAV-clean picture may move to the Storage Box (state: %)', r.scan_state using errcode = 'AX193';
+  end if;
+  if r.storage = 'hetzner' then
+    return jsonb_build_object('ok', true, 'shortcode', v_code, 'storage', 'hetzner', 'already', true);
+  end if;
+  update public.company_emoji e
+     set storage = 'hetzner', storage_key = 'emoji/' || r.org_id::text || '/' || r.sha256 || '.webp', data = null
+   where e.id = r.id;
+  v_seq := public.company_emoji_ledger_append(p_org, 'store', v_code, r.sha256, '00000000-0000-0000-0000-000000000000'::uuid,
+             jsonb_build_object('storage', 'hetzner', 'key', 'emoji/' || r.org_id::text || '/' || r.sha256 || '.webp'));
+  return jsonb_build_object('ok', true, 'shortcode', v_code, 'storage', 'hetzner', 'storage_key', 'emoji/' || r.org_id::text || '/' || r.sha256 || '.webp', 'ledger_seq', v_seq);
 end $$;
 
 -- 8. execute: sirf service_role -----------------------------------------------------------------------------------
@@ -536,6 +637,10 @@ grant execute on function public.company_emoji_list(uuid)                       
 grant execute on function public.company_emoji_get(uuid, text)                                    to service_role;
 grant execute on function public.company_emoji_verify(uuid)                                       to service_role;
 grant execute on function public.company_emoji_posture193()                                       to service_role;
+revoke all on function public.company_emoji_scan_set(uuid, text, text, text) from public, anon, authenticated;
+revoke all on function public.company_emoji_store_move(uuid, text)           from public, anon, authenticated;
+grant execute on function public.company_emoji_scan_set(uuid, text, text, text) to service_role;
+grant execute on function public.company_emoji_store_move(uuid, text)           to service_role;
 
 notify pgrst, 'reload schema';
 
@@ -573,6 +678,10 @@ begin
   v_sha := encode(sha256(v_webp), 'hex');
   res := res || jsonb_build_object('t', 'row hash is deterministic and 64 hex',
     'ok', public.company_emoji_row_hash('a', gen_random_uuid(), 'add', 'x', null, gen_random_uuid(), '{}'::jsonb, now()) ~ '^[0-9a-f]{64}$');
+
+  res := res || jsonb_build_object('t', 'advance: scan + Storage Box columns, 3 checks, ledger knows scan/store',
+    'ok', (public.company_emoji_posture193() ->> 'advance_cols')::int = 4 and (public.company_emoji_posture193() ->> 'advance_checks')::int = 3
+          and (public.company_emoji_posture193() ->> 'ledger_actions_ok')::boolean);
 
   -- asli data: koi bhi owner wali company (kuch na ho to yeh hissa chhoota hua gina jata hai, fail nahi)
   select m.org_id, m.user_id into v_org, v_owner
@@ -678,6 +787,21 @@ begin
         res := res || jsonb_build_object('t', 'get returns bytes + etag = sha', 'ok', (v_json ->> 'ok')::boolean and (v_json ->> 'etag') = v_sha);
         v_json := public.company_emoji_list(v_org);
         res := res || jsonb_build_object('t', 'list has it, no bytes in list', 'ok', v_json::text like '%selftest-logo%' and v_json::text not like '%data_b64%');
+
+        v_ok := false;
+        begin
+          perform public.company_emoji_store_move(v_org, 'selftest-logo');          -- not scanned yet: must be refused
+        exception when others then
+          v_ok := sqlerrm like 'E193 SCAN%';
+        end;
+        res := res || jsonb_build_object('t', 'advance: Storage Box move refused before ClamAV clean', 'ok', v_ok);
+
+        v_json := public.company_emoji_scan_set(v_org, 'selftest-logo', 'clean', 'selftest-clamav');
+        res := res || jsonb_build_object('t', 'advance: scan clean recorded + ledger line', 'ok', (v_json ->> 'ok')::boolean and (v_json ->> 'scan_state') = 'clean');
+        v_json := public.company_emoji_store_move(v_org, 'selftest-logo');
+        select count(*) into v_n from public.company_emoji e where e.org_id = v_org and e.shortcode = 'selftest-logo' and e.storage = 'hetzner'
+          and e.data is null and e.storage_key = 'emoji/' || v_org::text || '/' || v_sha || '.webp';
+        res := res || jsonb_build_object('t', 'advance: clean picture moved to Storage Box key, bytes left Postgres', 'ok', (v_json ->> 'ok')::boolean and v_n = 1);
 
         v_json := public.company_emoji_remove(v_org, v_owner, 'selftest-logo');
         select count(*) into v_n from public.company_emoji e where e.org_id = v_org and e.shortcode = 'selftest-logo' and e.status = 'removed' and e.data is null;

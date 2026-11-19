@@ -29,7 +29,7 @@ Rule for every awam phase: write the code ONLY on this list, check each phase ag
 | P4 | TS pure module + tests | React 19 + TypeScript | pulled 03:50 |
 | P5 | Picker Company tab, ':' list, screen now Org Center > Emoji | React 19, TanStack Router, Radix/shadcn | pull FAILED 04:24: manifest-sync lost the renamed route file (git mv shows 'old -> new'); FIXED 20.11.26 04:34 PKT (entry added, sync script patched); needs his pull again |
 | P6 | Manifest + gates | n/a | done |
-| G1 | bytes to Hetzner Storage Box | Hetzner Storage Box | OPEN |
-| G2 | ClamAV on upload (fail closed) | ClamAV | OPEN (client written, not wired) |
+| G1 | bytes to Hetzner Storage Box | Hetzner Storage Box | SQL side WRITTEN 20.11.26 04:36 PKT (E193 edited: storage_key, store_move after clean); Rust upload to the Box = OPEN (needs his Storage Box access) |
+| G2 | ClamAV on upload (fail closed) | ClamAV | SQL side WRITTEN 20.11.26 04:36 PKT (scan_state, scan_set, infected never active); Rust clamd call = OPEN (needs clamd address) |
 | G3 | upload through the Rust WASM kernel RPC (700 KB) | Rust WebAssembly kernel, WebTransport | OPEN, unproven live |
 | G4 | awam deploy builds with Bun | not on footer list | OPEN, his decision |

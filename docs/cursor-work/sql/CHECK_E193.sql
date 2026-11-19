@@ -9,4 +9,5 @@ union all select 'E193 service_role can only read the tables (every write is a d
 union all select 'E193 3 triggers (guard + ledger update/delete + ledger truncate)', (public.company_emoji_posture193() ->> 'triggers') = '3', 6
 union all select 'E193 tier limits business 10 / premium 50 / max 200', (public.company_emoji_posture193() #>> '{tiers,business}') = '10' and (public.company_emoji_posture193() #>> '{tiers,business_premium}') = '50' and (public.company_emoji_posture193() #>> '{tiers,business_max}') = '200', 7
 union all select 'E193 every company chain verifies', not exists (select 1 from (select distinct org_id from public.company_emoji_ledger) o where not coalesce((public.company_emoji_verify(o.org_id) ->> 'ok')::boolean, false)), 8
+union all select 'E193 advance: ClamAV scan + Storage Box columns, 3 checks, ledger scan/store', (public.company_emoji_posture193() ->> 'advance_cols')::int = 4 and (public.company_emoji_posture193() ->> 'advance_checks')::int = 3 and (public.company_emoji_posture193() ->> 'ledger_actions_ok')::boolean, 9
 ) t order by n;
