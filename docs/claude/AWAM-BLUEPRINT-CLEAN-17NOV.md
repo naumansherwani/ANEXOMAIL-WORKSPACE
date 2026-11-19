@@ -75,3 +75,4 @@ Message boxes found in awam code, to take the same EmojiBox one by one (each its
 - QC1E D4A (20.11.26 04:34 PKT): his pull failed because the renamed route file was missing from the manifest; FIXED; P1-P6 + gaps G1-G4 table in AWAM-TECH-LAW-FOOTER-20NOV.md; waits his awam pull.
 - QC1E D4A (20.11.26 04:36 PKT): E193 edited to footer technology (ClamAV + Hetzner Storage Box state in PostgreSQL RLS), tested on real PG17 22/22; waits his sql-run E193 + awam pull.
 - QC1E D4A G4 (20.11.26 04:42 PKT): remove Bun from awam = static SPA bundle served by Caddy (plan in AWAM-TECH-LAW-FOOTER-20NOV.md); sandbox build proven; waits his Caddy read-only paste.
+- QC1E D4A (20.11.26 04:52 PKT): G1 Storage Box + G2 ClamAV WIRED in Rust (sandbox 35 tests); waits his sql-run then Rust install; G3 + G4 open.

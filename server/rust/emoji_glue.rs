@@ -23,6 +23,9 @@
 use crate::emoji_core as core;
 #[path = "emoji_img.rs"]
 mod img;
+// ClamAV (clamd INSTREAM, std only, tested in mail_inline_core.rs); the same file also carries the D4B mail MIME builder
+#[path = "mail_inline_core.rs"]
+mod inl;
 use axum::{http::StatusCode, response::IntoResponse};
 use base64::Engine as _;
 use serde_json::{json, Value};
@@ -172,6 +175,52 @@ fn sql_fail(e: &str) -> Resp {
     }
 }
 
+// ---- advance technology (footer list: ClamAV + Hetzner Storage Box), his law 20 Nov 2026 04:28 -----------------------------------
+// ClamAV: the clamd that already runs on his server (127.0.0.1:3310, shared with the founder mail intake). EMOJI_CLAMD or FMAIL_CLAMD overrides.
+// FAIL CLOSED: if clamd cannot answer, the upload is refused and nothing is saved.
+fn clamd_addr() -> String {
+    for k in ["EMOJI_CLAMD", "FMAIL_CLAMD"] {
+        let v = crate::env_var(k);
+        if !v.trim().is_empty() {
+            return v.trim().to_string();
+        }
+    }
+    "127.0.0.1:3310".to_string()
+}
+// Hetzner Storage Box = the mount he already uses for attachments (/mnt/anexomail-box). Key = emoji/<org>/<sha256>.webp (content addressed).
+fn box_root() -> String {
+    let v = crate::env_var("EMOJI_BOX_DIR");
+    if v.starts_with('/') && v.len() > 1 { v.trim_end_matches('/').to_string() } else { "/mnt/anexomail-box".to_string() }
+}
+fn box_key(org: &str, sha: &str) -> Option<String> {
+    if !is_uuid(org) || !core::valid_sha(sha) {
+        return None;
+    }
+    Some(format!("emoji/{}/{}.webp", org.to_ascii_lowercase(), sha))
+}
+/// write atomically (tmp + rename) and read back + compare the sha: the Box is trusted only after it returns the same bytes
+fn box_put(root: &str, key: &str, bytes: &[u8], sha: &str) -> Result<(), String> {
+    let full = format!("{}/{}", root, key);
+    let dir = std::path::Path::new(&full).parent().ok_or("box path")?.to_path_buf();
+    std::fs::create_dir_all(&dir).map_err(|e| format!("box mkdir: {e}"))?;
+    let tmp = format!("{full}.tmp");
+    std::fs::write(&tmp, bytes).map_err(|e| format!("box write: {e}"))?;
+    std::fs::rename(&tmp, &full).map_err(|e| format!("box rename: {e}"))?;
+    let back = std::fs::read(&full).map_err(|e| format!("box read back: {e}"))?;
+    if hex(&Sha256::digest(&back)) != sha {
+        let _ = std::fs::remove_file(&full);
+        return Err("box read-back sha mismatch".into());
+    }
+    Ok(())
+}
+fn box_get(root: &str, key: &str, sha: &str) -> Result<Vec<u8>, String> {
+    let b = std::fs::read(format!("{}/{}", root, key)).map_err(|e| format!("box read: {e}"))?;
+    if hex(&Sha256::digest(&b)) != sha {
+        return Err("box file sha mismatch".into());
+    }
+    Ok(b)
+}
+
 fn hex(b: &[u8]) -> String {
     b.iter().map(|x| format!("{:02x}", x)).collect()
 }
@@ -221,7 +270,21 @@ async fn get(c: &Ctx, input: &Value) -> Resp {
         Err(m) => return fail(StatusCode::UNPROCESSABLE_ENTITY, "bad_code", m),
     };
     match crate::sb_rpc("company_emoji_get", json!({ "p_org": c.org_id, "p_code": code })).await {
-        Ok(v) if v.get("ok").and_then(|x| x.as_bool()) == Some(true) => crate::ok(v).into_response(),
+        Ok(mut v) if v.get("ok").and_then(|x| x.as_bool()) == Some(true) => {
+            // bytes that live in the Hetzner Storage Box are read back and verified against the sha before they leave the server
+            if st(&v, "storage") == "hetzner" {
+                let sha = st(&v, "etag");
+                let key = st(&v, "storage_key");
+                let got = match tokio::task::spawn_blocking(move || box_get(&box_root(), &key, &sha)).await {
+                    Ok(Ok(b)) => b,
+                    _ => return fail(StatusCode::BAD_GATEWAY, "store_unavailable", "The picture store did not answer. Try again."),
+                };
+                if let Some(o) = v.as_object_mut() {
+                    o.insert("data_b64".into(), json!(base64::engine::general_purpose::STANDARD.encode(&got)));
+                }
+            }
+            crate::ok(v).into_response()
+        }
         Ok(_) => fail(StatusCode::NOT_FOUND, "not_found", "not_found"),
         Err(e) => sql_fail(&e),
     }
@@ -282,6 +345,19 @@ async fn add(c: &Ctx, input: &Value) -> Resp {
     };
     drop(_permit);
     let sha = hex(&Sha256::digest(&cleaned.webp));
+    // ClamAV FIRST (fail closed): an infected or un-scannable picture is never saved
+    {
+        let (addr, bytes) = (clamd_addr(), cleaned.webp.clone());
+        match tokio::task::spawn_blocking(move || inl::clamd_instream(&addr, &bytes)).await {
+            Ok(Ok(())) => {}
+            Ok(Err(m)) if m.contains("FOUND") => {
+                return fail(StatusCode::UNPROCESSABLE_ENTITY, "virus", "This picture was refused by the virus scanner.");
+            }
+            _ => {
+                return fail(StatusCode::SERVICE_UNAVAILABLE, "scanner_unavailable", "Virus scanning is not available right now. Nothing was saved. Try again in a moment.");
+            }
+        }
+    }
     let res = crate::sb_rpc(
         "company_emoji_add",
         json!({
@@ -291,7 +367,21 @@ async fn add(c: &Ctx, input: &Value) -> Resp {
     )
     .await;
     match res {
-        Ok(v) => crate::ok(json!({ "added": v, "w": cleaned.w, "h": cleaned.h, "bytes": cleaned.webp.len(), "step": cleaned.step })).into_response(),
+        Ok(v) => {
+            // record the scan, then move the bytes to the Storage Box (SQL refuses the move unless the scan says clean)
+            let mut storage = "pg";
+            let scan_ok = crate::sb_rpc("company_emoji_scan_set", json!({ "p_org": c.org_id, "p_code": code, "p_state": "clean", "p_engine": "clamav" })).await.is_ok();
+            if scan_ok {
+                if let Some(key) = box_key(&c.org_id, &sha) {
+                    let (k2, b2, s2) = (key, cleaned.webp.clone(), sha.clone());
+                    let put = tokio::task::spawn_blocking(move || box_put(&box_root(), &k2, &b2, &s2)).await;
+                    if matches!(put, Ok(Ok(()))) && crate::sb_rpc("company_emoji_store_move", json!({ "p_org": c.org_id, "p_code": code })).await.is_ok() {
+                        storage = "hetzner";
+                    }
+                }
+            }
+            crate::ok(json!({ "added": v, "w": cleaned.w, "h": cleaned.h, "bytes": cleaned.webp.len(), "step": cleaned.step, "scan": if scan_ok { "clean" } else { "unscanned" }, "storage": storage })).into_response()
+        }
         Err(e) => sql_fail(&e),
     }
 }
@@ -304,8 +394,19 @@ async fn remove(c: &Ctx, input: &Value) -> Resp {
         Ok(x) => x,
         Err(m) => return fail(StatusCode::UNPROCESSABLE_ENTITY, "bad_code", m),
     };
+    // remember where the bytes live before the row is removed (best-effort cleanup of the Storage Box file afterwards)
+    let before = crate::sb_rpc("company_emoji_get", json!({ "p_org": c.org_id, "p_code": code })).await.ok();
     match crate::sb_rpc("company_emoji_remove", json!({ "p_org": c.org_id, "p_actor": c.user_id, "p_code": code })).await {
-        Ok(v) if v.get("ok").and_then(|x| x.as_bool()) == Some(true) => crate::ok(v).into_response(),
+        Ok(v) if v.get("ok").and_then(|x| x.as_bool()) == Some(true) => {
+            if let Some(b) = before {
+                if st(&b, "storage") == "hetzner" {
+                    if let Some(key) = box_key(&c.org_id, &st(&b, "etag")) {
+                        let _ = tokio::task::spawn_blocking(move || std::fs::remove_file(format!("{}/{}", box_root(), key))).await;
+                    }
+                }
+            }
+            crate::ok(v).into_response()
+        }
         Ok(_) => fail(StatusCode::NOT_FOUND, "not_found", "not_found"),
         Err(e) => sql_fail(&e),
     }
@@ -348,6 +449,30 @@ mod tests {
     fn owns_only_emoji() {
         assert!(owns("emoji.pack.add") && !owns("team.members.list"));
     }
+    #[test]
+    fn box_key_is_content_addressed() {
+        let org = "11111111-1111-1111-1111-111111111111";
+        let sha = "a".repeat(64);
+        assert_eq!(box_key(org, &sha), Some(format!("emoji/{org}/{sha}.webp")));
+        assert_eq!(box_key("../etc", &sha), None);
+        assert_eq!(box_key(org, "short"), None);
+    }
+
+    #[test]
+    fn box_put_get_roundtrip_and_tamper() {
+        let dir = std::env::temp_dir().join(format!("emoji-box-{}", std::process::id()));
+        let root = dir.to_str().unwrap().to_string();
+        let bytes = b"RIFF\x04\0\0\0WEBPxx".to_vec();
+        let sha = hex(&Sha256::digest(&bytes));
+        let key = box_key("11111111-1111-1111-1111-111111111111", &sha).unwrap();
+        box_put(&root, &key, &bytes, &sha).unwrap();
+        assert_eq!(box_get(&root, &key, &sha).unwrap(), bytes);
+        std::fs::write(format!("{}/{}", root, key), b"tampered").unwrap();
+        assert!(box_get(&root, &key, &sha).is_err());
+        assert!(box_put(&root, &key, &bytes, &"0".repeat(64)).is_err()); // wrong sha is refused and the file removed
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
     #[test]
     fn sql_errors_map() {
         assert_eq!(sql_fail("E193 QUOTA: x").status(), StatusCode::CONFLICT);
