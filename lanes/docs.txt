@@ -255,6 +255,7 @@ docs/claude/Q1B4-MASTER-PLAN-17NOV.md
 docs/claude/Q1B4-UI-PLAN-17NOV.md
 docs/claude/Q1D-1A-SUMMARY-16NOV.md
 docs/claude/Q1D-PLAN-16NOV.md
+docs/claude/QC1C-LOOPHOLES-PLAN-19NOV.md
 docs/claude/QC1C-RUST-UI-QTLS-PLAN-18NOV.md
 docs/claude/QLIVE-PLAN-18NOV.md
 docs/claude/QPERF-PLAN-15NOV.md

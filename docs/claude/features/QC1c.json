@@ -562,13 +562,21 @@
   {
    "id": "QC1cF8-3",
    "part": "QC1cF8",
-   "title": "TLS-RPT (RFC 8460): daily report is really SENT (builder exists; counters + gzip mail to the rua are the missing part)",
+   "title": "TLS-RPT (RFC 8460): per-day counters (SQL E191) + daily gzip report mailed through the normal strict outbox / https POST (Rust fmail_rpt.rs); written, waits his sql-run + install + a real report day",
    "tech": "Rust Tokio + mail-auth 0.9.2 tlsrpt structs + our own send path + PostgreSQL counters",
-   "status": "todo",
+   "status": "built",
    "markers": [
     {
-     "file": "server/founder/src/fmail_qtls.rs",
-     "pattern": "async fn send_tls_rpt_daily"
+     "file": "server/founder/src/fmail_rpt.rs",
+     "pattern": "pub async fn daily_worker"
+    },
+    {
+     "file": "server/founder/src/fmail_rpt.rs",
+     "pattern": "pub fn build_report"
+    },
+    {
+     "file": "docs/cursor-work/sql/E191_founder_mail_tls_rpt_policy.sql",
+     "pattern": "fmail_rpt_claim191"
     }
    ],
    "haan": "his order 18 Nov 2026 08:18 PKT: 'Qtls mein 4 advance codes shuru kero sab'"
@@ -576,13 +584,17 @@
   {
    "id": "QC1cF8-4",
    "part": "QC1cF8",
-   "title": "'send only if TLS': enforcement is live (every hop require_tls:true, no clear-text path); the passkey-touch LOOSEN switch is not built and needs his haan (it weakens security)",
+   "title": "'send only if TLS': strict by default (every hop), passkey-grant LOOSEN ratchet in SQL E191 (1-24 h, single use grant, max 3 a day, self-expiring) read by the sender; MTA-STS enforce / DANE stay TLS-only",
    "tech": "Rust policy ratchet + PostgreSQL + passkey touch to loosen",
-   "status": "needs-haan",
+   "status": "built",
    "markers": [
     {
-     "file": "server/founder/src/fmail_qtls.rs",
-     "pattern": "fn loosen_tls_only"
+     "file": "server/founder/src/fmail_rpt.rs",
+     "pattern": "pub fn hop_requires_tls"
+    },
+    {
+     "file": "docs/cursor-work/sql/E191_founder_mail_tls_rpt_policy.sql",
+     "pattern": "fmail_tls_policy_loosen191"
     }
    ],
    "haan": "his order 18 Nov 2026 08:18 PKT: 'Qtls mein 4 advance codes shuru kero sab'"
@@ -599,6 +611,20 @@
      "pattern": "fmail_change_note187"
     }
    ]
+  },
+  {
+   "id": "QC1cF8-5",
+   "part": "QC1cF8",
+   "title": "UI + signed door to loosen 'send only if TLS' with a passkey touch (Settings switch)",
+   "tech": "Rust signed door consuming the grant for mail.tls.loosen + React Settings card",
+   "status": "needs-haan",
+   "markers": [
+    {
+     "file": "server/founder/src/fmail_rpt.rs",
+     "pattern": "async fn loosen_ep"
+    }
+   ],
+   "haan": "UI Law: a new screen element needs his haan first"
   }
  ]
 }

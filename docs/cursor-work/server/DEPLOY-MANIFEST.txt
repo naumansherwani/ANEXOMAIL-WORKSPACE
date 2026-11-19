@@ -416,7 +416,7 @@ src/lib/history.test.ts d26cdfc56deea483
 src/lib/calendar-jump.ts 378d1a18d2415728
 src/components/app/search/HistoryResults.tsx 8da549dd49fd57e3
 src/routes/app.search.tsx 6f74a251778663b7
-docs/cursor-work/sql/index.md 7c470d0e48616217
+docs/cursor-work/sql/index.md d88a320c99803638
 docs/cursor-work/sql/CHECK_E65.sql ce449a9bcfd36628
 docs/cursor-work/sql/E65_rls_and_advisor_sweep.sql df4483c0cee65b4e
 docs/cursor-work/sql/proofs/E65_proof.sql 983e734dff0b7e79
@@ -875,10 +875,10 @@ docs/claude/FOUNDER-BUILD-PLAN-28OCT.md e9288eef93062829
 docs/claude/founder/INDEX.md 883f5a6508593746
 docs/claude/founder/FOUNDER-SECURITY-28OCT.md 7780a9a75e630917
 server/founder/.gitignore b53ee26e6ff1da21
-server/founder/Cargo.lock e59773af51024bfa
-server/founder/Cargo.toml 28b818424c28c948
+server/founder/Cargo.lock 32ed50842fa00f8c
+server/founder/Cargo.toml c32d174bd7028289
 server/founder/src/audit.rs b68fb02fcadadac3
-server/founder/src/main.rs a1df883f55d78921
+server/founder/src/main.rs 6b93d8870bfdb14c
 docs/claude/OFFICE-HR-ACCOUNTING-MIGRATION-28OCT.md c7e57fae35d617cc
 docs/claude/founder/design-f0/Action.dc.html 74ecac9376091b71
 docs/claude/founder/design-f0/Login.dc.html 4970172916db14e5
@@ -1188,12 +1188,12 @@ founder-web/src/passkey_pure.ts 18c84406d0b26eb9
 server/founder/src/passkey.rs fc1644aca0233454
 server/rust/j3_action_vectors.json d90c898ebb69d9ea
 web-wasm/src/action.rs eda7722b529a2887
-lanes/ALL-FILES.csv 68a0bdf6c2461444
-lanes/awam.txt 6ac9d2eecc239bd1
-lanes/docs.txt 434bc20ac36d217f
-lanes/founder.txt dd54286dac2990ae
+lanes/ALL-FILES.csv daf5aa8248fb06be
+lanes/awam.txt 433e2baea812cb91
+lanes/docs.txt 9ac3d3b91b2a28ae
+lanes/founder.txt 9e4495aa5c414cc0
 lanes/shared.txt 299aa61796a72830
-lovable-gold/README.md b55eae1a155e24aa
+lovable-gold/README.md 6ecb1e224d5d32d6
 docs/claude/FOUNDER-FLARE-J6-RESEARCH-03NOV.md 5e65d9f84cbbc643
 docs/cursor-work/sql/CHECK_E140.sql 0aa343c84820214f
 docs/cursor-work/sql/E140_founder_flare_push.sql 3c95ae9963ebd5bf
@@ -1256,7 +1256,7 @@ docs/cursor-work/sql/E162_founder_dbsc_hybrid_pq.sql 33cb2dc2244947e1
 docs/cursor-work/sql/CHECK_E162.sql 580f0ee0bd152f1f
 server/founder/src/mldsa.rs 4f64ed54eebca2aa
 server/founder/src/dbsc.rs be6b0642f9e0d42d
-docs/claude/tech-contracts/CURRENT.md 05903bfe40de6001
+docs/claude/tech-contracts/CURRENT.md 0a8c02a96f9a0825
 docs/claude/RESUME-POINT.md 6294a0b6f9822712
 docs/claude/SQL-ORDER-E1-E160.md a22f85baaf08e344
 docs/claude/TECH-LAW-GATE.json ff689b8854c111ca
@@ -1270,3 +1270,7 @@ server/founder/src/wtrpc.rs 202d7d1fccd6ed70
 public/kernel/anexo-kernel-0.17.0.wasm e37582a377185273
 founder-web/dist/kernel/anexo-kernel-0.18.0.wasm 9a0c227dd4fcdd77
 founder-web/public/kernel/anexo-kernel-0.18.0.wasm 9a0c227dd4fcdd77
+server/founder/src/fmail_out.rs 49e4465dd071f481
+server/founder/src/fmail_rpt.rs 7dfe2b639406a9b6
+docs/cursor-work/sql/E191_founder_mail_tls_rpt_policy.sql 463e6293788719ce
+docs/cursor-work/sql/CHECK_E191.sql eba9c31a07c2cca6
