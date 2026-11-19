@@ -59,3 +59,11 @@
 .emo-x{border-radius:50%}
 .emo-c{font-size:26px}
 .emo-h{text-transform:capitalize}
+/* QC1e founder = awam look (his 20 Nov 01:05 PKT, "awam perfect, founder ka bhi yehi"): picker opens OVER the message box, never under the Send row. Scoped to .mbx-compose; the wrapper keeps room for the picker so it never covers Send. */
+.mbx-compose .mc{--emog:clamp(96px,calc(100dvh - 600px),168px)}
+.mbx-compose .mc>.emo-over{flex:1 1 auto;display:flex;flex-direction:column;min-height:0}
+.mbx-compose .mc>.emo-over>.mc-t{flex:1 1 auto}
+.mbx-compose .mc>.emo-over:has(.emo-dock){min-height:calc(var(--emog) + 200px)}
+.mbx-compose .mc .emo-over .emo-dock .emo-grid{height:var(--emog);min-height:96px}
+.mbx-compose .mc>.emo-over>.emo.emo-dock{z-index:10}
+.mbx-compose .mc footer{z-index:40}

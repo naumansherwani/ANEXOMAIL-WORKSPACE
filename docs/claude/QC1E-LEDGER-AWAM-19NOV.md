@@ -15,3 +15,5 @@ Times are the real git commit times.
 | 14:40 | Overlay collapse fixed, scrolls into view; sandbox at 4 sizes |
 | 14:50 | WhatsApp order and last-32 history, same as founder; sandbox 15 emoji tests pass, tsc clean, vite build OK |
 Open: awam pull + live Chrome look, ":" shortcode, D3, D4, emoji box in chat / notes / events, bun.lock update.
+
+| 20 Nov 2026 01:12 PKT | LIVE CHROME LOOK after his pull (business.test, anexomail.com/app/mail/inbox, 1536x674): GOOD. Picker = tabs, round search + X, "Recently Used" (dolphin remembered), grid, panel not cut, button beside Send. His word 01:05: "awam side ka perfect hai". Founder is now made to match it. emoji.css copy carries the founder-scoped rules (.mbx-compose only), awam unchanged in behaviour; 390/820 live look still open. |

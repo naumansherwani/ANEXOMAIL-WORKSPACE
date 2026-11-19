@@ -110,8 +110,10 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
           <RecipientField field="Bcc" value={bcc} onChange={setBcc} taken={taken} onMove={moveChip} book={book} onBookAct={bookAct} tls={tls} /></>}
         <label className="mc-f"><span>Subject</span><input value={subject} onChange={(e) => setSubject(e.target.value)} maxLength={300} /></label>
         <label className="sr" htmlFor="mc-text">Message</label>
-        <textarea id="mc-text" ref={textRef} className={emo.open ? "mc-t mc-t-emo" : "mc-t"} value={text} onChange={(e) => setText(e.target.value)} placeholder="Write your message…" rows={10} />
-        <EmojiDock dock={emo} area={textRef} value={text} onChange={setText} />
+        <div className="emo-over">
+          <textarea id="mc-text" ref={textRef} className="mc-t" value={text} onChange={(e) => setText(e.target.value)} placeholder="Write your message…" rows={10} />
+          <EmojiDock dock={emo} area={textRef} value={text} onChange={setText} />
+        </div>
         <EmojiSafety text={text} onChange={setText} />
         <AnimatePresence>{err && <motion.p key="e" className="mx-warn" role="alert" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>{err}</motion.p>}</AnimatePresence>
         {needsDkim && <DkimSetup box={box} onDone={() => setErr("")} />}

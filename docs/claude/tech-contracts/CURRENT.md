@@ -1470,3 +1470,5 @@ Technology: React 19 + TypeScript; pure module founder-web/src/emoji_pure.ts (bu
 - 20 Nov 00:54 PKT checkpoint, QC1e WhatsApp picker + 32 recents awaits his two pulls
 
 - 20 Nov 01:00 PKT checkpoint, QC1e WhatsApp picker + 32 recents awaits his two pulls
+
+- 20 Nov 01:18 PKT QC1e founder picker = awam overlay (Send row no longer covered), layout only, colours untouched; awam look GOOD live
