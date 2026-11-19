@@ -339,4 +339,4 @@ G2 is now the open item in progress.
 7. F8-3 TLS-RPT: E191 + fmail_rpt.rs installed on his server 19 Nov 12:25 (CHECK_E191 9/9, install 4/4). His word 19 Nov 12:28: closed, codes are on the server, no more proof needed for this item.
 8. F8-5: signed door + Settings switch to loosen 'send only if TLS' with a passkey touch (action mail.tls.loosen, T2 tier registration needed). Needs his haan (UI Law). Until then the rule is strict, no loosen possible.
 
-9. F8-5 per-domain loosen: GREEN BY HIS WORD 19 Nov 13:20 (WIRED: YES / REAL: YES / TECH-LAW CHECKED). Still OPEN (needs his key): one real passkey touch that loosens a test domain, and the first TLS delivery that heals it; phone 390 / tablet 820 screenshots after the Q series.
+9. F8-5 per-domain loosen: GREEN BY HIS WORD 19 Nov 13:20 (WIRED: YES / REAL: YES / TECH-LAW CHECKED). His 13:23 word: a real touch and a real TLS heal are NOT needed as proof; the codes and the server selftest 14/14 are the proof. Nothing open.
