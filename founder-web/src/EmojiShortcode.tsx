@@ -1,6 +1,5 @@
 // QC1e-D2 (20 Nov 2026): ":" shortcode typeahead for the compose message box. Plan: docs/claude/QC1E-D2-PLAN-20NOV.md.
 // React 19 + TypeScript. WAI-ARIA 1.2 combobox (textarea + listbox). Pure logic in emoji_pure.ts. Data = the picker's bundled emojibase chunks, loaded on the first ":xx".
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useCallback, useDeferredValue, useEffect, useId, useMemo, useRef, useState } from "react";
 import { acceptShortcode, loadList, loadTone, pushRecent, rankRecent, RECENT_KEY, shortcodeAt, shortcodeSearch, TONE_KEY, withTone, type Emoji, type Group } from "./emoji_pure";
 import { loadData } from "./EmojiPicker";
@@ -54,25 +53,19 @@ export function useShortcode({ area, value, onChange }: { area: React.RefObject<
   };
 }
 
-/** The list. Put it inside the .emo-over wrapper, next to EmojiDock. Motion = the same engine as the picker (motion/react): the list fades and rises 6 px (0.14 s), and the highlight is ONE shared-layout pill that springs from row to row. Reduced motion (the OS or the app's Animations setting) = no movement at all. */
+/** The list. Put it inside the .emo-over wrapper, next to EmojiDock. */
 export function EmojiShortcodeList({ sc }: { sc: Shortcode }) {
-  const reduce = useReducedMotion(), hl = { type: "spring" as const, stiffness: 520, damping: 42, mass: 0.6 };
+  if (!sc.open) return null;
   return (
     <>
-      <AnimatePresence initial={false}>
-        {sc.open && (
-          <motion.ul key="l" className="emo-sc" id={sc.listId} role="listbox" aria-label="Emoji suggestions" style={{ transformOrigin: "bottom left" }}
-            initial={reduce ? false : { opacity: 0, y: 6, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={reduce ? { opacity: 0, transition: { duration: 0 } } : { opacity: 0, y: 4, scale: 0.98 }} transition={{ duration: 0.14, ease: [0.2, 0.8, 0.2, 1] }}>
-            {sc.items.map((it, i) => (
-              <li key={it.e.hexcode} id={`${sc.listId}-${i}`} role="option" aria-selected={i === sc.active} className="emo-sc-i" onMouseEnter={() => sc.setActive(i)} onMouseDown={(ev) => { ev.preventDefault(); sc.pick(i); }}>
-                {i === sc.active && <motion.span layoutId={`${sc.listId}-hl`} className="emo-sc-hl" aria-hidden="true" transition={reduce ? { duration: 0 } : hl} />}
-                <span className="emo-sc-g" aria-hidden="true">{it.unicode}</span><span className="emo-sc-n">{it.label}</span>
-              </li>
-            ))}
-          </motion.ul>
-        )}
-      </AnimatePresence>
-      {sc.open && <p className="sr" role="status" aria-live="polite">{sc.items.length} emoji suggestions</p>}
+      <ul className="emo-sc" id={sc.listId} role="listbox" aria-label="Emoji suggestions">
+        {sc.items.map((it, i) => (
+          <li key={it.e.hexcode} id={`${sc.listId}-${i}`} role="option" aria-selected={i === sc.active} className={i === sc.active ? "emo-sc-i on" : "emo-sc-i"} onMouseEnter={() => sc.setActive(i)} onMouseDown={(ev) => { ev.preventDefault(); sc.pick(i); }}>
+            <span className="emo-sc-g" aria-hidden="true">{it.unicode}</span><span className="emo-sc-n">{it.label}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="sr" role="status" aria-live="polite">{sc.items.length} emoji suggestions</p>
     </>
   );
 }

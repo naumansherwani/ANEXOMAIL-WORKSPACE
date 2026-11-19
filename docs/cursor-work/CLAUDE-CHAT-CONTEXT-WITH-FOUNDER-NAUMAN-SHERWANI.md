@@ -4033,3 +4033,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 20 Nov 01:43 PKT checkpoint, QC1e D2 shortcode built for founder + awam, waits his two pulls
 
 - 20 Nov 2026 01:50 PKT QC1e D2 shortcode FOUNDER motion added (motion/react fade+rise, shared-layout highlight pill, reduced-motion none); Chromium ok; waits his founder-install
+
+- 20 Nov 2026 01:51 PKT QC1e D2 shortcode: motion RESERVED for AnexoChat by his word 01:50, mail list instant (founder + awam), reserved code saved, blueprints + ledgers updated
