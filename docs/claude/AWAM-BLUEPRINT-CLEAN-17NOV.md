@@ -41,3 +41,6 @@ Nothing of AW0 to AW6 is being built now; the founder blueprint (Q1b4, then comp
 - Until then: the awam landing page must not open ai.anexomail.com and the awam must not see the AI product; the landing shows only "Coming soon". (OPEN: check the landing code for AI links; awam files are frozen, so a change is made only in AW phase with his word. Item added to PENDING-AWAM.)
 - Polar stays as the awam payment provider (his word); it is not a vendor-ban conflict.
 - ai-product/ is the preserved copy; live AI files stay where they are.
+
+## 6. LAUNCH PLAN 30 NOV - 30 DEC, SEMINAR 17 JAN (his 19 Nov 11:23, written 11:4x PKT)
+Day counts, dates and what is live on 30 Dec: docs/claude/AWAM-LAUNCH-PLAN-19NOV.md (46 working days estimated; launch set Basic, Business, Business Pro + AnexoChat core on 30 Dec; Premium + MAX 31 Dec - 3 Jan; full AnexoChat by 11 Jan; looks and rehearsal 12-15 Jan; 16 Jan travel).

@@ -1704,3 +1704,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - QC1c = GREEN BY HIS WORD 19 Nov 2026 11:05 PKT. WIRED: YES / REAL: YES / TECH-LAW CHECKED: live Chrome pq (Gmail), nomail, unreachable + retry 1/5 min, real send Proven by the real delivery gmail.com post-quantum, E190 CHECK 6/6 on his server, MTA-STS + DANE in sender installed (cargo 481/481). Remaining items kept on the open list in CLOSE-THE-GAPS-07NOV.md. Next QC3a.
 
 - Date plan written 19 Nov 2026 11:2x PKT for every remaining mailbox phase (his word 11:11): QC3a 19 Nov, R3 Admin Mail Desk 20-21 Nov, QC1/QC1e 22, QC2/QC3 23, QC4/QC5/QC7/QC8 24, Q3 + rest 25 Nov (last day). docs only.
+
+- Dates redone 19 Nov 2026 11:4x PKT (his 11:23 order): Q series first (QC3a 19, QC1/QC1e 20, QC2/QC3 21, QC4/5/7/8 22, Q3 23, U1U2+Q4 24), THEN R3 Admin Mail Desk 25 Nov, buffer 26-29. Awam launch plan written (AWAM-LAUNCH-PLAN-19NOV.md): 46 working days estimated, launch set on 30 Dec, Premium+MAX 31 Dec-3 Jan, full AnexoChat 11 Jan, seminar 17 Jan. docs only.

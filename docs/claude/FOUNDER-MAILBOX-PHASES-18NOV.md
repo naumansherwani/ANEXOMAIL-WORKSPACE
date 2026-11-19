@@ -22,14 +22,16 @@ Rule: one phase at a time; GREEN only WIRED: YES / REAL: YES / TECH-LAW CHECKED 
 | 17 | Q1e | Calendar | Queued |
 Dropped: AI drafting until July 2027. DKIM2 needs no work. SQL: E190 done (rerun with loophole fix, CHECK 6/6), next free E191.
 
-## DATE PLAN (his 19 Nov 11:11: every phase has a date, the Admin Mail Desk where awam problems are heard matters most) - written 19 Nov 2026 11:2x PKT
-Last day for the whole founder lane stays 25 Nov (FOUNDER-DEADLINE-25NOV-PLAN.md); each date below is the LATEST day, target is earlier. A phase that fails its proof is fixed the same day, the next one does not start (his rule). Awam lane starts 26 Nov, awam 100% by 16 Dec.
+## DATE PLAN v2 (his 19 Nov 11:23: the Q series is finished FIRST, then R3 Admin > Mail Desk) - written 19 Nov 2026 11:4x PKT
+Last day for the whole founder lane stays 25 Nov; each date is the LATEST day, target is earlier. A phase that fails its proof is fixed the same day, the next one does not start. His 30 Nov - 30 Dec window is the AWAM lane (docs/claude/AWAM-LAUNCH-PLAN-19NOV.md).
 | Date (Nov 2026) | Phase | What he gets |
 |---|---|---|
-| Thu 19 | QC3a Undo X = send now | the X on the undo bar sends at once (E185, signed Rust door, kernel RPC) |
-| Fri 20 - Sat 21 | **R3 Admin > Mail Desk** (FOUNDER-ADMIN-MAIL-DESK-03NOV.md): R3a company mailboxes (support, billing, abuse...) and the awam problem inbox, R3b assign / reply / status / SLA on each awam problem, R3c phone 390 / tablet 820 / laptop look | the desk where awam problems are heard |
-| Sun 22 | QC1 address book + autocomplete (E186), QC1e emoji picker | typing finds contacts, emoji |
-| Mon 23 | QC2 rich text (Tiptap 3), signatures, snippets; QC3 pre-send checks, schedule presets, delivery timeline | writing and sending tools |
-| Tue 24 | QC4 inline reply and forward; QC5 Delete forever; QC7 follow-up reminder + sealed draft in browser; QC8 shortcuts and accessibility pass | the daily mail loop |
-| Wed 25 | Q3 attachments (WebTransport, Hetzner Storage Box, ClamAV); QC1c open list closed; U1U2, Q4 OpenPGP, U5, Q1e calendar | LAST DAY. Q3 needs his Hetzner written confirmation (his hands); Q4, U5, U1U2, Q1e are the first to slip if anything fails, and I say so the same day |
+| Thu 19 | QC3a Undo X = send now | X on the undo bar sends at once (E185, signed Rust door, kernel RPC) |
+| Fri 20 | QC1 address book + autocomplete (E186), QC1e emoji picker | typing finds contacts, emoji |
+| Sat 21 | QC2 rich text (Tiptap 3), signatures, snippets; QC3 pre-send checks, schedule presets, delivery timeline | writing and sending tools |
+| Sun 22 | QC4 inline reply and forward; QC5 Delete forever; QC7 follow-up reminder + sealed draft in browser; QC8 shortcuts and accessibility pass | the daily mail loop |
+| Mon 23 | Q3 attachments (WebTransport, Hetzner Storage Box, ClamAV). Needs his Hetzner written confirmation (his hands) | files in mail |
+| Tue 24 | U1U2, Q4 OpenPGP (RFC 9980) | unified views, PGP |
+| Wed 25 | **R3 Admin > Mail Desk** (FOUNDER-ADMIN-MAIL-DESK-03NOV.md): R3a company mailboxes (support, billing, abuse), awam problem inbox; R3b assign / reply / status / SLA; R3c look at 390 / 820 / 1200+ | the desk where awam problems are heard |
+| Thu 26 - Sun 29 | U5, Q1e calendar, the QC1c open list, spill-over of anything that failed its proof | buffer, nothing new starts before the awam window |
 His hands, one step at a time when each comes: phone 390 / tablet 820 screenshots, Hetzner confirmation, hardware keys.
