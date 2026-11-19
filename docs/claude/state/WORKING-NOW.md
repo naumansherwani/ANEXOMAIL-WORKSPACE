@@ -1,15 +1,15 @@
-# WORKING NOW (manual checkpoint, 19 Nov 2026 16:58 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 19 Nov 2026 16:58 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC1e WhatsApp picker + 32 recents pushed, ledgers split
 NEXT STEP: his two pulls, then live Chrome looks
 HIS LAST WORD: his 14:46/14:47/14:53: WhatsApp look, 32 recents, founder and awam ledgers separate with time and date, keep everything in repo and context
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 528e2c48 19 Nov 16:58 checkpoint
 - 5b0fdd7e 19 Nov 16:52 ledger line 59b40c66
 - 59b40c66 19 Nov 16:52 checkpoint
 - 41eb84bc 19 Nov 16:46 ledger line 8ae07814
 - 8ae07814 19 Nov 16:46 checkpoint
-- e52f905a 19 Nov 16:39 ledger line 252da2df
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -29,4 +29,4 @@ QC1c: 44/44 written. NOT WRITTEN:
 ## >>> 18 NOV 2026 07:2x PKT NOW (his order 07:16, update for Claude after any compaction): PHASES IN HAND = (1) QLIVE-c (package stream limits stream_tier.rs, live drafts SQL E188 [his sql-run OK], simulation test founder-web/sim, 2 real browser bugs fixed) and (2) Q-contacts-kernel (contacts@1 in 
 ## >>> 15 NOV 19:25 HIS ORDER: L closed. NEXT = Q SERIES until complete, THEN S5 (not before). Lovable codes migration phase written in docs/claude/FOUNDER-LOVABLE-MIGRATION-15NOV.md and docs/claude/AWAM-LOVABLE-MIGRATION-15NOV.md (preserve as written, advance technology, fix loopholes, polish). Q s
 ## >>> HANDOFF 14 NOV 07:10 (he is sleeping; read this first tomorrow): DONE and proven: KP3 step 5 GREEN, pre-connect GREEN by his order, clean blueprint (docs/claude/FOUNDER-BLUEPRINT-CLEAN-14NOV.md), audit steps A+B GREEN, audit step C INSTALLED on his server (receipt 35, tests 394, listening aft
-WIP snapshot: refs/wip/last (3fdbba2f95929b620897cfd04c9cef632b2c174b)
+WIP snapshot: refs/wip/last (38bf7e8920c3c7bf06bef6f833f51954165dd95d)
