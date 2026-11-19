@@ -1,6 +1,6 @@
 <!--FEATURES-->
 ## FEATURES (auto, from docs/claude/features/*.json, full list docs/claude/FEATURES-LIVE.md; a missing feature is fixed BEFORE a commit, his 18 Nov 08:07 order)
-QC1c: 43/43 written. NOT WRITTEN: 
+QC1c: 41/43 written. NOT WRITTEN: QC1cF8-3, QC1cF8-4
 <!--/FEATURES-->
 ## >>> 18 NOV 2026 07:2x PKT NOW (his order 07:16, update for Claude after any compaction): PHASES IN HAND = (1) QLIVE-c (package stream limits stream_tier.rs, live drafts SQL E188 [his sql-run OK], simulation test founder-web/sim, 2 real browser bugs fixed) and (2) Q-contacts-kernel (contacts@1 in the Rust WASM kernel 0.18.0, plan docs/claude/Q-CONTACTS-KERNEL-PLAN-18NOV.md, pushed 0be0300a). Both wait his founder-install paste, then my live Chrome look, then GREEN. NEXT = QC1c (SQL E189). Founder pull and awam pull are separate points always (awam pull NOT needed now). Gate reminder AWAM-PREMIUM-MAX-LIVE stays open until awam Business Premium / MAX are built. No filler messages, no Monitor watches. <<<
 ## >>> 15 NOV 19:25 HIS ORDER: L closed. NEXT = Q SERIES until complete, THEN S5 (not before). Lovable codes migration phase written in docs/claude/FOUNDER-LOVABLE-MIGRATION-15NOV.md and docs/claude/AWAM-LOVABLE-MIGRATION-15NOV.md (preserve as written, advance technology, fix loopholes, polish). Q state = the generated block in docs/claude/HANDOFF-LIVE.md. <<<
