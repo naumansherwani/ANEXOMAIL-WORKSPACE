@@ -4201,3 +4201,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - QC1e D4 plan written + 20 Nov target in blueprints and ledgers 03:0x PKT, docs only
 
 - checkpoint 02:55 PKT
+
+- QC1e D4A started 03:05 PKT awam only; decisions: awam only, owner+admin, quota 10/50/200 default, D4A now D4B after Q3
