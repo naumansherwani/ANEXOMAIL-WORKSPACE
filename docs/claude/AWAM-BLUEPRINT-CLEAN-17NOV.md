@@ -44,3 +44,5 @@ Nothing of AW0 to AW6 is being built now; the founder blueprint (Q1b4, then comp
 
 ## 6. LAUNCH PLAN 30 NOV - 30 DEC, SEMINAR 17 JAN (his 19 Nov 11:23, written 11:4x PKT)
 Day counts, dates and what is live on 30 Dec: docs/claude/AWAM-LAUNCH-PLAN-19NOV.md (46 working days estimated; launch set Basic, Business, Business Pro + AnexoChat core on 30 Dec; Premium + MAX 31 Dec - 3 Jan; full AnexoChat by 11 Jan; looks and rehearsal 12-15 Jan; 16 Jan travel).
+
+(Updated 19 Nov 11:5x PKT, his order: migration package by package, Basic first, then Business, then Business Pro, gates inside each package; Basic 30 Nov-16 Dec, Business 17-26 Dec, Business Pro 27 Dec-5 Jan, Premium + MAX 6-9 Jan, looks and rehearsal 10-15 Jan, seminar 17 Jan. Details: AWAM-LAUNCH-PLAN-19NOV.md section 3.)
