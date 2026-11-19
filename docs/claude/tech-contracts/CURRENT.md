@@ -1223,3 +1223,10 @@ Backend: Rust + tokio + axum `tls_step.rs` (begin/finish like policy_step.rs, We
 - 19 Nov 13:27 PKT: 5-min checkpoint, F8-5 closed, QC1e discussion open
 
 - 19 Nov 13:35 PKT: his 13:23 word: F8-5 real touch and TLS heal are not needed as proof, closed; screenshots not repeated. QC1e emoji research + plan written (docs/claude/QC1E-EMOJI-RESEARCH-PLAN-19NOV.md), waits his answers D1-D4, nothing built, stash untouched
+
+## QC1e emoji picker (19 Nov 2026 13:40 PKT), D1
+Technology: React 19 + TypeScript; pure module founder-web/src/emoji_pure.ts (bun tested); emojibase-data 17.0.0 bundled as lazy Vite chunks (no network, no vendor, CSP self-only); HTML popover; Intl.Segmenter; native OS artwork. No Rust, SQL or server change in D1. Gate: no raw fetch/WebSocket. Later: Rust vault seal + PostgreSQL RLS for sealed recents (not D1).
+
+- 19 Nov 13:40 PKT QC1e D1 built (emoji picker + new-emoji safety), tests pass, awaits install
+
+- 19 Nov 13:40 PKT QC1e D1 built (emoji picker + new-emoji safety), tests pass, awaits install

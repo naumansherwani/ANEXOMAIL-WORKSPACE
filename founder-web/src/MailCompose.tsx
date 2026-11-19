@@ -5,6 +5,8 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import * as api from "./mail_api";
 import { composeProblem, undoLeft, type Box } from "./mail_pure";
 import { RecipientField } from "./RecipientField";
+import { EmojiButton } from "./EmojiPicker";
+import { EmojiSafety } from "./EmojiSafety";
 import { useTlsFacts } from "./TlsLock";
 import type { Contact } from "./book";
 import { chipsOf, joinChips, parseAddrs, removeChip, takenMap, type Field } from "./recipients";
@@ -42,7 +44,7 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
   const [busy, setBusy] = useState(false), [err, setErr] = useState(""), [needsDkim, setNeedsDkim] = useState(false), [saved, setSaved] = useState("");
   const draft = useRef<{ id?: string; v: number }>({ v: 0 });
   const last = useRef(""), dirty = useRef(false);
-  const toRef = useRef<HTMLInputElement>(null), reduce = !!useReducedMotion();
+  const toRef = useRef<HTMLInputElement>(null), textRef = useRef<HTMLTextAreaElement>(null), reduce = !!useReducedMotion();
   // QC1b: the sealed address book is opened once when the box opens (the server unseals the top 500); typing then filters it here with no server call
   const [book, setBook] = useState<Contact[]>([]);
   useEffect(() => { let on = true; api.contacts(box.id).then((c) => { if (on) setBook(c); }).catch(() => {}); return () => { on = false; }; }, [box.id]);
@@ -108,11 +110,13 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
           <RecipientField field="Bcc" value={bcc} onChange={setBcc} taken={taken} onMove={moveChip} book={book} onBookAct={bookAct} tls={tls} /></>}
         <label className="mc-f"><span>Subject</span><input value={subject} onChange={(e) => setSubject(e.target.value)} maxLength={300} /></label>
         <label className="sr" htmlFor="mc-text">Message</label>
-        <textarea id="mc-text" className="mc-t" value={text} onChange={(e) => setText(e.target.value)} placeholder="Write your message…" rows={10} />
+        <textarea id="mc-text" ref={textRef} className="mc-t" value={text} onChange={(e) => setText(e.target.value)} placeholder="Write your message…" rows={10} />
+        <EmojiSafety text={text} onChange={setText} />
         <AnimatePresence>{err && <motion.p key="e" className="mx-warn" role="alert" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>{err}</motion.p>}</AnimatePresence>
         {needsDkim && <DkimSetup box={box} onDone={() => setErr("")} />}
         <footer>
           <button type="submit" className="mx-btn" disabled={busy}>{busy ? "Sending…" : when ? "Schedule" : "Send"}</button>
+          <EmojiButton area={textRef} value={text} onChange={setText} />
           <label className="mc-when"><span className="sr">Send later</span><input type="datetime-local" value={when} onChange={(e) => setWhen(e.target.value)} aria-label="Send later (optional)" /></label>
           <button type="button" className="mx-btn alt" onClick={() => void discard()}>{sure ? "Discard this draft? Press again" : "Discard"}</button>
           <span className="dim small mc-hint">Ctrl+Enter sends · held 30 s, you can undo</span>

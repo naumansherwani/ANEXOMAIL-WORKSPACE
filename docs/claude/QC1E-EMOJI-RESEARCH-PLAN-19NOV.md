@@ -14,7 +14,7 @@ His word: a basic feature of writing mail, later also AnexoChat. Same for basic,
 
 ## What only Anexomail will have
 A. NEW-EMOJI SAFETY: each emoji carries the Unicode version it appeared in (emoji-test.txt "E17.0"). Before Send, an emoji newer than the common phone baseline gets a quiet hint "may show as a box on older phones" and one tap swaps it for its name in words. Gmail and WhatsApp never warn.
-B. SEARCH IN URDU AND ROMAN URDU: CLDR has Urdu names; we add a small Roman-Urdu keyword list of our own (dil, khush, mubarak, shukriya, dua...). Nobody searches emoji in Roman Urdu.
+B. SEARCH IN URDU AND ROMAN URDU: emojibase-data 17 ships NO Urdu locale (checked), so BOTH the Urdu-script and the Roman-Urdu keyword lists are our own curated map (hexcode to keywords) (dil, khush, mubarak, shukriya, dua...). Nobody searches emoji in Roman Urdu.
 C. SEALED RECENTS: "frequently used" is stored sealed (vault key, like the rest of the mailbox), follows the person across devices, no telemetry, no third-party fetch (CSP self-only; no emoji image is ever loaded from another site).
 D. ONE PURE MODULE, TWO GLUES: data + search + skin tone + version check live in one pure module (tested); founder glue and awam glue are separate files and separate pull commands (AWAM-INHERITS and SEPARATION laws). AnexoChat reuses the same module later.
 E. PLAN TIERS: the picker is the same on every plan. Only the OPTIONAL company emoji pack (Business tiers, a logo as an inline image with a text fallback for other mail programs) differs by plan; numbers are his decision and it is a LATER step, not QC1e core.
@@ -27,3 +27,10 @@ D4 Company emoji pack for Business tiers: later (my advice), or in QC1e?
 
 ## Technology (founder side)
 React 19 + TypeScript pure module (build-time CLDR data, lazy chunk), native popover (HTML popover API), Intl.Segmenter, Rust vault sealing for recents (existing seal module), PostgreSQL RLS table for the sealed recents, no Node/Bun on the server, no outside fetch.
+
+## SUB-PHASES (his order 19 Nov 13:29: D1 first, D4 last)
+- D1 (BUILT 19 Nov 13:40, awaits founder-install + his look): all Unicode 17 emoji from bundled emojibase-data 17.0.0, native artwork, picker (search, groups, skin tone, recents) inside the compose footer, NEW-EMOJI SAFETY line under the message box (finds emoji newer than Unicode 15.1, "Use words" swaps them for their names). Tech: React 19 + TypeScript pure module emoji_pure.ts (bun tests), HTML popover, Intl.Segmenter, lazy Vite chunks, no network, CSP self-only.
+- D2: button inside the message box bottom-right + ":" shortcode typeahead.
+- D3: Urdu + Roman Urdu keyword map merged into search.
+- D4 (LAST): company emoji pack for Business tiers (SQL + Rust + storage).
+- Later: sealed recents (vault key, RLS table), awam glue with its own pull command.
