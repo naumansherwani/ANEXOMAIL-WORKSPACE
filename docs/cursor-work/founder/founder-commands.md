@@ -4235,3 +4235,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - 20.11.26 04:20 PKT QC1e D4A P3: emoji_glue.rs + installer module emoji (opt-in, image-webp+png) written; 21 Rust tests pass in sandbox cargo (stub crate), not installed
 
 - 20.11.26 04:40 PKT QC1e D4A P4+P5: TS pure module (7 tests), data layer, picker Company tab, : list merge, Admin > Company emoji, route + manifest written; tsc + vite build OK; not deployed
+
+- 20.11.26 04:45 PKT D4A: code written, waits his rust install + awam pull

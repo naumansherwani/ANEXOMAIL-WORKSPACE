@@ -1,6 +1,6 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 03:42 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: D4A: ports recorded (8bd6eb69); writing glue P3 emoji_pack_glue.rs
-NEXT STEP: D4A next: glue file, installer module 'emoji' (2 crates opt-in), TS P4, picker P5
+# WORKING NOW (manual checkpoint, 20 Nov 2026 03:42 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: D4A code written+pushed 54ffd0d4; waits his 2 commands (rust install MODULES=emoji, awam pull)
+NEXT STEP: after his pastes: live Chrome look on business.test (Admin > Company emoji upload, picker tab, :ac list), then D4A green only with WIRED/REAL
 HIS LAST WORD: his 14:46/14:47/14:53: WhatsApp look, 32 recents, founder and awam ledgers separate with time and date, keep everything in repo and context
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -18,20 +18,24 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 54ffd0d4 20 Nov 03:42 ledger line 2f84d6f2
 - 2f84d6f2 20 Nov 03:42 QC1e D4A P4/P5: company emoji TS module, picker tab, ':' merge, admin screen (awam only)
 - a5102e12 20 Nov 03:37 ledger line 6d856f74
 - 6d856f74 20 Nov 03:37 QC1e D4A P3: emoji Rust glue + installer module (awam only)
 - 3475f9c7 20 Nov 03:33 ledger line 1fcac0d2
-- 1fcac0d2 20 Nov 03:33 QC1e D4A: checkpoint
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/AWAM-BLUEPRINT-CLEAN-17NOV.md
+ M docs/claude/QC1E-LEDGER-AWAM-19NOV.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ docs/claude/AWAM-BLUEPRINT-CLEAN-17NOV.md |  2 ++
+ docs/claude/QC1E-LEDGER-AWAM-19NOV.md     |  2 ++
+ docs/claude/state/WORKING-NOW.md          | 23 ++++++-----------------
+ 3 files changed, 10 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +46,4 @@ QC1c: 44/44 written. NOT WRITTEN:
 ## >>> 18 NOV 2026 07:2x PKT NOW (his order 07:16, update for Claude after any compaction): PHASES IN HAND = (1) QLIVE-c (package stream limits stream_tier.rs, live drafts SQL E188 [his sql-run OK], simulation test founder-web/sim, 2 real browser bugs fixed) and (2) Q-contacts-kernel (contacts@1 in 
 ## >>> 15 NOV 19:25 HIS ORDER: L closed. NEXT = Q SERIES until complete, THEN S5 (not before). Lovable codes migration phase written in docs/claude/FOUNDER-LOVABLE-MIGRATION-15NOV.md and docs/claude/AWAM-LOVABLE-MIGRATION-15NOV.md (preserve as written, advance technology, fix loopholes, polish). Q s
 ## >>> HANDOFF 14 NOV 07:10 (he is sleeping; read this first tomorrow): DONE and proven: KP3 step 5 GREEN, pre-connect GREEN by his order, clean blueprint (docs/claude/FOUNDER-BLUEPRINT-CLEAN-14NOV.md), audit steps A+B GREEN, audit step C INSTALLED on his server (receipt 35, tests 394, listening aft
-WIP snapshot: refs/wip/last (9f40470895f78e3897abd92c80d00f2923e00f91)
+WIP snapshot: refs/wip/last (8d38ee154f7cf8ce13a0fc8e4e1a1e66af15b4c2)
