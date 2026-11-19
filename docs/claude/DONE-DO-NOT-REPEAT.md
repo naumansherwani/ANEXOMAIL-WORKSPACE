@@ -1024,3 +1024,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 19 Nov 13:52 PKT QC1e D1 awam glue: same pure module, awam compose mount (his order 13:34)
 
 - 19 Nov 13:55 PKT checkpoint, QC1e D1 founder+awam built
+
+- 19 Nov 14:02 PKT checkpoint, QC1e D1 waits installs
