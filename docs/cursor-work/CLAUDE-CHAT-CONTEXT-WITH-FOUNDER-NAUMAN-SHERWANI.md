@@ -4045,3 +4045,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - QC1e D2 live looks recorded 02:08 PKT, WIRED partly, not green, TECH-LAW CHECKED pending
 
 - checkpoint 02:11 PKT
+
+- QC1e D2 founder + awam = GREEN BY HIS WORD 02:06, WIRED: YES / REAL: YES / TECH-LAW CHECKED; awam hint written 02:20 PKT

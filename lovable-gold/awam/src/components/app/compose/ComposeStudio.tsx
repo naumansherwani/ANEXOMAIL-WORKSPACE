@@ -775,8 +775,8 @@ export function ComposeStudio({
           {...(threadId ? { threadId } : {})}
           placeholder={
             leoUi
-              ? "Write it once. Leo can tighten it, translate it or coach the tone."
-              : "Write the message."
+              ? "Write it once. Leo can tighten it, translate it or coach the tone. Type : for emoji."
+              : "Write the message. Type : for emoji."
           }
         />
         <EmojiShortcodeList sc={sc} />

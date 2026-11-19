@@ -28,7 +28,7 @@ export function useEmojiDock(): Dock {
 }
 export function EmojiToggle({ dock, className = "mx-btn alt" }: { dock: Dock; className?: string }) {
   return (
-    <button ref={dock.btn} type="button" className={`${className} emo-btn emo-toggle`} aria-haspopup="dialog" aria-expanded={dock.open} aria-label="Insert emoji" title="Emoji" onClick={dock.toggle}>
+    <button ref={dock.btn} type="button" className={`${className} emo-btn emo-toggle`} aria-haspopup="dialog" aria-expanded={dock.open} aria-label="Insert emoji (or type : and a name, like :smile)" title="Emoji (or type : and a name, like :smile)" onClick={dock.toggle}>
       <span aria-hidden="true">🙂</span>
     </button>
   );

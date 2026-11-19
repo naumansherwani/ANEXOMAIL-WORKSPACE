@@ -1,24 +1,39 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 02:06 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QC1e D2 live looks 1536 done both sides; awaiting his word on discoverability hint
-NEXT STEP: his haan on hint; 390/820 live look; D3, D4
+# WORKING NOW (manual checkpoint, 20 Nov 2026 02:07 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QC1e D2 GREEN by his word both sides; awam hint written
+NEXT STEP: his awam pull.sh for the hint, then live Chrome look; 390/820; D3
 HIS LAST WORD: his 14:46/14:47/14:53: WhatsApp look, 32 recents, founder and awam ledgers separate with time and date, keep everything in repo and context
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 93288cab 20 Nov 02:06 ledger line e6678061
 - e6678061 20 Nov 02:06 checkpoint
 - 6cdb4bac 20 Nov 02:03 ledger line 08c0df72
 - 08c0df72 20 Nov 02:03 QC1e D2 live look ledger rows
 - b28fab82 20 Nov 01:59 ledger line 2952e0be
-- 2952e0be 20 Nov 01:59 checkpoint
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/AWAM-BLUEPRINT-CLEAN-17NOV.md
+ M docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md
+ M docs/claude/QC1E-LEDGER-AWAM-19NOV.md
+ M docs/claude/QC1E-LEDGER-FOUNDER-19NOV.md
  M docs/claude/state/WORKING-NOW.md
+ M lovable-gold/MANIFEST.sha256
+ M lovable-gold/awam/src/components/app/compose/ComposeStudio.tsx
+ M lovable-gold/awam/src/components/app/compose/emoji/EmojiPicker.tsx
+ M src/components/app/compose/ComposeStudio.tsx
+ M src/components/app/compose/emoji/EmojiPicker.tsx
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/QC1E-LEDGER-FOUNDER-19NOV.md           |  1 +
+ docs/claude/state/WORKING-NOW.md                   | 30 ++++++++++------------
+ lovable-gold/MANIFEST.sha256                       |  4 +--
+ .../src/components/app/compose/ComposeStudio.tsx   |  4 +--
+ .../components/app/compose/emoji/EmojiPicker.tsx   |  2 +-
+ src/components/app/compose/ComposeStudio.tsx       |  4 +--
+ src/components/app/compose/emoji/EmojiPicker.tsx   |  2 +-
+ 10 files changed, 25 insertions(+), 27 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -29,4 +44,4 @@ QC1c: 44/44 written. NOT WRITTEN:
 ## >>> 18 NOV 2026 07:2x PKT NOW (his order 07:16, update for Claude after any compaction): PHASES IN HAND = (1) QLIVE-c (package stream limits stream_tier.rs, live drafts SQL E188 [his sql-run OK], simulation test founder-web/sim, 2 real browser bugs fixed) and (2) Q-contacts-kernel (contacts@1 in 
 ## >>> 15 NOV 19:25 HIS ORDER: L closed. NEXT = Q SERIES until complete, THEN S5 (not before). Lovable codes migration phase written in docs/claude/FOUNDER-LOVABLE-MIGRATION-15NOV.md and docs/claude/AWAM-LOVABLE-MIGRATION-15NOV.md (preserve as written, advance technology, fix loopholes, polish). Q s
 ## >>> HANDOFF 14 NOV 07:10 (he is sleeping; read this first tomorrow): DONE and proven: KP3 step 5 GREEN, pre-connect GREEN by his order, clean blueprint (docs/claude/FOUNDER-BLUEPRINT-CLEAN-14NOV.md), audit steps A+B GREEN, audit step C INSTALLED on his server (receipt 35, tests 394, listening aft
-WIP snapshot: refs/wip/last (ed196dd4e792a1b0ac938b72e54c48389d91606d)
+WIP snapshot: refs/wip/last (1ac4171a22a6dc0fe62c7c915c7d56ff2c08372e)

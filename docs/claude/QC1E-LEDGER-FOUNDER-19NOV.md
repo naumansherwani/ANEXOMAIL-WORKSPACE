@@ -33,3 +33,4 @@ Open: live Chrome look after his pull, ":" shortcode, D3 search (English first, 
 
 | 20 Nov 2026 01:52 PKT | His word 01:52 confirmed: D1 + D2 work stays intact on the founder side; the shortcode motion is NOT for the founder, it goes to AnexoChat on the AWAM side. No code change. |
 | 20 Nov 02:08 PKT | QC1e D2 founder live Chrome look (1536): ':smi' list opens, ArrowDown+Enter inserts emoji, '12:30' no list, no errors. Escape + 390/820 live look still OPEN. Not GREEN yet. |
+| 20 Nov 02:20 PKT | QC1e D2 founder = GREEN BY HIS WORD (02:06): WIRED: YES / REAL: YES (his founder-install 01:59 + my live Chrome look 02:08 at 1536) / TECH-LAW CHECKED. No discoverability hint on founder (his word: the hint is for awam only). |
