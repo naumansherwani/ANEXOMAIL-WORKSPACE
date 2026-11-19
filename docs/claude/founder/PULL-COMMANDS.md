@@ -2066,3 +2066,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - checkpoint 02:41 PKT
 
 - QC1e D3 founder live look 02:50 PKT recorded, not green (390/820 open), TECH-LAW CHECKED pending
+
+- QC1e D3 founder + awam = GREEN BY HIS WORD 02:55 PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED
