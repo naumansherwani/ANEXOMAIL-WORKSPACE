@@ -3785,3 +3785,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 19 Nov 14:20 PKT QC1e D1 Chrome look: tab row squashed to 12 px, fixed (flex none), founder + awam css
 
 - 19 Nov 14:26 PKT checkpoint, QC1e D1 css fix awaits reinstall
+
+- 19 Nov 14:32 PKT checkpoint, QC1e D1 reinstall awaited
