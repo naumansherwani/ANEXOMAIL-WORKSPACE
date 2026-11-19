@@ -1,4 +1,4 @@
-// QC1e D4A (20 Nov 2026, AWAM ONLY): the company emoji pack, pure logic (bun-tested). Mirrors the SQL (E193) and the Rust core (emoji_core.rs):
+// QC1e D4A (20 Nov 2026, AWAM ONLY): the company emoji pack, pure logic (unit-tested). Mirrors the SQL (E193) and the Rust core (emoji_core.rs):
 // same shortcode rule, same reserved list, same ":code:" token rule, so the browser, the Rust door and the database can never disagree.
 // Plan: docs/claude/QC1E-D4-PLAN-20NOV.md. No network, no React here.
 import type { Emoji } from "./emoji_pure";

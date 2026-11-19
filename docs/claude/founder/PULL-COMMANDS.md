@@ -2124,3 +2124,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 20.11.26 04:34 PKT QC1e D4A: build fail root cause (route file missing from manifest) fixed; P-series table; waits his awam pull
 
 - 20.11.26 04:36 PKT QC1e D4A: E193 edited for advance tech (ClamAV scan state, Hetzner Storage Box key, store only after clean); real PG17 22/22; waits his sql-run E193 + awam pull
+
+- 20.11.26 04:41 PKT QC1e D4A: Bun audit, D4A code has zero Bun; site-wide Bun host tracked in Lovable Bun migration plan, not removed
