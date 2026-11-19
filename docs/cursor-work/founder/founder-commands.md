@@ -4153,3 +4153,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - 20 Nov 2026 01:40 PKT QC1e D2 shortcode FOUNDER gate built (bun 387/387, Chromium 1536/820/390 ok), waits his founder-install; awam gate next, separate pull
 
 - 20 Nov 2026 01:43 PKT QC1e D2 shortcode AWAM gate built (tsc, bun 18/18, build:bun ok, Chromium 1536/390 ok), waits his pull.sh; founder gate 543a4247 waits founder-install
+
+- 20 Nov 01:43 PKT checkpoint, QC1e D2 shortcode built for founder + awam, waits his two pulls
