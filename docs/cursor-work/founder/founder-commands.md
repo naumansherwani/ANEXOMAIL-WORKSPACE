@@ -3877,3 +3877,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - 19 Nov 13:30 PKT: F8-5 his 2nd sql-run: CHECK 5/6, selftest said no approved device of this founder (first account in founder_accounts has none). FIXED: E192 selftest now picks the founder whose device is approved; sandbox 14/14 with two accounts, first one deviceless. Technology written next to the QC1c row of the phase blueprint. Closed only after his re-run shows selftest 14/14 and my Chrome look
 
 - 19 Nov 13:35 PKT: F8-5 my live Chrome look (#/systems): the Send only if TLS card sits under the untouched Sending switch, pill Strict always on, text says every change is in a verified ledger (E192 state door answers on his server), button Allow one domain for a while present. Touch + real loosen not done (needs his key). Closed only after his re-run shows selftest 14/14
+
+- 19 Nov 13:20 PKT: 5-min checkpoint, F8-5 waits his sql-run re-run
