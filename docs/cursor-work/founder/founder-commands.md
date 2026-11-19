@@ -4171,3 +4171,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - checkpoint 02:11 PKT
 
 - QC1e D2 founder + awam = GREEN BY HIS WORD 02:06, WIRED: YES / REAL: YES / TECH-LAW CHECKED; awam hint written 02:20 PKT
+
+- QC1e D2 awam hint live look 02:25 PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED; D3 discussion started
