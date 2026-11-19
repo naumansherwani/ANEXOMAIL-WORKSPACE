@@ -1,0 +1,77 @@
+<title>TLS Loosen Demo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: the existing Settings > Sending row, with one new row under it. Same pill/knob look as SendSwitch. */
+:root{--bg:#0b1020;--panel:#121a30;--fg:#e8ecf6;--dim:#93a0bd;--line:rgba(255,255,255,.14);--accent:#6ea8ff;--warn:#ffc46b;--bad:#ff9a9a;--ok:#7fe0b0;color-scheme:dark}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f3f5fb;--panel:#fff;--fg:#141a2e;--dim:#56627f;--line:rgba(20,26,46,.18);--accent:#2d6bdc;--warn:#9a6200;--bad:#b3261e;--ok:#17714a;color-scheme:light}}
+:root[data-theme="light"]{--bg:#f3f5fb;--panel:#fff;--fg:#141a2e;--dim:#56627f;--line:rgba(20,26,46,.18);--accent:#2d6bdc;--warn:#9a6200;--bad:#b3261e;--ok:#17714a;color-scheme:light}
+body{background:var(--bg);color:var(--fg);font:14px/1.5 Inter,system-ui,sans-serif;padding-block:24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:640px;margin:0 auto;display:grid;gap:16px}
+h1{font-size:18px;margin:0}.dim{color:var(--dim)}.small{font-size:13px}
+.tag{display:inline-block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--warn);border:1px solid var(--warn);border-radius:999px;padding:2px 10px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:14px}
+.row{display:grid;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.row:last-child{border:0;padding-bottom:0}
+.ss{display:inline-flex;align-items:center;flex-wrap:wrap;gap:10px;max-width:100%}
+.ss-sw{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 16px 0 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:inherit;font:inherit;cursor:pointer}
+.ss-sw:focus-visible,button:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ss-knob{width:34px;height:20px;border-radius:999px;background:var(--line);position:relative;flex:none}
+.ss-knob::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s}
+.on .ss-knob{background:var(--accent)}.on .ss-knob::after{transform:translateX(14px)}.on{border-color:var(--accent)}
+.state{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{border-radius:999px;padding:4px 12px;border:1px solid var(--line);font-size:13px}
+.pill.strict{color:var(--ok);border-color:var(--ok)}.pill.loose{color:var(--warn);border-color:var(--warn)}
+.btn{min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:transparent;color:inherit;font:inherit;cursor:pointer}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}.btn[disabled]{opacity:.5;cursor:not-allowed}
+.form{display:grid;gap:12px;border:1px dashed var(--line);border-radius:12px;padding:14px}
+label{display:grid;gap:4px;font-size:13px;color:var(--dim)}
+select,textarea{min-height:44px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--fg);font:inherit;padding:8px 10px;width:100%;box-sizing:border-box}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.touch{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;border:1px solid var(--accent)}
+.pulse{width:14px;height:14px;border-radius:50%;background:var(--accent);animation:p 1.2s infinite}
+@keyframes p{50%{opacity:.25}}@media (prefers-reduced-motion:reduce){.pulse{animation:none}}
+.bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;background:var(--warn);width:100%}
+.err{color:var(--bad)}.hint{margin:0}
+[hidden]{display:none!important}
+</style>
+<div class="wrap">
+ <div><span class="tag">Demo, not wired</span><h1>Settings > Sending</h1>
+ <p class="dim small hint">The first row is the existing switch, unchanged. The second row is the new addition for F8-5. Nothing here talks to the server.</p></div>
+ <div class="card">
+  <div class="row"><div class="ss"><button class="ss-sw on" role="switch" aria-checked="true" id="sw"><span class="ss-knob"></span><span>Sending</span></button>
+   <span class="dim small">Mail leaves 30 seconds after you press Send.</span></div></div>
+  <div class="row" id="tls">
+   <div class="state"><strong>Send only if TLS</strong><span class="pill strict" id="pill">Strict, always on</span></div>
+   <div class="bar" id="barw" hidden><i id="bar"></i></div>
+   <p class="small dim hint" id="note">Mail is never sent on a connection without encryption. MTA-STS and DANE domains stay strict even when loosened.</p>
+   <div class="actions"><button class="btn" id="open">Loosen for a while</button><button class="btn pri" id="tight" hidden>Make strict now</button></div>
+   <div class="form" id="form" hidden>
+    <label for="hrs">How long<select id="hrs"><option value="1">1 hour</option><option value="4">4 hours</option><option value="12">12 hours</option><option value="24">24 hours</option></select></label>
+    <label for="why">Reason (8 to 200 characters)<textarea id="why" rows="2" maxlength="200" placeholder="Example: partner server has no STARTTLS, invoice due today"></textarea></label>
+    <span class="small err" id="err" role="alert"></span>
+    <div class="touch" id="touch" hidden><span class="pulse"></span><span>Touch your passkey to confirm.</span></div>
+    <div class="actions"><button class="btn pri" id="go">Touch passkey and loosen</button><button class="btn" id="cancel">Cancel</button></div>
+    <p class="small dim hint" id="left">Allowed 3 times in 24 hours. It tightens itself when the time ends.</p>
+   </div>
+  </div>
+ </div>
+ <p class="small dim">Rules this control follows: strict is the default, loosening needs a fresh passkey touch, 1 to 24 hours, a written reason, at most 3 per day, and it expires on its own.</p>
+</div>
+<script>
+var $=function(i){return document.getElementById(i)},used=0,timer=null,end=0,total=0;
+$("sw").onclick=function(){var o=this.classList.toggle("on");this.setAttribute("aria-checked",o)};
+$("open").onclick=function(){$("form").hidden=false;$("open").hidden=true};
+$("cancel").onclick=function(){$("form").hidden=true;$("open").hidden=false;$("err").textContent="";$("touch").hidden=true};
+function strict(){clearInterval(timer);$("pill").className="pill strict";$("pill").textContent="Strict, always on";$("barw").hidden=true;$("tight").hidden=true;$("open").hidden=false;$("open").disabled=used>=3;$("note").textContent=used>=3?"Loosen limit reached for today (3 of 3). Strict stays on.":"Mail is never sent on a connection without encryption. MTA-STS and DANE domains stay strict even when loosened."}
+$("tight").onclick=strict;
+$("go").onclick=function(){var r=$("why").value.trim();
+ if(r.length<8){$("err").textContent="Write a reason of at least 8 characters.";return}
+ $("err").textContent="";$("touch").hidden=false;$("go").disabled=true;
+ setTimeout(function(){$("touch").hidden=true;$("go").disabled=false;$("form").hidden=true;used++;
+  total=$("hrs").value*3600;end=Date.now()+total*1000/600; /* demo clock runs 600x */
+  $("pill").className="pill loose";$("barw").hidden=false;$("tight").hidden=false;$("open").hidden=true;
+  timer=setInterval(function(){var l=end-Date.now();if(l<=0){strict();return}
+   var s=Math.round(l*600/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60);
+   $("pill").textContent="Loosened, "+h+"h "+m+"m left";$("bar").style.width=(l/(total*1000/600)*100)+"%";
+   $("note").textContent="Plain connections allowed only where the receiving domain has no MTA-STS or DANE. Used "+used+" of 3 today. (Demo clock runs 600x faster.)"},200)},1400)};
+</script>

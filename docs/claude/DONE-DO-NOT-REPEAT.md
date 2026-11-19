@@ -976,3 +976,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - QC1c E191 12:2x PKT: his sql-run 12:17 showed the reason (selftest policy part: his founder_stepups has the E118 constraint founder_stepup_action_pair, a g3 grant must name action + action_hash); fix: the selftest grants now carry action and action_hash like real E118 grants, and the loosen door also demands scope g3 and action mail.tls.loosen; sandbox now has the same constraint, selftest 28/28, CHECK 9/9. Waits his re-run. Not green
 
 - QC1c F8-3 + F8-4 = GREEN BY HIS WORD 19 Nov 2026 12:25 PKT. WIRED: YES / REAL: YES / TECH-LAW CHECKED: E191 ran on his server, CHECK_E191 9/9 (selftest 28 of 28), founder-install 4/4 OK with the fmail_rpt.rs worker and the strict policy hook (cargo 489/489); retry 30 minute step live-proven in Chrome. Still open and written in CLOSE-THE-GAPS: first real report day 20 Nov, F8-5 loosen UI (his haan), none/refused/DANE/received-hint live proofs, phone/tablet screenshots
+
+- 19 Nov 12:40 PKT: F8-5 loosen DEMO written (docs/claude/demos/F8-5-tls-loosen-demo.html), existing SendSwitch untouched, waits his haan; first report day closed by his word 12:28, screenshots after Q series
+
+- 19 Nov 12:40 PKT: F8-5 loosen DEMO written (docs/claude/demos/F8-5-tls-loosen-demo.html), existing SendSwitch untouched, waits his haan; first report day closed by his word 12:28, screenshots after Q series

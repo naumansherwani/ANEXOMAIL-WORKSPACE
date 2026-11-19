@@ -293,6 +293,8 @@ docs/claude/awam-passkey-reference/passkey.rs.txt
 docs/claude/awam-passkey-reference/passkey_pure.ts.txt
 docs/claude/awam-passkey-reference/signin.rs.txt
 docs/claude/awam-passkey-reference/signin_passkey.ts.txt
+docs/claude/demos/00-FOUNDER-TECH-RULE.md
+docs/claude/demos/F8-5-tls-loosen-demo.html
 docs/claude/endpoint-package-map.py
 docs/claude/features/00-FOUNDER-TECH-RULE.md
 docs/claude/features/QC1c.json
