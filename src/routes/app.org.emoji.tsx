@@ -1,4 +1,4 @@
-// QC1e D4A (20 Nov 2026, AWAM ONLY): Admin > Company emoji. Owner / admin add and remove the company's own small pictures (logo, badge); everybody in the
+// QC1e D4A (20 Nov 2026, AWAM ONLY): Organization Center > Emoji. Owner / admin add and remove the company's own small pictures (logo, badge); everybody in the
 // company can use them in the compose window (picker "Company" tab, or type :name). Plan docs/claude/QC1E-D4-PLAN-20NOV.md; rules live in Rust (emoji_glue.rs) + SQL E193.
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
@@ -16,10 +16,10 @@ import { useAuth } from "@/lib/auth";
 import { notify } from "@/lib/notify";
 import "@/components/app/compose/emoji/company_emoji.css";
 
-export const Route = createFileRoute("/app/admin/emoji")({
+export const Route = createFileRoute("/app/org/emoji")({
   head: () => ({
     meta: [
-      { title: "Company emoji — ANEXOMAIL Admin" },
+      { title: "Company emoji — ANEXOMAIL Organization Center" },
       { name: "description", content: "Add your logo or badge as a small picture your whole company can use in messages." },
       { name: "robots", content: "noindex" },
     ],

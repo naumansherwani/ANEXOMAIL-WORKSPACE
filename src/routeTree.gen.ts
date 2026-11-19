@@ -90,7 +90,6 @@ import { Route as AppAdminIndexRouteImport } from './routes/app.admin.index'
 import { Route as AppAdminAddressesRouteImport } from './routes/app.admin.addresses'
 import { Route as AppAdminAuditRouteImport } from './routes/app.admin.audit'
 import { Route as AppAdminDiagnosticsRouteImport } from './routes/app.admin.diagnostics'
-import { Route as AppAdminEmojiRouteImport } from './routes/app.admin.emoji'
 import { Route as AppAdminExportRouteImport } from './routes/app.admin.export'
 import { Route as AppAdminHealthRouteImport } from './routes/app.admin.health'
 import { Route as AppAdminLogsRouteImport } from './routes/app.admin.logs'
@@ -143,6 +142,7 @@ import { Route as AppOrgIndexRouteImport } from './routes/app.org.index'
 import { Route as AppOrgAuditRouteImport } from './routes/app.org.audit'
 import { Route as AppOrgComplianceRouteImport } from './routes/app.org.compliance'
 import { Route as AppOrgDepartmentsRouteImport } from './routes/app.org.departments'
+import { Route as AppOrgEmojiRouteImport } from './routes/app.org.emoji'
 import { Route as AppOrgGraphRouteImport } from './routes/app.org.graph'
 import { Route as AppOrgMembersRouteImport } from './routes/app.org.members'
 import { Route as AppOrgPoliciesRouteImport } from './routes/app.org.policies'
@@ -593,11 +593,6 @@ const AppAdminDiagnosticsRoute = AppAdminDiagnosticsRouteImport.update({
   path: '/diagnostics',
   getParentRoute: () => AppAdminRoute,
 } as any)
-const AppAdminEmojiRoute = AppAdminEmojiRouteImport.update({
-  id: '/emoji',
-  path: '/emoji',
-  getParentRoute: () => AppAdminRoute,
-} as any)
 const AppAdminExportRoute = AppAdminExportRouteImport.update({
   id: '/export',
   path: '/export',
@@ -856,6 +851,11 @@ const AppOrgComplianceRoute = AppOrgComplianceRouteImport.update({
 const AppOrgDepartmentsRoute = AppOrgDepartmentsRouteImport.update({
   id: '/departments',
   path: '/departments',
+  getParentRoute: () => AppOrgRoute,
+} as any)
+const AppOrgEmojiRoute = AppOrgEmojiRouteImport.update({
+  id: '/emoji',
+  path: '/emoji',
   getParentRoute: () => AppOrgRoute,
 } as any)
 const AppOrgGraphRoute = AppOrgGraphRouteImport.update({
@@ -1164,7 +1164,6 @@ export interface FileRoutesByFullPath {
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
   '/app/admin/diagnostics': typeof AppAdminDiagnosticsRoute
-  '/app/admin/emoji': typeof AppAdminEmojiRoute
   '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/health': typeof AppAdminHealthRoute
   '/app/admin/logs': typeof AppAdminLogsRoute
@@ -1212,6 +1211,7 @@ export interface FileRoutesByFullPath {
   '/app/org/audit': typeof AppOrgAuditRoute
   '/app/org/compliance': typeof AppOrgComplianceRoute
   '/app/org/departments': typeof AppOrgDepartmentsRoute
+  '/app/org/emoji': typeof AppOrgEmojiRoute
   '/app/org/graph': typeof AppOrgGraphRoute
   '/app/org/members': typeof AppOrgMembersRoute
   '/app/org/policies': typeof AppOrgPoliciesRoute
@@ -1336,7 +1336,6 @@ export interface FileRoutesByTo {
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
   '/app/admin/diagnostics': typeof AppAdminDiagnosticsRoute
-  '/app/admin/emoji': typeof AppAdminEmojiRoute
   '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/health': typeof AppAdminHealthRoute
   '/app/admin/logs': typeof AppAdminLogsRoute
@@ -1381,6 +1380,7 @@ export interface FileRoutesByTo {
   '/app/org/audit': typeof AppOrgAuditRoute
   '/app/org/compliance': typeof AppOrgComplianceRoute
   '/app/org/departments': typeof AppOrgDepartmentsRoute
+  '/app/org/emoji': typeof AppOrgEmojiRoute
   '/app/org/graph': typeof AppOrgGraphRoute
   '/app/org/members': typeof AppOrgMembersRoute
   '/app/org/policies': typeof AppOrgPoliciesRoute
@@ -1514,7 +1514,6 @@ export interface FileRoutesById {
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
   '/app/admin/diagnostics': typeof AppAdminDiagnosticsRoute
-  '/app/admin/emoji': typeof AppAdminEmojiRoute
   '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/health': typeof AppAdminHealthRoute
   '/app/admin/logs': typeof AppAdminLogsRoute
@@ -1562,6 +1561,7 @@ export interface FileRoutesById {
   '/app/org/audit': typeof AppOrgAuditRoute
   '/app/org/compliance': typeof AppOrgComplianceRoute
   '/app/org/departments': typeof AppOrgDepartmentsRoute
+  '/app/org/emoji': typeof AppOrgEmojiRoute
   '/app/org/graph': typeof AppOrgGraphRoute
   '/app/org/members': typeof AppOrgMembersRoute
   '/app/org/policies': typeof AppOrgPoliciesRoute
@@ -1696,7 +1696,6 @@ export interface FileRouteTypes {
     | '/app/admin/addresses'
     | '/app/admin/audit'
     | '/app/admin/diagnostics'
-    | '/app/admin/emoji'
     | '/app/admin/export'
     | '/app/admin/health'
     | '/app/admin/logs'
@@ -1744,6 +1743,7 @@ export interface FileRouteTypes {
     | '/app/org/audit'
     | '/app/org/compliance'
     | '/app/org/departments'
+    | '/app/org/emoji'
     | '/app/org/graph'
     | '/app/org/members'
     | '/app/org/policies'
@@ -1868,7 +1868,6 @@ export interface FileRouteTypes {
     | '/app/admin/addresses'
     | '/app/admin/audit'
     | '/app/admin/diagnostics'
-    | '/app/admin/emoji'
     | '/app/admin/export'
     | '/app/admin/health'
     | '/app/admin/logs'
@@ -1913,6 +1912,7 @@ export interface FileRouteTypes {
     | '/app/org/audit'
     | '/app/org/compliance'
     | '/app/org/departments'
+    | '/app/org/emoji'
     | '/app/org/graph'
     | '/app/org/members'
     | '/app/org/policies'
@@ -2045,7 +2045,6 @@ export interface FileRouteTypes {
     | '/app/admin/addresses'
     | '/app/admin/audit'
     | '/app/admin/diagnostics'
-    | '/app/admin/emoji'
     | '/app/admin/export'
     | '/app/admin/health'
     | '/app/admin/logs'
@@ -2093,6 +2092,7 @@ export interface FileRouteTypes {
     | '/app/org/audit'
     | '/app/org/compliance'
     | '/app/org/departments'
+    | '/app/org/emoji'
     | '/app/org/graph'
     | '/app/org/members'
     | '/app/org/policies'
@@ -2769,13 +2769,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminDiagnosticsRouteImport
       parentRoute: typeof AppAdminRoute
     }
-    '/app/admin/emoji': {
-      id: '/app/admin/emoji'
-      path: '/emoji'
-      fullPath: '/app/admin/emoji'
-      preLoaderRoute: typeof AppAdminEmojiRouteImport
-      parentRoute: typeof AppAdminRoute
-    }
     '/app/admin/export': {
       id: '/app/admin/export'
       path: '/export'
@@ -3140,6 +3133,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppOrgDepartmentsRouteImport
       parentRoute: typeof AppOrgRoute
     }
+    '/app/org/emoji': {
+      id: '/app/org/emoji'
+      path: '/emoji'
+      fullPath: '/app/org/emoji'
+      preLoaderRoute: typeof AppOrgEmojiRouteImport
+      parentRoute: typeof AppOrgRoute
+    }
     '/app/org/graph': {
       id: '/app/org/graph'
       path: '/graph'
@@ -3455,7 +3455,6 @@ interface AppAdminRouteChildren {
   AppAdminAddressesRoute: typeof AppAdminAddressesRoute
   AppAdminAuditRoute: typeof AppAdminAuditRoute
   AppAdminDiagnosticsRoute: typeof AppAdminDiagnosticsRoute
-  AppAdminEmojiRoute: typeof AppAdminEmojiRoute
   AppAdminExportRoute: typeof AppAdminExportRoute
   AppAdminHealthRoute: typeof AppAdminHealthRoute
   AppAdminLogsRoute: typeof AppAdminLogsRoute
@@ -3472,7 +3471,6 @@ const AppAdminRouteChildren: AppAdminRouteChildren = {
   AppAdminAddressesRoute: AppAdminAddressesRoute,
   AppAdminAuditRoute: AppAdminAuditRoute,
   AppAdminDiagnosticsRoute: AppAdminDiagnosticsRoute,
-  AppAdminEmojiRoute: AppAdminEmojiRoute,
   AppAdminExportRoute: AppAdminExportRoute,
   AppAdminHealthRoute: AppAdminHealthRoute,
   AppAdminLogsRoute: AppAdminLogsRoute,
@@ -3558,6 +3556,7 @@ interface AppOrgRouteChildren {
   AppOrgAuditRoute: typeof AppOrgAuditRoute
   AppOrgComplianceRoute: typeof AppOrgComplianceRoute
   AppOrgDepartmentsRoute: typeof AppOrgDepartmentsRoute
+  AppOrgEmojiRoute: typeof AppOrgEmojiRoute
   AppOrgGraphRoute: typeof AppOrgGraphRoute
   AppOrgMembersRoute: typeof AppOrgMembersRoute
   AppOrgPoliciesRoute: typeof AppOrgPoliciesRoute
@@ -3570,6 +3569,7 @@ const AppOrgRouteChildren: AppOrgRouteChildren = {
   AppOrgAuditRoute: AppOrgAuditRoute,
   AppOrgComplianceRoute: AppOrgComplianceRoute,
   AppOrgDepartmentsRoute: AppOrgDepartmentsRoute,
+  AppOrgEmojiRoute: AppOrgEmojiRoute,
   AppOrgGraphRoute: AppOrgGraphRoute,
   AppOrgMembersRoute: AppOrgMembersRoute,
   AppOrgPoliciesRoute: AppOrgPoliciesRoute,

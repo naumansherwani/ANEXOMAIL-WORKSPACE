@@ -1440,7 +1440,6 @@ src/routes/app.account.tsx
 src/routes/app.admin.addresses.tsx
 src/routes/app.admin.audit.tsx
 src/routes/app.admin.diagnostics.tsx
-src/routes/app.admin.emoji.tsx
 src/routes/app.admin.export.tsx
 src/routes/app.admin.health.tsx
 src/routes/app.admin.index.tsx
@@ -1492,6 +1491,7 @@ src/routes/app.movein.tsx
 src/routes/app.org.audit.tsx
 src/routes/app.org.compliance.tsx
 src/routes/app.org.departments.tsx
+src/routes/app.org.emoji.tsx
 src/routes/app.org.graph.tsx
 src/routes/app.org.index.tsx
 src/routes/app.org.members.tsx

@@ -99,7 +99,7 @@ function Picker({ onPick, onClose }: { onPick: (e: string) => void; onClose: () 
       <div className="emo-grid" role="grid" aria-label={q ? "Search results" : "Emoji"} aria-rowcount={Math.ceil(list.length / COLS)}>
         {failed && <p className="emo-msg" role="alert">The emoji list could not be loaded.</p>}
         {!data && !failed && <p className="emo-msg">Loading emoji…</p>}
-        {data && !list.length && <p className="emo-msg">{q ? "No emoji found." : grp === -2 ? (pack.canManage ? "No company emoji yet. Add them in Admin > Company emoji." : "No company emoji yet.") : grp === -1 ? "Nothing used yet." : ""}</p>}
+        {data && !list.length && <p className="emo-msg">{q ? "No emoji found." : grp === -2 ? (pack.canManage ? "No company emoji yet. Add them in Organization Center > Emoji." : "No company emoji yet.") : grp === -1 ? "Nothing used yet." : ""}</p>}
         {list.map((e, i) => { const t = withTone(e, tone); return <button key={e.hexcode} type="button" role="gridcell" data-i={i} tabIndex={i === act ? 0 : -1} aria-label={t.label} title={t.label} className={`emo-c${i === act ? " act" : ""}`} onMouseEnter={() => setAct(i)} onClick={() => choose(e)}>{isCompany(e) ? <CompanyImg code={codeOf(e)} sha={coBy.get(codeOf(e))?.sha256 ?? ""} alt={t.label} size={26} /> : t.unicode}</button>; })}
       </div>
       <p className="sr" aria-live="polite">{data ? `${list.length} emoji` : ""}</p>

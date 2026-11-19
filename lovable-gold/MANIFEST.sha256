@@ -307,7 +307,7 @@ fef3186686b9b148ab30a310160291d4c8c3f5ceb07f76578123c4bccf9a0233  awam/src/compo
 7bc378b478e7ba7787ed67ca64ca62adf585e1e836e67573aba9b637af461d77  awam/src/components/app/compose/OutcomesBar.tsx
 5cf67ef47762e3adf963279f9321df99d07e8595a384fccaf78aba0a23c19c97  awam/src/components/app/compose/emoji/00-FOUNDER-TECH-RULE.md
 fb2754166706a673f96bfef3419932925793251697f2901401dd83a390e5f1b7  awam/src/components/app/compose/emoji/CompanyEmoji.tsx
-0c9d08c0bfce6fb9df54cd2d8406071a09ab02c14bd7384d47f2155650f806d5  awam/src/components/app/compose/emoji/EmojiPicker.tsx
+23b147e54ac589b5174e4bf7758e112619c42f94432d18d0f60c84ec2eecd883  awam/src/components/app/compose/emoji/EmojiPicker.tsx
 690d2924a1115e1680b06212145179ba5587649102769d6ce9d4fbdda53b4710  awam/src/components/app/compose/emoji/EmojiSafety.tsx
 20283dc3b7d0aaeed8dd7f9e354705c8effcc4476d6812b9b00021fb940e451d  awam/src/components/app/compose/emoji/EmojiShortcode.tsx
 d28f80717f92fc2250707b9f300d646668635ab7ebbabdb7c2c32375a54694ef  awam/src/components/app/compose/emoji/companyEmoji.ts
@@ -615,7 +615,7 @@ d26cdfc56deea483c896ad94157ba35e6727984fe2595d89e02c195e4d5d4b33  awam/src/lib/h
 2cdb988e4b5c295a545b3b3f913a375ad13a4cf8fcfc723071759223f4f194c8  awam/src/lib/history.ts
 76247ab63f3cb94ca9377e662e00f1557521f8f25d1b6ac7a3d71cc1788d3693  awam/src/lib/host.ts
 da79a8e10a34830b4eab5190195def15a315f3bcfcf75ab61b9ca9a1335bc6da  awam/src/lib/i18n.ts
-3c1655b988a7fc863af030c80340f17b446468a4ef49fc220555e8edd67e6de0  awam/src/lib/ia.ts
+6b9286758f761225ba408ea4931a5a71d8d51ee836466db661da7b0af37c0ac4  awam/src/lib/ia.ts
 e5b885bb1f9e0ba817e836fb905cee66eae5f30fd702b3770d60d529cc769523  awam/src/lib/ics.ts
 3a5925950c2b5547c62c02a5e0a242538ad3524af17cfdef74392907926777c3  awam/src/lib/integrations.ts
 5cf67ef47762e3adf963279f9321df99d07e8595a384fccaf78aba0a23c19c97  awam/src/lib/kernel/00-FOUNDER-TECH-RULE.md
@@ -706,7 +706,7 @@ d6f94676fa89e94f73abd79d0cd8be7b50801333a7888ca5463a8797e8397782  awam/src/lib/v
 f63f9f717972c4d48dffba39d7f2436c641209fc273d655ae898252ce6eff6e3  awam/src/lib/wt-url.ts
 06d457bdbbec95325dbfb9b9f7826b5b4c5d57ca1454638bf04938ed796474d0  awam/src/lib/zoom-prefs.test.ts
 3c76b835203e66e377fee58361ea89b44c24e94e7f0eea5fd3d70a60c1d15a49  awam/src/lib/zoom-prefs.ts
-eeb185825c07cc06e11142077c89d5fd471b9171b408cb5a00fbec4b3a1ccb68  awam/src/routeTree.gen.ts
+0b49c9a3b5d4a893daf1aa941ffdb2899ca86542dfe51317af30465a8617b98d  awam/src/routeTree.gen.ts
 3b7aceb40294eb299c842019a841df995b6165d1ad6cda78753df9dc70272f0f  awam/src/router.tsx
 5cf67ef47762e3adf963279f9321df99d07e8595a384fccaf78aba0a23c19c97  awam/src/routes/00-FOUNDER-TECH-RULE.md
 edbd5d3cd5a427882c60b7b7dcdd12c7031f2f8ac0c085d20d2f6abec719e95d  awam/src/routes/README.md
@@ -724,7 +724,6 @@ bcd3268530f8874170ef14cc72ab6ba329e9e905edf5e09ef5d29c903239d6ab  awam/src/route
 cb8efe1f397d00f0b4469b3108e292aaec1112d3407b5210542915e918ca102f  awam/src/routes/app.admin.addresses.tsx
 c7884b9e5e926572f0a9ca779e49f48e85ce8d3db06c30b956293e64dc68c3ab  awam/src/routes/app.admin.audit.tsx
 74d7869da9bcda74d628de46c1f135f82f3bef2f6b28be2b194368b07432428b  awam/src/routes/app.admin.diagnostics.tsx
-c6fe9599a369acc6f66d30b35d338fe91a6ec927b8d82ffec52e5810b6069f90  awam/src/routes/app.admin.emoji.tsx
 be039aaaca4d1ae5731bee49acffca1b40aa342688f10d6cd54baaf822c2d437  awam/src/routes/app.admin.export.tsx
 e52d5a397b2c31e81bb7ecc291d385ff54a5d4d243f54ae0bf67ab81526a3179  awam/src/routes/app.admin.health.tsx
 6bd032f28bcc34466c5ff4a7383405766ebb049587cf1db1fe02cffdd06bf197  awam/src/routes/app.admin.index.tsx
@@ -809,13 +808,14 @@ db2a5d33410818439dc42ec41b952da64b8e267f8599a986cfd839981c7d9bb3  awam/src/route
 8f6bacde2cb0b590adb46317fd7a68a804fe485dec0ab7e5bed440bd9e854fcc  awam/src/routes/app.org.audit.tsx
 584f2d054ea4efeaeda0837d4cda73a8f0f318970472ff345c68c64ef344f314  awam/src/routes/app.org.compliance.tsx
 c569c113d0f30c8c3ff71f7a9a8899067a834ef7550f1e321bf33f0297b978ea  awam/src/routes/app.org.departments.tsx
+4cb6c978d9fb4e5e8d20b3fb7df03c28893dd7fd4dc725d07c418b1c5aa1ffea  awam/src/routes/app.org.emoji.tsx
 3a91c9e5b69bd08a93a9065f87e5e7e9ef7cba1de284245d727b5f7c40e27ef8  awam/src/routes/app.org.graph.tsx
 53b981845d3af9621b45d8a742cfd7806b99165ff2734d9ed8a2a77a9596bc23  awam/src/routes/app.org.index.tsx
 a6dd87506b645e9e758c3912db707f87d09a700eedc5a4676814db77aa1720f9  awam/src/routes/app.org.members.tsx
 63e17d20e18afd96fa9463c4fac0825ea479dab72d8d40cb885fd6d44a0f7985  awam/src/routes/app.org.policies.tsx
 2a7d30d167c175962522a1666f00e354e6be20c003e10a98e8abbf994f484c10  awam/src/routes/app.org.roles.tsx
 9236dca400b4eb659113fac44e3897976fefda14a55cf1190550b0c4f3ffca5e  awam/src/routes/app.org.security.tsx
-be0c3dddb240f245a968585111b3d12f0c8d5588b53fa1643e7f3b350d4060c4  awam/src/routes/app.org.tsx
+c3a1f12a640bb274e46f4508db9c17455bffe4ef8eca940d39cebf790360855b  awam/src/routes/app.org.tsx
 423eb4164a4dceb49c5020db3eec643b02b44c49db32bb985674979b155f3ed9  awam/src/routes/app.people.tsx
 291c1cb00dea0c32dde0250dc941e9c2dd4dad7842e7cfa0df302af905012ab0  awam/src/routes/app.perf.budgets.tsx
 e973adb83099c92f66906f1f47cee377f2347f452e22b486aac02e3b9c9fb6ff  awam/src/routes/app.perf.devices.tsx

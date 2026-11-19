@@ -39,7 +39,8 @@ type Tab = {
     | "/app/org/security"
     | "/app/org/audit"
     | "/app/org/graph"
-    | "/app/org/compliance";
+    | "/app/org/compliance"
+    | "/app/org/emoji";
   label: string;
   exact?: boolean;
 };
@@ -54,6 +55,7 @@ const TABS: Tab[] = [
   { to: "/app/org/audit", label: "Audit ledger" },
   { to: "/app/org/graph", label: "Org graph" },
   { to: "/app/org/compliance", label: "Compliance" },
+  { to: "/app/org/emoji", label: "Emoji" },
 ];
 
 function OrgLayout() {
