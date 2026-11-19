@@ -5,11 +5,11 @@ HIS LAST WORD: his 14:46/14:47/14:53: WhatsApp look, 32 recents, founder and awa
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- eca98f2c 20 Nov 01:07 QC1e founder picker height follows the founder compose card
+- 72ee3de2 20 Nov 01:07 ledger line e3cad4c3
 - e3cad4c3 20 Nov 01:07 checkpoint
 - dccf2176 20 Nov 01:07 ledger line 026cf122
 - 026cf122 20 Nov 01:07 QC1e founder picker overlay like awam, fixes Send row overlap
-- f4ef3c61 20 Nov 01:00 ledger line b6207d6a
-- b6207d6a 20 Nov 01:00 checkpoint
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -29,4 +29,4 @@ QC1c: 44/44 written. NOT WRITTEN:
 ## >>> 18 NOV 2026 07:2x PKT NOW (his order 07:16, update for Claude after any compaction): PHASES IN HAND = (1) QLIVE-c (package stream limits stream_tier.rs, live drafts SQL E188 [his sql-run OK], simulation test founder-web/sim, 2 real browser bugs fixed) and (2) Q-contacts-kernel (contacts@1 in 
 ## >>> 15 NOV 19:25 HIS ORDER: L closed. NEXT = Q SERIES until complete, THEN S5 (not before). Lovable codes migration phase written in docs/claude/FOUNDER-LOVABLE-MIGRATION-15NOV.md and docs/claude/AWAM-LOVABLE-MIGRATION-15NOV.md (preserve as written, advance technology, fix loopholes, polish). Q s
 ## >>> HANDOFF 14 NOV 07:10 (he is sleeping; read this first tomorrow): DONE and proven: KP3 step 5 GREEN, pre-connect GREEN by his order, clean blueprint (docs/claude/FOUNDER-BLUEPRINT-CLEAN-14NOV.md), audit steps A+B GREEN, audit step C INSTALLED on his server (receipt 35, tests 394, listening aft
-WIP snapshot: refs/wip/last (826065e8ff55fe0d96b8f31d9a51ec86ee988cc3)
+WIP snapshot: refs/wip/last (6a83c05d1586eac84ef68927b74db0aaf979f17a)
