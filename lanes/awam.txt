@@ -844,6 +844,7 @@ server/rust/locale_core.rs
 server/rust/locale_glue.rs
 server/rust/mail_core.rs
 server/rust/mail_glue.rs
+server/rust/mail_inline_core.rs
 server/rust/mailx_core.rs
 server/rust/mailx_glue.rs
 server/rust/main.rs
