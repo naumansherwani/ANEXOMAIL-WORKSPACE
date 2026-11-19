@@ -45,7 +45,7 @@ export function EmojiDock({ dock, area, value, onChange }: { dock: Dock; area: R
 function Picker({ onPick, onClose }: { onPick: (e: string) => void; onClose: () => void }) {
   const reduce = useReducedMotion();
   const [data, setData] = useState<Data | null>(null), [failed, setFailed] = useState(false);
-  const [q, setQ] = useState(""), [grp, setGrp] = useState(0), [tone, setTone] = useState<Tone>(() => loadTone(rd(TONE_KEY))), [recent, setRecent] = useState<string[]>(() => loadList(rd(RECENT_KEY)));
+  const [q, setQ] = useState(""), [grp, setGrp] = useState(() => (loadList(rd(RECENT_KEY)).length ? -1 : 0)), [tone, setTone] = useState<Tone>(() => loadTone(rd(TONE_KEY))), [recent, setRecent] = useState<string[]>(() => loadList(rd(RECENT_KEY)));
   const [act, setAct] = useState(0), box = useRef<HTMLDivElement>(null), inp = useRef<HTMLInputElement>(null);
   useEffect(() => { let live = true; loadData().then((d) => { if (live) setData(d); }).catch(() => { if (live) setFailed(true); }); return () => { live = false; }; }, []);
   useEffect(() => { inp.current?.focus({ preventScroll: true }); const id = window.setTimeout(() => box.current?.scrollIntoView({ block: "nearest", behavior: "auto" }), 30); return () => window.clearTimeout(id); }, []); /* the picker opens fully in view, the compose panel scrolls to it */
@@ -77,16 +77,19 @@ function Picker({ onPick, onClose }: { onPick: (e: string) => void; onClose: () 
   const setT = (t: Tone) => { setTone(t); wr(TONE_KEY, t); };
   return (
     <motion.div ref={box} className="emo emo-dock" role="dialog" aria-label="Emoji picker" onKeyDown={key} initial={reduce ? false : { opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 6 }} transition={{ duration: 0.14 }}>
+      <div className="emo-tabs" role="tablist" aria-label="Emoji groups">
+        <button type="button" role="tab" aria-selected={grp === -1 && !q} aria-label="Recently used" title="Recently used" className="emo-tab" onClick={() => { setQ(""); setGrp(-1); }}><span aria-hidden="true">🕘</span></button>
+        {groups.map((g) => <button key={g.key} type="button" role="tab" aria-selected={grp === g.order && !q} aria-label={g.message} title={g.message} className="emo-tab" onClick={() => { setQ(""); setGrp(g.order); }}><span aria-hidden="true">{GROUP_ICON[g.key] ?? "•"}</span></button>)}
+      </div>
       <div className="emo-top">
         <input ref={inp} className="emo-q" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search emoji" aria-label="Search emoji" autoComplete="off" />
         <button type="button" className="emo-x" aria-label="Close emoji picker" title="Close" onClick={onClose}><span aria-hidden="true">✕</span></button>
       </div>
-      <div className="emo-tabs" role="tablist" aria-label="Emoji groups">
-        <button type="button" role="tab" aria-selected={grp === -1 && !q} aria-label="Recently used" className="emo-tab" onClick={() => { setQ(""); setGrp(-1); }}><span aria-hidden="true">🕘</span></button>
-        {groups.map((g) => <button key={g.key} type="button" role="tab" aria-selected={grp === g.order && !q} aria-label={g.message} className="emo-tab" onClick={() => { setQ(""); setGrp(g.order); }}><span aria-hidden="true">{GROUP_ICON[g.key] ?? "•"}</span></button>)}
-      </div>
-      <div className="emo-tone" role="radiogroup" aria-label="Skin tone">
-        {TONES.map((t, i) => <button key={t || "none"} type="button" role="radio" aria-checked={tone === t} aria-label={t ? `${t} skin tone` : "Default yellow"} className={`emo-sw s${i}`} onClick={() => setT(t)} />)}
+      <div className="emo-sec">
+        <h3 className="emo-h">{q.trim() ? "Search results" : grp === -1 ? "Recently used" : (groups.find((g) => g.order === grp)?.message ?? "")}</h3>
+        <div className="emo-tone" role="radiogroup" aria-label="Skin tone">
+          {TONES.map((t2, i) => <button key={t2 || "none"} type="button" role="radio" aria-checked={tone === t2} aria-label={t2 ? `${t2} skin tone` : "Default yellow"} className={`emo-sw s${i}`} onClick={() => setT(t2)} />)}
+        </div>
       </div>
       <div className="emo-grid" role="grid" aria-label={q ? "Search results" : "Emoji"} aria-rowcount={Math.ceil(list.length / COLS)}>
         {failed && <p className="emo-msg" role="alert">The emoji list could not be loaded.</p>}

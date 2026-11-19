@@ -1280,3 +1280,5 @@ Technology: React 19 + TypeScript; pure module founder-web/src/emoji_pure.ts (bu
 - 19 Nov 16:20 PKT QC1e FOUNDER fix (his 14:39 photo): live Chrome measured the founder picker box squeezed to 179 px inside the compose form (flex shrink, overflow hidden) so search/X and the groups bar sat outside the box and the grid scroll looked like closing; fixed: picker flex none, textarea shrinks while it is open, grid height follows the screen, grid keyboard scroll only inside the grid (no scrollIntoView on ancestors). Sandbox with real mail.css + mailbox.css at 4 sizes: picker whole (all rows inside, footer visible, form not clipped), stays open after wheel + 6 ArrowDown, no errors
 
 - 19 Nov 16:25 PKT checkpoint, QC1e founder+awam picker fixes await his pulls
+
+- 19 Nov 14:52 PKT QC1e picker WhatsApp order (tabs, search+X, heading, grid) + last 32 used, founder and awam, sandbox-proven; two separate ledgers written (QC1E-LEDGER-FOUNDER-19NOV.md, QC1E-LEDGER-AWAM-19NOV.md); earlier wrong times re-timed to commit times; code untouched beyond this; awaits his two pulls then live Chrome looks

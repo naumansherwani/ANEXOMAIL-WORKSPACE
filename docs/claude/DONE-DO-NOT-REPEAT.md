@@ -1013,56 +1013,58 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 - 19 Nov 13:35 PKT: his 13:23 word: F8-5 real touch and TLS heal are not needed as proof, closed; screenshots not repeated. QC1e emoji research + plan written (docs/claude/QC1E-EMOJI-RESEARCH-PLAN-19NOV.md), waits his answers D1-D4, nothing built, stash untouched
 
-- 19 Nov 13:40 PKT QC1e D1 built (emoji picker + new-emoji safety), tests pass, awaits install
+- 19 Nov 13:32 PKT QC1e D1 built (emoji picker + new-emoji safety), tests pass, awaits install
 
-- 19 Nov 13:40 PKT QC1e D1 built (emoji picker + new-emoji safety), tests pass, awaits install
+- 19 Nov 13:32 PKT QC1e D1 built (emoji picker + new-emoji safety), tests pass, awaits install
 
-- 19 Nov 13:45 PKT checkpoint, QC1e D1 built
+- 19 Nov 13:33 PKT checkpoint, QC1e D1 built
 
-- 19 Nov 13:50 PKT QC1e D1 awam glue: same pure module, awam compose mount (his order 13:34, separate awam gate)
+- 19 Nov 13:39 PKT QC1e D1 awam glue: same pure module, awam compose mount (his order 13:34, separate awam gate)
 
-- 19 Nov 13:52 PKT QC1e D1 awam glue: same pure module, awam compose mount (his order 13:34)
+- 19 Nov 13:39 PKT QC1e D1 awam glue: same pure module, awam compose mount (his order 13:34)
 
-- 19 Nov 13:55 PKT checkpoint, QC1e D1 founder+awam built
+- 19 Nov 13:40 PKT checkpoint, QC1e D1 founder+awam built
 
-- 19 Nov 14:02 PKT checkpoint, QC1e D1 waits installs
+- 19 Nov 13:47 PKT checkpoint, QC1e D1 waits installs
 
-- 19 Nov 14:05 PKT QC1e D1 founder install OK 4/4 (his paste 13:51); awam pull build FAIL fixed (manifest + package.json + bun install); flaky snap_seal test fixed; awam QC1e row added
+- 19 Nov 13:53 PKT QC1e D1 founder install OK 4/4 (his paste 13:51); awam pull build FAIL fixed (manifest + package.json + bun install); flaky snap_seal test fixed; awam QC1e row added
 
-- 19 Nov 14:12 PKT checkpoint, QC1e awam re-pull awaited
+- 19 Nov 13:53 PKT checkpoint, QC1e awam re-pull awaited
 
-- 19 Nov 14:20 PKT QC1e D1 Chrome look: tab row squashed to 12 px, fixed (flex none), founder + awam css
+- 19 Nov 13:57 PKT QC1e D1 Chrome look: tab row squashed to 12 px, fixed (flex none), founder + awam css
 
-- 19 Nov 14:26 PKT checkpoint, QC1e D1 css fix awaits reinstall
+- 19 Nov 13:59 PKT checkpoint, QC1e D1 css fix awaits reinstall
 
-- 19 Nov 14:32 PKT checkpoint, QC1e D1 reinstall awaited
+- 19 Nov 14:07 PKT checkpoint, QC1e D1 reinstall awaited
 
-- 19 Nov 14:20 PKT QC1e D1: his installs OK (founder 4/4, awam build OK, css e4aecec7 live); picker gap +5px (search to tabs, tabs to skin tone) per his word; Chrome look paused: founder session was signed out by the install, needs his sign-in
+- 19 Nov 14:10 PKT QC1e D1: his installs OK (founder 4/4, awam build OK, css e4aecec7 live); picker gap +5px (search to tabs, tabs to skin tone) per his word; Chrome look paused: founder session was signed out by the install, needs his sign-in
 
-- 19 Nov 14:30 PKT QC1e D1 founder Chrome look (live, signed in): picker opens, search orca finds the Unicode 17 orca, insert at caret works, new-emoji hint appears, Use words gives [orca] and hint goes; fixed: single result cell stretched tall (grid align-content start). Awam look still open
+- 19 Nov 14:12 PKT QC1e D1 founder Chrome look (live, signed in): picker opens, search orca finds the Unicode 17 orca, insert at caret works, new-emoji hint appears, Use words gives [orca] and hint goes; fixed: single result cell stretched tall (grid align-content start). Awam look still open
 
-- 19 Nov 14:36 PKT checkpoint, QC1e D1 founder look done, awam look open
+- 19 Nov 14:13 PKT checkpoint, QC1e D1 founder look done, awam look open
 
-- 19 Nov 14:45 PKT QC1e D1 AWAM Chrome look (business.test account, Business plan, live anexomail.com/app/mail): emoji button in compose, picker opens, search orca finds Unicode 17 orca, insert works, new-emoji hint shows, Use words gives [orca]; test text cleared, nothing sent. Not yet seen at 390/820 and not yet with the spacing + tall-cell css
+- 19 Nov 14:15 PKT QC1e D1 AWAM Chrome look (business.test account, Business plan, live anexomail.com/app/mail): emoji button in compose, picker opens, search orca finds Unicode 17 orca, insert works, new-emoji hint shows, Use words gives [orca]; test text cleared, nothing sent. Not yet seen at 390/820 and not yet with the spacing + tall-cell css
 
-- 19 Nov 14:40 PKT QC1e D2 (his order 14:16): WhatsApp-style EmojiBox, smiley inside the message box bottom-right, picker docked under the box (no floating over To/Subject), groups bar at the bottom; founder MailCompose + awam ComposeStudio, same shared module, separate gates; tsc, bun 15/15, both builds OK; not green until his pulls + Chrome look
+- 19 Nov 14:18 PKT QC1e D2 (his order 14:16): WhatsApp-style EmojiBox, smiley inside the message box bottom-right, picker docked under the box (no floating over To/Subject), groups bar at the bottom; founder MailCompose + awam ComposeStudio, same shared module, separate gates; tsc, bun 15/15, both builds OK; not green until his pulls + Chrome look
 
-- 19 Nov 14:42 PKT awam emoji everywhere list written (chat, notes, events) after his 14:17 word
+- 19 Nov 14:18 PKT awam emoji everywhere list written (chat, notes, events) after his 14:17 word
 
-- 19 Nov 14:48 PKT checkpoint, QC1e D2 box layout awaits his pulls
+- 19 Nov 14:19 PKT checkpoint, QC1e D2 box layout awaits his pulls
 
-- 19 Nov 14:55 PKT AWAM compose cut off at the bottom (his 14:21): panel scrolled inside, Send bar fell below the fold on sm+; fixed: Send bar sticky on every width, panel raised (bottom-6, max-h min(85vh, 100dvh-3rem)); ComposeOverlay.tsx + ComposeStudio.tsx, awam gate only
+- 19 Nov 14:22 PKT AWAM compose cut off at the bottom (his 14:21): panel scrolled inside, Send bar fell below the fold on sm+; fixed: Send bar sticky on every width, panel raised (bottom-6, max-h min(85vh, 100dvh-3rem)); ComposeOverlay.tsx + ComposeStudio.tsx, awam gate only
 
-- 19 Nov 15:05 PKT QC1e D2 (his 14:24 + 14:25): emoji button beside Send in the footer row (founder look kept as is, awam made the same), picker docked under the message box, X close button in the picker top row; founder + awam same shared module, separate gates; tsc, bun 15/15, both builds OK; not green until his pulls + Chrome look
+- 19 Nov 14:27 PKT QC1e D2 (his 14:24 + 14:25): emoji button beside Send in the footer row (founder look kept as is, awam made the same), picker docked under the message box, X close button in the picker top row; founder + awam same shared module, separate gates; tsc, bun 15/15, both builds OK; not green until his pulls + Chrome look
 
-- 19 Nov 15:12 PKT checkpoint, QC1e D2 button beside Send + X awaits his pulls
+- 19 Nov 14:27 PKT checkpoint, QC1e D2 button beside Send + X awaits his pulls
 
-- 19 Nov 15:25 PKT QC1e awam fix (his 14:33): picker opened below the panel fold and a click on the panel scrollbar counted as outside click and closed it; now: awam picker opens OVER the message box (emo-over), compact, scrollbar click ignored, sr-only line no longer visible (171 emoji). Founder layout unchanged. His two pulls done 14:28 (founder 4/4, awam build OK)
+- 19 Nov 14:35 PKT QC1e awam fix (his 14:33): picker opened below the panel fold and a click on the panel scrollbar counted as outside click and closed it; now: awam picker opens OVER the message box (emo-over), compact, scrollbar click ignored, sr-only line no longer visible (171 emoji). Founder layout unchanged. His two pulls done 14:28 (founder 4/4, awam build OK)
 
-- 19 Nov 15:36 PKT checkpoint, QC1e awam picker over text, awaits his awam pull
+- 19 Nov 14:36 PKT checkpoint, QC1e awam picker over text, awaits his awam pull
 
-- 19 Nov 15:55 PKT QC1e sandbox live test (his 14:36, real Chromium, compose-panel skeleton with the real EmojiPicker + css, 4 sizes 1536x674 / 1280x720 / 820x1180 / 390x844): found + fixed (1) overlay picker box collapsed to 22 px (top and bottom both set), (2) picker ran past the panel bottom, now scrolls into view on open, (3) phone height; result: picker fully inside the panel and viewport at all 4 sizes, search+insert OK, new-emoji hint OK, X closes, no console errors
+- 19 Nov 14:40 PKT QC1e sandbox live test (his 14:36, real Chromium, compose-panel skeleton with the real EmojiPicker + css, 4 sizes 1536x674 / 1280x720 / 820x1180 / 390x844): found + fixed (1) overlay picker box collapsed to 22 px (top and bottom both set), (2) picker ran past the panel bottom, now scrolls into view on open, (3) phone height; result: picker fully inside the panel and viewport at all 4 sizes, search+insert OK, new-emoji hint OK, X closes, no console errors
 
-- 19 Nov 16:20 PKT QC1e FOUNDER fix (his 14:39 photo): live Chrome measured the founder picker box squeezed to 179 px inside the compose form (flex shrink, overflow hidden) so search/X and the groups bar sat outside the box and the grid scroll looked like closing; fixed: picker flex none, textarea shrinks while it is open, grid height follows the screen, grid keyboard scroll only inside the grid (no scrollIntoView on ancestors). Sandbox with real mail.css + mailbox.css at 4 sizes: picker whole (all rows inside, footer visible, form not clipped), stays open after wheel + 6 ArrowDown, no errors
+- 19 Nov 14:44 PKT QC1e FOUNDER fix (his 14:39 photo): live Chrome measured the founder picker box squeezed to 179 px inside the compose form (flex shrink, overflow hidden) so search/X and the groups bar sat outside the box and the grid scroll looked like closing; fixed: picker flex none, textarea shrinks while it is open, grid height follows the screen, grid keyboard scroll only inside the grid (no scrollIntoView on ancestors). Sandbox with real mail.css + mailbox.css at 4 sizes: picker whole (all rows inside, footer visible, form not clipped), stays open after wheel + 6 ArrowDown, no errors
 
-- 19 Nov 16:25 PKT checkpoint, QC1e founder+awam picker fixes await his pulls
+- 19 Nov 14:44 PKT checkpoint, QC1e founder+awam picker fixes await his pulls
+
+- 19 Nov 14:52 PKT QC1e picker WhatsApp order (tabs, search+X, heading, grid) + last 32 used, founder and awam, sandbox-proven; two separate ledgers written (QC1E-LEDGER-FOUNDER-19NOV.md, QC1E-LEDGER-AWAM-19NOV.md); earlier wrong times re-timed to commit times; code untouched beyond this; awaits his two pulls then live Chrome looks
