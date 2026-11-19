@@ -22,7 +22,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { FileContextCard } from "@/components/app/compose/FileContextCard";
 import { GhostTextArea } from "@/components/app/compose/GhostTextArea";
-import { EmojiBox } from "@/components/app/compose/emoji/EmojiPicker";
+import { EmojiDock, EmojiToggle, useEmojiDock } from "@/components/app/compose/emoji/EmojiPicker";
 import { EmojiSafety } from "@/components/app/compose/emoji/EmojiSafety";
 import {
   OutcomesBar,
@@ -154,6 +154,7 @@ export function ComposeStudio({
   const [showVersions, setShowVersions] = useState(false);
   const [followUpDays, setFollowUpDays] = useState(0);
   const bodyRef = useRef<HTMLTextAreaElement | null>(null);
+  const emo = useEmojiDock(); // QC1e emoji: button beside Send, picker docked under the box
   // Business Outcomes (Pro): kernel se wada + kharcha; user ne jo "link" kiya wahi send par record hota hai.
   const [linked, setLinked] = useState<Record<PromiseKey, LinkChoice>>({});
   const [dismissedPromises, setDismissedPromises] = useState<Set<PromiseKey>>(() => new Set());
@@ -756,7 +757,6 @@ export function ComposeStudio({
         ) : null}
 
         {/* Phase 12A — inline word prediction (ghost text). Composer wahi hai. */}
-        <EmojiBox area={bodyRef} value={body} onChange={setBody}>
         <GhostTextArea
           id="studio-body"
           ref={bodyRef}
@@ -774,7 +774,7 @@ export function ComposeStudio({
               : "Write the message."
           }
         />
-        </EmojiBox>
+        <EmojiDock dock={emo} area={bodyRef} value={body} onChange={setBody} />
         {/* QC1e emoji (his order 19 Nov 13:34 + 14:16): same pure module as the founder, awam glue. WhatsApp-style: smiley inside the box, picker docked below. Additive only. */}
         <EmojiSafety text={body} onChange={setBody} />
 
@@ -1077,6 +1077,7 @@ export function ComposeStudio({
             {busy ? <BrandSpinner className="size-4" /> : <Send className="size-4" />}
             <span>{proMail && scheduling ? "Schedule" : "Send"}</span>
           </Button>
+          <EmojiToggle dock={emo} className="ax-press ax-tap inline-flex items-center justify-center rounded-md border border-border bg-secondary text-secondary-foreground hover:bg-secondary/80" />
           {proMail ? (
             <Button
               type="button"

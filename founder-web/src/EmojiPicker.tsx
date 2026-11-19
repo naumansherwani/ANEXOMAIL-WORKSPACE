@@ -18,26 +18,28 @@ const wr = (k: string, v: string) => { try { window.localStorage.setItem(k, v); 
 const GROUP_ICON: Record<string, string> = { "smileys-emotion": "😀", "people-body": "👋", "animals-nature": "🐻", "food-drink": "🍔", "travel-places": "✈️", activities: "⚽", objects: "💡", symbols: "❤️", flags: "🏁" };
 const COLS = 8;
 
-/** WhatsApp-style (his order 19 Nov 14:16): the smiley sits INSIDE the message box, bottom-right corner; the picker opens DOCKED right under the box (in the page flow, never floating over the To / Subject fields), search on top, groups as a bar at the bottom. One shared module, two glues (founder + awam), separate gates. */
-export function EmojiBox({ area, value, onChange, children }: { area: React.RefObject<HTMLTextAreaElement | null>; value: string; onChange: (v: string) => void; children: React.ReactNode }) {
+/** His order 19 Nov 14:23: the emoji button is the founder's own look (a square button beside Send, in the footer row), on founder AND awam. The picker opens DOCKED under the message box (in the page flow: never floating over To / Subject, never cut off). One shared module, two glues, separate gates. */
+export type Dock = { open: boolean; toggle: () => void; close: () => void; btn: React.RefObject<HTMLButtonElement | null> };
+export function useEmojiDock(): Dock {
   const [open, setOpen] = useState(false), btn = useRef<HTMLButtonElement>(null);
+  const toggle = useCallback(() => setOpen((o) => !o), []);
+  const close = useCallback(() => { setOpen(false); btn.current?.focus(); }, []);
+  return { open, toggle, close, btn };
+}
+export function EmojiToggle({ dock, className = "mx-btn alt" }: { dock: Dock; className?: string }) {
+  return (
+    <button ref={dock.btn} type="button" className={`${className} emo-btn emo-toggle`} aria-haspopup="dialog" aria-expanded={dock.open} aria-label="Insert emoji" title="Emoji" onClick={dock.toggle}>
+      <span aria-hidden="true">🙂</span>
+    </button>
+  );
+}
+export function EmojiDock({ dock, area, value, onChange }: { dock: Dock; area: React.RefObject<HTMLTextAreaElement | null>; value: string; onChange: (v: string) => void }) {
   const pick = useCallback((e: string) => {
     const t = area.current, s = t?.selectionStart ?? value.length, en = t?.selectionEnd ?? value.length;
     const r = insertAt(value, s, en, e); onChange(r.text);
     window.requestAnimationFrame(() => { if (t) { t.focus(); t.setSelectionRange(r.caret, r.caret); } });
   }, [area, value, onChange]);
-  const close = useCallback(() => { setOpen(false); btn.current?.focus(); }, []);
-  return (
-    <div className="emo-box">
-      <div className="emo-field">
-        {children}
-        <button ref={btn} type="button" className="emo-corner" aria-haspopup="dialog" aria-expanded={open} aria-label="Insert emoji" title="Emoji" onClick={() => setOpen((o) => !o)}>
-          <span aria-hidden="true">🙂</span>
-        </button>
-      </div>
-      <AnimatePresence initial={false}>{open && <Picker key="p" onPick={pick} onClose={close} />}</AnimatePresence>
-    </div>
-  );
+  return <AnimatePresence initial={false}>{dock.open && <Picker key="p" onPick={pick} onClose={dock.close} />}</AnimatePresence>;
 }
 
 function Picker({ onPick, onClose }: { onPick: (e: string) => void; onClose: () => void }) {
@@ -47,7 +49,7 @@ function Picker({ onPick, onClose }: { onPick: (e: string) => void; onClose: () 
   const [act, setAct] = useState(0), box = useRef<HTMLDivElement>(null), inp = useRef<HTMLInputElement>(null);
   useEffect(() => { let live = true; loadData().then((d) => { if (live) setData(d); }).catch(() => { if (live) setFailed(true); }); return () => { live = false; }; }, []);
   useEffect(() => { inp.current?.focus(); }, []);
-  useEffect(() => { const h = (e: MouseEvent) => { if (box.current && !box.current.contains(e.target as Node) && !(e.target as HTMLElement).closest(".emo-box")) onClose(); }; document.addEventListener("mousedown", h); return () => document.removeEventListener("mousedown", h); }, [onClose]);
+  useEffect(() => { const h = (e: MouseEvent) => { if (box.current && !box.current.contains(e.target as Node) && !(e.target as HTMLElement).closest(".emo-toggle")) onClose(); }; document.addEventListener("mousedown", h); return () => document.removeEventListener("mousedown", h); }, [onClose]);
   const groups = useMemo(() => (data?.groups ?? []).filter((g) => g.key !== "component"), [data]);
   const byHex = useMemo(() => new Map((data?.all ?? []).map((e) => [e.hexcode, e])), [data]);
   const list: Emoji[] = useMemo(() => {
@@ -69,7 +71,10 @@ function Picker({ onPick, onClose }: { onPick: (e: string) => void; onClose: () 
   const setT = (t: Tone) => { setTone(t); wr(TONE_KEY, t); };
   return (
     <motion.div ref={box} className="emo emo-dock" role="dialog" aria-label="Emoji picker" onKeyDown={key} initial={reduce ? false : { opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.16 }}>
-      <input ref={inp} className="emo-q" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search emoji" aria-label="Search emoji" autoComplete="off" />
+      <div className="emo-top">
+        <input ref={inp} className="emo-q" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search emoji" aria-label="Search emoji" autoComplete="off" />
+        <button type="button" className="emo-x" aria-label="Close emoji picker" title="Close" onClick={onClose}><span aria-hidden="true">✕</span></button>
+      </div>
       <div className="emo-tabs" role="tablist" aria-label="Emoji groups">
         <button type="button" role="tab" aria-selected={grp === -1 && !q} aria-label="Recently used" className="emo-tab" onClick={() => { setQ(""); setGrp(-1); }}><span aria-hidden="true">🕘</span></button>
         {groups.map((g) => <button key={g.key} type="button" role="tab" aria-selected={grp === g.order && !q} aria-label={g.message} className="emo-tab" onClick={() => { setQ(""); setGrp(g.order); }}><span aria-hidden="true">{GROUP_ICON[g.key] ?? "•"}</span></button>)}
