@@ -1268,3 +1268,5 @@ Technology: React 19 + TypeScript; pure module founder-web/src/emoji_pure.ts (bu
 - 19 Nov 14:55 PKT AWAM compose cut off at the bottom (his 14:21): panel scrolled inside, Send bar fell below the fold on sm+; fixed: Send bar sticky on every width, panel raised (bottom-6, max-h min(85vh, 100dvh-3rem)); ComposeOverlay.tsx + ComposeStudio.tsx, awam gate only
 
 - 19 Nov 15:05 PKT QC1e D2 (his 14:24 + 14:25): emoji button beside Send in the footer row (founder look kept as is, awam made the same), picker docked under the message box, X close button in the picker top row; founder + awam same shared module, separate gates; tsc, bun 15/15, both builds OK; not green until his pulls + Chrome look
+
+- 19 Nov 15:12 PKT checkpoint, QC1e D2 button beside Send + X awaits his pulls
