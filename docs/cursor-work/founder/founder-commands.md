@@ -4213,3 +4213,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - 20.11.26 03:50 PKT QC1e D4A checkpoint: waits his sql-run E193 paste
 
 - 20.11.26 03:30 PKT QC1e D4A: E193 first run on his DB: 3 FAIL (service_role write grant, selftest trigger order, trigger count); fixed in same file
+
+- 20.11.26 03:40 PKT D4A checkpoint: E193 fix pushed, waits re-run paste
