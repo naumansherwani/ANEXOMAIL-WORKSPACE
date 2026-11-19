@@ -4135,3 +4135,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - 20 Nov 01:18 PKT QC1e founder picker = awam overlay (Send row no longer covered), layout only, colours untouched; awam look GOOD live
 
 - 20 Nov 01:07 PKT checkpoint, QC1e founder overlay 026cf122 awaits his two pulls
+
+- 20 Nov 01:22 PKT QC1e founder picker height/position from the founder card itself (208px max), layout only
