@@ -63,11 +63,17 @@ function Picker({ onPick, onClose }: { onPick: (e: string) => void; onClose: () 
   const key = (ev: React.KeyboardEvent) => {
     if (ev.key === "Escape") { ev.preventDefault(); ev.stopPropagation(); onClose(); return; }
     if (!list.length) return;
-    const move = (d: number) => { ev.preventDefault(); setAct((a) => Math.max(0, Math.min(list.length - 1, a + d))); };
+    const move = (d: number) => { ev.preventDefault(); viaKey.current = true; setAct((a) => Math.max(0, Math.min(list.length - 1, a + d))); };
     if (ev.key === "ArrowRight") move(1); else if (ev.key === "ArrowLeft") move(-1); else if (ev.key === "ArrowDown") move(COLS); else if (ev.key === "ArrowUp") move(-COLS);
     else if (ev.key === "Enter") { ev.preventDefault(); const e = list[act]; if (e) choose(e); }
   };
-  useEffect(() => { box.current?.querySelector<HTMLElement>(`[data-i="${act}"]`)?.scrollIntoView({ block: "nearest" }); }, [act, list]);
+  const viaKey = useRef(false);
+  useEffect(() => { /* scroll ONLY the grid, and only for keyboard moves: scrollIntoView also scrolled the picker and the compose window, which looked like the picker closing */
+    if (!viaKey.current) return; viaKey.current = false;
+    const g = box.current?.querySelector<HTMLElement>(".emo-grid"), c = box.current?.querySelector<HTMLElement>(`[data-i="${act}"]`); if (!g || !c) return;
+    const gb = g.getBoundingClientRect(), cb = c.getBoundingClientRect();
+    if (cb.top < gb.top) g.scrollTop -= gb.top - cb.top; else if (cb.bottom > gb.bottom) g.scrollTop += cb.bottom - gb.bottom;
+  }, [act, list]);
   const setT = (t: Tone) => { setTone(t); wr(TONE_KEY, t); };
   return (
     <motion.div ref={box} className="emo emo-dock" role="dialog" aria-label="Emoji picker" onKeyDown={key} initial={reduce ? false : { opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 6 }} transition={{ duration: 0.14 }}>

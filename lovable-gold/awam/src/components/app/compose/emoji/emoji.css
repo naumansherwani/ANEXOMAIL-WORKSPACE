@@ -43,3 +43,6 @@
 .emo-over .emo-sw{width:40px;height:40px;padding:11px}.emo-over .emo-tab{min-height:40px}
 .emo-over .emo-dock .emo-grid{height:168px}.emo-over .emo-c{min-height:44px}
 @media (max-width:640px){.emo-over .emo-dock .emo-grid{height:148px}}
+.emo.emo-dock{flex:none;justify-content:flex-start}
+.emo-dock .emo-grid{height:min(208px,26dvh);min-height:120px}
+.mc-t.mc-t-emo,.mbx-compose .mc-t.mc-t-emo{min-height:56px}
