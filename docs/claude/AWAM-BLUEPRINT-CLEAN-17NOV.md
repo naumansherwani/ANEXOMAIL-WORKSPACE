@@ -57,3 +57,5 @@ Same feature as the founder QC1e (docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md), 
 ### QC1e awam: WHERE ELSE THE EMOJI BOX BELONGS (his word 19 Nov 14:17: "yeh awam side ka common hai puri website ke liye")  [written 14:42 PKT]
 Done (D2 layout, awam gate): Compose Studio + inline reply (ComposeStudio.tsx, variant inline) via the shared EmojiBox.
 Message boxes found in awam code, to take the same EmojiBox one by one (each its own awam pull, awam files frozen except by his word): 1) src/routes/app.chat.tsx (ANEXOChat message box, the main one, the plan says AnexoChat reuses the module), 2) src/components/app/work/NoteDoc.tsx (Work notes), 3) src/components/app/calendar/EventDetail.tsx + NewMeeting.tsx (event description), 4) BookingPage / book.$handle / rsvp (public booking pages: text only, decide with him), AppealForm + SignupReview (formal forms: no emoji, decide with him). The founder AI studio pages are founder-side, never touched here.
+
+- QC1e ledger (awam): docs/claude/QC1E-LEDGER-AWAM-19NOV.md

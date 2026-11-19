@@ -35,3 +35,5 @@ Last day for the whole founder lane stays 25 Nov; each date is the LATEST day, t
 | Wed 25 | **R3 Admin > Mail Desk** (FOUNDER-ADMIN-MAIL-DESK-03NOV.md): R3a company mailboxes (support, billing, abuse), awam problem inbox; R3b assign / reply / status / SLA; R3c look at 390 / 820 / 1200+ | the desk where awam problems are heard |
 | Thu 26 - Sun 29 | U5, Q1e calendar, the QC1c open list, spill-over of anything that failed its proof | buffer, nothing new starts before the awam window |
 His hands, one step at a time when each comes: phone 390 / tablet 820 screenshots, Hetzner confirmation, hardware keys.
+
+- QC1e ledger (founder): docs/claude/QC1E-LEDGER-FOUNDER-19NOV.md
