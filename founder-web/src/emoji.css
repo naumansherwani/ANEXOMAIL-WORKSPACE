@@ -20,3 +20,5 @@
 .emo-words{min-height:44px}
 .emo>.emo-q,.emo>.emo-tabs,.emo>.emo-tone{flex:none}
 .emo>.emo-grid{flex:1 1 auto}
+.emo>.emo-q{margin-bottom:5px}
+.emo>.emo-tone{margin-top:5px}

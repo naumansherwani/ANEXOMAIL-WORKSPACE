@@ -2738,3 +2738,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 19 Nov 14:26 PKT checkpoint, QC1e D1 css fix awaits reinstall
 
 - 19 Nov 14:32 PKT checkpoint, QC1e D1 reinstall awaited
+
+- 19 Nov 14:20 PKT QC1e D1: his installs OK (founder 4/4, awam build OK, css e4aecec7 live); picker gap +5px (search to tabs, tabs to skin tone) per his word; Chrome look paused: founder session was signed out by the install, needs his sign-in
