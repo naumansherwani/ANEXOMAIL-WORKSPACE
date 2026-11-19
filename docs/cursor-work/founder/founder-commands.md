@@ -4217,3 +4217,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - 20.11.26 03:40 PKT D4A checkpoint: E193 fix pushed, waits re-run paste
 
 - 20.11.26 03:30 PKT D4A: E193 SQL PROVEN on his server (11/11, CHECK 8/8); D4B detail plan + tier gates written
+
+- 20.11.26 03:50 PKT D4A checkpoint: E193 proven, P2 Rust core next
