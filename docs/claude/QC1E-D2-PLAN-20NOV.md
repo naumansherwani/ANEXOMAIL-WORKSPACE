@@ -13,7 +13,7 @@ Founder gate = founder-web/src/* (pull: founder-install). Awam gate = src/compon
 ## Advanced technology (nothing older than this)
 - React 19 + TypeScript strict; search runs on useDeferredValue so typing never waits for the list.
 - Data = the same bundled emojibase-data 17 chunks, lazy, loaded on the first ":xx", no network, no vendor, CSP self-only.
-- Accessibility = WAI-ARIA 1.2 combobox pattern: the textarea gets aria-autocomplete="list", aria-expanded, aria-controls and aria-activedescendant; the list is role="listbox" with role="option" rows and aria-selected; a polite live line says "N emoji suggestions". Reduced-motion respected (no animation when set).
+- Accessibility = WAI-ARIA 1.2 combobox pattern: the textarea gets aria-autocomplete="list", aria-expanded, aria-controls and aria-activedescendant; the list is role="listbox" with role="option" rows and aria-selected; a polite live line says "N emoji suggestions". Motion (his word 20 Nov 01:49, world-advanced): motion/react, list fades + rises 6 px in 0.14 s, one shared-layout highlight pill springs from row to row; reduced motion (OS or the app's Animations setting) = none.
 - Pure logic (shortcodeAt, shortcodeSearch, acceptShortcode, rank) is DOM-free and bun-tested; UI is proven by a real-Chromium Playwright run (1536 / 820 / 390) before any pull.
 - Layout = same flexible layout on laptop, tablet, phone (one build). Colours = the host's own tokens: founder keeps its colours, awam keeps its look.
 

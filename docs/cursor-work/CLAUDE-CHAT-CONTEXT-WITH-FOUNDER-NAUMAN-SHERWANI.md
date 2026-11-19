@@ -4031,3 +4031,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 20 Nov 2026 01:43 PKT QC1e D2 shortcode AWAM gate built (tsc, bun 18/18, build:bun ok, Chromium 1536/390 ok), waits his pull.sh; founder gate 543a4247 waits founder-install
 
 - 20 Nov 01:43 PKT checkpoint, QC1e D2 shortcode built for founder + awam, waits his two pulls
+
+- 20 Nov 2026 01:50 PKT QC1e D2 shortcode FOUNDER motion added (motion/react fade+rise, shared-layout highlight pill, reduced-motion none); Chromium ok; waits his founder-install
