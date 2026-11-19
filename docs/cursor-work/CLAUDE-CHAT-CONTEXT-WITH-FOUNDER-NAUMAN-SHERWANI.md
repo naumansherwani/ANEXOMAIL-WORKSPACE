@@ -4027,3 +4027,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 20 Nov 01:32 PKT checkpoint, QC1e D1 closed by his word (see ledger), D2 awaits his 2 answers
 
 - 20 Nov 2026 01:40 PKT QC1e D2 shortcode FOUNDER gate built (bun 387/387, Chromium 1536/820/390 ok), waits his founder-install; awam gate next, separate pull
+
+- 20 Nov 2026 01:43 PKT QC1e D2 shortcode AWAM gate built (tsc, bun 18/18, build:bun ok, Chromium 1536/390 ok), waits his pull.sh; founder gate 543a4247 waits founder-install

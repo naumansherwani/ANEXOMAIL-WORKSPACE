@@ -23,6 +23,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { FileContextCard } from "@/components/app/compose/FileContextCard";
 import { GhostTextArea } from "@/components/app/compose/GhostTextArea";
 import { EmojiDock, EmojiToggle, useEmojiDock } from "@/components/app/compose/emoji/EmojiPicker";
+import { EmojiShortcodeList, useShortcode } from "@/components/app/compose/emoji/EmojiShortcode";
+import { useShortcodeNative } from "@/components/app/compose/emoji/shortcodeNative";
 import { EmojiSafety } from "@/components/app/compose/emoji/EmojiSafety";
 import {
   OutcomesBar,
@@ -155,6 +157,8 @@ export function ComposeStudio({
   const [followUpDays, setFollowUpDays] = useState(0);
   const bodyRef = useRef<HTMLTextAreaElement | null>(null);
   const emo = useEmojiDock(); // QC1e emoji: button beside Send, picker docked under the box
+  const sc = useShortcode({ area: bodyRef, value: body, onChange: setBody }); // QC1e-D2 ":" shortcode (plan docs/claude/QC1E-D2-PLAN-20NOV.md)
+  useShortcodeNative(bodyRef, sc);
   // Business Outcomes (Pro): kernel se wada + kharcha; user ne jo "link" kiya wahi send par record hota hai.
   const [linked, setLinked] = useState<Record<PromiseKey, LinkChoice>>({});
   const [dismissedPromises, setDismissedPromises] = useState<Set<PromiseKey>>(() => new Set());
@@ -775,6 +779,7 @@ export function ComposeStudio({
               : "Write the message."
           }
         />
+        <EmojiShortcodeList sc={sc} />
         <EmojiDock dock={emo} area={bodyRef} value={body} onChange={setBody} />
         </div>
         {/* QC1e emoji (his order 19 Nov 13:34 + 14:16): same pure module as the founder, awam glue. WhatsApp-style: smiley inside the box, picker docked below. Additive only. */}

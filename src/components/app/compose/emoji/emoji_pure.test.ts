@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { fold, inGroup, insertAt, loadList, loadTone, pushRecent, search, withTone, type Emoji, type Group, MAX_RECENT } from "./emoji_pure";
+import { rankRecent, acceptShortcode, shortcodeAt, shortcodeSearch, fold, inGroup, insertAt, loadList, loadTone, pushRecent, search, withTone, type Emoji, type Group, MAX_RECENT } from "./emoji_pure";
 const groups: Group[] = [{ key: "smileys-emotion", message: "smileys", order: 0 }, { key: "component", message: "components", order: 2 }, { key: "flags", message: "flags", order: 9 }];
 const all: Emoji[] = [
   { hexcode: "1F600", label: "grinning face", unicode: "😀", group: 0, order: 1, tags: ["face", "grin"] },
@@ -54,4 +54,21 @@ describe("QC1e-D1 new-emoji safety", () => {
   });
   test("a family or flag is one grapheme", () => { expect(graphemes("a👨‍👩‍👧b🇵🇰").length).toBe(4); expect(hasEmoji("abc")).toBe(false); expect(hasEmoji("a🇵🇰")).toBe(true); });
   test("name index covers skin variants", () => { const m = nameIndex([{ hexcode: "1F44B", label: "waving hand", unicode: "👋", skins: [{ hexcode: "1F44B-1F3FB", label: "waving hand: light skin tone", unicode: "👋🏻" }] }]); expect(m.get("👋🏻")).toContain("light skin"); });
+
+  test("D2 shortcode: colon at start or after a space, 2..24 chars, never inside 12:30 or a link", () => {
+    expect(shortcodeAt(":sm", 3)).toEqual({ start: 0, query: "sm" });
+    expect(shortcodeAt("hi :thumbs_up", 13)).toEqual({ start: 3, query: "thumbs_up" });
+    expect(shortcodeAt("hi\n:fa", 7)).toEqual({ start: 3, query: "fa" });
+    expect(shortcodeAt("meet at 12:30", 13)).toBeNull(); expect(shortcodeAt("https://example", 15)).toBeNull();
+    expect(shortcodeAt(":s", 2)).toBeNull(); expect(shortcodeAt("hi :", 4)).toBeNull(); expect(shortcodeAt(":" + "a".repeat(25), 26)).toBeNull();
+    expect(shortcodeAt("a :sm now", 5)).toEqual({ start: 2, query: "sm" });
+  });
+  test("D2 shortcode search + accept", () => {
+    expect(shortcodeSearch(all, groups, "face_with")[0].hexcode).toBe("1F602");
+    const r = acceptShortcode("hi :gri now", 3, 7, "😀"); expect(r.text).toBe("hi 😀 now"); expect(r.caret).toBe(5);
+  });
+  test("D2 ranking: recently used first, then search order, stable", () => {
+    const l = [all[0], all[1], all[2]]; expect(rankRecent(l, []).map((e) => e.hexcode)).toEqual(["1F600", "1F602", "270B"]);
+    expect(rankRecent(l, ["270B", "1F602"]).map((e) => e.hexcode)).toEqual(["270B", "1F602", "1F600"]);
+  });
 });

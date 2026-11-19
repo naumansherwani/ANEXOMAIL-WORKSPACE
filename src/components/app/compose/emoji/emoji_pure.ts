@@ -91,3 +91,20 @@ export function newerEmoji(text: string, vm: Map<string, number>, names: Map<str
 export function inWords(text: string, flags: Flag[]): string {
   let t = text; for (const f of flags) t = t.split(f.emoji).join(`[${f.name}]`); return t;
 }
+
+// ---- QC1e-D2: ":" SHORTCODE. Typing ":smi" at the caret offers matching emoji; Enter/Tab puts one in place of the typed ":smi". Pure part only (the popup is EmojiShortcode.tsx).
+/** The ":name" being typed right at the caret: the colon must be at the start of the text or after a space/newline/opening bracket (so "12:30" and "https://x" are never touched), then 2..24 name characters (letters, digits, _ - +). */
+export function shortcodeAt(text: string, caret: number): { start: number; query: string } | null {
+  const c = Math.max(0, Math.min(caret, text.length)), head = text.slice(0, c);
+  const m = /(^|[\s([{])(:)([A-Za-z0-9_+-]{2,24})$/.exec(head); if (!m) return null;
+  return { start: c - m[3].length - 1, query: m[3] };
+}
+/** Emoji for a typed shortcode name: "_" and "-" count as spaces ("thumbs_up" = "thumbs up"). */
+export function shortcodeSearch(all: Emoji[], groups: Group[], query: string, max = 8): Emoji[] { return search(all, groups, query.replace(/[_-]+/g, " "), max); }
+/** Replace the typed ":name" (start..caret) by the emoji. Returns the new text and the caret after it. */
+export function acceptShortcode(text: string, start: number, caret: number, emoji: string): { text: string; caret: number } { return insertAt(text, start, caret, emoji); }
+/** Recently used first (in the order they were used), then the rest in the order search gave them. */
+export function rankRecent(list: Emoji[], recent: string[]): Emoji[] {
+  const r = new Map(recent.map((h, i) => [h, i] as const));
+  return list.map((e, i) => ({ e, i, r: r.get(e.hexcode) })).sort((a, b) => (a.r === undefined ? 1e9 : a.r) - (b.r === undefined ? 1e9 : b.r) || a.i - b.i).map((x) => x.e);
+}
