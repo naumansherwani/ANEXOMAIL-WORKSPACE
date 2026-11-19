@@ -980,3 +980,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 19 Nov 12:40 PKT: F8-5 loosen DEMO written (docs/claude/demos/F8-5-tls-loosen-demo.html), existing SendSwitch untouched, waits his haan; first report day closed by his word 12:28, screenshots after Q series
 
 - 19 Nov 12:40 PKT: F8-5 loosen DEMO written (docs/claude/demos/F8-5-tls-loosen-demo.html), existing SendSwitch untouched, waits his haan; first report day closed by his word 12:28, screenshots after Q series
+
+- 19 Nov 12:31 PKT: 5-min checkpoint, F8-5 demo waits his haan
