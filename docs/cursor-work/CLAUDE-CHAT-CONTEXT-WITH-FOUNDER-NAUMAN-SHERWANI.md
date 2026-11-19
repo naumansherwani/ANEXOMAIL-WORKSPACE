@@ -3719,3 +3719,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - QC1c honest list 19 Nov 11:50 PKT: live proof github.io 30 min step then 'No more tries scheduled' with reasons; features F8-3 todo (TLS-RPT never sent) and F8-4 needs-haan (sender already always require_tls, only the loosen switch is unbuilt)
 
 - QC1c honest list 19 Nov 11:52 PKT: live proof github.io 30 min step then No more tries scheduled with reasons; F8-3 todo (TLS-RPT never sent), F8-4 needs-haan (sender already always require_tls, only the loosen switch is unbuilt)
+
+- QC1c F8-3 + F8-4 19 Nov 2026 12:05 PKT: SQL E191 (TLS-RPT counters + report ledger + strict TLS ratchet, sandbox selftest 28/28, CHECK_E191 9/9) and Rust fmail_rpt.rs (daily gzip report worker through the strict outbox, policy hook in run_domain, 489 tests); no port changed (his ss paste 12:02); waits his sql-run + install + a real report day. Not live-proven

@@ -18,6 +18,7 @@ dependencies = [
  "ecdsa",
  "fips203",
  "fips204",
+ "flate2",
  "futures-core",
  "futures-util",
  "h3",

@@ -100,7 +100,7 @@ pub fn p_of_txt(records: &[String]) -> Option<String> {
     Some("(not a DKIM record)".into())
 }
 
-async fn run_domain(cfg: &Cfg, res: Option<&hickory_resolver::TokioResolver>, up: &smtp::RustlsUpgrade, domain: &str, from: &str, rcpts: &[String], payload: &[u8]) -> Result<smtp::Outcome, smtp::Fail> {
+async fn run_domain(cfg: &Cfg, res: Option<&hickory_resolver::TokioResolver>, up: &smtp::RustlsUpgrade, domain: &str, from: &str, rcpts: &[String], payload: &[u8], strict: bool, att: &mut Vec<crate::fmail_rpt::Attempt>) -> Result<smtp::Outcome, smtp::Fail> {
     if let Some(addr) = cfg.relay {
         let (io, _) = smtp::connect(&[smtp::Target { host: "localhost".into(), addr }]).await?;
         // loopback relay: TLS is optional here (the hop never leaves the machine); the relay's own policy covers the way out
@@ -109,19 +109,32 @@ async fn run_domain(cfg: &Cfg, res: Option<&hickory_resolver::TokioResolver>, up
     let res = res.ok_or(smtp::Fail::Temp("no DNS resolver".into()))?;
     let ts = smtp::targets(res, domain).await?;
     // MTA-STS (RFC 8461): an enforcing recipient domain is only ever contacted on the MX hosts its policy lists; clear text is refused for every hop already (require_tls)
-    let ts = crate::fmail_qtls::apply_sts(ts, crate::fmail_qtls::policy_for(res, domain).await.as_ref(), domain)?;
+    let sts = crate::fmail_qtls::policy_for(res, domain).await;
+    let ts = crate::fmail_qtls::apply_sts(ts, sts.as_ref(), domain)?;
     let mut last = smtp::Fail::Temp("no server tried".into());
     for t in ts.iter().take(3) {
         let (io, t) = match smtp::connect(std::slice::from_ref(t)).await { Ok(x) => x, Err(e) => { last = e; continue } };
         // DANE (RFC 7672): a host with DNSSEC-proven TLSA records is only trusted when its certificate matches them; otherwise the normal verified TLS 1.3 rule
         let dane = crate::fmail_qtls::dane_for(&t.host).await;
+        let has_dane = !dane.is_empty();
         let dane_up = if dane.is_empty() { None } else { crate::fmail_qtls::DaneUpgrade::new(dane).ok() };
         let upgrader: &dyn smtp::Upgrade = match dane_up.as_ref() { Some(d) => d, None => up };
-        match smtp::deliver(io, &smtp::Session { helo: &cfg.helo, require_tls: true, upgrader, host: &t.host }, from, rcpts, payload).await {
-            Ok(o) if o.delivered() || o.rcpts.iter().all(|r| r.result.as_ref().err().map_or(false, |e| e.is_perm())) => return Ok(o),
-            Ok(o) => { last = o.data.clone().err().unwrap_or(smtp::Fail::Temp("not delivered".into())); }
-            Err(e) if e.is_perm() => return Err(e),
-            Err(e) => last = e,
+        // F8-4 (E191): "send only if TLS" is strict unless a passkey grant loosened it for a few hours; MTA-STS enforce and DANE-proven hosts are TLS-only whatever the founder rule says
+        let pol = crate::fmail_rpt::policy_type(has_dane, sts.as_ref());
+        let req = crate::fmail_rpt::hop_requires_tls(strict, sts.as_ref(), has_dane);
+        let ip = t.addr.ip().to_string();
+        match smtp::deliver(io, &smtp::Session { helo: &cfg.helo, require_tls: req, upgrader, host: &t.host }, from, rcpts, payload).await {
+            Ok(o) => {
+                // TLS-RPT (RFC 8460): a session that carried TLS is a success; a clear-text session (only possible while loosened) is not reported
+                if !o.tls.is_empty() { att.push(crate::fmail_rpt::Attempt { host: t.host.clone(), ip, policy: pol, result: "success", reason: String::new() }); }
+                if o.delivered() || o.rcpts.iter().all(|r| r.result.as_ref().err().map_or(false, |e| e.is_perm())) { return Ok(o); }
+                last = o.data.clone().err().unwrap_or(smtp::Fail::Temp("not delivered".into()));
+            }
+            Err(e) => {
+                if let Some(rt) = crate::fmail_rpt::result_type(&e, pol) { att.push(crate::fmail_rpt::Attempt { host: t.host.clone(), ip, policy: pol, result: rt, reason: crate::fmail_rpt::reason_code(e.text()) }); }
+                if e.is_perm() { return Err(e); }
+                last = e;
+            }
         }
     }
     Err(last)
@@ -155,8 +168,15 @@ async fn process(sb: &crate::data::Sb, master: &[u8; 32], cfg: &Cfg, res: Option
     }
     let payload = mime::data_payload(&signed);
     let mut parts = Vec::new(); let mut doms: Vec<String> = Vec::new();
-    if cfg.relay.is_some() { parts.push(run_domain(cfg, res, up, "", &from, &rcpts, &payload).await); }
-    else { for (d, rs) in group_by_domain(&rcpts) { parts.push(run_domain(cfg, res, up, &d, &from, &rs, &payload).await); doms.push(d); } }
+    // F8-4: the founder rule "send only if TLS" (E191): strict unless a fresh passkey grant loosened it; any doubt = strict
+    let strict = crate::fmail_rpt::strict_for(sb, actor, mailbox).await;
+    // TLS-RPT: the report mail itself is never counted (it carries the TLS-Report-Domain header), so two servers can never report about each other's reports forever
+    let is_report = crate::fmail_rpt::is_report_mail(&raw);
+    if cfg.relay.is_some() { let mut a = Vec::new(); parts.push(run_domain(cfg, res, up, "", &from, &rcpts, &payload, strict, &mut a).await); }
+    else { for (d, rs) in group_by_domain(&rcpts) {
+        let mut a = Vec::new(); parts.push(run_domain(cfg, res, up, &d, &from, &rs, &payload, strict, &mut a).await);
+        if !is_report { let kid = js(&job, "key_id").unwrap_or("vault-1"); for x in &a { crate::fmail_rpt::record(sb, master, actor, mailbox, kid, &d, x).await; } }
+        doms.push(d); } }
     let verdict = decide(&parts);
     let delivered = matches!(verdict, Verdict::Sent { .. });
     report(verdict, true).await;
@@ -227,7 +247,8 @@ pub async fn spawn(sb: crate::data::Sb, master: [u8; 32], cfg: Cfg) {
 }
 
 /// Woken by send_ep right after a mail is queued, so the worker recomputes its next due time at once.
-pub static WAKE: tokio::sync::Notify = tokio::sync::Notify::const_new();
+pub(crate) fn wake() { WAKE.notify_one(); }
+static WAKE: tokio::sync::Notify = tokio::sync::Notify::const_new();
 /// Pure: how long the worker sleeps. None (nothing waits) = 5 s (backoff requeue still runs); a due or overdue mail = 50 ms; otherwise exactly the seconds to the earliest due mail, capped at 5 s.
 pub fn wake_in(secs: Option<f64>) -> Duration {
     match secs { None => Duration::from_secs(5), Some(s) if !s.is_finite() || s <= 0.05 => Duration::from_millis(50), Some(s) => Duration::from_secs_f64(s.min(5.0) + 0.02) }
