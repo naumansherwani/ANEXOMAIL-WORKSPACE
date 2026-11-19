@@ -49,7 +49,7 @@ function Picker({ onPick, onClose }: { onPick: (e: string) => void; onClose: () 
   const [act, setAct] = useState(0), box = useRef<HTMLDivElement>(null), inp = useRef<HTMLInputElement>(null);
   useEffect(() => { let live = true; loadData().then((d) => { if (live) setData(d); }).catch(() => { if (live) setFailed(true); }); return () => { live = false; }; }, []);
   useEffect(() => { inp.current?.focus(); }, []);
-  useEffect(() => { const h = (e: MouseEvent) => { if (box.current && !box.current.contains(e.target as Node) && !(e.target as HTMLElement).closest(".emo-toggle")) onClose(); }; document.addEventListener("mousedown", h); return () => document.removeEventListener("mousedown", h); }, [onClose]);
+  useEffect(() => { const h = (e: MouseEvent) => { const el = e.target as HTMLElement; if (el instanceof HTMLElement && (e.offsetX > el.clientWidth || e.offsetY > el.clientHeight) && (el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth)) return; /* a click on a scrollbar is not a click outside */ if (box.current && !box.current.contains(e.target as Node) && !(e.target as HTMLElement).closest(".emo-toggle")) onClose(); }; document.addEventListener("mousedown", h); return () => document.removeEventListener("mousedown", h); }, [onClose]);
   const groups = useMemo(() => (data?.groups ?? []).filter((g) => g.key !== "component"), [data]);
   const byHex = useMemo(() => new Map((data?.all ?? []).map((e) => [e.hexcode, e])), [data]);
   const list: Emoji[] = useMemo(() => {

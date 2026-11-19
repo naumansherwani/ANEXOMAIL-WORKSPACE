@@ -757,6 +757,7 @@ export function ComposeStudio({
         ) : null}
 
         {/* Phase 12A — inline word prediction (ghost text). Composer wahi hai. */}
+        <div className="emo-over">
         <GhostTextArea
           id="studio-body"
           ref={bodyRef}
@@ -775,6 +776,7 @@ export function ComposeStudio({
           }
         />
         <EmojiDock dock={emo} area={bodyRef} value={body} onChange={setBody} />
+        </div>
         {/* QC1e emoji (his order 19 Nov 13:34 + 14:16): same pure module as the founder, awam glue. WhatsApp-style: smiley inside the box, picker docked below. Additive only. */}
         <EmojiSafety text={body} onChange={setBody} />
 
