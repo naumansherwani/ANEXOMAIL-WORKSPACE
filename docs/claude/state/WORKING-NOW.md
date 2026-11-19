@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 19 Nov 2026 13:39 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QC1e D1 built and pushed 5fa7af3c; waits his founder-install + look, then D2
+# WORKING NOW (manual checkpoint, 19 Nov 2026 13:40 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QC1e D1 founder + awam built, pushed 4f66bac1; waits his two installs + my Chrome look, then D2
 NEXT STEP: 
 HIS LAST WORD: 19 Nov 11:39 PKT
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 4f66bac1 19 Nov 13:39 ledger line 335caa19
 - 335caa19 19 Nov 13:39 QC1e D1 awam glue: emoji picker + safety in ComposeStudio
 - f4b8d90c 19 Nov 13:33 ledger line 1fade0d2
 - 1fade0d2 19 Nov 13:33 checkpoint 13:45
 - 5fa7af3c 19 Nov 13:32 ledger line 7656c59c
-- 7656c59c 19 Nov 13:32 QC1e D1: emoji picker, Unicode 17, new-emoji safety
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -29,4 +29,4 @@ QC1c: 44/44 written. NOT WRITTEN:
 ## >>> 18 NOV 2026 07:2x PKT NOW (his order 07:16, update for Claude after any compaction): PHASES IN HAND = (1) QLIVE-c (package stream limits stream_tier.rs, live drafts SQL E188 [his sql-run OK], simulation test founder-web/sim, 2 real browser bugs fixed) and (2) Q-contacts-kernel (contacts@1 in 
 ## >>> 15 NOV 19:25 HIS ORDER: L closed. NEXT = Q SERIES until complete, THEN S5 (not before). Lovable codes migration phase written in docs/claude/FOUNDER-LOVABLE-MIGRATION-15NOV.md and docs/claude/AWAM-LOVABLE-MIGRATION-15NOV.md (preserve as written, advance technology, fix loopholes, polish). Q s
 ## >>> HANDOFF 14 NOV 07:10 (he is sleeping; read this first tomorrow): DONE and proven: KP3 step 5 GREEN, pre-connect GREEN by his order, clean blueprint (docs/claude/FOUNDER-BLUEPRINT-CLEAN-14NOV.md), audit steps A+B GREEN, audit step C INSTALLED on his server (receipt 35, tests 394, listening aft
-WIP snapshot: refs/wip/last (110afbfee152e649fabbc28d3caaf0105b792998)
+WIP snapshot: refs/wip/last (af4c9432096ebfa786a76b37e5d8066d101e1ec3)

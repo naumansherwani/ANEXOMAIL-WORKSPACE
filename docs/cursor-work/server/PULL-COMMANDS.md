@@ -790,3 +790,5 @@
 - 19 Nov 13:50 PKT QC1e D1 awam glue: same pure module, awam compose mount (his order 13:34, separate awam gate)
 
 - 19 Nov 13:52 PKT QC1e D1 awam glue: same pure module, awam compose mount (his order 13:34)
+
+- 19 Nov 13:55 PKT checkpoint, QC1e D1 founder+awam built
