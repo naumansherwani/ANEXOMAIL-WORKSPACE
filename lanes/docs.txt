@@ -259,6 +259,7 @@ docs/claude/Q1D-PLAN-16NOV.md
 docs/claude/QC1C-F8-5-RESEARCH-PLAN-19NOV.md
 docs/claude/QC1C-LOOPHOLES-PLAN-19NOV.md
 docs/claude/QC1C-RUST-UI-QTLS-PLAN-18NOV.md
+docs/claude/QC1E-D2-PLAN-20NOV.md
 docs/claude/QC1E-EMOJI-RESEARCH-PLAN-19NOV.md
 docs/claude/QC1E-LEDGER-AWAM-19NOV.md
 docs/claude/QC1E-LEDGER-FOUNDER-19NOV.md

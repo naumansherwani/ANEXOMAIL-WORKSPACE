@@ -6,6 +6,7 @@ import * as api from "./mail_api";
 import { composeProblem, undoLeft, type Box } from "./mail_pure";
 import { RecipientField } from "./RecipientField";
 import { EmojiDock, EmojiToggle, useEmojiDock } from "./EmojiPicker";
+import { EmojiShortcodeList, useShortcode } from "./EmojiShortcode";
 import { EmojiSafety } from "./EmojiSafety";
 import { useTlsFacts } from "./TlsLock";
 import type { Contact } from "./book";
@@ -44,7 +45,7 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
   const [busy, setBusy] = useState(false), [err, setErr] = useState(""), [needsDkim, setNeedsDkim] = useState(false), [saved, setSaved] = useState("");
   const draft = useRef<{ id?: string; v: number }>({ v: 0 });
   const last = useRef(""), dirty = useRef(false);
-  const toRef = useRef<HTMLInputElement>(null), textRef = useRef<HTMLTextAreaElement>(null), emo = useEmojiDock(), reduce = !!useReducedMotion();
+  const toRef = useRef<HTMLInputElement>(null), textRef = useRef<HTMLTextAreaElement>(null), emo = useEmojiDock(), sc = useShortcode({ area: textRef, value: text, onChange: setText }), reduce = !!useReducedMotion();
   // QC1b: the sealed address book is opened once when the box opens (the server unseals the top 500); typing then filters it here with no server call
   const [book, setBook] = useState<Contact[]>([]);
   useEffect(() => { let on = true; api.contacts(box.id).then((c) => { if (on) setBook(c); }).catch(() => {}); return () => { on = false; }; }, [box.id]);
@@ -111,7 +112,8 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
         <label className="mc-f"><span>Subject</span><input value={subject} onChange={(e) => setSubject(e.target.value)} maxLength={300} /></label>
         <label className="sr" htmlFor="mc-text">Message</label>
         <div className="emo-over">
-          <textarea id="mc-text" ref={textRef} className="mc-t" value={text} onChange={(e) => setText(e.target.value)} placeholder="Write your message…" rows={10} />
+          <textarea id="mc-text" ref={textRef} className="mc-t" value={text} onChange={(e) => setText(e.target.value)} placeholder="Write your message…" rows={10} {...sc.bind} />
+          <EmojiShortcodeList sc={sc} />
           <EmojiDock dock={emo} area={textRef} value={text} onChange={setText} />
         </div>
         <EmojiSafety text={text} onChange={setText} />
