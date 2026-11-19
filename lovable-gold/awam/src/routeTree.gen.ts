@@ -90,6 +90,7 @@ import { Route as AppAdminIndexRouteImport } from './routes/app.admin.index'
 import { Route as AppAdminAddressesRouteImport } from './routes/app.admin.addresses'
 import { Route as AppAdminAuditRouteImport } from './routes/app.admin.audit'
 import { Route as AppAdminDiagnosticsRouteImport } from './routes/app.admin.diagnostics'
+import { Route as AppAdminEmojiRouteImport } from './routes/app.admin.emoji'
 import { Route as AppAdminExportRouteImport } from './routes/app.admin.export'
 import { Route as AppAdminHealthRouteImport } from './routes/app.admin.health'
 import { Route as AppAdminLogsRouteImport } from './routes/app.admin.logs'
@@ -590,6 +591,11 @@ const AppAdminAuditRoute = AppAdminAuditRouteImport.update({
 const AppAdminDiagnosticsRoute = AppAdminDiagnosticsRouteImport.update({
   id: '/diagnostics',
   path: '/diagnostics',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAdminEmojiRoute = AppAdminEmojiRouteImport.update({
+  id: '/emoji',
+  path: '/emoji',
   getParentRoute: () => AppAdminRoute,
 } as any)
 const AppAdminExportRoute = AppAdminExportRouteImport.update({
@@ -1158,6 +1164,7 @@ export interface FileRoutesByFullPath {
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
   '/app/admin/diagnostics': typeof AppAdminDiagnosticsRoute
+  '/app/admin/emoji': typeof AppAdminEmojiRoute
   '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/health': typeof AppAdminHealthRoute
   '/app/admin/logs': typeof AppAdminLogsRoute
@@ -1329,6 +1336,7 @@ export interface FileRoutesByTo {
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
   '/app/admin/diagnostics': typeof AppAdminDiagnosticsRoute
+  '/app/admin/emoji': typeof AppAdminEmojiRoute
   '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/health': typeof AppAdminHealthRoute
   '/app/admin/logs': typeof AppAdminLogsRoute
@@ -1506,6 +1514,7 @@ export interface FileRoutesById {
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
   '/app/admin/diagnostics': typeof AppAdminDiagnosticsRoute
+  '/app/admin/emoji': typeof AppAdminEmojiRoute
   '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/health': typeof AppAdminHealthRoute
   '/app/admin/logs': typeof AppAdminLogsRoute
@@ -1687,6 +1696,7 @@ export interface FileRouteTypes {
     | '/app/admin/addresses'
     | '/app/admin/audit'
     | '/app/admin/diagnostics'
+    | '/app/admin/emoji'
     | '/app/admin/export'
     | '/app/admin/health'
     | '/app/admin/logs'
@@ -1858,6 +1868,7 @@ export interface FileRouteTypes {
     | '/app/admin/addresses'
     | '/app/admin/audit'
     | '/app/admin/diagnostics'
+    | '/app/admin/emoji'
     | '/app/admin/export'
     | '/app/admin/health'
     | '/app/admin/logs'
@@ -2034,6 +2045,7 @@ export interface FileRouteTypes {
     | '/app/admin/addresses'
     | '/app/admin/audit'
     | '/app/admin/diagnostics'
+    | '/app/admin/emoji'
     | '/app/admin/export'
     | '/app/admin/health'
     | '/app/admin/logs'
@@ -2757,6 +2769,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminDiagnosticsRouteImport
       parentRoute: typeof AppAdminRoute
     }
+    '/app/admin/emoji': {
+      id: '/app/admin/emoji'
+      path: '/emoji'
+      fullPath: '/app/admin/emoji'
+      preLoaderRoute: typeof AppAdminEmojiRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
     '/app/admin/export': {
       id: '/app/admin/export'
       path: '/export'
@@ -3436,6 +3455,7 @@ interface AppAdminRouteChildren {
   AppAdminAddressesRoute: typeof AppAdminAddressesRoute
   AppAdminAuditRoute: typeof AppAdminAuditRoute
   AppAdminDiagnosticsRoute: typeof AppAdminDiagnosticsRoute
+  AppAdminEmojiRoute: typeof AppAdminEmojiRoute
   AppAdminExportRoute: typeof AppAdminExportRoute
   AppAdminHealthRoute: typeof AppAdminHealthRoute
   AppAdminLogsRoute: typeof AppAdminLogsRoute
@@ -3452,6 +3472,7 @@ const AppAdminRouteChildren: AppAdminRouteChildren = {
   AppAdminAddressesRoute: AppAdminAddressesRoute,
   AppAdminAuditRoute: AppAdminAuditRoute,
   AppAdminDiagnosticsRoute: AppAdminDiagnosticsRoute,
+  AppAdminEmojiRoute: AppAdminEmojiRoute,
   AppAdminExportRoute: AppAdminExportRoute,
   AppAdminHealthRoute: AppAdminHealthRoute,
   AppAdminLogsRoute: AppAdminLogsRoute,

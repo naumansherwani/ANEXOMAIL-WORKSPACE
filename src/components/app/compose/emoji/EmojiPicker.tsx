@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { buildUr, inGroup, insertAt, loadList, loadTone, pushRecent, RECENT_KEY, search, TONE_KEY, TONES, withTone, type Emoji, type Group, type Tone, type UrIndex } from "./emoji_pure";
+import { CompanyImg, useCompanyPack } from "./CompanyEmoji";
+import { asEmoji, codeOf, isCompany, matchPack } from "./company_emoji_pure";
 import "./emoji.css";
 
 type Data = { all: Emoji[]; groups: Group[]; ur: UrIndex }; // ur = QC1e-D3 Urdu + Roman Urdu search words (own list, lazy chunk)
@@ -47,6 +49,7 @@ function Picker({ onPick, onClose }: { onPick: (e: string) => void; onClose: () 
   const [data, setData] = useState<Data | null>(null), [failed, setFailed] = useState(false);
   const [q, setQ] = useState(""), [grp, setGrp] = useState(() => (loadList(rd(RECENT_KEY)).length ? -1 : 0)), [tone, setTone] = useState<Tone>(() => loadTone(rd(TONE_KEY))), [recent, setRecent] = useState<string[]>(() => loadList(rd(RECENT_KEY)));
   const [act, setAct] = useState(0), box = useRef<HTMLDivElement>(null), inp = useRef<HTMLInputElement>(null);
+  const pack = useCompanyPack(), coBy = useMemo(() => new Map(pack.items.map((c) => [c.shortcode, c] as const)), [pack.items]), hasCo = pack.available && pack.quota.enabled; // QC1e-D4A: company emoji (awam only): the "Company" tab = grp -2
   useEffect(() => { let live = true; loadData().then((d) => { if (live) setData(d); }).catch(() => { if (live) setFailed(true); }); return () => { live = false; }; }, []);
   useEffect(() => { inp.current?.focus({ preventScroll: true }); const id = window.setTimeout(() => box.current?.scrollIntoView({ block: "nearest", behavior: "auto" }), 30); return () => window.clearTimeout(id); }, []); /* the picker opens fully in view, the compose panel scrolls to it */
   useEffect(() => { const h = (e: MouseEvent) => { const el = e.target as HTMLElement; if (el instanceof HTMLElement && (e.offsetX > el.clientWidth || e.offsetY > el.clientHeight) && (el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth)) return; /* a click on a scrollbar is not a click outside */ if (box.current && !box.current.contains(e.target as Node) && !(e.target as HTMLElement).closest(".emo-toggle")) onClose(); }; document.addEventListener("mousedown", h); return () => document.removeEventListener("mousedown", h); }, [onClose]);
@@ -54,12 +57,13 @@ function Picker({ onPick, onClose }: { onPick: (e: string) => void; onClose: () 
   const byHex = useMemo(() => new Map((data?.all ?? []).map((e) => [e.hexcode, e])), [data]);
   const list: Emoji[] = useMemo(() => {
     if (!data) return [];
-    if (q.trim()) return search(data.all, data.groups, q, 120, data.ur);
+    if (q.trim()) return [...(hasCo ? matchPack(pack.items, q, 12).map(asEmoji) : []), ...search(data.all, data.groups, q, 120, data.ur)];
+    if (grp === -2) return hasCo ? matchPack(pack.items, "").map(asEmoji) : [];
     if (grp === -1) return recent.map((h) => byHex.get(h)).filter((e): e is Emoji => !!e);
     return inGroup(data.all, grp, data.groups);
-  }, [data, q, grp, recent, byHex]);
+  }, [data, q, grp, recent, byHex, pack.items, hasCo]);
   useEffect(() => { setAct(0); }, [q, grp]);
-  const choose = (e: Emoji) => { const t = withTone(e, tone); onPick(t.unicode); const r = pushRecent(recent, e.hexcode); setRecent(r); wr(RECENT_KEY, JSON.stringify(r)); };
+  const choose = (e: Emoji) => { if (isCompany(e)) { onPick(e.unicode); return; } const t = withTone(e, tone); onPick(t.unicode); const r = pushRecent(recent, e.hexcode); setRecent(r); wr(RECENT_KEY, JSON.stringify(r)); };
   const key = (ev: React.KeyboardEvent) => {
     if (ev.key === "Escape") { ev.preventDefault(); ev.stopPropagation(); onClose(); return; }
     if (!list.length) return;
@@ -79,6 +83,7 @@ function Picker({ onPick, onClose }: { onPick: (e: string) => void; onClose: () 
     <motion.div ref={box} className="emo emo-dock" role="dialog" aria-label="Emoji picker" onKeyDown={key} initial={reduce ? false : { opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 6 }} transition={{ duration: 0.14 }}>
       <div className="emo-tabs" role="tablist" aria-label="Emoji groups">
         <button type="button" role="tab" aria-selected={grp === -1 && !q} aria-label="Recently used" title="Recently used" className="emo-tab" onClick={() => { setQ(""); setGrp(-1); }}><span aria-hidden="true">🕘</span></button>
+        {hasCo && <button type="button" role="tab" aria-selected={grp === -2 && !q} aria-label="Company emoji" title="Company emoji" className="emo-tab" onClick={() => { setQ(""); setGrp(-2); }}><span aria-hidden="true">🏢</span></button>}
         {groups.map((g) => <button key={g.key} type="button" role="tab" aria-selected={grp === g.order && !q} aria-label={g.message} title={g.message} className="emo-tab" onClick={() => { setQ(""); setGrp(g.order); }}><span aria-hidden="true">{GROUP_ICON[g.key] ?? "•"}</span></button>)}
       </div>
       <div className="emo-top">
@@ -86,7 +91,7 @@ function Picker({ onPick, onClose }: { onPick: (e: string) => void; onClose: () 
         <button type="button" className="emo-x" aria-label="Close emoji picker" title="Close" onClick={onClose}><span aria-hidden="true">✕</span></button>
       </div>
       <div className="emo-sec">
-        <h3 className="emo-h">{q.trim() ? "Search results" : grp === -1 ? "Recently used" : (groups.find((g) => g.order === grp)?.message ?? "")}</h3>
+        <h3 className="emo-h">{q.trim() ? "Search results" : grp === -2 ? "Company emoji" : grp === -1 ? "Recently used" : (groups.find((g) => g.order === grp)?.message ?? "")}</h3>
         <div className="emo-tone" role="radiogroup" aria-label="Skin tone">
           {TONES.map((t2, i) => <button key={t2 || "none"} type="button" role="radio" aria-checked={tone === t2} aria-label={t2 ? `${t2} skin tone` : "Default yellow"} className={`emo-sw s${i}`} onClick={() => setT(t2)} />)}
         </div>
@@ -94,8 +99,8 @@ function Picker({ onPick, onClose }: { onPick: (e: string) => void; onClose: () 
       <div className="emo-grid" role="grid" aria-label={q ? "Search results" : "Emoji"} aria-rowcount={Math.ceil(list.length / COLS)}>
         {failed && <p className="emo-msg" role="alert">The emoji list could not be loaded.</p>}
         {!data && !failed && <p className="emo-msg">Loading emoji…</p>}
-        {data && !list.length && <p className="emo-msg">{q ? "No emoji found." : grp === -1 ? "Nothing used yet." : ""}</p>}
-        {list.map((e, i) => { const t = withTone(e, tone); return <button key={e.hexcode} type="button" role="gridcell" data-i={i} tabIndex={i === act ? 0 : -1} aria-label={t.label} title={t.label} className={`emo-c${i === act ? " act" : ""}`} onMouseEnter={() => setAct(i)} onClick={() => choose(e)}>{t.unicode}</button>; })}
+        {data && !list.length && <p className="emo-msg">{q ? "No emoji found." : grp === -2 ? (pack.canManage ? "No company emoji yet. Add them in Admin > Company emoji." : "No company emoji yet.") : grp === -1 ? "Nothing used yet." : ""}</p>}
+        {list.map((e, i) => { const t = withTone(e, tone); return <button key={e.hexcode} type="button" role="gridcell" data-i={i} tabIndex={i === act ? 0 : -1} aria-label={t.label} title={t.label} className={`emo-c${i === act ? " act" : ""}`} onMouseEnter={() => setAct(i)} onClick={() => choose(e)}>{isCompany(e) ? <CompanyImg code={codeOf(e)} sha={coBy.get(codeOf(e))?.sha256 ?? ""} alt={t.label} size={26} /> : t.unicode}</button>; })}
       </div>
       <p className="sr" aria-live="polite">{data ? `${list.length} emoji` : ""}</p>
     </motion.div>

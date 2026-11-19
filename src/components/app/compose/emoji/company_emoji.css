@@ -1,0 +1,18 @@
+/* QC1e D4A (20 Nov 2026, AWAM ONLY): company emoji pack look. Same tokens as emoji.css; nothing here touches the shared emoji.css. */
+.emo-co-img{display:block;width:26px;height:26px;object-fit:contain;border-radius:6px;pointer-events:none}
+.emo-co-ph{display:block;border-radius:6px;background:rgba(127,127,127,.18);animation:emo-co-pulse 1.2s ease-in-out infinite}
+.emo-co-txt{font-size:11px;line-height:1.1;word-break:break-all;opacity:.8}
+.emo-c .emo-co-img{margin:0 auto}
+.emo-sc-g .emo-co-img{width:22px;height:22px}
+.emo-co-note{grid-column:1/-1;margin:4px 6px;font-size:12px;opacity:.75}
+@keyframes emo-co-pulse{0%,100%{opacity:.5}50%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.emo-co-ph{animation:none}}
+/* admin screen (routes/app.admin.emoji.tsx) */
+.coe-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.coe-card{display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--border,rgba(127,127,127,.3));border-radius:14px;min-width:0}
+.coe-card .emo-co-img{width:48px;height:48px}
+.coe-code{font-family:ui-monospace,monospace;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.coe-bar{height:8px;border-radius:99px;background:rgba(127,127,127,.25);overflow:hidden}
+.coe-bar>i{display:block;height:100%;background:#2b88d8;border-radius:99px;transition:width .2s}
+.coe-bar.near>i{background:#d99a1c}.coe-bar.full>i{background:#c94a4a}
+@media (prefers-reduced-motion:reduce){.coe-bar>i{transition:none}}
