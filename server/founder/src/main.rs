@@ -46,6 +46,7 @@ mod auth;
 mod signin;
 mod sessions;
 mod policy_step;
+mod tls_step;
 mod h3;
 mod wtrpc;
 mod fmail_seal;
@@ -958,6 +959,10 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/mail/changes", get(fmail_live::changes_ep))
         .route("/founder/v1/mail/tls", get(fmail_tls::tls_get_ep))
         .route("/founder/v1/mail/tls/check", axum::routing::post(fmail_tls::tls_check_ep))
+        .route("/founder/v1/mail/tls/policy", get(tls_step::policy_get_ep))
+        .route("/founder/v1/mail/tls/loosen/begin", axum::routing::post(tls_step::begin_ep))
+        .route("/founder/v1/mail/tls/loosen/finish", axum::routing::post(tls_step::finish_ep))
+        .route("/founder/v1/mail/tls/tighten", axum::routing::post(tls_step::tighten_ep))
         .route("/founder/v1/mail/contacts", get(fmail_book::top_ep))
         .route("/founder/v1/mail/contact", axum::routing::post(fmail_book::act_ep))
         .route("/founder/v1/mail/cancel", axum::routing::post(fmail_out::cancel_ep))

@@ -46,6 +46,7 @@ select,textarea{min-height:44px;border-radius:10px;border:1px solid var(--line);
    <p class="small dim hint" id="note">Mail is never sent on a connection without encryption. MTA-STS and DANE domains stay strict even when loosened.</p>
    <div class="actions"><button class="btn" id="open">Loosen for a while</button><button class="btn pri" id="tight" hidden>Make strict now</button></div>
    <div class="form" id="form" hidden>
+    <label for="dom">Partner domain<input id="dom" value="partner.com" style="min-height:44px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--fg);font:inherit;padding:8px 10px;width:100%;box-sizing:border-box"></label>
     <label for="hrs">How long<select id="hrs"><option value="1">1 hour</option><option value="4">4 hours</option><option value="12">12 hours</option><option value="24">24 hours</option></select></label>
     <label for="why">Reason (8 to 200 characters)<textarea id="why" rows="2" maxlength="200" placeholder="Example: partner server has no STARTTLS, invoice due today"></textarea></label>
     <span class="small err" id="err" role="alert"></span>
@@ -73,5 +74,5 @@ $("go").onclick=function(){var r=$("why").value.trim();
   timer=setInterval(function(){var l=end-Date.now();if(l<=0){strict();return}
    var s=Math.round(l*600/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60);
    $("pill").textContent="Loosened, "+h+"h "+m+"m left";$("bar").style.width=(l/(total*1000/600)*100)+"%";
-   $("note").textContent="Plain connections allowed only where the receiving domain has no MTA-STS or DANE. Used "+used+" of 3 today. (Demo clock runs 600x faster.)"},200)},1400)};
+   $("note").textContent="Plain delivery allowed to "+$("dom").value+" only. It ends early the moment that domain delivers over TLS. Used "+used+" of 3 today. (Demo clock runs 600x faster.)"},200)},1400)};
 </script>

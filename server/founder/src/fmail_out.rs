@@ -174,7 +174,10 @@ async fn process(sb: &crate::data::Sb, master: &[u8; 32], cfg: &Cfg, res: Option
     let is_report = crate::fmail_rpt::is_report_mail(&raw);
     if cfg.relay.is_some() { let mut a = Vec::new(); parts.push(run_domain(cfg, res, up, "", &from, &rcpts, &payload, strict, &mut a).await); }
     else { for (d, rs) in group_by_domain(&rcpts) {
-        let mut a = Vec::new(); parts.push(run_domain(cfg, res, up, &d, &from, &rs, &payload, strict, &mut a).await);
+        // F8-5 (E192): the founder may have allowed plain delivery for THIS ONE domain for a short time; any doubt = strict. A TLS session to that domain heals (retires) the exception at once.
+        let loose = strict && crate::fmail_rpt::domain_loosened(sb, mailbox, &d).await;
+        let mut a = Vec::new(); parts.push(run_domain(cfg, res, up, &d, &from, &rs, &payload, strict && !loose, &mut a).await);
+        if loose && a.iter().any(|x| x.result == "success") { crate::fmail_rpt::heal_domain(sb, mailbox, &d).await; }
         if !is_report { let kid = js(&job, "key_id").unwrap_or("vault-1"); for x in &a { crate::fmail_rpt::record(sb, master, actor, mailbox, kid, &d, x).await; } }
         doms.push(d); } }
     let verdict = decide(&parts);

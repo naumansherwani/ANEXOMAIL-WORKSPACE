@@ -615,16 +615,27 @@
   {
    "id": "QC1cF8-5",
    "part": "QC1cF8",
-   "title": "UI + signed door to loosen 'send only if TLS' with a passkey touch (Settings switch)",
-   "tech": "Rust signed door consuming the grant for mail.tls.loosen + React Settings card",
-   "status": "needs-haan",
+   "title": "Per-domain, timed, passkey-signed, self-healing loosen of 'send only if TLS' (Settings card under the Sending switch)",
+   "tech": "SQL E192 + Rust tls_step.rs begin/finish + per-domain sender + React 19 TlsLoosen.tsx + WASM kernel actionCheck",
+   "status": "built",
    "markers": [
     {
+     "file": "server/founder/src/tls_step.rs",
+     "pattern": "pub async fn begin_ep"
+    },
+    {
+     "file": "docs/cursor-work/sql/E192_founder_mail_tls_loosen.sql",
+     "pattern": "fmail_tls_loosen_apply192"
+    },
+    {
+     "file": "founder-web/src/TlsLoosen.tsx",
+     "pattern": "export function TlsLoosen"
+    },
+    {
      "file": "server/founder/src/fmail_rpt.rs",
-     "pattern": "async fn loosen_ep"
+     "pattern": "pub async fn heal_domain"
     }
-   ],
-   "haan": "UI Law: a new screen element needs his haan first"
+   ]
   }
  ]
 }

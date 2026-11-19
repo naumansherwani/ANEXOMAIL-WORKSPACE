@@ -2,7 +2,7 @@
 
 Every feature of a phase, one line each, checked against the repo (a built feature must be found in the code; a missing one is listed as TODO). Gate: rules-gate FEATURES.
 
-## QC1c: 43 of 44 written (18 Nov 2026 08:1x PKT)
+## QC1c: 44 of 44 written (18 Nov 2026 08:1x PKT)
 
 - QC1cF7-1 [BUILT] closed verdict list pq / classic13 / classic12 / none / refused / unreachable / nomail / checking, NO 'unknown' | PostgreSQL 16 (E189)
 - QC1cF7-2 [BUILT] domain name and host detail sealed (AES-256-GCM, vault-wrapped key), only HMAC + closed words in clear | PostgreSQL 16 (E189)
@@ -47,4 +47,4 @@ Every feature of a phase, one line each, checked against the repo (a built featu
 - QC1cF8-3 [BUILT] TLS-RPT (RFC 8460): per-day counters (SQL E191) + daily gzip report mailed through the normal strict outbox / https POST (Rust fmail_rpt.rs); written, waits his sql-run + install + a real report day | Rust Tokio + mail-auth 0.9.2 tlsrpt structs + our own send path + PostgreSQL counters
 - QC1cF8-4 [BUILT] 'send only if TLS': strict by default (every hop), passkey-grant LOOSEN ratchet in SQL E191 (1-24 h, single use grant, max 3 a day, self-expiring) read by the sender; MTA-STS enforce / DANE stay TLS-only | Rust policy ratchet + PostgreSQL + passkey touch to loosen
 - QC1cF3-6 [BUILT] SQL E190: the change log learns the kind 'tls' + a trigger on the E189 table writes one tls line (ids only) so the chip updates through QLIVE (the E188 pattern) | PostgreSQL 16 (E190)
-- QC1cF8-5 [NEEDS HIS HAAN] UI + signed door to loosen 'send only if TLS' with a passkey touch (Settings switch) | Rust signed door consuming the grant for mail.tls.loosen + React Settings card
+- QC1cF8-5 [BUILT] Per-domain, timed, passkey-signed, self-healing loosen of 'send only if TLS' (Settings card under the Sending switch) | SQL E192 + Rust tls_step.rs begin/finish + per-domain sender + React 19 TlsLoosen.tsx + WASM kernel actionCheck

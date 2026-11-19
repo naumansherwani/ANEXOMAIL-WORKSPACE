@@ -66,6 +66,12 @@ pub async fn strict_for(sb: &data::Sb, actor: &str, mailbox: &str) -> bool {
         _ => true,
     }
 }
+/// F8-5 (E192): is plain delivery allowed for this ONE domain right now? Only a clear `true` from SQL counts; an error, a missing step or anything else = strict.
+pub async fn domain_loosened(sb: &data::Sb, mailbox: &str, domain: &str) -> bool {
+    matches!(sb.rpc("fmail_tls_dom_loose192", json!({"p_mailbox": mailbox, "p_domain": domain})).await, Some(Value::Bool(true)))
+}
+/// A TLS session to the domain happened: the exception is no longer needed, retire it (tightening only, so no touch). A failure here is harmless: the exception still ends by its own time.
+pub async fn heal_domain(sb: &data::Sb, mailbox: &str, domain: &str) { let _ = sb.rpc("fmail_tls_dom_heal192", json!({"p_mailbox": mailbox, "p_domain": domain})).await; }
 /// The require_tls flag for one hop. An enforcing MTA-STS policy or DANE-proven TLSA always means TLS, whatever the founder's own rule says.
 pub fn hop_requires_tls(strict: bool, sts: Option<&qtls::StsPolicy>, dane: bool) -> bool { strict || dane || sts.map_or(false, |p| p.mode == qtls::StsMode::Enforce) }
 

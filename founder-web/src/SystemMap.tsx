@@ -5,6 +5,7 @@ import brain from "./system_brain.json";
 import { DkimDock } from "./DkimDock";
 import { MailHealth } from "./MailHealth";
 import { SendSwitch } from "./SendSwitch";
+import { TlsLoosen } from "./TlsLoosen";
 import { PulseCard } from "./PulseCard";
 import "./pulse.css";
 import "./systemmap.css";
@@ -17,7 +18,7 @@ export function SystemMap() {
   const hb = brain.heartbeat, feats = brain.features.filter((x) => f === "all" || x.layers.includes(f));
   return (
     <div className="grid">
-      <section className="card wide sm" aria-label="Mail health"><h2>MAIL HEALTH · SPEED, TRANSPORT, LEDGER, LANES</h2><div className="sm-send"><span className="sm-k">Real outgoing mail</span><SendSwitch /></div><MailHealth /></section>
+      <section className="card wide sm" aria-label="Mail health"><h2>MAIL HEALTH · SPEED, TRANSPORT, LEDGER, LANES</h2><div className="sm-send"><span className="sm-k">Real outgoing mail</span><SendSwitch /><TlsLoosen /></div><MailHealth /></section>
       <section className="card wide sm" aria-label="Live pulse"><h2>LIVE PULSE · THE RUNNING SERVER, EVERY 5 SECONDS</h2><PulseCard /></section>
       <section className="card wide sm" aria-label="Repo heartbeat">
         <h2>REPO HEARTBEAT · THE CODE AS WRITTEN WHEN THIS PAGE WAS BUILT</h2>

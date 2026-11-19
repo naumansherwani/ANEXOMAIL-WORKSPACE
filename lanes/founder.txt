@@ -142,6 +142,7 @@ docs/cursor-work/sql/E188_founder_mail_live_drafts.sql
 docs/cursor-work/sql/E189_founder_mail_domain_tls.sql
 docs/cursor-work/sql/E190_founder_mail_tls_change.sql
 docs/cursor-work/sql/E191_founder_mail_tls_rpt_policy.sql
+docs/cursor-work/sql/E192_founder_mail_tls_loosen.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/00-FOUNDER-TECH-RULE.md
@@ -163,8 +164,8 @@ founder-web/dist/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-BjHSSH1P.css
-founder-web/dist/assets/index-DRvcyJv8.js
+founder-web/dist/assets/index-BQvxQSS8.css
+founder-web/dist/assets/index-CA-0eG2E.js
 founder-web/dist/assets/kernel.worker-BLkLR49F.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
@@ -242,6 +243,7 @@ founder-web/src/SignIn.tsx
 founder-web/src/Surface.tsx
 founder-web/src/SystemMap.tsx
 founder-web/src/TlsLock.tsx
+founder-web/src/TlsLoosen.tsx
 founder-web/src/Trust.tsx
 founder-web/src/TrustRing.tsx
 founder-web/src/Vault.tsx
@@ -390,8 +392,12 @@ founder-web/src/tailwind.css
 founder-web/src/tls.css
 founder-web/src/tls_line.test.ts
 founder-web/src/tls_line.ts
+founder-web/src/tls_loosen_flow.ts
+founder-web/src/tls_loosen_pure.test.ts
+founder-web/src/tls_loosen_pure.ts
 founder-web/src/tls_pure.test.ts
 founder-web/src/tls_pure.ts
+founder-web/src/tlsloosen.css
 founder-web/src/trust.css
 founder-web/src/trust_pure.test.ts
 founder-web/src/trust_pure.ts
@@ -459,6 +465,7 @@ server/founder/src/signedcp.rs
 server/founder/src/signin.rs
 server/founder/src/stream_tier.rs
 server/founder/src/tls256.rs
+server/founder/src/tls_step.rs
 server/founder/src/wt.rs
 server/founder/src/wtrpc.rs
 server/founder/tests/00-FOUNDER-TECH-RULE.md

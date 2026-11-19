@@ -1190,3 +1190,10 @@ Not yet proven live: needs his sql-run (E191) + founder-install, then one real U
 - 19 Nov 12:40 PKT: F8-5 loosen DEMO written (docs/claude/demos/F8-5-tls-loosen-demo.html), existing SendSwitch untouched, waits his haan; first report day closed by his word 12:28, screenshots after Q series
 
 - 19 Nov 12:31 PKT: 5-min checkpoint, F8-5 demo waits his haan
+
+## QC1c F8-5 (19 Nov 2026 12:45 PKT): loosen send-only-if-TLS with a signed passkey touch
+Backend: Rust + tokio + axum `tls_step.rs` (begin/finish like policy_step.rs, WebAuthn assertion, no Node/Bun), SQL E192 on E118 grants + E191 doors. Frontend: React 19 + TypeScript `TlsLoosen.tsx` (new file, SendSwitch.tsx untouched), Rust WASM kernel actionCheck before the key is touched, WebTransport/H3 signed API only. Plan: docs/claude/QC1C-F8-5-RESEARCH-PLAN-19NOV.md
+
+- 19 Nov 12:55 PKT: QC1c F8-5 BUILT, NOT YET INSTALLED: E192 (per-domain loosen, sandbox selftest 14/14), Rust tls_step.rs begin/finish/tighten/policy (493 cargo tests), sender loose+heal per domain, React TlsLoosen.tsx mounted under SendSwitch (bun 369/369, vite build ok); waits his sql-run E192 + founder-install
+
+- 19 Nov 12:55 PKT: QC1c F8-5 BUILT, NOT YET INSTALLED: E192 (per-domain loosen, sandbox selftest 14/14), Rust tls_step.rs begin/finish/tighten/policy (493 cargo tests), sender loose+heal per domain, React TlsLoosen.tsx mounted under SendSwitch (bun 369/369, vite build ok); waits his sql-run E192 + founder-install
