@@ -331,8 +331,10 @@ G2 is now the open item in progress.
 
 ## QC1c open list after GREEN by his word (19 Nov 2026 11:1x PKT) - these stay open until closed, none is hidden
 1. none / refused paths: seen only in unit tests, no live server without STARTTLS tried yet.
-2. Retry 30 minute step (1 and 5 minute steps live-proven 18 Nov 10:42).
+2. CLOSED 19 Nov 11:19 PKT (live Chrome): github.io chip shows 'Cannot reach this mail server ... No more tries scheduled' after the 30 minute step.
 3. DANE: wired + unit-tested (DaneVerifier, DaneUpgrade); not yet proven on a real DNSSEC-signed TLSA domain.
 4. Received-hint (Postfix Received: header) not proven on a real arriving mail.
 5. Phone 390 / tablet 820 live look: his screenshot owed (sandbox measure was clean).
 6. blocked_24h = 6 (not green), AWAM-PREMIUM-MAX-LIVE, draft-edit two-tab live look.
+7. F8-3 TLS-RPT: E191 + fmail_rpt.rs installed on his server 19 Nov 12:25 (CHECK_E191 9/9, install 4/4). OPEN: the first real report to a domain with a _smtp._tls record after a UTC day ends (20 Nov) = live proof.
+8. F8-5: signed door + Settings switch to loosen 'send only if TLS' with a passkey touch (action mail.tls.loosen, T2 tier registration needed). Needs his haan (UI Law). Until then the rule is strict, no loosen possible.

@@ -4,7 +4,7 @@ Rule: one phase at a time; GREEN only WIRED: YES / REAL: YES / TECH-LAW CHECKED 
 | # | Phase | What | Status 18 Nov 10:5x |
 |---|---|---|---|
 | 1 | QC0 | Compose polish | GREEN (his word 02:11) |
-| 2 | QC1c | TLS lock on each recipient chip (probe, retry, proven line, MTA-STS, DANE) | GREEN BY HIS WORD 19 Nov 11:05. Proven: pq (Gmail), nomail, unreachable + retry 1/5 min, real send proven line, E190 6/6, MTA-STS + DANE wired (cargo 481/481, installed). Open list (not hidden, in CLOSE-THE-GAPS-07NOV.md): none/refused live, retry 30 min step, DANE on a real signed domain, received hint, phone 390/820 |
+| 2 | QC1c | TLS lock on each recipient chip (probe, retry, proven line, MTA-STS, DANE) | GREEN BY HIS WORD 19 Nov 11:05. Proven: pq (Gmail), nomail, unreachable + retry 1/5 min, real send proven line, E190 6/6, MTA-STS + DANE wired (cargo 481/481, installed). 19 Nov 12:25 PKT: F8-3 TLS-RPT sender + F8-4 strict ratchet = E191 CHECK 9/9 (selftest 28/28) on his server + founder-install live (cargo 489/489), GREEN BY HIS WORD; the first real report day (20 Nov) and the loosen UI (F8-5, needs his haan) stay open. Open list (not hidden, in CLOSE-THE-GAPS-07NOV.md): none/refused live, retry 30 min step, DANE on a real signed domain, received hint, phone 390/820 |
 | 3 | QC3a | Undo bar X = send now (E185 release door, signed Rust door, kernel RPC) | NEXT. Contract first in CURRENT.md, then SQL E185, Rust door, kernel RPC, React |
 | 4 | QC1 | Recipient chips, People autocomplete (lock part = QC1c) | After QC3a |
 | 5 | QC1e | Emoji picker (all emoji) | Queued |
