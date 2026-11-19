@@ -42,4 +42,3 @@ His hands, one step at a time when each comes: phone 390 / tablet 820 screenshot
 
 - QC1e D4 (20 Nov 2026 03:15 PKT) = AWAM-SIDE phase, no founder code. Advance technology: Rust image-webp re-encode, forced-RLS + hash-chain SQL (E193 proven on his server), D4B CID inline images + derived PNG + ClamAV + Hetzner Storage Box. Detail: awam blueprint + docs/claude/QC1E-D4-PLAN-20NOV.md.
 
-- LIVE PORTS (his fresh ss paste 20 Nov 2026 03:30 PKT): founder `anexomail-found` UDP 443, founder-dns UDP 53; awam `anexomail-rust` TCP 3200 + UDP 3443/3501; caddy UDP 18443. Table: docs/claude/state/PORTS-LIVE.md.

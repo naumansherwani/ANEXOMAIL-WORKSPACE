@@ -2114,3 +2114,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 20.11.26 04:50 PKT D4A checkpoint: code pushed, waits his rust install + awam pull
 
 - 20.11.26 04:06 PKT QC1e D4A (AWAM): E193 SQL proven; Rust emoji installed on his server 03:49; web pulled 03:50; live look: Company tab OK, upload screen unreachable for Business (Admin gated) = BUG, move to Org tab; D4A NOT green
+
+- 20.11.26 04:12 PKT separation cleanup: founder ledger/blueprint keep one D4 line, awam ports line removed from founder blueprint
