@@ -4191,3 +4191,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - QC1e D3 awam fix 02:45 PKT: new file emoji_ur_data.ts added to DEPLOY-MANIFEST (his pull.sh build FAIL cause), waits his pull.sh again
 
 - checkpoint 02:41 PKT
+
+- QC1e D3 founder live look 02:50 PKT recorded, not green (390/820 open), TECH-LAW CHECKED pending
