@@ -155,7 +155,8 @@ begin
       res := res || jsonb_build_array(jsonb_build_object('name', 'apply refuses a made-up grant and device', 'ok', not public.fmail_tls_dom_loose192(v_box, 'partner.com')));
     end;
     begin
-      select id into v_dev from public.founder_devices limit 1;
+      select id into v_dev from public.founder_devices where user_id = v_uid and approved_at is not null and revoked_at is null order by approved_at desc limit 1;      -- E117 _fp_assert_device: only an approved, unrevoked device of this founder counts
+      if v_dev is null then raise exception 'no approved device of this founder to test with'; end if;
       select credential_id into v_cred from public.founder_passkeys where user_id = v_uid limit 1;
       v_h := public.founder_action_hash('mail.tls.loosen', v_box::text, public._tls_loosen_params192(v_box, 'partner.com', 4, v_why), v_nonce);
       insert into public.founder_stepups (id, user_id, device_id, credential_id, scope, action, action_hash, expires_at) values (v_g, v_uid, v_dev, coalesce(v_cred, 'SELFTEST192CRED00000001'), 'g3', 'mail.tls.loosen', v_h, now() + interval '5 minutes');

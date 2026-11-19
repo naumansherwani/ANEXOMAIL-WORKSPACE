@@ -3743,3 +3743,9 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 19 Nov 13:03 PKT: 5-min checkpoint, F8-5 waits his sql-run E192 + install
 
 - 19 Nov 13:10 PKT: 5-min checkpoint, F8-5 waits his sql-run E192 + install
+
+- 19 Nov 13:20 PKT: F8-5 his sql-run: E192 ran, CHECK 5/6 OK but selftest 7/8 'device not approved' (my selftest picked any device, E117 needs an approved unrevoked one). FIXED in E192 (approved device only), sandbox 14/14 with real approval rule. Founder-install 4/4 OK. closed only after his re-run of sql-run shows selftest 14/14 and my Chrome look
+
+- 19 Nov 13:20 PKT: F8-5 his sql-run: E192 ran, CHECK 5/6 OK but selftest 7/8 device not approved (my selftest picked any device, E117 needs an approved unrevoked one). FIXED in E192 (approved device only), sandbox 14/14 with the real approval rule. Founder-install 4/4 OK. Closed only after his re-run shows selftest 14/14 and my Chrome look
+
+- 19 Nov 13:25 PKT: F8-5 his sql-run: E192 ran, CHECK 5/6 OK but selftest 7/8 device not approved (my selftest picked any device, E117 needs an approved unrevoked one). FIXED in E192 (approved device only), sandbox 14/14 with the real approval rule. Founder-install 4/4 OK. Closed only after his re-run shows selftest 14/14 and my Chrome look
