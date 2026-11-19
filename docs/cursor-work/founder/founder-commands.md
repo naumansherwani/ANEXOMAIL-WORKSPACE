@@ -3861,3 +3861,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - 19 Nov 12:55 PKT: QC1c F8-5 BUILT, NOT YET INSTALLED: E192 (per-domain loosen, sandbox selftest 14/14), Rust tls_step.rs begin/finish/tighten/policy (493 cargo tests), sender loose+heal per domain, React TlsLoosen.tsx mounted under SendSwitch (bun 369/369, vite build ok); waits his sql-run E192 + founder-install
 
 - 19 Nov 12:55 PKT: QC1c F8-5 BUILT, NOT YET INSTALLED: E192 (per-domain loosen, sandbox selftest 14/14), Rust tls_step.rs begin/finish/tighten/policy (493 cargo tests), sender loose+heal per domain, React TlsLoosen.tsx mounted under SendSwitch (bun 369/369, vite build ok); waits his sql-run E192 + founder-install
+
+- 19 Nov 12:57 PKT: 5-min checkpoint, F8-5 built, waits his sql-run E192 + install
