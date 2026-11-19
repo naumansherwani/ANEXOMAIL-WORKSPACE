@@ -22,3 +22,4 @@
 .emo>.emo-grid{flex:1 1 auto}
 .emo>.emo-q{margin-bottom:5px}
 .emo>.emo-tone{margin-top:5px}
+.emo>.emo-grid{align-content:start;grid-auto-rows:min-content}
