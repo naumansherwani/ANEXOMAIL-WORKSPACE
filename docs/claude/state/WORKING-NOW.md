@@ -1,15 +1,15 @@
-# WORKING NOW (auto snapshot before a compaction, 19 Nov 2026 14:12 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QC1e D1 css fix pushed e4aecec7; waits his founder-install + awam pull, then Chrome look search/insert/hint
+# WORKING NOW (manual checkpoint, 19 Nov 2026 14:13 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QC1e D1 founder Chrome look done (search, insert, hint, Use words OK); css fixes pushed 893b2cfd; waits his founder-install + awam pull, then awam look + 390/820/1200; then D2 together
 NEXT STEP: 
 HIS LAST WORD: 19 Nov 11:39 PKT
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## Last 5 commits
+- 893b2cfd 19 Nov 14:12 ledger line ed0b5d5e
 - ed0b5d5e 19 Nov 14:12 QC1e D1: emoji grid single result no longer stretches
 - 8bb54747 19 Nov 14:10 ledger line 623c5f41
 - 623c5f41 19 Nov 14:10 QC1e D1: emoji picker spacing +5px between search, tabs, skin tone
 - 60be8e1a 19 Nov 14:07 ledger line 102a1881
-- 102a1881 19 Nov 14:07 checkpoint 14:32
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -29,4 +29,4 @@ QC1c: 44/44 written. NOT WRITTEN:
 ## >>> 18 NOV 2026 07:2x PKT NOW (his order 07:16, update for Claude after any compaction): PHASES IN HAND = (1) QLIVE-c (package stream limits stream_tier.rs, live drafts SQL E188 [his sql-run OK], simulation test founder-web/sim, 2 real browser bugs fixed) and (2) Q-contacts-kernel (contacts@1 in 
 ## >>> 15 NOV 19:25 HIS ORDER: L closed. NEXT = Q SERIES until complete, THEN S5 (not before). Lovable codes migration phase written in docs/claude/FOUNDER-LOVABLE-MIGRATION-15NOV.md and docs/claude/AWAM-LOVABLE-MIGRATION-15NOV.md (preserve as written, advance technology, fix loopholes, polish). Q s
 ## >>> HANDOFF 14 NOV 07:10 (he is sleeping; read this first tomorrow): DONE and proven: KP3 step 5 GREEN, pre-connect GREEN by his order, clean blueprint (docs/claude/FOUNDER-BLUEPRINT-CLEAN-14NOV.md), audit steps A+B GREEN, audit step C INSTALLED on his server (receipt 35, tests 394, listening aft
-WIP snapshot: refs/wip/last (8d8e9ec3c6929975027edb2da70530a6e075b054)
+WIP snapshot: refs/wip/last (8b68491854038b24769be98fdaf3ccf918732bec)

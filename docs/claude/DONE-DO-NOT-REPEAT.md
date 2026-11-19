@@ -1040,3 +1040,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 19 Nov 14:20 PKT QC1e D1: his installs OK (founder 4/4, awam build OK, css e4aecec7 live); picker gap +5px (search to tabs, tabs to skin tone) per his word; Chrome look paused: founder session was signed out by the install, needs his sign-in
 
 - 19 Nov 14:30 PKT QC1e D1 founder Chrome look (live, signed in): picker opens, search orca finds the Unicode 17 orca, insert at caret works, new-emoji hint appears, Use words gives [orca] and hint goes; fixed: single result cell stretched tall (grid align-content start). Awam look still open
+
+- 19 Nov 14:36 PKT checkpoint, QC1e D1 founder look done, awam look open
