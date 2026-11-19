@@ -23,3 +23,5 @@ HTTPS 18443, HTTP 18080, admin 127.0.0.1:12019. They stay a proposal until his f
 
 - 9 Nov 2026 17:50 PKT 18081/tcp (127.0.0.1 only) = anexomail-awam-edge (K5a spare port, free in his 9 Nov 15:52 ss list, proven on 16:14 by the first build; now owned by the separate awam-edge service). 18443 tcp+udp = Caddy (since 9 Nov 15:15). 18080, 18444 stay free.
 - UDP 443 is FREE since the K4 switch (his fresh ss 11 Nov 03:40: udp 4443 founder, 18443 caddy, 3443 anexomail-rust); older lines above that list Caddy on UDP 443 are superseded.
+
+- 20 Nov 2026 03:30 PKT (his fresh paste, ss -tulnp + ss -tlnp grep anexomail-rust): anexomail-rust = TCP 0.0.0.0:3200, 127.0.0.1:3500/3600/3601, UDP 3443 (WebTransport), UDP 3501; founder anexomail-found UDP 443; founder-dns UDP 53; caddy UDP 18443; turnserver 3478/5349; axon_core 9200/9300; redis 127.0.0.1:6379. All match this file. QC1e D4A adds no port. Live copy for Claude: docs/claude/state/PORTS-LIVE.md

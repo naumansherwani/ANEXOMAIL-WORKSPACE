@@ -316,6 +316,7 @@ docs/claude/proofs/Q1D-GMAIL-AUTH-RESULTS-16NOV.txt
 docs/claude/state/00-FOUNDER-TECH-RULE.md
 docs/claude/state/HEARTBEAT.json
 docs/claude/state/PHASES.json
+docs/claude/state/PORTS-LIVE.md
 docs/claude/state/Q-STATE.jsonl
 docs/claude/state/SERVER-FIRST.jsonl
 docs/claude/state/WORKING-NOW.md

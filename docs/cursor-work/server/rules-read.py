@@ -18,6 +18,7 @@ if __name__ == "__main__":
     print("\n##### HANDOFF LIVE (current step + his standing rules + tools; docs/claude/HANDOFF-LIVE.md)"); print(open("docs/claude/HANDOFF-LIVE.md", errors="ignore").read()[:7000])
     print("\n##### FEATURES NOT WRITTEN YET (docs/claude/features/*.json, auto-checked against the repo; docs/claude/FEATURES-LIVE.md)")
     import subprocess as _s; print(_s.run(["python3", "docs/cursor-work/server/features.py", "show"], capture_output=True, text=True).stdout[:6000])
+    print("\n##### LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md = his fresh ss paste; PORT RED LINE)"); print(open("docs/claude/state/PORTS-LIVE.md", errors="ignore").read()[:2600])
     print("\n##### OPEN / OVERDUE technologies (TECH-LAW-GATE.json)")
     for c in json.load(open("docs/claude/TECH-LAW-GATE.json"))["checks"]:
         if c["status"] == "open": print(f'  OPEN {c["id"]}: fails from {c.get("fail_after", "?")} - {c["why"][:140]}')

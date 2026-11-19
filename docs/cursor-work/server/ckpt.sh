@@ -15,6 +15,7 @@ echo "DOING: $DOING"
 echo "NEXT STEP: $NEXT"
 echo "HIS LAST WORD: $WORD"
 echo "RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time."
+echo; echo "## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)"; sed -n '2,3p;8,16p' docs/claude/state/PORTS-LIVE.md 2>/dev/null | cut -c1-240
 echo; echo "## Last 5 commits"; git log -5 --format='- %h %ad %s' --date=format:'%d %b %H:%M' 2>/dev/null
 echo; echo "## Uncommitted files (half-done work if any)"; git status --short 2>/dev/null | head -40
 echo; echo "## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)"; cat docs/claude/state/EDIT-INTENT.md 2>/dev/null | head -20
