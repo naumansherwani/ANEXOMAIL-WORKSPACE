@@ -3809,3 +3809,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 19 Nov 15:12 PKT checkpoint, QC1e D2 button beside Send + X awaits his pulls
 
 - 19 Nov 15:25 PKT QC1e awam fix (his 14:33): picker opened below the panel fold and a click on the panel scrollbar counted as outside click and closed it; now: awam picker opens OVER the message box (emo-over), compact, scrollbar click ignored, sr-only line no longer visible (171 emoji). Founder layout unchanged. His two pulls done 14:28 (founder 4/4, awam build OK)
+
+- 19 Nov 15:36 PKT checkpoint, QC1e awam picker over text, awaits his awam pull
