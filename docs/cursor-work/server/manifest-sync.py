@@ -17,7 +17,7 @@ def sha(p):
 
 def changed():
     out = subprocess.check_output(["git", "-C", ROOT, "status", "--porcelain", "--", "src"]).decode().splitlines()
-    return [l[3:].strip() for l in out if not l.startswith(" D") and not l.startswith("D ")]
+    return [l[3:].split(" -> ")[-1].strip() for l in out if not l.startswith(" D") and not l.startswith("D ")]  # a git mv shows "old -> new": take the NEW path (20 Nov: the missing app.org.emoji.tsx broke his build)
 
 
 want = sys.argv[1:] or changed()
