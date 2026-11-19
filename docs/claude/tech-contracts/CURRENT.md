@@ -1178,3 +1178,5 @@ Sandbox proof: E191 selftest 28/28, CHECK_E191 9/9, re-run safe, E179 door audit
 Not yet proven live: needs his sql-run (E191) + founder-install, then one real UTC day to end with a Gmail-bound mail (Gmail publishes _smtp._tls). GREEN: NO.
 
 - QC1c F8-3 + F8-4 19 Nov 2026 12:05 PKT: SQL E191 (TLS-RPT counters + report ledger + strict TLS ratchet, sandbox selftest 28/28, CHECK_E191 9/9) and Rust fmail_rpt.rs (daily gzip report worker through the strict outbox, policy hook in run_domain, 489 tests); no port changed (his ss paste 12:02); waits his sql-run + install + a real report day. Not live-proven
+
+- QC1c E191 re-run 19 Nov 12:2x PKT: his sql-run 12:12 ran E191 OK and CHECK_E191 8 of 9 OK, only the selftest line failed with an empty name (the selftest stopped, reason unknown); fix: the policy part of the selftest is now its own block that reports the error, and CHECK_E191 prints the error / failing checks in the line. Sandbox 28/28 and a simulated blocked step-up insert shows the reason. Not green

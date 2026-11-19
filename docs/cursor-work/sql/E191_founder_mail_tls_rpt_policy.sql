@@ -489,33 +489,38 @@ begin
     v_r := public.fmail_rpt_finish191(v_uid, v_box, v_yday, sha256(convert_to('selftest191-two', 'UTF8')), 'failed', null, null, null, null, 'rua refused');
     res := res || jsonb_build_object('name', 'a failed report waits 1 hour for the retry', 'ok', (v_r ->> 'ok') = 'true' and (v_r ->> 'final') = 'false' and (v_r ->> 'next_try_at') is not null
                                               and (public.fmail_rpt_claim191(v_uid, v_box, v_yday, sha256(convert_to('selftest191-two', 'UTF8'))) ->> 'why') = 'waiting');
-    -- policy: strict default, loosen needs the grant, expiry
-    res := res || jsonb_build_object('name', 'the default is STRICT (send only if TLS)', 'ok', (public.fmail_tls_policy_get191(v_uid, v_box) ->> 'strict') = 'true');
-    res := res || jsonb_build_object('name', 'loosening without a grant is refused', 'ok', (public.fmail_tls_policy_loosen191(v_uid, v_box, 2, 'old server of a client', null) ->> 'ok') = 'false');
-    res := res || jsonb_build_object('name', 'loosening with a grant that does not exist is refused', 'ok', (public.fmail_tls_policy_loosen191(v_uid, v_box, 2, 'old server of a client', gen_random_uuid()) ->> 'ok') = 'false');
-    select id into v_dev from public.founder_devices limit 1;
-    insert into public.founder_stepups (id, user_id, device_id, credential_id, scope, expires_at, used_at, used_for) values (v_g, v_uid, v_dev, 'SELFTEST191CRED00000001', 'g3', now() + interval '5 minutes', now(), 'mail.tls.loosen');
-    insert into public.founder_stepups (id, user_id, device_id, credential_id, scope, expires_at, used_at, used_for) values (v_g2, v_uid, v_dev, 'SELFTEST191CRED00000001', 'g3', now() + interval '5 minutes', now(), 'something.else');
-    res := res || jsonb_build_object('name', 'a grant used for another action can not loosen', 'ok', (public.fmail_tls_policy_loosen191(v_uid, v_box, 2, 'old server of a client', v_g2) ->> 'ok') = 'false');
-    res := res || jsonb_build_object('name', 'a reason shorter than 8 characters is refused', 'ok', (public.fmail_tls_policy_loosen191(v_uid, v_box, 2, 'short', v_g) ->> 'ok') = 'false');
-    res := res || jsonb_build_object('name', 'more than 24 hours is refused', 'ok', (public.fmail_tls_policy_loosen191(v_uid, v_box, 25, 'old server of a client', v_g) ->> 'ok') = 'false');
-    v_r := public.fmail_tls_policy_loosen191(v_uid, v_box, 2, 'old server of a client', v_g);
-    res := res || jsonb_build_object('name', 'a correct grant loosens for the hours asked', 'ok', (v_r ->> 'ok') = 'true' and (public.fmail_tls_policy_get191(v_uid, v_box) ->> 'strict') = 'false');
-    res := res || jsonb_build_object('name', 'the same grant can not loosen twice', 'ok', (public.fmail_tls_policy_loosen191(v_uid, v_box, 2, 'old server of a client', v_g) ->> 'ok') = 'false');
-    perform set_config('fmail.tlsx_door', 'on', true);
-    update public.fmail_tls_policy191 set loosened_until = now() - interval '1 second' where mailbox_id = v_box;
-    perform set_config('fmail.tlsx_door', '', true);
-    res := res || jsonb_build_object('name', 'an expired loosening is strict again by itself', 'ok', (public.fmail_tls_policy_get191(v_uid, v_box) ->> 'strict') = 'true');
-    v_r := public.fmail_tls_policy_tighten191(v_uid, v_box);
-    res := res || jsonb_build_object('name', 'tightening clears the row and notes that it had expired', 'ok', (v_r ->> 'changed') = 'true' and (v_r ->> 'was_expired') = 'true' and not exists (select 1 from public.fmail_tls_policy191 where mailbox_id = v_box and loosened_until is not null));
-    insert into public.founder_stepups (id, user_id, device_id, credential_id, scope, expires_at, used_at, used_for) values (v_g3, v_uid, v_dev, 'SELFTEST191CRED00000001', 'g3', now() + interval '5 minutes', now(), 'mail.tls.loosen');
-    perform public.fmail_tls_policy_loosen191(v_uid, v_box, 1, 'second loosening today', v_g3);
-    res := res || jsonb_build_object('name', 'each used grant is remembered once', 'ok', (select count(*) from public.fmail_tls_grant191 where mailbox_id = v_box) = 2);
-    begin delete from public.fmail_tls_grant191 where mailbox_id = v_box; v_ok := false; exception when others then v_ok := true; end;
-    res := res || jsonb_build_object('name', 'deleting a used grant is refused', 'ok', v_ok);
-    begin update public.fmail_tlsx_log191 set note = 'x' where mailbox_id = v_box; v_ok := false; exception when others then v_ok := true; end;
-    res := res || jsonb_build_object('name', 'the log is append only', 'ok', v_ok);
-    res := res || jsonb_build_object('name', 'the chain still verifies after the policy events', 'ok', coalesce((public.fmail_tlsx_verify191(v_box) ->> 'ok')::boolean, false));
+    begin
+      -- policy: strict default, loosen needs the grant, expiry
+      res := res || jsonb_build_object('name', 'the default is STRICT (send only if TLS)', 'ok', (public.fmail_tls_policy_get191(v_uid, v_box) ->> 'strict') = 'true');
+      res := res || jsonb_build_object('name', 'loosening without a grant is refused', 'ok', (public.fmail_tls_policy_loosen191(v_uid, v_box, 2, 'old server of a client', null) ->> 'ok') = 'false');
+      res := res || jsonb_build_object('name', 'loosening with a grant that does not exist is refused', 'ok', (public.fmail_tls_policy_loosen191(v_uid, v_box, 2, 'old server of a client', gen_random_uuid()) ->> 'ok') = 'false');
+      select id into v_dev from public.founder_devices limit 1;
+      insert into public.founder_stepups (id, user_id, device_id, credential_id, scope, expires_at, used_at, used_for) values (v_g, v_uid, v_dev, 'SELFTEST191CRED00000001', 'g3', now() + interval '5 minutes', now(), 'mail.tls.loosen');
+      insert into public.founder_stepups (id, user_id, device_id, credential_id, scope, expires_at, used_at, used_for) values (v_g2, v_uid, v_dev, 'SELFTEST191CRED00000001', 'g3', now() + interval '5 minutes', now(), 'something.else');
+      res := res || jsonb_build_object('name', 'a grant used for another action can not loosen', 'ok', (public.fmail_tls_policy_loosen191(v_uid, v_box, 2, 'old server of a client', v_g2) ->> 'ok') = 'false');
+      res := res || jsonb_build_object('name', 'a reason shorter than 8 characters is refused', 'ok', (public.fmail_tls_policy_loosen191(v_uid, v_box, 2, 'short', v_g) ->> 'ok') = 'false');
+      res := res || jsonb_build_object('name', 'more than 24 hours is refused', 'ok', (public.fmail_tls_policy_loosen191(v_uid, v_box, 25, 'old server of a client', v_g) ->> 'ok') = 'false');
+      v_r := public.fmail_tls_policy_loosen191(v_uid, v_box, 2, 'old server of a client', v_g);
+      res := res || jsonb_build_object('name', 'a correct grant loosens for the hours asked', 'ok', (v_r ->> 'ok') = 'true' and (public.fmail_tls_policy_get191(v_uid, v_box) ->> 'strict') = 'false');
+      res := res || jsonb_build_object('name', 'the same grant can not loosen twice', 'ok', (public.fmail_tls_policy_loosen191(v_uid, v_box, 2, 'old server of a client', v_g) ->> 'ok') = 'false');
+      perform set_config('fmail.tlsx_door', 'on', true);
+      update public.fmail_tls_policy191 set loosened_until = now() - interval '1 second' where mailbox_id = v_box;
+      perform set_config('fmail.tlsx_door', '', true);
+      res := res || jsonb_build_object('name', 'an expired loosening is strict again by itself', 'ok', (public.fmail_tls_policy_get191(v_uid, v_box) ->> 'strict') = 'true');
+      v_r := public.fmail_tls_policy_tighten191(v_uid, v_box);
+      res := res || jsonb_build_object('name', 'tightening clears the row and notes that it had expired', 'ok', (v_r ->> 'changed') = 'true' and (v_r ->> 'was_expired') = 'true' and not exists (select 1 from public.fmail_tls_policy191 where mailbox_id = v_box and loosened_until is not null));
+      insert into public.founder_stepups (id, user_id, device_id, credential_id, scope, expires_at, used_at, used_for) values (v_g3, v_uid, v_dev, 'SELFTEST191CRED00000001', 'g3', now() + interval '5 minutes', now(), 'mail.tls.loosen');
+      perform public.fmail_tls_policy_loosen191(v_uid, v_box, 1, 'second loosening today', v_g3);
+      res := res || jsonb_build_object('name', 'each used grant is remembered once', 'ok', (select count(*) from public.fmail_tls_grant191 where mailbox_id = v_box) = 2);
+      begin delete from public.fmail_tls_grant191 where mailbox_id = v_box; v_ok := false; exception when others then v_ok := true; end;
+      res := res || jsonb_build_object('name', 'deleting a used grant is refused', 'ok', v_ok);
+      begin update public.fmail_tlsx_log191 set note = 'x' where mailbox_id = v_box; v_ok := false; exception when others then v_ok := true; end;
+      res := res || jsonb_build_object('name', 'the log is append only', 'ok', v_ok);
+      res := res || jsonb_build_object('name', 'the chain still verifies after the policy events', 'ok', coalesce((public.fmail_tlsx_verify191(v_box) ->> 'ok')::boolean, false));
+
+    exception when others then
+      res := res || jsonb_build_object('name', 'policy section stopped: ' || left(sqlerrm, 160), 'ok', false);
+    end;
     raise exception 'E191_ROLLBACK';
   exception when others then
     if sqlerrm <> 'E191_ROLLBACK' then return jsonb_build_object('ok', false, 'error', sqlerrm, 'passed', 0, 'checks', res); end if;
