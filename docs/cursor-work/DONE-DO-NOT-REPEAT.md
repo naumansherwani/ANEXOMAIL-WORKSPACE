@@ -3024,3 +3024,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - QC1e D3 founder + awam = GREEN BY HIS WORD 02:55 PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED
 
 - checkpoint 02:47 PKT
+
+- QC1e D4 plan written + 20 Nov target in blueprints and ledgers 03:0x PKT, docs only
