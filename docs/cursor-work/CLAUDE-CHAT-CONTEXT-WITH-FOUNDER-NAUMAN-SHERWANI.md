@@ -3705,3 +3705,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - QC1c Qtls DANE wired into the sender 19 Nov 2026 11:0x PKT: fmail_qtls DaneVerifier + DaneUpgrade (TLS 1.3, X25519MLKEM768 first, certificate decided by DNSSEC-proven TLSA usage 2/3), fmail_out run_domain looks up TLSA per MX host (8 s, failure = no DANE); mismatch = handshake error = next MX then retry, never clear text. cargo 481/481, release build ok. Not proven against a real DANE domain yet (open). Needs founder-install.
 
 - QC1c = GREEN BY HIS WORD 19 Nov 2026 11:05 PKT. WIRED: YES / REAL: YES / TECH-LAW CHECKED: live Chrome pq (Gmail), nomail, unreachable + retry 1/5 min, real send Proven by the real delivery gmail.com post-quantum, E190 CHECK 6/6 on his server, MTA-STS + DANE in sender installed (cargo 481/481). Remaining items kept on the open list in CLOSE-THE-GAPS-07NOV.md. Next QC3a.
+
+- Date plan written 19 Nov 2026 11:2x PKT for every remaining mailbox phase (his word 11:11): QC3a 19 Nov, R3 Admin Mail Desk 20-21 Nov, QC1/QC1e 22, QC2/QC3 23, QC4/QC5/QC7/QC8 24, Q3 + rest 25 Nov (last day). docs only.
