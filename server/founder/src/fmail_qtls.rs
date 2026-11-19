@@ -154,6 +154,56 @@ pub async fn policy_for(res: &hickory_resolver::TokioResolver, domain: &str) -> 
     }
 }
 
+
+// ---------------------------------------------------------------- DANE on the delivery hop (RFC 7672)
+use std::sync::Arc;
+/// Accepts the server certificate ONLY when it satisfies a DNSSEC-proven TLSA record (usage 3 DANE-EE, usage 2 DANE-TA). The handshake signature is still really verified.
+#[derive(Debug)]
+struct DaneVerifier { records: Vec<Tlsa>, alg: rustls::crypto::WebPkiSupportedAlgorithms }
+impl rustls::client::danger::ServerCertVerifier for DaneVerifier {
+    fn verify_server_cert(&self, e: &rustls::pki_types::CertificateDer<'_>, i: &[rustls::pki_types::CertificateDer<'_>], _n: &rustls::pki_types::ServerName<'_>, _o: &[u8], _now: rustls::pki_types::UnixTime) -> Result<rustls::client::danger::ServerCertVerified, rustls::Error> {
+        let chain: Vec<Vec<u8>> = std::iter::once(e.as_ref().to_vec()).chain(i.iter().map(|c| c.as_ref().to_vec())).collect();
+        if dane_matches(&self.records, &chain) { Ok(rustls::client::danger::ServerCertVerified::assertion()) } else { Err(rustls::Error::General("DANE: the certificate does not match the TLSA record".into())) }
+    }
+    fn verify_tls12_signature(&self, m: &[u8], c: &rustls::pki_types::CertificateDer<'_>, d: &rustls::DigitallySignedStruct) -> Result<rustls::client::danger::HandshakeSignatureValid, rustls::Error> { rustls::crypto::verify_tls12_signature(m, c, d, &self.alg) }
+    fn verify_tls13_signature(&self, m: &[u8], c: &rustls::pki_types::CertificateDer<'_>, d: &rustls::DigitallySignedStruct) -> Result<rustls::client::danger::HandshakeSignatureValid, rustls::Error> { rustls::crypto::verify_tls13_signature(m, c, d, &self.alg) }
+    fn supported_verify_schemes(&self) -> Vec<rustls::SignatureScheme> { self.alg.supported_schemes() }
+}
+/// The STARTTLS upgrade for a host that publishes DANE: TLS 1.3, X25519MLKEM768 first, AES-256-GCM first, certificate decided by TLSA instead of the web roots.
+pub struct DaneUpgrade { cfg: Arc<rustls::ClientConfig> }
+impl DaneUpgrade {
+    pub fn new(records: Vec<Tlsa>) -> Result<Self, String> {
+        use rustls::crypto::ring as rp;
+        let mut p = rp::default_provider();
+        p.cipher_suites = vec![rp::cipher_suite::TLS13_AES_256_GCM_SHA384, rp::cipher_suite::TLS13_CHACHA20_POLY1305_SHA256, rp::cipher_suite::TLS13_AES_128_GCM_SHA256];
+        p.kx_groups.insert(0, rustls_post_quantum::X25519MLKEM768);
+        let alg = p.signature_verification_algorithms;
+        let cfg = rustls::ClientConfig::builder_with_provider(Arc::new(p)).with_protocol_versions(&[&rustls::version::TLS13]).map_err(|e| e.to_string())?
+            .dangerous().with_custom_certificate_verifier(Arc::new(DaneVerifier { records, alg })).with_no_client_auth();
+        Ok(Self { cfg: Arc::new(cfg) })
+    }
+}
+impl smtp::Upgrade for DaneUpgrade {
+    fn upgrade<'a>(&'a self, s: smtp::BoxIo, host: &'a str) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::io::Result<(smtp::BoxIo, &'static str, &'static str)>> + Send + 'a>> {
+        Box::pin(async move {
+            let name = rustls::pki_types::ServerName::try_from(host.to_string()).map_err(|_| std::io::Error::new(std::io::ErrorKind::InvalidInput, "bad server name"))?;
+            let tls = tokio_rustls::TlsConnector::from(self.cfg.clone()).connect(name, s).await?;
+            let g = tls.get_ref().1.negotiated_key_exchange_group().map(|g| format!("{:?}", g.name())).unwrap_or_default();
+            let pq = g.contains("MLKEM");
+            let group: &'static str = if pq { "X25519MLKEM768" } else { match g.as_str() { "secp256r1" => "secp256r1", "secp384r1" => "secp384r1", _ => "X25519" } };
+            Ok((Box::new(tls) as smtp::BoxIo, if pq { "tls13_pq" } else { "tls13" }, group))
+        })
+    }
+}
+/// Only usage 2 / 3 records can be enforced here (usage 0 / 1 need PKIX path validation, which the default web-root verifier already does for those hosts). Empty = this host is not a DANE host for us.
+pub fn usable_records(all: Vec<Tlsa>) -> Vec<Tlsa> { all.into_iter().filter(|r| r.usage == 2 || r.usage == 3).collect() }
+static DANE_RES: std::sync::OnceLock<Option<hickory_resolver::TokioResolver>> = std::sync::OnceLock::new();
+/// DANE records for one MX host (DNSSEC-proven only, 8 s). Any failure = no DANE for this hop (never an invented policy); the web-root TLS rule still applies.
+pub async fn dane_for(host: &str) -> Vec<Tlsa> {
+    let Some(r) = DANE_RES.get_or_init(dane_resolver).as_ref() else { return vec![] };
+    match tokio::time::timeout(Duration::from_secs(8), tlsa_lookup(r, host)).await { Ok(Ok(v)) => usable_records(v), _ => vec![] }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -172,6 +222,18 @@ mod tests {
         let test = parse_policy("version: STSv1\nmode: testing\nmx: mail.example.com\nmax_age: 5").unwrap();
         assert_eq!(apply_sts(vec![t("evil.example.org")], Some(&test), "example.com").unwrap().len(), 1, "testing mode only reports");
         assert_eq!(apply_sts(vec![t("a.b")], None, "x.y").unwrap().len(), 1);
+    }
+    #[test] fn dane_only_usable_and_verifier_decides() {
+        let rec = |u: u8| Tlsa { usage: u, selector: 0, matching: 0, data: vec![1, 2, 3] };
+        assert_eq!(usable_records(vec![rec(0), rec(1), rec(2), rec(3)]).len(), 2, "PKIX usages are not DANE-enforced here");
+        assert!(usable_records(vec![rec(0)]).is_empty());
+        assert!(DaneUpgrade::new(vec![rec(3)]).is_ok());
+        let cert = vec![0xde, 0xad];
+        let v = DaneVerifier { records: vec![Tlsa { usage: 3, selector: 0, matching: 0, data: cert.clone() }], alg: rustls::crypto::ring::default_provider().signature_verification_algorithms };
+        use rustls::client::danger::ServerCertVerifier;
+        let name = rustls::pki_types::ServerName::try_from("mx.example.com").unwrap(); let now = rustls::pki_types::UnixTime::now();
+        assert!(v.verify_server_cert(&rustls::pki_types::CertificateDer::from(cert), &[], &name, &[], now).is_ok(), "matching TLSA record accepts");
+        assert!(v.verify_server_cert(&rustls::pki_types::CertificateDer::from(vec![0xbe, 0xef]), &[], &name, &[], now).is_err(), "a different certificate is refused");
     }
     #[test] fn mx_patterns() {
         assert!(mx_matches("mail.example.com", "MAIL.example.com.") && !mx_matches("mail.example.com", "x.mail.example.com"));

@@ -113,7 +113,11 @@ async fn run_domain(cfg: &Cfg, res: Option<&hickory_resolver::TokioResolver>, up
     let mut last = smtp::Fail::Temp("no server tried".into());
     for t in ts.iter().take(3) {
         let (io, t) = match smtp::connect(std::slice::from_ref(t)).await { Ok(x) => x, Err(e) => { last = e; continue } };
-        match smtp::deliver(io, &smtp::Session { helo: &cfg.helo, require_tls: true, upgrader: up, host: &t.host }, from, rcpts, payload).await {
+        // DANE (RFC 7672): a host with DNSSEC-proven TLSA records is only trusted when its certificate matches them; otherwise the normal verified TLS 1.3 rule
+        let dane = crate::fmail_qtls::dane_for(&t.host).await;
+        let dane_up = if dane.is_empty() { None } else { crate::fmail_qtls::DaneUpgrade::new(dane).ok() };
+        let upgrader: &dyn smtp::Upgrade = match dane_up.as_ref() { Some(d) => d, None => up };
+        match smtp::deliver(io, &smtp::Session { helo: &cfg.helo, require_tls: true, upgrader, host: &t.host }, from, rcpts, payload).await {
             Ok(o) if o.delivered() || o.rcpts.iter().all(|r| r.result.as_ref().err().map_or(false, |e| e.is_perm())) => return Ok(o),
             Ok(o) => { last = o.data.clone().err().unwrap_or(smtp::Fail::Temp("not delivered".into())); }
             Err(e) if e.is_perm() => return Err(e),
