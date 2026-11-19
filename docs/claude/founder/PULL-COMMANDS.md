@@ -1796,3 +1796,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 19 Nov 14:40 PKT QC1e D2 (his order 14:16): WhatsApp-style EmojiBox, smiley inside the message box bottom-right, picker docked under the box (no floating over To/Subject), groups bar at the bottom; founder MailCompose + awam ComposeStudio, same shared module, separate gates; tsc, bun 15/15, both builds OK; not green until his pulls + Chrome look
 
 - 19 Nov 14:42 PKT awam emoji everywhere list written (chat, notes, events) after his 14:17 word
+
+- 19 Nov 14:48 PKT checkpoint, QC1e D2 box layout awaits his pulls
