@@ -135,8 +135,9 @@ create or replace function public.fmail_selftest192() returns jsonb language plp
 declare res jsonb := '[]'::jsonb; v_uid uuid; v_dev uuid; v_box uuid; v_r jsonb; v_g uuid := gen_random_uuid(); v_g2 uuid := gen_random_uuid(); v_nonce text := 'selftest192nonce0001'; v_h text; v_err text; v_cred text;
         v_why text := 'partner server has no STARTTLS';
 begin
-  select user_id into v_uid from public.founder_accounts limit 1;
-  if v_uid is null then return jsonb_build_object('ok', false, 'error', 'no founder account to test with'); end if;
+  -- the founder whose device is approved and unrevoked (E117 _fp_assert_device); the first account in the table may be another one
+  select d.user_id, d.id into v_uid, v_dev from public.founder_devices d join public.founder_accounts a on a.user_id = d.user_id where d.approved_at is not null and d.revoked_at is null order by d.approved_at desc limit 1;
+  if v_uid is null then return jsonb_build_object('ok', false, 'passed', 0, 'total', 1, 'checks', jsonb_build_array(jsonb_build_object('name', 'no founder account with an approved device to test with', 'ok', false))); end if;
   begin
     insert into public.fmail_mailboxes (owner, address, display_name, seal_mode, recipient_key_id, vault_key_id) values (v_uid, 'selftest192@anexomail.com', 'T', 'vault', null, 'vault-selftest') returning id into v_box;
     res := res || jsonb_build_array(jsonb_build_object('name', 'tier row is T2 and built', 'ok', exists (select 1 from public.founder_action_tiers where action = 'mail.tls.loosen' and tier = 2 and built)));
@@ -155,8 +156,6 @@ begin
       res := res || jsonb_build_array(jsonb_build_object('name', 'apply refuses a made-up grant and device', 'ok', not public.fmail_tls_dom_loose192(v_box, 'partner.com')));
     end;
     begin
-      select id into v_dev from public.founder_devices where user_id = v_uid and approved_at is not null and revoked_at is null order by approved_at desc limit 1;      -- E117 _fp_assert_device: only an approved, unrevoked device of this founder counts
-      if v_dev is null then raise exception 'no approved device of this founder to test with'; end if;
       select credential_id into v_cred from public.founder_passkeys where user_id = v_uid limit 1;
       v_h := public.founder_action_hash('mail.tls.loosen', v_box::text, public._tls_loosen_params192(v_box, 'partner.com', 4, v_why), v_nonce);
       insert into public.founder_stepups (id, user_id, device_id, credential_id, scope, action, action_hash, expires_at) values (v_g, v_uid, v_dev, coalesce(v_cred, 'SELFTEST192CRED00000001'), 'g3', 'mail.tls.loosen', v_h, now() + interval '5 minutes');

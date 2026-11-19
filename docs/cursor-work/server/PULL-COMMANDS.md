@@ -766,3 +766,5 @@
 - 19 Nov 13:20 PKT: F8-5 his sql-run: E192 ran, CHECK 5/6 OK but selftest 7/8 device not approved (my selftest picked any device, E117 needs an approved unrevoked one). FIXED in E192 (approved device only), sandbox 14/14 with the real approval rule. Founder-install 4/4 OK. Closed only after his re-run shows selftest 14/14 and my Chrome look
 
 - 19 Nov 13:25 PKT: F8-5 his sql-run: E192 ran, CHECK 5/6 OK but selftest 7/8 device not approved (my selftest picked any device, E117 needs an approved unrevoked one). FIXED in E192 (approved device only), sandbox 14/14 with the real approval rule. Founder-install 4/4 OK. Closed only after his re-run shows selftest 14/14 and my Chrome look
+
+- 19 Nov 13:30 PKT: F8-5 his 2nd sql-run: CHECK 5/6, selftest said no approved device of this founder (first account in founder_accounts has none). FIXED: E192 selftest now picks the founder whose device is approved; sandbox 14/14 with two accounts, first one deviceless. Technology written next to the QC1c row of the phase blueprint. Closed only after his re-run shows selftest 14/14 and my Chrome look
