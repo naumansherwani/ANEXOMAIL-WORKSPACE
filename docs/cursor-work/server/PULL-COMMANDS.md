@@ -1253,7 +1253,7 @@
 
 - 20 Nov 2026 09:12 PKT: his QC4 feature list (7 features) pasted verbatim into the repo (QC4-PLAN-20NOV.md + founder-commands.md); wording of the Rust bullet superseded by the 09:30 correction, features unchanged
 
-- 20 Nov 2026 10:05 PKT: QC4 plan (his pasted 7 features) written into the repo and matched to the code line by line: feature 7 done end to end (not installed), feature 3 data done, pure logic 3-6 done and tested, screens 1-6 are QC4b
+- 20 Nov 2026 09:58 PKT: QC4 plan (his pasted 7 features) written into the repo and matched to the code line by line: feature 7 done end to end (not installed), feature 3 data done, pure logic 3-6 done and tested, screens 1-6 are QC4b
 
 - 20 Nov 2026 09:15 PKT QC4 POST-COMPACTION HANDOFF: QC4a (c2ff627c) is on main, NOT installed; QC4b (screen) is NOT started, no QC4b code exists. Plan: add an inline prop to MailCompose (static layout, no dialog role, Pop-out) + MailReplyBar (Reply/Reply all/Forward, keys r/a/f, 44px) + QuotedBody (splitQuote chip, selection) in MailBox; logic is in reply_pure.ts. He asked: Claude to state exactly what it remembers after compaction and discuss it with him before QC4b.
 
@@ -1269,7 +1269,7 @@
 
 - 20 Nov 2026 09:40 PKT HIS LAW: founder mail list look = same to same as his photo (kept in chat); law file docs/claude/FOUNDER-MAIL-LIST-LOOK-LAW-20NOV.md; guard test ui_class_guard.test.ts; class names grepped before use.
 
-- 20 Nov 2026 10:05 PKT FOUNDER emoji icon (his order 09:43): own FounderFace SVG (gradient-stroked round face, corner spark, smile lifts on hover, reduced motion respected), button frame and picker unchanged, no new dependency. Research: emoji-picker-element accessibility notes (nolanlawson.com), Unicode UTS #51 / CLDR annotations; data stays emojibase Unicode 17. tsc clean, bun 481/0, vite ok. Not installed; not looked at live.
+- 20 Nov 2026 09:58 PKT FOUNDER emoji icon (his order 09:43): own FounderFace SVG (gradient-stroked round face, corner spark, smile lifts on hover, reduced motion respected), button frame and picker unchanged, no new dependency. Research: emoji-picker-element accessibility notes (nolanlawson.com), Unicode UTS #51 / CLDR annotations; data stays emojibase Unicode 17. tsc clean, bun 481/0, vite ok. Not installed; not looked at live.
 
 - 20 Nov 2026 09:48 PKT AWAM sticker emoji icon: PROVEN LIVE by his Chrome look (his words: 'chorme live dekha hai sahi aya hai sticker') + his awam pull paste: build OK, web /health 200, /app/domains 200, pm2 anexomail-web online. WIRED: YES / REAL: YES / TECH-LAW CHECKED (React 19 TS, own SVG, no new dependency). pull printed KUCH GALAT for 2 lines, logged OPEN not hidden: MISSING sticker_toggle.test.ts (a test file) and DIFF src/routeTree.gen.ts (probably the file the build regenerates; NOT verified on his server). Founder FounderFace icon written (46e003f9), not installed.
 
@@ -1277,4 +1277,6 @@
 
 - 20 Nov 2026 09:58 PKT AWAM routeTree.gen.ts DIFF ROOT CAUSE (his paste): server has a stale src/routes/app.admin.emoji.tsx that the repo deleted in c0b8787e (moved to app.org.emoji.tsx); pull.sh never deletes, so the build keeps the old /app/admin/emoji route. Fix = one server line that MOVES the stale file to /root/i9/stale, rebuilds, restarts, health 200. No code reference to the old route in the repo. Follow-up: pull.sh should flag server files deleted in the repo.
 
-- 20 Nov 2026 10:05 PKT QC4 FIX + FOUNDER EMOJI ICON = GREEN: WIRED: YES / REAL: YES / TECH-LAW CHECKED. His founder-install paste (SPA 200, healthz 200, Ed25519 ON) + my live Chrome look (bundle index-D4DUrGRm = repo 886c37f9): list look = his photo, Reply/Forward 44px, FounderFace icon beside Send, picker opens. Nothing sent. Open: inline panel/fold/selection/20-warn live, 390/820, kernel pq References, awam health + routeTree re-check.
+- 20 Nov 2026 09:58 PKT QC4 FIX + FOUNDER EMOJI ICON = GREEN: WIRED: YES / REAL: YES / TECH-LAW CHECKED. His founder-install paste (SPA 200, healthz 200, Ed25519 ON) + my live Chrome look (bundle index-D4DUrGRm = repo 886c37f9): list look = his photo, Reply/Forward 44px, FounderFace icon beside Send, picker opens. Nothing sent. Open: inline panel/fold/selection/20-warn live, 390/820, kernel pq References, awam health + routeTree re-check.
+
+- 20 Nov 2026 09:59 PKT QC4 + FOUNDER EMOJI ICON + LIST LOOK = GREEN FINAL BY HIS WORD (his 09:58: 'mai clicks ker raha tha sab theek hai green likho'; he clicked the live founder site himself). WIRED: YES / REAL: YES / TECH-LAW CHECKED. CORRECTION: my earlier lines stamped 10:05 PKT used a wrong clock; real clock 09:58 PKT, fixed in the docs. Open follow-ups: CLOSE-THE-GAPS-07NOV.md.

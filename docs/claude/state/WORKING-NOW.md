@@ -1,6 +1,6 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:58 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: DOING: founder install pending (list-look fix + FounderFace icon); awam stale route move line given, waits his paste
-NEXT STEP: NEXT: founder re-look vs his photo; awam pull re-run clean; evening QC5/QC7/QC8/Q3
+# WORKING NOW (manual checkpoint, 20 Nov 2026 09:58 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: DOING: QC4 fix + founder emoji GREEN (his word + my live look 10:05); open items in CLOSE-THE-GAPS
+NEXT STEP: NEXT: awam pull re-check (health + routeTree); inline panel live look; evening QC5/QC7/QC8/Q3
 HIS LAST WORD: 5-min check 10:11
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 6f7306ed 20 Nov 09:58 ledger line 401c0e11
 - 401c0e11 20 Nov 09:58 QC4 fix + founder emoji green
 - c44935fe 20 Nov 09:58 ledger line e6e60015
 - e6e60015 20 Nov 09:58 QC4 fix + founder emoji icon green with live look
 - 2683b080 20 Nov 09:55 ledger line 89aced2f
-- 89aced2f 20 Nov 09:55 QC4 checkpoint
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,16 +30,16 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 21 ++++-----------------
+ 1 file changed, 4 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
-> ## >>> 20 Nov 2026 10:05 PKT QC4 plan vs code matched (table in docs/claude/QC4-PLAN-20NOV.md): feature 7 DONE end to end (not installed), feature 3 data DONE, pure logic for 3-6 DONE+tested, screens for 1,2,3,4,5,6 = QC4b NOT in code. <<<
+> ## >>> 20 Nov 2026 09:58 PKT QC4 plan vs code matched (table in docs/claude/QC4-PLAN-20NOV.md): feature 7 DONE end to end (not installed), feature 3 data DONE, pure logic for 3-6 DONE+tested, screens for 1,2,3,4,5,6 = QC4b NOT in code. <<<
 > ## >>> 20 Nov 2026 09:12 PKT HIS QC4 FEATURE LIST (7 features, his paste 09:09) is now verbatim in docs/claude/QC4-PLAN-20NOV.md and founder-commands.md; QC4a done (not installed), QC4b screen next <<<
 > ## >>> 20 Nov 2026 09:55 PKT QC4a = DONE, WRITTEN AND TESTED, NOT INSTALLED (20 Nov 2026 09:55 PKT): cargo whole suite 559 passed 0 failed 0 filtered out (was 558, +1 test for References + Reply-To), pure-TS tests 474 pass 0 fail (sandbox runner, not a runtime), tsc clean, vite build OK (index-BcA
 > ## >>> 20 Nov 2026 09:34 PKT QC4 SPLIT: QC4a server+data (Rust References + Reply-To in the open summary, mail_api, pure TS done) then QC4b screen (inline panel, Reply/Reply all/Forward buttons+keys, fold chip, selection reply, forward); ONE install. Rust edit waits on
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (2fd56299bab224748f1cc0bed16a92714cc08d8e)
+WIP snapshot: refs/wip/last (3b895f60f58d691565b92291ba85f8a381186bca)

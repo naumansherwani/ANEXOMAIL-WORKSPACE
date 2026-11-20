@@ -62,7 +62,7 @@ Features ki list (QC4 mein kya banega):
 
 NOTE (my 09:30 correction, shipped in QC4a 09:55): the Rust bullet and feature 7 wording above are SUPERSEDED in HOW, not in WHAT: the References chain is read where the mail is opened (summarize/summary_json: References + Reply-To), the reply sends it, and the send door re-validates every id; the server cannot open recipient_pq mail. All 7 features stay as he wrote them.
 
-## THE 7 FEATURES vs THE REPO CODE, MATCHED (20 Nov 2026 10:05 PKT, his order 09:10: put the full plan in the repo and match it to the codes)
+## THE 7 FEATURES vs THE REPO CODE, MATCHED (20 Nov 2026 09:58 PKT, his order 09:10: put the full plan in the repo and match it to the codes)
 His list (my first QC4 plan text, now in the repo) compared line by line with what the code really contains. Checked by grep of the source, not from memory.
 | # | Feature | Pure logic (reply_pure.ts, 13+1 tests) | Rust / data | Screen (React) | Status |
 |---|---|---|---|---|---|
