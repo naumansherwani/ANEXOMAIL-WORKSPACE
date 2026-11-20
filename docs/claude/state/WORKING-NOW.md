@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 03:56 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 03:57 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 03:56 PKT QC8a a3-a5 CODING (his 03:50: 1 haan, 2 browser, 3 haan): new KeyLayer.tsx, KeySwitch.tsx, keylayer.css + 2 one-line mounts; no SQL/Rust; deadline 05:00 live Chrome
 NEXT STEP: write files, bun+tsc+vite build, mount lines, live Chrome walk, then QC8b
 HIS LAST WORD: his 21 Nov 03:50: 1 haan, 2 browser, 3 haan
@@ -18,29 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- da98f43e 21 Nov 03:57 QC8a a5: range, batch, type-ahead, announce wired
 - e05f81e4 21 Nov 03:55 ledger line 11885e73
 - 11885e73 21 Nov 03:55 QC8a: Home/End wired, row restored
 - 4ad7e6c6 21 Nov 03:52 ledger line 11d97d4a
 - 11d97d4a 21 Nov 03:52 QC8a: harness proof, help rows only real keys
-- e7c814e2 21 Nov 03:51 ledger line a4a50238
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
- M founder-web/src/KeyLayer.tsx
- M founder-web/src/keylayer.css
- M founder-web/src/mail_keymap.test.ts
- M founder-web/src/mail_keymap.ts
-?? founder-web/src/keys_list.ts
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md    | 22 +++++++---------------
- founder-web/src/KeyLayer.tsx        | 26 ++++++++++++++------------
- founder-web/src/keylayer.css        |  5 +++++
- founder-web/src/mail_keymap.test.ts |  2 +-
- founder-web/src/mail_keymap.ts      |  2 ++
- 5 files changed, 29 insertions(+), 28 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 26 ++------------------------
+ 1 file changed, 2 insertions(+), 24 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -51,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (97a9634cbe03ae3086d84be5ac3d27770b87d186)
+WIP snapshot: refs/wip/last (bcf1d7ff40b689939a1a1722681bd2f95c207d43)
