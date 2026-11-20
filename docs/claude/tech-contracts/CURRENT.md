@@ -1616,3 +1616,5 @@ Technology: React 19 + TypeScript; pure module founder-web/src/emoji_pure.ts (bu
 - QC2 points renamed QC2-1..7 (founder)
 
 - 5-min checkpoint QC2 waits his word
+
+- QC2 is not Q3, Q3 not started

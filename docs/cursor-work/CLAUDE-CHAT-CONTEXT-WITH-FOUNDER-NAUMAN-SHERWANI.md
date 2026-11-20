@@ -4153,3 +4153,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - QC2 points renamed QC2-1..7 (founder)
 
 - 5-min checkpoint QC2 waits his word
+
+- QC2 is not Q3, Q3 not started
