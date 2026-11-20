@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 00:52 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 00:52 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 00:58 PKT: founder-tech-proof.sh WRITTEN (read-only: fonts HTTP/1.1 cause, TLS cipher/ML-KEM, red blocked count). His 2 lines: 1 = proof script, 2 = founder-install (installs data.rs fix). Switch 8b still on hold.
 NEXT STEP: Read his proof paste, then fix the ROOT cause of fonts h1 (DNS HTTPS record is his Namecheap hands; Alt-Svc is Rust code), explain the red blocked rows. No guesses.
 HIS LAST WORD: Qconnect ne barbad kiya, 5 min fix, deep audit, auto fix loopholes, qanoon na tootay, compaction-proof
@@ -18,21 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 33171565 21 Nov 00:52 founder-tech-proof.sh read-only audit proofs
 - 3388902c 21 Nov 00:48 ledger line 4a23e415
 - 4a23e415 21 Nov 00:48 QCONNECT: deep audit + 3 loophole fixes
 - 02943adb 21 Nov 00:40 ledger line 0463cb14
 - 0463cb14 21 Nov 00:40 QCONNECT: hold switch until his go
-- 64b10465 21 Nov 00:36 ledger line 8e12b1d9
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
-?? docs/cursor-work/server/founder-tech-proof.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 22 +++++-----------------
- 1 file changed, 5 insertions(+), 17 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -43,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (74fb3c5b8e1e6681a060ad2ae1b0af26f1c25ac8)
+WIP snapshot: refs/wip/last (2ffe1396d183c353e289725bb5a14cb80b5d8821)
