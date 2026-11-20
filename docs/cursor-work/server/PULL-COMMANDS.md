@@ -1168,3 +1168,5 @@
 - QC2 points P1-P7 written, waits his 4 answers
 
 - QC2 points renamed QC2-1..7 (founder)
+
+- 5-min checkpoint QC2 waits his word
