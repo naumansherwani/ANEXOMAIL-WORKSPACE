@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import * as api from "./mail_api";
 import { speedWords } from "./mailbox_pure";
+import { MailDeliveryBoard } from "./MailDeliveryBoard";
 import { ago, ledgerChip, pill, type Box, type Lane, type Proof } from "./mail_pure";
 
 export function MailHealth() {
@@ -21,6 +22,7 @@ export function MailHealth() {
         {([p.quic, p.dbsc, p.seal] as { ok: boolean; text: string }[]).map((x) => <span key={x.text} className={`mp-seg ${x.ok ? "ok" : "no"}`}><i aria-hidden="true" />{x.text}</span>)}
         {box && <button type="button" className={`mx-chip lg ${lc.tone}`} onClick={() => void verify()} disabled={busy} title={lc.title} aria-label={lc.title}><i aria-hidden="true" />{lc.text}</button>}
       </div>
+      {box && <MailDeliveryBoard box={box.id} />}
       {lanes && <ul className="sysmh-lanes" aria-label="Mail lanes, last 24 hours">{lanes.map((l) => <li key={l.lane}><i className={`ml-dot ${l.tone}`} aria-hidden="true" /><b>{l.count}</b><span>{l.label}</span>{l.last_ms ? <small>{ago(l.last_ms)}</small> : null}</li>)}</ul>}
     </div>
   );

@@ -12,3 +12,6 @@ LOOPHOLES FOUND:
 5. Service worker stale bundle after install (SPA update after install): I clear anexo-assets-v1 in my Chrome; real fix still open.
 6. Per-recipient delivery rows not stored (logged gap); attachment-word check (Q3).
 No fake green: QC3 stays NOT green until 1-3 are seen live and he says the word.
+
+## STATUS 20 Nov 2026 08:45 PKT
+QC3 LOOPHOLE FIX (20 Nov 2026 08:45 PKT): #5 service worker stale bundle = CLOSED WITH PROOF (live headers: index /_cc/ no-store, early.js no-store, flare-sw.js no-store, hashed bundle immutable; flare-sw.js only handles push + 'anexo-flare' cache, never caches the bundle; 'anexo-assets-v1' does not exist in his Chrome; earlier staleness = an open tab not reloaded). #2 delivery board WRITTEN: delivery_pure.ts + 5 tests, MailDeliveryBoard.tsx (Systems > Mail health, one door via kernel RPC mail_api.delivery, 24h/7d/30d, 44px buttons, wraps), 1 additive line in MailHealth.tsx; tsc clean, pure-TS tests 460/0 (sandbox runner), vite build OK. NOT INSTALLED: his one founder-install installs badges + delivery board together; then my live look at Sent badges and Systems > Mail health.

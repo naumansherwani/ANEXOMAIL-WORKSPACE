@@ -169,8 +169,8 @@ founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-D-pOXvDk.js
-founder-web/dist/assets/index-DJ-uNax-.css
+founder-web/dist/assets/index-BUycmrkE.js
+founder-web/dist/assets/index-ClT9a1hG.css
 founder-web/dist/assets/kernel.worker-BLkLR49F.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
@@ -233,6 +233,7 @@ founder-web/src/Live.tsx
 founder-web/src/MailAnchorLine.tsx
 founder-web/src/MailBox.tsx
 founder-web/src/MailCompose.tsx
+founder-web/src/MailDeliveryBoard.tsx
 founder-web/src/MailHealth.tsx
 founder-web/src/MailPresendBar.tsx
 founder-web/src/MailRichPanel.tsx
@@ -294,6 +295,8 @@ founder-web/src/confirm_pure.ts
 founder-web/src/countries.ts
 founder-web/src/dbsc_pure.test.ts
 founder-web/src/dbsc_pure.ts
+founder-web/src/delivery_pure.test.ts
+founder-web/src/delivery_pure.ts
 founder-web/src/devicekey.ts
 founder-web/src/devicekey_pure.test.ts
 founder-web/src/devicekey_pure.ts

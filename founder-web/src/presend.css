@@ -35,3 +35,14 @@ html[data-motion="full"] .mtl[data-tone="active"] .mtl-dot{animation:mtlp 1.6s e
 
 /* QC3 Sent-list badge: small, calm, never wider than the row */
 .mx-chip.sb{padding:1px 8px;font-size:11px;line-height:18px;margin-left:6px;white-space:nowrap}
+
+/* QC3 delivery board (Systems > Mail health): wraps at any width, 44px touch targets on the period buttons */
+.dlb{margin-top:14px;display:grid;gap:10px;min-width:0}
+.dlb-h{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.dlb-d{display:inline-flex;gap:6px;margin-left:auto}
+.dlb-d button{min-height:44px;min-width:44px;padding:0 12px;border-radius:999px;border:1px solid var(--mh2);background:transparent;color:var(--fg);font:inherit;cursor:pointer}
+.dlb-d button.on{border-color:var(--ok);background:rgba(61,213,152,.12)}
+.dlb-t{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:8px}
+.dlb-t li{display:grid;gap:2px;padding:10px 12px;border-radius:12px;border:1px solid var(--mh2);min-width:0}.dlb-t b{font-size:20px}.dlb-t span{font-size:12px;opacity:.8}
+.dlb-bad{border-color:rgba(242,112,95,.7)!important}.dlb-warn{border-color:rgba(242,184,75,.6)!important}.dlb-done{border-color:rgba(61,213,152,.45)!important}
+.dlb-r{list-style:none;margin:0;padding:0;display:grid;gap:6px}.dlb-r li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;min-width:0}
