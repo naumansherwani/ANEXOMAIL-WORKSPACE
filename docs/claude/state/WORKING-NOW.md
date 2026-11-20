@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- ffe89a3c 20 Nov 09:48 manifest resync
+- c41ea80c 20 Nov 09:48 ledger line b7bcda41
 - b7bcda41 20 Nov 09:48 awam pull: add sticker_toggle.test.ts to DEPLOY-MANIFEST
 - 9d1761ac 20 Nov 09:46 ledger line 3be3ae6f
 - 3be3ae6f 20 Nov 09:46 gaps: awam pull open lines
-- 9cc77b66 20 Nov 09:46 ledger line 0d1bcd98
-- 0d1bcd98 20 Nov 09:46 awam sticker emoji proven live by his Chrome look
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (db52a9dd328389a40b26af6b266a78e033f96e47)
+WIP snapshot: refs/wip/last (fa1d5f1803a41bf23b20c1726d8c53165c9c5146)
