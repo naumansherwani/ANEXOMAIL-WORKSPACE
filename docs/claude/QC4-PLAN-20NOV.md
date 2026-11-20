@@ -16,3 +16,6 @@
 QC4-1 contract + plan (this file, CURRENT.md). QC4-2 pure TS reply_pure.ts + golden tests. QC4-3 Rust door change (References from the stored parent) + cargo (whole suite, never filtered). QC4-4 UI: InlineReply, buttons, fold chip, selection reply, forward; additive mounts only. QC4-5 tests (tsc, pure-TS tests, cargo, vite, real-CSP harness 390/820/1280). QC4-6 his ONE founder-install. QC4-7 my live Chrome look on his site (no real send: a reply to my own address only if he allows; otherwise bar and draft only).
 ## NOT in QC4
 Forward as .eml (Q3), attachments (Q3), AI drafting (dropped to July 2027), per-recipient delivery rows (QC3 gap).
+
+## STATUS 20 Nov 2026 09:10 PKT
+QC4-2 DONE (20 Nov 2026 09:10 PKT): founder-web/src/reply_pure.ts + 13 golden tests (pure TypeScript, sandbox runner only): replyTargets (reply, reply all, me removed, dedupe, Reply-To), subjects (Re once, Fwd once), replyBody (selection replaces whole mail), forwardBody, splitQuote (Gmail, wrapped, Outlook, forwarded, trailing block; never loses a character), referencesFor (RFC 5322 3.6.4, max 20 keep root). tsc clean, all pure-TS tests pass, vite build OK. NEXT: QC4-3 Rust References from the stored parent, then QC4-4 UI (InlineReply, buttons, fold chip, selection reply, forward), QC4-5 tests, QC4-6 his one install, QC4-7 my live look.
