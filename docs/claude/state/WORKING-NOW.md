@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 04:56 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 04:57 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 04:56 PKT b2 LIVE on his server (his install paste OK). Doing: my Chrome DOM look for b2, then b3 plan+code, then SQL E199 sync + E200 audit log (BOTH, his word)
 NEXT STEP: b2 live Chrome look -> b3 plan doc + mount -> E199+E200 SQL with CHECK
 HIS LAST WORD: his 04:55: DONO SQL kero, b3 shuru, plan repo mein, search points likho, phir advance codes
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- b423a61d 21 Nov 04:56 ledger line 3393d95d
 - 3393d95d 21 Nov 04:56 QC8b b3 focus + b2 live proof + plan doc
 - 6c9f6be7 21 Nov 04:56 ledger line e8543cc0
 - e8543cc0 21 Nov 04:56 QC8b b3 focus + b2 live proof + plan doc
 - f0a26f0f 21 Nov 04:51 ledger line d710fb02
-- d710fb02 21 Nov 04:51 Records sync b3 detail and SQL question
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a31adec6bece7595d15948c69250634d001fc558)
+WIP snapshot: refs/wip/last (2351037d8d048d06857fbf91d020b004fe979e79)

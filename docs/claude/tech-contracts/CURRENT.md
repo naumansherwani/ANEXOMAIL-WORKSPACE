@@ -2149,3 +2149,12 @@ REST stays for ever: unset flag, unreachable socket or unusable key = REST (data
 - 21 Nov 2026 05:03 PKT QC8b b2 live-proven in his Chrome on laptop (heading, group, img, aria-current open and close); 390/820 open; b3 FOCUS RETURN written and mounted (sandbox-proven), plan with search points in QC8B-B3-PLAN-21NOV.md; b4 parked
 
 - 21 Nov 2026 05:03 PKT QC8b b2 live-proven in his Chrome on laptop (heading, group, img, aria-current open and close); 390/820 open; b3 FOCUS RETURN written and mounted (sandbox-proven), plan with search points in QC8B-B3-PLAN-21NOV.md; b4 parked
+
+## QC8a SQL E199 + E200 (21 Nov 2026 05:20 PKT) - TECHNOLOGY: SQL (Postgres, RLS forced, hash chain, append-only trigger, validator wrapper)
+E199: setting key mail.single_keys (sync of the shortcut switch across devices), E200: shortcut audit log. WRITTEN + local-Postgres-tested, NOT run on his server, NOT wired. Wiring order (each its own step): his sql-run E199 then E200 + CHECK -> Rust settings.rs REGISTRY mirror + signed door for fmail_keys_log200 -> keys_store.ts reads/writes mail.single_keys -> report key actions -> my live Chrome look.
+
+- 21 Nov 2026 05:20 PKT SQL E199 (mail.single_keys setting sync, validator wrapper) + E200 (hash-chained append-only key audit log) WRITTEN and tested on local Postgres 16 (E200 15 of 15, E199 11 of 11 with stubs); not run on his server, not wired to Rust/UI; b3 focus mounted
+
+- 21 Nov 2026 05:20 PKT SQL E199 (mail.single_keys setting sync, validator wrapper) + E200 (hash-chained append-only key audit log) WRITTEN and tested on local Postgres 16 (E200 15 of 15, E199 11 of 11 with stubs); not run on his server, not wired to Rust/UI; b3 focus mounted
+
+- 21 Nov 2026 05:24 PKT SQL E199 (mail.single_keys setting sync, validator wrapper) + E200 (hash-chained append-only key audit log) WRITTEN and tested on local Postgres 16 (E200 15 of 15, E199 11 of 11 with stubs); not run on his server, not wired to Rust/UI; b3 focus mounted

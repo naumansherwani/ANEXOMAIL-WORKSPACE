@@ -147,6 +147,8 @@ docs/cursor-work/sql/E192_founder_mail_tls_loosen.sql
 docs/cursor-work/sql/E194_founder_mail_signatures_snippets.sql
 docs/cursor-work/sql/E195_founder_mail_delivery_timeline.sql
 docs/cursor-work/sql/E196_founder_mail_followups.sql
+docs/cursor-work/sql/E199_founder_keys_setting_sync.sql
+docs/cursor-work/sql/E200_founder_keys_audit_log.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/LOCAL_E198_founder_localid_doors.sql
@@ -173,7 +175,7 @@ founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
 founder-web/dist/assets/index-CtqbAC3N.css
-founder-web/dist/assets/index-HbOqbqS8.js
+founder-web/dist/assets/index-DMMZbw24.js
 founder-web/dist/assets/kernel.worker-DY4WQ2it.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
