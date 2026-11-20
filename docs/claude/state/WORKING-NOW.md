@@ -1,6 +1,6 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:35 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: DOING: QC4a+QC4b on main, written+tested, waiting his ONE founder-install paste
-NEXT STEP: NEXT: my live Chrome look (no real send), 390/820 phone screens, then QC4 GREEN by his word
+# WORKING NOW (manual checkpoint, 20 Nov 2026 09:36 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: DOING: QC4 green by his word; mbx-rb collision fix pushed 9ac3a9c6, waiting his reinstall; starting awam emoji sticker button
+NEXT STEP: NEXT: my re-look after his reinstall; awam emoji button; evening QC5/QC7/QC8/Q3
 HIS LAST WORD: 5-min check 10:11
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 9ac3a9c6 20 Nov 09:35 ledger line 3167f82d
 - 3167f82d 20 Nov 09:35 QC4 fix: reply button class renamed (collided with list rows)
 - 3761ebdf 20 Nov 09:34 ledger line 02c03c93
 - 02c03c93 20 Nov 09:34 QC4 green by his word 20 Nov 09:36 PKT
 - 18d00876 20 Nov 09:29 ledger line adf7823f
-- adf7823f 20 Nov 09:29 QC4 checkpoint
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 21 ++++-----------------
+ 1 file changed, 4 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (94e71bcfd1abc6659fac446a04088a535884d9e3)
+WIP snapshot: refs/wip/last (eead389c9ab5f89af1dc28fc86936b97472e86c3)
