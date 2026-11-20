@@ -1644,3 +1644,12 @@ LEFT: Rust core + tests, doors, send wiring, browser, his ONE sql-run + ONE foun
 - 20 Nov 06:09 PKT 5-min check: rules read, WORKING-NOW updated; QC2-B on HOLD, waits his QC2-A paste
 
 - 20 Nov 06:12 PKT E194 sql-run OK on his server (his paste: selftest 33 passed 0 failed, CHECK_E194 all OK, E65 OK); founder-install (Rust QC2-A) waits until after QC2-B (his word 06:09); blueprint top status updated: QC0 QC1c QC3a QC1 QC1e done by his word, QC2 NOW
+
+## QC2-B (20 Nov 2026 06:25 PKT): the browser half of rich compose, contract
+- Editor: Tiptap 3 (ProseMirror, prosemirror-view >= 1.42.3 pinned by npm overrides, GHSA-c8x8-7fp4-3x9w) on a RESTRICTED schema = wall 1: bold, italic, underline, inline code, link (https/mailto), bullet + numbered list, quote, line break. No image, heading, colour, font. Pasted/dropped files refused. Wall 2 stays the server's ammonia clean.
+- A rich mail sends `html` AND its plain `text` twin; touch target binds html only when non-empty (mail_pure.sendTarget = fmail_mime::send_target). Drafts keep html (draft doc).
+- Server frame (fmail_rich::html_document): HTML5, viewport, light colours only (his 06:17: no dark), system font + Urdu fallback, bidi plaintext per paragraph, mobile padding. The cinematic UI is untouched: new files RichEditor.tsx, MailRichPanel.tsx, richeditor.css, rich_pure.ts; MailCompose gets additive wiring; plain-text mode keeps the old textarea, shortcodes and EmojiSafety exactly.
+- Signature + snippets: sealed on the server (E194), variables {first_name} {my_name} {date} + any {custom} (warn once before send), private only, `/name` menu.
+- Open in this step: emoji shortcodes (:smile:) and the new-emoji safety line work in plain mode only; the emoji picker works in both.
+
+- 20 Nov 06:30 PKT QC2-B browser built: Tiptap 3 restricted schema (paste cleaned, tested at 390/820/1280 in sandbox, 44px targets, no sideways scroll), signature + snippets panel, plain/rich switch with remove-formatting question, unfilled placeholder warning, html draft; server HTML5 frame (viewport, bidi, light only, his 06:17); tsc clean, bun 403 pass, cargo fmail_ 181 pass; waits his ONE founder-install, then my live Chrome

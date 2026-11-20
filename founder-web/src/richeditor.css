@@ -1,0 +1,25 @@
+/* QC2-B: rich compose box. Same look as the plain box (.mc-t), plus a 44 px toolbar. Layout flexes only; nothing is hidden on a small screen. */
+.rt{display:flex;flex-direction:column;flex:1 1 auto;min-width:0}
+.rt-bar{display:flex;flex-wrap:wrap;align-items:center;gap:4px;padding:2px 0 6px;border-bottom:1px solid var(--line,rgba(255,255,255,.12))}
+.rt-b{min-width:44px;min-height:44px;padding:0 10px;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--fg);font:inherit;font-size:15px;cursor:pointer}
+.rt-b:hover,.rt-b:focus-visible{background:rgba(127,127,127,.16);outline:none}
+.rt-b[aria-pressed="true"]{background:rgba(127,127,127,.28);border-color:rgba(127,127,127,.5)}
+.rt-bold{font-weight:800}.rt-it{font-style:italic}.rt-un{text-decoration:underline}
+.rt-link{display:inline-flex;flex-wrap:wrap;align-items:center;gap:4px;min-width:0}
+.rt-link input{min-height:44px;min-width:0;width:min(280px,60vw);padding:0 10px;border-radius:10px;border:1px solid rgba(127,127,127,.5);background:transparent;color:var(--fg);font:inherit}
+.mc-rich{outline:none;min-height:180px;white-space:pre-wrap;overflow-wrap:anywhere}
+.mc-rich p{margin:0 0 .7em}.mc-rich ul,.mc-rich ol{margin:0 0 .7em;padding-left:1.4em}
+.mc-rich blockquote{margin:0 0 .7em;padding-left:.9em;border-left:3px solid rgba(127,127,127,.5);opacity:.85}
+.mc-rich a{color:inherit;text-decoration:underline}
+.mc-rich p.is-editor-empty:first-child::before{content:attr(data-placeholder);float:left;height:0;pointer-events:none;opacity:.5}
+.rt-modes{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:4px 0}
+.rt-slash{display:flex;flex-direction:column;border:1px solid rgba(127,127,127,.4);border-radius:12px;overflow:hidden;margin:4px 0}
+.rt-slash button{min-height:44px;text-align:left;padding:0 12px;background:transparent;border:0;color:var(--fg);font:inherit;cursor:pointer}
+.rt-slash button[aria-selected="true"],.rt-slash button:hover{background:rgba(127,127,127,.2)}
+.rt-ask{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:6px 0}
+.rt-panel{display:flex;flex-direction:column;gap:6px;padding:8px 0;border-top:1px solid rgba(127,127,127,.3)}
+.rt-ph{display:flex;align-items:center;justify-content:space-between;gap:8px}.rt-panel h3{margin:6px 0 0;font-size:14px}
+.rt-ta,.rt-in{width:100%;min-width:0;box-sizing:border-box;padding:8px 10px;border-radius:10px;border:1px solid rgba(127,127,127,.5);background:transparent;color:var(--fg);font:inherit}.rt-in{min-height:44px}
+.rt-row{display:flex;flex-wrap:wrap;gap:6px}.rt-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.rt-list li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px;min-width:0}
+.mc-rich code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.92em;padding:0 .3em;border-radius:4px;background:rgba(127,127,127,.22)}

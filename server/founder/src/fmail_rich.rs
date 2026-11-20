@@ -92,10 +92,18 @@ pub fn alternative(text: &str, clean_html: &str, boundary: &str) -> (String, Vec
     b.push_str(&format!("--{boundary}\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: base64\r\n\r\n"));
     b.push_str(&b64_lines(norm(text).as_bytes()));
     b.push_str(&format!("--{boundary}\r\nContent-Type: text/html; charset=utf-8\r\nContent-Transfer-Encoding: base64\r\n\r\n"));
-    let doc = format!("<!doctype html><html><head><meta charset=\"utf-8\"></head><body>{clean_html}</body></html>");
+    let doc = html_document(clean_html);
     b.push_str(&b64_lines(norm(&doc).as_bytes()));
     b.push_str(&format!("--{boundary}--\r\n"));
     (format!("multipart/alternative; boundary=\"{boundary}\""), b.into_bytes())
+}
+
+/// The HTML5 document around the cleaned body. This frame is ours (static, never typed by anyone): viewport, light colours only (his word 20 Nov 06:17: no dark),
+/// system font stack, a readable 40em column that shrinks on a phone, text-size-adjust so iOS does not inflate it, `unicode-bidi: plaintext` so an Urdu paragraph inside an English mail (or the
+/// reverse) runs the right way round, and quoted text / links that stay legible. Clients that drop the head still show the clean body (inline base style on `body`).
+pub fn html_document(clean_html: &str) -> String {
+    const CSS: &str = "html{-webkit-text-size-adjust:100%;text-size-adjust:100%}body{margin:0;padding:16px;font:16px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans','Noto Nastaliq Urdu',Arial,sans-serif;color:#1a1a1a;background:#ffffff}.m{max-width:40em;margin:0 auto;overflow-wrap:anywhere}p,li,blockquote{unicode-bidi:plaintext}p{margin:0 0 .8em}ul,ol{margin:0 0 .8em;padding-inline-start:1.4em}blockquote{margin:0 0 .8em;padding-inline-start:.9em;border-inline-start:3px solid #b8b8b8;color:#555555}a{color:#0b57d0}@media (max-width:480px){body{padding:12px}}";
+    format!("<!doctype html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title></title><style>{CSS}</style></head><body style=\"margin:0;padding:16px;font-family:sans-serif;color:#1a1a1a\"><div class=\"m\">{clean_html}</div></body></html>")
 }
 
 // ---------------------------------------------------------------- variables of snippets and signatures
@@ -154,6 +162,11 @@ pub fn fill(t: &str, vars: &[(&str, &str)]) -> (String, Vec<String>) {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test] fn the_html_frame_is_advanced_and_static() {
+        let d = html_document("<p>Hi</p>");
+        assert!(d.starts_with("<!doctype html><html>") && d.contains("name=\"viewport\"") && !d.contains("prefers-color-scheme") && d.contains("unicode-bidi:plaintext") && d.contains("<div class=\"m\"><p>Hi</p></div>"));
+        assert!(!d.contains("<script") && !d.contains("http://") && !d.contains("url("), "{d}");
+    }
     #[test] fn script_style_and_events_die_with_their_content() {
         let c = sanitize_html("<p onclick=\"x()\" style=\"color:red\" class=\"a\">Hi <script>alert(1)</script><style>p{}</style><b>there</b></p>").unwrap();
         assert_eq!(c, "<p>Hi <b>there</b></p>");

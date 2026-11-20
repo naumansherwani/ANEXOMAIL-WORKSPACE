@@ -10,6 +10,9 @@ import { EmojiShortcodeList, useShortcode } from "./EmojiShortcode";
 import { EmojiSafety } from "./EmojiSafety";
 import { useTlsFacts } from "./TlsLock";
 import type { Contact } from "./book";
+import { RichEditor, type RichHandle } from "./RichEditor";
+import { MailRichPanel } from "./MailRichPanel";
+import { fill, knownVars, pickSignature, placeholders, slashMatches, textToHtml, type Sig, type Snippet } from "./rich_pure";
 import { chipsOf, joinChips, parseAddrs, removeChip, takenMap, type Field } from "./recipients";
 
 export type Start = { to?: string; subject?: string; text?: string; in_reply_to?: string; reply_to?: string; draft?: string };
@@ -43,6 +46,10 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
   const [to, setTo] = useState(start.to ?? ""), [cc, setCc] = useState(""), [bcc, setBcc] = useState(""), [showCc, setShowCc] = useState(false);
   const [subject, setSubject] = useState(start.subject ?? ""), [text, setText] = useState(start.text ?? ""), [when, setWhen] = useState("");
   const [busy, setBusy] = useState(false), [err, setErr] = useState(""), [needsDkim, setNeedsDkim] = useState(false), [saved, setSaved] = useState("");
+  // QC2-B: a new empty mail starts rich; a reply / a draft without html starts plain exactly as before (nothing is converted behind his back)
+  const [rich, setRich] = useState(!start.text && !start.draft), [html, setHtml] = useState(""), [ek, setEk] = useState(0), [askPlain, setAskPlain] = useState(false);
+  const [sigs, setSigs] = useState<Sig[]>([]), [snips, setSnips] = useState<Snippet[]>([]), [panel, setPanel] = useState(false), [slash, setSlash] = useState<string | null>(null), [warnOpen, setWarnOpen] = useState("");
+  const richRef = useRef<RichHandle>(null), noArea = useRef<HTMLTextAreaElement>(null), sigDone = useRef(false);
   const draft = useRef<{ id?: string; v: number }>({ v: 0 });
   const last = useRef(""), dirty = useRef(false);
   const toRef = useRef<HTMLInputElement>(null), textRef = useRef<HTMLTextAreaElement>(null), emo = useEmojiDock(), sc = useShortcode({ area: textRef, value: text, onChange: setText }), reduce = !!useReducedMotion();
@@ -60,24 +67,24 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
   const lists = () => ({ to: parseAddrs(to), cc: parseAddrs(cc), bcc: parseAddrs(bcc) });
 
   // open an existing draft
-  useEffect(() => { if (!start.draft) { toRef.current?.focus(); return; } let on = true; api.draftOpen(box.id, start.draft).then((d) => { if (!on || !d) return; draft.current = { id: d.id, v: d.version }; const c = d.content; setTo((c.to ?? []).join(", ")); setCc((c.cc ?? []).join(", ")); setBcc((c.bcc ?? []).join(", ")); setShowCc(!!(c.cc?.length || c.bcc?.length)); setSubject(c.subject ?? ""); setText(c.text ?? ""); last.current = JSON.stringify([c.to ?? [], c.cc ?? [], c.bcc ?? [], c.subject ?? "", c.text ?? ""]); }); return () => { on = false; }; }, [box.id, start.draft]);
+  useEffect(() => { if (!start.draft) { toRef.current?.focus(); return; } let on = true; api.draftOpen(box.id, start.draft).then((d) => { if (!on || !d) return; draft.current = { id: d.id, v: d.version }; const c = d.content; setTo((c.to ?? []).join(", ")); setCc((c.cc ?? []).join(", ")); setBcc((c.bcc ?? []).join(", ")); setShowCc(!!(c.cc?.length || c.bcc?.length)); setSubject(c.subject ?? ""); setText(c.text ?? ""); if (c.html) { setHtml(c.html); setRich(true); setEk((k) => k + 1); } last.current = JSON.stringify([c.to ?? [], c.cc ?? [], c.bcc ?? [], c.subject ?? "", c.text ?? "", c.html ?? ""]); }); return () => { on = false; }; }, [box.id, start.draft]);
 
   // autosave: 1.5 s after the last change, only when something is typed. persist() is also called when the box closes, so the last words are never lost (QC0b: a draft is ALWAYS kept).
-  const latest = useRef({ to, cc, bcc, subject, text }); latest.current = { to, cc, bcc, subject, text };
+  const latest = useRef({ to, cc, bcc, subject, text, html }); latest.current = { to, cc, bcc, subject, text, html };
   const persist = useCallback(async (): Promise<void> => {
-    const v = latest.current; const L = { to: parseAddrs(v.to), cc: parseAddrs(v.cc), bcc: parseAddrs(v.bcc) }; const snap = JSON.stringify([L.to.ok, L.cc.ok, L.bcc.ok, v.subject, v.text]);
+    const v = latest.current; const L = { to: parseAddrs(v.to), cc: parseAddrs(v.cc), bcc: parseAddrs(v.bcc) }; const snap = JSON.stringify([L.to.ok, L.cc.ok, L.bcc.ok, v.subject, v.text, v.html]);
     if (snap === last.current || (!v.subject.trim() && !v.text.trim() && !L.to.ok.length)) return;
-    const r = await api.draftSave(box.id, { to: L.to.ok, cc: L.cc.ok, bcc: L.bcc.ok, subject: v.subject, text: v.text, in_reply_to: start.in_reply_to }, { draft: draft.current.id, expected: draft.current.v, reply_to: start.reply_to });
+    const r = await api.draftSave(box.id, { to: L.to.ok, cc: L.cc.ok, bcc: L.bcc.ok, subject: v.subject, text: v.text, ...(v.html ? { html: v.html } : {}), in_reply_to: start.in_reply_to }, { draft: draft.current.id, expected: draft.current.v, reply_to: start.reply_to });
     if (r.ok) { draft.current = { id: r.id, v: r.version }; last.current = snap; dirty.current = false; setSaved("Draft saved, sealed"); } else setSaved(r.stale ? "This draft changed elsewhere - close and reopen it" : "Draft not saved");
   }, [box.id, start.in_reply_to, start.reply_to]);
   useEffect(() => {
-    const L = lists(); const snap = JSON.stringify([L.to.ok, L.cc.ok, L.bcc.ok, subject, text]);
+    const L = lists(); const snap = JSON.stringify([L.to.ok, L.cc.ok, L.bcc.ok, subject, text, html]);
     if (snap === last.current || (!subject.trim() && !text.trim() && !L.to.ok.length)) return;
     dirty.current = true;
     const t = window.setTimeout(() => { void persist(); }, 1500);
     return () => window.clearTimeout(t);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [to, cc, bcc, subject, text]);
+  }, [to, cc, bcc, subject, text, html]);
   const closeKeep = async () => { try { await persist(); } catch { /* the draft stays as last saved */ } onClose(); };
   // QC0b: on a phone the box is full screen and follows the keyboard (visualViewport), so Send is never hidden behind it
   const [vv, setVv] = useState<{ h: number; t: number } | null>(null);
@@ -86,13 +93,31 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
   // QC0d: Gmail-style window states: normal (centred) / large (expand) / min (bar). The component stays mounted, so nothing typed is lost.
   const [mode, setMode] = useState<"normal" | "large" | "min">("normal"), [fx, setFx] = useState(false);
 
+  // QC2-B: signatures + snippets (opened by the server, sealed at rest)
+  const reloadRich = useCallback(() => { void api.signatures(box.id).then((x) => x && setSigs(x)); void api.snippets(box.id).then((x) => x && setSnips(x)); }, [box.id]);
+  useEffect(() => { reloadRich(); }, [reloadRich]);
+  const slashHits = slash === null ? [] : slashMatches(slash, snips.map((x) => x.name));
+  const addText = (t: string) => { if (rich) richRef.current?.insertHtml(textToHtml(t)); else setText((v) => `${v}${v && !v.endsWith("\n") ? "\n" : ""}${t}`); };
+  const insertSig = (sg: Sig) => { if (rich) richRef.current?.insertHtml(`<p></p>${textToHtml(sg.text)}`); else setText((v) => `${v}\n\n-- \n${sg.text}`); };
+  const insertSnip = (sn: Snippet, typed?: string) => {
+    const f = chipsOf(to)[0]; const who = f ? (f.name || book.find((c) => c.addr.toLowerCase() === (f.addr ?? "").toLowerCase())?.name || "") : "";
+    const r = fill(sn.text, knownVars({ toName: who, myName: box.display_name ?? "", now: new Date() }));
+    if (rich && typed !== undefined) richRef.current?.replaceSlash(typed, textToHtml(r.text)); else addText(r.text);
+    void api.snippetAct(box.id, { op: "used", id: sn.id }); setSlash(null); setWarnOpen("");
+  };
+  // the signature goes into a NEW mail once, as soon as it is loaded (a reply or a draft gets it from the button)
+  useEffect(() => { if (sigDone.current || start.text || start.draft || !sigs.length) return; const sg = pickSignature(sigs, box.address); if (sg) { sigDone.current = true; window.setTimeout(() => insertSig(sg), 0); } /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [sigs]);
+
   async function send() {
     setErr(""); setNeedsDkim(false);
     const L = lists(); const bad = [...L.to.bad, ...L.cc.bad, ...L.bcc.bad];
     if (bad.length) { setErr(`Not an address: ${bad.slice(0, 3).join(", ")}`); return; }
-    const c = { to: L.to.ok, cc: L.cc.ok, bcc: L.bcc.ok, subject: subject.trim(), text, ...(start.in_reply_to ? { in_reply_to: start.in_reply_to } : {}) };
+    const c = { to: L.to.ok, cc: L.cc.ok, bcc: L.bcc.ok, subject: subject.trim(), text, ...(rich && html ? { html } : {}), ...(start.in_reply_to ? { in_reply_to: start.in_reply_to } : {}) };
     const p = composeProblem(c); if (p) { setErr(p); return; }
     let schedule = ""; if (when) { const d = new Date(when); if (!(d.getTime() > Date.now() + 60_000)) { setErr("Pick a time at least a minute from now."); return; } schedule = d.toISOString().replace(/\.\d{3}Z$/, "Z"); }
+    // an unfilled {placeholder} is warned about ONCE; the second press sends
+    const open = placeholders(text); const key = open.join(",");
+    if (open.length && warnOpen !== key) { setWarnOpen(key); setErr(`Not filled in yet: ${open.map((x) => `{${x}}`).join(" ")}. Press Send again to send it as it is.`); return; }
     setBusy(true);
     const r = await api.send(box.id, c, { schedule: schedule || undefined, draft: draft.current.id });
     setBusy(false);
@@ -111,12 +136,27 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
           <RecipientField field="Bcc" value={bcc} onChange={setBcc} taken={taken} onMove={moveChip} book={book} onBookAct={bookAct} tls={tls} /></>}
         <label className="mc-f"><span>Subject</span><input value={subject} onChange={(e) => setSubject(e.target.value)} maxLength={300} /></label>
         <label className="sr" htmlFor="mc-text">Message</label>
-        <div className="emo-over">
-          <textarea id="mc-text" ref={textRef} className="mc-t" value={text} onChange={(e) => setText(e.target.value)} placeholder="Write your message…" rows={10} {...sc.bind} />
-          <EmojiShortcodeList sc={sc} />
-          <EmojiDock dock={emo} area={textRef} value={text} onChange={setText} />
+        <div className="rt-modes">
+          {rich ? <button type="button" className="mx-btn alt" onClick={() => { if (html) setAskPlain(true); else setRich(false); }}>Plain text</button>
+                : <button type="button" className="mx-btn alt" onClick={() => { setHtml(text.trim() ? textToHtml(text) : ""); setEk((k) => k + 1); setRich(true); }}>Rich text</button>}
+          <button type="button" className="mx-btn alt" aria-expanded={panel} onClick={() => setPanel(!panel)}>Signature &amp; snippets</button>
         </div>
-        <EmojiSafety text={text} onChange={setText} />
+        {askPlain && <div className="rt-ask" role="alert"><span>Plain text removes all formatting from this mail. Switch?</span>
+          <button type="button" className="mx-btn" onClick={() => { setHtml(""); setRich(false); setAskPlain(false); }}>Remove formatting</button>
+          <button type="button" className="mx-btn alt" onClick={() => setAskPlain(false)}>Keep it</button></div>}
+        {panel && <MailRichPanel box={box.id} address={box.address} sigs={sigs} snips={snips} reload={reloadRich} onSig={insertSig} onSnip={insertSnip} onClose={() => setPanel(false)} />}
+        <div className="emo-over" onKeyDownCapture={(e) => { if (rich && slash !== null && e.key === "Tab" && slashHits.length) { e.preventDefault(); const sn = snips.find((x) => x.name === slashHits[0]); if (sn) insertSnip(sn, slash); } }}>
+          {rich ? <>
+            <RichEditor key={ek} ref={richRef} initialHtml={html || (text.trim() ? textToHtml(text) : "")} label="Message" placeholder="Write your message…" onChange={(h, t) => { setHtml(h); setText(t); }} onSlash={setSlash} />
+            {slash !== null && slashHits.length > 0 && <div className="rt-slash" role="listbox" aria-label="Snippets">{slashHits.map((n, i) => <button type="button" key={n} role="option" aria-selected={i === 0} onMouseDown={(e) => e.preventDefault()} onClick={() => { const sn = snips.find((x) => x.name === n); if (sn) insertSnip(sn, slash); }}>/{n}</button>)}</div>}
+            <EmojiDock dock={emo} area={noArea} value="" onChange={(v) => richRef.current?.insertText(v)} />
+          </> : <>
+            <textarea id="mc-text" ref={textRef} className="mc-t" value={text} onChange={(e) => setText(e.target.value)} placeholder="Write your message…" rows={10} {...sc.bind} />
+            <EmojiShortcodeList sc={sc} />
+            <EmojiDock dock={emo} area={textRef} value={text} onChange={setText} />
+          </>}
+        </div>
+        {!rich && <EmojiSafety text={text} onChange={setText} />}
         <AnimatePresence>{err && <motion.p key="e" className="mx-warn" role="alert" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>{err}</motion.p>}</AnimatePresence>
         {needsDkim && <DkimSetup box={box} onDone={() => setErr("")} />}
         <footer>
