@@ -24,6 +24,13 @@ export function KeyLayer() {
       const scene = { composeOpen: !!document.querySelector(".mc-wrap"), inDialog: dialogOpen, typing: typingIn(e.target) };
       if (e.key === "?" && !m.ctrl && !m.meta && !m.alt && !scene.typing && !scene.inDialog && !scene.composeOpen) { e.preventDefault(); e.stopImmediatePropagation(); setMail(!!document.querySelector(".mbx-rows")); setOpen(true); return; }
       if (silenceSingle(e.key, m, readSingle(), scene)) { e.stopImmediatePropagation(); return; }
+      // Home / End in the mail list: open the first / last row by clicking its own button (the existing select() does the work).
+      if ((e.key === "Home" || e.key === "End") && !m.ctrl && !m.meta && !m.alt && !m.shift && !scene.typing && !scene.inDialog && !scene.composeOpen
+          && document.querySelector(".mbx-rows") && (!interactive(e.target) || !!(e.target as HTMLElement).closest?.(".mbx-rows"))) {
+        const all = document.querySelectorAll<HTMLButtonElement>(".mbx-rows .mbx-r"), t = e.key === "Home" ? all[0] : all[all.length - 1];
+        if (t) { e.preventDefault(); e.stopImmediatePropagation(); t.click(); t.focus({ preventScroll: true }); t.scrollIntoView({ block: "nearest" }); }
+        return;
+      }
       // Up / Down in the mail list: the existing j / k does the real work. Only when nothing else owns the arrows.
       if ((e.key === "ArrowDown" || e.key === "ArrowUp") && !m.ctrl && !m.meta && !m.alt && !m.shift && !scene.typing && !scene.inDialog && !scene.composeOpen
           && document.querySelector(".mbx-rows") && (!interactive(e.target) || !!(e.target as HTMLElement).closest?.(".mbx-rows"))) {

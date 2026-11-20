@@ -44,6 +44,7 @@ export function typeAhead(labels: readonly string[], cur: number, buf: string, k
 export type HelpRow = { keys: string; does: string; where: "list" | "mail" | "page" | "compose" };
 export const HELP_ROWS: readonly HelpRow[] = [
   { keys: "j / k  or  Down / Up", does: "Next / previous mail", where: "list" },
+  { keys: "Home / End", does: "First / last mail", where: "list" },
   { keys: "Enter", does: "Open the mail", where: "list" },
   { keys: "c", does: "Write a new mail", where: "list" },
   { keys: "/", does: "Search the loaded mails", where: "list" },

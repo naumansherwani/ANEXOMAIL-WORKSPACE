@@ -413,6 +413,7 @@ docs/cursor-work/backups/signin-a-20261022/README.md
 docs/cursor-work/backups/signin-a-20261022/auth.tsx.signin-a
 docs/cursor-work/backups/signin-a-20261022/styles-hovera.css
 docs/cursor-work/crm-cinematic-wire.md
+docs/cursor-work/founder-commands.md
 docs/cursor-work/frontend/00-FOUNDER-TECH-RULE.md
 docs/cursor-work/frontend/auth-kind-cards.md
 docs/cursor-work/frontend/checkout-signup-pattern.md

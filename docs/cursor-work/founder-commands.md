@@ -1,0 +1,2 @@
+
+- 21 Nov 2026 04:30 PKT HIS ANGER 03:54: I removed the Home/End + Shift-range rows from the ? sheet WITHOUT asking him. Rule: NEVER delete anything of his plan without asking first. Fix: Home/End now WIRED (click first/last row, Chromium-proven) and its row restored. Shift-range NOT possible without editing MailBox (no multi-select exists); type-ahead conflicts with his letter keys; both wait his word.
