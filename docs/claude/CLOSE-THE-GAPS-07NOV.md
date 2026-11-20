@@ -366,3 +366,13 @@ G2 is now the open item in progress.
 - DK3: recovery with his two hardware keys not written.
 - DK4/DK5: one real pq mail opened on his device, plus 390/820/1280 look.
 - E90: kernel release ledger entry for 0.19.0 and 0.20.0.
+
+## QCONNECT open gaps (21 Nov 2026 01:55 PKT, after the phase was declared)
+1. Reverse copy: after the switch founder writes live only in the local database; OFF=1 returns to the managed copy WITHOUT them. A copy-back script needs his decision.
+2. Tables the awam site writes (identity_health warn, auth.* for awam users) can be stale locally; the founder only reads founder-owned tables, but a periodic refresh or logical replication is not built.
+3. 2 SLOW lines in the first 5 minutes after the switch: read them (journalctl -u anexomail-founder --since=-10min --no-pager | grep SLOW | tail -5) before calling the latency work closed.
+4. E197 login-finish door (QSPEED) still reserved and unwritten; QSPEED leftovers (writes after the answer, network-only retry, Rust cache).
+5. Inter fonts showed http/1.1 in Chrome (0 ms, probably cache); cause not proven.
+6. AES-256 / X25519MLKEM768 on the wire: proven only by code + tests (tls256.rs); needs a client with OpenSSL 3.5+ against UDP/TCP 443 or Chrome's security panel.
+7. auth.refresh_tokens keeps the token in clear text (legacy gotrue shape kept for rollback); a hashed column is a later SQL.
+8. Local PostgreSQL grants: copy used --no-privileges, E-line revokes on functions are not in the copy; only root and group anexopg reach the socket, the service uses service_role only. Audit again.
