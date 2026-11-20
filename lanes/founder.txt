@@ -144,6 +144,7 @@ docs/cursor-work/sql/E190_founder_mail_tls_change.sql
 docs/cursor-work/sql/E191_founder_mail_tls_rpt_policy.sql
 docs/cursor-work/sql/E192_founder_mail_tls_loosen.sql
 docs/cursor-work/sql/E194_founder_mail_signatures_snippets.sql
+docs/cursor-work/sql/E195_founder_mail_delivery_timeline.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
 docs/cursor-work/sql/proofs/00-FOUNDER-TECH-RULE.md
@@ -169,7 +170,7 @@ founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
 founder-web/dist/assets/index-CbYqkE_h.css
-founder-web/dist/assets/index-D9L98Nvp.js
+founder-web/dist/assets/index-I205jepc.js
 founder-web/dist/assets/kernel.worker-BLkLR49F.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
 founder-web/dist/assets/three.core-BkCwB-2w.js

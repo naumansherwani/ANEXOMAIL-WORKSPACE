@@ -3,7 +3,7 @@
 STATE: IN PROGRESS (QC3 written, not built; no GREEN claimed)
 | Listed technology | Where it must live | IN CODE | Proof |
 |---|---|---|---|
-| PostgreSQL, forced RLS, read-only security-definer door, no sealed columns, service_role only, CHECK + selftest | docs/cursor-work/sql/E195_*.sql + CHECK_E195.sql | PLANNED (QC3-2) | pglite PG17 proof, his sql-run |
+| PostgreSQL, forced RLS, read-only security-definer door, no sealed columns, service_role only, CHECK + selftest | docs/cursor-work/sql/E195_*.sql + CHECK_E195.sql | YES, WRITTEN (sandbox 70/0, not on his server) | pglite PG17 proof, his sql-run |
 | Rust + Tokio + axum signed door over HTTP/3, own_box check | server/founder/src/fmail_out.rs (+ main.rs route /founder/v1/mail/timeline) | PLANNED (QC3-3) | cargo test fmail_ |
 | Rust WASM kernel RPC (no raw fetch), api in mail_api.ts | founder-web/src/mail_api.ts | PLANNED (QC3-5) | rules-gate fetch count not rising |
 | React 19 + TypeScript + Tailwind 4, Framer Motion (reduced motion respected), pure modules with golden tests | founder-web/src/presend_pure.ts, MailPresendBar.tsx, MailTimeline.tsx | PLANNED (QC3-4/5) | bun test, tsc, vite build, real-CSP sandbox 390/820/1280 |
@@ -1685,3 +1685,5 @@ LEFT: Rust core + tests, doors, send wiring, browser, his ONE sql-run + ONE foun
 - 20 Nov 2026 07:18 PKT: QC3 plan + contract written (STATE in progress); NEXT QC3-2 SQL E195.
 
 - 20 Nov 2026 07:20 PKT: QC3 plan + contract written (docs only); NEXT QC3-2 SQL E195.
+
+- 20 Nov 2026 07:35 PKT: QC3-2 SQL E195 WRITTEN (delivery timeline doors, 4 doors + pure phase/backoff/meta, partial ledger index, selftest 70 checks, CHECK_E195); pglite proof on real E167 outbox+ledger: 70 pass 0 fail, rerun ok, posture all true. NOT on his server yet (sql-run later with Rust door). NEXT QC3-3 Rust door /founder/v1/mail/timeline.

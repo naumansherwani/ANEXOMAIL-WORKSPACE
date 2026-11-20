@@ -406,6 +406,7 @@ docs/cursor-work/sql/CHECK_E191.sql
 docs/cursor-work/sql/CHECK_E192.sql
 docs/cursor-work/sql/CHECK_E193.sql
 docs/cursor-work/sql/CHECK_E194.sql
+docs/cursor-work/sql/CHECK_E195.sql
 docs/cursor-work/sql/CHECK_E42_E47.sql
 docs/cursor-work/sql/CHECK_E48.sql
 docs/cursor-work/sql/CHECK_E50.sql

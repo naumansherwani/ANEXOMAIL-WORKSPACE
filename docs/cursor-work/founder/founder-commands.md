@@ -4321,3 +4321,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - 20 Nov 2026 07:18 PKT: QC3 plan + contract written (STATE in progress); NEXT QC3-2 SQL E195.
 
 - 20 Nov 2026 07:20 PKT: QC3 plan + contract written (docs only); NEXT QC3-2 SQL E195.
+
+- 20 Nov 2026 07:35 PKT: QC3-2 SQL E195 WRITTEN (delivery timeline doors, 4 doors + pure phase/backoff/meta, partial ledger index, selftest 70 checks, CHECK_E195); pglite proof on real E167 outbox+ledger: 70 pass 0 fail, rerun ok, posture all true. NOT on his server yet (sql-run later with Rust door). NEXT QC3-3 Rust door /founder/v1/mail/timeline.
