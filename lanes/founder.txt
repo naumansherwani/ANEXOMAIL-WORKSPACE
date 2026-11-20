@@ -169,7 +169,7 @@ founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-BiPR8r35.js
+founder-web/dist/assets/index-BhYPHuch.js
 founder-web/dist/assets/index-BtRfxfmm.css
 founder-web/dist/assets/kernel.worker-CIfmRW-j.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
