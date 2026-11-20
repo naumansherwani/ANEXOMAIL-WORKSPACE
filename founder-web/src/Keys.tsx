@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Flare } from "./Flare";
+import { MailDeviceKey } from "./MailDeviceKey";
 import { deviceLabel } from "./api";
 import { approvePending, door, friendly, loadKeys, loadPending, prove, register, runSignals, supported, type KeysView, type Pending } from "./passkey";
 
@@ -68,5 +69,6 @@ export function Keys() {
       Post-quantum keys: {pq.post_quantum ?? 0} ({pq.pq_allowed_by_policy ? "allowed" : "off until the standard is final"}).</p></div></div>
     {note && <p role="status" className={note.ok ? "dim" : "err"}>{note.t}</p>}
   </section>
+  <MailDeviceKey />
   <Flare /></>;
 }

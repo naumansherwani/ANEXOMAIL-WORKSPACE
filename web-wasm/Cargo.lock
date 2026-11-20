@@ -39,7 +39,7 @@ dependencies = [
 
 [[package]]
 name = "anexo-kernel"
-version = "0.19.0"
+version = "0.20.0"
 dependencies = [
  "aes-gcm",
  "base64",

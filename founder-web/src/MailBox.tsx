@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { titleWith } from "./mail_change";
 import * as Popover from "@radix-ui/react-popover";
 import * as api from "./mail_api";
+import { openSealedMail } from "./mail_pq";
 import { MailCompose, UndoBar, type Start } from "./MailCompose";
 import { OutboxPanel } from "./OutboxPanel";
 import { MailAnchorLine } from "./MailAnchorLine";
@@ -121,7 +122,7 @@ export function MailBox() {
     if ("opened" in a) { swap(() => { setOpened(a); setOpening(false); }); setRows((old) => old.map((x) => (x.id === r.id ? { ...x, read: true } : x))); void loadCounts(); setProofBusy(true); api.proof(boxId, r.id).then(setProof).catch(() => setProof(null)).finally(() => setProofBusy(false)); }
     else if ("needs_touch" in a) setOpenErr("A key touch is needed to open this.");
     else if ("broken" in a) setOpenErr(`This message does not verify (${a.reason}). It is kept, not shown.`);
-    else if ("sealed_for_kernel" in a) setOpenErr("This message is sealed for your device key (post-quantum). Opening it on this device arrives with the device-key phase; the server cannot read it.");
+    else if ("sealed_for_kernel" in a) { setOpening(true); const o = await openSealedMail(boxId, a.mail, !!a.touched); setOpening(false); if ("opened" in o) { swap(() => { setOpened(o); }); if (r.direction === "in") void api.flag(boxId, [r.id], { read: true }); setRows((old) => old.map((x) => (x.id === r.id ? { ...x, read: true } : x))); void loadCounts(); setProofBusy(true); api.proof(boxId, r.id).then(setProof).catch(() => setProof(null)).finally(() => setProofBusy(false)); } else setOpenErr(o.error); }
     else setOpenErr(a.error);
   }, [boxId, loadCounts, swap]);
 

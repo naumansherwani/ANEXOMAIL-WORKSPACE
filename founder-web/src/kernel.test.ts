@@ -239,3 +239,22 @@ test("mail_parse in the real wasm gives the server's golden JSON for every case 
     expect(got.summary).toEqual(c.summary); expect(got.view).toEqual(c.view);
   }
 });
+
+// DK3: the SHIPPED wasm makes the device key pair from seeds; the server (real fmail_kem::wrap + fmail_seal::seal) wraps a mail to that kernel-made public key; the kernel opens it with the kernel-made private halves.
+test("kem_keygen in the real wasm: deterministic, right sizes, and the server's wrap to its public key opens with its private halves", async () => {
+  const { existsSync, writeFileSync } = await import("node:fs");
+  const { instance } = await WebAssembly.instantiate(bytes, { env: { host_wake() {}, host_call() {}, host_emit() {} } });
+  const ex = instance.exports as any;
+  const call = (fn: string, o: unknown) => { const x = new TextEncoder().encode(JSON.stringify(o)), p = ex.kernel_alloc(x.length); new Uint8Array(ex.memory.buffer, p, x.length).set(x); const ok = ex[fn](p, x.length); return [ok, new TextDecoder().decode(new Uint8Array(ex.memory.buffer, ex.kernel_out_ptr(), ex.kernel_out_len()).slice())] as const; };
+  const seeds = { d: "01".repeat(32), z: "02".repeat(32), x: "03".repeat(32) };
+  const [ok, out] = call("kem_keygen", seeds); expect(ok).toBe(1);
+  const k = JSON.parse(out); expect(k.dk.length).toBe(2400 * 2); expect(k.x.length).toBe(64); expect(k.pub.length).toBe(1216 * 2);
+  expect(call("kem_keygen", seeds)[1]).toBe(out); expect(call("kem_keygen", { ...seeds, d: "04".repeat(32) })[1]).not.toBe(out);
+  expect(call("kem_keygen", { d: "00".repeat(32), z: seeds.z, x: seeds.x })[0]).toBe(0); expect(call("kem_keygen", {})[0]).toBe(0);
+  if (process.env.DK3_EMIT) writeFileSync("../web-wasm/tests/kem_keygen_vector.json", JSON.stringify({ ...seeds, pub: k.pub }, null, 2));
+  if (existsSync("../web-wasm/tests/kem_vector_dk3.json")) {
+    const v = JSON.parse(readFileSync("../web-wasm/tests/kem_vector_dk3.json", "utf8"));
+    const [ok2, plain] = call("kem_open", { ...v, dk: k.dk, x: k.x, pub: k.pub }); expect(ok2).toBe(1); expect(plain).toBe(v.plain);
+    expect(call("kem_open", { ...v, dk: k.dk, x: k.x, pub: k.pub.slice(0, -2) + "00" })[0]).toBe(0);
+  }
+});

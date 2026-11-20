@@ -299,6 +299,35 @@ pub async fn move_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::bo
     }
 }
 
+/// DK3: POST /founder/v1/mail/key {box, key_id, pub_hex, grant?, nonce?}. Installs or rotates the mailbox's post-quantum PUBLIC key (1216 bytes hex = 2432 chars). The private halves never come here.
+/// Needs a fresh passkey touch (action mail.key, target = box:key_id); the database enforces it too (fmail_key_register, E168).
+pub async fn key_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::body::Bytes) -> Response {
+    let (uid, _e, did) = match pk::ctx(&st, &h, uri.path(), &body, true).await { Ok(x) => x, Err(r) => return r };
+    let sb = match pk::sbx(&st) { Ok(s) => s, Err(r) => return r };
+    let j = match pk::body_json(&body) { Ok(j) => j, Err(r) => return r };
+    let Some(b) = pk::txt(&j, "box", 40).filter(|x| pk::is_uuid(x)) else { return bad("box is needed") };
+    let Some(kid) = pk::txt(&j, "key_id", 96).filter(|k| k.len() >= 4 && k.bytes().all(|c| c.is_ascii_alphanumeric() || b"._:-".contains(&c))) else { return bad("key_id is needed (4-96 letters, digits . _ : -)") };
+    let Some(ph) = pk::txt(&j, "pub_hex", 2432).filter(|x| x.len() == 2432 && x.bytes().all(|c| c.is_ascii_hexdigit())) else { return bad("pub_hex must be exactly 1216 bytes of hex") };
+    let touch = match touch_of(&j) { Ok(t) => t, Err(e) => return bad(e) };
+    if let Err(r) = own(sb, &uid, &b).await { return r; }
+    let target = format!("{}:{}", b, kid);
+    let Some(t) = touch else { return crate::signed(&st, json!({"needs_touch": true, "action": "mail.key", "target": target})) };
+    let hash = match spend(&st, sb, &uid, &did, &t, "mail.key", &target).await { Ok(h) => h, Err(r) => return r };
+    match sb.rpc_msg("fmail_key_register", json!({"p_actor": uid, "p_mailbox": b, "p_key_id": kid, "p_pub": format!("\\x{}", ph.to_ascii_lowercase()), "p_touch_hash": hash})).await {
+        Ok(v) => crate::signed(&st, json!({"ok": true, "result": v})),
+        Err(e) => pk::sql_err(e),
+    }
+}
+
+/// DK3: GET /founder/v1/mail/keys?box=<uuid>: the key history of one mailbox (ids, status, fingerprints; the public keys are public, the private halves are never here).
+pub async fn keys_ep(State(st): State<S>, uri: Uri, h: HeaderMap) -> Response {
+    let c = match crate::authed(&st, &h).await { Ok(c) => c, Err(e) => return e.into_response() };
+    let b = match parse_box(uri.query()) { Ok(b) => b, Err(e) => return bad(e) };
+    let sb = st.sb.as_ref().unwrap();
+    if let Err(r) = own(sb, &c.sub, &b).await { return r; }
+    match sb.rpc("fmail_key_history", json!({"p_mailbox": b})).await { Some(v) => crate::signed(&st, json!({"connected": true, "keys": v})), None => crate::signed(&st, json!({"connected": false, "keys": []})) }
+}
+
 /// POST /founder/v1/mail/vault {box, thread, vault, grant?, nonce?}. Into the vault: no touch. Out of the vault: touch (action mail.vault_out, target = thread id).
 pub async fn vault_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::body::Bytes) -> Response {
     let (uid, _e, did) = match pk::ctx(&st, &h, uri.path(), &body, true).await { Ok(x) => x, Err(r) => return r };

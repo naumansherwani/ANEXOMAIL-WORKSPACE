@@ -128,4 +128,26 @@ mod tests {
         let blob: Vec<u8> = (0..v["wrap"].as_str().unwrap().len() / 2).map(|i| u8::from_str_radix(&v["wrap"].as_str().unwrap()[2 * i..2 * i + 2], 16).unwrap()).collect();
         assert_eq!(blob.len(), BLOB_LEN); assert!(parts(&blob).is_some());
     }
+    /// DK3 cross-proof (20 Nov 2026): the SERVER wraps to a public key that the KERNEL made from fixed seeds (web-wasm/tests/kem_keygen_vector.json, made by the shipped wasm kem_keygen), and seals a body.
+    /// The kernel test then opens it with the kernel-made private halves. Absent files (the server install holds only server/founder) = skip.
+    #[test]
+    fn dk3_server_wraps_to_a_kernel_made_key() {
+        const KG: &str = "../../web-wasm/tests/kem_keygen_vector.json"; const OUT: &str = "../../web-wasm/tests/kem_vector_dk3.json";
+        if !std::path::Path::new(KG).exists() { return; }
+        let hexs = |b: &[u8]| b.iter().map(|x| format!("{x:02x}")).collect::<String>();
+        let k: serde_json::Value = serde_json::from_str(&std::fs::read_to_string(KG).unwrap()).unwrap();
+        let ph = k["pub"].as_str().unwrap(); assert_eq!(ph.len(), PUB_LEN * 2);
+        let p: Vec<u8> = (0..PUB_LEN).map(|i| u8::from_str_radix(&ph[2 * i..2 * i + 2], 16).unwrap()).collect();
+        if std::env::var("DK_VECTOR").is_ok() {
+            let mk = seal::new_key().unwrap(); let kid = "dk-20261120-000001";
+            let blob = wrap(&p, kid, &mk).unwrap();
+            let plain = "From: Ann <ann@example.org>\r\nTo: me@anexomail.com\r\nSubject: for the device key\r\nMessage-ID: <d3@example.org>\r\nReferences: <r1@example.org>\r\n\r\nSealed to a key the browser made.\r\n";
+            let a = seal::aad(&["fmail-msg-v1", "mbx-dk3", "in", "ab12", "body"]);
+            let (n, sealed) = seal::seal(&mk, &a, plain.as_bytes()).unwrap();
+            let j = serde_json::json!({"key_id": kid, "wrap": hexs(&blob), "nonce": hexs(&n), "aad": ["fmail-msg-v1", "mbx-dk3", "in", "ab12", "body"], "sealed": hexs(&sealed), "plain": plain});
+            std::fs::write(OUT, serde_json::to_string_pretty(&j).unwrap()).unwrap();
+        }
+        assert!(std::path::Path::new(OUT).exists(), "run once with DK_VECTOR=1");
+    }
+
 }

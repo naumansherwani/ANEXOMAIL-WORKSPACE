@@ -159,6 +159,22 @@ export function kemOpen(input: { dk: string; x: string; pub: string; key_id: str
   });
 }
 
+/** DK3: make a device key pair in the kernel from browser seeds (32 random bytes each: d, z, x, from crypto.getRandomValues). Out = { dk 2400 B, x 32 B, pub 1216 B } as bytes. The caller wraps dk + x at once and wipes them. */
+export function kemKeygen(seeds: { d: Uint8Array; z: Uint8Array; x: Uint8Array }): Promise<{ ok: true; dk: Uint8Array; x: Uint8Array; pub: Uint8Array } | { ok: false; reason: string } | undefined> {
+  const hx = (b: Uint8Array) => [...b].map((v) => v.toString(16).padStart(2, "0")).join("");
+  const un = (h: string) => Uint8Array.from(h.match(/../g) ?? [], (v) => parseInt(v, 16));
+  return new Promise((resolve) => {
+    const id = ++seq;
+    waiting.set(id, (m) => {
+      if (m.code === 0 && m.bytes instanceof Uint8Array) {
+        try { const o = JSON.parse(new TextDecoder().decode(m.bytes)); resolve({ ok: true, dk: un(o.dk), x: un(o.x), pub: un(o.pub) }); } catch { resolve(undefined); }
+      } else if (m.code === 1 && typeof m.error === "string") resolve({ ok: false, reason: m.error });
+      else resolve(undefined);
+    });
+    w().postMessage({ id, kemkeygen: { input: JSON.stringify({ d: hx(seeds.d), z: hx(seeds.z), x: hx(seeds.x) }) } });
+  });
+}
+
 export type ParsedMail = { summary: { subject: string; from: string; from_name: string; to: string[]; cc: string[]; date: string; message_id: string; references: string[]; reply_to: string[]; snippet: string; attach: number }; view: { text: string; had_html: boolean; remote_content_blocked?: boolean; attachments: { name: string; type: string; size: number }[] } };
 /** DK-a: read one raw mail in the kernel (mailparse@1). undefined = the kernel could not run. */
 export function mailParse(raw: Uint8Array): Promise<ParsedMail | undefined> {

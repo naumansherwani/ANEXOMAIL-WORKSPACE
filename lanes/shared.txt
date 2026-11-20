@@ -94,7 +94,9 @@ web-wasm/src/rpc.rs
 web-wasm/src/sniff.rs
 web-wasm/src/sys.rs
 web-wasm/tests/00-FOUNDER-TECH-RULE.md
+web-wasm/tests/kem_keygen_vector.json
 web-wasm/tests/kem_vector.json
 web-wasm/tests/kem_vector.rs
+web-wasm/tests/kem_vector_dk3.json
 web-wasm/tests/mail_golden.json
 web-wasm/tests/mail_golden.rs

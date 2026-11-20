@@ -2,7 +2,7 @@
 import { KERNEL } from "./kernel.pin";
 import { createHost, type HostExports, type WtCtor } from "./kernel.host";
 
-type Ex = { memory: WebAssembly.Memory; kernel_alloc(n: number): number; kernel_free(p: number, n: number): void; kernel_out_ptr(): number; kernel_out_len(): number; envelope_verify(p: number, l: number, now: number, skew: number): number; merkle_verify(r: number, rl: number, p: number, pl: number, o: number, ol: number): number; kem_open(p: number, l: number): number; mail_parse(p: number, l: number): number; merkle_consistency_verify(a: number, b: number, fr: number, frl: number, sr: number, srl: number, p: number, pl: number): number; anchor_inspect(kind: number, e: number, el: number, d: number, dl: number): number; checkpoint_verify(n: number, nl: number, nm: number, nml: number, pk: number, pkl: number, sz: number, szl: number, rt: number, rtl: number): number; portable_verify(t: number, tl: number, s: number, sl: number): number; lease_check(p: number, l: number): number; lease_vault_key(p: number, l: number): number; action_check(p: number, l: number): number; mail_ledger_check(p: number, l: number): number; audit_anchor_check(p: number, l: number): number; contacts_suggest(p: number, l: number): number; flive_start(u: number, ul: number, t: number, tl: number, seed: number): number; flive_set_token(h: number, t: number, tl: number): void; flive_stop(h: number): void; mldsa65_public(s: number, sl: number): number; mldsa65_sign(s: number, sl: number, r: number, rl: number, m: number, ml: number): number } & HostExports;
+type Ex = { memory: WebAssembly.Memory; kernel_alloc(n: number): number; kernel_free(p: number, n: number): void; kernel_out_ptr(): number; kernel_out_len(): number; envelope_verify(p: number, l: number, now: number, skew: number): number; merkle_verify(r: number, rl: number, p: number, pl: number, o: number, ol: number): number; kem_open(p: number, l: number): number; kem_keygen(p: number, l: number): number; mail_parse(p: number, l: number): number; merkle_consistency_verify(a: number, b: number, fr: number, frl: number, sr: number, srl: number, p: number, pl: number): number; anchor_inspect(kind: number, e: number, el: number, d: number, dl: number): number; checkpoint_verify(n: number, nl: number, nm: number, nml: number, pk: number, pkl: number, sz: number, szl: number, rt: number, rtl: number): number; portable_verify(t: number, tl: number, s: number, sl: number): number; lease_check(p: number, l: number): number; lease_vault_key(p: number, l: number): number; action_check(p: number, l: number): number; mail_ledger_check(p: number, l: number): number; audit_anchor_check(p: number, l: number): number; contacts_suggest(p: number, l: number): number; flive_start(u: number, ul: number, t: number, tl: number, seed: number): number; flive_set_token(h: number, t: number, tl: number): void; flive_stop(h: number): void; mldsa65_public(s: number, sl: number): number; mldsa65_sign(s: number, sl: number, r: number, rl: number, m: number, ml: number): number } & HostExports;
 const hex = (b: ArrayBuffer) => [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join("");
 let ex: Promise<Ex> | null = null;
 
@@ -20,7 +20,7 @@ function load(): Promise<Ex> {
   return ex;
 }
 
-self.onmessage = async (ev: MessageEvent<{ id: number; flive?: { op: "start" | "token" | "stop"; url?: string; token?: string; h?: number }; body: ArrayBuffer; now: number; skew: number; warm?: boolean; merkle?: { row: string; path: string; root: string }; portable?: { text: string; sha: string }; lease?: { op: "check" | "key"; input: string }; mldsa?: { op: "public" | "sign"; seed: Uint8Array; rnd?: Uint8Array; msg?: Uint8Array }; action?: { input: string }; mailledger?: { input: string }; anchorproof?: { input: string }; contacts?: { input: string }; kemopen?: { input: string }; mailparse?: { raw: Uint8Array }; consistency?: { first: number; second: number; fr: string; sr: string; proof: string }; checkpoint?: { note: string; name: string; pub: string; size: string; root: string }; anchor?: { kind: number; ev: string; digest: string } }>) => {
+self.onmessage = async (ev: MessageEvent<{ id: number; flive?: { op: "start" | "token" | "stop"; url?: string; token?: string; h?: number }; body: ArrayBuffer; now: number; skew: number; warm?: boolean; merkle?: { row: string; path: string; root: string }; portable?: { text: string; sha: string }; lease?: { op: "check" | "key"; input: string }; mldsa?: { op: "public" | "sign"; seed: Uint8Array; rnd?: Uint8Array; msg?: Uint8Array }; action?: { input: string }; mailledger?: { input: string }; anchorproof?: { input: string }; contacts?: { input: string }; kemopen?: { input: string }; kemkeygen?: { input: string }; mailparse?: { raw: Uint8Array }; consistency?: { first: number; second: number; fr: string; sr: string; proof: string }; checkpoint?: { note: string; name: string; pub: string; size: string; root: string }; anchor?: { kind: number; ev: string; digest: string } }>) => {
   if (ev.data.flive) { // K6.3: live over WebTransport, run by the kernel (flive@1, Rust/Tokio); this only starts/stops it and forwards its emits
     const { id, flive: a } = ev.data;
     try {
@@ -128,6 +128,17 @@ self.onmessage = async (ev: MessageEvent<{ id: number; flive?: { op: "start" | "
       const k = await load(), x = new TextEncoder().encode(a.input), p = k.kernel_alloc(Math.max(x.length, 1));
       new Uint8Array(k.memory.buffer, p, x.length).set(x);
       const ok = k.kem_open(p, x.length), out = new Uint8Array(k.memory.buffer, k.kernel_out_ptr(), k.kernel_out_len()).slice();
+      x.fill(0); new Uint8Array(k.memory.buffer, p, x.length).fill(0); k.kernel_free(p, Math.max(x.length, 1));
+      (self as unknown as Worker).postMessage(ok === 1 ? { id, code: 0, bytes: out } : { id, code: 1, error: new TextDecoder().decode(out) });
+    } catch (e) { (self as unknown as Worker).postMessage({ id, code: 100, error: String(e) }); }
+    return;
+  }
+  if (ev.data.kemkeygen) { // DK3: make a device key pair IN the kernel (kemopen@1 keygen). code 0 = JSON bytes in `bytes`, code 1 = a plain-language reason in `error`.
+    const { id, kemkeygen: a } = ev.data;
+    try {
+      const k = await load(), x = new TextEncoder().encode(a.input), p = k.kernel_alloc(Math.max(x.length, 1));
+      new Uint8Array(k.memory.buffer, p, x.length).set(x);
+      const ok = k.kem_keygen(p, x.length), out = new Uint8Array(k.memory.buffer, k.kernel_out_ptr(), k.kernel_out_len()).slice();
       x.fill(0); new Uint8Array(k.memory.buffer, p, x.length).fill(0); k.kernel_free(p, Math.max(x.length, 1));
       (self as unknown as Worker).postMessage(ok === 1 ? { id, code: 0, bytes: out } : { id, code: 1, error: new TextDecoder().decode(out) });
     } catch (e) { (self as unknown as Worker).postMessage({ id, code: 100, error: String(e) }); }

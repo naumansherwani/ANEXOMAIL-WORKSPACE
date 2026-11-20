@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 19:27 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: DK-b: DK3 device key custody + DK4 screen (his order 19:26: finish ALL of DK first, no questions; QC5 paused after recon: SQL fmail_delete_hard exists, touch action mail.delete exists, Rust door + UI missing)
-NEXT STEP: write DK3/DK4 contract in CURRENT.md, then code: kernel keygen+wrap, passkey PRF, IndexedDB, pubkey door, sealed_for_kernel read pane, Reply/Forward
-HIS LAST WORD: phudi: finish all DK first, stop asking
+# WORKING NOW (manual checkpoint, 20 Nov 2026 19:38 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: DK-b (DK3+DK4) WRITTEN + tested + pushed; waits his install; then DK5: his key PRF touch, real pq mail to himself, my Chrome 390/820/1280
+NEXT STEP: give him the install line; after paste my live check of kernel 0.20.0 + MailDeviceKey panel; then DK5
+HIS LAST WORD: gandu context bhul gaye? -> answered: DK-b
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,65 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 66e0f507 20 Nov 19:27 ledger line a9dc80e1
 - a9dc80e1 20 Nov 19:27 DK3 keygen
 - 4fefe297 20 Nov 19:22 ledger line 3db4ad62
 - 3db4ad62 20 Nov 19:22 DK-a live Chrome look recorded (19:35 PKT)
 - 481ce7fd 20 Nov 19:22 ledger line ea896d7b
-- ea896d7b 20 Nov 19:22 DK-a live look
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/state/WORKING-NOW.md
+M  CLAUDE.md
+M  docs/claude/DONE-DO-NOT-REPEAT.md
+M  docs/claude/RESUME-POINT.md
+M  docs/claude/founder/PULL-COMMANDS.md
+M  docs/claude/state/HEARTBEAT.json
+MM docs/claude/state/WORKING-NOW.md
+M  docs/claude/tech-contracts/CURRENT.md
+M  docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
+M  docs/cursor-work/DONE-DO-NOT-REPEAT.md
+M  docs/cursor-work/founder/founder-commands.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
+M  docs/cursor-work/server/PULL-COMMANDS.md
+D  founder-web/dist/assets/index-BHXpBeGf.js
+A  founder-web/dist/assets/index-BRkP6ODP.js
+R  founder-web/dist/assets/kernel.worker-CIfmRW-j.js -> founder-web/dist/assets/kernel.worker-CaGbLt0X.js
+M  founder-web/dist/index.html
+R  founder-web/dist/kernel/anexo-kernel-0.19.0.wasm -> founder-web/dist/kernel/anexo-kernel-0.20.0.wasm
+R  founder-web/public/kernel/anexo-kernel-0.19.0.wasm -> founder-web/public/kernel/anexo-kernel-0.20.0.wasm
+M  founder-web/src/Keys.tsx
+M  founder-web/src/MailBox.tsx
+A  founder-web/src/MailDeviceKey.tsx
+M  founder-web/src/MailView.tsx
+M  founder-web/src/kernel.pin.ts
+M  founder-web/src/kernel.test.ts
+M  founder-web/src/kernel.ts
+M  founder-web/src/kernel.worker.ts
+M  founder-web/src/mail_api.ts
+A  founder-web/src/mail_keys.ts
+A  founder-web/src/mail_keys_pure.test.ts
+A  founder-web/src/mail_keys_pure.ts
+A  founder-web/src/mail_pq.ts
+A  founder-web/src/mail_pq_pure.test.ts
+A  founder-web/src/mail_pq_pure.ts
+M  founder-web/src/system_brain.json
+M  lanes/ALL-FILES.csv
+M  lanes/founder.txt
+M  lanes/shared.txt
+M  lovable-gold/README.md
+M  server/founder/src/fmail_ep.rs
+M  server/founder/src/fmail_kem.rs
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 32 +-------------------------------
- 1 file changed, 1 insertion(+), 31 deletions(-)
+ server/founder/src/fmail_ep.rs                     |  29 +++
+ server/founder/src/fmail_kem.rs                    |  22 +++
+ server/founder/src/main.rs                         |   2 +
+ web-wasm/Cargo.lock                                |   2 +-
+ web-wasm/Cargo.toml                                |   2 +-
+ web-wasm/tests/kem_keygen_vector.json              |   6 +
+ web-wasm/tests/kem_vector_dk3.json                 |  14 ++
+ 45 files changed, 733 insertions(+), 285 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +87,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (aa044ecf7fb093eb4cecfe66a23d937b0591417a)
+WIP snapshot: refs/wip/last (7195832d12128864ea947d4d18b8092a68b06b29)

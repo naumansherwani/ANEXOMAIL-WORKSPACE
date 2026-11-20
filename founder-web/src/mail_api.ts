@@ -9,7 +9,7 @@ import type { Box, Counts, Lane, Proof, Row, Sum } from "./mail_pure";
 const q = (o: Record<string, string | number | undefined | null>) => Object.entries(o).filter(([, v]) => v !== undefined && v !== null && v !== "").map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join("&");
 export type Facts = Row & { key_id?: string };
 export type Opened = { opened: true; touched: boolean; facts: Facts; sum: Sum; view: { text: string; had_html: boolean; remote_content_blocked: boolean; attachments: { name: string; type: string; size: number }[] } };
-export type OpenAnswer = Opened | { needs_touch: true; action: string; target: string } | { broken: true; reason: string } | { sealed_for_kernel: true; mail: any } | { error: string };
+export type OpenAnswer = Opened | { needs_touch: true; action: string; target: string } | { broken: true; reason: string } | { sealed_for_kernel: true; touched?: boolean; mail: any } | { error: string };
 
 export async function boxes(): Promise<{ connected: boolean; boxes: Box[]; vault_ready?: boolean }> { return (await get("/founder/v1/mail/boxes")).data; }
 export async function counts(box: string): Promise<Counts | null> { const d = (await get(`/founder/v1/mail/counts?${q({ box })}`)).data; return d?.connected ? d.counts : null; }
