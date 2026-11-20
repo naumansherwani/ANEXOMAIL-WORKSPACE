@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 07:40 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 07:40 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC3-5 UI: MailPresendBar + presets + MailTimeline (kernel RPC)
 NEXT STEP: mail_api.ts timeline/delivery/badges, MailPresendBar.tsx, presets menu in MailCompose, MailTimeline in Sent detail, CSS, harness 390/820/1280, tsc+bun+vite
 HIS LAST WORD: his 07:40: ledger+blueprint+WORKING-NOW with time, then next phase technology
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 0597c2b1 20 Nov 07:40 QC3 checkpoint (WORKING-NOW)
 - 489a4803 20 Nov 07:40 ledger line bc481060
 - bc481060 20 Nov 07:40 QC3 status: install run, QC3-5 technology written
 - ced1f86d 20 Nov 07:37 ledger line c5ce0679
 - c5ce0679 20 Nov 07:37 QC3-4: presend_pure.ts + 50 tests (bun 454/0)
-- 86b37e9d 20 Nov 07:35 ledger line 5863e28c
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 RESEARCH SO
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
-WIP snapshot: refs/wip/last (c8d2970f1c7f411514626030e72ca6aa97c21957)
+WIP snapshot: refs/wip/last (1d9903aecae5610627288f892f810a103b1a2f5a)
