@@ -2146,3 +2146,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - NOW founder QC2 (plan discussed, no code)
 
 - QC2 points P1-P7 written, waits his 4 answers
+
+- QC2 points renamed QC2-1..7 (founder)

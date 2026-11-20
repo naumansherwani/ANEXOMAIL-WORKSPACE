@@ -4149,3 +4149,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - NOW founder QC2 (plan discussed, no code)
 
 - QC2 points P1-P7 written, waits his 4 answers
+
+- QC2 points renamed QC2-1..7 (founder)
