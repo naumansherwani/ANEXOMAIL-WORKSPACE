@@ -92,3 +92,6 @@ WHERE WE STAND: QCONNECT = the database moves next to the server. NOTHING IS SWI
 
 ## DEEP AUDIT 21 Nov 2026 00:58 PKT (his order 00:44): report = docs/claude/QCONNECT-AUDIT-21NOV.md
 Fixed: data.rs no default database (no FOUNDER_PG_URL = REST), switch script EXIT trap + env newline guard. 573 tests pass. Open: Inter fonts on HTTP/1.1 (cause unknown, read-only check first), AES-256/ML-KEM proof, reverse copy, red "4 requests blocked". Switch 8b still NOT run (on hold until his explicit go).
+
+## QCONNECT CLOSED FOR EVER 21 Nov 2026 01:05 PKT (his word 00:58)
+Switch 8b never run; flag OFF; live site on REST as before; code inert in the repo; nothing deleted on his server without his word (idle: PG18 socket-only cluster, anexo_founder, anexo_copy, role anexomail-founder, group anexopg, /etc/anexomail/local-id.p8, backups). His last pastes: tech-proof (his ss: founder binary holds TCP 443 + UDP 443; DNS HTTPS alpn=h3; blocked rows = why no_cookie) and a third founder-install (service alive). Latency alternative = QSPEED. Optional teardown of the idle local database ONLY if he asks.
