@@ -1752,3 +1752,5 @@ LEFT: Rust core + tests, doors, send wiring, browser, his ONE sql-run + ONE foun
 - 20 Nov 2026 09:55 PKT AWAM emoji button (his order 09:34, image): sticker-face icon (own SVG drawing, not a copy of any chat app), round ghost 44 px button, click opens the same docked emoji list; awam ComposeStudio only (EmojiToggle sticker prop), founder default glyph unchanged. tsc clean, emoji tests 33/0. Not installed on his awam site: needs the awam pull command; not looked at live yet.
 
 - 20 Nov 2026 09:40 PKT HIS LAW: founder mail list look = same to same as his photo (kept in chat); law file docs/claude/FOUNDER-MAIL-LIST-LOOK-LAW-20NOV.md; guard test ui_class_guard.test.ts; class names grepped before use.
+
+- 20 Nov 2026 10:05 PKT FOUNDER emoji icon (his order 09:43): own FounderFace SVG (gradient-stroked round face, corner spark, smile lifts on hover, reduced motion respected), button frame and picker unchanged, no new dependency. Research: emoji-picker-element accessibility notes (nolanlawson.com), Unicode UTS #51 / CLDR annotations; data stays emojibase Unicode 17. tsc clean, bun 481/0, vite ok. Not installed; not looked at live.

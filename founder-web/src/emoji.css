@@ -73,3 +73,9 @@
 .emo-sc-i{display:flex;align-items:center;gap:10px;min-height:44px;padding:0 10px;border-radius:10px;cursor:pointer;font-size:14px;color:inherit}
 .emo-sc-i.on{background:rgba(43,136,216,.22)}
 .emo-sc-g{font-size:22px;line-height:1;flex:none}.emo-sc-n{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* 20 Nov 09:43 founder face icon (own drawing): the button frame stays as it was; only the icon changes. Motion is skipped for reduced-motion users. */
+.emo-face{display:block;overflow:visible}
+.emo-face .emo-smile{transform-box:fill-box;transform-origin:center;transition:transform .18s ease}
+.emo-toggle:hover .emo-smile,.emo-toggle[aria-expanded="true"] .emo-smile{transform:translateY(-.7px) scaleX(1.08)}
+@media (prefers-reduced-motion:reduce){.emo-face .emo-smile{transition:none}.emo-toggle:hover .emo-smile{transform:none}}

@@ -1,6 +1,6 @@
 // QC1e (19 Nov 2026): the emoji picker of the compose window. React 19 + TypeScript + motion. Data = emojibase-data (Unicode 17), bundled and loaded lazily on first open: no network, no vendor.
 // Pure logic is in emoji_pure.ts (bun-tested). Inserts at the caret of the message box. 44 px targets, keyboard (arrows, Enter, Escape), role=dialog + grid, reduced motion respected.
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { buildUr, inGroup, insertAt, loadList, loadTone, pushRecent, RECENT_KEY, search, TONE_KEY, TONES, withTone, type Emoji, type Group, type Tone, type UrIndex } from "./emoji_pure";
 import "./emoji.css";
@@ -26,10 +26,25 @@ export function useEmojiDock(): Dock {
   const close = useCallback(() => { setOpen(false); btn.current?.focus(); }, []);
   return { open, toggle, close, btn };
 }
+/** His 20 Nov 09:43 order (founder): an own sticker-face icon, different from the awam one: gradient-stroked round face, a spark on the corner, the smile lifts on hover. Pure SVG, no image, no new dependency; colours come from the theme tokens. */
+export function FounderFace({ size = 24 }: { size?: number }) {
+  const id = useId();
+  return (
+    <svg className="emo-face" width={size} height={size} viewBox="0 0 24 24" fill="none" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+      <defs><linearGradient id={id} x1="3" y1="3" x2="21" y2="21" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="var(--emo-a, #7fb4ff)" /><stop offset="1" stopColor="var(--emo-b, #b794ff)" /></linearGradient></defs>
+      <g stroke={`url(#${id})`}>
+        <circle cx="11" cy="12" r="8" />
+        <path className="emo-smile" d="M7.6 14.2c1.6 2 4.6 2.2 6.6.2" />
+        <path d="M8.4 9.4v.2M13.6 9.4v.2" strokeWidth="2.4" />
+        <path d="M19.2 3.2v3.6M17.4 5h3.6" />
+      </g>
+    </svg>
+  );
+}
 export function EmojiToggle({ dock, className = "mx-btn alt" }: { dock: Dock; className?: string }) {
   return (
     <button ref={dock.btn} type="button" className={`${className} emo-btn emo-toggle`} aria-haspopup="dialog" aria-expanded={dock.open} aria-label="Insert emoji" title="Emoji" onClick={dock.toggle}>
-      <span aria-hidden="true">🙂</span>
+      <FounderFace />
     </button>
   );
 }
