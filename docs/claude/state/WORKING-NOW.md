@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 07:37 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 07:37 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC3-3 Rust door done (cargo 558/0); QC3-4 presend_pure.ts + 50 tests done; starting QC3-5 UI (MailPresendBar, presets, timeline) via kernel RPC
 NEXT STEP: QC3-5: api in mail_api.ts, MailPresendBar, schedule presets, MailTimeline in Sent detail, CSS, harness 390/820/1280 under real CSP
 HIS LAST WORD: 5-min check + his 07:33 no filtered tests
@@ -18,22 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- c5ce0679 20 Nov 07:37 QC3-4: presend_pure.ts + 50 tests (bun 454/0)
 - 86b37e9d 20 Nov 07:35 ledger line 5863e28c
 - 5863e28c 20 Nov 07:35 QC3-3: Rust + Tokio + axum delivery timeline doors (cargo 558/0)
 - 65b1e17e 20 Nov 07:26 ledger line a70a30f5
 - a70a30f5 20 Nov 07:26 QC3 checkpoint (WORKING-NOW)
-- cfa25590 20 Nov 07:26 ledger line 0b2a26c0
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
-?? founder-web/src/presend_pure.test.ts
-?? founder-web/src/presend_pure.ts
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 25 +++++++------------------
- 1 file changed, 7 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -44,4 +42,4 @@ RESEARCH SOURCES (opened and read): Exclaimer embedded vs hosted signature image
 HIS 4 QUESTIONS, ANSWERS FROM RESEARCH (his word still needed, defaults below):
 1. Only what he writes is rich: YES. Reply/forward of received HTML = QC4. Pasted
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
-WIP snapshot: refs/wip/last (5cb59a0eac823a3b04e3185c0a19bc6986e523e3)
+WIP snapshot: refs/wip/last (8b25faa2e1f4b26ce0bd25dd819ce8a2563c56b3)
