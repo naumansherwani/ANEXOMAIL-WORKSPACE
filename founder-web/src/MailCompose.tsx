@@ -16,9 +16,10 @@ import { fill, knownVars, pickSignature, slashMatches, type Sig, type Snippet } 
 import { applyFix, presendChecks, scheduleOf, shouldWarn, warnKey, type Fix } from "./presend_pure";
 import { MailPresendBar } from "./MailPresendBar";
 import { SchedulePresets } from "./SchedulePresets";
+import { BIG_REPLY, countPeople } from "./reply_start";
 import { chipsOf, joinChips, parseAddrs, removeChip, takenMap, type Field } from "./recipients";
 
-export type Start = { to?: string; subject?: string; text?: string; in_reply_to?: string; references?: string[]; reply_to?: string; draft?: string };
+export type Start = { cc?: string; inline?: boolean; to?: string; subject?: string; text?: string; in_reply_to?: string; references?: string[]; reply_to?: string; draft?: string };
 
 function DkimSetup({ box, onDone }: { box: Box; onDone: () => void }) {
   const [keys, setKeys] = useState<api.DkimRow[] | null>(null), [busy, setBusy] = useState(""), [err, setErr] = useState(""), [made, setMade] = useState<{ name: string; value: string }[]>([]);
@@ -45,8 +46,9 @@ function DkimSetup({ box, onDone }: { box: Box; onDone: () => void }) {
   );
 }
 
-export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start: Start; onClose: () => void; onQueued: (q: api.Queued) => void }) {
-  const [to, setTo] = useState(start.to ?? ""), [cc, setCc] = useState(""), [bcc, setBcc] = useState(""), [showCc, setShowCc] = useState(false);
+export function MailCompose({ box, start, onClose, onQueued, onPopOut }: { box: Box; start: Start; onClose: () => void; onQueued: (q: api.Queued) => void; onPopOut?: (next: Start) => void }) {
+  const inline = !!start.inline;   // QC4b: the reply panel under the mail = this same composer (editor, calm bar, presets), only the frame differs
+  const [to, setTo] = useState(start.to ?? ""), [cc, setCc] = useState(start.cc ?? ""), [bcc, setBcc] = useState(""), [showCc, setShowCc] = useState(!!start.cc);
   const [subject, setSubject] = useState(start.subject ?? ""), [text, setText] = useState(start.text ?? ""), [when, setWhen] = useState("");
   const [busy, setBusy] = useState(false), [err, setErr] = useState(""), [needsDkim, setNeedsDkim] = useState(false), [saved, setSaved] = useState("");
   // QC2-B: a new empty mail starts rich; a reply / a draft without html starts plain exactly as before (nothing is converted behind his back)
@@ -136,9 +138,9 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
   async function discard() { if (!sure) { setSure(true); window.setTimeout(() => setSure(false), 4000); return; } if (draft.current.id) await api.draftDiscard(box.id, draft.current.id).catch(() => false); onClose(); }
 
   return (
-    <motion.div className="mc-wrap" data-mode={mode} style={vv ? ({ "--vvh": `${vv.h}px`, "--vvt": `${vv.t}px` } as React.CSSProperties) : undefined} initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} role="dialog" aria-modal="true" aria-label="New email" onKeyDown={(e) => { if (e.key === "Escape") void closeKeep(); if ((e.ctrlKey || e.metaKey) && e.key === "Enter") void send(); }}>
-      <motion.form className="mc" data-mode={mode} data-fx={fx ? "sent" : undefined} initial={reduce ? false : { y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 24, opacity: 0 }} transition={{ type: "spring", stiffness: 420, damping: 36 }} onSubmit={(e) => { e.preventDefault(); void send(); }}>
-        <header><h2>{start.in_reply_to ? "Reply" : "New email"}</h2><span className="dim small" aria-live="polite">{saved}</span><button type="button" className="mc-x mc-b" onClick={() => setMode(mode === "min" ? "normal" : "min")} aria-label={mode === "min" ? "Restore" : "Minimize"}>{mode === "min" ? "▢" : "–"}</button><button type="button" className="mc-x mc-b mc-exp" onClick={() => setMode(mode === "large" ? "normal" : "large")} aria-label={mode === "large" ? "Smaller" : "Expand"}>{mode === "large" ? "⤡" : "⤢"}</button><button type="button" className="mc-x" onClick={() => void closeKeep()} aria-label="Close (the draft is kept)">×</button></header>
+    <motion.div className={inline ? "mc-wrap mc-inline" : "mc-wrap"} data-mode={inline ? "normal" : mode} style={vv ? ({ "--vvh": `${vv.h}px`, "--vvt": `${vv.t}px` } as React.CSSProperties) : undefined} initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} {...(inline ? { role: "region" } : { role: "dialog", "aria-modal": true })} aria-label={inline ? "Reply panel" : "New email"} onKeyDown={(e) => { if (e.key === "Escape") void closeKeep(); if ((e.ctrlKey || e.metaKey) && e.key === "Enter") void send(); }}>
+      <motion.form className="mc" data-mode={inline ? "normal" : mode} data-fx={fx ? "sent" : undefined} initial={reduce ? false : { y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 24, opacity: 0 }} transition={{ type: "spring", stiffness: 420, damping: 36 }} onSubmit={(e) => { e.preventDefault(); void send(); }}>
+        <header><h2>{start.in_reply_to ? (start.subject?.startsWith("Fwd:") ? "Forward" : "Reply") : "New email"}</h2><span className="dim small" aria-live="polite">{saved}</span>{inline ? (onPopOut && <button type="button" className="mc-x mc-b mc-pop" onClick={() => { void (async () => { try { await persist(); } catch { /* snapshot below */ } onPopOut(draft.current.id ? { draft: draft.current.id } : { to, cc, subject, text, in_reply_to: start.in_reply_to, references: start.references, reply_to: start.reply_to }); })(); }} aria-label="Pop out to a window" title="Pop out">⤢</button>) : <><button type="button" className="mc-x mc-b" onClick={() => setMode(mode === "min" ? "normal" : "min")} aria-label={mode === "min" ? "Restore" : "Minimize"}>{mode === "min" ? "▢" : "–"}</button><button type="button" className="mc-x mc-b mc-exp" onClick={() => setMode(mode === "large" ? "normal" : "large")} aria-label={mode === "large" ? "Smaller" : "Expand"}>{mode === "large" ? "⤡" : "⤢"}</button></>}<button type="button" className="mc-x" onClick={() => void closeKeep()} aria-label="Close (the draft is kept)">×</button></header>
         <label className="mc-f"><span>From</span><b>{box.address}</b></label>
         <RecipientField field="To" value={to} onChange={setTo} taken={taken} onMove={moveChip} book={book} onBookAct={bookAct} tls={tls} onDragActive={(on) => { if (on) setShowCc(true); }} inputRef={toRef}
           trailing={!showCc ? <button type="button" className="mc-link" onClick={() => setShowCc(true)}>Cc / Bcc</button> : undefined} />
@@ -170,6 +172,7 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
         <AnimatePresence>{err && <motion.p key="e" className="mx-warn" role="alert" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>{err}</motion.p>}</AnimatePresence>
         {needsDkim && <DkimSetup box={box} onDone={() => setErr("")} />}
         {barOn && <MailPresendBar warns={liveWarns} scheduled={!!when} busy={busy} onSendAnyway={sendAnyway} onFix={barFix} onKeepEditing={() => setBarOn(false)} />}
+        {countPeople(to, cc, bcc) > BIG_REPLY && <p className="mx-note mc-many" role="status">This mail goes to {countPeople(to, cc, bcc)} people. Check the list before you send.</p>}
         <SchedulePresets value={when} onChange={setWhen} />
         <footer>
           <button type="submit" className="mx-btn" disabled={busy}>{busy ? "Sending…" : when ? "Schedule" : "Send"}</button>

@@ -15,7 +15,10 @@ import { FOLDERS, ago, compact, fmtSize, glide, hue, initials, isGatedView, keyC
 import { TrustRing, OutFactsLine } from "./TrustRing";
 import { MailTimeline } from "./MailTimeline";
 import { SentBadge, useSentBadges } from "./SentBadges";
-import { referencesFor } from "./reply_pure";
+import { hasOthers } from "./reply_pure";
+import { buildStart, type ReplyKind } from "./reply_start";
+import { QuotedBody, selectedIn } from "./QuotedBody";
+import { MailReplyBar } from "./MailReplyBar";
 import { ConfirmSheet } from "./ConfirmSheet";
 import { deleteQuestion, type Ask } from "./confirm_pure";
 import { sentMs } from "./trust_pure";
@@ -133,7 +136,8 @@ export function MailBox() {
   const cur = rows.find((r) => r.id === sel) ?? null;
   // Q1b4: Delete asks first (his 17 Nov order). Trash is the only destructive door here; every other action stays one click.
   const [ask, setAsk] = useState<Ask | null>(null);
-  const composeOpen = useRef(false); composeOpen.current = compose !== null || ask !== null;
+  const bodyRef = useRef<HTMLDivElement>(null), [inline, setInline] = useState<{ id: string; start: Start } | null>(null), [hasSel, setHasSel] = useState(false);
+  const composeOpen = useRef(false); composeOpen.current = compose !== null || ask !== null || inline !== null;
   const act = useCallback((what: "archive" | "trash" | "star" | "unread" | "vault") => {
     if (what !== "trash") return doAct(what);
     const r = rows.find((x) => x.id === sel); if (!r) return Promise.resolve();
@@ -142,7 +146,10 @@ export function MailBox() {
   const query = useMemo(() => parseQuery(qText), [qText]);
   const shown = useMemo(() => rows.filter((r) => matchQuery(r, query)), [rows, query]);
   const sentBadges = useSentBadges(boxId, view, useMemo(() => shown.filter((r) => r.direction === "out").map((r) => r.id), [shown]));
-  const reply = useCallback(() => { if (!opened || !cur) return; setCompose({ to: opened.sum.from, subject: replySubject(opened.sum.subject ?? ""), text: quoteReply(opened.sum.from_name || opened.sum.from || "", opened.sum.date ? new Date(opened.sum.date).toLocaleString() : "", opened.view.text || ""), in_reply_to: opened.sum.message_id, references: referencesFor(opened.sum.references ?? [], opened.sum.message_id ?? ""), reply_to: cur.id }); }, [opened, cur]);
+  // QC4b: Reply / Reply all / Forward open the panel UNDER the mail (same composer); Pop-out moves it to the window. The reader's selection (if any) is what gets quoted.
+  const startReply = useCallback((k: ReplyKind) => { if (!opened || !cur || !box) return; setInline({ id: cur.id, start: buildStart(k, { sum: opened.sum, text: opened.view.text || "", me: [box.address], selection: k === "forward" ? "" : selectedIn(bodyRef.current) }) }); }, [opened, cur, box]);
+  const reply = useCallback(() => startReply("reply"), [startReply]);
+  useEffect(() => { const f = () => setHasSel(selectedIn(bodyRef.current) !== ""); document.addEventListener("selectionchange", f); return () => document.removeEventListener("selectionchange", f); }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -150,7 +157,11 @@ export function MailBox() {
       const t = e.target as HTMLElement | null; if (t?.closest?.("dialog")) return;   // Q1b4: keys inside the ring sheet or the delete question belong to that dialog (Esc must not also close the mail)
       if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
       if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey) { e.preventDefault(); searchRef.current?.focus(); return; }
-      if (e.key === "r" && !e.ctrlKey && !e.metaKey && !e.altKey && cur?.direction === "in" && opened) { e.preventDefault(); reply(); return; }
+      if (!e.ctrlKey && !e.metaKey && !e.altKey && opened && cur && cur.folder !== "drafts") {
+        if (e.key === "r" && cur.direction === "in") { e.preventDefault(); startReply("reply"); return; }
+        if (e.key === "a" && cur.direction === "in" && opened.sum.to && hasOthers({ from: opened.sum.from ?? "", to: opened.sum.to ?? [], cc: opened.sum.cc ?? [], replyTo: opened.sum.reply_to, me: [box?.address ?? ""] })) { e.preventDefault(); startReply("all"); return; }
+        if (e.key === "f") { e.preventDefault(); startReply("forward"); return; }
+      }
       const c = keyCmd(e.key, { ctrl: e.ctrlKey, meta: e.metaKey, alt: e.altKey }, pending.current); pending.current = null; if (!c) return;
       if ("pending" in c) { pending.current = c.pending; window.setTimeout(() => { pending.current = null; }, 1200); return; }
       const i = shown.findIndex((x) => x.id === sel);
@@ -296,10 +307,12 @@ export function MailBox() {
                   {cur.direction === "out" && <MailTimeline box={boxId} id={opened.facts.id} />}
                   {cur.direction === "out" && <TlsProven box={boxId} addrs={[...(opened.sum.to ?? []), ...(opened.sum.cc ?? [])]} />}
                   {opened.view.remote_content_blocked && <p className="mx-note">Remote images and scripts in this message were not loaded. You are reading its text only.</p>}
-                  <pre className="mbx-body-t">{opened.view.text || "(empty message)"}</pre>
+                  <QuotedBody ref={bodyRef} text={opened.view.text || ""} />
                   {opened.view.attachments.length > 0 && (
                     <ul className="mbx-att" aria-label="Attachments">{opened.view.attachments.map((a, i) => <li key={i}><Ic k="clip" s={16} /><b>{a.name}</b><span>{a.type} · {fmtSize(a.size)}</span></li>)}<li className="mbx-attn">Opening attachments arrives with the attachment phase (virus-scanned, sealed, streamed).</li></ul>
                   )}
+                  {cur.folder !== "drafts" && <MailReplyBar canAll={cur.direction === "in" && hasOthers({ from: opened.sum.from ?? "", to: opened.sum.to ?? [], cc: opened.sum.cc ?? [], replyTo: opened.sum.reply_to, me: [box?.address ?? ""] })} hasSel={hasSel} onPick={startReply} />}
+                  {inline && inline.id === cur.id && box && <div className="mbx-inline"><MailCompose key={`in-${cur.id}-${inline.start.subject}`} box={box} start={inline.start} onClose={() => setInline(null)} onQueued={(q) => { comet(); setQueued(q); setInline(null); void loadCounts(); void loadList(); }} onPopOut={(n) => { setInline(null); setCompose(n); }} /></div>}
                 </>
               )}
             </div>

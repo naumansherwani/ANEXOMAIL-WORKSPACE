@@ -169,8 +169,8 @@ founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-D4WSOwZB.css
-founder-web/dist/assets/index-ifQyEVmG.js
+founder-web/dist/assets/index-28vuW0q6.js
+founder-web/dist/assets/index-pe1nwduT.css
 founder-web/dist/assets/kernel.worker-BLkLR49F.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
@@ -236,6 +236,7 @@ founder-web/src/MailCompose.tsx
 founder-web/src/MailDeliveryBoard.tsx
 founder-web/src/MailHealth.tsx
 founder-web/src/MailPresendBar.tsx
+founder-web/src/MailReplyBar.tsx
 founder-web/src/MailRichPanel.tsx
 founder-web/src/MailTimeline.tsx
 founder-web/src/MailView.tsx
@@ -249,6 +250,7 @@ founder-web/src/PolicyEditor.tsx
 founder-web/src/Presence.tsx
 founder-web/src/Profile.tsx
 founder-web/src/PulseCard.tsx
+founder-web/src/QuotedBody.tsx
 founder-web/src/READ-FIRST-FOUNDER-LAW.md
 founder-web/src/RecipientField.tsx
 founder-web/src/RichEditor.tsx
@@ -384,6 +386,8 @@ founder-web/src/recipients.test.ts
 founder-web/src/recipients.ts
 founder-web/src/reply_pure.test.ts
 founder-web/src/reply_pure.ts
+founder-web/src/reply_start.test.ts
+founder-web/src/reply_start.ts
 founder-web/src/rich_pure.test.ts
 founder-web/src/rich_pure.ts
 founder-web/src/richeditor.css
