@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 19:54 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 20:01 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC5 Delete forever WRITTEN + tested + pushed; waits his install; next QC7 follow-up reminder + sealed draft, QC8, Q3
 NEXT STEP: give install line; then QC7 contract
 HIS LAST WORD: QC5 discuss
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 79c40216 20 Nov 20:01 QC5 chrome test, update green
+- da7e1601 20 Nov 19:54 ledger line ee96a40e
 - ee96a40e 20 Nov 19:54 QC5: Delete forever (signed Rust door, key touch, Trash UI, Empty Trash)
 - 5ced2c17 20 Nov 19:54 ledger line bf874e4f
 - bf874e4f 20 Nov 19:54 QC5 written
-- 716a707d 20 Nov 19:50 ledger line 0486b43b
-- 0486b43b 20 Nov 19:50 DK-a/DK-b done by his word; QC5 contract; open gaps listed
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (690957e827d27a867601ff03797580e12220293c)
+WIP snapshot: refs/wip/last (0f47be42a6d1b8cde767b7387023c8aef89370d2)
