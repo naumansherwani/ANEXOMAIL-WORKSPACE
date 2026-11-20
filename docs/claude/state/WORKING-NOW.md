@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 8c357a75 20 Nov 09:58 QC4 green final by his word; clock fix 10:05 to 09:58
+- 3f192cfe 20 Nov 09:58 ledger line f2a28919
 - f2a28919 20 Nov 09:58 QC4 green final by his word + clock correction
 - 6f7306ed 20 Nov 09:58 ledger line 401c0e11
 - 401c0e11 20 Nov 09:58 QC4 fix + founder emoji green
-- c44935fe 20 Nov 09:58 ledger line e6e60015
-- e6e60015 20 Nov 09:58 QC4 fix + founder emoji icon green with live look
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (c93b4bc1a0ae9b52223814102017686e632880ea)
+WIP snapshot: refs/wip/last (109d390b39135bb449d5777330930d882778d32a)
