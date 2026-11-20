@@ -4342,3 +4342,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - QCONNECT 21:5x PKT: pg-local-install = OK on his server (PostgreSQL 18.6, socket only, no TCP listener, compat bootstrap ok); full-backup.sh taken (/root/anexomail-backups/full-20261120-164159, 132M); SANDBOX FINDING: the E-line alone cannot build a fresh DB (E37 needs phase58 base schema) so step 4 = one read-only pg_dump of public+auth+storage from the managed DB restored into new local anexo_copy: pg-local-copy.sh written, awaits his run
 
 - QCONNECT 22:1x PKT: his pg-local-copy run: dump 12M in 661 s, restore 675 of 677 tables into local anexo_copy, fmail_messages 34=34, fmail_outbox 13=13, auth.users 16=16; the 2 missing tables need pgvector: pg-local-vector.sh written (waits his run); full status in QCONNECT-PLAN STATUS block; nothing wired into the running service yet
+
+- QCONNECT 22:0x PKT: WORKING-NOW checkpoint corrected (DOING/NEXT were stale); 2-minute ckpt-loop alive in the repo folder
