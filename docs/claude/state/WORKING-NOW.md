@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 00:59 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 00:59 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT CLOSED FOR EVER by his word (21 Nov 01:05 PKT). Switch never run, flag OFF, site on REST.
 NEXT STEP: Back to QC3a / QSPEED per docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md. rules-read.py first. Never restart QCONNECT.
 HIS LAST WORD: Qconnect yehi bandh kero hamesha ke liye; mera founder account pe impact? advance technology lost?
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 89ada5c6 21 Nov 00:59 WORKING-NOW snapshot after QCONNECT close
 - 61789911 21 Nov 00:59 ledger line 078fb50e
 - 078fb50e 21 Nov 00:59 QCONNECT closed for ever by founder word; state saved
 - cff43612 21 Nov 00:52 ledger line 33171565
 - 33171565 21 Nov 00:52 founder-tech-proof.sh read-only audit proofs
-- 3388902c 21 Nov 00:48 ledger line 4a23e415
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 21 ++++-----------------
- 1 file changed, 4 insertions(+), 17 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (2f3124fc7ee54b4f324615e1d074bfb37df8e0f5)
+WIP snapshot: refs/wip/last (40fd8d99b1ae34274ea3213b130b7a91e10aa134)
