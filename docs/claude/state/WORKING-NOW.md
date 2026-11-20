@@ -1,6 +1,6 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 20:52 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QC7b: his Chrome Settings > Privacy shows 'No device key yet' (Create key button present). Creating the key needs a physical passkey touch (WebAuthn PRF), which I cannot give and a prompt would freeze my browser tool; waiting for his ONE touch. QC7a GREEN, QC7 not closed
-NEXT STEP: He taps Settings > Privacy > Mail device key > Create key and touches his key; then I do: offline draft, Restore, write QC7 GREEN; then QC8
+# WORKING NOW (manual checkpoint, 20 Nov 2026 20:56 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QSPEED + LOGIN FIX: his phone screenshot 20:56 PKT shows the founder sign-in page: 'The sign-in service is not answering right now. Nothing is wrong with your password.' (busy_503 in server/founder/src/auth.rs/signin.rs). Finding the cause in code (database call failing or slow) and fixing it; then login speed to 50 ms target (ONE SQL door per login step, writes off the critical path); his db-latency-check paste still pending. QC7 is GREEN (32c07c05).
+NEXT STEP: 1) grep the exact message, find which call returns busy_503 on password login; 2) fix without touching the login UI (LOGIN UI LAW); 3) rec.sh; 4) give him ONE server line if needed; 5) QSPEED login finish as one SQL door; then QC8, Q3
 HIS LAST WORD: SQL advance 400+ likho QC7
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- befd2f2e 20 Nov 20:52 ledger line 14983446
 - 14983446 20 Nov 20:52 QSPEED started: login path read, plan recorded
 - 32c07c05 20 Nov 20:51 ledger line b4760674
 - b4760674 20 Nov 20:51 QC7 green on live Chrome look (reminder + sealed draft); QSPEED starts
 - 7a03729c 20 Nov 20:41 ledger line c4c37d4d
-- c4c37d4d 20 Nov 20:41 WORKING-NOW 20:43: QC7b waits for his Create-key touch
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 21 ++++-----------------
+ 1 file changed, 4 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (979a91a1dcf12fa3ac1a4307ba081f21803bbc69)
+WIP snapshot: refs/wip/last (b4d326f414b4c54b0105002e0912d30991762d94)
