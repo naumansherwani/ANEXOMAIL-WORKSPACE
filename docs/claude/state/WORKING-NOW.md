@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 00:59 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 00:59 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT CLOSED FOR EVER by his word (21 Nov 01:05 PKT). Switch never run, flag OFF, site on REST, nothing deleted on his server. Evidence founder tech intact (h3 14/18, kernel worker, WebGPU, ML-DSA line, ss: founder binary TCP+UDP 443, DNS alpn=h3). Blocked rows = no_cookie.
 NEXT STEP: Back to the phase order: QC3a (Undo X = send now) / QSPEED per docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md. Read rules-read.py first. Do NOT restart QCONNECT. Teardown of idle local DB only if he asks. Aap only, Rule-70 table, no guesses on his server, 2-min loop.
 HIS LAST WORD: Qconnect yehi bandh kero hamesha ke liye; mera founder account pe impact? advance technology lost?
@@ -18,26 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 078fb50e 21 Nov 00:59 QCONNECT closed for ever by founder word; state saved
 - cff43612 21 Nov 00:52 ledger line 33171565
 - 33171565 21 Nov 00:52 founder-tech-proof.sh read-only audit proofs
 - 3388902c 21 Nov 00:48 ledger line 4a23e415
 - 4a23e415 21 Nov 00:48 QCONNECT: deep audit + 3 loophole fixes
-- 02943adb 21 Nov 00:40 ledger line 0463cb14
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/BLUEPRINT-ABC-01NOV.md
- M docs/claude/QCONNECT-PLAN-20NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/BLUEPRINT-ABC-01NOV.md    |  1 +
- docs/claude/QCONNECT-PLAN-20NOV.md    |  3 +++
- docs/claude/state/WORKING-NOW.md      | 26 ++++++++------------------
- docs/claude/tech-contracts/CURRENT.md |  2 ++
- 4 files changed, 14 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 23 ++---------------------
+ 1 file changed, 2 insertions(+), 21 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -48,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (b7e685e49b6dcce878715e83ffd2cf5a6291248a)
+WIP snapshot: refs/wip/last (c02161492ebe472565f79bccbba72cf48f6eccf8)
