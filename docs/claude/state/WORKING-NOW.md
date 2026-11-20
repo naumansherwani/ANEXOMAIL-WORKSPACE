@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:44 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:46 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: DOING: QC4 green by his word; list-look fix 9ac3a9c6 + law 90cb141d waiting his reinstall; awam sticker emoji written (587aac38), waiting awam pull
 NEXT STEP: NEXT: re-look founder list vs his photo after reinstall; awam look after pull; evening QC5/QC7/QC8/Q3
 HIS LAST WORD: 5-min check 10:11
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 0d1bcd98 20 Nov 09:46 awam sticker emoji proven live by his Chrome look
+- 46e003f9 20 Nov 09:44 ledger line 886c37f9
 - 886c37f9 20 Nov 09:44 founder emoji: own FounderFace icon
 - fec9f2e7 20 Nov 09:42 ledger line efe16b1d
 - efe16b1d 20 Nov 09:42 QC4 checkpoint
-- 90cb141d 20 Nov 09:40 ledger line fb61b8f8
-- fb61b8f8 20 Nov 09:40 founder mail list look law + class guard test
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (d2649e6c9e583f952e929c6ea22872f7dc28a9de)
+WIP snapshot: refs/wip/last (c166659a65f459ce3c0d59b72f939cf81a428585)
