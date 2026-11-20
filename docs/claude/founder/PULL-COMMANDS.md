@@ -2180,3 +2180,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 20 Nov 07:05 PKT QC2 live loophole fixed: his site CSP require-trusted-types-for script crashed New mail (Tiptap DOMParser string); editor now JSON-fed + one inert parse policy; sandbox harness runs his real CSP; tsc clean, bun pass; waits his ONE founder-install then my live Chrome look again
 
 - 20 Nov 07:08 PKT 5-min check: rules read, WORKING-NOW updated; QC2 Trusted Types fix pushed, waits his founder-install then my live Chrome look
+
+- 20 Nov 07:14 PKT 5-min check: rules read, WORKING-NOW updated; QC2 fix pushed, waits his founder-install then my live Chrome look
