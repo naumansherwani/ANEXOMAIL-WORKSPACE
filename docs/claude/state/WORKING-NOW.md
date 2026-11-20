@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 01:50 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 01:50 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 02:00 PKT: he asks: local DB takes my server memory, what is the state, should Supabase be the fallback or go back to Supabase while the rest stays on server. I wrote a READ-ONLY qconnect-footprint.sh (RAM, disk, postgres RSS, db size); no guess until his paste. 3 options explained: OFF=1 / keep local + reverse copy / login-only.
 NEXT STEP: He pastes footprint output -> I give the numbers, then he picks: OFF=1, keep local (then reverse copy to Supabase = open gap 1 first), or login-only (contract first). Nothing on his server without his word.
 HIS LAST WORD: his 21 Nov 01:50 message: memory of my server, Supabase fallback or back to Supabase
@@ -18,21 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- de43576b 21 Nov 01:50 QCONNECT: footprint read-only script and memory answer
 - 6845a24d 21 Nov 01:44 ledger line 5eeccd18
 - 5eeccd18 21 Nov 01:44 QCONNECT: code vs data explanation recorded
 - 01e3d317 21 Nov 01:41 ledger line 95ee13ef
 - 95ee13ef 21 Nov 01:41 QCONNECT: real clock correction, login-only wish recorded
-- 33b02cda 21 Nov 01:38 ledger line ff2c6a88
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
-?? docs/cursor-work/server/qconnect-footprint.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 24 ++++++------------------
- 1 file changed, 6 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -43,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (4a4cd700f150f62b3b819c16123ebae57cb9e8c1)
+WIP snapshot: refs/wip/last (3f1fafffd9860ffcbff49eddb973ac4e7a025c63)
