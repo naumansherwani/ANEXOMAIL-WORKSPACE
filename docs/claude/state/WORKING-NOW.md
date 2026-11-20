@@ -1,6 +1,6 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 00:49 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QCONNECT deep audit done 21 Nov 00:58 PKT: report docs/claude/QCONNECT-AUDIT-21NOV.md; fixed data.rs default DB, switch EXIT trap + env newline; 573 tests pass. Switch 8b NOT run, on hold for his explicit go. 7 of 10 steps proven, flag OFF, site on REST.
-NEXT STEP: Wait for his go. Open items: Inter fonts HTTP/1.1 (read-only check first, no guess), AES-256/ML-KEM proof (Chrome panel or openssl paste), red '4 requests blocked', reverse copy decision. After switch: he signs in once, step 9 re-measure, step 10 local dump. Law 3, Aap only, Rule-70 table, 2-min loop must run.
+# WORKING NOW (manual checkpoint, 21 Nov 2026 00:52 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 21 Nov 00:58 PKT: founder-tech-proof.sh WRITTEN (read-only: fonts HTTP/1.1 cause, TLS cipher/ML-KEM, red blocked count). His 2 lines: 1 = proof script, 2 = founder-install (installs data.rs fix). Switch 8b still on hold.
+NEXT STEP: Read his proof paste, then fix the ROOT cause of fonts h1 (DNS HTTPS record is his Namecheap hands; Alt-Svc is Rust code), explain the red blocked rows. No guesses.
 HIS LAST WORD: Qconnect ne barbad kiya, 5 min fix, deep audit, auto fix loopholes, qanoon na tootay, compaction-proof
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -18,20 +18,21 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 3388902c 21 Nov 00:48 ledger line 4a23e415
 - 4a23e415 21 Nov 00:48 QCONNECT: deep audit + 3 loophole fixes
 - 02943adb 21 Nov 00:40 ledger line 0463cb14
 - 0463cb14 21 Nov 00:40 QCONNECT: hold switch until his go
 - 64b10465 21 Nov 00:36 ledger line 8e12b1d9
-- 8e12b1d9 21 Nov 00:36 QCONNECT: step 8a prep done, state refreshed for compaction
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+?? docs/cursor-work/server/founder-tech-proof.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 29 ++---------------------------
- 1 file changed, 2 insertions(+), 27 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 22 +++++-----------------
+ 1 file changed, 5 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +43,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (574cc1aa2a97317720d276711130ded837058e1a)
+WIP snapshot: refs/wip/last (74fb3c5b8e1e6681a060ad2ae1b0af26f1c25ac8)

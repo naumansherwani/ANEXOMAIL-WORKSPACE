@@ -3335,3 +3335,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 00:40 PKT: his 00:39 message: angry after 3 prep runs (my wrong guesses). Switch qconnect-switch.sh NOT run, live site untouched on REST. Waiting for his explicit go; no new server command until he asks.
 
 - 21 Nov 2026 00:58 PKT: QCONNECT deep audit (docs/claude/QCONNECT-AUDIT-21NOV.md): live Chrome read-only proof (14/18 resources h3, kernel worker, WebGPU), 3 loopholes fixed (data.rs default DB, switch EXIT trap, env newline), 573 tests pass. Open: Inter fonts HTTP/1.1, AES-256/ML-KEM proof, reverse copy, red blocked count. Switch NOT run, on hold. 7 of 10 steps proven, REST live.
+
+- 21 Nov 2026 00:58 PKT: founder-tech-proof.sh written (read-only proofs for fonts HTTP/1.1, TLS cipher/ML-KEM, red blocked_24h = founder_dbsc_events). His lines: 1 proof, 2 founder-install (data.rs fix). Switch on hold.
