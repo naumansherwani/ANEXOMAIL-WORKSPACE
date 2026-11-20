@@ -1659,3 +1659,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 02:00 PKT: QCONNECT = GREEN AND CLOSED BY HIS WORD (his 01:30). WIRED: YES / REAL: YES / TECH-LAW CHECKED (proof in the 01:55 ledger line). Live state FOUNDER_DB=local, rollback OFF=1. Leftover gaps only in CLOSE-THE-GAPS-07NOV.md. Next QC8.
 
 - 21 Nov 2026 02:05 PKT: his 01:33 concern recorded as the TOP open item: founder data is single-copy on his server since the switch (dump 13 MB x 7 on the same disk); awam not moved; managed copy = frozen snapshot of ~01:30. Options without Storage Box and without a vendor asked: his own second server over ssh, Hetzner server-level snapshot/RAID check, laptop by hand. Awaiting his answer.
+
+- 21 Nov 2026 02:10 PKT: his scope dispute recorded: he meant only LOGIN, the switch moved the WHOLE founder database to local PostgreSQL (my unclear wording, my fault); awam not moved; website and Rust binary were already on his Hetzner server; advance tech unchanged. Options given: OFF=1 rollback now (loses only rows since ~01:30), keep local, or a later login-only mode. Awaiting his choice.
