@@ -1,5 +1,15 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: QC8 (SHORTCUTS + ACCESSIBILITY FINAL PASS), DRAFT written 21 Nov 2026 03:20 PKT, plan docs/claude/QC8-PLAN-21NOV.md. NO CODE until his answers to the 4 questions.
+STATE: PLAN ONLY. TECHNOLOGY: React 19 + TypeScript + Tailwind 4 + Radix (focus), pure TypeScript key map with golden tests (mail_keys_pure.ts), Framer Motion with reduced motion respected; no server, SQL or listener change; test tools (axe-core, Playwright) in my sandbox only.
+| Listed technology | Where | IN CODE | Proof |
+|---|---|---|---|
+| Pure key map v2 + golden tests | founder-web/src/mail_keys_pure.ts (+ test) | PLANNED | bun tests |
+| Radix focus trap / focus return, listbox + roving tabindex | MailBox.tsx, MailView.tsx, MailCompose.tsx | PLANNED | real Chrome keyboard walk, axe-core |
+| Live region (polite) for mail events | one new small component | PLANNED | axe-core + screen-reader text check |
+| Shortcut switch-off / remap setting | existing settings door (key registry checked first) | PLANNED | bun + sandbox |
+Rules: existing cinematic UI untouched; any NEW visible panel (the ? help sheet) is shown to him first.
+
 # TECH CONTRACT FOR PHASE: QCONNECT-LO (LOGIN-ONLY LOCAL), written 21 Nov 2026 02:30 PKT BEFORE his install. His FINAL word 02:00: only the login on his server, everything else on Supabase (managed REST stays the data place and the fallback for ever).
 STATE: WRITTEN + TESTED, NOT INSTALLED (cargo 574/0). WIRED: NO until his install. Not green.
 QCONNECT-LO TECHNOLOGY PER STEP: RUST + TOKIO: Sb gets a second pool `idpg` (identity only); FOUNDER_DB=login fills idpg and leaves `pg` empty, so rows/count/rpc/rpc_msg/setting_set stay on managed REST; login (localid.rs: bcrypt on a blocking thread, ES256 kid lid1, refresh rotation + reuse kill, hash-chained founder_localid_events), jwks, passkey mint and logout use idpg. FOUNDER_DB=local keeps both pools on the same socket (unchanged). Wrong url, unusable key or silent socket = REST for both (never down). PostgreSQL 18 on the unix socket (0 TCP listeners) holds ONLY auth.users, auth.sessions, auth.refresh_tokens and the localid ledger for the login.
@@ -2010,3 +2020,5 @@ REST stays for ever: unset flag, unreachable socket or unusable key = REST (data
 - 21 Nov 2026 03:00 PKT QCONNECT-LO RAN ON HIS SERVER (his paste 02:53): back-copy of 30 tables to Supabase, 0 founder-owned mismatches, healthz 200, me 401, bridge 401, journal 'database engine = REST (managed, data); identity engine = LOCAL'. Login on his server, all data on Supabase. Backup 13M + 184 tables kept at /var/backups/anexomail-pg/pre-login-20261120-212605. Not green until my Chrome look.
 
 - 21 Nov 2026 03:10 PKT QCONNECT-LO live look in my Chrome (his tab, read only): session valid, Live + Trusted, Dashboard 2/2 checks fine, Answers verified, Mail inbox real; first dashboard load took about 15 s after the restart; data is on Supabase REST again (slower than local, expected). Not stamped green (390/820 not looked yet).
+
+- 21 Nov 2026 03:20 PKT QCONNECT (login-only) GREEN BY HIS WORD (02:58). WIRED: YES / REAL: YES / TECH-LAW CHECKED: login on his server (journal proof, his paste 02:53), data on Supabase, my Chrome look ok, backup kept. QC8 started: plan docs/claude/QC8-PLAN-21NOV.md and contract draft written, no code until his 4 answers.

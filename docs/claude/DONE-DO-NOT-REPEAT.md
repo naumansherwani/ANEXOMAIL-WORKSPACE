@@ -1689,3 +1689,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 03:00 PKT QCONNECT-LO RAN ON HIS SERVER (his paste 02:53): back-copy of 30 tables to Supabase, 0 founder-owned mismatches, healthz 200, me 401, bridge 401, journal 'database engine = REST (managed, data); identity engine = LOCAL'. Login on his server, all data on Supabase. Backup 13M + 184 tables kept at /var/backups/anexomail-pg/pre-login-20261120-212605. Not green until my Chrome look.
 
 - 21 Nov 2026 03:10 PKT QCONNECT-LO live look in my Chrome (his tab, read only): session valid, Live + Trusted, Dashboard 2/2 checks fine, Answers verified, Mail inbox real; first dashboard load took about 15 s after the restart; data is on Supabase REST again (slower than local, expected). Not stamped green (390/820 not looked yet).
+
+- 21 Nov 2026 03:20 PKT QCONNECT (login-only) GREEN BY HIS WORD (02:58). WIRED: YES / REAL: YES / TECH-LAW CHECKED: login on his server (journal proof, his paste 02:53), data on Supabase, my Chrome look ok, backup kept. QC8 started: plan docs/claude/QC8-PLAN-21NOV.md and contract draft written, no code until his 4 answers.

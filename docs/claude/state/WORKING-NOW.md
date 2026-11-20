@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 02:54 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 21 Nov 03:10 PKT: my Chrome look after the login-only switch: his open session still valid (Live, Trusted), Dashboard loaded after about 15 s (first load after the restart, data now on REST), 2/2 checks, Answers verified, Mail inbox real. NOT stamped green: 390/820 not looked, data speed is REST again (expected, slower).
-NEXT STEP: He decides; if he wants speed on dashboard first load, look at it separately. Then QC8.
-HIS LAST WORD: his 21 Nov 02:53: anger about 6 lost hours and build time
+# WORKING NOW (manual checkpoint, 21 Nov 2026 02:59 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 21 Nov 03:20 PKT: QCONNECT-LO GREEN BY HIS WORD (02:58). QC8 started: PLAN WRITTEN docs/claude/QC8-PLAN-21NOV.md + contract draft in CURRENT.md; 4 questions to him (? help sheet, switch-off/remap, scope, English only). No QC8 code until his answers.
+NEXT STEP: He answers the 4 QC8 questions; then QC8 step 1 audit (read-only, real Chrome keyboard walk + axe-core), step 2 key map golden tests, etc.
+HIS LAST WORD: his 21 Nov 02:58: green kero, QC8 shuru kero plan and discuss
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,29 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 63138f50 21 Nov 02:54 ledger line 2c975141
 - 2c975141 21 Nov 02:54 QCONNECT-LO: live Chrome look recorded
 - 5dd6635a 21 Nov 02:53 ledger line d9502c23
 - d9502c23 21 Nov 02:53 QCONNECT-LO: ran on his server, proof recorded
 - ca176cb7 21 Nov 02:39 ledger line 6cd3f15f
-- 6cd3f15f 21 Nov 02:39 QCONNECT-LO: prune-window proof for append-only prune tables (founder_dbsc_jti)
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/BLUEPRINT-ABC-01NOV.md
+ M docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md
+ M docs/claude/QCONNECT-PLAN-20NOV.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+?? docs/claude/QC8-PLAN-21NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/BLUEPRINT-ABC-01NOV.md          |  1 +
+ docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md |  2 +-
+ docs/claude/QCONNECT-PLAN-20NOV.md          |  2 ++
+ docs/claude/state/WORKING-NOW.md            | 28 ++++++++++------------------
+ docs/claude/tech-contracts/CURRENT.md       | 10 ++++++++++
+ 5 files changed, 24 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +51,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (611591c0fb4742c692b604dfb240c877452944ba)
+WIP snapshot: refs/wip/last (730622ca6dba7d4da9af99269c202cd0dd6320fd)
