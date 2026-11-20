@@ -24,3 +24,5 @@
 - 21 Nov 2026 04:45 PKT HIS WORD: "sirf b2 only likho". b3/b4 code written by mistake was reverted unwritten; only b2 stays. b3 onwards only after his word.
 
 - 21 Nov 2026 04:46 PKT HIS WORD: "hatao nahi" - b3/b4 code restored (b3 sandbox-proven, b4 written not proven); plan b3-b6 untouched.
+
+- 21 Nov 2026 04:47 PKT HIS WORD: "sirf b2 ke codes main lun ga, baki sab mere liye zero" + pull command. b3/b4 PARKED in founder-web/src/a11y_sem_next.ts (not imported, not built); only b2 (a11y_sem.ts) goes live.

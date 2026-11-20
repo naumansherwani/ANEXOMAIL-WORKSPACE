@@ -3481,3 +3481,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 05:00 PKT his word hatao nahi: b3 focus (sandbox-proven) and b4 key announcements (written, not proven) restored; b2 stays; none live yet
 
 - 21 Nov 2026 05:00 PKT his word hatao nahi: b3 focus (sandbox-proven) and b4 key announcements (written, not proven) restored; b2 stays; none live yet
+
+- 21 Nov 2026 05:02 PKT his word only b2 goes live: a11y_sem.ts = b2 only (mounted); b3 focus + b4 announcements PARKED in a11y_sem_next.ts (not imported); tsc clean, 519 tests
