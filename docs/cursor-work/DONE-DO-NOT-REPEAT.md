@@ -3122,3 +3122,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 20.11.26 06:08 PKT QC2-B browser step 1 (9c4d59c3) REVERTED on main by his word 06:04 (only QC2-A may reach his server; Tiptap not in package.json, no rich_pure); QC2-B parked, history keeps it
 
 - 20 Nov 06:09 PKT 5-min check: rules read, WORKING-NOW updated; QC2-B on HOLD, waits his QC2-A paste
+
+- 20 Nov 06:12 PKT E194 sql-run OK on his server (his paste: selftest 33 passed 0 failed, CHECK_E194 all OK, E65 OK); founder-install (Rust QC2-A) waits until after QC2-B (his word 06:09); blueprint top status updated: QC0 QC1c QC3a QC1 QC1e done by his word, QC2 NOW
