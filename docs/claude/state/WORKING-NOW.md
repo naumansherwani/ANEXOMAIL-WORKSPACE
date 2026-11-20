@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 47c8fd4b 20 Nov 09:09 QC4 feature list verbatim from his paste
+- 27e0a708 20 Nov 09:09 ledger line 7979435a
 - 7979435a 20 Nov 09:09 QC4 feature list verbatim
 - c2ff627c 20 Nov 09:09 ledger line e08e1caa
 - e08e1caa 20 Nov 09:09 QC4a: Rust References + Reply-To, references wiring; cargo 559/0
-- 6770eba7 20 Nov 09:08 ledger line a8a4c09c
-- a8a4c09c 20 Nov 09:08 QC4a done
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (c441da8051ce1eb7b965b5c74f6a0f082093a801)
+WIP snapshot: refs/wip/last (4684964db1efaa796bde551a09fdafe886f75789)
