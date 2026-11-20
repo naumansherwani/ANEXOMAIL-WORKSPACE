@@ -25,6 +25,9 @@ pub mod checkpoint;
 pub mod anchor;
 pub mod action;
 pub mod lease;
+pub mod htmltext;
+pub mod kemopen;
+pub mod mailparse;
 pub mod mailledger;
 pub mod auditproof;
 pub mod mldsa;
@@ -41,9 +44,9 @@ use std::collections::HashMap;
 use std::rc::Rc;
 
 pub const ABI: u32 = 1;
-pub const VERSION: (u32, u32, u32) = (0, 18, 0);
+pub const VERSION: (u32, u32, u32) = (0, 19, 0);
 /// Naam@module-version. Naya module ya badla hua module => yahan entry + VERSION bump (Cargo.toml bhi).
-pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "mldsa@1", "merkle@1", "merkle@2", "checkpoint@1", "anchor@1", "portable@1", "contacts@1", "mailledger@1", "auditproof@1", "action@1", "lease@1", "flive@1", "mailledger@1"];
+pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1", "ed25519@1", "envelope@1", "mldsa@1", "merkle@1", "merkle@2", "checkpoint@1", "anchor@1", "portable@1", "contacts@1", "mailledger@1", "kemopen@1", "mailparse@1", "auditproof@1", "action@1", "lease@1", "flive@1", "mailledger@1"];
 
 thread_local! {
     static OUT: RefCell<Vec<u8>> = const { RefCell::new(Vec::new()) };
@@ -237,6 +240,22 @@ pub extern "C" fn mail_ledger_check(ptr: u32, len: u32) -> u32 {
     let (ok, rep) = mailledger::check(unsafe { text(ptr, len) });
     set_out(rep.into_bytes());
     ok as u32
+}
+
+/* ------------------------------------------------------- kemopen@1 (DK-a) */
+/// DK-a: open a post-quantum sealed mail inside the kernel. JSON in (hex): dk, x, pub, key_id, wrap, nonce, aad[], sealed. 1 = the plain bytes are in the out buffer; 0 = a plain-language reason is in the out buffer.
+#[unsafe(no_mangle)]
+pub extern "C" fn kem_open(ptr: u32, len: u32) -> u32 {
+    let (ok, out) = kemopen::open_json(unsafe { text(ptr, len) });
+    set_out(out);
+    ok as u32
+}
+
+/* ------------------------------------------------------- mailparse@1 (DK-a) */
+/// DK-a: read one raw mail (bytes in the kernel memory) -> JSON {"summary","view"} in the out buffer, length wapas. Never fails: an unreadable message still gives a summary "(unreadable message)".
+#[unsafe(no_mangle)]
+pub extern "C" fn mail_parse(ptr: u32, len: u32) -> u32 {
+    set_out(mailparse::parse_json(unsafe { bytes(ptr, len) }).into_bytes())
 }
 
 /* ------------------------------------------------------- auditproof@1 (QUI-H4) */

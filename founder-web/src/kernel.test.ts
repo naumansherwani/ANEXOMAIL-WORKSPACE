@@ -209,3 +209,33 @@ test("contacts@1 in the REAL wasm: the shipped kernel gives the same hits as boo
     got.hits.forEach((h, k) => expect(Math.abs(h.score - c.hits[k].score), c.name).toBeLessThan(1e-9));
   }
 });
+
+// DK-a: the SHIPPED wasm (not a Rust unit test) opens a mail the SERVER sealed (vector made by the real fmail_kem::wrap + fmail_seal::seal) and reads mail like the server does (golden made by the real summarize()+render()).
+test("kem_open in the real wasm opens the server's sealed vector; a changed byte or a wrong aad is refused with a plain reason", async () => {
+  const { instance } = await WebAssembly.instantiate(bytes, { env: { host_wake() {}, host_call() {}, host_emit() {} } });
+  const ex = instance.exports as any;
+  const vec = JSON.parse(readFileSync("../web-wasm/tests/kem_vector.json", "utf8"));
+  const run = (o: unknown) => {
+    const x = new TextEncoder().encode(JSON.stringify(o)), p = ex.kernel_alloc(x.length); new Uint8Array(ex.memory.buffer, p, x.length).set(x);
+    const ok = ex.kem_open(p, x.length); return [ok, new TextDecoder().decode(new Uint8Array(ex.memory.buffer, ex.kernel_out_ptr(), ex.kernel_out_len()).slice())] as const;
+  };
+  const [ok, plain] = run(vec);
+  expect(ok).toBe(1); expect(plain).toBe(vec.plain);
+  const bad = { ...vec, sealed: (vec.sealed[0] === "0" ? "1" : "0") + vec.sealed.slice(1) };
+  expect(run(bad)[0]).toBe(0);
+  const [ok2, why] = run({ ...vec, aad: ["body", "mbx-vector", "out"] }); expect(ok2).toBe(0); expect(why).toBe("sealed bytes do not open");
+  expect(run({ ...vec, key_id: "another" })[0]).toBe(0);
+  expect(run({})[0]).toBe(0);
+});
+
+test("mail_parse in the real wasm gives the server's golden JSON for every case (References, Reply-To, text, attachments)", async () => {
+  const { instance } = await WebAssembly.instantiate(bytes, { env: { host_wake() {}, host_call() {}, host_emit() {} } });
+  const ex = instance.exports as any;
+  const cases = JSON.parse(readFileSync("../web-wasm/tests/mail_golden.json", "utf8"));
+  for (const c of cases) {
+    const raw = c.raw ? h(c.raw) : new Uint8Array(), p = ex.kernel_alloc(Math.max(raw.length, 1)); new Uint8Array(ex.memory.buffer, p, raw.length).set(raw);
+    ex.mail_parse(p, raw.length);
+    const got = JSON.parse(new TextDecoder().decode(new Uint8Array(ex.memory.buffer, ex.kernel_out_ptr(), ex.kernel_out_len()).slice()));
+    expect(got.summary).toEqual(c.summary); expect(got.view).toEqual(c.view);
+  }
+});

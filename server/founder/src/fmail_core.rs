@@ -241,4 +241,29 @@ mod tests {
         let b = seal_message(&m, MBOX, "in", Wrap::Vault { master: &m, key_id: "vk-1" }, &r, &s).unwrap();
         assert_eq!(a.msgid_blind, b.msgid_blind);
     }
+
+    /// DK-a parity: these raw mails go through the SERVER's real summarize()+render(); the result is written to web-wasm/tests/mail_golden.json and the Rust WASM kernel (module mailparse@1) must give the SAME JSON.
+    /// Regenerate: MAIL_GOLDEN=1 cargo test emit_mail_golden. Without it the test only checks the committed file still matches the server's output (so the two can never drift).
+    #[test]
+    fn emit_mail_golden() {
+        let big_refs: String = (0..60).map(|i| format!("<r{i}@x.org>")).collect::<Vec<_>>().join(" ");
+        let cases: Vec<(&str, Vec<u8>)> = vec![
+            ("plain", b"From: Ann <ann@example.org>\r\nTo: me@anexomail.com, Bob <bob@example.org>\r\nCc: c@example.org\r\nSubject: Hello there\r\nDate: Fri, 20 Nov 2026 09:00:00 +0500\r\nMessage-ID: <m1@example.org>\r\n\r\nHi,\r\n\r\nPlain text body.\r\n".to_vec()),
+            ("thread", b"From: a@x.org\r\nSubject: Re: s\r\nMessage-ID: <m3@x.org>\r\nIn-Reply-To: <m2@x.org>\r\nReferences: <m1@x.org> <m2@x.org>\r\nReply-To: Desk <desk@x.org>, other@y.org\r\n\r\nb\r\n".to_vec()),
+            ("many_references", format!("From: a@x.org\r\nSubject: s\r\nReferences: {big_refs}\r\n\r\nb\r\n").into_bytes()),
+            ("html_only", b"From: a@x.org\r\nSubject: html\r\nContent-Type: text/html; charset=utf-8\r\n\r\n<html><style>p{color:red}</style><script>alert(1)</script><p>Hello <b>world</b> &amp; friends</p><img src=\"http://evil.example/t.png\"><div>Second</div></html>".to_vec()),
+            ("multipart_attachment", b"From: a@x.org\r\nSubject: with file\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"BB\"\r\n\r\n--BB\r\nContent-Type: text/plain\r\n\r\nSee the file.\r\n--BB\r\nContent-Type: application/pdf; name=\"usd.pdf\"\r\nContent-Disposition: attachment; filename=\"usd.pdf\"\r\nContent-Transfer-Encoding: base64\r\n\r\nSGVsbG8gUERG\r\n--BB--\r\n".to_vec()),
+            ("html_entities", b"From: a@x.org\r\nSubject: ent\r\nContent-Type: text/html; charset=utf-8\r\n\r\n<p>caf&eacute; &lt;x&gt; &amp;amp; &#38;lt; &quot;z&quot; &copy; &hellip; &rarr; &unknown; end</p><br>line two".to_vec()),
+            ("latin1", b"From: =?ISO-8859-1?Q?Andr=E9?= <andre@example.org>\r\nSubject: =?ISO-8859-1?Q?caf=E9?=\r\nContent-Type: text/plain; charset=iso-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\ncaf=E9 cr=E8me\r\n".to_vec()),
+            ("bidi_and_controls", "From: a@x.org\r\nSubject: pay\u{202e}gnp.exe now\u{0007}\r\n\r\nb\r\n".as_bytes().to_vec()),
+            ("garbage", vec![0xff, 0x00, 0x01, 0x02, b'g', b'a', b'r']),
+            ("empty", Vec::new()),
+        ];
+        let hexs = |b: &[u8]| b.iter().map(|x| format!("{x:02x}")).collect::<String>();
+        let out: Vec<Value> = cases.iter().map(|(n, raw)| json!({"name": n, "raw": hexs(raw), "summary": summary_json(&summarize(raw)), "view": render(raw)})).collect();
+        let want = serde_json::to_string_pretty(&out).unwrap();
+        const GOLDEN: &str = "../../web-wasm/tests/mail_golden.json";
+        if std::env::var("MAIL_GOLDEN").is_ok() { std::fs::write(GOLDEN, &want).unwrap(); }
+        assert_eq!(std::fs::read_to_string(GOLDEN).expect("run once with MAIL_GOLDEN=1"), want, "the committed golden vectors differ from the server output");
+    }
 }

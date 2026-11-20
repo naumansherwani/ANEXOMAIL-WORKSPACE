@@ -17,4 +17,4 @@ His words: the kernel must have all of this; world-shaking code; these modules a
 ## ORDER
 DK1 -> DK2 -> DK3 (needs his hardware keys) -> DK4 -> DK5. One install per his rule (at most 2 subphases: DK-a = DK1+DK2 kernel + tests, DK-b = DK3+DK4 key + screen).
 ## STATE
-PLAN WRITTEN, NO CODE YET (20 Nov 2026 10:15 PKT). Starts on his word; his earlier order put QC5/QC7/QC8/Q3 in the evening.
+DK-a (DK1 + DK2) WRITTEN + TESTED 20 Nov 2026 10:40 PKT, NOT INSTALLED (kernel 0.19.0). Found on the way: mail-parser 0.11.5 decodes named HTML entities wrongly when built for wasm32 (hashify); the kernel has its own table (htmltext.rs) and the golden test on the real wasm proves parity. Note for DK-b: a pq mail has TWO sealed parts, meta (summary JSON, already carries references + reply_to for new mail) and body (raw mail); the kernel opens both with the same wrap. DK-b (key custody + screen) not started.

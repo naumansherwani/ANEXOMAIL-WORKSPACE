@@ -1,0 +1,289 @@
+[
+  {
+    "name": "plain",
+    "raw": "46726f6d3a20416e6e203c616e6e406578616d706c652e6f72673e0d0a546f3a206d6540616e65786f6d61696c2e636f6d2c20426f62203c626f62406578616d706c652e6f72673e0d0a43633a2063406578616d706c652e6f72670d0a5375626a6563743a2048656c6c6f2074686572650d0a446174653a204672692c203230204e6f7620323032362030393a30303a3030202b303530300d0a4d6573736167652d49443a203c6d31406578616d706c652e6f72673e0d0a0d0a48692c0d0a0d0a506c61696e207465787420626f64792e0d0a",
+    "summary": {
+      "attach": 0,
+      "cc": [
+        "c@example.org"
+      ],
+      "date": "2026-11-20T09:00:00+05:00",
+      "from": "ann@example.org",
+      "from_name": "Ann",
+      "message_id": "m1@example.org",
+      "references": [],
+      "reply_to": [],
+      "snippet": "Hi, Plain text body.",
+      "subject": "Hello there",
+      "to": [
+        "me@anexomail.com",
+        "bob@example.org"
+      ]
+    },
+    "view": {
+      "attachments": [],
+      "had_html": true,
+      "remote_content_blocked": true,
+      "text": "Hi,\n\nPlain text body."
+    }
+  },
+  {
+    "name": "thread",
+    "raw": "46726f6d3a206140782e6f72670d0a5375626a6563743a2052653a20730d0a4d6573736167652d49443a203c6d3340782e6f72673e0d0a496e2d5265706c792d546f3a203c6d3240782e6f72673e0d0a5265666572656e6365733a203c6d3140782e6f72673e203c6d3240782e6f72673e0d0a5265706c792d546f3a204465736b203c6465736b40782e6f72673e2c206f7468657240792e6f72670d0a0d0a620d0a",
+    "summary": {
+      "attach": 0,
+      "cc": [],
+      "date": "",
+      "from": "a@x.org",
+      "from_name": "",
+      "message_id": "m3@x.org",
+      "references": [
+        "m1@x.org",
+        "m2@x.org"
+      ],
+      "reply_to": [
+        "desk@x.org",
+        "other@y.org"
+      ],
+      "snippet": "b",
+      "subject": "Re: s",
+      "to": []
+    },
+    "view": {
+      "attachments": [],
+      "had_html": true,
+      "remote_content_blocked": true,
+      "text": "b"
+    }
+  },
+  {
+    "name": "many_references",
+    "raw": "46726f6d3a206140782e6f72670d0a5375626a6563743a20730d0a5265666572656e6365733a203c723040782e6f72673e203c723140782e6f72673e203c723240782e6f72673e203c723340782e6f72673e203c723440782e6f72673e203c723540782e6f72673e203c723640782e6f72673e203c723740782e6f72673e203c723840782e6f72673e203c723940782e6f72673e203c72313040782e6f72673e203c72313140782e6f72673e203c72313240782e6f72673e203c72313340782e6f72673e203c72313440782e6f72673e203c72313540782e6f72673e203c72313640782e6f72673e203c72313740782e6f72673e203c72313840782e6f72673e203c72313940782e6f72673e203c72323040782e6f72673e203c72323140782e6f72673e203c72323240782e6f72673e203c72323340782e6f72673e203c72323440782e6f72673e203c72323540782e6f72673e203c72323640782e6f72673e203c72323740782e6f72673e203c72323840782e6f72673e203c72323940782e6f72673e203c72333040782e6f72673e203c72333140782e6f72673e203c72333240782e6f72673e203c72333340782e6f72673e203c72333440782e6f72673e203c72333540782e6f72673e203c72333640782e6f72673e203c72333740782e6f72673e203c72333840782e6f72673e203c72333940782e6f72673e203c72343040782e6f72673e203c72343140782e6f72673e203c72343240782e6f72673e203c72343340782e6f72673e203c72343440782e6f72673e203c72343540782e6f72673e203c72343640782e6f72673e203c72343740782e6f72673e203c72343840782e6f72673e203c72343940782e6f72673e203c72353040782e6f72673e203c72353140782e6f72673e203c72353240782e6f72673e203c72353340782e6f72673e203c72353440782e6f72673e203c72353540782e6f72673e203c72353640782e6f72673e203c72353740782e6f72673e203c72353840782e6f72673e203c72353940782e6f72673e0d0a0d0a620d0a",
+    "summary": {
+      "attach": 0,
+      "cc": [],
+      "date": "",
+      "from": "a@x.org",
+      "from_name": "",
+      "message_id": "",
+      "references": [
+        "r0@x.org",
+        "r1@x.org",
+        "r2@x.org",
+        "r3@x.org",
+        "r4@x.org",
+        "r5@x.org",
+        "r6@x.org",
+        "r7@x.org",
+        "r8@x.org",
+        "r9@x.org",
+        "r10@x.org",
+        "r11@x.org",
+        "r12@x.org",
+        "r13@x.org",
+        "r14@x.org",
+        "r15@x.org",
+        "r16@x.org",
+        "r17@x.org",
+        "r18@x.org",
+        "r19@x.org",
+        "r20@x.org",
+        "r21@x.org",
+        "r22@x.org",
+        "r23@x.org",
+        "r24@x.org",
+        "r25@x.org",
+        "r26@x.org",
+        "r27@x.org",
+        "r28@x.org",
+        "r29@x.org",
+        "r30@x.org",
+        "r31@x.org",
+        "r32@x.org",
+        "r33@x.org",
+        "r34@x.org",
+        "r35@x.org",
+        "r36@x.org",
+        "r37@x.org",
+        "r38@x.org",
+        "r39@x.org"
+      ],
+      "reply_to": [],
+      "snippet": "b",
+      "subject": "s",
+      "to": []
+    },
+    "view": {
+      "attachments": [],
+      "had_html": true,
+      "remote_content_blocked": true,
+      "text": "b"
+    }
+  },
+  {
+    "name": "html_only",
+    "raw": "46726f6d3a206140782e6f72670d0a5375626a6563743a2068746d6c0d0a436f6e74656e742d547970653a20746578742f68746d6c3b20636861727365743d7574662d380d0a0d0a3c68746d6c3e3c7374796c653e707b636f6c6f723a7265647d3c2f7374796c653e3c7363726970743e616c6572742831293c2f7363726970743e3c703e48656c6c6f203c623e776f726c643c2f623e2026616d703b20667269656e64733c2f703e3c696d67207372633d22687474703a2f2f6576696c2e6578616d706c652f742e706e67223e3c6469763e5365636f6e643c2f6469763e3c2f68746d6c3e",
+    "summary": {
+      "attach": 0,
+      "cc": [],
+      "date": "",
+      "from": "a@x.org",
+      "from_name": "",
+      "message_id": "",
+      "references": [],
+      "reply_to": [],
+      "snippet": "Hello world & friends Second",
+      "subject": "html",
+      "to": []
+    },
+    "view": {
+      "attachments": [],
+      "had_html": true,
+      "remote_content_blocked": true,
+      "text": "Hello world & friends\nSecond"
+    }
+  },
+  {
+    "name": "multipart_attachment",
+    "raw": "46726f6d3a206140782e6f72670d0a5375626a6563743a20776974682066696c650d0a4d494d452d56657273696f6e3a20312e300d0a436f6e74656e742d547970653a206d756c7469706172742f6d697865643b20626f756e646172793d224242220d0a0d0a2d2d42420d0a436f6e74656e742d547970653a20746578742f706c61696e0d0a0d0a536565207468652066696c652e0d0a2d2d42420d0a436f6e74656e742d547970653a206170706c69636174696f6e2f7064663b206e616d653d227573642e706466220d0a436f6e74656e742d446973706f736974696f6e3a206174746163686d656e743b2066696c656e616d653d227573642e706466220d0a436f6e74656e742d5472616e736665722d456e636f64696e673a206261736536340d0a0d0a5347567362473867554552470d0a2d2d42422d2d0d0a",
+    "summary": {
+      "attach": 1,
+      "cc": [],
+      "date": "",
+      "from": "a@x.org",
+      "from_name": "",
+      "message_id": "",
+      "references": [],
+      "reply_to": [],
+      "snippet": "See the file.",
+      "subject": "with file",
+      "to": []
+    },
+    "view": {
+      "attachments": [
+        {
+          "name": "usd.pdf",
+          "size": 9,
+          "type": "application/pdf"
+        }
+      ],
+      "had_html": true,
+      "remote_content_blocked": true,
+      "text": "See the file."
+    }
+  },
+  {
+    "name": "html_entities",
+    "raw": "46726f6d3a206140782e6f72670d0a5375626a6563743a20656e740d0a436f6e74656e742d547970653a20746578742f68746d6c3b20636861727365743d7574662d380d0a0d0a3c703e636166266561637574653b20266c743b782667743b2026616d703b616d703b20262333383b6c743b202671756f743b7a2671756f743b2026636f70793b202668656c6c69703b2026726172723b2026756e6b6e6f776e3b20656e643c2f703e3c62723e6c696e652074776f",
+    "summary": {
+      "attach": 0,
+      "cc": [],
+      "date": "",
+      "from": "a@x.org",
+      "from_name": "",
+      "message_id": "",
+      "references": [],
+      "reply_to": [],
+      "snippet": "café <x> &amp; &lt; \"z\" © … → &unknown; end line two",
+      "subject": "ent",
+      "to": []
+    },
+    "view": {
+      "attachments": [],
+      "had_html": true,
+      "remote_content_blocked": true,
+      "text": "café <x> &amp; &lt; \"z\" © … → &unknown; end\n\nline two"
+    }
+  },
+  {
+    "name": "latin1",
+    "raw": "46726f6d3a203d3f49534f2d383835392d313f513f416e64723d45393f3d203c616e647265406578616d706c652e6f72673e0d0a5375626a6563743a203d3f49534f2d383835392d313f513f6361663d45393f3d0d0a436f6e74656e742d547970653a20746578742f706c61696e3b20636861727365743d69736f2d383835392d310d0a436f6e74656e742d5472616e736665722d456e636f64696e673a2071756f7465642d7072696e7461626c650d0a0d0a6361663d45392063723d45386d650d0a",
+    "summary": {
+      "attach": 0,
+      "cc": [],
+      "date": "",
+      "from": "andre@example.org",
+      "from_name": "André",
+      "message_id": "",
+      "references": [],
+      "reply_to": [],
+      "snippet": "café crème",
+      "subject": "café",
+      "to": []
+    },
+    "view": {
+      "attachments": [],
+      "had_html": true,
+      "remote_content_blocked": true,
+      "text": "café crème"
+    }
+  },
+  {
+    "name": "bidi_and_controls",
+    "raw": "46726f6d3a206140782e6f72670d0a5375626a6563743a20706179e280ae676e702e657865206e6f77070d0a0d0a620d0a",
+    "summary": {
+      "attach": 0,
+      "cc": [],
+      "date": "",
+      "from": "a@x.org",
+      "from_name": "",
+      "message_id": "",
+      "references": [],
+      "reply_to": [],
+      "snippet": "b",
+      "subject": "pay gnp.exe now",
+      "to": []
+    },
+    "view": {
+      "attachments": [],
+      "had_html": true,
+      "remote_content_blocked": true,
+      "text": "b"
+    }
+  },
+  {
+    "name": "garbage",
+    "raw": "ff000102676172",
+    "summary": {
+      "attach": 0,
+      "cc": [],
+      "date": "",
+      "from": "",
+      "from_name": "",
+      "message_id": "",
+      "references": [],
+      "reply_to": [],
+      "snippet": "",
+      "subject": "",
+      "to": []
+    },
+    "view": {
+      "attachments": [],
+      "had_html": false,
+      "remote_content_blocked": false,
+      "text": ""
+    }
+  },
+  {
+    "name": "empty",
+    "raw": "",
+    "summary": {
+      "attach": 0,
+      "cc": [],
+      "date": "",
+      "from": "",
+      "from_name": "",
+      "message_id": "",
+      "references": [],
+      "reply_to": [],
+      "snippet": "",
+      "subject": "(unreadable message)",
+      "to": []
+    },
+    "view": {
+      "attachments": [],
+      "had_html": false,
+      "text": "(this message could not be read)"
+    }
+  }
+]

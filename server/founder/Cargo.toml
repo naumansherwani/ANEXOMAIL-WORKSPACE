@@ -62,3 +62,5 @@ lto = true
 panic = "abort"
 [dev-dependencies]
 tokio = { version = "1", features = ["full", "test-util"] }
+# DK-a: a raw X25519 secret for the cross-vector test (ring only makes ephemeral keys). Test only.
+x25519-dalek = { version = "2", default-features = false, features = ["static_secrets"] }

@@ -169,9 +169,9 @@ founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-BUBEKzSR.js
 founder-web/dist/assets/index-BtRfxfmm.css
-founder-web/dist/assets/kernel.worker-BLkLR49F.js
+founder-web/dist/assets/index-CKFXqsD0.js
+founder-web/dist/assets/kernel.worker-CIfmRW-j.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
@@ -185,7 +185,7 @@ founder-web/dist/icon-180.png
 founder-web/dist/icon-192.png
 founder-web/dist/icon-512.png
 founder-web/dist/index.html
-founder-web/dist/kernel/anexo-kernel-0.18.0.wasm
+founder-web/dist/kernel/anexo-kernel-0.19.0.wasm
 founder-web/dist/manifest.webmanifest
 founder-web/index.html
 founder-web/kernel-sync.sh
@@ -200,7 +200,7 @@ founder-web/public/flare-sw.js
 founder-web/public/icon-180.png
 founder-web/public/icon-192.png
 founder-web/public/icon-512.png
-founder-web/public/kernel/anexo-kernel-0.18.0.wasm
+founder-web/public/kernel/anexo-kernel-0.19.0.wasm
 founder-web/public/manifest.webmanifest
 founder-web/s1280.png
 founder-web/s390.png

@@ -101,4 +101,29 @@ mod tests {
         assert!(wrap(&p[..1215], "k", &mk).is_err()); assert!(wrap(&[0u8; 1217], "k", &mk).is_err());
         assert!(parts(&[0u8; 1181]).is_none(), "version byte"); assert!(parts(&[1u8; 10]).is_none());
     }
+
+    /// DK-a cross-proof: the REAL wrap() + the REAL seal() make a vector file that the Rust WASM kernel (web-wasm, module kemopen@1) must open. Regenerate: DK_VECTOR=1 cargo test emit_kem_vector.
+    /// Without DK_VECTOR the test only checks that the committed vector is still a well-formed v1 wrap and that the server side of it still verifies its own shape.
+    const VECTOR: &str = "../../web-wasm/tests/kem_vector.json";
+    #[test]
+    fn emit_kem_vector() {
+        use fips203::ml_kem_768::KG;
+        use fips203::traits::KeyGen;
+        let hexs = |b: &[u8]| b.iter().map(|x| format!("{x:02x}")).collect::<String>();
+        if std::env::var("DK_VECTOR").is_ok() {
+            let (ek, dk) = KG::try_keygen().unwrap();
+            let xs = x25519_dalek::StaticSecret::from({ let mut b = [0u8; 32]; ring::rand::SecureRandom::fill(&SystemRandom::new(), &mut b).unwrap(); b });
+            let mut p = ek.into_bytes().to_vec(); p.extend_from_slice(x25519_dalek::PublicKey::from(&xs).as_bytes());
+            let mk = seal::new_key().unwrap();
+            let blob = wrap(&p, "pqk-vector", &mk).unwrap();
+            let plain = "From: Ann <ann@example.org>\r\nTo: me@anexomail.com\r\nSubject: sealed for the kernel\r\nMessage-ID: <v1@example.org>\r\nReferences: <r1@example.org> <r2@example.org>\r\nReply-To: desk@example.org\r\n\r\nHello from the vector.\r\n";
+            let a = seal::aad(&["body", "mbx-vector", "in"]);
+            let (n, sealed) = seal::seal(&mk, &a, plain.as_bytes()).unwrap();
+            let j = serde_json::json!({"dk": hexs(&dk.into_bytes()), "x": hexs(xs.as_bytes()), "pub": hexs(&p), "key_id": "pqk-vector", "wrap": hexs(&blob), "nonce": hexs(&n), "aad": ["body", "mbx-vector", "in"], "sealed": hexs(&sealed), "plain": plain});
+            std::fs::write(VECTOR, serde_json::to_string_pretty(&j).unwrap()).unwrap();
+        }
+        let v: serde_json::Value = serde_json::from_str(&std::fs::read_to_string(VECTOR).expect("run once with DK_VECTOR=1")).unwrap();
+        let blob: Vec<u8> = (0..v["wrap"].as_str().unwrap().len() / 2).map(|i| u8::from_str_radix(&v["wrap"].as_str().unwrap()[2 * i..2 * i + 2], 16).unwrap()).collect();
+        assert_eq!(blob.len(), BLOB_LEN); assert!(parts(&blob).is_some());
+    }
 }

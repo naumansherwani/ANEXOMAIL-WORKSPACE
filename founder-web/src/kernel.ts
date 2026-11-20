@@ -17,7 +17,7 @@ const REASON: Record<number, string> = {
 
 let worker: Worker | null = null;
 let seq = 0;
-const waiting = new Map<number, (m: { code: number; data?: string; error?: string }) => void>();
+const waiting = new Map<number, (m: { code: number; data?: string; error?: string; bytes?: Uint8Array }) => void>();
 
 // The server sends `require-trusted-types-for 'script'`: a Worker URL must be a TrustedScriptURL. One narrow policy: only our own /_cc/assets/ scripts.
 const ttPolicy = (window as unknown as { trustedTypes?: { createPolicy(n: string, o: { createScriptURL(u: string): string }): { createScriptURL(u: string): string } } }).trustedTypes?.createPolicy("anexo-kernel-worker", {
@@ -143,6 +143,32 @@ export function contactsSuggest(input: unknown): Promise<unknown | undefined> {
       try { resolve(JSON.parse(m.data)); } catch { resolve(undefined); }
     });
     w().postMessage({ id, contacts: { input: JSON.stringify(input) } });
+  });
+}
+
+/** DK-a: open a post-quantum sealed mail in the kernel (kemopen@1). Input = hex strings (dk, x, pub, key_id, wrap, nonce, aad[], sealed). { ok: true, plain } or { ok: false, reason } ; undefined = the kernel could not run. */
+export function kemOpen(input: { dk: string; x: string; pub: string; key_id: string; wrap: string; nonce: string; aad: string[]; sealed: string }): Promise<{ ok: true; plain: Uint8Array } | { ok: false; reason: string } | undefined> {
+  return new Promise((resolve) => {
+    const id = ++seq;
+    waiting.set(id, (m) => {
+      if (m.code === 0 && m.bytes instanceof Uint8Array) resolve({ ok: true, plain: m.bytes });
+      else if (m.code === 1 && typeof m.error === "string") resolve({ ok: false, reason: m.error });
+      else resolve(undefined);
+    });
+    w().postMessage({ id, kemopen: { input: JSON.stringify(input) } });
+  });
+}
+
+export type ParsedMail = { summary: { subject: string; from: string; from_name: string; to: string[]; cc: string[]; date: string; message_id: string; references: string[]; reply_to: string[]; snippet: string; attach: number }; view: { text: string; had_html: boolean; remote_content_blocked?: boolean; attachments: { name: string; type: string; size: number }[] } };
+/** DK-a: read one raw mail in the kernel (mailparse@1). undefined = the kernel could not run. */
+export function mailParse(raw: Uint8Array): Promise<ParsedMail | undefined> {
+  return new Promise((resolve) => {
+    const id = ++seq;
+    waiting.set(id, (m) => {
+      if (m.code !== 0 || typeof m.data !== "string") { resolve(undefined); return; }
+      try { resolve(JSON.parse(m.data) as ParsedMail); } catch { resolve(undefined); }
+    });
+    w().postMessage({ id, mailparse: { raw } });
   });
 }
 
