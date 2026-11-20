@@ -1,6 +1,12 @@
 # QC8: SHORTCUTS AND ACCESSIBILITY FINAL PASS: PLAN (21 Nov 2026 03:20 PKT, his order 02:58: "QC8 shuru kero, plan and discuss do")
 STATE: PLAN ONLY, NO CODE. Waits his answers to the 4 questions at the bottom. Founder side only. The cinematic UI is not restyled: additive code, focus and sound-of-screen-reader only (UI LAW: anything visible that is NEW is proposed to him first).
 
+## PLAIN WORDS FOR HIM (his 21 Nov 03:05: "mujhe nahi pata ye phase kya hai, kyun bana, zaruri hai ya nahi")
+WHAT: QC8 is the LAST item of the mail "QC" polish chain (QC0..QC8). It makes the mailbox usable from the keyboard alone and readable by a screen reader (shortcut help with "?", focus returning, spoken "sent / undo", arrow keys in the list).
+WHY IT EXISTS: it was the closing row of the chain in docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md (the chain was planned 18 Nov); it is polish, not a new capability.
+NECESSARY? NO, nothing breaks without it. It helps HIS daily speed (keyboard) and is needed only if the founder mailbox must be accessible to a screen-reader user. It is NOT on the TECH-LAW-GATE list.
+WHAT IS MORE URGENT (from rules-read.py, TECH-LAW-GATE.json, fail dates): attachments over WebTransport (Q-att-wt, 26 Nov), ClamAV scanner call (D-clamav, 26 Nov), Hetzner Storage Box attachments (D-hetzner-storagebox, 26 Nov), live mail channel over WebTransport (Q-live-wt, 26 Nov), OpenPGP RFC 9980 in the kernel (Q-pqmail, 29 Nov), MoQ (M-moq, 30 Nov). His choice: (a) skip QC8, go to the dated items; (b) a SMALL QC8 (the ? sheet, focus return, shortcuts off) then the dated items; (c) the full QC8 above.
+
 ## What already exists (read in code 21 Nov, not guessed)
 - founder-web/src/MailBox.tsx line 163-181: one window keydown handler. Keys: / search, r reply, a reply-all, f forward, j/k next/previous mail, c compose, g then a letter = folder (1.2 s chord), e / # move, s star, u unread, Esc close the mail. Guards: nothing fires while Compose is open (Q1b4), inside dialogs, or inside INPUT / TEXTAREA / contentEditable.
 - Pure key map: founder-web/src/mail_keys.ts + mail_keys_pure.ts (golden tests in mail_keys_pure.test.ts).
