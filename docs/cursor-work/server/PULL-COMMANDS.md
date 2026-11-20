@@ -1172,3 +1172,5 @@
 - 5-min checkpoint QC2 waits his word
 
 - QC2 is not Q3, Q3 not started
+
+- 5-min checkpoint QC2 waits his word
