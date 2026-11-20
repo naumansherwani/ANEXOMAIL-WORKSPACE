@@ -1,6 +1,6 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 00:17 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QCONNECT step 8 survey: split-brain risk (other programs write the managed DB). Wrote qconnect-who-writes.sh; waiting for his paste.
-NEXT STEP: Read his qconnect-who-writes paste, then choose shape A (founder only) or B (repoint other writers) and write qconnect-switch.sh with delta copy, freeze, compare, FOUNDER_DB=local on anexo_copy, rollback line.
+# WORKING NOW (manual checkpoint, 21 Nov 2026 00:19 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QCONNECT step 8 WRITTEN 21 Nov 2026 ~00:40 PKT: contract QCONNECT-8 in CURRENT.md, qconnect-switch-prep.sh (role anexomail-founder, key file, smoke test as service user, drift list) and qconnect-switch.sh (freeze, copy drift tables, seq reset, rehash, env flag, proof, auto rollback, OFF=1). Sandbox: copy pipe + sequence reset proven on scratch PG16. NOT run on his server yet.
+NEXT STEP: He runs line 1 = qconnect-switch-prep.sh, pastes; then line 2 = qconnect-switch.sh (his go: haan 00:17). Then step 9 db-latency-check re-measure, step 10 local nightly dump. REST fallback stays for ever.
 HIS LAST WORD: ledger working now blueprint time date, compaction-proof, 2-min loop, rules read, advance technology
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -18,20 +18,24 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- a8e41c51 21 Nov 00:17 ledger line 821e8d69
 - 821e8d69 21 Nov 00:17 QCONNECT step 8: survey probe for other database writers
 - 33743778 21 Nov 00:13 ledger line d9243dcc
 - d9243dcc 21 Nov 00:13 QCONNECT: WORKING-NOW doing/next restored
 - 9fc7f93e 21 Nov 00:13 ledger line af3bf40a
-- af3bf40a 21 Nov 00:13 QCONNECT: step 7 installed on his server, compaction state updated
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+?? docs/cursor-work/server/qconnect-switch-prep.sh
+?? docs/cursor-work/server/qconnect-switch.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 22 ++--------------------
- 1 file changed, 2 insertions(+), 20 deletions(-)
+ docs/claude/state/WORKING-NOW.md      | 24 +++++++-----------------
+ docs/claude/tech-contracts/CURRENT.md |  5 +++++
+ 2 files changed, 12 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +46,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a028b16f54ec10d1b0be6ca95e6fadaad036c506)
+WIP snapshot: refs/wip/last (df4adc295b6f4176a06c2bf4c49bc41ba7ef4411)
