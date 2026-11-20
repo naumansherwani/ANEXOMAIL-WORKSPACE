@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:10 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:14 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC4a written+tested (cargo 559/0), main c2ff627c, NOT installed; plan matched to code (ecc48491)
 NEXT STEP: QC4b screen NOW: InlineReply panel, Reply/Reply all/Forward buttons + keys r a f, fold chip, selection reply, forward block, 20-person warn; then ONE founder-install; live look without a real send
 HIS LAST WORD: 5-min check 10:11
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- e0f406af 20 Nov 09:14 QC4 handoff note after compaction
+- ed40e92b 20 Nov 09:10 ledger line aa0a27e6
 - aa0a27e6 20 Nov 09:10 QC4 checkpoint
 - ecc48491 20 Nov 09:10 ledger line c6abb830
 - c6abb830 20 Nov 09:10 QC4 plan matched to the code
-- 28ecf807 20 Nov 09:10 ledger line c20f13d2
-- c20f13d2 20 Nov 09:10 QC4 plan match
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (f151b491bdae52ec1b9b5fa91dd546b1cf2c86ed)
+WIP snapshot: refs/wip/last (ca8e8ffb10e914e0de83f2404f22149a36856fa4)
