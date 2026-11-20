@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 03:00 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 03:00 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 03:30 PKT: his order 02:59: look QCONNECT in live Chrome. DONE read-only on his Systems page 02:59:57 server clock: Live pulse running 6 min 50 s since 02:53:06 (= the switch restart), build 0e0284a3 installed 02:18:47, DATABASE ANSWERED IN 458 ms (Supabase REST again), Tokio 62 tasks 8 workers queue 0, QUIC WebTransport + DBSC verified + PQC sealed, mail speed 3.1 s median, delivery board real. Devices ring page not looked.
 NEXT STEP: He answers the 4 QC8 questions; QC8 step 1 audit after.
 HIS LAST WORD: his 21 Nov 02:59: Qconnect live chrome se dekho
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- a2f53bba 21 Nov 03:00 QCONNECT live Chrome look on Systems page recorded
 - 4a404779 21 Nov 02:59 ledger line f06562a1
 - f06562a1 21 Nov 02:59 QCONNECT green by his word; QC8 plan and contract draft
 - 63138f50 21 Nov 02:54 ledger line 2c975141
 - 2c975141 21 Nov 02:54 QCONNECT-LO: live Chrome look recorded
-- 5dd6635a 21 Nov 02:53 ledger line d9502c23
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (53fdc69c11840cc00f06af4c84fb0a97afb3dc8a)
+WIP snapshot: refs/wip/last (ae326fe68e4ce0662aeed61d2853b40c8ecba0e3)
