@@ -2,7 +2,7 @@
 use serde_json::Value;
 
 #[derive(Clone)]
-pub struct Sb { pub url: String, pub key: String, pub http: reqwest::Client, pub pg: Option<std::sync::Arc<crate::pg::Pg>> }
+pub struct Sb { pub url: String, pub key: String, pub http: reqwest::Client, pub pg: Option<std::sync::Arc<crate::pg::Pg>>, pub idpg: Option<std::sync::Arc<crate::pg::Pg>> }
 
 /// KP3 audit step C (14 Nov): which database call is slow. Prints ONLY the table or function name (no filter, no value, no key) and the milliseconds, and only when a call took SLOW_DB_MS or more.
 pub const SLOW_DB_MS: u128 = 250;
@@ -19,23 +19,32 @@ impl Sb {
             // speed (10 Nov 20:55): sign-ins are rare, so a default pool let the link to the database go cold between them and every sign-in paid a fresh TCP+TLS handshake.
             // Keep the connections warm for 10 minutes, no Nagle delay, TCP keep-alive; main.rs pings the database every 30 s (keepalive()).
             .pool_idle_timeout(std::time::Duration::from_secs(600)).pool_max_idle_per_host(16).tcp_nodelay(true).tcp_keepalive(std::time::Duration::from_secs(30))
-            .build().ok()?, pg: None })
+            .build().ok()?, pg: None, idpg: None })
     }
-    /// QCONNECT step 6: FOUNDER_DB=local (+ FOUNDER_PG_URL, FOUNDER_PG_POOL) moves every database call onto the local PostgreSQL socket. Anything else, or a local database that does not answer at start, keeps REST: the switch can never take the site down.
+    /// QCONNECT step 6 + LOGIN-ONLY mode (21 Nov 2026, his haan 01:54).
+    /// FOUNDER_DB=local : every database call (data AND login) goes to the local PostgreSQL socket (`pg` and `idpg` are the same pool).
+    /// FOUNDER_DB=login : ONLY the sign-in engine (password, refresh, logout, passkey mint, ES256 token kid lid1) uses the local socket (`idpg`); every data call (`rows`, `rpc`, `count`) stays on the managed REST database (`pg` = None), which keeps about 90 percent of the weight and is the fallback for ever.
+    /// Anything else, a missing or non-socket URL, an unusable key or a socket that does not answer keeps REST for both: the switch can never take the site down.
     pub async fn with_local(mut self) -> Sb {
-        if std::env::var("FOUNDER_DB").map(|v| v == "local").unwrap_or(false) {
-            // AUDIT 21 Nov 2026: no silent default database. The old default pointed at the EMPTY compat database anexo_founder, so a missing FOUNDER_PG_URL would have served empty answers. Now: no URL = stay on REST.
-            let Some(url) = std::env::var("FOUNDER_PG_URL").ok().filter(|u| u.starts_with("postgresql://") && u.contains("host=/")) else { eprintln!("founder: FOUNDER_DB=local but FOUNDER_PG_URL is missing or not a unix-socket url; staying on REST"); return self; };
-            let size = std::env::var("FOUNDER_PG_POOL").ok().and_then(|v| v.parse().ok()).unwrap_or(16);
+        let mode = std::env::var("FOUNDER_DB").unwrap_or_default();
+        if mode == "local" || mode == "login" {
+            // AUDIT 21 Nov 2026: no silent default database. A missing FOUNDER_PG_URL would have served empty answers. Now: no URL = stay on REST.
+            let Some(url) = std::env::var("FOUNDER_PG_URL").ok().filter(|u| u.starts_with("postgresql://") && u.contains("host=/")) else { eprintln!("founder: FOUNDER_DB={mode} but FOUNDER_PG_URL is missing or not a unix-socket url; staying on REST"); return self; };
+            // login-only needs a small pool: sign-ins are rare, the data calls do not come here.
+            let size = std::env::var("FOUNDER_PG_POOL").ok().and_then(|v| v.parse().ok()).unwrap_or(if mode == "login" { 4 } else { 16 });
             match crate::pg::Pg::connect(&url, size).await {
                 Ok(mut p) => {
                     let kf = std::env::var("FOUNDER_ID_KEY_FILE").unwrap_or_else(|_| "/etc/anexomail/local-id.p8".into());
                     match crate::localid::LocalId::load_or_create(&kf, &self.url) {
-                        Ok(l) => { eprintln!("founder: database engine = LOCAL PostgreSQL (unix socket, pool {size}); identity engine = LOCAL (bcrypt + ES256 kid lid1)"); p.id = Some(l); self.pg = Some(std::sync::Arc::new(p)); }
-                        Err(e) => eprintln!("founder: FOUNDER_DB=local but the identity key is not usable ({e}); staying on REST"),
+                        Ok(l) => {
+                            p.id = Some(l); let a = std::sync::Arc::new(p);
+                            if mode == "login" { eprintln!("founder: database engine = REST (managed, data); identity engine = LOCAL (login only: bcrypt + ES256 kid lid1, unix socket, pool {size})"); self.idpg = Some(a); }
+                            else { eprintln!("founder: database engine = LOCAL PostgreSQL (unix socket, pool {size}); identity engine = LOCAL (bcrypt + ES256 kid lid1)"); self.pg = Some(a.clone()); self.idpg = Some(a); }
+                        }
+                        Err(e) => eprintln!("founder: FOUNDER_DB={mode} but the identity key is not usable ({e}); staying on REST"),
                     }
                 }
-                Err(e) => eprintln!("founder: FOUNDER_DB=local but the socket did not answer ({e}); staying on REST"),
+                Err(e) => eprintln!("founder: FOUNDER_DB={mode} but the socket did not answer ({e}); staying on REST"),
             }
         } else { eprintln!("founder: database engine = REST (managed)"); }
         self
@@ -43,7 +52,9 @@ impl Sb {
     /// One TINY read (one row, one column) every 30 s keeps the warm connections to the database alive (no secret, no write). Called once from main.
     pub fn keepalive(&self) {
         let sb = self.clone();
-        if let Some(pg) = sb.pg.clone() { tokio::spawn(async move { loop { let _ = pg.ping().await; tokio::time::sleep(std::time::Duration::from_secs(30)).await; } }); return; }
+        if let Some(pg) = sb.idpg.clone() { tokio::spawn(async move { loop { let _ = pg.ping().await; tokio::time::sleep(std::time::Duration::from_secs(30)).await; } }); }
+        if sb.pg.is_some() { return; } // data on the local socket: that ping above is the whole keep-alive
+        let sb = sb.clone();
         tokio::spawn(async move { loop { // QSPEED (18 Nov): the root /rest/v1/ answers with the WHOLE OpenAPI schema (measured on his server: about 1.1 MB, up to 2.4 s) every 30 s and PostgREST builds it each time, which clogged the warm connections and slowed every real call. One tiny row read keeps the same connection warm.
             let _ = sb.http.get(format!("{}/rest/v1/founder_accounts?select=user_id&limit=1", sb.url)).header("apikey", &sb.key).header("authorization", format!("Bearer {}", sb.key)).send().await; let _ = sb.http.get(format!("{}/auth/v1/health", sb.url)).send().await; tokio::time::sleep(std::time::Duration::from_secs(30)).await; } });
     }
@@ -118,7 +129,7 @@ impl Sb {
         matches!(self.rpc("founder_device_ok", serde_json::json!({"p_uid": uid, "p_device": did})).await, Some(Value::Bool(true)))
     }
     pub async fn jwks(&self) -> Vec<crate::jwt_core::Jwk> {
-        if let Some(l) = self.pg.as_ref().and_then(|p| p.id.as_ref()) { return vec![l.jwk.clone()]; }
+        if let Some(l) = self.idpg.as_ref().and_then(|p| p.id.as_ref()) { return vec![l.jwk.clone()]; }
         let Ok(r) = self.http.get(format!("{}/auth/v1/.well-known/jwks.json", self.url)).send().await else { return vec![] };
         match r.json::<Value>().await { Ok(d) => crate::jwt_core::parse_jwks(&d), Err(_) => vec![] }
     }

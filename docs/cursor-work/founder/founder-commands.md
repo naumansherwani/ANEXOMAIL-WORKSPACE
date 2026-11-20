@@ -4564,3 +4564,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 02:00 PKT QCONNECT (tanaza): he asks about server memory and whether Supabase is the fallback or the main place. Written read-only docs/cursor-work/server/qconnect-footprint.sh (RAM, disk, postgres RSS, db size, changes nothing). Options: OFF=1 back to Supabase, keep local plus reverse copy, or login-only. Waiting for his paste and his choice. Not green-stamped scope.
 
 - 21 Nov 2026 02:10 PKT QCONNECT: his word 01:55 = option 2 (local primary, Supabase fallback via reverse copy). Login-only work stopped and parked in a git stash (not committed, live code unchanged). Written read-only docs/cursor-work/server/qconnect-mirror-probe.sh to learn the founder tables (pk, updated_at, rows) before the mirror contract. Reverse copy = QCONNECT open gap 1 now the next job.
+
+- 21 Nov 2026 02:25 PKT QCONNECT: his FINAL word 02:00 = only login on his server, everything else on Supabase. Code for FOUNDER_DB=login written (identity pool idpg separate from data pool pg, data stays REST), cargo 574/0, NOT installed. Real numbers: founder 80-90 MB RAM, 266 MB postgres dir, 21 GB disk free. Written read-only qconnect-back-diff.sh (which founder tables hold rows Supabase lacks); PGHOST bug fixed in footprint/probe scripts. Waiting for his paste of the diff before any back-copy.
+
+- 21 Nov 2026 02:30 PKT QCONNECT-LO contract written in CURRENT.md; server-first receipt recorded from his footprint paste; login-only code cargo 574/0 not installed

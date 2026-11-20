@@ -260,7 +260,7 @@ fn trace(stage: &str, detail: &str) { eprintln!("founder-signin stage={stage} de
 
 async fn mint(sb: &Sb, uid: &str) -> Result<Parked, ()> {
     if uid.is_empty() || !uid.chars().all(|c| c.is_ascii_hexdigit() || c == '-') { return Err(()); }
-    let email = if sb.pg.as_ref().is_some_and(|p| p.id.is_some()) {
+    let email = if sb.idpg.as_ref().is_some_and(|p| p.id.is_some()) {
         crate::localid::admin_email(sb, uid).await.filter(|e| crate::login::valid_email(e)).ok_or_else(|| trace("mint_user", "local_no_email"))?
     } else {
         let r = sb.http.get(format!("{}/auth/v1/admin/users/{uid}", sb.url)).header("apikey", &sb.key).header("authorization", format!("Bearer {}", sb.key))
@@ -498,7 +498,7 @@ mod tests {
         (url, w)
     }
     fn st_for(url: &str) -> S {
-        let sb = Sb { url: url.into(), key: "svc".into(), http: reqwest::Client::new(), pg: None };
+        let sb = Sb { url: url.into(), key: "svc".into(), http: reqwest::Client::new(), pg: None, idpg: None };
         Arc::new(St { sb: Some(sb), hmac_key: b"net-key".to_vec(), jwks: tokio::sync::RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: crate::polar::Live::off(), hook: Default::default(), ed: None, reqsig: true, gate: crate::authcache::AuthCache::new(Duration::from_secs(5)), dbsc: crate::dbsc::Mode::Off })
     }
     async fn call(st: &S, path: &str, body: Value, ip: &str) -> (StatusCode, Value) {

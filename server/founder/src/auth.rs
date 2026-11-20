@@ -62,7 +62,7 @@ pub(crate) fn no_store(mut r: Response) -> Response { r.headers_mut().insert(axu
 
 /// One call to the identity service. Err = unreachable/unreadable.
 pub(crate) async fn gotrue(sb: &crate::data::Sb, path_q: &str, body: Option<Value>, bearer: Option<&str>) -> Result<(u16, Value), ()> {
-    if sb.pg.as_ref().is_some_and(|p| p.id.is_some()) { return crate::localid::call(sb, path_q, body, bearer).await; } // QCONNECT 7: the identity engine is ours
+    if sb.idpg.as_ref().is_some_and(|p| p.id.is_some()) { return crate::localid::call(sb, path_q, body, bearer).await; } // QCONNECT 7: the identity engine is ours
     let mut rq = sb.http.post(format!("{}/auth/v1/{}", sb.url, path_q)).header("apikey", &sb.key);
     if let Some(b) = bearer { rq = rq.header("authorization", format!("Bearer {b}")); }
     if let Some(b) = body { rq = rq.json(&b); }
@@ -217,7 +217,7 @@ mod tests {
         (url, m)
     }
     fn st_for(url: &str) -> crate::S {
-        let sb = crate::data::Sb { url: url.into(), key: "svc".into(), http: reqwest::Client::new(), pg: None };
+        let sb = crate::data::Sb { url: url.into(), key: "svc".into(), http: reqwest::Client::new(), pg: None, idpg: None };
         Arc::new(crate::St { sb: Some(sb), hmac_key: b"k".to_vec(), jwks: tokio::sync::RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: crate::polar::Live::off(), hook: Default::default(), ed: None, reqsig: true, gate: crate::authcache::AuthCache::new(std::time::Duration::from_secs(5)), dbsc: crate::dbsc::Mode::Off })
     }
     async fn post_json(st: &crate::S, path: &str, body: Value, ip: &str) -> (StatusCode, Value, Option<String>) {

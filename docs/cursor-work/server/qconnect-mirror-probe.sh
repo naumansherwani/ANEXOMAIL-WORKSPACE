@@ -3,6 +3,7 @@
 # Lists every founder-owned table with: row count, primary key columns, whether it has updated_at / created_at, and the table kind.
 # The mirror design (outbox + Rust drain to Supabase) is written from THIS fact, not from a guess.
 set -u
+unset PGHOST PGPORT PGSERVICE PGDATABASE PGUSER
 DB=anexo_copy
 runuser -u postgres -- psql -d "$DB" -At -F ' | ' -c "
 select c.relname,

@@ -1213,7 +1213,7 @@ mod tests {
         let l = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
         let url = format!("http://{}", l.local_addr().unwrap());
         tokio::spawn(async move { axum::serve(l, r).await.unwrap(); });
-        (data::Sb { url, key: "svc".into(), http: reqwest::Client::new(), pg: None }, w)
+        (data::Sb { url, key: "svc".into(), http: reqwest::Client::new(), pg: None, idpg: None }, w)
     }
     fn cnt(w: &SWorld, n: &str) -> usize { w.rpc.lock().unwrap().iter().filter(|(x, _)| x == n).count() }
     #[tokio::test]
@@ -1292,7 +1292,7 @@ mod tests {
     }
 
     fn st_with_sb() -> S {
-        let sb = data::Sb { url: "http://127.0.0.1:1".into(), key: "k".into(), http: reqwest::Client::new(), pg: None };
+        let sb = data::Sb { url: "http://127.0.0.1:1".into(), key: "k".into(), http: reqwest::Client::new(), pg: None, idpg: None };
         Arc::new(St { sb: Some(sb), hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: polar::Live::off(), hook: Default::default(), ed: None, reqsig: true, gate: authcache::AuthCache::new(std::time::Duration::from_secs(5)), dbsc: dbsc::Mode::Off })
     }
     #[tokio::test]

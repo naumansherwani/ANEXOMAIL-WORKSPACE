@@ -81,7 +81,7 @@ async fn open_grant(pg: &crate::pg::Pg, lid: &LocalId, u: &Value) -> (u16, Value
 
 /// The same call shape as `auth::gotrue`: (HTTP status, JSON). Err(()) = the database is unreachable.
 pub async fn call(sb: &crate::data::Sb, path_q: &str, body: Option<Value>, bearer: Option<&str>) -> Result<(u16, Value), ()> {
-    let (Some(pg), Some(lid)) = (sb.pg.as_ref(), sb.pg.as_ref().and_then(|p| p.id.as_ref())) else { return Err(()) };
+    let (Some(pg), Some(lid)) = (sb.idpg.as_ref(), sb.idpg.as_ref().and_then(|p| p.id.as_ref())) else { return Err(()) };
     let b = body.unwrap_or(Value::Null);
     match path_q {
         "token?grant_type=password" => {
@@ -122,7 +122,7 @@ pub async fn call(sb: &crate::data::Sb, path_q: &str, body: Option<Value>, beare
 
 /// The identity service's admin user lookup (signin.rs mint): the account's email, or None.
 pub async fn admin_email(sb: &crate::data::Sb, uid: &str) -> Option<String> {
-    let pg = sb.pg.as_ref()?;
+    let pg = sb.idpg.as_ref()?;
     user_row(pg, None, Some(uid)).await.ok().flatten().and_then(|u| u["email"].as_str().map(str::to_string))
 }
 
@@ -179,7 +179,7 @@ mod live {
             drop trigger if exists identity_session_guard_trg on auth.sessions; create trigger identity_session_guard_trg before insert on auth.sessions for each row execute function public.identity_session_guard();")).await.unwrap();
         let mut pg = crate::pg::Pg::connect(&url, 4).await.unwrap();
         pg.id = Some(LocalId::from_pkcs8(EcdsaKeyPair::generate_pkcs8(&ECDSA_P256_SHA256_FIXED_SIGNING, &SystemRandom::new()).unwrap().as_ref(), "https://db.example").unwrap());
-        let sb = crate::data::Sb { url: "https://db.example".into(), key: "k".into(), http: reqwest::Client::new(), pg: Some(std::sync::Arc::new(pg)) };
+        let a = std::sync::Arc::new(pg); let sb = crate::data::Sb { url: "https://db.example".into(), key: "k".into(), http: reqwest::Client::new(), pg: Some(a.clone()), idpg: Some(a) };
         let lid = sb.pg.as_ref().unwrap().id.as_ref().unwrap();
         macro_rules! g { ($p:expr, $b:expr, $t:expr) => { call(&sb, $p, Some($b), $t).await.unwrap() } }
 

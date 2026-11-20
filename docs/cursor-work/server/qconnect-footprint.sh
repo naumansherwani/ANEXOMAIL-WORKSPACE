@@ -2,6 +2,7 @@
 # QCONNECT footprint: READ-ONLY. How much RAM, disk and CPU the local PostgreSQL takes on his server.
 # Changes nothing. No restart, no write, no network.
 set -u
+unset PGHOST PGPORT PGSERVICE PGDATABASE PGUSER
 echo "== 1/5 server RAM now (MB) =="
 free -m | sed -n '1,2p'
 echo "== 2/5 postgres processes: count and RAM used (RSS, MB) =="
