@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 01:07 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 01:08 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT reopened (his 01:05). NOTE: QC3a is ALREADY GREEN BY HIS WORD (20 Nov 05:20; live proof 19 Nov 11:30 + 20 Nov 08:25). My 'back to QC3a' lines were wrong. Remaining mail phases: QC2, QC3, QC4, QC5, QC7, QC8 (FOUNDER-MAILBOX-PHASES-18NOV.md).
 NEXT STEP: His switch line qconnect-switch.sh -> sign in once -> qconnect-measure.sh -> pg-local-dump-install.sh -> my Chrome look. After QCONNECT: QC2 (Tiptap) and the rest, NOT QC3a.
 HIS LAST WORD: dalay asshole Qc3a toh green hai?
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- bcb5e7c2 21 Nov 01:08 correction: QC3a already done, QCONNECT reopened state
 - b2df55a5 21 Nov 01:05 ledger line e1aba74a
 - e1aba74a 21 Nov 01:05 QCONNECT reopened: step 9 measure + step 10 dump scripts
 - 4e5fec6c 21 Nov 00:59 ledger line 89ada5c6
 - 89ada5c6 21 Nov 00:59 WORKING-NOW snapshot after QCONNECT close
-- 61789911 21 Nov 00:59 ledger line 078fb50e
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (75349f1437507e0d281cb38cc623e0af3473ef5d)
+WIP snapshot: refs/wip/last (a7a02ddbfc812abb960dd9a57aab9574c41e180a)
