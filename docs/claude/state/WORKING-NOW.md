@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 03:24 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 03:24 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 03:25 PKT QC8a started (his haan): his 5 answers written, a1 audit done; a2 new pure key-map module + golden tests, NEW files only
 NEXT STEP: a2 mail_keymap.ts + test, then show him the mount line and the ? sheet mock
 HIS LAST WORD: his 21 Nov 03:22: 5 answers, shuru kero QC8a
@@ -18,24 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- bd96d348 21 Nov 03:24 QC8a: his 5 answers + a1 audit
 - 22dc79a2 21 Nov 03:12 ledger line 6de007e8
 - 6de007e8 21 Nov 03:12 QC8a and QC8b plan with research (no code)
 - 57c035db 21 Nov 03:09 ledger line f05b5efe
 - f05b5efe 21 Nov 03:09 Docs: only GREEN, no 'by his word' after GREEN (his 03:07 order)
-- 19f81c27 21 Nov 03:07 ledger line e982cd7a
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/QC8A-QC8B-PLAN-21NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/founder/founder-commands.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/QC8A-QC8B-PLAN-21NOV.md          | 18 ++++++++++++++++++
- docs/claude/state/WORKING-NOW.md             | 25 +++++++------------------
- docs/cursor-work/founder/founder-commands.md |  2 ++
- 3 files changed, 27 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 21 ++-------------------
+ 1 file changed, 2 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -46,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (9f534b57d8d8b275cc8b8a1efc06986acfc43f0b)
+WIP snapshot: refs/wip/last (d056b9de9b934200c203fd6e1682f6ad68c277d5)
