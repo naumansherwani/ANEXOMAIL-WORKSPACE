@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 01:26 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 01:26 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT 10 of 10 steps RAN on his server (21 Nov 01:4x PKT): switch live (LOCAL PostgreSQL + LOCAL identity), measured (door ~3 ms vs REST 307-324 ms), nightly dump installed (13M, SHA-256 OK, timer 03:20 UTC, server only). He SIGNED IN via the local identity engine (my Chrome 01:25: dashboard 2/2, 11/11 endpoints, HTTP/3 QUIC, ML-DSA-65; Mail page shows his real mailbox: Inbox 1, Sent 10, Trash 4). NOT yet declared: need a fresh SLOW-lines count since the switch (his one line) to prove the 320 ms is gone end to end.
 NEXT STEP: 1) his paste: journalctl -u anexomail-founder --since=-5min --no-pager | grep -c SLOW 2) if ~0: declare QCONNECT done with WIRED+REAL+TECH-LAW proof (backend only, no UI change so Rule 34 N/A), gaps to CLOSE-THE-GAPS: reverse copy, awam-written tables stale, E197 3) then QC8. Rollback OFF=1.
 HIS LAST WORD: live chrome pe aao khudi dekho
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 04672c04 21 Nov 01:26 QCONNECT: steps 8-10 proven on his server, state saved
 - 5f42bf46 21 Nov 01:24 ledger line 21b19439
 - 21b19439 21 Nov 01:24 QCONNECT: step 9 measured, Chrome look at login page
 - f0e19f19 21 Nov 01:22 ledger line 070d084f
 - 070d084f 21 Nov 01:22 QCONNECT: switch live on his server, state saved
-- 3440a709 21 Nov 01:16 ledger line 2506c1b6
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (dc275cd64b34fe9c9d486c8ab287295bd1a556d7)
+WIP snapshot: refs/wip/last (b0d0512557a2d8fca589fb86cc5054997ac904c2)
