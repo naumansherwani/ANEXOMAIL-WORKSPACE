@@ -41,3 +41,23 @@ QC4a Rust edit (Summary.references + test) is on branch wip-qc4a ONLY (not main)
 
 ## STATUS 20 Nov 2026 09:55 PKT
 QC4a = DONE, WRITTEN AND TESTED, NOT INSTALLED (20 Nov 2026 09:55 PKT): cargo whole suite 559 passed 0 failed 0 filtered out (was 558, +1 test for References + Reply-To), pure-TS tests 474 pass 0 fail (sandbox runner, not a runtime), tsc clean, vite build OK (index-BcANl4MB). Rust edit was kept on branch wip-qc4a until cargo passed, then only the code files were brought to main. QC4a TECHNOLOGY, in plain words (written for the next Claude): RUST + TOKIO + AXUM: fmail_core.rs summarize() now reads the mail's References header (max 40 ids) and Reply-To header (addresses) with mail-parser 0.11.5; summary_json() hands both to the browser inside the existing open door (no new door, no new SQL), so a reply learns the thread chain where the mail is opened. The send door (fmail_mime.rs parse_compose, unchanged) RE-VALIDATES every id (msgid_ok, max 20) and writes In-Reply-To + References, so the browser is never trusted blindly. WASM KERNEL RPC: nothing new; mail_api.send already spreads the compose body, the send target hash does not include references so touch checks stay identical. REACT 19 + TYPESCRIPT: MailBox reply passes referencesFor(opened.sum.references, message_id) (reply_pure.ts, RFC 5322 3.6.4, max 20, thread root kept); MailCompose sends references. SQL: none. KNOWN GAP: recipient_pq mail is opened by the browser kernel (web-wasm), whose summary does not carry References/Reply-To until the kernel is rebuilt; such a reply sends [parent Message-ID] only and still threads by In-Reply-To. NEXT: his ONE founder-install for QC4a (Rust binary + bundle), then QC4b the screen (inline panel, Reply/Reply all/Forward buttons + keys r a f, fold chip, selection reply, forward block, reply all warn above 20), then my live look.
+
+
+## HIS APPROVED FEATURE LIST, VERBATIM (his paste 20 Nov 2026 09:12 PKT, added to the repo at his order)
+QC4a (server aur data)	Feature 7 (sahi References): Rust mail ke References aur Reply-To header padhega. Feature 3 ka data (Reply-To). mail_api.ts mein send ke saath references. Pure TS reply_pure.ts + 13 tests bane hue hain. QC4 ka poora plan
+Technology (har hissa kis cheez par):
+* Pure TypeScript (reply_pure.ts): reply aur reply all ke recipients, subject, quote, fold aur References ka hisaab. Yeh bana hua hai.
+* Rust + Tokio + axum: send door parent mail se References khud banayega. Browser par threading headers ka bharosa nahi karenge.
+* Kernel RPC: mail_api.ts ke zariye, koi raw fetch nahi.
+* React 19 + TypeScript + Tailwind + Framer Motion: inline panel aur buttons.
+* PostgreSQL: naya SQL nahi chahiye, kyunke door ke paas parent mail pehle se readable hai.
+Features ki list (QC4 mein kya banega):
+1. Inline reply: mail ke neeche panel, popup nahi. Editor, pre-send bar aur schedule presets Compose wale hi hain, aur ek pop-out button hai.
+2. Reply, Reply all, Forward: teen buttons, har screen size par 44 px. Keys: r, a, f.
+3. Reply all: aap khud nikal diye jate hain, duplicate hat jate hain, Reply-To ka lihaaz hota hai. 20 se zyada log hon to bar warn karegi.
+4. Quoted text fold: purana quote "..." ke peeche band, ek tap se khulta hai. Bheji gayi mail mein poora quote rehta hai.
+5. Selected hisse ka reply: mail mein kuch select karke Reply dabayein to sirf wohi quote hota hai.
+6. Forward (inline): "Forwarded message" ka block (From, Date, Subject, To) aur "Fwd:" sirf ek baar.
+7. Sahi References: ab UI sirf In-Reply-To bhejti, aage server poori chain banayega (max 20, thread ki jad rakhi jayegi).
+
+NOTE (my 09:30 correction, shipped in QC4a 09:55): the Rust bullet and feature 7 wording above are SUPERSEDED in HOW, not in WHAT: the References chain is read where the mail is opened (summarize/summary_json: References + Reply-To), the reply sends it, and the send door re-validates every id; the server cannot open recipient_pq mail. All 7 features stay as he wrote them.
