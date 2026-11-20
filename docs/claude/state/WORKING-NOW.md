@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 02:59 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 02:59 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 03:20 PKT: QCONNECT-LO GREEN BY HIS WORD (02:58). QC8 started: PLAN WRITTEN docs/claude/QC8-PLAN-21NOV.md + contract draft in CURRENT.md; 4 questions to him (? help sheet, switch-off/remap, scope, English only). No QC8 code until his answers.
 NEXT STEP: He answers the 4 QC8 questions; then QC8 step 1 audit (read-only, real Chrome keyboard walk + axe-core), step 2 key map golden tests, etc.
 HIS LAST WORD: his 21 Nov 02:58: green kero, QC8 shuru kero plan and discuss
@@ -18,29 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- f06562a1 21 Nov 02:59 QCONNECT green by his word; QC8 plan and contract draft
 - 63138f50 21 Nov 02:54 ledger line 2c975141
 - 2c975141 21 Nov 02:54 QCONNECT-LO: live Chrome look recorded
 - 5dd6635a 21 Nov 02:53 ledger line d9502c23
 - d9502c23 21 Nov 02:53 QCONNECT-LO: ran on his server, proof recorded
-- ca176cb7 21 Nov 02:39 ledger line 6cd3f15f
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/BLUEPRINT-ABC-01NOV.md
- M docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md
- M docs/claude/QCONNECT-PLAN-20NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
-?? docs/claude/QC8-PLAN-21NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/BLUEPRINT-ABC-01NOV.md          |  1 +
- docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md |  2 +-
- docs/claude/QCONNECT-PLAN-20NOV.md          |  2 ++
- docs/claude/state/WORKING-NOW.md            | 28 ++++++++++------------------
- docs/claude/tech-contracts/CURRENT.md       | 10 ++++++++++
- 5 files changed, 24 insertions(+), 19 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 26 ++------------------------
+ 1 file changed, 2 insertions(+), 24 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -51,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (730622ca6dba7d4da9af99269c202cd0dd6320fd)
+WIP snapshot: refs/wip/last (5d50ceb5ca2c22989b63437892ba8e4afaa27a72)
