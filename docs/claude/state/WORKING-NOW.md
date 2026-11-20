@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 03:44 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 03:45 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 03:52 PKT DEADLINE 05:00 PKT: QC8a + QC8b live Chrome GREEN. His 03:44 haan = start. Doing QC8a a3: read settings schema first (schema-first), then SQL keyboard.single_keys, toggle, listener
 NEXT STEP: a3 SQL, a3 listener mount in App.tsx, a4 ? sheet, a5 list keys, a6 Chrome, then QC8b
 HIS LAST WORD: his 21 Nov 03:44: 05:00 deadline, ek ek karke, advance technology
@@ -18,24 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 48b8d290 21 Nov 03:45 QC8: his 05:00 deadline recorded
 - 0ba8af08 21 Nov 03:41 ledger line 92f32687
 - 92f32687 21 Nov 03:41 QCONNECT intact proof recorded
 - 253a84ea 21 Nov 03:39 ledger line 51984872
 - 51984872 21 Nov 03:39 QC8a: compaction-safety records + blueprint top block
-- 22d00378 21 Nov 03:33 ledger line f8b7fa6d
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/BLUEPRINT-ABC-01NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/founder/founder-commands.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/BLUEPRINT-ABC-01NOV.md           |  1 +
- docs/claude/state/WORKING-NOW.md             | 25 +++++++------------------
- docs/cursor-work/founder/founder-commands.md |  2 ++
- 3 files changed, 10 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 21 ++-------------------
+ 1 file changed, 2 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -46,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (2c5545afb044489d274707bc70f7830089162be9)
+WIP snapshot: refs/wip/last (42284470ba430bd4247c485776e4fba709e6a872)
