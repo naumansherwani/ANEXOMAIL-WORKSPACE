@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 08:16 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 08:20 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC3 badges written+pushed (7a3f1fa0), NOT installed; QC3-7 partly live (timeline+presets proven)
 NEXT STEP: his founder-install, then my live look at Sent badges; try 390/820 same-origin frame; bar live firing + per-recipient rows + attachment-word check still open
 HIS LAST WORD: 5-min check 08:17
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 2ac3e07a 20 Nov 08:20 QC3 audit: live bundle vs repo, doors closed without token, 6 loopholes listed
+- 7b3b9627 20 Nov 08:16 ledger line e27d688b
 - e27d688b 20 Nov 08:16 QC3 checkpoint
 - 7a3f1fa0 20 Nov 08:15 ledger line 49a58b7e
 - 49a58b7e 20 Nov 08:15 QC3: Sent-list badges mounted (SentBadges.tsx, one batch kernel RPC call), ledger and blueprint
-- 79f3707b 20 Nov 08:11 ledger line b987ba29
-- b987ba29 20 Nov 08:11 QC3 live look
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,16 +30,16 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
+> ## >>> 20 Nov 2026 08:27 PKT QC3 AUDIT: docs/claude/QC3-AUDIT-20NOV.md. Live bundle = QC3-5 (badges 7a3f1fa0 not installed yet). Doors 401 without token, healthz 200. 390/820 live = after the Q series (his 08:20). Open: badges live, delivery-board mount, bar live, SW stale. <<<
 > ## >>> 20 Nov 2026 08:40 PKT QC3 GAP CLOSE (20 Nov 2026 08:40 PKT): Sent-list badges MOUNTED in code (SentBadges.tsx: one batch call via kernel RPC mail_api.badges, max 100 ids, polls 30 s only while mail is moving, calm: only Sending/Delayed/Failed/Scheduled/Undo/Cancelled/Undone get a word; Mail
 > ## >>> 20 Nov 2026 08:25 PKT QC3-7 LIVE LOOK (20 Nov 2026 08:25 PKT, my Chrome, his founderworkspace.anexomail.com, 1536 wide): live bundle index-DhaYIeTm.js contains the QC3 code (mail/timeline, presets). SENT timeline PROVEN LIVE on real mail 'QC3a send now proof': Queued 11:30:16, Send now pres
 > ## >>> 20 Nov 2026 08:12 PKT QC3 SABOOT (his founder-install paste, 2 runs, 20 Nov 2026 08:12 PKT): SPA index=200, exchange bina token=401, Ed25519 signing ON kid s1 write-request signature ENFORCED, public key endpoint=200, healthz=200, me bina token=401, bridge bina token=401, OK founder service
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-NOW: QC1c - COMPOSE C1c: TLS lock on every chip from our own STARTTLS probe (SQL E187; discuss after QC1b)  [Rust Tokio SMTP STARTTLS rustls X25519MLKEM768 probe, PostgreSQL domain TLS facts]
-WIP snapshot: refs/wip/last (a036abc9402f38ad64ff072d943780090bfc0423)
+WIP snapshot: refs/wip/last (39b020c55211ad147b5b39ab6643550f6698a323)
