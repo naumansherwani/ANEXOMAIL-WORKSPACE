@@ -4586,3 +4586,5 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 03:10 PKT QCONNECT-LO live look in my Chrome (his tab, read only): session valid, Live + Trusted, Dashboard 2/2 checks fine, Answers verified, Mail inbox real; first dashboard load took about 15 s after the restart; data is on Supabase REST again (slower than local, expected). Not stamped green (390/820 not looked yet).
 
 - 21 Nov 2026 03:20 PKT QCONNECT (login-only) GREEN BY HIS WORD (02:58). WIRED: YES / REAL: YES / TECH-LAW CHECKED: login on his server (journal proof, his paste 02:53), data on Supabase, my Chrome look ok, backup kept. QC8 started: plan docs/claude/QC8-PLAN-21NOV.md and contract draft written, no code until his 4 answers.
+
+- 21 Nov 2026 03:30 PKT QCONNECT live Chrome look (his order 02:59), his Systems page: live pulse running since 02:53:06 (the switch restart), build 0e0284a3, database round trip 458 ms (Supabase REST again, was about 3 ms local), Tokio 62 tasks 8 workers, QUIC + WebTransport, DBSC verified, PQC sealed, mail speed 3.1 s, real delivery board. Devices ring not looked.
