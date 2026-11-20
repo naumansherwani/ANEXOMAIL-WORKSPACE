@@ -18,54 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 7a3ddbf1 21 Nov 02:03 QCONNECT-LO: login-only mode code, contract, back-diff script
 - f6c20944 21 Nov 01:56 ledger line da20e427
 - da20e427 21 Nov 01:56 QCONNECT: option 2 chosen, mirror probe script, login-only parked
 - ed804ee5 21 Nov 01:50 ledger line de43576b
 - de43576b 21 Nov 01:50 QCONNECT: footprint read-only script and memory answer
-- 6845a24d 21 Nov 01:44 ledger line 5eeccd18
 
 ## Uncommitted files (half-done work if any)
-M  CLAUDE.md
-M  docs/claude/DONE-DO-NOT-REPEAT.md
-M  docs/claude/RESUME-POINT.md
-M  docs/claude/founder/PULL-COMMANDS.md
-M  docs/claude/state/HEARTBEAT.json
-MM docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
-M  docs/cursor-work/DONE-DO-NOT-REPEAT.md
-M  docs/cursor-work/founder/founder-commands.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  docs/cursor-work/server/PULL-COMMANDS.md
-A  docs/cursor-work/server/qconnect-back-diff.sh
-M  docs/cursor-work/server/qconnect-footprint.sh
-M  docs/cursor-work/server/qconnect-mirror-probe.sh
-R  founder-web/dist/assets/index-CIVRtGEY.js -> founder-web/dist/assets/index-BxCIB3y6.js
-M  founder-web/dist/index.html
-M  founder-web/src/system_brain.json
-M  lanes/ALL-FILES.csv
-M  lanes/awam.txt
-M  lanes/founder.txt
-M  lovable-gold/README.md
-M  server/founder/src/auth.rs
-M  server/founder/src/data.rs
-M  server/founder/src/localid.rs
-M  server/founder/src/main.rs
-M  server/founder/src/portable.rs
-M  server/founder/src/sessions.rs
-M  server/founder/src/signin.rs
+ M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- server/founder/src/auth.rs                         |  4 +-
- server/founder/src/data.rs                         | 35 +++++++++-----
- server/founder/src/localid.rs                      |  6 +--
- server/founder/src/main.rs                         |  4 +-
- server/founder/src/portable.rs                     |  2 +-
- server/founder/src/sessions.rs                     |  2 +-
- server/founder/src/signin.rs                       |  4 +-
- 29 files changed, 138 insertions(+), 74 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 51 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 49 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -76,4 +42,4 @@ M  server/founder/src/signin.rs
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (1c02326d6a274ee28970dd682dbffe0aaefa4eb1)
+WIP snapshot: refs/wip/last (0b9028ba20a00fa3704a5db087cf158ce3838544)
