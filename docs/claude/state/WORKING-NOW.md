@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 23:25 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 23:26 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT step 6 CODE DONE in the sandbox (pg.rs: Rust Tokio tokio-postgres + deadpool, catalog-driven rpc templates, PostgREST-subset translator, service_role session; 570 tests pass; live test 139 us per rpc); not installed, FOUNDER_DB=local unset = REST; score 5 proven on his server + step 6 code
 NEXT STEP: 1) step 7: Rust signin owns passwords + sessions (auth.rs/passkey.rs/signin.rs direct-http places) read E153/E167 first; 2) his ONE founder-install; 3) step 8 switch: delta copy + freeze + FOUNDER_DB=local + rollback; 4) step 9 re-measure; 5) step 10 nightly dump on server only
 HIS LAST WORD: SQL advance 400+ likho QC7
@@ -18,38 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 0f24446d 20 Nov 23:26 QCONNECT step 6: Rust local PostgreSQL engine inside Sb (pg.rs), FOUNDER_DB=local
 - 0ad082f3 20 Nov 22:22 ledger line 5f355fee
 - 5f355fee 20 Nov 22:22 QCONNECT: step 6 survey and design
 - 6247ded3 20 Nov 22:21 ledger line 91003589
 - 91003589 20 Nov 22:21 QCONNECT: step 5 compare done, score 5 of 10
-- 2cbd984f 20 Nov 22:16 ledger line 3313ce56
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/BLUEPRINT-ABC-01NOV.md
- M docs/claude/QCONNECT-PLAN-20NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- M server/founder/Cargo.lock
- M server/founder/Cargo.toml
- M server/founder/src/auth.rs
- M server/founder/src/data.rs
- M server/founder/src/main.rs
- M server/founder/src/portable.rs
- M server/founder/src/sessions.rs
- M server/founder/src/signin.rs
-?? server/founder/src/pg.rs
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- server/founder/Cargo.toml             |   2 +
- server/founder/src/auth.rs            |   2 +-
- server/founder/src/data.rs            |  22 ++-
- server/founder/src/main.rs            |   7 +-
- server/founder/src/portable.rs        |   2 +-
- server/founder/src/sessions.rs        |   2 +-
- server/founder/src/signin.rs          |   2 +-
- 12 files changed, 314 insertions(+), 36 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 35 ++---------------------------------
+ 1 file changed, 2 insertions(+), 33 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -60,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a106607cc7ef2df2b50dab3fa91fb9168959f594)
+WIP snapshot: refs/wip/last (9a6ddb64db56e0ade40b71c2793b1091854468db)
