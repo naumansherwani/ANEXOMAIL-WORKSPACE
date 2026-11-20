@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 07:26 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QC3-2 E195 pushed, blueprint updated (9fa59f5d); starting QC3-3 Rust timeline door (Tokio/axum)
-NEXT STEP: QC3-3 Rust door + cargo tests; then QC3-4 pure TS, QC3-5 UI via kernel RPC
-HIS LAST WORD: his 07:23: tell which tech is in QC3 (answered)
+# WORKING NOW (manual checkpoint, 20 Nov 2026 07:26 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: E195 RUN ON HIS SERVER 07:26 (70/0, CHECK 7/7); writing QC3-3 Rust + Tokio + axum timeline door
+NEXT STEP: QC3-3 Rust door /founder/v1/mail/timeline + cargo tests (fmail_), then QC3-4 pure TS, QC3-5 UI via kernel RPC, QC3-7 one install + live look
+HIS LAST WORD: his 07:26: write tech per step everywhere (done)
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- cfa25590 20 Nov 07:26 ledger line 0b2a26c0
 - 0b2a26c0 20 Nov 07:26 QC3: E195 live on his server; tech per step written everywhere
 - 423d480c 20 Nov 07:25 ledger line 85e7a7c2
 - 85e7a7c2 20 Nov 07:25 QC3 checkpoint (WORKING-NOW)
 - 9fa59f5d 20 Nov 07:21 ledger line 171c9315
-- 171c9315 20 Nov 07:21 blueprint: QC3 in progress
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 23 +++++------------------
+ 1 file changed, 5 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ RESEARCH SOURCES (opened and read): Exclaimer embedded vs hosted signature image
 HIS 4 QUESTIONS, ANSWERS FROM RESEARCH (his word still needed, defaults below):
 1. Only what he writes is rich: YES. Reply/forward of received HTML = QC4. Pasted
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
-WIP snapshot: refs/wip/last (8761ee49cc646cbc031d964398da630ea1bdbab2)
+WIP snapshot: refs/wip/last (75056652e8cbf1f69ea143446934047a0d7cd084)
