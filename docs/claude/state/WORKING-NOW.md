@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 01:37 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 01:38 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 02:10 PKT: HIS SCOPE DISPUTE: he meant ONLY login fast, rest as before; what runs is the WHOLE founder database local (FOUNDER_DB=local). I told him plainly (my wording was unclear) and gave the rollback line OFF=1 (founder data back on managed REST at once, loses only rows written since ~01:30; he signs in again). Waiting for his run or his choice (keep / rollback / login-only mode later).
 NEXT STEP: If he runs OFF=1: read his paste, record rollback, then reverse-copy only if he asks. If he keeps local: ask nothing, go on. Login-only mode (identity local, data REST) = new code in data.rs/localid.rs, contract first, audit. Off-server backup question stays open. Then QC8.
 HIS LAST WORD: mera sirf login ka tha baqi sab pehle jaisa, yeh hetzner pe sab kar diya? yeh tune kya kiya?
@@ -18,22 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- ff2c6a88 21 Nov 01:38 QCONNECT: scope dispute recorded, rollback line given
 - 1ed379a4 21 Nov 01:34 ledger line 6db7e2a1
 - 6db7e2a1 21 Nov 01:34 backup risk recorded as top gap
 - 15a66e88 21 Nov 01:30 ledger line ff446368
 - ff446368 21 Nov 01:30 QCONNECT: green and closed by founder word
-- e5bc0eae 21 Nov 01:28 ledger line e046ad80
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/BLUEPRINT-ABC-01NOV.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/BLUEPRINT-ABC-01NOV.md |  1 +
- docs/claude/state/WORKING-NOW.md   | 24 ++++++------------------
- 2 files changed, 7 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -44,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a6881c2426afbc8a279d3cbb7fd3adc9580f5a5e)
+WIP snapshot: refs/wip/last (a21fc0b9d4e47cd270eb00aec56d8b0e866a26c7)
