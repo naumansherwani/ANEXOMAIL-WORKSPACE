@@ -14,6 +14,7 @@ anexochat/packages/READ-FIRST-FOUNDER-LAW.md
 anexochat/sql/00-FOUNDER-TECH-RULE.md
 anexochat/sql/CHECK_phase61.sql
 anexochat/sql/READ-FIRST-FOUNDER-LAW.md
+anexochat/sql/READ-SCHEMA-FIRST.md
 anexochat/sql/README.md
 anexochat/sql/anexochat_phase03_message_engine.sql
 anexochat/sql/anexochat_phase07_cinema_video.sql
@@ -568,6 +569,7 @@ docs/cursor-work/sql/E97_commitment_ledger_economics.sql
 docs/cursor-work/sql/E98_kernel_release_040.sql
 docs/cursor-work/sql/E99_file_context.sql
 docs/cursor-work/sql/PROOF_cross_plan_mail.sql
+docs/cursor-work/sql/READ-SCHEMA-FIRST.md
 docs/cursor-work/sql/index.md
 docs/cursor-work/sql/phase63_f3a_passkey_family.sql
 docs/cursor-work/sql/phase64_crm_locale.sql
@@ -902,6 +904,7 @@ server/storage/mount-box.sh
 server/storage/register-box.sh
 sql/00-FOUNDER-TECH-RULE.md
 sql/READ-FIRST-FOUNDER-LAW.md
+sql/READ-SCHEMA-FIRST.md
 sql/README.md
 sql/apply-all.sh
 sql/connect.sh

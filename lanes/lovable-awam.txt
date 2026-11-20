@@ -14,6 +14,7 @@ anexochat/packages/READ-FIRST-FOUNDER-LAW.md
 anexochat/sql/00-FOUNDER-TECH-RULE.md
 anexochat/sql/CHECK_phase61.sql
 anexochat/sql/READ-FIRST-FOUNDER-LAW.md
+anexochat/sql/READ-SCHEMA-FIRST.md
 anexochat/sql/README.md
 anexochat/sql/anexochat_phase03_message_engine.sql
 anexochat/sql/anexochat_phase07_cinema_video.sql
@@ -156,6 +157,7 @@ server/storage/mount-box.sh
 server/storage/register-box.sh
 sql/00-FOUNDER-TECH-RULE.md
 sql/READ-FIRST-FOUNDER-LAW.md
+sql/READ-SCHEMA-FIRST.md
 sql/README.md
 sql/apply-all.sh
 sql/connect.sh

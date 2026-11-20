@@ -1827,3 +1827,10 @@ Tests QC7a so far: scratch Postgres 16 logic run (workday, cap, guard, reply, sn
 - 20 Nov 2026 20:25 PKT: QC7a React written (FollowupChip in the sent-mail read pane, followup_pure + 5 bun tests, mail_api followups/set/snooze/dismiss); bun 498/498, tsc clean, vite built; NOT installed yet, no acceptance word written; he must run sql-run E196 then founder-install; QC7b (draft sealed in browser) next. Tech: Rust WASM kernel + WebTransport HTTP/3 + React 19 TS + SQL E196. Phase: QC7
 
 - 20 Nov 2026 20:27 PKT: QC7a React chip committed after awam_inherit sync (MailBox.tsx, mailbox.css preserved-for-awam hashes); still not installed, no acceptance word written.
+
+- 20 Nov 2026 20:42 PKT: E196 = GREEN on his server (his sql-run paste: CHECK_E196 all OK, selftest 26 of 26, E179 door audit clean, E65 sweep OK): WIRED: YES / REAL: YES / TECH-LAW CHECKED (PostgreSQL 16 SQL, hash-chained event log, RLS). QC7a Rust doors + clock + React chip INSTALLED (his founder-install paste: healthz 200, SPA 200, Ed25519 signing ON); my live Chrome look at the chip is still to do, so QC7 stays IN PROGRESS. NEW LAW (his 20:35): SQL SCHEMA-FIRST, founder and awam, in every SQL folder (READ-SCHEMA-FIRST.md), CLAUDE.md, index.md, rules-read.py: docs/claude/SQL-SCHEMA-FIRST-LAW-20NOV.md. Next: QC7b sealed draft. Tech: PostgreSQL 16 SQL + Rust Tokio/axum + React 19 TS. Phase: QC7
+
+
+- 20 Nov 2026 20:46 PKT: SQL schema-first law block placed lower in CLAUDE.md; E196 GREEN record stands: WIRED: YES / REAL: YES / TECH-LAW CHECKED (his CHECK_E196 paste). Tech: PostgreSQL 16 SQL + Rust Tokio/axum + React 19 TS.
+
+- 20 Nov 2026 20:48 PKT: SQL schema-first law is in CLAUDE.md, index.md, rules-read.py and every SQL folder; E196 GREEN record stands: WIRED: YES / REAL: YES / TECH-LAW CHECKED (his CHECK_E196 paste). Tech: PostgreSQL 16 SQL + Rust Tokio/axum + React 19 TS.
