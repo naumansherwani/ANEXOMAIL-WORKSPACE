@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 08:22 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QC3 badges written+pushed (7a3f1fa0), NOT installed; QC3-7 partly live (timeline+presets proven)
-NEXT STEP: his founder-install, then my live look at Sent badges; try 390/820 same-origin frame; bar live firing + per-recipient rows + attachment-word check still open
-HIS LAST WORD: 5-min check 08:17
+# WORKING NOW (manual checkpoint, 20 Nov 2026 08:23 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QC3 badges + delivery board written+pushed (60865477), NOT installed; SW loophole closed with proof
+NEXT STEP: his founder-install, then my live look: Sent badges + Systems>Mail health board; bar live, 390/820 (after Q series), per-recipient rows, attachment-word check open
+HIS LAST WORD: 5-min check 08:23
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 60865477 20 Nov 08:22 ledger line 1a93644c
 - 1a93644c 20 Nov 08:22 QC3: delivery board + checkpoint
 - 44763e6e 20 Nov 08:22 ledger line a7ba122a
 - a7ba122a 20 Nov 08:22 QC3 delivery board
 - 747479b9 20 Nov 08:20 ledger line 2ac3e07a
-- 2ac3e07a 20 Nov 08:20 QC3 audit: live bundle vs repo, doors closed without token, 6 loopholes listed
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 23 +++++------------------
+ 1 file changed, 5 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (2460c7425b850a4d436cc83801b4f0614ff3e9c7)
+WIP snapshot: refs/wip/last (1f385c2dd6abf3911830958dd7d1dbef6ceb0ff5)
