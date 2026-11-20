@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 15:53 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 20 Nov 2026 15:59 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: DK-a kernel 0.19.0 pushed 64c78743, waits his founder-install
 NEXT STEP: his install, my live kernel check, DK-b key custody + screen, evening QC5/QC7/QC8/Q3
 HIS LAST WORD: 5-min check 10:11
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 70c4e667 20 Nov 15:53 ledger line eb88093f
 - eb88093f 20 Nov 15:53 DK checkpoint 15:53
 - ef1972ad 20 Nov 15:46 ledger line 05ce44df
 - 05ce44df 20 Nov 15:46 DK checkpoint 15:46
 - 5fa42780 20 Nov 15:40 ledger line ed119a79
-- ed119a79 20 Nov 15:40 DK checkpoint 15:40
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (db934d6d18912b79199c8203964b2d84ca4d71bc)
+WIP snapshot: refs/wip/last (0ea99134eac56a9af79169404472e5b9147b1e8f)
