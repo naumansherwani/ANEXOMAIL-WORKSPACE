@@ -20,3 +20,5 @@
 - 21 Nov 2026 04:43 PKT HIS WORD (clock = his): "b2..b6 45 mins hai, time likh lo, b2 ki detail do, discuss kero". Time box written in QC8A-QC8B-PLAN-21NOV.md (b2 -04:53, b3 -05:02, b4 -05:12, b5 -05:18, b6 -05:27 by his clock). b2 detail sent for discussion, no code yet.
 
 - 21 Nov 2026 04:44 PKT HIS WORD: 45 minutes left, deadline 05:27. b2 Semantics 04:53 / b3 Focus 05:02 / b4 Announcements 05:12 / b5 forced-colors+contrast 05:18 / b6 Final check + Chrome live 05:27. Write the time and technology in CAPITALS in ledger + blueprint after every phase. b2 detail asked.
+
+- 21 Nov 2026 04:45 PKT HIS WORD: "sirf b2 only likho". b3/b4 code written by mistake was reverted unwritten; only b2 stays. b3 onwards only after his word.
