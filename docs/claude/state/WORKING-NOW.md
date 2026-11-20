@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:04 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:08 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC3 GREEN FINAL; QC4 split QC4a/QC4b written (1adfade8); QC4-2 pure TS done; Rust References on branch wip-qc4a, cargo NOT run yet (he interrupted a run; I asked him whether to run it)
 NEXT STEP: his answer on cargo run; then QC4a: Reply-To in Summary + cargo whole suite + merge to main + mail_api references; then QC4b screen; one install
 HIS LAST WORD: 5-min check 09:35
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- a8a4c09c 20 Nov 09:08 QC4a done
+- 96a94a79 20 Nov 09:04 ledger line 5c5cb77d
 - 5c5cb77d 20 Nov 09:04 QC4 checkpoint
 - 1adfade8 20 Nov 09:04 ledger line 55886126
 - 55886126 20 Nov 09:04 QC4 split in blueprint and PHASE-NOW
-- f4ef5fe4 20 Nov 09:04 ledger line 0585ad19
-- 0585ad19 20 Nov 09:04 QC4 split plan
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,16 +30,16 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
+> ## >>> 20 Nov 2026 09:55 PKT QC4a = DONE, WRITTEN AND TESTED, NOT INSTALLED (20 Nov 2026 09:55 PKT): cargo whole suite 559 passed 0 failed 0 filtered out (was 558, +1 test for References + Reply-To), pure-TS tests 474 pass 0 fail (sandbox runner, not a runtime), tsc clean, vite build OK (index-BcA
 > ## >>> 20 Nov 2026 09:34 PKT QC4 SPLIT: QC4a server+data (Rust References + Reply-To in the open summary, mail_api, pure TS done) then QC4b screen (inline panel, Reply/Reply all/Forward buttons+keys, fold chip, selection reply, forward); ONE install. Rust edit waits on branch wip-qc4a until the wh
 > ## >>> 20 Nov 2026 09:10 PKT QC4-2 DONE (20 Nov 2026 09:10 PKT): founder-web/src/reply_pure.ts + 13 golden tests (pure TypeScript, sandbox runner only): replyTargets (reply, reply all, me removed, dedupe, Reply-To), subjects (Re once, Fwd once), replyBody (selection replaces whole mail), forwardBo
-> ## >>> 20 Nov 2026 09:03 PKT QC3 = GREEN FINAL BY THE CHAIRMAN'S WORD (20 Nov 2026 09:03 PKT, his 08:55: 'main chairman hoon, tu green likho bus final hai'). WIRED: YES / REAL: YES / TECH-LAW CHECKED. Whole phase QC3-1..QC3-7. Proof: his founder-install x3 (4/4 saboot: SPA 200, exchange without to
-> ## >>> 20 Nov 2026 08:58 PKT QC4 (inline reply and forward) STARTED: plan docs/claude/QC4-PLAN-20NOV.md, contract top of tech-contracts/CURRENT.md. Next: QC4-2 pure TS reply_pure.ts, QC4-3 Rust References from the store
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (18f8f92108178912c480480ff260fc3197f4f685)
+NOW: QC1c - COMPOSE C1c: TLS lock on every chip from our own STARTTLS probe (SQL E187; discuss after QC1b)  [Rust Tokio SMTP STARTTLS rustls X25519MLKEM768 probe, PostgreSQL domain TLS facts]
+WIP snapshot: refs/wip/last (170261165c5fc3e58fac39d65ecab37152a07231)
