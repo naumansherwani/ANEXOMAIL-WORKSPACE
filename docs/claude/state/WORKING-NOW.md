@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 07:12 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QC2 live look OK, CSS fix pushed (6b752a86); QC3 details sent to him, waits his 4 answers / default theek
-NEXT STEP: his word on QC3 (4 questions, default warn-only, 4 presets, timeline in Sent detail, 20 recipients); then contract in CURRENT.md, QC3-A Rust, QC3-B browser
-HIS LAST WORD: 5-min check
+# WORKING NOW (manual checkpoint, 20 Nov 2026 07:12 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QC3 plan+contract pushed (a0df148e); writing QC3-2 SQL E195 timeline door
+NEXT STEP: QC3-2 E195 + CHECK, then QC3-3 Rust door, QC3-4 pure, QC3-5 UI
+HIS LAST WORD: his 07:09 order: best answers, plan, start
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 66ddfea0 20 Nov 07:12 ledger line a0df148e
 - a0df148e 20 Nov 07:12 QC3 plan + contract (docs only)
 - 01380ff5 20 Nov 07:05 ledger line b31237c4
 - b31237c4 20 Nov 07:05 5-min checkpoint: QC3 waits his word
 - 6b752a86 20 Nov 07:05 ledger line 6df808ef
-- 6df808ef 20 Nov 07:05 QC2 live look OK on his server + rich rows alignment
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 23 +++++------------------
+ 1 file changed, 5 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ HIS 4 QUESTIONS, ANSWERS FROM RESEARCH (his word still needed, defaults below):
 1. Only what he writes is rich: YES. Reply/forward of received HTML = QC4. Pasted HTML is untrusted (the ProseMirror XSS above): pin prosemirror-view >= 1.42.3, schema + paste rules in the browser, Rust ammonia as the second wall on the server.
 2. Signature = text + links only in QC2. Reason: embedded (CID/base64) logo adds ~33 % size and shows as an attachment in Microsoft 365 / OWA, iOS Mail has stripped it; a hosted logo is blocked by default in many clients and needs the host online; guidance keeps a logo under 50 KB. Logo comes after 
 3. Snippets: trigger `/name` (Superhuman uses `;`, we keep `/` and Ctrl+K), built-in variables {first_name} {my_name} {date}, plus any {custom_placeholder}; sending with an unfilled {placeholder} WARNS first (Superhuman does the same). Private snippets only (single founder; team sharing not needed).
-WIP snapshot: refs/wip/last (beada82ed83884605f025eeb85e8d24f5501ad8c)
+WIP snapshot: refs/wip/last (22760f5fdc40c5dc0ae0606461c348d1b3114eaf)
