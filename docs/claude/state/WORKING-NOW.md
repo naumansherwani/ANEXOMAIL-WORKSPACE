@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 07:43 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 07:43 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC3-5 UI pushed (7b5a6021, sandbox 390/820/1280 ok); waits his founder-install + paste, then my live Chrome look (QC3-7)
 NEXT STEP: after his install paste: my live Chrome look (bar, presets, timeline), clear anexo-assets-v1 cache, never send a mail; then QC3 green only by his word
 HIS LAST WORD: 5-min check
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 9887f380 20 Nov 07:43 QC3 checkpoint (WORKING-NOW)
 - 7b5a6021 20 Nov 07:43 ledger line bfefd9ae
 - bfefd9ae 20 Nov 07:43 QC3-5: pre-send bar, schedule presets, delivery timeline UI
 - d5374568 20 Nov 07:40 ledger line 0597c2b1
 - 0597c2b1 20 Nov 07:40 QC3 checkpoint (WORKING-NOW)
-- 489a4803 20 Nov 07:40 ledger line bc481060
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 RESEARCH SO
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
-WIP snapshot: refs/wip/last (42afc631eb098cdf647f03a5b4a212b73319d44e)
+WIP snapshot: refs/wip/last (e85f458e0638d27f9cbfdc981b2fb0556af058db)
