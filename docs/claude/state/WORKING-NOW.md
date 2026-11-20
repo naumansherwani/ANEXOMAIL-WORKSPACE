@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 07:43 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 07:47 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC3-5 UI pushed (7b5a6021, sandbox 390/820/1280 ok); waits his founder-install + paste, then my live Chrome look (QC3-7)
 NEXT STEP: after his install paste: my live Chrome look (bar, presets, timeline), clear anexo-assets-v1 cache, never send a mail; then QC3 green only by his word
 HIS LAST WORD: 5-min check
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- bf27f077 20 Nov 07:47 QC3 progress table in blueprint, ledger, phase files
+- adc18f0e 20 Nov 07:43 ledger line 9887f380
 - 9887f380 20 Nov 07:43 QC3 checkpoint (WORKING-NOW)
 - 7b5a6021 20 Nov 07:43 ledger line bfefd9ae
 - bfefd9ae 20 Nov 07:43 QC3-5: pre-send bar, schedule presets, delivery timeline UI
-- d5374568 20 Nov 07:40 ledger line 0597c2b1
-- 0597c2b1 20 Nov 07:40 QC3 checkpoint (WORKING-NOW)
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,16 +30,16 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
+# >>> QC3 20 Nov 2026 07:48 PKT: QC3 PROGRESS TABLE (his order 07:46, write it everywhere): QC3-1 contract = DONE. QC3-2 SQL E195 = DONE and RUN ON HIS SERVER (70/0, CHECK 7/7). QC3-3 Rust + Tokio + axum doors (fmail_timeline.rs) = WRITTEN, cargo 558/0, commit 86b37e9d, his install RUNNING now, past
 # >>> QC3 20 Nov 2026 07:42 PKT: QC3-3 (Rust + Tokio + axum timeline doors, commit 86b37e9d, cargo 558/0) = HIS founder-install RUN at 07:40 (his word); his output paste NOT seen yet, so no saboot line (healthz, SPA, Ed25519) is recorded and QC3 is NOT green. QC3-4 (presend_pure.ts, 50 bun tests, bu
 # >>> QC3 20 Nov 2026 07:30 PKT: E195 is on his server (70/0). QC3 TECHNOLOGY PER STEP (my explanation to him 20 Nov 07:23, his order 07:26 to write it word for word everywhere): PostgreSQL (SQL): DONE. E195 written, sandbox 70/0, and RUN ON HIS SERVER 20 Nov 07:26 PKT: his sql-run paste shows e195_
-# >>> NOW: QC3 (20 Nov 2026 07:15 PKT): plan docs/claude/QC3-PLAN-20NOV.md, contract top of tech-contracts/CURRENT.md. Order: QC3-1 contract (done) -> QC3-2 SQL E195 -> QC3-3 Rust door -> QC3-4 pure + tests -> QC3-5 UI -> QC3-6 tests -> QC3-7 his sql-run + install + live look. <<<
-# QC2 (FOUNDER) PHASE POINTS (FOUNDER; awam D4A used P1-P6, different thing), FROM WEB RESEARCH 20 Nov 2026 05:3x PKT (his order 05:30). ONE phase, no sub-phases; GREEN only when ALL points are WIRED: YES / REAL: YES / TECH-LAW CHECKED.
-RESEARCH SO
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
-WIP snapshot: refs/wip/last (e85f458e0638d27f9cbfdc981b2fb0556af058db)
+## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
+NOW: QC1c - COMPOSE C1c: TLS lock on every chip from our own STARTTLS probe (SQL E187; discuss after QC1b)  [Rust Tokio SMTP STARTTLS rustls X25519MLKEM768 probe, PostgreSQL domain TLS facts]
+WIP snapshot: refs/wip/last (afe6eb3f55b2be6ebea0e0be4ed5c92828810578)
