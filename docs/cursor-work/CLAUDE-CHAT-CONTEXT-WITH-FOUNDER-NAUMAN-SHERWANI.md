@@ -4263,3 +4263,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 20 Nov 2026 09:59 PKT QC4 + FOUNDER EMOJI ICON + LIST LOOK = GREEN FINAL BY HIS WORD (his 09:58: 'mai clicks ker raha tha sab theek hai green likho'; he clicked the live founder site himself). WIRED: YES / REAL: YES / TECH-LAW CHECKED. CORRECTION: my earlier lines stamped 10:05 PKT used a wrong clock; real clock 09:58 PKT, fixed in the docs. Open follow-ups: CLOSE-THE-GAPS-07NOV.md.
 
 - 20 Nov 2026 10:02 PKT OPEN ITEMS CLOSED BY HIS WORD (his 10:01): inline panel/fold/selection/20-warn, 390+820 screens, awam routeTree+health = GREEN by his word; WIRED: YES / REAL: YES / TECH-LAW CHECKED. Mine to fix: kernel pq-mail References + Reply-To.
+
+- 20 Nov 2026 10:08 PKT kernel pq-mail References CHECKED: not a QC4 bug. The browser cannot open recipient_pq mail yet (sealed_for_kernel, device-key phase) and web-wasm has no mail parser, so no reply path exists for it. Requirement recorded for the device-key phase: kernel summary must return references (max 40) + reply_to with the same golden cases as the Rust test. My earlier 'gap' wording corrected.
