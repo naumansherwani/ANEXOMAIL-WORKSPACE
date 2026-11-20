@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 01:12 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 01:12 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 01:35 PKT: MAIL CHAIN CORRECTED: only QC8 is open; QC2 QC3 QC4 QC5 QC7 are done (ledger dates in blueprint top). QCONNECT reopened by his 01:05 (30 min), then QC8. My earlier 'remaining QC2..QC8' and 'back to QC2' lines were wrong.
 NEXT STEP: 1) his qconnect-switch.sh paste + sign in once 2) qconnect-measure.sh 3) pg-local-dump-install.sh 4) my Chrome look 5) THEN QC8 (shortcuts + accessibility final pass): contract in CURRENT.md first. Source of truth: FOUNDER-MAILBOX-PHASES-18NOV.md + DONE-DO-NOT-REPEAT.md.
 HIS LAST WORD: yeh kaise mix hua, QC8 ne ana tha, blueprint update kero, repo se ledger do
@@ -18,36 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 4eda0677 21 Nov 01:12 correction: only QC8 open in the mail chain
 - 4521e501 21 Nov 01:08 ledger line bcb5e7c2
 - bcb5e7c2 21 Nov 01:08 correction: QC3a already done, QCONNECT reopened state
 - b2df55a5 21 Nov 01:05 ledger line e1aba74a
 - e1aba74a 21 Nov 01:05 QCONNECT reopened: step 9 measure + step 10 dump scripts
-- 4e5fec6c 21 Nov 00:59 ledger line 89ada5c6
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/BLUEPRINT-ABC-01NOV.md
- M docs/claude/DONE-DO-NOT-REPEAT.md
- M docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md
- M docs/claude/RESUME-POINT.md
- M docs/claude/founder/PULL-COMMANDS.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- M docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
- M docs/cursor-work/DONE-DO-NOT-REPEAT.md
- M docs/cursor-work/founder/founder-commands.md
- M docs/cursor-work/server/PULL-COMMANDS.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/founder/PULL-COMMANDS.md               |  2 +-
- docs/claude/state/WORKING-NOW.md                   | 33 ++++++++++------------
- docs/claude/tech-contracts/CURRENT.md              |  2 +-
- ...DE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md |  2 +-
- docs/cursor-work/DONE-DO-NOT-REPEAT.md             |  2 +-
- docs/cursor-work/founder/founder-commands.md       |  2 +-
- docs/cursor-work/server/PULL-COMMANDS.md           |  2 +-
- 11 files changed, 25 insertions(+), 27 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 33 ++-------------------------------
+ 1 file changed, 2 insertions(+), 31 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -58,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (7e867d551cca1233687cacbd2fca6e3f7a08cd1d)
+WIP snapshot: refs/wip/last (2b9befc7d4c1192bc14dde038a30a9be503c152c)
