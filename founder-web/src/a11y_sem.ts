@@ -25,13 +25,26 @@ export function applySemantics(root: ParentNode): void {
   });
 }
 
+// QC8b b3: when the focused element is removed (compose or reader closes, focus falls to <body>),
+// focus goes back to the mail row that was open, else the first row. Never steals focus otherwise.
+let lost: EventTarget | null = null;
+let lastRow: Element | null = null;
+export function restoreFocus(doc: Document): void {
+  const cur = doc.querySelector(".mbx .mbx-r.on"); if (cur) lastRow = cur;
+  if (!lost || (lost as Element).isConnected) return;
+  const a = doc.activeElement; if (a && a !== doc.body) { lost = null; return; }
+  const row = (lastRow && lastRow.isConnected ? lastRow : doc.querySelector(".mbx .mbx-r")) as HTMLElement | null;
+  lost = null; row?.focus({ preventScroll: true });
+}
+
 let started = false;
 /** Starts once: applies now and again after every change under the body (class and child changes). */
 export function trackSemantics(): void {
   if (started || typeof document === "undefined") return;
   started = true;
   let queued = false;
-  const run = () => { queued = false; applySemantics(document); };
+  const run = () => { queued = false; applySemantics(document); restoreFocus(document); };
+  document.addEventListener("focusout", (e) => { lost = e.target; }, true);
   const mo = new MutationObserver(() => { if (!queued) { queued = true; queueMicrotask(run); } });
   mo.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ["class"] });
   run();

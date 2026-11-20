@@ -277,6 +277,7 @@ docs/claude/QC3-PLAN-20NOV.md
 docs/claude/QC4-PLAN-20NOV.md
 docs/claude/QC8-PLAN-21NOV.md
 docs/claude/QC8A-QC8B-PLAN-21NOV.md
+docs/claude/QC8B-B3-PLAN-21NOV.md
 docs/claude/QCONNECT-AUDIT-21NOV.md
 docs/claude/QCONNECT-PLAN-20NOV.md
 docs/claude/QLIVE-PLAN-18NOV.md

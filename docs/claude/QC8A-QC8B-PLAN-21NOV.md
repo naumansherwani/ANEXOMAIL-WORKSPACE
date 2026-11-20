@@ -91,3 +91,7 @@ New file only: founder-web/src/a11y_sem.ts (+ test) and one mount line in KeyLay
 TECHNOLOGY: TYPESCRIPT + MUTATIONOBSERVER, ATTRIBUTES ONLY, NEW FILE founder-web/src/a11y_sem.ts, ONE MOUNT CALL inside my own KeyLayer.tsx (no old file touched).
 Real DOM (read before writing): ul.mbx-rows > li > button.mbx-r is already a list; so no listitem role was needed. Gaps fixed: (1) no h1 -> role=heading level 1 label "Mail" on the existing .mbx-brand b (no node inserted); (2) .mbx-list div had a dead aria-label -> role=group; (3) open row had no aria-current -> aria-current="true" on .mbx-r.on, removed when closed; (4) unread dot <i aria-label> had no role -> role=img.
 Sandbox proof: Playwright getByRole heading(1,"Mail")=1, group "Inbox messages"=1, img "unread"=1, aria-current moves with the open row and clears on close. tsc clean, bun tests, vite build ok. LIVE proof waits his founder-install.
+
+## QC8b b2 LIVE LOOK (21 Nov 2026 05:02 PKT, his real Chrome, after his founder-install paste)
+On #/mail: role=heading level 1 label "Mail" on the wordmark = YES; .mbx-list role=group = YES; unread dot role=img = YES (1 of 1); a read mail opened -> exactly 1 row aria-current="true" and 1 ".on"; Esc -> 0 and 0. 18 rows, nothing marked or changed in his mailbox (opened only an already-read mail). Laptop 1536 only: phone 390 / tablet 820 STILL OPEN (attributes only, same build, no layout).
+## QC8b b3 (05:03 PKT) mounted in a11y_sem.ts; b4 stays parked in a11y_sem_next.ts. Plan: docs/claude/QC8B-B3-PLAN-21NOV.md
