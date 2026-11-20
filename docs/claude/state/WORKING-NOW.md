@@ -18,37 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- a9dc80e1 20 Nov 19:27 DK3 keygen
 - 4fefe297 20 Nov 19:22 ledger line 3db4ad62
 - 3db4ad62 20 Nov 19:22 DK-a live Chrome look recorded (19:35 PKT)
 - 481ce7fd 20 Nov 19:22 ledger line ea896d7b
 - ea896d7b 20 Nov 19:22 DK-a live look
-- 5aaedbde 20 Nov 19:21 ledger line bcf1bc3c
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/DONE-DO-NOT-REPEAT.md
- M docs/claude/RESUME-POINT.md
- M docs/claude/founder/PULL-COMMANDS.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- M docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
- M docs/cursor-work/DONE-DO-NOT-REPEAT.md
- M docs/cursor-work/founder/founder-commands.md
- M docs/cursor-work/server/PULL-COMMANDS.md
- M web-wasm/src/kemopen.rs
- M web-wasm/src/lib.rs
-?? docs/cursor-work/server/ckpt-loop.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/tech-contracts/CURRENT.md              |  2 +-
- ...DE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md |  2 +-
- docs/cursor-work/DONE-DO-NOT-REPEAT.md             |  2 +-
- docs/cursor-work/founder/founder-commands.md       |  2 +-
- docs/cursor-work/server/PULL-COMMANDS.md           |  2 +-
- web-wasm/src/kemopen.rs                            | 38 ++++++++++++++++++++++
- web-wasm/src/lib.rs                                |  8 +++++
- 11 files changed, 70 insertions(+), 26 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 32 +-------------------------------
+ 1 file changed, 1 insertion(+), 31 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -59,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (25a8af4e06b16911885d1024fd8638e4af4eb269)
+WIP snapshot: refs/wip/last (aa044ecf7fb093eb4cecfe66a23d937b0591417a)
