@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 20:51 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 20:52 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC7b: his Chrome Settings > Privacy shows 'No device key yet' (Create key button present). Creating the key needs a physical passkey touch (WebAuthn PRF), which I cannot give and a prompt would freeze my browser tool; waiting for his ONE touch. QC7a GREEN, QC7 not closed
 NEXT STEP: He taps Settings > Privacy > Mail device key > Create key and touches his key; then I do: offline draft, Restore, write QC7 GREEN; then QC8
 HIS LAST WORD: SQL advance 400+ likho QC7
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 14983446 20 Nov 20:52 QSPEED started: login path read, plan recorded
+- 32c07c05 20 Nov 20:51 ledger line b4760674
 - b4760674 20 Nov 20:51 QC7 green on live Chrome look (reminder + sealed draft); QSPEED starts
 - 7a03729c 20 Nov 20:41 ledger line c4c37d4d
 - c4c37d4d 20 Nov 20:41 WORKING-NOW 20:43: QC7b waits for his Create-key touch
-- eeb901c9 20 Nov 20:38 ledger line d44debd7
-- d44debd7 20 Nov 20:38 QC7a green on live Chrome look; QC7b kernel seal proven live, local seal waits for his key
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (57f1c42846f410553bd22397e0f5ef4daaa12ade)
+WIP snapshot: refs/wip/last (979a91a1dcf12fa3ac1a4307ba081f21803bbc69)
