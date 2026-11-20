@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 19:04 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 19:08 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: DK-a: install script step-3 bug fixed (my comment); waits his re-run of founder-install; then my live kernel 0.19.0 check
 NEXT STEP: QC5 Delete forever (contract first), QC7 follow-up reminder + sealed draft, QC8 shortcuts + a11y, Q3 attachments; DK-b key custody + screen
 HIS LAST WORD: 5-min check 10:11
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 3e7393b5 20 Nov 19:08 DK context saved
+- fe26ff73 20 Nov 19:04 ledger line 73975c25
 - 73975c25 20 Nov 19:04 DK-a install: remove comment that swallowed NEW assignment
 - e902018f 20 Nov 19:04 ledger line 5a9284c5
 - 5a9284c5 20 Nov 19:04 DK-a install step-3 fix
-- bb42e528 20 Nov 18:47 ledger line 9cc257cb
-- 9cc257cb 20 Nov 18:47 DK-a install fix: server tests skip repo-only vectors; faster install build
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (404e1afb62857e2b29aa0db1e1f05e621abdee75)
+WIP snapshot: refs/wip/last (cc09209d9d8aaa0a83d9bc0f59a57f7219861d9a)
