@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 00:17 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 00:17 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT step 8 survey: split-brain risk (other programs write the managed DB). Wrote qconnect-who-writes.sh; waiting for his paste.
 NEXT STEP: Read his qconnect-who-writes paste, then choose shape A (founder only) or B (repoint other writers) and write qconnect-switch.sh with delta copy, freeze, compare, FOUNDER_DB=local on anexo_copy, rollback line.
 HIS LAST WORD: ledger working now blueprint time date, compaction-proof, 2-min loop, rules read, advance technology
@@ -18,25 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 821e8d69 21 Nov 00:17 QCONNECT step 8: survey probe for other database writers
 - 33743778 21 Nov 00:13 ledger line d9243dcc
 - d9243dcc 21 Nov 00:13 QCONNECT: WORKING-NOW doing/next restored
 - 9fc7f93e 21 Nov 00:13 ledger line af3bf40a
 - af3bf40a 21 Nov 00:13 QCONNECT: step 7 installed on his server, compaction state updated
-- 075ab205 21 Nov 00:04 ledger line 814aa2f4
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/QCONNECT-PLAN-20NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
-?? docs/cursor-work/server/qconnect-who-writes.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/QCONNECT-PLAN-20NOV.md    |  5 +++++
- docs/claude/state/WORKING-NOW.md      | 24 +++++++-----------------
- docs/claude/tech-contracts/CURRENT.md |  2 ++
- 3 files changed, 14 insertions(+), 17 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 22 ++--------------------
+ 1 file changed, 2 insertions(+), 20 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -47,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (c03db4af21b09740e02ea0fd1ec07794223067a3)
+WIP snapshot: refs/wip/last (a028b16f54ec10d1b0be6ca95e6fadaad036c506)
