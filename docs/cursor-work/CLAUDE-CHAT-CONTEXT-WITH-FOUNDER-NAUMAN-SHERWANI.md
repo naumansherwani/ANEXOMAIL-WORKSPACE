@@ -4137,3 +4137,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - QC1e D4A: his 2 server cmds pending (sql-run, emoji Rust)
 
 - QC1e D4A installed on server, D4B parked
+
+- QC1e D4A CHECK_E193 all OK on server

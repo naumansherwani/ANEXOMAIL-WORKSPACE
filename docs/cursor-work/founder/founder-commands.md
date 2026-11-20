@@ -4261,3 +4261,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - QC1e D4A: his 2 server cmds pending (sql-run, emoji Rust)
 
 - QC1e D4A installed on server, D4B parked
+
+- QC1e D4A CHECK_E193 all OK on server
