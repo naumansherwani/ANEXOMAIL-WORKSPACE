@@ -4678,3 +4678,5 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 04:45 his clock: QC8b b2 detail written for his discussion, time box b2..b6 recorded, no code yet
 
 - 21 Nov 2026 04:55 PKT QC8b b2 SEMANTICS WRITTEN, sandbox-proven (a11y_sem.ts, TS + MutationObserver, attributes only); live proof waits his founder-install; next b3 focus 05:02
+
+- 21 Nov 2026 04:55 PKT QC8b b2 SEMANTICS WRITTEN, sandbox-proven (a11y_sem.ts, TS + MutationObserver, attributes only); live proof waits his founder-install; next b3 focus 05:02
