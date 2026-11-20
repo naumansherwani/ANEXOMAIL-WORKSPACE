@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 19:50 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 19:50 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: DK-a+DK-b done BY HIS WORD 19:5x (gaps on CLOSE-THE-GAPS); QC5 Delete forever started: contract in CURRENT.md, writing Rust door /mail/delete
 NEXT STEP: Rust door delete_ep + route + test; mail_api.deleteForever; Trash UI Delete forever + Empty trash (additive); then QC7, QC8, Q3
 HIS LAST WORD: khudi dekh lo, mere pass time nahi, green likho
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 0486b43b 20 Nov 19:50 DK-a/DK-b done by his word; QC5 contract; open gaps listed
 - 58df0974 20 Nov 19:50 ledger line 821ecc13
 - 821ecc13 20 Nov 19:50 DK done by his word
 - e4c198d3 20 Nov 19:47 ledger line 31ef4531
 - 31ef4531 20 Nov 19:47 DK-b live Chrome look recorded
-- 794f0e0e 20 Nov 19:46 ledger line 4343a7c3
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (b21018a15cc599ad0baad12936b5f1dbe9ec3528)
+WIP snapshot: refs/wip/last (dfb6f5e5272424efba8c2409c098f2a2c04f4117)
