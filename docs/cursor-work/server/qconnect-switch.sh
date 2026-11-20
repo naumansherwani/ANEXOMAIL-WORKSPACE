@@ -13,6 +13,8 @@ if [ "${OFF:-}" = 1 ]; then off; health && echo "ROLLBACK done: founder service 
 [ -s "$KEY" ] && [ -f "$DRIFT" ] || { echo "FAIL: run qconnect-switch-prep.sh first (key / drift list missing)"; exit 2; }
 [ $(( $(date +%s) - $(stat -c %Y "$DRIFT") )) -lt 7200 ] || { echo "FAIL: drift list older than 2 hours, run qconnect-switch-prep.sh again"; exit 2; }
 health || { echo "FAIL: founder service is not healthy now; nothing changed"; exit 2; }
+# AUDIT 21 Nov 2026: if this script is killed (ssh drop) while the founder service is stopped, the EXIT trap starts it again on REST. Cleared only at the very end.
+trap 'systemctl is-active --quiet $SVC || off' EXIT
 echo "== 1/5 freeze: founder service stopped (site of the founder is down during the copy, awam untouched)"
 systemctl stop $SVC
 fail() { echo "FAIL: $1 -> rollback to REST"; off; health && echo "   service back on REST"; exit 5; }
@@ -38,10 +40,12 @@ while read -r T; do [ -n "$T" ] || continue
 echo "   founder-owned mismatches: $BAD, warnings: $WARN"; [ $BAD -eq 0 ] || fail "founder-owned table differs after the copy"
 echo "== 5/5 flag on, start, proof"
 off >/dev/null 2>&1; systemctl stop $SVC
+[ -n "$(tail -c1 "$ENVF")" ] && echo >>"$ENVF"   # AUDIT: env file without a final newline would glue the first new line onto the last old one
 { echo "FOUNDER_DB=local"; echo "FOUNDER_PG_URL=$URL"; echo "FOUNDER_PG_POOL=16"; echo "FOUNDER_ID_KEY_FILE=$KEY"; } >>"$ENVF"
 systemctl restart $SVC; health || fail "service did not answer"
 H=$(curl -s -o /dev/null -w %{http_code} http://127.0.0.1:3210/healthz); M2=$(curl -s -o /dev/null -w %{http_code} http://127.0.0.1:3210/founder/v1/me); B=$(curl -s -o /dev/null -w %{http_code} http://127.0.0.1:3210/founder/v1/bridge)
 ENG=$(journalctl -u $SVC -n 60 --no-pager | grep -o 'database engine = [A-Za-z ]*' | tail -1)
 echo "   healthz=$H (200) me=$M2 (401) bridge=$B (401) | journal: $ENG"
 { [ "$H" = 200 ] && [ "$M2" = 401 ] && [ "$B" = 401 ] && echo "$ENG" | grep -q LOCAL; } || fail "proof failed (engine line or door status)"
+trap - EXIT
 echo "OK: the founder service now reads and writes LOCAL PostgreSQL. REST stays the fallback. Rollback: OFF=1 with this same script. Next: sign in once, then step 9 db-latency-check."

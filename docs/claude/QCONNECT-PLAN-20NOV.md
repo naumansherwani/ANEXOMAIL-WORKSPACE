@@ -89,3 +89,6 @@ WHERE WE STAND: QCONNECT = the database moves next to the server. NOTHING IS SWI
 ## STEP 8a RAN ON HIS SERVER 21 Nov 2026 00:50 PKT (his paste 00:36)
 - Prep succeeded on run 3 (after: socket group anexopg for postgres + anexomail-founder; service_role grants on anexo_copy). Cluster self-healed, 0 TCP listeners, smoke test as the service user ok, drift list /root/anexomail-backups/switch-drift.txt (30+ founder_*, mail_follow_ups, identity_* tables; the founder service writes them live). sort -u added to the switch because one table was listed twice.
 - NEXT = qconnect-switch.sh (his ONE line). Expect the founder site down for the copy (a few minutes: one psql connection per table over the 215 ms distance, plus the re-hash), awam untouched; auto rollback on any failure; he signs in again afterwards (old gotrue tokens are not verified by the local JWKS). Then step 9 re-measure, step 10 local-only nightly dump.
+
+## DEEP AUDIT 21 Nov 2026 00:58 PKT (his order 00:44): report = docs/claude/QCONNECT-AUDIT-21NOV.md
+Fixed: data.rs no default database (no FOUNDER_PG_URL = REST), switch script EXIT trap + env newline guard. 573 tests pass. Open: Inter fonts on HTTP/1.1 (cause unknown, read-only check first), AES-256/ML-KEM proof, reverse copy, red "4 requests blocked". Switch 8b still NOT run (on hold until his explicit go).

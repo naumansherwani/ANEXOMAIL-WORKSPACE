@@ -24,7 +24,8 @@ impl Sb {
     /// QCONNECT step 6: FOUNDER_DB=local (+ FOUNDER_PG_URL, FOUNDER_PG_POOL) moves every database call onto the local PostgreSQL socket. Anything else, or a local database that does not answer at start, keeps REST: the switch can never take the site down.
     pub async fn with_local(mut self) -> Sb {
         if std::env::var("FOUNDER_DB").map(|v| v == "local").unwrap_or(false) {
-            let url = std::env::var("FOUNDER_PG_URL").unwrap_or_else(|_| "postgresql://root@/anexo_founder?host=/var/run/postgresql".into());
+            // AUDIT 21 Nov 2026: no silent default database. The old default pointed at the EMPTY compat database anexo_founder, so a missing FOUNDER_PG_URL would have served empty answers. Now: no URL = stay on REST.
+            let Some(url) = std::env::var("FOUNDER_PG_URL").ok().filter(|u| u.starts_with("postgresql://") && u.contains("host=/")) else { eprintln!("founder: FOUNDER_DB=local but FOUNDER_PG_URL is missing or not a unix-socket url; staying on REST"); return self; };
             let size = std::env::var("FOUNDER_PG_POOL").ok().and_then(|v| v.parse().ok()).unwrap_or(16);
             match crate::pg::Pg::connect(&url, size).await {
                 Ok(mut p) => {
