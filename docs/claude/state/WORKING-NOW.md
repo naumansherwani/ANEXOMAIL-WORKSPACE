@@ -17,24 +17,22 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 | Proto | Port | Process |
 |---|---|---|
 
-##- acde7fdd 21 No- acde7fdd 21 Nov 03:45 ledger line 48b8d290
+## Last 5 commits
+- 3f280267 21 Nov 03:50 QC8a: his 3 haan recorded, contract
+- acde7fdd 21 Nov 03:45 ledger line 48b8d290
 - 48b8d290 21 Nov 03:45 QC8: his 05:00 deadline recorded
 - 0ba8af08 21 Nov 03:41 ledger line 92f32687
 - 92f32687 21 Nov 03:41 QCONNECT intact proof recorded
-- 253a84ea 21 Nov 03:39 ledge
-## Uncommitted 
-## Uncommitted files (half-do M docs/claude/B M docs/claude/BLUEPRINT-ABC-01NOV.md
- M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- M docs/cursor-work/founder/founder-commands.md
 
-## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = n
-## Uncommitted 
-## U docs/claude/BLU docs/claude/BLUEPRINT-ABC-01NOV.md           |  1 +
- docs/claude/state/WORKING-NOW.md             | 36 ++++++++++------------------
- docs/claude/tech-contracts/CURRENT.md        |  9 +++++++
- docs/cursor-work/founder/founder-commands.md |  2 ++
- 4 files changed, 24 insertions(+), 
+## Uncommitted files (half-done work if any)
+ M docs/claude/state/WORKING-NOW.md
+
+## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
+
+## Uncommitted size
+ docs/claude/state/WORKING-NOW.md | 32 ++++++++------------------------
+ 1 file changed, 8 insertions(+), 24 deletions(-)
+
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
 > ## >>> 20 Nov 2026 09:58 PKT QC4 plan vs code matched (table in docs/claude/QC4-PLAN-20NOV.md): feature 7 DONE end to end (not installed), feature 3 data DONE, pure logic for 3-6 DONE+tested, screens for 1,2,3,4,5,6 = QC4b NOT in code. <<<
@@ -44,5 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-t edit by hand)
-WIP snapshot: refs/wip/last (3bcf3215453303e18bfcf05858182038bc7ed9d4)
+WIP snapshot: refs/wip/last (84b1813ef9065143c0b19266eea6f4a40f4d08f7)
