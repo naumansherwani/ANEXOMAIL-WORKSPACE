@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 08:09 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 08:11 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC3-1..6 done/written; his installs running (no paste); QC3-7 live look open
 NEXT STEP: on his paste: my live Chrome look; clear anexo-assets-v1; no mail sent
 HIS LAST WORD: 5-min check 08:09
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- b987ba29 20 Nov 08:11 QC3 live look
+- b2298679 20 Nov 08:09 ledger line 57a6b8f3
 - 57a6b8f3 20 Nov 08:09 QC3 saboot
 - 107550d2 20 Nov 08:09 ledger line 23afc953
 - 23afc953 20 Nov 08:09 QC3 checkpoint
-- 57f00b62 20 Nov 08:02 ledger line 934bc74a
-- 934bc74a 20 Nov 08:02 QC3 checkpoint
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,16 +30,16 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
+> ## >>> 20 Nov 2026 08:25 PKT QC3-7 LIVE LOOK (20 Nov 2026 08:25 PKT, my Chrome, his founderworkspace.anexomail.com, 1536 wide): live bundle index-DhaYIeTm.js contains the QC3 code (mail/timeline, presets). SENT timeline PROVEN LIVE on real mail 'QC3a send now proof': Queued 11:30:16, Send now pres
 > ## >>> 20 Nov 2026 08:12 PKT QC3 SABOOT (his founder-install paste, 2 runs, 20 Nov 2026 08:12 PKT): SPA index=200, exchange bina token=401, Ed25519 signing ON kid s1 write-request signature ENFORCED, public key endpoint=200, healthz=200, me bina token=401, bridge bina token=401, OK founder service
 # >>> QC3 20 Nov 2026 07:48 PKT: QC3 PROGRESS TABLE (his order 07:46, write it everywhere): QC3-1 contract = DONE. QC3-2 SQL E195 = DONE and RUN ON HIS SERVER (70/0, CHECK 7/7). QC3-3 Rust + Tokio + axum doors (fmail_timeline.rs) = WRITTEN, cargo 558/0, commit 86b37e9d, his install RUNNING now, past
-# >>> QC3 20 Nov 2026 07:42 PKT: QC3-3 (Rust + Tokio + axum timeline doors, commit 86b37e9d, cargo 558/0) = HIS founder-install RUN at 07:40 (his word); his output paste NOT seen yet, so no saboot line (healthz, SPA, Ed25519) is recorded and QC3 is NOT green. QC3-4 (presend_pure.ts, 50 bun tests, bu
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
 NOW: QC1c - COMPOSE C1c: TLS lock on every chip from our own STARTTLS probe (SQL E187; discuss after QC1b)  [Rust Tokio SMTP STARTTLS rustls X25519MLKEM768 probe, PostgreSQL domain TLS facts]
-WIP snapshot: refs/wip/last (26428b8e7614e0f4cf1caebc034bd9b354859b7f)
+WIP snapshot: refs/wip/last (5924d0e2725664cc70aa647e6dbd311e0e328b1f)
