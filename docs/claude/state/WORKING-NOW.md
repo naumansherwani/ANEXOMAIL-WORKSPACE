@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 01:44 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 01:44 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 02:20 PKT: he is confused: if the binary is already on Hetzner, why backup/data-loss talk? EXPLAINED: code/website (on Hetzner, also in git) vs DATA/database (was at Supabase, they kept it; now on his own server, so backup is now his job, Hetzner does not copy a database by itself unless a backup product is bought; unknown for his server). Rollback line OFF=1 returns data safety to Supabase. Waiting for his run of OFF=1.
 NEXT STEP: If he runs OFF=1: read paste, record. Then login-only mode only after his haan. Explain simply (code vs data), short, no new scripts.
 HIS LAST WORD: AGAR PEHLE SE HETZNER PE HAIN TOH DUMP/DATA LOSE KI BAAT PEHLE SE HAI? ADVANCE TECHNOLOGY KA DATA HETZNER NE KARNA HAI KYA?
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 5eeccd18 21 Nov 01:44 QCONNECT: code vs data explanation recorded
 - 01e3d317 21 Nov 01:41 ledger line 95ee13ef
 - 95ee13ef 21 Nov 01:41 QCONNECT: real clock correction, login-only wish recorded
 - 33b02cda 21 Nov 01:38 ledger line ff2c6a88
 - ff2c6a88 21 Nov 01:38 QCONNECT: scope dispute recorded, rollback line given
-- 1ed379a4 21 Nov 01:34 ledger line 6db7e2a1
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (6b2bf108830d51cd307ad3d22f756415be16b2fa)
+WIP snapshot: refs/wip/last (6f4a0ea366238001b7edae8a8d6a87e2cfeb94f9)
