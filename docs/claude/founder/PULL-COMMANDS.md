@@ -2186,3 +2186,9 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 20 Nov 07:22 PKT QC2 live look on his server OK (Trusted Types crash gone after his install, rich editor + paste clean + signature/snippets panel live, bundle = repo); rich rows aligned (18 px); open gaps in CLOSE-THE-GAPS (phone/tablet look, SPA stale after install via service worker cache, save signature/snippet by his hands); NEXT = QC3 discuss with him
 
 - 20 Nov 07:27 PKT 5-min check: rules read, WORKING-NOW updated; QC2 live look OK; QC3 details sent, waits his default theek
+
+- 20 Nov 2026 07:16 PKT: QC3 plan docs/claude/QC3-PLAN-20NOV.md + contract (CURRENT.md top) written; his 4 answers = best-practice defaults (warn only, 4 presets + Custom PKT, timeline in Sent detail, limit 20). Next QC3-2 SQL E195 timeline door. Nothing coded yet.
+
+- 20 Nov 2026 07:18 PKT: QC3 plan + contract written (STATE in progress); NEXT QC3-2 SQL E195.
+
+- 20 Nov 2026 07:20 PKT: QC3 plan + contract written (docs only); NEXT QC3-2 SQL E195.

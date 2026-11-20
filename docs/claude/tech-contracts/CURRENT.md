@@ -1,4 +1,16 @@
 <!--TECHLAW-->
+# TECH CONTRACT FOR PHASE: QC3 (PRE-SEND CALM BAR, SCHEDULE PRESETS, DELIVERY TIMELINE), written 20 Nov 2026 07:15 PKT BEFORE any code. Plan: docs/claude/QC3-PLAN-20NOV.md
+STATE: IN PROGRESS (QC3 written, not built; no GREEN claimed)
+| Listed technology | Where it must live | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL, forced RLS, read-only security-definer door, no sealed columns, service_role only, CHECK + selftest | docs/cursor-work/sql/E195_*.sql + CHECK_E195.sql | PLANNED (QC3-2) | pglite PG17 proof, his sql-run |
+| Rust + Tokio + axum signed door over HTTP/3, own_box check | server/founder/src/fmail_out.rs (+ main.rs route /founder/v1/mail/timeline) | PLANNED (QC3-3) | cargo test fmail_ |
+| Rust WASM kernel RPC (no raw fetch), api in mail_api.ts | founder-web/src/mail_api.ts | PLANNED (QC3-5) | rules-gate fetch count not rising |
+| React 19 + TypeScript + Tailwind 4, Framer Motion (reduced motion respected), pure modules with golden tests | founder-web/src/presend_pure.ts, MailPresendBar.tsx, MailTimeline.tsx | PLANNED (QC3-4/5) | bun test, tsc, vite build, real-CSP sandbox 390/820/1280 |
+| Trusted Types safe (no innerHTML, no HTML string parse) | same files | PLANNED | real-CSP harness |
+Rules: bar WARNS only, never blocks; times shown and chosen in Asia/Karachi, stored UTC; timeline never claims inbox or read, only "accepted by the recipient's server"; existing cinematic UI untouched, additive mounts only.
+
+
 # TECH CONTRACT FOR PHASE: L (Look: Framer Motion + GSAP + Three.js WebGPU) ON TOP OF K8d (kernel WebTransport RPC) + K7 GAP 2 (post-quantum device proof)
 STATE: GREEN K7c too (12 Nov 17:20 PKT, enforce live-proven; earlier 00:25 PKT: WIRED: YES / REAL: YES / TECH-LAW CHECKED; open item = live proof of the kernel ML-DSA key on Safari/Firefox, K7c enforce)
 Opened: 11 Nov 2026 04:40 PKT, updated 20:25 PKT (DBSC fresh challenge on every 200) (network = provider area for sessions) (E161 live) (permanent DBSC heal: 403 fresh challenge, dead chip re-offer, E161) (E160 key rotation not theft) (refresh challenge 15 min; ring still Alert after sign-in) (ring-alert fix: chip-bound device never re-offered a key) (K8d REOPENED: ring Alert after K8d, cause being checked, not green). Rule: rewritten at the START of every phase and BEFORE any code; a code commit without this file is refused; STATE may be GREEN only when no row says NO. Every commit carries `Phase:` and `Tech:` lines.
@@ -1667,3 +1679,9 @@ LEFT: Rust core + tests, doors, send wiring, browser, his ONE sql-run + ONE foun
 - 20 Nov 07:22 PKT QC2 live look on his server OK (Trusted Types crash gone after his install, rich editor + paste clean + signature/snippets panel live, bundle = repo); rich rows aligned (18 px); open gaps in CLOSE-THE-GAPS (phone/tablet look, SPA stale after install via service worker cache, save signature/snippet by his hands); NEXT = QC3 discuss with him
 
 - 20 Nov 07:27 PKT 5-min check: rules read, WORKING-NOW updated; QC2 live look OK; QC3 details sent, waits his default theek
+
+- 20 Nov 2026 07:16 PKT: QC3 plan docs/claude/QC3-PLAN-20NOV.md + contract (CURRENT.md top) written; his 4 answers = best-practice defaults (warn only, 4 presets + Custom PKT, timeline in Sent detail, limit 20). Next QC3-2 SQL E195 timeline door. Nothing coded yet.
+
+- 20 Nov 2026 07:18 PKT: QC3 plan + contract written (STATE in progress); NEXT QC3-2 SQL E195.
+
+- 20 Nov 2026 07:20 PKT: QC3 plan + contract written (docs only); NEXT QC3-2 SQL E195.
