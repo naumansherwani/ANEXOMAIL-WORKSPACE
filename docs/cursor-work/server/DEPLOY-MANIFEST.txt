@@ -1280,8 +1280,8 @@ src/components/app/compose/emoji/EmojiSafety.tsx 690d2924a1115e16
 src/components/app/compose/emoji/emoji.css 80ad1a3f57054525
 src/components/app/compose/emoji/emoji_pure.ts 4115ca5cb705b1eb
 src/components/app/compose/emoji/emoji_pure.test.ts f44672fdb557a45a
-docs/claude/AWAM-BLUEPRINT-CLEAN-17NOV.md f807992b63b41a46
-docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md 2fee2919800eeabd
+docs/claude/AWAM-BLUEPRINT-CLEAN-17NOV.md ada13119b9036072
+docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md b2dda2f2f7638775
 docs/claude/QC1E-D2-PLAN-20NOV.md dbda41d53a426b33
 docs/claude/QC1E-LEDGER-FOUNDER-19NOV.md 21f40fa439c5fdb2
 docs/claude/state/HEARTBEAT.json de1e281160b8995c
@@ -1294,7 +1294,7 @@ founder-web/src/system_brain.json 5f5ba1dd6a72bb8e
 docs/claude/AWAM-INHERIT-MANIFEST.json f8cf3ec27ed20e94
 src/components/app/compose/emoji/EmojiShortcode.tsx 20283dc3b7d0aaee
 src/components/app/compose/emoji/shortcodeNative.ts 53f920b910770c82
-docs/claude/QC1E-LEDGER-AWAM-19NOV.md a2f9997257316a64
+docs/claude/QC1E-LEDGER-AWAM-19NOV.md 04f1e093b0dd5a1d
 founder-web/dist/assets/index-Bmsm3onk.css 1da0012f11f82b2f
 docs/claude/anexochat-reserved/00-FOUNDER-TECH-RULE.md 5cf67ef47762e3ad
 docs/claude/anexochat-reserved/SHORTCODE-MOTION-RESERVED-20NOV.md 20ca3f750fedff49
