@@ -270,6 +270,7 @@ docs/claude/QC1E-LEDGER-FOUNDER-19NOV.md
 docs/claude/QC2-PLAN-20NOV.md
 docs/claude/QC3-AUDIT-20NOV.md
 docs/claude/QC3-PLAN-20NOV.md
+docs/claude/QC4-PLAN-20NOV.md
 docs/claude/QLIVE-PLAN-18NOV.md
 docs/claude/QPERF-PLAN-15NOV.md
 docs/claude/QUI-H4-PLAN-15NOV.md
