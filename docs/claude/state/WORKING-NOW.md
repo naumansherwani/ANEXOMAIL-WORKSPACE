@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:46 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:48 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: DOING: QC4 green by his word; list-look fix 9ac3a9c6 + law 90cb141d waiting his reinstall; awam sticker emoji written (587aac38), waiting awam pull
 NEXT STEP: NEXT: re-look founder list vs his photo after reinstall; awam look after pull; evening QC5/QC7/QC8/Q3
 HIS LAST WORD: 5-min check 10:11
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- b7bcda41 20 Nov 09:48 awam pull: add sticker_toggle.test.ts to DEPLOY-MANIFEST
+- 9d1761ac 20 Nov 09:46 ledger line 3be3ae6f
 - 3be3ae6f 20 Nov 09:46 gaps: awam pull open lines
 - 9cc77b66 20 Nov 09:46 ledger line 0d1bcd98
 - 0d1bcd98 20 Nov 09:46 awam sticker emoji proven live by his Chrome look
-- 46e003f9 20 Nov 09:44 ledger line 886c37f9
-- 886c37f9 20 Nov 09:44 founder emoji: own FounderFace icon
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (83f903aacbf9a2e0d13fb9cc1c3f2987c8d9a6aa)
+WIP snapshot: refs/wip/last (db52a9dd328389a40b26af6b266a78e033f96e47)
