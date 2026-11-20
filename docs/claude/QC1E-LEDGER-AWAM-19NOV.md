@@ -56,3 +56,4 @@ Open: awam pull + live Chrome look, ":" shortcode, D3, D4, emoji box in chat / n
 | 20.11.26 05:25 PKT | PRO package: all GREEN on advance technology (his word 05:12) written in awam blueprint + order doc. |
 | 20.11.26 05:30 PKT | AWAM PACKAGES: only Basic, Business, Business Pro remain (his word 05:13); Premium/MAX out, code preserved. |
 | 20.11.26 05:25 PKT | AWAM: package plan (Business Pro full website first, then MAX complete, then Premium by gates) + R3 Mail Desk DNS reminder + PRO devices-limit NOT CHECKED written. Founder phases file: QC0/QC1c/QC3a/QC1/QC1e green by his word; QC2,QC3,QC4,QC5,QC7,QC8 remain. |
+| 20.11.26 05:35 PKT | Founder moves to QC2 (plan written); awam D4A closed, awam turn 30 Nov. |

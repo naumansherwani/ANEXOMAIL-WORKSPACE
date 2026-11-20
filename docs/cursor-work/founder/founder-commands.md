@@ -4269,3 +4269,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - QC1e D4A closed, built in awam turn
 
 - PRO package done on advance technology (his word 20 Nov 05:12), WIRED: YES / REAL: YES / TECH-LAW CHECKED by his word
+
+- NOW founder QC2 (plan discussed, no code)

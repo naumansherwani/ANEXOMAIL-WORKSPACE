@@ -267,6 +267,7 @@ docs/claude/QC1E-D4-PLAN-20NOV.md
 docs/claude/QC1E-EMOJI-RESEARCH-PLAN-19NOV.md
 docs/claude/QC1E-LEDGER-AWAM-19NOV.md
 docs/claude/QC1E-LEDGER-FOUNDER-19NOV.md
+docs/claude/QC2-PLAN-20NOV.md
 docs/claude/QLIVE-PLAN-18NOV.md
 docs/claude/QPERF-PLAN-15NOV.md
 docs/claude/QUI-H4-PLAN-15NOV.md

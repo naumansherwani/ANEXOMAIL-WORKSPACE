@@ -4145,3 +4145,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - QC1e D4A closed, built in awam turn
 
 - PRO package done on advance technology (his word 20 Nov 05:12), WIRED: YES / REAL: YES / TECH-LAW CHECKED by his word
+
+- NOW founder QC2 (plan discussed, no code)
