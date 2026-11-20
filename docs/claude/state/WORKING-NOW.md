@@ -1,6 +1,6 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 23:42 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QCONNECT step 7 survey + design done (localid.rs Rust identity engine, design in the plan); SQL schema-first: pg-local-authschema.sh (read only) written, WAITS his paste of it before any code; score 6 of 10 proven
-NEXT STEP: 1) his paste of pg-local-authschema.sh; 2) code localid.rs + bcrypt + key file in the installer + sandbox tests against a real PostgreSQL; 3) his founder-install; 4) step 8 switch; 5) step 9 re-measure; 6) step 10 dump on server only
+# WORKING NOW (manual checkpoint, 20 Nov 2026 23:46 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QCONNECT step 7 SCHEMA READ done (his auth paste: bcrypt 2a, legacy refresh rows, E71 guard 42501); NOW coding server/founder/src/localid.rs (bcrypt, ES256 token with a new key file, session + refresh rows legacy style, mint, refresh rotation, logout) + sandbox tests on a real PostgreSQL; score 6 of 10 proven
+NEXT STEP: 1) code localid.rs + Cargo bcrypt + wire auth.rs/signin.rs/passkey.rs/main.rs behind FOUNDER_DB=local; 2) sandbox tests; 3) installer step for /etc/anexomail/local-id.p8; 4) his founder-install; 5) step 8 switch; 6) step 9 re-measure; 7) step 10 dump on server only
 HIS LAST WORD: SQL advance 400+ likho QC7
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -18,20 +18,24 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 68023d80 20 Nov 23:42 ledger line 6befe8a9
 - 6befe8a9 20 Nov 23:42 QCONNECT: step 7 design + pg-local-authschema.sh
 - f4a003c8 20 Nov 23:38 ledger line c3563819
 - c3563819 20 Nov 23:38 QCONNECT: step 6 installed (off), score 6 of 10
 - 2d8fd6ea 20 Nov 23:26 ledger line 0f24446d
-- 0f24446d 20 Nov 23:26 QCONNECT step 6: Rust local PostgreSQL engine inside Sb (pg.rs), FOUNDER_DB=local
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/BLUEPRINT-ABC-01NOV.md
+ M docs/claude/QCONNECT-PLAN-20NOV.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 22 ++--------------------
- 1 file changed, 2 insertions(+), 20 deletions(-)
+ docs/claude/BLUEPRINT-ABC-01NOV.md |  1 +
+ docs/claude/QCONNECT-PLAN-20NOV.md |  9 +++++++++
+ docs/claude/state/WORKING-NOW.md   | 23 ++++++-----------------
+ 3 files changed, 16 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +46,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (d5051ca1f4f3ef1bc670545b01025dfecceee184)
+WIP snapshot: refs/wip/last (a9dbeefd06e14405b10761828884bf9f303724a0)
