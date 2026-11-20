@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 21:08 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 21:08 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT step 3 WRITTEN (not run): pg-local-install.sh (PostgreSQL from Ubuntu packages, PG18, cluster on a UNIX SOCKET ONLY, no TCP port, database anexo_founder, root peer role, compat layer QCONNECT_bootstrap.sql idempotent on scratch PG16) + ports paste 21:06 recorded in PORTS-LIVE.md (no new listener). His ONE line to run is in chat. After his paste: sql-run on the new database with ENV_FILE=/etc/anexomail/local-pg.env LEDGER=/var/lib/anexomail/sql-applied-local.tsv, then CHECKs. AUTH FACT: password login + session mint still use the managed auth service; Rust signin must own passwords and sessions before the switch (passkey login needs no password check).
 NEXT STEP: 1) his paste of pg-local-install; 2) sql-run E-line on the local DB (ENV_FILE + LEDGER overrides), fix any E-file that needs a managed-project-only object; 3) E197 login door; 4) data copy; 5) Rust Postgres backend
 HIS LAST WORD: SQL advance 400+ likho QC7
@@ -18,30 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 42816916 20 Nov 21:08 QCONNECT step 3 written: pg-local-install.sh, compat bootstrap, ports recorded
 - 88fee6bb 20 Nov 21:05 ledger line c01f7a28
 - c01f7a28 20 Nov 21:05 QCONNECT: go-ahead recorded, ports check line
 - a3563673 20 Nov 21:03 ledger line 32e2d4da
 - 32e2d4da 20 Nov 21:03 QCONNECT started: plan, db-direct-probe result, research
-- f267487a 20 Nov 20:59 ledger line 4501d30d
 
 ## Uncommitted files (half-done work if any)
-M  docs/claude/QCONNECT-PLAN-20NOV.md
-M  docs/claude/SERVER-PORTS-RED-LINE-08NOV.md
-M  docs/claude/state/PORTS-LIVE.md
  M docs/claude/state/WORKING-NOW.md
-A  docs/cursor-work/server/pg-local-install.sh
-A  docs/cursor-work/sql/QCONNECT_bootstrap.sql
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/QCONNECT-PLAN-20NOV.md          |  4 +++
- docs/claude/SERVER-PORTS-RED-LINE-08NOV.md  |  2 ++
- docs/claude/state/PORTS-LIVE.md             |  4 ++-
- docs/claude/state/WORKING-NOW.md            | 28 ++++++---------
- docs/cursor-work/server/pg-local-install.sh | 55 +++++++++++++++++++++++++++++
- docs/cursor-work/sql/QCONNECT_bootstrap.sql | 52 +++++++++++++++++++++++++++
- 6 files changed, 126 insertions(+), 19 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 27 ++-------------------------
+ 1 file changed, 2 insertions(+), 25 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -52,4 +42,4 @@ A  docs/cursor-work/sql/QCONNECT_bootstrap.sql
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (de05b93177575bd26ac1f7c66a1659fc49ad720b)
+WIP snapshot: refs/wip/last (63d72c5328f6f94c3f366cd0e6a3e0329e58af03)
