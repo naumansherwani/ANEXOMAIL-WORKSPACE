@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:03 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:07 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC3 GREEN by his word 08:52; QC4 inline reply+forward is NOW (QC2 already green); Outbox badge fix waits his install
 NEXT STEP: write QC4 tech contract in CURRENT.md first (mail-parser + mail-builder Rust, kernel RPC, React 19 TS), check existing reply/forward code in MailBox.tsx/MailCompose.tsx, then plan+code
 HIS LAST WORD: 5-min check 08:48
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- fd8bcdfe 20 Nov 09:07 QC4a WIP branch
+- 8cc14cab 20 Nov 09:03 ledger line 3a80991e
 - 3a80991e 20 Nov 09:03 QC4a WIP checkpoint (branch only)
 - a625b0ba 20 Nov 09:03 ledger line 378e93f6
 - 378e93f6 20 Nov 09:03 QC4a WIP
-- 318cce26 20 Nov 09:00 ledger line b3255c53
-- b3255c53 20 Nov 09:00 QC4-2: reply_pure.ts (reply all, forward, fold, selection, References) + golden tests
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (3dacaf2f143aec5325ef52b3e13cebb457374151)
+WIP snapshot: refs/wip/last (b6ba16beda591fecb252c26f296691d9c34186a1)
