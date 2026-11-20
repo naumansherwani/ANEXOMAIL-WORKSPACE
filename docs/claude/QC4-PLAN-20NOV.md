@@ -61,3 +61,21 @@ Features ki list (QC4 mein kya banega):
 7. Sahi References: ab UI sirf In-Reply-To bhejti, aage server poori chain banayega (max 20, thread ki jad rakhi jayegi).
 
 NOTE (my 09:30 correction, shipped in QC4a 09:55): the Rust bullet and feature 7 wording above are SUPERSEDED in HOW, not in WHAT: the References chain is read where the mail is opened (summarize/summary_json: References + Reply-To), the reply sends it, and the send door re-validates every id; the server cannot open recipient_pq mail. All 7 features stay as he wrote them.
+
+## THE 7 FEATURES vs THE REPO CODE, MATCHED (20 Nov 2026 10:05 PKT, his order 09:10: put the full plan in the repo and match it to the codes)
+His list (my first QC4 plan text, now in the repo) compared line by line with what the code really contains. Checked by grep of the source, not from memory.
+| # | Feature | Pure logic (reply_pure.ts, 13+1 tests) | Rust / data | Screen (React) | Status |
+|---|---|---|---|---|---|
+| 1 | Inline reply panel under the mail, same editor + bar + presets, pop-out | n/a | n/a | InlineReply: NOT IN CODE | QC4b |
+| 2 | Reply, Reply all, Forward buttons (44 px) + keys r, a, f | n/a | n/a | Reply button + key r exist (opens the Compose window, MailBox.tsx reply()); Reply all, Forward, keys a and f NOT IN CODE | QC4b |
+| 3 | Reply all (me removed, dupes removed, Reply-To honoured, warn above 20) | replyTargets, hasOthers: IN CODE, tested | Reply-To read in summarize() + open door: IN CODE (cargo 559/0) | button + 20-person warn NOT IN CODE (bar rule exists in QC3) | data DONE, screen QC4b |
+| 4 | Quoted text folded behind "..." | splitQuote: IN CODE, tested (never loses a character) | n/a | fold chip NOT IN CODE | QC4b |
+| 5 | Reply to the selected part | replyBody(selection): IN CODE, tested | n/a | window.getSelection read NOT IN CODE | QC4b |
+| 6 | Forward inline block, "Fwd:" once | forwardBody, forwardSubject: IN CODE, tested | n/a | Forward UI NOT IN CODE | QC4b |
+| 7 | Correct References / In-Reply-To | referencesFor: IN CODE, tested | summarize() reads References (max 40), send door re-validates (max 20, fmail_mime.rs): IN CODE | MailBox reply passes references, MailCompose sends them: IN CODE (source test) | DONE, not installed |
+## Two lines of the pasted plan are SUPERSEDED (do not follow them)
+- "send door builds References from the parent itself": WRONG for recipient_pq mail (the server cannot open it). Real design: References + Reply-To are read where the mail is opened (summary), the reply sends them, the send door re-validates. Section "CORRECTION" above.
+- "PostgreSQL: no new SQL because the door can read the parent": true that no SQL is needed, but for a different reason (nothing is looked up server-side).
+- "UI only sends In-Reply-To": that was the OLD state; since QC4a (c2ff627c) the reply also sends references.
+## One-line truth
+Code today: feature 7 DONE end to end (not installed); feature 3 data DONE; features 1, 2 (reply all, forward, keys a/f), 3 (button), 4, 5, 6 screens = QC4b, not written. Pure logic for all of them is written and tested.

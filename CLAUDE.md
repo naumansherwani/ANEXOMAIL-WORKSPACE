@@ -1,4 +1,4 @@
-> ## >>> RESUME HERE: his QC4 7-feature list is in the repo verbatim; QC4a installed? no; QC4b next (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
+> ## >>> RESUME HERE: QC4 plan vs code table written; screens are QC4b (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
 > ## >>> LIVE PORTS OF HIS SERVER (his fresh ss paste 20 Nov 2026 03:30 PKT): docs/claude/state/PORTS-LIVE.md (awam anexomail-rust TCP 3200 + UDP 3443/3501; founder UDP 443; caddy UDP 18443). Printed by rules-read.py and ckpt.sh. Update it in the same step whenever he pastes a new ss. <<<
 > ## >>> WEBSITE PROMISES (his 17 Nov 04:11): what is written on a website page is a promise he delivers; docs/claude/WEBSITE-PROMISES.md lists every line with proof or OPEN. P1 founder TLS line written; P2 awam TLS line OPEN until K5b + his openssl proof. <<<
 > ## >>> RESUME HERE: ADDRESS HIM ONLY AS AAP (never tum/tumhara/tumhare/tumhari). Then his sql-run E182 + founder-install, DKIM2, AUDIT-Q1d, Q1b4, Q3, Qtls (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<

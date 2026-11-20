@@ -4377,3 +4377,5 @@ Features ki list (QC4 mein kya banega):
 7. Sahi References: ab UI sirf In-Reply-To bhejti, aage server poori chain banayega (max 20, thread ki jad rakhi jayegi).
 
 - 20 Nov 2026 09:12 PKT: his QC4 feature list (7 features) pasted verbatim into the repo (QC4-PLAN-20NOV.md + founder-commands.md); wording of the Rust bullet superseded by the 09:30 correction, features unchanged
+
+- 20 Nov 2026 10:05 PKT: QC4 plan (his pasted 7 features) written into the repo and matched to the code line by line: feature 7 done end to end (not installed), feature 3 data done, pure logic 3-6 done and tested, screens 1-6 are QC4b
