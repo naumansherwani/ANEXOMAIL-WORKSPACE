@@ -29,3 +29,7 @@ QC3-7 his ONE sql-run (E195) + ONE founder-install, then my live Chrome look (ne
 
 ## NOT IN QC3
 Attachment-word check (Q3), per-recipient delivery rows (needs a recipients table: logged as OPEN GAP), SPA update after install (QC8 or earlier), AI drafting (dropped to Jul 2027).
+
+## STATUS 20 Nov 2026 07:30 PKT
+QC3-1 contract DONE. QC3-2 E195 DONE AND RUN ON HIS SERVER (his sql-run 07:26: 70 passed, 0 failed, CHECK_E195 7/7 OK). QC3-3..7 OPEN.
+QC3 TECHNOLOGY PER STEP (my explanation to him 20 Nov 07:23, his order 07:26 to write it word for word everywhere): PostgreSQL (SQL): DONE. E195 written, sandbox 70/0, and RUN ON HIS SERVER 20 Nov 07:26 PKT: his sql-run paste shows e195_selftest_passed 70 / failed 0, CHECK_E195 all 7 OK, CHECK_E65 all OK (SQL part only, the phase is NOT green). Rust + Tokio + axum (async): NEXT STEP, QC3-3. Signed door /founder/v1/mail/timeline is an async axum handler and runs on the Tokio runtime, like the other mail doors. Not written yet, so not in code yet. WASM kernel: QC3-5, when the screen's API call is written. The timeline call goes from mail_api.ts through the kernel RPC (WebTransport/HTTP/3), never raw fetch; rules-gate refuses a commit when the fetch count rises. New WASM code in the kernel: NOT in this phase. The kernel is already live (K8d) and is reused. Pre-send checks and presets are computed in the TypeScript pure module presend_pure.ts, like mail_pure.ts. If he wants those checks inside the Rust WASM kernel instead, he says so; that changes the QC3-4 design, so his word is needed before QC3-4 starts.
