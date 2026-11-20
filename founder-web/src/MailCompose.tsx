@@ -12,7 +12,7 @@ import { useTlsFacts } from "./TlsLock";
 import type { Contact } from "./book";
 import { RichEditor, type RichHandle } from "./RichEditor";
 import { MailRichPanel } from "./MailRichPanel";
-import { fill, knownVars, pickSignature, placeholders, slashMatches, textToHtml, type Sig, type Snippet } from "./rich_pure";
+import { fill, knownVars, pickSignature, placeholders, slashMatches, type Sig, type Snippet } from "./rich_pure";
 import { chipsOf, joinChips, parseAddrs, removeChip, takenMap, type Field } from "./recipients";
 
 export type Start = { to?: string; subject?: string; text?: string; in_reply_to?: string; reply_to?: string; draft?: string };
@@ -97,12 +97,12 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
   const reloadRich = useCallback(() => { void api.signatures(box.id).then((x) => x && setSigs(x)); void api.snippets(box.id).then((x) => x && setSnips(x)); }, [box.id]);
   useEffect(() => { reloadRich(); }, [reloadRich]);
   const slashHits = slash === null ? [] : slashMatches(slash, snips.map((x) => x.name));
-  const addText = (t: string) => { if (rich) richRef.current?.insertHtml(textToHtml(t)); else setText((v) => `${v}${v && !v.endsWith("\n") ? "\n" : ""}${t}`); };
-  const insertSig = (sg: Sig) => { if (rich) richRef.current?.insertHtml(`<p></p>${textToHtml(sg.text)}`); else setText((v) => `${v}\n\n-- \n${sg.text}`); };
+  const addText = (t: string) => { if (rich) richRef.current?.insertText(t); else setText((v) => `${v}${v && !v.endsWith("\n") ? "\n" : ""}${t}`); };
+  const insertSig = (sg: Sig) => { if (rich) richRef.current?.insertText(`\n\n${sg.text}`); else setText((v) => `${v}\n\n-- \n${sg.text}`); };
   const insertSnip = (sn: Snippet, typed?: string) => {
     const f = chipsOf(to)[0]; const who = f ? (f.name || book.find((c) => c.addr.toLowerCase() === (f.addr ?? "").toLowerCase())?.name || "") : "";
     const r = fill(sn.text, knownVars({ toName: who, myName: box.display_name ?? "", now: new Date() }));
-    if (rich && typed !== undefined) richRef.current?.replaceSlash(typed, textToHtml(r.text)); else addText(r.text);
+    if (rich && typed !== undefined) richRef.current?.replaceSlash(typed, r.text); else addText(r.text);
     void api.snippetAct(box.id, { op: "used", id: sn.id }); setSlash(null); setWarnOpen("");
   };
   // the signature goes into a NEW mail once, as soon as it is loaded (a reply or a draft gets it from the button)
@@ -138,7 +138,7 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
         <label className="sr" htmlFor="mc-text">Message</label>
         <div className="rt-modes">
           {rich ? <button type="button" className="mx-btn alt" onClick={() => { if (html) setAskPlain(true); else setRich(false); }}>Plain text</button>
-                : <button type="button" className="mx-btn alt" onClick={() => { setHtml(text.trim() ? textToHtml(text) : ""); setEk((k) => k + 1); setRich(true); }}>Rich text</button>}
+                : <button type="button" className="mx-btn alt" onClick={() => { setHtml(""); setEk((k) => k + 1); setRich(true); }}>Rich text</button>}
           <button type="button" className="mx-btn alt" aria-expanded={panel} onClick={() => setPanel(!panel)}>Signature &amp; snippets</button>
         </div>
         {askPlain && <div className="rt-ask" role="alert"><span>Plain text removes all formatting from this mail. Switch?</span>
@@ -147,7 +147,7 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
         {panel && <MailRichPanel box={box.id} address={box.address} sigs={sigs} snips={snips} reload={reloadRich} onSig={insertSig} onSnip={insertSnip} onClose={() => setPanel(false)} />}
         <div className="emo-over" onKeyDownCapture={(e) => { if (rich && slash !== null && e.key === "Tab" && slashHits.length) { e.preventDefault(); const sn = snips.find((x) => x.name === slashHits[0]); if (sn) insertSnip(sn, slash); } }}>
           {rich ? <>
-            <RichEditor key={ek} ref={richRef} initialHtml={html || (text.trim() ? textToHtml(text) : "")} label="Message" placeholder="Write your message…" onChange={(h, t) => { setHtml(h); setText(t); }} onSlash={setSlash} />
+            <RichEditor key={ek} ref={richRef} initialHtml={html} initialText={html ? "" : text} label="Message" placeholder="Write your message…" onChange={(h, t) => { setHtml(h); setText(t); }} onSlash={setSlash} />
             {slash !== null && slashHits.length > 0 && <div className="rt-slash" role="listbox" aria-label="Snippets">{slashHits.map((n, i) => <button type="button" key={n} role="option" aria-selected={i === 0} onMouseDown={(e) => e.preventDefault()} onClick={() => { const sn = snips.find((x) => x.name === n); if (sn) insertSnip(sn, slash); }}>/{n}</button>)}</div>}
             <EmojiDock dock={emo} area={noArea} value="" onChange={(v) => richRef.current?.insertText(v)} />
           </> : <>

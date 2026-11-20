@@ -168,7 +168,7 @@ founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-Jwj_i2ug.js
+founder-web/dist/assets/index-AMa-5k8x.js
 founder-web/dist/assets/index-N3WmIfa7.css
 founder-web/dist/assets/kernel.worker-BLkLR49F.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
@@ -201,6 +201,9 @@ founder-web/public/icon-192.png
 founder-web/public/icon-512.png
 founder-web/public/kernel/anexo-kernel-0.18.0.wasm
 founder-web/public/manifest.webmanifest
+founder-web/s1280.png
+founder-web/s390.png
+founder-web/s820.png
 founder-web/sim/00-FOUNDER-TECH-RULE.md
 founder-web/sim/gen_contacts_vectors.ts
 founder-web/sim/mail_live.sim.test.ts

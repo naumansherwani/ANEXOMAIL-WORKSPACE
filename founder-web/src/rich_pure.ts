@@ -39,3 +39,15 @@ export function textToHtml(t: string): string {
 }
 /** True when the editor holds nothing worth sending (only empty paragraphs / spaces). */
 export const htmlIsEmpty = (h: string): boolean => !h.replace(/<(?!img\b)[^>]*>/gi, "").replace(/&nbsp;|\s/g, "");
+
+/** ProseMirror JSON (no HTML string, so no HTML parse: the site's CSP `require-trusted-types-for 'script'` refuses string HTML in Tiptap) for a signature / snippet / plain text:
+ *  paragraphs on blank lines, line breaks inside, https links as link marks. Nothing else can come in. */
+export type PmNode = { type: string; text?: string; marks?: { type: string; attrs?: Record<string, string> }[]; attrs?: Record<string, unknown>; content?: PmNode[] };
+export function textToDoc(t: string): PmNode[] {
+  const inline = (line: string): PmNode[] => {
+    const out: PmNode[] = []; let i = 0; const re = /(https:\/\/[^\s<>"]+[^\s<>".,;:!?)\]])/g; let m: RegExpExecArray | null;
+    while ((m = re.exec(line))) { if (m.index > i) out.push({ type: "text", text: line.slice(i, m.index) }); out.push({ type: "text", text: m[1], marks: [{ type: "link", attrs: { href: m[1] } }] }); i = m.index + m[1].length; }
+    if (i < line.length) out.push({ type: "text", text: line.slice(i) }); return out;
+  };
+  return t.split(/\n{2,}/).map((p) => { const c: PmNode[] = []; p.split("\n").forEach((l, k) => { if (k) c.push({ type: "hardBreak" }); c.push(...inline(l)); }); return { type: "paragraph", content: c }; });
+}

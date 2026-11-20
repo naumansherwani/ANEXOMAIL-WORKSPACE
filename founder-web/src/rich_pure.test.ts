@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { cleanName, fill, htmlIsEmpty, knownVars, pickSignature, placeholders, slashMatches, textToHtml } from "./rich_pure";
+import { textToDoc, cleanName, fill, htmlIsEmpty, knownVars, pickSignature, placeholders, slashMatches, textToHtml } from "./rich_pure";
 import { sendTarget } from "./mail_pure";
 describe("rich_pure (twin of fmail_rich.rs)", () => {
   test("names", () => { expect(cleanName(" /Thanks-1 ")).toBe("thanks-1"); expect(cleanName("a b")).toBeNull(); expect(cleanName("")).toBeNull(); expect(cleanName("x".repeat(41))).toBeNull(); });
@@ -18,5 +18,10 @@ describe("rich_pure (twin of fmail_rich.rs)", () => {
     expect(await sendTarget("mb1", c, "")).toBe("9ffbc152919d43cc0c97cc688c722fb24361db540ebde020685ca9e6fe36f523");
     expect(await sendTarget("mb1", { ...c, html: "" }, "")).toBe("9ffbc152919d43cc0c97cc688c722fb24361db540ebde020685ca9e6fe36f523");
     expect(await sendTarget("mb1", { ...c, html: "<p>body</p>" }, "")).not.toBe("9ffbc152919d43cc0c97cc688c722fb24361db540ebde020685ca9e6fe36f523");
+  });
+  test("text to doc: paragraphs, breaks, https links only", () => {
+    const d = textToDoc("a\nsee https://x.com/p.\n\njavascript:alert(1) <b>");
+    expect(d.length).toBe(2); expect(d[0].content?.map((n) => n.type)).toEqual(["text", "hardBreak", "text", "text", "text"]);
+    expect(d[0].content?.[3].marks?.[0].attrs?.href).toBe("https://x.com/p"); expect(d[1].content?.[0].text).toBe("javascript:alert(1) <b>"); expect(d[1].content?.[0].marks).toBeUndefined();
   });
 });
