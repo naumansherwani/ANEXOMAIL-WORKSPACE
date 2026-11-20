@@ -169,8 +169,8 @@ founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-BcI-69ZE.js
-founder-web/dist/assets/index-BnCN-wK_.css
+founder-web/dist/assets/index-D-pOXvDk.js
+founder-web/dist/assets/index-DJ-uNax-.css
 founder-web/dist/assets/kernel.worker-BLkLR49F.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
@@ -254,6 +254,7 @@ founder-web/src/RichEditor.tsx
 founder-web/src/Scene3D.tsx
 founder-web/src/SchedulePresets.tsx
 founder-web/src/SendSwitch.tsx
+founder-web/src/SentBadges.tsx
 founder-web/src/Settings.tsx
 founder-web/src/SettingsS2.tsx
 founder-web/src/SignIn.tsx

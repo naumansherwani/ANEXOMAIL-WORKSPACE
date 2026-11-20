@@ -14,6 +14,7 @@ import { arrivalLine, describeQuery, freshRows, isEmptyQuery, matchQuery, parseQ
 import { FOLDERS, ago, compact, fmtSize, glide, hue, initials, isGatedView, keyCmd, ledgerChip, merge, pill, proofChip, quoteReply, replySubject, rowText, touchAction, verdicts, when, folderLabel, type Box, type Counts, type Lane, type Proof, type Row } from "./mail_pure";
 import { TrustRing, OutFactsLine } from "./TrustRing";
 import { MailTimeline } from "./MailTimeline";
+import { SentBadge, useSentBadges } from "./SentBadges";
 import { ConfirmSheet } from "./ConfirmSheet";
 import { deleteQuestion, type Ask } from "./confirm_pure";
 import { sentMs } from "./trust_pure";
@@ -139,6 +140,7 @@ export function MailBox() {
   }, [rows, sel, doAct]);
   const query = useMemo(() => parseQuery(qText), [qText]);
   const shown = useMemo(() => rows.filter((r) => matchQuery(r, query)), [rows, query]);
+  const sentBadges = useSentBadges(boxId, view, useMemo(() => shown.filter((r) => r.direction === "out").map((r) => r.id), [shown]));
   const reply = useCallback(() => { if (!opened || !cur) return; setCompose({ to: opened.sum.from, subject: replySubject(opened.sum.subject ?? ""), text: quoteReply(opened.sum.from_name || opened.sum.from || "", opened.sum.date ? new Date(opened.sum.date).toLocaleString() : "", opened.view.text || ""), in_reply_to: opened.sum.message_id, reply_to: cur.id }); }, [opened, cur]);
 
   useEffect(() => {
@@ -245,7 +247,7 @@ export function MailBox() {
                   <button type="button" className={`mbx-r ${sel === r.id ? "on" : ""} ${r.read ? "" : "unread"} ${t.locked ? "locked" : ""} ${flashRows.includes(r.id) ? "fresh" : ""}`} onClick={() => void select(r)}>
                     <span className={`mbx-av ${t.locked ? "lk" : ""}`} style={{ ["--h" as string]: hue(r.sum?.from) }} aria-hidden="true">{t.locked ? <Ic k="lock" s={16} /> : initials(r.sum?.from_name, r.sum?.from)}</span>
                     <span className="mbx-rb">
-                      <span className="mbx-r1"><b>{!r.read && <i className="mbx-dot" aria-label="unread" />}{t.who}</b><span className="mbx-rm">{r.attach > 0 && <Ic k="clip" s={14} />}{r.starred && <Ic k="flag" s={14} fill />}<time>{when(sentMs(r) ?? r.received_ms)}</time></span></span>
+                      <span className="mbx-r1"><b>{!r.read && <i className="mbx-dot" aria-label="unread" />}{t.who}{r.direction === "out" && <SentBadge b={sentBadges[r.id]} />}</b><span className="mbx-rm">{r.attach > 0 && <Ic k="clip" s={14} />}{r.starred && <Ic k="flag" s={14} fill />}<time>{when(sentMs(r) ?? r.received_ms)}</time></span></span>
                       <span className="mbx-r2">{t.subject}</span>
                       {t.snippet && <span className="mbx-r3">{t.snippet}</span>}
                       {(r.thread_count > 1 || r.seal_mode === "recipient_pq") && <span className="mbx-r4">{r.thread_count > 1 && <span>{r.thread_count} in thread</span>}{r.seal_mode === "recipient_pq" && <span>PQC</span>}</span>}

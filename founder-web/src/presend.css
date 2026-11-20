@@ -32,3 +32,6 @@ html[data-motion="full"] .mtl[data-tone="active"] .mtl-dot{animation:mtlp 1.6s e
 .mtl-line,.mtl-why,.mtl-fine{margin:0;font-size:13px;line-height:1.45;overflow-wrap:anywhere}
 .mtl-tries ul{margin:6px 0 0;padding-left:18px;display:grid;gap:3px}.mtl-tries .mc-link{min-height:44px}
 @media (max-width:480px){.sp{margin:0 14px}.psb{margin:0 14px}}
+
+/* QC3 Sent-list badge: small, calm, never wider than the row */
+.mx-chip.sb{padding:1px 8px;font-size:11px;line-height:18px;margin-left:6px;white-space:nowrap}
