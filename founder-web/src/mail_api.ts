@@ -225,10 +225,3 @@ export async function sendingSet(on: boolean): Promise<{ ok: boolean; error?: st
 /** SYS-LIVE: the live pulse of the running Rust process (signed answer, verified by the kernel in api.get). null = door unavailable. */
 export type Pulse = { seq: number; now_ms: number; started_ms: number; uptime_s: number; build: string; build_time: string; tokio: { workers: number; alive_tasks: number; queue_depth: number }; db_ms: number | null; sending: Sending | null };
 export async function pulse(): Promise<Pulse | null> { const d = (await get("/founder/v1/system/pulse")).data; return d?.connected && typeof d.now_ms === "number" ? d as Pulse : null; }
-
-// ================================================================== QC2: signatures + snippets (signed doors; the server seals and opens, the browser only shows)
-import type { Sig, Snippet } from "./rich_pure";
-export async function signatures(box: string): Promise<Sig[] | null> { const d = (await get(`/founder/v1/mail/signatures?${q({ box })}`)).data; return d?.ok && Array.isArray(d.items) ? d.items : null; }
-export async function signatureAct(box: string, a: { op: "put"; from: string; text: string; fallback: boolean } | { op: "clear"; id: string }): Promise<{ ok: boolean; error?: string }> { const r = await post("/founder/v1/mail/signature", { box, ...a }); return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` }; }
-export async function snippets(box: string): Promise<Snippet[] | null> { const d = (await get(`/founder/v1/mail/snippets?${q({ box })}`)).data; return d?.ok && Array.isArray(d.items) ? d.items : null; }
-export async function snippetAct(box: string, a: { op: "put"; name: string; text: string } | { op: "delete" | "used"; id: string }): Promise<{ ok: boolean; error?: string }> { const r = await post("/founder/v1/mail/snippet", { box, ...a }); return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` }; }

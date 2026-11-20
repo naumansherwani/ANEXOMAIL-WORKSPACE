@@ -748,3 +748,5 @@ Sub-phases QC1a chips (UI only), QC1b autocomplete (SQL E186 sealed address book
 
 ## 18 Nov 2026 04:40 PKT - NOW = QC1a CHIPS (his haan 03:53: all four answers yes: cinematic glass chips, address book only from sent/received mail, QC1c probe OK, one at a time). QSPEED PARKED until founder AND awam are complete (his word 03:53)
 Contract = last block of tech-contracts/CURRENT.md. QC1a has NO SQL and NO backend (UI + pure parser recipients.ts). After QC1a is GREEN: discuss QC1b (SQL E186, he wants 300+ lines of advance SQL), then QC1c (E187). His other standing words: HTTP/2 is banned for ever; CLAUDE.md line 18 H2 wording belongs to the awam side, founder and awam are never mixed (do not edit it).
+
+- 20.11.26 06:08 PKT QC2-B browser step 1 (9c4d59c3) REVERTED on main by his word 06:04 (only QC2-A may reach his server; Tiptap not in package.json, no rich_pure); QC2-B parked, history keeps it

@@ -4293,3 +4293,5 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - 20 Nov 06:02 PKT 5-min check: rules read, WORKING-NOW updated; QC2-A pushed, his pull waits; building RichEditor.tsx
 
 - 20 Nov 06:03 PKT HOLD (his word 06:02): QC2-B browser stopped; step 1 (9c4d59c3) kept, RichEditor.tsx parked unimported; waits his choice: delete + rebuild from scratch OR edit step by step; QC2-A server pull is his to run
+
+- 20.11.26 06:08 PKT QC2-B browser step 1 (9c4d59c3) REVERTED on main by his word 06:04 (only QC2-A may reach his server; Tiptap not in package.json, no rich_pure); QC2-B parked, history keeps it
