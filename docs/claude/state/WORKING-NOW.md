@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 02:14 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 21 Nov 02:55 PKT: qconnect-login-only.sh WRITTEN + sandbox-tested (guards: empty list, refuse if Supabase has more rows, privilege test before stopping, append-only ledgers copied through replica role). Order for him: 1 founder-install (new binary, still local mode), 2 qconnect-login-only.sh. His open session stays valid.
-NEXT STEP: He runs line 1 then line 2 and pastes; then my Chrome look (dashboard, HTTP/3, ML-DSA, Mail) and the proof that login is local and data is REST. Rollback OFF=1.
-HIS LAST WORD: his 21 Nov 02:11: only login on server, rest as before, tech intact
+# WORKING NOW (manual checkpoint, 21 Nov 2026 02:17 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 21 Nov 03:05 PKT: HIS ORDER (02:16): BACKUP FIRST so nothing is lost. qconnect-backup-now.sh written + sandbox-tested (read-only on both DBs; full server pg_dump + Supabase founder tables as COPY files + SHA-256, in /var/backups/anexomail-pg on his server only, NOT git, NOT Storage Box). Order for him: 0 backup, 1 founder-install, 2 qconnect-login-only.
+NEXT STEP: He runs the backup line and pastes; only then founder-install and qconnect-login-only. Nothing switches before the backup paste says OK.
+HIS LAST WORD: his 21 Nov 02:16: pehle backup, takay kuch lost na ho
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,21 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- b391b0d3 21 Nov 02:14 ledger line 46c700d5
 - 46c700d5 21 Nov 02:14 QCONNECT-LO: state snapshot
 - cee18441 21 Nov 02:13 ledger line d8c3e9f9
 - d8c3e9f9 21 Nov 02:13 QCONNECT-LO: login-only switch script with guarded back-copy
 - 3edfe459 21 Nov 02:03 ledger line 7a3ddbf1
-- 7a3ddbf1 21 Nov 02:03 QCONNECT-LO: login-only mode code, contract, back-diff script
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+?? docs/cursor-work/server/qconnect-backup-now.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 24 ++++++------------------
+ 1 file changed, 6 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +43,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (fc032c3efc242fba78e2cbc50388ae5593446665)
+WIP snapshot: refs/wip/last (c3b2aad709fc721c3411178e73df28e27c904437)

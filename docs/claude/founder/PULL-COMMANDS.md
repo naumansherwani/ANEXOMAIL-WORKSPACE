@@ -2425,3 +2425,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 02:55 PKT QCONNECT-LO: switch script docs/cursor-work/server/qconnect-login-only.sh written and sandbox-tested on two scratch databases (copy of append-only ledger through replica role, refuse if Supabase has more rows, empty-list guard, idempotent). His diff paste: 47 of 184 founder tables differ, local newer. Not installed. His two lines: founder-install then qconnect-login-only.
 
 - 21 Nov 2026 03:00 PKT state snapshot only (WORKING-NOW); nothing else changed
+
+- 21 Nov 2026 03:05 PKT QCONNECT-LO: his order 02:16 backup first. Written docs/cursor-work/server/qconnect-backup-now.sh (read-only on both databases; full server dump + Supabase founder tables as COPY files, SHA-256 checked, on his server only, never in git or the Storage Box), sandbox-tested. Switch waits for his backup paste.

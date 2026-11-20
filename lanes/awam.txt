@@ -243,6 +243,7 @@ docs/cursor-work/server/pro-second-user.sh
 docs/cursor-work/server/pro-team-probe.sh
 docs/cursor-work/server/pull-20260921-web.md
 docs/cursor-work/server/qconnect-back-diff.sh
+docs/cursor-work/server/qconnect-backup-now.sh
 docs/cursor-work/server/qconnect-footprint.sh
 docs/cursor-work/server/qconnect-login-only.sh
 docs/cursor-work/server/qconnect-measure.sh
