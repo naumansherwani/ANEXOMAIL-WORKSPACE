@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 00:40 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 00:40 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT step 8b NOT run. His 00:39 message: angry (prep needed 3 runs, my guesses cost him time). He did NOT run the switch. Live site untouched, on REST, fine.
 NEXT STEP: WAIT for his explicit go before giving the switch line again. No new server command unless he asks. If he says go: first read-only check, then ONE line. Keep replies short, no guesses, Aap only.
 HIS LAST WORD: madarchod yeh tune barbadi kerne ke liye aya hai, tu jab se aya mera kaam kam hone ke bajay zyada hua
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 0463cb14 21 Nov 00:40 QCONNECT: hold switch until his go
 - 64b10465 21 Nov 00:36 ledger line 8e12b1d9
 - 8e12b1d9 21 Nov 00:36 QCONNECT: step 8a prep done, state refreshed for compaction
 - 02c8db81 21 Nov 00:28 ledger line 31373bf7
 - 31373bf7 21 Nov 00:28 QCONNECT: prep fix 3 grants for service_role
-- 71c2caf2 21 Nov 00:25 ledger line ae03f517
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (e8597137bdd55af3e0103d198d5a69be084542ca)
+WIP snapshot: refs/wip/last (d3e790d1c51d694f984097ce97661b3114d98112)
