@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 07:05 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 07:05 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC2 live look OK, CSS fix pushed (6b752a86); QC3 details sent to him, waits his 4 answers / default theek
 NEXT STEP: his word on QC3 (4 questions, default warn-only, 4 presets, timeline in Sent detail, 20 recipients); then contract in CURRENT.md, QC3-A Rust, QC3-B browser
 HIS LAST WORD: 5-min check
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- b31237c4 20 Nov 07:05 5-min checkpoint: QC3 waits his word
 - 6b752a86 20 Nov 07:05 ledger line 6df808ef
 - 6df808ef 20 Nov 07:05 QC2 live look OK on his server + rich rows alignment
 - 62af6f5b 20 Nov 06:58 ledger line 77c32271
 - 77c32271 20 Nov 06:58 5-min checkpoint: QC2 waits founder-install
-- 844dc2d3 20 Nov 06:51 ledger line cd37ee98
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ HIS 4 QUESTIONS, ANSWERS FROM RESEARCH (his word still needed, defaults below):
 2. Signature = text + links only in QC2. Reason: embedded (CID/base64) logo adds ~33 % size and shows as an attachment in Microsoft 365 / OWA, iOS Mail has stripped it; a hosted logo is blocked by default in many clients and needs the host online; guidance keeps a logo under 50 KB. Logo comes after 
 3. Snippets: trigger `/name` (Superhuman uses `;`, we keep `/` and Ctrl+K), built-in variables {first_name} {my_name} {date}, plus any {custom_placeholder}; sending with an unfilled {placeholder} WARNS first (Superhuman does the same). Private snippets only (single founder; team sharing not needed).
 4. Plain-text mode = per mail, NOT remembered (Gmail: per message, default stays formatted). Switching to plain text drops formatting and cannot be brought back, so ask "formatting will be removed" before switching.
-WIP snapshot: refs/wip/last (844127638256bc410b3c248777abcb87d05ff9e9)
+WIP snapshot: refs/wip/last (2947599c93e360de413a76797928a0f3d50a1b6b)
