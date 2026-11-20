@@ -1174,3 +1174,6 @@
 - QC2 is not Q3, Q3 not started
 
 - 5-min checkpoint QC2 waits his word
+- 20.11.26 06:00 PKT QC2-A founder server: SQL E194 (signatures + snippets) + Rust fmail_rich/fmail_rich_ep (ammonia) written and tested, not yet run on his server; his sql-run (no name) + founder-install wait for QC2-B
+
+- 20 Nov 06:00 PKT QC2-A founder server written + tested (SQL E194 PG17 33/33, Rust fmail_ 180 passed), not yet on his server; QC2-B browser next

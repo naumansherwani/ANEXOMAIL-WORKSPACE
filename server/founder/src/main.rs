@@ -64,6 +64,8 @@ mod fmail_qtls;
 mod fmail_rpt;
 mod fmail_out;
 mod fmail_book;
+mod fmail_rich;
+mod fmail_rich_ep;
 mod fmail_live;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
@@ -965,6 +967,10 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/mail/tls/tighten", axum::routing::post(tls_step::tighten_ep))
         .route("/founder/v1/mail/contacts", get(fmail_book::top_ep))
         .route("/founder/v1/mail/contact", axum::routing::post(fmail_book::act_ep))
+        .route("/founder/v1/mail/signatures", get(fmail_rich_ep::sigs_ep))
+        .route("/founder/v1/mail/signature", axum::routing::post(fmail_rich_ep::sig_act_ep))
+        .route("/founder/v1/mail/snippets", get(fmail_rich_ep::snips_ep))
+        .route("/founder/v1/mail/snippet", axum::routing::post(fmail_rich_ep::snip_act_ep))
         .route("/founder/v1/mail/cancel", axum::routing::post(fmail_out::cancel_ep))
         .route("/founder/v1/mail/outbox", get(fmail_out::outbox_ep))
         .route("/founder/v1/mail/draft", axum::routing::post(fmail_out::draft_save_ep))

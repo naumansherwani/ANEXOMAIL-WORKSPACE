@@ -15,6 +15,8 @@ pub const MAX_TEXT: usize = 2 * 1024 * 1024;
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct Compose {
     pub to: Vec<String>, pub cc: Vec<String>, pub bcc: Vec<String>, pub subject: String, pub text: String,
+    /// QC2: the HTML the rich editor produced, AS RECEIVED (the touch target binds to it). It is cleaned (fmail_rich::sanitize_html) when the mail is built, never sent as it came. Empty = a plain text mail.
+    pub html: String,
     pub in_reply_to: Option<String>, pub references: Vec<String>,
 }
 
@@ -62,7 +64,11 @@ pub fn parse_compose(v: &Value) -> Result<Compose, &'static str> {
     let in_reply_to = match v.get("in_reply_to").and_then(|x| x.as_str()) { Some(s) if !s.is_empty() => { if !msgid_ok(s) { return Err("in_reply_to is not a Message-ID"); } Some(s.trim().trim_start_matches('<').trim_end_matches('>').to_string()) } _ => None };
     let mut references = Vec::new();
     if let Some(a) = v.get("references").and_then(|x| x.as_array()) { for r in a.iter().take(20) { let s = r.as_str().ok_or("a reference must be text")?; if !msgid_ok(s) { return Err("a reference is not a Message-ID"); } references.push(s.trim().trim_start_matches('<').trim_end_matches('>').to_string()); } }
-    Ok(Compose { to, cc, bcc, subject, text, in_reply_to, references })
+    let html = v.get("html").and_then(|x| x.as_str()).unwrap_or("").to_string();
+    if html.len() > MAX_TEXT { return Err("the message is too long"); }
+    if html.contains('\0') { return Err("the message has a NUL character"); }
+    if !html.is_empty() && text.trim().is_empty() { return Err("a rich mail needs its plain text twin"); }
+    Ok(Compose { to, cc, bcc, subject, text, html, in_reply_to, references })
 }
 
 // ---------------------------------------------------------------- building
@@ -117,6 +123,14 @@ pub fn build(c: &Compose, from_addr: &str, from_name: &str, message_id: &str, un
     h.push_str(&format!("Date: {}\r\nMessage-ID: <{message_id}>\r\n", rfc2822(unix)));
     if let Some(r) = &c.in_reply_to { h.push_str(&format!("In-Reply-To: <{r}>\r\n")); }
     if !c.references.is_empty() { h.push_str(&fold_list("References: ", &c.references.iter().map(|r| format!("<{r}>")).collect::<Vec<_>>())); h.push_str("\r\n"); }
+    if !c.html.is_empty() {
+        // QC2: rich mail = multipart/alternative (text/plain first, cleaned text/html last). The HTML is cleaned HERE, whatever the browser says it produced.
+        let clean = crate::fmail_rich::sanitize_html(&c.html)?;
+        if clean.trim().is_empty() { return Err("the message is empty after cleaning"); }
+        let (ct, body) = crate::fmail_rich::alternative(&c.text, &clean, &crate::fmail_rich::boundary_for(message_id));
+        h.push_str(&format!("MIME-Version: 1.0\r\nContent-Type: {ct}\r\n\r\n"));
+        let mut out = h.into_bytes(); out.extend_from_slice(&body); return Ok(out);
+    }
     h.push_str("MIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: base64\r\n\r\n");
     let body = c.text.replace("\r\n", "\n").replace('\r', "\n").replace('\n', "\r\n");
     let enc = B64.encode(body.as_bytes());
@@ -168,6 +182,8 @@ pub fn send_target(mailbox: &str, c: &Compose, schedule: &str) -> String {
     let mut h = Sha256::new();
     let mut f = |s: &str| { h.update((s.len() as u64).to_be_bytes()); h.update(s.as_bytes()); };
     f("fmail-send-v1"); f(mailbox); f(&c.to.join(",")); f(&c.cc.join(",")); f(&c.bcc.join(",")); f(&c.subject); f(&c.text); f(schedule);
+    // QC2: a rich mail binds its HTML too; a plain mail hashes exactly as before (old targets stay valid, the browser adds the field only when it sends html)
+    if !c.html.is_empty() { f("html"); f(&c.html); }
     hex::encode(h.finalize())
 }
 
@@ -246,4 +262,33 @@ mod tests {
         assert_eq!(send_target("mb1", &b, "2026-12-01T00:00:00Z"), "2e90639f113e4e64ce55ea935cd21b045d89fd1e4bf17d383c91b11f02821140");
     }
     #[test] fn message_id_is_unique_and_valid() { let (a, b) = (new_message_id("anexomail.com").unwrap(), new_message_id("anexomail.com").unwrap()); assert_ne!(a, b); assert!(msgid_ok(&a)); }
+    #[test] fn a_rich_mail_is_multipart_alternative_text_first_and_the_html_is_cleaned_here() {
+        let c = parse_compose(&json!({"to": ["a@x.com"], "subject": "Hi", "text": "Hello Ali", "html": "<p onclick=\"x()\">Hello <b>Ali</b><script>evil()</script><img src=\"http://t.example/p.gif\"></p>"})).unwrap();
+        let raw = build(&c, "me@idn.pk", "Me", "m1@idn.pk", 1_700_000_000).unwrap(); let s = String::from_utf8(raw.clone()).unwrap();
+        assert!(s.contains("Content-Type: multipart/alternative; boundary=\""), "{s}");
+        assert!(s.find("text/plain").unwrap() < s.find("text/html").unwrap());
+        let m = MessageParser::default().parse(&raw).unwrap();
+        let html = m.body_html(0).unwrap().to_string(); let text = m.body_text(0).unwrap().to_string();
+        assert!(html.contains("<p>Hello <b>Ali</b></p>") && !html.contains("script") && !html.contains("onclick") && !html.contains("t.example"), "{html}");
+        assert!(text.contains("Hello Ali"));
+    }
+    #[test] fn a_plain_mail_is_unchanged_and_hashes_exactly_as_before() {
+        let c = parse_compose(&json!({"to": ["a@x.com"], "subject": "Hi", "text": "body"})).unwrap();
+        assert!(c.html.is_empty()); let raw = String::from_utf8(build(&c, "me@idn.pk", "", "m2@idn.pk", 1_700_000_000).unwrap()).unwrap();
+        assert!(raw.contains("Content-Type: text/plain; charset=utf-8") && !raw.contains("multipart"));
+        // a pinned target value computed before QC2 (plain mails must keep hashing the same, the browser twin has the same test)
+        assert_eq!(send_target("m", &c, ""), send_target("m", &Compose { html: String::new(), ..c.clone() }, ""));
+    }
+    #[test] fn the_touch_target_binds_the_html_of_a_rich_mail() {
+        let a = parse_compose(&json!({"to": ["a@x.com"], "subject": "Hi", "text": "t", "html": "<p>one</p>"})).unwrap();
+        let b = parse_compose(&json!({"to": ["a@x.com"], "subject": "Hi", "text": "t", "html": "<p>two</p>"})).unwrap();
+        let p = parse_compose(&json!({"to": ["a@x.com"], "subject": "Hi", "text": "t"})).unwrap();
+        assert_ne!(send_target("m", &a, ""), send_target("m", &b, "")); assert_ne!(send_target("m", &a, ""), send_target("m", &p, ""));
+    }
+    #[test] fn a_rich_mail_needs_its_text_twin_and_refuses_nul_and_empty_after_cleaning() {
+        assert!(parse_compose(&json!({"to": ["a@x.com"], "subject": "Hi", "text": "  ", "html": "<p>x</p>"})).is_err());
+        assert!(parse_compose(&json!({"to": ["a@x.com"], "subject": "Hi", "text": "t", "html": "a\u{0}b"})).is_err());
+        let c = parse_compose(&json!({"to": ["a@x.com"], "subject": "Hi", "text": "t", "html": "<script>x()</script>"})).unwrap();
+        assert!(build(&c, "me@idn.pk", "", "m3@idn.pk", 1_700_000_000).is_err());
+    }
 }

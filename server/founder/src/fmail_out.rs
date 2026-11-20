@@ -385,7 +385,7 @@ pub async fn draft_save_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: ax
     let expected = j.get("expected").and_then(|x| x.as_i64()).unwrap_or(0).clamp(0, 100_000);
     // a draft may be half written: only the sizes and the control characters are checked here (the full check runs at send)
     let pick = |k: &str| j.get(k).cloned().unwrap_or(Value::Null);
-    let doc = json!({"to": pick("to"), "cc": pick("cc"), "bcc": pick("bcc"), "subject": pick("subject"), "text": pick("text"), "in_reply_to": pick("in_reply_to")});
+    let doc = json!({"to": pick("to"), "cc": pick("cc"), "bcc": pick("bcc"), "subject": pick("subject"), "text": pick("text"), "html": pick("html"), "in_reply_to": pick("in_reply_to")});
     let bytes = doc.to_string();
     if bytes.len() > mime::MAX_TEXT + 64 * 1024 { return bad("the draft is too long"); }
     if doc["subject"].as_str().map_or(false, |s| s.chars().count() > mime::MAX_SUBJECT) { return bad("the subject is too long"); }

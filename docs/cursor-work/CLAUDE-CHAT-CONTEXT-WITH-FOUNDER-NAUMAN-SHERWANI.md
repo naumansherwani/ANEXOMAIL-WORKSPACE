@@ -4157,3 +4157,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - QC2 is not Q3, Q3 not started
 
 - 5-min checkpoint QC2 waits his word
+
+- 20 Nov 06:00 PKT QC2-A founder server written + tested (SQL E194 PG17 33/33, Rust fmail_ 180 passed), not yet on his server; QC2-B browser next
