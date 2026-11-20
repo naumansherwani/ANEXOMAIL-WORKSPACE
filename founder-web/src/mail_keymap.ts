@@ -44,8 +44,6 @@ export function typeAhead(labels: readonly string[], cur: number, buf: string, k
 export type HelpRow = { keys: string; does: string; where: "list" | "mail" | "page" | "compose" };
 export const HELP_ROWS: readonly HelpRow[] = [
   { keys: "j / k  or  Down / Up", does: "Next / previous mail", where: "list" },
-  { keys: "Home / End", does: "First / last mail", where: "list" },
-  { keys: "Shift + Down / Up", does: "Extend the selection", where: "list" },
   { keys: "Enter", does: "Open the mail", where: "list" },
   { keys: "c", does: "Write a new mail", where: "list" },
   { keys: "/", does: "Search the loaded mails", where: "list" },
@@ -55,7 +53,7 @@ export const HELP_ROWS: readonly HelpRow[] = [
   { keys: "s  u", does: "Star, mark unread", where: "mail" },
   { keys: "Esc", does: "Close the mail", where: "mail" },
   { keys: "Ctrl K", does: "Search pages", where: "page" },
-  { keys: "Ctrl Enter", does: "Send (inside Compose)", where: "compose" },
+  { keys: "Ctrl Enter", does: "Send (inside Compose; Cmd Enter on a Mac)", where: "compose" },
   { keys: "?", does: "This help", where: "page" },
 ];
 export const helpFor = (scene: "list" | "mail" | "compose"): HelpRow[] => HELP_ROWS.filter((r) => r.where === scene || r.where === "page" || (scene === "mail" && r.where === "list"));

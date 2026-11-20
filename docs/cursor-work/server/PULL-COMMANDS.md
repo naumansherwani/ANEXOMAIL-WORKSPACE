@@ -1493,3 +1493,5 @@
 - 21 Nov 2026 03:57 PKT his answer 1 haan, 2 browser, 3 haan recorded; QC8a a3-a5 contract written, coding starts (browser-stored switch, no SQL, no server command)
 
 - 21 Nov 2026 04:05 PKT QC8a a3-a5 WRITTEN: KeyLayer.tsx (capture listener, ? native dialog, Up/Down via existing j/k), KeySwitch.tsx (Settings row), keys_store.ts (browser-stored switch), keylayer.css, 2 one-line mounts (App.tsx, Settings.tsx); bun 519/519, tsc clean, vite build ok 2 s; NOT live yet, NOT green
+
+- 21 Nov 2026 04:20 PKT QC8a a3-a5 CHECKED in real Chromium harness (10 checks: ON j passes, OFF j/c silenced, Enter/Esc/Ctrl+K pass, typing box untouched, Up/Down become j/k, ? opens sheet, Esc closes, no sideways scroll at 390/820/1280); help rows cut to keys that are really wired (removed Home/End and Shift range); bun 519/519, tsc clean, build ok; NOT live on his server yet, NOT green
