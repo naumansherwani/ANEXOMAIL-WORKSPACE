@@ -1,9 +1,9 @@
 {
  "heartbeat": {
-  "generated": "20 Nov 2026 20:59 +0500",
-  "head": "b5f54935",
-  "head_subject": "ledger line 56c1a29a",
-  "now": "QSPEED",
+  "generated": "20 Nov 2026 21:03 +0500",
+  "head": "f267487a",
+  "head_subject": "ledger line 4501d30d",
+  "now": "QCONNECT",
   "phases": {
    "GREEN": 28,
    "IN PROGRESS": 1,
@@ -11,7 +11,7 @@
    "PAUSED": 1
   },
   "q_done": 40,
-  "q_open": 4,
+  "q_open": 5,
   "checks_ok": 26,
   "checks_open": [
    "M-moq",
