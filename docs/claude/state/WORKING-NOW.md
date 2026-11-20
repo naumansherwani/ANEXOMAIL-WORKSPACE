@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 06:49 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 06:50 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC2 live loophole (Trusted Types crash on New mail) fixed in code, pushed; waits his ONE founder-install, then my live Chrome look again
 NEXT STEP: his founder-install paste, then live Chrome 390/820/1200 again (New mail opens, paste, placeholder, plain switch, signature, snippet)
 HIS LAST WORD: his 06:47: live Chrome look + auto fix loopholes
@@ -18,35 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 60962ec1 20 Nov 06:50 QC2 fix: Trusted Types safe rich editor (JSON content, inert parse policy)
 - f04c6f2b 20 Nov 06:44 ledger line 290f7817
 - 4e3b3e32 20 Nov 06:44 ledger line 506d090b
 - 506d090b 20 Nov 06:44 QC2 GREEN by his word 06:44: Tiptap 3 rich compose, signatures, snippets, HTML5 mail frame
 - a14b6dc4 20 Nov 01:44 Storage Box SSH IP na milna
-- c0562f28 20 Nov 01:42 Work in progress
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/AWAM-INHERIT-MANIFEST.json
- M docs/claude/CLOSE-THE-GAPS-07NOV.md
  M docs/claude/state/WORKING-NOW.md
- M founder-web/src/MailCompose.tsx
- M founder-web/src/RichEditor.tsx
- M founder-web/src/rich_pure.test.ts
- M founder-web/src/rich_pure.ts
-?? founder-web/s1280.png
-?? founder-web/s390.png
-?? founder-web/s820.png
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/AWAM-INHERIT-MANIFEST.json |  2 +-
- docs/claude/CLOSE-THE-GAPS-07NOV.md    |  1 +
- docs/claude/state/WORKING-NOW.md       | 40 +++++++++++-------------
- founder-web/src/MailCompose.tsx        | 12 +++----
- founder-web/src/RichEditor.tsx         | 57 ++++++++++++++++++++++++++++------
- founder-web/src/rich_pure.test.ts      |  7 ++++-
- founder-web/src/rich_pure.ts           | 12 +++++++
- 7 files changed, 91 insertions(+), 40 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 32 ++------------------------------
+ 1 file changed, 2 insertions(+), 30 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -57,4 +42,4 @@ HIS 4 QUESTIONS, ANSWERS FROM RESEARCH (his word still needed, defaults below):
 2. Signature = text + links only in QC2. Reason: embedded (CID/base64) logo adds ~33 % size and shows as an attachment in Microsoft 365 / OWA, iOS Mail has stripped it; a hosted logo is blocked by default in many clients and needs the host online; guidance keeps a logo under 50 KB. Logo comes after 
 3. Snippets: trigger `/name` (Superhuman uses `;`, we keep `/` and Ctrl+K), built-in variables {first_name} {my_name} {date}, plus any {custom_placeholder}; sending with an unfilled {placeholder} WARNS first (Superhuman does the same). Private snippets only (single founder; team sharing not needed).
 4. Plain-text mode = per mail, NOT remembered (Gmail: per message, default stays formatted). Switching to plain text drops formatting and cannot be brought back, so ask "formatting will be removed" before switching.
-WIP snapshot: refs/wip/last (bd4be1c66976a8035e0b6569a8d2ae8ac62fb7d1)
+WIP snapshot: refs/wip/last (eedd0517211679f7ff01ab6a199df127814d2e6f)
