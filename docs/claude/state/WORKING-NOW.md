@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 7979435a 20 Nov 09:09 QC4 feature list verbatim
+- c2ff627c 20 Nov 09:09 ledger line e08e1caa
 - e08e1caa 20 Nov 09:09 QC4a: Rust References + Reply-To, references wiring; cargo 559/0
 - 6770eba7 20 Nov 09:08 ledger line a8a4c09c
 - a8a4c09c 20 Nov 09:08 QC4a done
-- 96a94a79 20 Nov 09:04 ledger line 5c5cb77d
-- 5c5cb77d 20 Nov 09:04 QC4 checkpoint
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -35,11 +35,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
+> ## >>> 20 Nov 2026 09:12 PKT HIS QC4 FEATURE LIST (7 features, his paste 09:09) is now verbatim in docs/claude/QC4-PLAN-20NOV.md and founder-commands.md; QC4a done (not installed), QC4b screen next <<<
 > ## >>> 20 Nov 2026 09:55 PKT QC4a = DONE, WRITTEN AND TESTED, NOT INSTALLED (20 Nov 2026 09:55 PKT): cargo whole suite 559 passed 0 failed 0 filtered out (was 558, +1 test for References + Reply-To), pure-TS tests 474 pass 0 fail (sandbox runner, not a runtime), tsc clean, vite build OK (index-BcA
 > ## >>> 20 Nov 2026 09:34 PKT QC4 SPLIT: QC4a server+data (Rust References + Reply-To in the open summary, mail_api, pure TS done) then QC4b screen (inline panel, Reply/Reply all/Forward buttons+keys, fold chip, selection reply, forward); ONE install. Rust edit waits on branch wip-qc4a until the wh
-> ## >>> 20 Nov 2026 09:10 PKT QC4-2 DONE (20 Nov 2026 09:10 PKT): founder-web/src/reply_pure.ts + 13 golden tests (pure TypeScript, sandbox runner only): replyTargets (reply, reply all, me removed, dedupe, Reply-To), subjects (Re once, Fwd once), replyBody (selection replaces whole mail), forwardBo
+> ## >>> 20 Nov 2026 09:10 PKT QC4-2 DONE (20 Nov 2026 09:10 PKT): founder-web/src/reply_pure.ts + 13 golden tests (pure TypeScript, sandbox runner o
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-NOW: QC1c - COMPOSE C1c: TLS lock on every chip from our own STARTTLS probe (SQL E187; discuss after QC1b)  [Rust Tokio SMTP STARTTLS rustls X25519MLKEM768 probe, PostgreSQL domain TLS facts]
-WIP snapshot: refs/wip/last (f059af6725582fc212bcc8cf15c7ba0301b900f5)
+WIP snapshot: refs/wip/last (c441da8051ce1eb7b965b5c74f6a0f082093a801)
