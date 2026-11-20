@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 76a91751 20 Nov 08:56 QC3 green final by the chairman's word
+- dbdb9081 20 Nov 08:56 ledger line 3e9fdb80
 - 3e9fdb80 20 Nov 08:56 QC3 green final
 - ef40be4a 20 Nov 08:55 ledger line 047074f2
 - 047074f2 20 Nov 08:55 QC4 plan and tech contract
-- b5272897 20 Nov 08:55 ledger line 92c7957f
-- 92c7957f 20 Nov 08:55 QC4 plan
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
 NOW: QC1c - COMPOSE C1c: TLS lock on every chip from our own STARTTLS probe (SQL E187; discuss after QC1b)  [Rust Tokio SMTP STARTTLS rustls X25519MLKEM768 probe, PostgreSQL domain TLS facts]
-WIP snapshot: refs/wip/last (7f4c490b0a9d64b9d23237e4735ed78b7334d890)
+WIP snapshot: refs/wip/last (224e9b2fdb2730d124bb8564a04b67ba248cd25a)
