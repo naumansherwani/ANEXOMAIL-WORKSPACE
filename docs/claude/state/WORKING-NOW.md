@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 01:16 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 01:16 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT switch RAN on his server 01:2x: copy 36 tables ok, 0 founder-owned mismatches, proof failed on engine line, AUTO ROLLBACK to REST worked (site on REST). ROOT CAUSE found in sandbox: identity key file was PEM + no public key (ring needs DER PKCS#8 138 bytes). Fix 4 pushed in prep + switch. He re-runs the same switch line.
 NEXT STEP: He re-runs qconnect-switch.sh (key gets replaced automatically, drift list valid until 02:36) -> paste -> sign in once -> measure -> dump-install -> my Chrome look -> then QC8. No guesses; OFF=1 rollback.
 HIS LAST WORD: Qconnect 30 min wire working
@@ -18,28 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 2506c1b6 21 Nov 01:16 QCONNECT fix 4: identity key DER with public key
 - 1a331403 21 Nov 01:12 ledger line 4eda0677
 - 4eda0677 21 Nov 01:12 correction: only QC8 open in the mail chain
 - 4521e501 21 Nov 01:08 ledger line bcb5e7c2
 - bcb5e7c2 21 Nov 01:08 correction: QC3a already done, QCONNECT reopened state
-- b2df55a5 21 Nov 01:05 ledger line e1aba74a
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- M docs/cursor-work/server/qconnect-switch-prep.sh
- M docs/cursor-work/server/qconnect-switch.sh
- M server/founder/src/localid.rs
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md                | 27 +++++++++----------------
- docs/claude/tech-contracts/CURRENT.md           |  2 ++
- docs/cursor-work/server/qconnect-switch-prep.sh |  5 +++--
- docs/cursor-work/server/qconnect-switch.sh      |  6 +++++-
- server/founder/src/localid.rs                   |  8 ++++++++
- 5 files changed, 27 insertions(+), 21 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 25 ++-----------------------
+ 1 file changed, 2 insertions(+), 23 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -50,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (9a237940f50d4b8d819827e85d044917fcfab8f4)
+WIP snapshot: refs/wip/last (c79beb450dfe85122450ee6a6e973ac7bc1950dc)
