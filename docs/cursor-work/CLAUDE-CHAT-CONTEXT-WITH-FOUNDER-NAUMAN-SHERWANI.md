@@ -4141,3 +4141,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - QC1e D4A CHECK_E193 all OK on server
 
 - Awam blueprint alphabetic copy
+
+- QC1e D4A closed, built in awam turn

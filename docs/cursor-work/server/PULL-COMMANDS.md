@@ -1158,3 +1158,5 @@
 - QC1e D4A CHECK_E193 all OK on server
 
 - Awam blueprint alphabetic copy
+
+- QC1e D4A closed, built in awam turn
