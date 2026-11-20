@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 07:25 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 07:26 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC3-2 E195 pushed, blueprint updated (9fa59f5d); starting QC3-3 Rust timeline door (Tokio/axum)
 NEXT STEP: QC3-3 Rust door + cargo tests; then QC3-4 pure TS, QC3-5 UI via kernel RPC
 HIS LAST WORD: his 07:23: tell which tech is in QC3 (answered)
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 0b2a26c0 20 Nov 07:26 QC3: E195 live on his server; tech per step written everywhere
+- 423d480c 20 Nov 07:25 ledger line 85e7a7c2
 - 85e7a7c2 20 Nov 07:25 QC3 checkpoint (WORKING-NOW)
 - 9fa59f5d 20 Nov 07:21 ledger line 171c9315
 - 171c9315 20 Nov 07:21 blueprint: QC3 in progress
-- 432a6b8b 20 Nov 07:19 ledger line f100edc6
-- f100edc6 20 Nov 07:19 QC3 checkpoint (WORKING-NOW)
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,16 +30,16 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
+# >>> QC3 20 Nov 2026 07:30 PKT: E195 is on his server (70/0). QC3 TECHNOLOGY PER STEP (my explanation to him 20 Nov 07:23, his order 07:26 to write it word for word everywhere): PostgreSQL (SQL): DONE. E195 written, sandbox 70/0, and RUN ON HIS SERVER 20 Nov 07:26 PKT: his sql-run paste shows e195_
 # >>> NOW: QC3 (20 Nov 2026 07:15 PKT): plan docs/claude/QC3-PLAN-20NOV.md, contract top of tech-contracts/CURRENT.md. Order: QC3-1 contract (done) -> QC3-2 SQL E195 -> QC3-3 Rust door -> QC3-4 pure + tests -> QC3-5 UI -> QC3-6 tests -> QC3-7 his sql-run + install + live look. <<<
 # QC2 (FOUNDER) PHASE POINTS (FOUNDER; awam D4A used P1-P6, different thing), FROM WEB RESEARCH 20 Nov 2026 05:3x PKT (his order 05:30). ONE phase, no sub-phases; GREEN only when ALL points are WIRED: YES / REAL: YES / TECH-LAW CHECKED.
 RESEARCH SOURCES (opened and read): Exclaimer embedded vs hosted signature images (https://exclaimer.com/email-signature-handbook/embedded-vs-hosted-images-in-email-signatures/); Superhuman Snippets help (https://help.superhuman.com/article/466-snippets); Cornell IT Gmail plain vs formatted (https:/
 HIS 4 QUESTIONS, ANSWERS FROM RESEARCH (his word still needed, defaults below):
-1. Only what he writes is rich: YES. Reply/forward of received HTML = QC4. Pasted HTML is untrusted (the ProseMirror XSS above): pin prosemirror-view >= 1.42.3, schema + paste rules in the browser, Rust ammonia as the second wall on the server.
-2. Signature = text + links only in QC2. Reason: embedded (CID/base64) logo adds ~33 % size and shows as an attachment in Microsoft 365 / OWA, iOS Mail has stripped it; a hosted logo is blocked by default in many clients and needs the host online; guidance keeps a logo under 50 KB. Logo comes after 
-3. Snippets: trigger `/name` (Superhuman uses `;`, we keep `/` and Ctrl+K), built-in variables {first_name} {my_name} {date}, plus any {custom_placeholder}; sending with an unfilled {placeholder} WARNS first (Superhuman does the same). Private snippets only (single founder; team sharing not needed).
-WIP snapshot: refs/wip/last (824b86921e91b5024d8114ee7988abc3ce27902b)
+1. Only what he writes is rich: YES. Reply/forward of received HTML = QC4. Pasted
+=== Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
+WIP snapshot: refs/wip/last (8761ee49cc646cbc031d964398da630ea1bdbab2)
