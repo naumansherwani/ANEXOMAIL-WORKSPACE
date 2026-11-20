@@ -1,6 +1,6 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 20:56 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QSPEED + LOGIN FIX: his phone screenshot 20:56 PKT shows the founder sign-in page: 'The sign-in service is not answering right now. Nothing is wrong with your password.' (busy_503 in server/founder/src/auth.rs/signin.rs). Finding the cause in code (database call failing or slow) and fixing it; then login speed to 50 ms target (ONE SQL door per login step, writes off the critical path); his db-latency-check paste still pending. QC7 is GREEN (32c07c05).
-NEXT STEP: 1) grep the exact message, find which call returns busy_503 on password login; 2) fix without touching the login UI (LOGIN UI LAW); 3) rec.sh; 4) give him ONE server line if needed; 5) QSPEED login finish as one SQL door; then QC8, Q3
+# WORKING NOW (manual checkpoint, 20 Nov 2026 20:59 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QSPEED, MEASURED (his pastes 20:58 PKT). FACTS: (a) journal: every database rpc is SLOW 306-546 ms (founder_live_tick every 5 s, outbox_claim, followup sweep/next196, dtls_due189, push_claim...). (b) db-latency-check: ping to the database edge 1-6 ms, tcp 4-11 ms, tls 20-35 ms, FIRST BYTE 318-375 ms even on ONE reused connection. So the cost is NOT network: it is the REST front + the database behind it (about 320 ms floor per call), 50 ms is impossible while every call goes through REST. (c) login finish = about 8 sequential calls = 2.5 s+, and any failure shows 'sign-in service not answering' (busy). DECISION PATH: A) cut the number of calls (login finish as ONE SQL door, parallel reads, writes after the answer, Rust cache) = about 0.35 s per login, code only; B) direct Postgres connection from Rust (tokio-postgres pooled): needs his read-only paste of db-direct-probe.sh to know the real distance; C) the 50 ms goal needs the database next to the server (Hetzner Postgres, allowed vendor): his word only. Do NOT name the CDN in front of the database to him.
+NEXT STEP: 1) commit db-direct-probe.sh (read-only) and give him ONE line; 2) write login finish as ONE SQL door (new E197, read E167/E153/passkey schema first, schema-first law) + Rust finish_inner uses it; 3) audit/ledger writes after the answer; 4) network-only retry; 5) rec.sh; his two lines: sql-run then founder-install; 6) my live Chrome login timing before/after
 HIS LAST WORD: SQL advance 400+ likho QC7
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -18,20 +18,21 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- b5f54935 20 Nov 20:56 ledger line 56c1a29a
 - 56c1a29a 20 Nov 20:56 QSPEED: login busy cause recorded, waiting for his paste
 - befd2f2e 20 Nov 20:52 ledger line 14983446
 - 14983446 20 Nov 20:52 QSPEED started: login path read, plan recorded
 - 32c07c05 20 Nov 20:51 ledger line b4760674
-- b4760674 20 Nov 20:51 QC7 green on live Chrome look (reminder + sealed draft); QSPEED starts
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+?? docs/cursor-work/server/db-direct-probe.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 22 +++++-----------------
+ 1 file changed, 5 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +43,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (0d31a76f79cbe2ca97cb547f5fee7c8b102f0e2d)
+WIP snapshot: refs/wip/last (4544458e5b17ba6377d1533ceca5ff6bae8a9aec)
