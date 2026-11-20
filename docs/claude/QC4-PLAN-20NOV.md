@@ -19,3 +19,22 @@ Forward as .eml (Q3), attachments (Q3), AI drafting (dropped to July 2027), per-
 
 ## STATUS 20 Nov 2026 09:10 PKT
 QC4-2 DONE (20 Nov 2026 09:10 PKT): founder-web/src/reply_pure.ts + 13 golden tests (pure TypeScript, sandbox runner only): replyTargets (reply, reply all, me removed, dedupe, Reply-To), subjects (Re once, Fwd once), replyBody (selection replaces whole mail), forwardBody, splitQuote (Gmail, wrapped, Outlook, forwarded, trailing block; never loses a character), referencesFor (RFC 5322 3.6.4, max 20 keep root). tsc clean, all pure-TS tests pass, vite build OK. NEXT: QC4-3 Rust References from the stored parent, then QC4-4 UI (InlineReply, buttons, fold chip, selection reply, forward), QC4-5 tests, QC4-6 his one install, QC4-7 my live look.
+
+## THE SPLIT, TWO SUBPHASES, ONE INSTALL (20 Nov 2026 09:30 PKT, his order 09:00: one phase QC4, at most 2 subphases)
+QC4a = SERVER AND DATA (Rust + Tokio + axum, kernel API, pure TypeScript). Written and tested FIRST, no screen change.
+- Feature 7, correct References: Rust Summary gets "references" (the opened mail's own References header, max 40) and "reply_to" (its Reply-To header); the open door already returns the summary, so the browser gets them with no new door. The reply sends references = referencesFor(parent references, parent Message-ID) (reply_pure.ts, DONE) and the send door re-validates every id (msgid_ok, max 20, already in fmail_mime.rs).
+- Feature 3 data: Reply-To (needed for reply all and for lists) comes from the same summary.
+- mail_api.ts: send carries references; types updated. All through the kernel RPC.
+- Pure TS reply_pure.ts + 13 tests: DONE (reply, reply all, subjects, quote, selection, forward block, fold split, References chain).
+QC4b = THE SCREEN (React 19 + TypeScript + Tailwind + Framer Motion), additive mounts only.
+- Feature 1 inline reply panel under the opened mail (same editor, pre-send bar, schedule presets; pop-out to the full window).
+- Feature 2 Reply / Reply all / Forward buttons (44 px, every size) and keys r, a, f.
+- Feature 3 Reply all button using replyTargets, bar warns above 20 people.
+- Feature 4 quoted text folded behind a "..." chip (splitQuote), full quote kept in the sent mail.
+- Feature 5 reply to the selected part (read-only window.getSelection).
+- Feature 6 forward inline block + "Fwd:" once.
+Then ONE founder-install, then my live Chrome look (read-only: a reply is only SAVED as a draft or sent to nobody; I never send a real mail).
+## CORRECTION OF MY EARLIER PLAN (honest)
+I first wrote "the send door builds References from the stored parent". The code shows that cannot work for every mail: a mail with seal_mode recipient_pq is sealed FOR the browser kernel; the server cannot open it (fmail_ep.rs open_ep returns sealed_for_kernel). So the parent's References are read where the mail is opened (server for vault mail, summary_json; kernel for pq mail) and sent back with the reply; the send door re-validates them. For pq mail the kernel summary does not carry References/Reply-To until the kernel is rebuilt: the reply then uses [parent Message-ID] only (still threads correctly by In-Reply-To), logged as a gap for the kernel (web-wasm) update.
+## STATE 20 Nov 2026 09:30 PKT
+QC4a Rust edit (Summary.references + test) is on branch wip-qc4a ONLY (not main) because cargo has not run yet and his founder-install builds origin/main; it merges to main after the WHOLE cargo suite passes. Reply_to still to add in the same edit.
