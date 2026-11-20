@@ -1675,3 +1675,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 02:30 PKT QCONNECT-LO contract written in CURRENT.md; server-first receipt recorded from his footprint paste; login-only code cargo 574/0 not installed
 
 - 21 Nov 2026 02:55 PKT QCONNECT-LO: switch script docs/cursor-work/server/qconnect-login-only.sh written and sandbox-tested on two scratch databases (copy of append-only ledger through replica role, refuse if Supabase has more rows, empty-list guard, idempotent). His diff paste: 47 of 184 founder tables differ, local newer. Not installed. His two lines: founder-install then qconnect-login-only.
+
+- 21 Nov 2026 03:00 PKT state snapshot only (WORKING-NOW); nothing else changed
