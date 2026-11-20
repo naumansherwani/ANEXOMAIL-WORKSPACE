@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 01:21 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 01:22 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT SWITCH IS LIVE on his server (21 Nov ~01:30 PKT, his paste): second switch run OK, journal 'database engine = LOCAL PostgreSQL', healthz 200, me 401, bridge 401, 36 tables copied, 0 founder-owned mismatches. Root cause of run 1 was the identity key format (fixed). He must SIGN IN ONCE (old gotrue tokens invalid). NOT declared done: needs his sign-in, measure, dump, my Chrome look.
 NEXT STEP: 1) he signs in once (password or passkey) 2) qconnect-measure.sh paste 3) pg-local-dump-install.sh paste 4) my Chrome look at the signed-in dashboard (read-only) 5) declare only with WIRED+REAL+TECH-LAW proof 6) then QC8. Rollback OFF=1. No guesses.
 HIS LAST WORD: yeh kya sara saal chalega, web research kero, compaction save
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 070d084f 21 Nov 01:22 QCONNECT: switch live on his server, state saved
 - 3440a709 21 Nov 01:16 ledger line 2506c1b6
 - 2506c1b6 21 Nov 01:16 QCONNECT fix 4: identity key DER with public key
 - 1a331403 21 Nov 01:12 ledger line 4eda0677
 - 4eda0677 21 Nov 01:12 correction: only QC8 open in the mail chain
-- 4521e501 21 Nov 01:08 ledger line bcb5e7c2
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (fdb4778fbf1e4efbce09cdac6f29224c11b097ba)
+WIP snapshot: refs/wip/last (2a94069ec5d73720ebce3baca6b8e66c5f9539a3)
