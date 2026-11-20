@@ -6,17 +6,20 @@ unset PGHOST PGPORT PGSERVICE PGDATABASE PGUSER
 set -uo pipefail
 . /etc/anexomail/sync.env 2>/dev/null; [ -n "${WORKING_URL:-}" ] || { echo "FAIL: WORKING_URL missing"; exit 2; }
 S=/var/run/postgresql; SU=anexomail-founder; KEY=/etc/anexomail/local-id.p8; D=/root/anexomail-backups; umask 077; mkdir -p "$D"
-pg_isready -h $S >/dev/null || { echo "FAIL: local cluster not ready"; exit 2; }
 id "$SU" >/dev/null 2>&1 || { echo "FAIL: OS user $SU missing (founder-install creates it)"; exit 2; }
 echo "== 0/4 socket door: the socket is 0770 (his hardening, step 3), so the service user needs the socket GROUP (dedicated group anexopg, nobody else gets in; the data directory stays 0700)"
 VER="$(ls /usr/lib/postgresql | sort -n | tail -1)"
+AUTO="$(ls /var/lib/postgresql/$VER/main/postgresql.auto.conf 2>/dev/null | head -1)"
+restart_pg() { systemctl restart "postgresql@$VER-main" 2>/dev/null || pg_ctlcluster "$VER" main restart; for W in $(seq 1 15); do pg_isready -h $S >/dev/null && return 0; sleep 1; done; return 1; }
+undo_group() { [ -n "$AUTO" ] && sed -i "/^unix_socket_group/d" "$AUTO"; restart_pg; }
 getent group anexopg >/dev/null || groupadd --system anexopg
-id -nG "$SU" | tr ' ' '\n' | grep -qx anexopg || usermod -aG anexopg "$SU"
+# PostgreSQL may only chown its socket to a group the postgres OS user belongs to (his 00:25 paste: restart failed without it)
+for U in postgres "$SU"; do id -nG "$U" | tr ' ' '\n' | grep -qx anexopg || usermod -aG anexopg "$U"; done
+if ! pg_isready -h $S >/dev/null; then echo "   cluster was DOWN from the last failed restart: removing the group line and starting it"; undo_group || { echo "FAIL: cluster still down; log:"; tail -15 /var/log/postgresql/postgresql-$VER-main.log; exit 2; }; fi
 CUR="$(psql -X -h $S -d postgres -At -c "show unix_socket_group")"
 if [ "$CUR" != anexopg ]; then
   psql -X -h $S -d postgres -At -c "alter system set unix_socket_group = 'anexopg'" >/dev/null
-  systemctl restart "postgresql@$VER-main" 2>/dev/null || pg_ctlcluster "$VER" main restart
-  for W in 1 2 3 4 5 6 7 8 9 10; do pg_isready -h $S >/dev/null && break; sleep 1; done
+  if ! restart_pg; then echo "   restart with the group FAILED, log tail:"; tail -8 /var/log/postgresql/postgresql-$VER-main.log; undo_group; echo "FAIL: group door not possible, cluster restored without it (socket unchanged)"; exit 2; fi
 fi
 pg_isready -h $S >/dev/null || { echo "FAIL: cluster not ready after the group change"; exit 2; }
 echo "   socket: $(ls -l $S/.s.PGSQL.5432 | awk '{print $1, $3, $4}'), unix_socket_group=$(psql -X -h $S -d postgres -At -c "show unix_socket_group"), $SU groups: $(id -nG $SU)"
