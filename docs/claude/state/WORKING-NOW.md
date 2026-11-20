@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 08:48 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 08:48 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC3 GREEN by his word 08:52; QC4 inline reply+forward is NOW (QC2 already green); Outbox badge fix waits his install
 NEXT STEP: write QC4 tech contract in CURRENT.md first (mail-parser + mail-builder Rust, kernel RPC, React 19 TS), check existing reply/forward code in MailBox.tsx/MailCompose.tsx, then plan+code
 HIS LAST WORD: 5-min check 08:48
@@ -18,22 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 10cf91f8 20 Nov 08:48 QC3 green row, QC4 now; checkpoint
 - 9d581ab6 20 Nov 08:41 ledger line 1557e182
 - 1557e182 20 Nov 08:41 QC3 checkpoint
 - b77e8f47 20 Nov 08:39 ledger line fb812c58
 - fb812c58 20 Nov 08:39 QC3 green by his word; Outbox badges; delivery tile layout fix from live look
-- 5398cb0e 20 Nov 08:35 ledger line 6da637d5
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md |  4 ++--
- docs/claude/state/WORKING-NOW.md            | 24 ++++++------------------
- 2 files changed, 8 insertions(+), 20 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -44,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (99e4aed1cbf3027fb88448da23fe14692932f2fa)
+WIP snapshot: refs/wip/last (d8b4d78124ee4ffde3ccac983fe4fd397c710443)
