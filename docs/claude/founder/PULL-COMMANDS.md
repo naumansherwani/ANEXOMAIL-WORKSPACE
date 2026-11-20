@@ -2375,3 +2375,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 00:35 PKT: QCONNECT step 8 prep 2nd run: local cluster restart FAILED with unix_socket_group=anexopg (cluster DOWN, local only, live site on REST unaffected). Fix 2: postgres user joins anexopg, script self-heals a down cluster, rollback on failure, log tail printed. Awaiting his re-run paste.
 
 - 21 Nov 2026 00:45 PKT: QCONNECT step 8 prep run 3 on his server: group door works (0 listeners), smoke test failed: no table grants in anexo_copy (pg_dump --no-privileges). Fix 3: prep grants service_role only; sandbox grant test ok. Awaiting his re-run paste.
+
+- 21 Nov 2026 00:50 PKT: QCONNECT step 8a prep SUCCEEDED on his server (run 3): socket group door ok (0 listeners), smoke test as service user ok, drift list written (30+ founder_*/mail_*/identity_* tables). Switch script: sort -u on the drift list. Next his ONE line qconnect-switch.sh. 7 of 10 steps proven, flag OFF, phase OPEN. WORKING-NOW + blueprint top + plan + 2-min loop refreshed.

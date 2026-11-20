@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 00:28 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QCONNECT step 8: prep run 3 (00:27): socket group door WORKS; smoke test failed 'permission denied for table founder_accounts' (copy has no grants). FIX 3 pushed: prep grants service_role on anexo_copy. Not yet re-run. HIS ANGER: no guesses on his server, read-only command first.
-NEXT STEP: He re-runs qconnect-switch-prep.sh and pastes; then qconnect-switch.sh; then step 9. Before ANY new server theory: one read-only command first (law 3).
-HIS LAST WORD: ledger working now blueprint time date, compaction-proof, 2-min loop, rules read, advance technology
+# WORKING NOW (manual checkpoint, 21 Nov 2026 00:36 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QCONNECT step 8a prep DONE on his server (00:36 paste, drift list written). Step 8b = qconnect-switch.sh is his NEXT line (sort -u fix pushed). 7 of 10 proven, flag OFF, site on REST. 2-min loop running (restarted 00:50).
+NEXT STEP: Give him the ONE switch line, then read his paste. After it: he signs in once; step 9 db-latency-check re-measure; step 10 local nightly dump (no Storage Box). Law 3: no guessing on his server, read-only command first. Aap only, Rule-70 table, REST fallback for ever.
+HIS LAST WORD: his word: update top of repo, ledger, WORKING-NOW, compaction-proof, loop every 2 min, advance technology, rules read
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,26 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 02c8db81 21 Nov 00:28 ledger line 31373bf7
 - 31373bf7 21 Nov 00:28 QCONNECT: prep fix 3 grants for service_role
 - 71c2caf2 21 Nov 00:25 ledger line ae03f517
 - ae03f517 21 Nov 00:25 QCONNECT: prep fix 2, cluster self-heal
 - da8ec74b 21 Nov 00:22 ledger line 7327db98
-- 7327db98 21 Nov 00:22 QCONNECT: prep socket group fix
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/BLUEPRINT-ABC-01NOV.md
+ M docs/claude/QCONNECT-PLAN-20NOV.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/server/qconnect-switch.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 21 ++-------------------
- 1 file changed, 2 insertions(+), 19 deletions(-)
+ docs/claude/BLUEPRINT-ABC-01NOV.md         |  1 +
+ docs/claude/QCONNECT-PLAN-20NOV.md         |  4 ++++
+ docs/claude/state/WORKING-NOW.md           | 26 ++++++++------------------
+ docs/cursor-work/server/qconnect-switch.sh |  4 ++--
+ 4 files changed, 15 insertions(+), 20 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +48,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ca056c9c98fc3f059ae1c87cdd9f42bfa4f36a87)
+WIP snapshot: refs/wip/last (e04281e409551d95b09a7f85d11a96f1997f128d)

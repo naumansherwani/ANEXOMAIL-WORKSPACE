@@ -19,7 +19,7 @@ fail() { echo "FAIL: $1 -> rollback to REST"; off; health && echo "   service ba
 echo "== 2/5 copy the drifted tables (one local transaction each; managed side read only)"
 N=0; while read -r T; do [ -n "$T" ] || continue
   { echo "set session_replication_role = replica; delete from only $T; copy $T from stdin;"; psql "$WORKING_URL" -X -q -c "copy $T to stdout"; echo '\.'; } | psql -X -h $S -d anexo_copy -q -1 -v ON_ERROR_STOP=1 -f - >/dev/null 2>"$D/sw-copy.err" || { head -3 "$D/sw-copy.err"; fail "copy of $T"; }
-  N=$((N+1)); done <"$DRIFT"
+  N=$((N+1)); done < <(sort -u "$DRIFT")
 echo "   tables copied: $N"
 echo "== 3/5 sequences reset to max(column)"
 psql -X -h $S -d anexo_copy -q -v ON_ERROR_STOP=1 <<'SQL' || fail "sequence reset"
@@ -34,7 +34,7 @@ BAD=0; WARN=0
 while read -r T; do [ -n "$T" ] || continue
   Q="select count(*), coalesce(md5(string_agg(md5(t::text), '' order by md5(t::text))), 'empty') from $T t"
   L=$(psql -X -h $S -d anexo_copy -At -F ' ' -c "$Q" 2>&1 | tail -1); M=$(psql "$WORKING_URL" -X -At -F ' ' -c "$Q" 2>&1 | tail -1)
-  if [ "$L" != "$M" ]; then case "${T#*.}" in founder_*|fmail_*|qt_*|revenue_*|mail_*) echo "   MISMATCH (founder-owned) $T local=$L managed=$M"; BAD=$((BAD+1));; *) echo "   warn (written by others after the copy) $T local=${L%% *} managed=${M%% *}"; WARN=$((WARN+1));; esac; fi; done <"$DRIFT"
+  if [ "$L" != "$M" ]; then case "${T#*.}" in founder_*|fmail_*|qt_*|revenue_*|mail_*) echo "   MISMATCH (founder-owned) $T local=$L managed=$M"; BAD=$((BAD+1));; *) echo "   warn (written by others after the copy) $T local=${L%% *} managed=${M%% *}"; WARN=$((WARN+1));; esac; fi; done < <(sort -u "$DRIFT")
 echo "   founder-owned mismatches: $BAD, warnings: $WARN"; [ $BAD -eq 0 ] || fail "founder-owned table differs after the copy"
 echo "== 5/5 flag on, start, proof"
 off >/dev/null 2>&1; systemctl stop $SVC
