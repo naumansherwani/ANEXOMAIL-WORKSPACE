@@ -3397,3 +3397,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 03:30 PKT QCONNECT live Chrome look (his order 02:59), his Systems page: live pulse running since 02:53:06 (the switch restart), build 0e0284a3, database round trip 458 ms (Supabase REST again, was about 3 ms local), Tokio 62 tasks 8 workers, QUIC + WebTransport, DBSC verified, PQC sealed, mail speed 3.1 s, real delivery board. Devices ring not looked.
 
 - 21 Nov 2026 03:40 PKT QC8: he asked what it is and whether it is needed; plain-words answer written at the top of docs/claude/QC8-PLAN-21NOV.md: polish only, not needed, dated tech-law items (26-30 Nov) are more urgent; his choice skip / small / full; no code
+
+- 21 Nov 2026 03:45 PKT HIS ORDER 03:06: NOT ONE LINE OF CODE until he says haan. Applies to QC8 and everything else; only plans and answers. QC8 choice (skip / small / full) is his; dated tech-law items wait for his word too.
