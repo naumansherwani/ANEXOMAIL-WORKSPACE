@@ -32,7 +32,14 @@ end \$\$;
 grant service_role to "$SU";
 grant connect on database anexo_copy to "$SU";
 SQL
-psql -X -h $S -d anexo_copy -q -c "grant usage on schema public, auth, extensions to service_role" >/dev/null 2>&1
+# his 00:27 paste: "permission denied for table founder_accounts". pg_copy used pg_dump --no-privileges, so the copy has NO grants. service_role (the only role the service uses; anon/authenticated are never given anything here, fail-closed) gets what the managed project gave it.
+psql -X -h $S -d anexo_copy -q -v ON_ERROR_STOP=1 <<'SQL' || { echo "FAIL: grants"; exit 3; }
+grant usage on schema public, auth, storage, extensions to service_role;
+grant all on all tables in schema public, auth, storage to service_role;
+grant all on all sequences in schema public, auth, storage to service_role;
+grant execute on all functions in schema public, auth, storage, extensions to service_role;
+SQL
+echo "   service_role grants on anexo_copy: tables $(psql -X -h $S -d anexo_copy -At -c "select count(*) from information_schema.role_table_grants where grantee='service_role' and table_schema='public'")"
 echo "   role ok: $(psql -X -h $S -d postgres -At -c "select rolsuper::text||' super, member of '||(select string_agg(b.rolname,',') from pg_auth_members m join pg_roles b on b.oid=m.roleid where m.member=r.oid) from pg_roles r where rolname='$SU'")"
 echo "== 2/4 identity key file $KEY"
 if [ -s "$KEY" ]; then echo "   exists (kept, never replaced)"; else

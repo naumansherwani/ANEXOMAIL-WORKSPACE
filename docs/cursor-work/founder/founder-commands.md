@@ -4520,3 +4520,5 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 00:30 PKT: QCONNECT step 8 prep run on his server: role ok, key created, smoke test FAILED (socket 0770, service user outside the group). Fixed: prep step 0 creates group anexopg, sets unix_socket_group, adds anexomail-founder. Awaiting his re-run paste.
 
 - 21 Nov 2026 00:35 PKT: QCONNECT step 8 prep 2nd run: local cluster restart FAILED with unix_socket_group=anexopg (cluster DOWN, local only, live site on REST unaffected). Fix 2: postgres user joins anexopg, script self-heals a down cluster, rollback on failure, log tail printed. Awaiting his re-run paste.
+
+- 21 Nov 2026 00:45 PKT: QCONNECT step 8 prep run 3 on his server: group door works (0 listeners), smoke test failed: no table grants in anexo_copy (pg_dump --no-privileges). Fix 3: prep grants service_role only; sandbox grant test ok. Awaiting his re-run paste.

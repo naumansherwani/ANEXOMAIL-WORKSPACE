@@ -1,6 +1,6 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 00:25 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QCONNECT step 8: his prep re-run 00:25 -> local cluster postgresql@18-main DOWN after restart with unix_socket_group=anexopg (live site unaffected, REST). FIX 2 pushed: postgres user also joins anexopg; script self-heals a down cluster and rolls the group line back on failure. Not yet re-run.
-NEXT STEP: He re-runs qconnect-switch-prep.sh (same line) and pastes. If the restart fails again the script prints the log tail and restores the cluster. Then switch, then step 9.
+# WORKING NOW (manual checkpoint, 21 Nov 2026 00:28 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QCONNECT step 8: prep run 3 (00:27): socket group door WORKS; smoke test failed 'permission denied for table founder_accounts' (copy has no grants). FIX 3 pushed: prep grants service_role on anexo_copy. Not yet re-run. HIS ANGER: no guesses on his server, read-only command first.
+NEXT STEP: He re-runs qconnect-switch-prep.sh and pastes; then qconnect-switch.sh; then step 9. Before ANY new server theory: one read-only command first (law 3).
 HIS LAST WORD: ledger working now blueprint time date, compaction-proof, 2-min loop, rules read, advance technology
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -18,20 +18,24 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 71c2caf2 21 Nov 00:25 ledger line ae03f517
 - ae03f517 21 Nov 00:25 QCONNECT: prep fix 2, cluster self-heal
 - da8ec74b 21 Nov 00:22 ledger line 7327db98
 - 7327db98 21 Nov 00:22 QCONNECT: prep socket group fix
 - 0e914f4a 21 Nov 00:19 ledger line f687effa
-- f687effa 21 Nov 00:19 QCONNECT: step 8 switch scripts + contract
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M docs/cursor-work/server/qconnect-switch-prep.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 21 ++-------------------
- 1 file changed, 2 insertions(+), 19 deletions(-)
+ docs/claude/state/WORKING-NOW.md                | 23 ++++++-----------------
+ docs/claude/tech-contracts/CURRENT.md           |  2 ++
+ docs/cursor-work/server/qconnect-switch-prep.sh |  9 ++++++++-
+ 3 files changed, 16 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +46,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ebac784248f251a2fa9738202f47aca4483dfba3)
+WIP snapshot: refs/wip/last (6c86807f2660abb1d88523da7851fa3dc097315d)
