@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 09:42 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:42 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: DOING: QC4 green by his word; list-look fix 9ac3a9c6 + law 90cb141d waiting his reinstall; awam sticker emoji written (587aac38), waiting awam pull
 NEXT STEP: NEXT: re-look founder list vs his photo after reinstall; awam look after pull; evening QC5/QC7/QC8/Q3
 HIS LAST WORD: 5-min check 10:11
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- efe16b1d 20 Nov 09:42 QC4 checkpoint
 - 90cb141d 20 Nov 09:40 ledger line fb61b8f8
 - fb61b8f8 20 Nov 09:40 founder mail list look law + class guard test
 - 587aac38 20 Nov 09:37 ledger line 45cde1e5
 - 45cde1e5 20 Nov 09:37 awam emoji: sticker-face icon button
-- df691b06 20 Nov 09:36 ledger line bb6ceda3
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 21 ++++-----------------
- 1 file changed, 4 insertions(+), 17 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (94ff777ee766645d8780d41c704cfbc098901c93)
+WIP snapshot: refs/wip/last (4c4a9c8f1616619546059c093286e174a57c6d5e)
