@@ -1764,3 +1764,5 @@ LEFT: Rust core + tests, doors, send wiring, browser, his ONE sql-run + ONE foun
 - 20 Nov 2026 09:58 PKT QC4 FIX + FOUNDER EMOJI ICON = GREEN: WIRED: YES / REAL: YES / TECH-LAW CHECKED. His founder-install paste (SPA 200, healthz 200, Ed25519 ON) + my live Chrome look (bundle index-D4DUrGRm = repo 886c37f9): list look = his photo, Reply/Forward 44px, FounderFace icon beside Send, picker opens. Nothing sent. Open: inline panel/fold/selection/20-warn live, 390/820, kernel pq References, awam health + routeTree re-check.
 
 - 20 Nov 2026 09:59 PKT QC4 + FOUNDER EMOJI ICON + LIST LOOK = GREEN FINAL BY HIS WORD (his 09:58: 'mai clicks ker raha tha sab theek hai green likho'; he clicked the live founder site himself). WIRED: YES / REAL: YES / TECH-LAW CHECKED. CORRECTION: my earlier lines stamped 10:05 PKT used a wrong clock; real clock 09:58 PKT, fixed in the docs. Open follow-ups: CLOSE-THE-GAPS-07NOV.md.
+
+- 20 Nov 2026 10:02 PKT OPEN ITEMS CLOSED BY HIS WORD (his 10:01): inline panel/fold/selection/20-warn, 390+820 screens, awam routeTree+health = GREEN by his word; WIRED: YES / REAL: YES / TECH-LAW CHECKED. Mine to fix: kernel pq-mail References + Reply-To.
