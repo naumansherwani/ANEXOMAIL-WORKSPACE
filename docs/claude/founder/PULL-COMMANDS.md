@@ -2481,3 +2481,9 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 04:07 PKT his founder-install OK (574 tests, build 2m13s under 4 min); QC8a SPA live; live Chrome walk next; schema-first + Rule 52 restated and recorded
 
 - 21 Nov 2026 04:26 PKT QC8a live Chrome partial: ? sheet + switch + / silenced when OFF proven on his tab (bundle da98f43e); arrows/range/batch/type-ahead/390/820 not yet live-proven (touch his real mails); his Gmail-style search request recorded, waits mock + haan; NOT green
+
+- 21 Nov 2026 04:39 PKT QC8b b1 AUDIT done (read-only live DOM: 51 controls, 0 unnamed, 0 small, 6 gaps listed); his search placeholder Search mail done (one string); blueprint top block has subphases and technology; QC8a live proof partial
+
+- 21 Nov 2026 04:42 PKT QC8b b1 AUDIT done (read-only live DOM: 51 controls, 0 unnamed, 0 small, 6 gaps listed); his search placeholder Search mail done (one string, look unchanged, his word 04:09 with 2 photos); blueprint top block has subphases and technology; QC8a live proof partial
+
+- 21 Nov 2026 04:44 PKT QC8b b1 audit, search placeholder Search mail (his word 04:09, manifest synced for awam inherit), blueprint subphases; QC8a live proof partial

@@ -69,3 +69,11 @@ Handlers on the page, by file (none edited):
 - No "?" help, no Home/End, no type-ahead, no Shift-range in the mail list; list rows: Up/Down arrows missing (only j/k).
 - Single-letter keys today: always on, no switch (fails WCAG 2.1.4 level A). Settings registry: no keyboard key yet (sql folder has no registry row; a new row = tiny SQL file, schema-first, waits his haan before it is written).
 Next: a2 = NEW pure module mail_keymap.ts + golden tests (no existing file touched).
+
+## QC8a a6 LIVE (his Chrome, 21 Nov 2026 04:20-04:35 PKT, live bundle index-B_rALZuO = da98f43e)
+Proven live: "?" sheet (14 rows), the switch writes anx.keys.single, "/" is ignored when OFF. NOT yet live-proven: Up/Down, Home/End, Shift-range, e # s u batch, type-ahead (they open or change his real mails; sandbox Chromium proof exists), 390/820. His word 04:08: search placeholder "Search" -> "Search mail" (one string, MailBox.tsx:259), live after his next install.
+
+## QC8b b1 AUDIT (read-only, live DOM of his mail page, 21 Nov 04:35 PKT)
+Facts: 51 visible controls; 0 without an accessible name; 0 under 24x24 px (WCAG 2.5.8); 0 images without alt; 0 duplicate ids; lang=en; 1 main, 3 nav, 4 live regions; prefers-contrast / forced-colors / reduced-motion not active on his machine (rules still need a forced-colors screenshot).
+Gaps found (to fix by additive runtime attributes, no edit of existing files): (1) page has no h1 (heading level start); (2) .mbx-list carries aria-label on a plain div (ignored by screen readers: needs a role); (3) mail rows are a plain list: the open mail has no aria-current, unread dot is an <i> with aria-label (not announced reliably); (4) focus after Compose / dialog close not proven; (5) forced-colors and prefers-contrast CSS not written; (6) announcements for sent / moved / error not wired (only the key layer speaks). Real screen reader pass cannot be run in my sandbox: stated plainly.
+Next: b2 semantics enhancer (new file, additive), b3 focus return, b4 announcements, b5 forced-colors css.

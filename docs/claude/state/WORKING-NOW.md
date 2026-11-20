@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 04:05 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 21 Nov 04:06 PKT QC8a LIVE on his server (founder-install OK, build 2m13s). Doing my live Chrome walk now (mail j, Down, ?, switch OFF, Settings row, range, 390/820/1200). Then QC8b. Laws: SQL schema-first, Rule 52, advance technology
-NEXT STEP: live Chrome walk, GREEN only with proof, then QC8b a1
-HIS LAST WORD: his 21 Nov 04:01 paste: install OK
+# WORKING NOW (manual checkpoint, 21 Nov 2026 04:09 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 21 Nov 04:38 PKT QC8a a1-a5 done + live partial (sheet, switch proven); his search placeholder Search mail (one string) done; QC8b b1 audit done (51 controls ok, 6 gaps); next b2 semantics enhancer. Rule 52 UI only; schema-first; advance technology
+NEXT STEP: b2 enhancer (new file), b3 focus, b4 announce, b5 forced-colors css, his install for live proof
+HIS LAST WORD: his 21 Nov 04:08: search mail, next shuru kero, compaction safety
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,33 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 1be05747 21 Nov 04:05 ledger line a00f1e73
 - a00f1e73 21 Nov 04:05 QC8a live partial, search restyle request recorded
 - 27d2ce41 21 Nov 04:02 ledger line f78c735f
 - f78c735f 21 Nov 04:02 QC8a installed on his server, laws restated
 - dc24f778 21 Nov 03:57 ledger line da98f43e
-- da98f43e 21 Nov 03:57 QC8a a5: range, batch, type-ahead, announce wired
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/BLUEPRINT-ABC-01NOV.md
+ M docs/claude/QC8A-QC8B-PLAN-21NOV.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/founder-commands.md
+ D founder-web/dist/assets/index-CKoT78tD.js
+ M founder-web/dist/index.html
+ M founder-web/src/MailBox.tsx
+?? founder-web/dist/assets/index-UNyutq2z.js
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/BLUEPRINT-ABC-01NOV.md        |   1 +
+ docs/claude/QC8A-QC8B-PLAN-21NOV.md       |   8 ++
+ docs/claude/state/WORKING-NOW.md          |  30 ++---
+ docs/cursor-work/founder-commands.md      |   2 +
+ founder-web/dist/assets/index-CKoT78tD.js | 212 ------------------------------
+ founder-web/dist/index.html               |   2 +-
+ founder-web/src/MailBox.tsx               |   2 +-
+ 7 files changed, 25 insertions(+), 232 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +55,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (cadfa8091becd82ebe7396a95acb288435b9ca97)
+WIP snapshot: refs/wip/last (939b7e23663a0368a8a07ca4cd5dbeb30942fbdc)

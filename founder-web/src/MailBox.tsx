@@ -256,7 +256,7 @@ export function MailBox() {
           {view === "outbox" && box && <OutboxPanel box={box.id} onChanged={() => { void loadCounts(); void loadList(); }} />}
           <div className="mbx-srow">
           <div className={`mbx-sbox mbx-glow ${qFocus ? "on" : "idle"} ${qText ? "has" : ""}`}>
-            <label className="mbx-sin"><span className="sr">Search mail</span><Ic k="search" s={18} /><input ref={searchRef} value={qText} onChange={(e) => setQText(e.target.value)} onFocus={() => setQFocus(true)} onBlur={() => window.setTimeout(() => setQFocus(false), 140)} placeholder="Search" autoComplete="off" spellCheck={false} />{qText ? <button type="button" className="mbx-x" onClick={() => setQText("")} aria-label="Clear search"><Ic k="close" s={16} /></button> : null}</label>
+            <label className="mbx-sin"><span className="sr">Search mail</span><Ic k="search" s={18} /><input ref={searchRef} value={qText} onChange={(e) => setQText(e.target.value)} onFocus={() => setQFocus(true)} onBlur={() => window.setTimeout(() => setQFocus(false), 140)} placeholder="Search mail" autoComplete="off" spellCheck={false} />{qText ? <button type="button" className="mbx-x" onClick={() => setQText("")} aria-label="Clear search"><Ic k="close" s={16} /></button> : null}</label>
             {qFocus && <div className="mbx-dd" role="listbox">{said ? <p>{said}</p> : <p>Searched inside your browser. Sealed mail is never read.</p>}{sugg.length > 0 && <div>{sugg.map((s) => <button key={s} type="button" onMouseDown={(e) => { e.preventDefault(); setQText((t) => (t.match(/\S+$/) ? t.replace(/\S+$/, s) : t + s) + " "); }}>{s}</button>)}</div>}</div>}
           </div>
           </div>
