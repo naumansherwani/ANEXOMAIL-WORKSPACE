@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 08:23 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QC3 badges + delivery board written+pushed (60865477), NOT installed; SW loophole closed with proof
-NEXT STEP: his founder-install, then my live look: Sent badges + Systems>Mail health board; bar live, 390/820 (after Q series), per-recipient rows, attachment-word check open
-HIS LAST WORD: 5-min check 08:23
+# WORKING NOW (manual checkpoint, 20 Nov 2026 08:29 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QC3 badges + delivery board pushed (60865477), NOT installed
+NEXT STEP: his founder-install, then my live look: Sent badges + Systems>Mail health board
+HIS LAST WORD: 5-min check 08:30
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 53ca1f0f 20 Nov 08:23 ledger line 81d8870e
 - 81d8870e 20 Nov 08:23 QC3 checkpoint
 - 60865477 20 Nov 08:22 ledger line 1a93644c
 - 1a93644c 20 Nov 08:22 QC3: delivery board + checkpoint
 - 44763e6e 20 Nov 08:22 ledger line a7ba122a
-- a7ba122a 20 Nov 08:22 QC3 delivery board
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 23 +++++------------------
+ 1 file changed, 5 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (22704d55e2d5451fc460202b8bd564d826424da3)
+WIP snapshot: refs/wip/last (f6ac05d5f633bdbcf4856972e87086e345782530)
