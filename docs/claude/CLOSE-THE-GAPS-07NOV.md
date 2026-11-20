@@ -340,3 +340,4 @@ G2 is now the open item in progress.
 8. F8-5: signed door + Settings switch to loosen 'send only if TLS' with a passkey touch (action mail.tls.loosen, T2 tier registration needed). Needs his haan (UI Law). Until then the rule is strict, no loosen possible.
 
 9. F8-5 per-domain loosen: GREEN BY HIS WORD 19 Nov 13:20 (WIRED: YES / REAL: YES / TECH-LAW CHECKED). His 13:23 word: a real touch and a real TLS heal are NOT needed as proof; the codes and the server selftest 14/14 are the proof. Nothing open.
+- 20 Nov 2026 06:48 PKT QC2 OPEN GAPS (QC2 is GREEN by his word 06:44, these stay open until closed): (1) my live Chrome look on his server at 390 / 820 / 1200+ (Word paste, unfilled {placeholder} warning, plain switch question, signature on a new mail, /snippet menu); (2) :shortcodes: and the new-emoji safety line work in plain mode only, not in rich mode; (3) signature is text + https links only (logo comes after Q3, his answer 2).

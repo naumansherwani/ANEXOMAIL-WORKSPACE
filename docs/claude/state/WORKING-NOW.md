@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 06:19 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QC2 all code pushed (328e2aa8); waits his ONE founder-install paste
-NEXT STEP: his founder-install paste, then my live Chrome 390/820/1200 (Word paste, unfilled placeholder, plain switch), then QC2 GREEN only if WIRED+REAL
-HIS LAST WORD: his 06:12 go for QC2-B; done
+# WORKING NOW (manual checkpoint, 20 Nov 2026 06:44 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QC2 = GREEN BY HIS WORD 06:44 (his founder-install 4/4 saboot + E194 OK). Open: my live Chrome look, rich-mode shortcodes. NEXT = QC3 discuss first, no code
+NEXT STEP: discuss QC3 with him (pre-send checks, schedule presets, delivery timeline) ONLY after his word; do my live Chrome look for QC2 gaps; 5-min chain continues
+HIS LAST WORD: his 06:44: install pasted, write GREEN everywhere, compaction safe
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,26 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 592cd0a7 20 Nov 06:19 ledger line 032be547
 - 032be547 20 Nov 06:19 5-min checkpoint: QC2 waits founder-install
 - 1216b43b 20 Nov 06:18 ledger line 328e2aa8
 - 328e2aa8 20 Nov 06:18 QC2-B: Tiptap 3 rich compose, signatures + snippets panel, HTML5 mail frame
 - cbfd501c 20 Nov 06:09 ledger line 51c6ca9b
-- 51c6ca9b 20 Nov 06:09 E194 OK on his server; blueprint status + compose chain updated
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/BLUEPRINT-ABC-01NOV.md
+ M docs/claude/CLOSE-THE-GAPS-07NOV.md
+ M docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/BLUEPRINT-ABC-01NOV.md          |  2 +-
+ docs/claude/CLOSE-THE-GAPS-07NOV.md         |  1 +
+ docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md |  2 +-
+ docs/claude/state/WORKING-NOW.md            | 26 ++++++++------------------
+ 4 files changed, 11 insertions(+), 20 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +48,4 @@ HIS 4 QUESTIONS, ANSWERS FROM RESEARCH (his word still needed, defaults below):
 2. Signature = text + links only in QC2. Reason: embedded (CID/base64) logo adds ~33 % size and shows as an attachment in Microsoft 365 / OWA, iOS Mail has stripped it; a hosted logo is blocked by default in many clients and needs the host online; guidance keeps a logo under 50 KB. Logo comes after 
 3. Snippets: trigger `/name` (Superhuman uses `;`, we keep `/` and Ctrl+K), built-in variables {first_name} {my_name} {date}, plus any {custom_placeholder}; sending with an unfilled {placeholder} WARNS first (Superhuman does the same). Private snippets only (single founder; team sharing not needed).
 4. Plain-text mode = per mail, NOT remembered (Gmail: per message, default stays formatted). Switching to plain text drops formatting and cannot be brought back, so ask "formatting will be removed" before switching.
-WIP snapshot: refs/wip/last (36a9975dd8cedf64ec0a0abd5c5e34ab2972ee1c)
+WIP snapshot: refs/wip/last (4511f6879d132a76511b8a18b9ab641511fb04c7)
