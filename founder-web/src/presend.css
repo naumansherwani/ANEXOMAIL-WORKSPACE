@@ -46,3 +46,7 @@ html[data-motion="full"] .mtl[data-tone="active"] .mtl-dot{animation:mtlp 1.6s e
 .dlb-t li{display:grid;gap:2px;padding:10px 12px;border-radius:12px;border:1px solid var(--mh2);min-width:0}.dlb-t b{font-size:20px}.dlb-t span{font-size:12px;opacity:.8}
 .dlb-bad{border-color:rgba(242,112,95,.7)!important}.dlb-warn{border-color:rgba(242,184,75,.6)!important}.dlb-done{border-color:rgba(61,213,152,.45)!important}
 .dlb-r{list-style:none;margin:0;padding:0;display:grid;gap:6px}.dlb-r li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;min-width:0}
+
+/* QC3 live fix (20 Nov 08:50, seen in his Chrome): global "li" row styles stretched label and number to the two ends; the tile is a stacked column, label under number */
+.dlb .dlb-t li{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:2px}
+.dlb .dlb-t li b,.dlb .dlb-t li span{display:block}

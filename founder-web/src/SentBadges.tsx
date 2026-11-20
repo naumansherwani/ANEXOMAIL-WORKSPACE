@@ -8,7 +8,7 @@ import "./presend.css";
 
 export function useSentBadges(box: string, view: string, ids: string[]): Record<string, api.Badge> {
   const [map, setMap] = useState<Record<string, api.Badge>>({});
-  const key = view === "sent" ? ids.slice(0, 100).join(",") : "";
+  const key = view === "sent" || view === "outbox" ? ids.slice(0, 100).join(",") : "";
   const alive = useRef(0);
   useEffect(() => {
     const my = ++alive.current; let timer = 0;
