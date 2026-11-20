@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 03:07 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 03:07 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 03:45 PKT: HIS ORDER (03:06): NO CODE AT ALL until he says haan. Nothing is written or run; only answers and plans.
 NEXT STEP: Wait for his haan or his choice a/b/c for QC8. No code, no server command, until then.
 HIS LAST WORD: his 21 Nov 03:06: ek bhi code nahi likhna jab tak haan nahi
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- e982cd7a 21 Nov 03:07 Standing order: no code until his haan (03:06)
 - bd9100c1 21 Nov 03:07 ledger line b90b0802
 - b90b0802 21 Nov 03:07 QC8: plain-words answer and options recorded
 - e86dbf92 21 Nov 03:00 ledger line a2f53bba
 - a2f53bba 21 Nov 03:00 QCONNECT live Chrome look on Systems page recorded
-- 4a404779 21 Nov 02:59 ledger line f06562a1
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (b545ddc2da65b13549f47a6695cd6e66ae28f13e)
+WIP snapshot: refs/wip/last (509938423d1557934bd4e318188ae6d79bd9dbf3)
