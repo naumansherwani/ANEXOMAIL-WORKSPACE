@@ -1634,3 +1634,5 @@ LEFT: Rust core + tests, doors, send wiring, browser, his ONE sql-run + ONE foun
 - 20 Nov 06:10 PKT QC2-B step 1: rich_pure.ts + mail_pure html twin + mail_api signatures/snippets + Tiptap 3 installed, tsc clean, bun pass; QC2-A pull is his to run
 
 - 20 Nov 06:12 PKT QC2-B step 1 inherit manifest synced
+
+- 20 Nov 06:02 PKT 5-min check: rules read, WORKING-NOW updated; QC2-A pushed, his pull waits; building RichEditor.tsx

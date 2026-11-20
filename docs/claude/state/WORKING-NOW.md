@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 06:00 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QC2-A (founder) IN PROGRESS: E194 SQL written + PG17 33/33 + CHECK_E194; fmail_rich.rs (16 tests ok), fmail_rich_ep.rs, fmail_mime html wiring, main.rs routes, Cargo ammonia; cargo test of founder crate running in background (disk was full, cleaned target/incremental)
-NEXT STEP: when cargo test passes: commit via rec.sh, then QC2-B browser (Tiptap, mail_pure sendTarget html, signature+snippet UI), then his sql-run E194 + founder-install
-HIS LAST WORD: his 05:45: start QC2, only 2 sub-phases (A server, B browser), advance code and SQL
+# WORKING NOW (manual checkpoint, 20 Nov 2026 06:00 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QC2-A server committed+pushed (beb4a62d), his pull waits; QC2-B step 1 pushed (9c4d59c3); building RichEditor.tsx
+NEXT STEP: RichEditor.tsx (Tiptap restricted schema, paste rules, toolbar), then MailCompose wiring, then signatures/snippets screen; rich mail sends text empty? NO: server needs text twin
+HIS LAST WORD: his 06:00: ONE thing at a time; gave him QC2-A pull commands
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- e914cfef 20 Nov 06:00 ledger line 9c4d59c3
 - 9c4d59c3 20 Nov 06:00 QC2-B step 1: rich_pure, html send-target twin, signature/snippet api, Tiptap 3 dependency
 - 88480a81 20 Nov 05:58 ledger line beb4a62d
 - beb4a62d 20 Nov 05:58 QC2-A: signatures + snippets SQL E194, rich HTML sanitiser (ammonia), multipart/alternative, draft html
 - 4d2d8e71 20 Nov 05:41 ledger line 70961f6e
-- 70961f6e 20 Nov 05:41 Checkpoint: WORKING-NOW refreshed
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 23 +++++------------------
+ 1 file changed, 5 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ HIS 4 QUESTIONS, ANSWERS FROM RESEARCH (his word still needed, defaults below):
 2. Signature = text + links only in QC2. Reason: embedded (CID/base64) logo adds ~33 % size and shows as an attachment in Microsoft 365 / OWA, iOS Mail has stripped it; a hosted logo is blocked by default in many clients and needs the host online; guidance keeps a logo under 50 KB. Logo comes after 
 3. Snippets: trigger `/name` (Superhuman uses `;`, we keep `/` and Ctrl+K), built-in variables {first_name} {my_name} {date}, plus any {custom_placeholder}; sending with an unfilled {placeholder} WARNS first (Superhuman does the same). Private snippets only (single founder; team sharing not needed).
 4. Plain-text mode = per mail, NOT remembered (Gmail: per message, default stays formatted). Switching to plain text drops formatting and cannot be brought back, so ask "formatting will be removed" before switching.
-WIP snapshot: refs/wip/last (b0fbe92396926dc8ac4b3a394688b50f076ae076)
+WIP snapshot: refs/wip/last (e170c22d85f1ffb26b9487f4b77cc3772b7662ba)
