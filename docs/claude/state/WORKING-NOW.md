@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 02:38 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 02:39 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 03:35 PKT: HIS PASTE: backup OK (13M dump, 184 Supabase tables, SHA-256 OK, 20M, on his server). Login-only refused AGAIN at founder_dbsc_jti (147 vs 144): E149 guard allows forgetting rows older than 1 day, so Supabase surplus = pruned old rows. FIXING with a rigorous check for the 6 known prune tables: every Supabase row inside the server time window must exist on the server, only older ones may be missing. Backup exists, so nothing can be lost.
 NEXT STEP: Sandbox-test (accept old surplus, refuse a surplus NEW row), push, his one line again.
 HIS LAST WORD: his 21 Nov 02:37 paste
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 6cd3f15f 21 Nov 02:39 QCONNECT-LO: prune-window proof for append-only prune tables (founder_dbsc_jti)
 - a2763486 21 Nov 02:24 ledger line e28309ee
 - e28309ee 21 Nov 02:24 QCONNECT-LO: backup runs as root, prune-aware guard, his 02:24 paste
 - e681feea 21 Nov 02:18 ledger line 478ce99a
 - 478ce99a 21 Nov 02:18 QCONNECT-LO: state snapshot
-- 0e0284a3 21 Nov 02:17 ledger line f3545f91
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (29862123c43e88bf0917eaeb9d9f4d3fd2643a24)
+WIP snapshot: refs/wip/last (8fb9b9f94d8704afe655ebfa470c9584bb5b8a8e)
