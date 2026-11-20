@@ -1,3 +1,4 @@
+**AUTOFIX LAW (his 21 Nov 2026 04:33): any loophole / gap = Claude fixes it himself and loops until the code is seen live in Chrome, then GREEN. docs/claude/AUTOFIX-LAW-21NOV.md**
 <!--TECHLAW-->
 # TECH-FIRST PROTOCOL: THE FOREVER SOLUTION (founder 11 Nov 2026 04:33: "1% mistake bardasht nahi")
 **STANDING RULE 0 (his word 18 Nov 2026 04:26, for EVERY phase): WEB RESEARCH FIRST. Search the web for the most advanced current way (standards, RFCs, best implementations), write the findings and the plan at the TOP of the phase plan in the repo, put that plan in front of the code, THEN write the code. SQL = advance level, 300+ lines where he said so. After every step: repo, ledger, chat context, blueprint phase row and the 5-minute reminder are updated with the real clock (rec.sh).**
