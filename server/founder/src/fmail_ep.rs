@@ -130,7 +130,7 @@ pub fn open_message(master: &[u8; 32], mailbox: &str, m: &Value) -> Result<Value
 fn bad(e: &str) -> Response { pk::refuse(StatusCode::BAD_REQUEST, e) }
 
 /// The mailbox must belong to the signed-in founder (fmail_mailboxes169 lists only his).
-async fn own(sb: &crate::data::Sb, uid: &str, mailbox: &str) -> Result<(), Response> {
+pub(crate) async fn own(sb: &crate::data::Sb, uid: &str, mailbox: &str) -> Result<(), Response> {
     let v = sb.rpc("fmail_mailboxes169", json!({"p_uid": uid})).await.ok_or_else(|| pk::refuse(StatusCode::SERVICE_UNAVAILABLE, "mail database not answering - run the E169 SQL step (sql-run.sh)"))?;
     if v.as_array().map_or(false, |a| a.iter().any(|m| m["id"] == mailbox)) { Ok(()) } else { Err(pk::refuse(StatusCode::NOT_FOUND, "no such mailbox")) }
 }

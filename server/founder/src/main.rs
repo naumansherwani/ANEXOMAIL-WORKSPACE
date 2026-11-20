@@ -68,6 +68,7 @@ mod fmail_rich;
 mod fmail_timeline;
 mod fmail_rich_ep;
 mod fmail_live;
+mod fmail_followup;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -956,6 +957,10 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/mail/flag", axum::routing::post(fmail_ep::flag_ep))
         .route("/founder/v1/mail/move", axum::routing::post(fmail_ep::move_ep))
         .route("/founder/v1/mail/delete", axum::routing::post(fmail_ep::delete_ep))
+        .route("/founder/v1/mail/followup", axum::routing::post(fmail_followup::set_ep))
+        .route("/founder/v1/mail/followup/snooze", axum::routing::post(fmail_followup::snooze_ep))
+        .route("/founder/v1/mail/followup/dismiss", axum::routing::post(fmail_followup::dismiss_ep))
+        .route("/founder/v1/mail/followups", axum::routing::get(fmail_followup::list_ep))
         .route("/founder/v1/mail/key", axum::routing::post(fmail_ep::key_ep))
         .route("/founder/v1/mail/keys", axum::routing::get(fmail_ep::keys_ep))
         .route("/founder/v1/mail/vault", axum::routing::post(fmail_ep::vault_ep))
@@ -1105,7 +1110,7 @@ async fn main() {
     match (fmail_out::from_env(), &sb, lease::MASTER.get()) {
         (None, _, _) => eprintln!("founder: mail sender OFF (no FMAIL_SEND=on)"),
         (Some(Err(e)), _, _) => eprintln!("founder: mail sender NOT started: {e}"),
-        (Some(Ok(c)), Some(s), Some(m)) => { fmail_out::spawn(s.clone(), *m, c).await; tokio::spawn(fmail_tls::retry_worker(s.clone())); tokio::spawn(fmail_rpt::daily_worker(s.clone())); }
+        (Some(Ok(c)), Some(s), Some(m)) => { fmail_out::spawn(s.clone(), *m, c).await; tokio::spawn(fmail_tls::retry_worker(s.clone())); tokio::spawn(fmail_rpt::daily_worker(s.clone())); tokio::spawn(fmail_followup::worker(s.clone())); }
         (Some(Ok(_)), _, _) => eprintln!("founder: mail sender NOT started: needs the database and the vault master key"),
     }
 

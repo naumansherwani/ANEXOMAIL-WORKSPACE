@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 20:02 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QC5 GREEN by his word 20:0x; starting QC7 follow-up reminder + draft sealed in browser (contract first)
-NEXT STEP: read QC7 spec in FOUNDER-MAILBOX-PHASES + drafts code (E188 live drafts); contract CURRENT.md; then code
-HIS LAST WORD: QC5 chrome test, update green
+# WORKING NOW (manual checkpoint, 20 Nov 2026 20:13 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QC7a: E196 SQL (473 lines) + Rust doors + clock written and tested on scratch pg; writing React Remind me chip; then his sql-run E196 + install; then QC7b sealed draft
+NEXT STEP: React: mail_followup api + pure helpers + chip in read pane (additive); then push and give him sql-run E196 then founder-install
+HIS LAST WORD: SQL advance 400+ likho QC7
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,49 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- a33a93c4 20 Nov 20:02 ledger line 4479d0b1
 - 4479d0b1 20 Nov 20:02 QC5 recorded as my own live proof
 - b2f171e0 20 Nov 20:02 ledger line 25d79458
 - 25d79458 20 Nov 20:02 QC5 is my proof
 - 724ce010 20 Nov 20:01 ledger line a66b87ea
-- a66b87ea 20 Nov 20:01 QC5 done by his word with live Chrome look
 
 ## Uncommitted files (half-done work if any)
+M  CLAUDE.md
+M  docs/claude/DONE-DO-NOT-REPEAT.md
+M  docs/claude/RESUME-POINT.md
+M  docs/claude/founder/PULL-COMMANDS.md
+M  docs/claude/state/HEARTBEAT.json
  M docs/claude/state/WORKING-NOW.md
+M  docs/claude/tech-contracts/CURRENT.md
+M  docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
+M  docs/cursor-work/DONE-DO-NOT-REPEAT.md
+M  docs/cursor-work/founder/founder-commands.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
+M  docs/cursor-work/server/PULL-COMMANDS.md
+A  docs/cursor-work/sql/CHECK_E196.sql
+A  docs/cursor-work/sql/E196_founder_mail_followups.sql
+R  founder-web/dist/assets/index-ocDOkx6x.js -> founder-web/dist/assets/index-CNFwkYU-.js
+M  founder-web/dist/index.html
+M  founder-web/src/system_brain.json
+M  lanes/ALL-FILES.csv
+M  lanes/awam.txt
+M  lanes/founder.txt
+M  lovable-gold/README.md
+M  server/founder/src/fmail_ep.rs
+A  server/founder/src/fmail_followup.rs
+M  server/founder/src/main.rs
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ lanes/ALL-FILES.csv                                |   5 +-
+ lanes/awam.txt                                     |   1 +
+ lanes/founder.txt                                  |   4 +-
+ lovable-gold/README.md                             |   2 +-
+ server/founder/src/fmail_ep.rs                     |   2 +-
+ server/founder/src/fmail_followup.rs               | 135 ++++++
+ server/founder/src/main.rs                         |   7 +-
+ 24 files changed, 706 insertions(+), 50 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +71,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (c9c6e5c5d3b6277765603231da9d10daf2f73c77)
+WIP snapshot: refs/wip/last (bb999a8dc327fb648f01a9a50f885b203dfc2afd)
