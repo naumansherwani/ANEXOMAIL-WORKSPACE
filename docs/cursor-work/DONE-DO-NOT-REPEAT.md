@@ -3447,3 +3447,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 05:06 PKT his second founder-install OK; QC8a keys + Search mail live on his server; live Chrome look next; awam search waits his pull.sh
 
 - 21 Nov 2026 05:16 PKT QC8a live proof #2: Search mail placeholder live on his server, KeyLayer live, sheet proven at 390/820/1280 in sandbox Chromium with real css; his real-device 390/820 + real-mail key walk still open; NOT green
+
+- 21 Nov 2026 05:31 PKT QC8a a1 a2 a3 a4 a5(Down Home End Shift+Down type-ahead Esc) and Search mail placeholder = GREEN: WIRED: YES / REAL: YES / TECH-LAW CHECKED (React 19, TypeScript, native dialog, WCAG 2.1.4, ariaNotify, Rule 52 UI only) proven on his real Chrome bundle index-BCK9wT3H; batch e # s u live and phone 390/820 look OPEN so QC8a as a whole is not green
+
+- 21 Nov 2026 05:33 PKT QC8a a1 a2 a3 a4 a5(Down Home End Shift+Down type-ahead Esc) and Search mail placeholder = GREEN: WIRED: YES / REAL: YES / TECH-LAW CHECKED (React 19, TypeScript, native dialog, WCAG 2.1.4, ariaNotify, Rule 52 UI only) proven on his real Chrome bundle index-BCK9wT3H; batch e # s u live and phone 390/820 look OPEN so QC8a as a whole is not green

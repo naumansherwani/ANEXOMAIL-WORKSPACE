@@ -377,3 +377,5 @@ G2 is now the open item in progress.
 6. AES-256 / X25519MLKEM768 on the wire: proven only by code + tests (tls256.rs); needs a client with OpenSSL 3.5+ against UDP/TCP 443 or Chrome's security panel.
 7. auth.refresh_tokens keeps the token in clear text (legacy gotrue shape kept for rollback); a hashed column is a later SQL.
 8. Local PostgreSQL grants: copy used --no-privileges, E-line revokes on functions are not in the copy; only root and group anexopg reach the socket, the service uses service_role only. Audit again.
+
+- OPEN (21 Nov 2026 05:30 PKT, QC8a): (1) batch e # s u on several marked mails: proven in sandbox Chromium only, live proof needs his ok to change real mail (use a test mail); (2) phone 390 / tablet 820 look of the ? sheet and the marked rows on his real device (my Chrome window cannot be resized); (3) awam search look (Search mail ( / ), awam colours) waits his pull.sh then Business test Chrome look.
