@@ -1,6 +1,6 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 19:09 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: DK-a pushed fe26ff73; install-script bug fixed; WAITS his founder-install re-run paste; DK3/DK4/DK5 open (see ledger 19:10)
-NEXT STEP: his paste -> my live Chrome kernel 0.19.0 check -> QC5 Delete forever (contract first), QC7, QC8, Q3, then DK-b
+# WORKING NOW (manual checkpoint, 20 Nov 2026 19:20 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: DK-a INSTALLED (his paste 19:20, healthz 200); doing my live Chrome kernel 0.19.0 look
+NEXT STEP: Chrome look -> QC5 Delete forever -> QC7 -> QC8 -> Q3 -> DK-b (his hardware keys)
 HIS LAST WORD: 5-min check 10:11
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -18,20 +18,43 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- dbd27325 20 Nov 19:09 ledger line 073635e8
 - 073635e8 20 Nov 19:09 WORKING-NOW checkpoint refresh
 - 2dc9af34 20 Nov 19:08 ledger line 3e7393b5
 - 3e7393b5 20 Nov 19:08 DK context saved
 - fe26ff73 20 Nov 19:04 ledger line 73975c25
-- 73975c25 20 Nov 19:04 DK-a install: remove comment that swallowed NEW assignment
 
 ## Uncommitted files (half-done work if any)
+M  CLAUDE.md
+M  docs/claude/DONE-DO-NOT-REPEAT.md
+M  docs/claude/RESUME-POINT.md
+M  docs/claude/founder/PULL-COMMANDS.md
+M  docs/claude/state/HEARTBEAT.json
+M  docs/claude/state/SERVER-FIRST.jsonl
  M docs/claude/state/WORKING-NOW.md
+M  docs/claude/tech-contracts/CURRENT.md
+M  docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
+M  docs/cursor-work/DONE-DO-NOT-REPEAT.md
+M  docs/cursor-work/founder/founder-commands.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
+M  docs/cursor-work/server/PULL-COMMANDS.md
+R  founder-web/dist/assets/index-BhYPHuch.js -> founder-web/dist/assets/index-DyOmStTK.js
+M  founder-web/dist/index.html
+M  founder-web/src/system_brain.json
+M  lanes/ALL-FILES.csv
+M  lanes/founder.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        | 30 ++++++++---------
+ docs/cursor-work/server/PULL-COMMANDS.md           |  2 ++
+ .../{index-BhYPHuch.js => index-DyOmStTK.js}       |  2 +-
+ founder-web/dist/index.html                        |  2 +-
+ founder-web/src/system_brain.json                  |  6 ++--
+ lanes/ALL-FILES.csv                                |  2 +-
+ lanes/founder.txt                                  |  2 +-
+ 18 files changed, 63 insertions(+), 43 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +65,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (c543097da008adaf27dd1e7f7bfa049f6067f60a)
+WIP snapshot: refs/wip/last (6b1db0ead75134135798f2b0b8117233ef7f5175)
