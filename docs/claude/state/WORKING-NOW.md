@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 03:06 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 03:07 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 03:40 PKT: he asked what QC8 is, why, is it necessary. Answered in plain words (docs/claude/QC8-PLAN-21NOV.md top): QC8 = last polish item of the QC chain, keyboard + screen-reader; NOT necessary; dated tech-law items are more urgent (26-30 Nov). He chooses (a) skip, (b) small QC8, (c) full. No QC8 code.
 NEXT STEP: His choice a/b/c. If a: start the dated items (Q-att-wt attachments over WebTransport, D-clamav, D-hetzner-storagebox, Q-live-wt) with contract first.
 HIS LAST WORD: his 21 Nov 03:05: QC8 kya hai kyun zaruri
@@ -18,20 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- b90b0802 21 Nov 03:07 QC8: plain-words answer and options recorded
 - e86dbf92 21 Nov 03:00 ledger line a2f53bba
 - a2f53bba 21 Nov 03:00 QCONNECT live Chrome look on Systems page recorded
 - 4a404779 21 Nov 02:59 ledger line f06562a1
 - f06562a1 21 Nov 02:59 QCONNECT green by his word; QC8 plan and contract draft
-- 63138f50 21 Nov 02:54 ledger line 2c975141
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/QC8-PLAN-21NOV.md
- M docs/claude/st M docs/claude/QC8-PLAN-21NOV.md
  M docs/claude/state/WORKING-NOW.md
 
-## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT. docs/claude/QC8-PLAN-21NOV.md    |  6 ++++++
- docs/claude/state/WORKING-NOW.md | 25 +++++++------------------
- 2 files changed, 13 insertions(+), 18 deletions(-)
+## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
+
+## Uncommitted size
+ docs/claude/state/WORKING-NOW.md | 22 ++++------------------
+ 1 file changed, 4 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,5 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-ursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ca2493cb3f04ebaf4d3f955dfcbfe86c212984d2)
+WIP snapshot: refs/wip/last (274af282262b6284d02161616f06d753fee652c0)
