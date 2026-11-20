@@ -17,6 +17,8 @@ pub struct Summary {
     pub date: String, pub message_id: String, pub in_reply_to: String, pub snippet: String, pub attach: usize,
     /// QC4: the References header of THIS mail (ids without angle brackets, at most 40, in header order). A reply builds its own References from this plus this mail's Message-ID (RFC 5322 3.6.4).
     pub references: Vec<String>,
+    /// QC4: the Reply-To header (addresses only): Reply and Reply all go here when it is set (mailing lists, support desks).
+    pub reply_to: Vec<String>,
 }
 
 /// Control characters out, runs of white space folded to one space, cut to `max` characters (never in the middle of a character).
@@ -75,12 +77,12 @@ pub fn summarize(raw: &[u8]) -> Summary {
         to: addrs(m.to()), cc: addrs(m.cc()),
         date: m.date().map(|d| d.to_rfc3339()).unwrap_or_default(),
         message_id: clean(m.message_id().unwrap_or(""), 300), in_reply_to: clean(&in_reply, 300),
-        snippet: clean(&text, 160), attach: m.attachment_count().min(100), references: refs,
+        snippet: clean(&text, 160), attach: m.attachment_count().min(100), references: refs, reply_to: addrs(m.reply_to()),
     }
 }
 
 pub fn summary_json(s: &Summary) -> Value {
-    json!({"subject": s.subject, "from": s.from_addr, "from_name": s.from_name, "to": s.to, "cc": s.cc, "date": s.date, "message_id": s.message_id, "references": s.references, "snippet": s.snippet, "attach": s.attach})
+    json!({"subject": s.subject, "from": s.from_addr, "from_name": s.from_name, "to": s.to, "cc": s.cc, "date": s.date, "message_id": s.message_id, "references": s.references, "reply_to": s.reply_to, "snippet": s.snippet, "attach": s.attach})
 }
 
 /// Safe view of a whole message for the reader: plain text only (HTML becomes stripped text), the attachment list (name, type, size), a flag that remote content was removed.
@@ -169,11 +171,12 @@ mod tests {
     fn summary_reads_the_references_chain_for_replies() {
         let raw = b"From: a@x.org\r\nTo: b@y.org\r\nSubject: Re: t\r\nMessage-ID: <c3@x.org>\r\nIn-Reply-To: <b2@y.org>\r\nReferences: <a1@x.org>\r\n <b2@y.org>\r\n\r\nbody\r\n";
         let s = summarize(raw);
-        assert_eq!(s.references, vec!["a1@x.org", "b2@y.org"]); assert_eq!(s.in_reply_to, "b2@y.org"); assert_eq!(summary_json(&s)["references"], json!(["a1@x.org", "b2@y.org"]));
+        assert_eq!(s.references, vec!["a1@x.org", "b2@y.org"]); assert!(s.reply_to.is_empty()); assert_eq!(s.in_reply_to, "b2@y.org"); assert_eq!(summary_json(&s)["references"], json!(["a1@x.org", "b2@y.org"]));
         let one = summarize(b"From: a@x.org\r\nReferences: <only@x.org>\r\nSubject: s\r\n\r\nb\r\n"); assert_eq!(one.references, vec!["only@x.org"]);
         assert!(summarize(b"From: a@x.org\r\nSubject: s\r\n\r\nb\r\n").references.is_empty());
         let many: String = (0..60).map(|i| format!("<m{i}@x.org> ")).collect(); let big = format!("From: a@x.org\r\nReferences: {many}\r\nSubject: s\r\n\r\nb\r\n");
         assert_eq!(summarize(big.as_bytes()).references.len(), 40);
+        let rt = summarize(b"From: a@x.org\r\nReply-To: Desk <desk@x.org>, other@y.org\r\nSubject: s\r\n\r\nb\r\n"); assert_eq!(rt.reply_to, vec!["desk@x.org", "other@y.org"]); assert_eq!(summary_json(&rt)["reply_to"], json!(["desk@x.org", "other@y.org"]));
     }
     #[test]
     fn summary_decodes_headers_and_never_panics() {

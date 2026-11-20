@@ -18,7 +18,7 @@ import { MailPresendBar } from "./MailPresendBar";
 import { SchedulePresets } from "./SchedulePresets";
 import { chipsOf, joinChips, parseAddrs, removeChip, takenMap, type Field } from "./recipients";
 
-export type Start = { to?: string; subject?: string; text?: string; in_reply_to?: string; reply_to?: string; draft?: string };
+export type Start = { to?: string; subject?: string; text?: string; in_reply_to?: string; references?: string[]; reply_to?: string; draft?: string };
 
 function DkimSetup({ box, onDone }: { box: Box; onDone: () => void }) {
   const [keys, setKeys] = useState<api.DkimRow[] | null>(null), [busy, setBusy] = useState(""), [err, setErr] = useState(""), [made, setMade] = useState<{ name: string; value: string }[]>([]);
@@ -120,7 +120,7 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
     setErr(""); setNeedsDkim(false);
     const L = lists(); const bad = [...L.to.bad, ...L.cc.bad, ...L.bcc.bad];
     if (bad.length) { setErr(`Not an address: ${bad.slice(0, 3).join(", ")}`); return; }
-    const c = { to: L.to.ok, cc: L.cc.ok, bcc: L.bcc.ok, subject: subject.trim(), text, ...(rich && html ? { html } : {}), ...(start.in_reply_to ? { in_reply_to: start.in_reply_to } : {}) };
+    const c = { to: L.to.ok, cc: L.cc.ok, bcc: L.bcc.ok, subject: subject.trim(), text, ...(rich && html ? { html } : {}), ...(start.in_reply_to ? { in_reply_to: start.in_reply_to } : {}), ...(start.references?.length ? { references: start.references } : {}) };
     const p = composeProblem(c); if (p) { setErr(p); return; }
     const sch = scheduleOf(when, Date.now()); if (!sch.ok) { setErr(sch.error); return; }
     const schedule = sch.at;
