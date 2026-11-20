@@ -4542,3 +4542,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 05:04 PKT records sync, b2-only live, waits his founder-install
 
 - 21 Nov 2026 05:04 PKT records sync, b2-only live, waits his founder-install
+
+- 21 Nov 2026 05:08 PKT b3 detail sent with web research; QC8 SQL waits his choice (sync key and or audit log, E199 free); b2 live waits his founder-install
