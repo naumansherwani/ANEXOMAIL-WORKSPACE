@@ -18,24 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 5fe8565d 21 Nov 04:16 Awam mail search: founder look, Search mail, awam colours
 - 79e5e1f6 21 Nov 04:11 ledger line ce0610ec
 - ce0610ec 21 Nov 04:11 QC8: snapshot after pull command
 - 22d27c8d 21 Nov 04:09 ledger line 4f4052e9
 - 4f4052e9 21 Nov 04:09 QC8b b1 audit + Search mail placeholder + subphases
-- 1be05747 21 Nov 04:05 ledger line a00f1e73
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/CORE-UNFREEZE-OK.txt
  M docs/claude/state/WORKING-NOW.md
- M src/routes/app.mail.$folder.tsx
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/CORE-UNFREEZE-OK.txt |  1 +
- docs/claude/state/WORKING-NOW.md | 19 ++++---------------
- src/routes/app.mail.$folder.tsx  |  8 ++++----
- 3 files changed, 9 insertions(+), 19 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +------------------
+ 1 file changed, 1 insertion(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -46,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ca68b2140ba409b1cd112e937e6080767dc9233e)
+WIP snapshot: refs/wip/last (ffe8be57ffa4cc2bf4fed71dd3e2d32e0b106c29)
