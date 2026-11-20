@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 06:03 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 06:05 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: HOLD by his 06:02 word: QC2-B browser work STOPPED, nothing deleted, nothing new built; RichEditor.tsx parked (not imported anywhere)
 NEXT STEP: WAIT his word: delete QC2-B and rebuild from scratch, or edit it step by step; QC2-A pull is his to run
 HIS LAST WORD: his 06:02: hold QC2-B, ledger it
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- e8beab93 20 Nov 06:05 Revert QC2-B browser step 1 (his word 06:04: only QC2-A may reach his server)
+- 26ee153d 20 Nov 06:03 ledger line dad915b0
 - dad915b0 20 Nov 06:03 HOLD QC2-B (his word 06:02): ledger only, tree restored to 9c4d59c3
 - c1dd3c6f 20 Nov 06:01 ledger line e1da4508
 - e1da4508 20 Nov 06:01 5-min checkpoint: WORKING-NOW QC2-B in progress
-- e914cfef 20 Nov 06:00 ledger line 9c4d59c3
-- 9c4d59c3 20 Nov 06:00 QC2-B step 1: rich_pure, html send-target twin, signature/snippet api, Tiptap 3 dependency
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 29 ++---------------------------
- 1 file changed, 2 insertions(+), 27 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ HIS 4 QUESTIONS, ANSWERS FROM RESEARCH (his word still needed, defaults below):
 2. Signature = text + links only in QC2. Reason: embedded (CID/base64) logo adds ~33 % size and shows as an attachment in Microsoft 365 / OWA, iOS Mail has stripped it; a hosted logo is blocked by default in many clients and needs the host online; guidance keeps a logo under 50 KB. Logo comes after 
 3. Snippets: trigger `/name` (Superhuman uses `;`, we keep `/` and Ctrl+K), built-in variables {first_name} {my_name} {date}, plus any {custom_placeholder}; sending with an unfilled {placeholder} WARNS first (Superhuman does the same). Private snippets only (single founder; team sharing not needed).
 4. Plain-text mode = per mail, NOT remembered (Gmail: per message, default stays formatted). Switching to plain text drops formatting and cannot be brought back, so ask "formatting will be removed" before switching.
-WIP snapshot: refs/wip/last (a138bc1a86db3acde6586b9cf3599146e82e311c)
+WIP snapshot: refs/wip/last (10e9c3b7cfda06fda306f68275c868ffd1a1cc71)
