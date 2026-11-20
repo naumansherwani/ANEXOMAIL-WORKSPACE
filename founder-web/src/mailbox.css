@@ -307,9 +307,9 @@ html[data-motion="reduced"] .mbx-compose .mc[data-fx="sent"]::after,html[data-mo
 
 /* QC4b: reply bar (44 px targets), inline reply panel, folded quote chip. Additive; the current mail look is untouched. */
 .mbx-replybar{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 6px}
-.mbx-rb{min-height:44px;min-width:44px;padding:0 16px;border-radius:12px;border:1px solid var(--mh2,rgba(255,255,255,.14));background:transparent;color:inherit;font:inherit;display:inline-flex;align-items:center;gap:10px;cursor:pointer}
-.mbx-rb:hover,.mbx-rb:focus-visible{background:rgba(255,255,255,.07)}
-.mbx-rb kbd{font-size:.72em;opacity:.6;border:1px solid currentColor;border-radius:5px;padding:0 5px}
+.mbx-rpl{min-height:44px;min-width:44px;padding:0 16px;border-radius:12px;border:1px solid var(--mh2,rgba(255,255,255,.14));background:transparent;color:inherit;font:inherit;display:inline-flex;align-items:center;gap:10px;cursor:pointer}
+.mbx-rpl:hover,.mbx-rpl:focus-visible{background:rgba(255,255,255,.07)}
+.mbx-rpl kbd{font-size:.72em;opacity:.6;border:1px solid currentColor;border-radius:5px;padding:0 5px}
 .mbx-fold{min-height:44px;min-width:56px;margin:4px 0;border-radius:12px;border:1px solid var(--mh2,rgba(255,255,255,.14));background:transparent;color:inherit;font:inherit;letter-spacing:.2em;cursor:pointer}
 .mbx-fold[aria-expanded="true"]{background:rgba(255,255,255,.07)}
 .mbx-quoted{opacity:.72;border-left:2px solid var(--mh2,rgba(255,255,255,.2));padding-left:12px}
@@ -317,4 +317,4 @@ html[data-motion="reduced"] .mbx-compose .mc[data-fx="sent"]::after,html[data-mo
 .mbx-inline .mc-wrap,.mc-wrap.mc-inline{position:static;inset:auto;z-index:auto;display:block;background:none;backdrop-filter:none;padding:0}
 .mbx-inline .mc{width:100%;max-width:none;max-height:none;height:auto;border-radius:16px}
 .mbx-inline .mc-pop{min-width:44px;min-height:44px}
-@media (prefers-reduced-motion:reduce){.mbx-rb,.mbx-fold{transition:none}}
+@media (prefers-reduced-motion:reduce){.mbx-rpl,.mbx-fold{transition:none}}
