@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 23:46 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 23:46 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT step 7 SCHEMA READ done (his auth paste: bcrypt 2a, legacy refresh rows, E71 guard 42501); NOW coding server/founder/src/localid.rs (bcrypt, ES256 token with a new key file, session + refresh rows legacy style, mint, refresh rotation, logout) + sandbox tests on a real PostgreSQL; score 6 of 10 proven
 NEXT STEP: 1) code localid.rs + Cargo bcrypt + wire auth.rs/signin.rs/passkey.rs/main.rs behind FOUNDER_DB=local; 2) sandbox tests; 3) installer step for /etc/anexomail/local-id.p8; 4) his founder-install; 5) step 8 switch; 6) step 9 re-measure; 7) step 10 dump on server only
 HIS LAST WORD: SQL advance 400+ likho QC7
@@ -18,24 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 4cca17f3 20 Nov 23:46 QCONNECT: step 7 real auth schema read, technology list
 - 68023d80 20 Nov 23:42 ledger line 6befe8a9
 - 6befe8a9 20 Nov 23:42 QCONNECT: step 7 design + pg-local-authschema.sh
 - f4a003c8 20 Nov 23:38 ledger line c3563819
 - c3563819 20 Nov 23:38 QCONNECT: step 6 installed (off), score 6 of 10
-- 2d8fd6ea 20 Nov 23:26 ledger line 0f24446d
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/BLUEPRINT-ABC-01NOV.md
- M docs/claude/QCONNECT-PLAN-20NOV.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/BLUEPRINT-ABC-01NOV.md |  1 +
- docs/claude/QCONNECT-PLAN-20NOV.md |  9 +++++++++
- docs/claude/state/WORKING-NOW.md   | 23 ++++++-----------------
- 3 files changed, 16 insertions(+), 17 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 21 ++-------------------
+ 1 file changed, 2 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -46,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a9dbeefd06e14405b10761828884bf9f303724a0)
+WIP snapshot: refs/wip/last (f51fafd36a28e31ec0f18b8138822e1d860907f2)
