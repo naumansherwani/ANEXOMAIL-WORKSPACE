@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:34 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:35 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: DOING: QC4a+QC4b on main, written+tested, waiting his ONE founder-install paste
 NEXT STEP: NEXT: my live Chrome look (no real send), 390/820 phone screens, then QC4 GREEN by his word
 HIS LAST WORD: 5-min check 10:11
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 3167f82d 20 Nov 09:35 QC4 fix: reply button class renamed (collided with list rows)
+- 3761ebdf 20 Nov 09:34 ledger line 02c03c93
 - 02c03c93 20 Nov 09:34 QC4 green by his word 20 Nov 09:36 PKT
 - 18d00876 20 Nov 09:29 ledger line adf7823f
 - adf7823f 20 Nov 09:29 QC4 checkpoint
-- 579972ff 20 Nov 09:23 ledger line bed01022
-- bed01022 20 Nov 09:23 QC4 checkpoint 09:24
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (107b5ec4a98d99e300711d27106aa3ecada2a724)
+WIP snapshot: refs/wip/last (94e71bcfd1abc6659fac446a04088a535884d9e3)
