@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 00:04 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QCONNECT step 7 CODE DONE in the sandbox (localid.rs + LOCAL_E198 doors, live test on real PostgreSQL, 573 tests pass), not installed; his next lines: pg-local-run198.sh then founder-install; then step 8 switch
-NEXT STEP: 1) his pg-local-run198.sh; 2) his founder-install (flag off); 3) step 8: delta copy + freeze + FOUNDER_DB=local + FOUNDER_PG_URL anexo_copy + rollback; 4) step 9 re-measure; 5) step 10 nightly dump on server only
-HIS LAST WORD: SQL advance 400+ likho QC7
+# WORKING NOW (manual checkpoint, 21 Nov 2026 00:13 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 
+NEXT STEP: 
+HIS LAST WORD: ledger working now blueprint time date, compaction-proof, 2-min loop, rules read, advance technology
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,43 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 075ab205 21 Nov 00:04 ledger line 814aa2f4
 - 814aa2f4 21 Nov 00:04 QCONNECT: bootstrap guard against managed Supabase
 - 88886515 20 Nov 23:56 ledger line a3842b0e
 - a3842b0e 20 Nov 23:56 QCONNECT step 7: Rust identity engine localid.rs + LOCAL_E198 doors
 - f6844be0 20 Nov 23:46 ledger line 4cca17f3
-- 4cca17f3 20 Nov 23:46 QCONNECT: step 7 real auth schema read, technology list
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/state/WORKING-NOW.md
+M  CLAUDE.md
+MM docs/claude/DONE-DO-NOT-REPEAT.md
+M  docs/claude/QCONNECT-PLAN-20NOV.md
+MM docs/claude/RESUME-POINT.md
+MM docs/claude/founder/PULL-COMMANDS.md
+M  docs/claude/state/HEARTBEAT.json
+MM docs/claude/state/WORKING-NOW.md
+MM docs/claude/tech-contracts/CURRENT.md
+MM docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
+MM docs/cursor-work/DONE-DO-NOT-REPEAT.md
+MM docs/cursor-work/founder/founder-commands.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
+MM docs/cursor-work/server/PULL-COMMANDS.md
+R  founder-web/dist/assets/index-O4qxGF_C.js -> founder-web/dist/assets/index-BhYDc03m.js
+M  founder-web/dist/index.html
+M  founder-web/src/system_brain.json
+M  lanes/ALL-FILES.csv
+M  lanes/founder.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        | 30 ++++++++--------
+ docs/cursor-work/server/PULL-COMMANDS.md           |  2 ++
+ .../{index-O4qxGF_C.js => index-BhYDc03m.js}       |  2 +-
+ founder-web/dist/index.html                        |  2 +-
+ founder-web/src/system_brain.json                  |  6 ++--
+ lanes/ALL-FILES.csv                                |  2 +-
+ lanes/founder.txt                                  |  2 +-
+ 18 files changed, 71 insertions(+), 45 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +65,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ae6ef4325410382ae0e70d2f1648ec833059a70f)
+WIP snapshot: refs/wip/last (2ea8f80c715d87fb17b4b542fac52fe2c2d4e8bd)
