@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 21:03 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 21:03 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT STARTED (his word 21:02): plan docs/claude/QCONNECT-PLAN-20NOV.md. KEY FACT from db-direct-probe paste: database host is IPv6 only, plain TCP connect 215-225 ms from his server => a direct Postgres connection is NOT faster; only a database on his Hetzner server (unix socket, 1 ms) or fewer calls/cache helps. Web research confirms: PostgREST adds few ms, distance dominates.
 NEXT STEP: 1) wait for his explicit haan for step 3 (install PostgreSQL 16 on his server, unix socket only) + fresh ss paste; 2) meanwhile QSPEED code-only: E197 login finish ONE SQL door (read E153/E167/passkey schema first), writes after the answer, network-only retry; 3) rec.sh each step
 HIS LAST WORD: SQL advance 400+ likho QC7
@@ -18,28 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 32e2d4da 20 Nov 21:03 QCONNECT started: plan, db-direct-probe result, research
 - f267487a 20 Nov 20:59 ledger line 4501d30d
 - 4501d30d 20 Nov 20:59 QSPEED measured: 320 ms per REST call; db-direct-probe.sh added
 - b5f54935 20 Nov 20:56 ledger line 56c1a29a
 - 56c1a29a 20 Nov 20:56 QSPEED: login busy cause recorded, waiting for his paste
-- befd2f2e 20 Nov 20:52 ledger line 14983446
 
 ## Uncommitted files (half-done work if any)
-M  docs/claude/HANDOFF-LIVE.md
-A  docs/claude/QCONNECT-PLAN-20NOV.md
-M  docs/claude/state/Q-STATE.jsonl
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/server/qstate.py
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/HANDOFF-LIVE.md        |  3 ++-
- docs/claude/QCONNECT-PLAN-20NOV.md | 23 +++++++++++++++++++++++
- docs/claude/state/Q-STATE.jsonl    |  1 +
- docs/claude/state/WORKING-NOW.md   | 25 ++++++++-----------------
- docs/cursor-work/server/qstate.py  |  1 +
- 5 files changed, 35 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 25 ++-----------------------
+ 1 file changed, 2 insertions(+), 23 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -50,4 +42,4 @@ M  docs/cursor-work/server/qstate.py
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ab7a568fb0fb565d8dd0d62febf97ddd3226f126)
+WIP snapshot: refs/wip/last (a8154258933f4b8286a7f8a4b55f35aa28003ec9)
