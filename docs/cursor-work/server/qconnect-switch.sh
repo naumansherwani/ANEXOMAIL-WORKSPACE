@@ -10,6 +10,9 @@ off() { sed -i '/^FOUNDER_DB=/d;/^FOUNDER_PG_URL=/d;/^FOUNDER_PG_POOL=/d;/^FOUND
 health() { for W in $(seq 1 40); do [ "$(curl -s -o /dev/null -w %{http_code} http://127.0.0.1:3210/healthz)" = 200 ] && return 0; sleep 1; done; return 1; }
 if [ "${OFF:-}" = 1 ]; then off; health && echo "ROLLBACK done: founder service back on REST (managed). journal: $(journalctl -u $SVC -n 40 --no-pager | grep -o 'database engine = [A-Za-z ]*' | tail -1)"; exit 0; fi
 . /etc/anexomail/sync.env 2>/dev/null; [ -n "${WORKING_URL:-}" ] || { echo "FAIL: WORKING_URL missing"; exit 2; }
+# 21 Nov 2026 01:30 PKT ROOT CAUSE of the failed proof (found in the sandbox, not guessed): the key file must be DER PKCS#8 WITH the public key (138 bytes). `openssl genpkey -out` wrote PEM text (and without the public key it is 121 bytes) and ring refuses both, so the service said "identity key not usable" and stayed on REST. This key was made tonight and never used, so replacing it is safe.
+mkkey() { openssl ecparam -name prime256v1 -genkey -noout 2>/dev/null | openssl pkcs8 -topk8 -nocrypt -outform DER -out "$KEY.new" 2>/dev/null && [ "$(stat -c %s "$KEY.new")" = 138 ] && mv "$KEY.new" "$KEY" && chown root:anexomail-founder "$KEY" && chmod 640 "$KEY"; }
+[ "$(stat -c %s "$KEY" 2>/dev/null)" = 138 ] || mkkey || { echo "FAIL: identity key (openssl)"; exit 2; }
 [ -s "$KEY" ] && [ -f "$DRIFT" ] || { echo "FAIL: run qconnect-switch-prep.sh first (key / drift list missing)"; exit 2; }
 [ $(( $(date +%s) - $(stat -c %Y "$DRIFT") )) -lt 7200 ] || { echo "FAIL: drift list older than 2 hours, run qconnect-switch-prep.sh again"; exit 2; }
 health || { echo "FAIL: founder service is not healthy now; nothing changed"; exit 2; }
@@ -44,7 +47,8 @@ off >/dev/null 2>&1; systemctl stop $SVC
 { echo "FOUNDER_DB=local"; echo "FOUNDER_PG_URL=$URL"; echo "FOUNDER_PG_POOL=16"; echo "FOUNDER_ID_KEY_FILE=$KEY"; } >>"$ENVF"
 systemctl restart $SVC; health || fail "service did not answer"
 H=$(curl -s -o /dev/null -w %{http_code} http://127.0.0.1:3210/healthz); M2=$(curl -s -o /dev/null -w %{http_code} http://127.0.0.1:3210/founder/v1/me); B=$(curl -s -o /dev/null -w %{http_code} http://127.0.0.1:3210/founder/v1/bridge)
-ENG=$(journalctl -u $SVC -n 60 --no-pager | grep -o 'database engine = [A-Za-z ]*' | tail -1)
+sleep 2; ENG=$(journalctl -u $SVC --since=-3min --no-pager | grep -o 'database engine = [A-Za-z ]*' | tail -1)
+[ -n "$ENG" ] || { echo "   service lines about the database (read from the journal):"; journalctl -u $SVC --since=-3min --no-pager | grep -i -e "FOUNDER_DB" -e "staying on REST" -e "identity" -e "engine" | tail -5 | cut -c1-220 | sed "s/^/   /"; }
 echo "   healthz=$H (200) me=$M2 (401) bridge=$B (401) | journal: $ENG"
 { [ "$H" = 200 ] && [ "$M2" = 401 ] && [ "$B" = 401 ] && echo "$ENG" | grep -q LOCAL; } || fail "proof failed (engine line or door status)"
 trap - EXIT

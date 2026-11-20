@@ -128,6 +128,14 @@ pub async fn admin_email(sb: &crate::data::Sb, uid: &str) -> Option<String> {
 
 #[cfg(test)]
 mod tests {
+    /// 21 Nov 2026: the key file made by the prep script (openssl) must load in ring exactly like a ring-made key. Set KEYTEST=<der file> to try another file.
+    #[test]
+    fn openssl_made_key_loads() {
+        let Ok(path) = std::env::var("KEYTEST") else { return };
+        let der = std::fs::read(&path).unwrap();
+        assert!(LocalId::from_pkcs8(&der, "https://x.test").is_some(), "ring refused the key file {path} ({} bytes)", der.len());
+    }
+
     use super::*;
     fn lid() -> LocalId { let der = EcdsaKeyPair::generate_pkcs8(&ECDSA_P256_SHA256_FIXED_SIGNING, &SystemRandom::new()).unwrap(); LocalId::from_pkcs8(der.as_ref(), "https://db.example/").unwrap() }
     #[test] fn token_verifies_with_the_shared_jwt_core_and_nothing_else() {

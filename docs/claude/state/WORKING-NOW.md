@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 01:12 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 21 Nov 01:35 PKT: MAIL CHAIN CORRECTED: only QC8 is open; QC2 QC3 QC4 QC5 QC7 are done (ledger dates in blueprint top). QCONNECT reopened by his 01:05 (30 min), then QC8. My earlier 'remaining QC2..QC8' and 'back to QC2' lines were wrong.
-NEXT STEP: 1) his qconnect-switch.sh paste + sign in once 2) qconnect-measure.sh 3) pg-local-dump-install.sh 4) my Chrome look 5) THEN QC8 (shortcuts + accessibility final pass): contract in CURRENT.md first. Source of truth: FOUNDER-MAILBOX-PHASES-18NOV.md + DONE-DO-NOT-REPEAT.md.
-HIS LAST WORD: yeh kaise mix hua, QC8 ne ana tha, blueprint update kero, repo se ledger do
+# WORKING NOW (manual checkpoint, 21 Nov 2026 01:16 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QCONNECT switch RAN on his server 01:2x: copy 36 tables ok, 0 founder-owned mismatches, proof failed on engine line, AUTO ROLLBACK to REST worked (site on REST). ROOT CAUSE found in sandbox: identity key file was PEM + no public key (ring needs DER PKCS#8 138 bytes). Fix 4 pushed in prep + switch. He re-runs the same switch line.
+NEXT STEP: He re-runs qconnect-switch.sh (key gets replaced automatically, drift list valid until 02:36) -> paste -> sign in once -> measure -> dump-install -> my Chrome look -> then QC8. No guesses; OFF=1 rollback.
+HIS LAST WORD: Qconnect 30 min wire working
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,28 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 1a331403 21 Nov 01:12 ledger line 4eda0677
 - 4eda0677 21 Nov 01:12 correction: only QC8 open in the mail chain
 - 4521e501 21 Nov 01:08 ledger line bcb5e7c2
 - bcb5e7c2 21 Nov 01:08 correction: QC3a already done, QCONNECT reopened state
 - b2df55a5 21 Nov 01:05 ledger line e1aba74a
-- e1aba74a 21 Nov 01:05 QCONNECT reopened: step 9 measure + step 10 dump scripts
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M docs/cursor-work/server/qconnect-switch-prep.sh
+ M docs/cursor-work/server/qconnect-switch.sh
+ M server/founder/src/localid.rs
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 33 ++-------------------------------
- 1 file changed, 2 insertions(+), 31 deletions(-)
+ docs/claude/state/WORKING-NOW.md                | 27 +++++++++----------------
+ docs/claude/tech-contracts/CURRENT.md           |  2 ++
+ docs/cursor-work/server/qconnect-switch-prep.sh |  5 +++--
+ docs/cursor-work/server/qconnect-switch.sh      |  6 +++++-
+ server/founder/src/localid.rs                   |  8 ++++++++
+ 5 files changed, 27 insertions(+), 21 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +50,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (2b9befc7d4c1192bc14dde038a30a9be503c152c)
+WIP snapshot: refs/wip/last (9a237940f50d4b8d819827e85d044917fcfab8f4)

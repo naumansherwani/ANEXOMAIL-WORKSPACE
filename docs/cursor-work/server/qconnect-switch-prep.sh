@@ -42,8 +42,9 @@ SQL
 echo "   service_role grants on anexo_copy: tables $(psql -X -h $S -d anexo_copy -At -c "select count(*) from information_schema.role_table_grants where grantee='service_role' and table_schema='public'")"
 echo "   role ok: $(psql -X -h $S -d postgres -At -c "select rolsuper::text||' super, member of '||(select string_agg(b.rolname,',') from pg_auth_members m join pg_roles b on b.oid=m.roleid where m.member=r.oid) from pg_roles r where rolname='$SU'")"
 echo "== 2/4 identity key file $KEY"
-if [ -s "$KEY" ]; then echo "   exists (kept, never replaced)"; else
-  openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 -out "$KEY" 2>/dev/null && echo "   created (P-256 PKCS8)" || { echo "FAIL: openssl"; exit 3; }; fi
+# 21 Nov 2026 01:30 PKT ROOT CAUSE of the failed proof (found in the sandbox, not guessed): the key file must be DER PKCS#8 WITH the public key (138 bytes). `openssl genpkey -out` wrote PEM text (and without the public key it is 121 bytes) and ring refuses both, so the service said "identity key not usable" and stayed on REST. This key was made tonight and never used, so replacing it is safe.
+mkkey() { openssl ecparam -name prime256v1 -genkey -noout 2>/dev/null | openssl pkcs8 -topk8 -nocrypt -outform DER -out "$KEY.new" 2>/dev/null && [ "$(stat -c %s "$KEY.new")" = 138 ] && mv "$KEY.new" "$KEY" && chown root:$SU "$KEY" && chmod 640 "$KEY"; }
+if [ "$(stat -c %s "$KEY" 2>/dev/null)" = 138 ]; then echo "   exists, DER PKCS#8 138 bytes (kept)"; else mkkey && echo "   created: DER PKCS#8 with public key, 138 bytes (the old file was the wrong format)" || { echo "FAIL: key"; exit 3; }; fi
 chown root:$SU "$KEY"; chmod 640 "$KEY"; ls -l "$KEY" | awk '{print "   " $1, $3, $4}'
 echo "== 3/4 smoke test AS the service user over the socket (the same way the service connects)"
 OUT=$(runuser -u $SU -- psql -X -h $S -d anexo_copy -At -c "set role service_role" -c "select 'founder_accounts rows: '||count(*) from public.founder_accounts" -c "select 'localid_verify: '||public.localid_verify()::text" 2>&1 | head -6)
