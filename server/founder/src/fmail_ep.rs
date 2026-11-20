@@ -299,6 +299,27 @@ pub async fn move_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::bo
     }
 }
 
+/// QC5: POST /founder/v1/mail/delete {box, ids[1..100], grant?, nonce?}. DELETE FOREVER: trash only (the database refuses anything outside Trash), ALWAYS behind a fresh passkey touch (action mail.delete,
+/// target = "del:" + digest of the ids), ledgered + anchored (delete_hard, E167). Without a touch the answer is needs_touch and nothing is deleted. Cannot be undone; the UI says so before it asks.
+pub async fn delete_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::body::Bytes) -> Response {
+    let (uid, _e, did) = match pk::ctx(&st, &h, uri.path(), &body, true).await { Ok(x) => x, Err(r) => return r };
+    let sb = match pk::sbx(&st) { Ok(s) => s, Err(r) => return r };
+    let j = match pk::body_json(&body) { Ok(j) => j, Err(r) => return r };
+    let Some(b) = pk::txt(&j, "box", 40).filter(|x| pk::is_uuid(x)) else { return bad("box is needed") };
+    let ids = match ids_of(&j, "ids") { Ok(i) => i, Err(e) => return bad(e) };
+    let touch = match touch_of(&j) { Ok(t) => t, Err(e) => return bad(e) };
+    if let Err(r) = own(sb, &uid, &b).await { return r; }
+    let target = delete_target(&ids);
+    let Some(t) = touch else { return crate::signed(&st, json!({"needs_touch": true, "action": "mail.delete", "target": target})) };
+    let hash = match spend(&st, sb, &uid, &did, &t, "mail.delete", &target).await { Ok(h) => h, Err(r) => return r };
+    match sb.rpc_msg("fmail_delete_hard", json!({"p_actor": uid, "p_mailbox": b, "p_ids": ids, "p_touch_hash": hash})).await {
+        Ok(v) => crate::signed(&st, json!({"ok": true, "result": v})),
+        Err(e) => pk::sql_err(e),
+    }
+}
+/// The touch target of a delete: bound to exactly these ids, so a grant for one batch can never delete another.
+pub fn delete_target(ids: &[String]) -> String { format!("del:{}", move_target(ids)) }
+
 /// DK3: POST /founder/v1/mail/key {box, key_id, pub_hex, grant?, nonce?}. Installs or rotates the mailbox's post-quantum PUBLIC key (1216 bytes hex = 2432 chars). The private halves never come here.
 /// Needs a fresh passkey touch (action mail.key, target = box:key_id); the database enforces it too (fmail_key_register, E168).
 pub async fn key_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::body::Bytes) -> Response {
@@ -349,6 +370,17 @@ pub async fn vault_ep(State(st): State<S>, uri: Uri, h: HeaderMap, body: axum::b
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn qc5_delete_target_is_bound_to_the_ids_and_order_free() {
+        let a = "0b9d1c2e-0000-4000-8000-000000000001".to_string(); let b = "0b9d1c2e-0000-4000-8000-000000000002".to_string();
+        assert_eq!(delete_target(&[a.clone(), b.clone()]), delete_target(&[b.clone(), a.clone()]));
+        assert_ne!(delete_target(&[a.clone()]), delete_target(&[b.clone()]));
+        assert!(delete_target(&[a.clone()]).starts_with("del:") && delete_target(&[a.clone()]).len() == 4 + 64);
+        assert_ne!(delete_target(&[a.clone()]), move_target(&[a]));   // a move grant can never delete
+        assert!(ids_of(&serde_json::json!({"ids": []}), "ids").is_err());
+        assert!(ids_of(&serde_json::json!({"ids": ["x"]}), "ids").is_err());
+    }
+
     #[test] fn auth_query_is_strict() {
         let b = "123e4567-e89b-12d3-a456-426614174000";
         assert_eq!(parse_auth(Some(&format!("box={b}&message={b}&days=999"))).unwrap(), (b.to_string(), Some(b.to_string()), 365));

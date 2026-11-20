@@ -88,6 +88,16 @@ export async function move(box: string, ids: string[], to: string): Promise<{ ok
   }
   return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` };
 }
+/** QC5: delete forever (Trash only). The server asks for a key touch every time (action mail.delete, bound to these ids); 1..100 ids per call. */
+export async function deleteForever(box: string, ids: string[]): Promise<{ ok: boolean; deleted?: number; error?: string }> {
+  let r = await post("/founder/v1/mail/delete", { box, ids });
+  if (r.status === 200 && r.body?.needs_touch) {
+    const p = await prove({ action: r.body.action, target: r.body.target });
+    if (!p.ok) return { ok: false, error: p.error };
+    r = await post("/founder/v1/mail/delete", { box, ids, grant: p.result?.grant, nonce: p.nonce });
+  }
+  return r.status === 200 && r.body?.ok ? { ok: true, deleted: r.body.result?.deleted } : { ok: false, error: r.body?.error || `HTTP ${r.status}` };
+}
 export async function setVault(box: string, thread: string, vault: boolean): Promise<{ ok: boolean; error?: string }> {
   let r = await post("/founder/v1/mail/vault", { box, thread, vault });
   if (r.status === 200 && r.body?.needs_touch) {

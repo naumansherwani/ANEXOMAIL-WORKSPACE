@@ -21,7 +21,7 @@ import { buildStart, type ReplyKind } from "./reply_start";
 import { QuotedBody, selectedIn } from "./QuotedBody";
 import { MailReplyBar } from "./MailReplyBar";
 import { ConfirmSheet } from "./ConfirmSheet";
-import { deleteQuestion, type Ask } from "./confirm_pure";
+import { deleteQuestion, emptyTrashQuestion, foreverIds, type Ask } from "./confirm_pure";
 import { sentMs } from "./trust_pure";
 import "./mail.css";
 import "./mailbox.css";
@@ -134,6 +134,13 @@ export function MailBox() {
     setSel(null); setOpened(null); void loadList(); void loadCounts();
   }, [rows, sel, boxId, view, loadList, loadCounts]);
 
+  // QC5: Delete forever (Trash only). One selected mail, or Empty Trash for the listed mails (<= 100 per touch).
+  const [forever, setForever] = useState<string[] | null>(null);
+  const doForever = useCallback(async () => {
+    const ids = forever ?? (sel ? [sel] : []); setForever(null); if (!ids.length) return;
+    const res = await api.deleteForever(boxId, foreverIds(ids)); if (!res.ok) { setOpenErr(res.error || "That did not work."); return; }
+    setSel(null); setOpened(null); void loadList(); void loadCounts();
+  }, [forever, sel, boxId, loadList, loadCounts]);
   const cur = rows.find((r) => r.id === sel) ?? null;
   // Q1b4: Delete asks first (his 17 Nov order). Trash is the only destructive door here; every other action stays one click.
   const [ask, setAsk] = useState<Ask | null>(null);
@@ -238,6 +245,7 @@ export function MailBox() {
             <span className="mbx-sp" />
             <div className="mbx-acts" role="toolbar" aria-label="Message actions">
               <button type="button" className="mbx-ib" disabled={!sel} onClick={() => void act("trash")} title="Delete (#)" aria-label="Delete"><Ic k="trash" /></button>
+              {view === "trash" && rows.length > 0 && <button type="button" className="mbx-ib" onClick={() => { const ids = foreverIds(rows.map((r) => r.id)); setForever(ids); setAsk(emptyTrashQuestion(rows.length)); }} title="Empty Trash (delete forever)" aria-label="Empty Trash"><Ic k="trash" /></button>}
               <button type="button" className="mbx-ib" disabled={!sel} onClick={() => void act("archive")} title="Archive (e)" aria-label="Archive"><Ic k="archive" /></button>
               <button type="button" className="mbx-ib" disabled={!sel} onClick={() => void act("star")} title="Star (s)" aria-label="Star"><Ic k="flag" fill={!!cur?.starred} /></button>
               <button type="button" className="mbx-ib" disabled={!sel} onClick={() => void act("unread")} title="Mark unread (u)" aria-label="Mark unread"><Ic k="unread" /></button>
@@ -321,7 +329,7 @@ export function MailBox() {
         </article>
       </div>
 
-      <ConfirmSheet ask={ask} onNo={() => setAsk(null)} onYes={() => { const a = ask; setAsk(null); if (a && !a.skip) void doAct("trash"); }} />
+      <ConfirmSheet ask={ask} onNo={() => { setAsk(null); setForever(null); }} onYes={() => { const a = ask; setAsk(null); if (a && !a.skip) void (a.forever ? doForever() : doAct("trash")); }} />
       {box && <button type="button" className="mbx-fab mbx-glow idle" onClick={() => setCompose({})} aria-label="New email"><Ic k="pen" s={22} /></button>}
 
       <AnimatePresence>{arrival && <motion.div key={arrival.k} className="mbx-pill" role="status" initial={reduce ? false : { opacity: 0, y: 16, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 8 }} transition={{ type: "spring", stiffness: 380, damping: 30 }}><Ic k="spark" s={16} /><b>{arrival.who}</b><span>{arrival.what}</span></motion.div>}</AnimatePresence>
