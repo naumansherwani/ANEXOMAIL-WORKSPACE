@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 00:13 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 00:13 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 
 NEXT STEP: 
 HIS LAST WORD: ledger working now blueprint time date, compaction-proof, 2-min loop, rules read, advance technology
@@ -18,43 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- af3bf40a 21 Nov 00:13 QCONNECT: step 7 installed on his server, compaction state updated
 - 075ab205 21 Nov 00:04 ledger line 814aa2f4
 - 814aa2f4 21 Nov 00:04 QCONNECT: bootstrap guard against managed Supabase
 - 88886515 20 Nov 23:56 ledger line a3842b0e
 - a3842b0e 20 Nov 23:56 QCONNECT step 7: Rust identity engine localid.rs + LOCAL_E198 doors
-- f6844be0 20 Nov 23:46 ledger line 4cca17f3
 
 ## Uncommitted files (half-done work if any)
-M  CLAUDE.md
-MM docs/claude/DONE-DO-NOT-REPEAT.md
-M  docs/claude/QCONNECT-PLAN-20NOV.md
-MM docs/claude/RESUME-POINT.md
-MM docs/claude/founder/PULL-COMMANDS.md
-M  docs/claude/state/HEARTBEAT.json
-MM docs/claude/state/WORKING-NOW.md
-MM docs/claude/tech-contracts/CURRENT.md
-MM docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
-MM docs/cursor-work/DONE-DO-NOT-REPEAT.md
-MM docs/cursor-work/founder/founder-commands.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-MM docs/cursor-work/server/PULL-COMMANDS.md
-R  founder-web/dist/assets/index-O4qxGF_C.js -> founder-web/dist/assets/index-BhYDc03m.js
-M  founder-web/dist/index.html
-M  founder-web/src/system_brain.json
-M  lanes/ALL-FILES.csv
-M  lanes/founder.txt
+ M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        | 30 ++++++++--------
- docs/cursor-work/server/PULL-COMMANDS.md           |  2 ++
- .../{index-O4qxGF_C.js => index-BhYDc03m.js}       |  2 +-
- founder-web/dist/index.html                        |  2 +-
- founder-web/src/system_brain.json                  |  6 ++--
- lanes/ALL-FILES.csv                                |  2 +-
- lanes/founder.txt                                  |  2 +-
- 18 files changed, 71 insertions(+), 45 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 42 +++-------------------------------------
+ 1 file changed, 3 insertions(+), 39 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -65,4 +42,4 @@ M  lanes/founder.txt
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (2ea8f80c715d87fb17b4b542fac52fe2c2d4e8bd)
+WIP snapshot: refs/wip/last (0f90cbd51b85f42d3cedddaf13ef7fb05db5d400)
