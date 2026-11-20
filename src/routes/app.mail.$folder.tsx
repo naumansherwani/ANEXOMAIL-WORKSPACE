@@ -276,14 +276,14 @@ function MailFolderPage() {
               );
             })}
           </HScroll>
-          <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-2.5 py-1.5">
-            <Search className="size-3.5 shrink-0 text-steel" aria-hidden="true" />
+          <div className="flex min-h-11 items-center gap-2.5 rounded-[14px] border border-border bg-card px-3 transition-shadow focus-within:border-primary/70 focus-within:ring-2 focus-within:ring-primary/40">
+            <Search className="size-[18px] shrink-0 text-primary" aria-hidden="true" />
             <input
               id="mail-search"
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Search this workspace…  ( / )"
-              className="min-w-0 flex-1 bg-transparent text-[13px] outline-none placeholder:text-muted-foreground"
+              placeholder="Search mail"
+              aria-label="Search mail" className="min-h-11 min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
             />
             {q && (
               <button type="button" aria-label="Clear search" onClick={() => setQ("")}>

@@ -4492,3 +4492,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 04:44 PKT QC8b b1 audit, search placeholder Search mail (his word 04:09, manifest synced for awam inherit), blueprint subphases; QC8a live proof partial
 
 - 21 Nov 2026 04:50 PKT pull command given for QC8a + Search mail; waits his paste for live Chrome; next QC8b b2
+
+- 21 Nov 2026 04:55 PKT AWAM mail search = founder look in awam colours (his word 04:12 + 04:15): placeholder Search mail, 44px box, 14px radius, primary focus ring; className + placeholder only in app.mail.folder.tsx (CORE-UNFREEZE-OK line written), search logic/tabs/gates untouched; tsc clean, build ok; NOT live on awam yet (needs his awam pull), Business test look pending

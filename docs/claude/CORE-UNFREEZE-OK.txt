@@ -1,1 +1,2 @@
 src/components/app/compose/ComposeStudio.tsx  # his word 19 Nov 2026 13:34 PKT: emoji picker for awam, additive mount only
+src/routes/app.mail.$folder.tsx  # his word 21 Nov 2026 04:12 PKT: awam mail search = founder look, placeholder "Search mail", awam colours; className + placeholder only, search logic untouched
