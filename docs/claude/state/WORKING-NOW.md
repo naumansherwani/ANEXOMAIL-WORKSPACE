@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 04:02 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 04:04 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 04:06 PKT QC8a LIVE on his server (founder-install OK, build 2m13s). Doing my live Chrome walk now (mail j, Down, ?, switch OFF, Settings row, range, 390/820/1200). Then QC8b. Laws: SQL schema-first, Rule 52, advance technology
 NEXT STEP: live Chrome walk, GREEN only with proof, then QC8b a1
 HIS LAST WORD: his 21 Nov 04:01 paste: install OK
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 27d2ce41 21 Nov 04:02 ledger line f78c735f
 - f78c735f 21 Nov 04:02 QC8a installed on his server, laws restated
 - dc24f778 21 Nov 03:57 ledger line da98f43e
 - da98f43e 21 Nov 03:57 QC8a a5: range, batch, type-ahead, announce wired
 - e05f81e4 21 Nov 03:55 ledger line 11885e73
-- 11885e73 21 Nov 03:55 QC8a: Home/End wired, row restored
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 ++-----------------
- 1 file changed, 2 insertions(+), 17 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a57a10734b02b5b9b50e8260d4a26d4c097eb96b)
+WIP snapshot: refs/wip/last (fd7d2c26fda5dd31a5d34b5cfac8997f5ce3a224)

@@ -4636,3 +4636,5 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 04:56 PKT QC8a a5 WIRED in code: Shift+Arrow range marks, e # s u batch on marked mails, type-ahead, Home/End, ariaNotify + live region; keys_list.ts new, KeyLayer wired, MailBox untouched; Chromium fake-mailbox checks all as expected; bun 519/519, tsc clean, vite build ok; NOT live on his server, NOT green
 
 - 21 Nov 2026 04:07 PKT his founder-install OK (574 tests, build 2m13s under 4 min); QC8a SPA live; live Chrome walk next; schema-first + Rule 52 restated and recorded
+
+- 21 Nov 2026 04:26 PKT QC8a live Chrome partial: ? sheet + switch + / silenced when OFF proven on his tab (bundle da98f43e); arrows/range/batch/type-ahead/390/820 not yet live-proven (touch his real mails); his Gmail-style search request recorded, waits mock + haan; NOT green
