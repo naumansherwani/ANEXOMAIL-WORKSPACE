@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 03:30 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 03:32 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 03:25 PKT QC8a started (his haan): his 5 answers written, a1 audit done; a2 new pure key-map module + golden tests, NEW files only
 NEXT STEP: a2 mail_keymap.ts + test, then show him the mount line and the ? sheet mock
 HIS LAST WORD: his 21 Nov 03:22: 5 answers, shuru kero QC8a
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 69881466 21 Nov 03:30 ledger line fbdd41c1
 - fbdd41c1 21 Nov 03:30 QC8a: working-now snapshot
 - 19113201 21 Nov 03:25 ledger line dedbf5f7
 - dedbf5f7 21 Nov 03:25 QC8a a2: pure key map module + golden tests (new files only)
 - 403d6720 21 Nov 03:24 ledger line bd96d348
-- bd96d348 21 Nov 03:24 QC8a: his 5 answers + a1 audit
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (8f00aaaacfb5e75189603993f9274984c213c4e9)
+WIP snapshot: refs/wip/last (a32e3df68f6b7475534387da043398784d08f5fb)

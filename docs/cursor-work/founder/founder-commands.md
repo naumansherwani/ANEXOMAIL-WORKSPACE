@@ -4604,3 +4604,5 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 03:36 PKT QC8a a2 WRITTEN: new pure module founder-web/src/mail_keymap.ts + 13 golden tests (switch for single-letter keys, list arrows/Home/End/Shift, type-ahead, help rows); bun 517/517, tsc clean; existing files untouched; NOT mounted, NOT green
 
 - 21 Nov 2026 03:45 PKT QC8a: his question answered (pull command unchanged, build time cause not yet measured, bun = my test runner only); waits his haan for mount line, SQL setting, ? sheet mock
+
+- 21 Nov 2026 03:50 PKT QC8a: detail summary of his 5 answers vs repo given to him; still waits his haan for mount line, SQL setting, ? mock
