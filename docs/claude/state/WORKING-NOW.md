@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 02:03 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 21 Nov 02:25 PKT: HIS FINAL WORD (02:00, in anger): ONLY LOGIN on his server, EVERYTHING ELSE on Supabase. LOGIN-ONLY mode (FOUNDER_DB=login) code WRITTEN, cargo 574/0, NOT installed. Real numbers from his paste: founder 80-90 MB RAM, postgres dir 266 MB, disk 21 GB free of 75. Two scripts of mine failed on PGHOST (fixed). Back-diff script written.
-NEXT STEP: He runs qconnect-back-diff.sh and pastes. Then I write the back-copy (local to Supabase, only the DIFF tables) + qconnect-login-only.sh switch (own contract), his ONE line, then my Chrome look. Nothing on his server before his paste.
-HIS LAST WORD: his 21 Nov 02:00: sirf login server pe, baki sab supabase pe
+# WORKING NOW (manual checkpoint, 21 Nov 2026 02:13 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 21 Nov 02:55 PKT: qconnect-login-only.sh WRITTEN + sandbox-tested (guards: empty list, refuse if Supabase has more rows, privilege test before stopping, append-only ledgers copied through replica role). Order for him: 1 founder-install (new binary, still local mode), 2 qconnect-login-only.sh. His open session stays valid.
+NEXT STEP: He runs line 1 then line 2 and pastes; then my Chrome look (dashboard, HTTP/3, ML-DSA, Mail) and the proof that login is local and data is REST. Rollback OFF=1.
+HIS LAST WORD: his 21 Nov 02:11: only login on server, rest as before, tech intact
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,23 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 3edfe459 21 Nov 02:03 ledger line 7a3ddbf1
 - 7a3ddbf1 21 Nov 02:03 QCONNECT-LO: login-only mode code, contract, back-diff script
 - f6c20944 21 Nov 01:56 ledger line da20e427
 - da20e427 21 Nov 01:56 QCONNECT: option 2 chosen, mirror probe script, login-only parked
 - ed804ee5 21 Nov 01:50 ledger line de43576b
-- de43576b 21 Nov 01:50 QCONNECT: footprint read-only script and memory answer
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+?? docs/cursor-work/server/qconnect-login-only.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 51 ++--------------------------------------
- 1 file changed, 2 insertions(+), 49 deletions(-)
+ docs/claude/state/WORKING-NOW.md      | 25 +++++++------------------
+ docs/claude/tech-contracts/CURRENT.md |  2 +-
+ 2 files changed, 8 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +45,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (0b9028ba20a00fa3704a5db087cf158ce3838544)
+WIP snapshot: refs/wip/last (25b966a375d7441c79895b0bb2e6a62f1e8a973c)
