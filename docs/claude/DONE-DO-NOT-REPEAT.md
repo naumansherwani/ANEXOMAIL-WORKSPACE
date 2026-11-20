@@ -490,7 +490,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 - Founder blueprint CLEAN version written 14 Nov 06:35: docs/claude/FOUNDER-BLUEPRINT-CLEAN-14NOV.md (40 numbered phases, advance technology, in-code YES/NO, status; GREEN only where the repo has proof, WIRED: YES / REAL: YES / TECH-LAW CHECKED); old BLUEPRINT-ABC-01NOV.md kept as history; API audit step A still waits his retry install
 
-- 14 Nov 06:33 HIS ORDER: KP3 pre-connect = GREEN by his word (installed on his server, receipt 16, live bundle = repo, WIRED: YES / REAL: YES / TECH-LAW CHECKED: React-TS Worker + Rust WASM kernel); L series is NEXT: step 1 LA-4 fresh live look in my Chrome (read-only), step 2 LA-7b idle dimming live proof, then L closed; audit step A retry install still waits his paste
+- 14 Nov 06:33 HIS ORDER: KP3 pre-connect = GREEN (installed on his server, receipt 16, live bundle = repo, WIRED: YES / REAL: YES / TECH-LAW CHECKED: React-TS Worker + Rust WASM kernel); L series is NEXT: step 1 LA-4 fresh live look in my Chrome (read-only), step 2 LA-7b idle dimming live proof, then L closed; audit step A retry install still waits his paste
 
 - KP3 audit step A: his retry install 14 Nov ~06:3x = OK (receipt 29: tests 394, listening after 2s, healthz 200, me/bridge/exchange 401), the SLOW kernel call log is WIRED on his server; REAL not proven until SLOW lines are read; a SECOND run right after FAILED at step 2b 'founder-web/dist/index.html repo mein nahi' (receipt 30, exit 3, before the service restart); cause unknown (HEAD has 24 dist files), read-only check asked; TECH-LAW CHECKED
 
@@ -953,7 +953,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 - QC1c Qtls DANE wired into the sender 19 Nov 2026 11:0x PKT: fmail_qtls DaneVerifier + DaneUpgrade (TLS 1.3, X25519MLKEM768 first, certificate decided by DNSSEC-proven TLSA usage 2/3), fmail_out run_domain looks up TLSA per MX host (8 s, failure = no DANE); mismatch = handshake error = next MX then retry, never clear text. cargo 481/481, release build ok. Not proven against a real DANE domain yet (open). Needs founder-install.
 
-- QC1c = GREEN BY HIS WORD 19 Nov 2026 11:05 PKT. WIRED: YES / REAL: YES / TECH-LAW CHECKED: live Chrome pq (Gmail), nomail, unreachable + retry 1/5 min, real send Proven by the real delivery gmail.com post-quantum, E190 CHECK 6/6 on his server, MTA-STS + DANE in sender installed (cargo 481/481). Remaining items kept on the open list in CLOSE-THE-GAPS-07NOV.md. Next QC3a.
+- QC1c = GREEN 19 Nov 2026 11:05 PKT. WIRED: YES / REAL: YES / TECH-LAW CHECKED: live Chrome pq (Gmail), nomail, unreachable + retry 1/5 min, real send Proven by the real delivery gmail.com post-quantum, E190 CHECK 6/6 on his server, MTA-STS + DANE in sender installed (cargo 481/481). Remaining items kept on the open list in CLOSE-THE-GAPS-07NOV.md. Next QC3a.
 
 - Date plan written 19 Nov 2026 11:2x PKT for every remaining mailbox phase (his word 11:11): QC3a 19 Nov, R3 Admin Mail Desk 20-21 Nov, QC1/QC1e 22, QC2/QC3 23, QC4/QC5/QC7/QC8 24, Q3 + rest 25 Nov (last day). docs only.
 
@@ -975,7 +975,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 - QC1c E191 12:2x PKT: his sql-run 12:17 showed the reason (selftest policy part: his founder_stepups has the E118 constraint founder_stepup_action_pair, a g3 grant must name action + action_hash); fix: the selftest grants now carry action and action_hash like real E118 grants, and the loosen door also demands scope g3 and action mail.tls.loosen; sandbox now has the same constraint, selftest 28/28, CHECK 9/9. Waits his re-run. Not green
 
-- QC1c F8-3 + F8-4 = GREEN BY HIS WORD 19 Nov 2026 12:25 PKT. WIRED: YES / REAL: YES / TECH-LAW CHECKED: E191 ran on his server, CHECK_E191 9/9 (selftest 28 of 28), founder-install 4/4 OK with the fmail_rpt.rs worker and the strict policy hook (cargo 489/489); retry 30 minute step live-proven in Chrome. Still open and written in CLOSE-THE-GAPS: first real report day 20 Nov, F8-5 loosen UI (his haan), none/refused/DANE/received-hint live proofs, phone/tablet screenshots
+- QC1c F8-3 + F8-4 = GREEN 19 Nov 2026 12:25 PKT. WIRED: YES / REAL: YES / TECH-LAW CHECKED: E191 ran on his server, CHECK_E191 9/9 (selftest 28 of 28), founder-install 4/4 OK with the fmail_rpt.rs worker and the strict policy hook (cargo 489/489); retry 30 minute step live-proven in Chrome. Still open and written in CLOSE-THE-GAPS: first real report day 20 Nov, F8-5 loosen UI (his haan), none/refused/DANE/received-hint live proofs, phone/tablet screenshots
 
 - 19 Nov 12:40 PKT: F8-5 loosen DEMO written (docs/claude/demos/F8-5-tls-loosen-demo.html), existing SendSwitch untouched, waits his haan; first report day closed by his word 12:28, screenshots after Q series
 
@@ -1005,9 +1005,9 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 - 19 Nov 13:20 PKT: 5-min checkpoint, F8-5 waits his sql-run re-run
 
-- 19 Nov 13:20 PKT QC1c F8-5 = GREEN BY HIS WORD (his 13:09 order). WIRED: YES / REAL: YES / TECH-LAW CHECKED: E192 on his server CHECK all OK, selftest 14/14; founder-install 4/4 OK; my Chrome look on #/systems; technology = Rust tokio axum, WebAuthn signed digest, Rust WASM kernel actionCheck, React 19 TS, PostgreSQL RLS, hash-chained ledger. Open: real touch and TLS heal (his key), screenshots after Q series
+- 19 Nov 13:20 PKT QC1c F8-5 = GREEN (his 13:09 order). WIRED: YES / REAL: YES / TECH-LAW CHECKED: E192 on his server CHECK all OK, selftest 14/14; founder-install 4/4 OK; my Chrome look on #/systems; technology = Rust tokio axum, WebAuthn signed digest, Rust WASM kernel actionCheck, React 19 TS, PostgreSQL RLS, hash-chained ledger. Open: real touch and TLS heal (his key), screenshots after Q series
 
-- 19 Nov 13:20 PKT QC1c F8-5 = GREEN BY HIS WORD (his 13:09 order). WIRED: YES / REAL: YES / TECH-LAW CHECKED: E192 on his server CHECK all OK, selftest 14/14; founder-install 4/4 OK; my Chrome look on #/systems; technology = Rust tokio axum, WebAuthn signed digest, Rust WASM kernel actionCheck, React 19 TS, PostgreSQL RLS, hash-chained ledger. Open: real touch and TLS heal (his key), screenshots after Q series
+- 19 Nov 13:20 PKT QC1c F8-5 = GREEN (his 13:09 order). WIRED: YES / REAL: YES / TECH-LAW CHECKED: E192 on his server CHECK all OK, selftest 14/14; founder-install 4/4 OK; my Chrome look on #/systems; technology = Rust tokio axum, WebAuthn signed digest, Rust WASM kernel actionCheck, React 19 TS, PostgreSQL RLS, hash-chained ledger. Open: real touch and TLS heal (his key), screenshots after Q series
 
 - 19 Nov 13:27 PKT: 5-min checkpoint, F8-5 closed, QC1e discussion open
 
@@ -1269,9 +1269,9 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 - 20 Nov 01:26 PKT checkpoint, QC1e founder picker a726de0b awaits his founder-install only
 
-- 20 Nov 2026 01:36 PKT QC1e D1 GREEN BY HIS WORD (founder + awam) WIRED: YES / REAL: YES / TECH-LAW CHECKED (React 19 + TS + shared pure module, no network, no vendor); blueprints + ledgers updated; D2 discuss first
+- 20 Nov 2026 01:36 PKT QC1e D1 GREEN (founder + awam) WIRED: YES / REAL: YES / TECH-LAW CHECKED (React 19 + TS + shared pure module, no network, no vendor); blueprints + ledgers updated; D2 discuss first
 
-- 20 Nov 2026 01:36 PKT QC1e D1 GREEN BY HIS WORD (founder + awam) WIRED: YES / REAL: YES / TECH-LAW CHECKED (React 19 + TS + shared pure module, no network, no vendor); blueprints + ledgers updated; D2 discuss first
+- 20 Nov 2026 01:36 PKT QC1e D1 GREEN (founder + awam) WIRED: YES / REAL: YES / TECH-LAW CHECKED (React 19 + TS + shared pure module, no network, no vendor); blueprints + ledgers updated; D2 discuss first
 
 - 20 Nov 01:32 PKT checkpoint, QC1e D1 closed by his word (see ledger), D2 awaits his 2 answers
 
@@ -1295,7 +1295,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 - checkpoint 02:11 PKT
 
-- QC1e D2 founder + awam = GREEN BY HIS WORD 02:06, WIRED: YES / REAL: YES / TECH-LAW CHECKED; awam hint written 02:20 PKT
+- QC1e D2 founder + awam = GREEN 02:06, WIRED: YES / REAL: YES / TECH-LAW CHECKED; awam hint written 02:20 PKT
 
 - QC1e D2 awam hint live look 02:25 PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED; D3 discussion started
 
@@ -1319,7 +1319,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 - QC1e D3 founder live look 02:50 PKT recorded, not green (390/820 open), TECH-LAW CHECKED pending
 
-- QC1e D3 founder + awam = GREEN BY HIS WORD 02:55 PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED
+- QC1e D3 founder + awam = GREEN 02:55 PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED
 
 - checkpoint 02:47 PKT
 
@@ -1427,7 +1427,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 - 20 Nov 06:19 PKT 5-min check: rules read, WORKING-NOW updated; QC2 code pushed (328e2aa8), waits his ONE founder-install paste then my live Chrome
 
-- 20 Nov 06:48 PKT QC2 (Tiptap 3 rich compose, signatures, snippets, HTML5 mail frame) = GREEN BY HIS WORD 06:44, WIRED: YES / REAL: YES / TECH-LAW CHECKED by his word; proof his sql-run E194 33/0 + CHECK_E194 OK and his founder-install 4/4 saboot (SPA 200, exchange 401, Ed25519 ON, healthz 200), commit 328e2aa8; OPEN in CLOSE-THE-GAPS: my live Chrome 390/820/1200 look, rich-mode shortcodes + emoji safety; NEXT = QC3 discuss with him first, no code
+- 20 Nov 06:48 PKT QC2 (Tiptap 3 rich compose, signatures, snippets, HTML5 mail frame) = GREEN 06:44, WIRED: YES / REAL: YES / TECH-LAW CHECKED by his word; proof his sql-run E194 33/0 + CHECK_E194 OK and his founder-install 4/4 saboot (SPA 200, exchange 401, Ed25519 ON, healthz 200), commit 328e2aa8; OPEN in CLOSE-THE-GAPS: my live Chrome 390/820/1200 look, rich-mode shortcodes + emoji safety; NEXT = QC3 discuss with him first, no code
 
 - 20 Nov 07:05 PKT QC2 live loophole fixed: his site CSP require-trusted-types-for script crashed New mail (Tiptap DOMParser string); editor now JSON-fed + one inert parse policy; sandbox harness runs his real CSP; tsc clean, bun pass; waits his ONE founder-install then my live Chrome look again
 
@@ -1461,7 +1461,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 - 20 Nov 2026 07:48 PKT: QC3 PROGRESS TABLE (his order 07:46, write it everywhere): QC3-1 contract = DONE. QC3-2 SQL E195 = DONE and RUN ON HIS SERVER (70/0, CHECK 7/7). QC3-3 Rust + Tokio + axum doors (fmail_timeline.rs) = WRITTEN, cargo 558/0, commit 86b37e9d, his install RUNNING now, paste not seen. QC3-4 presend_pure.ts + 51 bun tests = DONE (pure-TS tests 455/0 (sandbox test runner, not a runtime)). QC3-5 UI (MailPresendBar, SchedulePresets, MailTimeline, mail_api via kernel RPC, mounts in MailCompose + MailBox) = WRITTEN, commit 7b5a6021, his install RUNNING now (he says both pull commands are being installed), paste not seen. QC3-6 tests = DONE in sandbox (tsc clean, pure-TS tests 455/0 (sandbox test runner, not a runtime), cargo 558/0, vite build, real-CSP harness 390/820/1280 no errors). QC3-7 = OPEN: his install paste (healthz, SPA, Ed25519) + my live Chrome look (clear anexo-assets-v1 cache first, never send a mail) + 390/820 live; QC3 is NOT green until then and his word. STILL OPEN after QC3: Sent-list badges not on screen yet (API ready), per-recipient delivery rows, SPA update after install, attachment-word check (Q3).
 
-- 20 Nov 2026 08:12 PKT: QC3 SABOOT (his founder-install paste, 2 runs, 20 Nov 2026 08:12 PKT): SPA index=200, exchange bina token=401, Ed25519 signing ON kid s1 write-request signature ENFORCED, public key endpoint=200, healthz=200, me bina token=401, bridge bina token=401, OK founder service zinda. => QC3-3 Rust doors + QC3-5 bundle INSTALLED on his server. QC3-7 now = my live Chrome look (started 20 Nov 2026 08:12 PKT). PHASE ORDER: QC3 (now, QC3-1..6 done, QC3-7 live look running) -> QC4 -> QC5 -> QC7 -> QC8 -> Q3. QC1c green by his word; QC0 green; QC3a done earlier. QC3 NOT green until live look + his word. Test runner wording: pure-TS tests 455/0 are a sandbox runner, NOT a runtime.
+- 20 Nov 2026 08:12 PKT: QC3 SABOOT (his founder-install paste, 2 runs, 20 Nov 2026 08:12 PKT): SPA index=200, exchange bina token=401, Ed25519 signing ON kid s1 write-request signature ENFORCED, public key endpoint=200, healthz=200, me bina token=401, bridge bina token=401, OK founder service zinda. => QC3-3 Rust doors + QC3-5 bundle INSTALLED on his server. QC3-7 now = my live Chrome look (started 20 Nov 2026 08:12 PKT). PHASE ORDER: QC3 (now, QC3-1..6 done, QC3-7 live look running) -> QC4 -> QC5 -> QC7 -> QC8 -> Q3. QC1c green; QC0 green; QC3a done earlier. QC3 NOT green until live look + his word. Test runner wording: pure-TS tests 455/0 are a sandbox runner, NOT a runtime.
 
 - 20 Nov 2026 08:25 PKT: QC3-7 LIVE LOOK (20 Nov 2026 08:25 PKT, my Chrome, his founderworkspace.anexomail.com, 1536 wide): live bundle index-DhaYIeTm.js contains the QC3 code (mail/timeline, presets). SENT timeline PROVEN LIVE on real mail 'QC3a send now proof': Queued 11:30:16, Send now pressed 11:30:22, Handed over (1 try) 11:30:25, Accepted by the recipient's server 11:30:25, line '1 recipient. Accepted means the recipient's server took it. Whether it reached the inbox is not something any server tells us.', Refresh + Show tries (1). COMPOSE PRESETS PROVEN LIVE: Later today 11:15, Tonight 20:00, Tomorrow 09:00, Monday Mon 23 Nov 09:00, Custom date box; no console errors. NOT PROVEN: calm pre-send bar firing (needs a recipient, I never risk a real send), 390/820 live (window resize did not change the viewport, innerWidth stayed 1536), Sent-list badges (not mounted). I sent no mail and wrote nothing.
 
@@ -1469,11 +1469,11 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 - 20 Nov 2026 08:46 PKT: QC3 delivery board written (delivery_pure.ts + MailDeliveryBoard.tsx, Systems > Mail health, kernel RPC), SW stale-bundle loophole closed with live header proof; his one founder-install installs badges + board; not installed yet
 
-- 20 Nov 2026 08:52 PKT: QC3 = GREEN BY HIS WORD (20 Nov 2026 08:52 PKT: his 'green kero' + his founder-install paste x2 + his phone screenshot 08:29). WIRED: YES / REAL: YES / TECH-LAW CHECKED for: (a) Sent timeline on real mail, (b) compose schedule presets Karachi time, (c) Systems > Mail health DELIVERY BOARD live with real data through the signed Rust door + kernel RPC (13 sent, 11 accepted, 1 failed, accepted 85 pct, real speed line), (d) 390 phone: compose + presets seen on his phone (no sideways scroll, big buttons), (e) bundle live index-BUycmrkE = repo build, doors 401 without token, healthz 200, Ed25519 ON, service-worker stale-bundle loophole closed by header proof. Technology: Rust + Tokio + axum doors (fmail_timeline.rs), SQL E195 read-only security-definer + CHECK 7/7, WASM kernel RPC (mail_api), React 19 + TS UI. OPEN LIST (not green, in CLOSE-THE-GAPS-07NOV.md): badges on an in-flight mail (code extended to the Outbox view, needs his next founder-install; Sent badges calm by design, nothing to show for final mail), calm bar live firing (needs a real recipient), 820 tablet live, per-recipient delivery rows, attachment-word check (Q3). LIVE FIX seen in his Chrome: delivery tiles had label and number at the two ends, fixed in presend.css, waits his install. NEXT PHASE: QC4.
+- 20 Nov 2026 08:52 PKT: QC3 = GREEN (20 Nov 2026 08:52 PKT: his 'green kero' + his founder-install paste x2 + his phone screenshot 08:29). WIRED: YES / REAL: YES / TECH-LAW CHECKED for: (a) Sent timeline on real mail, (b) compose schedule presets Karachi time, (c) Systems > Mail health DELIVERY BOARD live with real data through the signed Rust door + kernel RPC (13 sent, 11 accepted, 1 failed, accepted 85 pct, real speed line), (d) 390 phone: compose + presets seen on his phone (no sideways scroll, big buttons), (e) bundle live index-BUycmrkE = repo build, doors 401 without token, healthz 200, Ed25519 ON, service-worker stale-bundle loophole closed by header proof. Technology: Rust + Tokio + axum doors (fmail_timeline.rs), SQL E195 read-only security-definer + CHECK 7/7, WASM kernel RPC (mail_api), React 19 + TS UI. OPEN LIST (not green, in CLOSE-THE-GAPS-07NOV.md): badges on an in-flight mail (code extended to the Outbox view, needs his next founder-install; Sent badges calm by design, nothing to show for final mail), calm bar live firing (needs a real recipient), 820 tablet live, per-recipient delivery rows, attachment-word check (Q3). LIVE FIX seen in his Chrome: delivery tiles had label and number at the two ends, fixed in presend.css, waits his install. NEXT PHASE: QC4.
 
 - 20 Nov 2026 08:58 PKT: QC4 plan + tech contract written (inline reply under the mail, reply all, forward inline, fold, selection reply, server-built References); no code yet
 
-- 20 Nov 2026 09:03 PKT: QC3 = GREEN FINAL BY THE CHAIRMAN'S WORD (20 Nov 2026 09:03 PKT, his 08:55: 'main chairman hoon, tu green likho bus final hai'). WIRED: YES / REAL: YES / TECH-LAW CHECKED. Whole phase QC3-1..QC3-7. Proof: his founder-install x3 (4/4 saboot: SPA 200, exchange without token 401, Ed25519 ON write-request signature ENFORCED, healthz 200); LIVE in my Chrome: OUTBOX BADGE 'Failed' on the real 17 Nov mail 'Q1b4 verdict test' through the authenticated Rust badges door + kernel RPC; Sent timeline on a real mail; compose presets; delivery board with real numbers (13 sent, 11 accepted, 1 failed); delivery tile fix live (css present in live bundle); his phone screenshot 390 (compose + presets, no sideways scroll); live bundle index-DTLpyjFT = committed dist at b77e8f47 (later local hash differs only because system_brain.json stamps every commit). Technology: SQL E195 (70/0, CHECK 7/7), Rust + Tokio + axum doors (cargo 558/0), WASM kernel RPC, React 19 + TS. Follow-ups carried on the list in CLOSE-THE-GAPS-07NOV.md (inside the green by his word, not blocking): calm bar live firing with a real recipient, 820 tablet live look, per-recipient delivery rows, attachment-word check (Q3). NEXT = QC4.
+- 20 Nov 2026 09:03 PKT: QC3 = GREEN FINAL BY THE CHAIRMAN'S WORD (20 Nov 2026 09:03 PKT, his 08:55: 'main chairman hoon, tu green likho bus final hai'). WIRED: YES / REAL: YES / TECH-LAW CHECKED. Whole phase QC3-1..QC3-7. Proof: his founder-install x3 (4/4 saboot: SPA 200, exchange without token 401, Ed25519 ON write-request signature ENFORCED, healthz 200); LIVE in my Chrome: OUTBOX BADGE 'Failed' on the real 17 Nov mail 'Q1b4 verdict test' through the authenticated Rust badges door + kernel RPC; Sent timeline on a real mail; compose presets; delivery board with real numbers (13 sent, 11 accepted, 1 failed); delivery tile fix live (css present in live bundle); his phone screenshot 390 (compose + presets, no sideways scroll); live bundle index-DTLpyjFT = committed dist at b77e8f47 (later local hash differs only because system_brain.json stamps every commit). Technology: SQL E195 (70/0, CHECK 7/7), Rust + Tokio + axum doors (cargo 558/0), WASM kernel RPC, React 19 + TS. Follow-ups carried on the list in CLOSE-THE-GAPS-07NOV.md (inside the green, not blocking): calm bar live firing with a real recipient, 820 tablet live look, per-recipient delivery rows, attachment-word check (Q3). NEXT = QC4.
 
 - 20 Nov 2026 09:10 PKT: QC4-2 DONE (20 Nov 2026 09:10 PKT): founder-web/src/reply_pure.ts + 13 golden tests (pure TypeScript, sandbox runner only): replyTargets (reply, reply all, me removed, dedupe, Reply-To), subjects (Re once, Fwd once), replyBody (selection replaces whole mail), forwardBody, splitQuote (Gmail, wrapped, Outlook, forwarded, trailing block; never loses a character), referencesFor (RFC 5322 3.6.4, max 20 keep root). tsc clean, all pure-TS tests pass, vite build OK. NEXT: QC4-3 Rust References from the stored parent, then QC4-4 UI (InlineReply, buttons, fold chip, selection reply, forward), QC4-5 tests, QC4-6 his one install, QC4-7 my live look.
 
@@ -1509,9 +1509,9 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 - 20 Nov 2026 09:58 PKT QC4 FIX + FOUNDER EMOJI ICON = GREEN: WIRED: YES / REAL: YES / TECH-LAW CHECKED. His founder-install paste (SPA 200, healthz 200, Ed25519 ON) + my live Chrome look (bundle index-D4DUrGRm = repo 886c37f9): list look = his photo, Reply/Forward 44px, FounderFace icon beside Send, picker opens. Nothing sent. Open: inline panel/fold/selection/20-warn live, 390/820, kernel pq References, awam health + routeTree re-check.
 
-- 20 Nov 2026 09:59 PKT QC4 + FOUNDER EMOJI ICON + LIST LOOK = GREEN FINAL BY HIS WORD (his 09:58: 'mai clicks ker raha tha sab theek hai green likho'; he clicked the live founder site himself). WIRED: YES / REAL: YES / TECH-LAW CHECKED. CORRECTION: my earlier lines stamped 10:05 PKT used a wrong clock; real clock 09:58 PKT, fixed in the docs. Open follow-ups: CLOSE-THE-GAPS-07NOV.md.
+- 20 Nov 2026 09:59 PKT QC4 + FOUNDER EMOJI ICON + LIST LOOK = GREEN FINAL (his 09:58: 'mai clicks ker raha tha sab theek hai green likho'; he clicked the live founder site himself). WIRED: YES / REAL: YES / TECH-LAW CHECKED. CORRECTION: my earlier lines stamped 10:05 PKT used a wrong clock; real clock 09:58 PKT, fixed in the docs. Open follow-ups: CLOSE-THE-GAPS-07NOV.md.
 
-- 20 Nov 2026 10:02 PKT OPEN ITEMS CLOSED BY HIS WORD (his 10:01): inline panel/fold/selection/20-warn, 390+820 screens, awam routeTree+health = GREEN by his word; WIRED: YES / REAL: YES / TECH-LAW CHECKED. Mine to fix: kernel pq-mail References + Reply-To.
+- 20 Nov 2026 10:02 PKT OPEN ITEMS CLOSED BY HIS WORD (his 10:01): inline panel/fold/selection/20-warn, 390+820 screens, awam routeTree+health = GREEN; WIRED: YES / REAL: YES / TECH-LAW CHECKED. Mine to fix: kernel pq-mail References + Reply-To.
 
 - 20 Nov 2026 10:08 PKT kernel pq-mail References CHECKED: not a QC4 bug. The browser cannot open recipient_pq mail yet (sealed_for_kernel, device-key phase) and web-wasm has no mail parser, so no reply path exists for it. Requirement recorded for the device-key phase: kernel summary must return references (max 40) + reply_to with the same golden cases as the Rust test. My earlier 'gap' wording corrected.
 
@@ -1656,7 +1656,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 - 21 Nov 2026 01:55 PKT: QCONNECT = GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED. Proof: his pastes (journal LOCAL PostgreSQL + LOCAL identity, 36 tables 0 founder-owned mismatches, door 3 ms vs REST 307-324 ms, dump 13M SHA-256 OK timer 03:20 UTC server only, SLOW lines 790 -> 2 in 5 min), my live Chrome 01:25 (his sign-in on the local identity, dashboard 2/2 11/11 HTTP/3 QUIC ML-DSA-65, real mailbox Inbox 1 Sent 10 Trash 4), his word 01:26 fast. Tech: Rust tokio-postgres, bcrypt + ES256, PostgreSQL 18 socket only, REST fallback kept. Gaps in CLOSE-THE-GAPS-07NOV.md. Next QC8.
 
-- 21 Nov 2026 02:00 PKT: QCONNECT = GREEN AND CLOSED BY HIS WORD (his 01:30). WIRED: YES / REAL: YES / TECH-LAW CHECKED (proof in the 01:55 ledger line). Live state FOUNDER_DB=local, rollback OFF=1. Leftover gaps only in CLOSE-THE-GAPS-07NOV.md. Next QC8.
+- 21 Nov 2026 02:00 PKT: QCONNECT = GREEN AND CLOSED (his 01:30). WIRED: YES / REAL: YES / TECH-LAW CHECKED (proof in the 01:55 ledger line). Live state FOUNDER_DB=local, rollback OFF=1. Leftover gaps only in CLOSE-THE-GAPS-07NOV.md. Next QC8.
 
 - 21 Nov 2026 02:05 PKT: his 01:33 concern recorded as the TOP open item: founder data is single-copy on his server since the switch (dump 13 MB x 7 on the same disk); awam not moved; managed copy = frozen snapshot of ~01:30. Options without Storage Box and without a vendor asked: his own second server over ssh, Hetzner server-level snapshot/RAID check, laptop by hand. Awaiting his answer.
 
@@ -1690,10 +1690,12 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 - 21 Nov 2026 03:10 PKT QCONNECT-LO live look in my Chrome (his tab, read only): session valid, Live + Trusted, Dashboard 2/2 checks fine, Answers verified, Mail inbox real; first dashboard load took about 15 s after the restart; data is on Supabase REST again (slower than local, expected). Not stamped green (390/820 not looked yet).
 
-- 21 Nov 2026 03:20 PKT QCONNECT (login-only) GREEN BY HIS WORD (02:58). WIRED: YES / REAL: YES / TECH-LAW CHECKED: login on his server (journal proof, his paste 02:53), data on Supabase, my Chrome look ok, backup kept. QC8 started: plan docs/claude/QC8-PLAN-21NOV.md and contract draft written, no code until his 4 answers.
+- 21 Nov 2026 03:20 PKT QCONNECT (login-only) GREEN (02:58). WIRED: YES / REAL: YES / TECH-LAW CHECKED: login on his server (journal proof, his paste 02:53), data on Supabase, my Chrome look ok, backup kept. QC8 started: plan docs/claude/QC8-PLAN-21NOV.md and contract draft written, no code until his 4 answers.
 
 - 21 Nov 2026 03:30 PKT QCONNECT live Chrome look (his order 02:59), his Systems page: live pulse running since 02:53:06 (the switch restart), build 0e0284a3, database round trip 458 ms (Supabase REST again, was about 3 ms local), Tokio 62 tasks 8 workers, QUIC + WebTransport, DBSC verified, PQC sealed, mail speed 3.1 s, real delivery board. Devices ring not looked.
 
 - 21 Nov 2026 03:40 PKT QC8: he asked what it is and whether it is needed; plain-words answer written at the top of docs/claude/QC8-PLAN-21NOV.md: polish only, not needed, dated tech-law items (26-30 Nov) are more urgent; his choice skip / small / full; no code
 
 - 21 Nov 2026 03:45 PKT HIS ORDER 03:06: NOT ONE LINE OF CODE until he says haan. Applies to QC8 and everything else; only plans and answers. QC8 choice (skip / small / full) is his; dated tech-law items wait for his word too.
+
+- 21 Nov 2026 03:55 PKT HIS ORDER 03:07: the words 'by his word' after GREEN are removed everywhere in the docs (196 replacements, 20 files); only GREEN is written from now on, with WIRED: YES / REAL: YES / TECH-LAW CHECKED. Lines about what was waived or closed by his word are kept. QCONNECT = GREEN. No code until his haan.
