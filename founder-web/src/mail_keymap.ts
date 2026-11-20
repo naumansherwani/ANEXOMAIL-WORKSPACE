@@ -45,6 +45,8 @@ export type HelpRow = { keys: string; does: string; where: "list" | "mail" | "pa
 export const HELP_ROWS: readonly HelpRow[] = [
   { keys: "j / k  or  Down / Up", does: "Next / previous mail", where: "list" },
   { keys: "Home / End", does: "First / last mail", where: "list" },
+  { keys: "Shift + Down / Up", does: "Select several mails; then e # s u do it for all of them", where: "list" },
+  { keys: "Type a name", does: "Jump to the next sender that starts with it (letters that are not shortcuts)", where: "list" },
   { keys: "Enter", does: "Open the mail", where: "list" },
   { keys: "c", does: "Write a new mail", where: "list" },
   { keys: "/", does: "Search the loaded mails", where: "list" },

@@ -19,3 +19,8 @@
 @media (max-width:480px){.kl-row{grid-template-columns:1fr;gap:4px}}
 @media (prefers-reduced-motion:reduce){.kl[open]{animation:none}}
 @media (forced-colors:active){.kl{border-color:CanvasText;background:Canvas;color:CanvasText}.kl kbd{border-color:CanvasText}}
+
+/* QC8a: marked rows (Shift range). A data attribute, so the mailbox's own classes are never touched. Not colour alone: a left bar + inset ring. */
+.mbx-r[data-kl-mark="1"]{box-shadow:inset 4px 0 0 #5aa9f0,inset 0 0 0 1px rgba(90,169,240,.55)}
+.kl-live{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (forced-colors:active){.mbx-r[data-kl-mark="1"]{outline:2px solid Highlight;outline-offset:-2px}}

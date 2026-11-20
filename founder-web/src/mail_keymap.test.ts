@@ -26,5 +26,5 @@ describe("QC8a type-ahead", () => {
   test("no match, no list, non-character keys", () => { expect(typeAhead(L, 0, "", "z", 1, 0).hit).toBe(-1); expect(typeAhead([], 0, "", "a", 1, 0).hit).toBe(-1); expect(typeAhead(L, 0, "", "Enter", 1, 0).hit).toBe(-1); });
 });
 describe("QC8a help rows", () => {
-  test("every row has keys and words; list scene shows list and page rows only", () => { for (const r of HELP_ROWS) { expect(r.keys.length).toBeGreaterThan(0); expect(r.does.length).toBeGreaterThan(3); } expect(helpFor("list").every((r) => r.where === "list" || r.where === "page")).toBe(true); expect(helpFor("compose").every((r) => r.where === "page" || r.where === "compose")).toBe(true); expect(HELP_ROWS.some((r) => /Shift \+/.test(r.keys))).toBe(false); expect(helpFor("compose").some((r) => r.keys === "Ctrl Enter")).toBe(true); });
+  test("every row has keys and words; list scene shows list and page rows only", () => { for (const r of HELP_ROWS) { expect(r.keys.length).toBeGreaterThan(0); expect(r.does.length).toBeGreaterThan(3); } expect(helpFor("list").every((r) => r.where === "list" || r.where === "page")).toBe(true); expect(helpFor("compose").every((r) => r.where === "page" || r.where === "compose")).toBe(true); expect(helpFor("compose").some((r) => r.keys === "Ctrl Enter")).toBe(true); });
 });

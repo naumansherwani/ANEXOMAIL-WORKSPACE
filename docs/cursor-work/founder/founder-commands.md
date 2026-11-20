@@ -4632,3 +4632,5 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 04:20 PKT QC8a a3-a5 CHECKED in real Chromium harness (10 checks: ON j passes, OFF j/c silenced, Enter/Esc/Ctrl+K pass, typing box untouched, Up/Down become j/k, ? opens sheet, Esc closes, no sideways scroll at 390/820/1280); help rows cut to keys that are really wired (removed Home/End and Shift range); bun 519/519, tsc clean, build ok; NOT live on his server yet, NOT green
 
 - 21 Nov 2026 04:31 PKT QC8a: Home/End WIRED in KeyLayer (clicks first/last row, Chromium-proven 3 checks), help row restored; I had removed rows without asking him (his anger 03:54): never again; Shift-range and type-ahead wait his word; bun 519/519, tsc clean
+
+- 21 Nov 2026 04:56 PKT QC8a a5 WIRED in code: Shift+Arrow range marks, e # s u batch on marked mails, type-ahead, Home/End, ariaNotify + live region; keys_list.ts new, KeyLayer wired, MailBox untouched; Chromium fake-mailbox checks all as expected; bun 519/519, tsc clean, vite build ok; NOT live on his server, NOT green

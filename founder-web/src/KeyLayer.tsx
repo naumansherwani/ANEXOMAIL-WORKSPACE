@@ -2,6 +2,8 @@ import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Switch } from "@/components/ui/switch";
 import { HELP_ROWS, helpFor, silenceSingle } from "./mail_keymap";
 import { readSingle, setSingle, subscribeSingle } from "./keys_store";
+import { ahead, batch, clearMarks, trackList, extend, jump, markedCount } from "./keys_list";
+import { SINGLE_KEYS } from "./mail_keymap";
 import "./keylayer.css";
 
 // QC8a (21 Nov 2026, his haan 03:50): the keyboard layer, ONE mount line in App.tsx. It ADDS to the existing handlers and edits none of them:
@@ -23,22 +25,22 @@ export function KeyLayer() {
       const dialogOpen = !!document.querySelector("dialog[open]") || !!(e.target as HTMLElement | null)?.closest?.("[role=dialog]");
       const scene = { composeOpen: !!document.querySelector(".mc-wrap"), inDialog: dialogOpen, typing: typingIn(e.target) };
       if (e.key === "?" && !m.ctrl && !m.meta && !m.alt && !scene.typing && !scene.inDialog && !scene.composeOpen) { e.preventDefault(); e.stopImmediatePropagation(); setMail(!!document.querySelector(".mbx-rows")); setOpen(true); return; }
+      const inList = !m.ctrl && !m.meta && !m.alt && !scene.typing && !scene.inDialog && !scene.composeOpen && !!document.querySelector(".mbx-rows") && (!interactive(e.target) || !!(e.target as HTMLElement).closest?.(".mbx-rows"));
+      const send = (key: string) => { own.current = true; try { window.dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true })); } finally { own.current = false; } };
+      // Several marked mails + an action key (e # s u): the action is done for each of them, one after the other.
+      if (inList && !m.shift && markedCount() > 1 && ["e", "#", "s", "u"].includes(e.key) && readSingle()) { e.preventDefault(); e.stopImmediatePropagation(); void batch(e.key, send); return; }
+      if (e.key === "Escape" && markedCount()) clearMarks();
+      if (inList && (e.key === "Home" || e.key === "End") && !m.shift) { if (jump(e.key === "End")) { e.preventDefault(); e.stopImmediatePropagation(); } return; }
+      if (inList && m.shift && (e.key === "ArrowDown" || e.key === "ArrowUp")) { if (extend(e.key === "ArrowDown" ? 1 : -1)) { e.preventDefault(); e.stopImmediatePropagation(); } return; }
+      // Type-ahead: only with a row in focus, and never a letter that is one of his fast keys while those are ON.
+      if (inList && !m.shift && (e.target as HTMLElement | null)?.closest?.(".mbx-r") && [...e.key].length === 1 && e.key !== " " && e.key !== "?" && (!readSingle() || !SINGLE_KEYS.includes(e.key.toLowerCase()))) { const hit = ahead(e.key); if (hit) e.preventDefault(); if (hit || !readSingle()) e.stopImmediatePropagation(); return; }
       if (silenceSingle(e.key, m, readSingle(), scene)) { e.stopImmediatePropagation(); return; }
-      // Home / End in the mail list: open the first / last row by clicking its own button (the existing select() does the work).
-      if ((e.key === "Home" || e.key === "End") && !m.ctrl && !m.meta && !m.alt && !m.shift && !scene.typing && !scene.inDialog && !scene.composeOpen
-          && document.querySelector(".mbx-rows") && (!interactive(e.target) || !!(e.target as HTMLElement).closest?.(".mbx-rows"))) {
-        const all = document.querySelectorAll<HTMLButtonElement>(".mbx-rows .mbx-r"), t = e.key === "Home" ? all[0] : all[all.length - 1];
-        if (t) { e.preventDefault(); e.stopImmediatePropagation(); t.click(); t.focus({ preventScroll: true }); t.scrollIntoView({ block: "nearest" }); }
-        return;
-      }
       // Up / Down in the mail list: the existing j / k does the real work. Only when nothing else owns the arrows.
-      if ((e.key === "ArrowDown" || e.key === "ArrowUp") && !m.ctrl && !m.meta && !m.alt && !m.shift && !scene.typing && !scene.inDialog && !scene.composeOpen
-          && document.querySelector(".mbx-rows") && (!interactive(e.target) || !!(e.target as HTMLElement).closest?.(".mbx-rows"))) {
-        e.preventDefault(); e.stopImmediatePropagation();
-        own.current = true; try { window.dispatchEvent(new KeyboardEvent("keydown", { key: e.key === "ArrowDown" ? "j" : "k", bubbles: true })); } finally { own.current = false; }
+      if ((e.key === "ArrowDown" || e.key === "ArrowUp") && !m.ctrl && !m.meta && !m.alt && !m.shift && inList) {
+        e.preventDefault(); e.stopImmediatePropagation(); clearMarks(); send(e.key === "ArrowDown" ? "j" : "k");
       }
     };
-    window.addEventListener("keydown", k, true); return () => window.removeEventListener("keydown", k, true);
+    window.addEventListener("keydown", k, true); const off = trackList(); return () => { window.removeEventListener("keydown", k, true); off(); };
   }, []);
   useEffect(() => { const d = dlg.current; if (!d) return; if (open && !d.open) d.showModal(); if (!open && d.open) d.close(); }, [open]);
   const rows = mail ? helpFor("mail") : HELP_ROWS.filter((r) => r.where === "page");
