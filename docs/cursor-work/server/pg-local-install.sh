@@ -22,22 +22,19 @@ cat > "$CONF/anexo.conf" <<CFG
 listen_addresses = ''
 unix_socket_directories = '/var/run/postgresql'
 unix_socket_permissions = 0770
-max_connections = 80
-shared_buffers = 2GB
-effective_cache_size = 8GB
-work_mem = 16MB
-maintenance_work_mem = 256MB
-random_page_cost = 1.1
-jit = off
-synchronous_commit = on
-log_min_duration_statement = 100
-log_lock_waits = on
-password_encryption = scram-sha-256
 CFG
 systemctl enable "postgresql@$VER-main" >/dev/null 2>&1 || true
-pg_ctlcluster "$VER" main status >/dev/null 2>&1 && pg_ctlcluster "$VER" main restart || pg_ctlcluster "$VER" main start
+pg_ctlcluster "$VER" main start >/dev/null 2>&1 || true
 for W in $(seq 1 30); do pg_isready -q -h /var/run/postgresql && break; sleep 1; done
 pg_isready -h /var/run/postgresql || { echo "FAIL: cluster not ready"; exit 1; }
+# 21:15 FIX (his first run: Ubuntu 26.04 had auto-created the cluster on localhost:5432 and the conf.d file was not the winning setting): ALTER SYSTEM writes postgresql.auto.conf, which beats every other file.
+for KV in "listen_addresses=''" "unix_socket_directories='/var/run/postgresql'" "unix_socket_permissions='0770'" "max_connections=80" "shared_buffers='2GB'" "effective_cache_size='8GB'" "work_mem='16MB'" "maintenance_work_mem='256MB'" "random_page_cost=1.1" "jit=off" "synchronous_commit=on" "log_min_duration_statement=100" "log_lock_waits=on" "password_encryption='scram-sha-256'"; do
+  K="${KV%%=*}"; V="${KV#*=}"; su postgres -c "psql -X -q -At -c \"alter system set $K = $V\"" >/dev/null
+done
+systemctl restart "postgresql@$VER-main" 2>/dev/null || pg_ctlcluster "$VER" main restart
+for W in $(seq 1 30); do pg_isready -q -h /var/run/postgresql && break; sleep 1; done
+pg_isready -h /var/run/postgresql || { echo "FAIL: cluster not ready after restart"; exit 1; }
+if ss -tlnp 2>/dev/null | grep -q postgres; then echo "FAIL: still a TCP listener after the fix; diagnosis:"; su postgres -c "psql -X -At -c \"select name||' = ['||setting||'] from '||coalesce(sourcefile,'default')||' ('||source||')' from pg_settings where name in ('listen_addresses','port','unix_socket_directories')\""; ss -tlnp | grep postgres; exit 1; fi
 echo "== 3/6 owner role (root, superuser, peer auth over the socket) and the database"
 su postgres -c "psql -X -At -c \"select 1 from pg_roles where rolname='root'\"" | grep -q 1 || su postgres -c "createuser -s root"
 su postgres -c "psql -X -At -c \"select 1 from pg_database where datname='$DB'\"" | grep -q 1 || su postgres -c "createdb -O root -E UTF8 $DB"
