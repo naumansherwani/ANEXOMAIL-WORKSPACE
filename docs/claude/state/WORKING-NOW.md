@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 00:28 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 00:28 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT step 8: prep run 3 (00:27): socket group door WORKS; smoke test failed 'permission denied for table founder_accounts' (copy has no grants). FIX 3 pushed: prep grants service_role on anexo_copy. Not yet re-run. HIS ANGER: no guesses on his server, read-only command first.
 NEXT STEP: He re-runs qconnect-switch-prep.sh and pastes; then qconnect-switch.sh; then step 9. Before ANY new server theory: one read-only command first (law 3).
 HIS LAST WORD: ledger working now blueprint time date, compaction-proof, 2-min loop, rules read, advance technology
@@ -18,24 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 31373bf7 21 Nov 00:28 QCONNECT: prep fix 3 grants for service_role
 - 71c2caf2 21 Nov 00:25 ledger line ae03f517
 - ae03f517 21 Nov 00:25 QCONNECT: prep fix 2, cluster self-heal
 - da8ec74b 21 Nov 00:22 ledger line 7327db98
 - 7327db98 21 Nov 00:22 QCONNECT: prep socket group fix
-- 0e914f4a 21 Nov 00:19 ledger line f687effa
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- M docs/cursor-work/server/qconnect-switch-prep.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md                | 23 ++++++-----------------
- docs/claude/tech-contracts/CURRENT.md           |  2 ++
- docs/cursor-work/server/qconnect-switch-prep.sh |  9 ++++++++-
- 3 files changed, 16 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 21 ++-------------------
+ 1 file changed, 2 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -46,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (6c86807f2660abb1d88523da7851fa3dc097315d)
+WIP snapshot: refs/wip/last (ca056c9c98fc3f059ae1c87cdd9f42bfa4f36a87)
