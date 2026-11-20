@@ -3110,3 +3110,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 5-min checkpoint QC2 waits his word
 
 - 20 Nov 06:00 PKT QC2-A founder server written + tested (SQL E194 PG17 33/33, Rust fmail_ 180 passed), not yet on his server; QC2-B browser next
+
+- 20 Nov 06:10 PKT QC2-B step 1: rich_pure.ts + mail_pure html twin + mail_api signatures/snippets + Tiptap 3 installed, tsc clean, bun pass; QC2-A pull is his to run
+
+- 20 Nov 06:12 PKT QC2-B step 1 inherit manifest synced

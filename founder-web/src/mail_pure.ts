@@ -138,7 +138,7 @@ export function hue(key: string | undefined): number { let h = 7; for (const c o
 
 // ================================================================== Q1d: compose + send (pure; the Rust twin is server/founder/src/fmail_mime.rs)
 
-export type Compose = { to: string[]; cc: string[]; bcc: string[]; subject: string; text: string; in_reply_to?: string };
+export type Compose = { to: string[]; cc: string[]; bcc: string[]; subject: string; text: string; html?: string; in_reply_to?: string };
 const LABEL = /^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$/;
 /** Same grammar as fmail_mime::norm_addr: dot-atom local part, a host with a dot, no quotes, no comments, no IP literals. Returns the lower-case address or null. */
 export function normAddr(a: string): string | null {
@@ -163,12 +163,14 @@ export function composeProblem(c: Compose): string | null {
   if (/[\u0000-\u0008\u000a-\u001f\u007f]/.test(c.subject)) return "The subject has a control character.";
   if (!c.subject.trim() && !c.text.trim()) return "An empty mail with no subject is not sent.";
   if (c.text.length > 2 * 1024 * 1024) return "The message is too long.";
+  if ((c.html ?? "").length > 2 * 1024 * 1024) return "The message is too long.";
   return null;
 }
 const enc = new TextEncoder();
 /** The touch target of a send: SHA-256 over the length-prefixed fields; byte for byte the same as fmail_mime::send_target (golden vector in both test files). */
 export async function sendTarget(mailbox: string, c: Compose, schedule: string): Promise<string> {
   const fields = ["fmail-send-v1", mailbox, c.to.join(","), c.cc.join(","), c.bcc.join(","), c.subject.trim(), c.text, schedule];
+  if (c.html) fields.push("html", c.html); // QC2: a rich mail binds its HTML too; a plain mail hashes as before (twin of fmail_mime::send_target)
   const parts: Uint8Array[] = [];
   for (const f of fields) { const b = enc.encode(f); const len = new Uint8Array(8); new DataView(len.buffer).setBigUint64(0, BigInt(b.length)); parts.push(len, b); }
   const all = new Uint8Array(parts.reduce((n, p) => n + p.length, 0)); let o = 0; for (const p of parts) { all.set(p, o); o += p.length; }

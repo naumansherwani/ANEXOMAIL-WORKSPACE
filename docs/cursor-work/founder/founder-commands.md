@@ -4285,3 +4285,7 @@ Compose box must have all Gmail features: minimize + centre/expand (bigger) like
 - 20 Nov 2026 05:44 PKT, HIS ORDER (verbatim): "QC2 ... is webresearch kya tha woh kero aur tum sirf 2 subphases banao only shuru kero advance codes likho advance sql likho" => QC2 = exactly 2 sub-phases (QC2A backend SQL+Rust, QC2B browser), web-research defaults accepted, start now.
 
 - 20 Nov 06:00 PKT QC2-A founder server written + tested (SQL E194 PG17 33/33, Rust fmail_ 180 passed), not yet on his server; QC2-B browser next
+
+- 20 Nov 06:10 PKT QC2-B step 1: rich_pure.ts + mail_pure html twin + mail_api signatures/snippets + Tiptap 3 installed, tsc clean, bun pass; QC2-A pull is his to run
+
+- 20 Nov 06:12 PKT QC2-B step 1 inherit manifest synced
