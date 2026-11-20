@@ -4344,3 +4344,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - QCONNECT 22:1x PKT: his pg-local-copy run: dump 12M in 661 s, restore 675 of 677 tables into local anexo_copy, fmail_messages 34=34, fmail_outbox 13=13, auth.users 16=16; the 2 missing tables need pgvector: pg-local-vector.sh written (waits his run); full status in QCONNECT-PLAN STATUS block; nothing wired into the running service yet
 
 - QCONNECT 22:0x PKT: WORKING-NOW checkpoint corrected (DOING/NEXT were stale); 2-minute ckpt-loop alive in the repo folder
+
+- QCONNECT 22:1x PKT: his pg-local-vector run OK: pgvector 0.8.1, tables 677=677, 0 errors, functions 1520; HIS WORD: no dump on the Storage Box (nightly dump stays on his server, 7 kept); step 5 pg-local-compare.sh written (hash compare + verify functions), waits his run; nothing wired into the running service

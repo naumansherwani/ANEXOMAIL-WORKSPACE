@@ -35,3 +35,7 @@ WHERE WE STAND: QCONNECT = the database moves next to the server. NOTHING IS SWI
 - QSPEED code-only wins that run meanwhile: E197 login finish as ONE SQL door (read E153/E167/passkey schema first, SQL SCHEMA-FIRST law), writes after the answer, network-only retry, Rust cache.
 - NOT green: QCONNECT as a phase (nothing is wired into the running service). QC7 reminder + sealed draft = GREEN (earlier).
 - Auto checkpoint: ckpt-loop.sh runs every 2 minutes in the sandbox (restart it with: nohup bash docs/cursor-work/server/ckpt-loop.sh &); the PreCompact hook also checkpoints.
+
+## STEP 4b DONE 22:0x PKT 20 Nov 2026 (his pg-local-vector paste): pgvector 0.8.1, restore exit 0 with 0 errors, tables local 677 = managed 677, leo_memory_vectors 0 rows, ai_memory_vectors 2 rows, functions local 1520. The copy anexo_copy is now table-complete.
+## HIS WORD 22:06 ON THE STORAGE BOX: "yeh mere storage box pe wazan nahi aye" = NO nightly database dump to the Hetzner Storage Box (it must not carry weight). Step 10 CHANGED: the nightly dump stays on his server only, compressed, last 7 kept (rotation), SHA-256 beside each; the Storage Box stays for attachments only (Q3). Nothing is ever pushed to the Storage Box for QCONNECT.
+## Step 5 WRITTEN 22:1x PKT: docs/cursor-work/server/pg-local-compare.sh (read-only on both sides: per table row count + one md5 over sorted row hashes, differing tables only; then the zero-argument verify functions on the local copy). Rows written by the live site after the dump will differ: expected, closed by the delta copy at switch time.
