@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 04:55 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 04:56 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 04:56 PKT b2 LIVE on his server (his install paste OK). Doing: my Chrome DOM look for b2, then b3 plan+code, then SQL E199 sync + E200 audit log (BOTH, his word)
 NEXT STEP: b2 live Chrome look -> b3 plan doc + mount -> E199+E200 SQL with CHECK
 HIS LAST WORD: his 04:55: DONO SQL kero, b3 shuru, plan repo mein, search points likho, phir advance codes
@@ -18,21 +18,23 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- e8543cc0 21 Nov 04:56 QC8b b3 focus + b2 live proof + plan doc
 - f0a26f0f 21 Nov 04:51 ledger line d710fb02
 - d710fb02 21 Nov 04:51 Records sync b3 detail and SQL question
 - 68009898 21 Nov 04:51 ledger line e2435573
 - e2435573 21 Nov 04:51 Records sync b3 detail and SQL question
-- 6fe5bf33 21 Nov 04:48 ledger line ee5a51ea
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/founder-commands.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
-## Uncom docs/claude docs/claude/state/WORKING-NOW.md     | 26 +++++++++-----------------
- docs/cursor-work/founder-commands.md |  2 ++
- 2 files changed, 11 insertions(+), 17 deletions(=== PHASE NOW (=== PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
+## Uncommitted size
+ docs/claude/state/WORKING-NOW.md | 17 +++--------------
+ 1 file changed, 3 insertions(+), 14 deletions(-)
+
+## Q state
+=== PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
 > ## >>> 20 Nov 2026 09:58 PKT QC4 plan vs code matched (table in docs/claude/QC4-PLAN-20NOV.md): feature 7 DONE end to end (not installed), feature 3 data DONE, pure logic for 3-6 DONE+tested, screens for 1,2,3,4,5,6 = QC4b NOT in code. <<<
 > ## >>> 20 Nov 2026 09:12 PKT HIS QC4 FEATURE LIST (7 features, his paste 09:09) is now verbatim in docs/claude/QC4-PLAN-20NOV.md and founder-commands.md; QC4a done (not installed), QC4b screen next <<<
 > ## >>> 20 Nov 2026 09:55 PKT QC4a = DONE, WRITTEN AND TESTED, NOT INSTALLED (20 Nov 2026 09:55 PKT): cargo whole suite 559 passed 0 failed 0 filtered out (was 558, +1 test for References + Reply-To), pure-TS tests 474 pass 0 fail (sandbox runner, not a runtime), tsc clean, vite build OK (index-BcA
@@ -40,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (fd87d4b340d53b6e2a1a0e31060c882e098a488c)
+WIP snapshot: refs/wip/last (9a472b202e4c7d8da09e1b6f6edc545a9de37b38)
