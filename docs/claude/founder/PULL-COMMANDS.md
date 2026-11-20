@@ -2467,3 +2467,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 03:54 PKT HIS DEADLINE 05:00 PKT: QC8a + QC8b live-Chrome GREEN; start QC8a a3
 
 - 21 Nov 2026 03:55 PKT HIS DEADLINE 05:00 PKT: QC8a and QC8b must be seen in live Chrome by then; start QC8a a3
+
+- 21 Nov 2026 03:57 PKT his answer 1 haan, 2 browser, 3 haan recorded; QC8a a3-a5 contract written, coding starts (browser-stored switch, no SQL, no server command)

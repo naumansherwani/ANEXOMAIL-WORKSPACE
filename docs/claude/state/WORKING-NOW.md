@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 03:45 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 21 Nov 03:52 PKT DEADLINE 05:00 PKT: QC8a + QC8b live Chrome GREEN. His 03:44 haan = start. Doing QC8a a3: read settings schema first (schema-first), then SQL keyboard.single_keys, toggle, listener
-NEXT STEP: a3 SQL, a3 listener mount in App.tsx, a4 ? sheet, a5 list keys, a6 Chrome, then QC8b
-HIS LAST WORD: his 21 Nov 03:44: 05:00 deadline, ek ek karke, advance technology
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 03:50 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 21 Nov 03:56 PKT QC8a a3-a5 CODING (his 03:50: 1 haan, 2 browser, 3 haan): new KeyLayer.tsx, KeySwitch.tsx, keylayer.css + 2 one-line mounts; no SQL/Rust; deadline 05:00 live Chrome
+NEXT STEP: write files, bun+tsc+vite build, mount lines, live Chrome walk, then QC8b
+HIS LAST WORD: his 21 Nov 03:50: 1 haan, 2 browser, 3 haan
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -17,22 +17,24 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 | Proto | Port | Process |
 |---|---|---|
 
-## Last 5 commits
+##- acde7fdd 21 No- acde7fdd 21 Nov 03:45 ledger line 48b8d290
 - 48b8d290 21 Nov 03:45 QC8: his 05:00 deadline recorded
 - 0ba8af08 21 Nov 03:41 ledger line 92f32687
 - 92f32687 21 Nov 03:41 QCONNECT intact proof recorded
-- 253a84ea 21 Nov 03:39 ledger line 51984872
-- 51984872 21 Nov 03:39 QC8a: compaction-safety records + blueprint top block
-
-## Uncommitted files (half-done work if any)
+- 253a84ea 21 Nov 03:39 ledge
+## Uncommitted 
+## Uncommitted files (half-do M docs/claude/B M docs/claude/BLUEPRINT-ABC-01NOV.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M docs/cursor-work/founder/founder-commands.md
 
-## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
-
-## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 21 ++-------------------
- 1 file changed, 2 insertions(+), 19 deletions(-)
-
+## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = n
+## Uncommitted 
+## U docs/claude/BLU docs/claude/BLUEPRINT-ABC-01NOV.md           |  1 +
+ docs/claude/state/WORKING-NOW.md             | 36 ++++++++++------------------
+ docs/claude/tech-contracts/CURRENT.md        |  9 +++++++
+ docs/cursor-work/founder/founder-commands.md |  2 ++
+ 4 files changed, 24 insertions(+), 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
 > ## >>> 20 Nov 2026 09:58 PKT QC4 plan vs code matched (table in docs/claude/QC4-PLAN-20NOV.md): feature 7 DONE end to end (not installed), feature 3 data DONE, pure logic for 3-6 DONE+tested, screens for 1,2,3,4,5,6 = QC4b NOT in code. <<<
@@ -42,4 +44,5 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (42284470ba430bd4247c485776e4fba709e6a872)
+t edit by hand)
+WIP snapshot: refs/wip/last (3bcf3215453303e18bfcf05858182038bc7ed9d4)

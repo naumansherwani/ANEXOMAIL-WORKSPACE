@@ -1,5 +1,14 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: QC8a a3-a5 (KEY LAYER MOUNT), written 21 Nov 2026 03:55 PKT, his answer 03:50 "1 haan, 2 browser, 3 haan". STATE: IN PROGRESS
+| Listed technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| React 19 + TypeScript + Radix + Tailwind 4 | NEW: KeyLayer.tsx (capture listener + "?" Radix dialog), KeySwitch.tsx (Settings toggle), keylayer.css; mounts = ONE line in App.tsx, ONE line in Settings.tsx | no | bun, tsc, vite build, real Chrome |
+| WCAG 2.1.4 Character Key Shortcuts (level A) | silenceSingle() from mail_keymap.ts, switch stored in this browser (localStorage, try/catch, per device); default ON | no | golden tests + Chrome keyboard walk |
+| Existing handlers untouched | MailBox.tsx, MailView.tsx, mail_pure.ts: byte for byte; arrows re-dispatch the existing j/k | no | git diff |
+| Server / SQL / Rust | NONE (his word: browser) | n/a | no server command |
+
+
 # TECH CONTRACT FOR PHASE: QC8a (KEYBOARD LAYER), a2 WRITTEN 21 Nov 2026 03:35 PKT, his haan 03:22 ("shuru kero QC8a"), plan docs/claude/QC8A-QC8B-PLAN-21NOV.md. STATE: IN PROGRESS
 | Listed technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -2060,3 +2069,5 @@ REST stays for ever: unset flag, unreachable socket or unusable key = REST (data
 - 21 Nov 2026 03:54 PKT HIS DEADLINE 05:00 PKT: QC8a + QC8b live-Chrome GREEN; start QC8a a3
 
 - 21 Nov 2026 03:55 PKT HIS DEADLINE 05:00 PKT: QC8a and QC8b must be seen in live Chrome by then; start QC8a a3
+
+- 21 Nov 2026 03:57 PKT his answer 1 haan, 2 browser, 3 haan recorded; QC8a a3-a5 contract written, coding starts (browser-stored switch, no SQL, no server command)
