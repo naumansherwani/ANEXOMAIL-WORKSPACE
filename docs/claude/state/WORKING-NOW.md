@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 02:17 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 02:17 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 03:05 PKT: HIS ORDER (02:16): BACKUP FIRST so nothing is lost. qconnect-backup-now.sh written + sandbox-tested (read-only on both DBs; full server pg_dump + Supabase founder tables as COPY files + SHA-256, in /var/backups/anexomail-pg on his server only, NOT git, NOT Storage Box). Order for him: 0 backup, 1 founder-install, 2 qconnect-login-only.
 NEXT STEP: He runs the backup line and pastes; only then founder-install and qconnect-login-only. Nothing switches before the backup paste says OK.
 HIS LAST WORD: his 21 Nov 02:16: pehle backup, takay kuch lost na ho
@@ -18,21 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- f3545f91 21 Nov 02:17 QCONNECT-LO: backup-now script (his backup-first order)
 - b391b0d3 21 Nov 02:14 ledger line 46c700d5
 - 46c700d5 21 Nov 02:14 QCONNECT-LO: state snapshot
 - cee18441 21 Nov 02:13 ledger line d8c3e9f9
 - d8c3e9f9 21 Nov 02:13 QCONNECT-LO: login-only switch script with guarded back-copy
-- 3edfe459 21 Nov 02:03 ledger line 7a3ddbf1
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
-?? docs/cursor-work/server/qconnect-backup-now.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 24 ++++++------------------
- 1 file changed, 6 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -43,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (c3b2aad709fc721c3411178e73df28e27c904437)
+WIP snapshot: refs/wip/last (d23ae8916ea9afec80b61a1c2306df08ea3b70e2)
