@@ -1,6 +1,6 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 10:21 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: DOING: QC4 + founder emoji + list look GREEN FINAL by his word; all QC4 open items closed; idle until his evening start
-NEXT STEP: NEXT: QC5 Delete forever, QC7 follow-up reminder + sealed draft, QC8 shortcuts + a11y, Q3 attachments; device-key phase needs kernel pq References
+# WORKING NOW (manual checkpoint, 20 Nov 2026 10:21 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: DOING: DK-a (kernel 0.19.0 kemopen@1 + mailparse@1) written+tested, pushed 64c78743, waits his founder-install
+NEXT STEP: NEXT: his install paste -> my live check kernel loads (version 0.19.0, no console errors); DK-b key custody (his hands) + screen; evening QC5/QC7/QC8/Q3
 HIS LAST WORD: 5-min check 10:11
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 052ff1be 20 Nov 10:21 ledger line 64c78743
 - 64c78743 20 Nov 10:21 DK-a: kernel 0.19.0 opens post-quantum mail (kemopen@1, mailparse@1)
 - 624eb192 20 Nov 10:05 ledger line b9602ac6
 - b9602ac6 20 Nov 10:05 DK plan: kernel opens pq mail
 - 65e511b5 20 Nov 10:05 ledger line 88e87c06
-- 88e87c06 20 Nov 10:05 DK device-key phase plan (kernel opens pq mail)
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 21 ++++-----------------
+ 1 file changed, 4 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (010d29552ca7fbe804e6aa124c46aa2946d5324d)
+WIP snapshot: refs/wip/last (ba918c009d499d459795ddd1cfcc84b360d028a1)
