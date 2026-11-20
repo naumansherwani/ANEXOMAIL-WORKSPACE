@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 03:24 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 03:25 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 03:25 PKT QC8a started (his haan): his 5 answers written, a1 audit done; a2 new pure key-map module + golden tests, NEW files only
 NEXT STEP: a2 mail_keymap.ts + test, then show him the mount line and the ? sheet mock
 HIS LAST WORD: his 21 Nov 03:22: 5 answers, shuru kero QC8a
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- dedbf5f7 21 Nov 03:25 QC8a a2: pure key map module + golden tests (new files only)
 - 403d6720 21 Nov 03:24 ledger line bd96d348
 - bd96d348 21 Nov 03:24 QC8a: his 5 answers + a1 audit
 - 22dc79a2 21 Nov 03:12 ledger line 6de007e8
 - 6de007e8 21 Nov 03:12 QC8a and QC8b plan with research (no code)
-- 57c035db 21 Nov 03:09 ledger line f05b5efe
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (04f02747abb8b64976998dcc43cc56e4eb00e299)
+WIP snapshot: refs/wip/last (1ecf0dc66a519a57b51718393864e760bd8b1265)
