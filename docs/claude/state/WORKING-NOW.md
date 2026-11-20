@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 03:09 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 21 Nov 03:55 PKT: HIS ORDER (03:07): delete 'by his word' everywhere, write only GREEN. DONE in docs: 196 replacements in 20 files (GREEN BY HIS WORD -> GREEN). From now on I write only GREEN (with WIRED/REAL/TECH-LAW CHECKED). Statements 'waived / closed by his word' (what was skipped) are kept. Still: NO CODE until his haan.
-NEXT STEP: Wait for his haan or his choice a/b/c for QC8.
-HIS LAST WORD: his 21 Nov 03:07: by his words delete, sirf green likho
+# WORKING NOW (manual checkpoint, 21 Nov 2026 03:12 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 21 Nov 03:55 PKT: his order 03:11: QC8a + QC8b plan with web research, existing UNTOUCHED, new only connects. PLAN WRITTEN docs/claude/QC8A-QC8B-PLAN-21NOV.md (QC8a keys, QC8b accessibility; zero-touch overlay; research: WCAG 2.1.4 level A, ariaNotify Baseline 2026, APG listbox vs grid). NO CODE (his order 03:06). 5 questions to him.
+NEXT STEP: His answers (haan/na) to the 5 questions; code only after his haan.
+HIS LAST WORD: his 21 Nov 03:11: QC8a QC8b plan, advance web research, existing no touch
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,21 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 57c035db 21 Nov 03:09 ledger line f05b5efe
 - f05b5efe 21 Nov 03:09 Docs: only GREEN, no 'by his word' after GREEN (his 03:07 order)
 - 19f81c27 21 Nov 03:07 ledger line e982cd7a
 - e982cd7a 21 Nov 03:07 Standing order: no code until his haan (03:06)
 - bd9100c1 21 Nov 03:07 ledger line b90b0802
-- b90b0802 21 Nov 03:07 QC8: plain-words answer and options recorded
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+?? docs/claude/QC8A-QC8B-PLAN-21NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 43 ++--------------------------------------
- 1 file changed, 2 insertions(+), 41 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 24 ++++++------------------
+ 1 file changed, 6 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +43,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (858db32f4bc45ef93984e770b3ba5447e1f4d18c)
+WIP snapshot: refs/wip/last (45cb663ca4ea32b9e07e6ba781d48a4ebe27a6dd)

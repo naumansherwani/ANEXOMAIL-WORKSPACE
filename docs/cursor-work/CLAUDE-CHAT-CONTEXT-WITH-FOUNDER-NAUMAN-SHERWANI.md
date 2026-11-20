@@ -4450,3 +4450,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 03:45 PKT HIS ORDER 03:06: NOT ONE LINE OF CODE until he says haan. Applies to QC8 and everything else; only plans and answers. QC8 choice (skip / small / full) is his; dated tech-law items wait for his word too.
 
 - 21 Nov 2026 03:55 PKT HIS ORDER 03:07: the words 'by his word' after GREEN are removed everywhere in the docs (196 replacements, 20 files); only GREEN is written from now on, with WIRED: YES / REAL: YES / TECH-LAW CHECKED. Lines about what was waived or closed by his word are kept. QCONNECT = GREEN. No code until his haan.
+
+- 21 Nov 2026 03:55 PKT QC8a + QC8b PLAN written (docs/claude/QC8A-QC8B-PLAN-21NOV.md): keyboard layer and accessibility layer, zero-touch overlay (existing files unchanged), research WCAG 2.1.4 (level A), ariaNotify (Baseline 2026), APG listbox/grid; 5 questions to him; no code until his haan
