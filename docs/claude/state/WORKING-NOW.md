@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 00:59 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QCONNECT CLOSED FOR EVER by his word (21 Nov 01:05 PKT). Switch never run, flag OFF, site on REST.
-NEXT STEP: Back to QC3a / QSPEED per docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md. rules-read.py first. Never restart QCONNECT.
-HIS LAST WORD: Qconnect yehi bandh kero hamesha ke liye; mera founder account pe impact? advance technology lost?
+# WORKING NOW (manual checkpoint, 21 Nov 2026 01:05 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QCONNECT REOPENED by his word 01:05 PKT (replaces the 00:58 close): finish in 30 min. Scripts ready: qconnect-switch.sh (his line, drift list valid until 02:36), qconnect-measure.sh (step 9), pg-local-dump-install.sh (step 10). Waiting for his switch paste.
+NEXT STEP: 1) his switch line + paste 2) he signs in once 3) measure line 4) dump-install line 5) my Chrome look, then declare only with WIRED+REAL+TECH-LAW proof. Rollback OFF=1. No guesses.
+HIS LAST WORD: Qconnect continue kero sirf 30 mins main sab green working wire kero
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,26 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 4e5fec6c 21 Nov 00:59 ledger line 89ada5c6
 - 89ada5c6 21 Nov 00:59 WORKING-NOW snapshot after QCONNECT close
 - 61789911 21 Nov 00:59 ledger line 078fb50e
 - 078fb50e 21 Nov 00:59 QCONNECT closed for ever by founder word; state saved
 - cff43612 21 Nov 00:52 ledger line 33171565
-- 33171565 21 Nov 00:52 founder-tech-proof.sh read-only audit proofs
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/BLUEPRINT-ABC-01NOV.md
+ M docs/claude/QCONNECT-PLAN-20NOV.md
  M docs/claude/state/WORKING-NOW.md
+?? docs/cursor-work/server/pg-local-dump-install.sh
+?? docs/cursor-work/server/qconnect-measure.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/BLUEPRINT-ABC-01NOV.md |  1 +
+ docs/claude/QCONNECT-PLAN-20NOV.md |  2 ++
+ docs/claude/state/WORKING-NOW.md   | 27 +++++++++------------------
+ 3 files changed, 12 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +48,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (40fd8d99b1ae34274ea3213b130b7a91e10aa134)
+WIP snapshot: refs/wip/last (13c43b820f27cab1f9bed7a8a7e66b73a39050fe)

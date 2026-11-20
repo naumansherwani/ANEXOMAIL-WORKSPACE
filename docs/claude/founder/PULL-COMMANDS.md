@@ -2385,3 +2385,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 00:58 PKT: founder-tech-proof.sh written (read-only proofs for fonts HTTP/1.1, TLS cipher/ML-KEM, red blocked_24h = founder_dbsc_events). His lines: 1 proof, 2 founder-install (data.rs fix). Switch on hold.
 
 - 21 Nov 2026 01:05 PKT: QCONNECT CLOSED FOR EVER by his word. Switch 8b never run, FOUNDER_DB OFF, live site on REST unchanged, code inert, nothing deleted on his server. His tech-proof paste: founder binary holds TCP+UDP 443, DNS HTTPS alpn=h3, blocked rows = DBSC why no_cookie (2 before QCONNECT started). Live Chrome 00:42: 14/18 h3, kernel worker, WebGPU, ML-DSA line. Back to QC3a / QSPEED.
+
+- 21 Nov 2026 01:15 PKT: QCONNECT REOPENED by his word (30 min to finish; replaces the 00:58 close). Written: qconnect-measure.sh (step 9, read only), pg-local-dump-install.sh (step 10, server only, 7 kept, SHA-256, no Storage Box). Next his switch line (qconnect-switch.sh), then sign in once, measure, dump, my Chrome look. Not proven yet.

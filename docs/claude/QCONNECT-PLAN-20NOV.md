@@ -95,3 +95,5 @@ Fixed: data.rs no default database (no FOUNDER_PG_URL = REST), switch script EXI
 
 ## QCONNECT CLOSED FOR EVER 21 Nov 2026 01:05 PKT (his word 00:58)
 Switch 8b never run; flag OFF; live site on REST as before; code inert in the repo; nothing deleted on his server without his word (idle: PG18 socket-only cluster, anexo_founder, anexo_copy, role anexomail-founder, group anexopg, /etc/anexomail/local-id.p8, backups). His last pastes: tech-proof (his ss: founder binary holds TCP 443 + UDP 443; DNS HTTPS alpn=h3; blocked rows = why no_cookie) and a third founder-install (service alive). Latency alternative = QSPEED. Optional teardown of the idle local database ONLY if he asks.
+
+## QCONNECT REOPENED 21 Nov 2026 01:15 PKT (his word 01:05, replaces the close): finish in 30 min = switch (his line), measure (qconnect-measure.sh), nightly dump (pg-local-dump-install.sh, server only), my Chrome look. Not green until proven.
