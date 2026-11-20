@@ -4490,3 +4490,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 04:42 PKT QC8b b1 AUDIT done (read-only live DOM: 51 controls, 0 unnamed, 0 small, 6 gaps listed); his search placeholder Search mail done (one string, look unchanged, his word 04:09 with 2 photos); blueprint top block has subphases and technology; QC8a live proof partial
 
 - 21 Nov 2026 04:44 PKT QC8b b1 audit, search placeholder Search mail (his word 04:09, manifest synced for awam inherit), blueprint subphases; QC8a live proof partial
+
+- 21 Nov 2026 04:50 PKT pull command given for QC8a + Search mail; waits his paste for live Chrome; next QC8b b2
