@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 22:01 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 22:01 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT: install proven (PostgreSQL 18.6, socket only); full-backup full-20261120-164159; copy restored into anexo_copy 675 of 677 tables, row counts equal; pg-local-vector.sh written, waits his run; NOTHING wired into the running service yet (plan + STATUS block docs/claude/QCONNECT-PLAN-20NOV.md)
 NEXT STEP: 1) his paste of pg-local-vector.sh; 2) hash-chain compare on anexo_copy; 3) Rust data.rs pg backend (flag, REST rollback); 4) Rust signin owns passwords; 5) switch with rollback + re-measure (login 50 ms); 6) nightly Storage Box dump; meanwhile QSPEED E197 login door (SQL schema-first)
 HIS LAST WORD: SQL advance 400+ likho QC7
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 7a55b36b 20 Nov 22:01 QCONNECT: WORKING-NOW checkpoint corrected
 - 1dc89ec9 20 Nov 22:00 ledger line 167b966e
 - 167b966e 20 Nov 22:00 QCONNECT: copy proof 675/677, pg-local-vector.sh, status block
 - 2ad9d26d 20 Nov 21:44 ledger line 3235e43e
 - 3235e43e 20 Nov 21:44 QCONNECT: pg-local-copy.sh (dump + restore + row-count proof); install proven
-- 2e706d12 20 Nov 21:39 ledger line 8489873a
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 21 ++++-----------------
- 1 file changed, 4 insertions(+), 17 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (4af64f6441604a5acd502c2b36373988908a65ac)
+WIP snapshot: refs/wip/last (ed00570788867fff2fbf4ff22be9e0fafe85b477)
