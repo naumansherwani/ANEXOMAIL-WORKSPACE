@@ -4364,3 +4364,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - QCONNECT 23:5x PKT: step 7 CODE DONE (sandbox, real PostgreSQL): server/founder/src/localid.rs Rust identity engine (bcrypt, ES256 own key kid lid1, refresh rotation + reuse kill, mint, ledger) + LOCAL_E198 SQL doors + hooks; live tests pass, suite 573 passed 0 failed; real bug found (zero-argument rpc) and fixed; not installed
 
 - QCONNECT 23:5x PKT: step 7 CODE DONE (sandbox, real PostgreSQL): server/founder/src/localid.rs Rust identity engine (bcrypt, ES256 own key kid lid1, refresh rotation + reuse kill, mint, ledger) + LOCAL_E198 SQL doors + hooks; live tests pass, suite 573 passed 0 failed; real bug found (zero-argument rpc) and fixed; not installed
+
+- 21 Nov 2026 00:12 PKT: QCONNECT_bootstrap.sql GUARD added (refuses on managed Supabase: supabase_admin role present; sandbox: local re-run ok, simulated managed refused). His 00:02 paste into Supabase editor was refused by Supabase itself, harm 0. File is LOCAL ONLY, run by pg-local-install.sh; never a web SQL editor. Step 7 still code-only; his next lines: pg-local-run198.sh then founder-install.

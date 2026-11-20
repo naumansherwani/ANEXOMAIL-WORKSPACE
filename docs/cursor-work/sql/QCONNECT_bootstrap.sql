@@ -4,6 +4,13 @@
 -- identities, audit_log_entries, uid(), role(), jwt()), schema storage (objects). The auth and storage tables here are MINIMAL STUBS so the E-files can reference them; in step 4 the real rows come from a data dump
 -- and the real column sets from a schema-only dump of the managed project (then this file is not run again). Safe to run again (idempotent). Opens no port, writes no secret.
 
+-- GUARD (21 Nov 2026 00:10 PKT, after he pasted this file into the managed Supabase editor): this file is for his OWN server PostgreSQL ONLY. The managed project has the roles supabase_admin / supabase_auth_admin; if either exists this refuses at once and changes nothing. pg-local-install.sh runs this file itself; never paste it into any web SQL editor.
+do $$ begin
+  if exists (select 1 from pg_roles where rolname in ('supabase_admin','supabase_auth_admin','supabase_storage_admin')) then
+    raise exception 'QCONNECT_bootstrap is for the LOCAL server database only: REFUSED on a managed Supabase project (nothing was changed)';
+  end if;
+end $$;
+
 do $$ begin
   if not exists (select 1 from pg_roles where rolname = 'anon') then create role anon nologin noinherit; end if;
   if not exists (select 1 from pg_roles where rolname = 'authenticated') then create role authenticated nologin noinherit; end if;
