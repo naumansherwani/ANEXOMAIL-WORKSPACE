@@ -1266,3 +1266,5 @@
 - 20 Nov 2026 09:50 PKT QC4 LIVE LOOK (my Chrome, live bundle index-28vuW0q6 = repo 48b0525e): Reply (r) and Forward (f) buttons 44 px render under the mail, no sideways scroll, Reply all correctly hidden (one-recipient mail). BUG FOUND + FIXED: my class mbx-rb collided with the list row class (rows became 44 px bordered buttons); renamed to mbx-rpl, tsc clean, bun 479/0, vite ok. Needs his next install to go live. Not yet seen live: inline panel open, fold chip, selection, 20-warn, 390/820.
 
 - 20 Nov 2026 09:55 PKT AWAM emoji button (his order 09:34, image): sticker-face icon (own SVG drawing, not a copy of any chat app), round ghost 44 px button, click opens the same docked emoji list; awam ComposeStudio only (EmojiToggle sticker prop), founder default glyph unchanged. tsc clean, emoji tests 33/0. Not installed on his awam site: needs the awam pull command; not looked at live yet.
+
+- 20 Nov 2026 09:40 PKT HIS LAW: founder mail list look = same to same as his photo (kept in chat); law file docs/claude/FOUNDER-MAIL-LIST-LOOK-LAW-20NOV.md; guard test ui_class_guard.test.ts; class names grepped before use.
