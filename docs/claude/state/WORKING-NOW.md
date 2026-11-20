@@ -1,6 +1,6 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 23:46 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QCONNECT step 7 SCHEMA READ done (his auth paste: bcrypt 2a, legacy refresh rows, E71 guard 42501); NOW coding server/founder/src/localid.rs (bcrypt, ES256 token with a new key file, session + refresh rows legacy style, mint, refresh rotation, logout) + sandbox tests on a real PostgreSQL; score 6 of 10 proven
-NEXT STEP: 1) code localid.rs + Cargo bcrypt + wire auth.rs/signin.rs/passkey.rs/main.rs behind FOUNDER_DB=local; 2) sandbox tests; 3) installer step for /etc/anexomail/local-id.p8; 4) his founder-install; 5) step 8 switch; 6) step 9 re-measure; 7) step 10 dump on server only
+# WORKING NOW (manual checkpoint, 20 Nov 2026 23:55 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QCONNECT step 7 CODE DONE in the sandbox (localid.rs + LOCAL_E198 doors, live test on real PostgreSQL, 573 tests pass), not installed; his next lines: pg-local-run198.sh then founder-install; then step 8 switch
+NEXT STEP: 1) his pg-local-run198.sh; 2) his founder-install (flag off); 3) step 8: delta copy + freeze + FOUNDER_DB=local + FOUNDER_PG_URL anexo_copy + rollback; 4) step 9 re-measure; 5) step 10 nightly dump on server only
 HIS LAST WORD: SQL advance 400+ likho QC7
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -18,20 +18,43 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- f6844be0 20 Nov 23:46 ledger line 4cca17f3
 - 4cca17f3 20 Nov 23:46 QCONNECT: step 7 real auth schema read, technology list
 - 68023d80 20 Nov 23:42 ledger line 6befe8a9
 - 6befe8a9 20 Nov 23:42 QCONNECT: step 7 design + pg-local-authschema.sh
 - f4a003c8 20 Nov 23:38 ledger line c3563819
-- c3563819 20 Nov 23:38 QCONNECT: step 6 installed (off), score 6 of 10
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/BLUEPRINT-ABC-01NOV.md
+ M docs/claude/QCONNECT-PLAN-20NOV.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M docs/cursor-work/sql/QCONNECT_bootstrap.sql
+ M docs/cursor-work/sql/index.md
+ M server/founder/Cargo.lock
+ M server/founder/Cargo.toml
+ M server/founder/src/auth.rs
+ M server/founder/src/data.rs
+ M server/founder/src/main.rs
+ M server/founder/src/passkey.rs
+ M server/founder/src/pg.rs
+ M server/founder/src/signin.rs
+?? docs/cursor-work/server/pg-local-run198.sh
+?? docs/cursor-work/sql/CHECK_LOCAL_E198.sql
+?? docs/cursor-work/sql/LOCAL_E198_founder_localid_doors.sql
+?? server/founder/src/localid.rs
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 21 ++-------------------
- 1 file changed, 2 insertions(+), 19 deletions(-)
+ server/founder/Cargo.toml                   |  1 +
+ server/founder/src/auth.rs                  |  1 +
+ server/founder/src/data.rs                  |  9 +++++-
+ server/founder/src/main.rs                  |  1 +
+ server/founder/src/passkey.rs               |  5 ++--
+ server/founder/src/pg.rs                    | 11 +++++---
+ server/founder/src/signin.rs                | 14 ++++++----
+ 14 files changed, 108 insertions(+), 30 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +65,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (f51fafd36a28e31ec0f18b8138822e1d860907f2)
+WIP snapshot: refs/wip/last (333dcc532d1b43e2da00ddfb000daf9ebc963fe6)

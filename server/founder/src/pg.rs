@@ -13,7 +13,7 @@ struct Arg { name: String, ty: String, has_default: bool, is_json: bool, is_arra
 #[derive(Clone, Debug)]
 struct Proc { args: Vec<Arg>, set: bool, void: bool }
 
-pub struct Pg { pool: Pool, procs: RwLock<HashMap<String, Vec<Proc>>>, cols: RwLock<HashMap<String, HashMap<String, String>>>, sql: RwLock<HashMap<String, String>> }
+pub struct Pg { pub id: Option<crate::localid::LocalId>, pool: Pool, procs: RwLock<HashMap<String, Vec<Proc>>>, cols: RwLock<HashMap<String, HashMap<String, String>>>, sql: RwLock<HashMap<String, String>> }
 
 /// service_role is what PostgREST uses for the service key; the session is opened AS that role, with the same JWT claim, so every SQL door sees the same caller as before.
 fn cfg_from(url: &str) -> Result<tokio_postgres::Config, String> {
@@ -27,7 +27,7 @@ impl Pg {
     pub async fn connect(url: &str, size: usize) -> Result<Pg, String> {
         let mgr = Manager::from_config(cfg_from(url)?, NoTls, ManagerConfig { recycling_method: RecyclingMethod::Fast });
         let pool = Pool::builder(mgr).max_size(size.clamp(2, 64)).build().map_err(|e| e.to_string())?;
-        let me = Pg { pool, procs: RwLock::new(HashMap::new()), cols: RwLock::new(HashMap::new()), sql: RwLock::new(HashMap::new()) };
+        let me = Pg { id: None, pool, procs: RwLock::new(HashMap::new()), cols: RwLock::new(HashMap::new()), sql: RwLock::new(HashMap::new()) };
         me.pool.get().await.map_err(|e| e.to_string())?.query_one("select 1", &[]).await.map_err(|e| e.to_string())?;
         Ok(me)
     }
@@ -80,8 +80,11 @@ impl Pg {
         let procs = self.load_proc(name).await?;
         let p = Self::pick(&procs, &keys).ok_or((404u16, "The requested function was not found in the schema cache (PGRST202)".to_string()))?;
         let call = format!("public.\"{name}\"({})", keys.iter().map(|k| { let a = p.args.iter().find(|a| &a.name == k).unwrap(); format!("\"{}\" => {}", a.name.replace('"', "\"\""), Self::arg_expr(a)) }).collect::<Vec<_>>().join(", "));
-        let s = if p.void { format!("select 'null'::jsonb from (select {call}) _v") }
-                else if p.set { format!("select coalesce(jsonb_agg(to_jsonb(t)), '[]'::jsonb) from {call} t") }
+        // a call without arguments never mentions $1; the statement still takes the body as its one parameter, so it is always referenced once
+        let pp = if keys.is_empty() { ", (select $1::jsonb) _p" } else { "" };
+        let s = if p.void { format!("select 'null'::jsonb from (select {call}) _v{pp}") }
+                else if p.set { format!("select coalesce(jsonb_agg(to_jsonb(t)), '[]'::jsonb) from {call} t{pp}") }
+                else if keys.is_empty() { format!("select coalesce(to_jsonb({call}), 'null'::jsonb) from (select $1::jsonb) _p") }
                 else { format!("select coalesce(to_jsonb({call}), 'null'::jsonb)") };
         self.sql.write().unwrap().insert(ck, s.clone());
         Ok(s)

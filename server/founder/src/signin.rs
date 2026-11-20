@@ -260,11 +260,15 @@ fn trace(stage: &str, detail: &str) { eprintln!("founder-signin stage={stage} de
 
 async fn mint(sb: &Sb, uid: &str) -> Result<Parked, ()> {
     if uid.is_empty() || !uid.chars().all(|c| c.is_ascii_hexdigit() || c == '-') { return Err(()); }
-    let r = sb.http.get(format!("{}/auth/v1/admin/users/{uid}", sb.url)).header("apikey", &sb.key).header("authorization", format!("Bearer {}", sb.key))
-        .send().await.map_err(|_| trace("mint_user", "send_failed"))?;
-    let c0 = r.status().as_u16();
-    let u: Value = r.json().await.map_err(|_| trace("mint_user", &format!("not_json http={c0}")))?;
-    let email = u["email"].as_str().filter(|e| crate::login::valid_email(e)).ok_or_else(|| trace("mint_user", &format!("no_email http={c0}")))?.to_string();
+    let email = if sb.pg.as_ref().is_some_and(|p| p.id.is_some()) {
+        crate::localid::admin_email(sb, uid).await.filter(|e| crate::login::valid_email(e)).ok_or_else(|| trace("mint_user", "local_no_email"))?
+    } else {
+        let r = sb.http.get(format!("{}/auth/v1/admin/users/{uid}", sb.url)).header("apikey", &sb.key).header("authorization", format!("Bearer {}", sb.key))
+            .send().await.map_err(|_| trace("mint_user", "send_failed"))?;
+        let c0 = r.status().as_u16();
+        let u: Value = r.json().await.map_err(|_| trace("mint_user", &format!("not_json http={c0}")))?;
+        u["email"].as_str().filter(|e| crate::login::valid_email(e)).ok_or_else(|| trace("mint_user", &format!("no_email http={c0}")))?.to_string()
+    };
     let (c1, link) = gotrue(sb, "admin/generate_link", Some(json!({"type": "magiclink", "email": email})), Some(&sb.key)).await.map_err(|_| trace("mint_link", "send_failed"))?;
     if !(200..300).contains(&c1) { trace("mint_link", &format!("http={c1}")); return Err(()); }
     let th = link["hashed_token"].as_str().or_else(|| link["properties"]["hashed_token"].as_str()).filter(|t| !t.is_empty() && t.len() <= 256).ok_or_else(|| trace("mint_link", "no_hashed_token"))?.to_string();

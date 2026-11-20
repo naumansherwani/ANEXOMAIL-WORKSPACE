@@ -483,8 +483,9 @@ async fn finish_register(st: &St, sb: &crate::data::Sb, uid: &str, did: &str, re
     if facts["ok"].as_bool() != Some(true) {
         // fail closed: a key without facts cannot sign in (assert denies unknown credentials); take it out of the active set too
         if let Some(id) = added["id"].as_str().filter(|i| is_uuid(i)) {
-            let _ = sb.http.patch(format!("{}/rest/v1/founder_passkeys?id=eq.{id}&revoked_at=is.null", sb.url)).header("apikey", &sb.key).header("authorization", format!("Bearer {}", sb.key))
-                .json(&json!({"revoked_at": "now()", "revoked_reason": "registration refused by the WebAuthn policy"})).send().await;
+            if sb.pg.is_some() { let _ = sb.rpc("localid_passkey_unregister", json!({"p_id": id, "p_reason": "registration refused by the WebAuthn policy"})).await; }
+            else { let _ = sb.http.patch(format!("{}/rest/v1/founder_passkeys?id=eq.{id}&revoked_at=is.null", sb.url)).header("apikey", &sb.key).header("authorization", format!("Bearer {}", sb.key))
+                .json(&json!({"revoked_at": "now()", "revoked_reason": "registration refused by the WebAuthn policy"})).send().await; }
         }
         return (StatusCode::FORBIDDEN, Json(json!({"error": "the WebAuthn policy refused this key", "reasons": facts["reasons"], "kind": facts["kind"]}))).into_response();
     }

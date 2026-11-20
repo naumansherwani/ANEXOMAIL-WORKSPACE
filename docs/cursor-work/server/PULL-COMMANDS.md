@@ -1379,3 +1379,7 @@
 - QCONNECT 23:5x PKT: step 7 survey + design (Rust identity engine localid.rs replaces the 6 gotrue spots when FOUNDER_DB=local); pg-local-authschema.sh (read only) written per the SQL schema-first law, waits his paste before any code
 
 - QCONNECT 23:5x PKT: step 7 schema read from his paste (bcrypt 2a only, legacy refresh path, E71 guard 42501, 0 MFA factors); technology list written in the plan and the blueprint; next localid.rs code
+
+- QCONNECT 23:5x PKT: step 7 CODE DONE (sandbox, real PostgreSQL): server/founder/src/localid.rs Rust identity engine (bcrypt, ES256 own key kid lid1, refresh rotation + reuse kill, mint, ledger) + LOCAL_E198 SQL doors + hooks; live tests pass, suite 573 passed 0 failed; real bug found (zero-argument rpc) and fixed; not installed
+
+- QCONNECT 23:5x PKT: step 7 CODE DONE (sandbox, real PostgreSQL): server/founder/src/localid.rs Rust identity engine (bcrypt, ES256 own key kid lid1, refresh rotation + reuse kill, mint, ledger) + LOCAL_E198 SQL doors + hooks; live tests pass, suite 573 passed 0 failed; real bug found (zero-argument rpc) and fixed; not installed

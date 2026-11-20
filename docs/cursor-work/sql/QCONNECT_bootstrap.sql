@@ -27,7 +27,8 @@ create table if not exists auth.sessions (
   id uuid primary key default gen_random_uuid(), user_id uuid not null references auth.users(id) on delete cascade, created_at timestamptz default now(), updated_at timestamptz default now(),
   factor_id uuid, aal text, not_after timestamptz, refreshed_at timestamp, user_agent text, ip inet, tag text);
 create table if not exists auth.refresh_tokens (
-  id bigserial primary key, token text unique, user_id text, revoked boolean, created_at timestamptz default now(), updated_at timestamptz default now(), parent text, session_id uuid references auth.sessions(id) on delete cascade);
+  id bigserial primary key, instance_id uuid, token text unique, user_id text, revoked boolean, created_at timestamptz default now(), updated_at timestamptz default now(), parent text, session_id uuid references auth.sessions(id) on delete cascade);
+create table if not exists auth.mfa_factors (id uuid primary key default gen_random_uuid(), user_id uuid not null references auth.users(id) on delete cascade, friendly_name text, factor_type text not null default 'totp', status text not null default 'unverified', created_at timestamptz not null default now(), updated_at timestamptz not null default now());
 create table if not exists auth.identities (
   id uuid primary key default gen_random_uuid(), provider_id text not null, user_id uuid not null references auth.users(id) on delete cascade, identity_data jsonb not null default '{}'::jsonb, provider text not null,
   last_sign_in_at timestamptz, created_at timestamptz default now(), updated_at timestamptz default now(), email text);

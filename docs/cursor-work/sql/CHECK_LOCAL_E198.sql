@@ -1,0 +1,4 @@
+select 'LOCAL_E198 doors: ' || (select count(*) from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.proname in ('localid_user','localid_open','localid_refresh','localid_close','localid_verify','localid_selftest','localid_passkey_unregister')) || ' of 7' as what, (select count(*) from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.proname in ('localid_user','localid_open','localid_refresh','localid_close','localid_verify','localid_selftest','localid_passkey_unregister')) = 7 as ok;
+select public.localid_selftest() as what, public.localid_selftest() like '%10/10' as ok;
+select 'ledger ' || (public.localid_verify())::text as what, (public.localid_verify()->>'broken')::int = 0 as ok;
+select 'parameters never logged: ' || current_setting('log_parameter_max_length') as what, current_setting('log_parameter_max_length') = '0' as ok;

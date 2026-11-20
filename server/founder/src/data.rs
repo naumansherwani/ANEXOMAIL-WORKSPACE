@@ -27,7 +27,13 @@ impl Sb {
             let url = std::env::var("FOUNDER_PG_URL").unwrap_or_else(|_| "postgresql://root@/anexo_founder?host=/var/run/postgresql".into());
             let size = std::env::var("FOUNDER_PG_POOL").ok().and_then(|v| v.parse().ok()).unwrap_or(16);
             match crate::pg::Pg::connect(&url, size).await {
-                Ok(p) => { eprintln!("founder: database engine = LOCAL PostgreSQL (unix socket, pool {size})"); self.pg = Some(std::sync::Arc::new(p)); }
+                Ok(mut p) => {
+                    let kf = std::env::var("FOUNDER_ID_KEY_FILE").unwrap_or_else(|_| "/etc/anexomail/local-id.p8".into());
+                    match crate::localid::LocalId::load_or_create(&kf, &self.url) {
+                        Ok(l) => { eprintln!("founder: database engine = LOCAL PostgreSQL (unix socket, pool {size}); identity engine = LOCAL (bcrypt + ES256 kid lid1)"); p.id = Some(l); self.pg = Some(std::sync::Arc::new(p)); }
+                        Err(e) => eprintln!("founder: FOUNDER_DB=local but the identity key is not usable ({e}); staying on REST"),
+                    }
+                }
                 Err(e) => eprintln!("founder: FOUNDER_DB=local but the socket did not answer ({e}); staying on REST"),
             }
         } else { eprintln!("founder: database engine = REST (managed)"); }
@@ -111,6 +117,7 @@ impl Sb {
         matches!(self.rpc("founder_device_ok", serde_json::json!({"p_uid": uid, "p_device": did})).await, Some(Value::Bool(true)))
     }
     pub async fn jwks(&self) -> Vec<crate::jwt_core::Jwk> {
+        if let Some(l) = self.pg.as_ref().and_then(|p| p.id.as_ref()) { return vec![l.jwk.clone()]; }
         let Ok(r) = self.http.get(format!("{}/auth/v1/.well-known/jwks.json", self.url)).send().await else { return vec![] };
         match r.json::<Value>().await { Ok(d) => crate::jwt_core::parse_jwks(&d), Err(_) => vec![] }
     }

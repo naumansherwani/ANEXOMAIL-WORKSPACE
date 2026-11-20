@@ -148,6 +148,7 @@ docs/cursor-work/sql/E195_founder_mail_delivery_timeline.sql
 docs/cursor-work/sql/E196_founder_mail_followups.sql
 docs/cursor-work/sql/E89_analytics_backend.sql
 docs/cursor-work/sql/E90_kernel_constitution.sql
+docs/cursor-work/sql/LOCAL_E198_founder_localid_doors.sql
 docs/cursor-work/sql/proofs/00-FOUNDER-TECH-RULE.md
 docs/cursor-work/sql/proofs/E68_proof.sql
 docs/cursor-work/sql/proofs/E69_proof.sql
@@ -170,8 +171,8 @@ founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
+founder-web/dist/assets/index-CVWR9Ns_.js
 founder-web/dist/assets/index-CqAjfayR.css
-founder-web/dist/assets/index-DNVY7_2F.js
 founder-web/dist/assets/kernel.worker-DY4WQ2it.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
@@ -505,6 +506,7 @@ server/founder/src/inbox.rs
 server/founder/src/lease.rs
 server/founder/src/ledger.rs
 server/founder/src/live.rs
+server/founder/src/localid.rs
 server/founder/src/login.rs
 server/founder/src/main.rs
 server/founder/src/mldsa.rs

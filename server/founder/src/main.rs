@@ -10,6 +10,7 @@ mod sign;
 mod bridge;
 mod data;
 mod pg;
+mod localid;
 mod login;
 mod actions;
 mod ftoken;

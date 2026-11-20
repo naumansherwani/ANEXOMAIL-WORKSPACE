@@ -62,6 +62,7 @@ pub(crate) fn no_store(mut r: Response) -> Response { r.headers_mut().insert(axu
 
 /// One call to the identity service. Err = unreachable/unreadable.
 pub(crate) async fn gotrue(sb: &crate::data::Sb, path_q: &str, body: Option<Value>, bearer: Option<&str>) -> Result<(u16, Value), ()> {
+    if sb.pg.as_ref().is_some_and(|p| p.id.is_some()) { return crate::localid::call(sb, path_q, body, bearer).await; } // QCONNECT 7: the identity engine is ours
     let mut rq = sb.http.post(format!("{}/auth/v1/{}", sb.url, path_q)).header("apikey", &sb.key);
     if let Some(b) = bearer { rq = rq.header("authorization", format!("Bearer {b}")); }
     if let Some(b) = body { rq = rq.json(&b); }
