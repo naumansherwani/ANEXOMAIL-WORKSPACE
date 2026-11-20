@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 04:32 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 04:33 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 05:05 PKT founder-install #2 OK on his server (QC8a keys + Search mail live). Doing live Chrome look: placeholder, ? sheet 390/820. Then QC8b b2. Awam search written, waits his awam pull.sh
 NEXT STEP: live Chrome look then GREEN only with proof; QC8b b2 semantics enhancer
 HIS LAST WORD: his 21 Nov 04:25 paste: install OK
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- f24babe9 21 Nov 04:33 AUTOFIX LAW written and spread
 - 936deae3 21 Nov 04:30 ledger line da1c5f3a
 - da1c5f3a 21 Nov 04:30 QC8a a1-a5 + Search mail GREEN (live proof), open items listed
 - b37f4e34 21 Nov 04:26 ledger line c08865fd
 - c08865fd 21 Nov 04:26 QC8a live proof 2 recorded
-- 95523bba 21 Nov 04:25 ledger line 386ffe5c
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (e9fbe906673ff8184ad6951ff5a763316482729f)
+WIP snapshot: refs/wip/last (264e76ae2dad218ff5d55ad8ff871a41d2be22cf)
