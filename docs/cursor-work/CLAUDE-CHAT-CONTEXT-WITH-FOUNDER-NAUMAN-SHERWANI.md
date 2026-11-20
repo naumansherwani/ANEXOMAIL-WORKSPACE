@@ -4185,3 +4185,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 20 Nov 07:08 PKT 5-min check: rules read, WORKING-NOW updated; QC2 Trusted Types fix pushed, waits his founder-install then my live Chrome look
 
 - 20 Nov 07:14 PKT 5-min check: rules read, WORKING-NOW updated; QC2 fix pushed, waits his founder-install then my live Chrome look
+
+- 20 Nov 07:22 PKT QC2 live look on his server OK (Trusted Types crash gone after his install, rich editor + paste clean + signature/snippets panel live, bundle = repo); rich rows aligned (18 px); open gaps in CLOSE-THE-GAPS (phone/tablet look, SPA stale after install via service worker cache, save signature/snippet by his hands); NEXT = QC3 discuss with him

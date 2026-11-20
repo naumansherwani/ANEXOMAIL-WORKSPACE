@@ -23,3 +23,6 @@
 .rt-row{display:flex;flex-wrap:wrap;gap:6px}.rt-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
 .rt-list li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px;min-width:0}
 .mc-rich code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.92em;padding:0 .3em;border-radius:4px;background:rgba(127,127,127,.22)}
+/* live look 20 Nov 07:15: the plain box and the Subject row sit 18 px in; the rich rows must line up with them */
+.rt-modes,.rt-ask,.rt-panel,.rt-slash{padding-inline:18px}.rt-slash{margin-inline:18px;padding-inline:0}
+.rt .rt-bar{padding-inline:18px}.rt .mc-rich{padding-inline:18px}
