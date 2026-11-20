@@ -348,3 +348,4 @@ G2 is now the open item in progress.
 - 20 Nov 2026 07:48 PKT QC3 OPEN: his two pull commands (Rust + SPA) are installing, no paste yet; QC3-7 live look open; Sent-list badges not mounted; per-recipient rows; SPA update after install.
 - 20 Nov 2026 08:12 PKT QC3 saboot recorded: installed on his server (healthz 200, SPA 200, Ed25519 ON); live Chrome look running.
 - 20 Nov 2026 08:25 PKT QC3 live look: timeline + presets proven; bar firing, 390/820 live, Sent-list badges still OPEN.
+- 20 Nov 2026 08:27 PKT QC3 AUDIT written: docs/claude/QC3-AUDIT-20NOV.md (6 loopholes; 390/820 after the Q series by his word).

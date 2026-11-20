@@ -1064,7 +1064,7 @@ docs/cursor-work/sql/CHECK_E119.sql 8a79e357ded727d0
 src/components/app/CommandPalette.tsx 12a0fd1cf3105c1a
 src/lib/dashboard.ts 66e8a7d64fa8e599
 src/routes/app.admin.addresses.tsx cb8efe1f397d00f0
-docs/claude/BLUEPRINT-ABC-01NOV.md 001fe7655fd1f706
+docs/claude/BLUEPRINT-ABC-01NOV.md e6c82a8851d54d57
 docs/cursor-work/sql/E122_founder_seal_interval.sql be0edb2538f82051
 docs/cursor-work/sql/CHECK_E122.sql d10212a8dfda8472
 founder-web/src/routes.test.ts caf72623a1376094
@@ -1188,12 +1188,12 @@ founder-web/src/passkey_pure.ts 18c84406d0b26eb9
 server/founder/src/passkey.rs fc1644aca0233454
 server/rust/j3_action_vectors.json d90c898ebb69d9ea
 web-wasm/src/action.rs eda7722b529a2887
-lanes/ALL-FILES.csv 1801408d1e43ded9
+lanes/ALL-FILES.csv 004248e27d7884f1
 lanes/awam.txt 355e26eaaef4a371
-lanes/docs.txt 339d5c51d8d77809
+lanes/docs.txt c87f274a657f0bb9
 lanes/founder.txt d8d4226d07bbd2c4
 lanes/shared.txt 299aa61796a72830
-lovable-gold/README.md 8a64d8dc14e66e6d
+lovable-gold/README.md ab681e6a94e30cd2
 docs/claude/FOUNDER-FLARE-J6-RESEARCH-03NOV.md 5e65d9f84cbbc643
 docs/cursor-work/sql/CHECK_E140.sql 0aa343c84820214f
 docs/cursor-work/sql/E140_founder_flare_push.sql 3c95ae9963ebd5bf
@@ -1216,7 +1216,7 @@ founder-web/public/icon-512.png f1fdd95ddefb9b35
 founder-web/public/manifest.webmanifest c13e42ef147a304c
 src/components/app/FeatureGate.tsx f0ae35c8646cb436
 src/routes/app.storage.tsx 78ca91241d265b0f
-docs/claude/CLOSE-THE-GAPS-07NOV.md 2bd2bba6e4b8c6af
+docs/claude/CLOSE-THE-GAPS-07NOV.md 6557d37e2fb9480f
 docs/claude/FOUNDER-STATUS-TABLE-07NOV.md 9c074ad25a6c9ad0
 docs/claude/START-HERE-AFTER-COMPACTION.md edb1ff7f3fc7615f
 docs/claude/K4-REAL-443-DESIGN-07NOV.md 209686fae89766e5
@@ -1307,8 +1307,8 @@ src/routes/app.org.tsx c3a1f12a640bb274
 src/routes/app.org.emoji.tsx 4cb6c978d9fb4e5e
 docs/claude/AWAM-D4-CLOSE-AND-ORDER-20NOV.md ab447059a98a8681
 docs/claude/QC2-PLAN-20NOV.md 963486e05ceb310e
-docs/claude/state/WORKING-NOW.md 1710de951bc7f879
-docs/claude/PHASE-NOW.md d6989b254eb4f2ea
+docs/claude/state/WORKING-NOW.md e52ca79bb7099e8d
+docs/claude/PHASE-NOW.md dff8e26cf0a92e7c
 docs/cursor-work/sql/E194_founder_mail_signatures_snippets.sql 77d359c553335cc3
 docs/cursor-work/sql/CHECK_E194.sql 677ed0aa9fed057f
 server/founder/src/fmail_rich.rs 5ba3c0e5689cc692
