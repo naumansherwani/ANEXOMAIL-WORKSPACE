@@ -107,6 +107,8 @@ mod tests {
     const VECTOR: &str = "../../web-wasm/tests/kem_vector.json";
     #[test]
     fn emit_kem_vector() {
+        // The vector file lives in the repo (web-wasm/tests). The server install only holds server/founder, so there the file is absent: skip. The parity proof runs in the repo/sandbox.
+        if std::env::var("DK_VECTOR").is_err() && !std::path::Path::new(VECTOR).exists() { return; }
         use fips203::ml_kem_768::KG;
         use fips203::traits::KeyGen;
         let hexs = |b: &[u8]| b.iter().map(|x| format!("{x:02x}")).collect::<String>();

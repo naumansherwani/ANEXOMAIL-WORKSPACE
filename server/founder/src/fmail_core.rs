@@ -246,6 +246,8 @@ mod tests {
     /// Regenerate: MAIL_GOLDEN=1 cargo test emit_mail_golden. Without it the test only checks the committed file still matches the server's output (so the two can never drift).
     #[test]
     fn emit_mail_golden() {
+        // Same rule: the golden file is in the repo (web-wasm/tests), not in the server install tree; skip there, prove in the repo.
+        if std::env::var("MAIL_GOLDEN").is_err() && !std::path::Path::new("../../web-wasm/tests/mail_golden.json").exists() { return; }
         let big_refs: String = (0..60).map(|i| format!("<r{i}@x.org>")).collect::<Vec<_>>().join(" ");
         let cases: Vec<(&str, Vec<u8>)> = vec![
             ("plain", b"From: Ann <ann@example.org>\r\nTo: me@anexomail.com, Bob <bob@example.org>\r\nCc: c@example.org\r\nSubject: Hello there\r\nDate: Fri, 20 Nov 2026 09:00:00 +0500\r\nMessage-ID: <m1@example.org>\r\n\r\nHi,\r\n\r\nPlain text body.\r\n".to_vec()),

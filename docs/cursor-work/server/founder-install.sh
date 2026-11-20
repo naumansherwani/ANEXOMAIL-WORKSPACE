@@ -8,7 +8,7 @@
 #   4. systemd unit (ProtectSystem=strict, NoNewPrivileges, PrivateTmp, seccomp-lite) -> start -> /healthz + /founder/v1/me bina token = 401 saboot.
 #   Fail => purani binary wapas. Caddy/host ABHI nahi (F1a mein alag, pehle saboot).
 set -uo pipefail
-REPO="${REPO:-/opt/anexomail-web}"; ROOT=/opt/anexomail-founder; RUST_ENV="${RUST_ENV:-/opt/anexomail-rust/.env}"
+REPO="${REPO:-/opt/anexomail-web}"; ROOT=/opt/anexomail-founder; export CARGO_TARGET_DIR="$ROOT/target"; RUST_ENV="${RUST_ENV:-/opt/anexomail-rust/.env}"
 SVC=anexomail-founder; ENVF=/etc/anexomail/founder.env; STAMP="$(date +%s)"
 command -v cargo >/dev/null 2>&1 || export PATH="$HOME/.cargo/bin:$PATH"
 command -v cargo >/dev/null 2>&1 || { echo "FAIL: cargo nahi mila"; exit 2; }
@@ -35,8 +35,8 @@ show server/rust/g5d_bundle_vector.json >"$ROOT/rust/g5d_bundle_vector.json" || 
 # QLIVE-c: stream_tier.rs test include_str!("../../rust/e187_tier_rows.sql") (the 7 package rows of E187; a repo-side test keeps it equal to the SQL)
 show server/rust/e187_tier_rows.sql >"$ROOT/rust/e187_tier_rows.sql" || { echo "FAIL: e187_tier_rows.sql nahi"; exit 2; }
 # main.rs ka path src/ se ../../rust/jwt_core.rs = $ROOT/rust/jwt_core.rs (src/src -> ../../ = src/..)
-echo "== 1/4 tests"; TOK=0; for TRY in 1 2 3; do (cd "$ROOT/src" && cargo test --release >/tmp/founder-test.$$ 2>&1); RC=$?; grep -E "test result|FAILED|^error|panicked" /tmp/founder-test.$$ | head -8; if [ $RC -eq 0 ]; then TOK=1; break; fi; echo "tests try $TRY failed (exit $RC), dobara"; sleep 2; done; [ $TOK -eq 1 ] || { echo "FAIL: tests 3 baar — kuch nahi badla"; exit 3; }; rm -f /tmp/founder-test.$$
-echo "== 2/4 build"; export ANX_BUILD="$(git -C "$REPO" rev-parse --short origin/main)" ANX_BUILD_TIME="$(date -u +%Y-%m-%dT%H:%M:%SZ)"; (cd "$ROOT/src" && nice cargo build --release 2>&1 | tail -3) ; NEW="$ROOT/src/target/release/anexomail-founder"; [ -x "$NEW" ] || { echo "FAIL: build"; exit 3; }
+echo "== 1/4 tests"; TOK=0; for TRY in 1 2 3; do (cd "$ROOT/src" && cargo test --profile itest >/tmp/founder-test.$$ 2>&1); RC=$?; grep -E "test result|FAILED|^error|panicked" /tmp/founder-test.$$ | head -8; if [ $RC -eq 0 ]; then TOK=1; break; fi; echo "tests try $TRY failed (exit $RC), dobara"; sleep 2; done; [ $TOK -eq 1 ] || { echo "FAIL: tests 3 baar — kuch nahi badla"; exit 3; }; rm -f /tmp/founder-test.$$
+echo "== 2/4 build"; export ANX_BUILD="$(git -C "$REPO" rev-parse --short origin/main)" ANX_BUILD_TIME="$(date -u +%Y-%m-%dT%H:%M:%SZ)"; (cd "$ROOT/src" && nice cargo build --release 2>&1 | tail -3)  # CARGO_TARGET_DIR persists: 2nd install is incremental ; NEW="$ROOT/target/release/anexomail-founder"; [ -x "$NEW" ] || { echo "FAIL: build"; exit 3; }
 [ -x "$ROOT/anexomail-founder" ] && cp "$ROOT/anexomail-founder" "$ROOT/anexomail-founder.bak.$STAMP"
 echo "== 2b/4 SPA (founder-web/dist, sandbox mein bana; server par npm/Node NAHI)"
 NEWWEB="$ROOT/web.new.$STAMP"; mkdir -p "$NEWWEB"
