@@ -2369,3 +2369,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 00:30 PKT: QCONNECT step 8 started (his haan 00:16). Survey found a split-brain risk: anexomail-deliver / inbound_attach / awam edge also write the managed DB. Read-only probe qconnect-who-writes.sh written; switch shape decided after his paste.
 
 - 21 Nov 2026 00:40 PKT: QCONNECT step 8 WRITTEN (not run on his server): contract QCONNECT-8, qconnect-switch-prep.sh + qconnect-switch.sh (REST fallback kept, auto rollback, OFF=1). Sandbox proof: COPY pipe with replica role (append-only trigger and FK bypassed) + sequence reset on scratch PG16. His haan 00:17. Next: his prep paste, then the switch line, then step 9.
+
+- 21 Nov 2026 00:30 PKT: QCONNECT step 8 prep run on his server: role ok, key created, smoke test FAILED (socket 0770, service user outside the group). Fixed: prep step 0 creates group anexopg, sets unix_socket_group, adds anexomail-founder. Awaiting his re-run paste.

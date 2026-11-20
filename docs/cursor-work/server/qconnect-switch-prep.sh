@@ -8,6 +8,19 @@ set -uo pipefail
 S=/var/run/postgresql; SU=anexomail-founder; KEY=/etc/anexomail/local-id.p8; D=/root/anexomail-backups; umask 077; mkdir -p "$D"
 pg_isready -h $S >/dev/null || { echo "FAIL: local cluster not ready"; exit 2; }
 id "$SU" >/dev/null 2>&1 || { echo "FAIL: OS user $SU missing (founder-install creates it)"; exit 2; }
+echo "== 0/4 socket door: the socket is 0770 (his hardening, step 3), so the service user needs the socket GROUP (dedicated group anexopg, nobody else gets in; the data directory stays 0700)"
+VER="$(ls /usr/lib/postgresql | sort -n | tail -1)"
+getent group anexopg >/dev/null || groupadd --system anexopg
+id -nG "$SU" | tr ' ' '\n' | grep -qx anexopg || usermod -aG anexopg "$SU"
+CUR="$(psql -X -h $S -d postgres -At -c "show unix_socket_group")"
+if [ "$CUR" != anexopg ]; then
+  psql -X -h $S -d postgres -At -c "alter system set unix_socket_group = 'anexopg'" >/dev/null
+  systemctl restart "postgresql@$VER-main" 2>/dev/null || pg_ctlcluster "$VER" main restart
+  for W in 1 2 3 4 5 6 7 8 9 10; do pg_isready -h $S >/dev/null && break; sleep 1; done
+fi
+pg_isready -h $S >/dev/null || { echo "FAIL: cluster not ready after the group change"; exit 2; }
+echo "   socket: $(ls -l $S/.s.PGSQL.5432 | awk '{print $1, $3, $4}'), unix_socket_group=$(psql -X -h $S -d postgres -At -c "show unix_socket_group"), $SU groups: $(id -nG $SU)"
+echo "   listeners (must be none): $(ss -tlnp 2>/dev/null | grep -c postgres)"
 echo "== 1/4 login role $SU (local database only)"
 psql -X -h $S -d postgres -q -v ON_ERROR_STOP=1 <<SQL || { echo "FAIL: role"; exit 3; }
 do \$\$ begin
