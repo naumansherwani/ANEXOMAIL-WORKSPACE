@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 01:34 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 01:34 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT green+closed, but HIS 01:33 CONCERN is the top open item: founder data now single-copy on his one server (dump on the same server). Awam NOT moved. Waiting his answer: what is 'server 2' / how is the server hosted, and which off-server copy he accepts (not Storage Box, no vendor).
 NEXT STEP: Do NOT write backup scripts until he answers (law 3: read-only question first). Then write the off-server copy line. Then QC8.
 HIS LAST WORD: yeh umar bhar ka masla, awam bhi risk founder bhi risk, storage pe weight na aye
@@ -18,22 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 6db7e2a1 21 Nov 01:34 backup risk recorded as top gap
 - 15a66e88 21 Nov 01:30 ledger line ff446368
 - ff446368 21 Nov 01:30 QCONNECT: green and closed by founder word
 - e5bc0eae 21 Nov 01:28 ledger line e046ad80
 - e046ad80 21 Nov 01:28 QCONNECT: declared done with proof, gaps recorded, next QC8
-- eab16a49 21 Nov 01:26 ledger line e9575f5c
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/CLOSE-THE-GAPS-07NOV.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/CLOSE-THE-GAPS-07NOV.md |  1 +
- docs/claude/state/WORKING-NOW.md    | 24 ++++++------------------
- 2 files changed, 7 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -44,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (828f8fa035f9c621889951baab95a30e85d0fffb)
+WIP snapshot: refs/wip/last (18e9aac72d091b48ac58f6daa8e3702af4a6f374)
