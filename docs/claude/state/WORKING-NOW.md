@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 19:21 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 19:22 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: DK-a INSTALLED (his paste 19:20, healthz 200); doing my live Chrome kernel 0.19.0 look
 NEXT STEP: Chrome look -> QC5 Delete forever -> QC7 -> QC8 -> Q3 -> DK-b (his hardware keys)
 HIS LAST WORD: 5-min check 10:11
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- ea896d7b 20 Nov 19:22 DK-a live look
+- 5aaedbde 20 Nov 19:21 ledger line bcf1bc3c
 - bcf1bc3c 20 Nov 19:21 DK-a installed on his server (19:20 PKT paste), receipt + ledger
 - dbd27325 20 Nov 19:09 ledger line 073635e8
 - 073635e8 20 Nov 19:09 WORKING-NOW checkpoint refresh
-- 2dc9af34 20 Nov 19:08 ledger line 3e7393b5
-- 3e7393b5 20 Nov 19:08 DK context saved
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 40 ++--------------------------------------
- 1 file changed, 2 insertions(+), 38 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (e408b5ee5e1fb67a0267613d8b7319b1c4f3f9e5)
+WIP snapshot: refs/wip/last (a0b3b9a5a8fae3611b2acabd5161f81f60092d0f)
