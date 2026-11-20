@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 01:26 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 01:26 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT live. His word 01:26 PKT: speed feels amazing on both site loads after the switch ('wow what a fast speed, kamaal hai'). Still to write the phase as done: fresh SLOW count after the switch (his one line) for the number.
 NEXT STEP: His paste: journalctl -u anexomail-founder --since=-5min --no-pager | grep -c SLOW ; then declare QCONNECT done (WIRED+REAL+TECH-LAW), then QC8. Rollback OFF=1.
 HIS LAST WORD: wow what a fast speed bhai kamaal hai, live kiya do bar, dono bar kamaal hai speed
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- e9575f5c 21 Nov 01:26 QCONNECT: his speed word recorded
 - c58634de 21 Nov 01:26 ledger line 04672c04
 - 04672c04 21 Nov 01:26 QCONNECT: steps 8-10 proven on his server, state saved
 - 5f42bf46 21 Nov 01:24 ledger line 21b19439
 - 21b19439 21 Nov 01:24 QCONNECT: step 9 measured, Chrome look at login page
-- f0e19f19 21 Nov 01:22 ledger line 070d084f
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (b3a1b7549f056faf75efe586012ccfc36a0dc15d)
+WIP snapshot: refs/wip/last (4db22e9e86720c7790b8ad3b4b5842ae81e64536)
