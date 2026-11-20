@@ -15,6 +15,7 @@ import { FOLDERS, ago, compact, fmtSize, glide, hue, initials, isGatedView, keyC
 import { TrustRing, OutFactsLine } from "./TrustRing";
 import { MailTimeline } from "./MailTimeline";
 import { SentBadge, useSentBadges } from "./SentBadges";
+import { referencesFor } from "./reply_pure";
 import { ConfirmSheet } from "./ConfirmSheet";
 import { deleteQuestion, type Ask } from "./confirm_pure";
 import { sentMs } from "./trust_pure";
@@ -141,7 +142,7 @@ export function MailBox() {
   const query = useMemo(() => parseQuery(qText), [qText]);
   const shown = useMemo(() => rows.filter((r) => matchQuery(r, query)), [rows, query]);
   const sentBadges = useSentBadges(boxId, view, useMemo(() => shown.filter((r) => r.direction === "out").map((r) => r.id), [shown]));
-  const reply = useCallback(() => { if (!opened || !cur) return; setCompose({ to: opened.sum.from, subject: replySubject(opened.sum.subject ?? ""), text: quoteReply(opened.sum.from_name || opened.sum.from || "", opened.sum.date ? new Date(opened.sum.date).toLocaleString() : "", opened.view.text || ""), in_reply_to: opened.sum.message_id, reply_to: cur.id }); }, [opened, cur]);
+  const reply = useCallback(() => { if (!opened || !cur) return; setCompose({ to: opened.sum.from, subject: replySubject(opened.sum.subject ?? ""), text: quoteReply(opened.sum.from_name || opened.sum.from || "", opened.sum.date ? new Date(opened.sum.date).toLocaleString() : "", opened.view.text || ""), in_reply_to: opened.sum.message_id, references: referencesFor(opened.sum.references ?? [], opened.sum.message_id ?? ""), reply_to: cur.id }); }, [opened, cur]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

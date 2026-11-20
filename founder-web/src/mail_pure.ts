@@ -1,7 +1,7 @@
 // Q1c (founder mailbox UI), the pure part: no fetch, no DOM, nothing invented. Everything the Mail page shows as words, numbers or order is decided here and tested (mail_pure.test.ts).
 // INHERITABLE BY AWAM (AWAM-INHERITS law): no founder names inside; the awam mailbox migration lifts this file as it is.
 export type Seal = "vault" | "recipient_pq";
-export type Sum = { subject?: string; from?: string; from_name?: string; to?: string[]; cc?: string[]; date?: string; message_id?: string; snippet?: string; attach?: number };
+export type Sum = { subject?: string; from?: string; from_name?: string; to?: string[]; cc?: string[]; date?: string; message_id?: string; references?: string[]; reply_to?: string[]; snippet?: string; attach?: number };
 export type Row = {
   id: string; thread_id: string; folder: string; direction: "in" | "out"; received_ms: number; size: number; attach: number; read: boolean; starred: boolean; draft: boolean; thread_count: number;
   spf: string; dkim: string; dmarc: string; arc: string; lookalike: boolean; scan: string; tls: string | null; domain: string | null; seal_mode: Seal; gated: boolean;
@@ -138,7 +138,7 @@ export function hue(key: string | undefined): number { let h = 7; for (const c o
 
 // ================================================================== Q1d: compose + send (pure; the Rust twin is server/founder/src/fmail_mime.rs)
 
-export type Compose = { to: string[]; cc: string[]; bcc: string[]; subject: string; text: string; html?: string; in_reply_to?: string };
+export type Compose = { to: string[]; cc: string[]; bcc: string[]; subject: string; text: string; html?: string; in_reply_to?: string; references?: string[] };
 const LABEL = /^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$/;
 /** Same grammar as fmail_mime::norm_addr: dot-atom local part, a host with a dot, no quotes, no comments, no IP literals. Returns the lower-case address or null. */
 export function normAddr(a: string): string | null {

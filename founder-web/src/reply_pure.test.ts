@@ -51,3 +51,11 @@ test("referencesFor: parent refs + parent id, brackets stripped, no dupes, trimm
   const many = Array.from({ length: 30 }, (_, i) => `m${i}@x`); const r = referencesFor(many, "last@x"); expect(r.length).toBe(20); expect(r[0]).toBe("m0@x"); expect(r[19]).toBe("last@x");
 });
 test("attribution line", () => expect(attribution("Hana", "20 Nov")).toBe("On 20 Nov, Hana wrote:"));
+import { readFileSync } from "node:fs";
+test("QC4a wiring: the reply carries the References chain from the opened mail to the send door (source check, no raw fetch)", () => {
+  const box = readFileSync(new URL("./MailBox.tsx", import.meta.url), "utf8"), comp = readFileSync(new URL("./MailCompose.tsx", import.meta.url), "utf8"), pure = readFileSync(new URL("./mail_pure.ts", import.meta.url), "utf8");
+  expect(box).toContain("references: referencesFor(opened.sum.references ?? [], opened.sum.message_id");
+  expect(comp).toContain("start.references?.length ? { references: start.references }");
+  expect(pure).toContain("references?: string[]; reply_to?: string[]");
+  expect(pure).toContain("in_reply_to?: string; references?: string[] }");
+});
