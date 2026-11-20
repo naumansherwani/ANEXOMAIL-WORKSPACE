@@ -4606,3 +4606,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 03:45 PKT QC8a: his question answered (pull command unchanged, build time cause not yet measured, bun = my test runner only); waits his haan for mount line, SQL setting, ? sheet mock
 
 - 21 Nov 2026 03:50 PKT QC8a: detail summary of his 5 answers vs repo given to him; still waits his haan for mount line, SQL setting, ? mock
+
+- 21 Nov 2026 03:42 PKT HIS PASTE 03:39: ran qconnect-login-only.sh again (already GREEN, not needed): FAIL founder service not healthy, nothing changed; then founder-install OK (SPA 200, healthz 200, me 401, bridge 401). OPEN FACT: did FOUNDER_DB=login survive the install? Read-only check needed (journal line). Law 3: no guess.
+
+- 21 Nov 2026 03:46 PKT compaction-safety update: WORKING-NOW, blueprint top block, founder-commands, CLAUDE.md first line; his 03:39 paste recorded; QC8a a2 done, waits his 3 haan; FOUNDER_DB=login after install = open fact (read-only check)
