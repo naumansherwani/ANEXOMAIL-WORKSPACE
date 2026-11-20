@@ -2111,3 +2111,5 @@ REST stays for ever: unset flag, unreachable socket or unusable key = REST (data
 - 21 Nov 2026 05:56 PKT AUTOFIX applied to QC8a gaps: batch e # s u proven live on his real Chrome (Home, Shift+Down marks 2, s starred both, s unstarred both, mailbox restored); Settings Appearance row for single-letter keys proven live; real-device 390/820 still open (my Chrome window cannot resize, iframe blocked by his CSP), awam search waits his pull.sh
 
 - 21 Nov 2026 05:56 PKT AUTOFIX applied to QC8a gaps: batch e # s u proven live on his real Chrome (Home, Shift+Down marks 2, s starred both, s unstarred both, mailbox restored); Settings Appearance row for single-letter keys proven live; real-device 390/820 still open (my Chrome window cannot resize, iframe blocked by his CSP), awam search waits his pull.sh
+
+- 21 Nov 2026 06:06 PKT his colour complaint checked with proof: compiled founder CSS diff old vs now = 0 changed or removed rules, 24 new kl-only rules; Time machine shows no appearance change since 16 Nov; waits his screen and photo; QC8 order sent
