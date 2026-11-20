@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 04:23 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 21 Nov 04:38 PKT QC8a a1-a5 done + live partial (sheet, switch proven); his search placeholder Search mail (one string) done; QC8b b1 audit done (51 controls ok, 6 gaps); next b2 semantics enhancer. Rule 52 UI only; schema-first; advance technology
-NEXT STEP: b2 enhancer (new file), b3 focus, b4 announce, b5 forced-colors css, his install for live proof
-HIS LAST WORD: his 21 Nov 04:08: search mail, next shuru kero, compaction safety
+# WORKING NOW (manual checkpoint, 21 Nov 2026 04:25 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 21 Nov 05:05 PKT founder-install #2 OK on his server (QC8a keys + Search mail live). Doing live Chrome look: placeholder, ? sheet 390/820. Then QC8b b2. Awam search written, waits his awam pull.sh
+NEXT STEP: live Chrome look then GREEN only with proof; QC8b b2 semantics enhancer
+HIS LAST WORD: his 21 Nov 04:25 paste: install OK
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,22 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 94beffca 21 Nov 04:23 ledger line 306692b4
 - 306692b4 21 Nov 04:23 Awam search: hint ( / ) restored
 - 3895a4aa 21 Nov 04:16 ledger line 5fe8565d
 - 5fe8565d 21 Nov 04:16 Awam mail search: founder look, Search mail, awam colours
 - 79e5e1f6 21 Nov 04:11 ledger line ce0610ec
-- ce0610ec 21 Nov 04:11 QC8: snapshot after pull command
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/founder-commands.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md     | 24 ++++++------------------
+ docs/cursor-work/founder-commands.md |  2 ++
+ 2 files changed, 8 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +44,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (f32fd973ed1c96ec42c5059dfa46f4a370b820ec)
+WIP snapshot: refs/wip/last (2b9a7e71f52d7b8f0a135a55714430b080b96c89)

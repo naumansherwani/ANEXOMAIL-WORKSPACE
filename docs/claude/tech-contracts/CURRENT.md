@@ -2095,3 +2095,5 @@ REST stays for ever: unset flag, unreachable socket or unusable key = REST (data
 - 21 Nov 2026 04:55 PKT AWAM mail search = founder look in awam colours (his word 04:12 + 04:15): placeholder Search mail, 44px box, 14px radius, primary focus ring; className + placeholder only in app.mail.folder.tsx (CORE-UNFREEZE-OK line written), search logic/tabs/gates untouched; tsc clean, build ok; NOT live on awam yet (needs his awam pull), Business test look pending
 
 - 21 Nov 2026 05:01 PKT awam mail search hint restored (placeholder Search mail ( / )), his word 04:23; nothing else of awam touched; awam pull = pull.sh, rust-engine-install not needed
+
+- 21 Nov 2026 05:06 PKT his second founder-install OK; QC8a keys + Search mail live on his server; live Chrome look next; awam search waits his pull.sh

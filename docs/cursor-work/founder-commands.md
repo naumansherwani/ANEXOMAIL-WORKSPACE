@@ -10,3 +10,5 @@
 - 21 Nov 2026 04:35 PKT HIS WORD 04:08: Gmail "Search mail" = ONLY the word mail is added to the search placeholder, everything else intact. MailBox.tsx line 259 placeholder "Search" -> "Search mail" (ONE string, found already changed in the working tree, not by me; verified: tsc clean, bun pass, build ok). Live bundle still shows "Search" until his next founder-install.
 
 - 21 Nov 2026 05:00 PKT HIS WORD 04:23: awam mail search hint "( / )" put back: placeholder = "Search mail  ( / )"; rest of awam NOT touched. Awam pull is separate: pull.sh (site) for this change; rust-engine-install.sh only when Rust modules change (not needed here). Awam stack answered to him from package.json + PORTS-LIVE + WEBSITE-PROMISES (P2: awam TLS today Caddy HTTP/2, K5b open).
+
+- 21 Nov 2026 05:05 PKT HIS PASTE 04:25: second founder-install OK (SPA 200, healthz 200, me 401, bridge 401): live now = QC8a keys + "Search mail" placeholder. Next: my live Chrome look (placeholder, ? sheet, 390/820), then QC8b b2. Rule 52 UI only; advance technology; schema-first.
