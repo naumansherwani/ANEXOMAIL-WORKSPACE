@@ -2046,3 +2046,5 @@ REST stays for ever: unset flag, unreachable socket or unusable key = REST (data
 - 21 Nov 2026 03:26 PKT QC8a STARTED (his haan 03:22): his 5 answers written line by line in QC8A-QC8B-PLAN-21NOV.md, a1 keyboard audit done read-only (found: App.tsx and MailBox.tsx both arm g; MailView.tsx copy not mounted; no single-key switch)
 
 - 21 Nov 2026 03:36 PKT QC8a a2 WRITTEN: new pure module founder-web/src/mail_keymap.ts + 13 golden tests (switch for single-letter keys, list arrows/Home/End/Shift, type-ahead, help rows); bun 517/517, tsc clean; existing files untouched; NOT mounted, NOT green
+
+- 21 Nov 2026 03:45 PKT QC8a: his question answered (pull command unchanged, build time cause not yet measured, bun = my test runner only); waits his haan for mount line, SQL setting, ? sheet mock
