@@ -282,7 +282,7 @@ function MailFolderPage() {
               id="mail-search"
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Search mail"
+              placeholder="Search mail  ( / )"
               aria-label="Search mail" className="min-h-11 min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
             />
             {q && (

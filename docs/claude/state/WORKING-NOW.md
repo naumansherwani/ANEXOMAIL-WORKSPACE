@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 04:16 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 04:22 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 04:38 PKT QC8a a1-a5 done + live partial (sheet, switch proven); his search placeholder Search mail (one string) done; QC8b b1 audit done (51 controls ok, 6 gaps); next b2 semantics enhancer. Rule 52 UI only; schema-first; advance technology
 NEXT STEP: b2 enhancer (new file), b3 focus, b4 announce, b5 forced-colors css, his install for live proof
 HIS LAST WORD: his 21 Nov 04:08: search mail, next shuru kero, compaction safety
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 3895a4aa 21 Nov 04:16 ledger line 5fe8565d
 - 5fe8565d 21 Nov 04:16 Awam mail search: founder look, Search mail, awam colours
 - 79e5e1f6 21 Nov 04:11 ledger line ce0610ec
 - ce0610ec 21 Nov 04:11 QC8: snapshot after pull command
 - 22d27c8d 21 Nov 04:09 ledger line 4f4052e9
-- 4f4052e9 21 Nov 04:09 QC8b b1 audit + Search mail placeholder + subphases
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +------------------
- 1 file changed, 1 insertion(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ffe8be57ffa4cc2bf4fed71dd3e2d32e0b106c29)
+WIP snapshot: refs/wip/last (407b73d0ed4f085f2e834815d759031013e06b2f)
