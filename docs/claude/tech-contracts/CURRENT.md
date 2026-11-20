@@ -1653,3 +1653,5 @@ LEFT: Rust core + tests, doors, send wiring, browser, his ONE sql-run + ONE foun
 - Open in this step: emoji shortcodes (:smile:) and the new-emoji safety line work in plain mode only; the emoji picker works in both.
 
 - 20 Nov 06:30 PKT QC2-B browser built: Tiptap 3 restricted schema (paste cleaned, tested at 390/820/1280 in sandbox, 44px targets, no sideways scroll), signature + snippets panel, plain/rich switch with remove-formatting question, unfilled placeholder warning, html draft; server HTML5 frame (viewport, bidi, light only, his 06:17); tsc clean, bun 403 pass, cargo fmail_ 181 pass; waits his ONE founder-install, then my live Chrome
+
+- 20 Nov 06:19 PKT 5-min check: rules read, WORKING-NOW updated; QC2 code pushed (328e2aa8), waits his ONE founder-install paste then my live Chrome
