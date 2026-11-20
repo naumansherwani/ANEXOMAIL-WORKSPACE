@@ -224,6 +224,7 @@ docs/cursor-work/server/passkey-proof.py
 docs/cursor-work/server/passkey_patch.py
 docs/cursor-work/server/people-check.sh
 docs/cursor-work/server/personal-polar-products.md
+docs/cursor-work/server/pg-local-install.sh
 docs/cursor-work/server/phases.py
 docs/cursor-work/server/polar-control-plane-install.sh
 docs/cursor-work/server/polar-cp-proof.py
@@ -570,6 +571,7 @@ docs/cursor-work/sql/E97_commitment_ledger_economics.sql
 docs/cursor-work/sql/E98_kernel_release_040.sql
 docs/cursor-work/sql/E99_file_context.sql
 docs/cursor-work/sql/PROOF_cross_plan_mail.sql
+docs/cursor-work/sql/QCONNECT_bootstrap.sql
 docs/cursor-work/sql/READ-SCHEMA-FIRST.md
 docs/cursor-work/sql/index.md
 docs/cursor-work/sql/phase63_f3a_passkey_family.sql

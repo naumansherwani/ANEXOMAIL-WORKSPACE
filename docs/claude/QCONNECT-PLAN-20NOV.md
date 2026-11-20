@@ -21,3 +21,7 @@
 8. Backup law: nightly dump to the Hetzner Storage Box with SHA-256, restore proven once.
 ## Until step 6: QSPEED code-only wins (login finish as ONE SQL door, writes after the answer, Rust cache) keep running, they pay off on both backends.
 ## Auth note: the password check still goes to the managed auth service until the Rust signin owns passwords; passkey login does not need it.
+
+## Step 2 DONE 21:06 PKT: his ss + services + disk + ram paste. No port needed (socket only). Ubuntu offers PostgreSQL 18 (newer than 16, so latest-only law holds; the E-line was tested on 16 here, every CHECK on his server proves 18). 22 GB disk free, 12.9 GB RAM available.
+## Step 3 WRITTEN 21:10 PKT: docs/cursor-work/server/pg-local-install.sh (cluster NOT auto-created, listen_addresses empty, root peer role, database anexo_founder, compat layer docs/cursor-work/sql/QCONNECT_bootstrap.sql proven idempotent on scratch PG16). It does not touch Caddy, the founder service or its env. Next after his paste: sql-run with ENV_FILE=/etc/anexomail/local-pg.env LEDGER=/var/lib/anexomail/sql-applied-local.tsv (the whole E-line on the new database), then CHECKs.
+## AUTH FACT: the founder password sign-in and the session minting still call the managed auth service (gotrue). The local database holds auth stubs only; accounts and password hashes move in step 4 and the Rust signin takes over password + sessions (passkey sign-in needs no password check) before the switch.

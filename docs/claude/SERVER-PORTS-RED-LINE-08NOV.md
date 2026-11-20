@@ -25,3 +25,5 @@ HTTPS 18443, HTTP 18080, admin 127.0.0.1:12019. They stay a proposal until his f
 - UDP 443 is FREE since the K4 switch (his fresh ss 11 Nov 03:40: udp 4443 founder, 18443 caddy, 3443 anexomail-rust); older lines above that list Caddy on UDP 443 are superseded.
 
 - 20 Nov 2026 03:30 PKT (his fresh paste, ss -tulnp + ss -tlnp grep anexomail-rust): anexomail-rust = TCP 0.0.0.0:3200, 127.0.0.1:3500/3600/3601, UDP 3443 (WebTransport), UDP 3501; founder anexomail-found UDP 443; founder-dns UDP 53; caddy UDP 18443; turnserver 3478/5349; axon_core 9200/9300; redis 127.0.0.1:6379. All match this file. QC1e D4A adds no port. Live copy for Claude: docs/claude/state/PORTS-LIVE.md
+
+- 20 Nov 2026 21:06 PKT: his ss paste again: no new listener. QCONNECT adds PostgreSQL on a UNIX SOCKET only (listen_addresses empty): no TCP port, no listed port touched.
