@@ -4596,3 +4596,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 03:55 PKT HIS ORDER 03:07: the words 'by his word' after GREEN are removed everywhere in the docs (196 replacements, 20 files); only GREEN is written from now on, with WIRED: YES / REAL: YES / TECH-LAW CHECKED. Lines about what was waived or closed by his word are kept. QCONNECT = GREEN. No code until his haan.
 
 - 21 Nov 2026 03:55 PKT QC8a + QC8b PLAN written (docs/claude/QC8A-QC8B-PLAN-21NOV.md): keyboard layer and accessibility layer, zero-touch overlay (existing files unchanged), research WCAG 2.1.4 (level A), ariaNotify (Baseline 2026), APG listbox/grid; 5 questions to him; no code until his haan
+
+- 21 Nov 2026 03:25 PKT HIS 5 ANSWERS 03:22 (QC8a/QC8b split HAAN, shadow overlay HAAN, single-letter switch HAAN, simple list j/k + arrows HAAN, QC8 skip NA) and "shuru kero QC8a" = haan for QC8a; written in docs/claude/QC8A-QC8B-PLAN-21NOV.md. a1 audit done (read-only). NEXT a2 new pure key map + golden tests (new files only).
+
+- 21 Nov 2026 03:26 PKT QC8a STARTED (his haan 03:22): his 5 answers written line by line in QC8A-QC8B-PLAN-21NOV.md, a1 keyboard audit done read-only (found: App.tsx and MailBox.tsx both arm g; MailView.tsx copy not mounted; no single-key switch)

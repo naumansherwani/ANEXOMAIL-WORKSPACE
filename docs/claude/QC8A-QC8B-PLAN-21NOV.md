@@ -51,3 +51,21 @@ b6 CHECK: same as a6 plus a screen-reader pass (NVDA/VoiceOver notes, my sandbox
 - W3C Understanding SC 2.1.4 Character Key Shortcuts: https://www.w3.org/WAI/WCAG21/Understanding/character-key-shortcuts
 - W3C WAI-ARIA APG Listbox pattern: https://www.w3.org/WAI/ARIA/apg/patterns/listbox
 - W3C WAI-ARIA APG Grid pattern: https://www.w3.org/WAI/ARIA/apg/patterns/grid
+
+## HIS 5 ANSWERS (21 Nov 2026 03:22 PKT, written line by line as he wrote them; Claude wrote the 4 answers' reasons in his words)
+1. QC8a (Keys) aur QC8b (Accessibility) alag: HAAN, 100% theek. Reason: keyboard shortcuts (j/k/c/e) aur accessibility (screen readers, focus rings, contrast) alag layers hain.
+2. Zero-Mutation Shadow Overlay: HAAN. Pehle overlay real UI ko chhue baghair test hoga; us ke baad jab woh aankh se approve karay, tab line-by-line code change.
+3. Single-letter shortcuts ka switch (WCAG 2.1.4 Level A): HAAN, lazmi. Settings mein ON/OFF toggle; ON = us ki fast keys chalti hain, OFF = single-letter keys band.
+4. Mail list: simple list rahay jaisi hai (grid pattern NAHI). j/k ya Up/Down arrows se mails ke beech move.
+5. QC8 skip kero?: NA. Pehle QC8a aur QC8b khatam (30 Nov tak 9 din; navigation / accessibility ki buniyaad).
+His order 03:22: read the repo before any code ("yeh read kiye bina codes nahi likhna"). His word "shuru kero QC8a" = the haan for QC8a. Existing files stay byte for byte unchanged; new files only; mount line and the "?" sheet mock are shown to him BEFORE they are written.
+
+## QC8a a1 AUDIT (read-only, 21 Nov 2026, from the code)
+Handlers on the page, by file (none edited):
+- MailBox.tsx:163-181 (MOUNTED screen; window keydown): / search, r reply, a reply-all, f forward, then keyCmd (mail_pure.ts:117): c compose, j next, k prev, Enter open, e archive, # trash, s star, u unread, g then i/s/d/a/q/v/t/p folder (1.2 s), Esc close. Guards: compose open, dialog, INPUT/TEXTAREA/contentEditable.
+- MailView.tsx:154-161: second copy of the same handler (NOT imported by App.tsx; App mounts MailBox only): not live, left alone.
+- App.tsx:127-136 (window keydown): Ctrl/Cmd+K palette; g then d/b/f/p/m/s/a = go to a page. CONFLICT: on the mail screen "g" arms BOTH handlers (g s = Sent folder in mail AND Settings page in App; g a = Archive AND Audit; g d = Drafts AND Dashboard; g p = Spam AND People). Existing behaviour, reported to him, not changed without his word.
+- MoreSheet.tsx:8 Esc; Palette.tsx:13-16 Esc, Up, Down, Enter (dialog); Profile.tsx:52 and Trust.tsx:12 Esc (document); Decks.tsx:29 and ConfirmSheet.tsx:15 Esc; EmojiPicker, EmojiShortcode, RecipientField, RichEditor, AmbientStudio, BridgeLanes, OrbWhy, TlsLock: widget keys inside their own element.
+- No "?" help, no Home/End, no type-ahead, no Shift-range in the mail list; list rows: Up/Down arrows missing (only j/k).
+- Single-letter keys today: always on, no switch (fails WCAG 2.1.4 level A). Settings registry: no keyboard key yet (sql folder has no registry row; a new row = tiny SQL file, schema-first, waits his haan before it is written).
+Next: a2 = NEW pure module mail_keymap.ts + golden tests (no existing file touched).
