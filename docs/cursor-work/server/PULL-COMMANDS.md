@@ -1375,3 +1375,5 @@
 - QCONNECT 23:3x PKT: step 6 CODE DONE (sandbox only, not installed): server/founder/src/pg.rs Rust Tokio tokio-postgres+deadpool engine inside Sb, switch FOUNDER_DB=local (default REST), 4 unit tests + live test on a real PostgreSQL (139 us per rpc over the socket, REST 320 ms), 570 tests pass; contract in CURRENT.md; step 7 Rust signin next
 
 - QCONNECT 23:4x PKT: step 6 INSTALLED on his server (founder-install OK: SPA 200, healthz 200, Ed25519 ENFORCED); engine switched OFF (FOUNDER_DB unset), journal still REST 324-508 ms as designed; SCORE 6 of 10 proven; step 7 Rust signin next
+
+- QCONNECT 23:5x PKT: step 7 survey + design (Rust identity engine localid.rs replaces the 6 gotrue spots when FOUNDER_DB=local); pg-local-authschema.sh (read only) written per the SQL schema-first law, waits his paste before any code

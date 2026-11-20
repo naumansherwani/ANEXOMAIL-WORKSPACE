@@ -1,6 +1,6 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 23:38 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QCONNECT score 6 of 10 proven on his server; step 6 Rust pg engine INSTALLED switched OFF (his founder-install paste OK, journal still REST 324-508 ms as designed); NOW step 7 Rust signin owns passwords + sessions (survey the 4 direct-http places in auth.rs/passkey.rs/signin.rs, read E153/E167 first)
-NEXT STEP: 1) step 7 survey + code (SQL schema-first: read E153/E167/passkey schema); 2) his founder-install; 3) step 8 delta copy + freeze + FOUNDER_DB=local + rollback; 4) step 9 re-measure; 5) step 10 nightly dump on server only
+# WORKING NOW (manual checkpoint, 20 Nov 2026 23:42 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QCONNECT step 7 survey + design done (localid.rs Rust identity engine, design in the plan); SQL schema-first: pg-local-authschema.sh (read only) written, WAITS his paste of it before any code; score 6 of 10 proven
+NEXT STEP: 1) his paste of pg-local-authschema.sh; 2) code localid.rs + bcrypt + key file in the installer + sandbox tests against a real PostgreSQL; 3) his founder-install; 4) step 8 switch; 5) step 9 re-measure; 6) step 10 dump on server only
 HIS LAST WORD: SQL advance 400+ likho QC7
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -18,20 +18,25 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- f4a003c8 20 Nov 23:38 ledger line c3563819
 - c3563819 20 Nov 23:38 QCONNECT: step 6 installed (off), score 6 of 10
 - 2d8fd6ea 20 Nov 23:26 ledger line 0f24446d
 - 0f24446d 20 Nov 23:26 QCONNECT step 6: Rust local PostgreSQL engine inside Sb (pg.rs), FOUNDER_DB=local
 - 0ad082f3 20 Nov 22:22 ledger line 5f355fee
-- 5f355fee 20 Nov 22:22 QCONNECT: step 6 survey and design
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/BLUEPRINT-ABC-01NOV.md
+ M docs/claude/QCONNECT-PLAN-20NOV.md
  M docs/claude/state/WORKING-NOW.md
+?? docs/cursor-work/server/pg-local-authschema.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 21 ++-------------------
- 1 file changed, 2 insertions(+), 19 deletions(-)
+ docs/claude/BLUEPRINT-ABC-01NOV.md |  1 +
+ docs/claude/QCONNECT-PLAN-20NOV.md |  6 ++++++
+ docs/claude/state/WORKING-NOW.md   | 24 +++++++-----------------
+ 3 files changed, 14 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +47,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (676153898bd885039e72deea8b52a15a25622287)
+WIP snapshot: refs/wip/last (95b9e15a0552e66d93e0da119a7f1f2accf75f0d)
