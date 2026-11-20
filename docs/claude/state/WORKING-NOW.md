@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 03:12 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 03:12 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 03:55 PKT: his order 03:11: QC8a + QC8b plan with web research, existing UNTOUCHED, new only connects. PLAN WRITTEN docs/claude/QC8A-QC8B-PLAN-21NOV.md (QC8a keys, QC8b accessibility; zero-touch overlay; research: WCAG 2.1.4 level A, ariaNotify Baseline 2026, APG listbox vs grid). NO CODE (his order 03:06). 5 questions to him.
 NEXT STEP: His answers (haan/na) to the 5 questions; code only after his haan.
 HIS LAST WORD: his 21 Nov 03:11: QC8a QC8b plan, advance web research, existing no touch
@@ -18,21 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 6de007e8 21 Nov 03:12 QC8a and QC8b plan with research (no code)
 - 57c035db 21 Nov 03:09 ledger line f05b5efe
 - f05b5efe 21 Nov 03:09 Docs: only GREEN, no 'by his word' after GREEN (his 03:07 order)
 - 19f81c27 21 Nov 03:07 ledger line e982cd7a
 - e982cd7a 21 Nov 03:07 Standing order: no code until his haan (03:06)
-- bd9100c1 21 Nov 03:07 ledger line b90b0802
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
-?? docs/claude/QC8A-QC8B-PLAN-21NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 24 ++++++------------------
- 1 file changed, 6 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -43,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (45cb663ca4ea32b9e07e6ba781d48a4ebe27a6dd)
+WIP snapshot: refs/wip/last (13b6dcedf5f576bb7f07c7606ae26f57f4e4a4cc)
