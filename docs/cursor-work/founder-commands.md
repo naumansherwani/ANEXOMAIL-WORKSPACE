@@ -18,3 +18,5 @@
 - 21 Nov 2026 04:42 PKT (his clock) HIS WORD: QC8b b2..b6 = 45 MINUTES, so deadline = 05:27 PKT: b2 semantics 04:42-04:53, b3 focus 04:53-05:02, b4 announcements 05:02-05:12, b5 forced-colors css 05:12-05:18, b6 Chrome live check 05:18-05:27. Each GREEN only WIRED+REAL with live Chrome proof.
 
 - 21 Nov 2026 04:43 PKT HIS WORD (clock = his): "b2..b6 45 mins hai, time likh lo, b2 ki detail do, discuss kero". Time box written in QC8A-QC8B-PLAN-21NOV.md (b2 -04:53, b3 -05:02, b4 -05:12, b5 -05:18, b6 -05:27 by his clock). b2 detail sent for discussion, no code yet.
+
+- 21 Nov 2026 04:44 PKT HIS WORD: 45 minutes left, deadline 05:27. b2 Semantics 04:53 / b3 Focus 05:02 / b4 Announcements 05:12 / b5 forced-colors+contrast 05:18 / b6 Final check + Chrome live 05:27. Write the time and technology in CAPITALS in ledger + blueprint after every phase. b2 detail asked.

@@ -3,6 +3,7 @@ import { Switch } from "@/components/ui/switch";
 import { HELP_ROWS, helpFor, silenceSingle } from "./mail_keymap";
 import { readSingle, setSingle, subscribeSingle } from "./keys_store";
 import { ahead, batch, clearMarks, trackList, extend, jump, markedCount } from "./keys_list";
+import { trackSemantics } from "./a11y_sem";
 import { SINGLE_KEYS } from "./mail_keymap";
 import "./keylayer.css";
 
@@ -40,7 +41,7 @@ export function KeyLayer() {
         e.preventDefault(); e.stopImmediatePropagation(); clearMarks(); send(e.key === "ArrowDown" ? "j" : "k");
       }
     };
-    window.addEventListener("keydown", k, true); const off = trackList(); return () => { window.removeEventListener("keydown", k, true); off(); };
+    window.addEventListener("keydown", k, true); trackSemantics(); const off = trackList(); return () => { window.removeEventListener("keydown", k, true); off(); };
   }, []);
   useEffect(() => { const d = dlg.current; if (!d) return; if (open && !d.open) d.showModal(); if (!open && d.open) d.close(); }, [open]);
   const rows = mail ? helpFor("mail") : HELP_ROWS.filter((r) => r.where === "page");

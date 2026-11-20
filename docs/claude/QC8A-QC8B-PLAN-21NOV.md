@@ -86,3 +86,8 @@ STILL OPEN before GREEN: live Down / Home / End / Shift-range / batch / type-ahe
 
 ## QC8b b2 DETAIL (for his discuss, 21 Nov 04:45 his clock)
 New file only: founder-web/src/a11y_sem.ts (+ test) and one mount line in KeyLayer.tsx (or App.tsx). Runtime attributes via MutationObserver, no existing file edited: (1) one visually-hidden h1 "Mail" on the mail scene (heading start); (2) .mbx-list gets role=list (rows stay buttons inside listitem wrappers is NOT done, rows get role=listitem would break button role, so list uses role=group + aria-label kept); (3) open mail row gets aria-current=true, removed when closed; (4) unread dot <i aria-label> gets role=img so the label is announced, or row aria-description "Unread". Pixel look unchanged (attributes only). Test: bun test + live DOM read in his Chrome (axe-like counts).
+
+## QC8b b2 SEMANTICS (21 Nov 2026 04:55 PKT) - WRITTEN, TESTED IN SANDBOX, NOT YET LIVE
+TECHNOLOGY: TYPESCRIPT + MUTATIONOBSERVER, ATTRIBUTES ONLY, NEW FILE founder-web/src/a11y_sem.ts, ONE MOUNT CALL inside my own KeyLayer.tsx (no old file touched).
+Real DOM (read before writing): ul.mbx-rows > li > button.mbx-r is already a list; so no listitem role was needed. Gaps fixed: (1) no h1 -> role=heading level 1 label "Mail" on the existing .mbx-brand b (no node inserted); (2) .mbx-list div had a dead aria-label -> role=group; (3) open row had no aria-current -> aria-current="true" on .mbx-r.on, removed when closed; (4) unread dot <i aria-label> had no role -> role=img.
+Sandbox proof: Playwright getByRole heading(1,"Mail")=1, group "Inbox messages"=1, img "unread"=1, aria-current moves with the open row and clears on close. tsc clean, bun tests, vite build ok. LIVE proof waits his founder-install.
