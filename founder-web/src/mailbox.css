@@ -318,3 +318,7 @@ html[data-motion="reduced"] .mbx-compose .mc[data-fx="sent"]::after,html[data-mo
 .mbx-inline .mc{width:100%;max-width:none;max-height:none;height:auto;border-radius:16px}
 .mbx-inline .mc-pop{min-width:44px;min-height:44px}
 @media (prefers-reduced-motion:reduce){.mbx-rpl,.mbx-fold{transition:none}}
+/* QC7a: Remind me chip */
+.mbx-fu{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+.mbx-fu-menu{display:flex;flex-wrap:wrap;gap:8px}
+.mx-chip.fu-due{outline:1px solid currentColor}

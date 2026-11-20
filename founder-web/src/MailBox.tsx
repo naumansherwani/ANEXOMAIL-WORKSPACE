@@ -15,6 +15,7 @@ import { arrivalLine, describeQuery, freshRows, isEmptyQuery, matchQuery, parseQ
 import { FOLDERS, ago, compact, fmtSize, glide, hue, initials, isGatedView, keyCmd, ledgerChip, merge, pill, proofChip, quoteReply, replySubject, rowText, touchAction, verdicts, when, folderLabel, type Box, type Counts, type Lane, type Proof, type Row } from "./mail_pure";
 import { TrustRing, OutFactsLine } from "./TrustRing";
 import { MailTimeline } from "./MailTimeline";
+import { FollowupChip } from "./FollowupChip";
 import { SentBadge, useSentBadges } from "./SentBadges";
 import { hasOthers } from "./reply_pure";
 import { buildStart, type ReplyKind } from "./reply_start";
@@ -314,6 +315,7 @@ export function MailBox() {
                   </div>
                   {cur.direction === "out" && <OutFactsLine box={boxId} id={opened.facts.id} />}
                   {cur.direction === "out" && <MailTimeline box={boxId} id={opened.facts.id} />}
+                  {cur.direction === "out" && <FollowupChip box={boxId} message={opened.facts.id} />}
                   {cur.direction === "out" && <TlsProven box={boxId} addrs={[...(opened.sum.to ?? []), ...(opened.sum.cc ?? [])]} />}
                   {opened.view.remote_content_blocked && <p className="mx-note">Remote images and scripts in this message were not loaded. You are reading its text only.</p>}
                   <QuotedBody ref={bodyRef} text={opened.view.text || ""} />

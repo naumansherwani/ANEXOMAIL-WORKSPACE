@@ -1318,3 +1318,7 @@
 - 20 Nov 2026 20:02 PKT QC5 Delete forever GREEN (WIRED: YES / REAL: YES / TECH-LAW CHECKED) on MY OWN live Chrome look, written as my proof not as his word: delete door POST /founder/v1/mail/delete answers 401 unsigned (unknown door 405), Trash has Empty Trash, question text correct, Keep them pressed, nothing deleted.
 
 - 20 Nov 2026 20:11 PKT QC7a WRITTEN (not installed, not run on his database): SQL E196 (473 lines + CHECK_E196) tested on a scratch Postgres 16 with stub tables (workday window, cap, guard, reply trigger, snooze, hash-chained event log + tamper detected, prune); the shipped selftest uses the real compose door and has NOT run on the real chain. Rust doors + Tokio clock (fmail_followup.rs, cargo 566 ok). NEXT: his sql-run E196, founder-install, React Remind me chip, then QC7b sealed draft.
+
+- 20 Nov 2026 20:25 PKT: QC7a React written (FollowupChip in the sent-mail read pane, followup_pure + 5 bun tests, mail_api followups/set/snooze/dismiss); bun 498/498, tsc clean, vite built; NOT installed yet, no acceptance word written; he must run sql-run E196 then founder-install; QC7b (draft sealed in browser) next. Tech: Rust WASM kernel + WebTransport HTTP/3 + React 19 TS + SQL E196. Phase: QC7
+
+- 20 Nov 2026 20:27 PKT: QC7a React chip committed after awam_inherit sync (MailBox.tsx, mailbox.css preserved-for-awam hashes); still not installed, no acceptance word written.

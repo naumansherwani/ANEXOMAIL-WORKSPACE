@@ -170,8 +170,8 @@ founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-BtRfxfmm.css
-founder-web/dist/assets/index-CNFwkYU-.js
+founder-web/dist/assets/index-CD4pVki7.js
+founder-web/dist/assets/index-CqAjfayR.css
 founder-web/dist/assets/kernel.worker-CaGbLt0X.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
@@ -229,6 +229,7 @@ founder-web/src/EmojiSafety.tsx
 founder-web/src/EmojiShortcode.tsx
 founder-web/src/Finance.tsx
 founder-web/src/Flare.tsx
+founder-web/src/FollowupChip.tsx
 founder-web/src/Keys.tsx
 founder-web/src/Live.tsx
 founder-web/src/MailAnchorLine.tsx
@@ -317,6 +318,8 @@ founder-web/src/emoji_pure.ts
 founder-web/src/emoji_ur_data.ts
 founder-web/src/flare_pure.ts
 founder-web/src/flare_sw.test.ts
+founder-web/src/followup_pure.test.ts
+founder-web/src/followup_pure.ts
 founder-web/src/fonts/00-FOUNDER-TECH-RULE.md
 founder-web/src/fonts/Inter-Bold.woff2
 founder-web/src/fonts/Inter-ExtraLight.woff2
