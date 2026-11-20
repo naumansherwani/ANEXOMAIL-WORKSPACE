@@ -14,3 +14,7 @@
 - 21 Nov 2026 05:05 PKT HIS PASTE 04:25: second founder-install OK (SPA 200, healthz 200, me 401, bridge 401): live now = QC8a keys + "Search mail" placeholder. Next: my live Chrome look (placeholder, ? sheet, 390/820), then QC8b b2. Rule 52 UI only; advance technology; schema-first.
 
 - 21 Nov 2026 06:05 PKT HIS ORDER 04:37: "founder ke appearance mein colours change kiye, pehle wala colour wapis kero" + "tarteeb send kero Qc8 ki". PROOF CHECKED (not guessed): compiled founder CSS before today (commit 8ca244d3, index-CqAjfayR.css) vs now (index-CtqbAC3N.css): 0 old rules removed or changed, 24 NEW rules, all .kl* (? sheet) and .mbx-r[data-kl-mark] (range marks); Time machine (his live Settings) shows NO appearance change since 16 Nov; no founder token or colour file was edited. So no founder colour was changed by QC8. Waits his screen + colour (photo) to compare. QC8 order sent to him.
+
+- 21 Nov 2026 04:42 PKT (his clock) HIS WORD: QC8b b2..b6 = 45 MINUTES, so deadline = 05:27 PKT: b2 semantics 04:42-04:53, b3 focus 04:53-05:02, b4 announcements 05:02-05:12, b5 forced-colors css 05:12-05:18, b6 Chrome live check 05:18-05:27. Each GREEN only WIRED+REAL with live Chrome proof.
+
+- 21 Nov 2026 04:43 PKT HIS WORD (clock = his): "b2..b6 45 mins hai, time likh lo, b2 ki detail do, discuss kero". Time box written in QC8A-QC8B-PLAN-21NOV.md (b2 -04:53, b3 -05:02, b4 -05:12, b5 -05:18, b6 -05:27 by his clock). b2 detail sent for discussion, no code yet.
