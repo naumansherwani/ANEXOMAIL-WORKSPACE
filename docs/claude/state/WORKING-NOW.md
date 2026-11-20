@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 08:02 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 08:02 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC3-1..6 done/written; his installs running (no paste); QC3-7 live look open
 NEXT STEP: on his paste: my live Chrome look; clear anexo-assets-v1; no mail sent
 HIS LAST WORD: 5-min check 08:03
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 934bc74a 20 Nov 08:02 QC3 checkpoint
 - ef6d61b9 20 Nov 07:56 ledger line 9d5f5da3
 - 9d5f5da3 20 Nov 07:56 QC3 checkpoint
 - 03fce32d 20 Nov 07:49 ledger line de5d8f70
 - de5d8f70 20 Nov 07:49 Fix test-runner wording (sandbox tool, not a runtime) + checkpoint
-- af5b89cd 20 Nov 07:47 ledger line 23680f1d
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
 NOW: QC1c - COMPOSE C1c: TLS lock on every chip from our own STARTTLS probe (SQL E187; discuss after QC1b)  [Rust Tokio SMTP STARTTLS rustls X25519MLKEM768 probe, PostgreSQL domain TLS facts]
-WIP snapshot: refs/wip/last (1c6ccf2afbb0711ad3b7b8e245e73acde67c299c)
+WIP snapshot: refs/wip/last (9340b34e7bffe4e98d2e5495f75db8b0ed189946)
