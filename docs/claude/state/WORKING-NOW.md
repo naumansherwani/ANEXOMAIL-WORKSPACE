@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 19:38 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 19:41 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: DK-b (DK3+DK4) WRITTEN + tested + pushed; waits his install; then DK5: his key PRF touch, real pq mail to himself, my Chrome 390/820/1280
 NEXT STEP: give him the install line; after paste my live check of kernel 0.20.0 + MailDeviceKey panel; then DK5
 HIS LAST WORD: gandu context bhul gaye? -> answered: DK-b
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 736db9ea 20 Nov 19:38 ledger line 502979f8
 - 502979f8 20 Nov 19:38 DK-b: device key custody (kernel 0.20.0 keygen, passkey PRF wrap, key doors) + pq mail opens in the same read pane
 - 66e0f507 20 Nov 19:27 ledger line a9dc80e1
 - a9dc80e1 20 Nov 19:27 DK3 keygen
 - 4fefe297 20 Nov 19:22 ledger line 3db4ad62
-- 3db4ad62 20 Nov 19:22 DK-a live Chrome look recorded (19:35 PKT)
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 64 ++--------------------------------------
- 1 file changed, 3 insertions(+), 61 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (0fe006ecc9d2c8d18e09be53f28bb6f8537d8301)
+WIP snapshot: refs/wip/last (6f94ed761e6b01559326ea43076cd7ce11e6fd61)
