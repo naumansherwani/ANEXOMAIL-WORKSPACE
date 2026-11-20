@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 20:01 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 20:02 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC5 GREEN by his word 20:0x; starting QC7 follow-up reminder + draft sealed in browser (contract first)
 NEXT STEP: read QC7 spec in FOUNDER-MAILBOX-PHASES + drafts code (E188 live drafts); contract CURRENT.md; then code
 HIS LAST WORD: QC5 chrome test, update green
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 25d79458 20 Nov 20:02 QC5 is my proof
+- 724ce010 20 Nov 20:01 ledger line a66b87ea
 - a66b87ea 20 Nov 20:01 QC5 done by his word with live Chrome look
 - cab7fcdf 20 Nov 20:01 ledger line 79c40216
 - 79c40216 20 Nov 20:01 QC5 chrome test, update green
-- da7e1601 20 Nov 19:54 ledger line ee96a40e
-- ee96a40e 20 Nov 19:54 QC5: Delete forever (signed Rust door, key touch, Trash UI, Empty Trash)
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (9577208337f1753133699db75dd2e1668a551a4f)
+WIP snapshot: refs/wip/last (0f12a6b77e76fddbf6cb07d4ae810a254f5011b2)
