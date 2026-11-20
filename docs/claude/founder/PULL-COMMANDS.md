@@ -2451,3 +2451,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 03:55 PKT QC8a + QC8b PLAN written (docs/claude/QC8A-QC8B-PLAN-21NOV.md): keyboard layer and accessibility layer, zero-touch overlay (existing files unchanged), research WCAG 2.1.4 (level A), ariaNotify (Baseline 2026), APG listbox/grid; 5 questions to him; no code until his haan
 
 - 21 Nov 2026 03:26 PKT QC8a STARTED (his haan 03:22): his 5 answers written line by line in QC8A-QC8B-PLAN-21NOV.md, a1 keyboard audit done read-only (found: App.tsx and MailBox.tsx both arm g; MailView.tsx copy not mounted; no single-key switch)
+
+- 21 Nov 2026 03:36 PKT QC8a a2 WRITTEN: new pure module founder-web/src/mail_keymap.ts + 13 golden tests (switch for single-letter keys, list arrows/Home/End/Shift, type-ahead, help rows); bun 517/517, tsc clean; existing files untouched; NOT mounted, NOT green

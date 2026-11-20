@@ -4600,3 +4600,5 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 03:25 PKT HIS 5 ANSWERS 03:22 (QC8a/QC8b split HAAN, shadow overlay HAAN, single-letter switch HAAN, simple list j/k + arrows HAAN, QC8 skip NA) and "shuru kero QC8a" = haan for QC8a; written in docs/claude/QC8A-QC8B-PLAN-21NOV.md. a1 audit done (read-only). NEXT a2 new pure key map + golden tests (new files only).
 
 - 21 Nov 2026 03:26 PKT QC8a STARTED (his haan 03:22): his 5 answers written line by line in QC8A-QC8B-PLAN-21NOV.md, a1 keyboard audit done read-only (found: App.tsx and MailBox.tsx both arm g; MailView.tsx copy not mounted; no single-key switch)
+
+- 21 Nov 2026 03:36 PKT QC8a a2 WRITTEN: new pure module founder-web/src/mail_keymap.ts + 13 golden tests (switch for single-letter keys, list arrows/Home/End/Shift, type-ahead, help rows); bun 517/517, tsc clean; existing files untouched; NOT mounted, NOT green

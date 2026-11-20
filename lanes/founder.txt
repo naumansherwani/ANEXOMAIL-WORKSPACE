@@ -172,7 +172,7 @@ founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-BkwtADWA.js
+founder-web/dist/assets/index-BrdO1PtK.js
 founder-web/dist/assets/index-CqAjfayR.css
 founder-web/dist/assets/kernel.worker-DY4WQ2it.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
@@ -355,6 +355,8 @@ founder-web/src/mail_change.ts
 founder-web/src/mail_draft_local.ts
 founder-web/src/mail_draft_local_pure.test.ts
 founder-web/src/mail_draft_local_pure.ts
+founder-web/src/mail_keymap.test.ts
+founder-web/src/mail_keymap.ts
 founder-web/src/mail_keys.ts
 founder-web/src/mail_keys_pure.test.ts
 founder-web/src/mail_keys_pure.ts

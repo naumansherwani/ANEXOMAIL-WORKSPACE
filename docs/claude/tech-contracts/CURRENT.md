@@ -1,5 +1,15 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: QC8a (KEYBOARD LAYER), a2 WRITTEN 21 Nov 2026 03:35 PKT, his haan 03:22 ("shuru kero QC8a"), plan docs/claude/QC8A-QC8B-PLAN-21NOV.md. STATE: IN PROGRESS
+| Listed technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| React 19 + TypeScript + Radix + Tailwind 4 | founder-web/src/mail_keymap.ts (pure TS, no DOM); the mount + "?" sheet are NOT written yet (shown to him first) | a2 YES, mount NO | bun 517 pass, tsc clean |
+| Zero-touch: existing MailBox.tsx, MailView.tsx, mail_pure.ts, App.tsx unchanged | git diff shows only NEW files | YES | his 03:11 order |
+| WCAG 2.1.4 switch (single-letter keys ON/OFF) | silenceSingle() + singleKeysOn() golden tests; setting key waits his haan (new SQL registry row, schema-first) | pure part YES | mail_keymap.test.ts |
+| List movement (his answer 4: simple list) | listMove() + typeAhead() | pure part YES | mail_keymap.test.ts |
+| Server / SQL / kernel | none in a2 | n/a | no server or SQL change |
+
+
 # TECH CONTRACT FOR PHASE: QC8 (SHORTCUTS + ACCESSIBILITY FINAL PASS), DRAFT written 21 Nov 2026 03:20 PKT, plan docs/claude/QC8-PLAN-21NOV.md. NO CODE until his answers to the 4 questions.
 STATE: PLAN ONLY. TECHNOLOGY: React 19 + TypeScript + Tailwind 4 + Radix (focus), pure TypeScript key map with golden tests (mail_keys_pure.ts), Framer Motion with reduced motion respected; no server, SQL or listener change; test tools (axe-core, Playwright) in my sandbox only.
 | Listed technology | Where | IN CODE | Proof |
@@ -2034,3 +2044,5 @@ REST stays for ever: unset flag, unreachable socket or unusable key = REST (data
 - 21 Nov 2026 03:55 PKT QC8a + QC8b PLAN written (docs/claude/QC8A-QC8B-PLAN-21NOV.md): keyboard layer and accessibility layer, zero-touch overlay (existing files unchanged), research WCAG 2.1.4 (level A), ariaNotify (Baseline 2026), APG listbox/grid; 5 questions to him; no code until his haan
 
 - 21 Nov 2026 03:26 PKT QC8a STARTED (his haan 03:22): his 5 answers written line by line in QC8A-QC8B-PLAN-21NOV.md, a1 keyboard audit done read-only (found: App.tsx and MailBox.tsx both arm g; MailView.tsx copy not mounted; no single-key switch)
+
+- 21 Nov 2026 03:36 PKT QC8a a2 WRITTEN: new pure module founder-web/src/mail_keymap.ts + 13 golden tests (switch for single-letter keys, list arrows/Home/End/Shift, type-ahead, help rows); bun 517/517, tsc clean; existing files untouched; NOT mounted, NOT green
