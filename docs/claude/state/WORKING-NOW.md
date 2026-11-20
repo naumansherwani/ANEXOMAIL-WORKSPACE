@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 22:16 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 22:16 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT score 4 of 10 done (plan, ports, install, copy 677/677), step 5 hash compare in progress (script fixed: empty-table false DIFF; verify functions OK on the copy), 5 left (Rust data.rs, Rust signin, switch+rollback, re-measure 50 ms, nightly dump on server only); nothing wired into the running service
 NEXT STEP: 1) his re-run of pg-local-compare; 2) Rust data.rs pg backend (flag, REST rollback); 3) Rust signin owns passwords/sessions; 4) switch with freeze + rollback; 5) re-measure; 6) nightly dump on server; meanwhile QSPEED E197
 HIS LAST WORD: SQL advance 400+ likho QC7
@@ -18,26 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 3313ce56 20 Nov 22:16 QCONNECT: compare script empty-table fix, score 4 of 10
 - 0014035f 20 Nov 22:07 ledger line e7abd9dc
 - e7abd9dc 20 Nov 22:07 QCONNECT: 4b proof, no Storage Box dump, pg-local-compare.sh
 - 24029b99 20 Nov 22:01 ledger line 7a55b36b
 - 7a55b36b 20 Nov 22:01 QCONNECT: WORKING-NOW checkpoint corrected
-- 1dc89ec9 20 Nov 22:00 ledger line 167b966e
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/BLUEPRINT-ABC-01NOV.md
- M docs/claude/QCONNECT-PLAN-20NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/server/pg-local-compare.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/BLUEPRINT-ABC-01NOV.md          |  1 +
- docs/claude/QCONNECT-PLAN-20NOV.md          |  3 +++
- docs/claude/state/WORKING-NOW.md            | 24 +++++++-----------------
- docs/cursor-work/server/pg-local-compare.sh |  4 ++--
- 4 files changed, 13 insertions(+), 19 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 23 ++---------------------
+ 1 file changed, 2 insertions(+), 21 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -48,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (c72db8055518db5aef44821ae437b75175e0d630)
+WIP snapshot: refs/wip/last (e8cfcf7522fb7331d1a44ae31149d3506d7417e6)
