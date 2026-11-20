@@ -53,3 +53,5 @@ Open: awam pull + live Chrome look, ":" shortcode, D3, D4, emoji box in chat / n
 | 20.11.26 05:10 PKT | QC1E D4A SERVER PASTES: awam pull OK; sql-run AUTO nothing new (edited E193 in ledger); Rust emoji installed OK (11 tests, build 3m13s, pm2 online); D4B PARKED in awam blueprint as written. Next: CHECK_E193 (advance_cols=4), then his OK for live upload test. |
 | 20.11.26 05:12 PKT | QC1E D4A CHECK_E193 on his server (paste 05:07): all OK incl. advance ClamAV+Box columns; E193 edited is live in DB. Next: his OK for live upload test, routeTree diff check. |
 | 20.11.26 05:20 PKT | QC1E D4A CLOSED HERE by his order; ordered detail + migration state written in AWAM-D4-CLOSE-AND-ORDER-20NOV.md; built in awam turn. |
+| 20.11.26 05:25 PKT | PRO package: all GREEN on advance technology (his word 05:12) written in awam blueprint + order doc. |
+| 20.11.26 05:30 PKT | AWAM PACKAGES: only Basic, Business, Business Pro remain (his word 05:13); Premium/MAX out, code preserved. |
