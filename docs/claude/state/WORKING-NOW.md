@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
-- 506d090b 20 Nov 06:44 QC2 GREEN by his word 06:44: Tiptap 3 rich compose, signatures, snippets, HTML5 mail frame
-- a14b6dc4 20 Nov 01:44 Storage Box SSH IP na milna
-- c0562f28 20 Nov 01:42 Work in progress
+- 290f7817 20 Nov 06:44 QC2 GREEN by his word 06:44: Tiptap 3 rich compose, signatures, snippets, HTML5 mail frame
 - 592cd0a7 20 Nov 06:19 ledger line 032be547
 - 032be547 20 Nov 06:19 5-min checkpoint: QC2 waits founder-install
+- 1216b43b 20 Nov 06:18 ledger line 328e2aa8
+- 328e2aa8 20 Nov 06:18 QC2-B: Tiptap 3 rich compose, signatures + snippets panel, HTML5 mail frame
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 27 ++++-----------------------
- 1 file changed, 4 insertions(+), 23 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 23 ++---------------------
+ 1 file changed, 2 insertions(+), 21 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ HIS 4 QUESTIONS, ANSWERS FROM RESEARCH (his word still needed, defaults below):
 2. Signature = text + links only in QC2. Reason: embedded (CID/base64) logo adds ~33 % size and shows as an attachment in Microsoft 365 / OWA, iOS Mail has stripped it; a hosted logo is blocked by default in many clients and needs the host online; guidance keeps a logo under 50 KB. Logo comes after 
 3. Snippets: trigger `/name` (Superhuman uses `;`, we keep `/` and Ctrl+K), built-in variables {first_name} {my_name} {date}, plus any {custom_placeholder}; sending with an unfilled {placeholder} WARNS first (Superhuman does the same). Private snippets only (single founder; team sharing not needed).
 4. Plain-text mode = per mail, NOT remembered (Gmail: per message, default stays formatted). Switching to plain text drops formatting and cannot be brought back, so ask "formatting will be removed" before switching.
-WIP snapshot: refs/wip/last (90f2da7ebd8194abfb6042347437ac20d329af37)
+WIP snapshot: refs/wip/last (70f149af0fc76bc5f410efb0ce86f0d75ce9934b)
