@@ -1713,3 +1713,9 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 03:46 PKT compaction-safety update: WORKING-NOW, blueprint top block, founder-commands, CLAUDE.md first line; his 03:39 paste recorded; QC8a a2 done, waits his 3 haan; FOUNDER_DB=login after install = open fact (read-only check)
 
 - 21 Nov 2026 03:51 PKT QCONNECT login-only INTACT after his founder-install (journal paste 03:41); QC8a waits one haan
+
+- 21 Nov 2026 03:53 PKT HIS DEADLINE 05:00 PKT: QC8a + QC8b live-Chrome GREEN; start QC8a a3
+
+- 21 Nov 2026 03:54 PKT HIS DEADLINE 05:00 PKT: QC8a + QC8b live-Chrome GREEN; start QC8a a3
+
+- 21 Nov 2026 03:55 PKT HIS DEADLINE 05:00 PKT: QC8a and QC8b must be seen in live Chrome by then; start QC8a a3

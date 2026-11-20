@@ -4614,3 +4614,11 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 03:50 PKT HIS PASTE 03:41: journal 22:36:47 UTC (03:36 PKT) after founder-install: database engine = REST (managed, data); identity engine = LOCAL (login only, pool 4). QCONNECT login-only INTACT after install (proved by his paste). He wants QC8a finished fast, Admin Desk starts TODAY.
 
 - 21 Nov 2026 03:51 PKT QCONNECT login-only INTACT after his founder-install (journal paste 03:41); QC8a waits one haan
+
+- 21 Nov 2026 03:50 PKT HIS ORDER 03:44: DEADLINE 05:00 PKT TODAY: QC8a AND QC8b seen in LIVE CHROME and written GREEN by then. ONE QC8a at a time, blueprint order updated, ledger with date and time, START NOW (= his haan for the 3 items). ADVANCE TECHNOLOGY IS GOD: latest only (React 19, TS, Radix, Tailwind 4, WCAG 2.1.4/2.2, ariaNotify), never forget it.
+
+- 21 Nov 2026 03:53 PKT HIS DEADLINE 05:00 PKT: QC8a + QC8b live-Chrome GREEN; start QC8a a3
+
+- 21 Nov 2026 03:54 PKT HIS DEADLINE 05:00 PKT: QC8a + QC8b live-Chrome GREEN; start QC8a a3
+
+- 21 Nov 2026 03:55 PKT HIS DEADLINE 05:00 PKT: QC8a and QC8b must be seen in live Chrome by then; start QC8a a3
