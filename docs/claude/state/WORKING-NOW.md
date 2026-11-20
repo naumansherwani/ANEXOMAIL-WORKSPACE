@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 20:14 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 20:16 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC7a: E196 SQL (473 lines) + Rust doors + clock written and tested on scratch pg; writing React Remind me chip; then his sql-run E196 + install; then QC7b sealed draft
 NEXT STEP: React: mail_followup api + pure helpers + chip in read pane (additive); then push and give him sql-run E196 then founder-install
 HIS LAST WORD: SQL advance 400+ likho QC7
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 8ca244d3 20 Nov 20:16 QC7a: Remind me chip React (FollowupChip), api, pure tests
+- 1f1b38e2 20 Nov 20:14 ledger line 6ffd0976
 - 6ffd0976 20 Nov 20:14 QC7a: E196 follow-up reminder SQL (event chain, guard, policy), Rust doors and clock
 - a33a93c4 20 Nov 20:02 ledger line 4479d0b1
 - 4479d0b1 20 Nov 20:02 QC5 recorded as my own live proof
-- b2f171e0 20 Nov 20:02 ledger line 25d79458
-- 25d79458 20 Nov 20:02 QC5 is my proof
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 46 ++--------------------------------------
- 1 file changed, 2 insertions(+), 44 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (50813264ceb3b826ead400d4092b29be2f77a582)
+WIP snapshot: refs/wip/last (d6b4b0d77229716ce9c77fd0aabe73beadb2bdc6)
