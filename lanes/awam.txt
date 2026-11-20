@@ -105,6 +105,7 @@ docs/cursor-work/server/calendar-status.sh
 docs/cursor-work/server/cargo_migration_deps.py
 docs/cursor-work/server/cert-refresh-check.sh
 docs/cursor-work/server/checks-all.sh
+docs/cursor-work/server/ckpt-loop.sh
 docs/cursor-work/server/ckpt.sh
 docs/cursor-work/server/clamd-tcp-fix.sh
 docs/cursor-work/server/commit-msg.hook

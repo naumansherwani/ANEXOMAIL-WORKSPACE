@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 19:22 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: DK-a installed + my Chrome look done 19:35 (0.19.0 served, no console errors); starting QC5 Delete forever contract
-NEXT STEP: QC5 -> QC7 -> QC8 -> Q3 -> DK-b (his hardware keys)
-HIS LAST WORD: 5-min check 10:11
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 19:27 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: DK-b: DK3 device key custody + DK4 screen (his order 19:26: finish ALL of DK first, no questions; QC5 paused after recon: SQL fmail_delete_hard exists, touch action mail.delete exists, Rust door + UI missing)
+NEXT STEP: write DK3/DK4 contract in CURRENT.md, then code: kernel keygen+wrap, passkey PRF, IndexedDB, pubkey door, sealed_for_kernel read pane, Reply/Forward
+HIS LAST WORD: phudi: finish all DK first, stop asking
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,37 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 4fefe297 20 Nov 19:22 ledger line 3db4ad62
 - 3db4ad62 20 Nov 19:22 DK-a live Chrome look recorded (19:35 PKT)
 - 481ce7fd 20 Nov 19:22 ledger line ea896d7b
 - ea896d7b 20 Nov 19:22 DK-a live look
 - 5aaedbde 20 Nov 19:21 ledger line bcf1bc3c
-- bcf1bc3c 20 Nov 19:21 DK-a installed on his server (19:20 PKT paste), receipt + ledger
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/DONE-DO-NOT-REPEAT.md
+ M docs/claude/RESUME-POINT.md
+ M docs/claude/founder/PULL-COMMANDS.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
+ M docs/cursor-work/DONE-DO-NOT-REPEAT.md
+ M docs/cursor-work/founder/founder-commands.md
+ M docs/cursor-work/server/PULL-COMMANDS.md
+ M web-wasm/src/kemopen.rs
+ M web-wasm/src/lib.rs
+?? docs/cursor-work/server/ckpt-loop.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/tech-contracts/CURRENT.md              |  2 +-
+ ...DE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md |  2 +-
+ docs/cursor-work/DONE-DO-NOT-REPEAT.md             |  2 +-
+ docs/cursor-work/founder/founder-commands.md       |  2 +-
+ docs/cursor-work/server/PULL-COMMANDS.md           |  2 +-
+ web-wasm/src/kemopen.rs                            | 38 ++++++++++++++++++++++
+ web-wasm/src/lib.rs                                |  8 +++++
+ 11 files changed, 70 insertions(+), 26 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +59,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (43b60639d7aaa0e434ba5a711428523b44902ba6)
+WIP snapshot: refs/wip/last (25a8af4e06b16911885d1024fd8638e4af4eb269)

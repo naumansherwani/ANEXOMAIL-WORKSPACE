@@ -251,6 +251,14 @@ pub extern "C" fn kem_open(ptr: u32, len: u32) -> u32 {
     ok as u32
 }
 
+/// DK3: make a device key pair from browser seeds (kemopen@1 keygen). 1 = hex JSON {dk, x, pub} in the out buffer; 0 = a plain reason.
+#[unsafe(no_mangle)]
+pub extern "C" fn kem_keygen(ptr: u32, len: u32) -> u32 {
+    let (ok, out) = kemopen::keygen_json(unsafe { text(ptr, len) });
+    set_out(out);
+    ok as u32
+}
+
 /* ------------------------------------------------------- mailparse@1 (DK-a) */
 /// DK-a: read one raw mail (bytes in the kernel memory) -> JSON {"summary","view"} in the out buffer, length wapas. Never fails: an unreadable message still gives a summary "(unreadable message)".
 #[unsafe(no_mangle)]

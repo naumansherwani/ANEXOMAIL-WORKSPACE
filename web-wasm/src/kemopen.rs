@@ -103,6 +103,28 @@ pub fn open_json(input: &str) -> (bool, Vec<u8>) {
     match open_sealed(&*mk, &nonce, &aad(&parts), &sealed) { Some(p) => (true, p), None => fail("sealed bytes do not open") }
 }
 
+/// DK3 (20 Nov 2026): make a device key pair from browser-supplied random seeds. JSON in (hex): d (32), z (32), x (32). The browser draws the seeds from crypto.getRandomValues; the kernel has NO rng,
+/// so the same seeds always give the same pair (testable). Out (hex JSON): dk (2400), x (32), pub (1216 = ML-KEM encaps key 1184 + X25519 public 32). The caller wraps dk + x at once and wipes them.
+pub fn keygen_json(input: &str) -> (bool, Vec<u8>) {
+    use fips203::ml_kem_768::KG;
+    use fips203::traits::KeyGen;
+    let fail = |m: &str| (false, m.as_bytes().to_vec());
+    let Ok(v) = serde_json::from_str::<serde_json::Value>(input) else { return fail("bad json") };
+    let get = |k: &str| v[k].as_str().and_then(hex_dec).filter(|b| b.len() == 32).map(Zeroizing::new);
+    let (Some(d), Some(z), Some(x)) = (get("d"), get("z"), get("x")) else { return fail("d, z and x must be 32 bytes of hex each") };
+    if d.iter().all(|b| *b == 0) || z.iter().all(|b| *b == 0) || x.iter().all(|b| *b == 0) { return fail("all-zero seed refused"); }
+    let (mut dd, mut zz, mut xx) = ([0u8; 32], [0u8; 32], [0u8; 32]);
+    dd.copy_from_slice(&d); zz.copy_from_slice(&z); xx.copy_from_slice(&x);
+    let (ek, dk) = KG::keygen_from_seed(dd, zz);
+    let sk = StaticSecret::from(xx);
+    let mut pubk = ek.into_bytes().to_vec();
+    pubk.extend_from_slice(PublicKey::from(&sk).as_bytes());
+    let dkb = Zeroizing::new(dk.into_bytes().to_vec());
+    dd.zeroize(); zz.zeroize(); xx.zeroize();
+    let hx = |b: &[u8]| b.iter().map(|c| format!("{:02x}", c)).collect::<String>();
+    (true, serde_json::json!({"dk": hx(&dkb), "x": hx(&x), "pub": hx(&pubk)}).to_string().into_bytes())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -171,4 +193,20 @@ mod tests {
         let mut bad = j.clone(); bad["aad"] = serde_json::json!(["body", "m", "out"]);
         let (ok2, why) = open_json(&bad.to_string()); assert!(!ok2); assert_eq!(why, b"sealed bytes do not open");
     }
+    #[test]
+    fn dk3_keygen_is_deterministic_sized_and_opens_a_wrap() {
+        let inp = |d: u8| format!(r#"{{"d":"{}","z":"{}","x":"{}"}}"#, format!("{:02x}", d).repeat(32), "22".repeat(32), "33".repeat(32));
+        let (ok, a) = keygen_json(&inp(1)); assert!(ok);
+        let (_, a2) = keygen_json(&inp(1)); let (_, b) = keygen_json(&inp(2));
+        assert_eq!(a, a2); assert_ne!(a, b);
+        let v: serde_json::Value = serde_json::from_slice(&a).unwrap();
+        let (dk, x, pubk) = (hex_dec(v["dk"].as_str().unwrap()).unwrap(), hex_dec(v["x"].as_str().unwrap()).unwrap(), hex_dec(v["pub"].as_str().unwrap()).unwrap());
+        assert_eq!((dk.len(), x.len(), pubk.len()), (DK_LEN, 32, PUB_LEN));
+        // the generated pair must open a wrap made to its public half (same algorithm as the server's wrap)
+        let ek = fips203::ml_kem_768::EncapsKey::try_from_bytes(pubk[..EK_LEN].try_into().unwrap()).unwrap();
+        let ek_ok = { use fips203::traits::Encaps; ek.try_encaps().is_ok() }; assert!(ek_ok);
+        assert!(!keygen_json(r#"{"d":"00","z":"00","x":"00"}"#).0);
+        assert!(!keygen_json(&format!(r#"{{"d":"{}","z":"{}","x":"{}"}}"#, "00".repeat(32), "22".repeat(32), "33".repeat(32))).0);
+    }
+
 }
