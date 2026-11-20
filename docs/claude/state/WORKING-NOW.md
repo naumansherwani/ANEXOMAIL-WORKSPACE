@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 09:16 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:17 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: DOING: QC4b not started, awaiting his answer on install timing + plan haan
 NEXT STEP: NEXT: QC4b screen (InlineReply, buttons r/a/f, fold chip, selection, forward, 20-warn); QC4a install pending
 HIS LAST WORD: 5-min check 10:11
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 7912b5f4 20 Nov 09:17 QC4 checkpoint 09:16
 - 22fef72f 20 Nov 09:14 ledger line e0f406af
 - e0f406af 20 Nov 09:14 QC4 handoff note after compaction
 - ed40e92b 20 Nov 09:10 ledger line aa0a27e6
 - aa0a27e6 20 Nov 09:10 QC4 checkpoint
-- ecc48491 20 Nov 09:10 ledger line c6abb830
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 21 ++++-----------------
- 1 file changed, 4 insertions(+), 17 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (49b181a3f51433323267250605bbe7f46eacefca)
+WIP snapshot: refs/wip/last (d58412146506fa471d90b6b0c1c6dea288eaa133)
