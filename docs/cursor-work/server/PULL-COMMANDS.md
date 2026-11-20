@@ -1549,3 +1549,5 @@
 - 21 Nov 2026 04:58 PKT his word sirf b2 only: b3/b4 draft reverted unwritten, b2 SEMANTICS only stays (sandbox-proven, live waits his founder-install)
 
 - 21 Nov 2026 04:58 PKT his word sirf b2 only: b3/b4 draft reverted unwritten, b2 SEMANTICS only stays (sandbox-proven, live waits his founder-install)
+
+- 21 Nov 2026 05:00 PKT his word hatao nahi: b3 focus (sandbox-proven) and b4 key announcements (written, not proven) restored; b2 stays; none live yet

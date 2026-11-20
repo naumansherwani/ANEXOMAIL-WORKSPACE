@@ -22,3 +22,5 @@
 - 21 Nov 2026 04:44 PKT HIS WORD: 45 minutes left, deadline 05:27. b2 Semantics 04:53 / b3 Focus 05:02 / b4 Announcements 05:12 / b5 forced-colors+contrast 05:18 / b6 Final check + Chrome live 05:27. Write the time and technology in CAPITALS in ledger + blueprint after every phase. b2 detail asked.
 
 - 21 Nov 2026 04:45 PKT HIS WORD: "sirf b2 only likho". b3/b4 code written by mistake was reverted unwritten; only b2 stays. b3 onwards only after his word.
+
+- 21 Nov 2026 04:46 PKT HIS WORD: "hatao nahi" - b3/b4 code restored (b3 sandbox-proven, b4 written not proven); plan b3-b6 untouched.

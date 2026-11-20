@@ -1,6 +1,20 @@
 // QC8b b2: screen-reader semantics, added as ATTRIBUTES ONLY on elements the mail page already renders.
 // No node is inserted, no class changes, nothing visible changes. Existing files are untouched.
 // Technology: TypeScript + MutationObserver (one observer, re-applied when React re-renders).
+import { announce } from "./keys_list";
+import { readSingle } from "./keys_store";
+
+const SAID: Record<string, string> = { e: "Archived", "#": "Moved to Trash", s: "Star changed", u: "Marked unread" };
+/** QC8b b4 (WRITTEN, NOT YET PROVEN): a spoken sentence after e # s u on the open mail. Never says mail content. */
+function onActionKey(e: KeyboardEvent): void {
+  const say = SAID[e.key];
+  if (!say || e.ctrlKey || e.metaKey || e.altKey) return;
+  const t = e.target as HTMLElement | null;
+  if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+  if (document.querySelector(".mc-wrap, dialog[open]") || !readSingle() || !document.querySelector(".mbx .mbx-r.on")) return;
+  announce(say);
+}
+
 const SET: Array<[string, Array<[string, string]>]> = [
   // The wordmark is the page's one heading, spoken as "Mail" (level 1).
   [".mbx .mbx-brand b", [["role", "heading"], ["aria-level", "1"], ["aria-label", "Mail"]]],
@@ -25,13 +39,27 @@ export function applySemantics(root: ParentNode): void {
   });
 }
 
+// QC8b b3 (sandbox-proven): when the focused element is removed (compose or reader closes, focus falls to <body>),
+// focus goes back to the mail row that was open, else the first row. Never steals focus otherwise.
+let lost: EventTarget | null = null;
+let lastRow: Element | null = null;
+export function restoreFocus(doc: Document): void {
+  const cur = doc.querySelector(".mbx .mbx-r.on"); if (cur) lastRow = cur;
+  if (!lost || (lost as Element).isConnected) return;
+  const a = doc.activeElement; if (a && a !== doc.body) { lost = null; return; }
+  const row = (lastRow && lastRow.isConnected ? lastRow : doc.querySelector(".mbx .mbx-r")) as HTMLElement | null;
+  lost = null; row?.focus({ preventScroll: true });
+}
+
 let started = false;
 /** Starts once: applies now and again after every change under the body (class and child changes). */
 export function trackSemantics(): void {
   if (started || typeof document === "undefined") return;
   started = true;
   let queued = false;
-  const run = () => { queued = false; applySemantics(document); };
+  const run = () => { queued = false; applySemantics(document); restoreFocus(document); };
+  window.addEventListener("keydown", onActionKey);
+  document.addEventListener("focusout", (e) => { lost = e.target; }, true);
   const mo = new MutationObserver(() => { if (!queued) { queued = true; queueMicrotask(run); } });
   mo.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ["class"] });
   run();
