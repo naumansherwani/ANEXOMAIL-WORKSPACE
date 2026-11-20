@@ -73,3 +73,8 @@
 .emo-sc-i{display:flex;align-items:center;gap:10px;min-height:44px;padding:0 10px;border-radius:10px;cursor:pointer;font-size:14px;color:inherit}
 .emo-sc-i.on{background:rgba(43,136,216,.22)}
 .emo-sc-g{font-size:22px;line-height:1;flex:none}.emo-sc-n{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* 20 Nov 09:34 awam sticker-face toggle: round ghost button, icon only, 44 px target, visible focus ring */
+.emo-sticker{border-radius:9999px;min-width:44px;min-height:44px;padding:0;border:0;background:transparent}
+.emo-sticker:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+.emo-sticker[aria-expanded="true"]{background:rgba(127,127,127,.18)}

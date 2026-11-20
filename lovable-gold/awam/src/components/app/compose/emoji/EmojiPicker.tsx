@@ -28,10 +28,22 @@ export function useEmojiDock(): Dock {
   const close = useCallback(() => { setOpen(false); btn.current?.focus(); }, []);
   return { open, toggle, close, btn };
 }
-export function EmojiToggle({ dock, className = "mx-btn alt" }: { dock: Dock; className?: string }) {
+/** His 20 Nov 09:34 order (awam): a sticker-face icon like the chat apps use (own drawing, not a copy of any app's): round face, eyes, smile, peeled corner. Round ghost button, 44 px. */
+export function StickerFace({ size = 24 }: { size?: number }) {
   return (
-    <button ref={dock.btn} type="button" className={`${className} emo-btn emo-toggle`} aria-haspopup="dialog" aria-expanded={dock.open} aria-label="Insert emoji (or type : and a name, like :smile)" title="Emoji (or type : and a name, like :smile)" onClick={dock.toggle}>
-      <span aria-hidden="true">🙂</span>
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+      <path d="M20.6 11.6A8.6 8.6 0 1 0 12 20.6c.4 0 .8 0 1.2-.1" />
+      <path d="M13.2 20.5c.4-3.6 3-6.3 7.3-6.9" />
+      <circle cx="9" cy="10" r="1" fill="currentColor" stroke="none" />
+      <circle cx="15" cy="10" r="1" fill="currentColor" stroke="none" />
+      <path d="M8.2 13.6c1.9 2 4.6 2.2 6.2.8" />
+    </svg>
+  );
+}
+export function EmojiToggle({ dock, className = "mx-btn alt", sticker = false }: { dock: Dock; className?: string; sticker?: boolean }) {
+  return (
+    <button ref={dock.btn} type="button" className={`${className} emo-btn emo-toggle${sticker ? " emo-sticker" : ""}`} aria-haspopup="dialog" aria-expanded={dock.open} aria-label="Insert emoji (or type : and a name, like :smile)" title="Emoji (or type : and a name, like :smile)" onClick={dock.toggle}>
+      {sticker ? <StickerFace /> : <span aria-hidden="true">🙂</span>}
     </button>
   );
 }

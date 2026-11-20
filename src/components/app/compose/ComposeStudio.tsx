@@ -1084,7 +1084,7 @@ export function ComposeStudio({
             {busy ? <BrandSpinner className="size-4" /> : <Send className="size-4" />}
             <span>{proMail && scheduling ? "Schedule" : "Send"}</span>
           </Button>
-          <EmojiToggle dock={emo} className="ax-press ax-tap inline-flex items-center justify-center rounded-md border border-border bg-secondary text-secondary-foreground hover:bg-secondary/80" />
+          <EmojiToggle sticker dock={emo} className="ax-press ax-tap inline-flex items-center justify-center rounded-full text-muted-foreground hover:bg-secondary hover:text-foreground" />
           {proMail ? (
             <Button
               type="button"

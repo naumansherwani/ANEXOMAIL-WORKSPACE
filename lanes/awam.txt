@@ -1047,6 +1047,7 @@ src/components/app/compose/emoji/emoji_pure.test.ts
 src/components/app/compose/emoji/emoji_pure.ts
 src/components/app/compose/emoji/emoji_ur_data.ts
 src/components/app/compose/emoji/shortcodeNative.ts
+src/components/app/compose/emoji/sticker_toggle.test.ts
 src/components/app/crm/00-FOUNDER-TECH-RULE.md
 src/components/app/crm/CrmBits.tsx
 src/components/app/crm/CrmCapture.tsx
