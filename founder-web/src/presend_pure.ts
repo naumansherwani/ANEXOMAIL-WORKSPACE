@@ -173,7 +173,11 @@ export function headline(p: Phase): string {
     default: return "Status unknown";
   }
 }
-const TIME = (ms: number | null): string => { if (ms === null) return ""; const p = partsIn(ms); return `${pad(p.h)}:${pad(p.mi)}:${pad(p.s)}`; };
+/** HH:MM:SS on the Karachi clock ("" when there is no time). */
+export const clockOf = (ms: number | null | undefined, tz: string = SCHEDULE_TZ): string => { if (ms === null || ms === undefined || !Number.isFinite(ms)) return ""; const p = partsIn(ms, tz); return `${pad(p.h)}:${pad(p.mi)}:${pad(p.s)}`; };
+const TIME = clockOf;
+/** The time shown beside a step: the ledger moment when there is one, else the outbox clock, else nothing. */
+export const stepTime = (s: Pick<Step, "at_ms" | "at">): string => s.at_ms ? clockOf(s.at_ms) : s.at && Number.isFinite(Date.parse(s.at)) ? clockOf(Date.parse(s.at)) : "";
 /** The title of one of the four steps, from its state and detail. */
 export function stepTitle(s: Step): string {
   const d = s.detail ?? {};

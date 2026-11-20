@@ -13,6 +13,7 @@ import { Ic, FOLDER_ICON } from "./mailbox_icons";
 import { arrivalLine, describeQuery, freshRows, isEmptyQuery, matchQuery, parseQuery, speedWords, suggest } from "./mailbox_pure";
 import { FOLDERS, ago, compact, fmtSize, glide, hue, initials, isGatedView, keyCmd, ledgerChip, merge, pill, proofChip, quoteReply, replySubject, rowText, touchAction, verdicts, when, folderLabel, type Box, type Counts, type Lane, type Proof, type Row } from "./mail_pure";
 import { TrustRing, OutFactsLine } from "./TrustRing";
+import { MailTimeline } from "./MailTimeline";
 import { ConfirmSheet } from "./ConfirmSheet";
 import { deleteQuestion, type Ask } from "./confirm_pure";
 import { sentMs } from "./trust_pure";
@@ -289,6 +290,7 @@ export function MailBox() {
                     {opened.touched && <span className="mx-chip ok">Opened with your key</span>}
                   </div>
                   {cur.direction === "out" && <OutFactsLine box={boxId} id={opened.facts.id} />}
+                  {cur.direction === "out" && <MailTimeline box={boxId} id={opened.facts.id} />}
                   {cur.direction === "out" && <TlsProven box={boxId} addrs={[...(opened.sum.to ?? []), ...(opened.sum.cc ?? [])]} />}
                   {opened.view.remote_content_blocked && <p className="mx-note">Remote images and scripts in this message were not loaded. You are reading its text only.</p>}
                   <pre className="mbx-body-t">{opened.view.text || "(empty message)"}</pre>

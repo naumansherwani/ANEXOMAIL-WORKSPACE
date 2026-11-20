@@ -232,3 +232,24 @@ export async function signatures(box: string): Promise<Sig[] | null> { const d =
 export async function signatureAct(box: string, a: { op: "put"; from: string; text: string; fallback: boolean } | { op: "clear"; id: string }): Promise<{ ok: boolean; error?: string }> { const r = await post("/founder/v1/mail/signature", { box, ...a }); return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` }; }
 export async function snippets(box: string): Promise<Snippet[] | null> { const d = (await get(`/founder/v1/mail/snippets?${q({ box })}`)).data; return d?.ok && Array.isArray(d.items) ? d.items : null; }
 export async function snippetAct(box: string, a: { op: "put"; name: string; text: string } | { op: "delete" | "used"; id: string }): Promise<{ ok: boolean; error?: string }> { const r = await post("/founder/v1/mail/snippet", { box, ...a }); return r.status === 200 && r.body?.ok ? { ok: true } : { ok: false, error: r.body?.error || `HTTP ${r.status}` }; }
+
+// ---- QC3: delivery timeline (signed GETs through the kernel RPC, E195 doors). undefined = the door is not answering (E195 or the Rust door not installed yet); null = this mail has no outbox row.
+import type { TimelineView, Phase, Tone } from "./presend_pure";
+export async function timeline(box: string, message: string): Promise<TimelineView | null | undefined> {
+  const d = (await get(`/founder/v1/mail/timeline?${q({ box, message })}`)).data;
+  if (!d?.connected) return undefined;
+  return d.timeline ? (d.timeline as TimelineView) : null;
+}
+export type Badge = { message_id: string; phase: Phase; tone: Tone; final: boolean; attempts: number; next_attempt: string | null };
+/** One small word per mail for a list of sent mail (max 100 ids per call). */
+export async function badges(box: string, ids: string[]): Promise<Record<string, Badge> | null> {
+  const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const list = Array.from(new Set(ids.filter((x) => UUID.test(x)))).slice(0, 100); if (!list.length || !UUID.test(box)) return {};
+  // the ids are plain uuids joined by commas; the commas are NOT percent-encoded (the Rust door splits the raw query on ',')
+  const d = (await get(`/founder/v1/mail/timeline/badges?box=${box}&ids=${list.join(",")}`)).data;
+  if (!d?.connected) return null;
+  const out: Record<string, Badge> = {}; for (const b of (d.badges?.items ?? []) as Badge[]) out[b.message_id] = b; return out;
+}
+export type DeliveryBoard = { server_now: string | null; days: number; total: number; by_phase: Record<string, number>; accepted_took_seconds: { p50: number | null; p95: number | null }; accepted_rate: number; deferred_rate: number; failed_rate: number;
+  rows: { outbox_id: string; message_id: string; phase: Phase; tone: Tone; final: boolean; rcpt: number; attempts: number; created_at: string | null; finished_at: string | null; next_attempt: string | null; reason: string | null; last_error: string | null }[] };
+export async function delivery(box: string, days = 7): Promise<DeliveryBoard | null> { const d = (await get(`/founder/v1/mail/delivery?${q({ box, days: String(days) })}`)).data; return d?.connected ? (d.delivery as DeliveryBoard) : null; }

@@ -12,7 +12,10 @@ import { useTlsFacts } from "./TlsLock";
 import type { Contact } from "./book";
 import { RichEditor, type RichHandle } from "./RichEditor";
 import { MailRichPanel } from "./MailRichPanel";
-import { fill, knownVars, pickSignature, placeholders, slashMatches, type Sig, type Snippet } from "./rich_pure";
+import { fill, knownVars, pickSignature, slashMatches, type Sig, type Snippet } from "./rich_pure";
+import { applyFix, presendChecks, scheduleOf, shouldWarn, warnKey, type Fix } from "./presend_pure";
+import { MailPresendBar } from "./MailPresendBar";
+import { SchedulePresets } from "./SchedulePresets";
 import { chipsOf, joinChips, parseAddrs, removeChip, takenMap, type Field } from "./recipients";
 
 export type Start = { to?: string; subject?: string; text?: string; in_reply_to?: string; reply_to?: string; draft?: string };
@@ -48,7 +51,8 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
   const [busy, setBusy] = useState(false), [err, setErr] = useState(""), [needsDkim, setNeedsDkim] = useState(false), [saved, setSaved] = useState("");
   // QC2-B: a new empty mail starts rich; a reply / a draft without html starts plain exactly as before (nothing is converted behind his back)
   const [rich, setRich] = useState(!start.text && !start.draft), [html, setHtml] = useState(""), [ek, setEk] = useState(0), [askPlain, setAskPlain] = useState(false);
-  const [sigs, setSigs] = useState<Sig[]>([]), [snips, setSnips] = useState<Snippet[]>([]), [panel, setPanel] = useState(false), [slash, setSlash] = useState<string | null>(null), [warnOpen, setWarnOpen] = useState("");
+  const [sigs, setSigs] = useState<Sig[]>([]), [snips, setSnips] = useState<Snippet[]>([]), [panel, setPanel] = useState(false), [slash, setSlash] = useState<string | null>(null), [barOn, setBarOn] = useState(false);
+  const ack = useRef("");
   const richRef = useRef<RichHandle>(null), noArea = useRef<HTMLTextAreaElement>(null), sigDone = useRef(false);
   const draft = useRef<{ id?: string; v: number }>({ v: 0 });
   const last = useRef(""), dirty = useRef(false);
@@ -103,21 +107,27 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
     const f = chipsOf(to)[0]; const who = f ? (f.name || book.find((c) => c.addr.toLowerCase() === (f.addr ?? "").toLowerCase())?.name || "") : "";
     const r = fill(sn.text, knownVars({ toName: who, myName: box.display_name ?? "", now: new Date() }));
     if (rich && typed !== undefined) richRef.current?.replaceSlash(typed, r.text); else addText(r.text);
-    void api.snippetAct(box.id, { op: "used", id: sn.id }); setSlash(null); setWarnOpen("");
+    void api.snippetAct(box.id, { op: "used", id: sn.id }); setSlash(null); ack.current = "";
   };
   // the signature goes into a NEW mail once, as soon as it is loaded (a reply or a draft gets it from the button)
   useEffect(() => { if (sigDone.current || start.text || start.draft || !sigs.length) return; const sg = pickSignature(sigs, box.address); if (sg) { sigDone.current = true; window.setTimeout(() => insertSig(sg), 0); } /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [sigs]);
 
+  const liveWarns = barOn ? (() => { const L = lists(); return presendChecks({ to: L.to.ok, cc: L.cc.ok, bcc: L.bcc.ok, subject: subject.trim(), text, tls }); })() : [];
+  useEffect(() => { if (barOn && !liveWarns.length) setBarOn(false); }, [barOn, liveWarns.length]);
+  function barFix(k: Fix["kind"]) { const L = lists(); const r = applyFix(k, { to: L.to.ok, cc: L.cc.ok, bcc: L.bcc.ok }); setTo(r.to.join(", ")); setCc(r.cc.join(", ")); setBcc(r.bcc.join(", ")); setShowCc(true); }
+  function sendAnyway() { ack.current = warnKey(liveWarns); setBarOn(false); void send(); }
   async function send() {
     setErr(""); setNeedsDkim(false);
     const L = lists(); const bad = [...L.to.bad, ...L.cc.bad, ...L.bcc.bad];
     if (bad.length) { setErr(`Not an address: ${bad.slice(0, 3).join(", ")}`); return; }
     const c = { to: L.to.ok, cc: L.cc.ok, bcc: L.bcc.ok, subject: subject.trim(), text, ...(rich && html ? { html } : {}), ...(start.in_reply_to ? { in_reply_to: start.in_reply_to } : {}) };
     const p = composeProblem(c); if (p) { setErr(p); return; }
-    let schedule = ""; if (when) { const d = new Date(when); if (!(d.getTime() > Date.now() + 60_000)) { setErr("Pick a time at least a minute from now."); return; } schedule = d.toISOString().replace(/\.\d{3}Z$/, "Z"); }
-    // an unfilled {placeholder} is warned about ONCE; the second press sends
-    const open = placeholders(text); const key = open.join(",");
-    if (open.length && warnOpen !== key) { setWarnOpen(key); setErr(`Not filled in yet: ${open.map((x) => `{${x}}`).join(" ")}. Press Send again to send it as it is.`); return; }
+    const sch = scheduleOf(when, Date.now()); if (!sch.ok) { setErr(sch.error); return; }
+    const schedule = sch.at;
+    // QC3 calm bar: it WARNS and never blocks. The first press shows the bar (the old "unfilled {placeholder}" warn-once lives here now); "Send anyway" lets exactly that set through.
+    const warns = presendChecks({ to: c.to, cc: c.cc, bcc: c.bcc, subject: c.subject, text, tls });
+    if (shouldWarn(warns, ack.current)) { setBarOn(true); return; }
+    setBarOn(false);
     setBusy(true);
     const r = await api.send(box.id, c, { schedule: schedule || undefined, draft: draft.current.id });
     setBusy(false);
@@ -159,10 +169,11 @@ export function MailCompose({ box, start, onClose, onQueued }: { box: Box; start
         {!rich && <EmojiSafety text={text} onChange={setText} />}
         <AnimatePresence>{err && <motion.p key="e" className="mx-warn" role="alert" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>{err}</motion.p>}</AnimatePresence>
         {needsDkim && <DkimSetup box={box} onDone={() => setErr("")} />}
+        {barOn && <MailPresendBar warns={liveWarns} scheduled={!!when} busy={busy} onSendAnyway={sendAnyway} onFix={barFix} onKeepEditing={() => setBarOn(false)} />}
+        <SchedulePresets value={when} onChange={setWhen} />
         <footer>
           <button type="submit" className="mx-btn" disabled={busy}>{busy ? "Sending…" : when ? "Schedule" : "Send"}</button>
           <EmojiToggle dock={emo} />
-          <label className="mc-when"><span className="sr">Send later</span><input type="datetime-local" value={when} onChange={(e) => setWhen(e.target.value)} aria-label="Send later (optional)" /></label>
           <button type="button" className="mx-btn alt" onClick={() => void discard()}>{sure ? "Discard this draft? Press again" : "Discard"}</button>
           <span className="dim small mc-hint">Ctrl+Enter sends · held 30 s, you can undo</span>
         </footer>

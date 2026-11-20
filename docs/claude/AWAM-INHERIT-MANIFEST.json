@@ -5,8 +5,8 @@
   "founder-web/src/mailbox_pure.test.ts": "34312e85d0f71efbbabef71157361f1226ffa13a5a533a7065b62ef214100350",
   "founder-web/src/mailbox_icons.tsx": "437aa30eea28b7413e957d095096fb14d19fa78e2600ae1535cebc35e1190405",
   "founder-web/src/mailbox.css": "00f5b0b4a0ab07aea390db130efc22fe62e61ebf83d13a6d96c077fc83758e06",
-  "founder-web/src/MailBox.tsx": "e654b614c09186bb8b37c1ced76c2189c573f934d6a3dbd29a80781225d8e5d2",
+  "founder-web/src/MailBox.tsx": "7dd03584d051c9dcd5d56153e2a807f2a4b926e0ea93d93effc5c15885070174",
   "founder-web/src/mail_pure.ts": "dec0aa2d4636a6468b7d6b739d2872d6c4d26321d0342a988cc5076cf6f85e62",
-  "founder-web/src/MailCompose.tsx": "0e64413d80e345f50591873082e60258e1665bd074b22283f394015bd8f81ec5"
+  "founder-web/src/MailCompose.tsx": "505040708701c8c678d1cbd473234ac3b96db3e8601f2144efcf820928617699"
  }
 }

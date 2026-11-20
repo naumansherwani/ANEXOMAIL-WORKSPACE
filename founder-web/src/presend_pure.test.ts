@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import {
   applyFix, attemptLine, badgeOf, describeWhen, domainOf, fromLocalInput, headline, humanDuration, MANY_LIMIT, partsIn, pollMs, presendChecks, presets, reasonLine, retryLine,
-  scheduleOf, shouldWarn, stepTitle, toLocalInput, warnKey, zonedToMs, type Step, type TimelineView,
+  scheduleOf, shouldWarn, stepTime, clockOf, stepTitle, toLocalInput, warnKey, zonedToMs, type Step, type TimelineView,
 } from "./presend_pure";
 
 const Z = (s: string) => Date.parse(s);
@@ -187,6 +187,15 @@ const view = (o: Partial<TimelineView> = {}, retry: Partial<TimelineView["retry"
   retry: { attempts: 1, max_attempts: 12, remaining: 11, next_in_seconds: 240, give_up_in_seconds: 549_360, last_error: null, smtp_reply: null, explain: null, ...retry }, ...o,
 });
 const step = (key: Step["key"], state: Step["state"], detail: Step["detail"] = {}): Step => ({ key, state, at_ms: null, at: null, detail });
+
+describe("step times", () => {
+  test("ledger time wins, outbox time is the fallback, nothing is nothing", () => {
+    expect(clockOf(Z("2026-11-20T09:02:11Z"))).toBe("14:02:11");
+    expect(stepTime({ at_ms: Z("2026-11-20T09:02:11Z"), at: "2026-11-20T00:00:00Z" })).toBe("14:02:11");
+    expect(stepTime({ at_ms: null, at: "2026-11-20T09:02:11Z" })).toBe("14:02:11");
+    expect(stepTime({ at_ms: null, at: null })).toBe(""); expect(stepTime({ at_ms: null, at: "garbage" })).toBe(""); expect(clockOf(NaN)).toBe("");
+  });
+});
 
 describe("timeline words", () => {
   test("durations read naturally and never say 0", () => {
