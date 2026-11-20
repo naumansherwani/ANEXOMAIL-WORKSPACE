@@ -4494,3 +4494,5 @@ Features ki list (QC4 mein kya banega):
 - QCONNECT 22:2x PKT: step 5 first run: 350 DIFF lines were a script false positive (empty tables), fixed; same table list both sides, verify functions OK on the copy (dkim chain broken 0 of 34, perf seal 6, plan_interop ok); SCORE 4 of 10 done, 1 in progress, 5 left; nothing wired into the running service
 
 - QCONNECT 22:2x PKT: step 5 DONE on his server: 642 tables hashed both sides, 27 differ = live-write drift only (none larger locally), hash chains OK; SCORE 5 of 10 done; NOW step 6 Rust data.rs pg backend
+
+- QCONNECT 22:3x PKT: step 5 compare finished (27 diffs = live-write drift only); step 6 survey of Sb done (212 rpc names, 17 rows reads, 2 counts, 4 files direct http) and design written in the plan; code not started
