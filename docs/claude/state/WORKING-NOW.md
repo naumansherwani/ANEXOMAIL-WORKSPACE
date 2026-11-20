@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 00:48 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 00:49 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT deep audit done 21 Nov 00:58 PKT: report docs/claude/QCONNECT-AUDIT-21NOV.md; fixed data.rs default DB, switch EXIT trap + env newline; 573 tests pass. Switch 8b NOT run, on hold for his explicit go. 7 of 10 steps proven, flag OFF, site on REST.
 NEXT STEP: Wait for his go. Open items: Inter fonts HTTP/1.1 (read-only check first, no guess), AES-256/ML-KEM proof (Chrome panel or openssl paste), red '4 requests blocked', reverse copy decision. After switch: he signs in once, step 9 re-measure, step 10 local dump. Law 3, Aap only, Rule-70 table, 2-min loop must run.
 HIS LAST WORD: Qconnect ne barbad kiya, 5 min fix, deep audit, auto fix loopholes, qanoon na tootay, compaction-proof
@@ -18,32 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 4a23e415 21 Nov 00:48 QCONNECT: deep audit + 3 loophole fixes
 - 02943adb 21 Nov 00:40 ledger line 0463cb14
 - 0463cb14 21 Nov 00:40 QCONNECT: hold switch until his go
 - 64b10465 21 Nov 00:36 ledger line 8e12b1d9
 - 8e12b1d9 21 Nov 00:36 QCONNECT: step 8a prep done, state refreshed for compaction
-- 02c8db81 21 Nov 00:28 ledger line 31373bf7
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/DONE-DO-NOT-REPEAT.md
- M docs/claude/QCONNECT-PLAN-20NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/founder/founder-commands.md
- M docs/cursor-work/server/qconnect-switch.sh
- M server/founder/src/data.rs
-?? docs/claude/QCONNECT-AUDIT-21NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/tech-contracts/CURRENT.md              |  2 ++
- ...DE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md |  2 ++
- docs/cursor-work/DONE-DO-NOT-REPEAT.md             |  2 ++
- docs/cursor-work/founder/founder-commands.md       |  2 ++
- docs/cursor-work/server/PULL-COMMANDS.md           |  2 ++
- docs/cursor-work/server/qconnect-switch.sh         |  4 +++
- server/founder/src/data.rs                         |  3 ++-
- 11 files changed, 34 insertions(+), 19 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 29 ++---------------------------
+ 1 file changed, 2 insertions(+), 27 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -54,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (2bc312fef538257b648339c081a99646f4bba216)
+WIP snapshot: refs/wip/last (574cc1aa2a97317720d276711130ded837058e1a)
