@@ -1640,4 +1640,6 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 - 21 Nov 2026 01:15 PKT: QCONNECT REOPENED by his word (30 min to finish; replaces the 00:58 close). Written: qconnect-measure.sh (step 9, read only), pg-local-dump-install.sh (step 10, server only, 7 kept, SHA-256, no Storage Box). Next his switch line (qconnect-switch.sh), then sign in once, measure, dump, my Chrome look. Not proven yet.
 
-- 21 Nov 2026 01:20 PKT: correction: QC3a is done by his word (20 Nov 05:20) with live proof (19 Nov 11:30, 20 Nov 08:25). The earlier 'back to QC3a' resume lines were wrong; remaining mail phases QC2, QC3, QC4, QC5, QC7, QC8. QCONNECT stays reopened (his 01:05).
+- 21 Nov 2026 01:20 PKT: correction: QC3a is done by his word (20 Nov 05:20) with live proof (19 Nov 11:30, 20 Nov 08:25). The earlier 'back to QC3a' resume lines were wrong; CORRECTED 01:35 PKT: only QC8 remains in the mail chain; QC2, QC3, QC4, QC5, QC7 are already done (see their ledger lines 20 Nov 06:44, 08:52-09:03, 09:36-09:59, 20:02, 20:51). QCONNECT stays reopened (his 01:05).
+
+- 21 Nov 2026 01:35 PKT: mail chain status CORRECTED from the repo ledger: QC2 done 20 Nov 06:44, QC3 08:52/09:03, QC4 09:36/09:59, QC5 20:02, QC7 20:51; ONLY QC8 is open. My earlier lines listing QC2..QC8 as remaining were wrong (I copied the old 20 Nov 05:20 state). Order: QCONNECT 30 min (his 01:05) then QC8. Blueprint top, phases file row 11, WORKING-NOW updated.
