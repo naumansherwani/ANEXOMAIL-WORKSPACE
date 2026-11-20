@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 07:49 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 20 Nov 2026 07:56 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC3-1..6 done/written; his installs running (no paste); QC3-7 live look open
-NEXT STEP: on his paste: my live Chrome look; clear anexo-assets-v1; no mail sent; test runner wording fixed (not a runtime)
-HIS LAST WORD: 5-min check 07:50
+NEXT STEP: on his paste: my live Chrome look; clear anexo-assets-v1; no mail sent
+HIS LAST WORD: 5-min check 08:56
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 03fce32d 20 Nov 07:49 ledger line de5d8f70
 - de5d8f70 20 Nov 07:49 Fix test-runner wording (sandbox tool, not a runtime) + checkpoint
 - af5b89cd 20 Nov 07:47 ledger line 23680f1d
 - 23680f1d 20 Nov 07:47 QC3 checkpoint (WORKING-NOW)
 - c95c2069 20 Nov 07:47 ledger line bf27f077
-- bf27f077 20 Nov 07:47 QC3 progress table in blueprint, ledger, phase files
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 31 ++-----------------------------
- 1 file changed, 2 insertions(+), 29 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 21 ++++-----------------
+ 1 file changed, 4 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
 NOW: QC1c - COMPOSE C1c: TLS lock on every chip from our own STARTTLS probe (SQL E187; discuss after QC1b)  [Rust Tokio SMTP STARTTLS rustls X25519MLKEM768 probe, PostgreSQL domain TLS facts]
-WIP snapshot: refs/wip/last (bbdf184ef4f0de76bba8e9002c4c59f39986feb9)
+WIP snapshot: refs/wip/last (f38d0d69883e243806d5c710311faee7cf8804a2)
