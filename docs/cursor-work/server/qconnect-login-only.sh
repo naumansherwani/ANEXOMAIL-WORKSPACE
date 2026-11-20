@@ -43,7 +43,12 @@ for T in $TABLES; do
   case "$A" in [0-9]*" "*) ;; *) fail "the server database did not answer for $T ($A)";; esac
   [ "$A" = "$B" ] && continue
   case "$B" in ERROR*|psql*|"") echo "   skip $T: not readable on Supabase ($B)"; continue;; esac
-  [ "${B%% *}" -le "${A%% *}" ] 2>/dev/null || fail "Supabase has MORE rows than the server in $T (${B%% *} vs ${A%% *}); refused to overwrite"
+  if ! [ "${B%% *}" -le "${A%% *}" ] 2>/dev/null; then
+    # 21 Nov 03:20 (his paste: founder_dbsc_jti Supabase 147 vs server 144): the server PRUNES expiring tables, so Supabase can hold more old rows. Only a table with an append-only DELETE guard (a ledger) must never lose a row: that one is refused.
+    PROT="$(LP -At -c "select count(*) from pg_trigger where tgrelid='public.$T'::regclass and not tgisinternal and tgenabled<>'D' and (tgtype & 8)=8" 2>&1 | tail -1)"
+    [ "${PROT:-1}" = 0 ] || fail "Supabase has MORE rows than the server in the append-only table $T (${B%% *} vs ${A%% *}); refused to overwrite (integrity alarm)"
+    echo "   note $T: Supabase had ${B%% *} rows, server ${A%% *}: the server prunes this table (no append-only guard), the server copy wins"
+  fi
   LP -q -c "copy public.$T to stdout" > "$D/lo-$T.copy" 2>"$D/lo.err" || { head -3 "$D/lo.err"; fail "read of $T on the server"; }
   { echo "set session_replication_role = replica; delete from only public.$T; copy public.$T from stdin;"; cat "$D/lo-$T.copy"; echo '\.'; } | MP -q -1 -v ON_ERROR_STOP=1 -f - >/dev/null 2>"$D/lo.err" || { head -3 "$D/lo.err"; fail "write of $T to Supabase"; }
   rm -f "$D/lo-$T.copy"; COPIED="$COPIED,$T"; N=$((N+1)); echo "   copied $T (server ${A%% *} rows, Supabase had ${B%% *})"

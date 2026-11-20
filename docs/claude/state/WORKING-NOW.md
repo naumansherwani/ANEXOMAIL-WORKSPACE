@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 02:18 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 21 Nov 03:05 PKT: HIS ORDER (02:16): BACKUP FIRST so nothing is lost. qconnect-backup-now.sh written + sandbox-tested (read-only on both DBs; full server pg_dump + Supabase founder tables as COPY files + SHA-256, in /var/backups/anexomail-pg on his server only, NOT git, NOT Storage Box). Order for him: 0 backup, 1 founder-install, 2 qconnect-login-only.
-NEXT STEP: He runs the backup line and pastes; only then founder-install and qconnect-login-only. Nothing switches before the backup paste says OK.
-HIS LAST WORD: his 21 Nov 02:16: pehle backup, takay kuch lost na ho
+# WORKING NOW (manual checkpoint, 21 Nov 2026 02:24 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 21 Nov 03:20 PKT: HIS RUN (out of order, no backup): backup FAILED (pg_dump ran as postgres into a root-only dir: my bug), founder-install OK (new binary live, still local mode), login-only script FAILED SAFE at founder_dbsc_jti (Supabase 147 rows vs server 144 = rows pruned on the server); 10 tables were already copied to Supabase (they only gained rows), service back as before = local mode. FIXING: backup as root; prune-aware guard (refuse only for tables with an append-only delete trigger).
+NEXT STEP: Sandbox-test both fixes, push, give him 2 lines: backup, then login-only (founder-install already done).
+HIS LAST WORD: his 21 Nov 02:24 paste: backup fail, install ok, login-only refused at founder_dbsc_jti
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- e681feea 21 Nov 02:18 ledger line 478ce99a
 - 478ce99a 21 Nov 02:18 QCONNECT-LO: state snapshot
 - 0e0284a3 21 Nov 02:17 ledger line f3545f91
 - f3545f91 21 Nov 02:17 QCONNECT-LO: backup-now script (his backup-first order)
 - b391b0d3 21 Nov 02:14 ledger line 46c700d5
-- 46c700d5 21 Nov 02:14 QCONNECT-LO: state snapshot
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 23 +++++------------------
+ 1 file changed, 5 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (58a9a3ff61937cf379a3e6c3efb5955f23a7b140)
+WIP snapshot: refs/wip/last (59d4f1f435952712055fadf65c180c403d0bcf2e)

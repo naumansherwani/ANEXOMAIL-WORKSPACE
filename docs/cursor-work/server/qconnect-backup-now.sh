@@ -10,8 +10,8 @@ S=${QSOCK:-/var/run/postgresql}; PORT=${QPORT:-5432}; LDB=${QLDB:-anexo_copy}; B
 umask 077; mkdir -p "$B"; chmod 700 "$B"; DIR="$B/pre-login-$TS"; mkdir -p "$DIR/supabase"
 LP() { psql -X -h "$S" -p "$PORT" -d "$LDB" ${QUSER:+-U $QUSER} "$@"; }
 echo "== 1/2 his server database (full dump)"
-${QDUMP:-runuser -u postgres --} pg_dump -h "$S" -p "$PORT" ${QUSER:+-U $QUSER} -Fc "$LDB" -f "$DIR/server-$LDB.dump" 2>"$DIR/dump.err" || { cat "$DIR/dump.err" | head -3; echo "FAIL: server dump"; exit 3; }
-N=$(${QDUMP:-runuser -u postgres --} pg_restore -l "$DIR/server-$LDB.dump" | wc -l); [ "$N" -gt "${QMINE:-100}" ] || { echo "FAIL: dump has only $N entries"; exit 3; }
+${QDUMP:-} pg_dump -h "$S" -p "$PORT" ${QUSER:+-U $QUSER} -Fc "$LDB" -f "$DIR/server-$LDB.dump" 2>"$DIR/dump.err" || { cat "$DIR/dump.err" | head -3; echo "FAIL: server dump"; exit 3; }
+N=$(${QDUMP:-} pg_restore -l "$DIR/server-$LDB.dump" | wc -l); [ "$N" -gt "${QMINE:-100}" ] || { echo "FAIL: dump has only $N entries"; exit 3; }
 echo "   $(ls -lh "$DIR/server-$LDB.dump" | awk '{print $5}') $DIR/server-$LDB.dump (restore list: $N entries)"
 echo "== 2/2 Supabase founder tables (COPY files)"
 T=0; BAD=0

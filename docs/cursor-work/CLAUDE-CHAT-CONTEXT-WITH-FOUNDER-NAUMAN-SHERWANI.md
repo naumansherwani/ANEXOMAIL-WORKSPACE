@@ -4432,3 +4432,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 03:05 PKT QCONNECT-LO: his order 02:16 backup first. Written docs/cursor-work/server/qconnect-backup-now.sh (read-only on both databases; full server dump + Supabase founder tables as COPY files, SHA-256 checked, on his server only, never in git or the Storage Box), sandbox-tested. Switch waits for his backup paste.
 
 - 21 Nov 2026 03:10 PKT state snapshot only; backup pull command repeated to him
+
+- 21 Nov 2026 03:25 PKT QCONNECT-LO: his run 02:24: backup failed (pg_dump as postgres into root-only dir; fixed, now runs as root), founder-install OK (new binary live, still local mode), login-only refused safe at founder_dbsc_jti (Supabase 147 vs server 144, rows pruned on the server); 10 tables had already been copied to Supabase (they only gained rows). Fix: refuse only tables with an append-only delete guard, prunable tables take the server copy; sandbox-tested A/B/C.
