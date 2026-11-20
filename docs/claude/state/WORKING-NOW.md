@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 20:16 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 20:27 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC7a: E196 SQL (473 lines) + Rust doors + clock written and tested on scratch pg; writing React Remind me chip; then his sql-run E196 + install; then QC7b sealed draft
 NEXT STEP: React: mail_followup api + pure helpers + chip in read pane (additive); then push and give him sql-run E196 then founder-install
 HIS LAST WORD: SQL advance 400+ likho QC7
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 1ea8a51c 20 Nov 20:27 QC7a SQL E196 green on his server; SQL schema-first law in every SQL folder
+- 4e31b4aa 20 Nov 20:16 ledger line 8ca244d3
 - 8ca244d3 20 Nov 20:16 QC7a: Remind me chip React (FollowupChip), api, pure tests
 - 1f1b38e2 20 Nov 20:14 ledger line 6ffd0976
 - 6ffd0976 20 Nov 20:14 QC7a: E196 follow-up reminder SQL (event chain, guard, policy), Rust doors and clock
-- a33a93c4 20 Nov 20:02 ledger line 4479d0b1
-- 4479d0b1 20 Nov 20:02 QC5 recorded as my own live proof
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (d6b4b0d77229716ce9c77fd0aabe73beadb2bdc6)
+WIP snapshot: refs/wip/last (6634161ee5c5ec2e722e453177f78d00457cd5d3)
