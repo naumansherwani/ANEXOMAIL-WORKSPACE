@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 20:41 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 20:51 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC7b: his Chrome Settings > Privacy shows 'No device key yet' (Create key button present). Creating the key needs a physical passkey touch (WebAuthn PRF), which I cannot give and a prompt would freeze my browser tool; waiting for his ONE touch. QC7a GREEN, QC7 not closed
 NEXT STEP: He taps Settings > Privacy > Mail device key > Create key and touches his key; then I do: offline draft, Restore, write QC7 GREEN; then QC8
 HIS LAST WORD: SQL advance 400+ likho QC7
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- b4760674 20 Nov 20:51 QC7 green on live Chrome look (reminder + sealed draft); QSPEED starts
+- 7a03729c 20 Nov 20:41 ledger line c4c37d4d
 - c4c37d4d 20 Nov 20:41 WORKING-NOW 20:43: QC7b waits for his Create-key touch
 - eeb901c9 20 Nov 20:38 ledger line d44debd7
 - d44debd7 20 Nov 20:38 QC7a green on live Chrome look; QC7b kernel seal proven live, local seal waits for his key
-- 129f96ff 20 Nov 20:30 ledger line 4914afa3
-- 4914afa3 20 Nov 20:30 QC7b: draft sealed in the browser (kernel 0.21.0 kem_seal, local sealed copy, Restore bar)
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ce44e90572a2113a5ad263d3a1ed446936e1454c)
+WIP snapshot: refs/wip/last (57f1c42846f410553bd22397e0f5ef4daaa12ade)
