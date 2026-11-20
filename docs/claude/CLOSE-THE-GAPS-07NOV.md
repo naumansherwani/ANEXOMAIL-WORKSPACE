@@ -360,3 +360,9 @@ G2 is now the open item in progress.
 - 20 Nov 2026 09:58 PKT closed by my live look: list look restored, Reply/Forward 44px, founder emoji icon + picker. Still OPEN: inline panel / fold chip / selection reply / 20-person warn live; 390 + 820 phone screens; kernel pq References; awam routeTree diff + health re-check after his next pull (his curl had no URL).
 - 20 Nov 2026 10:02 PKT CLOSED BY HIS WORD: inline panel/fold/selection/20-warn live look; 390+820 screens; awam routeTree + health. ONLY OPEN: kernel pq-mail References + Reply-To (mine to fix).
 - 20 Nov 2026 10:08 PKT kernel pq-mail References: CHECKED, NOT A QC4 BUG. Today the browser cannot open recipient_pq mail at all (server answers sealed_for_kernel; MailBox.tsx 124 and MailView.tsx 138 show 'arrives with the device-key phase'), the web-wasm kernel has no mail parser, so there is no reply path for such mail and nothing to fix now. REQUIREMENT written for the DEVICE-KEY phase: when the kernel decrypts + parses a pq mail it must return the same summary fields as fmail_core summarize(): references (max 40 ids) and reply_to, with the same golden cases as the Rust test summary_reads_the_references_chain_for_replies. Until then a reply uses only the parent Message-ID (In-Reply-To), which keeps the thread correct.
+
+## 20 Nov 2026 19:50 PKT DK open gaps (his word: no time, marked done by his word)
+- DK3: his Create key touch with a PRF key, never run for real.
+- DK3: recovery with his two hardware keys not written.
+- DK4/DK5: one real pq mail opened on his device, plus 390/820/1280 look.
+- E90: kernel release ledger entry for 0.19.0 and 0.20.0.
