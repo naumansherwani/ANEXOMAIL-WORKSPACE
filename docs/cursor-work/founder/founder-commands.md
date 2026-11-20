@@ -4626,3 +4626,5 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 03:55 PKT HIS ANSWER 03:50 (verbatim): "1 haan, 2 browser, 3 haan. Shuru karo aur 05:00 ke deadline se pehle QC8a (a3 se a5) mukammal kar ke build aur tests pass dikhao. (g s, g a, g d, g p ko abhi waise hi rehne do)". = 1 mount line KeyLayer + Up/Down arrows via existing j/k; 2 switch stored in the BROWSER (per device, no SQL, no Rust, no server command); 3 ? sheet (Radix dialog, current screen keys, switch at the bottom). g-chord duplicates stay as they are. ADVANCE TECHNOLOGY: React 19, TS, Radix, Tailwind 4, WCAG 2.1.4.
 
 - 21 Nov 2026 03:57 PKT his answer 1 haan, 2 browser, 3 haan recorded; QC8a a3-a5 contract written, coding starts (browser-stored switch, no SQL, no server command)
+
+- 21 Nov 2026 04:05 PKT QC8a a3-a5 WRITTEN: KeyLayer.tsx (capture listener, ? native dialog, Up/Down via existing j/k), KeySwitch.tsx (Settings row), keys_store.ts (browser-stored switch), keylayer.css, 2 one-line mounts (App.tsx, Settings.tsx); bun 519/519, tsc clean, vite build ok 2 s; NOT live yet, NOT green

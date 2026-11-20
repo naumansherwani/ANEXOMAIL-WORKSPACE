@@ -1,0 +1,21 @@
+/* QC8a: the "?" keyboard sheet. Same glass look as the confirm sheet; 44 px targets; no sideways scroll on a phone (390), tablet (820) or laptop. */
+.kl{border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(18,22,30,.94);color:#eaf0f7;padding:0;width:min(560px,calc(100vw - 32px));max-height:min(86dvh,720px);box-shadow:0 24px 80px rgba(0,0,0,.55);backdrop-filter:blur(18px) saturate(1.2)}
+.kl::backdrop{background:rgba(5,8,14,.55);backdrop-filter:blur(3px)}
+.kl[open]{animation:kl-in .18s cubic-bezier(.2,.8,.2,1)}
+@keyframes kl-in{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+.kl-in{padding:22px 22px 18px;overflow-y:auto;max-height:inherit}
+.kl h3{margin:0 0 4px;font-size:1.1rem;font-weight:650}
+.kl-sub{margin:0 0 14px;color:rgba(234,240,247,.66);font-size:.86rem}
+.kl-rows{margin:0 0 14px;display:grid;gap:2px}
+.kl-row{display:grid;grid-template-columns:minmax(0,11.5rem) minmax(0,1fr);gap:12px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.kl-row dt,.kl-row dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.kl-row dd{color:rgba(234,240,247,.86);font-size:.92rem}
+.kl kbd{font:600 .8rem ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:3px 8px;display:inline-block;max-width:100%}
+.kl-sw{display:flex;gap:14px;align-items:center;justify-content:space-between;padding:10px 0 14px}
+.kl-sw p{margin:2px 0 0;color:rgba(234,240,247,.66);font-size:.84rem}
+.kl-act{display:flex;justify-content:flex-end}
+.kl-b{min-height:44px;min-width:44px;padding:0 18px;border-radius:12px;border:1px solid rgba(90,169,240,.5);background:rgba(43,136,216,.22);color:inherit;font:inherit;font-weight:600;cursor:pointer}
+.kl-b:focus-visible{outline:2px solid #5aa9f0;outline-offset:2px}
+@media (max-width:480px){.kl-row{grid-template-columns:1fr;gap:4px}}
+@media (prefers-reduced-motion:reduce){.kl[open]{animation:none}}
+@media (forced-colors:active){.kl{border-color:CanvasText;background:Canvas;color:CanvasText}.kl kbd{border-color:CanvasText}}

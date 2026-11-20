@@ -14,6 +14,7 @@ import { valid as validRecipe, type Recipe } from "./ambient";
 import { Keys } from "./Keys";
 import { Dbsc } from "./Dbsc";
 import { Vault } from "./Vault";
+import { KeySwitch } from "./KeySwitch";
 
 // Founder Settings Center — S1 (plan: docs/claude/FOUNDER-SETTINGS-CENTER-PORT-28OCT.md). Every control here is wired to a real server setting (E108).
 const I: Record<string, ReactNode> = {
@@ -202,6 +203,7 @@ export function SettingsView({ p, fx, setFx, slim, setSlim, reload, go, preview,
               <div className="setrow last"><div><b>Compact sidebar</b><p className="dim">Start with the sidebar collapsed to icons.</p></div>
                 <Switch checked={slim} aria-label="Compact sidebar" disabled={busy} onCheckedChange={(v) => save("appearance.sidebar_slim", v, () => setSlim(v))} /></div>
               <RowTools k="appearance.sidebar_slim" onHistory={openHistory} />
+              <KeySwitch />
               <Msg />
             </section>
             <AmbientStudio saved={savedAmb} favs={favs} cat={cat} preview={preview} setPreview={setPreview} motion={effectiveMotion(ap, os)} save={save} busy={busy} onHistory={openHistory} />

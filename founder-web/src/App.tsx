@@ -23,6 +23,7 @@ import { SystemMap } from "./SystemMap";
 import "./founder_mail_quiet.css";
 import { SignIn } from "./SignIn";
 import { TLS_LINE } from "./tls_line";
+import { KeyLayer } from "./KeyLayer";
 
 
 
@@ -188,6 +189,7 @@ export default function App() {
       </nav>
       {more && <MoreSheet items={items} current={view} onPick={(x) => { setMore(false); pick(x); }} onClose={() => setMore(false)} />}
       {pal && <Palette items={items} onPick={pick} onClose={() => setPal(false)} />}
+      <KeyLayer />
     </div>
     </ShellCtx.Provider>
   );
