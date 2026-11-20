@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 03:39 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 21 Nov 03:42 PKT QC8a: a2 DONE (mail_keymap.ts + 13 tests, new files only, not mounted). His 03:39 paste: qconnect-login-only re-run printed FAIL service not healthy (nothing changed), then founder-install OK healthz 200. Whether FOUNDER_DB=login survived the install is NOT yet proven: one read-only journal command waits his paste
-NEXT STEP: 1) his paste of the journal line (database engine = REST ... identity engine = LOCAL) 2) his haan on mount line / SQL setting / ? mock 3) build-time cause read-only if he asks
-HIS LAST WORD: his 21 Nov 03:39: compact-safety order, QC8a summary matched
+# WORKING NOW (manual checkpoint, 21 Nov 2026 03:41 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 21 Nov 03:50 PKT login-only INTACT after install (his journal paste). QC8a a2 done; he wants speed, Admin Desk today; shown him mount line + SQL + ? mock in one message, waits ONE haan
+NEXT STEP: his single haan, then a3 mount + SQL + a4 sheet + a5 wiring, then Admin Desk
+HIS LAST WORD: his 21 Nov 03:41: jaldi kero, Admin Desk today
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,22 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 253a84ea 21 Nov 03:39 ledger line 51984872
 - 51984872 21 Nov 03:39 QC8a: compaction-safety records + blueprint top block
 - 22d00378 21 Nov 03:33 ledger line f8b7fa6d
 - f8b7fa6d 21 Nov 03:33 QC8a: snapshot after summary
 - 69881466 21 Nov 03:30 ledger line fbdd41c1
-- fbdd41c1 21 Nov 03:30 QC8a: working-now snapshot
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/founder/founder-commands.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md             | 24 ++++++------------------
+ docs/cursor-work/founder/founder-commands.md |  2 ++
+ 2 files changed, 8 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +44,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (01cb786297a8f3478585fe266d392c807e57ca23)
+WIP snapshot: refs/wip/last (6515cfeac0b44d773fd49b7da532bcfcdd9203cb)

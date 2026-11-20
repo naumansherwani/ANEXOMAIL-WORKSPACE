@@ -4610,3 +4610,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 03:42 PKT HIS PASTE 03:39: ran qconnect-login-only.sh again (already GREEN, not needed): FAIL founder service not healthy, nothing changed; then founder-install OK (SPA 200, healthz 200, me 401, bridge 401). OPEN FACT: did FOUNDER_DB=login survive the install? Read-only check needed (journal line). Law 3: no guess.
 
 - 21 Nov 2026 03:46 PKT compaction-safety update: WORKING-NOW, blueprint top block, founder-commands, CLAUDE.md first line; his 03:39 paste recorded; QC8a a2 done, waits his 3 haan; FOUNDER_DB=login after install = open fact (read-only check)
+
+- 21 Nov 2026 03:50 PKT HIS PASTE 03:41: journal 22:36:47 UTC (03:36 PKT) after founder-install: database engine = REST (managed, data); identity engine = LOCAL (login only, pool 4). QCONNECT login-only INTACT after install (proved by his paste). He wants QC8a finished fast, Admin Desk starts TODAY.
+
+- 21 Nov 2026 03:51 PKT QCONNECT login-only INTACT after his founder-install (journal paste 03:41); QC8a waits one haan
