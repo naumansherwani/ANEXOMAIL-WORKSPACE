@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 21:05 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 21:05 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT: his 21:05 word = start, but ports and Caddy first. I gave him ONE read-only line (ss + caddy/postgres services + disk + ram + postgres package) and wait for the paste; the local PostgreSQL installer (unix socket only, no new port) is written only after it. Meanwhile QSPEED code-only: E197 login finish ONE SQL door (read E153/E167/passkey schema first).
 NEXT STEP: 1) his paste of the ports/caddy line; 2) write pg-local-install.sh for his exact OS and ports; 3) E197 login door; each step rec.sh
 HIS LAST WORD: SQL advance 400+ likho QC7
@@ -18,22 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- c01f7a28 20 Nov 21:05 QCONNECT: go-ahead recorded, ports check line
 - a3563673 20 Nov 21:03 ledger line 32e2d4da
 - 32e2d4da 20 Nov 21:03 QCONNECT started: plan, db-direct-probe result, research
 - f267487a 20 Nov 20:59 ledger line 4501d30d
 - 4501d30d 20 Nov 20:59 QSPEED measured: 320 ms per REST call; db-direct-probe.sh added
-- b5f54935 20 Nov 20:56 ledger line 56c1a29a
 
 ## Uncommitted files (half-done work if any)
-M  docs/claude/QCONNECT-PLAN-20NOV.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/QCONNECT-PLAN-20NOV.md |  2 +-
- docs/claude/state/WORKING-NOW.md   | 22 +++++-----------------
- 2 files changed, 6 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -44,4 +42,4 @@ M  docs/claude/QCONNECT-PLAN-20NOV.md
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (0b34bd0a4b940838e2ab75d0110a8fecb27876dc)
+WIP snapshot: refs/wip/last (5b2459ddfd61ac72614d087689a29a05e946a486)
