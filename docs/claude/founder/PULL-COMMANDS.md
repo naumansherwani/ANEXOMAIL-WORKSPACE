@@ -2345,3 +2345,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - QCONNECT 22:1x PKT: his pg-local-vector run OK: pgvector 0.8.1, tables 677=677, 0 errors, functions 1520; HIS WORD: no dump on the Storage Box (nightly dump stays on his server, 7 kept); step 5 pg-local-compare.sh written (hash compare + verify functions), waits his run; nothing wired into the running service
 
 - QCONNECT 22:2x PKT: step 5 first run: 350 DIFF lines were a script false positive (empty tables), fixed; same table list both sides, verify functions OK on the copy (dkim chain broken 0 of 34, perf seal 6, plan_interop ok); SCORE 4 of 10 done, 1 in progress, 5 left; nothing wired into the running service
+
+- QCONNECT 22:2x PKT: step 5 DONE on his server: 642 tables hashed both sides, 27 differ = live-write drift only (none larger locally), hash chains OK; SCORE 5 of 10 done; NOW step 6 Rust data.rs pg backend

@@ -1,6 +1,6 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 22:16 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QCONNECT score 4 of 10 done (plan, ports, install, copy 677/677), step 5 hash compare in progress (script fixed: empty-table false DIFF; verify functions OK on the copy), 5 left (Rust data.rs, Rust signin, switch+rollback, re-measure 50 ms, nightly dump on server only); nothing wired into the running service
-NEXT STEP: 1) his re-run of pg-local-compare; 2) Rust data.rs pg backend (flag, REST rollback); 3) Rust signin owns passwords/sessions; 4) switch with freeze + rollback; 5) re-measure; 6) nightly dump on server; meanwhile QSPEED E197
+# WORKING NOW (manual checkpoint, 20 Nov 2026 22:21 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QCONNECT score 5 of 10 DONE (plan, ports, install, copy 677/677, hash compare: 27 diffs are all live-write drift); NOW step 6: Rust data.rs Postgres backend (pooled tokio-postgres, same Sb interface, env flag, REST rollback); nothing wired into the running service yet
+NEXT STEP: 1) step 6 survey of the Sb interface in server/founder/src then data.rs; 2) step 7 Rust signin owns passwords/sessions; 3) step 8 switch with freeze + delta copy + rollback; 4) step 9 re-measure; 5) step 10 nightly dump on server only; meanwhile QSPEED E197
 HIS LAST WORD: SQL advance 400+ likho QC7
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -18,20 +18,24 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 2cbd984f 20 Nov 22:16 ledger line 3313ce56
 - 3313ce56 20 Nov 22:16 QCONNECT: compare script empty-table fix, score 4 of 10
 - 0014035f 20 Nov 22:07 ledger line e7abd9dc
 - e7abd9dc 20 Nov 22:07 QCONNECT: 4b proof, no Storage Box dump, pg-local-compare.sh
 - 24029b99 20 Nov 22:01 ledger line 7a55b36b
-- 7a55b36b 20 Nov 22:01 QCONNECT: WORKING-NOW checkpoint corrected
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/BLUEPRINT-ABC-01NOV.md
+ M docs/claude/QCONNECT-PLAN-20NOV.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 ++---------------------
- 1 file changed, 2 insertions(+), 21 deletions(-)
+ docs/claude/BLUEPRINT-ABC-01NOV.md |  1 +
+ docs/claude/QCONNECT-PLAN-20NOV.md |  3 +++
+ docs/claude/state/WORKING-NOW.md   | 23 ++++++-----------------
+ 3 files changed, 10 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +46,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (e8cfcf7522fb7331d1a44ae31149d3506d7417e6)
+WIP snapshot: refs/wip/last (18cb0d9414a1a440bfe26a247740f7207738f3cc)
