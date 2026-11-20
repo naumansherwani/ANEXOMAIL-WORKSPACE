@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 01:28 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QCONNECT DONE 21 Nov 01:55 PKT: all 10 steps ran on his server, FOUNDER_DB=local LIVE, SLOW lines 790 -> 2 in 5 min, his sign-in worked on the local identity, my Chrome look ok, dump installed. Gaps in CLOSE-THE-GAPS-07NOV.md. NEXT = QC8 (shortcuts + accessibility final pass).
-NEXT STEP: QC8: write the contract in docs/claude/tech-contracts/CURRENT.md first, then code (shortcuts + accessibility final pass), 390/820/1200+ look, his install line. Read rules-read.py first. Rollback of QCONNECT = OFF=1 with qconnect-switch.sh. Aap only, Rule-70 table, no guesses on his server, 2-min loop running.
-HIS LAST WORD: wow what a fast speed, kamaal hai
+# WORKING NOW (manual checkpoint, 21 Nov 2026 01:30 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QCONNECT = GREEN AND CLOSED by his word (21 Nov 02:00 PKT). Live: FOUNDER_DB=local on his server, rollback OFF=1. Gaps only in CLOSE-THE-GAPS-07NOV.md. NEXT = QC8.
+NEXT STEP: QC8 (shortcuts + accessibility final pass): contract in tech-contracts/CURRENT.md first, then code, 390/820/1200+ look, his install line. rules-read.py first. Do NOT reopen QCONNECT unless he says. Short replies, Aap only, Rule-70 table, no guesses on his server, 2-min loop.
+HIS LAST WORD: Qconnect green ker ke close kero
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,24 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- e5bc0eae 21 Nov 01:28 ledger line e046ad80
 - e046ad80 21 Nov 01:28 QCONNECT: declared done with proof, gaps recorded, next QC8
 - eab16a49 21 Nov 01:26 ledger line e9575f5c
 - e9575f5c 21 Nov 01:26 QCONNECT: his speed word recorded
 - c58634de 21 Nov 01:26 ledger line 04672c04
-- 04672c04 21 Nov 01:26 QCONNECT: steps 8-10 proven on his server, state saved
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/BLUEPRINT-ABC-01NOV.md
+ M docs/claude/QCONNECT-PLAN-20NOV.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 25 ++-----------------------
- 1 file changed, 2 insertions(+), 23 deletions(-)
+ docs/claude/BLUEPRINT-ABC-01NOV.md |  1 +
+ docs/claude/QCONNECT-PLAN-20NOV.md |  2 ++
+ docs/claude/state/WORKING-NOW.md   | 25 +++++++------------------
+ 3 files changed, 10 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +46,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (450f132ee0cde7ba2857450013dab389c311a62c)
+WIP snapshot: refs/wip/last (70bdc1d6887fd76ccf09ece7f1e0ed178b044661)

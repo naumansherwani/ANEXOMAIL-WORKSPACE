@@ -99,3 +99,5 @@ Switch 8b never run; flag OFF; live site on REST as before; code inert in the re
 ## QCONNECT REOPENED 21 Nov 2026 01:15 PKT (his word 01:05, replaces the close): finish in 30 min = switch (his line), measure (qconnect-measure.sh), nightly dump (pg-local-dump-install.sh, server only), my Chrome look. Not green until proven.
 
 ## QCONNECT DONE 21 Nov 2026 01:55 PKT (WIRED: YES / REAL: YES / TECH-LAW CHECKED): all 10 steps ran on his server; proof in the blueprint top block; gaps in CLOSE-THE-GAPS-07NOV.md (QCONNECT open gaps). Rollback = OFF=1 with qconnect-switch.sh. NEXT = QC8.
+
+## QCONNECT GREEN AND CLOSED 21 Nov 2026 02:00 PKT by his word (01:30). Next = QC8.
