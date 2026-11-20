@@ -15,6 +15,8 @@ const AAD_TAG: &str = "fmail-msg-v1";
 pub struct Summary {
     pub subject: String, pub from_addr: String, pub from_name: String, pub to: Vec<String>, pub cc: Vec<String>,
     pub date: String, pub message_id: String, pub in_reply_to: String, pub snippet: String, pub attach: usize,
+    /// QC4: the References header of THIS mail (ids without angle brackets, at most 40, in header order). A reply builds its own References from this plus this mail's Message-ID (RFC 5322 3.6.4).
+    pub references: Vec<String>,
 }
 
 /// Control characters out, runs of white space folded to one space, cut to `max` characters (never in the middle of a character).
@@ -65,6 +67,7 @@ pub fn summarize(raw: &[u8]) -> Summary {
     let from = m.from().and_then(|a| a.first());
     let text = m.body_text(0).map(|t| t.into_owned()).or_else(|| m.body_html(0).map(|h| strip_html(&h))).unwrap_or_default();
     let in_reply = m.in_reply_to().as_text().map(str::to_string).or_else(|| m.in_reply_to().as_text_list().and_then(|l| l.first().map(|s| s.to_string()))).unwrap_or_default();
+    let refs: Vec<String> = { let h = m.references(); h.as_text_list().map(|l| l.iter().map(|x| clean(x, 300)).filter(|x| !x.is_empty()).take(40).collect()).or_else(|| h.as_text().map(|x| vec![clean(x, 300)]).filter(|v| !v[0].is_empty())).unwrap_or_default() };
     Summary {
         subject: clean(m.subject().unwrap_or(""), 300),
         from_addr: from.and_then(|a| a.address()).map(|s| clean(s, 254)).unwrap_or_default(),
@@ -72,12 +75,12 @@ pub fn summarize(raw: &[u8]) -> Summary {
         to: addrs(m.to()), cc: addrs(m.cc()),
         date: m.date().map(|d| d.to_rfc3339()).unwrap_or_default(),
         message_id: clean(m.message_id().unwrap_or(""), 300), in_reply_to: clean(&in_reply, 300),
-        snippet: clean(&text, 160), attach: m.attachment_count().min(100),
+        snippet: clean(&text, 160), attach: m.attachment_count().min(100), references: refs,
     }
 }
 
 pub fn summary_json(s: &Summary) -> Value {
-    json!({"subject": s.subject, "from": s.from_addr, "from_name": s.from_name, "to": s.to, "cc": s.cc, "date": s.date, "message_id": s.message_id, "snippet": s.snippet, "attach": s.attach})
+    json!({"subject": s.subject, "from": s.from_addr, "from_name": s.from_name, "to": s.to, "cc": s.cc, "date": s.date, "message_id": s.message_id, "references": s.references, "snippet": s.snippet, "attach": s.attach})
 }
 
 /// Safe view of a whole message for the reader: plain text only (HTML becomes stripped text), the attachment list (name, type, size), a flag that remote content was removed.
@@ -161,6 +164,16 @@ mod tests {
     const MBOX: &str = "0b9d1c2e-0000-4000-8000-000000000001";
     fn raw() -> Vec<u8> {
         b"From: =?UTF-8?B?SGFuYSBPcnRlZ2E=?= <hana@example.org>\r\nTo: nauman@anexomail.com, b@example.com\r\nCc: c@example.com\r\nSubject: =?UTF-8?Q?Seminar_contract=3A_clause_7?=\r\nMessage-ID: <Abc123@Example.ORG>\r\nIn-Reply-To: <prev@example.org>\r\nDate: Fri, 13 Nov 2026 09:41:00 +0500\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\nClause 7 needs one change:\r\n30 days, not 14.\r\n".to_vec()
+    }
+    #[test]
+    fn summary_reads_the_references_chain_for_replies() {
+        let raw = b"From: a@x.org\r\nTo: b@y.org\r\nSubject: Re: t\r\nMessage-ID: <c3@x.org>\r\nIn-Reply-To: <b2@y.org>\r\nReferences: <a1@x.org>\r\n <b2@y.org>\r\n\r\nbody\r\n";
+        let s = summarize(raw);
+        assert_eq!(s.references, vec!["a1@x.org", "b2@y.org"]); assert_eq!(s.in_reply_to, "b2@y.org"); assert_eq!(summary_json(&s)["references"], json!(["a1@x.org", "b2@y.org"]));
+        let one = summarize(b"From: a@x.org\r\nReferences: <only@x.org>\r\nSubject: s\r\n\r\nb\r\n"); assert_eq!(one.references, vec!["only@x.org"]);
+        assert!(summarize(b"From: a@x.org\r\nSubject: s\r\n\r\nb\r\n").references.is_empty());
+        let many: String = (0..60).map(|i| format!("<m{i}@x.org> ")).collect(); let big = format!("From: a@x.org\r\nReferences: {many}\r\nSubject: s\r\n\r\nb\r\n");
+        assert_eq!(summarize(big.as_bytes()).references.len(), 40);
     }
     #[test]
     fn summary_decodes_headers_and_never_panics() {
