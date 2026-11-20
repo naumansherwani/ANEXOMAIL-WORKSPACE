@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 09:58 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:58 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: DOING: QC4 fix + founder emoji GREEN (his word + my live look 10:05); open items in CLOSE-THE-GAPS
 NEXT STEP: NEXT: awam pull re-check (health + routeTree); inline panel live look; evening QC5/QC7/QC8/Q3
 HIS LAST WORD: 5-min check 10:11
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- f2a28919 20 Nov 09:58 QC4 green final by his word + clock correction
 - 6f7306ed 20 Nov 09:58 ledger line 401c0e11
 - 401c0e11 20 Nov 09:58 QC4 fix + founder emoji green
 - c44935fe 20 Nov 09:58 ledger line e6e60015
 - e6e60015 20 Nov 09:58 QC4 fix + founder emoji icon green with live look
-- 2683b080 20 Nov 09:55 ledger line 89aced2f
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 21 ++++-----------------
- 1 file changed, 4 insertions(+), 17 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (3b895f60f58d691565b92291ba85f8a381186bca)
+WIP snapshot: refs/wip/last (c93b4bc1a0ae9b52223814102017686e632880ea)
