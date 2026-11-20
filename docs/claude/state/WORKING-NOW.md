@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 08:35 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 08:39 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC3 badges + delivery board pushed (60865477), NOT installed
 NEXT STEP: his founder-install, then my live look: Sent badges + Systems>Mail health board
 HIS LAST WORD: 5-min check 08:36
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- fb812c58 20 Nov 08:39 QC3 green by his word; Outbox badges; delivery tile layout fix from live look
+- 5398cb0e 20 Nov 08:35 ledger line 6da637d5
 - 6da637d5 20 Nov 08:35 QC3 checkpoint
 - 62041a47 20 Nov 08:29 ledger line 652ee8a5
 - 652ee8a5 20 Nov 08:29 QC3 checkpoint
-- 53ca1f0f 20 Nov 08:23 ledger line 81d8870e
-- 81d8870e 20 Nov 08:23 QC3 checkpoint
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,16 +30,16 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
+> ## >>> 20 Nov 2026 08:52 PKT QC3 = GREEN BY HIS WORD (20 Nov 2026 08:52 PKT: his 'green kero' + his founder-install paste x2 + his phone screenshot 08:29). WIRED: YES / REAL: YES / TECH-LAW CHECKED for: (a) Sent timeline on real mail, (b) compose schedule presets Karachi time, (c) Systems > Mail h
 > ## >>> 20 Nov 2026 08:45 PKT QC3 LOOPHOLE FIX (20 Nov 2026 08:45 PKT): #5 service worker stale bundle = CLOSED WITH PROOF (live headers: index /_cc/ no-store, early.js no-store, flare-sw.js no-store, hashed bundle immutable; flare-sw.js only handles push + 'anexo-flare' cache, never caches the bun
 > ## >>> 20 Nov 2026 08:27 PKT QC3 AUDIT: docs/claude/QC3-AUDIT-20NOV.md. Live bundle = QC3-5 (badges 7a3f1fa0 not installed yet). Doors 401 without token, healthz 200. 390/820 live = after the Q series (his 08:20). Open: badges live, delivery-board mount, bar live, SW stale. <<<
-> ## >>> 20 Nov 2026 08:40 PKT QC3 GAP CLOSE (20 Nov 2026 08:40 PKT): Sent-list badges MOUNTED in code (SentBadges.tsx: one batch call via kernel RPC mail_api.badges, max 100 ids, polls 30 s only while mail is moving, calm: only Sending/Delayed/Failed/Scheduled/Undo/Cancelled/Undone get a word; Mail
-> ## >>> 20 Nov 2026 08:25 PKT QC3-7 LIVE LOOK (20 Nov 2026 08:25 PKT, my Chrome, his founderworkspace.anexomail.com, 1536 wide): live bundle index-DhaYIeTm.js contains the QC3 code (mail/timeline, presets). SENT timeline PROVEN LIVE on real mail 'QC3a send now proof': Queued 11:30:16, Send now pres
+> ## >>> 20 Nov 2026 08:40 PKT QC3 GAP CLOSE (20 Nov 2026 08:40 PKT): Sent-li
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (c6576a45732f9314586210376ea2bf70fd5b3876)
+WIP snapshot: refs/wip/last (02abdb97ec30bebde54b15bb7adc8bd49ae9ebdc)
