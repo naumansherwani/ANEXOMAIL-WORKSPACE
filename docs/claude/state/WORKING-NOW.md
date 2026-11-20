@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:49 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:51 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: DOING: founder install pending (list-look fix + FounderFace icon 46e003f9); awam sticker proven live by his look; routeTree.gen.ts diff waits his read-only paste
 NEXT STEP: NEXT: re-look founder list vs his photo after install; fix routeTree from his diff; evening QC5/QC7/QC8/Q3
 HIS LAST WORD: 5-min check 10:11
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 7cea4e00 20 Nov 09:51 awam pull: routeTree diff root cause logged
+- bf45ae31 20 Nov 09:49 ledger line d38c7a9a
 - d38c7a9a 20 Nov 09:49 QC4 checkpoint
 - 5bba4ccf 20 Nov 09:48 ledger line ffe89a3c
 - ffe89a3c 20 Nov 09:48 manifest resync
-- c41ea80c 20 Nov 09:48 ledger line b7bcda41
-- b7bcda41 20 Nov 09:48 awam pull: add sticker_toggle.test.ts to DEPLOY-MANIFEST
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (d319f5e6fb45e9aa14b4256b5b7e7e95c5200004)
+WIP snapshot: refs/wip/last (0b0ce4430f8c6e97799f23e411d446802bbc2f5e)
