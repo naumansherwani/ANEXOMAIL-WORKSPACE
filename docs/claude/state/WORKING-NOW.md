@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 06:09 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 06:09 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC2: his sql-run E194 pasted OK (33/0, CHECK all OK); blueprint line 1 + phases file updated; waiting his word to start QC2-B (rebuild from scratch, Rust install comes after QC2-B)
 NEXT STEP: ask his go for QC2-B; then RichEditor.tsx etc.
 HIS LAST WORD: his 06:09: E194 OK, install later after QC2-B
@@ -18,24 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 51c6ca9b 20 Nov 06:09 E194 OK on his server; blueprint status + compose chain updated
 - e5ba3714 20 Nov 06:08 ledger line 08f701e9
 - 08f701e9 20 Nov 06:08 5-min checkpoint: QC2-B on hold
 - 99e47b1d 20 Nov 06:05 ledger line e8beab93
 - e8beab93 20 Nov 06:05 Revert QC2-B browser step 1 (his word 06:04: only QC2-A may reach his server)
-- 26ee153d 20 Nov 06:03 ledger line dad915b0
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/BLUEPRINT-ABC-01NOV.md
- M docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/BLUEPRINT-ABC-01NOV.md          |  2 +-
- docs/claude/FOUNDER-MAILBOX-PHASES-18NOV.md |  2 +-
- docs/claude/state/WORKING-NOW.md            | 25 +++++++------------------
- 3 files changed, 9 insertions(+), 20 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 21 ++-------------------
+ 1 file changed, 2 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -46,4 +42,4 @@ HIS 4 QUESTIONS, ANSWERS FROM RESEARCH (his word still needed, defaults below):
 2. Signature = text + links only in QC2. Reason: embedded (CID/base64) logo adds ~33 % size and shows as an attachment in Microsoft 365 / OWA, iOS Mail has stripped it; a hosted logo is blocked by default in many clients and needs the host online; guidance keeps a logo under 50 KB. Logo comes after 
 3. Snippets: trigger `/name` (Superhuman uses `;`, we keep `/` and Ctrl+K), built-in variables {first_name} {my_name} {date}, plus any {custom_placeholder}; sending with an unfilled {placeholder} WARNS first (Superhuman does the same). Private snippets only (single founder; team sharing not needed).
 4. Plain-text mode = per mail, NOT remembered (Gmail: per message, default stays formatted). Switching to plain text drops formatting and cannot be brought back, so ask "formatting will be removed" before switching.
-WIP snapshot: refs/wip/last (9d5c5499371fbe15f6187895259a08594a2f1962)
+WIP snapshot: refs/wip/last (fd64204cf953c99adaed9eaffbe83abe441d6f72)
