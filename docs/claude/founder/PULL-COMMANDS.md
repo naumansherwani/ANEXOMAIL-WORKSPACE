@@ -2144,3 +2144,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - PRO package done on advance technology (his word 20 Nov 05:12), WIRED: YES / REAL: YES / TECH-LAW CHECKED by his word
 
 - NOW founder QC2 (plan discussed, no code)
+
+- QC2 points P1-P7 written, waits his 4 answers

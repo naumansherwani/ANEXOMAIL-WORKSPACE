@@ -1,6 +1,6 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 05:28 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QC2 PLAN written (docs/claude/QC2-PLAN-20NOV.md), discussing with him; no code yet
-NEXT STEP: his answers to the 4 questions in QC2-PLAN-20NOV.md, then contract in CURRENT.md, then SQL, Rust, browser
+# WORKING NOW (manual checkpoint, 20 Nov 2026 05:31 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QC2 points written, waits his word on 4 answers
+NEXT STEP: his word, then P1 contract in CURRENT.md
 HIS LAST WORD: his 05:27: QC2 is ONE phase, no sub-phases, all of QC2 to QC8 must be GREEN
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -18,28 +18,36 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- badb0547 20 Nov 05:28 ledger line 2e18baf1
 - 2e18baf1 20 Nov 05:28 QC2 plan written for discussion, WORKING-NOW and ledgers updated
 - 885a6399 20 Nov 05:21 ledger line a14e8248
 - a14e8248 20 Nov 05:21 Package plan, R3 Mail Desk reminder, founder QC status by his word
 - d64ec75b 20 Nov 05:13 ledger line 44fffdec
-- 44fffdec 20 Nov 05:13 Record PRO done and only Basic, Business, Business Pro remain (his words)
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/PHASE-NOW.md
+ M docs/claude/QC1E-LEDGER-FOUNDER-19NOV.md
+ M docs/claude/QC2-PLAN-20NOV.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 18 ++----------------
- 1 file changed, 2 insertions(+), 16 deletions(-)
+ docs/claude/PHASE-NOW.md                    | 10 ++++++++++
+ docs/claude/QC1E-LEDGER-FOUNDER-19NOV.md    |  1 +
+ docs/claude/QC2-PLAN-20NOV.md               | 10 ++++++++++
+ docs/claude/state/WORKING-NOW.md            | 25 ++++++++-----------------
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt |  5 +++--
+ 5 files changed, 32 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
-<!--FEATURES-->
-## FEATURES (auto, from docs/claude/features/*.json, full list docs/claude/FEATURES-LIVE.md; a missing feature is fixed BEFORE a commit, his 18 Nov 08:07 order)
-QC1c: 44/44 written. NOT WRITTEN: 
-<!--/FEATURES-->
-## >>> 18 NOV 2026 07:2x PKT NOW (his order 07:16, update for Claude after any compaction): PHASES IN HAND = (1) QLIVE-c (package stream limits stream_tier.rs, live drafts SQL E188 [his sql-run OK], simulation test founder-web/sim, 2 real browser bugs fixed) and (2) Q-contacts-kernel (contacts@1 in 
-## >>> 15 NOV 19:25 HIS ORDER: L closed. NEXT = Q SERIES until complete, THEN S5 (not before). Lovable codes migration phase written in docs/claude/FOUNDER-LOVABLE-MIGRATION-15NOV.md and docs/claude/AWAM-LOVABLE-MIGRATION-15NOV.md (preserve as written, advance technology, fix loopholes, polish). Q s
-## >>> HANDOFF 14 NOV 07:10 (he is sleeping; read this first tomorrow): DONE and proven: KP3 step 5 GREEN, pre-connect GREEN by his order, clean blueprint (docs/claude/FOUNDER-BLUEPRINT-CLEAN-14NOV.md), audit steps A+B GREEN, audit step C INSTALLED on his server (receipt 35, tests 394, listening aft
-WIP snapshot: refs/wip/last (b2cad07f1545f8976f0e61b460df329fe06fa1b2)
+# QC2 (FOUNDER) PHASE POINTS, FROM WEB RESEARCH 20 Nov 2026 05:3x PKT (his order 05:30). ONE phase, no sub-phases; GREEN only when ALL points are WIRED: YES / REAL: YES / TECH-LAW CHECKED.
+RESEARCH SOURCES (opened and read): Exclaimer embedded vs hosted signature images (https://exclaimer.com/email-signature-handbook/embedded-vs-hosted-images-in-email-signatures/); Superhuman Snippets help (https://help.superhuman.com/article/466-snippets); Cornell IT Gmail plain vs formatted (https:/
+HIS 4 QUESTIONS, ANSWERS FROM RESEARCH (his word still needed, defaults below):
+1. Only what he writes is rich: YES. Reply/forward of received HTML = QC4. Pasted HTML is untrusted (the ProseMirror XSS above): pin prosemirror-view >= 1.42.3, schema + paste rules in the browser, Rust ammonia as the second wall on the server.
+2. Signature = text + links only in QC2. Reason: embedded (CID/base64) logo adds ~33 % size and shows as an attachment in Microsoft 365 / OWA, iOS Mail has stripped it; a hosted logo is blocked by default in many clients and needs the host online; guidance keeps a logo under 50 KB. Logo comes after 
+3. Snippets: trigger `/name` (Superhuman uses `;`, we keep `/` and Ctrl+K), built-in variables {first_name} {my_name} {date}, plus any {custom_placeholder}; sending with an unfilled {placeholder} WARNS first (Superhuman does the same). Private snippets only (single founder; team sharing not needed).
+4. Plain-text mode = per mail, NOT remembered (Gmail: per message, default stays formatted). Switching to plain text drops formatting and cannot be brought back, so ask "formatting will be removed" before switching.
+WIP snapshot: refs/wip/last (3c614595f16894b41ef540ca93d609dc4d7a3457)
