@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 03:57 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 21 Nov 03:56 PKT QC8a a3-a5 CODING (his 03:50: 1 haan, 2 browser, 3 haan): new KeyLayer.tsx, KeySwitch.tsx, keylayer.css + 2 one-line mounts; no SQL/Rust; deadline 05:00 live Chrome
-NEXT STEP: write files, bun+tsc+vite build, mount lines, live Chrome walk, then QC8b
-HIS LAST WORD: his 21 Nov 03:50: 1 haan, 2 browser, 3 haan
+# WORKING NOW (manual checkpoint, 21 Nov 2026 04:02 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 21 Nov 04:06 PKT QC8a LIVE on his server (founder-install OK, build 2m13s). Doing my live Chrome walk now (mail j, Down, ?, switch OFF, Settings row, range, 390/820/1200). Then QC8b. Laws: SQL schema-first, Rule 52, advance technology
+NEXT STEP: live Chrome walk, GREEN only with proof, then QC8b a1
+HIS LAST WORD: his 21 Nov 04:01 paste: install OK
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,22 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- dc24f778 21 Nov 03:57 ledger line da98f43e
 - da98f43e 21 Nov 03:57 QC8a a5: range, batch, type-ahead, announce wired
 - e05f81e4 21 Nov 03:55 ledger line 11885e73
 - 11885e73 21 Nov 03:55 QC8a: Home/End wired, row restored
 - 4ad7e6c6 21 Nov 03:52 ledger line 11d97d4a
-- 11d97d4a 21 Nov 03:52 QC8a: harness proof, help rows only real keys
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/founder-commands.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 26 ++------------------------
- 1 file changed, 2 insertions(+), 24 deletions(-)
+ docs/claude/state/WORKING-NOW.md     | 24 ++++++------------------
+ docs/cursor-work/founder-commands.md |  2 ++
+ 2 files changed, 8 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +44,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (bcf1d7ff40b689939a1a1722681bd2f95c207d43)
+WIP snapshot: refs/wip/last (9a74531c3d6bc13d840892c6589df8aae4e59298)
