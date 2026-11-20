@@ -1888,3 +1888,5 @@ Technology: Rust WASM kernel 0.21.0, module kemopen@1 gains `seal` (kem_seal): M
 - NOT done in this step: the 4 direct-http places (auth.rs, passkey.rs, signin.rs) still call the managed auth service (step 7), install on his server, switch (step 8).
 
 - QCONNECT 23:3x PKT: step 6 CODE DONE (sandbox only, not installed): server/founder/src/pg.rs Rust Tokio tokio-postgres+deadpool engine inside Sb, switch FOUNDER_DB=local (default REST), 4 unit tests + live test on a real PostgreSQL (139 us per rpc over the socket, REST 320 ms), 570 tests pass; contract in CURRENT.md; step 7 Rust signin next
+
+- QCONNECT 23:4x PKT: step 6 INSTALLED on his server (founder-install OK: SPA 200, healthz 200, Ed25519 ENFORCED); engine switched OFF (FOUNDER_DB unset), journal still REST 324-508 ms as designed; SCORE 6 of 10 proven; step 7 Rust signin next

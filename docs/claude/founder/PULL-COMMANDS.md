@@ -2351,3 +2351,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - QCONNECT 22:3x PKT: step 5 compare finished (27 diffs = live-write drift only); step 6 survey of Sb done (212 rpc names, 17 rows reads, 2 counts, 4 files direct http) and design written in the plan; code not started
 
 - QCONNECT 23:3x PKT: step 6 CODE DONE (sandbox only, not installed): server/founder/src/pg.rs Rust Tokio tokio-postgres+deadpool engine inside Sb, switch FOUNDER_DB=local (default REST), 4 unit tests + live test on a real PostgreSQL (139 us per rpc over the socket, REST 320 ms), 570 tests pass; contract in CURRENT.md; step 7 Rust signin next
+
+- QCONNECT 23:4x PKT: step 6 INSTALLED on his server (founder-install OK: SPA 200, healthz 200, Ed25519 ENFORCED); engine switched OFF (FOUNDER_DB unset), journal still REST 324-508 ms as designed; SCORE 6 of 10 proven; step 7 Rust signin next
