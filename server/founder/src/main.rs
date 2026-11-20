@@ -65,6 +65,7 @@ mod fmail_rpt;
 mod fmail_out;
 mod fmail_book;
 mod fmail_rich;
+mod fmail_timeline;
 mod fmail_rich_ep;
 mod fmail_live;
 
@@ -973,6 +974,9 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/mail/snippet", axum::routing::post(fmail_rich_ep::snip_act_ep))
         .route("/founder/v1/mail/cancel", axum::routing::post(fmail_out::cancel_ep))
         .route("/founder/v1/mail/outbox", get(fmail_out::outbox_ep))
+        .route("/founder/v1/mail/timeline", get(fmail_timeline::timeline_ep))
+        .route("/founder/v1/mail/timeline/badges", get(fmail_timeline::badges_ep))
+        .route("/founder/v1/mail/delivery", get(fmail_timeline::delivery_ep))
         .route("/founder/v1/mail/draft", axum::routing::post(fmail_out::draft_save_ep))
         .route("/founder/v1/mail/draft/discard", axum::routing::post(fmail_out::draft_discard_ep))
         .route("/founder/v1/mail/drafts", get(fmail_out::drafts_ep))

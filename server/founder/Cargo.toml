@@ -61,3 +61,4 @@ opt-level = 3
 lto = true
 panic = "abort"
 [dev-dependencies]
+tokio = { version = "1", features = ["full", "test-util"] }
