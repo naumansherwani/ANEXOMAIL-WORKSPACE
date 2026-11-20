@@ -1,6 +1,6 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 19:04 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: DK-a kernel 0.19.0 pushed 64c78743, waits his founder-install
-NEXT STEP: his install, my live kernel check, DK-b key custody + screen, evening QC5/QC7/QC8/Q3
+# WORKING NOW (manual checkpoint, 20 Nov 2026 19:04 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: DK-a: install script step-3 bug fixed (my comment); waits his re-run of founder-install; then my live kernel 0.19.0 check
+NEXT STEP: QC5 Delete forever (contract first), QC7 follow-up reminder + sealed draft, QC8 shortcuts + a11y, Q3 attachments; DK-b key custody + screen
 HIS LAST WORD: 5-min check 10:11
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- e902018f 20 Nov 19:04 ledger line 5a9284c5
 - 5a9284c5 20 Nov 19:04 DK-a install step-3 fix
 - bb42e528 20 Nov 18:47 ledger line 9cc257cb
 - 9cc257cb 20 Nov 18:47 DK-a install fix: server tests skip repo-only vectors; faster install build
 - 9eb4d099 20 Nov 18:33 ledger line fafe96b1
-- fafe96b1 20 Nov 18:33 DK checkpoint 18:33
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 21 ++++-----------------
+ 1 file changed, 4 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (f7d54c6685f07381e9579555105120ae09ed54b2)
+WIP snapshot: refs/wip/last (5ba6ad54443d2423e3470b634abe9eb38926d7a2)
