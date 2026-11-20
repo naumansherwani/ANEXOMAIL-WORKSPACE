@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 20 Nov 2026 07:25 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 07:25 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QC3-2 E195 pushed, blueprint updated (9fa59f5d); starting QC3-3 Rust timeline door (Tokio/axum)
 NEXT STEP: QC3-3 Rust door + cargo tests; then QC3-4 pure TS, QC3-5 UI via kernel RPC
 HIS LAST WORD: his 07:23: tell which tech is in QC3 (answered)
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 85e7a7c2 20 Nov 07:25 QC3 checkpoint (WORKING-NOW)
 - 9fa59f5d 20 Nov 07:21 ledger line 171c9315
 - 171c9315 20 Nov 07:21 blueprint: QC3 in progress
 - 432a6b8b 20 Nov 07:19 ledger line f100edc6
 - f100edc6 20 Nov 07:19 QC3 checkpoint (WORKING-NOW)
-- 8ff91fd3 20 Nov 07:19 ledger line 21242c99
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ HIS 4 QUESTIONS, ANSWERS FROM RESEARCH (his word still needed, defaults below):
 1. Only what he writes is rich: YES. Reply/forward of received HTML = QC4. Pasted HTML is untrusted (the ProseMirror XSS above): pin prosemirror-view >= 1.42.3, schema + paste rules in the browser, Rust ammonia as the second wall on the server.
 2. Signature = text + links only in QC2. Reason: embedded (CID/base64) logo adds ~33 % size and shows as an attachment in Microsoft 365 / OWA, iOS Mail has stripped it; a hosted logo is blocked by default in many clients and needs the host online; guidance keeps a logo under 50 KB. Logo comes after 
 3. Snippets: trigger `/name` (Superhuman uses `;`, we keep `/` and Ctrl+K), built-in variables {first_name} {my_name} {date}, plus any {custom_placeholder}; sending with an unfilled {placeholder} WARNS first (Superhuman does the same). Private snippets only (single founder; team sharing not needed).
-WIP snapshot: refs/wip/last (55332f65b07e2abd67024ad820bc69a67e7ee135)
+WIP snapshot: refs/wip/last (824b86921e91b5024d8114ee7988abc3ce27902b)
