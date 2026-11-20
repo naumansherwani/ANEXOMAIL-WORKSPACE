@@ -170,9 +170,9 @@ founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
+founder-web/dist/assets/index-BQiOZ_wV.js
 founder-web/dist/assets/index-CqAjfayR.css
-founder-web/dist/assets/index-DEIq5X0f.js
-founder-web/dist/assets/kernel.worker-CaGbLt0X.js
+founder-web/dist/assets/kernel.worker-DY4WQ2it.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
 founder-web/dist/assets/three.module-9T9CILLm.js
@@ -186,7 +186,7 @@ founder-web/dist/icon-180.png
 founder-web/dist/icon-192.png
 founder-web/dist/icon-512.png
 founder-web/dist/index.html
-founder-web/dist/kernel/anexo-kernel-0.20.0.wasm
+founder-web/dist/kernel/anexo-kernel-0.21.0.wasm
 founder-web/dist/manifest.webmanifest
 founder-web/index.html
 founder-web/kernel-sync.sh
@@ -201,7 +201,7 @@ founder-web/public/flare-sw.js
 founder-web/public/icon-180.png
 founder-web/public/icon-192.png
 founder-web/public/icon-512.png
-founder-web/public/kernel/anexo-kernel-0.20.0.wasm
+founder-web/public/kernel/anexo-kernel-0.21.0.wasm
 founder-web/public/manifest.webmanifest
 founder-web/s1280.png
 founder-web/s390.png
@@ -350,6 +350,9 @@ founder-web/src/mail.css
 founder-web/src/mail_api.ts
 founder-web/src/mail_change.test.ts
 founder-web/src/mail_change.ts
+founder-web/src/mail_draft_local.ts
+founder-web/src/mail_draft_local_pure.test.ts
+founder-web/src/mail_draft_local_pure.ts
 founder-web/src/mail_keys.ts
 founder-web/src/mail_keys_pure.test.ts
 founder-web/src/mail_keys_pure.ts

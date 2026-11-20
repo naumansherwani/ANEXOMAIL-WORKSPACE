@@ -1329,3 +1329,7 @@
 - 20 Nov 2026 20:46 PKT: SQL schema-first law block placed lower in CLAUDE.md; E196 GREEN record stands: WIRED: YES / REAL: YES / TECH-LAW CHECKED (his CHECK_E196 paste). Tech: PostgreSQL 16 SQL + Rust Tokio/axum + React 19 TS.
 
 - 20 Nov 2026 20:48 PKT: SQL schema-first law is in CLAUDE.md, index.md, rules-read.py and every SQL folder; E196 GREEN record stands: WIRED: YES / REAL: YES / TECH-LAW CHECKED (his CHECK_E196 paste). Tech: PostgreSQL 16 SQL + Rust Tokio/axum + React 19 TS.
+
+- 20 Nov 2026 21:10 PKT: QC7b WRITTEN, not installed, no acceptance word written: kernel 0.21.0 kem_seal (ML-KEM-768 + X25519 + HKDF + AES-256-GCM, public key only, browser random values, byte-compatible with kem_open), mail_draft_local (IndexedDB sealed copy, Restore bar with one key touch), wired into MailCompose persist/send/discard; cargo kemopen 6/6, bun 504/504, tsc clean, dist built. He needs ONE line: founder-install (no SQL). Tech: Rust WASM kernel + React 19 TS + AES-256-GCM. Phase: QC7
+
+- 20 Nov 2026 21:12 PKT: QC7b kernel wasm 0.21.0 added to the deploy manifest; QC7b still written-not-installed, no acceptance word written. Tech: Rust WASM kernel + React 19 TS + AES-256-GCM. Phase: QC7

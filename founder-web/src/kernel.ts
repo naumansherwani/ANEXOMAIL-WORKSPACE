@@ -175,6 +175,22 @@ export function kemKeygen(seeds: { d: Uint8Array; z: Uint8Array; x: Uint8Array }
   });
 }
 
+/** QC7b: seal bytes to the device PUBLIC key in the kernel (kemopen@1 seal). The browser draws every random value (the kernel has no rng). No private key and no touch needed. Out = wrap (1181 B), nonce, sealed as hex, openable with kemOpen. */
+export function kemSeal(input: { pub: string; key_id: string; aad: string[]; plain: Uint8Array }): Promise<{ ok: true; wrap: string; nonce: string; sealed: string } | { ok: false; reason: string } | undefined> {
+  const hx = (b: Uint8Array) => [...b].map((v) => v.toString(16).padStart(2, "0")).join("");
+  const r = (n: number) => crypto.getRandomValues(new Uint8Array(n));
+  const body = JSON.stringify({ pub: input.pub, key_id: input.key_id, aad: input.aad, plain: hx(input.plain), m: hx(r(32)), e: hx(r(32)), k: hx(r(32)), n1: hx(r(12)), n2: hx(r(12)) });
+  return new Promise((resolve) => {
+    const id = ++seq;
+    waiting.set(id, (m) => {
+      if (m.code === 0 && m.bytes instanceof Uint8Array) { try { const o = JSON.parse(new TextDecoder().decode(m.bytes)); resolve({ ok: true, wrap: o.wrap, nonce: o.nonce, sealed: o.sealed }); } catch { resolve(undefined); } }
+      else if (m.code === 1 && typeof m.error === "string") resolve({ ok: false, reason: m.error });
+      else resolve(undefined);
+    });
+    w().postMessage({ id, kemseal: { input: body } });
+  });
+}
+
 export type ParsedMail = { summary: { subject: string; from: string; from_name: string; to: string[]; cc: string[]; date: string; message_id: string; references: string[]; reply_to: string[]; snippet: string; attach: number }; view: { text: string; had_html: boolean; remote_content_blocked?: boolean; attachments: { name: string; type: string; size: number }[] } };
 /** DK-a: read one raw mail in the kernel (mailparse@1). undefined = the kernel could not run. */
 export function mailParse(raw: Uint8Array): Promise<ParsedMail | undefined> {

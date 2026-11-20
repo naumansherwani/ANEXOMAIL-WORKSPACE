@@ -258,3 +258,17 @@ test("kem_keygen in the real wasm: deterministic, right sizes, and the server's 
     expect(call("kem_open", { ...v, dk: k.dk, x: k.x, pub: k.pub.slice(0, -2) + "00" })[0]).toBe(0);
   }
 });
+
+test("kem_seal in the real wasm (QC7b): seals to the public key from browser random values and kem_open gets the same bytes back; wrong aad and zero seeds are refused", async () => {
+  const { instance } = await WebAssembly.instantiate(bytes, { env: { host_wake() {}, host_call() {}, host_emit() {} } });
+  const ex = instance.exports as any;
+  const call = (fn: string, o: unknown) => { const x = new TextEncoder().encode(JSON.stringify(o)), p = ex.kernel_alloc(x.length); new Uint8Array(ex.memory.buffer, p, x.length).set(x); const ok = ex[fn](p, x.length); return [ok, new TextDecoder().decode(new Uint8Array(ex.memory.buffer, ex.kernel_out_ptr(), ex.kernel_out_len()).slice())] as const; };
+  const [, kg] = call("kem_keygen", { d: "01".repeat(32), z: "02".repeat(32), x: "03".repeat(32) }); const k = JSON.parse(kg);
+  const plain = Buffer.from("QC7b draft: sealed in the browser").toString("hex");
+  const s = { pub: k.pub, key_id: "pqk-1", aad: ["fmail-draft-v1", "box", "d1"], plain, m: "0a".repeat(32), e: "0b".repeat(32), k: "0c".repeat(32), n1: "0d".repeat(12), n2: "0e".repeat(12) };
+  const [ok, out] = call("kem_seal", s); expect(ok).toBe(1); const o = JSON.parse(out); expect(o.wrap.length).toBe(1181 * 2);
+  const open = { dk: k.dk, x: k.x, pub: k.pub, key_id: "pqk-1", wrap: o.wrap, nonce: o.nonce, aad: s.aad, sealed: o.sealed };
+  const [ok2, back] = call("kem_open", open); expect(ok2).toBe(1); expect(back).toBe("QC7b draft: sealed in the browser");
+  expect(call("kem_open", { ...open, aad: ["fmail-draft-v1", "box", "d2"] })[0]).toBe(0);
+  expect(call("kem_seal", { ...s, m: "00".repeat(32) })[0]).toBe(0); expect(call("kem_seal", {})[0]).toBe(0);
+});

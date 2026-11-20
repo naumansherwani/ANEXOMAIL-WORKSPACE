@@ -259,6 +259,14 @@ pub extern "C" fn kem_keygen(ptr: u32, len: u32) -> u32 {
     ok as u32
 }
 
+/// QC7b: seal bytes to the device's PUBLIC key from browser-supplied random values (kemopen@1 seal), byte-compatible with kem_open. 1 = hex JSON {wrap, nonce, sealed}; 0 = a plain reason.
+#[unsafe(no_mangle)]
+pub extern "C" fn kem_seal(ptr: u32, len: u32) -> u32 {
+    let (ok, out) = kemopen::seal_json(unsafe { text(ptr, len) });
+    set_out(out);
+    ok as u32
+}
+
 /* ------------------------------------------------------- mailparse@1 (DK-a) */
 /// DK-a: read one raw mail (bytes in the kernel memory) -> JSON {"summary","view"} in the out buffer, length wapas. Never fails: an unreadable message still gives a summary "(unreadable message)".
 #[unsafe(no_mangle)]

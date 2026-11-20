@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import * as api from "./mail_api";
+import * as local from "./mail_draft_local";
+import { restoreLine, type LocalRec } from "./mail_draft_local_pure";
 import { composeProblem, undoLeft, type Box } from "./mail_pure";
 import { RecipientField } from "./RecipientField";
 import { EmojiDock, EmojiToggle, useEmojiDock } from "./EmojiPicker";
@@ -72,6 +74,16 @@ export function MailCompose({ box, start, onClose, onQueued, onPopOut }: { box: 
   };
   const lists = () => ({ to: parseAddrs(to), cc: parseAddrs(cc), bcc: parseAddrs(bcc) });
 
+  // QC7b: a draft sealed on this device that never reached the server (offline) can be brought back with one key touch
+  const [lost, setLost] = useState<LocalRec | null>(null), [lostErr, setLostErr] = useState("");
+  useEffect(() => { if (start.draft) return; let on = true; void local.pending(box.id).then((r) => { if (on) setLost(r); }); return () => { on = false; }; }, [box.id, start.draft]);
+  const restoreLost = async () => {
+    if (!lost) return; setLostErr(""); const r = await local.restore(lost);
+    if (!r.ok) { setLostErr(r.error); return; }
+    const c = r.draft; setTo(c.to.join(", ")); setCc(c.cc.join(", ")); setBcc(c.bcc.join(", ")); setShowCc(!!(c.cc.length || c.bcc.length)); setSubject(c.subject); setText(c.text);
+    if (c.html) { setHtml(c.html); setRich(true); setEk((k) => k + 1); }
+    void local.forget(box.id, lost.slot); setLost(null);
+  };
   // open an existing draft
   useEffect(() => { if (!start.draft) { toRef.current?.focus(); return; } let on = true; api.draftOpen(box.id, start.draft).then((d) => { if (!on || !d) return; draft.current = { id: d.id, v: d.version }; const c = d.content; setTo((c.to ?? []).join(", ")); setCc((c.cc ?? []).join(", ")); setBcc((c.bcc ?? []).join(", ")); setShowCc(!!(c.cc?.length || c.bcc?.length)); setSubject(c.subject ?? ""); setText(c.text ?? ""); if (c.html) { setHtml(c.html); setRich(true); setEk((k) => k + 1); } last.current = JSON.stringify([c.to ?? [], c.cc ?? [], c.bcc ?? [], c.subject ?? "", c.text ?? "", c.html ?? ""]); }); return () => { on = false; }; }, [box.id, start.draft]);
 
@@ -80,8 +92,12 @@ export function MailCompose({ box, start, onClose, onQueued, onPopOut }: { box: 
   const persist = useCallback(async (): Promise<void> => {
     const v = latest.current; const L = { to: parseAddrs(v.to), cc: parseAddrs(v.cc), bcc: parseAddrs(v.bcc) }; const snap = JSON.stringify([L.to.ok, L.cc.ok, L.bcc.ok, v.subject, v.text, v.html]);
     if (snap === last.current || (!v.subject.trim() && !v.text.trim() && !L.to.ok.length)) return;
+    // QC7b: seal a copy in THIS browser first (public key only, no touch, kernel kemopen@1), so a lost connection never loses the words
+    const body = { to: L.to.ok, cc: L.cc.ok, bcc: L.bcc.ok, subject: v.subject, text: v.text, ...(v.html ? { html: v.html } : {}), ...(start.in_reply_to ? { in_reply_to: start.in_reply_to } : {}) };
+    const sealedHere = await local.sealLocal(box.id, draft.current.id, body, false);
     const r = await api.draftSave(box.id, { to: L.to.ok, cc: L.cc.ok, bcc: L.bcc.ok, subject: v.subject, text: v.text, ...(v.html ? { html: v.html } : {}), in_reply_to: start.in_reply_to }, { draft: draft.current.id, expected: draft.current.v, reply_to: start.reply_to });
-    if (r.ok) { draft.current = { id: r.id, v: r.version }; last.current = snap; dirty.current = false; setSaved("Draft saved, sealed"); } else setSaved(r.stale ? "This draft changed elsewhere - close and reopen it" : "Draft not saved");
+    if (r.ok) { draft.current = { id: r.id, v: r.version }; last.current = snap; dirty.current = false; if (sealedHere) void local.markSynced(box.id, r.id, body); setSaved(sealedHere ? "Draft saved, sealed here too" : "Draft saved, sealed"); }
+    else if (sealedHere) setSaved("Not sent to the server yet: sealed on this device"); else setSaved(r.stale ? "This draft changed elsewhere - close and reopen it" : "Draft not saved");
   }, [box.id, start.in_reply_to, start.reply_to]);
   useEffect(() => {
     const L = lists(); const snap = JSON.stringify([L.to.ok, L.cc.ok, L.bcc.ok, subject, text, html]);
@@ -133,14 +149,16 @@ export function MailCompose({ box, start, onClose, onQueued, onPopOut }: { box: 
     setBusy(true);
     const r = await api.send(box.id, c, { schedule: schedule || undefined, draft: draft.current.id });
     setBusy(false);
-    if (r.ok) { onQueued(r.queued); const calm = reduce || document.documentElement.dataset.motion !== "full"; setFx(true); window.setTimeout(onClose, calm ? 1300 : 2900); } else { setErr(r.error); setNeedsDkim(!!r.needsDkim); }
+    if (r.ok) { void local.forgetDraft(box.id, draft.current.id); onQueued(r.queued); const calm = reduce || document.documentElement.dataset.motion !== "full"; setFx(true); window.setTimeout(onClose, calm ? 1300 : 2900); } else { setErr(r.error); setNeedsDkim(!!r.needsDkim); }
   }
-  async function discard() { if (!sure) { setSure(true); window.setTimeout(() => setSure(false), 4000); return; } if (draft.current.id) await api.draftDiscard(box.id, draft.current.id).catch(() => false); onClose(); }
+  async function discard() { if (!sure) { setSure(true); window.setTimeout(() => setSure(false), 4000); return; } if (draft.current.id) await api.draftDiscard(box.id, draft.current.id).catch(() => false); void local.forgetDraft(box.id, draft.current.id); onClose(); }
 
   return (
     <motion.div className={inline ? "mc-wrap mc-inline" : "mc-wrap"} data-mode={inline ? "normal" : mode} style={vv ? ({ "--vvh": `${vv.h}px`, "--vvt": `${vv.t}px` } as React.CSSProperties) : undefined} initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} {...(inline ? { role: "region" } : { role: "dialog", "aria-modal": true })} aria-label={inline ? "Reply panel" : "New email"} onKeyDown={(e) => { if (e.key === "Escape") void closeKeep(); if ((e.ctrlKey || e.metaKey) && e.key === "Enter") void send(); }}>
       <motion.form className="mc" data-mode={inline ? "normal" : mode} data-fx={fx ? "sent" : undefined} initial={reduce ? false : { y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 24, opacity: 0 }} transition={{ type: "spring", stiffness: 420, damping: 36 }} onSubmit={(e) => { e.preventDefault(); void send(); }}>
         <header><h2>{start.in_reply_to ? (start.subject?.startsWith("Fwd:") ? "Forward" : "Reply") : "New email"}</h2><span className="dim small" aria-live="polite">{saved}</span>{inline ? (onPopOut && <button type="button" className="mc-x mc-b mc-pop" onClick={() => { void (async () => { try { await persist(); } catch { /* snapshot below */ } onPopOut(draft.current.id ? { draft: draft.current.id } : { to, cc, subject, text, in_reply_to: start.in_reply_to, references: start.references, reply_to: start.reply_to }); })(); }} aria-label="Pop out to a window" title="Pop out">⤢</button>) : <><button type="button" className="mc-x mc-b" onClick={() => setMode(mode === "min" ? "normal" : "min")} aria-label={mode === "min" ? "Restore" : "Minimize"}>{mode === "min" ? "▢" : "–"}</button><button type="button" className="mc-x mc-b mc-exp" onClick={() => setMode(mode === "large" ? "normal" : "large")} aria-label={mode === "large" ? "Smaller" : "Expand"}>{mode === "large" ? "⤡" : "⤢"}</button></>}<button type="button" className="mc-x" onClick={() => void closeKeep()} aria-label="Close (the draft is kept)">×</button></header>
+        {lost && <div className="mx-gate" role="status" style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}><span>{restoreLine(lost, Date.now())}</span><button type="button" className="mx-btn" style={{ minHeight: 44 }} onClick={() => void restoreLost()}>Restore (touch your key)</button></div>}
+        {lostErr && <p className="mx-warn" role="alert">{lostErr}</p>}
         <label className="mc-f"><span>From</span><b>{box.address}</b></label>
         <RecipientField field="To" value={to} onChange={setTo} taken={taken} onMove={moveChip} book={book} onBookAct={bookAct} tls={tls} onDragActive={(on) => { if (on) setShowCc(true); }} inputRef={toRef}
           trailing={!showCc ? <button type="button" className="mc-link" onClick={() => setShowCc(true)}>Cc / Bcc</button> : undefined} />

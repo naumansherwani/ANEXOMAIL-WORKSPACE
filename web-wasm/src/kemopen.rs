@@ -125,6 +125,47 @@ pub fn keygen_json(input: &str) -> (bool, Vec<u8>) {
     (true, serde_json::json!({"dk": hx(&dkb), "x": hx(&x), "pub": hx(&pubk)}).to_string().into_bytes())
 }
 
+/// QC7b (20 Nov 2026): SEAL for the founder's own device. The reverse of `open_json`, byte-compatible with it (same blob v1, same KDF, same AAD), so a draft sealed here opens with `open_json`.
+/// The kernel has NO rng: the browser supplies every random value. JSON in (hex): pub (1216), key_id, m (32, ML-KEM encaps seed), e (32, ephemeral X25519 secret), k (32, message key), n1 (12, wrap nonce),
+/// n2 (12, body nonce), aad[] (parts), plain (hex). Out (hex JSON): wrap (1181 B), nonce (12 B), sealed (plain + 16 B). Nothing private is needed: sealing uses only the PUBLIC key, so no key touch is asked.
+pub fn seal_json(input: &str) -> (bool, Vec<u8>) {
+    use fips203::ml_kem_768::EncapsKey;
+    use fips203::traits::Encaps;
+    let fail = |m: &str| (false, m.as_bytes().to_vec());
+    let Ok(v) = serde_json::from_str::<serde_json::Value>(input) else { return fail("bad json") };
+    let hx = |k: &str| v[k].as_str().and_then(hex_dec);
+    let (Some(pubk), Some(m), Some(e), Some(k), Some(n1), Some(n2), Some(plain)) = (hx("pub"), hx("m"), hx("e"), hx("k"), hx("n1"), hx("n2"), hx("plain")) else { return fail("missing or bad hex field") };
+    let (m, e, k, plain) = (Zeroizing::new(m), Zeroizing::new(e), Zeroizing::new(k), Zeroizing::new(plain));
+    if pubk.len() != PUB_LEN { return fail("recipient key must be 1216 bytes"); }
+    if m.len() != 32 || e.len() != 32 || k.len() != 32 || n1.len() != NONCE_LEN || n2.len() != NONCE_LEN { return fail("bad random value length"); }
+    if [&m, &e, &k].iter().any(|b| b.iter().all(|x| *x == 0)) || n1 == n2 { return fail("all-zero or repeated random value refused"); }
+    let Some(key_id) = v["key_id"].as_str() else { return fail("no key_id") };
+    let parts: Vec<&str> = v["aad"].as_array().map(|a| a.iter().filter_map(|p| p.as_str()).collect()).unwrap_or_default();
+    let mut ek_b = [0u8; EK_LEN]; ek_b.copy_from_slice(&pubk[..EK_LEN]);
+    let Ok(ek) = EncapsKey::try_from_bytes(ek_b) else { return fail("invalid ML-KEM public key") };
+    let mut rx = [0u8; 32]; rx.copy_from_slice(&pubk[EK_LEN..]);
+    let mut seed = [0u8; 32]; seed.copy_from_slice(&m);
+    let (ss_kem, ct) = ek.encaps_from_seed(&seed); seed.zeroize();
+    let ss_kem = Zeroizing::new(ss_kem.into_bytes());
+    let ct_b = ct.into_bytes();
+    let mut es = Zeroizing::new([0u8; 32]); es.copy_from_slice(&e);
+    let eph = StaticSecret::from(*es);
+    let eph_pub = PublicKey::from(&eph);
+    let shared = eph.diffie_hellman(&PublicKey::from(rx));
+    if !shared.was_contributory() { return fail("x25519 low-order key"); }
+    let ss_x = Zeroizing::new(*shared.as_bytes());
+    let Some(wk) = kdf(&*ss_kem, &*ss_x, &ct_b, eph_pub.as_bytes(), &pubk, key_id) else { return fail("hkdf") };
+    let Ok(c1) = Aes256Gcm::new_from_slice(&*wk) else { return fail("aes") };
+    let Ok(wrapped) = c1.encrypt(Nonce::from_slice(&n1), Payload { msg: &k, aad: &aad(&["kem-wrap", key_id]) }) else { return fail("wrap seal failed") };
+    let Ok(c2) = Aes256Gcm::new_from_slice(&k) else { return fail("aes") };
+    let Ok(sealed) = c2.encrypt(Nonce::from_slice(&n2), Payload { msg: &plain, aad: &aad(&parts) }) else { return fail("seal failed") };
+    let mut blob = vec![VER];
+    blob.extend_from_slice(&ct_b); blob.extend_from_slice(eph_pub.as_bytes()); blob.extend_from_slice(&n1); blob.extend_from_slice(&wrapped);
+    if blob.len() != BLOB_LEN { return fail("wrap has the wrong length"); }
+    let h = |b: &[u8]| b.iter().map(|c| format!("{:02x}", c)).collect::<String>();
+    (true, serde_json::json!({"wrap": h(&blob), "nonce": h(&n2), "sealed": h(&sealed)}).to_string().into_bytes())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -209,4 +250,24 @@ mod tests {
         assert!(!keygen_json(&format!(r#"{{"d":"{}","z":"{}","x":"{}"}}"#, "00".repeat(32), "22".repeat(32), "33".repeat(32))).0);
     }
 
+
+    #[test]
+    fn qc7b_seal_json_opens_with_open_json_and_refuses_bad_input() {
+        use fips203::ml_kem_768::KG; use fips203::traits::{KeyGen, SerDes};
+        let hx = |b: &[u8]| b.iter().map(|c| format!("{:02x}", c)).collect::<String>();
+        let (ek, dk) = KG::keygen_from_seed([1u8; 32], [2u8; 32]);
+        let xs = StaticSecret::from([7u8; 32]);
+        let mut pubk = ek.into_bytes().to_vec(); pubk.extend_from_slice(PublicKey::from(&xs).as_bytes());
+        let inp = |plain: &[u8], m: u8| serde_json::json!({"pub": hx(&pubk), "key_id": "pqk-1", "m": hx(&[m; 32]), "e": hx(&[9u8; 32]), "k": hx(&[5u8; 32]), "n1": hx(&[3u8; 12]), "n2": hx(&[4u8; 12]), "aad": ["draft", "box", "v1"], "plain": hx(plain)}).to_string();
+        let (ok, out) = seal_json(&inp(b"Dear Ali, this draft is sealed in the browser.", 11)); assert!(ok, "{}", String::from_utf8_lossy(&out));
+        let o: serde_json::Value = serde_json::from_slice(&out).unwrap();
+        assert_eq!(o["wrap"].as_str().unwrap().len(), BLOB_LEN * 2);
+        let back = serde_json::json!({"dk": hx(&dk.into_bytes()), "x": hx(&[7u8; 32]), "pub": hx(&pubk), "key_id": "pqk-1", "wrap": o["wrap"], "nonce": o["nonce"], "aad": ["draft", "box", "v1"], "sealed": o["sealed"]}).to_string();
+        let (ok2, plain) = open_json(&back); assert!(ok2); assert_eq!(plain, b"Dear Ali, this draft is sealed in the browser.");
+        let wrong = back.replace("\"v1\"", "\"v2\""); assert!(!open_json(&wrong).0, "another aad must not open");
+        assert_eq!(seal_json(&inp(b"x", 11)), seal_json(&inp(b"x", 11)), "same random values, same bytes");
+        assert!(!seal_json(&inp(b"x", 0)).0, "all-zero seed refused");
+        assert!(!seal_json("{}").0); assert!(!seal_json("nope").0);
+        let short = inp(b"x", 11).replace(&hx(&pubk), &hx(&pubk[..100])); assert!(!seal_json(&short).0);
+    }
 }
