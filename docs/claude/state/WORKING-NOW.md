@@ -18,44 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- da1c5f3a 21 Nov 04:30 QC8a a1-a5 + Search mail GREEN (live proof), open items listed
 - b37f4e34 21 Nov 04:26 ledger line c08865fd
 - c08865fd 21 Nov 04:26 QC8a live proof 2 recorded
 - 95523bba 21 Nov 04:25 ledger line 386ffe5c
 - 386ffe5c 21 Nov 04:25 QC8a live after install #2
-- 94beffca 21 Nov 04:23 ledger line 306692b4
 
 ## Uncommitted files (half-done work if any)
-M  CLAUDE.md
-M  docs/claude/BLUEPRINT-ABC-01NOV.md
-M  docs/claude/CLOSE-THE-GAPS-07NOV.md
-M  docs/claude/DONE-DO-NOT-REPEAT.md
-M  docs/claude/RESUME-POINT.md
-M  docs/claude/founder/PULL-COMMANDS.md
-M  docs/claude/state/HEARTBEAT.json
-MM docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
-M  docs/cursor-work/DONE-DO-NOT-REPEAT.md
-M  docs/cursor-work/founder/founder-commands.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  docs/cursor-work/server/PULL-COMMANDS.md
-R  founder-web/dist/assets/index-Bmz8mR9o.js -> founder-web/dist/assets/index-CBdj26_-.js
-M  founder-web/dist/index.html
-M  founder-web/src/system_brain.json
-M  lanes/ALL-FILES.csv
-M  lanes/founder.txt
+ M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        | 34 ++++++++++----------
- docs/cursor-work/server/PULL-COMMANDS.md           |  2 ++
- .../{index-Bmz8mR9o.js => index-CBdj26_-.js}       |  2 +-
- founder-web/dist/index.html                        |  2 +-
- founder-web/src/system_brain.json                  |  6 ++--
- lanes/ALL-FILES.csv                                |  2 +-
- lanes/founder.txt                                  |  2 +-
- 19 files changed, 67 insertions(+), 44 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 41 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 39 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -66,4 +42,4 @@ M  lanes/founder.txt
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (8ab008af1d584caf566e3752746f00fc8483b78f)
+WIP snapshot: refs/wip/last (9983cdec0e6ac9c9e0083a714a497f18e1f36011)
