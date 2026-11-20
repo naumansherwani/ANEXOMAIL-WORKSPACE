@@ -1,6 +1,6 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 09:51 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: DOING: founder install pending (list-look fix + FounderFace icon 46e003f9); awam sticker proven live by his look; routeTree.gen.ts diff waits his read-only paste
-NEXT STEP: NEXT: re-look founder list vs his photo after install; fix routeTree from his diff; evening QC5/QC7/QC8/Q3
+# WORKING NOW (manual checkpoint, 20 Nov 2026 09:55 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: DOING: founder install pending (list-look fix + FounderFace icon); awam stale route move line given, waits his paste
+NEXT STEP: NEXT: founder re-look vs his photo; awam pull re-run clean; evening QC5/QC7/QC8/Q3
 HIS LAST WORD: 5-min check 10:11
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- d61dfd9a 20 Nov 09:51 ledger line 349775e2
 - 349775e2 20 Nov 09:51 gaps: routeTree stale route cause
 - b8b0df0b 20 Nov 09:51 ledger line 7cea4e00
 - 7cea4e00 20 Nov 09:51 awam pull: routeTree diff root cause logged
 - bf45ae31 20 Nov 09:49 ledger line d38c7a9a
-- d38c7a9a 20 Nov 09:49 QC4 checkpoint
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 21 ++++-----------------
+ 1 file changed, 4 insertions(+), 17 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (d52c4cf794b5032f6234bbc1147a29bdeae31a62)
+WIP snapshot: refs/wip/last (734926ba325f0577df6cc10934c45d50ca7a6c69)
