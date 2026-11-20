@@ -1598,3 +1598,5 @@ Technology: React 19 + TypeScript; pure module founder-web/src/emoji_pure.ts (bu
 - 20.11.26 04:52 PKT QC1e D4A G1+G2: Rust wired (ClamAV fail closed, Hetzner Storage Box sha-addressed); 35 tests; waits his sql-run then Rust install
 
 - QC1e D4A: his 2 server cmds pending (sql-run, emoji Rust)
+
+- QC1e D4A installed on server, D4B parked
