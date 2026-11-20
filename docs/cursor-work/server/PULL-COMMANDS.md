@@ -1156,3 +1156,5 @@
 - QC1e D4A installed on server, D4B parked
 
 - QC1e D4A CHECK_E193 all OK on server
+
+- Awam blueprint alphabetic copy

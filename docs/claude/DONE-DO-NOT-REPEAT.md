@@ -1388,3 +1388,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - QC1e D4A installed on server, D4B parked
 
 - QC1e D4A CHECK_E193 all OK on server
+
+- Awam blueprint alphabetic copy
