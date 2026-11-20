@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 02:39 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 21 Nov 03:35 PKT: HIS PASTE: backup OK (13M dump, 184 Supabase tables, SHA-256 OK, 20M, on his server). Login-only refused AGAIN at founder_dbsc_jti (147 vs 144): E149 guard allows forgetting rows older than 1 day, so Supabase surplus = pruned old rows. FIXING with a rigorous check for the 6 known prune tables: every Supabase row inside the server time window must exist on the server, only older ones may be missing. Backup exists, so nothing can be lost.
-NEXT STEP: Sandbox-test (accept old surplus, refuse a surplus NEW row), push, his one line again.
-HIS LAST WORD: his 21 Nov 02:37 paste
+# WORKING NOW (manual checkpoint, 21 Nov 2026 02:53 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 21 Nov 03:00 PKT: HIS PASTE: qconnect-login-only.sh OK (30 tables copied back, 0 founder-owned mismatches, healthz 200 me 401 bridge 401, journal: database engine = REST (managed, data); identity engine = LOCAL). Login on his server, data on Supabase. NOT GREEN YET: my Chrome look + his open session + proofs pending.
+NEXT STEP: My Chrome look (dashboard, Mail, Devices ring, HTTP/3, ML-DSA, sign-in works), then GREEN only with WIRED/REAL/TECH-LAW CHECKED. Then QC8.
+HIS LAST WORD: his 21 Nov 02:53 paste: login-only OK
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- ca176cb7 21 Nov 02:39 ledger line 6cd3f15f
 - 6cd3f15f 21 Nov 02:39 QCONNECT-LO: prune-window proof for append-only prune tables (founder_dbsc_jti)
 - a2763486 21 Nov 02:24 ledger line e28309ee
 - e28309ee 21 Nov 02:24 QCONNECT-LO: backup runs as root, prune-aware guard, his 02:24 paste
 - e681feea 21 Nov 02:18 ledger line 478ce99a
-- 478ce99a 21 Nov 02:18 QCONNECT-LO: state snapshot
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 23 +++++------------------
+ 1 file changed, 5 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (8fb9b9f94d8704afe655ebfa470c9584bb5b8a8e)
+WIP snapshot: refs/wip/last (91dc40dc171529ff3f43601c127eb2ca5c47d296)
