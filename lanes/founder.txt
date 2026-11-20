@@ -170,7 +170,7 @@ founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
 founder-web/dist/assets/index-CbYqkE_h.css
-founder-web/dist/assets/index-Cxo3dEyd.js
+founder-web/dist/assets/index-DEJaJsjM.js
 founder-web/dist/assets/kernel.worker-BLkLR49F.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
@@ -367,6 +367,8 @@ founder-web/src/portable.test.ts
 founder-web/src/portable.ts
 founder-web/src/presence_pure.test.ts
 founder-web/src/presence_pure.ts
+founder-web/src/presend_pure.test.ts
+founder-web/src/presend_pure.ts
 founder-web/src/pulse.css
 founder-web/src/pulse_pure.test.ts
 founder-web/src/pulse_pure.ts
