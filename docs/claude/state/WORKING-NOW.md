@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 01:41 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: REAL CLOCK 21 Nov 01:40 PKT (my earlier stamps 01:42 onward up to 02:10 ran AHEAD of the real clock; order by commit time is true, use date). HIS 01:40 WORD: before QCONNECT the founder system was fine for speed, he asked ONLY for the LOGIN to be fast. The switch moved the whole founder database local. He must run the rollback line (OFF=1) or decide. Login-only needs an identity+session plane split (new code, contract, audit), not tonight.
-NEXT STEP: 1) his OFF=1 paste (or his decision to keep local) 2) if rollback: record it, then plan 'login plane local, data plane managed' with contract first (QSPEED E197 + local identity/session tables), 3) off-server backup question only if he keeps local 4) QC8. ALWAYS stamp ledger lines with the real clock from date.
-HIS LAST WORD: qconnect se pehle jo system tha founder side ka wo batao, sirf login bola tha fast ho jaye baqi sab speed theek thi
+# WORKING NOW (manual checkpoint, 21 Nov 2026 01:44 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 21 Nov 02:20 PKT: he is confused: if the binary is already on Hetzner, why backup/data-loss talk? EXPLAINED: code/website (on Hetzner, also in git) vs DATA/database (was at Supabase, they kept it; now on his own server, so backup is now his job, Hetzner does not copy a database by itself unless a backup product is bought; unknown for his server). Rollback line OFF=1 returns data safety to Supabase. Waiting for his run of OFF=1.
+NEXT STEP: If he runs OFF=1: read paste, record. Then login-only mode only after his haan. Explain simply (code vs data), short, no new scripts.
+HIS LAST WORD: AGAR PEHLE SE HETZNER PE HAIN TOH DUMP/DATA LOSE KI BAAT PEHLE SE HAI? ADVANCE TECHNOLOGY KA DATA HETZNER NE KARNA HAI KYA?
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 01e3d317 21 Nov 01:41 ledger line 95ee13ef
 - 95ee13ef 21 Nov 01:41 QCONNECT: real clock correction, login-only wish recorded
 - 33b02cda 21 Nov 01:38 ledger line ff2c6a88
 - ff2c6a88 21 Nov 01:38 QCONNECT: scope dispute recorded, rollback line given
 - 1ed379a4 21 Nov 01:34 ledger line 6db7e2a1
-- 6db7e2a1 21 Nov 01:34 backup risk recorded as top gap
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 23 +++++------------------
+ 1 file changed, 5 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (01650e898244a1ef973b4aaa827db830b884ba97)
+WIP snapshot: refs/wip/last (6b2bf108830d51cd307ad3d22f756415be16b2fa)
