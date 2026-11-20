@@ -226,6 +226,7 @@ docs/cursor-work/server/people-check.sh
 docs/cursor-work/server/personal-polar-products.md
 docs/cursor-work/server/pg-local-copy.sh
 docs/cursor-work/server/pg-local-install.sh
+docs/cursor-work/server/pg-local-vector.sh
 docs/cursor-work/server/phases.py
 docs/cursor-work/server/polar-control-plane-install.sh
 docs/cursor-work/server/polar-cp-proof.py
