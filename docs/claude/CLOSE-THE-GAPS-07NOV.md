@@ -368,6 +368,7 @@ G2 is now the open item in progress.
 - E90: kernel release ledger entry for 0.19.0 and 0.20.0.
 
 ## QCONNECT open gaps (21 Nov 2026 01:55 PKT, after the phase was declared)
+0. HIGHEST (his 01:33 anger, a lifetime risk): since the switch the founder's NEW data exists only in the local database on his one server; the nightly dump (13 MB, 7 kept = about 90 MB) is on the same server. Awam is NOT moved (still on the managed database); the managed copy is a frozen snapshot of 21 Nov ~01:30. Needs an off-server copy that is NOT the Storage Box and NOT a vendor: candidates = his own second server over ssh (what is 'server 2'? ask him), the disk RAID/Hetzner server snapshot option (read-only check of the server type first), or his laptop by hand. NOT decided; asked him.
 1. Reverse copy: after the switch founder writes live only in the local database; OFF=1 returns to the managed copy WITHOUT them. A copy-back script needs his decision.
 2. Tables the awam site writes (identity_health warn, auth.* for awam users) can be stale locally; the founder only reads founder-owned tables, but a periodic refresh or logical replication is not built.
 3. 2 SLOW lines in the first 5 minutes after the switch: read them (journalctl -u anexomail-founder --since=-10min --no-pager | grep SLOW | tail -5) before calling the latency work closed.

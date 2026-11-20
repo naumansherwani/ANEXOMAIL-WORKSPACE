@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 01:30 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QCONNECT = GREEN AND CLOSED by his word (21 Nov 02:00 PKT). Live: FOUNDER_DB=local on his server, rollback OFF=1. Gaps only in CLOSE-THE-GAPS-07NOV.md. NEXT = QC8.
-NEXT STEP: QC8 (shortcuts + accessibility final pass): contract in tech-contracts/CURRENT.md first, then code, 390/820/1200+ look, his install line. rules-read.py first. Do NOT reopen QCONNECT unless he says. Short replies, Aap only, Rule-70 table, no guesses on his server, 2-min loop.
-HIS LAST WORD: Qconnect green ker ke close kero
+# WORKING NOW (manual checkpoint, 21 Nov 2026 01:34 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QCONNECT green+closed, but HIS 01:33 CONCERN is the top open item: founder data now single-copy on his one server (dump on the same server). Awam NOT moved. Waiting his answer: what is 'server 2' / how is the server hosted, and which off-server copy he accepts (not Storage Box, no vendor).
+NEXT STEP: Do NOT write backup scripts until he answers (law 3: read-only question first). Then write the off-server copy line. Then QC8.
+HIS LAST WORD: yeh umar bhar ka masla, awam bhi risk founder bhi risk, storage pe weight na aye
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,22 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 15a66e88 21 Nov 01:30 ledger line ff446368
 - ff446368 21 Nov 01:30 QCONNECT: green and closed by founder word
 - e5bc0eae 21 Nov 01:28 ledger line e046ad80
 - e046ad80 21 Nov 01:28 QCONNECT: declared done with proof, gaps recorded, next QC8
 - eab16a49 21 Nov 01:26 ledger line e9575f5c
-- e9575f5c 21 Nov 01:26 QCONNECT: his speed word recorded
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/CLOSE-THE-GAPS-07NOV.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 21 ++-------------------
- 1 file changed, 2 insertions(+), 19 deletions(-)
+ docs/claude/CLOSE-THE-GAPS-07NOV.md |  1 +
+ docs/claude/state/WORKING-NOW.md    | 24 ++++++------------------
+ 2 files changed, 7 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +44,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (cc3c3409ce97e685767d348d58d935f1297f8c81)
+WIP snapshot: refs/wip/last (828f8fa035f9c621889951baab95a30e85d0fffb)
