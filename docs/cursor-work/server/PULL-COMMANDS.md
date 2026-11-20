@@ -1355,3 +1355,7 @@
 - QCONNECT 21:2x PKT: his first pg-local-install run FAILED its own proof (Ubuntu 26.04 auto-created the cluster on localhost:5432, conf.d did not win); script patched with ALTER SYSTEM (postgresql.auto.conf) + restart + diagnosis exit; localhost-only listener, not reachable from outside; next his re-run, then E-line on local DB (QCONNECT steps 3-7 open)
 
 - QCONNECT 21:4x PKT: his 2nd run stopped at step 2 (psql: could not translate host name quoted /var/run/postgresql: a PGHOST env in his root shell); script now unsets PG* env and passes -h /var/run/postgresql on every psql; backup before the install = full-backup.sh (on his server, read-only copy)
+
+- QCONNECT 21:5x PKT: pg-local-install = OK on his server (PostgreSQL 18.6, socket only, no TCP listener, compat bootstrap ok); full-backup.sh taken (/root/anexomail-backups/full-20261120-164159, 132M); SANDBOX FINDING: the E-line alone cannot build a fresh DB (E37 needs phase58 base schema) so step 4 = one read-only pg_dump of public+auth+storage from the managed DB restored into new local anexo_copy: pg-local-copy.sh written, awaits his run
+
+- QCONNECT 21:5x PKT: pg-local-install = OK on his server (PostgreSQL 18.6, socket only, no TCP listener, compat bootstrap ok); full-backup.sh taken (/root/anexomail-backups/full-20261120-164159, 132M); SANDBOX FINDING: the E-line alone cannot build a fresh DB (E37 needs phase58 base schema) so step 4 = one read-only pg_dump of public+auth+storage from the managed DB restored into new local anexo_copy: pg-local-copy.sh written, awaits his run
