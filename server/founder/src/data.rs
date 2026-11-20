@@ -2,7 +2,7 @@
 use serde_json::Value;
 
 #[derive(Clone)]
-pub struct Sb { pub url: String, pub key: String, pub http: reqwest::Client }
+pub struct Sb { pub url: String, pub key: String, pub http: reqwest::Client, pub pg: Option<std::sync::Arc<crate::pg::Pg>> }
 
 /// KP3 audit step C (14 Nov): which database call is slow. Prints ONLY the table or function name (no filter, no value, no key) and the milliseconds, and only when a call took SLOW_DB_MS or more.
 pub const SLOW_DB_MS: u128 = 250;
@@ -19,11 +19,24 @@ impl Sb {
             // speed (10 Nov 20:55): sign-ins are rare, so a default pool let the link to the database go cold between them and every sign-in paid a fresh TCP+TLS handshake.
             // Keep the connections warm for 10 minutes, no Nagle delay, TCP keep-alive; main.rs pings the database every 30 s (keepalive()).
             .pool_idle_timeout(std::time::Duration::from_secs(600)).pool_max_idle_per_host(16).tcp_nodelay(true).tcp_keepalive(std::time::Duration::from_secs(30))
-            .build().ok()? })
+            .build().ok()?, pg: None })
+    }
+    /// QCONNECT step 6: FOUNDER_DB=local (+ FOUNDER_PG_URL, FOUNDER_PG_POOL) moves every database call onto the local PostgreSQL socket. Anything else, or a local database that does not answer at start, keeps REST: the switch can never take the site down.
+    pub async fn with_local(mut self) -> Sb {
+        if std::env::var("FOUNDER_DB").map(|v| v == "local").unwrap_or(false) {
+            let url = std::env::var("FOUNDER_PG_URL").unwrap_or_else(|_| "postgresql://root@/anexo_founder?host=/var/run/postgresql".into());
+            let size = std::env::var("FOUNDER_PG_POOL").ok().and_then(|v| v.parse().ok()).unwrap_or(16);
+            match crate::pg::Pg::connect(&url, size).await {
+                Ok(p) => { eprintln!("founder: database engine = LOCAL PostgreSQL (unix socket, pool {size})"); self.pg = Some(std::sync::Arc::new(p)); }
+                Err(e) => eprintln!("founder: FOUNDER_DB=local but the socket did not answer ({e}); staying on REST"),
+            }
+        } else { eprintln!("founder: database engine = REST (managed)"); }
+        self
     }
     /// One TINY read (one row, one column) every 30 s keeps the warm connections to the database alive (no secret, no write). Called once from main.
     pub fn keepalive(&self) {
         let sb = self.clone();
+        if let Some(pg) = sb.pg.clone() { tokio::spawn(async move { loop { let _ = pg.ping().await; tokio::time::sleep(std::time::Duration::from_secs(30)).await; } }); return; }
         tokio::spawn(async move { loop { // QSPEED (18 Nov): the root /rest/v1/ answers with the WHOLE OpenAPI schema (measured on his server: about 1.1 MB, up to 2.4 s) every 30 s and PostgREST builds it each time, which clogged the warm connections and slowed every real call. One tiny row read keeps the same connection warm.
             let _ = sb.http.get(format!("{}/rest/v1/founder_accounts?select=user_id&limit=1", sb.url)).header("apikey", &sb.key).header("authorization", format!("Bearer {}", sb.key)).send().await; let _ = sb.http.get(format!("{}/auth/v1/health", sb.url)).send().await; tokio::time::sleep(std::time::Duration::from_secs(30)).await; } });
     }
@@ -32,6 +45,7 @@ impl Sb {
     }
     pub async fn rows(&self, path: &str) -> Option<Vec<Value>> {
         let t0 = std::time::Instant::now();
+        if let Some(pg) = &self.pg { let r = pg.rows(path).await.ok(); slow_db("read", path, t0); return r; }
         let r = self.req(path).send().await.ok()?;
         slow_db("read", path, t0);
         if !r.status().is_success() { return None; }
@@ -39,6 +53,7 @@ impl Sb {
     }
     pub async fn count(&self, path: &str) -> Option<i64> {
         let t0 = std::time::Instant::now();
+        if let Some(pg) = &self.pg { let r = pg.count(path).await.ok(); slow_db("count", path, t0); return r; }
         let r = self.req(path).header("prefer", "count=exact").header("range", "0-0").send().await.ok()?;
         slow_db("count", path, t0);
         if !r.status().is_success() && r.status().as_u16() != 416 { return None; }
@@ -47,6 +62,7 @@ impl Sb {
     /// PostgREST RPC (service_role). Jawab JSON value (null bhi valid) ya None (error).
     pub async fn rpc(&self, name: &str, body: Value) -> Option<Value> {
         let t0 = std::time::Instant::now();
+        if let Some(pg) = &self.pg { let r = pg.rpc(name, &body).await.ok(); slow_db("rpc", name, t0); return r; }
         let r = self.http.post(format!("{}/rest/v1/rpc/{}", self.url, name)).header("apikey", &self.key)
             .header("authorization", format!("Bearer {}", self.key)).json(&body).send().await.ok()?;
         slow_db("rpc", name, t0);
@@ -56,6 +72,7 @@ impl Sb {
     /// Like `rpc`, but keeps the database's own plain-language message when the SQL door refuses (validation / "already undone" / limits).
     /// Err = (HTTP status from PostgREST, message). 0 = unreachable. Used by the S2 write routes so the founder reads WHY.
     pub async fn rpc_msg(&self, name: &str, body: Value) -> Result<Value, (u16, String)> {
+        if let Some(pg) = &self.pg { return pg.rpc(name, &body).await.map_err(|(st, m)| if st == 404 { (404, "The server's settings time machine is older than this app. Run the E113 SQL step (sql-run.sh) once, then try again.".to_string()) } else { (st, m) }); }
         let r = self.http.post(format!("{}/rest/v1/rpc/{}", self.url, name)).header("apikey", &self.key)
             .header("authorization", format!("Bearer {}", self.key)).json(&body).send().await.map_err(|_| (0u16, "database unreachable".to_string()))?;
         let st = r.status().as_u16();
@@ -73,6 +90,7 @@ impl Sb {
     }
     /// One atomic write through the SQL door (validation + history + audit inside). Err = (HTTP status from PostgREST, message).
     pub async fn setting_set(&self, uid: &str, key: &str, value: &Value) -> Result<Value, (u16, String)> {
+        if let Some(pg) = &self.pg { return pg.rpc("founder_setting_set", &serde_json::json!({"p_uid": uid, "p_key": key, "p_value": value})).await.map_err(|(st, m)| if m.contains("key_registry") { (503, m) } else { (st, m) }); }
         let r = self.http.post(format!("{}/rest/v1/rpc/founder_setting_set", self.url)).header("apikey", &self.key)
             .header("authorization", format!("Bearer {}", self.key)).json(&serde_json::json!({"p_uid": uid, "p_key": key, "p_value": value})).send().await.map_err(|_| (0u16, "database unreachable".to_string()))?;
         let st = r.status().as_u16();

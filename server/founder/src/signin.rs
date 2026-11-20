@@ -494,7 +494,7 @@ mod tests {
         (url, w)
     }
     fn st_for(url: &str) -> S {
-        let sb = Sb { url: url.into(), key: "svc".into(), http: reqwest::Client::new() };
+        let sb = Sb { url: url.into(), key: "svc".into(), http: reqwest::Client::new(), pg: None };
         Arc::new(St { sb: Some(sb), hmac_key: b"net-key".to_vec(), jwks: tokio::sync::RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: crate::polar::Live::off(), hook: Default::default(), ed: None, reqsig: true, gate: crate::authcache::AuthCache::new(Duration::from_secs(5)), dbsc: crate::dbsc::Mode::Off })
     }
     async fn call(st: &S, path: &str, body: Value, ip: &str) -> (StatusCode, Value) {

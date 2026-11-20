@@ -9,6 +9,7 @@ mod gate;
 mod sign;
 mod bridge;
 mod data;
+mod pg;
 mod login;
 mod actions;
 mod ftoken;
@@ -1080,7 +1081,7 @@ async fn main() {
         println!("generated");
         return;
     }
-    let sb = data::Sb::from_env();
+    let sb = match data::Sb::from_env() { Some(s) => Some(s.with_local().await), None => None };
     if let Some(s) = &sb { s.keepalive(); sessions::spawn_upkeep(s.clone()); }
     let ft = std::env::var("FOUNDER_TOKEN_KEY_FILE").unwrap_or_else(|_| "/etc/anexomail/founder-token.p8".into());
     let ft = std::fs::read(&ft).ok().and_then(|d| ftoken::Keys::from_pkcs8(&d));
@@ -1211,7 +1212,7 @@ mod tests {
         let l = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
         let url = format!("http://{}", l.local_addr().unwrap());
         tokio::spawn(async move { axum::serve(l, r).await.unwrap(); });
-        (data::Sb { url, key: "svc".into(), http: reqwest::Client::new() }, w)
+        (data::Sb { url, key: "svc".into(), http: reqwest::Client::new(), pg: None }, w)
     }
     fn cnt(w: &SWorld, n: &str) -> usize { w.rpc.lock().unwrap().iter().filter(|(x, _)| x == n).count() }
     #[tokio::test]
@@ -1290,7 +1291,7 @@ mod tests {
     }
 
     fn st_with_sb() -> S {
-        let sb = data::Sb { url: "http://127.0.0.1:1".into(), key: "k".into(), http: reqwest::Client::new() };
+        let sb = data::Sb { url: "http://127.0.0.1:1".into(), key: "k".into(), http: reqwest::Client::new(), pg: None };
         Arc::new(St { sb: Some(sb), hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: polar::Live::off(), hook: Default::default(), ed: None, reqsig: true, gate: authcache::AuthCache::new(std::time::Duration::from_secs(5)), dbsc: dbsc::Mode::Off })
     }
     #[tokio::test]

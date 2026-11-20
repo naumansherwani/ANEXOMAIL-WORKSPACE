@@ -181,7 +181,7 @@ mod tests {
     }
     #[tokio::test]
     async fn view_without_the_sql_step_is_honest_not_empty() {
-        let sb = Sb { url: "http://127.0.0.1:1".into(), key: "k".into(), http: reqwest::Client::new() };
+        let sb = Sb { url: "http://127.0.0.1:1".into(), key: "k".into(), http: reqwest::Client::new(), pg: None };
         let v = view(&sb, "00000000-0000-0000-0000-000000000000").await;
         assert_eq!(v["connected"], false);
         assert!(v["reason"].as_str().unwrap().contains("E138"));

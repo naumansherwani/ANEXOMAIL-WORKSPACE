@@ -216,7 +216,7 @@ mod tests {
         (url, m)
     }
     fn st_for(url: &str) -> crate::S {
-        let sb = crate::data::Sb { url: url.into(), key: "svc".into(), http: reqwest::Client::new() };
+        let sb = crate::data::Sb { url: url.into(), key: "svc".into(), http: reqwest::Client::new(), pg: None };
         Arc::new(crate::St { sb: Some(sb), hmac_key: b"k".to_vec(), jwks: tokio::sync::RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: crate::polar::Live::off(), hook: Default::default(), ed: None, reqsig: true, gate: crate::authcache::AuthCache::new(std::time::Duration::from_secs(5)), dbsc: crate::dbsc::Mode::Off })
     }
     async fn post_json(st: &crate::S, path: &str, body: Value, ip: &str) -> (StatusCode, Value, Option<String>) {

@@ -1879,3 +1879,12 @@ Technology: Rust WASM kernel 0.21.0, module kemopen@1 gains `seal` (kem_seal): M
 - QCONNECT 22:2x PKT: step 5 DONE on his server: 642 tables hashed both sides, 27 differ = live-write drift only (none larger locally), hash chains OK; SCORE 5 of 10 done; NOW step 6 Rust data.rs pg backend
 
 - QCONNECT 22:3x PKT: step 5 compare finished (27 diffs = live-write drift only); step 6 survey of Sb done (212 rpc names, 17 rows reads, 2 counts, 4 files direct http) and design written in the plan; code not started
+
+## QCONNECT-6 (20 Nov 2026 23:3x PKT): LOCAL DATABASE ENGINE inside Sb (Rust Tokio, tokio-postgres 0.7 + deadpool-postgres 0.14, PostgreSQL 18 on the unix socket)
+- Technology: Rust + Tokio async runtime, pooled tokio-postgres over a unix socket (no TCP port), PostgreSQL with row-level security (session opened AS service_role with the same JWT claim PostgREST sets), prepared statements cached per connection, catalog-driven rpc templates (pg_proc), statement timeout 8 s.
+- Files: server/founder/src/pg.rs (engine + PostgREST-subset translator + tests), data.rs (Sb.pg, with_local, 5 methods branch), main.rs (mod pg, with_local at start). Switch = env FOUNDER_DB=local (+ FOUNDER_PG_URL, FOUNDER_PG_POOL); unset or unreachable = REST as before.
+- Safety: identifiers (function, argument, table, column) only from the catalog, values only bound parameters; injection tests; unknown column/table/operator refused.
+- Proof 23:3x in the sandbox (PostgreSQL 16 scratch): 4 unit tests + 1 live test against a real database (scalar, set-returning, void, jsonb, array, default argument, raise exception -> 400 + message, unknown function/argument -> 404, injection string = plain value, session role service_role): 139 microseconds per rpc over the socket (REST measured 320 ms on his server); whole suite 570 passed 0 failed.
+- NOT done in this step: the 4 direct-http places (auth.rs, passkey.rs, signin.rs) still call the managed auth service (step 7), install on his server, switch (step 8).
+
+- QCONNECT 23:3x PKT: step 6 CODE DONE (sandbox only, not installed): server/founder/src/pg.rs Rust Tokio tokio-postgres+deadpool engine inside Sb, switch FOUNDER_DB=local (default REST), 4 unit tests + live test on a real PostgreSQL (139 us per rpc over the socket, REST 320 ms), 570 tests pass; contract in CURRENT.md; step 7 Rust signin next

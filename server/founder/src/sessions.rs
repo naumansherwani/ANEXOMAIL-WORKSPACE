@@ -351,7 +351,7 @@ mod tests {
         let l = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
         let url = format!("http://{}", l.local_addr().unwrap());
         tokio::spawn(async move { axum::serve(l, app).await.unwrap(); });
-        (Sb { url, key: "svc".into(), http: reqwest::Client::new() }, w)
+        (Sb { url, key: "svc".into(), http: reqwest::Client::new(), pg: None }, w)
     }
     fn f() -> Facts { Facts { net: "n".repeat(64), protocol: "h2", kernel: "k-1".into(), ua: "chrome", hint: "chrome", country: Some("PK".into()) } }
     fn n(w: &World, name: &str) -> usize { w.rpc.lock().unwrap().iter().filter(|(x, _)| x == name).count() }
