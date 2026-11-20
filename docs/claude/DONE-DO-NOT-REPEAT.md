@@ -1765,3 +1765,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 06:06 PKT his colour complaint checked with proof: compiled founder CSS diff old vs now = 0 changed or removed rules, 24 new kl-only rules; Time machine shows no appearance change since 16 Nov; waits his screen and photo; QC8 order sent
 
 - 21 Nov 2026 06:06 PKT his colour complaint checked with proof: compiled founder CSS diff old vs now = 0 changed or removed rules, 24 new kl-only rules; Time machine shows no appearance change since 16 Nov; waits his screen and photo; QC8 order sent
+
+- 21 Nov 2026 06:10 PKT QC8 order sent to him, colour proof recorded; next QC8b b2
