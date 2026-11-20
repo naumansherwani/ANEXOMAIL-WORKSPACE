@@ -1,6 +1,6 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 21:03 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QCONNECT STARTED (his word 21:02): plan docs/claude/QCONNECT-PLAN-20NOV.md. KEY FACT from db-direct-probe paste: database host is IPv6 only, plain TCP connect 215-225 ms from his server => a direct Postgres connection is NOT faster; only a database on his Hetzner server (unix socket, 1 ms) or fewer calls/cache helps. Web research confirms: PostgREST adds few ms, distance dominates.
-NEXT STEP: 1) wait for his explicit haan for step 3 (install PostgreSQL 16 on his server, unix socket only) + fresh ss paste; 2) meanwhile QSPEED code-only: E197 login finish ONE SQL door (read E153/E167/passkey schema first), writes after the answer, network-only retry; 3) rec.sh each step
+# WORKING NOW (manual checkpoint, 20 Nov 2026 21:05 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: QCONNECT: his 21:05 word = start, but ports and Caddy first. I gave him ONE read-only line (ss + caddy/postgres services + disk + ram + postgres package) and wait for the paste; the local PostgreSQL installer (unix socket only, no new port) is written only after it. Meanwhile QSPEED code-only: E197 login finish ONE SQL door (read E153/E167/passkey schema first).
+NEXT STEP: 1) his paste of the ports/caddy line; 2) write pg-local-install.sh for his exact OS and ports; 3) E197 login door; each step rec.sh
 HIS LAST WORD: SQL advance 400+ likho QC7
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -18,20 +18,22 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- a3563673 20 Nov 21:03 ledger line 32e2d4da
 - 32e2d4da 20 Nov 21:03 QCONNECT started: plan, db-direct-probe result, research
 - f267487a 20 Nov 20:59 ledger line 4501d30d
 - 4501d30d 20 Nov 20:59 QSPEED measured: 320 ms per REST call; db-direct-probe.sh added
 - b5f54935 20 Nov 20:56 ledger line 56c1a29a
-- 56c1a29a 20 Nov 20:56 QSPEED: login busy cause recorded, waiting for his paste
 
 ## Uncommitted files (half-done work if any)
+M  docs/claude/QCONNECT-PLAN-20NOV.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 25 ++-----------------------
- 1 file changed, 2 insertions(+), 23 deletions(-)
+ docs/claude/QCONNECT-PLAN-20NOV.md |  2 +-
+ docs/claude/state/WORKING-NOW.md   | 22 +++++-----------------
+ 2 files changed, 6 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +44,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a8154258933f4b8286a7f8a4b55f35aa28003ec9)
+WIP snapshot: refs/wip/last (0b34bd0a4b940838e2ab75d0110a8fecb27876dc)

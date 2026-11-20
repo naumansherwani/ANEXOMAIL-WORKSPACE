@@ -11,7 +11,7 @@
 - So only two ways reach 50 ms: (a) the database on his Hetzner server (1 ms), (b) cache and fewer calls so the 320 ms is paid rarely.
 
 ## Plan (law: Hetzner, own Rust, Caddy, Namecheap only; no other vendor)
-1. This plan + his word (given 21:02 for the start; install needs his explicit haan, step 3).
+1. This plan + his word: start given 21:02, and at 20 Nov 2026 21:05 PKT his "shuru kero" (21:05) counts as the haan to go on, on ONE condition he set: I check ports and Caddy FIRST (PORT RED LINE). Step 2 below is that check; the installer is written only after his paste.
 2. PORT RED LINE: his fresh `ss` paste first; PostgreSQL listens on a UNIX SOCKET only (no TCP port opened).
 3. Install PostgreSQL 16 from the OS packages on his server, empty database, roles as in E167 (service_role only doors). sql-run.sh runs the whole E-line on it, strictly by number, every CHECK green.
 4. Copy data: pg_dump of the founder tables, then compare row counts + hash chains (ledger verify functions) before any switch.
