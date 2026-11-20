@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 20 Nov 2026 23:56 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 00:04 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: QCONNECT step 7 CODE DONE in the sandbox (localid.rs + LOCAL_E198 doors, live test on real PostgreSQL, 573 tests pass), not installed; his next lines: pg-local-run198.sh then founder-install; then step 8 switch
 NEXT STEP: 1) his pg-local-run198.sh; 2) his founder-install (flag off); 3) step 8: delta copy + freeze + FOUNDER_DB=local + FOUNDER_PG_URL anexo_copy + rollback; 4) step 9 re-measure; 5) step 10 nightly dump on server only
 HIS LAST WORD: SQL advance 400+ likho QC7
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 814aa2f4 21 Nov 00:04 QCONNECT: bootstrap guard against managed Supabase
+- 88886515 20 Nov 23:56 ledger line a3842b0e
 - a3842b0e 20 Nov 23:56 QCONNECT step 7: Rust identity engine localid.rs + LOCAL_E198 doors
 - f6844be0 20 Nov 23:46 ledger line 4cca17f3
 - 4cca17f3 20 Nov 23:46 QCONNECT: step 7 real auth schema read, technology list
-- 68023d80 20 Nov 23:42 ledger line 6befe8a9
-- 6befe8a9 20 Nov 23:42 QCONNECT: step 7 design + pg-local-authschema.sh
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 40 ++--------------------------------------
- 1 file changed, 2 insertions(+), 38 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (680061b143d70fb0821540a4415a977f0c95de75)
+WIP snapshot: refs/wip/last (ae6ef4325410382ae0e70d2f1648ec833059a70f)
