@@ -5085,3 +5085,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 10:52 PKT checkpoint loop refresh only; WIRED: NO
 
 - 21 Nov 2026 10:52 PKT checkpoint loop refresh only; WIRED: NO
+
+[21 Nov 2026 10:53 PKT] HIS WORD (10:52): meri company ke aliais ban rahay hain aur tu pagal hai jo (Asli Business account E28 customer script) dai raha hai. FIX: script removed; company addresses = aliases; read-only desk-alias-look.sh first.
+
+- 21 Nov 2026 10:53 PKT Desk: wrong customer-account script removed, alias look-script added per his 10:52; WIRED: NO

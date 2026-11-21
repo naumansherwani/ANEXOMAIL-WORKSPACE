@@ -25,7 +25,7 @@ admin-desk/scripts/ad-auto.sh
 admin-desk/scripts/ad-check.sh
 admin-desk/scripts/ad-db-env.sh
 admin-desk/scripts/ad-sql-run.sh
-admin-desk/scripts/desk-business-account.sh
+admin-desk/scripts/desk-alias-look.sh
 admin-desk/scripts/desk-cert-sync.sh
 admin-desk/scripts/desk-h3-check.sh
 admin-desk/scripts/desk-h3-enable.sh

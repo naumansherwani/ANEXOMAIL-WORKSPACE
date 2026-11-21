@@ -340,7 +340,7 @@ docs/claude/admin-desk/scripts/ad-auto.sh
 docs/claude/admin-desk/scripts/ad-check.sh
 docs/claude/admin-desk/scripts/ad-db-env.sh
 docs/claude/admin-desk/scripts/ad-sql-run.sh
-docs/claude/admin-desk/scripts/desk-business-account.sh
+docs/claude/admin-desk/scripts/desk-alias-look.sh
 docs/claude/admin-desk/scripts/desk-cert-sync.sh
 docs/claude/admin-desk/scripts/desk-h3-check.sh
 docs/claude/admin-desk/scripts/desk-h3-enable.sh

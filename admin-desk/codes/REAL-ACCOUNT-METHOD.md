@@ -6,12 +6,8 @@ Saved 21 Nov 2026 10:44 PKT. These are the ONLY ways accounts are made, all with
 - Script: admin-desk/scripts/desk-owner.sh. Reads password twice with read -s, `anexomail-desk hashpw` (admin-desk/server/src/auth.rs, argon2id m=64MiB t=3 p=1) turns stdin into a hash, psql inserts via /etc/anexomail-desk/db.env, one ledger line. Env: OWNER_EMAIL, OWNER_NAME, OWNER_ROLE.
 - Line: git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:admin-desk/scripts/desk-owner.sh)
 
-## 2. REAL awam Business account (Supabase, auth.users) - the repo's own real-signup path
-- Method = docs/cursor-work/sql/E28_seed_buyer_test_account.sql (header explains): server/routes/auth.ts /signup (auth.users + auth.identities with crypt(pw, gen_salt('bf')), account_profiles workspace_kind=business, user_roles, ensure_trial_account_row) -> /identity/claim -> POST /organisations -> entitlement_state (plan) -> E23 trigger activates the account exactly as a real payment does. One transaction, rolls back whole on any error.
-- Plans proven in the repo: basic, pro, business, business_pro (Premium/Max need their plan rows first, R3p).
-- Script: admin-desk/scripts/desk-business-account.sh (asks handle, name, company, domain, plan, then password twice, no echo; runs E28 unchanged). Account = handle@anexomail.com.
-- Line: git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:admin-desk/scripts/desk-business-account.sh)
-- Older random-password helpers (do not use for real people): docs/cursor-work/server/t16-accounts-look.sh, pro-second-user.sh.
+## 2. Company addresses are ALIASES (his 21 Nov 10:52 word), NOT customer accounts
+hello@, moveyourbusiness@, resolved@, billing@, noreply@, leo@, postmaster@, abuse@, dmarc@, naumansherwani.founder@ and admindesk@ are his OWN company's aliases. They are NOT made by the E28 customer signup seed (that was my mistake, script desk-business-account.sh removed 10:5x). How they exist today = read-only look first: admin-desk/scripts/desk-alias-look.sh, then his word.
 
 ## Isolation
 The Desk binary never reads auth.users or any awam table. Account 2 is awam data made by awam's own seed.
