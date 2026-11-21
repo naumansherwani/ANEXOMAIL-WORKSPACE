@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 00:00 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 00:00 PKT) - read this FIRST for the Desk after a compaction
 DOING: PROVEN: A rows @ + admindesk missing at Namecheap; server 200 v4+v6; he re-adds A
 NEXT STEP: his A re-add; desk-restart facts; Alt-Svc haan
 HIS LAST WORD: 00:00 paste
@@ -41,6 +41,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 54e41a8f 22 Nov 00:00 Record DNS proof
 - a99ab122 21 Nov 23:56 ledger line 2e237693
 - 2e237693 21 Nov 23:56 Record down report
 - e6a37e02 21 Nov 23:54 ledger line 4abf202d
@@ -48,10 +49,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 79b4b0e2 21 Nov 23:50 ledger line e18f1119
 - e18f1119 21 Nov 23:50 Record DNS AAAA saved
 - c30b685f 21 Nov 23:45 ledger line ab60b9b8
-- ab60b9b8 21 Nov 23:45 Record Namecheap AAAA save state
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
