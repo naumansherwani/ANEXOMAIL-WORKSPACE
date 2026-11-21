@@ -5165,3 +5165,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 21:10 PKT auto checkpoint; WIRED: NO
 
 - 21 Nov 2026 21:10 PKT auto checkpoint; WIRED: NO
+
+[21 Nov 2026 21:10 PKT] HIS WORD (21:10): gandu yeh neechay aye ga continue with passkey. DONE: passkey button moved below Sign in.
+
+- 21 Nov 2026 21:10 PKT Desk login: passkey button below Sign in; WIRED: NO until his desk-install

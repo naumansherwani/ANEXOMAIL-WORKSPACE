@@ -52,11 +52,6 @@ export function DeskSignIn() {
           <div style={{ width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", border: "1px solid rgba(160,200,255,.2)", borderRadius: 14, background: "rgba(255,255,255,.04)" }}>
             <span style={{ fontSize: 12, letterSpacing: ".08em", color: "#9FB2D4" }}>IDENTITY</span><span style={{ fontSize: 14 }}>Admin Desk</span>
           </div>
-          <button type="button" className="ax-press" disabled={hw !== "ready"} onClick={() => setMsg("No passkey is registered on this account yet. Use the email and password below.")}
-            style={{ width: "100%", minHeight: 48, borderRadius: 12, border: "1px solid rgba(160,200,255,.4)", background: "transparent", color: "#E8EEF8", cursor: hw === "ready" ? "pointer" : "not-allowed", fontSize: 15, fontWeight: 600, opacity: hw === "ready" ? 1 : 0.7, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-            <KeyRound size={16} aria-hidden="true" />Continue with a passkey
-          </button>
-          <p role="status" style={{ margin: 0, fontSize: 13, color: hw === "ready" ? "#9FD6B4" : "#F2C58A", textAlign: "center" }}>{hwLine}</p>
           <details style={{ width: "100%", borderTop: "1px solid rgba(160,200,255,.14)", paddingTop: 12 }} open>
             <summary style={{ fontSize: 13, color: "#9FB2D4", textAlign: "center", minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>No passkey on this account? Use your password</summary>
             <form onSubmit={submit} noValidate name="desklogin" method="post" autoComplete="on" style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 8 }}>
@@ -68,6 +63,11 @@ export function DeskSignIn() {
               <button type="submit" className="ax-a-hover" disabled={busy} style={{ minHeight: 48, border: "1px solid rgba(160,200,255,.4)", borderRadius: 12, background: "transparent", color: "#E8EEF9", fontSize: 15, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}><HoverA busy={busy} />Sign in</button>
             </form>
           </details>
+          <button type="button" className="ax-press" disabled={hw !== "ready"} onClick={() => setMsg("No passkey is registered on this account yet. Use the email and password below.")}
+            style={{ width: "100%", minHeight: 48, borderRadius: 12, border: "1px solid rgba(160,200,255,.4)", background: "transparent", color: "#E8EEF8", cursor: hw === "ready" ? "pointer" : "not-allowed", fontSize: 15, fontWeight: 600, opacity: hw === "ready" ? 1 : 0.7, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+            <KeyRound size={16} aria-hidden="true" />Continue with a passkey
+          </button>
+          <p role="status" style={{ margin: 0, fontSize: 13, color: hw === "ready" ? "#9FD6B4" : "#F2C58A", textAlign: "center" }}>{hwLine}</p>
           <div style={{ width: "100%", borderTop: "1px solid rgba(160,200,255,.14)", paddingTop: 14, display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
             <p style={{ margin: 0, fontSize: 13, lineHeight: 1.5, color: "#C9D8F2", textAlign: "center", textWrap: "balance" as const }}>Our engine runs in milliseconds; our support should too. Own the issue, fix the root, leave zero open loops.</p>
             <p style={{ margin: 0, fontSize: 11, letterSpacing: ".08em", color: "#8FA6CC", textAlign: "center" }}>Built on: Rust · Tokio · axum · Rust WASM kernel · WebAuthn passkeys · Three.js</p>
