@@ -1,4 +1,4 @@
-> ## >>> RESUME HERE: RESUME 22 Nov 04:32 PKT: S0 retest on new connection, ad-auto (AD3 4 s), S1 bridge.rs (RESUME-POINT.md line 3) (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
+> ## >>> RESUME HERE: 22 Nov 04:40 S0 h2 still, AD3 4 s in DB, his alt-svc+tcpdump next, S1 bridge.rs after (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
 > ## >>> FRONTEND=CADDY, HETZNER=BACKEND; DNS=Caddy IP (his 21 Nov 23:35): docs/claude/FRONTEND-CADDY-BACKEND-HETZNER-LAW-21NOV.md <<<
 > ## >>> DESK 3 CMDS: desk-install, ad-auto, desk-restart (admin-desk/TWO-COMMANDS.md) <<<
 > ## >>> CLEAN-PUSH: git status empty after push (CLEAN-PUSH-LAW-21NOV.md) <<<

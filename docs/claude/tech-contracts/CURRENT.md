@@ -2864,3 +2864,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - Blueprint order sent to founder in chat; current phase R4-1b Bridge S0; docs only; WIRED: NO
 
 - S0 evidence: QUIC to UDP 4400 reachable from his Chrome; h2 reuse; docs only; WIRED: NO
+
+- 22 Nov 04:40 PKT: S0 retest h2 on new tab; AD3 4 s patch confirmed in his DB (ad-auto all rows t); S0 still NOT green; next his curl alt-svc + tcpdump

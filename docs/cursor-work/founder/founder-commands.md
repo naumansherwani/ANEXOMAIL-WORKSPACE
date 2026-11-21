@@ -5547,3 +5547,5 @@ Features ki list (QC4 mein kya banega):
 ## 22 Nov 2026 04:32 PKT (his 04:31): pasted tcpdump (loopback only) + fetch (repo was stale); wants S0 solved in 10 min with web research; keep blueprint order.
 
 - S0 evidence: QUIC to UDP 4400 reachable from his Chrome; h2 reuse; docs only; WIRED: NO
+
+- 22 Nov 04:40 PKT: S0 retest h2 on new tab; AD3 4 s patch confirmed in his DB (ad-auto all rows t); S0 still NOT green; next his curl alt-svc + tcpdump

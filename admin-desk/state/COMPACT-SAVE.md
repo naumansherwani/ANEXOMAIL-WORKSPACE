@@ -142,3 +142,5 @@ AD3 ran on his server OK. Read BRIDGE-FEATURES-22NOV.md. Open decisions for him:
 ## 70 (22 Nov 2026 04:27 PKT) his 04:27: asked for blueprint order + current phase; answered. CURRENT = R4-1b Desk Bridge S0. Repo already records: browser h3 needs his Namecheap AAAA + HTTPS record (alpn h3); check that BEFORE more guessing.
 
 ## 71 (22 Nov 2026 04:32 PKT) S0 evidence 2: WebTransport handshake to :4400 answered (376 ms), h2 reuse explains Chrome; CSP needs :4400 in S2; his repo was stale so AD3 patch pending: ad-auto again. NEXT: retest on a new connection, then S1.
+
+## 72 (22 Nov 2026 04:40 PKT) S0 retest on new tab: still h2. ad-auto on current repo: AD3 already run, all 18 check rows t = 4 s patch IS in his DB. Next: his curl alt-svc + tcpdump (non-loopback). Tech list per phase answered (S0 h3, S1 Rust/Axum/Rule52, S2 WebTransport+kernel, S3 React/TS/Tailwind/Radix/Framer/GSAP/Three, S5 MoQ, ClamAV/StorageBox later).
