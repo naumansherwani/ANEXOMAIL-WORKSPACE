@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:34 PKT) - read this FIRST for the Desk after a compaction
-DOING: ad-db-env done; waiting his AD1 editor run + ad-check
-NEXT STEP: auth.rs ARGON2ID after 8 rows true
-HIS LAST WORD: ad-db-env paste
+# ADMIN DESK WORKING NOW (manual checkpoint, 21 Nov 2026 10:35 PKT) - read this FIRST for the Desk after a compaction
+DOING: ad-auto.sh pushed, waits his run
+NEXT STEP: auth.rs ARGON2ID
+HIS LAST WORD: auto sql run
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
 
@@ -24,9 +24,12 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 
 > [21 Nov 2026 10:33 PKT] ad-db-env DONE on his server (10:3x); next his editor AD1 run + ad-check paste.
 
+> [21 Nov 2026 10:35 PKT] AD1 now AUTO: ad-auto.sh (runs if missing, says already run if done). WAITS his output.
+
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 9c049bf0 21 Nov 10:34 checkpoint
 - 02d8fcdd 21 Nov 10:34 checkpoint
 - 7c25db6e 21 Nov 10:33 Desk: ad-db-env done on his server
 - 3d60b24b 21 Nov 10:33 Desk: ad-db-env done on his server
@@ -34,10 +37,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - eb92d0a3 21 Nov 10:32 checkpoint
 - 8ac80b88 21 Nov 10:32 Desk: compact-save context file
 - 3b8f4a00 21 Nov 10:32 Desk: compact-save context file
-- 7da33aa0 21 Nov 10:31 Desk AD1: AD1.sql for his SQL editor, ad-check.sh + ad-db-env.sh for the server check
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
+ M docs/claude/admin-desk/state/PHASES.md
+MM docs/claude/admin-desk/state/WORKING-NOW.md
+?? docs/claude/admin-desk/scripts/ad-auto.sh
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 22 Nov: R3a2-argon2 [R3a2] Password door with ARGON2ID, constant-time -> needs ARGON2ID, constant-time compare, token audience desk in admin-de

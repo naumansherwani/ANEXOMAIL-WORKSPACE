@@ -19,6 +19,7 @@ admin-desk/gates/00-FOUNDER-TECH-RULE.md
 admin-desk/gates/DESK-FEATURES.json
 admin-desk/gates/desk_tech_gate.py
 admin-desk/scripts/00-FOUNDER-TECH-RULE.md
+admin-desk/scripts/ad-auto.sh
 admin-desk/scripts/ad-check.sh
 admin-desk/scripts/ad-db-env.sh
 admin-desk/scripts/ad-sql-run.sh
