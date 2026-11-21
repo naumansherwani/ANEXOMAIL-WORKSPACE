@@ -4997,3 +4997,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 10:22 PKT: checkpoint (loop refresh of WORKING-NOW and Desk WORKING-NOW); AD1 not yet run on his server (WIRED: NO)
 
 - 21 Nov 2026 10:22 PKT: checkpoint (loop refresh of WORKING-NOW and Desk WORKING-NOW); AD1 not yet run on his server (WIRED: NO)
+
+- 21 Nov 2026 10:24 PKT: he ran AD1.sql in a SQL editor: ERROR 42501 permission denied to alter role (pasted verbatim above in context). Fixed AD1.sql (no ALTER ROLE, no extension, p_installer policies), tested as non-superuser + superuser.
+
+- 21 Nov 2026 10:35 PKT: his AD1 editor error 42501 (ALTER ROLE needs superuser) fixed: no ALTER ROLE/extension, p_installer policies; tested non-superuser + superuser 8/8; WIRED: code YES, not yet run on his server via ad-sql-run.sh

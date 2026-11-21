@@ -2426,3 +2426,7 @@ Gate bans http/1, http/1.1, http/2, h2 in every Desk .rs/.toml/.ts/.tsx (only De
 - 21 Nov 2026 10:22 PKT: checkpoint (loop refresh of WORKING-NOW and Desk WORKING-NOW); AD1 not yet run on his server (WIRED: NO)
 
 - 21 Nov 2026 10:22 PKT: checkpoint (loop refresh of WORKING-NOW and Desk WORKING-NOW); AD1 not yet run on his server (WIRED: NO)
+
+## 21 Nov 2026 10:35 PKT R3a2 AD1 FIX (his paste 10:24 from a SQL editor: ERROR 42501 permission denied to alter role, context ALTER ROLE desk_app NOSUPERUSER NOBYPASSRLS). Cause: those attributes can only be changed by a superuser; the editor role is not one. Fix: AD1.sql makes no ALTER ROLE and no CREATE EXTENSION; CREATE ROLE desk_app NOLOGIN (defaults are NOSUPERUSER NOBYPASSRLS); selftest still raises if the role is superuser/BYPASSRLS. Second finding while testing as a non-superuser: FORCE RLS also binds the installing role, so AD1 creates ONE policy p_installer per desk table (FOR ALL TO the installer role); desk_app never has one. Tested as superuser and as a CREATEROLE non-superuser. Whole file is one transaction: the failed run created nothing. NOTE: the Desk SQL must NOT be run in an editor of the founder or awam database (isolation); run ad-sql-run.sh (own database anexo_desk).
+
+- 21 Nov 2026 10:35 PKT: his AD1 editor error 42501 (ALTER ROLE needs superuser) fixed: no ALTER ROLE/extension, p_installer policies; tested non-superuser + superuser 8/8; WIRED: code YES, not yet run on his server via ad-sql-run.sh

@@ -7,14 +7,12 @@
 -- The owner row and its ARGON2ID hash are created by HIS command later (never in chat, never in this file).
 -- ==============================================================================================================================
 BEGIN;
-CREATE EXTENSION IF NOT EXISTS pgcrypto;  -- gen_random_uuid() on every supported version
+-- (no extension needed: gen_random_uuid() and sha256() are built in; the file needs NO superuser, so it also runs in a hosted editor whose role is not a superuser)
 
 -- 1) the Desk's own database role: no login yet (AD1b gives it a unix-socket login), no superuser, NEVER bypasses row level security
+-- (his 21 Nov 10:24 error: `ALTER ROLE desk_app NOSUPERUSER NOBYPASSRLS` needs a superuser. It is not needed: CREATE ROLE already defaults to NOSUPERUSER NOBYPASSRLS, and the selftest at the end FAILS the file if the role is ever a superuser or bypasses RLS.)
 DO $$ BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'desk_app') THEN
-    CREATE ROLE desk_app NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
-  END IF;
-  ALTER ROLE desk_app NOSUPERUSER NOBYPASSRLS;
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'desk_app') THEN CREATE ROLE desk_app NOLOGIN; END IF;
 END $$;
 CREATE SCHEMA IF NOT EXISTS desk;
 REVOKE ALL ON SCHEMA public FROM desk_app;
@@ -127,6 +125,15 @@ DO $$ BEGIN
   DROP POLICY IF EXISTS p_mailbox_read ON desk.fadm_mailbox; CREATE POLICY p_mailbox_read ON desk.fadm_mailbox FOR SELECT TO desk_app USING (desk.fadm_me() IS NOT NULL);
   DROP POLICY IF EXISTS p_ledger_read ON desk.fadm_ledger;   CREATE POLICY p_ledger_read ON desk.fadm_ledger   FOR SELECT TO desk_app USING (desk.fadm_me() IS NOT NULL);
   DROP POLICY IF EXISTS p_ledger_add ON desk.fadm_ledger;    CREATE POLICY p_ledger_add ON desk.fadm_ledger    FOR INSERT TO desk_app WITH CHECK (desk.fadm_me() IS NOT NULL AND (actor IS NULL OR actor = desk.fadm_me()));
+END $$;
+-- FORCE RLS applies to the role that installed this file too (a superuser bypasses it, a hosted-editor role does not). That installer (the database admin) gets ONE all-access policy per table, named p_installer:
+-- it lets the SECURITY DEFINER login lookup, the seed rows and the selftest work. desk_app NEVER gets such a policy, and the ledger stays append-only for EVERYONE (trigger, not policy).
+DO $$ DECLARE t text; BEGIN
+  FOREACH t IN ARRAY ARRAY['fadm_owner','fadm_session','fadm_passkey','fadm_mailbox','fadm_ledger'] LOOP
+    EXECUTE format('DROP POLICY IF EXISTS p_installer ON desk.%I', t);
+    EXECUTE format('CREATE POLICY p_installer ON desk.%I FOR ALL TO %I USING (true) WITH CHECK (true)', t, current_user);
+  END LOOP;
+  DROP POLICY IF EXISTS p_owner_definer ON desk.fadm_owner;
 END $$;
 REVOKE ALL ON ALL TABLES IN SCHEMA desk FROM desk_app;
 GRANT SELECT ON desk.fadm_owner, desk.fadm_mailbox TO desk_app;
