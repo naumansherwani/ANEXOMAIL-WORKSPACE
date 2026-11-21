@@ -37,6 +37,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 8df2152f 21 Nov 11:01 Desk: UI copy plan
 - e0080aa2 21 Nov 11:01 Desk: UI copy plan
 - 15a20ce2 21 Nov 10:56 checkpoint
 - 26a24e49 21 Nov 10:56 checkpoint
@@ -44,7 +45,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - b38ce066 21 Nov 10:56 Desk: owner created, records
 - 0edce82b 21 Nov 10:53 Desk: aliases not customer accounts; alias look script
 - 1b2168d9 21 Nov 10:53 Desk: aliases not customer accounts; alias look script
-- a40b609b 21 Nov 10:52 checkpoint
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
