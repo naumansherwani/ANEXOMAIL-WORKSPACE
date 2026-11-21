@@ -35,6 +35,7 @@ admin-desk/scripts/desk-h3-enable.sh
 admin-desk/scripts/desk-host-check.sh
 admin-desk/scripts/desk-install.sh
 admin-desk/scripts/desk-owner.sh
+admin-desk/scripts/desk-restart.sh
 admin-desk/server/00-FOUNDER-TECH-RULE.md
 admin-desk/server/Cargo.lock
 admin-desk/server/Cargo.toml

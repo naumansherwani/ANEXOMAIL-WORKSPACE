@@ -5235,3 +5235,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 21:42 PKT DESK TWO-COMMAND LAW: install does everything (DB login + CA), SQL = ad-auto; WIRED: NO until his install
 
 - 21 Nov 2026 21:42 PKT DESK TWO-COMMAND LAW: install does everything (DB login + CA), SQL = ad-auto; WIRED: NO until his install
+
+[21 Nov 2026 21:42 PKT] HIS WORD (21:42): restart aur load ki command hogi bas, agar install, sql, restart agar hui bhi to yaad rakho. DONE: desk-restart.sh; allowed = install, sql, restart.
+
+- 21 Nov 2026 21:42 PKT Desk restart command added; allowed = install, sql, restart; WIRED: NO
