@@ -11,6 +11,7 @@ use axum::{
 };
 use tower_http::services::{ServeDir, ServeFile};
 
+mod auth;
 mod h3;
 
 const HOST: &str = "admindesk.anexomail.com";
@@ -63,6 +64,12 @@ async fn login_not_connected() -> impl IntoResponse {
 async fn main() {
     // `anexomail-desk h3check <ip:port> <host> <cert.pem>`: the proof client (PQ + AES-256 only) for his server
     let a: Vec<String> = std::env::args().collect();
+    // `anexomail-desk hashpw`: reads ONE password line from stdin (typed on his server by desk-owner.sh), prints only the ARGON2ID hash. Never prints or logs the password.
+    if a.get(1).map(String::as_str) == Some("hashpw") {
+        let mut l = String::new();
+        std::io::stdin().read_line(&mut l).ok();
+        match auth::hash_password(l.trim_end_matches(['\n', '\r'])) { Ok(h) => { println!("{h}"); return; } Err(e) => { eprintln!("hashpw: {e}"); std::process::exit(3); } }
+    }
     if a.get(1).map(String::as_str) == Some("h3check") && a.len() == 5 {
         let cert = std::fs::read(&a[4]).expect("cert file");
         match h3::selfcheck(a[2].parse().expect("ip:port"), &a[3], &cert).await { Ok(o) => { println!("H3CHECK OK: {o} (handshake = TLS 1.3, AES-256-GCM, X25519MLKEM768: the client offered nothing else)"); return; } Err(e) => { println!("H3CHECK FAIL: {e}"); std::process::exit(1); } }

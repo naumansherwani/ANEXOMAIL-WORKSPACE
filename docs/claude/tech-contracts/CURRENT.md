@@ -2489,3 +2489,10 @@ admin-desk/scripts/ad-auto.sh: per AD<n>.sql on origin/main, CHECK first; all tr
 - 21 Nov 2026 10:36 PKT checkpoint loop refresh only; WIRED: NO
 
 - 21 Nov 2026 10:36 PKT checkpoint loop refresh only; WIRED: NO
+
+###  Desk login R3a2-2 (his 10:38/10:41)
+auth.rs ARGON2ID (argon2 0.5, m=64MiB t=3 p=1, subtle ct compare, sha2 token hash, aud desk) + hashpw subcommand; 10 Rust tests pass. desk-owner.sh (owner admindesk@anexomail.com, password typed on server) and desk-business-account.sh (REAL Business account via E28 real-signup seed, Supabase). Method saved: admin-desk/codes/REAL-ACCOUNT-METHOD.md. Login door /desk/v1/auth/login still the stub (needs a Postgres client + AD1b desk_app login).
+
+- 21 Nov 2026 10:44 PKT Desk auth.rs ARGON2ID + desk-owner.sh + real Business account script + REAL-ACCOUNT-METHOD; WIRED: NO until his runs
+
+- 21 Nov 2026 10:44 PKT Desk auth.rs ARGON2ID + desk-owner.sh + real Business account script + REAL-ACCOUNT-METHOD; WIRED: NO until his runs

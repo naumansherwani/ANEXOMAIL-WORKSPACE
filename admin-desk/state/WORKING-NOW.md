@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:36 PKT) - read this FIRST for the Desk after a compaction
-DOING: ad-auto.sh pushed, waits his run
-NEXT STEP: auth.rs ARGON2ID
-HIS LAST WORD: auto sql run
+# ADMIN DESK WORKING NOW (manual checkpoint, 21 Nov 2026 10:44 PKT) - read this FIRST for the Desk after a compaction
+DOING: auth.rs + owner/real-account scripts pushed
+NEXT STEP: his desk-install + desk-owner run, then login door + AD1b
+HIS LAST WORD: real account method, gold codes
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
 
@@ -13,7 +13,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 | R3a0-s2 | Own HTTP/3 (QUIC) listener, X25519MLKEM768, BBR | server/src/h3.rs | quinn, h3, rustls PQ, ring | his 09:08 / 09:18 | PROVEN on his server 09:55 (H3CHECK OK); DNS AAAA + HTTPS record = his hands, OPEN |
 | R3a1 | Cinematic login + landing, telemetry pill | founder-web/src/desk/* | React 19, Three.js, Tailwind 4, kernel (Rule 52) | his 08:31 | LIVE (pill HTTP/3 line after his next desk-install.sh) |
 | R3a2-1 | AD1 SQL: schema desk, desk_app, RLS, SHA-256 ledger | sql/AD1.sql, sql/checks/AD1-check.sql, scripts/ad-sql-run.sh | PostgreSQL ROW LEVEL SECURITY, hash chain | his 08:19 | WRITTEN + TESTED on PG16 (as superuser AND as a NON-superuser hosted-editor role) AND the runner tested end to end (own database anexo_desk created, AD1 applied, 8/8 checks, 2nd run skipped, quoted PGHOST reproduced); NOT yet run on his server |
-| R3a2-2 | auth.rs: ARGON2ID, constant-time, token audience desk | server/src/auth.rs | Rust argon2 | his 08:07 | NEXT |
+| R3a2-2 | auth.rs: ARGON2ID, constant-time, token audience desk | server/src/auth.rs, scripts/desk-owner.sh | Rust argon2 | his 08:07 / 10:38 | CODE + 10 tests pass; AD1 = already run on his server (10:38); owner not created yet (his desk-install then desk-owner.sh); login DOOR next |
 | R3a2-3 | DBSC device-bound session | server/src/auth.rs | DBSC | his 08:07 | after auth.rs |
 | R3a1-b | Orb pulse / shockwave / zoom into the 3-pane workspace | founder-web/src/desk | Three.js, GSAP | his 08:28 | after R3a2 |
 | R3a2-4 | Passkey ceremony (optional) | server/src/passkey.rs + UI | WebAuthn, rp_id admindesk.anexomail.com | his 08:07 | after DBSC |
@@ -28,9 +28,12 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 
 > [21 Nov 2026 10:35 PKT] AD1: ad-db-env DONE on his server; ad-auto.sh written (auto run / already run). WAITS his run + paste.
 
+> [21 Nov 2026 10:44 PKT] ORDER NOW: AD1 DONE -> auth.rs (written) -> desk-install -> desk-owner.sh (his password) -> login door + AD1b desk_app login -> DBSC -> orb pulse/zoom -> passkey (optional) -> R3p plans -> R3b-g (Sun 22 - Mon 23 Nov).
+
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 70629973 21 Nov 10:36 checkpoint
 - d4bca7c6 21 Nov 10:36 checkpoint
 - 79a3aef8 21 Nov 10:36 Desk: ad-auto.sh auto SQL runner
 - 30d3ff13 21 Nov 10:35 Desk: ad-auto.sh auto SQL runner
@@ -38,13 +41,29 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - a864ba3e 21 Nov 10:35 Desk: ad-auto.sh auto SQL runner
 - 9c049bf0 21 Nov 10:34 checkpoint
 - 02d8fcdd 21 Nov 10:34 checkpoint
-- 7c25db6e 21 Nov 10:33 Desk: ad-db-env done on his server
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+ M admin-desk/scripts/desk-install.sh
+ M admin-desk/server/Cargo.lock
+ M admin-desk/server/Cargo.toml
+ M admin-desk/server/src/main.rs
+M  admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/scripts/desk-install.sh
+ M docs/claude/admin-desk/server/Cargo.lock
+ M docs/claude/admin-desk/server/Cargo.toml
+ M docs/claude/admin-desk/server/src/main.rs
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
+ M docs/claude/admin-desk/state/PHASES.md
+MM docs/claude/admin-desk/state/WORKING-NOW.md
+?? admin-desk/server/src/auth.rs
+?? docs/claude/admin-desk/codes/
+?? docs/claude/admin-desk/scripts/desk-business-account.sh
+?? docs/claude/admin-desk/scripts/desk-owner.sh
+?? docs/claude/admin-desk/server/src/auth.rs
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
-warn ADMIN DESK OPEN until 22 Nov: R3a2-argon2 [R3a2] Password door with ARGON2ID, constant-time -> needs ARGON2ID, constant-time compare, token audience desk in admin-de
+warn R3a2-argon2 now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
 warn ADMIN DESK OPEN until 24 Nov: R3p1-plans [R3p1] Plans as data (Premium, Max first) -> needs PostgreSQL RLS, hash-chained ledger in admin-desk/sql/AD2.sql
 warn ADMIN DESK OPEN until 24 Nov: R3p2-webhook [R3p2] Polar signed webhook door -> needs Rust Tokio axum, HMAC-SHA256 constant-time in admin-desk/server/src/polar.rs

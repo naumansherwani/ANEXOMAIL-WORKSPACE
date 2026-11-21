@@ -19,6 +19,9 @@ bytes = "1"
 rustls-pemfile = "2"
 http-body-util = "0.1"
 tower = { version = "0.5", features = ["util"] }
+subtle = "2.6.1"
+sha2 = "0.10"
+argon2 = { version = "0.5", features = ["std"] }
 
 [profile.release]
 opt-level = 3
