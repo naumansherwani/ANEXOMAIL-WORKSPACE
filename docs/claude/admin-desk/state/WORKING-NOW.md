@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 21 Nov 2026 23:54 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 23:54 PKT) - read this FIRST for the Desk after a compaction
 DOING: A records of @ and admindesk MISSING (his paste 23:55); he must re-add; anexochat/anexovideo dig line
 NEXT STEP: his A re-add; desk-restart facts; Alt-Svc haan
 HIS LAST WORD: 23:55 paste
@@ -41,6 +41,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 4abf202d 21 Nov 23:54 Record missing A rows
 - 79b4b0e2 21 Nov 23:50 ledger line e18f1119
 - e18f1119 21 Nov 23:50 Record DNS AAAA saved
 - c30b685f 21 Nov 23:45 ledger line ab60b9b8
@@ -48,10 +49,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 0d47203c 21 Nov 23:39 ledger line 80b44c0d
 - b97bee74 21 Nov 23:36 ledger line d0e124ee
 - d0e124ee 21 Nov 23:36 LAW: frontend Caddy, backend Hetzner
-- 5bd1a4d8 21 Nov 23:34 ledger line e886861c
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
