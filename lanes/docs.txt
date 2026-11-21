@@ -335,6 +335,7 @@ docs/claude/admin-desk/PLAN-DESK-UI-COPY-21NOV.md
 docs/claude/admin-desk/README.md
 docs/claude/admin-desk/REMAINING-LIST-22NOV.md
 docs/claude/admin-desk/SCALE-50K-DESIGN-22NOV.md
+docs/claude/admin-desk/STATUS-REAL-22NOV.md
 docs/claude/admin-desk/TWO-COMMANDS.md
 docs/claude/admin-desk/WORLD-ADVANCE-DESK-22NOV.md
 docs/claude/admin-desk/codes/00-FOUNDER-TECH-RULE.md

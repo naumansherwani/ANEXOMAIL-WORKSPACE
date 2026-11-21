@@ -5423,3 +5423,7 @@ Features ki list (QC4 mein kya banega):
 [22 Nov 2026 01:41 PKT] HIS WORDS: desk-install mein signing key ka step: key ek dafa banti hai, aur check fail ho to purana binary aur purane pages wapis lag jate hain. khabardar jo yeh naye admin desk main kiya toh goli maarun ga. yeh tab hoga jab fail ho toh
 
 - 22 Nov 02:55 PKT: his rollback warning recorded, WIRED: NO
+
+[22 Nov 2026 01:47 PKT] HIS WORDS: (pasted his 01:39 desk-install output + all earlier replies) yeh sab batao kitna huwa hai aur kitna baki hai, jitna repo se match karke real working hai woh bhi admin desk ke ledger/working now/blueprint mein update karo, jo nahi hai woh bhi batao.
+
+- 22 Nov 2026 01:47 PKT: honest status written (live base, R3d code-only, rest plan-only); CORRECTION: ledger stamps 02:05-02:55 PKT were typed wrong, real 01:3x-01:4x; WIRED: NO for R3d

@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 01:41 PKT) - read this FIRST for the Desk after a compaction
-DOING: rollback wording question answered; R3d B waits his install
-NEXT STEP: his desk-install paste, my Chrome proof, R4-1
-HIS LAST WORD: his 01:41: rollback warning
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 01:47 PKT) - read this FIRST for the Desk after a compaction
+DOING: Status: LIVE base + R3d code-only; rerun desk-install
+NEXT STEP: his rerun paste, my Chrome Rule 52 proof, R4-1
+HIS LAST WORD: his 01:47: kitna hua / kitna baki
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
 
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- baf45e2c 22 Nov 01:41 ledger line 68859e31
 - 68859e31 22 Nov 01:41 rollback warning record
 - 87e2923c 22 Nov 01:39 ledger line ada44a81
 - ada44a81 22 Nov 01:39 status record
@@ -54,10 +55,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 13fb6626 22 Nov 01:38 Desk R3d stage B: signed doors, own WASM kernel, deskCall, real dashboard
 - d435d57e 22 Nov 01:25 ledger line e07c9674
 - e07c9674 22 Nov 01:25 Desk: ON1-ON12 final plan
-- cad6b1db 22 Nov 01:22 ledger line 9e3cf7b7
 
 ## Uncommitted Desk files
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
+ M docs/claude/admin-desk/state/PHASES.md
+ M docs/claude/admin-desk/state/REMINDERS.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+?? docs/claude/admin-desk/STATUS-REAL-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

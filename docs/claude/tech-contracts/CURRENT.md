@@ -2781,3 +2781,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 22 Nov 02:50 PKT: status asked, R3d B pushed, WIRED: NO until his install
 
 - 22 Nov 02:55 PKT: his rollback warning recorded, WIRED: NO
+
+- 22 Nov 2026 01:47 PKT: honest status written (live base, R3d code-only, rest plan-only); CORRECTION: ledger stamps 02:05-02:55 PKT were typed wrong, real 01:3x-01:4x; WIRED: NO for R3d

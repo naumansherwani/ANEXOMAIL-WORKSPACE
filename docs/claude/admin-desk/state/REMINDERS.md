@@ -7,3 +7,5 @@
 - [22 Nov 2026 01:14 PKT] Employee accounts plan = EMPLOYEE-ACCOUNTS-PLAN-22NOV.md; staff never get passwords; ask him its 4 questions.
 
 - [22 Nov 2026 01:25 PKT] Teams decided: support, migration, frontend_demo (UI change needs his approval). ON9..ON12 = his zero-trust locks; Apple passkey sync conflict noted in plan.
+
+- [22 Nov 2026 01:47 PKT] Rerun desk-install (his 01:39 paste = old script). Then my Chrome proof. STATUS-REAL-22NOV.md is the honest scoreboard.

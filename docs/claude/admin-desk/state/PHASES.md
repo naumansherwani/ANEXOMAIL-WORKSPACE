@@ -45,3 +45,5 @@ Updated 21 Nov 2026 10:20 PKT. Rule 52: signed kernel-verified calls, no raw fet
 > [22 Nov 2026 01:25 PKT] ON1..ON12 FINAL (his answers: all haan; teams support / migration / frontend_demo; +4 zero-trust locks AAGUID, IP+shift, circuit breaker, no_access default). EMPLOYEE-ACCOUNTS-PLAN-22NOV.md. ORDER: R3d > dashboard+bridge > S1+S2 > ON1. Not in code.
 
 > [22 Nov 2026 01:36 PKT] R3d stage B written + tested; waits his desk-install, then my live Chrome proof. NEXT: R4-1 shell/bridge on deskCall.
+
+> [22 Nov 2026 01:47 PKT] STATUS-REAL-22NOV.md: LIVE vs CODE-ONLY vs PLAN-ONLY. Desk complete about 12 percent (1.5/12), whole plan about 3 percent live. R3d code pushed 01:38, his 01:39 paste shows the OLD script ran: rerun the pull command. TIME-STAMP FIX: ledger lines stamped 02:05-02:55 were wrong, real 01:3x-01:4x.
