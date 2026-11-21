@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 21:09 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 21:10 PKT) - read this FIRST for the Desk after a compaction
 DOING: login demo published; installer fixed
 NEXT STEP: his desk-install + desk-appdb, his demo pick
 HIS LAST WORD: login simple passkey, no ball, philosophy
@@ -39,6 +39,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- d186cdee 21 Nov 21:10 Desk login: passkey button + philosophy instead of orb
 - 5882a924 21 Nov 21:09 Desk login: passkey button + philosophy instead of orb
 - eeb4c747 21 Nov 21:08 checkpoint
 - fe55fb85 21 Nov 21:08 checkpoint
@@ -46,7 +47,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 4fe0c7ba 21 Nov 21:07 Desk: login demo record
 - 5dfa332c 21 Nov 21:05 Desk: installer copies all Rust files, stops on failed build
 - 00dc4b6a 21 Nov 21:05 Desk: installer copies all Rust files, stops on failed build
-- bd17b83a 21 Nov 20:49 checkpoint
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
