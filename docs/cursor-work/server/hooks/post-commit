@@ -7,7 +7,7 @@ mkdir -p docs/claude/state
 H="$(git log -1 --format=%h)"
 echo "$(TZ=Asia/Karachi date '+%Y-%m-%d %H:%M:%S PKT') | $H | $(echo "$S" | cut -c1-140)" >> docs/claude/state/COMMIT-LEDGER.log
 bash docs/cursor-work/server/ckpt.sh --auto >/dev/null 2>&1 || true
-git add docs/claude/state/COMMIT-LEDGER.log docs/claude/state/WORKING-NOW.md
+git add docs/claude/state/COMMIT-LEDGER.log docs/claude/state/WORKING-NOW.md docs/claude/admin-desk/state/WORKING-NOW.md 2>/dev/null
 git commit -q --no-verify -m "ledger line $H
 
 Phase: Q1d

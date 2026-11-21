@@ -2621,3 +2621,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 21 Nov 2026 21:15 PKT WORKING-NOW kept only in canonical Desk folder (no dirty file after commit); WIRED: NO
 
 - 21 Nov 2026 21:15 PKT WORKING-NOW kept only in canonical Desk folder (no dirty file after commit); WIRED: NO
+
+- 21 Nov 2026 21:16 PKT post-commit hook also commits the Desk WORKING-NOW (tree clean after every push); WIRED: NO
