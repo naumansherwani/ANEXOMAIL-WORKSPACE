@@ -1,4 +1,4 @@
-> ## >>> RESUME HERE: RESUME 22 Nov 03:19 PKT: Day1 Desk Bridge (A3/B4/B5), AD3 SQL, AD2 Rust door; price 21,500 waits his word (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
+> ## >>> RESUME HERE: RESUME 22 Nov 03:30 PKT: Day1 Desk Bridge (A3/B4/B5), AD3 SQL, AD2 Rust door; Max price 105k vs 125k waits his word (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
 > ## >>> FRONTEND=CADDY, HETZNER=BACKEND; DNS=Caddy IP (his 21 Nov 23:35): docs/claude/FRONTEND-CADDY-BACKEND-HETZNER-LAW-21NOV.md <<<
 > ## >>> DESK 3 CMDS: desk-install, ad-auto, desk-restart (admin-desk/TWO-COMMANDS.md) <<<
 > ## >>> CLEAN-PUSH: git status empty after push (CLEAN-PUSH-LAW-21NOV.md) <<<

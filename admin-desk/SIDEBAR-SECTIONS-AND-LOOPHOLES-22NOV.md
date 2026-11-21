@@ -63,3 +63,5 @@ The 6 loopholes = the Desk's design promises: (1) metadata-only staff view, (2) 
 * Merkle later, DBSC claim only after proof, owner cannot read sealed email: kept as written. support@ stays banned (resolved@).
 
 ## CORRECTION 03:19 PKT: I wrote that 20,500 was the Business Max price: WRONG. The awam packages file says Business Max = 125,000 pounds. He says 21,500; NOT found in any doc, so UNCONFIRMED. See DASHBOARD-LIVE-COMMAND-22NOV.md section D.
+
+## CORRECTION2 22 Nov 2026 03:30 PKT: 21,500 was Premium 21,000 (7,000 users). Max price conflict 105,000 vs 125,000 open.

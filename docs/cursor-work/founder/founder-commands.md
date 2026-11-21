@@ -5487,3 +5487,7 @@ Features ki list (QC4 mein kya banega):
 ## 22 Nov 2026 03:19 (his 03:18): Dashboard folder-wise with Live Command Bar (Live SLA Clock, Active P1 Alerts with package prices, Mail and QUIC Pipeline heartbeat) + everything Zoho/Microsoft/Google have + Proton features + Desk-only features, web research, phases with advance technology. Also: "business max price 21,500 not 20,500, check awam blueprint". Done: DASHBOARD-LIVE-COMMAND-22NOV.md; price NOT confirmed (awam file says 125,000 pounds).
 
 - Dashboard plan (Live Command Bar, world cards, Desk-only) + price check; docs only, WIRED: NO
+
+## 22 Nov 2026 03:30 PKT (his 03:29): pasted package chart again, Premium 21,000/7,000; asked to add line by line to awam blueprint. Done in AWAM-PACKAGES-PROPOSAL + awam blueprint. Max 105k vs 125k open.
+
+- Awam package chart re-added to awam blueprint; docs only, WIRED: NO

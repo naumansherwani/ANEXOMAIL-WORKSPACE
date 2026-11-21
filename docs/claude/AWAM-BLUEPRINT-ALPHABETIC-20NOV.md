@@ -90,3 +90,5 @@ Every awam phase gets the founder's proven technology moulded to the awam (per-c
 ## H. 1. WHEN IT STARTS
 The awam starts only after the FOUNDER blueprint is complete (founder target 25 Nov 2026). The whole awam website is 100% complete by 16 Dec 2026 with tests; seminar launch 16 Jan 2027. Awam files stay FROZEN until their phase starts (`lovable-gold/awam/` is the preserved Lovable copy, never edited).
 
+
+> [22 Nov 2026 03:30 PKT] AWAM PACKAGES: Premium = 21,000 pounds / 7,000 users (his note; the 21,500 was not a price). Max: his note says 105,000, G4 says 125,000, CONFIRM. Full chart appended to AWAM-PACKAGES-PROPOSAL-07NOV.md.

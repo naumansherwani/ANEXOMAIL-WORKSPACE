@@ -29,3 +29,5 @@ C1 Every number has a verified tick: the answer was signed by the Desk key and v
 ## D. PRICE CHECK (his order: confirm the Business Max price in the awam blueprint)
 docs/claude/AWAM-PACKAGES-PROPOSAL-07NOV.md and CLAUDE.md say: Business Max = £125,000 per month, unlimited seats (capped 125,000 users in backend). I searched the docs for 21,500 and 20,500 and found NO such price. 21,000 appears only as an OPTION for the Premium seat cap (question A in that file). So I cannot confirm 21,500: his word needed. The Desk plan rows will take the price only from his answer. My earlier note "20,500 = Business Max price" was WRONG and is corrected in SIDEBAR-SECTIONS-AND-LOOPHOLES-22NOV.md.
 ## ORDER (does not break the blueprint): R4-1b Bridge (A3, B4, B5) -> AD3 SQL + R3b/R3f (A1, B1, B2) -> R3p (A2, B9) -> inboxes R4-2 (B11) -> Day 3-4 (B6, B7, B3, B8) -> after 4 days (B10, B12, B13, C7, C8).
+
+## E) PRICE UPDATE 22 Nov 2026 03:30 PKT: Premium 21,000 / 7,000 users confirmed in repo; Max 105,000 (his chart) vs 125,000 (G4) awaits his word.

@@ -2341,3 +2341,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 4-day plan + his answers on loophole table + research modules into phases; docs only, WIRED: NO
 
 - Dashboard plan (Live Command Bar, world cards, Desk-only) + price check; docs only, WIRED: NO
+
+- Awam package chart re-added to awam blueprint; docs only, WIRED: NO

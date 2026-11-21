@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 03:19 PKT) - read this FIRST for the Desk after a compaction
-DOING: dashboard plan + price check written
-NEXT STEP: Day1: Desk Bridge, AD3 SQL, AD2 Rust door
-HIS LAST WORD: dashboard live command bar
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 03:30 PKT) - read this FIRST for the Desk after a compaction
+DOING: awam package chart added
+NEXT STEP: Day1 Desk Bridge, AD3, AD2 door
+HIS LAST WORD: package chart
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
 
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 4ec63755 22 Nov 03:19 ledger line d46a9cb1
 - d46a9cb1 22 Nov 03:19 Desk dashboard plan
 - f1880c63 22 Nov 03:08 ledger line 13389f33
 - 13389f33 22 Nov 03:08 Desk 4-day plan
@@ -54,9 +55,10 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 0d4ae5c6 22 Nov 03:02 Desk sidebar sections + loopholes
 - e6f40d0d 22 Nov 03:01 ledger line 2384dac0
 - 2384dac0 22 Nov 03:01 Desk top bar + profile menu
-- df835efe 22 Nov 02:53 ledger line a616ac20
 
 ## Uncommitted Desk files
+ M docs/claude/admin-desk/DASHBOARD-LIVE-COMMAND-22NOV.md
+ M docs/claude/admin-desk/SIDEBAR-SECTIONS-AND-LOOPHOLES-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
