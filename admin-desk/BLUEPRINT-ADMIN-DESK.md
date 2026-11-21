@@ -1,3 +1,5 @@
+> **21 Nov 2026 09:40 PKT: Desk HTTP/3 port = UDP 4400 (from his fresh ss 09:27). h3.rs has a REAL loopback PQ test (X25519MLKEM768 + AES-256-GCM handshake + h3 request: PASS). Scripts desk-install.sh + desk-h3-enable.sh committed; the HTTP/3 block stays ON until his curl --http3 proof; then his AAAA + HTTPS record (port=4400).**
+
 > **21 Nov 2026 09:30 PKT, HIS WORD 09:23: HTTP/1 AND HTTP/2 ARE BOTH BANNED (gate). Desk HTTP/3 listener CODE WRITTEN (admin-desk/server/src/h3.rs: quinn+h3, TLS 1.3 AES-256-GCM only, X25519MLKEM768 first, 5 tests pass); NOT live until his ss (UDP port) + AAAA/HTTPS record + curl --http3 proof. Order after that: AD1 SQL, auth.rs ARGON2ID, DBSC, orb pulse/zoom, passkey ceremony, R3p plans.**
 
 > **21 Nov 2026 09:25 PKT, HIS WORD: HTTP/3 HARD BLOCK. HTTP/2 is BANNED for the Desk. No later phase (AD1 SQL, auth.rs ARGON2ID, DBSC, orb pulse/zoom, passkey ceremony, R3p plans) may exist in the repo until the Desk's own HTTP/3 + X25519MLKEM768 listener (R3a0-stage2) is in code and proven (his curl --http3). The gate fails the commit. Technology = founder's or more advanced.**

@@ -2350,3 +2350,11 @@ Gate bans http/1, http/1.1, http/2, h2 in every Desk .rs/.toml/.ts/.tsx (only De
 - 21 Nov 2026 09:35 PKT: HIS WORD: Desk folders made: admin-desk/sql/AD1 (plan only, AD1.sql blocked until HTTP/3), sql/checks, web; WIRED: folders YES, SQL NO
 
 - 21 Nov 2026 09:35 PKT: HIS WORD: Desk folders made: admin-desk/sql/AD1 (plan only, AD1.sql blocked until HTTP/3), sql/checks, web; WIRED: folders YES, SQL NO
+
+## 21 Nov 2026 09:40 PKT R3a0-s2: PORT CHOSEN from his fresh ss (09:27): UDP 4400 (free, not in ufw, outside TURN range). Real loopback test PASSES (h3.rs test real_h3_request_over_pq_aes256: a client offering ONLY X25519MLKEM768 + AES-256-GCM completes the handshake, gets the router's 200 over h3, wrong host = 421). Scripts: desk-install.sh (builds h3 binary, h3 OFF) then desk-h3-enable.sh (own cert copy /etc/anexomail/tls/desk + daily refresh cron, systemd drop-in DESK_H3_ADDR=[::]:4400, ufw allow 4400/udp, check, rollback). Row R3a0-stage2 stays PLANNED (gate block stays ON) until his curl --http3 output proves it live.
+
+- 21 Nov 2026 09:40 PKT: his ss paste 09:27: UDP 4400 chosen for Desk HTTP/3; h3.rs real PQ loopback test PASS (6 tests); desk-install.sh + desk-h3-enable.sh committed; WIRED: code YES, live NO until his curl --http3 proof
+
+- 21 Nov 2026 09:40 PKT: his ss paste 09:27: UDP 4400 chosen for Desk HTTP/3; h3.rs real PQ loopback test PASS (6 tests); desk-install.sh + desk-h3-enable.sh committed; WIRED: code YES, live NO until his curl --http3 proof
+
+- 21 Nov 2026 09:40 PKT: his ss paste 09:27: UDP 4400 chosen for Desk HTTP/3; h3.rs real PQ loopback test PASS (6 tests); desk-install.sh + desk-h3-enable.sh committed; WIRED: code YES, live NO until his curl --http3 proof

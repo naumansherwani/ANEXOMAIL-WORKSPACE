@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 09:25 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Desk folders: admin-desk/sql/AD1, sql/checks, web (plan only, no .sql until HTTP/3)
-NEXT STEP: his ss (UDP port) -> h3 live -> AD1.sql
-HIS LAST WORD: 09:25 AD1 folder
+# WORKING NOW (manual checkpoint, 21 Nov 2026 09:28 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Desk h3 real PQ loopback test passes; UDP 4400 chosen; desk-h3-enable.sh written
+NEXT STEP: he runs desk-install.sh then desk-h3-enable.sh; AAAA + HTTPS record (port=4400); curl --http3 proof; flip row; then AD1
+HIS LAST WORD: 09:27 ss paste, pull command
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -15,23 +15,37 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
-## FOUNDER + other processes in the same list (never touch)
+## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- b7eff221 21 Nov 09:25 ledger line c2abbfdf
 - c2abbfdf 21 Nov 09:25 desk: AD1 folder, sql/checks, web folder
 - a5f86a62 21 Nov 09:24 ledger line 8162c620
 - 8162c620 21 Nov 09:24 desk: h3 listener code, http1+http2 banned
 - e0f9bbef 21 Nov 09:24 ledger line a57137e3
-- a57137e3 21 Nov 09:24 desk: h3 listener code, http1+http2 banned
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/scripts/desk-install.sh
+ M admin-desk/server/src/h3.rs
+ M docs/claude/SERVER-PORTS-RED-LINE-08NOV.md
+ M docs/claude/state/PORTS-LIVE.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M docs/cursor-work/founder/founder-commands.md
+?? admin-desk/scripts/desk-h3-enable.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 22 ++--------------------
- 1 file changed, 2 insertions(+), 20 deletions(-)
+ admin-desk/scripts/desk-install.sh           |  2 +-
+ admin-desk/server/src/h3.rs                  | 36 ++++++++++++++++++++++++++++
+ docs/claude/SERVER-PORTS-RED-LINE-08NOV.md   |  2 ++
+ docs/claude/state/PORTS-LIVE.md              |  2 ++
+ docs/claude/state/WORKING-NOW.md             | 33 +++++++++++--------------
+ docs/claude/tech-contracts/CURRENT.md        |  2 ++
+ docs/cursor-work/founder/founder-commands.md |  2 ++
+ 8 files changed, 61 insertions(+), 20 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +56,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (7f56188ddfa0620d8446de4a6f03a66638ab2875)
+WIP snapshot: refs/wip/last (55d1f7421b11baeb1c2af8c229aa2e420fc55dc1)

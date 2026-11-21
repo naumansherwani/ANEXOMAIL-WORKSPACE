@@ -4744,3 +4744,9 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 09:35 PKT: HIS WORD: Desk folders made: admin-desk/sql/AD1 (plan only, AD1.sql blocked until HTTP/3), sql/checks, web; WIRED: folders YES, SQL NO
 
 - 21 Nov 2026 09:35 PKT: HIS WORD: Desk folders made: admin-desk/sql/AD1 (plan only, AD1.sql blocked until HTTP/3), sql/checks, web; WIRED: folders YES, SQL NO
+
+- 21 Nov 2026 09:40 PKT: his ss paste 09:27: UDP 4400 chosen for Desk HTTP/3; h3.rs real PQ loopback test PASS (6 tests); desk-install.sh + desk-h3-enable.sh committed; WIRED: code YES, live NO until his curl --http3 proof
+
+- 21 Nov 2026 09:40 PKT: his ss paste 09:27: UDP 4400 chosen for Desk HTTP/3; h3.rs real PQ loopback test PASS (6 tests); desk-install.sh + desk-h3-enable.sh committed; WIRED: code YES, live NO until his curl --http3 proof
+
+- 21 Nov 2026 09:40 PKT: his ss paste 09:27: UDP 4400 chosen for Desk HTTP/3; h3.rs real PQ loopback test PASS (6 tests); desk-install.sh + desk-h3-enable.sh committed; WIRED: code YES, live NO until his curl --http3 proof

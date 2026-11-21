@@ -153,4 +153,40 @@ mod tests {
         assert_eq!(format!("{:?}", p.cipher_suites[0].suite()), "TLS13_AES_256_GCM_SHA384");
         assert!(format!("{:?}", p.kx_groups[0].name()).contains("MLKEM"), "{:?}", p.kx_groups[0].name());
     }
+
+    /// A REAL loopback: a quinn client that offers ONLY X25519MLKEM768 + AES-256-GCM talks h3 to this listener; the answer must come from the router and the negotiated group must be the hybrid.
+    #[tokio::test]
+    async fn real_h3_request_over_pq_aes256() {
+        let d = std::env::temp_dir().join(format!("deskh3-{}", std::process::id())); let _ = std::fs::create_dir_all(&d);
+        let (k, c) = (d.join("k.pem"), d.join("c.pem"));
+        let ok = std::process::Command::new("openssl").args(["req","-x509","-newkey","ec","-pkeyopt","ec_paramgen_curve:prime256v1","-nodes","-days","1","-subj","/CN=admindesk.anexomail.com","-addext","subjectAltName=DNS:admindesk.anexomail.com","-addext","basicConstraints=critical,CA:FALSE","-keyout",k.to_str().unwrap(),"-out",c.to_str().unwrap()]).output().map(|o| o.status.success()).unwrap_or(false);
+        if !ok { eprintln!("no openssl: skipped"); return; }
+        let (cert, key) = (std::fs::read(&c).unwrap(), std::fs::read(&k).unwrap());
+        let ep = quinn::Endpoint::server(quic_config(server_config(&cert, &key).unwrap()).unwrap(), "127.0.0.1:0".parse().unwrap()).unwrap();
+        let addr = ep.local_addr().unwrap();
+        let router = axum::Router::new().route("/desk/v1/health", axum::routing::get(|| async { "desk-h3-ok" }));
+        tokio::spawn(serve(ep, router, "admindesk.anexomail.com".into()));
+        // client: AES-256 only, ML-KEM hybrid ONLY, trusts the test certificate
+        let mut p = rp::default_provider(); p.cipher_suites = vec![rp::cipher_suite::TLS13_AES_256_GCM_SHA384]; p.kx_groups = vec![rustls_post_quantum::X25519MLKEM768];
+        let mut roots = rustls::RootCertStore::empty();
+        for c in rustls_pemfile::certs(&mut &*cert) { roots.add(c.unwrap()).unwrap(); }
+        let mut cc = rustls::ClientConfig::builder_with_provider(Arc::new(p)).with_protocol_versions(&[&rustls::version::TLS13]).unwrap().with_root_certificates(roots).with_no_client_auth();
+        cc.alpn_protocols = vec![b"h3".to_vec()];
+        let initial = rp::cipher_suite::TLS13_AES_128_GCM_SHA256.tls13().and_then(|s| s.quic_suite()).unwrap();
+        let qc = quinn::ClientConfig::new(Arc::new(quinn::crypto::rustls::QuicClientConfig::with_initial(Arc::new(cc), initial).unwrap()));
+        let mut cep = quinn::Endpoint::client("127.0.0.1:0".parse().unwrap()).unwrap(); cep.set_default_client_config(qc);
+        let conn = cep.connect(addr, "admindesk.anexomail.com").unwrap().await.expect("PQ + AES-256 handshake");
+        let (mut driver, mut send) = h3::client::new(h3_quinn::Connection::new(conn)).await.unwrap();
+        tokio::spawn(async move { let _ = futures_poll(&mut driver).await; });
+        let req = Request::builder().uri("https://admindesk.anexomail.com/desk/v1/health").body(()).unwrap();
+        let mut st = send.send_request(req).await.unwrap(); st.finish().await.unwrap();
+        let resp = st.recv_response().await.unwrap();
+        assert_eq!(resp.status(), StatusCode::OK);
+        let mut got = Vec::new(); while let Some(mut b) = st.recv_data().await.unwrap() { let n = b.remaining(); got.extend_from_slice(&b.copy_to_bytes(n)); }
+        assert_eq!(got, b"desk-h3-ok");
+        // wrong host = 421
+        let mut st2 = send.send_request(Request::builder().uri("https://founderworkspace.anexomail.com/desk/v1/health").body(()).unwrap()).await.unwrap(); st2.finish().await.unwrap();
+        assert_eq!(st2.recv_response().await.unwrap().status(), StatusCode::MISDIRECTED_REQUEST);
+    }
+    async fn futures_poll<T: h3::quic::Connection<Bytes>>(d: &mut h3::client::Connection<T, Bytes>) { let _ = std::future::poll_fn(|cx| d.poll_close(cx)).await; }
 }

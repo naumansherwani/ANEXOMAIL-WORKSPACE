@@ -13,6 +13,8 @@ Full law + older history: docs/claude/SERVER-PORTS-RED-LINE-08NOV.md. QC1e D4A (
 
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; nothing listens on 4400 yet). His free-port check showed 4400, 4500, 7400, 8400 free. Never use 4400 for anything else.
 
+## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in env DESK_H3_ADDR=[::]:4400, ufw rule by admin-desk/scripts/desk-h3-enable.sh). Seen in that paste: udp 3478/5349 turnserver, 3501+3443 anexomail-rust, 9200/9300 axon_core, 18443 caddy, 443 anexomail-found (founder), 53 founder-dns/systemd-resolve, 323 chronyd, 68 systemd-network. ufw udp rules: 3478, 5349, 49152:65535, 9200 (88.198.208.90), 49152:49500, 9300, 443, 3501, 3443, 18443, 53 (founder-dns).
+
 ## FOUNDER + other processes in the same list (never touch)
 | Proto | Port | Process |
 |---|---|---|

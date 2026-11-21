@@ -4923,3 +4923,11 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 09:35 PKT: HIS WORD: Desk folders made: admin-desk/sql/AD1 (plan only, AD1.sql blocked until HTTP/3), sql/checks, web; WIRED: folders YES, SQL NO
 
 - 21 Nov 2026 09:35 PKT: HIS WORD: Desk folders made: admin-desk/sql/AD1 (plan only, AD1.sql blocked until HTTP/3), sql/checks, web; WIRED: folders YES, SQL NO
+
+- 21 Nov 2026 09:27 PKT HIS WORD: pasted full `ss -ulnp; ufw status | grep -i udp` + "pull command do, commit". Done: UDP 4400 chosen (free), desk-h3-enable.sh written, real PQ HTTP/3 loopback test passes (6 tests); pull commands given.
+
+- 21 Nov 2026 09:40 PKT: his ss paste 09:27: UDP 4400 chosen for Desk HTTP/3; h3.rs real PQ loopback test PASS (6 tests); desk-install.sh + desk-h3-enable.sh committed; WIRED: code YES, live NO until his curl --http3 proof
+
+- 21 Nov 2026 09:40 PKT: his ss paste 09:27: UDP 4400 chosen for Desk HTTP/3; h3.rs real PQ loopback test PASS (6 tests); desk-install.sh + desk-h3-enable.sh committed; WIRED: code YES, live NO until his curl --http3 proof
+
+- 21 Nov 2026 09:40 PKT: his ss paste 09:27: UDP 4400 chosen for Desk HTTP/3; h3.rs real PQ loopback test PASS (6 tests); desk-install.sh + desk-h3-enable.sh committed; WIRED: code YES, live NO until his curl --http3 proof
