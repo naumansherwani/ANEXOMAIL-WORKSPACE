@@ -25,6 +25,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 8ac80b88 21 Nov 10:32 Desk: compact-save context file
 - 3b8f4a00 21 Nov 10:32 Desk: compact-save context file
 - 7da33aa0 21 Nov 10:31 Desk AD1: AD1.sql for his SQL editor, ad-check.sh + ad-db-env.sh for the server check
 - 0d572362 21 Nov 10:31 Desk AD1: AD1.sql for his SQL editor, ad-check.sh + ad-db-env.sh for the server check
@@ -32,7 +33,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 9efe08f3 21 Nov 10:27 checkpoint 10:48
 - bf9114ac 21 Nov 10:27 desk: AD1-editor.sql for the SQL editor
 - 41acdd31 21 Nov 10:26 desk: AD1-editor.sql for the SQL editor
-- c7681864 21 Nov 10:26 checkpoint 10:38
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
