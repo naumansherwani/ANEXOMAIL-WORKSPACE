@@ -117,7 +117,7 @@
     "argon2id",
     "constant"
    ],
-   "status": "planned",
+   "status": "code",
    "fail_after": "2026-11-22",
    "deadline": "22 Nov"
   },

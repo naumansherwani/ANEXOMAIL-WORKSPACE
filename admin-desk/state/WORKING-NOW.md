@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 21 Nov 2026 10:44 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:44 PKT) - read this FIRST for the Desk after a compaction
 DOING: auth.rs + owner/real-account scripts pushed
 NEXT STEP: his desk-install + desk-owner run, then login door + AD1b
 HIS LAST WORD: real account method, gold codes
@@ -33,6 +33,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 51542813 21 Nov 10:44 Desk: auth.rs ARGON2ID, owner and real account scripts
 - 70629973 21 Nov 10:36 checkpoint
 - d4bca7c6 21 Nov 10:36 checkpoint
 - 79a3aef8 21 Nov 10:36 Desk: ad-auto.sh auto SQL runner
@@ -40,27 +41,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - c6a250e5 21 Nov 10:35 Desk: ad-auto.sh auto SQL runner
 - a864ba3e 21 Nov 10:35 Desk: ad-auto.sh auto SQL runner
 - 9c049bf0 21 Nov 10:34 checkpoint
-- 02d8fcdd 21 Nov 10:34 checkpoint
 
 ## Uncommitted Desk files
- M admin-desk/scripts/desk-install.sh
- M admin-desk/server/Cargo.lock
- M admin-desk/server/Cargo.toml
- M admin-desk/server/src/main.rs
-M  admin-desk/state/WORKING-NOW.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/scripts/desk-install.sh
- M docs/claude/admin-desk/server/Cargo.lock
- M docs/claude/admin-desk/server/Cargo.toml
- M docs/claude/admin-desk/server/src/main.rs
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
- M docs/claude/admin-desk/state/PHASES.md
-MM docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/server/src/auth.rs
-?? docs/claude/admin-desk/codes/
-?? docs/claude/admin-desk/scripts/desk-business-account.sh
-?? docs/claude/admin-desk/scripts/desk-owner.sh
-?? docs/claude/admin-desk/server/src/auth.rs
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-argon2 now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
