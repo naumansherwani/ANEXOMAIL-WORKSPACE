@@ -23,6 +23,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- b5f6863a 21 Nov 10:08 desk: working-now + phases inside desk folder, own database anexo_desk
 - 7942ff0f 21 Nov 10:08 desk: working-now + phases inside desk folder, own database anexo_desk
 - a766b69f 21 Nov 10:01 desk: ad-sql-run psql socket fix
 - 81b51095 21 Nov 10:00 desk: folder in docs/claude/admin-desk + root copy, DESK COPY gate
@@ -30,9 +31,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - cb0d3c35 21 Nov 09:56 desk: HTTP/3 proven, gate row code, pill, back to phase order
 - 86a82d75 21 Nov 09:53 desk: quic udp tech list, gate rows, bbr
 - c3e5e361 21 Nov 09:52 desk: h3-check diagnosis section
-- b67b963a 21 Nov 09:48 desk: h3check proof client + read-only check script
 
 ## Uncommitted Desk files
+ M admin-desk/state/WORKING-NOW.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)

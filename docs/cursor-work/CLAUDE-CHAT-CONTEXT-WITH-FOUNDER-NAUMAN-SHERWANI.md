@@ -4792,3 +4792,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 10:20 PKT: his word 10:04: Desk WORKING-NOW.md + PHASES.md inside docs/claude/admin-desk/state (2-minute loop restarted, root copy synced); Desk gets its OWN database anexo_desk, runner tested end to end locally; WIRED: code YES, AD1 not yet run on his server
 
 - 21 Nov 2026 10:20 PKT: his word 10:04: Desk WORKING-NOW.md + PHASES.md inside docs/claude/admin-desk/state (2-minute loop restarted, root copy synced); Desk gets its OWN database anexo_desk, runner tested end to end locally; WIRED: code YES, AD1 not yet run on his server
+
+- 21 Nov 2026 10:22 PKT: checkpoint (loop refresh of WORKING-NOW and Desk WORKING-NOW); AD1 not yet run on his server (WIRED: NO)
