@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 04:27 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 04:27 PKT) - read this FIRST for the Desk after a compaction
 DOING: blueprint order sent
 NEXT STEP: S0 h3 via DNS HTTPS record check
 HIS LAST WORD: his 04:27
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 71b6f3d8 22 Nov 04:27 blueprint order
 - 47c61b34 22 Nov 04:26 ledger line 4e4e34de
 - 4e4e34de 22 Nov 04:26 Bridge all today
 - 2350d1a2 22 Nov 04:15 ledger line b10048e0
@@ -54,10 +55,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 82e6fcdf 22 Nov 04:07 ledger line 6c70bec8
 - 6c70bec8 22 Nov 04:07 AD3 patch check
 - a3fcd1e3 22 Nov 04:00 ledger line a481f016
-- a481f016 22 Nov 04:00 Bridge probes
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
