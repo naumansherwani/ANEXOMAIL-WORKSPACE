@@ -4885,3 +4885,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 09:10 PKT: his live photo: landing was plain + ANEXOMAIL twice; landing rebuilt in the cinematic scene (one logo, gradient headline, motto pill, HoverA button), kernel label only when verified; sandbox 390/820/1280 ok; needs his re-install (WIRED: login door NO)
 
 - 21 Nov 2026 09:10 PKT: his live photo: landing was plain + ANEXOMAIL twice; landing rebuilt in the cinematic scene (one logo, gradient headline, motto pill, HoverA button), kernel label only when verified; sandbox 390/820/1280 ok; needs his re-install (WIRED: login door NO)
+
+- 21 Nov 2026 09:02 PKT HIS WORD + PASTE: his re-install ran OK (build ok, health 200, wrong host 404, listener 127.0.0.1:4400 pid 168978, public curl "HTTP/2 200"); "yeh mix nahi ho jaye awam ke saath, is ka plan bana lete hain, pehle Business Premium aur Business MAX, is pe sirf founder wali advance technology aur ..." (his sentence stops at "aur"). Plan written: admin-desk/docs/PLAN-PREMIUM-MAX-21NOV.md.
+
+- 21 Nov 2026 09:12 PKT: his re-install OK (public HTTP/2 200); plan R3p written for Business Premium + Max (founder technology only, no mix with awam; Polar webhook is the only plan channel); gate rows added; nothing coded (WIRED: NO)

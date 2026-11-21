@@ -146,6 +146,48 @@
    "status": "planned",
    "fail_after": "2026-11-23",
    "deadline": "23 Nov"
+  },
+  {
+   "id": "R3p1-plans",
+   "phase": "R3p1",
+   "feature": "Plans as data (Premium, Max first)",
+   "file": "admin-desk/sql/AD2.sql",
+   "tech": "PostgreSQL RLS, hash-chained ledger",
+   "must": [
+    "fadm_plans",
+    "row level security"
+   ],
+   "status": "planned",
+   "fail_after": "2026-11-24",
+   "deadline": "24 Nov"
+  },
+  {
+   "id": "R3p2-webhook",
+   "phase": "R3p2",
+   "feature": "Polar signed webhook door",
+   "file": "admin-desk/server/src/polar.rs",
+   "tech": "Rust Tokio axum, HMAC-SHA256 constant-time",
+   "must": [
+    "hmac",
+    "constant"
+   ],
+   "status": "planned",
+   "fail_after": "2026-11-24",
+   "deadline": "24 Nov"
+  },
+  {
+   "id": "R3p4-sla",
+   "phase": "R3p4",
+   "feature": "SLA clock per plan",
+   "file": "admin-desk/server/src/sla.rs",
+   "tech": "Rust Tokio timers",
+   "must": [
+    "tokio",
+    "business"
+   ],
+   "status": "planned",
+   "fail_after": "2026-11-24",
+   "deadline": "24 Nov"
   }
  ]
 }

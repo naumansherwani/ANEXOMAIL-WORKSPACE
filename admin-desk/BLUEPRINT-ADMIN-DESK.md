@@ -35,5 +35,7 @@ RULE (his word): in every phase, next to each FEATURE the CODE file and the ADVA
 
 ## ONE ENGINE FOR ALL PLANS (his 21 Nov 08:53 question, answer YES): the awam plans Basic, Pro, Business, Business Pro, Business Premium, Business Max are DATA in the Desk (table fadm_plans in AD1: plan name, support lane, first-response hours, priority weight), not six builds. A company's plan reaches the Desk only through its own channel (Polar signed webhook / the Desk's own record), never by reading awam tables (isolation). The inbox, SLA clock and labels read the plan row. Open: which awam packages are live (his D answer) and the Business Max / Premium support terms.
 
+## PLAN R3p (his 21 Nov 09:02): Premium + Max lanes first, founder technology only, no mix with awam: full plan with feature/code/technology/haan table = admin-desk/docs/PLAN-PREMIUM-MAX-21NOV.md (R3p0 terms from him, R3p1 AD2 SQL, R3p2 Polar webhook door, R3p3 lanes UI, R3p4 SLA clock, R3p5 named contact + quarterly review, R3p6 other four plans as rows).
+
 ## PHASES AFTER R3a (each gets its own feature table when it starts; plan times in the 3-day plan)
 R3b inboxes (Sun 06:00) / R3c auto mail RFC 3834 + Polar signed webhook (12:00) / R3d dashboard + mail UI (17:00) / R3e reply without passkey (Mon 06:00) / R3f SLA engine (09:00) / R3g verify + final (14:00-21:00) / R4 Managed Move-In + Priority Support (from Tue 24 Nov) / R5 LEO / R6.

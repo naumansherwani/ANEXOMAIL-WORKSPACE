@@ -2312,3 +2312,5 @@ Own crate server/desk, own binary anexomail-desk, loopback 127.0.0.1:4400, own u
 - 21 Nov 2026 09:10 PKT: his live photo: landing was plain + ANEXOMAIL twice; landing rebuilt in the cinematic scene (one logo, gradient headline, motto pill, HoverA button), kernel label only when verified; sandbox 390/820/1280 ok; needs his re-install (WIRED: login door NO)
 
 - 21 Nov 2026 09:10 PKT: his live photo: landing was plain + ANEXOMAIL twice; landing rebuilt in the cinematic scene (one logo, gradient headline, motto pill, HoverA button), kernel label only when verified; sandbox 390/820/1280 ok; needs his re-install (WIRED: login door NO)
+
+- 21 Nov 2026 09:12 PKT: his re-install OK (public HTTP/2 200); plan R3p written for Business Premium + Max (founder technology only, no mix with awam; Polar webhook is the only plan channel); gate rows added; nothing coded (WIRED: NO)
