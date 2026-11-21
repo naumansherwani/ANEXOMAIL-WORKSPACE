@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 00:10 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 00:10 PKT) - read this FIRST for the Desk after a compaction
 DOING: OUTAGE: anexomail.com + admindesk have no A and no AAAA (his 00:08 paste); he fixes Namecheap rows
 NEXT STEP: his authoritative dig paste; four rows; desk-restart facts
 HIS LAST WORD: 00:10 page nahi khulta
@@ -41,6 +41,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 5e7c00ba 22 Nov 00:10 Record DNS outage
 - 911da8ef 22 Nov 00:00 ledger line 54e41a8f
 - 54e41a8f 22 Nov 00:00 Record DNS proof
 - a99ab122 21 Nov 23:56 ledger line 2e237693
@@ -48,10 +49,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - e6a37e02 21 Nov 23:54 ledger line 4abf202d
 - 4abf202d 21 Nov 23:54 Record missing A rows
 - 79b4b0e2 21 Nov 23:50 ledger line e18f1119
-- e18f1119 21 Nov 23:50 Record DNS AAAA saved
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
