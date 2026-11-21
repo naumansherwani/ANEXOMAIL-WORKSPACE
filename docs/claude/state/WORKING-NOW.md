@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:52 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:53 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: auth.rs + owner/real-account scripts pushed
 NEXT STEP: his desk-install + desk-owner run, then login door + AD1b
 HIS LAST WORD: real account method, gold codes
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 1b2168d9 21 Nov 10:53 Desk: aliases not customer accounts; alias look script
+- e87c6f8f 21 Nov 10:52 ledger line a40b609b
 - a40b609b 21 Nov 10:52 checkpoint
 - bcf301a7 21 Nov 10:52 ledger line 381551d2
 - 381551d2 21 Nov 10:52 checkpoint
-- 54bc33a9 21 Nov 10:52 ledger line 948739a2
-- 948739a2 21 Nov 10:52 Desk: scripts prompt via /dev/tty
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (62af053d7234480077e1fe5bff22662ce9099771)
+WIP snapshot: refs/wip/last (8f5239ae54ca9b0180e6e37aaba5ba9e6fd2ec80)
