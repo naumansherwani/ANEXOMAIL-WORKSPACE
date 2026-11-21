@@ -5437,3 +5437,7 @@ Features ki list (QC4 mein kya banega):
 - 22 Nov 2026 01:59 PKT: sandbox live test (real binary + real Postgres + Chrome) passed, dashboard time + spacing fixed, WIRED: NO until his install + my Chrome look
 
 - 22 Nov 2026 01:59 PKT: sandbox live test (real binary + real Postgres + Chrome) passed, dashboard time + spacing fixed, WIRED: NO until his install + my Chrome look
+
+## 22 Nov 2026 02:18 PKT (his 02:17): "kitni dair hain gandu jaldi kero complete" + 02:09 "sql advance codes 500+ lines". AD2.sql (730 lines) + checks/AD2-check.sql written and sandbox-tested (Postgres 16, run twice, selftest ALL RULES PASSED, 20 check rows true). Not yet run on his server.
+
+- AD2 SQL (org, Zanzibar relations, policy engine, device-bound passkeys, onboarding, mover/leaver, recovery, JIT, burst breaker) + AD2-check: sandbox PASS x2, WIRED: NO (not run on his server)

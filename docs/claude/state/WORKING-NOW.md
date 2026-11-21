@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 01:59 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Sandbox live test passed, 2 UI fixes; pull = desk-install
-NEXT STEP: his desk-install rerun paste, my Chrome look on his URL, R4-1
-HIS LAST WORD: his 01:57: live sandbox test
+# WORKING NOW (manual checkpoint, 22 Nov 2026 02:18 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: AD2 SQL written + sandbox-tested, committing
+NEXT STEP: his ad-auto run, then R4-1
+HIS LAST WORD: kitni dair hain, jaldi complete
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,26 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 882c6f95 22 Nov 01:59 ledger line e869ef67
 - e869ef67 22 Nov 01:59 Desk: sandbox live test, dashboard fixes
 - 0e011cb2 22 Nov 01:55 ledger line e94b2518
 - e94b2518 22 Nov 01:55 Desk: installer check fix for Rule 52 layer, R-CRM phase
 - 1bf4195c 22 Nov 01:47 ledger line 21dbdaea
-- 21dbdaea 22 Nov 01:47 Desk status record + timestamp correction
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/admin-desk/sql/checks/AD1-check.sql
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/founder/founder-commands.md
+?? docs/claude/admin-desk/sql/AD2.sql
+?? docs/claude/admin-desk/sql/checks/AD2-check.sql
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 42 ++--------------------------------------
- 1 file changed, 2 insertions(+), 40 deletions(-)
+ docs/claude/admin-desk/sql/checks/AD1-check.sql |  2 +-
+ docs/claude/state/WORKING-NOW.md                | 27 +++++++++----------------
+ docs/cursor-work/founder/founder-commands.md    |  2 ++
+ 3 files changed, 12 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +48,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (b1d91fb5bf149efd4ab972b49d4f023b9977d06b)
+WIP snapshot: refs/wip/last (705a4095cbc9a226a93977ee78c70472679a819a)
