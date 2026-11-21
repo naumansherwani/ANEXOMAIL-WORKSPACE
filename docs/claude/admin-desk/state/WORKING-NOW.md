@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 21:21 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 21:22 PKT) - read this FIRST for the Desk after a compaction
 DOING: login demo published; installer fixed
 NEXT STEP: his desk-install + desk-appdb, his demo pick
 HIS LAST WORD: login simple passkey, no ball, philosophy
@@ -39,14 +39,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e41e4f6f 21 Nov 21:22 Desk login: restored, only ball removed and passkey moved down
+- 6f373d34 21 Nov 21:21 ledger line eb8dcef6
 - eb8dcef6 21 Nov 21:21 CLEAN-PUSH LAW + records
 - f411782e 21 Nov 21:16 ledger line 672ba916
 - 672ba916 21 Nov 21:16 repo: post-commit hook adds Desk WORKING-NOW
 - 6ec8d1bb 21 Nov 21:16 repo: WORKING-NOW root copy untracked
 - 4be7ccb3 21 Nov 21:16 repo: WORKING-NOW root copy untracked
 - 29c9d103 21 Nov 21:15 repo: WORKING-NOW root copy untracked
-- a58324a9 21 Nov 21:14 checkpoint
-- e74f2d71 21 Nov 21:14 checkpoint
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
