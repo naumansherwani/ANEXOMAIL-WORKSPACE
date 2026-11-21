@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 21:42 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 21:43 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: login demo published; installer fixed
 NEXT STEP: his desk-install + desk-appdb, his demo pick
 HIS LAST WORD: login simple passkey, no ball, philosophy
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- c88cb88c 21 Nov 21:43 Desk: restart command, three-command law
+- 016bb463 21 Nov 21:42 ledger line e3b1e4f5
 - e3b1e4f5 21 Nov 21:42 Desk: one install command does everything (DB login + CA)
 - 70774099 21 Nov 21:40 ledger line 8747699c
 - 8747699c 21 Nov 21:40 Desk login: motto removed from the login page only
-- a69e4362 21 Nov 21:39 ledger line c29f4204
-- c29f4204 21 Nov 21:39 Desk login: logo link, vault line, fit; DB CA pin; CLEAN-PUSH LAW
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (bb335b60fbb74a11fc4d7cdf99561681050e322c)
+WIP snapshot: refs/wip/last (ea592207a06300707d6ff30e1ee70456e86b6831)
