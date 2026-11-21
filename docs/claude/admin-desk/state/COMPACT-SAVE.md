@@ -13,3 +13,5 @@
 9. (21 Nov 2026 20:47 PKT) LESSON: edit ONLY docs/claude/admin-desk/ (canonical); desk-copy-sync overwrites root admin-desk/. Rule 52 NOT on Desk API yet (login = plain fetch); Desk imports shared signin/* and kernel: fix in R4-1 (own copies, own kernel RPC audience desk).
 
 10. (21 Nov 2026 21:05 PKT) AD1b DONE on his server. desk-install loophole fixed. His order now: desk-install.sh, then desk-appdb.sh, then sign in. Then login page DEMO (no orb, simple passkey button like founder/awam, ANEXOMAIL philosophy).
+
+11. (21 Nov 2026 21:07 PKT) Login DEMO artifact published (no orb, philosophy on top, founder passkey button). Waits his haan before changing DeskSignIn.tsx.
