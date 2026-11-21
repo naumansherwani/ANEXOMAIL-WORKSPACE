@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 08:21 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 08:29 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: R3a0 CODE written: server/desk crate (anexomail-desk, 4400), desk-install.sh, dist-desk; sandbox proof ok; waits his ONE install line
 NEXT STEP: his desk-install paste, then my Chrome look, then AAAA record, then R3a1 login design/code, R3a2 SQL E201
 HIS LAST WORD: 08:10 shuru kero codes likhna
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## FOUNDER + other processes in the same list (never touch)
 
 ## Last 5 commits
+- 173ffed6 21 Nov 08:29 desk R3a1: login design demo
 - 83da13e8 21 Nov 08:20 ledger line e36741ce
 - e36741ce 21 Nov 08:20 admin-desk folder, installer, AD sql series, desk tech gate
 - 8116fd0f 21 Nov 08:20 ledger line 1ad1f453
 - 1ad1f453 21 Nov 08:20 admin-desk folder, installer, AD sql series, desk tech gate
-- 849ba496 21 Nov 08:12 ledger line 76859711
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (e26c0814dc68692a3223124db98aeb600949a0d5)
+WIP snapshot: refs/wip/last (6abe028a6c155f71c1cb0b74e17afe027cac8937)
