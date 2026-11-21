@@ -13,7 +13,15 @@ import { DeskTelemetry } from "./DeskTelemetry";
 const card: React.CSSProperties = { width: "100%", maxWidth: 456, boxSizing: "border-box", padding: "clamp(24px,4vh,44px) clamp(20px,5vw,40px) clamp(18px,3vh,28px)", position: "relative", borderRadius: 28, background: "linear-gradient(160deg,rgba(18,28,52,.62),rgba(6,11,25,.78))", backdropFilter: "blur(26px) saturate(140%)", border: "1px solid rgba(160,200,255,.34)", boxShadow: "0 0 0 1px rgba(255,255,255,.04) inset,0 1px 0 rgba(255,255,255,.18) inset,0 40px 90px rgba(0,0,0,.6),0 0 60px rgba(15,52,96,.55)", display: "flex", flexDirection: "column", alignItems: "center", gap: "clamp(10px,1.8vh,16px)" };
 const field: React.CSSProperties = { minHeight: 44, boxSizing: "border-box", padding: "0 14px", borderRadius: 12, border: "1px solid rgba(160,200,255,.3)", background: "rgba(4,9,22,.7)", color: "#E8EEF9", fontSize: 16, width: "100%" };
 
+const SAVE_PW_KEY = "anexo.desk.savepw"; // the Desk's own key (never the founder's or awam's): ON by default, remembered per browser
+function readSavePw(): boolean { try { return window.localStorage.getItem(SAVE_PW_KEY) !== "0"; } catch { return true; } }
+function writeSavePw(on: boolean) { try { window.localStorage.setItem(SAVE_PW_KEY, on ? "1" : "0"); } catch { /* storage blocked: the choice just is not remembered */ } }
+function EyeIcon({ off }: { off: boolean }) {
+  return (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" /><circle cx="12" cy="12" r="3" />{off && <path d="M4 4l16 16" />}</svg>);
+}
+
 export function DeskSignIn() {
+  const [show, setShow] = useState(false), [savePw, setSavePw] = useState(readSavePw);
   const [email, setEmail] = useState(""), [password, setPassword] = useState(""), [busy, setBusy] = useState(false), [msg, setMsg] = useState(""), [hw, setHw] = useState<"checking" | "ready" | "none">("checking");
   useEffect(() => {
     // Honest hardware check: only what this browser really reports.
@@ -29,7 +37,7 @@ export function DeskSignIn() {
     setBusy(true); setMsg("");
     try {
       const r = await postJson(realDeps(), DESK_LOGIN_PATH, { email: cleanEmail(addr), password }), j = (r.json && typeof r.json === "object" ? r.json : null) as { token?: string } | null;
-      if (r.status === 200 && typeof j?.token === "string") { try { window.localStorage.setItem(DESK_SESSION_KEY, j.token); } catch { setMsg("This browser blocks storage, so the sign-in cannot be kept."); setBusy(false); return; } window.location.assign("/dashboard"); return; }
+      if (r.status === 200 && typeof j?.token === "string") { try { window.localStorage.setItem(DESK_SESSION_KEY, j.token); } catch { setMsg("This browser blocks storage, so the sign-in cannot be kept."); setBusy(false); return; } if (savePw) { try { const PC = (window as unknown as { PasswordCredential?: new (d: { id: string; password: string; name?: string }) => Credential }).PasswordCredential; if (PC) await navigator.credentials.store(new PC({ id: cleanEmail(addr), password, name: cleanEmail(addr) })); } catch { /* the browser declined: nothing to do */ } } window.location.assign("/dashboard"); return; }
       setMsg(deskLoginMessage(r.status));
     } catch { setMsg(deskLoginMessage(0)); }
     setBusy(false); setPassword("");
@@ -56,7 +64,14 @@ export function DeskSignIn() {
                 {!email.includes("@") && <span aria-hidden="true" style={{ display: "flex", alignItems: "center", padding: "0 14px", borderLeft: "1px solid rgba(160,200,255,.3)", background: "rgba(160,200,255,.10)", color: "#C9D8F2", fontSize: 15, whiteSpace: "nowrap", userSelect: "none" }}>@anexomail.com</span>}
               </div>
               <label htmlFor="deskpw" style={{ fontSize: 12, letterSpacing: ".06em", color: "#9FB2D4" }}>Password</label>
-              <input id="deskpw" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} style={field} />
+              <div style={{ ...field, display: "flex", padding: 0, overflow: "hidden" }}>
+                <input id="deskpw" name="password" type={show ? "text" : "password"} autoComplete={savePw ? "current-password" : "off"} value={password} onChange={(e) => setPassword(e.target.value)} style={{ flex: 1, minWidth: 0, border: 0, outline: "none", background: "transparent", color: "#E8EEF9", fontSize: 16, padding: "0 14px" }} />
+                <button type="button" onClick={() => setShow((v) => !v)} aria-label={show ? "Hide password" : "Show password"} aria-pressed={show} style={{ width: 48, minHeight: 44, border: 0, background: "transparent", color: "#C9D8F2", cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center" }}><EyeIcon off={show} /></button>
+              </div>
+              <label htmlFor="deskpwsave" style={{ minHeight: 44, boxSizing: "border-box", display: "flex", alignItems: "center", gap: 10, padding: "0 14px", borderRadius: 12, border: "1px solid rgba(160,200,255,.22)", background: "rgba(4,9,22,.45)", color: "#E8EEF9", fontSize: 14, cursor: "pointer" }}>
+                <input id="deskpwsave" type="checkbox" checked={savePw} onChange={(e) => { setSavePw(e.target.checked); writeSavePw(e.target.checked); }} style={{ width: 18, height: 18, accentColor: "#3B8EDB", cursor: "pointer" }} />
+                Save password
+              </label>
               {msg && <p role="alert" style={{ margin: 0, fontSize: 13, color: "#F2C58A" }}>{msg}</p>}
               <button type="submit" className="ax-a-hover" disabled={busy} style={{ minHeight: 44, border: "1px solid rgba(160,200,255,.4)", borderRadius: 12, background: "transparent", color: "#E8EEF9", fontSize: 15, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}><HoverA busy={busy} />Sign in</button>
             </form>

@@ -2045,3 +2045,7 @@
 - 22 Nov 2026 00:52 PKT his haan for Alt-Svc :4400; read-only Caddy block paste needed first; WIRED: NO
 
 - 22 Nov 2026 00:58 PKT desk-install step 6/6 Alt-Svc h3 :4400 written (backup, validate, rollback); not run on his server; WIRED: NO
+
+- 22 Nov 2026 01:06 PKT Desk login: eye + Save password added (own key anexo.desk.savepw); Alt-Svc h3 :4400 live on his server; WIRED: NO
+
+- 22 Nov 2026 01:06 PKT Desk login: eye + Save password added (own key anexo.desk.savepw); Alt-Svc h3 :4400 live on his server; WIRED: NO

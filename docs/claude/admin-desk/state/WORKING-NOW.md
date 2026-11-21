@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 00:47 PKT) - read this FIRST for the Desk after a compaction
-DOING: Alt-Svc step 6/6 written in desk-install.sh, waits his install
-NEXT STEP: his desk-install; my Chrome h3 proof; row 3 Rule 52 Desk RPC
-HIS LAST WORD: 00:47 Caddy paste + context update
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 00:54 PKT) - read this FIRST for the Desk after a compaction
+DOING: Desk login: eye + Save password added (backup branch first), Alt-Svc live
+NEXT STEP: his desk-install for the UI; my Chrome h3 proof + UI look; row 3 Rule 52
+HIS LAST WORD: 00:53 eye + save password
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
 
@@ -42,6 +42,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- b60740f6 22 Nov 00:47 ledger line c8816dfe
 - c8816dfe 22 Nov 00:47 Desk Alt-Svc step in desk-install
 - 3863527b 22 Nov 00:43 ledger line c8c79153
 - c8c79153 22 Nov 00:43 Record Alt-Svc haan
@@ -49,10 +50,12 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - d865e186 22 Nov 00:42 Desk remaining list
 - c4a06271 22 Nov 00:38 ledger line f7e19236
 - f7e19236 22 Nov 00:38 Record his order
-- 60f64525 22 Nov 00:30 ledger line 248ee0e0
 
 ## Uncommitted Desk files
+ M admin-desk/state/COMPACT-SAVE.md
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+ M founder-web/src/desk/DeskSignIn.tsx
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

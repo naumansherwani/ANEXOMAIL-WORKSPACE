@@ -5371,3 +5371,9 @@ Features ki list (QC4 mein kya banega):
 [22 Nov 2026 00:58 PKT] HIS PASTE (00:47): Caddy admindesk block = 3 lines (encode, reverse_proxy 127.0.0.1:4400); ufw 4400/udp allowed v4+v6; public alt-svc h3=":18443" (Caddy). DONE: desk-install.sh step 6/6 (backup to /root/caddy-backups, one header line Alt-Svc h3=":4400" ma=86400, caddy validate, reload, check, rollback). Tested the awk edit on a copy of the block locally. His install command is the same one-line desk-install. Not yet run on his server. And: "claude ke liye context update kero time and date ke saath ledger working now".
 
 - 22 Nov 2026 00:58 PKT desk-install step 6/6 Alt-Svc h3 :4400 written (backup, validate, rollback); not run on his server; WIRED: NO
+
+[22 Nov 2026 01:06 PKT] HIS PASTE (00:53): desk-install 6/6 ran on his server: backup /root/caddy-backups/Caddyfile.admindesk-altsvc.20261121-195010, public alt-svc NOW = h3=":4400"; ma=86400, OK; database login live. HIS WORD (images): "image 1 mein hai Save password option aur eye wala, add kero" to the Desk sign-in (image 2). Plus the standing compaction-save orders (WORKING-NOW + ledger + blueprint every message, 2-minute loop, rules read, Rule 52, advance technology per phase).
+
+- 22 Nov 2026 01:06 PKT Desk login: eye + Save password added (own key anexo.desk.savepw); Alt-Svc h3 :4400 live on his server; WIRED: NO
+
+- 22 Nov 2026 01:06 PKT Desk login: eye + Save password added (own key anexo.desk.savepw); Alt-Svc h3 :4400 live on his server; WIRED: NO
