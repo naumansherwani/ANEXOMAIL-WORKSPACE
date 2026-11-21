@@ -5271,3 +5271,7 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 22:41 PKT] HIS WORD (22:41): existing admin desk ka sab kuch same rahega, sirf sign in wala awam wala sign in color wala hoga. CONFIRMED: only the home Sign in button colours changed.
 
 - 21 Nov 2026 22:41 PKT his word: only the Sign in colour changes on the Desk; WIRED: NO
+
+[21 Nov 2026 22:50 PKT] HIS WORD (22:49, 3 images): image 1 ki tarah admin desk pe @anexomail.com nahi aata; image 2 mein scroll bar jahan rakha wahan bottom light nazar aati hai, zara upar neeche ho to chhup jaati hai, exactly yeh karo; mobile ke liye image 3. DONE (backup branch backup/desk-ui-20261121-2250): email = yourname + @anexomail.com suffix like awam (hidden once he types @); the warm light is FIXED near the bottom of the screen (never hidden by scrolling); laptop 1366x768 no scroll.
+
+- 21 Nov 2026 22:50 PKT Desk login: @anexomail.com suffix like awam, light fixed at the screen bottom; WIRED: NO until his install

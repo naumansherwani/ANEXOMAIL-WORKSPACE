@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 22:41 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: CA credential fix, pill, light
-NEXT STEP: his desk-install, sign in; flash demo
-HIS LAST WORD: light under card, pill both pages
+# WORKING NOW (manual checkpoint, 21 Nov 2026 22:50 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: email suffix + fixed light
+NEXT STEP: his install, sign in
+HIS LAST WORD: @anexomail.com like awam; light always visible
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,35 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 10f9dc43 21 Nov 22:41 ledger line fc3ae069
 - fc3ae069 21 Nov 22:41 records: Desk only Sign in colour
 - 5a2e589d 21 Nov 22:40 ledger line dad14a1b
 - dad14a1b 21 Nov 22:40 Desk home Sign in: awam button colours
 - cd8b2fcd 21 Nov 22:36 ledger line 77f84998
-- 77f84998 21 Nov 22:36 Desk: backup branch note
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/founder/founder-commands.md
+ D founder-web/dist-desk/00-FOUNDER-TECH-RULE.md
+ D founder-web/dist-desk/assets/00-FOUNDER-TECH-RULE.md
+ D founder-web/dist-desk/assets/desk-Cn_ozEOm.js
+ M founder-web/dist-desk/desk.html
+ D founder-web/dist-desk/kernel/00-FOUNDER-TECH-RULE.md
+ M founder-web/src/desk/DeskSignIn.tsx
+?? founder-web/dist-desk/assets/desk-D25NB4T4.js
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ docs/cursor-work/founder/founder-commands.md       |  2 ++
+ founder-web/dist-desk/00-FOUNDER-TECH-RULE.md      |  5 ----
+ .../dist-desk/assets/00-FOUNDER-TECH-RULE.md       |  5 ----
+ founder-web/dist-desk/assets/desk-Cn_ozEOm.js      |  9 ------
+ founder-web/dist-desk/desk.html                    |  2 +-
+ .../dist-desk/kernel/00-FOUNDER-TECH-RULE.md       |  5 ----
+ founder-web/src/desk/DeskSignIn.tsx                | 11 +++++---
+ 9 files changed, 26 insertions(+), 47 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +57,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (d031763cc4d198d5eeb69b19e44fd1a1440e22a1)
+WIP snapshot: refs/wip/last (4d0d855985a8416029f03919c82514d526d92871)

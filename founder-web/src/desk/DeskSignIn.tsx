@@ -40,7 +40,7 @@ export function DeskSignIn() {
         <style>{".dk-logo-wide{position:absolute;top:22px;left:24px;z-index:5;display:inline-flex}.dk-logo-card{display:none}@media (max-width:899px){.dk-logo-wide{display:none}.dk-logo-card{display:inline-flex}}"}</style>
         <a href="/" aria-label="ANEXOMAIL Admin Desk home" className="dk-logo-wide" style={{ minHeight: 44, alignItems: "center", color: "inherit", textDecoration: "none" }}><BrandMark home={false} /></a>
         <DeskTelemetry />
-        <div style={{ width: "100%", maxWidth: 456, display: "flex", flexDirection: "column", alignItems: "center", marginTop: -14 }}>
+        <div style={{ width: "100%", maxWidth: 456, display: "flex", flexDirection: "column", alignItems: "center", marginTop: -14, marginBottom: -24 }}>
         <section style={card} aria-label="Admin Desk sign-in">
           <div aria-hidden="true" style={{ position: "absolute", top: -60, left: "50%", width: 260, height: 160, transform: "translateX(-50%)", borderRadius: "50%", background: "radial-gradient(closest-side,rgba(95,168,255,.42),rgba(27,79,156,.22) 55%,rgba(10,26,62,0) 100%)", filter: "blur(6px)", pointerEvents: "none" }} />
           <a href="/" aria-label="ANEXOMAIL Admin Desk home" className="dk-logo-card" style={{ minHeight: 44, alignItems: "center", color: "inherit", textDecoration: "none", position: "relative", zIndex: 1 }}><BrandMark home={false} /></a>
@@ -50,7 +50,10 @@ export function DeskSignIn() {
           <div style={{ width: "100%", borderTop: "1px solid rgba(160,200,255,.14)", paddingTop: 12 }}>
             <form onSubmit={submit} noValidate name="desklogin" method="post" autoComplete="on" style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 4 }}>
               <label htmlFor="deskemail" style={{ fontSize: 12, letterSpacing: ".06em", color: "#9FB2D4" }}>Email</label>
-              <input id="deskemail" type="text" inputMode="email" autoCapitalize="none" autoCorrect="off" spellCheck={false} autoComplete="username" placeholder="yourname@anexomail.com" value={email} onChange={(e) => setEmail(e.target.value)} style={field} />
+              <div style={{ ...field, display: "flex", padding: 0, overflow: "hidden" }}>
+                <input id="deskemail" type="text" inputMode="email" autoCapitalize="none" autoCorrect="off" spellCheck={false} autoComplete="username" placeholder="yourname" value={email} onChange={(e) => setEmail(e.target.value)} style={{ flex: 1, minWidth: 0, border: 0, outline: "none", background: "transparent", color: "inherit", font: "inherit", padding: "0 14px" }} />
+                {!email.includes("@") && <span aria-hidden="true" style={{ display: "flex", alignItems: "center", padding: "0 14px", borderLeft: "1px solid rgba(160,200,255,.3)", background: "rgba(160,200,255,.10)", color: "#C9D8F2", fontSize: 15, whiteSpace: "nowrap", userSelect: "none" }}>@anexomail.com</span>}
+              </div>
               <label htmlFor="deskpw" style={{ fontSize: 12, letterSpacing: ".06em", color: "#9FB2D4" }}>Password</label>
               <input id="deskpw" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} style={field} />
               {msg && <p role="alert" style={{ margin: 0, fontSize: 13, color: "#F2C58A" }}>{msg}</p>}
@@ -66,9 +69,9 @@ export function DeskSignIn() {
             <p style={{ margin: 0, fontSize: 11, letterSpacing: ".08em", color: "#8FA6CC", textAlign: "center" }}>Built on: Rust · Tokio · axum · Rust WASM kernel · WebAuthn passkeys · Three.js</p>
           </div>
         </section>
-        {/* the warm horizon light of the Desk home page (same size and colour as DeskScene), right under the card so the card never hides it */}
-        <div aria-hidden="true" style={{ width: "76vw", flexShrink: 0, height: 14, marginTop: 22, borderRadius: "50%", background: "radial-gradient(closest-side,rgba(255,170,70,.35),rgba(255,170,70,0))", pointerEvents: "none" }} />
         </div>
+        {/* his 21 Nov 22:49: the warm horizon light (same size and colour as the Desk home page) stays fixed at the bottom of the screen, so no scroll position hides it */}
+        <div aria-hidden="true" style={{ position: "fixed", left: "12vw", right: "12vw", bottom: "clamp(8px,2.2vh,22px)", height: 14, borderRadius: "50%", background: "radial-gradient(closest-side,rgba(255,170,70,.45),rgba(255,170,70,0))", pointerEvents: "none", zIndex: 4 }} />
       </DeskScene>
     </main>
   );

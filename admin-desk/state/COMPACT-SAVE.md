@@ -41,3 +41,5 @@
 23. (21 Nov 2026 22:36 PKT) BACKUP LAW: tag backup/desk-ui-<time> before every Desk UI change (TWO-COMMANDS.md). Home Sign in A made navy/crisp. He said "bahut bura colour" - asked which.
 
 24. (21 Nov 2026 22:40 PKT) Home Sign in button = awam colours + white A (his 22:39). Backup branch backup/desk-ui-20261121-2239.
+
+25. (21 Nov 2026 22:50 PKT) Login: email suffix @anexomail.com like awam; bottom light fixed to the screen bottom; backup branch backup/desk-ui-20261121-2250.
