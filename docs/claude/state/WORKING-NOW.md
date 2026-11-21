@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 09:25 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 09:25 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Desk folders: admin-desk/sql/AD1, sql/checks, web (plan only, no .sql until HTTP/3)
 NEXT STEP: his ss (UDP port) -> h3 live -> AD1.sql
 HIS LAST WORD: 09:25 AD1 folder
@@ -18,25 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## FOUNDER + other processes in the same list (never touch)
 
 ## Last 5 commits
+- c2abbfdf 21 Nov 09:25 desk: AD1 folder, sql/checks, web folder
 - a5f86a62 21 Nov 09:24 ledger line 8162c620
 - 8162c620 21 Nov 09:24 desk: h3 listener code, http1+http2 banned
 - e0f9bbef 21 Nov 09:24 ledger line a57137e3
 - a57137e3 21 Nov 09:24 desk: h3 listener code, http1+http2 banned
-- 16a0ddf7 21 Nov 09:19 ledger line cb8a9093
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/founder/founder-commands.md
-?? admin-desk/sql/AD1/
-?? admin-desk/sql/checks/
-?? admin-desk/web/
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md             | 27 +++++++++------------------
- docs/cursor-work/founder/founder-commands.md |  2 ++
- 2 files changed, 11 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 22 ++--------------------
+ 1 file changed, 2 insertions(+), 20 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -47,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (8df8335316ececbf20cc30c148b477c3a4cd343b)
+WIP snapshot: refs/wip/last (7f56188ddfa0620d8446de4a6f03a66638ab2875)
