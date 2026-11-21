@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 10:56 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:56 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: owner created; login door next
 NEXT STEP: his desk-alias-look paste, login door + AD1b
 HIS LAST WORD: prove business script relation: none
@@ -18,33 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- b38ce066 21 Nov 10:56 Desk: owner created, records
 - 2644d3c9 21 Nov 10:53 ledger line 0edce82b
 - 0edce82b 21 Nov 10:53 Desk: aliases not customer accounts; alias look script
 - 6de851b7 21 Nov 10:53 ledger line 1b2168d9
 - 1b2168d9 21 Nov 10:53 Desk: aliases not customer accounts; alias look script
-- e87c6f8f 21 Nov 10:52 ledger line a40b609b
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/state/WORKING-NOW.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
- M docs/claude/admin-desk/state/PHASES.md
-M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- M docs/cursor-work/founder/founder-commands.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md |  1 +
- docs/claude/admin-desk/state/COMPACT-SAVE.md   |  2 +-
- docs/claude/admin-desk/state/PHASES.md         |  2 ++
- docs/claude/admin-desk/state/WORKING-NOW.md    |  2 +-
- docs/claude/state/WORKING-NOW.md               | 30 +++++++++++---------------
- docs/claude/tech-contracts/CURRENT.md          |  2 ++
- docs/cursor-work/founder/founder-commands.md   |  2 ++
- 8 files changed, 22 insertions(+), 21 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 30 ++----------------------------
+ 1 file changed, 2 insertions(+), 28 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -55,4 +42,4 @@ M  docs/claude/admin-desk/state/WORKING-NOW.md
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ac8e47e8e50084c3bb71ebd51fff795bbbaba978)
+WIP snapshot: refs/wip/last (7575f15f72d80fd3cf3e95febb6d75e9ecf6f0e4)
