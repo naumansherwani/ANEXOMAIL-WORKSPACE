@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 07:49 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 07:50 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: PHASE 1 R3a0 HOST + R3a1 cinematic passkey-only login STARTED; host facts from his paste; desk-ports-check.sh written; building DeskScene (Three.js) next
 NEXT STEP: his desk-ports-check paste; Namecheap AAAA/HTTPS/CAA steps; Caddy host add; R3a2 passkey door + SQL E201
 HIS LAST WORD: his 21 Nov 07:48 order + paste
@@ -17,34 +17,24 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 | Proto | Port | Process |
 |---|---|---|
 
-##- a357f1f7 21 Nov 07:40 ledger line d4301849
+## Last 5 commits
+- 0ad68bd6 21 Nov 07:50 Admin Desk phase 1 started: host facts, ports check script, cinematic passkey-only login design
+- a357f1f7 21 Nov 07:40 ledger line d4301849
 - d4301849 21 Nov 07:40 Admin Desk 3-day plan with times and technology per phase
 - 67cd4115 21 Nov 07:40 ledger line ac7aa8c7
 - ac7aa8c7 21 Nov 07:40 Admin Desk 3-day plan with times and technology per phase
-- 4f382d04 21 Nov 07:36 ledger line b0d830d9
 
-## Uncommitted f## Uncommitted files (half-do M docs/claude/BLUEPRINT-ABC-01NOV.md
- M docs/claude/TECH-LAW-GATE.json
+## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
- M docs/cursor-work/founder/founder-commands.md
- M lanes/lane-sync.py
-?? docs/claude/ADMIN-DESK-LOGIN-CINEMA-DESIGN-21NOV.md
-?? docs/cursor-work/server/desk-ports-check.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/BLUEPRINT-ABC-01NOV.md                 |  1 +
- docs/claude/TECH-LAW-GATE.json                     | 27 ++++++++++++------
- docs/claude/state/WORKING-NOW.md                   | 33 +++++++++-------------
- ...DE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md |  2 ++
- docs/cursor-work/founder/founder-commands.md       |  2 ++
- lanes/lane-sync.py                                 |  2 +-
- 6 files changed, 37 insertions(+), 30 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 33 +++++----------------------------
+ 1 file changed, 5 insertions(+), 28 deletions(-)
 
 ## Q state
-=== PHASE NOW (d=== PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
+=== PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
 > ## >>> 20 Nov 2026 09:58 PKT QC4 plan vs code matched (table in docs/claude/QC4-PLAN-20NOV.md): feature 7 DONE end to end (not installed), feature 3 data DONE, pure logic for 3-6 DONE+tested, screens for 1,2,3,4,5,6 = QC4b NOT in code. <<<
 > ## >>> 20 Nov 2026 09:12 PKT HIS QC4 FEATURE LIST (7 features, his paste 09:09) is now verbatim in docs/claude/QC4-PLAN-20NOV.md and founder-commands.md; QC4a done (not installed), QC4b screen next <<<
 > ## >>> 20 Nov 2026 09:55 PKT QC4a = DONE, WRITTEN AND TESTED, NOT INSTALLED (20 Nov 2026 09:55 PKT): cargo whole suite 559 passed 0 failed 0 filtered out (was 558, +1 test for References + Reply-To), pure-TS tests 474 pass 0 fail (sandbox runner, not a runtime), tsc clean, vite build OK (index-BcA
@@ -52,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (983a5c9f1d6ff658edd7cd7e3a8c218b15930926)
+WIP snapshot: refs/wip/last (913eeecf781ad8a9d9b3a50e32bb59f5571aff7e)
