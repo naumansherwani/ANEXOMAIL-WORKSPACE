@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 00:43 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 00:43 PKT) - read this FIRST for the Desk after a compaction
 DOING: his haan for Alt-Svc :4400; waiting his read-only paste of Caddy admindesk block
 NEXT STEP: write Alt-Svc step in desk-install.sh after his paste; then Rule 52 Desk RPC meanwhile
 HIS LAST WORD: 00:43 haan advance only
@@ -42,6 +42,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- c8c79153 22 Nov 00:43 Record Alt-Svc haan
 - 0d220b4a 22 Nov 00:42 ledger line d865e186
 - d865e186 22 Nov 00:42 Desk remaining list
 - c4a06271 22 Nov 00:38 ledger line f7e19236
@@ -49,10 +50,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 60f64525 22 Nov 00:30 ledger line 248ee0e0
 - 248ee0e0 22 Nov 00:30 Record flash cancel and domain law
 - e52b6ae9 22 Nov 00:27 ledger line 6d76d507
-- 6d76d507 22 Nov 00:27 E201 schema-first read
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)

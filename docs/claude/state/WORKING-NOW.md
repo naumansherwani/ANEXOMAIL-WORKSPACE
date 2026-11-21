@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 00:43 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 00:43 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: his haan for Alt-Svc :4400; waiting his read-only paste of Caddy admindesk block
 NEXT STEP: write Alt-Svc step in desk-install.sh after his paste; then Rule 52 Desk RPC meanwhile
 HIS LAST WORD: 00:43 haan advance only
@@ -18,24 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- c8c79153 22 Nov 00:43 Record Alt-Svc haan
 - 0d220b4a 22 Nov 00:42 ledger line d865e186
 - d865e186 22 Nov 00:42 Desk remaining list
 - c4a06271 22 Nov 00:38 ledger line f7e19236
 - f7e19236 22 Nov 00:38 Record his order
-- 60f64525 22 Nov 00:30 ledger line 248ee0e0
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/founder/founder-commands.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/admin-desk/state/COMPACT-SAVE.md |  2 ++
- docs/claude/state/WORKING-NOW.md             | 25 +++++++------------------
- docs/cursor-work/founder/founder-commands.md |  2 ++
- 3 files changed, 11 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 21 ++-------------------
+ 1 file changed, 2 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -46,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (f1220f03a52fec3d744695e074864d356060f9e6)
+WIP snapshot: refs/wip/last (be1e8912df76e8dddc88363c461d040f0ebabafc)
