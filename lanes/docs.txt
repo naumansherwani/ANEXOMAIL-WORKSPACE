@@ -98,6 +98,7 @@ docs/awam/audit_inventory.py
 docs/caddy-payments-host.md
 docs/claude/00-FOUNDER-TECH-RULE.md
 docs/claude/ADMIN-DESK-2DAY-PLAN-21NOV.md
+docs/claude/ADMIN-DESK-OWN-HOST-IDEA-21NOV.md
 docs/claude/ADMIN-DESK-PHASES-AND-EMPLOYEE-ISOLATION-21NOV.md
 docs/claude/ADMIN-DESK-R3-FOUNDER-ORDER-21NOV.md
 docs/claude/ADMIN-DESK-R3-R4-RESEARCH-AND-PHASES-21NOV.md
