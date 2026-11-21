@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "build:desk": "vite build --config vite.desk.config.ts"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.4.1",

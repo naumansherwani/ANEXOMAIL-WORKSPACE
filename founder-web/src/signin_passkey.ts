@@ -27,7 +27,7 @@ export const realDeps = (): Deps => ({
   get: typeof window !== "undefined" && window.PublicKeyCredential && navigator.credentials ? (o) => navigator.credentials.get(o) : null,
 });
 
-async function postJson(d: Deps, url: string, body: Json): Promise<{ status: number; json: unknown }> {
+export async function postJson(d: Deps, url: string, body: Json): Promise<{ status: number; json: unknown }> {
   const r = await d.fetch(url, { method: "POST", headers: { "content-type": "application/json" }, cache: "no-store", body: JSON.stringify(body) });
   let json: unknown = null; try { json = await r.json(); } catch { /* not json */ }
   return { status: r.status, json };
