@@ -116,11 +116,11 @@ def cross_imports():
 DESK_OK_IMPORTS = re.compile(r"""^(\.\./(signin_pure|signin_passkey|kernel|tls_line|styles\.css|ui\.css|cinema\.css|tailwind\.css|dx\.css)|\.\./signin/|\./)""")
 def desk_isolation():
     bad = []
-    files = subprocess.check_output(["git", "ls-files", "founder-web", "server"], text=True).split()
+    files = subprocess.check_output(["git", "ls-files", "founder-web", "server", "admin-desk"], text=True).split()
     for p in files:
         if not p.endswith((".ts", ".tsx", ".rs", ".css", ".html")) or not os.path.exists(p): continue
         t = read(p)
-        in_desk = p.startswith("founder-web/src/desk/") or p in ("founder-web/desk.html", "founder-web/vite.desk.config.ts") or p.startswith("server/desk/") or re.match(r"server/founder/src/desk_[^/]*\.rs$", p)
+        in_desk = p.startswith("founder-web/src/desk/") or p in ("founder-web/desk.html", "founder-web/vite.desk.config.ts") or p.startswith("server/desk/") or p.startswith("admin-desk/server/") or re.match(r"server/founder/src/desk_[^/]*\.rs$", p)
         is_gate_text = p.endswith(".test.ts")
         if in_desk:
             if p.endswith((".ts", ".tsx")):

@@ -171,6 +171,16 @@ try:
 except FileNotFoundError:
     fail("TECH LAW", "docs/claude/TECH-LAW-GATE.json is missing")
 
+# ADMIN DESK ADVANCED-TECHNOLOGY GATE (his 21 Nov 2026 08:19): admin-desk/gates/DESK-FEATURES.json; missing technology = FAIL (no commit), shouted.
+try:
+    sys.path.insert(0, "admin-desk/gates")
+    import desk_tech_gate
+    _df, _dw = desk_tech_gate.check(".")
+    for _m in _df: fail("DESK TECH", _m)
+    for _m in _dw: warn("DESK TECH", _m)
+except ImportError:
+    fail("DESK TECH", "admin-desk/gates/desk_tech_gate.py is missing")
+
 # TECH-FIRST PROTOCOL (founder 11 Nov 2026 04:33, "forever solution"): docs/claude/TECH-FIRST-PROTOCOL.md. Three mechanical gates so the listed technology can never be skipped again.
 
 # SERVER-SELF-CONTAINED (11 Nov 22:00, incident: founder-install failed on his server because a test pulled web-wasm/src/mldsa.rs via #[path]): his server builds ONLY the server/ folder.

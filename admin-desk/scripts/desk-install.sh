@@ -7,8 +7,8 @@ command -v cargo >/dev/null 2>&1 || export PATH="$HOME/.cargo/bin:$PATH"
 command -v cargo >/dev/null 2>&1 || { echo "FAIL: cargo not found"; exit 2; }
 git -C "$REPO" fetch -q origin main || { echo "FAIL: fetch"; exit 2; }
 show() { git -C "$REPO" show "origin/main:$1"; }
-echo "== 1/4 source (server/desk from origin/main)"
-mkdir -p "$ROOT/src/src"; show server/desk/Cargo.toml >"$ROOT/src/Cargo.toml"; show server/desk/src/main.rs >"$ROOT/src/src/main.rs"
+echo "== 1/4 source (admin-desk/server from origin/main)"
+mkdir -p "$ROOT/src/src"; show admin-desk/server/Cargo.toml >"$ROOT/src/Cargo.toml"; show admin-desk/server/src/main.rs >"$ROOT/src/src/main.rs"
 echo "== 2/4 build"; (cd "$ROOT/src" && nice cargo build --release 2>&1 | tail -3); NEW="$ROOT/target/release/anexomail-desk"; [ -x "$NEW" ] || { echo "FAIL: build"; exit 3; }
 echo "== 3/4 user + files"
 id $SVC >/dev/null 2>&1 || useradd --system --no-create-home --shell /usr/sbin/nologin $SVC

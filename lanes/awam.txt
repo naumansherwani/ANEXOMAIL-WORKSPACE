@@ -119,8 +119,6 @@ docs/cursor-work/server/db-direct-probe.sh
 docs/cursor-work/server/db-latency-check.sh
 docs/cursor-work/server/db-latency-probe.sh
 docs/cursor-work/server/deploy-pro.sh
-docs/cursor-work/server/desk-host-check.sh
-docs/cursor-work/server/desk-install.sh
 docs/cursor-work/server/desk-ports-check.sh
 docs/cursor-work/server/device-hash-migrate.sh
 docs/cursor-work/server/dkim-dns-print.sh
@@ -695,11 +693,6 @@ server/config/billing-products.test.ts
 server/config/billing-products.ts
 server/deploy-all.sh
 server/deploy-brain.sh
-server/desk/00-FOUNDER-TECH-RULE.md
-server/desk/Cargo.lock
-server/desk/Cargo.toml
-server/desk/src/00-FOUNDER-TECH-RULE.md
-server/desk/src/main.rs
 server/founder-dns/00-FOUNDER-TECH-RULE.md
 server/founder-dns/Cargo.lock
 server/founder-dns/Cargo.toml
