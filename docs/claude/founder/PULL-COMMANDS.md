@@ -3055,3 +3055,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 22 Nov 02:45 PKT: R3d stage B code (Desk signed doors + own WASM kernel + deskCall + real /me dashboard + signing key install step), Rust 19/19, kernel 4/4, Playwright tamper refused; WIRED: NO until his desk-install + my Chrome look
 
 - 22 Nov 02:50 PKT: status asked, R3d B pushed, WIRED: NO until his install
+
+- 22 Nov 02:55 PKT: his rollback warning recorded, WIRED: NO

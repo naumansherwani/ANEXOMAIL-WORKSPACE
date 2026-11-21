@@ -5419,3 +5419,7 @@ Features ki list (QC4 mein kya banega):
 [22 Nov 2026 01:39 PKT] HIS WORDS: (attachment = his 01:31 message) yeh kitna huwa hai batao
 
 - 22 Nov 02:50 PKT: status asked, R3d B pushed, WIRED: NO until his install
+
+[22 Nov 2026 01:41 PKT] HIS WORDS: desk-install mein signing key ka step: key ek dafa banti hai, aur check fail ho to purana binary aur purane pages wapis lag jate hain. khabardar jo yeh naye admin desk main kiya toh goli maarun ga. yeh tab hoga jab fail ho toh
+
+- 22 Nov 02:55 PKT: his rollback warning recorded, WIRED: NO

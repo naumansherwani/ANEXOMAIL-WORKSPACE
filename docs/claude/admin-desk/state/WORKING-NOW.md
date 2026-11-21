@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 01:39 PKT) - read this FIRST for the Desk after a compaction
-DOING: status answer: R3d B pushed, waits his desk-install
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 01:41 PKT) - read this FIRST for the Desk after a compaction
+DOING: rollback wording question answered; R3d B waits his install
 NEXT STEP: his desk-install paste, my Chrome proof, R4-1
-HIS LAST WORD: his 01:39: kitna hua
+HIS LAST WORD: his 01:41: rollback warning
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
 
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 87e2923c 22 Nov 01:39 ledger line ada44a81
 - ada44a81 22 Nov 01:39 status record
 - 906df9b7 22 Nov 01:38 ledger line 13fb6626
 - 13fb6626 22 Nov 01:38 Desk R3d stage B: signed doors, own WASM kernel, deskCall, real dashboard
@@ -54,7 +55,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - e07c9674 22 Nov 01:25 Desk: ON1-ON12 final plan
 - cad6b1db 22 Nov 01:22 ledger line 9e3cf7b7
 - 9e3cf7b7 22 Nov 01:22 Desk R3d stage A: signing + own kernel crate
-- f9ac1bbb 22 Nov 01:14 ledger line be1cefbb
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
