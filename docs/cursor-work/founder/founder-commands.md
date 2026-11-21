@@ -5181,3 +5181,5 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 21:14 PKT Desk login: Identity box removed (his 21:13); WIRED: NO until his desk-install
 
 - 21 Nov 2026 21:14 PKT Desk login: Identity box removed (his 21:13); WIRED: NO until his desk-install
+
+- 21 Nov 2026 21:14 PKT auto checkpoint; WIRED: NO
