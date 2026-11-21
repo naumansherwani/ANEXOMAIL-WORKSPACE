@@ -5044,3 +5044,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 22 Nov 2026 00:40 PKT flash cancelled; Premium/Max own-domain law, test domain to be discussed; WIRED: NO
 
 - 22 Nov 2026 00:44 PKT his order: Desk complete, founder rest, then Premium/Max by copy with per-package gates; WIRED: NO
+
+- 22 Nov 2026 00:50 PKT Admin Desk remaining list (12 rows) written; new-not-copy rule; WIRED: NO

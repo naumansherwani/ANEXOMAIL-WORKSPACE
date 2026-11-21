@@ -1,5 +1,6 @@
 # ADMIN DESK PHASES (status table, kept by Claude; the live pointer is WORKING-NOW.md in this folder). Each row: feature | code | technology | HAAN (his word) | state
 Updated 21 Nov 2026 10:20 PKT. Rule 52: signed kernel-verified calls, no raw fetch. Founder technology or MORE advanced. HTTP/1 and HTTP/2 are BANNED for the Desk.
+> [22 Nov 2026 00:50 PKT] CURRENT ORDER: see REMAINING-LIST-22NOV.md (12 rows). Flash cancelled. Premium/Max after Desk complete.
 
 | Phase | Feature | Code | Technology | HAAN | State |
 |---|---|---|---|---|---|
