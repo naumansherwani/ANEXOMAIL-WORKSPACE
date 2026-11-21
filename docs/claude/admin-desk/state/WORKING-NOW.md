@@ -33,6 +33,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 10bc7c96 21 Nov 10:44 Desk: R3a2-argon2 feature row = code
 - 51542813 21 Nov 10:44 Desk: auth.rs ARGON2ID, owner and real account scripts
 - 70629973 21 Nov 10:36 checkpoint
 - d4bca7c6 21 Nov 10:36 checkpoint
@@ -40,13 +41,11 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 30d3ff13 21 Nov 10:35 Desk: ad-auto.sh auto SQL runner
 - c6a250e5 21 Nov 10:35 Desk: ad-auto.sh auto SQL runner
 - a864ba3e 21 Nov 10:35 Desk: ad-auto.sh auto SQL runner
-- 9c049bf0 21 Nov 10:34 checkpoint
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
-warn R3a2-argon2 now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
 warn ADMIN DESK OPEN until 24 Nov: R3p1-plans [R3p1] Plans as data (Premium, Max first) -> needs PostgreSQL RLS, hash-chained ledger in admin-desk/sql/AD2.sql
 warn ADMIN DESK OPEN until 24 Nov: R3p2-webhook [R3p2] Polar signed webhook door -> needs Rust Tokio axum, HMAC-SHA256 constant-time in admin-desk/server/src/polar.rs
