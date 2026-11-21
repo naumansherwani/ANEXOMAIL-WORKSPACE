@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 10:44 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:44 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: auth.rs + owner/real-account scripts pushed
 NEXT STEP: his desk-install + desk-owner run, then login door + AD1b
 HIS LAST WORD: real account method, gold codes
@@ -18,46 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 51542813 21 Nov 10:44 Desk: auth.rs ARGON2ID, owner and real account scripts
 - 7a53170d 21 Nov 10:36 ledger line 70629973
 - 70629973 21 Nov 10:36 checkpoint
 - 0f2f08d9 21 Nov 10:36 ledger line d4bca7c6
 - d4bca7c6 21 Nov 10:36 checkpoint
-- d41e24a8 21 Nov 10:36 ledger line 79a3aef8
 
 ## Uncommitted files (half-done work if any)
- M admin-desk/scripts/desk-install.sh
- M admin-desk/server/Cargo.lock
- M admin-desk/server/Cargo.toml
- M admin-desk/server/src/main.rs
-M  admin-desk/state/WORKING-NOW.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/scripts/desk-install.sh
- M docs/claude/admin-desk/server/Cargo.lock
- M docs/claude/admin-desk/server/Cargo.toml
- M docs/claude/admin-desk/server/src/main.rs
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
- M docs/claude/admin-desk/state/PHASES.md
-M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- M docs/cursor-work/founder/founder-commands.md
-?? admin-desk/server/src/auth.rs
-?? docs/claude/admin-desk/codes/
-?? docs/claude/admin-desk/scripts/desk-business-account.sh
-?? docs/claude/admin-desk/scripts/desk-owner.sh
-?? docs/claude/admin-desk/server/src/auth.rs
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/admin-desk/server/src/main.rs      |   7 ++
- docs/claude/admin-desk/state/COMPACT-SAVE.md   |   2 +-
- docs/claude/admin-desk/state/PHASES.md         |   4 +-
- docs/claude/admin-desk/state/WORKING-NOW.md    |   2 +-
- docs/claude/state/WORKING-NOW.md               |  43 ++++----
- docs/claude/tech-contracts/CURRENT.md          |   3 +
- docs/cursor-work/founder/founder-commands.md   |   2 +
- 16 files changed, 313 insertions(+), 34 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 43 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 41 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -68,4 +42,4 @@ M  docs/claude/admin-desk/state/WORKING-NOW.md
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (9549f0d5f9a4105868df5e32e3fbf1f180767439)
+WIP snapshot: refs/wip/last (998d3f5f09ece07795977e62682130ab479b63e0)
