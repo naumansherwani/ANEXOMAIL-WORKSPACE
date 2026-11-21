@@ -3,12 +3,12 @@
 # Runs docs/cursor-work/sql/E28_seed_buyer_test_account.sql unchanged. This is AWAM data, made through awam's own seed; the Desk never reads it directly. Asks: handle (becomes handle@anexomail.com), name, company, domain, plan, then the password twice (no echo).
 set -uo pipefail
 G=/opt/anexomail-web; [ -r /etc/anexomail/sync.env ] || { echo "FAIL: /etc/anexomail/sync.env missing"; exit 2; }; . /etc/anexomail/sync.env
-[ -t 0 ] || { echo "FAIL: run in your terminal"; exit 2; }
-read -rp "handle (mail name before @anexomail.com): " H; read -rp "person name: " NM; read -rp "company name: " ORG; read -rp "company domain (e.g. example.com): " DOM
-read -rp "plan [business|business_pro]: " PL
+[ -r /dev/tty ] || { echo "FAIL: needs a terminal"; exit 2; }
+printf "%s" "handle (mail name before @anexomail.com): " >/dev/tty; read -r H </dev/tty; printf "%s" "person name: " >/dev/tty; read -r NM </dev/tty; printf "%s" "company name: " >/dev/tty; read -r ORG </dev/tty; printf "%s" "company domain (e.g. example.com): " >/dev/tty; read -r DOM </dev/tty
+printf "%s" "plan [business|business_pro]: " >/dev/tty; read -r PL </dev/tty
 case "$PL" in business|business_pro) ;; *) echo "FAIL: plan name"; exit 3;; esac
 [[ "$H" =~ ^[a-z0-9._-]{3,40}$ ]] || { echo "FAIL: handle must be a-z 0-9 . _ - (3 to 40)"; exit 3; }
-read -rs -p "password (12+ chars): " P1; echo; read -rs -p "again: " P2; echo
+printf "%s" "password (12+ chars): " >/dev/tty; read -rs P1 </dev/tty; echo >/dev/tty; printf "%s" "again: " >/dev/tty; read -rs P2 </dev/tty; echo >/dev/tty
 [ "$P1" = "$P2" ] && [ "${#P1}" -ge 12 ] || { echo "FAIL: passwords differ or shorter than 12"; exit 3; }
 git -C "$G" fetch -q origin main; T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
 git -C "$G" show origin/main:docs/cursor-work/sql/E28_seed_buyer_test_account.sql >"$T/E28.sql" || { echo "FAIL: E28 not found"; exit 2; }

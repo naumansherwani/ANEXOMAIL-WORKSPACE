@@ -8,9 +8,9 @@ EM="$(printf '%s' "${OWNER_EMAIL:-admindesk@anexomail.com}" | tr 'A-Z' 'a-z')"; 
 [ -r "$ENVF" ] || { echo "FAIL: $ENVF missing (run ad-db-env.sh)"; exit 2; }; . "$ENVF"
 [ -x "$BIN" ] || { echo "FAIL: $BIN missing (run desk-install.sh first)"; exit 2; }
 "$BIN" hashpw </dev/null >/dev/null 2>&1; [ $? = 3 ] || { echo "FAIL: installed Desk binary has no hashpw (run desk-install.sh again)"; exit 2; }
-[ -t 0 ] || { echo "FAIL: run this in your terminal (it asks for the password)"; exit 2; }
-echo "Desk owner: $EM ($RL). Type the password (12+ characters), nothing is shown."
-read -rs -p "password: " P1; echo; read -rs -p "again:    " P2; echo
+[ -r /dev/tty ] || { echo "FAIL: needs a terminal (it asks for the password)"; exit 2; }
+echo "Desk owner: $EM ($RL). Type the password (12+ characters), nothing is shown." >/dev/tty
+printf "%s" "password: " >/dev/tty; read -rs P1 </dev/tty; echo >/dev/tty; printf "%s" "again:    " >/dev/tty; read -rs P2 </dev/tty; echo >/dev/tty
 [ "$P1" = "$P2" ] || { echo "FAIL: the two passwords differ, nothing changed"; exit 3; }
 H="$(printf '%s\n' "$P1" | "$BIN" hashpw)" || { unset P1 P2; echo "FAIL: password refused (12 to 256 characters)"; exit 3; }; unset P1 P2
 case "$H" in '$argon2id$'*) ;; *) echo "FAIL: not an ARGON2ID hash"; exit 3;; esac

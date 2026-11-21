@@ -4858,3 +4858,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 10:44 PKT checkpoint loop refresh only; WIRED: NO
 
 - 21 Nov 2026 10:44 PKT checkpoint loop refresh only; WIRED: NO
+
+- 21 Nov 2026 10:52 PKT Desk owner + account scripts ask via /dev/tty (no hidden prompts); WIRED: NO
