@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 01:38 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: R3d stage B code done + tested; pull = desk-install
-NEXT STEP: his desk-install paste, then my live Chrome Rule 52 proof; then R4-1 shell
-HIS LAST WORD: his 01:31: real pull, phases tonight, desk rules on top
+# WORKING NOW (manual checkpoint, 22 Nov 2026 01:39 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: status answer: R3d B pushed, waits his desk-install
+NEXT STEP: his desk-install paste, my Chrome proof, R4-1
+HIS LAST WORD: his 01:39: kitna hua
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,22 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 906df9b7 22 Nov 01:38 ledger line 13fb6626
 - 13fb6626 22 Nov 01:38 Desk R3d stage B: signed doors, own WASM kernel, deskCall, real dashboard
 - d435d57e 22 Nov 01:25 ledger line e07c9674
 - e07c9674 22 Nov 01:25 Desk: ON1-ON12 final plan
 - cad6b1db 22 Nov 01:22 ledger line 9e3cf7b7
-- 9e3cf7b7 22 Nov 01:22 Desk R3d stage A: signing + own kernel crate
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/founder/founder-commands.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 47 ++--------------------------------------
- 1 file changed, 2 insertions(+), 45 deletions(-)
+ docs/claude/state/WORKING-NOW.md             | 24 ++++++------------------
+ docs/cursor-work/founder/founder-commands.md |  2 ++
+ 2 files changed, 8 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +44,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (10bc3b4b2ac835f56861fd79555cbe48d1aa3f85)
+WIP snapshot: refs/wip/last (1cf3b246f4d6362b66fc78c8d65895f26c7e747b)
