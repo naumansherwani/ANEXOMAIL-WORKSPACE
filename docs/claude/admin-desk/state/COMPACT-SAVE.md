@@ -5,3 +5,5 @@
 4. STATE (21 Nov 2026 10:56 PKT): AD1 DONE. Owner admindesk@anexomail.com CREATED (his desk-owner.sh run, ARGON2ID). desk-install with auth.rs DONE (health 200). Company addresses are ALIASES (not customer accounts; E28 customer script was WRONG and removed). NEXT: his desk-alias-look.sh paste, then LOGIN DOOR (needs Postgres client + AD1b desk_app login), DBSC, orb, passkey, R3p, R3b-g.
 5. NEXT in order: auth.rs ARGON2ID+constant-time (audience desk, AD1b desk_app login, owner by HIS command) -> DBSC -> orb pulse/zoom -> passkey (optional) -> R3p plans (needs his support terms) -> R3b-g by Mon 23 Nov. His hands: Namecheap AAAA + HTTPS record port 4400.
 6. Commit: lane-sync, git add -A, rec.sh twice, git push -q. Loop: pgrep -f ckpt-loop.sh (restart with nohup bash docs/cursor-work/server/ckpt-loop.sh &).
+
+7. (21 Nov 2026 11:01 PKT) UI PLAN: read PLAN-DESK-UI-COPY-21NOV.md. NEVER mention repo checkpoint commits in chat (his 11:00). Evening: keep that table order.

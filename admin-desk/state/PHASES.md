@@ -26,3 +26,5 @@ Updated 21 Nov 2026 10:20 PKT. Rule 52: signed kernel-verified calls, no raw fet
 > [21 Nov 2026 10:44 PKT] ORDER NOW: AD1 DONE -> auth.rs (written) -> desk-install -> desk-owner.sh (his password) -> login door + AD1b desk_app login -> DBSC -> orb pulse/zoom -> passkey (optional) -> R3p plans -> R3b-g (Sun 22 - Mon 23 Nov).
 
 > [21 Nov 2026 10:56 PKT] R3a2-2: owner admindesk@ CREATED on his server, auth.rs installed. NEXT login door + AD1b. desk-business-account.sh removed (no Desk relation).
+
+> [21 Nov 2026 11:01 PKT] PLAN after login: see PLAN-DESK-UI-COPY-21NOV.md (R4-1..R4-10 = founder phases copied in order; Desk gate + /desk/v1 endpoints only).
