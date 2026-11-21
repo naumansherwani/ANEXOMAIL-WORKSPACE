@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 02:18 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 02:18 PKT) - read this FIRST for the Desk after a compaction
 DOING: AD2 SQL written + sandbox-tested, committing
 NEXT STEP: his ad-auto run, then R4-1
 HIS LAST WORD: kitni dair hain, jaldi complete
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 5a065da1 22 Nov 02:18 Admin Desk AD2 SQL
 - 882c6f95 22 Nov 01:59 ledger line e869ef67
 - e869ef67 22 Nov 01:59 Desk: sandbox live test, dashboard fixes
 - 0e011cb2 22 Nov 01:55 ledger line e94b2518
@@ -54,13 +55,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 1bf4195c 22 Nov 01:47 ledger line 21dbdaea
 - 21dbdaea 22 Nov 01:47 Desk status record + timestamp correction
 - baf45e2c 22 Nov 01:41 ledger line 68859e31
-- 68859e31 22 Nov 01:41 rollback warning record
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/sql/checks/AD1-check.sql
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? docs/claude/admin-desk/sql/AD2.sql
-?? docs/claude/admin-desk/sql/checks/AD2-check.sql
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
