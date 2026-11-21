@@ -4827,3 +4827,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 08:00 PKT: correction: no old :8400 block; his sed renamed the Desk host to :8400 and opened ufw 8400; revert proposed, waits his haan (WIRED: NO)
 
 - 21 Nov 2026 08:00 PKT: same (manifest pass)
+
+- 21 Nov 2026 08:04 PKT HIS WORD: pasted the revert + verify output (Caddy block back to plain host, 8400 closed, nothing on 8400/4400) and repeated the compaction-safety order: save the chat so a compacted Claude understands alone; WORKING-NOW.md + ledger + top of repo + blueprint with date/time, updated every 2 min and after every message; rules read; Rule 52; advance technology next to every phase and subphase.
+
+- 21 Nov 2026 08:05 PKT: Desk host Caddy block verified clean on his server (plain host -> 127.0.0.1:4400, no 8400, no ufw 8400); Desk still not wired (WIRED: NO), login design demo next

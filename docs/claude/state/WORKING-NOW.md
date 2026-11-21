@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 07:59 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: STOPPED by his word 07:57: two admindesk blocks in Caddy (old :8400 + new :4400), no server action until read-only look
-NEXT STEP: one read-only command: sed -n 185,205p /etc/caddy/Caddyfile and ss for 4400/8400; his paste; then fix
-HIS LAST WORD: yeh wrong hai ruk ja
+# WORKING NOW (manual checkpoint, 21 Nov 2026 08:04 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Server Caddy/ufw verified clean 08:01 (admindesk plain block -> 4400, no 8400); now login design demo (Design artifact HjgAQvTc1EqnpM3pa9xQfi) then R3a2 contract + SQL E201
+NEXT STEP: login design boards (1440 + 390), his pick + 4 answers (passkey-only vs optional, selector vs isolation), then R3a2
+HIS LAST WORD: 08:04 compaction-safety order
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,24 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## FOUNDER + other processes in the same list (never touch)
 
 ## Last 5 commits
+- 467215bc 21 Nov 07:59 ledger line 3a8214f1
 - 3a8214f1 21 Nov 07:59 desk: manifest
 - 44e4cfde 21 Nov 07:59 ledger line fd146b0f
 - fd146b0f 21 Nov 07:59 desk: caddy 8400 correction
 - 70931997 21 Nov 07:58 ledger line bf163b84
-- bf163b84 21 Nov 07:58 desk: manifest
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/ADMIN-DESK-R3A0-FACTS-21NOV.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/founder/founder-commands.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/ADMIN-DESK-R3A0-FACTS-21NOV.md   |  3 +++
+ docs/claude/state/WORKING-NOW.md             | 25 +++++++------------------
+ docs/cursor-work/founder/founder-commands.md |  2 ++
+ 3 files changed, 12 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +46,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (7d9bc614bbd2f96aacb0f807f654f8a6813e3f75)
+WIP snapshot: refs/wip/last (8abab6fc9f4e9000fa3aa27b6715e1607ae323cf)
