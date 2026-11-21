@@ -4938,3 +4938,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 21:13 PKT Desk login: IDENTITY row removed, ball gone, passkey below; WIRED: NO until his desk-install
 
 - 21 Nov 2026 21:14 PKT Desk login: Identity box removed (his 21:13); WIRED: NO until his desk-install
+
+- 21 Nov 2026 21:14 PKT Desk login: Identity box removed (his 21:13); WIRED: NO until his desk-install
