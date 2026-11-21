@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 21 Nov 2026 23:50 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 23:50 PKT) - read this FIRST for the Desk after a compaction
 DOING: DNS AAAA saved by him (*, @, admindesk); anexochat/anexovideo AAAA next by him
 NEXT STEP: desk-restart DNS facts; his haan Alt-Svc :4400; live Chrome h3; E201; Rule 52
 HIS LAST WORD: 23:50 screenshot AAAA saved
@@ -41,6 +41,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e18f1119 21 Nov 23:50 Record DNS AAAA saved
 - c30b685f 21 Nov 23:45 ledger line ab60b9b8
 - ab60b9b8 21 Nov 23:45 Record Namecheap AAAA save state
 - 0d47203c 21 Nov 23:39 ledger line 80b44c0d
@@ -48,10 +49,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - d0e124ee 21 Nov 23:36 LAW: frontend Caddy, backend Hetzner
 - 5bd1a4d8 21 Nov 23:34 ledger line e886861c
 - def52e4e 21 Nov 23:32 ledger line ea507af5
-- 0e1745fc 21 Nov 23:31 ledger line 791d0af3
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
