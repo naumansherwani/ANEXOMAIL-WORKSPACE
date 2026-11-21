@@ -65,3 +65,5 @@ Updated 21 Nov 2026 10:20 PKT. Rule 52: signed kernel-verified calls, no raw fet
 - [22 Nov 2026 03:58 PKT] BRIDGE: step 7 Merkle anchor REMOVED, inbox placement REMOVED (his 03:57).
 
 - [22 Nov 2026 03:59 PKT] R4-1b step 2 probes.rs written + tested (24 tests); AD3 patched for 4 s probes; needs desk-install + ad-auto on his server.
+
+- [22 Nov 2026 04:07 PKT] step 3 signed doors: summary, alerts, alert act, services, incidents; Desk Freeze waits for AD2 Rust door (passkey touch).

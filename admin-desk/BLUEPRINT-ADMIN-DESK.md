@@ -1,4 +1,6 @@
 
+> [22 Nov 2026 04:07 PKT PKT, his 04:07] HIS SERVER: desk-install OK (new binary with probes running, db login live). ad-auto SKIPPED AD3 because the CHECK was all true: my 4 s probe patch was NOT applied. FIXED: AD3-check has a new row (probes every 4 s) that is false until the patch runs, so his next ad-auto runs AD3 again (sandbox proved: before f, after 18 rows t). His answers: founder rows stay in Founder Bridge, I decide what an employee needs; Desk Bridge = for the Anexomail company needs only. NEXT: R4-1b step 3 signed doors.
+
 > [22 Nov 2026 03:59 PKT PKT] R4-1b STEP 2 WRITTEN (not on his server): server/src/probes.rs (db, signer, h3_edge, tls every 4 s; ledger, clamav every 60 s; 24 cargo tests ok) + AD3.sql patch (probe floor 1 s, 4 s rows; stale = 12 s). mail_in/mail_out/dns/storage_box have NO probe yet = UNKNOWN on purpose. ClamAV probe needs DESK_CLAMD_SOCK.
 
 > [22 Nov 2026 03:58 PKT PKT, his 03:57] BRIDGE: inbox placement DROPPED, Merkle anchor DROPPED, stale rule = probes 4 s / stale 12 s, honest insider radar, freeze shows measured time. My advice on 2 decisions recorded in BRIDGE-FEATURES-22NOV.md. NOW: R4-1b step 2 Rust probes.

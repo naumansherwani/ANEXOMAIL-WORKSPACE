@@ -15,4 +15,5 @@ UNION ALL SELECT 'the Bridge doors are granted to desk_app', has_function_privil
 UNION ALL SELECT 'no PUBLIC execute on Desk functions', NOT EXISTS (SELECT 1 FROM pg_proc p JOIN pg_namespace s ON s.oid = p.pronamespace WHERE s.nspname = 'desk' AND p.proname LIKE 'fadm\_%' AND has_function_privilege('public', p.oid, 'EXECUTE'))
 UNION ALL SELECT 'all SECURITY DEFINER functions pin search_path', NOT EXISTS (SELECT 1 FROM pg_proc p JOIN pg_namespace s ON s.oid = p.pronamespace WHERE s.nspname = 'desk' AND p.prosecdef AND (p.proconfig IS NULL OR NOT EXISTS (SELECT 1 FROM unnest(p.proconfig) c WHERE c LIKE 'search_path=%')))
 UNION ALL SELECT 'desk_app is no superuser and does not bypass RLS', NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'desk_app' AND (rolsuper OR rolbypassrls))
+UNION ALL SELECT 'live probes run every 4 s so a heartbeat is stale at 12 s (his rule)', (SELECT count(*) FROM desk.fadm_service WHERE service IN ('h3_edge','tls','db','signer') AND probe_every_s = 4) = 4
 UNION ALL SELECT 'ledger hash chain still verifies', desk.fadm_ledger_verify();

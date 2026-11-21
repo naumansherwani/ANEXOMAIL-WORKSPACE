@@ -5519,3 +5519,7 @@ Features ki list (QC4 mein kya banega):
 ## 22 Nov 2026 03:59 PKT (his 03:59): "tumen mashwara nahi diya discuss nahi kiya": answered the two decisions in chat.
 
 - Bridge step 2 probes.rs written, 24 cargo tests ok, AD3 patch tested in sandbox; not on server; WIRED: NO
+
+## 22 Nov 2026 04:07 PKT (his 04:07): pasted ad-auto (AD3 skipped) + desk-install OK; founder rows stay founder, I judge what employees need; confused about Bridge: Desk Bridge = company needs; next phase discuss tech.
+
+- AD3-check row for 4 s probes (so ad-auto reruns AD3); desk-install ok on his server; WIRED: NO

@@ -2837,3 +2837,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - AD3 SQL ran OK on his server (17 rows t), phase not green; Bridge feature list 2 recorded; WIRED: NO
 
 - Bridge step 2 probes.rs written, 24 cargo tests ok, AD3 patch tested in sandbox; not on server; WIRED: NO
+
+- AD3-check row for 4 s probes (so ad-auto reruns AD3); desk-install ok on his server; WIRED: NO

@@ -132,3 +132,5 @@ AD3 ran on his server OK. Read BRIDGE-FEATURES-22NOV.md. Open decisions for him:
 ## 65 (22 Nov 2026 03:58 PKT) his 03:57: dropped inbox placement + Merkle anchor; stale 12 s / probes 4 s; advice yes+yes on founder rows and one-way summary. NEXT Rust probes.
 
 ## 66 (22 Nov 2026 03:59 PKT) probes.rs done; he said I gave no advice in chat (it was only in the doc): give it in chat. NEXT: his ad-auto + desk-install, then signed doors.
+
+## 67 (22 Nov 2026 04:07 PKT) his 04:07: desk-install ok; ad-auto skipped AD3 patch (check true) -> added check row 18; he must run ad-auto again. Founder rows stay founder; Desk Bridge only company needs; one-way summary dropped for now. NEXT step 3 doors (discuss tech).
