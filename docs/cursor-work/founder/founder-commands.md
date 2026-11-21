@@ -5363,3 +5363,7 @@ Features ki list (QC4 mein kya banega):
 [22 Nov 2026 00:50 PKT] HIS WORD (00:41): "founder wali technology codes kaise awam main jayegi yeh bhi masla hai, abhi hum founder wale admin desk mein kar rahe hain; copy nahi karna hai to kam se kam yaad kar ke NEW likh do." + "admin desk ka list do, next ka time and date ke saath ledger working now update kero". DONE: docs/claude/admin-desk/REMAINING-LIST-22NOV.md (12 ordered rows). Rule: new code written from remembered founder design, no file copy/import.
 
 - 22 Nov 2026 00:50 PKT Admin Desk remaining list (12 rows) written; new-not-copy rule; WIRED: NO
+
+[22 Nov 2026 00:52 PKT] HIS HAAN (00:43): Alt-Svc :4400 = "haan advance only". Before touching his Caddyfile I need the real admindesk block (0.1% doubt rule): read-only line given (grep -n -A12 admindesk in /etc/caddy/Caddyfile; ufw status | grep 4400; curl -sI alt-svc). Then the Alt-Svc step goes INSIDE desk-install.sh (backup, caddy validate, rollback). Note: first visit stays on Caddy h2 (no HTTPS record at Namecheap); Alt-Svc moves later visits to h3.
+
+- 22 Nov 2026 00:52 PKT his haan for Alt-Svc :4400; read-only Caddy block paste needed first; WIRED: NO
