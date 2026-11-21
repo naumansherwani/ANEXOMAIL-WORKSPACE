@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 21 Nov 2026 21:51 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 21:52 PKT) - read this FIRST for the Desk after a compaction
 DOING: login subtitle + mobile logo fixed
 NEXT STEP: his desk-install, sign in; then Rule 52, R4-1
 HIS LAST WORD: Sovereign Desk Access line, mobile fix
@@ -39,6 +39,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 0faa9860 21 Nov 21:52 Desk login: new subtitle, mobile logo fix
 - 3040da2e 21 Nov 21:43 ledger line bc0f1692
 - fa104607 21 Nov 21:43 ledger line c88cb88c
 - c88cb88c 21 Nov 21:43 Desk: restart command, three-command law
@@ -46,12 +47,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - e3b1e4f5 21 Nov 21:42 Desk: one install command does everything (DB login + CA)
 - 70774099 21 Nov 21:40 ledger line 8747699c
 - 8747699c 21 Nov 21:40 Desk login: motto removed from the login page only
-- a69e4362 21 Nov 21:39 ledger line c29f4204
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskSignIn.tsx
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
