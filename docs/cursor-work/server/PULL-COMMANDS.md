@@ -2089,3 +2089,5 @@
 - AD2 SQL (org, Zanzibar relations, policy engine, device-bound passkeys, onboarding, mover/leaver, recovery, JIT, burst breaker) + AD2-check: sandbox PASS x2, WIRED: NO (not run on his server)
 
 - R4-1 UI step 1 DeskShell cinematic dashboard: tests 7/7, sandbox layout 390/820/1280 ok, WIRED: NO (not on his server, no real-session look)
+
+- R4-1 UI: original BrandMark (awam size) in Desk rail, colours intact; sandbox layout ok, WIRED: NO

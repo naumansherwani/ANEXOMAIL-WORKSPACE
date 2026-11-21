@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
+import { BrandMark } from "../signin/BrandMark";
 
 /** Admin Desk shell (R4-1, UI step 1, 22 Nov 2026): cinematic night-office look of the Desk login, calm work screen (ONE hero moment: the greeting).
  *  Pure presentation: every value comes in as a prop from a Desk-signed answer the kernel verified. No founder import, no raw fetch, no mock data.
@@ -77,7 +78,7 @@ export function DeskShell({ me, err, out, onSignOut }: { me: ShellMe | null; err
   return (
     <div className="dsk"><style>{CSS}</style>
       <nav className="dsk-rail" aria-label="Admin Desk">
-        <div className="dsk-brand"><b>Admin Desk</b></div>
+        <div className="dsk-brand"><BrandMark home={false} /><b>Admin Desk</b></div>
         {NAV.map((n) => <button key={n.key} type="button" className="dsk-nav" aria-current={n.live ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={n.live ? undefined : "Opens when it is connected"} onClick={(e) => { if (!n.live) e.preventDefault(); }}>{n.glyph}<span>{n.label}</span></button>)}
         {me && <div className="dsk-who"><i aria-hidden="true">{initials(me.name || me.email)}</i><span>{me.name || me.email}</span></div>}
       </nav>

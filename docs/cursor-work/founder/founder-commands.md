@@ -5447,3 +5447,7 @@ Features ki list (QC4 mein kya banega):
 ## 22 Nov 2026 02:26: R4-1 UI step 1 (his 02:23 order): DeskShell.tsx cinematic dashboard (glass rail >=820, bottom tab bar <820, greeting, live clock, real session countdown, honest not-connected cards). Tests 7/7, harness 390/820/1280: no sideways scroll, no console errors. Backup branch pushed first. NOT GREEN: needs his real sign-in look.
 
 - R4-1 UI step 1 DeskShell cinematic dashboard: tests 7/7, sandbox layout 390/820/1280 ok, WIRED: NO (not on his server, no real-session look)
+
+## 22 Nov 2026 02:27 (his 02:26): "orignial logo rakho aur awam wala size rakho baki colours sahi hai intact". DeskShell rail now shows the ORIGINAL BrandMark at awam size (size-8, unchanged component); colours untouched. Tests pass, 390/820/1280 harness ok.
+
+- R4-1 UI: original BrandMark (awam size) in Desk rail, colours intact; sandbox layout ok, WIRED: NO
