@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 01:14 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 01:14 PKT) - read this FIRST for the Desk after a compaction
 DOING: Employee accounts plan ON1..ON8 written
 NEXT STEP: his 4 answers; R3d code
 HIS LAST WORD: his 01:13: employees accounts plan
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- be1cefbb 22 Nov 01:14 Desk: employee accounts plan
 - 1feda4c5 22 Nov 01:13 ledger line b3d0dcfc
 - b3d0dcfc 22 Nov 01:13 Desk: world-advance points W1-W10
 - 0ea957a3 22 Nov 01:09 ledger line 8fbad37c
@@ -54,15 +55,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 25f7d87d 22 Nov 01:08 ledger line 27e8eda0
 - 27e8eda0 22 Nov 01:08 Desk: 50,000-staff design phase, reminders
 - 3af44290 22 Nov 01:01 ledger line 5b1a98ef
-- 5b1a98ef 22 Nov 01:01 Clean tree after record
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
- M docs/claude/admin-desk/state/PHASES.md
- M docs/claude/admin-desk/state/REMINDERS.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? docs/claude/admin-desk/EMPLOYEE-ACCOUNTS-PLAN-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
