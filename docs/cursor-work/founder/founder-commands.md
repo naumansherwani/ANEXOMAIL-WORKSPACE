@@ -5115,3 +5115,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 11:21 PKT auto checkpoint; WIRED: NO
 
 - 21 Nov 2026 11:21 PKT auto checkpoint; WIRED: NO
+
+[21 Nov 2026 20:44 PKT] HIS WORD (20:38): gandu bata kaise login kerun, tune normal cheezein rakhi nahi hain; ajj ka target = founder ke codes/phases tarteeb se copy admin desk ke gates pe, endpoint admin desk ka, awam/founder se mix nahi. (20:39) awam ka login mere wale se fast hai, awam login technology bhi dekho. FOUND: awam login = Bun server/routes/auth.ts -> Supabase GoTrue signInWithPassword (1 HTTPS call, kept-alive); my first Desk door opened a new DB connection per login (slow). FIXED: one persistent desk_app connection, 2 round trips per login.
+
+- 21 Nov 2026 20:44 PKT Desk login door door.rs + AD1b + desk-appdb.sh, password form open; tested locally on PG16; WIRED: NO until his 3 server steps

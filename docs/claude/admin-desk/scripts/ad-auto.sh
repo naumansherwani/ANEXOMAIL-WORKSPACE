@@ -10,7 +10,7 @@ git -C "$REPO" fetch -q origin main || { echo "FAIL: fetch"; exit 2; }
 P(){ env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "$DESK_DB_URL" -X -q -P pager=off "$@"; }
 S="$(mktemp)"; C="$(mktemp)"; trap 'rm -f "$S" "$C"' EXIT; N=0; BAD=0
 ok(){ ! echo "$1" | grep -qE '\| f( |$)|ERROR' && echo "$1" | grep -qE '\| t( |$)'; }
-for n in $(git -C "$REPO" ls-tree --name-only origin/main admin-desk/sql/ | sed -n 's#.*/\(AD[0-9][0-9]*\)\.sql$#\1#p' | sort -V); do
+for n in $(git -C "$REPO" ls-tree --name-only origin/main admin-desk/sql/ | sed -n 's#.*/\(AD[0-9][0-9]*[a-z]*\)\.sql$#\1#p' | sort -V); do
   N=$((N+1)); git -C "$REPO" show "origin/main:admin-desk/sql/$n.sql" >"$S"
   HAS=0; git -C "$REPO" cat-file -e "origin/main:admin-desk/sql/checks/$n-check.sql" 2>/dev/null && { HAS=1; git -C "$REPO" show "origin/main:admin-desk/sql/checks/$n-check.sql" >"$C"; }
   if [ $HAS = 1 ]; then R="$(P -f "$C" 2>&1)"; if ok "$R"; then echo "$n: already run (yeh already is database mein implement hai), skipped"; continue; fi; fi

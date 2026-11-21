@@ -7,3 +7,5 @@
 6. Commit: lane-sync, git add -A, rec.sh twice, git push -q. Loop: pgrep -f ckpt-loop.sh (restart with nohup bash docs/cursor-work/server/ckpt-loop.sh &).
 
 7. (21 Nov 2026 11:01 PKT) UI PLAN: read PLAN-DESK-UI-COPY-21NOV.md. NEVER mention repo checkpoint commits in chat (his 11:00). Evening: keep that table order.
+
+8. (21 Nov 2026 20:44 PKT) LOGIN DOOR code pushed. His steps in order: ad-auto.sh (applies AD1b), desk-appdb.sh (desk_app login + app.env), desk-install.sh; then sign in at /adminlogin with admindesk@anexomail.com + the password he typed. Awam login = Supabase GoTrue (Bun auth.ts), do not touch. TODAY target (his 20:38): copy founder phases in order into the Desk (PLAN-DESK-UI-COPY-21NOV.md), Desk gate + /desk/v1 endpoints only.

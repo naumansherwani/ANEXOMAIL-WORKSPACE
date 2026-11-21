@@ -8,7 +8,7 @@ REPO="${REPO:-/opt/anexomail-web}"; ENVF=/etc/anexomail-desk/db.env
 command -v psql >/dev/null || { echo "FAIL: psql not found"; exit 2; }
 git -C "$REPO" fetch -q origin main || { echo "FAIL: fetch"; exit 2; }
 T="$(mktemp)"; trap 'rm -f "$T"' EXIT; BAD=0; N=0
-for f in $(git -C "$REPO" ls-tree --name-only origin/main admin-desk/sql/checks/ | sed -n 's#.*/\(AD[0-9][0-9]*\)-check\.sql$#\1#p' | sort -V); do
+for f in $(git -C "$REPO" ls-tree --name-only origin/main admin-desk/sql/checks/ | sed -n 's#.*/\(AD[0-9][0-9]*[a-z]*\)-check\.sql$#\1#p' | sort -V); do
   git -C "$REPO" show "origin/main:admin-desk/sql/checks/$f-check.sql" >"$T"; N=$((N+1))
   echo "== check $f"; OUT="$(env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "$DESK_DB_URL" -X -q -P pager=off -f "$T" 2>&1)"; echo "$OUT" | sed 's/^/   /'
   echo "$OUT" | grep -qE '\| f( |$)|ERROR' && BAD=1

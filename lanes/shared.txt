@@ -27,6 +27,7 @@ admin-desk/scripts/ad-check.sh
 admin-desk/scripts/ad-db-env.sh
 admin-desk/scripts/ad-sql-run.sh
 admin-desk/scripts/desk-alias-look.sh
+admin-desk/scripts/desk-appdb.sh
 admin-desk/scripts/desk-cert-sync.sh
 admin-desk/scripts/desk-h3-check.sh
 admin-desk/scripts/desk-h3-enable.sh
@@ -44,9 +45,11 @@ admin-desk/sql/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/AD1.sql
 admin-desk/sql/AD1/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/AD1/README.md
+admin-desk/sql/AD1b.sql
 admin-desk/sql/README.md
 admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/checks/AD1-check.sql
+admin-desk/sql/checks/AD1b-check.sql
 admin-desk/sql/checks/README.md
 admin-desk/state/00-FOUNDER-TECH-RULE.md
 admin-desk/state/COMPACT-SAVE.md
