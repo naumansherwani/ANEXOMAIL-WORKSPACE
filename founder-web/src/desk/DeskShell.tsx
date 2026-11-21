@@ -63,6 +63,15 @@ const CSS = `
 .dsk-h1{margin:4px 0 0;font-size:clamp(30px,5.4vw,52px);line-height:1.05;font-weight:600;letter-spacing:-.03em;text-wrap:balance;background:linear-gradient(180deg,#fff 0%,#BFD6FF 60%,#6FA6F2 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .dsk-clock{font-variant-numeric:tabular-nums;font-size:clamp(22px,3.4vw,34px);font-weight:300;letter-spacing:.02em;color:#D5E1F7;text-align:right;white-space:nowrap}
 .dsk-clock small{display:block;margin-top:2px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);font-weight:500}
+.dsk-bar{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin:-8px 0 14px;position:relative}
+.dsk-chip{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:var(--glass);font-size:13px;font-weight:600;color:var(--ink)}
+.dsk-chip i{width:9px;height:9px;border-radius:50%;background:#6FA6F2;box-shadow:0 0 0 3px rgba(111,166,242,.25)}
+.dsk-av{display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--line);border-radius:50%;background:rgba(111,166,242,.2);color:#fff;font:inherit;font-weight:600;cursor:pointer}
+.dsk-menu{position:absolute;z-index:30;right:0;top:52px;width:min(300px,calc(100vw - 32px));padding:14px;border:1px solid var(--line);border-radius:18px;background:rgba(10,18,38,.96);backdrop-filter:blur(18px);box-shadow:0 18px 40px rgba(2,8,22,.55)}
+.dsk-menu b{display:block;font-size:15px}.dsk-menu small{display:block;margin-top:2px;color:var(--mute);overflow-wrap:anywhere}
+.dsk-role{display:inline-block;margin:8px 0 6px;padding:3px 10px;border-radius:999px;background:rgba(111,166,242,.2);font-size:12px;font-weight:600;text-transform:capitalize}
+.dsk-menu button{display:block;width:100%;min-height:44px;margin-top:6px;border:0;border-radius:12px;background:transparent;color:var(--ink);font-family:inherit;font-size:14px;text-align:left;padding:0 10px;cursor:pointer}
+.dsk-menu button:hover:not(:disabled){background:rgba(255,255,255,.06)}.dsk-menu button:disabled{color:var(--mute);cursor:default}
 .dsk-grid{display:grid;gap:14px;margin-top:30px;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr))}
 .dsk-card{min-width:0;padding:18px 20px;border:1px solid var(--line);border-radius:18px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 10px 30px rgba(2,8,22,.35)}
 .dsk-k{margin:0;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
@@ -94,7 +103,7 @@ html{scrollbar-width:thin;scrollbar-color:rgba(111,166,242,.45) transparent}
 export function DeskShell({ me, err, out, onSignOut }: { me: ShellMe | null; err: string; out: boolean; onSignOut: () => void }) {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const t = window.setInterval(() => setNow(Date.now()), 15000); return () => window.clearInterval(t); }, []);
-  const [pins, setPins] = useState<string[]>(readPins), groups = orderNav(NAV, pins), toggle = (k: string) => setPins((p) => { const n = p.includes(k) ? p.filter((x) => x !== k) : [...p, k]; writePins(n); return n; });
+  const [menu, setMenu] = useState(false), [pins, setPins] = useState<string[]>(readPins), groups = orderNav(NAV, pins), toggle = (k: string) => setPins((p) => { const n = p.includes(k) ? p.filter((x) => x !== k) : [...p, k]; writePins(n); return n; });
   const d = new Date(now), first = me?.name?.trim().split(/\s+/)[0] || me?.email.split("@")[0] || "";
   const end = me ? parseWhen(me.expires_at) : null;
   const clock = d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" }), date = d.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
@@ -117,6 +126,13 @@ export function DeskShell({ me, err, out, onSignOut }: { me: ShellMe | null; err
         </div>
       </nav>
       <main className="dsk-main">
+        <div className="dsk-bar">
+          {me && <span className="dsk-chip" title="Every answer on this page was signed by the Desk and verified in your browser"><i aria-hidden="true" />Live · verified</span>}
+          {me && <button type="button" className="dsk-av" aria-label="Account menu" aria-expanded={menu} onClick={() => setMenu((v) => !v)}>{(me.name || me.email).trim().split(/\s+/).slice(0, 2).map((w) => w[0]?.toUpperCase() ?? "").join("") || "?"}</button>}
+          {me && menu && <div className="dsk-menu" role="menu"><b>{me.name || first}</b><small>{me.email}</small><span className="dsk-role">{me.role}</span>
+            <button type="button" role="menuitem" disabled title="Opens when it is connected">Profile and photo</button><button type="button" role="menuitem" disabled title="Opens when it is connected">Settings</button><button type="button" role="menuitem" disabled title="Opens when it is connected">Devices and sessions</button>
+            <button type="button" role="menuitem" disabled={out} onClick={onSignOut}>{out ? "Signing out…" : "Sign out"}</button></div>}
+        </div>
         <header className="dsk-top">
           <div><p className="dsk-hi">{greeting(d.getHours())}{first ? "," : ""}</p><h1 className="dsk-h1">{me ? (me.name || first) : err ? "Dashboard" : "Loading your desk…"}</h1></div>
           <div className="dsk-clock" aria-label={`${clock}, ${date}`}>{clock}<small>{date}</small></div>

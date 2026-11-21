@@ -3087,3 +3087,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Desk rail: Cases in Workspace, bottom name removed; WORLD-ADMIN-DESK-FEATURES + 24 module folders (PLAN), WIRED: NO for UI until install
 
 - Desk rail reads module registry (24 planned modules), Cases in Workspace, bottom name removed, WORLD feature list; isolation gate resolves Desk-internal imports; tests 12/12, WIRED: NO until install
+
+- R4-1b step 1: Desk top bar chip Live verified + profile menu; layout 390/820/1280 ok, tests 12/12; install of previous UI pasted OK; WIRED: NO for this step until install + my look

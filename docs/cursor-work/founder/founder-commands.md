@@ -5471,3 +5471,7 @@ Features ki list (QC4 mein kya banega):
 ## 22 Nov 2026 02:53: NOTE a parallel writer created founder-web/src/desk/modules/* (registry + 24 folders) and WORLD-CLASS-DESK-MODULES-22NOV.md at 02:51 while I worked; adopted as the CODE registry (DeskShell reads it). My duplicate docs/modules removed. Gate lane-sync.py fixed: a relative import that resolves INSIDE founder-web/src/desk/ is the Desk own file (imports resolving outside are still refused).
 
 - Desk rail reads module registry (24 planned modules), Cases in Workspace, bottom name removed, WORLD feature list; isolation gate resolves Desk-internal imports; tests 12/12, WIRED: NO until install
+
+## 22 Nov 2026 03:00: his desk-install paste 03:00 OK (registry UI live on server: build, key kept, health 200, DB login live; serverfirst receipt 67). R4-1b step 1: top bar with chip "Live · verified" (real: only shown when a kernel-verified /me answer arrived) + avatar profile menu (name, email, role chip, Profile/Settings/Devices disabled until connected, Sign out). Trusted chip NOT shown: device key (DBSC) not real yet, nothing faked.
+
+- R4-1b step 1: Desk top bar chip Live verified + profile menu; layout 390/820/1280 ok, tests 12/12; install of previous UI pasted OK; WIRED: NO for this step until install + my look
