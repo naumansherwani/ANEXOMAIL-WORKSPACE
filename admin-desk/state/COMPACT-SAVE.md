@@ -39,3 +39,5 @@
 22. (21 Nov 2026 22:31 PKT) His install: CA pinned (sha256 80:70:25:AD...), door failed Permission denied -> fixed with systemd LoadCredential. Login: pill fix both pages, card up 14px, horizon light under card. NEXT his install, sign in; then sign-in flash demo (his 22:31).
 
 23. (21 Nov 2026 22:36 PKT) BACKUP LAW: tag backup/desk-ui-<time> before every Desk UI change (TWO-COMMANDS.md). Home Sign in A made navy/crisp. He said "bahut bura colour" - asked which.
+
+24. (21 Nov 2026 22:40 PKT) Home Sign in button = awam colours + white A (his 22:39). Backup branch backup/desk-ui-20261121-2239.

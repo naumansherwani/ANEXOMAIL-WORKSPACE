@@ -5263,3 +5263,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 22:36 PKT Desk home Sign in A prominent; backup tag before UI changes; WIRED: NO
 
 - 21 Nov 2026 22:36 PKT backup is a branch (tags refused by proxy); WIRED: NO
+
+[21 Nov 2026 22:40 PKT] HIS WORD (22:39, 2 images): yeh second image (my navy A on light button) bahut bura tha, image one awam wala hai, yeh kar lo. DONE: backup branch backup/desk-ui-20261121-2239; home Sign in button = awam colours (--primary oklch(0.455 0.093 258), white text) with the awam white A; my navy-A CSS removed.
+
+- 21 Nov 2026 22:40 PKT Desk home Sign in = awam colours + white A; WIRED: NO until his install
