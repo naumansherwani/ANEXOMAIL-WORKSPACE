@@ -18,36 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- dd66f70f 21 Nov 07:31 Desk isolation gate (founder and Desk never mixed)
 - 38dcddba 21 Nov 07:31 ledger line 3ca0635a
 - 3ca0635a 21 Nov 07:31 Desk isolation gate (founder and Desk never mixed)
 - d056b1a7 21 Nov 07:29 ledger line dde2559c
 - dde2559c 21 Nov 07:29 WORKING-NOW checkpoint
-- 98a98972 21 Nov 07:29 ledger line 614387c1
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/DONE-DO-NOT-REPEAT.md
- M docs/claude/RESUME-POINT.md
- M docs/claude/founder/PULL-COMMANDS.md
- M docs/claude/state/HEARTBEAT.json
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- M docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
- M docs/cursor-work/DONE-DO-NOT-REPEAT.md
- M docs/cursor-work/founder/founder-commands.md
- M docs/cursor-work/server/PULL-COMMANDS.md
- M founder-web/src/system_brain.json
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md                   | 25 ++++++++++------------
- docs/claude/tech-contracts/CURRENT.md              |  2 ++
- ...DE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md |  2 ++
- docs/cursor-work/DONE-DO-NOT-REPEAT.md             |  2 ++
- docs/cursor-work/founder/founder-commands.md       |  2 ++
- docs/cursor-work/server/PULL-COMMANDS.md           |  2 ++
- founder-web/src/system_brain.json                  |  4 ++--
- 11 files changed, 30 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 31 +------------------------------
+ 1 file changed, 1 insertion(+), 30 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -58,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (77903635a3619b1442b9760e2ee5f6e8965fb95e)
+WIP snapshot: refs/wip/last (2778e1a60d69ff79df6f80e827ce1a5c30142a9c)
