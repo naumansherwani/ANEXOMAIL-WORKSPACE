@@ -5079,3 +5079,5 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 10:52 PKT] HIS WORD (10:51): "Asli Business account ... yeh kyon dia hai tera dekh bhi use kia kero socho" (my line piped through tail hid the questions). FIXED: prompts via /dev/tty.
 
 - 21 Nov 2026 10:52 PKT Desk owner + account scripts ask via /dev/tty (no hidden prompts); WIRED: NO
+
+- 21 Nov 2026 10:52 PKT Desk owner + account scripts ask via /dev/tty (no hidden prompts); WIRED: NO

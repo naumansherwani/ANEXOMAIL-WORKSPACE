@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:44 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:52 PKT) - read this FIRST for the Desk after a compaction
 DOING: auth.rs + owner/real-account scripts pushed
 NEXT STEP: his desk-install + desk-owner run, then login door + AD1b
 HIS LAST WORD: real account method, gold codes
@@ -33,6 +33,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e85ccf30 21 Nov 10:52 Desk: scripts prompt via /dev/tty
 - daecb612 21 Nov 10:44 checkpoint
 - 197b49a1 21 Nov 10:44 checkpoint
 - 619966b3 21 Nov 10:44 Desk: R3a2-argon2 feature row = code
@@ -40,7 +41,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 51542813 21 Nov 10:44 Desk: auth.rs ARGON2ID, owner and real account scripts
 - 70629973 21 Nov 10:36 checkpoint
 - d4bca7c6 21 Nov 10:36 checkpoint
-- 79a3aef8 21 Nov 10:36 Desk: ad-auto.sh auto SQL runner
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
