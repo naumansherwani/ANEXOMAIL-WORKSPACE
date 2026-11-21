@@ -30,3 +30,5 @@ Full law + older history: docs/claude/SERVER-PORTS-RED-LINE-08NOV.md. QC1e D4A (
 Note: the first paste was cut by `head -40` after the TURN lines (TCP 22/25/80/443/8443 ... not shown); those stay as in the red-line file until a full list is pasted.
 
 ## QCONNECT (21:06 PKT): PostgreSQL on his server = UNIX SOCKET ONLY (/var/run/postgresql), NO TCP port, NO port from this list is touched. Services seen running: anexomail-awam-edge, anexomail-founder, caddy, founder-dns. OS packages: postgresql candidate 18 (Ubuntu). Disk 22 GB free, RAM 12.9 GB available.
+
+## (22 Nov 2026 00:58 PKT) HIS PASTE 22 Nov 00:47: Caddyfile admindesk block (line 194) = encode zstd gzip + reverse_proxy 127.0.0.1:4400 only; ufw has 4400/udp ALLOW (v4 + v6, comment anexomail-desk http3); current public alt-svc = h3=":18443"; ma=2592000 (Caddy's own). desk-install step 6/6 adds one header line to that block: Alt-Svc h3=":4400".

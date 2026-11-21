@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 00:43 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: his haan for Alt-Svc :4400; waiting his read-only paste of Caddy admindesk block
-NEXT STEP: write Alt-Svc step in desk-install.sh after his paste; then Rule 52 Desk RPC meanwhile
-HIS LAST WORD: 00:43 haan advance only
+# WORKING NOW (manual checkpoint, 22 Nov 2026 00:47 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Alt-Svc step 6/6 written in desk-install.sh, waits his install
+NEXT STEP: his desk-install; my Chrome h3 proof; row 3 Rule 52 Desk RPC
+HIS LAST WORD: 00:47 Caddy paste + context update
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,30 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 3863527b 22 Nov 00:43 ledger line c8c79153
 - c8c79153 22 Nov 00:43 Record Alt-Svc haan
 - 0d220b4a 22 Nov 00:42 ledger line d865e186
 - d865e186 22 Nov 00:42 Desk remaining list
 - c4a06271 22 Nov 00:38 ledger line f7e19236
-- f7e19236 22 Nov 00:38 Record his order
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/admin-desk/scripts/desk-install.sh
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
+ M docs/claude/state/PORTS-LIVE.md
+ M docs/claude/state/SERVER-FIRST.jsonl
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/founder/founder-commands.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 21 ++-------------------
- 1 file changed, 2 insertions(+), 19 deletions(-)
+ docs/claude/admin-desk/scripts/desk-install.sh | 15 +++++++++++++-
+ docs/claude/admin-desk/state/COMPACT-SAVE.md   |  2 ++
+ docs/claude/state/PORTS-LIVE.md                |  2 ++
+ docs/claude/state/SERVER-FIRST.jsonl           |  1 +
+ docs/claude/state/WORKING-NOW.md               | 28 +++++++++-----------------
+ docs/cursor-work/founder/founder-commands.md   |  2 ++
+ 6 files changed, 31 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +52,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (be1e8912df76e8dddc88363c461d040f0ebabafc)
+WIP snapshot: refs/wip/last (1611dd08e2aa3ca43881ec8b81f9466c966178e0)

@@ -2741,3 +2741,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 22 Nov 2026 00:50 PKT Admin Desk remaining list (12 rows) written; new-not-copy rule; WIRED: NO
 
 - 22 Nov 2026 00:52 PKT his haan for Alt-Svc :4400; read-only Caddy block paste needed first; WIRED: NO
+
+- 22 Nov 2026 00:58 PKT desk-install step 6/6 Alt-Svc h3 :4400 written (backup, validate, rollback); not run on his server; WIRED: NO

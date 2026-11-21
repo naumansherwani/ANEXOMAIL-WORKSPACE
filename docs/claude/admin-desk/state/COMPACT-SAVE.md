@@ -79,3 +79,5 @@
 42. (22 Nov 2026 00:50 PKT) Desk remaining list written: docs/claude/admin-desk/REMAINING-LIST-22NOV.md (12 ordered rows: 1 Alt-Svc h3 (his haan), 2 his first sign-in, 3 Rule 52 Desk kernel RPC, 4 DBSC, 5 orb, 6 R4-1 shell, 7 inboxes, 8 auto mail, 9 assign/SLA, 10 compose..shortcuts, 11 attachments/TLS/PGP, 12 dashboard+audit). His rule: write NEW from remembered founder design, no copy or import. Premium/Max after.
 
 43. (22 Nov 2026 00:52 PKT) HAAN given for Alt-Svc :4400 ("advance only"). WAITS his paste of the read-only line (Caddy admindesk block, ufw 4400, current alt-svc header) before I edit Caddy inside desk-install.sh. Do not guess the Caddyfile layout.
+
+44. (22 Nov 2026 00:58 PKT) Alt-Svc WRITTEN: desk-install.sh step 6/6 (his paste 00:47 gave the real Caddy block + ufw 4400/udp ok + current alt-svc h3=":18443"). Backtick-quoted header line, awk insert tested locally, backup + validate + reload + check + rollback. NEXT his ONE desk-install, then my live Chrome: second visit must show nextHopProtocol h3 (first visit stays on Caddy). Then row 2 (his first sign-in) and row 3 Rule 52 Desk RPC.

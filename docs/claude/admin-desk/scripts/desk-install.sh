@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ANEXOMAIL ADMIN DESK installer R3a0 (21 Nov 2026). DESK ISOLATION: its own user, own dir /opt/anexomail-desk, own unit anexomail-desk, loopback 127.0.0.1:4400.
-# Does NOT touch: anexomail-founder, anexomail-rust, Caddy, ufw, any env of another service. Rerun is safe (old binary backed up, rollback on failure).
+# Does NOT touch: anexomail-founder, anexomail-rust, ufw, any env of another service. Step 6/6 touches ONLY the admindesk block of the Caddyfile (one header line, backup + validate + rollback). Rerun is safe (old binary backed up, rollback on failure).
 set -u
 REPO="${REPO:-/opt/anexomail-web}"; ROOT=/opt/anexomail-desk; SVC=anexomail-desk; export CARGO_TARGET_DIR="$ROOT/target"
 command -v cargo >/dev/null 2>&1 || export PATH="$HOME/.cargo/bin:$PATH"
@@ -52,3 +52,16 @@ echo "OK: anexomail-desk is up on 127.0.0.1:4400"
 # 5/5 (his 21 Nov 2026 21:41: ONE install command does everything): the Desk's own database login + database CA, kept if it works, renewed if it does not
 echo "== 5/5 database login (desk_app)"
 if [ -r /etc/anexomail-desk/db.env ]; then bash <(show admin-desk/scripts/desk-appdb.sh) --ensure || exit $?; else echo "   skipped: /etc/anexomail-desk/db.env not there yet"; fi
+# 6/6 (his 22 Nov 2026 00:43 'haan advance only'): tell browsers the Desk speaks QUIC on UDP 4400 (Alt-Svc). Only the admindesk block of the Caddyfile changes: ONE header line.
+echo "== 6/6 Alt-Svc for the Desk (HTTP/3 on UDP 4400)"
+CF=/etc/caddy/Caddyfile; BK=/root/caddy-backups; LINE='    header Alt-Svc `h3=":4400"; ma=86400`'
+if [ ! -f "$CF" ]; then echo "   skipped: $CF not found"
+elif awk '/^admindesk\.anexomail\.com[[:space:]]*\{/{i=1} i&&/Alt-Svc/{f=1} i&&/^\}/{i=0} END{exit !f}' "$CF"; then echo "   already set in the admindesk block, nothing changed"
+else
+  mkdir -p "$BK"; B="$BK/Caddyfile.admindesk-altsvc.$(date +%Y%m%d-%H%M%S)"; cp -a "$CF" "$B"; echo "   backup: $B"
+  awk -v L="$LINE" '/^admindesk\.anexomail\.com[[:space:]]*\{/{i=1} {print} i&&/reverse_proxy 127\.0\.0\.1:4400/{print L} i&&/^\}/{i=0}' "$B" >"$CF.new" && cp "$CF.new" "$CF" && rm -f "$CF.new"
+  if caddy validate --config "$CF" --adapter caddyfile >/dev/null 2>&1 && systemctl reload caddy; then
+    sleep 2; AS="$(curl -sI --max-time 10 https://admindesk.anexomail.com/ | grep -i '^alt-svc' | tr -d '\r')"; echo "   alt-svc now: $AS"
+    case "$AS" in *':4400"'*) echo "OK: browsers are told h3 on UDP 4400 (first visit still arrives through Caddy; the next ones use the Desk's own QUIC)";; *) echo "FAIL: header not as expected, restoring the backup"; cp -a "$B" "$CF"; systemctl reload caddy;; esac
+  else echo "FAIL: caddy validate or reload failed, restoring the backup"; cp -a "$B" "$CF"; systemctl reload caddy; fi
+fi
