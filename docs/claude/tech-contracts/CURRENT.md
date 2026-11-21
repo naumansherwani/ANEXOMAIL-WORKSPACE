@@ -2705,3 +2705,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 21 Nov 2026 23:31 PKT DNS facts recorded; AAAA steps; browser h3 choice pending; WIRED: NO
 
 - 21 Nov 2026 23:32 PKT his word: AAAA TTL Automatic; WIRED: NO
+
+- 21 Nov 2026 23:34 PKT Namecheap save failed (empty A row); fix steps given; WIRED: NO

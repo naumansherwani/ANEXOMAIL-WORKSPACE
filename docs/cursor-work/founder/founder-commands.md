@@ -5299,3 +5299,7 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 23:32 PKT] HIS WORD (23:32): auto karunga 5 mins nahi (TTL Automatic for the 2 AAAA records). OK.
 
 - 21 Nov 2026 23:32 PKT his word: AAAA TTL Automatic; WIRED: NO
+
+[21 Nov 2026 23:34 PKT] HIS SCREENSHOT (23:34): Namecheap "Failed to save record. Please try again." with AAAA admindesk 2a01:4f9:c014:5df6::1 (Automatic) AND an empty new A Record row (no host, no IP) below it. Told him: remove the empty A row, save the AAAA alone with its own tick.
+
+- 21 Nov 2026 23:34 PKT Namecheap save failed (empty A row); fix steps given; WIRED: NO

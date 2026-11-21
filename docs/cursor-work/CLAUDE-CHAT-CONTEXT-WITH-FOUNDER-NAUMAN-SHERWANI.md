@@ -5012,3 +5012,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 23:31 PKT DNS facts recorded; AAAA steps; browser h3 choice pending; WIRED: NO
 
 - 21 Nov 2026 23:32 PKT his word: AAAA TTL Automatic; WIRED: NO
+
+- 21 Nov 2026 23:34 PKT Namecheap save failed (empty A row); fix steps given; WIRED: NO
