@@ -95,3 +95,7 @@ Sandbox proof: Playwright getByRole heading(1,"Mail")=1, group "Inbox messages"=
 ## QC8b b2 LIVE LOOK (21 Nov 2026 05:02 PKT, his real Chrome, after his founder-install paste)
 On #/mail: role=heading level 1 label "Mail" on the wordmark = YES; .mbx-list role=group = YES; unread dot role=img = YES (1 of 1); a read mail opened -> exactly 1 row aria-current="true" and 1 ".on"; Esc -> 0 and 0. 18 rows, nothing marked or changed in his mailbox (opened only an already-read mail). Laptop 1536 only: phone 390 / tablet 820 STILL OPEN (attributes only, same build, no layout).
 ## QC8b b3 (05:03 PKT) mounted in a11y_sem.ts; b4 stays parked in a11y_sem_next.ts. Plan: docs/claude/QC8B-B3-PLAN-21NOV.md
+
+## 21 Nov 2026 05:30 PKT LIVE LOOK b3 + SQL ON HIS SERVER
+b3 (his real Chrome, laptop): opened a read mail, pressed c (Compose opened, focus inside it), clicked "Close (the draft is kept)" on the empty compose -> compose gone and document.activeElement = the open mail row (button.mbx-r.on). Nothing sent, nothing changed in his mailbox. 390/820 still open.
+SQL on his real database (his paste 05:12): E199 CHECK 8/8 OK incl. selftest 11 of 11; E200 CHECK 7/7 OK incl. selftest 15 of 15. Server side proven; Rust door + keys_store.ts wiring NOT done, so the sync/log are not active yet.
