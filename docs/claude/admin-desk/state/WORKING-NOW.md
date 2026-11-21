@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 01:39 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 01:39 PKT) - read this FIRST for the Desk after a compaction
 DOING: status answer: R3d B pushed, waits his desk-install
 NEXT STEP: his desk-install paste, my Chrome proof, R4-1
 HIS LAST WORD: his 01:39: kitna hua
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- ada44a81 22 Nov 01:39 status record
 - 906df9b7 22 Nov 01:38 ledger line 13fb6626
 - 13fb6626 22 Nov 01:38 Desk R3d stage B: signed doors, own WASM kernel, deskCall, real dashboard
 - d435d57e 22 Nov 01:25 ledger line e07c9674
@@ -54,7 +55,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - cad6b1db 22 Nov 01:22 ledger line 9e3cf7b7
 - 9e3cf7b7 22 Nov 01:22 Desk R3d stage A: signing + own kernel crate
 - f9ac1bbb 22 Nov 01:14 ledger line be1cefbb
-- be1cefbb 22 Nov 01:14 Desk: employee accounts plan
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
