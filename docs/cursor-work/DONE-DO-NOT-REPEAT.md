@@ -3679,3 +3679,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 09:45 PKT: his pastes 09:33: AnexoChat UDP proven (3443 anexomail-rust, TURN 3478/5349 relay 49152-49500); desk-install OK on server (h3 binary, h3 OFF); desk-h3-enable rolled back by design (ran before install); WIRED: live NO until his re-run + curl --http3
 
 - 21 Nov 2026 09:45 PKT: his pastes 09:33: AnexoChat UDP proven (3443 anexomail-rust, TURN 3478/5349 relay 49152-49500); desk-install OK on server (h3 binary, h3 OFF); desk-h3-enable rolled back by design (ran before install); WIRED: live NO until his re-run + curl --http3
+
+- 21 Nov 2026 09:50 PKT: his anger 09:38: Desk page no longer writes HTTP/2 or HTTP/1 (pill: HTTP/3 QUIC only when browser reports h3), gate allowlist empty; desk-h3-enable.sh cert Permission denied fixed with systemd LoadCredential; WIRED: live NO until his re-run + curl --http3
+
+- 21 Nov 2026 09:50 PKT: his anger 09:38: Desk page no longer writes HTTP/2 or HTTP/1 (pill: HTTP/3 QUIC only when browser reports h3), gate allowlist empty; desk-h3-enable.sh cert Permission denied fixed with systemd LoadCredential; WIRED: live NO until his re-run + curl --http3

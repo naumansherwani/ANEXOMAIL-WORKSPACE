@@ -2366,3 +2366,11 @@ Gate bans http/1, http/1.1, http/2, h2 in every Desk .rs/.toml/.ts/.tsx (only De
 - 21 Nov 2026 09:45 PKT: his pastes 09:33: AnexoChat UDP proven (3443 anexomail-rust, TURN 3478/5349 relay 49152-49500); desk-install OK on server (h3 binary, h3 OFF); desk-h3-enable rolled back by design (ran before install); WIRED: live NO until his re-run + curl --http3
 
 - 21 Nov 2026 09:45 PKT: his pastes 09:33: AnexoChat UDP proven (3443 anexomail-rust, TURN 3478/5349 relay 49152-49500); desk-install OK on server (h3 binary, h3 OFF); desk-h3-enable rolled back by design (ran before install); WIRED: live NO until his re-run + curl --http3
+
+## 21 Nov 2026 09:50 PKT R3a0-s2: TWO FIXES (his word 09:38, in anger: the page showed 'HTTP/2 . TLS 1.3 . AES-256-GCM'; and desk-h3-enable.sh failed: cert Permission denied)
+1) Desk pill (DeskTelemetry.tsx): the words HTTP/2 and HTTP/1.1 are removed from the code; the pill says 'HTTP/3 QUIC . TLS 1.3 . AES-256-GCM' only when the browser reports h3, otherwise only 'TLS 1.3 . AES-256-GCM' (proven line). Gate allowlist for the readout is now EMPTY: no Desk file may contain those words at all.
+2) Cert permission: the Desk user could not read /etc/anexomail/tls/desk (the parent directory is not traversable for it). Fix without touching any parent directory: the script keeps the copy root-only (700/600) and hands it to the service with systemd LoadCredential (desk.crt, desk.key; DESK_H3_CERT=%d/desk.crt). Rollback worked as designed: the Desk stays up on loopback, HTTP/3 off, ufw rule removed. NEXT: he re-runs desk-install.sh is NOT needed (binary is current); he re-runs desk-h3-enable.sh once more.
+
+- 21 Nov 2026 09:50 PKT: his anger 09:38: Desk page no longer writes HTTP/2 or HTTP/1 (pill: HTTP/3 QUIC only when browser reports h3), gate allowlist empty; desk-h3-enable.sh cert Permission denied fixed with systemd LoadCredential; WIRED: live NO until his re-run + curl --http3
+
+- 21 Nov 2026 09:50 PKT: his anger 09:38: Desk page no longer writes HTTP/2 or HTTP/1 (pill: HTTP/3 QUIC only when browser reports h3), gate allowlist empty; desk-h3-enable.sh cert Permission denied fixed with systemd LoadCredential; WIRED: live NO until his re-run + curl --http3

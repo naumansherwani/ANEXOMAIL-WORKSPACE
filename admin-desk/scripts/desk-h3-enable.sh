@@ -11,20 +11,20 @@ echo "   free"
 echo "== 2/6 the Desk's OWN copy of its certificate (isolation: the Desk never reads the awam directory)"
 [ -f "$AWD/$H.crt" ] && [ -f "$AWD/$H.key" ] || { echo "FAIL: $AWD/$H.crt/.key missing (run desk-cert-sync.sh first)"; exit 3; }
 id $SVC >/dev/null 2>&1 || { echo "FAIL: user $SVC missing (run desk-install.sh first)"; exit 3; }
-install -d -m 750 -o root -g $SVC $DD
-install -m 640 -o root -g $SVC "$AWD/$H.crt" $DD/$H.crt; install -m 640 -o root -g $SVC "$AWD/$H.key" $DD/$H.key
+install -d -m 700 -o root -g root $DD
+install -m 600 -o root -g root "$AWD/$H.crt" $DD/$H.crt; install -m 600 -o root -g root "$AWD/$H.key" $DD/$H.key   # root-only: the Desk gets them through systemd LoadCredential (no directory permission needed)
 cat >/usr/local/sbin/anexomail-desk-cert-refresh <<'R'
 #!/usr/bin/env bash
 # copies the Desk certificate from the awam sync directory when it changed, then restarts the Desk so HTTP/3 serves the new one
 H=admindesk.anexomail.com; A=/etc/anexomail/tls/awam; D=/etc/anexomail/tls/desk; ch=0
-for e in crt key; do cmp -s "$A/$H.$e" "$D/$H.$e" || { install -m 640 -o root -g anexomail-desk "$A/$H.$e" "$D/$H.$e" && ch=1; }; done
+for e in crt key; do cmp -s "$A/$H.$e" "$D/$H.$e" || { install -m 600 -o root -g root "$A/$H.$e" "$D/$H.$e" && ch=1; }; done
 [ $ch = 1 ] && systemctl restart anexomail-desk
 R
 chmod 755 /usr/local/sbin/anexomail-desk-cert-refresh
 echo '40 4 * * * root /usr/local/sbin/anexomail-desk-cert-refresh' >/etc/cron.d/anexomail-desk-cert
 echo "== 3/6 systemd drop-in (HTTP/3 on)"
 mkdir -p $DROP
-printf '[Service]\nEnvironment=DESK_H3_ADDR=[::]:%s\nEnvironment=DESK_H3_CERT=%s/%s.crt\nEnvironment=DESK_H3_KEY=%s/%s.key\n' $PORT $DD $H $DD $H >$DROP/h3.conf
+printf '[Service]\nLoadCredential=desk.crt:%s/%s.crt\nLoadCredential=desk.key:%s/%s.key\nEnvironment=DESK_H3_ADDR=[::]:%s\nEnvironment=DESK_H3_CERT=%%d/desk.crt\nEnvironment=DESK_H3_KEY=%%d/desk.key\n' $DD $H $DD $H $PORT >$DROP/h3.conf
 echo "== 4/6 firewall: one rule, UDP $PORT"
 ufw allow $PORT/udp comment 'anexomail-desk http3' >/dev/null 2>&1; ufw status | grep -E "^$PORT/udp" | head -2 | sed 's/^/   /'
 echo "== 5/6 restart + check"

@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 09:34 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: desk-install OK on server (h3 binary, off); enable rolled back (ran before install); AnexoChat UDP 3443 proven
-NEXT STEP: he re-runs desk-h3-enable.sh once; AAAA + HTTPS record; curl --http3; flip row; then AD1
-HIS LAST WORD: 09:33 pastes
+# WORKING NOW (manual checkpoint, 21 Nov 2026 09:39 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: pill HTTP/2 word removed; enable script uses LoadCredential after cert Permission denied
+NEXT STEP: he runs desk-install.sh (new page) then desk-h3-enable.sh; AAAA + HTTPS record; curl --http3; flip row; AD1
+HIS LAST WORD: 09:38 anger http2 pill, cert perm
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,40 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 373b9182 21 Nov 09:34 ledger line 45174dc7
 - 45174dc7 21 Nov 09:34 ports: anexochat udp proven; desk h3 install facts
 - 71ed3f85 21 Nov 09:34 ledger line 7042e517
 - 7042e517 21 Nov 09:34 ports: anexochat udp proven; desk h3 install facts
 - 0e979ad0 21 Nov 09:29 ledger line efc739b1
-- efc739b1 21 Nov 09:29 desk: h3 UDP 4400, enable script, real PQ loopback test
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/gates/DESK-FEATURES.json
+ M admin-desk/scripts/desk-h3-enable.sh
+ M docs/claude/WEBSITE-PROMISES.md
+ M docs/claude/state/SERVER-FIRST.jsonl
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M docs/cursor-work/founder/founder-commands.md
+ D founder-web/dist-desk/00-FOUNDER-TECH-RULE.md
+ D founder-web/dist-desk/assets/00-FOUNDER-TECH-RULE.md
+ D founder-web/dist-desk/assets/desk-D348ta1Y.js
+ M founder-web/dist-desk/desk.html
+ D founder-web/dist-desk/kernel/00-FOUNDER-TECH-RULE.md
+ M founder-web/src/desk/DeskTelemetry.tsx
+?? founder-web/dist-desk/assets/desk-eE43lg4y.js
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/cursor-work/founder/founder-commands.md       |  2 ++
+ founder-web/dist-desk/00-FOUNDER-TECH-RULE.md      |  5 ---
+ .../dist-desk/assets/00-FOUNDER-TECH-RULE.md       |  5 ---
+ founder-web/dist-desk/assets/desk-D348ta1Y.js      |  9 ------
+ founder-web/dist-desk/desk.html                    |  2 +-
+ .../dist-desk/kernel/00-FOUNDER-TECH-RULE.md       |  5 ---
+ founder-web/src/desk/DeskTelemetry.tsx             | 12 +++----
+ 14 files changed, 41 insertions(+), 57 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +62,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (e6adb3f4e154a5cc4a3f3b434b75c915c840eb71)
+WIP snapshot: refs/wip/last (7a9bbcf48beee09f9f36f6f1ff3faa9b90eb44f0)

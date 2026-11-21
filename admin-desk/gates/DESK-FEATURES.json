@@ -211,8 +211,6 @@
    "admin-desk/server/Cargo.toml",
    "founder-web/src/desk"
   ],
-  "h2_ban_allow": [
-   "founder-web/src/desk/DeskTelemetry.tsx"
-  ]
+  "h2_ban_allow": []
  }
 }
