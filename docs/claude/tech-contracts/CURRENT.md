@@ -2416,3 +2416,7 @@ Gate bans http/1, http/1.1, http/2, h2 in every Desk .rs/.toml/.ts/.tsx (only De
 - 21 Nov 2026 10:05 PKT: his db-list paste: psql fails on PGHOST with literal quotes (fact); ad-sql-run.sh fixed with own PSQL() -h /var/run/postgresql; WIRED: AD1 not yet run on his server
 
 - 21 Nov 2026 10:05 PKT: his db-list paste: psql fails on PGHOST with literal quotes (fact); ad-sql-run.sh fixed with own PSQL() -h /var/run/postgresql; WIRED: AD1 not yet run on his server
+
+## 21 Nov 2026 10:20 PKT R3a2 AD1: his db list (10:04 paste): anexo_copy, anexo_founder, postgres, template0, template1. DECISION (Desk isolation law, no mixing): the Desk gets its OWN database anexo_desk; ad-sql-run.sh creates it if missing (only that name) and applies AD1 there with the postgres OS user over the unix socket (PG* variables cleared, -h /var/run/postgresql). Tested end to end locally incl. quoted PGHOST. Desk WORKING-NOW.md + PHASES.md live inside docs/claude/admin-desk/state (ckpt.sh writes + syncs the root copy). NEXT: his ONE line `ad-sql-run.sh` (no argument), then auth.rs.
+
+- 21 Nov 2026 10:20 PKT: his word 10:04: Desk WORKING-NOW.md + PHASES.md inside docs/claude/admin-desk/state (2-minute loop restarted, root copy synced); Desk gets its OWN database anexo_desk, runner tested end to end locally; WIRED: code YES, AD1 not yet run on his server

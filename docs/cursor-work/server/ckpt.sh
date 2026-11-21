@@ -24,4 +24,19 @@ echo; echo "## Q state"; python3 docs/cursor-work/server/qstate.py brief 2>/dev/
 } > $F
 # snapshot of every uncommitted file as a git object (tree untouched, never pushed): restore with git checkout refs/wip/last -- <file>
 W="$(git stash create 2>/dev/null)"; [ -n "$W" ] && git update-ref refs/wip/last "$W" && echo "WIP snapshot: refs/wip/last ($W)" >> $F
+
+# ADMIN DESK WORKING-NOW (his 21 Nov 2026 10:04: "mujhe repo updated chahiye admin desk ke andar updated working now"): the same live pointer INSIDE the Desk folder, refreshed every time (and by the 2-minute loop); the root copy is synced in the same step.
+DF=docs/claude/admin-desk/state/WORKING-NOW.md; mkdir -p docs/claude/admin-desk/state
+{
+echo "# ADMIN DESK WORKING NOW ($WHY, $NOW) - read this FIRST for the Desk after a compaction"
+echo "DOING: $DOING"; echo "NEXT STEP: $NEXT"; echo "HIS LAST WORD: $WORD"
+echo "LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'."
+echo "FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync)."
+echo; echo "## Phase table (docs/claude/admin-desk/state/PHASES.md)"; sed -n '4,40p' docs/claude/admin-desk/state/PHASES.md 2>/dev/null
+echo; echo "## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)"
+echo; echo "## Last 8 Desk commits"; git log -8 --format='- %h %ad %s' --date=format:'%d %b %H:%M' -- docs/claude/admin-desk admin-desk founder-web/src/desk 2>/dev/null
+echo; echo "## Uncommitted Desk files"; git status --short -- docs/claude/admin-desk admin-desk founder-web/src/desk 2>/dev/null | head -20
+echo; echo "## Gate rows (admin-desk/gates/DESK-FEATURES.json)"; python3 admin-desk/gates/desk_tech_gate.py 2>/dev/null | cut -c1-170 | head -14
+} > $DF
+python3 docs/cursor-work/server/desk-copy-sync.py sync >/dev/null 2>&1
 echo "checkpoint written: $F ($NOW)"

@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:01 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: his psql PGHOST-quote error understood; ad-sql-run.sh fixed
-NEXT STEP: his db list with -h /var/run/postgresql -> ad-sql-run.sh; auth.rs -> DBSC -> orb -> passkey -> R3p
-HIS LAST WORD: 10:01 psql error
+# WORKING NOW (manual checkpoint, 21 Nov 2026 10:08 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Desk WORKING-NOW + PHASES inside the Desk folder; runner creates own DB anexo_desk, tested end to end
+NEXT STEP: his ONE line ad-sql-run.sh (no argument) -> AD1 on server; then auth.rs ARGON2ID -> DBSC -> orb -> passkey -> R3p
+HIS LAST WORD: 10:04 desk working now
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,38 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 0b15f76f 21 Nov 10:01 ledger line e4be28f0
 - e4be28f0 21 Nov 10:01 desk: ad-sql-run psql socket fix
 - fef67908 21 Nov 10:01 ledger line a766b69f
 - a766b69f 21 Nov 10:01 desk: ad-sql-run psql socket fix
 - fd991453 21 Nov 10:00 ledger line d3db4197
-- d3db4197 21 Nov 10:00 desk: folder in docs/claude/admin-desk + root copy, DESK COPY gate
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/scripts/ad-sql-run.sh
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/scripts/ad-sql-run.sh
+ M docs/claude/state/SERVER-FIRST.jsonl
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M docs/cursor-work/founder/founder-commands.md
+ M docs/cursor-work/server/ckpt.sh
+?? admin-desk/state/PHASES.md
+?? admin-desk/state/WORKING-NOW.md
+?? docs/claude/admin-desk/state/PHASES.md
+?? docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md |  2 ++
+ docs/claude/admin-desk/scripts/ad-sql-run.sh   |  7 ++++--
+ docs/claude/state/SERVER-FIRST.jsonl           |  1 +
+ docs/claude/state/WORKING-NOW.md               | 35 +++++++++++++-------------
+ docs/claude/tech-contracts/CURRENT.md          |  2 ++
+ docs/cursor-work/founder/founder-commands.md   |  2 ++
+ docs/cursor-work/server/ckpt.sh                | 15 +++++++++++
+ 9 files changed, 51 insertions(+), 22 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +60,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (35198bfca89456857e830a323752291a27050b2a)
+WIP snapshot: refs/wip/last (45f41088dfd38f9b10ffa28ef9c5f6f3a1827f75)
