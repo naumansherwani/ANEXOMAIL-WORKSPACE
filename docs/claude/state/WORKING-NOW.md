@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 5d8c3841 21 Nov 05:32 QC8c wiring: Rust keys door, settings 23rd key, keys_sync.ts
+- b00fc048 21 Nov 05:32 ledger line 1ab07123
 - 1ab07123 21 Nov 05:32 QC8c wiring: Rust keys door, settings 23rd key, keys_sync.ts
 - cd3f5453 21 Nov 05:24 ledger line e73d0663
 - e73d0663 21 Nov 05:24 QC8b b5 contrast css, b4 star wait fix, b2-b4 green scoped
-- 84965278 21 Nov 05:23 ledger line df7921bd
-- df7921bd 21 Nov 05:23 QC8b b5 contrast css, b4 star wait fix, b2-b4 green scoped
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 26 ++------------------------
- 1 file changed, 2 insertions(+), 24 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (c29fd9482f9f099bb19ab824ea6ab07f359117b1)
+WIP snapshot: refs/wip/last (83b4645bde0ee2176f0f771e55f7cc606d7e0636)
