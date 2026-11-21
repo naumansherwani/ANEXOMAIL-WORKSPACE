@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 00:27 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 00:27 PKT) - read this FIRST for the Desk after a compaction
 DOING: E201 Premium/Max schema-first read (28 files with business_pro, locks listed)
 NEXT STEP: finish read E100/E23/E94/E36, write E201 + CHECK_E201; his haan Alt-Svc; his first Desk sign-in
 HIS LAST WORD: 00:27 shuru kero
@@ -41,6 +41,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 6d76d507 22 Nov 00:27 E201 schema-first read
 - de0e6cd2 22 Nov 00:21 ledger line a5c6c9ef
 - a5c6c9ef 22 Nov 00:21 Record wifi vs mobile
 - 26aff9e6 22 Nov 00:10 ledger line 5e7c00ba
@@ -48,10 +49,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 911da8ef 22 Nov 00:00 ledger line 54e41a8f
 - 54e41a8f 22 Nov 00:00 Record DNS proof
 - a99ab122 21 Nov 23:56 ledger line 2e237693
-- 2e237693 21 Nov 23:56 Record down report
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
