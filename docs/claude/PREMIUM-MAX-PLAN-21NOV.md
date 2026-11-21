@@ -24,3 +24,6 @@ What he already told Claude (found in the repo, his own words kept there):
 
 ## P0 SCHEMA-FIRST READ (22 Nov 2026 00:36 PKT, before writing E201; E199 + E200 exist, E201 is free)
 28 SQL files mention business_pro. The ones that LOCK the plan list (E201 must extend each, read first): E100 (plan_catalog_chk line 40, plan_interop_chk 89-90, gate_map chk 134, plan_norm 232), E23 (activation function allows only basic/pro/business/business_pro, line 38), E94 (plan promises), E87 + E88 (basic/pro v6 selftests), E36 (ensure_test_account), E40 (billing price truth), E34 (team seats), E27 (business_pro mailboxes unlimited), E5/E13/E20/E41 (billing + family), E48/E50 (attachment limits per plan), E30 (dashboard truth), CHECK_E87/88/94/100 (must still pass). NEXT: read these one by one, then write E201 (+ CHECK_E201) once, run through sql-run AUTO.
+
+## 22 Nov 2026 00:40 PKT HIS 00:30 WORDS: flash CANCELLED; Premium/Max need a DOMAIN
+Mailboxes of Premium/Max are on the company's OWN domain (user@theircompany.com), NOT @anexomail.com (AWAM-PACKAGES-PROPOSAL G5, his 8 Nov 03:15). So the two test accounts (businesspremium.test@, businessmax.test@ at anexomail.com) conflict with that law, and he will not build it without a domain. DISCUSS FIRST: which real test domain (his own, as Pro used axonetis.com) the test companies use. No E201 account step until answered.

@@ -5351,3 +5351,7 @@ Features ki list (QC4 mein kya banega):
 [22 Nov 2026 00:36 PKT] STARTED (his 00:27 shuru kero): rules-read done; Premium/Max P0 = E201 schema-first read begun (list in PREMIUM-MAX-PLAN-21NOV.md). Alt-Svc :4400 NOT started: waits his haan.
 
 - 22 Nov 2026 00:36 PKT E201 Premium/Max: schema-first read started, locks listed; WIRED: NO
+
+[22 Nov 2026 00:40 PKT] HIS WORD (00:30): sign-in FLASH = CANCELLED. Premium/Max: "para rahay, yeh main domain ke bina nahi kerun ga"; he says the ledger already holds a long note (Premium/Max mailboxes on the COMPANY'S OWN DOMAIN, AWAM-PACKAGES-PROPOSAL-07NOV.md G5, AWAM-PROTON-PLUS-PLAN-07NOV.md 8 Nov 03:15) and Claude did not use it; "ledger read kero aur wapis aao, discuss".
+
+- 22 Nov 2026 00:40 PKT flash cancelled; Premium/Max own-domain law, test domain to be discussed; WIRED: NO

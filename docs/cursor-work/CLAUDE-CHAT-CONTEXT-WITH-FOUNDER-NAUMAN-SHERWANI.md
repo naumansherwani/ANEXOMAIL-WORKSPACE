@@ -5040,3 +5040,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 22 Nov 2026 00:23 PKT anexomail.com opens on mobile data not on his WiFi; DNS proven good; local cache suspected; WIRED: NO
 
 - 22 Nov 2026 00:36 PKT E201 Premium/Max: schema-first read started, locks listed; WIRED: NO
+
+- 22 Nov 2026 00:40 PKT flash cancelled; Premium/Max own-domain law, test domain to be discussed; WIRED: NO
