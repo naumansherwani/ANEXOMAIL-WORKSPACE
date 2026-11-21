@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:56 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 11:01 PKT) - read this FIRST for the Desk after a compaction
 DOING: owner created; login door next
 NEXT STEP: his desk-alias-look paste, login door + AD1b
 HIS LAST WORD: prove business script relation: none
@@ -32,9 +32,12 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 
 > [21 Nov 2026 10:56 PKT] R3a2-2: owner admindesk@ CREATED on his server, auth.rs installed. NEXT login door + AD1b. desk-business-account.sh removed (no Desk relation).
 
+> [21 Nov 2026 11:01 PKT] PLAN after login: see PLAN-DESK-UI-COPY-21NOV.md (R4-1..R4-10 = founder phases copied in order; Desk gate + /desk/v1 endpoints only).
+
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e0080aa2 21 Nov 11:01 Desk: UI copy plan
 - 15a20ce2 21 Nov 10:56 checkpoint
 - 26a24e49 21 Nov 10:56 checkpoint
 - 95e82c1b 21 Nov 10:56 Desk: owner created, records
@@ -42,7 +45,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 0edce82b 21 Nov 10:53 Desk: aliases not customer accounts; alias look script
 - 1b2168d9 21 Nov 10:53 Desk: aliases not customer accounts; alias look script
 - a40b609b 21 Nov 10:52 checkpoint
-- 381551d2 21 Nov 10:52 checkpoint
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
