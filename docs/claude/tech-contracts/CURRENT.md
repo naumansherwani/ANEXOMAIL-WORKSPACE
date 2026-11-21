@@ -2665,3 +2665,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 ### 21 Nov 2026 21:51 PKT Desk login (his 21:50): subtitle = "Sovereign Desk Access. Protect every customer's vault, sign in with your passkey or desk credentials."; logo link top-left >= 900 px, inside the card top below 900 px (it covered the HTTP/3 pill on his phone). Checked Pixel 7, 820, 1366.
 
 - 21 Nov 2026 21:51 PKT Desk login: Sovereign Desk Access line, logo off the pill on phone/tablet; WIRED: NO until his desk-install
+
+- 21 Nov 2026 21:54 PKT his word on the login line recorded; options offered; WIRED: NO

@@ -5245,3 +5245,7 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 21:51 PKT] HIS WORD (21:50, phone screenshot): "One sealed door..." ki jagah yeh line: Sovereign Desk Access. Protect every customer's vault-sign in with your passkey or desk credentials. Aur mobile sahi nahi (logo pill ke upar chadh gaya), fix karo; ledger + working-now update. DONE: subtitle replaced; logo top-left on wide screens, inside the card top on phone/tablet (never on the pill); phone/tablet/laptop checked, no sideways scroll.
 
 - 21 Nov 2026 21:51 PKT Desk login: Sovereign Desk Access line, logo off the pill on phone/tablet; WIRED: NO until his desk-install
+
+[21 Nov 2026 21:54 PKT] HIS WORD (21:54): Sovereign Desk Access. Protect every customer's vault-sign in with your Key. yeh to forced hua, is ko aur forced nahi banao; hum security de rahe hain; employee sign-in ke liye kya motivation hogi woh batao. (options given in chat, no code change until his pick)
+
+- 21 Nov 2026 21:54 PKT his word on the login line recorded; options offered; WIRED: NO
