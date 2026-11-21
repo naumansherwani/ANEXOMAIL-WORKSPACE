@@ -4945,3 +4945,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 09:50 PKT: his anger 09:38: Desk page no longer writes HTTP/2 or HTTP/1 (pill: HTTP/3 QUIC only when browser reports h3), gate allowlist empty; desk-h3-enable.sh cert Permission denied fixed with systemd LoadCredential; WIRED: live NO until his re-run + curl --http3
 
 - 21 Nov 2026 09:50 PKT: his anger 09:38: Desk page no longer writes HTTP/2 or HTTP/1 (pill: HTTP/3 QUIC only when browser reports h3), gate allowlist empty; desk-h3-enable.sh cert Permission denied fixed with systemd LoadCredential; WIRED: live NO until his re-run + curl --http3
+
+- 21 Nov 2026 09:47 PKT HIS WORD (in anger): pasted successful desk-install + desk-h3-enable (HTTP/3 listening udp 4400) and: "jaisa bola hai waisa kero https 3 kero." Done: h3check proof client + desk-h3-check.sh written; HTTP/3 is listening, proof + DNS record are next.
+
+- 21 Nov 2026 09:55 PKT: Desk HTTP/3 LISTENING on his server (udp 4400, his paste 09:47); proof client h3check + desk-h3-check.sh written (6 tests pass); WIRED: listening YES, answering NOT YET PROVEN until his H3CHECK OK

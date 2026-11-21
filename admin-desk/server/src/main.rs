@@ -61,6 +61,12 @@ async fn login_not_connected() -> impl IntoResponse {
 
 #[tokio::main]
 async fn main() {
+    // `anexomail-desk h3check <ip:port> <host> <cert.pem>`: the proof client (PQ + AES-256 only) for his server
+    let a: Vec<String> = std::env::args().collect();
+    if a.get(1).map(String::as_str) == Some("h3check") && a.len() == 5 {
+        let cert = std::fs::read(&a[4]).expect("cert file");
+        match h3::selfcheck(a[2].parse().expect("ip:port"), &a[3], &cert).await { Ok(o) => { println!("H3CHECK OK: {o} (handshake = TLS 1.3, AES-256-GCM, X25519MLKEM768: the client offered nothing else)"); return; } Err(e) => { println!("H3CHECK FAIL: {e}"); std::process::exit(1); } }
+    }
     let index = format!("{DIST}/desk.html");
     let files = ServeDir::new(DIST).fallback(ServeFile::new(index));
     let app = Router::new()
