@@ -4726,3 +4726,5 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 05:34 PKT QC8b b4 ANNOUNCEMENTS written and mounted (ariaNotify + polite fallback, only real key presses, star says Starred or Unstarred), sandbox-proven; plan with search points in QC8B-B4-PLAN-21NOV.md; live proof waits his founder-install; b5 b6 todo
 
 - 21 Nov 2026 05:36 PKT QC8b b2 b3 b4 = GREEN on laptop (his word 05:25): WIRED: YES / REAL: YES / TECH-LAW CHECKED, live in his Chrome: heading+group+img+aria-current, focus back to the open row, real key s spoke through ariaNotify; open gaps 390/820 and b4 star direction (fix written, waits his install) on CLOSE-THE-GAPS; b5 forced-colors + contrast CSS written, sandbox emulation proven, plan QC8B-B5-PLAN-21NOV.md
+
+- 21 Nov 2026 05:36 PKT QC8b b2 b3 b4 = GREEN on laptop (his word 05:25): WIRED: YES / REAL: YES / TECH-LAW CHECKED, live in his Chrome: heading+group+img+aria-current, focus back to the open row, real key s spoke through ariaNotify; open gaps 390/820 and b4 star direction (fix written, waits his install) on CLOSE-THE-GAPS; b5 forced-colors + contrast CSS written, sandbox emulation proven, plan QC8B-B5-PLAN-21NOV.md
