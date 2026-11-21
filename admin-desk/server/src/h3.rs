@@ -64,6 +64,7 @@ pub fn quic_config(tls: rustls::ServerConfig) -> Result<quinn::ServerConfig, Str
     t.keep_alive_interval(Some(Duration::from_secs(10)));
     t.max_concurrent_bidi_streams(64u32.into());
     t.max_concurrent_uni_streams(8u32.into());
+    t.congestion_controller_factory(Arc::new(quinn::congestion::BbrConfig::default())); // BBR congestion control (Google's model-based controller) instead of the loss-based default
     sc.transport_config(Arc::new(t));
     sc.migration(true);
     Ok(sc)

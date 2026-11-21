@@ -2386,3 +2386,7 @@ Gate bans http/1, http/1.1, http/2, h2 in every Desk .rs/.toml/.ts/.tsx (only De
 - 21 Nov 2026 09:58 PKT: his 09:51 pastes: new page live; h3check not taken on his server (stale binary / two pids), diagnosis added to desk-h3-check.sh; HTTP/3 words wait H3CHECK OK; WIRED: listening YES, proof NO
 
 - 21 Nov 2026 09:58 PKT: his 09:51 pastes: new page live; h3check not taken on his server (stale binary / two pids), diagnosis added to desk-h3-check.sh; HTTP/3 words wait H3CHECK OK; WIRED: listening YES, proof NO
+
+## 21 Nov 2026 10:05 PKT R3a0-s2: his word 09:52 'quic udp jitne bhi advance technology sab likho': full list in admin-desk/docs/QUIC-UDP-TECH-21NOV.md; BBR congestion control added to h3.rs (6 tests pass); gate rows QUIC-core/h3/tls/pq/retry/migration/no0rtt/bbr/altsvc/selfcheck = code (enforced), QUIC-datagram/moq/v2/ech = planned with fail dates.
+
+- 21 Nov 2026 10:05 PKT: his word 09:52: all QUIC/UDP advanced technology written + gated (QUIC-UDP-TECH-21NOV.md, 10 code rows, 4 planned rows), BBR added to h3.rs, 6 tests pass; WIRED: code YES, over-the-wire proof NO

@@ -2741,3 +2741,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 09:58 PKT: his 09:51 pastes: new page live; h3check not taken on his server (stale binary / two pids), diagnosis added to desk-h3-check.sh; HTTP/3 words wait H3CHECK OK; WIRED: listening YES, proof NO
 
 - 21 Nov 2026 09:58 PKT: his 09:51 pastes: new page live; h3check not taken on his server (stale binary / two pids), diagnosis added to desk-h3-check.sh; HTTP/3 words wait H3CHECK OK; WIRED: listening YES, proof NO
+
+- 21 Nov 2026 10:05 PKT: his word 09:52: all QUIC/UDP advanced technology written + gated (QUIC-UDP-TECH-21NOV.md, 10 code rows, 4 planned rows), BBR added to h3.rs, 6 tests pass; WIRED: code YES, over-the-wire proof NO
