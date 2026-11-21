@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 23:44 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 23:45 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Namecheap AAAA admindesk save still failing (his screenshot 23:44); recorded, loop running
 NEXT STEP: his retry of AAAA save; then desk-restart DNS facts; Alt-Svc haan; E201; Rule 52
 HIS LAST WORD: 23:44 screenshot + compaction/record orders
@@ -18,22 +18,23 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- ab60b9b8 21 Nov 23:45 Record Namecheap AAAA save state
 - 0d47203c 21 Nov 23:39 ledger line 80b44c0d
 - 80b44c0d 21 Nov 23:39 records: Caddy IP fact
 - b97bee74 21 Nov 23:36 ledger line d0e124ee
 - d0e124ee 21 Nov 23:36 LAW: frontend Caddy, backend Hetzner
-- 5bd1a4d8 21 Nov 23:34 ledger line e886861c
 
-## Uncommitted files (half-do M docs/claude/a M docs/claude/admin-desk/state/COMPACT-SAVE.md
+## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/founder/founder-commands.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
-## U docs/claude/adm docs/claude/admin-desk/state/COMPACT-SAVE.md |  2 ++
- docs/claude/state/WORKING-NOW.md             | 26 +++++++-------------------
- docs/cursor-work/founder/founder-commands.md |  2 ++
- 3 files changed, 11 insertions(+), 19 deletions=== PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
+## Uncommitted size
+ docs/claude/state/WORKING-NOW.md | 21 ++++-----------------
+ 1 file changed, 4 insertions(+), 17 deletions(-)
+
+## Q state
+=== PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
 > ## >>> 20 Nov 2026 09:58 PKT QC4 plan vs code matched (table in docs/claude/QC4-PLAN-20NOV.md): feature 7 DONE end to end (not installed), feature 3 data DONE, pure logic for 3-6 DONE+tested, screens for 1,2,3,4,5,6 = QC4b NOT in code. <<<
 > ## >>> 20 Nov 2026 09:12 PKT HIS QC4 FEATURE LIST (7 features, his paste 09:09) is now verbatim in docs/claude/QC4-PLAN-20NOV.md and founder-commands.md; QC4a done (not installed), QC4b screen next <<<
 > ## >>> 20 Nov 2026 09:55 PKT QC4a = DONE, WRITTEN AND TESTED, NOT INSTALLED (20 Nov 2026 09:55 PKT): cargo whole suite 559 passed 0 failed 0 filtered out (was 558, +1 test for References + Reply-To), pure-TS tests 474 pass 0 fail (sandbox runner, not a runtime), tsc clean, vite build OK (index-BcA
@@ -41,5 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-t edit by hand)
-WIP snapshot: refs/wip/last (9e7928cd03cf4ee40f7c35e799e00b260b76880d)
+WIP snapshot: refs/wip/last (c5d06722f9d05aa73b8f35c8a8fd64b61590e941)
