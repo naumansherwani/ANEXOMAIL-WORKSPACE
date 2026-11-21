@@ -12,5 +12,5 @@ Every new Desk server step goes INSIDE one of these two scripts, never as a thir
 Allowed Desk commands = INSTALL, SQL, RESTART. Nothing else, ever.
 
 ## BACKUP BEFORE EVERY UI CHANGE (his 21 Nov 22:35): "hamesha backup lo taake pasand na aaye to pehle wala wapis aaye"
-Before any Desk UI change Claude pushes a git tag backup/desk-ui-<YYYYMMDD-HHMM> at the last approved commit; going back = Claude restores the files from that tag and he runs the same INSTALL (no new command). The server also keeps the previous page as /opt/anexomail-desk/dist-desk.old and the previous binary as anexomail-desk.bak.<time>.
-First tag: backup/desk-ui-20261121-2235.
+Before any Desk UI change Claude pushes a backup BRANCH backup/desk-ui-<YYYYMMDD-HHMM> (tags are refused by the push proxy) at the last approved commit; going back = Claude restores the files from that tag and he runs the same INSTALL (no new command). The server also keeps the previous page as /opt/anexomail-desk/dist-desk.old and the previous binary as anexomail-desk.bak.<time>.
+First backup branch: backup/desk-ui-20261121-2235 (on GitHub).

@@ -4992,3 +4992,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 22:31 PKT Desk: CA via systemd credential, pill fix both pages, card up, horizon light under card; WIRED: NO until his install
 
 - 21 Nov 2026 22:36 PKT Desk home Sign in A prominent; backup tag before UI changes; WIRED: NO
+
+- 21 Nov 2026 22:36 PKT backup is a branch (tags refused by proxy); WIRED: NO
