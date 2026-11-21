@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 09:52 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 09:53 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: new page live; h3check did not run on his server (old binary behaviour, two pids): diagnosis in desk-h3-check.sh
 NEXT STEP: his one run of desk-h3-check.sh -> fact -> fix -> H3CHECK OK -> HTTP/3 words on page -> AD1
 HIS LAST WORD: 09:51 https3 likho
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 650302ea 21 Nov 09:53 desk: h3-check diagnosis section
+- b1b4d420 21 Nov 09:52 ledger line c3e5e361
 - c3e5e361 21 Nov 09:52 desk: h3-check diagnosis section
 - 6fffa645 21 Nov 09:48 ledger line 12fd8834
 - 12fd8834 21 Nov 09:48 desk: h3check proof client + read-only check script
-- 932932c5 21 Nov 09:48 ledger line b67b963a
-- b67b963a 21 Nov 09:48 desk: h3check proof client + read-only check script
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 25 ++-----------------------
- 1 file changed, 2 insertions(+), 23 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (38b895be9d0df66ad22bc05b5a3430d71a226ffe)
+WIP snapshot: refs/wip/last (bb260aff2ddcca397d9d8c276f3311071ae24a5b)
