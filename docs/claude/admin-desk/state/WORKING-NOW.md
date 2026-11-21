@@ -39,6 +39,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 672ba916 21 Nov 21:16 repo: post-commit hook adds Desk WORKING-NOW
 - 6ec8d1bb 21 Nov 21:16 repo: WORKING-NOW root copy untracked
 - 4be7ccb3 21 Nov 21:16 repo: WORKING-NOW root copy untracked
 - 29c9d103 21 Nov 21:15 repo: WORKING-NOW root copy untracked
@@ -46,7 +47,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - e74f2d71 21 Nov 21:14 checkpoint
 - bb9f8659 21 Nov 21:14 Desk login: Identity box removed
 - 59d92b95 21 Nov 21:14 Desk login: Identity box removed
-- 8099be4b 21 Nov 21:11 Desk login: passkey button below the form
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
