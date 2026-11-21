@@ -31,3 +31,5 @@
 18. (21 Nov 2026 21:42 PKT) TWO-COMMAND LAW: only desk-install.sh (does everything incl. DB login + CA) and ad-auto.sh (SQL). See admin-desk/TWO-COMMANDS.md.
 
 19. (21 Nov 2026 21:42 PKT) Allowed Desk commands = desk-install.sh, ad-auto.sh, desk-restart.sh (TWO-COMMANDS.md).
+
+20. (21 Nov 2026 21:51 PKT) Login: subtitle = Sovereign Desk Access line; logo inside the card on phone/tablet (was on top of the pill). NEXT his ONE desk-install, sign in.

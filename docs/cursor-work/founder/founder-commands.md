@@ -5241,3 +5241,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 21:42 PKT Desk restart command added; allowed = install, sql, restart; WIRED: NO
 
 - 21 Nov 2026 21:43 PKT CLAUDE.md: Desk 3 commands law; WIRED: NO
+
+[21 Nov 2026 21:51 PKT] HIS WORD (21:50, phone screenshot): "One sealed door..." ki jagah yeh line: Sovereign Desk Access. Protect every customer's vault-sign in with your passkey or desk credentials. Aur mobile sahi nahi (logo pill ke upar chadh gaya), fix karo; ledger + working-now update. DONE: subtitle replaced; logo top-left on wide screens, inside the card top on phone/tablet (never on the pill); phone/tablet/laptop checked, no sideways scroll.
+
+- 21 Nov 2026 21:51 PKT Desk login: Sovereign Desk Access line, logo off the pill on phone/tablet; WIRED: NO until his desk-install

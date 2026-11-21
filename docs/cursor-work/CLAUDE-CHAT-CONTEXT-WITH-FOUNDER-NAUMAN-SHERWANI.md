@@ -4982,3 +4982,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 21:42 PKT Desk restart command added; allowed = install, sql, restart; WIRED: NO
 
 - 21 Nov 2026 21:43 PKT CLAUDE.md: Desk 3 commands law; WIRED: NO
+
+- 21 Nov 2026 21:51 PKT Desk login: Sovereign Desk Access line, logo off the pill on phone/tablet; WIRED: NO until his desk-install
