@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 01:37 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 01:38 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: R3d stage B code done + tested; pull = desk-install
 NEXT STEP: his desk-install paste, then my live Chrome Rule 52 proof; then R4-1 shell
 HIS LAST WORD: his 01:31: real pull, phases tonight, desk rules on top
@@ -18,50 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 13fb6626 22 Nov 01:38 Desk R3d stage B: signed doors, own WASM kernel, deskCall, real dashboard
 - d435d57e 22 Nov 01:25 ledger line e07c9674
 - e07c9674 22 Nov 01:25 Desk: ON1-ON12 final plan
 - cad6b1db 22 Nov 01:22 ledger line 9e3cf7b7
 - 9e3cf7b7 22 Nov 01:22 Desk R3d stage A: signing + own kernel crate
-- f9ac1bbb 22 Nov 01:14 ledger line be1cefbb
 
 ## Uncommitted files (half-done work if any)
- M CLAUDE.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/scripts/desk-install.sh
- M docs/claude/admin-desk/server/src/door.rs
- M docs/claude/admin-desk/server/src/main.rs
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
- M docs/claude/admin-desk/state/PHASES.md
- M docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- M docs/cursor-work/founder/founder-commands.md
- D founder-web/dist-desk/00-FOUNDER-TECH-RULE.md
- D founder-web/dist-desk/assets/00-FOUNDER-TECH-RULE.md
- D founder-web/dist-desk/assets/desk-3KBasGG5.css
- D founder-web/dist-desk/assets/desk-BIgOCq0f.js
- M founder-web/dist-desk/desk.html
- D founder-web/dist-desk/kernel/00-FOUNDER-TECH-RULE.md
- M founder-web/src/desk/DeskPages.tsx
- M founder-web/src/desk/DeskSignIn.tsx
-?? docs/claude/admin-desk/server/src/signed.rs
-?? founder-web/dist-desk/assets/anexomail_desk_kernel_bg-DROILsBT.wasm
-?? founder-web/dist-desk/assets/desk-CU2N64T3.css
-?? founder-web/dist-desk/assets/desk-Dq2TTTlO.js
-?? founder-web/src/desk/desk_kernel.ts
-?? founder-web/src/desk/kernel/
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- .../dist-desk/assets/00-FOUNDER-TECH-RULE.md       |  5 ---
- founder-web/dist-desk/assets/desk-3KBasGG5.css     |  1 -
- founder-web/dist-desk/assets/desk-BIgOCq0f.js      |  9 -----
- founder-web/dist-desk/desk.html                    |  4 +-
- .../dist-desk/kernel/00-FOUNDER-TECH-RULE.md       |  5 ---
- founder-web/src/desk/DeskPages.tsx                 | 40 +++++++++++++++---
- founder-web/src/desk/DeskSignIn.tsx                |  8 ++--
- 19 files changed, 109 insertions(+), 62 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 47 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 45 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -72,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (652a58e0fad2326b2a66ac37ad1e1b08ab579da3)
+WIP snapshot: refs/wip/last (10bc3b4b2ac835f56861fd79555cbe48d1aa3f85)
