@@ -4,7 +4,7 @@ SVC=anexomail-desk; H='Host: admindesk.anexomail.com'
 systemctl restart $SVC; sleep 3
 echo "service: $(systemctl is-active $SVC)"
 echo "health: $(curl -s -o /dev/null -w '%{http_code}' -H "$H" http://127.0.0.1:4400/desk/v1/health) (want 200); wrong host: $(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:4400/desk/v1/health) (want 404)"
-echo "door: $(curl -s -o /dev/null -w '%{http_code}' -H "$H" http://127.0.0.1:4400/desk/v1/auth/me) (want 401 = alive, no session)"
+echo "door: $(curl -s -o /dev/null -w '%{http_code}' -H "$H" -H 'x-desk-nonce: 00112233445566778899aabbccddeeff' http://127.0.0.1:4400/desk/v1/auth/me) (want 401 = alive, no session)"
 journalctl -u $SVC --since '-20s' --no-pager 2>/dev/null | grep -E 'desk door|HTTP/3' | tail -3
 echo "== DNS facts (read only): what browsers are told for HTTP/3"
 for h in admindesk.anexomail.com anexomail.com founderworkspace.anexomail.com; do echo "$h A=$(dig +short A $h | tr '\n' ' ') AAAA=$(dig +short AAAA $h | tr '\n' ' ') HTTPS=$(dig +short TYPE65 $h | tr '\n' ' ')"; done

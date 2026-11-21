@@ -3059,3 +3059,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 22 Nov 02:55 PKT: his rollback warning recorded, WIRED: NO
 
 - 22 Nov 2026 01:47 PKT: honest status written (live base, R3d code-only, rest plan-only); CORRECTION: ledger stamps 02:05-02:55 PKT were typed wrong, real 01:3x-01:4x; WIRED: NO for R3d
+
+- 22 Nov 2026 01:55 PKT his rerun pull command (desk-appdb check fix): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:admin-desk/scripts/desk-install.sh) 2>&1 | tail -20
+
+- 22 Nov 2026 01:55 PKT: R3d key + signed refusal live on his server (his paste); installer check bug fixed (400 vs 401); R-CRM added; WIRED: NO until my Chrome look

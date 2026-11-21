@@ -9,3 +9,5 @@
 - [22 Nov 2026 01:25 PKT] Teams decided: support, migration, frontend_demo (UI change needs his approval). ON9..ON12 = his zero-trust locks; Apple passkey sync conflict noted in plan.
 
 - [22 Nov 2026 01:47 PKT] Rerun desk-install (his 01:39 paste = old script). Then my Chrome proof. STATUS-REAL-22NOV.md is the honest scoreboard.
+
+- [22 Nov 2026 01:55 PKT] CRM = Desk phase R-CRM (company style, same feature set as awam CRM: accounts, leads, pipeline, relationships, tasks, activity, collab, reports, setup).

@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 01:47 PKT) - read this FIRST for the Desk after a compaction
-DOING: Status: LIVE base + R3d code-only; rerun desk-install
-NEXT STEP: his rerun paste, my Chrome Rule 52 proof, R4-1
-HIS LAST WORD: his 01:47: kitna hua / kitna baki
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 01:55 PKT) - read this FIRST for the Desk after a compaction
+DOING: R3d live on his server (key + signed refusal); step-5 check bug fixed; R-CRM added
+NEXT STEP: his rerun of desk-install (pull below), my Chrome Rule 52 proof, R4-1
+HIS LAST WORD: his 01:54 paste + CRM word
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
 
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 1bf4195c 22 Nov 01:47 ledger line 21dbdaea
 - 21dbdaea 22 Nov 01:47 Desk status record + timestamp correction
 - baf45e2c 22 Nov 01:41 ledger line 68859e31
 - 68859e31 22 Nov 01:41 rollback warning record
@@ -54,9 +55,15 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - ada44a81 22 Nov 01:39 status record
 - 906df9b7 22 Nov 01:38 ledger line 13fb6626
 - 13fb6626 22 Nov 01:38 Desk R3d stage B: signed doors, own WASM kernel, deskCall, real dashboard
-- d435d57e 22 Nov 01:25 ledger line e07c9674
 
 ## Uncommitted Desk files
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/MASTER-PLAN-22NOV.md
+ M docs/claude/admin-desk/scripts/desk-appdb.sh
+ M docs/claude/admin-desk/scripts/desk-restart.sh
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
+ M docs/claude/admin-desk/state/PHASES.md
+ M docs/claude/admin-desk/state/REMINDERS.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)

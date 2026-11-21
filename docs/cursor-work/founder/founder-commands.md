@@ -5427,3 +5427,7 @@ Features ki list (QC4 mein kya banega):
 [22 Nov 2026 01:47 PKT] HIS WORDS: (pasted his 01:39 desk-install output + all earlier replies) yeh sab batao kitna huwa hai aur kitna baki hai, jitna repo se match karke real working hai woh bhi admin desk ke ledger/working now/blueprint mein update karo, jo nahi hai woh bhi batao.
 
 - 22 Nov 2026 01:47 PKT: honest status written (live base, R3d code-only, rest plan-only); CORRECTION: ledger stamps 02:05-02:55 PKT were typed wrong, real 01:3x-01:4x; WIRED: NO for R3d
+
+[22 Nov 2026 01:55 PKT] HIS WORDS: desk-install rerun paste (key kid e92a4cb1..., Rule 52 check OK, step 5 FAIL); "mujhe pull command commit nahi send kiya hai woh kero"; is mein CRM bhi aye ga jitna user ko milta hai bus yeh company ke style mein hoga yaad rakho.
+
+- 22 Nov 2026 01:55 PKT: R3d key + signed refusal live on his server (his paste); installer check bug fixed (400 vs 401); R-CRM added; WIRED: NO until my Chrome look

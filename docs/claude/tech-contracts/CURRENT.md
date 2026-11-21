@@ -2783,3 +2783,7 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 22 Nov 02:55 PKT: his rollback warning recorded, WIRED: NO
 
 - 22 Nov 2026 01:47 PKT: honest status written (live base, R3d code-only, rest plan-only); CORRECTION: ledger stamps 02:05-02:55 PKT were typed wrong, real 01:3x-01:4x; WIRED: NO for R3d
+
+- 22 Nov 2026 01:55 PKT R3d LIVE ON HIS SERVER (his paste 22 Nov 01:54): Rule 52 key kept, kid e92a4cb169d466a2, key 200, call without session = refused AND signed. Step-5 check bug (expected 401, new layer gives 400) fixed in desk-appdb.sh/desk-restart.sh; rerun pending. Chrome look pending, so not GREEN.
+
+- 22 Nov 2026 01:55 PKT: R3d key + signed refusal live on his server (his paste); installer check bug fixed (400 vs 401); R-CRM added; WIRED: NO until my Chrome look

@@ -18,3 +18,9 @@ P1 Every Desk answer signed + kernel-verified (Rule 52). P2 Authorization by rel
 | 9 | W3 hybrid PQ, W5/W6, ON5-ON7 recovery/review/SCIM | ml-dsa, Rust | needed |
 | 10 | compose..shortcuts, attachments, outbound TLS, final audit + S10 load proof | Rust, Storage Box | needed |
 Dashboard + bridge are order 2 (his 01:05 word); they use only data that exists.
+
+## ADDED 22 Nov 2026 01:55 PKT (his 01:54 word): CRM INSIDE THE DESK
+| # | Phase | What | Technology |
+|---|---|---|---|
+| CRM1 | R-CRM | The Desk gets a CRM with everything the awam user's CRM has (accounts, leads, pipeline, relationships, tasks, activity, collab, reports, setup: matched to lovable-gold/awam app.crm.* routes) but in COMPANY style: accounts = companies on Anexomail (hello, moveyourbusiness, Premium/Max, axonetis ...), their cases, plan, onboarding/migration pipeline, owner staff, SLA. Written NEW for the Desk (no copy, no import), his Desk isolation + vendor ban. | Rust axum + Postgres (team key + relation tuples S1/S2, RLS), Desk WASM kernel (Rule 52), React 19, Tailwind 4, hash-chained ledger |
+Order: after inboxes + case routing (needs real accounts and cases to hang on). Not in code.

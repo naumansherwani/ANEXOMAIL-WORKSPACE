@@ -4009,3 +4009,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 22 Nov 02:55 PKT: his rollback warning recorded, WIRED: NO
 
 - 22 Nov 2026 01:47 PKT: honest status written (live base, R3d code-only, rest plan-only); CORRECTION: ledger stamps 02:05-02:55 PKT were typed wrong, real 01:3x-01:4x; WIRED: NO for R3d
+
+- 22 Nov 2026 01:55 PKT R3d live on his server (his paste 01:54); desk-appdb/desk-restart check fixed for the Rule 52 layer. Do not rewrite.
+
+- 22 Nov 2026 01:55 PKT: R3d key + signed refusal live on his server (his paste); installer check bug fixed (400 vs 401); R-CRM added; WIRED: NO until my Chrome look

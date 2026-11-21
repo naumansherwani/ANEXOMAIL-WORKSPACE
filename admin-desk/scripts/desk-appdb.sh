@@ -24,7 +24,7 @@ check() {  # restart the Desk with app.env and read its own words: "database con
   else printf '[Service]\nEnvironmentFile=%s\n' "$APP" >/etc/systemd/system/$SVC.service.d/db.conf; fi
   systemctl daemon-reload; systemctl restart $SVC; sleep 3
   J="$(journalctl -u $SVC --since '-20s' --no-pager 2>/dev/null | grep 'desk door' | tail -1)"; echo "   $J"
-  C="$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: admindesk.anexomail.com' http://127.0.0.1:4400/desk/v1/auth/me)"
+  C="$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: admindesk.anexomail.com' -H 'x-desk-nonce: 00112233445566778899aabbccddeeff' http://127.0.0.1:4400/desk/v1/auth/me)"  # R3d: the door sits behind the Rule 52 layer, so alive = a SIGNED 401 (it answered 400 without a nonce, which the old check read as dead)
   [ "$C" = 401 ] && echo "$J" | grep -q "connection ready"
 }
 write_app() { ( umask 077; printf 'DESK_APP_URL=%s\n' "$1" >"$APP" ); chmod 600 "$APP"; }  # read by systemd (root) only
