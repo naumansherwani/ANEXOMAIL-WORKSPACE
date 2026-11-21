@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 00:30 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 00:30 PKT) - read this FIRST for the Desk after a compaction
 DOING: flash cancelled; Premium/Max need own-domain test company, discussing which domain
 NEXT STEP: his domain answer; then E201 + accounts
 HIS LAST WORD: 00:30 flash cancel + domain
@@ -41,6 +41,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 248ee0e0 22 Nov 00:30 Record flash cancel and domain law
 - e52b6ae9 22 Nov 00:27 ledger line 6d76d507
 - 6d76d507 22 Nov 00:27 E201 schema-first read
 - de0e6cd2 22 Nov 00:21 ledger line a5c6c9ef
@@ -48,10 +49,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 26aff9e6 22 Nov 00:10 ledger line 5e7c00ba
 - 5e7c00ba 22 Nov 00:10 Record DNS outage
 - 911da8ef 22 Nov 00:00 ledger line 54e41a8f
-- 54e41a8f 22 Nov 00:00 Record DNS proof
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
