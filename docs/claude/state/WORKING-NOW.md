@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:35 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:36 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: ad-auto.sh pushed, waits his run
 NEXT STEP: auth.rs ARGON2ID
 HIS LAST WORD: auto sql run
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 79a3aef8 21 Nov 10:36 Desk: ad-auto.sh auto SQL runner
+- 85ce68d9 21 Nov 10:35 ledger line 30d3ff13
 - 30d3ff13 21 Nov 10:35 Desk: ad-auto.sh auto SQL runner
 - 17047f26 21 Nov 10:35 ledger line c6a250e5
 - c6a250e5 21 Nov 10:35 Desk: ad-auto.sh auto SQL runner
-- b7663da0 21 Nov 10:35 ledger line a864ba3e
-- a864ba3e 21 Nov 10:35 Desk: ad-auto.sh auto SQL runner
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (dc47023cf30af5f7ff88b8284c056c7f046d4fcd)
+WIP snapshot: refs/wip/last (d82fc5268342715491b01c9056bcc804a5ac7da8)
