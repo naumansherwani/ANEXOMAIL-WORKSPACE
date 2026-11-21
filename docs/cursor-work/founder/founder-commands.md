@@ -4937,3 +4937,5 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 09:33 PKT HIS WORD: "anexochat ka udp kaun sa hai read only command do" then pasted result (3443 anexomail-rust, TURN 3478/5349, relay 49152-49500) + his run of desk-h3-enable.sh (rolled back: ran before install) and desk-install.sh (OK). "yeh repo main date time ke saath update kero." Done.
 
 - 21 Nov 2026 09:45 PKT: his pastes 09:33: AnexoChat UDP proven (3443 anexomail-rust, TURN 3478/5349 relay 49152-49500); desk-install OK on server (h3 binary, h3 OFF); desk-h3-enable rolled back by design (ran before install); WIRED: live NO until his re-run + curl --http3
+
+- 21 Nov 2026 09:45 PKT: his pastes 09:33: AnexoChat UDP proven (3443 anexomail-rust, TURN 3478/5349 relay 49152-49500); desk-install OK on server (h3 binary, h3 OFF); desk-h3-enable rolled back by design (ran before install); WIRED: live NO until his re-run + curl --http3
