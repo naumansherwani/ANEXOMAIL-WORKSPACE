@@ -2288,3 +2288,5 @@ Own crate server/desk, own binary anexomail-desk, loopback 127.0.0.1:4400, own u
 - 21 Nov 2026 08:32 PKT: ADMIN DESK own folder admin-desk/ (server, scripts, sql AD series, gates, blueprint with FEATURE/CODE/TECHNOLOGY/HAAN, blueprint copy, RESUME); his install 08:19 ran: anexomail-desk up on 4400, wrong host 404; DESK TECH gate shouts on missing technology (WIRED: NO for login)
 
 - 21 Nov 2026 08:32 PKT: ADMIN DESK own folder admin-desk/ (server, scripts, sql AD series, gates, blueprint with FEATURE/CODE/TECHNOLOGY/HAAN, blueprint copy, RESUME); his install 08:19 ran: anexomail-desk up on 4400, wrong host 404; DESK TECH gate shouts on missing technology (WIRED: NO for login)
+
+- 21 Nov 2026 08:41 PKT: R3a1 cinematic login DESIGN DEMO published (Design canvas, laptop 1440 + phone 390); no React code yet, waits his pick (WIRED: NO)

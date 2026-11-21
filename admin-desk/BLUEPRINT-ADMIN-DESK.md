@@ -16,7 +16,7 @@ RULE (his word): in every phase, next to each FEATURE the CODE file and the ADVA
 ### R3a1 CINEMATIC LOGIN
 | Feature | Code | Technology | Haan |
 |---|---|---|---|
-| Night glass-walled office scene, gradient #060B19 / #0F3460 / amber rim | founder-web/src/desk/DeskScene.tsx (planned) | REACT 19, THREE.JS (LAZY) | NO |
+| Night glass-walled office scene, gradient #060B19 / #0F3460 / amber rim | founder-web/src/desk/DeskScene.tsx (planned); DESIGN DEMO shown 08:40 (artifact HjgAQvTc1EqnpM3pa9xQfi, CSS only) | REACT 19, THREE.JS (LAZY) | NO (demo only, awaits his pick) |
 | Mouse + phone-tilt parallax | DeskScene.tsx (planned) | POINTER EVENTS, DEVICEORIENTATION | NO |
 | Smoked liquid-glass card, 1px luminous edge, Desk identity only | founder-web/src/desk/DeskSignIn.tsx | TAILWIND 4, CSS BACKDROP-FILTER | partly (skeleton) |
 | Optional passkey button + honest hardware text | DeskSignIn.tsx (planned) | WEBAUTHN, KERNEL RPC (RULE 52) | NO |

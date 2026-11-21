@@ -4851,3 +4851,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 08:32 PKT: ADMIN DESK own folder admin-desk/ (server, scripts, sql AD series, gates, blueprint with FEATURE/CODE/TECHNOLOGY/HAAN, blueprint copy, RESUME); his install 08:19 ran: anexomail-desk up on 4400, wrong host 404; DESK TECH gate shouts on missing technology (WIRED: NO for login)
 
 - 21 Nov 2026 08:32 PKT: ADMIN DESK own folder admin-desk/ (server, scripts, sql AD series, gates, blueprint with FEATURE/CODE/TECHNOLOGY/HAAN, blueprint copy, RESUME); his install 08:19 ran: anexomail-desk up on 4400, wrong host 404; DESK TECH gate shouts on missing technology (WIRED: NO for login)
+
+- 21 Nov 2026 08:28 PKT HIS ORDER: "next shuru kero R3a1: Cinematic Login ... mujhe codes demo dekhao" + compaction-safety order (WORKING-NOW + ledger + blueprint + top of repo with date/time, 2-min loop, rules read, Rule 52, advance technology next to every phase/subphase). Done 08:40: design demo published (Design canvas "Admin Desk Login", laptop 1440 + phone 390 boards); waits his pick before React code.
+
+- 21 Nov 2026 08:41 PKT: R3a1 cinematic login DESIGN DEMO published (Design canvas, laptop 1440 + phone 390); no React code yet, waits his pick (WIRED: NO)
