@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 02:18 PKT) - read this FIRST for the Desk after a compaction
-DOING: AD2 SQL written + sandbox-tested, committing
-NEXT STEP: his ad-auto run, then R4-1
-HIS LAST WORD: kitni dair hain, jaldi complete
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 02:23 PKT) - read this FIRST for the Desk after a compaction
+DOING: AD2 LIVE; starting cinematic Desk dashboard UI (reading founder look, read-only)
+NEXT STEP: R4-1 shell+dashboard UI, then Rust door for AD2
+HIS LAST WORD: UI UX shuru kero, fast
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
 
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 02da406d 22 Nov 02:18 ledger line 5a065da1
 - 5a065da1 22 Nov 02:18 Admin Desk AD2 SQL
 - 882c6f95 22 Nov 01:59 ledger line e869ef67
 - e869ef67 22 Nov 01:59 Desk: sandbox live test, dashboard fixes
@@ -54,7 +55,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - e94b2518 22 Nov 01:55 Desk: installer check fix for Rule 52 layer, R-CRM phase
 - 1bf4195c 22 Nov 01:47 ledger line 21dbdaea
 - 21dbdaea 22 Nov 01:47 Desk status record + timestamp correction
-- baf45e2c 22 Nov 01:41 ledger line 68859e31
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md

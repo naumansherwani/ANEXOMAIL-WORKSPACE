@@ -5441,3 +5441,9 @@ Features ki list (QC4 mein kya banega):
 ## 22 Nov 2026 02:18 PKT (his 02:17): "kitni dair hain gandu jaldi kero complete" + 02:09 "sql advance codes 500+ lines". AD2.sql (730 lines) + checks/AD2-check.sql written and sandbox-tested (Postgres 16, run twice, selftest ALL RULES PASSED, 20 check rows true). Not yet run on his server.
 
 - AD2 SQL (org, Zanzibar relations, policy engine, device-bound passkeys, onboarding, mover/leaver, recovery, JIT, burst breaker) + AD2-check: sandbox PASS x2, WIRED: NO (not run on his server)
+
+## 22 Nov 2026 02:23 PKT (his 02:23): AD2 ad-auto paste: 20 rows t, "AD2: run and CHECK OK", "DONE: every Desk SQL is in the database" = AD2 LIVE on his server. His words: "UI UX kab bano gay cinematic admin desk ka dashboard account ka woh bhi shuru ker lo founder ke codes read kero phir samne rakh ke is gates banao aur phase ki tarteeb fast kero. 1 din main zero hai sab." + standard compaction/2-min/rule-52 orders.
+
+## 22 Nov 2026 02:26: R4-1 UI step 1 (his 02:23 order): DeskShell.tsx cinematic dashboard (glass rail >=820, bottom tab bar <820, greeting, live clock, real session countdown, honest not-connected cards). Tests 7/7, harness 390/820/1280: no sideways scroll, no console errors. Backup branch pushed first. NOT GREEN: needs his real sign-in look.
+
+- R4-1 UI step 1 DeskShell cinematic dashboard: tests 7/7, sandbox layout 390/820/1280 ok, WIRED: NO (not on his server, no real-session look)

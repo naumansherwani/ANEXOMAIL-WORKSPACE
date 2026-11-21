@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
 import { BrandMark } from "../signin/BrandMark";
-import { Button } from "../signin/ui/button";
 import { DESK_SESSION_KEY, deskGuard, deskPage } from "./desk_pure";
 import { DeskSignIn } from "./DeskSignIn";
 import { DeskScene } from "./DeskScene";
 import { DeskTelemetry } from "./DeskTelemetry";
+import { DeskShell, type ShellMe } from "./DeskShell";
 import { HoverA } from "../signin/BrandLoader";
 import { deskCall, DeskRefused, refusedMessage } from "./desk_kernel";
 
 const hasSession = () => { try { return !!window.localStorage.getItem(DESK_SESSION_KEY); } catch { return false; } };
 const go = (to: string) => window.location.replace(to);
-
-/** The brand band: the Desk is always visibly the Desk, never mistaken for the founder tab. */
-function Band() { return <div role="banner" className="sticky top-0 z-10 flex items-center justify-between gap-3 bg-[oklch(0.295_0.066_258)] px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.2em] text-white"><span>Admin Desk</span><span className="opacity-70 normal-case tracking-normal">admindesk.anexomail.com</span></div>; }
 
 function Landing() {
   return (
@@ -32,17 +29,11 @@ function Landing() {
   );
 }
 
-type Me = { email: string; name: string | null; role: string; expires_at: string };
+type Me = ShellMe;
 const isMe = (j: unknown): j is Me => !!j && typeof j === "object" && typeof (j as Me).email === "string" && typeof (j as Me).role === "string";
 const dropSession = () => { try { window.localStorage.removeItem(DESK_SESSION_KEY); } catch { /* ignore */ } };
-// Postgres sends "2026-11-22 13:58:12.54+05" (offset without minutes, long fraction): normalise it so every browser parses it.
-function when(iso: string): string {
-  const n = iso.trim().replace(" ", "T").replace(/(\.\d{3})\d*/, "$1").replace(/([+-]\d{2})$/, "$1:00");
-  const d = new Date(n); return isNaN(d.getTime()) ? iso : d.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
-}
-function greet(): string { const h = new Date().getHours(); return h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening"; }
 
-/** R3d dashboard: ONLY real data, every line from a Desk-signed answer the kernel verified (/desk/v1/auth/me). Clean: no technology words on screen. */
+/** Dashboard: ONLY real data, every line from a Desk-signed answer the kernel verified (/desk/v1/auth/me). The look lives in DeskShell. */
 function Dashboard() {
   const [me, setMe] = useState<Me | null>(null), [err, setErr] = useState(""), [out, setOut] = useState(false);
   useEffect(() => {
@@ -55,26 +46,7 @@ function Dashboard() {
     return () => { live = false; };
   }, []);
   async function signOut() { setOut(true); try { await deskCall("POST", "/desk/v1/auth/logout"); } catch { /* the local session is dropped anyway */ } dropSession(); go("/adminlogin"); }
-  const first = me?.name?.trim().split(/\s+/)[0] || me?.email.split("@")[0] || "";
-  const tile = "rounded-2xl border border-border bg-card p-5 min-w-0";
-  return (
-    <main className="fa min-h-screen bg-background"><Band />
-      <section className="mx-auto w-full max-w-[64rem] px-4 py-8 sm:px-6 sm:py-10">
-        <p className="text-sm text-muted-foreground">{greet()}{first ? "," : ""}</p>
-        <h1 className="mt-1 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl" style={{ textWrap: "balance" }}>{me ? (me.name || first) : err ? "Dashboard" : "Loading your desk…"}</h1>
-        {err && <p role="alert" className="mt-4 rounded-xl border border-destructive/40 px-4 py-3 text-sm text-destructive">{err}</p>}
-        {me && (
-          <div className="grid gap-4" style={{ marginTop: 32, gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,15rem),1fr))" }}>
-            <div className={tile}><p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">Signed in as</p><p className="mt-2 break-words text-base font-medium text-foreground">{me.email}</p></div>
-            <div className={tile}><p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">Role</p><p className="mt-2 text-base font-medium capitalize text-foreground">{me.role}</p></div>
-            <div className={tile}><p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">Session ends</p><p className="mt-2 text-base font-medium text-foreground">{when(me.expires_at)}</p></div>
-            <div className={tile}><p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">Company mailboxes</p><p className="mt-2 text-sm text-muted-foreground">Not connected yet. They appear here when they are real.</p></div>
-          </div>
-        )}
-        <Button variant="outline" className="ax-press mt-8 min-h-11" disabled={out} onClick={signOut}>{out ? "Signing out…" : "Sign out"}</Button>
-      </section>
-    </main>
-  );
+  return <DeskShell me={me} err={err} out={out} onSignOut={signOut} />;
 }
 
 /** One component, three pages by path (/, /adminlogin, /dashboard). The guard sends a visitor without a session away from the dashboard. */
