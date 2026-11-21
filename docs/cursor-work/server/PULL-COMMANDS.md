@@ -2115,3 +2115,5 @@
 - Awam package chart re-added to awam blueprint; docs only, WIRED: NO
 
 - Awam packages caps deep audit; docs only, WIRED: NO
+
+- Awam top-priority caps block; docs only, WIRED: NO

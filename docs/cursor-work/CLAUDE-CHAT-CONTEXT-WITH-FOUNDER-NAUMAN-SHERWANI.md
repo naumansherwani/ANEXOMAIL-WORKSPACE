@@ -5120,3 +5120,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - Awam package chart re-added to awam blueprint; docs only, WIRED: NO
 
 - Awam packages caps deep audit; docs only, WIRED: NO
+
+- Awam top-priority caps block; docs only, WIRED: NO

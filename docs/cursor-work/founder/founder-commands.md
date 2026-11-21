@@ -5495,3 +5495,7 @@ Features ki list (QC4 mein kya banega):
 ## 22 Nov 2026 03:32 PKT (his 03:32): deep audit of caps. Done: docs/awam/PACKAGES-CAPS-AUDIT-22NOV.md
 
 - Awam packages caps deep audit; docs only, WIRED: NO
+
+## 22 Nov 2026 03:34 PKT (his 03:34): put caps audit at TOP PRIORITY of awam blueprint in capitals; any future dictation goes to that top list; back to Admin Desk order.
+
+- Awam top-priority caps block; docs only, WIRED: NO
