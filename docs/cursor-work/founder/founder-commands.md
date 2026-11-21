@@ -5221,3 +5221,7 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 21:39 PKT] HIS WORD (21:35, with 3 images + openssl paste): image 2 neeche se cut kyon; ball nikalne ke baad colours different kaise; logo (ANEXOMAIL WORKSPACE, cursor wali jagah) clickable -> admindesk.anexomail.com home; image 2 pe line add: Behind every ticket is a business that trusted our vault. Don't just reply-resolve it before they even wonder why. Baki admindesk.anexomail.com pe kuch nahi touch. Ledger mein compact save. openssl: issuer Supabase Intermediate 2021 CA, verify 19. (21:38): clean-push RULE strict, sab repo mein likho.
 
 - 21 Nov 2026 21:39 PKT Desk login: logo link, vault line, glow, fit; desk-appdb pins Supabase root CA; CLEAN-PUSH LAW file; WIRED: NO until his runs
+
+[21 Nov 2026 21:40 PKT] HIS WORD (21:39): Our engine runs in milliseconds... yeh line delete sirf yahan (login) se, baki admindesk.anexomail.com pe intact rahegi. DONE: removed from DeskSignIn only; landing still shows it (checked).
+
+- 21 Nov 2026 21:40 PKT Desk login: motto removed from the login only, landing keeps it; WIRED: NO until his desk-install

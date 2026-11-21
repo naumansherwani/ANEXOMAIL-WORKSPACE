@@ -25,3 +25,5 @@
 15. (21 Nov 2026 21:27 PKT) Login: "No passkey on this account" line removed too.
 
 16. (21 Nov 2026 21:39 PKT) Login: logo -> /, his vault line under the motto, glow back without the ball, tighter spacing. desk-appdb.sh now pins Supabase Root 2021 CA (DESK_DB_CA). NEXT his desk-install then desk-appdb, then sign in. CLEAN-PUSH LAW: docs/claude/CLEAN-PUSH-LAW-21NOV.md (git status empty after every push).
+
+17. (21 Nov 2026 21:40 PKT) Login: motto line removed from /adminlogin only; landing / keeps it.

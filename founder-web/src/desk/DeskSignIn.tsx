@@ -59,7 +59,6 @@ export function DeskSignIn() {
             <HoverA />Continue with a passkey
           </button>
           <div style={{ width: "100%", borderTop: "1px solid rgba(160,200,255,.14)", paddingTop: "clamp(8px,1.4vh,14px)", display: "flex", flexDirection: "column", alignItems: "center", gap: "clamp(4px,1vh,10px)" }}>
-            <p style={{ margin: 0, fontSize: 13, lineHeight: 1.5, color: "#C9D8F2", textAlign: "center", textWrap: "balance" as const }}>Our engine runs in milliseconds; our support should too. Own the issue, fix the root, leave zero open loops.</p>
             <p style={{ margin: 0, fontSize: 13, lineHeight: 1.5, color: "#C9D8F2", textAlign: "center", textWrap: "balance" as const }}>Behind every ticket is a business that trusted our vault. Don’t just reply—resolve it before they even wonder why.</p>
             <p style={{ margin: 0, fontSize: 11, letterSpacing: ".08em", color: "#8FA6CC", textAlign: "center" }}>Built on: Rust · Tokio · axum · Rust WASM kernel · WebAuthn passkeys · Three.js</p>
           </div>
