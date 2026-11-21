@@ -9,3 +9,5 @@
 7. (21 Nov 2026 11:01 PKT) UI PLAN: read PLAN-DESK-UI-COPY-21NOV.md. NEVER mention repo checkpoint commits in chat (his 11:00). Evening: keep that table order.
 
 8. (21 Nov 2026 20:44 PKT) LOGIN DOOR code pushed. His steps in order: ad-auto.sh (applies AD1b), desk-appdb.sh (desk_app login + app.env), desk-install.sh; then sign in at /adminlogin with admindesk@anexomail.com + the password he typed. Awam login = Supabase GoTrue (Bun auth.ts), do not touch. TODAY target (his 20:38): copy founder phases in order into the Desk (PLAN-DESK-UI-COPY-21NOV.md), Desk gate + /desk/v1 endpoints only.
+
+9. (21 Nov 2026 20:47 PKT) LESSON: edit ONLY docs/claude/admin-desk/ (canonical); desk-copy-sync overwrites root admin-desk/. Rule 52 NOT on Desk API yet (login = plain fetch); Desk imports shared signin/* and kernel: fix in R4-1 (own copies, own kernel RPC audience desk).

@@ -2551,3 +2551,7 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 21 Nov 2026 20:44 PKT Desk login door door.rs + AD1b + desk-appdb.sh, password form open; tested locally on PG16; WIRED: NO until his 3 server steps
 
 - 21 Nov 2026 20:44 PKT Desk login door door.rs + AD1b + desk-appdb.sh, password form open; tested locally on PG16; WIRED: NO until his 3 server steps
+
+### 21 Nov 2026 20:47 PKT Desk frontend + Rule 52 audit (his 20:44): see founder-commands. door.rs, main.rs, Cargo (tokio-postgres, rustls-native-certs, serde) written in docs/claude/admin-desk/server (canonical; root is a synced copy, edit ONLY canonical). 14 Rust tests pass, Desk gate clean.
+
+- 21 Nov 2026 20:47 PKT Desk door.rs + wiring + deps restored in canonical folder, gate clean, 14 tests; WIRED: NO until his server steps

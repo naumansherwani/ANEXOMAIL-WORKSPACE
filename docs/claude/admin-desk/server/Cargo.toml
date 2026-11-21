@@ -22,6 +22,10 @@ tower = { version = "0.5", features = ["util"] }
 subtle = "2.6.1"
 sha2 = "0.10"
 argon2 = { version = "0.5", features = ["std"] }
+tokio-postgres = "0.7.18"
+tokio-postgres-rustls = "0.14.0"
+rustls-native-certs = "0.8.5"
+serde = { version = "1.0.229", features = ["derive"] }
 
 [profile.release]
 opt-level = 3

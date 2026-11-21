@@ -12,6 +12,7 @@ use axum::{
 use tower_http::services::{ServeDir, ServeFile};
 
 mod auth;
+mod door;
 mod h3;
 
 const HOST: &str = "admindesk.anexomail.com";
@@ -55,11 +56,6 @@ async fn health() -> impl IntoResponse {
     (StatusCode::OK, [(header::CONTENT_TYPE, "application/json")], r#"{"desk":"up","login":"not-connected"}"#)
 }
 
-// R3a2 replaces this with the real ARGON2ID door. Until then it says the truth.
-async fn login_not_connected() -> impl IntoResponse {
-    (StatusCode::NOT_FOUND, [(header::CONTENT_TYPE, "application/json")], r#"{"error":"desk login not connected"}"#)
-}
-
 #[tokio::main]
 async fn main() {
     // `anexomail-desk h3check <ip:port> <host> <cert.pem>`: the proof client (PQ + AES-256 only) for his server
@@ -74,11 +70,14 @@ async fn main() {
         let cert = std::fs::read(&a[4]).expect("cert file");
         match h3::selfcheck(a[2].parse().expect("ip:port"), &a[3], &cert).await { Ok(o) => { println!("H3CHECK OK: {o} (handshake = TLS 1.3, AES-256-GCM, X25519MLKEM768: the client offered nothing else)"); return; } Err(e) => { println!("H3CHECK FAIL: {e}"); std::process::exit(1); } }
     }
+    tokio::spawn(door::warm());
     let index = format!("{DIST}/desk.html");
     let files = ServeDir::new(DIST).fallback(ServeFile::new(index));
     let app = Router::new()
         .route("/desk/v1/health", get(health))
-        .route("/desk/v1/auth/login", post(login_not_connected))
+        .route("/desk/v1/auth/login", post(door::login))
+        .route("/desk/v1/auth/me", get(door::me))
+        .route("/desk/v1/auth/logout", post(door::logout))
         .fallback_service(files)
         .layer(middleware::from_fn(desk_headers))
         .layer(middleware::from_fn(host_gate));

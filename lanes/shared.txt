@@ -39,6 +39,7 @@ admin-desk/server/Cargo.lock
 admin-desk/server/Cargo.toml
 admin-desk/server/src/00-FOUNDER-TECH-RULE.md
 admin-desk/server/src/auth.rs
+admin-desk/server/src/door.rs
 admin-desk/server/src/h3.rs
 admin-desk/server/src/main.rs
 admin-desk/sql/00-FOUNDER-TECH-RULE.md
