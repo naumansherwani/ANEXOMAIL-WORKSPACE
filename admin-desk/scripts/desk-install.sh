@@ -49,3 +49,6 @@ echo "   listener:"; ss -ltnp | grep ':4400' | sed 's/^/     /'
 if [ "$H" != 200 ] || [ "$W" != 404 ]; then echo "FAIL: rollback"; systemctl stop $SVC; B="$(ls -t $ROOT/anexomail-desk.bak.* 2>/dev/null | head -1)"; [ -n "$B" ] && cp "$B" "$ROOT/anexomail-desk" && systemctl start $SVC; journalctl -u $SVC -n 15 --no-pager; exit 4; fi
 echo "   public: curl -sI https://admindesk.anexomail.com | head -3"; curl -sI --max-time 10 https://admindesk.anexomail.com | head -3
 echo "OK: anexomail-desk is up on 127.0.0.1:4400"
+# 5/5 (his 21 Nov 2026 21:41: ONE install command does everything): the Desk's own database login + database CA, kept if it works, renewed if it does not
+echo "== 5/5 database login (desk_app)"
+if [ -r /etc/anexomail-desk/db.env ]; then bash <(show admin-desk/scripts/desk-appdb.sh) --ensure || exit $?; else echo "   skipped: /etc/anexomail-desk/db.env not there yet"; fi

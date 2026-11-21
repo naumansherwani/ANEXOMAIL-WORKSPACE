@@ -2647,3 +2647,13 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 21 Nov 2026 21:39 PKT Desk login: logo link, vault line, glow, fit; desk-appdb pins Supabase root CA; CLEAN-PUSH LAW file; WIRED: NO until his runs
 
 - 21 Nov 2026 21:40 PKT Desk login: motto removed from the login only, landing keeps it; WIRED: NO until his desk-install
+
+### 21 Nov 2026 21:42 PKT DESK TWO-COMMAND LAW: desk-install.sh step 5/5 runs desk-appdb.sh --ensure (CA pin every install; keeps a working desk_app login, renews it only when it does not connect). SQL = ad-auto.sh. No third Desk command.
+
+- 21 Nov 2026 21:42 PKT DESK TWO-COMMAND LAW: install does everything (DB login + CA), SQL = ad-auto; WIRED: NO until his install
+
+- 21 Nov 2026 21:42 PKT DESK TWO-COMMAND LAW: install does everything (DB login + CA), SQL = ad-auto; WIRED: NO until his install
+
+- 21 Nov 2026 21:42 PKT DESK TWO-COMMAND LAW: install does everything (DB login + CA), SQL = ad-auto; WIRED: NO until his install
+
+- 21 Nov 2026 21:42 PKT DESK TWO-COMMAND LAW: install does everything (DB login + CA), SQL = ad-auto; WIRED: NO until his install

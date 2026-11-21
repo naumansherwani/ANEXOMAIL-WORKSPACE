@@ -5225,3 +5225,13 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 21:40 PKT] HIS WORD (21:39): Our engine runs in milliseconds... yeh line delete sirf yahan (login) se, baki admindesk.anexomail.com pe intact rahegi. DONE: removed from DeskSignIn only; landing still shows it (checked).
 
 - 21 Nov 2026 21:40 PKT Desk login: motto removed from the login only, landing keeps it; WIRED: NO until his desk-install
+
+[21 Nov 2026 21:42 PKT] HIS WORD (21:41): yeh same kyon aati hai, aaj ke baad sirf ek install ki command hogi jis mein sab kuch hoga jaise founder ki install command thi ya web pull ki, aur ek SQL ki command hogi, is ke ilawa koi command nahi hogi. DONE: desk-appdb folded into desk-install (step 5/5, --ensure), law in CLAUDE.md + docs/claude/admin-desk/TWO-COMMANDS.md.
+
+- 21 Nov 2026 21:42 PKT DESK TWO-COMMAND LAW: install does everything (DB login + CA), SQL = ad-auto; WIRED: NO until his install
+
+- 21 Nov 2026 21:42 PKT DESK TWO-COMMAND LAW: install does everything (DB login + CA), SQL = ad-auto; WIRED: NO until his install
+
+- 21 Nov 2026 21:42 PKT DESK TWO-COMMAND LAW: install does everything (DB login + CA), SQL = ad-auto; WIRED: NO until his install
+
+- 21 Nov 2026 21:42 PKT DESK TWO-COMMAND LAW: install does everything (DB login + CA), SQL = ad-auto; WIRED: NO until his install

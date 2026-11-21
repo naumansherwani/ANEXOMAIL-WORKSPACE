@@ -2943,3 +2943,11 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 21:39 PKT Desk login: logo link, vault line, glow, fit; desk-appdb pins Supabase root CA; CLEAN-PUSH LAW file; WIRED: NO until his runs
 
 - 21 Nov 2026 21:40 PKT Desk login: motto removed from the login only, landing keeps it; WIRED: NO until his desk-install
+
+- 21 Nov 2026 21:42 PKT DESK TWO-COMMAND LAW: install does everything (DB login + CA), SQL = ad-auto; WIRED: NO until his install
+
+- 21 Nov 2026 21:42 PKT DESK TWO-COMMAND LAW: install does everything (DB login + CA), SQL = ad-auto; WIRED: NO until his install
+
+- 21 Nov 2026 21:42 PKT DESK TWO-COMMAND LAW: install does everything (DB login + CA), SQL = ad-auto; WIRED: NO until his install
+
+- 21 Nov 2026 21:42 PKT DESK TWO-COMMAND LAW: install does everything (DB login + CA), SQL = ad-auto; WIRED: NO until his install
