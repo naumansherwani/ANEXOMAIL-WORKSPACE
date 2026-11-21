@@ -47,3 +47,5 @@
 26. (21 Nov 2026 22:59 PKT) Login: single bottom light (scene line off on login only via DeskScene horizon={false}). Backups: branches backup/desk-ui-20261121-2235/2239/2250/2259. NEXT his install, sign in; flash pick; then Rule 52 own kernel RPC, R4-1 founder phase copy.
 
 27. (21 Nov 2026 23:10 PKT) LOGIN DOOR LIVE on his server (database login live 23:08). Status: admin-desk/BLUEPRINT-STATUS-21NOV.md. Palette kept: codes/DESK-PALETTE-PREMIUM-MAX.md. NEXT: his sign-in, Rule 52 Desk kernel RPC, DBSC, orb, passkey, R4, R3p, R3b-g.
+
+28. (21 Nov 2026 23:21 PKT) LIVE CHROME 23:2x: /adminlogin bundle desk-CLXshddE.js = repo build; door answers bad_credentials 401 (real DB); his Chrome uses h2 (Caddy), NOT h3 -> pill text HTTP/3 is not yet true for browsers (WEBSITE-PROMISES gap). Namecheap has NO HTTPS record type (his 13 Nov screenshots); founderworkspace gets its h3 hint from his own Rust DNS. Premium/Max plan: docs/claude/PREMIUM-MAX-PLAN-21NOV.md (awam lane, next E201).

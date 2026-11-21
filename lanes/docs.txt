@@ -266,6 +266,7 @@ docs/claude/POLAR-COPY-V6-PRO.md
 docs/claude/POLAR-ENGINE-MAP.md
 docs/claude/PP0-FEATURE-INVENTORY-26OCT.md
 docs/claude/PP1-FULL-GATE-TABLE-26OCT.md
+docs/claude/PREMIUM-MAX-PLAN-21NOV.md
 docs/claude/PRICING-AND-PLANS-PHASE-26OCT.md
 docs/claude/PRICING-POSITIONING-26OCT.md
 docs/claude/PRO-LIVE-GREEN-26OCT.md

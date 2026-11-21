@@ -2693,3 +2693,7 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 ### 21 Nov 2026 23:10 PKT Desk login door LIVE (his install: desk_app connection ready, OK database login live). Status file BLUEPRINT-STATUS-21NOV.md; palette for Premium/Max saved.
 
 - 21 Nov 2026 23:10 PKT Desk login door LIVE on his server (desk_app DB login); blueprint status + Premium/Max palette saved; sign-in by him pending
+
+### 21 Nov 2026 23:21 PKT LIVE CHROME (his laptop Chrome, read only): Desk bundle = repo; door 401 bad_credentials; nextHopProtocol h2. PREMIUM-MAX plan written (awam lane). desk-restart.sh prints DNS facts (A/AAAA/TYPE65, server IPv6, IPv6 listeners).
+
+- 21 Nov 2026 23:21 PKT Premium/Max plan (awam lane), live Chrome look of the Desk, DNS facts in desk-restart; WIRED: NO

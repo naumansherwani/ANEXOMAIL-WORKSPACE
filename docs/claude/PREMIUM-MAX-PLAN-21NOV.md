@@ -1,0 +1,13 @@
+# BUSINESS PREMIUM + BUSINESS MAX (AWAM) PLAN, HIS 21 NOV 2026 23:19 (written 21 Nov 2026 23:21 PKT)
+His word: "ab same Business Premium aur Business MAX ke liye banao, yeh mix nahi karna hai Admin Desk, yeh strictly follow karo. Business Premium users aur MAX ke liye HTTP 1 aur 2 banned hai, sirf HTTP 3 aur QUIC aur jitni bhi duniya ki advance technology woh hogi. businesspremium.test@anexomail.com banega, yeh woh hai jis se humko maloom hoga ke user ko experience kya milega; businessmax.test@anexomail.com, is mein bhi hum ko user ban ke sochna hai jaise humne Basic, Pro, Business, Business Pro mein experience kiya hai. Baad mein yeh dono packages ready honge to Business aur Business Pro ke liye sirf gates ki limit lagegi, user ko kitne features milenge, yeh gates package ke hisaab se lagenge."
+## LAWS
+1. AWAM lane, NEVER mixed with the Admin Desk (no desk code, no fadm_ table, no desk_app role, no /desk/v1 door) and never with the founder binary.
+2. Business Premium + Business Max: HTTP/1 and HTTP/2 BANNED; HTTP/3 over QUIC only, TLS 1.3 AES-256-GCM, X25519MLKEM768, plus the founder technology law (Rust/Tokio/axum, Rust WASM kernel Rule 52, WebTransport, MoQ, RLS, ML-DSA hybrid, OpenPGP PQC where listed).
+3. The Desk palette is kept for them (docs/claude/admin-desk/codes/DESK-PALETTE-PREMIUM-MAX.md).
+4. Two REAL-path test accounts, made the way the repo makes real buyers (E28 seed: /signup + claim + organisation + entitlement): businesspremium.test@anexomail.com and businessmax.test@anexomail.com; we use them as the customer to judge the experience, like basic/pro/business/business_pro before.
+5. After both are ready: Business and Business Pro get the same build with GATES that cap features by package (plan_catalog / plan_interop_gate_map, E100), nothing rebuilt.
+## FACTS FROM THE REPO (no guess)
+- The database knows plans personal, basic, pro, business, business_pro, enterprise only (E100 plan_catalog / plan_interop check). business_premium and business_max are NOT plans yet: a new E SQL (next free E201) must add them first, schema-first (read E100 + E23 + E28 owners before writing).
+- E28 seed takes plan as a parameter; with the new plans it makes the two test accounts; passwords typed on the server, never in chat.
+## ORDER
+P0 E201 SQL: plans business_premium + business_max in plan_catalog/interop (+ CHECK) -> P1 the two test accounts (E28 path, password typed on the server) -> P2 their transport: HTTP/3 only listener for their hosts (port from his fresh ss), Alt-Svc + DNS -> P3 the experience pass as the user (every screen at 390/820/1280, live Chrome) -> P4 gates for Business / Business Pro.

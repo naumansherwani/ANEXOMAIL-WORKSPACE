@@ -5283,3 +5283,7 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 23:10 PKT] HIS WORD (23:10): tarteeb mein next update karo aur batao next kya hai; admindesk ke colours preserve karo Business Premium users aur Business Max ke liye; his install: 5/5 database connection ready, OK database login live; compaction order; abhi time date ke saath blueprint bhejo, advance technology ke saath kya bana, kya baqi, hum kahan khade hain.
 
 - 21 Nov 2026 23:10 PKT Desk login door LIVE on his server (desk_app DB login); blueprint status + Premium/Max palette saved; sign-in by him pending
+
+[21 Nov 2026 23:21 PKT] HIS WORD (23:19): flash ke WAIT likha rahe lekin commit nahi karna, mujhe demo dikhao; ab same Business Premium aur Business Max ke liye banao, mix nahi Admin Desk; Premium/Max ke liye HTTP 1 aur 2 banned, sirf HTTP 3 + QUIC + duniya ki advance technology; businesspremium.test@anexomail.com aur businessmax.test@anexomail.com banenge user ban ke experience ke liye; baad mein Business aur Business Pro ke liye sirf gates ki limit; Namecheap AAAA + HTTPS record ke steps admin desk aur awam dono ke liye ek baar batao; live Chrome dekhna shuru karo; compaction order. DONE: PREMIUM-MAX-PLAN-21NOV.md; live Chrome look (bundle desk-CLXshddE = repo, bad login 401 from the real door, me 401, connection h2 not h3); DNS facts section in desk-restart.sh.
+
+- 21 Nov 2026 23:21 PKT Premium/Max plan (awam lane), live Chrome look of the Desk, DNS facts in desk-restart; WIRED: NO
