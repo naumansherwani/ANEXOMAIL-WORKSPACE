@@ -2,14 +2,14 @@ import { useEffect, useState, type FormEvent } from "react";
 import { canSubmit, cleanEmail } from "../signin_pure";
 import { BrandMark } from "../signin/BrandMark";
 import { HoverA } from "../signin/BrandLoader";
-import { postJson, realDeps } from "../signin_passkey";
 import { DESK_LOGIN_PATH, DESK_SESSION_KEY, deskLoginMessage } from "./desk_pure";
 import { DeskScene } from "./DeskScene";
 import { DeskTelemetry } from "./DeskTelemetry";
+import { deskCall, DeskRefused, refusedMessage } from "./desk_kernel";
 
 /** Admin Desk sign-in (/adminlogin), R3a1: the cinematic office login he approved on 21 Nov 2026 08:31 (laptop 1440 + phone 390 demo).
  *  The ORIGINAL ANEXOMAIL mark (BrandMark) and the sign-in "A" (HoverA) are used as they are, same as the founder and awam sign-in. One build for phone, tablet and laptop: the card is fluid.
- *  Identity is the Desk only (no founder entry). A passkey is OPTIONAL: the primary button reports the browser honestly; the password path (collapsed) signs in through the Desk door /desk/v1/auth/login (Rust, R3a2). No new raw fetch: postJson from signin_passkey. */
+ *  Identity is the Desk only (no founder entry). A passkey is OPTIONAL: the primary button reports the browser honestly; the password path (collapsed) signs in through the Desk door /desk/v1/auth/login (Rust, R3a2). Rule 52: every call goes through deskCall() (desk_kernel.ts), the Desk's own WASM kernel verifies the signed answer. */
 const card: React.CSSProperties = { width: "100%", maxWidth: 456, boxSizing: "border-box", padding: "clamp(24px,4vh,44px) clamp(20px,5vw,40px) clamp(18px,3vh,28px)", position: "relative", borderRadius: 28, background: "linear-gradient(160deg,rgba(18,28,52,.62),rgba(6,11,25,.78))", backdropFilter: "blur(26px) saturate(140%)", border: "1px solid rgba(160,200,255,.34)", boxShadow: "0 0 0 1px rgba(255,255,255,.04) inset,0 1px 0 rgba(255,255,255,.18) inset,0 40px 90px rgba(0,0,0,.6),0 0 60px rgba(15,52,96,.55)", display: "flex", flexDirection: "column", alignItems: "center", gap: "clamp(10px,1.8vh,16px)" };
 const field: React.CSSProperties = { minHeight: 44, boxSizing: "border-box", padding: "0 14px", borderRadius: 12, border: "1px solid rgba(160,200,255,.3)", background: "rgba(4,9,22,.7)", color: "#E8EEF9", fontSize: 16, width: "100%" };
 
@@ -36,10 +36,10 @@ export function DeskSignIn() {
     if (!canSubmit(addr, password, busy)) { setMsg("Enter your email and password."); return; }
     setBusy(true); setMsg("");
     try {
-      const r = await postJson(realDeps(), DESK_LOGIN_PATH, { email: cleanEmail(addr), password }), j = (r.json && typeof r.json === "object" ? r.json : null) as { token?: string } | null;
+      const r = await deskCall("POST", DESK_LOGIN_PATH, { email: cleanEmail(addr), password }), j = (r.json && typeof r.json === "object" ? r.json : null) as { token?: string } | null;
       if (r.status === 200 && typeof j?.token === "string") { try { window.localStorage.setItem(DESK_SESSION_KEY, j.token); } catch { setMsg("This browser blocks storage, so the sign-in cannot be kept."); setBusy(false); return; } if (savePw) { try { const PC = (window as unknown as { PasswordCredential?: new (d: { id: string; password: string; name?: string }) => Credential }).PasswordCredential; if (PC) await navigator.credentials.store(new PC({ id: cleanEmail(addr), password, name: cleanEmail(addr) })); } catch { /* the browser declined: nothing to do */ } } window.location.assign("/dashboard"); return; }
       setMsg(deskLoginMessage(r.status));
-    } catch { setMsg(deskLoginMessage(0)); }
+    } catch (err) { setMsg(err instanceof DeskRefused ? refusedMessage(err.message) : deskLoginMessage(0)); }
     setBusy(false); setPassword("");
   }
   return (

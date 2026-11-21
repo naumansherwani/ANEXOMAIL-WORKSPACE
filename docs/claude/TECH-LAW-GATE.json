@@ -306,10 +306,10 @@
   {
    "id": "D-shared-postjson",
    "file": "founder-web/src/desk/DeskSignIn.tsx",
-   "must": "postJson",
+   "must": "deskCall",
    "status": "ok",
-   "why": "Desk sign-in uses the shared pre-session helper, no new raw fetch (Rule 52 ratchet)",
-   "live": "written 21 Nov 2026 (Desk), proven by the build/tests"
+   "why": "Desk sign-in goes ONLY through deskCall() (Desk WASM kernel verifies the signed answer; Rule 52); no new raw fetch",
+   "live": "changed 22 Nov 2026 01:37 PKT (R3d stage B), proven by Rust 19/19 + Playwright on the real binary"
   },
   {
    "id": "D-host-router",
@@ -418,6 +418,22 @@
    "deadline": "R3a1",
    "why": "R3a1: cinematic office scene in THREE.JS (lazy, parallax, static fallback)",
    "fail_after": "2026-11-24"
+  },
+  {
+   "id": "D-r3d-sign",
+   "file": "admin-desk/server/src/signed.rs",
+   "must": "envelope",
+   "status": "ok",
+   "why": "Every sealed /desk/v1 answer is Desk-Ed25519-signed and bound to nonce+method+path; request MAC after sign-in (Rule 52)",
+   "live": "written 22 Nov 2026 01:37 PKT (R3d stage B), Rust tests"
+  },
+  {
+   "id": "D-r3d-kernel",
+   "file": "founder-web/src/desk/desk_kernel.ts",
+   "must": "verify_answer",
+   "status": "ok",
+   "why": "Desk pages trust an answer only after the Desk's OWN WASM kernel verifies it",
+   "live": "written 22 Nov 2026 01:37 PKT (R3d stage B), Playwright tamper refused"
   }
  ]
 }

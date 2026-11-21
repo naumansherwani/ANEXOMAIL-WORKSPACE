@@ -87,8 +87,9 @@ pub async fn login(Json(b): Json<Login>) -> Response {
     resp.headers_mut().insert(header::SET_COOKIE, set_cookie(&token, TTL_SECS)); resp
 }
 
-fn token_of(h: &HeaderMap) -> Option<String> {
-    cookie_token(h).or_else(|| h.get(header::AUTHORIZATION).and_then(|v| v.to_str().ok()).and_then(|v| v.strip_prefix("Bearer ")).map(str::to_string).filter(|v| v.len() == 64 && v.bytes().all(|b| b.is_ascii_hexdigit())))
+// R3d: the kernel's bearer token comes FIRST (it is the one the request MAC is keyed on), the HttpOnly cookie second.
+pub fn token_of(h: &HeaderMap) -> Option<String> {
+    h.get(header::AUTHORIZATION).and_then(|v| v.to_str().ok()).and_then(|v| v.strip_prefix("Bearer ")).map(str::to_string).filter(|v| v.len() == 64 && v.bytes().all(|b| b.is_ascii_hexdigit())).or_else(|| cookie_token(h))
 }
 
 pub async fn me(req: Request) -> Response {

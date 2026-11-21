@@ -15,6 +15,7 @@ mod auth;
 mod door;
 mod h3;
 mod sign;
+mod signed;
 
 const HOST: &str = "admindesk.anexomail.com";
 const BIND: &str = "127.0.0.1:4400";
@@ -74,11 +75,18 @@ async fn main() {
     tokio::spawn(door::warm());
     let index = format!("{DIST}/desk.html");
     let files = ServeDir::new(DIST).fallback(ServeFile::new(index));
-    let app = Router::new()
-        .route("/desk/v1/health", get(health))
+    signed::init();
+    // R3d (Rule 52): every door below `sealed` answers ONLY as a Desk-signed envelope; calls after sign-in must carry the request MAC (signed.rs).
+    let sealed = Router::new()
         .route("/desk/v1/auth/login", post(door::login))
         .route("/desk/v1/auth/me", get(door::me))
         .route("/desk/v1/auth/logout", post(door::logout))
+        .route("/desk/v1/sig/ping", get(signed::ping))
+        .layer(middleware::from_fn(signed::guard));
+    let app = Router::new()
+        .route("/desk/v1/health", get(health))
+        .route("/desk/v1/key", get(signed::key))
+        .merge(sealed)
         .fallback_service(files)
         .layer(middleware::from_fn(desk_headers))
         .layer(middleware::from_fn(host_gate));

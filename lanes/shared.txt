@@ -58,6 +58,7 @@ admin-desk/server/src/door.rs
 admin-desk/server/src/h3.rs
 admin-desk/server/src/main.rs
 admin-desk/server/src/sign.rs
+admin-desk/server/src/signed.rs
 admin-desk/sql/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/AD1.sql
 admin-desk/sql/AD1/00-FOUNDER-TECH-RULE.md

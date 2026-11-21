@@ -1,3 +1,4 @@
+> ## >>> ADMIN DESK RULES (his 22 Nov 2026 01:36 PKT, STANDING): (1) every phase and subphase is written WITH its advance technology next to it; (2) the Desk is a REAL business system (his business runs from here now and in future): real accounts, real data, no mock, no demo data, every change wired end to end and live-proven; (3) every phase ships with its REAL pull command the same night (as many phases as possible each night); (4) PRESERVE the Desk code as a product: the SAME Admin Desk will be built for NEXATECT, AXONETIS and ANEXVOT PAY (each its own isolated deployment, host, key, DB role; never mixed); (5) Rule 52 on every call. <<<
 > [21 Nov 2026 23:10 PKT] WHERE WE STAND: login door + own DB login LIVE (his install 23:08). NEXT: his sign-in, then Rule 52 Desk kernel RPC, DBSC, orb, passkey, R4 copy, R3p (palette kept for Premium/Max). Full status: BLUEPRINT-STATUS-21NOV.md
 > [21 Nov 2026 20:44 PKT] R3a2-3 LOGIN DOOR code done (door.rs, AD1b, desk-appdb.sh); waits his 3 server steps; then R3a2 DBSC, R4-1.. founder phases copied (Desk gate + /desk/v1 endpoints only).
 > [21 Nov 2026 11:01 PKT] AFTER LOGIN: inside UI = founder phases COPIED in order (R4-1..R4-10, PLAN-DESK-UI-COPY-21NOV.md), Desk gate + /desk/v1 endpoints, never founder's. NEXT now: login door + AD1b.
@@ -84,3 +85,5 @@ R3b inboxes (Sun 06:00) / R3c auto mail RFC 3834 + Polar signed webhook (12:00) 
 > [22 Nov 2026 01:15 PKT] MASTER PLAN written: MASTER-PLAN-22NOV.md (points P1..P12 + 10-step build order with technology). CODE STARTS: step 1 R3d.
 
 > [22 Nov 2026 01:25 PKT] ON1..ON12 FINAL (his answers: all haan; teams support / migration / frontend_demo; +4 zero-trust locks AAGUID, IP+shift, circuit breaker, no_access default). EMPLOYEE-ACCOUNTS-PLAN-22NOV.md. ORDER: R3d > dashboard+bridge > S1+S2 > ON1. Not in code.
+
+> [22 Nov 2026 01:36 PKT] R3d stage B written + tested; waits his desk-install, then my live Chrome proof. NEXT: R4-1 shell/bridge on deskCall.
