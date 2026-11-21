@@ -39,6 +39,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 0d5e4c3e 21 Nov 21:10 checkpoint
 - d186cdee 21 Nov 21:10 Desk login: passkey button + philosophy instead of orb
 - 5882a924 21 Nov 21:09 Desk login: passkey button + philosophy instead of orb
 - eeb4c747 21 Nov 21:08 checkpoint
@@ -46,7 +47,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - ebf4fa37 21 Nov 21:07 Desk: login demo record
 - 4fe0c7ba 21 Nov 21:07 Desk: login demo record
 - 5dfa332c 21 Nov 21:05 Desk: installer copies all Rust files, stops on failed build
-- 00dc4b6a 21 Nov 21:05 Desk: installer copies all Rust files, stops on failed build
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
