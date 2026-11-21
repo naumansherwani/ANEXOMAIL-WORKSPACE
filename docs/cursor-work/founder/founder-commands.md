@@ -5205,3 +5205,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 21:20 PKT CLEAN-PUSH LAW in CLAUDE.md; desk-appdb db connection fail recorded; WIRED: NO
 
 - 21 Nov 2026 21:21 PKT CLEAN-PUSH LAW in CLAUDE.md; desk-appdb db connection fail recorded; WIRED: NO
+
+[21 Nov 2026 21:22 PKT] HIS WORD (21:21, 2 images): yeh tune 1st image banaya hai aur second image mein se sirf ball nikalna tha aur passkey wali neechay bola tha, yeh wapis kar de. DONE: page restored to his 2nd image; ONLY the ball removed (nothing in its place) and the same Touch passkey button moved below Sign in. Identity box kept (his 2nd image). 390 + 1280 checked.
+
+- 21 Nov 2026 21:22 PKT Desk login restored to his image minus ball, passkey below; WIRED: NO until his desk-install

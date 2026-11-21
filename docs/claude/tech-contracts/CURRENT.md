@@ -2631,3 +2631,7 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 21 Nov 2026 21:20 PKT CLEAN-PUSH LAW in CLAUDE.md; desk-appdb db connection fail recorded; WIRED: NO
 
 - 21 Nov 2026 21:21 PKT CLEAN-PUSH LAW in CLAUDE.md; desk-appdb db connection fail recorded; WIRED: NO
+
+### 21 Nov 2026 21:22 PKT Desk login RESTORED to his 2nd image (21:21): only the ball removed, Touch passkey (same look/words) moved below Sign in. Philosophy line and Continue-with-a-passkey restyle removed.
+
+- 21 Nov 2026 21:22 PKT Desk login restored to his image minus ball, passkey below; WIRED: NO until his desk-install

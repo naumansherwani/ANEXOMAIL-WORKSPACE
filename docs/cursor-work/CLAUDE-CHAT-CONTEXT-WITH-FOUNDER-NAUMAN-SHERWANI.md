@@ -4960,3 +4960,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 21:20 PKT CLEAN-PUSH LAW in CLAUDE.md; desk-appdb db connection fail recorded; WIRED: NO
 
 - 21 Nov 2026 21:21 PKT CLEAN-PUSH LAW in CLAUDE.md; desk-appdb db connection fail recorded; WIRED: NO
+
+- 21 Nov 2026 21:22 PKT Desk login restored to his image minus ball, passkey below; WIRED: NO until his desk-install
