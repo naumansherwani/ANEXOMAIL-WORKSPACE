@@ -16,8 +16,9 @@ q=dict(u.parse_qsl(a.query)); q.setdefault("sslmode","require")
 print(u.urlunsplit((a.scheme,nu+":"+os.environ["DESK_PW"]+"@"+host,a.path,u.urlencode(q),"")))
 P
 )" || { echo "FAIL: could not build the desk_app url"; exit 3; }
-env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "$DESK_DB_URL" -X -q -v ON_ERROR_STOP=1 -v pw="$PW" -c "alter role desk_app login password :'pw'" 2>&1 | tail -3
-[ "${PIPESTATUS[0]}" = 0 ] || { echo "FAIL: ALTER ROLE desk_app (AD1 must be in the database)"; exit 4; }
+# the statement goes through stdin: psql only expands :'pw' there (never with -c)
+printf "alter role desk_app login password :'pw';\n" | env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "$DESK_DB_URL" -X -q -v ON_ERROR_STOP=1 -v pw="$PW" 2>&1 | tail -3
+[ "${PIPESTATUS[1]}" = 0 ] || { echo "FAIL: ALTER ROLE desk_app (AD1 must be in the database)"; exit 4; }
 id $SVC >/dev/null 2>&1 || { echo "FAIL: run desk-install.sh first"; exit 2; }
 ( umask 037; printf 'DESK_APP_URL=%s\n' "$URL" >"$APP" ); chown root:$SVC "$APP"; chmod 640 "$APP"; unset PW URL
 mkdir -p /etc/systemd/system/$SVC.service.d; printf '[Service]\nEnvironmentFile=%s\n' "$APP" >/etc/systemd/system/$SVC.service.d/db.conf
