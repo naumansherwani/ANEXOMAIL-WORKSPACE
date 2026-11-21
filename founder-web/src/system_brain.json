@@ -1,8 +1,8 @@
 {
  "heartbeat": {
-  "generated": "21 Nov 2026 07:31 +0500",
-  "head": "38dcddba",
-  "head_subject": "ledger line 3ca0635a",
+  "generated": "21 Nov 2026 07:35 +0500",
+  "head": "5328bd8f",
+  "head_subject": "ledger line dd66f70f",
   "now": "QCONNECT",
   "phases": {
    "GREEN": 28,
@@ -12,7 +12,7 @@
   },
   "q_done": 40,
   "q_open": 5,
-  "checks_ok": 26,
+  "checks_ok": 29,
   "checks_open": [
    "M-moq",
    "D-clamav",
@@ -22,7 +22,10 @@
    "Q-live-wt",
    "Q-smtp-mtasts",
    "Q-ledger-kernel",
-   "AWAM-PREMIUM-MAX-LIVE"
+   "AWAM-PREMIUM-MAX-LIVE",
+   "D-host-router",
+   "D-login-door",
+   "D-argon2"
   ]
  },
  "features": [

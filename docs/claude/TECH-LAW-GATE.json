@@ -286,6 +286,129 @@
    "status": "ok",
    "why": "QLIVE (his word 18 Nov 05:16): new mail appears by itself, no refresh; WebTransport push + kernel opens the sealed row; SSE fallback only",
    "deadline": "2026-11-25"
+  },
+  {
+   "id": "D-own-bundle",
+   "file": "founder-web/vite.desk.config.ts",
+   "must": "dist-desk",
+   "status": "ok",
+   "why": "Admin Desk has its OWN Vite build and output folder (never inside the founder bundle)",
+   "live": "written 21 Nov 2026 (Desk), proven by the build/tests"
+  },
+  {
+   "id": "D-own-session-key",
+   "file": "founder-web/src/desk/desk_pure.ts",
+   "must": "anexo.desk.session",
+   "status": "ok",
+   "why": "Admin Desk has its OWN session key",
+   "live": "written 21 Nov 2026 (Desk), proven by the build/tests"
+  },
+  {
+   "id": "D-shared-postjson",
+   "file": "founder-web/src/desk/DeskSignIn.tsx",
+   "must": "postJson",
+   "status": "ok",
+   "why": "Desk sign-in uses the shared pre-session helper, no new raw fetch (Rule 52 ratchet)",
+   "live": "written 21 Nov 2026 (Desk), proven by the build/tests"
+  },
+  {
+   "id": "D-host-router",
+   "file": "server/founder/src/fproxy.rs",
+   "must": "admindesk.anexomail.com",
+   "status": "open",
+   "deadline": "R3a0",
+   "why": "R3a0: Rust SNI host router knows the Desk host and refuses founder doors there",
+   "fail_after": "2026-11-24"
+  },
+  {
+   "id": "D-login-door",
+   "file": "server/founder/src/main.rs",
+   "must": "/desk/v1/auth/login",
+   "status": "open",
+   "deadline": "R3a2",
+   "why": "R3a1/R3a2: Rust signed Desk login door (own token audience desk)",
+   "fail_after": "2026-11-24"
+  },
+  {
+   "id": "D-argon2",
+   "file": "server/founder/Cargo.toml",
+   "must": "argon2",
+   "status": "open",
+   "deadline": "R3a2",
+   "why": "R3a1: ARGON2ID password hashing for staff/owner login",
+   "fail_after": "2026-11-24"
+  },
+  {
+   "id": "D-sql-owner",
+   "file": "docs/cursor-work/sql/E201_admin_desk_core.sql",
+   "must": "desk_app",
+   "status": "open",
+   "deadline": "R3a2",
+   "why": "R3a2: SQL E201 with fadm_* tables, RLS and the desk_app role (zero founder grants)",
+   "fail_after": "2026-11-24"
+  },
+  {
+   "id": "D-sql-sla",
+   "file": "docs/cursor-work/sql/E202_admin_desk_sla.sql",
+   "must": "business",
+   "status": "open",
+   "deadline": "R3a2",
+   "why": "R3a2: SQL E202 business-hours SLA engine",
+   "fail_after": "2026-11-24"
+  },
+  {
+   "id": "D-virtual-list",
+   "file": "founder-web/package.json",
+   "must": "@tanstack/react-virtual",
+   "status": "open",
+   "deadline": "R3b",
+   "why": "R3b: virtualised inbox list (huge inbox stays fast)",
+   "fail_after": "2026-11-24"
+  },
+  {
+   "id": "D-auto-submitted",
+   "file": "server/founder/src/desk_auto.rs",
+   "must": "Auto-Submitted",
+   "status": "open",
+   "deadline": "R3c",
+   "why": "R3c: RFC 3834 Auto-Submitted header + 7-day per-sender gate on auto mail",
+   "fail_after": "2026-11-24"
+  },
+  {
+   "id": "D-kernel-rpc",
+   "file": "founder-web/src/desk/desk_api.ts",
+   "must": "kernelRpc",
+   "status": "open",
+   "deadline": "R3d",
+   "why": "R3d: every Desk call after sign-in goes through the Rust WASM kernel (Rule 52)",
+   "fail_after": "2026-11-24"
+  },
+  {
+   "id": "D-sla-engine",
+   "file": "docs/cursor-work/sql/E202_admin_desk_sla.sql",
+   "must": "pause",
+   "status": "open",
+   "deadline": "R3f",
+   "why": "R3f: SLA clock pauses/stops only on a human reply or resolve",
+   "fail_after": "2026-11-24"
+  },
+  {
+   "id": "D-imap-migrator",
+   "file": "server/founder/Cargo.toml",
+   "must": "async-imap",
+   "status": "open",
+   "deadline": "R4c",
+   "why": "R4c: Rust async IMAP migrator for Managed Move-In",
+   "fail_after": "2026-12-12"
+  },
+  {
+   "id": "D-attachments-shared",
+   "file": "server/founder/src/attach_core.rs",
+   "must": "wtransport",
+   "status": "open",
+   "deadline": "ATT",
+   "why": "ATTACHMENTS phase (after R4): Tokio + Rust + WebTransport, one core shared by founder, Desk and awam",
+   "fail_after": "2026-12-20"
   }
  ]
 }
