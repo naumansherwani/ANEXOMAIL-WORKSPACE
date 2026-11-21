@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 21 Nov 2026 10:31 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:32 PKT) - read this FIRST for the Desk after a compaction
 DOING: AD1 editor run + server check pending
 NEXT STEP: auth.rs ARGON2ID after his paste
 HIS LAST WORD: compact save order 10:33
@@ -25,6 +25,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 3b8f4a00 21 Nov 10:32 Desk: compact-save context file
 - 7da33aa0 21 Nov 10:31 Desk AD1: AD1.sql for his SQL editor, ad-check.sh + ad-db-env.sh for the server check
 - 0d572362 21 Nov 10:31 Desk AD1: AD1.sql for his SQL editor, ad-check.sh + ad-db-env.sh for the server check
 - 1f7c3c22 21 Nov 10:27 checkpoint 10:48
@@ -32,13 +33,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - bf9114ac 21 Nov 10:27 desk: AD1-editor.sql for the SQL editor
 - 41acdd31 21 Nov 10:26 desk: AD1-editor.sql for the SQL editor
 - c7681864 21 Nov 10:26 checkpoint 10:38
-- c042de6e 21 Nov 10:25 checkpoint 10:38
 
 ## Uncommitted Desk files
-M  admin-desk/state/WORKING-NOW.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
-MM docs/claude/admin-desk/state/WORKING-NOW.md
-?? docs/claude/admin-desk/state/COMPACT-SAVE.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 22 Nov: R3a2-argon2 [R3a2] Password door with ARGON2ID, constant-time -> needs ARGON2ID, constant-time compare, token audience desk in admin-de
