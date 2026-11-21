@@ -2360,3 +2360,7 @@ Gate bans http/1, http/1.1, http/2, h2 in every Desk .rs/.toml/.ts/.tsx (only De
 - 21 Nov 2026 09:40 PKT: his ss paste 09:27: UDP 4400 chosen for Desk HTTP/3; h3.rs real PQ loopback test PASS (6 tests); desk-install.sh + desk-h3-enable.sh committed; WIRED: code YES, live NO until his curl --http3 proof
 
 - 21 Nov 2026 09:40 PKT: his ss paste 09:27: UDP 4400 chosen for Desk HTTP/3; h3.rs real PQ loopback test PASS (6 tests); desk-install.sh + desk-h3-enable.sh committed; WIRED: code YES, live NO until his curl --http3 proof
+
+## 21 Nov 2026 09:45 PKT R3a0-s2 SERVER RUN FACTS (his pastes 09:33): he ran desk-h3-enable.sh BEFORE desk-install.sh (my two lines were numbered 1 and 2, he ran 2 first): the old binary had no HTTP/3, so the script's own check failed and ROLLED BACK (drop-in and ufw rule removed, as designed). Left behind, harmless: /etc/anexomail/tls/desk/* (Desk cert copy) and cron file /etc/cron.d/anexomail-desk-cert. Then desk-install.sh ran OK: new h3 binary built (1m54s), health 200, wrong host 404, listener 127.0.0.1:4400 pid 178020, public still answers h2 via the edge (alt-svc h3=:18443 is Caddy's, not the Desk's). NEXT: he re-runs desk-h3-enable.sh ONCE (install is already done).
+
+- 21 Nov 2026 09:45 PKT: his pastes 09:33: AnexoChat UDP proven (3443 anexomail-rust, TURN 3478/5349 relay 49152-49500); desk-install OK on server (h3 binary, h3 OFF); desk-h3-enable rolled back by design (ran before install); WIRED: live NO until his re-run + curl --http3

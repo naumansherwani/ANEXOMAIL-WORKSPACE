@@ -15,6 +15,8 @@ Full law + older history: docs/claude/SERVER-PORTS-RED-LINE-08NOV.md. QC1e D4A (
 
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in env DESK_H3_ADDR=[::]:4400, ufw rule by admin-desk/scripts/desk-h3-enable.sh). Seen in that paste: udp 3478/5349 turnserver, 3501+3443 anexomail-rust, 9200/9300 axon_core, 18443 caddy, 443 anexomail-found (founder), 53 founder-dns/systemd-resolve, 323 chronyd, 68 systemd-network. ufw udp rules: 3478, 5349, 49152:65535, 9200 (88.198.208.90), 49152:49500, 9300, 443, 3501, 3443, 18443, 53 (founder-dns).
 
+## ANEXOCHAT UDP = PROVEN by his paste 21 Nov 2026 09:33 PKT: chat + call WebTransport = UDP *:3443 (anexomail-rust pid 3902845); internal UDP 3501 (anexomail-rust); TURN for calls = turnserver UDP 3478 (listening-port) + UDP 5349 (tls-listening-port), relay range min-port 49152 .. max-port 49500 (ufw has 49152:49500 and also 49152:65535). ANEXOCHAT_WT_PORT is not set in /etc/anexomail/*.env (no output: the code default 3443 applies). UDP 4400 (Desk HTTP/3) collides with none of these.
+
 ## FOUNDER + other processes in the same list (never touch)
 | Proto | Port | Process |
 |---|---|---|

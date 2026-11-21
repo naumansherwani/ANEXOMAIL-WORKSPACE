@@ -1,3 +1,5 @@
+> **21 Nov 2026 09:45 PKT: desk-install.sh RAN OK on his server (h3 binary live, h3 still OFF); desk-h3-enable.sh ran first and rolled back by design. NEXT his ONE re-run of desk-h3-enable.sh, then AAAA + HTTPS record, curl --http3. AnexoChat UDP proven = 3443 (no clash with Desk UDP 4400).**
+
 > **21 Nov 2026 09:40 PKT: Desk HTTP/3 port = UDP 4400 (from his fresh ss 09:27). h3.rs has a REAL loopback PQ test (X25519MLKEM768 + AES-256-GCM handshake + h3 request: PASS). Scripts desk-install.sh + desk-h3-enable.sh committed; the HTTP/3 block stays ON until his curl --http3 proof; then his AAAA + HTTPS record (port=4400).**
 
 > **21 Nov 2026 09:30 PKT, HIS WORD 09:23: HTTP/1 AND HTTP/2 ARE BOTH BANNED (gate). Desk HTTP/3 listener CODE WRITTEN (admin-desk/server/src/h3.rs: quinn+h3, TLS 1.3 AES-256-GCM only, X25519MLKEM768 first, 5 tests pass); NOT live until his ss (UDP port) + AAAA/HTTPS record + curl --http3 proof. Order after that: AD1 SQL, auth.rs ARGON2ID, DBSC, orb pulse/zoom, passkey ceremony, R3p plans.**

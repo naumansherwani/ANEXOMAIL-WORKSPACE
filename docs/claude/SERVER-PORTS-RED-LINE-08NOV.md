@@ -31,3 +31,5 @@ HTTPS 18443, HTTP 18080, admin 127.0.0.1:12019. They stay a proposal until his f
 - 21 Nov 2026 07:5x PKT (his pastes): desk-host-check.sh: tcp 443 + udp 443 = anexomail-founder, udp 18443 = caddy, tcp 3200 = anexomail-rust, udp 443 firewall open. His free-port loop (ss -tulnH + grep /etc/caddy): FREE 4400 4500 7400 8400 (3400 3500 4400... taken). HIS DECISION: 4400 = ADMIN DESK (own Rust process, LOOPBACK 127.0.0.1:4400 only, separate from awam and founder); he added the admindesk host to Caddy himself. 4400 is RESERVED; nobody else may use it. The full ss list is not re-pasted yet; PORTS-LIVE.md gets the full table at his next full ss paste.
 
 - 21 Nov 2026 09:27 PKT (his full `ss -ulnp; ufw status | grep -i udp` paste): UDP 4400 FREE -> RESERVED for the Admin Desk's own HTTP/3 (own binary anexomail-desk, own cert copy /etc/anexomail/tls/desk, ufw rule added only by his run of desk-h3-enable.sh). Nobody else may use UDP 4400.
+
+- 21 Nov 2026 09:33 PKT (his paste): AnexoChat UDP proven = 3443 (anexomail-rust WebTransport) + 3501 internal; TURN 3478/5349, relay 49152-49500. Desk HTTP/3 = UDP 4400, no clash.
