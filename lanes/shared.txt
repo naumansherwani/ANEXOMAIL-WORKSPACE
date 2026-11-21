@@ -42,6 +42,7 @@ admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/checks/AD1-check.sql
 admin-desk/sql/checks/README.md
 admin-desk/state/00-FOUNDER-TECH-RULE.md
+admin-desk/state/COMPACT-SAVE.md
 admin-desk/state/PHASES.md
 admin-desk/state/RESUME.md
 admin-desk/state/WORKING-NOW.md
