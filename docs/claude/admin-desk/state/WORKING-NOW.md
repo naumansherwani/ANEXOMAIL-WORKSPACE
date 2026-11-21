@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 21 Nov 2026 22:59 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 22:59 PKT) - read this FIRST for the Desk after a compaction
 DOING: single bottom light
 NEXT STEP: his install, sign in, flash pick
 HIS LAST WORD: double light removed
@@ -39,6 +39,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- f24407da 21 Nov 22:59 Desk login: one bottom light
 - 0b3f96d1 21 Nov 22:50 ledger line 42468c3e
 - 42468c3e 21 Nov 22:50 Desk login: email suffix, fixed bottom light
 - 10f9dc43 21 Nov 22:41 ledger line fc3ae069
@@ -46,13 +47,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - dad14a1b 21 Nov 22:40 Desk home Sign in: awam button colours
 - cd8b2fcd 21 Nov 22:36 ledger line 77f84998
 - 77f84998 21 Nov 22:36 Desk: backup branch note
-- 45909205 21 Nov 22:36 ledger line 19ff7847
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskScene.tsx
- M founder-web/src/desk/DeskSignIn.tsx
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
