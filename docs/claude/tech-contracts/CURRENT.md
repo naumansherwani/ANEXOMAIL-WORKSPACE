@@ -2271,3 +2271,5 @@ HOST admindesk.anexomail.com (Namecheap added by him; banned for awam users). FR
 Passkey OPTIONAL (owner first door = his command + ARGON2ID password; passkey enrol after, optional; Desk login screen: Touch Passkey primary, password path collapsed for accounts without a passkey). Only the Desk identity on the login (no founder entry). Telemetry values real or hidden. TLS line on the page only after stage 2 real AES-256 + his openssl proof (WEBSITE-PROMISES row).
 
 - 21 Nov 2026 08:09 PKT: his answers: passkey optional, Desk identity only, telemetry real, TLS line only after stage 2; Phase R3a described (R3a0 host, R3a1 login UI, R3a2 login door); Desk not wired (WIRED: NO)
+
+- 21 Nov 2026 08:09 PKT: same (manifest pass)
