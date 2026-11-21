@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 21:54 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 22:06 PKT) - read this FIRST for the Desk after a compaction
 DOING: login subtitle + mobile logo fixed
 NEXT STEP: his desk-install, sign in; then Rule 52, R4-1
 HIS LAST WORD: Sovereign Desk Access line, mobile fix
@@ -39,14 +39,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 9730261a 21 Nov 22:06 Desk login: new line, phone pill fix
+- 98f92358 21 Nov 21:54 ledger line 283a7d6a
 - b3c26743 21 Nov 21:52 ledger line 0faa9860
 - 0faa9860 21 Nov 21:52 Desk login: new subtitle, mobile logo fix
 - 3040da2e 21 Nov 21:43 ledger line bc0f1692
 - fa104607 21 Nov 21:43 ledger line c88cb88c
 - c88cb88c 21 Nov 21:43 Desk: restart command, three-command law
 - 016bb463 21 Nov 21:42 ledger line e3b1e4f5
-- e3b1e4f5 21 Nov 21:42 Desk: one install command does everything (DB login + CA)
-- 70774099 21 Nov 21:40 ledger line 8747699c
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
