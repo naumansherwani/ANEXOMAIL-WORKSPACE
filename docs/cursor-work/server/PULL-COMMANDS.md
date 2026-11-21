@@ -2093,3 +2093,5 @@
 - R4-1 UI: original BrandMark (awam size) in Desk rail, colours intact; sandbox layout ok, WIRED: NO
 
 - R4-1a UI: pin/unpin, scrollbar, groups, logo text removed; audit of founder->Desk moves; tests 8/8, layout ok, WIRED: NO until his install + my look
+
+- Desk rail item renamed Managed Move-In (his folder name); tests 8/8, WIRED: NO until install

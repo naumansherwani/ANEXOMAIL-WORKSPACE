@@ -6,7 +6,7 @@ RULES THAT DO NOT BREAK: Desk isolation law (copy into founder-web/src/desk/, ne
 | Finance (F3) | revenue, billing, Polar | STAYS in founder (his word) | none | none |
 | Polar read-only (E105/E106, polar.rs, Finance.tsx) | payments | STAYS in founder | the Desk only RECEIVES a signed plan event (R3p2), never reads Polar | none |
 | People (F4): organisations, users, devices, permissions | YES | MOVE | Admin Desk folder, "People" (metadata only, never message content) | R5a |
-| Managed Move-In (F3): slots, cut-overs, mailbox + DNS checks | YES | MOVE | Admin Desk folder, "Move-In" (rail item exists, not connected) | R4-11 |
+| Managed Move-In (F3): slots, cut-overs, mailbox + DNS checks | YES | MOVE | Admin Desk folder, "Managed Move-In" (his folder name, rail item exists, not connected) | R4-11 |
 | Mail > Mail Desk (company mailboxes, support replies, deliverability) | YES | MOVE | ANEXOMAIL WORKSPACE > Inboxes | R4-2 |
 | Mail > his own inbox, folders, compose, outbox, Calendar | founder's own mail | STAYS (also built in the Desk for staff) | Inboxes (staff mail) | R4-3..R4-10 |
 | Dashboard card "New customers" (leads, Glitch / Support / Company Mail) | YES | MOVE to the Desk dashboard (leads = CRM) | Desk dashboard + R-CRM | R4-1b |

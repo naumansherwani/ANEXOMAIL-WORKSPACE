@@ -12,7 +12,7 @@ const NAV: NavItem[] = [
   { key: "dashboard", group: "", label: "Dashboard", glyph: ico("M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"), live: true },
   { key: "inboxes", group: "Anexomail Workspace", label: "Inboxes", glyph: ico("M3 13l3-8h12l3 8v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zM3 13h5l1 3h6l1-3h5"), live: false },
   { key: "cases", group: "Admin Desk", label: "Cases", glyph: ico("M4 5h16v11H8l-4 4zM8 9h8M8 12h5"), live: false },
-  { key: "movein", group: "Admin Desk", label: "Move-In", glyph: ico("M3 12h13M12 6l6 6-6 6M20 4v16"), live: false },
+  { key: "movein", group: "Admin Desk", label: "Managed Move-In", glyph: ico("M3 12h13M12 6l6 6-6 6M20 4v16"), live: false },
   { key: "team", group: "Company", label: "Team", glyph: ico("M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20a6 6 0 0 1 12 0M17 11a2.5 2.5 0 1 0 0-5M16 14.5A5 5 0 0 1 21 20"), live: false },
   { key: "audit", group: "Company", label: "Audit", glyph: ico("M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM9 12l2 2 4-4"), live: false },
 ];
@@ -49,7 +49,7 @@ const CSS = `
 .dsk::after{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0,transparent 14vw,rgba(160,200,255,.05) 14vw,rgba(160,200,255,.05) calc(14vw + 1px));box-shadow:inset 0 0 180px rgba(0,0,0,.55)}
 .dsk-rail{overflow-x:auto;scrollbar-width:none;position:fixed;z-index:20;left:0;right:0;bottom:0;display:flex;justify-content:space-around;gap:2px;padding:6px max(8px,env(safe-area-inset-left)) calc(6px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-right));background:var(--glass);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border-top:1px solid var(--line)}
 .dsk-brand,.dsk-who,.dsk-grp,.dsk-pin{display:none}.dsk-scroll{display:contents}
-.dsk-nav{flex:1 0 56px;min-width:0;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:0;border-radius:14px;background:transparent;color:var(--mute);font-family:inherit;font-size:11px;font-weight:500;line-height:1.1;cursor:pointer}
+.dsk-nav{flex:1 0 64px;min-width:0;text-align:center;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:0;border-radius:14px;background:transparent;color:var(--mute);font-family:inherit;font-size:11px;font-weight:500;line-height:1.1;cursor:pointer}
 .dsk-nav[aria-current=page]{color:#fff;background:rgba(111,166,242,.16)}
 .dsk-nav[aria-disabled=true]{opacity:.55;cursor:default}
 .dsk-nav:focus-visible,.dsk-out:focus-visible{outline:2px solid #BFD6FF;outline-offset:2px}

@@ -5455,3 +5455,7 @@ Features ki list (QC4 mein kya banega):
 ## 22 Nov 2026 02:45 (his 02:43, with phone screenshots of Desk rail + founder dashboard): desk-install paste OK (build, key kept, health 200, DB login live). His words: logo/colours good; ADD pin/unpin + scrollbar; Managed Move-In and everything awam in founder MOVES to the Desk same-to-same and is removed from founder (only Finance + Polar stay); remove "Admin Desk" text above dashboard; Desk gets its own Bridge (his needs); ANEXOMAIL WORKSPACE above mailboxes, folder ADMIN DESK for all user problems; asks WHEN the founder-look top bar order (2nd image) comes; wants audit. Answered in FOUNDER-TO-DESK-AUDIT-22NOV.md (R4-1b next).
 
 - R4-1a UI: pin/unpin, scrollbar, groups, logo text removed; audit of founder->Desk moves; tests 8/8, layout ok, WIRED: NO until his install + my look
+
+## 22 Nov 2026 02:46 (his 02:46): "Managed Move-In yeh folder name hai rename kero" -> rail item renamed Move-In to Managed Move-In (his folder name).
+
+- Desk rail item renamed Managed Move-In (his folder name); tests 8/8, WIRED: NO until install
