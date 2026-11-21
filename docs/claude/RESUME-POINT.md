@@ -2,6 +2,7 @@
 ## >>> KP3 STEP 5 STATUS 14 Nov 05:53 (full text = top of docs/claude/PHASE-NOW.md + tech-contracts/CURRENT.md last block): steps 1+2 GREEN on his server; STEP 3 WRITTEN = docs/cursor-work/server/founder-wt-off.sh (not run on his server; old founder-wt.sh + founder-wt-proof.sh deleted); NEXT = step 4 (checks), then step 5 = his ONE command (founder-wt-off.sh) + ss paste, then step 6 my live Chrome. ONE STEP AT A TIME. Note: the step-2 binary no longer binds udp 4443, so the listener is probably already gone (UNVERIFIED until his ss); what remains is the 4 FOUNDER_WT_* env lines + ufw 4443/udp. <<<
 - 21 Nov 2026 21:15 PKT WORKING-NOW kept only in canonical Desk folder (no dirty file after commit); WIRED: NO
 - 21 Nov 2026 21:15 PKT WORKING-NOW kept only in canonical Desk folder (no dirty file after commit); WIRED: NO
+- 21 Nov 2026 21:15 PKT WORKING-NOW kept only in canonical Desk folder (no dirty file after commit); WIRED: NO
 - 21 Nov 2026 21:14 PKT auto checkpoint; WIRED: NO
 - 21 Nov 2026 21:14 PKT auto checkpoint; WIRED: NO
 - 21 Nov 2026 21:14 PKT Desk login: Identity box removed (his 21:13); WIRED: NO until his desk-install

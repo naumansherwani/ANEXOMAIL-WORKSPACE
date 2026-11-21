@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 21:15 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 21:16 PKT) - read this FIRST for the Desk after a compaction
 DOING: login demo published; installer fixed
 NEXT STEP: his desk-install + desk-appdb, his demo pick
 HIS LAST WORD: login simple passkey, no ball, philosophy
@@ -39,6 +39,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 4be7ccb3 21 Nov 21:16 repo: WORKING-NOW root copy untracked
 - 29c9d103 21 Nov 21:15 repo: WORKING-NOW root copy untracked
 - a58324a9 21 Nov 21:14 checkpoint
 - e74f2d71 21 Nov 21:14 checkpoint
@@ -46,7 +47,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 59d92b95 21 Nov 21:14 Desk login: Identity box removed
 - 8099be4b 21 Nov 21:11 Desk login: passkey button below the form
 - cf68e2db 21 Nov 21:10 Desk login: passkey button below the form
-- b52f18cc 21 Nov 21:10 checkpoint
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
