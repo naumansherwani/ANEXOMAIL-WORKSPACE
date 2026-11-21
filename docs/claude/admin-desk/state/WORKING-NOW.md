@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 21 Nov 2026 22:50 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 22:50 PKT) - read this FIRST for the Desk after a compaction
 DOING: email suffix + fixed light
 NEXT STEP: his install, sign in
 HIS LAST WORD: @anexomail.com like awam; light always visible
@@ -39,6 +39,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 42468c3e 21 Nov 22:50 Desk login: email suffix, fixed bottom light
 - 10f9dc43 21 Nov 22:41 ledger line fc3ae069
 - 5a2e589d 21 Nov 22:40 ledger line dad14a1b
 - dad14a1b 21 Nov 22:40 Desk home Sign in: awam button colours
@@ -46,12 +47,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 77f84998 21 Nov 22:36 Desk: backup branch note
 - 45909205 21 Nov 22:36 ledger line 19ff7847
 - 19ff7847 21 Nov 22:36 Desk: home Sign in A prominent, backup law
-- 03844383 21 Nov 22:31 ledger line 114b6c9e
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskSignIn.tsx
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
