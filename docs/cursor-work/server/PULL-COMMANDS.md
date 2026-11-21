@@ -2131,3 +2131,5 @@
 - Bridge step 2 probes.rs written, 24 cargo tests ok, AD3 patch tested in sandbox; not on server; WIRED: NO
 
 - AD3-check row for 4 s probes (so ad-auto reruns AD3); desk-install ok on his server; WIRED: NO
+
+- Bridge live transport decided: WebTransport on UDP 4400, signed poll fallback, MoQ later; docs + contract only; WIRED: NO

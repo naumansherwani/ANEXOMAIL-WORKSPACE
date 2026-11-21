@@ -1,4 +1,4 @@
-> ## >>> RESUME HERE: RESUME 22 Nov 04:07 PKT: his ad-auto (AD3 patch), then R4-1b step 3 signed doors; AD4 cases/SLA; AD2 Rust door (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
+> ## >>> RESUME HERE: RESUME 22 Nov 04:15 PKT: his ad-auto (AD3 4 s patch) + desk-h3-check paste; then bridge.rs signed poll doors, WebTransport wt.rs; AD4 cases/SLA; AD2 Rust door (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
 > ## >>> FRONTEND=CADDY, HETZNER=BACKEND; DNS=Caddy IP (his 21 Nov 23:35): docs/claude/FRONTEND-CADDY-BACKEND-HETZNER-LAW-21NOV.md <<<
 > ## >>> DESK 3 CMDS: desk-install, ad-auto, desk-restart (admin-desk/TWO-COMMANDS.md) <<<
 > ## >>> CLEAN-PUSH: git status empty after push (CLEAN-PUSH-LAW-21NOV.md) <<<

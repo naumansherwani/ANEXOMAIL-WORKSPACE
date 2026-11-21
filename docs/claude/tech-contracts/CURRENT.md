@@ -1,5 +1,14 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK BRIDGE R4-1b step 3+ (LIVE TRANSPORT), written 22 Nov 2026 04:15 PKT, his word 04:15 "option 3 WebTransport". STATE: IN PROGRESS (prerequisite = real HTTP/3 proof)
+| Listed technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| Rust + Tokio + axum, Rule 52 signed envelopes (Ed25519) | server/src/signed.rs + new bridge.rs doors (poll fallback) | no | cargo tests + Chrome |
+| HTTP/3 (UDP 4400, only HTTP protocol of the Desk) | server/src/h3.rs exists; browser proof of h3 NOT yet (his curl shows HTTP/2) | partly | his desk-h3-check paste + Chrome nextHopProtocol |
+| WebTransport over QUIC (live Bridge stream) | new server/src/wt.rs + kernel stream client | no | sandbox + Chrome |
+| WASM kernel per-message verify, seq, 12 s stale | admin-desk/kernel | no | kernel tests |
+| MoQ tracks (named now, framing later) | docs/claude/admin-desk/BRIDGE-TRANSPORT-DECISION-22NOV.md D4 | no | later |
+
 # TECH CONTRACT FOR PHASE: QC8a a3-a5 (KEY LAYER MOUNT), written 21 Nov 2026 03:55 PKT, his answer 03:50 "1 haan, 2 browser, 3 haan". STATE: IN PROGRESS
 | Listed technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -2839,3 +2848,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - Bridge step 2 probes.rs written, 24 cargo tests ok, AD3 patch tested in sandbox; not on server; WIRED: NO
 
 - AD3-check row for 4 s probes (so ad-auto reruns AD3); desk-install ok on his server; WIRED: NO
+
+- Bridge live transport decided: WebTransport on UDP 4400, signed poll fallback, MoQ later; docs + contract only; WIRED: NO

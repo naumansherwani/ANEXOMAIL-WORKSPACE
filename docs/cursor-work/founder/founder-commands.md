@@ -5523,3 +5523,7 @@ Features ki list (QC4 mein kya banega):
 ## 22 Nov 2026 04:07 PKT (his 04:07): pasted ad-auto (AD3 skipped) + desk-install OK; founder rows stay founder, I judge what employees need; confused about Bridge: Desk Bridge = company needs; next phase discuss tech.
 
 - AD3-check row for 4 s probes (so ad-auto reruns AD3); desk-install ok on his server; WIRED: NO
+
+## 22 Nov 2026 04:15 PKT (his 04:15): option 3 WebTransport; asks when Rule 52 and MoQ arrive; record decision in ledger + blueprint.
+
+- Bridge live transport decided: WebTransport on UDP 4400, signed poll fallback, MoQ later; docs + contract only; WIRED: NO

@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 04:07 PKT) - read this FIRST for the Desk after a compaction
-DOING: AD3 check row for 4 s probes
-NEXT STEP: his ad-auto, then signed doors
-HIS LAST WORD: ad3 patch check
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 04:15 PKT) - read this FIRST for the Desk after a compaction
+DOING: Bridge transport decision WebTransport
+NEXT STEP: prove h3, signed poll doors
+HIS LAST WORD: webtransport decision
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
 
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 82e6fcdf 22 Nov 04:07 ledger line 6c70bec8
 - 6c70bec8 22 Nov 04:07 AD3 patch check
 - a3fcd1e3 22 Nov 04:00 ledger line a481f016
 - a481f016 22 Nov 04:00 Bridge probes
@@ -54,10 +55,13 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 7f8a137a 22 Nov 03:53 Bridge features list 2
 - 74cc71bf 22 Nov 03:43 ledger line 5d69c38a
 - 5d69c38a 22 Nov 03:43 Desk Bridge AD3
-- 5494fde6 22 Nov 03:34 ledger line 670128d4
 
 ## Uncommitted Desk files
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
+ M docs/claude/admin-desk/state/PHASES.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+?? docs/claude/admin-desk/BRIDGE-TRANSPORT-DECISION-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

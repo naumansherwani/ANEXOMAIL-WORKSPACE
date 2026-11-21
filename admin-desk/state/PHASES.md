@@ -67,3 +67,5 @@ Updated 21 Nov 2026 10:20 PKT. Rule 52: signed kernel-verified calls, no raw fet
 - [22 Nov 2026 03:59 PKT] R4-1b step 2 probes.rs written + tested (24 tests); AD3 patched for 4 s probes; needs desk-install + ad-auto on his server.
 
 - [22 Nov 2026 04:07 PKT] step 3 signed doors: summary, alerts, alert act, services, incidents; Desk Freeze waits for AD2 Rust door (passkey touch).
+
+- [22 Nov 2026 04:15 PKT] BRIDGE TRANSPORT (BRIDGE-TRANSPORT-DECISION-22NOV.md): step 0 prove real h3 (his desk-h3-check); step 1 signed poll doors (fallback, Rule 52 live); step 2 WebTransport server wt.rs + kernel stream client; step 3 Bridge screens; step 4 fan-out W4; step 5 MoQ tracks later. Tech: Rust quinn+h3 WebTransport, WASM kernel verify per message.

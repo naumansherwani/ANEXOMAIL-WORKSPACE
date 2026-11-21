@@ -332,6 +332,7 @@ docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
 docs/claude/admin-desk/BLUEPRINT-STATUS-21NOV.md
 docs/claude/admin-desk/BRIDGE-FEATURES-22NOV.md
 docs/claude/admin-desk/BRIDGE-PLAN-22NOV.md
+docs/claude/admin-desk/BRIDGE-TRANSPORT-DECISION-22NOV.md
 docs/claude/admin-desk/DASHBOARD-LIVE-COMMAND-22NOV.md
 docs/claude/admin-desk/EMPLOYEE-ACCOUNTS-PLAN-22NOV.md
 docs/claude/admin-desk/FOUNDER-TO-DESK-AUDIT-22NOV.md
