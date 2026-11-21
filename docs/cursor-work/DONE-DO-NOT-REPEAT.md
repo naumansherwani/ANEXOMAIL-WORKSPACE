@@ -3591,3 +3591,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 07:58 PKT: STOP by his word: two admindesk blocks in Caddy (pre-existing :8400 line 194 + his new :4400), ufw 8400 open; no server action until a read-only look; Desk still not wired (WIRED: NO)
 
 - 21 Nov 2026 07:58 PKT: same (manifest pass)
+
+- 21 Nov 2026 08:00 PKT: correction: no old :8400 block; his sed renamed the Desk host to :8400 and opened ufw 8400; revert proposed, waits his haan (WIRED: NO)
