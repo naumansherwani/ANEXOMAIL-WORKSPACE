@@ -3933,3 +3933,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 23:25 PKT Premium/Max: sign-in at anexomail.com/auth law + deep-search findings recorded; WIRED: NO
 
 - 21 Nov 2026 23:31 PKT DNS facts recorded; AAAA steps; browser h3 choice pending; WIRED: NO
+
+- 21 Nov 2026 23:32 PKT his word: AAAA TTL Automatic; WIRED: NO

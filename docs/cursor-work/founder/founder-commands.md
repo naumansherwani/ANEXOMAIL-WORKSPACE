@@ -5295,3 +5295,7 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 23:31 PKT] HIS PASTE (23:30, desk-restart DNS facts): service active, health 200, wrong host 404, door 401, HTTP/3 listening udp [::]:4400, db connection ready. admindesk A=62.238.98.98 AAAA none HTTPS none; anexomail.com A=62.238.98.98 AAAA none HTTPS none; founderworkspace A + AAAA 2a01:4f9:c014:5df6::1 + HTTPS 1 . alpn=h3 (his own Rust DNS); server IPv6 2a01:4f9:c014:5df6::1/64; IPv6 listeners udp 4400, udp 443, tcp 443.
 
 - 21 Nov 2026 23:31 PKT DNS facts recorded; AAAA steps; browser h3 choice pending; WIRED: NO
+
+[21 Nov 2026 23:32 PKT] HIS WORD (23:32): auto karunga 5 mins nahi (TTL Automatic for the 2 AAAA records). OK.
+
+- 21 Nov 2026 23:32 PKT his word: AAAA TTL Automatic; WIRED: NO
