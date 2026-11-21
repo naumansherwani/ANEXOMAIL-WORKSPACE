@@ -2414,3 +2414,5 @@ Gate bans http/1, http/1.1, http/2, h2 in every Desk .rs/.toml/.ts/.tsx (only De
 ## 21 Nov 2026 10:05 PKT R3a2 AD1 server FACT (his paste 10:01): bare `psql` on his server fails: 'could not translate host name "/var/run/postgresql"' = the PGHOST environment variable carries literal quotes in his root shell. ad-sql-run.sh now defines PSQL() = runuser -u postgres -- env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql -h /var/run/postgresql, so it never depends on his shell variables. NEXT: his read-only db list with -h /var/run/postgresql, then ad-sql-run.sh <database>.
 
 - 21 Nov 2026 10:05 PKT: his db-list paste: psql fails on PGHOST with literal quotes (fact); ad-sql-run.sh fixed with own PSQL() -h /var/run/postgresql; WIRED: AD1 not yet run on his server
+
+- 21 Nov 2026 10:05 PKT: his db-list paste: psql fails on PGHOST with literal quotes (fact); ad-sql-run.sh fixed with own PSQL() -h /var/run/postgresql; WIRED: AD1 not yet run on his server
