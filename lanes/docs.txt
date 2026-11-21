@@ -330,6 +330,7 @@ docs/claude/admin-desk/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
 docs/claude/admin-desk/BLUEPRINT-STATUS-21NOV.md
 docs/claude/admin-desk/EMPLOYEE-ACCOUNTS-PLAN-22NOV.md
+docs/claude/admin-desk/MASTER-PLAN-22NOV.md
 docs/claude/admin-desk/PLAN-DESK-UI-COPY-21NOV.md
 docs/claude/admin-desk/README.md
 docs/claude/admin-desk/REMAINING-LIST-22NOV.md
@@ -346,6 +347,12 @@ docs/claude/admin-desk/docs/QUIC-UDP-TECH-21NOV.md
 docs/claude/admin-desk/gates/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/gates/DESK-FEATURES.json
 docs/claude/admin-desk/gates/desk_tech_gate.py
+docs/claude/admin-desk/kernel/00-FOUNDER-TECH-RULE.md
+docs/claude/admin-desk/kernel/Cargo.lock
+docs/claude/admin-desk/kernel/Cargo.toml
+docs/claude/admin-desk/kernel/src/00-FOUNDER-TECH-RULE.md
+docs/claude/admin-desk/kernel/src/lib.rs
+docs/claude/admin-desk/kernel/src/wire.rs
 docs/claude/admin-desk/scripts/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/scripts/ad-auto.sh
 docs/claude/admin-desk/scripts/ad-check.sh
@@ -368,6 +375,7 @@ docs/claude/admin-desk/server/src/auth.rs
 docs/claude/admin-desk/server/src/door.rs
 docs/claude/admin-desk/server/src/h3.rs
 docs/claude/admin-desk/server/src/main.rs
+docs/claude/admin-desk/server/src/sign.rs
 docs/claude/admin-desk/sql/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/sql/AD1.sql
 docs/claude/admin-desk/sql/AD1/00-FOUNDER-TECH-RULE.md

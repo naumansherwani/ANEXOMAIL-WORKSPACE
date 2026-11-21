@@ -26,6 +26,10 @@ tokio-postgres = "0.7.18"
 tokio-postgres-rustls = "0.14.0"
 rustls-native-certs = "0.8.5"
 serde = { version = "1.0.229", features = ["derive"] }
+# R3d (22 Nov 2026): Rule 52 for the Desk. Desk-own Ed25519 answer signing + HKDF/HMAC request binding. Never the founder key or crate.
+ed25519-dalek = { version = "2", default-features = false, features = ["std", "rand_core"] }
+hmac = "0.12"
+hkdf = "0.12"
 
 [profile.release]
 opt-level = 3

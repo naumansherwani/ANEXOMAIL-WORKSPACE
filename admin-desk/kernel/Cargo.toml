@@ -1,0 +1,20 @@
+# ANEXOMAIL ADMIN DESK KERNEL (R3d, 22 Nov 2026): the Desk's OWN Rust WebAssembly kernel (Rule 52). New crate, never the founder kernel, never shared.
+[package]
+name = "anexomail-desk-kernel"
+version = "0.0.1"
+edition = "2024"
+[lib]
+crate-type = ["cdylib", "rlib"]
+[dependencies]
+ed25519-dalek = { version = "2", default-features = false }
+hmac = "0.12"
+hkdf = "0.12"
+sha2 = "0.10"
+subtle = "2.6.1"
+serde_json = "1"
+wasm-bindgen = "0.2"
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+strip = true

@@ -2763,3 +2763,11 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 22 Nov 01:25 PKT: WORLD-ADVANCE W1..W10 written into Desk blueprint, WIRED: NO (design only)
 
 - 22 Nov 01:35 PKT: employee accounts plan ON1..ON8 written, WIRED: NO (design only)
+
+- 22 Nov 2026 01:19 PKT PHASE R3d stage A CODE: server/src/sign.rs (Desk Ed25519 envelope + HKDF/HMAC request binding + replay cache, 4 tests green) and kernel/ (Desk-own WASM kernel crate, wire.rs verify_answer/request_headers, 4 host tests green, same message layout as the server). Stage B (wasm build, deskCall, /desk/v1/sig/ping + /key routes, live Chrome proof) next; login/me NOT touched until deskCall ships. WIRED: NO
+
+- 22 Nov 01:50 PKT: R3d stage A code (Desk sign.rs + own kernel crate, 8 tests green), WIRED: NO (not on routes yet)
+
+- 22 Nov 01:50 PKT: R3d stage A code (Desk sign.rs + own kernel crate, 8 tests green), WIRED: NO (not on routes yet)
+
+- 22 Nov 02:05 PKT: R3d stage A code (Desk sign.rs + own kernel crate, 8 tests green), WIRED: NO (not on routes yet)

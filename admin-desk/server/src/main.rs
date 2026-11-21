@@ -14,6 +14,7 @@ use tower_http::services::{ServeDir, ServeFile};
 mod auth;
 mod door;
 mod h3;
+mod sign;
 
 const HOST: &str = "admindesk.anexomail.com";
 const BIND: &str = "127.0.0.1:4400";
