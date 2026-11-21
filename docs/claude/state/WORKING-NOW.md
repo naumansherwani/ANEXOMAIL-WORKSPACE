@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 23:21 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 23:25 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Premium/Max plan, live Chrome look
 NEXT STEP: his DNS facts via desk-restart; E201 plans
 HIS LAST WORD: Premium/Max banao, DNS steps, live Chrome
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 2f2d329b 21 Nov 23:25 Premium/Max: auth law and his earlier notes
+- f236ba84 21 Nov 23:21 ledger line cf087070
 - cf087070 21 Nov 23:21 Premium/Max plan, Desk DNS facts, live Chrome record
 - 3c482ee8 21 Nov 23:11 ledger line 5defab99
 - 5defab99 21 Nov 23:11 Desk: status blueprint, palette for Premium/Max
-- 495bd5dc 21 Nov 22:59 ledger line f24407da
-- f24407da 21 Nov 22:59 Desk login: one bottom light
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 26 ++------------------------
- 1 file changed, 2 insertions(+), 24 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (d7b1ddac03a996a086f2f41701f3d337c432c7aa)
+WIP snapshot: refs/wip/last (3373546c8b8ece4a1273c5388a244607b0b0aa35)

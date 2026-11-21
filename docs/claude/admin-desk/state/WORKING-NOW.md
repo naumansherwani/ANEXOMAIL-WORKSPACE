@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 23:21 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 23:25 PKT) - read this FIRST for the Desk after a compaction
 DOING: Premium/Max plan, live Chrome look
 NEXT STEP: his DNS facts via desk-restart; E201 plans
 HIS LAST WORD: Premium/Max banao, DNS steps, live Chrome
@@ -41,14 +41,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 2f2d329b 21 Nov 23:25 Premium/Max: auth law and his earlier notes
+- f236ba84 21 Nov 23:21 ledger line cf087070
 - cf087070 21 Nov 23:21 Premium/Max plan, Desk DNS facts, live Chrome record
 - 3c482ee8 21 Nov 23:11 ledger line 5defab99
 - 5defab99 21 Nov 23:11 Desk: status blueprint, palette for Premium/Max
 - 495bd5dc 21 Nov 22:59 ledger line f24407da
 - f24407da 21 Nov 22:59 Desk login: one bottom light
 - 0b3f96d1 21 Nov 22:50 ledger line 42468c3e
-- 42468c3e 21 Nov 22:50 Desk login: email suffix, fixed bottom light
-- 10f9dc43 21 Nov 22:41 ledger line fc3ae069
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
