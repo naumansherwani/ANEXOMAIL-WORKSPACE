@@ -1779,3 +1779,5 @@
 - 21 Nov 2026 10:40 PKT: his word 09:59: Admin Desk folder moved INTO docs/claude/admin-desk (canonical) with ONE identical copy kept at root admin-desk/; desk-copy-sync.py + gate rule DESK COPY; installers unchanged; WIRED: YES
 
 - 21 Nov 2026 10:40 PKT: his word 09:59: Admin Desk folder moved INTO docs/claude/admin-desk (canonical) with ONE identical copy kept at root admin-desk/; desk-copy-sync.py + gate rule DESK COPY; installers unchanged; WIRED: YES
+
+- 21 Nov 2026 10:05 PKT: his db-list paste: psql fails on PGHOST with literal quotes (fact); ad-sql-run.sh fixed with own PSQL() -h /var/run/postgresql; WIRED: AD1 not yet run on his server
