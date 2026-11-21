@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 07:40 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 07:40 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: ADMIN DESK 3-DAY PLAN written (Sat 21 07:40 -> Mon 23 21:00); PHASE 1 = R3a0 HOST + R3a2 SQL/login door parallel; waits his haan for desk-host-check.sh
 NEXT STEP: his haan + paste, then R3a2 contract + E201 (schema-first) and Namecheap steps one at a time
 HIS LAST WORD: his 21 Nov 07:39: admin desk 3 din, pehla phase
@@ -18,40 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- ac7aa8c7 21 Nov 07:40 Admin Desk 3-day plan with times and technology per phase
 - 4f382d04 21 Nov 07:36 ledger line b0d830d9
 - b0d830d9 21 Nov 07:36 Desk tech-law gate checks, attachments after R4, R3a0-R3a2 detail, host check script
 - aecb42e1 21 Nov 07:36 ledger line 980dcce7
 - 980dcce7 21 Nov 07:36 Desk tech-law gate checks, attachments after R4, R3a0-R3a2 detail, host check script
-- 5328bd8f 21 Nov 07:31 ledger line dd66f70f
 
 ## Uncommitted files (half-done work if any)
- M CLAUDE.md
- M docs/claude/BLUEPRINT-ABC-01NOV.md
- M docs/claude/DONE-DO-NOT-REPEAT.md
- M docs/claude/RESUME-POINT.md
- M docs/claude/founder/PULL-COMMANDS.md
- M docs/claude/state/HEARTBEAT.json
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- M docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
- M docs/cursor-work/DONE-DO-NOT-REPEAT.md
- M docs/cursor-work/founder/founder-commands.md
- M docs/cursor-work/server/PULL-COMMANDS.md
- M founder-web/src/system_brain.json
-?? docs/claude/ADMIN-DESK-3DAY-PLAN-21NOV.md
-?? docs/claude/ADMIN-DESK-3DAY-SCHEDULE-21NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md                   | 37 +++++++++++-----------
- docs/claude/tech-contracts/CURRENT.md              |  2 ++
- ...DE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md |  4 +++
- docs/cursor-work/DONE-DO-NOT-REPEAT.md             |  2 ++
- docs/cursor-work/founder/founder-commands.md       |  6 ++++
- docs/cursor-work/server/PULL-COMMANDS.md           |  2 ++
- founder-web/src/system_brain.json                  |  6 ++--
- 13 files changed, 48 insertions(+), 25 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 37 ++-----------------------------------
+ 1 file changed, 2 insertions(+), 35 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -62,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (2d7d08ac480f4baa6f5aaacae08a223f371f6d3f)
+WIP snapshot: refs/wip/last (92106e2317966ce8290f70743858b8f4f0e37d0a)
