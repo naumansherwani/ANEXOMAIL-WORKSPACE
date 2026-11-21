@@ -2860,3 +2860,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - Bridge: all-today order, step 0 browser h3 NOT proven (Chrome h2), WebTransport primary; docs only; WIRED: NO
 
 - Bridge: all-today order, step 0 browser h3 NOT proven (Chrome h2), WebTransport primary; docs only; WIRED: NO
+
+- Blueprint order sent to founder in chat; current phase R4-1b Bridge S0; docs only; WIRED: NO
