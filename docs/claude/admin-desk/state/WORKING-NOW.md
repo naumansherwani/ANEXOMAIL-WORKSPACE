@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 03:34 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 03:34 PKT) - read this FIRST for the Desk after a compaction
 DOING: awam top priority block
 NEXT STEP: Day1 Desk Bridge, AD3, AD2 door
 HIS LAST WORD: top priority
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 670128d4 22 Nov 03:34 awam top priority
 - f8b4fc27 22 Nov 03:32 ledger line d6f7599e
 - d6f7599e 22 Nov 03:32 caps audit
 - cb561384 22 Nov 03:30 ledger line 4651e3ed
@@ -54,7 +55,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 4ec63755 22 Nov 03:19 ledger line d46a9cb1
 - d46a9cb1 22 Nov 03:19 Desk dashboard plan
 - f1880c63 22 Nov 03:08 ledger line 13389f33
-- 13389f33 22 Nov 03:08 Desk 4-day plan
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
