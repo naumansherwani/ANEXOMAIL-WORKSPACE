@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 01:55 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 01:55 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: R3d live on his server (key + signed refusal); step-5 check bug fixed; R-CRM added
 NEXT STEP: his rerun of desk-install (pull below), my Chrome Rule 52 proof, R4-1
 HIS LAST WORD: his 01:54 paste + CRM word
@@ -18,37 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- e94b2518 22 Nov 01:55 Desk: installer check fix for Rule 52 layer, R-CRM phase
 - 1bf4195c 22 Nov 01:47 ledger line 21dbdaea
 - 21dbdaea 22 Nov 01:47 Desk status record + timestamp correction
 - baf45e2c 22 Nov 01:41 ledger line 68859e31
 - 68859e31 22 Nov 01:41 rollback warning record
-- 87e2923c 22 Nov 01:39 ledger line ada44a81
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/BLUEPRINT-ABC-01NOV.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/MASTER-PLAN-22NOV.md
- M docs/claude/admin-desk/scripts/desk-appdb.sh
- M docs/claude/admin-desk/scripts/desk-restart.sh
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
- M docs/claude/admin-desk/state/PHASES.md
- M docs/claude/admin-desk/state/REMINDERS.md
- M docs/claude/state/SERVER-FIRST.jsonl
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- M docs/cursor-work/founder/founder-commands.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/admin-desk/state/COMPACT-SAVE.md   |  2 ++
- docs/claude/admin-desk/state/PHASES.md         |  2 ++
- docs/claude/admin-desk/state/REMINDERS.md      |  2 ++
- docs/claude/state/SERVER-FIRST.jsonl           |  1 +
- docs/claude/state/WORKING-NOW.md               | 34 ++++++++++++--------------
- docs/claude/tech-contracts/CURRENT.md          |  2 ++
- docs/cursor-work/founder/founder-commands.md   |  2 ++
- 12 files changed, 39 insertions(+), 20 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 34 ++--------------------------------
+ 1 file changed, 2 insertions(+), 32 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -59,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (67473aa82d2dbb6e2eb9f08f3f334c07b7571bca)
+WIP snapshot: refs/wip/last (03d5bd0b355be930b4b0ef60799ca753239ac505)

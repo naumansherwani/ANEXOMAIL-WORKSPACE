@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 01:55 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 01:55 PKT) - read this FIRST for the Desk after a compaction
 DOING: R3d live on his server (key + signed refusal); step-5 check bug fixed; R-CRM added
 NEXT STEP: his rerun of desk-install (pull below), my Chrome Rule 52 proof, R4-1
 HIS LAST WORD: his 01:54 paste + CRM word
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e94b2518 22 Nov 01:55 Desk: installer check fix for Rule 52 layer, R-CRM phase
 - 1bf4195c 22 Nov 01:47 ledger line 21dbdaea
 - 21dbdaea 22 Nov 01:47 Desk status record + timestamp correction
 - baf45e2c 22 Nov 01:41 ledger line 68859e31
@@ -54,16 +55,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 87e2923c 22 Nov 01:39 ledger line ada44a81
 - ada44a81 22 Nov 01:39 status record
 - 906df9b7 22 Nov 01:38 ledger line 13fb6626
-- 13fb6626 22 Nov 01:38 Desk R3d stage B: signed doors, own WASM kernel, deskCall, real dashboard
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/MASTER-PLAN-22NOV.md
- M docs/claude/admin-desk/scripts/desk-appdb.sh
- M docs/claude/admin-desk/scripts/desk-restart.sh
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
- M docs/claude/admin-desk/state/PHASES.md
- M docs/claude/admin-desk/state/REMINDERS.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
