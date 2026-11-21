@@ -4079,3 +4079,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Bridge: all-today order, step 0 browser h3 NOT proven (Chrome h2), WebTransport primary; docs only; WIRED: NO
 
 - Blueprint order sent to founder in chat; current phase R4-1b Bridge S0; docs only; WIRED: NO
+
+- S0 evidence: QUIC to UDP 4400 reachable from his Chrome; h2 reuse; docs only; WIRED: NO

@@ -140,3 +140,5 @@ AD3 ran on his server OK. Read BRIDGE-FEATURES-22NOV.md. Open decisions for him:
 ## 69 (22 Nov 2026 04:25 PKT) his 04:24: WebTransport primary, all today, one phase green at a time. Step 0 NOT proven (Chrome h2 on admindesk, h3 on founder site; server h3check OK). ad-auto skipped AD3 patch twice: cause unknown (my local test says the check row flips), need read-only look. NEXT: server read-only look, bridge.rs doors.
 
 ## 70 (22 Nov 2026 04:27 PKT) his 04:27: asked for blueprint order + current phase; answered. CURRENT = R4-1b Desk Bridge S0. Repo already records: browser h3 needs his Namecheap AAAA + HTTPS record (alpn h3); check that BEFORE more guessing.
+
+## 71 (22 Nov 2026 04:32 PKT) S0 evidence 2: WebTransport handshake to :4400 answered (376 ms), h2 reuse explains Chrome; CSP needs :4400 in S2; his repo was stale so AD3 patch pending: ad-auto again. NEXT: retest on a new connection, then S1.

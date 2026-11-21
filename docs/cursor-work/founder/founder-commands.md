@@ -5543,3 +5543,7 @@ Features ki list (QC4 mein kya banega):
 ## 22 Nov 2026 04:27 PKT (his 04:27, angry): "blueprint tarteeb send kero, woh phase kaun sa hai": answered in chat: NOW = R4-1b Desk Bridge, step S0 (browser h3). Repo gap recorded earlier: browsers reach UDP 4400 only after Namecheap AAAA + HTTPS record (BLUEPRINT-STATUS-21NOV.md).
 
 - Blueprint order sent to founder in chat; current phase R4-1b Bridge S0; docs only; WIRED: NO
+
+## 22 Nov 2026 04:32 PKT (his 04:31): pasted tcpdump (loopback only) + fetch (repo was stale); wants S0 solved in 10 min with web research; keep blueprint order.
+
+- S0 evidence: QUIC to UDP 4400 reachable from his Chrome; h2 reuse; docs only; WIRED: NO
