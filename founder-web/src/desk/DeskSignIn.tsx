@@ -49,9 +49,6 @@ export function DeskSignIn() {
           <p style={{ margin: 0, fontSize: 12, letterSpacing: ".28em", color: "#8FB4FF" }}>ADMIN DESK</p>
           <h1 style={{ margin: 0, fontWeight: 500, fontSize: "clamp(24px,6vw,30px)", lineHeight: 1.15, textAlign: "center", textWrap: "balance" as const }}>Sign in to the company desk</h1>
           <p style={{ margin: 0, fontSize: 14, lineHeight: 1.5, color: "#A9BAD6", textAlign: "center", maxWidth: 340 }}>One sealed door. Sign in with your email and password; a passkey is optional.</p>
-          <div style={{ width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", border: "1px solid rgba(160,200,255,.2)", borderRadius: 14, background: "rgba(255,255,255,.04)" }}>
-            <span style={{ fontSize: 12, letterSpacing: ".08em", color: "#9FB2D4" }}>IDENTITY</span><span style={{ fontSize: 14 }}>Admin Desk</span>
-          </div>
           <details style={{ width: "100%", borderTop: "1px solid rgba(160,200,255,.14)", paddingTop: 12 }} open>
             <summary style={{ fontSize: 13, color: "#9FB2D4", textAlign: "center", minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>No passkey on this account? Use your password</summary>
             <form onSubmit={submit} noValidate name="desklogin" method="post" autoComplete="on" style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 8 }}>

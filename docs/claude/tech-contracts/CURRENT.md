@@ -2601,3 +2601,11 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 21 Nov 2026 21:10 PKT Desk login: passkey button below Sign in; WIRED: NO until his desk-install
 
 - 21 Nov 2026 21:10 PKT Desk login: passkey button below Sign in; WIRED: NO until his desk-install
+
+### 21 Nov 2026 21:13 PKT Desk login (his 21:13): IDENTITY row removed; existing words kept; ball gone; passkey below the form. 390 + 1280 checked.
+
+- 21 Nov 2026 21:13 PKT Desk login: IDENTITY row removed, ball gone, passkey below; WIRED: NO until his desk-install
+
+### 21 Nov 2026 21:14 PKT Desk login (his 21:13): IDENTITY / Admin Desk box removed. Page = existing words + philosophy line in place of the ball + Continue with a passkey under Sign in. NOTE: another session edits this workspace at the same time (uncommitted edits appeared that I did not make).
+
+- 21 Nov 2026 21:14 PKT Desk login: Identity box removed (his 21:13); WIRED: NO until his desk-install
