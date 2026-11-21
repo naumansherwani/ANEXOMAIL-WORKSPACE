@@ -122,3 +122,6 @@ Read FOUR-DAY-PLAN-22NOV.md first: where we stand + Day1..Day4. His answers: ale
 
 ## 62 (22 Nov 2026 03:19 PKT) dashboard plan (Live Command Bar + world cards) and price check
 Read docs/claude/admin-desk/DASHBOARD-LIVE-COMMAND-22NOV.md. His A1/A2/A3 bar; B1-B13 from Google/Microsoft/Zoho/Proton research; C1-C10 Desk-only. Every number real or 'not measured'. PRICE: Business Max = 125,000 pounds in AWAM-PACKAGES-PROPOSAL-07NOV.md; his 21,500 not found anywhere: ask him; my earlier '20,500 = Business Max' was wrong (corrected). NEXT: Day1 Desk Bridge, AD3 SQL, AD2 Rust door.
+
+## 63 (22 Nov 2026 03:43 PKT) Bridge plan + AD3 SQL
+His 03:38: Max 125,000 FINAL; Bridge phase: websearch, points, tech, plan, codes now. Done: BRIDGE-PLAN-22NOV.md, sql/AD3.sql, sql/checks/AD3-check.sql (sandbox ok, not on his server). NEXT: his ad-auto for AD3, then Rust probes + doors, React bar. AD4 = cases/queues/SLA.

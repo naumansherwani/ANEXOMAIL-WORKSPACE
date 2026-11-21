@@ -3101,3 +3101,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Awam packages caps deep audit; docs only, WIRED: NO
 
 - Awam top-priority caps block; docs only, WIRED: NO
+
+- Desk Bridge plan + AD3 SQL (alert center, service health, incidents, watches, summary), sandbox-tested, not on server; WIRED: NO

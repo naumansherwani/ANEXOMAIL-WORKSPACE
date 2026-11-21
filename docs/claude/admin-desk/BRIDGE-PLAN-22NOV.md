@@ -1,0 +1,23 @@
+# R4-1b DESK BRIDGE: PLAN + CODES (22 Nov 2026 03:43 PKT, his order 03:38: "bridge main kya aye ga, websearch, points, advance technology, plan and codes, abhi shuru")
+The Desk Bridge is the Desk's OWN control tower for the company Anexomail (Desk isolation law: it is NOT the Founder Bridge; the Desk never writes the Founder Bridge). Sources: Google Workspace alert center (https://knowledge.workspace.google.com/admin/security/about-the-alert-center: alert list, severity, status, assignee, notes, email rules, ~300 alerts per rule per day, 10-year retention, API); Microsoft 365 service health (https://learn.microsoft.com/en-us/microsoft-365/enterprise/view-service-health?view=o365-worldwide: incident vs advisory, status ladder investigating to restored, update feed, post-incident report, 30-day history, notification subscriptions); Proton security page (monitoring, spoof and link protection). Earlier research: DASHBOARD-LIVE-COMMAND-22NOV.md.
+## WHAT THE BRIDGE HOLDS (points) and the advance technology next to each
+| # | Point | Detail | Advance technology | Step | State |
+|---|---|---|---|---|---|
+| 1 | Alert center | one list of everything urgent, severity info/notice/high/critical (critical = P1), source (security, access, service, mail, case, plan, system), status new/ack/in_progress/resolved/false_positive, assignee, notes, full event history, dedupe by key, flood cap 300 per kind per day | Postgres RLS + append-only events + guard triggers + deny-by-default authorisation (AD2 engine) | AD3 SQL | CODE, TESTED in sandbox, NOT on his server |
+| 2 | Nobody closes an alert about himself; resolved is final; resolve needs supervisor | four-eyes spirit | SQL rules inside the function | AD3 SQL | same |
+| 3 | Service health | 10 services (HTTP/3 edge, TLS, database, signer, ledger, inbound mail, outbound mail, DNS, Storage Box, ClamAV); state unknown / operational / degraded / outage; UNKNOWN when data is stale, never a guessed green; uptime 24 h | probe log + state function in SQL; probes are Rust tokio tasks | AD3 SQL + R4-1b step 2 | SQL done; probes NOT written |
+| 4 | Outage = one alert, recovery closes it | 3 failed probes in a row opens ONE critical alert (high for non-critical services), first pass closes it, ledger line both ways | SQL transition logic | AD3 SQL | done in SQL |
+| 5 | Incidents and advisories | opened by a supervisor, update feed, closing is final except the post-incident report | append-only feed | AD3 SQL | done in SQL |
+| 6 | Watches (his inbox) | per person: which sources and from which severity | SQL + in-app inbox; email/push later | AD3 SQL | done in SQL |
+| 7 | Live Command Bar numbers | fadm_bridge_summary: P1 open, high open, unacked + oldest age, incidents, advisories, services by state, critical not ok / unknown, ledger seal ok | one signed answer (Rule 52) | AD3 SQL + step 3 | SQL done; door and UI NOT written |
+| 8 | Browser-measured HTTP/3 line | PerformanceNavigationTiming nextHopProtocol shown as measured; today the browser shows h2 and the bar will say so | browser API in the WASM kernel call | step 4 | NOT written |
+| 9 | P1 red pulse | at p1_open >= 1 the whole screen pulses red, with text + icon too, respects reduced motion | CSS + React 19 | step 4 | NOT written |
+| 10 | Pipeline heartbeat | edge, TLS, ClamAV, mail: each a real probe with its own age | Rust tokio probes, clamd socket, UDP/QUIC self-check, DNS lookups | step 2 | NOT written |
+## STEPS (order does not change)
+1. AD3 SQL + CHECK (THIS COMMIT): sql/AD3.sql (about 450 lines incl. 60-rule selftest, rolls back, idempotent: ran twice) + sql/checks/AD3-check.sql (17 rows, all t in sandbox on AD1+AD1b+AD2+AD3). His run: ad-auto (AD3 is picked up by number).
+2. Rust probes (tokio, one task per service) writing fadm_probe_record through the Desk door; ClamAV via clamd socket INSTREAM test string.
+3. Rust signed doors /desk/v1/bridge/summary, /alerts, /alerts/act, /services, /incidents (Rule 52, deskCall, no raw fetch).
+4. React: Live Command Bar on the dashboard + Bridge module screens (Alert center, Service health, Incidents), 390 / 820 / 1200+, my Chrome look.
+5. His haan, then GREEN only WIRED + REAL with proof.
+## NUMBERING NOTE: the plan said AD3 = cases/queues/SLA. The Bridge goes first (his order), so AD3 = Bridge and the cases/queues/SLA SQL becomes AD4. FOUR-DAY-PLAN order is unchanged.
+## HONEST NOTES: probes do not exist yet, so after AD3 every critical service shows UNKNOWN: that is correct, not a bug. Email/push of alerts and an incremental ledger checkpoint (instead of verifying the whole chain per call) are later steps.

@@ -11,6 +11,7 @@ README.md
 admin-desk/00-FOUNDER-TECH-RULE.md
 admin-desk/BLUEPRINT-ADMIN-DESK.md
 admin-desk/BLUEPRINT-STATUS-21NOV.md
+admin-desk/BRIDGE-PLAN-22NOV.md
 admin-desk/DASHBOARD-LIVE-COMMAND-22NOV.md
 admin-desk/EMPLOYEE-ACCOUNTS-PLAN-22NOV.md
 admin-desk/FOUNDER-TO-DESK-AUDIT-22NOV.md
@@ -73,11 +74,13 @@ admin-desk/sql/AD1/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/AD1/README.md
 admin-desk/sql/AD1b.sql
 admin-desk/sql/AD2.sql
+admin-desk/sql/AD3.sql
 admin-desk/sql/README.md
 admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/checks/AD1-check.sql
 admin-desk/sql/checks/AD1b-check.sql
 admin-desk/sql/checks/AD2-check.sql
+admin-desk/sql/checks/AD3-check.sql
 admin-desk/sql/checks/README.md
 admin-desk/state/00-FOUNDER-TECH-RULE.md
 admin-desk/state/COMPACT-SAVE.md
