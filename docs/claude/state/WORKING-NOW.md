@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 09:28 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 09:29 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Desk h3 real PQ loopback test passes; UDP 4400 chosen; desk-h3-enable.sh written
 NEXT STEP: he runs desk-install.sh then desk-h3-enable.sh; AAAA + HTTPS record (port=4400); curl --http3 proof; flip row; then AD1
 HIS LAST WORD: 09:27 ss paste, pull command
@@ -18,34 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- a7e78735 21 Nov 09:29 desk: h3 UDP 4400, enable script, real PQ loopback test
 - b7eff221 21 Nov 09:25 ledger line c2abbfdf
 - c2abbfdf 21 Nov 09:25 desk: AD1 folder, sql/checks, web folder
 - a5f86a62 21 Nov 09:24 ledger line 8162c620
 - 8162c620 21 Nov 09:24 desk: h3 listener code, http1+http2 banned
-- e0f9bbef 21 Nov 09:24 ledger line a57137e3
 
 ## Uncommitted files (half-done work if any)
- M admin-desk/BLUEPRINT-ADMIN-DESK.md
- M admin-desk/scripts/desk-install.sh
- M admin-desk/server/src/h3.rs
- M docs/claude/SERVER-PORTS-RED-LINE-08NOV.md
- M docs/claude/state/PORTS-LIVE.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- M docs/cursor-work/founder/founder-commands.md
-?? admin-desk/scripts/desk-h3-enable.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/scripts/desk-install.sh           |  2 +-
- admin-desk/server/src/h3.rs                  | 36 ++++++++++++++++++++++++++++
- docs/claude/SERVER-PORTS-RED-LINE-08NOV.md   |  2 ++
- docs/claude/state/PORTS-LIVE.md              |  2 ++
- docs/claude/state/WORKING-NOW.md             | 33 +++++++++++--------------
- docs/claude/tech-contracts/CURRENT.md        |  2 ++
- docs/cursor-work/founder/founder-commands.md |  2 ++
- 8 files changed, 61 insertions(+), 20 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 31 ++-----------------------------
+ 1 file changed, 2 insertions(+), 29 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -56,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (55d1f7421b11baeb1c2af8c229aa2e420fc55dc1)
+WIP snapshot: refs/wip/last (c3691cd4af03f45276bbb823f70a37c1b2219f26)
