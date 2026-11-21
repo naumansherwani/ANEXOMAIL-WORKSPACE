@@ -5195,3 +5195,13 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 21:15 PKT WORKING-NOW kept only in canonical Desk folder (no dirty file after commit); WIRED: NO
 
 - 21 Nov 2026 21:16 PKT post-commit hook also commits the Desk WORKING-NOW (tree clean after every push); WIRED: NO
+
+[21 Nov 2026 21:20 PKT] HIS WORD (21:20): clean-push rule strict banao. + his paste: desk-install OK (new build, 1m17s), desk-appdb FAIL db connection (tail -1 only). + compaction order serious. + "tune mera pura UI change ker diya, wapis le ke aao jaise tha" -> git shows founder/awam UI source NOT changed today; Desk login changes listed to him; waiting which UI.
+
+- 21 Nov 2026 21:20 PKT CLEAN-PUSH LAW in CLAUDE.md; desk-appdb db connection fail recorded; WIRED: NO
+
+- 21 Nov 2026 21:20 PKT CLEAN-PUSH LAW in CLAUDE.md; desk-appdb db connection fail recorded; WIRED: NO
+
+- 21 Nov 2026 21:20 PKT CLEAN-PUSH LAW in CLAUDE.md; desk-appdb db connection fail recorded; WIRED: NO
+
+- 21 Nov 2026 21:21 PKT CLEAN-PUSH LAW in CLAUDE.md; desk-appdb db connection fail recorded; WIRED: NO

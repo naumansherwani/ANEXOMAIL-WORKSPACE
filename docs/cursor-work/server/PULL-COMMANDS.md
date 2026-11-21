@@ -1947,3 +1947,11 @@
 - 21 Nov 2026 21:15 PKT WORKING-NOW kept only in canonical Desk folder (no dirty file after commit); WIRED: NO
 
 - 21 Nov 2026 21:16 PKT post-commit hook also commits the Desk WORKING-NOW (tree clean after every push); WIRED: NO
+
+- 21 Nov 2026 21:20 PKT CLEAN-PUSH LAW in CLAUDE.md; desk-appdb db connection fail recorded; WIRED: NO
+
+- 21 Nov 2026 21:20 PKT CLEAN-PUSH LAW in CLAUDE.md; desk-appdb db connection fail recorded; WIRED: NO
+
+- 21 Nov 2026 21:20 PKT CLEAN-PUSH LAW in CLAUDE.md; desk-appdb db connection fail recorded; WIRED: NO
+
+- 21 Nov 2026 21:21 PKT CLEAN-PUSH LAW in CLAUDE.md; desk-appdb db connection fail recorded; WIRED: NO

@@ -15,3 +15,5 @@
 10. (21 Nov 2026 21:05 PKT) AD1b DONE on his server. desk-install loophole fixed. His order now: desk-install.sh, then desk-appdb.sh, then sign in. Then login page DEMO (no orb, simple passkey button like founder/awam, ANEXOMAIL philosophy).
 
 11. (21 Nov 2026 21:07 PKT) Login DEMO artifact published (no orb, philosophy on top, founder passkey button). Waits his haan before changing DeskSignIn.tsx.
+
+12. (21 Nov 2026 21:20 PKT) desk-install OK on his server; desk-appdb FAILED (db connection; need journal door line). He says "pura UI change": founder src untouched by me today (git); Desk login diff = ball->philosophy, identity removed, passkey below, subtitle + form open, HTTP/3 pill. CLEAN-PUSH LAW added to CLAUDE.md.
