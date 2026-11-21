@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 07:35 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 07:36 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Desk tech-law gate checks (3 ok + 11 open) written; attachments after R4; phase detail R3a0-R3a2 written for discussion; desk-host-check.sh read-only written
 NEXT STEP: his haan for the read-only host check + paste, then Namecheap steps one at a time; R3a2 owner SQL E201
 HIS LAST WORD: his 21 Nov 07:34: gate ruk le, attachments after move-in, phase details
@@ -18,30 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 980dcce7 21 Nov 07:36 Desk tech-law gate checks, attachments after R4, R3a0-R3a2 detail, host check script
 - 5328bd8f 21 Nov 07:31 ledger line dd66f70f
 - dd66f70f 21 Nov 07:31 Desk isolation gate (founder and Desk never mixed)
 - 38dcddba 21 Nov 07:31 ledger line 3ca0635a
 - 3ca0635a 21 Nov 07:31 Desk isolation gate (founder and Desk never mixed)
-- d056b1a7 21 Nov 07:29 ledger line dde2559c
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/BLUEPRINT-ABC-01NOV.md
- M docs/claude/TECH-LAW-GATE.json
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
- M docs/cursor-work/founder/founder-commands.md
-?? docs/claude/ADMIN-DESK-R3A0-R3A2-PHASE-DETAIL-21NOV.md
-?? docs/cursor-work/server/desk-host-check.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/BLUEPRINT-ABC-01NOV.md                 |   1 +
- docs/claude/TECH-LAW-GATE.json                     | 125 ++++++++++++++++++++-
- docs/claude/state/WORKING-NOW.md                   |  29 ++---
- ...DE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md |   1 +
- docs/cursor-work/founder/founder-commands.md       |   2 +
- 5 files changed, 139 insertions(+), 19 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 27 ++-------------------------
+ 1 file changed, 2 insertions(+), 25 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -52,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a8f43387a86b3b16ce33d3c4523e694fa8513e5c)
+WIP snapshot: refs/wip/last (ffbd34059a92b2d689b5844e30875fc80344a4ed)
