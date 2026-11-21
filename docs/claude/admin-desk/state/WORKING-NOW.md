@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 01:41 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 01:41 PKT) - read this FIRST for the Desk after a compaction
 DOING: rollback wording question answered; R3d B waits his install
 NEXT STEP: his desk-install paste, my Chrome proof, R4-1
 HIS LAST WORD: his 01:41: rollback warning
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 68859e31 22 Nov 01:41 rollback warning record
 - 87e2923c 22 Nov 01:39 ledger line ada44a81
 - ada44a81 22 Nov 01:39 status record
 - 906df9b7 22 Nov 01:38 ledger line 13fb6626
@@ -54,7 +55,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - d435d57e 22 Nov 01:25 ledger line e07c9674
 - e07c9674 22 Nov 01:25 Desk: ON1-ON12 final plan
 - cad6b1db 22 Nov 01:22 ledger line 9e3cf7b7
-- 9e3cf7b7 22 Nov 01:22 Desk R3d stage A: signing + own kernel crate
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
