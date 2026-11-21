@@ -2344,3 +2344,5 @@ Gate bans http/1, http/1.1, http/2, h2 in every Desk .rs/.toml/.ts/.tsx (only De
 - 21 Nov 2026 09:30 PKT: HIS WORD: HTTP/1 AND HTTP/2 both banned (gate, all Desk code); Desk HTTP/3 listener h3.rs written, 5 tests pass (quinn+h3, AES-256-GCM only, X25519MLKEM768 first); WIRED: code YES, live NO
 
 - 21 Nov 2026 09:30 PKT: HIS WORD: HTTP/1 AND HTTP/2 both banned (gate, all Desk code); Desk HTTP/3 listener h3.rs written, 5 tests pass (quinn+h3, AES-256-GCM only, X25519MLKEM768 first); WIRED: code YES, live NO
+
+- 21 Nov 2026 09:30 PKT: HIS WORD: HTTP/1 AND HTTP/2 both banned (gate, all Desk code); Desk HTTP/3 listener h3.rs written, 5 tests pass (quinn+h3, AES-256-GCM only, X25519MLKEM768 first); WIRED: code YES, live NO

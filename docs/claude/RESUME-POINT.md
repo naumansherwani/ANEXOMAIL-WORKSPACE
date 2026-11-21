@@ -3,6 +3,7 @@
 - 21 Nov 2026 09:30 PKT: HIS WORD: HTTP/1 AND HTTP/2 both banned (gate, all Desk code); Desk HTTP/3 listener h3.rs written, 5 tests pass (quinn+h3, AES-256-GCM only, X25519MLKEM768 first); WIRED: code YES, live NO
 - 21 Nov 2026 09:30 PKT: HIS WORD: HTTP/1 AND HTTP/2 both banned (gate, all Desk code); Desk HTTP/3 listener h3.rs written, 5 tests pass (quinn+h3, AES-256-GCM only, X25519MLKEM768 first); WIRED: code YES, live NO
 - 21 Nov 2026 09:30 PKT: HIS WORD: HTTP/1 AND HTTP/2 both banned (gate, all Desk code); Desk HTTP/3 listener h3.rs written, 5 tests pass (quinn+h3, AES-256-GCM only, X25519MLKEM768 first); WIRED: code YES, live NO
+- 21 Nov 2026 09:30 PKT: HIS WORD: HTTP/1 AND HTTP/2 both banned (gate, all Desk code); Desk HTTP/3 listener h3.rs written, 5 tests pass (quinn+h3, AES-256-GCM only, X25519MLKEM768 first); WIRED: code YES, live NO
 - 21 Nov 2026 09:25 PKT: HIS WORD: Desk HTTP/3 HARD BLOCK + HTTP/2 BAN in gate (no AD1, auth.rs, DBSC, orb, passkey, R3p until h3 listener + X25519MLKEM768 in code); WIRED: gate YES, listener NO
 - 21 Nov 2026 09:25 PKT: HIS WORD: Desk HTTP/3 HARD BLOCK + HTTP/2 BAN in gate (no AD1, auth.rs, DBSC, orb, passkey, R3p until h3 listener + X25519MLKEM768 in code); WIRED: gate YES, listener NO
 - 21 Nov 2026 09:12 PKT: checkpoint after reply to his 09:08 message; Desk HTTP/3 waits his ss (WIRED: NO)
