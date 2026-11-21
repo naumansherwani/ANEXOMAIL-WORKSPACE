@@ -1871,3 +1871,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 08:12 PKT his 07:29 order: the commit gate now knows the Admin Desk: DESK ISOLATION in lanes/lane-sync.py (Desk imports only shared sign-in pieces + kernel + css; never names /founder/v1, founder session key, fmail_*, founder_*; founder code never touches desk/, /desk/v1, anexo.desk.session, fadm_*), proven by two deliberate violations that FAILED and were reverted; doc DESK-ISOLATION-GATE-21NOV.md; CLAUDE.md law block; nothing else built
 
 - 21 Nov 2026 08:14 PKT Desk isolation gate recorded; CLAUDE.md top kept within the gate's first 17000 characters (stale 05:57 RESUME line removed, duplicate prefix fixed); same content as 08:12
+
+- 21 Nov 2026 08:14 PKT Desk isolation gate recorded; CLAUDE.md top kept within the gate's first 17000 characters (stale 05:57 RESUME line removed, duplicate prefix fixed); same content as 08:12
