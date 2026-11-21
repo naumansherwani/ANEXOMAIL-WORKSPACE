@@ -17,31 +17,21 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 | Proto | Port | Process |
 |---|---|---|
 
-##- 4b958038 21 Nov 06:44 ledger line 8d780c1a
+## Last 5 commits
+- e3dbc3cc 21 Nov 07:05 Managed Move-In price closed, deck renamed, phases + employee isolation design
+- 4b958038 21 Nov 06:44 ledger line 8d780c1a
 - 8d780c1a 21 Nov 06:44 R4 move-in phase named, research + phase proposal (docs only)
 - 5e78d258 21 Nov 06:44 ledger line c61db3b4
 - c61db3b4 21 Nov 06:44 R4 move-in phase named, research + phase proposal (docs only)
-- e812b697 21 Nov 06:28 ledger line 7d667258
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/W M docs/claude/WEBSITE-PROMISES.md
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
- M docs/cursor-work/founder/founder-commands.md
- M founder-web/src/Decks.tsx
- M founder-web/src/catalog.ts
-?? docs/claude/ADMIN-DESK-PHASES-AND-EMPLOYEE-ISOLATION-21NOV.md
-?? docs/claude/MOVEIN-PRICE-CLOSED-21NOV.md
 
-## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = n
-## Uncommitted 
-## U docs/claude/WEBSITE-PROMISES.md                    |  3 ++
- docs/claude/state/WORKING-NOW.md                   | 35 +++++++++-------------
- ...DE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md |  3 ++
- docs/cursor-work/founder/founder-commands.md       |  2 ++
- founder-web/src/Decks.tsx                          |  2 +-
- founder-web/src/catalog.ts                         |  2 +-
- 6 files changed, 24 insertions(+), 23 deletions(-)
+## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
+
+## Uncommitted size
+ docs/claude/state/WORKING-NOW.md | 34 +++++-----------------------------
+ 1 file changed, 5 insertions(+), 29 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -52,5 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-t edit by hand)
-WIP snapshot: refs/wip/last (01c8067c75b6dd324e50ec1a8171d78dda64f651)
+WIP snapshot: refs/wip/last (b020f6f000bac6e503d276cce95a8ae872e4f40d)
