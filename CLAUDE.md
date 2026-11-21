@@ -1,4 +1,4 @@
-> ## >>> RESUME HERE: RESUME 22 Nov 2026 01:06 PKT: Alt-Svc live; Desk login got eye + Save password (bundle desk-BIgOCq0f); he runs desk-install; then my Chrome h3 + UI look (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
+> ## >>> RESUME HERE: RESUME 22 Nov 2026 01:12 PKT: Alt-Svc live, browser still h2 (not proven h3); new UI bundle awaits his desk-install (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
 > ## >>> FRONTEND=CADDY, HETZNER=BACKEND; DNS=Caddy IP (his 21 Nov 23:35): docs/claude/FRONTEND-CADDY-BACKEND-HETZNER-LAW-21NOV.md <<<
 > ## >>> DESK 3 CMDS: desk-install, ad-auto, desk-restart (admin-desk/TWO-COMMANDS.md) <<<
 > ## >>> CLEAN-PUSH: git status empty after push (CLEAN-PUSH-LAW-21NOV.md) <<<

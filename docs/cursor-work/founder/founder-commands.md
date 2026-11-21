@@ -5377,3 +5377,5 @@ Features ki list (QC4 mein kya banega):
 - 22 Nov 2026 01:06 PKT Desk login: eye + Save password added (own key anexo.desk.savepw); Alt-Svc h3 :4400 live on his server; WIRED: NO
 
 - 22 Nov 2026 01:06 PKT Desk login: eye + Save password added (own key anexo.desk.savepw); Alt-Svc h3 :4400 live on his server; WIRED: NO
+
+- 22 Nov 2026 01:12 PKT Chrome check: still h2 after Alt-Svc live, browser HTTP/3 NOT proven; WIRED: NO
