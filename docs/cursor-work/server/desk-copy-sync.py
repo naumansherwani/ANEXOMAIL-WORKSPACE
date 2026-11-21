@@ -6,12 +6,14 @@ import filecmp, os, shutil, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 A, B = os.path.join(ROOT, "docs/claude/admin-desk"), os.path.join(ROOT, "admin-desk")
 SKIP = {"target", "__pycache__"}
+# the live WORKING-NOW pointer is written every 2 minutes; it lives ONLY in the canonical folder, so a commit never leaves the root copy dirty behind it
+SKIP_FILES = {"state/WORKING-NOW.md"}
 def files(base):
     out = set()
     for dp, dn, fn in os.walk(base):
         dn[:] = [d for d in dn if d not in SKIP]
         out |= {os.path.relpath(os.path.join(dp, f), base) for f in fn}
-    return out
+    return out - SKIP_FILES
 def diff():
     a, b = files(A), files(B); d = [f"only in canonical (not in the root copy): {x}" for x in sorted(a - b)] + [f"only in the root copy (not canonical): {x}" for x in sorted(b - a)]
     d += [f"differs: {x}" for x in sorted(a & b) if not filecmp.cmp(os.path.join(A, x), os.path.join(B, x), shallow=False)]

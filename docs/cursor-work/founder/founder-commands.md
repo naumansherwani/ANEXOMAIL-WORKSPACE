@@ -5185,3 +5185,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 21:14 PKT auto checkpoint; WIRED: NO
 
 - 21 Nov 2026 21:14 PKT auto checkpoint; WIRED: NO
+
+[21 Nov 2026 21:15 PKT] HIS WORD (21:15): push ke baad still working nazar aya to (anger). FIX: root admin-desk/state/WORKING-NOW.md no longer copied/tracked (it made every commit leave a dirty file and a second hook round).
+
+- 21 Nov 2026 21:15 PKT WORKING-NOW kept only in canonical Desk folder (no dirty file after commit); WIRED: NO

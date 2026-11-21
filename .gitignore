@@ -44,3 +44,4 @@ web-wasm/target
 server/founder-dns/target/
 docs/claude/state/LIVE-5MIN.txt
 admin-desk/server/target/
+admin-desk/state/WORKING-NOW.md
