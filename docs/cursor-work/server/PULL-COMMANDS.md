@@ -1613,3 +1613,5 @@
 - 21 Nov 2026 06:29 PKT WORKING-NOW.md refreshed (R3 Admin Desk HIGH ALERT, order written only) and the 2-minute loop restarted (it was not running); every file points to docs/claude/ADMIN-DESK-R3-FOUNDER-ORDER-21NOV.md
 
 - 21 Nov 2026 06:29 PKT WORKING-NOW.md refreshed (R3 Admin Desk HIGH ALERT, order written only) and the 2-minute loop restarted (it was not running); every file points to docs/claude/ADMIN-DESK-R3-FOUNDER-ORDER-21NOV.md
+
+- 21 Nov 2026 06:56 PKT R4 MANAGED MOVE-IN + PRIORITY SUPPORT named after R3 (his 06:43 order, moveyourbusiness@ own mailbox, Lovable gold move-in code to be extracted into Rust + new SQL); web research (RFC 3834, shared inbox, imapsync cutover) + proposed phase order written for FINAL DISCUSSION in ADMIN-DESK-R3-R4-RESEARCH-AND-PHASES-21NOV.md; price finding 568 vs Lovable 500; blueprint phase lines only after he finalises; nothing built
