@@ -2304,3 +2304,5 @@ Own crate server/desk, own binary anexomail-desk, loopback 127.0.0.1:4400, own u
 - 21 Nov 2026 08:52 PKT: ROOT CAUSE found for admindesk not opening: awam-edge had no copy of the Desk certificate (daily sync); fix script admin-desk/scripts/desk-cert-sync.sh + desk-install runs the sync; not yet run on his server (WIRED: NO)
 
 - 21 Nov 2026 08:52 PKT: ROOT CAUSE found for admindesk not opening: awam-edge had no copy of the Desk certificate (daily sync); fix script admin-desk/scripts/desk-cert-sync.sh + desk-install runs the sync; not yet run on his server (WIRED: NO)
+
+- 21 Nov 2026 08:57 PKT: admindesk OPENS (his cert sync: HTTPS 200, TLS 1.3 AES-256-GCM-SHA384 verified by his openssl); SPA 404 bug fixed in code (fallback = 200), needs his re-install; plans = data in AD1 fadm_plans; X25519MLKEM768/HTTP3 not proven (WIRED: login door NO)

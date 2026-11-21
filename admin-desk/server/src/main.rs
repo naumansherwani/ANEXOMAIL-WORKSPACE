@@ -60,7 +60,7 @@ async fn login_not_connected() -> impl IntoResponse {
 #[tokio::main]
 async fn main() {
     let index = format!("{DIST}/desk.html");
-    let files = ServeDir::new(DIST).not_found_service(ServeFile::new(index));
+    let files = ServeDir::new(DIST).fallback(ServeFile::new(index));
     let app = Router::new()
         .route("/desk/v1/health", get(health))
         .route("/desk/v1/auth/login", post(login_not_connected))

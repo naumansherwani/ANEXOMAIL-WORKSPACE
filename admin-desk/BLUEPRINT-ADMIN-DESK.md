@@ -33,5 +33,7 @@ RULE (his word): in every phase, next to each FEATURE the CODE file and the ADVA
 
 ## DESK PRINCIPLE (his 21 Nov 2026 08:40, shown on the landing + login): "Our engine runs in milliseconds; our support should too. Own the issue, fix the root, leave zero open loops." It is a PROMISE (WEBSITE-PROMISES P6): R3f builds it (one owner per issue, SLA clock, an issue closes only with a root-cause note; no open loops).
 
+## ONE ENGINE FOR ALL PLANS (his 21 Nov 08:53 question, answer YES): the awam plans Basic, Pro, Business, Business Pro, Business Premium, Business Max are DATA in the Desk (table fadm_plans in AD1: plan name, support lane, first-response hours, priority weight), not six builds. A company's plan reaches the Desk only through its own channel (Polar signed webhook / the Desk's own record), never by reading awam tables (isolation). The inbox, SLA clock and labels read the plan row. Open: which awam packages are live (his D answer) and the Business Max / Premium support terms.
+
 ## PHASES AFTER R3a (each gets its own feature table when it starts; plan times in the 3-day plan)
 R3b inboxes (Sun 06:00) / R3c auto mail RFC 3834 + Polar signed webhook (12:00) / R3d dashboard + mail UI (17:00) / R3e reply without passkey (Mon 06:00) / R3f SLA engine (09:00) / R3g verify + final (14:00-21:00) / R4 Managed Move-In + Priority Support (from Tue 24 Nov) / R5 LEO / R6.
