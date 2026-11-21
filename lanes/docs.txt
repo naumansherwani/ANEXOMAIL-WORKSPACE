@@ -148,6 +148,7 @@ docs/claude/COMPOSE-RESEARCH-17NOV.md
 docs/claude/CORE-FREEZE.json
 docs/claude/CORE-UNFREEZE-OK.txt
 docs/claude/DECISION-TANSTACK-ROUTER-ONLY-16NOV.md
+docs/claude/DESK-ISOLATION-GATE-21NOV.md
 docs/claude/DK-KERNEL-MAIL-PLAN-20NOV.md
 docs/claude/DKIM2-ANEXOMAIL-BUILDS-IT-17NOV.md
 docs/claude/DONE-DO-NOT-REPEAT.md

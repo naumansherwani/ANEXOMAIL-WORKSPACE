@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 07:29 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Admin Desk phases in BLUEPRINT; UI + frontend/backend tech per phase written for discussion (docs/claude/ADMIN-DESK-UI-AND-TECH-PER-PHASE-21NOV.md); login face skeleton written NOT WIRED (founder-web/src/desk)
-NEXT STEP: his discussion/approval; then R3a0 read-only ss + DNS check, R3a2 owner SQL E201 (login door needs it)
-HIS LAST WORD: his 21 Nov 07:25 + 07:27 orders
+# WORKING NOW (manual checkpoint, 21 Nov 2026 07:30 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Desk isolation gate written + proven (deliberate violations fail); Admin Desk phases in blueprint; discussion pending
+NEXT STEP: his answers; R3a0 read-only ss + DNS check; R3a2 owner SQL E201 (add desk_app grant check to gate)
+HIS LAST WORD: his 07:29: gate ko samjha do, mix nahi
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,29 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- d056b1a7 21 Nov 07:29 ledger line dde2559c
 - dde2559c 21 Nov 07:29 WORKING-NOW checkpoint
 - 98a98972 21 Nov 07:29 ledger line 614387c1
 - 614387c1 21 Nov 07:29 WORKING-NOW checkpoint
 - 4d9051e8 21 Nov 07:29 ledger line 0b6589f6
-- 0b6589f6 21 Nov 07:29 Admin Desk phases in blueprint, UI + tech per phase, login face skeleton (not wired)
 
 ## Uncommitted files (half-done work if any)
+ M CLAUDE.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
+ M docs/cursor-work/founder/founder-commands.md
+ M lanes/lane-sync.py
+?? docs/claude/DESK-ISOLATION-GATE-21NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ CLAUDE.md                                          |  1 +
+ docs/claude/state/WORKING-NOW.md                   | 28 ++++++++--------------
+ ...DE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md |  1 +
+ docs/cursor-work/founder/founder-commands.md       |  2 ++
+ lanes/lane-sync.py                                 | 22 ++++++++++++++++-
+ 5 files changed, 35 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +51,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (25b36989a4ee551f80e679118ccbcd83a2efe7db)
+WIP snapshot: refs/wip/last (ac8fddc5b213cc6a48a30cf8d0d70ff810103848)

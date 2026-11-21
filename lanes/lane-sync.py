@@ -112,6 +112,26 @@ def cross_imports():
     return bad
 
 
+# ADMIN DESK ISOLATION (his 21 Nov 2026 07:29 order: "yeh founder ke saath mix nahi karna"): the Desk is its OWN security domain. Doc: docs/claude/DESK-ISOLATION-GATE-21NOV.md
+DESK_OK_IMPORTS = re.compile(r"""^(\.\./(signin_pure|signin_passkey|kernel|tls_line|styles\.css|ui\.css|cinema\.css|tailwind\.css|dx\.css)|\.\./signin/|\./)""")
+def desk_isolation():
+    bad = []
+    files = subprocess.check_output(["git", "ls-files", "founder-web", "server"], text=True).split()
+    for p in files:
+        if not p.endswith((".ts", ".tsx", ".rs", ".css", ".html")) or not os.path.exists(p): continue
+        t = read(p)
+        in_desk = p.startswith("founder-web/src/desk/") or p in ("founder-web/desk.html", "founder-web/vite.desk.config.ts") or p.startswith("server/desk/")
+        is_gate_text = p.endswith(".test.ts")
+        if in_desk:
+            if p.endswith((".ts", ".tsx")):
+                for m in re.finditer(r"""from\s+['"](\.[^'"]*)['"]""", t):
+                    if m.group(1).startswith("../") and not DESK_OK_IMPORTS.match(m.group(1)): bad.append(f"DESK ISOLATION: {p} imports {m.group(1)} (a founder screen/module); the Desk may import only the shared sign-in pieces, kernel and css")
+            if not is_gate_text and re.search(r"/founder/v1/|anexo\.session\.token|FOUNDER_|fmail_|founder_", t): bad.append(f"DESK ISOLATION: {p} names a founder door, founder session key or founder table; the Desk uses /desk/v1/*, key anexo.desk.session and fadm_* only")
+        elif p.startswith(("founder-web/src/", "server/founder/src/")):
+            if re.search(r"""from\s+['"][^'"]*/desk/|/desk/v1/|anexo\.desk\.session|fadm_""", t) and not is_gate_text: bad.append(f"DESK ISOLATION: {p} (founder code) touches the Desk (desk/, /desk/v1/, anexo.desk.session or fadm_*); founder and Desk are never mixed")
+    return bad
+
+
 def main():
     rows, out, gold = build()
     check = "--check" in sys.argv
@@ -133,7 +153,7 @@ def main():
             if not os.path.exists(q) or sha(q) != sha(p): problems.append(f"{q} differs from {p}")
         for k, v in ep.items():
             if read(f"{GOLD}/{k}") != v: problems.append(f"{GOLD}/{k} is stale")
-        problems += cross_imports() + index_problems()
+        problems += cross_imports() + desk_isolation() + index_problems()
         for x in problems: print("FAIL [73 lanes]", x)
         print(f"lane-check: {len(rows)} files in lanes, {len(gold)} Lovable files frozen, {len(problems)} problem(s)")
         sys.exit(1 if problems else 0)
