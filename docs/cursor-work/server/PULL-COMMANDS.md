@@ -2091,3 +2091,5 @@
 - R4-1 UI step 1 DeskShell cinematic dashboard: tests 7/7, sandbox layout 390/820/1280 ok, WIRED: NO (not on his server, no real-session look)
 
 - R4-1 UI: original BrandMark (awam size) in Desk rail, colours intact; sandbox layout ok, WIRED: NO
+
+- R4-1a UI: pin/unpin, scrollbar, groups, logo text removed; audit of founder->Desk moves; tests 8/8, layout ok, WIRED: NO until his install + my look

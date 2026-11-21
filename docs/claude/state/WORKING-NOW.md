@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 02:27 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: AD2 LIVE; starting cinematic Desk dashboard UI (reading founder look, read-only)
-NEXT STEP: R4-1 shell+dashboard UI, then Rust door for AD2
-HIS LAST WORD: UI UX shuru kero, fast
+# WORKING NOW (manual checkpoint, 22 Nov 2026 02:45 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: R4-1a pins/scroll/groups done; audit written
+NEXT STEP: R4-1b top bar + profile menu + Desk Bridge, then R4-2 inboxes
+HIS LAST WORD: pin/scroll/groups + audit
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,37 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 1565602c 22 Nov 02:27 ledger line ae67604c
 - ae67604c 22 Nov 02:27 Admin Desk rail: original logo
 - e7576eba 22 Nov 02:26 ledger line 68abd560
 - 68abd560 22 Nov 02:26 Admin Desk R4-1 dashboard shell UI
 - 02da406d 22 Nov 02:18 ledger line 5a065da1
-- 5a065da1 22 Nov 02:18 Admin Desk AD2 SQL
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/founder/founder-commands.md
+ D founder-web/dist-desk/00-FOUNDER-TECH-RULE.md
+ D founder-web/dist-desk/assets/00-FOUNDER-TECH-RULE.md
+ D founder-web/dist-desk/assets/desk-CYCtux0o.js
+ M founder-web/dist-desk/desk.html
+ D founder-web/dist-desk/kernel/00-FOUNDER-TECH-RULE.md
+ M founder-web/src/desk/DeskShell.tsx
+ M founder-web/src/desk/desk_shell.test.ts
+?? docs/claude/admin-desk/FOUNDER-TO-DESK-AUDIT-22NOV.md
+?? founder-web/dist-desk/assets/desk-CsIhKh1t.js
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ founder-web/dist-desk/00-FOUNDER-TECH-RULE.md      |  5 --
+ .../dist-desk/assets/00-FOUNDER-TECH-RULE.md       |  5 --
+ founder-web/dist-desk/assets/desk-CYCtux0o.js      | 46 -----------------
+ founder-web/dist-desk/desk.html                    |  2 +-
+ .../dist-desk/kernel/00-FOUNDER-TECH-RULE.md       |  5 --
+ founder-web/src/desk/DeskShell.tsx                 | 60 +++++++++++++++++-----
+ founder-web/src/desk/desk_shell.test.ts            |  8 ++-
+ 10 files changed, 74 insertions(+), 94 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +59,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (af6b0d980ae3402a54b8b3f606e24c5a9361f557)
+WIP snapshot: refs/wip/last (29c5e57d0d665299de724b65fc24eaebc9f3fb10)

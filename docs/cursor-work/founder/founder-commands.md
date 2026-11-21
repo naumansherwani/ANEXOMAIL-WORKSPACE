@@ -5451,3 +5451,7 @@ Features ki list (QC4 mein kya banega):
 ## 22 Nov 2026 02:27 (his 02:26): "orignial logo rakho aur awam wala size rakho baki colours sahi hai intact". DeskShell rail now shows the ORIGINAL BrandMark at awam size (size-8, unchanged component); colours untouched. Tests pass, 390/820/1280 harness ok.
 
 - R4-1 UI: original BrandMark (awam size) in Desk rail, colours intact; sandbox layout ok, WIRED: NO
+
+## 22 Nov 2026 02:45 (his 02:43, with phone screenshots of Desk rail + founder dashboard): desk-install paste OK (build, key kept, health 200, DB login live). His words: logo/colours good; ADD pin/unpin + scrollbar; Managed Move-In and everything awam in founder MOVES to the Desk same-to-same and is removed from founder (only Finance + Polar stay); remove "Admin Desk" text above dashboard; Desk gets its own Bridge (his needs); ANEXOMAIL WORKSPACE above mailboxes, folder ADMIN DESK for all user problems; asks WHEN the founder-look top bar order (2nd image) comes; wants audit. Answered in FOUNDER-TO-DESK-AUDIT-22NOV.md (R4-1b next).
+
+- R4-1a UI: pin/unpin, scrollbar, groups, logo text removed; audit of founder->Desk moves; tests 8/8, layout ok, WIRED: NO until his install + my look

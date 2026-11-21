@@ -5,15 +5,28 @@ import { BrandMark } from "../signin/BrandMark";
  *  Pure presentation: every value comes in as a prop from a Desk-signed answer the kernel verified. No founder import, no raw fetch, no mock data.
  *  One build for 390 / 820 / 1200+: a left glass rail from 820 up, a bottom tab bar below it (CSS only, no JS size switch). Honours reduced motion and forced colours. */
 export type ShellMe = { email: string; name: string | null; role: string; expires_at: string };
-type NavItem = { key: string; label: string; glyph: ReactNode; live: boolean };
+type NavItem = { key: string; label: string; glyph: ReactNode; live: boolean; group: string };
 const ico = (d: string) => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={d} /></svg>;
+/** Groups follow his word (22 Nov 02:43): company mailboxes sit under ANEXOMAIL WORKSPACE, and the folder ADMIN DESK holds everything about the users' problems. */
 const NAV: NavItem[] = [
-  { key: "dashboard", label: "Dashboard", glyph: ico("M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"), live: true },
-  { key: "inboxes", label: "Inboxes", glyph: ico("M3 13l3-8h12l3 8v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zM3 13h5l1 3h6l1-3h5"), live: false },
-  { key: "cases", label: "Cases", glyph: ico("M4 5h16v11H8l-4 4zM8 9h8M8 12h5"), live: false },
-  { key: "team", label: "Team", glyph: ico("M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20a6 6 0 0 1 12 0M17 11a2.5 2.5 0 1 0 0-5M16 14.5A5 5 0 0 1 21 20"), live: false },
-  { key: "audit", label: "Audit", glyph: ico("M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM9 12l2 2 4-4"), live: false },
+  { key: "dashboard", group: "", label: "Dashboard", glyph: ico("M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"), live: true },
+  { key: "inboxes", group: "Anexomail Workspace", label: "Inboxes", glyph: ico("M3 13l3-8h12l3 8v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zM3 13h5l1 3h6l1-3h5"), live: false },
+  { key: "cases", group: "Admin Desk", label: "Cases", glyph: ico("M4 5h16v11H8l-4 4zM8 9h8M8 12h5"), live: false },
+  { key: "movein", group: "Admin Desk", label: "Move-In", glyph: ico("M3 12h13M12 6l6 6-6 6M20 4v16"), live: false },
+  { key: "team", group: "Company", label: "Team", glyph: ico("M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20a6 6 0 0 1 12 0M17 11a2.5 2.5 0 1 0 0-5M16 14.5A5 5 0 0 1 21 20"), live: false },
+  { key: "audit", group: "Company", label: "Audit", glyph: ico("M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM9 12l2 2 4-4"), live: false },
 ];
+const PIN_KEY = "anexo.desk.pins";
+const readPins = (): string[] => { try { const v = JSON.parse(window.localStorage.getItem(PIN_KEY) || "[]"); return Array.isArray(v) ? v.filter((x) => typeof x === "string") : []; } catch { return []; } };
+const writePins = (p: string[]) => { try { window.localStorage.setItem(PIN_KEY, JSON.stringify(p)); } catch { /* per-viewer convenience only */ } };
+/** Pinned items float to a "Pinned" group at the top; unpinning puts them back in their own group. */
+export function orderNav(items: NavItem[], pins: string[]): { label: string; items: NavItem[] }[] {
+  const pinned = items.filter((n) => pins.includes(n.key) && n.key !== "dashboard"), rest = items.filter((n) => !pinned.includes(n));
+  const out: { label: string; items: NavItem[] }[] = [];
+  for (const n of rest) { const g = out.find((x) => x.label === n.group); if (g) g.items.push(n); else out.push({ label: n.group, items: [n] }); }
+  if (pinned.length) out.splice(out.length && out[0].label === "" ? 1 : 0, 0, { label: "Pinned", items: pinned });   // Dashboard stays on top, Pinned right under it
+  return out;
+}
 
 // Postgres sends "2026-11-22 13:58:12.54+05" (offset without minutes, long fraction): normalise so every browser parses it.
 export function parseWhen(iso: string): Date | null {
@@ -34,9 +47,9 @@ const CSS = `
 .dsk{font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;--ink:#E8EEF9;--mute:#9FB3D6;--glass:rgba(12,22,46,.62);--line:rgba(160,200,255,.16);--amber:255,170,70;position:relative;min-height:100dvh;color:var(--ink);background:linear-gradient(180deg,#060B19 0%,#0A1730 48%,#0F3460 100%);overflow-x:hidden}
 .dsk::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(55% 45% at 94% 0%,rgba(var(--amber),.26),transparent 62%),radial-gradient(60% 55% at 6% 100%,rgba(15,52,96,.85),transparent 70%)}
 .dsk::after{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0,transparent 14vw,rgba(160,200,255,.05) 14vw,rgba(160,200,255,.05) calc(14vw + 1px));box-shadow:inset 0 0 180px rgba(0,0,0,.55)}
-.dsk-rail{position:fixed;z-index:20;left:0;right:0;bottom:0;display:flex;justify-content:space-around;gap:2px;padding:6px max(8px,env(safe-area-inset-left)) calc(6px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-right));background:var(--glass);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border-top:1px solid var(--line)}
-.dsk-brand,.dsk-who{display:none}
-.dsk-nav{flex:1;min-width:0;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:0;border-radius:14px;background:transparent;color:var(--mute);font-family:inherit;font-size:11px;font-weight:500;line-height:1.1;cursor:pointer}
+.dsk-rail{overflow-x:auto;scrollbar-width:none;position:fixed;z-index:20;left:0;right:0;bottom:0;display:flex;justify-content:space-around;gap:2px;padding:6px max(8px,env(safe-area-inset-left)) calc(6px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-right));background:var(--glass);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border-top:1px solid var(--line)}
+.dsk-brand,.dsk-who,.dsk-grp,.dsk-pin{display:none}.dsk-scroll{display:contents}
+.dsk-nav{flex:1 0 56px;min-width:0;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:0;border-radius:14px;background:transparent;color:var(--mute);font-family:inherit;font-size:11px;font-weight:500;line-height:1.1;cursor:pointer}
 .dsk-nav[aria-current=page]{color:#fff;background:rgba(111,166,242,.16)}
 .dsk-nav[aria-disabled=true]{opacity:.55;cursor:default}
 .dsk-nav:focus-visible,.dsk-out:focus-visible{outline:2px solid #BFD6FF;outline-offset:2px}
@@ -54,10 +67,18 @@ const CSS = `
 .dsk-hollow{display:inline-block;width:10px;height:10px;margin-right:8px;border:1.5px solid var(--mute);border-radius:50%;vertical-align:-1px}
 .dsk-out{margin-top:26px;min-height:44px;padding:0 22px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.04);color:var(--ink);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer}
 .dsk-err{margin-top:20px;padding:12px 16px;border:1px solid rgba(var(--amber),.5);border-radius:14px;color:#FFD9A8;background:rgba(var(--amber),.08);font-size:14px}
+html{scrollbar-width:thin;scrollbar-color:rgba(111,166,242,.45) transparent}
+.dsk *::-webkit-scrollbar,.dsk::-webkit-scrollbar{width:10px;height:10px}.dsk *::-webkit-scrollbar-thumb{background:rgba(111,166,242,.38);border-radius:8px;border:2px solid transparent;background-clip:content-box}.dsk *::-webkit-scrollbar-thumb:hover{background:rgba(111,166,242,.6);background-clip:content-box}
+.dsk-row{display:contents}
 @media (min-width:820px){
+ .dsk-scroll{display:flex;flex-direction:column;gap:4px;flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(111,166,242,.4) transparent;padding-right:2px}
+ .dsk-grp{display:block;margin:16px 10px 4px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);opacity:.85}
+ .dsk-row{position:relative;display:flex;align-items:center}.dsk-row .dsk-nav{flex:1}
+ .dsk-pin{display:grid;place-items:center;position:absolute;right:6px;width:34px;height:34px;border:0;border-radius:10px;background:transparent;color:var(--mute);cursor:pointer;opacity:0}
+ .dsk-row:hover .dsk-pin,.dsk-row:focus-within .dsk-pin,.dsk-pin[aria-pressed=true]{opacity:1}.dsk-pin[aria-pressed=true]{color:#BFD6FF}.dsk-pin:focus-visible{outline:2px solid #BFD6FF}
  .dsk-rail{top:0;right:auto;bottom:0;width:232px;flex-direction:column;justify-content:flex-start;gap:6px;padding:22px 14px;border-top:0;border-right:1px solid var(--line)}
- .dsk-brand{display:block;margin:0 6px 18px}.dsk-brand b{display:block;margin-top:8px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#fff}
- .dsk-nav{flex:0 0 auto;flex-direction:row;justify-content:flex-start;gap:12px;padding:0 14px;font-size:14px;text-align:left}
+ .dsk-brand{display:block;margin:0 6px 10px}
+ .dsk-nav{flex:0 0 auto;width:100%;flex-direction:row;justify-content:flex-start;gap:12px;padding:0 14px;font-size:14px;text-align:left}
  .dsk-who{display:flex;align-items:center;gap:10px;margin-top:auto;padding:12px 8px 0;border-top:1px solid var(--line);font-size:13px;color:var(--mute)}
  .dsk-who i{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:rgba(111,166,242,.2);color:#fff;font-style:normal;font-weight:600;font-size:13px}
  .dsk-who span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -72,14 +93,27 @@ const CSS = `
 export function DeskShell({ me, err, out, onSignOut }: { me: ShellMe | null; err: string; out: boolean; onSignOut: () => void }) {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const t = window.setInterval(() => setNow(Date.now()), 15000); return () => window.clearInterval(t); }, []);
+  const [pins, setPins] = useState<string[]>(readPins), groups = orderNav(NAV, pins), toggle = (k: string) => setPins((p) => { const n = p.includes(k) ? p.filter((x) => x !== k) : [...p, k]; writePins(n); return n; });
   const d = new Date(now), first = me?.name?.trim().split(/\s+/)[0] || me?.email.split("@")[0] || "";
   const end = me ? parseWhen(me.expires_at) : null;
   const clock = d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" }), date = d.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
   return (
     <div className="dsk"><style>{CSS}</style>
       <nav className="dsk-rail" aria-label="Admin Desk">
-        <div className="dsk-brand"><BrandMark home={false} /><b>Admin Desk</b></div>
-        {NAV.map((n) => <button key={n.key} type="button" className="dsk-nav" aria-current={n.live ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={n.live ? undefined : "Opens when it is connected"} onClick={(e) => { if (!n.live) e.preventDefault(); }}>{n.glyph}<span>{n.label}</span></button>)}
+        <div className="dsk-brand"><BrandMark home={false} /></div>
+        <div className="dsk-scroll">
+          {groups.map((g) => (
+            <div key={g.label || "top"} style={{ display: "contents" }}>
+              {g.label && <p className="dsk-grp">{g.label}</p>}
+              {g.items.map((n) => (
+                <div className="dsk-row" key={n.key}>
+                  <button type="button" className="dsk-nav" aria-current={n.live ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={n.live ? undefined : "Opens when it is connected"} onClick={(e) => { if (!n.live) e.preventDefault(); }}>{n.glyph}<span>{n.label}</span></button>
+                  {n.key !== "dashboard" && <button type="button" className="dsk-pin" aria-pressed={pins.includes(n.key)} aria-label={(pins.includes(n.key) ? "Unpin " : "Pin ") + n.label} onClick={() => toggle(n.key)}>{ico("M9 4h6l-1 6 3 3v2H7v-2l3-3zM12 15v5")}</button>}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
         {me && <div className="dsk-who"><i aria-hidden="true">{initials(me.name || me.email)}</i><span>{me.name || me.email}</span></div>}
       </nav>
       <main className="dsk-main">
