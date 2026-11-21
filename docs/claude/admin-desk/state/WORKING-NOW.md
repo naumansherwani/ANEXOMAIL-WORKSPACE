@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 21 Nov 2026 23:10 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 23:11 PKT) - read this FIRST for the Desk after a compaction
 DOING: login door live; blueprint status written
 NEXT STEP: his sign-in; Rule 52 Desk kernel RPC
 HIS LAST WORD: blueprint bhejo, palette Premium/Max
@@ -41,6 +41,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 5defab99 21 Nov 23:11 Desk: status blueprint, palette for Premium/Max
 - 495bd5dc 21 Nov 22:59 ledger line f24407da
 - f24407da 21 Nov 22:59 Desk login: one bottom light
 - 0b3f96d1 21 Nov 22:50 ledger line 42468c3e
@@ -48,15 +49,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 10f9dc43 21 Nov 22:41 ledger line fc3ae069
 - 5a2e589d 21 Nov 22:40 ledger line dad14a1b
 - dad14a1b 21 Nov 22:40 Desk home Sign in: awam button colours
-- cd8b2fcd 21 Nov 22:36 ledger line 77f84998
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
- M docs/claude/admin-desk/state/PHASES.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? docs/claude/admin-desk/BLUEPRINT-STATUS-21NOV.md
-?? docs/claude/admin-desk/codes/DESK-PALETTE-PREMIUM-MAX.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
