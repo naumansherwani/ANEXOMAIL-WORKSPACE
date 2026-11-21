@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 07:57 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 07:58 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: STOPPED by his word 07:57: two admindesk blocks in Caddy (old :8400 + new :4400), no server action until read-only look
 NEXT STEP: one read-only command: sed -n 185,205p /etc/caddy/Caddyfile and ss for 4400/8400; his paste; then fix
 HIS LAST WORD: yeh wrong hai ruk ja
@@ -18,47 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## FOUNDER + other processes in the same list (never touch)
 
 ## Last 5 commits
+- eefc07c4 21 Nov 07:58 desk: stop, duplicate caddy block
 - ac748a55 21 Nov 07:50 ledger line 0ad68bd6
 - 0ad68bd6 21 Nov 07:50 Admin Desk phase 1 started: host facts, ports check script, cinematic passkey-only login design
 - a357f1f7 21 Nov 07:40 ledger line d4301849
 - d4301849 21 Nov 07:40 Admin Desk 3-day plan with times and technology per phase
-- 67cd4115 21 Nov 07:40 ledger line ac7aa8c7
 
 ## Uncommitted files (half-done work if any)
-M  CLAUDE.md
-AM docs/claude/ADMIN-DESK-R3A0-FACTS-21NOV.md
-MM docs/claude/DONE-DO-NOT-REPEAT.md
-M  docs/claude/RESUME-POINT.md
-M  docs/claude/SERVER-PORTS-RED-LINE-08NOV.md
-M  docs/claude/founder/PULL-COMMANDS.md
-M  docs/claude/state/HEARTBEAT.json
-M  docs/claude/state/PORTS-LIVE.md
-MM docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-MM docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
-MM docs/cursor-work/DONE-DO-NOT-REPEAT.md
-MM docs/cursor-work/founder/founder-commands.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  docs/cursor-work/server/PULL-COMMANDS.md
-R  founder-web/dist/assets/index-DOZGq0OE.js -> founder-web/dist/assets/index-BI0hlzqV.js
-M  founder-web/dist/index.html
-M  founder-web/src/system_brain.json
-M  lanes/ALL-FILES.csv
-M  lanes/docs.txt
-M  lanes/founder.txt
-M  lovable-gold/README.md
+ M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- .../{index-DOZGq0OE.js => index-BI0hlzqV.js}       |  2 +-
- founder-web/dist/index.html                        |  2 +-
- founder-web/src/system_brain.json                  |  6 +--
- lanes/ALL-FILES.csv                                |  3 +-
- lanes/docs.txt                                     |  1 +
- lanes/founder.txt                                  |  2 +-
- lovable-gold/README.md                             |  2 +-
- 22 files changed, 121 insertions(+), 51 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 46 +++-------------------------------------
+ 1 file changed, 3 insertions(+), 43 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -69,4 +42,4 @@ M  lovable-gold/README.md
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (87ba869102a5c793ae3c2ef4c4a0e16dcfd411e3)
+WIP snapshot: refs/wip/last (637226e321625489889db975c946ba87d28c9e5a)
