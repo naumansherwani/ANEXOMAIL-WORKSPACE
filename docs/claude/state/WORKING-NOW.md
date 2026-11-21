@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 07:50 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: PHASE 1 R3a0 HOST + R3a1 cinematic passkey-only login STARTED; host facts from his paste; desk-ports-check.sh written; building DeskScene (Three.js) next
-NEXT STEP: his desk-ports-check paste; Namecheap AAAA/HTTPS/CAA steps; Caddy host add; R3a2 passkey door + SQL E201
-HIS LAST WORD: his 21 Nov 07:48 order + paste
+# WORKING NOW (manual checkpoint, 21 Nov 2026 07:57 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: STOPPED by his word 07:57: two admindesk blocks in Caddy (old :8400 + new :4400), no server action until read-only look
+NEXT STEP: one read-only command: sed -n 185,205p /etc/caddy/Caddyfile and ss for 4400/8400; his paste; then fix
+HIS LAST WORD: yeh wrong hai ruk ja
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -13,25 +13,52 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 | UDP | *:3443 | WebTransport |
 | UDP | 0.0.0.0:3501 | awam Rust UDP (internal channel) |
 
+## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
+
 ## FOUNDER + other processes in the same list (never touch)
-| Proto | Port | Process |
-|---|---|---|
 
 ## Last 5 commits
+- ac748a55 21 Nov 07:50 ledger line 0ad68bd6
 - 0ad68bd6 21 Nov 07:50 Admin Desk phase 1 started: host facts, ports check script, cinematic passkey-only login design
 - a357f1f7 21 Nov 07:40 ledger line d4301849
 - d4301849 21 Nov 07:40 Admin Desk 3-day plan with times and technology per phase
 - 67cd4115 21 Nov 07:40 ledger line ac7aa8c7
-- ac7aa8c7 21 Nov 07:40 Admin Desk 3-day plan with times and technology per phase
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/state/WORKING-NOW.md
+M  CLAUDE.md
+AM docs/claude/ADMIN-DESK-R3A0-FACTS-21NOV.md
+MM docs/claude/DONE-DO-NOT-REPEAT.md
+M  docs/claude/RESUME-POINT.md
+M  docs/claude/SERVER-PORTS-RED-LINE-08NOV.md
+M  docs/claude/founder/PULL-COMMANDS.md
+M  docs/claude/state/HEARTBEAT.json
+M  docs/claude/state/PORTS-LIVE.md
+MM docs/claude/state/WORKING-NOW.md
+M  docs/claude/tech-contracts/CURRENT.md
+MM docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
+MM docs/cursor-work/DONE-DO-NOT-REPEAT.md
+MM docs/cursor-work/founder/founder-commands.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
+M  docs/cursor-work/server/PULL-COMMANDS.md
+R  founder-web/dist/assets/index-DOZGq0OE.js -> founder-web/dist/assets/index-BI0hlzqV.js
+M  founder-web/dist/index.html
+M  founder-web/src/system_brain.json
+M  lanes/ALL-FILES.csv
+M  lanes/docs.txt
+M  lanes/founder.txt
+M  lovable-gold/README.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 33 +++++----------------------------
- 1 file changed, 5 insertions(+), 28 deletions(-)
+ .../{index-DOZGq0OE.js => index-BI0hlzqV.js}       |  2 +-
+ founder-web/dist/index.html                        |  2 +-
+ founder-web/src/system_brain.json                  |  6 +--
+ lanes/ALL-FILES.csv                                |  3 +-
+ lanes/docs.txt                                     |  1 +
+ lanes/founder.txt                                  |  2 +-
+ lovable-gold/README.md                             |  2 +-
+ 22 files changed, 121 insertions(+), 51 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +69,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (913eeecf781ad8a9d9b3a50e32bb59f5571aff7e)
+WIP snapshot: refs/wip/last (87ba869102a5c793ae3c2ef4c4a0e16dcfd411e3)

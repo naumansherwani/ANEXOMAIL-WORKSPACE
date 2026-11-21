@@ -11,6 +11,8 @@ Full law + older history: docs/claude/SERVER-PORTS-RED-LINE-08NOV.md. QC1e D4A (
 | UDP | *:3443 | WebTransport |
 | UDP | 0.0.0.0:3501 | awam Rust UDP (internal channel) |
 
+## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; nothing listens on 4400 yet). His free-port check showed 4400, 4500, 7400, 8400 free. Never use 4400 for anything else.
+
 ## FOUNDER + other processes in the same list (never touch)
 | Proto | Port | Process |
 |---|---|---|

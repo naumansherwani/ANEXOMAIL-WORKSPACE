@@ -4660,3 +4660,9 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 07:47 PKT his 07:39 order: ADMIN DESK = 3 DAYS (Sat 21 07:40 -> Mon 23 21:00), plan with times + advance technology per phase in ADMIN-DESK-3DAY-PLAN-21NOV.md; PHASE 1 = R3a0 HOST + parallel R3a2 SQL E201/E202 + login door; day 2 R3b R3c R3d, day 3 R3e R3f R3g; R4 Managed Move-In from Tue 24 Nov (IMAP migrator not honest in 3 days, his word needed); blueprint top, ledger, commands, CLAUDE.md updated; nothing wired
 
 - 21 Nov 2026 08:08 PKT his 07:48 order: PHASE 1 started. His host-check paste read (admindesk A ok, AAAA/HTTPS/CAA missing, Caddy + certificate missing, tcp+udp 443 = anexomail-founder, NO new public port needed); read-only desk-ports-check.sh written; login design = cinematic PASSKEY-ONLY (ADMIN-DESK-LOGIN-CINEMA-DESIGN-21NOV.md; supersedes optional passkey, telemetry only if real); gate: D-argon2 removed, D-passkey-door + D-three-scene added, isolation gate covers server/founder/src/desk_*.rs; blueprint, ledger, commands, CLAUDE.md updated; scene not built yet
+
+- 21 Nov 2026 07:55 PKT: ADMIN DESK R3a0 host: port 4400 RESERVED (loopback), his Caddy block admindesk -> 127.0.0.1:4400 validated + reloaded, DNS A ok; 502 until anexomail-desk exists (R3a2); his 4-layer cinematic passkey-only login spec recorded; design demo in progress; still open (WIRED: NO)
+
+- 21 Nov 2026 07:55 PKT: same (manifest pass)
+
+- 21 Nov 2026 07:58 PKT: STOP by his word: two admindesk blocks in Caddy (pre-existing :8400 line 194 + his new :4400), ufw 8400 open; no server action until a read-only look; Desk still not wired (WIRED: NO)
