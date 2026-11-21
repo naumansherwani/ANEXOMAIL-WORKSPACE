@@ -1,6 +1,6 @@
 # AD1: Admin Desk SQL, step 1 (his 21 Nov 2026 09:25: "AD 1 ka folder")
 
-STATUS: FOLDER + PLAN ONLY. The file `AD1.sql` is NOT written yet: his HTTP/3 hard block (gate `_h3_block`, 21 Nov 09:18) refuses any `admin-desk/sql/AD*.sql` until the Desk's own HTTP/3 listener (R3a0-stage2) is in code and proven. This folder is allowed; the SQL file is not, yet.
+STATUS 21 Nov 2026 10:30 PKT: `../AD1.sql` is WRITTEN and TESTED on PostgreSQL 16 (run twice = idempotent, selftest passes, 8/8 CHECK rows true, desk_app sees 0 rows without a session and touches 0 public tables). It was unblocked when the Desk HTTP/3 was proven (H3CHECK OK, 09:55). NOT yet run on his server: needs his database name (read-only paste) then `admin-desk/scripts/ad-sql-run.sh <database>`.
 
 Rules: Desk series = AD1, AD2 ... (founder and awam keep the E series). SCHEMA-FIRST LAW: before writing, read the previous schema that owns the tables (none yet: AD1 is the first Desk schema; the founder/awam E files are NEVER read from or joined to, DESK ISOLATION LAW). One file per step, one CHECK file per step in `../checks/`. Run only through a Desk runner (`ad-sql-run.sh`, written with AD1), strictly by number.
 

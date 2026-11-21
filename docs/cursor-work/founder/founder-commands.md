@@ -4969,3 +4969,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 10:15 PKT: R3a0-s2 HTTP/3 PROVEN on his server (H3CHECK OK loopback + 62.238.98.98, WIRED: YES / REAL: YES, TECH-LAW CHECKED); gate row code, block lifted; pill HTTP/3 QUIC TLS 1.3 AES-256-GCM X25519MLKEM768; DNS record still his hands; NOW R3a2 AD1
 
 - 21 Nov 2026 10:15 PKT: R3a0-s2 HTTP/3 PROVEN on his server (H3CHECK OK loopback + 62.238.98.98, WIRED: YES / REAL: YES, TECH-LAW CHECKED); gate row code, block lifted; pill HTTP/3 QUIC TLS 1.3 AES-256-GCM X25519MLKEM768; DNS record still his hands; NOW R3a2 AD1
+
+- 21 Nov 2026 09:56 PKT (continuation of 'phase ki taraf aao'): R3a2 step 1 done: AD1.sql written + tested on PostgreSQL 16, ad-sql-run.sh written; asks his database name (read-only).
+
+- 21 Nov 2026 10:30 PKT: R3a2 step 1 AD1.sql WRITTEN + TESTED on PostgreSQL 16 (idempotent, selftest, 8/8 CHECK), ad-sql-run.sh written; gate row R3a2-sql code; WIRED: code YES, NOT yet run on his server (needs his db name)

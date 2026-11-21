@@ -132,8 +132,7 @@
     "desk_app",
     "sha256"
    ],
-   "status": "planned",
-   "fail_after": "2026-11-22",
+   "status": "code",
    "deadline": "22 Nov"
   },
   {

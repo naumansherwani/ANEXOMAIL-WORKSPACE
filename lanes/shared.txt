@@ -19,6 +19,7 @@ admin-desk/gates/00-FOUNDER-TECH-RULE.md
 admin-desk/gates/DESK-FEATURES.json
 admin-desk/gates/desk_tech_gate.py
 admin-desk/scripts/00-FOUNDER-TECH-RULE.md
+admin-desk/scripts/ad-sql-run.sh
 admin-desk/scripts/desk-cert-sync.sh
 admin-desk/scripts/desk-h3-check.sh
 admin-desk/scripts/desk-h3-enable.sh
@@ -31,10 +32,12 @@ admin-desk/server/src/00-FOUNDER-TECH-RULE.md
 admin-desk/server/src/h3.rs
 admin-desk/server/src/main.rs
 admin-desk/sql/00-FOUNDER-TECH-RULE.md
+admin-desk/sql/AD1.sql
 admin-desk/sql/AD1/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/AD1/README.md
 admin-desk/sql/README.md
 admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
+admin-desk/sql/checks/AD1-check.sql
 admin-desk/sql/checks/README.md
 admin-desk/state/00-FOUNDER-TECH-RULE.md
 admin-desk/state/RESUME.md
