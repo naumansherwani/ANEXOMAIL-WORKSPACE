@@ -2721,3 +2721,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 21 Nov 2026 23:46 PKT his 23:44 screenshot: Namecheap AAAA admindesk save still failing; recorded; WIRED: NO
 
 - 21 Nov 2026 23:53 PKT DNS: AAAA saved for *, @, admindesk; anexochat/anexovideo to follow; WIRED: NO
+
+- 21 Nov 2026 23:57 PKT DNS: A rows for @ and admindesk missing in his paste; re-add A 62.238.98.98; WIRED: NO
