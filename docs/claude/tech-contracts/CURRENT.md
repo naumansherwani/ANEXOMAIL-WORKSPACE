@@ -2641,3 +2641,7 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 21 Nov 2026 21:25 PKT Desk login final (no ball/identity/hardware line, Continue with a passkey below); door.rs DESK_DB_CA; WIRED: NO
 
 - 21 Nov 2026 21:27 PKT Desk login: no-passkey line removed; WIRED: NO until his desk-install
+
+### 21 Nov 2026 21:39 PKT Desk login (his 21:35): logo = link to / (Desk home), above the pill row (zIndex 5); his line added under the motto; the soft blue light the ball gave the card top is back (glow only, no ball); spacing tightened with vh clamps (fields 44, buttons 44/48): card fits a 768 px high window (bottom 745); shorter windows scroll. Landing page untouched. desk-appdb.sh pins the Supabase Root 2021 CA from the chain the server sends (subject checked, sha256 printed) and writes DESK_DB_CA. CLEAN-PUSH LAW file docs/claude/CLEAN-PUSH-LAW-21NOV.md.
+
+- 21 Nov 2026 21:39 PKT Desk login: logo link, vault line, glow, fit; desk-appdb pins Supabase root CA; CLEAN-PUSH LAW file; WIRED: NO until his runs

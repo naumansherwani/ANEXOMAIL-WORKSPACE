@@ -23,3 +23,5 @@
 14. (21 Nov 2026 21:25 PKT) Login final: no ball, no Identity, no hardware-key line, Continue with a passkey below Sign in. DB TLS handshake fail on his server: waiting his openssl issuer line, then pin the DB CA (DESK_DB_CA).
 
 15. (21 Nov 2026 21:27 PKT) Login: "No passkey on this account" line removed too.
+
+16. (21 Nov 2026 21:39 PKT) Login: logo -> /, his vault line under the motto, glow back without the ball, tighter spacing. desk-appdb.sh now pins Supabase Root 2021 CA (DESK_DB_CA). NEXT his desk-install then desk-appdb, then sign in. CLEAN-PUSH LAW: docs/claude/CLEAN-PUSH-LAW-21NOV.md (git status empty after every push).

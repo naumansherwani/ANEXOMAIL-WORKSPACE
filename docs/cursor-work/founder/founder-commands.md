@@ -5217,3 +5217,7 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 21:27 PKT] HIS WORD (21:27): no passkey wali line hata de. DONE: "No passkey on this account? Use your password" removed, form stays.
 
 - 21 Nov 2026 21:27 PKT Desk login: no-passkey line removed; WIRED: NO until his desk-install
+
+[21 Nov 2026 21:39 PKT] HIS WORD (21:35, with 3 images + openssl paste): image 2 neeche se cut kyon; ball nikalne ke baad colours different kaise; logo (ANEXOMAIL WORKSPACE, cursor wali jagah) clickable -> admindesk.anexomail.com home; image 2 pe line add: Behind every ticket is a business that trusted our vault. Don't just reply-resolve it before they even wonder why. Baki admindesk.anexomail.com pe kuch nahi touch. Ledger mein compact save. openssl: issuer Supabase Intermediate 2021 CA, verify 19. (21:38): clean-push RULE strict, sab repo mein likho.
+
+- 21 Nov 2026 21:39 PKT Desk login: logo link, vault line, glow, fit; desk-appdb pins Supabase root CA; CLEAN-PUSH LAW file; WIRED: NO until his runs

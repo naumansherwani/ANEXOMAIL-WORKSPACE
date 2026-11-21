@@ -1961,3 +1961,5 @@
 - 21 Nov 2026 21:25 PKT Desk login final (no ball/identity/hardware line, Continue with a passkey below); door.rs DESK_DB_CA; WIRED: NO
 
 - 21 Nov 2026 21:27 PKT Desk login: no-passkey line removed; WIRED: NO until his desk-install
+
+- 21 Nov 2026 21:39 PKT Desk login: logo link, vault line, glow, fit; desk-appdb pins Supabase root CA; CLEAN-PUSH LAW file; WIRED: NO until his runs

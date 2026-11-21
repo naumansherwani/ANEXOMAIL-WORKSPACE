@@ -20,7 +20,15 @@ P
 printf "alter role desk_app login password :'pw';\n" | env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "$DESK_DB_URL" -X -q -v ON_ERROR_STOP=1 -v pw="$PW" 2>&1 | tail -3
 [ "${PIPESTATUS[1]}" = 0 ] || { echo "FAIL: ALTER ROLE desk_app (AD1 must be in the database)"; exit 4; }
 id $SVC >/dev/null 2>&1 || { echo "FAIL: run desk-install.sh first"; exit 2; }
-( umask 037; printf 'DESK_APP_URL=%s\n' "$URL" >"$APP" ); chown root:$SVC "$APP"; chmod 640 "$APP"; unset PW URL
+# The database's own CA: Supabase signs its pooler certificate with "Supabase Root 2021 CA", which is not a public root (his openssl 21 Nov 21:35: issuer Supabase Intermediate 2021 CA, verify 19).
+# Take the self-signed root from the chain the server itself sends, accept it ONLY if its subject is Supabase Inc / Supabase Root 2021 CA, store it root-owned and print its SHA-256 fingerprint.
+CA=/etc/anexomail-desk/db-ca.pem; HP="$(DESK_ADMIN_URL="$DESK_DB_URL" python3 -c 'import os,urllib.parse as u;a=u.urlsplit(os.environ["DESK_ADMIN_URL"]);print(a.hostname+":"+str(a.port or 5432))')"
+T="$(mktemp -d)"; openssl s_client -starttls postgres -connect "$HP" -showcerts </dev/null 2>/dev/null | awk -v d="$T" '/BEGIN CERT/{n++} n{print > (d "/c" n ".pem")} /END CERT/{}' 
+ROOTF=""; for f in "$T"/c*.pem; do [ -s "$f" ] || continue; S="$(openssl x509 -in "$f" -noout -subject -nameopt RFC2253 2>/dev/null)"; I="$(openssl x509 -in "$f" -noout -issuer -nameopt RFC2253 2>/dev/null)"
+  [ "${S#subject=}" = "${I#issuer=}" ] && echo "$S" | grep -q "O=Supabase Inc" && echo "$S" | grep -q "CN=Supabase Root 2021 CA" && ROOTF="$f"; done
+if [ -n "$ROOTF" ]; then cp "$ROOTF" "$CA"; chown root:$SVC "$CA"; chmod 640 "$CA"; echo "database CA pinned: $(openssl x509 -in "$CA" -noout -subject -nameopt RFC2253) sha256=$(openssl x509 -in "$CA" -noout -fingerprint -sha256 | cut -d= -f2)"
+else echo "note: no Supabase Root 2021 CA in the chain from $HP (public roots only)"; CA=""; fi; rm -rf "$T"
+( umask 037; printf 'DESK_APP_URL=%s\n' "$URL" >"$APP"; [ -n "$CA" ] && printf 'DESK_DB_CA=%s\n' "$CA" >>"$APP" ); chown root:$SVC "$APP"; chmod 640 "$APP"; unset PW URL
 mkdir -p /etc/systemd/system/$SVC.service.d; printf '[Service]\nEnvironmentFile=%s\n' "$APP" >/etc/systemd/system/$SVC.service.d/db.conf
 systemctl daemon-reload; systemctl restart $SVC; sleep 3
 C="$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: admindesk.anexomail.com' http://127.0.0.1:4400/desk/v1/auth/me)"
