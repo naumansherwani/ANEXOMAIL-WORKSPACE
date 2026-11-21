@@ -26,9 +26,12 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 
 > [21 Nov 2026 10:35 PKT] AD1 now AUTO: ad-auto.sh (runs if missing, says already run if done). WAITS his output.
 
+> [21 Nov 2026 10:35 PKT] AD1: ad-db-env DONE on his server; ad-auto.sh written (auto run / already run). WAITS his run + paste.
+
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 30d3ff13 21 Nov 10:35 Desk: ad-auto.sh auto SQL runner
 - c6a250e5 21 Nov 10:35 Desk: ad-auto.sh auto SQL runner
 - a864ba3e 21 Nov 10:35 Desk: ad-auto.sh auto SQL runner
 - 9c049bf0 21 Nov 10:34 checkpoint
@@ -36,7 +39,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 7c25db6e 21 Nov 10:33 Desk: ad-db-env done on his server
 - 3d60b24b 21 Nov 10:33 Desk: ad-db-env done on his server
 - 24bed13c 21 Nov 10:32 checkpoint
-- eb92d0a3 21 Nov 10:32 checkpoint
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md

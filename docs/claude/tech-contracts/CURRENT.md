@@ -2483,3 +2483,5 @@ admin-desk/scripts/ad-auto.sh: per AD<n>.sql, check all true = "already run", el
 admin-desk/scripts/ad-auto.sh: per AD<n>.sql on origin/main, CHECK first; all true = already run, skip; else run (one transaction, idempotent) + CHECK. Same DB as his E series (his word), schema desk only. ad-check.sh stays read-only.
 
 - 21 Nov 2026 10:35 PKT Desk ad-auto.sh auto SQL runner per his 10:35; WIRED: NO until he runs it
+
+- 21 Nov 2026 10:35 PKT Desk ad-auto.sh auto SQL runner per his 10:35; WIRED: NO until he runs it
