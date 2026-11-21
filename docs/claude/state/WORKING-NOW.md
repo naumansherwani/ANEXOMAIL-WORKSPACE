@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 03:30 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 03:30 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: awam package chart added
 NEXT STEP: Day1 Desk Bridge, AD3, AD2 door
 HIS LAST WORD: package chart
@@ -18,30 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 4651e3ed 22 Nov 03:30 awam package chart
 - 4ec63755 22 Nov 03:19 ledger line d46a9cb1
 - d46a9cb1 22 Nov 03:19 Desk dashboard plan
 - f1880c63 22 Nov 03:08 ledger line 13389f33
 - 13389f33 22 Nov 03:08 Desk 4-day plan
-- 151953ea 22 Nov 03:02 ledger line 0d4ae5c6
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
- M docs/claude/AWAM-PACKAGES-PROPOSAL-07NOV.md
- M docs/claude/admin-desk/DASHBOARD-LIVE-COMMAND-22NOV.md
- M docs/claude/admin-desk/SIDEBAR-SECTIONS-AND-LOOPHOLES-22NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/founder/founder-commands.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md     |  2 ++
- docs/claude/AWAM-PACKAGES-PROPOSAL-07NOV.md        |  3 +++
- .../admin-desk/DASHBOARD-LIVE-COMMAND-22NOV.md     |  2 ++
- .../SIDEBAR-SECTIONS-AND-LOOPHOLES-22NOV.md        |  2 ++
- docs/claude/state/WORKING-NOW.md                   | 28 ++++++++--------------
- docs/cursor-work/founder/founder-commands.md       |  2 ++
- 6 files changed, 21 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 27 ++-------------------------
+ 1 file changed, 2 insertions(+), 25 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -52,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (5968450a3c19eb9e04696001b51a60a3cafcb970)
+WIP snapshot: refs/wip/last (8888dcbe4adebbe837bad38a2e7bf067fae7406b)
