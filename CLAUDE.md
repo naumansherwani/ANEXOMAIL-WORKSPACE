@@ -1,4 +1,4 @@
-> ## >>> RESUME HERE: >>> RESUME 22 Nov 01:15 PKT: 50k-staff design written (admin-desk/SCALE-50K-DESIGN-22NOV.md); R3d code next, then dashboard+bridge <<< (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
+> ## >>> RESUME HERE: >>> RESUME 22 Nov 01:20 PKT: 50k-staff design written; R3d code next, then dashboard+bridge <<< (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
 > ## >>> FRONTEND=CADDY, HETZNER=BACKEND; DNS=Caddy IP (his 21 Nov 23:35): docs/claude/FRONTEND-CADDY-BACKEND-HETZNER-LAW-21NOV.md <<<
 > ## >>> DESK 3 CMDS: desk-install, ad-auto, desk-restart (admin-desk/TWO-COMMANDS.md) <<<
 > ## >>> CLEAN-PUSH: git status empty after push (CLEAN-PUSH-LAW-21NOV.md) <<<
