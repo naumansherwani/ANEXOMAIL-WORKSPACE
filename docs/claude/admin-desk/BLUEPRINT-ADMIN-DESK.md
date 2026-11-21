@@ -76,3 +76,5 @@ RULE (his word): in every phase, next to each FEATURE the CODE file and the ADVA
 
 ## PHASES AFTER R3a (each gets its own feature table when it starts; plan times in the 3-day plan)
 R3b inboxes (Sun 06:00) / R3c auto mail RFC 3834 + Polar signed webhook (12:00) / R3d dashboard + mail UI (17:00) / R3e reply without passkey (Mon 06:00) / R3f SLA engine (09:00) / R3g verify + final (14:00-21:00) / R4 Managed Move-In + Priority Support (from Tue 24 Nov) / R5 LEO / R6.
+
+> [22 Nov 2026 01:13 PKT] PHASE R3-SCALE + WORLD-ADVANCE (his 01:12 target: world's most advanced): SCALE-50K-DESIGN-22NOV.md (S1..S11) + WORLD-ADVANCE-DESK-22NOV.md (W1..W10: transparent Merkle log, policy engine deny-by-default/forbid-wins, hybrid Ed25519+ML-DSA signing, MoQ-style WebTransport fan-out, zero standing privilege, data-view guard, per-staff keys). Each row needs his haan. Rule 52 on all. Not in code.

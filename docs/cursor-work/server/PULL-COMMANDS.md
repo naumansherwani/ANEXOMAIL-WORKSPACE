@@ -2059,3 +2059,5 @@
 - 22 Nov 01:15 PKT: 50,000-staff Desk design (S1..S11) + phase R3-SCALE + REMINDERS written, WIRED: NO (design only)
 
 - 22 Nov 01:20 PKT: working-now refresh, WIRED: NO
+
+- 22 Nov 01:25 PKT: WORLD-ADVANCE W1..W10 written into Desk blueprint, WIRED: NO (design only)
