@@ -17,6 +17,7 @@ admin-desk/gates/00-FOUNDER-TECH-RULE.md
 admin-desk/gates/DESK-FEATURES.json
 admin-desk/gates/desk_tech_gate.py
 admin-desk/scripts/00-FOUNDER-TECH-RULE.md
+admin-desk/scripts/desk-cert-sync.sh
 admin-desk/scripts/desk-host-check.sh
 admin-desk/scripts/desk-install.sh
 admin-desk/server/00-FOUNDER-TECH-RULE.md

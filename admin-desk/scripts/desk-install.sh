@@ -37,6 +37,8 @@ MemoryDenyWriteExecute=true
 [Install]
 WantedBy=multi-user.target
 U
+# the awam AES-256 edge serves only names whose certificate it has copied; run the existing sync so a new Desk host is not refused for up to a day
+[ -x /usr/local/sbin/anexomail-awam-certs-sync ] && /usr/local/sbin/anexomail-awam-certs-sync >/dev/null 2>&1
 echo "== 4/4 start + check"
 systemctl daemon-reload && systemctl enable $SVC >/dev/null 2>&1; systemctl restart $SVC; sleep 2
 H="$(curl -s -o /dev/null -w %{http_code} -H 'Host: admindesk.anexomail.com' http://127.0.0.1:4400/desk/v1/health)"

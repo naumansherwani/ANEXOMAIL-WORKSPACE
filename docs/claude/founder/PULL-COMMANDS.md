@@ -2677,3 +2677,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 08:58 PKT: his desk-install ran OK on his server (anexomail-desk on 127.0.0.1:4400, health 200, wrong host 404); motto + Built-on line added to Desk landing/login (P5 proven, P6 open until R3f); public https look still unseen (WIRED: NO for login door)
 
 - 21 Nov 2026 08:58 PKT: his desk-install ran OK on his server (anexomail-desk on 127.0.0.1:4400, health 200, wrong host 404); motto + Built-on line added to Desk landing/login (P5 proven, P6 open until R3f); public https look still unseen (WIRED: NO for login door)
+
+- 21 Nov 2026 08:52 PKT: ROOT CAUSE found for admindesk not opening: awam-edge had no copy of the Desk certificate (daily sync); fix script admin-desk/scripts/desk-cert-sync.sh + desk-install runs the sync; not yet run on his server (WIRED: NO)
