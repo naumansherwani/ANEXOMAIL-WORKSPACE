@@ -9,3 +9,5 @@ export function writeSingle(on: boolean, s: Store | null = ls()): boolean { try 
 const subs = new Set<() => void>();
 export const subscribeSingle = (f: () => void) => { subs.add(f); return () => { subs.delete(f); }; };
 export const setSingle = (on: boolean) => { writeSingle(on); subs.forEach((f) => f()); };
+/** QC8c: tell the listeners the stored value changed without writing it again (used when the server's copy is applied). */
+export const notifySingle = () => { subs.forEach((f) => f()); };

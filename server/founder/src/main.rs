@@ -65,6 +65,7 @@ mod fmail_tls;
 mod fmail_qtls;
 mod fmail_rpt;
 mod fmail_out;
+mod fmail_keys;
 mod fmail_book;
 mod fmail_rich;
 mod fmail_timeline;
@@ -969,6 +970,9 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/mail/send", axum::routing::post(fmail_out::send_ep))
         .route("/founder/v1/mail/undo", axum::routing::post(fmail_out::undo_ep))
         .route("/founder/v1/mail/release", axum::routing::post(fmail_out::release_ep))
+        .route("/founder/v1/mail/keys/log", axum::routing::post(fmail_keys::log_ep))
+        .route("/founder/v1/mail/keys/stats", axum::routing::get(fmail_keys::stats_ep))
+        .route("/founder/v1/mail/keys/verify", axum::routing::get(fmail_keys::verify_ep))
         .route("/founder/v1/mail/changes", get(fmail_live::changes_ep))
         .route("/founder/v1/mail/tls", get(fmail_tls::tls_get_ep))
         .route("/founder/v1/mail/tls/check", axum::routing::post(fmail_tls::tls_check_ep))

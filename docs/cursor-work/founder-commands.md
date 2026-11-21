@@ -38,3 +38,9 @@
 - 21 Nov 2026 05:14 PKT HIS WORD: "ab shuru kero web research plan likho search ke points aur codes advance shuru kero b4 Announcements". Done: QC8B-B4-PLAN-21NOV.md, b4 mounted in a11y_sem.ts (a11y_sem_next.ts removed, nothing parked now).
 
 - 21 Nov 2026 05:25 PKT HIS WORD: b4 install done, "green likho B4 ko baki jo hai un ko bhi green likho shuru kero"; b5 deep web search then code; after b5 whole QC8 is shown to him. Done: b5 plan + CSS, b4 star-wait fix, GREEN lines scoped with open gaps.
+
+- 21 Nov 2026 05:27 PKT HIS WORD: "E199/E200 wiring shuru, repo ke top pe likho, advance technology sirf". QC8c c1..c6 written at the blueprint top.
+
+- 21 Nov 2026 05:28 PKT HIS WORD: "shuru ho jao, repo main top pe likho, advance technology" = START the wiring of E199 + E200 (Rust signed door + settings 23rd key + keys_store.ts), plus compaction-safety order again. NOTE: the last paragraph of his paste ("Rust ka door ... likh diya hai") is pasted text, NOT done yet at 05:28.
+
+- 21 Nov 2026 05:31 PKT HIS WORD: "rule 52 kahan apply hoga aur frontend advance technology kaha apply hogi jahan hogi kero apply". Answered in CURRENT.md QC8c block: Rule 52 = api.ts signed kernel-verified calls (no raw fetch) for keys_sync.ts; advance tech map written.

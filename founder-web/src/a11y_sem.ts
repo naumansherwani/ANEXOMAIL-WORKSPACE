@@ -3,7 +3,9 @@
 // Technology: TypeScript + MutationObserver (one observer, re-applied when React re-renders).
 import { announce } from "./keys_list";
 import { readSingle } from "./keys_store";
+import { logKey } from "./keys_sync";
 
+const WHAT: Record<string, "archive" | "trash" | "star" | "unread"> = { e: "archive", "#": "trash", s: "star", u: "unread" };
 const SAID: Record<string, string> = { e: "Archived", "#": "Moved to Trash", s: "Star changed", u: "Marked unread" };
 const marks = (el: Element | null) => el?.querySelectorAll(".mbx-rm svg").length ?? 0;
 /** QC8b b4: one spoken sentence after e # s u on the open mail (the keys act silently today). Never says mail content.
@@ -15,6 +17,7 @@ function onActionKey(e: KeyboardEvent): void {
   if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
   const row = document.querySelector(".mbx .mbx-r.on");
   if (document.querySelector(".mc-wrap, dialog[open]") || !readSingle() || !row) return;
+  logKey(WHAT[e.key], "key", 1);   // E200: one row, no mail content
   if (e.key !== "s") { announce(say); return; }
   // Star toggles: say which way it went. The server answers in its own time (seen live: more than 900 ms), so wait for the row's marks to CHANGE (up to 5 s), then speak.
   const li = row.closest("li"), before = marks(li); let done = false;

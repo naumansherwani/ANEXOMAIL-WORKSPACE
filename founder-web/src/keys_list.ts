@@ -1,6 +1,7 @@
 // QC8a a5 (21 Nov 2026, his order 03:55 "advance technology pe wire kero"): the DOM side of the list keys, NO change to MailBox. It only clicks the row buttons the mailbox already renders
 // and re-sends the existing action keys, so select() / act() stay the single owners of what happens to a mail.
 import { typeAhead } from "./mail_keymap";
+import { logKey } from "./keys_sync";
 
 const rows = () => [...document.querySelectorAll<HTMLButtonElement>(".mbx-rows .mbx-r")];
 const nameOf = (b: HTMLElement) => (b.querySelector(".mbx-rb b")?.textContent ?? b.textContent ?? "").trim();
@@ -63,5 +64,6 @@ export async function batch(key: string, send: (k: string) => void) {
       send(key); done++; await wait(450);
     }
     announce(done === 1 ? "Done for 1 mail" : `Done for ${done} mails`);
+    if (done >= 2) logKey(({ e: "archive", "#": "trash", s: "star", u: "unread" } as const)[key as "e" | "#" | "s" | "u"], "batch", Math.min(done, 50));   // E200: one batch row
   } finally { busy = false; clearMarks(); }
 }

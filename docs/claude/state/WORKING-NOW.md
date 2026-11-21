@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 05:24 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 21 Nov 04:56 PKT b2 LIVE on his server (his install paste OK). Doing: my Chrome DOM look for b2, then b3 plan+code, then SQL E199 sync + E200 audit log (BOTH, his word)
-NEXT STEP: b2 live Chrome look -> b3 plan doc + mount -> E199+E200 SQL with CHECK
-HIS LAST WORD: his 04:55: DONO SQL kero, b3 shuru, plan repo mein, search points likho, phir advance codes
+# WORKING NOW (manual checkpoint, 21 Nov 2026 05:28 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 21 Nov 05:29 PKT QC8 wiring START: E199+E200 on his DB, now Rust signed doors (settings 23rd key + mail/keys/log,list,stats,verify) then keys_store.ts reads/writes mail.single_keys and reports key actions; b2-b4 GREEN laptop, b5 written, b6 live look after his install
+NEXT STEP: 1 read settings.rs REGISTRY + mail release door pattern; 2 write Rust; 3 cargo test; 4 keys_store.ts; 5 contract in CURRENT.md; 6 his install; 7 my Chrome
+HIS LAST WORD: his 05:28: shuru ho jao, wiring, repo top pe likho, advance technology
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,29 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- cd3f5453 21 Nov 05:24 ledger line e73d0663
 - e73d0663 21 Nov 05:24 QC8b b5 contrast css, b4 star wait fix, b2-b4 green scoped
 - 84965278 21 Nov 05:23 ledger line df7921bd
 - df7921bd 21 Nov 05:23 QC8b b5 contrast css, b4 star wait fix, b2-b4 green scoped
 - e7440f56 21 Nov 05:16 ledger line 97ade033
-- 97ade033 21 Nov 05:16 QC8b b4 announcements + plan
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/BLUEPRINT-ABC-01NOV.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/founder-commands.md
+ M server/founder/src/main.rs
+ M server/founder/src/settings.rs
+?? server/founder/src/fmail_keys.rs
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ docs/claude/BLUEPRINT-ABC-01NOV.md   |  1 +
+ docs/claude/state/WORKING-NOW.md     | 28 ++++++++++------------------
+ docs/cursor-work/founder-commands.md |  4 ++++
+ server/founder/src/main.rs           |  4 ++++
+ server/founder/src/settings.rs       |  7 ++++---
+ 5 files changed, 23 insertions(+), 21 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +51,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (3eda1c15fd532c7f4891f4db8e914c1eb85a5b74)
+WIP snapshot: refs/wip/last (e50bb728a1e039702f5a56760b9f84741933248c)

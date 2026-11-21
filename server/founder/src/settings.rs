@@ -3,7 +3,7 @@
 use serde_json::Value;
 
 /// (key, kind, default as JSON text) — what the SPA is told, so the UI never invents a default.
-pub const REGISTRY: [(&str, &str, &str); 22] = [
+pub const REGISTRY: [(&str, &str, &str); 23] = [
     ("personal.display_name", "text", "null"),
     ("personal.avatar", "image", "null"),
     ("personal.home", "place", "null"),
@@ -26,6 +26,7 @@ pub const REGISTRY: [(&str, &str, &str); 22] = [
     ("appearance.reduce_motion", "bool", "false"),
     ("appearance.ambient", "recipe", "{\"palette\":60,\"pattern\":1,\"speed\":9,\"intensity\":6,\"blend\":0,\"seed\":0}"),
     ("appearance.ambient_favs", "recipes", "[]"),
+    ("mail.single_keys", "bool", "true"), // E199 (QC8c c2): the one-letter mail keys switch, synced across devices
 ];
 
 /// A photo is a small data: URL (jpeg/png/webp, base64, <= 180_000 chars) or a short https link. Same limits as the user app, so both stay compatible.
@@ -62,7 +63,7 @@ pub fn valid(key: &str, v: &Value) -> bool {
         "personal.avatar" => v.as_str().map(valid_avatar).unwrap_or(false),
         "personal.home" => valid_place(v), // the real zone list check is in SQL (pg_timezone_names)
         "appearance.graphics" | "appearance.sidebar_slim" | "appearance.celebration" | "appearance.focus_ring" | "appearance.reduce_motion"
-        | "personal.send_check" | "workspace.require_passkey" | "workspace.flag_external" | "notifications.quiet_hours" | "notifications.only_vips" | "privacy.block_trackers" => v.is_boolean(),
+        | "personal.send_check" | "workspace.require_passkey" | "workspace.flag_external" | "notifications.quiet_hours" | "notifications.only_vips" | "privacy.block_trackers" | "mail.single_keys" => v.is_boolean(),
         // S1c: exact JSON integers from a closed list (never a string, never 30.5)
         "personal.undo_send" => v.as_i64().map(|n| v.is_i64() && matches!(n, 0 | 5 | 10 | 20 | 30 | 60)).unwrap_or(false),
         "workspace.retention_days" => v.as_i64().map(|n| v.is_i64() && matches!(n, 0 | 30 | 90 | 180 | 365 | 730 | 1825)).unwrap_or(false),
@@ -84,7 +85,7 @@ pub fn registry_json() -> Value {
 mod tests_s1b {
     use super::*;
     use serde_json::json;
-    #[test] fn registry_has_the_twenty_two_keys_of_e115() { assert_eq!(REGISTRY.len(), 22); }
+    #[test] fn registry_has_the_twenty_three_keys_of_e115_and_e199() { assert_eq!(REGISTRY.len(), 23); assert!(known("mail.single_keys")); assert!(valid("mail.single_keys", &json!(false))); assert!(!valid("mail.single_keys", &json!("off"))); }
     #[test] fn appearance_values() {
         for (k, good, bad) in [("appearance.text_scale", vec![json!(90), json!(100), json!(115), json!(130), json!(150)], vec![json!(120), json!("115"), json!(115.5), json!(true)]),
                                ("appearance.animations", vec![json!("full"), json!("reduced"), json!("none")], vec![json!("off"), json!(true)]),

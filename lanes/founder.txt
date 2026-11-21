@@ -175,7 +175,7 @@ founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-CSQAYQjG.js
+founder-web/dist/assets/index-DtRzOb-7.js
 founder-web/dist/assets/index-taNtCYNU.css
 founder-web/dist/assets/kernel.worker-DY4WQ2it.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
@@ -350,6 +350,9 @@ founder-web/src/keylayer.css
 founder-web/src/keys_list.ts
 founder-web/src/keys_store.test.ts
 founder-web/src/keys_store.ts
+founder-web/src/keys_sync.test.ts
+founder-web/src/keys_sync.ts
+founder-web/src/keys_sync_pure.ts
 founder-web/src/laneflow_pure.test.ts
 founder-web/src/laneflow_pure.ts
 founder-web/src/lease.ts
@@ -499,6 +502,7 @@ server/founder/src/fmail_ep.rs
 server/founder/src/fmail_followup.rs
 server/founder/src/fmail_in.rs
 server/founder/src/fmail_kem.rs
+server/founder/src/fmail_keys.rs
 server/founder/src/fmail_live.rs
 server/founder/src/fmail_mime.rs
 server/founder/src/fmail_out.rs
