@@ -2292,3 +2292,7 @@ Own crate server/desk, own binary anexomail-desk, loopback 127.0.0.1:4400, own u
 - 21 Nov 2026 08:41 PKT: R3a1 cinematic login DESIGN DEMO published (Design canvas, laptop 1440 + phone 390); no React code yet, waits his pick (WIRED: NO)
 
 - 21 Nov 2026 08:41 PKT: R3a1 cinematic login DESIGN DEMO published (Design canvas, laptop 1440 + phone 390); no React code yet, waits his pick (WIRED: NO)
+
+- 21 Nov 2026 08:55 PKT: R3a1 login CODE written: DeskScene (Three.js lazy parallax), DeskTelemetry (real values only), DeskSignIn (approved design, ORIGINAL BrandMark + HoverA A), seen in sandbox at 390/820/1280 no h-scroll no errors; gate R3a1 rows now CODE; not installed on his server (WIRED: NO)
+
+- 21 Nov 2026 08:55 PKT: R3a1 login CODE written: DeskScene (Three.js lazy parallax), DeskTelemetry (real values only), DeskSignIn (approved design, ORIGINAL BrandMark + HoverA A), seen in sandbox at 390/820/1280 no h-scroll no errors; gate R3a1 rows now CODE; not installed on his server (WIRED: NO)

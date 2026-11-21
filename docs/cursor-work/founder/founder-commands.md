@@ -4857,3 +4857,9 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 08:41 PKT: R3a1 cinematic login DESIGN DEMO published (Design canvas, laptop 1440 + phone 390); no React code yet, waits his pick (WIRED: NO)
 
 - 21 Nov 2026 08:41 PKT: R3a1 cinematic login DESIGN DEMO published (Design canvas, laptop 1440 + phone 390); no React code yet, waits his pick (WIRED: NO)
+
+- 21 Nov 2026 08:31 PKT HIS WORD: "yeh UI acha hai, colors aur gradient touch do (read: leave them as approved), aur yeh original login aur woh jo signin pe original A aata hai, jaise founder aur awam, intact rakho; original logo, login A intact; mobile tablet same rule" => colours/gradient kept as designed; the ORIGINAL BrandMark logo and the sign-in HoverA "A" are used unchanged (imported from founder-web/src/signin/, the shared sign-in lane); ONE build for 390 / 820 / 1200+.
+
+- 21 Nov 2026 08:55 PKT: R3a1 login CODE written: DeskScene (Three.js lazy parallax), DeskTelemetry (real values only), DeskSignIn (approved design, ORIGINAL BrandMark + HoverA A), seen in sandbox at 390/820/1280 no h-scroll no errors; gate R3a1 rows now CODE; not installed on his server (WIRED: NO)
+
+- 21 Nov 2026 08:55 PKT: R3a1 login CODE written: DeskScene (Three.js lazy parallax), DeskTelemetry (real values only), DeskSignIn (approved design, ORIGINAL BrandMark + HoverA A), seen in sandbox at 390/820/1280 no h-scroll no errors; gate R3a1 rows now CODE; not installed on his server (WIRED: NO)

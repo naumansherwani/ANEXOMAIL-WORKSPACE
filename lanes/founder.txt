@@ -174,8 +174,10 @@ founder-web/dist-desk/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist-desk/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist-desk/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist-desk/assets/Inter-SemiBold-CF8ghLaY.woff2
-founder-web/dist-desk/assets/desk-B_hAFchG.js
-founder-web/dist-desk/assets/desk-BdoPMl-B.css
+founder-web/dist-desk/assets/desk-DA0AAQLC.js
+founder-web/dist-desk/assets/desk-Tle4EYAx.css
+founder-web/dist-desk/assets/kernel.worker-DY4WQ2it.js
+founder-web/dist-desk/assets/three.module-C0S06CcT.js
 founder-web/dist-desk/boot.css
 founder-web/dist-desk/desk.html
 founder-web/dist-desk/early.js
@@ -198,8 +200,8 @@ founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-C4dr_rRA.css
-founder-web/dist/assets/index-CjYcWMKb.js
+founder-web/dist/assets/index-BQhXNDj4.js
+founder-web/dist/assets/index-DM4OKeHt.css
 founder-web/dist/assets/kernel.worker-DY4WQ2it.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
@@ -337,7 +339,9 @@ founder-web/src/delivery_pure.test.ts
 founder-web/src/delivery_pure.ts
 founder-web/src/desk/00-FOUNDER-TECH-RULE.md
 founder-web/src/desk/DeskPages.tsx
+founder-web/src/desk/DeskScene.tsx
 founder-web/src/desk/DeskSignIn.tsx
+founder-web/src/desk/DeskTelemetry.tsx
 founder-web/src/desk/desk_pure.test.ts
 founder-web/src/desk/desk_pure.ts
 founder-web/src/desk/main.tsx

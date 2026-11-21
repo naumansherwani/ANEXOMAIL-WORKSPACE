@@ -1,16 +1,151 @@
 {
  "_about": "ADMIN DESK ADVANCED-TECHNOLOGY GATE (his 21 Nov 2026 08:19 word: the Desk repo stands on the advanced-technology gate; if technology is missing Claude SHOUTS and there is NO COMMIT). One row per feature: the code file that carries it, the technology it must use (markers that must be in that file), the phase. status code = the markers MUST be in the file on every commit (else FAIL). status planned = not written yet; becomes a FAIL on fail_after (a date inside the 3-day plan). Change planned to code only when the markers are really in the file.",
  "features": [
-  {"id":"R3a0-process","phase":"R3a0","feature":"Own Desk process on loopback, async","file":"admin-desk/server/src/main.rs","tech":"Rust, Tokio async runtime, axum 0.8","must":["#[tokio::main]","axum::serve","127.0.0.1:4400"],"status":"code"},
-  {"id":"R3a0-host-gate","phase":"R3a0","feature":"Wrong Host = 404 + journal line","file":"admin-desk/server/src/main.rs","tech":"axum middleware","must":["host_gate","NOT_FOUND"],"status":"code"},
-  {"id":"R3a0-headers","phase":"R3a0","feature":"CSP self-only + Trusted Types, COOP/CORP, HSTS, no framing","file":"admin-desk/server/src/main.rs","tech":"CSP + Trusted Types, COOP, CORP, HSTS","must":["require-trusted-types-for","cross-origin-opener-policy","cross-origin-resource-policy","strict-transport-security"],"status":"code"},
-  {"id":"R3a0-own-bundle","phase":"R3a0","feature":"Own Vite 8 bundle dist-desk","file":"founder-web/vite.desk.config.ts","tech":"Vite 8 separate entry","must":["dist-desk"],"status":"code"},
-  {"id":"R3a0-stage2","phase":"R3a0","feature":"HTTP/3 + TLS 1.3 AES-256-GCM X25519MLKEM768 for admindesk (SNI front + UDP 443)","file":"admin-desk/server/src/main.rs","tech":"HTTP/3, QUIC, AES-256-GCM, X25519MLKEM768","must":["X25519MLKEM768","h3"],"status":"planned","fail_after":"2026-11-23","deadline":"23 Nov"},
-  {"id":"R3a1-scene","phase":"R3a1","feature":"Cinematic office login scene with parallax","file":"founder-web/src/desk/DeskScene.tsx","tech":"React 19, Three.js (lazy), pointer + device-tilt parallax","must":["three","pointermove"],"status":"planned","fail_after":"2026-11-22","deadline":"22 Nov"},
-  {"id":"R3a1-telemetry","phase":"R3a1","feature":"Real perimeter telemetry (handshake, kernel hash/size, Merkle chain)","file":"founder-web/src/desk/DeskTelemetry.tsx","tech":"Rust WASM kernel (Rule 52) values, no decoration","must":["kernel"],"status":"planned","fail_after":"2026-11-22","deadline":"22 Nov"},
-  {"id":"R3a1-passkey","phase":"R3a1","feature":"Optional passkey button, honest hardware check","file":"founder-web/src/desk/DeskSignIn.tsx","tech":"WebAuthn passkey (optional), kernel RPC","must":["navigator.credentials"],"status":"planned","fail_after":"2026-11-22","deadline":"22 Nov"},
-  {"id":"R3a2-argon2","phase":"R3a2","feature":"Password door with ARGON2ID, constant-time","file":"admin-desk/server/src/auth.rs","tech":"ARGON2ID, constant-time compare, token audience desk","must":["argon2id","constant"],"status":"planned","fail_after":"2026-11-22","deadline":"22 Nov"},
-  {"id":"R3a2-sql","phase":"R3a2","feature":"Desk schema: owner, sessions, hash-chained ledger, RLS, desk_app role","file":"admin-desk/sql/AD1.sql","tech":"PostgreSQL RLS, append-only hash chain, desk_app role","must":["row level security","desk_app","sha256"],"status":"planned","fail_after":"2026-11-22","deadline":"22 Nov"},
-  {"id":"R3a2-dbsc","phase":"R3a2","feature":"Device-bound session (DBSC)","file":"admin-desk/server/src/auth.rs","tech":"DBSC","must":["dbsc"],"status":"planned","fail_after":"2026-11-23","deadline":"23 Nov"}
+  {
+   "id": "R3a0-process",
+   "phase": "R3a0",
+   "feature": "Own Desk process on loopback, async",
+   "file": "admin-desk/server/src/main.rs",
+   "tech": "Rust, Tokio async runtime, axum 0.8",
+   "must": [
+    "#[tokio::main]",
+    "axum::serve",
+    "127.0.0.1:4400"
+   ],
+   "status": "code"
+  },
+  {
+   "id": "R3a0-host-gate",
+   "phase": "R3a0",
+   "feature": "Wrong Host = 404 + journal line",
+   "file": "admin-desk/server/src/main.rs",
+   "tech": "axum middleware",
+   "must": [
+    "host_gate",
+    "NOT_FOUND"
+   ],
+   "status": "code"
+  },
+  {
+   "id": "R3a0-headers",
+   "phase": "R3a0",
+   "feature": "CSP self-only + Trusted Types, COOP/CORP, HSTS, no framing",
+   "file": "admin-desk/server/src/main.rs",
+   "tech": "CSP + Trusted Types, COOP, CORP, HSTS",
+   "must": [
+    "require-trusted-types-for",
+    "cross-origin-opener-policy",
+    "cross-origin-resource-policy",
+    "strict-transport-security"
+   ],
+   "status": "code"
+  },
+  {
+   "id": "R3a0-own-bundle",
+   "phase": "R3a0",
+   "feature": "Own Vite 8 bundle dist-desk",
+   "file": "founder-web/vite.desk.config.ts",
+   "tech": "Vite 8 separate entry",
+   "must": [
+    "dist-desk"
+   ],
+   "status": "code"
+  },
+  {
+   "id": "R3a0-stage2",
+   "phase": "R3a0",
+   "feature": "HTTP/3 + TLS 1.3 AES-256-GCM X25519MLKEM768 for admindesk (SNI front + UDP 443)",
+   "file": "admin-desk/server/src/main.rs",
+   "tech": "HTTP/3, QUIC, AES-256-GCM, X25519MLKEM768",
+   "must": [
+    "X25519MLKEM768",
+    "h3"
+   ],
+   "status": "planned",
+   "fail_after": "2026-11-23",
+   "deadline": "23 Nov"
+  },
+  {
+   "id": "R3a1-scene",
+   "phase": "R3a1",
+   "feature": "Cinematic office login scene with parallax",
+   "file": "founder-web/src/desk/DeskScene.tsx",
+   "tech": "React 19, Three.js (lazy), pointer + device-tilt parallax",
+   "must": [
+    "three",
+    "pointermove"
+   ],
+   "status": "code",
+   "fail_after": "2026-11-22",
+   "deadline": "22 Nov"
+  },
+  {
+   "id": "R3a1-telemetry",
+   "phase": "R3a1",
+   "feature": "Real perimeter telemetry (handshake, kernel hash/size, Merkle chain)",
+   "file": "founder-web/src/desk/DeskTelemetry.tsx",
+   "tech": "Rust WASM kernel (Rule 52) values, no decoration",
+   "must": [
+    "kernel"
+   ],
+   "status": "code",
+   "fail_after": "2026-11-22",
+   "deadline": "22 Nov"
+  },
+  {
+   "id": "R3a1-passkey",
+   "phase": "R3a1",
+   "feature": "Optional passkey button, honest hardware check",
+   "file": "founder-web/src/desk/DeskSignIn.tsx",
+   "tech": "WebAuthn passkey (optional), kernel RPC",
+   "must": [
+    "navigator.credentials"
+   ],
+   "status": "code",
+   "fail_after": "2026-11-22",
+   "deadline": "22 Nov"
+  },
+  {
+   "id": "R3a2-argon2",
+   "phase": "R3a2",
+   "feature": "Password door with ARGON2ID, constant-time",
+   "file": "admin-desk/server/src/auth.rs",
+   "tech": "ARGON2ID, constant-time compare, token audience desk",
+   "must": [
+    "argon2id",
+    "constant"
+   ],
+   "status": "planned",
+   "fail_after": "2026-11-22",
+   "deadline": "22 Nov"
+  },
+  {
+   "id": "R3a2-sql",
+   "phase": "R3a2",
+   "feature": "Desk schema: owner, sessions, hash-chained ledger, RLS, desk_app role",
+   "file": "admin-desk/sql/AD1.sql",
+   "tech": "PostgreSQL RLS, append-only hash chain, desk_app role",
+   "must": [
+    "row level security",
+    "desk_app",
+    "sha256"
+   ],
+   "status": "planned",
+   "fail_after": "2026-11-22",
+   "deadline": "22 Nov"
+  },
+  {
+   "id": "R3a2-dbsc",
+   "phase": "R3a2",
+   "feature": "Device-bound session (DBSC)",
+   "file": "admin-desk/server/src/auth.rs",
+   "tech": "DBSC",
+   "must": [
+    "dbsc"
+   ],
+   "status": "planned",
+   "fail_after": "2026-11-23",
+   "deadline": "23 Nov"
+  }
  ]
 }

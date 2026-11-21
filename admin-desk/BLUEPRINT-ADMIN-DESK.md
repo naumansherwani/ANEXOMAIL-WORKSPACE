@@ -16,12 +16,12 @@ RULE (his word): in every phase, next to each FEATURE the CODE file and the ADVA
 ### R3a1 CINEMATIC LOGIN
 | Feature | Code | Technology | Haan |
 |---|---|---|---|
-| Night glass-walled office scene, gradient #060B19 / #0F3460 / amber rim | founder-web/src/desk/DeskScene.tsx (planned); DESIGN DEMO shown 08:40 (artifact HjgAQvTc1EqnpM3pa9xQfi, CSS only) | REACT 19, THREE.JS (LAZY) | NO (demo only, awaits his pick) |
-| Mouse + phone-tilt parallax | DeskScene.tsx (planned) | POINTER EVENTS, DEVICEORIENTATION | NO |
-| Smoked liquid-glass card, 1px luminous edge, Desk identity only | founder-web/src/desk/DeskSignIn.tsx | TAILWIND 4, CSS BACKDROP-FILTER | partly (skeleton) |
-| Optional passkey button + honest hardware text | DeskSignIn.tsx (planned) | WEBAUTHN, KERNEL RPC (RULE 52) | NO |
+| Night glass-walled office scene, gradient #060B19 / #0F3460 / amber rim | founder-web/src/desk/DeskScene.tsx | REACT 19, THREE.JS (LAZY DYNAMIC IMPORT, city-light points) | sandbox YES at 390/820/1280 (his design approved 08:31); his server NO until install |
+| Mouse + phone-tilt parallax (wall, points and card move at different speeds; off with reduced motion) | DeskScene.tsx | POINTER EVENTS, DEVICEORIENTATION, requestAnimationFrame | code YES, live motion NOT yet seen by his eyes |
+| Smoked liquid-glass card, 1px luminous edge, Desk identity only, ORIGINAL BrandMark logo + HoverA "A" kept | founder-web/src/desk/DeskSignIn.tsx | CSS BACKDROP-FILTER, original signin/BrandMark + BrandLoader | sandbox YES 390/820/1280 |
+| Optional passkey button + honest hardware text (real PublicKeyCredential check) | DeskSignIn.tsx | WEBAUTHN detection; the passkey ceremony itself arrives with the Desk door R3a2 | detection YES; ceremony NO |
 | Orb pulse, shockwave, zoom into 3-pane workspace | DeskScene.tsx (planned) | THREE.JS, GSAP | NO |
-| Real telemetry (handshake, kernel hash, Merkle) | founder-web/src/desk/DeskTelemetry.tsx (planned) | RUST WASM KERNEL VALUES | NO |
+| Real telemetry: protocol (browser-reported), kernel state; Merkle only when the door reports a head; NO cipher line until stage 2 | founder-web/src/desk/DeskTelemetry.tsx | RUST WASM KERNEL (kernel.ts trust), PerformanceNavigationTiming | YES (values real; Merkle + cipher hidden on purpose) |
 ### R3a2 LOGIN DOOR
 | Feature | Code | Technology | Haan |
 |---|---|---|---|

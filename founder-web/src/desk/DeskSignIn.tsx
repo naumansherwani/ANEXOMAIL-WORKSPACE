@@ -1,19 +1,27 @@
-import { useState, type FormEvent } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { useEffect, useState, type FormEvent } from "react";
 import { canSubmit, cleanEmail } from "../signin_pure";
 import { BrandMark } from "../signin/BrandMark";
 import { HoverA } from "../signin/BrandLoader";
-import { AuthCinema } from "../signin/AuthCinema";
-import { Button } from "../signin/ui/button";
-import { Input } from "../signin/ui/input";
-import { Label } from "../signin/ui/label";
 import { postJson, realDeps } from "../signin_passkey";
 import { DESK_LOGIN_PATH, DESK_SESSION_KEY, deskLoginMessage } from "./desk_pure";
+import { DeskScene } from "./DeskScene";
+import { DeskTelemetry } from "./DeskTelemetry";
 
-/** Admin Desk sign-in (/adminlogin). LOOK = the founder sign-in (same BrandMark, AuthCinema, shadcn Button/Input/Label, same classes); only the words differ.
- *  Password signs in; a passkey is OPTIONAL and arrives later (R6). Talks only to the Desk door /desk/v1/auth/login (Rust, R3a2). Before the session exists it is the one plain POST helper the founder passkey sign-in also uses (postJson); no new raw fetch. */
+/** Admin Desk sign-in (/adminlogin), R3a1: the cinematic office login he approved on 21 Nov 2026 08:31 (laptop 1440 + phone 390 demo).
+ *  The ORIGINAL ANEXOMAIL mark (BrandMark) and the sign-in "A" (HoverA) are used as they are, same as the founder and awam sign-in. One build for phone, tablet and laptop: the card is fluid.
+ *  Identity is the Desk only (no founder entry). A passkey is OPTIONAL: the primary button reports the browser honestly; the password path (collapsed) signs in through the Desk door /desk/v1/auth/login (Rust, R3a2). No new raw fetch: postJson from signin_passkey. */
+const card: React.CSSProperties = { width: "100%", maxWidth: 456, boxSizing: "border-box", padding: "44px clamp(20px,5vw,40px) 28px", borderRadius: 28, background: "linear-gradient(160deg,rgba(18,28,52,.62),rgba(6,11,25,.78))", backdropFilter: "blur(26px) saturate(140%)", border: "1px solid rgba(160,200,255,.34)", boxShadow: "0 0 0 1px rgba(255,255,255,.04) inset,0 1px 0 rgba(255,255,255,.18) inset,0 40px 90px rgba(0,0,0,.6),0 0 60px rgba(15,52,96,.55)", display: "flex", flexDirection: "column", alignItems: "center", gap: 16 };
+const field: React.CSSProperties = { minHeight: 48, boxSizing: "border-box", padding: "0 14px", borderRadius: 12, border: "1px solid rgba(160,200,255,.3)", background: "rgba(4,9,22,.7)", color: "#E8EEF9", fontSize: 16, width: "100%" };
+
 export function DeskSignIn() {
-  const [email, setEmail] = useState(""), [password, setPassword] = useState(""), [busy, setBusy] = useState(false), [msg, setMsg] = useState(""), [show, setShow] = useState(false);
+  const [email, setEmail] = useState(""), [password, setPassword] = useState(""), [busy, setBusy] = useState(false), [msg, setMsg] = useState(""), [hw, setHw] = useState<"checking" | "ready" | "none">("checking");
+  useEffect(() => {
+    // Honest hardware check: only what this browser really reports.
+    const ok = typeof window !== "undefined" && "PublicKeyCredential" in window && typeof navigator.credentials?.get === "function";
+    if (!ok) { setHw("none"); return; }
+    const pk = (window as unknown as { PublicKeyCredential: { isUserVerifyingPlatformAuthenticatorAvailable?: () => Promise<boolean> } }).PublicKeyCredential;
+    pk.isUserVerifyingPlatformAuthenticatorAvailable?.().then((v) => setHw(v ? "ready" : "none"), () => setHw("none"));
+  }, []);
   async function submit(e: FormEvent) {
     e.preventDefault();
     const addr = email.includes("@") ? email : email.trim() ? email.trim() + "@anexomail.com" : "";
@@ -26,42 +34,42 @@ export function DeskSignIn() {
     } catch { setMsg(deskLoginMessage(0)); }
     setBusy(false); setPassword("");
   }
+  const hwLine = hw === "checking" ? "Checking this browser for passkey support" : hw === "ready" ? "A passkey is available on this device" : "Hardware key not detected on this browser";
   return (
-    <main className="fa flex min-h-screen overflow-hidden bg-background">
-      <AuthCinema className="hidden lg:flex" />
-      <div className="flex flex-1 items-center justify-center px-6 py-12 lg:px-14">
-        <div className="ax-in w-full max-w-[28rem]">
-          <div className="mb-6 lg:hidden"><BrandMark home={false} /></div>
-          <div className="mb-ax-4 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Admin Desk</p>
-            <h1 className="mt-1 text-3xl font-semibold tracking-tight text-foreground">Welcome to the Desk</h1>
+    <main className="fa">
+      <DeskScene>
+        <div style={{ position: "absolute", top: 22, left: 24, zIndex: 3 }}><BrandMark home={false} /></div>
+        <DeskTelemetry />
+        <section style={card} aria-label="Admin Desk sign-in">
+                    <div aria-hidden="true" style={{ position: "relative", width: 72, height: 72, marginTop: -80 }}>
+            <div style={{ position: "absolute", inset: -12, borderRadius: "50%", border: "1px solid rgba(95,168,255,.22)" }} />
+            <div style={{ position: "absolute", inset: -24, borderRadius: "50%", border: "1px solid rgba(95,168,255,.10)" }} />
+            <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 35% 30%,#BFE0FF 0%,#5FA8FF 28%,#1B4F9C 62%,#0A1A3E 100%)", boxShadow: "0 0 40px rgba(95,168,255,.7),0 0 90px rgba(15,52,96,.9)" }} />
           </div>
-          <div className="rounded-2xl border border-border bg-card p-ax-5 shadow-2xl">
-            <div className="text-center"><h2 className="ax-heading text-foreground">Sign in</h2><p className="ax-caption mt-1">Company mail, one place.</p></div>
-            <form onSubmit={submit} noValidate name="desklogin" method="post" autoComplete="on" className="mt-ax-4 space-y-ax-3">
-              <div className="space-y-1.5">
-                <Label htmlFor="email" className="text-[13px] font-semibold text-foreground">Email</Label>
-                <div className="flex h-10 overflow-hidden rounded-md border border-border bg-[#F9FAFB] focus-within:ring-1 focus-within:ring-ring">
-                  <input id="email" type="text" inputMode="email" autoCapitalize="none" autoCorrect="off" spellCheck={false} autoComplete="username" placeholder="yourname" aria-label="Email" value={email} onChange={(e) => setEmail(e.target.value)}
-                    className="w-0 min-w-0 flex-1 bg-transparent px-3 text-[15px] font-semibold text-[#0B1220] outline-none placeholder:font-normal placeholder:text-[#6B7280]" />
-                  {!email.includes("@") && <span aria-hidden className="flex shrink-0 items-center border-l border-[#E5E7EB] bg-[#E5E7EB] px-3 text-[15px] font-semibold text-[#0B1220] select-none">@anexomail.com</span>}
-                </div>
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="password" className="ax-caption text-foreground">Password</Label>
-                <div className="relative">
-                  <Input id="password" name="password" type={show ? "text" : "password"} value={password} required autoComplete="current-password" className="pr-10 bg-[#F9FAFB] text-[15px] font-semibold text-[#0B1220]" onChange={(e) => setPassword(e.target.value)} />
-                  <button type="button" className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-muted-foreground hover:text-foreground focus-visible:outline-none" aria-label={show ? "Hide password" : "Show password"} onClick={() => setShow(!show)}>
-                    {show ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-                  </button>
-                </div>
-              </div>
-              {msg && <p role="alert" className="ax-caption text-destructive">{msg}</p>}
-              <Button type="submit" className="ax-press ax-a-hover w-full" disabled={busy}><HoverA busy={busy} />Sign in</Button>
+          <p style={{ margin: 0, fontSize: 12, letterSpacing: ".28em", color: "#8FB4FF" }}>ADMIN DESK</p>
+          <h1 style={{ margin: 0, fontWeight: 500, fontSize: "clamp(24px,6vw,30px)", lineHeight: 1.15, textAlign: "center", textWrap: "balance" as const }}>Sign in to the company desk</h1>
+          <p style={{ margin: 0, fontSize: 14, lineHeight: 1.5, color: "#A9BAD6", textAlign: "center", maxWidth: 340 }}>One sealed door. Your passkey opens it, nothing is typed.</p>
+          <div style={{ width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", border: "1px solid rgba(160,200,255,.2)", borderRadius: 14, background: "rgba(255,255,255,.04)" }}>
+            <span style={{ fontSize: 12, letterSpacing: ".08em", color: "#9FB2D4" }}>IDENTITY</span><span style={{ fontSize: 14 }}>Admin Desk</span>
+          </div>
+          <button type="button" className="ax-a-hover" disabled={hw !== "ready"} onClick={() => setMsg("Passkey sign-in is switched on with the Desk door (R3a2). Until then use the password below.")}
+            style={{ width: "100%", minHeight: 52, border: 0, borderRadius: 14, cursor: hw === "ready" ? "pointer" : "not-allowed", fontSize: 16, fontWeight: 600, color: "#04122B", background: "linear-gradient(180deg,#9CCBFF,#5FA8FF)", boxShadow: "0 8px 28px rgba(95,168,255,.35),0 1px 0 rgba(255,255,255,.6) inset", opacity: hw === "ready" ? 1 : 0.7, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+            <HoverA />Touch passkey
+          </button>
+          <p role="status" style={{ margin: 0, fontSize: 13, color: hw === "ready" ? "#9FD6B4" : "#F2C58A", textAlign: "center" }}>{hwLine}</p>
+          <details style={{ width: "100%", borderTop: "1px solid rgba(160,200,255,.14)", paddingTop: 12 }} open={!!msg}>
+            <summary style={{ fontSize: 13, color: "#9FB2D4", textAlign: "center", minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>No passkey on this account? Use your password</summary>
+            <form onSubmit={submit} noValidate name="desklogin" method="post" autoComplete="on" style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 8 }}>
+              <label htmlFor="deskemail" style={{ fontSize: 12, letterSpacing: ".06em", color: "#9FB2D4" }}>Email</label>
+              <input id="deskemail" type="text" inputMode="email" autoCapitalize="none" autoCorrect="off" spellCheck={false} autoComplete="username" placeholder="yourname@anexomail.com" value={email} onChange={(e) => setEmail(e.target.value)} style={field} />
+              <label htmlFor="deskpw" style={{ fontSize: 12, letterSpacing: ".06em", color: "#9FB2D4" }}>Password</label>
+              <input id="deskpw" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} style={field} />
+              {msg && <p role="alert" style={{ margin: 0, fontSize: 13, color: "#F2C58A" }}>{msg}</p>}
+              <button type="submit" className="ax-a-hover" disabled={busy} style={{ minHeight: 48, border: "1px solid rgba(160,200,255,.4)", borderRadius: 12, background: "transparent", color: "#E8EEF9", fontSize: 15, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}><HoverA busy={busy} />Sign in</button>
             </form>
-          </div>
-        </div>
-      </div>
+          </details>
+        </section>
+      </DeskScene>
     </main>
   );
 }
