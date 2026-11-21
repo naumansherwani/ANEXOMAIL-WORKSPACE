@@ -1987,3 +1987,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 09:50 PKT: his anger 09:38: Desk page no longer writes HTTP/2 or HTTP/1 (pill: HTTP/3 QUIC only when browser reports h3), gate allowlist empty; desk-h3-enable.sh cert Permission denied fixed with systemd LoadCredential; WIRED: live NO until his re-run + curl --http3
 
 - 21 Nov 2026 09:55 PKT: Desk HTTP/3 LISTENING on his server (udp 4400, his paste 09:47); proof client h3check + desk-h3-check.sh written (6 tests pass); WIRED: listening YES, answering NOT YET PROVEN until his H3CHECK OK
+
+- 21 Nov 2026 09:55 PKT: Desk HTTP/3 LISTENING on his server (udp 4400, his paste 09:47); proof client h3check + desk-h3-check.sh written (6 tests pass); WIRED: listening YES, answering NOT YET PROVEN until his H3CHECK OK
