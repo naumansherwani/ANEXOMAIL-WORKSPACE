@@ -21,3 +21,5 @@
 13. (21 Nov 2026 21:22 PKT) Desk login = his 2nd image minus the ball, Touch passkey below Sign in. NEVER change any other word of this page without his word.
 
 14. (21 Nov 2026 21:25 PKT) Login final: no ball, no Identity, no hardware-key line, Continue with a passkey below Sign in. DB TLS handshake fail on his server: waiting his openssl issuer line, then pin the DB CA (DESK_DB_CA).
+
+15. (21 Nov 2026 21:27 PKT) Login: "No passkey on this account" line removed too.

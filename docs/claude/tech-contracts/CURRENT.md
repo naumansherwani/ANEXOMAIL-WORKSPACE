@@ -2639,3 +2639,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 ### 21 Nov 2026 21:25 PKT Desk login final per his 21:24/21:25: no ball, no Identity box, no hardware-key line, white button "Continue with a passkey" below Sign in. door.rs: optional DESK_DB_CA (database CA PEM) + full TLS error chain in the journal (his server: TLS handshake to the Supabase pooler failed).
 
 - 21 Nov 2026 21:25 PKT Desk login final (no ball/identity/hardware line, Continue with a passkey below); door.rs DESK_DB_CA; WIRED: NO
+
+- 21 Nov 2026 21:27 PKT Desk login: no-passkey line removed; WIRED: NO until his desk-install

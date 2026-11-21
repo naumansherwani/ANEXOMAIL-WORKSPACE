@@ -5213,3 +5213,7 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 21:25 PKT] HIS WORD (21:24): Identity dabba hata de, continue with passkey sirf neeche aayega, is ke ilawa ek bhi extra word nahi. (21:25, in anger): hardware key not wala hata de. + his journal: desk door: database not ready yet: error performing TLS handshake. DONE: Identity removed, Touch passkey -> Continue with a passkey (same look), hardware-key line removed. door.rs: DESK_DB_CA support + full TLS error chain.
 
 - 21 Nov 2026 21:25 PKT Desk login final (no ball/identity/hardware line, Continue with a passkey below); door.rs DESK_DB_CA; WIRED: NO
+
+[21 Nov 2026 21:27 PKT] HIS WORD (21:27): no passkey wali line hata de. DONE: "No passkey on this account? Use your password" removed, form stays.
+
+- 21 Nov 2026 21:27 PKT Desk login: no-passkey line removed; WIRED: NO until his desk-install
