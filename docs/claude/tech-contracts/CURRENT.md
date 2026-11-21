@@ -2273,3 +2273,10 @@ Passkey OPTIONAL (owner first door = his command + ARGON2ID password; passkey en
 - 21 Nov 2026 08:09 PKT: his answers: passkey optional, Desk identity only, telemetry real, TLS line only after stage 2; Phase R3a described (R3a0 host, R3a1 login UI, R3a2 login door); Desk not wired (WIRED: NO)
 
 - 21 Nov 2026 08:09 PKT: same (manifest pass)
+
+## 21 Nov 2026 08:20 PKT PHASE R3a0 CODE WRITTEN: anexomail-desk (Rust, Tokio, axum 0.8)
+Own crate server/desk, own binary anexomail-desk, loopback 127.0.0.1:4400, own user + dir /opt/anexomail-desk, own unit; installer docs/cursor-work/server/desk-install.sh (touches no other service, Caddy or ufw; rollback on failure). In code: Host gate (wrong Host = 404 + journal line), CSP self-only + Trusted Types, COOP/CORP, HSTS, nosniff, no-referrer, DENY framing, no-store; /desk/v1/health; /desk/v1/auth/login answers 404 "not connected" (honest) until R3a2. Static: founder-web/dist-desk (Vite 8 desk entry). Sandbox proof: health 200 with Desk host, 404 with founder host, headers present. NOT in code yet (OPEN, gate D-host-router/D-login-door): stage-2 SNI front + HTTP/3 AES-256 X25519MLKEM768 for this host, ledger line on wrong host, ARGON2ID login, SQL E201, DBSC. Server install = his ONE line after this commit.
+
+- 21 Nov 2026 08:22 PKT: PHASE R3a0 code written: Rust anexomail-desk (Tokio, axum, loopback 4400, host gate, CSP/TrustedTypes/COOP/HSTS headers), desk-install.sh; sandbox proof health 200 / wrong host 404; not installed on his server (WIRED: NO)
+
+- 21 Nov 2026 08:22 PKT: same (manifest pass)

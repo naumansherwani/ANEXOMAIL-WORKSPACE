@@ -1905,3 +1905,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 08:09 PKT: his answers: passkey optional, Desk identity only, telemetry real, TLS line only after stage 2; Phase R3a described (R3a0 host, R3a1 login UI, R3a2 login door); Desk not wired (WIRED: NO)
 
 - 21 Nov 2026 08:09 PKT: same (manifest pass)
+
+- 21 Nov 2026 08:22 PKT: PHASE R3a0 code written: Rust anexomail-desk (Tokio, axum, loopback 4400, host gate, CSP/TrustedTypes/COOP/HSTS headers), desk-install.sh; sandbox proof health 200 / wrong host 404; not installed on his server (WIRED: NO)
+
+- 21 Nov 2026 08:22 PKT: same (manifest pass)

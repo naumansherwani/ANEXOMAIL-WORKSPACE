@@ -43,3 +43,4 @@ __pycache__/
 web-wasm/target
 server/founder-dns/target/
 docs/claude/state/LIVE-5MIN.txt
+server/desk/target/

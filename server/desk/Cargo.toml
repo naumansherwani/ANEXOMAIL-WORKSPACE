@@ -1,0 +1,17 @@
+# ANEXOMAIL ADMIN DESK: its OWN Rust binary `anexomail-desk` (DESK ISOLATION LAW, 21 Nov 2026). Never shares a crate, key, env file or table with the founder binary.
+[package]
+name = "anexomail-desk"
+version = "0.0.1"
+edition = "2024"
+
+[dependencies]
+axum = "0.8"
+tokio = { version = "1", features = ["full"] }
+tower-http = { version = "0.6", features = ["set-header", "fs"] }
+serde_json = "1"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true

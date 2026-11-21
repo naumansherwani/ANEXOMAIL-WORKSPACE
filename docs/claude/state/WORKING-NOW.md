@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 08:08 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Phase R3a (Desk host + cinematic login + login door) described to him; his 4 answers recorded (passkey optional, Desk identity only, real telemetry, TLS line after stage 2)
-NEXT STEP: login design demo boards, his pick, then R3a2 contract + SQL E201 + anexomail-desk crate
-HIS LAST WORD: 08:07 four answers
+# WORKING NOW (manual checkpoint, 21 Nov 2026 08:11 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: R3a0 CODE written: server/desk crate (anexomail-desk, 4400), desk-install.sh, dist-desk; sandbox proof ok; waits his ONE install line
+NEXT STEP: his desk-install paste, then my Chrome look, then AAAA record, then R3a1 login design/code, R3a2 SQL E201
+HIS LAST WORD: 08:10 shuru kero codes likhna
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,35 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## FOUNDER + other processes in the same list (never touch)
 
 ## Last 5 commits
+- ad9da081 21 Nov 08:08 ledger line 258463e4
 - 258463e4 21 Nov 08:08 desk: manifest
 - 8d628cb3 21 Nov 08:08 ledger line b17906c4
 - b17906c4 21 Nov 08:08 desk: his four answers, phase R3a
 - 88c65ba5 21 Nov 08:04 ledger line ec25ca23
-- ec25ca23 21 Nov 08:04 desk: manifest
 
 ## Uncommitted files (half-done work if any)
+M  .gitignore
  M docs/claude/state/WORKING-NOW.md
+M  docs/claude/tech-contracts/CURRENT.md
+A  docs/cursor-work/server/desk-install.sh
+D  founder-web/dist-desk/00-FOUNDER-TECH-RULE.md
+D  founder-web/dist-desk/assets/00-FOUNDER-TECH-RULE.md
+D  founder-web/dist-desk/kernel/00-FOUNDER-TECH-RULE.md
+A  server/desk/Cargo.lock
+A  server/desk/Cargo.toml
+A  server/desk/src/main.rs
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/cursor-work/server/desk-install.sh            |  48 ++
+ founder-web/dist-desk/00-FOUNDER-TECH-RULE.md      |   5 -
+ .../dist-desk/assets/00-FOUNDER-TECH-RULE.md       |   5 -
+ .../dist-desk/kernel/00-FOUNDER-TECH-RULE.md       |   5 -
+ server/desk/Cargo.lock                             | 636 +++++++++++++++++++++
+ server/desk/Cargo.toml                             |  17 +
+ server/desk/src/main.rs                            |  73 +++
+ 10 files changed, 792 insertions(+), 33 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +57,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (027fa3b6849496f1bc385a3df7acec762c174adc)
+WIP snapshot: refs/wip/last (1452335590d362666e485c850d70e50d0be73c1b)
