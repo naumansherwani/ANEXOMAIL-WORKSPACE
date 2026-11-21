@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 01:22 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: R3d stage A code: sign.rs + desk kernel crate, tests green
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 01:25 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Employee plan final ON1..ON12 (his answers); R3d stage B coding
 NEXT STEP: R3d stage B: wasm build, deskCall, ping route, live proof
-HIS LAST WORD: his 01:14: codes
+HIS LAST WORD: his 01:24 answers + 4 zero-trust locks
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,65 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- cad6b1db 22 Nov 01:22 ledger line 9e3cf7b7
 - 9e3cf7b7 22 Nov 01:22 Desk R3d stage A: signing + own kernel crate
 - f9ac1bbb 22 Nov 01:14 ledger line be1cefbb
 - be1cefbb 22 Nov 01:14 Desk: employee accounts plan
 - 1feda4c5 22 Nov 01:13 ledger line b3d0dcfc
-- b3d0dcfc 22 Nov 01:13 Desk: world-advance points W1-W10
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/EMPLOYEE-ACCOUNTS-PLAN-22NOV.md
+ M admin-desk/state/COMPACT-SAVE.md
+ M admin-desk/state/PHASES.md
+ M admin-desk/state/REMINDERS.md
+ M docs/claude/BLUEPRINT-ABC-01NOV.md
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/EMPLOYEE-ACCOUNTS-PLAN-22NOV.md
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
+ M docs/claude/admin-desk/state/PHASES.md
+ M docs/claude/admin-desk/state/REMINDERS.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/founder/founder-commands.md
+ D lovable-gold/MANIFEST.sha256
+ D lovable-gold/README.md
+ D lovable-gold/awam/ENDPOINTS-awam.csv
+ D lovable-gold/awam/src/lib/network.ts
+ D lovable-gold/awam/src/lib/notify.ts
+ D lovable-gold/awam/src/lib/offline.ts
+ D lovable-gold/awam/src/lib/org-export.ts
+ D lovable-gold/awam/src/lib/org.ts
+ D lovable-gold/awam/src/lib/outcomes.test.ts
+ D lovable-gold/awam/src/lib/outcomes.ts
+ D lovable-gold/awam/src/lib/overlap-focus.test.ts
+ D lovable-gold/awam/src/lib/overlap.ts
+ D lovable-gold/awam/src/lib/passkey-login.test.ts
+ D lovable-gold/awam/src/lib/passkey.ts
+ D lovable-gold/awam/src/lib/perf.ts
+ D lovable-gold/awam/src/lib/places.test.ts
+ D lovable-gold/awam/src/lib/places.ts
+ D lovable-gold/awam/src/lib/plan-surface.test.ts
+ D lovable-gold/awam/src/lib/plan-surface.ts
+ D lovable-gold/awam/src/lib/plans.ts
+ D lovable-gold/awam/src/lib/promise-engine.ts
+ D lovable-gold/awam/src/lib/public-locale.ts
+ D lovable-gold/awam/src/lib/pull-refresh.test.ts
+ D lovable-gold/awam/src/lib/pull-refresh.ts
+ D lovable-gold/awam/src/lib/pwa.ts
+ D lovable-gold/awam/src/lib/recurrence.ts
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ .../founder/src/routes/app.founder_.safety.tsx     |   40 -
+ .../founder/src/routes/app.founder_.security.tsx   |   75 -
+ .../founder/src/routes/app.founder_.settings.tsx   |   95 -
+ .../founder/src/routes/founder.preview.tsx         |  303 --
+ lovable-gold/founder/src/routes/founder.tsx        |   11 -
+ lovable-gold/founder/src/routes/founder_.$.tsx     |   12 -
+ lovable-gold/founder/src/routes/founderlogin.tsx   |   16 -
+ 208 files changed, 110 insertions(+), 42650 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +87,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (4f9f83d14f12b4caa607595fd8e87420de295bb1)
+WIP snapshot: refs/wip/last (d7d521ac058ec034469a69e4ec64556f5df23a56)

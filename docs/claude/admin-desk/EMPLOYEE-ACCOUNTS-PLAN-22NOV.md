@@ -36,3 +36,22 @@ Fits SCALE-50K-DESIGN (S1 org, S2 relations, S4 SCIM, S5 passkeys) and WORLD-ADV
 - Synced passkey attacks: https://thehackernews.com/2025/10/how-attackers-bypass-synced-passkeys.html
 - Passkeys in enterprise: https://workos.com/blog/passkeys-consumer-advice-breaks-in-enterprise
 - SCIM overview RFC 7642: https://datatracker.ietf.org/doc/rfc7642
+
+## HIS ANSWERS (22 Nov 2026 01:25 PKT) and the final phase list (one line each)
+DECIDED: (1) staff passkeys device-bound only, 2 devices = HAAN. (2) recovery = 2 supervisors + 24 h cooling = HAAN. (3) enrollment code handed over by the lead, never emailed = HAAN. (4) first hiring teams: support (live support + ticket resolution), migration (Move Your Business + onboarding, G30, DNS/DKIM), frontend_demo (UI/frontend editing + tech demos; EVERY UI change needs his approval first). His 4 extra zero-trust locks are ON9..ON12 below. New joiner starts as no_access (ON1).
+ORDER (his word): R3d -> dashboard + bridge -> S1+S2 -> ON1.
+| Line | Phase | Technology |
+|---|---|---|
+| ON1 | SQL: staff, enroll token (Argon2id hash), device (credential id, backup-eligible flag, AAGUID, attestation), recovery; joiner starts no_access; team key on every row | Postgres, RLS, hash-chained ledger |
+| ON2 | Enrollment door: lead-issued one-time 10-minute code, then 2 device-bound passkeys at first login; synced (backup-eligible) credentials refused; no password ever | Rust axum, webauthn-rs, Argon2id |
+| ON3 | Own Rule 52 key + DBSC session per staff | Ed25519, desk WASM kernel, DBSC |
+| ON4 | Mover + leaver in one transaction, instant revoke, open cases back to the queue | Postgres, Rust |
+| ON5 | Recovery: 2 supervisors + new-device code + 24 h cooling + alerts, all ledgered | Rust, ledger |
+| ON6 | 90-day access review, unattested access auto-expires | Rust scheduler |
+| ON7 | Own SCIM 2.0 endpoint (Users, Groups, Bulk), never carries credentials | Rust, RFC 7643/7644 |
+| ON8 | Proof: my live Chrome look at 390/820/1200+ with a real test staff, then offboard test | Playwright, Chrome |
+| ON9 | AAGUID hardware allow-list: only listed TPM / Secure Enclave / FIDO2 keys register; software emulators refused (see honest note) | webauthn-rs attestation, Postgres allow-list |
+| ON10 | Office IP lock (lead-optional, our own CIDR list, no third-party geo vendor) + shift-hours gate (per-team window, team timezone), sessions dead outside both | Rust middleware, Postgres policy rows |
+| ON11 | Anti-scraping circuit breaker: over N tickets opened or any export burst per minute (N set per team, start 50) freezes the session and raises a red alert on the Founder Bridge | Rust counters, ledger, signed alert |
+| ON12 | Zero-privilege default + UI-change approval: new joiner = no_access until a queue is assigned; frontend_demo UI changes need his passkey-approved release | Relation tuples (S2), W5 approval |
+HONEST NOTES (checked by research, not assumed): (a) Apple Secure Enclave passkeys normally SYNC through iCloud Keychain (backup-eligible), which conflicts with rule 1; on Apple, only a hardware security key counts as device-bound, so ON9 allow-list decides per model. (b) AAGUID is only trustworthy when the authenticator gives real attestation; platform authenticators often return none/anonymous, so ON9 starts with security keys + Windows Hello TPM and lists exactly what is accepted. (c) Geo by country needs an IP database from a vendor; we use only OUR office IP list.
