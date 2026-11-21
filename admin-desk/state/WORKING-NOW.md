@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:25 PKT) - read this FIRST for the Desk after a compaction
-DOING: AD1.sql fixed after his editor error 42501; tested non-superuser + superuser
-NEXT STEP: his ONE line ad-sql-run.sh (own DB anexo_desk, not an editor); then auth.rs ARGON2ID -> DBSC -> orb -> passkey -> R3p
-HIS LAST WORD: 10:24 AD1 editor error
+# ADMIN DESK WORKING NOW (manual checkpoint, 21 Nov 2026 10:26 PKT) - read this FIRST for the Desk after a compaction
+DOING: AD1-editor.sql built for his SQL editor, tested non-superuser
+NEXT STEP: his paste of the 8-row result from the editor; then auth.rs ARGON2ID -> DBSC -> orb -> passkey -> R3p
+HIS LAST WORD: 10:26 editor sql
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
 
@@ -23,6 +23,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- c7681864 21 Nov 10:26 checkpoint 10:38
 - c042de6e 21 Nov 10:25 checkpoint 10:38
 - 4ff7a6fd 21 Nov 10:25 desk: AD1 works without superuser
 - a5339f0b 21 Nov 10:25 desk: AD1 works without superuser
@@ -30,10 +31,18 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - c2c3e43d 21 Nov 10:09 checkpoint 10:22
 - b5f6863a 21 Nov 10:08 desk: working-now + phases inside desk folder, own database anexo_desk
 - 7942ff0f 21 Nov 10:08 desk: working-now + phases inside desk folder, own database anexo_desk
-- a766b69f 21 Nov 10:01 desk: ad-sql-run psql socket fix
 
 ## Uncommitted Desk files
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/gates/desk_tech_gate.py
+ M admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/gates/desk_tech_gate.py
  M docs/claude/admin-desk/state/WORKING-NOW.md
+?? admin-desk/scripts/make-editor-sql.py
+?? admin-desk/sql/AD1-editor.sql
+?? docs/claude/admin-desk/scripts/make-editor-sql.py
+?? docs/claude/admin-desk/sql/AD1-editor.sql
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 22 Nov: R3a2-argon2 [R3a2] Password door with ARGON2ID, constant-time -> needs ARGON2ID, constant-time compare, token audience desk in admin-de

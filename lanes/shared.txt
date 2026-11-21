@@ -25,6 +25,7 @@ admin-desk/scripts/desk-h3-check.sh
 admin-desk/scripts/desk-h3-enable.sh
 admin-desk/scripts/desk-host-check.sh
 admin-desk/scripts/desk-install.sh
+admin-desk/scripts/make-editor-sql.py
 admin-desk/server/00-FOUNDER-TECH-RULE.md
 admin-desk/server/Cargo.lock
 admin-desk/server/Cargo.toml
@@ -32,6 +33,7 @@ admin-desk/server/src/00-FOUNDER-TECH-RULE.md
 admin-desk/server/src/h3.rs
 admin-desk/server/src/main.rs
 admin-desk/sql/00-FOUNDER-TECH-RULE.md
+admin-desk/sql/AD1-editor.sql
 admin-desk/sql/AD1.sql
 admin-desk/sql/AD1/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/AD1/README.md
