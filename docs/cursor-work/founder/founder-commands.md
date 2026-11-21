@@ -5321,3 +5321,7 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 23:46 PKT] HIS WORD (23:44, screenshot): Namecheap still shows "Failed to save record" with the AAAA admindesk row (2a01:4f9:c014:5df6::1, Automatic) and no empty A row visible. Plus standing order: compaction save, WORKING-NOW + ledger + blueprint + CLAUDE.md top + CURRENT.md every message, loop every 2 min, rules-read, Rule 52, advance technology next to every phase.
 
 - 21 Nov 2026 23:46 PKT his 23:44 screenshot: Namecheap AAAA admindesk save still failing; recorded; WIRED: NO
+
+[21 Nov 2026 23:53 PKT] HIS WORD (23:50, screenshot): Namecheap now shows AAAA saved for * , @ and admindesk, all 2a01:4f9:c014:5df6::1, Automatic. He is also moving anexochat and anexovideo to AAAA (same Caddy IPv6): update the repo.
+
+- 21 Nov 2026 23:53 PKT DNS: AAAA saved for *, @, admindesk; anexochat/anexovideo to follow; WIRED: NO

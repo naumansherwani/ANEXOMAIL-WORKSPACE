@@ -2251,3 +2251,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 23:39 PKT his fact: 62.238.98.98 = Caddy IP; AAAA = 2a01:4f9:c014:5df6::1; WIRED: NO
 
 - 21 Nov 2026 23:46 PKT his 23:44 screenshot: Namecheap AAAA admindesk save still failing; recorded; WIRED: NO
+
+- 21 Nov 2026 23:53 PKT DNS: AAAA saved for *, @, admindesk; anexochat/anexovideo to follow; WIRED: NO

@@ -8,3 +8,6 @@ Facts in the repo, for checking against this law (no guess):
 - So the Caddy that answers anexomail.com and admindesk today runs on the machine whose IPv4 is 62.238.98.98 and IPv6 is 2a01:4f9:c014:5df6::1. If his Caddy server is a DIFFERENT machine, the AAAA value must be THAT machine's IPv6: he gives it, Claude never guesses.
 
 - 21 Nov 2026 23:39 PKT HIS FACT: 62.238.98.98 = the Caddy server IP. Its IPv6 (same machine, his desk-restart paste 23:30) = 2a01:4f9:c014:5df6::1 -> AAAA value.
+
+## DNS state (21 Nov 2026 23:53 PKT, his screenshot)
+AAAA saved: *, @, admindesk = 2a01:4f9:c014:5df6::1 (Caddy machine). anexochat and anexovideo: he moves them to AAAA too (same value). A records stay 62.238.98.98. Hosts with their own A record need their own AAAA.

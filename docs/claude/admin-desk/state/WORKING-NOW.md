@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 23:45 PKT) - read this FIRST for the Desk after a compaction
-DOING: Namecheap AAAA admindesk save still failing (his screenshot 23:44); recorded, loop running
-NEXT STEP: his retry of AAAA save; then desk-restart DNS facts; Alt-Svc haan; E201; Rule 52
-HIS LAST WORD: 23:44 screenshot + compaction/record orders
+# ADMIN DESK WORKING NOW (manual checkpoint, 21 Nov 2026 23:50 PKT) - read this FIRST for the Desk after a compaction
+DOING: DNS AAAA saved by him (*, @, admindesk); anexochat/anexovideo AAAA next by him
+NEXT STEP: desk-restart DNS facts; his haan Alt-Svc :4400; live Chrome h3; E201; Rule 52
+HIS LAST WORD: 23:50 screenshot AAAA saved
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
 
@@ -41,6 +41,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- c30b685f 21 Nov 23:45 ledger line ab60b9b8
 - ab60b9b8 21 Nov 23:45 Record Namecheap AAAA save state
 - 0d47203c 21 Nov 23:39 ledger line 80b44c0d
 - b97bee74 21 Nov 23:36 ledger line d0e124ee
@@ -48,9 +49,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 5bd1a4d8 21 Nov 23:34 ledger line e886861c
 - def52e4e 21 Nov 23:32 ledger line ea507af5
 - 0e1745fc 21 Nov 23:31 ledger line 791d0af3
-- 791d0af3 21 Nov 23:31 records: DNS facts and AAAA steps
 
 ## Uncommitted Desk files
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
