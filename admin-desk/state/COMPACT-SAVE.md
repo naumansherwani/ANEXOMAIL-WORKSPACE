@@ -43,3 +43,5 @@
 24. (21 Nov 2026 22:40 PKT) Home Sign in button = awam colours + white A (his 22:39). Backup branch backup/desk-ui-20261121-2239.
 
 25. (21 Nov 2026 22:50 PKT) Login: email suffix @anexomail.com like awam; bottom light fixed to the screen bottom; backup branch backup/desk-ui-20261121-2250.
+
+26. (21 Nov 2026 22:59 PKT) Login: single bottom light (scene line off on login only via DeskScene horizon={false}). Backups: branches backup/desk-ui-20261121-2235/2239/2250/2259. NEXT his install, sign in; flash pick; then Rule 52 own kernel RPC, R4-1 founder phase copy.

@@ -5275,3 +5275,7 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 22:50 PKT] HIS WORD (22:49, 3 images): image 1 ki tarah admin desk pe @anexomail.com nahi aata; image 2 mein scroll bar jahan rakha wahan bottom light nazar aati hai, zara upar neeche ho to chhup jaati hai, exactly yeh karo; mobile ke liye image 3. DONE (backup branch backup/desk-ui-20261121-2250): email = yourname + @anexomail.com suffix like awam (hidden once he types @); the warm light is FIXED near the bottom of the screen (never hidden by scrolling); laptop 1366x768 no scroll.
 
 - 21 Nov 2026 22:50 PKT Desk login: @anexomail.com suffix like awam, light fixed at the screen bottom; WIRED: NO until his install
+
+[21 Nov 2026 22:59 PKT] HIS WORD (22:59, 2 images): pehle wale codes ka backup repo mein hai, pull karwao; neeche ki sunehri roshni double aa gayi, ek khatam karo (image 2 arrow wali, card ke peeche wali), baqi intact. + compaction order. DONE (backup branch backup/desk-ui-20261121-2259): DeskScene horizon prop; login passes horizon={false} so only the fixed bottom light shows; home page unchanged.
+
+- 21 Nov 2026 22:59 PKT Desk login: single bottom light; WIRED: NO until his install

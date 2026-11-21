@@ -1995,3 +1995,5 @@
 - 21 Nov 2026 22:41 PKT his word: only the Sign in colour changes on the Desk; WIRED: NO
 
 - 21 Nov 2026 22:50 PKT Desk login: @anexomail.com suffix like awam, light fixed at the screen bottom; WIRED: NO until his install
+
+- 21 Nov 2026 22:59 PKT Desk login: single bottom light; WIRED: NO until his install

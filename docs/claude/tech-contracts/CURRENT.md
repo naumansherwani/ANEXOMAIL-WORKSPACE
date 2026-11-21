@@ -2685,3 +2685,7 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 21 Nov 2026 22:41 PKT his word: only the Sign in colour changes on the Desk; WIRED: NO
 
 - 21 Nov 2026 22:50 PKT Desk login: @anexomail.com suffix like awam, light fixed at the screen bottom; WIRED: NO until his install
+
+### 21 Nov 2026 22:59 PKT Desk login: one horizon light only (DeskScene horizon prop, login off); landing unchanged. Backup branch backup/desk-ui-20261121-2259.
+
+- 21 Nov 2026 22:59 PKT Desk login: single bottom light; WIRED: NO until his install

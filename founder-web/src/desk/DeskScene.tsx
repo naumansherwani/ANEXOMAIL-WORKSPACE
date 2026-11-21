@@ -5,7 +5,7 @@ import { useEffect, useRef, type ReactNode } from "react";
  *  Three.js is loaded lazily (dynamic import) and is skipped when the person asks for reduced motion. The CSS layers alone already show the office. */
 const SKY = "linear-gradient(180deg,#060B19 0%,#0A1730 45%,#0F3460 100%)";
 
-export function DeskScene({ children }: { children: ReactNode }) {
+export function DeskScene({ children, horizon = true }: { children: ReactNode; horizon?: boolean }) {
   const canvas = useRef<HTMLCanvasElement>(null), card = useRef<HTMLDivElement>(null), wall = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const cv = canvas.current;
@@ -74,7 +74,7 @@ export function DeskScene({ children }: { children: ReactNode }) {
       <canvas ref={canvas} aria-hidden="true" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }} />
       <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(90deg,rgba(160,200,255,0) 0,rgba(160,200,255,0) 14vw,rgba(160,200,255,.10) 14vw,rgba(160,200,255,.10) calc(14vw + 2px))" }} />
       <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "24%", background: "linear-gradient(180deg,rgba(6,11,25,0) 0%,rgba(6,11,25,.78) 30%,#050914 100%)" }} />
-      <div aria-hidden="true" style={{ position: "absolute", left: "12%", right: "12%", bottom: 70, height: 14, borderRadius: "50%", background: "radial-gradient(closest-side,rgba(255,170,70,.35),rgba(255,170,70,0))" }} />
+      {horizon && <div aria-hidden="true" style={{ position: "absolute", left: "12%", right: "12%", bottom: 70, height: 14, borderRadius: "50%", background: "radial-gradient(closest-side,rgba(255,170,70,.35),rgba(255,170,70,0))" }} />}
       <div aria-hidden="true" style={{ position: "absolute", inset: 0, boxShadow: "inset 0 0 200px rgba(0,0,0,.65)" }} />
       <div ref={card} style={{ position: "relative", zIndex: 2, minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 16px 72px", willChange: "transform" }}>{children}</div>
     </div>
