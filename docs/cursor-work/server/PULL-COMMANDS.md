@@ -2025,3 +2025,5 @@
 - 21 Nov 2026 23:53 PKT DNS: AAAA saved for *, @, admindesk; anexochat/anexovideo to follow; WIRED: NO
 
 - 21 Nov 2026 23:57 PKT DNS: A rows for @ and admindesk missing in his paste; re-add A 62.238.98.98; WIRED: NO
+
+- 21 Nov 2026 23:58 PKT anexomail.com down report; read-only check line given; WIRED: NO

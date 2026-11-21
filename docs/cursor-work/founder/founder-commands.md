@@ -5329,3 +5329,7 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 23:57 PKT] HIS WORD (23:55): anexochat + anexovideo are separate (call); give him a read-only command, then he adds AAAA. His desk-restart paste: service active, health 200, host gate 404, door 401, HTTP/3 on udp [::]:4400, DB ready; DNS facts: admindesk AAAA=2a01:4f9:c014:5df6::1 and anexomail.com AAAA=same, BUT A= EMPTY for both (founderworkspace A=62.238.98.98 ok). His screenshot list also shows no A row for @ or admindesk.
 
 - 21 Nov 2026 23:57 PKT DNS: A rows for @ and admindesk missing in his paste; re-add A 62.238.98.98; WIRED: NO
+
+[21 Nov 2026 23:58 PKT] HIS WORD (23:55): anexomail.com is DOWN, check it quickly from the server read-only (HTTP/3 side), he adds the Namecheap rows himself. Given: one read-only line (authoritative dns1.registrar-servers.com A/AAAA + curl via --resolve over v4 and v6).
+
+- 21 Nov 2026 23:58 PKT anexomail.com down report; read-only check line given; WIRED: NO
