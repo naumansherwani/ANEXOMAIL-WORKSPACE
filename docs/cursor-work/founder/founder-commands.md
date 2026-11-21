@@ -5209,3 +5209,7 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 21:22 PKT] HIS WORD (21:21, 2 images): yeh tune 1st image banaya hai aur second image mein se sirf ball nikalna tha aur passkey wali neechay bola tha, yeh wapis kar de. DONE: page restored to his 2nd image; ONLY the ball removed (nothing in its place) and the same Touch passkey button moved below Sign in. Identity box kept (his 2nd image). 390 + 1280 checked.
 
 - 21 Nov 2026 21:22 PKT Desk login restored to his image minus ball, passkey below; WIRED: NO until his desk-install
+
+[21 Nov 2026 21:25 PKT] HIS WORD (21:24): Identity dabba hata de, continue with passkey sirf neeche aayega, is ke ilawa ek bhi extra word nahi. (21:25, in anger): hardware key not wala hata de. + his journal: desk door: database not ready yet: error performing TLS handshake. DONE: Identity removed, Touch passkey -> Continue with a passkey (same look), hardware-key line removed. door.rs: DESK_DB_CA support + full TLS error chain.
+
+- 21 Nov 2026 21:25 PKT Desk login final (no ball/identity/hardware line, Continue with a passkey below); door.rs DESK_DB_CA; WIRED: NO

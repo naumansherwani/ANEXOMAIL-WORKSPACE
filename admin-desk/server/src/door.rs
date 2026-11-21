@@ -23,9 +23,14 @@ async fn open() -> Result<Client, String> {
     }
     let mut roots = rustls::RootCertStore::empty();
     for c in rustls_native_certs::load_native_certs().certs { let _ = roots.add(c); }
+    // DESK_DB_CA: the database's own CA (PEM), when its certificate is not signed by a public root (written by desk-appdb.sh, root-only).
+    if let Ok(p) = std::env::var("DESK_DB_CA") {
+        let pem = std::fs::read(&p).map_err(|e| format!("DESK_DB_CA {p}: {e}"))?;
+        for c in rustls_pemfile::certs(&mut pem.as_slice()).flatten() { roots.add(c).map_err(|e| format!("DESK_DB_CA cert: {e}"))?; }
+    }
     let tls = rustls::ClientConfig::builder_with_provider(std::sync::Arc::new(rustls::crypto::ring::default_provider()))
         .with_safe_default_protocol_versions().map_err(|e| e.to_string())?.with_root_certificates(roots).with_no_client_auth();
-    let (c, conn) = cfg.connect(tokio_postgres_rustls::MakeRustlsConnect::new(tls)).await.map_err(|e| e.to_string())?;
+    let (c, conn) = cfg.connect(tokio_postgres_rustls::MakeRustlsConnect::new(tls)).await.map_err(|e| { let mut m = e.to_string(); let mut s: Option<&dyn std::error::Error> = std::error::Error::source(&e); while let Some(x) = s { m.push_str(": "); m.push_str(&x.to_string()); s = x.source(); } m })?;
     tokio::spawn(async move { let _ = conn.await; }); Ok(c)
 }
 static DB: tokio::sync::Mutex<Option<std::sync::Arc<Client>>> = tokio::sync::Mutex::const_new(None);

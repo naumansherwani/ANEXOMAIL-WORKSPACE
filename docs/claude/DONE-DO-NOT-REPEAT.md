@@ -2187,3 +2187,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 21:21 PKT CLEAN-PUSH LAW in CLAUDE.md; desk-appdb db connection fail recorded; WIRED: NO
 
 - 21 Nov 2026 21:22 PKT Desk login restored to his image minus ball, passkey below; WIRED: NO until his desk-install
+
+- 21 Nov 2026 21:25 PKT Desk login final (no ball/identity/hardware line, Continue with a passkey below); door.rs DESK_DB_CA; WIRED: NO

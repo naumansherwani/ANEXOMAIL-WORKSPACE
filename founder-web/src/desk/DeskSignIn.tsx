@@ -34,7 +34,6 @@ export function DeskSignIn() {
     } catch { setMsg(deskLoginMessage(0)); }
     setBusy(false); setPassword("");
   }
-  const hwLine = hw === "checking" ? "Checking this browser for passkey support" : hw === "ready" ? "A passkey is available on this device" : "Hardware key not detected on this browser";
   return (
     <main className="fa">
       <DeskScene>
@@ -44,9 +43,6 @@ export function DeskSignIn() {
           <p style={{ margin: 0, fontSize: 12, letterSpacing: ".28em", color: "#8FB4FF" }}>ADMIN DESK</p>
           <h1 style={{ margin: 0, fontWeight: 500, fontSize: "clamp(24px,6vw,30px)", lineHeight: 1.15, textAlign: "center", textWrap: "balance" as const }}>Sign in to the company desk</h1>
           <p style={{ margin: 0, fontSize: 14, lineHeight: 1.5, color: "#A9BAD6", textAlign: "center", maxWidth: 340 }}>One sealed door. Sign in with your email and password; a passkey is optional.</p>
-          <div style={{ width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", border: "1px solid rgba(160,200,255,.2)", borderRadius: 14, background: "rgba(255,255,255,.04)" }}>
-            <span style={{ fontSize: 12, letterSpacing: ".08em", color: "#9FB2D4" }}>IDENTITY</span><span style={{ fontSize: 14 }}>Admin Desk</span>
-          </div>
           <details style={{ width: "100%", borderTop: "1px solid rgba(160,200,255,.14)", paddingTop: 12 }} open>
             <summary style={{ fontSize: 13, color: "#9FB2D4", textAlign: "center", minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>No passkey on this account? Use your password</summary>
             <form onSubmit={submit} noValidate name="desklogin" method="post" autoComplete="on" style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 8 }}>
@@ -60,9 +56,8 @@ export function DeskSignIn() {
           </details>
           <button type="button" className="ax-a-hover" disabled={hw !== "ready"} onClick={() => setMsg("No passkey is registered on this account yet. Use the email and password below.")}
             style={{ width: "100%", minHeight: 52, border: 0, borderRadius: 14, cursor: hw === "ready" ? "pointer" : "not-allowed", fontSize: 16, fontWeight: 600, color: "#04122B", background: "linear-gradient(180deg,#9CCBFF,#5FA8FF)", boxShadow: "0 8px 28px rgba(95,168,255,.35),0 1px 0 rgba(255,255,255,.6) inset", opacity: hw === "ready" ? 1 : 0.7, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-            <HoverA />Touch passkey
+            <HoverA />Continue with a passkey
           </button>
-          <p role="status" style={{ margin: 0, fontSize: 13, color: hw === "ready" ? "#9FD6B4" : "#F2C58A", textAlign: "center" }}>{hwLine}</p>
           <div style={{ width: "100%", borderTop: "1px solid rgba(160,200,255,.14)", paddingTop: 14, display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
             <p style={{ margin: 0, fontSize: 13, lineHeight: 1.5, color: "#C9D8F2", textAlign: "center", textWrap: "balance" as const }}>Our engine runs in milliseconds; our support should too. Own the issue, fix the root, leave zero open loops.</p>
             <p style={{ margin: 0, fontSize: 11, letterSpacing: ".08em", color: "#8FA6CC", textAlign: "center" }}>Built on: Rust · Tokio · axum · Rust WASM kernel · WebAuthn passkeys · Three.js</p>

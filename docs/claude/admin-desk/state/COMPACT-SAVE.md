@@ -19,3 +19,5 @@
 12. (21 Nov 2026 21:20 PKT) desk-install OK on his server; desk-appdb FAILED (db connection; need journal door line). He says "pura UI change": founder src untouched by me today (git); Desk login diff = ball->philosophy, identity removed, passkey below, subtitle + form open, HTTP/3 pill. CLEAN-PUSH LAW added to CLAUDE.md.
 
 13. (21 Nov 2026 21:22 PKT) Desk login = his 2nd image minus the ball, Touch passkey below Sign in. NEVER change any other word of this page without his word.
+
+14. (21 Nov 2026 21:25 PKT) Login final: no ball, no Identity, no hardware-key line, Continue with a passkey below Sign in. DB TLS handshake fail on his server: waiting his openssl issuer line, then pin the DB CA (DESK_DB_CA).
