@@ -2520,3 +2520,7 @@ auth.rs ARGON2ID (argon2 0.5, m=64MiB t=3 p=1, subtle ct compare, sha2 token has
 - 21 Nov 2026 10:53 PKT Desk: wrong customer-account script removed, alias look-script added per his 10:52; WIRED: NO
 
 - 21 Nov 2026 10:53 PKT Desk: wrong customer-account script removed, alias look-script added per his 10:52; WIRED: NO
+
+### 21 Nov 2026 10:56 PKT Desk: OWNER admindesk@anexomail.com CREATED on his server (his run 10:5x, ARGON2ID, desk.fadm_owner). desk-install with auth.rs DONE (health 200). desk-business-account.sh has NO Desk relation, removed. Login door still stub.
+
+- 21 Nov 2026 10:56 PKT Desk owner created on his server, auth.rs installed; business script had no Desk relation, removed; WIRED: NO (login door stub)

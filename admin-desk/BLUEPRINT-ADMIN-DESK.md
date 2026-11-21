@@ -1,3 +1,4 @@
+> [21 Nov 2026 10:56 PKT] R3a2-2 owner CREATED + auth.rs installed (his runs). NEXT: login door + AD1b desk_app login > DBSC > orb > passkey > R3p > R3b-g. Aliases = company aliases, look first (desk-alias-look.sh).
 > [21 Nov 2026 10:44 PKT] ORDER: R3a2-1 AD1 DONE (his paste 10:38) > R3a2-2 auth.rs ARGON2ID written, tests pass > his desk-install + desk-owner.sh > login door + AD1b > R3a2-3 DBSC > R3a1-b orb > R3a2-4 passkey > R3p plans > R3b-g. Real-account method: codes/REAL-ACCOUNT-METHOD.md
 > [21 Nov 2026 10:35 PKT] R3a2: AD1 via scripts/ad-auto.sh (auto run or already run); NEXT auth.rs ARGON2ID
 > [21 Nov 2026 10:31 PKT] NOW R3a2: AD1 SQL in his editor + server ad-check; NEXT auth.rs ARGON2ID (tech: Rust axum, argon2id, constant-time), DBSC, passkey. Compact-safe: state/COMPACT-SAVE.md

@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:53 PKT) - read this FIRST for the Desk after a compaction
-DOING: auth.rs + owner/real-account scripts pushed
-NEXT STEP: his desk-install + desk-owner run, then login door + AD1b
-HIS LAST WORD: real account method, gold codes
+# ADMIN DESK WORKING NOW (manual checkpoint, 21 Nov 2026 10:56 PKT) - read this FIRST for the Desk after a compaction
+DOING: owner created; login door next
+NEXT STEP: his desk-alias-look paste, login door + AD1b
+HIS LAST WORD: prove business script relation: none
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
 
@@ -30,9 +30,12 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 
 > [21 Nov 2026 10:44 PKT] ORDER NOW: AD1 DONE -> auth.rs (written) -> desk-install -> desk-owner.sh (his password) -> login door + AD1b desk_app login -> DBSC -> orb pulse/zoom -> passkey (optional) -> R3p plans -> R3b-g (Sun 22 - Mon 23 Nov).
 
+> [21 Nov 2026 10:56 PKT] R3a2-2: owner admindesk@ CREATED on his server, auth.rs installed. NEXT login door + AD1b. desk-business-account.sh removed (no Desk relation).
+
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 0edce82b 21 Nov 10:53 Desk: aliases not customer accounts; alias look script
 - 1b2168d9 21 Nov 10:53 Desk: aliases not customer accounts; alias look script
 - a40b609b 21 Nov 10:52 checkpoint
 - 381551d2 21 Nov 10:52 checkpoint
@@ -40,10 +43,13 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - e85ccf30 21 Nov 10:52 Desk: scripts prompt via /dev/tty
 - daecb612 21 Nov 10:44 checkpoint
 - 197b49a1 21 Nov 10:44 checkpoint
-- 619966b3 21 Nov 10:44 Desk: R3a2-argon2 feature row = code
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
+ M docs/claude/admin-desk/state/PHASES.md
+MM docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

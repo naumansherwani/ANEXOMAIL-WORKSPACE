@@ -5091,3 +5091,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 10:53 PKT Desk: wrong customer-account script removed, alias look-script added per his 10:52; WIRED: NO
 
 - 21 Nov 2026 10:53 PKT Desk: wrong customer-account script removed, alias look-script added per his 10:52; WIRED: NO
+
+[21 Nov 2026 10:56 PKT] HIS WORD (10:55): is command (desk-business-account.sh) ka admin desk se taluq prove kero. chutiya. + his paste: desk-owner.sh OK (admindesk@anexomail.com owner, argon2id), desk-install OK (health 200, wrong host 404, listener 4400). ANSWER: NO relation, it was my mistake, removed.
+
+- 21 Nov 2026 10:56 PKT Desk owner created on his server, auth.rs installed; business script had no Desk relation, removed; WIRED: NO (login door stub)

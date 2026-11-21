@@ -4870,3 +4870,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 10:53 PKT Desk: wrong customer-account script removed, alias look-script added per his 10:52; WIRED: NO
 
 - 21 Nov 2026 10:53 PKT Desk: wrong customer-account script removed, alias look-script added per his 10:52; WIRED: NO
+
+- 21 Nov 2026 10:56 PKT Desk owner created on his server, auth.rs installed; business script had no Desk relation, removed; WIRED: NO (login door stub)
