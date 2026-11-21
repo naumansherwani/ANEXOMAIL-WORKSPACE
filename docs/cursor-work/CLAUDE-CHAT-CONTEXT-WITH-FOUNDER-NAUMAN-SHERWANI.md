@@ -4690,3 +4690,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 08:25 PKT: R3a0 files in repo (server/desk, desk-install.sh, dist-desk, lanes synced); not installed on his server (WIRED: NO)
 
 - 21 Nov 2026 08:32 PKT: ADMIN DESK own folder admin-desk/ (server, scripts, sql AD series, gates, blueprint with FEATURE/CODE/TECHNOLOGY/HAAN, blueprint copy, RESUME); his install 08:19 ran: anexomail-desk up on 4400, wrong host 404; DESK TECH gate shouts on missing technology (WIRED: NO for login)
+
+- 21 Nov 2026 08:32 PKT: ADMIN DESK own folder admin-desk/ (server, scripts, sql AD series, gates, blueprint with FEATURE/CODE/TECHNOLOGY/HAAN, blueprint copy, RESUME); his install 08:19 ran: anexomail-desk up on 4400, wrong host 404; DESK TECH gate shouts on missing technology (WIRED: NO for login)
