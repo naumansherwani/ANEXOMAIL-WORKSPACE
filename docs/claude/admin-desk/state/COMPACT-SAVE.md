@@ -69,3 +69,5 @@
 37. (22 Nov 2026 00:14 PKT) OUTAGE: anexomail.com + admindesk resolve to NOTHING (A and AAAA both empty in his latest desk-restart, 00:08 PKT). Server fine. He must make Namecheap hold all four rows: A @ + A admindesk = 62.238.98.98; AAAA @ + AAAA admindesk = 2a01:4f9:c014:5df6::1 (and AAAA * optional). Read-only authoritative check line given. NEXT: his Namecheap screenshot/paste, then desk-restart facts.
 
 38. (22 Nov 2026 00:23 PKT) anexomail.com opens on his mobile data, NOT on his WiFi laptop. DNS + server proven fine from outside. Suspect WiFi/laptop DNS cache (not proven). His steps: ipconfig /flushdns, restart router, nslookup anexomail.com paste. I cannot clear Chrome internals (chrome:// blocked in my tool). NEXT: his nslookup paste.
+
+39. (22 Nov 2026 00:36 PKT) anexomail.com works again (WiFi cache). He said start: rules-read done, E201 (Premium/Max plans) schema-first read started, file list in PREMIUM-MAX-PLAN-21NOV.md. Alt-Svc :4400 waits his haan. Then first Desk sign-in, flash pick, Rule 52 for Desk.

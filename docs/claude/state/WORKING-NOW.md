@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 00:21 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: anexomail.com fine on mobile data, not on his WiFi; DNS proven good; suspect local DNS cache
-NEXT STEP: his nslookup paste; Alt-Svc haan; E201; Rule 52
-HIS LAST WORD: 00:21 wifi vs mobile
+# WORKING NOW (manual checkpoint, 22 Nov 2026 00:27 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: E201 Premium/Max schema-first read (28 files with business_pro, locks listed)
+NEXT STEP: finish read E100/E23/E94/E36, write E201 + CHECK_E201; his haan Alt-Svc; his first Desk sign-in
+HIS LAST WORD: 00:27 shuru kero
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,26 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- de0e6cd2 22 Nov 00:21 ledger line a5c6c9ef
 - a5c6c9ef 22 Nov 00:21 Record wifi vs mobile
 - 26aff9e6 22 Nov 00:10 ledger line 5e7c00ba
 - 5e7c00ba 22 Nov 00:10 Record DNS outage
 - 911da8ef 22 Nov 00:00 ledger line 54e41a8f
-- 54e41a8f 22 Nov 00:00 Record DNS proof
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/PREMIUM-MAX-PLAN-21NOV.md
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/founder/founder-commands.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 21 ++-------------------
- 1 file changed, 2 insertions(+), 19 deletions(-)
+ docs/claude/PREMIUM-MAX-PLAN-21NOV.md        |  3 +++
+ docs/claude/admin-desk/state/COMPACT-SAVE.md |  2 ++
+ docs/claude/state/WORKING-NOW.md             | 26 ++++++++------------------
+ docs/cursor-work/founder/founder-commands.md |  4 ++++
+ 4 files changed, 17 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +48,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (90a9108e816e1acc6438a0ba399377a769639c0e)
+WIP snapshot: refs/wip/last (af730c657d5e5c6043f53cbbd2fbb262f7a5bec3)

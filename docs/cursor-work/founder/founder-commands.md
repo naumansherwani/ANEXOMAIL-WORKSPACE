@@ -5345,3 +5345,9 @@ Features ki list (QC4 mein kya banega):
 [22 Nov 2026 00:23 PKT] HIS WORD (00:21): anexomail.com does NOT open on his WiFi but opens on mobile data; "fix kero". FACT: authoritative Namecheap, 1.1.1.1, 8.8.8.8 all return A 62.238.98.98 + AAAA 2a01:4f9:c014:5df6::1; server answers 200. Likely his WiFi/router/laptop DNS cache (stale negative answer). Not proven. Asked him: ipconfig /flushdns, router restart, nslookup anexomail.com output.
 
 - 22 Nov 2026 00:23 PKT anexomail.com opens on mobile data not on his WiFi; DNS proven good; local cache suspected; WIRED: NO
+
+[22 Nov 2026 00:29 PKT] HIS WORD (00:27): "chal gaye, website wifi ka masla tha, ab fast hai. ab tarteeb batao next kya hai, shuru kero". anexomail.com WORKS again (local WiFi DNS cache was the cause).
+
+[22 Nov 2026 00:36 PKT] STARTED (his 00:27 shuru kero): rules-read done; Premium/Max P0 = E201 schema-first read begun (list in PREMIUM-MAX-PLAN-21NOV.md). Alt-Svc :4400 NOT started: waits his haan.
+
+- 22 Nov 2026 00:36 PKT E201 Premium/Max: schema-first read started, locks listed; WIRED: NO
