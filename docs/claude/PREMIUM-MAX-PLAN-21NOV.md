@@ -11,3 +11,13 @@ His word: "ab same Business Premium aur Business MAX ke liye banao, yeh mix nahi
 - E28 seed takes plan as a parameter; with the new plans it makes the two test accounts; passwords typed on the server, never in chat.
 ## ORDER
 P0 E201 SQL: plans business_premium + business_max in plan_catalog/interop (+ CHECK) -> P1 the two test accounts (E28 path, password typed on the server) -> P2 their transport: HTTP/3 only listener for their hosts (port from his fresh ss), Alt-Svc + DNS -> P3 the experience pass as the user (every screen at 390/820/1280, live Chrome) -> P4 gates for Business / Business Pro.
+
+## UPDATE 21 Nov 2026 23:25 PKT (his 23:25): SIGN-IN + WHAT HE ALREADY TOLD CLAUDE (deep search of the repo)
+His word: "anexomail.com/auth awam ka hai, yahan aayega Business Premium aur Business Max; Business Pro, Business, Pro, Basic ka same existing wala sign-in rahega, mix nahi karna."
+LAW: Premium/Max sign in on the SAME page anexomail.com/auth; the page and the flow for Basic, Pro, Business, Business Pro stay EXACTLY as they are. After sign-in the account's plan sends Premium/Max to their own advanced experience; nothing else changes.
+What he already told Claude (found in the repo, his own words kept there):
+1. AWAM-MAILBOX-UI-INHERIT-LAW-16NOV.md (16 Nov): "yeh codes awam ke liye preserve karo; Business Premium aur Business MAX ka yehi same UI hoga; SHA aur HMAC 256 ke saath UI banana hai; baad mein yehi awam ke liye mold kar ke use hoga." = Premium + MAX get the FOUNDER mailbox UI (the living mailbox, QUI-LIVE), only limits and domain differ.
+2. AWAM-PACKAGES-PROPOSAL-07NOV.md (G4/G5, 7-8 Nov): Premium 7,000 users, 70 TB shared, 100 MB mail; Max GBP 125,000/month, card says unlimited users, backend + SQL strict cap 125,000 per company, alerts 90% yellow / 95% high, no block; Premium + Max mailboxes on the COMPANY'S OWN DOMAIN (user@theircompany.com), not @anexomail.com; free months 2 (Max 3).
+3. QLIVE-PLAN-18NOV.md + AWAM-QLIVE-TIERS-18NOV.md (18 Nov): live-mail streams Premium 25, MAX 100, 30-day log; codes WRITTEN AND PRESERVED, built = false; gate AWAM-PREMIUM-MAX-LIVE stays OPEN until built.
+4. AWAM-BLUEPRINT-ALPHABETIC-20NOV.md + AWAM-LAUNCH-PLAN-19NOV.md: order Basic, Business, Business Pro, Business Premium, Business Max; Premium + MAX dates 6-9 Jan (launch plan), seminar 16-17 Jan.
+5. admin-desk/docs/PLAN-PREMIUM-MAX-21NOV.md (21 Nov 09:08): every Business package runs ONLY on the advanced technology; Premium + Max get their own support lanes in the Admin Desk (R3p, needs his support terms).

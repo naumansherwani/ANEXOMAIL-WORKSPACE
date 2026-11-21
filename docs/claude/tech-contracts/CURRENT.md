@@ -2697,3 +2697,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 ### 21 Nov 2026 23:21 PKT LIVE CHROME (his laptop Chrome, read only): Desk bundle = repo; door 401 bad_credentials; nextHopProtocol h2. PREMIUM-MAX plan written (awam lane). desk-restart.sh prints DNS facts (A/AAAA/TYPE65, server IPv6, IPv6 listeners).
 
 - 21 Nov 2026 23:21 PKT Premium/Max plan (awam lane), live Chrome look of the Desk, DNS facts in desk-restart; WIRED: NO
+
+- 21 Nov 2026 23:25 PKT Premium/Max: sign-in at anexomail.com/auth law + deep-search findings recorded; WIRED: NO
