@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 09:58 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: R3a2 AD1.sql written + tested (PG16, 8/8 checks); runner written
-NEXT STEP: his db name paste -> ad-sql-run.sh; auth.rs ARGON2ID -> DBSC -> orb -> passkey -> R3p
-HIS LAST WORD: AD1 done
+# WORKING NOW (manual checkpoint, 21 Nov 2026 10:00 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Admin Desk folder now in docs/claude/admin-desk (canonical) + root copy, gate DESK COPY
+NEXT STEP: his db name -> ad-sql-run.sh; auth.rs ARGON2ID -> DBSC -> orb -> passkey -> R3p
+HIS LAST WORD: 09:59 move desk folder
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,30 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 9aa9c95e 21 Nov 09:58 ledger line 37e1aa36
 - 37e1aa36 21 Nov 09:58 desk: AD1.sql + runner, tested on PG16
 - b1c166c5 21 Nov 09:58 ledger line 7f3f62dd
 - 7f3f62dd 21 Nov 09:58 desk: AD1.sql + runner, tested on PG16
 - bc374fa0 21 Nov 09:56 ledger line cb0d3c35
-- cb0d3c35 21 Nov 09:56 desk: HTTP/3 proven, gate row code, pill, back to phase order
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M docs/cursor-work/founder/founder-commands.md
+ M docs/cursor-work/server/rules-gate.py
+?? docs/claude/admin-desk/
+?? docs/cursor-work/server/desk-copy-sync.py
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ admin-desk/BLUEPRINT-ADMIN-DESK.md           |  2 ++
+ docs/claude/state/WORKING-NOW.md             | 29 +++++++++++-----------------
+ docs/claude/tech-contracts/CURRENT.md        |  2 ++
+ docs/cursor-work/founder/founder-commands.md |  2 ++
+ docs/cursor-work/server/rules-gate.py        |  8 ++++++++
+ 5 files changed, 25 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +52,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (d2db90267ee455712fd09f4fb0d452493a60742d)
+WIP snapshot: refs/wip/last (6549f30ee682a4fbe5da8b38c6623afce97b095e)

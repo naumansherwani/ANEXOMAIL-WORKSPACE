@@ -181,6 +181,14 @@ try:
 except ImportError:
     fail("DESK TECH", "admin-desk/gates/desk_tech_gate.py is missing")
 
+# ADMIN DESK TWO PLACES (his 21 Nov 2026 09:59): canonical docs/claude/admin-desk/ + ONE identical copy at admin-desk/ (server installers fetch it from origin/main). Drift = no commit.
+try:
+    import subprocess as _sp
+    _r = _sp.run([sys.executable, "docs/cursor-work/server/desk-copy-sync.py", "check"], capture_output=True, text=True)
+    if _r.returncode != 0: fail("DESK COPY", "docs/claude/admin-desk and admin-desk/ differ (edit only docs/claude/admin-desk, then run: python3 docs/cursor-work/server/desk-copy-sync.py sync): " + " | ".join(_r.stdout.strip().splitlines()[:3]))
+except Exception as _x:
+    fail("DESK COPY", "desk-copy-sync.py cannot run: " + str(_x)[:100])
+
 # TECH-FIRST PROTOCOL (founder 11 Nov 2026 04:33, "forever solution"): docs/claude/TECH-FIRST-PROTOCOL.md. Three mechanical gates so the listed technology can never be skipped again.
 
 # SERVER-SELF-CONTAINED (11 Nov 22:00, incident: founder-install failed on his server because a test pulled web-wasm/src/mldsa.rs via #[path]): his server builds ONLY the server/ folder.
