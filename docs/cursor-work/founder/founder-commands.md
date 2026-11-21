@@ -4877,3 +4877,5 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 08:53 PKT HIS WORD + PASTE: his desk-cert-sync output: admindesk cert copied (03:46 UTC), "after 220s: HTTPS answers 200", Verification OK, TLSv1.3, Cipher TLS_AES_256_GCM_SHA384, health {"desk":"up","login":"not-connected"}; "/" answered HTTP/2 404 (my bug: not_found_service keeps 404; fixed with fallback = 200). HIS QUESTION: "yeh awam ke mutabiq protocol pe banana hai; agar yeh banega to basic, pro, business, business max, business premium bhi banaye jayenge; sab ko ek saath bana lete hain, kya possible hai?" + compaction-safety order.
 
 - 21 Nov 2026 08:57 PKT: admindesk OPENS (his cert sync: HTTPS 200, TLS 1.3 AES-256-GCM-SHA384 verified by his openssl); SPA 404 bug fixed in code (fallback = 200), needs his re-install; plans = data in AD1 fadm_plans; X25519MLKEM768/HTTP3 not proven (WIRED: login door NO)
+
+- 21 Nov 2026 08:57 PKT: admindesk OPENS (his cert sync: HTTPS 200, TLS 1.3 AES-256-GCM-SHA384 verified by his openssl); SPA 404 bug fixed in code (fallback = 200), needs his re-install; plans = data in AD1 fadm_plans; X25519MLKEM768/HTTP3 not proven (WIRED: login door NO)
