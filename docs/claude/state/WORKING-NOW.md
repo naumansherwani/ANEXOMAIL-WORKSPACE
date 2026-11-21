@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 09:19 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Desk HTTP/3 HARD BLOCK in gate (no later phase until h3 live)
-NEXT STEP: his ss (free UDP port) -> Desk h3 listener (quinn+h3+PQ) -> AAAA+HTTPS record -> his curl --http3 -> only then AD1/auth/DBSC/orb/passkey/R3p
-HIS LAST WORD: 09:18 http2 banned
+# WORKING NOW (manual checkpoint, 21 Nov 2026 09:23 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Desk h3.rs written + tested (5 pass); HTTP/1 AND HTTP/2 banned in gate
+NEXT STEP: his ss (UDP port) -> install env + ufw (his cmd) -> AAAA+HTTPS record -> curl --http3 -> row code -> AD1/auth/DBSC/orb/passkey/R3p
+HIS LAST WORD: 09:23 http1 and http2 banned
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,35 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## FOUNDER + other processes in the same list (never touch)
 
 ## Last 5 commits
+- 16a0ddf7 21 Nov 09:19 ledger line cb8a9093
 - cb8a9093 21 Nov 09:19 desk gate: HTTP/3 hard block, HTTP/2 banned
 - 49adb523 21 Nov 09:19 ledger line 9a0a2a1c
 - 9a0a2a1c 21 Nov 09:19 desk gate: HTTP/3 hard block, HTTP/2 banned
 - b8c29481 21 Nov 09:12 ledger line c7e911a5
-- c7e911a5 21 Nov 09:12 checkpoint 09:12
 
 ## Uncommitted files (half-done work if any)
+ M CLAUDE.md
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/gates/desk_tech_gate.py
+ M admin-desk/server/Cargo.lock
+ M admin-desk/server/Cargo.toml
+ M admin-desk/server/src/main.rs
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M docs/cursor-work/founder/founder-commands.md
+?? admin-desk/server/src/h3.rs
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ admin-desk/gates/desk_tech_gate.py           |   4 +-
+ admin-desk/server/Cargo.lock                 | 613 ++++++++++++++++++++++++++-
+ admin-desk/server/Cargo.toml                 |  10 +
+ admin-desk/server/src/main.rs                |  17 +
+ docs/claude/state/WORKING-NOW.md             |  32 +-
+ docs/claude/tech-contracts/CURRENT.md        |   3 +
+ docs/cursor-work/founder/founder-commands.md |   2 +
+ 9 files changed, 660 insertions(+), 24 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +57,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ee103b0477c28dc3fef89d5383876cc7d80bed1d)
+WIP snapshot: refs/wip/last (12283849dcb66c32279e5a802cbe30afbe18017c)

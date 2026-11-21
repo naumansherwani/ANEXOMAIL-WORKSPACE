@@ -11,6 +11,8 @@ use axum::{
 };
 use tower_http::services::{ServeDir, ServeFile};
 
+mod h3;
+
 const HOST: &str = "admindesk.anexomail.com";
 const BIND: &str = "127.0.0.1:4400";
 const DIST: &str = "/opt/anexomail-desk/dist-desk";
@@ -67,6 +69,21 @@ async fn main() {
         .fallback_service(files)
         .layer(middleware::from_fn(desk_headers))
         .layer(middleware::from_fn(host_gate));
+    // R3a0-s2: the Desk's OWN HTTP/3 (QUIC, TLS 1.3 AES-256-GCM, X25519MLKEM768 first). Off unless DESK_H3_ADDR is set (its UDP port comes only from his fresh ss).
+    let mut app = app;
+    match h3::from_env() {
+        None => eprintln!("desk: HTTP/3 is OFF (DESK_H3_ADDR not set)"),
+        Some(Err(e)) => { eprintln!("desk: HTTP/3 REFUSED to start: {e}"); std::process::exit(2); }
+        Some(Ok((addr, tls))) => {
+            let port = addr.port();
+            let qc = h3::quic_config(tls).expect("desk h3 quic config");
+            let ep = quinn::Endpoint::server(qc, addr).expect("bind desk udp");
+            eprintln!("desk: HTTP/3 listening on udp {addr} (TLS 1.3, AES-256-GCM only, X25519MLKEM768 first)");
+            let alt = HeaderValue::from_str(&h3::alt_svc_value(port)).expect("alt-svc");
+            app = app.layer(middleware::from_fn(move |req: Request, next: Next| { let alt = alt.clone(); async move { let mut r = next.run(req).await; r.headers_mut().insert(header::HeaderName::from_static("alt-svc"), alt); r } }));
+            tokio::spawn(h3::serve(ep, app.clone(), HOST.to_string()));
+        }
+    }
     let listener = tokio::net::TcpListener::bind(BIND).await.expect("bind 127.0.0.1:4400");
     eprintln!("desk: listening on {BIND} (loopback only)");
     axum::serve(listener, app).await.expect("serve");

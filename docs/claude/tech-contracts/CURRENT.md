@@ -2335,3 +2335,12 @@ HTTP/3 (QUIC) is the ONLY HTTP for the Admin Desk; HTTP/2 and HTTP/1.1 are BANNE
 - 21 Nov 2026 09:25 PKT: HIS WORD: Desk HTTP/3 HARD BLOCK + HTTP/2 BAN in gate (no AD1, auth.rs, DBSC, orb, passkey, R3p until h3 listener + X25519MLKEM768 in code); WIRED: gate YES, listener NO
 
 - 21 Nov 2026 09:25 PKT: HIS WORD: Desk HTTP/3 HARD BLOCK + HTTP/2 BAN in gate (no AD1, auth.rs, DBSC, orb, passkey, R3p until h3 listener + X25519MLKEM768 in code); WIRED: gate YES, listener NO
+
+## 21 Nov 2026 09:30 PKT HTTP/1 AND HTTP/2 BOTH BANNED (his word 09:23); R3a0-s2 CODE WRITTEN
+Gate bans http/1, http/1.1, http/2, h2 in every Desk .rs/.toml/.ts/.tsx (only DeskTelemetry's honest browser readout is allowed). Code: admin-desk/server/src/h3.rs (own copy, no founder import): quinn 0.11 + h3 0.0.8, rustls ring, ONE cipher TLS13_AES_256_GCM_SHA384, rustls_post_quantum X25519MLKEM768 first, ALPN h3 only, Retry under flood, migration on, no 0-RTT, Alt-Svc on TCP answers. Env DESK_H3_ADDR / DESK_H3_CERT / DESK_H3_KEY (off when unset; port ONLY from his fresh ss). cargo test: 5 pass. STILL OPEN: his ss -> port -> install script env + ufw line (his command) -> his AAAA + HTTPS record -> his curl --http3 proof -> row R3a0-stage2 flips to code -> only then AD1 / auth.rs / DBSC / orb / passkey / R3p.
+
+- 21 Nov 2026 09:30 PKT: HIS WORD: HTTP/1 AND HTTP/2 both banned (gate, all Desk code); Desk HTTP/3 listener h3.rs written, 5 tests pass (quinn+h3, AES-256-GCM only, X25519MLKEM768 first); WIRED: code YES, live NO
+
+- 21 Nov 2026 09:30 PKT: HIS WORD: HTTP/1 AND HTTP/2 both banned (gate, all Desk code); Desk HTTP/3 listener h3.rs written, 5 tests pass (quinn+h3, AES-256-GCM only, X25519MLKEM768 first); WIRED: code YES, live NO
+
+- 21 Nov 2026 09:30 PKT: HIS WORD: HTTP/1 AND HTTP/2 both banned (gate, all Desk code); Desk HTTP/3 listener h3.rs written, 5 tests pass (quinn+h3, AES-256-GCM only, X25519MLKEM768 first); WIRED: code YES, live NO

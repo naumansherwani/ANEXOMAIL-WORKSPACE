@@ -38,8 +38,8 @@ def check(root="."):
             if rel in allow or not rel.endswith((".rs", ".toml", ".ts", ".tsx")) or "target/" in rel:
                 continue
             t = open(fp, errors="ignore").read()
-            if re.search(r'http/?2|"http2"|\bh2\b|http/1\.1', t, re.I):
-                fails.append("!!! ADMIN DESK HTTP/2 / HTTP/1.1 IS BANNED (HTTP/3 only) !!! " + rel + " mentions it; remove it")
+            if re.search(r'http/?2|"http2"|\bh2\b|http/?1(\.[01])?\b|\bhttp1\b', t, re.I):
+                fails.append("!!! ADMIN DESK HTTP/1 AND HTTP/2 ARE BOTH BANNED (HTTP/3 only) !!! " + rel + " mentions it; remove it")
     return fails, warns
 if __name__ == "__main__":
     a, b = check()
