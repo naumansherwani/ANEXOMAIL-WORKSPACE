@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 05:16 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 05:23 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 04:56 PKT b2 LIVE on his server (his install paste OK). Doing: my Chrome DOM look for b2, then b3 plan+code, then SQL E199 sync + E200 audit log (BOTH, his word)
 NEXT STEP: b2 live Chrome look -> b3 plan doc + mount -> E199+E200 SQL with CHECK
 HIS LAST WORD: his 04:55: DONO SQL kero, b3 shuru, plan repo mein, search points likho, phir advance codes
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- df7921bd 21 Nov 05:23 QC8b b5 contrast css, b4 star wait fix, b2-b4 green scoped
+- e7440f56 21 Nov 05:16 ledger line 97ade033
 - 97ade033 21 Nov 05:16 QC8b b4 announcements + plan
 - 01586551 21 Nov 05:15 ledger line 334320ca
 - 334320ca 21 Nov 05:15 QC8b b4 announcements + plan
-- 59cdda79 21 Nov 05:13 ledger line 8b0bd090
-- 8b0bd090 21 Nov 05:13 b3 live proof, E199/E200 on his DB
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (247d67a3b8b5ebd7ac67492690b69ad390946d9a)
+WIP snapshot: refs/wip/last (d8b4a5c77bf5648578258c43ceb123f236d4324a)
