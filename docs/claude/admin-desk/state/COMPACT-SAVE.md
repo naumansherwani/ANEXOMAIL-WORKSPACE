@@ -37,3 +37,5 @@
 21. (21 Nov 2026 22:06 PKT) Login subtitle = secured-by-hardware line; login pill fixed on phones; landing pill on phones still overflows (ask before touching landing).
 
 22. (21 Nov 2026 22:31 PKT) His install: CA pinned (sha256 80:70:25:AD...), door failed Permission denied -> fixed with systemd LoadCredential. Login: pill fix both pages, card up 14px, horizon light under card. NEXT his install, sign in; then sign-in flash demo (his 22:31).
+
+23. (21 Nov 2026 22:36 PKT) BACKUP LAW: tag backup/desk-ui-<time> before every Desk UI change (TWO-COMMANDS.md). Home Sign in A made navy/crisp. He said "bahut bura colour" - asked which.

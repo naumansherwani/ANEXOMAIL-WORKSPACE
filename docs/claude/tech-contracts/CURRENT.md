@@ -2675,3 +2675,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 ### 21 Nov 2026 22:31 PKT Desk: DeskTelemetry pill fits phones on BOTH pages (his OK 22:28); login card 14 px higher; horizon light (DeskScene style) right under the card; desk-appdb.sh: CA via systemd LoadCredential + DESK_DB_CA=%d/db-ca.pem (the service user cannot open /etc/anexomail-desk, his journal: Permission denied); app.env + CA root 0600.
 
 - 21 Nov 2026 22:31 PKT Desk: CA via systemd credential, pill fix both pages, card up, horizon light under card; WIRED: NO until his install
+
+- 21 Nov 2026 22:36 PKT Desk home Sign in A prominent; backup tag before UI changes; WIRED: NO

@@ -1985,3 +1985,5 @@
 - 21 Nov 2026 22:06 PKT Desk login: secured-by-hardware line, pill fits phones; WIRED: NO until his desk-install
 
 - 21 Nov 2026 22:31 PKT Desk: CA via systemd credential, pill fix both pages, card up, horizon light under card; WIRED: NO until his install
+
+- 21 Nov 2026 22:36 PKT Desk home Sign in A prominent; backup tag before UI changes; WIRED: NO

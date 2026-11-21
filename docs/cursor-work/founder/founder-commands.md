@@ -5257,3 +5257,7 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 22:31 PKT] HIS WORD (22:28): home page pill bhi fix karo; install = founder ka Rust compile karta hai, awam ke do (web pull + install), admin desk ka install har advance technology latest pull karega right; his install paste: 5/5 CA pinned sha256 80:70:25:AD... but desk door: DESK_DB_CA Permission denied (os error 13); bottom light (image 1) mujhe acchi lagti hai, image 2 mein chhupi, mobile/tablet pe nazar nahi aati, fix karo; login box thora upar. (22:30) landing ki bottom light wali line same chahiye signin page pe. (22:31) sign in click ke baad flash kare gradient wala demo dikhao. DONE: pill fix in DeskTelemetry (both pages), card 14px up, horizon light right under the card (same size/colour as the home page), CA handed to the service as a systemd credential.
 
 - 21 Nov 2026 22:31 PKT Desk: CA via systemd credential, pill fix both pages, card up, horizon light under card; WIRED: NO until his install
+
+[21 Nov 2026 22:36 PKT] HIS WORD (22:35): sign in ka button bahut zyada glow karta hai jis wajah se A dim ho jata hai, A prominent nazar aaye, baki kisi cheez ko touch na karna; main pull nahi karunga; tum hamesha backup lo taake pasand na aaye to pehle wala wapis aaye. (22:35) yeh bahut bura colour hai big no. DONE: backup tag backup/desk-ui-20261121-2235 before the change; home Sign in A = navy, crisp, 1.2rem (no white wash). Asked which colour he means.
+
+- 21 Nov 2026 22:36 PKT Desk home Sign in A prominent; backup tag before UI changes; WIRED: NO
