@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 03:32 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 03:32 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: caps audit
 NEXT STEP: Day1 Desk Bridge, AD3, AD2 door
 HIS LAST WORD: caps audit
@@ -18,25 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- d6f7599e 22 Nov 03:32 caps audit
 - cb561384 22 Nov 03:30 ledger line 4651e3ed
 - 4651e3ed 22 Nov 03:30 awam package chart
 - 4ec63755 22 Nov 03:19 ledger line d46a9cb1
 - d46a9cb1 22 Nov 03:19 Desk dashboard plan
-- f1880c63 22 Nov 03:08 ledger line 13389f33
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/founder/founder-commands.md
-?? docs/awam/PACKAGES-CAPS-AUDIT-22NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md |  2 ++
- docs/claude/state/WORKING-NOW.md               | 24 +++++++-----------------
- docs/cursor-work/founder/founder-commands.md   |  2 ++
- 3 files changed, 11 insertions(+), 17 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 22 ++--------------------
+ 1 file changed, 2 insertions(+), 20 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -47,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (01699d6aeed21ba0d1c7de0d07e31d3622a8b622)
+WIP snapshot: refs/wip/last (c216ee056f4e3f5ae61a85d3847eb6d70342ccd4)

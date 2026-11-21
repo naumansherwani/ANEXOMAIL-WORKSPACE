@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 03:32 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 03:32 PKT) - read this FIRST for the Desk after a compaction
 DOING: caps audit
 NEXT STEP: Day1 Desk Bridge, AD3, AD2 door
 HIS LAST WORD: caps audit
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- d6f7599e 22 Nov 03:32 caps audit
 - cb561384 22 Nov 03:30 ledger line 4651e3ed
 - 4651e3ed 22 Nov 03:30 awam package chart
 - 4ec63755 22 Nov 03:19 ledger line d46a9cb1
@@ -54,7 +55,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - f1880c63 22 Nov 03:08 ledger line 13389f33
 - 13389f33 22 Nov 03:08 Desk 4-day plan
 - 151953ea 22 Nov 03:02 ledger line 0d4ae5c6
-- 0d4ae5c6 22 Nov 03:02 Desk sidebar sections + loopholes
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
