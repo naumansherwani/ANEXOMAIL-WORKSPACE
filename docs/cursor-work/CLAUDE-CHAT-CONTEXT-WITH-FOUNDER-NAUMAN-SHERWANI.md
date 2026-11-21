@@ -5024,3 +5024,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 23:36 PKT LAW frontend = Caddy, Hetzner = backend; DNS = Caddy server IP; WIRED: NO
 
 - 21 Nov 2026 23:39 PKT his fact: 62.238.98.98 = Caddy IP; AAAA = 2a01:4f9:c014:5df6::1; WIRED: NO
+
+- 21 Nov 2026 23:46 PKT his 23:44 screenshot: Namecheap AAAA admindesk save still failing; recorded; WIRED: NO
