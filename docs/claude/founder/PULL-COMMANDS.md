@@ -3133,3 +3133,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - S0 evidence: QUIC to UDP 4400 reachable from his Chrome; h2 reuse; docs only; WIRED: NO
 
 - 22 Nov 04:40 PKT: S0 retest h2 on new tab; AD3 4 s patch confirmed in his DB (ad-auto all rows t); S0 still NOT green; next his curl alt-svc + tcpdump
+
+- 22 Nov 04:46 PKT: HIS LAW: Desk HTTP fallback BANNED until his approval, HTTP/3 only; S0 evidence 3 Alt-Svc sent, 0 external UDP 4400 packets; not green
