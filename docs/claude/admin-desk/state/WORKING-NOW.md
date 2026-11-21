@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 03:00 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 03:01 PKT) - read this FIRST for the Desk after a compaction
 DOING: R4-1b step 1 top bar + profile menu done; install pasted OK
 NEXT STEP: R4-1b Desk Bridge, then R4-2 inboxes, AD3 SQL
 HIS LAST WORD: his install paste
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 2384dac0 22 Nov 03:01 Desk top bar + profile menu
 - df835efe 22 Nov 02:53 ledger line a616ac20
 - a616ac20 22 Nov 02:53 Desk modules registry + rail fix + gate resolve fix
 - 512f33e2 22 Nov 02:46 ledger line e3384356
@@ -54,11 +55,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 84363605 22 Nov 02:45 ledger line 64a0e2de
 - 64a0e2de 22 Nov 02:45 Desk rail pins groups + founder-to-desk audit
 - 1565602c 22 Nov 02:27 ledger line ae67604c
-- ae67604c 22 Nov 02:27 Admin Desk rail: original logo
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskShell.tsx
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

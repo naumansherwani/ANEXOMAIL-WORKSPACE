@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 03:00 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 03:01 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: R4-1b step 1 top bar + profile menu done; install pasted OK
 NEXT STEP: R4-1b Desk Bridge, then R4-2 inboxes, AD3 SQL
 HIS LAST WORD: his install paste
@@ -18,35 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 2384dac0 22 Nov 03:01 Desk top bar + profile menu
 - df835efe 22 Nov 02:53 ledger line a616ac20
 - a616ac20 22 Nov 02:53 Desk modules registry + rail fix + gate resolve fix
 - 512f33e2 22 Nov 02:46 ledger line e3384356
 - e3384356 22 Nov 02:46 Desk rail: Managed Move-In name
-- 84363605 22 Nov 02:45 ledger line 64a0e2de
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/state/SERVER-FIRST.jsonl
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/founder/founder-commands.md
- D founder-web/dist-desk/00-FOUNDER-TECH-RULE.md
- D founder-web/dist-desk/assets/00-FOUNDER-TECH-RULE.md
- D founder-web/dist-desk/assets/desk-DLNQN-Nq.js
- M founder-web/dist-desk/desk.html
- D founder-web/dist-desk/kernel/00-FOUNDER-TECH-RULE.md
- M founder-web/src/desk/DeskShell.tsx
-?? founder-web/dist-desk/assets/desk-ChcGVvJu.js
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/cursor-work/founder/founder-commands.md       |  2 +
- founder-web/dist-desk/00-FOUNDER-TECH-RULE.md      |  5 ---
- .../dist-desk/assets/00-FOUNDER-TECH-RULE.md       |  5 ---
- founder-web/dist-desk/assets/desk-DLNQN-Nq.js      | 51 ----------------------
- founder-web/dist-desk/desk.html                    |  2 +-
- .../dist-desk/kernel/00-FOUNDER-TECH-RULE.md       |  5 ---
- founder-web/src/desk/DeskShell.tsx                 | 18 +++++++-
- 9 files changed, 35 insertions(+), 86 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 32 ++------------------------------
+ 1 file changed, 2 insertions(+), 30 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -57,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (2214f922230beaa67d6c28334bf1bbf440e725ac)
+WIP snapshot: refs/wip/last (1fea72206d20a443e8dbcd5ebefcd20fd5fabfa2)
