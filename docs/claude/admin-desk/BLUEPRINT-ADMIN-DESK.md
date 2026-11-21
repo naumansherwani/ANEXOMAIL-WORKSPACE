@@ -1,3 +1,5 @@
+> [22 Nov 2026 04:59 PKT PKT] S0 EVIDENCE 4 (his pcap): Chrome QUIC packets from 182.185.188.151 REACH UDP 4400 and the Desk completes the QUIC handshake. Network and Hetzner firewall CLEARED. WebTransport CONNECT fails only because the Desk has no WebTransport yet (S2). Open: Chrome navigation still h2 (alt-svc use). NOT green.
+
 > [22 Nov 2026 04:46 PKT] HIS LAW (04:44): HTTP FALLBACK IS BANNED for the Admin Desk and stays banned until HE gives approval. NO signed poll doors, NO SSE, NO h1/h2 data path. HTTP/3 ONLY (WebTransport primary, MoQ later); everything else intact. This overrides D2 and S1 in BRIDGE-TRANSPORT-DECISION-22NOV.md. S1 is now the Rust Bridge data layer (bridge.rs) read through the same HTTP/3 + WebTransport path, Rule 52 signed. S0 evidence 3: public Alt-Svc header IS sent (h3=":4400"; ma=86400), but tcpdump 20 s on UDP 4400 (non-loopback) saw ZERO packets; my earlier '376 ms = reachable' is WEAK (a local Chrome rejection looks the same). S0 NOT green.
 
 

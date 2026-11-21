@@ -148,3 +148,5 @@ AD3 ran on his server OK. Read BRIDGE-FEATURES-22NOV.md. Open decisions for him:
 ## 73 (22 Nov 2026 04:46 PKT) HIS LAW: HTTP FALLBACK BANNED for the Desk until his approval; HTTP/3 only. S0 evidence 3: Alt-Svc sent, 0 non-loopback UDP 4400 packets in 20 s. S0 not green.
 
 ## 74 (22 Nov 2026 04:57 PKT) his ss: 443=founder, 4400=desk, 18443=caddy. pcap result pending (tcpdump -nr /tmp/h4400.pcap). S0 not green.
+
+## 75 (22 Nov 2026 04:59 PKT) S0 EVIDENCE 4 (his pcap): my 4 WebTransport tries from his Chrome (IP 182.185.188.151) REACH UDP 4400 on the server (eth0 In), the Desk answers with a full QUIC handshake (5131 B cert flight, 1326, 1389) and closes. NETWORK + HETZNER FIREWALL ARE CLEARED. WebTransport CONNECT fails because the Desk has no WebTransport yet (S2). Open: why Chrome NAVIGATION stays h2 (earlier tcpdumps saw no Chrome packets during reloads). 443 is user/founder, Desk stays 4400.
