@@ -2667,3 +2667,7 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 21 Nov 2026 21:51 PKT Desk login: Sovereign Desk Access line, logo off the pill on phone/tablet; WIRED: NO until his desk-install
 
 - 21 Nov 2026 21:54 PKT his word on the login line recorded; options offered; WIRED: NO
+
+### 21 Nov 2026 22:06 PKT Desk login (his 22:05): subtitle "Sovereign Desk Access. Protect every customer's vault, secured by hardware, built for you to step in and resolve instantly."; HTTP/3 pill on the LOGIN fits one line inside a 360/412 px phone (scoped .dk-login-tel CSS); landing pill still edge-to-edge on phones (not touched, his word). desk-install.sh always fetches origin/main, with or without tail.
+
+- 21 Nov 2026 22:06 PKT Desk login: secured-by-hardware line, pill fits phones; WIRED: NO until his desk-install

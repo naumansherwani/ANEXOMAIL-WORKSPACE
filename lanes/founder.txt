@@ -175,7 +175,7 @@ founder-web/dist-desk/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist-desk/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist-desk/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist-desk/assets/desk-3KBasGG5.css
-founder-web/dist-desk/assets/desk-bMLWxv_b.js
+founder-web/dist-desk/assets/desk-JKgA4nUv.js
 founder-web/dist-desk/assets/kernel.worker-DY4WQ2it.js
 founder-web/dist-desk/assets/three.module-C0S06CcT.js
 founder-web/dist-desk/boot.css
@@ -200,7 +200,7 @@ founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-C6CP20s-.js
+founder-web/dist/assets/index-CSm8e4P9.js
 founder-web/dist/assets/index-CnHbmMGT.css
 founder-web/dist/assets/kernel.worker-DY4WQ2it.js
 founder-web/dist/assets/messages-DJ_oHCt2.js

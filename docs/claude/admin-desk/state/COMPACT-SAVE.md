@@ -33,3 +33,5 @@
 19. (21 Nov 2026 21:42 PKT) Allowed Desk commands = desk-install.sh, ad-auto.sh, desk-restart.sh (TWO-COMMANDS.md).
 
 20. (21 Nov 2026 21:51 PKT) Login: subtitle = Sovereign Desk Access line; logo inside the card on phone/tablet (was on top of the pill). NEXT his ONE desk-install, sign in.
+
+21. (21 Nov 2026 22:06 PKT) Login subtitle = secured-by-hardware line; login pill fixed on phones; landing pill on phones still overflows (ask before touching landing).
