@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 02:46 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 02:53 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: R4-1a pins/scroll/groups done; audit written
 NEXT STEP: R4-1b top bar + profile menu + Desk Bridge, then R4-2 inboxes
 HIS LAST WORD: pin/scroll/groups + audit
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- a616ac20 22 Nov 02:53 Desk modules registry + rail fix + gate resolve fix
+- 512f33e2 22 Nov 02:46 ledger line e3384356
 - e3384356 22 Nov 02:46 Desk rail: Managed Move-In name
 - 84363605 22 Nov 02:45 ledger line 64a0e2de
 - 64a0e2de 22 Nov 02:45 Desk rail pins groups + founder-to-desk audit
-- 1565602c 22 Nov 02:27 ledger line ae67604c
-- ae67604c 22 Nov 02:27 Admin Desk rail: original logo
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (67867cef1bc2f2dc821528acc7ae24ebe2473214)
+WIP snapshot: refs/wip/last (1b620f93bad69a3a8b3ea4e06132e7096284d65f)
