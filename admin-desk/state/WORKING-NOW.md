@@ -23,6 +23,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- bf9114ac 21 Nov 10:27 desk: AD1-editor.sql for the SQL editor
 - 41acdd31 21 Nov 10:26 desk: AD1-editor.sql for the SQL editor
 - c7681864 21 Nov 10:26 checkpoint 10:38
 - c042de6e 21 Nov 10:25 checkpoint 10:38
@@ -30,7 +31,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - a5339f0b 21 Nov 10:25 desk: AD1 works without superuser
 - 8fa66e0b 21 Nov 10:09 checkpoint 10:22
 - c2c3e43d 21 Nov 10:09 checkpoint 10:22
-- b5f6863a 21 Nov 10:08 desk: working-now + phases inside desk folder, own database anexo_desk
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md

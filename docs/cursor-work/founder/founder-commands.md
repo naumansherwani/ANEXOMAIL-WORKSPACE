@@ -5013,3 +5013,5 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 10:45 PKT: his word 10:26: AD1-editor.sql built for his SQL editor (AD1 + 8-row CHECK last), no superuser, tested twice as non-superuser, gate fails if stale; WIRED: not yet run by him
 
 - 21 Nov 2026 10:45 PKT: his word 10:26: AD1-editor.sql built for his SQL editor (AD1 + 8-row CHECK last), no superuser, tested twice as non-superuser, gate fails if stale; WIRED: not yet run by him
+
+- 21 Nov 2026 10:48 PKT: checkpoint (loop refresh of WORKING-NOW files); AD1 not yet run by him (WIRED: NO)
