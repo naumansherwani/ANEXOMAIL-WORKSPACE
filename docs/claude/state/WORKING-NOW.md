@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 07:30 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 07:31 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Desk isolation gate written + proven (deliberate violations fail); Admin Desk phases in blueprint; discussion pending
 NEXT STEP: his answers; R3a0 read-only ss + DNS check; R3a2 owner SQL E201 (add desk_app grant check to gate)
 HIS LAST WORD: his 07:29: gate ko samjha do, mix nahi
@@ -18,29 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 3ca0635a 21 Nov 07:31 Desk isolation gate (founder and Desk never mixed)
 - d056b1a7 21 Nov 07:29 ledger line dde2559c
 - dde2559c 21 Nov 07:29 WORKING-NOW checkpoint
 - 98a98972 21 Nov 07:29 ledger line 614387c1
 - 614387c1 21 Nov 07:29 WORKING-NOW checkpoint
-- 4d9051e8 21 Nov 07:29 ledger line 0b6589f6
 
 ## Uncommitted files (half-done work if any)
- M CLAUDE.md
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
- M docs/cursor-work/founder/founder-commands.md
- M lanes/lane-sync.py
-?? docs/claude/DESK-ISOLATION-GATE-21NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- CLAUDE.md                                          |  1 +
- docs/claude/state/WORKING-NOW.md                   | 28 ++++++++--------------
- ...DE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md |  1 +
- docs/cursor-work/founder/founder-commands.md       |  2 ++
- lanes/lane-sync.py                                 | 22 ++++++++++++++++-
- 5 files changed, 35 insertions(+), 19 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 26 ++------------------------
+ 1 file changed, 2 insertions(+), 24 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -51,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ac8fddc5b213cc6a48a30cf8d0d70ff810103848)
+WIP snapshot: refs/wip/last (cc7d879c6d7f89cd2a9f1ef41d8a330821d42c0a)
