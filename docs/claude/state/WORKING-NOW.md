@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 00:21 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 00:21 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: anexomail.com fine on mobile data, not on his WiFi; DNS proven good; suspect local DNS cache
 NEXT STEP: his nslookup paste; Alt-Svc haan; E201; Rule 52
 HIS LAST WORD: 00:21 wifi vs mobile
@@ -18,24 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- a5c6c9ef 22 Nov 00:21 Record wifi vs mobile
 - 26aff9e6 22 Nov 00:10 ledger line 5e7c00ba
 - 5e7c00ba 22 Nov 00:10 Record DNS outage
 - 911da8ef 22 Nov 00:00 ledger line 54e41a8f
 - 54e41a8f 22 Nov 00:00 Record DNS proof
-- a99ab122 21 Nov 23:56 ledger line 2e237693
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/founder/founder-commands.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/admin-desk/state/COMPACT-SAVE.md |  2 ++
- docs/claude/state/WORKING-NOW.md             | 25 +++++++------------------
- docs/cursor-work/founder/founder-commands.md |  2 ++
- 3 files changed, 11 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 21 ++-------------------
+ 1 file changed, 2 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -46,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (9ae5d6e07499771b4e55db25c6c9249502900342)
+WIP snapshot: refs/wip/last (90a9108e816e1acc6438a0ba399377a769639c0e)
