@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 86b9eee1 21 Nov 06:27 R3 Admin Desk founder order written (docs only)
+- f1b1fc0c 21 Nov 06:27 ledger line 54c77ff0
 - 54c77ff0 21 Nov 06:27 R3 Admin Desk founder order written (docs only)
 - 5958fd3b 21 Nov 05:53 ledger line 50e3a184
 - 50e3a184 21 Nov 05:53 QC8 GREEN, Admin Desk 2-day plan
-- 41616725 21 Nov 05:52 ledger line e110a628
-- e110a628 21 Nov 05:52 QC8 GREEN, Admin Desk 2-day plan
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 30 ++----------------------------
- 1 file changed, 2 insertions(+), 28 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (c04f2a1b1394307b349fc9ca5c6b64d27afb8dbd)
+WIP snapshot: refs/wip/last (c92d5942c57b6981153b284e84af05ac4cc0ef80)
