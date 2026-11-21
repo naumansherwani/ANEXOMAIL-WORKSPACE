@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 06:28 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 06:28 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: HIGH ALERT R3 ADMIN MAIL DESK (company inbox + move-in + LEO) order WRITTEN ONLY, no code: read docs/claude/ADMIN-DESK-R3-FOUNDER-ORDER-21NOV.md (16 points; support@ banned -> resolved@; no passkey; billing@ restricted); QC8 GREEN done; Rule 52 + advance technology; WORKING-NOW auto every 2 min
 NEXT STEP: his answers A-E (family accts, billing folder, staff/composer, which 3 awam packages, which addresses exist), then R3a contract in CURRENT.md + SQL E201
 HIS LAST WORD: his 21 Nov 06:28: working now md sab jaga update kero; 06:26 Admin Desk order
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 5bc0d3ad 21 Nov 06:28 WORKING-NOW refresh, loop restarted
 - dbb14970 21 Nov 06:27 ledger line 86b9eee1
 - 86b9eee1 21 Nov 06:27 R3 Admin Desk founder order written (docs only)
 - f1b1fc0c 21 Nov 06:27 ledger line 54c77ff0
 - 54c77ff0 21 Nov 06:27 R3 Admin Desk founder order written (docs only)
-- 5958fd3b 21 Nov 05:53 ledger line 50e3a184
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (965a69d439e014030e50bf108a4ef505e2978b63)
+WIP snapshot: refs/wip/last (8a7af046bed2e5c5c0e14407fdbb971334217721)
