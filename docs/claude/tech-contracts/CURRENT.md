@@ -2671,3 +2671,7 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 ### 21 Nov 2026 22:06 PKT Desk login (his 22:05): subtitle "Sovereign Desk Access. Protect every customer's vault, secured by hardware, built for you to step in and resolve instantly."; HTTP/3 pill on the LOGIN fits one line inside a 360/412 px phone (scoped .dk-login-tel CSS); landing pill still edge-to-edge on phones (not touched, his word). desk-install.sh always fetches origin/main, with or without tail.
 
 - 21 Nov 2026 22:06 PKT Desk login: secured-by-hardware line, pill fits phones; WIRED: NO until his desk-install
+
+### 21 Nov 2026 22:31 PKT Desk: DeskTelemetry pill fits phones on BOTH pages (his OK 22:28); login card 14 px higher; horizon light (DeskScene style) right under the card; desk-appdb.sh: CA via systemd LoadCredential + DESK_DB_CA=%d/db-ca.pem (the service user cannot open /etc/anexomail-desk, his journal: Permission denied); app.env + CA root 0600.
+
+- 21 Nov 2026 22:31 PKT Desk: CA via systemd credential, pill fix both pages, card up, horizon light under card; WIRED: NO until his install

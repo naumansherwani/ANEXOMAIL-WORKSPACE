@@ -35,3 +35,5 @@
 20. (21 Nov 2026 21:51 PKT) Login: subtitle = Sovereign Desk Access line; logo inside the card on phone/tablet (was on top of the pill). NEXT his ONE desk-install, sign in.
 
 21. (21 Nov 2026 22:06 PKT) Login subtitle = secured-by-hardware line; login pill fixed on phones; landing pill on phones still overflows (ask before touching landing).
+
+22. (21 Nov 2026 22:31 PKT) His install: CA pinned (sha256 80:70:25:AD...), door failed Permission denied -> fixed with systemd LoadCredential. Login: pill fix both pages, card up 14px, horizon light under card. NEXT his install, sign in; then sign-in flash demo (his 22:31).

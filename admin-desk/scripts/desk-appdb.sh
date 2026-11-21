@@ -14,17 +14,20 @@ HP="$(DESK_ADMIN_URL="$DESK_DB_URL" python3 -c 'import os,urllib.parse as u;a=u.
 T="$(mktemp -d)"; openssl s_client -starttls postgres -connect "$HP" -showcerts </dev/null 2>/dev/null | awk -v d="$T" '/BEGIN CERT/{n++} n{print > (d "/c" n ".pem")}'
 ROOTF=""; for f in "$T"/c*.pem; do [ -s "$f" ] || continue; S="$(openssl x509 -in "$f" -noout -subject -nameopt RFC2253 2>/dev/null)"; I="$(openssl x509 -in "$f" -noout -issuer -nameopt RFC2253 2>/dev/null)"
   [ "${S#subject=}" = "${I#issuer=}" ] && echo "$S" | grep -q "O=Supabase Inc" && echo "$S" | grep -q "CN=Supabase Root 2021 CA" && ROOTF="$f"; done
-if [ -n "$ROOTF" ]; then cp "$ROOTF" "$CA"; chown root:$SVC "$CA"; chmod 640 "$CA"; echo "   database CA pinned: Supabase Root 2021 CA sha256=$(openssl x509 -in "$CA" -noout -fingerprint -sha256 | cut -d= -f2)"
+if [ -n "$ROOTF" ]; then cp "$ROOTF" "$CA"; chmod 600 "$CA"; echo "   database CA pinned: Supabase Root 2021 CA sha256=$(openssl x509 -in "$CA" -noout -fingerprint -sha256 | cut -d= -f2)"
 else echo "   note: no Supabase Root 2021 CA in the chain from $HP (public roots only)"; rm -f "$CA"; fi; rm -rf "$T"
 
 check() {  # restart the Desk with app.env and read its own words: "database connection ready"
-  mkdir -p /etc/systemd/system/$SVC.service.d; printf '[Service]\nEnvironmentFile=%s\n' "$APP" >/etc/systemd/system/$SVC.service.d/db.conf
+  # the CA reaches the service as a systemd credential (the Desk user cannot open /etc/anexomail-desk, which stays root-only 0700): his paste 22:2x 'Permission denied (os error 13)'
+  mkdir -p /etc/systemd/system/$SVC.service.d
+  if [ -s "$CA" ]; then printf '[Service]\nEnvironmentFile=%s\nLoadCredential=db-ca.pem:%s\nEnvironment=DESK_DB_CA=%%d/db-ca.pem\n' "$APP" "$CA" >/etc/systemd/system/$SVC.service.d/db.conf
+  else printf '[Service]\nEnvironmentFile=%s\n' "$APP" >/etc/systemd/system/$SVC.service.d/db.conf; fi
   systemctl daemon-reload; systemctl restart $SVC; sleep 3
   J="$(journalctl -u $SVC --since '-20s' --no-pager 2>/dev/null | grep 'desk door' | tail -1)"; echo "   $J"
   C="$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: admindesk.anexomail.com' http://127.0.0.1:4400/desk/v1/auth/me)"
   [ "$C" = 401 ] && echo "$J" | grep -q "connection ready"
 }
-write_app() { ( umask 037; printf 'DESK_APP_URL=%s\n' "$1" >"$APP"; [ -s "$CA" ] && printf 'DESK_DB_CA=%s\n' "$CA" >>"$APP" ); chown root:$SVC "$APP"; chmod 640 "$APP"; }
+write_app() { ( umask 077; printf 'DESK_APP_URL=%s\n' "$1" >"$APP" ); chmod 600 "$APP"; }  # read by systemd (root) only
 
 # 2) --ensure: keep a working login
 if [ "$MODE" = "--ensure" ] && [ -s "$APP" ] && grep -q '^DESK_APP_URL=' "$APP"; then

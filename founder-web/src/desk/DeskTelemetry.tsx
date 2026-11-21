@@ -23,8 +23,9 @@ export function DeskTelemetry({ chainHead }: { chainHead?: string | null }) {
   return (
     <>
       {proto !== null && (
-        <div style={{ position: "absolute", top: 24, left: 0, right: 0, display: "flex", justifyContent: "center", zIndex: 3 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 16px", border: "1px solid rgba(143,180,255,.28)", borderRadius: 999, background: "rgba(6,11,25,.55)", backdropFilter: "blur(10px)", fontSize: 12, letterSpacing: ".06em", color: "#A9C4F5" }}>
+        <div className="dk-pill-row" style={{ position: "absolute", top: 24, left: 0, right: 0, padding: "0 16px", boxSizing: "border-box", display: "flex", justifyContent: "center", zIndex: 3 }}>
+          <style>{"@media (max-width:480px){.dk-pill{font-size:10.5px!important;letter-spacing:.02em!important;padding:6px 12px!important;gap:8px!important}}"}</style>
+          <div className="dk-pill" style={{ maxWidth: "100%", boxSizing: "border-box", whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 10, padding: "8px 16px", border: "1px solid rgba(143,180,255,.28)", borderRadius: 999, background: "rgba(6,11,25,.55)", backdropFilter: "blur(10px)", fontSize: 12, letterSpacing: ".06em", color: "#A9C4F5" }}>
             <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: "50%", background: "#5FA8FF", boxShadow: "0 0 10px #5FA8FF" }} /><span>{DESK_LINE}</span>
           </div>
         </div>

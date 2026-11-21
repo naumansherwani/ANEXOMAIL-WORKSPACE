@@ -3911,3 +3911,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 21:54 PKT his word on the login line recorded; options offered; WIRED: NO
 
 - 21 Nov 2026 22:06 PKT Desk login: secured-by-hardware line, pill fits phones; WIRED: NO until his desk-install
+
+- 21 Nov 2026 22:31 PKT Desk: CA via systemd credential, pill fix both pages, card up, horizon light under card; WIRED: NO until his install

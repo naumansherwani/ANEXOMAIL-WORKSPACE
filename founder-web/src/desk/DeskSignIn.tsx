@@ -37,9 +37,10 @@ export function DeskSignIn() {
   return (
     <main className="fa">
       <DeskScene>
-        <style>{".dk-login-tel>div:first-child{padding:0 16px!important;box-sizing:border-box}.dk-login-tel>div:first-child>div{max-width:100%;box-sizing:border-box;justify-content:center;text-align:center;white-space:nowrap}@media (max-width:480px){.dk-login-tel>div:first-child>div{font-size:10.5px!important;letter-spacing:.02em!important;padding:6px 12px!important;gap:8px!important}}.dk-logo-wide{position:absolute;top:22px;left:24px;z-index:5;display:inline-flex}.dk-logo-card{display:none}@media (max-width:899px){.dk-logo-wide{display:none}.dk-logo-card{display:inline-flex}}"}</style>
+        <style>{".dk-logo-wide{position:absolute;top:22px;left:24px;z-index:5;display:inline-flex}.dk-logo-card{display:none}@media (max-width:899px){.dk-logo-wide{display:none}.dk-logo-card{display:inline-flex}}"}</style>
         <a href="/" aria-label="ANEXOMAIL Admin Desk home" className="dk-logo-wide" style={{ minHeight: 44, alignItems: "center", color: "inherit", textDecoration: "none" }}><BrandMark home={false} /></a>
-        <div className="dk-login-tel"><DeskTelemetry /></div>
+        <DeskTelemetry />
+        <div style={{ width: "100%", maxWidth: 456, display: "flex", flexDirection: "column", alignItems: "center", marginTop: -14 }}>
         <section style={card} aria-label="Admin Desk sign-in">
           <div aria-hidden="true" style={{ position: "absolute", top: -60, left: "50%", width: 260, height: 160, transform: "translateX(-50%)", borderRadius: "50%", background: "radial-gradient(closest-side,rgba(95,168,255,.42),rgba(27,79,156,.22) 55%,rgba(10,26,62,0) 100%)", filter: "blur(6px)", pointerEvents: "none" }} />
           <a href="/" aria-label="ANEXOMAIL Admin Desk home" className="dk-logo-card" style={{ minHeight: 44, alignItems: "center", color: "inherit", textDecoration: "none", position: "relative", zIndex: 1 }}><BrandMark home={false} /></a>
@@ -65,6 +66,9 @@ export function DeskSignIn() {
             <p style={{ margin: 0, fontSize: 11, letterSpacing: ".08em", color: "#8FA6CC", textAlign: "center" }}>Built on: Rust · Tokio · axum · Rust WASM kernel · WebAuthn passkeys · Three.js</p>
           </div>
         </section>
+        {/* the warm horizon light of the Desk home page (same size and colour as DeskScene), right under the card so the card never hides it */}
+        <div aria-hidden="true" style={{ width: "76vw", flexShrink: 0, height: 14, marginTop: 22, borderRadius: "50%", background: "radial-gradient(closest-side,rgba(255,170,70,.35),rgba(255,170,70,0))", pointerEvents: "none" }} />
+        </div>
       </DeskScene>
     </main>
   );
