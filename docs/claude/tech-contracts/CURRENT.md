@@ -2392,3 +2392,9 @@ Gate bans http/1, http/1.1, http/2, h2 in every Desk .rs/.toml/.ts/.tsx (only De
 - 21 Nov 2026 10:05 PKT: his word 09:52: all QUIC/UDP advanced technology written + gated (QUIC-UDP-TECH-21NOV.md, 10 code rows, 4 planned rows), BBR added to h3.rs, 6 tests pass; WIRED: code YES, over-the-wire proof NO
 
 - 21 Nov 2026 10:05 PKT: his word 09:52: all QUIC/UDP advanced technology written + gated (QUIC-UDP-TECH-21NOV.md, 10 code rows, 4 planned rows), BBR added to h3.rs, 6 tests pass; WIRED: code YES, over-the-wire proof NO
+
+## 21 Nov 2026 10:15 PKT R3a0-s2 = PROVEN (his paste 09:55): MainPID 185327, drop-in h3.conf (LoadCredential + DESK_H3_ADDR=[::]:4400), binary has h3check, UDP *:4400 owned by the service, ufw 4400/udp v4+v6, H3CHECK OK on 127.0.0.1 and 62.238.98.98 (HTTP/3 200). The earlier 'old binary' reading was a stale view taken while the service restarted; no code change was needed. Row R3a0-stage2 flipped to code (file h3.rs), HTTP/3 block lifted. Open: his DNS HTTPS record + AAAA (alpn=h3 port=4400) so browsers use UDP 4400 (Caddy's alt-svc h3=:18443 still shows on the TCP side). Next phase: R3a2 (AD1 SQL, auth.rs, DBSC), then orb, passkey, R3p.
+
+- 21 Nov 2026 10:15 PKT: R3a0-s2 HTTP/3 PROVEN on his server (H3CHECK OK loopback + 62.238.98.98, WIRED: YES / REAL: YES, TECH-LAW CHECKED); gate row code, block lifted; pill HTTP/3 QUIC TLS 1.3 AES-256-GCM X25519MLKEM768; DNS record still his hands; NOW R3a2 AD1
+
+- 21 Nov 2026 10:15 PKT: R3a0-s2 HTTP/3 PROVEN on his server (H3CHECK OK loopback + 62.238.98.98, WIRED: YES / REAL: YES, TECH-LAW CHECKED); gate row code, block lifted; pill HTTP/3 QUIC TLS 1.3 AES-256-GCM X25519MLKEM768; DNS record still his hands; NOW R3a2 AD1

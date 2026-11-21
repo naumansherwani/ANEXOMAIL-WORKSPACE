@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 09:53 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: QUIC/UDP full tech list + gate rows + BBR
-NEXT STEP: his run of desk-h3-check.sh -> fact -> H3CHECK OK -> HTTP/3 words on page -> AD1
-HIS LAST WORD: 09:52 quic udp tech
+# WORKING NOW (manual checkpoint, 21 Nov 2026 09:56 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: R3a0-s2 HTTP/3 PROVEN (H3CHECK OK); HTTP/3 block lifted; NOW R3a2: AD1 SQL
+NEXT STEP: AD1.sql + ad-sql-run.sh + check -> auth.rs ARGON2ID -> DBSC -> orb -> passkey -> R3p; his: desk-install.sh once + AAAA/HTTPS record
+HIS LAST WORD: 09:55 phase order
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,39 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- afb9b14c 21 Nov 09:53 ledger line 7969a8a2
 - 7969a8a2 21 Nov 09:53 desk: quic udp tech list, gate rows, bbr
 - c8eabc7b 21 Nov 09:53 ledger line 86a82d75
 - 86a82d75 21 Nov 09:53 desk: quic udp tech list, gate rows, bbr
 - ce35de84 21 Nov 09:53 ledger line 650302ea
-- 650302ea 21 Nov 09:53 desk: h3-check diagnosis section
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/gates/DESK-FEATURES.json
+ M docs/claude/WEBSITE-PROMISES.md
+ M docs/claude/state/SERVER-FIRST.jsonl
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M docs/cursor-work/founder/founder-commands.md
+ D founder-web/dist-desk/00-FOUNDER-TECH-RULE.md
+ D founder-web/dist-desk/assets/00-FOUNDER-TECH-RULE.md
+ D founder-web/dist-desk/assets/desk-eE43lg4y.js
+ M founder-web/dist-desk/desk.html
+ D founder-web/dist-desk/kernel/00-FOUNDER-TECH-RULE.md
+ M founder-web/src/desk/DeskTelemetry.tsx
+?? founder-web/dist-desk/assets/desk-Cqtl4m9N.js
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/cursor-work/founder/founder-commands.md       |  2 ++
+ founder-web/dist-desk/00-FOUNDER-TECH-RULE.md      |  5 ---
+ .../dist-desk/assets/00-FOUNDER-TECH-RULE.md       |  5 ---
+ founder-web/dist-desk/assets/desk-eE43lg4y.js      |  9 ------
+ founder-web/dist-desk/desk.html                    |  2 +-
+ .../dist-desk/kernel/00-FOUNDER-TECH-RULE.md       |  5 ---
+ founder-web/src/desk/DeskTelemetry.tsx             |  4 ++-
+ 13 files changed, 32 insertions(+), 48 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +61,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (324347b0e6ffd042442826080a887319fa3a57c4)
+WIP snapshot: refs/wip/last (260565c6192b5c63e00c414e582862f0861af11e)
