@@ -39,6 +39,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- fa104607 21 Nov 21:43 ledger line c88cb88c
 - c88cb88c 21 Nov 21:43 Desk: restart command, three-command law
 - 016bb463 21 Nov 21:42 ledger line e3b1e4f5
 - e3b1e4f5 21 Nov 21:42 Desk: one install command does everything (DB login + CA)
@@ -46,7 +47,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 8747699c 21 Nov 21:40 Desk login: motto removed from the login page only
 - a69e4362 21 Nov 21:39 ledger line c29f4204
 - c29f4204 21 Nov 21:39 Desk login: logo link, vault line, fit; DB CA pin; CLEAN-PUSH LAW
-- 7f731c3c 21 Nov 21:27 ledger line 3d4bc21d
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
