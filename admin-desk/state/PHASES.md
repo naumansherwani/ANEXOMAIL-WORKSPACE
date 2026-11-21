@@ -59,3 +59,5 @@ Updated 21 Nov 2026 10:20 PKT. Rule 52: signed kernel-verified calls, no raw fet
 - [22 Nov 2026 03:19 PKT] DASHBOARD PHASES (DASHBOARD-LIVE-COMMAND-22NOV.md): R4-1b Bridge = A3 pipeline heartbeat + B4 alert center + B5 service health (Rust probes, SSE); R3b/R3f = A1 Live SLA Clock + B1 queues + B2 SLA at risk (Rust scheduler, Postgres); R3p = A2 Active P1 + packages with prices + B9 (HMAC webhook, plan rows); R4-1c = B3 security health score (SQL views); R4-10 = B6 deliverability; R4-11 = B7 Move-In board; R4-2 = B11 spoof/link guard (Rust MIME). Tech per row in the file.
 
 - [22 Nov 2026 03:43 PKT] R4-1b BRIDGE (BRIDGE-PLAN-22NOV.md): step 1 AD3 SQL + AD3-check written and sandbox-tested; steps 2 Rust probes, 3 signed doors, 4 React command bar NOT written. Cases/queues/SLA SQL renumbered AD4.
+
+- [22 Nov 2026 03:53 PKT] BRIDGE FEATURES (BRIDGE-FEATURES-22NOV.md): R4-10 deliverability; R4-1b step 5 SLO burn (Rust HdrHistogram); step 6 cipher meter (rustls); step 7 Merkle anchor (external Storage Box); R4-1c insider radar + Chairman inbox + Desk Freeze; step 4 honest telemetry UI. AD3 LIVE.

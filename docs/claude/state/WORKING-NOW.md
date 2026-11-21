@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 03:43 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Bridge plan + AD3 SQL
-NEXT STEP: his ad-auto for AD3, then Rust probes and doors
-HIS LAST WORD: bridge phase
+# WORKING NOW (manual checkpoint, 22 Nov 2026 03:53 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: AD3 live; bridge features list 2 recorded
+NEXT STEP: R4-1b step 2 Rust probes
+HIS LAST WORD: bridge features 2
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,29 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 74cc71bf 22 Nov 03:43 ledger line 5d69c38a
 - 5d69c38a 22 Nov 03:43 Desk Bridge AD3
 - 5494fde6 22 Nov 03:34 ledger line 670128d4
 - 670128d4 22 Nov 03:34 awam top priority
 - f8b4fc27 22 Nov 03:32 ledger line d6f7599e
-- d6f7599e 22 Nov 03:32 caps audit
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
+ M docs/claude/admin-desk/state/PHASES.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/founder/founder-commands.md
+?? docs/claude/admin-desk/BRIDGE-FEATURES-22NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 32 ++------------------------------
- 1 file changed, 2 insertions(+), 30 deletions(-)
+ docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md |  2 ++
+ docs/claude/admin-desk/state/COMPACT-SAVE.md   |  3 +++
+ docs/claude/admin-desk/state/PHASES.md         |  2 ++
+ docs/claude/state/WORKING-NOW.md               | 28 +++++++++-----------------
+ docs/cursor-work/founder/founder-commands.md   |  2 ++
+ 5 files changed, 19 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +51,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (92c391d69cab2436e6cd23e4537576abf2ade1c4)
+WIP snapshot: refs/wip/last (4901087edfd477a37a8e11dbc2cd6057b70485f0)

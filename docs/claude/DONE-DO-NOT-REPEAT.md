@@ -2349,3 +2349,11 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Awam top-priority caps block; docs only, WIRED: NO
 
 - Desk Bridge plan + AD3 SQL (alert center, service health, incidents, watches, summary), sandbox-tested, not on server; WIRED: NO
+
+- AD3 GREEN on his server (selftest + 17 check rows t, SQL only); Bridge feature list 2 recorded; WIRED: NO (no Rust/UI yet)
+
+- AD3 GREEN on his server (selftest + 17 check rows t, SQL only); Bridge feature list 2 recorded; WIRED: NO (no Rust/UI yet)
+
+- AD3 GREEN on his server (selftest + 17 check rows t, SQL only); Bridge feature list 2 recorded; WIRED: NO (no Rust/UI yet)
+
+- AD3 SQL ran OK on his server (17 rows t), phase not green; Bridge feature list 2 recorded; WIRED: NO

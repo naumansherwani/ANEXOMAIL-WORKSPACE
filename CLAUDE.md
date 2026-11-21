@@ -1,4 +1,4 @@
-> ## >>> RESUME HERE: RESUME 22 Nov 03:43 PKT: Day1 Bridge step 2 Rust probes + doors after his ad-auto AD3; AD4 cases/SLA; AD2 Rust door (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
+> ## >>> RESUME HERE: RESUME 22 Nov 03:53 PKT: Day1 R4-1b step 2 Rust probes (4 s heartbeat, stale 12 s), doors, command bar; AD4 cases/SLA; AD2 Rust door (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
 > ## >>> FRONTEND=CADDY, HETZNER=BACKEND; DNS=Caddy IP (his 21 Nov 23:35): docs/claude/FRONTEND-CADDY-BACKEND-HETZNER-LAW-21NOV.md <<<
 > ## >>> DESK 3 CMDS: desk-install, ad-auto, desk-restart (admin-desk/TWO-COMMANDS.md) <<<
 > ## >>> CLEAN-PUSH: git status empty after push (CLEAN-PUSH-LAW-21NOV.md) <<<
