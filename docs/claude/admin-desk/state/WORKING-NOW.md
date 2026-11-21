@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 22:40 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 22:41 PKT) - read this FIRST for the Desk after a compaction
 DOING: CA credential fix, pill, light
 NEXT STEP: his desk-install, sign in; flash demo
 HIS LAST WORD: light under card, pill both pages
@@ -39,6 +39,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 5a2e589d 21 Nov 22:40 ledger line dad14a1b
 - dad14a1b 21 Nov 22:40 Desk home Sign in: awam button colours
 - cd8b2fcd 21 Nov 22:36 ledger line 77f84998
 - 77f84998 21 Nov 22:36 Desk: backup branch note
@@ -46,7 +47,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 19ff7847 21 Nov 22:36 Desk: home Sign in A prominent, backup law
 - 03844383 21 Nov 22:31 ledger line 114b6c9e
 - 114b6c9e 21 Nov 22:31 Desk: CA credential, pill, light, card up
-- 599939f5 21 Nov 22:06 ledger line 9730261a
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
