@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 00:30 PKT) - read this FIRST for the Desk after a compaction
-DOING: flash cancelled; Premium/Max need own-domain test company, discussing which domain
-NEXT STEP: his domain answer; then E201 + accounts
-HIS LAST WORD: 00:30 flash cancel + domain
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 00:38 PKT) - read this FIRST for the Desk after a compaction
+DOING: his order: Desk complete, then founder rest, then Premium/Max copy with gates
+NEXT STEP: Desk completion list (Alt-Svc haan, first sign-in, Rule 52, R3b-g)
+HIS LAST WORD: 00:38 order + possible?
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
 
@@ -41,6 +41,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 60f64525 22 Nov 00:30 ledger line 248ee0e0
 - 248ee0e0 22 Nov 00:30 Record flash cancel and domain law
 - e52b6ae9 22 Nov 00:27 ledger line 6d76d507
 - 6d76d507 22 Nov 00:27 E201 schema-first read
@@ -48,9 +49,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - a5c6c9ef 22 Nov 00:21 Record wifi vs mobile
 - 26aff9e6 22 Nov 00:10 ledger line 5e7c00ba
 - 5e7c00ba 22 Nov 00:10 Record DNS outage
-- 911da8ef 22 Nov 00:00 ledger line 54e41a8f
 
 ## Uncommitted Desk files
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)

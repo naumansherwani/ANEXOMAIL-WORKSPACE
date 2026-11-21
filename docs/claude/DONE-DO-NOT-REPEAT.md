@@ -2267,3 +2267,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 22 Nov 2026 00:36 PKT E201 Premium/Max: schema-first read started, locks listed; WIRED: NO
 
 - 22 Nov 2026 00:40 PKT flash cancelled; Premium/Max own-domain law, test domain to be discussed; WIRED: NO
+
+- 22 Nov 2026 00:44 PKT his order: Desk complete, founder rest, then Premium/Max by copy with per-package gates; WIRED: NO

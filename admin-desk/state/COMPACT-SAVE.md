@@ -73,3 +73,5 @@
 39. (22 Nov 2026 00:36 PKT) anexomail.com works again (WiFi cache). He said start: rules-read done, E201 (Premium/Max plans) schema-first read started, file list in PREMIUM-MAX-PLAN-21NOV.md. Alt-Svc :4400 waits his haan. Then first Desk sign-in, flash pick, Rule 52 for Desk.
 
 40. (22 Nov 2026 00:40 PKT) Flash CANCELLED. Premium/Max = company's OWN domain mailboxes (law 8 Nov 03:15); he will not build test accounts without a domain: DISCUSS which test domain. I wrongly asked him a question the ledger already answered; read the ledger first.
+
+41. (22 Nov 2026 00:44 PKT) HIS ORDER: 1) Admin Desk complete (so awam problems can be heard live), 2) remaining founder phases, 3) Business Premium/Max in the awam lane, copied from founder tech (AWAM-INHERITS-FOUNDER-TECH-LAW-13NOV, AWAM-MAILBOX-UI-INHERIT-LAW-16NOV), gates per package (E100 plan_catalog + plan_interop_gate_map). I told him: possible, with 3 conditions (never mix = inheritable modules + awam's own doors/keys/tables; every feature carries a gate key from day one; Business/Pro stay untouched). E201 SQL waits.
