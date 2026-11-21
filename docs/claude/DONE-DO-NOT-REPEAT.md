@@ -2157,3 +2157,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 21:10 PKT auto checkpoint; WIRED: NO
 
 - 21 Nov 2026 21:10 PKT Desk login: passkey button below Sign in; WIRED: NO until his desk-install
+
+- 21 Nov 2026 21:10 PKT Desk login: passkey button below Sign in; WIRED: NO until his desk-install

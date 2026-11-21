@@ -2599,3 +2599,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 ### 21 Nov 2026 21:10 PKT Desk login: Continue with a passkey moved BELOW the password form (his 21:10); 390 + 1280 checked.
 
 - 21 Nov 2026 21:10 PKT Desk login: passkey button below Sign in; WIRED: NO until his desk-install
+
+- 21 Nov 2026 21:10 PKT Desk login: passkey button below Sign in; WIRED: NO until his desk-install
