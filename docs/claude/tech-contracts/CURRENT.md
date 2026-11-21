@@ -2589,3 +2589,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 ### 21 Nov 2026 21:09 PKT Desk login (his 21:08): only 2 changes on the existing page: passkey button = founder-style outline "Continue with a passkey" (lucide KeyRound); the orb replaced by the ANEXOMAIL philosophy line. Bundle rebuilt (dist-desk), tsc clean, desk tests 3/3, 390 + 1280 no sideways scroll.
 
 - 21 Nov 2026 21:09 PKT Desk login: Continue with a passkey + philosophy in place of the orb; WIRED: NO until his desk-install
+
+- 21 Nov 2026 21:09 PKT Desk login: Continue with a passkey + philosophy in place of the orb; WIRED: NO until his desk-install
