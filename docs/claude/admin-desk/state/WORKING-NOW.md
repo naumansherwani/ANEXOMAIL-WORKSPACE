@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 00:38 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 00:38 PKT) - read this FIRST for the Desk after a compaction
 DOING: his order: Desk complete, then founder rest, then Premium/Max copy with gates
 NEXT STEP: Desk completion list (Alt-Svc haan, first sign-in, Rule 52, R3b-g)
 HIS LAST WORD: 00:38 order + possible?
@@ -41,6 +41,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- f7e19236 22 Nov 00:38 Record his order
 - 60f64525 22 Nov 00:30 ledger line 248ee0e0
 - 248ee0e0 22 Nov 00:30 Record flash cancel and domain law
 - e52b6ae9 22 Nov 00:27 ledger line 6d76d507
@@ -48,10 +49,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - de0e6cd2 22 Nov 00:21 ledger line a5c6c9ef
 - a5c6c9ef 22 Nov 00:21 Record wifi vs mobile
 - 26aff9e6 22 Nov 00:10 ledger line 5e7c00ba
-- 5e7c00ba 22 Nov 00:10 Record DNS outage
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
