@@ -5156,3 +5156,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 22 Nov 04:40 PKT: S0 retest h2 on new tab; AD3 4 s patch confirmed in his DB (ad-auto all rows t); S0 still NOT green; next his curl alt-svc + tcpdump
 
 - 22 Nov 04:46 PKT: HIS LAW: Desk HTTP fallback BANNED until his approval, HTTP/3 only; S0 evidence 3 Alt-Svc sent, 0 external UDP 4400 packets; not green
+
+- 22 Nov 04:57 PKT: his ss: UDP 443 founder, 4400 desk, 18443 caddy; S0 pcap pending, not green
