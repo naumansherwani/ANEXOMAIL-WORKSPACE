@@ -68,6 +68,10 @@ export function DeskSignIn() {
               <button type="submit" className="ax-a-hover" disabled={busy} style={{ minHeight: 48, border: "1px solid rgba(160,200,255,.4)", borderRadius: 12, background: "transparent", color: "#E8EEF9", fontSize: 15, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}><HoverA busy={busy} />Sign in</button>
             </form>
           </details>
+          <div style={{ width: "100%", borderTop: "1px solid rgba(160,200,255,.14)", paddingTop: 14, display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
+            <p style={{ margin: 0, fontSize: 13, lineHeight: 1.5, color: "#C9D8F2", textAlign: "center", textWrap: "balance" as const }}>Our engine runs in milliseconds; our support should too. Own the issue, fix the root, leave zero open loops.</p>
+            <p style={{ margin: 0, fontSize: 11, letterSpacing: ".08em", color: "#8FA6CC", textAlign: "center" }}>Built on: Rust · Tokio · axum · Rust WASM kernel · WebAuthn passkeys · Three.js</p>
+          </div>
         </section>
       </DeskScene>
     </main>

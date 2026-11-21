@@ -22,6 +22,7 @@ RULE (his word): in every phase, next to each FEATURE the CODE file and the ADVA
 | Optional passkey button + honest hardware text (real PublicKeyCredential check) | DeskSignIn.tsx | WEBAUTHN detection; the passkey ceremony itself arrives with the Desk door R3a2 | detection YES; ceremony NO |
 | Orb pulse, shockwave, zoom into 3-pane workspace | DeskScene.tsx (planned) | THREE.JS, GSAP | NO |
 | Real telemetry: protocol (browser-reported), kernel state; Merkle only when the door reports a head; NO cipher line until stage 2 | founder-web/src/desk/DeskTelemetry.tsx | RUST WASM KERNEL (kernel.ts trust), PerformanceNavigationTiming | YES (values real; Merkle + cipher hidden on purpose) |
+| Principle line + "Built on" technology line (only real technologies) | founder-web/src/desk/DeskSignIn.tsx, DeskPages.tsx | RUST, TOKIO, AXUM, WASM KERNEL, WEBAUTHN, THREE.JS (all in code) | YES in code (promise rows P5 proven, P6 open until R3f) |
 ### R3a2 LOGIN DOOR
 | Feature | Code | Technology | Haan |
 |---|---|---|---|
@@ -29,6 +30,8 @@ RULE (his word): in every phase, next to each FEATURE the CODE file and the ADVA
 | /desk/v1/auth/login | admin-desk/server/src/auth.rs (planned) | ARGON2ID, CONSTANT-TIME, TOKEN AUDIENCE "desk" | NO |
 | Device-bound session | auth.rs (planned) | DBSC | NO |
 | Owner created by his command (password never in chat) | admin-desk/scripts (planned) | ARGON2ID | NO |
+
+## DESK PRINCIPLE (his 21 Nov 2026 08:40, shown on the landing + login): "Our engine runs in milliseconds; our support should too. Own the issue, fix the root, leave zero open loops." It is a PROMISE (WEBSITE-PROMISES P6): R3f builds it (one owner per issue, SLA clock, an issue closes only with a root-cause note; no open loops).
 
 ## PHASES AFTER R3a (each gets its own feature table when it starts; plan times in the 3-day plan)
 R3b inboxes (Sun 06:00) / R3c auto mail RFC 3834 + Polar signed webhook (12:00) / R3d dashboard + mail UI (17:00) / R3e reply without passkey (Mon 06:00) / R3f SLA engine (09:00) / R3g verify + final (14:00-21:00) / R4 Managed Move-In + Priority Support (from Tue 24 Nov) / R5 LEO / R6.

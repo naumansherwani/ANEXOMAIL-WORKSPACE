@@ -4700,3 +4700,7 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 08:55 PKT: R3a1 login CODE written: DeskScene (Three.js lazy parallax), DeskTelemetry (real values only), DeskSignIn (approved design, ORIGINAL BrandMark + HoverA A), seen in sandbox at 390/820/1280 no h-scroll no errors; gate R3a1 rows now CODE; not installed on his server (WIRED: NO)
 
 - 21 Nov 2026 08:55 PKT: R3a1 login CODE written: DeskScene (Three.js lazy parallax), DeskTelemetry (real values only), DeskSignIn (approved design, ORIGINAL BrandMark + HoverA A), seen in sandbox at 390/820/1280 no h-scroll no errors; gate R3a1 rows now CODE; not installed on his server (WIRED: NO)
+
+- 21 Nov 2026 08:58 PKT: his desk-install ran OK on his server (anexomail-desk on 127.0.0.1:4400, health 200, wrong host 404); motto + Built-on line added to Desk landing/login (P5 proven, P6 open until R3f); public https look still unseen (WIRED: NO for login door)
+
+- 21 Nov 2026 08:58 PKT: his desk-install ran OK on his server (anexomail-desk on 127.0.0.1:4400, health 200, wrong host 404); motto + Built-on line added to Desk landing/login (P5 proven, P6 open until R3f); public https look still unseen (WIRED: NO for login door)

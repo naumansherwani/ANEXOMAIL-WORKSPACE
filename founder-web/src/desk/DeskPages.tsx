@@ -18,6 +18,7 @@ function Landing() {
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">ANEXOMAIL</p>
         <h1 className="text-balance text-4xl font-semibold tracking-tight text-foreground">Admin Desk</h1>
         <p className="max-w-[34rem] text-pretty text-muted-foreground">Where company mail is heard and solved. For ANEXOMAIL staff only.</p>
+        <p className="max-w-[34rem] text-pretty text-sm text-muted-foreground">Our engine runs in milliseconds; our support should too. Own the issue, fix the root, leave zero open loops.</p>
         <Button className="ax-press min-h-11 px-8" onClick={() => go("/adminlogin")}>Sign in</Button>
       </section>
     </main>
