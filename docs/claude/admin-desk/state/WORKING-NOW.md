@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 00:55 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 00:55 PKT) - read this FIRST for the Desk after a compaction
 DOING: Alt-Svc live but my Chrome still h2 on 3 loads; h3 not proven; UI bundle waits his install
 NEXT STEP: his Chrome Network Protocol check; his desk-install for eye+save UI; row 3 Rule 52
 HIS LAST WORD: 01:12 h3 check
@@ -42,6 +42,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 241177c2 22 Nov 00:55 Record h3 check result
 - 08c42d25 22 Nov 00:55 ledger line 1a039bc0
 - 1a039bc0 22 Nov 00:55 Desk login eye + save password
 - b60740f6 22 Nov 00:47 ledger line c8816dfe
@@ -49,10 +50,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 3863527b 22 Nov 00:43 ledger line c8c79153
 - c8c79153 22 Nov 00:43 Record Alt-Svc haan
 - 0d220b4a 22 Nov 00:42 ledger line d865e186
-- d865e186 22 Nov 00:42 Desk remaining list
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
