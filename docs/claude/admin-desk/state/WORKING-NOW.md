@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 01:59 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 01:59 PKT) - read this FIRST for the Desk after a compaction
 DOING: Sandbox live test passed, 2 UI fixes; pull = desk-install
 NEXT STEP: his desk-install rerun paste, my Chrome look on his URL, R4-1
 HIS LAST WORD: his 01:57: live sandbox test
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e869ef67 22 Nov 01:59 Desk: sandbox live test, dashboard fixes
 - 0e011cb2 22 Nov 01:55 ledger line e94b2518
 - e94b2518 22 Nov 01:55 Desk: installer check fix for Rule 52 layer, R-CRM phase
 - 1bf4195c 22 Nov 01:47 ledger line 21dbdaea
@@ -54,15 +55,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - baf45e2c 22 Nov 01:41 ledger line 68859e31
 - 68859e31 22 Nov 01:41 rollback warning record
 - 87e2923c 22 Nov 01:39 ledger line ada44a81
-- ada44a81 22 Nov 01:39 status record
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
- M docs/claude/admin-desk/state/PHASES.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskPages.tsx
-?? docs/claude/admin-desk/SANDBOX-LIVE-TEST-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
