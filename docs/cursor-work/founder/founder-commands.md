@@ -5037,3 +5037,5 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 10:33 PKT] HIS RUN: ad-db-env.sh OK, /etc/anexomail-desk/db.env written (host aws-0-ap-southeast-1.pooler.supabase.com). Waiting AD1.sql in editor + ad-check paste.
 
 - 21 Nov 2026 10:33 PKT his ad-db-env run OK on server; WIRED: NO until AD1 + check
+
+- 21 Nov 2026 10:33 PKT his ad-db-env run OK on server; WIRED: NO until AD1 + check
