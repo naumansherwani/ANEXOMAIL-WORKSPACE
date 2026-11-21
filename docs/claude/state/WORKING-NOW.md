@@ -17,26 +17,24 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 | Proto | Port | Process |
 |---|---|---|
 
-##- e812b697 21 No- e812b697 21 Nov 06:28 ledger line 7d667258
+## Last 5 commits
+- c61db3b4 21 Nov 06:44 R4 move-in phase named, research + phase proposal (docs only)
+- e812b697 21 Nov 06:28 ledger line 7d667258
 - 7d667258 21 Nov 06:28 WORKING-NOW refresh, loop restarted
 - 4e41d262 21 Nov 06:28 ledger line 5bc0d3ad
 - 5bc0d3ad 21 Nov 06:28 WORKING-NOW refresh, loop restarted
-- dbb14970 21 Nov 06:27 ledge
+
 ## Uncommitted files (half-done work if any)
- M CLAUDE.md
- M  M CLAUDE.md
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
- M docs/cursor-work/founder/founder-commands.md
-?? docs/claude/ADMIN-DESK-R3-R4-RESEARCH-AND-
-## EDIT IN PROG
-## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = n
-## Uncommitted 
-## U CLAUDE.md       CLAUDE.md                                          |  2 +-
- docs/claude/state/WORKING-NOW.md                   | 38 ++++++++--------------
- ...DE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md |  4 +++
- docs/cursor-work/founder/founder-commands.md       |  2 ++
- 4 files changed, 21 insertions(+), 25 deletions=== PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
+
+## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
+
+## Uncommitted size
+ docs/claude/state/WORKING-NOW.md | 32 ++++++++------------------------
+ 1 file changed, 8 insertions(+), 24 deletions(-)
+
+## Q state
+=== PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
 > ## >>> 20 Nov 2026 09:58 PKT QC4 plan vs code matched (table in docs/claude/QC4-PLAN-20NOV.md): feature 7 DONE end to end (not installed), feature 3 data DONE, pure logic for 3-6 DONE+tested, screens for 1,2,3,4,5,6 = QC4b NOT in code. <<<
 > ## >>> 20 Nov 2026 09:12 PKT HIS QC4 FEATURE LIST (7 features, his paste 09:09) is now verbatim in docs/claude/QC4-PLAN-20NOV.md and founder-commands.md; QC4a done (not installed), QC4b screen next <<<
 > ## >>> 20 Nov 2026 09:55 PKT QC4a = DONE, WRITTEN AND TESTED, NOT INSTALLED (20 Nov 2026 09:55 PKT): cargo whole suite 559 passed 0 failed 0 filtered out (was 558, +1 test for References + Reply-To), pure-TS tests 474 pass 0 fail (sandbox runner, not a runtime), tsc clean, vite build OK (index-BcA
@@ -44,5 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-t edit by hand)
-WIP snapshot: refs/wip/last (37ebf25e1bce19b3cf8bb6ace3fcf729b9b637f6)
+WIP snapshot: refs/wip/last (55a4c3082a4674a48f9d33b881f68594b58bf88f)
