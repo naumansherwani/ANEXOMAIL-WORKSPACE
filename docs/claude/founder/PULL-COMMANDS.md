@@ -2835,3 +2835,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 10:52 PKT Desk owner + account scripts ask via /dev/tty (no hidden prompts); WIRED: NO
 
 - 21 Nov 2026 10:52 PKT Desk owner + account scripts ask via /dev/tty (no hidden prompts); WIRED: NO
+
+- 21 Nov 2026 10:52 PKT checkpoint loop refresh only; WIRED: NO
