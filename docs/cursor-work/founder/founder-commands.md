@@ -5155,3 +5155,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 21:07 PKT auto checkpoint; WIRED: NO
 
 - 21 Nov 2026 21:07 PKT auto checkpoint; WIRED: NO
+
+[21 Nov 2026 21:09 PKT] HIS WORD (21:08): mere existing login page ko no touch, sirf yeh continue with passkey aye ga, baki ball ki jaga anexomail ki philosophy ko follow kero. DONE: Touch passkey -> outline Continue with a passkey (KeyRound); orb -> philosophy line; nothing else changed. Seen at 390 + 1280, no sideways scroll.
+
+- 21 Nov 2026 21:09 PKT Desk login: Continue with a passkey + philosophy in place of the orb; WIRED: NO until his desk-install
