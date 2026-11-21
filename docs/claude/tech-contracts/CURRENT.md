@@ -2518,3 +2518,5 @@ auth.rs ARGON2ID (argon2 0.5, m=64MiB t=3 p=1, subtle ct compare, sha2 token has
 ### 21 Nov 2026 10:53 PKT Desk: company addresses are aliases (his 10:52). desk-business-account.sh (E28 customer seed) REMOVED as wrong. desk-alias-look.sh = read-only look at how aliases exist. desk-owner.sh stays (Desk login admindesk@).
 
 - 21 Nov 2026 10:53 PKT Desk: wrong customer-account script removed, alias look-script added per his 10:52; WIRED: NO
+
+- 21 Nov 2026 10:53 PKT Desk: wrong customer-account script removed, alias look-script added per his 10:52; WIRED: NO
