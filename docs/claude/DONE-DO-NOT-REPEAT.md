@@ -2135,3 +2135,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 20:49 PKT auto checkpoint; WIRED: NO
 
 - 21 Nov 2026 20:49 PKT auto checkpoint; WIRED: NO
+
+- 21 Nov 2026 21:05 PKT desk-install copies every Rust file and stops on a failed build; AD1b in his DB; WIRED: NO until his install

@@ -5141,3 +5141,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 20:49 PKT auto checkpoint; WIRED: NO
 
 - 21 Nov 2026 20:49 PKT auto checkpoint; WIRED: NO
+
+[21 Nov 2026 21:05 PKT] HIS WORD (20:59): seedhi si baat hai tumhay kaam nahi ata jaise lovable kerta hai, pata hi nahi kaun si commands kis situation mein deni hain. + compaction order + login page: touch passkey simple jaise awam/founder ka, ball (orb) khatam, text upar, us jaga demo dikhao, anexomail ki philosophy yahan aaye. His paste: ad-auto AD1b OK 3/3; desk-install build FAILED (installer missed door.rs, still said OK with the old binary); desk-appdb me=200 FAIL. FIX: installer copies every .rs from origin and stops on a failed build.
+
+- 21 Nov 2026 21:05 PKT desk-install copies every Rust file and stops on a failed build; AD1b in his DB; WIRED: NO until his install

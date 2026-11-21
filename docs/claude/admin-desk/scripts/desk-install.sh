@@ -8,8 +8,9 @@ command -v cargo >/dev/null 2>&1 || { echo "FAIL: cargo not found"; exit 2; }
 git -C "$REPO" fetch -q origin main || { echo "FAIL: fetch"; exit 2; }
 show() { git -C "$REPO" show "origin/main:$1"; }
 echo "== 1/4 source (admin-desk/server from origin/main)"
-mkdir -p "$ROOT/src/src"; show admin-desk/server/Cargo.toml >"$ROOT/src/Cargo.toml"; show admin-desk/server/src/main.rs >"$ROOT/src/src/main.rs"; show admin-desk/server/src/h3.rs >"$ROOT/src/src/h3.rs"; show admin-desk/server/src/auth.rs >"$ROOT/src/src/auth.rs"; show admin-desk/server/Cargo.lock >"$ROOT/src/Cargo.lock" 2>/dev/null
-echo "== 2/4 build"; (cd "$ROOT/src" && nice cargo build --release 2>&1 | tail -3); NEW="$ROOT/target/release/anexomail-desk"; [ -x "$NEW" ] || { echo "FAIL: build"; exit 3; }
+mkdir -p "$ROOT/src/src"; show admin-desk/server/Cargo.toml >"$ROOT/src/Cargo.toml"; rm -f "$ROOT"/src/src/*.rs; for f in $(git -C "$REPO" ls-tree --name-only origin/main admin-desk/server/src/ | grep "\.rs$"); do show "$f" >"$ROOT/src/src/$(basename "$f")"; done; echo "   rust files: $(ls "$ROOT"/src/src/*.rs | xargs -n1 basename | tr "
+" " ")"; show admin-desk/server/Cargo.lock >"$ROOT/src/Cargo.lock" 2>/dev/null
+echo "== 2/4 build"; NEW="$ROOT/target/release/anexomail-desk"; rm -f "$NEW"; (cd "$ROOT/src" && nice cargo build --release >"$ROOT/build.log" 2>&1); RC=$?; if [ $RC != 0 ] || [ ! -x "$NEW" ]; then echo "FAIL: build (nothing installed, the running Desk is untouched)"; grep -E "^error" -A6 "$ROOT/build.log" | head -20; exit 3; fi; tail -1 "$ROOT/build.log"
 echo "== 3/4 user + files"
 id $SVC >/dev/null 2>&1 || useradd --system --no-create-home --shell /usr/sbin/nologin $SVC
 [ -f "$ROOT/anexomail-desk" ] && cp "$ROOT/anexomail-desk" "$ROOT/anexomail-desk.bak.$(date +%s)"
@@ -47,4 +48,4 @@ echo "   health with the Desk host: $H (want 200); wrong host: $W (want 404)"
 echo "   listener:"; ss -ltnp | grep ':4400' | sed 's/^/     /'
 if [ "$H" != 200 ] || [ "$W" != 404 ]; then echo "FAIL: rollback"; systemctl stop $SVC; B="$(ls -t $ROOT/anexomail-desk.bak.* 2>/dev/null | head -1)"; [ -n "$B" ] && cp "$B" "$ROOT/anexomail-desk" && systemctl start $SVC; journalctl -u $SVC -n 15 --no-pager; exit 4; fi
 echo "   public: curl -sI https://admindesk.anexomail.com | head -3"; curl -sI --max-time 10 https://admindesk.anexomail.com | head -3
-echo "OK: anexomail-desk is up on 127.0.0.1:4400 (login door not connected until R3a2)"
+echo "OK: anexomail-desk is up on 127.0.0.1:4400"

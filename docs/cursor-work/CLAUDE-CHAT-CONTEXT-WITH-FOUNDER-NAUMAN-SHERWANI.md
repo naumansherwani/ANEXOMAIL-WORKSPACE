@@ -4910,3 +4910,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 20:49 PKT auto checkpoint; WIRED: NO
 
 - 21 Nov 2026 20:49 PKT auto checkpoint; WIRED: NO
+
+- 21 Nov 2026 21:05 PKT desk-install copies every Rust file and stops on a failed build; AD1b in his DB; WIRED: NO until his install
