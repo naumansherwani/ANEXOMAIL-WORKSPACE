@@ -3063,3 +3063,9 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 22 Nov 2026 01:55 PKT his rerun pull command (desk-appdb check fix): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:admin-desk/scripts/desk-install.sh) 2>&1 | tail -20
 
 - 22 Nov 2026 01:55 PKT: R3d key + signed refusal live on his server (his paste); installer check bug fixed (400 vs 401); R-CRM added; WIRED: NO until my Chrome look
+
+- 22 Nov 2026 01:59 PKT R3d dashboard fixes + sandbox live test; pull: git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:admin-desk/scripts/desk-install.sh) 2>&1 | tail -20
+
+- 22 Nov 2026 01:59 PKT: sandbox live test (real binary + real Postgres + Chrome) passed, dashboard time + spacing fixed, WIRED: NO until his install + my Chrome look
+
+- 22 Nov 2026 01:59 PKT: sandbox live test (real binary + real Postgres + Chrome) passed, dashboard time + spacing fixed, WIRED: NO until his install + my Chrome look

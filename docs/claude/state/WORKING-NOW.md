@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 01:55 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: R3d live on his server (key + signed refusal); step-5 check bug fixed; R-CRM added
-NEXT STEP: his rerun of desk-install (pull below), my Chrome Rule 52 proof, R4-1
-HIS LAST WORD: his 01:54 paste + CRM word
+# WORKING NOW (manual checkpoint, 22 Nov 2026 01:59 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Sandbox live test passed, 2 UI fixes; pull = desk-install
+NEXT STEP: his desk-install rerun paste, my Chrome look on his URL, R4-1
+HIS LAST WORD: his 01:57: live sandbox test
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,45 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 0e011cb2 22 Nov 01:55 ledger line e94b2518
 - e94b2518 22 Nov 01:55 Desk: installer check fix for Rule 52 layer, R-CRM phase
 - 1bf4195c 22 Nov 01:47 ledger line 21dbdaea
 - 21dbdaea 22 Nov 01:47 Desk status record + timestamp correction
 - baf45e2c 22 Nov 01:41 ledger line 68859e31
-- 68859e31 22 Nov 01:41 rollback warning record
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/BLUEPRINT-ABC-01NOV.md
+ M docs/claude/RESUME-POINT.md
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
+ M docs/claude/admin-desk/state/PHASES.md
+ M docs/claude/founder/PULL-COMMANDS.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M docs/cursor-work/DONE-DO-NOT-REPEAT.md
+ M docs/cursor-work/founder/founder-commands.md
+ D founder-web/dist-desk/00-FOUNDER-TECH-RULE.md
+ D founder-web/dist-desk/assets/00-FOUNDER-TECH-RULE.md
+ D founder-web/dist-desk/assets/desk-CU2N64T3.css
+ D founder-web/dist-desk/assets/desk-Dq2TTTlO.js
+ M founder-web/dist-desk/desk.html
+ D founder-web/dist-desk/kernel/00-FOUNDER-TECH-RULE.md
+ M founder-web/src/desk/DeskPages.tsx
+?? docs/claude/admin-desk/SANDBOX-LIVE-TEST-22NOV.md
+?? founder-web/dist-desk/assets/desk-BGEjndQ-.css
+?? founder-web/dist-desk/assets/desk-CHnhOxau.js
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 34 ++--------------------------------
- 1 file changed, 2 insertions(+), 32 deletions(-)
+ founder-web/dist-desk/00-FOUNDER-TECH-RULE.md      |  5 ---
+ .../dist-desk/assets/00-FOUNDER-TECH-RULE.md       |  5 ---
+ founder-web/dist-desk/assets/desk-CU2N64T3.css     |  1 -
+ founder-web/dist-desk/assets/desk-Dq2TTTlO.js      |  9 -----
+ founder-web/dist-desk/desk.html                    |  4 +--
+ .../dist-desk/kernel/00-FOUNDER-TECH-RULE.md       |  5 ---
+ founder-web/src/desk/DeskPages.tsx                 |  8 +++--
+ 17 files changed, 49 insertions(+), 47 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +67,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (03d5bd0b355be930b4b0ef60799ca753239ac505)
+WIP snapshot: refs/wip/last (83bec937d904cd45dd51d5b35e22443828371133)

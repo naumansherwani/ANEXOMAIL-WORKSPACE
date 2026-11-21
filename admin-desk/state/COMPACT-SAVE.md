@@ -105,3 +105,5 @@
 55. (22 Nov 2026 01:47 PKT) STATUS-REAL-22NOV.md written. His 01:39 paste lacks the Rule 52 line = OLD script ran; rerun pull. Timestamp fix recorded (earlier ledger stamps 02:05-02:55 were my typing error). Desk complete ~12 percent, plan ~3 percent live.
 
 56. (22 Nov 2026 01:55 PKT) HIS RERUN PASTE: R3d signing key + signed refusal OK on his server (kid e92a4cb169d466a2); step 5 FAIL was MY script bug: auth/me now sits behind the Rule 52 layer (400 without nonce), check wanted 401. Fixed in desk-appdb.sh + desk-restart.sh (send nonce, want 401; sandbox: 400 without, 401 with). Note the failed ensure made a new desk_app password (harmless). CRM phase R-CRM added. NEXT: his rerun of desk-install then my Chrome proof.
+
+57. (22 Nov 2026 01:59 PKT) SANDBOX LIVE TEST (real binary, real Postgres AD1/AD1b, real Chrome) all pass; fixed session-time format + tile spacing; installer check verified (400 vs 401). Pull = same desk-install line.

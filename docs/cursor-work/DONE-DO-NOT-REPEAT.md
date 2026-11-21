@@ -4013,3 +4013,9 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 22 Nov 2026 01:55 PKT R3d live on his server (his paste 01:54); desk-appdb/desk-restart check fixed for the Rule 52 layer. Do not rewrite.
 
 - 22 Nov 2026 01:55 PKT: R3d key + signed refusal live on his server (his paste); installer check bug fixed (400 vs 401); R-CRM added; WIRED: NO until my Chrome look
+
+- 22 Nov 2026 01:59 PKT R3d dashboard fixes (time format, spacing) after the sandbox live test. Do not rewrite.
+
+- 22 Nov 2026 01:59 PKT: sandbox live test (real binary + real Postgres + Chrome) passed, dashboard time + spacing fixed, WIRED: NO until his install + my Chrome look
+
+- 22 Nov 2026 01:59 PKT: sandbox live test (real binary + real Postgres + Chrome) passed, dashboard time + spacing fixed, WIRED: NO until his install + my Chrome look

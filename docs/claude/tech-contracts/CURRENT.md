@@ -2787,3 +2787,9 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 22 Nov 2026 01:55 PKT R3d LIVE ON HIS SERVER (his paste 22 Nov 01:54): Rule 52 key kept, kid e92a4cb169d466a2, key 200, call without session = refused AND signed. Step-5 check bug (expected 401, new layer gives 400) fixed in desk-appdb.sh/desk-restart.sh; rerun pending. Chrome look pending, so not GREEN.
 
 - 22 Nov 2026 01:55 PKT: R3d key + signed refusal live on his server (his paste); installer check bug fixed (400 vs 401); R-CRM added; WIRED: NO until my Chrome look
+
+- 22 Nov 2026 01:59 PKT R3d sandbox live test passed on real binary + real Postgres; dashboard time format + spacing fixed (DeskPages.tsx), dist-desk rebuilt. WIRED on his server: key + signed refusal live; login/dashboard look on his real URL pending.
+
+- 22 Nov 2026 01:59 PKT: sandbox live test (real binary + real Postgres + Chrome) passed, dashboard time + spacing fixed, WIRED: NO until his install + my Chrome look
+
+- 22 Nov 2026 01:59 PKT: sandbox live test (real binary + real Postgres + Chrome) passed, dashboard time + spacing fixed, WIRED: NO until his install + my Chrome look

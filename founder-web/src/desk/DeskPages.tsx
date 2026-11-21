@@ -35,7 +35,11 @@ function Landing() {
 type Me = { email: string; name: string | null; role: string; expires_at: string };
 const isMe = (j: unknown): j is Me => !!j && typeof j === "object" && typeof (j as Me).email === "string" && typeof (j as Me).role === "string";
 const dropSession = () => { try { window.localStorage.removeItem(DESK_SESSION_KEY); } catch { /* ignore */ } };
-function when(iso: string): string { const d = new Date(iso.replace(" ", "T")); return isNaN(d.getTime()) ? iso : d.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" }); }
+// Postgres sends "2026-11-22 13:58:12.54+05" (offset without minutes, long fraction): normalise it so every browser parses it.
+function when(iso: string): string {
+  const n = iso.trim().replace(" ", "T").replace(/(\.\d{3})\d*/, "$1").replace(/([+-]\d{2})$/, "$1:00");
+  const d = new Date(n); return isNaN(d.getTime()) ? iso : d.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+}
 function greet(): string { const h = new Date().getHours(); return h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening"; }
 
 /** R3d dashboard: ONLY real data, every line from a Desk-signed answer the kernel verified (/desk/v1/auth/me). Clean: no technology words on screen. */
@@ -60,7 +64,7 @@ function Dashboard() {
         <h1 className="mt-1 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl" style={{ textWrap: "balance" }}>{me ? (me.name || first) : err ? "Dashboard" : "Loading your desk…"}</h1>
         {err && <p role="alert" className="mt-4 rounded-xl border border-destructive/40 px-4 py-3 text-sm text-destructive">{err}</p>}
         {me && (
-          <div className="mt-8 grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,15rem),1fr))" }}>
+          <div className="grid gap-4" style={{ marginTop: 32, gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,15rem),1fr))" }}>
             <div className={tile}><p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">Signed in as</p><p className="mt-2 break-words text-base font-medium text-foreground">{me.email}</p></div>
             <div className={tile}><p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">Role</p><p className="mt-2 text-base font-medium capitalize text-foreground">{me.role}</p></div>
             <div className={tile}><p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">Session ends</p><p className="mt-2 text-base font-medium text-foreground">{when(me.expires_at)}</p></div>

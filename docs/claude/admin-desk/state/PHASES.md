@@ -49,3 +49,5 @@ Updated 21 Nov 2026 10:20 PKT. Rule 52: signed kernel-verified calls, no raw fet
 > [22 Nov 2026 01:47 PKT] STATUS-REAL-22NOV.md: LIVE vs CODE-ONLY vs PLAN-ONLY. Desk complete about 12 percent (1.5/12), whole plan about 3 percent live. R3d code pushed 01:38, his 01:39 paste shows the OLD script ran: rerun the pull command. TIME-STAMP FIX: ledger lines stamped 02:05-02:55 were wrong, real 01:3x-01:4x.
 
 > [22 Nov 2026 01:55 PKT] R-CRM added to the Desk plan (his 01:54): CRM as much as the awam user gets, company style, built NEW. MASTER-PLAN-22NOV.md. Not in code.
+
+- [22 Nov 2026 01:59 PKT] SANDBOX LIVE TEST done (real binary + real Postgres AD1/AD1b + real Chrome 390/820/1280): all pass after 2 UI fixes. SANDBOX-LIVE-TEST-22NOV.md. His rerun of desk-install is next, then my Chrome look on his real URL.
