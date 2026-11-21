@@ -5267,3 +5267,7 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 22:40 PKT] HIS WORD (22:39, 2 images): yeh second image (my navy A on light button) bahut bura tha, image one awam wala hai, yeh kar lo. DONE: backup branch backup/desk-ui-20261121-2239; home Sign in button = awam colours (--primary oklch(0.455 0.093 258), white text) with the awam white A; my navy-A CSS removed.
 
 - 21 Nov 2026 22:40 PKT Desk home Sign in = awam colours + white A; WIRED: NO until his install
+
+[21 Nov 2026 22:41 PKT] HIS WORD (22:41): existing admin desk ka sab kuch same rahega, sirf sign in wala awam wala sign in color wala hoga. CONFIRMED: only the home Sign in button colours changed.
+
+- 21 Nov 2026 22:41 PKT his word: only the Sign in colour changes on the Desk; WIRED: NO

@@ -2221,3 +2221,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 22:36 PKT backup is a branch (tags refused by proxy); WIRED: NO
 
 - 21 Nov 2026 22:40 PKT Desk home Sign in = awam colours + white A; WIRED: NO until his install
+
+- 21 Nov 2026 22:41 PKT his word: only the Sign in colour changes on the Desk; WIRED: NO
