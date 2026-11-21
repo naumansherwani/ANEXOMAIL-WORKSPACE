@@ -2380,3 +2380,7 @@ Gate bans http/1, http/1.1, http/2, h2 in every Desk .rs/.toml/.ts/.tsx (only De
 - 21 Nov 2026 09:55 PKT: Desk HTTP/3 LISTENING on his server (udp 4400, his paste 09:47); proof client h3check + desk-h3-check.sh written (6 tests pass); WIRED: listening YES, answering NOT YET PROVEN until his H3CHECK OK
 
 - 21 Nov 2026 09:55 PKT: Desk HTTP/3 LISTENING on his server (udp 4400, his paste 09:47); proof client h3check + desk-h3-check.sh written (6 tests pass); WIRED: listening YES, answering NOT YET PROVEN until his H3CHECK OK
+
+## 21 Nov 2026 09:58 PKT R3a0-s2 OPEN FACT (his paste 09:51): after desk-install.sh (pid 185327) the check showed UDP 4400 still owned by the OLD pid 182925 and the installed binary behaving like the previous main.rs (h3check branch not taken, panic line 87). origin/main DOES contain h3check. Not guessed: desk-h3-check.sh section 0 now prints MainPID, the drop-in, all anexomail-desk processes and whether the binary contains h3check. NEXT: his one run of that script, then the fact, then the fix, then H3CHECK OK, then the HTTP/3 words on the page, then AD1.
+
+- 21 Nov 2026 09:58 PKT: his 09:51 pastes: new page live; h3check not taken on his server (stale binary / two pids), diagnosis added to desk-h3-check.sh; HTTP/3 words wait H3CHECK OK; WIRED: listening YES, proof NO

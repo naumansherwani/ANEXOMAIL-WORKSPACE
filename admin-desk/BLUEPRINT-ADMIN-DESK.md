@@ -1,3 +1,5 @@
+> **21 Nov 2026 09:58 PKT: new Desk page LIVE (pill = TLS 1.3 . AES-256-GCM, no HTTP/2 word). HTTP/3 listener runs but the h3check proof did not run on his server (old binary behaviour + two pids): diagnosis line added to desk-h3-check.sh; the HTTP/3 words go on the page the moment H3CHECK OK is pasted; then AD1 ... in order.**
+
 > **21 Nov 2026 09:55 PKT: Desk HTTP/3 IS LISTENING on his server (UDP 4400, journal line + ss). Proof tool `anexomail-desk h3check` + desk-h3-check.sh written; NEXT his desk-install.sh then desk-h3-check.sh (H3CHECK OK flips row R3a0-stage2 and opens AD1 ...), then his AAAA + HTTPS record port=4400 (browsers must reach the Desk's own port, not Caddy's 18443).**
 
 > **21 Nov 2026 09:50 PKT (his anger 09:38): the Desk page may NEVER write HTTP/2 or HTTP/1 (pill shows only HTTP/3 QUIC when the browser reports h3, else just TLS 1.3 . AES-256-GCM; gate allowlist empty). desk-h3-enable.sh failed on cert Permission denied (rolled back, Desk up, h3 off); fixed with systemd LoadCredential; NEXT his re-run of desk-h3-enable.sh (one line) and desk-install.sh once for the new page.**

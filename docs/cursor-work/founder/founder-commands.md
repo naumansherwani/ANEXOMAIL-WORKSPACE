@@ -4951,3 +4951,7 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 09:55 PKT: Desk HTTP/3 LISTENING on his server (udp 4400, his paste 09:47); proof client h3check + desk-h3-check.sh written (6 tests pass); WIRED: listening YES, answering NOT YET PROVEN until his H3CHECK OK
 
 - 21 Nov 2026 09:55 PKT: Desk HTTP/3 LISTENING on his server (udp 4400, his paste 09:47); proof client h3check + desk-h3-check.sh written (6 tests pass); WIRED: listening YES, answering NOT YET PROVEN until his H3CHECK OK
+
+- 21 Nov 2026 09:51 PKT HIS WORD (in anger, photo of the live page showing "TLS 1.3 . AES-256-GCM"): "tune admin desk main pe kar diya hai tujhe bola tha yeh folder claude main jayega" + "phase tarteeb pe wapis aao baki sab update" + "https 3 likho jaisa bola hai waisa kero." Facts: the new page is live (no HTTP/2 word). desk-h3-check.sh on his server: h3check branch not taken (panic at main.rs:87 = the OLD main.rs; origin/main has h3check), UDP owner pid 182925 vs service pid 185327: diagnosis line added (section 0). HTTP/3 text goes on the page the moment H3CHECK OK is pasted.
+
+- 21 Nov 2026 09:58 PKT: his 09:51 pastes: new page live; h3check not taken on his server (stale binary / two pids), diagnosis added to desk-h3-check.sh; HTTP/3 words wait H3CHECK OK; WIRED: listening YES, proof NO

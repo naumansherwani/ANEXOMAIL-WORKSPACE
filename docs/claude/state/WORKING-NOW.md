@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 09:48 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Desk HTTP/3 listening on his server (udp 4400); h3check proof tool + desk-h3-check.sh written
-NEXT STEP: he runs desk-install.sh then desk-h3-check.sh; H3CHECK OK -> flip R3a0-stage2 -> AD1; AAAA + HTTPS record port=4400
-HIS LAST WORD: 09:47 https3 kero
+# WORKING NOW (manual checkpoint, 21 Nov 2026 09:52 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: new page live; h3check did not run on his server (old binary behaviour, two pids): diagnosis in desk-h3-check.sh
+NEXT STEP: his one run of desk-h3-check.sh -> fact -> fix -> H3CHECK OK -> HTTP/3 words on page -> AD1
+HIS LAST WORD: 09:51 https3 likho
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,28 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 6fffa645 21 Nov 09:48 ledger line 12fd8834
 - 12fd8834 21 Nov 09:48 desk: h3check proof client + read-only check script
 - 932932c5 21 Nov 09:48 ledger line b67b963a
 - b67b963a 21 Nov 09:48 desk: h3check proof client + read-only check script
 - f53f7477 21 Nov 09:39 ledger line 41f91460
-- 41f91460 21 Nov 09:39 desk: no HTTP/2 word on page, h3 enable cert via LoadCredential
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/scripts/desk-h3-check.sh
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M docs/cursor-work/founder/founder-commands.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ admin-desk/BLUEPRINT-ADMIN-DESK.md           |  2 ++
+ admin-desk/scripts/desk-h3-check.sh          |  1 +
+ docs/claude/state/WORKING-NOW.md             | 27 +++++++++------------------
+ docs/claude/tech-contracts/CURRENT.md        |  2 ++
+ docs/cursor-work/founder/founder-commands.md |  2 ++
+ 5 files changed, 16 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +50,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (3610ed6e8b4841d65d62144b8482dfb3a08e228b)
+WIP snapshot: refs/wip/last (daef3ba9ae1487b9d38b024bfeb94e5a74b84272)
