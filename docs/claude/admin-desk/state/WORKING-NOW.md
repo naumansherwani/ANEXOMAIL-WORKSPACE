@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 03:01 PKT) - read this FIRST for the Desk after a compaction
-DOING: R4-1b step 1 top bar + profile menu done; install pasted OK
-NEXT STEP: R4-1b Desk Bridge, then R4-2 inboxes, AD3 SQL
-HIS LAST WORD: his install paste
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 03:02 PKT) - read this FIRST for the Desk after a compaction
+DOING: his sidebar+loopholes text saved to repo (verbatim + conflict table)
+NEXT STEP: R4-1b Desk Bridge, R4-2 inboxes, AD3 SQL; R4-1c rail rename after his haan
+HIS LAST WORD: sidebar sections saved
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
 
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e6f40d0d 22 Nov 03:01 ledger line 2384dac0
 - 2384dac0 22 Nov 03:01 Desk top bar + profile menu
 - df835efe 22 Nov 02:53 ledger line a616ac20
 - a616ac20 22 Nov 02:53 Desk modules registry + rail fix + gate resolve fix
@@ -54,10 +55,13 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - e3384356 22 Nov 02:46 Desk rail: Managed Move-In name
 - 84363605 22 Nov 02:45 ledger line 64a0e2de
 - 64a0e2de 22 Nov 02:45 Desk rail pins groups + founder-to-desk audit
-- 1565602c 22 Nov 02:27 ledger line ae67604c
 
 ## Uncommitted Desk files
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
+ M docs/claude/admin-desk/state/PHASES.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+?? docs/claude/admin-desk/SIDEBAR-SECTIONS-AND-LOOPHOLES-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

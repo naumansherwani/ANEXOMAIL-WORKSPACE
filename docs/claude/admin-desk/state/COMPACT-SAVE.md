@@ -113,3 +113,6 @@ AD2 = LIVE (his ad-auto paste 02:23, 20 rows t). desk-install ran OK with DeskSh
 
 ## 59 (22 Nov 2026 02:51 PKT) Cases in ANEXOMAIL WORKSPACE; world feature list + 24 module folders
 Rail: Dashboard / Pinned / ANEXOMAIL WORKSPACE (Inboxes, Cases) / ADMIN DESK (Managed Move-In) / Company (Team, Audit); bottom name block removed. docs/claude/admin-desk/WORLD-ADMIN-DESK-FEATURES-22NOV.md + modules/01..24 (README each: feature, tables, tech, phase, gate). Next SQL = AD3 (cases, queues, SLA). Next UI = R4-1b top bar + profile menu + Desk Bridge. Module folders are PLAN only.
+
+## 60 (22 Nov 2026 03:02 PKT) his sidebar-sections + 6 loopholes text saved
+File docs/claude/admin-desk/SIDEBAR-SECTIONS-AND-LOOPHOLES-22NOV.md = his text verbatim + my conflict table (support@ banned, Desk cannot write Founder Bridge/Vault, Enterprise price unconfirmed, Merkle later, DBSC unbuilt). Rail rename = R4-1c after his haan. R4-1b step 1 (top bar chip + profile menu) is pushed, not yet installed. NEXT: Desk Bridge, R4-2 inboxes, AD3 SQL.

@@ -5475,3 +5475,7 @@ Features ki list (QC4 mein kya banega):
 ## 22 Nov 2026 03:00: his desk-install paste 03:00 OK (registry UI live on server: build, key kept, health 200, DB login live; serverfirst receipt 67). R4-1b step 1: top bar with chip "Live · verified" (real: only shown when a kernel-verified /me answer arrived) + avatar profile menu (name, email, role chip, Profile/Settings/Devices disabled until connected, Sign out). Trusted chip NOT shown: device key (DBSC) not real yet, nothing faked.
 
 - R4-1b step 1: Desk top bar chip Live verified + profile menu; layout 390/820/1280 ok, tests 12/12; install of previous UI pasted OK; WIRED: NO for this step until install + my look
+
+## 22 Nov 2026 03:02 (his 03:01): attachment "Sidebar mein kya naye folders / 4 groups + billion-dollar companies + 6 loopholes" saved verbatim in SIDEBAR-SECTIONS-AND-LOOPHOLES-22NOV.md, added to blueprint top, PHASES (R4-1c), COMPACT-SAVE 60, ledger. Standard compaction orders repeated.
+
+- his sidebar sections + 6 loopholes saved verbatim with conflict table, blueprint/PHASES/COMPACT-SAVE updated; docs only, WIRED: NO
