@@ -2474,3 +2474,5 @@ AD1.sql original (no appended check) goes to his SQL editor; the CHECK runs on t
 admin-desk/scripts/ad-auto.sh: per AD<n>.sql, check all true = "already run", else run (one transaction, idempotent) then check. Replaces the editor step. Tested local PG16 twice. Not wired until he runs it.
 
 - 21 Nov 2026 10:35 PKT Desk ad-auto.sh (auto run or already run); WIRED: NO until he runs it
+
+- 21 Nov 2026 10:35 PKT Desk ad-auto.sh (auto run or already run); WIRED: NO until he runs it
