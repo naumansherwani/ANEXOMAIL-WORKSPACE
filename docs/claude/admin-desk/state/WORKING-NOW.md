@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 02:45 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 02:45 PKT) - read this FIRST for the Desk after a compaction
 DOING: R4-1a pins/scroll/groups done; audit written
 NEXT STEP: R4-1b top bar + profile menu + Desk Bridge, then R4-2 inboxes
 HIS LAST WORD: pin/scroll/groups + audit
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 64a0e2de 22 Nov 02:45 Desk rail pins groups + founder-to-desk audit
 - 1565602c 22 Nov 02:27 ledger line ae67604c
 - ae67604c 22 Nov 02:27 Admin Desk rail: original logo
 - e7576eba 22 Nov 02:26 ledger line 68abd560
@@ -54,14 +55,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 02da406d 22 Nov 02:18 ledger line 5a065da1
 - 5a065da1 22 Nov 02:18 Admin Desk AD2 SQL
 - 882c6f95 22 Nov 01:59 ledger line e869ef67
-- e869ef67 22 Nov 01:59 Desk: sandbox live test, dashboard fixes
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskShell.tsx
- M founder-web/src/desk/desk_shell.test.ts
-?? docs/claude/admin-desk/FOUNDER-TO-DESK-AUDIT-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
