@@ -2579,3 +2579,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 ### 21 Nov 2026 21:07 PKT Desk login DEMO published (his 20:59): orb removed, ANEXOMAIL philosophy (P6 motto + awam line "private business email on your own name") where the orb was, text up, founder-style outline "Continue with a passkey" (KeyRound) under the password form. Code waits his pick.
 
 - 21 Nov 2026 21:07 PKT Desk login demo published (no orb, philosophy, founder passkey button); WIRED: NO
+
+- 21 Nov 2026 21:07 PKT Desk login demo published (no orb, philosophy, founder passkey button); WIRED: NO
