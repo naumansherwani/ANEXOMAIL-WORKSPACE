@@ -3937,3 +3937,11 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 23:32 PKT his word: AAAA TTL Automatic; WIRED: NO
 
 - 21 Nov 2026 23:34 PKT Namecheap save failed (empty A row); fix steps given; WIRED: NO
+
+- 21 Nov 2026 23:36 PKT LAW frontend = Caddy, Hetzner = backend; DNS = Caddy server IP; WIRED: NO
+
+- 21 Nov 2026 23:36 PKT LAW frontend = Caddy, Hetzner = backend; DNS = Caddy server IP; WIRED: NO
+
+- 21 Nov 2026 23:36 PKT LAW frontend = Caddy, Hetzner = backend; DNS = Caddy server IP; WIRED: NO
+
+- 21 Nov 2026 23:36 PKT LAW frontend = Caddy, Hetzner = backend; DNS = Caddy server IP; WIRED: NO

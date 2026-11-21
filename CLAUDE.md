@@ -1,6 +1,7 @@
-> ## >>> RESUME HERE: RESUME HERE 21 Nov 2026 23:34 PKT: his Namecheap AAAA (remove empty row, save); his haan for Alt-Svc :4400; NEXT E201 Premium/Max (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
-> ## >>> DESK 3 COMMANDS ONLY (his 21 Nov 21:41/21:42): desk-install.sh, ad-auto.sh, desk-restart.sh; docs/claude/admin-desk/TWO-COMMANDS.md <<<
-> ## >>> CLEAN-PUSH LAW (his 21 Nov): git status EMPTY after every push; docs/claude/CLEAN-PUSH-LAW-21NOV.md <<<
+> ## >>> RESUME HERE: RESUME HERE 21 Nov 2026 23:36 PKT: his word which machine is his Caddy server; then AAAA; NEXT E201 Premium/Max (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
+> ## >>> FRONTEND=CADDY, HETZNER=BACKEND; DNS=Caddy IP (his 21 Nov 23:35): docs/claude/FRONTEND-CADDY-BACKEND-HETZNER-LAW-21NOV.md <<<
+> ## >>> DESK 3 CMDS: desk-install, ad-auto, desk-restart (admin-desk/TWO-COMMANDS.md) <<<
+> ## >>> CLEAN-PUSH: git status empty after push (CLEAN-PUSH-LAW-21NOV.md) <<<
 > ## >>> DESK HTTP/3 LAW (his 21 Nov 09:23): HTTP/1 AND HTTP/2 BANNED for the Admin Desk; HTTP/3 ONLY; gate blocks later Desk phases until R3a0-stage2 is code (docs/claude/tech-contracts/CURRENT.md). <<<
 > ## >>> DESK ISOLATION LAW (his 21 Nov 2026 07:29 PKT: 'founder ke saath mix nahi karna'): the Admin Desk (admindesk.anexomail.com, founder-web/src/desk, /desk/v1/*, anexo.desk.session, fadm_*, desk_app role) is its OWN security domain; the commit gate FAILS any mixing with founder code, doors, keys or tables. docs/claude/DESK-ISOLATION-GATE-21NOV.md <<<
 > ## >>> AUTOFIX LAW (his 21 Nov 2026 04:33 PKT, in anger): WHEREVER THERE IS A LOOPHOLE OR GAP, CLAUDE FIXES IT HIMSELF AND KEEPS GOING UNTIL THE CODE IS SEEN WORKING LIVE IN CHROME; ONLY THEN GREEN. NEVER 'OPEN, YOU TELL ME'. Safe live proofs only (reversible actions, my own test data, iframe 390/820, read-only scans); his hands only for his phone / keys / server command. docs/claude/AUTOFIX-LAW-21NOV.md <<<

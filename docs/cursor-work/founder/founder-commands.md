@@ -5303,3 +5303,13 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 23:34 PKT] HIS SCREENSHOT (23:34): Namecheap "Failed to save record. Please try again." with AAAA admindesk 2a01:4f9:c014:5df6::1 (Automatic) AND an empty new A Record row (no host, no IP) below it. Told him: remove the empty A row, save the AAAA alone with its own tick.
 
 - 21 Nov 2026 23:34 PKT Namecheap save failed (empty A row); fix steps given; WIRED: NO
+
+[21 Nov 2026 23:36 PKT] HIS WORD (23:35, in anger): gandu yeh yahan caddyserver ka IP aayega, mera frontend repo mein cheekh cheekh ke likho, mera frontend caddyserver sambhalta hai, Hetzner sirf backend sambhalta hai. DONE: FRONTEND-CADDY-BACKEND-HETZNER-LAW-21NOV.md + CLAUDE.md top line.
+
+- 21 Nov 2026 23:36 PKT LAW frontend = Caddy, Hetzner = backend; DNS = Caddy server IP; WIRED: NO
+
+- 21 Nov 2026 23:36 PKT LAW frontend = Caddy, Hetzner = backend; DNS = Caddy server IP; WIRED: NO
+
+- 21 Nov 2026 23:36 PKT LAW frontend = Caddy, Hetzner = backend; DNS = Caddy server IP; WIRED: NO
+
+- 21 Nov 2026 23:36 PKT LAW frontend = Caddy, Hetzner = backend; DNS = Caddy server IP; WIRED: NO

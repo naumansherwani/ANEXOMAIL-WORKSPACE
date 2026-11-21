@@ -53,3 +53,5 @@
 29. (21 Nov 2026 23:25 PKT) Premium/Max sign in at anexomail.com/auth (same page, Basic..Business Pro flow untouched); they get the founder mailbox UI (AWAM-MAILBOX-UI-INHERIT-LAW-16NOV), own company domain, Premium 7,000 users / Max 125,000 cap, live streams 25/100. Details: docs/claude/PREMIUM-MAX-PLAN-21NOV.md.
 
 30. (21 Nov 2026 23:31 PKT) DNS FACTS (his paste): admindesk + anexomail.com have A only (no AAAA, no HTTPS); founderworkspace has AAAA + HTTPS h3 from his own Rust DNS; server IPv6 2a01:4f9:c014:5df6::1; IPv6 listens tcp 443 (same front as IPv4), udp 443, udp 4400. Steps given: Namecheap AAAA for admindesk and @ = 2a01:4f9:c014:5df6::1. Browser h3 for admindesk needs an Alt-Svc h3=":4400" on the public answer (Caddy admindesk block, his haan) because Namecheap has no HTTPS record type; waits his choice.
+
+31. (21 Nov 2026 23:36 PKT) LAW: frontend = Caddy, Hetzner = backend only; DNS A/AAAA = the Caddy server IP (FRONTEND-CADDY-BACKEND-HETZNER-LAW-21NOV.md). Repo facts say the Caddy answering today is on 62.238.98.98 / 2a01:4f9:c014:5df6::1; if his Caddy server is another machine, he gives its IPv6.
