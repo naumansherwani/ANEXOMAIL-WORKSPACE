@@ -1,5 +1,7 @@
 # PLAN R3p: Business Premium + Business Max support lanes in the Admin Desk (written 21 Nov 2026 09:10 PKT, his word 09:02)
 His words: "yeh mix nahi ho jaye awam ke saath, is ka plan bana lete hain, pehle Business Premium aur Business Max, is pe sirf FOUNDER wali advance technology aur ..." (the sentence ended there in his message; waits for the rest).
+## HIS DECISION 21 Nov 09:08 (scope of plans): Basic stays on the Bun side (not touched, not in the Desk's first lanes); Pro already runs on the advanced stack (a Desk row later); EVERY Business package (Business, Business Pro, Business Premium, Business Max) runs ONLY on the advanced technology. First lanes = Premium + Max; R3p6 = Business + Business Pro rows (advanced), then Pro; Basic left alone.
+
 ## NO MIX WITH AWAM (the rule for this whole plan)
 - The Desk never reads awam tables, never imports awam code, never shares an awam key. A company's plan reaches the Desk ONLY through the Polar signed webhook (Rust door in the Desk, own secret) and is stored in the Desk's own tables (fadm_*).
 - Awam files stay frozen. The isolation gate (lanes/lane-sync.py) and the Desk tech gate (admin-desk/gates) fail the commit on any mix.
@@ -15,5 +17,5 @@ RUST + TOKIO + AXUM (webhook door, SLA engine), HMAC-SHA256 signed webhook check
 | R3p3 | Premium and Max lanes in the shared inbox (label, priority above lower plans, named contact shown) | founder-web/src/desk (lane list) | REACT 19, TANSTACK VIRTUAL, KERNEL RPC | NO |
 | R3p4 | SLA clock per plan (starts at the customer's message, stops only on a human reply or resolve) | admin-desk/server/src/sla.rs | RUST TOKIO timers, business-day calendar | NO |
 | R3p5 | Named-contact record + quarterly service/security review record (due dates, proof) | AD2 + Desk screen | POSTGRESQL, hash-chained ledger | NO |
-| R3p6 | The other four plans (Basic, Pro, Business, Business Pro) = more rows in fadm_plans, no new code | AD2 rows | data only | NO (after Premium/Max are real) |
+| R3p6 | Business + Business Pro rows (advanced stack), then Pro; Basic stays on Bun and is not touched = more rows in fadm_plans, no new code | AD2 rows | data only | NO (after Premium/Max are real) |
 Order: after R3a2 (AD1 + login door). Gate rows added in admin-desk/gates/DESK-FEATURES.json (planned, FAIL from 24 Nov 2026 if the technology is still missing).
