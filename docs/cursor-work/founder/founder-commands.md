@@ -5003,3 +5003,5 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 10:35 PKT: his AD1 editor error 42501 (ALTER ROLE needs superuser) fixed: no ALTER ROLE/extension, p_installer policies; tested non-superuser + superuser 8/8; WIRED: code YES, not yet run on his server via ad-sql-run.sh
 
 - 21 Nov 2026 10:35 PKT: his AD1 editor error 42501 (ALTER ROLE needs superuser) fixed: no ALTER ROLE/extension, p_installer policies; tested non-superuser + superuser 8/8; WIRED: code YES, not yet run on his server via ad-sql-run.sh
+
+- 21 Nov 2026 10:38 PKT: checkpoint (loop refresh of WORKING-NOW files); AD1 not yet run on his server (WIRED: NO)
