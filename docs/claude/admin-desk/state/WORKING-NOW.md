@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 01:08 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 01:08 PKT) - read this FIRST for the Desk after a compaction
 DOING: 50k-staff design + phase R3-SCALE written; reminders file added
 NEXT STEP: R3d Rule 52 code (Desk key, own kernel, deskCall), then dashboard + bridge
 HIS LAST WORD: his 01:05: dashboard, bridge, 50,000 employees design
@@ -44,6 +44,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 27e8eda0 22 Nov 01:08 Desk: 50,000-staff design phase, reminders
 - 3af44290 22 Nov 01:01 ledger line 5b1a98ef
 - 5b1a98ef 22 Nov 01:01 Clean tree after record
 - 4f7db55d 22 Nov 01:00 ledger line 6dcf3710
@@ -51,16 +52,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 812107b5 22 Nov 00:55 ledger line 241177c2
 - 241177c2 22 Nov 00:55 Record h3 check result
 - 08c42d25 22 Nov 00:55 ledger line 1a039bc0
-- 1a039bc0 22 Nov 00:55 Desk login eye + save password
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/REMAINING-LIST-22NOV.md
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
- M docs/claude/admin-desk/state/PHASES.md
- M docs/claude/admin-desk/state/RESUME.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? docs/claude/admin-desk/SCALE-50K-DESIGN-22NOV.md
-?? docs/claude/admin-desk/state/REMINDERS.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
