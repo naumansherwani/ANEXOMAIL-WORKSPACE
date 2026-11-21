@@ -5100,3 +5100,11 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - R4-1a UI: pin/unpin, scrollbar, groups, logo text removed; audit of founder->Desk moves; tests 8/8, layout ok, WIRED: NO until his install + my look
 
 - Desk rail item renamed Managed Move-In (his folder name); tests 8/8, WIRED: NO until install
+
+- Desk rail: Cases in Workspace, bottom name removed; WORLD-ADMIN-DESK-FEATURES + 24 module folders (PLAN), WIRED: NO for UI until install
+
+- Desk rail: Cases in Workspace, bottom name removed; WORLD-ADMIN-DESK-FEATURES + 24 module folders (PLAN), WIRED: NO for UI until install
+
+- Desk rail: Cases in Workspace, bottom name removed; WORLD-ADMIN-DESK-FEATURES + 24 module folders (PLAN), WIRED: NO for UI until install
+
+- Desk rail reads module registry (24 planned modules), Cases in Workspace, bottom name removed, WORLD feature list; isolation gate resolves Desk-internal imports; tests 12/12, WIRED: NO until install

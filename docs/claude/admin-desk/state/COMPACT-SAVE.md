@@ -110,3 +110,6 @@
 
 ## 58 (22 Nov 2026 02:45 PKT) AD2 live on his server; R4-1a UI live; pin/unpin+scrollbar+groups added; audit
 AD2 = LIVE (his ad-auto paste 02:23, 20 rows t). desk-install ran OK with DeskShell (his phone screenshot shows rail + original logo). DeskShell.tsx now has groups ANEXOMAIL WORKSPACE / ADMIN DESK / Company, pin/unpin (localStorage anexo.desk.pins), styled scrollbars. Audit + big order = FOUNDER-TO-DESK-AUDIT-22NOV.md: only Finance + Polar stay in founder; People, Managed Move-In, Mail Desk, New customers card MOVE to Desk after Desk copy is live. NEXT: R4-1b (top bar Live+Trusted chips, profile menu, Desk Bridge), R4-2 inboxes, AD2 Rust door. Rule 52, Desk isolation, Rule-70 table + "Abhi code mein NAHI" every reply, real clock via TZ=Asia/Karachi date.
+
+## 59 (22 Nov 2026 02:51 PKT) Cases in ANEXOMAIL WORKSPACE; world feature list + 24 module folders
+Rail: Dashboard / Pinned / ANEXOMAIL WORKSPACE (Inboxes, Cases) / ADMIN DESK (Managed Move-In) / Company (Team, Audit); bottom name block removed. docs/claude/admin-desk/WORLD-ADMIN-DESK-FEATURES-22NOV.md + modules/01..24 (README each: feature, tables, tech, phase, gate). Next SQL = AD3 (cases, queues, SLA). Next UI = R4-1b top bar + profile menu + Desk Bridge. Module folders are PLAN only.

@@ -125,7 +125,8 @@ def desk_isolation():
         if in_desk:
             if p.endswith((".ts", ".tsx")):
                 for m in re.finditer(r"""from\s+['"](\.[^'"]*)['"]""", t):
-                    if m.group(1).startswith("../") and not DESK_OK_IMPORTS.match(m.group(1)): bad.append(f"DESK ISOLATION: {p} imports {m.group(1)} (a founder screen/module); the Desk may import only the shared sign-in pieces, kernel and css")
+                    inside_desk = os.path.normpath(os.path.join(os.path.dirname(p), m.group(1))).replace(os.sep, "/").startswith("founder-web/src/desk/")   # a relative import that RESOLVES inside the Desk folder is the Desk's own file; anything that resolves outside is still refused
+                    if m.group(1).startswith("../") and not inside_desk and not DESK_OK_IMPORTS.match(m.group(1)): bad.append(f"DESK ISOLATION: {p} imports {m.group(1)} (a founder screen/module); the Desk may import only the shared sign-in pieces, kernel and css")
             if not is_gate_text and re.search(r"/founder/v1/|anexo\.session\.token|FOUNDER_|fmail_|founder_", t): bad.append(f"DESK ISOLATION: {p} names a founder door, founder session key or founder table; the Desk uses /desk/v1/*, key anexo.desk.session and fadm_* only")
         elif p.startswith(("founder-web/src/", "server/founder/src/")):
             if re.search(r"""from\s+['"][^'"]*/desk/|/desk/v1/|anexo\.desk\.session|fadm_""", t) and not is_gate_text: bad.append(f"DESK ISOLATION: {p} (founder code) touches the Desk (desk/, /desk/v1/, anexo.desk.session or fadm_*); founder and Desk are never mixed")

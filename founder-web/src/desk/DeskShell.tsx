@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { BrandMark } from "../signin/BrandMark";
+import { MODULES } from "./modules/registry";
 
 /** Admin Desk shell (R4-1, UI step 1, 22 Nov 2026): cinematic night-office look of the Desk login, calm work screen (ONE hero moment: the greeting).
  *  Pure presentation: every value comes in as a prop from a Desk-signed answer the kernel verified. No founder import, no raw fetch, no mock data.
@@ -8,13 +9,17 @@ export type ShellMe = { email: string; name: string | null; role: string; expire
 type NavItem = { key: string; label: string; glyph: ReactNode; live: boolean; group: string };
 const ico = (d: string) => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={d} /></svg>;
 /** Groups follow his word (22 Nov 02:43): company mailboxes sit under ANEXOMAIL WORKSPACE, and the folder ADMIN DESK holds everything about the users' problems. */
+const GLYPH: Record<string, string> = {
+  inboxes: "M3 13l3-8h12l3 8v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zM3 13h5l1 3h6l1-3h5", cases: "M4 5h16v11H8l-4 4zM8 9h8M8 12h5", movein: "M3 12h13M12 6l6 6-6 6M20 4v16",
+  team: "M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20a6 6 0 0 1 12 0M17 11a2.5 2.5 0 1 0 0-5M16 14.5A5 5 0 0 1 21 20", audit: "M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM9 12l2 2 4-4",
+  people: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0", analytics: "M4 20V10M10 20V4M16 20v-7M22 20H2", bridge: "M3 17c3-8 15-8 18 0M3 17h18M7 17v-4M12 17v-6M17 17v-4", alerts: "M12 4a6 6 0 0 0-6 6v4l-2 3h16l-2-3v-4a6 6 0 0 0-6-6zM10 20a2 2 0 0 0 4 0",
+  policy: "M5 4h14v16H5zM9 9h6M9 13h6", shifts: "M12 7v5l3 2M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z", sla: "M12 7v5l3 2M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z",
+};
+const DEFAULT_GLYPH = "M12 8v8M8 12h8M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z";
+/** The rail is built from the module registry (modules/registry.ts): one list, never a second copy here. Groups follow his word (22 Nov 02:49): cases sit under ANEXOMAIL WORKSPACE, user problems and Managed Move-In under ADMIN DESK. */
 const NAV: NavItem[] = [
   { key: "dashboard", group: "", label: "Dashboard", glyph: ico("M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"), live: true },
-  { key: "inboxes", group: "Anexomail Workspace", label: "Inboxes", glyph: ico("M3 13l3-8h12l3 8v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zM3 13h5l1 3h6l1-3h5"), live: false },
-  { key: "cases", group: "Admin Desk", label: "Cases", glyph: ico("M4 5h16v11H8l-4 4zM8 9h8M8 12h5"), live: false },
-  { key: "movein", group: "Admin Desk", label: "Managed Move-In", glyph: ico("M3 12h13M12 6l6 6-6 6M20 4v16"), live: false },
-  { key: "team", group: "Company", label: "Team", glyph: ico("M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20a6 6 0 0 1 12 0M17 11a2.5 2.5 0 1 0 0-5M16 14.5A5 5 0 0 1 21 20"), live: false },
-  { key: "audit", group: "Company", label: "Audit", glyph: ico("M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM9 12l2 2 4-4"), live: false },
+  ...MODULES.map((m): NavItem => ({ key: m.key, group: m.group, label: m.label, glyph: ico(GLYPH[m.key] ?? DEFAULT_GLYPH), live: m.status === "live" })),
 ];
 const PIN_KEY = "anexo.desk.pins";
 const readPins = (): string[] => { try { const v = JSON.parse(window.localStorage.getItem(PIN_KEY) || "[]"); return Array.isArray(v) ? v.filter((x) => typeof x === "string") : []; } catch { return []; } };
@@ -41,14 +46,13 @@ export function remaining(end: Date | null, now: number): string {
   return h > 0 ? `${h} h ${r} min` : `${r} min`;
 }
 export function greeting(h: number): string { return h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening"; }
-const initials = (s: string) => s.trim().split(/\s+/).slice(0, 2).map((w) => w[0]?.toUpperCase() ?? "").join("") || "?";
 
 const CSS = `
 .dsk{font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;--ink:#E8EEF9;--mute:#9FB3D6;--glass:rgba(12,22,46,.62);--line:rgba(160,200,255,.16);--amber:255,170,70;position:relative;min-height:100dvh;color:var(--ink);background:linear-gradient(180deg,#060B19 0%,#0A1730 48%,#0F3460 100%);overflow-x:hidden}
 .dsk::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(55% 45% at 94% 0%,rgba(var(--amber),.26),transparent 62%),radial-gradient(60% 55% at 6% 100%,rgba(15,52,96,.85),transparent 70%)}
 .dsk::after{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0,transparent 14vw,rgba(160,200,255,.05) 14vw,rgba(160,200,255,.05) calc(14vw + 1px));box-shadow:inset 0 0 180px rgba(0,0,0,.55)}
 .dsk-rail{overflow-x:auto;scrollbar-width:none;position:fixed;z-index:20;left:0;right:0;bottom:0;display:flex;justify-content:space-around;gap:2px;padding:6px max(8px,env(safe-area-inset-left)) calc(6px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-right));background:var(--glass);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border-top:1px solid var(--line)}
-.dsk-brand,.dsk-who,.dsk-grp,.dsk-pin{display:none}.dsk-scroll{display:contents}
+.dsk-brand,.dsk-grp,.dsk-pin{display:none}.dsk-scroll{display:contents}
 .dsk-nav{flex:1 0 64px;min-width:0;text-align:center;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:0;border-radius:14px;background:transparent;color:var(--mute);font-family:inherit;font-size:11px;font-weight:500;line-height:1.1;cursor:pointer}
 .dsk-nav[aria-current=page]{color:#fff;background:rgba(111,166,242,.16)}
 .dsk-nav[aria-disabled=true]{opacity:.55;cursor:default}
@@ -79,9 +83,6 @@ html{scrollbar-width:thin;scrollbar-color:rgba(111,166,242,.45) transparent}
  .dsk-rail{top:0;right:auto;bottom:0;width:232px;flex-direction:column;justify-content:flex-start;gap:6px;padding:22px 14px;border-top:0;border-right:1px solid var(--line)}
  .dsk-brand{display:block;margin:0 6px 10px}
  .dsk-nav{flex:0 0 auto;width:100%;flex-direction:row;justify-content:flex-start;gap:12px;padding:0 14px;font-size:14px;text-align:left}
- .dsk-who{display:flex;align-items:center;gap:10px;margin-top:auto;padding:12px 8px 0;border-top:1px solid var(--line);font-size:13px;color:var(--mute)}
- .dsk-who i{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:rgba(111,166,242,.2);color:#fff;font-style:normal;font-weight:600;font-size:13px}
- .dsk-who span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
  .dsk-main{margin-left:232px;max-width:none;padding:40px 40px 48px}
  .dsk-main>*{max-width:62rem}
 }
@@ -114,7 +115,6 @@ export function DeskShell({ me, err, out, onSignOut }: { me: ShellMe | null; err
             </div>
           ))}
         </div>
-        {me && <div className="dsk-who"><i aria-hidden="true">{initials(me.name || me.email)}</i><span>{me.name || me.email}</span></div>}
       </nav>
       <main className="dsk-main">
         <header className="dsk-top">

@@ -5459,3 +5459,15 @@ Features ki list (QC4 mein kya banega):
 ## 22 Nov 2026 02:46 (his 02:46): "Managed Move-In yeh folder name hai rename kero" -> rail item renamed Move-In to Managed Move-In (his folder name).
 
 - Desk rail item renamed Managed Move-In (his folder name); tests 8/8, WIRED: NO until install
+
+## 22 Nov 2026 02:51 (his 02:50): Cases belongs in ANEXOMAIL WORKSPACE; remove the bottom name (Layout Check was my test name); list what a world-class company Admin Desk contains, web research, write code folders. DONE: Cases moved to Workspace group, bottom name block removed (profile menu comes in R4-1b), WORLD-ADMIN-DESK-FEATURES-22NOV.md + 24 module folders docs/claude/admin-desk/modules/*.
+
+- Desk rail: Cases in Workspace, bottom name removed; WORLD-ADMIN-DESK-FEATURES + 24 module folders (PLAN), WIRED: NO for UI until install
+
+- Desk rail: Cases in Workspace, bottom name removed; WORLD-ADMIN-DESK-FEATURES + 24 module folders (PLAN), WIRED: NO for UI until install
+
+- Desk rail: Cases in Workspace, bottom name removed; WORLD-ADMIN-DESK-FEATURES + 24 module folders (PLAN), WIRED: NO for UI until install
+
+## 22 Nov 2026 02:53: NOTE a parallel writer created founder-web/src/desk/modules/* (registry + 24 folders) and WORLD-CLASS-DESK-MODULES-22NOV.md at 02:51 while I worked; adopted as the CODE registry (DeskShell reads it). My duplicate docs/modules removed. Gate lane-sync.py fixed: a relative import that resolves INSIDE founder-web/src/desk/ is the Desk own file (imports resolving outside are still refused).
+
+- Desk rail reads module registry (24 planned modules), Cases in Workspace, bottom name removed, WORLD feature list; isolation gate resolves Desk-internal imports; tests 12/12, WIRED: NO until install
