@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 00:10 PKT) - read this FIRST for the Desk after a compaction
-DOING: OUTAGE: anexomail.com + admindesk have no A and no AAAA (his 00:08 paste); he fixes Namecheap rows
-NEXT STEP: his authoritative dig paste; four rows; desk-restart facts
-HIS LAST WORD: 00:10 page nahi khulta
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 00:21 PKT) - read this FIRST for the Desk after a compaction
+DOING: anexomail.com fine on mobile data, not on his WiFi; DNS proven good; suspect local DNS cache
+NEXT STEP: his nslookup paste; Alt-Svc haan; E201; Rule 52
+HIS LAST WORD: 00:21 wifi vs mobile
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
 
@@ -41,6 +41,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 26aff9e6 22 Nov 00:10 ledger line 5e7c00ba
 - 5e7c00ba 22 Nov 00:10 Record DNS outage
 - 911da8ef 22 Nov 00:00 ledger line 54e41a8f
 - 54e41a8f 22 Nov 00:00 Record DNS proof
@@ -48,9 +49,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 2e237693 21 Nov 23:56 Record down report
 - e6a37e02 21 Nov 23:54 ledger line 4abf202d
 - 4abf202d 21 Nov 23:54 Record missing A rows
-- 79b4b0e2 21 Nov 23:50 ledger line e18f1119
 
 ## Uncommitted Desk files
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)

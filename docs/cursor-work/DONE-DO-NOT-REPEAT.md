@@ -3959,3 +3959,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 22 Nov 2026 00:02 PKT DNS proven: A rows @ and admindesk missing at Namecheap, server 200 v4+v6; WIRED: NO
 
 - 22 Nov 2026 00:14 PKT OUTAGE: anexomail.com and admindesk resolve to no A and no AAAA; he fixes Namecheap rows; WIRED: NO
+
+- 22 Nov 2026 00:23 PKT anexomail.com opens on mobile data not on his WiFi; DNS proven good; local cache suspected; WIRED: NO

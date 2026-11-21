@@ -67,3 +67,5 @@
 36. (22 Nov 2026 00:02 PKT) PROVEN by his paste: Namecheap authoritative A is EMPTY for @ and admindesk; server answers 200 (HTTP/2, Caddy) on both v4 and v6. FIX (his hands): add A @ and A admindesk = 62.238.98.98, Automatic. Then desk-restart facts again; then his haan for Alt-Svc :4400.
 
 37. (22 Nov 2026 00:14 PKT) OUTAGE: anexomail.com + admindesk resolve to NOTHING (A and AAAA both empty in his latest desk-restart, 00:08 PKT). Server fine. He must make Namecheap hold all four rows: A @ + A admindesk = 62.238.98.98; AAAA @ + AAAA admindesk = 2a01:4f9:c014:5df6::1 (and AAAA * optional). Read-only authoritative check line given. NEXT: his Namecheap screenshot/paste, then desk-restart facts.
+
+38. (22 Nov 2026 00:23 PKT) anexomail.com opens on his mobile data, NOT on his WiFi laptop. DNS + server proven fine from outside. Suspect WiFi/laptop DNS cache (not proven). His steps: ipconfig /flushdns, restart router, nslookup anexomail.com paste. I cannot clear Chrome internals (chrome:// blocked in my tool). NEXT: his nslookup paste.

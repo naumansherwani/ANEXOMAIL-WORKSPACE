@@ -5341,3 +5341,7 @@ Features ki list (QC4 mein kya banega):
 [22 Nov 2026 00:14 PKT] HIS WORD (00:10): "page nahi open hota hai anexomail.com". His desk-restart pastes in order: 18:27 UTC A ok / AAAA empty; 18:53 A empty / AAAA ok; latest 19:08 UTC (00:08 PKT): A= AND AAAA= BOTH EMPTY for admindesk and anexomail.com (his local resolver). Earlier public resolvers (1.1.1.1/8.8.8.8/9.9.9.9) showed AAAA only. Server itself fine (curl 200). So the DNS rows are being lost/changed at Namecheap; anexomail.com has no address at all right now.
 
 - 22 Nov 2026 00:14 PKT OUTAGE: anexomail.com and admindesk resolve to no A and no AAAA; he fixes Namecheap rows; WIRED: NO
+
+[22 Nov 2026 00:23 PKT] HIS WORD (00:21): anexomail.com does NOT open on his WiFi but opens on mobile data; "fix kero". FACT: authoritative Namecheap, 1.1.1.1, 8.8.8.8 all return A 62.238.98.98 + AAAA 2a01:4f9:c014:5df6::1; server answers 200. Likely his WiFi/router/laptop DNS cache (stale negative answer). Not proven. Asked him: ipconfig /flushdns, router restart, nslookup anexomail.com output.
+
+- 22 Nov 2026 00:23 PKT anexomail.com opens on mobile data not on his WiFi; DNS proven good; local cache suspected; WIRED: NO
