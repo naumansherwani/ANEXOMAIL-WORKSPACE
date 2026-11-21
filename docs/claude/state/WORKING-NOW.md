@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 07:58 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 07:59 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: STOPPED by his word 07:57: two admindesk blocks in Caddy (old :8400 + new :4400), no server action until read-only look
 NEXT STEP: one read-only command: sed -n 185,205p /etc/caddy/Caddyfile and ss for 4400/8400; his paste; then fix
 HIS LAST WORD: yeh wrong hai ruk ja
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## FOUNDER + other processes in the same list (never touch)
 
 ## Last 5 commits
+- fd146b0f 21 Nov 07:59 desk: caddy 8400 correction
+- 70931997 21 Nov 07:58 ledger line bf163b84
 - bf163b84 21 Nov 07:58 desk: manifest
 - 66b10993 21 Nov 07:58 ledger line eefc07c4
 - eefc07c4 21 Nov 07:58 desk: stop, duplicate caddy block
-- ac748a55 21 Nov 07:50 ledger line 0ad68bd6
-- 0ad68bd6 21 Nov 07:50 Admin Desk phase 1 started: host facts, ports check script, cinematic passkey-only login design
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (f928ee8e5a3a8ab905ffc12e5b12af68034ffad1)
+WIP snapshot: refs/wip/last (5ffc3fbd14097142e9b2388ab8644f78ce7800de)
