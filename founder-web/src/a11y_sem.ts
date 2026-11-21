@@ -1,6 +1,26 @@
 // QC8b b2: screen-reader semantics, added as ATTRIBUTES ONLY on elements the mail page already renders.
 // No node is inserted, no class changes, nothing visible changes. Existing files are untouched.
 // Technology: TypeScript + MutationObserver (one observer, re-applied when React re-renders).
+import { announce } from "./keys_list";
+import { readSingle } from "./keys_store";
+
+const SAID: Record<string, string> = { e: "Archived", "#": "Moved to Trash", s: "Star changed", u: "Marked unread" };
+const marks = (el: Element | null) => el?.querySelectorAll(".mbx-rm svg").length ?? 0;
+/** QC8b b4: one spoken sentence after e # s u on the open mail (the keys act silently today). Never says mail content.
+ *  Only real key presses (isTrusted): the batch walker re-sends keys synthetically and ends with ONE "Done for N mails" (ariaNotify speaks only the latest). */
+function onActionKey(e: KeyboardEvent): void {
+  const say = SAID[e.key];
+  if (!say || !e.isTrusted || e.ctrlKey || e.metaKey || e.altKey || e.shiftKey || e.repeat) return;
+  const t = e.target as HTMLElement | null;
+  if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+  const row = document.querySelector(".mbx .mbx-r.on");
+  if (document.querySelector(".mc-wrap, dialog[open]") || !readSingle() || !row) return;
+  if (e.key !== "s") { announce(say); return; }
+  // Star toggles: say which way it went by comparing the row's marks a moment after the server answered.
+  const li = row.closest("li"), before = marks(li);
+  window.setTimeout(() => { const after = marks(document.querySelector(".mbx .mbx-r.on")?.closest("li") ?? li); announce(after > before ? "Starred" : after < before ? "Unstarred" : say); }, 900);
+}
+
 const SET: Array<[string, Array<[string, string]>]> = [
   // The wordmark is the page's one heading, spoken as "Mail" (level 1).
   [".mbx .mbx-brand b", [["role", "heading"], ["aria-level", "1"], ["aria-label", "Mail"]]],
@@ -44,6 +64,7 @@ export function trackSemantics(): void {
   started = true;
   let queued = false;
   const run = () => { queued = false; applySemantics(document); restoreFocus(document); };
+  window.addEventListener("keydown", onActionKey);
   document.addEventListener("focusout", (e) => { lost = e.target; }, true);
   const mo = new MutationObserver(() => { if (!queued) { queued = true; queueMicrotask(run); } });
   mo.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ["class"] });

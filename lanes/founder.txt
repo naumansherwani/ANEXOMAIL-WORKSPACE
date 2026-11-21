@@ -174,8 +174,8 @@ founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
+founder-web/dist/assets/index-C4isMmkN.js
 founder-web/dist/assets/index-CtqbAC3N.css
-founder-web/dist/assets/index-DNpp1rGl.js
 founder-web/dist/assets/kernel.worker-DY4WQ2it.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
@@ -278,7 +278,6 @@ founder-web/src/Trust.tsx
 founder-web/src/TrustRing.tsx
 founder-web/src/Vault.tsx
 founder-web/src/a11y_sem.ts
-founder-web/src/a11y_sem_next.ts
 founder-web/src/ambient.ts
 founder-web/src/anchorgauge.test.ts
 founder-web/src/anchorgauge.ts

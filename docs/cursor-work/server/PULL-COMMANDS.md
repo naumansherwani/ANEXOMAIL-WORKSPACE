@@ -1585,3 +1585,5 @@
 - 21 Nov 2026 05:30 PKT b3 focus return live-proven in his Chrome on laptop (compose closed, focus back on the open row); SQL E199 + E200 CHECK all OK on his real database (11 of 11, 15 of 15); Rust door and keys_store wiring not done; 390/820 open; b4 parked
 
 - 21 Nov 2026 05:30 PKT b3 focus return live-proven in his Chrome on laptop (compose closed, focus back on the open row); SQL E199 + E200 CHECK all OK on his real database (11 of 11, 15 of 15); Rust door and keys_store wiring not done; 390/820 open; b4 parked
+
+- 21 Nov 2026 05:34 PKT QC8b b4 ANNOUNCEMENTS written and mounted (ariaNotify + polite fallback, only real key presses, star says Starred or Unstarred), sandbox-proven; plan with search points in QC8B-B4-PLAN-21NOV.md; live proof waits his founder-install; b5 b6 todo
