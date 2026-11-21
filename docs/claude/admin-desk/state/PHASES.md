@@ -61,3 +61,7 @@ Updated 21 Nov 2026 10:20 PKT. Rule 52: signed kernel-verified calls, no raw fet
 - [22 Nov 2026 03:43 PKT] R4-1b BRIDGE (BRIDGE-PLAN-22NOV.md): step 1 AD3 SQL + AD3-check written and sandbox-tested; steps 2 Rust probes, 3 signed doors, 4 React command bar NOT written. Cases/queues/SLA SQL renumbered AD4.
 
 - [22 Nov 2026 03:53 PKT] BRIDGE FEATURES (BRIDGE-FEATURES-22NOV.md): R4-10 deliverability; R4-1b step 5 SLO burn (Rust HdrHistogram); step 6 cipher meter (rustls); step 7 Merkle anchor (external Storage Box); R4-1c insider radar + Chairman inbox + Desk Freeze; step 4 honest telemetry UI. AD3 LIVE.
+
+- [22 Nov 2026 03:58 PKT] BRIDGE: step 7 Merkle anchor REMOVED, inbox placement REMOVED (his 03:57).
+
+- [22 Nov 2026 03:59 PKT] R4-1b step 2 probes.rs written + tested (24 tests); AD3 patched for 4 s probes; needs desk-install + ad-auto on his server.

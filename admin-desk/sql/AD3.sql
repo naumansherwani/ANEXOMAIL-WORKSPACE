@@ -155,14 +155,20 @@ CREATE TABLE IF NOT EXISTS desk.fadm_service (
   service        text PRIMARY KEY CHECK (service ~ '^[a-z0-9_]{2,30}$'),
   label          text NOT NULL,
   critical       boolean NOT NULL DEFAULT false,
-  probe_every_s  integer NOT NULL CHECK (probe_every_s BETWEEN 5 AND 3600),
+  probe_every_s  integer NOT NULL CHECK (probe_every_s BETWEEN 1 AND 3600),
   degraded_ms    integer NOT NULL CHECK (degraded_ms BETWEEN 1 AND 600000)
 );
+DO $$ BEGIN   -- a database that already holds the first AD3 run has the old 5-second floor: widen it to 1 (his 12 s stale rule needs 4 s probes)
+  ALTER TABLE desk.fadm_service DROP CONSTRAINT IF EXISTS fadm_service_probe_every_s_check;
+  ALTER TABLE desk.fadm_service ADD CONSTRAINT fadm_service_probe_every_s_check CHECK (probe_every_s BETWEEN 1 AND 3600);
+END $$;
 INSERT INTO desk.fadm_service (service, label, critical, probe_every_s, degraded_ms) VALUES
-  ('h3_edge','HTTP/3 QUIC edge (UDP)',true,30,800),('tls','TLS 1.3 handshake',true,60,800),('db','Desk database',true,30,300),('signer','Desk answer signer (Ed25519)',true,60,300),
+  ('h3_edge','HTTP/3 QUIC edge (UDP)',true,4,800),('tls','TLS 1.3 handshake',true,4,800),('db','Desk database',true,4,300),('signer','Desk answer signer (Ed25519)',true,4,300),
   ('ledger','Ledger hash chain',true,300,2000),('mail_in','Inbound mail',true,60,3000),('mail_out','Outbound mail',true,60,3000),('dns','DNS (SPF, DKIM, DMARC, MTA-STS)',false,300,2000),
   ('storage_box','Attachment storage (Storage Box)',false,120,2000),('clamav','ClamAV scanner',true,60,2000)
 ON CONFLICT (service) DO NOTHING;
+-- HIS RULE (22 Nov 03:57): a heartbeat older than 12 s is STALE. The four live probes run every 4 s, state turns unknown after 3 intervals = 12 s (idempotent: also fixes a database that already holds the first seed)
+UPDATE desk.fadm_service SET probe_every_s = 4 WHERE service IN ('h3_edge','tls','db','signer') AND probe_every_s <> 4;
 CREATE TABLE IF NOT EXISTS desk.fadm_probe (
   id         bigserial PRIMARY KEY,
   service    text NOT NULL REFERENCES desk.fadm_service(service),

@@ -1,4 +1,8 @@
 
+> [22 Nov 2026 03:59 PKT PKT] R4-1b STEP 2 WRITTEN (not on his server): server/src/probes.rs (db, signer, h3_edge, tls every 4 s; ledger, clamav every 60 s; 24 cargo tests ok) + AD3.sql patch (probe floor 1 s, 4 s rows; stale = 12 s). mail_in/mail_out/dns/storage_box have NO probe yet = UNKNOWN on purpose. ClamAV probe needs DESK_CLAMD_SOCK.
+
+> [22 Nov 2026 03:58 PKT PKT, his 03:57] BRIDGE: inbox placement DROPPED, Merkle anchor DROPPED, stale rule = probes 4 s / stale 12 s, honest insider radar, freeze shows measured time. My advice on 2 decisions recorded in BRIDGE-FEATURES-22NOV.md. NOW: R4-1b step 2 Rust probes.
+
 > [22 Nov 2026 03:53 PKT PKT, his 03:52] AD3 LIVE on his server (17 rows t). BRIDGE SECOND LIST: docs/claude/admin-desk/BRIDGE-FEATURES-22NOV.md (11 features with side DESK/FOUNDER, tech, step, honest notes; Desk isolation kept; founder rows need his haan). NEXT: R4-1b step 2 Rust probes (4 s heartbeat, stale at 12 s).
 
 > [22 Nov 2026 03:43 PKT PKT, his 03:38] BRIDGE R4-1b: PLAN docs/claude/admin-desk/BRIDGE-PLAN-22NOV.md; AD3.sql (Bridge: alert center, service health, incidents, watches, command-bar summary) WRITTEN + sandbox-tested (selftest + 17 check rows t, idempotent); NOT yet on his server (ad-auto). Cases/queues/SLA SQL = AD4. Max price FINAL 125,000 (his word 03:38).

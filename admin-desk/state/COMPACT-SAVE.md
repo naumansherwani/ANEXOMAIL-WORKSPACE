@@ -128,3 +128,7 @@ His 03:38: Max 125,000 FINAL; Bridge phase: websearch, points, tech, plan, codes
 
 ## 64 (22 Nov 2026 03:53 PKT) AD3 live + bridge features list 2
 AD3 ran on his server OK. Read BRIDGE-FEATURES-22NOV.md. Open decisions for him: founder rows 4/5/8/9, read-only Desk summary door. NEXT: Rust probes step 2.
+
+## 65 (22 Nov 2026 03:58 PKT) his 03:57: dropped inbox placement + Merkle anchor; stale 12 s / probes 4 s; advice yes+yes on founder rows and one-way summary. NEXT Rust probes.
+
+## 66 (22 Nov 2026 03:59 PKT) probes.rs done; he said I gave no advice in chat (it was only in the doc): give it in chat. NEXT: his ad-auto + desk-install, then signed doors.

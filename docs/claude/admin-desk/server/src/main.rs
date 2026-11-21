@@ -14,10 +14,11 @@ use tower_http::services::{ServeDir, ServeFile};
 mod auth;
 mod door;
 mod h3;
+mod probes;
 mod sign;
 mod signed;
 
-const HOST: &str = "admindesk.anexomail.com";
+pub const HOST: &str = "admindesk.anexomail.com";
 const BIND: &str = "127.0.0.1:4400";
 const DIST: &str = "/opt/anexomail-desk/dist-desk";
 
@@ -76,6 +77,7 @@ async fn main() {
     let index = format!("{DIST}/desk.html");
     let files = ServeDir::new(DIST).fallback(ServeFile::new(index));
     signed::init();
+    probes::spawn_all();   // after the key is loaded, so the first signer probe is a real one
     // R3d (Rule 52): every door below `sealed` answers ONLY as a Desk-signed envelope; calls after sign-in must carry the request MAC (signed.rs).
     let sealed = Router::new()
         .route("/desk/v1/auth/login", post(door::login))

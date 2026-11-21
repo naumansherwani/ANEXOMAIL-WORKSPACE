@@ -5513,3 +5513,9 @@ Features ki list (QC4 mein kya banega):
 - AD3 GREEN on his server (selftest + 17 check rows t, SQL only); Bridge feature list 2 recorded; WIRED: NO (no Rust/UI yet)
 
 - AD3 SQL ran OK on his server (17 rows t), phase not green; Bridge feature list 2 recorded; WIRED: NO
+
+## 22 Nov 2026 03:58 PKT (his 03:57): drop inbox placement and Merkle anchor; keep only practical world-best; honest radar; 12 s stale; asks my advice on 2 decisions.
+
+## 22 Nov 2026 03:59 PKT (his 03:59): "tumen mashwara nahi diya discuss nahi kiya": answered the two decisions in chat.
+
+- Bridge step 2 probes.rs written, 24 cargo tests ok, AD3 patch tested in sandbox; not on server; WIRED: NO

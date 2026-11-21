@@ -2127,3 +2127,5 @@
 - AD3 GREEN on his server (selftest + 17 check rows t, SQL only); Bridge feature list 2 recorded; WIRED: NO (no Rust/UI yet)
 
 - AD3 SQL ran OK on his server (17 rows t), phase not green; Bridge feature list 2 recorded; WIRED: NO
+
+- Bridge step 2 probes.rs written, 24 cargo tests ok, AD3 patch tested in sandbox; not on server; WIRED: NO

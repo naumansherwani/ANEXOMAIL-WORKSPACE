@@ -41,10 +41,10 @@ pub async fn connect() -> Result<std::sync::Arc<Client>, String> {
 }
 pub async fn warm() { match connect().await { Ok(_) => eprintln!("desk door: database connection ready (role desk_app)"), Err(e) => eprintln!("desk door: database not ready yet: {e}") } }
 // every value below is validated or generated here (hex token hash, uuid, allowlisted email), so no prepared statement is needed.
-fn lit(s: &str) -> String { format!("'{}'", s.replace('\'', "''")) }
+pub(crate) fn lit(s: &str) -> String { format!("'{}'", s.replace('\'', "''")) }
 fn email_ok(e: &str) -> bool { e.len() <= 200 && e.contains('@') && e.bytes().all(|b| b.is_ascii_alphanumeric() || b"._%+-@".contains(&b)) }
 fn hex(b: &[u8]) -> String { b.iter().map(|x| format!("{x:02x}")).collect() }
-async fn rows(c: &Client, q: &str) -> Result<Vec<tokio_postgres::SimpleQueryRow>, tokio_postgres::Error> {
+pub(crate) async fn rows(c: &Client, q: &str) -> Result<Vec<tokio_postgres::SimpleQueryRow>, tokio_postgres::Error> {
     Ok(c.simple_query(q).await?.into_iter().filter_map(|m| if let tokio_postgres::SimpleQueryMessage::Row(r) = m { Some(r) } else { None }).collect())
 }
 

@@ -20,6 +20,17 @@ pub fn init() {
     };
     let _ = SIGNER.set(s);
 }
+/// Bridge probe: a real sign + verify round trip with the Desk key. False when the key is missing or broken (never a cached answer).
+pub fn selftest() -> bool {
+    use ed25519_dalek::{Signature, Verifier, VerifyingKey};
+    let Some(s) = signer() else { return false };
+    let env = s.envelope("GET", "/desk/v1/probe", "00112233445566778899aabbccddeeff", now(), "{}");
+    let Ok(e) = serde_json::from_str::<serde_json::Value>(&env) else { return false };
+    let (Some(pubk), Some(sig), Some(body), Some(ts)) = (sign::unhex(&s.public_hex()), e["sig"].as_str().and_then(sign::unhex), e["body"].as_str(), e["ts"].as_i64()) else { return false };
+    let Ok(arr) = <[u8; 32]>::try_from(pubk) else { return false };
+    let (Ok(vk), Ok(sg)) = (VerifyingKey::from_bytes(&arr), Signature::from_slice(&sig)) else { return false };
+    vk.verify(&sign::message("GET", "/desk/v1/probe", "00112233445566778899aabbccddeeff", ts, body.as_bytes()), &sg).is_ok()
+}
 fn signer() -> Option<&'static sign::Signer> { SIGNER.get().and_then(|s| s.as_ref()) }
 fn now() -> i64 { std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0) }
 fn plain(status: StatusCode, err: &str) -> Response { (status, [(header::CONTENT_TYPE, "application/json")], serde_json::json!({"error": err}).to_string()).into_response() }
@@ -97,6 +108,7 @@ mod tests {
         let body = e["body"].as_str()?;
         vk.verify(&sign::message("GET", "/desk/v1/sig/ping", nonce, e["ts"].as_i64()?, body.as_bytes()), &sig).ok()?; Some(body.to_string())
     }
+    #[tokio::test] async fn bridge_signer_probe_is_a_real_round_trip() { let _ = app(); assert!(selftest()); }
     #[tokio::test] async fn sealed_door_signs_good_calls_and_refuses_bad_ones() {
         let a = app(); let t = "ef".repeat(32); let ts = now();
         let (st, _) = call(a.clone(), None, Some(&t), None, ts).await; assert_eq!(st, StatusCode::BAD_REQUEST);
