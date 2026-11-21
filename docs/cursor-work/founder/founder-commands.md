@@ -5135,3 +5135,5 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 20:49 PKT] his paste: desk-appdb.sh ERROR syntax near ":" (psql -c does not expand :pw). FIXED: statement via stdin, tested on PG16.
 
 - 21 Nov 2026 20:49 PKT desk-appdb.sh fix: ALTER ROLE via stdin (psql -c never expands variables); WIRED: NO until his run
+
+- 21 Nov 2026 20:49 PKT desk-appdb.sh fix: ALTER ROLE via stdin (psql -c never expands variables); WIRED: NO until his run
