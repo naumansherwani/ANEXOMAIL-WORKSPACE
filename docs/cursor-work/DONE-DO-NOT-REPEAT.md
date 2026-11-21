@@ -3989,3 +3989,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 22 Nov 01:20 PKT: working-now refresh, WIRED: NO
 
 - 22 Nov 01:25 PKT: WORLD-ADVANCE W1..W10 written into Desk blueprint, WIRED: NO (design only)
+
+- 22 Nov 01:35 PKT: employee accounts plan ON1..ON8 written, WIRED: NO (design only)

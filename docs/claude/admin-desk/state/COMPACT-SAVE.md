@@ -91,3 +91,5 @@
 48. (22 Nov 2026 01:08 PKT) HIS 01:05 ORDER: dashboard then bridge (clean). 50,000-STAFF DESIGN written: docs/claude/admin-desk/SCALE-50K-DESIGN-22NOV.md (S1..S11, Zanzibar-style relations, SCIM, passkeys, routing/SLA, partitions, audit; research sources inside). Reminder file: admin-desk/state/REMINDERS.md. NEXT: R3d code, then dashboard+bridge, inboxes. Nothing in code yet.
 
 49. (22 Nov 2026 01:13 PKT) WORLD-ADVANCE target: WORLD-ADVANCE-DESK-22NOV.md W1..W10 (transparent log, policy engine, hybrid PQ sign, MoQ-style fan-out, ZSP, data-view guard). 4 final questions for him at the end of the doc. Blueprint tops updated. Nothing in code.
+
+50. (22 Nov 2026 01:14 PKT) EMPLOYEE ACCOUNTS PLAN written (ON1..ON8): lead-issued one-time enrollment code, device-bound passkeys x2, no passwords, recovery 2 supervisors + cooling, leaver one-transaction, SCIM. Nothing in code.

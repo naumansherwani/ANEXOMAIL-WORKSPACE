@@ -11,6 +11,7 @@ README.md
 admin-desk/00-FOUNDER-TECH-RULE.md
 admin-desk/BLUEPRINT-ADMIN-DESK.md
 admin-desk/BLUEPRINT-STATUS-21NOV.md
+admin-desk/EMPLOYEE-ACCOUNTS-PLAN-22NOV.md
 admin-desk/PLAN-DESK-UI-COPY-21NOV.md
 admin-desk/README.md
 admin-desk/REMAINING-LIST-22NOV.md
