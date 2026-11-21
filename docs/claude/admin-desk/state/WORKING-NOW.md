@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 20:45 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 20:47 PKT) - read this FIRST for the Desk after a compaction
 DOING: owner created; login door next
 NEXT STEP: his desk-alias-look paste, login door + AD1b
 HIS LAST WORD: prove business script relation: none
@@ -39,6 +39,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 402caa5f 21 Nov 20:47 Desk: login door code (door.rs), AD1b, desk-appdb.sh
 - 5ae3f623 21 Nov 20:45 Desk: login door, AD1b, desk_app login script
 - 5c00668c 21 Nov 20:45 Desk: login door, AD1b, desk_app login script
 - 541b6636 21 Nov 11:21 checkpoint
@@ -46,7 +47,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 32d20048 21 Nov 11:01 checkpoint
 - e8d13804 21 Nov 11:01 checkpoint
 - 8df2152f 21 Nov 11:01 Desk: UI copy plan
-- e0080aa2 21 Nov 11:01 Desk: UI copy plan
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
