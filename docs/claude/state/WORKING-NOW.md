@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 09:12 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Desk pill TLS 1.3 AES-256-GCM live in repo (0c946a7f); HTTP/3 contract written
-NEXT STEP: his ss paste (free UDP port) -> Desk HTTP/3 listener; then AAAA + HTTPS record; R3a2 AD1
-HIS LAST WORD: 09:08 TLS+HTTP/3 for Desk; plans scope
+# WORKING NOW (manual checkpoint, 21 Nov 2026 09:19 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Desk HTTP/3 HARD BLOCK in gate (no later phase until h3 live)
+NEXT STEP: his ss (free UDP port) -> Desk h3 listener (quinn+h3+PQ) -> AAAA+HTTPS record -> his curl --http3 -> only then AD1/auth/DBSC/orb/passkey/R3p
+HIS LAST WORD: 09:18 http2 banned
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,30 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## FOUNDER + other processes in the same list (never touch)
 
 ## Last 5 commits
+- b8c29481 21 Nov 09:12 ledger line c7e911a5
 - c7e911a5 21 Nov 09:12 checkpoint 09:12
 - 1bce042f 21 Nov 09:12 ledger line ee0d17b8
 - ee0d17b8 21 Nov 09:12 checkpoint 09:12
 - 0c946a7f 21 Nov 09:09 ledger line c12c2097
-- c12c2097 21 Nov 09:09 desk: TLS pill proven, http3 contract, plan scope
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/gates/DESK-FEATURES.json
+ M admin-desk/gates/desk_tech_gate.py
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M docs/cursor-work/founder/founder-commands.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ admin-desk/BLUEPRINT-ADMIN-DESK.md           |  2 ++
+ admin-desk/gates/DESK-FEATURES.json          | 31 +++++++++++++++++++++++++---
+ admin-desk/gates/desk_tech_gate.py           | 22 +++++++++++++++++++-
+ docs/claude/state/WORKING-NOW.md             | 28 +++++++++----------------
+ docs/claude/tech-contracts/CURRENT.md        |  3 +++
+ docs/cursor-work/founder/founder-commands.md |  2 ++
+ 6 files changed, 66 insertions(+), 22 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +52,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (474680cd6ebec5f3ab4898de0fe49b516b119db6)
+WIP snapshot: refs/wip/last (8a269b174f0ca026a8c4c04084de3e751a5b15c8)

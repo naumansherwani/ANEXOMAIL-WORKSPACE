@@ -1,3 +1,5 @@
+> **21 Nov 2026 09:25 PKT, HIS WORD: HTTP/3 HARD BLOCK. HTTP/2 is BANNED for the Desk. No later phase (AD1 SQL, auth.rs ARGON2ID, DBSC, orb pulse/zoom, passkey ceremony, R3p plans) may exist in the repo until the Desk's own HTTP/3 + X25519MLKEM768 listener (R3a0-stage2) is in code and proven (his curl --http3). The gate fails the commit. Technology = founder's or more advanced.**
+
 # ADMIN DESK BLUEPRINT (live copy of the Desk phases; his order 21 Nov 2026 08:19 PKT)
 Updated: 21 Nov 2026 08:30 PKT. Plan with times: docs/claude/ADMIN-DESK-3DAY-PLAN-21NOV.md. The Desk is its OWN security domain (docs/claude/DESK-ISOLATION-GATE-21NOV.md). Rule 52: every browser call is signed and verified in the ONE Rust WASM kernel. SQL series for the Desk = AD1, AD2, ... (founder and awam keep the E series).
 RULE (his word): in every phase, next to each FEATURE the CODE file and the ADVANCED TECHNOLOGY are written, and "HAAN" = yes only when the technology is really in that file AND seen working. The gate admin-desk/gates/DESK-FEATURES.json enforces this: missing technology = FAIL, NO COMMIT, shouted.
