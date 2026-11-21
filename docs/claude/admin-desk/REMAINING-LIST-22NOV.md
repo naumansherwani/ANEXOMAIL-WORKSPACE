@@ -18,3 +18,6 @@ R3a0 own process | R3a0-s1 TLS 1.3 AES-256-GCM | R3a0-s2 HTTP/3 on UDP [::]:4400
 | 11 | R4-9, R4-10 | attachments (WebTransport, Storage Box, ClamAV), outbound TLS policy, OpenPGP PQC | Rust | his Hetzner word |
 | 12 | R3g | dashboard + final audit of the Desk | Rust, React | his look |
 "Desk complete" = rows 1 to 12 green, each WIRED: YES / REAL: YES with my live Chrome look at 390 / 820 / 1200+. Premium/Max (P0 E201 plans, test companies on a domain he names, HTTP/3-only path, gates) starts only after that, except the SQL-only E201 plans row which may run beside it if he says so.
+
+## ADDED (22 Nov 2026 01:08 PKT, his 01:05 word): SCALE-50K (row 13): lifetime design for 50,000 staff, rows S1..S11 in SCALE-50K-DESIGN-22NOV.md. Landing target; S1+S2 (org + Zanzibar-style relations) come before a second person gets Desk access. Tech: Rust + Postgres tuples/partitions, SCIM 2.0, WebAuthn, DBSC, WebTransport. His haan per row.
+## NEXT AFTER R3d: dashboard (clean, no tech shown) then BRIDGE (founder-like, clean), real data only.

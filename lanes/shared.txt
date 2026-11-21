@@ -14,6 +14,7 @@ admin-desk/BLUEPRINT-STATUS-21NOV.md
 admin-desk/PLAN-DESK-UI-COPY-21NOV.md
 admin-desk/README.md
 admin-desk/REMAINING-LIST-22NOV.md
+admin-desk/SCALE-50K-DESIGN-22NOV.md
 admin-desk/TWO-COMMANDS.md
 admin-desk/codes/00-FOUNDER-TECH-RULE.md
 admin-desk/codes/DESK-PALETTE-PREMIUM-MAX.md
@@ -60,6 +61,7 @@ admin-desk/sql/checks/README.md
 admin-desk/state/00-FOUNDER-TECH-RULE.md
 admin-desk/state/COMPACT-SAVE.md
 admin-desk/state/PHASES.md
+admin-desk/state/REMINDERS.md
 admin-desk/state/RESUME.md
 admin-desk/web/00-FOUNDER-TECH-RULE.md
 admin-desk/web/README.md
