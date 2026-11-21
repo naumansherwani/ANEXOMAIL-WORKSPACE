@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 04:32 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 04:33 PKT) - read this FIRST for the Desk after a compaction
 DOING: S0 evidence 2
 NEXT STEP: retest new connection, ad-auto, then S1
 HIS LAST WORD: s0
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 0263c06b 22 Nov 04:33 S0 evidence 2
 - 05b99104 22 Nov 04:27 ledger line 71b6f3d8
 - 71b6f3d8 22 Nov 04:27 blueprint order
 - 47c61b34 22 Nov 04:26 ledger line 4e4e34de
@@ -54,12 +55,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 2350d1a2 22 Nov 04:15 ledger line b10048e0
 - b10048e0 22 Nov 04:15 Bridge WebTransport decision
 - 82e6fcdf 22 Nov 04:07 ledger line 6c70bec8
-- 6c70bec8 22 Nov 04:07 AD3 patch check
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/BRIDGE-TRANSPORT-DECISION-22NOV.md
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
