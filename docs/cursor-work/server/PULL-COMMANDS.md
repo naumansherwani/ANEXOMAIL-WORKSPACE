@@ -1785,3 +1785,5 @@
 - 21 Nov 2026 10:05 PKT: his db-list paste: psql fails on PGHOST with literal quotes (fact); ad-sql-run.sh fixed with own PSQL() -h /var/run/postgresql; WIRED: AD1 not yet run on his server
 
 - 21 Nov 2026 10:20 PKT: his word 10:04: Desk WORKING-NOW.md + PHASES.md inside docs/claude/admin-desk/state (2-minute loop restarted, root copy synced); Desk gets its OWN database anexo_desk, runner tested end to end locally; WIRED: code YES, AD1 not yet run on his server
+
+- 21 Nov 2026 10:20 PKT: his word 10:04: Desk WORKING-NOW.md + PHASES.md inside docs/claude/admin-desk/state (2-minute loop restarted, root copy synced); Desk gets its OWN database anexo_desk, runner tested end to end locally; WIRED: code YES, AD1 not yet run on his server
