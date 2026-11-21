@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 05:13 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 05:16 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 21 Nov 04:56 PKT b2 LIVE on his server (his install paste OK). Doing: my Chrome DOM look for b2, then b3 plan+code, then SQL E199 sync + E200 audit log (BOTH, his word)
 NEXT STEP: b2 live Chrome look -> b3 plan doc + mount -> E199+E200 SQL with CHECK
 HIS LAST WORD: his 04:55: DONO SQL kero, b3 shuru, plan repo mein, search points likho, phir advance codes
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 334320ca 21 Nov 05:15 QC8b b4 announcements + plan
+- 59cdda79 21 Nov 05:13 ledger line 8b0bd090
 - 8b0bd090 21 Nov 05:13 b3 live proof, E199/E200 on his DB
 - 71630d90 21 Nov 05:13 ledger line 07cb31e0
 - 07cb31e0 21 Nov 05:13 b3 live proof, E199/E200 on his DB
-- 1a973792 21 Nov 04:59 ledger line b108abc1
-- b108abc1 21 Nov 04:59 Records sync
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (2fe1e399d9c22cd4141e65ac853f93160e810946)
+WIP snapshot: refs/wip/last (f11b6076743534d600f83e9e098536f95e4fea6b)
