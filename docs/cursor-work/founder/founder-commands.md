@@ -4931,3 +4931,5 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 09:40 PKT: his ss paste 09:27: UDP 4400 chosen for Desk HTTP/3; h3.rs real PQ loopback test PASS (6 tests); desk-install.sh + desk-h3-enable.sh committed; WIRED: code YES, live NO until his curl --http3 proof
 
 - 21 Nov 2026 09:40 PKT: his ss paste 09:27: UDP 4400 chosen for Desk HTTP/3; h3.rs real PQ loopback test PASS (6 tests); desk-install.sh + desk-h3-enable.sh committed; WIRED: code YES, live NO until his curl --http3 proof
+
+- 21 Nov 2026 09:40 PKT: his ss paste 09:27: UDP 4400 chosen for Desk HTTP/3; h3.rs real PQ loopback test PASS (6 tests); desk-install.sh + desk-h3-enable.sh committed; WIRED: code YES, live NO until his curl --http3 proof
