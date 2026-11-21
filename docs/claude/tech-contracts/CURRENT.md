@@ -2689,3 +2689,7 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 ### 21 Nov 2026 22:59 PKT Desk login: one horizon light only (DeskScene horizon prop, login off); landing unchanged. Backup branch backup/desk-ui-20261121-2259.
 
 - 21 Nov 2026 22:59 PKT Desk login: single bottom light; WIRED: NO until his install
+
+### 21 Nov 2026 23:10 PKT Desk login door LIVE (his install: desk_app connection ready, OK database login live). Status file BLUEPRINT-STATUS-21NOV.md; palette for Premium/Max saved.
+
+- 21 Nov 2026 23:10 PKT Desk login door LIVE on his server (desk_app DB login); blueprint status + Premium/Max palette saved; sign-in by him pending

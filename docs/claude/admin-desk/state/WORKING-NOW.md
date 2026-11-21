@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 22:59 PKT) - read this FIRST for the Desk after a compaction
-DOING: single bottom light
-NEXT STEP: his install, sign in, flash pick
-HIS LAST WORD: double light removed
+# ADMIN DESK WORKING NOW (manual checkpoint, 21 Nov 2026 23:10 PKT) - read this FIRST for the Desk after a compaction
+DOING: login door live; blueprint status written
+NEXT STEP: his sign-in; Rule 52 Desk kernel RPC
+HIS LAST WORD: blueprint bhejo, palette Premium/Max
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
 
@@ -36,9 +36,12 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 
 > [21 Nov 2026 20:44 PKT] R3a2-3 LOGIN DOOR written + tested locally (door.rs, AD1b). His 3 server steps: ad-auto (AD1b) > desk-appdb.sh > desk-install. Then login at /adminlogin: admindesk@anexomail.com + his password. NEXT R4-1 copy of founder shell (PLAN-DESK-UI-COPY-21NOV.md).
 
+> [21 Nov 2026 23:10 PKT] LIVE: R3a0, s1, s2 (UDP 4400), R3a1 pages, AD1+AD1b, owner, login door + desk_app DB login (his install 23:08 'database login live'). NEXT: his sign-in -> Rule 52 kernel RPC -> DBSC -> orb -> passkey -> R4-1..10 -> R3p -> R3b-g. Gap: public path still TCP/HTTP2 via Caddy until his AAAA+HTTPS record.
+
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 495bd5dc 21 Nov 22:59 ledger line f24407da
 - f24407da 21 Nov 22:59 Desk login: one bottom light
 - 0b3f96d1 21 Nov 22:50 ledger line 42468c3e
 - 42468c3e 21 Nov 22:50 Desk login: email suffix, fixed bottom light
@@ -46,10 +49,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 5a2e589d 21 Nov 22:40 ledger line dad14a1b
 - dad14a1b 21 Nov 22:40 Desk home Sign in: awam button colours
 - cd8b2fcd 21 Nov 22:36 ledger line 77f84998
-- 77f84998 21 Nov 22:36 Desk: backup branch note
 
 ## Uncommitted Desk files
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
+ M docs/claude/admin-desk/state/PHASES.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+?? docs/claude/admin-desk/BLUEPRINT-STATUS-21NOV.md
+?? docs/claude/admin-desk/codes/DESK-PALETTE-PREMIUM-MAX.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

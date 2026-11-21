@@ -30,3 +30,5 @@ Updated 21 Nov 2026 10:20 PKT. Rule 52: signed kernel-verified calls, no raw fet
 > [21 Nov 2026 11:01 PKT] PLAN after login: see PLAN-DESK-UI-COPY-21NOV.md (R4-1..R4-10 = founder phases copied in order; Desk gate + /desk/v1 endpoints only).
 
 > [21 Nov 2026 20:44 PKT] R3a2-3 LOGIN DOOR written + tested locally (door.rs, AD1b). His 3 server steps: ad-auto (AD1b) > desk-appdb.sh > desk-install. Then login at /adminlogin: admindesk@anexomail.com + his password. NEXT R4-1 copy of founder shell (PLAN-DESK-UI-COPY-21NOV.md).
+
+> [21 Nov 2026 23:10 PKT] LIVE: R3a0, s1, s2 (UDP 4400), R3a1 pages, AD1+AD1b, owner, login door + desk_app DB login (his install 23:08 'database login live'). NEXT: his sign-in -> Rule 52 kernel RPC -> DBSC -> orb -> passkey -> R4-1..10 -> R3p -> R3b-g. Gap: public path still TCP/HTTP2 via Caddy until his AAAA+HTTPS record.

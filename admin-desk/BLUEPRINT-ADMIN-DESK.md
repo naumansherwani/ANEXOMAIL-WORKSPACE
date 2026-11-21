@@ -1,3 +1,4 @@
+> [21 Nov 2026 23:10 PKT] WHERE WE STAND: login door + own DB login LIVE (his install 23:08). NEXT: his sign-in, then Rule 52 Desk kernel RPC, DBSC, orb, passkey, R4 copy, R3p (palette kept for Premium/Max). Full status: BLUEPRINT-STATUS-21NOV.md
 > [21 Nov 2026 20:44 PKT] R3a2-3 LOGIN DOOR code done (door.rs, AD1b, desk-appdb.sh); waits his 3 server steps; then R3a2 DBSC, R4-1.. founder phases copied (Desk gate + /desk/v1 endpoints only).
 > [21 Nov 2026 11:01 PKT] AFTER LOGIN: inside UI = founder phases COPIED in order (R4-1..R4-10, PLAN-DESK-UI-COPY-21NOV.md), Desk gate + /desk/v1 endpoints, never founder's. NEXT now: login door + AD1b.
 > [21 Nov 2026 10:56 PKT] R3a2-2 owner CREATED + auth.rs installed (his runs). NEXT: login door + AD1b desk_app login > DBSC > orb > passkey > R3p > R3b-g. Aliases = company aliases, look first (desk-alias-look.sh).
