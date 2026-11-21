@@ -5337,3 +5337,7 @@ Features ki list (QC4 mein kya banega):
 [22 Nov 2026 00:02 PKT] HIS PASTE (00:00): authoritative dns1.registrar-servers.com: anexomail.com A= (empty) AAAA=2a01:4f9:c014:5df6::1; admindesk A= (empty) AAAA same. Server answers 200/2 over v4 and v6 for both (HTTP/2 via Caddy). PROVEN: the A rows for @ and admindesk are missing at Namecheap, server is fine.
 
 - 22 Nov 2026 00:02 PKT DNS proven: A rows @ and admindesk missing at Namecheap, server 200 v4+v6; WIRED: NO
+
+[22 Nov 2026 00:14 PKT] HIS WORD (00:10): "page nahi open hota hai anexomail.com". His desk-restart pastes in order: 18:27 UTC A ok / AAAA empty; 18:53 A empty / AAAA ok; latest 19:08 UTC (00:08 PKT): A= AND AAAA= BOTH EMPTY for admindesk and anexomail.com (his local resolver). Earlier public resolvers (1.1.1.1/8.8.8.8/9.9.9.9) showed AAAA only. Server itself fine (curl 200). So the DNS rows are being lost/changed at Namecheap; anexomail.com has no address at all right now.
+
+- 22 Nov 2026 00:14 PKT OUTAGE: anexomail.com and admindesk resolve to no A and no AAAA; he fixes Namecheap rows; WIRED: NO
