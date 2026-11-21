@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:25 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:26 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: AD1.sql fixed after his editor error 42501; tested non-superuser + superuser
 NEXT STEP: his ONE line ad-sql-run.sh (own DB anexo_desk, not an editor); then auth.rs ARGON2ID -> DBSC -> orb -> passkey -> R3p
 HIS LAST WORD: 10:24 AD1 editor error
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- c7681864 21 Nov 10:26 checkpoint 10:38
+- 6dfb7ecd 21 Nov 10:25 ledger line c042de6e
 - c042de6e 21 Nov 10:25 checkpoint 10:38
 - 110ac79e 21 Nov 10:25 ledger line 4ff7a6fd
 - 4ff7a6fd 21 Nov 10:25 desk: AD1 works without superuser
-- 15f8d3a9 21 Nov 10:25 ledger line a5339f0b
-- a5339f0b 21 Nov 10:25 desk: AD1 works without superuser
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a9716a9a40bb0f19347071a458bdbd7bf8154eaa)
+WIP snapshot: refs/wip/last (d388afbff715cf320549fd6e82f8ae49d142ec61)
