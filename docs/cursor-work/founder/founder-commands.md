@@ -4973,3 +4973,5 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 09:56 PKT (continuation of 'phase ki taraf aao'): R3a2 step 1 done: AD1.sql written + tested on PostgreSQL 16, ad-sql-run.sh written; asks his database name (read-only).
 
 - 21 Nov 2026 10:30 PKT: R3a2 step 1 AD1.sql WRITTEN + TESTED on PostgreSQL 16 (idempotent, selftest, 8/8 CHECK), ad-sql-run.sh written; gate row R3a2-sql code; WIRED: code YES, NOT yet run on his server (needs his db name)
+
+- 21 Nov 2026 10:30 PKT: R3a2 step 1 AD1.sql WRITTEN + TESTED on PostgreSQL 16 (idempotent, selftest, 8/8 CHECK), ad-sql-run.sh written; gate row R3a2-sql code; WIRED: code YES, NOT yet run on his server (needs his db name)
