@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:27 PKT) - read this FIRST for the Desk after a compaction
-DOING: AD1-editor.sql built for his SQL editor, tested non-superuser
-NEXT STEP: his paste of the 8-row result from the editor; then auth.rs ARGON2ID -> DBSC -> orb -> passkey -> R3p
-HIS LAST WORD: 10:26 editor sql
+# ADMIN DESK WORKING NOW (manual checkpoint, 21 Nov 2026 10:31 PKT) - read this FIRST for the Desk after a compaction
+DOING: AD1 editor + server check scripts pushed
+NEXT STEP: his editor run of AD1.sql, ad-db-env + ad-check paste, then auth.rs
+HIS LAST WORD: same rakho check wali jaise pehle tha check server pe AD1 sql editor
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
 
@@ -20,9 +20,12 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 | R3p | Plans (Business Premium, Max first; Business tiers advanced only; Basic stays Bun) | AD2 SQL, polar.rs, sla.rs, lanes UI | Rust, HMAC-SHA256 webhook, RLS | his 09:08 | after the Desk; needs his support terms (R3p0) |
 | R3b-g | Inboxes, auto mail, dashboard, reply, SLA engine, final | later | Rust, kernel RPC | his 3-day plan | Sun 22 - Mon 23 Nov |
 
+> [21 Nov 2026 10:31 PKT] AD1 flow: editor = sql/AD1.sql, server = scripts/ad-check.sh (read-only) after ad-db-env.sh once. WAITS his editor run + check paste.
+
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 1f7c3c22 21 Nov 10:27 checkpoint 10:48
 - 9efe08f3 21 Nov 10:27 checkpoint 10:48
 - bf9114ac 21 Nov 10:27 desk: AD1-editor.sql for the SQL editor
 - 41acdd31 21 Nov 10:26 desk: AD1-editor.sql for the SQL editor
@@ -30,10 +33,21 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - c042de6e 21 Nov 10:25 checkpoint 10:38
 - 4ff7a6fd 21 Nov 10:25 desk: AD1 works without superuser
 - a5339f0b 21 Nov 10:25 desk: AD1 works without superuser
-- 8fa66e0b 21 Nov 10:09 checkpoint 10:22
 
 ## Uncommitted Desk files
+ M admin-desk/gates/desk_tech_gate.py
+ D admin-desk/scripts/make-editor-sql.py
+ D admin-desk/sql/AD1-editor.sql
+ M admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/gates/desk_tech_gate.py
+ D docs/claude/admin-desk/scripts/make-editor-sql.py
+ D docs/claude/admin-desk/sql/AD1-editor.sql
+ M docs/claude/admin-desk/state/PHASES.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+?? admin-desk/scripts/ad-check.sh
+?? admin-desk/scripts/ad-db-env.sh
+?? docs/claude/admin-desk/scripts/ad-check.sh
+?? docs/claude/admin-desk/scripts/ad-db-env.sh
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 22 Nov: R3a2-argon2 [R3a2] Password door with ARGON2ID, constant-time -> needs ARGON2ID, constant-time compare, token audience desk in admin-de

@@ -40,11 +40,6 @@ def check(root="."):
             t = open(fp, errors="ignore").read()
             if re.search(r'http/?2|"http2"|\bh2\b|http/?1(\.[01])?\b|\bhttp1\b', t, re.I):
                 fails.append("!!! ADMIN DESK HTTP/1 AND HTTP/2 ARE BOTH BANNED (HTTP/3 only) !!! " + rel + " mentions it; remove it")
-    # the editor file must be the current AD1.sql + CHECK (his 21 Nov 10:26: he runs it in a SQL editor)
-    import subprocess, sys as _s
-    mk = os.path.join(root, "docs/claude/admin-desk/scripts/make-editor-sql.py")
-    if os.path.exists(mk) and subprocess.run([_s.executable, mk, "check"]).returncode != 0:
-        fails.append("!!! ADMIN DESK AD1-editor.sql IS STALE !!! run: python3 docs/claude/admin-desk/scripts/make-editor-sql.py (then desk-copy-sync.py sync)")
     return fails, warns
 if __name__ == "__main__":
     a, b = check()

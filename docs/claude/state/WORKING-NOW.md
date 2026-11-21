@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:27 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: AD1-editor.sql built for his SQL editor, tested non-superuser
-NEXT STEP: his paste of the 8-row result from the editor; then auth.rs ARGON2ID -> DBSC -> orb -> passkey -> R3p
-HIS LAST WORD: 10:26 editor sql
+# WORKING NOW (manual checkpoint, 21 Nov 2026 10:31 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: AD1 editor + server check scripts pushed
+NEXT STEP: his editor run of AD1.sql, ad-db-env + ad-check paste, then auth.rs
+HIS LAST WORD: same rakho check wali jaise pehle tha check server pe AD1 sql editor
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,41 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 5966b2fe 21 Nov 10:27 ledger line 1f7c3c22
 - 1f7c3c22 21 Nov 10:27 checkpoint 10:48
 - 973e4d5e 21 Nov 10:27 ledger line 9efe08f3
 - 9efe08f3 21 Nov 10:27 checkpoint 10:48
 - 09688b7d 21 Nov 10:27 ledger line bf9114ac
-- bf9114ac 21 Nov 10:27 desk: AD1-editor.sql for the SQL editor
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/gates/desk_tech_gate.py
+ D admin-desk/scripts/make-editor-sql.py
+ D admin-desk/sql/AD1-editor.sql
+ M admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/gates/desk_tech_gate.py
+ D docs/claude/admin-desk/scripts/make-editor-sql.py
+ D docs/claude/admin-desk/sql/AD1-editor.sql
+ M docs/claude/admin-desk/state/PHASES.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M docs/cursor-work/founder/founder-commands.md
+?? admin-desk/scripts/ad-check.sh
+?? admin-desk/scripts/ad-db-env.sh
+?? docs/claude/admin-desk/scripts/ad-check.sh
+?? docs/claude/admin-desk/scripts/ad-db-env.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/admin-desk/scripts/make-editor-sql.py |  17 --
+ docs/claude/admin-desk/sql/AD1-editor.sql         | 186 ----------------------
+ docs/claude/admin-desk/state/PHASES.md            |   2 +
+ docs/claude/admin-desk/state/WORKING-NOW.md       |   2 +-
+ docs/claude/state/WORKING-NOW.md                  |  38 ++---
+ docs/claude/tech-contracts/CURRENT.md             |   3 +
+ docs/cursor-work/founder/founder-commands.md      |   2 +
+ 12 files changed, 29 insertions(+), 436 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +63,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (274dad349ee0126bb081760867d0ab14f1845195)
+WIP snapshot: refs/wip/last (8692aa9f9c12f8f675ae67167d51d287cec883e5)

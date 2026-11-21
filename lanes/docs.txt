@@ -334,13 +334,14 @@ docs/claude/admin-desk/gates/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/gates/DESK-FEATURES.json
 docs/claude/admin-desk/gates/desk_tech_gate.py
 docs/claude/admin-desk/scripts/00-FOUNDER-TECH-RULE.md
+docs/claude/admin-desk/scripts/ad-check.sh
+docs/claude/admin-desk/scripts/ad-db-env.sh
 docs/claude/admin-desk/scripts/ad-sql-run.sh
 docs/claude/admin-desk/scripts/desk-cert-sync.sh
 docs/claude/admin-desk/scripts/desk-h3-check.sh
 docs/claude/admin-desk/scripts/desk-h3-enable.sh
 docs/claude/admin-desk/scripts/desk-host-check.sh
 docs/claude/admin-desk/scripts/desk-install.sh
-docs/claude/admin-desk/scripts/make-editor-sql.py
 docs/claude/admin-desk/server/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/server/Cargo.lock
 docs/claude/admin-desk/server/Cargo.toml
@@ -348,7 +349,6 @@ docs/claude/admin-desk/server/src/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/server/src/h3.rs
 docs/claude/admin-desk/server/src/main.rs
 docs/claude/admin-desk/sql/00-FOUNDER-TECH-RULE.md
-docs/claude/admin-desk/sql/AD1-editor.sql
 docs/claude/admin-desk/sql/AD1.sql
 docs/claude/admin-desk/sql/AD1/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/sql/AD1/README.md

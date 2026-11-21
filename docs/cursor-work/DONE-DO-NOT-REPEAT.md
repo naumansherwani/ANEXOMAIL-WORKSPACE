@@ -3735,3 +3735,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 10:48 PKT: checkpoint (loop refresh of WORKING-NOW files); AD1 not yet run by him (WIRED: NO)
 
 - 21 Nov 2026 10:48 PKT: checkpoint (loop refresh of WORKING-NOW files); AD1 not yet run by him (WIRED: NO)
+
+- 21 Nov 2026 10:31 PKT Desk AD1 flow per his 10:28: editor runs AD1.sql, server runs ad-check.sh; WIRED: NO until he runs both
