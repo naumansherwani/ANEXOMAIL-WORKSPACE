@@ -5138,3 +5138,13 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - AD3-check row for 4 s probes (so ad-auto reruns AD3); desk-install ok on his server; WIRED: NO
 
 - Bridge live transport decided: WebTransport on UDP 4400, signed poll fallback, MoQ later; docs + contract only; WIRED: NO
+
+- Bridge: all-today order, step 0 browser h3 NOT proven (Chrome h2), WebTransport primary; docs only; WIRED: NO
+
+- Bridge: all-today order, step 0 browser h3 NOT proven (Chrome h2), WebTransport primary; docs only; WIRED: NO
+
+- Bridge: all-today order, step 0 browser h3 NOT proven (Chrome h2), WebTransport primary; docs only; WIRED: NO
+
+- Bridge: all-today order, step 0 browser h3 NOT proven (Chrome h2), WebTransport primary; docs only; WIRED: NO
+
+- Bridge: all-today order, step 0 browser h3 NOT proven (Chrome h2), WebTransport primary; docs only; WIRED: NO

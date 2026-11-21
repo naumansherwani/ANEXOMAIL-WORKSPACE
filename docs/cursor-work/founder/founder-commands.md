@@ -5527,3 +5527,15 @@ Features ki list (QC4 mein kya banega):
 ## 22 Nov 2026 04:15 PKT (his 04:15): option 3 WebTransport; asks when Rule 52 and MoQ arrive; record decision in ledger + blueprint.
 
 - Bridge live transport decided: WebTransport on UDP 4400, signed poll fallback, MoQ later; docs + contract only; WIRED: NO
+
+## 22 Nov 2026 04:25 PKT (his 04:24): WebTransport primary; all today; his full tech list for Admin Desk; pasted ad-auto (AD3 skipped) + desk-h3-check OK.
+
+- Bridge: all-today order, step 0 browser h3 NOT proven (Chrome h2), WebTransport primary; docs only; WIRED: NO
+
+- Bridge: all-today order, step 0 browser h3 NOT proven (Chrome h2), WebTransport primary; docs only; WIRED: NO
+
+- Bridge: all-today order, step 0 browser h3 NOT proven (Chrome h2), WebTransport primary; docs only; WIRED: NO
+
+- Bridge: all-today order, step 0 browser h3 NOT proven (Chrome h2), WebTransport primary; docs only; WIRED: NO
+
+- Bridge: all-today order, step 0 browser h3 NOT proven (Chrome h2), WebTransport primary; docs only; WIRED: NO

@@ -136,3 +136,5 @@ AD3 ran on his server OK. Read BRIDGE-FEATURES-22NOV.md. Open decisions for him:
 ## 67 (22 Nov 2026 04:07 PKT) his 04:07: desk-install ok; ad-auto skipped AD3 patch (check true) -> added check row 18; he must run ad-auto again. Founder rows stay founder; Desk Bridge only company needs; one-way summary dropped for now. NEXT step 3 doors (discuss tech).
 
 ## 68 (22 Nov 2026 04:15 PKT) his 04:15: option 3 WebTransport chosen. See BRIDGE-TRANSPORT-DECISION-22NOV.md (D1-D4 + order). Pending his: ad-auto again (AD3 4 s patch), desk-h3-check paste. NEXT: signed poll doors bridge.rs.
+
+## 69 (22 Nov 2026 04:25 PKT) his 04:24: WebTransport primary, all today, one phase green at a time. Step 0 NOT proven (Chrome h2 on admindesk, h3 on founder site; server h3check OK). ad-auto skipped AD3 patch twice: cause unknown (my local test says the check row flips), need read-only look. NEXT: server read-only look, bridge.rs doors.

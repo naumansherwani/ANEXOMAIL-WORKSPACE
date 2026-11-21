@@ -1,4 +1,6 @@
 
+> [22 Nov 2026 04:25 PKT PKT, his 04:24] HIS FAITH: WebTransport PRIMARY always, fallback kept, EVERYTHING TODAY (not 4 days), one phase green in Chrome then next, his full technology list on every phase. STEP 0 NOT PROVEN: server h3check OK (loopback + public) but real Chrome shows h2 for admindesk (h3 for the founder site). Diagnosing. AD3 4 s patch still not applied on his DB (ad-auto skipped twice).
+
 > [22 Nov 2026 04:15 PKT PKT, his 04:15] DECISION: Bridge live transport = WEBTRANSPORT (QUIC) on the Desk UDP 4400 (443 is founder), signed poll doors = fallback, Rule 52 per stream message (live since R3d for doors), MoQ tracks named now, framing after (not in the 4 days). Prerequisite: real HTTP/3 proof (desk-h3-check). Full: docs/claude/admin-desk/BRIDGE-TRANSPORT-DECISION-22NOV.md
 
 > [22 Nov 2026 04:07 PKT PKT, his 04:07] HIS SERVER: desk-install OK (new binary with probes running, db login live). ad-auto SKIPPED AD3 because the CHECK was all true: my 4 s probe patch was NOT applied. FIXED: AD3-check has a new row (probes every 4 s) that is false until the patch runs, so his next ad-auto runs AD3 again (sandbox proved: before f, after 18 rows t). His answers: founder rows stay in Founder Bridge, I decide what an employee needs; Desk Bridge = for the Anexomail company needs only. NEXT: R4-1b step 3 signed doors.
