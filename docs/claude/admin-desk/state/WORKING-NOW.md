@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 02:23 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 02:26 PKT) - read this FIRST for the Desk after a compaction
 DOING: AD2 LIVE; starting cinematic Desk dashboard UI (reading founder look, read-only)
 NEXT STEP: R4-1 shell+dashboard UI, then Rust door for AD2
 HIS LAST WORD: UI UX shuru kero, fast
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 68abd560 22 Nov 02:26 Admin Desk R4-1 dashboard shell UI
 - 02da406d 22 Nov 02:18 ledger line 5a065da1
 - 5a065da1 22 Nov 02:18 Admin Desk AD2 SQL
 - 882c6f95 22 Nov 01:59 ledger line e869ef67
@@ -54,7 +55,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 0e011cb2 22 Nov 01:55 ledger line e94b2518
 - e94b2518 22 Nov 01:55 Desk: installer check fix for Rule 52 layer, R-CRM phase
 - 1bf4195c 22 Nov 01:47 ledger line 21dbdaea
-- 21dbdaea 22 Nov 01:47 Desk status record + timestamp correction
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
