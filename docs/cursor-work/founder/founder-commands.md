@@ -4879,3 +4879,9 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 08:57 PKT: admindesk OPENS (his cert sync: HTTPS 200, TLS 1.3 AES-256-GCM-SHA384 verified by his openssl); SPA 404 bug fixed in code (fallback = 200), needs his re-install; plans = data in AD1 fadm_plans; X25519MLKEM768/HTTP3 not proven (WIRED: login door NO)
 
 - 21 Nov 2026 08:57 PKT: admindesk OPENS (his cert sync: HTTPS 200, TLS 1.3 AES-256-GCM-SHA384 verified by his openssl); SPA 404 bug fixed in code (fallback = 200), needs his re-install; plans = data in AD1 fadm_plans; X25519MLKEM768/HTTP3 not proven (WIRED: login door NO)
+
+- 21 Nov 2026 08:56 PKT HIS WORD (with his phone photo of the live landing): "yeh page open hogaya hai lekin tum khud batao ke yeh Vercel/Apple ke level ka hai, aur yeh do baar ANEXOMAIL likha hai" => honest verdict: NO, the landing was the old plain skeleton (two ANEXOMAIL = logo lockup + a small label). Rebuilt in the cinematic scene: ONE logo lockup (original BrandMark), gradient headline, motto glass pill, HoverA Sign in button; kernel label shown only when really verified. Sandbox 390/820/1280 ok.
+
+- 21 Nov 2026 09:10 PKT: his live photo: landing was plain + ANEXOMAIL twice; landing rebuilt in the cinematic scene (one logo, gradient headline, motto pill, HoverA button), kernel label only when verified; sandbox 390/820/1280 ok; needs his re-install (WIRED: login door NO)
+
+- 21 Nov 2026 09:10 PKT: his live photo: landing was plain + ANEXOMAIL twice; landing rebuilt in the cinematic scene (one logo, gradient headline, motto pill, HoverA button), kernel label only when verified; sandbox 390/820/1280 ok; needs his re-install (WIRED: login door NO)

@@ -174,8 +174,8 @@ founder-web/dist-desk/assets/Inter-Light-Czry1CUT.woff2
 founder-web/dist-desk/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist-desk/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist-desk/assets/Inter-SemiBold-CF8ghLaY.woff2
-founder-web/dist-desk/assets/desk-DUz0TcIM.js
-founder-web/dist-desk/assets/desk-Tle4EYAx.css
+founder-web/dist-desk/assets/desk-CIZ4RGiZ.js
+founder-web/dist-desk/assets/desk-wNoEzQjc.css
 founder-web/dist-desk/assets/kernel.worker-DY4WQ2it.js
 founder-web/dist-desk/assets/three.module-C0S06CcT.js
 founder-web/dist-desk/boot.css
@@ -200,8 +200,8 @@ founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-6JDrGBmO.js
-founder-web/dist/assets/index-DM4OKeHt.css
+founder-web/dist/assets/index-B1NbwEq2.js
+founder-web/dist/assets/index-CnHbmMGT.css
 founder-web/dist/assets/kernel.worker-DY4WQ2it.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
 founder-web/dist/assets/three.core-BkCwB-2w.js

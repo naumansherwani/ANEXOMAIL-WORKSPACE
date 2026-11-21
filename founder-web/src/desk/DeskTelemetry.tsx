@@ -16,7 +16,8 @@ export function DeskTelemetry({ chainHead }: { chainHead?: string | null }) {
     warmKernel();
     return trust.sub(() => setK(trust.get()));
   }, []);
-  const kernel = k.state === "verified" ? "Rust WASM kernel verified" : k.state === "failed" ? "Rust WASM kernel: check failed" : "Rust WASM kernel: starting";
+  // "starting" is never shown: on a page with no signed reply the kernel has nothing to verify yet, and a label stuck on "starting" would say nothing true.
+  const kernel = k.state === "verified" ? "Rust WASM kernel verified" : k.state === "failed" ? "Rust WASM kernel: check failed" : null;
   return (
     <>
       {proto && (
@@ -26,7 +27,7 @@ export function DeskTelemetry({ chainHead }: { chainHead?: string | null }) {
           </div>
         </div>
       )}
-      <div style={{ ...lab, left: 24, bottom: 20 }}>{kernel}</div>
+      {kernel ? <div style={{ ...lab, left: 24, bottom: 20 }}>{kernel}</div> : null}
       {chainHead ? <div style={{ ...lab, right: 24, bottom: 20 }}>Merkle audit chain: head {chainHead.slice(0, 8)}</div> : null}
     </>
   );
