@@ -4674,3 +4674,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 21 Nov 2026 08:00 PKT: same (manifest pass)
 
 - 21 Nov 2026 08:05 PKT: Desk host Caddy block verified clean on his server (plain host -> 127.0.0.1:4400, no 8400, no ufw 8400); Desk still not wired (WIRED: NO), login design demo next
+
+- 21 Nov 2026 08:05 PKT: same (manifest pass)
