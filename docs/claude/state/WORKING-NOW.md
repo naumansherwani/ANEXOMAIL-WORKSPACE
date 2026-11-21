@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 06:44 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: R3 DESK order written; R4 MANAGED MOVE-IN + PRIORITY SUPPORT named (his 06:43); web research written; waiting FINAL DISCUSSION of phase order (docs/claude/ADMIN-DESK-R3-R4-RESEARCH-AND-PHASES-21NOV.md)
-NEXT STEP: his answers A-E + move-in price truth (568 vs Lovable 500), then finalise phases, then blueprint lines, then R3a
-HIS LAST WORD: his 21 Nov 06:43: move-in alag phase, web research, discuss, update ek ek line
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 07:05 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: R3 DESK + R4 MANAGED MOVE-IN written; price CLOSED 568/1670/2210/3350; deck renamed Managed Move-In; phases + employee isolation design written for his APPROVAL (docs/claude/ADMIN-DESK-PHASES-AND-EMPLOYEE-ISOLATION-21NOV.md); blueprint lines only after approval
+NEXT STEP: his approval of phase order + answers (passkey staff login, split at first hire, A, D, E, migrator), then blueprint lines, then R3a contract + E201
+HIS LAST WORD: his 21 Nov 07:03 order
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -17,21 +17,31 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 | Proto | Port | Process |
 |---|---|---|
 
-## Last 5 commits
+##- 4b958038 21 Nov 06:44 ledger line 8d780c1a
 - 8d780c1a 21 Nov 06:44 R4 move-in phase named, research + phase proposal (docs only)
 - 5e78d258 21 Nov 06:44 ledger line c61db3b4
 - c61db3b4 21 Nov 06:44 R4 move-in phase named, research + phase proposal (docs only)
 - e812b697 21 Nov 06:28 ledger line 7d667258
-- 7d667258 21 Nov 06:28 WORKING-NOW refresh, loop restarted
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/W M docs/claude/WEBSITE-PROMISES.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
+ M docs/cursor-work/founder/founder-commands.md
+ M founder-web/src/Decks.tsx
+ M founder-web/src/catalog.ts
+?? docs/claude/ADMIN-DESK-PHASES-AND-EMPLOYEE-ISOLATION-21NOV.md
+?? docs/claude/MOVEIN-PRICE-CLOSED-21NOV.md
 
-## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
-
-## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = n
+## Uncommitted 
+## U docs/claude/WEBSITE-PROMISES.md                    |  3 ++
+ docs/claude/state/WORKING-NOW.md                   | 35 +++++++++-------------
+ ...DE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md |  3 ++
+ docs/cursor-work/founder/founder-commands.md       |  2 ++
+ founder-web/src/Decks.tsx                          |  2 +-
+ founder-web/src/catalog.ts                         |  2 +-
+ 6 files changed, 24 insertions(+), 23 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +52,5 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ae48861fdc3a1272c0cb76507c479ff2852bf296)
+t edit by hand)
+WIP snapshot: refs/wip/last (01c8067c75b6dd324e50ec1a8171d78dda64f651)

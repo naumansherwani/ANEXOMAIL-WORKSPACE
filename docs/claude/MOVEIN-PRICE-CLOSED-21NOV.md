@@ -1,0 +1,2 @@
+# MANAGED MOVE-IN PRICE: CLOSED FOR EVER (his word 21 Nov 2026 07:03 PKT)
+GBP 568 / 1,670 / 2,210 / 3,350 one-off by mailbox count 1-5 / 6-15 / 16-29 / 30+. Equals the landing page and Polar. The Lovable gold ladder (500 / 1,500 / 2,000 / 3,000 in lovable-gold/awam/sql/phase37_movein_ops.sql movein_price_for) is OLD and is NOT used; lovable-gold is frozen (Rule 73) so this note is the date-stamped mark for that place. New SQL (R4) takes 568/1670/2210/3350 only. Feature name = "Managed Move-In" (founder workspace deck renamed 21 Nov 07:03).

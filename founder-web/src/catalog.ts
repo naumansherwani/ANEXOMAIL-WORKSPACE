@@ -13,7 +13,7 @@ export const DECK_META: Record<string, { title: string; phase: string; intro: st
   mail: { title: "Mail", phase: "F5", intro: "Your own inbox, folders, compose and outbox, plus Calendar. Mail Desk (company mailboxes, support replies, deliverability) is the last part of this page." },
   ai: { title: "AI", phase: "F6", intro: "Workflows, knowledge, prompts, spend and receipts for the AI features." },
   release: { title: "Release", phase: "F3", intro: "What is live, what changed, and one-click deploys with proof." },
-  move_in: { title: "Move-In", phase: "F3", intro: "Customer onboarding cockpit: slots, cut-overs, mailbox and DNS checks." },
+  move_in: { title: "Managed Move-In", phase: "F3", intro: "Customer onboarding cockpit: slots, cut-overs, mailbox and DNS checks." },
   systems: { title: "Systems", phase: "F6", intro: "Real health probes, capacity and speed across every tenant." },
   control: { title: "Control", phase: "F8", intro: "Kill switches, flags and maintenance. Every change is audited and reversible where possible." },
 };

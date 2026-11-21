@@ -11,7 +11,7 @@ type AuditData = { connected: boolean; note?: string; chain_ok: boolean; first_b
 
 export const DECKS: [string, string, string][] = [
   ["people", "People", "F4"], ["mail", "Mail", "F5"], ["release", "Release", "F3"],
-  ["move_in", "Move-In", "F3"], ["systems", "Systems", "F6"], ["control", "Control", "F8"],
+  ["move_in", "Managed Move-In", "F3"], ["systems", "Systems", "F6"], ["control", "Control", "F8"],
 ];
 const DANGER: Record<string, string> = { low: "LOW", medium: "MEDIUM", high: "HIGH RISK" };
 
