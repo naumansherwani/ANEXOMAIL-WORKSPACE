@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 04:44 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 04:56 PKT) - read this FIRST for the Desk after a compaction
 DOING: S0 evidence 2
 NEXT STEP: retest new connection, ad-auto, then S1
 HIS LAST WORD: s0
@@ -47,14 +47,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 1cba9a7f 22 Nov 04:56 ports ss 22Nov + S0 note
+- dacd13cd 22 Nov 04:44 ledger line f2922798
 - f2922798 22 Nov 04:44 Desk fallback ban + S0 evidence 3
 - 4bab7646 22 Nov 04:38 ledger line 8658c7da
 - 8658c7da 22 Nov 04:38 S0 retest + AD3 patch confirmed
 - 05fd8e65 22 Nov 04:33 ledger line 0263c06b
 - 0263c06b 22 Nov 04:33 S0 evidence 2
 - 05b99104 22 Nov 04:27 ledger line 71b6f3d8
-- 71b6f3d8 22 Nov 04:27 blueprint order
-- 47c61b34 22 Nov 04:26 ledger line 4e4e34de
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
