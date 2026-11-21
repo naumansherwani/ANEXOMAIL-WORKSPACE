@@ -39,14 +39,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 77f84998 21 Nov 22:36 Desk: backup branch note
+- 45909205 21 Nov 22:36 ledger line 19ff7847
 - 19ff7847 21 Nov 22:36 Desk: home Sign in A prominent, backup law
 - 03844383 21 Nov 22:31 ledger line 114b6c9e
 - 114b6c9e 21 Nov 22:31 Desk: CA credential, pill, light, card up
 - 599939f5 21 Nov 22:06 ledger line 9730261a
 - 9730261a 21 Nov 22:06 Desk login: new line, phone pill fix
 - 98f92358 21 Nov 21:54 ledger line 283a7d6a
-- b3c26743 21 Nov 21:52 ledger line 0faa9860
-- 0faa9860 21 Nov 21:52 Desk login: new subtitle, mobile logo fix
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
