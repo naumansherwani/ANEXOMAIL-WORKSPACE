@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- bd17b83a 21 Nov 20:49 checkpoint
+- 312fd623 21 Nov 20:49 ledger line 76f00676
 - 76f00676 21 Nov 20:49 checkpoint
 - e352c167 21 Nov 20:49 ledger line 6ccebaea
 - 6ccebaea 21 Nov 20:49 Desk: desk-appdb.sh alter role via stdin
-- 0c23459f 21 Nov 20:49 ledger line 6c124ab5
-- 6c124ab5 21 Nov 20:49 Desk: desk-appdb.sh alter role via stdin
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (46fb517ba2c314ea95be8e8c93df0ec8fc562cc0)
+WIP snapshot: refs/wip/last (dc0648b3eecdbbcf782bfd6013a2415250060c19)
