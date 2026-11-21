@@ -2713,3 +2713,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 09:30 PKT: HIS WORD: HTTP/1 AND HTTP/2 both banned (gate, all Desk code); Desk HTTP/3 listener h3.rs written, 5 tests pass (quinn+h3, AES-256-GCM only, X25519MLKEM768 first); WIRED: code YES, live NO
 
 - 21 Nov 2026 09:30 PKT: HIS WORD: HTTP/1 AND HTTP/2 both banned (gate, all Desk code); Desk HTTP/3 listener h3.rs written, 5 tests pass (quinn+h3, AES-256-GCM only, X25519MLKEM768 first); WIRED: code YES, live NO
+
+- 21 Nov 2026 09:35 PKT: HIS WORD: Desk folders made: admin-desk/sql/AD1 (plan only, AD1.sql blocked until HTTP/3), sql/checks, web; WIRED: folders YES, SQL NO
+
+- 21 Nov 2026 09:35 PKT: HIS WORD: Desk folders made: admin-desk/sql/AD1 (plan only, AD1.sql blocked until HTTP/3), sql/checks, web; WIRED: folders YES, SQL NO

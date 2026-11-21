@@ -28,9 +28,15 @@ admin-desk/server/src/00-FOUNDER-TECH-RULE.md
 admin-desk/server/src/h3.rs
 admin-desk/server/src/main.rs
 admin-desk/sql/00-FOUNDER-TECH-RULE.md
+admin-desk/sql/AD1/00-FOUNDER-TECH-RULE.md
+admin-desk/sql/AD1/README.md
 admin-desk/sql/README.md
+admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
+admin-desk/sql/checks/README.md
 admin-desk/state/00-FOUNDER-TECH-RULE.md
 admin-desk/state/RESUME.md
+admin-desk/web/00-FOUNDER-TECH-RULE.md
+admin-desk/web/README.md
 anexomail inboxes to build/00-FOUNDER-TECH-RULE.md
 anexomail inboxes to build/READ-FIRST-FOUNDER-LAW.md
 anexomail inboxes to build/README.md
