@@ -5239,3 +5239,5 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 21:42 PKT] HIS WORD (21:42): restart aur load ki command hogi bas, agar install, sql, restart agar hui bhi to yaad rakho. DONE: desk-restart.sh; allowed = install, sql, restart.
 
 - 21 Nov 2026 21:42 PKT Desk restart command added; allowed = install, sql, restart; WIRED: NO
+
+- 21 Nov 2026 21:43 PKT CLAUDE.md: Desk 3 commands law; WIRED: NO

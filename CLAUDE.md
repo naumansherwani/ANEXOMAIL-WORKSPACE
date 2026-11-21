@@ -1,5 +1,5 @@
-> ## >>> RESUME HERE: RESUME HERE 21 Nov 2026 21:42 PKT: his ONE desk-install (incl. DB login + CA), sign in; NEXT Rule 52, R4-1 (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
-> ## >>> DESK 2 COMMANDS ONLY (his 21 Nov 21:41): desk-install.sh + ad-auto.sh; docs/claude/admin-desk/TWO-COMMANDS.md <<<
+> ## >>> RESUME HERE: RESUME HERE 21 Nov 2026 21:43 PKT: his ONE desk-install (incl. DB login + CA), sign in; NEXT Rule 52, R4-1 (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
+> ## >>> DESK 3 COMMANDS ONLY (his 21 Nov 21:41/21:42): desk-install.sh, ad-auto.sh, desk-restart.sh; docs/claude/admin-desk/TWO-COMMANDS.md <<<
 > ## >>> CLEAN-PUSH LAW (his 21 Nov): git status EMPTY after every push; docs/claude/CLEAN-PUSH-LAW-21NOV.md <<<
 > ## >>> DESK HTTP/3 LAW (his 21 Nov 09:23): HTTP/1 AND HTTP/2 BANNED for the Admin Desk; HTTP/3 ONLY; gate blocks later Desk phases until R3a0-stage2 is code (docs/claude/tech-contracts/CURRENT.md). <<<
 > ## >>> DESK ISOLATION LAW (his 21 Nov 2026 07:29 PKT: 'founder ke saath mix nahi karna'): the Admin Desk (admindesk.anexomail.com, founder-web/src/desk, /desk/v1/*, anexo.desk.session, fadm_*, desk_app role) is its OWN security domain; the commit gate FAILS any mixing with founder code, doors, keys or tables. docs/claude/DESK-ISOLATION-GATE-21NOV.md <<<

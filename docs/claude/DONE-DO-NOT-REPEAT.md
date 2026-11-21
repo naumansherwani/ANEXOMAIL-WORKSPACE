@@ -2205,3 +2205,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 21 Nov 2026 21:42 PKT DESK TWO-COMMAND LAW: install does everything (DB login + CA), SQL = ad-auto; WIRED: NO until his install
 
 - 21 Nov 2026 21:42 PKT Desk restart command added; allowed = install, sql, restart; WIRED: NO
+
+- 21 Nov 2026 21:43 PKT CLAUDE.md: Desk 3 commands law; WIRED: NO
