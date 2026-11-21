@@ -5291,3 +5291,7 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 23:25 PKT] HIS WORD (23:25): anexomail.com/auth awam ka hai, yahan aayega Business Premium aur Business Max; Business Pro, Business, Pro, Basic ka same existing sign-in rahega, mix nahi; mushkil kaam hai, yeh karna hai; maine khud ki kasam Claude ko note karwaya tha Business Premium aur Business Max, deep search karo; Namecheap pe sab jagah AAAA kar doon? DONE: deep search findings + sign-in law appended to PREMIUM-MAX-PLAN-21NOV.md. AAAA answer: not everywhere yet, only after the DNS facts.
 
 - 21 Nov 2026 23:25 PKT Premium/Max: sign-in at anexomail.com/auth law + deep-search findings recorded; WIRED: NO
+
+[21 Nov 2026 23:31 PKT] HIS PASTE (23:30, desk-restart DNS facts): service active, health 200, wrong host 404, door 401, HTTP/3 listening udp [::]:4400, db connection ready. admindesk A=62.238.98.98 AAAA none HTTPS none; anexomail.com A=62.238.98.98 AAAA none HTTPS none; founderworkspace A + AAAA 2a01:4f9:c014:5df6::1 + HTTPS 1 . alpn=h3 (his own Rust DNS); server IPv6 2a01:4f9:c014:5df6::1/64; IPv6 listeners udp 4400, udp 443, tcp 443.
+
+- 21 Nov 2026 23:31 PKT DNS facts recorded; AAAA steps; browser h3 choice pending; WIRED: NO

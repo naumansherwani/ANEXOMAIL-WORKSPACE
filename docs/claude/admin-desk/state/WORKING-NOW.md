@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 23:25 PKT) - read this FIRST for the Desk after a compaction
-DOING: Premium/Max plan, live Chrome look
-NEXT STEP: his DNS facts via desk-restart; E201 plans
-HIS LAST WORD: Premium/Max banao, DNS steps, live Chrome
+# ADMIN DESK WORKING NOW (manual checkpoint, 21 Nov 2026 23:31 PKT) - read this FIRST for the Desk after a compaction
+DOING: DNS facts in; AAAA steps given
+NEXT STEP: his Namecheap AAAA; his choice for browser h3 (Alt-Svc via Caddy); E201
+HIS LAST WORD: DNS facts paste
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
 
@@ -41,6 +41,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 39116433 21 Nov 23:25 ledger line 2f2d329b
 - 2f2d329b 21 Nov 23:25 Premium/Max: auth law and his earlier notes
 - f236ba84 21 Nov 23:21 ledger line cf087070
 - cf087070 21 Nov 23:21 Premium/Max plan, Desk DNS facts, live Chrome record
@@ -48,9 +49,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 5defab99 21 Nov 23:11 Desk: status blueprint, palette for Premium/Max
 - 495bd5dc 21 Nov 22:59 ledger line f24407da
 - f24407da 21 Nov 22:59 Desk login: one bottom light
-- 0b3f96d1 21 Nov 22:50 ledger line 42468c3e
 
 ## Uncommitted Desk files
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)

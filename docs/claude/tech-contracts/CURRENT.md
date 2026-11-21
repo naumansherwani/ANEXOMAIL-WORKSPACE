@@ -2699,3 +2699,7 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 21 Nov 2026 23:21 PKT Premium/Max plan (awam lane), live Chrome look of the Desk, DNS facts in desk-restart; WIRED: NO
 
 - 21 Nov 2026 23:25 PKT Premium/Max: sign-in at anexomail.com/auth law + deep-search findings recorded; WIRED: NO
+
+### 21 Nov 2026 23:31 PKT DNS facts (his desk-restart paste) recorded; AAAA steps for admindesk and @; h3 for browsers = Alt-Svc :4400 via Caddy (needs his haan) or delegation to his own Rust DNS.
+
+- 21 Nov 2026 23:31 PKT DNS facts recorded; AAAA steps; browser h3 choice pending; WIRED: NO
