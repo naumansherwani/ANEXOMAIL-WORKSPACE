@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 21 Nov 2026 23:55 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 23:56 PKT) - read this FIRST for the Desk after a compaction
 DOING: anexomail.com down (A missing); read-only check line given
 NEXT STEP: his paste; he re-adds A @ + admindesk; desk-restart facts
 HIS LAST WORD: 23:55 down report
@@ -41,6 +41,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 2e237693 21 Nov 23:56 Record down report
 - e6a37e02 21 Nov 23:54 ledger line 4abf202d
 - 4abf202d 21 Nov 23:54 Record missing A rows
 - 79b4b0e2 21 Nov 23:50 ledger line e18f1119
@@ -48,10 +49,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - c30b685f 21 Nov 23:45 ledger line ab60b9b8
 - ab60b9b8 21 Nov 23:45 Record Namecheap AAAA save state
 - 0d47203c 21 Nov 23:39 ledger line 80b44c0d
-- b97bee74 21 Nov 23:36 ledger line d0e124ee
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
