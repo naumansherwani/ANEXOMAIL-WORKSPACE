@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 03:43 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 03:43 PKT) - read this FIRST for the Desk after a compaction
 DOING: Bridge plan + AD3 SQL
 NEXT STEP: his ad-auto for AD3, then Rust probes and doors
 HIS LAST WORD: bridge phase
@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 5d69c38a 22 Nov 03:43 Desk Bridge AD3
 - 5494fde6 22 Nov 03:34 ledger line 670128d4
 - 670128d4 22 Nov 03:34 awam top priority
 - f8b4fc27 22 Nov 03:32 ledger line d6f7599e
@@ -54,16 +55,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - cb561384 22 Nov 03:30 ledger line 4651e3ed
 - 4651e3ed 22 Nov 03:30 awam package chart
 - 4ec63755 22 Nov 03:19 ledger line d46a9cb1
-- d46a9cb1 22 Nov 03:19 Desk dashboard plan
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/state/COMPACT-SAVE.md
- M docs/claude/admin-desk/state/PHASES.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? docs/claude/admin-desk/BRIDGE-PLAN-22NOV.md
-?? docs/claude/admin-desk/sql/AD3.sql
-?? docs/claude/admin-desk/sql/checks/AD3-check.sql
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
