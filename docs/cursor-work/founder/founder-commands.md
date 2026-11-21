@@ -4979,3 +4979,5 @@ Features ki list (QC4 mein kya banega):
 - 21 Nov 2026 09:59 PKT HIS WORD (in anger): "admin desk -> docs -> claude folder ke andar move kero abhi, aur ek copy main pe rakho." Done: docs/claude/admin-desk/ (canonical) + admin-desk/ root copy, desk-copy-sync.py + gate rule DESK COPY.
 
 - 21 Nov 2026 10:40 PKT: his word 09:59: Admin Desk folder moved INTO docs/claude/admin-desk (canonical) with ONE identical copy kept at root admin-desk/; desk-copy-sync.py + gate rule DESK COPY; installers unchanged; WIRED: YES
+
+- 21 Nov 2026 10:40 PKT: his word 09:59: Admin Desk folder moved INTO docs/claude/admin-desk (canonical) with ONE identical copy kept at root admin-desk/; desk-copy-sync.py + gate rule DESK COPY; installers unchanged; WIRED: YES

@@ -1777,3 +1777,5 @@
 - 21 Nov 2026 10:30 PKT: R3a2 step 1 AD1.sql WRITTEN + TESTED on PostgreSQL 16 (idempotent, selftest, 8/8 CHECK), ad-sql-run.sh written; gate row R3a2-sql code; WIRED: code YES, NOT yet run on his server (needs his db name)
 
 - 21 Nov 2026 10:40 PKT: his word 09:59: Admin Desk folder moved INTO docs/claude/admin-desk (canonical) with ONE identical copy kept at root admin-desk/; desk-copy-sync.py + gate rule DESK COPY; installers unchanged; WIRED: YES
+
+- 21 Nov 2026 10:40 PKT: his word 09:59: Admin Desk folder moved INTO docs/claude/admin-desk (canonical) with ONE identical copy kept at root admin-desk/; desk-copy-sync.py + gate rule DESK COPY; installers unchanged; WIRED: YES

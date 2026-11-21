@@ -2408,3 +2408,5 @@ Gate bans http/1, http/1.1, http/2, h2 in every Desk .rs/.toml/.ts/.tsx (only De
 ## 21 Nov 2026 10:40 PKT DESK FOLDER IN TWO PLACES (his word 09:59): canonical docs/claude/admin-desk/ + one identical copy admin-desk/ at the root (installers fetch origin/main:admin-desk/...). Gate rule DESK COPY (rules-gate.py -> docs/cursor-work/server/desk-copy-sync.py check) fails on any difference; edit only the canonical one, then `desk-copy-sync.py sync`. Server install lines are unchanged.
 
 - 21 Nov 2026 10:40 PKT: his word 09:59: Admin Desk folder moved INTO docs/claude/admin-desk (canonical) with ONE identical copy kept at root admin-desk/; desk-copy-sync.py + gate rule DESK COPY; installers unchanged; WIRED: YES
+
+- 21 Nov 2026 10:40 PKT: his word 09:59: Admin Desk folder moved INTO docs/claude/admin-desk (canonical) with ONE identical copy kept at root admin-desk/; desk-copy-sync.py + gate rule DESK COPY; installers unchanged; WIRED: YES
