@@ -2027,3 +2027,5 @@
 - 21 Nov 2026 23:57 PKT DNS: A rows for @ and admindesk missing in his paste; re-add A 62.238.98.98; WIRED: NO
 
 - 21 Nov 2026 23:58 PKT anexomail.com down report; read-only check line given; WIRED: NO
+
+- 22 Nov 2026 00:02 PKT DNS proven: A rows @ and admindesk missing at Namecheap, server 200 v4+v6; WIRED: NO

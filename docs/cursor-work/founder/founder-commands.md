@@ -5333,3 +5333,7 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 23:58 PKT] HIS WORD (23:55): anexomail.com is DOWN, check it quickly from the server read-only (HTTP/3 side), he adds the Namecheap rows himself. Given: one read-only line (authoritative dns1.registrar-servers.com A/AAAA + curl via --resolve over v4 and v6).
 
 - 21 Nov 2026 23:58 PKT anexomail.com down report; read-only check line given; WIRED: NO
+
+[22 Nov 2026 00:02 PKT] HIS PASTE (00:00): authoritative dns1.registrar-servers.com: anexomail.com A= (empty) AAAA=2a01:4f9:c014:5df6::1; admindesk A= (empty) AAAA same. Server answers 200/2 over v4 and v6 for both (HTTP/2 via Caddy). PROVEN: the A rows for @ and admindesk are missing at Namecheap, server is fine.
+
+- 22 Nov 2026 00:02 PKT DNS proven: A rows @ and admindesk missing at Namecheap, server 200 v4+v6; WIRED: NO

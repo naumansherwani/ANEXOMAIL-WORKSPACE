@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 23:56 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: anexomail.com down (A missing); read-only check line given
-NEXT STEP: his paste; he re-adds A @ + admindesk; desk-restart facts
-HIS LAST WORD: 23:55 down report
+# WORKING NOW (manual checkpoint, 22 Nov 2026 00:00 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: PROVEN: A rows @ + admindesk missing at Namecheap; server 200 v4+v6; he re-adds A
+NEXT STEP: his A re-add; desk-restart facts; Alt-Svc haan
+HIS LAST WORD: 00:00 paste
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,24 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- a99ab122 21 Nov 23:56 ledger line 2e237693
 - 2e237693 21 Nov 23:56 Record down report
 - e6a37e02 21 Nov 23:54 ledger line 4abf202d
 - 4abf202d 21 Nov 23:54 Record missing A rows
 - 79b4b0e2 21 Nov 23:50 ledger line e18f1119
-- e18f1119 21 Nov 23:50 Record DNS AAAA saved
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/admin-desk/state/COMPACT-SAVE.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/founder/founder-commands.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 21 ++-------------------
- 1 file changed, 2 insertions(+), 19 deletions(-)
+ docs/claude/admin-desk/state/COMPACT-SAVE.md |  2 ++
+ docs/claude/state/WORKING-NOW.md             | 25 +++++++------------------
+ docs/cursor-work/founder/founder-commands.md |  2 ++
+ 3 files changed, 11 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +46,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (0ad339e5dda8716ae2a42daa76b0ea5607e12a19)
+WIP snapshot: refs/wip/last (9a26b83ee0bc8c70ee4aa9254e74d8e4890adb31)

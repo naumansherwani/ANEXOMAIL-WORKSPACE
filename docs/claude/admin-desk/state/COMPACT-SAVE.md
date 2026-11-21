@@ -63,3 +63,5 @@
 34. (21 Nov 2026 23:57 PKT) URGENT FACT: his desk-restart paste 23:55 shows A= EMPTY for admindesk.anexomail.com and anexomail.com (AAAA ok). The A rows for @ and admindesk (62.238.98.98) were probably deleted with the empty row. IPv4-only visitors cannot reach them. Fix = his hands: add A @ and A admindesk = 62.238.98.98, Automatic. Then re-run desk-restart facts. anexochat/anexovideo: read-only dig line given, he adds their AAAA after.
 
 35. (21 Nov 2026 23:58 PKT) anexomail.com reported DOWN by him (A rows missing). Read-only server line given (authoritative DNS + curl --resolve v4/v6 for anexomail.com and admindesk). NEXT: his paste, then he re-adds A @ and A admindesk = 62.238.98.98.
+
+36. (22 Nov 2026 00:02 PKT) PROVEN by his paste: Namecheap authoritative A is EMPTY for @ and admindesk; server answers 200 (HTTP/2, Caddy) on both v4 and v6. FIX (his hands): add A @ and A admindesk = 62.238.98.98, Automatic. Then desk-restart facts again; then his haan for Alt-Svc :4400.
