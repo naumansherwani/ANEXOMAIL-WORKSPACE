@@ -92,3 +92,5 @@ The awam starts only after the FOUNDER blueprint is complete (founder target 25 
 
 
 > [22 Nov 2026 03:30 PKT] AWAM PACKAGES: Premium = 21,000 pounds / 7,000 users (his note; the 21,500 was not a price). Max: his note says 105,000, G4 says 125,000, CONFIRM. Full chart appended to AWAM-PACKAGES-PROPOSAL-07NOV.md.
+
+> [22 Nov 2026 03:32 PKT] AUDIT: awam packages caps recorded in docs but OLD values still in phase61 SQL (Premium 21,000 users), pricing-v6, README; Max cap/alerts/pool throttle not coded. See docs/awam/PACKAGES-CAPS-AUDIT-22NOV.md

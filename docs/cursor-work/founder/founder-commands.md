@@ -5491,3 +5491,7 @@ Features ki list (QC4 mein kya banega):
 ## 22 Nov 2026 03:30 PKT (his 03:29): pasted package chart again, Premium 21,000/7,000; asked to add line by line to awam blueprint. Done in AWAM-PACKAGES-PROPOSAL + awam blueprint. Max 105k vs 125k open.
 
 - Awam package chart re-added to awam blueprint; docs only, WIRED: NO
+
+## 22 Nov 2026 03:32 PKT (his 03:32): deep audit of caps. Done: docs/awam/PACKAGES-CAPS-AUDIT-22NOV.md
+
+- Awam packages caps deep audit; docs only, WIRED: NO

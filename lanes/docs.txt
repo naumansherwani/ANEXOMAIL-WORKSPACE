@@ -92,6 +92,7 @@ docs/anexomail-security-blueprint.md
 docs/awam/00-FOUNDER-TECH-RULE.md
 docs/awam/INVENTORY.csv
 docs/awam/MESS-REPORT.md
+docs/awam/PACKAGES-CAPS-AUDIT-22NOV.md
 docs/awam/PENDING-AWAM.md
 docs/awam/README.md
 docs/awam/audit_inventory.py
