@@ -5479,3 +5479,7 @@ Features ki list (QC4 mein kya banega):
 ## 22 Nov 2026 03:02 (his 03:01): attachment "Sidebar mein kya naye folders / 4 groups + billion-dollar companies + 6 loopholes" saved verbatim in SIDEBAR-SECTIONS-AND-LOOPHOLES-22NOV.md, added to blueprint top, PHASES (R4-1c), COMPACT-SAVE 60, ledger. Standard compaction orders repeated.
 
 - his sidebar sections + 6 loopholes saved verbatim with conflict table, blueprint/PHASES/COMPACT-SAVE updated; docs only, WIRED: NO
+
+## 22 Nov 2026 03:08 (his 03:08): asked to add the research modules to blueprint phases + ledger + working-now, answered the conflict table (alerts own bridge; Chairman Escalations inside Desk; Enterprise 20,500 = Business Max price, Enterprise after Admin Desk), pasted 3rd desk-install OK, wants the blueprint sent in chat with where we stand, 4-DAY target for Admin Desk.
+
+- 4-day plan + his answers on loophole table + research modules into phases; docs only, WIRED: NO

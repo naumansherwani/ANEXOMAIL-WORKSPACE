@@ -2815,3 +2815,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - R4-1b step 1: Desk top bar chip Live verified + profile menu; layout 390/820/1280 ok, tests 12/12; install of previous UI pasted OK; WIRED: NO for this step until install + my look
 
 - his sidebar sections + 6 loopholes saved verbatim with conflict table, blueprint/PHASES/COMPACT-SAVE updated; docs only, WIRED: NO
+
+- 4-day plan + his answers on loophole table + research modules into phases; docs only, WIRED: NO

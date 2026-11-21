@@ -116,3 +116,6 @@ Rail: Dashboard / Pinned / ANEXOMAIL WORKSPACE (Inboxes, Cases) / ADMIN DESK (Ma
 
 ## 60 (22 Nov 2026 03:02 PKT) his sidebar-sections + 6 loopholes text saved
 File docs/claude/admin-desk/SIDEBAR-SECTIONS-AND-LOOPHOLES-22NOV.md = his text verbatim + my conflict table (support@ banned, Desk cannot write Founder Bridge/Vault, Enterprise price unconfirmed, Merkle later, DBSC unbuilt). Rail rename = R4-1c after his haan. R4-1b step 1 (top bar chip + profile menu) is pushed, not yet installed. NEXT: Desk Bridge, R4-2 inboxes, AD3 SQL.
+
+## 61 (22 Nov 2026 03:08 PKT) 4-day target + his answers on the loophole table; 3rd desk-install pasted OK (03:08)
+Read FOUR-DAY-PLAN-22NOV.md first: where we stand + Day1..Day4. His answers: alerts stay in the Desk's own bridge, Chairman Escalations inside the Desk (owner-only), Enterprise 20,500 was Business Max price (Enterprise = after Admin Desk). desk-install ran OK at 03:03 (top bar chip + profile menu now on his server, not yet looked at by me on his URL). NEXT: Desk Bridge, AD3 SQL, AD2 Rust door.

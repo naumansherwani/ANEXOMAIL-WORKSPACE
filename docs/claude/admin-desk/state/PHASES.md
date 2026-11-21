@@ -53,3 +53,5 @@ Updated 21 Nov 2026 10:20 PKT. Rule 52: signed kernel-verified calls, no raw fet
 - [22 Nov 2026 01:59 PKT] SANDBOX LIVE TEST done (real binary + real Postgres AD1/AD1b + real Chrome 390/820/1280): all pass after 2 UI fixes. SANDBOX-LIVE-TEST-22NOV.md. His rerun of desk-install is next, then my Chrome look on his real URL.
 
 - [22 Nov 2026 03:02 PKT] R4-1c (PLAN, after his haan): rail renamed to 4 groups per SIDEBAR-SECTIONS-AND-LOOPHOLES-22NOV.md; new items Live Pulse & SLA, Domains & DNS Health, Customers & Plans, Security & Policies, Chairman Escalations. Technology: React 19 + module registry, kernel RPC; each item stays "not connected" until its phase is WIRED + REAL.
+
+- [22 Nov 2026 03:08 PKT] 4-DAY PLAN written (FOUR-DAY-PLAN-22NOV.md). Day1 R4-1b Bridge, AD3 SQL, AD2 Rust door. Day2 R4-2 inboxes, cases, routing. Day3 R3c auto mail, R3f SLA, R4-11 Managed Move-In. Day4 People, deliverability, security screens, CRM base, final proof. Advance tech per phase inside the file.

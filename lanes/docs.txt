@@ -331,6 +331,7 @@ docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
 docs/claude/admin-desk/BLUEPRINT-STATUS-21NOV.md
 docs/claude/admin-desk/EMPLOYEE-ACCOUNTS-PLAN-22NOV.md
 docs/claude/admin-desk/FOUNDER-TO-DESK-AUDIT-22NOV.md
+docs/claude/admin-desk/FOUR-DAY-PLAN-22NOV.md
 docs/claude/admin-desk/MASTER-PLAN-22NOV.md
 docs/claude/admin-desk/PLAN-DESK-UI-COPY-21NOV.md
 docs/claude/admin-desk/README.md

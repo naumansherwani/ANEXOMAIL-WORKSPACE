@@ -56,3 +56,8 @@ Google, Microsoft, aur Zoho ke admin panels mein 6 aise security loopholes hain 
 ## HOW IT MAPS TO THE PHASES (order unchanged)
 Rail group 1 COMMAND & LIVE PULSE: Dashboard (R4-1a LIVE), Live Pulse & SLA (R3f + R4-1b Desk Bridge). Group 2 SUPPORT & OPERATIONS: Inboxes (R4-2), Cases (R3b), Managed Move-In (R4-11), Domains & DNS Health (new, with R4-10 deliverability). Group 3 ORGANIZATION & GOVERNANCE: Customers & Plans (R3p / R5a), Team & Access (AD2 live; ON1-ON8 Rust door), Security & Policies (ON9-ON12, AD2 live). Group 4 VERIFICATION & ESCALATION: Audit Ledger (module 16), Chairman Escalations (new, inside Desk, owner-only). The rail names change to these four groups in step R4-1c, after his haan on the table above (current rail: Dashboard / Pinned / ANEXOMAIL WORKSPACE / ADMIN DESK / Company stays until then).
 The 6 loopholes = the Desk's design promises: (1) metadata-only staff view, (2) DBSC session binding (ON3), (3) 2-supervisor recovery + 24 h cooling (AD2 LIVE), (4) append-only hash-chained ledger (AD1/AD2 LIVE), (5) anti-scraping breaker (AD2 LIVE, Rust side ON11), (6) office IP + shift gate (AD2 LIVE, Rust side ON10). Each is proof-gated: no website line until WIRED + REAL.
+
+## HIS ANSWERS (22 Nov 2026 03:08 PKT, to the table above)
+* Anti-scraping alert: Desk's OWN bridge (his "tum sahi ho"). Chairman Escalations: INSIDE the Desk, owner-only lane (his "yeh desk ke andar aye ga").
+* "Enterprise 20,500 pounds" was WRONG as a plan: it is the Business Max package price he quoted; a separate Enterprise plan is a matter AFTER the Admin Desk (his word). No Enterprise row now.
+* Merkle later, DBSC claim only after proof, owner cannot read sealed email: kept as written. support@ stays banned (resolved@).
