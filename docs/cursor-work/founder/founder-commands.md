@@ -5021,3 +5021,5 @@ Features ki list (QC4 mein kya banega):
 [21 Nov 2026 10:31 PKT] HIS WORD (10:28): same rakho check wali jaise pehle tha check wali jaye gi server pe aur AD1 jaye gi sql editor samjhay Check AD1 server pe
 
 - 21 Nov 2026 10:31 PKT Desk AD1 flow per his 10:28: editor runs AD1.sql, server runs ad-check.sh; WIRED: NO until he runs both
+
+- 21 Nov 2026 10:31 PKT Desk AD1 flow per his 10:28: editor runs AD1.sql, server runs ad-check.sh; WIRED: NO until he runs both

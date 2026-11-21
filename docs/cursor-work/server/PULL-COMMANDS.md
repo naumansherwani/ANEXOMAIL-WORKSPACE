@@ -1809,3 +1809,5 @@
 - 21 Nov 2026 10:48 PKT: checkpoint (loop refresh of WORKING-NOW files); AD1 not yet run by him (WIRED: NO)
 
 - 21 Nov 2026 10:31 PKT Desk AD1 flow per his 10:28: editor runs AD1.sql, server runs ad-check.sh; WIRED: NO until he runs both
+
+- 21 Nov 2026 10:31 PKT Desk AD1 flow per his 10:28: editor runs AD1.sql, server runs ad-check.sh; WIRED: NO until he runs both

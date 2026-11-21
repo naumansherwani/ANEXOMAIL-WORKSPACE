@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 21 Nov 2026 10:31 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 10:31 PKT) - read this FIRST for the Desk after a compaction
 DOING: AD1 editor + server check scripts pushed
 NEXT STEP: his editor run of AD1.sql, ad-db-env + ad-check paste, then auth.rs
 HIS LAST WORD: same rakho check wali jaise pehle tha check server pe AD1 sql editor
@@ -25,6 +25,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 0d572362 21 Nov 10:31 Desk AD1: AD1.sql for his SQL editor, ad-check.sh + ad-db-env.sh for the server check
 - 1f7c3c22 21 Nov 10:27 checkpoint 10:48
 - 9efe08f3 21 Nov 10:27 checkpoint 10:48
 - bf9114ac 21 Nov 10:27 desk: AD1-editor.sql for the SQL editor
@@ -32,22 +33,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - c7681864 21 Nov 10:26 checkpoint 10:38
 - c042de6e 21 Nov 10:25 checkpoint 10:38
 - 4ff7a6fd 21 Nov 10:25 desk: AD1 works without superuser
-- a5339f0b 21 Nov 10:25 desk: AD1 works without superuser
 
 ## Uncommitted Desk files
- M admin-desk/gates/desk_tech_gate.py
- D admin-desk/scripts/make-editor-sql.py
- D admin-desk/sql/AD1-editor.sql
- M admin-desk/state/WORKING-NOW.md
- M docs/claude/admin-desk/gates/desk_tech_gate.py
- D docs/claude/admin-desk/scripts/make-editor-sql.py
- D docs/claude/admin-desk/sql/AD1-editor.sql
- M docs/claude/admin-desk/state/PHASES.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/scripts/ad-check.sh
-?? admin-desk/scripts/ad-db-env.sh
-?? docs/claude/admin-desk/scripts/ad-check.sh
-?? docs/claude/admin-desk/scripts/ad-db-env.sh
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 22 Nov: R3a2-argon2 [R3a2] Password door with ARGON2ID, constant-time -> needs ARGON2ID, constant-time compare, token audience desk in admin-de

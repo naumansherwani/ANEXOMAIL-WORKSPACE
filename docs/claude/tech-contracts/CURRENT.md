@@ -2451,3 +2451,5 @@ Gate bans http/1, http/1.1, http/2, h2 in every Desk .rs/.toml/.ts/.tsx (only De
 AD1.sql original (no appended check) goes to his SQL editor; the CHECK runs on the server: admin-desk/scripts/ad-db-env.sh (one time, his run) then ad-check.sh (read-only, 8 rows). Editor-only file removed. Not wired until he runs both.
 
 - 21 Nov 2026 10:31 PKT Desk AD1 flow per his 10:28: editor runs AD1.sql, server runs ad-check.sh; WIRED: NO until he runs both
+
+- 21 Nov 2026 10:31 PKT Desk AD1 flow per his 10:28: editor runs AD1.sql, server runs ad-check.sh; WIRED: NO until he runs both
