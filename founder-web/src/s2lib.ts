@@ -7,7 +7,7 @@ export const LABEL: Record<string, string> = {
   "appearance.ambient": "Ambient look", "appearance.ambient_favs": "Favourite looks",
   "personal.undo_send": "Undo send window", "personal.send_check": "Send confidence check",
   "workspace.retention_days": "Retention window", "workspace.require_passkey": "Require passkey for every sign-in", "workspace.flag_external": "Flag external recipients",
-  "notifications.quiet_hours": "Quiet hours", "notifications.only_vips": "Only VIPs interrupt", "privacy.block_trackers": "Block tracking pixels",
+  "notifications.quiet_hours": "Quiet hours", "notifications.only_vips": "Only VIPs interrupt", "privacy.block_trackers": "Block tracking pixels", "mail.single_keys": "Single-letter keyboard shortcuts",
 };
 export const label = (k: string) => LABEL[k] ?? k;
 

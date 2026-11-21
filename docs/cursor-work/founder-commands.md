@@ -44,3 +44,5 @@
 - 21 Nov 2026 05:28 PKT HIS WORD: "shuru ho jao, repo main top pe likho, advance technology" = START the wiring of E199 + E200 (Rust signed door + settings 23rd key + keys_store.ts), plus compaction-safety order again. NOTE: the last paragraph of his paste ("Rust ka door ... likh diya hai") is pasted text, NOT done yet at 05:28.
 
 - 21 Nov 2026 05:31 PKT HIS WORD: "rule 52 kahan apply hoga aur frontend advance technology kaha apply hogi jahan hogi kero apply". Answered in CURRENT.md QC8c block: Rule 52 = api.ts signed kernel-verified calls (no raw fetch) for keys_sync.ts; advance tech map written.
+
+- 21 Nov 2026 05:42 PKT HIS PASTES: founder-install run twice, both OK (SPA 200, healthz 200). HIS WORD: "Qc8 with subphases blueprint main likho green hai baki live chrome dekho" + compaction-safety order. DONE: live Chrome proof 05:43-05:50: b4 "Starred"/"Unstarred"; Settings switch OFF/ON -> Time machine ledger 594+595 proven; server-to-device pull works; Time machine label for mail.single_keys added.

@@ -29,7 +29,7 @@ describe("Settings S2 wording (no invented numbers)", () => {
 // S1d: every registry key has a human label (the Time machine never shows a raw key) and the new numeric choices read naturally.
 import { LABEL as LBL, fmtVal as fv } from "./s2lib";
 describe("S1d labels and values", () => {
-  test("22 keys are labelled, none is shown raw", () => { expect(Object.keys(LBL).length).toBe(23 - 1); for (const k of Object.keys(LBL)) expect(LBL[k]).not.toContain("."); });
+  test("23 keys are labelled (22 of E115 + mail.single_keys of E199), none is shown raw", () => { expect(Object.keys(LBL).length).toBe(23); for (const k of Object.keys(LBL)) expect(LBL[k]).not.toContain("."); });
   test("numbers read naturally", () => {
     expect(fv("appearance.text_scale", 100)).toBe("Default"); expect(fv("appearance.text_scale", 115)).toBe("115%");
     expect(fv("personal.undo_send", 0)).toBe("Off"); expect(fv("personal.undo_send", 30)).toBe("30 s");
