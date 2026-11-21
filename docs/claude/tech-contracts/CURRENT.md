@@ -2573,3 +2573,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 ### 21 Nov 2026 21:05 PKT Desk installer loophole closed: desk-install.sh copies EVERY admin-desk/server/src/*.rs from origin/main and STOPS on a failed build (old binary never reported as new). AD1b = in his database (his paste 3/3 true).
 
 - 21 Nov 2026 21:05 PKT desk-install copies every Rust file and stops on a failed build; AD1b in his DB; WIRED: NO until his install
+
+- 21 Nov 2026 21:05 PKT desk-install copies every Rust file and stops on a failed build; AD1b in his DB; WIRED: NO until his install
