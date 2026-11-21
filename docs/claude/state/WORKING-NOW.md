@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 23:36 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 23:39 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: DNS facts in; AAAA steps given
 NEXT STEP: his Namecheap AAAA; his choice for browser h3 (Alt-Svc via Caddy); E201
 HIS LAST WORD: DNS facts paste
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 80b44c0d 21 Nov 23:39 records: Caddy IP fact
+- b97bee74 21 Nov 23:36 ledger line d0e124ee
 - d0e124ee 21 Nov 23:36 LAW: frontend Caddy, backend Hetzner
 - 5bd1a4d8 21 Nov 23:34 ledger line e886861c
 - e886861c 21 Nov 23:34 records: Namecheap save failure
-- def52e4e 21 Nov 23:32 ledger line ea507af5
-- ea507af5 21 Nov 23:32 records: AAAA TTL automatic
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (eda3aa2c670ff48d5710e18113062c8db87ee1d8)
+WIP snapshot: refs/wip/last (8a4dd4f541f3aa9aac8c275e22fb9698f97ea1d5)
