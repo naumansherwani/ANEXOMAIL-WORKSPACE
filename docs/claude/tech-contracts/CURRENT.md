@@ -2195,3 +2195,7 @@ PROOF TODO (his founder-install, then my Chrome): Settings flip -> E199 row in T
 - 21 Nov 2026 05:57 PKT QC8 GREEN (his word 05:51 for the E200 sql-run): WIRED: YES / REAL: YES / TECH-LAW CHECKED for a1-a5 b2-b4 c1-c4, Time machine label seen live; open gaps on CLOSE-THE-GAPS; Admin Desk R3 2-day plan written ADMIN-DESK-2DAY-PLAN-21NOV.md for discussion, nothing built
 
 - 21 Nov 2026 05:57 PKT QC8 GREEN (his word 05:51 for the E200 sql-run): WIRED: YES / REAL: YES / TECH-LAW CHECKED for a1-a5 b2-b4 c1-c4, Time machine label seen live; open gaps on CLOSE-THE-GAPS; Admin Desk R3 2-day plan written ADMIN-DESK-2DAY-PLAN-21NOV.md for discussion, nothing built
+
+## R3 ADMIN MAIL DESK (21 Nov 2026 06:35 PKT, HIGH ALERT, WRITTEN ONLY, NO CODE): technology to hold when built = RUST TOKIO AXUM signed doors /founder/v1/admin/maildesk/*, HTTP/3, WASM KERNEL RPC (RULE 52, no raw fetch), POSTGRESQL RLS + hash-chained ledger (SQL E201/E202, schema-first), REACT 19 + TS same founder UI, QC8 accessibility layers. Points: docs/claude/ADMIN-DESK-R3-FOUNDER-ORDER-21NOV.md. Separation law: shared cores only.
+
+- 21 Nov 2026 06:36 PKT R3 ADMIN MAIL DESK (company inbox + move-in + LEO) HIS ORDER WRITTEN ONLY, HIGH ALERT, no code: 16 ordered points in ADMIN-DESK-R3-FOUNDER-ORDER-21NOV.md, ledger top, blueprint top, CURRENT.md; support@ banned -> resolved@, no passkey, billing@ restricted; open answers A-E; Rule 52 + advance technology kept

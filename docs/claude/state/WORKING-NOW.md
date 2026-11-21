@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 05:53 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 21 Nov 05:29 PKT QC8 wiring START: E199+E200 on his DB, now Rust signed doors (settings 23rd key + mail/keys/log,list,stats,verify) then keys_store.ts reads/writes mail.single_keys and reports key actions; b2-b4 GREEN laptop, b5 written, b6 live look after his install
-NEXT STEP: 1 read settings.rs REGISTRY + mail release door pattern; 2 write Rust; 3 cargo test; 4 keys_store.ts; 5 contract in CURRENT.md; 6 his install; 7 my Chrome
-HIS LAST WORD: his 05:28: shuru ho jao, wiring, repo top pe likho, advance technology
+# WORKING NOW (manual checkpoint, 21 Nov 2026 06:27 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: R3 Admin Desk order WRITTEN (no code)
+NEXT STEP: his answers A-E then R3a contract + E201
+HIS LAST WORD: his 21 Nov 06:26 order: abhi sirf likho, high alert
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,33 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 5958fd3b 21 Nov 05:53 ledger line 50e3a184
 - 50e3a184 21 Nov 05:53 QC8 GREEN, Admin Desk 2-day plan
 - 41616725 21 Nov 05:52 ledger line e110a628
 - e110a628 21 Nov 05:52 QC8 GREEN, Admin Desk 2-day plan
 - 6dd9608f 21 Nov 05:44 ledger line 0da3f571
-- 0da3f571 21 Nov 05:44 QC8 subphases live-proven, Time machine label, E200 live check
 
 ## Uncommitted files (half-done work if any)
+ M CLAUDE.md
+ M docs/claude/ADMIN-DESK-2DAY-PLAN-21NOV.md
+ M docs/claude/BLUEPRINT-ABC-01NOV.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
+ M docs/cursor-work/founder/founder-commands.md
+?? docs/claude/ADMIN-DESK-R3-FOUNDER-ORDER-21NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ CLAUDE.md                                          |  1 +
+ docs/claude/ADMIN-DESK-2DAY-PLAN-21NOV.md          |  2 ++
+ docs/claude/BLUEPRINT-ABC-01NOV.md                 |  1 +
+ docs/claude/state/WORKING-NOW.md                   | 30 +++++++++-------------
+ docs/claude/tech-contracts/CURRENT.md              |  2 ++
+ ...DE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md |  7 +++++
+ docs/cursor-work/founder/founder-commands.md       |  2 ++
+ 7 files changed, 27 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +55,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a9973a708d95e7ebbecc2feaefefde04c3321f45)
+WIP snapshot: refs/wip/last (f6fd16f14002205bbef4230ea77d08f1ae1ea4b5)

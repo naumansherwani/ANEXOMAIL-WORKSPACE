@@ -32,6 +32,8 @@ A SECOND mailbox system, own folder, for the COMPANY mailboxes (support@, billin
 | R3i | Ledger verify screen + stats (SLA met %, open by age) | SQL + React | verify ok:true | live Chrome |
 | R3j | 390 / 820 / 1200+ pass, High Contrast CSS, final check, blueprint + ledger GREEN with open gaps listed | all | GREEN lines | phone screenshots by him |
 
+## UPDATE 21 Nov 06:35 PKT: HIS ORDER OVERRIDES THESE DEFAULTS (see ADMIN-DESK-R3-FOUNDER-ORDER-21NOV.md): support@ is BANNED -> resolved@; mailboxes = hello@, moveyourbusiness@ (own full mailbox), resolved@, billing@ (restricted), leo@, noreply@ send-only; reply = NO passkey.
+
 ## What I need decided (defaults I will use if you say "default")
 1. Which company mailboxes exist today? Default: support@, billing@, abuse@, appeals@, inbox@ on anexomail.com as the company mailboxes (E1xx mail tables already hold boxes).
 2. Reply "from" identity: default = the company address of the issue's box, never the founder personal address, send needs a passkey touch.
