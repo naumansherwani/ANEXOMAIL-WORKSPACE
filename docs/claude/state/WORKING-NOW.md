@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 21 Nov 2026 07:28 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 21 Nov 2026 07:29 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Admin Desk phases in BLUEPRINT; UI + frontend/backend tech per phase written for discussion (docs/claude/ADMIN-DESK-UI-AND-TECH-PER-PHASE-21NOV.md); login face skeleton written NOT WIRED (founder-web/src/desk)
 NEXT STEP: his discussion/approval; then R3a0 read-only ss + DNS check, R3a2 owner SQL E201 (login door needs it)
 HIS LAST WORD: his 21 Nov 07:25 + 07:27 orders
@@ -18,35 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 |---|---|---|
 
 ## Last 5 commits
+- 0b6589f6 21 Nov 07:29 Admin Desk phases in blueprint, UI + tech per phase, login face skeleton (not wired)
 - e3b27f39 21 Nov 07:16 ledger line b14c51ff
 - b14c51ff 21 Nov 07:16 Admin Desk own host idea verdict + polish (docs only)
 - 3b647b0f 21 Nov 07:16 ledger line 441cad9d
 - 441cad9d 21 Nov 07:16 Admin Desk own host idea verdict + polish (docs only)
-- 7f930fc1 21 Nov 07:05 ledger line 8a1c5f3c
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/BLUEPRINT-ABC-01NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- M docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
- M docs/cursor-work/founder/founder-commands.md
- M founder-web/package.json
-?? docs/claude/ADMIN-DESK-UI-AND-TECH-PER-PHASE-21NOV.md
-?? founder-web/desk.html
-?? founder-web/dist-desk/
-?? founder-web/src/desk/
-?? founder-web/vite.desk.config.ts
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/BLUEPRINT-ABC-01NOV.md                 |  4 ++-
- docs/claude/state/WORKING-NOW.md                   | 33 ++++++++++------------
- docs/claude/tech-contracts/CURRENT.md              |  3 ++
- ...DE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md |  2 ++
- docs/cursor-work/founder/founder-commands.md       |  3 ++
- founder-web/package.json                           |  3 +-
- 6 files changed, 28 insertions(+), 20 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 32 ++------------------------------
+ 1 file changed, 2 insertions(+), 30 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -57,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (1beae330087cafb5e2fe96f39188a252fec1fe15)
+WIP snapshot: refs/wip/last (6c2ed6f47d0b4cdbd3453f0b54d1ee8177d87af2)
