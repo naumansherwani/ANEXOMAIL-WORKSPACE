@@ -5114,3 +5114,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - his sidebar sections + 6 loopholes saved verbatim with conflict table, blueprint/PHASES/COMPACT-SAVE updated; docs only, WIRED: NO
 
 - 4-day plan + his answers on loophole table + research modules into phases; docs only, WIRED: NO
+
+- Dashboard plan (Live Command Bar, world cards, Desk-only) + price check; docs only, WIRED: NO

@@ -61,3 +61,5 @@ The 6 loopholes = the Desk's design promises: (1) metadata-only staff view, (2) 
 * Anti-scraping alert: Desk's OWN bridge (his "tum sahi ho"). Chairman Escalations: INSIDE the Desk, owner-only lane (his "yeh desk ke andar aye ga").
 * "Enterprise 20,500 pounds" was WRONG as a plan: it is the Business Max package price he quoted; a separate Enterprise plan is a matter AFTER the Admin Desk (his word). No Enterprise row now.
 * Merkle later, DBSC claim only after proof, owner cannot read sealed email: kept as written. support@ stays banned (resolved@).
+
+## CORRECTION 03:19 PKT: I wrote that 20,500 was the Business Max price: WRONG. The awam packages file says Business Max = 125,000 pounds. He says 21,500; NOT found in any doc, so UNCONFIRMED. See DASHBOARD-LIVE-COMMAND-22NOV.md section D.

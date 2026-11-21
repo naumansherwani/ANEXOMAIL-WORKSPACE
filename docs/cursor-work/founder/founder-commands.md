@@ -5483,3 +5483,7 @@ Features ki list (QC4 mein kya banega):
 ## 22 Nov 2026 03:08 (his 03:08): asked to add the research modules to blueprint phases + ledger + working-now, answered the conflict table (alerts own bridge; Chairman Escalations inside Desk; Enterprise 20,500 = Business Max price, Enterprise after Admin Desk), pasted 3rd desk-install OK, wants the blueprint sent in chat with where we stand, 4-DAY target for Admin Desk.
 
 - 4-day plan + his answers on loophole table + research modules into phases; docs only, WIRED: NO
+
+## 22 Nov 2026 03:19 (his 03:18): Dashboard folder-wise with Live Command Bar (Live SLA Clock, Active P1 Alerts with package prices, Mail and QUIC Pipeline heartbeat) + everything Zoho/Microsoft/Google have + Proton features + Desk-only features, web research, phases with advance technology. Also: "business max price 21,500 not 20,500, check awam blueprint". Done: DASHBOARD-LIVE-COMMAND-22NOV.md; price NOT confirmed (awam file says 125,000 pounds).
+
+- Dashboard plan (Live Command Bar, world cards, Desk-only) + price check; docs only, WIRED: NO

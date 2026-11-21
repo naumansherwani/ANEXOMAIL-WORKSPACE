@@ -119,3 +119,6 @@ File docs/claude/admin-desk/SIDEBAR-SECTIONS-AND-LOOPHOLES-22NOV.md = his text v
 
 ## 61 (22 Nov 2026 03:08 PKT) 4-day target + his answers on the loophole table; 3rd desk-install pasted OK (03:08)
 Read FOUR-DAY-PLAN-22NOV.md first: where we stand + Day1..Day4. His answers: alerts stay in the Desk's own bridge, Chairman Escalations inside the Desk (owner-only), Enterprise 20,500 was Business Max price (Enterprise = after Admin Desk). desk-install ran OK at 03:03 (top bar chip + profile menu now on his server, not yet looked at by me on his URL). NEXT: Desk Bridge, AD3 SQL, AD2 Rust door.
+
+## 62 (22 Nov 2026 03:19 PKT) dashboard plan (Live Command Bar + world cards) and price check
+Read docs/claude/admin-desk/DASHBOARD-LIVE-COMMAND-22NOV.md. His A1/A2/A3 bar; B1-B13 from Google/Microsoft/Zoho/Proton research; C1-C10 Desk-only. Every number real or 'not measured'. PRICE: Business Max = 125,000 pounds in AWAM-PACKAGES-PROPOSAL-07NOV.md; his 21,500 not found anywhere: ask him; my earlier '20,500 = Business Max' was wrong (corrected). NEXT: Day1 Desk Bridge, AD3 SQL, AD2 Rust door.
