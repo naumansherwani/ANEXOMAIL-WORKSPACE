@@ -2266,3 +2266,8 @@ HOST admindesk.anexomail.com (Namecheap added by him; banned for awam users). FR
 - 21 Nov 2026 08:05 PKT: Desk host Caddy block verified clean on his server (plain host -> 127.0.0.1:4400, no 8400, no ufw 8400); Desk still not wired (WIRED: NO), login design demo next
 
 - 21 Nov 2026 08:05 PKT: same (manifest pass)
+
+## 21 Nov 2026 08:08 PKT DESK PHASE R3a DECISIONS (his answers 08:07)
+Passkey OPTIONAL (owner first door = his command + ARGON2ID password; passkey enrol after, optional; Desk login screen: Touch Passkey primary, password path collapsed for accounts without a passkey). Only the Desk identity on the login (no founder entry). Telemetry values real or hidden. TLS line on the page only after stage 2 real AES-256 + his openssl proof (WEBSITE-PROMISES row).
+
+- 21 Nov 2026 08:09 PKT: his answers: passkey optional, Desk identity only, telemetry real, TLS line only after stage 2; Phase R3a described (R3a0 host, R3a1 login UI, R3a2 login door); Desk not wired (WIRED: NO)
