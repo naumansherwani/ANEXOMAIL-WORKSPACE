@@ -330,15 +330,6 @@
    "fail_after": "2026-11-24"
   },
   {
-   "id": "D-argon2",
-   "file": "server/founder/Cargo.toml",
-   "must": "argon2",
-   "status": "open",
-   "deadline": "R3a2",
-   "why": "R3a1: ARGON2ID password hashing for staff/owner login",
-   "fail_after": "2026-11-24"
-  },
-  {
    "id": "D-sql-owner",
    "file": "docs/cursor-work/sql/E201_admin_desk_core.sql",
    "must": "desk_app",
@@ -409,6 +400,24 @@
    "deadline": "ATT",
    "why": "ATTACHMENTS phase (after R4): Tokio + Rust + WebTransport, one core shared by founder, Desk and awam",
    "fail_after": "2026-12-20"
+  },
+  {
+   "id": "D-passkey-door",
+   "file": "server/founder/src/desk_auth.rs",
+   "must": "verify_assertion",
+   "status": "open",
+   "deadline": "R3a2",
+   "why": "R3a2: Desk PASSKEY-ONLY sign-in door (discoverable credential, rp_id admindesk.anexomail.com, reuses passkey.rs verify_assertion)",
+   "fail_after": "2026-11-24"
+  },
+  {
+   "id": "D-three-scene",
+   "file": "founder-web/src/desk/DeskScene.tsx",
+   "must": "three",
+   "status": "open",
+   "deadline": "R3a1",
+   "why": "R3a1: cinematic office scene in THREE.JS (lazy, parallax, static fallback)",
+   "fail_after": "2026-11-24"
   }
  ]
 }
