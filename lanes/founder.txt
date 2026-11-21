@@ -163,6 +163,7 @@ founder-web/.gitignore
 founder-web/00-FOUNDER-TECH-RULE.md
 founder-web/READ-FIRST-FOUNDER-LAW.md
 founder-web/bunfig.toml
+founder-web/contrast-more.png
 founder-web/dist/READ-FIRST-FOUNDER-LAW.md
 founder-web/dist/assets/Inter-Bold-sbKixbcS.woff2
 founder-web/dist/assets/Inter-ExtraLight-BhvJvErM.woff2
@@ -174,8 +175,8 @@ founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-CtqbAC3N.css
-founder-web/dist/assets/index-D7AQEeXR.js
+founder-web/dist/assets/index-DYBEL1BF.js
+founder-web/dist/assets/index-taNtCYNU.css
 founder-web/dist/assets/kernel.worker-DY4WQ2it.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
@@ -192,6 +193,7 @@ founder-web/dist/icon-512.png
 founder-web/dist/index.html
 founder-web/dist/kernel/anexo-kernel-0.21.0.wasm
 founder-web/dist/manifest.webmanifest
+founder-web/forced.png
 founder-web/index.html
 founder-web/kernel-sync.sh
 founder-web/package-lock.json
@@ -277,6 +279,7 @@ founder-web/src/TlsLoosen.tsx
 founder-web/src/Trust.tsx
 founder-web/src/TrustRing.tsx
 founder-web/src/Vault.tsx
+founder-web/src/a11y_contrast.css
 founder-web/src/a11y_sem.ts
 founder-web/src/ambient.ts
 founder-web/src/anchorgauge.test.ts

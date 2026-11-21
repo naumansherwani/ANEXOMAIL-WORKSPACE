@@ -6,6 +6,7 @@ import { ahead, batch, clearMarks, trackList, extend, jump, markedCount } from "
 import { trackSemantics } from "./a11y_sem";
 import { SINGLE_KEYS } from "./mail_keymap";
 import "./keylayer.css";
+import "./a11y_contrast.css";
 
 // QC8a (21 Nov 2026, his haan 03:50): the keyboard layer, ONE mount line in App.tsx. It ADDS to the existing handlers and edits none of them:
 //  1) switch OFF -> a capture-phase listener swallows bare single-letter shortcuts before MailBox / App ever see them (WCAG 2.1.4, level A);

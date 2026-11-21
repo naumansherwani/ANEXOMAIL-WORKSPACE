@@ -16,9 +16,13 @@ function onActionKey(e: KeyboardEvent): void {
   const row = document.querySelector(".mbx .mbx-r.on");
   if (document.querySelector(".mc-wrap, dialog[open]") || !readSingle() || !row) return;
   if (e.key !== "s") { announce(say); return; }
-  // Star toggles: say which way it went by comparing the row's marks a moment after the server answered.
-  const li = row.closest("li"), before = marks(li);
-  window.setTimeout(() => { const after = marks(document.querySelector(".mbx .mbx-r.on")?.closest("li") ?? li); announce(after > before ? "Starred" : after < before ? "Unstarred" : say); }, 900);
+  // Star toggles: say which way it went. The server answers in its own time (seen live: more than 900 ms), so wait for the row's marks to CHANGE (up to 5 s), then speak.
+  const li = row.closest("li"), before = marks(li); let done = false;
+  const finish = (txt: string) => { if (done) return; done = true; mo.disconnect(); window.clearTimeout(tm); announce(txt); };
+  const read = () => marks(document.querySelector(".mbx .mbx-r.on")?.closest("li") ?? li);
+  const mo = new MutationObserver(() => { const a = read(); if (a !== before) finish(a > before ? "Starred" : "Unstarred"); });
+  mo.observe(document.body, { subtree: true, childList: true });
+  const tm = window.setTimeout(() => finish(say), 5000);
 }
 
 const SET: Array<[string, Array<[string, string]>]> = [

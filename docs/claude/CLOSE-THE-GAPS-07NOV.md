@@ -381,3 +381,9 @@ G2 is now the open item in progress.
 - OPEN (21 Nov 2026 05:30 PKT, QC8a): (1) batch e # s u on several marked mails: proven in sandbox Chromium only, live proof needs his ok to change real mail (use a test mail); (2) phone 390 / tablet 820 look of the ? sheet and the marked rows on his real device (my Chrome window cannot be resized); (3) awam search look (Search mail ( / ), awam colours) waits his pull.sh then Business test Chrome look.
 
 - CLOSED 21 Nov 2026 05:55 PKT (QC8a): batch e # s u live (star/unstar of two marked mails on his real Chrome, restored). STILL OPEN: phone 390 / tablet 820 real device (his ONE step: phone screenshot of Settings > Appearance > Single-letter keyboard shortcuts), awam search live after his pull.sh.
+
+## QC8b open gaps (21 Nov 2026 05:30 PKT)
+- GAP phone 390 + tablet 820 for b2 b3 b4 b5 (attributes/focus/announcements/CSS only, same build): his phone screenshot or my iframe look still to do.
+- GAP b4 star direction: live look showed "Star changed" because the server answers after 900 ms; fixed in code (waits up to 5 s for the mark to change), waits his founder-install + my live re-look.
+- GAP b5 real Windows High Contrast: only emulated in the sandbox.
+- GAP E199 + E200 on his DB but NOT wired (Rust signed door + keys_store.ts).

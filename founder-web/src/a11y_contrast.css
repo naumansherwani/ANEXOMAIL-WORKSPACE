@@ -1,0 +1,22 @@
+/* QC8b b5 (21 Nov 2026): high-contrast support for the mail list. NEW FILE, adds rules only: no existing rule changed, colours of the normal look are untouched.
+   Research (MDN forced-colors, Firefox HCM CSS checklist, Chrome colour guide): in forced-colors mode the browser replaces author colours with system colours, drops box-shadow
+   and background-image, so anything shown ONLY by colour or shadow disappears. Selected / unread / focus must also be a SHAPE (outline, border), never colour alone (WCAG 1.4.1, 1.4.11). */
+
+/* 1) Windows High Contrast / forced colours */
+@media (forced-colors: active) {
+  /* open mail: its background and border colour are forced away, so draw a shape */
+  .mbx-r.on, .mbx-r[aria-current="true"] { outline: 3px solid Highlight; outline-offset: -3px; }
+  /* unread dot: a background colour is forced to Canvas (invisible); a thick border is kept as a system colour, so it stays a solid disc */
+  .mbx-dot { box-sizing: border-box; border: 4px solid CanvasText; }
+  /* keyboard focus on a row: always a visible ring */
+  .mbx-r:focus-visible { outline: 2px solid Highlight; outline-offset: -2px; }
+  .mbx-r.on:focus-visible, .mbx-r[aria-current="true"]:focus-visible { outline-width: 3px; outline-style: double; }
+}
+
+/* 2) "Increase contrast" in the operating system (prefers-contrast: more) */
+@media (prefers-contrast: more) {
+  .mbx-r.on, .mbx-r[aria-current="true"] { outline: 2px solid currentColor; outline-offset: -2px; }
+  .mbx-r:focus-visible { outline: 3px solid currentColor; outline-offset: -3px; }
+  .mbx-dot { outline: 2px solid currentColor; }
+  .mbx-r[data-kl-mark="1"] { outline: 2px dashed currentColor; outline-offset: -2px; }
+}
