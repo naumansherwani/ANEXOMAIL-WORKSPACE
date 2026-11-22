@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 03:13 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:13 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: gate loophole closed; 1j GREEN; 1k research next
 NEXT STEP: 1k web research + LIST + contract
 HIS LAST WORD: his 03:13 autofix order
@@ -18,26 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- cd06a6a5 23 Nov 03:13 gate: contract block must be the NOW phase
 - fd81d5ba 23 Nov 03:13 ledger line f388a760
 - f388a760 23 Nov 03:13 1j GREEN
 - 5996652c 23 Nov 03:11 ledger line 48bc8fa6
 - 48bc8fa6 23 Nov 03:11 research-in-blueprint gate + 1j install proof
-- 08711266 23 Nov 03:02 ledger line 87c65037
 
 ## Uncommitted files (half-done work if any)
- M admin-desk/RESEARCH-IN-BLUEPRINT-LAW-23NOV.md
- M docs/claude/admin-desk/RESEARCH-IN-BLUEPRINT-LAW-23NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/server/rules-gate.py
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/RESEARCH-IN-BLUEPRINT-LAW-23NOV.md      |  2 ++
- .../admin-desk/RESEARCH-IN-BLUEPRINT-LAW-23NOV.md  |  2 ++
- docs/claude/state/WORKING-NOW.md                   | 26 +++++++---------------
- docs/cursor-work/server/rules-gate.py              |  5 +++++
- 4 files changed, 17 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 23 ++---------------------
+ 1 file changed, 2 insertions(+), 21 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -48,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (5677e07b506043211bc35b86c09fce2bd06bc774)
+WIP snapshot: refs/wip/last (ef362204427b3608e521d9739e6fbaa382b6ffe2)

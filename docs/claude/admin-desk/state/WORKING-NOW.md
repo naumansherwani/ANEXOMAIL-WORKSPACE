@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 03:13 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:13 PKT) - read this FIRST for the Desk after a compaction
 DOING: gate loophole closed; 1j GREEN; 1k research next
 NEXT STEP: 1k web research + LIST + contract
 HIS LAST WORD: his 03:13 autofix order
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- cd06a6a5 23 Nov 03:13 gate: contract block must be the NOW phase
 - fd81d5ba 23 Nov 03:13 ledger line f388a760
 - f388a760 23 Nov 03:13 1j GREEN
 - 5996652c 23 Nov 03:11 ledger line 48bc8fa6
@@ -72,11 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 08711266 23 Nov 03:02 ledger line 87c65037
 - 87c65037 23 Nov 03:02 1j: audit and autofix
 - 6b73183f 23 Nov 02:57 ledger line 53aed7fd
-- 53aed7fd 23 Nov 02:57 1j: Plan context screen code
 
 ## Uncommitted Desk files
- M admin-desk/RESEARCH-IN-BLUEPRINT-LAW-23NOV.md
- M docs/claude/admin-desk/RESEARCH-IN-BLUEPRINT-LAW-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
