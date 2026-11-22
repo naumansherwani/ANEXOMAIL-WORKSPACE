@@ -5172,3 +5172,7 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 22 Nov 05:45 PKT: login scrollbar regression found: 00:55 Save-password row made page taller than 1366x768; 05:35 pad fix restores fit; rule: re-measure login heights before every commit
 
 - 22 Nov 05:40 PKT: his 3 photos: image 2 (22:59 look, no save-password row) = wanted; asked keep or remove eye+Save password; pad fix pushed, waits his desk-install
+
+- 22 Nov 05:55 PKT: Desk login = his perfect photo: one light below the card, double light removed, rest intact; fits 1366x768, 1440x900, 390x844, 820x1180; waits desk-install + live look
+
+- 22 Nov 06:05 PKT: Desk login: one light below the card, eye + Save password kept (restored after a silent working-tree loss, HEAD untouched), fits 1366x768/1440x900/390/820/1920; waits desk-install

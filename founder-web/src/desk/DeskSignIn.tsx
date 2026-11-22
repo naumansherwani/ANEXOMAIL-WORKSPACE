@@ -45,11 +45,11 @@ export function DeskSignIn() {
   return (
     <main className="fa">
       {/* his 21 Nov 22:59: one light only on the login, the fixed one at the screen bottom; the scene's own line (it showed twice) is off here, the home page keeps it */}
-      <DeskScene horizon={false} pad="clamp(12px,6dvh,88px) 16px clamp(12px,4dvh,72px)">
+      <DeskScene horizon={false} pad="70px 16px 20px">
         <style>{".dk-logo-wide{position:absolute;top:22px;left:24px;z-index:5;display:inline-flex}.dk-logo-card{display:none}@media (max-width:899px){.dk-logo-wide{display:none}.dk-logo-card{display:inline-flex}}"}</style>
         <a href="/" aria-label="ANEXOMAIL Admin Desk home" className="dk-logo-wide" style={{ minHeight: 44, alignItems: "center", color: "inherit", textDecoration: "none" }}><BrandMark home={false} /></a>
         <DeskTelemetry />
-        <div style={{ width: "100%", maxWidth: 456, display: "flex", flexDirection: "column", alignItems: "center", marginTop: -14, marginBottom: -24 }}>
+        <div style={{ width: "100%", maxWidth: 456, display: "flex", flexDirection: "column", alignItems: "center", marginTop: -14 }}>
         <section style={card} aria-label="Admin Desk sign-in">
           <div aria-hidden="true" style={{ position: "absolute", top: -60, left: "50%", width: 260, height: 160, transform: "translateX(-50%)", borderRadius: "50%", background: "radial-gradient(closest-side,rgba(95,168,255,.42),rgba(27,79,156,.22) 55%,rgba(10,26,62,0) 100%)", filter: "blur(6px)", pointerEvents: "none" }} />
           <a href="/" aria-label="ANEXOMAIL Admin Desk home" className="dk-logo-card" style={{ minHeight: 44, alignItems: "center", color: "inherit", textDecoration: "none", position: "relative", zIndex: 1 }}><BrandMark home={false} /></a>
@@ -87,7 +87,7 @@ export function DeskSignIn() {
         </section>
         </div>
         {/* his 21 Nov 22:49: the warm horizon light (same size and colour as the Desk home page) stays fixed at the bottom of the screen, so no scroll position hides it */}
-        <div aria-hidden="true" style={{ position: "fixed", left: "12vw", right: "12vw", bottom: "clamp(8px,2.2vh,22px)", height: 14, borderRadius: "50%", background: "radial-gradient(closest-side,rgba(255,170,70,.45),rgba(255,170,70,0))", pointerEvents: "none", zIndex: 4 }} />
+        <div aria-hidden="true" style={{ position: "fixed", left: "12vw", right: "12vw", bottom: "0px", height: 14, borderRadius: "50%", background: "radial-gradient(closest-side,rgba(255,170,70,.45),rgba(255,170,70,0))", pointerEvents: "none", zIndex: 4 }} />
       </DeskScene>
     </main>
   );
