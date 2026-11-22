@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 01:27 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 01:27 PKT) - read this FIRST for the Desk after a compaction
 DOING: D5a-4 outside copy built + audited, committing
 NEXT STEP: his install commands after push
 HIS LAST WORD: his 01:18 + 01:23 words
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 5906a650 23 Nov 01:27 D5a-4: outside copy + audit-before-install law
 - 74a31a4d 23 Nov 01:09 ledger line dfe7aeae
 - dfe7aeae 23 Nov 01:09 D5a-4: AD4b lookup audit proof chain
 - fcb59cc3 23 Nov 00:48 ledger line 80c3ff56
@@ -72,26 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 7393e1de 23 Nov 00:36 ledger line 3fc1fc44
 - 3fc1fc44 23 Nov 00:36 AD8 advance + honest truth table
 - 2f574bd1 23 Nov 00:29 ledger line 0de9ed41
-- 0de9ed41 23 Nov 00:29 blueprint 0l
 
 ## Uncommitted Desk files
- M admin-desk/D5A4-AUDIT-PROOF-LIST-23NOV.md
- M admin-desk/scripts/cp-install.sh
- M admin-desk/scripts/desk-install.sh
- M admin-desk/server/src/main.rs
- M admin-desk/sql/AD4b.sql
- M admin-desk/sql/checks/AD4b-check.sql
- M docs/claude/admin-desk/D5A4-AUDIT-PROOF-LIST-23NOV.md
- M docs/claude/admin-desk/scripts/cp-install.sh
- M docs/claude/admin-desk/scripts/desk-install.sh
- M docs/claude/admin-desk/server/src/main.rs
- M docs/claude/admin-desk/sql/AD4b.sql
- M docs/claude/admin-desk/sql/checks/AD4b-check.sql
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/scripts/audit-export-install.sh
-?? admin-desk/server/src/audit.rs
-?? docs/claude/admin-desk/scripts/audit-export-install.sh
-?? docs/claude/admin-desk/server/src/audit.rs
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
