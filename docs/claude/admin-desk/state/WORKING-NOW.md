@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 19:54 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 19:55 PKT) - read this FIRST for the Desk after a compaction
 DOING: AD7 staff queues coded and proved on PG16
 NEXT STEP: his ad-auto for AD7; then D5a-3 Rust lookup door
 HIS LAST WORD: his 19:50 start next phase
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 61b5f411 22 Nov 19:55 Desk AD7 staff queues (cases, Priority Support clock, assignment, status machine) proved on PostgreSQL 16
 - 93d27cef 22 Nov 11:40 ledger line 636842c9
 - 1b0335d0 22 Nov 11:40 ledger line 06ed7785
 - 06ed7785 22 Nov 11:40 Desk backup reserve rule + restore script, blueprint regenerated, AD5/AD6 live noted
@@ -72,20 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 8814db90 22 Nov 11:40 AD6 live, backup rule
 - d1895e92 22 Nov 11:27 ledger line 9b13f53c
 - 8cc21898 22 Nov 11:27 ledger line 79001767
-- 1cf0ff8d 22 Nov 11:26 ledger line ce85d899
 
 ## Uncommitted Desk files
- M admin-desk/BLUEPRINT-ADMIN-DESK.md
- M admin-desk/NEXT-CODES-ORDER-22NOV.md
-AM admin-desk/sql/AD7.sql
-A  admin-desk/sql/checks/AD7-check.sql
- M admin-desk/state/REMINDERS.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/NEXT-CODES-ORDER-22NOV.md
-AM docs/claude/admin-desk/sql/AD7.sql
-A  docs/claude/admin-desk/sql/checks/AD7-check.sql
- M docs/claude/admin-desk/state/REMINDERS.md
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
