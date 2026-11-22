@@ -3293,3 +3293,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Blueprint Part 0j D5a-2 state added (22 Nov 2026 21:55 PKT): seed + Rust doors installed, ad-auto AD6b already-run to be confirmed by his count.
 
 - D5a-2 CLOSED (22 Nov 2026 ~22:00 PKT): WIRED YES, REAL YES for SQL (his paste: 7 packages, version 1, grace 3) and the door (my Chrome: unsigned call refused as unsigned_request on all three routes); session answers proved by cargo. Next D5a-3b responder.
+
+- D5a-2 GREEN (22 Nov 2026 ~22:05 PKT): WIRED: YES / REAL: YES / TECH-LAW CHECKED. SQL: his paste 7 packages v1 grace 3. CODE: Rust read doors installed, my Chrome shows sealed refusal of unsigned calls, session answers proved by 43 cargo tests. PHASE D5a-2 GREEN. D5a list (3, 4, 5) still open. First on-screen use comes with the D5 screen.

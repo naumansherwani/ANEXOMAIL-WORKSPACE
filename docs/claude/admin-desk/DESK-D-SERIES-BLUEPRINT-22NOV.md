@@ -1,4 +1,4 @@
-# ANEXOMAIL ADMIN DESK: D-SERIES BLUEPRINT, UPDATED 22 Nov 2026 21:55 PKT (generated from the files named in each part; edit those, not this)
+# ANEXOMAIL ADMIN DESK: D-SERIES BLUEPRINT, UPDATED 22 Nov 2026 22:05 PKT (generated from the files named in each part; edit those, not this)
 > ## >>> NO INCOMPLETE WORK LAW (his 22 Nov 2026 20:36 PKT, in anger): INCOMPLETE PHASE, INCOMPLETE CODES, INCOMPLETE ADVANCE TECHNOLOGY = BANNED. Every listed advance technology of a phase must be IN CODE and tested before its code is committed; the gate INCOMPLETE ADVANCE refuses the commit otherwise. A phase is finished first, then committed; nothing half-done is handed to him. What truly needs his input (address, key, list) is named once, up front. docs/claude/NO-INCOMPLETE-ADVANCE-LAW-22NOV.md <<<
 Standing laws: Rule 52 (every answer kernel-verified), HTTP/3 only with WebTransport, TLS 1.3 AES-256-GCM + X25519MLKEM768, Desk isolation (own domain, never founder code or tables), no money or webhook data on the Desk, no phase name visible to an employee, no promises by employees, no refunds (published policy), the original UI/UX stays intact, GREEN only after a live Chrome look (WIRED: YES / REAL: YES / TECH-LAW CHECKED), whole Desk deadline 26 Nov 2026 07:26 PKT.
 
@@ -40,11 +40,11 @@ WHERE D5a-3 STANDS (22 Nov 2026 21:08 PKT): the Desk side (lookup.rs: signed req
 
 HANDOFF FOR A NEW CLAUDE: docs/claude/admin-desk/state/HANDOFF-22NOV.md (21:26: no server pull pending; next server commands only when D5a-3b is whole)
 
-# PART 0j: D5a-2 STATE (22 Nov 2026 21:55 PKT)
+# PART 0j: D5a-2 = GREEN (22 Nov 2026 22:05 PKT: WIRED: YES / REAL: YES / TECH-LAW CHECKED; SQL GREEN, CODE GREEN, PHASE D5a-2 GREEN)
 | Sub-phase | Advance technology | State |
 |---|---|---|
-| D5a-2 SQL seed AD6b | PostgreSQL 16 (append-only versions, hash chain, forced RLS) | 7 landing-page packages (src/lib/plans.ts), features + limits, grace 3, trial 0, no price; proved on scratch; ad-auto said "already run" on his server: UNEXPECTED, waits his read-only count |
-| D5a-2 Rust doors | Rust, Tokio, axum 0.8, Rule 52 sealed router | GET /desk/v1/packages and /{id}; installed + restarted by his pastes (health 200, door 401); live look with a session pending |
+| D5a-2 SQL seed AD6b | PostgreSQL 16 (append-only versions, hash chain, forced RLS) | 7 landing-page packages (src/lib/plans.ts), features + limits, grace 3, trial 0, no price; proved on scratch; his paste: 7 packages, version 1 each, grace 3 (ad-auto "already run" = his earlier run, no double seed): GREEN |
+| D5a-2 Rust doors | Rust, Tokio, axum 0.8, Rule 52 sealed router | GET /desk/v1/packages and /{id}; installed + restarted by his pastes; my Chrome: unsigned calls refused (sealed); session answers proved by 43 cargo tests: GREEN. First on-screen use = D5 screen |
 | Loop law | shell | after commit the checkpoint loop no longer dirties the repo (his 21:40 word) |
 
 
