@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 08:47 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 08:47 PKT) - read this FIRST for the Desk after a compaction
 DOING: D1d D1e GREEN live, D3b fix written
 NEXT STEP: his install, D3b live look, TCP paste, D4
 HIS LAST WORD: his 08:46 word
@@ -64,6 +64,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 9129a635 22 Nov 08:47 D1d D1e live
 - 825972df 22 Nov 08:38 ledger line f9d602dd
 - 98ae78ae 22 Nov 08:38 ledger line f4011d6d
 - f4011d6d 22 Nov 08:38 D1e
@@ -71,14 +72,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - f93ca0b5 22 Nov 08:27 ledger line 61b14756
 - 61b14756 22 Nov 08:27 D1d
 - 820529e3 22 Nov 08:25 ledger line cd193bb6
-- b9ed2419 22 Nov 08:25 ledger line ef8a9b06
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/desk_trend_pure.test.ts
- M founder-web/src/desk/desk_trend_pure.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
