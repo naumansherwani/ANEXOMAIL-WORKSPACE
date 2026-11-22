@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:54 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:55 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 1k NOT green: services row mark bug 2 fixed in code, needs his desk-install + my click
 NEXT STEP: his desk-install, my Chrome click, then 1k GREEN, then 1l
 HIS LAST WORD: his photo 03:53
@@ -18,20 +18,27 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 45c75881 23 Nov 03:54 ledger line e283c4d5
 - e283c4d5 23 Nov 03:54 1k fix: services row mark follows click
 - 459bf9ff 23 Nov 03:53 ledger line c195b47a
 - c195b47a 23 Nov 03:53 1k GREEN, NOW 1l
 - 7017b124 23 Nov 03:43 ledger line 2eb5f7e6
-- 2eb5f7e6 23 Nov 03:43 1k: AD1c repair + ad-auto retry
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+ D founder-web/dist-desk/assets/desk-D4jRio_b.js
+ M founder-web/dist-desk/desk.html
+ M founder-web/src/desk/DeskCards.tsx
+?? founder-web/dist-desk/assets/desk-BV_W3xnS.js
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 45 ++--------------------------------------
- 1 file changed, 2 insertions(+), 43 deletions(-)
+ docs/claude/state/WORKING-NOW.md              |  21 ++---
+ founder-web/dist-desk/assets/desk-D4jRio_b.js | 127 --------------------------
+ founder-web/dist-desk/desk.html               |   2 +-
+ founder-web/src/desk/DeskCards.tsx            |   2 +-
+ 4 files changed, 8 insertions(+), 144 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +49,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (7f298eb3978c04e86b45fcff107ea3f54bf43958)
+WIP snapshot: refs/wip/last (702ea09592eaa40622c1d014b331b747199768cd)

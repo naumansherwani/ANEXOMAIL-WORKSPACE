@@ -30,3 +30,5 @@ ad-auto printed "AD2: not in the database yet, running it now ... deadlock detec
 
 ## BUG 2 (his photo 23 Nov 03:53): Service health row mark did not follow the click
 The red border on the services page came from the URL hash (#h3_edge) and stayed on that row. Fix: rows are focusable, a click or Enter moves the mark to the clicked row (data-pick), the hash mark is switched off once a row is picked. Plain DOM attribute, no hook in a branch. Bundle desk-D4jRio_b.js. Not green until installed and clicked in my Chrome.
+
+## BUG 3 (his 23 Nov 03:54): the mark colour was red and he dislikes it. Now the Desk's own light-blue (#8FB8FF, same as the focus ring) for 'you came from / you picked this'. Red stays ONLY for real outage rows. Bundle desk-BV_W3xnS.js.

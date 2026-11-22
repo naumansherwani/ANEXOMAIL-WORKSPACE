@@ -5420,3 +5420,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 1k bug 2: Service health red mark follows the clicked row (data-pick, keyboard too); 1k GREEN withdrawn until installed and clicked live. TESTED: tsc clean, bun 66 pass, vite build. TECH-LAW CHECKED
 
 - 1k bug 2: Service health red mark follows the clicked row (data-pick, keyboard too); 1k GREEN withdrawn until installed and clicked live. TESTED: tsc clean, bun 66 pass, vite build. TECH-LAW CHECKED
+
+- 1k bug 3: return/pick mark is the Desk light-blue (#8FB8FF), red only for real outages. TESTED: tsc clean, bun 66 pass, vite build; live look after his install. TECH-LAW CHECKED
