@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 20:05 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 20:05 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: AD7 live on his server; phase-technology-SQL map and thread answer written
 NEXT STEP: D5a-3 Rust lookup door; founder dist receipt after his paste
 HIS LAST WORD: his 20:04 orders
@@ -18,43 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 65a7b80b 22 Nov 20:05 AD7 live, map
 - 3127c7b6 22 Nov 19:56 ledger line 3c007880
 - 3c007880 22 Nov 19:56 Checkpoint: WORKING-NOW refresh
 - b5679198 22 Nov 19:55 ledger line 61b5f411
 - 61b5f411 22 Nov 19:55 Desk AD7 staff queues (cases, Priority Support clock, assignment, status machine) proved on PostgreSQL 16
-- 93d27cef 22 Nov 11:40 ledger line 636842c9
 
 ## Uncommitted files (half-done work if any)
- M CLAUDE.md
- M admin-desk/BLUEPRINT-ADMIN-DESK.md
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/DESK-PHASES-22NOV.md
- M admin-desk/NEXT-CODES-ORDER-22NOV.md
- M admin-desk/state/REMINDERS.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
- M docs/claude/admin-desk/NEXT-CODES-ORDER-22NOV.md
- M docs/claude/admin-desk/state/REMINDERS.md
- M docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
- D founder-web/dist/assets/index-B71G7amT.js
- M founder-web/dist/index.html
-?? admin-desk/PHASE-TECH-SQL-MAP-22NOV.md
-?? docs/claude/admin-desk/PHASE-TECH-SQL-MAP-22NOV.md
-?? founder-web/dist/assets/index-jQwRFuFw.js
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/admin-desk/DESK-PHASES-22NOV.md        |   2 +-
- docs/claude/admin-desk/NEXT-CODES-ORDER-22NOV.md   |   4 +-
- docs/claude/admin-desk/state/REMINDERS.md          |   2 +
- docs/claude/admin-desk/state/WORKING-NOW.md        |  16 +-
- docs/claude/state/WORKING-NOW.md                   |  39 ++--
- founder-web/dist/assets/index-B71G7amT.js          | 212 ---------------------
- founder-web/dist/index.html                        |   2 +-
- 15 files changed, 161 insertions(+), 244 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 40 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 38 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -65,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (bb7cc30546d8d69f1810dba71eb325dce1967b98)
+WIP snapshot: refs/wip/last (4305f9eff8a70530bd90ef0a5df4cb4ceb00885b)
