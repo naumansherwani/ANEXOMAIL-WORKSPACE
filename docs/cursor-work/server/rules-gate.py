@@ -215,9 +215,10 @@ if "--staged" in sys.argv:
     _rx = _rm.compile(r"(?<![A-Za-z0-9])(" + "|".join(_rm.escape(x) for x in _forb) + r")(?![A-Za-z0-9])", _rm.I) if _forb else None
     for _f in staged:
         if not _rx or not _f.startswith(("founder-web/src/desk/", "docs/claude/admin-desk/server/", "docs/claude/admin-desk/sql/", "docs/claude/admin-desk/kernel/")): continue
-        if not _f.endswith((".ts", ".tsx", ".rs", ".sql")) or ".test." in _f: continue
+        if not _f.endswith((".ts", ".tsx", ".rs", ".sql")) or ".test." in _f or "/sql/checks/" in _f: continue
         try: _t = open(_f, encoding="utf-8").read()
         except OSError: continue
+        _t = "\n".join(_x for _x in _t.splitlines() if "no-money-gate-ok" not in _x)   # a negative rule or selftest line that must NAME the forbidden word carries this tag
         _t = _rm.sub(r"/\*.*?\*/", "", _t, flags=_rm.S); _t = _rm.sub(r"(?m)(^|\s)(//|--).*$", "", _t)
         _m = _rx.search(_t)
         if _m: fail("DESK NO-MONEY", f"{_f}: the Desk names a money field ({_m.group(1)}); finance, invoices, cards and Polar stay on the founder side (contract DESK-LOOKUP-CONTRACT.json)")

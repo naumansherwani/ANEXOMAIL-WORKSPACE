@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 10:48 PKT) - read this FIRST for the Desk after a compaction
-DOING: D5a-1 coded: contract JSON + DESK NO-MONEY gate; refund law; plans text fixed
-NEXT STEP: D5a-4 audit ledger SQL, then D5a-2 registry SQL, D5a-3 lookup vs test double; S1 waits his haan; rename Plans and prices only with his word
-HIS LAST WORD: his 10:47 word: no refund, act as CEO, start first phase
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 10:51 PKT) - read this FIRST for the Desk after a compaction
+DOING: D5a-4 audit SQL coded and proved on scratch PostgreSQL 16 (AD4 + check)
+NEXT STEP: his SQL command (ad-auto) runs AD4 on his server; next D5a-2 registry SQL, D5a-3 lookup Rust door vs test double; S1 waits his haan
+HIS LAST WORD: his 10:47 CEO order: start first phase
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e8487991 22 Nov 10:48 ledger line 0407b750
 - 0407b750 22 Nov 10:48 Desk D5a-1 contract and no-money gate, refund law
 - fa83e3d1 22 Nov 10:48 ledger line aa0fb942
 - aa0fb942 22 Nov 10:48 Desk D5a-1 contract and no-money gate
@@ -72,10 +73,19 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - ed675201 22 Nov 10:43 Desk no-promise law, suspension classes, runbook drafts, D-series blueprint
 - 6c05bcfe 22 Nov 10:43 ledger line 987d934f
 - 987d934f 22 Nov 10:43 Desk no-promise law, reason classes, runbook drafts
-- 94eb01fd 22 Nov 10:35 ledger line 806a79d8
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/DESK-PHASES-22NOV.md
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/DESK-PHASES-22NOV.md
+A  docs/claude/admin-desk/sql/AD4.sql
+A  docs/claude/admin-desk/sql/checks/AD4-check.sql
+MM docs/claude/admin-desk/state/WORKING-NOW.md
+?? admin-desk/sql/AD4.sql
+?? admin-desk/sql/checks/AD4-check.sql
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 10:48 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: D5a-1 coded: contract JSON + DESK NO-MONEY gate; refund law; plans text fixed
-NEXT STEP: D5a-4 audit ledger SQL, then D5a-2 registry SQL, D5a-3 lookup vs test double; S1 waits his haan; rename Plans and prices only with his word
-HIS LAST WORD: his 10:47 word: no refund, act as CEO, start first phase
+# WORKING NOW (manual checkpoint, 22 Nov 2026 10:51 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: D5a-4 audit SQL coded and proved on scratch PostgreSQL 16 (AD4 + check)
+NEXT STEP: his SQL command (ad-auto) runs AD4 on his server; next D5a-2 registry SQL, D5a-3 lookup Rust door vs test double; S1 waits his haan
+HIS LAST WORD: his 10:47 CEO order: start first phase
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,42 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- e8487991 22 Nov 10:48 ledger line 0407b750
 - 0407b750 22 Nov 10:48 Desk D5a-1 contract and no-money gate, refund law
 - fa83e3d1 22 Nov 10:48 ledger line aa0fb942
 - aa0fb942 22 Nov 10:48 Desk D5a-1 contract and no-money gate
 - f033fe12 22 Nov 10:43 ledger line ed675201
-- ed675201 22 Nov 10:43 Desk no-promise law, suspension classes, runbook drafts, D-series blueprint
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/state/WORKING-NOW.md
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/DESK-PHASES-22NOV.md
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/DESK-PHASES-22NOV.md
+A  docs/claude/admin-desk/sql/AD4.sql
+A  docs/claude/admin-desk/sql/checks/AD4-check.sql
+M  docs/claude/admin-desk/state/WORKING-NOW.md
+MM docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+M  docs/cursor-work/server/rules-gate.py
+ M lanes/ALL-FILES.csv
+ M lanes/docs.txt
+ M lovable-gold/README.md
+?? admin-desk/sql/AD4.sql
+?? admin-desk/sql/checks/AD4-check.sql
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/admin-desk/state/WORKING-NOW.md        |   4 +-
+ docs/claude/state/WORKING-NOW.md                   |  41 ++---
+ docs/claude/tech-contracts/CURRENT.md              |   2 +
+ docs/cursor-work/server/rules-gate.py              |   3 +-
+ lanes/ALL-FILES.csv                                |   2 +
+ lanes/docs.txt                                     |   2 +
+ lovable-gold/README.md                             |   2 +-
+ 15 files changed, 237 insertions(+), 29 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +64,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (2f86e7e21c6aa1377b1edcf82a2b6bd649ce71e9)
+WIP snapshot: refs/wip/last (3aa14c4e70367a3d5cb49ad241fbada8427cac2b)
