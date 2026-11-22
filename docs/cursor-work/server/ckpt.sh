@@ -27,12 +27,18 @@ W="$(git stash create 2>/dev/null)"; [ -n "$W" ] && git update-ref refs/wip/last
 
 # ADMIN DESK WORKING-NOW (his 21 Nov 2026 10:04: "mujhe repo updated chahiye admin desk ke andar updated working now"): the same live pointer INSIDE the Desk folder, refreshed every time (and by the 2-minute loop); the root copy is synced in the same step.
 DF=docs/claude/admin-desk/state/WORKING-NOW.md; mkdir -p docs/claude/admin-desk/state
+# RULE BOOK (his 22 Nov 2026 07:21: "rule book admin desk main rakho, directly connected working now + blueprint"): the copy inside the Desk folder is rebuilt from the strict rules at the top of DESK-PHASES-22NOV.md on every checkpoint, so it can never drift.
+RB=docs/claude/admin-desk/RULE-BOOK.md
+if [ -f "$RB" ] && [ -f docs/claude/admin-desk/DESK-PHASES-22NOV.md ]; then
+  { sed '/^## STRICT RULES/,$d' "$RB"; echo "## STRICT RULES (copy of DESK-PHASES-22NOV.md, top; rebuilt by ckpt.sh)"; grep -E '^[0-9]+\. ' docs/claude/admin-desk/DESK-PHASES-22NOV.md; } > "$RB.new" && mv "$RB.new" "$RB"
+fi
 {
 echo "# ADMIN DESK WORKING NOW ($WHY, $NOW) - read this FIRST for the Desk after a compaction"
 echo "DOING: $DOING"; echo "NEXT STEP: $NEXT"; echo "HIS LAST WORD: $WORD"
 echo "LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'."
 echo "REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named."
-echo "FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync)."
+echo "RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md."; echo "FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync)."
+echo; echo "## RULE BOOK (strict rules, read before every phase)"; grep -E "^[0-9]+\. " docs/claude/admin-desk/RULE-BOOK.md | cut -c1-210
 echo; echo "## Phase table (docs/claude/admin-desk/state/PHASES.md)"; sed -n '4,40p' docs/claude/admin-desk/state/PHASES.md 2>/dev/null
 echo; echo "## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)"
 echo; echo "## Last 8 Desk commits"; git log -8 --format='- %h %ad %s' --date=format:'%d %b %H:%M' -- docs/claude/admin-desk admin-desk founder-web/src/desk 2>/dev/null

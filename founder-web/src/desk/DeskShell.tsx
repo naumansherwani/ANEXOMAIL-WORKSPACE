@@ -1,5 +1,8 @@
 import { chipText, type StreamState } from "./desk_stream_pure";
 import { DeskCommandBar } from "./DeskCommandBar";
+import { DeskCardGrid, DeskSubPage } from "./DeskCards";
+import type { Nav } from "./DeskNav";
+import type { Snapshot } from "./desk_stream";
 import type { Bar } from "./desk_bridge_pure";
 import { useEffect, useState, type ReactNode } from "react";
 import { BrandMark } from "../signin/BrandMark";
@@ -104,7 +107,7 @@ html{scrollbar-width:thin;scrollbar-color:rgba(111,166,242,.45) transparent}
 @media (forced-colors:active){.dsk-card,.dsk-rail{border:1px solid CanvasText}}
 `;
 
-export function DeskShell({ me, err, out, onSignOut, live = "live", bar }: { me: ShellMe | null; err: string; out: boolean; onSignOut: () => void; live?: StreamState; bar?: Bar | null }) {
+export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, sub = "", search = "", hash = "", nav = () => {} }: { me: ShellMe | null; err: string; out: boolean; onSignOut: () => void; live?: StreamState; bar?: Bar | null; snap?: Snapshot; sub?: string; search?: string; hash?: string; nav?: Nav }) {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const t = window.setInterval(() => setNow(Date.now()), 15000); return () => window.clearInterval(t); }, []);
   const [menu, setMenu] = useState(false), [pins, setPins] = useState<string[]>(readPins), groups = orderNav(NAV, pins), toggle = (k: string) => setPins((p) => { const n = p.includes(k) ? p.filter((x) => x !== k) : [...p, k]; writePins(n); return n; });
@@ -129,7 +132,7 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar }: { me:
               {g.label && <p className="dsk-grp">{g.label}</p>}
               {g.items.map((n) => (
                 <div className="dsk-row" key={n.key}>
-                  <button type="button" className="dsk-nav" aria-current={n.live ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={n.live ? undefined : "Opens when it is connected"} onClick={(e) => { if (!n.live) e.preventDefault(); }}>{n.glyph}<span>{n.label}</span></button>
+                  <button type="button" className="dsk-nav" aria-current={n.live ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={n.live ? undefined : "Opens when it is connected"} onClick={(e) => { if (!n.live) e.preventDefault(); else if (n.key === "dashboard") nav("/dashboard"); }}>{n.glyph}<span>{n.label}</span></button>
                   {n.key !== "dashboard" && <button type="button" className="dsk-pin" aria-pressed={pins.includes(n.key)} aria-label={(pins.includes(n.key) ? "Unpin " : "Pin ") + n.label} onClick={() => toggle(n.key)}>{ico("M9 4h6l-1 6 3 3v2H7v-2l3-3zM12 15v5")}</button>}
                 </div>
               ))}
@@ -141,7 +144,7 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar }: { me:
         <div className="dsk-bar">
           {me && <span className="dsk-chip" title="Every answer on this page was signed by the Desk and verified in your browser" data-live={live}><i aria-hidden="true" />{chipText(live)}</span>}
           {me && <button type="button" className="dsk-av" aria-label="Account menu" aria-expanded={menu} onClick={() => setMenu((v) => !v)}>{(me.name || me.email).trim().split(/\s+/).slice(0, 2).map((w) => w[0]?.toUpperCase() ?? "").join("") || "?"}</button>}
-          {me && menu && <div className="dsk-menu" role="menu"><b>{me.name || first}</b><small>{me.email}</small><span className="dsk-role">{me.role}</span>
+          {me && menu && <div className="dsk-menu" role="menu"><b>{me.name || first}</b><small>{me.email}</small><span className="dsk-role">{me.role}</span>{end && <small>Session: {remaining(end, now)} left</small>}
             <button type="button" role="menuitem" disabled title="Opens when it is connected">Profile and photo</button><button type="button" role="menuitem" disabled title="Opens when it is connected">Settings</button><button type="button" role="menuitem" disabled title="Opens when it is connected">Devices and sessions</button>
             <button type="button" role="menuitem" disabled={out} onClick={onSignOut}>{out ? "Signing out…" : "Sign out"}</button></div>}
         </div>
@@ -150,17 +153,8 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar }: { me:
           <div className="dsk-clock" aria-label={`${clock}, ${date}`}>{clock}<small>{date}</small></div>
         </header>
         {err && <p role="alert" className="dsk-err">{err}</p>}
-        {me && bar && <DeskCommandBar bar={bar} />}
-        {me && (
-          <section className="dsk-grid" aria-label="Your account">
-            <div className="dsk-card"><p className="dsk-k">Signed in as</p><p className="dsk-v">{me.email}</p></div>
-            <div className="dsk-card"><p className="dsk-k">Role</p><p className="dsk-v" style={{ textTransform: "capitalize" }}>{me.role}</p></div>
-            <div className="dsk-card"><p className="dsk-k">Session</p><p className="dsk-v">{end ? `${remaining(end, now)} left` : "active"}</p>{end && <p className="dsk-n">Ends {end.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}</p>}</div>
-            <div className="dsk-card"><p className="dsk-k">Company mailboxes</p><p className="dsk-n"><span className="dsk-hollow" aria-hidden="true" />Not connected yet. They appear here when they are real.</p></div>
-            <div className="dsk-card"><p className="dsk-k">Cases</p><p className="dsk-n"><span className="dsk-hollow" aria-hidden="true" />Not connected yet.</p></div>
-            <div className="dsk-card"><p className="dsk-k">Team</p><p className="dsk-n"><span className="dsk-hollow" aria-hidden="true" />Not connected yet.</p></div>
-          </section>
-        )}
+        {me && bar && !sub && <><DeskCommandBar bar={bar} nav={nav} /><DeskCardGrid nav={nav} /></>}
+        {me && sub && snap && <DeskSubPage sub={sub} search={search} hash={hash} snap={snap} nav={nav} />}
       </main>
     </div>
   );

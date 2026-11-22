@@ -3189,3 +3189,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 22 Nov 2026 07:18 PKT: strict rule 10 (web research points into blueprint in order) + research log, 13 points with phases.
 
 - 22 Nov 2026 07:19 PKT: Desk phase D GREEN (WIRED YES / REAL YES / TECH-LAW CHECKED, live Chrome look, bundle desk-DvcfAUtv = repo). NOW D1 clickable cards: contract first.
+
+- 22 Nov 2026 07:33 PKT: Desk D1 written: clickable cards, account cards removed, /dashboard/* pages, Connecting fix, desk_cards registry; rule book rebuilt by ckpt.sh. Waits his desk-install + live look.

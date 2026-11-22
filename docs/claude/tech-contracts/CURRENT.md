@@ -2933,3 +2933,15 @@ Phase row (DESK-PHASES-22NOV.md): D Command Bar | React 19, Framer Motion (packa
 - 22 Nov 2026 07:18 PKT: strict rule 10 (web research points into blueprint in order) + research log, 13 points with phases.
 
 - 22 Nov 2026 07:19 PKT: Desk phase D GREEN (WIRED YES / REAL YES / TECH-LAW CHECKED, live Chrome look, bundle desk-DvcfAUtv = repo). NOW D1 clickable cards: contract first.
+
+# TECH CONTRACT FOR PHASE: DESK D1 CLICKABLE CARDS + ROUTER (+ D4 registry first cut), written 22 Nov 2026 07:25 PKT, his word 07:11 "cards clickable, seedha us maslay pe". STATE: IN PROGRESS
+Desk-own, no founder/awam import. Advance technology (listed in DESK-PHASES D1/D4): React 19 + TypeScript, Framer Motion (reduced motion respected), History API drill-down inside ONE page (the WebTransport stream stays open across pages, Rule 52 kernel-verified frames only), registry-driven cards.
+1. Loophole fixed first (AUTOFIX LAW): while the stream is still connecting for the first time the bar said "Stale · not answering"; it now says "Connecting…" (stale only after it was live or failed).
+2. `desk_cards.ts`: ONE registry (id, label, route, track, phase, wired). Unit test fails a card with no route, a route outside /dashboard/, an unknown track, or a duplicate id.
+3. `deskSub(path)`: /dashboard/<sub> routes; the Rust SPA fallback (ServeFile desk.html) already serves them, no server change.
+4. Cards are real `<a href>` links (keyboard, middle click, 44 px, focus ring); click = pushState, Back = popstate with the same scroll.
+5. Account cards (Signed in as, Role, Session) removed from the dashboard (identity stays in the AD menu); the three "not connected" placeholders become registry cards.
+6. Sub pages: Alerts and Service health render the real stream rows (filters from the URL); every other card page says what phase it waits for. Nothing invented.
+No raw fetch, no WebSocket, no HTTP/1 or HTTP/2 word, no new endpoint.
+
+- 22 Nov 2026 07:33 PKT: Desk D1 written: clickable cards, account cards removed, /dashboard/* pages, Connecting fix, desk_cards registry; rule book rebuilt by ckpt.sh. Waits his desk-install + live look.

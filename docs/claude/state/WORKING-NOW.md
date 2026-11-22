@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 07:18 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Desk phase C: C2 written (kernel stream client), phases blueprint + DESK PHASE START gate written
-NEXT STEP: his desk-install of the C2 build, my live Chrome look at the chip, then C GREEN, then D Command Bar
-HIS LAST WORD: her phase se pehle rules aur working now read, technology reminder, blueprint phases ke saath advance technology aur features, strict rules top
+# WORKING NOW (manual checkpoint, 22 Nov 2026 07:25 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: D1 written, waits his desk-install + live look
+NEXT STEP: his desk-install, my Chrome look, D1 GREEN, then D2 ack/act
+HIS LAST WORD: rule book connected, cards clickable
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,50 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 831786c8 22 Nov 07:18 ledger line bc2fdc2f
 - bc2fdc2f 22 Nov 07:18 Desk: phase D GREEN after live Chrome look (22 Nov 07:19 PKT)
 - ea5d9cc9 22 Nov 07:15 ledger line fc8649ed
 - fc8649ed 22 Nov 07:15 Desk: strict rule 10 and web research log (22 Nov 07:18 PKT)
 - e7d22902 22 Nov 07:15 ledger line 7dee6d42
-- 7dee6d42 22 Nov 07:15 Desk: rule 10 + research log
 
 ## Uncommitted files (half-done work if any)
+ M CLAUDE.md
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/DESK-PHASES-22NOV.md
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/DESK-PHASES-22NOV.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M docs/cursor-work/server/ckpt.sh
+ D founder-web/dist-desk/assets/desk-DvcfAUtv.js
+ M founder-web/dist-desk/desk.html
+ M founder-web/src/desk/DeskCommandBar.tsx
+ M founder-web/src/desk/DeskPages.tsx
+ M founder-web/src/desk/DeskShell.tsx
+ M founder-web/src/desk/desk_bridge_pure.test.ts
+ M founder-web/src/desk/desk_bridge_pure.ts
+ M founder-web/src/desk/desk_pure.test.ts
+ M founder-web/src/desk/desk_pure.ts
+?? admin-desk/RULE-BOOK.md
+?? docs/claude/admin-desk/RULE-BOOK.md
+?? founder-web/dist-desk/assets/desk-CsMpi8zr.js
+?? founder-web/src/desk/DeskCards.tsx
+?? founder-web/src/desk/DeskNav.tsx
+?? founder-web/src/desk/desk_cards.test.ts
+?? founder-web/src/desk/desk_cards.ts
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ founder-web/src/desk/DeskCommandBar.tsx        | 28 +++++----
+ founder-web/src/desk/DeskPages.tsx             |  8 ++-
+ founder-web/src/desk/DeskShell.tsx             | 22 +++----
+ founder-web/src/desk/desk_bridge_pure.test.ts  |  7 ++-
+ founder-web/src/desk/desk_bridge_pure.ts       | 19 +++---
+ founder-web/src/desk/desk_pure.test.ts         |  2 +-
+ founder-web/src/desk/desk_pure.ts              |  2 +-
+ 18 files changed, 139 insertions(+), 152 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +72,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (04741b375f9b90034c2b0fb746ca4422f04b21be)
+WIP snapshot: refs/wip/last (6a1c6f858a0b57170c0984711d92c6b1f9bb713b)

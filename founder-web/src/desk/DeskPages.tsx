@@ -10,9 +10,11 @@ import { deskCall, DeskRefused, refusedMessage } from "./desk_kernel";
 import { openBridge, type Snapshot } from "./desk_stream";
 import { DeskBoot } from "./DeskBoot";
 import { barModel } from "./desk_bridge_pure";
+import { deskSub } from "./desk_cards";
 
 const hasSession = () => { try { return !!window.localStorage.getItem(DESK_SESSION_KEY); } catch { return false; } };
 const go = (to: string) => window.location.replace(to);
+const here = () => ({ path: window.location.pathname, search: window.location.search, hash: window.location.hash });
 
 function Landing() {
   return (
@@ -38,6 +40,10 @@ const dropSession = () => { try { window.localStorage.removeItem(DESK_SESSION_KE
 
 /** Dashboard: ONLY real data, every line from a Desk-signed answer the kernel verified (/desk/v1/auth/me). The look lives in DeskShell. */
 function Dashboard() {
+  const [loc, setLoc] = useState(here);
+  // D1: cards move inside this one page with the History API; the stream below stays open. Back restores the previous page.
+  useEffect(() => { const on = () => setLoc(here()); window.addEventListener("popstate", on); return () => window.removeEventListener("popstate", on); }, []);
+  const nav = (to: string) => { window.history.pushState(null, "", to); setLoc(here()); const id = to.split("#")[1]; window.setTimeout(() => (id ? document.getElementById(id) : null)?.scrollIntoView({ block: "center" }) ?? window.scrollTo(0, 0), 0); };
   const [me, setMe] = useState<Me | null>(null), [err, setErr] = useState(""), [out, setOut] = useState(false), [live, setLive] = useState<Snapshot>({ state: "connecting", data: {} });
   // Phase C2: the live Bridge stream (WebTransport, Rule 52 verified in the kernel). Starts once the account answer is trusted; stops on sign-out.
   useEffect(() => { if (!me) return; return openBridge(setLive); }, [me]);
@@ -52,7 +58,7 @@ function Dashboard() {
   }, []);
   async function signOut() { setOut(true); try { await deskCall("POST", "/desk/v1/auth/logout"); } catch { /* the local session is dropped anyway */ } dropSession(); go("/adminlogin"); }
   if (!me && !err) return <DeskBoot />; // loading: the Anexomail mark + ADMIN DESK (no big heading)
-  return <DeskShell me={me} err={err} out={out} onSignOut={signOut} live={live.state} bar={barModel(live.state, live.data)} />;
+  return <DeskShell me={me} err={err} out={out} onSignOut={signOut} live={live.state} bar={barModel(live.state, live.data)} snap={live} sub={deskSub(loc.path)} search={loc.search} hash={loc.hash} nav={nav} />;
 }
 
 /** One component, three pages by path (/, /adminlogin, /dashboard). The guard sends a visitor without a session away from the dashboard. */

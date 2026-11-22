@@ -6,7 +6,7 @@ export const DESK_LOGIN_PATH = "/desk/v1/auth/login"; // Rust door of R3a2 (owne
 /** Which page the Desk shows for a path. Unknown paths go to the landing page (the Desk has exactly three pages). */
 export function deskPage(path: string): "landing" | "adminlogin" | "dashboard" {
   const p = path.replace(/\/+$/, "") || "/";
-  return p === "/adminlogin" ? "adminlogin" : p === "/dashboard" ? "dashboard" : "landing";
+  return p === "/adminlogin" ? "adminlogin" : p === "/dashboard" || p.startsWith("/dashboard/") ? "dashboard" : "landing";
 }
 /** The dashboard needs a Desk session; without one the visitor is sent to /adminlogin. */
 export function deskGuard(page: ReturnType<typeof deskPage>, hasSession: boolean): "stay" | "to_login" | "to_dashboard" {

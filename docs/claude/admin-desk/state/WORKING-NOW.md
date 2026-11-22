@@ -1,10 +1,23 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 07:18 PKT) - read this FIRST for the Desk after a compaction
-DOING: Desk phase C: C2 written (kernel stream client), phases blueprint + DESK PHASE START gate written
-NEXT STEP: his desk-install of the C2 build, my live Chrome look at the chip, then C GREEN, then D Command Bar
-HIS LAST WORD: her phase se pehle rules aur working now read, technology reminder, blueprint phases ke saath advance technology aur features, strict rules top
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 07:25 PKT) - read this FIRST for the Desk after a compaction
+DOING: D1 written, waits his desk-install + live look
+NEXT STEP: his desk-install, my Chrome look, D1 GREEN, then D2 ack/act
+HIS LAST WORD: rule book connected, cards clickable
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
+RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
+
+## RULE BOOK (strict rules, read before every phase)
+1. BEFORE EVERY PHASE: run `python3 docs/cursor-work/server/rules-read.py` then `python3 docs/cursor-work/server/desk-phase-start.py <phase>` and READ both outputs, plus docs/claude/admin-desk/state/WORKING-NOW
+2. ADVANCE TECHNOLOGY ONLY, AND IT MUST BECOME CODE: the technology written next to a phase is his word, not a wish. A listed technology missing from code = OPEN GAP, the phase is never GREEN. Contract first (d
+3. HTTP/1 AND HTTP/2 ARE BANNED FOR THE DESK, everywhere (code, tests, comments, strings). HTTP/3 + WebTransport (QUIC) only. HTTP fallback is banned until HE approves it.
+4. RULE 52: every Desk call and every stream frame is Desk-signed (Ed25519) and verified by the Desk's own Rust WASM kernel; requests carry the HKDF/HMAC MAC + replay nonce.
+5. GREEN only with "WIRED: YES / REAL: YES / TECH-LAW CHECKED" AND my live Chrome look (live bundle = repo, 390 / 820 / 1200+). Installed or written is not green.
+6. ISOLATION: the Desk is its OWN security domain (own binary, keys, tables, cookie, role). Never mix with founder or awam code. Vendor ban stays (Caddy, Namecheap by his hands, Hetzner, his own Rust only).
+7. Never remove or restyle a feature he did not name. Login look and Bridge look are his approved ones.
+8. After EVERY message: repo + ledger + blueprint + COMPACT-SAVE updated with real date and time (rec.sh, desk-copy-sync, lane-sync, manifest-sync, rules-gate 0 fail). EVERY phase is named by ALPHABET in build 
+9. Address him only as Aap, Roman Urdu, short; end every reply with the Rule-70 table and "Abhi code mein NAHI"; server commands = ONE line.
+10. WEB RESEARCH GOES INTO THE REPO IN ORDER (his 22 Nov 2026 07:15 PKT): every web search's points and features are written, in order, into the blueprint (section 'WEB RESEARCH LOG' in DASHBOARD-CARDS-CLICK-PL
 
 ## Phase table (docs/claude/admin-desk/state/PHASES.md)
 
@@ -48,6 +61,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 831786c8 22 Nov 07:18 ledger line bc2fdc2f
 - bc2fdc2f 22 Nov 07:18 Desk: phase D GREEN after live Chrome look (22 Nov 07:19 PKT)
 - ea5d9cc9 22 Nov 07:15 ledger line fc8649ed
 - e7d22902 22 Nov 07:15 ledger line 7dee6d42
@@ -55,12 +69,29 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - bd5ab479 22 Nov 07:14 ledger line 5f449e7e
 - 4110299d 22 Nov 07:14 ledger line 56034001
 - 56034001 22 Nov 07:14 Desk: clickable cards plan D1-D6
-- b53d7760 22 Nov 06:59 ledger line b95fbfeb
 
 ## Uncommitted Desk files
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/DESK-PHASES-22NOV.md
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/DESK-PHASES-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+ M founder-web/src/desk/DeskCommandBar.tsx
+ M founder-web/src/desk/DeskPages.tsx
+ M founder-web/src/desk/DeskShell.tsx
+ M founder-web/src/desk/desk_bridge_pure.test.ts
+ M founder-web/src/desk/desk_bridge_pure.ts
+ M founder-web/src/desk/desk_pure.test.ts
+ M founder-web/src/desk/desk_pure.ts
+?? admin-desk/RULE-BOOK.md
+?? docs/claude/admin-desk/RULE-BOOK.md
+?? founder-web/src/desk/DeskCards.tsx
+?? founder-web/src/desk/DeskNav.tsx
+?? founder-web/src/desk/desk_cards.test.ts
+?? founder-web/src/desk/desk_cards.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
+FAIL !!! ADMIN DESK HTTP/1 AND HTTP/2 ARE BOTH BANNED (HTTP/3 only) !!! founder-web/src/desk/DeskCards.tsx mentions it; remove it
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
 warn ADMIN DESK OPEN until 24 Nov: R3p1-plans [R3p1] Plans as data (Premium, Max first) -> needs PostgreSQL RLS, hash-chained ledger in admin-desk/sql/AD2.sql
 warn ADMIN DESK OPEN until 24 Nov: R3p2-webhook [R3p2] Polar signed webhook door -> needs Rust Tokio axum, HMAC-SHA256 constant-time in admin-desk/server/src/polar.rs

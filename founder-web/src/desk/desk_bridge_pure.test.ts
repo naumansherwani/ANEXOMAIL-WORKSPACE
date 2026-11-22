@@ -13,11 +13,16 @@ test("P1 >= 1 turns the red pulse on, only while the data is fresh", () => {
   expect(barModel("stale", { summary: sum(1), services: [] }).pulse).toBe(false);
 });
 test("a stale or offline stream shows Stale everywhere, never the last green", () => {
-  for (const st of ["stale", "offline", "connecting"] as const) {
+  for (const st of ["stale", "offline"] as const) {
     const b = barModel(st, { summary: sum(0), services: [svc("db", "operational")] });
     expect(b.fresh).toBe(false); expect(b.p1).toBeNull(); expect(b.ledger).toBe("Not measured yet");
     expect(b.rows.every((r) => r.state === "stale" && r.text === "Stale · not answering")).toBe(true);
   }
+});
+test("first connect says Connecting, never Stale (autofix 22 Nov 07:25)", () => {
+  const b = barModel("connecting", { summary: sum(0), services: [svc("db", "operational")] });
+  expect(b.wait).toBe(true); expect(b.p1).toBeNull(); expect(b.rows.every((r) => r.state === "connecting" && r.text === "Connecting…")).toBe(true);
+  expect(barModel("stale", {}).wait).toBe(false);
 });
 test("nothing is invented: SLA and prices say they are not connected, garbage input is refused", () => {
   const b = barModel("live", {}); expect(b.sla).toBe("No cases yet"); expect(b.prices).toContain("not connected"); expect(b.p1).toBeNull();

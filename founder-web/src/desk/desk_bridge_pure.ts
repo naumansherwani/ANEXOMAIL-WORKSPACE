@@ -5,10 +5,10 @@ import type { StreamState } from "./desk_stream_pure";
 
 export type Svc = { service: string; label: string; critical: boolean; state: string; age_s: number | null; last_latency_ms: number | null; uptime_24h: number | null };
 export type Summary = { p1_open: number; high_open: number; unacked: number; oldest_unacked_s: number | null; incidents_open: number; advisories_open: number; critical_not_ok: number; critical_unknown: number; ledger_ok: boolean | null };
-export type RowState = "ok" | "degraded" | "outage" | "unknown" | "stale";
+export type RowState = "ok" | "degraded" | "outage" | "unknown" | "stale" | "connecting";
 export type Row = { key: string; label: string; state: RowState; text: string; detail: string };
 export type Bar = {
-  fresh: boolean;
+  fresh: boolean; wait: boolean;
   p1: number | null; high: number | null; unacked: number | null; oldestUnacked: string | null;
   pulse: boolean;
   sla: string; prices: string;
@@ -35,24 +35,25 @@ export function asServices(v: unknown): Svc[] | null {
 }
 export function ago(s: number | null): string | null { if (s === null || s < 0) return null; if (s < 90) return `${Math.round(s)} s ago`; if (s < 5400) return `${Math.round(s / 60)} min ago`; return `${Math.round(s / 3600)} h ago`; }
 export function duration(s: number | null): string | null { if (s === null || s < 0) return null; const m = Math.floor(s / 60); return m >= 60 ? `${Math.floor(m / 60)} h ${m % 60} min` : `${m} min ${Math.round(s % 60)} s`; }
-const WORDS: Record<RowState, string> = { ok: "Operational", degraded: "Degraded", outage: "Outage", unknown: "Not measured", stale: "Stale · not answering" };
-function rowState(server: string, fresh: boolean): RowState { if (!fresh) return "stale"; return server === "operational" ? "ok" : server === "degraded" ? "degraded" : server === "outage" ? "outage" : "unknown"; }
+const WORDS: Record<RowState, string> = { ok: "Operational", degraded: "Degraded", outage: "Outage", unknown: "Not measured", stale: "Stale · not answering", connecting: "Connecting…" };
+function rowState(server: string, fresh: boolean, wait = false): RowState { if (!fresh) return wait ? "connecting" : "stale"; return server === "operational" ? "ok" : server === "degraded" ? "degraded" : server === "outage" ? "outage" : "unknown"; }
 
 /** The whole bar. `stream` is the one state the page already shows on its chip. */
 export function barModel(stream: StreamState, data: { summary?: unknown; services?: unknown }): Bar {
-  const fresh = stream === "live";
+  const fresh = stream === "live", wait = stream === "connecting"; // first connect in progress: say so, never "Stale"
+  const idle: RowState = wait ? "connecting" : "stale";
   const sum = asSummary(data.summary), svcs = asServices(data.services);
-  const rows: Row[] = [{ key: "stream", label: "Live stream (WebTransport · QUIC)", state: fresh ? "ok" : "stale", text: fresh ? "Live · verified" : WORDS.stale, detail: "" }];
+  const rows: Row[] = [{ key: "stream", label: "Live stream (WebTransport · QUIC)", state: fresh ? "ok" : idle, text: fresh ? "Live · verified" : WORDS[idle], detail: "" }];
   for (const id of PIPELINE) {
     const s = svcs?.find((x) => x.service === id);
-    if (!s) { rows.push({ key: id, label: id, state: fresh ? "unknown" : "stale", text: fresh ? WORDS.unknown : WORDS.stale, detail: "" }); continue; }
-    const st = rowState(s.state, fresh);
+    if (!s) { rows.push({ key: id, label: id, state: fresh ? "unknown" : idle, text: fresh ? WORDS.unknown : WORDS[idle], detail: "" }); continue; }
+    const st = rowState(s.state, fresh, wait);
     const bits = fresh && st !== "unknown" ? [s.last_latency_ms !== null ? `${s.last_latency_ms} ms` : null, ago(s.age_s)].filter(Boolean) : [];
     rows.push({ key: id, label: s.label, state: st, text: WORDS[st], detail: bits.join(" · ") });
   }
   const p1 = fresh && sum ? sum.p1_open : null;
   return {
-    fresh, p1, high: fresh && sum ? sum.high_open : null, unacked: fresh && sum ? sum.unacked : null,
+    fresh, wait, p1, high: fresh && sum ? sum.high_open : null, unacked: fresh && sum ? sum.unacked : null,
     oldestUnacked: fresh && sum ? duration(sum.oldest_unacked_s) : null,
     pulse: p1 !== null && p1 >= 1,
     sla: "No cases yet", // the SLA clock needs real cases (AD4); until then it says so, never a made-up time
