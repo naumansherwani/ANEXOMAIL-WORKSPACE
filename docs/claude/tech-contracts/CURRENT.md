@@ -3005,3 +3005,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 22 Nov 2026 09:05 PKT: Desk D4 gate DESK WIRING in rules-gate.py (registry test + no phase names / P1 in user text). D2 live proof uses desk.fadm_alert_raise through desk-test-alert.sh (one notice alert, no red pulse). Phase A measured: Chrome page protocol h2. HTTP/3 primary stays the target.
 
 - 22 Nov 2026 09:05 PKT: Desk D3b GREEN and D4 GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED; D8 closed; D2 test alert script written
+
+- 22 Nov 2026 09:09 PKT: desk-test-alert.sh uses alert source 'system' (allowed by fadm_alert_source_ck); first run with 'selftest' was refused by the CHECK, nothing written.
+
+- 22 Nov 2026 09:09 PKT: Desk D2 test alert script fixed after CHECK refusal, waits his re-run and live proof

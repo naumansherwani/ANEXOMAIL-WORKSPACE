@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 08:58 PKT) - read this FIRST for the Desk after a compaction
-DOING: D3b D4 GREEN, D8 closed, D2 test alert script
-NEXT STEP: D2 live proof, D5, D6, phase A
-HIS LAST WORD: his 08:56 word
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 09:01 PKT) - read this FIRST for the Desk after a compaction
+DOING: D2 test alert script fixed
+NEXT STEP: his re-run, live Acknowledge + Resolve, D5, D6
+HIS LAST WORD: check constraint
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -64,6 +64,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 385aff8d 22 Nov 08:58 ledger line 03f1e05f
 - f8ff322c 22 Nov 08:58 ledger line 0d02f799
 - 0d02f799 22 Nov 08:58 D3b D4
 - 972c6e89 22 Nov 08:52 ledger line e612b232
@@ -71,9 +72,10 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 718e9186 22 Nov 08:52 transport
 - cc3ab449 22 Nov 08:51 ledger line 7ea7df07
 - be88d497 22 Nov 08:51 ledger line 506c42b5
-- 506c42b5 22 Nov 08:51 status
 
 ## Uncommitted Desk files
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/scripts/desk-test-alert.sh
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
