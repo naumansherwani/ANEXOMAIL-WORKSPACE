@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 02:03 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 02:03 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: ORDER LOCK written; now starting 1i D5a-5 code
 NEXT STEP: 1i D5a-5 then 1j,1k,1l,1m,1n,1o in this exact order
 HIS LAST WORD: his 02:02 anger about order
@@ -18,26 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- aff35c7c 23 Nov 02:03 Order lock
 - 1fd877b7 23 Nov 01:54 ledger line 8df10397
 - 8df10397 23 Nov 01:54 Phase A row corrected
 - 9ef4c33e 23 Nov 01:45 ledger line 7afc45f1
 - 7afc45f1 23 Nov 01:45 NOW-LIST remaining phases
-- 28f6fd3f 23 Nov 01:38 ledger line b1542e59
 
 ## Uncommitted files (half-done work if any)
- M CLAUDE.md
- M admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- CLAUDE.md                                |  2 +-
- admin-desk/NOW-LIST-23NOV.md             |  3 +++
- docs/claude/admin-desk/NOW-LIST-23NOV.md |  3 +++
- docs/claude/state/WORKING-NOW.md         | 26 ++++++++------------------
- 4 files changed, 15 insertions(+), 19 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 23 ++---------------------
+ 1 file changed, 2 insertions(+), 21 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -48,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (fa2e26953b8028db69d9de0d39d9564550717fc0)
+WIP snapshot: refs/wip/last (44d76308663ecc07359be9e080fa9872d6a33a42)

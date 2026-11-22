@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 02:03 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 02:03 PKT) - read this FIRST for the Desk after a compaction
 DOING: ORDER LOCK written; now starting 1i D5a-5 code
 NEXT STEP: 1i D5a-5 then 1j,1k,1l,1m,1n,1o in this exact order
 HIS LAST WORD: his 02:02 anger about order
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- aff35c7c 23 Nov 02:03 Order lock
 - 1fd877b7 23 Nov 01:54 ledger line 8df10397
 - 8df10397 23 Nov 01:54 Phase A row corrected
 - 9ef4c33e 23 Nov 01:45 ledger line 7afc45f1
@@ -72,11 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 28f6fd3f 23 Nov 01:38 ledger line b1542e59
 - b1542e59 23 Nov 01:38 D5a-4 GREEN report
 - 400d879c 23 Nov 01:28 ledger line e7e0e670
-- e7e0e670 23 Nov 01:28 D5a-4: audit fix PUBLIC revoke
 
 ## Uncommitted Desk files
- M admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
