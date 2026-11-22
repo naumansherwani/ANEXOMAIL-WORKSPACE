@@ -2914,3 +2914,16 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 22 Nov 2026 06:49 PKT PHASE C GREEN (WIRED: YES / REAL: YES / TECH-LAW CHECKED) live Chrome: chip Live verified, bundle = repo; B read path GREEN via stream; open: 390/820 live, A h2, alert-act live
 
 - 22 Nov 2026 06:51 PKT Desk BOOT SCREEN written (Anexomail A mark + ADMIN DESK, static HTML before JS + DeskBoot.tsx), not green: needs his install + my Chrome look
+
+# TECH CONTRACT FOR PHASE: DESK D COMMAND BAR (R4-1b step 4), written 22 Nov 2026 06:57 PKT, his word 06:56 "ab next phase pe chalo". STATE: IN PROGRESS
+Phase row (DESK-PHASES-22NOV.md): D Command Bar | React 19, Framer Motion (package `motion`), kernel stream data | Live SLA clock, Active P1 alerts with package prices, Mail and QUIC heartbeat, red pulse at P1 >= 1.
+| Listed technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| Kernel-verified stream data (Rule 52) | the bar reads ONLY the Snapshot of desk_stream.ts (frames verified by the Desk WASM kernel); no fetch, no poll, no HTTP fallback | yes (C, GREEN) | live Chrome |
+| React 19 + TypeScript pure view model | src/desk/desk_bridge_pure.ts (summary/services -> bar model, STALE rule, red pulse rule) + bun tests | to write | bun tests |
+| Framer Motion (`motion`) | DeskCommandBar.tsx: number change + P1 pulse, honours prefers-reduced-motion (static red border + text + icon) | to write | sandbox screenshot + Chrome |
+| Honest data: every value real or "Not measured yet" | SLA clock = "No cases yet" until AD4 cases exist; package prices = "Plans not connected yet" until plan rows (phase K/R3p), NEVER invented | by design | reading the code + Chrome |
+| Stale rule (his 12 s) | when the stream is stale/offline every value shows "Stale · not answering", never the last green | to write | bun tests + sandbox |
+| HTTP/3 line | "HTTP/3 QUIC" named ONLY when the browser measured h3 (nextHopProtocol); otherwise the edge row shows the server probe state without naming a protocol | to write | Chrome |
+
+- 22 Nov 2026 06:59 PKT PHASE D Command Bar WRITTEN (not green): pure model + DeskCommandBar (motion, P1 red pulse) from kernel-verified stream; SLA clock/prices honest 'not connected'; needs his install + Chrome look. Boot screen live-confirmed.

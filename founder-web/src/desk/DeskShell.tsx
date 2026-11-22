@@ -1,4 +1,6 @@
 import { chipText, type StreamState } from "./desk_stream_pure";
+import { DeskCommandBar } from "./DeskCommandBar";
+import type { Bar } from "./desk_bridge_pure";
 import { useEffect, useState, type ReactNode } from "react";
 import { BrandMark } from "../signin/BrandMark";
 import { MODULES } from "./modules/registry";
@@ -102,7 +104,7 @@ html{scrollbar-width:thin;scrollbar-color:rgba(111,166,242,.45) transparent}
 @media (forced-colors:active){.dsk-card,.dsk-rail{border:1px solid CanvasText}}
 `;
 
-export function DeskShell({ me, err, out, onSignOut, live = "live" }: { me: ShellMe | null; err: string; out: boolean; onSignOut: () => void; live?: StreamState }) {
+export function DeskShell({ me, err, out, onSignOut, live = "live", bar }: { me: ShellMe | null; err: string; out: boolean; onSignOut: () => void; live?: StreamState; bar?: Bar | null }) {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const t = window.setInterval(() => setNow(Date.now()), 15000); return () => window.clearInterval(t); }, []);
   const [menu, setMenu] = useState(false), [pins, setPins] = useState<string[]>(readPins), groups = orderNav(NAV, pins), toggle = (k: string) => setPins((p) => { const n = p.includes(k) ? p.filter((x) => x !== k) : [...p, k]; writePins(n); return n; });
@@ -148,6 +150,7 @@ export function DeskShell({ me, err, out, onSignOut, live = "live" }: { me: Shel
           <div className="dsk-clock" aria-label={`${clock}, ${date}`}>{clock}<small>{date}</small></div>
         </header>
         {err && <p role="alert" className="dsk-err">{err}</p>}
+        {me && bar && <DeskCommandBar bar={bar} />}
         {me && (
           <section className="dsk-grid" aria-label="Your account">
             <div className="dsk-card"><p className="dsk-k">Signed in as</p><p className="dsk-v">{me.email}</p></div>
