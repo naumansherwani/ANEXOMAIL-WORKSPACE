@@ -5430,3 +5430,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 1k GREEN: his desk-install (build 90 s, desk-D1zbEnu0.js) + my Chrome look (one row marked per click/Enter, others clean, Ice blue soft glow). WIRED: YES / REAL: YES. TESTED: live Chrome screenshots + computed styles + his server paste. TECH-LAW CHECKED
 
 - 1k closed items GREEN (23 Nov 2026 04:31 PKT): 9 runbooks approved by the Chairman, checklist tick live and persisted after reload. TESTED: live Chrome on his open owner account (approve x9, reload, tick, reload). WIRED: YES / REAL: YES. TECH-LAW CHECKED
+
+- Recorded his 04:25 question: founder-side escalation inbox = later phase after 1o + 1a, one-way signed messages, Desk isolation kept. TESTED: records only, gate. TECH-LAW CHECKED
