@@ -8,4 +8,5 @@ UNION ALL SELECT 'the four doors are granted to desk_app and are SECURITY DEFINE
 UNION ALL SELECT 'the internal helper is not callable by desk_app or PUBLIC', NOT has_function_privilege('desk_app','desk.fadm_runbook_staff(uuid)','execute') AND NOT has_function_privilege('public','desk.fadm_runbook_staff(uuid)','execute')
 UNION ALL SELECT 'the four runbook ledger kinds are on the closed list', (SELECT count(*) FROM desk.fadm_ledger_kind WHERE kind IN ('ad9.selftest','runbook.version_added','runbook.approved','runbook.validated')) = 4
 UNION ALL SELECT 'the version hash chain verifies', desk.fadm_runbook_chain_verify()
-UNION ALL SELECT 'the main ledger hash chain still verifies', desk.fadm_ledger_verify();
+UNION ALL SELECT 'the main ledger hash chain still verifies', desk.fadm_ledger_verify()
+UNION ALL SELECT 'the no-promise helper is not executable by PUBLIC (AD2 and AD3 rules)', NOT has_function_privilege('public','desk.fadm_runbook_clean(text)','execute');

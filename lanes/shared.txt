@@ -130,6 +130,7 @@ admin-desk/sql/AD1.sql
 admin-desk/sql/AD1/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/AD1/README.md
 admin-desk/sql/AD1b.sql
+admin-desk/sql/AD1c.sql
 admin-desk/sql/AD2.sql
 admin-desk/sql/AD3.sql
 admin-desk/sql/AD4.sql
@@ -147,6 +148,7 @@ admin-desk/sql/README.md
 admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/checks/AD1-check.sql
 admin-desk/sql/checks/AD1b-check.sql
+admin-desk/sql/checks/AD1c-check.sql
 admin-desk/sql/checks/AD2-check.sql
 admin-desk/sql/checks/AD3-check.sql
 admin-desk/sql/checks/AD4-check.sql

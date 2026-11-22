@@ -155,6 +155,7 @@ BEGIN
   END LOOP;
   RETURN true;
 END $f$;
+REVOKE ALL ON FUNCTION desk.fadm_runbook_clean(text) FROM PUBLIC;   -- found by the AD2 and AD3 CHECKS on the server: no Desk function may be executable by PUBLIC (only the doors, granted to desk_app)
 REVOKE ALL ON FUNCTION desk.fadm_runbook_staff(uuid), desk.fadm_runbooks_list(uuid), desk.fadm_runbook_add_version(uuid,text,int,int,int,jsonb,jsonb,text,text), desk.fadm_runbook_mark(uuid,bigint,text), desk.fadm_runbook_chain_verify() FROM PUBLIC;
 REVOKE ALL ON FUNCTION desk.fadm_runbook_staff(uuid) FROM desk_app;   -- internal helper
 REVOKE ALL ON FUNCTION desk.fadm_runbook_version_chain(), desk.fadm_runbook_frozen(), desk.fadm_runbook_event_guard() FROM PUBLIC;

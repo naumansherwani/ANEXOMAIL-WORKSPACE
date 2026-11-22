@@ -5410,3 +5410,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - Return mark: the Dashboard card you opened wears the same red mark and scrolls into view when you come back (desk_return_pure.ts, DeskPages effect, CSS). 1k install proof recorded (3 SAME, ca5022eb8). TESTED: bun 66 pass, tsc clean, vite build. 1k not green: AD9/AD9b failed on his server, ad-auto paste needed. TECH-LAW CHECKED
 
 - Return mark: the Dashboard card you opened wears the same red mark and scrolls into view when you come back (desk_return_pure.ts, DeskPages effect, CSS). 1k install proof recorded (3 SAME, ca5022eb8). TESTED: bun 66 pass, tsc clean, vite build. 1k not green: AD9/AD9b failed on his server, ad-auto paste needed. TECH-LAW CHECKED
+
+- 1k SQL fix: AD9 helper was PUBLIC-executable (broke AD2+AD3 CHECKs, ad-auto re-ran AD2, deadlock). AD9 revoke, repair AD1c (runs before AD2), ad-auto deadlock retry x6. TESTED: scratch PostgreSQL reproduced the false row, all 16 AD checks 0 false after, AD9 and AD9b rerun clean, bash -n. Not green until his ad-auto + install + Chrome look. TECH-LAW CHECKED

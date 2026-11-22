@@ -8,6 +8,7 @@
 | Signed Rust doors /desk/v1/runbooks, /tick, /ticks, /mark over the sealed HTTP/3 router; employees cannot approve (database says 403) | server/src/runbooks.rs, main.rs | yes | cargo test incl. real PostgreSQL: agent reads and ticks, agent approve = 403, owner approve = 200, bad step 400, wrong step 409 |
 | Rule 52 kernel-verified reads (deskCall), fail-closed Data unavailable, slow answer for another company dropped | desk_kernel.ts, DeskRunbooks.tsx, desk_runbook_pure.ts | yes | bun 63 pass incl. fail-closed parse tests; my signed-in Chrome look after install |
 | React 19 + TypeScript + Tailwind-token screen: library, six parts, checklist, say-this copy with selection fallback, owner approve buttons | DeskRunbooks.tsx, desk_cards.ts (card runbooks), DeskCards.tsx | yes | bun + tsc clean + vite build; three widths = Chrome look |
+| Repair AD1c (runs before AD2): no PUBLIC execute on the AD9 helper; ad-auto retries a deadlock 6 times | sql/AD1c.sql, checks/AD1c-check.sql, scripts/ad-auto.sh | yes | scratch PostgreSQL: AD2 and AD3 checks false before, all 16 checks 0 false after; bash -n
 | One no-promise word list in three layers (gate, SQL CHECK, TS) | rules-gate.py (NO PROMISE), AD9 fadm_runbook_clean, desk_runbook_pure.ts noPromise | yes | gate negative probe fails as designed (R1 promise), positive passes; SQL selftest bans 13 words; bun test |
 # TECH CONTRACT FOR PHASE: DESK D5 PLAN CONTEXT SCREEN (phase 1j), written 23 Nov 2026 03:1x PKT BEFORE code. LIST: docs/claude/admin-desk/D5-PLAN-CONTEXT-SCREEN-LIST-23NOV.md (P1..P12)
 | Advance technology | Where in code | IN CODE | Proof |
@@ -3302,3 +3303,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Return mark: the Dashboard card you opened wears the same red mark and scrolls into view when you come back (desk_return_pure.ts, DeskPages effect, CSS). 1k install proof recorded (3 SAME, ca5022eb8). TESTED: bun 66 pass, tsc clean, vite build. 1k not green: AD9/AD9b failed on his server, ad-auto paste needed. TECH-LAW CHECKED
 
 - Return mark: the Dashboard card you opened wears the same red mark and scrolls into view when you come back (desk_return_pure.ts, DeskPages effect, CSS). 1k install proof recorded (3 SAME, ca5022eb8). TESTED: bun 66 pass, tsc clean, vite build. 1k not green: AD9/AD9b failed on his server, ad-auto paste needed. TECH-LAW CHECKED
+
+- 1k SQL fix: AD9 helper was PUBLIC-executable (broke AD2+AD3 CHECKs, ad-auto re-ran AD2, deadlock). AD9 revoke, repair AD1c (runs before AD2), ad-auto deadlock retry x6. TESTED: scratch PostgreSQL reproduced the false row, all 16 AD checks 0 false after, AD9 and AD9b rerun clean, bash -n. Not green until his ad-auto + install + Chrome look. TECH-LAW CHECKED

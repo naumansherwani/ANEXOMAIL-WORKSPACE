@@ -15,7 +15,12 @@ for n in $(git -C "$REPO" ls-tree --name-only origin/main admin-desk/sql/ | sed 
   HAS=0; git -C "$REPO" cat-file -e "origin/main:admin-desk/sql/checks/$n-check.sql" 2>/dev/null && { HAS=1; git -C "$REPO" show "origin/main:admin-desk/sql/checks/$n-check.sql" >"$C"; }
   if [ $HAS = 1 ]; then R="$(P -f "$C" 2>&1)"; if ok "$R"; then echo "$n: already run (yeh already is database mein implement hai), skipped"; continue; fi; fi
   echo "$n: not in the database yet, running it now"
-  O="$(P -v ON_ERROR_STOP=1 -f "$S" 2>&1 | grep -v '^NOTICE')"; RC=${PIPESTATUS[0]}
+  # a deadlock with the live Desk service is rolled back whole (one transaction) and harmless: try again up to 6 times (his 23 Nov 03:42 server paste: "deadlock detected" on AD2)
+  for TRY in 1 2 3 4 5 6; do
+    O="$(P -v ON_ERROR_STOP=1 -f "$S" 2>&1 | grep -v '^NOTICE')"; RC=${PIPESTATUS[0]}
+    echo "$O" | grep -q 'deadlock detected' || break
+    echo "   deadlock with the running Desk (attempt $TRY of 6), nothing was changed, trying again in 3 seconds"; sleep 3
+  done
   echo "$O" | tail -5 | sed 's/^/   /'
   echo "$O" | grep -q 'ERROR' && { echo "$n: FAILED, nothing was created (one transaction)"; BAD=1; break; }
   if [ $HAS = 1 ]; then R="$(P -f "$C" 2>&1)"; echo "$R" | sed 's/^/   /'; ok "$R" && echo "$n: run and CHECK OK" || { echo "$n: CHECK FALSE"; BAD=1; break; }; fi
