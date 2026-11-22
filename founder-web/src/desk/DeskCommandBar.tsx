@@ -15,7 +15,7 @@ const CSS = `
 .dcb-big{margin:8px 0 0;font-size:clamp(30px,6vw,40px);line-height:1.05;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:#fff}
 .dcb-n{margin:8px 0 0;font-size:13.5px;line-height:1.5;color:var(--mute);overflow-wrap:anywhere}
 .dcb-wide{grid-column:1/-1}
-.dcb-p1[data-hot=true]{border-color:rgba(255,92,92,.75);background:rgba(120,16,24,.28)}
+.dcb-urgent[data-hot=true]{border-color:rgba(255,92,92,.75);background:rgba(120,16,24,.28)}
 .dcb-hot{display:flex;align-items:center;gap:8px;margin:10px 0 0;font-size:14px;font-weight:600;color:#FFB4B4}
 .dcb-rows{display:grid;gap:10px;margin:12px 0 0;padding:0;list-style:none;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr))}
 .dcb-row{display:flex;align-items:flex-start;gap:10px;min-width:0;min-height:44px}
@@ -42,16 +42,16 @@ export function DeskCommandBar({ bar, nav, sys, tech = true }: { bar: Bar; nav: 
       <style>{CSS}</style>
       <AnimatePresence>
         {hot && (calm
-          ? <div key="f" className="dcb-frame" data-testid="p1-frame" aria-hidden="true" />
-          : <motion.div key="f" className="dcb-frame" data-testid="p1-frame" aria-hidden="true" initial={{ opacity: 0 }} animate={{ opacity: [0.35, 1, 0.35] }} exit={{ opacity: 0 }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }} />)}
+          ? <div key="f" className="dcb-frame" data-testid="urgent-frame" aria-hidden="true" />
+          : <motion.div key="f" className="dcb-frame" data-testid="urgent-frame" aria-hidden="true" initial={{ opacity: 0 }} animate={{ opacity: [0.35, 1, 0.35] }} exit={{ opacity: 0 }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }} />)}
       </AnimatePresence>
       <div className="dcb-card" title={"Live SLA clock · " + shortcutLabel("sla")} onClick={open(route("sla"))}>
         <p className="dcb-k"><DeskLink to={route("sla")} nav={nav} className="dcl" keys={shortcutLabel("sla")} badge>Live SLA clock →</DeskLink></p>
         <p className="dcb-big">{bar.sla}</p>
         <p className="dcb-n">Average time to a first answer. Target: under 2 minutes. It shows a real time when cases exist.</p>
       </div>
-      <div className="dcb-card dcb-p1" data-hot={hot} role={hot ? "alert" : undefined} title={"Urgent alerts · " + shortcutLabel("alerts")} onClick={open(route("alerts") + "?severity=p1")}>
-        <p className="dcb-k"><DeskLink to={route("alerts") + "?severity=p1"} nav={nav} className="dcl" keys={shortcutLabel("alerts")} badge>Urgent alerts →</DeskLink></p>
+      <div className="dcb-card dcb-urgent" data-hot={hot} role={hot ? "alert" : undefined} title={"Urgent alerts · " + shortcutLabel("alerts")} onClick={open(route("alerts") + "?severity=urgent")}>
+        <p className="dcb-k"><DeskLink to={route("alerts") + "?severity=urgent"} nav={nav} className="dcl" keys={shortcutLabel("alerts")} badge>Urgent alerts →</DeskLink></p>
         <motion.p className="dcb-big" key={String(bar.p1)} initial={calm ? false : { opacity: 0.4, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>{bar.p1 === null ? (bar.wait ? "…" : "Stale") : bar.p1}</motion.p>
         {hot
           ? <p className="dcb-hot"><Alert />Urgent alert open. Act now.</p>

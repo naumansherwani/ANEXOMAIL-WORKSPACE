@@ -201,7 +201,7 @@ if _dstaged:
         try: _t = open(_f, encoding="utf-8").read()
         except OSError: continue
         _t = _re.sub(r"/\*.*?\*/", "", _t, flags=_re.S); _t = _re.sub(r"(?m)^\s*//.*$", "", _t)
-        if _re.search(r"Waits for phase|[\"`>]\s*Phase [A-Z]\b|Active P1|P1 open", _t):
+        if _re.search(r"Waits for phase|[\"`>]\s*Phase [A-Z]\b|\bP1\b|severity=p1|dcb-p1", _t):
             fail("DESK WIRING", f"{_f}: user-facing text names a phase or says P1; the real Desk uses plain words (Urgent alerts, Not connected yet)")
 
 

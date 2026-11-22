@@ -82,7 +82,7 @@ export function DeskSubPage({ sub, search, hash, snap, nav, role = "", act }: { 
     return (
       <Shell title="Alerts" back nav={nav}>
         <p>{card.what}. {f.severity ? "Showing urgent alerts (critical, still open). " : ""}{f.status ? "Showing not acknowledged. " : ""}</p>
-        <div><DeskLink to={route("alerts")} nav={nav} className="dcp-chip">All</DeskLink> <DeskLink to={route("alerts") + "?severity=p1"} nav={nav} className="dcp-chip">Urgent</DeskLink> <DeskLink to={route("alerts") + "?status=unacked"} nav={nav} className="dcp-chip">Not acknowledged</DeskLink></div>
+        <div><DeskLink to={route("alerts")} nav={nav} className="dcp-chip">All</DeskLink> <DeskLink to={route("alerts") + "?severity=urgent"} nav={nav} className="dcp-chip">Urgent</DeskLink> <DeskLink to={route("alerts") + "?status=unacked"} nav={nav} className="dcp-chip">Not acknowledged</DeskLink></div>
         {note && <p role="status">{note}</p>}
         {rows && <ul className="dcp-list">{rows.length === 0 ? <li className="dcp-item">{f.severity || f.status ? "Nothing matches this filter. That is healthy." : "No alerts. That is healthy."}</li> : rows.map((r) => (
           <AlertItem key={r.id} r={r} act={act} />

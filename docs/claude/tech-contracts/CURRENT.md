@@ -3017,3 +3017,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 22 Nov 2026 09:12 PKT: Desk rule 14: no phase name or P1 in any employee-visible text, including rows our scripts write (test alert kind live.test). Gate DESK WIRING extended to desk-test-alert.sh.
 
 - 22 Nov 2026 09:12 PKT: Desk rule 14 no phase names or P1 visible on the Desk, test alert text fixed, gate extended
+
+- 22 Nov 2026 09:20 PKT: Desk D1f: alert filter URL is ?severity=urgent (p1 still accepted when read); no P1 / phase text in Desk code; gate DESK WIRING extended. HTTP/3 only.
+
+- 22 Nov 2026 09:20 PKT: Desk live scan 14 routes clean, two leftovers fixed (urgent URL, CSS tag), gate extended, waits install

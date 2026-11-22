@@ -43,11 +43,11 @@ export function cardProblems(cards: Card[] = CARDS): string[] {
 export type AlertRow = { id: string; num: number | null; at: string; severity: string; source: string; kind: string; status: string; assignee: string | null; seen_count: number; last_at: string; detail: string };
 export function alertFilter(search: string): { severity: string | null; status: string | null } {
   const q = new URLSearchParams(search); const sev = q.get("severity"), st = q.get("status");
-  return { severity: sev === "p1" ? "p1" : null, status: st === "unacked" ? "unacked" : null };
+  return { severity: sev === "urgent" || sev === "p1" ? "urgent" : null, status: st === "unacked" ? "unacked" : null };
 }
 export function filterAlerts(rows: AlertRow[], f: ReturnType<typeof alertFilter>): AlertRow[] {
   const closed = (s: string) => s === "resolved" || s === "false_positive";
-  return rows.filter((r) => (f.severity === "p1" ? r.severity === "critical" && !closed(r.status) : true) && (f.status === "unacked" ? r.status === "new" : true));
+  return rows.filter((r) => (f.severity === "urgent" ? r.severity === "critical" && !closed(r.status) : true) && (f.status === "unacked" ? r.status === "new" : true));
 }
 const detailText = (d: unknown): string => {
   if (typeof d === "string") return d;

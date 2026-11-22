@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 09:04 PKT) - read this FIRST for the Desk after a compaction
-DOING: phase-name ban rule 14, test alert text fixed
-NEXT STEP: D5, D6, phase A
-HIS LAST WORD: his 09:03 Chairman word
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 09:05 PKT) - read this FIRST for the Desk after a compaction
+DOING: live scan clean, urgent URL, gate extended
+NEXT STEP: his install, 2nd scan, D5
+HIS LAST WORD: his 09:04 word
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 68d309cb 22 Nov 09:04 ledger line 98c9a765
 - 28e80707 22 Nov 09:04 ledger line 33db1302
 - 33db1302 22 Nov 09:04 rule 14
 - 4fc8edaf 22 Nov 09:03 ledger line fdb716a6
@@ -72,10 +73,16 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 425ec964 22 Nov 09:03 D2 live
 - f7c15a5d 22 Nov 09:01 ledger line ecc37d29
 - ee694483 22 Nov 09:01 ledger line 080dcd0c
-- 080dcd0c 22 Nov 09:01 D2 script
 
 ## Uncommitted Desk files
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/DESK-PHASES-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+ M founder-web/src/desk/DeskCards.tsx
+ M founder-web/src/desk/DeskCommandBar.tsx
+ M founder-web/src/desk/DeskShell.tsx
+ M founder-web/src/desk/desk_cards.test.ts
+ M founder-web/src/desk/desk_cards.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

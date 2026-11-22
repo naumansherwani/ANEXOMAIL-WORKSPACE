@@ -10,7 +10,7 @@ const rows = asAlerts([
   { id: "a", severity: "critical", status: "new" }, { id: "b", severity: "critical", status: "resolved" }, { id: "c", severity: "high", status: "new" }, { id: "d", severity: "info", status: "ack" },
 ])!;
 test("P1 = critical and not closed; unacked = new (same as the summary SQL)", () => {
-  expect(filterAlerts(rows, alertFilter("?severity=p1")).map((r) => r.id)).toEqual(["a"]);
+  expect(filterAlerts(rows, alertFilter("?severity=urgent")).map((r) => r.id)).toEqual(["a"]);
   expect(filterAlerts(rows, alertFilter("?status=unacked")).map((r) => r.id)).toEqual(["a", "c"]);
   expect(filterAlerts(rows, alertFilter("")).length).toBe(4); expect(asAlerts("x")).toBeNull(); expect(asAlerts([{ id: 1 }])).toBeNull(); expect(asAlerts([{ id: {}, severity: "high", status: "new" }])).toBeNull();
 });

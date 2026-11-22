@@ -5252,3 +5252,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 22 Nov 2026 09:04 PKT: Desk D2 GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED, live Chrome Acknowledge and Resolve on test alert 1229
 
 - 22 Nov 2026 09:12 PKT: Desk rule 14 no phase names or P1 visible on the Desk, test alert text fixed, gate extended
+
+- 22 Nov 2026 09:20 PKT: Desk live scan 14 routes clean, two leftovers fixed (urgent URL, CSS tag), gate extended, waits install
