@@ -2961,3 +2961,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 5. (his 22 Nov 2026 07:40 PKT) The Mail and QUIC pipeline (HTTP/3 edge, TLS, database, signer, ledger, mail, ClamAV) is REMOVED from the dashboard and shown inside the Systems folder for owner / admin / engineer; the dashboard keeps a one-line Systems card for everyone. Same kernel-verified stream data, no new endpoint.
 
 - 22 Nov 2026 07:52 PKT: Desk D7: Mail and QUIC pipeline moved from the dashboard into the existing Systems folder (his 07:40 word); dashboard keeps one Systems line; bundle desk-DZKO_LVM.
+
+- 22 Nov 2026 07:58 PKT: Desk D8 eye-comfort colours: 4-palette demo shown (no code until his pick). Blueprint top says existing Systems/shortcuts/cards files must not be re-written.
