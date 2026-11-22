@@ -5188,3 +5188,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 22 Nov 07:00 PKT: Save password row RESTORED (my mistake at 06:25), eye + single light + scale-to-fit kept, 10 sizes fit; rule: never delete a feature he did not name
 
 - 22 Nov 06:10 PKT: Desk login PERFECT, live-proven (bundle desk-YbabI512.js, no scrollbar); CODE BACKUP LAW + tool + gate + first backup backups/desk/20261122-0603-50eec49a-perfect-login; B installed, not green
+
+- 22 Nov 07:20 PKT: Desk dashboard: bottom Sign out removed, account menu closes on outside click and Esc; sandbox 7 checks ok; waits desk-install + live look

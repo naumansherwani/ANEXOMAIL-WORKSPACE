@@ -104,6 +104,14 @@ export function DeskShell({ me, err, out, onSignOut }: { me: ShellMe | null; err
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const t = window.setInterval(() => setNow(Date.now()), 15000); return () => window.clearInterval(t); }, []);
   const [menu, setMenu] = useState(false), [pins, setPins] = useState<string[]>(readPins), groups = orderNav(NAV, pins), toggle = (k: string) => setPins((p) => { const n = p.includes(k) ? p.filter((x) => x !== k) : [...p, k]; writePins(n); return n; });
+  // his 22 Nov 06:07: the account menu closes when he clicks anywhere else (empty screen, another card) or presses Esc; a click on the avatar or inside the menu is handled by the menu itself.
+  useEffect(() => {
+    if (!menu) return;
+    const away = (e: PointerEvent) => { const t = e.target as Element | null; if (t && (t.closest(".dsk-menu") || t.closest(".dsk-av"))) return; setMenu(false); };
+    const esc = (e: KeyboardEvent) => { if (e.key === "Escape") setMenu(false); };
+    document.addEventListener("pointerdown", away, true); document.addEventListener("keydown", esc);
+    return () => { document.removeEventListener("pointerdown", away, true); document.removeEventListener("keydown", esc); };
+  }, [menu]);
   const d = new Date(now), first = me?.name?.trim().split(/\s+/)[0] || me?.email.split("@")[0] || "";
   const end = me ? parseWhen(me.expires_at) : null;
   const clock = d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" }), date = d.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
@@ -148,7 +156,6 @@ export function DeskShell({ me, err, out, onSignOut }: { me: ShellMe | null; err
             <div className="dsk-card"><p className="dsk-k">Team</p><p className="dsk-n"><span className="dsk-hollow" aria-hidden="true" />Not connected yet.</p></div>
           </section>
         )}
-        <button type="button" className="dsk-out" disabled={out} onClick={onSignOut}>{out ? "Signing out…" : "Sign out"}</button>
       </main>
     </div>
   );
