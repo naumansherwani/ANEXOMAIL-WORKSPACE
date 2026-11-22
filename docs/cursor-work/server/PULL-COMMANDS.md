@@ -2301,3 +2301,5 @@
 - D5a-2 CODE DONE (22 Nov 2026 22:0x PKT): AD6b seed of the 7 landing-page packages (features + limits, grace 3, no price) and Rust read doors /desk/v1/packages; 43 cargo tests, scratch PostgreSQL CHECK 5 rows true, isolated release build OK. Not live until his ad-auto, desk-install, desk-restart.
 
 - D5a-2 CODE DONE (22 Nov 2026 PKT): AD6b seed of the 7 landing-page packages (features + limits, grace 3, no price) and Rust read doors /desk/v1/packages; 43 cargo tests, scratch PostgreSQL CHECK 5 rows true, isolated release build OK. Not live until his ad-auto, desk-install, desk-restart.
+
+- LOOP-AFTER-COMMIT BANNED law (his 22 Nov 2026 21:40 PKT): ckpt-loop now snapshots only while real work is uncommitted; clean tree after push stays clean.

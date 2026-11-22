@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 21:39 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 21:40 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: D5a-2 registry seed AD6b + packages read doors coded, proved on scratch PG and isolated build
 NEXT STEP: his 3 pulls (ad-auto, desk-install, desk-restart), then D5a-3b responder
 HIS LAST WORD: his 21:31 word: package list from landing page
@@ -18,20 +18,25 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 73594083 22 Nov 21:39 ledger line 9bb2517c
 - 9bb2517c 22 Nov 21:39 D5a-2 package registry fill and read doors
 - 8b746529 22 Nov 21:24 ledger line 420d79ed
 - 420d79ed 22 Nov 21:24 Handoff refresh, loop restart
 - be0ac970 22 Nov 21:01 ledger line afa31a13
-- afa31a13 22 Nov 21:01 D5a list 1..5, D5a-1 proof, his ss paste recorded, UDP 127.0.0.1:4410 reserved for D5a-3b
 
 ## Uncommitted files (half-done work if any)
+ M CLAUDE.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/server/ckpt-loop.sh
+?? docs/claude/LOOP-AFTER-COMMIT-BANNED-LAW-22NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 33 ++-------------------------------
- 1 file changed, 2 insertions(+), 31 deletions(-)
+ CLAUDE.md                            |  1 +
+ docs/claude/state/WORKING-NOW.md     | 20 +++++---------------
+ docs/cursor-work/server/ckpt-loop.sh |  7 ++++++-
+ 3 files changed, 12 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +47,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (6c6486f02c53a9533983f1695104e54e41b56e5c)
+WIP snapshot: refs/wip/last (f34525b4958d0a107f9fd6e0dd4af1ffa6290d20)
