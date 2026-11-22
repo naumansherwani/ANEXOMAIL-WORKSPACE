@@ -105,6 +105,7 @@ admin-desk/sql/AD3.sql
 admin-desk/sql/AD4.sql
 admin-desk/sql/AD5.sql
 admin-desk/sql/AD6.sql
+admin-desk/sql/AD7.sql
 admin-desk/sql/README.md
 admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/checks/AD1-check.sql
@@ -114,6 +115,7 @@ admin-desk/sql/checks/AD3-check.sql
 admin-desk/sql/checks/AD4-check.sql
 admin-desk/sql/checks/AD5-check.sql
 admin-desk/sql/checks/AD6-check.sql
+admin-desk/sql/checks/AD7-check.sql
 admin-desk/sql/checks/README.md
 admin-desk/state/00-FOUNDER-TECH-RULE.md
 admin-desk/state/COMPACT-SAVE.md
