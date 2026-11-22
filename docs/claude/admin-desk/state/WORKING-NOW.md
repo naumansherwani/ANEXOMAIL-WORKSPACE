@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 22:26 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 22:27 PKT) - read this FIRST for the Desk after a compaction
 DOING: answered his 22:26 question: throttle = pool throttle in awam blueprint (AW0 FINAL line + proposal bandwidth rule); listed his recent awam orders in chat
 NEXT STEP: his 3 pulls (ad-auto, desk-install, desk-restart), then D5a-3b
 HIS LAST WORD: his 22:26 word: throttle ka zikar, sab yahan likho
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 61797108 22 Nov 22:27 throttle answered
 - 9c833aa1 22 Nov 22:22 ledger line 1b54bab4
 - 1b54bab4 22 Nov 22:22 D5a-2 landing page plans
 - 898dcced 22 Nov 22:20 ledger line 3bea45d8
@@ -72,7 +73,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 57926485 22 Nov 22:18 ledger line d336c686
 - d336c686 22 Nov 22:18 D5a-2c trial correction AD6c
 - 34d8bbed 22 Nov 21:56 ledger line 61042086
-- 61042086 22 Nov 21:56 D5a-3b schema look script
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
