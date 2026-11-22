@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 03:16 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:16 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1k START: after-compaction points written; 1k web research next
 NEXT STEP: 1k: research -> LIST -> ADVANCE-RESEARCH [1k] -> contract -> code
 HIS LAST WORD: his 03:16 order
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 1a766922 23 Nov 03:16 after-compaction points
 - 1cc9c4fe 23 Nov 03:13 ledger line cd06a6a5
 - cd06a6a5 23 Nov 03:13 gate: contract block must be the NOW phase
 - fd81d5ba 23 Nov 03:13 ledger line f388a760
@@ -72,12 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 5996652c 23 Nov 03:11 ledger line 48bc8fa6
 - 48bc8fa6 23 Nov 03:11 research-in-blueprint gate + 1j install proof
 - 08711266 23 Nov 03:02 ledger line 87c65037
-- 87c65037 23 Nov 03:02 1j: audit and autofix
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/AFTER-COMPACTION-POINTS-23NOV.md
-?? docs/claude/admin-desk/AFTER-COMPACTION-POINTS-23NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
