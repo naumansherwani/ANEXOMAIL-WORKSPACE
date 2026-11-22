@@ -3,6 +3,7 @@ import type { Snapshot } from "./desk_stream";
 import { asServices, ago } from "./desk_bridge_pure";
 import { CARDS, alertFilter, asAlerts, cardById, filterAlerts, route, shortcutLabel } from "./desk_cards";
 import { DeskLink, type Nav } from "./DeskNav";
+import { canSeeTech, systemsModel, type Level } from "./desk_systems_pure";
 
 /** ADMIN DESK D1..D4 (22 Nov 2026): the clickable cards below the Command Bar and the pages they open. Every number comes from the kernel-verified stream (Rule 52);
  *  a card whose data is not connected still opens its page, which says what it waits for. No fetch, no founder import, no invented value. */
@@ -20,8 +21,10 @@ const CSS = `
 .dcp-back{display:inline-flex;align-items:center;min-height:44px;color:#BFD6FF;text-decoration:none}
 .dcp-list{display:grid;gap:10px;margin:0;padding:0;list-style:none}.dcp-item{padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--glass);min-width:0;overflow-wrap:anywhere}
 .dcp-item[data-hot=true]{border-color:rgba(255,92,92,.7)}.dcp-item b{display:block}.dcp-item small{color:var(--mute)}
+.dcp-head{font-size:clamp(17px,3vw,20px);color:#fff!important;font-weight:600}.dcp-head[data-l=outage]{color:#FFB4B4!important}.dcp-banner{padding:14px 16px;border:1px solid rgba(255,92,92,.6);border-radius:14px;background:rgba(120,16,24,.25);color:#FFD6D6!important}.dcp-dot{display:inline-block;margin:0 8px 0 0;vertical-align:middle}
 .dcp-chip{display:inline-flex;align-items:center;min-height:32px;padding:0 12px;border:1px solid var(--line);border-radius:999px;color:inherit;text-decoration:none;font-size:13px}
 `;
+const dot = (l: Level) => (l === "ok" ? "ok" : l === "degraded" ? "degraded" : l === "outage" ? "outage" : "unknown");
 const Arrow = () => <span className="dcc-go" aria-hidden="true">→</span>;
 
 /** The cards that are not on the Command Bar (queue, security, staff, deliverability, move-in, reports, ledger). */
@@ -43,7 +46,7 @@ function Shell({ title, back, nav, children }: { title: string; back: boolean; n
 }
 
 /** /dashboard/<sub>. Alerts and Service health show real stream rows; every other page says what it waits for. */
-export function DeskSubPage({ sub, search, hash, snap, nav }: { sub: string; search: string; hash: string; snap: Snapshot; nav: Nav }) {
+export function DeskSubPage({ sub, search, hash, snap, nav, role = "" }: { sub: string; search: string; hash: string; snap: Snapshot; nav: Nav; role?: string }) {
   const card = cardById(sub);
   if (!card) return <Shell title="Page not found" back nav={nav}><p>The Desk has no page called “{sub}”.</p></Shell>;
   const live = snap.state === "live";
@@ -60,6 +63,25 @@ export function DeskSubPage({ sub, search, hash, snap, nav }: { sub: string; sea
         ))}</ul>}
       </Shell>
     );
+  }
+  if (card.id === "systems") {
+    const m = systemsModel(snap.state, snap.data, role);
+    return (
+      <Shell title="Systems" back nav={nav}>
+        <p>{card.what}.</p>
+        <p role="status" className="dcp-head" data-l={m.overall}>{m.headline}</p>
+        {m.banner && <p role="alert" className="dcp-banner"><b>What to tell customers.</b> {m.banner}</p>}
+        <ul className="dcp-list">{m.areas.map((a) => (
+          <li key={a.id} className="dcp-item" data-hot={a.level === "outage" || a.level === "degraded"}><b><i className="dcb-dot dcp-dot" data-s={dot(a.level)} aria-hidden="true" />{a.label}</b>
+            {a.words}{a.tell && <><br /><small>{a.tell}</small></>}
+            {a.tech.length > 0 && <><br />{a.tech.map((t) => <small key={t.label} style={{ display: "block" }}>{t.label}: {t.text}</small>)}</>}</li>
+        ))}</ul>
+        {m.showTech ? <DeskLink to={route("services")} nav={nav} className="dcp-chip">Open technical Service health →</DeskLink> : <p>Technical detail is for owners and admins.</p>}
+      </Shell>
+    );
+  }
+  if (card.id === "services" && !canSeeTech(role)) {
+    return <Shell title="Service health" back nav={nav}><p>Technical detail (latency, probe age) is for owners and admins. Everyone can see the plain status on the Systems page.</p><DeskLink to={route("systems")} nav={nav} className="dcp-chip">Open Systems →</DeskLink></Shell>;
   }
   if (card.id === "services") {
     const svcs = live ? asServices(snap.data.services) : null, want = hash.replace(/^#/, "");

@@ -2,6 +2,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type { Bar, RowState } from "./desk_bridge_pure";
 import { DeskLink, type Nav } from "./DeskNav";
 import { route, shortcutLabel } from "./desk_cards";
+import type { Systems } from "./desk_systems_pure";
 
 /** ADMIN DESK Phase D (22 Nov 2026): the LIVE COMMAND BAR, his three items: Live SLA Clock, Active P1 Alerts (+ packages with prices), Mail and QUIC pipeline heartbeat.
  *  Pure presentation of a Bar made by desk_bridge_pure.barModel from kernel-verified stream frames (Rule 52). No fetch, no poll, no founder import, no mock data:
@@ -32,7 +33,7 @@ const CSS = `
 const Alert = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3z" /><path d="M12 10v4" /><path d="M12 17.2v.1" /></svg>;
 const WHERE: Record<RowState, string> = { ok: "ok", degraded: "degraded", outage: "outage", unknown: "unknown", stale: "stale", connecting: "unknown" };
 
-export function DeskCommandBar({ bar, nav }: { bar: Bar; nav: Nav }) {
+export function DeskCommandBar({ bar, nav, sys, tech = true }: { bar: Bar; nav: Nav; sys?: Systems; tech?: boolean }) {
   const calm = useReducedMotion();
   const hot = bar.pulse;
   return (
@@ -57,20 +58,28 @@ export function DeskCommandBar({ bar, nav }: { bar: Bar; nav: Nav }) {
         {bar.p1 !== null && <p className="dcb-n">{bar.high} high · <DeskLink to={route("alerts") + "?status=unacked"} nav={nav} className="dcb-up">{bar.unacked} not acknowledged</DeskLink>{bar.oldestUnacked ? ` · oldest ${bar.oldestUnacked}` : ""}</p>}
         <p className="dcb-n"><DeskLink to={route("plans")} nav={nav} className="dcb-up" keys={shortcutLabel("plans")}>{bar.prices}</DeskLink></p>
       </div>
-      <div className="dcb-card dcb-wide">
-        <p className="dcb-k">Mail and QUIC pipeline</p>
-        <ul className="dcb-rows">
-          {bar.rows.map((r) => (
-            <li className="dcb-row" key={r.key}>
-              <DeskLink to={route("services") + (r.key === "stream" ? "" : `#${r.key}`)} nav={nav} className="dcb-rowlink" keys={shortcutLabel("services")}>
-                <i className="dcb-dot" data-s={WHERE[r.state]} aria-hidden="true" />
-                <div><p className="dcb-rl">{r.label}</p><p className="dcb-rs">{r.text}{r.detail ? ` · ${r.detail}` : ""}</p></div>
-              </DeskLink>
-            </li>
-          ))}
-        </ul>
-        <p className="dcb-n">Ledger: {bar.ledger}</p>
-      </div>
+      {tech ? (
+        <div className="dcb-card dcb-wide">
+          <p className="dcb-k">Mail and QUIC pipeline</p>
+          <ul className="dcb-rows">
+            {bar.rows.map((r) => (
+              <li className="dcb-row" key={r.key}>
+                <DeskLink to={route("services") + (r.key === "stream" ? "" : `#${r.key}`)} nav={nav} className="dcb-rowlink" keys={shortcutLabel("services")}>
+                  <i className="dcb-dot" data-s={WHERE[r.state]} aria-hidden="true" />
+                  <div><p className="dcb-rl">{r.label}</p><p className="dcb-rs">{r.text}{r.detail ? ` · ${r.detail}` : ""}</p></div>
+                </DeskLink>
+              </li>
+            ))}
+          </ul>
+          <p className="dcb-n">Ledger: {bar.ledger}</p>
+        </div>
+      ) : (
+        <div className="dcb-card dcb-wide">
+          <p className="dcb-k"><DeskLink to={route("systems")} nav={nav} className="dcl" keys={shortcutLabel("systems")} badge>Systems →</DeskLink></p>
+          <p className="dcb-n" role="status">{sys ? sys.headline : "Connecting…"}</p>
+          {sys?.banner && <p className="dcb-hot">{sys.banner}</p>}
+        </div>
+      )}
     </section>
   );
 }

@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 07:34 PKT) - read this FIRST for the Desk after a compaction
-DOING: D1 GREEN, D1b shortcuts written
-NEXT STEP: his desk-install, my Chrome look at D1b, then D2 ack/act buttons
-HIS LAST WORD: shortcuts + hand cursor
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 07:40 PKT) - read this FIRST for the Desk after a compaction
+DOING: D1b GREEN, D7 Systems written
+NEXT STEP: his desk-install, my Chrome look at D7, then D2 ack/act
+HIS LAST WORD: Systems folder for employees
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -64,6 +64,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- ccf44736 22 Nov 07:34 ledger line 7555ce4a
 - 7555ce4a 22 Nov 07:34 Desk: D1 GREEN after live look, D1b keyboard shortcuts and hand cursor (22 Nov 07:38 PKT)
 - e144a933 22 Nov 07:27 ledger line 8147d2ee
 - 8147d2ee 22 Nov 07:27 Desk: rules 11-13, Mailboxes rename, stricter read gate, bundle desk-CKA6WGAE (22 Nov 07:31 PKT)
@@ -71,10 +72,21 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 4099ee9b 22 Nov 07:27 Desk: rules 11-13, Mailboxes rename, stricter read gate
 - 7374586f 22 Nov 07:25 ledger line 4594bdd8
 - 4594bdd8 22 Nov 07:25 Desk D1: clickable cards, account cards removed, /dashboard/* pages, Connecting fix, rule book (22 Nov 07:36 PKT)
-- 831786c8 22 Nov 07:18 ledger line bc2fdc2f
 
 ## Uncommitted Desk files
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/DESK-PHASES-22NOV.md
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/DESK-PHASES-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+ M founder-web/src/desk/DeskCards.tsx
+ M founder-web/src/desk/DeskCommandBar.tsx
+ M founder-web/src/desk/DeskShell.tsx
+ M founder-web/src/desk/desk_cards.ts
+ M founder-web/src/desk/modules/company/systems/meta.ts
+ M founder-web/src/desk/modules/registry.test.ts
+?? founder-web/src/desk/desk_systems_pure.test.ts
+?? founder-web/src/desk/desk_systems_pure.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

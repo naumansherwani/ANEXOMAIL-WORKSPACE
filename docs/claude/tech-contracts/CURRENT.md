@@ -2949,3 +2949,12 @@ No raw fetch, no WebSocket, no HTTP/1 or HTTP/2 word, no new endpoint.
 - 22 Nov 2026 07:30 PKT: his rules: 11 folder-wise green dashboard first, 12 whole Admin Desk green by 26 Nov 07:26 PKT (4 days), 13 no read no commit (gate checks receipt: rules, blueprint, rule book, both WORKING-NOW). Inboxes renamed Mailboxes.
 
 - 22 Nov 2026 07:37 PKT: Desk D1 GREEN (live Chrome look, desk-CKA6WGAE). D1b written: keyboard shortcuts (g then letter, hover badge), hand cursor on folders, bundle desk-ByW6Xrfq. Plan rows 14-15 (employee visibility answer, shortcuts).
+
+# TECH CONTRACT FOR PHASE: DESK D7 SYSTEMS FOLDER (employee-visible system status), written 22 Nov 2026 07:45 PKT, his word 07:38 "system ka folder banao, employee ko maloom hona chahiye, founder ka apna tareeka, admin desk ka apna". STATE: IN PROGRESS
+Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified WebTransport stream data only (Rule 52, no fetch), pure view model `desk_systems_pure.ts`, role-aware screen rule.
+1. Every employee: plain words per area (Working / Slow or partly down / Down / Not measured yet / Not answering) and what to tell the customer. Never "Working" when part of an area was not measured.
+2. Owner / admin / engineer only: technical rows (latency, probe age) and the Service health page; frontline sees the Systems page instead.
+3. HONEST LIMIT (written plainly): the role split is a screen rule today; the data still arrives to every signed Desk session. The server-side split by role (fadm_need) is phases G / H. Only one owner account exists today.
+4. Rail folder "Systems" becomes live; card "systems" (shortcut G then Y) in the registry; no new endpoint.
+
+- 22 Nov 2026 07:46 PKT: Desk D1b GREEN WIRED: YES / REAL: YES / TECH-LAW CHECKED (live Chrome look, desk-ByW6Xrfq). D7 Systems folder written: plain status for every employee, technical rows for owner/admin only, bundle desk-RqemED1a.

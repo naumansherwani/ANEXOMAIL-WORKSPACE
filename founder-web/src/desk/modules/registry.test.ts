@@ -9,6 +9,6 @@ describe("desk module registry", () => {
     expect(MODULES.find((m) => m.key === "cases")?.group).toBe("Anexomail Workspace");
     expect(MODULES.find((m) => m.key === "movein")?.label).toBe("Managed Move-In");
   });
-  test("nothing is live that is not wired: all start planned", () => { expect(MODULES.every((m) => m.status === "planned")).toBe(true); });
+  test("only wired modules are live: today Systems (D7)", () => { expect(MODULES.filter((m) => m.status === "live").map((m) => m.key)).toEqual(["systems"]); });
   test("Finance and Polar are not Desk modules", () => { expect(MODULES.some((m) => /finance|polar/i.test(m.key))).toBe(false); });
 });

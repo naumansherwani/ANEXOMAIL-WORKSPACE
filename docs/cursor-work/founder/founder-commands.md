@@ -5611,3 +5611,5 @@ Features ki list (QC4 mein kya banega):
 - 22 Nov 2026 07:30 PKT: his rules: 11 folder-wise green dashboard first, 12 whole Admin Desk green by 26 Nov 07:26 PKT (4 days), 13 no read no commit (gate checks receipt: rules, blueprint, rule book, both WORKING-NOW). Inboxes renamed Mailboxes.
 
 - 22 Nov 2026 07:37 PKT: Desk D1 GREEN WIRED: YES / REAL: YES / TECH-LAW CHECKED (live Chrome look, desk-CKA6WGAE). D1b written: keyboard shortcuts (g then letter, hover badge), hand cursor on folders, bundle desk-ByW6Xrfq. Plan rows 14-15 (employee visibility answer, shortcuts).
+
+- 22 Nov 2026 07:46 PKT: Desk D1b GREEN WIRED: YES / REAL: YES / TECH-LAW CHECKED (live Chrome look, desk-ByW6Xrfq). D7 Systems folder written: plain status for every employee, technical rows for owner/admin only, bundle desk-RqemED1a.

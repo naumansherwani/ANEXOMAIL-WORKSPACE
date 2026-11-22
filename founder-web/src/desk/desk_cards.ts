@@ -6,6 +6,7 @@ export type Card = { id: string; key: string; label: string; track: Track | null
 export const CARDS: Card[] = [
   { id: "alerts", key: "a", label: "Active P1 alerts", track: "alerts", phase: "D2", wired: true, onBar: true, what: "Alerts the Desk raised, oldest first", waits: "" },
   { id: "services", key: "s", label: "Service health", track: "services", phase: "D3", wired: true, onBar: true, what: "Every probe: state, latency, age", waits: "" },
+  { id: "systems", key: "y", label: "Systems", track: "services", phase: "D7", wired: true, onBar: false, what: "Is the Desk working? Plain status for every employee, with what to tell customers", waits: "" },
   { id: "sla", key: "l", label: "Live SLA clock", track: null, phase: "K", wired: false, onBar: true, what: "Cases about to breach their first-answer target", waits: "Waits for phase K (cases and the SLA engine)" },
   { id: "plans", key: "p", label: "Plans and prices", track: null, phase: "J", wired: false, onBar: true, what: "Customers per plan and package prices", waits: "Waits for phase J (plan rows from the signed Polar event)" },
   { id: "queue", key: "q", label: "Queue pressure", track: null, phase: "K", wired: false, onBar: false, what: "Open, waiting and at-risk cases by team and plan lane", waits: "Waits for phase K (cases and queues)" },
