@@ -64,6 +64,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 1987b52c 22 Nov 07:42 ledger line ca5ac2d6
 - ca5ac2d6 22 Nov 07:42 Desk: pipeline moves into Systems
 - e2b4bdad 22 Nov 07:40 ledger line e1fd6c8c
 - 789f96f3 22 Nov 07:40 ledger line 4ad3e6ea
@@ -71,7 +72,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - ccf44736 22 Nov 07:34 ledger line 7555ce4a
 - 7555ce4a 22 Nov 07:34 Desk: D1 GREEN after live look, D1b keyboard shortcuts and hand cursor (22 Nov 07:38 PKT)
 - e144a933 22 Nov 07:27 ledger line 8147d2ee
-- 8147d2ee 22 Nov 07:27 Desk: rules 11-13, Mailboxes rename, stricter read gate, bundle desk-CKA6WGAE (22 Nov 07:31 PKT)
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
