@@ -22,6 +22,7 @@ admin-desk/EMPLOYEE-ACCOUNTS-PLAN-22NOV.md
 admin-desk/FOUNDER-TO-DESK-AUDIT-22NOV.md
 admin-desk/FOUR-DAY-PLAN-22NOV.md
 admin-desk/MASTER-PLAN-22NOV.md
+admin-desk/PLAN-CONTEXT-AND-RUNBOOKS-22NOV.md
 admin-desk/PLAN-DESK-UI-COPY-21NOV.md
 admin-desk/README.md
 admin-desk/REMAINING-LIST-22NOV.md
