@@ -1,4 +1,4 @@
-> ## >>> RESUME HERE: next his ad-auto AD5, then queues (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
+> ## >>> RESUME HERE: next his ad-auto AD6, then AD7 (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
 > ## >>> FRONTEND=CADDY, HETZNER=BACKEND; DNS=Caddy IP (his 21 Nov 23:35): docs/claude/FRONTEND-CADDY-BACKEND-HETZNER-LAW-21NOV.md <<<
 > ## >>> DESK 3 CMDS: desk-install, ad-auto, desk-restart (admin-desk/TWO-COMMANDS.md) <<<
 > ## >>> CLEAN-PUSH: git status empty after push (CLEAN-PUSH-LAW-21NOV.md) <<<

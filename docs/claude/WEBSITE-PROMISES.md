@@ -15,3 +15,5 @@ Rule: every security or technology sentence that appears on a page or footer is 
 | P7 | Admin Desk top pill: "HTTP/3 QUIC · TLS 1.3 · AES-256-GCM · X25519MLKEM768" (his word 09:08 + 09:51). HTTP/1 and HTTP/2 are BANNED words, never written. | Admin Desk landing + /adminlogin | PROVEN 21 Nov 2026 09:55 PKT on his server: `anexomail-desk h3check` (client offers ONLY X25519MLKEM768 + AES-256-GCM, TLS 1.3) = H3CHECK OK, HTTP/3 200 from the Desk on UDP 4400, on loopback AND 62.238.98.98; TLS 1.3 AES-256-GCM-SHA384 also by his openssl 08:53 | Until his DNS HTTPS record (`alpn=h3 port=4400`) is live a browser still reaches the page first over TCP; the promise is what the Desk answers on UDP 4400 |
 
 When a new line is added to any page, add its row here in the same commit.
+
+| P-PRIO | Landing Enterprise/Priority Support says "a named founder contact" | OPEN (his 11:18: the Desk is independent, Priority Support is answered by the support team from resolved@ with a priority label and the SLA; he must approve the exact new words before the landing line changes; landing UI untouched) |

@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 11:11 PKT) - read this FIRST for the Desk after a compaction
-DOING: AD5 address-role SQL coded and proved on PG16; mailbox role plan written
-NEXT STEP: his ad-auto runs AD5; then staff queues, SLA, sender identity, real tests; C4 asks him
-HIS LAST WORD: his 11:06 mailbox role priority
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 11:20 PKT) - read this FIRST for the Desk after a compaction
+DOING: AD6 package registry coded and proved on PG16; AD5 live on his server
+NEXT STEP: his ad-auto for AD6; then AD7 staff queues, D5a-3 Rust door
+HIS LAST WORD: his 11:18 next-list order
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 2988c689 22 Nov 11:11 ledger line 0b86c3b2
 - 0b86c3b2 22 Nov 11:11 Reminders stay in repo and chat only (his 11:11); scheduled reminder deleted
 - 7f6a033b 22 Nov 11:11 ledger line 42e3bd7c
 - 2712005c 22 Nov 11:10 ledger line e37c3325
@@ -72,10 +73,19 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 49e9c113 22 Nov 10:52 ledger line f7a7f3ee
 - f7a7f3ee 22 Nov 10:52 Checkpoint: WORKING-NOW refresh
 - 212f79e7 22 Nov 10:52 ledger line cf070b58
-- cf070b58 22 Nov 10:52 Desk D5a-4 lookup audit SQL (AD4) proved on PostgreSQL 16, gate refinement
 
 ## Uncommitted Desk files
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/state/REMINDERS.md
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/state/REMINDERS.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+?? admin-desk/NEXT-CODES-ORDER-22NOV.md
+?? admin-desk/sql/AD6.sql
+?? admin-desk/sql/checks/AD6-check.sql
+?? docs/claude/admin-desk/NEXT-CODES-ORDER-22NOV.md
+?? docs/claude/admin-desk/sql/AD6.sql
+?? docs/claude/admin-desk/sql/checks/AD6-check.sql
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

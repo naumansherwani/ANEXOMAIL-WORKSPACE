@@ -27,6 +27,7 @@ admin-desk/FOUNDER-TO-DESK-AUDIT-22NOV.md
 admin-desk/FOUR-DAY-PLAN-22NOV.md
 admin-desk/MAILBOX-ROLES-PLAN-22NOV.md
 admin-desk/MASTER-PLAN-22NOV.md
+admin-desk/NEXT-CODES-ORDER-22NOV.md
 admin-desk/PLAN-CONTEXT-AND-RUNBOOKS-22NOV.md
 admin-desk/PLAN-DESK-UI-COPY-21NOV.md
 admin-desk/README.md
@@ -100,6 +101,7 @@ admin-desk/sql/AD2.sql
 admin-desk/sql/AD3.sql
 admin-desk/sql/AD4.sql
 admin-desk/sql/AD5.sql
+admin-desk/sql/AD6.sql
 admin-desk/sql/README.md
 admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/checks/AD1-check.sql
@@ -108,6 +110,7 @@ admin-desk/sql/checks/AD2-check.sql
 admin-desk/sql/checks/AD3-check.sql
 admin-desk/sql/checks/AD4-check.sql
 admin-desk/sql/checks/AD5-check.sql
+admin-desk/sql/checks/AD6-check.sql
 admin-desk/sql/checks/README.md
 admin-desk/state/00-FOUNDER-TECH-RULE.md
 admin-desk/state/COMPACT-SAVE.md

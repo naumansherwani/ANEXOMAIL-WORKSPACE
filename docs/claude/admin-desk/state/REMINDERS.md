@@ -15,3 +15,5 @@
 - [22 Nov 2026 11:12 PKT] PRIORITY: finish mailbox/role plan (MAILBOX-ROLES-PLAN-22NOV.md): his ad-auto for AD5, then queues, SLA, sender identity, real send/receive tests; ask him C4 (landing "named founder contact" vs resolved@).
 
 - [22 Nov 2026 11:17 PKT] HIS WORD 11:11: REMINDERS LIVE IN THE REPO (this file) AND IN THE CHAT ONLY, never as a scheduled task or message to him. The 12:11 scheduled reminder was deleted. Every reply re-reads this file and states the open reminders in chat.
+
+- [22 Nov 2026 11:23 PKT] OPEN: ad-auto line for AD6 (package registry) once pushed; land C4 wording approval; next AD7 staff queues. Reminders live in this file and in chat only (his 11:11).

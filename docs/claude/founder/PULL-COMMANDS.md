@@ -3255,3 +3255,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - [22 Nov 2026 10:51 PKT] D5a-4 CODED: AD4.sql + checks/AD4-check.sql (company lookup audit: reason 10..300 chars, closed list of 18 fields with money names refused, request line before any answer, hash-chained ledger line, append-only, outage = unavailable, 30 per minute breaker, three SECURITY DEFINER doors, forced RLS). PROVED on a scratch PostgreSQL 16 here: AD1..AD3 then AD4 twice, selftest ALL RULES PASSED, 18 of 18 check rows true. Not green: not run on his server yet, no Rust door yet. Gate DESK NO-MONEY refined (tag no-money-gate-ok, sql/checks skipped).
 
 - 22 Nov 11:14 Desk mailbox role plan + AD5 address-role SQL coded, proved on PG16
+
+- 22 Nov 11:24 AD5 live on his server; AD6 package registry coded, proved PG16; next codes order written
