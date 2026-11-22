@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 07:34 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 07:34 PKT) - read this FIRST for the Desk after a compaction
 DOING: D1 GREEN, D1b shortcuts written
 NEXT STEP: his desk-install, my Chrome look at D1b, then D2 ack/act buttons
 HIS LAST WORD: shortcuts + hand cursor
@@ -64,6 +64,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 7555ce4a 22 Nov 07:34 Desk: D1 GREEN after live look, D1b keyboard shortcuts and hand cursor (22 Nov 07:38 PKT)
 - e144a933 22 Nov 07:27 ledger line 8147d2ee
 - 8147d2ee 22 Nov 07:27 Desk: rules 11-13, Mailboxes rename, stricter read gate, bundle desk-CKA6WGAE (22 Nov 07:31 PKT)
 - 3496cf61 22 Nov 07:27 ledger line 4099ee9b
@@ -71,23 +72,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 7374586f 22 Nov 07:25 ledger line 4594bdd8
 - 4594bdd8 22 Nov 07:25 Desk D1: clickable cards, account cards removed, /dashboard/* pages, Connecting fix, rule book (22 Nov 07:36 PKT)
 - 831786c8 22 Nov 07:18 ledger line bc2fdc2f
-- bc2fdc2f 22 Nov 07:18 Desk: phase D GREEN after live Chrome look (22 Nov 07:19 PKT)
 
 ## Uncommitted Desk files
- M admin-desk/BLUEPRINT-ADMIN-DESK.md
- M admin-desk/DASHBOARD-CARDS-CLICK-PLAN-22NOV.md
- M admin-desk/DESK-PHASES-22NOV.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DASHBOARD-CARDS-CLICK-PLAN-22NOV.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskCards.tsx
- M founder-web/src/desk/DeskCommandBar.tsx
- M founder-web/src/desk/DeskNav.tsx
- M founder-web/src/desk/DeskPages.tsx
- M founder-web/src/desk/DeskShell.tsx
- M founder-web/src/desk/desk_cards.test.ts
- M founder-web/src/desk/desk_cards.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
