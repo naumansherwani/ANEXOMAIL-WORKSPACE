@@ -1,6 +1,6 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 02:56 PKT) - read this FIRST for the Desk after a compaction
-DOING: 1j points + contract written
-NEXT STEP: 1j code: desk_plan_pure.ts then screen
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 02:57 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1j code done, audit next
+NEXT STEP: 1j install line then Chrome look
 HIS LAST WORD: his 02:53 order
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 4b4b376e 23 Nov 02:56 ledger line ad2138b5
 - ad2138b5 23 Nov 02:56 1j: plan, list, ML-DSA gap plan
 - 308f6827 23 Nov 02:46 ledger line 711d040d
 - 711d040d 23 Nov 02:46 crypto choice note
@@ -72,10 +73,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 57f63ea6 23 Nov 02:40 Rule 52 rename + installer proof
 - 5676c3d7 23 Nov 02:21 ledger line 9e52ac8e
 - 0a9a4191 23 Nov 02:21 ledger line 8aa186f8
-- 8aa186f8 23 Nov 02:21 1i GREEN + Rule 52 live technology
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
+ M founder-web/src/desk/DeskCards.tsx
+ M founder-web/src/desk/desk_cards.ts
+?? founder-web/src/desk/DeskPlan.tsx
+?? founder-web/src/desk/desk_plan_pure.test.ts
+?? founder-web/src/desk/desk_plan_pure.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

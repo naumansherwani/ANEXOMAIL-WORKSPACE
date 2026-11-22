@@ -3,10 +3,9 @@
 # TECH CONTRACT FOR PHASE: DESK D5 PLAN CONTEXT SCREEN (phase 1j), written 23 Nov 2026 03:1x PKT BEFORE code. LIST: docs/claude/admin-desk/D5-PLAN-CONTEXT-SCREEN-LIST-23NOV.md (P1..P12)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
-| React 19 + TypeScript + Tailwind 4 + Framer Motion screen, registry-driven card, History API route /dashboard/plans | founder-web/src/desk/ | no | bun tests + tsc + three widths |
-| Kernel-verified lookup (Rule 52 WASM): deskLookup, 15 s freshness, fail-closed "Data unavailable" | desk_kernel.ts, desk_lookup_pure.ts | no | bun tests + my Chrome look |
-| Pure logic: included-vs-enabled diff, 90/95 usage marks, 5 service states, age ticker | desk_plan_pure.ts | no | bun unit tests |
-| ML-DSA hybrid is a SEPARATE open gap: docs/claude/admin-desk/ML-DSA-HYBRID-GAP-PLAN-23NOV.md | plan only | no | not this phase |
+| React 19 + TypeScript screen (CSS transition with reduced-motion; Framer Motion is not used in the Desk yet), registry-driven card (new "lookup" track), History API route /dashboard/plans | DeskPlan.tsx, DeskCards.tsx, desk_cards.ts | yes | bun 55 pass + tsc clean; three widths = my Chrome look after install |
+| Kernel-verified lookup (Rule 52 WASM): deskLookup, 15 s freshness, fail-closed "Data unavailable" | desk_kernel.ts, desk_lookup_pure.ts, DeskPlan.tsx | yes | bun tests (no fetch in the screen, only deskLookup); signed-in look after install |
+| Pure logic: included-vs-enabled diff, 90/95 usage marks, 5 service states, age ticker | desk_plan_pure.ts | yes | 10 bun unit tests (90/95 marks, diff, 5 states, 15 s age, payment flag, no money or phase words) |
 
 
 # TECH CONTRACT FOR PHASE: DESK D5a-5 (FAIL-CLOSED PROOF, phase 1i), written 23 Nov 2026 02:1x PKT, his word: "Control Plane band ho to Desk Data unavailable dikhaye, purana jawab kabhi na dikhaye". FULL LIST: docs/claude/admin-desk/D5A5-FAIL-CLOSED-LIST-23NOV.md
@@ -3262,3 +3261,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Rule 52 file: strongest-primitive research note (AES-256-GCM, SHA-256/384/3, ML-KEM, ML-DSA gap). TESTED: gate pass, docs only OK
 
 - 1j D5 plan context: web research done, point list P1-P12 + CURRENT.md contract + ML-DSA gap plan written; 1i install proof (3 SAME) recorded. TESTED: gate pass, docs only. TECH-LAW CHECKED
+
+- 1j D5 plan context screen CODE: desk_plan_pure.ts + DeskPlan.tsx + plans card wired (lookup track), bundle rebuilt. TESTED: bun 55 pass (10 new), tsc clean, vite build. Not green until install + signed-in Chrome look. TECH-LAW CHECKED
+
+- 1j D5 plan context screen CODE: desk_plan_pure.ts + DeskPlan.tsx + plans card wired (lookup track), bundle rebuilt; ML-DSA stays a separate gap plan. TESTED: bun 55 pass (10 new), tsc clean, vite build. Not green until install + signed-in Chrome look. TECH-LAW CHECKED

@@ -1,14 +1,14 @@
 // ADMIN DESK D1/D4 (22 Nov 2026 07:30 PKT): ONE registry of every dashboard card. Pure (no browser, no network), unit-tested. A card is a real link to /dashboard/<id>.
 // `wired` = its page shows real rows from a kernel-verified stream track today. A card that is not wired still opens its page, which says what it waits for (nothing is invented).
 // When phase K / J / H deliver the rows, the card flips by changing its one line here.
-export type Track = "summary" | "services" | "alerts";
+export type Track = "summary" | "services" | "alerts" | "lookup"; // "lookup" = not a stream: the page asks one signed customer lookup (D5)
 export type Card = { id: string; key: string; label: string; track: Track | null; phase: string; wired: boolean; onBar: boolean; what: string; waits: string };
 export const CARDS: Card[] = [
   { id: "alerts", key: "a", label: "Urgent alerts", track: "alerts", phase: "D2", wired: true, onBar: true, what: "Alerts the Desk raised, oldest first", waits: "" },
   { id: "services", key: "s", label: "Service health", track: "services", phase: "D3", wired: true, onBar: true, what: "Every probe: state, latency, age", waits: "" },
   { id: "systems", key: "y", label: "Systems", track: "services", phase: "D7", wired: true, onBar: false, what: "Is the Desk working? Plain status for every employee, with what to tell customers", waits: "" },
   { id: "sla", key: "l", label: "Live SLA clock", track: null, phase: "K", wired: false, onBar: true, what: "Cases about to breach their first-answer target", waits: "Not connected yet. Shows when cases are coming in." },
-  { id: "plans", key: "p", label: "Plans and prices", track: null, phase: "J", wired: false, onBar: true, what: "Customers per plan and package prices", waits: "Not connected yet. Shows when customer plans are connected." },
+  { id: "plans", key: "p", label: "Plans and prices", track: "lookup", phase: "D5", wired: true, onBar: true, what: "Look up one company: plan, real features, usage and service state", waits: "" },
   { id: "queue", key: "q", label: "Queue pressure", track: null, phase: "K", wired: false, onBar: false, what: "Open, waiting and at-risk cases by team and plan lane", waits: "Not connected yet. Shows when cases are coming in." },
   { id: "security", key: "e", label: "Security health", track: null, phase: "H", wired: false, onBar: false, what: "Device-bound passkeys, staff with two keys, expired reviews, open recoveries", waits: "Not connected yet. Shows when staff accounts are connected." },
   { id: "staff", key: "t", label: "Staff online and shifts", track: null, phase: "H", wired: false, onBar: false, what: "Who is on shift, who holds an elevation right now", waits: "Not connected yet. Shows when staff accounts are connected." },
@@ -31,7 +31,7 @@ export function cardProblems(cards: Card[] = CARDS): string[] {
     if (!/^[a-z]+$/.test(c.id)) out.push(`${c.id}: id must be lowercase letters`);
     if (seen.has(c.id)) out.push(`${c.id}: duplicate`); seen.add(c.id);
     if (!route(c.id).startsWith("/dashboard/")) out.push(`${c.id}: route outside /dashboard/`);
-    if (c.track !== null && !["summary", "services", "alerts"].includes(c.track)) out.push(`${c.id}: unknown track`);
+    if (c.track !== null && !["summary", "services", "alerts", "lookup"].includes(c.track)) out.push(`${c.id}: unknown track`);
     if (c.wired && c.track === null) out.push(`${c.id}: wired but no track`);
     if (!c.wired && !c.waits) out.push(`${c.id}: not wired, must say what it waits for`);
     if (!/^[a-z]$/.test(c.key) || c.key === HOME_KEY || cards.some((o) => o !== c && o.key === c.key)) out.push(`${c.id}: shortcut key must be one unique letter other than ${HOME_KEY}`);

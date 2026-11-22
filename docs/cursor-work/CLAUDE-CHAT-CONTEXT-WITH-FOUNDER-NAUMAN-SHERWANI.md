@@ -5378,3 +5378,7 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - Rule 52 file: strongest-primitive research note (AES-256-GCM, SHA-256/384/3, ML-KEM, ML-DSA gap). TESTED: gate pass, docs only OK
 
 - 1j D5 plan context: web research done, point list P1-P12 + CURRENT.md contract + ML-DSA gap plan written; 1i install proof (3 SAME) recorded. TESTED: gate pass, docs only. TECH-LAW CHECKED
+
+- 1j D5 plan context screen CODE: desk_plan_pure.ts + DeskPlan.tsx + plans card wired (lookup track), bundle rebuilt. TESTED: bun 55 pass (10 new), tsc clean, vite build. Not green until install + signed-in Chrome look. TECH-LAW CHECKED
+
+- 1j D5 plan context screen CODE: desk_plan_pure.ts + DeskPlan.tsx + plans card wired (lookup track), bundle rebuilt; ML-DSA stays a separate gap plan. TESTED: bun 55 pass (10 new), tsc clean, vite build. Not green until install + signed-in Chrome look. TECH-LAW CHECKED

@@ -7,6 +7,7 @@ import { DeskLink, type Nav } from "./DeskNav";
 import { canSeeTech, systemsModel, type Level } from "./desk_systems_pure";
 import { barModel } from "./desk_bridge_pure";
 import { DeskPipeline } from "./DeskCommandBar";
+import { DeskPlan } from "./DeskPlan";
 
 /** ADMIN DESK D1..D4 (22 Nov 2026): the clickable cards below the Command Bar and the pages they open. Every number comes from the kernel-verified stream (Rule 52);
  *  a card whose data is not connected still opens its page, which says what it waits for. No fetch, no founder import, no invented value. */
@@ -90,6 +91,7 @@ export function DeskSubPage({ sub, search, hash, snap, nav, role = "", act }: { 
       </Shell>
     );
   }
+  if (card.id === "plans") return <Shell title="Plans and prices" back nav={nav}><p>Look up one company's plan, what is really switched on, usage and service state.</p><DeskPlan /></Shell>;
   if (card.id === "systems") {
     const m = systemsModel(snap.state, snap.data, role);
     return (
