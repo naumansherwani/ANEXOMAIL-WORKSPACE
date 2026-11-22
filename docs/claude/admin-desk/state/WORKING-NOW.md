@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 20:16 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 20:16 PKT) - read this FIRST for the Desk after a compaction
 DOING: Dashboard folder first order written; AD5/AD7 out-of-order admitted, later folders frozen
 NEXT STEP: D5a-3 Rust signed lookup door vs test double
 HIS LAST WORD: his 20:15 rule
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 76455551 22 Nov 20:16 dashboard-first order
 - 733f2512 22 Nov 20:05 ledger line 6b0e0be0
 - a3a9f4b5 22 Nov 20:05 ledger line 90f00abf
 - 4e695b4f 22 Nov 20:05 ledger line 65a7b80b
@@ -72,25 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 3127c7b6 22 Nov 19:56 ledger line 3c007880
 - 3c007880 22 Nov 19:56 Checkpoint: WORKING-NOW refresh
 - b5679198 22 Nov 19:55 ledger line 61b5f411
-- 61b5f411 22 Nov 19:55 Desk AD7 staff queues (cases, Priority Support clock, assignment, status machine) proved on PostgreSQL 16
 
 ## Uncommitted Desk files
- M admin-desk/BLUEPRINT-ADMIN-DESK.md
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/DESK-PHASES-22NOV.md
- M admin-desk/NEXT-CODES-ORDER-22NOV.md
- M admin-desk/PHASE-TECH-SQL-MAP-22NOV.md
- M admin-desk/state/REMINDERS.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
- M docs/claude/admin-desk/NEXT-CODES-ORDER-22NOV.md
- M docs/claude/admin-desk/PHASE-TECH-SQL-MAP-22NOV.md
- M docs/claude/admin-desk/RULE-BOOK.md
- M docs/claude/admin-desk/state/REMINDERS.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
-?? docs/claude/admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
