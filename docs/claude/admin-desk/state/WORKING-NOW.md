@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 21:55 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 21:55 PKT) - read this FIRST for the Desk after a compaction
 DOING: D5a-3b schema-first read written (D5A-3B-SCHEMA-READ-22NOV.md); two gaps: org family and storage matrix conflict with landing page
 NEXT STEP: his read-only psql on awam DB, then D5a-3b contract and crate
 HIS LAST WORD: schema-first law
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 4d45dbd6 22 Nov 21:55 D5a-3b schema-first read
 - 7d141880 22 Nov 21:53 ledger line 90a27229
 - 90a27229 22 Nov 21:53 D5a-2 GREEN
 - 51a5f654 22 Nov 21:51 ledger line 378c0cd7
@@ -72,20 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - b676151f 22 Nov 21:49 ledger line ccfa26fd
 - ccfa26fd 22 Nov 21:49 blueprint D5a-2 part
 - cdc8ecd2 22 Nov 21:49 ledger line f7dab702
-- f7dab702 22 Nov 21:49 D5a-2 installed, state saved
 
 ## Uncommitted Desk files
- M admin-desk/D5A-GREEN-LIST-22NOV.md
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/STATUS-GREEN-TABLE-22NOV.md
- M admin-desk/state/HANDOFF-22NOV.md
- M docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md
- M docs/claude/admin-desk/state/HANDOFF-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
-?? docs/claude/admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

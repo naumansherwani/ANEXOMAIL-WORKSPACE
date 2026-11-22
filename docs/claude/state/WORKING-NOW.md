@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 21:55 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 21:55 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: D5a-3b schema-first read written (D5A-3B-SCHEMA-READ-22NOV.md); two gaps: org family and storage matrix conflict with landing page
 NEXT STEP: his read-only psql on awam DB, then D5a-3b contract and crate
 HIS LAST WORD: schema-first law
@@ -18,37 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 4d45dbd6 22 Nov 21:55 D5a-3b schema-first read
 - 7d141880 22 Nov 21:53 ledger line 90a27229
 - 90a27229 22 Nov 21:53 D5a-2 GREEN
 - 51a5f654 22 Nov 21:51 ledger line 378c0cd7
 - 378c0cd7 22 Nov 21:51 D5a-2 closed
-- b676151f 22 Nov 21:49 ledger line ccfa26fd
 
 ## Uncommitted files (half-done work if any)
- M admin-desk/D5A-GREEN-LIST-22NOV.md
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/STATUS-GREEN-TABLE-22NOV.md
- M admin-desk/state/HANDOFF-22NOV.md
- M docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md
- M docs/claude/admin-desk/state/HANDOFF-22NOV.md
- M docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
-?? admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
-?? docs/claude/admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/state/HANDOFF-22NOV.md                  |  2 +-
- docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md     |  2 +-
- .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    |  4 +--
- docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md |  2 +-
- docs/claude/admin-desk/state/HANDOFF-22NOV.md      |  2 +-
- docs/claude/admin-desk/state/WORKING-NOW.md        | 10 +++----
- docs/claude/state/WORKING-NOW.md                   | 34 ++++++++++------------
- 10 files changed, 31 insertions(+), 33 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 34 ++--------------------------------
+ 1 file changed, 2 insertions(+), 32 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -59,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (572b30fe55f40e0b19f564324894b4213ef09dd0)
+WIP snapshot: refs/wip/last (d99beb366a1fbd532c728076e6c8df2114fdb6e3)
