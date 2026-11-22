@@ -1,0 +1,194 @@
+{
+ "version": "1.0.0",
+ "runbooks": [
+  {
+   "key": "R1",
+   "title": "Payment received, service not active",
+   "parts": {
+    "sees": "service state, the ONE flag \"payment received, service not active\" + since when, package and version, freshness time",
+    "may": "confirm the flag, open an owner case with the audit reference, tell the customer a case exists",
+    "never": "ask for or look at amounts, card, invoice; touch the money side; promise a time. Never promise a date, a refund, a credit, an upgrade or an owner decision.",
+    "escalate": "owner case, priority high if the flag is older than the plan's target",
+    "say": "I can see your payment has been received and your service is not active yet. I have opened case [case] with the team that can fix this. I cannot give a restore time.",
+    "clock": "the plan's first-answer target (a target to reply, not a promise to fix)"
+   },
+   "steps": [
+    "Check what the screen shows: service state, the ONE flag \"payment received, service not active\" + since when, package and version, freshness time",
+    "Do only what is allowed: confirm the flag, open an owner case with the audit reference, tell the customer a case exists",
+    "Check the never list: ask for or look at amounts, card, invoice; touch the money side; promise a time. Never promise a date, a refund, a credit, an upgrade or an owner decision.",
+    "Escalate when needed: owner case, priority high if the flag is older than the plan's target",
+    "Say this to the customer, fill the brackets from the screen, then copy it.",
+    "Note the clock: the plan's first-answer target (a target to reply, not a promise to fix)"
+   ],
+   "say_text": "I can see your payment has been received and your service is not active yet. I have opened case [case] with the team that can fix this. I cannot give a restore time."
+  },
+  {
+   "key": "R2",
+   "title": "Features missing",
+   "parts": {
+    "sees": "package and version, features included, features actually enabled, the difference",
+    "may": "explain the difference, check the version date, open a case if included features are off",
+    "never": "enable or disable anything, say a feature will be added. Never promise a date, a refund, a credit, an upgrade or an owner decision.",
+    "escalate": "support lead if the package says included but it is off",
+    "say": "Your package includes [feature]. I can see it is currently off for your account. I have opened case [case].",
+    "clock": "plan target"
+   },
+   "steps": [
+    "Check what the screen shows: package and version, features included, features actually enabled, the difference",
+    "Do only what is allowed: explain the difference, check the version date, open a case if included features are off",
+    "Check the never list: enable or disable anything, say a feature will be added. Never promise a date, a refund, a credit, an upgrade or an owner decision.",
+    "Escalate when needed: support lead if the package says included but it is off",
+    "Say this to the customer, fill the brackets from the screen, then copy it.",
+    "Note the clock: plan target"
+   ],
+   "say_text": "Your package includes [feature]. I can see it is currently off for your account. I have opened case [case]."
+  },
+  {
+   "key": "R3",
+   "title": "Storage or seats limit reached",
+   "parts": {
+    "sees": "usage against the limit, the 90 and 95 percent marks, package limit",
+    "may": "explain what is using space or seats from the usage metadata, point to the owner's upgrade route",
+    "never": "sell, quote, promise an upgrade or a raise. Never promise a date, a refund, a credit, an upgrade or an owner decision.",
+    "escalate": "owner case if the customer asks for a change",
+    "say": "You are at [percent] percent of your limit. Changes to limits are handled by the owner. I have passed your request, reference [case].",
+    "clock": "plan target"
+   },
+   "steps": [
+    "Check what the screen shows: usage against the limit, the 90 and 95 percent marks, package limit",
+    "Do only what is allowed: explain what is using space or seats from the usage metadata, point to the owner's upgrade route",
+    "Check the never list: sell, quote, promise an upgrade or a raise. Never promise a date, a refund, a credit, an upgrade or an owner decision.",
+    "Escalate when needed: owner case if the customer asks for a change",
+    "Say this to the customer, fill the brackets from the screen, then copy it.",
+    "Note the clock: plan target"
+   ],
+   "say_text": "You are at [percent] percent of your limit. Changes to limits are handled by the owner. I have passed your request, reference [case]."
+  },
+  {
+   "key": "R4",
+   "title": "Grace period",
+   "parts": {
+    "sees": "service state \"Grace period\", days left (from the registry), package",
+    "may": "explain the state in plain words, open a case if the customer disagrees",
+    "never": "extend, shorten, or promise an extension. Never promise a date, a refund, a credit, an upgrade or an owner decision.",
+    "escalate": "owner case for any extension request",
+    "say": "Your account is in a grace period. The date it ends is on your account page. Any change to that is decided by the owner. Reference [case].",
+    "clock": "plan target"
+   },
+   "steps": [
+    "Check what the screen shows: service state \"Grace period\", days left (from the registry), package",
+    "Do only what is allowed: explain the state in plain words, open a case if the customer disagrees",
+    "Check the never list: extend, shorten, or promise an extension. Never promise a date, a refund, a credit, an upgrade or an owner decision.",
+    "Escalate when needed: owner case for any extension request",
+    "Say this to the customer, fill the brackets from the screen, then copy it.",
+    "Note the clock: plan target"
+   ],
+   "say_text": "Your account is in a grace period. The date it ends is on your account page. Any change to that is decided by the owner. Reference [case]."
+  },
+  {
+   "key": "R5",
+   "title": "Account suspended",
+   "parts": {
+    "sees": "state \"Suspended\", reason class code (section B), since when",
+    "may": "read the class sheet statement, open the escalation named in the class",
+    "never": "say more than the class sheet allows, guess a reason, restore, promise. Never promise a date, a refund, a credit, an upgrade or an owner decision.",
+    "escalate": "as per the class table",
+    "say": "I can see your account is on hold. I can only share what the reason class on your account allows, and I cannot give details or a restore time. I have passed this on, reference [case].",
+    "clock": "plan target; SR3 and SR4 run at raised priority"
+   },
+   "steps": [
+    "Check what the screen shows: state \"Suspended\", reason class code (section B), since when",
+    "Do only what is allowed: read the class sheet statement, open the escalation named in the class",
+    "Check the never list: say more than the class sheet allows, guess a reason, restore, promise. Never promise a date, a refund, a credit, an upgrade or an owner decision.",
+    "Escalate when needed: as per the class table",
+    "Say this to the customer, fill the brackets from the screen, then copy it.",
+    "Note the clock: plan target; SR3 and SR4 run at raised priority"
+   ],
+   "say_text": "I can see your account is on hold. I can only share what the reason class on your account allows, and I cannot give details or a restore time. I have passed this on, reference [case]."
+  },
+  {
+   "key": "R6",
+   "title": "Cannot sign in",
+   "parts": {
+    "sees": "account state, whether recovery is pending or done (never a code or secret), last sign-in time, device count",
+    "may": "tell the customer the recovery steps from their own page, confirm that recovery is pending",
+    "never": "ask for a password or code, reset a secret, bypass a check. Never promise a date, a refund, a credit, an upgrade or an owner decision.",
+    "escalate": "security case if signs of takeover",
+    "say": "I can see the account is active. Please use the recovery option on the sign-in page. I will not ask for your password or any code.",
+    "clock": "plan target, raised if suspected takeover"
+   },
+   "steps": [
+    "Check what the screen shows: account state, whether recovery is pending or done (never a code or secret), last sign-in time, device count",
+    "Do only what is allowed: tell the customer the recovery steps from their own page, confirm that recovery is pending",
+    "Check the never list: ask for a password or code, reset a secret, bypass a check. Never promise a date, a refund, a credit, an upgrade or an owner decision.",
+    "Escalate when needed: security case if signs of takeover",
+    "Say this to the customer, fill the brackets from the screen, then copy it.",
+    "Note the clock: plan target, raised if suspected takeover"
+   ],
+   "say_text": "I can see the account is active. Please use the recovery option on the sign-in page. I will not ask for your password or any code."
+  },
+  {
+   "key": "R7",
+   "title": "Email not delivered",
+   "parts": {
+    "sees": "domain checks (MX, SPF, DKIM, DMARC state), queue state, last delivery results, never message content",
+    "may": "explain which check fails and what the customer's administrator must change",
+    "never": "read message content, send on the customer's behalf, promise delivery. Never promise a date, a refund, a credit, an upgrade or an owner decision.",
+    "escalate": "support lead if our side is the cause; incident if many customers show it",
+    "say": "Your domain check for [check] shows [result]. Your administrator needs to change [change].",
+    "clock": "plan target"
+   },
+   "steps": [
+    "Check what the screen shows: domain checks (MX, SPF, DKIM, DMARC state), queue state, last delivery results, never message content",
+    "Do only what is allowed: explain which check fails and what the customer's administrator must change",
+    "Check the never list: read message content, send on the customer's behalf, promise delivery. Never promise a date, a refund, a credit, an upgrade or an owner decision.",
+    "Escalate when needed: support lead if our side is the cause; incident if many customers show it",
+    "Say this to the customer, fill the brackets from the screen, then copy it.",
+    "Note the clock: plan target"
+   ],
+   "say_text": "Your domain check for [check] shows [result]. Your administrator needs to change [change]."
+  },
+  {
+   "key": "R8",
+   "title": "Attachment blocked",
+   "parts": {
+    "sees": "scan state (clean, infected, scan pending, too large), size against the package limit",
+    "may": "explain the reason in plain words",
+    "never": "release or open the file, promise it will be released. Never promise a date, a refund, a credit, an upgrade or an owner decision.",
+    "escalate": "security case if the scan result is disputed",
+    "say": "The file was held because the scan says [scan]. I cannot open or release it.",
+    "clock": "plan target"
+   },
+   "steps": [
+    "Check what the screen shows: scan state (clean, infected, scan pending, too large), size against the package limit",
+    "Do only what is allowed: explain the reason in plain words",
+    "Check the never list: release or open the file, promise it will be released. Never promise a date, a refund, a credit, an upgrade or an owner decision.",
+    "Escalate when needed: security case if the scan result is disputed",
+    "Say this to the customer, fill the brackets from the screen, then copy it.",
+    "Note the clock: plan target"
+   ],
+   "say_text": "The file was held because the scan says [scan]. I cannot open or release it."
+  },
+  {
+   "key": "R9",
+   "title": "Multiple customers affected (first cut)",
+   "parts": {
+    "sees": "several cases from different companies about the same symptom, service health card",
+    "may": "link the cases to one incident, post the status note the incident lead approved",
+    "never": "tell customers a cause or an end time that is not in the approved note. Never promise a date, a refund, a credit, an upgrade or an owner decision.",
+    "escalate": "incident manager immediately",
+    "say": "We know several customers are affected. The latest status note is: [approved_note].",
+    "clock": "incident clock; full handling in the incident section"
+   },
+   "steps": [
+    "Check what the screen shows: several cases from different companies about the same symptom, service health card",
+    "Do only what is allowed: link the cases to one incident, post the status note the incident lead approved",
+    "Check the never list: tell customers a cause or an end time that is not in the approved note. Never promise a date, a refund, a credit, an upgrade or an owner decision.",
+    "Escalate when needed: incident manager immediately",
+    "Say this to the customer, fill the brackets from the screen, then copy it.",
+    "Note the clock: incident clock; full handling in the incident section"
+   ],
+   "say_text": "We know several customers are affected. The latest status note is: [approved_note]."
+  }
+ ]
+}

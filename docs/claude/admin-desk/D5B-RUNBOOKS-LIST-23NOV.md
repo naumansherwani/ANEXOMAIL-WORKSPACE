@@ -16,3 +16,7 @@ Order lock unchanged: 1k NOW, then 1l..1o. Sub-steps inside 1k: b1 library, b3 s
 | R11 | Fail-closed: runbook read that cannot be verified shows "Data unavailable", never a cached copy. | 1i law | deskCall + kernel verify |
 | R12 | 390 / 820 / 1200+, one build, 44 px, no sideways scroll; keyboard: Enter ticks a step. | Rule 34 + 19 | CSS grid minmax |
 Later (not 1k, written so nothing is lost): new-hire dry run, post-case runbook gap review, step-skip rate report (Reports phase).
+
+## AUDIT + AUTOFIX (23 Nov 03:5x PKT)
+Found and closed in code: L1 slow tick answer for an EARLIER company could appear under the NEW company -> dropped by comparing the company on screen (test); L2 the plan screen accepted a 3-character company that the lookup door refuses -> both screens now use the lookup shape (6..64, letters digits _ -); L3 runbook doors accept only exact bodies (unknown fields refused), a step 0..11, a company in the lookup shape; L4 an agent can never approve (database trigger + door + 403 test); L5 an old runbook version can never be ticked, approved or validated (SQL selftest); L6 a flood of ticks is refused and written to the ledger (selftest).
+Open, said plainly: approval by the Chairman has not happened yet (every runbook shows "Draft, waiting for the Chairman"); the nine texts and suspension class words are his to approve; the live tick proof needs a real company reference on his server (the checklist stores only the reference, no customer data).

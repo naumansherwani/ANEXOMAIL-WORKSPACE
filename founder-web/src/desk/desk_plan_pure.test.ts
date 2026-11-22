@@ -23,7 +23,7 @@ describe("plan context pure logic", () => {
   test("freshness 15 s", () => {
     expect(isStale(ageSecs(100, 115))).toBe(false); expect(isStale(ageSecs(100, 116))).toBe(true); expect(isStale(null)).toBe(true); expect(freshnessWords(3)).toBe("Fresh, 3 s old"); expect(freshnessWords(20)).toContain("Look up again");
   });
-  test("inputs", () => { expect(reasonOk("short")).toBe(false); expect(reasonOk("customer asked about plan")).toBe(true); expect(companyOk("co_123")).toBe(true); expect(companyOk("a b")).toBe(false); });
+  test("inputs", () => { expect(reasonOk("short")).toBe(false); expect(reasonOk("customer asked about plan")).toBe(true); expect(companyOk("co_12345")).toBe(true); expect(companyOk("co_1")).toBe(false); expect(companyOk("a b")).toBe(false); });
   test("no money or phase words in field list", () => { expect(PLAN_FIELDS.length).toBe(18); expect(PLAN_FIELDS.join(" ")).not.toMatch(/amount|card|invoice|price/); });
 });
 import { readFileSync } from "node:fs";

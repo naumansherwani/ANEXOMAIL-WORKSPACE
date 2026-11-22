@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:17 PKT) - read this FIRST for the Desk after a compaction
-DOING: 1k research done, LIST + ADVANCE-RESEARCH + contract written; code next: AD9 SQL
-NEXT STEP: AD9.sql schema-first then selftest, AD9b, runbooks.rs, React
-HIS LAST WORD: his 03:16 order
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 03:27 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1k code done and tested; commit then give his 2 commands (ad-auto then desk-install)
+NEXT STEP: his ad-auto + desk-install paste then Chrome look then GREEN
+HIS LAST WORD: his order
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 06f6c2ac 23 Nov 03:17 ledger line e75d586b
 - e75d586b 23 Nov 03:17 1k: research list + contract
 - 269b755b 23 Nov 03:16 ledger line 1a766922
 - 1a766922 23 Nov 03:16 after-compaction points
@@ -72,10 +73,28 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - cd06a6a5 23 Nov 03:13 gate: contract block must be the NOW phase
 - fd81d5ba 23 Nov 03:13 ledger line f388a760
 - f388a760 23 Nov 03:13 1j GREEN
-- 5996652c 23 Nov 03:11 ledger line 48bc8fa6
 
 ## Uncommitted Desk files
+ M admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/NOW-LIST-23NOV.md
+ M admin-desk/server/src/main.rs
+ M docs/claude/admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
+ M docs/claude/admin-desk/server/src/main.rs
  M docs/claude/admin-desk/state/WORKING-NOW.md
+ M founder-web/src/desk/DeskCards.tsx
+ M founder-web/src/desk/desk_cards.ts
+ M founder-web/src/desk/desk_plan_pure.test.ts
+ M founder-web/src/desk/desk_plan_pure.ts
+?? admin-desk/runbooks.seed.json
+?? admin-desk/server/src/runbooks.rs
+?? admin-desk/sql/AD9.sql
+?? admin-desk/sql/AD9b.sql
+?? admin-desk/sql/checks/AD9-check.sql
+?? admin-desk/sql/checks/AD9b-check.sql
+?? admin-desk/tools/
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

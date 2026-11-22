@@ -1,0 +1,8 @@
+-- AD9b CHECK (read-only): one row per rule, ok must be true on every row. Run through ad-sql-run.sh after AD9b.sql.
+SELECT 'the tick table has forced RLS and desk_app has no right on it' AS rule, (SELECT relrowsecurity AND relforcerowsecurity FROM pg_class WHERE oid='desk.fadm_runbook_tick'::regclass) AND NOT has_table_privilege('desk_app','desk.fadm_runbook_tick','select') AND NOT has_table_privilege('desk_app','desk.fadm_runbook_tick','insert') AS ok
+UNION ALL SELECT 'ticks are append-only (frozen triggers)', (SELECT count(*) FROM pg_trigger WHERE tgrelid='desk.fadm_runbook_tick'::regclass AND tgname LIKE '%frozen%') = 2
+UNION ALL SELECT 'the tick hash chain is computed by a trigger', EXISTS (SELECT 1 FROM pg_trigger WHERE tgrelid='desk.fadm_runbook_tick'::regclass AND tgname='fadm_runbook_tick_chain')
+UNION ALL SELECT 'the three doors are granted to desk_app and are SECURITY DEFINER', has_function_privilege('desk_app','desk.fadm_runbook_tick(uuid,bigint,text,int,boolean)','execute') AND has_function_privilege('desk_app','desk.fadm_runbook_ticks(uuid,bigint,text)','execute') AND has_function_privilege('desk_app','desk.fadm_runbook_tick_chain_verify()','execute') AND (SELECT bool_and(prosecdef) FROM pg_proc WHERE proname IN ('fadm_runbook_tick','fadm_runbook_ticks','fadm_runbook_tick_chain_verify'))
+UNION ALL SELECT 'the company reference and step are constraints', (SELECT count(*) FROM pg_constraint WHERE conrelid='desk.fadm_runbook_tick'::regclass AND contype='c') >= 2
+UNION ALL SELECT 'the tick chain verifies', desk.fadm_runbook_tick_chain_verify()
+UNION ALL SELECT 'the main ledger hash chain still verifies', desk.fadm_ledger_verify();

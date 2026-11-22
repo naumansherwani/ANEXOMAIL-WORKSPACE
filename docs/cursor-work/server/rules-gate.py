@@ -347,6 +347,24 @@ if _desk_code and os.path.exists(cur):
         for _f in (_bp, _nl):
             if not os.path.exists(_f) or _tag not in open(_f, errors="ignore").read():
                 fail("RESEARCH IN BLUEPRINT", f"phase {_id}: '{_tag}' line (research points + advance technology + code files) is missing in {_f}. Is this phase's advance technology and advance code added?")
+# NO PROMISE (his word 22 Nov 2026 10:42 + 10:47, phase 1k D5b-3): the runbook seed says what the employee SAYS; a promise word, a missing part or a missing fixed never-line fails the commit.
+# The SAME word list lives in SQL AD9 (fadm_runbook_clean) and in desk_runbook_pure.ts (noPromise); three layers, one list.
+_seed = "docs/claude/admin-desk/runbooks.seed.json"
+if os.path.exists(_seed):
+    import json as _json
+    _POLICY = "Our published billing policy says payments are not refunded or credited once the service has been used. You can read it on the Billing Policy page."
+    _PROMISE = re.compile(r"(promise|guarantee|definitely|for sure|100 percent|will be fixed|will be restored|refund|credit|compensation|discount|\bfree\b|i will make sure|within [0-9]+ *(hours?|minutes?|days?|mins?))", re.I)
+    _NEVER = "Never promise a date, a refund, a credit, an upgrade or an owner decision."
+    try:
+        for _r in _json.load(open(_seed, encoding="utf-8"))["runbooks"]:
+            _six = list(_r["parts"].keys()) == ["sees", "may", "never", "escalate", "say", "clock"]
+            if not _six: fail("NO PROMISE", f"runbook {_r['key']}: must have exactly the six parts in order")
+            if _NEVER not in _r["parts"]["never"]: fail("NO PROMISE", f"runbook {_r['key']}: part 3 must carry the fixed never-line")
+            for _t in (_r["say_text"], _r["parts"]["say"]):
+                _m = _PROMISE.search(_t.replace(_POLICY, ""))
+                if _m: fail("NO PROMISE", f"runbook {_r['key']}: promise word '{_m.group(0)}' in what the employee says")
+    except Exception as _e:
+        fail("NO PROMISE", f"runbooks.seed.json unreadable: {_e}")
 for led in ("docs/cursor-work/DONE-DO-NOT-REPEAT.md", "docs/claude/CLOSE-THE-GAPS-07NOV.md"):
     if led in staged:
         try:

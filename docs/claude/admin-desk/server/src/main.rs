@@ -20,6 +20,7 @@ mod bridge;
 mod dbsc;
 mod lookup;
 mod packages;
+mod runbooks;
 mod sign;
 mod wt;
 mod signed;
@@ -108,6 +109,10 @@ async fn main() {
         .route("/desk/v1/customer/lookup", post(lookup::lookup))
         .route("/desk/v1/packages", get(packages::list))
         .route("/desk/v1/packages/{id}", get(packages::one))
+        .route("/desk/v1/runbooks", get(runbooks::list))
+        .route("/desk/v1/runbooks/tick", post(runbooks::tick))
+        .route("/desk/v1/runbooks/ticks", post(runbooks::ticks))
+        .route("/desk/v1/runbooks/mark", post(runbooks::mark))
         .layer(middleware::from_fn(signed::guard));
     let app = Router::new()
         .route("/desk/v1/health", get(health))

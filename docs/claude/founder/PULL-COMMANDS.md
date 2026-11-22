@@ -3379,3 +3379,9 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 1k D5b runbooks: web research done, list R1-R12, ADVANCE-RESEARCH [1k] in blueprint + NOW-LIST, CURRENT.md contract written first. TESTED: gate pass, docs only. TECH-LAW CHECKED
 
 - 1k D5b runbooks: web research done, list R1-R12, ADVANCE-RESEARCH [1k] in blueprint + NOW-LIST, CURRENT.md contract written first. TESTED: gate pass, docs only. TECH-LAW CHECKED
+
+- 1k D5b runbooks CODE: SQL AD9 (versioned runbooks, no-promise CHECK, approval events) + AD9b (tick ledger), Rust doors runbooks.rs, React DeskRunbooks.tsx, pure logic, NO PROMISE gate, runbooks.seed.json; audit L1-L6 fixed. TESTED: real PostgreSQL AD1-AD9b selftests + checks 10/10 and 7/7, cargo 66 pass incl real-PG doors, bun 63 pass, tsc clean, vite build, gate negative+positive probes. Not green until his ad-auto + install + Chrome look. TECH-LAW CHECKED
+
+- 1k D5b runbooks CODE: SQL AD9 (versioned runbooks, no-promise CHECK, approval events) + AD9b (tick ledger), Rust doors runbooks.rs, React DeskRunbooks.tsx, pure logic, NO PROMISE gate, runbooks.seed.json; audit L1-L6 fixed. TESTED: real PostgreSQL AD1-AD9b selftests (rerun-safe on a dirty DB, mutation probe fails as designed) + checks 10/10 and 7/7, cargo 66 pass incl real-PG doors, bun 63 pass, tsc clean, vite build, gate negative+positive probes. Not green until his ad-auto + install + Chrome look. TECH-LAW CHECKED
+
+- 1k D5b runbooks CODE: SQL AD9 (versioned runbooks, no-promise CHECK, approval events) + AD9b (tick ledger), Rust doors runbooks.rs, React DeskRunbooks.tsx, pure logic, NO PROMISE gate, runbooks.seed.json; audit L1-L6 fixed. TESTED: real PostgreSQL AD1-AD9b selftests (rerun-safe on a dirty DB, mutation probe fails as designed) + checks 10/10 and 7/7, cargo 66 pass incl real-PG doors, bun 63 pass, tsc clean, vite build, gate negative+positive probes. Not green until his ad-auto + install + Chrome look. TECH-LAW CHECKED

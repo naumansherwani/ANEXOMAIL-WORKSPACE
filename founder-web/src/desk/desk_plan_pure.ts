@@ -69,4 +69,4 @@ export function freshnessWords(age: number | null): string {
   return age > FRESH_SECS ? `Older than ${FRESH_SECS} s (${age} s). Look up again.` : `Fresh, ${age} s old`;
 }
 export const reasonOk = (r: string) => r.trim().length >= MIN_REASON;
-export const companyOk = (c: string) => /^[A-Za-z0-9_.:-]{3,64}$/.test(c.trim());
+export const companyOk = (c: string) => /^[A-Za-z0-9_-]{6,64}$/.test(c.trim());
