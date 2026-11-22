@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 08:38 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 08:38 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: D1e KPI pop-up written
 NEXT STEP: his install, live look D1d D1e D3b, TCP latency paste
 HIS LAST WORD: his 08:37 word
@@ -18,41 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- f4011d6d 22 Nov 08:38 D1e
 - 5c5cf795 22 Nov 08:27 ledger line cc788a70
 - cc788a70 22 Nov 08:27 Desk D1d: KPI card text selectable, no phase names or P1 on the Desk
 - f93ca0b5 22 Nov 08:27 ledger line 61b14756
 - 61b14756 22 Nov 08:27 D1d
-- 820529e3 22 Nov 08:25 ledger line cd193bb6
 
 ## Uncommitted files (half-done work if any)
- M CLAUDE.md
- M docs/claude/DONE-DO-NOT-REPEAT.md
- M docs/claude/RESUME-POINT.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
- M docs/claude/founder/PULL-COMMANDS.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- M docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
- M docs/cursor-work/DONE-DO-NOT-REPEAT.md
- M docs/cursor-work/founder/founder-commands.md
- M docs/cursor-work/server/PULL-COMMANDS.md
- D founder-web/dist-desk/assets/desk-LokNBXXS.js
- M founder-web/dist-desk/desk.html
- M founder-web/src/desk/DeskCommandBar.tsx
-?? founder-web/dist-desk/assets/desk-Dqnc5mb_.js
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- ...DE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md |   4 +-
- docs/cursor-work/DONE-DO-NOT-REPEAT.md             |   4 +-
- docs/cursor-work/founder/founder-commands.md       |   4 +-
- docs/cursor-work/server/PULL-COMMANDS.md           |   4 +-
- founder-web/dist-desk/assets/desk-LokNBXXS.js      | 105 ---------------------
- founder-web/dist-desk/desk.html                    |   2 +-
- founder-web/src/desk/DeskCommandBar.tsx            |   6 +-
- 15 files changed, 52 insertions(+), 151 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 38 ++------------------------------------
+ 1 file changed, 2 insertions(+), 36 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -63,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (aa80b857fb34075f3e8c8c9738661f3dacdec49c)
+WIP snapshot: refs/wip/last (fa2669b9fd690c4a1401b7fb29751b224a0f9b75)
