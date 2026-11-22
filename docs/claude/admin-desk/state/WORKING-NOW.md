@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 21:55 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 21:56 PKT) - read this FIRST for the Desk after a compaction
 DOING: D5a-3b schema-first read written (D5A-3B-SCHEMA-READ-22NOV.md); two gaps: org family and storage matrix conflict with landing page
 NEXT STEP: his read-only psql on awam DB, then D5a-3b contract and crate
 HIS LAST WORD: schema-first law
@@ -65,14 +65,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 61042086 22 Nov 21:56 D5a-3b schema look script
+- 9156d706 22 Nov 21:55 ledger line 4d45dbd6
 - 4d45dbd6 22 Nov 21:55 D5a-3b schema-first read
 - 7d141880 22 Nov 21:53 ledger line 90a27229
 - 90a27229 22 Nov 21:53 D5a-2 GREEN
 - 51a5f654 22 Nov 21:51 ledger line 378c0cd7
 - 378c0cd7 22 Nov 21:51 D5a-2 closed
 - b676151f 22 Nov 21:49 ledger line ccfa26fd
-- ccfa26fd 22 Nov 21:49 blueprint D5a-2 part
-- cdc8ecd2 22 Nov 21:49 ledger line f7dab702
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
