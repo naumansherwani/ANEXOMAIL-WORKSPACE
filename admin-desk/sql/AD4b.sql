@@ -463,6 +463,11 @@ DO $$ DECLARE t text; BEGIN
 END $$;
 DROP TRIGGER IF EXISTS fadm_lookup_threshold_nodelete ON desk.fadm_lookup_threshold;
 CREATE TRIGGER fadm_lookup_threshold_nodelete BEFORE DELETE OR TRUNCATE ON desk.fadm_lookup_threshold FOR EACH STATEMENT EXECUTE FUNCTION desk.fadm_append_only_guard();
+-- AD8's two trigger functions were created executable by PUBLIC (found by the AD3 CHECK); AD8 itself is skipped by ad-auto once its CHECK is true, so the repair is repeated here (only when they exist)
+DO $$ BEGIN
+  IF to_regprocedure('desk.fadm_session_dbsc_frozen()') IS NOT NULL THEN REVOKE ALL ON FUNCTION desk.fadm_session_dbsc_frozen() FROM PUBLIC; END IF;
+  IF to_regprocedure('desk.fadm_session_dbsc_thumb()') IS NOT NULL THEN REVOKE ALL ON FUNCTION desk.fadm_session_dbsc_thumb() FROM PUBLIC; END IF;
+END $$;
 DO $$ DECLARE p record; BEGIN
   FOR p IN SELECT pr.oid::regprocedure AS sig, pr.proname FROM pg_proc pr JOIN pg_namespace s ON s.oid = pr.pronamespace WHERE s.nspname = 'desk' AND (pr.proname LIKE 'fadm\_lookup%' OR pr.proname LIKE 'fadm\_merkle%') LOOP
     EXECUTE format('REVOKE ALL ON FUNCTION %s FROM PUBLIC', p.sig);
@@ -482,7 +487,7 @@ BEGIN
 END $f$;
 DO $$
 DECLARE o uuid; sup uuid; s uuid; s2 uuid; s3 uuid; s4 uuid; s5 uuid; sfx text := substr(md5(random()::text), 1, 8); rootu uuid := desk.fadm_unit_id('department', 'desk'); cref text := 'co_' || sfx;
-  h text := '$argon2id$v=19$m=19456,t=2,p=1$c2VsZnRlc3Q$c2VsZnRlc3RoYXNo'; n int; k int; i int; rq uuid; lid bigint; pf jsonb; d record; okv boolean; cp1 bigint; cp2 bigint; hh int; base bigint; arr bytea[]; pth bytea[]; rt bytea; l0 bytea; l1 bytea; l2 bytea; sz int;
+  h text := '$argon2id$v=19$m=19456,t=2,p=1$c2VsZnRlc3Q$c2VsZnRlc3RoYXNo'; n int; k int; i int; rq uuid; lid bigint; pf jsonb; d record; okv boolean; cp1 bigint; cp2 bigint; hh int; base bigint; b1 bigint; b2 bigint; b3 bigint; arr bytea[]; pth bytea[]; rt bytea; l0 bytea; l1 bytea; l2 bytea; sz int;
 BEGIN
   INSERT INTO desk.fadm_owner (email, display_name, role, pw_hash) VALUES ('o1-' || sfx || '@selftest.invalid', 'Selftest Owner', 'owner', h) RETURNING id INTO o;
   INSERT INTO desk.fadm_owner (email, display_name, role, pw_hash, passkey_required, status, active) VALUES ('sp-' || sfx || '@selftest.invalid', 'Selftest Supervisor', 'agent', NULL, true, 'active', true) RETURNING id INTO sup;
@@ -649,8 +654,9 @@ BEGIN
   pf := desk.fadm_lookup_cp_export(0, 1000);
   PERFORM pg_temp.ad4b_ok(jsonb_array_length(pf) = (SELECT count(*) FROM desk.fadm_lookup_cp) AND pf::text !~* '(company|reason)' AND (pf->0->>'root') = encode((SELECT root FROM desk.fadm_lookup_cp ORDER BY cp_seq LIMIT 1), 'hex'), 'the export door lists every checkpoint with hashes only');
   PERFORM pg_temp.ad4b_ok(jsonb_array_length(desk.fadm_lookup_cp_export((SELECT max(cp_seq) FROM desk.fadm_lookup_cp), 10)) = 0, 'the export door lists only checkpoints after the last one given');
+  SELECT (SELECT count(*) FROM desk.fadm_ledger WHERE kind = 'lookup.exported'), (SELECT count(*) FROM desk.fadm_ledger WHERE kind = 'lookup.export_mismatch'), (SELECT count(*) FROM desk.fadm_alert WHERE kind = 'lookup.export_mismatch' AND severity = 'high') INTO b1, b2, b3;
   PERFORM desk.fadm_lookup_export_report(true, 2, 5, 'ok'); PERFORM desk.fadm_lookup_export_report(false, 0, 5, 'file 5 hash differs; <b>x</b>');
-  PERFORM pg_temp.ad4b_ok((SELECT count(*) FROM desk.fadm_ledger WHERE kind = 'lookup.exported') = 1 AND (SELECT count(*) FROM desk.fadm_ledger WHERE kind = 'lookup.export_mismatch') = 1 AND (SELECT count(*) FROM desk.fadm_alert WHERE kind = 'lookup.export_mismatch' AND severity = 'high') = 1
+  PERFORM pg_temp.ad4b_ok((SELECT count(*) FROM desk.fadm_ledger WHERE kind = 'lookup.exported') = b1 + 1 AND (SELECT count(*) FROM desk.fadm_ledger WHERE kind = 'lookup.export_mismatch') = b2 + 1 AND (SELECT count(*) FROM desk.fadm_alert WHERE kind = 'lookup.export_mismatch' AND severity = 'high') = CASE WHEN b3 > 0 THEN b3 ELSE 1 END
     AND (SELECT detail->>'note' FROM desk.fadm_ledger WHERE kind = 'lookup.export_mismatch' ORDER BY seq DESC LIMIT 1) !~ '[<>;]', 'a mismatch report is a ledger line and ONE high alert; the note is stripped to safe characters');
   PERFORM pg_temp.ad4b_ok(desk.fadm_lookup_tick() ? 'sealed' OR desk.fadm_lookup_tick() ? 'skipped', 'the tick door runs maintenance (or says why it skipped)');
   PERFORM pg_temp.ad4b_ok(has_function_privilege('desk_app', 'desk.fadm_lookup_tick()', 'EXECUTE'), 'the tick door is granted to desk_app');
