@@ -6,4 +6,4 @@ UNION ALL SELECT 'desk_app touches nothing in public', NOT EXISTS (SELECT 1 FROM
 UNION ALL SELECT 'ledger hash chain verifies', desk.fadm_ledger_verify()
 UNION ALL SELECT 'ledger is append-only (three freeze triggers)', (SELECT count(*) FROM pg_trigger WHERE tgrelid = 'desk.fadm_ledger'::regclass AND tgname LIKE 'fadm_ledger_frozen%') = 2
 UNION ALL SELECT 'support@ is not a Desk mailbox', NOT EXISTS (SELECT 1 FROM desk.fadm_mailbox WHERE local_part = 'support')
-UNION ALL SELECT 'billing@ and noreply@ are send-only', NOT EXISTS (SELECT 1 FROM desk.fadm_mailbox WHERE local_part IN ('billing','noreply') AND NOT send_only);
+UNION ALL SELECT 'noreply@ is send-only (billing@ became a restricted receiving mailbox in AD5, his 22 Nov 11:06 rule, so it is no longer checked here)', NOT EXISTS (SELECT 1 FROM desk.fadm_mailbox WHERE local_part = 'noreply' AND NOT send_only);
