@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 21:38 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 21:39 PKT) - read this FIRST for the Desk after a compaction
 DOING: D5a-2 registry seed AD6b + packages read doors coded, proved on scratch PG and isolated build
 NEXT STEP: his 3 pulls (ad-auto, desk-install, desk-restart), then D5a-3b responder
 HIS LAST WORD: his 21:31 word: package list from landing page
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 9bb2517c 22 Nov 21:39 D5a-2 package registry fill and read doors
 - 8b746529 22 Nov 21:24 ledger line 420d79ed
 - 420d79ed 22 Nov 21:24 Handoff refresh, loop restart
 - be0ac970 22 Nov 21:01 ledger line afa31a13
@@ -72,20 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 8c91126b 22 Nov 20:54 ledger line e7663bf1
 - e7663bf1 22 Nov 20:54 Desk D5a-3 live check, D5a-3b contract, handoff file
 - 802da807 22 Nov 20:44 ledger line 4f2d93ce
-- 4f2d93ce 22 Nov 20:44 Finding: no Control Plane responder yet
 
 ## Uncommitted Desk files
- M admin-desk/server/src/main.rs
- M docs/claude/admin-desk/server/src/main.rs
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/scripts/gen-pkg-seed.py
-?? admin-desk/server/src/packages.rs
-?? admin-desk/sql/AD6b.sql
-?? admin-desk/sql/checks/AD6b-check.sql
-?? docs/claude/admin-desk/scripts/gen-pkg-seed.py
-?? docs/claude/admin-desk/server/src/packages.rs
-?? docs/claude/admin-desk/sql/AD6b.sql
-?? docs/claude/admin-desk/sql/checks/AD6b-check.sql
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
