@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 00:29 PKT) - read this FIRST for the Desk after a compaction
-DOING: R3a2-dbsc code done (AD8 + dbsc.rs), responder done; committing both
-NEXT STEP: his ONE desk-install + ad-auto + sign-in
-HIS LAST WORD: his 00:22/00:25 orders
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 00:36 PKT) - read this FIRST for the Desk after a compaction
+DOING: AD8 advance rules + handler tests + honest truth table
+NEXT STEP: his desk-install + ad-auto + sign-in
+HIS LAST WORD: his 00:34 order
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 2f574bd1 23 Nov 00:29 ledger line 0de9ed41
 - 0de9ed41 23 Nov 00:29 blueprint 0l
 - 0ef1d766 23 Nov 00:29 ledger line 97a039c1
 - 97a039c1 23 Nov 00:29 R3a2-dbsc device-bound sessions + control plane responder
@@ -72,9 +73,16 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 32747762 22 Nov 23:39 D5a-3b contract v2 and folder phases
 - e12110bb 22 Nov 23:34 ledger line 0c4cbfb4
 - 0c4cbfb4 22 Nov 23:34 D5a-3b schema paste and look 2
-- 610119ff 22 Nov 22:42 ledger line ed337fb9
 
 ## Uncommitted Desk files
+ M admin-desk/DBSC-PHASE-LIST-23NOV.md
+ M admin-desk/server/src/dbsc.rs
+ M admin-desk/sql/AD8.sql
+ M admin-desk/sql/checks/AD8-check.sql
+ M docs/claude/admin-desk/DBSC-PHASE-LIST-23NOV.md
+ M docs/claude/admin-desk/server/src/dbsc.rs
+ M docs/claude/admin-desk/sql/AD8.sql
+ M docs/claude/admin-desk/sql/checks/AD8-check.sql
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)

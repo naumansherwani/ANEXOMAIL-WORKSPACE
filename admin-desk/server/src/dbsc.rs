@@ -276,4 +276,48 @@ mod tests {
         rows(&c, &format!("update desk.fadm_session set revoked_at = now() where token_hash = '\\x{}'", hex(&th))).await.unwrap();
         assert_eq!(refresh_core(&c, &th, None, now).await.err(), Some(Fail::Refused("not_bound")), "a revoked session ends the binding");
     }
+
+    // ---- the HTTP doors themselves (D6 D14 D16 D17 D20 + the database-side advance rules), real PostgreSQL, env set inside ONE test so nothing races ----
+    #[tokio::test] async fn http_doors_on_real_postgres() {
+        let Some(c) = pg().await else { eprintln!("no DESK_TEST_ADMIN_URL: skipped"); return };
+        let url = std::env::var("DESK_TEST_ADMIN_URL").unwrap(); let sep = if url.contains('?') { '&' } else { '?' };
+        unsafe { std::env::set_var("DESK_APP_URL", format!("{url}{sep}sslmode=disable")); }
+        let token = { use argon2::password_hash::rand_core::{OsRng, RngCore}; let mut b = [0u8; 32]; OsRng.fill_bytes(&mut b); hex(&b) };
+        let th = auth::token_hash(&token);
+        rows(&c, &format!("insert into desk.fadm_session (owner_id, token_hash, expires_at) select id, '\\x{}', now() + interval '1 hour' from desk.fadm_owner where active limit 1", hex(&th))).await.unwrap();
+        let hdr = |extra: &[(&'static str, String)]| { let mut h = HeaderMap::new(); h.insert(header::COOKIE, HeaderValue::from_str(&format!("anexo.desk.session={token}")).unwrap()); for (k, v) in extra { h.insert(HeaderName::from_static(k), HeaderValue::from_str(v).unwrap()); } h };
+        // off: both doors are invisible
+        unsafe { std::env::set_var("DESK_DBSC", "off"); }
+        assert_eq!(start(hdr(&[])).await.status(), StatusCode::NOT_FOUND); assert_eq!(refresh(hdr(&[])).await.status(), StatusCode::NOT_FOUND);
+        unsafe { std::env::set_var("DESK_DBSC", "observe"); }
+        // D14: a refresh without the right session id is refused; unbound session + right id = continue:false (D17)
+        assert_eq!(refresh(hdr(&[])).await.status(), StatusCode::FORBIDDEN);
+        assert_eq!(refresh(hdr(&[("sec-secure-session-id", "\"wrong\"".into())])).await.status(), StatusCode::FORBIDDEN);
+        let sid = session_id(&th); let ok_id = ("sec-secure-session-id", format!("\"{sid}\""));
+        let r = refresh(hdr(&[ok_id.clone()])).await; assert_eq!(r.status(), StatusCode::OK);
+        assert_eq!(axum::body::to_bytes(r.into_body(), 4096).await.unwrap().as_ref(), br#"{"continue":false}"#);
+        // no proof at all on start = 400; D15: every answer is no-store
+        let r = start(hdr(&[])).await; assert_eq!(r.status(), StatusCode::BAD_REQUEST); assert_eq!(r.headers()[header::CACHE_CONTROL], "no-store");
+        // register through the door, then: refresh with no proof = 403 + Secure-Session-Challenge with the session id (D23)
+        let k = pair(); let now = crate::signed::now_secs(); let rc = make_challenge("r", &th, now);
+        let r = start(hdr(&[("secure-session-response", format!("\"{}\"", reg(&k, &rc)))])).await; assert_eq!(r.status(), StatusCode::OK);
+        assert!(r.headers().get("secure-session-challenge").is_some() && r.headers().get(header::SET_COOKIE).unwrap().to_str().unwrap().starts_with(BOUND_COOKIE));
+        let r = refresh(hdr(&[ok_id.clone()])).await; assert_eq!(r.status(), StatusCode::FORBIDDEN);
+        assert!(r.headers()["secure-session-challenge"].to_str().unwrap().contains(&format!("id=\"{sid}\"")));
+        // D16: a skipped-refresh report lands in the ledger
+        let _ = refresh(hdr(&[ok_id.clone(), ("secure-session-skipped", "\"quota_exceeded\";session_identifier=\"x\"".into())])).await;
+        let n = q(&c, "select count(*)::text from desk.fadm_ledger where kind='dbsc.refused' and detail->>'why'='skipped_quota_exceeded'").await.unwrap().unwrap(); assert!(n.parse::<i64>().unwrap() >= 1, "skipped reason recorded");
+        // D6: observe never blocks, enforce blocks a bound session that has no bound cookie, and lets one with a good cookie through; unbound sessions are never blocked
+        let h_no = hdr(&[]); assert!(enforce_ok(&h_no, &th).await, "observe never blocks");
+        unsafe { std::env::set_var("DESK_DBSC", "enforce"); }
+        assert!(!enforce_ok(&h_no, &th).await, "enforce: bound session without the bound cookie");
+        let mut h_ok = hdr(&[]); h_ok.insert(header::COOKIE, HeaderValue::from_str(&format!("anexo.desk.session={token}; {BOUND_COOKIE}={}", bound_cookie_value(&th, now))).unwrap());
+        assert!(enforce_ok(&h_ok, &th).await, "enforce: good bound cookie");
+        assert!(enforce_ok(&h_no, &[1u8; 32]).await, "enforce: an unknown or unbound session is never blocked by DBSC");
+        // database-side advance rules through the doors: five forged proofs end the session
+        let other = pair(); for _ in 0..5 { let fc = make_challenge("f", &th, now); let _ = refresh_core(&c, &th, Some(&refp(&other, &fc)), now).await; }
+        assert_eq!(refresh_core(&c, &th, None, now).await.err(), Some(Fail::Refused("not_bound")), "the database ended the session after repeated forged proofs");
+        assert_eq!(q(&c, "select ((desk.fadm_dbsc_health()->>'ended_by_database_24h')::int > 0)::text").await.unwrap().as_deref(), Some("true"));
+        unsafe { std::env::set_var("DESK_DBSC", "off"); }
+    }
 }

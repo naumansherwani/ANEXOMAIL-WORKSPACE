@@ -3319,3 +3319,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - R3a2-dbsc CODE DONE 23 Nov 00:5x + D5a-3b CODE DONE: AD8 (frozen device key, jti replay, hash-chained ledger kinds, 5 doors; CHECK 9/9), dbsc.rs (D1-D23 list from web research of W3C DBSC draft 9 Nov 2026: ES256 only, signed 60s challenge, Sec-Secure-Session-Id check, continue:false, scope closed, modes off/observe/enforce; 6 tests incl real PostgreSQL run), desk-install DBSC observe + step 7/7 control plane (control-plane crate 9 tests, CP1 CHECK 8/8, real h3 e2e). TECH-LAW CHECKED. Waits his install, ad-auto and one Chrome sign-in
 
 - Blueprint Part 0l: R3a2-dbsc + D5a-3b code done 23 Nov 00:3x PKT TECH-LAW CHECKED
+
+- AD8 advance (his 00:34): key thumbprint unique, 5-minute registration window, refresh rate limit, 5 forged proofs end the session, health door; CHECK 13 rows; http_doors_on_real_postgres test (cargo 50 pass); DBSC list truth table (D20 code only, D13 not built). TECH-LAW CHECKED. Waits his install
