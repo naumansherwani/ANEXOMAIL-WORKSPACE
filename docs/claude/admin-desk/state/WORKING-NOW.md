@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 10:11 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 10:11 PKT) - read this FIRST for the Desk after a compaction
 DOING: D5 3 answers approved; extract from outside blueprint written
 NEXT STEP: D5 answers APPROVED 10:10: next = lookup contract in CURRENT.md then D5 code; needs his package list as data
 HIS LAST WORD: his 10:10 word: practical, take only what we need
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 428cfc36 22 Nov 10:11 Desk D5 answers approved and extract
 - 93d569cc 22 Nov 09:49 ledger line b9f5aa84
 - 65d21479 22 Nov 09:49 ledger line eb91932b
 - eb91932b 22 Nov 09:49 Desk repo audit and research points in blueprint
@@ -72,16 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - d64fd21d 22 Nov 09:24 ledger line ad35194d
 - ad35194d 22 Nov 09:24 D5 D6 plan
 - 9902e515 22 Nov 09:15 ledger line 157ccb9a
-- c273588b 22 Nov 09:15 ledger line be8a101e
 
 ## Uncommitted Desk files
- M admin-desk/BLUEPRINT-ADMIN-DESK.md
- M admin-desk/DESK-PHASES-22NOV.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/D5-DECISIONS-AND-EXTRACT-22NOV.md
-?? docs/claude/admin-desk/D5-DECISIONS-AND-EXTRACT-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
