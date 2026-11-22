@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 07:27 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 07:27 PKT) - read this FIRST for the Desk after a compaction
 DOING: rules 11-13 written, Mailboxes rename; waits his desk-install
 NEXT STEP: his desk-install, my live Chrome look, D1 GREEN, then D2 ack/act buttons
 HIS LAST WORD: dashboard first, 4 days, no read no commit
@@ -64,6 +64,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 4099ee9b 22 Nov 07:27 Desk: rules 11-13, Mailboxes rename, stricter read gate
 - 7374586f 22 Nov 07:25 ledger line 4594bdd8
 - 4594bdd8 22 Nov 07:25 Desk D1: clickable cards, account cards removed, /dashboard/* pages, Connecting fix, rule book (22 Nov 07:36 PKT)
 - 831786c8 22 Nov 07:18 ledger line bc2fdc2f
@@ -71,19 +72,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - ea5d9cc9 22 Nov 07:15 ledger line fc8649ed
 - e7d22902 22 Nov 07:15 ledger line 7dee6d42
 - 7dee6d42 22 Nov 07:15 Desk: rule 10 + research log
-- bd5ab479 22 Nov 07:14 ledger line 5f449e7e
 
 ## Uncommitted Desk files
- M admin-desk/BLUEPRINT-ADMIN-DESK.md
- M admin-desk/DESK-PHASES-22NOV.md
- M admin-desk/FOUR-DAY-PLAN-22NOV.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
-M  docs/claude/admin-desk/DESK-PHASES-22NOV.md
-M  docs/claude/admin-desk/FOUR-DAY-PLAN-22NOV.md
- M docs/claude/admin-desk/RULE-BOOK.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-M  founder-web/src/desk/modules/workspace/inboxes/README.md
-M  founder-web/src/desk/modules/workspace/inboxes/meta.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

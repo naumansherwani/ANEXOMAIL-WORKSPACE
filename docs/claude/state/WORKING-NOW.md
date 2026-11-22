@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 07:27 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 07:27 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: rules 11-13 written, Mailboxes rename; waits his desk-install
 NEXT STEP: his desk-install, my live Chrome look, D1 GREEN, then D2 ack/act buttons
 HIS LAST WORD: dashboard first, 4 days, no read no commit
@@ -18,40 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 4099ee9b 22 Nov 07:27 Desk: rules 11-13, Mailboxes rename, stricter read gate
 - 7374586f 22 Nov 07:25 ledger line 4594bdd8
 - 4594bdd8 22 Nov 07:25 Desk D1: clickable cards, account cards removed, /dashboard/* pages, Connecting fix, rule book (22 Nov 07:36 PKT)
 - 831786c8 22 Nov 07:18 ledger line bc2fdc2f
 - bc2fdc2f 22 Nov 07:18 Desk: phase D GREEN after live Chrome look (22 Nov 07:19 PKT)
-- ea5d9cc9 22 Nov 07:15 ledger line fc8649ed
 
 ## Uncommitted files (half-done work if any)
- M CLAUDE.md
- M admin-desk/BLUEPRINT-ADMIN-DESK.md
- M admin-desk/DESK-PHASES-22NOV.md
- M admin-desk/FOUR-DAY-PLAN-22NOV.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
-M  docs/claude/admin-desk/DESK-PHASES-22NOV.md
-M  docs/claude/admin-desk/FOUR-DAY-PLAN-22NOV.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/server/desk-phase-start.py
-M  docs/cursor-work/server/rules-gate.py
- D founder-web/dist-desk/assets/desk-BuWc5YMH.js
- M founder-web/dist-desk/desk.html
-M  founder-web/src/desk/modules/workspace/inboxes/README.md
-M  founder-web/src/desk/modules/workspace/inboxes/meta.ts
-?? founder-web/dist-desk/assets/desk-CKA6WGAE.js
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md                   | 37 ++++-----
- docs/cursor-work/server/desk-phase-start.py        |  6 +-
- docs/cursor-work/server/rules-gate.py              |  9 ++-
- founder-web/dist-desk/assets/desk-BuWc5YMH.js      | 94 ----------------------
- founder-web/dist-desk/desk.html                    |  2 +-
- .../src/desk/modules/workspace/inboxes/README.md   |  2 +-
- .../src/desk/modules/workspace/inboxes/meta.ts     |  6 +-
- 14 files changed, 50 insertions(+), 122 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 37 ++-----------------------------------
+ 1 file changed, 2 insertions(+), 35 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -62,4 +42,4 @@ M  founder-web/src/desk/modules/workspace/inboxes/meta.ts
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (30339b9f0ea9b3677e3d1906d92f59398635032b)
+WIP snapshot: refs/wip/last (71edf8e3ead9f493769ef568963c65b46a2e2fe0)
