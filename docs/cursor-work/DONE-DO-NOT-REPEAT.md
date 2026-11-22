@@ -4341,3 +4341,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Return mark: the Dashboard card you opened wears the same red mark and scrolls into view when you come back (desk_return_pure.ts, DeskPages effect, CSS). 1k install proof recorded (3 SAME, ca5022eb8). TESTED: bun 66 pass, tsc clean, vite build. 1k not green: AD9/AD9b failed on his server, ad-auto paste needed. TECH-LAW CHECKED
 
 - 1k SQL fix: AD9 helper was PUBLIC-executable (broke AD2+AD3 CHECKs, ad-auto re-ran AD2, deadlock). AD9 revoke, repair AD1c (runs before AD2), ad-auto deadlock retry x6. TESTED: scratch PostgreSQL reproduced the false row, all 16 AD checks 0 false after, AD9 and AD9b rerun clean, bash -n. Not green until his ad-auto + install + Chrome look. TECH-LAW CHECKED
+
+- 1k GREEN: his ad-auto (AD1c CHECK OK, rest already run) + desk-install 7017b124a (3 SAME, desk-CpHI6Kua.js) + my Chrome look (9 runbooks, six parts, checklist, say-this, return mark on the Runbooks card). WIRED: YES / REAL: YES. TESTED: live Chrome look + his server pastes + scratch PostgreSQL. TECH-LAW CHECKED

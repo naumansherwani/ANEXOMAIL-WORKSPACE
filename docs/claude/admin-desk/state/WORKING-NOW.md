@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:43 PKT) - read this FIRST for the Desk after a compaction
-DOING: 1k SQL root cause found + fixed (AD1c, AD9 revoke, ad-auto retry); his ad-auto again
-NEXT STEP: his ad-auto paste then desk-install then Chrome look then 1k GREEN
-HIS LAST WORD: his 03:42 paste
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 03:53 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1k = GREEN (his installs + my Chrome look). NOW = 1l D5c Escalate. Install slowness open: waiting for his read-only paste
+NEXT STEP: 1l research + LIST + ADVANCE-RESEARCH + contract; his build.log paste
+HIS LAST WORD: his 03:51
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 7017b124 23 Nov 03:43 ledger line 2eb5f7e6
 - 2eb5f7e6 23 Nov 03:43 1k: AD1c repair + ad-auto retry
 - 602c8c54 23 Nov 03:39 ledger line 4fc3746f
 - 4fc3746f 23 Nov 03:39 return mark bug fix + 1k install proof
@@ -72,9 +73,10 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 8067194e 23 Nov 03:29 1k: runbooks code
 - 06f6c2ac 23 Nov 03:17 ledger line e75d586b
 - e75d586b 23 Nov 03:17 1k: research list + contract
-- 269b755b 23 Nov 03:16 ledger line 1a766922
 
 ## Uncommitted Desk files
+ M admin-desk/NOW-LIST-23NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
