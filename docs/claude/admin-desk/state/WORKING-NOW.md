@@ -48,6 +48,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 6808238c 22 Nov 06:44 ledger line 33c6e819
 - 33c6e819 22 Nov 06:44 Desk blueprint alphabetic A to Q
 - 7ed033a2 22 Nov 06:42 ledger line d17597b2
 - d17597b2 22 Nov 06:42 Desk phases blueprint and phase-start reminder gate
@@ -55,7 +56,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 406bbe10 22 Nov 06:40 ledger line 60e70c2b
 - 60e70c2b 22 Nov 06:40 Desk phase C2 kernel stream client
 - e3dde6d5 22 Nov 06:24 ledger line 6f85aa0c
-- 6f85aa0c 22 Nov 06:24 Desk gate lesson: advance technology only, HTTP/1 and HTTP/2 never named
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
