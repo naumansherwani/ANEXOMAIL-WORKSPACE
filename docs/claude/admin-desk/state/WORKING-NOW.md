@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 01:28 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 01:28 PKT) - read this FIRST for the Desk after a compaction
 DOING: D5a-4 audit fix: PUBLIC revoke repeated in AD4b
 NEXT STEP: his install commands
 HIS LAST WORD: audit-before-install
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e7e0e670 23 Nov 01:28 D5a-4: audit fix PUBLIC revoke
 - 84619001 23 Nov 01:27 ledger line 5906a650
 - 5906a650 23 Nov 01:27 D5a-4: outside copy + audit-before-install law
 - 74a31a4d 23 Nov 01:09 ledger line dfe7aeae
@@ -72,11 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - fcb59cc3 23 Nov 00:48 ledger line 80c3ff56
 - 80c3ff56 23 Nov 00:48 No-test-no-commit law, gate, D5a-3b green
 - 7393e1de 23 Nov 00:36 ledger line 3fc1fc44
-- 3fc1fc44 23 Nov 00:36 AD8 advance + honest truth table
 
 ## Uncommitted Desk files
-M  admin-desk/sql/AD4b.sql
-M  docs/claude/admin-desk/sql/AD4b.sql
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
