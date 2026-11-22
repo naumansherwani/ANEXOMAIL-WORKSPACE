@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 07:47 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 07:47 PKT) - read this FIRST for the Desk after a compaction
 DOING: D8 colour demo shown, waits his pick; D7 live look next
 NEXT STEP: my Chrome look at D7 (desk-DZKO_LVM), D7 GREEN, then D2 ack/act; colours only after his pick
 HIS LAST WORD: colours hurt eyes, demo
@@ -64,6 +64,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 0999a049 22 Nov 07:47 Desk D8: eye-comfort colour demo (4 palettes), blueprint records (22 Nov 07:58 PKT)
 - 260da7bf 22 Nov 07:42 ledger line 5b1f481e
 - 1987b52c 22 Nov 07:42 ledger line ca5ac2d6
 - ca5ac2d6 22 Nov 07:42 Desk: pipeline moves into Systems
@@ -71,16 +72,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 789f96f3 22 Nov 07:40 ledger line 4ad3e6ea
 - 4ad3e6ea 22 Nov 07:40 Desk: D1b GREEN, D7 Systems folder
 - ccf44736 22 Nov 07:34 ledger line 7555ce4a
-- 7555ce4a 22 Nov 07:34 Desk: D1 GREEN after live look, D1b keyboard shortcuts and hand cursor (22 Nov 07:38 PKT)
 
 ## Uncommitted Desk files
- M admin-desk/BLUEPRINT-ADMIN-DESK.md
- M admin-desk/DESK-PHASES-22NOV.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/demo/
-?? docs/claude/admin-desk/demo/
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
