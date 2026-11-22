@@ -4185,3 +4185,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 22 Nov 2026 09:20 PKT: Desk live scan 14 routes clean, two leftovers fixed (urgent URL, CSS tag), gate extended, waits install
 
 - 22 Nov 2026 09:14 PKT: Desk D1f GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED, 2nd live scan clean; order D5 D6 A E..Q written with technology
+
+- 22 Nov 2026 09:22 PKT: Desk D8 GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED by his word; D5 revised to package plans and SLA targets only, no webhook or Polar on the Desk

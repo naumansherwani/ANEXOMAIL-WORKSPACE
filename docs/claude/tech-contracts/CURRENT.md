@@ -3025,3 +3025,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 22 Nov 2026 09:14 PKT: next phase D5 contract (to write before code): Rust axum receive-only plan door, HMAC-SHA256 signature check, replay window, idempotency key, Postgres RLS + append-only plan ledger, Rule 52 signed answer, HTTP/3 + WebTransport only.
 
 - 22 Nov 2026 09:14 PKT: Desk D1f GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED, 2nd live scan clean; order D5 D6 A E..Q written with technology
+
+- 22 Nov 2026 09:22 PKT: Desk D5 REVISED (his 09:15 word): no webhook, no Polar, no payments on the Desk; D5 = Desk-own package plan table + SLA targets per plan, Rust axum signed door (Rule 52), RLS, append-only history, HTTP/3 + WebTransport only. Previous webhook contract line withdrawn.
+
+- 22 Nov 2026 09:22 PKT: Desk D8 GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED by his word; D5 revised to package plans and SLA targets only, no webhook or Polar on the Desk
