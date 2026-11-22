@@ -2653,3 +2653,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 1k: his install paste shows the new build was not installed (binary missing at 9/9, old bundle served); cause not guessed, asking for the head of the output. TESTED: reading his paste against desk-install.sh 9/9 logic. TECH-LAW CHECKED
 
 - 1k GREEN: his desk-install (build 90 s, desk-D1zbEnu0.js) + my Chrome look (one row marked per click/Enter, others clean, Ice blue soft glow). WIRED: YES / REAL: YES. TESTED: live Chrome screenshots + computed styles + his server paste. TECH-LAW CHECKED
+
+- 1k closed items GREEN (23 Nov 2026 04:31 PKT): 9 runbooks approved by the Chairman, checklist tick live and persisted after reload. TESTED: live Chrome on his open owner account (approve x9, reload, tick, reload). WIRED: YES / REAL: YES. TECH-LAW CHECKED

@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 04:18 PKT) - read this FIRST for the Desk after a compaction
-DOING: 1k = GREEN (his install + my screenshot proof). NOW = 1l D5c Escalate: web research + LIST + ADVANCE-RESEARCH + contract first
-NEXT STEP: 1l research, LIST file, blueprint + NOW-LIST ADVANCE-RESEARCH [1l], contract block, then code
-HIS LAST WORD: his 04:17 paste
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 04:25 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1k GREEN with all closed items: 9 runbooks Approved by the Chairman (my Chrome, his account), checklist tick live + persisted. NOW = 1l D5c Escalate (research first)
+NEXT STEP: 1l research + LIST + ADVANCE-RESEARCH [1l] + contract, then code; after 1o: 1a (Caddy to own HTTP/3 code) then phone 390 / tablet 820 test
+HIS LAST WORD: his 04:23
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 2f1bf66f 23 Nov 04:18 ledger line cba544eb
 - cba544eb 23 Nov 04:18 1k GREEN, NOW 1l
 - 611b16af 23 Nov 04:10 ledger line c923b616
 - c923b616 23 Nov 04:10 1k: install did not take, need head of output
@@ -72,9 +73,12 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 889c9577 23 Nov 04:04 1k fix: old row glow cleared, build timer
 - b4d70200 23 Nov 03:55 ledger line d5fe6738
 - d5fe6738 23 Nov 03:55 1k fix: mark colour blue
-- 45c75881 23 Nov 03:54 ledger line e283c4d5
 
 ## Uncommitted Desk files
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/NOW-LIST-23NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
