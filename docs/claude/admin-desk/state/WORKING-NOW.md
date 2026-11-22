@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 11:26 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 11:26 PKT) - read this FIRST for the Desk after a compaction
 DOING: AD1 check fixed after AD5; phase T top bar planned
 NEXT STEP: his ad-auto: AD6; then AD7
 HIS LAST WORD: his 11:26 top bar question + ad-auto deadlock
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- ce85d899 22 Nov 11:26 AD1 check fix, top bar
 - 553c96a4 22 Nov 11:20 ledger line 7918d093
 - 48c818a2 22 Nov 11:20 ledger line fb250dd9
 - b341403b 22 Nov 11:20 ledger line fc391322
@@ -72,20 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 2988c689 22 Nov 11:11 ledger line 0b86c3b2
 - 0b86c3b2 22 Nov 11:11 Reminders stay in repo and chat only (his 11:11); scheduled reminder deleted
 - 7f6a033b 22 Nov 11:11 ledger line 42e3bd7c
-- 2712005c 22 Nov 11:10 ledger line e37c3325
 
 ## Uncommitted Desk files
- M admin-desk/BLUEPRINT-ADMIN-DESK.md
- M admin-desk/DESK-PHASES-22NOV.md
- M admin-desk/sql/checks/AD1-check.sql
- M admin-desk/state/REMINDERS.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
- M docs/claude/admin-desk/sql/checks/AD1-check.sql
- M docs/claude/admin-desk/state/REMINDERS.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/TOPBAR-PLAN-22NOV.md
-?? docs/claude/admin-desk/TOPBAR-PLAN-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
