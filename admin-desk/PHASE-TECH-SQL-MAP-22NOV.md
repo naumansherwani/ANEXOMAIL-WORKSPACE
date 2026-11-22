@@ -51,3 +51,19 @@ Rule 52 (every answer signed by Rust, verified by the Desk's own Rust WASM kerne
 What exists: the awam site has its own mail threads (src/routes/app.mail.$folder.tsx, server/mail-worker.ts, sql phase52 mail truth tables) and the founder mailbox has its own (QC series). The Desk must NOT import or share them (isolation law); they are remade NEW for the Desk from the same method (preserve, advance technology, fix loopholes, polish).
 Where the Desk gets its threads: phase I Mailboxes + the Replies folder. AD7 already keeps one case per (address, thread id); the thread's messages, original recipient, headers and attachments come with AD8 (planned) and the Rust mail door, bodies and files on Hetzner Storage Box with ClamAV. Every email keeps its original recipient and thread history (his point 4).
 His remark that the earlier thread codes are "left open": I will audit the awam thread code and the founder thread code (read-only) for loopholes in phase I step i0 and write each loophole into CLOSE-THE-GAPS-07NOV.md; the awam code is frozen (his law), so the Desk copy gets the fix, the awam fix waits for his word.
+
+## 5. GATES (commit gates in docs/cursor-work/server/rules-gate.py) AND THEIR ADVANCE TECHNOLOGY, PHASE BY PHASE (his 20:15 order)
+| Gate | Phase it guards | Advance technology | What it refuses |
+|---|---|---|---|
+| RULES NOT READ | every phase | signed receipt file (2 h), SHA-256 of rule files | a commit without a fresh rules-read |
+| DESK PHASE START | every Desk code commit | desk-phase-start.py receipt per phase | Desk code before the phase's contract is read |
+| DESK ISOLATION | all Desk phases | static import + table + key scan | any mix with founder or awam code, doors, keys, tables |
+| DESK NO-MONEY | D5a, D5, D6 | contract JSON (DESK-LOOKUP-CONTRACT.json) + pattern scan over Desk files | amount, invoice, card, Polar, webhook fields on the Desk |
+| DESK WIRING | D1..D6 cards | desk_cards.ts registry + test | a card without route, track and phase; phase names visible to employees |
+| NO-PROMISE (planned) | D5b runbooks | closed banned-word list over runbook text | date, restore, refund, credit, upgrade, owner decision promises |
+| DESK CONTRACT DRIFT (planned) | D5a | JSON allowed_fields vs AD4 field list compare | the contract and the SQL list disagreeing |
+| TECH LAW | all phases | tech-contracts/CURRENT.md + TECH-LAW-GATE.json | a listed advance technology missing from code, GREEN without TECH-LAW CHECKED |
+| SERVER FIRST | server surface (ports, TLS, HTTP/3, Caddy, installers) | hash-chained receipt ledger of his pasted read-only output | a server change without his fresh paste |
+| 73 lanes + manifest | every commit | lane-sync, SHA-256 manifest | stale lane files, changed files not in the manifest |
+| VENDOR BAN | all | VENDOR-BAN-LIST.json | any third-party vendor name |
+| HTTP/3 only, no WebSocket / Bun / Node | all Desk phases | pattern scan | h1, h2, ws://, Bun, Node in Desk or server runtime |

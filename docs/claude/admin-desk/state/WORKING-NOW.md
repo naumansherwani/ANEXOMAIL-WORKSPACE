@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 20:05 PKT) - read this FIRST for the Desk after a compaction
-DOING: AD7 live on his server; phase-technology-SQL map and thread answer written
-NEXT STEP: D5a-3 Rust lookup door; founder dist receipt after his paste
-HIS LAST WORD: his 20:04 orders
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 20:16 PKT) - read this FIRST for the Desk after a compaction
+DOING: Dashboard folder first order written; AD5/AD7 out-of-order admitted, later folders frozen
+NEXT STEP: D5a-3 Rust signed lookup door vs test double
+HIS LAST WORD: his 20:15 rule
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -18,7 +18,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 8. After EVERY message: repo + ledger + blueprint + COMPACT-SAVE updated with real date and time (rec.sh, desk-copy-sync, lane-sync, manifest-sync, rules-gate 0 fail). EVERY phase is named by ALPHABET in build 
 9. Address him only as Aap, Roman Urdu, short; end every reply with the Rule-70 table and "Abhi code mein NAHI"; server commands = ONE line.
 10. WEB RESEARCH GOES INTO THE REPO IN ORDER (his 22 Nov 2026 07:15 PKT): every web search's points and features are written, in order, into the blueprint (section 'WEB RESEARCH LOG' in DASHBOARD-CARDS-CLICK-PL
-11. FOLDER-WISE GREEN, DASHBOARD FIRST (his 22 Nov 2026 07:26 PKT): the Desk is made green folder by folder in rail order and the DASHBOARD folder (D, D1..D6) goes green completely before any other folder start
+11. FOLDER-WISE GREEN, DASHBOARD FIRST (his 22 Nov 2026 07:26 PKT, REPEATED 20:15 PKT in anger; step order = DASHBOARD-FOLDER-ORDER-22NOV.md): the Desk is made green folder by folder in rail order and the DASHB
 12. FOUR-DAY TARGET (his 22 Nov 2026 07:26 PKT): the WHOLE Admin Desk is complete, wired and green in 4 days: by 26 Nov 2026 07:26 PKT. Day plan: docs/claude/admin-desk/FOUR-DAY-PLAN-22NOV.md. Every message re-
 13. NO READ, NO COMMIT (his 22 Nov 2026 07:26 PKT): the commit gate 'DESK PHASE START' fails a Desk code commit unless the receipt shows the strict rules, this blueprint, the rule book and both WORKING-NOW file
 14. NO PHASE NAME, NO "P1" ANYWHERE AN EMPLOYEE CAN SEE ON THE ADMIN DESK (his 22 Nov 2026 09:03 PKT, CHAIRMAN, said three times, "baaned hai"): not in cards, pages, tooltips, alert text, notes, test rows or da
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 733f2512 22 Nov 20:05 ledger line 6b0e0be0
 - a3a9f4b5 22 Nov 20:05 ledger line 90f00abf
 - 4e695b4f 22 Nov 20:05 ledger line 65a7b80b
 - 65a7b80b 22 Nov 20:05 AD7 live, map
@@ -72,10 +73,24 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 3c007880 22 Nov 19:56 Checkpoint: WORKING-NOW refresh
 - b5679198 22 Nov 19:55 ledger line 61b5f411
 - 61b5f411 22 Nov 19:55 Desk AD7 staff queues (cases, Priority Support clock, assignment, status machine) proved on PostgreSQL 16
-- 93d27cef 22 Nov 11:40 ledger line 636842c9
 
 ## Uncommitted Desk files
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/DESK-PHASES-22NOV.md
+ M admin-desk/NEXT-CODES-ORDER-22NOV.md
+ M admin-desk/PHASE-TECH-SQL-MAP-22NOV.md
+ M admin-desk/state/REMINDERS.md
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/DESK-PHASES-22NOV.md
+ M docs/claude/admin-desk/NEXT-CODES-ORDER-22NOV.md
+ M docs/claude/admin-desk/PHASE-TECH-SQL-MAP-22NOV.md
+ M docs/claude/admin-desk/RULE-BOOK.md
+ M docs/claude/admin-desk/state/REMINDERS.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+?? admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
+?? docs/claude/admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
