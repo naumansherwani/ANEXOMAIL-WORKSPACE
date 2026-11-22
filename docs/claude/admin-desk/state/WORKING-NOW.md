@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 08:47 PKT) - read this FIRST for the Desk after a compaction
-DOING: D1d D1e GREEN live, D3b fix written
-NEXT STEP: his install, D3b live look, TCP paste, D4
-HIS LAST WORD: his 08:46 word
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 08:51 PKT) - read this FIRST for the Desk after a compaction
+DOING: status report, phase A order written, D3b fix not installed
+NEXT STEP: his install, D3b live look, D4 gate rule, D2 proof
+HIS LAST WORD: his 08:51 word
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -64,6 +64,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- ac0a4826 22 Nov 08:47 ledger line f6ee6a88
 - 79740592 22 Nov 08:47 ledger line 9129a635
 - 9129a635 22 Nov 08:47 D1d D1e live
 - 825972df 22 Nov 08:38 ledger line f9d602dd
@@ -71,9 +72,10 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - f4011d6d 22 Nov 08:38 D1e
 - 5c5cf795 22 Nov 08:27 ledger line cc788a70
 - f93ca0b5 22 Nov 08:27 ledger line 61b14756
-- 61b14756 22 Nov 08:27 D1d
 
 ## Uncommitted Desk files
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/DESK-PHASES-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
