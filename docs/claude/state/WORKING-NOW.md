@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 22:22 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 22:22 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: D5a-2 registry = the 4 live landing-page plans (read in my Chrome); AD6d retires AI; proved on fresh DB
 NEXT STEP: his 3 pulls, my look, then D5a-3b
 HIS LAST WORD: his 22:21 word: landing page pe plans
@@ -18,41 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 1b54bab4 22 Nov 22:22 D5a-2 landing page plans
 - 898dcced 22 Nov 22:20 ledger line 3bea45d8
 - 3bea45d8 22 Nov 22:20 D5a-2 reopened awam ladder correction
 - 57926485 22 Nov 22:18 ledger line d336c686
 - d336c686 22 Nov 22:18 D5a-2c trial correction AD6c
-- 34d8bbed 22 Nov 21:56 ledger line 61042086
 
 ## Uncommitted files (half-done work if any)
- M admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
- M admin-desk/D5A-GREEN-LIST-22NOV.md
- M admin-desk/server/src/lookup.rs
- M admin-desk/server/src/packages.rs
- M admin-desk/sql/AD6d.sql
- M admin-desk/sql/checks/AD6d-check.sql
- M admin-desk/state/HANDOFF-22NOV.md
- M docs/claude/admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
- M docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md
- M docs/claude/admin-desk/server/src/lookup.rs
- M docs/claude/admin-desk/server/src/packages.rs
- M docs/claude/admin-desk/sql/AD6d.sql
- M docs/claude/admin-desk/sql/checks/AD6d-check.sql
- M docs/claude/admin-desk/state/HANDOFF-22NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/admin-desk/server/src/lookup.rs        |  2 +-
- docs/claude/admin-desk/server/src/packages.rs      |  8 ++---
- docs/claude/admin-desk/sql/AD6d.sql                | 20 +-----------
- docs/claude/admin-desk/sql/checks/AD6d-check.sql   |  7 ++--
- docs/claude/admin-desk/state/HANDOFF-22NOV.md      |  2 +-
- docs/claude/state/WORKING-NOW.md                   | 38 ++++++++++++----------
- docs/claude/tech-contracts/CURRENT.md              |  6 ++--
- 16 files changed, 45 insertions(+), 85 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 38 ++------------------------------------
+ 1 file changed, 2 insertions(+), 36 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -63,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (4017e32a48bc39f185d780cb7b6b6a5cb2e954cd)
+WIP snapshot: refs/wip/last (2f5243fb059e350a4e4145cb4c03bfee3a834e56)
