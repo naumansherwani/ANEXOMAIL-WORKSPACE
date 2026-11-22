@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 00:29 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 00:29 PKT) - read this FIRST for the Desk after a compaction
 DOING: R3a2-dbsc code done (AD8 + dbsc.rs), responder done; committing both
 NEXT STEP: his ONE desk-install + ad-auto + sign-in
 HIS LAST WORD: his 00:22/00:25 orders
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 97a039c1 23 Nov 00:29 R3a2-dbsc device-bound sessions + control plane responder
 - baeaccce 22 Nov 23:39 ledger line 32747762
 - 32747762 22 Nov 23:39 D5a-3b contract v2 and folder phases
 - e12110bb 22 Nov 23:34 ledger line 0c4cbfb4
@@ -72,29 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 610119ff 22 Nov 22:42 ledger line ed337fb9
 - ed337fb9 22 Nov 22:42 D5a-2 GREEN and phase R plan
 - 2f2c8c6f 22 Nov 22:27 ledger line 61797108
-- 61797108 22 Nov 22:27 throttle answered
 
 ## Uncommitted Desk files
-A  admin-desk/scripts/cp-install.sh
-MM admin-desk/scripts/desk-install.sh
- M admin-desk/server/Cargo.lock
- M admin-desk/server/Cargo.toml
- M admin-desk/server/src/auth.rs
- M admin-desk/server/src/bridge.rs
- M admin-desk/server/src/door.rs
-M  admin-desk/server/src/lookup.rs
-MM admin-desk/server/src/main.rs
- M admin-desk/state/HANDOFF-22NOV.md
-A  docs/claude/admin-desk/scripts/cp-install.sh
-MM docs/claude/admin-desk/scripts/desk-install.sh
- M docs/claude/admin-desk/server/Cargo.lock
- M docs/claude/admin-desk/server/Cargo.toml
- M docs/claude/admin-desk/server/src/auth.rs
- M docs/claude/admin-desk/server/src/bridge.rs
- M docs/claude/admin-desk/server/src/door.rs
-M  docs/claude/admin-desk/server/src/lookup.rs
-MM docs/claude/admin-desk/server/src/main.rs
- M docs/claude/admin-desk/state/HANDOFF-22NOV.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
