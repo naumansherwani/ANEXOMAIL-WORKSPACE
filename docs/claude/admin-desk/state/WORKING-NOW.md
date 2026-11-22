@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 11:10 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 11:10 PKT) - read this FIRST for the Desk after a compaction
 DOING: AD5 address-role SQL coded and proved on PG16; mailbox role plan written
 NEXT STEP: his ad-auto runs AD5; then staff queues, SLA, sender identity, real tests; C4 asks him
 HIS LAST WORD: his 11:06 mailbox role priority
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e37c3325 22 Nov 11:10 AD5 mailbox roles
 - 49e9c113 22 Nov 10:52 ledger line f7a7f3ee
 - f7a7f3ee 22 Nov 10:52 Checkpoint: WORKING-NOW refresh
 - 212f79e7 22 Nov 10:52 ledger line cf070b58
@@ -72,24 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 7604cf79 22 Nov 10:51 ledger line 8f7bb606
 - 8f7bb606 22 Nov 10:51 Desk D5a-4 lookup audit SQL
 - e8487991 22 Nov 10:48 ledger line 0407b750
-- 0407b750 22 Nov 10:48 Desk D5a-1 contract and no-money gate, refund law
 
 ## Uncommitted Desk files
- M admin-desk/BLUEPRINT-ADMIN-DESK.md
- M admin-desk/DESK-PHASES-22NOV.md
- M admin-desk/REMAINING-LIST-22NOV.md
- M admin-desk/state/REMINDERS.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
- M docs/claude/admin-desk/REMAINING-LIST-22NOV.md
- M docs/claude/admin-desk/state/REMINDERS.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/MAILBOX-ROLES-PLAN-22NOV.md
-?? admin-desk/sql/AD5.sql
-?? admin-desk/sql/checks/AD5-check.sql
-?? docs/claude/admin-desk/MAILBOX-ROLES-PLAN-22NOV.md
-?? docs/claude/admin-desk/sql/AD5.sql
-?? docs/claude/admin-desk/sql/checks/AD5-check.sql
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
