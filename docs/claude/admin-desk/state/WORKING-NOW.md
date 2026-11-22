@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:55 PKT) - read this FIRST for the Desk after a compaction
-DOING: 1k NOT green: services row mark bug 2 fixed in code, needs his desk-install + my click
-NEXT STEP: his desk-install, my Chrome click, then 1k GREEN, then 1l
-HIS LAST WORD: his photo 03:53
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 04:04 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1k: Ice blue chosen; box-shadow loophole fixed (desk-D1zbEnu0.js), installer prints build seconds; waiting his install
+NEXT STEP: his desk-install, my screenshot proof, 1k GREEN, 1l
+HIS LAST WORD: his 04:03
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- b4d70200 23 Nov 03:55 ledger line d5fe6738
 - d5fe6738 23 Nov 03:55 1k fix: mark colour blue
 - 45c75881 23 Nov 03:54 ledger line e283c4d5
 - e283c4d5 23 Nov 03:54 1k fix: services row mark follows click
@@ -72,10 +73,16 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - c195b47a 23 Nov 03:53 1k GREEN, NOW 1l
 - 7017b124 23 Nov 03:43 ledger line 2eb5f7e6
 - 2eb5f7e6 23 Nov 03:43 1k: AD1c repair + ad-auto retry
-- 602c8c54 23 Nov 03:39 ledger line 4fc3746f
 
 ## Uncommitted Desk files
+ M admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
+ M admin-desk/NOW-LIST-23NOV.md
+ M admin-desk/scripts/desk-install.sh
+ M docs/claude/admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
+ M docs/claude/admin-desk/scripts/desk-install.sh
  M docs/claude/admin-desk/state/WORKING-NOW.md
+ M founder-web/src/desk/DeskCards.tsx
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

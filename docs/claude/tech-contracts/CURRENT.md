@@ -3315,3 +3315,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 1k bug 2: Service health red mark follows the clicked row (data-pick, keyboard too); 1k GREEN withdrawn until installed and clicked live. TESTED: tsc clean, bun 66 pass, vite build. TECH-LAW CHECKED
 
 - 1k bug 3: return/pick mark is the Desk light-blue (#8FB8FF), red only for real outages. TESTED: tsc clean, bun 66 pass, vite build; live look after his install. TECH-LAW CHECKED
+
+- 1k: Ice blue pick; old row glow now cleared (box-shadow:none); installer prints build seconds. TESTED: tsc clean, bun 66 pass, vite build, bash -n; live screenshot proof after his install. TECH-LAW CHECKED

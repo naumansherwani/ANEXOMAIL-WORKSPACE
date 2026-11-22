@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:55 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 1k NOT green: services row mark bug 2 fixed in code, needs his desk-install + my click
-NEXT STEP: his desk-install, my Chrome click, then 1k GREEN, then 1l
-HIS LAST WORD: his photo 03:53
+# WORKING NOW (manual checkpoint, 23 Nov 2026 04:04 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 1k: Ice blue chosen; box-shadow loophole fixed (desk-D1zbEnu0.js), installer prints build seconds; waiting his install
+NEXT STEP: his desk-install, my screenshot proof, 1k GREEN, 1l
+HIS LAST WORD: his 04:03
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,36 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- b4d70200 23 Nov 03:55 ledger line d5fe6738
 - d5fe6738 23 Nov 03:55 1k fix: mark colour blue
 - 45c75881 23 Nov 03:54 ledger line e283c4d5
 - e283c4d5 23 Nov 03:54 1k fix: services row mark follows click
 - 459bf9ff 23 Nov 03:53 ledger line c195b47a
-- c195b47a 23 Nov 03:53 1k GREEN, NOW 1l
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
+ M admin-desk/NOW-LIST-23NOV.md
+ M admin-desk/scripts/desk-install.sh
+ M docs/claude/admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
+ M docs/claude/admin-desk/scripts/desk-install.sh
  M docs/claude/state/WORKING-NOW.md
+ D founder-web/dist-desk/assets/desk-BV_W3xnS.js
+ M founder-web/dist-desk/desk.html
+ M founder-web/src/desk/DeskCards.tsx
+?? founder-web/dist-desk/assets/desk-D1zbEnu0.js
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 22 +---------------------
- 1 file changed, 1 insertion(+), 21 deletions(-)
+ docs/claude/admin-desk/D5B-RUNBOOKS-LIST-23NOV.md |   4 +
+ docs/claude/admin-desk/NOW-LIST-23NOV.md          |   1 +
+ docs/claude/admin-desk/scripts/desk-install.sh    |   2 +-
+ docs/claude/state/WORKING-NOW.md                  |  33 +++---
+ founder-web/dist-desk/assets/desk-BV_W3xnS.js     | 127 ----------------------
+ founder-web/dist-desk/desk.html                   |   2 +-
+ founder-web/src/desk/DeskCards.tsx                |   2 +-
+ 10 files changed, 29 insertions(+), 149 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +58,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (04c68279c37025e1c11d50ae1ce2d0a701f71d64)
+WIP snapshot: refs/wip/last (dece3151d7dc7f84bd893dfe7f2238f88368be35)
