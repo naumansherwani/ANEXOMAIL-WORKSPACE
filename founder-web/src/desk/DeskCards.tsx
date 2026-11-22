@@ -27,7 +27,7 @@ const CSS = `
 .dcp-back{display:inline-flex;align-items:center;min-height:44px;color:#BFD6FF;text-decoration:none}
 .dcp-list{display:grid;gap:10px;margin:0;padding:0;list-style:none}.dcp-item{padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--glass);min-width:0;overflow-wrap:anywhere}
 .dcp-trend{display:flex;align-items:center;gap:10px;margin-top:6px;color:var(--mute);font-size:12px}.dcp-trend svg{width:110px;height:24px;flex:none}.dcp-trend polyline{fill:none;stroke:var(--mute);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
-.dcp-item[data-hot=true],.dcb-card[data-from=true],.dcc-card[data-from=true]{border-color:rgba(255,92,92,.7)}.dcp-item b{display:block}.dcp-item small{color:var(--mute)}
+.dcp-item[data-hot=true],.dcp-item[data-want=true],.dcp-item[data-pick=true],.dcb-card[data-from=true],.dcc-card[data-from=true]{border-color:rgba(255,92,92,.7)}.dcp-list:has(.dcp-item[data-pick=true]) .dcp-item[data-want=true]:not([data-pick=true]){border-color:var(--line)}.dcp-item[data-pick=true]{outline:0}.dcp-item b{display:block}.dcp-item small{color:var(--mute)}
 .dcp-head{font-size:clamp(17px,3vw,20px);color:#fff!important;font-weight:600}.dcp-head[data-l=outage]{color:#FFB4B4!important}.dcp-banner{padding:14px 16px;border:1px solid rgba(255,92,92,.6);border-radius:14px;background:rgba(120,16,24,.25);color:#FFD6D6!important}.dcp-dot{display:inline-block;margin:0 8px 0 0;vertical-align:middle}
 .dcp-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.dcp-act{min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.07);color:inherit;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}.dcp-act:hover:not(:disabled){background:rgba(255,255,255,.14)}.dcp-act[data-armed=true]{border-color:rgba(255,160,90,.8)}.dcp-act:disabled{opacity:.5;cursor:default}.dcp-act:focus-visible{outline:2px solid #8FB8FF;outline-offset:2px}.dcp-msg{display:block;margin-top:8px}.dcp-msg[data-ok=false]{color:#FFB4B4}
 .dcp-chip{display:inline-flex;align-items:center;min-height:32px;padding:0 12px;border:1px solid var(--line);border-radius:999px;color:inherit;text-decoration:none;font-size:13px}
@@ -116,11 +116,13 @@ export function DeskSubPage({ sub, search, hash, snap, nav, role = "", act }: { 
   }
   if (card.id === "services") {
     const svcs = live ? asServices(snap.data.services) : null, want = hash.replace(/^#/, "");
+    // the red mark follows the row you click (his 23 Nov 03:53): a plain DOM mark, so no hook sits inside this branch
+    const pickRow = (e: { currentTarget: HTMLElement }) => { const row = e.currentTarget; row.parentElement?.querySelectorAll("[data-pick]").forEach((x) => x.removeAttribute("data-pick")); row.setAttribute("data-pick", "true"); };
     return (
       <Shell title="Service health" back nav={nav}>
         <p>{card.what}.</p>{note && <p role="status">{note}</p>}
         {svcs && <ul className="dcp-list">{svcs.map((s) => (
-          <li key={s.service} id={s.service} className="dcp-item" data-hot={s.service === want || s.state === "outage"}><b>{s.label}{s.critical ? " · critical" : ""}</b>
+          <li key={s.service} id={s.service} className="dcp-item" tabIndex={0} data-hot={s.state === "outage"} data-want={s.service === want} onClick={pickRow} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pickRow(e); } }}><b>{s.label}{s.critical ? " · critical" : ""}</b>
             {s.state === "operational" ? "Operational" : s.state === "degraded" ? "Degraded" : s.state === "outage" ? "Outage" : "Not measured"}<br />
             <small>{[s.last_latency_ms !== null ? `${s.last_latency_ms} ms` : null, ago(s.age_s), s.uptime_24h !== null ? `${s.uptime_24h}% in 24 h` : null].filter(Boolean).join(" · ") || "No probe yet"}</small>
             {(() => { const pts = trendOf(s.service), segs = sparkSegments(pts, 110, 24), w = trendWords(pts); return segs.length > 0 && <div className="dcp-trend" role="img" aria-label={`Latency trend, last ${pts.length} probes: ${w}`}><svg viewBox="0 0 110 24" aria-hidden="true">{segs.map((g, k) => <polyline key={k} points={g} />)}</svg><span>{w} · last {pts.length} probes</span></div>; })()}</li>

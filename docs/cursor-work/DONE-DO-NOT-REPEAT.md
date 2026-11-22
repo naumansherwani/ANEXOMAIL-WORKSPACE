@@ -4343,3 +4343,9 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 1k SQL fix: AD9 helper was PUBLIC-executable (broke AD2+AD3 CHECKs, ad-auto re-ran AD2, deadlock). AD9 revoke, repair AD1c (runs before AD2), ad-auto deadlock retry x6. TESTED: scratch PostgreSQL reproduced the false row, all 16 AD checks 0 false after, AD9 and AD9b rerun clean, bash -n. Not green until his ad-auto + install + Chrome look. TECH-LAW CHECKED
 
 - 1k GREEN: his ad-auto (AD1c CHECK OK, rest already run) + desk-install 7017b124a (3 SAME, desk-CpHI6Kua.js) + my Chrome look (9 runbooks, six parts, checklist, say-this, return mark on the Runbooks card). WIRED: YES / REAL: YES. TESTED: live Chrome look + his server pastes + scratch PostgreSQL. TECH-LAW CHECKED
+
+- 1k bug 2: Service health red mark follows the clicked row (data-pick, keyboard too). TESTED: tsc clean, bun 66 pass, vite build; live click proof after his install. TECH-LAW CHECKED
+
+- 1k bug 2: Service health red mark follows the clicked row (data-pick, keyboard too); 1k GREEN withdrawn until installed and clicked live. TESTED: tsc clean, bun 66 pass, vite build. TECH-LAW CHECKED
+
+- 1k bug 2: Service health red mark follows the clicked row (data-pick, keyboard too); 1k GREEN withdrawn until installed and clicked live. TESTED: tsc clean, bun 66 pass, vite build. TECH-LAW CHECKED
