@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 04:18 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 04:18 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1k = GREEN (his install + my screenshot proof). NOW = 1l D5c Escalate: web research + LIST + ADVANCE-RESEARCH + contract first
 NEXT STEP: 1l research, LIST file, blueprint + NOW-LIST ADVANCE-RESEARCH [1l], contract block, then code
 HIS LAST WORD: his 04:17 paste
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- cba544eb 23 Nov 04:18 1k GREEN, NOW 1l
 - 611b16af 23 Nov 04:10 ledger line c923b616
 - c923b616 23 Nov 04:10 1k: install did not take, need head of output
 - f4451da4 23 Nov 04:04 ledger line 889c9577
@@ -72,13 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - b4d70200 23 Nov 03:55 ledger line d5fe6738
 - d5fe6738 23 Nov 03:55 1k fix: mark colour blue
 - 45c75881 23 Nov 03:54 ledger line e283c4d5
-- e283c4d5 23 Nov 03:54 1k fix: services row mark follows click
 
 ## Uncommitted Desk files
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
