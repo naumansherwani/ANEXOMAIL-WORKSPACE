@@ -12,6 +12,57 @@ export function frame_is_stale(last_frame_ts, now) {
 }
 
 /**
+ * D5a-5 (phase 1i): the ONLY door from a lookup answer to a screen. Returns JSON {"state":"data","body":"..."} | {"state":"refused"} | {"state":"unavailable"}.
+ * status = HTTP status the browser saw (0 for a network error); every doubt, stale, replayed, other-request or malformed answer is "unavailable".
+ * @param {string} pinned_pub_hex
+ * @param {string} nonce_hex
+ * @param {number} now
+ * @param {string} request_id
+ * @param {string} company
+ * @param {number} status
+ * @param {string} envelope
+ * @returns {string}
+ */
+export function lookup_view(pinned_pub_hex, nonce_hex, now, request_id, company, status, envelope) {
+    let deferred8_0;
+    let deferred8_1;
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16) >>> 0;
+        const val6 = +now;
+        const val7 = +status;
+        let ptr0, len0, ptr1, len1, ptr2, len2, ptr3, len3, ptr4, len4;
+        try {
+            ptr0 = passStringToWasm0(pinned_pub_hex, wasm.__wbindgen_export, wasm.__wbindgen_export2);
+            len0 = WASM_VECTOR_LEN;
+            ptr1 = passStringToWasm0(nonce_hex, wasm.__wbindgen_export, wasm.__wbindgen_export2);
+            len1 = WASM_VECTOR_LEN;
+            ptr2 = passStringToWasm0(request_id, wasm.__wbindgen_export, wasm.__wbindgen_export2);
+            len2 = WASM_VECTOR_LEN;
+            ptr3 = passStringToWasm0(company, wasm.__wbindgen_export, wasm.__wbindgen_export2);
+            len3 = WASM_VECTOR_LEN;
+            ptr4 = passStringToWasm0(envelope, wasm.__wbindgen_export, wasm.__wbindgen_export2);
+            len4 = WASM_VECTOR_LEN;
+        } catch (e) {
+            if (ptr4) { wasm.__wbindgen_export3(ptr4, len4 * 1, 1); }
+            if (ptr3) { wasm.__wbindgen_export3(ptr3, len3 * 1, 1); }
+            if (ptr2) { wasm.__wbindgen_export3(ptr2, len2 * 1, 1); }
+            if (ptr1) { wasm.__wbindgen_export3(ptr1, len1 * 1, 1); }
+            if (ptr0) { wasm.__wbindgen_export3(ptr0, len0 * 1, 1); }
+            throw e;
+        }
+        wasm.lookup_view(retptr, ptr0, len0, ptr1, len1, val6, ptr2, len2, ptr3, len3, val7, ptr4, len4);
+        var r0 = getDataViewMemory0().getInt32(retptr + 4 * 0, true);
+        var r1 = getDataViewMemory0().getInt32(retptr + 4 * 1, true);
+        deferred8_0 = r0;
+        deferred8_1 = r1;
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_export3(deferred8_0, deferred8_1, 1);
+    }
+}
+
+/**
  * Build the three request headers (nonce, ts, mac). nonce_hex = 16 random bytes from crypto.getRandomValues (JS), ts = unix seconds.
  * @param {string} token
  * @param {string} method

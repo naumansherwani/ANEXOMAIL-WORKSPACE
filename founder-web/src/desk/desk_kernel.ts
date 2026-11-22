@@ -3,9 +3,10 @@
 // bound to this call's method + path + nonce, fresh clock. After sign-in every request carries the HKDF/HMAC request MAC made in the kernel.
 // An answer that fails is THROWN (DeskRefused), never shown. Transport = the shared pre-session helper realDeps().fetch (no new raw fetch);
 // the browser rides HTTP/3 to the Desk when Alt-Svc is taken. Nothing from the founder kernel or founder keys is used here.
-import init, { request_headers, verify_answer } from "./kernel/anexomail_desk_kernel.js";
+import init, { lookup_view, request_headers, verify_answer } from "./kernel/anexomail_desk_kernel.js";
 import { realDeps } from "../signin_passkey";
 import { DESK_SESSION_KEY } from "./desk_pure";
+import { LOOKUP_PATH, parseLookupView, UNAVAILABLE, type LookupState } from "./desk_lookup_pure";
 
 export const DESK_PIN_KEY = "anexo.desk.kernelpin";
 export class DeskRefused extends Error {}
@@ -30,7 +31,8 @@ async function pin(): Promise<string> {
   pinned = k.pub; return pinned;
 }
 
-export async function deskCall(method: "GET" | "POST", path: string, body?: unknown): Promise<DeskAnswer> {
+/** One sealed round trip: returns what the server said (status + envelope text) plus the nonce and pinned key this call used. NOTHING is trusted here; callers verify in the kernel. */
+async function sealedFetch(method: "GET" | "POST", path: string, body?: unknown): Promise<{ status: number; text: string; nonce: string; pub: string }> {
   await (ready ??= init());
   const pub = await pin();
   const nonce = hex(crypto.getRandomValues(new Uint8Array(16))), ts = nowS();
@@ -43,11 +45,24 @@ export async function deskCall(method: "GET" | "POST", path: string, body?: unkn
   }
   if (b) headers["content-type"] = "application/json";
   const r = await realDeps().fetch(path, { method, headers, body: b || undefined, cache: "no-store", credentials: "same-origin" });
-  const text = await r.text();
+  return { status: r.status, text: await r.text(), nonce, pub };
+}
+
+export async function deskCall(method: "GET" | "POST", path: string, body?: unknown): Promise<DeskAnswer> {
+  const { status, text, nonce, pub } = await sealedFetch(method, path, body);
   let verified: string;
   try { verified = verify_answer(pub, method, path, nonce, nowS(), text); }
   catch (e) { throw new DeskRefused(e instanceof Error ? e.message : String(e)); }
-  return { status: r.status, json: JSON.parse(verified) as unknown };
+  return { status, json: JSON.parse(verified) as unknown };
+}
+
+/** D5a-5 (phase 1i): the customer lookup. The kernel's lookup_view is the ONLY door to a screen: fresh (15 s), this request id, this company, signature, path, nonce.
+ *  ANY doubt (network error, 503, stale, replayed, other request, malformed) returns {state:"unavailable"}; nothing from an earlier call is ever returned or kept. */
+export async function deskLookup(company: string, reason: string, fields: string[], requestId: string): Promise<LookupState> {
+  try {
+    const { status, text, nonce, pub } = await sealedFetch("POST", LOOKUP_PATH, { company_ref: company, reason, fields });
+    return parseLookupView(lookup_view(pub, nonce, nowS(), requestId, company, status, text));
+  } catch { return UNAVAILABLE; }
 }
 
 /** Plain words for a refused answer (no technology words on screen). */

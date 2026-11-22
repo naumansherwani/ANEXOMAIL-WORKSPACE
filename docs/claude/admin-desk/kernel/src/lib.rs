@@ -26,3 +26,14 @@ pub fn verify_frame(pinned_pub_hex: &str, now: f64, last_seq: f64, line: &str) -
 /// Phase C2: true when a track's last verified frame is older than 12 s.
 #[wasm_bindgen]
 pub fn frame_is_stale(last_frame_ts: f64, now: f64) -> bool { wire::is_stale(last_frame_ts as i64, now as i64) }
+
+/// D5a-5 (phase 1i): the ONLY door from a lookup answer to a screen. Returns JSON {"state":"data","body":"..."} | {"state":"refused"} | {"state":"unavailable"}.
+/// status = HTTP status the browser saw (0 for a network error); every doubt, stale, replayed, other-request or malformed answer is "unavailable".
+#[wasm_bindgen]
+pub fn lookup_view(pinned_pub_hex: &str, nonce_hex: &str, now: f64, request_id: &str, company: &str, status: f64, envelope: &str) -> String {
+    match wire::lookup_view(pinned_pub_hex, nonce_hex, now as i64, request_id, company, status as u16, envelope) {
+        wire::LookupView::Data(b) => serde_json::json!({"state": "data", "body": b}).to_string(),
+        wire::LookupView::Refused => "{\"state\":\"refused\"}".to_string(),
+        wire::LookupView::Unavailable => "{\"state\":\"unavailable\"}".to_string(),
+    }
+}

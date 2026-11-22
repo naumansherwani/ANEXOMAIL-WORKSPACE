@@ -2359,3 +2359,5 @@
 - ORDER LOCK 1i..1o saved, order unchanged since 22 Nov 23:39. TESTED: gate pass, docs only, git history check OK
 
 - 1i D5a-5 point list F1-F11 + contract written first. TESTED: gate pass, docs only OK
+
+- 1i D5a-5 code done (NOT green until his install + Chrome look). TECH-LAW CHECKED. TESTED: server cargo 62 passed incl real-PostgreSQL D20 + real HTTP/3 loopback, kernel cargo 9 passed, real WASM in Node with independent Ed25519 OK, bun 45 pass, tsc clean, vite build OK

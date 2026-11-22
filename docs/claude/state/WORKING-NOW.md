@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 02:08 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 1i D5a-5: point list + contract written at repo top; code next (lookup.rs deadline/freshness/breaker/D20, kernel lookup_view)
-NEXT STEP: write 1i code, tests, hostile audit, then install command
-HIS LAST WORD: his 02:07 order: points, plan, web research, then code
+# WORKING NOW (manual checkpoint, 23 Nov 2026 02:14 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 1i D5a-5 code + tests + audit DONE, committed; waits his desk-install then my Chrome look (F11)
+NEXT STEP: his desk-install, then my live Chrome look, then 1i GREEN, then 1j
+HIS LAST WORD: his 02:07 order
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,51 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 0bc1bfc8 23 Nov 02:08 ledger line 327ceebf
 - 327ceebf 23 Nov 02:08 1i plan and list
 - fbea1b8d 23 Nov 02:03 ledger line aff35c7c
 - aff35c7c 23 Nov 02:03 Order lock
 - 1fd877b7 23 Nov 01:54 ledger line 8df10397
-- 8df10397 23 Nov 01:54 Phase A row corrected
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/D5A5-FAIL-CLOSED-LIST-23NOV.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/FOLDER-PHASES-22NOV.md
+ M admin-desk/kernel/src/lib.rs
+ M admin-desk/kernel/src/wire.rs
+ M admin-desk/server/src/lookup.rs
+ M docs/claude/admin-desk/D5A5-FAIL-CLOSED-LIST-23NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/FOLDER-PHASES-22NOV.md
+ M docs/claude/admin-desk/kernel/src/lib.rs
+ M docs/claude/admin-desk/kernel/src/wire.rs
+ M docs/claude/admin-desk/server/src/lookup.rs
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ D founder-web/dist-desk/assets/anexomail_desk_kernel_bg-Lgal3fHB.wasm
+ D founder-web/dist-desk/assets/desk-CaheKM8J.js
+ M founder-web/dist-desk/desk.html
+ M founder-web/src/desk/desk_kernel.ts
+ M founder-web/src/desk/kernel/anexomail_desk_kernel.d.ts
+ M founder-web/src/desk/kernel/anexomail_desk_kernel.js
+ M founder-web/src/desk/kernel/anexomail_desk_kernel_bg.wasm
+ M founder-web/src/desk/kernel/anexomail_desk_kernel_bg.wasm.d.ts
+?? founder-web/dist-desk/assets/anexomail_desk_kernel_bg-pHx6Jilq.wasm
+?? founder-web/dist-desk/assets/desk-C-GRp42D.js
+?? founder-web/src/desk/desk_lookup_pure.test.ts
+?? founder-web/src/desk/desk_lookup_pure.ts
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 21 ++-------------------
- 1 file changed, 2 insertions(+), 19 deletions(-)
+ founder-web/dist-desk/assets/desk-CaheKM8J.js      | 105 -------------
+ founder-web/dist-desk/desk.html                    |   2 +-
+ founder-web/src/desk/desk_kernel.ts                |  23 ++-
+ .../src/desk/kernel/anexomail_desk_kernel.d.ts     |   7 +
+ .../src/desk/kernel/anexomail_desk_kernel.js       |  51 +++++++
+ .../src/desk/kernel/anexomail_desk_kernel_bg.wasm  | Bin 117016 -> 120010 bytes
+ .../desk/kernel/anexomail_desk_kernel_bg.wasm.d.ts |   1 +
+ 22 files changed, 598 insertions(+), 177 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +73,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (edd5a9beb58c71caf0d0b2598355a54fc6757589)
+WIP snapshot: refs/wip/last (41eb500d6aa8ae115da1fcfc76beb9a4ba99803c)

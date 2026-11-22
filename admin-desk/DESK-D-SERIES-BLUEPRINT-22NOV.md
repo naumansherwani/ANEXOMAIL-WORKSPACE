@@ -617,3 +617,7 @@ Phase 1h. Advance technology: PostgreSQL audit-first SHA-256 hash chain (fadm_lo
 Proof: his ad-auto paste "AD4b run and CHECK OK" (21 rows true); desk-install step 8/8 "AUDIT EXPORT OK" local + Storage Box; my Chrome: the four doors answer 400 unsigned_request + no-store (live and sealed); scratch tests: selftest, 64-link parallel chain, upgrade DB, tamper exit 3, cargo 58 passed.
 WIRED: YES / REAL: YES / TECH-LAW CHECKED.
 Open, written plainly: no real lookup row exists yet (lookup screen = phase 1j); signed-in door call needs his one sign-in. NEXT: 1i D5a-5 fail-closed proof, then 1j screen.
+
+## PART 0o. D5a-5 FAIL-CLOSED (phase 1i), code + tests + audit done 23 Nov 2026 02:5x PKT (NOT green: waits his install + my Chrome look)
+Advance technology: Rust + Tokio 6 s deadline over quinn + h3 (TLS 1.3 AES-256-GCM, X25519MLKEM768), Ed25519-signed answered_at, 15 s freshness vs the Desk's signed envelope time, circuit breaker, no-store, PostgreSQL D20 (database down before and during), Rust WASM kernel lookup_view (Rule 52), React 19 + TS state mapping (desk_lookup_pure.ts).
+Proof so far: server 62 tests, kernel 9, bun 45, real WASM in Node with an independent Ed25519 signer. Open: F11 live on his server.

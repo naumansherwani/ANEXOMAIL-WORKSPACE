@@ -14,6 +14,12 @@ use serde_json::{json, Map, Value};
 const CONTRACT: &str = include_str!("../contract/DESK-LOOKUP-CONTRACT.json");
 pub const AUD: &str = "desk-lookup";
 pub const EXPIRY: i64 = 60;
+/// D5a-5 (1i): a verified answer may be at most this old when it arrives (was 60 s); never older than the request it answers.
+pub const FRESH: i64 = 15;
+/// D5a-5 (1i): ONE total deadline for the whole Control Plane call and for the session/database check before it.
+pub const DEADLINE_SECS: u64 = 6;
+/// D5a-5 (1i): circuit breaker: BREAKER_FAILS failures inside BREAKER_WINDOW seconds open it for BREAKER_OPEN seconds.
+pub const BREAKER_FAILS: i64 = 3; pub const BREAKER_WINDOW: i64 = 30; pub const BREAKER_OPEN: i64 = 15;
 const REQ_DOMAIN: &str = "anexo-desk-lookup-v1";
 const ANS_DOMAIN: &str = "anexo-control-answer-v1";
 
@@ -43,6 +49,10 @@ pub fn build_request(s: &Signer, request_id: &str, employee: &str, company: &str
 pub enum Reject { Unavailable, Refused }
 /// Verify the Control Plane answer and keep ONLY the requested whitelist fields. Anything wrong = Unavailable (fail closed).
 pub fn accept(env: &str, cp_pub_hex: &str, request_id: &str, company: &str, requested: &[String], now: i64) -> Result<Map<String, Value>, Reject> {
+    accept_for(env, cp_pub_hex, request_id, company, requested, now - FRESH, now)
+}
+/// Same, and the answer must also be NOT OLDER than the request it answers (`issued` = the request's own issued_at, 2 s clock skew allowed).
+pub fn accept_for(env: &str, cp_pub_hex: &str, request_id: &str, company: &str, requested: &[String], issued: i64, now: i64) -> Result<Map<String, Value>, Reject> {
     use ed25519_dalek::{Signature, Verifier, VerifyingKey};
     let e: Value = serde_json::from_str(env).map_err(|_| Reject::Unavailable)?;
     let body = e["body"].as_str().ok_or(Reject::Unavailable)?;
@@ -53,13 +63,36 @@ pub fn accept(env: &str, cp_pub_hex: &str, request_id: &str, company: &str, requ
     let b: Value = serde_json::from_str(body).map_err(|_| Reject::Unavailable)?;
     if b["request_id"].as_str() != Some(request_id) || b["company_ref"].as_str() != Some(company) { return Err(Reject::Unavailable); }
     let at = b["answered_at"].as_i64().ok_or(Reject::Unavailable)?;
-    if at > now + 5 || now - at > EXPIRY { return Err(Reject::Unavailable); }
+    if at > now + 5 || now - at > FRESH || at < issued - 2 { return Err(Reject::Unavailable); }
     if b["refused"].as_bool() == Some(true) { return Err(Reject::Refused); }
     let ok = allowed(); let got = b["fields"].as_object().ok_or(Reject::Unavailable)?;
     let mut out = Map::new();
     for f in requested { if ok.contains(f) { if let Some(v) = got.get(f) { out.insert(f.clone(), v.clone()); } } }
     Ok(out)
 }
+
+/// D5a-5 (1i) circuit breaker. Pure state machine (testable): `fails` inside the window open it; while open every call is answered unavailable at once;
+/// after BREAKER_OPEN seconds ONE probe is let through (half-open); a success closes it, a failure re-opens it.
+#[derive(Default)]
+pub struct Breaker { st: std::sync::Mutex<(i64, i64, i64)> } // (fail count, first fail time, open until)
+impl Breaker {
+    pub fn allow(&self, now: i64) -> bool {
+        let mut g = self.st.lock().unwrap_or_else(|e| e.into_inner());
+        if g.2 == 0 || now >= g.2 { if g.2 != 0 { g.2 = now + BREAKER_OPEN; } return true; } // closed, or half-open: this ONE probe goes out and the gate shuts again
+        false
+    }
+    pub fn ok(&self) { *self.st.lock().unwrap_or_else(|e| e.into_inner()) = (0, 0, 0); }
+    pub fn fail(&self, now: i64) {
+        let mut g = self.st.lock().unwrap_or_else(|e| e.into_inner());
+        if now - g.1 > BREAKER_WINDOW { g.0 = 0; g.1 = now; }
+        g.0 += 1;
+        if g.0 >= BREAKER_FAILS || g.2 != 0 { g.2 = now + BREAKER_OPEN; }
+    }
+    #[allow(dead_code)]
+    pub fn is_open(&self, now: i64) -> bool { let g = self.st.lock().unwrap_or_else(|e| e.into_inner()); g.2 != 0 && now < g.2 }
+}
+static BREAKER: std::sync::OnceLock<Breaker> = std::sync::OnceLock::new();
+fn breaker() -> &'static Breaker { BREAKER.get_or_init(Breaker::default) }
 
 /// Where the Control Plane is reached. Off = not configured: every lookup is "unavailable" (honest, fail closed).
 pub enum Plane { Off, H3 { addr: std::net::SocketAddr, host: String, ca_pem: Option<Vec<u8>> }, #[cfg(test)] Double(Box<dyn Fn(&str) -> Option<String> + Send + Sync>) }
@@ -122,18 +155,28 @@ pub async fn selftest(company: &str) -> Result<String, String> {
 }
 fn cp_pub() -> String { std::env::var("DESK_CONTROL_PLANE_PUBKEY").unwrap_or_default() }
 
-fn out(status: StatusCode, body: Value) -> Response { (status, [(header::CONTENT_TYPE, "application/json")], body.to_string()).into_response() }
+fn out(status: StatusCode, body: Value) -> Response { (status, [(header::CONTENT_TYPE, "application/json"), (header::CACHE_CONTROL, "no-store")], body.to_string()).into_response() }
+/// ONE honest shape for every failure (D5a-5 F5): no fields, no cause, freshness null. The cause goes to the server log only.
 fn unavailable(rid: &str) -> Response { out(StatusCode::SERVICE_UNAVAILABLE, json!({"error": "data_unavailable", "request_id": rid, "freshness": null})) }
 
 /// POST /desk/v1/customer/lookup  {company_ref, reason, fields:[..]}
-pub async fn lookup(h: HeaderMap, body: Bytes) -> Response { run(&h, &body, &plane(), &cp_pub(), crate::signed::now_secs()).await }
+pub async fn lookup(h: HeaderMap, body: Bytes) -> Response { run(&h, &body, &plane(), &cp_pub(), crate::signed::now_secs(), breaker()).await }
 
-pub(crate) async fn run(h: &HeaderMap, body: &[u8], plane: &Plane, cp_key: &str, now: i64) -> Response {
+/// ONE total deadline over the whole Control Plane call (connect + request + answer). Slow, hanging or silent = None = unavailable.
+pub(crate) async fn ask_bounded(plane: &Plane, env: &str, secs: u64) -> Option<String> { tokio::time::timeout(std::time::Duration::from_secs(secs), plane.ask(env)).await.ok().flatten() }
+
+pub(crate) async fn run(h: &HeaderMap, body: &[u8], plane: &Plane, cp_key: &str, now: i64, brk: &Breaker) -> Response {
     let Ok(v) = serde_json::from_slice::<Value>(body) else { return out(StatusCode::UNPROCESSABLE_ENTITY, json!({"error": "refused"})) };
     let company = v["company_ref"].as_str().unwrap_or(""); let reason = v["reason"].as_str().unwrap_or("");
     let fields: Vec<String> = v["fields"].as_array().map(|a| a.iter().filter_map(|x| x.as_str().map(str::to_string)).collect()).unwrap_or_default();
     if !valid_ref(company) || !valid_reason(reason) || !valid_fields(&fields) { return out(StatusCode::UNPROCESSABLE_ENTITY, json!({"error": "refused"})); }
-    let (c, who) = match owner(h).await { Ok(x) => x, Err(r) => return r };
+    // D20: the session + database check has its own deadline; a database that is down or slow = the SAME unavailable shape, nothing shown
+    let (c, who) = match tokio::time::timeout(std::time::Duration::from_secs(DEADLINE_SECS), owner(h)).await {
+        Err(_) => { eprintln!("desk lookup: session check timed out"); return unavailable("") }
+        Ok(Err(r)) if r.status() == StatusCode::SERVICE_UNAVAILABLE => { eprintln!("desk lookup: database unavailable before the audit line"); return unavailable("") }
+        Ok(Err(r)) => return r,
+        Ok(Ok(x)) => x,
+    };
     let rid = uuid4();
     let arr = format!("array[{}]::text[]", fields.iter().map(|f| lit(f)).collect::<Vec<_>>().join(","));
     // 2) audit line first (also the permission check + burst breaker inside PostgreSQL)
@@ -143,22 +186,27 @@ pub(crate) async fn run(h: &HeaderMap, body: &[u8], plane: &Plane, cp_key: &str,
         Err(e) => return match e.code() {
             Some(k) if *k == tokio_postgres::error::SqlState::INSUFFICIENT_PRIVILEGE => out(StatusCode::FORBIDDEN, json!({"error": "not_allowed"})),
             Some(k) if *k == tokio_postgres::error::SqlState::CHECK_VIOLATION => out(StatusCode::UNPROCESSABLE_ENTITY, json!({"error": "refused"})),
-            _ => { eprintln!("desk lookup: db: {e}"); out(StatusCode::SERVICE_UNAVAILABLE, json!({"error": "db_unavailable"})) }
+            _ => { eprintln!("desk lookup: db: {e}"); unavailable("") }
         },
     }
     let finish = |o: &'static str| format!("select desk.fadm_lookup_finish('{who}'::uuid, '{rid}'::uuid, '{o}')::text");
     // 3) signed request out
     let Some(s) = crate::signed::signer() else { let _ = rows(&c, &finish("unavailable")).await; return unavailable(&rid) };
     let env = build_request(s, &rid, &who, company, reason, &fields, now);
-    let Some(ans) = plane.ask(&env).await else { let _ = rows(&c, &finish("unavailable")).await; return unavailable(&rid) };
-    // 4) verify + whitelist, 5) close the audit line; if it cannot be closed, nothing is shown
-    match accept(&ans, cp_key, &rid, company, &fields, now) {
+    // D5a-5: breaker open = answer unavailable at once (the audit line is still closed); otherwise ONE total deadline for the whole call
+    let started = std::time::Instant::now();
+    let allowed_now = brk.allow(now);
+    let asked = if allowed_now { ask_bounded(plane, &env, DEADLINE_SECS).await } else { eprintln!("desk lookup: breaker open"); None };
+    let Some(ans) = asked else { if allowed_now { brk.fail(now); } let _ = rows(&c, &finish("unavailable")).await; return unavailable(&rid) };
+    let now2 = now + started.elapsed().as_secs() as i64;
+    match accept_for(&ans, cp_key, &rid, company, &fields, now, now2) {
         Ok(f) => {
+            brk.ok();
             if rows(&c, &finish("answered")).await.is_err() { return unavailable(&rid); }
             out(StatusCode::OK, json!({"request_id": rid, "company_ref": company, "answered_at": now, "fields": f}))
         }
-        Err(Reject::Refused) => { let _ = rows(&c, &finish("refused")).await; out(StatusCode::FORBIDDEN, json!({"error": "control_plane_refused", "request_id": rid})) }
-        Err(Reject::Unavailable) => { let _ = rows(&c, &finish("unavailable")).await; unavailable(&rid) }
+        Err(Reject::Refused) => { brk.ok(); let _ = rows(&c, &finish("refused")).await; out(StatusCode::FORBIDDEN, json!({"error": "control_plane_refused", "request_id": rid})) }
+        Err(Reject::Unavailable) => { brk.fail(now); let _ = rows(&c, &finish("unavailable")).await; unavailable(&rid) }
     }
 }
 
@@ -268,8 +316,50 @@ mod tests {
         let untrusted = Plane::H3 { addr, host: "controlplane.test".into(), ca_pem: Some(Vec::new()) };
         assert!(untrusted.ask(&req).await.is_none(), "a Control Plane whose certificate we do not trust gets nothing");
     }
+    #[test] fn answer_must_be_fresh_and_not_older_than_the_request() {
+        let (k, p) = cp(); let req = f(&["service_state"]); let ok = json!({"service_state": "active"});
+        let a = answer(&k, RID, "acme-1234", 1000, ok.clone(), false);
+        assert!(accept(&a, &p, RID, "acme-1234", &req, 1000 + FRESH).is_ok(), "exactly at the limit");
+        assert_eq!(accept(&a, &p, RID, "acme-1234", &req, 1000 + FRESH + 1), Err(Reject::Unavailable), "16 s old = refused (was 60 s)");
+        assert_eq!(accept_for(&a, &p, RID, "acme-1234", &req, 1100, 1101), Err(Reject::Unavailable), "genuine but older than the request it claims to answer");
+        assert!(accept_for(&a, &p, RID, "acme-1234", &req, 1002, 1005).is_ok(), "2 s clock skew allowed");
+        assert_eq!(accept_for(&a, &p, RID, "acme-1234", &req, 1003, 1005), Err(Reject::Unavailable), "3 s older than the request");
+        assert_eq!(accept(&answer(&k, RID, "acme-1234", 1006, ok, false), &p, RID, "acme-1234", &req, 1000), Err(Reject::Unavailable), "more than 5 s in the future");
+    }
+    #[test] fn breaker_opens_after_three_fails_probes_once_and_closes_on_success() {
+        let b = Breaker::default();
+        assert!(b.allow(100)); b.fail(100); b.fail(101); assert!(!b.is_open(101), "two failures: still closed");
+        b.fail(102); assert!(b.is_open(102) && !b.allow(102) && !b.allow(110), "third failure opens it");
+        assert!(b.allow(102 + BREAKER_OPEN), "after 15 s ONE probe goes out"); assert!(!b.allow(102 + BREAKER_OPEN), "and the gate shuts again until it reports");
+        b.fail(102 + BREAKER_OPEN); assert!(b.is_open(102 + BREAKER_OPEN + 1), "a failed probe re-opens it");
+        assert!(b.allow(102 + 2 * BREAKER_OPEN)); b.ok(); assert!(!b.is_open(102 + 2 * BREAKER_OPEN) && b.allow(102 + 2 * BREAKER_OPEN + 1), "a success closes it");
+        let c = Breaker::default(); c.fail(0); c.fail(10); c.fail(31); assert!(!c.is_open(31), "failures older than the 30 s window do not count");
+    }
+    #[test] fn every_response_is_no_store_and_unavailable_has_no_data() {
+        let r = unavailable("rid-1"); assert_eq!(r.status(), StatusCode::SERVICE_UNAVAILABLE);
+        assert_eq!(r.headers().get(header::CACHE_CONTROL).unwrap(), "no-store");
+        assert_eq!(out(StatusCode::OK, json!({})).headers().get(header::CACHE_CONTROL).unwrap(), "no-store");
+    }
+    #[tokio::test] async fn a_control_plane_that_never_answers_is_cut_at_the_deadline() {
+        let d = std::env::temp_dir().join(format!("deskcp-hang-{}", std::process::id())); let _ = std::fs::create_dir_all(&d);
+        let (kf, cf) = (d.join("k.pem"), d.join("c.pem"));
+        let ok = std::process::Command::new("openssl").args(["req","-x509","-newkey","ec","-pkeyopt","ec_paramgen_curve:prime256v1","-nodes","-days","1","-subj","/CN=controlplane.test","-addext","subjectAltName=DNS:controlplane.test","-keyout",kf.to_str().unwrap(),"-out",cf.to_str().unwrap()]).output().map(|o| o.status.success()).unwrap_or(false);
+        if !ok { eprintln!("no openssl: skipped"); return; }
+        let (cert, key) = (std::fs::read(&cf).unwrap(), std::fs::read(&kf).unwrap());
+        let ep = quinn::Endpoint::server(crate::h3::quic_config(crate::h3::server_config(&cert, &key).unwrap()).unwrap(), "127.0.0.1:0".parse().unwrap()).unwrap();
+        let addr = ep.local_addr().unwrap();
+        let router = axum::Router::new().route(CP_PATH, axum::routing::post(|_b: String| async { tokio::time::sleep(std::time::Duration::from_secs(60)).await; (StatusCode::OK, String::new()) }));
+        tokio::spawn(crate::h3::serve(ep, router, "controlplane.test".into(), None));
+        let plane = Plane::H3 { addr, host: "controlplane.test".into(), ca_pem: Some(cert) };
+        let t = std::time::Instant::now();
+        assert!(ask_bounded(&plane, "{}", 1).await.is_none(), "silence = no answer");
+        assert!(t.elapsed().as_secs() < 3, "cut at the deadline, not after the 10 s inner timeout");
+        // nothing listens at all: connection refused/timeout also ends as None within the deadline
+        let dead = Plane::H3 { addr: "127.0.0.1:9".parse().unwrap(), host: "controlplane.test".into(), ca_pem: None };
+        let t = std::time::Instant::now(); assert!(ask_bounded(&dead, "{}", 2).await.is_none()); assert!(t.elapsed().as_secs() < 4);
+    }
     /// Rust -> PostgreSQL: audit line BEFORE the answer, outcome closed after, refusal and unavailable paths, on the scratch database (needs DESK_TEST_ADMIN_URL; skipped otherwise).
-    #[tokio::test] async fn database_flow_audit_first_and_fail_closed() {
+    #[tokio::test(flavor = "multi_thread")] async fn database_flow_audit_first_and_fail_closed() {
         let Ok(admin) = std::env::var("DESK_TEST_ADMIN_URL") else { eprintln!("no DESK_TEST_ADMIN_URL: skipped"); return; };
         let (a, conn) = tokio_postgres::connect(&admin, tokio_postgres::NoTls).await.unwrap(); tokio::spawn(conn);
         let q = |sql: String| { let a = &a; async move { crate::door::rows(a, &sql).await.unwrap() } };
@@ -295,22 +385,64 @@ mod tests {
         let rid_of = |r: Value| r["request_id"].as_str().unwrap().to_string();
         let jbody = |r: Response| async move { let st = r.status(); let b = axum::body::to_bytes(r.into_body(), 1 << 20).await.unwrap(); (st, serde_json::from_slice::<Value>(&b).unwrap()) };
         // 1) good path: 200, only the requested whitelist fields, audit line first then answered
-        let (st, v) = jbody(run(&h_agent, body, &plane, &p, now).await).await;
+        let (st, v) = jbody(run(&h_agent, body, &plane, &p, now, &Breaker::default()).await).await;
         assert_eq!(st, StatusCode::OK, "{v}"); assert_eq!(v["fields"]["service_state"], "active"); assert_eq!(v["fields"]["usage_seats"], 12); assert!(v["fields"].get("unlisted_field").is_none());
         assert_eq!(outcomes(rid_of(v)).await, vec!["requested", "answered"]);
         // 2) Control Plane not configured: unavailable, nothing shown, line closed as unavailable
-        let (st, v) = jbody(run(&h_agent, body, &Plane::Off, &p, now).await).await;
+        let (st, v) = jbody(run(&h_agent, body, &Plane::Off, &p, now, &Breaker::default()).await).await;
         assert_eq!(st, StatusCode::SERVICE_UNAVAILABLE); assert_eq!(v["error"], "data_unavailable"); assert!(v.get("fields").is_none());
         assert_eq!(outcomes(rid_of(v)).await, vec!["requested", "unavailable"]);
         // 3) answer signed by a key we do not trust: unavailable
-        let (st, v) = jbody(run(&h_agent, body, &plane, &hex(SigningKey::from_bytes(&[9u8; 32]).verifying_key().as_bytes()), now).await).await;
+        let (st, v) = jbody(run(&h_agent, body, &plane, &hex(SigningKey::from_bytes(&[9u8; 32]).verifying_key().as_bytes()), now, &Breaker::default()).await).await;
         assert_eq!(st, StatusCode::SERVICE_UNAVAILABLE); assert_eq!(outcomes(rid_of(v)).await, vec!["requested", "unavailable"]);
         // 4) a person with no access: refused by PostgreSQL, no lookup row at all
         let before = q("select count(*)::text from desk.fadm_lookup".to_string()).await[0].get(0).unwrap().to_string();
-        let (st, _) = jbody(run(&h_loner, body, &plane, &p, now).await).await; assert_eq!(st, StatusCode::FORBIDDEN);
+        let (st, _) = jbody(run(&h_loner, body, &plane, &p, now, &Breaker::default()).await).await; assert_eq!(st, StatusCode::FORBIDDEN);
         // 5) bad input never reaches the database; no session = 401
-        let (st, _) = jbody(run(&h_agent, br#"{"company_ref":"x","reason":"short","fields":["service_state"]}"#, &plane, &p, now).await).await; assert_eq!(st, StatusCode::UNPROCESSABLE_ENTITY);
-        let (st, _) = jbody(run(&HeaderMap::new(), body, &plane, &p, now).await).await; assert_eq!(st, StatusCode::UNAUTHORIZED);
+        let (st, _) = jbody(run(&h_agent, br#"{"company_ref":"x","reason":"short","fields":["service_state"]}"#, &plane, &p, now, &Breaker::default()).await).await; assert_eq!(st, StatusCode::UNPROCESSABLE_ENTITY);
+        let (st, _) = jbody(run(&HeaderMap::new(), body, &plane, &p, now, &Breaker::default()).await).await; assert_eq!(st, StatusCode::UNAUTHORIZED);
         assert_eq!(q("select count(*)::text from desk.fadm_lookup".to_string()).await[0].get(0).unwrap(), before);
+        // ---- D5a-5 (1i) ----
+        let dbl_at = |delta: i64, other_company: bool| { let (sp, k2) = (sg.public_hex(), SigningKey::from_bytes(&[7u8; 32])); let _ = &k2; let key = cp().0; Plane::Double(Box::new(move |env| {
+            let e: Value = serde_json::from_str(env).ok()?; let body = e["body"].as_str()?; let _ = &sp;
+            let b: Value = serde_json::from_str(body).ok()?;
+            Some(answer(&key, b["request_id"].as_str()?, if other_company { "other-9999" } else { b["company_ref"].as_str()? }, b["issued_at"].as_i64()? + delta, json!({"service_state": "active"}), false))
+        })) };
+        let unavailable_cases: Vec<(&str, Plane)> = vec![("old but genuine answer (30 s)", dbl_at(-30, false)), ("answer from the future (60 s)", dbl_at(60, false)), ("answer for another company", dbl_at(0, true))];
+        for (name, pl) in unavailable_cases {
+            let (st, v) = jbody(run(&h_agent, body, &pl, &p, now, &Breaker::default()).await).await;
+            assert_eq!(st, StatusCode::SERVICE_UNAVAILABLE, "{name}"); assert_eq!(v["error"], "data_unavailable", "{name}"); assert!(v.get("fields").is_none(), "{name}");
+            assert_eq!(outcomes(rid_of(v)).await, vec!["requested", "unavailable"], "{name}");
+        }
+        let (st, v) = jbody(run(&h_agent, body, &dbl_at(0, false), &p, now, &Breaker::default()).await).await; assert_eq!(st, StatusCode::OK, "a fresh answer still works: {v}");
+        // breaker: three bad answers open it; while open the Control Plane is not asked (a double that would answer is never reached) and the line is still audited
+        let bk = Breaker::default(); for _ in 0..3 { let _ = run(&h_agent, body, &Plane::Off, &p, now, &bk).await; }
+        assert!(bk.is_open(now));
+        let (st, v) = jbody(run(&h_agent, body, &dbl_at(0, false), &p, now, &bk).await).await;
+        assert_eq!(st, StatusCode::SERVICE_UNAVAILABLE, "breaker open: unavailable at once even though the Control Plane could answer"); assert_eq!(outcomes(rid_of(v)).await, vec!["requested", "unavailable"]);
+        let (st, _) = jbody(run(&h_agent, body, &dbl_at(0, false), &p, now + BREAKER_OPEN + 1, &bk).await).await; assert_eq!(st, StatusCode::OK, "half-open probe succeeds and closes the breaker");
+        assert!(!bk.is_open(now + BREAKER_OPEN + 1));
+        // D20 database down BEFORE the audit line: same unavailable shape, no fields, no row
+        let good_url = std::env::var("DESK_APP_URL").unwrap();
+        q("select pg_terminate_backend(pid)::text from pg_stat_activity where usename = 'desk_app'".to_string()).await; tokio::time::sleep(std::time::Duration::from_millis(500)).await;
+        unsafe { std::env::set_var("DESK_APP_URL", "postgres://desk_app:x@127.0.0.1:1/none?sslmode=disable"); }
+        let rows_before = q("select count(*)::text from desk.fadm_lookup".to_string()).await[0].get(0).unwrap().to_string();
+        let (st, v) = jbody(run(&h_agent, body, &plane, &p, now, &Breaker::default()).await).await;
+        unsafe { std::env::set_var("DESK_APP_URL", &good_url); }
+        assert_eq!(st, StatusCode::SERVICE_UNAVAILABLE); assert_eq!(v["error"], "data_unavailable"); assert!(v.get("fields").is_none());
+        assert_eq!(q("select count(*)::text from desk.fadm_lookup".to_string()).await[0].get(0).unwrap(), rows_before);
+        // D20 database LOST between the audit line and its closing: the answer is NOT shown, the line stays requested (the AD4b sweep makes it abandoned)
+        let adm = std::sync::Arc::new({ let (c2, cn) = tokio_postgres::connect(&admin, tokio_postgres::NoTls).await.unwrap(); tokio::spawn(cn); c2 });
+        let (k9, _) = cp(); let key9 = k9;
+        let killer = Plane::Double(Box::new(move |env| {
+            let e: Value = serde_json::from_str(env).ok()?; let b: Value = serde_json::from_str(e["body"].as_str()?).ok()?;
+            let a2 = adm.clone();
+            tokio::task::block_in_place(|| tokio::runtime::Handle::current().block_on(a2.simple_query("select pg_terminate_backend(pid) from pg_stat_activity where usename = 'desk_app' and pid <> pg_backend_pid()"))).ok()?;
+            Some(answer(&key9, b["request_id"].as_str()?, b["company_ref"].as_str()?, b["issued_at"].as_i64()?, json!({"service_state": "active"}), false))
+        }));
+        let (st, v) = jbody(run(&h_agent, body, &killer, &p, now, &Breaker::default()).await).await;
+        assert_eq!(st, StatusCode::SERVICE_UNAVAILABLE, "{v}"); assert_eq!(v["error"], "data_unavailable"); assert!(v.get("fields").is_none(), "no answer is shown when the audit line cannot be closed");
+        let rid = v["request_id"].as_str().unwrap().to_string();
+        assert_eq!(outcomes(rid).await, vec!["requested"], "the line is left open, never 'answered'");
     }
 }

@@ -90,6 +90,30 @@ pub fn verify_frame(pinned_pub_hex: &str, now: i64, last_seq: u64, line: &str) -
 /// A track is STALE when its last verified frame is older than 12 s (the server sends a heartbeat every 8 s).
 pub fn is_stale(last_frame_ts: i64, now: i64) -> bool { now - last_frame_ts > STALE_SECS }
 
+// ---- D5a-5 (phase 1i, 23 Nov 2026): the lookup answer can NEVER reach a screen unless it is fresh and for THIS call. Any doubt = Unavailable. ----
+pub const LOOKUP_PATH: &str = "/desk/v1/customer/lookup";
+/// An answer whose own signed answered_at is more than this many seconds older than the Desk's signed envelope time is never shown, however genuine its signature is.
+pub const LOOKUP_FRESH_SECS: i64 = 15;
+#[derive(Debug, PartialEq)]
+pub enum LookupView { Data(String), Refused, Unavailable }
+/// The ONLY door from a Desk lookup answer to a screen. `status` is the HTTP status the browser saw, `envelope` the sealed answer. Data only when: signature + method + path + nonce + clock (verify_answer),
+/// HTTP 200, the body names the SAME request id and company the page asked for, answered_at is at most 15 s old (and at most 5 s in the future), and `fields` is an object. A signed refusal (403) = Refused.
+/// Everything else (any other status, 503, stale, replayed, other request, other company, malformed, empty) = Unavailable: the page shows "Data unavailable" and keeps nothing from before.
+pub fn lookup_view(pinned_pub_hex: &str, nonce: &str, now: i64, request_id: &str, company: &str, status: u16, envelope: &str) -> LookupView {
+    let Ok(body) = verify_answer(pinned_pub_hex, "POST", LOOKUP_PATH, nonce, now, envelope) else { return LookupView::Unavailable };
+    let Ok(b) = serde_json::from_str::<serde_json::Value>(&body) else { return LookupView::Unavailable };
+    // freshness is measured against the Desk's OWN signed envelope time (the signature covers ts), so a laptop clock that is a little off cannot hide stale data or break good data;
+    // the laptop clock itself must still be within SKEW_SECS of the Desk (verify_answer above), so an old envelope cannot be replayed either.
+    let Some(ts) = serde_json::from_str::<serde_json::Value>(envelope).ok().and_then(|e| e["ts"].as_i64()) else { return LookupView::Unavailable };
+    if status == 403 && b["error"].as_str() == Some("control_plane_refused") && b["request_id"].as_str() == Some(request_id) { return LookupView::Refused; }
+    if status != 200 { return LookupView::Unavailable; }
+    if b["request_id"].as_str() != Some(request_id) || b["company_ref"].as_str() != Some(company) { return LookupView::Unavailable; }
+    let Some(at) = b["answered_at"].as_i64() else { return LookupView::Unavailable };
+    if ts - at > LOOKUP_FRESH_SECS || at - ts > 5 { return LookupView::Unavailable; }
+    if !b["fields"].is_object() { return LookupView::Unavailable; }
+    LookupView::Data(body)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -156,5 +180,48 @@ mod tests {
         assert_eq!(stream_hello("short", NONCE, 1000), Err("no_session"));
         assert_eq!(stream_hello(&t, "zz", 1000), Err("bad_nonce"));
         assert!(is_stale(1000, 1013) && !is_stale(1000, 1012));
+    }
+    // ---- D5a-5 (1i): every doubtful lookup answer ends as Unavailable ----
+    const RID: &str = "11111111-2222-4333-8444-555555555555";
+    fn lk(sk: &SigningKey, ts: i64, body: &str) -> String { envelope(sk, "POST", LOOKUP_PATH, NONCE, ts, body) }
+    fn good_body(at: i64) -> String { serde_json::json!({"request_id": RID, "company_ref": "acme-1234", "answered_at": at, "fields": {"service_state": "active"}}).to_string() }
+    #[test] fn lookup_view_shows_data_only_when_fresh_and_for_this_call() {
+        let sk = SigningKey::from_bytes(&[1u8; 32]); let pk = hex(sk.verifying_key().as_bytes());
+        let v = |now: i64, st: u16, rid: &str, co: &str, env: &str| lookup_view(&pk, NONCE, now, rid, co, st, env);
+        let env = lk(&sk, 1005, &good_body(1000));
+        assert_eq!(v(1005, 200, RID, "acme-1234", &env), LookupView::Data(good_body(1000)));
+        assert_eq!(v(1005, 200, RID, "acme-1234", &lk(&sk, 1000 + LOOKUP_FRESH_SECS, &good_body(1000))), LookupView::Data(good_body(1000)), "exactly at the limit");
+        assert_eq!(v(1016, 200, RID, "acme-1234", &lk(&sk, 1000 + LOOKUP_FRESH_SECS + 1, &good_body(1000))), LookupView::Unavailable, "genuine but 16 s old: never shown");
+        assert_eq!(v(1005, 200, "99999999-2222-4333-8444-555555555555", "acme-1234", &env), LookupView::Unavailable, "another request");
+        assert_eq!(v(1005, 200, RID, "other-9999", &env), LookupView::Unavailable, "another company");
+        assert_eq!(v(1005, 503, RID, "acme-1234", &env), LookupView::Unavailable, "a 503 is never data, whatever the body says");
+        assert_eq!(v(1005, 500, RID, "acme-1234", &env), LookupView::Unavailable);
+        assert_eq!(v(1005, 0, RID, "acme-1234", &env), LookupView::Unavailable, "network error");
+        assert_eq!(v(1000, 200, RID, "acme-1234", &lk(&sk, 1000, &good_body(1100))), LookupView::Unavailable, "answered in the future");
+        assert_eq!(v(1005, 200, RID, "acme-1234", &lk(&sk, 1005, &serde_json::json!({"request_id": RID, "company_ref": "acme-1234", "answered_at": 1000}).to_string())), LookupView::Unavailable, "no fields object");
+        assert_eq!(v(1005, 200, RID, "acme-1234", &lk(&sk, 1005, "not json")), LookupView::Unavailable);
+        assert_eq!(v(1005, 200, RID, "acme-1234", ""), LookupView::Unavailable, "empty answer");
+        assert_eq!(v(1005, 200, RID, "acme-1234", "{}"), LookupView::Unavailable, "unsigned");
+        // a laptop clock 100 s off still gets good data (the Desk's own time decides freshness); 130 s off is refused by verify_answer (SKEW 120)
+        assert_eq!(v(1105, 200, RID, "acme-1234", &env), LookupView::Data(good_body(1000)), "clock 100 s ahead: fine");
+        assert_eq!(v(1005 + SKEW_SECS + 10, 200, RID, "acme-1234", &env), LookupView::Unavailable, "clock far off: refused");
+    }
+    #[test] fn lookup_view_refuses_wrong_key_replay_for_another_call_and_old_envelope() {
+        let sk = SigningKey::from_bytes(&[1u8; 32]); let pk = hex(sk.verifying_key().as_bytes()); let other = hex(SigningKey::from_bytes(&[2u8; 32]).verifying_key().as_bytes());
+        let env = lk(&sk, 1000, &good_body(1000));
+        assert_eq!(lookup_view(&other, NONCE, 1005, RID, "acme-1234", 200, &env), LookupView::Unavailable, "wrong pinned key");
+        assert_eq!(lookup_view(&pk, "ffffffffffffffffffffffffffffffff", 1005, RID, "acme-1234", 200, &env), LookupView::Unavailable, "answer recorded for another call (replay)");
+        assert_eq!(lookup_view(&pk, NONCE, 1000 + SKEW_SECS + 1, RID, "acme-1234", 200, &env), LookupView::Unavailable, "old envelope");
+        let tampered = env.replace("active", "suspended"); assert_ne!(tampered, env);
+        assert_eq!(lookup_view(&pk, NONCE, 1005, RID, "acme-1234", 200, &tampered), LookupView::Unavailable, "tampered");
+        let other_path = envelope(&sk, "POST", "/desk/v1/bridge/summary", NONCE, 1000, &good_body(1000));
+        assert_eq!(lookup_view(&pk, NONCE, 1005, RID, "acme-1234", 200, &other_path), LookupView::Unavailable, "answer of another door");
+    }
+    #[test] fn lookup_view_signed_refusal_is_refused_and_forged_refusal_is_not() {
+        let sk = SigningKey::from_bytes(&[1u8; 32]); let pk = hex(sk.verifying_key().as_bytes());
+        let r = serde_json::json!({"error": "control_plane_refused", "request_id": RID}).to_string();
+        assert_eq!(lookup_view(&pk, NONCE, 1005, RID, "acme-1234", 403, &lk(&sk, 1005, &r)), LookupView::Refused);
+        assert_eq!(lookup_view(&pk, NONCE, 1005, "99999999-2222-4333-8444-555555555555", "acme-1234", 403, &lk(&sk, 1005, &r)), LookupView::Unavailable, "refusal of another request");
+        assert_eq!(lookup_view(&pk, NONCE, 1005, RID, "acme-1234", 403, &lk(&sk, 1000, "{\"error\":\"not_allowed\"}")), LookupView::Unavailable);
     }
 }

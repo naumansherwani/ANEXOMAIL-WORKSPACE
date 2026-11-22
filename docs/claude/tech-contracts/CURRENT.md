@@ -4,11 +4,11 @@
 # TECH CONTRACT FOR PHASE: DESK D5a-5 (FAIL-CLOSED PROOF, phase 1i), written 23 Nov 2026 02:1x PKT, his word: "Control Plane band ho to Desk Data unavailable dikhaye, purana jawab kabhi na dikhaye". FULL LIST: docs/claude/admin-desk/D5A5-FAIL-CLOSED-LIST-23NOV.md
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
-| One 6 s deadline over the whole HTTP/3 call (quinn + h3, TLS 1.3 AES-256-GCM, X25519MLKEM768), circuit breaker, no cache, one honest unavailable shape | server/src/lookup.rs | planned | tests to be written, then run |
-| 15 s freshness + answer bound to its request (Ed25519 signed answered_at, request id, company) | server/src/lookup.rs accept | planned | tests |
-| D20 database down (before and in the middle of a lookup): no answer shown, sweep closes the line | server/src/lookup.rs + test | planned | tests |
-| Kernel stale + replay + request-id check, lookup_view mapping (Rule 52, Rust WASM) | kernel/src/wire.rs, lib.rs | planned | tests |
-NOT THIS PHASE: the Desk screen and its words = phase 1j.
+| One 6 s deadline over the whole HTTP/3 call (quinn + h3, TLS 1.3 AES-256-GCM, X25519MLKEM768), circuit breaker, no cache, one honest unavailable shape | server/src/lookup.rs | yes | cargo test 62 passed incl. real HTTP/3 loopback with a silent Control Plane (cut at the deadline), breaker state machine, no-store |
+| 15 s freshness + answer bound to its request (Ed25519 signed answered_at, request id, company) | server/src/lookup.rs accept | yes | cargo test (stale 16 s, not older than request, other company, future) |
+| D20 database down (before and in the middle of a lookup): no answer shown, sweep closes the line | server/src/lookup.rs + test | yes | real-PostgreSQL test: DB down before the audit line, DB killed in the middle, nothing shown, line left requested |
+| Kernel stale + replay + request-id check, lookup_view mapping (Rule 52, Rust WASM) | kernel/src/wire.rs, lib.rs | yes | kernel cargo test 9 passed; real WASM run in Node with an independent Ed25519 signer; bun 45 pass |
+NOT YET (needs his install): live look on his server = F11. NOT THIS PHASE: the Desk screen and its words = phase 1j.
 
 
 # TECH CONTRACT FOR PHASE: DESK D5a-4 (LOOKUP AUDIT PROOF), written 23 Nov 2026 01:2x PKT, his word 00:56 "sab se sensitive, points likho, test live kero, duniya ka advance, sql maximum". FULL LIST: docs/claude/admin-desk/D5A4-AUDIT-PROOF-LIST-23NOV.md
@@ -3239,3 +3239,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - ORDER LOCK 1i..1o saved, order unchanged since 22 Nov 23:39. TESTED: gate pass, docs only, git history check OK
 
 - 1i D5a-5 point list F1-F11 + contract written first. TESTED: gate pass, docs only OK
+
+- 1i D5a-5 code done (NOT green until his install + Chrome look). TECH-LAW CHECKED. TESTED: server cargo 62 passed incl real-PostgreSQL D20 + real HTTP/3 loopback, kernel cargo 9 passed, real WASM in Node with independent Ed25519 OK, bun 45 pass, tsc clean, vite build OK

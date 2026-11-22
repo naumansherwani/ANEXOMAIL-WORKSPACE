@@ -7,6 +7,12 @@
 export function frame_is_stale(last_frame_ts: number, now: number): boolean;
 
 /**
+ * D5a-5 (phase 1i): the ONLY door from a lookup answer to a screen. Returns JSON {"state":"data","body":"..."} | {"state":"refused"} | {"state":"unavailable"}.
+ * status = HTTP status the browser saw (0 for a network error); every doubt, stale, replayed, other-request or malformed answer is "unavailable".
+ */
+export function lookup_view(pinned_pub_hex: string, nonce_hex: string, now: number, request_id: string, company: string, status: number, envelope: string): string;
+
+/**
  * Build the three request headers (nonce, ts, mac). nonce_hex = 16 random bytes from crypto.getRandomValues (JS), ts = unix seconds.
  */
 export function request_headers(token: string, method: string, path: string, nonce_hex: string, ts: number, body: string): string;
@@ -31,6 +37,7 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 export interface InitOutput {
     readonly memory: WebAssembly.Memory;
     readonly frame_is_stale: (a: number, b: number) => number;
+    readonly lookup_view: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number, k: number, l: number, m: number) => void;
     readonly request_headers: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number, k: number, l: number) => void;
     readonly stream_hello: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
     readonly verify_answer: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number, k: number, l: number) => void;
