@@ -2927,3 +2927,5 @@ Phase row (DESK-PHASES-22NOV.md): D Command Bar | React 19, Framer Motion (packa
 | HTTP/3 line | "HTTP/3 QUIC" named ONLY when the browser measured h3 (nextHopProtocol); otherwise the edge row shows the server probe state without naming a protocol | to write | Chrome |
 
 - 22 Nov 2026 06:59 PKT PHASE D Command Bar WRITTEN (not green): pure model + DeskCommandBar (motion, P1 red pulse) from kernel-verified stream; SLA clock/prices honest 'not connected'; needs his install + Chrome look. Boot screen live-confirmed.
+
+- 22 Nov 2026 07:16 PKT: his order: account cards out, clickable live cards, click map + subphases D1..D6 written (DASHBOARD-CARDS-CLICK-PLAN-22NOV.md). D still not green (Chrome look pending).
