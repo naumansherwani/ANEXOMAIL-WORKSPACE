@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 09:01 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 09:01 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: D2 test alert script fixed
 NEXT STEP: his re-run, live Acknowledge + Resolve, D5, D6
 HIS LAST WORD: check constraint
@@ -18,28 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 080dcd0c 22 Nov 09:01 D2 script
 - 385aff8d 22 Nov 08:58 ledger line 03f1e05f
 - 03f1e05f 22 Nov 08:58 Desk D3b D4 GREEN, D8 closed, D4 gate DESK WIRING, D2 test alert script
 - f8ff322c 22 Nov 08:58 ledger line 0d02f799
 - 0d02f799 22 Nov 08:58 D3b D4
-- 972c6e89 22 Nov 08:52 ledger line e612b232
 
 ## Uncommitted files (half-done work if any)
- M CLAUDE.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/scripts/desk-test-alert.sh
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- CLAUDE.md                                         |  2 +-
- docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md    |  1 +
- docs/claude/admin-desk/scripts/desk-test-alert.sh |  2 +-
- docs/claude/state/WORKING-NOW.md                  | 27 ++++++++---------------
- docs/claude/tech-contracts/CURRENT.md             |  2 ++
- 5 files changed, 14 insertions(+), 20 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 25 ++-----------------------
+ 1 file changed, 2 insertions(+), 23 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -50,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (1eb4a3afc076db96beb6be756690bb0c54b8d38a)
+WIP snapshot: refs/wip/last (366a1742f70f9ca7ceaaed2033511f9860d51a1c)
