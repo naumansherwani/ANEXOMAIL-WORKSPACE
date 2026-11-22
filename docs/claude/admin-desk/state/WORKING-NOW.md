@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 20:42 PKT) - read this FIRST for the Desk after a compaction
-DOING: No-incomplete-work law written everywhere + gate INCOMPLETE ADVANCE; desk-install build fix (contract inside crate)
-NEXT STEP: his desk-install + desk-restart; his Control Plane address + key; D5a-5
-HIS LAST WORD: Dashboard folder first
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 20:44 PKT) - read this FIRST for the Desk after a compaction
+DOING: D5a-3 done in code; Control Plane responder does not exist yet (D5a-3b)
+NEXT STEP: his fresh ss -ulnp paste, then design D5a-3b contract
+HIS LAST WORD: no incomplete work
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 3fd29fe9 22 Nov 20:42 ledger line bb13ccf9
 - bb13ccf9 22 Nov 20:42 No-incomplete-work law (gate INCOMPLETE ADVANCE), desk-install fetches lookup contract, contract inside crate
 - 6476741c 22 Nov 20:36 ledger line 79f0f952
 - 79f0f952 22 Nov 20:36 Desk D5a-3 real HTTP/3 client + PostgreSQL integration test
@@ -72,9 +73,10 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - c940ec13 22 Nov 20:30 Working-now checkpoint 20:50
 - a222d842 22 Nov 20:29 ledger line c21ae224
 - c21ae224 22 Nov 20:29 Desk D5a-3: signed lookup door (lookup.rs), status table SQL/CODE/PHASE, blueprint 20:45
-- 2bb0c017 22 Nov 20:16 ledger line ac4901d0
 
 ## Uncommitted Desk files
+ M admin-desk/state/REMINDERS.md
+ M docs/claude/admin-desk/state/REMINDERS.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
