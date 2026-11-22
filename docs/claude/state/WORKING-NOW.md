@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 05:33 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 05:40 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: S0 evidence 2
 NEXT STEP: retest new connection, ad-auto, then S1
 HIS LAST WORD: s0
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- d4cb35b3 22 Nov 05:40 repo visibility check + login photo compare
+- c00a94c0 22 Nov 05:33 ledger line a70faca8
 - a70faca8 22 Nov 05:33 Desk login: one light below the card, eye and save password kept
 - 569aa2e4 22 Nov 05:27 ledger line 9bab1fd6
 - 9bab1fd6 22 Nov 05:27 login photos note
-- 8dbe2bbb 22 Nov 05:27 ledger line 2f394ef4
-- 2f394ef4 22 Nov 05:27 login photos note
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (06dff30eceb0dfdafbdbe083b38db2fc3e0e7d7e)
+WIP snapshot: refs/wip/last (ebdc4d3fb8c5d3f595475eb74bab8fc5f2cddada)
