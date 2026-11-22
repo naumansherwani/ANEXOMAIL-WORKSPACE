@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 03:54 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:54 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 1k NOT green: services row mark bug 2 fixed in code, needs his desk-install + my click
 NEXT STEP: his desk-install, my Chrome click, then 1k GREEN, then 1l
 HIS LAST WORD: his photo 03:53
@@ -18,48 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- e283c4d5 23 Nov 03:54 1k fix: services row mark follows click
 - 459bf9ff 23 Nov 03:53 ledger line c195b47a
 - c195b47a 23 Nov 03:53 1k GREEN, NOW 1l
 - 7017b124 23 Nov 03:43 ledger line 2eb5f7e6
 - 2eb5f7e6 23 Nov 03:43 1k: AD1c repair + ad-auto retry
-- 602c8c54 23 Nov 03:39 ledger line 4fc3746f
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
- M admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/DONE-DO-NOT-REPEAT.md
-M  docs/claude/RESUME-POINT.md
-M  docs/claude/admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/founder/PULL-COMMANDS.md
-M  docs/claude/state/HEARTBEAT.json
  M docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
-M  docs/cursor-work/DONE-DO-NOT-REPEAT.md
-M  docs/cursor-work/founder/founder-commands.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  docs/cursor-work/server/PULL-COMMANDS.md
-R  founder-web/dist-desk/assets/desk-CpHI6Kua.js -> founder-web/dist-desk/assets/desk-D4jRio_b.js
-M  founder-web/dist-desk/desk.html
-R  founder-web/dist/assets/index-D8IE_9gv.js -> founder-web/dist/assets/index-uydJkcuo.js
-M  founder-web/dist/index.html
-M  founder-web/src/desk/DeskCards.tsx
-M  founder-web/src/system_brain.json
-M  lanes/ALL-FILES.csv
-M  lanes/founder.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- founder-web/dist-desk/desk.html                    |  2 +-
- .../{index-D8IE_9gv.js => index-uydJkcuo.js}       |  2 +-
- founder-web/dist/index.html                        |  2 +-
- founder-web/src/desk/DeskCards.tsx                 |  6 ++-
- founder-web/src/system_brain.json                  |  6 +--
- lanes/ALL-FILES.csv                                |  4 +-
- lanes/founder.txt                                  |  4 +-
- 23 files changed, 88 insertions(+), 52 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 45 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 43 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -70,4 +42,4 @@ M  lanes/founder.txt
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (5e7d5fd9f756f74c79d5c761f044e59e38fbb485)
+WIP snapshot: refs/wip/last (7f298eb3978c04e86b45fcff107ea3f54bf43958)

@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 03:54 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:54 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1k NOT green: services row mark bug 2 fixed in code, needs his desk-install + my click
 NEXT STEP: his desk-install, my Chrome click, then 1k GREEN, then 1l
 HIS LAST WORD: his photo 03:53
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e283c4d5 23 Nov 03:54 1k fix: services row mark follows click
 - 459bf9ff 23 Nov 03:53 ledger line c195b47a
 - c195b47a 23 Nov 03:53 1k GREEN, NOW 1l
 - 7017b124 23 Nov 03:43 ledger line 2eb5f7e6
@@ -72,15 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 602c8c54 23 Nov 03:39 ledger line 4fc3746f
 - 4fc3746f 23 Nov 03:39 return mark bug fix + 1k install proof
 - ca5022eb 23 Nov 03:29 ledger line 8067194e
-- 8067194e 23 Nov 03:29 1k: runbooks code
 
 ## Uncommitted Desk files
-M  admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
- M admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-M  founder-web/src/desk/DeskCards.tsx
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
