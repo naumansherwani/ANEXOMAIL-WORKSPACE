@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 4e695b4f 22 Nov 20:05 ledger line 65a7b80b
 - 65a7b80b 22 Nov 20:05 AD7 live, map
 - 3127c7b6 22 Nov 19:56 ledger line 3c007880
 - 3c007880 22 Nov 19:56 Checkpoint: WORKING-NOW refresh
@@ -72,7 +73,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 61b5f411 22 Nov 19:55 Desk AD7 staff queues (cases, Priority Support clock, assignment, status machine) proved on PostgreSQL 16
 - 93d27cef 22 Nov 11:40 ledger line 636842c9
 - 1b0335d0 22 Nov 11:40 ledger line 06ed7785
-- 06ed7785 22 Nov 11:40 Desk backup reserve rule + restore script, blueprint regenerated, AD5/AD6 live noted
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
