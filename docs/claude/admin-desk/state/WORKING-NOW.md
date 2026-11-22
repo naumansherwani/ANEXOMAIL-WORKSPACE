@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 04:04 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 04:04 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1k: Ice blue chosen; box-shadow loophole fixed (desk-D1zbEnu0.js), installer prints build seconds; waiting his install
 NEXT STEP: his desk-install, my screenshot proof, 1k GREEN, 1l
 HIS LAST WORD: his 04:03
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 889c9577 23 Nov 04:04 1k fix: old row glow cleared, build timer
 - b4d70200 23 Nov 03:55 ledger line d5fe6738
 - d5fe6738 23 Nov 03:55 1k fix: mark colour blue
 - 45c75881 23 Nov 03:54 ledger line e283c4d5
@@ -72,17 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 459bf9ff 23 Nov 03:53 ledger line c195b47a
 - c195b47a 23 Nov 03:53 1k GREEN, NOW 1l
 - 7017b124 23 Nov 03:43 ledger line 2eb5f7e6
-- 2eb5f7e6 23 Nov 03:43 1k: AD1c repair + ad-auto retry
 
 ## Uncommitted Desk files
- M admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
- M admin-desk/NOW-LIST-23NOV.md
- M admin-desk/scripts/desk-install.sh
- M docs/claude/admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/scripts/desk-install.sh
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskCards.tsx
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
