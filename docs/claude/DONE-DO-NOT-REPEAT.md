@@ -2585,3 +2585,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - NOW-LIST: remaining Dashboard phases + total 23 saved for compaction. TESTED: gate pass, docs only OK
 
 - Phase A row corrected: Namecheap A+AAAA done 21 Nov, no HTTPS type. TESTED: my Chrome live look nextHopProtocol h2 on 3 resources, alt-svc header present OK
+
+- ORDER LOCK 1i..1o saved, order unchanged since 22 Nov 23:39. TESTED: gate pass, docs only, git history check OK
