@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 48c818a2 22 Nov 11:20 ledger line fb250dd9
 - b341403b 22 Nov 11:20 ledger line fc391322
 - fc391322 22 Nov 11:20 Desk AD6 package registry (D5a-2) proved on PostgreSQL 16; AD5 live; next-codes order; C4 answer recorded
 - 2988c689 22 Nov 11:11 ledger line 0b86c3b2
@@ -72,7 +73,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 7f6a033b 22 Nov 11:11 ledger line 42e3bd7c
 - 2712005c 22 Nov 11:10 ledger line e37c3325
 - e37c3325 22 Nov 11:10 AD5 mailbox roles
-- 49e9c113 22 Nov 10:52 ledger line f7a7f3ee
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
