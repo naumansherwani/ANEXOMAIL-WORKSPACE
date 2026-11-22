@@ -2912,3 +2912,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 22 Nov 2026 06:50 PKT Desk blueprint now ALPHABETIC A to Q (technology + features per phase), strict rules on top, desk-phase-start.py reminder verified
 
 - 22 Nov 2026 06:49 PKT PHASE C GREEN (WIRED: YES / REAL: YES / TECH-LAW CHECKED) live Chrome: chip Live verified, bundle = repo; B read path GREEN via stream; open: 390/820 live, A h2, alert-act live
+
+- 22 Nov 2026 06:51 PKT Desk BOOT SCREEN written (Anexomail A mark + ADMIN DESK, static HTML before JS + DeskBoot.tsx), not green: needs his install + my Chrome look

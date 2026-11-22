@@ -8,6 +8,7 @@ import { DeskShell, type ShellMe } from "./DeskShell";
 import { HoverA } from "../signin/BrandLoader";
 import { deskCall, DeskRefused, refusedMessage } from "./desk_kernel";
 import { openBridge, type Snapshot } from "./desk_stream";
+import { DeskBoot } from "./DeskBoot";
 
 const hasSession = () => { try { return !!window.localStorage.getItem(DESK_SESSION_KEY); } catch { return false; } };
 const go = (to: string) => window.location.replace(to);
@@ -49,6 +50,7 @@ function Dashboard() {
     return () => { live = false; };
   }, []);
   async function signOut() { setOut(true); try { await deskCall("POST", "/desk/v1/auth/logout"); } catch { /* the local session is dropped anyway */ } dropSession(); go("/adminlogin"); }
+  if (!me && !err) return <DeskBoot />; // loading: the Anexomail mark + ADMIN DESK (no big heading)
   return <DeskShell me={me} err={err} out={out} onSignOut={signOut} live={live.state} />;
 }
 
