@@ -10,7 +10,7 @@ Rule (DESK-PHASES rule 11, unchanged): rail order = 1 Dashboard, 2 Mailboxes, 3 
 | 1e | D5a-2 package registry (AD6, AD6b, AD6c, AD6d) + Rust read doors | PostgreSQL 16 append-only, Rust axum, Rule 52 | GREEN 22 Nov 22:5x |
 | 1f | D5a-3 signed lookup door (Desk side) | Rust, ed25519-dalek, HTTP/3 client, PQ + AES-256 | GREEN 23 Nov 00:5x (his selftest paste) |
 | 1g | D5a-3b Control Plane responder (other end) | Rust axum, quinn + h3 server, own Ed25519 key | GREEN 23 Nov 00:5x: his server paste 'LOOKUP SELFTEST OK' (signed answer verified, replay, wrong key, unknown company refused), UDP 4410 live, CP1 CHECK 8/8. WIRED: YES / REAL: YES / TECH-LAW CHECKED. Honest data: package null, service_state not_active_yet, seats 2 (no subscription rows exist yet) |
-| 1h | D5a-4 lookup audit proof (AD4) | PostgreSQL audit-first, hash chain | after 1g |
+| 1h | D5a-4 lookup audit proof (AD4b) | PostgreSQL audit-first SHA-256 chain + RFC 6962 Merkle checkpoints + Ed25519-signed outside copy (Storage Box) | GREEN 23 Nov 2026 01:4x PKT: his server pastes (AD4b run and CHECK OK 21/21; audit export OK local + Storage Box) + my Chrome look (4 audit doors live, sealed, 400 unsigned, no-store). WIRED: YES / REAL: YES / TECH-LAW CHECKED. Open (next phases, not hidden): first real lookup row + signed-in door call come with the D5 screen (1j) and his one sign-in |
 | 1i | D5a-5 fail-closed proof | Rust, test double, kernel stale check | after 1g |
 | 1j | D5 Plan context screen | React 19 + TS + Tailwind 4, kernel-verified | after 1h, 1i |
 | 1k | D5b runbooks (b1 nine, b2 checklist, b3 say-this + no-promise gate) | React, PostgreSQL versioned runbooks (AD9 planned) | after 1j |

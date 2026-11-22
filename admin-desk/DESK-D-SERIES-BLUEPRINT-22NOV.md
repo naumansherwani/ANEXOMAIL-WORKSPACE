@@ -611,3 +611,9 @@ It lives in the customer's own account on the awam site, so it is the awam bluep
 
 ## F. BUILD ORDER NOW
 1 signed read-only Control Plane connection + audit-with-reason (contract first) -> 2 D5 plan context screen -> 3 D5b runbooks -> 4 escalation case -> 5 D6 priority card -> (later) Billing Portal on the awam side. Needs from him still: the final landing-page package list as data (features and limits per package) so the registry can be filled; until then the registry file stays empty and the screen says "Package list not supplied yet".
+
+## PART 0n. D5a-4 LOOKUP AUDIT PROOF = GREEN (23 Nov 2026 01:4x PKT)
+Phase 1h. Advance technology: PostgreSQL audit-first SHA-256 hash chain (fadm_lookup_link), RFC 6962/9162 Merkle checkpoints (fadm_lookup_cp, inclusion proof + verifier), 6 live alert signals, separation of duties, Rust sealed doors (lookup-health/verify/seal/proof), Ed25519-signed checkpoint files on local disk AND his Storage Box (audit-verify needs no database), systemd timer every 10 minutes.
+Proof: his ad-auto paste "AD4b run and CHECK OK" (21 rows true); desk-install step 8/8 "AUDIT EXPORT OK" local + Storage Box; my Chrome: the four doors answer 400 unsigned_request + no-store (live and sealed); scratch tests: selftest, 64-link parallel chain, upgrade DB, tamper exit 3, cargo 58 passed.
+WIRED: YES / REAL: YES / TECH-LAW CHECKED.
+Open, written plainly: no real lookup row exists yet (lookup screen = phase 1j); signed-in door call needs his one sign-in. NEXT: 1i D5a-5 fail-closed proof, then 1j screen.

@@ -47,3 +47,4 @@ desk-copy-sync.py sync -> lanes/lane-sync.py -> ckpt.sh "<doing>" "<next>" "<why
 - LIVE CHROME 00:4x: start 400 no_proof (DBSC observe is ON), refresh 403 session_id, status 400 unsigned (sealed), /control/v1/lookup 405, all no-store. No loophole found.
 - NEXT: his ad-auto rerun + one real Chrome sign-in (his hands) -> DBSC ledger rows -> D5a-4 real look (lookup audit proof) -> D5a-5 fail-closed -> D5 screen (Dashboard folder 1h..1j). Open: phase A (page is h2, Caddy/DNS his hands), D13 other browsers (his haan), D20 test.
 - Loop: `setsid nohup bash docs/cursor-work/server/ckpt-loop.sh >/dev/null 2>&1 < /dev/null &`; check `pgrep -af ckpt-loop`.
+- D5a-4 GREEN 23 Nov 01:4x: AD4b + outside copy live on his server (his pastes), doors sealed in my Chrome. NEXT D5a-5 (1i).
