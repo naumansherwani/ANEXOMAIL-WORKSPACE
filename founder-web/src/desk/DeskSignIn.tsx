@@ -45,7 +45,7 @@ export function DeskSignIn() {
   return (
     <main className="fa">
       {/* his 21 Nov 22:59: one light only on the login, the fixed one at the screen bottom; the scene's own line (it showed twice) is off here, the home page keeps it */}
-      <DeskScene horizon={false}>
+      <DeskScene horizon={false} pad="clamp(12px,6dvh,88px) 16px clamp(12px,4dvh,72px)">
         <style>{".dk-logo-wide{position:absolute;top:22px;left:24px;z-index:5;display:inline-flex}.dk-logo-card{display:none}@media (max-width:899px){.dk-logo-wide{display:none}.dk-logo-card{display:inline-flex}}"}</style>
         <a href="/" aria-label="ANEXOMAIL Admin Desk home" className="dk-logo-wide" style={{ minHeight: 44, alignItems: "center", color: "inherit", textDecoration: "none" }}><BrandMark home={false} /></a>
         <DeskTelemetry />

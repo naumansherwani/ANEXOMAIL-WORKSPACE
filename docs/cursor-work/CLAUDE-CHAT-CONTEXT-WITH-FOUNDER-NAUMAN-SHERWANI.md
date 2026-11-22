@@ -5164,3 +5164,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 22 Nov 05:12 PKT: S1 bridge.rs WRITTEN (4 signed doors, 27 tests ok), not green until his desk-install + my Chrome look
 
 - 22 Nov 05:20 PKT: his login-scroll complaint checked: live bundle = repo HEAD, no UI commit after 03:01, nothing reverted; asked which screen
+
+- 22 Nov 05:35 PKT: Desk login scrollbar FIXED in code (DeskScene pad prop), 6 sizes fit in sandbox; phases renamed by alphabet A..F; B (bridge.rs) installed by his 05:13 desk-install, not green until scrollbar live look
