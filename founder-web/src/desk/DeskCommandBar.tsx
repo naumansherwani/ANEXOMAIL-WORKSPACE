@@ -25,7 +25,6 @@ const CSS = `
 .dcb-dot[data-s=outage]{background:#FF5C5C;box-shadow:0 0 0 3px rgba(255,92,92,.3)}
 .dcb-rl{margin:0;font-size:14px;font-weight:600;overflow-wrap:anywhere}.dcb-rs{margin:2px 0 0;font-size:12.5px;color:var(--mute);overflow-wrap:anywhere}
 .dcb-frame{position:fixed;inset:0;z-index:40;pointer-events:none;box-shadow:inset 0 0 0 3px rgba(255,70,70,.85),inset 0 0 90px rgba(255,40,40,.35)}
-.dcb-card:hover .dkbd,.dcb-card:focus-within .dkbd{opacity:1;transform:none}
 .dcl{color:inherit;text-decoration:none}.dcl::after{content:"";position:absolute;inset:0;border-radius:18px}.dcl:focus-visible{outline:2px solid #8FB8FF;outline-offset:3px}.dcb-up{position:relative;z-index:1;color:inherit;text-decoration:underline;text-underline-offset:3px}
 .dcb-card:has(.dcl):hover{border-color:rgba(160,200,255,.5)}.dcb-rowlink{display:flex;align-items:flex-start;gap:10px;min-height:44px;width:100%;color:inherit;text-decoration:none;border-radius:10px}.dcb-rowlink:hover .dcb-rl{text-decoration:underline}.dcb-rowlink:focus-visible{outline:2px solid #8FB8FF;outline-offset:2px}
 @media (forced-colors:active){.dcb-card{border:1px solid CanvasText}.dcb-frame{box-shadow:none;border:3px solid Mark}}

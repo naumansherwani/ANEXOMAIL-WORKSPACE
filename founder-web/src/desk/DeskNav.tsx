@@ -7,6 +7,7 @@ export function DeskLink({ to, nav, className, children, label, keys, badge }: {
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     e.preventDefault(); nav(to);
   };
-  const hint = keys ? `Shortcut: ${keys}` : undefined;
-  return <a href={to} className={className} onClick={click} aria-label={label} title={hint} aria-keyshortcuts={keys ? keys.replace(/G then /i, "g ").toLowerCase() : undefined}>{children}{badge && keys && <kbd className="dkbd" aria-hidden="true">{keys}</kbd>}</a>;
+  // the white pop-up STAYS (his 22 Nov 08:07 word: "yeh white pop intact rahy"): native title shows the shortcut in the Claude style, e.g. "Open · Alt+Shift+A". No bordered badge on the cards any more.
+  const hint = keys ? (typeof children === "string" ? children.replace(/\s*→\s*$/, "") : "Open") + " · " + keys : undefined;
+  return <a href={to} className={className} onClick={click} aria-label={label} title={hint} aria-keyshortcuts={keys || undefined}>{children}</a>;
 }

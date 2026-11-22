@@ -2967,3 +2967,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 22 Nov 2026 08:03 PKT: Desk D9 brand link written (ANEXOMAIL clickable, refresh or back to dashboard, phone shows brand); D8 colour demo 2 cinematic light (L1-L4) shown, no colour code until his pick; bundle desk-UKXIYNCu.
 
 - 22 Nov 2026 08:10 PKT: Desk D10 bottom glow written after backup (before-bottom-glow, verified); top-corner colours spread softly to the bottom, nothing else touched; bundle desk-CYkLX2WY.
+
+- 22 Nov 2026 08:20 PKT: Desk D1c + D2 contract. D1c: shortcut shown in the native white pop-up (title) 'Open · Alt+Shift+A', aria-keyshortcuts; HTTP/3 only, no new transport. D2: alert actions are Desk-signed POST /desk/v1/bridge/alerts/act via deskCall (Rule 52 kernel), mapped 200/401/403/404/422/503; role split server-side stays G/H.
+
+- 22 Nov 2026 08:20 PKT: Desk D1c pop-up kept with Alt+Shift hint, D2 alert buttons first cut, written only, waits install and live look

@@ -117,6 +117,11 @@ backups/desk/20261122-0756-47ebf24c-before-bottom-glow/MANIFEST.txt
 backups/desk/20261122-0756-47ebf24c-before-bottom-glow/RESTORE.md
 backups/desk/20261122-0756-47ebf24c-before-bottom-glow/SHA256SUMS
 backups/desk/20261122-0756-47ebf24c-before-bottom-glow/code.tar.gz
+backups/desk/20261122-0808-6dd5a41b-d10-colours-liked/00-FOUNDER-TECH-RULE.md
+backups/desk/20261122-0808-6dd5a41b-d10-colours-liked/MANIFEST.txt
+backups/desk/20261122-0808-6dd5a41b-d10-colours-liked/RESTORE.md
+backups/desk/20261122-0808-6dd5a41b-d10-colours-liked/SHA256SUMS
+backups/desk/20261122-0808-6dd5a41b-d10-colours-liked/code.tar.gz
 banned-countries/00-FOUNDER-TECH-RULE.md
 banned-countries/READ-FIRST-FOUNDER-LAW.md
 banned-countries/README.md

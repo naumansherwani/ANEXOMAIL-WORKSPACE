@@ -10,7 +10,7 @@ import { deskCall, DeskRefused, refusedMessage } from "./desk_kernel";
 import { openBridge, type Snapshot } from "./desk_stream";
 import { DeskBoot } from "./DeskBoot";
 import { barModel } from "./desk_bridge_pure";
-import { CHORD_MS, chordTarget, deskSub, typingTarget } from "./desk_cards";
+import { CHORD_MS, chordTarget, comboTarget, deskSub, typingTarget } from "./desk_cards";
 
 const hasSession = () => { try { return !!window.localStorage.getItem(DESK_SESSION_KEY); } catch { return false; } };
 const go = (to: string) => window.location.replace(to);
@@ -48,7 +48,9 @@ function Dashboard() {
   useEffect(() => {
     let armed = 0;
     const on = (e: KeyboardEvent) => {
-      if (e.ctrlKey || e.metaKey || e.altKey || e.repeat || typingTarget(e.target as HTMLElement | null)) return;
+      if (e.ctrlKey || e.metaKey || e.repeat || typingTarget(e.target as HTMLElement | null)) return;
+      const c = comboTarget(e); if (c) { e.preventDefault(); nav(c); return; } // Alt+Shift+letter (his 08:04 word)
+      if (e.altKey) return;
       const r = chordTarget(Date.now() < armed, e.key);
       if (r === "arm") { armed = Date.now() + CHORD_MS; return; }
       armed = 0; if (r) { e.preventDefault(); nav(r); }
@@ -69,7 +71,7 @@ function Dashboard() {
   }, []);
   async function signOut() { setOut(true); try { await deskCall("POST", "/desk/v1/auth/logout"); } catch { /* the local session is dropped anyway */ } dropSession(); go("/adminlogin"); }
   if (!me && !err) return <DeskBoot />; // loading: the Anexomail mark + ADMIN DESK (no big heading)
-  return <DeskShell me={me} err={err} out={out} onSignOut={signOut} live={live.state} bar={barModel(live.state, live.data)} snap={live} sub={deskSub(loc.path)} search={loc.search} hash={loc.hash} nav={nav} />;
+  return <DeskShell me={me} err={err} out={out} onSignOut={signOut} live={live.state} bar={barModel(live.state, live.data)} act={(b) => deskCall("POST", "/desk/v1/bridge/alerts/act", b).then((r) => r.status, () => 0)} snap={live} sub={deskSub(loc.path)} search={loc.search} hash={loc.hash} nav={nav} />;
 }
 
 /** One component, three pages by path (/, /adminlogin, /dashboard). The guard sends a visitor without a session away from the dashboard. */

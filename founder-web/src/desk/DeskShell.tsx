@@ -113,7 +113,7 @@ html{scrollbar-width:thin;scrollbar-color:rgba(111,166,242,.45) transparent}
 @media (forced-colors:active){.dsk-card,.dsk-rail{border:1px solid CanvasText}}
 `;
 
-export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, sub = "", search = "", hash = "", nav = () => {} }: { me: ShellMe | null; err: string; out: boolean; onSignOut: () => void; live?: StreamState; bar?: Bar | null; snap?: Snapshot; sub?: string; search?: string; hash?: string; nav?: Nav }) {
+export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, sub = "", search = "", hash = "", nav = () => {}, act }: { me: ShellMe | null; err: string; out: boolean; onSignOut: () => void; live?: StreamState; bar?: Bar | null; snap?: Snapshot; sub?: string; search?: string; hash?: string; nav?: Nav; act?: (body: object) => Promise<number> }) {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const t = window.setInterval(() => setNow(Date.now()), 15000); return () => window.clearInterval(t); }, []);
   const [menu, setMenu] = useState(false), [pins, setPins] = useState<string[]>(readPins), groups = orderNav(NAV, pins), toggle = (k: string) => setPins((p) => { const n = p.includes(k) ? p.filter((x) => x !== k) : [...p, k]; writePins(n); return n; });
@@ -140,7 +140,7 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, s
               {g.label && <p className="dsk-grp">{g.label}</p>}
               {g.items.map((n) => (
                 <div className="dsk-row" key={n.key}>
-                  <button type="button" className="dsk-nav" aria-current={n.live ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={n.live ? (n.key === "dashboard" ? "Dashboard · Shortcut: G then D" : undefined) : "Opens when it is connected"} onClick={(e) => { if (!n.live) e.preventDefault(); else if (n.key === "dashboard") nav("/dashboard"); else nav(route(n.key)); }}>{n.glyph}<span>{n.label}</span></button>
+                  <button type="button" className="dsk-nav" aria-current={n.live ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={n.live ? (n.key === "dashboard" ? "Dashboard · G then D" : undefined) : "Opens when it is connected"} onClick={(e) => { if (!n.live) e.preventDefault(); else if (n.key === "dashboard") nav("/dashboard"); else nav(route(n.key)); }}>{n.glyph}<span>{n.label}</span></button>
                   {n.key !== "dashboard" && <button type="button" className="dsk-pin" aria-pressed={pins.includes(n.key)} aria-label={(pins.includes(n.key) ? "Unpin " : "Pin ") + n.label} onClick={() => toggle(n.key)}>{ico("M9 4h6l-1 6 3 3v2H7v-2l3-3zM12 15v5")}</button>}
                 </div>
               ))}
@@ -163,7 +163,7 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, s
         </header>
         {err && <p role="alert" className="dsk-err">{err}</p>}
         {me && bar && !sub && <><DeskCommandBar bar={bar} nav={nav} tech={canSeeTech(me.role)} sys={systemsModel(live, snap?.data ?? {}, me.role)} /><DeskCardGrid nav={nav} /></>}
-        {me && sub && snap && <DeskSubPage sub={sub} search={search} hash={hash} snap={snap} nav={nav} role={me.role} />}
+        {me && sub && snap && <DeskSubPage sub={sub} search={search} hash={hash} snap={snap} nav={nav} role={me.role} act={act} />}
       </main>
     </div>
   );

@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 07:58 PKT) - read this FIRST for the Desk after a compaction
-DOING: D10 bottom glow written after backup
-NEXT STEP: his desk-install, my live look D7+D9+D10, then D2 ack/act
-HIS LAST WORD: bottom glow with backup
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 08:09 PKT) - read this FIRST for the Desk after a compaction
+DOING: D1c pop-up kept + D2 alert buttons built, waits install
+NEXT STEP: his desk-install, live look D7 D9 D10 D1c D2
+HIS LAST WORD: his 08:07 word white pop stays
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -64,6 +64,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 6dd5a41b 22 Nov 07:58 ledger line fbadb7aa
 - fbadb7aa 22 Nov 07:58 Desk D10: soft bottom glow (top corner colours), after backup (22 Nov 08:11 PKT)
 - 47ebf24c 22 Nov 07:51 ledger line 9971c556
 - d51862e6 22 Nov 07:51 ledger line e3b9a539
@@ -71,10 +72,18 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - e45ccd07 22 Nov 07:47 ledger line 0999a049
 - 0999a049 22 Nov 07:47 Desk D8: eye-comfort colour demo (4 palettes), blueprint records (22 Nov 07:58 PKT)
 - 260da7bf 22 Nov 07:42 ledger line 5b1f481e
-- 1987b52c 22 Nov 07:42 ledger line ca5ac2d6
 
 ## Uncommitted Desk files
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/DESK-PHASES-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+ M founder-web/src/desk/DeskCards.tsx
+ M founder-web/src/desk/DeskCommandBar.tsx
+ M founder-web/src/desk/DeskNav.tsx
+ M founder-web/src/desk/DeskPages.tsx
+ M founder-web/src/desk/DeskShell.tsx
+ M founder-web/src/desk/desk_cards.test.ts
+ M founder-web/src/desk/desk_cards.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

@@ -1,7 +1,7 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import type { Snapshot } from "./desk_stream";
 import { asServices, ago } from "./desk_bridge_pure";
-import { CARDS, alertFilter, asAlerts, cardById, filterAlerts, route, shortcutLabel } from "./desk_cards";
+import { ACT_LABEL, CARDS, actBody, actMessage, actsFor, needsConfirm, type AlertAct, type AlertRow, alertFilter, asAlerts, cardById, filterAlerts, route, shortcutLabel } from "./desk_cards";
 import { DeskLink, type Nav } from "./DeskNav";
 import { canSeeTech, systemsModel, type Level } from "./desk_systems_pure";
 import { barModel } from "./desk_bridge_pure";
@@ -13,8 +13,9 @@ const CSS = `
 .dcc{display:grid;gap:14px;margin-top:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr))}
 .dcc-card{position:relative;display:block;min-width:0;min-height:44px;padding:18px 20px;border:1px solid var(--line);border-radius:18px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);color:inherit;text-decoration:none;box-shadow:0 10px 30px rgba(2,8,22,.35);transition:transform .18s ease,border-color .18s ease}
 .dcc-card:hover{transform:translateY(-2px);border-color:rgba(160,200,255,.5)}.dcc-card:focus-visible,.dcl:focus-visible{outline:2px solid #8FB8FF;outline-offset:3px}
-.dkbd{position:absolute;right:12px;bottom:10px;padding:2px 8px;border:1px solid rgba(160,200,255,.4);border-radius:8px;background:rgba(10,20,45,.85);color:#CFE0FF;font:600 11px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;opacity:0;transform:translateY(3px);transition:opacity .15s ease,transform .15s ease;pointer-events:none}
-.dcc-card:hover .dkbd,.dcc-card:focus-visible .dkbd,.dcb-card:hover .dkbd,.dcb-card:focus-within .dkbd{opacity:1;transform:none}
+.dkbd{position:absolute;top:13px;right:42px;padding:1px 9px;border-radius:8px;background:rgba(255,255,255,.09);color:var(--mute);font:500 12px/1.75 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:0;white-space:nowrap;opacity:0;transition:opacity .14s ease;pointer-events:none}
+.dcb-card .dkbd{right:16px}
+.dcc-card:hover .dkbd,.dcc-card:focus-visible .dkbd,.dcb-card:hover .dkbd,.dcb-card:focus-within .dkbd{opacity:1}
 @media (prefers-reduced-motion:reduce){.dkbd{transition:none}}
 .dcc-k{margin:0;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
 .dcc-v{margin:8px 0 0;font-size:15px;line-height:1.45;overflow-wrap:anywhere}.dcc-go{float:right;opacity:.7}
@@ -24,6 +25,7 @@ const CSS = `
 .dcp-list{display:grid;gap:10px;margin:0;padding:0;list-style:none}.dcp-item{padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--glass);min-width:0;overflow-wrap:anywhere}
 .dcp-item[data-hot=true]{border-color:rgba(255,92,92,.7)}.dcp-item b{display:block}.dcp-item small{color:var(--mute)}
 .dcp-head{font-size:clamp(17px,3vw,20px);color:#fff!important;font-weight:600}.dcp-head[data-l=outage]{color:#FFB4B4!important}.dcp-banner{padding:14px 16px;border:1px solid rgba(255,92,92,.6);border-radius:14px;background:rgba(120,16,24,.25);color:#FFD6D6!important}.dcp-dot{display:inline-block;margin:0 8px 0 0;vertical-align:middle}
+.dcp-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.dcp-act{min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.07);color:inherit;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}.dcp-act:hover:not(:disabled){background:rgba(255,255,255,.14)}.dcp-act[data-armed=true]{border-color:rgba(255,160,90,.8)}.dcp-act:disabled{opacity:.5;cursor:default}.dcp-act:focus-visible{outline:2px solid #8FB8FF;outline-offset:2px}.dcp-msg{display:block;margin-top:8px}.dcp-msg[data-ok=false]{color:#FFB4B4}
 .dcp-chip{display:inline-flex;align-items:center;min-height:32px;padding:0 12px;border:1px solid var(--line);border-radius:999px;color:inherit;text-decoration:none;font-size:13px}
 `;
 const dot = (l: Level) => (l === "ok" ? "ok" : l === "degraded" ? "degraded" : l === "outage" ? "outage" : "unknown");
@@ -47,8 +49,28 @@ function Shell({ title, back, nav, children }: { title: string; back: boolean; n
   return <section className="dcp" aria-label={title}><style>{CSS}</style>{back && <DeskLink to="/dashboard" nav={nav} className="dcp-back">← Dashboard</DeskLink>}<div role="heading" aria-level={2} className="dcp-title">{title}</div>{children}</section>;
 }
 
+/** One alert with its buttons (D2). Closing (Resolve / False alarm) asks once more inside the row. The database decides who may do what; its answer is shown in plain words. */
+function AlertItem({ r, act }: { r: AlertRow; act?: (body: object) => Promise<number> }) {
+  const [busy, setBusy] = useState(false), [armed, setArmed] = useState<AlertAct | null>(null), [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
+  const acts = actsFor(r.status);
+  async function run(a: AlertAct) {
+    if (!act || r.num === null || busy) return;
+    if (needsConfirm(a) && armed !== a) { setArmed(a); return; }
+    setArmed(null); setBusy(true); setMsg(null);
+    const st = await act(actBody(r.num, a)); setMsg(actMessage(st)); setBusy(false);
+  }
+  return (
+    <li className="dcp-item" data-hot={r.severity === "critical"}><b>{r.severity.toUpperCase()} · {r.kind} · {r.status}</b>{r.detail}<br /><small>{r.source} · seen {r.seen_count}× · {r.assignee ? "assigned" : "not assigned"}</small>
+      {act && acts.length > 0 && r.num !== null && (
+        <div className="dcp-acts">{acts.map((a) => <button key={a} type="button" className="dcp-act" data-armed={armed === a} disabled={busy} onClick={() => void run(a)}>{armed === a ? `Confirm: ${ACT_LABEL[a]}` : ACT_LABEL[a]}</button>)}
+          {armed && <button type="button" className="dcp-act" onClick={() => setArmed(null)}>Cancel</button>}</div>)}
+      {msg && <small role="status" className="dcp-msg" data-ok={msg.ok}>{msg.text}</small>}
+    </li>
+  );
+}
+
 /** /dashboard/<sub>. Alerts and Service health show real stream rows; every other page says what it waits for. */
-export function DeskSubPage({ sub, search, hash, snap, nav, role = "" }: { sub: string; search: string; hash: string; snap: Snapshot; nav: Nav; role?: string }) {
+export function DeskSubPage({ sub, search, hash, snap, nav, role = "", act }: { sub: string; search: string; hash: string; snap: Snapshot; nav: Nav; role?: string; act?: (body: object) => Promise<number> }) {
   const card = cardById(sub);
   if (!card) return <Shell title="Page not found" back nav={nav}><p>The Desk has no page called “{sub}”.</p></Shell>;
   const live = snap.state === "live";
@@ -61,7 +83,7 @@ export function DeskSubPage({ sub, search, hash, snap, nav, role = "" }: { sub: 
         <div><DeskLink to={route("alerts")} nav={nav} className="dcp-chip">All</DeskLink> <DeskLink to={route("alerts") + "?severity=p1"} nav={nav} className="dcp-chip">P1</DeskLink> <DeskLink to={route("alerts") + "?status=unacked"} nav={nav} className="dcp-chip">Not acknowledged</DeskLink></div>
         {note && <p role="status">{note}</p>}
         {rows && <ul className="dcp-list">{rows.length === 0 ? <li className="dcp-item">{f.severity || f.status ? "Nothing matches this filter. That is healthy." : "No alerts. That is healthy."}</li> : rows.map((r) => (
-          <li key={r.id} className="dcp-item" data-hot={r.severity === "critical"}><b>{r.severity.toUpperCase()} · {r.kind} · {r.status}</b>{r.detail}<br /><small>{r.source} · seen {r.seen_count}× · {r.assignee ? `assigned ${r.assignee}` : "not assigned"}</small></li>
+          <AlertItem key={r.id} r={r} act={act} />
         ))}</ul>}
       </Shell>
     );
