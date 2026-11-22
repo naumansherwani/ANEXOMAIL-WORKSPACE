@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- bc176174 22 Nov 05:22 ledger line b65b131f
 - b65b131f 22 Nov 05:22 login scroll regression cause
 - 02492075 22 Nov 05:21 ledger line 310ce85b
 - fe0da111 22 Nov 05:20 ledger line 107e85bf
@@ -54,7 +55,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 5ae7abac 22 Nov 05:18 ledger line 509193cd
 - 509193cd 22 Nov 05:18 Desk login scrollbar fix, phases by alphabet
 - 03c33cd1 22 Nov 05:12 ledger line 56088e2d
-- 586200bc 22 Nov 05:12 ledger line 20494eb5
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
