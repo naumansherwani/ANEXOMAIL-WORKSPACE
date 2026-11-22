@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 02:40 PKT) - read this FIRST for the Desk after a compaction
-DOING: Rule 52 renamed ADVANCE TECHNOLOGY FOR ANEXOMAIL + installer proof step 9/9 + version subcommand; waits his one install, then 1j
-NEXT STEP: his install (shows PROOF lines), then 1j D5 screen list/plan/code
-HIS LAST WORD: his 02:38 order
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 02:46 PKT) - read this FIRST for the Desk after a compaction
+DOING: crypto-choice research answer written into Rule 52 file; waits his desk-install (step 9/9 PROOF) then 1j
+NEXT STEP: his install paste, then 1j D5 screen
+HIS LAST WORD: his 02:46 question: strongest primitive
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 16845c1a 23 Nov 02:40 ledger line 57f63ea6
 - 57f63ea6 23 Nov 02:40 Rule 52 rename + installer proof
 - 5676c3d7 23 Nov 02:21 ledger line 9e52ac8e
 - 0a9a4191 23 Nov 02:21 ledger line 8aa186f8
@@ -72,7 +73,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 6440242a 23 Nov 02:14 ledger line 4a79cd5f
 - 4a79cd5f 23 Nov 02:14 1i D5a-5 fail-closed code
 - 0bc1bfc8 23 Nov 02:08 ledger line 327ceebf
-- 327ceebf 23 Nov 02:08 1i plan and list
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md

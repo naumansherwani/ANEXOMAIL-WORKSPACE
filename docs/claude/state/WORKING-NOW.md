@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 02:40 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Rule 52 renamed ADVANCE TECHNOLOGY FOR ANEXOMAIL + installer proof step 9/9 + version subcommand; waits his one install, then 1j
-NEXT STEP: his install (shows PROOF lines), then 1j D5 screen list/plan/code
-HIS LAST WORD: his 02:38 order
+# WORKING NOW (manual checkpoint, 23 Nov 2026 02:46 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: crypto-choice research answer written into Rule 52 file; waits his desk-install (step 9/9 PROOF) then 1j
+NEXT STEP: his install paste, then 1j D5 screen
+HIS LAST WORD: his 02:46 question: strongest primitive
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,22 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 16845c1a 23 Nov 02:40 ledger line 57f63ea6
 - 57f63ea6 23 Nov 02:40 Rule 52 rename + installer proof
 - 5676c3d7 23 Nov 02:21 ledger line 9e52ac8e
 - 9e52ac8e 23 Nov 02:21 resume line keeps order lock
 - 0a9a4191 23 Nov 02:21 ledger line 8aa186f8
-- 8aa186f8 23 Nov 02:21 1i GREEN + Rule 52 live technology
 
 ## Uncommitted files (half-done work if any)
+ M docs/claude/RULE-52-ADVANCE-TECHNOLOGY-FOR-ANEXOMAIL.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 35 ++---------------------------------
- 1 file changed, 2 insertions(+), 33 deletions(-)
+ .../RULE-52-ADVANCE-TECHNOLOGY-FOR-ANEXOMAIL.md    |  6 ++++++
+ docs/claude/state/WORKING-NOW.md                   | 24 ++++++----------------
+ 2 files changed, 12 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +44,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (e5604973263c70c779c31261318e7322351581f8)
+WIP snapshot: refs/wip/last (07523c979de8dd6a7fb7b1a6d72910a06b2e2ff9)

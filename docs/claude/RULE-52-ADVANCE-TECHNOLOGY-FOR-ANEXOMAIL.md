@@ -20,3 +20,9 @@ Notes: HTTP/3 is the ONLY HTTP protocol (no h2, no HTTP/1.1; his 13 Nov 20:30 wo
 | Files | Hetzner Storage Box, ClamAV virus scanning | Storage Box LIVE (signed audit copies); ClamAV not in Desk scope | attachments: founder/awam |
 | Fail-closed | deadline, freshness, breaker, no-store, D20 DB-down | LIVE (D5a-5, 1i GREEN) | Desk only |
 Dated proof table for the Desk: docs/claude/admin-desk/RULE-52-LIVE-TECHNOLOGY-23NOV.md. Update both files after every GREEN phase.
+
+## Which primitive is the strongest? (his question 23 Nov 2026 02:46; web search + standards knowledge, honest)
+- Cipher: AES-256-GCM is a top-tier NIST/CNSA 2.0 approved standard (quantum-safe at 256-bit: Grover only halves it to ~128-bit). ChaCha20-Poly1305 is equally secure (better without AES hardware). AES-256-GCM-SIV / XChaCha20-Poly1305 add nonce-misuse safety for STORED data. No cipher is "more secure" in a practical sense; the risks are nonce reuse and key handling, not the cipher.
+- Hash: SHA-256 is unbroken (collision 128-bit, quantum collision still strong). Stronger-by-margin: SHA-384/512 (CNSA 2.0 asks for SHA-384+ for top secret, and the TLS suite we use already uses SHA-384) or SHA3-256/SHAKE256 (different design, hedge). BLAKE3 = fast, not NIST. Changing our audit chain hash would break every existing chain, so it stays SHA-256 unless he orders a versioned chain.
+- Key exchange: X25519MLKEM768 (ML-KEM-768, NIST FIPS 203) is what we run. The highest category is ML-KEM-1024 (CNSA 2.0); browser support for a hybrid with it is limited, so NOT in code.
+- Signatures: Ed25519 today (not quantum-safe). The advance step is ML-DSA (FIPS 204) hybrid with Ed25519, and SLH-DSA (FIPS 205) as the conservative hash-based option: OPEN GAP (GAP 2).
