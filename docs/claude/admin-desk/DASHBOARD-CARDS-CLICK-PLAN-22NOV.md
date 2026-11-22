@@ -38,3 +38,21 @@ His words: remove "Signed in as / Role / Session" from the dashboard (identity s
 ## 4. After clickable cards (web research 22 Nov 07:15 PKT: drill-down guidance from GoodData, Elastic Kibana, DevExpress, ServiceNow community)
 Common pattern: KPI card -> filtered detail view that keeps the filter and returns with Back; one source for number and rows; no dead cards. Our next steps from that: (a) filter chips and URL state on every list, (b) keyboard shortcuts (g a = alerts, g s = services), (c) per-card "since last visit" change marker, (d) saved views per staff after phase H, (e) role-aware dashboard: card set decided in Postgres by fadm_need, never in the browser.
 Sources: https://help.gooddata.com/classic/en/dashboards-and-insights/kpi-dashboards/drilling-in-kpi-dashboards/drill-to-insights-from-kpi-dashboards/ , https://www.elastic.co/kr/guide/en/kibana/current/drilldowns.html , https://docs.devexpress.com/eud/eud-for-bi-dashboard/dashboard-for-web/web-dashboard-viewer-mode/dashboard-items/cards/interactivity
+
+## 5. WEB RESEARCH LOG (rule 10; written 22 Nov 2026 07:18 PKT). Search: clickable KPI cards, drill-down, keep context. Sources: GoodData, Elastic Kibana, DevExpress, ServiceNow community, ClickUp feature request, Zoho Analytics, MYOB.
+Each point, in order, with the phase that builds it:
+| # | Point from the research | Our feature | Phase |
+|---|---|---|---|
+| 1 | A KPI card should drill into the underlying records, not just a bigger chart (GoodData, ClickUp request) | every card opens the filtered list of the rows behind its number | D1, D2, D3 |
+| 2 | Drill-down must carry the filter / context of the click (Kibana drilldowns, GoodData) | filter lives in the URL (?severity=p1), page opens already filtered | D2 |
+| 3 | The user must be able to go back to where they were (ServiceNow community complaint about lost context) | Back returns to the dashboard with the same scroll and the same card focused | D1 |
+| 4 | One data source for the card number and the detail rows (DevExpress cards interactivity) | both read the same stream track, so they cannot disagree | D1, D4 |
+| 5 | Visible affordance that a card is clickable (hover, focus, arrow, cursor) | arrow mark, hover lift, keyboard focus ring, 44 px target, reduced motion respected | D1 |
+| 6 | Master-detail: pick a row, see detail without leaving the page (DevExpress, Zoho) | service row opens detail in place (#service anchor) | D3 |
+| 7 | Do not leave dead cards (MYOB usage guide, GoodData) | registry test fails a card without route/page; unwired cards open a page that says what they wait for | D4 |
+| 8 | Drill to another dashboard, not only a table (GoodData drill-to-dashboard) | SLA and plans cards open their own pages with sub-cards | D5, D6 |
+| 9 | Filters shown as removable chips with a reset (setproduct, cursa) | chips on every list page | D2 |
+| 10 | Highlight what changed since the last look (dashboard UX guidance) | "new since your last visit" marker per card, stored per staff in Postgres after phase H | H |
+| 11 | Keyboard drill (power users) | g a = alerts, g s = services, / = search | D6 |
+| 12 | Cards a user may not use should not exist for them (role-aware) | card set decided in Postgres by fadm_need, never in the browser | G, H |
+| 13 | Saved views | each staff saves a filter as a named view | H |

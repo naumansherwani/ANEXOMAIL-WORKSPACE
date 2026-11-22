@@ -9,6 +9,7 @@
 7. Never remove or restyle a feature he did not name. Login look and Bridge look are his approved ones.
 8. After EVERY message: repo + ledger + blueprint + COMPACT-SAVE updated with real date and time (rec.sh, desk-copy-sync, lane-sync, manifest-sync, rules-gate 0 fail). EVERY phase is named by ALPHABET in build order (A, B, C ... Q), never S-numbers; the old ids stay in brackets.
 9. Address him only as Aap, Roman Urdu, short; end every reply with the Rule-70 table and "Abhi code mein NAHI"; server commands = ONE line.
+10. WEB RESEARCH GOES INTO THE REPO IN ORDER (his 22 Nov 2026 07:15 PKT): every web search's points and features are written, in order, into the blueprint (section 'WEB RESEARCH LOG' in DASHBOARD-CARDS-CLICK-PLAN-22NOV.md plus the phase row they belong to) in the same step; each point gets a phase letter and is built in that phase, never left in chat.
 ## PHASES (technology | features | state at 22 Nov 2026 06:50 PKT). Foundation rows first (done), then A to Q in order. One phase at a time, each GREEN only after my live Chrome look.
 | Phase | Advance technology | Features | State |
 |---|---|---|---|
