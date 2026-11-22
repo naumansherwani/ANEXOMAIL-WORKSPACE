@@ -1,5 +1,16 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK D5a-3b (CONTROL PLANE LOOKUP RESPONDER), written 22 Nov 2026 21:05 PKT, his word 20:43 "address/key mujhe nahi pata, tum server pe command do". STATE: IN PROGRESS (nothing of it is committed as code until every row is yes)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| Rust + Tokio + axum 0.8 responder binary, its OWN crate, user and env (never the Desk, founder or Polar code) | new folder, decided at code time | no | cargo tests |
+| HTTP/3 server (TLS 1.3, AES-256-GCM, X25519MLKEM768 only), UDP port taken only from his fresh ss -ulnp paste | responder h3 listener | no | loopback test + his ss |
+| Ed25519: verifies the Desk request (audience desk-lookup, 60 s, request id used once), signs the answer with its OWN key; public key served for the Desk env | responder sign/verify | no | cargo tests |
+| Read-only source of package + service state (schema-first: the owning schema is read before any SQL) | read-only PostgreSQL view / role | no | integration test |
+| Desk wiring: DESK_CONTROL_PLANE_ADDR / _HOST / _CA / _PUBKEY set by an installer, then my live Chrome look | scripts + desk env | no | Chrome 390/820/1200 |
+
+
+
 # TECH CONTRACT FOR PHASE: DESK D5a-3 (SIGNED LOOKUP DOOR, Dashboard folder), written 22 Nov 2026 20:30 PKT, his word 20:15 "dashboard 100% green first". STATE: CODE DONE, waits his Control Plane address + key
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3091,3 +3102,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 22 Nov 2026 21:08 PKT: his 20:36 law NO INCOMPLETE WORK: incomplete phase, codes and advance technology are banned. Gate INCOMPLETE ADVANCE added to rules-gate.py (Desk code commit refused unless the newest contract block is whole). Law written at the top of CLAUDE.md, founder, awam and Desk blueprints, every ledger and every READ-FIRST file. His desk-install build failure (lookup contract file outside the crate) fixed: contract now inside server/contract, desk-install.sh fetches it, a test keeps it equal to the gate file, isolated installer-style build proven.
 
 - 22 Nov 2026 21:20 PKT: finding: no Control Plane lookup responder exists in the repo (the only control plane is the Polar payment service, TCP 3400, which the Desk never touches). Next: his fresh ss paste for a UDP port, then contract for D5a-3b (own Rust responder, own Ed25519 key, HTTP/3).
+
+- 22 Nov 2026 21:08 PKT: Desk D5a-3 live on his server (his install and restart pastes, kid e92a4cb169d466a2); my Chrome look: route present, no session gives 400 unsigned_request, Desk page still shown over h2 (old gap). New sub-phase D5a-3b (Control Plane responder) contract written, all rows open. HANDOFF-22NOV.md written for compaction. Advance technology: Rust Tokio axum 0.8, quinn + h3, ed25519-dalek, Rule 52.

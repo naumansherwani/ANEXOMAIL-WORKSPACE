@@ -1,4 +1,4 @@
-# ANEXOMAIL ADMIN DESK: D-SERIES BLUEPRINT, UPDATED 22 Nov 2026 20:58 PKT (generated from the files named in each part; edit those, not this)
+# ANEXOMAIL ADMIN DESK: D-SERIES BLUEPRINT, UPDATED 22 Nov 2026 21:08 PKT (generated from the files named in each part; edit those, not this)
 > ## >>> NO INCOMPLETE WORK LAW (his 22 Nov 2026 20:36 PKT, in anger): INCOMPLETE PHASE, INCOMPLETE CODES, INCOMPLETE ADVANCE TECHNOLOGY = BANNED. Every listed advance technology of a phase must be IN CODE and tested before its code is committed; the gate INCOMPLETE ADVANCE refuses the commit otherwise. A phase is finished first, then committed; nothing half-done is handed to him. What truly needs his input (address, key, list) is named once, up front. docs/claude/NO-INCOMPLETE-ADVANCE-LAW-22NOV.md <<<
 Standing laws: Rule 52 (every answer kernel-verified), HTTP/3 only with WebTransport, TLS 1.3 AES-256-GCM + X25519MLKEM768, Desk isolation (own domain, never founder code or tables), no money or webhook data on the Desk, no phase name visible to an employee, no promises by employees, no refunds (published policy), the original UI/UX stays intact, GREEN only after a live Chrome look (WIRED: YES / REAL: YES / TECH-LAW CHECKED), whole Desk deadline 26 Nov 2026 07:26 PKT.
 
@@ -8,7 +8,7 @@ Standing laws: Rule 52 (every answer kernel-verified), HTTP/3 only with WebTrans
 
 # PART 0g: GREEN TABLE (STATUS-GREEN-TABLE-22NOV.md)
 
-# GREEN TABLE (his 20:23 order "GREEN LIKHO"; written 22 Nov 2026 20:42 PKT). Two honest levels, never mixed
+# GREEN TABLE (his 20:23 order "GREEN LIKHO"; refreshed 22 Nov 2026 21:05 PKT). Two honest levels, never mixed
 - SQL GREEN = the SQL file ran on his server and its CHECK printed every row true (his own paste).
 - CODE GREEN = Rust / TS code written, tests pass in my sandbox, committed and pushed (not yet on his server until his desk-install + desk-restart).
 - PHASE GREEN = WIRED: YES / REAL: YES / TECH-LAW CHECKED after my live Chrome look at 390 / 820 / 1200+ (his standing law). Only then the word GREEN stands alone.
@@ -21,8 +21,24 @@ Standing laws: Rule 52 (every answer kernel-verified), HTTP/3 only with WebTrans
 | AD5 addresses + mailbox roles | PostgreSQL trigger guards, grants | GREEN | none (Mailboxes folder FROZEN) | NOT GREEN |
 | AD6 package registry | versioned, frozen rows, no money columns | GREEN (registry empty) | none (D5a-2 needs his package list) | NOT GREEN |
 | AD7 cases | state machine trigger, append-only events | GREEN | none (Cases folder FROZEN) | NOT GREEN |
-| D5a-3 signed lookup door | Rust Tokio axum 0.8, ed25519-dalek, Rule 52, fail closed | no new SQL | GREEN in sandbox: cargo 40 passed (7 lookup tests: real HTTP/3 loopback + PostgreSQL integration); NOT on his server yet | NOT GREEN |
+| D5a-3 signed lookup door (client side in the Desk) | Rust Tokio axum 0.8, quinn + h3 client (TLS 1.3, AES-256-GCM, X25519MLKEM768), ed25519-dalek, Rule 52, fail closed | no new SQL | GREEN: cargo 41 passed; LIVE on his server since his install paste 20:5x (kid e92a4cb169d466a2, same build as origin/main); my Chrome look 20:54: route exists, no session = 400 unsigned_request | NOT GREEN: no responder to ask (D5a-3b) |
+| D5a-3b Control Plane lookup responder (the other end) | Rust Tokio axum 0.8, quinn + h3 server, ed25519-dalek, own key | read-only view, schema-first | NOT WRITTEN (contract written, all rows no) | NOT GREEN: needs his fresh ss -ulnp paste for the UDP port |
+| Desk page protocol | HTTP/3 only (his 21 Nov law) | | Chrome 20:54 shows h2 for the Desk (public curl HTTP/2 via Caddy TCP 443, Alt-Svc h3=:4400 set, DNS HTTPS record empty) | OLD GAP, not part of D5a-3, stays open |
 | DASHBOARD FOLDER as a whole | see DASHBOARD-FOLDER-ORDER-22NOV.md | | | NOT GREEN: steps 2..9 open |
+
+# PART 0h: D5a-3 PHASE DETAIL (his 20:53 order: put the phase detail in front)
+
+D5a SUB-PHASES AND THEIR ADVANCE TECHNOLOGY (D5-SUBPHASES-22NOV.md):
+|---|---|---|---|
+| D5a-1 Contract | The lookup contract in CURRENT.md: allowed fields (package id and version, features on, limits, usage, service state, one flag "payment received, service not active" + since when, freshness time), forbidden fields (any amount, invoice, card, transaction), request format | Written contract + a commit gate that FAILS any Desk file that names an amount / invoice / card field (same style as the isolation gate) | gate fails on a planted bad field, passes clean |
+| D5a-2 Package registry | ONE versioned entitlement registry from the landing-page list: package, version, effective date, features, limits, trial and grace rules, SLA target; old subscriptions keep their version | PostgreSQL (fadm_pkg tables in the Desk schema, forced RLS), append-only versions, hash-chained ledger line per version, Rust read door; empty until he supplies the list | an inserted test version cannot be edited, only superseded |
+| D5a-3 Signed lookup | Employee opens a company: role check, reason typed, short-lived signed read-only request to the Control Plane, answer checked, nothing stored | Rust Tokio axum, Ed25519 request signature with audience + expiry + request id, HKDF/HMAC, one narrow read-only key, Rule 52 verify in the Rust WASM kernel, HTTP/3 | wrong audience, expired, replayed request all refused |
+| D5a-4 Audit with reason | Every look leaves one line: employee, company ref, time, reason, requested fields, request id | PostgreSQL append-only ledger with SHA-256 hash chain (Desk's own), RLS | line appears for every look, chain verifies |
+| D5a-5 Fail closed | Control Plane down or slow: screen says "Data unavailable", never old data; show freshness time on every screen | Rust timeout + circuit state, kernel stale-frame check (Rule 52) | live test with the lookup switched off shows the honest message |
+
+WHERE D5a-3 STANDS (22 Nov 2026 21:08 PKT): the Desk side (lookup.rs: signed request, HTTP/3 client, verify, whitelist, audit before data, fail closed) is written, tested (cargo 41, real HTTP/3 loopback, PostgreSQL integration) and LIVE on his server (his install paste; my Chrome look: the door exists and refuses a call without a session). The other end, the Control Plane responder, does not exist anywhere: new sub-phase D5a-3b (contract in tech-contracts/CURRENT.md, all rows open). So D5a-3 is NOT whole and NOT green. Next input from him: ss -ulnp | head -60.
+
+HANDOFF FOR A NEW CLAUDE: docs/claude/admin-desk/state/HANDOFF-22NOV.md
 
 # PART 0: STATE NOW (NEXT-CODES-ORDER-22NOV.md)
 

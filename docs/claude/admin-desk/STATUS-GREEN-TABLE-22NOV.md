@@ -1,4 +1,4 @@
-# GREEN TABLE (his 20:23 order "GREEN LIKHO"; written 22 Nov 2026 20:42 PKT). Two honest levels, never mixed
+# GREEN TABLE (his 20:23 order "GREEN LIKHO"; refreshed 22 Nov 2026 21:05 PKT). Two honest levels, never mixed
 - SQL GREEN = the SQL file ran on his server and its CHECK printed every row true (his own paste).
 - CODE GREEN = Rust / TS code written, tests pass in my sandbox, committed and pushed (not yet on his server until his desk-install + desk-restart).
 - PHASE GREEN = WIRED: YES / REAL: YES / TECH-LAW CHECKED after my live Chrome look at 390 / 820 / 1200+ (his standing law). Only then the word GREEN stands alone.
@@ -11,5 +11,7 @@
 | AD5 addresses + mailbox roles | PostgreSQL trigger guards, grants | GREEN | none (Mailboxes folder FROZEN) | NOT GREEN |
 | AD6 package registry | versioned, frozen rows, no money columns | GREEN (registry empty) | none (D5a-2 needs his package list) | NOT GREEN |
 | AD7 cases | state machine trigger, append-only events | GREEN | none (Cases folder FROZEN) | NOT GREEN |
-| D5a-3 signed lookup door | Rust Tokio axum 0.8, ed25519-dalek, Rule 52, fail closed | no new SQL | GREEN in sandbox: cargo 40 passed (7 lookup tests: real HTTP/3 loopback + PostgreSQL integration); NOT on his server yet | NOT GREEN |
+| D5a-3 signed lookup door (client side in the Desk) | Rust Tokio axum 0.8, quinn + h3 client (TLS 1.3, AES-256-GCM, X25519MLKEM768), ed25519-dalek, Rule 52, fail closed | no new SQL | GREEN: cargo 41 passed; LIVE on his server since his install paste 20:5x (kid e92a4cb169d466a2, same build as origin/main); my Chrome look 20:54: route exists, no session = 400 unsigned_request | NOT GREEN: no responder to ask (D5a-3b) |
+| D5a-3b Control Plane lookup responder (the other end) | Rust Tokio axum 0.8, quinn + h3 server, ed25519-dalek, own key | read-only view, schema-first | NOT WRITTEN (contract written, all rows no) | NOT GREEN: needs his fresh ss -ulnp paste for the UDP port |
+| Desk page protocol | HTTP/3 only (his 21 Nov law) | | Chrome 20:54 shows h2 for the Desk (public curl HTTP/2 via Caddy TCP 443, Alt-Svc h3=:4400 set, DNS HTTPS record empty) | OLD GAP, not part of D5a-3, stays open |
 | DASHBOARD FOLDER as a whole | see DASHBOARD-FOLDER-ORDER-22NOV.md | | | NOT GREEN: steps 2..9 open |

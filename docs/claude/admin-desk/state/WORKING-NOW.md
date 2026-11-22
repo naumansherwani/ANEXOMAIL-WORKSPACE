@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 20:44 PKT) - read this FIRST for the Desk after a compaction
-DOING: D5a-3 done in code; Control Plane responder does not exist yet (D5a-3b)
-NEXT STEP: his fresh ss -ulnp paste, then design D5a-3b contract
-HIS LAST WORD: no incomplete work
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 20:54 PKT) - read this FIRST for the Desk after a compaction
+DOING: D5a-3 live on his server (his install paste 20:5x); my Chrome look 20:54: lookup door present, no session = 400. D5a-3b responder contract written, not coded
+NEXT STEP: ask his ss -ulnp paste; read owning schema; code D5a-3b whole before committing code; then D5a-5; HANDOFF-22NOV.md = full context
+HIS LAST WORD: no incomplete work; dashboard first
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 802da807 22 Nov 20:44 ledger line 4f2d93ce
 - 4f2d93ce 22 Nov 20:44 Finding: no Control Plane responder yet
 - 3fd29fe9 22 Nov 20:42 ledger line bb13ccf9
 - bb13ccf9 22 Nov 20:42 No-incomplete-work law (gate INCOMPLETE ADVANCE), desk-install fetches lookup contract, contract inside crate
@@ -72,10 +73,17 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 79f0f952 22 Nov 20:36 Desk D5a-3 real HTTP/3 client + PostgreSQL integration test
 - bebf54a1 22 Nov 20:30 ledger line c940ec13
 - c940ec13 22 Nov 20:30 Working-now checkpoint 20:50
-- a222d842 22 Nov 20:29 ledger line c21ae224
 
 ## Uncommitted Desk files
+ M admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/STATUS-GREEN-TABLE-22NOV.md
+ M docs/claude/admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+?? admin-desk/state/HANDOFF-22NOV.md
+?? docs/claude/admin-desk/state/HANDOFF-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

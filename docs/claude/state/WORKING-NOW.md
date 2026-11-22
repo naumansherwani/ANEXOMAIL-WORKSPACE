@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 20:44 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: D5a-3 done in code; Control Plane responder does not exist yet (D5a-3b)
-NEXT STEP: his fresh ss -ulnp paste, then design D5a-3b contract
-HIS LAST WORD: no incomplete work
+# WORKING NOW (manual checkpoint, 22 Nov 2026 20:54 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: D5a-3 live on his server (his install paste 20:5x); my Chrome look 20:54: lookup door present, no session = 400. D5a-3b responder contract written, not coded
+NEXT STEP: ask his ss -ulnp paste; read owning schema; code D5a-3b whole before committing code; then D5a-5; HANDOFF-22NOV.md = full context
+HIS LAST WORD: no incomplete work; dashboard first
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,36 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 802da807 22 Nov 20:44 ledger line 4f2d93ce
 - 4f2d93ce 22 Nov 20:44 Finding: no Control Plane responder yet
 - 3fd29fe9 22 Nov 20:42 ledger line bb13ccf9
 - bb13ccf9 22 Nov 20:42 No-incomplete-work law (gate INCOMPLETE ADVANCE), desk-install fetches lookup contract, contract inside crate
 - 6476741c 22 Nov 20:36 ledger line 79f0f952
-- 79f0f952 22 Nov 20:36 Desk D5a-3 real HTTP/3 client + PostgreSQL integration test
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/STATUS-GREEN-TABLE-22NOV.md
+ M docs/claude/admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+?? admin-desk/state/HANDOFF-22NOV.md
+?? docs/claude/admin-desk/state/HANDOFF-22NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 ++---------------------
- 1 file changed, 2 insertions(+), 21 deletions(-)
+ admin-desk/STATUS-GREEN-TABLE-22NOV.md             |  6 ++--
+ .../admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md     |  1 +
+ .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    | 22 +++++++++++++--
+ docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md |  6 ++--
+ docs/claude/admin-desk/state/WORKING-NOW.md        |  4 +--
+ docs/claude/state/WORKING-NOW.md                   | 33 ++++++++++------------
+ docs/claude/tech-contracts/CURRENT.md              | 11 ++++++++
+ 9 files changed, 76 insertions(+), 30 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +58,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (c2453047820d944ff5a2c9f3a592490e6e7531b7)
+WIP snapshot: refs/wip/last (936374e7e8c2dcd3ffa135ed59b58a330eb952a7)
