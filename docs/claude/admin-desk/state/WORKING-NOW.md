@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- d5fe6738 23 Nov 03:55 1k fix: mark colour blue
 - 45c75881 23 Nov 03:54 ledger line e283c4d5
 - e283c4d5 23 Nov 03:54 1k fix: services row mark follows click
 - 459bf9ff 23 Nov 03:53 ledger line c195b47a
@@ -72,11 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 7017b124 23 Nov 03:43 ledger line 2eb5f7e6
 - 2eb5f7e6 23 Nov 03:43 1k: AD1c repair + ad-auto retry
 - 602c8c54 23 Nov 03:39 ledger line 4fc3746f
-- 4fc3746f 23 Nov 03:39 return mark bug fix + 1k install proof
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskCards.tsx
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
