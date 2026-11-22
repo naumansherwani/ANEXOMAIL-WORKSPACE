@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 03:39 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:39 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1k installed (3 SAME); red-mark return bug fixed; SQL AD9/AD9b failed on server per him, need ad-auto paste
 NEXT STEP: his ad-auto paste -> fix -> Chrome look -> 1k GREEN
 HIS LAST WORD: his 03:38 order
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 4fc3746f 23 Nov 03:39 return mark bug fix + 1k install proof
 - ca5022eb 23 Nov 03:29 ledger line 8067194e
 - 8067194e 23 Nov 03:29 1k: runbooks code
 - 06f6c2ac 23 Nov 03:17 ledger line e75d586b
@@ -72,20 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 269b755b 23 Nov 03:16 ledger line 1a766922
 - 1a766922 23 Nov 03:16 after-compaction points
 - 1cc9c4fe 23 Nov 03:13 ledger line cd06a6a5
-- cd06a6a5 23 Nov 03:13 gate: contract block must be the NOW phase
 
 ## Uncommitted Desk files
- M admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskCards.tsx
- M founder-web/src/desk/DeskPages.tsx
-?? founder-web/src/desk/desk_return_pure.test.ts
-?? founder-web/src/desk/desk_return_pure.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
