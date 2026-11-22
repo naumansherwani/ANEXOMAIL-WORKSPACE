@@ -19,3 +19,5 @@
 - [22 Nov 2026 11:23 PKT] OPEN: ad-auto line for AD6 (package registry) once pushed; land C4 wording approval; next AD7 staff queues. Reminders live in this file and in chat only (his 11:11).
 
 - [22 Nov 2026 11:30 PKT] OPEN: his ad-auto again after this push (AD1 check fixed, AD6 pending); phase T top bar waits S1 haan.
+
+- [22 Nov 2026 11:40 PKT] HE SLEEPS UNTIL EVENING: next code AD7 staff queues, then D5a-3 Rust door (test double); do NOT claim green; ask him package list, Control Plane address, S1 haan, landing P-PRIO words, trials@ yes/no.

@@ -1,9 +1,94 @@
-# ANEXOMAIL ADMIN DESK: D-SERIES BLUEPRINT, UPDATED 22 Nov 2026 10:51 PKT (generated from the files named in each part; edit those, not this)
+# ANEXOMAIL ADMIN DESK: D-SERIES BLUEPRINT, UPDATED 22 Nov 2026 11:40 PKT (generated from the files named in each part; edit those, not this)
 Standing laws: Rule 52 (every answer kernel-verified), HTTP/3 only with WebTransport, TLS 1.3 AES-256-GCM + X25519MLKEM768, Desk isolation (own domain, never founder code or tables), no money or webhook data on the Desk, no phase name visible to an employee, no promises by employees, no refunds (published policy), the original UI/UX stays intact, GREEN only after a live Chrome look (WIRED: YES / REAL: YES / TECH-LAW CHECKED), whole Desk deadline 26 Nov 2026 07:26 PKT.
 
 
 
 =====================================================
+
+# PART 0: STATE NOW (NEXT-CODES-ORDER-22NOV.md)
+
+# NEXT CODES, IN ORDER (his word 22 Nov 2026 11:18 PKT: "list banao aur bari bari is ke codes likho aur send kero pull command")
+Each row: written -> proved on scratch PostgreSQL 16 (or test double) -> ONE pull line for him -> next row. Technology per row is the advance level of the phase. Rule 52 on every Desk call.
+| # | Code | What | Advance technology | Status 22 Nov 11:22 |
+|---|---|---|---|---|
+| 1 | AD5 | address-role truth (10 addresses, billing restricted, founder private, reply-from) | PostgreSQL forced RLS, CHECK, SECURITY DEFINER doors, hash-chained grant ledger | LIVE ON HIS SERVER (his paste 11:1x, 13/13 CHECK OK). SQL layer only: not GREEN until the Rust mail door uses it and my Chrome sees it |
+| 2 | AD6 (D5a-2) | versioned package registry, no price, append-only versions | PostgreSQL forced RLS, append-only triggers, hash-chained ledger | LIVE ON HIS SERVER (his paste 11:38, 10/10 CHECK OK). SQL layer only: not GREEN until the Rust read door + D5 screen use it |
+| 3 | AD7 | staff queues: case table per queue (support/movein/general/billing), assignment, status, Priority Support label + 2 business day SLA clock, per-company move-in work record | PostgreSQL RLS (team key on every row, 50k-staff design), burst breaker, hash-chained audit | NOT written |
+| 4 | D5a-3 | Rust signed read-only lookup door vs a test double of the Control Plane (Ed25519, audience desk-lookup, 60 s, fail closed) | Rust, Tokio, Axum, HTTP/3, Ed25519, Rule 52 kernel verify | NOT written |
+| 5 | D5a-5 | fail-closed behaviour proof (Control Plane down = "not available", nothing stale) | Rust + test double | NOT written |
+| 6 | Mail door | Rust inbound routing through fadm_route_inbound, outbound sender identity through fadm_reply_from, founder draft/approve flow | Rust, Tokio, QUIC, ClamAV, Storage Box | NOT written |
+| 7 | D5 screen | company plan context screen (original UI intact, data only) | React 19, TS, Tailwind 4, kernel-verified data | NOT written |
+| 8 | D5b-1..3 | nine runbooks, guided checklist, say-this text + no-promise gate | PostgreSQL versioned runbooks, React | NOT written |
+| 9 | D5c, D6 | Escalate one-way signed hand-over, Desk card | Rust signed hand-over, React | NOT written |
+| 10 | Gate | DESK CONTRACT DRIFT: DESK-LOOKUP-CONTRACT.json allowed_fields vs AD4 field list | rules-gate | NOT written |
+| 11 | Tests | real send/receive tests through the mail door | Rust integration tests | NOT written |
+## SCORE (his question 11:39, honest): 2 of 11 are on his server (AD5, AD6), both SQL layers only; 9 of 11 are not written (AD7, D5a-3, D5a-5, mail door, D5 screen, D5b, D5c+D6, drift gate, send/receive tests). GREEN: 0 of 11, because GREEN = WIRED: YES / REAL: YES / TECH-LAW CHECKED after my live Chrome look (his standing law), and none of the 11 is wired end to end yet.
+## C4 (his answer 11:18, recorded): the "named founder contact" line came from when the Desk was inside the founder app; the Desk is independent now; Priority Support is paid (landing page shows the real monthly charge) and is answered by the support team from resolved@ with the priority label and SLA. The landing line wording is a website promise: proposed new text is listed in docs/claude/WEBSITE-PROMISES.md as OPEN until he approves the exact words; landing UI untouched.
+
+# PART 0b: MAILBOX AND ROLE PLAN (MAILBOX-ROLES-PLAN-22NOV.md)
+
+# MAILBOX AND ROLE PLAN (his word, 22 Nov 2026 11:06 PKT, written line by line 11:12 PKT) - PRIORITY, phase I Mailboxes
+Order he gave: Claude first updates this role plan; then verify address-role conflicts and the existing mail flow, then routing/permissions, staff queues, SLA, sender identity, and last real send/receive tests, in this order.
+## His 8 points
+1. resolved@ = Support queue: employees see customer problems, assign, answer and resolve.
+2. moveyourbusiness@ = Managed Move-In queue: migration enquiries and a separate work record per company.
+3. Priority Support = a priority/SLA label on the support queue, NOT a new mailbox; an eligible customer gets a first reply within 2 business days (as the landing page says).
+4. hello@ = general enquiries; billing@ = authorized finance staff only. Every email keeps its original recipient and thread history.
+5. Every employee signs in with own account; access follows the role; assignment, reply and status changes are audited.
+6. A staff reply leaves from the address the customer wrote to: support from resolved@, move-in from moveyourbusiness@.
+7. Founder may get owner view/copies, but staff never sign in to the founder mailbox. For a reply from the founder address the employee makes a DRAFT, the founder approves and sends. Delegated "send as Founder" only with his permission, approval and audit, never by sharing a password.
+8. Order of work: conflicts + existing mail flow -> routing/permissions -> staff queues -> SLA -> sender identity -> real send/receive tests.
+Sending rule: general -> hello@; migration -> moveyourbusiness@; support and Priority Support -> resolved@; billing -> billing@. Priority Support replies go from resolved@.
+## His 10 addresses
+| # | Address | Role |
+|---|---|---|
+| 1 | hello@anexomail.com | General questions and first enquiries |
+| 2 | moveyourbusiness@anexomail.com | Managed Move-In: quote, schedule, company handover |
+| 3 | resolved@anexomail.com | Customer support; Priority Support is in this same queue (first reply in 2 business days, as the landing page packages say) |
+| 4 | billing@anexomail.com | Billing, invoices, payment questions; only authorized staff |
+| 5 | leo@anexomail.com | LEO automatic replies/system work; not a staff support inbox |
+| 6 | naumansherwani.founder@anexomail.com | His private founder account; employees never use its password |
+| 7 | noreply@anexomail.com | Automatic system mail only; nothing received |
+| 8 | postmaster@anexomail.com | Mail-server technical notices; forwarded to resolved@ with its own label |
+| 9 | abuse@anexomail.com | Abuse/security reports; forwarded to resolved@ with a restricted security label |
+| 10 | dmarc@anexomail.com | Domain mail security reports; auto-filtered in resolved@, never mixed with customer support |
+## Step 1 result: conflicts found (11:12 PKT), each fixed or asked
+| # | Conflict | Fix |
+|---|---|---|
+| C1 | AD1 made billing@ SEND-ONLY (live on his server); his rule: authorized finance staff READ billing@ | FIXED in AD5: only noreply@ stays send-only; billing@ restricted by explicit grant (ledgered) |
+| C2 | Old docs: resolved@ = silent BCC log of resolved replies; new rule: resolved@ is the real support queue and the reply address | AD5 table says resolved@ = support queue; old BCC-proof idea must be re-planned in phase K (a flag on the case, not an address) |
+| C3 | Old docs: postmaster@ alias to abuse@; support@ alias to hello@, trials@ real | AD5: postmaster/abuse/dmarc forward to resolved@ with labels; support@ and priority@ can never exist (constraint); trials@ not in his list, left out until he says |
+| C4 | Landing Priority Support says "a named founder contact"; his plan answers from resolved@ by staff | OPEN, his decision: change the landing line or keep a founder contact (website lines are promises) |
+| C5 | leo@ listed as system, but AI drafting is dropped until July 2027 | AD5 keeps leo@ as system row, no staff mailbox, no routing |
+## Step status
+- Step 1 conflicts: DONE (above). Step 2 routing + permissions SQL: AD5 CODED, proved on scratch PostgreSQL 16 (selftest all rules, 13/13 check), not yet on his server. Steps 3-6: NOT written.
+
+# PART 0c: TOP BAR PLAN (TOPBAR-PLAN-22NOV.md)
+
+# TOP BAR PLAN (his word 22 Nov 2026 11:26 PKT, image of the concept top bar: Search, Quick actions, theme, bell, profile)
+His question: which phase does the top bar (Search, Quick actions, Bell and the rest) belong to? His law: the original Anexomail UI/UX stays INTACT; additive only, his haan before any pixel changes.
+## Answer: NEW Desk phase T "Top bar", after S1 (rail order) and S2/S5 (Customers, Cases), because Search and Quick actions need real data to search and act on. Today (checked in founder-web/src/desk/DeskShell.tsx) the Desk shell has none of them.
+| Item in the concept | Desk decision | Needs first | Advance technology |
+|---|---|---|---|
+| Search | YES: one box searches cases, customers (opaque company ref), runbooks; typed reason is NOT needed for search, only for opening a company lookup | S2 Customers, S5 Cases, S3 Knowledge | PostgreSQL full text + trigram behind a signed door, Rule 52 kernel-verified results, React 19 |
+| Quick actions | YES: a keyboard-first action list (new note, assign to me, open runbook, escalate); each action is an existing signed door, list comes from fadm_action by the person's relation | AD7 queues, D5b, D5c | React 19 + TS, Framer Motion, kernel-verified action list |
+| Bell | YES: assignments, SLA warnings, alerts of the glitch rules (AD2 alerts exist) | D2 alerts (exist), AD7 SLA clocks | Server push over WebTransport with the kernel, never a third-party push |
+| Theme toggle | YES, colours only, from the D8 eye-comfort palette decision | D8 his pick | CSS design tokens |
+| Profile + sign out | exists already in the shell | none | existing |
+| Workspace switcher (Northwind Studio) | NO: the Desk is one workspace | none | none |
+| Breadcrumb tags "Protected preview", "browser router" | NO: no phase or tech names visible to employees (rule 14) | none | none |
+| Orb/"OpsPilot" logo, sidebar group names | NOT copied; the Desk keeps its own Anexomail look and identity | none | none |
+Order inside T: T1 Search, T2 Quick actions, T3 Bell, T4 Theme. Every step: backup in backups/desk, before/after check, 390 / 820 / 1200+ look, his haan first.
+
+# PART 0d: BACKUP RESERVE RULE (BACKUP-RESERVE-RULE-22NOV.md)
+
+# BACKUP RESERVE RULE (his word 22 Nov 2026 11:39 PKT)
+Backups in backups/desk stay RESERVED. They are used only when he says so. When code from a backup is needed, ONE command restores ONLY the files asked for (not everything); the live (newer) code of every other file is untouched, because the website changes all the time.
+List backups: 
+Look at specific files (live code untouched, extracted to /tmp): 
+Write them into the repo (those files only, backup version replaces the new one): same line with RESTORE_APPLY=1 in front of bash. Then desk-copy-sync, build, tests, commit.
+Every UI change still needs a fresh backup first (backups/desk + MANIFEST) and his haan. Written 22 Nov 2026 11:40 PKT.
+
 # PART 1: PHASE TABLE (D-series, every letter, state)  (DESK-PHASES-22NOV.md)
 =====================================================
 # ADMIN DESK: ORIGINAL BLUEPRINT BY PHASE (technology + features next to every phase). Written 22 Nov 2026 06:42 PKT, his 06:41 order; ALPHABETIC ORDER (his 06:43 word) laid out 22 Nov 2026 06:50 PKT: A to Q in build order, old ids in brackets.

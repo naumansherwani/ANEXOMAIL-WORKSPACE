@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 11:27 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: AD1 check fixed after AD5; phase T top bar planned
-NEXT STEP: his ad-auto: AD6; then AD7
-HIS LAST WORD: his 11:26 top bar question + ad-auto deadlock
+# WORKING NOW (manual checkpoint, 22 Nov 2026 11:40 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: AD5 + AD6 live on his server (SQL layers); blueprint regenerated; backup reserve rule
+NEXT STEP: AD7 staff queues then D5a-3 Rust door; he sleeps until evening
+HIS LAST WORD: his 11:38 paste + 11:39 orders
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,40 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- d1895e92 22 Nov 11:27 ledger line 9b13f53c
 - 9b13f53c 22 Nov 11:27 Manifest refresh
 - 8cc21898 22 Nov 11:27 ledger line 79001767
 - 79001767 22 Nov 11:27 Manifest refresh
 - 1cf0ff8d 22 Nov 11:26 ledger line ce85d899
-- ce85d899 22 Nov 11:26 AD1 check fix, top bar
 
 ## Uncommitted files (half-done work if any)
+ M CLAUDE.md
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/NEXT-CODES-ORDER-22NOV.md
+ M admin-desk/state/REMINDERS.md
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/NEXT-CODES-ORDER-22NOV.md
+ M docs/claude/admin-desk/state/REMINDERS.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
+?? admin-desk/BACKUP-RESERVE-RULE-22NOV.md
+?? admin-desk/scripts/desk-restore.sh
+?? docs/claude/admin-desk/BACKUP-RESERVE-RULE-22NOV.md
+?? docs/claude/admin-desk/scripts/desk-restore.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ admin-desk/state/REMINDERS.md                      |  2 +
+ docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md     |  1 +
+ .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    | 87 +++++++++++++++++++++-
+ docs/claude/admin-desk/NEXT-CODES-ORDER-22NOV.md   |  5 +-
+ docs/claude/admin-desk/state/REMINDERS.md          |  2 +
+ docs/claude/admin-desk/state/WORKING-NOW.md        | 16 +++-
+ docs/claude/state/WORKING-NOW.md                   | 37 ++++-----
+ 11 files changed, 218 insertions(+), 27 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +62,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (62ef6860038dd347560bd0327d2b796c0ac43883)
+WIP snapshot: refs/wip/last (4f671065d90173308f4190580257c313dded17f0)
