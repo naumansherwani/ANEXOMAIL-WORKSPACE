@@ -11,3 +11,8 @@ Responder = the Control Plane side of the Desk lookup (contract gates/DESK-LOOKU
 | data_freshness | the responder's own read time | none | none |
 RULE: a field whose source is unproven is sent as null ("not measured"), never invented.
 NEXT: his ONE read-only command on the awam database for the real org/subscription/usage columns, then the D5a-3b contract block, then the crate.
+
+## CORRECTIONS (his 22 Nov 2026 22:16 PKT)
+1. His package caps are ALREADY decided (AWAM-PACKAGES-PROPOSAL-07NOV.md section 6 D: card values = repo/plans.ts stay exactly; storage_plans conflict question withdrawn). Business Premium (7,000 users, 70 TB, 100 MB, 4 GB) and Business Max (card unlimited, strict 125,000 backend cap, 90% yellow / 95% high, never blocked) are decided too but are added AFTER the founder lane; the responder must know them when they are added.
+2. His rule F: the 48-hour trial is the only free entry. AD6b had trial 0: corrected by AD6c (version 2, trial_days 2).
+3. "Family" accounts (Rule 40, unlimited) are a separate thing, not a package and not an org to look up: they never appear in the Desk lookup. My earlier word "org family" meant two groups of tables (orgs vs account_organisations), nothing to do with family accounts.

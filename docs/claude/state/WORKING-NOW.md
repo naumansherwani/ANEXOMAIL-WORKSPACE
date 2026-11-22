@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 21:56 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: D5a-3b schema-first read written (D5A-3B-SCHEMA-READ-22NOV.md); two gaps: org family and storage matrix conflict with landing page
-NEXT STEP: his read-only psql on awam DB, then D5a-3b contract and crate
-HIS LAST WORD: schema-first law
+# WORKING NOW (manual checkpoint, 22 Nov 2026 22:17 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: D5a-2c trial correction AD6c (48 hour trial) coded; D5a-3b schema read corrected (caps already decided, family separate)
+NEXT STEP: his ad-auto for AD6c, then his schema-look paste, then D5a-3b contract
+HIS LAST WORD: his 22:16 word: caps already decided, family separate
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,34 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 34d8bbed 22 Nov 21:56 ledger line 61042086
 - 61042086 22 Nov 21:56 D5a-3b schema look script
 - 9156d706 22 Nov 21:55 ledger line 4d45dbd6
 - 4d45dbd6 22 Nov 21:55 D5a-3b schema-first read
 - 7d141880 22 Nov 21:53 ledger line 90a27229
-- 90a27229 22 Nov 21:53 D5a-2 GREEN
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
+ M admin-desk/server/src/packages.rs
+ M docs/claude/admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
+ M docs/claude/admin-desk/server/src/packages.rs
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+?? admin-desk/sql/AD6c.sql
+?? admin-desk/sql/checks/AD6c-check.sql
+?? docs/claude/admin-desk/sql/AD6c.sql
+?? docs/claude/admin-desk/sql/checks/AD6c-check.sql
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ admin-desk/D5A-3B-SCHEMA-READ-22NOV.md             |  5 ++++
+ admin-desk/server/src/packages.rs                  |  2 +-
+ docs/claude/admin-desk/D5A-3B-SCHEMA-READ-22NOV.md |  5 ++++
+ docs/claude/admin-desk/server/src/packages.rs      |  2 +-
+ docs/claude/state/WORKING-NOW.md                   | 32 ++++++++++------------
+ docs/claude/tech-contracts/CURRENT.md              |  8 ++++++
+ 6 files changed, 34 insertions(+), 20 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +56,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (9782ec4baa5568c2bb746e41a72097daf96b3c11)
+WIP snapshot: refs/wip/last (b9f8caeadc0b8050a3e180503afe14f08e8e6e0e)

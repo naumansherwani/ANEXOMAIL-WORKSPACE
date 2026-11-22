@@ -1,5 +1,13 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK D5a-2c (TRIAL CORRECTION, 48 HOURS), written 22 Nov 2026 22:1x PKT. His FINAL decision F (AWAM-PACKAGES-PROPOSAL-07NOV.md section 6): the 48-hour trial is the only free entry; AD6b had trial 0. STATE: CODE DONE, proved on scratch PostgreSQL; waits his ad-auto
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL 16 append-only registry: a NEW version 2 per package with trial_days 2 (history kept, hash-chained ledger line per version, never an update) | sql/AD6c.sql + sql/checks/AD6c-check.sql | yes | CHECK f before, t after, second run changes nothing, ledger_verify true (scratch) |
+| Rust read doors unchanged (they read fadm_pkg_current, so they serve version 2 automatically); test no longer assumes one version | server/src/packages.rs | yes | cargo tests |
+
+
+
 # TECH CONTRACT FOR PHASE: DESK D5a-2 (PACKAGE REGISTRY FILL + RUST READ DOOR), written 22 Nov 2026 21:40 PKT, his word 21:31 "package list landing page se dekh lo, shuru kero". STATE: CODE DONE and proved on scratch PostgreSQL + isolated build; waits his three pulls (ad-auto, desk-install, desk-restart) and my live look
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3136,3 +3144,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - D5a-3b schema-first read written (22 Nov 2026 21:5x PKT, docs only): sources for each lookup field named; gaps: real org family unproven, old storage_plans matrix conflicts with landing page, no suspension table. Responder code not started.
 
 - D5a-3b read-only schema look script added (22 Nov 2026 21:5x PKT): lists real columns of orgs, polar_subscriptions, storage and plan tables, prints no secret and no rows; waits his paste.
+
+- D5a-2c (22 Nov 2026 22:1x PKT): his rule F, 48 hour trial is the only free entry; AD6b had trial 0, AD6c adds version 2 per package with trial_days 2 (scratch PostgreSQL: CHECK false before, true after, rerun changes nothing, 43 cargo tests). Waits his ad-auto. D5a-3b schema read corrected: caps already decided, family accounts are separate.

@@ -4249,3 +4249,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - D5a-3b schema-first read written (22 Nov 2026 21:5x PKT, docs only): sources for each lookup field named; gaps: real org family unproven, old storage_plans matrix conflicts with landing page, no suspension table. Responder code not started.
 
 - D5a-3b read-only schema look script added (22 Nov 2026 21:5x PKT): lists real columns of orgs, polar_subscriptions, storage and plan tables, prints no secret and no rows; waits his paste.
+
+- D5a-2c (22 Nov 2026 22:1x PKT): his rule F, 48 hour trial is the only free entry; AD6b had trial 0, AD6c adds version 2 per package with trial_days 2 (scratch PostgreSQL: CHECK false before, true after, rerun changes nothing, 43 cargo tests). Waits his ad-auto. D5a-3b schema read corrected: caps already decided, family accounts are separate.

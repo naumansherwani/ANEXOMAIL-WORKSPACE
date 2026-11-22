@@ -58,7 +58,7 @@ mod tests {
         let (st, v) = body(list(hd.clone()).await).await; assert_eq!(st, StatusCode::OK, "{v}");
         let arr = v.as_array().unwrap(); assert_eq!(arr.len(), 7); assert_eq!(arr[0]["pkg_id"], "basic"); assert_eq!(arr[6]["pkg_id"], "ai_executive");
         assert_eq!(arr[3]["limits"]["seats"], 570); assert_eq!(arr[0]["grace_days"], 3);
-        let (st, v) = body(one(hd.clone(), Path("pro".into())).await).await; assert_eq!(st, StatusCode::OK); assert_eq!(v["current"]["pkg_id"], "pro"); assert_eq!(v["versions"].as_array().unwrap().len(), 1);
+        let (st, v) = body(one(hd.clone(), Path("pro".into())).await).await; assert_eq!(st, StatusCode::OK); assert_eq!(v["current"]["pkg_id"], "pro"); assert!(!v["versions"].as_array().unwrap().is_empty());
         let (st, _) = body(one(hd, Path("enterprise".into())).await).await; assert_eq!(st, StatusCode::NOT_FOUND);
     }
 }
