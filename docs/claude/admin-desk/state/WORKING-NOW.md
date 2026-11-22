@@ -47,6 +47,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 406bbe10 22 Nov 06:40 ledger line 60e70c2b
 - 60e70c2b 22 Nov 06:40 Desk phase C2 kernel stream client
 - e3dde6d5 22 Nov 06:24 ledger line 6f85aa0c
 - 6f85aa0c 22 Nov 06:24 Desk gate lesson: advance technology only, HTTP/1 and HTTP/2 never named
@@ -54,7 +55,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 34836497 22 Nov 06:21 Desk phase C1: WebTransport server on UDP 4400 (wt.rs, signed frames)
 - ac2007ae 22 Nov 06:08 ledger line 4d7881d7
 - 4d7881d7 22 Nov 06:08 Desk dashboard: remove bottom sign out, account menu closes on outside click
-- 8d9c7035 22 Nov 06:03 ledger line 5810d00b
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
