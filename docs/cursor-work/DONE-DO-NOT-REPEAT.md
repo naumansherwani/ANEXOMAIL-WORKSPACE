@@ -4237,3 +4237,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - D5a-2 CODE DONE (22 Nov 2026 PKT): AD6b seed of the 7 landing-page packages (features + limits, grace 3, no price) and Rust read doors /desk/v1/packages; 43 cargo tests, scratch PostgreSQL CHECK 5 rows true, isolated release build OK. Not live until his ad-auto, desk-install, desk-restart.
 
 - LOOP-AFTER-COMMIT BANNED law (his 22 Nov 2026 21:40 PKT): ckpt-loop now snapshots only while real work is uncommitted; clean tree after push stays clean.
+
+- D5a-2 INSTALLED (22 Nov 2026 ~21:50 PKT): his desk-install built the Desk with packages.rs and desk-restart is active (health 200, door 401); ad-auto reported AD6b already run, unexpected, waits his one read-only count of fadm_pkg_version and my live look. Not whole yet.

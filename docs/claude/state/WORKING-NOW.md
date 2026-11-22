@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 21:40 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: D5a-2 registry seed AD6b + packages read doors coded, proved on scratch PG and isolated build
-NEXT STEP: his 3 pulls (ad-auto, desk-install, desk-restart), then D5a-3b responder
-HIS LAST WORD: his 21:31 word: package list from landing page
+# WORKING NOW (manual checkpoint, 22 Nov 2026 21:49 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: D5a-2 installed on his server (desk-install, desk-restart OK); ad-auto says AD6b already run, to confirm by his read-only count
+NEXT STEP: his count paste, my live look, then D5a-3b responder
+HIS LAST WORD: his 21:48 compact-save order
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,32 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 3b4408b1 22 Nov 21:40 ledger line 0acafb5b
 - 0acafb5b 22 Nov 21:40 Loop-after-commit banned: ckpt-loop writes only while real work is uncommitted; law file
 - 73594083 22 Nov 21:39 ledger line 9bb2517c
 - 9bb2517c 22 Nov 21:39 D5a-2 package registry fill and read doors
 - 8b746529 22 Nov 21:24 ledger line 420d79ed
-- 420d79ed 22 Nov 21:24 Handoff refresh, loop restart
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/D5A-GREEN-LIST-22NOV.md
+ M admin-desk/STATUS-GREEN-TABLE-22NOV.md
+ M admin-desk/state/HANDOFF-22NOV.md
+ M docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md
+ M docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md
+ M docs/claude/admin-desk/state/HANDOFF-22NOV.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 20 +-------------------
- 1 file changed, 1 insertion(+), 19 deletions(-)
+ admin-desk/D5A-GREEN-LIST-22NOV.md                 |  2 +-
+ admin-desk/STATUS-GREEN-TABLE-22NOV.md             |  2 +-
+ admin-desk/state/HANDOFF-22NOV.md                  |  6 ++++-
+ docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md     |  2 +-
+ docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md |  2 +-
+ docs/claude/admin-desk/state/HANDOFF-22NOV.md      |  6 ++++-
+ docs/claude/state/WORKING-NOW.md                   | 29 ++++++++--------------
+ 7 files changed, 25 insertions(+), 24 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +54,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a54713489da9bd8d189f707df2f7b8918f6323e1)
+WIP snapshot: refs/wip/last (22a817a08ac87d5d9c35c736ac1ab340e3b0cbc8)
