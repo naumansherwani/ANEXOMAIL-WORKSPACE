@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 09:04 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 09:04 PKT) - read this FIRST for the Desk after a compaction
 DOING: phase-name ban rule 14, test alert text fixed
 NEXT STEP: D5, D6, phase A
 HIS LAST WORD: his 09:03 Chairman word
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 33db1302 22 Nov 09:04 rule 14
 - 4fc8edaf 22 Nov 09:03 ledger line fdb716a6
 - 89473640 22 Nov 09:03 ledger line 425ec964
 - 425ec964 22 Nov 09:03 D2 live
@@ -72,13 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - ee694483 22 Nov 09:01 ledger line 080dcd0c
 - 080dcd0c 22 Nov 09:01 D2 script
 - 385aff8d 22 Nov 08:58 ledger line 03f1e05f
-- f8ff322c 22 Nov 08:58 ledger line 0d02f799
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
- M docs/claude/admin-desk/RULE-BOOK.md
- M docs/claude/admin-desk/scripts/desk-test-alert.sh
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
