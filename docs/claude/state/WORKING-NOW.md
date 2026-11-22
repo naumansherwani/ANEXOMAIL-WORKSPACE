@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 20:44 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 20:44 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: D5a-3 done in code; Control Plane responder does not exist yet (D5a-3b)
 NEXT STEP: his fresh ss -ulnp paste, then design D5a-3b contract
 HIS LAST WORD: no incomplete work
@@ -18,26 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 4f2d93ce 22 Nov 20:44 Finding: no Control Plane responder yet
 - 3fd29fe9 22 Nov 20:42 ledger line bb13ccf9
 - bb13ccf9 22 Nov 20:42 No-incomplete-work law (gate INCOMPLETE ADVANCE), desk-install fetches lookup contract, contract inside crate
 - 6476741c 22 Nov 20:36 ledger line 79f0f952
 - 79f0f952 22 Nov 20:36 Desk D5a-3 real HTTP/3 client + PostgreSQL integration test
-- bebf54a1 22 Nov 20:30 ledger line c940ec13
 
 ## Uncommitted files (half-done work if any)
- M admin-desk/state/REMINDERS.md
- M docs/claude/admin-desk/state/REMINDERS.md
- M docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/state/REMINDERS.md               |  1 +
- docs/claude/admin-desk/state/REMINDERS.md   |  1 +
- docs/claude/admin-desk/state/WORKING-NOW.md |  4 ++--
- docs/claude/state/WORKING-NOW.md            | 26 ++++++++------------------
- 4 files changed, 12 insertions(+), 20 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 23 ++---------------------
+ 1 file changed, 2 insertions(+), 21 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -48,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (100b57591c8e0094198de90e080b3bdc534053b3)
+WIP snapshot: refs/wip/last (c2453047820d944ff5a2c9f3a592490e6e7531b7)
