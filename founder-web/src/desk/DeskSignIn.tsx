@@ -76,6 +76,10 @@ export function DeskSignIn() {
                 <input id="deskpw" name="password" type={show ? "text" : "password"} autoComplete={savePw ? "current-password" : "off"} value={password} onChange={(e) => setPassword(e.target.value)} style={{ flex: 1, minWidth: 0, border: 0, outline: "none", background: "transparent", color: "#E8EEF9", fontSize: 16, padding: "0 14px" }} />
                 <button type="button" onClick={() => setShow((v) => !v)} aria-label={show ? "Hide password" : "Show password"} aria-pressed={show} style={{ width: 48, minHeight: 44, border: 0, background: "transparent", color: "#C9D8F2", cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center" }}><EyeIcon off={show} /></button>
               </div>
+              <label htmlFor="deskpwsave" style={{ minHeight: 44, boxSizing: "border-box", display: "flex", alignItems: "center", gap: 10, padding: "0 14px", borderRadius: 12, border: "1px solid rgba(160,200,255,.22)", background: "rgba(4,9,22,.45)", color: "#E8EEF9", fontSize: 14, cursor: "pointer" }}>
+                <input id="deskpwsave" type="checkbox" checked={savePw} onChange={(e) => { setSavePw(e.target.checked); writeSavePw(e.target.checked); }} style={{ width: 18, height: 18, accentColor: "#3B8EDB", cursor: "pointer" }} />
+                Save password
+              </label>
               {msg && <p role="alert" style={{ margin: 0, fontSize: 13, color: "#F2C58A" }}>{msg}</p>}
               <button type="submit" className="ax-a-hover" disabled={busy} style={{ minHeight: 44, border: "1px solid rgba(160,200,255,.4)", borderRadius: 12, background: "transparent", color: "#E8EEF9", fontSize: 15, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}><HoverA busy={busy} />Sign in</button>
             </form>

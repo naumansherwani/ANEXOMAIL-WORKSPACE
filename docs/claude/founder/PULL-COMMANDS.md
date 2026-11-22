@@ -3163,3 +3163,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 22 Nov 06:40 PKT: Desk login scales to window height: no scrollbar at 10 sizes incl 1366x650, single light visible, eye kept; waits desk-install
 
 - 22 Nov 06:50 PKT: Desk login light raised to bottom 12px, below card, 10 sizes fit no scrollbar; waits desk-install
+
+- 22 Nov 07:00 PKT: Save password row RESTORED (my mistake at 06:25), eye + single light + scale-to-fit kept, 10 sizes fit; rule: never delete a feature he did not name
