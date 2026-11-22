@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 04:36 PKT) - read this FIRST for the Desk after a compaction
-DOING: 1l D5c Escalate: web research done, LIST L1-L12 + ADVANCE-RESEARCH [1l] + contract written BEFORE code. Next: AD10 SQL on scratch with AD1..AD10 checks
-NEXT STEP: AD10.sql + check + selftest on scratch, then cases.rs, then UI
-HIS LAST WORD: his 04:34 SHURU KERO
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 04:48 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1l code done, waits his ad-auto + desk-install + my Chrome look
+NEXT STEP: his 2 server lines, Chrome look, then 1l GREEN
+HIS LAST WORD: his order: write the researched points as code
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 988153f9 23 Nov 04:36 ledger line 8f1f5669
 - 8f1f5669 23 Nov 04:36 1l research + contract before code
 - d23a5a2e 23 Nov 04:30 ledger line f4afe900
 - f4afe900 23 Nov 04:30 founder inbox plan + reminder gate
@@ -72,10 +73,28 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - c8287687 23 Nov 04:25 founder escalation inbox parked after 1o + 1a
 - 89e0e045 23 Nov 04:25 ledger line 2b5144d1
 - 2b5144d1 23 Nov 04:25 1k closed: approvals + tick proved live
-- 2f1bf66f 23 Nov 04:18 ledger line cba544eb
 
 ## Uncommitted Desk files
+ M admin-desk/D5C-ESCALATE-LIST-23NOV.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/NOW-LIST-23NOV.md
+ M admin-desk/server/src/main.rs
+ M docs/claude/admin-desk/D5C-ESCALATE-LIST-23NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
+ M docs/claude/admin-desk/server/src/main.rs
  M docs/claude/admin-desk/state/WORKING-NOW.md
+ M founder-web/src/desk/DeskCards.tsx
+ M founder-web/src/desk/DeskRunbooks.tsx
+ M founder-web/src/desk/desk_cards.ts
+?? admin-desk/server/src/escalations.rs
+?? admin-desk/sql/AD10.sql
+?? admin-desk/sql/checks/AD10-check.sql
+?? docs/claude/admin-desk/server/src/escalations.rs
+?? docs/claude/admin-desk/sql/AD10.sql
+?? docs/claude/admin-desk/sql/checks/AD10-check.sql
+?? founder-web/src/desk/DeskEscalate.tsx
+?? founder-web/src/desk/desk_case_pure.test.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

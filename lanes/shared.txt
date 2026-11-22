@@ -118,6 +118,7 @@ admin-desk/server/src/auth.rs
 admin-desk/server/src/bridge.rs
 admin-desk/server/src/dbsc.rs
 admin-desk/server/src/door.rs
+admin-desk/server/src/escalations.rs
 admin-desk/server/src/h3.rs
 admin-desk/server/src/lookup.rs
 admin-desk/server/src/main.rs
@@ -131,6 +132,7 @@ admin-desk/sql/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/AD1.sql
 admin-desk/sql/AD1/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/AD1/README.md
+admin-desk/sql/AD10.sql
 admin-desk/sql/AD1b.sql
 admin-desk/sql/AD1c.sql
 admin-desk/sql/AD2.sql
@@ -149,6 +151,7 @@ admin-desk/sql/AD9b.sql
 admin-desk/sql/README.md
 admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/checks/AD1-check.sql
+admin-desk/sql/checks/AD10-check.sql
 admin-desk/sql/checks/AD1b-check.sql
 admin-desk/sql/checks/AD1c-check.sql
 admin-desk/sql/checks/AD2-check.sql

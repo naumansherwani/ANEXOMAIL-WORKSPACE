@@ -5438,3 +5438,7 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 1l research first: D5C list L1-L12, ADVANCE-RESEARCH [1l] in blueprint + NOW-LIST, CURRENT.md contract (rows no, planned), founder inbox plan gets his Chairman/CEO words. TESTED: records only, gate. TECH-LAW CHECKED
 
 - 1l research first: D5C list L1-L12, ADVANCE-RESEARCH [1l] in blueprint + NOW-LIST, CURRENT.md contract (rows no, planned), founder inbox plan gets his Chairman/CEO words. TESTED: records only, gate. TECH-LAW CHECKED
+
+- 1l D5c ESCALATE CODE: AD10 + escalations.rs + DeskEscalate.tsx, TESTED: scratch PG selftest x2, cargo 73 pass, bun 73 pass, tsc, vite; TECH-LAW CHECKED; GREEN waits his install + Chrome
+
+- 1l D5c ESCALATE CODE: AD10 + escalations.rs + DeskEscalate.tsx, TESTED: scratch PG selftest x2, cargo 73 pass, bun 73 pass, tsc, vite; TECH-LAW CHECKED; GREEN waits his install + Chrome

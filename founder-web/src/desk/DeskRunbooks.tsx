@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { deskCall } from "./desk_kernel";
+import { DeskEscalate } from "./DeskEscalate";
+import { RUNBOOK_FOR, type Reason } from "./desk_case_pure";
 import { UNAVAILABLE_TEXT } from "./desk_lookup_pure";
 import { PART_LABEL, SIX, approvalState, approvalWords, checkedWords, companyOk, day, doneCount, parseRunbooks, parseTicks, sayFilled, tickMap, type Runbook, type Tick } from "./desk_runbook_pure";
 
@@ -90,6 +92,7 @@ function Detail({ rb, role, back, reload }: { rb: Runbook; role: string; back: (
         {say.open.length > 0 && <p role="status"><small>Fill these from the screen before you send: {say.open.join(" ")}</small></p>}
         <div className="drb-row" style={{ marginTop: 10 }}><button type="button" className="drb-btn" onClick={() => void copy()}>Copy text</button>{copied === "yes" && <small role="status">Copied.</small>}{copied === "select" && <small role="status">Selected. Press Ctrl+C (or hold and copy on a phone).</small>}</div>
       </section>
+      <DeskEscalate company={ok ? company.trim() : ""} reason={(Object.entries(RUNBOOK_FOR).find(([, k]) => k === rb.key)?.[0] as Reason | undefined) ?? "other"} />
     </div>
   );
 }

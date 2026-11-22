@@ -21,6 +21,7 @@ mod dbsc;
 mod lookup;
 mod packages;
 mod runbooks;
+mod escalations;
 mod sign;
 mod wt;
 mod signed;
@@ -113,6 +114,8 @@ async fn main() {
         .route("/desk/v1/runbooks/tick", post(runbooks::tick))
         .route("/desk/v1/runbooks/ticks", post(runbooks::ticks))
         .route("/desk/v1/runbooks/mark", post(runbooks::mark))
+        .route("/desk/v1/escalations", post(escalations::create))
+        .route("/desk/v1/escalations/list", post(escalations::list))
         .layer(middleware::from_fn(signed::guard));
     let app = Router::new()
         .route("/desk/v1/health", get(health))

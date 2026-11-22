@@ -3,14 +3,14 @@
 # TECH CONTRACT FOR PHASE: DESK D5c ESCALATE (phase 1l), written 23 Nov 2026 04:55 PKT BEFORE code. LIST: docs/claude/admin-desk/D5C-ESCALATE-LIST-23NOV.md (L1..L12)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
-| PostgreSQL AD10: fadm_case, append-only SHA-256 event chain, closed priority + reason lists, forced RLS, doors only | sql/AD10.sql, checks/AD10-check.sql | no | planned: scratch PostgreSQL selftest + AD1..AD10 checks all true (AD2/AD3 included) |
-| Transactional outbox in the same transaction, SKIP LOCKED claim, dedup by outbox id | sql/AD10.sql | no | planned: rollback test |
-| Idempotent request id (duplicate = same case) | AD10 unique key, desk_case_pure.ts | no | planned: bun + PostgreSQL test |
-| Ed25519 signed one-way hand-over, 5 minute window, key rotation overlap, constant-time compare | server/src/cases.rs (Desk-own sign.rs) | no | planned: cargo test, wrong/old signature refused |
-| Rust doors /desk/v1/cases (create, list, status) over HTTP/3, employees see their company only | server/src/cases.rs, main.rs | no | planned: cargo test with real PostgreSQL |
-| Dead-letter state + alert, 429 ceiling per employee | AD10, cases.rs | no | planned |
-| Rule 52 kernel-verified reads, fail-closed Data unavailable | desk_case_pure.ts, DeskCases.tsx | no | planned: bun tests + my Chrome look |
-| React 19 + TypeScript Escalate button + case number/status, 390 / 820 / 1200+ | DeskCases.tsx, DeskRunbooks.tsx, desk_cards.ts | no | planned |
+| PostgreSQL AD10: fadm_escalation, append-only SHA-256 event chain, closed priority + reason lists, forced RLS, doors only | sql/AD10.sql, checks/AD10-check.sql | yes | scratch PostgreSQL: selftest passes twice, AD10 check 10/10 true, AD1..AD10 checks 0 false rows (AD2/AD3 included) |
+| Transactional outbox in the same transaction, SKIP LOCKED claim, dedup by outbox id | sql/AD10.sql (fadm_escalation_outbox_claim / _mark) | yes | selftest: claim, back-off, stuck after 8 tries |
+| Idempotent request id (duplicate = same case) | AD10 unique request_id, desk_case_pure.ts | yes | selftest + bun tests: duplicate = same case |
+| Ed25519 signed one-way hand-over, 5 minute window, key rotation overlap, constant-time compare | server/src/escalations.rs seal_handover / verify_handover (Desk-own HandoverSeen cache) | yes | cargo test 73 pass: accept, replay, tamper, wrong key, expired, future, rotation |
+| Rust doors /desk/v1/cases (create, list, status) over HTTP/3, employees see their company only | server/src/escalations.rs, main.rs: /desk/v1/escalations and /list | yes | cargo test (real PostgreSQL test needs DESK_TEST_ADMIN_URL); my live Chrome look is next |
+| Dead-letter state + alert, 429 ceiling per employee | AD10 escalation.flood / escalation.stuck, ceiling 10 per minute | yes | selftest |
+| Rule 52 kernel-verified reads, fail-closed Data unavailable | desk_case_pure.ts, DeskEscalate.tsx (deskCall = kernel-verified, UNAVAILABLE_TEXT fail-closed) | yes | bun test src/desk 73 pass, tsc clean |
+| React 19 + TypeScript Escalate button + case number/status, 390 / 820 / 1200+ | DeskEscalate.tsx, DeskRunbooks.tsx, desk_cards.ts (card x), DeskCards.tsx | yes | vite build ok; 390 / 820 / 1200+ Chrome look next |
 
 # TECH CONTRACT FOR PHASE: DESK D5b RUNBOOKS (phase 1k), written 23 Nov 2026 03:3x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D5B-RUNBOOKS-LIST-23NOV.md (R1..R12)
 | Advance technology | Where in code | IN CODE | Proof |
@@ -3343,3 +3343,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 1l research first: D5C list L1-L12, ADVANCE-RESEARCH [1l] in blueprint + NOW-LIST, CURRENT.md contract (rows no, planned), founder inbox plan gets his Chairman/CEO words. TESTED: records only, gate. TECH-LAW CHECKED
 
 - 1l research first: D5C list L1-L12, ADVANCE-RESEARCH [1l] in blueprint + NOW-LIST, CURRENT.md contract (rows no, planned), founder inbox plan gets his Chairman/CEO words. TESTED: records only, gate. TECH-LAW CHECKED
+
+- 1l D5c ESCALATE CODE: AD10 + escalations.rs + DeskEscalate.tsx, TESTED: scratch PG selftest x2, cargo 73 pass, bun 73 pass, tsc, vite; TECH-LAW CHECKED; GREEN waits his install + Chrome

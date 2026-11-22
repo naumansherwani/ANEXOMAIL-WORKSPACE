@@ -8,6 +8,7 @@ import { canSeeTech, systemsModel, type Level } from "./desk_systems_pure";
 import { barModel } from "./desk_bridge_pure";
 import { DeskPipeline } from "./DeskCommandBar";
 import { DeskPlan } from "./DeskPlan";
+import { DeskEscalate } from "./DeskEscalate";
 import { DeskRunbooks } from "./DeskRunbooks";
 
 /** ADMIN DESK D1..D4 (22 Nov 2026): the clickable cards below the Command Bar and the pages they open. Every number comes from the kernel-verified stream (Rule 52);
@@ -93,6 +94,7 @@ export function DeskSubPage({ sub, search, hash, snap, nav, role = "", act }: { 
     );
   }
   if (card.id === "plans") return <Shell title="Plans and prices" back nav={nav}><p>Look up one company's plan, what is really switched on, usage and service state.</p><DeskPlan /></Shell>;
+  if (card.id === "escalations") return <Shell title="Escalations" back nav={nav}><p>{card.what}.</p><DeskEscalate /></Shell>;
   if (card.id === "runbooks") return <Shell title="Runbooks" back nav={nav}><p>{card.what}.</p><DeskRunbooks role={role} /></Shell>;
   if (card.id === "systems") {
     const m = systemsModel(snap.state, snap.data, role);

@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 04:36 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 1l D5c Escalate: web research done, LIST L1-L12 + ADVANCE-RESEARCH [1l] + contract written BEFORE code. Next: AD10 SQL on scratch with AD1..AD10 checks
-NEXT STEP: AD10.sql + check + selftest on scratch, then cases.rs, then UI
-HIS LAST WORD: his 04:34 SHURU KERO
+# WORKING NOW (manual checkpoint, 23 Nov 2026 04:48 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 1l code done, waits his ad-auto + desk-install + my Chrome look
+NEXT STEP: his 2 server lines, Chrome look, then 1l GREEN
+HIS LAST WORD: his order: write the researched points as code
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,50 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 988153f9 23 Nov 04:36 ledger line 8f1f5669
 - 8f1f5669 23 Nov 04:36 1l research + contract before code
 - d23a5a2e 23 Nov 04:30 ledger line f4afe900
 - f4afe900 23 Nov 04:30 founder inbox plan + reminder gate
 - e2147d46 23 Nov 04:25 ledger line c8287687
-- c8287687 23 Nov 04:25 founder escalation inbox parked after 1o + 1a
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/D5C-ESCALATE-LIST-23NOV.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/NOW-LIST-23NOV.md
+ M admin-desk/server/src/main.rs
+ M docs/claude/admin-desk/D5C-ESCALATE-LIST-23NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
+ M docs/claude/admin-desk/server/src/main.rs
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ D founder-web/dist-desk/assets/desk-D1zbEnu0.js
+ M founder-web/dist-desk/desk.html
+ M founder-web/src/desk/DeskCards.tsx
+ M founder-web/src/desk/DeskRunbooks.tsx
+ M founder-web/src/desk/desk_cards.ts
+?? admin-desk/server/src/escalations.rs
+?? admin-desk/sql/AD10.sql
+?? admin-desk/sql/checks/AD10-check.sql
+?? docs/claude/admin-desk/server/src/escalations.rs
+?? docs/claude/admin-desk/sql/AD10.sql
+?? docs/claude/admin-desk/sql/checks/AD10-check.sql
+?? founder-web/dist-desk/assets/desk-BmAwjGyi.js
+?? founder-web/src/desk/DeskEscalate.tsx
+?? founder-web/src/desk/desk_case_pure.test.ts
+?? founder-web/src/desk/desk_case_pure.ts
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 32 ++------------------------------
- 1 file changed, 2 insertions(+), 30 deletions(-)
+ docs/claude/state/WORKING-NOW.md                   |  47 +++++---
+ docs/claude/tech-contracts/CURRENT.md              |  16 +--
+ founder-web/dist-desk/assets/desk-D1zbEnu0.js      | 127 ---------------------
+ founder-web/dist-desk/desk.html                    |   2 +-
+ founder-web/src/desk/DeskCards.tsx                 |   2 +
+ founder-web/src/desk/DeskRunbooks.tsx              |   3 +
+ founder-web/src/desk/desk_cards.ts                 |   1 +
+ 15 files changed, 66 insertions(+), 170 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +72,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (b7e37e87f235a5917b43ab33133c20c662c83f76)
+WIP snapshot: refs/wip/last (ee788f32a9215f6c0cda39789b6dff6e04df144c)
