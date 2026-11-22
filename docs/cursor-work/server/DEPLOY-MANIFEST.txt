@@ -1188,12 +1188,12 @@ founder-web/src/passkey_pure.ts 18c84406d0b26eb9
 server/founder/src/passkey.rs 28b7e52ec90ad563
 server/rust/j3_action_vectors.json d90c898ebb69d9ea
 web-wasm/src/action.rs eda7722b529a2887
-lanes/ALL-FILES.csv 40668c3c6d706796
+lanes/ALL-FILES.csv 85a91e00f0b1a8a3
 lanes/awam.txt 219a070e10451e94
-lanes/docs.txt f4b890aed5a3c859
+lanes/docs.txt 112685bbdfed9dee
 lanes/founder.txt 8eba618d6f35bd01
-lanes/shared.txt c5cece6ce426a96f
-lovable-gold/README.md b4a332d050606228
+lanes/shared.txt 373fb205b4c8013a
+lovable-gold/README.md e4c8cd76c73b0288
 docs/claude/FOUNDER-FLARE-J6-RESEARCH-03NOV.md 5e65d9f84cbbc643
 docs/cursor-work/sql/CHECK_E140.sql 0aa343c84820214f
 docs/cursor-work/sql/E140_founder_flare_push.sql 3c95ae9963ebd5bf
@@ -1305,7 +1305,7 @@ src/routes/app.org.tsx c3a1f12a640bb274
 src/routes/app.org.emoji.tsx 4cb6c978d9fb4e5e
 docs/claude/AWAM-D4-CLOSE-AND-ORDER-20NOV.md ab447059a98a8681
 docs/claude/QC2-PLAN-20NOV.md 963486e05ceb310e
-docs/claude/state/WORKING-NOW.md 1b74b69ebffe8ddc
+docs/claude/state/WORKING-NOW.md 8ac3cb13ab997246
 docs/claude/PHASE-NOW.md 54798ad777c387dc
 docs/cursor-work/sql/E194_founder_mail_signatures_snippets.sql 77d359c553335cc3
 docs/cursor-work/sql/CHECK_E194.sql 677ed0aa9fed057f

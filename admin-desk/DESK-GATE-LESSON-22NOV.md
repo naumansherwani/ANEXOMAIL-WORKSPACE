@@ -1,0 +1,5 @@
+# DESK GATE LESSON (22 Nov 2026 06:25 PKT, his anger after the C1 commit failed rules-gate)
+1. BEFORE ANY DESK COMMIT: run rules-read.py, read WORKING-NOW.md, the ledger and CURRENT.md. Gates are read FIRST, not after the failure.
+2. HTTP/1 and HTTP/2 are BANNED for the Admin Desk EVERYWHERE: code, tests, comments, strings, fixtures. The gate [DESK TECH] fails any file under admin-desk/ that names them (even a test string like a raw HTTP/1 request line). Use plain bytes (e.g. "GET /\n") or the word "plain request".
+3. Desk code runs ONLY on advance technology: Rust + Tokio + Axum, HTTP/3 + WebTransport over QUIC (UDP 4400), Rule 52 signed frames, WASM kernel, PQ TLS (X25519MLKEM768, AES-256-GCM). No fallback transport without his approval.
+4. Commit routine that passes first time: desk-copy-sync.py sync -> lane-sync.py -> manifest-sync.py (WORKING-NOW.md, lanes/*.txt, lanes/ALL-FILES.csv, lovable-gold/README.md) -> git add -A -> rules-gate.py --staged (0 fail) -> commit with Phase: and Tech: lines.
