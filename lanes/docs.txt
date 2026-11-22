@@ -361,6 +361,7 @@ docs/claude/admin-desk/RUNBOOK-LIBRARY-DRAFT-22NOV.md
 docs/claude/admin-desk/SANDBOX-LIVE-TEST-22NOV.md
 docs/claude/admin-desk/SCALE-50K-DESIGN-22NOV.md
 docs/claude/admin-desk/SIDEBAR-SECTIONS-AND-LOOPHOLES-22NOV.md
+docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md
 docs/claude/admin-desk/STATUS-REAL-22NOV.md
 docs/claude/admin-desk/TOPBAR-PLAN-22NOV.md
 docs/claude/admin-desk/TWO-COMMANDS.md
@@ -412,6 +413,7 @@ docs/claude/admin-desk/server/src/auth.rs
 docs/claude/admin-desk/server/src/bridge.rs
 docs/claude/admin-desk/server/src/door.rs
 docs/claude/admin-desk/server/src/h3.rs
+docs/claude/admin-desk/server/src/lookup.rs
 docs/claude/admin-desk/server/src/main.rs
 docs/claude/admin-desk/server/src/probes.rs
 docs/claude/admin-desk/server/src/sign.rs

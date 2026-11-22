@@ -2283,3 +2283,5 @@
 - 22 Nov 20:10 AD7 live; phase technology SQL map; thread answer
 
 - 22 Nov 20:28 Dashboard folder first order, frozen folders, gates advance technology map
+
+- 22 Nov 2026 20:45 PKT: Desk D5a-3 CODE DONE (sandbox tests pass, the phase is not finished yet): lookup.rs signed lookup door POST /desk/v1/customer/lookup, cargo 38 passed (5 new), status table in the admin-desk folder, 22NOV (SQL / CODE / PHASE levels). PHASE not finished: not on his server, Control Plane address + key missing. Advance technology: Rust Tokio axum 0.8, ed25519-dalek, Rule 52, fail closed.

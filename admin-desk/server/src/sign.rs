@@ -60,6 +60,8 @@ impl Signer {
     }
     pub fn public_hex(&self) -> String { hex(self.key.verifying_key().as_bytes()) }
     pub fn kid(&self) -> String { sha256_hex(self.key.verifying_key().as_bytes())[..16].to_string() }
+    /// Raw Ed25519 signature (hex) over caller-built bytes; the lookup door signs its own audience-bound message with it.
+    pub fn sign_raw(&self, msg: &[u8]) -> String { hex(&self.key.sign(msg).to_bytes()) }
     // Envelope: the body travels as a STRING so the exact signed bytes arrive; the kernel refuses anything else.
     pub fn envelope(&self, method: &str, path: &str, nonce: &str, ts: i64, body: &str) -> String {
         let sig = hex(&self.key.sign(&message(method, path, nonce, ts, body.as_bytes())).to_bytes());

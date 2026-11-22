@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 20:16 PKT) - read this FIRST for the Desk after a compaction
-DOING: Dashboard folder first order written; AD5/AD7 out-of-order admitted, later folders frozen
-NEXT STEP: D5a-3 Rust signed lookup door vs test double
-HIS LAST WORD: his 20:15 rule
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 20:28 PKT) - read this FIRST for the Desk after a compaction
+DOING: D5a-3 lookup.rs CODE GREEN in sandbox (cargo 38 pass); GREEN table + blueprint sent
+NEXT STEP: his desk-install + desk-restart for lookup door; then D5a-5 fail-closed proof (needs plane Off live check); waits Control Plane address+key
+HIS LAST WORD: Dashboard folder first; adhoora nahi
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 2bb0c017 22 Nov 20:16 ledger line ac4901d0
 - 09c6e08f 22 Nov 20:16 ledger line 350ee8e9
 - a0962174 22 Nov 20:16 ledger line 76455551
 - 76455551 22 Nov 20:16 dashboard-first order
@@ -72,10 +73,23 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - a3a9f4b5 22 Nov 20:05 ledger line 90f00abf
 - 4e695b4f 22 Nov 20:05 ledger line 65a7b80b
 - 65a7b80b 22 Nov 20:05 AD7 live, map
-- 3127c7b6 22 Nov 19:56 ledger line 3c007880
 
 ## Uncommitted Desk files
+ M admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/server/src/main.rs
+ M admin-desk/server/src/sign.rs
+ M admin-desk/server/src/signed.rs
+ M docs/claude/admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/server/src/main.rs
+ M docs/claude/admin-desk/server/src/sign.rs
+ M docs/claude/admin-desk/server/src/signed.rs
  M docs/claude/admin-desk/state/WORKING-NOW.md
+?? admin-desk/STATUS-GREEN-TABLE-22NOV.md
+?? admin-desk/server/src/lookup.rs
+?? docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md
+?? docs/claude/admin-desk/server/src/lookup.rs
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

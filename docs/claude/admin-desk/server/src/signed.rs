@@ -41,7 +41,7 @@ pub fn selftest() -> bool {
     let (Ok(vk), Ok(sg)) = (VerifyingKey::from_bytes(&arr), Signature::from_slice(&sig)) else { return false };
     vk.verify(&sign::message("GET", "/desk/v1/probe", "00112233445566778899aabbccddeeff", ts, body.as_bytes()), &sg).is_ok()
 }
-fn signer() -> Option<&'static sign::Signer> { SIGNER.get().and_then(|s| s.as_ref()) }
+pub(crate) fn signer() -> Option<&'static sign::Signer> { SIGNER.get().and_then(|s| s.as_ref()) }
 fn now() -> i64 { std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0) }
 fn plain(status: StatusCode, err: &str) -> Response { (status, [(header::CONTENT_TYPE, "application/json")], serde_json::json!({"error": err}).to_string()).into_response() }
 fn hdr<'a>(r: &'a Request, k: &str) -> Option<&'a str> { r.headers().get(k).and_then(|v| v.to_str().ok()) }

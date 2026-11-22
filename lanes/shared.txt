@@ -41,6 +41,7 @@ admin-desk/RUNBOOK-LIBRARY-DRAFT-22NOV.md
 admin-desk/SANDBOX-LIVE-TEST-22NOV.md
 admin-desk/SCALE-50K-DESIGN-22NOV.md
 admin-desk/SIDEBAR-SECTIONS-AND-LOOPHOLES-22NOV.md
+admin-desk/STATUS-GREEN-TABLE-22NOV.md
 admin-desk/STATUS-REAL-22NOV.md
 admin-desk/TOPBAR-PLAN-22NOV.md
 admin-desk/TWO-COMMANDS.md
@@ -92,6 +93,7 @@ admin-desk/server/src/auth.rs
 admin-desk/server/src/bridge.rs
 admin-desk/server/src/door.rs
 admin-desk/server/src/h3.rs
+admin-desk/server/src/lookup.rs
 admin-desk/server/src/main.rs
 admin-desk/server/src/probes.rs
 admin-desk/server/src/sign.rs

@@ -16,6 +16,7 @@ mod door;
 mod h3;
 mod probes;
 mod bridge;
+mod lookup;
 mod sign;
 mod wt;
 mod signed;
@@ -90,6 +91,7 @@ async fn main() {
         .route("/desk/v1/bridge/services", get(bridge::services))
         .route("/desk/v1/bridge/alerts", get(bridge::alerts))
         .route("/desk/v1/bridge/alerts/act", post(bridge::alert_act))
+        .route("/desk/v1/customer/lookup", post(lookup::lookup))
         .layer(middleware::from_fn(signed::guard));
     let app = Router::new()
         .route("/desk/v1/health", get(health))

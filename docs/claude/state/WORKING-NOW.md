@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 20:16 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Dashboard folder first order written; AD5/AD7 out-of-order admitted, later folders frozen
-NEXT STEP: D5a-3 Rust signed lookup door vs test double
-HIS LAST WORD: his 20:15 rule
+# WORKING NOW (manual checkpoint, 22 Nov 2026 20:28 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: D5a-3 lookup.rs CODE GREEN in sandbox (cargo 38 pass); GREEN table + blueprint sent
+NEXT STEP: his desk-install + desk-restart for lookup door; then D5a-5 fail-closed proof (needs plane Off live check); waits Control Plane address+key
+HIS LAST WORD: Dashboard folder first; adhoora nahi
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,42 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 2bb0c017 22 Nov 20:16 ledger line ac4901d0
 - ac4901d0 22 Nov 20:16 Desk: dashboard-folder-first order, frozen folders, gates advance technology, blueprint
 - 09c6e08f 22 Nov 20:16 ledger line 350ee8e9
 - 350ee8e9 22 Nov 20:16 Desk: dashboard-folder-first order, frozen folders, gates advance technology, blueprint
 - a0962174 22 Nov 20:16 ledger line 76455551
-- 76455551 22 Nov 20:16 dashboard-first order
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/server/src/main.rs
+ M admin-desk/server/src/sign.rs
+ M admin-desk/server/src/signed.rs
+ M docs/claude/admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/server/src/main.rs
+ M docs/claude/admin-desk/server/src/sign.rs
+ M docs/claude/admin-desk/server/src/signed.rs
+ M docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+?? admin-desk/STATUS-GREEN-TABLE-22NOV.md
+?? admin-desk/server/src/lookup.rs
+?? docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md
+?? docs/claude/admin-desk/server/src/lookup.rs
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    | 22 ++++++++++--
+ docs/claude/admin-desk/server/src/main.rs          |  2 ++
+ docs/claude/admin-desk/server/src/sign.rs          |  2 ++
+ docs/claude/admin-desk/server/src/signed.rs        |  2 +-
+ docs/claude/admin-desk/state/WORKING-NOW.md        |  8 +++--
+ docs/claude/state/WORKING-NOW.md                   | 39 ++++++++++++----------
+ docs/claude/tech-contracts/CURRENT.md              | 13 ++++++++
+ 13 files changed, 92 insertions(+), 28 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +64,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (7e5c7fa495d5ccb444d0f41f1d2cf77c47602101)
+WIP snapshot: refs/wip/last (6bc90466f39f1bfe59fa5b059f0abaae824e44e7)

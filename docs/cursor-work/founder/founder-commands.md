@@ -5685,3 +5685,5 @@ Features ki list (QC4 mein kya banega):
 [22 Nov 2026 20:15 PKT, his words, verbatim essentials] "DEKHO YEH TUM TARTEEB KI BREAK KIYA HAI ... RULE YEH HAI KE DASHBOARD KA KAAM 100% GREEN KERO COMPLETE KERO AUR FOLDER WISE KAAM HOGA US KE PHASE KO TARTEEB DO FOLDERS KE MUTABIQ" / "AB SE HER PHASE KE BAAD MUJHE UPDATED BLUEPRINT SEND KERTE RAHO" / "TECHNOLOGY NAHI LIKHO ADVANCE TECHNOLOGY LIKHO ... GATES KO BHI TECHNOLOGY BATAO PHASE WISE" / "NEXT PHASE ... DASHBOARD KI TARTEEB SE KAAM KERO" / threads = "SAME TO SAME AWAM WALA TAREEKA ... BUS ADMIN DESK KE ZARURAT KE MUTABIQ" / founder-side commands: give him the pull line when needed.
 
 - 22 Nov 20:28 Dashboard folder first order, frozen folders, gates advance technology map
+
+- 22 Nov 2026 20:45 PKT: Desk D5a-3 CODE DONE (sandbox tests pass, the phase is not finished yet): lookup.rs signed lookup door POST /desk/v1/customer/lookup, cargo 38 passed (5 new), status table in the admin-desk folder, 22NOV (SQL / CODE / PHASE levels). PHASE not finished: not on his server, Control Plane address + key missing. Advance technology: Rust Tokio axum 0.8, ed25519-dalek, Rule 52, fail closed.
