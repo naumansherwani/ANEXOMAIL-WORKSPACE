@@ -3126,3 +3126,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - LOOP-AFTER-COMMIT BANNED law (his 22 Nov 2026 21:40 PKT): ckpt-loop now snapshots only while real work is uncommitted; clean tree after push stays clean.
 
 - D5a-2 INSTALLED (22 Nov 2026 ~21:50 PKT): his desk-install built the Desk with packages.rs and desk-restart is active (health 200, door 401); ad-auto reported AD6b already run, unexpected, waits his one read-only count of fadm_pkg_version and my live look. Not whole yet.
+
+- Blueprint Part 0j D5a-2 state added (22 Nov 2026 21:55 PKT): seed + Rust doors installed, ad-auto AD6b already-run to be confirmed by his count.
