@@ -4,7 +4,7 @@ Source of truth for the phase rules = the top of DESK-PHASES-22NOV.md (copied be
 - DESK ISOLATION LAW (21 Nov 07:29): own security domain, never mixed with founder code, doors, keys or tables; docs/claude/DESK-ISOLATION-GATE-21NOV.md
 - AUTOFIX LAW (21 Nov 04:33): a loophole or gap is fixed by Claude himself until it is seen working live in Chrome; docs/claude/AUTOFIX-LAW-21NOV.md
 - NO UNFINISHED WORK (7 Nov): GREEN only WIRED: YES / REAL: YES; docs/claude/CLOSE-THE-GAPS-07NOV.md
-- Rule 52: Desk-signed, kernel-verified answers and frames, HKDF/HMAC request MAC, replay nonce
+- Rule 52: Desk-signed, kernel-verified answers and frames, HKDF/HMAC request MAC, replay nonce; the technology LIVE on the Desk today (dated, with proof, plus open gaps): RULE-52-LIVE-TECHNOLOGY-23NOV.md
 - Rule 70: every reply ends with the technology table and "Abhi code mein NAHI"
 - Vendor ban: only Caddy, Namecheap (his hands), Hetzner, his own Rust; docs/claude/FOUNDER-VENDOR-BAN-13NOV.md
 - Address him only as Aap, Roman Urdu, short; Pakistani time only, never UTC

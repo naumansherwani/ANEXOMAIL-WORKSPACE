@@ -1,5 +1,5 @@
 # ORDER LOCK (his 23 Nov 2026 02:02 PKT, in anger): THE DASHBOARD ORDER NEVER CHANGES. Proof: FOLDER-PHASES-22NOV.md has had this exact order since 22 Nov 23:39 (git history), I never reordered it.
-EXACT ORDER: 1a A (h3 page, WIRED NO, browser side) | 1b B,C | 1c D..D10 | 1d D5a-1 | 1e D5a-2 | 1f D5a-3 | 1g D5a-3b | 1h D5a-4 = GREEN (LAST DONE) | >>> 1i D5a-5 fail-closed = NOW / NEXT <<< | 1j D5 screen | 1k D5b | 1l D5c | 1m D6 B1..B13 | 1n E+F | 1o DASHBOARD FINAL.
+EXACT ORDER: 1a A (h3 page, WIRED NO, browser side) | 1b B,C | 1c D..D10 | 1d D5a-1 | 1e D5a-2 | 1f D5a-3 | 1g D5a-3b | 1h D5a-4 = GREEN | 1i D5a-5 = GREEN (23 Nov 02:3x, LAST DONE) | >>> 1j D5 Plan context screen = NOW / NEXT <<< | 1k D5b | 1l D5c | 1m D6 B1..B13 | 1n E+F | 1o DASHBOARD FINAL.
 GREEN means: code is on his server AND proven (his paste / my Chrome). 1b-1h are on his server and green; 1a stays open.
 # ADMIN DESK: TOTAL + REMAINING (his order 23 Nov 2026 01:45 PKT; read with WORKING-NOW.md)
 TOTAL ADMIN DESK PHASES = 23 rows in FOLDER-PHASES-22NOV.md: Folder 1 Dashboard = 15 (1a..1o), Folders 2..9 = 8 (Mailboxes, Cases, Replies, Routing, SLA, Automations, Admin Desk group, Company group).

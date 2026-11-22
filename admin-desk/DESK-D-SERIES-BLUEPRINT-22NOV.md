@@ -621,3 +621,8 @@ Open, written plainly: no real lookup row exists yet (lookup screen = phase 1j);
 ## PART 0o. D5a-5 FAIL-CLOSED (phase 1i), code + tests + audit done 23 Nov 2026 02:5x PKT (NOT green: waits his install + my Chrome look)
 Advance technology: Rust + Tokio 6 s deadline over quinn + h3 (TLS 1.3 AES-256-GCM, X25519MLKEM768), Ed25519-signed answered_at, 15 s freshness vs the Desk's signed envelope time, circuit breaker, no-store, PostgreSQL D20 (database down before and during), Rust WASM kernel lookup_view (Rule 52), React 19 + TS state mapping (desk_lookup_pure.ts).
 Proof so far: server 62 tests, kernel 9, bun 45, real WASM in Node with an independent Ed25519 signer. Open: F11 live on his server.
+
+## PART 0p. D5a-5 FAIL-CLOSED (phase 1i) = GREEN (23 Nov 2026 02:3x PKT)
+Advance technology: Rust + Tokio 6 s deadline over quinn + h3 (TLS 1.3 AES-256-GCM, X25519MLKEM768), Ed25519 signed answered_at, 15 s freshness, circuit breaker, no-store, PostgreSQL D20, Rust WASM kernel lookup_view (Rule 52), React 19 + TS state mapping.
+Proof: his desk-install paste (finished OK) + my Chrome: live bundle desk-C-GRp42D.js and kernel wasm sha 6dc834aa040e5ad3 = repo build; lookup door sealed 400 + no-store. Tests server 62, kernel 9, bun 45. WIRED: YES / REAL: YES / TECH-LAW CHECKED.
+Open, plainly: first signed-in lookup on the live server = with 1j. NEXT = 1j D5 Plan context screen (order locked: 1j,1k,1l,1m,1n,1o). Rule 52 + live technology list updated: RULE-52-LIVE-TECHNOLOGY-23NOV.md.

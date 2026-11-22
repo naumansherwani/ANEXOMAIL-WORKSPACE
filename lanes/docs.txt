@@ -368,6 +368,7 @@ docs/claude/admin-desk/PLAN-DESK-UI-COPY-21NOV.md
 docs/claude/admin-desk/README.md
 docs/claude/admin-desk/REMAINING-LIST-22NOV.md
 docs/claude/admin-desk/REPO-AUDIT-FOR-DESK-22NOV.md
+docs/claude/admin-desk/RULE-52-LIVE-TECHNOLOGY-23NOV.md
 docs/claude/admin-desk/RULE-BOOK.md
 docs/claude/admin-desk/RUNBOOK-LIBRARY-DRAFT-22NOV.md
 docs/claude/admin-desk/SANDBOX-LIVE-TEST-22NOV.md

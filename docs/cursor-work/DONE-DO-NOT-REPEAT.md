@@ -4295,3 +4295,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 1i D5a-5 point list F1-F11 + contract written first. TESTED: gate pass, docs only OK
 
 - 1i D5a-5 code done (NOT green until his install + Chrome look). TECH-LAW CHECKED. TESTED: server cargo 62 passed incl real-PostgreSQL D20 + real HTTP/3 loopback, kernel cargo 9 passed, real WASM in Node with independent Ed25519 OK, bun 45 pass, tsc clean, vite build OK
+
+- 1i D5a-5 GREEN 23 Nov 02:3x. WIRED: YES / REAL: YES / TECH-LAW CHECKED. TESTED: his desk-install paste finished OK + step 8/8 OK, my Chrome live bundle desk-C-GRp42D.js = repo, kernel wasm sha 6dc834aa040e5ad3 = repo, lookup door 400 sealed no-store OK, cargo 62+9 pass, bun 45 pass
