@@ -338,6 +338,7 @@ docs/claude/admin-desk/D5-DECISIONS-AND-EXTRACT-22NOV.md
 docs/claude/admin-desk/D5-SUBPHASES-22NOV.md
 docs/claude/admin-desk/DASHBOARD-CARDS-CLICK-PLAN-22NOV.md
 docs/claude/admin-desk/DASHBOARD-LIVE-COMMAND-22NOV.md
+docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
 docs/claude/admin-desk/DESK-GATE-LESSON-22NOV.md
 docs/claude/admin-desk/DESK-PHASES-22NOV.md
 docs/claude/admin-desk/DESK-SIX-SECTIONS-22NOV.md
@@ -351,6 +352,7 @@ docs/claude/admin-desk/README.md
 docs/claude/admin-desk/REMAINING-LIST-22NOV.md
 docs/claude/admin-desk/REPO-AUDIT-FOR-DESK-22NOV.md
 docs/claude/admin-desk/RULE-BOOK.md
+docs/claude/admin-desk/RUNBOOK-LIBRARY-DRAFT-22NOV.md
 docs/claude/admin-desk/SANDBOX-LIVE-TEST-22NOV.md
 docs/claude/admin-desk/SCALE-50K-DESIGN-22NOV.md
 docs/claude/admin-desk/SIDEBAR-SECTIONS-AND-LOOPHOLES-22NOV.md

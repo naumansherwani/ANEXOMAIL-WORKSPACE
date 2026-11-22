@@ -27,7 +27,7 @@ Written 22 Nov 2026 10:28 PKT. Rule 52 holds for every step: each answer the emp
 KEEP exactly: the 9 problems, the 6 parts per runbook, version control, approval owner.
 CHANGE / ADD (my view, he decides):
 1. "Storage or seats limit: approved upgrade route": an upgrade is a money act. The employee explains usage and points to the customer's own Billing Portal or the owner; the employee never sells or promises. Wording changed to "explain usage, send the customer to the owner's upgrade route".
-2. "Account suspended: approved reason class": I need HIS list of reason classes (for example non-payment, abuse, security hold, owner request). Until he writes it the runbook shows "Reason classes not supplied yet" instead of inventing them.
+2. "Account suspended: approved reason class": HIS ORDER 10:42: I design the classes myself at advance level. DONE as a draft: eight classes SR1..SR8 in RUNBOOK-LIBRARY-DRAFT-22NOV.md; the employee only sees the class, never sets it; he approves.
 3. "Grace period": I need HIS number of grace days per package; it comes from the registry, not from the runbook text.
 4. "Multiple customers affected" is a runbook only for the first cut; the real incident handling (group, one status message) lands in phase K.
 5. "Payment received, service not active": the runbook's first line is the safe flag; second line is escalate with the audit reference. The employee never checks Polar or amounts.
@@ -37,8 +37,13 @@ DROP now: AI-written summaries (AI for the Desk is dropped until July 2027), dua
 
 ## D. WHAT HE MUST GIVE (one at a time, none blocks D5a-1 and D5a-4)
 1. Package list as data (features + limits per package, grace days). Blocks D5a-2 filling and D5 screen values.
-2. Suspension reason classes. Blocks one runbook only.
+2. (Done by me, his order 10:42) Suspension reason classes: draft in RUNBOOK-LIBRARY-DRAFT-22NOV.md, waits his approval only.
 3. Where his Control Plane answers (address + how it should verify our signature). Blocks D5a-3 on his server; the code and tests are written first against a local test double.
 
 ## E. ORDER NOW
 D5a-1 contract and gate -> D5a-4 audit ledger SQL -> D5a-2 registry SQL -> D5a-3 signed lookup (test double) -> D5a-5 fail closed -> D5 screen -> D5b-1..3 -> D5c -> D6. Deadline for the whole Desk stays 26 Nov 2026 07:26 PKT.
+
+## F. HIS 10:42 ADDITIONS
+1. NO PROMISES (law): a runbook never promises a date, restore, refund, credit, upgrade or owner decision; gate in D5b-3 fails a runbook with a banned promise word. Text in RUNBOOK-LIBRARY-DRAFT-22NOV.md section A.
+2. All nine runbooks are drafted (same file, section C); the suspension classes SR1..SR8 are drafted (section B).
+3. THE ORIGINAL ANEXOMAIL UI AND UX STAYS INTACT (his identity): every step above and the six sections only ADD data and reorder the rail; no restyle of the Desk look, colours, glow, Command Bar, login or any existing screen without his word; a backup under backups/desk before each UI change, and a before / after screenshot check.

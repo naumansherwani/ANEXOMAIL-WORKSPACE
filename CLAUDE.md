@@ -1,4 +1,4 @@
-> ## >>> RESUME HERE: S1 six sections rail waits his haan; D5a-1 next; needs package list, suspension reasons, Control Plane address (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
+> ## >>> RESUME HERE: S1 waits his haan; D5a-1 next; needs package list + Control Plane address; runbooks wait his approval (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
 > ## >>> FRONTEND=CADDY, HETZNER=BACKEND; DNS=Caddy IP (his 21 Nov 23:35): docs/claude/FRONTEND-CADDY-BACKEND-HETZNER-LAW-21NOV.md <<<
 > ## >>> DESK 3 CMDS: desk-install, ad-auto, desk-restart (admin-desk/TWO-COMMANDS.md) <<<
 > ## >>> CLEAN-PUSH: git status empty after push (CLEAN-PUSH-LAW-21NOV.md) <<<
