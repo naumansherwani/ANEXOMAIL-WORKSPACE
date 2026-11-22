@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:11 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 1j INSTALLED on his server (3 SAME), Chrome signed-in look next; new RESEARCH-IN-BLUEPRINT gate live
-NEXT STEP: Chrome signed-in look at /dashboard/plans then GREEN then send blueprint
-HIS LAST WORD: his 03:10 order
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:13 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 1j GREEN, 1k D5b runbooks NOW (research first)
+NEXT STEP: 1k: web research, LIST file + ADVANCE-RESEARCH [1k] lines, contract, code
+HIS LAST WORD: his order
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,49 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 5996652c 23 Nov 03:11 ledger line 48bc8fa6
 - 48bc8fa6 23 Nov 03:11 research-in-blueprint gate + 1j install proof
 - 08711266 23 Nov 03:02 ledger line 87c65037
 - 87c65037 23 Nov 03:02 1j: audit and autofix
 - 6b73183f 23 Nov 02:57 ledger line 53aed7fd
-- 53aed7fd 23 Nov 02:57 1j: Plan context screen code
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/state/WORKING-NOW.md
+M  CLAUDE.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/FOLDER-PHASES-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/DONE-DO-NOT-REPEAT.md
+M  docs/claude/RESUME-POINT.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/FOLDER-PHASES-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/state/WORKING-NOW.md
+M  docs/claude/founder/PULL-COMMANDS.md
+M  docs/claude/state/HEARTBEAT.json
+MM docs/claude/state/WORKING-NOW.md
+M  docs/claude/tech-contracts/CURRENT.md
+M  docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
+M  docs/cursor-work/DONE-DO-NOT-REPEAT.md
+M  docs/cursor-work/founder/founder-commands.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
+M  docs/cursor-work/server/PULL-COMMANDS.md
+R  founder-web/dist/assets/index-DHYUqxMS.js -> founder-web/dist/assets/index-Cu-aYAEb.js
+M  founder-web/dist/index.html
+M  founder-web/src/system_brain.json
+M  lanes/ALL-FILES.csv
+M  lanes/founder.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 33 ++-------------------------------
- 1 file changed, 2 insertions(+), 31 deletions(-)
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        | 36 ++++++++--------
+ docs/cursor-work/server/PULL-COMMANDS.md           |  2 +
+ .../{index-DHYUqxMS.js => index-Cu-aYAEb.js}       |  2 +-
+ founder-web/dist/index.html                        |  2 +-
+ founder-web/src/system_brain.json                  |  6 +--
+ lanes/ALL-FILES.csv                                |  2 +-
+ lanes/founder.txt                                  |  2 +-
+ 24 files changed, 94 insertions(+), 55 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +71,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (536ef13dc8fde236850a2163dd8ffca6067750b7)
+WIP snapshot: refs/wip/last (6ccb4bd64837de6a34539a151fa0fff0d9db4c5f)

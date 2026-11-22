@@ -4317,3 +4317,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - RESEARCH-IN-BLUEPRINT law + gate (negative and positive tested); 1j install proof recorded (binary b5742eda0630, bundle desk-DGfUACHd.js, kernel 6dc834aa040e, all SAME). TESTED: gate negative probe failed as designed, positive run passes. TECH-LAW CHECKED
 
 - RESEARCH-IN-BLUEPRINT law + gate (negative and positive tested); 1j install proof recorded (binary b5742eda0630, bundle desk-DGfUACHd.js, kernel 6dc834aa040e, all SAME). TESTED: gate negative probe failed as designed, positive run passes. TECH-LAW CHECKED
+
+- 1j D5 Plan context screen GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED. his install paste 3 SAME + my signed-in Chrome look (sealed lookup, Data unavailable fail-closed, 44 px, no overflow). TESTED: bun 56 pass, live Chrome. Data-fill live waits for Control Plane rows (J), on open list
+
+- 1j D5 Plan context screen GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED. his install paste 3 SAME + my signed-in Chrome look (sealed lookup, Data unavailable fail-closed, 44 px, no overflow). TESTED: bun 56 pass, live Chrome. Data-fill live waits for Control Plane rows (J), on open list
