@@ -1,4 +1,4 @@
-> ## >>> RESUME HERE: 1j AUDITED not installed, ORDER LOCKED 1j-1o (admin-desk/NOW-LIST-23NOV.md), RULE 52 = ADVANCE TECHNOLOGY FOR ANEXOMAIL (RULE-52-ADVANCE-TECHNOLOGY-FOR-ANEXOMAIL.md) (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
+> ## >>> RESUME HERE: 1j INSTALLED, Chrome look next, ORDER LOCKED 1j-1o (admin-desk/NOW-LIST-23NOV.md), RULE 52 = ADVANCE TECHNOLOGY FOR ANEXOMAIL (RULE-52-ADVANCE-TECHNOLOGY-FOR-ANEXOMAIL.md) (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
 > ## >>> FRONTEND=CADDY, HETZNER=BACKEND; DNS=Caddy IP (his 21 Nov 23:35): docs/claude/FRONTEND-CADDY-BACKEND-HETZNER-LAW-21NOV.md <<<
 > ## >>> DESK 3 CMDS: desk-install, ad-auto, desk-restart (admin-desk/TWO-COMMANDS.md) <<<
 > ## >>> CLEAN-PUSH: git status empty after push (CLEAN-PUSH-LAW-21NOV.md) <<<
@@ -72,3 +72,5 @@
 > **Rule 73 (founder 3 Nov 08:33): LANES. `lovable-gold/awam` + `lovable-gold/founder` = frozen copy of the whole Lovable Bun website (never edit); `lanes/*.txt` split every file into founder / awam / shared / lovable / docs. After adding, removing or renaming files run `python3 lanes/lane-sync.py` before commit; founder code never imports awam code and the reverse.**
 
 Full rules: `AGENTS.md` (Rules 1–73) and `docs/claude/founder/CODES/00-README-RULES.md` (FC1–FC42). After a compaction read `docs/cursor-work/founder/founder-commands.md` and `docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` before anything else.
+
+> ## >>> RESEARCH-IN-BLUEPRINT LAW (his 23 Nov 03:1x, STRICT, all website SOPs): web-research advance technology goes in the phase LIST + blueprint + NOW-LIST BEFORE commit; gate "RESEARCH IN BLUEPRINT" stops Claude; docs/claude/admin-desk/RESEARCH-IN-BLUEPRINT-LAW-23NOV.md <<<

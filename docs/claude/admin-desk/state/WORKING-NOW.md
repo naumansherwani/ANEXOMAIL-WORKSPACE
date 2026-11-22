@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:02 PKT) - read this FIRST for the Desk after a compaction
-DOING: 1j audit+autofix L1-L6 done, install next
-NEXT STEP: his install paste then Chrome signed-in look then GREEN
-HIS LAST WORD: his 03:01 order: audit, add all research, autofix, WORKING-NOW
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 03:10 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1j INSTALLED on his server (3 SAME), Chrome signed-in look next; new RESEARCH-IN-BLUEPRINT gate live
+NEXT STEP: Chrome signed-in look at /dashboard/plans then GREEN then send blueprint
+HIS LAST WORD: his 03:10 order
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 08711266 23 Nov 03:02 ledger line 87c65037
 - 87c65037 23 Nov 03:02 1j: audit and autofix
 - 6b73183f 23 Nov 02:57 ledger line 53aed7fd
 - 53aed7fd 23 Nov 02:57 1j: Plan context screen code
@@ -72,10 +73,16 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - ad2138b5 23 Nov 02:56 1j: plan, list, ML-DSA gap plan
 - 308f6827 23 Nov 02:46 ledger line 711d040d
 - 711d040d 23 Nov 02:46 crypto choice note
-- 16845c1a 23 Nov 02:40 ledger line 57f63ea6
 
 ## Uncommitted Desk files
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/NOW-LIST-23NOV.md
+ M admin-desk/RULE-BOOK.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+?? admin-desk/RESEARCH-IN-BLUEPRINT-LAW-23NOV.md
+?? docs/claude/admin-desk/RESEARCH-IN-BLUEPRINT-LAW-23NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

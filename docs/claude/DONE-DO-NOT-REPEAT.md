@@ -2609,3 +2609,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 1j D5 plan context screen CODE: desk_plan_pure.ts + DeskPlan.tsx + plans card wired (lookup track), bundle rebuilt; ML-DSA stays a separate gap plan. TESTED: bun 55 pass (10 new), tsc clean, vite build. Not green until install + signed-in Chrome look. TECH-LAW CHECKED
 
 - 1j audit + autofix L1-L6 (stale answer removed, cleared on company change, company shown, 3 s cooldown, plain limit, SR code label). TESTED: bun 56 pass, tsc clean, vite build. Not green until install + Chrome look. TECH-LAW CHECKED
+
+- RESEARCH-IN-BLUEPRINT law + gate (negative and positive tested); 1j install proof recorded (binary b5742eda0630, bundle desk-DGfUACHd.js, kernel 6dc834aa040e, all SAME). TESTED: gate negative probe failed as designed, positive run passes. TECH-LAW CHECKED
+
+- RESEARCH-IN-BLUEPRINT law + gate (negative and positive tested); 1j install proof recorded (binary b5742eda0630, bundle desk-DGfUACHd.js, kernel 6dc834aa040e, all SAME). TESTED: gate negative probe failed as designed, positive run passes. TECH-LAW CHECKED

@@ -1,0 +1,5 @@
+# RESEARCH-IN-BLUEPRINT LAW (Chairman Nauman Sherwani, 23 Nov 2026 03:1x PKT, STRICT, whole website SOPs, every phase and subphase)
+His word: "advance technology aur web research se jo advance technology banegi woh phase ke aage blueprint mein add karna hai. Jab commit karo, gate ruk jaye aur poochhe: is phase ki advance technology aur advance codes add hain? Ek dot bhi kam ho to Claude ruk jaye."
+Order of every phase: 1 web research -> 2 points list file (LIST: in the CURRENT.md heading) -> 3 line "ADVANCE-RESEARCH [<phase>]" in the Desk blueprint AND NOW-LIST -> 4 CURRENT.md rows all IN CODE = yes -> 5 code + tests -> 6 audit -> 7 one install line -> 8 Chrome look -> GREEN.
+Gate: rules-gate.py "RESEARCH IN BLUEPRINT" refuses a commit with Desk code when the list file or either line is missing. Tested negative (fails) and positive (passes).
+Also in force after every message: WORKING-NOW.md + 2-minute loop (inside the repo only), ledger, resume line, blueprint with date and time; Rule 52 = ADVANCE TECHNOLOGY FOR ANEXOMAIL; advance technology written next to every phase and subphase.

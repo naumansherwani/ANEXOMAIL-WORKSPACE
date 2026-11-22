@@ -46,6 +46,7 @@ admin-desk/PLAN-DESK-UI-COPY-21NOV.md
 admin-desk/README.md
 admin-desk/REMAINING-LIST-22NOV.md
 admin-desk/REPO-AUDIT-FOR-DESK-22NOV.md
+admin-desk/RESEARCH-IN-BLUEPRINT-LAW-23NOV.md
 admin-desk/RULE-52-LIVE-TECHNOLOGY-23NOV.md
 admin-desk/RULE-BOOK.md
 admin-desk/RUNBOOK-LIBRARY-DRAFT-22NOV.md

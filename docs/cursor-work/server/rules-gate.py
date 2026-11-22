@@ -326,6 +326,22 @@ if _desk_code and os.path.exists(cur):
         _bad = [l for l in _blk.splitlines() if l.startswith("|") and len(l.split("|")) > 4 and l.split("|")[3].strip().lower().split(" ")[0] in ("no", "partly", "pending")]
         if _bad:
             fail("INCOMPLETE ADVANCE", f"Desk code staged but {len(_bad)} advance technolog(y/ies) of the newest phase are not IN CODE yet (incomplete advance technology is banned): {_bad[0].split('|')[1].strip()[:80]}")
+# RESEARCH IN BLUEPRINT (his word 23 Nov 2026 03:1x PKT, STRICT, for every phase and every SOP of the website): the advance technology that web research gives a phase must be written in
+# FOUR places BEFORE code is committed: the phase LIST file (named in the CURRENT.md heading), the Desk blueprint (line "ADVANCE-RESEARCH [<phase>]"), NOW-LIST-23NOV.md, and CURRENT.md rows all IN CODE.
+# One missing dot = the gate stops the commit and asks "is this phase's advance technology and advance code added?".
+if _desk_code and os.path.exists(cur):
+    _h2 = (open(cur, errors="ignore").read().split("# TECH CONTRACT FOR PHASE") + ["", ""])[1].splitlines()[0] if True else ""
+    _m = re.search(r"\(phase (\d+[a-z])\)", _h2)
+    if _m:
+        _id = _m.group(1)
+        _lm = re.search(r"LIST: (docs/claude/admin-desk/[A-Za-z0-9_.-]+)", _h2)
+        _bp = "docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md"; _nl = "docs/claude/admin-desk/NOW-LIST-23NOV.md"
+        _tag = f"ADVANCE-RESEARCH [{_id}]"
+        if not _lm or not os.path.exists(_lm.group(1)):
+            fail("RESEARCH IN BLUEPRINT", f"phase {_id}: the CURRENT.md heading must name 'LIST: <file>' and that web-research list must exist. Is this phase's advance technology written?")
+        for _f in (_bp, _nl):
+            if not os.path.exists(_f) or _tag not in open(_f, errors="ignore").read():
+                fail("RESEARCH IN BLUEPRINT", f"phase {_id}: '{_tag}' line (research points + advance technology + code files) is missing in {_f}. Is this phase's advance technology and advance code added?")
 for led in ("docs/cursor-work/DONE-DO-NOT-REPEAT.md", "docs/claude/CLOSE-THE-GAPS-07NOV.md"):
     if led in staged:
         try:
