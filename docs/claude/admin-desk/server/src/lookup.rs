@@ -3,14 +3,15 @@
 // which also runs the permission check and the burst breaker), 3) a signed read-only request goes out (Ed25519, audience desk-lookup, 60 s expiry),
 // 4) the answer is verified (its own key, same request id, fresh) and cut down to the contract whitelist, 5) the database closes the audit line.
 // FAIL CLOSED: no address, no key, bad signature, stale, wrong id = "data_unavailable"; an old answer is never shown and nothing is stored here.
-// Desk-only: no founder or awam code. The fields allowed come from gates/DESK-LOOKUP-CONTRACT.json (read at build time, one source of truth).
+// Desk-only: no founder or awam code. The fields allowed come from contract/DESK-LOOKUP-CONTRACT.json INSIDE this crate (the installer builds only admin-desk/server);
+// the test contract_copy_equals_the_gate_file keeps it byte-equal to gates/DESK-LOOKUP-CONTRACT.json, the file the commit gate reads.
 use crate::bridge::owner;
 use crate::door::{lit, rows};
 use crate::sign::{hex, unhex, Signer};
 use axum::{body::Bytes, http::{header, HeaderMap, StatusCode}, response::{IntoResponse, Response}};
 use serde_json::{json, Map, Value};
 
-const CONTRACT: &str = include_str!("../../gates/DESK-LOOKUP-CONTRACT.json");
+const CONTRACT: &str = include_str!("../contract/DESK-LOOKUP-CONTRACT.json");
 pub const AUD: &str = "desk-lookup";
 pub const EXPIRY: i64 = 60;
 const REQ_DOMAIN: &str = "anexo-desk-lookup-v1";
@@ -156,6 +157,10 @@ mod tests {
         json!({"body": body, "sig": sig}).to_string()
     }
     fn f(v: &[&str]) -> Vec<String> { v.iter().map(|x| x.to_string()).collect() }
+    #[test] fn contract_copy_equals_the_gate_file() {
+        let g = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../gates/DESK-LOOKUP-CONTRACT.json");
+        if let Ok(t) = std::fs::read_to_string(&g) { assert_eq!(t, CONTRACT, "copy the gate file into server/contract/"); }
+    }
     #[test] fn contract_has_whitelist_and_inputs_are_checked() {
         assert!(allowed().contains(&"service_state".to_string()) && allowed().len() >= 14);
         assert!(valid_ref("acme-1234") && !valid_ref("short") && !valid_ref("Acme Ltd, 10 High Street") && !valid_ref(&"a".repeat(65)));

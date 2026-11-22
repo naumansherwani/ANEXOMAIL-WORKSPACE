@@ -255,6 +255,7 @@ docs/claude/MASTER-MIGRATION-AND-GATES-27OCT.md
 docs/claude/MIGRATION-LEDGER-24OCT.md
 docs/claude/MOVEIN-PRICE-CLOSED-21NOV.md
 docs/claude/NEXT-ORDER-09NOV-K5B-TO-20NOV.md
+docs/claude/NO-INCOMPLETE-ADVANCE-LAW-22NOV.md
 docs/claude/OFFICE-HR-ACCOUNTING-MIGRATION-28OCT.md
 docs/claude/ONE-ORDER-27OCT.md
 docs/claude/PERSONAL-PLANS-REMOVAL-PLAN-02NOV.md
@@ -408,6 +409,8 @@ docs/claude/admin-desk/scripts/desk-test-alert.sh
 docs/claude/admin-desk/server/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/server/Cargo.lock
 docs/claude/admin-desk/server/Cargo.toml
+docs/claude/admin-desk/server/contract/00-FOUNDER-TECH-RULE.md
+docs/claude/admin-desk/server/contract/DESK-LOOKUP-CONTRACT.json
 docs/claude/admin-desk/server/src/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/server/src/auth.rs
 docs/claude/admin-desk/server/src/bridge.rs

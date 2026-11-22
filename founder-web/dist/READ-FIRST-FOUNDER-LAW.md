@@ -1,3 +1,4 @@
+> ## >>> NO INCOMPLETE WORK LAW (his 22 Nov 2026 20:36 PKT, in anger): INCOMPLETE PHASE, INCOMPLETE CODES, INCOMPLETE ADVANCE TECHNOLOGY = BANNED. Every listed advance technology of a phase must be IN CODE and tested before its code is committed; the gate INCOMPLETE ADVANCE refuses the commit otherwise. A phase is finished first, then committed; nothing half-done is handed to him. What truly needs his input (address, key, list) is named once, up front. docs/claude/NO-INCOMPLETE-ADVANCE-LAW-22NOV.md <<<
 > ## >>> SERVER CMDS, HIS EXACT FORMS (15 Nov 20:15/20:16), each = git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/X.sh) : X=sql-run then 2>&1 | tail -25 (no name = AUTO); X=founder-install then 2>&1 | tail -12. They run the newest origin/main commit. <<<
 # READ THIS FIRST, BEFORE ASKING THE FOUNDER ANY QUESTION (his word, 14 Nov 2026 04:04 PKT)
 

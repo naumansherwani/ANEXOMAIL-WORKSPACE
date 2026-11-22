@@ -88,6 +88,8 @@ admin-desk/scripts/desk-test-alert.sh
 admin-desk/server/00-FOUNDER-TECH-RULE.md
 admin-desk/server/Cargo.lock
 admin-desk/server/Cargo.toml
+admin-desk/server/contract/00-FOUNDER-TECH-RULE.md
+admin-desk/server/contract/DESK-LOOKUP-CONTRACT.json
 admin-desk/server/src/00-FOUNDER-TECH-RULE.md
 admin-desk/server/src/auth.rs
 admin-desk/server/src/bridge.rs

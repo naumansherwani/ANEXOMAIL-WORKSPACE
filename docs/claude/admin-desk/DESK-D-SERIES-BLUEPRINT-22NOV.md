@@ -1,4 +1,5 @@
 # ANEXOMAIL ADMIN DESK: D-SERIES BLUEPRINT, UPDATED 22 Nov 2026 20:58 PKT (generated from the files named in each part; edit those, not this)
+> ## >>> NO INCOMPLETE WORK LAW (his 22 Nov 2026 20:36 PKT, in anger): INCOMPLETE PHASE, INCOMPLETE CODES, INCOMPLETE ADVANCE TECHNOLOGY = BANNED. Every listed advance technology of a phase must be IN CODE and tested before its code is committed; the gate INCOMPLETE ADVANCE refuses the commit otherwise. A phase is finished first, then committed; nothing half-done is handed to him. What truly needs his input (address, key, list) is named once, up front. docs/claude/NO-INCOMPLETE-ADVANCE-LAW-22NOV.md <<<
 Standing laws: Rule 52 (every answer kernel-verified), HTTP/3 only with WebTransport, TLS 1.3 AES-256-GCM + X25519MLKEM768, Desk isolation (own domain, never founder code or tables), no money or webhook data on the Desk, no phase name visible to an employee, no promises by employees, no refunds (published policy), the original UI/UX stays intact, GREEN only after a live Chrome look (WIRED: YES / REAL: YES / TECH-LAW CHECKED), whole Desk deadline 26 Nov 2026 07:26 PKT.
 
 

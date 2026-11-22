@@ -310,6 +310,22 @@ if os.path.exists(cur):
         nos = [l for l in ct.splitlines() if l.startswith("|") and len(l.split("|")) > 4 and l.split("|")[3].strip() == "NO"]
         if nos:
             fail("TECH CONTRACT", f"STATE is GREEN but {len(nos)} listed technolog(y/ies) say NO in CURRENT.md")
+# INCOMPLETE ADVANCE (his word 22 Nov 2026 20:36 PKT, in anger: "incomplete phase, incomplete codes, incomplete advance technology is BANNED; no commit"):
+# a commit that carries Desk CODE is refused unless the NEWEST technology contract block (top of CURRENT.md) has every listed advance technology IN CODE = yes (or n/a) and is not "IN PROGRESS".
+# Half-written phases stay in the working tree; only a finished phase is committed. Contract notes, docs and the ledger are not code and may be committed any time.
+_desk_code = [f for f in staged if re.match(r"docs/claude/admin-desk/server/src/.*\.rs$|founder-web/src/desk/|docs/claude/admin-desk/sql/AD[0-9]+[a-z]?\.sql$", f)]
+if _desk_code and os.path.exists(cur):
+    _ct = open(cur, errors="ignore").read()
+    _parts = _ct.split("# TECH CONTRACT FOR PHASE")
+    if len(_parts) < 2:
+        fail("INCOMPLETE ADVANCE", "Desk code is staged but CURRENT.md has no technology contract block")
+    else:
+        _blk = _parts[1]; _head = _blk.splitlines()[0] if _blk.strip() else ""
+        if re.search(r"STATE:\s*IN PROGRESS", _head):
+            fail("INCOMPLETE ADVANCE", f"Desk code staged while the newest phase contract says IN PROGRESS (incomplete phases are banned from commits): {_head[:100]}")
+        _bad = [l for l in _blk.splitlines() if l.startswith("|") and len(l.split("|")) > 4 and l.split("|")[3].strip().lower().split(" ")[0] in ("no", "partly", "pending")]
+        if _bad:
+            fail("INCOMPLETE ADVANCE", f"Desk code staged but {len(_bad)} advance technolog(y/ies) of the newest phase are not IN CODE yet (incomplete advance technology is banned): {_bad[0].split('|')[1].strip()[:80]}")
 for led in ("docs/cursor-work/DONE-DO-NOT-REPEAT.md", "docs/claude/CLOSE-THE-GAPS-07NOV.md"):
     if led in staged:
         try:
