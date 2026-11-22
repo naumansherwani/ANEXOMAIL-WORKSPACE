@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 212f79e7 22 Nov 10:52 ledger line cf070b58
 - cf070b58 22 Nov 10:52 Desk D5a-4 lookup audit SQL (AD4) proved on PostgreSQL 16, gate refinement
 - 7604cf79 22 Nov 10:51 ledger line 8f7bb606
 - 8f7bb606 22 Nov 10:51 Desk D5a-4 lookup audit SQL
@@ -72,7 +73,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 0407b750 22 Nov 10:48 Desk D5a-1 contract and no-money gate, refund law
 - fa83e3d1 22 Nov 10:48 ledger line aa0fb942
 - aa0fb942 22 Nov 10:48 Desk D5a-1 contract and no-money gate
-- f033fe12 22 Nov 10:43 ledger line ed675201
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
