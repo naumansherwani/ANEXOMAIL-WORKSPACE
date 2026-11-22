@@ -61,11 +61,46 @@ pub fn accept(env: &str, cp_pub_hex: &str, request_id: &str, company: &str, requ
 }
 
 /// Where the Control Plane is reached. Off = not configured: every lookup is "unavailable" (honest, fail closed).
-pub enum Plane { Off, #[cfg(test)] Double(Box<dyn Fn(&str) -> Option<String> + Send + Sync>) }
+pub enum Plane { Off, H3 { addr: std::net::SocketAddr, host: String, ca_pem: Option<Vec<u8>> }, #[cfg(test)] Double(Box<dyn Fn(&str) -> Option<String> + Send + Sync>) }
 impl Plane {
-    async fn ask(&self, _env: &str) -> Option<String> { match self { Plane::Off => None, #[cfg(test)] Plane::Double(f) => f(_env) } }
+    async fn ask(&self, _env: &str) -> Option<String> { match self { Plane::Off => None, Plane::H3 { addr, host, ca_pem } => h3_post(*addr, host, ca_pem.as_deref(), CP_PATH, _env).await, #[cfg(test)] Plane::Double(f) => f(_env) } }
 }
-fn plane() -> Plane { Plane::Off }   // the real HTTP/3 client lands when his Control Plane address + public key are given
+pub const CP_PATH: &str = "/control/v1/lookup";
+/// The real Control Plane is reached ONLY when his address (DESK_CONTROL_PLANE_ADDR = ip:udp-port) and host name (DESK_CONTROL_PLANE_HOST) are set; otherwise Off = fail closed.
+fn plane() -> Plane {
+    let (Ok(a), Ok(h)) = (std::env::var("DESK_CONTROL_PLANE_ADDR"), std::env::var("DESK_CONTROL_PLANE_HOST")) else { return Plane::Off };
+    let Ok(addr) = a.parse() else { return Plane::Off };
+    let ca_pem = std::env::var("DESK_CONTROL_PLANE_CA").ok().and_then(|p| std::fs::read(p).ok());
+    Plane::H3 { addr, host: h, ca_pem }
+}
+/// HTTP/3 POST to the Control Plane. The client offers ONLY TLS 1.3, AES-256-GCM and X25519MLKEM768 (a finished handshake proves the Control Plane agreed to all three); 8 s to connect, 10 s to answer; any failure = None.
+pub async fn h3_post(addr: std::net::SocketAddr, host: &str, ca_pem: Option<&[u8]>, path: &str, body: &str) -> Option<String> {
+    use bytes::Buf; use rustls::crypto::ring as rp; use std::{sync::Arc, time::Duration};
+    let mut p = rp::default_provider();
+    p.cipher_suites = vec![rp::cipher_suite::TLS13_AES_256_GCM_SHA384];
+    p.kx_groups = vec![rustls_post_quantum::X25519MLKEM768];
+    let mut roots = rustls::RootCertStore::empty();
+    match ca_pem { Some(pem) => for c in rustls_pemfile::certs(&mut &*pem).flatten() { roots.add(c).ok()?; }, None => for c in rustls_native_certs::load_native_certs().certs { let _ = roots.add(c); } }
+    let mut cc = rustls::ClientConfig::builder_with_provider(Arc::new(p)).with_protocol_versions(&[&rustls::version::TLS13]).ok()?.with_root_certificates(roots).with_no_client_auth();
+    cc.alpn_protocols = vec![b"h3".to_vec()];
+    let initial = rp::cipher_suite::TLS13_AES_128_GCM_SHA256.tls13().and_then(|s| s.quic_suite())?;
+    let qc = quinn::ClientConfig::new(Arc::new(quinn::crypto::rustls::QuicClientConfig::with_initial(Arc::new(cc), initial).ok()?));
+    let bind: std::net::SocketAddr = if addr.is_ipv6() { "[::]:0" } else { "0.0.0.0:0" }.parse().ok()?;
+    let mut ep = quinn::Endpoint::client(bind).ok()?; ep.set_default_client_config(qc);
+    let conn = tokio::time::timeout(Duration::from_secs(8), ep.connect(addr, host).ok()?).await.ok()?.ok()?;
+    let (mut driver, mut send) = h3::client::new(h3_quinn::Connection::new(conn)).await.ok()?;
+    tokio::spawn(async move { let _ = std::future::poll_fn(|cx| driver.poll_close(cx)).await; });
+    let req = axum::http::Request::builder().method("POST").uri(format!("https://{host}{path}")).header("content-type", "application/json").body(()).ok()?;
+    let work = async {
+        let mut st = send.send_request(req).await.ok()?;
+        st.send_data(bytes::Bytes::copy_from_slice(body.as_bytes())).await.ok()?; st.finish().await.ok()?;
+        if st.recv_response().await.ok()?.status() != StatusCode::OK { return None; }
+        let mut got = Vec::new();
+        while let Some(mut b) = st.recv_data().await.ok()? { let n = b.remaining(); got.extend_from_slice(&b.copy_to_bytes(n)); if got.len() > 64 * 1024 { return None; } }
+        String::from_utf8(got).ok()
+    };
+    tokio::time::timeout(Duration::from_secs(10), work).await.ok().flatten()
+}
 fn cp_pub() -> String { std::env::var("DESK_CONTROL_PLANE_PUBKEY").unwrap_or_default() }
 
 fn out(status: StatusCode, body: Value) -> Response { (status, [(header::CONTENT_TYPE, "application/json")], body.to_string()).into_response() }
@@ -178,5 +213,81 @@ mod tests {
         let m = accept(&ans, &p, RID, "acme-1234", &f(&["service_state", "grace_days_left"]), 1005).unwrap();
         assert_eq!(m["service_state"], "grace_period");
         let forged = req.replace("acme-1234", "other-9999"); assert!(d.ask(&forged).await.is_none(), "a request altered after signing is refused");
+    }
+
+    fn double_fn(sp: String, k: SigningKey) -> impl Fn(&str) -> Option<String> + Send + Sync + 'static {
+        move |env| {
+            let e: Value = serde_json::from_str(env).ok()?; let body = e["body"].as_str()?;
+            let vk = VerifyingKey::from_bytes(&unhex(&sp)?.try_into().ok()?).ok()?;
+            vk.verify(format!("{REQ_DOMAIN}\n{body}").as_bytes(), &Signature::from_slice(&unhex(e["sig"].as_str()?)?).ok()?).ok()?;
+            let b: Value = serde_json::from_str(body).ok()?; if b["aud"] != "desk-lookup" { return None; }
+            Some(answer(&k, b["request_id"].as_str()?, b["company_ref"].as_str()?, b["issued_at"].as_i64()?, json!({"service_state": "active", "usage_seats": 12, "unlisted_field": "x"}), false))
+        }
+    }
+    /// REAL HTTP/3 loopback: our client (TLS 1.3, AES-256-GCM, X25519MLKEM768 only) -> a quinn/h3 server standing in for the Control Plane, signed request in, signed answer out.
+    #[tokio::test] async fn real_h3_round_trip_to_a_control_plane_double() {
+        let d = std::env::temp_dir().join(format!("deskcp-{}", std::process::id())); let _ = std::fs::create_dir_all(&d);
+        let (kf, cf) = (d.join("k.pem"), d.join("c.pem"));
+        let ok = std::process::Command::new("openssl").args(["req","-x509","-newkey","ec","-pkeyopt","ec_paramgen_curve:prime256v1","-nodes","-days","1","-subj","/CN=controlplane.test","-addext","subjectAltName=DNS:controlplane.test","-addext","basicConstraints=critical,CA:FALSE","-keyout",kf.to_str().unwrap(),"-out",cf.to_str().unwrap()]).output().map(|o| o.status.success()).unwrap_or(false);
+        if !ok { eprintln!("no openssl: skipped"); return; }
+        let (cert, key) = (std::fs::read(&cf).unwrap(), std::fs::read(&kf).unwrap());
+        let ep = quinn::Endpoint::server(crate::h3::quic_config(crate::h3::server_config(&cert, &key).unwrap()).unwrap(), "127.0.0.1:0".parse().unwrap()).unwrap();
+        let addr = ep.local_addr().unwrap();
+        let s = Signer::from_seed_hex(SEED).unwrap(); let (k, p) = cp();
+        let dbl = std::sync::Arc::new(double_fn(s.public_hex(), k));
+        let router = axum::Router::new().route(CP_PATH, axum::routing::post(move |body: String| { let dbl = dbl.clone(); async move { match dbl(&body) { Some(a) => (StatusCode::OK, a), None => (StatusCode::FORBIDDEN, String::new()) } } }));
+        tokio::spawn(crate::h3::serve(ep, router, "controlplane.test".into(), None));
+        let plane = Plane::H3 { addr, host: "controlplane.test".into(), ca_pem: Some(cert.clone()) };
+        let req = build_request(&s, RID, "emp-1", "acme-1234", "customer says mail is missing", &f(&["service_state"]), 1000);
+        let ans = plane.ask(&req).await.expect("answer over real HTTP/3");
+        assert_eq!(accept(&ans, &p, RID, "acme-1234", &f(&["service_state"]), 1005).unwrap()["service_state"], "active");
+        assert!(plane.ask(&req.replace("acme-1234", "other-9999")).await.is_none(), "altered request: the Control Plane refuses");
+        let untrusted = Plane::H3 { addr, host: "controlplane.test".into(), ca_pem: Some(Vec::new()) };
+        assert!(untrusted.ask(&req).await.is_none(), "a Control Plane whose certificate we do not trust gets nothing");
+    }
+    /// Rust -> PostgreSQL: audit line BEFORE the answer, outcome closed after, refusal and unavailable paths, on the scratch database (needs DESK_TEST_ADMIN_URL; skipped otherwise).
+    #[tokio::test] async fn database_flow_audit_first_and_fail_closed() {
+        let Ok(admin) = std::env::var("DESK_TEST_ADMIN_URL") else { eprintln!("no DESK_TEST_ADMIN_URL: skipped"); return; };
+        let (a, conn) = tokio_postgres::connect(&admin, tokio_postgres::NoTls).await.unwrap(); tokio::spawn(conn);
+        let q = |sql: String| { let a = &a; async move { crate::door::rows(a, &sql).await.unwrap() } };
+        let sfx = &uuid4()[..8]; let h = "$argon2id$v=19$m=19456,t=2,p=1$c2VsZnRlc3Q$c2VsZnRlc3RoYXNo";
+        let o = q(format!("insert into desk.fadm_owner (email, display_name, role, pw_hash) values ('o-{sfx}@selftest.invalid','T Owner','owner','{h}') returning id::text")).await[0].get(0).unwrap().to_string();
+        let mk = |tag: &str| format!("insert into desk.fadm_owner (email, display_name, role, pw_hash, passkey_required, status, active) values ('{tag}-{sfx}@selftest.invalid','T {tag}','agent',NULL,true,'active',true) returning id::text");
+        let agent = q(mk("a")).await[0].get(0).unwrap().to_string(); let loner = q(mk("l")).await[0].get(0).unwrap().to_string();
+        q(format!("select desk.fadm_access_grant('{o}'::uuid, '{agent}'::uuid, desk.fadm_unit_id('department','desk'), 'agent')::text")).await;
+        let sess = |who: String| { let q = &q; async move {
+            let t = format!("{}{}", hex(&uuid4().into_bytes()).chars().take(32).collect::<String>(), hex(&uuid4().into_bytes()).chars().take(32).collect::<String>());
+            q(format!("select desk.fadm_session_create('{who}'::uuid, '\\x{}'::bytea, 600)::text", hex(&crate::auth::token_hash(&t)))).await;
+            let mut hd = HeaderMap::new(); hd.insert(header::AUTHORIZATION, format!("Bearer {t}").parse().unwrap()); hd } };
+        let (h_agent, h_loner) = (sess(agent.clone()).await, sess(loner).await);
+        q("alter role desk_app login password 'scratch'".to_string()).await;
+        let url = format!("postgres://desk_app:scratch@{}/anexo_desk?sslmode=disable", admin.split('@').next_back().unwrap().split('/').next().unwrap());
+        let f_ = std::env::temp_dir().join("desk-sign-test.seed"); std::fs::write(&f_, "0202020202020202020202020202020202020202020202020202020202020202").unwrap();
+        unsafe { std::env::set_var("DESK_APP_URL", &url); std::env::set_var("DESK_SIGN_SEED_FILE", &f_); }
+        crate::signed::init(); let sg = crate::signed::signer().expect("signer");
+        let (k, p) = cp(); let plane = Plane::Double(Box::new(double_fn(sg.public_hex(), k)));
+        let now = crate::signed::now_secs();
+        let body = br#"{"company_ref":"acme-1234","reason":"customer says mail is missing","fields":["service_state","usage_seats"]}"#;
+        let outcomes = |rid: String| { let q = &q; async move { q(format!("select outcome from desk.fadm_lookup where request_id='{rid}'::uuid order by id")).await.iter().map(|r| r.get(0).unwrap().to_string()).collect::<Vec<_>>() } };
+        let rid_of = |r: Value| r["request_id"].as_str().unwrap().to_string();
+        let jbody = |r: Response| async move { let st = r.status(); let b = axum::body::to_bytes(r.into_body(), 1 << 20).await.unwrap(); (st, serde_json::from_slice::<Value>(&b).unwrap()) };
+        // 1) good path: 200, only the requested whitelist fields, audit line first then answered
+        let (st, v) = jbody(run(&h_agent, body, &plane, &p, now).await).await;
+        assert_eq!(st, StatusCode::OK, "{v}"); assert_eq!(v["fields"]["service_state"], "active"); assert_eq!(v["fields"]["usage_seats"], 12); assert!(v["fields"].get("unlisted_field").is_none());
+        assert_eq!(outcomes(rid_of(v)).await, vec!["requested", "answered"]);
+        // 2) Control Plane not configured: unavailable, nothing shown, line closed as unavailable
+        let (st, v) = jbody(run(&h_agent, body, &Plane::Off, &p, now).await).await;
+        assert_eq!(st, StatusCode::SERVICE_UNAVAILABLE); assert_eq!(v["error"], "data_unavailable"); assert!(v.get("fields").is_none());
+        assert_eq!(outcomes(rid_of(v)).await, vec!["requested", "unavailable"]);
+        // 3) answer signed by a key we do not trust: unavailable
+        let (st, v) = jbody(run(&h_agent, body, &plane, &hex(SigningKey::from_bytes(&[9u8; 32]).verifying_key().as_bytes()), now).await).await;
+        assert_eq!(st, StatusCode::SERVICE_UNAVAILABLE); assert_eq!(outcomes(rid_of(v)).await, vec!["requested", "unavailable"]);
+        // 4) a person with no access: refused by PostgreSQL, no lookup row at all
+        let before = q("select count(*)::text from desk.fadm_lookup".to_string()).await[0].get(0).unwrap().to_string();
+        let (st, _) = jbody(run(&h_loner, body, &plane, &p, now).await).await; assert_eq!(st, StatusCode::FORBIDDEN);
+        // 5) bad input never reaches the database; no session = 401
+        let (st, _) = jbody(run(&h_agent, br#"{"company_ref":"x","reason":"short","fields":["service_state"]}"#, &plane, &p, now).await).await; assert_eq!(st, StatusCode::UNPROCESSABLE_ENTITY);
+        let (st, _) = jbody(run(&HeaderMap::new(), body, &plane, &p, now).await).await; assert_eq!(st, StatusCode::UNAUTHORIZED);
+        assert_eq!(q("select count(*)::text from desk.fadm_lookup".to_string()).await[0].get(0).unwrap(), before);
     }
 }

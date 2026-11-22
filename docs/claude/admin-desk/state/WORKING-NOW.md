@@ -1,6 +1,6 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 20:30 PKT) - read this FIRST for the Desk after a compaction
-DOING: D5a-3 lookup.rs CODE GREEN in sandbox (cargo 38 pass); GREEN table + blueprint sent
-NEXT STEP: his desk-install + desk-restart for lookup door; then D5a-5 fail-closed proof (needs plane Off live check); waits Control Plane address+key
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 20:35 PKT) - read this FIRST for the Desk after a compaction
+DOING: D5a-3 finished in code: real HTTP/3 client + PostgreSQL integration test, cargo 40 pass; blueprint sent
+NEXT STEP: his desk-install + desk-restart, then his Control Plane address + public key (env), then D5a-5 live proof, D5 screen
 HIS LAST WORD: Dashboard folder first; adhoora nahi
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- bebf54a1 22 Nov 20:30 ledger line c940ec13
 - c940ec13 22 Nov 20:30 Working-now checkpoint 20:50
 - a222d842 22 Nov 20:29 ledger line c21ae224
 - c21ae224 22 Nov 20:29 Desk D5a-3: signed lookup door (lookup.rs), status table SQL/CODE/PHASE, blueprint 20:45
@@ -72,9 +73,16 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 09c6e08f 22 Nov 20:16 ledger line 350ee8e9
 - a0962174 22 Nov 20:16 ledger line 76455551
 - 76455551 22 Nov 20:16 dashboard-first order
-- 733f2512 22 Nov 20:05 ledger line 6b0e0be0
 
 ## Uncommitted Desk files
+ M admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/STATUS-GREEN-TABLE-22NOV.md
+ M admin-desk/server/src/lookup.rs
+ M docs/claude/admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md
+ M docs/claude/admin-desk/server/src/lookup.rs
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)

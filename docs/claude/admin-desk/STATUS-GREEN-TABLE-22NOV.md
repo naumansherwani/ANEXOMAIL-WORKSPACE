@@ -11,5 +11,5 @@
 | AD5 addresses + mailbox roles | PostgreSQL trigger guards, grants | GREEN | none (Mailboxes folder FROZEN) | NOT GREEN |
 | AD6 package registry | versioned, frozen rows, no money columns | GREEN (registry empty) | none (D5a-2 needs his package list) | NOT GREEN |
 | AD7 cases | state machine trigger, append-only events | GREEN | none (Cases folder FROZEN) | NOT GREEN |
-| D5a-3 signed lookup door | Rust Tokio axum 0.8, ed25519-dalek, Rule 52, fail closed | no new SQL | GREEN in sandbox: cargo 38 passed, 5 new lookup tests; NOT on his server yet | NOT GREEN |
+| D5a-3 signed lookup door | Rust Tokio axum 0.8, ed25519-dalek, Rule 52, fail closed | no new SQL | GREEN in sandbox: cargo 40 passed (7 lookup tests: real HTTP/3 loopback + PostgreSQL integration); NOT on his server yet | NOT GREEN |
 | DASHBOARD FOLDER as a whole | see DASHBOARD-FOLDER-ORDER-22NOV.md | | | NOT GREEN: steps 2..9 open |

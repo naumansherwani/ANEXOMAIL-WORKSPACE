@@ -1,14 +1,15 @@
 <!--TECHLAW-->
 
-# TECH CONTRACT FOR PHASE: DESK D5a-3 (SIGNED LOOKUP DOOR, Dashboard folder), written 22 Nov 2026 20:30 PKT, his word 20:15 "dashboard 100% green first". STATE: IN PROGRESS
+# TECH CONTRACT FOR PHASE: DESK D5a-3 (SIGNED LOOKUP DOOR, Dashboard folder), written 22 Nov 2026 20:30 PKT, his word 20:15 "dashboard 100% green first". STATE: CODE DONE, waits his Control Plane address + key
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
-| Rust + Tokio + axum door POST /desk/v1/customer/lookup (inside the sealed router: Rule 52 signed envelope + request MAC + replay nonce) | server/src/lookup.rs + one route line in main.rs | no | cargo tests |
-| Ed25519 signed request (audience desk-lookup, 60 s expiry, request id, employee, company_ref, typed reason, requested fields) | lookup.rs build_request + sign.rs sign_raw | no | cargo test verifies with dalek, tamper fails |
-| Control Plane answer verified (Ed25519, its own key, request id must match, 60 s fresh) before any field is shown; unknown or extra fields dropped (whitelist = DESK-LOOKUP-CONTRACT.json) | lookup.rs accept() | no | cargo tests |
-| Audit BEFORE data: SQL fadm_lookup_begin (AD4, live) first, fadm_lookup_finish after; burst-frozen = refused | lookup.rs run() | no | AD4 selftest + cargo |
-| Fail closed: no address / no key / bad signature / stale / wrong request id = "data_unavailable" + freshness, never an old answer, nothing stored | lookup.rs | no | cargo tests |
-| Control Plane address + its public key | NOT given yet (waits his answer); until then door answers unavailable on his server (honest) | n/a | his word |
+| Rust + Tokio + axum door POST /desk/v1/customer/lookup (inside the sealed router: Rule 52 signed envelope + request MAC + replay nonce) | server/src/lookup.rs + one route line in main.rs | yes | cargo tests |
+| Ed25519 signed request (audience desk-lookup, 60 s expiry, request id, employee, company_ref, typed reason, requested fields) | lookup.rs build_request + sign.rs sign_raw | yes | cargo test verifies with dalek, tamper fails |
+| Control Plane answer verified (Ed25519, its own key, request id must match, 60 s fresh) before any field is shown; unknown or extra fields dropped (whitelist = DESK-LOOKUP-CONTRACT.json) | lookup.rs accept() | yes | cargo tests |
+| Audit BEFORE data: SQL fadm_lookup_begin (AD4, live) first, fadm_lookup_finish after; burst-frozen = refused | lookup.rs run() | yes | AD4 selftest + cargo integration test on PostgreSQL 16 (rows: requested before answered/unavailable) |
+| Fail closed: no address / no key / bad signature / stale / wrong request id = "data_unavailable" + freshness, never an old answer, nothing stored | lookup.rs | yes | cargo tests |
+| Real HTTP/3 client to the Control Plane (TLS 1.3, AES-256-GCM, X25519MLKEM768 only) | lookup.rs h3_post, env DESK_CONTROL_PLANE_ADDR / _HOST / _CA / _PUBKEY | yes | real quinn+h3 loopback test |
+| Control Plane address + its public key | NOT given yet (his input); until then door answers unavailable on his server (honest) | n/a | his word |
 | Server / SQL | no new SQL (AD4 already live) | n/a | desk-install + desk-restart after commit |
 
 
@@ -3084,3 +3085,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 22 Nov 20:28 Dashboard folder first order, frozen folders, gates advance technology map
 
 - 22 Nov 2026 20:45 PKT: Desk D5a-3 CODE DONE (sandbox tests pass, the phase is not finished yet): lookup.rs signed lookup door POST /desk/v1/customer/lookup, cargo 38 passed (5 new), status table in the admin-desk folder, 22NOV (SQL / CODE / PHASE levels). PHASE not finished: not on his server, Control Plane address + key missing. Advance technology: Rust Tokio axum 0.8, ed25519-dalek, Rule 52, fail closed.
+
+- 22 Nov 2026 20:58 PKT: Desk D5a-3 finished in code: lookup.rs now has the real HTTP/3 Control Plane client (TLS 1.3, AES-256-GCM, X25519MLKEM768 only) proven by a real quinn+h3 loopback, and a Rust to PostgreSQL integration test (audit line before answer, unavailable, refused, no-access, bad input), cargo 40 passed. Not finished as a phase: his Control Plane address and public key are needed, then his desk-install and desk-restart. Advance technology: Rust Tokio axum 0.8, quinn + h3, ed25519-dalek, Rule 52, PostgreSQL 16.

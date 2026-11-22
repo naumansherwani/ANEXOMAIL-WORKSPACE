@@ -1,4 +1,4 @@
-# ANEXOMAIL ADMIN DESK: D-SERIES BLUEPRINT, UPDATED 22 Nov 2026 20:42 PKT (generated from the files named in each part; edit those, not this)
+# ANEXOMAIL ADMIN DESK: D-SERIES BLUEPRINT, UPDATED 22 Nov 2026 20:58 PKT (generated from the files named in each part; edit those, not this)
 Standing laws: Rule 52 (every answer kernel-verified), HTTP/3 only with WebTransport, TLS 1.3 AES-256-GCM + X25519MLKEM768, Desk isolation (own domain, never founder code or tables), no money or webhook data on the Desk, no phase name visible to an employee, no promises by employees, no refunds (published policy), the original UI/UX stays intact, GREEN only after a live Chrome look (WIRED: YES / REAL: YES / TECH-LAW CHECKED), whole Desk deadline 26 Nov 2026 07:26 PKT.
 
 
@@ -20,7 +20,7 @@ Standing laws: Rule 52 (every answer kernel-verified), HTTP/3 only with WebTrans
 | AD5 addresses + mailbox roles | PostgreSQL trigger guards, grants | GREEN | none (Mailboxes folder FROZEN) | NOT GREEN |
 | AD6 package registry | versioned, frozen rows, no money columns | GREEN (registry empty) | none (D5a-2 needs his package list) | NOT GREEN |
 | AD7 cases | state machine trigger, append-only events | GREEN | none (Cases folder FROZEN) | NOT GREEN |
-| D5a-3 signed lookup door | Rust Tokio axum 0.8, ed25519-dalek, Rule 52, fail closed | no new SQL | GREEN in sandbox: cargo 38 passed, 5 new lookup tests; NOT on his server yet | NOT GREEN |
+| D5a-3 signed lookup door | Rust Tokio axum 0.8, ed25519-dalek, Rule 52, fail closed | no new SQL | GREEN in sandbox: cargo 40 passed (7 lookup tests: real HTTP/3 loopback + PostgreSQL integration); NOT on his server yet | NOT GREEN |
 | DASHBOARD FOLDER as a whole | see DASHBOARD-FOLDER-ORDER-22NOV.md | | | NOT GREEN: steps 2..9 open |
 
 # PART 0: STATE NOW (NEXT-CODES-ORDER-22NOV.md)
@@ -119,7 +119,7 @@ His rule (DESK-PHASES rule 11): the DASHBOARD folder (D, D1..D6) goes 100% green
 | # | Step | What it is | Advance technology | SQL | State 22 Nov 20:25 |
 |---|---|---|---|---|---|
 | 1 | D, D1, D1c..D1f, D2, D3, D3b, D4, D7, D8..D10 (command bar, cards, alerts, service health, trend, registry, copy, glow, brand link) | the dashboard shell and its live Bridge cards | React 19 + TS, Framer Motion, Rust h3-webtransport (QUIC), signed frames, Desk-own Rust WASM kernel (Rule 52) | AD2, AD3 (live) | LIVE / first cuts; each waits its green look |
-| 2 | D5a-3 Rust signed lookup door | Rust asks his Control Plane read-only (Ed25519, audience desk-lookup, 60 s, request id, reason typed, audit before data, fail closed), against a TEST DOUBLE of the Control Plane first | Rust Tokio Axum 0.8, ed25519-dalek, HTTP/3, Rule 52 kernel verify | AD4 (live) | 20:42 CODE GREEN in sandbox (lookup.rs, cargo 38 passed); his desk-install + desk-restart next; PHASE GREEN waits his Control Plane address + key |
+| 2 | D5a-3 Rust signed lookup door | Rust asks his Control Plane read-only (Ed25519, audience desk-lookup, 60 s, request id, reason typed, audit before data, fail closed), against a TEST DOUBLE of the Control Plane first | Rust Tokio Axum 0.8, ed25519-dalek, HTTP/3, Rule 52 kernel verify | AD4 (live) | 20:58 CODE GREEN in sandbox (lookup.rs, real HTTP/3 client, PostgreSQL integration test, cargo 40 passed); his desk-install + desk-restart next; PHASE GREEN waits his Control Plane address + key |
 | 3 | D5a-5 Fail closed proof | Control Plane down = "Not available now", nothing stale, ledger line | Rust + test double | AD4 (live) | after step 2 |
 | 4 | D5a-2 fill + read door | registry filled from his package list, Rust read door | PostgreSQL versioned registry + Rust | AD6 (live, empty) | needs his package list |
 | 5 | D5 Plan context screen | package + version, features included vs enabled, limits and usage bars (90 / 95 marks), service state, SLA target, one payment flag, freshness; no amount anywhere | React 19 + TS + Tailwind 4, kernel-verified data | AD4, AD6 | after steps 2 to 4 |
