@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 22:42 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 22:42 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: D5a-2 GREEN again (his pastes + my Chrome); new last phase R feature release feed + employee accounts written
 NEXT STEP: his desk-schema-look paste, then D5a-3b contract and crate
 HIS LAST WORD: his 22:41 word: features auto to Desk, employee accounts, phase last; compact save
@@ -18,39 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- ed337fb9 22 Nov 22:42 D5a-2 GREEN and phase R plan
 - 2f2c8c6f 22 Nov 22:27 ledger line 61797108
 - 61797108 22 Nov 22:27 throttle answered
 - 9c833aa1 22 Nov 22:22 ledger line 1b54bab4
 - 1b54bab4 22 Nov 22:22 D5a-2 landing page plans
-- 898dcced 22 Nov 22:20 ledger line 3bea45d8
 
 ## Uncommitted files (half-done work if any)
- M admin-desk/D5A-GREEN-LIST-22NOV.md
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/STATUS-GREEN-TABLE-22NOV.md
- M admin-desk/state/HANDOFF-22NOV.md
- M docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
- M docs/claude/FINAL-FOUNDER-BLUEPRINT.md
- M docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md
- M docs/claude/admin-desk/state/HANDOFF-22NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/founder/founder-commands.md
-?? admin-desk/FEATURE-FEED-AND-EMPLOYEE-ACCOUNTS-PLAN-22NOV.md
-?? docs/claude/admin-desk/FEATURE-FEED-AND-EMPLOYEE-ACCOUNTS-PLAN-22NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/FINAL-FOUNDER-BLUEPRINT.md             |  2 ++
- docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md     |  2 +-
- .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    |  5 +--
- docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md |  2 +-
- docs/claude/admin-desk/state/HANDOFF-22NOV.md      |  4 +++
- docs/claude/state/WORKING-NOW.md                   | 36 +++++++++++-----------
- docs/cursor-work/founder/founder-commands.md       |  2 ++
- 12 files changed, 42 insertions(+), 26 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 36 ++----------------------------------
+ 1 file changed, 2 insertions(+), 34 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -61,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (fabdbfe17160f8bbdff33a1fd847de031f2a9358)
+WIP snapshot: refs/wip/last (bfb08c74cc0672e3ed3bd52d2ae3968ded59cae1)
