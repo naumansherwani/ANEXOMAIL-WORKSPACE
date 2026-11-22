@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 23:32 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 23:34 PKT) - read this FIRST for the Desk after a compaction
 DOING: D5a-3b: his schema paste read (orgs 7, polar_subscriptions 0, mailbox_storage 5); plan per company = workspace_subscriptions; second read-only look written
 NEXT STEP: his desk-schema-look2 paste, then D5a-3b contract block and responder crate
 HIS LAST WORD: his 23:32 word: phase next pe aao, save everything
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 0c4cbfb4 22 Nov 23:34 D5a-3b schema paste and look 2
 - 610119ff 22 Nov 22:42 ledger line ed337fb9
 - ed337fb9 22 Nov 22:42 D5a-2 GREEN and phase R plan
 - 2f2c8c6f 22 Nov 22:27 ledger line 61797108
@@ -72,14 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 9c833aa1 22 Nov 22:22 ledger line 1b54bab4
 - 1b54bab4 22 Nov 22:22 D5a-2 landing page plans
 - 898dcced 22 Nov 22:20 ledger line 3bea45d8
-- 3bea45d8 22 Nov 22:20 D5a-2 reopened awam ladder correction
 
 ## Uncommitted Desk files
- M admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
- M docs/claude/admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/scripts/desk-schema-look2.sh
-?? docs/claude/admin-desk/scripts/desk-schema-look2.sh
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
