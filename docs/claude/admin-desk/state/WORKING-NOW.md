@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 03:02 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:02 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1j audit+autofix L1-L6 done, install next
 NEXT STEP: his install paste then Chrome signed-in look then GREEN
 HIS LAST WORD: his 03:01 order: audit, add all research, autofix, WORKING-NOW
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 87c65037 23 Nov 03:02 1j: audit and autofix
 - 6b73183f 23 Nov 02:57 ledger line 53aed7fd
 - 53aed7fd 23 Nov 02:57 1j: Plan context screen code
 - 4b4b376e 23 Nov 02:56 ledger line ad2138b5
@@ -72,14 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 308f6827 23 Nov 02:46 ledger line 711d040d
 - 711d040d 23 Nov 02:46 crypto choice note
 - 16845c1a 23 Nov 02:40 ledger line 57f63ea6
-- 57f63ea6 23 Nov 02:40 Rule 52 rename + installer proof
 
 ## Uncommitted Desk files
- M admin-desk/D5-PLAN-CONTEXT-SCREEN-LIST-23NOV.md
- M docs/claude/admin-desk/D5-PLAN-CONTEXT-SCREEN-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskPlan.tsx
- M founder-web/src/desk/desk_plan_pure.test.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
