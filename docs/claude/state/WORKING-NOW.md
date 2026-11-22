@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 09:03 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 09:03 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: D2 GREEN live
 NEXT STEP: D5 plans + SLA doors, D6, phase A
 HIS LAST WORD: his test alert ran 09:00
@@ -18,28 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 425ec964 22 Nov 09:03 D2 live
 - f7c15a5d 22 Nov 09:01 ledger line ecc37d29
 - ecc37d29 22 Nov 09:01 Desk D2 test alert script: allowed source system
 - ee694483 22 Nov 09:01 ledger line 080dcd0c
 - 080dcd0c 22 Nov 09:01 D2 script
-- 385aff8d 22 Nov 08:58 ledger line 03f1e05f
 
 ## Uncommitted files (half-done work if any)
- M CLAUDE.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- CLAUDE.md                                      |  2 +-
- docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md |  1 +
- docs/claude/admin-desk/DESK-PHASES-22NOV.md    |  4 ++--
- docs/claude/state/WORKING-NOW.md               | 27 +++++++++-----------------
- docs/claude/tech-contracts/CURRENT.md          |  2 ++
- 5 files changed, 15 insertions(+), 21 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 25 ++-----------------------
+ 1 file changed, 2 insertions(+), 23 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -50,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (112a77239dd5b36cbd701fd2b11dc6745aafd7d4)
+WIP snapshot: refs/wip/last (507095d8f529dcb818d5dc1a01954a8aaf695d63)
