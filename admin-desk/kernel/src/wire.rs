@@ -54,6 +54,42 @@ pub fn verify_answer(pinned_pub_hex: &str, method: &str, path: &str, nonce: &str
     Ok(body.to_string())
 }
 
+// ---- Phase C2 (22 Nov 2026): the live Bridge stream (WebTransport /wt/bridge). Same Rule 52, per frame. ----
+pub const STREAM_PATH: &str = "/wt/bridge";
+pub const STALE_SECS: i64 = 12;
+const TRACKS: [&str; 3] = ["summary", "services", "alerts"];
+
+/// The first line of the stream: `ANX1 <token> <nonce> <ts> <mac>\n` (the browser cannot set headers on a WebTransport CONNECT, so the request MAC rides the hello).
+pub fn stream_hello(token: &str, nonce: &str, ts: i64) -> Result<String, &'static str> {
+    if !nonce_ok(nonce) { return Err("bad_nonce"); }
+    if token.len() != 64 || !token.bytes().all(|b| b.is_ascii_hexdigit()) { return Err("no_session"); }
+    let mut m = <Hmac<Sha256> as Mac>::new_from_slice(&req_key(token)).map_err(|_| "bad_key")?;
+    m.update(&message("WT", STREAM_PATH, nonce, ts, b""));
+    Ok(format!("ANX1 {token} {nonce} {ts} {}\n", hex(&m.finalize().into_bytes())))
+}
+
+/// ONE stream line -> the trusted frame JSON {"seq","track","data"}, or a refusal. Checks: Desk key (pinned), signature over method WT + path /wt/bridge/<track> + nonce + ts + exact body,
+/// fresh clock, a known track, and seq == last_seq + 1 for that track (a replayed, skipped or reordered frame is REFUSED).
+pub fn verify_frame(pinned_pub_hex: &str, now: i64, last_seq: u64, line: &str) -> Result<String, &'static str> {
+    let e: serde_json::Value = serde_json::from_str(line.trim_end_matches('\n')).map_err(|_| "unsigned_frame")?;
+    if e["v"] != 1 { return Err("unsigned_frame"); }
+    let nonce = e["nonce"].as_str().filter(|n| nonce_ok(n)).ok_or("bad_nonce")?;
+    let ts = e["ts"].as_i64().ok_or("unsigned_frame")?;
+    if (now - ts).abs() > SKEW_SECS { return Err("stale_frame"); }
+    let body = e["body"].as_str().ok_or("unsigned_frame")?;
+    let b: serde_json::Value = serde_json::from_str(body).map_err(|_| "unsigned_frame")?;
+    let track = b["track"].as_str().filter(|t| TRACKS.contains(t)).ok_or("bad_track")?;
+    let sig = unhex(e["sig"].as_str().ok_or("unsigned_frame")?).and_then(|x| Signature::from_slice(&x).ok()).ok_or("unsigned_frame")?;
+    let pk: [u8; 32] = unhex(pinned_pub_hex).and_then(|x| x.try_into().ok()).ok_or("bad_pinned_key")?;
+    let vk = VerifyingKey::from_bytes(&pk).map_err(|_| "bad_pinned_key")?;
+    vk.verify(&message("WT", &format!("{STREAM_PATH}/{track}"), nonce, ts, body.as_bytes()), &sig).map_err(|_| "bad_signature")?;
+    let seq = b["seq"].as_u64().ok_or("bad_seq")?;
+    if seq != last_seq + 1 { return Err("frame_out_of_order"); }
+    Ok(body.to_string())
+}
+/// A track is STALE when its last verified frame is older than 12 s (the server sends a heartbeat every 8 s).
+pub fn is_stale(last_frame_ts: i64, now: i64) -> bool { now - last_frame_ts > STALE_SECS }
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -92,5 +128,33 @@ mod tests {
         assert_eq!(request_headers(&t, "GET", "/other", NONCE, 1000, b""), Err("bad_path"));
         assert_eq!(request_headers("short", "GET", "/desk/v1/x", NONCE, 1000, b""), Err("no_session"));
         assert_eq!(request_headers(&t, "TRACE", "/desk/v1/x", NONCE, 1000, b""), Err("bad_method"));
+    }
+
+    fn frame(sk: &SigningKey, nonce: &str, ts: i64, track: &str, seq: u64) -> String {
+        let body = format!("{{\"seq\":{seq},\"track\":\"{track}\",\"data\":{{\"p1\":0}}}}");
+        let sig = hex(&sk.sign(&message("WT", &format!("/wt/bridge/{track}"), nonce, ts, body.as_bytes())).to_bytes());
+        serde_json::json!({"v":1,"kid":"x","nonce":nonce,"ts":ts,"body":body,"sig":sig}).to_string()
+    }
+    #[test] fn stream_frames_verified_and_order_enforced() {
+        let sk = SigningKey::from_bytes(&[1u8; 32]); let pk = hex(sk.verifying_key().as_bytes());
+        let f1 = frame(&sk, NONCE, 1000, "summary", 1);
+        assert!(verify_frame(&pk, 1005, 0, &f1).unwrap().contains("\"seq\":1"));
+        assert_eq!(verify_frame(&pk, 1005, 1, &f1), Err("frame_out_of_order"), "a replayed frame is refused");
+        assert_eq!(verify_frame(&pk, 1005, 5, &frame(&sk, NONCE, 1000, "summary", 7)), Err("frame_out_of_order"), "a gap is refused");
+        assert_eq!(verify_frame(&pk, 1005 + SKEW_SECS, 0, &f1), Err("stale_frame"));
+        assert_eq!(verify_frame(&pk, 1005, 0, &f1.replace("p1", "p2")), Err("bad_signature"));
+        assert_eq!(verify_frame(&pk, 1005, 0, &frame(&sk, NONCE, 1000, "secrets", 1)), Err("bad_track"));
+        assert_eq!(verify_frame(&hex(SigningKey::from_bytes(&[2u8; 32]).verifying_key().as_bytes()), 1005, 0, &f1), Err("bad_signature"));
+        assert_eq!(verify_frame(&pk, 1005, 0, "{\"seq\":1}"), Err("unsigned_frame"));
+        // a frame signed for ANOTHER track cannot be moved onto this one
+        let moved = f1.replace("summary", "alerts"); assert_eq!(verify_frame(&pk, 1005, 0, &moved), Err("bad_signature"));
+    }
+    #[test] fn stream_hello_is_mac_bound_and_strict() {
+        let t = "ab".repeat(32);
+        let h = stream_hello(&t, NONCE, 1000).unwrap();
+        assert!(h.starts_with("ANX1 ") && h.ends_with('\n') && h.split(' ').count() == 5);
+        assert_eq!(stream_hello("short", NONCE, 1000), Err("no_session"));
+        assert_eq!(stream_hello(&t, "zz", 1000), Err("bad_nonce"));
+        assert!(is_stale(1000, 1013) && !is_stale(1000, 1012));
     }
 }

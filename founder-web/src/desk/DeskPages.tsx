@@ -7,6 +7,7 @@ import { DeskTelemetry } from "./DeskTelemetry";
 import { DeskShell, type ShellMe } from "./DeskShell";
 import { HoverA } from "../signin/BrandLoader";
 import { deskCall, DeskRefused, refusedMessage } from "./desk_kernel";
+import { openBridge, type Snapshot } from "./desk_stream";
 
 const hasSession = () => { try { return !!window.localStorage.getItem(DESK_SESSION_KEY); } catch { return false; } };
 const go = (to: string) => window.location.replace(to);
@@ -35,7 +36,9 @@ const dropSession = () => { try { window.localStorage.removeItem(DESK_SESSION_KE
 
 /** Dashboard: ONLY real data, every line from a Desk-signed answer the kernel verified (/desk/v1/auth/me). The look lives in DeskShell. */
 function Dashboard() {
-  const [me, setMe] = useState<Me | null>(null), [err, setErr] = useState(""), [out, setOut] = useState(false);
+  const [me, setMe] = useState<Me | null>(null), [err, setErr] = useState(""), [out, setOut] = useState(false), [live, setLive] = useState<Snapshot>({ state: "connecting", data: {} });
+  // Phase C2: the live Bridge stream (WebTransport, Rule 52 verified in the kernel). Starts once the account answer is trusted; stops on sign-out.
+  useEffect(() => { if (!me) return; return openBridge(setLive); }, [me]);
   useEffect(() => {
     let live = true;
     deskCall("GET", "/desk/v1/auth/me").then((r) => {
@@ -46,7 +49,7 @@ function Dashboard() {
     return () => { live = false; };
   }, []);
   async function signOut() { setOut(true); try { await deskCall("POST", "/desk/v1/auth/logout"); } catch { /* the local session is dropped anyway */ } dropSession(); go("/adminlogin"); }
-  return <DeskShell me={me} err={err} out={out} onSignOut={signOut} />;
+  return <DeskShell me={me} err={err} out={out} onSignOut={signOut} live={live.state} />;
 }
 
 /** One component, three pages by path (/, /adminlogin, /dashboard). The guard sends a visitor without a session away from the dashboard. */

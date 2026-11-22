@@ -2,21 +2,39 @@
 /* eslint-disable */
 
 /**
+ * Phase C2: true when a track's last verified frame is older than 12 s.
+ */
+export function frame_is_stale(last_frame_ts: number, now: number): boolean;
+
+/**
  * Build the three request headers (nonce, ts, mac). nonce_hex = 16 random bytes from crypto.getRandomValues (JS), ts = unix seconds.
  */
 export function request_headers(token: string, method: string, path: string, nonce_hex: string, ts: number, body: string): string;
+
+/**
+ * Phase C2: the hello line of the live stream (nonce_hex = 16 random bytes from crypto.getRandomValues, ts = unix seconds).
+ */
+export function stream_hello(token: string, nonce_hex: string, ts: number): string;
 
 /**
  * Verify a Desk answer envelope against the pinned public key. Returns the BODY string only when the signature, path, method, nonce and clock all match.
  */
 export function verify_answer(pinned_pub_hex: string, method: string, path: string, nonce_hex: string, now: number, envelope: string): string;
 
+/**
+ * Phase C2: verify ONE stream line. Returns the frame JSON {"seq","track","data"} only when signature, track, clock and seq (== last_seq + 1) all pass.
+ */
+export function verify_frame(pinned_pub_hex: string, now: number, last_seq: number, line: string): string;
+
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
 export interface InitOutput {
     readonly memory: WebAssembly.Memory;
+    readonly frame_is_stale: (a: number, b: number) => number;
     readonly request_headers: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number, k: number, l: number) => void;
+    readonly stream_hello: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
     readonly verify_answer: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number, k: number, l: number) => void;
+    readonly verify_frame: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => void;
     readonly __wbindgen_externrefs: WebAssembly.Table;
     readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
     readonly __wbindgen_export: (a: number, b: number) => number;

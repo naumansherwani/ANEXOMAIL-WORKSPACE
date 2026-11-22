@@ -1,6 +1,17 @@
 /* @ts-self-types="./anexomail_desk_kernel.d.ts" */
 
 /**
+ * Phase C2: true when a track's last verified frame is older than 12 s.
+ * @param {number} last_frame_ts
+ * @param {number} now
+ * @returns {boolean}
+ */
+export function frame_is_stale(last_frame_ts, now) {
+    const ret = wasm.frame_is_stale(last_frame_ts, now);
+    return ret !== 0;
+}
+
+/**
  * Build the three request headers (nonce, ts, mac). nonce_hex = 16 random bytes from crypto.getRandomValues (JS), ts = unix seconds.
  * @param {string} token
  * @param {string} method
@@ -57,6 +68,50 @@ export function request_headers(token, method, path, nonce_hex, ts, body) {
 }
 
 /**
+ * Phase C2: the hello line of the live stream (nonce_hex = 16 random bytes from crypto.getRandomValues, ts = unix seconds).
+ * @param {string} token
+ * @param {string} nonce_hex
+ * @param {number} ts
+ * @returns {string}
+ */
+export function stream_hello(token, nonce_hex, ts) {
+    let deferred5_0;
+    let deferred5_1;
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16) >>> 0;
+        const val3 = +ts;
+        let ptr0, len0, ptr1, len1;
+        try {
+            ptr0 = passStringToWasm0(token, wasm.__wbindgen_export, wasm.__wbindgen_export2);
+            len0 = WASM_VECTOR_LEN;
+            ptr1 = passStringToWasm0(nonce_hex, wasm.__wbindgen_export, wasm.__wbindgen_export2);
+            len1 = WASM_VECTOR_LEN;
+        } catch (e) {
+            if (ptr1) { wasm.__wbindgen_export3(ptr1, len1 * 1, 1); }
+            if (ptr0) { wasm.__wbindgen_export3(ptr0, len0 * 1, 1); }
+            throw e;
+        }
+        wasm.stream_hello(retptr, ptr0, len0, ptr1, len1, val3);
+        var r0 = getDataViewMemory0().getInt32(retptr + 4 * 0, true);
+        var r1 = getDataViewMemory0().getInt32(retptr + 4 * 1, true);
+        var r2 = getDataViewMemory0().getInt32(retptr + 4 * 2, true);
+        var r3 = getDataViewMemory0().getInt32(retptr + 4 * 3, true);
+        var ptr4 = r0;
+        var len4 = r1;
+        if (r3) {
+            ptr4 = 0; len4 = 0;
+            throw takeFromExternrefTable0(r2);
+        }
+        deferred5_0 = ptr4;
+        deferred5_1 = len4;
+        return getStringFromWasm0(ptr4, len4);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_export3(deferred5_0, deferred5_1, 1);
+    }
+}
+
+/**
  * Verify a Desk answer envelope against the pinned public key. Returns the BODY string only when the signature, path, method, nonce and clock all match.
  * @param {string} pinned_pub_hex
  * @param {string} method
@@ -109,6 +164,52 @@ export function verify_answer(pinned_pub_hex, method, path, nonce_hex, now, enve
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_export3(deferred8_0, deferred8_1, 1);
+    }
+}
+
+/**
+ * Phase C2: verify ONE stream line. Returns the frame JSON {"seq","track","data"} only when signature, track, clock and seq (== last_seq + 1) all pass.
+ * @param {string} pinned_pub_hex
+ * @param {number} now
+ * @param {number} last_seq
+ * @param {string} line
+ * @returns {string}
+ */
+export function verify_frame(pinned_pub_hex, now, last_seq, line) {
+    let deferred6_0;
+    let deferred6_1;
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16) >>> 0;
+        const val3 = +now;
+        const val4 = +last_seq;
+        let ptr0, len0, ptr1, len1;
+        try {
+            ptr0 = passStringToWasm0(pinned_pub_hex, wasm.__wbindgen_export, wasm.__wbindgen_export2);
+            len0 = WASM_VECTOR_LEN;
+            ptr1 = passStringToWasm0(line, wasm.__wbindgen_export, wasm.__wbindgen_export2);
+            len1 = WASM_VECTOR_LEN;
+        } catch (e) {
+            if (ptr1) { wasm.__wbindgen_export3(ptr1, len1 * 1, 1); }
+            if (ptr0) { wasm.__wbindgen_export3(ptr0, len0 * 1, 1); }
+            throw e;
+        }
+        wasm.verify_frame(retptr, ptr0, len0, val3, val4, ptr1, len1);
+        var r0 = getDataViewMemory0().getInt32(retptr + 4 * 0, true);
+        var r1 = getDataViewMemory0().getInt32(retptr + 4 * 1, true);
+        var r2 = getDataViewMemory0().getInt32(retptr + 4 * 2, true);
+        var r3 = getDataViewMemory0().getInt32(retptr + 4 * 3, true);
+        var ptr5 = r0;
+        var len5 = r1;
+        if (r3) {
+            ptr5 = 0; len5 = 0;
+            throw takeFromExternrefTable0(r2);
+        }
+        deferred6_0 = ptr5;
+        deferred6_1 = len5;
+        return getStringFromWasm0(ptr5, len5);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_export3(deferred6_0, deferred6_1, 1);
     }
 }
 function __wbg_get_imports() {

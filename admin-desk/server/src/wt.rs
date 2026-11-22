@@ -228,4 +228,25 @@ mod tests {
         let Some((port, cert)) = start(fake(Some(403))).await else { return };
         assert_eq!(String::from_utf8(talk(port, &cert, PATH, &hello(TOK, "4a4b4c4d4e4f00112233445566778899", ts), Duration::from_millis(800)).await.unwrap()).unwrap(), "ERR 403\n");
     }
+
+    /// SANDBOX BROWSER PROOF (not part of the normal run): `DESK_BROWSER_PROOF=<dir> cargo test --offline browser_proof -- --ignored --nocapture`.
+    /// Serves the real Desk h3 + WebTransport endpoint on UDP 4400 with the cert in <dir>/c.pem + k.pem (host admindesk.anexomail.com) and a fake Bridge source,
+    /// signing with the seed in <dir>/seed, for 90 s, so a real Chromium can run the real stream client against it.
+    #[tokio::test(flavor = "multi_thread")]
+    #[ignore]
+    async fn browser_proof() {
+        let Ok(d) = std::env::var("DESK_BROWSER_PROOF") else { return };
+        let d = std::path::PathBuf::from(d);
+        unsafe { std::env::set_var("DESK_SIGN_SEED_FILE", d.join("seed")); }
+        signed::init();
+        let (c, k) = (std::fs::read(d.join("c.pem")).unwrap(), std::fs::read(d.join("k.pem")).unwrap());
+        let ep = quinn::Endpoint::server(h3::quic_config(h3::server_config(&c, &k).unwrap()).unwrap(), "127.0.0.1:4400".parse().unwrap()).unwrap();
+        let n = Arc::new(AtomicUsize::new(0));
+        let fetch: Fetch = Arc::new(move |_t: String, track: &'static str| { let n = n.clone(); Box::pin(async move {
+            Ok(match track { "summary" => format!("{{\"p1\":{}}}", n.fetch_add(1, Ordering::SeqCst) / 3 % 2), "services" => r#"[{"name":"db","state":"up"}]"#.into(), _ => "[]".into() })
+        }) });
+        tokio::spawn(h3::serve(ep, axum::Router::new(), "admindesk.anexomail.com".into(), Some(Arc::new(Cfg { host: "admindesk.anexomail.com".into(), fetch }))));
+        println!("PUB {}", signed::public_hex().unwrap());
+        tokio::time::sleep(Duration::from_secs(240)).await;
+    }
 }

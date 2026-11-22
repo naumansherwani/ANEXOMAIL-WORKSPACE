@@ -1,3 +1,4 @@
+import { chipText, type StreamState } from "./desk_stream_pure";
 import { useEffect, useState, type ReactNode } from "react";
 import { BrandMark } from "../signin/BrandMark";
 import { MODULES } from "./modules/registry";
@@ -66,6 +67,7 @@ const CSS = `
 .dsk-bar{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin:-8px 0 14px;position:relative}
 .dsk-chip{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:var(--glass);font-size:13px;font-weight:600;color:var(--ink)}
 .dsk-chip i{width:9px;height:9px;border-radius:50%;background:#6FA6F2;box-shadow:0 0 0 3px rgba(111,166,242,.25)}
+.dsk-chip[data-live="connecting"] i,.dsk-chip[data-live="stale"] i,.dsk-chip[data-live="offline"] i{background:#8A93A6;box-shadow:0 0 0 3px rgba(138,147,166,.25)}
 .dsk-av{display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--line);border-radius:50%;background:rgba(111,166,242,.2);color:#fff;font:inherit;font-weight:600;cursor:pointer}
 .dsk-menu{position:absolute;z-index:30;right:0;top:52px;width:min(300px,calc(100vw - 32px));padding:14px;border:1px solid var(--line);border-radius:18px;background:rgba(10,18,38,.96);backdrop-filter:blur(18px);box-shadow:0 18px 40px rgba(2,8,22,.55)}
 .dsk-menu b{display:block;font-size:15px}.dsk-menu small{display:block;margin-top:2px;color:var(--mute);overflow-wrap:anywhere}
@@ -100,7 +102,7 @@ html{scrollbar-width:thin;scrollbar-color:rgba(111,166,242,.45) transparent}
 @media (forced-colors:active){.dsk-card,.dsk-rail{border:1px solid CanvasText}}
 `;
 
-export function DeskShell({ me, err, out, onSignOut }: { me: ShellMe | null; err: string; out: boolean; onSignOut: () => void }) {
+export function DeskShell({ me, err, out, onSignOut, live = "live" }: { me: ShellMe | null; err: string; out: boolean; onSignOut: () => void; live?: StreamState }) {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const t = window.setInterval(() => setNow(Date.now()), 15000); return () => window.clearInterval(t); }, []);
   const [menu, setMenu] = useState(false), [pins, setPins] = useState<string[]>(readPins), groups = orderNav(NAV, pins), toggle = (k: string) => setPins((p) => { const n = p.includes(k) ? p.filter((x) => x !== k) : [...p, k]; writePins(n); return n; });
@@ -135,7 +137,7 @@ export function DeskShell({ me, err, out, onSignOut }: { me: ShellMe | null; err
       </nav>
       <main className="dsk-main">
         <div className="dsk-bar">
-          {me && <span className="dsk-chip" title="Every answer on this page was signed by the Desk and verified in your browser"><i aria-hidden="true" />Live · verified</span>}
+          {me && <span className="dsk-chip" title="Every answer on this page was signed by the Desk and verified in your browser" data-live={live}><i aria-hidden="true" />{chipText(live)}</span>}
           {me && <button type="button" className="dsk-av" aria-label="Account menu" aria-expanded={menu} onClick={() => setMenu((v) => !v)}>{(me.name || me.email).trim().split(/\s+/).slice(0, 2).map((w) => w[0]?.toUpperCase() ?? "").join("") || "?"}</button>}
           {me && menu && <div className="dsk-menu" role="menu"><b>{me.name || first}</b><small>{me.email}</small><span className="dsk-role">{me.role}</span>
             <button type="button" role="menuitem" disabled title="Opens when it is connected">Profile and photo</button><button type="button" role="menuitem" disabled title="Opens when it is connected">Settings</button><button type="button" role="menuitem" disabled title="Opens when it is connected">Devices and sessions</button>
