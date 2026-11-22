@@ -181,6 +181,17 @@ try:
 except ImportError:
     fail("DESK TECH", "admin-desk/gates/desk_tech_gate.py is missing")
 
+# CODE BACKUP LAW (his 22 Nov 2026 06:02): backups/<lane>/<stamp>-<commit>/ is APPEND-ONLY. A staged change that modifies or deletes anything under backups/ fails; every backup archive must match its SHA256SUMS. Nothing pulls from backups/ unless he asks. docs/claude/CODE-BACKUP-LAW-22NOV.md
+try:
+    _bs = sh("git", "diff", "--cached", "--name-status", "--", "backups/").splitlines()
+    _bad = [l for l in _bs if l and not l.startswith("A")]
+    if _bad: fail("CODE BACKUP", "backups/ is append-only (add a new backup, never change or delete an old one): " + " | ".join(_bad[:3]))
+    if os.path.isdir("backups"):
+        _v = subprocess.run([sys.executable, "docs/cursor-work/server/code-backup.py", "verify"], capture_output=True, text=True)
+        if _v.returncode != 0: fail("CODE BACKUP", "a backup archive does not match its SHA256SUMS: " + _v.stdout.strip()[-200:])
+except Exception as _x:
+    fail("CODE BACKUP", "code-backup check cannot run: " + str(_x)[:100])
+
 # ADMIN DESK TWO PLACES (his 21 Nov 2026 09:59): canonical docs/claude/admin-desk/ + ONE identical copy at admin-desk/ (server installers fetch it from origin/main). Drift = no commit.
 try:
     import subprocess as _sp

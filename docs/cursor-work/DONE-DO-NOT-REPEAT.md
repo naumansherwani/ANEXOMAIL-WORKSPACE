@@ -4115,3 +4115,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 22 Nov 06:50 PKT: Desk login light raised to bottom 12px, below card, 10 sizes fit no scrollbar; waits desk-install
 
 - 22 Nov 07:00 PKT: Save password row RESTORED (my mistake at 06:25), eye + single light + scale-to-fit kept, 10 sizes fit; rule: never delete a feature he did not name
+
+- 22 Nov 06:10 PKT: Desk login PERFECT, live-proven (bundle desk-YbabI512.js, no scrollbar); CODE BACKUP LAW + tool + gate + first backup backups/desk/20261122-0603-50eec49a-perfect-login; B installed, not green
