@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 02:57 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 1j code done, audit next
-NEXT STEP: 1j install line then Chrome look
-HIS LAST WORD: his 02:53 order
+# WORKING NOW (manual checkpoint, 23 Nov 2026 03:02 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 1j audit+autofix L1-L6 done, install next
+NEXT STEP: his install paste then Chrome signed-in look then GREEN
+HIS LAST WORD: his 03:01 order: audit, add all research, autofix, WORKING-NOW
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,33 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 6b73183f 23 Nov 02:57 ledger line 53aed7fd
 - 53aed7fd 23 Nov 02:57 1j: Plan context screen code
 - 4b4b376e 23 Nov 02:56 ledger line ad2138b5
 - ad2138b5 23 Nov 02:56 1j: plan, list, ML-DSA gap plan
 - 308f6827 23 Nov 02:46 ledger line 711d040d
-- 711d040d 23 Nov 02:46 crypto choice note
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/D5-PLAN-CONTEXT-SCREEN-LIST-23NOV.md
+ M docs/claude/admin-desk/D5-PLAN-CONTEXT-SCREEN-LIST-23NOV.md
  M docs/claude/state/WORKING-NOW.md
+ D founder-web/dist-desk/assets/desk-CrifIdYe.js
+ M founder-web/dist-desk/desk.html
+ M founder-web/src/desk/DeskPlan.tsx
+ M founder-web/src/desk/desk_plan_pure.test.ts
+?? founder-web/dist-desk/assets/desk-DGfUACHd.js
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 31 ++-----------------------------
- 1 file changed, 2 insertions(+), 29 deletions(-)
+ admin-desk/D5-PLAN-CONTEXT-SCREEN-LIST-23NOV.md    |   5 +
+ .../D5-PLAN-CONTEXT-SCREEN-LIST-23NOV.md           |   5 +
+ docs/claude/state/WORKING-NOW.md                   |  30 +++---
+ founder-web/dist-desk/assets/desk-CrifIdYe.js      | 115 ---------------------
+ founder-web/dist-desk/desk.html                    |   2 +-
+ founder-web/src/desk/DeskPlan.tsx                  |  24 +++--
+ founder-web/src/desk/desk_plan_pure.test.ts        |   5 +
+ 7 files changed, 41 insertions(+), 145 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +55,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (4d348721e21925877ff6c450ed44ec7d18308c5f)
+WIP snapshot: refs/wip/last (6eb107566d50ac4eb77f0edccb372e095e1a3840)

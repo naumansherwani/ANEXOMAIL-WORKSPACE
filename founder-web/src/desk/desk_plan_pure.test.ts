@@ -36,3 +36,8 @@ test("lookup is sealed: DeskPlan asks only through deskLookup, never fetch", () 
   const t = readFileSync(new URL("./DeskPlan.tsx", import.meta.url), "utf8");
   expect(t).toContain("deskLookup("); expect(t).not.toMatch(/\bfetch\(|WebSocket|XMLHttpRequest/);
 });
+test("loopholes closed: stale answer removed, result cleared on company change, 3 s cooldown, company shown", () => {
+  const t = readFileSync(new URL("./DeskPlan.tsx", import.meta.url), "utf8");
+  expect(t).toContain("if (stale) return"); expect(t).toContain("The old answer was removed"); expect(t).toContain("setCompany(e.target.value); setRes(null)");
+  expect(t).toContain("Date.now() / 1000 + 3"); expect(t).toContain("{company}: {val(f.package_id)}");
+});

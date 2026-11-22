@@ -18,3 +18,8 @@ Order lock: 1j is NOW; 1k..1o follow; nothing here changes the order.
 | P12 | No phase names ("P1", "1j") in employee-visible text. | standing law | text test |
 
 Tests required before commit: pure functions (diff, thresholds, state map, age) bun tests; component render at three widths in the harness; tsc clean; gates. Then hostile audit, then ONE install line, then my Chrome look (signed-in session if present), then GREEN.
+
+## AUDIT + AUTOFIX (23 Nov 03:2x PKT, his order "ek bhi nahi chodo")
+Loopholes found and closed in code (each has a test): L1 a stale answer stayed on screen greyed -> now REMOVED after 15 s (same law as the server); L2 an old company's answer stayed while typing another company -> result cleared on company change; L3 answer did not say which company -> company shown in the heading; L4 button could hammer the Control Plane -> 3 s cooldown; L5 "not known of 100" for attachment size -> shows "limit 100"; L6 raw SR code -> "Reason class SRn" (classes are a draft until he approves the words; shown as the code only).
+Research points added beyond P1-P12: stale removal not dimming (kinde stale-data guidance), answer bound to its company (Zuora/Reltio per-tenant views), caps shown as information not a block (saasui), cooldown to protect the source.
+Still open, said plainly: signed-in live look after install; SR class words wait for his approval; Framer Motion not used yet.

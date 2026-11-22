@@ -23,43 +23,45 @@ const val = (v: unknown) => (typeof v === "string" || typeof v === "number" ? St
 
 export function DeskPlan() {
   const [company, setCompany] = useState(""), [reason, setReason] = useState(""), [busy, setBusy] = useState(false);
-  const [res, setRes] = useState<LookupState | null>(null), [now, setNow] = useState(() => Date.now() / 1000);
+  const [res, setRes] = useState<LookupState | null>(null), [asked, setAsked] = useState(""), [cool, setCool] = useState(0), [now, setNow] = useState(() => Date.now() / 1000);
   const head = useRef<HTMLHeadingElement>(null);
   useEffect(() => { const t = setInterval(() => setNow(Date.now() / 1000), 1000); return () => clearInterval(t); }, []);
-  const ok = companyOk(company) && reasonOk(reason) && !busy;
+  const ok = companyOk(company) && reasonOk(reason) && !busy && now >= cool;
   async function go(e: { preventDefault(): void }) {
     e.preventDefault(); if (!ok) return;
-    setRes(null); setBusy(true);                       // the old answer is gone the moment a new lookup starts
+    setRes(null); setBusy(true); setAsked(company.trim());                       // the old answer is gone the moment a new lookup starts
     const r = await deskLookup(company.trim(), reason.trim(), PLAN_FIELDS, rid());
-    setRes(r); setBusy(false); setTimeout(() => head.current?.focus(), 0);
+    setRes(r); setBusy(false); setCool(Date.now() / 1000 + 3); setTimeout(() => head.current?.focus(), 0);
   }
   return (
     <div className="dpl"><style>{CSS}</style>
       <form className="dpl-form" onSubmit={(e) => void go(e)}>
-        <label>Company reference<input value={company} onChange={(e) => setCompany(e.target.value)} autoComplete="off" spellCheck={false} /></label>
-        <label className="dpl-reason">Why are you looking? (at least {MIN_REASON} characters, saved in the audit log before anything is shown)<textarea rows={2} value={reason} onChange={(e) => setReason(e.target.value)} /></label>
+        <label>Company reference<input value={company} onChange={(e) => { setCompany(e.target.value); setRes(null); }} autoComplete="off" spellCheck={false} /></label>
+        <label className="dpl-reason">Why are you looking? (at least {MIN_REASON} characters, saved in the audit log before anything is shown)<textarea rows={2} value={reason} onChange={(e) => { setReason(e.target.value); }} /></label>
         <button type="submit" className="dpl-go" disabled={!ok}>{busy ? "Looking…" : "Look up plan"}</button>
       </form>
       {res?.state === "unavailable" && <p role="status" className="dpl-box"><b>{UNAVAILABLE_TEXT}</b><br />Nothing is shown, so nothing old can be mistaken for today's answer. Try again in a moment.</p>}
       {res?.state === "refused" && <p role="status" className="dpl-box"><b>Not allowed or paused</b><br />The Desk did not give this lookup. No data is shown.</p>}
-      {res?.state === "data" && <Result f={res.fields} answeredAt={res.answeredAt} now={now} head={head} />}
+      {res?.state === "data" && <Result company={asked} f={res.fields} answeredAt={res.answeredAt} now={now} head={head} />}
     </div>
   );
 }
 
-function Result({ f, answeredAt, now, head }: { f: Record<string, unknown>; answeredAt: number; now: number; head: React.RefObject<HTMLHeadingElement | null> }) {
+function Result({ company, f, answeredAt, now, head }: { company: string; f: Record<string, unknown>; answeredAt: number; now: number; head: React.RefObject<HTMLHeadingElement | null> }) {
   const age = ageSecs(answeredAt, now), stale = isStale(age), sv = serviceView(f), pf = paymentFlag(f), fd = featureDiff(f);
+  // A stale answer is not kept on screen at all (same law as the server: never an old answer).
+  if (stale) return <p role="status" className="dpl-box" ref={undefined}><b>{freshnessWords(age)}</b><br />The old answer was removed. Press "Look up plan" again.</p>;
   return (
     <div className="dpl">
-      <h3 ref={head} tabIndex={-1} style={{ margin: 0, fontWeight: 600 }}>{val(f.package_id)} · version {val(f.package_version)}</h3>
+      <h3 ref={head} tabIndex={-1} style={{ margin: 0, fontWeight: 600 }}>{company}: {val(f.package_id)} · version {val(f.package_version)}</h3>
       <p className="dpl-fresh" role="status" data-stale={stale}>{freshnessWords(age)}</p>
       <div className="dpl-grid" data-stale={stale}>
         <section className="dpl-box" data-stale={stale}><h3>Service</h3><span className="dpl-chip" data-l={sv.level}>{sv.words}</span>
-          {sv.detail && <p>{sv.detail}</p>}{sv.since && <p>Since {sv.since}</p>}<p>Plan effective from {val(f.package_effective_from)}</p><p>Answer target: {val(f.sla_target)}</p>
+          {sv.detail && <p>{sv.detail.startsWith("SR") ? `Reason class ${sv.detail}` : sv.detail}</p>}{sv.since && <p>Since {sv.since}</p>}<p>Plan effective from {val(f.package_effective_from)}</p><p>Answer target: {val(f.sla_target)}</p>
           <p><b>{pf.words}</b>{pf.since ? ` since ${pf.since}` : ""}</p></section>
         <section className="dpl-box" data-stale={stale}><h3>Usage</h3>
           {meters(f).map((m) => (
-            <div key={m.label}><b>{m.label}</b>: {m.used !== null ? m.used : "not known"}{m.limit !== null ? ` of ${m.limit}` : ""}{m.percent !== null ? ` (${m.percent}%)` : ""} · {m.words}
+            <div key={m.label}><b>{m.label}</b>: {m.used === null ? (m.limit !== null ? `limit ${m.limit}` : "not known") : m.used}{m.used !== null && m.limit !== null ? ` of ${m.limit}` : ""}{m.percent !== null ? ` (${m.percent}%)` : ""} · {m.words}
               {m.percent !== null && <div className="dpl-bar" role="progressbar" aria-label={m.label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.min(100, m.percent)}><div className="dpl-fill" data-m={m.mark} style={{ width: `${Math.min(100, m.percent)}%` }} /></div>}</div>
           ))}</section>
         <section className="dpl-box" data-stale={stale}><h3>Features</h3>

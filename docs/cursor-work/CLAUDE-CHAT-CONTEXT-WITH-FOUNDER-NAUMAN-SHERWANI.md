@@ -5382,3 +5382,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 1j D5 plan context screen CODE: desk_plan_pure.ts + DeskPlan.tsx + plans card wired (lookup track), bundle rebuilt. TESTED: bun 55 pass (10 new), tsc clean, vite build. Not green until install + signed-in Chrome look. TECH-LAW CHECKED
 
 - 1j D5 plan context screen CODE: desk_plan_pure.ts + DeskPlan.tsx + plans card wired (lookup track), bundle rebuilt; ML-DSA stays a separate gap plan. TESTED: bun 55 pass (10 new), tsc clean, vite build. Not green until install + signed-in Chrome look. TECH-LAW CHECKED
+
+- 1j audit + autofix L1-L6 (stale answer removed, cleared on company change, company shown, 3 s cooldown, plain limit, SR code label). TESTED: bun 56 pass, tsc clean, vite build. Not green until install + Chrome look. TECH-LAW CHECKED
