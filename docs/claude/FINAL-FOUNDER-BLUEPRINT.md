@@ -62,3 +62,5 @@ Rule 30 (jo ho chuka dobara nahi) · Rule 35 (Rust live sirf surgical script) ·
 | docs/anexomail-security-blueprint.md | founder original security |
 | docs/ai-packages.md, package-feature-map.md, polar-*.md | packages/payments detail |
 | docs/wire/*, IMPLEMENTATION-MASTER.md, BLUEPRINT-SUPERSEDE-PLAN.md | PURANA (Sep) — history, status ke liye mat parho |
+
+> [22 Nov 2026 22:4x PKT] HIS ORDER (common to awam, founder and Admin Desk): every new feature gets ONE release record (detail, purpose, background, packages) that reaches the Admin Desk automatically into a features folder; admin creates ready Anexomail employee accounts with workspace; Desk phase R (last). Plan: docs/claude/admin-desk/FEATURE-FEED-AND-EMPLOYEE-ACCOUNTS-PLAN-22NOV.md. Nothing built.

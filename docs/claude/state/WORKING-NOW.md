@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 22:27 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: answered his 22:26 question: throttle = pool throttle in awam blueprint (AW0 FINAL line + proposal bandwidth rule); listed his recent awam orders in chat
-NEXT STEP: his 3 pulls (ad-auto, desk-install, desk-restart), then D5a-3b
-HIS LAST WORD: his 22:26 word: throttle ka zikar, sab yahan likho
+# WORKING NOW (manual checkpoint, 22 Nov 2026 22:42 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: D5a-2 GREEN again (his pastes + my Chrome); new last phase R feature release feed + employee accounts written
+NEXT STEP: his desk-schema-look paste, then D5a-3b contract and crate
+HIS LAST WORD: his 22:41 word: features auto to Desk, employee accounts, phase last; compact save
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,39 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 2f2c8c6f 22 Nov 22:27 ledger line 61797108
 - 61797108 22 Nov 22:27 throttle answered
 - 9c833aa1 22 Nov 22:22 ledger line 1b54bab4
 - 1b54bab4 22 Nov 22:22 D5a-2 landing page plans
 - 898dcced 22 Nov 22:20 ledger line 3bea45d8
-- 3bea45d8 22 Nov 22:20 D5a-2 reopened awam ladder correction
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/D5A-GREEN-LIST-22NOV.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/STATUS-GREEN-TABLE-22NOV.md
+ M admin-desk/state/HANDOFF-22NOV.md
+ M docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
+ M docs/claude/FINAL-FOUNDER-BLUEPRINT.md
+ M docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md
+ M docs/claude/admin-desk/state/HANDOFF-22NOV.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/founder/founder-commands.md
+?? admin-desk/FEATURE-FEED-AND-EMPLOYEE-ACCOUNTS-PLAN-22NOV.md
+?? docs/claude/admin-desk/FEATURE-FEED-AND-EMPLOYEE-ACCOUNTS-PLAN-22NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/FINAL-FOUNDER-BLUEPRINT.md             |  2 ++
+ docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md     |  2 +-
+ .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    |  5 +--
+ docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md |  2 +-
+ docs/claude/admin-desk/state/HANDOFF-22NOV.md      |  4 +++
+ docs/claude/state/WORKING-NOW.md                   | 36 +++++++++++-----------
+ docs/cursor-work/founder/founder-commands.md       |  2 ++
+ 12 files changed, 42 insertions(+), 26 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +61,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (3fc68af7e16dfeee2a4d54e77360b8eab572a55a)
+WIP snapshot: refs/wip/last (fabdbfe17160f8bbdff33a1fd847de031f2a9358)

@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 22:27 PKT) - read this FIRST for the Desk after a compaction
-DOING: answered his 22:26 question: throttle = pool throttle in awam blueprint (AW0 FINAL line + proposal bandwidth rule); listed his recent awam orders in chat
-NEXT STEP: his 3 pulls (ad-auto, desk-install, desk-restart), then D5a-3b
-HIS LAST WORD: his 22:26 word: throttle ka zikar, sab yahan likho
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 22:42 PKT) - read this FIRST for the Desk after a compaction
+DOING: D5a-2 GREEN again (his pastes + my Chrome); new last phase R feature release feed + employee accounts written
+NEXT STEP: his desk-schema-look paste, then D5a-3b contract and crate
+HIS LAST WORD: his 22:41 word: features auto to Desk, employee accounts, phase last; compact save
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 2f2c8c6f 22 Nov 22:27 ledger line 61797108
 - 61797108 22 Nov 22:27 throttle answered
 - 9c833aa1 22 Nov 22:22 ledger line 1b54bab4
 - 1b54bab4 22 Nov 22:22 D5a-2 landing page plans
@@ -72,10 +73,19 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 3bea45d8 22 Nov 22:20 D5a-2 reopened awam ladder correction
 - 57926485 22 Nov 22:18 ledger line d336c686
 - d336c686 22 Nov 22:18 D5a-2c trial correction AD6c
-- 34d8bbed 22 Nov 21:56 ledger line 61042086
 
 ## Uncommitted Desk files
+ M admin-desk/D5A-GREEN-LIST-22NOV.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/STATUS-GREEN-TABLE-22NOV.md
+ M admin-desk/state/HANDOFF-22NOV.md
+ M docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md
+ M docs/claude/admin-desk/state/HANDOFF-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+?? admin-desk/FEATURE-FEED-AND-EMPLOYEE-ACCOUNTS-PLAN-22NOV.md
+?? docs/claude/admin-desk/FEATURE-FEED-AND-EMPLOYEE-ACCOUNTS-PLAN-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

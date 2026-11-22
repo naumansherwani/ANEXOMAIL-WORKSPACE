@@ -29,3 +29,7 @@ desk-copy-sync.py sync -> lanes/lane-sync.py -> ckpt.sh "<doing>" "<next>" "<why
 - D5a-2 = GREEN (his word 21:53 "GREEN bolo"; SQL, CODE and PHASE level; WIRED: YES / REAL: YES / TECH-LAW CHECKED; 22 Nov 21:54 PKT): his count paste = 7 packages v1 grace 3 (ad-auto "already run" = earlier run of his, no double seed); my Chrome: /desk/v1/packages, /pro, /enterprise all answer unsigned_request 400 (sealed). NEXT = D5a-3b responder (own Rust crate, UDP 127.0.0.1:4410, needs his fresh ss before any listener).
 
 - D5a-2 REOPENED (22 Nov 22:3x PKT, his 22:19 word): awam blueprint read; AI packages are not awam (retired in AD6d), registry = the 4 plans on the live landing page (Premium + Max decided but not on the page: not added), trial 48 h (AD6c). Code done + proved on scratch; he must run ad-auto, desk-install, desk-restart; then my look; only then D5a-2 is GREEN again. D5a-3b waits (also his desk-schema-look paste).
+
+- D5a-2 = GREEN AGAIN (22 Nov 22:5x PKT): his pastes ad-auto (AD6c + AD6d CHECK OK), desk-install, desk-restart all OK; my Chrome shows the sealed door refusing unsigned calls. NEXT = D5a-3b (his desk-schema-look paste pending).
+- NEW LAST PHASE R (his 22 Nov 22:41): feature release feed + employee accounts, plan FEATURE-FEED-AND-EMPLOYEE-ACCOUNTS-PLAN-22NOV.md, nothing built, built after Q; same line in awam + founder + Desk blueprints.
+- The 2-minute loop (ckpt-loop) runs only while real work is uncommitted (his loop-after-commit law); check pgrep -f ckpt-loop each turn and restart if absent (it had stopped at 22:4x, restarted).

@@ -1,4 +1,4 @@
-# ANEXOMAIL ADMIN DESK: D-SERIES BLUEPRINT, UPDATED 22 Nov 2026 21:54 PKT (generated from the files named in each part; edit those, not this)
+# ANEXOMAIL ADMIN DESK: D-SERIES BLUEPRINT, UPDATED 22 Nov 2026 22:5x PKT (generated from the files named in each part; edit those, not this)
 > ## >>> NO INCOMPLETE WORK LAW (his 22 Nov 2026 20:36 PKT, in anger): INCOMPLETE PHASE, INCOMPLETE CODES, INCOMPLETE ADVANCE TECHNOLOGY = BANNED. Every listed advance technology of a phase must be IN CODE and tested before its code is committed; the gate INCOMPLETE ADVANCE refuses the commit otherwise. A phase is finished first, then committed; nothing half-done is handed to him. What truly needs his input (address, key, list) is named once, up front. docs/claude/NO-INCOMPLETE-ADVANCE-LAW-22NOV.md <<<
 Standing laws: Rule 52 (every answer kernel-verified), HTTP/3 only with WebTransport, TLS 1.3 AES-256-GCM + X25519MLKEM768, Desk isolation (own domain, never founder code or tables), no money or webhook data on the Desk, no phase name visible to an employee, no promises by employees, no refunds (published policy), the original UI/UX stays intact, GREEN only after a live Chrome look (WIRED: YES / REAL: YES / TECH-LAW CHECKED), whole Desk deadline 26 Nov 2026 07:26 PKT.
 
@@ -40,7 +40,7 @@ WHERE D5a-3 STANDS (22 Nov 2026 21:08 PKT): the Desk side (lookup.rs: signed req
 
 HANDOFF FOR A NEW CLAUDE: docs/claude/admin-desk/state/HANDOFF-22NOV.md (21:26: no server pull pending; next server commands only when D5a-3b is whole)
 
-# PART 0j: D5a-2 = REOPENED 22:3x PKT (awam ladder correction AD6c+AD6d; was GREEN) (22 Nov 2026 21:54 PKT: WIRED: YES / REAL: YES / TECH-LAW CHECKED; SQL GREEN, CODE GREEN, PHASE D5a-2 GREEN)
+# PART 0j: D5a-2 = GREEN again (22 Nov 2026 22:5x PKT: WIRED: YES / REAL: YES / TECH-LAW CHECKED; his pastes: ad-auto AD6c + AD6d CHECK OK, desk-install build OK, desk-restart active, door 401, my Chrome: unsigned call refused on /packages and /packages/ai_pro)
 | Sub-phase | Advance technology | State |
 |---|---|---|
 | D5a-2 SQL seed AD6b | PostgreSQL 16 (append-only versions, hash chain, forced RLS) | 7 landing-page packages (src/lib/plans.ts), features + limits, grace 3, trial 0, no price; proved on scratch; his paste: 7 packages, version 1 each, grace 3 (ad-auto "already run" = his earlier run, no double seed): GREEN |
@@ -232,6 +232,7 @@ Rule 52 (every answer signed by Rust, verified by the Desk's own Rust WASM kerne
 | O CRM | React 19, Rust, RLS | accounts, leads, pipeline | AD13 |
 | P Managed Move-In | Rust async IMAP migrator | per-company work record | AD12 |
 | Q Final audit + load proof | Rust, React | audit, load proof | none |
+| R Feature release feed + Employee accounts (NEW, his 22 Nov 22:41, LAST) | PostgreSQL 16 append-only hash chain, Rust Tokio axum 0.8, Rule 52, WebTransport live push, React 19 + kernel verify, passkey-only employee accounts | every new feature (detail, purpose, background) reaches the Desk automatically into a features folder; admin creates ready Anexomail employee accounts with workspace; same line in awam + founder + Desk blueprints; plan FEATURE-FEED-AND-EMPLOYEE-ACCOUNTS-PLAN-22NOV.md; NOT BUILT |
 ## 4. THE "THREAD" QUESTION (his 20:04 word: the awam/founder system has threads; where does the Admin Desk get them?)
 What exists: the awam site has its own mail threads (src/routes/app.mail.$folder.tsx, server/mail-worker.ts, sql phase52 mail truth tables) and the founder mailbox has its own (QC series). The Desk must NOT import or share them (isolation law); they are remade NEW for the Desk from the same method (preserve, advance technology, fix loopholes, polish).
 Where the Desk gets its threads: phase I Mailboxes + the Replies folder. AD7 already keeps one case per (address, thread id); the thread's messages, original recipient, headers and attachments come with AD8 (planned) and the Rust mail door, bodies and files on Hetzner Storage Box with ClamAV. Every email keeps its original recipient and thread history (his point 4).

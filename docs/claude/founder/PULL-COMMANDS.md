@@ -3307,3 +3307,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - D5a-2 corrected to the live landing page (22 Nov 2026 22:3x PKT): I read anexomail.com/plans in Chrome: four plans (Basic, Pro, Business, Business Pro), AI on /ai, no Premium or Max. AD6d retires the AI packages and no longer adds Premium or Max; fresh scratch database from AD1..AD7: all CHECK rows true, 43 cargo tests. Still reopened until his pulls and my look.
 
 - 22 Nov 2026 22:2x PKT: his question on throttle answered from the awam blueprint (AW0 FINAL line and the proposal bandwidth rule: pool alerts 70 and 85 percent, at 100 percent big transfers and calls are slowed, email keeps working, nothing deleted); no code, awam not built yet.
+
+- D5a-2 GREEN (22 Nov 2026 22:5x PKT): WIRED: YES / REAL: YES / TECH-LAW CHECKED. His ad-auto ran AD6c and AD6d with CHECK OK, desk-install built the new binary, desk-restart active, door 401; my Chrome: unsigned calls to /desk/v1/packages and /packages/ai_pro refused (sealed). New last phase R (his 22:41): feature release feed and employee accounts, plan written, same line added to awam, founder and Desk blueprints, nothing built.
