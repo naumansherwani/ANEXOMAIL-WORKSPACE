@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 09:24 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 09:25 PKT) - read this FIRST for the Desk after a compaction
 DOING: D5 revised with web research, plan file written
 NEXT STEP: his 3 answers, then D5 contract + code
 HIS LAST WORD: his 09:23 word
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- ad35194d 22 Nov 09:24 D5 D6 plan
 - 9902e515 22 Nov 09:15 ledger line 157ccb9a
 - c273588b 22 Nov 09:15 ledger line be8a101e
 - be8a101e 22 Nov 09:15 D8 D5
@@ -72,13 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - e34b2753 22 Nov 09:09 ledger line d908f8a3
 - d908f8a3 22 Nov 09:09 D1f
 - 3bff83ec 22 Nov 09:05 ledger line 1d125d25
-- bddf5e76 22 Nov 09:05 ledger line 1f5695a6
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? docs/claude/admin-desk/PLAN-CONTEXT-AND-RUNBOOKS-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
