@@ -5178,3 +5178,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 22 Nov 06:05 PKT: Desk login: one light below the card, eye + Save password kept (restored after a silent working-tree loss, HEAD untouched), fits 1366x768/1440x900/390/820/1920; waits desk-install
 
 - 22 Nov 06:15 PKT: repo is PUBLIC (verified), no foreign commits, no secrets; private flip needs a server deploy key first; photo compare done; Save-password row question open
+
+- 22 Nov 06:25 PKT: Desk login = his perfect photo (no Save row, eye kept, one light below card); fits 1366x768/1440/390/820/1920; waits desk-install
