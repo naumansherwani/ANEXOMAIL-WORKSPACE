@@ -338,6 +338,7 @@ docs/claude/admin-desk/BRIDGE-PLAN-22NOV.md
 docs/claude/admin-desk/BRIDGE-TRANSPORT-DECISION-22NOV.md
 docs/claude/admin-desk/D5-DECISIONS-AND-EXTRACT-22NOV.md
 docs/claude/admin-desk/D5-SUBPHASES-22NOV.md
+docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md
 docs/claude/admin-desk/DASHBOARD-CARDS-CLICK-PLAN-22NOV.md
 docs/claude/admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
 docs/claude/admin-desk/DASHBOARD-LIVE-COMMAND-22NOV.md

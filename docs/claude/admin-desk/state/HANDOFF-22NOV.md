@@ -10,6 +10,7 @@
 5. Reminders live in the repo (state/REMINDERS.md) and chat only, never scheduled messages to him. The 2-minute checkpoint loop (docs/cursor-work/server/ckpt-loop.sh) must be running: pgrep -f ckpt-loop, else start it.
 ## What is live on his server (his pastes)
 - SQL AD1..AD7 (CHECK OK). Desk binary built from origin/main commit 3fd29fe9 era, installed + restarted 22 Nov ~20:5x (kid e92a4cb169d466a2, listener 127.0.0.1:4400 + HTTP/3 UDP 4400). POST /desk/v1/customer/lookup exists (no session = 400 unsigned_request, my Chrome look 20:54).
+## D5a GREEN LIST (his 20:59 order, nothing moves on until 1..5 are green): docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md. Responder port: UDP 127.0.0.1:4410 reserved (his ss paste 20:59).
 ## Where the work is (Dashboard folder, DASHBOARD-FOLDER-ORDER-22NOV.md)
 - Step 2 D5a-3 lookup client: code + tests done (cargo 41 pass), live on server, PHASE NOT whole because the other end does not exist.
 - Step 2b D5a-3b Control Plane lookup responder: contract written in tech-contracts/CURRENT.md (all rows no, STATE IN PROGRESS), nothing coded. FIRST ask him for: ss -ulnp | head -60 (UDP port, port red line). Then read the owning schema (SCHEMA-FIRST), write the responder as its own crate.

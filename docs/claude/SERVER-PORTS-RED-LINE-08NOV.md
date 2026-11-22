@@ -33,3 +33,4 @@ HTTPS 18443, HTTP 18080, admin 127.0.0.1:12019. They stay a proposal until his f
 - 21 Nov 2026 09:27 PKT (his full `ss -ulnp; ufw status | grep -i udp` paste): UDP 4400 FREE -> RESERVED for the Admin Desk's own HTTP/3 (own binary anexomail-desk, own cert copy /etc/anexomail/tls/desk, ufw rule added only by his run of desk-h3-enable.sh). Nobody else may use UDP 4400.
 
 - 21 Nov 2026 09:33 PKT (his paste): AnexoChat UDP proven = 3443 (anexomail-rust WebTransport) + 3501 internal; TURN 3478/5349, relay 49152-49500. Desk HTTP/3 = UDP 4400, no clash.
+- 22 Nov 2026 21:20 PKT (his fresh `ss -ulnp | head -60` paste, 20:59 PKT): nothing new listening; anexomail-desk UDP *:4400 confirmed. UDP 4410 is free and absent from this file: RESERVED, loopback 127.0.0.1 only, for the Desk's Control Plane lookup responder (D5a-3b, own Rust binary).

@@ -3,6 +3,8 @@ Source = HIS fresh paste: `ss -tulnp | head -40` and `ss -tlnp | grep anexomail-
 UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date in the same step (rec.sh), and append one line to docs/claude/SERVER-PORTS-RED-LINE-08NOV.md. Never guess a port: no fresh paste = ask for a read-only command.
 Full law + older history: docs/claude/SERVER-PORTS-RED-LINE-08NOV.md. QC1e D4A (company emoji) adds NO port: its procs live inside the existing /rpc/* on TCP 3200.
 
+## HIS FRESH `ss -ulnp | head -60` PASTE 22 Nov 2026 21:20 PKT (real clock 20:59 PKT): UDP listeners = turnserver 3478/5349; anexomail-rust 3501 + 3443; founder-dns 53 (62.238.98.98 + IPv6); axon_core 9200/9300; caddy 18443; anexomail-desk *:4400 (pid 536885); anexomail-found *:443; chronyd 323; systemd-resolve 53. NOT in the list: UDP 4410. D5a-3b Control Plane responder = UDP 127.0.0.1:4410 (loopback only, never public), RESERVED by this step.
+
 ## AWAM Rust engine = process `anexomail-rust` (pid 3145875 at 20 Nov 03:30)
 | Proto | Address:Port | Meaning |
 |---|---|---|

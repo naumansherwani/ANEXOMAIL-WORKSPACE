@@ -1,4 +1,4 @@
-# ANEXOMAIL ADMIN DESK: D-SERIES BLUEPRINT, UPDATED 22 Nov 2026 21:08 PKT (generated from the files named in each part; edit those, not this)
+# ANEXOMAIL ADMIN DESK: D-SERIES BLUEPRINT, UPDATED 22 Nov 2026 21:20 PKT (generated from the files named in each part; edit those, not this)
 > ## >>> NO INCOMPLETE WORK LAW (his 22 Nov 2026 20:36 PKT, in anger): INCOMPLETE PHASE, INCOMPLETE CODES, INCOMPLETE ADVANCE TECHNOLOGY = BANNED. Every listed advance technology of a phase must be IN CODE and tested before its code is committed; the gate INCOMPLETE ADVANCE refuses the commit otherwise. A phase is finished first, then committed; nothing half-done is handed to him. What truly needs his input (address, key, list) is named once, up front. docs/claude/NO-INCOMPLETE-ADVANCE-LAW-22NOV.md <<<
 Standing laws: Rule 52 (every answer kernel-verified), HTTP/3 only with WebTransport, TLS 1.3 AES-256-GCM + X25519MLKEM768, Desk isolation (own domain, never founder code or tables), no money or webhook data on the Desk, no phase name visible to an employee, no promises by employees, no refunds (published policy), the original UI/UX stays intact, GREEN only after a live Chrome look (WIRED: YES / REAL: YES / TECH-LAW CHECKED), whole Desk deadline 26 Nov 2026 07:26 PKT.
 
@@ -39,6 +39,19 @@ D5a SUB-PHASES AND THEIR ADVANCE TECHNOLOGY (D5-SUBPHASES-22NOV.md):
 WHERE D5a-3 STANDS (22 Nov 2026 21:08 PKT): the Desk side (lookup.rs: signed request, HTTP/3 client, verify, whitelist, audit before data, fail closed) is written, tested (cargo 41, real HTTP/3 loopback, PostgreSQL integration) and LIVE on his server (his install paste; my Chrome look: the door exists and refuses a call without a session). The other end, the Control Plane responder, does not exist anywhere: new sub-phase D5a-3b (contract in tech-contracts/CURRENT.md, all rows open). So D5a-3 is NOT whole and NOT green. Next input from him: ss -ulnp | head -60.
 
 HANDOFF FOR A NEW CLAUDE: docs/claude/admin-desk/state/HANDOFF-22NOV.md
+
+# PART 0i: D5a 1 TO 5 GREEN LIST (D5A-GREEN-LIST-22NOV.md)
+
+# D5a: 1 TO 5, ONE BY ONE, NOTHING MOVES ON UNTIL ALL FIVE ARE GREEN (his order 22 Nov 2026 20:59 PKT, written 22 Nov 2026 21:20 PKT)
+His words: "is ki list bana ek ek ker ke is ko complete kero ... jab tak green nahi tab tak agay nahi jana hai. Yeh 1 se 5 tak green ka target hai". GREEN = WIRED: YES / REAL: YES / TECH-LAW CHECKED with proof. Dashboard steps 3..9 and every other folder wait behind this list.
+| # | Sub-phase | Advance technology | State now | What makes it GREEN (proof I must show) | Blocked by |
+|---|---|---|---|---|---|
+| 1 | D5a-1 Contract | Written contract + commit gate DESK NO-MONEY | DONE: gate live, it refused a money field name in lookup.rs on 22 Nov 20:30 (real catch), contract copy kept equal by a test | gate fails a planted bad field (re-run now), passes clean; lookup.rs reads the same contract | GREEN 21:22 PKT: WIRED: YES / REAL: YES / TECH-LAW CHECKED. Proof: a planted Desk file naming a card field was REFUSED by the gate DESK NO-MONEY (and by INCOMPLETE ADVANCE), clean commits pass, lookup.rs reads the same contract |
+| 2 | D5a-2 Package registry | PostgreSQL 16 versioned, hash-chained, append-only (AD6, live) + Rust read door | SQL live and empty; no Rust read door yet | his package list loaded, an inserted version cannot be edited, Rust door answers, signed, kernel-verified | HIS PACKAGE LIST (features, limits, grace days) |
+| 3 | D5a-3 Signed lookup (3a Desk side, 3b responder) | Rust Tokio axum 0.8, quinn + h3, Ed25519, Rule 52 | 3a live on his server; 3b contract written, port UDP 127.0.0.1:4410 reserved, code not started | a real lookup end to end on his server: wrong audience, expired and replayed requests refused, good request answered, shown in my Chrome | 3b code (schema-first read of the subscription tables first) |
+| 4 | D5a-4 Audit with reason | PostgreSQL append-only ledger, SHA-256 chain (AD4, live) | SQL live; Rust path proven on the scratch database (requested line before the answer) | after 3 is live: one real look leaves one line, chain verifies on his server | step 3 |
+| 5 | D5a-5 Fail closed | Rust timeout + unavailable path, kernel stale-frame check (Rule 52) | server side done and tested (Off / bad key / bad signature give data_unavailable); screen message + kernel check not wired | Control Plane switched off on his server, my Chrome shows "Data unavailable" with freshness, never old data | steps 3 and the D5 screen |
+Order of work from here: 1 (proof now) -> 3b -> 3 -> 4 -> 5 -> 2 (when he gives the list).
 
 # PART 0: STATE NOW (NEXT-CODES-ORDER-22NOV.md)
 
