@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 20:28 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 20:29 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: D5a-3 lookup.rs CODE GREEN in sandbox (cargo 38 pass); GREEN table + blueprint sent
 NEXT STEP: his desk-install + desk-restart for lookup door; then D5a-5 fail-closed proof (needs plane Off live check); waits Control Plane address+key
 HIS LAST WORD: Dashboard folder first; adhoora nahi
@@ -18,42 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- c21ae224 22 Nov 20:29 Desk D5a-3: signed lookup door (lookup.rs), status table SQL/CODE/PHASE, blueprint 20:45
 - 2bb0c017 22 Nov 20:16 ledger line ac4901d0
 - ac4901d0 22 Nov 20:16 Desk: dashboard-folder-first order, frozen folders, gates advance technology, blueprint
 - 09c6e08f 22 Nov 20:16 ledger line 350ee8e9
 - 350ee8e9 22 Nov 20:16 Desk: dashboard-folder-first order, frozen folders, gates advance technology, blueprint
-- a0962174 22 Nov 20:16 ledger line 76455551
 
 ## Uncommitted files (half-done work if any)
- M admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/server/src/main.rs
- M admin-desk/server/src/sign.rs
- M admin-desk/server/src/signed.rs
- M docs/claude/admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/server/src/main.rs
- M docs/claude/admin-desk/server/src/sign.rs
- M docs/claude/admin-desk/server/src/signed.rs
- M docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
-?? admin-desk/STATUS-GREEN-TABLE-22NOV.md
-?? admin-desk/server/src/lookup.rs
-?? docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md
-?? docs/claude/admin-desk/server/src/lookup.rs
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    | 22 ++++++++++--
- docs/claude/admin-desk/server/src/main.rs          |  2 ++
- docs/claude/admin-desk/server/src/sign.rs          |  2 ++
- docs/claude/admin-desk/server/src/signed.rs        |  2 +-
- docs/claude/admin-desk/state/WORKING-NOW.md        |  8 +++--
- docs/claude/state/WORKING-NOW.md                   | 39 ++++++++++++----------
- docs/claude/tech-contracts/CURRENT.md              | 13 ++++++++
- 13 files changed, 92 insertions(+), 28 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 39 ++-------------------------------------
+ 1 file changed, 2 insertions(+), 37 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -64,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (6bc90466f39f1bfe59fa5b059f0abaae824e44e7)
+WIP snapshot: refs/wip/last (915b2b03a025b4edba9062bb6e0f2e1235cfffc1)
