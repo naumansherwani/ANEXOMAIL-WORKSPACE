@@ -336,6 +336,18 @@ for led in ("docs/cursor-work/DONE-DO-NOT-REPEAT.md", "docs/claude/CLOSE-THE-GAP
         except OSError:
             pass
 
+# NO TEST, NO COMMIT (his 23 Nov 2026 00:46 PKT, in anger: "test live kiye bina commit nahi send kerna, bina test ke pull nahi hoga"): a commit that stages Desk / Control Plane code, Desk SQL or Desk installer scripts must
+# carry a ledger line (docs/claude/RESUME-POINT.md, added by rec.sh) with "TESTED:" followed by WHAT was run and its result (cargo N pass, CHECK n/n, real HTTP/3 or Chrome look). A line without it is refused.
+_codeish = [f for f in staged if re.match(r"(docs/claude/admin-desk/server/src/|admin-desk/server/src/|control-plane/src/|docs/claude/admin-desk/sql/AD[0-9]|admin-desk/sql/AD[0-9]|docs/claude/admin-desk/scripts/.*\.sh$|admin-desk/scripts/.*\.sh$)", f)]
+if _codeish:
+    try:
+        _d = _sp.run(["git", "diff", "--cached", "-U0", "--", "docs/claude/RESUME-POINT.md"], capture_output=True, text=True).stdout
+        _ok = any(l.startswith("+") and not l.startswith("+++") and re.search(r"TESTED:\s*\S+.*(pass|true|OK|[0-9]+/[0-9]+|live)", l, re.I) for l in _d.splitlines())
+        if not _ok:
+            fail("NO TEST NO COMMIT", f"{len(_codeish)} code/SQL/installer file(s) staged ({_codeish[0]}) but the ledger line has no 'TESTED: <what ran + result>' (his 23 Nov law: docs/claude/NO-TEST-NO-COMMIT-LAW-23NOV.md)")
+    except OSError:
+        pass
+
 # Q-SERIES STATE (his 13 Nov 2026 19:06 "advance automatic system"): the hash-chained step ledger must verify and HANDOFF-LIVE.md's generated block must match it, so a compaction can never hand the next chat a stale place.
 try:
     import importlib.util as _iu

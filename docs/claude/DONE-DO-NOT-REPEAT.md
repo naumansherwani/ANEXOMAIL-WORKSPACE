@@ -2567,3 +2567,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Blueprint Part 0l: R3a2-dbsc + D5a-3b code done 23 Nov 00:3x PKT TECH-LAW CHECKED
 
 - AD8 advance (his 00:34): key thumbprint unique, 5-minute registration window, refresh rate limit, 5 forged proofs end the session, health door; CHECK 13 rows; http_doors_on_real_postgres test (cargo 50 pass); DBSC list truth table (D20 code only, D13 not built). TECH-LAW CHECKED. Waits his install
+
+- NO-TEST-NO-COMMIT law (his 00:46) + gate rule; D5a-3 and D5a-3b GREEN WIRED: YES / REAL: YES / TECH-LAW CHECKED by his server paste (LOOKUP SELFTEST OK, UDP 4410 live, CP1 CHECK 8/8); live Chrome: dbsc start 400 refresh 403 status sealed control-lookup 405 no-store; AD8 upgrade old->new TESTED: scratch PG old AD8 (9 rows) to new AD8 CHECK 13/13 true, cargo 50 pass, gate run

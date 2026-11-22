@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 00:36 PKT) - read this FIRST for the Desk after a compaction
-DOING: AD8 advance rules + handler tests + honest truth table
-NEXT STEP: his desk-install + ad-auto + sign-in
-HIS LAST WORD: his 00:34 order
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 00:48 PKT) - read this FIRST for the Desk after a compaction
+DOING: NO-TEST-NO-COMMIT law + gate; D5a-3/3b GREEN by his paste; AD8 upgrade rerun pending
+NEXT STEP: his ad-auto rerun + Chrome sign-in; then D5a-4
+HIS LAST WORD: his 00:46 anger order
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 7393e1de 23 Nov 00:36 ledger line 3fc1fc44
 - 3fc1fc44 23 Nov 00:36 AD8 advance + honest truth table
 - 2f574bd1 23 Nov 00:29 ledger line 0de9ed41
 - 0de9ed41 23 Nov 00:29 blueprint 0l
@@ -72,9 +73,16 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 97a039c1 23 Nov 00:29 R3a2-dbsc device-bound sessions + control plane responder
 - baeaccce 22 Nov 23:39 ledger line 32747762
 - 32747762 22 Nov 23:39 D5a-3b contract v2 and folder phases
-- e12110bb 22 Nov 23:34 ledger line 0c4cbfb4
 
 ## Uncommitted Desk files
+ M admin-desk/D5A-GREEN-LIST-22NOV.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/FOLDER-PHASES-22NOV.md
+ M admin-desk/state/HANDOFF-22NOV.md
+ M docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/FOLDER-PHASES-22NOV.md
+ M docs/claude/admin-desk/state/HANDOFF-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)

@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 00:36 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: AD8 advance rules + handler tests + honest truth table
-NEXT STEP: his desk-install + ad-auto + sign-in
-HIS LAST WORD: his 00:34 order
+# WORKING NOW (manual checkpoint, 23 Nov 2026 00:48 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: NO-TEST-NO-COMMIT law + gate; D5a-3/3b GREEN by his paste; AD8 upgrade rerun pending
+NEXT STEP: his ad-auto rerun + Chrome sign-in; then D5a-4
+HIS LAST WORD: his 00:46 anger order
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,36 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 7393e1de 23 Nov 00:36 ledger line 3fc1fc44
 - 3fc1fc44 23 Nov 00:36 AD8 advance + honest truth table
 - 2f574bd1 23 Nov 00:29 ledger line 0de9ed41
 - 0de9ed41 23 Nov 00:29 blueprint 0l
 - 0ef1d766 23 Nov 00:29 ledger line 97a039c1
-- 97a039c1 23 Nov 00:29 R3a2-dbsc device-bound sessions + control plane responder
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/D5A-GREEN-LIST-22NOV.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/FOLDER-PHASES-22NOV.md
+ M admin-desk/state/HANDOFF-22NOV.md
+ M docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/FOLDER-PHASES-22NOV.md
+ M docs/claude/admin-desk/state/HANDOFF-22NOV.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/server/rules-gate.py
+?? docs/claude/NO-TEST-NO-COMMIT-LAW-23NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 31 ++-----------------------------
- 1 file changed, 2 insertions(+), 29 deletions(-)
+ admin-desk/state/HANDOFF-22NOV.md                  |  7 +++++
+ docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md     |  2 +-
+ .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    |  3 ++
+ docs/claude/admin-desk/FOLDER-PHASES-22NOV.md      |  4 +--
+ docs/claude/admin-desk/state/HANDOFF-22NOV.md      |  7 +++++
+ docs/claude/state/WORKING-NOW.md                   | 33 ++++++++++------------
+ docs/cursor-work/server/rules-gate.py              | 12 ++++++++
+ 10 files changed, 53 insertions(+), 24 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +58,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (df2847ac6a5d5b4f0612b0c4221240b6b8588569)
+WIP snapshot: refs/wip/last (8cccfe7d5e14d927588d898330047b8c8d39a976)
