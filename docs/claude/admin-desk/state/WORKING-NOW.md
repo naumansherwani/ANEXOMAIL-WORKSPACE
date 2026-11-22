@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 01:09 PKT) - read this FIRST for the Desk after a compaction
-DOING: D5a-4 AD4b + audit doors written, tested on scratch
-NEXT STEP: commit via rec.sh, then his ad-auto
-HIS LAST WORD: his 00:56 order, audit before install
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 01:27 PKT) - read this FIRST for the Desk after a compaction
+DOING: D5a-4 outside copy built + audited, committing
+NEXT STEP: his install commands after push
+HIS LAST WORD: his 01:18 + 01:23 words
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 74a31a4d 23 Nov 01:09 ledger line dfe7aeae
 - dfe7aeae 23 Nov 01:09 D5a-4: AD4b lookup audit proof chain
 - fcb59cc3 23 Nov 00:48 ledger line 80c3ff56
 - 80c3ff56 23 Nov 00:48 No-test-no-commit law, gate, D5a-3b green
@@ -72,10 +73,25 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 3fc1fc44 23 Nov 00:36 AD8 advance + honest truth table
 - 2f574bd1 23 Nov 00:29 ledger line 0de9ed41
 - 0de9ed41 23 Nov 00:29 blueprint 0l
-- 0ef1d766 23 Nov 00:29 ledger line 97a039c1
 
 ## Uncommitted Desk files
+ M admin-desk/D5A4-AUDIT-PROOF-LIST-23NOV.md
+ M admin-desk/scripts/cp-install.sh
+ M admin-desk/scripts/desk-install.sh
+ M admin-desk/server/src/main.rs
+ M admin-desk/sql/AD4b.sql
+ M admin-desk/sql/checks/AD4b-check.sql
+ M docs/claude/admin-desk/D5A4-AUDIT-PROOF-LIST-23NOV.md
+ M docs/claude/admin-desk/scripts/cp-install.sh
+ M docs/claude/admin-desk/scripts/desk-install.sh
+ M docs/claude/admin-desk/server/src/main.rs
+ M docs/claude/admin-desk/sql/AD4b.sql
+ M docs/claude/admin-desk/sql/checks/AD4b-check.sql
  M docs/claude/admin-desk/state/WORKING-NOW.md
+?? admin-desk/scripts/audit-export-install.sh
+?? admin-desk/server/src/audit.rs
+?? docs/claude/admin-desk/scripts/audit-export-install.sh
+?? docs/claude/admin-desk/server/src/audit.rs
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

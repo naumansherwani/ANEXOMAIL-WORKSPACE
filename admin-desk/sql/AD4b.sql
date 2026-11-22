@@ -23,7 +23,8 @@ INSERT INTO desk.fadm_ledger_kind (kind, severity, note) VALUES
   ('ad4b.selftest','info','AD4b'),('lookup.history_read','notice','someone read the lookup history of a company'),('lookup.person_read','notice','someone read the lookups of one employee'),
   ('lookup.proof_read','notice','someone read an inclusion proof'),('lookup.sealed','notice','a checkpoint of the lookup chain was sealed (root recorded here too)'),
   ('lookup.abandoned','notice','a lookup request never got a result and was closed as abandoned'),('lookup.threshold','notice','a lookup signal threshold was changed'),
-  ('lookup.verified','info','the whole lookup chain was verified on request')
+  ('lookup.verified','info','the whole lookup chain was verified on request'),
+  ('lookup.exported','info','new checkpoints were signed and copied outside the database'),('lookup.export_mismatch','high','an outside copy of a checkpoint does not match the database (history rewritten or a copy damaged)')
 ON CONFLICT (kind) DO NOTHING;
 INSERT INTO desk.fadm_action (action, note) VALUES ('audit.seal','seal a checkpoint of the lookup chain') ON CONFLICT (action) DO NOTHING;
 INSERT INTO desk.fadm_policy (name, effect, action, relation) VALUES ('p_audit_seal','permit','audit.seal','admin') ON CONFLICT (name) DO NOTHING;
@@ -431,6 +432,25 @@ BEGIN
   RETURN desk.fadm_lookup_health();
 END $f$;
 
+-- OUTSIDE COPY (honest limit 1 closed): the Desk Rust job reads the checkpoints here, signs each with the Desk key, writes one file per checkpoint outside the database (Storage Box) and compares every older file with this table.
+-- Root and chain hashes only: no company, no reason, no person. The job reports back through the second door; a mismatch is a ledger line AND a high alert.
+CREATE OR REPLACE FUNCTION desk.fadm_lookup_cp_export(p_after bigint DEFAULT 0, p_limit integer DEFAULT 1000) RETURNS jsonb LANGUAGE sql STABLE SECURITY DEFINER SET search_path = pg_catalog, desk AS $f$
+  SELECT coalesce(jsonb_agg(jsonb_build_object('cp_seq', c.cp_seq, 'ts', to_char(c.ts AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"'), 'size', c.size, 'root', encode(c.root, 'hex'), 'prev', encode(c.prev_hash, 'hex'), 'hash', encode(c.hash, 'hex'), 'auto', c.auto) ORDER BY c.cp_seq), '[]'::jsonb)
+    FROM (SELECT * FROM desk.fadm_lookup_cp WHERE cp_seq > greatest(p_after, 0) ORDER BY cp_seq LIMIT least(greatest(p_limit, 1), 1000)) c
+$f$;
+-- the timer's heartbeat: runs the sweep and the automatic seal even when nobody looks at a company (otherwise the last links of a quiet day would wait for the next lookup)
+CREATE OR REPLACE FUNCTION desk.fadm_lookup_tick() RETURNS jsonb LANGUAGE sql VOLATILE SECURITY DEFINER SET search_path = pg_catalog, desk AS $f$ SELECT desk.fadm_lookup_maintain(false) $f$;
+CREATE OR REPLACE FUNCTION desk.fadm_lookup_export_report(p_ok boolean, p_new integer, p_last bigint, p_note text DEFAULT NULL) RETURNS void LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog, desk AS $f$
+DECLARE note text := left(regexp_replace(coalesce(p_note, ''), '[^A-Za-z0-9 _.,:=/-]', '', 'g'), 200);
+BEGIN
+  IF p_ok THEN
+    IF coalesce(p_new, 0) > 0 THEN PERFORM desk.fadm_audit(NULL, 'lookup.exported', jsonb_build_object('new', p_new, 'last_cp', p_last)); END IF;
+  ELSE
+    PERFORM desk.fadm_audit(NULL, 'lookup.export_mismatch', jsonb_build_object('last_cp', p_last, 'note', note));
+    PERFORM desk.fadm_alert_raise('security', 'high', 'lookup.export_mismatch', NULL, jsonb_build_object('last_cp', p_last, 'note', note), 'lookup.export_mismatch');
+  END IF;
+END $f$;
+
 -- 12) RLS AND GRANTS (same pattern as AD4: the installer role owns, desk_app has no table right, only the doors) ------------------------------------------------------------------------------------------------
 DO $$ DECLARE t text; BEGIN
   FOREACH t IN ARRAY ARRAY['fadm_lookup_reason_block','fadm_lookup_threshold','fadm_lookup_link','fadm_lookup_cp','fadm_lookup_state'] LOOP
@@ -446,7 +466,7 @@ CREATE TRIGGER fadm_lookup_threshold_nodelete BEFORE DELETE OR TRUNCATE ON desk.
 DO $$ DECLARE p record; BEGIN
   FOR p IN SELECT pr.oid::regprocedure AS sig, pr.proname FROM pg_proc pr JOIN pg_namespace s ON s.oid = pr.pronamespace WHERE s.nspname = 'desk' AND (pr.proname LIKE 'fadm\_lookup%' OR pr.proname LIKE 'fadm\_merkle%') LOOP
     EXECUTE format('REVOKE ALL ON FUNCTION %s FROM PUBLIC', p.sig);
-    IF p.proname IN ('fadm_lookup_begin','fadm_lookup_finish','fadm_lookup_history','fadm_lookup_by_employee','fadm_lookup_seal','fadm_lookup_proof','fadm_lookup_verify_full','fadm_lookup_health','fadm_lookup_audit_door','fadm_lookup_threshold_set','fadm_merkle_verify')
+    IF p.proname IN ('fadm_lookup_begin','fadm_lookup_finish','fadm_lookup_history','fadm_lookup_by_employee','fadm_lookup_seal','fadm_lookup_proof','fadm_lookup_verify_full','fadm_lookup_health','fadm_lookup_audit_door','fadm_lookup_cp_export','fadm_lookup_export_report','fadm_lookup_tick','fadm_lookup_threshold_set','fadm_merkle_verify')
       THEN EXECUTE format('GRANT EXECUTE ON FUNCTION %s TO desk_app', p.sig);
       ELSE EXECUTE format('REVOKE ALL ON FUNCTION %s FROM desk_app', p.sig); END IF;
   END LOOP;
@@ -625,6 +645,15 @@ BEGIN
   BEGIN PERFORM desk.fadm_lookup_audit_door(s); RAISE EXCEPTION 'no refusal h1' USING ERRCODE = 'P0AK4'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;   -- an agent cannot read the audit counts
   PERFORM pg_temp.ad4b_ok((desk.fadm_lookup_audit_door(sup)->>'tail_ok')::boolean, 'a supervisor reads the audit counts through the Bridge door');
 
+  -- outside copy doors: the export lists checkpoints (hashes only), the report writes a ledger line and, on a mismatch, a high alert
+  pf := desk.fadm_lookup_cp_export(0, 1000);
+  PERFORM pg_temp.ad4b_ok(jsonb_array_length(pf) = (SELECT count(*) FROM desk.fadm_lookup_cp) AND pf::text !~* '(company|reason)' AND (pf->0->>'root') = encode((SELECT root FROM desk.fadm_lookup_cp ORDER BY cp_seq LIMIT 1), 'hex'), 'the export door lists every checkpoint with hashes only');
+  PERFORM pg_temp.ad4b_ok(jsonb_array_length(desk.fadm_lookup_cp_export((SELECT max(cp_seq) FROM desk.fadm_lookup_cp), 10)) = 0, 'the export door lists only checkpoints after the last one given');
+  PERFORM desk.fadm_lookup_export_report(true, 2, 5, 'ok'); PERFORM desk.fadm_lookup_export_report(false, 0, 5, 'file 5 hash differs; <b>x</b>');
+  PERFORM pg_temp.ad4b_ok((SELECT count(*) FROM desk.fadm_ledger WHERE kind = 'lookup.exported') = 1 AND (SELECT count(*) FROM desk.fadm_ledger WHERE kind = 'lookup.export_mismatch') = 1 AND (SELECT count(*) FROM desk.fadm_alert WHERE kind = 'lookup.export_mismatch' AND severity = 'high') = 1
+    AND (SELECT detail->>'note' FROM desk.fadm_ledger WHERE kind = 'lookup.export_mismatch' ORDER BY seq DESC LIMIT 1) !~ '[<>;]', 'a mismatch report is a ledger line and ONE high alert; the note is stripped to safe characters');
+  PERFORM pg_temp.ad4b_ok(desk.fadm_lookup_tick() ? 'sealed' OR desk.fadm_lookup_tick() ? 'skipped', 'the tick door runs maintenance (or says why it skipped)');
+  PERFORM pg_temp.ad4b_ok(has_function_privilege('desk_app', 'desk.fadm_lookup_tick()', 'EXECUTE'), 'the tick door is granted to desk_app');
   -- burst breaker of AD4 still works through the new begin (31st in a minute freezes)
   FOR k IN 1..29 LOOP PERFORM desk.fadm_lookup_begin(s5, 'co_burst_' || k || '_' || sfx, 'burst viewing selftest number ' || k, ARRAY['service_state'], gen_random_uuid()); END LOOP;
   PERFORM pg_temp.ad4b_ok(desk.fadm_lookup_begin(s5, 'co_burst_x_' || sfx, 'burst viewing selftest number x', ARRAY['service_state'], gen_random_uuid()) IS NULL, 'the 31st lookup in a minute is refused (NULL)');

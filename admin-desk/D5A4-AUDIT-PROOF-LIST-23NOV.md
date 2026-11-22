@@ -43,3 +43,8 @@ P1-P12 written in sql/AD4b.sql and PASSED the selftest on three scratch database
 Rust doors (health, verify, seal, proof) written, compiled, 51 tests pass; NOT yet called on his server. Not built: the screen (1j), the signed outside copy (limit 1).
 Found while testing: AD8 left two trigger functions executable by PUBLIC (AD3 CHECK caught it); fixed in AD8.sql.
 Design note: automatic seal runs at most once a minute and only when a lookup or the health door runs, so a burst of lookups inside one minute is sealed by the next maintenance run (parallel test: 64 links, 0 checkpoints right after the burst, by design).
+
+## UPDATE 23 Nov 2026 01:3x PKT: honest limit 1 is now CLOSED IN CODE (his order 01:18)
+P15 Outside copy: audit.rs signs each checkpoint with the Desk key and writes one file per checkpoint to /var/lib/anexomail-desk-audit AND /mnt/anexomail-box/desk-audit (his existing sshfs Storage Box mount, no new password or key); every run compares ALL older files with the database (TAMPER = ledger line, high alert, exit 3); `anexomail-desk audit-verify <folder>` checks signatures and chain with NO database. Timer every 10 minutes, heartbeat door fadm_lookup_tick so a quiet day's last links are sealed too.
+Tested: the real compiled binary against a scratch PostgreSQL (6 files, rerun 0 new, tamper exit 3 with ledger line and alert), 7 pure tests, 1 PostgreSQL test, unit file through systemd-analyze. NOT yet run on his server (installer step 8/8 of desk-install).
+Rule added by him: docs/claude/AUDIT-BEFORE-INSTALL-LAW-23NOV.md.

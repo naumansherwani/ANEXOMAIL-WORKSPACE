@@ -81,3 +81,6 @@ fi
 # 7/7 (his 22 Nov 2026 23:57: ONE install does everything): the Control Plane responder (own binary, UDP 4410, read-only database role), wired to the Desk, with an end-to-end proof line
 echo "== 7/7 Control Plane (D5a-3b)"
 bash <(show admin-desk/scripts/cp-install.sh) || exit $?
+# 8/8 (his 23 Nov 2026 01:18: the Storage Box copy of the lookup-audit checkpoints, signed with the Desk key, timer every 10 minutes)
+echo "== 8/8 audit outside copy (D5a-4)"
+bash <(show admin-desk/scripts/audit-export-install.sh) || exit $?

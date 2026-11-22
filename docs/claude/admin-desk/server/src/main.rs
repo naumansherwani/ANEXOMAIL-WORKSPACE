@@ -11,6 +11,7 @@ use axum::{
 };
 use tower_http::services::{ServeDir, ServeFile};
 
+mod audit;
 mod auth;
 mod door;
 mod h3;
@@ -77,6 +78,8 @@ async fn main() {
     if a.get(1).map(String::as_str) == Some("lookup-selftest") && a.len() == 3 {
         match lookup::selftest(&a[2]).await { Ok(o) => { println!("{o}"); return; } Err(e) => { println!("LOOKUP SELFTEST FAIL: {e}"); std::process::exit(4); } }
     }
+    if a.get(1).map(String::as_str) == Some("audit-export") && a.len() == 3 { std::process::exit(audit::cmd_export(&a[2]).await); }
+    if a.get(1).map(String::as_str) == Some("audit-verify") && (a.len() == 3 || a.len() == 4) { std::process::exit(audit::cmd_verify(&a[2], a.get(3).map(String::as_str))); }
     if a.get(1).map(String::as_str) == Some("h3check") && a.len() == 5 {
         let cert = std::fs::read(&a[4]).expect("cert file");
         match h3::selfcheck(a[2].parse().expect("ip:port"), &a[3], &cert).await { Ok(o) => { println!("H3CHECK OK: {o} (handshake = TLS 1.3, AES-256-GCM, X25519MLKEM768: the client offered nothing else)"); return; } Err(e) => { println!("H3CHECK FAIL: {e}"); std::process::exit(1); } }

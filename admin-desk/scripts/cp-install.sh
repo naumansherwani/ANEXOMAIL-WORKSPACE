@@ -11,7 +11,9 @@ git -C "$REPO" fetch -q origin main || { echo "FAIL: fetch"; exit 2; }
 show() { git -C "$REPO" show "origin/main:$1"; }
 echo "== CP 1/7 port red line (read-only)"
 HOLD="$(ss -ulnp 2>/dev/null | awk '$4 ~ /:4410$/')"
-if [ -n "$HOLD" ] && ! echo "$HOLD" | grep -q anexomail-controlplane; then echo "FAIL: UDP 4410 is held by something else, nothing changed:"; echo "$HOLD" | sed 's/^/     /'; exit 2; fi
+OWN="$(systemctl show -p MainPID --value anexomail-controlplane 2>/dev/null)"   # ss shows the process name cut to 15 letters (anexomail-contr), so the owner is proven by the unit's own PID
+own_ok(){ [ -n "$OWN" ] && [ "$OWN" != 0 ] && echo "$1" | grep -q "pid=$OWN,"; }
+if [ -n "$HOLD" ] && ! own_ok "$HOLD"; then echo "FAIL: UDP 4410 is held by something else, nothing changed:"; echo "$HOLD" | sed 's/^/     /'; exit 2; fi
 if [ -n "$HOLD" ]; then echo "   UDP 4410: held by the Control Plane itself (rerun)"; else echo "   UDP 4410: free"; fi
 [ -r /etc/anexomail/sync.env ] || { echo "FAIL: /etc/anexomail/sync.env not readable"; exit 2; }
 ADMIN="$( . /etc/anexomail/sync.env 2>/dev/null; printf %s "${WORKING_URL:-}" )"; [ -n "$ADMIN" ] || { echo "FAIL: no WORKING_URL in sync.env"; exit 2; }
