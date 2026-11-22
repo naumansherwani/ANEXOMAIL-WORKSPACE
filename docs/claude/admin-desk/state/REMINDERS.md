@@ -11,3 +11,5 @@
 - [22 Nov 2026 01:47 PKT] Rerun desk-install (his 01:39 paste = old script). Then my Chrome proof. STATUS-REAL-22NOV.md is the honest scoreboard.
 
 - [22 Nov 2026 01:55 PKT] CRM = Desk phase R-CRM (company style, same feature set as awam CRM: accounts, leads, pipeline, relationships, tasks, activity, collab, reports, setup).
+
+- [22 Nov 2026 11:12 PKT] PRIORITY: finish mailbox/role plan (MAILBOX-ROLES-PLAN-22NOV.md): his ad-auto for AD5, then queues, SLA, sender identity, real send/receive tests; ask him C4 (landing "named founder contact" vs resolved@).

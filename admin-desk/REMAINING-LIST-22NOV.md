@@ -21,3 +21,5 @@ R3a0 own process | R3a0-s1 TLS 1.3 AES-256-GCM | R3a0-s2 HTTP/3 on UDP [::]:4400
 
 ## ADDED (22 Nov 2026 01:08 PKT, his 01:05 word): SCALE-50K (row 13): lifetime design for 50,000 staff, rows S1..S11 in SCALE-50K-DESIGN-22NOV.md. Landing target; S1+S2 (org + Zanzibar-style relations) come before a second person gets Desk access. Tech: Rust + Postgres tuples/partitions, SCIM 2.0, WebAuthn, DBSC, WebTransport. His haan per row.
 ## NEXT AFTER R3d: dashboard (clean, no tech shown) then BRIDGE (founder-like, clean), real data only.
+
+## PRIORITY 1 (his 22 Nov 2026 11:06 PKT): MAILBOX AND ROLE PLAN, phase I. Plan = MAILBOX-ROLES-PLAN-22NOV.md. Order: conflicts (done) -> routing/permissions (AD5 coded) -> staff queues -> SLA -> sender identity -> real send/receive tests. Open: C4 landing "named founder contact".

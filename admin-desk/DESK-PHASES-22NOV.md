@@ -51,7 +51,7 @@
 | F MoQ | Media over QUIC tracks (IETF), WebTransport | named tracks summary/services/alerts as MoQ objects | NOT written (tracks already named in the frame) |
 | G Org + policy (AD2, S1+S2) | PostgreSQL tuples (Zanzibar-style), RLS, Rust evaluator, deny-by-default | staff, relations, forbid-wins policy | NOT written |
 | H Staff accounts (ON1..ON12) | webauthn-rs, Argon2id, DBSC, device-bound passkeys | enrollment code, devices, leaver, recovery, zero-trust locks (AAGUID, IP + shift, circuit breaker) | NOT written |
-| I Mailboxes (was Inboxes; R3b, R4-2) | PostgreSQL RLS (fadm_mailbox), Rust, virtual list | hello, moveyourbusiness, resolved, billing (restricted), leo, noreply | NOT written |
+| I Mailboxes (was Inboxes; R3b, R4-2) | PostgreSQL RLS (fadm_mailbox), Rust, virtual list | hello, moveyourbusiness, resolved, billing (restricted), leo, noreply | PRIORITY (his 22 Nov 11:06): AD5 address-role SQL CODED 11:12, proved on PG16; MAILBOX-ROLES-PLAN-22NOV.md; routing, queues, SLA, sender identity, real tests NOT written |
 | J Auto mail (R3c) | Rust, RFC 3834 Auto-Submitted | 7-day per-sender gate, Polar signed webhook | NOT written |
 | K Cases + SLA (R3e, R3f) | Rust, SQL SLA engine (AD4), SKIP LOCKED routing | assign, reply, clock stops only on human reply or resolve, root-cause note | NOT written (needs his support terms) |
 | L Transparency log (W1) | Merkle tiles, signed tree head | audit log browsers remember | NOT written |
