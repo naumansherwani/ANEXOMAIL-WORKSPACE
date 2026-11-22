@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 04:10 PKT) - read this FIRST for the Desk after a compaction
-DOING: 1k: install of desk-D1zbEnu0.js did NOT take (no new binary, no FAIL line in tail); waiting for the head of his output
-NEXT STEP: his di.log lines, root cause, install, my screenshot, 1k GREEN, then 1l D5c
-HIS LAST WORD: his 04:1x paste
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 04:18 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1k = GREEN (his install + my screenshot proof). NOW = 1l D5c Escalate: web research + LIST + ADVANCE-RESEARCH + contract first
+NEXT STEP: 1l research, LIST file, blueprint + NOW-LIST ADVANCE-RESEARCH [1l], contract block, then code
+HIS LAST WORD: his 04:17 paste
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 611b16af 23 Nov 04:10 ledger line c923b616
 - c923b616 23 Nov 04:10 1k: install did not take, need head of output
 - f4451da4 23 Nov 04:04 ledger line 889c9577
 - 889c9577 23 Nov 04:04 1k fix: old row glow cleared, build timer
@@ -72,9 +73,12 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - d5fe6738 23 Nov 03:55 1k fix: mark colour blue
 - 45c75881 23 Nov 03:54 ledger line e283c4d5
 - e283c4d5 23 Nov 03:54 1k fix: services row mark follows click
-- 459bf9ff 23 Nov 03:53 ledger line c195b47a
 
 ## Uncommitted Desk files
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/NOW-LIST-23NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
