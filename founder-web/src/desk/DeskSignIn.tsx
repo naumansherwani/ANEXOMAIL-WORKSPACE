@@ -91,7 +91,7 @@ export function DeskSignIn() {
         </section>
         </div>
         {/* his 21 Nov 22:49: the warm horizon light (same size and colour as the Desk home page) stays fixed at the bottom of the screen, so no scroll position hides it */}
-        <div aria-hidden="true" style={{ position: "fixed", left: "12vw", right: "12vw", bottom: "0px", height: 14, borderRadius: "50%", background: "radial-gradient(closest-side,rgba(255,170,70,.45),rgba(255,170,70,0))", pointerEvents: "none", zIndex: 4 }} />
+        <div aria-hidden="true" style={{ position: "fixed", left: "12vw", right: "12vw", bottom: "12px", height: 14, borderRadius: "50%", background: "radial-gradient(closest-side,rgba(255,170,70,.45),rgba(255,170,70,0))", pointerEvents: "none", zIndex: 4 }} />
       </DeskScene>
     </main>
   );

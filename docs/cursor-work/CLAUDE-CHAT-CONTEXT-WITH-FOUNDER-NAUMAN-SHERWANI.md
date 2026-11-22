@@ -5182,3 +5182,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 22 Nov 06:25 PKT: Desk login = his perfect photo (no Save row, eye kept, one light below card); fits 1366x768/1440/390/820/1920; waits desk-install
 
 - 22 Nov 06:40 PKT: Desk login scales to window height: no scrollbar at 10 sizes incl 1366x650, single light visible, eye kept; waits desk-install
+
+- 22 Nov 06:50 PKT: Desk login light raised to bottom 12px, below card, 10 sizes fit no scrollbar; waits desk-install
