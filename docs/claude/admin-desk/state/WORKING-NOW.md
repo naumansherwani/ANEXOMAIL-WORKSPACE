@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 08:09 PKT) - read this FIRST for the Desk after a compaction
-DOING: D1c pop-up kept + D2 alert buttons built, waits install
-NEXT STEP: his desk-install, live look D7 D9 D10 D1c D2
-HIS LAST WORD: his 08:07 word white pop stays
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 08:16 PKT) - read this FIRST for the Desk after a compaction
+DOING: D7 D9 D10 D1c GREEN live, D2 waits an alert row
+NEXT STEP: D2 live proof then D3
+HIS LAST WORD: his install 08:15, live look
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -64,6 +64,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 919c1cd6 22 Nov 08:09 ledger line f648efb9
 - f648efb9 22 Nov 08:09 Desk D1c white pop-up kept with Alt+Shift hint, D2 alert action buttons, full backup after D10
 - 6dd5a41b 22 Nov 07:58 ledger line fbadb7aa
 - fbadb7aa 22 Nov 07:58 Desk D10: soft bottom glow (top corner colours), after backup (22 Nov 08:11 PKT)
@@ -71,9 +72,10 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - d51862e6 22 Nov 07:51 ledger line e3b9a539
 - e3b9a539 22 Nov 07:51 Desk: D9 brand link, colour demo 2
 - e45ccd07 22 Nov 07:47 ledger line 0999a049
-- 0999a049 22 Nov 07:47 Desk D8: eye-comfort colour demo (4 palettes), blueprint records (22 Nov 07:58 PKT)
 
 ## Uncommitted Desk files
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/DESK-PHASES-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)

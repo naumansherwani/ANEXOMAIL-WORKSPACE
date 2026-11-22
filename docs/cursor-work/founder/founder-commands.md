@@ -5622,4 +5622,6 @@ Features ki list (QC4 mein kya banega):
 
 - 22 Nov 2026 08:10 PKT: Desk D10 bottom glow written after backup (before-bottom-glow, verified); top-corner colours spread softly to the bottom, nothing else touched; bundle desk-CYkLX2WY.
 
-- 22 Nov 2026 08:20 PKT: Desk D1c pop-up kept with Alt+Shift hint, D2 alert buttons first cut, written only, waits install and live look
+- 22 Nov 2026 08:10 PKT: Desk D1c pop-up kept with Alt+Shift hint, D2 alert buttons first cut, written only, waits install and live look
+
+- 22 Nov 2026 08:16 PKT: Desk D7 D9 D10 D1c GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED, live Chrome look on bundle desk-BvvohRXS.js; D2 buttons still waits an alert row
