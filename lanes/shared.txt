@@ -36,6 +36,7 @@ admin-desk/FOUR-DAY-PLAN-22NOV.md
 admin-desk/MAILBOX-ROLES-PLAN-22NOV.md
 admin-desk/MASTER-PLAN-22NOV.md
 admin-desk/NEXT-CODES-ORDER-22NOV.md
+admin-desk/NOW-LIST-23NOV.md
 admin-desk/PHASE-TECH-SQL-MAP-22NOV.md
 admin-desk/PLAN-CONTEXT-AND-RUNBOOKS-22NOV.md
 admin-desk/PLAN-DESK-UI-COPY-21NOV.md

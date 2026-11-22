@@ -4285,3 +4285,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - D5a-4 audit fix: AD4b repeats the PUBLIC revoke of the two AD8 trigger functions (ad-auto skips AD8 once its CHECK is true), selftest counts made relative so real rows cannot fail it. TESTED: AD4b selftest ALL RULES PASSED on 3 scratch databases, AD3 CHECK false row repaired by AD4b (1 false before, 0 after), AD4b CHECK all true, cargo test 58 passed. TECH-LAW CHECKED.
 
 - D5a-4 GREEN 23 Nov 01:4x: AD4b + signed outside copy. WIRED: YES / REAL: YES / TECH-LAW CHECKED. TESTED: his server pastes AD4b run and CHECK OK 21/21 pass, AUDIT EXPORT OK local + Storage Box, my Chrome live look 4 audit doors 400 unsigned no-store OK, cargo 58 passed
+
+- NOW-LIST: remaining Dashboard phases + total 23 saved for compaction. TESTED: gate pass, docs only OK
