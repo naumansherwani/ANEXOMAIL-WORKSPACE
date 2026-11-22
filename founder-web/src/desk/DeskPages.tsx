@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { recordServices } from "./desk_trend_pure";
+import { asServices } from "./desk_bridge_pure";
 import { BrandMark } from "../signin/BrandMark";
 import { DESK_SESSION_KEY, deskGuard, deskPage } from "./desk_pure";
 import { DeskSignIn } from "./DeskSignIn";
@@ -60,6 +62,8 @@ function Dashboard() {
   const [me, setMe] = useState<Me | null>(null), [err, setErr] = useState(""), [out, setOut] = useState(false), [live, setLive] = useState<Snapshot>({ state: "connecting", data: {} });
   // Phase C2: the live Bridge stream (WebTransport, Rule 52 verified in the kernel). Starts once the account answer is trusted; stops on sign-out.
   useEffect(() => { if (!me) return; return openBridge(setLive); }, [me]);
+  // D3b: only verified, live ticks feed the trend (a stale or connecting stream adds nothing).
+  useEffect(() => { if (live.state === "live") recordServices(asServices(live.data.services)); }, [live]);
   useEffect(() => {
     let live = true;
     deskCall("GET", "/desk/v1/auth/me").then((r) => {
