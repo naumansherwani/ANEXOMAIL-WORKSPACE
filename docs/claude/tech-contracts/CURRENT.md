@@ -1,5 +1,17 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK D5c ESCALATE (phase 1l), written 23 Nov 2026 04:55 PKT BEFORE code. LIST: docs/claude/admin-desk/D5C-ESCALATE-LIST-23NOV.md (L1..L12)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL AD10: fadm_case, append-only SHA-256 event chain, closed priority + reason lists, forced RLS, doors only | sql/AD10.sql, checks/AD10-check.sql | no | planned: scratch PostgreSQL selftest + AD1..AD10 checks all true (AD2/AD3 included) |
+| Transactional outbox in the same transaction, SKIP LOCKED claim, dedup by outbox id | sql/AD10.sql | no | planned: rollback test |
+| Idempotent request id (duplicate = same case) | AD10 unique key, desk_case_pure.ts | no | planned: bun + PostgreSQL test |
+| Ed25519 signed one-way hand-over, 5 minute window, key rotation overlap, constant-time compare | server/src/cases.rs (Desk-own sign.rs) | no | planned: cargo test, wrong/old signature refused |
+| Rust doors /desk/v1/cases (create, list, status) over HTTP/3, employees see their company only | server/src/cases.rs, main.rs | no | planned: cargo test with real PostgreSQL |
+| Dead-letter state + alert, 429 ceiling per employee | AD10, cases.rs | no | planned |
+| Rule 52 kernel-verified reads, fail-closed Data unavailable | desk_case_pure.ts, DeskCases.tsx | no | planned: bun tests + my Chrome look |
+| React 19 + TypeScript Escalate button + case number/status, 390 / 820 / 1200+ | DeskCases.tsx, DeskRunbooks.tsx, desk_cards.ts | no | planned |
+
 # TECH CONTRACT FOR PHASE: DESK D5b RUNBOOKS (phase 1k), written 23 Nov 2026 03:3x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D5B-RUNBOOKS-LIST-23NOV.md (R1..R12)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3327,3 +3339,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Recorded his 04:25 question: founder-side escalation inbox = later phase after 1o + 1a, one-way signed messages, Desk isolation kept. TESTED: records only, gate. TECH-LAW CHECKED
 
 - Founder Escalation Inbox plan (what the Admin Desk escalates to the founder, by Desk phase) + gate FOUNDER INBOX REMINDER (23 Nov 2026 04:42 PKT). TESTED: gate probe with the tag removed from the founder blueprint FAILED as intended, restored passes; python syntax. TECH-LAW CHECKED
+
+- 1l research first: D5C list L1-L12, ADVANCE-RESEARCH [1l] in blueprint + NOW-LIST, CURRENT.md contract (rows no, planned), founder inbox plan gets his Chairman/CEO words. TESTED: records only, gate. TECH-LAW CHECKED
+
+- 1l research first: D5C list L1-L12, ADVANCE-RESEARCH [1l] in blueprint + NOW-LIST, CURRENT.md contract (rows no, planned), founder inbox plan gets his Chairman/CEO words. TESTED: records only, gate. TECH-LAW CHECKED

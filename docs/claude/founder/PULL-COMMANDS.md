@@ -3413,3 +3413,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Recorded his 04:25 question: founder-side escalation inbox = later phase after 1o + 1a, one-way signed messages, Desk isolation kept. TESTED: records only, gate. TECH-LAW CHECKED
 
 - Founder Escalation Inbox plan (what the Admin Desk escalates to the founder, by Desk phase) + gate FOUNDER INBOX REMINDER (23 Nov 2026 04:42 PKT). TESTED: gate probe with the tag removed from the founder blueprint FAILED as intended, restored passes; python syntax. TECH-LAW CHECKED
+
+- 1l research first: D5C list L1-L12, ADVANCE-RESEARCH [1l] in blueprint + NOW-LIST, CURRENT.md contract (rows no, planned), founder inbox plan gets his Chairman/CEO words. TESTED: records only, gate. TECH-LAW CHECKED
+
+- 1l research first: D5C list L1-L12, ADVANCE-RESEARCH [1l] in blueprint + NOW-LIST, CURRENT.md contract (rows no, planned), founder inbox plan gets his Chairman/CEO words. TESTED: records only, gate. TECH-LAW CHECKED
