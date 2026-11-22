@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 00:36 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 00:36 PKT) - read this FIRST for the Desk after a compaction
 DOING: AD8 advance rules + handler tests + honest truth table
 NEXT STEP: his desk-install + ad-auto + sign-in
 HIS LAST WORD: his 00:34 order
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 3fc1fc44 23 Nov 00:36 AD8 advance + honest truth table
 - 2f574bd1 23 Nov 00:29 ledger line 0de9ed41
 - 0de9ed41 23 Nov 00:29 blueprint 0l
 - 0ef1d766 23 Nov 00:29 ledger line 97a039c1
@@ -72,17 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - baeaccce 22 Nov 23:39 ledger line 32747762
 - 32747762 22 Nov 23:39 D5a-3b contract v2 and folder phases
 - e12110bb 22 Nov 23:34 ledger line 0c4cbfb4
-- 0c4cbfb4 22 Nov 23:34 D5a-3b schema paste and look 2
 
 ## Uncommitted Desk files
- M admin-desk/DBSC-PHASE-LIST-23NOV.md
- M admin-desk/server/src/dbsc.rs
- M admin-desk/sql/AD8.sql
- M admin-desk/sql/checks/AD8-check.sql
- M docs/claude/admin-desk/DBSC-PHASE-LIST-23NOV.md
- M docs/claude/admin-desk/server/src/dbsc.rs
- M docs/claude/admin-desk/sql/AD8.sql
- M docs/claude/admin-desk/sql/checks/AD8-check.sql
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)

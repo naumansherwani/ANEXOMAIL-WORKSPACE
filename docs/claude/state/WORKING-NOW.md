@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 00:36 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 00:36 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: AD8 advance rules + handler tests + honest truth table
 NEXT STEP: his desk-install + ad-auto + sign-in
 HIS LAST WORD: his 00:34 order
@@ -18,34 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 3fc1fc44 23 Nov 00:36 AD8 advance + honest truth table
 - 2f574bd1 23 Nov 00:29 ledger line 0de9ed41
 - 0de9ed41 23 Nov 00:29 blueprint 0l
 - 0ef1d766 23 Nov 00:29 ledger line 97a039c1
 - 97a039c1 23 Nov 00:29 R3a2-dbsc device-bound sessions + control plane responder
-- baeaccce 22 Nov 23:39 ledger line 32747762
 
 ## Uncommitted files (half-done work if any)
- M admin-desk/DBSC-PHASE-LIST-23NOV.md
- M admin-desk/server/src/dbsc.rs
- M admin-desk/sql/AD8.sql
- M admin-desk/sql/checks/AD8-check.sql
- M docs/claude/admin-desk/DBSC-PHASE-LIST-23NOV.md
- M docs/claude/admin-desk/server/src/dbsc.rs
- M docs/claude/admin-desk/sql/AD8.sql
- M docs/claude/admin-desk/sql/checks/AD8-check.sql
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/sql/AD8.sql                          | 77 ++++++++++++++++++++++---
- admin-desk/sql/checks/AD8-check.sql             |  8 ++-
- docs/claude/admin-desk/DBSC-PHASE-LIST-23NOV.md | 49 +++++++++-------
- docs/claude/admin-desk/server/src/dbsc.rs       | 44 ++++++++++++++
- docs/claude/admin-desk/sql/AD8.sql              | 77 ++++++++++++++++++++++---
- docs/claude/admin-desk/sql/checks/AD8-check.sql |  8 ++-
- docs/claude/state/WORKING-NOW.md                | 31 +++++-----
- 9 files changed, 305 insertions(+), 82 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 31 ++-----------------------------
+ 1 file changed, 2 insertions(+), 29 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -56,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (31acd79cfb2dc73c801303fa729ea8938ea54021)
+WIP snapshot: refs/wip/last (df2847ac6a5d5b4f0612b0c4221240b6b8588569)
