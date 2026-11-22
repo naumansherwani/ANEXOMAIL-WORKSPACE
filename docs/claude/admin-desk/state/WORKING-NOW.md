@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 07:25 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 07:25 PKT) - read this FIRST for the Desk after a compaction
 DOING: D1 written, waits his desk-install + live look
 NEXT STEP: his desk-install, my Chrome look, D1 GREEN, then D2 ack/act
 HIS LAST WORD: rule book connected, cards clickable
@@ -61,6 +61,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 4594bdd8 22 Nov 07:25 Desk D1: clickable cards, account cards removed, /dashboard/* pages, Connecting fix, rule book (22 Nov 07:36 PKT)
 - 831786c8 22 Nov 07:18 ledger line bc2fdc2f
 - bc2fdc2f 22 Nov 07:18 Desk: phase D GREEN after live Chrome look (22 Nov 07:19 PKT)
 - ea5d9cc9 22 Nov 07:15 ledger line fc8649ed
@@ -68,30 +69,11 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 7dee6d42 22 Nov 07:15 Desk: rule 10 + research log
 - bd5ab479 22 Nov 07:14 ledger line 5f449e7e
 - 4110299d 22 Nov 07:14 ledger line 56034001
-- 56034001 22 Nov 07:14 Desk: clickable cards plan D1-D6
 
 ## Uncommitted Desk files
- M admin-desk/BLUEPRINT-ADMIN-DESK.md
- M admin-desk/DESK-PHASES-22NOV.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskCommandBar.tsx
- M founder-web/src/desk/DeskPages.tsx
- M founder-web/src/desk/DeskShell.tsx
- M founder-web/src/desk/desk_bridge_pure.test.ts
- M founder-web/src/desk/desk_bridge_pure.ts
- M founder-web/src/desk/desk_pure.test.ts
- M founder-web/src/desk/desk_pure.ts
-?? admin-desk/RULE-BOOK.md
-?? docs/claude/admin-desk/RULE-BOOK.md
-?? founder-web/src/desk/DeskCards.tsx
-?? founder-web/src/desk/DeskNav.tsx
-?? founder-web/src/desk/desk_cards.test.ts
-?? founder-web/src/desk/desk_cards.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
-FAIL !!! ADMIN DESK HTTP/1 AND HTTP/2 ARE BOTH BANNED (HTTP/3 only) !!! founder-web/src/desk/DeskCards.tsx mentions it; remove it
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
 warn ADMIN DESK OPEN until 24 Nov: R3p1-plans [R3p1] Plans as data (Premium, Max first) -> needs PostgreSQL RLS, hash-chained ledger in admin-desk/sql/AD2.sql
 warn ADMIN DESK OPEN until 24 Nov: R3p2-webhook [R3p2] Polar signed webhook door -> needs Rust Tokio axum, HMAC-SHA256 constant-time in admin-desk/server/src/polar.rs
