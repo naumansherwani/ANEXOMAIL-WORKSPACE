@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 23:39 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 23:39 PKT) - read this FIRST for the Desk after a compaction
 DOING: D5a-3b contract v2 written from his real database facts; folder phases written (Dashboard separate, rail order)
 NEXT STEP: build control-plane crate: sign + answer core with tests, then HTTP/3 server, CP1.sql, installer
 HIS LAST WORD: his 23:3x word: dashboard phases separate, rail order phases
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 32747762 22 Nov 23:39 D5a-3b contract v2 and folder phases
 - e12110bb 22 Nov 23:34 ledger line 0c4cbfb4
 - 0c4cbfb4 22 Nov 23:34 D5a-3b schema paste and look 2
 - 610119ff 22 Nov 22:42 ledger line ed337fb9
@@ -72,16 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 2f2c8c6f 22 Nov 22:27 ledger line 61797108
 - 61797108 22 Nov 22:27 throttle answered
 - 9c833aa1 22 Nov 22:22 ledger line 1b54bab4
-- 1b54bab4 22 Nov 22:22 D5a-2 landing page plans
 
 ## Uncommitted Desk files
- M admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/FOLDER-PHASES-22NOV.md
-?? docs/claude/admin-desk/FOLDER-PHASES-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
