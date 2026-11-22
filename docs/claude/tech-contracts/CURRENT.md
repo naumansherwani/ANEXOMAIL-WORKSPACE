@@ -3021,3 +3021,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 22 Nov 2026 09:20 PKT: Desk D1f: alert filter URL is ?severity=urgent (p1 still accepted when read); no P1 / phase text in Desk code; gate DESK WIRING extended. HTTP/3 only.
 
 - 22 Nov 2026 09:20 PKT: Desk live scan 14 routes clean, two leftovers fixed (urgent URL, CSS tag), gate extended, waits install
+
+- 22 Nov 2026 09:14 PKT: next phase D5 contract (to write before code): Rust axum receive-only plan door, HMAC-SHA256 signature check, replay window, idempotency key, Postgres RLS + append-only plan ledger, Rule 52 signed answer, HTTP/3 + WebTransport only.
+
+- 22 Nov 2026 09:14 PKT: Desk D1f GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED, 2nd live scan clean; order D5 D6 A E..Q written with technology
