@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 8cc21898 22 Nov 11:27 ledger line 79001767
 - 1cf0ff8d 22 Nov 11:26 ledger line ce85d899
 - ce85d899 22 Nov 11:26 AD1 check fix, top bar
 - 553c96a4 22 Nov 11:20 ledger line 7918d093
@@ -72,7 +73,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - b341403b 22 Nov 11:20 ledger line fc391322
 - fc391322 22 Nov 11:20 Desk AD6 package registry (D5a-2) proved on PostgreSQL 16; AD5 live; next-codes order; C4 answer recorded
 - 2988c689 22 Nov 11:11 ledger line 0b86c3b2
-- 0b86c3b2 22 Nov 11:11 Reminders stay in repo and chat only (his 11:11); scheduled reminder deleted
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
