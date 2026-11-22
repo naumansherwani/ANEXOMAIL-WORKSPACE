@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 08:09 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 08:09 PKT) - read this FIRST for the Desk after a compaction
 DOING: D1c pop-up kept + D2 alert buttons built, waits install
 NEXT STEP: his desk-install, live look D7 D9 D10 D1c D2
 HIS LAST WORD: his 08:07 word white pop stays
@@ -64,6 +64,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- f648efb9 22 Nov 08:09 Desk D1c white pop-up kept with Alt+Shift hint, D2 alert action buttons, full backup after D10
 - 6dd5a41b 22 Nov 07:58 ledger line fbadb7aa
 - fbadb7aa 22 Nov 07:58 Desk D10: soft bottom glow (top corner colours), after backup (22 Nov 08:11 PKT)
 - 47ebf24c 22 Nov 07:51 ledger line 9971c556
@@ -71,19 +72,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - e3b9a539 22 Nov 07:51 Desk: D9 brand link, colour demo 2
 - e45ccd07 22 Nov 07:47 ledger line 0999a049
 - 0999a049 22 Nov 07:47 Desk D8: eye-comfort colour demo (4 palettes), blueprint records (22 Nov 07:58 PKT)
-- 260da7bf 22 Nov 07:42 ledger line 5b1f481e
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskCards.tsx
- M founder-web/src/desk/DeskCommandBar.tsx
- M founder-web/src/desk/DeskNav.tsx
- M founder-web/src/desk/DeskPages.tsx
- M founder-web/src/desk/DeskShell.tsx
- M founder-web/src/desk/desk_cards.test.ts
- M founder-web/src/desk/desk_cards.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
