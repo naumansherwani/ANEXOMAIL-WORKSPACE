@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 07:51 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 07:51 PKT) - read this FIRST for the Desk after a compaction
 DOING: D9 brand link written, D8 colour demo 2 shown
 NEXT STEP: his desk-install, my live look D7+D9, then D2 ack/act; colours only after his pick
 HIS LAST WORD: brand link + cinematic light demo
@@ -64,6 +64,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e3b9a539 22 Nov 07:51 Desk: D9 brand link, colour demo 2
 - e45ccd07 22 Nov 07:47 ledger line 0999a049
 - 0999a049 22 Nov 07:47 Desk D8: eye-comfort colour demo (4 palettes), blueprint records (22 Nov 07:58 PKT)
 - 260da7bf 22 Nov 07:42 ledger line 5b1f481e
@@ -71,19 +72,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - ca5ac2d6 22 Nov 07:42 Desk: pipeline moves into Systems
 - e2b4bdad 22 Nov 07:40 ledger line e1fd6c8c
 - 789f96f3 22 Nov 07:40 ledger line 4ad3e6ea
-- 4ad3e6ea 22 Nov 07:40 Desk: D1b GREEN, D7 Systems folder
 
 ## Uncommitted Desk files
- M admin-desk/BLUEPRINT-ADMIN-DESK.md
- M admin-desk/DESK-PHASES-22NOV.md
- M admin-desk/demo/COLOUR-DEMO-22NOV.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
- M docs/claude/admin-desk/demo/COLOUR-DEMO-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskShell.tsx
-?? admin-desk/demo/COLOUR-DEMO-2-CINEMATIC-LIGHT-22NOV.png
-?? docs/claude/admin-desk/demo/COLOUR-DEMO-2-CINEMATIC-LIGHT-22NOV.png
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

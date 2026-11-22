@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 07:51 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 07:51 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: D9 brand link written, D8 colour demo 2 shown
 NEXT STEP: his desk-install, my live look D7+D9, then D2 ack/act; colours only after his pick
 HIS LAST WORD: brand link + cinematic light demo
@@ -18,39 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- e3b9a539 22 Nov 07:51 Desk: D9 brand link, colour demo 2
 - e45ccd07 22 Nov 07:47 ledger line 0999a049
 - 0999a049 22 Nov 07:47 Desk D8: eye-comfort colour demo (4 palettes), blueprint records (22 Nov 07:58 PKT)
 - 260da7bf 22 Nov 07:42 ledger line 5b1f481e
 - 5b1f481e 22 Nov 07:42 Desk D7: pipeline moves from dashboard into Systems (22 Nov 07:53 PKT)
-- 1987b52c 22 Nov 07:42 ledger line ca5ac2d6
 
 ## Uncommitted files (half-done work if any)
- M CLAUDE.md
- M admin-desk/BLUEPRINT-ADMIN-DESK.md
- M admin-desk/DESK-PHASES-22NOV.md
- M admin-desk/demo/COLOUR-DEMO-22NOV.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
- M docs/claude/admin-desk/demo/COLOUR-DEMO-22NOV.md
  M docs/claude/state/WORKING-NOW.md
- D founder-web/dist-desk/assets/desk-DZKO_LVM.js
- M founder-web/dist-desk/desk.html
- M founder-web/src/desk/DeskShell.tsx
-?? admin-desk/demo/COLOUR-DEMO-2-CINEMATIC-LIGHT-22NOV.png
-?? docs/claude/admin-desk/demo/COLOUR-DEMO-2-CINEMATIC-LIGHT-22NOV.png
-?? founder-web/dist-desk/assets/desk-UKXIYNCu.js
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md   |   1 +
- docs/claude/admin-desk/DESK-PHASES-22NOV.md      |   3 +-
- docs/claude/admin-desk/demo/COLOUR-DEMO-22NOV.md |   3 +
- docs/claude/state/WORKING-NOW.md                 |  36 ++++----
- founder-web/dist-desk/assets/desk-DZKO_LVM.js    | 100 -----------------------
- founder-web/dist-desk/desk.html                  |   2 +-
- founder-web/src/desk/DeskShell.tsx               |  10 ++-
- 11 files changed, 39 insertions(+), 125 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 36 ++----------------------------------
+ 1 file changed, 2 insertions(+), 34 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -61,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (bce36bb3df580fb99332fcc7052d64635843516b)
+WIP snapshot: refs/wip/last (0cdd746590d1b22c8348b897bffe3ebc401a2bb6)
