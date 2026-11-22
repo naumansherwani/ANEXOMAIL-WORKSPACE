@@ -2989,3 +2989,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 22 Nov 2026 08:38 PKT: Desk D1e: title (shortcut pop-up) on the three KPI cards; Ctrl+A rejected (browser Select all); HTTP/3 only, no new transport.
 
 - 22 Nov 2026 08:38 PKT: Desk D1e KPI card pop-up written, D1d installed by him, times corrected D3 08:32 D1d 08:36, waits install and live look
+
+- 22 Nov 2026 08:47 PKT: Desk D3b fix: a probe is identified by its time (now minus age_s, 2.5 s tolerance), not by age falling; fixes 4 s probe seen by 4 s tick counted once. No door, no storage, HTTP/3 only.
+
+- 22 Nov 2026 08:47 PKT: Desk D1d and D1e GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED, live Chrome on desk-Dqnc5mb_.js; D3b probe-count bug fixed, waits install
