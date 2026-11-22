@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 0de9ed41 23 Nov 00:29 blueprint 0l
+- 0ef1d766 23 Nov 00:29 ledger line 97a039c1
 - 97a039c1 23 Nov 00:29 R3a2-dbsc device-bound sessions + control plane responder
 - baeaccce 22 Nov 23:39 ledger line 32747762
 - 32747762 22 Nov 23:39 D5a-3b contract v2 and folder phases
-- e12110bb 22 Nov 23:34 ledger line 0c4cbfb4
-- 0c4cbfb4 22 Nov 23:34 D5a-3b schema paste and look 2
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 64 ++--------------------------------------
- 1 file changed, 3 insertions(+), 61 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (4cce3d393e4edeb83771e7388a65da5ee51888c8)
+WIP snapshot: refs/wip/last (2da50b766b5f76f1980d29e162a77e05e23554d0)
