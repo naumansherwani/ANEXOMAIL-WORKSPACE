@@ -205,6 +205,23 @@ if _dstaged:
             fail("DESK WIRING", f"{_f}: user-facing text names a phase or says P1; the real Desk uses plain words (Urgent alerts, Not connected yet)")
 
 
+# DESK NO-MONEY GATE (D5a-1, his 22 Nov 2026 10:10 word: no amounts, invoices, cards, transactions, Polar or webhook names on the Admin Desk; finance stays founder side). Reads docs/claude/admin-desk/gates/DESK-LOOKUP-CONTRACT.json.
+if "--staged" in sys.argv:
+    import re as _rm, json as _jm
+    try:
+        _forb = _jm.load(open("docs/claude/admin-desk/gates/DESK-LOOKUP-CONTRACT.json", encoding="utf-8"))["forbidden_identifiers"]
+    except Exception as _e:
+        _forb = []; fail("DESK NO-MONEY", "contract file DESK-LOOKUP-CONTRACT.json is missing or broken: " + str(_e)[:80])
+    _rx = _rm.compile(r"(?<![A-Za-z0-9])(" + "|".join(_rm.escape(x) for x in _forb) + r")(?![A-Za-z0-9])", _rm.I) if _forb else None
+    for _f in staged:
+        if not _rx or not _f.startswith(("founder-web/src/desk/", "docs/claude/admin-desk/server/", "docs/claude/admin-desk/sql/", "docs/claude/admin-desk/kernel/")): continue
+        if not _f.endswith((".ts", ".tsx", ".rs", ".sql")) or ".test." in _f: continue
+        try: _t = open(_f, encoding="utf-8").read()
+        except OSError: continue
+        _t = _rm.sub(r"/\*.*?\*/", "", _t, flags=_rm.S); _t = _rm.sub(r"(?m)(^|\s)(//|--).*$", "", _t)
+        _m = _rx.search(_t)
+        if _m: fail("DESK NO-MONEY", f"{_f}: the Desk names a money field ({_m.group(1)}); finance, invoices, cards and Polar stay on the founder side (contract DESK-LOOKUP-CONTRACT.json)")
+
 # DESK PHASE START (his 22 Nov 2026 06:41): a commit that changes Desk CODE needs a Desk phase receipt (desk-phase-start.py, also run by rules-read.py) younger than 2 hours: the strict rules, the phase technology and WORKING-NOW were printed to Claude.
 if "--staged" in sys.argv:
     _desk_code = [f for f in staged if f.startswith(("docs/claude/admin-desk/server/", "docs/claude/admin-desk/kernel/", "founder-web/src/desk/")) and f.endswith((".rs", ".ts", ".tsx", ".sql", ".sh"))]

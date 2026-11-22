@@ -374,6 +374,7 @@ docs/claude/admin-desk/docs/PLAN-PREMIUM-MAX-21NOV.md
 docs/claude/admin-desk/docs/QUIC-UDP-TECH-21NOV.md
 docs/claude/admin-desk/gates/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/gates/DESK-FEATURES.json
+docs/claude/admin-desk/gates/DESK-LOOKUP-CONTRACT.json
 docs/claude/admin-desk/gates/desk_tech_gate.py
 docs/claude/admin-desk/kernel/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/kernel/Cargo.lock

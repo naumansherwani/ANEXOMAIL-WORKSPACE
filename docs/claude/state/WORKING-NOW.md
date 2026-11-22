@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 10:43 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: No-promise law, SR1..SR8 suspension classes, nine runbooks drafted, D-series blueprint file generated
-NEXT STEP: S1 waits his haan; D5a-1 contract next; needs package list + Control Plane address; runbooks wait his approval
-HIS LAST WORD: his 10:42 word: no promises, I make reason classes, UI intact, send blueprint
+# WORKING NOW (manual checkpoint, 22 Nov 2026 10:48 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: D5a-1 coded: contract JSON + DESK NO-MONEY gate; refund law; plans text fixed
+NEXT STEP: D5a-4 audit ledger SQL, then D5a-2 registry SQL, D5a-3 lookup vs test double; S1 waits his haan; rename Plans and prices only with his word
+HIS LAST WORD: his 10:47 word: no refund, act as CEO, start first phase
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,44 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- f033fe12 22 Nov 10:43 ledger line ed675201
 - ed675201 22 Nov 10:43 Desk no-promise law, suspension classes, runbook drafts, D-series blueprint
 - 6c05bcfe 22 Nov 10:43 ledger line 987d934f
 - 987d934f 22 Nov 10:43 Desk no-promise law, reason classes, runbook drafts
 - 94eb01fd 22 Nov 10:35 ledger line 806a79d8
-- 806a79d8 22 Nov 10:35 Desk six main sections plan
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/state/WORKING-NOW.md
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/DESK-PHASES-22NOV.md
+ M admin-desk/RUNBOOK-LIBRARY-DRAFT-22NOV.md
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/DESK-PHASES-22NOV.md
+ M docs/claude/admin-desk/RUNBOOK-LIBRARY-DRAFT-22NOV.md
+A  docs/claude/admin-desk/gates/DESK-LOOKUP-CONTRACT.json
+MM docs/claude/admin-desk/state/WORKING-NOW.md
+MM docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+M  docs/cursor-work/server/rules-gate.py
+M  founder-web/src/desk/modules/admin-desk/plans/README.md
+M  founder-web/src/desk/modules/admin-desk/plans/meta.ts
+ M lanes/ALL-FILES.csv
+ M lanes/docs.txt
+ M lovable-gold/README.md
+?? admin-desk/gates/DESK-LOOKUP-CONTRACT.json
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/tech-contracts/CURRENT.md              |  2 +
+ docs/cursor-work/server/rules-gate.py              | 17 +++++++++
+ .../src/desk/modules/admin-desk/plans/README.md    |  2 +-
+ .../src/desk/modules/admin-desk/plans/meta.ts      |  2 +-
+ lanes/ALL-FILES.csv                                |  1 +
+ lanes/docs.txt                                     |  1 +
+ lovable-gold/README.md                             |  2 +-
+ 18 files changed, 95 insertions(+), 39 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +66,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (64c48a5806104c83a5b5f22df8d559994d6bb4a7)
+WIP snapshot: refs/wip/last (16e088194e58c9dbb9a950abb540d3868e7365d3)
