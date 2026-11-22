@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 01:45 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 01:45 PKT) - read this FIRST for the Desk after a compaction
 DOING: Next = 1i D5a-5 fail-closed (waits his haan); list in docs/claude/admin-desk/NOW-LIST-23NOV.md
 NEXT STEP: REMAINING: 1i D5a-5, 1j D5 screen, 1k D5b, 1l D5c, 1m D6 cards, 1n E+F, 1o Dashboard FINAL; total 23 phases
 HIS LAST WORD: his 01:45 order: save for compaction
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 7afc45f1 23 Nov 01:45 NOW-LIST remaining phases
 - 28f6fd3f 23 Nov 01:38 ledger line b1542e59
 - b1542e59 23 Nov 01:38 D5a-4 GREEN report
 - 400d879c 23 Nov 01:28 ledger line e7e0e670
@@ -72,12 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 84619001 23 Nov 01:27 ledger line 5906a650
 - 5906a650 23 Nov 01:27 D5a-4: outside copy + audit-before-install law
 - 74a31a4d 23 Nov 01:09 ledger line dfe7aeae
-- dfe7aeae 23 Nov 01:09 D5a-4: AD4b lookup audit proof chain
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/NOW-LIST-23NOV.md
-?? docs/claude/admin-desk/NOW-LIST-23NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
