@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 02:08 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 02:08 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1i D5a-5: point list + contract written at repo top; code next (lookup.rs deadline/freshness/breaker/D20, kernel lookup_view)
 NEXT STEP: write 1i code, tests, hostile audit, then install command
 HIS LAST WORD: his 02:07 order: points, plan, web research, then code
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 327ceebf 23 Nov 02:08 1i plan and list
 - fbea1b8d 23 Nov 02:03 ledger line aff35c7c
 - aff35c7c 23 Nov 02:03 Order lock
 - 1fd877b7 23 Nov 01:54 ledger line 8df10397
@@ -72,12 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 9ef4c33e 23 Nov 01:45 ledger line 7afc45f1
 - 7afc45f1 23 Nov 01:45 NOW-LIST remaining phases
 - 28f6fd3f 23 Nov 01:38 ledger line b1542e59
-- b1542e59 23 Nov 01:38 D5a-4 GREEN report
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/D5A5-FAIL-CLOSED-LIST-23NOV.md
-?? docs/claude/admin-desk/D5A5-FAIL-CLOSED-LIST-23NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
