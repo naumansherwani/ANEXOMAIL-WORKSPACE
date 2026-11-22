@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 10:48 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 10:48 PKT) - read this FIRST for the Desk after a compaction
 DOING: D5a-1 coded: contract JSON + DESK NO-MONEY gate; refund law; plans text fixed
 NEXT STEP: D5a-4 audit ledger SQL, then D5a-2 registry SQL, D5a-3 lookup vs test double; S1 waits his haan; rename Plans and prices only with his word
 HIS LAST WORD: his 10:47 word: no refund, act as CEO, start first phase
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- aa0fb942 22 Nov 10:48 Desk D5a-1 contract and no-money gate
 - f033fe12 22 Nov 10:43 ledger line ed675201
 - ed675201 22 Nov 10:43 Desk no-promise law, suspension classes, runbook drafts, D-series blueprint
 - 6c05bcfe 22 Nov 10:43 ledger line 987d934f
@@ -72,22 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 94eb01fd 22 Nov 10:35 ledger line 806a79d8
 - 806a79d8 22 Nov 10:35 Desk six main sections plan
 - 381007c3 22 Nov 10:35 ledger line cc67c510
-- cc67c510 22 Nov 10:35 Desk six sections plan
 
 ## Uncommitted Desk files
- M admin-desk/BLUEPRINT-ADMIN-DESK.md
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/DESK-PHASES-22NOV.md
- M admin-desk/RUNBOOK-LIBRARY-DRAFT-22NOV.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
- M docs/claude/admin-desk/RUNBOOK-LIBRARY-DRAFT-22NOV.md
-A  docs/claude/admin-desk/gates/DESK-LOOKUP-CONTRACT.json
-MM docs/claude/admin-desk/state/WORKING-NOW.md
-M  founder-web/src/desk/modules/admin-desk/plans/README.md
-M  founder-web/src/desk/modules/admin-desk/plans/meta.ts
-?? admin-desk/gates/DESK-LOOKUP-CONTRACT.json
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
