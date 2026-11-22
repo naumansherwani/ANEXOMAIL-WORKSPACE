@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 04:48 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 04:48 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1l code done, waits his ad-auto + desk-install + my Chrome look
 NEXT STEP: his 2 server lines, Chrome look, then 1l GREEN
 HIS LAST WORD: his order: write the researched points as code
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 3c87ed51 23 Nov 04:48 1l D5c Escalate code
 - 988153f9 23 Nov 04:36 ledger line 8f1f5669
 - 8f1f5669 23 Nov 04:36 1l research + contract before code
 - d23a5a2e 23 Nov 04:30 ledger line f4afe900
@@ -72,29 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - e2147d46 23 Nov 04:25 ledger line c8287687
 - c8287687 23 Nov 04:25 founder escalation inbox parked after 1o + 1a
 - 89e0e045 23 Nov 04:25 ledger line 2b5144d1
-- 2b5144d1 23 Nov 04:25 1k closed: approvals + tick proved live
 
 ## Uncommitted Desk files
- M admin-desk/D5C-ESCALATE-LIST-23NOV.md
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/NOW-LIST-23NOV.md
- M admin-desk/server/src/main.rs
- M docs/claude/admin-desk/D5C-ESCALATE-LIST-23NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/server/src/main.rs
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskCards.tsx
- M founder-web/src/desk/DeskRunbooks.tsx
- M founder-web/src/desk/desk_cards.ts
-?? admin-desk/server/src/escalations.rs
-?? admin-desk/sql/AD10.sql
-?? admin-desk/sql/checks/AD10-check.sql
-?? docs/claude/admin-desk/server/src/escalations.rs
-?? docs/claude/admin-desk/sql/AD10.sql
-?? docs/claude/admin-desk/sql/checks/AD10-check.sql
-?? founder-web/src/desk/DeskEscalate.tsx
-?? founder-web/src/desk/desk_case_pure.test.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
