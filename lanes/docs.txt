@@ -344,6 +344,7 @@ docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md
 docs/claude/admin-desk/DASHBOARD-CARDS-CLICK-PLAN-22NOV.md
 docs/claude/admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
 docs/claude/admin-desk/DASHBOARD-LIVE-COMMAND-22NOV.md
+docs/claude/admin-desk/DBSC-PHASE-LIST-23NOV.md
 docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
 docs/claude/admin-desk/DESK-GATE-LESSON-22NOV.md
 docs/claude/admin-desk/DESK-PHASES-22NOV.md
@@ -400,6 +401,7 @@ docs/claude/admin-desk/scripts/ad-auto.sh
 docs/claude/admin-desk/scripts/ad-check.sh
 docs/claude/admin-desk/scripts/ad-db-env.sh
 docs/claude/admin-desk/scripts/ad-sql-run.sh
+docs/claude/admin-desk/scripts/cp-install.sh
 docs/claude/admin-desk/scripts/desk-alias-look.sh
 docs/claude/admin-desk/scripts/desk-appdb.sh
 docs/claude/admin-desk/scripts/desk-cert-sync.sh
@@ -422,6 +424,7 @@ docs/claude/admin-desk/server/contract/DESK-LOOKUP-CONTRACT.json
 docs/claude/admin-desk/server/src/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/server/src/auth.rs
 docs/claude/admin-desk/server/src/bridge.rs
+docs/claude/admin-desk/server/src/dbsc.rs
 docs/claude/admin-desk/server/src/door.rs
 docs/claude/admin-desk/server/src/h3.rs
 docs/claude/admin-desk/server/src/lookup.rs
@@ -445,6 +448,7 @@ docs/claude/admin-desk/sql/AD6b.sql
 docs/claude/admin-desk/sql/AD6c.sql
 docs/claude/admin-desk/sql/AD6d.sql
 docs/claude/admin-desk/sql/AD7.sql
+docs/claude/admin-desk/sql/AD8.sql
 docs/claude/admin-desk/sql/README.md
 docs/claude/admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/sql/checks/AD1-check.sql
@@ -458,6 +462,7 @@ docs/claude/admin-desk/sql/checks/AD6b-check.sql
 docs/claude/admin-desk/sql/checks/AD6c-check.sql
 docs/claude/admin-desk/sql/checks/AD6d-check.sql
 docs/claude/admin-desk/sql/checks/AD7-check.sql
+docs/claude/admin-desk/sql/checks/AD8-check.sql
 docs/claude/admin-desk/sql/checks/README.md
 docs/claude/admin-desk/state/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/state/COMPACT-SAVE.md

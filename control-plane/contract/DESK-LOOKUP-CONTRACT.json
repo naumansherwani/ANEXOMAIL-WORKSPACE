@@ -1,0 +1,13 @@
+{
+  "_note": "D5a-1 (his word 22 Nov 2026, approved 10:10 PKT): the ONE contract for what the Admin Desk may ask his Control Plane. The commit gate DESK NO-MONEY reads forbidden_identifiers from here. Money, invoices, cards and transactions live on the founder side only.",
+  "version": "2026-11-22.1",
+  "transport": "HTTP/3 only, TLS 1.3 AES-256-GCM, X25519MLKEM768; answer verified in the Desk Rust WASM kernel (Rule 52)",
+  "request": {"signature": "Ed25519", "audience": "desk-lookup", "expiry_seconds": 60, "needs": ["request_id", "employee_id", "company_ref", "reason", "requested_fields", "issued_at"], "method": "read-only", "stored_copy": false},
+  "allowed_fields": ["package_id", "package_version", "package_effective_from", "features_included", "features_enabled", "limit_storage", "limit_seats", "limit_attachment", "usage_storage", "usage_seats", "service_state", "payment_received_service_not_active", "payment_flag_since", "grace_days_left", "suspension_class", "suspension_since", "sla_target", "data_freshness"],
+  "service_states": ["active", "not_active_yet", "grace_period", "suspended", "setting_up"],
+  "suspension_classes": ["SR1", "SR2", "SR3", "SR4", "SR5", "SR6", "SR7", "SR8"],
+  "on_failure": "fail closed: show Data unavailable plus freshness; never show an old answer as current",
+  "audit_line": ["employee_id", "company_ref", "time", "reason", "requested_fields", "request_id"],
+  "forbidden_identifiers": ["amount", "amount_cents", "amount_minor", "invoice", "invoice_id", "invoice_url", "card_number", "card_last4", "cvv", "transaction_id", "payment_intent", "refund", "refund_amount", "billing_address", "iban", "bank_account", "polar_customer", "polar_order", "polar_secret", "webhook_secret", "webhook_url", "sk_live"],
+  "forbidden_note": "Names of fields, columns, variables or JSON keys in Desk code. Comments and tests are not scanned. A package price for a landing page is not a Desk field."
+}

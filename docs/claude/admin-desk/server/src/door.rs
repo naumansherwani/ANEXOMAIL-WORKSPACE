@@ -84,7 +84,9 @@ pub async fn login(Json(b): Json<Login>) -> Response {
     let (token, th) = auth::new_token();
     if let Err(e) = rows(&c, &format!("select desk.fadm_session_create('{owner}'::uuid, '\\x{}'::bytea, {TTL_SECS})::text", hex(&th))).await { eprintln!("desk door: session create: {e}"); return json(StatusCode::SERVICE_UNAVAILABLE, serde_json::json!({"error":"db_unavailable"})); }
     let mut resp = json(StatusCode::OK, serde_json::json!({"token": token, "expires_in": TTL_SECS}));
-    resp.headers_mut().insert(header::SET_COOKIE, set_cookie(&token, TTL_SECS)); resp
+    resp.headers_mut().insert(header::SET_COOKIE, set_cookie(&token, TTL_SECS));
+    if let Some((k, v)) = crate::dbsc::registration_header(&th) { resp.headers_mut().insert(k, v); }   // R3a2-dbsc D1: the browser may now bind this session to its device key
+    resp
 }
 
 // R3d: the kernel's bearer token comes FIRST (it is the one the request MAC is keyed on), the HttpOnly cookie second.
@@ -94,6 +96,7 @@ pub fn token_of(h: &HeaderMap) -> Option<String> {
 
 pub async fn me(req: Request) -> Response {
     let Some(t) = token_of(req.headers()) else { return json(StatusCode::UNAUTHORIZED, serde_json::json!({"error":"no_session"})) };
+    if !crate::dbsc::enforce_ok(req.headers(), &auth::token_hash(&t)).await { return json(StatusCode::UNAUTHORIZED, serde_json::json!({"error":"dbsc_required"})); }
     let Ok(c) = connect().await else { return json(StatusCode::SERVICE_UNAVAILABLE, serde_json::json!({"error":"db_unavailable"})) };
     match rows(&c, &format!("select email, display_name, role, expires_at::text from desk.fadm_session_lookup('\\x{}'::bytea)", hex(&auth::token_hash(&t)))).await {
         Ok(v) => match v.first() {

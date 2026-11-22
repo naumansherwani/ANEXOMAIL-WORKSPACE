@@ -33,6 +33,9 @@ serde = { version = "1.0.229", features = ["derive"] }
 ed25519-dalek = { version = "2", default-features = false, features = ["std", "rand_core"] }
 hmac = "0.12"
 hkdf = "0.12"
+# R3a2-dbsc (23 Nov 2026): Desk-own device-bound sessions. ES256 verification with ring (already inside rustls), base64url for the JWT parts.
+ring = "0.17"
+base64 = "0.22"
 
 [profile.release]
 opt-level = 3

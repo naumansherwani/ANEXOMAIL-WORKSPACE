@@ -8,6 +8,7 @@ version = "0.0.1"
 dependencies = [
  "argon2",
  "axum",
+ "base64",
  "bytes",
  "ed25519-dalek",
  "futures-util",
@@ -18,6 +19,7 @@ dependencies = [
  "hmac 0.12.1",
  "http-body-util",
  "quinn",
+ "ring",
  "rustls",
  "rustls-native-certs",
  "rustls-pemfile",

@@ -45,6 +45,8 @@ SEED=/etc/anexomail-desk/sign.seed; mkdir -p -m 700 /etc/anexomail-desk
 if [ -s "$SEED" ]; then echo "   Rule 52 signing key: kept (existing)"; else ( umask 077; head -c 32 /dev/urandom | od -An -tx1 | tr -d ' \n' >"$SEED" ); echo "   Rule 52 signing key: created (32 random bytes, root-only)"; fi
 chown root:root "$SEED"; chmod 600 "$SEED"
 mkdir -p /etc/systemd/system/$SVC.service.d; printf '[Service]\nLoadCredential=sign.seed:%s\nEnvironment=DESK_SIGN_SEED_FILE=%%d/sign.seed\n' "$SEED" >/etc/systemd/system/$SVC.service.d/sign.conf
+# R3a2-dbsc (23 Nov 2026): device-bound sessions in OBSERVE mode (register, refresh, ledger; never blocks). Written ONCE: if the file exists (e.g. he later set enforce) it is never overwritten. Rollback = DESK_DBSC=off in that file.
+[ -f /etc/systemd/system/$SVC.service.d/dbsc.conf ] && echo "   DBSC mode: kept ($(grep -o 'DESK_DBSC=[a-z]*' /etc/systemd/system/$SVC.service.d/dbsc.conf))" || { printf '[Service]\nEnvironment=DESK_DBSC=observe\n' >/etc/systemd/system/$SVC.service.d/dbsc.conf; echo "   DBSC mode: observe (set now)"; }
 # the awam AES-256 edge serves only names whose certificate it has copied; run the existing sync so a new Desk host is not refused for up to a day
 [ -x /usr/local/sbin/anexomail-awam-certs-sync ] && /usr/local/sbin/anexomail-awam-certs-sync >/dev/null 2>&1
 echo "== 4/4 start + check"
@@ -76,3 +78,6 @@ else
     case "$AS" in *':4400"'*) echo "OK: browsers are told h3 on UDP 4400 (first visit still arrives through Caddy; the next ones use the Desk's own QUIC)";; *) echo "FAIL: header not as expected, restoring the backup"; cp -a "$B" "$CF"; systemctl reload caddy;; esac
   else echo "FAIL: caddy validate or reload failed, restoring the backup"; cp -a "$B" "$CF"; systemctl reload caddy; fi
 fi
+# 7/7 (his 22 Nov 2026 23:57: ONE install does everything): the Control Plane responder (own binary, UDP 4410, read-only database role), wired to the Desk, with an end-to-end proof line
+echo "== 7/7 Control Plane (D5a-3b)"
+bash <(show admin-desk/scripts/cp-install.sh) || exit $?

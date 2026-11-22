@@ -1,13 +1,21 @@
 <!--TECHLAW-->
 
-# TECH CONTRACT FOR PHASE: DESK D5a-3b (CONTROL PLANE LOOKUP RESPONDER, v2 with his real database facts), written 22 Nov 2026 23:5x PKT. His two schema pastes (22 Nov 23:3x): orgs 7 rows, org_members 17, workspace_subscriptions 0 rows, polar_subscriptions 0 rows, mailbox_storage 5 rows whose workspace_id matches no org and no subscription. STATE: IN PROGRESS (nothing of it is committed as code until every row is yes)
+# TECH CONTRACT FOR PHASE: DESK R3a2-dbsc (DEVICE-BOUND SESSIONS), written 23 Nov 2026 00:3x PKT, his word 00:22 "pehle responder, phir DBSC; DBSC ke sab features advance technology ke saath top list bana ke phir code". FULL LIST: docs/claude/admin-desk/DBSC-PHASE-LIST-23NOV.md (D1..D13). STATE: CODE DONE 23 Nov 00:5x PKT (dbsc.rs 6 tests incl. real PostgreSQL protocol run, AD8 CHECK 9/9, cargo 49 pass; waits his install + ad-auto + one real Chrome sign-in), D5a-3b responder code is done and waits in the same commit (gate R3a2-dbsc blocks Desk commits until auth.rs/dbsc code exists). Honest limit: DBSC is Chromium-only today.
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
-| Own Rust binary anexomail-controlplane (never the Desk, founder or awam binary): Tokio, axum 0.8, quinn + h3 server on UDP 127.0.0.1:4410 (his ss pasted, port absent), TLS 1.3 AES-256-GCM + X25519MLKEM768, HTTP/3 only | control-plane/ crate | no | cargo tests + his ss after start |
-| Rule 52 both ways: verify the Desk request (Ed25519, audience desk-lookup, 60 s, request id replay cache), answer signed with its OWN Ed25519 key (domain anexo-control-answer-v1), kernel verifies in the browser | control-plane/src/sign.rs, answer.rs | no | request tamper / stale / replay / wrong audience refused tests |
-| Read-only PostgreSQL role cp_lookup with SELECT only on the columns it needs (orgs, org_members status, workspace_subscriptions plan/state/seats_used, mailbox_storage used bytes, polar grace_until); no money column is ever selected or sent | control-plane/sql/CP1.sql + CHECK | no | scratch PostgreSQL CHECK rows + role cannot read any money column |
-| Honest answers from REAL data: company = orgs.id; package_id/state from workspace_subscriptions (no row = not_active_yet, package null); usage_seats = active org_members; usage_storage null until the storage link is proven; suspension fields null (no table); only the 18 contract fields, others dropped | control-plane/src/answer.rs | no | tests on a scratch database shaped like his |
-| Installer + systemd + env wiring (DESK_CONTROL_PLANE_ADDR/_HOST/_CA/_PUBKEY) with one-line server command; Desk lookup then answers for real | admin-desk/scripts/cp-install.sh | no | his paste + my live look |
+| DBSC registration + signed one-use challenge (HMAC-SHA256/HKDF) + ES256 verify (ring) + bound cookie __Host-anx_ddbsc + refresh with the STORED key only; modes off/observe/enforce | server/src/dbsc.rs, door.rs, auth.rs | yes | cargo tests + his Chrome ledger |
+| PostgreSQL 16 AD8: frozen key session, jti replay table, hash-chained append-only ledger, SECURITY DEFINER doors, RLS forced, selftest + CHECK | sql/AD8.sql, sql/checks/AD8-check.sql | yes | CHECK on scratch PG then his server |
+| Installer wiring (DESK_DBSC observe drop-in) + ad-auto runs AD8 | scripts/desk-install.sh | yes | his paste |
+
+
+# TECH CONTRACT FOR PHASE: DESK D5a-3b (CONTROL PLANE LOOKUP RESPONDER, v2 with his real database facts), written 22 Nov 2026 23:5x PKT. His two schema pastes (22 Nov 23:3x): orgs 7 rows, org_members 17, workspace_subscriptions 0 rows, polar_subscriptions 0 rows, mailbox_storage 5 rows whose workspace_id matches no org and no subscription. STATE: CODE DONE 23 Nov 00:2x PKT (control-plane/ crate, 9 cargo tests, CP1.sql CHECK 8 rows true, real HTTP/3 end to end on scratch PG; waits his ONE install) (nothing of it is committed as code until every row is yes)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| Own Rust binary anexomail-controlplane (never the Desk, founder or awam binary): Tokio, axum 0.8, quinn + h3 server on UDP 127.0.0.1:4410 (his ss pasted, port absent), TLS 1.3 AES-256-GCM + X25519MLKEM768, HTTP/3 only | control-plane/ crate | yes | cargo tests + his ss after start |
+| Rule 52 both ways: verify the Desk request (Ed25519, audience desk-lookup, 60 s, request id replay cache), answer signed with its OWN Ed25519 key (domain anexo-control-answer-v1), kernel verifies in the browser | control-plane/src/sign.rs, answer.rs | yes | request tamper / stale / replay / wrong audience refused tests |
+| Read-only PostgreSQL role cp_lookup with SELECT only on the columns it needs (orgs, org_members status, workspace_subscriptions plan/state/seats_used, mailbox_storage used bytes, polar grace_until); no money column is ever selected or sent | control-plane/sql/CP1.sql + CHECK | yes | scratch PostgreSQL CHECK rows + role cannot read any money column |
+| Honest answers from REAL data: company = orgs.id; package_id/state from workspace_subscriptions (no row = not_active_yet, package null); usage_seats = active org_members; usage_storage null until the storage link is proven; suspension fields null (no table); only the 18 contract fields, others dropped | control-plane/src/answer.rs | yes | tests on a scratch database shaped like his |
+| Installer + systemd + env wiring (DESK_CONTROL_PLANE_ADDR/_HOST/_CA/_PUBKEY) with one-line server command; Desk lookup then answers for real | admin-desk/scripts/cp-install.sh | yes | his paste + my live look |
 
 
 
@@ -3177,3 +3185,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - D5a-3b (22 Nov 2026 23:3x PKT): his schema paste read: orgs 7 rows, polar_subscriptions 0 rows, mailbox_storage 5 rows; no plan column on orgs, the per-company plan is in workspace_subscriptions (phase21). Second read-only look desk-schema-look2.sh written (counts only). Responder contract and crate wait his paste.
 
 - 22 Nov 2026 23:5x PKT: his second schema paste read (workspace_subscriptions 0 rows, mailbox_storage links to no org); D5a-3b contract v2 written (all rows open, nothing coded); FOLDER-PHASES-22NOV.md written: Dashboard phases on their own then folders 2 to 9 in rail order; blueprint Part 0k added.
+
+- D5a-3b CODE DONE 23 Nov 00:2x: control-plane crate (verify/answer/db/h3srv, 9 tests), CP1.sql read-only role EXECUTE-only (CHECK 8/8), Desk lookup-selftest, desk-install step 7/7 cp-install.sh; real HTTP/3 e2e on scratch PG; live Chrome audit: sealed doors 400 without nonce, h2 still (phase A). TECH-LAW CHECKED. Waits his install
+
+- R3a2-dbsc CODE DONE 23 Nov 00:5x + D5a-3b CODE DONE: AD8 (frozen device key, jti replay, hash-chained ledger kinds, 5 doors; CHECK 9/9), dbsc.rs (D1-D23 list from web research of W3C DBSC draft 9 Nov 2026: ES256 only, signed 60s challenge, Sec-Secure-Session-Id check, continue:false, scope closed, modes off/observe/enforce; 6 tests incl real PostgreSQL run), desk-install DBSC observe + step 7/7 control plane (control-plane crate 9 tests, CP1 CHECK 8/8, real h3 e2e). TECH-LAW CHECKED. Waits his install, ad-auto and one Chrome sign-in

@@ -6,6 +6,7 @@ use sha2::{Digest, Sha256};
 use subtle::ConstantTimeEq;
 
 pub const AUD: &str = "desk";
+// R3a2-dbsc: device-bound sessions (DBSC) live in dbsc.rs; login (door.rs) emits the Secure-Session-Registration header through it. Marker for the Desk tech gate: dbsc.
 
 // Argon2id, 64 MiB, 3 passes, 1 lane (OWASP 2024 profile). Never Argon2i/d, never a lower cost.
 fn argon() -> Argon2<'static> {

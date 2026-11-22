@@ -22,6 +22,7 @@ admin-desk/D5A-GREEN-LIST-22NOV.md
 admin-desk/DASHBOARD-CARDS-CLICK-PLAN-22NOV.md
 admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
 admin-desk/DASHBOARD-LIVE-COMMAND-22NOV.md
+admin-desk/DBSC-PHASE-LIST-23NOV.md
 admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
 admin-desk/DESK-GATE-LESSON-22NOV.md
 admin-desk/DESK-PHASES-22NOV.md
@@ -78,6 +79,7 @@ admin-desk/scripts/ad-auto.sh
 admin-desk/scripts/ad-check.sh
 admin-desk/scripts/ad-db-env.sh
 admin-desk/scripts/ad-sql-run.sh
+admin-desk/scripts/cp-install.sh
 admin-desk/scripts/desk-alias-look.sh
 admin-desk/scripts/desk-appdb.sh
 admin-desk/scripts/desk-cert-sync.sh
@@ -100,6 +102,7 @@ admin-desk/server/contract/DESK-LOOKUP-CONTRACT.json
 admin-desk/server/src/00-FOUNDER-TECH-RULE.md
 admin-desk/server/src/auth.rs
 admin-desk/server/src/bridge.rs
+admin-desk/server/src/dbsc.rs
 admin-desk/server/src/door.rs
 admin-desk/server/src/h3.rs
 admin-desk/server/src/lookup.rs
@@ -123,6 +126,7 @@ admin-desk/sql/AD6b.sql
 admin-desk/sql/AD6c.sql
 admin-desk/sql/AD6d.sql
 admin-desk/sql/AD7.sql
+admin-desk/sql/AD8.sql
 admin-desk/sql/README.md
 admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/checks/AD1-check.sql
@@ -136,6 +140,7 @@ admin-desk/sql/checks/AD6b-check.sql
 admin-desk/sql/checks/AD6c-check.sql
 admin-desk/sql/checks/AD6d-check.sql
 admin-desk/sql/checks/AD7-check.sql
+admin-desk/sql/checks/AD8-check.sql
 admin-desk/sql/checks/README.md
 admin-desk/state/00-FOUNDER-TECH-RULE.md
 admin-desk/state/COMPACT-SAVE.md
@@ -172,6 +177,22 @@ banned-countries/banned.json
 bun.lock
 bunfig.toml
 components.json
+control-plane/00-FOUNDER-TECH-RULE.md
+control-plane/Cargo.lock
+control-plane/Cargo.toml
+control-plane/contract/00-FOUNDER-TECH-RULE.md
+control-plane/contract/DESK-LOOKUP-CONTRACT.json
+control-plane/sql/00-FOUNDER-TECH-RULE.md
+control-plane/sql/CP1.sql
+control-plane/sql/checks/00-FOUNDER-TECH-RULE.md
+control-plane/sql/checks/CP1-check.sql
+control-plane/src/00-FOUNDER-TECH-RULE.md
+control-plane/src/answer.rs
+control-plane/src/core.rs
+control-plane/src/db.rs
+control-plane/src/h3srv.rs
+control-plane/src/main.rs
+control-plane/src/verify.rs
 docs/cursor-work/server/all-pull.sh
 docs/cursor-work/server/manifest-sync.py
 docs/cursor-work/server/manifest-verify.py

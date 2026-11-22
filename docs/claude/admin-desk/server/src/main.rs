@@ -16,6 +16,7 @@ mod door;
 mod h3;
 mod probes;
 mod bridge;
+mod dbsc;
 mod lookup;
 mod packages;
 mod sign;
@@ -73,6 +74,9 @@ async fn main() {
         std::io::stdin().read_line(&mut l).ok();
         match auth::hash_password(l.trim_end_matches(['\n', '\r'])) { Ok(h) => { println!("{h}"); return; } Err(e) => { eprintln!("hashpw: {e}"); std::process::exit(3); } }
     }
+    if a.get(1).map(String::as_str) == Some("lookup-selftest") && a.len() == 3 {
+        match lookup::selftest(&a[2]).await { Ok(o) => { println!("{o}"); return; } Err(e) => { println!("LOOKUP SELFTEST FAIL: {e}"); std::process::exit(4); } }
+    }
     if a.get(1).map(String::as_str) == Some("h3check") && a.len() == 5 {
         let cert = std::fs::read(&a[4]).expect("cert file");
         match h3::selfcheck(a[2].parse().expect("ip:port"), &a[3], &cert).await { Ok(o) => { println!("H3CHECK OK: {o} (handshake = TLS 1.3, AES-256-GCM, X25519MLKEM768: the client offered nothing else)"); return; } Err(e) => { println!("H3CHECK FAIL: {e}"); std::process::exit(1); } }
@@ -88,6 +92,7 @@ async fn main() {
         .route("/desk/v1/auth/me", get(door::me))
         .route("/desk/v1/auth/logout", post(door::logout))
         .route("/desk/v1/sig/ping", get(signed::ping))
+        .route("/desk/v1/dbsc/status", get(dbsc::status))
         .route("/desk/v1/bridge/summary", get(bridge::summary))
         .route("/desk/v1/bridge/services", get(bridge::services))
         .route("/desk/v1/bridge/alerts", get(bridge::alerts))
@@ -99,6 +104,9 @@ async fn main() {
     let app = Router::new()
         .route("/desk/v1/health", get(health))
         .route("/desk/v1/key", get(signed::key))
+        // R3a2-dbsc: the BROWSER calls these itself (no kernel MAC possible), protected by the signed challenge + device key; 404 while DESK_DBSC is off
+        .route("/desk/v1/dbsc/start", post(dbsc::start))
+        .route("/desk/v1/dbsc/refresh", post(dbsc::refresh))
         .merge(sealed)
         .fallback_service(files)
         .layer(middleware::from_fn(desk_headers))

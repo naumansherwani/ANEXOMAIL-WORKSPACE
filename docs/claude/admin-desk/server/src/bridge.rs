@@ -23,6 +23,7 @@ fn uuid_ok(s: &str) -> bool { s.len() == 36 && s.bytes().all(|b| b.is_ascii_hexd
 /// The owner behind the session token (None = no live session). The kernel MAC was already checked by signed::guard.
 pub(crate) async fn owner(h: &HeaderMap) -> Result<(std::sync::Arc<tokio_postgres::Client>, String), Response> {
     let Some(t) = token_of(h) else { return Err(err(StatusCode::UNAUTHORIZED, "no_session")) };
+    if !crate::dbsc::enforce_ok(h, &auth::token_hash(&t)).await { return Err(err(StatusCode::UNAUTHORIZED, "dbsc_required")); }
     let Ok(c) = connect().await else { return Err(err(StatusCode::SERVICE_UNAVAILABLE, "db_unavailable")) };
     let q = format!("select owner_id::text from desk.fadm_session_lookup('\\x{}'::bytea)", auth::token_hash(&t).iter().map(|x| format!("{x:02x}")).collect::<String>());
     match rows(&c, &q).await {

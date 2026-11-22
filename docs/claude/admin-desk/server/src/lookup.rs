@@ -102,6 +102,24 @@ pub async fn h3_post(addr: std::net::SocketAddr, host: &str, ca_pem: Option<&[u8
     };
     tokio::time::timeout(Duration::from_secs(10), work).await.ok().flatten()
 }
+/// `anexomail-desk lookup-selftest <company_ref>`: the real end-to-end proof on his server without a Desk login. Signs a request with the Desk's own key, sends it over HTTP/3 to the Control Plane
+/// (env DESK_CONTROL_PLANE_*), verifies the signed answer, then proves three refusals: the SAME request again (replay), the answer checked against a WRONG key, and a company the database does not know.
+pub async fn selftest(company: &str) -> Result<String, String> {
+    crate::signed::init();
+    let Some(s) = crate::signed::signer() else { return Err("Desk signing key not loaded".into()) };
+    let p = plane(); if matches!(p, Plane::Off) { return Err("DESK_CONTROL_PLANE_ADDR / _HOST are not set".into()); }
+    let key = cp_pub(); let now = crate::signed::now_secs();
+    let fields: Vec<String> = ["service_state", "usage_seats", "package_id", "data_freshness"].iter().map(|x| x.to_string()).collect();
+    let rid = uuid4(); let env = build_request(s, &rid, "selftest", company, "installer end to end self test", &fields, now);
+    let ans = p.ask(&env).await.ok_or("no answer over HTTP/3 (Control Plane down, certificate not trusted, or request refused)")?;
+    let got = accept(&ans, &key, &rid, company, &fields, now).map_err(|e| format!("answer not accepted: {e:?}"))?;
+    if p.ask(&env).await.is_some() { return Err("REPLAY WAS ANSWERED (must be refused)".into()); }
+    if accept(&ans, &hex(&[9u8; 32]), &rid, company, &fields, now).is_ok() { return Err("answer accepted under a wrong key".into()); }
+    let rid2 = uuid4(); let env2 = build_request(s, &rid2, "selftest", "no-such-company-0000", "installer end to end self test", &fields, now);
+    let a2 = p.ask(&env2).await.ok_or("no answer for the unknown-company probe")?;
+    if accept(&a2, &key, &rid2, "no-such-company-0000", &fields, now) != Err(Reject::Refused) { return Err("unknown company was not refused".into()); }
+    Ok(format!("LOOKUP SELFTEST OK: signed answer verified, replay refused, wrong key refused, unknown company refused; fields {}", Value::Object(got)))
+}
 fn cp_pub() -> String { std::env::var("DESK_CONTROL_PLANE_PUBKEY").unwrap_or_default() }
 
 fn out(status: StatusCode, body: Value) -> Response { (status, [(header::CONTENT_TYPE, "application/json")], body.to_string()).into_response() }
