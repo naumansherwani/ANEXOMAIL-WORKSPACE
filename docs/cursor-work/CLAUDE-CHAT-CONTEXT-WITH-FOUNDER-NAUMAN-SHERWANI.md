@@ -5242,3 +5242,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 22 Nov 2026 08:47 PKT: Desk D1d and D1e GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED, live Chrome on desk-Dqnc5mb_.js; D3b probe-count bug fixed, waits install
 
 - 22 Nov 2026 08:55 PKT: Desk status written, phase A order (fallback first then HTTP/3 only) recorded, D3b fix waits his install
+
+- 22 Nov 2026 08:58 PKT: Desk transport word recorded, HTTP/3 primary with advance technology, TCP fallback only to arrive

@@ -2997,3 +2997,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 22 Nov 2026 08:55 PKT: Desk phase A order (his 08:51 word): keep the TCP fallback until HTTP/3 page load is proven in Chrome and the DNS HTTPS record is answered by Namecheap (his hands); only then HTTP/3-only on the Desk host, with rollback and his haan. No change made.
 
 - 22 Nov 2026 08:55 PKT: Desk status written, phase A order (fallback first then HTTP/3 only) recorded, D3b fix waits his install
+
+- 22 Nov 2026 08:58 PKT: Desk transport (his 08:52 word): HTTP/3 primary with QUIC, TLS 1.3 AES-256-GCM, X25519MLKEM768, WebTransport, Rule 52; TCP only as the arrival fallback. No change on his server.
+
+- 22 Nov 2026 08:58 PKT: Desk transport word recorded, HTTP/3 primary with advance technology, TCP fallback only to arrive
