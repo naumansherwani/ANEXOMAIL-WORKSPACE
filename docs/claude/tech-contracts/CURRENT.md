@@ -2888,3 +2888,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 22 Nov 05:55 PKT: Desk login = his perfect photo: one light below the card, double light removed, rest intact; fits 1366x768, 1440x900, 390x844, 820x1180; waits desk-install + live look
 
 - 22 Nov 06:05 PKT: Desk login: one light below the card, eye + Save password kept (restored after a silent working-tree loss, HEAD untouched), fits 1366x768/1440x900/390/820/1920; waits desk-install
+
+- 22 Nov 06:15 PKT: repo is PUBLIC (verified), no foreign commits, no secrets; private flip needs a server deploy key first; photo compare done; Save-password row question open
