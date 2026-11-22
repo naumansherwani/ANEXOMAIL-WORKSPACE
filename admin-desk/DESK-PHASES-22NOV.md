@@ -1,4 +1,4 @@
-# ADMIN DESK: ORIGINAL BLUEPRINT BY PHASE (technology + features next to every phase). Written 22 Nov 2026 06:42 PKT, his 06:41 order.
+# ADMIN DESK: ORIGINAL BLUEPRINT BY PHASE (technology + features next to every phase). Written 22 Nov 2026 06:42 PKT, his 06:41 order; ALPHABETIC ORDER (his 06:43 word) laid out 22 Nov 2026 06:50 PKT: A to Q in build order, old ids in brackets.
 ## STRICT RULES (top of the Desk, read before EVERY phase; the commit gate "DESK PHASE START" fails a Desk code commit without a fresh read)
 1. BEFORE EVERY PHASE: run `python3 docs/cursor-work/server/rules-read.py` then `python3 docs/cursor-work/server/desk-phase-start.py <phase>` and READ both outputs, plus docs/claude/admin-desk/state/WORKING-NOW.md and docs/claude/state/WORKING-NOW.md. The scripts print this page, the phase row and the ledger tail; receipts last 2 hours.
 2. ADVANCE TECHNOLOGY ONLY, AND IT MUST BECOME CODE: the technology written next to a phase is his word, not a wish. A listed technology missing from code = OPEN GAP, the phase is never GREEN. Contract first (docs/claude/tech-contracts/CURRENT.md), code second.
@@ -7,9 +7,9 @@
 5. GREEN only with "WIRED: YES / REAL: YES / TECH-LAW CHECKED" AND my live Chrome look (live bundle = repo, 390 / 820 / 1200+). Installed or written is not green.
 6. ISOLATION: the Desk is its OWN security domain (own binary, keys, tables, cookie, role). Never mix with founder or awam code. Vendor ban stays (Caddy, Namecheap by his hands, Hetzner, his own Rust only).
 7. Never remove or restyle a feature he did not name. Login look and Bridge look are his approved ones.
-8. After EVERY message: repo + ledger + blueprint + COMPACT-SAVE updated with real date and time (rec.sh, desk-copy-sync, lane-sync, manifest-sync, rules-gate 0 fail). Phases of the Bridge are named by ALPHABET (A, B, C ...).
+8. After EVERY message: repo + ledger + blueprint + COMPACT-SAVE updated with real date and time (rec.sh, desk-copy-sync, lane-sync, manifest-sync, rules-gate 0 fail). EVERY phase is named by ALPHABET in build order (A, B, C ... Q), never S-numbers; the old ids stay in brackets.
 9. Address him only as Aap, Roman Urdu, short; end every reply with the Rule-70 table and "Abhi code mein NAHI"; server commands = ONE line.
-## PHASES (technology | features | state at 22 Nov 2026 06:42 PKT)
+## PHASES (technology | features | state at 22 Nov 2026 06:50 PKT). Foundation rows first (done), then A to Q in order. One phase at a time, each GREEN only after my live Chrome look.
 | Phase | Advance technology | Features | State |
 |---|---|---|---|
 | R3a0 Host | Rust + Tokio + Axum 0.8, systemd hardening, TLS 1.3 AES-256-GCM, X25519MLKEM768, HTTP/3 (quinn + h3) on UDP 4400, Caddy edge | own process 127.0.0.1:4400, host gate, CSP + Trusted Types, HSTS, own installer | LIVE; browser page load still shows h2 (phase A below) |
@@ -17,21 +17,21 @@
 | R3a2 Login door | Argon2id, constant-time, PostgreSQL RLS (AD1), audience "desk" | /desk/v1/auth/login, sessions, append-only ledger, desk_app role | LIVE |
 | R3d Rule 52 | Rust Ed25519 signer, HKDF/HMAC, Desk-own Rust WASM kernel, deskCall | signed answers, kernel-verified, replay nonce | LIVE |
 | R4-1 Shell + dashboard | React 19, TS, Tailwind 4, kernel | rail + bottom tabs, greeting, clock, account menu with Sign out, menu closes outside | LIVE (06:11 install) |
-| R4-1b A | HTTP/3 page load, Alt-Svc, DNS HTTPS record (his Namecheap) | browser shows h3 for the Desk page | OPEN: Chrome shows h2; WebTransport reaches UDP 4400 (pcap) |
-| R4-1b B Bridge doors | Rust Axum, Rule 52, PostgreSQL RLS (fadm_need) | summary, services, alerts, alert act | INSTALLED, no live look yet (not green) |
-| R4-1b C WebTransport | Rust h3-webtransport (QUIC), Rule 52 per frame, Rust WASM kernel verify_frame (seq, STALE 12 s), Tokio | /wt/bridge stream, hello MAC, signed frames, real stream state on the chip, no fallback | C1 server INSTALLED; C2 kernel + client WRITTEN (sandbox Chromium proof ok); his install + my live look pending |
-| R4-1b D Command Bar | React 19, Framer Motion, kernel stream data | Live SLA clock, Active P1 alerts with package prices, Mail and QUIC heartbeat, red pulse at P1 >= 1 | NOT written |
-| R4-1b E Team fan-out | Tokio broadcast, WebTransport streams | one DB read per tick shared by all staff sessions | NOT written |
-| R4-1b F MoQ | Media over QUIC tracks (IETF), WebTransport | named tracks summary/services/alerts as MoQ objects | NOT written (tracks already named in the frame) |
-| AD2 / S1+S2 org + policy | PostgreSQL tuples (Zanzibar-style), RLS, Rust evaluator, deny-by-default | staff, relations, forbid-wins policy | NOT written |
-| ON1..ON12 staff accounts | webauthn-rs, Argon2id, DBSC, device-bound passkeys | enrollment code, devices, leaver, recovery, zero-trust locks (AAGUID, IP + shift, circuit breaker) | NOT written |
-| R3b / R4-2 inboxes | PostgreSQL RLS (fadm_mailbox), Rust, virtual list | hello, moveyourbusiness, resolved, billing (restricted), leo, noreply | NOT written |
-| R3c auto mail | Rust, RFC 3834 Auto-Submitted | 7-day per-sender gate, Polar signed webhook | NOT written |
-| R3e / R3f SLA | Rust, SQL SLA engine (AD4), SKIP LOCKED routing | assign, reply, clock stops only on human reply or resolve, root-cause note | NOT written (needs his support terms) |
-| W1 transparency log | Merkle tiles, signed tree head | audit log browsers remember | NOT written |
-| W3 hybrid PQ | ML-DSA + Ed25519, ML-KEM | post-quantum signatures and mail | NOT written |
-| R4-3..R4-10 mail | React, Tiptap 3, Rust, ML-KEM, WebTransport, Hetzner Storage Box, ClamAV, OpenPGP PQC (RFC 9980) | compose, rich text, undo/schedule, attachments, outbound TLS policy | NOT written |
-| R-CRM | React 19, Rust, RLS | accounts, leads, pipeline, tasks, reports in company style | NOT written |
-| R4 Managed Move-In | Rust async IMAP migrator | company mailbox migration | NOT written |
-| R3g Final | Rust, React | dashboard + final audit + load proof (S10) | NOT written |
+| A Browser HTTP/3 | HTTP/3 page load, Alt-Svc, DNS HTTPS record (his Namecheap) | browser shows h3 for the Desk page | OPEN: Chrome shows h2; WebTransport reaches UDP 4400 (pcap) |
+| B Bridge doors | Rust Axum, Rule 52, PostgreSQL RLS (fadm_need) | summary, services, alerts, alert act | INSTALLED, no live look yet (not green) |
+| C WebTransport | Rust h3-webtransport (QUIC), Rule 52 per frame, Rust WASM kernel verify_frame (seq, STALE 12 s), Tokio | /wt/bridge stream, hello MAC, signed frames, real stream state on the chip, no fallback | C1 server INSTALLED; C2 kernel + client WRITTEN (sandbox Chromium proof ok); his install + my live look pending |
+| D Command Bar | React 19, Framer Motion, kernel stream data | Live SLA clock, Active P1 alerts with package prices, Mail and QUIC heartbeat, red pulse at P1 >= 1 | NOT written |
+| E Team fan-out | Tokio broadcast, WebTransport streams | one DB read per tick shared by all staff sessions | NOT written |
+| F MoQ | Media over QUIC tracks (IETF), WebTransport | named tracks summary/services/alerts as MoQ objects | NOT written (tracks already named in the frame) |
+| G Org + policy (AD2, S1+S2) | PostgreSQL tuples (Zanzibar-style), RLS, Rust evaluator, deny-by-default | staff, relations, forbid-wins policy | NOT written |
+| H Staff accounts (ON1..ON12) | webauthn-rs, Argon2id, DBSC, device-bound passkeys | enrollment code, devices, leaver, recovery, zero-trust locks (AAGUID, IP + shift, circuit breaker) | NOT written |
+| I Inboxes (R3b, R4-2) | PostgreSQL RLS (fadm_mailbox), Rust, virtual list | hello, moveyourbusiness, resolved, billing (restricted), leo, noreply | NOT written |
+| J Auto mail (R3c) | Rust, RFC 3834 Auto-Submitted | 7-day per-sender gate, Polar signed webhook | NOT written |
+| K Cases + SLA (R3e, R3f) | Rust, SQL SLA engine (AD4), SKIP LOCKED routing | assign, reply, clock stops only on human reply or resolve, root-cause note | NOT written (needs his support terms) |
+| L Transparency log (W1) | Merkle tiles, signed tree head | audit log browsers remember | NOT written |
+| M Hybrid post-quantum (W3) | ML-DSA + Ed25519, ML-KEM | post-quantum signatures and mail | NOT written |
+| N Mail craft + attachments (R4-3..R4-10) | React, Tiptap 3, Rust, ML-KEM, WebTransport, Hetzner Storage Box, ClamAV, OpenPGP PQC (RFC 9980) | compose, rich text, undo/schedule, attachments, outbound TLS policy | NOT written |
+| O CRM (R-CRM) | React 19, Rust, RLS | accounts, leads, pipeline, tasks, reports in company style | NOT written |
+| P Managed Move-In (R4-11) | Rust async IMAP migrator | company mailbox migration | NOT written |
+| Q Final audit + load proof (R3g, S10) | Rust, React | dashboard + final audit + load proof (S10) | NOT written |
 Sources: BLUEPRINT-ADMIN-DESK.md (R3a detail tables), MASTER-PLAN-22NOV.md, REMAINING-LIST-22NOV.md, BRIDGE-PLAN-22NOV.md, EMPLOYEE-ACCOUNTS-PLAN-22NOV.md, SCALE-50K-DESIGN-22NOV.md, WORLD-ADVANCE-DESK-22NOV.md. This page is the one-page summary; when a phase starts its own feature table (feature | code | technology | HAAN) is written in BLUEPRINT-ADMIN-DESK.md.
