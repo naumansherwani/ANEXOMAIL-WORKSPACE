@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 01:09 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 01:09 PKT) - read this FIRST for the Desk after a compaction
 DOING: D5a-4 AD4b + audit doors written, tested on scratch
 NEXT STEP: commit via rec.sh, then his ad-auto
 HIS LAST WORD: his 00:56 order, audit before install
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- dfe7aeae 23 Nov 01:09 D5a-4: AD4b lookup audit proof chain
 - fcb59cc3 23 Nov 00:48 ledger line 80c3ff56
 - 80c3ff56 23 Nov 00:48 No-test-no-commit law, gate, D5a-3b green
 - 7393e1de 23 Nov 00:36 ledger line 3fc1fc44
@@ -72,22 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 2f574bd1 23 Nov 00:29 ledger line 0de9ed41
 - 0de9ed41 23 Nov 00:29 blueprint 0l
 - 0ef1d766 23 Nov 00:29 ledger line 97a039c1
-- 97a039c1 23 Nov 00:29 R3a2-dbsc device-bound sessions + control plane responder
 
 ## Uncommitted Desk files
- M admin-desk/server/src/bridge.rs
- M admin-desk/server/src/main.rs
- M admin-desk/sql/AD8.sql
- M docs/claude/admin-desk/server/src/bridge.rs
- M docs/claude/admin-desk/server/src/main.rs
- M docs/claude/admin-desk/sql/AD8.sql
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/D5A4-AUDIT-PROOF-LIST-23NOV.md
-?? admin-desk/sql/AD4b.sql
-?? admin-desk/sql/checks/AD4b-check.sql
-?? docs/claude/admin-desk/D5A4-AUDIT-PROOF-LIST-23NOV.md
-?? docs/claude/admin-desk/sql/AD4b.sql
-?? docs/claude/admin-desk/sql/checks/AD4b-check.sql
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

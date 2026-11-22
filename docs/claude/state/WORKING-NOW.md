@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 01:09 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 01:09 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: D5a-4 AD4b + audit doors written, tested on scratch
 NEXT STEP: commit via rec.sh, then his ad-auto
 HIS LAST WORD: his 00:56 order, audit before install
@@ -18,40 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- dfe7aeae 23 Nov 01:09 D5a-4: AD4b lookup audit proof chain
 - fcb59cc3 23 Nov 00:48 ledger line 80c3ff56
 - 80c3ff56 23 Nov 00:48 No-test-no-commit law, gate, D5a-3b green
 - 7393e1de 23 Nov 00:36 ledger line 3fc1fc44
 - 3fc1fc44 23 Nov 00:36 AD8 advance + honest truth table
-- 2f574bd1 23 Nov 00:29 ledger line 0de9ed41
 
 ## Uncommitted files (half-done work if any)
- M admin-desk/server/src/bridge.rs
- M admin-desk/server/src/main.rs
- M admin-desk/sql/AD8.sql
- M docs/claude/admin-desk/server/src/bridge.rs
- M docs/claude/admin-desk/server/src/main.rs
- M docs/claude/admin-desk/sql/AD8.sql
- M docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
-?? admin-desk/D5A4-AUDIT-PROOF-LIST-23NOV.md
-?? admin-desk/sql/AD4b.sql
-?? admin-desk/sql/checks/AD4b-check.sql
-?? docs/claude/admin-desk/D5A4-AUDIT-PROOF-LIST-23NOV.md
-?? docs/claude/admin-desk/sql/AD4b.sql
-?? docs/claude/admin-desk/sql/checks/AD4b-check.sql
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/sql/AD8.sql                      |  1 +
- docs/claude/admin-desk/server/src/bridge.rs | 15 ++++++++++++
- docs/claude/admin-desk/server/src/main.rs   |  4 ++++
- docs/claude/admin-desk/sql/AD8.sql          |  1 +
- docs/claude/admin-desk/state/WORKING-NOW.md | 13 ++++++++--
- docs/claude/state/WORKING-NOW.md            | 37 +++++++++++++++--------------
- docs/claude/tech-contracts/CURRENT.md       | 13 ++++++++++
- 9 files changed, 83 insertions(+), 20 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 37 ++-----------------------------------
+ 1 file changed, 2 insertions(+), 35 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -62,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (55720b5f87a5a1f76e08323627dd7097064eb301)
+WIP snapshot: refs/wip/last (58b2380f8d33300b4177d00e7990d97fc361bfc3)
