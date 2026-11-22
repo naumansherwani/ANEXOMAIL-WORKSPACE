@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 10:43 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 10:43 PKT) - read this FIRST for the Desk after a compaction
 DOING: No-promise law, SR1..SR8 suspension classes, nine runbooks drafted, D-series blueprint file generated
 NEXT STEP: S1 waits his haan; D5a-1 contract next; needs package list + Control Plane address; runbooks wait his approval
 HIS LAST WORD: his 10:42 word: no promises, I make reason classes, UI intact, send blueprint
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 987d934f 22 Nov 10:43 Desk no-promise law, reason classes, runbook drafts
 - 94eb01fd 22 Nov 10:35 ledger line 806a79d8
 - 806a79d8 22 Nov 10:35 Desk six main sections plan
 - 381007c3 22 Nov 10:35 ledger line cc67c510
@@ -72,18 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 5a4eef79 22 Nov 10:28 ledger line 325108ee
 - 325108ee 22 Nov 10:28 Desk D5 subphases with advance technology
 - 703fe395 22 Nov 10:28 ledger line e22dd5ef
-- e22dd5ef 22 Nov 10:28 Desk D5 subphases with technology
 
 ## Uncommitted Desk files
- M admin-desk/BLUEPRINT-ADMIN-DESK.md
- M admin-desk/D5-SUBPHASES-22NOV.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/D5-SUBPHASES-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-?? admin-desk/RUNBOOK-LIBRARY-DRAFT-22NOV.md
-?? docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-?? docs/claude/admin-desk/RUNBOOK-LIBRARY-DRAFT-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
