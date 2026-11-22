@@ -1305,7 +1305,7 @@ src/routes/app.org.tsx c3a1f12a640bb274
 src/routes/app.org.emoji.tsx 4cb6c978d9fb4e5e
 docs/claude/AWAM-D4-CLOSE-AND-ORDER-20NOV.md ab447059a98a8681
 docs/claude/QC2-PLAN-20NOV.md 963486e05ceb310e
-docs/claude/state/WORKING-NOW.md 972a7881cb77ac54
+docs/claude/state/WORKING-NOW.md b449c3703236f2f9
 docs/claude/PHASE-NOW.md 54798ad777c387dc
 docs/cursor-work/sql/E194_founder_mail_signatures_snippets.sql 77d359c553335cc3
 docs/cursor-work/sql/CHECK_E194.sql 677ed0aa9fed057f
