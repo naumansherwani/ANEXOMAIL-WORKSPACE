@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:13 PKT) - read this FIRST for the Desk after a compaction
-DOING: 1j GREEN, 1k D5b runbooks NOW (research first)
-NEXT STEP: 1k: web research, LIST file + ADVANCE-RESEARCH [1k] lines, contract, code
-HIS LAST WORD: his order
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 03:13 PKT) - read this FIRST for the Desk after a compaction
+DOING: gate loophole closed; 1j GREEN; 1k research next
+NEXT STEP: 1k web research + LIST + contract
+HIS LAST WORD: his 03:13 autofix order
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- fd81d5ba 23 Nov 03:13 ledger line f388a760
 - f388a760 23 Nov 03:13 1j GREEN
 - 5996652c 23 Nov 03:11 ledger line 48bc8fa6
 - 48bc8fa6 23 Nov 03:11 research-in-blueprint gate + 1j install proof
@@ -72,9 +73,10 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 87c65037 23 Nov 03:02 1j: audit and autofix
 - 6b73183f 23 Nov 02:57 ledger line 53aed7fd
 - 53aed7fd 23 Nov 02:57 1j: Plan context screen code
-- 4b4b376e 23 Nov 02:56 ledger line ad2138b5
 
 ## Uncommitted Desk files
+ M admin-desk/RESEARCH-IN-BLUEPRINT-LAW-23NOV.md
+ M docs/claude/admin-desk/RESEARCH-IN-BLUEPRINT-LAW-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)

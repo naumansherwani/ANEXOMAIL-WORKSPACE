@@ -5392,3 +5392,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 1j D5 Plan context screen GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED. his install paste 3 SAME + my signed-in Chrome look (sealed lookup, Data unavailable fail-closed, 44 px, no overflow). TESTED: bun 56 pass, live Chrome. Data-fill live waits for Control Plane rows (J), on open list
 
 - 1j D5 Plan context screen GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED. his install paste 3 SAME + my signed-in Chrome look (sealed lookup, Data unavailable fail-closed, 44 px, no overflow). TESTED: bun 56 pass, live Chrome. Data-fill live waits for Control Plane rows (J), on open list
+
+- Gate loophole closed: contract block must match the NOW phase (negative probe tested). TESTED: probe refused as designed, normal commit passes. TECH-LAW CHECKED

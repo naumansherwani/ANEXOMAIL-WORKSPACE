@@ -337,6 +337,11 @@ if _desk_code and os.path.exists(cur):
         _lm = re.search(r"LIST: (docs/claude/admin-desk/[A-Za-z0-9_.-]+)", _h2)
         _bp = "docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md"; _nl = "docs/claude/admin-desk/NOW-LIST-23NOV.md"
         _tag = f"ADVANCE-RESEARCH [{_id}]"
+        # LOOPHOLE CLOSED (his autofix order 23 Nov 03:13): the contract block must be for the phase that NOW-LIST says is NOW, so code of the next phase can never ride on an older phase's block.
+        if os.path.exists(_nl):
+            _nm = re.search(r">>> (\d+[a-z]) [^<]*= NOW <<<", open(_nl, errors="ignore").read())
+            if _nm and _nm.group(1) != _id:
+                fail("RESEARCH IN BLUEPRINT", f"NOW-LIST says phase {_nm.group(1)} is NOW but the newest CURRENT.md contract block is phase {_id}: do the web research, LIST file, ADVANCE-RESEARCH lines and contract block for {_nm.group(1)} FIRST")
         if not _lm or not os.path.exists(_lm.group(1)):
             fail("RESEARCH IN BLUEPRINT", f"phase {_id}: the CURRENT.md heading must name 'LIST: <file>' and that web-research list must exist. Is this phase's advance technology written?")
         for _f in (_bp, _nl):
