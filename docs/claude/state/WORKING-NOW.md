@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 07:40 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 07:40 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: D1b GREEN, D7 Systems written
 NEXT STEP: his desk-install, my Chrome look at D7, then D2 ack/act
 HIS LAST WORD: Systems folder for employees
@@ -18,43 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 4ad3e6ea 22 Nov 07:40 Desk: D1b GREEN, D7 Systems folder
 - ccf44736 22 Nov 07:34 ledger line 7555ce4a
 - 7555ce4a 22 Nov 07:34 Desk: D1 GREEN after live look, D1b keyboard shortcuts and hand cursor (22 Nov 07:38 PKT)
 - e144a933 22 Nov 07:27 ledger line 8147d2ee
 - 8147d2ee 22 Nov 07:27 Desk: rules 11-13, Mailboxes rename, stricter read gate, bundle desk-CKA6WGAE (22 Nov 07:31 PKT)
-- 3496cf61 22 Nov 07:27 ledger line 4099ee9b
 
 ## Uncommitted files (half-done work if any)
- M CLAUDE.md
- M admin-desk/BLUEPRINT-ADMIN-DESK.md
- M admin-desk/DESK-PHASES-22NOV.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- D founder-web/dist-desk/assets/desk-ByW6Xrfq.js
- M founder-web/dist-desk/desk.html
- M founder-web/src/desk/DeskCards.tsx
- M founder-web/src/desk/DeskCommandBar.tsx
- M founder-web/src/desk/DeskShell.tsx
- M founder-web/src/desk/desk_cards.ts
- M founder-web/src/desk/modules/company/systems/meta.ts
- M founder-web/src/desk/modules/registry.test.ts
-?? founder-web/dist-desk/assets/desk-RqemED1a.js
-?? founder-web/src/desk/desk_systems_pure.test.ts
-?? founder-web/src/desk/desk_systems_pure.ts
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- founder-web/dist-desk/desk.html                    |  2 +-
- founder-web/src/desk/DeskCards.tsx                 | 24 +++++-
- founder-web/src/desk/DeskCommandBar.tsx            | 39 +++++----
- founder-web/src/desk/DeskShell.tsx                 |  8 +-
- founder-web/src/desk/desk_cards.ts                 |  1 +
- .../src/desk/modules/company/systems/meta.ts       |  8 +-
- founder-web/src/desk/modules/registry.test.ts      |  2 +-
- 15 files changed, 95 insertions(+), 145 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 40 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 38 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -65,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (fe67821e8ad2ce93a2c62f5b2ddc14fd3ace1690)
+WIP snapshot: refs/wip/last (8e0641eb95828cbc1ec1bbc1e908c38ddcad705a)
