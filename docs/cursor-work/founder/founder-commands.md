@@ -5617,3 +5617,5 @@ Features ki list (QC4 mein kya banega):
 - 22 Nov 2026 07:52 PKT: Desk D7: Mail and QUIC pipeline moved from the dashboard into the existing Systems folder (his 07:40 word); dashboard keeps one Systems line; bundle desk-DZKO_LVM.
 
 - 22 Nov 2026 07:58 PKT: Desk D8 eye-comfort colours: 4-palette demo shown (no code until his pick). Blueprint top says existing Systems/shortcuts/cards files must not be re-written.
+
+- 22 Nov 2026 08:03 PKT: Desk D9 brand link written (ANEXOMAIL clickable, refresh or back to dashboard, phone shows brand); D8 colour demo 2 cinematic light (L1-L4) shown, no colour code until his pick; bundle desk-UKXIYNCu.

@@ -358,6 +358,7 @@ docs/claude/admin-desk/codes/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/codes/DESK-PALETTE-PREMIUM-MAX.md
 docs/claude/admin-desk/codes/REAL-ACCOUNT-METHOD.md
 docs/claude/admin-desk/demo/00-FOUNDER-TECH-RULE.md
+docs/claude/admin-desk/demo/COLOUR-DEMO-2-CINEMATIC-LIGHT-22NOV.png
 docs/claude/admin-desk/demo/COLOUR-DEMO-22NOV.md
 docs/claude/admin-desk/demo/COLOUR-DEMO-22NOV.png
 docs/claude/admin-desk/docs/00-FOUNDER-TECH-RULE.md

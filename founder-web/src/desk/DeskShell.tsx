@@ -6,7 +6,7 @@ import type { Snapshot } from "./desk_stream";
 import { canSeeTech, systemsModel } from "./desk_systems_pure";
 import { route } from "./desk_cards";
 import type { Bar } from "./desk_bridge_pure";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, type MouseEvent as ReactMouseEvent, type ReactNode } from "react";
 import { BrandMark } from "../signin/BrandMark";
 import { MODULES } from "./modules/registry";
 
@@ -82,6 +82,7 @@ const CSS = `
 .dsk-menu button{display:block;width:100%;min-height:44px;margin-top:6px;border:0;border-radius:12px;background:transparent;color:var(--ink);font-family:inherit;font-size:14px;text-align:left;padding:0 10px;cursor:pointer}
 .dsk-menu button:hover:not(:disabled){background:rgba(255,255,255,.06)}.dsk-menu button:disabled{color:var(--mute);cursor:default}
 .dsk-grid{display:grid;gap:14px;margin-top:30px;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr))}
+.dsk-home{display:block;color:inherit;text-decoration:none;cursor:pointer;border-radius:12px}.dsk-home:focus-visible,.dsk-homem:focus-visible{outline:2px solid #BFD6FF;outline-offset:3px}.dsk-homem{margin-right:auto;display:inline-flex;align-items:center;min-height:44px;color:var(--ink);text-decoration:none;font-size:13px;font-weight:700;letter-spacing:.18em;cursor:pointer}
 .dsk-nav,.dsk-pin,.dsk-av,.dsk-menu button:not(:disabled){cursor:pointer}
 .dsk-card{min-width:0;padding:18px 20px;border:1px solid var(--line);border-radius:18px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 10px 30px rgba(2,8,22,.35)}
 .dsk-k{margin:0;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
@@ -93,7 +94,7 @@ const CSS = `
 html{scrollbar-width:thin;scrollbar-color:rgba(111,166,242,.45) transparent}
 .dsk *::-webkit-scrollbar,.dsk::-webkit-scrollbar{width:10px;height:10px}.dsk *::-webkit-scrollbar-thumb{background:rgba(111,166,242,.38);border-radius:8px;border:2px solid transparent;background-clip:content-box}.dsk *::-webkit-scrollbar-thumb:hover{background:rgba(111,166,242,.6);background-clip:content-box}
 .dsk-row{display:contents}
-@media (min-width:820px){
+@media (min-width:820px){.dsk-homem{display:none}
  .dsk-scroll{display:flex;flex-direction:column;gap:4px;flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(111,166,242,.4) transparent;padding-right:2px}
  .dsk-grp{display:block;margin:16px 10px 4px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);opacity:.85}
  .dsk-row{position:relative;display:flex;align-items:center}.dsk-row .dsk-nav{flex:1}
@@ -122,13 +123,15 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, s
     document.addEventListener("pointerdown", away, true); document.addEventListener("keydown", esc);
     return () => { document.removeEventListener("pointerdown", away, true); document.removeEventListener("keydown", esc); };
   }, [menu]);
+  // his 22 Nov 07:49: the ANEXOMAIL brand is a link. On a sub page it goes back to the dashboard; already on the dashboard it refreshes the page. Modified clicks fall through to the browser.
+  const goHome = (e: ReactMouseEvent<HTMLAnchorElement>) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); if (sub) nav("/dashboard"); else window.location.reload(); };
   const d = new Date(now), first = me?.name?.trim().split(/\s+/)[0] || me?.email.split("@")[0] || "";
   const end = me ? parseWhen(me.expires_at) : null;
   const clock = d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" }), date = d.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
   return (
     <div className="dsk"><style>{CSS}</style>
       <nav className="dsk-rail" aria-label="Admin Desk">
-        <div className="dsk-brand"><BrandMark home={false} /></div>
+        <div className="dsk-brand"><a href="/dashboard" className="dsk-home" onClick={goHome} title={sub ? "Back to the dashboard" : "Refresh the dashboard"} aria-label={sub ? "Anexomail Workspace, back to the dashboard" : "Anexomail Workspace, refresh the dashboard"}><BrandMark home={false} /></a></div>
         <div className="dsk-scroll">
           {groups.map((g) => (
             <div key={g.label || "top"} style={{ display: "contents" }}>
@@ -145,6 +148,7 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, s
       </nav>
       <main className="dsk-main">
         <div className="dsk-bar">
+          <a href="/dashboard" className="dsk-homem" onClick={goHome} title={sub ? "Back to the dashboard" : "Refresh the dashboard"} aria-label={sub ? "Anexomail, back to the dashboard" : "Anexomail, refresh the dashboard"}>ANEXOMAIL</a>
           {me && <span className="dsk-chip" title="Every answer on this page was signed by the Desk and verified in your browser" data-live={live}><i aria-hidden="true" />{chipText(live)}</span>}
           {me && <button type="button" className="dsk-av" aria-label="Account menu" aria-expanded={menu} onClick={() => setMenu((v) => !v)}>{(me.name || me.email).trim().split(/\s+/).slice(0, 2).map((w) => w[0]?.toUpperCase() ?? "").join("") || "?"}</button>}
           {me && menu && <div className="dsk-menu" role="menu"><b>{me.name || first}</b><small>{me.email}</small><span className="dsk-role">{me.role}</span>{end && <small>Session: {remaining(end, now)} left</small>}
