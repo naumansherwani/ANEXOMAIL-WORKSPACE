@@ -5233,6 +5233,8 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 
 - 22 Nov 2026 08:22 PKT: Desk D3 live desktop look ok (WIRED: YES / REAL: YES), phone look due, D3b trend proposed
 
-- 22 Nov 2026 08:40 PKT: Desk D3 GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED; D3b latency trend written, waits install
+- 22 Nov 2026 08:32 PKT: Desk D3 GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED; D3b latency trend written, waits install
 
-- 22 Nov 2026 08:50 PKT: Desk D1d bug fix written (KPI text copy, no phase names or P1 on the Desk), waits install and live look
+- 22 Nov 2026 08:36 PKT: Desk D1d bug fix written (KPI text copy, no phase names or P1 on the Desk), waits install and live look
+
+- 22 Nov 2026 08:38 PKT: Desk D1e KPI card pop-up written, D1d installed by him, times corrected D3 08:32 D1d 08:36, waits install and live look

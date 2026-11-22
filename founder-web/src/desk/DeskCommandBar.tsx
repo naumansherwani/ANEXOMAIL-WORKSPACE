@@ -45,12 +45,12 @@ export function DeskCommandBar({ bar, nav, sys, tech = true }: { bar: Bar; nav: 
           ? <div key="f" className="dcb-frame" data-testid="p1-frame" aria-hidden="true" />
           : <motion.div key="f" className="dcb-frame" data-testid="p1-frame" aria-hidden="true" initial={{ opacity: 0 }} animate={{ opacity: [0.35, 1, 0.35] }} exit={{ opacity: 0 }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }} />)}
       </AnimatePresence>
-      <div className="dcb-card" onClick={open(route("sla"))}>
+      <div className="dcb-card" title={"Live SLA clock · " + shortcutLabel("sla")} onClick={open(route("sla"))}>
         <p className="dcb-k"><DeskLink to={route("sla")} nav={nav} className="dcl" keys={shortcutLabel("sla")} badge>Live SLA clock →</DeskLink></p>
         <p className="dcb-big">{bar.sla}</p>
         <p className="dcb-n">Average time to a first answer. Target: under 2 minutes. It shows a real time when cases exist.</p>
       </div>
-      <div className="dcb-card dcb-p1" data-hot={hot} role={hot ? "alert" : undefined} onClick={open(route("alerts") + "?severity=p1")}>
+      <div className="dcb-card dcb-p1" data-hot={hot} role={hot ? "alert" : undefined} title={"Urgent alerts · " + shortcutLabel("alerts")} onClick={open(route("alerts") + "?severity=p1")}>
         <p className="dcb-k"><DeskLink to={route("alerts") + "?severity=p1"} nav={nav} className="dcl" keys={shortcutLabel("alerts")} badge>Urgent alerts →</DeskLink></p>
         <motion.p className="dcb-big" key={String(bar.p1)} initial={calm ? false : { opacity: 0.4, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>{bar.p1 === null ? (bar.wait ? "…" : "Stale") : bar.p1}</motion.p>
         {hot
@@ -59,7 +59,7 @@ export function DeskCommandBar({ bar, nav, sys, tech = true }: { bar: Bar; nav: 
         {bar.p1 !== null && <p className="dcb-n">{bar.high} high · <DeskLink to={route("alerts") + "?status=unacked"} nav={nav} className="dcb-up">{bar.unacked} not acknowledged</DeskLink>{bar.oldestUnacked ? ` · oldest ${bar.oldestUnacked}` : ""}</p>}
         <p className="dcb-n"><DeskLink to={route("plans")} nav={nav} className="dcb-up" keys={shortcutLabel("plans")}>{bar.prices}</DeskLink></p>
       </div>
-      <div className="dcb-card dcb-wide" onClick={open(route("systems"))}>
+      <div className="dcb-card dcb-wide" title={"Systems · " + shortcutLabel("systems")} onClick={open(route("systems"))}>
         <p className="dcb-k"><DeskLink to={route("systems")} nav={nav} className="dcl" keys={shortcutLabel("systems")} badge>Systems →</DeskLink></p>
         <p className="dcb-n" role="status">{sys ? sys.headline : "Connecting…"}</p>
         {sys?.banner && <p className="dcb-hot">{sys.banner}</p>}
