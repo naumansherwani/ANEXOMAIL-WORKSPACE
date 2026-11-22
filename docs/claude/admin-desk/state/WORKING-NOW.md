@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 20:41 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 20:42 PKT) - read this FIRST for the Desk after a compaction
 DOING: No-incomplete-work law written everywhere + gate INCOMPLETE ADVANCE; desk-install build fix (contract inside crate)
 NEXT STEP: his desk-install + desk-restart; his Control Plane address + key; D5a-5
 HIS LAST WORD: Dashboard folder first
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- bb13ccf9 22 Nov 20:42 No-incomplete-work law (gate INCOMPLETE ADVANCE), desk-install fetches lookup contract, contract inside crate
 - 6476741c 22 Nov 20:36 ledger line 79f0f952
 - 79f0f952 22 Nov 20:36 Desk D5a-3 real HTTP/3 client + PostgreSQL integration test
 - bebf54a1 22 Nov 20:30 ledger line c940ec13
@@ -72,22 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - a222d842 22 Nov 20:29 ledger line c21ae224
 - c21ae224 22 Nov 20:29 Desk D5a-3: signed lookup door (lookup.rs), status table SQL/CODE/PHASE, blueprint 20:45
 - 2bb0c017 22 Nov 20:16 ledger line ac4901d0
-- 09c6e08f 22 Nov 20:16 ledger line 350ee8e9
 
 ## Uncommitted Desk files
-M  admin-desk/BLUEPRINT-ADMIN-DESK.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/scripts/desk-install.sh
-A  admin-desk/server/contract/00-FOUNDER-TECH-RULE.md
-A  admin-desk/server/contract/DESK-LOOKUP-CONTRACT.json
-M  admin-desk/server/src/lookup.rs
-M  docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/scripts/desk-install.sh
-A  docs/claude/admin-desk/server/contract/00-FOUNDER-TECH-RULE.md
-A  docs/claude/admin-desk/server/contract/DESK-LOOKUP-CONTRACT.json
-M  docs/claude/admin-desk/server/src/lookup.rs
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
