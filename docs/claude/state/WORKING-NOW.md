@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 19:55 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 19:56 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: AD7 staff queues coded and proved on PG16
 NEXT STEP: his ad-auto for AD7; then D5a-3 Rust lookup door
 HIS LAST WORD: his 19:50 start next phase
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 3c007880 22 Nov 19:56 Checkpoint: WORKING-NOW refresh
 - b5679198 22 Nov 19:55 ledger line 61b5f411
 - 61b5f411 22 Nov 19:55 Desk AD7 staff queues (cases, Priority Support clock, assignment, status machine) proved on PostgreSQL 16
 - 93d27cef 22 Nov 11:40 ledger line 636842c9
 - 636842c9 22 Nov 11:40 Desk backup reserve rule + restore script, blueprint regenerated, AD5/AD6 live noted
-- 1b0335d0 22 Nov 11:40 ledger line 06ed7785
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -33,10 +33,10 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md          |  17 +--
+ docs/claude/state/WORKING-NOW.md          |  19 +--
  founder-web/dist/assets/index-B71G7amT.js | 212 ------------------------------
  founder-web/dist/index.html               |   2 +-
- 3 files changed, 2 insertions(+), 229 deletions(-)
+ 3 files changed, 3 insertions(+), 230 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -47,4 +47,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a1cac89b02d5a980d2219af3916cc3eba33e0920)
+WIP snapshot: refs/wip/last (5165f9f608352b725fa1cbfe21f83dd7c6ee851b)
