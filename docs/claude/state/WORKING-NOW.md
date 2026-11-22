@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 21:00 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 21:01 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: D5a list 1..5 written (D5A-GREEN-LIST); D5a-1 proven; his ss paste recorded, UDP 127.0.0.1:4410 reserved for D5a-3b
 NEXT STEP: D5a-3b: schema-first read of subscription tables (E105 polar-fed, plan_catalog), then responder crate whole, then 3, 4, 5, 2
 HIS LAST WORD: nothing moves on until D5a 1..5 are green
@@ -18,35 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- afa31a13 22 Nov 21:01 D5a list 1..5, D5a-1 proof, his ss paste recorded, UDP 127.0.0.1:4410 reserved for D5a-3b
 - 8c91126b 22 Nov 20:54 ledger line e7663bf1
 - e7663bf1 22 Nov 20:54 Desk D5a-3 live check, D5a-3b contract, handoff file
 - 802da807 22 Nov 20:44 ledger line 4f2d93ce
 - 4f2d93ce 22 Nov 20:44 Finding: no Control Plane responder yet
-- 3fd29fe9 22 Nov 20:42 ledger line bb13ccf9
 
 ## Uncommitted files (half-done work if any)
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/state/HANDOFF-22NOV.md
- M docs/claude/SERVER-PORTS-RED-LINE-08NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/state/HANDOFF-22NOV.md
- M docs/claude/admin-desk/state/WORKING-NOW.md
- M docs/claude/state/PORTS-LIVE.md
  M docs/claude/state/WORKING-NOW.md
-?? admin-desk/D5A-GREEN-LIST-22NOV.md
-?? docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/state/HANDOFF-22NOV.md                  |  1 +
- docs/claude/SERVER-PORTS-RED-LINE-08NOV.md         |  1 +
- .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    | 15 ++++++++-
- docs/claude/admin-desk/state/HANDOFF-22NOV.md      |  1 +
- docs/claude/admin-desk/state/WORKING-NOW.md        |  4 +--
- docs/claude/state/PORTS-LIVE.md                    |  2 ++
- docs/claude/state/WORKING-NOW.md                   | 36 ++++++++++------------
- 8 files changed, 51 insertions(+), 24 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 32 ++------------------------------
+ 1 file changed, 2 insertions(+), 30 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -57,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (7f27578ff9230f4440bdda7446d084f8c7045c49)
+WIP snapshot: refs/wip/last (95b0dbc20802b2a0d8530a86e0efc253c3a401ad)
