@@ -1,5 +1,5 @@
 # D5 SUBPHASES + ADVANCE TECHNOLOGY (his word 22 Nov 2026 10:27 PKT: "yeh admin desk meri company ki rooh hai, seminar mein bhi samjhana hai, business ki backbone")
-Written 22 Nov 2026 10:30 PKT. Rule 52 holds for every step: each answer the employee sees is signed by the Desk Rust signer and verified in the browser by the Desk's own Rust WASM kernel. HTTP/3 only, TLS 1.3 AES-256-GCM, X25519MLKEM768. No phase name is ever shown to an employee (rule 14). No money on the Desk. Desk isolation law: nothing here touches founder code, doors, keys or tables.
+Written 22 Nov 2026 10:28 PKT. Rule 52 holds for every step: each answer the employee sees is signed by the Desk Rust signer and verified in the browser by the Desk's own Rust WASM kernel. HTTP/3 only, TLS 1.3 AES-256-GCM, X25519MLKEM768. No phase name is ever shown to an employee (rule 14). No money on the Desk. Desk isolation law: nothing here touches founder code, doors, keys or tables.
 
 ## A. THE SEMINAR STORY IN 5 LINES (so he can say it on stage)
 1. A customer has a problem. The employee opens that company in the Admin Desk.
