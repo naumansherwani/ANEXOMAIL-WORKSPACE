@@ -1,5 +1,5 @@
 # THE SIX MAIN SECTIONS OF THE ADMIN DESK (his word 22 Nov 2026 10:34 PKT) + HOW, DECIDED FROM WEB RESEARCH
-Written 22 Nov 2026 10:36 PKT. His words: the concept picture he sent is only a likeness, ours must be ORIGINAL, never a copy; add these 6 sections; method is mine to decide from research. Rule 52, HTTP/3 only, Desk isolation, no money on the Desk, no phase name visible to an employee (rule 14) all stand.
+Written 22 Nov 2026 10:35 PKT. His words: the concept picture he sent is only a likeness, ours must be ORIGINAL, never a copy; add these 6 sections; method is mine to decide from research. Rule 52, HTTP/3 only, Desk isolation, no money on the Desk, no phase name visible to an employee (rule 14) all stand.
 
 ## A. THE SIX (employee words, exactly his table)
 | # | Section | Employee's job | Home in the repo today | Phase that fills it |
