@@ -18,25 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 0acafb5b 22 Nov 21:40 Loop-after-commit banned: ckpt-loop writes only while real work is uncommitted; law file
 - 73594083 22 Nov 21:39 ledger line 9bb2517c
 - 9bb2517c 22 Nov 21:39 D5a-2 package registry fill and read doors
 - 8b746529 22 Nov 21:24 ledger line 420d79ed
 - 420d79ed 22 Nov 21:24 Handoff refresh, loop restart
-- be0ac970 22 Nov 21:01 ledger line afa31a13
 
 ## Uncommitted files (half-done work if any)
- M CLAUDE.md
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/server/ckpt-loop.sh
-?? docs/claude/LOOP-AFTER-COMMIT-BANNED-LAW-22NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- CLAUDE.md                            |  1 +
- docs/claude/state/WORKING-NOW.md     | 20 +++++---------------
- docs/cursor-work/server/ckpt-loop.sh |  7 ++++++-
- 3 files changed, 12 insertions(+), 16 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 20 +-------------------
+ 1 file changed, 1 insertion(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -47,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (f34525b4958d0a107f9fd6e0dd4af1ffa6290d20)
+WIP snapshot: refs/wip/last (a54713489da9bd8d189f707df2f7b8918f6323e1)
