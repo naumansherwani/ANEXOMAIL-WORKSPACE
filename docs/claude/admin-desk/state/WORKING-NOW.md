@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 06:42 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 06:42 PKT) - read this FIRST for the Desk after a compaction
 DOING: Desk phase C: C2 written (kernel stream client), phases blueprint + DESK PHASE START gate written
 NEXT STEP: his desk-install of the C2 build, my live Chrome look at the chip, then C GREEN, then D Command Bar
 HIS LAST WORD: her phase se pehle rules aur working now read, technology reminder, blueprint phases ke saath advance technology aur features, strict rules top
@@ -48,6 +48,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- d17597b2 22 Nov 06:42 Desk phases blueprint and phase-start reminder gate
 - 0338d7ff 22 Nov 06:40 ledger line 766e78a3
 - 406bbe10 22 Nov 06:40 ledger line 60e70c2b
 - 60e70c2b 22 Nov 06:40 Desk phase C2 kernel stream client
@@ -55,11 +56,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 6f85aa0c 22 Nov 06:24 Desk gate lesson: advance technology only, HTTP/1 and HTTP/2 never named
 - f09cc907 22 Nov 06:21 ledger line 34836497
 - 34836497 22 Nov 06:21 Desk phase C1: WebTransport server on UDP 4400 (wt.rs, signed frames)
-- ac2007ae 22 Nov 06:08 ledger line 4d7881d7
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? docs/claude/admin-desk/DESK-PHASES-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
