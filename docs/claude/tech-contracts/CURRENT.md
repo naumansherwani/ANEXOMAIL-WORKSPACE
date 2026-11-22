@@ -5,7 +5,7 @@
 |---|---|---|---|
 | Rust + Tokio + axum, Rule 52 signed envelopes (Ed25519) | server/src/signed.rs + new bridge.rs doors (poll fallback) | no | cargo tests + Chrome |
 | HTTP/3 (UDP 4400, only HTTP protocol of the Desk) | server/src/h3.rs exists; browser proof of h3 NOT yet (his curl shows HTTP/2) | partly | his desk-h3-check paste + Chrome nextHopProtocol |
-| WebTransport over QUIC (live Bridge stream) | new server/src/wt.rs + kernel stream client | no | sandbox + Chrome |
+| WebTransport over QUIC (live Bridge stream, HTTP FALLBACK BANNED by his word 22 Nov 04:38) | server/src/wt.rs + h3.rs (same UDP 4400 endpoint, path /wt/bridge, hello `ANX1 token nonce ts mac`, frames = Desk-signed envelope method WT, body {seq,track,data}) DONE 22 Nov 06:20 PKT (33 cargo tests, real quinn+wtransport loopback); kernel stream client + CSP connect-src https://admindesk.anexomail.com:4400 NEXT | server yes, kernel no | cargo loopback + Chrome |
 | WASM kernel per-message verify, seq, 12 s stale | admin-desk/kernel | no | kernel tests |
 | MoQ tracks (named now, framing later) | docs/claude/admin-desk/BRIDGE-TRANSPORT-DECISION-22NOV.md D4 | no | later |
 
@@ -2902,3 +2902,5 @@ server/src/door.rs: POST /desk/v1/auth/login, GET /me, POST /logout. ARGON2ID (a
 - 22 Nov 06:10 PKT: Desk login PERFECT, live-proven (bundle desk-YbabI512.js, no scrollbar); CODE BACKUP LAW + tool + gate + first backup backups/desk/20261122-0603-50eec49a-perfect-login; B installed, not green
 
 - 22 Nov 07:20 PKT: Desk dashboard: bottom Sign out removed, account menu closes on outside click and Esc; sandbox 7 checks ok; waits desk-install + live look
+
+- 22 Nov 2026 06:20 PKT PHASE C1 (Desk WebTransport server) WRITTEN, not green: wt.rs + h3.rs /wt/bridge on UDP 4400, signed frames, 33 cargo tests; kernel client NEXT

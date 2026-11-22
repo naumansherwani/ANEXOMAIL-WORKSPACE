@@ -3169,3 +3169,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 22 Nov 06:10 PKT: Desk login PERFECT, live-proven (bundle desk-YbabI512.js, no scrollbar); CODE BACKUP LAW + tool + gate + first backup backups/desk/20261122-0603-50eec49a-perfect-login; B installed, not green
 
 - 22 Nov 07:20 PKT: Desk dashboard: bottom Sign out removed, account menu closes on outside click and Esc; sandbox 7 checks ok; waits desk-install + live look
+
+- 22 Nov 2026 06:20 PKT PHASE C1 (Desk WebTransport server) WRITTEN, not green: wt.rs + h3.rs /wt/bridge on UDP 4400, signed frames, 33 cargo tests; kernel client NEXT

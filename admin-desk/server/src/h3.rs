@@ -8,7 +8,7 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use axum::body::Body;
-use axum::http::{HeaderName, HeaderValue, Request, Response, StatusCode, Version, header};
+use axum::http::{HeaderValue, Request, Response, StatusCode, Version, header};
 use bytes::{Buf, Bytes, BytesMut};
 use http_body_util::BodyExt;
 use rustls::crypto::ring as rp;
@@ -81,25 +81,53 @@ pub fn from_env() -> Option<Result<(SocketAddr, rustls::ServerConfig), String>> 
     })())
 }
 
-pub async fn serve(ep: quinn::Endpoint, router: axum::Router, host: String) {
+pub async fn serve(ep: quinn::Endpoint, router: axum::Router, host: String, wt: Option<Arc<crate::wt::Cfg>>) {
     let host = Arc::new(host);
     while let Some(incoming) = ep.accept().await {
         if need_retry(incoming.remote_address_validated(), HANDSHAKES.load(std::sync::atomic::Ordering::Relaxed)) { let _ = incoming.retry(); continue; }
-        let (router, host) = (router.clone(), host.clone());
+        let (router, host, wt) = (router.clone(), host.clone(), wt.clone());
         HANDSHAKES.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
         tokio::spawn(async move {
             let hs = tokio::time::timeout(Duration::from_secs(10), async { incoming.await }).await;
             HANDSHAKES.fetch_sub(1, std::sync::atomic::Ordering::Relaxed);
             let Ok(Ok(conn)) = hs else { return };
-            let Ok(mut h3c) = h3::server::builder().build::<_, Bytes>(h3_quinn::Connection::new(conn)).await else { return };
+            let peer = conn.remote_address();
+            let mut b = h3::server::builder();
+            if wt.is_some() { b.enable_webtransport(true).enable_extended_connect(true).enable_datagram(true).max_webtransport_sessions(crate::wt::MAX_SESSIONS as u64); }
+            let Ok(mut h3c) = b.build::<_, Bytes>(h3_quinn::Connection::new(conn)).await else { return };
             loop {
                 let Ok(Some(resolver)) = h3c.accept().await else { break };
                 let Ok(Ok((req, stream))) = tokio::time::timeout(HEADER_WAIT, resolver.resolve_request()).await else { continue };
+                // Phase C: a WebTransport CONNECT takes the connection over (the Desk's live Bridge stream)
+                if req.method() == axum::http::Method::CONNECT && req.extensions().get::<h3::ext::Protocol>() == Some(&h3::ext::Protocol::WEB_TRANSPORT) {
+                    let Some(cfg) = wt.clone() else { let mut s = stream; reply(&mut s, StatusCode::NOT_IMPLEMENTED, "Not served.").await; continue };
+                    webtransport(req, stream, h3c, cfg, peer).await;
+                    return;
+                }
                 let (router, host) = (router.clone(), host.clone());
                 tokio::spawn(async move { request(req, stream, router, host).await });
             }
         });
     }
+}
+
+/// A WebTransport CONNECT: exact Desk host, only /wt/bridge, same-origin Origin, session cap; the stream is the Rule 52 live Bridge (wt::session).
+async fn webtransport(req: Request<()>, mut stream: h3::server::RequestStream<h3_quinn::BidiStream<Bytes>, Bytes>, h3c: h3::server::Connection<h3_quinn::Connection, Bytes>, cfg: Arc<crate::wt::Cfg>, peer: SocketAddr) {
+    use crate::wt::{authority_host, origin_ok, PATH};
+    let host_ok = req.uri().authority().map(|a| authority_host(a.as_str()) == cfg.host.to_ascii_lowercase()).unwrap_or(false);
+    if !host_ok || req.uri().path() != PATH { reply(&mut stream, StatusCode::NOT_FOUND, "Not found.").await; return; }
+    let origin = req.headers().get(header::ORIGIN).and_then(|v| v.to_str().ok());
+    if !origin_ok(origin, &cfg.host) { reply(&mut stream, StatusCode::FORBIDDEN, "Wrong origin.").await; return; }
+    let Some(_slot) = crate::wt::Active::take() else { reply(&mut stream, StatusCode::TOO_MANY_REQUESTS, "Busy.").await; return };
+    let Ok(session) = h3_webtransport::server::WebTransportSession::accept(req, stream, h3c).await else { return };
+    let session = Arc::new(session);
+    let first = tokio::time::timeout(crate::wt::HELLO_WAIT, session.accept_bi()).await;
+    let Ok(Ok(Some(h3_webtransport::server::AcceptedBi::BidiStream(_, bi)))) = first else { return };
+    let _ = peer;
+    let (mut recv, mut send) = tokio::io::split(bi);
+    let _ = crate::wt::session(&mut send, &mut recv, &cfg).await;
+    // let the peer read the last frames before the session is dropped
+    let _ = tokio::time::timeout(Duration::from_secs(5), async { loop { match session.accept_bi().await { Ok(Some(_)) => continue, _ => break } } }).await;
 }
 
 async fn reply<S: h3::quic::SendStream<Bytes>>(s: &mut h3::server::RequestStream<S, Bytes>, code: StatusCode, msg: &'static str) {
@@ -164,6 +192,7 @@ pub async fn selfcheck(addr: SocketAddr, host: &str, cert_pem: &[u8]) -> Result<
 #[cfg(test)]
 mod tests {
     use super::*;
+    use axum::http::HeaderName;
     #[test] fn alt_svc_names_the_udp_port() { assert_eq!(alt_svc_value(7443), "h3=\":7443\"; ma=31536000; persist=1"); }
     #[test] fn only_the_desk_host_is_served() { assert!(host_ok(Some("AdminDesk.anexomail.com"), "admindesk.anexomail.com")); assert!(!host_ok(Some("founderworkspace.anexomail.com"), "admindesk.anexomail.com")); assert!(!host_ok(None, "x")); }
     #[test] fn retry_only_for_unvalidated_under_flood() { assert!(!need_retry(true, 999)); assert!(!need_retry(false, 1)); assert!(need_retry(false, RETRY_ABOVE)); }
@@ -191,7 +220,7 @@ mod tests {
         let ep = quinn::Endpoint::server(quic_config(server_config(&cert, &key).unwrap()).unwrap(), "127.0.0.1:0".parse().unwrap()).unwrap();
         let addr = ep.local_addr().unwrap();
         let router = axum::Router::new().route("/desk/v1/health", axum::routing::get(|| async { "desk-h3-ok" }));
-        tokio::spawn(serve(ep, router, "admindesk.anexomail.com".into()));
+        tokio::spawn(serve(ep, router, "admindesk.anexomail.com".into(), None));
         let out = selfcheck(addr, "admindesk.anexomail.com", &cert).await.expect("PQ + AES-256 HTTP/3 selfcheck");
         assert!(out.contains("200") && out.contains("desk-h3-ok"), "{out}");
     }

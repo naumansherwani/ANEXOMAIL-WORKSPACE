@@ -12,6 +12,16 @@ const MAX_RES: usize = 4 * 1024 * 1024;
 static SIGNER: OnceLock<Option<sign::Signer>> = OnceLock::new();
 static NONCES: Mutex<Option<sign::NonceCache>> = Mutex::new(None);
 
+/// Phase C: the same replay cache the doors use (one nonce, once, per session token) for the WebTransport hello.
+pub fn nonce_fresh(token: &str, nonce: &str) -> bool {
+    let who = sign::sha256_hex(token.as_bytes());
+    NONCES.lock().map(|mut g| g.get_or_insert_with(Default::default).fresh(&who, nonce, now())).unwrap_or(false)
+}
+/// Phase C: a stream frame sealed with the Desk key exactly like a door answer (method "WT", path "/wt/bridge/<track>"), so the kernel's one verify path accepts it.
+pub fn seal_frame(path: &str, nonce: &str, body: &str) -> Option<String> { signer().map(|s| s.envelope("WT", path, nonce, now(), body)) }
+pub fn now_secs() -> i64 { now() }
+#[cfg(test)] pub fn public_hex() -> Option<String> { signer().map(|s| s.public_hex()) }
+
 pub fn init() {
     let path = std::env::var("DESK_SIGN_SEED_FILE").unwrap_or_else(|_| SEED_FILE.to_string());
     let s = match std::fs::read_to_string(&path) {

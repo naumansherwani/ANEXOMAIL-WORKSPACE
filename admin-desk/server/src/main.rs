@@ -17,6 +17,7 @@ mod h3;
 mod probes;
 mod bridge;
 mod sign;
+mod wt;
 mod signed;
 
 pub const HOST: &str = "admindesk.anexomail.com";
@@ -45,7 +46,7 @@ async fn desk_headers(req: Request, next: Next) -> Response {
     let set = |h: &mut axum::http::HeaderMap, k: &'static str, v: &'static str| {
         h.insert(header::HeaderName::from_static(k), HeaderValue::from_static(v));
     };
-    set(h, "content-security-policy", "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'; require-trusted-types-for 'script'");
+    set(h, "content-security-policy", "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://admindesk.anexomail.com:4400; frame-ancestors 'none'; base-uri 'none'; form-action 'self'; require-trusted-types-for 'script'");
     set(h, "cross-origin-opener-policy", "same-origin");
     set(h, "cross-origin-resource-policy", "same-origin");
     set(h, "strict-transport-security", "max-age=63072000; includeSubDomains");
@@ -109,7 +110,8 @@ async fn main() {
             eprintln!("desk: HTTP/3 listening on udp {addr} (TLS 1.3, AES-256-GCM only, X25519MLKEM768 first)");
             let alt = HeaderValue::from_str(&h3::alt_svc_value(port)).expect("alt-svc");
             app = app.layer(middleware::from_fn(move |req: Request, next: Next| { let alt = alt.clone(); async move { let mut r = next.run(req).await; r.headers_mut().insert(header::HeaderName::from_static("alt-svc"), alt); r } }));
-            tokio::spawn(h3::serve(ep, app.clone(), HOST.to_string()));
+            let fetch: wt::Fetch = std::sync::Arc::new(|t: String, track: &'static str| Box::pin(async move { bridge::track(&t, track).await }));
+            tokio::spawn(h3::serve(ep, app.clone(), HOST.to_string(), Some(std::sync::Arc::new(wt::Cfg { host: HOST.to_string(), fetch }))));
         }
     }
     let listener = tokio::net::TcpListener::bind(BIND).await.expect("bind 127.0.0.1:4400");

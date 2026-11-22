@@ -392,6 +392,7 @@ docs/claude/admin-desk/server/src/main.rs
 docs/claude/admin-desk/server/src/probes.rs
 docs/claude/admin-desk/server/src/sign.rs
 docs/claude/admin-desk/server/src/signed.rs
+docs/claude/admin-desk/server/src/wt.rs
 docs/claude/admin-desk/sql/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/sql/AD1.sql
 docs/claude/admin-desk/sql/AD1/00-FOUNDER-TECH-RULE.md

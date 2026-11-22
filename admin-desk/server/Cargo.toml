@@ -13,8 +13,11 @@ serde_json = "1"
 rustls = { version = "0.23", default-features = false, features = ["ring", "std"] }
 rustls-post-quantum = "0.2"
 quinn = { version = "0.11", default-features = false, features = ["ring", "rustls-ring", "runtime-tokio"] }
-h3 = { version = "0.0.8" }
-h3-quinn = "0.0.10"
+h3 = { version = "0.0.8", features = ["i-implement-a-third-party-backend-and-opt-into-breaking-changes"] }
+h3-quinn = { version = "0.0.10", features = ["datagram"] }
+# Phase C (22 Nov 2026): WebTransport on the SAME h3 endpoint (same UDP 4400). Desk-own copy of the pattern, never imported from founder.
+h3-webtransport = "0.1.2"
+futures-util = "0.3"
 bytes = "1"
 rustls-pemfile = "2"
 http-body-util = "0.1"
@@ -36,3 +39,6 @@ opt-level = 3
 lto = true
 codegen-units = 1
 strip = true
+
+[dev-dependencies]
+wtransport = { version = "0.7", default-features = false, features = ["quinn", "ring"] }

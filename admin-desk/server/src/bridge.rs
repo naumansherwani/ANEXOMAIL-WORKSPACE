@@ -21,7 +21,7 @@ fn db_err(e: &tokio_postgres::Error) -> Response {
 fn uuid_ok(s: &str) -> bool { s.len() == 36 && s.bytes().all(|b| b.is_ascii_hexdigit() || b == b'-') }
 
 /// The owner behind the session token (None = no live session). The kernel MAC was already checked by signed::guard.
-async fn owner(h: &HeaderMap) -> Result<(std::sync::Arc<tokio_postgres::Client>, String), Response> {
+pub(crate) async fn owner(h: &HeaderMap) -> Result<(std::sync::Arc<tokio_postgres::Client>, String), Response> {
     let Some(t) = token_of(h) else { return Err(err(StatusCode::UNAUTHORIZED, "no_session")) };
     let Ok(c) = connect().await else { return Err(err(StatusCode::SERVICE_UNAVAILABLE, "db_unavailable")) };
     let q = format!("select owner_id::text from desk.fadm_session_lookup('\\x{}'::bytea)", auth::token_hash(&t).iter().map(|x| format!("{x:02x}")).collect::<String>());
@@ -69,4 +69,23 @@ mod tests {
         assert!(serde_json::from_str::<Act>(r#"{"event":"ack"}"#).is_err());
     }
     #[test] fn errors_are_json_with_the_right_status() { assert_eq!(err(StatusCode::FORBIDDEN, "not_allowed").status(), StatusCode::FORBIDDEN); }
+}
+
+
+/// Phase C: one track of the Bridge for the WebTransport stream. The session token is looked up EVERY call (a sign-out or a revoked session ends the stream on the next tick);
+/// the database (fadm_need inside PostgreSQL) still decides what this person may see. Ok = the JSON text, Err = the HTTP-style status of the refusal.
+pub async fn track(token: &str, track: &str) -> Result<String, u16> {
+    let mut h = HeaderMap::new();
+    h.insert(header::AUTHORIZATION, format!("Bearer {token}").parse().map_err(|_| 401u16)?);
+    let (c, o) = match owner(&h).await { Ok(x) => x, Err(r) => return Err(r.status().as_u16()) };
+    let q = match track {
+        "summary" => format!("select desk.fadm_bridge_summary('{o}'::uuid)::text"),
+        "services" => format!("select coalesce(jsonb_agg(to_jsonb(t)), '[]'::jsonb)::text from desk.fadm_bridge_services('{o}'::uuid) t"),
+        "alerts" => format!("select coalesce(jsonb_agg(to_jsonb(t)), '[]'::jsonb)::text from desk.fadm_alert_list('{o}'::uuid, true, 100) t"),
+        _ => return Err(404),
+    };
+    match rows(&c, &q).await {
+        Ok(v) => Ok(v.first().and_then(|r| r.get(0)).unwrap_or("null").to_string()),
+        Err(e) => Err(db_err(&e).status().as_u16()),
+    }
 }
