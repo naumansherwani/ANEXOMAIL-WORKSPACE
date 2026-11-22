@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 21:51 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 21:51 PKT) - read this FIRST for the Desk after a compaction
 DOING: D5a-2 closed with his count paste and sealed-door look
 NEXT STEP: D5a-3b responder
 HIS LAST WORD: his count paste
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 378c0cd7 22 Nov 21:51 D5a-2 closed
 - b676151f 22 Nov 21:49 ledger line ccfa26fd
 - ccfa26fd 22 Nov 21:49 blueprint D5a-2 part
 - cdc8ecd2 22 Nov 21:49 ledger line f7dab702
@@ -72,15 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 3b4408b1 22 Nov 21:40 ledger line 0acafb5b
 - 0acafb5b 22 Nov 21:40 Loop-after-commit banned: ckpt-loop writes only while real work is uncommitted; law file
 - 73594083 22 Nov 21:39 ledger line 9bb2517c
-- 9bb2517c 22 Nov 21:39 D5a-2 package registry fill and read doors
 
 ## Uncommitted Desk files
- M admin-desk/D5A-GREEN-LIST-22NOV.md
- M admin-desk/STATUS-GREEN-TABLE-22NOV.md
- M admin-desk/state/HANDOFF-22NOV.md
- M docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md
- M docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md
- M docs/claude/admin-desk/state/HANDOFF-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
