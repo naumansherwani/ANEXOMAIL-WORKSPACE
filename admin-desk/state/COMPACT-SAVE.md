@@ -150,3 +150,5 @@ AD3 ran on his server OK. Read BRIDGE-FEATURES-22NOV.md. Open decisions for him:
 ## 74 (22 Nov 2026 04:57 PKT) his ss: 443=founder, 4400=desk, 18443=caddy. pcap result pending (tcpdump -nr /tmp/h4400.pcap). S0 not green.
 
 ## 75 (22 Nov 2026 04:59 PKT) S0 EVIDENCE 4 (his pcap): my 4 WebTransport tries from his Chrome (IP 182.185.188.151) REACH UDP 4400 on the server (eth0 In), the Desk answers with a full QUIC handshake (5131 B cert flight, 1326, 1389) and closes. NETWORK + HETZNER FIREWALL ARE CLEARED. WebTransport CONNECT fails because the Desk has no WebTransport yet (S2). Open: why Chrome NAVIGATION stays h2 (earlier tcpdumps saw no Chrome packets during reloads). 443 is user/founder, Desk stays 4400.
+
+## 76 (22 Nov 2026 05:12 PKT) S1 WRITTEN (his order 05:03: "TUM S1 SHURU KERO"): server/src/bridge.rs, 4 doors behind signed::guard (Rule 52): GET /desk/v1/bridge/summary|services|alerts, POST /desk/v1/bridge/alerts/act; the DB decides access (fadm_need), errors 403/404/422/503; 27 cargo tests pass. NOT green: needs his desk-install + my Chrome look. HTTP fallback banned: these are the S2 stream source, UI never polls. No incident list function yet (AD4).

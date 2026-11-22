@@ -15,6 +15,7 @@ mod auth;
 mod door;
 mod h3;
 mod probes;
+mod bridge;
 mod sign;
 mod signed;
 
@@ -84,6 +85,10 @@ async fn main() {
         .route("/desk/v1/auth/me", get(door::me))
         .route("/desk/v1/auth/logout", post(door::logout))
         .route("/desk/v1/sig/ping", get(signed::ping))
+        .route("/desk/v1/bridge/summary", get(bridge::summary))
+        .route("/desk/v1/bridge/services", get(bridge::services))
+        .route("/desk/v1/bridge/alerts", get(bridge::alerts))
+        .route("/desk/v1/bridge/alerts/act", post(bridge::alert_act))
         .layer(middleware::from_fn(signed::guard));
     let app = Router::new()
         .route("/desk/v1/health", get(health))
