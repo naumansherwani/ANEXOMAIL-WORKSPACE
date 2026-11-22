@@ -1,4 +1,4 @@
-# HANDOFF FOR ANY CLAUDE AFTER A COMPACTION (written 22 Nov 2026 21:08 PKT; kept current by ckpt.sh + rec.sh; read with rules-read.py first)
+# HANDOFF FOR ANY CLAUDE AFTER A COMPACTION (refreshed 22 Nov 2026 21:26 PKT; kept current by ckpt.sh + rec.sh; read with rules-read.py first)
 ## Who and how
 - He is the Chairman/Founder Nauman Sherwani (Asia/Karachi). Address ONLY "Aap". Roman Urdu, short. Every reply ends with the Rule-70 table (columns Code / Advance technology / Phase; never plain "technology") and "Abhi code mein NAHI: ...".
 - Edit only docs/claude/admin-desk/ (root admin-desk/ = synced copy: python3 docs/cursor-work/server/desk-copy-sync.py sync). lovable-gold/ is frozen (lane-sync is the only writer). Before stamping any time call the clock tool.
@@ -11,6 +11,9 @@
 ## What is live on his server (his pastes)
 - SQL AD1..AD7 (CHECK OK). Desk binary built from origin/main commit 3fd29fe9 era, installed + restarted 22 Nov ~20:5x (kid e92a4cb169d466a2, listener 127.0.0.1:4400 + HTTP/3 UDP 4400). POST /desk/v1/customer/lookup exists (no session = 400 unsigned_request, my Chrome look 20:54).
 ## D5a GREEN LIST (his 20:59 order, nothing moves on until 1..5 are green): docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md. Responder port: UDP 127.0.0.1:4410 reserved (his ss paste 20:59).
+## SERVER PULL STATE (his question 21:24 "pull command kahan hai"): NO pull is pending. The last commit that changed anything his server runs is 3fd29fe9 (Desk install fix); he already ran desk-install + desk-restart on it (OK, kid e92a4cb169d466a2). Everything since is docs, gates, ports record. Say so plainly in each reply. The NEXT server commands appear only when D5a-3b (responder) is whole: ad-auto only if new SQL, then desk-install + desk-restart (one line each, see rule 4 above).
+## FACTS FOR D5a-3b (his ss paste 20:59): UDP 127.0.0.1:4410 reserved (loopback only); free of every listed port. Subscription data lives in the awam/Supabase DB fed by Polar webhooks (E105 founder_polar_pulse, plan_catalog, plan_promises, polar_plan_replacements): READ THE OWNING SCHEMA FIRST (SQL SCHEMA-FIRST LAW) and decide what the responder may read; the responder returns only the 18 whitelisted fields of DESK-LOOKUP-CONTRACT.json, no money field.
+## 2-MINUTE LOOP: restarted 21:25 (it had stopped); check pgrep -f ckpt-loop at every turn.
 ## Where the work is (Dashboard folder, DASHBOARD-FOLDER-ORDER-22NOV.md)
 - Step 2 D5a-3 lookup client: code + tests done (cargo 41 pass), live on server, PHASE NOT whole because the other end does not exist.
 - Step 2b D5a-3b Control Plane lookup responder: contract written in tech-contracts/CURRENT.md (all rows no, STATE IN PROGRESS), nothing coded. FIRST ask him for: ss -ulnp | head -60 (UDP port, port red line). Then read the owning schema (SCHEMA-FIRST), write the responder as its own crate.
