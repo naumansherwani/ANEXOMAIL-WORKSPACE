@@ -1,10 +1,10 @@
 <!--TECHLAW-->
 
-# TECH CONTRACT FOR PHASE: DESK D5a-2d (REGISTRY MATCHES THE AWAM BLUEPRINT), written 22 Nov 2026 22:3x PKT, his word 22:19 "awam blueprint read kero, jab tak correct nahi hoga agay nahi chalega". STATE: CODE DONE, proved on scratch PostgreSQL + cargo; waits his ad-auto and desk-install and desk-restart (not accepted by him until correct)
+# TECH CONTRACT FOR PHASE: DESK D5a-2d (REGISTRY = THE LIVE LANDING PAGE PLANS), written 22 Nov 2026 22:3x PKT, his words 22:19 and 22:21: read the awam blueprint, then "landing page pe jao, waha pe plans". I read anexomail.com/plans in my Chrome: exactly four plans (Basic, Pro, Business, Business Pro; AI is a separate page /ai; no Premium or Max on the page). STATE: CODE DONE, proved on a fresh scratch database built from AD1..AD7 only; waits his ad-auto and desk-install and desk-restart
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
-| PostgreSQL 16 append-only registry: AI packages RETIRED (AI product, ai.anexomail.com, July 2027), Business Premium and Business Max published (his FINAL caps: Premium 7,000 users / 70 TB / 100 MB / 4 GB; Max strict cap 125,000, 250 TB, 250 MB, 10 GB), trial 2 days, grace 3; list door desk.fadm_pkg_list | sql/AD6d.sql + sql/checks/AD6d-check.sql | yes | CHECK 7 rows true on scratch, rerun changes nothing, ledger_verify true |
-| Rust Tokio axum 0.8 read doors take the list from the database (retired = 404), sealed router, Rule 52 | server/src/packages.rs | yes | cargo 43 pass incl. PostgreSQL integration (6 packages in ladder order, ai_pro 404) |
+| PostgreSQL 16 append-only registry: AI packages RETIRED (AI product, ai.anexomail.com, July 2027), list door desk.fadm_pkg_list, trial 2 days (AD6c), grace 3; Business Premium and Business Max are decided but not on the landing page, so they are NOT in the registry until it shows them | sql/AD6d.sql + sql/checks/AD6d-check.sql (+ AD6c) | yes | fresh database AD1..AD7: CHECK rows all true for AD6, AD6b, AD6c, AD6d; rerun changes nothing |
+| Rust Tokio axum 0.8 read doors take the list from the database (retired or unknown = 404), sealed router, Rule 52 | server/src/packages.rs (tests now use the admin URL's database name) | yes | cargo 43 pass on the fresh database incl. PostgreSQL integration (4 packages, ai_pro 404)|
 
 
 
@@ -3156,3 +3156,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - D5a-2c (22 Nov 2026 22:1x PKT): his rule F, 48 hour trial is the only free entry; AD6b had trial 0, AD6c adds version 2 per package with trial_days 2 (scratch PostgreSQL: CHECK false before, true after, rerun changes nothing, 43 cargo tests). Waits his ad-auto. D5a-3b schema read corrected: caps already decided, family accounts are separate.
 
 - D5a-2 REOPENED and corrected (22 Nov 2026 22:3x PKT): awam blueprint read; AD6d retires the AI packages (AI product, not awam) and adds Business Premium (7,000 users, 70 TB, 100 MB, 4 GB) and Business Max (strict cap 125,000); Rust doors read the list from the database; scratch PostgreSQL CHECK 7 rows true, 43 cargo tests. Earlier green withdrawn until his pulls and my look.
+
+- D5a-2 corrected to the live landing page (22 Nov 2026 22:3x PKT): I read anexomail.com/plans in Chrome: four plans (Basic, Pro, Business, Business Pro), AI on /ai, no Premium or Max. AD6d retires the AI packages and no longer adds Premium or Max; fresh scratch database from AD1..AD7: all CHECK rows true, 43 cargo tests. Still reopened until his pulls and my look.

@@ -266,7 +266,7 @@ mod tests {
             let mut hd = HeaderMap::new(); hd.insert(header::AUTHORIZATION, format!("Bearer {t}").parse().unwrap()); hd } };
         let (h_agent, h_loner) = (sess(agent.clone()).await, sess(loner).await);
         q("alter role desk_app login password 'scratch'".to_string()).await;
-        let url = format!("postgres://desk_app:scratch@{}/anexo_desk?sslmode=disable", admin.split('@').next_back().unwrap().split('/').next().unwrap());
+        let url = format!("postgres://desk_app:scratch@{}/{}?sslmode=disable", admin.split('@').next_back().unwrap().split('/').next().unwrap(), admin.rsplit('/').next().unwrap());
         let f_ = std::env::temp_dir().join("desk-sign-test.seed"); std::fs::write(&f_, "0202020202020202020202020202020202020202020202020202020202020202").unwrap();
         unsafe { std::env::set_var("DESK_APP_URL", &url); std::env::set_var("DESK_SIGN_SEED_FILE", &f_); }
         crate::signed::init(); let sg = crate::signed::signer().expect("signer");

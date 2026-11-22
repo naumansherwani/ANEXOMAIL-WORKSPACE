@@ -1,8 +1,5 @@
--- AD6d CHECK (read-only): the registry matches the awam ladder (Basic, Pro, Business, Business Pro, Business Premium, Business Max); AI packages retired.
-SELECT 'the list is exactly the six awam packages' AS rule, (SELECT array_agg(pkg_id ORDER BY ord) FROM (SELECT pkg_id, row_number() OVER () ord FROM desk.fadm_pkg_list()) t) = ARRAY['basic','pro','business','business_pro','business_premium','business_max'] AS ok
+-- AD6d CHECK (read-only): the registry lists exactly the landing page plans (Basic, Pro, Business, Business Pro); AI packages retired.
+SELECT 'the list is exactly the four packages the landing page offers' AS rule, (SELECT array_agg(pkg_id ORDER BY ord) FROM (SELECT pkg_id, row_number() OVER () ord FROM desk.fadm_pkg_list()) t) = ARRAY['basic','pro','business','business_pro'] AS ok
 UNION ALL SELECT 'AI packages are retired, not deleted', (SELECT count(*) FROM desk.fadm_pkg_version WHERE pkg_id IN ('ai_pro','ai_business','ai_executive')) >= 3 AND NOT EXISTS (SELECT 1 FROM desk.fadm_pkg_list() WHERE pkg_id LIKE 'ai\_%')
-UNION ALL SELECT 'Premium: 7000 users, 70 TB, 100 MB, 4 GB chat file', (SELECT limits = '{"seats": 7000, "storage_gb": 70000, "attachment_mb": 100, "chat_file_mb": 4096}'::jsonb FROM desk.fadm_pkg_current('business_premium'))
-UNION ALL SELECT 'Max: strict cap 125000 users, 250 TB, 250 MB, 10 GB', (SELECT limits = '{"seats": 125000, "storage_gb": 250000, "attachment_mb": 250, "chat_file_mb": 10240}'::jsonb FROM desk.fadm_pkg_current('business_max'))
 UNION ALL SELECT 'Business Pro attachment is 60 MB', (SELECT (limits->>'attachment_mb')::int = 60 FROM desk.fadm_pkg_current('business_pro'))
-UNION ALL SELECT 'Premium and Max carry the 48 hour trial and grace 3', (SELECT count(*) FROM desk.fadm_pkg_current('business_premium') c WHERE c.trial_days = 2 AND c.grace_days = 3) = 1 AND (SELECT count(*) FROM desk.fadm_pkg_current('business_max') c WHERE c.trial_days = 2 AND c.grace_days = 3) = 1
 UNION ALL SELECT 'ledger hash chain still verifies', desk.fadm_ledger_verify();

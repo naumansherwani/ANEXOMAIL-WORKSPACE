@@ -37,7 +37,7 @@ fn answer(r: Result<Vec<tokio_postgres::SimpleQueryRow>, tokio_postgres::Error>)
 mod tests {
     use super::*;
     #[test] fn only_published_ids_pass() {
-        for p in ["basic", "business_max", "business_pro"] { assert!(valid_id(p)); }
+        for p in ["basic", "business", "business_pro"] { assert!(valid_id(p)); }
         for bad in ["", "Basic", "basic'; drop table x;--", "../pro", "a", "1abc"] { assert!(!valid_id(bad), "{bad}"); }
     }
     /// Rust -> PostgreSQL on the scratch database (needs DESK_TEST_ADMIN_URL; skipped otherwise): no session = 401, session = all seven packages and the version history.
@@ -51,14 +51,14 @@ mod tests {
         let t = format!("{sfx}{}", "ab".repeat(28));
         rows(&a, &format!("select desk.fadm_session_create('{o}'::uuid, '\\x{}'::bytea, 600)::text", hx(&crate::auth::token_hash(&t)))).await.unwrap();
         rows(&a, "alter role desk_app login password 'scratch'").await.unwrap();
-        let url = format!("postgres://desk_app:scratch@{}/anexo_desk?sslmode=disable", admin.split('@').next_back().unwrap().split('/').next().unwrap());
+        let url = format!("postgres://desk_app:scratch@{}/{}?sslmode=disable", admin.split('@').next_back().unwrap().split('/').next().unwrap(), admin.rsplit('/').next().unwrap());
         unsafe { std::env::set_var("DESK_APP_URL", &url); }
         let body = |r: Response| async move { let st = r.status(); let b = axum::body::to_bytes(r.into_body(), 1 << 22).await.unwrap(); (st, serde_json::from_slice::<serde_json::Value>(&b).unwrap_or_default()) };
         let (st, _) = body(list(HeaderMap::new()).await).await; assert_eq!(st, StatusCode::UNAUTHORIZED);
         let mut hd = HeaderMap::new(); hd.insert(header::AUTHORIZATION, format!("Bearer {t}").parse().unwrap());
         let (st, v) = body(list(hd.clone()).await).await; assert_eq!(st, StatusCode::OK, "{v}");
-        let arr = v.as_array().unwrap(); assert_eq!(arr.len(), 6); assert_eq!(arr[0]["pkg_id"], "basic"); assert_eq!(arr[5]["pkg_id"], "business_max");
-        assert_eq!(arr[3]["limits"]["seats"], 570); assert_eq!(arr[4]["limits"]["seats"], 7000); assert_eq!(arr[5]["limits"]["seats"], 125000); assert_eq!(arr[0]["grace_days"], 3); assert_eq!(arr[0]["trial_days"], 2);
+        let arr = v.as_array().unwrap(); assert_eq!(arr.len(), 4); assert_eq!(arr[0]["pkg_id"], "basic"); assert_eq!(arr[3]["pkg_id"], "business_pro");
+        assert_eq!(arr[3]["limits"]["seats"], 570); assert_eq!(arr[0]["grace_days"], 3); assert_eq!(arr[0]["trial_days"], 2);
         let (st, v) = body(one(hd.clone(), Path("pro".into())).await).await; assert_eq!(st, StatusCode::OK); assert_eq!(v["current"]["pkg_id"], "pro"); assert!(!v["versions"].as_array().unwrap().is_empty());
         let (st, _) = body(one(hd.clone(), Path("enterprise".into())).await).await; assert_eq!(st, StatusCode::NOT_FOUND);
         let (st, _) = body(one(hd, Path("ai_pro".into())).await).await; assert_eq!(st, StatusCode::NOT_FOUND, "retired AI package must not be served");
