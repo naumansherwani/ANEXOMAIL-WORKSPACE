@@ -58,6 +58,8 @@ export function greeting(h: number): string { return h < 12 ? "Good morning" : h
 const CSS = `
 .dsk{font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;--ink:#E8EEF9;--mute:#9FB3D6;--glass:rgba(12,22,46,.62);--line:rgba(160,200,255,.16);--amber:255,170,70;position:relative;min-height:100dvh;color:var(--ink);background:linear-gradient(180deg,#060B19 0%,#0A1730 48%,#0F3460 100%);overflow-x:hidden}
 .dsk::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(55% 45% at 94% 0%,rgba(var(--amber),.26),transparent 62%),radial-gradient(60% 55% at 6% 100%,rgba(15,52,96,.85),transparent 70%)}
+/* D10 bottom glow (his 22 Nov 07:56): the colours of the top corner, spread softly to the bottom. ONE rule + ONE element (.dsk-glow); delete both to go back, or restore backups/desk/20261122-0756-47ebf24c-before-bottom-glow */
+.dsk-glow{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(64% 40% at 90% 100%,rgba(var(--amber),.22),transparent 68%),radial-gradient(78% 36% at 42% 100%,rgba(111,166,242,.20),transparent 72%),radial-gradient(42% 26% at 4% 100%,rgba(var(--amber),.11),transparent 70%)}
 .dsk::after{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0,transparent 14vw,rgba(160,200,255,.05) 14vw,rgba(160,200,255,.05) calc(14vw + 1px));box-shadow:inset 0 0 180px rgba(0,0,0,.55)}
 .dsk-rail{overflow-x:auto;scrollbar-width:none;position:fixed;z-index:20;left:0;right:0;bottom:0;display:flex;justify-content:space-around;gap:2px;padding:6px max(8px,env(safe-area-inset-left)) calc(6px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-right));background:var(--glass);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border-top:1px solid var(--line)}
 .dsk-brand,.dsk-grp,.dsk-pin{display:none}.dsk-scroll{display:contents}
@@ -129,7 +131,7 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, s
   const end = me ? parseWhen(me.expires_at) : null;
   const clock = d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" }), date = d.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
   return (
-    <div className="dsk"><style>{CSS}</style>
+    <div className="dsk"><style>{CSS}</style><div className="dsk-glow" aria-hidden="true" />
       <nav className="dsk-rail" aria-label="Admin Desk">
         <div className="dsk-brand"><a href="/dashboard" className="dsk-home" onClick={goHome} title={sub ? "Back to the dashboard" : "Refresh the dashboard"} aria-label={sub ? "Anexomail Workspace, back to the dashboard" : "Anexomail Workspace, refresh the dashboard"}><BrandMark home={false} /></a></div>
         <div className="dsk-scroll">

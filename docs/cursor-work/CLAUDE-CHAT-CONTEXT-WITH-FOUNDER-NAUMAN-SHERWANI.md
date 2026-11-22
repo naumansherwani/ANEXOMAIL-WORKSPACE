@@ -5224,3 +5224,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 22 Nov 2026 07:58 PKT: Desk D8 eye-comfort colours: 4-palette demo shown (no code until his pick). Blueprint top says existing Systems/shortcuts/cards files must not be re-written.
 
 - 22 Nov 2026 08:03 PKT: Desk D9 brand link written (ANEXOMAIL clickable, refresh or back to dashboard, phone shows brand); D8 colour demo 2 cinematic light (L1-L4) shown, no colour code until his pick; bundle desk-UKXIYNCu.
+
+- 22 Nov 2026 08:10 PKT: Desk D10 bottom glow written after backup (before-bottom-glow, verified); top-corner colours spread softly to the bottom, nothing else touched; bundle desk-CYkLX2WY.
