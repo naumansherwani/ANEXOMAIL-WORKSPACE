@@ -40,7 +40,7 @@ WHERE D5a-3 STANDS (22 Nov 2026 21:08 PKT): the Desk side (lookup.rs: signed req
 
 HANDOFF FOR A NEW CLAUDE: docs/claude/admin-desk/state/HANDOFF-22NOV.md (21:26: no server pull pending; next server commands only when D5a-3b is whole)
 
-# PART 0j: D5a-2 = GREEN (22 Nov 2026 21:54 PKT: WIRED: YES / REAL: YES / TECH-LAW CHECKED; SQL GREEN, CODE GREEN, PHASE D5a-2 GREEN)
+# PART 0j: D5a-2 = REOPENED 22:3x PKT (awam ladder correction AD6c+AD6d; was GREEN) (22 Nov 2026 21:54 PKT: WIRED: YES / REAL: YES / TECH-LAW CHECKED; SQL GREEN, CODE GREEN, PHASE D5a-2 GREEN)
 | Sub-phase | Advance technology | State |
 |---|---|---|
 | D5a-2 SQL seed AD6b | PostgreSQL 16 (append-only versions, hash chain, forced RLS) | 7 landing-page packages (src/lib/plans.ts), features + limits, grace 3, trial 0, no price; proved on scratch; his paste: 7 packages, version 1 each, grace 3 (ad-auto "already run" = his earlier run, no double seed): GREEN |

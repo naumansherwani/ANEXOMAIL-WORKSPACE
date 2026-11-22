@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 22:18 PKT) - read this FIRST for the Desk after a compaction
-DOING: D5a-2c trial correction AD6c (48 hour trial) coded; D5a-3b schema read corrected (caps already decided, family separate)
-NEXT STEP: his ad-auto for AD6c, then his schema-look paste, then D5a-3b contract
-HIS LAST WORD: his 22:16 word: caps already decided, family separate
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 22:20 PKT) - read this FIRST for the Desk after a compaction
+DOING: D5a-2 REOPENED and corrected to the awam blueprint: AD6c trial 2, AD6d retire AI packages + add Premium and Max, Rust list from DB
+NEXT STEP: his 3 pulls (ad-auto, desk-install, desk-restart), my look, then D5a-3b
+HIS LAST WORD: his 22:19 word: read awam blueprint, not correct = no progress
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 57926485 22 Nov 22:18 ledger line d336c686
 - d336c686 22 Nov 22:18 D5a-2c trial correction AD6c
 - 34d8bbed 22 Nov 21:56 ledger line 61042086
 - 61042086 22 Nov 21:56 D5a-3b schema look script
@@ -72,10 +73,25 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 4d45dbd6 22 Nov 21:55 D5a-3b schema-first read
 - 7d141880 22 Nov 21:53 ledger line 90a27229
 - 90a27229 22 Nov 21:53 D5a-2 GREEN
-- 51a5f654 22 Nov 21:51 ledger line 378c0cd7
 
 ## Uncommitted Desk files
+ M admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
+ M admin-desk/D5A-GREEN-LIST-22NOV.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/STATUS-GREEN-TABLE-22NOV.md
+ M admin-desk/server/src/packages.rs
+ M admin-desk/state/HANDOFF-22NOV.md
+ M docs/claude/admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
+ M docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md
+ M docs/claude/admin-desk/server/src/packages.rs
+ M docs/claude/admin-desk/state/HANDOFF-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+?? admin-desk/sql/AD6d.sql
+?? admin-desk/sql/checks/AD6d-check.sql
+?? docs/claude/admin-desk/sql/AD6d.sql
+?? docs/claude/admin-desk/sql/checks/AD6d-check.sql
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

@@ -5,25 +5,26 @@ use crate::bridge::owner;
 use crate::door::rows;
 use axum::{extract::Path, http::{header, HeaderMap, StatusCode}, response::{IntoResponse, Response}};
 
-/// The seven packages the landing page publishes (src/lib/plans.ts); the registry table is not readable by desk_app, so the list is fixed here.
-pub const PACKAGES: [&str; 7] = ["basic", "pro", "business", "business_pro", "ai_pro", "ai_business", "ai_executive"];
-pub fn valid_id(s: &str) -> bool { PACKAGES.contains(&s) }
+/// A package id is a plain word (the list itself comes from the database: desk.fadm_pkg_list, retired packages leave it).
+pub fn valid_id(s: &str) -> bool { (2..=41).contains(&s.len()) && s.as_bytes()[0].is_ascii_lowercase() && s.bytes().all(|b| b.is_ascii_lowercase() || b.is_ascii_digit() || b == b'_') }
 fn out(status: StatusCode, body: String) -> Response { (status, [(header::CONTENT_TYPE, "application/json")], body).into_response() }
 fn err(status: StatusCode, e: &str) -> Response { out(status, serde_json::json!({"error": e}).to_string()) }
 
-/// GET /desk/v1/packages: the current version of every package.
+/// GET /desk/v1/packages: the current version of every live (not retired) package, in ladder order.
 pub async fn list(h: HeaderMap) -> Response {
     let (c, _o) = match owner(&h).await { Ok(x) => x, Err(r) => return r };
-    let ids = PACKAGES.iter().map(|p| format!("'{p}'")).collect::<Vec<_>>().join(",");
-    let q = format!("select coalesce(jsonb_agg(to_jsonb(t) order by array_position(array[{ids}], t.pkg_id)), '[]'::jsonb)::text from (select p.id, (desk.fadm_pkg_current(p.id)).* from unnest(array[{ids}]) as p(id)) t");
-    answer(rows(&c, &q).await)
+    let q = "select coalesce(jsonb_agg(to_jsonb(t) order by t.ord), '[]'::jsonb)::text from (select l.ord, (desk.fadm_pkg_current(l.pkg_id)).* from (select pkg_id, row_number() over () as ord from desk.fadm_pkg_list()) l) t";
+    answer(rows(&c, q).await)
 }
-/// GET /desk/v1/packages/{id}: the current version and every version of one package.
+/// GET /desk/v1/packages/{id}: the current version and every version of one live package (a retired or unknown id = 404).
 pub async fn one(h: HeaderMap, Path(id): Path<String>) -> Response {
     if !valid_id(&id) { return err(StatusCode::NOT_FOUND, "not_found"); }
     let (c, _o) = match owner(&h).await { Ok(x) => x, Err(r) => return r };
-    let q = format!("select jsonb_build_object('current', (select to_jsonb(t) from desk.fadm_pkg_current('{id}') t), 'versions', (select coalesce(jsonb_agg(to_jsonb(v)), '[]'::jsonb) from desk.fadm_pkg_versions('{id}') v))::text");
-    answer(rows(&c, &q).await)
+    let q = format!("select case when exists (select 1 from desk.fadm_pkg_list() where pkg_id = '{id}') then jsonb_build_object('current', (select to_jsonb(t) from desk.fadm_pkg_current('{id}') t), 'versions', (select coalesce(jsonb_agg(to_jsonb(v)), '[]'::jsonb) from desk.fadm_pkg_versions('{id}') v))::text end");
+    match rows(&c, &q).await {
+        Ok(v) if v.first().and_then(|r| r.get(0)).is_none() => err(StatusCode::NOT_FOUND, "not_found"),
+        r => answer(r),
+    }
 }
 fn answer(r: Result<Vec<tokio_postgres::SimpleQueryRow>, tokio_postgres::Error>) -> Response {
     match r {
@@ -36,8 +37,8 @@ fn answer(r: Result<Vec<tokio_postgres::SimpleQueryRow>, tokio_postgres::Error>)
 mod tests {
     use super::*;
     #[test] fn only_published_ids_pass() {
-        for p in PACKAGES { assert!(valid_id(p)); }
-        for bad in ["", "Basic", "basic'; drop table x;--", "../pro", "enterprise"] { assert!(!valid_id(bad), "{bad}"); }
+        for p in ["basic", "business_max", "business_pro"] { assert!(valid_id(p)); }
+        for bad in ["", "Basic", "basic'; drop table x;--", "../pro", "a", "1abc"] { assert!(!valid_id(bad), "{bad}"); }
     }
     /// Rust -> PostgreSQL on the scratch database (needs DESK_TEST_ADMIN_URL; skipped otherwise): no session = 401, session = all seven packages and the version history.
     #[tokio::test] async fn database_doors_need_a_session_and_return_the_registry() {
@@ -56,9 +57,10 @@ mod tests {
         let (st, _) = body(list(HeaderMap::new()).await).await; assert_eq!(st, StatusCode::UNAUTHORIZED);
         let mut hd = HeaderMap::new(); hd.insert(header::AUTHORIZATION, format!("Bearer {t}").parse().unwrap());
         let (st, v) = body(list(hd.clone()).await).await; assert_eq!(st, StatusCode::OK, "{v}");
-        let arr = v.as_array().unwrap(); assert_eq!(arr.len(), 7); assert_eq!(arr[0]["pkg_id"], "basic"); assert_eq!(arr[6]["pkg_id"], "ai_executive");
-        assert_eq!(arr[3]["limits"]["seats"], 570); assert_eq!(arr[0]["grace_days"], 3);
+        let arr = v.as_array().unwrap(); assert_eq!(arr.len(), 6); assert_eq!(arr[0]["pkg_id"], "basic"); assert_eq!(arr[5]["pkg_id"], "business_max");
+        assert_eq!(arr[3]["limits"]["seats"], 570); assert_eq!(arr[4]["limits"]["seats"], 7000); assert_eq!(arr[5]["limits"]["seats"], 125000); assert_eq!(arr[0]["grace_days"], 3); assert_eq!(arr[0]["trial_days"], 2);
         let (st, v) = body(one(hd.clone(), Path("pro".into())).await).await; assert_eq!(st, StatusCode::OK); assert_eq!(v["current"]["pkg_id"], "pro"); assert!(!v["versions"].as_array().unwrap().is_empty());
-        let (st, _) = body(one(hd, Path("enterprise".into())).await).await; assert_eq!(st, StatusCode::NOT_FOUND);
+        let (st, _) = body(one(hd.clone(), Path("enterprise".into())).await).await; assert_eq!(st, StatusCode::NOT_FOUND);
+        let (st, _) = body(one(hd, Path("ai_pro".into())).await).await; assert_eq!(st, StatusCode::NOT_FOUND, "retired AI package must not be served");
     }
 }

@@ -3301,3 +3301,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - D5a-3b read-only schema look script added (22 Nov 2026 21:5x PKT): lists real columns of orgs, polar_subscriptions, storage and plan tables, prints no secret and no rows; waits his paste.
 
 - D5a-2c (22 Nov 2026 22:1x PKT): his rule F, 48 hour trial is the only free entry; AD6b had trial 0, AD6c adds version 2 per package with trial_days 2 (scratch PostgreSQL: CHECK false before, true after, rerun changes nothing, 43 cargo tests). Waits his ad-auto. D5a-3b schema read corrected: caps already decided, family accounts are separate.
+
+- D5a-2 REOPENED and corrected (22 Nov 2026 22:3x PKT): awam blueprint read; AD6d retires the AI packages (AI product, not awam) and adds Business Premium (7,000 users, 70 TB, 100 MB, 4 GB) and Business Max (strict cap 125,000); Rust doors read the list from the database; scratch PostgreSQL CHECK 7 rows true, 43 cargo tests. Earlier green withdrawn until his pulls and my look.

@@ -27,3 +27,5 @@ desk-copy-sync.py sync -> lanes/lane-sync.py -> ckpt.sh "<doing>" "<next>" "<why
 - LOOP-AFTER-COMMIT BANNED (his 21:40): ckpt-loop writes only while real work is uncommitted; clean tree stays clean (docs/claude/LOOP-AFTER-COMMIT-BANNED-LAW-22NOV.md).
 
 - D5a-2 = GREEN (his word 21:53 "GREEN bolo"; SQL, CODE and PHASE level; WIRED: YES / REAL: YES / TECH-LAW CHECKED; 22 Nov 21:54 PKT): his count paste = 7 packages v1 grace 3 (ad-auto "already run" = earlier run of his, no double seed); my Chrome: /desk/v1/packages, /pro, /enterprise all answer unsigned_request 400 (sealed). NEXT = D5a-3b responder (own Rust crate, UDP 127.0.0.1:4410, needs his fresh ss before any listener).
+
+- D5a-2 REOPENED (22 Nov 22:3x PKT, his 22:19 word): awam blueprint read; AI packages are not awam (retired in AD6d), Premium + Max added with his FINAL caps, trial 48 h (AD6c). Code done + proved on scratch; he must run ad-auto, desk-install, desk-restart; then my look; only then D5a-2 is GREEN again. D5a-3b waits (also his desk-schema-look paste).

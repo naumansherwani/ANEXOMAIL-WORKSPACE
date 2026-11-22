@@ -1,5 +1,13 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK D5a-2d (REGISTRY MATCHES THE AWAM BLUEPRINT), written 22 Nov 2026 22:3x PKT, his word 22:19 "awam blueprint read kero, jab tak correct nahi hoga agay nahi chalega". STATE: CODE DONE, proved on scratch PostgreSQL + cargo; waits his ad-auto and desk-install and desk-restart (not accepted by him until correct)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL 16 append-only registry: AI packages RETIRED (AI product, ai.anexomail.com, July 2027), Business Premium and Business Max published (his FINAL caps: Premium 7,000 users / 70 TB / 100 MB / 4 GB; Max strict cap 125,000, 250 TB, 250 MB, 10 GB), trial 2 days, grace 3; list door desk.fadm_pkg_list | sql/AD6d.sql + sql/checks/AD6d-check.sql | yes | CHECK 7 rows true on scratch, rerun changes nothing, ledger_verify true |
+| Rust Tokio axum 0.8 read doors take the list from the database (retired = 404), sealed router, Rule 52 | server/src/packages.rs | yes | cargo 43 pass incl. PostgreSQL integration (6 packages in ladder order, ai_pro 404) |
+
+
+
 # TECH CONTRACT FOR PHASE: DESK D5a-2c (TRIAL CORRECTION, 48 HOURS), written 22 Nov 2026 22:1x PKT. His FINAL decision F (AWAM-PACKAGES-PROPOSAL-07NOV.md section 6): the 48-hour trial is the only free entry; AD6b had trial 0. STATE: CODE DONE, proved on scratch PostgreSQL; waits his ad-auto
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3146,3 +3154,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - D5a-3b read-only schema look script added (22 Nov 2026 21:5x PKT): lists real columns of orgs, polar_subscriptions, storage and plan tables, prints no secret and no rows; waits his paste.
 
 - D5a-2c (22 Nov 2026 22:1x PKT): his rule F, 48 hour trial is the only free entry; AD6b had trial 0, AD6c adds version 2 per package with trial_days 2 (scratch PostgreSQL: CHECK false before, true after, rerun changes nothing, 43 cargo tests). Waits his ad-auto. D5a-3b schema read corrected: caps already decided, family accounts are separate.
+
+- D5a-2 REOPENED and corrected (22 Nov 2026 22:3x PKT): awam blueprint read; AD6d retires the AI packages (AI product, not awam) and adds Business Premium (7,000 users, 70 TB, 100 MB, 4 GB) and Business Max (strict cap 125,000); Rust doors read the list from the database; scratch PostgreSQL CHECK 7 rows true, 43 cargo tests. Earlier green withdrawn until his pulls and my look.
