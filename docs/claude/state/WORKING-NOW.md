@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 9971c556 22 Nov 07:51 Desk D9: ANEXOMAIL brand link; D8 cinematic light colour demo 2 (22 Nov 08:04 PKT)
+- d51862e6 22 Nov 07:51 ledger line e3b9a539
 - e3b9a539 22 Nov 07:51 Desk: D9 brand link, colour demo 2
 - e45ccd07 22 Nov 07:47 ledger line 0999a049
 - 0999a049 22 Nov 07:47 Desk D8: eye-comfort colour demo (4 palettes), blueprint records (22 Nov 07:58 PKT)
-- 260da7bf 22 Nov 07:42 ledger line 5b1f481e
-- 5b1f481e 22 Nov 07:42 Desk D7: pipeline moves from dashboard into Systems (22 Nov 07:53 PKT)
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 36 ++----------------------------------
- 1 file changed, 2 insertions(+), 34 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (0cdd746590d1b22c8348b897bffe3ebc401a2bb6)
+WIP snapshot: refs/wip/last (c2345e04d26f1dfe17a777fc40236334d3f6e7bd)
