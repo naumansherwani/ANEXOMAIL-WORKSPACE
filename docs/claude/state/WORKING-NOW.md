@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 02:40 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 02:40 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Rule 52 renamed ADVANCE TECHNOLOGY FOR ANEXOMAIL + installer proof step 9/9 + version subcommand; waits his one install, then 1j
 NEXT STEP: his install (shows PROOF lines), then 1j D5 screen list/plan/code
 HIS LAST WORD: his 02:38 order
@@ -18,38 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 57f63ea6 23 Nov 02:40 Rule 52 rename + installer proof
 - 5676c3d7 23 Nov 02:21 ledger line 9e52ac8e
 - 9e52ac8e 23 Nov 02:21 resume line keeps order lock
 - 0a9a4191 23 Nov 02:21 ledger line 8aa186f8
 - 8aa186f8 23 Nov 02:21 1i GREEN + Rule 52 live technology
-- 6440242a 23 Nov 02:14 ledger line 4a79cd5f
 
 ## Uncommitted files (half-done work if any)
- M admin-desk/RULE-52-LIVE-TECHNOLOGY-23NOV.md
- M admin-desk/RULE-BOOK.md
- M admin-desk/scripts/desk-install.sh
- M admin-desk/server/src/lookup.rs
- M admin-desk/server/src/main.rs
- M docs/claude/admin-desk/RULE-52-LIVE-TECHNOLOGY-23NOV.md
- M docs/claude/admin-desk/RULE-BOOK.md
- M docs/claude/admin-desk/scripts/desk-install.sh
- M docs/claude/admin-desk/server/src/lookup.rs
- M docs/claude/admin-desk/server/src/main.rs
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
-?? docs/claude/RULE-52-ADVANCE-TECHNOLOGY-FOR-ANEXOMAIL.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- .../admin-desk/RULE-52-LIVE-TECHNOLOGY-23NOV.md    |  2 +-
- docs/claude/admin-desk/RULE-BOOK.md                |  2 +-
- docs/claude/admin-desk/scripts/desk-install.sh     | 13 +++++++-
- docs/claude/admin-desk/server/src/lookup.rs        |  8 +++++
- docs/claude/admin-desk/server/src/main.rs          |  1 +
- docs/claude/state/WORKING-NOW.md                   | 35 +++++++++++-----------
- docs/claude/tech-contracts/CURRENT.md              |  3 +-
- 12 files changed, 65 insertions(+), 25 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 35 ++---------------------------------
+ 1 file changed, 2 insertions(+), 33 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -60,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (495f95eb9e6a71cb382a2da4e33eeb0e577c9bc5)
+WIP snapshot: refs/wip/last (e5604973263c70c779c31261318e7322351581f8)
