@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 22:22 PKT) - read this FIRST for the Desk after a compaction
-DOING: D5a-2 registry = the 4 live landing-page plans (read in my Chrome); AD6d retires AI; proved on fresh DB
-NEXT STEP: his 3 pulls, my look, then D5a-3b
-HIS LAST WORD: his 22:21 word: landing page pe plans
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 22:26 PKT) - read this FIRST for the Desk after a compaction
+DOING: answered his 22:26 question: throttle = pool throttle in awam blueprint (AW0 FINAL line + proposal bandwidth rule); listed his recent awam orders in chat
+NEXT STEP: his 3 pulls (ad-auto, desk-install, desk-restart), then D5a-3b
+HIS LAST WORD: his 22:26 word: throttle ka zikar, sab yahan likho
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 9c833aa1 22 Nov 22:22 ledger line 1b54bab4
 - 1b54bab4 22 Nov 22:22 D5a-2 landing page plans
 - 898dcced 22 Nov 22:20 ledger line 3bea45d8
 - 3bea45d8 22 Nov 22:20 D5a-2 reopened awam ladder correction
@@ -72,7 +73,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - d336c686 22 Nov 22:18 D5a-2c trial correction AD6c
 - 34d8bbed 22 Nov 21:56 ledger line 61042086
 - 61042086 22 Nov 21:56 D5a-3b schema look script
-- 9156d706 22 Nov 21:55 ledger line 4d45dbd6
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md

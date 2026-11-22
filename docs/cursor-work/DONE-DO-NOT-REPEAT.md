@@ -4255,3 +4255,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - D5a-2 REOPENED and corrected (22 Nov 2026 22:3x PKT): awam blueprint read; AD6d retires the AI packages (AI product, not awam) and adds Business Premium (7,000 users, 70 TB, 100 MB, 4 GB) and Business Max (strict cap 125,000); Rust doors read the list from the database; scratch PostgreSQL CHECK 7 rows true, 43 cargo tests. Earlier green withdrawn until his pulls and my look.
 
 - D5a-2 corrected to the live landing page (22 Nov 2026 22:3x PKT): I read anexomail.com/plans in Chrome: four plans (Basic, Pro, Business, Business Pro), AI on /ai, no Premium or Max. AD6d retires the AI packages and no longer adds Premium or Max; fresh scratch database from AD1..AD7: all CHECK rows true, 43 cargo tests. Still reopened until his pulls and my look.
+
+- 22 Nov 2026 22:2x PKT: his question on throttle answered from the awam blueprint (AW0 FINAL line and the proposal bandwidth rule: pool alerts 70 and 85 percent, at 100 percent big transfers and calls are slowed, email keeps working, nothing deleted); no code, awam not built yet.
