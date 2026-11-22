@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 02:56 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 02:56 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1j points + contract written
 NEXT STEP: 1j code: desk_plan_pure.ts then screen
 HIS LAST WORD: his 02:53 order
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- ad2138b5 23 Nov 02:56 1j: plan, list, ML-DSA gap plan
 - 308f6827 23 Nov 02:46 ledger line 711d040d
 - 711d040d 23 Nov 02:46 crypto choice note
 - 16845c1a 23 Nov 02:40 ledger line 57f63ea6
@@ -72,16 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 5676c3d7 23 Nov 02:21 ledger line 9e52ac8e
 - 0a9a4191 23 Nov 02:21 ledger line 8aa186f8
 - 8aa186f8 23 Nov 02:21 1i GREEN + Rule 52 live technology
-- 6440242a 23 Nov 02:14 ledger line 4a79cd5f
 
 ## Uncommitted Desk files
- M admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/D5-PLAN-CONTEXT-SCREEN-LIST-23NOV.md
-?? admin-desk/ML-DSA-HYBRID-GAP-PLAN-23NOV.md
-?? docs/claude/admin-desk/D5-PLAN-CONTEXT-SCREEN-LIST-23NOV.md
-?? docs/claude/admin-desk/ML-DSA-HYBRID-GAP-PLAN-23NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
