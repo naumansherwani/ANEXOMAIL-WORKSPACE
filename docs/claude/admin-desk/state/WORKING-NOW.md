@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 04:35 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 04:36 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1l D5c Escalate: web research done, LIST L1-L12 + ADVANCE-RESEARCH [1l] + contract written BEFORE code. Next: AD10 SQL on scratch with AD1..AD10 checks
 NEXT STEP: AD10.sql + check + selftest on scratch, then cases.rs, then UI
 HIS LAST WORD: his 04:34 SHURU KERO
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 8f1f5669 23 Nov 04:36 1l research + contract before code
 - d23a5a2e 23 Nov 04:30 ledger line f4afe900
 - f4afe900 23 Nov 04:30 founder inbox plan + reminder gate
 - e2147d46 23 Nov 04:25 ledger line c8287687
@@ -72,18 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 89e0e045 23 Nov 04:25 ledger line 2b5144d1
 - 2b5144d1 23 Nov 04:25 1k closed: approvals + tick proved live
 - 2f1bf66f 23 Nov 04:18 ledger line cba544eb
-- cba544eb 23 Nov 04:18 1k GREEN, NOW 1l
 
 ## Uncommitted Desk files
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/FOUNDER-ESCALATION-INBOX-PLAN-23NOV.md
- M admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/FOUNDER-ESCALATION-INBOX-PLAN-23NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/D5C-ESCALATE-LIST-23NOV.md
-?? docs/claude/admin-desk/D5C-ESCALATE-LIST-23NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
