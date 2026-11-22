@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 04:25 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 04:25 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1k GREEN with all closed items: 9 runbooks Approved by the Chairman (my Chrome, his account), checklist tick live + persisted. NOW = 1l D5c Escalate (research first)
 NEXT STEP: 1l research + LIST + ADVANCE-RESEARCH [1l] + contract, then code; after 1o: 1a (Caddy to own HTTP/3 code) then phone 390 / tablet 820 test
 HIS LAST WORD: his 04:23
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 2b5144d1 23 Nov 04:25 1k closed: approvals + tick proved live
 - 2f1bf66f 23 Nov 04:18 ledger line cba544eb
 - cba544eb 23 Nov 04:18 1k GREEN, NOW 1l
 - 611b16af 23 Nov 04:10 ledger line c923b616
@@ -72,13 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - f4451da4 23 Nov 04:04 ledger line 889c9577
 - 889c9577 23 Nov 04:04 1k fix: old row glow cleared, build timer
 - b4d70200 23 Nov 03:55 ledger line d5fe6738
-- d5fe6738 23 Nov 03:55 1k fix: mark colour blue
 
 ## Uncommitted Desk files
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
