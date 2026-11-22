@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 01:54 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 01:54 PKT) - read this FIRST for the Desk after a compaction
 DOING: Phase A row fixed: Namecheap DONE, h3 open is browser side; ServiceNow picture answered
 NEXT STEP: 1i D5a-5 after his haan
 HIS LAST WORD: his 01:53: Namecheap anger
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 8df10397 23 Nov 01:54 Phase A row corrected
 - 9ef4c33e 23 Nov 01:45 ledger line 7afc45f1
 - 7afc45f1 23 Nov 01:45 NOW-LIST remaining phases
 - 28f6fd3f 23 Nov 01:38 ledger line b1542e59
@@ -72,11 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 400d879c 23 Nov 01:28 ledger line e7e0e670
 - e7e0e670 23 Nov 01:28 D5a-4: audit fix PUBLIC revoke
 - 84619001 23 Nov 01:27 ledger line 5906a650
-- 5906a650 23 Nov 01:27 D5a-4: outside copy + audit-before-install law
 
 ## Uncommitted Desk files
- M admin-desk/FOLDER-PHASES-22NOV.md
- M docs/claude/admin-desk/FOLDER-PHASES-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
