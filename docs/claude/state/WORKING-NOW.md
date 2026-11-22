@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 11:10 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 11:11 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: AD5 address-role SQL coded and proved on PG16; mailbox role plan written
 NEXT STEP: his ad-auto runs AD5; then staff queues, SLA, sender identity, real tests; C4 asks him
 HIS LAST WORD: his 11:06 mailbox role priority
@@ -18,11 +18,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 42e3bd7c 22 Nov 11:11 Manifest refresh after Desk mailbox role plan
+- 2712005c 22 Nov 11:10 ledger line e37c3325
 - e37c3325 22 Nov 11:10 AD5 mailbox roles
 - 49e9c113 22 Nov 10:52 ledger line f7a7f3ee
 - f7a7f3ee 22 Nov 10:52 Checkpoint: WORKING-NOW refresh
-- 212f79e7 22 Nov 10:52 ledger line cf070b58
-- cf070b58 22 Nov 10:52 Desk D5a-4 lookup audit SQL (AD4) proved on PostgreSQL 16, gate refinement
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -30,8 +30,8 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 38 ++------------------------------------
- 1 file changed, 2 insertions(+), 36 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (7005d54309378e3c4a3840036fa5528529480730)
+WIP snapshot: refs/wip/last (eabe2107afcc13a7340e3b87fda4f2aa7d1d1af6)
