@@ -3,7 +3,7 @@ Rule (DESK-PHASES rule 11, unchanged): rail order = 1 Dashboard, 2 Mailboxes, 3 
 ## FOLDER 1: DASHBOARD (the only folder open now)
 | Step | Phase (old ids) | ADVANCE TECHNOLOGY | State 22 Nov 23:4x PKT |
 |---|---|---|---|
-| 1a | A Browser HTTP/3 page load | HTTP/3, Alt-Svc, DNS HTTPS record (his Namecheap) | OPEN: Chrome shows h2 |
+| 1a | A Browser HTTP/3 page load | HTTP/3, Alt-Svc, DNS HTTPS record (his Namecheap) | DNS DONE by him 21 Nov 23:50 (A + AAAA saved; Namecheap has NO HTTPS record type, so NOTHING more is needed on Namecheap); server Alt-Svc h3=:4400 live + H3CHECK OK; my Chrome 23 Nov 01:5x still h2 = browser/network side, not DNS. OPEN: h3 adoption by Chrome (WIRED: NO) |
 | 1b | B Bridge doors, C WebTransport stream | Rust axum, Rule 52, h3-webtransport, kernel verify_frame | LIVE |
 | 1c | D Command bar, D1, D1c..D1f, D2 alert actions, D3, D3b, D4, D7 Systems, D8 colours, D9 brand link, D10 glow | React 19 + TS, Framer Motion, kernel stream | LIVE / looked |
 | 1d | D5a-1 lookup contract + NO-MONEY gate | commit gate, JSON contract | GREEN |

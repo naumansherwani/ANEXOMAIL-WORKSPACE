@@ -5757,3 +5757,5 @@ Features ki list (QC4 mein kya banega):
 - D5a-4 GREEN 23 Nov 01:4x: AD4b + signed outside copy. WIRED: YES / REAL: YES / TECH-LAW CHECKED. TESTED: his server pastes AD4b run and CHECK OK 21/21 pass, AUDIT EXPORT OK local + Storage Box, my Chrome live look 4 audit doors 400 unsigned no-store OK, cargo 58 passed
 
 - NOW-LIST: remaining Dashboard phases + total 23 saved for compaction. TESTED: gate pass, docs only OK
+
+- Phase A row corrected: Namecheap A+AAAA done 21 Nov, no HTTPS type. TESTED: my Chrome live look nextHopProtocol h2 on 3 resources, alt-svc header present OK
