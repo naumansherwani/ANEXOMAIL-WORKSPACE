@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 07:25 PKT) - read this FIRST for the Desk after a compaction
-DOING: D1 written, waits his desk-install + live look
-NEXT STEP: his desk-install, my Chrome look, D1 GREEN, then D2 ack/act
-HIS LAST WORD: rule book connected, cards clickable
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 07:27 PKT) - read this FIRST for the Desk after a compaction
+DOING: rules 11-13 written, Mailboxes rename; waits his desk-install
+NEXT STEP: his desk-install, my live Chrome look, D1 GREEN, then D2 ack/act buttons
+HIS LAST WORD: dashboard first, 4 days, no read no commit
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -18,6 +18,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 8. After EVERY message: repo + ledger + blueprint + COMPACT-SAVE updated with real date and time (rec.sh, desk-copy-sync, lane-sync, manifest-sync, rules-gate 0 fail). EVERY phase is named by ALPHABET in build 
 9. Address him only as Aap, Roman Urdu, short; end every reply with the Rule-70 table and "Abhi code mein NAHI"; server commands = ONE line.
 10. WEB RESEARCH GOES INTO THE REPO IN ORDER (his 22 Nov 2026 07:15 PKT): every web search's points and features are written, in order, into the blueprint (section 'WEB RESEARCH LOG' in DASHBOARD-CARDS-CLICK-PL
+11. FOLDER-WISE GREEN, DASHBOARD FIRST (his 22 Nov 2026 07:26 PKT): the Desk is made green folder by folder in rail order and the DASHBOARD folder (D, D1..D6) goes green completely before any other folder start
+12. FOUR-DAY TARGET (his 22 Nov 2026 07:26 PKT): the WHOLE Admin Desk is complete, wired and green in 4 days: by 26 Nov 2026 07:26 PKT. Day plan: docs/claude/admin-desk/FOUR-DAY-PLAN-22NOV.md. Every message re-
+13. NO READ, NO COMMIT (his 22 Nov 2026 07:26 PKT): the commit gate 'DESK PHASE START' fails a Desk code commit unless the receipt shows the strict rules, this blueprint, the rule book and both WORKING-NOW file
 
 ## Phase table (docs/claude/admin-desk/state/PHASES.md)
 
@@ -61,6 +64,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 7374586f 22 Nov 07:25 ledger line 4594bdd8
 - 4594bdd8 22 Nov 07:25 Desk D1: clickable cards, account cards removed, /dashboard/* pages, Connecting fix, rule book (22 Nov 07:36 PKT)
 - 831786c8 22 Nov 07:18 ledger line bc2fdc2f
 - bc2fdc2f 22 Nov 07:18 Desk: phase D GREEN after live Chrome look (22 Nov 07:19 PKT)
@@ -68,10 +72,18 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - e7d22902 22 Nov 07:15 ledger line 7dee6d42
 - 7dee6d42 22 Nov 07:15 Desk: rule 10 + research log
 - bd5ab479 22 Nov 07:14 ledger line 5f449e7e
-- 4110299d 22 Nov 07:14 ledger line 56034001
 
 ## Uncommitted Desk files
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/DESK-PHASES-22NOV.md
+ M admin-desk/FOUR-DAY-PLAN-22NOV.md
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+M  docs/claude/admin-desk/DESK-PHASES-22NOV.md
+M  docs/claude/admin-desk/FOUR-DAY-PLAN-22NOV.md
+ M docs/claude/admin-desk/RULE-BOOK.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+M  founder-web/src/desk/modules/workspace/inboxes/README.md
+M  founder-web/src/desk/modules/workspace/inboxes/meta.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

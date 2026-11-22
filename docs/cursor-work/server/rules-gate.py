@@ -188,7 +188,14 @@ if "--staged" in sys.argv:
     if _desk_code:
         try:
             import json as _j4, time as _t4
-            if _t4.time() - _j4.load(open(".git/desk-phase-receipt.json"))["time"] > 7200: fail("DESK PHASE START", "receipt older than 2 hours: run python3 docs/cursor-work/server/desk-phase-start.py <phase> and READ it (strict rules, phase technology, WORKING-NOW)")
+            _rc = _j4.load(open(".git/desk-phase-receipt.json"))
+            _need = ["docs/claude/admin-desk/DESK-PHASES-22NOV.md", "docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md", "docs/claude/admin-desk/RULE-BOOK.md", "docs/claude/admin-desk/state/WORKING-NOW.md", "docs/claude/state/WORKING-NOW.md"]
+            _miss = [x for x in _need if x not in _rc.get("read", [])]
+            if _miss: fail("DESK PHASE START", "receipt does not show the repo was read (his 22 Nov 07:26: no rules + blueprint + working-now read = no commit): missing " + ", ".join(_miss) + "; run desk-phase-start.py <phase> and READ it")
+            import hashlib as _h4, re as _r4
+            _cur = _h4.sha256("\n".join(l for l in open("docs/claude/admin-desk/DESK-PHASES-22NOV.md", errors="ignore").read().split("\n") if _r4.match(r"^\d+\. ", l)).encode()).hexdigest()
+            if _rc.get("rules_sha") != _cur: fail("DESK PHASE START", "the Desk strict rules changed since your last read: run desk-phase-start.py <phase> again and READ the new rules")
+            if _t4.time() - _rc["time"] > 7200: fail("DESK PHASE START", "receipt older than 2 hours: run python3 docs/cursor-work/server/desk-phase-start.py <phase> and READ it (strict rules, phase technology, WORKING-NOW)")
         except Exception:
             fail("DESK PHASE START", "no Desk phase receipt: run python3 docs/cursor-work/server/desk-phase-start.py <phase> and READ it before changing Desk code (docs/claude/admin-desk/DESK-PHASES-22NOV.md)")
 

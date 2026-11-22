@@ -5,6 +5,8 @@ PRINTS the Desk strict rules, the phase row (technology + features) from DESK-PH
 .git/desk-phase-receipt.json. rules-gate.py --staged FAILS a Desk code commit without a receipt younger than 2 hours (gate 'DESK PHASE START')."""
 import hashlib, json, os, re, sys, time
 P = "docs/claude/admin-desk/DESK-PHASES-22NOV.md"; R = ".git/desk-phase-receipt.json"
+BP = "docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md"; RB = "docs/claude/admin-desk/RULE-BOOK.md"; WN = "docs/claude/admin-desk/state/WORKING-NOW.md"; WN2 = "docs/claude/state/WORKING-NOW.md"
+def rules_sha(t): return hashlib.sha256("\n".join(l for l in t if re.match(r"^\d+\. ", l)).encode()).hexdigest()
 def main():
     ph = (sys.argv[1] if len(sys.argv) > 1 else "").strip()
     t = open(P, errors="ignore").read().split("\n")
@@ -19,8 +21,10 @@ def main():
         if l.startswith("| ") and (not ph or re.search(r"\b" + re.escape(ph) + r"\b", l.split("|")[1], re.I)): print(l[:600])
     for f, n in (("docs/claude/admin-desk/state/WORKING-NOW.md", 14), ("docs/claude/state/WORKING-NOW.md", 6)):
         print(f"\n##### {f} (head)"); print("\n".join(x[:260] for x in open(f, errors="ignore").read().split("\n")[:n]) if os.path.exists(f) else "missing")
+    print(f"\n##### BLUEPRINT ({BP}, top)"); print("\n".join(x[:300] for x in open(BP, errors="ignore").read().split("\n")[:6]))
+    print(f"\n##### RULE BOOK ({RB})"); print("\n".join(x[:200] for x in open(RB, errors="ignore").read().split("\n")[:8]))
     print("\n##### LEDGER TAIL (docs/cursor-work/founder/founder-commands.md)")
     print("\n".join(x[:300] for x in open("docs/cursor-work/founder/founder-commands.md", errors="ignore").read().rstrip().split("\n")[-4:]))
-    json.dump({"time": time.time(), "phase": ph, "sha": hashlib.sha256(open(P, "rb").read()).hexdigest()}, open(R, "w"))
+    json.dump({"time": time.time(), "phase": ph, "sha": hashlib.sha256(open(P, "rb").read()).hexdigest(), "rules_sha": rules_sha(t), "read": [P, BP, RB, WN, WN2, "docs/cursor-work/founder/founder-commands.md"]}, open(R, "w"))
     print("\nDESK PHASE RECEIPT WRITTEN (valid 2 h). Technology listed for this phase becomes CODE; HTTP/1 and HTTP/2 are never named; GREEN only after my live Chrome look.")
 if __name__ == "__main__": main()

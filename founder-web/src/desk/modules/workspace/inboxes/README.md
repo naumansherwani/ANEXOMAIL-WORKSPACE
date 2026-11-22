@@ -1,4 +1,4 @@
-# Inboxes (Anexomail Workspace)
+# Mailboxes (Anexomail Workspace; was Inboxes, each mailbox holds its inbox)
 Company mailboxes: hello, moveyourbusiness, resolved; billing restricted folder; leo automation; noreply send-only; support@ banned
 
 - Phase: R4-2

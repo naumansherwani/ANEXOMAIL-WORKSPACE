@@ -11,6 +11,9 @@
 8. After EVERY message: repo + ledger + blueprint + COMPACT-SAVE updated with real date and time (rec.sh, desk-copy-sync, lane-sync, manifest-sync, rules-gate 0 fail). EVERY phase is named by ALPHABET in build order (A, B, C ... Q), never S-numbers; the old ids stay in brackets.
 9. Address him only as Aap, Roman Urdu, short; end every reply with the Rule-70 table and "Abhi code mein NAHI"; server commands = ONE line.
 10. WEB RESEARCH GOES INTO THE REPO IN ORDER (his 22 Nov 2026 07:15 PKT): every web search's points and features are written, in order, into the blueprint (section 'WEB RESEARCH LOG' in DASHBOARD-CARDS-CLICK-PLAN-22NOV.md plus the phase row they belong to) in the same step; each point gets a phase letter and is built in that phase, never left in chat.
+11. FOLDER-WISE GREEN, DASHBOARD FIRST (his 22 Nov 2026 07:26 PKT): the Desk is made green folder by folder in rail order and the DASHBOARD folder (D, D1..D6) goes green completely before any other folder starts. Order: 1 Dashboard, 2 Mailboxes (was Inboxes), 3 Cases, 4 Replies, 5 Routing, 6 SLA clocks, 7 Automations, 8 Admin Desk group (Managed Move-In .. Quality), 9 Company group (Team .. Audit). A folder is green only by rule 5.
+12. FOUR-DAY TARGET (his 22 Nov 2026 07:26 PKT): the WHOLE Admin Desk is complete, wired and green in 4 days: by 26 Nov 2026 07:26 PKT. Day plan: docs/claude/admin-desk/FOUR-DAY-PLAN-22NOV.md. Every message re-checks the day plan against the clock.
+13. NO READ, NO COMMIT (his 22 Nov 2026 07:26 PKT): the commit gate 'DESK PHASE START' fails a Desk code commit unless the receipt shows the strict rules, this blueprint, the rule book and both WORKING-NOW files were read (desk-phase-start.py prints and records them), the receipt is under 2 hours old, and the strict rules have not changed since the read.
 ## PHASES (technology | features | state at 22 Nov 2026 06:50 PKT). Foundation rows first (done), then A to Q in order. One phase at a time, each GREEN only after my live Chrome look.
 | Phase | Advance technology | Features | State |
 |---|---|---|---|
@@ -33,7 +36,7 @@
 | F MoQ | Media over QUIC tracks (IETF), WebTransport | named tracks summary/services/alerts as MoQ objects | NOT written (tracks already named in the frame) |
 | G Org + policy (AD2, S1+S2) | PostgreSQL tuples (Zanzibar-style), RLS, Rust evaluator, deny-by-default | staff, relations, forbid-wins policy | NOT written |
 | H Staff accounts (ON1..ON12) | webauthn-rs, Argon2id, DBSC, device-bound passkeys | enrollment code, devices, leaver, recovery, zero-trust locks (AAGUID, IP + shift, circuit breaker) | NOT written |
-| I Inboxes (R3b, R4-2) | PostgreSQL RLS (fadm_mailbox), Rust, virtual list | hello, moveyourbusiness, resolved, billing (restricted), leo, noreply | NOT written |
+| I Mailboxes (was Inboxes; R3b, R4-2) | PostgreSQL RLS (fadm_mailbox), Rust, virtual list | hello, moveyourbusiness, resolved, billing (restricted), leo, noreply | NOT written |
 | J Auto mail (R3c) | Rust, RFC 3834 Auto-Submitted | 7-day per-sender gate, Polar signed webhook | NOT written |
 | K Cases + SLA (R3e, R3f) | Rust, SQL SLA engine (AD4), SKIP LOCKED routing | assign, reply, clock stops only on human reply or resolve, root-cause note | NOT written (needs his support terms) |
 | L Transparency log (W1) | Merkle tiles, signed tree head | audit log browsers remember | NOT written |
