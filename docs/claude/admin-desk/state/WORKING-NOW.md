@@ -65,14 +65,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- ccfa26fd 22 Nov 21:49 blueprint D5a-2 part
+- cdc8ecd2 22 Nov 21:49 ledger line f7dab702
 - f7dab702 22 Nov 21:49 D5a-2 installed, state saved
 - 3b4408b1 22 Nov 21:40 ledger line 0acafb5b
 - 0acafb5b 22 Nov 21:40 Loop-after-commit banned: ckpt-loop writes only while real work is uncommitted; law file
 - 73594083 22 Nov 21:39 ledger line 9bb2517c
 - 9bb2517c 22 Nov 21:39 D5a-2 package registry fill and read doors
 - 8b746529 22 Nov 21:24 ledger line 420d79ed
-- 420d79ed 22 Nov 21:24 Handoff refresh, loop restart
-- be0ac970 22 Nov 21:01 ledger line afa31a13
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
