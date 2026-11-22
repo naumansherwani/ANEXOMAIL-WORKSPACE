@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 09:03 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: D2 GREEN live
-NEXT STEP: D5 plans + SLA doors, D6, phase A
-HIS LAST WORD: his test alert ran 09:00
+# WORKING NOW (manual checkpoint, 22 Nov 2026 09:04 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: phase-name ban rule 14, test alert text fixed
+NEXT STEP: D5, D6, phase A
+HIS LAST WORD: his 09:03 Chairman word
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,32 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 4fc8edaf 22 Nov 09:03 ledger line fdb716a6
 - fdb716a6 22 Nov 09:03 Desk D2 GREEN: live Acknowledge and Resolve on a test alert
 - 89473640 22 Nov 09:03 ledger line 425ec964
 - 425ec964 22 Nov 09:03 D2 live
 - f7c15a5d 22 Nov 09:01 ledger line ecc37d29
-- ecc37d29 22 Nov 09:01 Desk D2 test alert script: allowed source system
 
 ## Uncommitted files (half-done work if any)
+ M CLAUDE.md
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/DESK-PHASES-22NOV.md
+ M docs/claude/admin-desk/scripts/desk-test-alert.sh
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M docs/cursor-work/server/rules-gate.py
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ CLAUDE.md                                         |  2 +-
+ docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md    |  1 +
+ docs/claude/admin-desk/DESK-PHASES-22NOV.md       |  1 +
+ docs/claude/admin-desk/scripts/desk-test-alert.sh |  6 ++---
+ docs/claude/state/WORKING-NOW.md                  | 29 +++++++++--------------
+ docs/claude/tech-contracts/CURRENT.md             |  2 ++
+ docs/cursor-work/server/rules-gate.py             |  7 ++++++
+ 7 files changed, 26 insertions(+), 22 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +54,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (59d6ad503671062bcb5fb0d8f7254c7e423570dc)
+WIP snapshot: refs/wip/last (a16750b78db6c1ffa661f3af0cb4ad5d7acfa0fd)

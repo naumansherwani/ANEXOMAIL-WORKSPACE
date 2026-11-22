@@ -182,7 +182,14 @@ except ImportError:
     fail("DESK TECH", "admin-desk/gates/desk_tech_gate.py is missing")
 
 # ADMIN DESK D4 WIRING GATE (his 22 Nov 2026 08:56: "D4 gate banao"): a Desk card may never be dead, and the real Desk never shows phase names or "P1" (his 08:26 word).
+# Also: any admin-desk script that WRITES a row an employee can see (desk-test-alert.sh) may not carry a phase name (D2, R3b ...) or "P1" in that text (his 09:03 Chairman word, after "live.proof.d2" showed on the Alerts page).
 # Runs when a commit touches founder-web/src/desk: (1) the card registry test (route, track, "what it waits for", unique key), (2) no user-facing "Waits for phase" / "phase K" text.
+for _sf in ("docs/claude/admin-desk/scripts/desk-test-alert.sh",):
+    try:
+        for _ln in open(_sf, encoding="utf-8").read().splitlines():
+            if "fadm_alert_raise" in _ln and __import__("re").search(r"\bD[0-9]+[a-z]?\b|\bR[0-9][a-z0-9-]*\b|[Pp]hase|\bP1\b|\.d[0-9]\b", _ln.split("fadm_alert_raise", 1)[1]):
+                fail("DESK WIRING", f"{_sf}: the test alert text carries a phase name or P1; employees see it on the Alerts page")
+    except OSError: pass
 _dstaged = [f for f in subprocess.run(["git", "diff", "--cached", "--name-only"], capture_output=True, text=True).stdout.splitlines() if f.startswith("founder-web/src/desk/")]
 if _dstaged:
     _r = subprocess.run(["bun", "test", "src/desk/desk_cards.test.ts"], cwd="founder-web", capture_output=True, text=True)

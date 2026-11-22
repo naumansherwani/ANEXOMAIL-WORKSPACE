@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 09:03 PKT) - read this FIRST for the Desk after a compaction
-DOING: D2 GREEN live
-NEXT STEP: D5 plans + SLA doors, D6, phase A
-HIS LAST WORD: his test alert ran 09:00
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 09:04 PKT) - read this FIRST for the Desk after a compaction
+DOING: phase-name ban rule 14, test alert text fixed
+NEXT STEP: D5, D6, phase A
+HIS LAST WORD: his 09:03 Chairman word
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -21,6 +21,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 11. FOLDER-WISE GREEN, DASHBOARD FIRST (his 22 Nov 2026 07:26 PKT): the Desk is made green folder by folder in rail order and the DASHBOARD folder (D, D1..D6) goes green completely before any other folder start
 12. FOUR-DAY TARGET (his 22 Nov 2026 07:26 PKT): the WHOLE Admin Desk is complete, wired and green in 4 days: by 26 Nov 2026 07:26 PKT. Day plan: docs/claude/admin-desk/FOUR-DAY-PLAN-22NOV.md. Every message re-
 13. NO READ, NO COMMIT (his 22 Nov 2026 07:26 PKT): the commit gate 'DESK PHASE START' fails a Desk code commit unless the receipt shows the strict rules, this blueprint, the rule book and both WORKING-NOW file
+14. NO PHASE NAME, NO "P1" ANYWHERE AN EMPLOYEE CAN SEE ON THE ADMIN DESK (his 22 Nov 2026 09:03 PKT, CHAIRMAN, said three times, "baaned hai"): not in cards, pages, tooltips, alert text, notes, test rows or da
 
 ## Phase table (docs/claude/admin-desk/state/PHASES.md)
 
@@ -64,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 4fc8edaf 22 Nov 09:03 ledger line fdb716a6
 - 89473640 22 Nov 09:03 ledger line 425ec964
 - 425ec964 22 Nov 09:03 D2 live
 - f7c15a5d 22 Nov 09:01 ledger line ecc37d29
@@ -71,9 +73,12 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 080dcd0c 22 Nov 09:01 D2 script
 - 385aff8d 22 Nov 08:58 ledger line 03f1e05f
 - f8ff322c 22 Nov 08:58 ledger line 0d02f799
-- 0d02f799 22 Nov 08:58 D3b D4
 
 ## Uncommitted Desk files
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/DESK-PHASES-22NOV.md
+ M docs/claude/admin-desk/RULE-BOOK.md
+ M docs/claude/admin-desk/scripts/desk-test-alert.sh
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
