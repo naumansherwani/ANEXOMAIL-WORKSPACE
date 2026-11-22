@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 10:35 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 10:35 PKT) - read this FIRST for the Desk after a compaction
 DOING: Six main sections plan written (Overview, My Work, All Cases, Customers, Incidents, Knowledge)
 NEXT STEP: S1 waits his haan (six on top of rail); D5a-1 contract next; needs package list, suspension reasons, Control Plane address
 HIS LAST WORD: his 10:34 word: six sections, original, method from research
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- cc67c510 22 Nov 10:35 Desk six sections plan
 - 5a4eef79 22 Nov 10:28 ledger line 325108ee
 - 325108ee 22 Nov 10:28 Desk D5 subphases with advance technology
 - 703fe395 22 Nov 10:28 ledger line e22dd5ef
@@ -72,16 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - f5b3e6e1 22 Nov 10:11 ledger line 689ff44f
 - 8062a9aa 22 Nov 10:11 ledger line 428cfc36
 - 428cfc36 22 Nov 10:11 Desk D5 answers approved and extract
-- 93d569cc 22 Nov 09:49 ledger line b9f5aa84
 
 ## Uncommitted Desk files
- M admin-desk/BLUEPRINT-ADMIN-DESK.md
- M admin-desk/DESK-PHASES-22NOV.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/DESK-SIX-SECTIONS-22NOV.md
-?? docs/claude/admin-desk/DESK-SIX-SECTIONS-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

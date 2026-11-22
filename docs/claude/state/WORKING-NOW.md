@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 22 Nov 2026 10:35 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 10:35 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Six main sections plan written (Overview, My Work, All Cases, Customers, Incidents, Knowledge)
 NEXT STEP: S1 waits his haan (six on top of rail); D5a-1 contract next; needs package list, suspension reasons, Control Plane address
 HIS LAST WORD: his 10:34 word: six sections, original, method from research
@@ -18,34 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- cc67c510 22 Nov 10:35 Desk six sections plan
 - 5a4eef79 22 Nov 10:28 ledger line 325108ee
 - 325108ee 22 Nov 10:28 Desk D5 subphases with advance technology
 - 703fe395 22 Nov 10:28 ledger line e22dd5ef
 - e22dd5ef 22 Nov 10:28 Desk D5 subphases with technology
-- f5b3e6e1 22 Nov 10:11 ledger line 689ff44f
 
 ## Uncommitted files (half-done work if any)
- M admin-desk/BLUEPRINT-ADMIN-DESK.md
- M admin-desk/DESK-PHASES-22NOV.md
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
- M docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
-?? admin-desk/DESK-SIX-SECTIONS-22NOV.md
-?? docs/claude/admin-desk/DESK-SIX-SECTIONS-22NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/BLUEPRINT-ADMIN-DESK.md             |  1 +
- admin-desk/DESK-PHASES-22NOV.md                |  1 +
- docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md |  1 +
- docs/claude/admin-desk/DESK-PHASES-22NOV.md    |  1 +
- docs/claude/admin-desk/state/WORKING-NOW.md    |  4 ++--
- docs/claude/state/WORKING-NOW.md               | 31 +++++++++++---------------
- docs/claude/tech-contracts/CURRENT.md          |  2 ++
- 7 files changed, 21 insertions(+), 20 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 31 ++-----------------------------
+ 1 file changed, 2 insertions(+), 29 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -56,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (6a805b3df067cbdc918a3d88de59a6ec376c1efa)
+WIP snapshot: refs/wip/last (fae55bff9abe83d9927cd9a39fd0242c9ba0a5bd)
