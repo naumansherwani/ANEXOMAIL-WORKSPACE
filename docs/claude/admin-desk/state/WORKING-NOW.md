@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 03:43 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:43 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1k SQL root cause found + fixed (AD1c, AD9 revoke, ad-auto retry); his ad-auto again
 NEXT STEP: his ad-auto paste then desk-install then Chrome look then 1k GREEN
 HIS LAST WORD: his 03:42 paste
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 2eb5f7e6 23 Nov 03:43 1k: AD1c repair + ad-auto retry
 - 602c8c54 23 Nov 03:39 ledger line 4fc3746f
 - 4fc3746f 23 Nov 03:39 return mark bug fix + 1k install proof
 - ca5022eb 23 Nov 03:29 ledger line 8067194e
@@ -72,26 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 06f6c2ac 23 Nov 03:17 ledger line e75d586b
 - e75d586b 23 Nov 03:17 1k: research list + contract
 - 269b755b 23 Nov 03:16 ledger line 1a766922
-- 1a766922 23 Nov 03:16 after-compaction points
 
 ## Uncommitted Desk files
- M admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
- M admin-desk/scripts/ad-auto.sh
- M admin-desk/sql/AD9.sql
- M admin-desk/sql/checks/AD9-check.sql
- M admin-desk/tools/AD9.template.sql
- M docs/claude/admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/scripts/ad-auto.sh
- M docs/claude/admin-desk/sql/AD9.sql
- M docs/claude/admin-desk/sql/checks/AD9-check.sql
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M docs/claude/admin-desk/tools/AD9.template.sql
-?? admin-desk/sql/AD1c.sql
-?? admin-desk/sql/checks/AD1c-check.sql
-?? docs/claude/admin-desk/sql/AD1c.sql
-?? docs/claude/admin-desk/sql/checks/AD1c-check.sql
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

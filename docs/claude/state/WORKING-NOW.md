@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 03:43 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:43 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 1k SQL root cause found + fixed (AD1c, AD9 revoke, ad-auto retry); his ad-auto again
 NEXT STEP: his ad-auto paste then desk-install then Chrome look then 1k GREEN
 HIS LAST WORD: his 03:42 paste
@@ -18,43 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 2eb5f7e6 23 Nov 03:43 1k: AD1c repair + ad-auto retry
 - 602c8c54 23 Nov 03:39 ledger line 4fc3746f
 - 4fc3746f 23 Nov 03:39 return mark bug fix + 1k install proof
 - ca5022eb 23 Nov 03:29 ledger line 8067194e
 - 8067194e 23 Nov 03:29 1k: runbooks code
-- 06f6c2ac 23 Nov 03:17 ledger line e75d586b
 
 ## Uncommitted files (half-done work if any)
- M admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
- M admin-desk/scripts/ad-auto.sh
- M admin-desk/sql/AD9.sql
- M admin-desk/sql/checks/AD9-check.sql
- M admin-desk/tools/AD9.template.sql
- M docs/claude/admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/scripts/ad-auto.sh
- M docs/claude/admin-desk/sql/AD9.sql
- M docs/claude/admin-desk/sql/checks/AD9-check.sql
- M docs/claude/admin-desk/tools/AD9.template.sql
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
-?? admin-desk/sql/AD1c.sql
-?? admin-desk/sql/checks/AD1c-check.sql
-?? docs/claude/admin-desk/sql/AD1c.sql
-?? docs/claude/admin-desk/sql/checks/AD1c-check.sql
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/admin-desk/NOW-LIST-23NOV.md           |  2 ++
- docs/claude/admin-desk/scripts/ad-auto.sh          |  7 +++-
- docs/claude/admin-desk/sql/AD9.sql                 |  1 +
- docs/claude/admin-desk/sql/checks/AD9-check.sql    |  3 +-
- docs/claude/admin-desk/tools/AD9.template.sql      |  1 +
- docs/claude/state/WORKING-NOW.md                   | 40 ++++++++++++----------
- docs/claude/tech-contracts/CURRENT.md              |  1 +
- 14 files changed, 53 insertions(+), 22 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 40 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 38 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -65,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (831cce8d5bdca504ce3d60203e20f55802d74abd)
+WIP snapshot: refs/wip/last (fbb848f8ef59df5ac325d8aa1b3fdd85e4e56de7)
