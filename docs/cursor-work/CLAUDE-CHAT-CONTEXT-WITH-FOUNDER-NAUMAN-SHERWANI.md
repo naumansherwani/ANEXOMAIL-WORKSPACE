@@ -5376,3 +5376,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - Rule 52 = ADVANCE TECHNOLOGY FOR ANEXOMAIL full list; installer step 9/9 PROOF (running binary sha = installed = build, bundle + kernel sha = repo) and 'anexomail-desk version'. TECH-LAW CHECKED. TESTED: cargo 63 passed incl version_line, bash -n OK, proof regexes run on repo OK
 
 - Rule 52 file: strongest-primitive research note (AES-256-GCM, SHA-256/384/3, ML-KEM, ML-DSA gap). TESTED: gate pass, docs only OK
+
+- 1j D5 plan context: web research done, point list P1-P12 + CURRENT.md contract + ML-DSA gap plan written; 1i install proof (3 SAME) recorded. TESTED: gate pass, docs only. TECH-LAW CHECKED

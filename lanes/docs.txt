@@ -341,6 +341,7 @@ docs/claude/admin-desk/BRIDGE-FEATURES-22NOV.md
 docs/claude/admin-desk/BRIDGE-PLAN-22NOV.md
 docs/claude/admin-desk/BRIDGE-TRANSPORT-DECISION-22NOV.md
 docs/claude/admin-desk/D5-DECISIONS-AND-EXTRACT-22NOV.md
+docs/claude/admin-desk/D5-PLAN-CONTEXT-SCREEN-LIST-23NOV.md
 docs/claude/admin-desk/D5-SUBPHASES-22NOV.md
 docs/claude/admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
 docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md
@@ -361,6 +362,7 @@ docs/claude/admin-desk/FOUNDER-TO-DESK-AUDIT-22NOV.md
 docs/claude/admin-desk/FOUR-DAY-PLAN-22NOV.md
 docs/claude/admin-desk/MAILBOX-ROLES-PLAN-22NOV.md
 docs/claude/admin-desk/MASTER-PLAN-22NOV.md
+docs/claude/admin-desk/ML-DSA-HYBRID-GAP-PLAN-23NOV.md
 docs/claude/admin-desk/NEXT-CODES-ORDER-22NOV.md
 docs/claude/admin-desk/NOW-LIST-23NOV.md
 docs/claude/admin-desk/PHASE-TECH-SQL-MAP-22NOV.md

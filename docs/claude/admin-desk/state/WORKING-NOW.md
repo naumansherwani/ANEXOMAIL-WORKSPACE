@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 02:46 PKT) - read this FIRST for the Desk after a compaction
-DOING: crypto-choice research answer written into Rule 52 file; waits his desk-install (step 9/9 PROOF) then 1j
-NEXT STEP: his install paste, then 1j D5 screen
-HIS LAST WORD: his 02:46 question: strongest primitive
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 02:56 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1j points + contract written
+NEXT STEP: 1j code: desk_plan_pure.ts then screen
+HIS LAST WORD: his 02:53 order
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 308f6827 23 Nov 02:46 ledger line 711d040d
 - 711d040d 23 Nov 02:46 crypto choice note
 - 16845c1a 23 Nov 02:40 ledger line 57f63ea6
 - 57f63ea6 23 Nov 02:40 Rule 52 rename + installer proof
@@ -72,10 +73,15 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 0a9a4191 23 Nov 02:21 ledger line 8aa186f8
 - 8aa186f8 23 Nov 02:21 1i GREEN + Rule 52 live technology
 - 6440242a 23 Nov 02:14 ledger line 4a79cd5f
-- 4a79cd5f 23 Nov 02:14 1i D5a-5 fail-closed code
 
 ## Uncommitted Desk files
+ M admin-desk/NOW-LIST-23NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+?? admin-desk/D5-PLAN-CONTEXT-SCREEN-LIST-23NOV.md
+?? admin-desk/ML-DSA-HYBRID-GAP-PLAN-23NOV.md
+?? docs/claude/admin-desk/D5-PLAN-CONTEXT-SCREEN-LIST-23NOV.md
+?? docs/claude/admin-desk/ML-DSA-HYBRID-GAP-PLAN-23NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

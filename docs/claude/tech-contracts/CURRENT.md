@@ -1,5 +1,13 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK D5 PLAN CONTEXT SCREEN (phase 1j), written 23 Nov 2026 03:1x PKT BEFORE code. LIST: docs/claude/admin-desk/D5-PLAN-CONTEXT-SCREEN-LIST-23NOV.md (P1..P12)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| React 19 + TypeScript + Tailwind 4 + Framer Motion screen, registry-driven card, History API route /dashboard/plans | founder-web/src/desk/ | no | bun tests + tsc + three widths |
+| Kernel-verified lookup (Rule 52 WASM): deskLookup, 15 s freshness, fail-closed "Data unavailable" | desk_kernel.ts, desk_lookup_pure.ts | no | bun tests + my Chrome look |
+| Pure logic: included-vs-enabled diff, 90/95 usage marks, 5 service states, age ticker | desk_plan_pure.ts | no | bun unit tests |
+| ML-DSA hybrid is a SEPARATE open gap: docs/claude/admin-desk/ML-DSA-HYBRID-GAP-PLAN-23NOV.md | plan only | no | not this phase |
+
 
 # TECH CONTRACT FOR PHASE: DESK D5a-5 (FAIL-CLOSED PROOF, phase 1i), written 23 Nov 2026 02:1x PKT, his word: "Control Plane band ho to Desk Data unavailable dikhaye, purana jawab kabhi na dikhaye". FULL LIST: docs/claude/admin-desk/D5A5-FAIL-CLOSED-LIST-23NOV.md
 | Advance technology | Where in code | IN CODE | Proof |
@@ -3252,3 +3260,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Rule 52 = ADVANCE TECHNOLOGY FOR ANEXOMAIL full list; installer step 9/9 PROOF (running binary sha = installed = build, bundle + kernel sha = repo) and 'anexomail-desk version'. TECH-LAW CHECKED. TESTED: cargo 63 passed incl version_line, bash -n OK, proof regexes run on repo OK
 
 - Rule 52 file: strongest-primitive research note (AES-256-GCM, SHA-256/384/3, ML-KEM, ML-DSA gap). TESTED: gate pass, docs only OK
+
+- 1j D5 plan context: web research done, point list P1-P12 + CURRENT.md contract + ML-DSA gap plan written; 1i install proof (3 SAME) recorded. TESTED: gate pass, docs only. TECH-LAW CHECKED
