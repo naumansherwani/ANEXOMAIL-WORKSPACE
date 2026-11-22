@@ -4361,3 +4361,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 1k closed items GREEN (23 Nov 2026 04:31 PKT): 9 runbooks approved by the Chairman, checklist tick live and persisted after reload. TESTED: live Chrome on his open owner account (approve x9, reload, tick, reload). WIRED: YES / REAL: YES. TECH-LAW CHECKED
 
 - Recorded his 04:25 question: founder-side escalation inbox = later phase after 1o + 1a, one-way signed messages, Desk isolation kept. TESTED: records only, gate. TECH-LAW CHECKED
+
+- Founder Escalation Inbox plan (what the Admin Desk escalates to the founder, by Desk phase) + gate FOUNDER INBOX REMINDER (23 Nov 2026 04:42 PKT). TESTED: gate probe with the tag removed from the founder blueprint FAILED as intended, restored passes; python syntax. TECH-LAW CHECKED

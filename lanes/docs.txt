@@ -360,6 +360,7 @@ docs/claude/admin-desk/DESK-SIX-SECTIONS-22NOV.md
 docs/claude/admin-desk/EMPLOYEE-ACCOUNTS-PLAN-22NOV.md
 docs/claude/admin-desk/FEATURE-FEED-AND-EMPLOYEE-ACCOUNTS-PLAN-22NOV.md
 docs/claude/admin-desk/FOLDER-PHASES-22NOV.md
+docs/claude/admin-desk/FOUNDER-ESCALATION-INBOX-PLAN-23NOV.md
 docs/claude/admin-desk/FOUNDER-TO-DESK-AUDIT-22NOV.md
 docs/claude/admin-desk/FOUR-DAY-PLAN-22NOV.md
 docs/claude/admin-desk/MAILBOX-ROLES-PLAN-22NOV.md

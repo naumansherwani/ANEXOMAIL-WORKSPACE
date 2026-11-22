@@ -64,3 +64,5 @@ Rule 30 (jo ho chuka dobara nahi) · Rule 35 (Rust live sirf surgical script) ·
 | docs/wire/*, IMPLEMENTATION-MASTER.md, BLUEPRINT-SUPERSEDE-PLAN.md | PURANA (Sep) — history, status ke liye mat parho |
 
 > [22 Nov 2026 22:4x PKT] HIS ORDER (common to awam, founder and Admin Desk): every new feature gets ONE release record (detail, purpose, background, packages) that reaches the Admin Desk automatically into a features folder; admin creates ready Anexomail employee accounts with workspace; Desk phase R (last). Plan: docs/claude/admin-desk/FEATURE-FEED-AND-EMPLOYEE-ACCOUNTS-PLAN-22NOV.md. Nothing built.
+
+FOUNDER-ESCALATION-INBOX (23 Nov 2026 04:40 PKT, his order 04:25 + 04:29): the founder-side receiver of everything the Admin Desk escalates, one-way signed hand-over, a LATER phase after 1o DASHBOARD FINAL + 1a, then the phone/tablet test. Plan + what comes by Desk phase: docs/claude/admin-desk/FOUNDER-ESCALATION-INBOX-PLAN-23NOV.md. Gate FOUNDER INBOX REMINDER stops commits if this tag leaves the lists, and when 1o is GREEN it demands STATUS: STARTED.

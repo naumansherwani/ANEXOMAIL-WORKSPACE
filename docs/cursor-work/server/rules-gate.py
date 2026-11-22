@@ -347,6 +347,19 @@ if _desk_code and os.path.exists(cur):
         for _f in (_bp, _nl):
             if not os.path.exists(_f) or _tag not in open(_f, errors="ignore").read():
                 fail("RESEARCH IN BLUEPRINT", f"phase {_id}: '{_tag}' line (research points + advance technology + code files) is missing in {_f}. Is this phase's advance technology and advance code added?")
+# FOUNDER INBOX REMINDER (his word 23 Nov 2026 04:29 PKT): the Admin Desk sends escalations to the founder; the founder-side receiver (Founder Escalation Inbox) is a LATER phase that must never be forgotten.
+# The plan file and its tag must stay in the Desk NOW-LIST, the Desk blueprint and the FOUNDER blueprint; once 1o DASHBOARD FINAL is GREEN the plan must say STATUS: STARTED or GREEN or the commit is stopped.
+_fi = "docs/claude/admin-desk/FOUNDER-ESCALATION-INBOX-PLAN-23NOV.md"
+if os.path.exists("docs/claude/admin-desk/NOW-LIST-23NOV.md"):
+    if not os.path.exists(_fi):
+        fail("FOUNDER INBOX REMINDER", f"{_fi} is missing: the Founder Escalation Inbox plan (what comes from the Admin Desk to the founder) must stay in the repo")
+    else:
+        for _f in ("docs/claude/admin-desk/NOW-LIST-23NOV.md", "docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md", "docs/claude/FINAL-FOUNDER-BLUEPRINT.md"):
+            if not os.path.exists(_f) or "FOUNDER-ESCALATION-INBOX" not in open(_f, errors="ignore").read():
+                fail("FOUNDER INBOX REMINDER", f"the tag FOUNDER-ESCALATION-INBOX is missing in {_f}: the founder-side receiver of Desk escalations must stay on the list")
+        _nlt = open("docs/claude/admin-desk/NOW-LIST-23NOV.md", errors="ignore").read()
+        if re.search(r"1o DASHBOARD FINAL = GREEN", _nlt) and not re.search(r"STATUS: (STARTED|GREEN)", open(_fi, errors="ignore").read()):
+            fail("FOUNDER INBOX REMINDER", "1o DASHBOARD FINAL is GREEN: the Founder Escalation Inbox (what the Admin Desk escalates to the founder) is due now, set its plan STATUS to STARTED and begin its research")
 # NO PROMISE (his word 22 Nov 2026 10:42 + 10:47, phase 1k D5b-3): the runbook seed says what the employee SAYS; a promise word, a missing part or a missing fixed never-line fails the commit.
 # The SAME word list lives in SQL AD9 (fadm_runbook_clean) and in desk_runbook_pure.ts (noPromise); three layers, one list.
 _seed = "docs/claude/admin-desk/runbooks.seed.json"

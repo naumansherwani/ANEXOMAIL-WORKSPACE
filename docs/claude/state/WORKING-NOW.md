@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 04:25 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 1l D5c Escalate = NOW (Desk side). Founder-side Escalation Inbox recorded as a later phase after 1o + 1a (one-way signed messages, Desk isolation)
-NEXT STEP: 1l research + LIST + contract; founder inbox plan after 1o, 1a
-HIS LAST WORD: his 04:25
+# WORKING NOW (manual checkpoint, 23 Nov 2026 04:30 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 1l D5c Escalate = NOW (research next). Founder Escalation Inbox plan + gate FOUNDER INBOX REMINDER added (23 Nov 2026 04:42 PKT)
+NEXT STEP: 1l web research -> LIST -> ADVANCE-RESEARCH [1l] -> contract -> code; later after 1o + 1a: founder inbox, then phone 390 / tablet 820
+HIS LAST WORD: his 04:29
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,37 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- e2147d46 23 Nov 04:25 ledger line c8287687
 - c8287687 23 Nov 04:25 founder escalation inbox parked after 1o + 1a
 - 89e0e045 23 Nov 04:25 ledger line 2b5144d1
 - 2b5144d1 23 Nov 04:25 1k closed: approvals + tick proved live
 - 2f1bf66f 23 Nov 04:18 ledger line cba544eb
-- cba544eb 23 Nov 04:18 1k GREEN, NOW 1l
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/FINAL-FOUNDER-BLUEPRINT.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+A  docs/claude/admin-desk/FOUNDER-ESCALATION-INBOX-PLAN-23NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/rules-gate.py
+ M lanes/ALL-FILES.csv
+ M lanes/docs.txt
+ M lovable-gold/README.md
+?? admin-desk/FOUNDER-ESCALATION-INBOX-PLAN-23NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 25 ++-----------------------
- 1 file changed, 2 insertions(+), 23 deletions(-)
+ .../FOUNDER-ESCALATION-INBOX-PLAN-23NOV.md         | 24 +++++++++++++++
+ docs/claude/admin-desk/NOW-LIST-23NOV.md           |  2 ++
+ docs/claude/state/WORKING-NOW.md                   | 34 ++++++++++------------
+ docs/cursor-work/server/rules-gate.py              | 13 +++++++++
+ lanes/ALL-FILES.csv                                |  1 +
+ lanes/docs.txt                                     |  1 +
+ lovable-gold/README.md                             |  2 +-
+ 11 files changed, 66 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +59,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (86f34015ae3770fc7e3131593d7df50e00752456)
+WIP snapshot: refs/wip/last (185849e3e53e6a461ecafe581ac5f976d2eff326)
