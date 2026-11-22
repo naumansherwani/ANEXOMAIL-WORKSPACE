@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 02:46 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 02:46 PKT) - read this FIRST for the Desk after a compaction
 DOING: crypto-choice research answer written into Rule 52 file; waits his desk-install (step 9/9 PROOF) then 1j
 NEXT STEP: his install paste, then 1j D5 screen
 HIS LAST WORD: his 02:46 question: strongest primitive
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 711d040d 23 Nov 02:46 crypto choice note
 - 16845c1a 23 Nov 02:40 ledger line 57f63ea6
 - 57f63ea6 23 Nov 02:40 Rule 52 rename + installer proof
 - 5676c3d7 23 Nov 02:21 ledger line 9e52ac8e
@@ -72,7 +73,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 8aa186f8 23 Nov 02:21 1i GREEN + Rule 52 live technology
 - 6440242a 23 Nov 02:14 ledger line 4a79cd5f
 - 4a79cd5f 23 Nov 02:14 1i D5a-5 fail-closed code
-- 0bc1bfc8 23 Nov 02:08 ledger line 327ceebf
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
