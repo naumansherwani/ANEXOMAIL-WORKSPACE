@@ -5,9 +5,11 @@ export type Nav = (to: string) => void;
 export function DeskLink({ to, nav, className, children, label, keys, badge }: { to: string; nav: Nav; className?: string; children: ReactNode; label?: string; keys?: string; badge?: boolean }) {
   const click = (e: MouseEvent<HTMLAnchorElement>) => {
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    e.preventDefault(); nav(to);
+    e.preventDefault();
+    if ((window.getSelection()?.toString() ?? "") !== "") return; // the person was selecting text to copy: stay here, do not open the page
+    nav(to);
   };
   // the white pop-up STAYS (his 22 Nov 08:07 word: "yeh white pop intact rahy"): native title shows the shortcut in the Claude style, e.g. "Open · Alt+Shift+A". No bordered badge on the cards any more.
   const hint = keys ? (typeof children === "string" ? children.replace(/\s*→\s*$/, "") : "Open") + " · " + keys : undefined;
-  return <a href={to} className={className} onClick={click} aria-label={label} title={hint} aria-keyshortcuts={keys || undefined}>{children}</a>;
+  return <a href={to} className={className} onClick={click} draggable={false} aria-label={label} title={hint} aria-keyshortcuts={keys || undefined}>{children}</a>;
 }

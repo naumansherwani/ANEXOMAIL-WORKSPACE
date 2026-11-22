@@ -2981,3 +2981,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 22 Nov 2026 08:40 PKT: Desk D3b DONE in code (his haan): desk_trend_pure.ts, ring buffer 75 probes, new probe only when age_s falls, gaps for failed probes, no door, no storage, HTTP/3 + WebTransport only. Latency note: db and ledger probes are one RTT to Supabase Singapore pooler.
 
 - 22 Nov 2026 08:40 PKT: Desk D3 GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED; D3b latency trend written, waits install
+
+- 22 Nov 2026 08:50 PKT: Desk D1d fix: no overlay link on KPI cards (text selectable), card click guarded by window selection, anchors draggable=false; user-facing strings carry no phase letters and no 'P1'. No transport change, HTTP/3 only.
+
+- 22 Nov 2026 08:50 PKT: Desk D1d bug fix written (KPI text copy, no phase names or P1 on the Desk), waits install and live look

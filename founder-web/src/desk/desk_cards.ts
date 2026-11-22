@@ -4,18 +4,18 @@
 export type Track = "summary" | "services" | "alerts";
 export type Card = { id: string; key: string; label: string; track: Track | null; phase: string; wired: boolean; onBar: boolean; what: string; waits: string };
 export const CARDS: Card[] = [
-  { id: "alerts", key: "a", label: "Active P1 alerts", track: "alerts", phase: "D2", wired: true, onBar: true, what: "Alerts the Desk raised, oldest first", waits: "" },
+  { id: "alerts", key: "a", label: "Urgent alerts", track: "alerts", phase: "D2", wired: true, onBar: true, what: "Alerts the Desk raised, oldest first", waits: "" },
   { id: "services", key: "s", label: "Service health", track: "services", phase: "D3", wired: true, onBar: true, what: "Every probe: state, latency, age", waits: "" },
   { id: "systems", key: "y", label: "Systems", track: "services", phase: "D7", wired: true, onBar: false, what: "Is the Desk working? Plain status for every employee, with what to tell customers", waits: "" },
-  { id: "sla", key: "l", label: "Live SLA clock", track: null, phase: "K", wired: false, onBar: true, what: "Cases about to breach their first-answer target", waits: "Waits for phase K (cases and the SLA engine)" },
-  { id: "plans", key: "p", label: "Plans and prices", track: null, phase: "J", wired: false, onBar: true, what: "Customers per plan and package prices", waits: "Waits for phase J (plan rows from the signed Polar event)" },
-  { id: "queue", key: "q", label: "Queue pressure", track: null, phase: "K", wired: false, onBar: false, what: "Open, waiting and at-risk cases by team and plan lane", waits: "Waits for phase K (cases and queues)" },
-  { id: "security", key: "e", label: "Security health", track: null, phase: "H", wired: false, onBar: false, what: "Device-bound passkeys, staff with two keys, expired reviews, open recoveries", waits: "Waits for phase H (staff accounts)" },
-  { id: "staff", key: "t", label: "Staff online and shifts", track: null, phase: "H", wired: false, onBar: false, what: "Who is on shift, who holds an elevation right now", waits: "Waits for phase H (staff accounts)" },
-  { id: "deliverability", key: "v", label: "Deliverability", track: null, phase: "N", wired: false, onBar: false, what: "Bounces, complaints, SPF / DKIM / DMARC per company", waits: "Waits for phase N (mail pipeline)" },
-  { id: "movein", key: "m", label: "Managed Move-In", track: null, phase: "P", wired: false, onBar: false, what: "Batches, retries, domain verification", waits: "Waits for phase P (move-in tables)" },
-  { id: "reports", key: "r", label: "Reports", track: null, phase: "Q", wired: false, onBar: false, what: "Volume, first response, resolution, backlog", waits: "Waits for phase Q (reports)" },
-  { id: "audit", key: "u", label: "Ledger", track: null, phase: "L", wired: false, onBar: false, what: "Append-only ledger tail and chain check", waits: "Waits for phase L (transparency log)" },
+  { id: "sla", key: "l", label: "Live SLA clock", track: null, phase: "K", wired: false, onBar: true, what: "Cases about to breach their first-answer target", waits: "Not connected yet. Shows when cases are coming in." },
+  { id: "plans", key: "p", label: "Plans and prices", track: null, phase: "J", wired: false, onBar: true, what: "Customers per plan and package prices", waits: "Not connected yet. Shows when customer plans are connected." },
+  { id: "queue", key: "q", label: "Queue pressure", track: null, phase: "K", wired: false, onBar: false, what: "Open, waiting and at-risk cases by team and plan lane", waits: "Not connected yet. Shows when cases are coming in." },
+  { id: "security", key: "e", label: "Security health", track: null, phase: "H", wired: false, onBar: false, what: "Device-bound passkeys, staff with two keys, expired reviews, open recoveries", waits: "Not connected yet. Shows when staff accounts are connected." },
+  { id: "staff", key: "t", label: "Staff online and shifts", track: null, phase: "H", wired: false, onBar: false, what: "Who is on shift, who holds an elevation right now", waits: "Not connected yet. Shows when staff accounts are connected." },
+  { id: "deliverability", key: "v", label: "Deliverability", track: null, phase: "N", wired: false, onBar: false, what: "Bounces, complaints, SPF / DKIM / DMARC per company", waits: "Not connected yet. Shows when mail sending is measured." },
+  { id: "movein", key: "m", label: "Managed Move-In", track: null, phase: "P", wired: false, onBar: false, what: "Batches, retries, domain verification", waits: "Not connected yet. Shows when customer move-in starts." },
+  { id: "reports", key: "r", label: "Reports", track: null, phase: "Q", wired: false, onBar: false, what: "Volume, first response, resolution, backlog", waits: "Not connected yet. Shows when reports are ready." },
+  { id: "audit", key: "u", label: "Ledger", track: null, phase: "L", wired: false, onBar: false, what: "Append-only ledger tail and chain check", waits: "Not connected yet. Shows when the audit log is connected." },
 ];
 export const route = (id: string) => `/dashboard/${id}`;
 export const cardById = (id: string) => CARDS.find((c) => c.id === id) ?? null;

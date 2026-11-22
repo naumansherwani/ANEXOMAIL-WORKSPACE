@@ -12,7 +12,7 @@ import { DeskPipeline } from "./DeskCommandBar";
  *  a card whose data is not connected still opens its page, which says what it waits for. No fetch, no founder import, no invented value. */
 const CSS = `
 .dcc{display:grid;gap:14px;margin-top:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr))}
-.dcc-card{position:relative;display:block;min-width:0;min-height:44px;padding:18px 20px;border:1px solid var(--line);border-radius:18px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);color:inherit;text-decoration:none;box-shadow:0 10px 30px rgba(2,8,22,.35);transition:transform .18s ease,border-color .18s ease}
+.dcc-card{user-select:text;-webkit-user-select:text;cursor:pointer;position:relative;display:block;min-width:0;min-height:44px;padding:18px 20px;border:1px solid var(--line);border-radius:18px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);color:inherit;text-decoration:none;box-shadow:0 10px 30px rgba(2,8,22,.35);transition:transform .18s ease,border-color .18s ease}
 .dcc-card:hover{transform:translateY(-2px);border-color:rgba(160,200,255,.5)}.dcc-card:focus-visible,.dcl:focus-visible{outline:2px solid #8FB8FF;outline-offset:3px}
 .dkbd{position:absolute;top:13px;right:42px;padding:1px 9px;border-radius:8px;background:rgba(255,255,255,.09);color:var(--mute);font:500 12px/1.75 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:0;white-space:nowrap;opacity:0;transition:opacity .14s ease;pointer-events:none}
 .dcb-card .dkbd{right:16px}
@@ -81,8 +81,8 @@ export function DeskSubPage({ sub, search, hash, snap, nav, role = "", act }: { 
     const f = alertFilter(search), all = asAlerts(snap.data.alerts), rows = live && all ? filterAlerts(all, f) : null;
     return (
       <Shell title="Alerts" back nav={nav}>
-        <p>{card.what}. {f.severity ? "Showing P1 (critical, still open). " : ""}{f.status ? "Showing not acknowledged. " : ""}</p>
-        <div><DeskLink to={route("alerts")} nav={nav} className="dcp-chip">All</DeskLink> <DeskLink to={route("alerts") + "?severity=p1"} nav={nav} className="dcp-chip">P1</DeskLink> <DeskLink to={route("alerts") + "?status=unacked"} nav={nav} className="dcp-chip">Not acknowledged</DeskLink></div>
+        <p>{card.what}. {f.severity ? "Showing urgent alerts (critical, still open). " : ""}{f.status ? "Showing not acknowledged. " : ""}</p>
+        <div><DeskLink to={route("alerts")} nav={nav} className="dcp-chip">All</DeskLink> <DeskLink to={route("alerts") + "?severity=p1"} nav={nav} className="dcp-chip">Urgent</DeskLink> <DeskLink to={route("alerts") + "?status=unacked"} nav={nav} className="dcp-chip">Not acknowledged</DeskLink></div>
         {note && <p role="status">{note}</p>}
         {rows && <ul className="dcp-list">{rows.length === 0 ? <li className="dcp-item">{f.severity || f.status ? "Nothing matches this filter. That is healthy." : "No alerts. That is healthy."}</li> : rows.map((r) => (
           <AlertItem key={r.id} r={r} act={act} />
@@ -124,5 +124,5 @@ export function DeskSubPage({ sub, search, hash, snap, nav, role = "", act }: { 
       </Shell>
     );
   }
-  return <Shell title={card.label} back nav={nav}><p>{card.what}.</p><p role="status">{card.waits}. The card is wired to this page; the rows appear here by themselves when that phase is built.</p></Shell>;
+  return <Shell title={card.label} back nav={nav}><p>{card.what}.</p><p role="status">{card.waits}</p></Shell>;
 }

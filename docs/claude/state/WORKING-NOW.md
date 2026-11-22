@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 08:25 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: D3 GREEN, D3b written
-NEXT STEP: his install + look D3b, ping paste, D4 gate
-HIS LAST WORD: his 08:23 word
+# WORKING NOW (manual checkpoint, 22 Nov 2026 08:27 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: D1d bug fix written: copy text, no phase names
+NEXT STEP: his install, live look D1d + D3b
+HIS LAST WORD: his 08:26 bug
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,37 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 820529e3 22 Nov 08:25 ledger line cd193bb6
 - cd193bb6 22 Nov 08:25 Desk D3 GREEN, D3b latency trend per service
 - b9ed2419 22 Nov 08:25 ledger line ef8a9b06
 - ef8a9b06 22 Nov 08:25 D3 D3b
 - 39bd96d8 22 Nov 08:19 ledger line df98fe49
-- df98fe49 22 Nov 08:19 Desk D3 live look, D3b proposal, D7 D9 D10 rows GREEN
 
 ## Uncommitted files (half-done work if any)
+ M CLAUDE.md
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/DESK-PHASES-22NOV.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ D founder-web/dist-desk/assets/desk-CuFsRFmO.js
+ M founder-web/dist-desk/desk.html
+ M founder-web/src/desk/DeskCards.tsx
+ M founder-web/src/desk/DeskCommandBar.tsx
+ M founder-web/src/desk/DeskNav.tsx
+ M founder-web/src/desk/desk_cards.ts
+?? founder-web/dist-desk/assets/desk-LokNBXXS.js
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/tech-contracts/CURRENT.md          |   2 +
+ founder-web/dist-desk/assets/desk-CuFsRFmO.js  | 105 -------------------------
+ founder-web/dist-desk/desk.html                |   2 +-
+ founder-web/src/desk/DeskCards.tsx             |   8 +-
+ founder-web/src/desk/DeskCommandBar.tsx        |  14 ++--
+ founder-web/src/desk/DeskNav.tsx               |   6 +-
+ founder-web/src/desk/desk_cards.ts             |  20 ++---
+ 11 files changed, 48 insertions(+), 147 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +59,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (f3be74bf9eb16b6d46d96a4f0c99414aed616931)
+WIP snapshot: refs/wip/last (542eecc44bfeb89e36d8cb360d443cacdc7b5fbb)
