@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 01:38 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 01:38 PKT) - read this FIRST for the Desk after a compaction
 DOING: D5a-4 GREEN report
 NEXT STEP: D5a-5 fail-closed (1i), then 1j screen
 HIS LAST WORD: his 01:35 order: report + GREEN
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- b1542e59 23 Nov 01:38 D5a-4 GREEN report
 - 400d879c 23 Nov 01:28 ledger line e7e0e670
 - e7e0e670 23 Nov 01:28 D5a-4: audit fix PUBLIC revoke
 - 84619001 23 Nov 01:27 ledger line 5906a650
@@ -72,15 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 74a31a4d 23 Nov 01:09 ledger line dfe7aeae
 - dfe7aeae 23 Nov 01:09 D5a-4: AD4b lookup audit proof chain
 - fcb59cc3 23 Nov 00:48 ledger line 80c3ff56
-- 80c3ff56 23 Nov 00:48 No-test-no-commit law, gate, D5a-3b green
 
 ## Uncommitted Desk files
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/FOLDER-PHASES-22NOV.md
- M admin-desk/state/HANDOFF-22NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/FOLDER-PHASES-22NOV.md
- M docs/claude/admin-desk/state/HANDOFF-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
