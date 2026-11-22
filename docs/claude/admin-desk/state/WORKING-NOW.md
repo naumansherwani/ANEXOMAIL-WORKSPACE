@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 02:21 PKT) - read this FIRST for the Desk after a compaction
-DOING: 1i D5a-5 GREEN; Rule 52 live technology list updated; 1j next
-NEXT STEP: 1j D5 Plan context screen: points + web research + plan first, then code (order locked 1j..1o)
-HIS LAST WORD: his 02:20: GREEN 1i + Rule 52 technology update
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 02:40 PKT) - read this FIRST for the Desk after a compaction
+DOING: Rule 52 renamed ADVANCE TECHNOLOGY FOR ANEXOMAIL + installer proof step 9/9 + version subcommand; waits his one install, then 1j
+NEXT STEP: his install (shows PROOF lines), then 1j D5 screen list/plan/code
+HIS LAST WORD: his 02:38 order
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 5676c3d7 23 Nov 02:21 ledger line 9e52ac8e
 - 0a9a4191 23 Nov 02:21 ledger line 8aa186f8
 - 8aa186f8 23 Nov 02:21 1i GREEN + Rule 52 live technology
 - 6440242a 23 Nov 02:14 ledger line 4a79cd5f
@@ -72,9 +73,18 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 0bc1bfc8 23 Nov 02:08 ledger line 327ceebf
 - 327ceebf 23 Nov 02:08 1i plan and list
 - fbea1b8d 23 Nov 02:03 ledger line aff35c7c
-- aff35c7c 23 Nov 02:03 Order lock
 
 ## Uncommitted Desk files
+ M admin-desk/RULE-52-LIVE-TECHNOLOGY-23NOV.md
+ M admin-desk/RULE-BOOK.md
+ M admin-desk/scripts/desk-install.sh
+ M admin-desk/server/src/lookup.rs
+ M admin-desk/server/src/main.rs
+ M docs/claude/admin-desk/RULE-52-LIVE-TECHNOLOGY-23NOV.md
+ M docs/claude/admin-desk/RULE-BOOK.md
+ M docs/claude/admin-desk/scripts/desk-install.sh
+ M docs/claude/admin-desk/server/src/lookup.rs
+ M docs/claude/admin-desk/server/src/main.rs
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)

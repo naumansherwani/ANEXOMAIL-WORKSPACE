@@ -2595,3 +2595,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 1i D5a-5 GREEN 23 Nov 02:3x. WIRED: YES / REAL: YES / TECH-LAW CHECKED. TESTED: his desk-install paste finished OK + step 8/8 OK, my Chrome live bundle desk-C-GRp42D.js = repo, kernel wasm sha 6dc834aa040e5ad3 = repo, lookup door 400 sealed no-store OK, cargo 62+9 pass, bun 45 pass
 
 - ORDER LOCK suffix restored in resume line. TESTED: gate pass, docs only OK
+
+- Rule 52 = ADVANCE TECHNOLOGY FOR ANEXOMAIL full list; installer step 9/9 PROOF (running binary sha = installed = build, bundle + kernel sha = repo) and 'anexomail-desk version'. TECH-LAW CHECKED. TESTED: cargo 63 passed incl version_line, bash -n OK, proof regexes run on repo OK
+
+- Rule 52 = ADVANCE TECHNOLOGY FOR ANEXOMAIL full list; installer step 9/9 PROOF (running binary sha = installed = build, bundle + kernel sha = repo) and 'anexomail-desk version'. TECH-LAW CHECKED. TESTED: cargo 63 passed incl version_line, bash -n OK, proof regexes run on repo OK

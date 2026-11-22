@@ -8,7 +8,8 @@
 | 15 s freshness + answer bound to its request (Ed25519 signed answered_at, request id, company) | server/src/lookup.rs accept | yes | cargo test (stale 16 s, not older than request, other company, future) |
 | D20 database down (before and in the middle of a lookup): no answer shown, sweep closes the line | server/src/lookup.rs + test | yes | real-PostgreSQL test: DB down before the audit line, DB killed in the middle, nothing shown, line left requested |
 | Kernel stale + replay + request-id check, lookup_view mapping (Rule 52, Rust WASM) | kernel/src/wire.rs, lib.rs | yes | kernel cargo test 9 passed; real WASM run in Node with an independent Ed25519 signer; bun 45 pass |
-NOT YET (needs his install): live look on his server = F11. NOT THIS PHASE: the Desk screen and its words = phase 1j.
+| `anexomail-desk version` + installer step 9/9 PROOF lines (running process sha = installed file = build, served bundle and kernel sha = repo) printed LAST | server/src/main.rs, lookup.rs, scripts/desk-install.sh | yes | cargo test version_line, bash -n, regexes run on the repo |
+F11 live proof done for the bundle + kernel (my Chrome 02:3x); binary proof comes from step 9/9. NOT THIS PHASE: the Desk screen and its words = phase 1j.
 
 
 # TECH CONTRACT FOR PHASE: DESK D5a-4 (LOOKUP AUDIT PROOF), written 23 Nov 2026 01:2x PKT, his word 00:56 "sab se sensitive, points likho, test live kero, duniya ka advance, sql maximum". FULL LIST: docs/claude/admin-desk/D5A4-AUDIT-PROOF-LIST-23NOV.md
@@ -3245,3 +3246,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 1i D5a-5 GREEN 23 Nov 02:3x. WIRED: YES / REAL: YES / TECH-LAW CHECKED. TESTED: his desk-install paste finished OK + step 8/8 OK, my Chrome live bundle desk-C-GRp42D.js = repo, kernel wasm sha 6dc834aa040e5ad3 = repo, lookup door 400 sealed no-store OK, cargo 62+9 pass, bun 45 pass
 
 - ORDER LOCK suffix restored in resume line. TESTED: gate pass, docs only OK
+
+- Rule 52 = ADVANCE TECHNOLOGY FOR ANEXOMAIL full list; installer step 9/9 PROOF (running binary sha = installed = build, bundle + kernel sha = repo) and 'anexomail-desk version'. TECH-LAW CHECKED. TESTED: cargo 63 passed incl version_line, bash -n OK, proof regexes run on repo OK
+
+- Rule 52 = ADVANCE TECHNOLOGY FOR ANEXOMAIL full list; installer step 9/9 PROOF (running binary sha = installed = build, bundle + kernel sha = repo) and 'anexomail-desk version'. TECH-LAW CHECKED. TESTED: cargo 63 passed incl version_line, bash -n OK, proof regexes run on repo OK

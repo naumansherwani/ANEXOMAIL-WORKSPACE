@@ -75,6 +75,7 @@ async fn main() {
         std::io::stdin().read_line(&mut l).ok();
         match auth::hash_password(l.trim_end_matches(['\n', '\r'])) { Ok(h) => { println!("{h}"); return; } Err(e) => { eprintln!("hashpw: {e}"); std::process::exit(3); } }
     }
+    if a.get(1).map(String::as_str) == Some("version") && a.len() == 2 { println!("{}", lookup::version_line()); return; }
     if a.get(1).map(String::as_str) == Some("lookup-selftest") && a.len() == 3 {
         match lookup::selftest(&a[2]).await { Ok(o) => { println!("{o}"); return; } Err(e) => { println!("LOOKUP SELFTEST FAIL: {e}"); std::process::exit(4); } }
     }

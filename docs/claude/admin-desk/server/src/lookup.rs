@@ -94,6 +94,11 @@ impl Breaker {
 static BREAKER: std::sync::OnceLock<Breaker> = std::sync::OnceLock::new();
 fn breaker() -> &'static Breaker { BREAKER.get_or_init(Breaker::default) }
 
+/// `anexomail-desk version`: ONE line that proves WHICH build is running and that it carries the D5a-5 fail-closed code (the installer prints it as its last lines).
+pub fn version_line() -> String {
+    format!("DESK BUILD {} | fail-closed: fresh {}s, deadline {}s, breaker {} fails/{}s open {}s, no-store | lookup contract {} fields", option_env!("DESK_BUILD_COMMIT").unwrap_or("unknown"), FRESH, DEADLINE_SECS, BREAKER_FAILS, BREAKER_WINDOW, BREAKER_OPEN, allowed().len())
+}
+
 /// Where the Control Plane is reached. Off = not configured: every lookup is "unavailable" (honest, fail closed).
 pub enum Plane { Off, H3 { addr: std::net::SocketAddr, host: String, ca_pem: Option<Vec<u8>> }, #[cfg(test)] Double(Box<dyn Fn(&str) -> Option<String> + Send + Sync>) }
 impl Plane {
@@ -334,6 +339,9 @@ mod tests {
         b.fail(102 + BREAKER_OPEN); assert!(b.is_open(102 + BREAKER_OPEN + 1), "a failed probe re-opens it");
         assert!(b.allow(102 + 2 * BREAKER_OPEN)); b.ok(); assert!(!b.is_open(102 + 2 * BREAKER_OPEN) && b.allow(102 + 2 * BREAKER_OPEN + 1), "a success closes it");
         let c = Breaker::default(); c.fail(0); c.fail(10); c.fail(31); assert!(!c.is_open(31), "failures older than the 30 s window do not count");
+    }
+    #[test] fn version_line_names_the_fail_closed_numbers() {
+        let v = version_line(); assert!(v.starts_with("DESK BUILD ")); assert!(v.contains("fresh 15s") && v.contains("deadline 6s") && v.contains("breaker 3 fails/30s open 15s") && v.contains("no-store"), "{v}");
     }
     #[test] fn every_response_is_no_store_and_unavailable_has_no_data() {
         let r = unavailable("rid-1"); assert_eq!(r.status(), StatusCode::SERVICE_UNAVAILABLE);

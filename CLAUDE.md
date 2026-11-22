@@ -1,4 +1,4 @@
-> ## >>> RESUME HERE: 1i GREEN, NEXT 1j D5 screen, ORDER LOCKED 1j,1k,1l,1m,1n,1o NEVER REORDER (docs/claude/admin-desk/NOW-LIST-23NOV.md) (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
+> ## >>> RESUME HERE: 1i GREEN, NEXT 1j, ORDER LOCKED 1j-1o (admin-desk/NOW-LIST-23NOV.md), RULE 52 = ADVANCE TECHNOLOGY FOR ANEXOMAIL (RULE-52-ADVANCE-TECHNOLOGY-FOR-ANEXOMAIL.md) (rules-read.py, RESUME-POINT.md line 3, FOUNDER-MAILBOX-REAL-BUILD-PLAN-13NOV.md) <<<
 > ## >>> FRONTEND=CADDY, HETZNER=BACKEND; DNS=Caddy IP (his 21 Nov 23:35): docs/claude/FRONTEND-CADDY-BACKEND-HETZNER-LAW-21NOV.md <<<
 > ## >>> DESK 3 CMDS: desk-install, ad-auto, desk-restart (admin-desk/TWO-COMMANDS.md) <<<
 > ## >>> CLEAN-PUSH: git status empty after push (CLEAN-PUSH-LAW-21NOV.md) <<<

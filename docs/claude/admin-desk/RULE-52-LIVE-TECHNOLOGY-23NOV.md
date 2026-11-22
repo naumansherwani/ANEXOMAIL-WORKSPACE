@@ -1,4 +1,4 @@
-# RULE 52 + THE ADVANCE TECHNOLOGY RUNNING ON THE ADMIN DESK (updated 23 Nov 2026 02:3x PKT, his order 02:20)
+# RULE 52 = ADVANCE TECHNOLOGY FOR ANEXOMAIL: what runs on the ADMIN DESK (whole rule: docs/claude/RULE-52-ADVANCE-TECHNOLOGY-FOR-ANEXOMAIL.md) (updated 23 Nov 2026 02:3x PKT, his order 02:20)
 Rule 52 (unchanged in meaning, extended today): EVERY Desk answer, stream frame and lookup is Desk-signed (Ed25519) and verified by the Desk's OWN Rust WASM kernel in the browser; requests carry the HKDF/HMAC MAC + replay nonce; since D5a-5 a customer lookup reaches a screen only through the kernel's `lookup_view` (fresh 15 s vs the Desk's signed time, this request id, this company, HTTP 200). Any doubt = "Data unavailable", never an old answer.
 
 ## What is REALLY running on the Desk today (each line has its proof; nothing here is a wish)

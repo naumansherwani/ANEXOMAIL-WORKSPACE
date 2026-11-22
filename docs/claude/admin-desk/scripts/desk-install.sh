@@ -11,7 +11,7 @@ echo "== 1/4 source (admin-desk/server from origin/main)"
 mkdir -p "$ROOT/src/src"; show admin-desk/server/Cargo.toml >"$ROOT/src/Cargo.toml"; rm -f "$ROOT"/src/src/*.rs; for f in $(git -C "$REPO" ls-tree --name-only origin/main admin-desk/server/src/ | grep "\.rs$"); do show "$f" >"$ROOT/src/src/$(basename "$f")"; done; echo "   rust files: $(ls "$ROOT"/src/src/*.rs | xargs -n1 basename | tr "
 " " ")"; show admin-desk/server/Cargo.lock >"$ROOT/src/Cargo.lock" 2>/dev/null
 mkdir -p "$ROOT/src/contract"; rm -f "$ROOT"/src/contract/*.json; for f in $(git -C "$REPO" ls-tree --name-only origin/main admin-desk/server/contract/ | grep "\.json$"); do show "$f" >"$ROOT/src/contract/$(basename "$f")"; done; echo "   contract files: $(ls "$ROOT"/src/contract/*.json 2>/dev/null | xargs -n1 basename 2>/dev/null | tr "\n" " ")"
-echo "== 2/4 build"; NEW="$ROOT/target/release/anexomail-desk"; rm -f "$NEW"; (cd "$ROOT/src" && nice cargo build --release >"$ROOT/build.log" 2>&1); RC=$?; if [ $RC != 0 ] || [ ! -x "$NEW" ]; then echo "FAIL: build (nothing installed, the running Desk is untouched)"; grep -E "^error" -A6 "$ROOT/build.log" | head -20; exit 3; fi; tail -1 "$ROOT/build.log"
+echo "== 2/4 build"; NEW="$ROOT/target/release/anexomail-desk"; rm -f "$NEW"; (cd "$ROOT/src" && DESK_BUILD_COMMIT="$(git -C "$REPO" rev-parse --short origin/main)" nice cargo build --release >"$ROOT/build.log" 2>&1); RC=$?; if [ $RC != 0 ] || [ ! -x "$NEW" ]; then echo "FAIL: build (nothing installed, the running Desk is untouched)"; grep -E "^error" -A6 "$ROOT/build.log" | head -20; exit 3; fi; tail -1 "$ROOT/build.log"
 echo "== 3/4 user + files"
 id $SVC >/dev/null 2>&1 || useradd --system --no-create-home --shell /usr/sbin/nologin $SVC
 [ -f "$ROOT/anexomail-desk" ] && cp "$ROOT/anexomail-desk" "$ROOT/anexomail-desk.bak.$(date +%s)"
@@ -84,3 +84,14 @@ bash <(show admin-desk/scripts/cp-install.sh) || exit $?
 # 8/8 (his 23 Nov 2026 01:18: the Storage Box copy of the lookup-audit checkpoints, signed with the Desk key, timer every 10 minutes)
 echo "== 8/8 audit outside copy (D5a-4)"
 bash <(show admin-desk/scripts/audit-export-install.sh) || exit $?
+# 9/9 (his 23 Nov 2026 02:38: "the last 15 lines must PROVE the new code is the one running"): printed LAST so `tail -15` always shows it. Read-only.
+echo "== 9/9 PROOF: the running binary and the live page are the NEW build"
+PID="$(systemctl show -p MainPID --value $SVC)"; RUN="$(sha256sum /proc/$PID/exe 2>/dev/null | cut -c1-12)"; BIN="$(sha256sum "$ROOT/anexomail-desk" | cut -c1-12)"; BLD="$(sha256sum "$NEW" | cut -c1-12)"
+HEADC="$(git -C "$REPO" rev-parse --short origin/main)"
+echo "   $(timeout 5 "$ROOT/anexomail-desk" version 2>&1 | head -1)"
+if [ -n "$RUN" ] && [ "$RUN" = "$BIN" ] && [ "$BIN" = "$BLD" ]; then echo "   PROOF binary: running process = installed file = this build ($RUN), repo commit $HEADC: SAME"; else echo "   PROOF binary: DIFFERENT (running $RUN, installed $BIN, built $BLD): do not trust this install"; fi
+LIVE="$(curl -s -H 'Host: admindesk.anexomail.com' http://127.0.0.1:4400/adminlogin | grep -o 'desk-[A-Za-z0-9_-]*\.js' | head -1)"; REPOJS="$(show founder-web/dist-desk/desk.html | grep -o 'desk-[A-Za-z0-9_-]*\.js' | head -1)"
+if [ -n "$LIVE" ] && [ "$LIVE" = "$REPOJS" ]; then echo "   PROOF page: served bundle $LIVE = repo build: SAME"; else echo "   PROOF page: DIFFERENT (served ${LIVE:-none}, repo ${REPOJS:-none})"; fi
+WASM="$(show founder-web/dist-desk/desk.html | grep -o 'anexomail_desk_kernel_bg-[A-Za-z0-9_-]*\.wasm' | head -1)"; [ -z "$WASM" ] && WASM="$(git -C "$REPO" ls-tree --name-only origin/main founder-web/dist-desk/assets/ | grep -o 'anexomail_desk_kernel_bg-[A-Za-z0-9_-]*\.wasm' | head -1)"
+SW="$(curl -s -H 'Host: admindesk.anexomail.com' "http://127.0.0.1:4400/assets/$WASM" | sha256sum | cut -c1-12)"; RW="$(git -C "$REPO" show "origin/main:founder-web/dist-desk/assets/$WASM" | sha256sum | cut -c1-12)"
+if [ -n "$WASM" ] && [ "$SW" = "$RW" ]; then echo "   PROOF kernel: served $WASM sha $SW = repo: SAME"; else echo "   PROOF kernel: DIFFERENT (served $SW, repo $RW, file ${WASM:-none})"; fi
