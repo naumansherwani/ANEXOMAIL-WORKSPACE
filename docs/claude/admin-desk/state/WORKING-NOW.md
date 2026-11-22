@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 02:03 PKT) - read this FIRST for the Desk after a compaction
-DOING: ORDER LOCK written; now starting 1i D5a-5 code
-NEXT STEP: 1i D5a-5 then 1j,1k,1l,1m,1n,1o in this exact order
-HIS LAST WORD: his 02:02 anger about order
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 02:08 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1i D5a-5: point list + contract written at repo top; code next (lookup.rs deadline/freshness/breaker/D20, kernel lookup_view)
+NEXT STEP: write 1i code, tests, hostile audit, then install command
+HIS LAST WORD: his 02:07 order: points, plan, web research, then code
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- fbea1b8d 23 Nov 02:03 ledger line aff35c7c
 - aff35c7c 23 Nov 02:03 Order lock
 - 1fd877b7 23 Nov 01:54 ledger line 8df10397
 - 8df10397 23 Nov 01:54 Phase A row corrected
@@ -72,10 +73,11 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 7afc45f1 23 Nov 01:45 NOW-LIST remaining phases
 - 28f6fd3f 23 Nov 01:38 ledger line b1542e59
 - b1542e59 23 Nov 01:38 D5a-4 GREEN report
-- 400d879c 23 Nov 01:28 ledger line e7e0e670
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
+?? admin-desk/D5A5-FAIL-CLOSED-LIST-23NOV.md
+?? docs/claude/admin-desk/D5A5-FAIL-CLOSED-LIST-23NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

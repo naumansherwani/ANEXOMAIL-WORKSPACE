@@ -5761,3 +5761,5 @@ Features ki list (QC4 mein kya banega):
 - Phase A row corrected: Namecheap A+AAAA done 21 Nov, no HTTPS type. TESTED: my Chrome live look nextHopProtocol h2 on 3 resources, alt-svc header present OK
 
 - ORDER LOCK 1i..1o saved, order unchanged since 22 Nov 23:39. TESTED: gate pass, docs only, git history check OK
+
+- 1i D5a-5 point list F1-F11 + contract written first. TESTED: gate pass, docs only OK

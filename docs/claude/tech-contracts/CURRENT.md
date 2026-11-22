@@ -1,6 +1,16 @@
 <!--TECHLAW-->
 
 
+# TECH CONTRACT FOR PHASE: DESK D5a-5 (FAIL-CLOSED PROOF, phase 1i), written 23 Nov 2026 02:1x PKT, his word: "Control Plane band ho to Desk Data unavailable dikhaye, purana jawab kabhi na dikhaye". FULL LIST: docs/claude/admin-desk/D5A5-FAIL-CLOSED-LIST-23NOV.md
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| One 6 s deadline over the whole HTTP/3 call (quinn + h3, TLS 1.3 AES-256-GCM, X25519MLKEM768), circuit breaker, no cache, one honest unavailable shape | server/src/lookup.rs | planned | tests to be written, then run |
+| 15 s freshness + answer bound to its request (Ed25519 signed answered_at, request id, company) | server/src/lookup.rs accept | planned | tests |
+| D20 database down (before and in the middle of a lookup): no answer shown, sweep closes the line | server/src/lookup.rs + test | planned | tests |
+| Kernel stale + replay + request-id check, lookup_view mapping (Rule 52, Rust WASM) | kernel/src/wire.rs, lib.rs | planned | tests |
+NOT THIS PHASE: the Desk screen and its words = phase 1j.
+
+
 # TECH CONTRACT FOR PHASE: DESK D5a-4 (LOOKUP AUDIT PROOF), written 23 Nov 2026 01:2x PKT, his word 00:56 "sab se sensitive, points likho, test live kero, duniya ka advance, sql maximum". FULL LIST: docs/claude/admin-desk/D5A4-AUDIT-PROOF-LIST-23NOV.md
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3227,3 +3237,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Phase A row corrected: Namecheap A+AAAA done 21 Nov, no HTTPS type. TESTED: my Chrome live look nextHopProtocol h2 on 3 resources, alt-svc header present OK
 
 - ORDER LOCK 1i..1o saved, order unchanged since 22 Nov 23:39. TESTED: gate pass, docs only, git history check OK
+
+- 1i D5a-5 point list F1-F11 + contract written first. TESTED: gate pass, docs only OK
