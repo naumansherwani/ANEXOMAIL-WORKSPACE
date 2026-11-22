@@ -16,6 +16,7 @@ import { CHORD_MS, chordTarget, comboTarget, deskSub, typingTarget } from "./des
 
 const hasSession = () => { try { return !!window.localStorage.getItem(DESK_SESSION_KEY); } catch { return false; } };
 const go = (to: string) => window.location.replace(to);
+import { markSelectors, origin, remember } from "./desk_return_pure";
 const here = () => ({ path: window.location.pathname, search: window.location.search, hash: window.location.hash });
 
 function Landing() {
@@ -45,7 +46,14 @@ function Dashboard() {
   const [loc, setLoc] = useState(here);
   // D1: cards move inside this one page with the History API; the stream below stays open. Back restores the previous page.
   useEffect(() => { const on = () => setLoc(here()); window.addEventListener("popstate", on); return () => window.removeEventListener("popstate", on); }, []);
-  const nav = (to: string) => { window.history.pushState(null, "", to); setLoc(here()); const id = to.split("#")[1]; window.setTimeout(() => (id ? document.getElementById(id) : null)?.scrollIntoView({ block: "center" }) ?? window.scrollTo(0, 0), 0); };
+  // coming back to the Dashboard: the card you opened wears the red mark and scrolls into view (his 23 Nov 03:38 word)
+  useEffect(() => {
+    document.querySelectorAll("[data-from]").forEach((e) => e.removeAttribute("data-from"));
+    const id = origin(loc.path); if (!id) return;
+    const t = window.setTimeout(() => { for (const sel of markSelectors(id)) { const a = document.querySelector<HTMLElement>(sel); if (!a) continue; const card = (a.closest(".dcb-card") as HTMLElement | null) ?? a; card.setAttribute("data-from", "true"); card.scrollIntoView({ block: "center" }); return; } }, 60);
+    return () => window.clearTimeout(t);
+  }, [loc.path]);
+  const nav = (to: string) => { remember(to); window.history.pushState(null, "", to); setLoc(here()); const id = to.split("#")[1]; window.setTimeout(() => (id ? document.getElementById(id) : null)?.scrollIntoView({ block: "center" }) ?? window.scrollTo(0, 0), 0); };
   // D1b (his 22 Nov 07:33): keyboard shortcuts, "g" then a letter. Not while typing, not with Ctrl / Alt / Meta.
   useEffect(() => {
     let armed = 0;

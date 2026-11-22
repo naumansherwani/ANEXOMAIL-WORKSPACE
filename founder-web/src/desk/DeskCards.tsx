@@ -27,7 +27,7 @@ const CSS = `
 .dcp-back{display:inline-flex;align-items:center;min-height:44px;color:#BFD6FF;text-decoration:none}
 .dcp-list{display:grid;gap:10px;margin:0;padding:0;list-style:none}.dcp-item{padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--glass);min-width:0;overflow-wrap:anywhere}
 .dcp-trend{display:flex;align-items:center;gap:10px;margin-top:6px;color:var(--mute);font-size:12px}.dcp-trend svg{width:110px;height:24px;flex:none}.dcp-trend polyline{fill:none;stroke:var(--mute);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
-.dcp-item[data-hot=true]{border-color:rgba(255,92,92,.7)}.dcp-item b{display:block}.dcp-item small{color:var(--mute)}
+.dcp-item[data-hot=true],.dcb-card[data-from=true],.dcc-card[data-from=true]{border-color:rgba(255,92,92,.7)}.dcp-item b{display:block}.dcp-item small{color:var(--mute)}
 .dcp-head{font-size:clamp(17px,3vw,20px);color:#fff!important;font-weight:600}.dcp-head[data-l=outage]{color:#FFB4B4!important}.dcp-banner{padding:14px 16px;border:1px solid rgba(255,92,92,.6);border-radius:14px;background:rgba(120,16,24,.25);color:#FFD6D6!important}.dcp-dot{display:inline-block;margin:0 8px 0 0;vertical-align:middle}
 .dcp-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.dcp-act{min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.07);color:inherit;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}.dcp-act:hover:not(:disabled){background:rgba(255,255,255,.14)}.dcp-act[data-armed=true]{border-color:rgba(255,160,90,.8)}.dcp-act:disabled{opacity:.5;cursor:default}.dcp-act:focus-visible{outline:2px solid #8FB8FF;outline-offset:2px}.dcp-msg{display:block;margin-top:8px}.dcp-msg[data-ok=false]{color:#FFB4B4}
 .dcp-chip{display:inline-flex;align-items:center;min-height:32px;padding:0 12px;border:1px solid var(--line);border-radius:999px;color:inherit;text-decoration:none;font-size:13px}
@@ -50,7 +50,7 @@ export function DeskCardGrid({ nav }: { nav: Nav }) {
 }
 
 function Shell({ title, back, nav, children }: { title: string; back: boolean; nav: Nav; children: ReactNode }) {
-  return <section className="dcp" aria-label={title}><style>{CSS}</style>{back && <DeskLink to="/dashboard" nav={nav} className="dcp-back">← Dashboard</DeskLink>}<div role="heading" aria-level={2} className="dcp-title">{title}</div>{children}</section>;
+  return <section className="dcp" aria-label={title}><style>{CSS}</style>{back && <DeskLink to="/dashboard" nav={nav} className="dcp-back" label="Back to the Dashboard">← Dashboard</DeskLink>}<div role="heading" aria-level={2} className="dcp-title">{title}</div>{children}</section>;
 }
 
 /** One alert with its buttons (D2). Closing (Resolve / False alarm) asks once more inside the row. The database decides who may do what; its answer is shown in plain words. */
