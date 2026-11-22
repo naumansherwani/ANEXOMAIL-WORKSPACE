@@ -3173,3 +3173,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 22 Nov 2026 06:20 PKT PHASE C1 (Desk WebTransport server) WRITTEN, not green: wt.rs + h3.rs /wt/bridge on UDP 4400, signed frames, 33 cargo tests; kernel client NEXT
 
 - 22 Nov 2026 06:40 PKT PHASE C2 (Desk kernel stream client + chip) WRITTEN, not green: Rust WASM kernel verify_frame, desk_stream.ts WebTransport, real Chromium sandbox proof; C1 installed on his server; needs his install + my Chrome look
+
+- 22 Nov 2026 06:42 PKT DESK PHASES BLUEPRINT + REMINDER GATE: DESK-PHASES-22NOV.md (strict rules top, technology + features per phase), desk-phase-start.py, gate DESK PHASE START, ckpt reminder

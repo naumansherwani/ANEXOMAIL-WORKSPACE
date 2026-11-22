@@ -181,6 +181,17 @@ try:
 except ImportError:
     fail("DESK TECH", "admin-desk/gates/desk_tech_gate.py is missing")
 
+
+# DESK PHASE START (his 22 Nov 2026 06:41): a commit that changes Desk CODE needs a Desk phase receipt (desk-phase-start.py, also run by rules-read.py) younger than 2 hours: the strict rules, the phase technology and WORKING-NOW were printed to Claude.
+if "--staged" in sys.argv:
+    _desk_code = [f for f in staged if f.startswith(("docs/claude/admin-desk/server/", "docs/claude/admin-desk/kernel/", "founder-web/src/desk/")) and f.endswith((".rs", ".ts", ".tsx", ".sql", ".sh"))]
+    if _desk_code:
+        try:
+            import json as _j4, time as _t4
+            if _t4.time() - _j4.load(open(".git/desk-phase-receipt.json"))["time"] > 7200: fail("DESK PHASE START", "receipt older than 2 hours: run python3 docs/cursor-work/server/desk-phase-start.py <phase> and READ it (strict rules, phase technology, WORKING-NOW)")
+        except Exception:
+            fail("DESK PHASE START", "no Desk phase receipt: run python3 docs/cursor-work/server/desk-phase-start.py <phase> and READ it before changing Desk code (docs/claude/admin-desk/DESK-PHASES-22NOV.md)")
+
 # CODE BACKUP LAW (his 22 Nov 2026 06:02): backups/<lane>/<stamp>-<commit>/ is APPEND-ONLY. A staged change that modifies or deletes anything under backups/ fails; every backup archive must match its SHA256SUMS. Nothing pulls from backups/ unless he asks. docs/claude/CODE-BACKUP-LAW-22NOV.md
 try:
     _bs = sh("git", "diff", "--cached", "--name-status", "--", "backups/").splitlines()

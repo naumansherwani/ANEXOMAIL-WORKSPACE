@@ -121,6 +121,7 @@ docs/cursor-work/server/db-latency-check.sh
 docs/cursor-work/server/db-latency-probe.sh
 docs/cursor-work/server/deploy-pro.sh
 docs/cursor-work/server/desk-copy-sync.py
+docs/cursor-work/server/desk-phase-start.py
 docs/cursor-work/server/desk-ports-check.sh
 docs/cursor-work/server/device-hash-migrate.sh
 docs/cursor-work/server/dkim-dns-print.sh

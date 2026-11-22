@@ -26,5 +26,6 @@ if __name__ == "__main__":
     print("\n##### BLUEPRINT TECH LAW header"); b = open("docs/claude/BLUEPRINT-ABC-01NOV.md", errors="ignore").read().split("\n")
     for l in b:
         if l.startswith("> **TECH LAW"): print(l[:700]); break
+    print("\n##### ADMIN DESK (his 22 Nov 06:41: read before EVERY Desk phase)"); import subprocess as _d; print(_d.run(["python3", "docs/cursor-work/server/desk-phase-start.py"], capture_output=True, text=True).stdout[:7000])
     json.dump({"time": time.time(), "hashes": {f: sha(f) for f in FILES}}, open(RECEIPT, "w"))
     print("\nRECEIPT WRITTEN (valid 2 h, until a rule/contract/gate file changes). Now work: contract first, code second, GREEN only with proof.")

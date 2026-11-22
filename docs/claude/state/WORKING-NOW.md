@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 06:40 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: S0 evidence 2
-NEXT STEP: retest new connection, ad-auto, then S1
-HIS LAST WORD: s0
+# WORKING NOW (manual checkpoint, 22 Nov 2026 06:42 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Desk phase C: C2 written (kernel stream client), phases blueprint + DESK PHASE START gate written
+NEXT STEP: his desk-install of the C2 build, my live Chrome look at the chip, then C GREEN, then D Command Bar
+HIS LAST WORD: her phase se pehle rules aur working now read, technology reminder, blueprint phases ke saath advance technology aur features, strict rules top
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,28 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## ADMIN DESK HTTP/3 (his fresh ss 21 Nov 2026 09:27 PKT, full `ss -ulnp` + ufw udp pasted): UDP 4400 was FREE (no listener, no ufw rule, outside the TURN 49152-65535 range) -> RESERVED for the Desk's own HTTP/3 (`anexomail-desk`, drop-in e
 
 ## Last 5 commits
+- 0338d7ff 22 Nov 06:40 ledger line 766e78a3
 - 766e78a3 22 Nov 06:40 Desk phase C2: manifest refresh
 - 406bbe10 22 Nov 06:40 ledger line 60e70c2b
 - 60e70c2b 22 Nov 06:40 Desk phase C2 kernel stream client
 - e3dde6d5 22 Nov 06:24 ledger line 6f85aa0c
-- 6f85aa0c 22 Nov 06:24 Desk gate lesson: advance technology only, HTTP/1 and HTTP/2 never named
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+ M docs/cursor-work/server/ckpt.sh
+ M docs/cursor-work/server/rules-gate.py
+ M docs/cursor-work/server/rules-read.py
+?? docs/claude/admin-desk/DESK-PHASES-22NOV.md
+?? docs/cursor-work/server/desk-phase-start.py
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ docs/claude/state/WORKING-NOW.md      | 28 ++++++++++------------------
+ docs/cursor-work/server/ckpt.sh       |  1 +
+ docs/cursor-work/server/rules-gate.py | 11 +++++++++++
+ docs/cursor-work/server/rules-read.py |  1 +
+ 4 files changed, 23 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +50,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (c66c0748ad3db93c70305a672db94d5b4ebf7688)
+WIP snapshot: refs/wip/last (6f1931060a91da374ae58d8c99ada40c39ce0eff)
