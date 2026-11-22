@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 21:24 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 21:24 PKT) - read this FIRST for the Desk after a compaction
 DOING: D5a list 1..5 is the work; step now = schema-first read for D5a-3b responder (UDP 127.0.0.1:4410), then responder whole before any commit
 NEXT STEP: read E105 founder_polar_pulse + plan_catalog + plan_promises schemas; write responder crate with Rule 52 style signing; tests; installer; then D5a-3 live, 4, 5, 2
 HIS LAST WORD: no incomplete work; no server pull pending; handoff = admin-desk/state/HANDOFF-22NOV.md
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 420d79ed 22 Nov 21:24 Handoff refresh, loop restart
 - be0ac970 22 Nov 21:01 ledger line afa31a13
 - afa31a13 22 Nov 21:01 D5a list 1..5, D5a-1 proof, his ss paste recorded, UDP 127.0.0.1:4410 reserved for D5a-3b
 - 8c91126b 22 Nov 20:54 ledger line e7663bf1
@@ -72,13 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 802da807 22 Nov 20:44 ledger line 4f2d93ce
 - 4f2d93ce 22 Nov 20:44 Finding: no Control Plane responder yet
 - 3fd29fe9 22 Nov 20:42 ledger line bb13ccf9
-- bb13ccf9 22 Nov 20:42 No-incomplete-work law (gate INCOMPLETE ADVANCE), desk-install fetches lookup contract, contract inside crate
 
 ## Uncommitted Desk files
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/state/HANDOFF-22NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/state/HANDOFF-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
