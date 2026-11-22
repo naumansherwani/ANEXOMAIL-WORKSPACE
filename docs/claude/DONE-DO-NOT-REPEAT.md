@@ -2387,3 +2387,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 22 Nov 04:59 PKT: S0 evidence 4: his pcap proves Chrome QUIC reaches UDP 4400 and Desk handshakes; firewall cleared; navigation still h2; not green
 
 - 22 Nov 05:12 PKT: S1 bridge.rs WRITTEN (4 signed doors, 27 tests ok), not green until his desk-install + my Chrome look
+
+- 22 Nov 05:20 PKT: his login-scroll complaint checked: live bundle = repo HEAD, no UI commit after 03:01, nothing reverted; asked which screen
