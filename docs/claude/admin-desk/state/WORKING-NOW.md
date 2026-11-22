@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 10:51 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 10:52 PKT) - read this FIRST for the Desk after a compaction
 DOING: D5a-4 audit SQL coded and proved on scratch PostgreSQL 16 (AD4 + check)
 NEXT STEP: his SQL command (ad-auto) runs AD4 on his server; next D5a-2 registry SQL, D5a-3 lookup Rust door vs test double; S1 waits his haan
 HIS LAST WORD: his 10:47 CEO order: start first phase
@@ -65,14 +65,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- cf070b58 22 Nov 10:52 Desk D5a-4 lookup audit SQL (AD4) proved on PostgreSQL 16, gate refinement
+- 7604cf79 22 Nov 10:51 ledger line 8f7bb606
 - 8f7bb606 22 Nov 10:51 Desk D5a-4 lookup audit SQL
 - e8487991 22 Nov 10:48 ledger line 0407b750
 - 0407b750 22 Nov 10:48 Desk D5a-1 contract and no-money gate, refund law
 - fa83e3d1 22 Nov 10:48 ledger line aa0fb942
 - aa0fb942 22 Nov 10:48 Desk D5a-1 contract and no-money gate
 - f033fe12 22 Nov 10:43 ledger line ed675201
-- ed675201 22 Nov 10:43 Desk no-promise law, suspension classes, runbook drafts, D-series blueprint
-- 6c05bcfe 22 Nov 10:43 ledger line 987d934f
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
