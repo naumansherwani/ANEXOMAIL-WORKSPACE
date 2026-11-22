@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 08:51 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 08:51 PKT) - read this FIRST for the Desk after a compaction
 DOING: status report, phase A order written, D3b fix not installed
 NEXT STEP: his install, D3b live look, D4 gate rule, D2 proof
 HIS LAST WORD: his 08:51 word
@@ -64,6 +64,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 506c42b5 22 Nov 08:51 status
 - ac0a4826 22 Nov 08:47 ledger line f6ee6a88
 - 79740592 22 Nov 08:47 ledger line 9129a635
 - 9129a635 22 Nov 08:47 D1d D1e live
@@ -71,11 +72,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 98ae78ae 22 Nov 08:38 ledger line f4011d6d
 - f4011d6d 22 Nov 08:38 D1e
 - 5c5cf795 22 Nov 08:27 ledger line cc788a70
-- f93ca0b5 22 Nov 08:27 ledger line 61b14756
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
- M docs/claude/admin-desk/DESK-PHASES-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
