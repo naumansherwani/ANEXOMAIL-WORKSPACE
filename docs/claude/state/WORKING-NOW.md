@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 04:25 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 04:25 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 1l D5c Escalate = NOW (Desk side). Founder-side Escalation Inbox recorded as a later phase after 1o + 1a (one-way signed messages, Desk isolation)
 NEXT STEP: 1l research + LIST + contract; founder inbox plan after 1o, 1a
 HIS LAST WORD: his 04:25
@@ -18,28 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- c8287687 23 Nov 04:25 founder escalation inbox parked after 1o + 1a
 - 89e0e045 23 Nov 04:25 ledger line 2b5144d1
 - 2b5144d1 23 Nov 04:25 1k closed: approvals + tick proved live
 - 2f1bf66f 23 Nov 04:18 ledger line cba544eb
 - cba544eb 23 Nov 04:18 1k GREEN, NOW 1l
-- 611b16af 23 Nov 04:10 ledger line c923b616
 
 ## Uncommitted files (half-done work if any)
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md        |  4 ++++
- admin-desk/NOW-LIST-23NOV.md                       |  2 ++
- .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    |  4 ++++
- docs/claude/admin-desk/NOW-LIST-23NOV.md           |  2 ++
- docs/claude/state/WORKING-NOW.md                   | 27 ++++++++--------------
- 5 files changed, 21 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 25 ++-----------------------
+ 1 file changed, 2 insertions(+), 23 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -50,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ac91e21d18ca5c64ee0d9370f9fd6006116cdd34)
+WIP snapshot: refs/wip/last (86f34015ae3770fc7e3131593d7df50e00752456)
