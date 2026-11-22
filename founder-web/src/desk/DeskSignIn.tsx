@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from "react";
 import { canSubmit, cleanEmail } from "../signin_pure";
 import { BrandMark } from "../signin/BrandMark";
 import { HoverA } from "../signin/BrandLoader";
@@ -23,6 +23,14 @@ function EyeIcon({ off }: { off: boolean }) {
 export function DeskSignIn() {
   const [show, setShow] = useState(false), [savePw, setSavePw] = useState(readSavePw);
   const [email, setEmail] = useState(""), [password, setPassword] = useState(""), [busy, setBusy] = useState(false), [msg, setMsg] = useState(""), [hw, setHw] = useState<"checking" | "ready" | "none">("checking");
+  // his 22 Nov 05:49: the whole login (every feature, the eye, both buttons) AND the single bottom light must be visible WITHOUT scrolling on any window height. When the window is shorter than the card, the card is scaled down to fit (never cut, never hidden); on tall windows it stays 100%.
+  const fit = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const el = fit.current; if (!el) return;
+    const run = () => { el.style.zoom = "1"; const natural = el.offsetHeight; const room = window.innerHeight - 76 - 34 + 14 - 6; el.style.zoom = natural > room && natural > 0 ? String(Math.max(0.55, room / natural)) : "1"; };
+    run(); window.addEventListener("resize", run); void document.fonts?.ready.then(run);
+    return () => window.removeEventListener("resize", run);
+  }, [msg, busy]);
   useEffect(() => {
     // Honest hardware check: only what this browser really reports.
     const ok = typeof window !== "undefined" && "PublicKeyCredential" in window && typeof navigator.credentials?.get === "function";
@@ -45,11 +53,11 @@ export function DeskSignIn() {
   return (
     <main className="fa">
       {/* his 21 Nov 22:59: one light only on the login, the fixed one at the screen bottom; the scene's own line (it showed twice) is off here, the home page keeps it */}
-      <DeskScene horizon={false} pad="88px 16px 44px">
+      <DeskScene horizon={false} pad="76px 16px 34px">
         <style>{".dk-logo-wide{position:absolute;top:22px;left:24px;z-index:5;display:inline-flex}.dk-logo-card{display:none}@media (max-width:899px){.dk-logo-wide{display:none}.dk-logo-card{display:inline-flex}}"}</style>
         <a href="/" aria-label="ANEXOMAIL Admin Desk home" className="dk-logo-wide" style={{ minHeight: 44, alignItems: "center", color: "inherit", textDecoration: "none" }}><BrandMark home={false} /></a>
         <DeskTelemetry />
-        <div style={{ width: "100%", maxWidth: 456, display: "flex", flexDirection: "column", alignItems: "center", marginTop: -14 }}>
+        <div ref={fit} style={{ width: "100%", maxWidth: 456, display: "flex", flexDirection: "column", alignItems: "center", marginTop: -14 }}>
         <section style={card} aria-label="Admin Desk sign-in">
           <div aria-hidden="true" style={{ position: "absolute", top: -60, left: "50%", width: 260, height: 160, transform: "translateX(-50%)", borderRadius: "50%", background: "radial-gradient(closest-side,rgba(95,168,255,.42),rgba(27,79,156,.22) 55%,rgba(10,26,62,0) 100%)", filter: "blur(6px)", pointerEvents: "none" }} />
           <a href="/" aria-label="ANEXOMAIL Admin Desk home" className="dk-logo-card" style={{ minHeight: 44, alignItems: "center", color: "inherit", textDecoration: "none", position: "relative", zIndex: 1 }}><BrandMark home={false} /></a>
