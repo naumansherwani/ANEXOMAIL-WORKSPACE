@@ -45,6 +45,20 @@ pub async fn services(h: HeaderMap) -> Response { json_of(&h, |o| format!("selec
 /// GET /desk/v1/bridge/alerts: open alerts, worst first (max 100).
 pub async fn alerts(h: HeaderMap) -> Response { json_of(&h, |o| format!("select coalesce(jsonb_agg(to_jsonb(t)), '[]'::jsonb)::text from desk.fadm_alert_list('{o}'::uuid, true, 100) t")).await }
 
+/// D5a-4 lookup audit proof doors (AD4b). Each runs fadm_need inside PostgreSQL; nobody reads his OWN lookups (the database refuses).
+/// GET /desk/v1/audit/lookup-health: counts only (links, tail check, checkpoints, orphans, signals in 24 h), no company, no reason.
+pub async fn lookup_health(h: HeaderMap) -> Response { json_of(&h, |o| format!("select desk.fadm_lookup_audit_door('{o}'::uuid)::text")).await }
+/// GET /desk/v1/audit/lookup-verify: the whole chain and every checkpoint re-checked now; the answer is a ledger line.
+pub async fn lookup_verify(h: HeaderMap) -> Response { json_of(&h, |o| format!("select desk.fadm_lookup_verify_full('{o}'::uuid)::text")).await }
+/// POST /desk/v1/audit/lookup-seal: seal a checkpoint now (needs audit.seal).
+pub async fn lookup_seal(h: HeaderMap) -> Response { json_of(&h, |o| format!("select jsonb_build_object('checkpoint', desk.fadm_lookup_seal('{o}'::uuid))::text")).await }
+/// GET /desk/v1/audit/lookup-proof/{id}: inclusion proof of one lookup row (a number), checkable with the pure verifier.
+pub async fn lookup_proof(h: HeaderMap, axum::extract::Path(id): axum::extract::Path<String>) -> Response {
+    let Some(n) = proof_id(&id) else { return err(StatusCode::BAD_REQUEST, "bad_id") };
+    json_of(&h, |o| format!("select desk.fadm_lookup_proof('{o}'::uuid, {n})::text")).await
+}
+fn proof_id(s: &str) -> Option<i64> { if s.is_empty() || s.len() > 15 || !s.bytes().all(|b| b.is_ascii_digit()) { return None; } s.parse::<i64>().ok().filter(|n| *n >= 1) }
+
 #[derive(serde::Deserialize)]
 pub struct Act { alert: i64, event: String, status: Option<String>, assignee: Option<String>, note: Option<String> }
 /// POST /desk/v1/bridge/alerts/act: ack / assign / status / note on one alert. The database enforces who may do it and the alert rules.
@@ -69,6 +83,7 @@ mod tests {
         let a: Act = serde_json::from_str(r#"{"alert":7,"event":"ack"}"#).unwrap(); assert_eq!(a.alert, 7); assert!(a.status.is_none());
         assert!(serde_json::from_str::<Act>(r#"{"event":"ack"}"#).is_err());
     }
+    #[test] fn proof_id_is_digits_only() { assert_eq!(proof_id("42"), Some(42)); assert_eq!(proof_id("0"), None); assert_eq!(proof_id("1;drop"), None); assert_eq!(proof_id("-5"), None); assert_eq!(proof_id(""), None); assert_eq!(proof_id(&"9".repeat(16)), None); }
     #[test] fn errors_are_json_with_the_right_status() { assert_eq!(err(StatusCode::FORBIDDEN, "not_allowed").status(), StatusCode::FORBIDDEN); }
 }
 

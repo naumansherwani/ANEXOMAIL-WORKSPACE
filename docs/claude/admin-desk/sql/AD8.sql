@@ -141,6 +141,7 @@ CREATE OR REPLACE FUNCTION desk.fadm_dbsc_health() RETURNS jsonb LANGUAGE sql ST
     'ended_by_database_24h', (SELECT count(*) FROM desk.fadm_ledger WHERE kind = 'dbsc.session_ended' AND ts > now() - interval '24 hours')) $f$;
 REVOKE ALL ON FUNCTION desk.fadm_dbsc_live(bytea), desk.fadm_dbsc_consume(uuid,text), desk.fadm_dbsc_register(bytea,jsonb,text), desk.fadm_dbsc_key(bytea), desk.fadm_dbsc_refresh(bytea,text), desk.fadm_dbsc_refuse(bytea,text,text), desk.fadm_dbsc_status(bytea), desk.fadm_dbsc_health() FROM PUBLIC;
 REVOKE ALL ON FUNCTION desk.fadm_dbsc_live(bytea), desk.fadm_dbsc_consume(uuid,text) FROM desk_app;   -- internal helpers: only the other doors call them
+REVOKE ALL ON FUNCTION desk.fadm_session_dbsc_frozen(), desk.fadm_session_dbsc_thumb() FROM PUBLIC;   -- trigger functions need no caller right (found by the AD3 CHECK while testing AD4b)
 GRANT EXECUTE ON FUNCTION desk.fadm_dbsc_register(bytea,jsonb,text), desk.fadm_dbsc_key(bytea), desk.fadm_dbsc_refresh(bytea,text), desk.fadm_dbsc_refuse(bytea,text,text), desk.fadm_dbsc_status(bytea), desk.fadm_dbsc_health() TO desk_app;
 
 -- 4) SELFTEST (rolls back; failure P0AH8 -> raised as exception, success leaves nothing) ----------------------------------------------------------------------------------------------

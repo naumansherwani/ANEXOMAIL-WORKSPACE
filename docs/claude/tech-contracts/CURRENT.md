@@ -1,5 +1,18 @@
 <!--TECHLAW-->
 
+
+# TECH CONTRACT FOR PHASE: DESK D5a-4 (LOOKUP AUDIT PROOF), written 23 Nov 2026 01:2x PKT, his word 00:56 "sab se sensitive, points likho, test live kero, duniya ka advance, sql maximum". FULL LIST: docs/claude/admin-desk/D5A4-AUDIT-PROOF-LIST-23NOV.md
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| Per-lookup SHA-256 hash chain (fixed genesis, length-prefixed canonical text, DB clock under advisory lock, monotonic time, back-fill of old rows), append-only, RLS forced | sql/AD4b.sql (fadm_lookup_link) | yes | selftest ALL RULES PASSED on 3 scratch DBs, 3 tamper kinds detected, 8 parallel sessions = 64 links contiguous, upgrade 11 old rows back-filled |
+| RFC 6962 Merkle checkpoints (cumulative root, chained digests, copy in the main ledger) + inclusion proof + pure RFC 9162 verifier | sql/AD4b.sql (fadm_lookup_cp, fadm_merkle_*) | yes | every proof of every tree size 1..37 verifies, wrong root/index/short path refused |
+| Completeness: orphan sweep to abandoned, auto seal, health counts, nothing deletable | sql/AD4b.sql (fadm_lookup_maintain, health) | yes | selftest + parallel test |
+| Reason quality + sensitive fields + six live insider signals into the alert centre + admin-only thresholds | sql/AD4b.sql | yes | selftest (bulk, repeat, probe, reuse, daily, after hours) |
+| Self-audit + separation of duties (nobody reads his own lookups or proofs) | sql/AD4b.sql | yes | selftest |
+| Rust doors /desk/v1/audit/lookup-health, -verify, -seal, -proof/{id} behind Rule 52 | server/src/bridge.rs, main.rs | yes | cargo test 51 passed (proof id validator); doors not yet called live |
+
+NOT THIS PHASE (own phases, written in the list, not hidden): the Desk screen that shows these counts = phase 1j (D5 Plan context screen); the Ed25519-signed checkpoint copy on the Hetzner Storage Box = named follow-up (honest limit 1 in the list).
+
 # TECH CONTRACT FOR PHASE: DESK R3a2-dbsc (DEVICE-BOUND SESSIONS), written 23 Nov 2026 00:3x PKT, his word 00:22 "pehle responder, phir DBSC; DBSC ke sab features advance technology ke saath top list bana ke phir code". FULL LIST: docs/claude/admin-desk/DBSC-PHASE-LIST-23NOV.md (D1..D13). STATE: CODE DONE 23 Nov 00:5x PKT (dbsc.rs 6 tests incl. real PostgreSQL protocol run, AD8 CHECK 9/9, cargo 49 pass; waits his install + ad-auto + one real Chrome sign-in), D5a-3b responder code is done and waits in the same commit (gate R3a2-dbsc blocks Desk commits until auth.rs/dbsc code exists). Honest limit: DBSC is Chromium-only today.
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3195,3 +3208,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - AD8 advance (his 00:34): key thumbprint unique, 5-minute registration window, refresh rate limit, 5 forged proofs end the session, health door; CHECK 13 rows; http_doors_on_real_postgres test (cargo 50 pass); DBSC list truth table (D20 code only, D13 not built). TECH-LAW CHECKED. Waits his install
 
 - NO-TEST-NO-COMMIT law (his 00:46) + gate rule; D5a-3 and D5a-3b GREEN WIRED: YES / REAL: YES / TECH-LAW CHECKED by his server paste (LOOKUP SELFTEST OK, UDP 4410 live, CP1 CHECK 8/8); live Chrome: dbsc start 400 refresh 403 status sealed control-lookup 405 no-store; AD8 upgrade old->new TESTED: scratch PG old AD8 (9 rows) to new AD8 CHECK 13/13 true, cargo 50 pass, gate run
+
+- D5a-4 lookup audit proof (AD4b): per-lookup SHA-256 chain, RFC 6962 Merkle checkpoints + inclusion proof, orphan sweep, reason quality, six insider signals, self-audit, separation of duties, Rust doors; also AD8 PUBLIC-execute fix. TESTED: AD4b selftest ALL RULES PASSED on 3 scratch PostgreSQL databases (fresh AD1..AD8 order, new, upgrade with 11 old rows back-filled), CHECK 21/21 true, Merkle proofs sizes 1..37 pass, 3 tamper kinds detected, 8 parallel sessions 64 contiguous links, cargo test 51 passed. TECH-LAW CHECKED. WIRED: SQL yes, Rust doors compiled not yet live; REAL: not green until his ad-auto + install.
+
+- D5a-4 lookup audit proof (AD4b): per-lookup SHA-256 chain, RFC 6962 Merkle checkpoints + inclusion proof, orphan sweep, reason quality, six insider signals, self-audit, separation of duties, Rust doors; also AD8 PUBLIC-execute fix. TESTED: AD4b selftest ALL RULES PASSED on 3 scratch PostgreSQL databases (fresh AD1..AD8 order, new, upgrade with 11 old rows back-filled), CHECK 21/21 true, Merkle proofs sizes 1..37 pass, 3 tamper kinds detected, 8 parallel sessions 64 contiguous links, cargo test 51 passed. TECH-LAW CHECKED. WIRED: SQL yes, Rust doors compiled not yet live; REAL: not green until his ad-auto + install.

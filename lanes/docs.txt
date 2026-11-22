@@ -342,6 +342,7 @@ docs/claude/admin-desk/D5-DECISIONS-AND-EXTRACT-22NOV.md
 docs/claude/admin-desk/D5-SUBPHASES-22NOV.md
 docs/claude/admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
 docs/claude/admin-desk/D5A-GREEN-LIST-22NOV.md
+docs/claude/admin-desk/D5A4-AUDIT-PROOF-LIST-23NOV.md
 docs/claude/admin-desk/DASHBOARD-CARDS-CLICK-PLAN-22NOV.md
 docs/claude/admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
 docs/claude/admin-desk/DASHBOARD-LIVE-COMMAND-22NOV.md
@@ -443,6 +444,7 @@ docs/claude/admin-desk/sql/AD1b.sql
 docs/claude/admin-desk/sql/AD2.sql
 docs/claude/admin-desk/sql/AD3.sql
 docs/claude/admin-desk/sql/AD4.sql
+docs/claude/admin-desk/sql/AD4b.sql
 docs/claude/admin-desk/sql/AD5.sql
 docs/claude/admin-desk/sql/AD6.sql
 docs/claude/admin-desk/sql/AD6b.sql
@@ -457,6 +459,7 @@ docs/claude/admin-desk/sql/checks/AD1b-check.sql
 docs/claude/admin-desk/sql/checks/AD2-check.sql
 docs/claude/admin-desk/sql/checks/AD3-check.sql
 docs/claude/admin-desk/sql/checks/AD4-check.sql
+docs/claude/admin-desk/sql/checks/AD4b-check.sql
 docs/claude/admin-desk/sql/checks/AD5-check.sql
 docs/claude/admin-desk/sql/checks/AD6-check.sql
 docs/claude/admin-desk/sql/checks/AD6b-check.sql
