@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 03:17 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:17 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1k research done, LIST + ADVANCE-RESEARCH + contract written; code next: AD9 SQL
 NEXT STEP: AD9.sql schema-first then selftest, AD9b, runbooks.rs, React
 HIS LAST WORD: his 03:16 order
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e75d586b 23 Nov 03:17 1k: research list + contract
 - 269b755b 23 Nov 03:16 ledger line 1a766922
 - 1a766922 23 Nov 03:16 after-compaction points
 - 1cc9c4fe 23 Nov 03:13 ledger line cd06a6a5
@@ -72,16 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - fd81d5ba 23 Nov 03:13 ledger line f388a760
 - f388a760 23 Nov 03:13 1j GREEN
 - 5996652c 23 Nov 03:11 ledger line 48bc8fa6
-- 48bc8fa6 23 Nov 03:11 research-in-blueprint gate + 1j install proof
 
 ## Uncommitted Desk files
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
-?? docs/claude/admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
