@@ -2543,3 +2543,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - D5a-2 GREEN (22 Nov 2026 ~22:05 PKT): WIRED: YES / REAL: YES / TECH-LAW CHECKED. SQL: his paste 7 packages v1 grace 3. CODE: Rust read doors installed, my Chrome shows sealed refusal of unsigned calls, session answers proved by 43 cargo tests. PHASE D5a-2 GREEN. D5a list (3, 4, 5) still open. First on-screen use comes with the D5 screen.
 
 - D5a-3b schema-first read written (22 Nov 2026 21:5x PKT, docs only): sources for each lookup field named; gaps: real org family unproven, old storage_plans matrix conflicts with landing page, no suspension table. Responder code not started.
+
+- D5a-3b read-only schema look script added (22 Nov 2026 21:5x PKT): lists real columns of orgs, polar_subscriptions, storage and plan tables, prints no secret and no rows; waits his paste.

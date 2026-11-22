@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# D5a-3b READ-ONLY schema look (22 Nov 2026): lists the real columns of the tables the Control Plane lookup would read. Changes nothing, prints no secret, no row data.
+set -uo pipefail
+. /etc/anexomail/sync.env 2>/dev/null; [ -n "${WORKING_URL:-}" ] || { echo "FAIL: WORKING_URL missing in /etc/anexomail/sync.env"; exit 2; }
+env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "$WORKING_URL" -X -q -P pager=off -c "set default_transaction_read_only = on" -c "select table_name, string_agg(column_name||':'||data_type, ', ' order by ordinal_position) as columns from information_schema.columns where table_schema='public' and table_name in ('orgs','org_members','account_organisations','account_org_members','polar_subscriptions','storage_plans','mailbox_storage','plan_catalog') group by table_name order by 1" -c "select 'orgs' t, count(*) from public.orgs union all select 'polar_subscriptions', count(*) from public.polar_subscriptions union all select 'mailbox_storage', count(*) from public.mailbox_storage" 2>&1 | cut -c1-900
