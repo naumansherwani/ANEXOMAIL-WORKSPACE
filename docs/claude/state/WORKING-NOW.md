@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 22:42 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: D5a-2 GREEN again (his pastes + my Chrome); new last phase R feature release feed + employee accounts written
-NEXT STEP: his desk-schema-look paste, then D5a-3b contract and crate
-HIS LAST WORD: his 22:41 word: features auto to Desk, employee accounts, phase last; compact save
+# WORKING NOW (manual checkpoint, 22 Nov 2026 23:32 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: D5a-3b: his schema paste read (orgs 7, polar_subscriptions 0, mailbox_storage 5); plan per company = workspace_subscriptions; second read-only look written
+NEXT STEP: his desk-schema-look2 paste, then D5a-3b contract block and responder crate
+HIS LAST WORD: his 23:32 word: phase next pe aao, save everything
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,26 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 610119ff 22 Nov 22:42 ledger line ed337fb9
 - ed337fb9 22 Nov 22:42 D5a-2 GREEN and phase R plan
 - 2f2c8c6f 22 Nov 22:27 ledger line 61797108
 - 61797108 22 Nov 22:27 throttle answered
 - 9c833aa1 22 Nov 22:22 ledger line 1b54bab4
-- 1b54bab4 22 Nov 22:22 D5a-2 landing page plans
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
+ M docs/claude/admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
  M docs/claude/state/WORKING-NOW.md
+?? admin-desk/scripts/desk-schema-look2.sh
+?? docs/claude/admin-desk/scripts/desk-schema-look2.sh
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 36 ++----------------------------------
- 1 file changed, 2 insertions(+), 34 deletions(-)
+ admin-desk/D5A-3B-SCHEMA-READ-22NOV.md             |  4 ++++
+ docs/claude/admin-desk/D5A-3B-SCHEMA-READ-22NOV.md |  4 ++++
+ docs/claude/state/WORKING-NOW.md                   | 27 ++++++++--------------
+ 3 files changed, 17 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +48,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (bfb08c74cc0672e3ed3bd52d2ae3968ded59cae1)
+WIP snapshot: refs/wip/last (93fbd2c4224a27f7d9344eafdce823a73d0c2cf5)

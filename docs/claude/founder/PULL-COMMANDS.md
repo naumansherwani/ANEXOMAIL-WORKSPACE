@@ -3309,3 +3309,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 22 Nov 2026 22:2x PKT: his question on throttle answered from the awam blueprint (AW0 FINAL line and the proposal bandwidth rule: pool alerts 70 and 85 percent, at 100 percent big transfers and calls are slowed, email keeps working, nothing deleted); no code, awam not built yet.
 
 - D5a-2 GREEN (22 Nov 2026 22:5x PKT): WIRED: YES / REAL: YES / TECH-LAW CHECKED. His ad-auto ran AD6c and AD6d with CHECK OK, desk-install built the new binary, desk-restart active, door 401; my Chrome: unsigned calls to /desk/v1/packages and /packages/ai_pro refused (sealed). New last phase R (his 22:41): feature release feed and employee accounts, plan written, same line added to awam, founder and Desk blueprints, nothing built.
+
+- D5a-3b (22 Nov 2026 23:3x PKT): his schema paste read: orgs 7 rows, polar_subscriptions 0 rows, mailbox_storage 5 rows; no plan column on orgs, the per-company plan is in workspace_subscriptions (phase21). Second read-only look desk-schema-look2.sh written (counts only). Responder contract and crate wait his paste.
