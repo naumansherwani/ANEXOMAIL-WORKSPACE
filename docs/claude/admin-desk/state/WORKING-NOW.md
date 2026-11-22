@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 04:30 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 04:30 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1l D5c Escalate = NOW (research next). Founder Escalation Inbox plan + gate FOUNDER INBOX REMINDER added (23 Nov 2026 04:42 PKT)
 NEXT STEP: 1l web research -> LIST -> ADVANCE-RESEARCH [1l] -> contract -> code; later after 1o + 1a: founder inbox, then phone 390 / tablet 820
 HIS LAST WORD: his 04:29
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- f4afe900 23 Nov 04:30 founder inbox plan + reminder gate
 - e2147d46 23 Nov 04:25 ledger line c8287687
 - c8287687 23 Nov 04:25 founder escalation inbox parked after 1o + 1a
 - 89e0e045 23 Nov 04:25 ledger line 2b5144d1
@@ -72,16 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 2f1bf66f 23 Nov 04:18 ledger line cba544eb
 - cba544eb 23 Nov 04:18 1k GREEN, NOW 1l
 - 611b16af 23 Nov 04:10 ledger line c923b616
-- c923b616 23 Nov 04:10 1k: install did not take, need head of output
 
 ## Uncommitted Desk files
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-A  docs/claude/admin-desk/FOUNDER-ESCALATION-INBOX-PLAN-23NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/FOUNDER-ESCALATION-INBOX-PLAN-23NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
