@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 23:34 PKT) - read this FIRST for the Desk after a compaction
-DOING: D5a-3b: his schema paste read (orgs 7, polar_subscriptions 0, mailbox_storage 5); plan per company = workspace_subscriptions; second read-only look written
-NEXT STEP: his desk-schema-look2 paste, then D5a-3b contract block and responder crate
-HIS LAST WORD: his 23:32 word: phase next pe aao, save everything
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 23:39 PKT) - read this FIRST for the Desk after a compaction
+DOING: D5a-3b contract v2 written from his real database facts; folder phases written (Dashboard separate, rail order)
+NEXT STEP: build control-plane crate: sign + answer core with tests, then HTTP/3 server, CP1.sql, installer
+HIS LAST WORD: his 23:3x word: dashboard phases separate, rail order phases
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e12110bb 22 Nov 23:34 ledger line 0c4cbfb4
 - 0c4cbfb4 22 Nov 23:34 D5a-3b schema paste and look 2
 - 610119ff 22 Nov 22:42 ledger line ed337fb9
 - ed337fb9 22 Nov 22:42 D5a-2 GREEN and phase R plan
@@ -72,10 +73,15 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 61797108 22 Nov 22:27 throttle answered
 - 9c833aa1 22 Nov 22:22 ledger line 1b54bab4
 - 1b54bab4 22 Nov 22:22 D5a-2 landing page plans
-- 898dcced 22 Nov 22:20 ledger line 3bea45d8
 
 ## Uncommitted Desk files
+ M admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/D5A-3B-SCHEMA-READ-22NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+?? admin-desk/FOLDER-PHASES-22NOV.md
+?? docs/claude/admin-desk/FOLDER-PHASES-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs

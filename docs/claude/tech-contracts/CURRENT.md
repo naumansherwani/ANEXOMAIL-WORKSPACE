@@ -1,5 +1,16 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK D5a-3b (CONTROL PLANE LOOKUP RESPONDER, v2 with his real database facts), written 22 Nov 2026 23:5x PKT. His two schema pastes (22 Nov 23:3x): orgs 7 rows, org_members 17, workspace_subscriptions 0 rows, polar_subscriptions 0 rows, mailbox_storage 5 rows whose workspace_id matches no org and no subscription. STATE: IN PROGRESS (nothing of it is committed as code until every row is yes)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| Own Rust binary anexomail-controlplane (never the Desk, founder or awam binary): Tokio, axum 0.8, quinn + h3 server on UDP 127.0.0.1:4410 (his ss pasted, port absent), TLS 1.3 AES-256-GCM + X25519MLKEM768, HTTP/3 only | control-plane/ crate | no | cargo tests + his ss after start |
+| Rule 52 both ways: verify the Desk request (Ed25519, audience desk-lookup, 60 s, request id replay cache), answer signed with its OWN Ed25519 key (domain anexo-control-answer-v1), kernel verifies in the browser | control-plane/src/sign.rs, answer.rs | no | request tamper / stale / replay / wrong audience refused tests |
+| Read-only PostgreSQL role cp_lookup with SELECT only on the columns it needs (orgs, org_members status, workspace_subscriptions plan/state/seats_used, mailbox_storage used bytes, polar grace_until); no money column is ever selected or sent | control-plane/sql/CP1.sql + CHECK | no | scratch PostgreSQL CHECK rows + role cannot read any money column |
+| Honest answers from REAL data: company = orgs.id; package_id/state from workspace_subscriptions (no row = not_active_yet, package null); usage_seats = active org_members; usage_storage null until the storage link is proven; suspension fields null (no table); only the 18 contract fields, others dropped | control-plane/src/answer.rs | no | tests on a scratch database shaped like his |
+| Installer + systemd + env wiring (DESK_CONTROL_PLANE_ADDR/_HOST/_CA/_PUBKEY) with one-line server command; Desk lookup then answers for real | admin-desk/scripts/cp-install.sh | no | his paste + my live look |
+
+
+
 # TECH CONTRACT FOR PHASE: DESK D5a-2d (REGISTRY = THE LIVE LANDING PAGE PLANS), written 22 Nov 2026 22:3x PKT, his words 22:19 and 22:21: read the awam blueprint, then "landing page pe jao, waha pe plans". I read anexomail.com/plans in my Chrome: exactly four plans (Basic, Pro, Business, Business Pro; AI is a separate page /ai; no Premium or Max on the page). STATE: CODE DONE, proved on a fresh scratch database built from AD1..AD7 only; waits his ad-auto and desk-install and desk-restart
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3164,3 +3175,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - D5a-2 GREEN (22 Nov 2026 22:5x PKT): WIRED: YES / REAL: YES / TECH-LAW CHECKED. His ad-auto ran AD6c and AD6d with CHECK OK, desk-install built the new binary, desk-restart active, door 401; my Chrome: unsigned calls to /desk/v1/packages and /packages/ai_pro refused (sealed). New last phase R (his 22:41): feature release feed and employee accounts, plan written, same line added to awam, founder and Desk blueprints, nothing built.
 
 - D5a-3b (22 Nov 2026 23:3x PKT): his schema paste read: orgs 7 rows, polar_subscriptions 0 rows, mailbox_storage 5 rows; no plan column on orgs, the per-company plan is in workspace_subscriptions (phase21). Second read-only look desk-schema-look2.sh written (counts only). Responder contract and crate wait his paste.
+
+- 22 Nov 2026 23:5x PKT: his second schema paste read (workspace_subscriptions 0 rows, mailbox_storage links to no org); D5a-3b contract v2 written (all rows open, nothing coded); FOLDER-PHASES-22NOV.md written: Dashboard phases on their own then folders 2 to 9 in rail order; blueprint Part 0k added.

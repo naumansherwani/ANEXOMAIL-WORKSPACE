@@ -3311,3 +3311,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - D5a-2 GREEN (22 Nov 2026 22:5x PKT): WIRED: YES / REAL: YES / TECH-LAW CHECKED. His ad-auto ran AD6c and AD6d with CHECK OK, desk-install built the new binary, desk-restart active, door 401; my Chrome: unsigned calls to /desk/v1/packages and /packages/ai_pro refused (sealed). New last phase R (his 22:41): feature release feed and employee accounts, plan written, same line added to awam, founder and Desk blueprints, nothing built.
 
 - D5a-3b (22 Nov 2026 23:3x PKT): his schema paste read: orgs 7 rows, polar_subscriptions 0 rows, mailbox_storage 5 rows; no plan column on orgs, the per-company plan is in workspace_subscriptions (phase21). Second read-only look desk-schema-look2.sh written (counts only). Responder contract and crate wait his paste.
+
+- 22 Nov 2026 23:5x PKT: his second schema paste read (workspace_subscriptions 0 rows, mailbox_storage links to no org); D5a-3b contract v2 written (all rows open, nothing coded); FOLDER-PHASES-22NOV.md written: Dashboard phases on their own then folders 2 to 9 in rail order; blueprint Part 0k added.
