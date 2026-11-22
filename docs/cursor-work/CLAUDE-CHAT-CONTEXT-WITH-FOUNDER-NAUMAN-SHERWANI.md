@@ -5170,3 +5170,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 22 Nov 05:40 PKT: searched all branches for his 5h-old login scrollbar fix: none exists in history, nothing stolen; backup branch desk-ui-20261122-0540 pushed
 
 - 22 Nov 05:45 PKT: login scrollbar regression found: 00:55 Save-password row made page taller than 1366x768; 05:35 pad fix restores fit; rule: re-measure login heights before every commit
+
+- 22 Nov 05:40 PKT: his 3 photos: image 2 (22:59 look, no save-password row) = wanted; asked keep or remove eye+Save password; pad fix pushed, waits his desk-install
