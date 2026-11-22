@@ -3239,3 +3239,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 22 Nov 2026 09:22 PKT: Desk D8 GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED by his word; D5 revised to package plans and SLA targets only, no webhook or Polar on the Desk
 
 - 22 Nov 2026 09:35 PKT: Desk D5 and D6 revised after web research, plan file PLAN-CONTEXT-AND-RUNBOOKS written, waits his answers
+
+- [22 Nov 2026 09:49 PKT] REPO AUDIT FOR THE DESK written (his 09:46 word): docs/claude/admin-desk/REPO-AUDIT-FOR-DESK-22NOV.md, 4,126 files, every folder has a row, points AU1..AU13 added to BLUEPRINT-ADMIN-DESK.md top with the 4 web research points; founder-only items taken out of the Desk plan (AU10); phase I gets the address list, K the SLA and alert rules, P the Move-In state machine and new price, D5/D5b the final caps. Docs only, no code change. D5 still waits his 3 answers.
