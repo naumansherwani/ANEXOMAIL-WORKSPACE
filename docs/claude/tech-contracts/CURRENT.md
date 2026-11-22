@@ -3317,3 +3317,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 1k bug 3: return/pick mark is the Desk light-blue (#8FB8FF), red only for real outages. TESTED: tsc clean, bun 66 pass, vite build; live look after his install. TECH-LAW CHECKED
 
 - 1k: Ice blue pick; old row glow now cleared (box-shadow:none); installer prints build seconds. TESTED: tsc clean, bun 66 pass, vite build, bash -n; live screenshot proof after his install. TECH-LAW CHECKED
+
+- 1k: his install paste shows the new build was not installed (binary missing at 9/9, old bundle served); cause not guessed, asking for the head of the output. TESTED: reading his paste against desk-install.sh 9/9 logic. TECH-LAW CHECKED
