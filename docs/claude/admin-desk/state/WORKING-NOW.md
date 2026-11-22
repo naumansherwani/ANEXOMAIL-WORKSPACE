@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 09:05 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 09:06 PKT) - read this FIRST for the Desk after a compaction
 DOING: live scan clean, urgent URL, gate extended
 NEXT STEP: his install, 2nd scan, D5
 HIS LAST WORD: his 09:04 word
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- bddf5e76 22 Nov 09:05 ledger line 1f5695a6
 - 1f5695a6 22 Nov 09:05 D1f
 - 68d309cb 22 Nov 09:04 ledger line 98c9a765
 - 28e80707 22 Nov 09:04 ledger line 33db1302
@@ -72,7 +73,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 4fc8edaf 22 Nov 09:03 ledger line fdb716a6
 - 89473640 22 Nov 09:03 ledger line 425ec964
 - 425ec964 22 Nov 09:03 D2 live
-- f7c15a5d 22 Nov 09:01 ledger line ecc37d29
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
