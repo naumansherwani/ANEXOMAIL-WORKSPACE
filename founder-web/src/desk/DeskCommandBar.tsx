@@ -58,28 +58,33 @@ export function DeskCommandBar({ bar, nav, sys, tech = true }: { bar: Bar; nav: 
         {bar.p1 !== null && <p className="dcb-n">{bar.high} high · <DeskLink to={route("alerts") + "?status=unacked"} nav={nav} className="dcb-up">{bar.unacked} not acknowledged</DeskLink>{bar.oldestUnacked ? ` · oldest ${bar.oldestUnacked}` : ""}</p>}
         <p className="dcb-n"><DeskLink to={route("plans")} nav={nav} className="dcb-up" keys={shortcutLabel("plans")}>{bar.prices}</DeskLink></p>
       </div>
-      {tech ? (
-        <div className="dcb-card dcb-wide">
-          <p className="dcb-k">Mail and QUIC pipeline</p>
-          <ul className="dcb-rows">
-            {bar.rows.map((r) => (
-              <li className="dcb-row" key={r.key}>
-                <DeskLink to={route("services") + (r.key === "stream" ? "" : `#${r.key}`)} nav={nav} className="dcb-rowlink" keys={shortcutLabel("services")}>
-                  <i className="dcb-dot" data-s={WHERE[r.state]} aria-hidden="true" />
-                  <div><p className="dcb-rl">{r.label}</p><p className="dcb-rs">{r.text}{r.detail ? ` · ${r.detail}` : ""}</p></div>
-                </DeskLink>
-              </li>
-            ))}
-          </ul>
-          <p className="dcb-n">Ledger: {bar.ledger}</p>
-        </div>
-      ) : (
-        <div className="dcb-card dcb-wide">
-          <p className="dcb-k"><DeskLink to={route("systems")} nav={nav} className="dcl" keys={shortcutLabel("systems")} badge>Systems →</DeskLink></p>
-          <p className="dcb-n" role="status">{sys ? sys.headline : "Connecting…"}</p>
-          {sys?.banner && <p className="dcb-hot">{sys.banner}</p>}
-        </div>
-      )}
+      <div className="dcb-card dcb-wide">
+        <p className="dcb-k"><DeskLink to={route("systems")} nav={nav} className="dcl" keys={shortcutLabel("systems")} badge>Systems →</DeskLink></p>
+        <p className="dcb-n" role="status">{sys ? sys.headline : "Connecting…"}</p>
+        {sys?.banner && <p className="dcb-hot">{sys.banner}</p>}
+        <p className="dcb-n">{tech ? "The full Mail and QUIC pipeline (HTTP/3 edge, TLS, database, signer, ledger, mail, ClamAV) lives in Systems." : "Plain status and what to tell customers live in Systems."}</p>
+      </div>
     </section>
+  );
+}
+
+/** The full Mail and QUIC pipeline (his A3). Lives in the Systems folder for owner / admin / engineer (his 22 Nov 07:40 word: system technology goes in Systems, not on the dashboard). */
+export function DeskPipeline({ bar, nav }: { bar: Bar; nav: Nav }) {
+  return (
+    <div className="dcb-card dcb-wide" style={{ marginTop: 14 }}>
+      <style>{CSS}</style>
+      <p className="dcb-k">Mail and QUIC pipeline</p>
+      <ul className="dcb-rows">
+        {bar.rows.map((r) => (
+          <li className="dcb-row" key={r.key}>
+            <DeskLink to={route("services") + (r.key === "stream" ? "" : `#${r.key}`)} nav={nav} className="dcb-rowlink" keys={shortcutLabel("services")}>
+              <i className="dcb-dot" data-s={WHERE[r.state]} aria-hidden="true" />
+              <div><p className="dcb-rl">{r.label}</p><p className="dcb-rs">{r.text}{r.detail ? ` · ${r.detail}` : ""}</p></div>
+            </DeskLink>
+          </li>
+        ))}
+      </ul>
+      <p className="dcb-n">Ledger: {bar.ledger}</p>
+    </div>
   );
 }

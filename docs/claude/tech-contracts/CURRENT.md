@@ -2958,3 +2958,6 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 4. Rail folder "Systems" becomes live; card "systems" (shortcut G then Y) in the registry; no new endpoint.
 
 - 22 Nov 2026 07:46 PKT: Desk D1b GREEN WIRED: YES / REAL: YES / TECH-LAW CHECKED (live Chrome look, desk-ByW6Xrfq). D7 Systems folder written: plain status for every employee, technical rows for owner/admin only, bundle desk-RqemED1a.
+5. (his 22 Nov 2026 07:40 PKT) The Mail and QUIC pipeline (HTTP/3 edge, TLS, database, signer, ledger, mail, ClamAV) is REMOVED from the dashboard and shown inside the Systems folder for owner / admin / engineer; the dashboard keeps a one-line Systems card for everyone. Same kernel-verified stream data, no new endpoint.
+
+- 22 Nov 2026 07:52 PKT: Desk D7: Mail and QUIC pipeline moved from the dashboard into the existing Systems folder (his 07:40 word); dashboard keeps one Systems line; bundle desk-DZKO_LVM.

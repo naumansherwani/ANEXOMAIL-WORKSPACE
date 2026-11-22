@@ -4,6 +4,8 @@ import { asServices, ago } from "./desk_bridge_pure";
 import { CARDS, alertFilter, asAlerts, cardById, filterAlerts, route, shortcutLabel } from "./desk_cards";
 import { DeskLink, type Nav } from "./DeskNav";
 import { canSeeTech, systemsModel, type Level } from "./desk_systems_pure";
+import { barModel } from "./desk_bridge_pure";
+import { DeskPipeline } from "./DeskCommandBar";
 
 /** ADMIN DESK D1..D4 (22 Nov 2026): the clickable cards below the Command Bar and the pages they open. Every number comes from the kernel-verified stream (Rule 52);
  *  a card whose data is not connected still opens its page, which says what it waits for. No fetch, no founder import, no invented value. */
@@ -76,6 +78,7 @@ export function DeskSubPage({ sub, search, hash, snap, nav, role = "" }: { sub: 
             {a.words}{a.tell && <><br /><small>{a.tell}</small></>}
             {a.tech.length > 0 && <><br />{a.tech.map((t) => <small key={t.label} style={{ display: "block" }}>{t.label}: {t.text}</small>)}</>}</li>
         ))}</ul>
+        {m.showTech && <DeskPipeline bar={barModel(snap.state, snap.data)} nav={nav} />}
         {m.showTech ? <DeskLink to={route("services")} nav={nav} className="dcp-chip">Open technical Service health →</DeskLink> : <p>Technical detail is for owners and admins.</p>}
       </Shell>
     );

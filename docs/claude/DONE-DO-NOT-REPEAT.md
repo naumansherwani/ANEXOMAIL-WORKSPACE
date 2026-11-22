@@ -2443,3 +2443,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 22 Nov 2026 07:37 PKT: Desk D1 GREEN (live Chrome look, desk-CKA6WGAE). D1b written: keyboard shortcuts (g then letter, hover badge), hand cursor on folders, bundle desk-ByW6Xrfq. Plan rows 14-15 (employee visibility answer, shortcuts).
 
 - 22 Nov 2026 07:46 PKT: Desk D1b GREEN WIRED: YES / REAL: YES / TECH-LAW CHECKED (live Chrome look, desk-ByW6Xrfq). D7 Systems folder written: plain status for every employee, technical rows for owner/admin only, bundle desk-RqemED1a.
+
+- 22 Nov 2026 07:52 PKT: Desk D7: Mail and QUIC pipeline moved from the dashboard into the existing Systems folder (his 07:40 word); dashboard keeps one Systems line; bundle desk-DZKO_LVM.

@@ -7,7 +7,8 @@ His words: remove "Signed in as / Role / Session" from the dashboard (identity s
 |---|---|---|---|---|
 | Active P1 alerts (count) | /dashboard/alerts?severity=p1 | the P1 rows, oldest first, ack/act buttons | stream track alerts + POST /desk/v1/bridge/alerts/act | D2 |
 | High / Unacknowledged chips | /dashboard/alerts?status=unacked | same list, filtered | alerts | D2 |
-| Pipeline row (stream, h3_edge, tls, db, signer, ledger, mail_in, mail_out, clamav) | /dashboard/services#<service> | that service row opened: state, last probe, latency, uptime 24h | stream track services | D3 |
+| Systems one-line card (his 07:40: pipeline moved into the Systems folder) | /dashboard/systems | plain status for all; owner/admin see the full pipeline rows there, each row -> /dashboard/services#<service> |
+| (old) Pipeline row | /dashboard/services#<service> | that service row opened: state, last probe, latency, uptime 24h | stream track services | D3 |
 | Live SLA clock | /dashboard/sla | cases at risk list (breach under 15 min) | AD4 case events (phase K) | wired door now, rows in K |
 | Package prices strip | /dashboard/plans | plan lanes, counts per plan | plan rows via signed Polar webhook (J/R3p) | wired door now, rows in J |
 | Queue pressure (B1) | /dashboard/queue | team + plan lane, open / waiting / at risk | AD3 cases | K |
