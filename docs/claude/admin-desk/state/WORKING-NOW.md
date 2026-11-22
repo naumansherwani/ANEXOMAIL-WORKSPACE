@@ -48,6 +48,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 15528c11 22 Nov 06:59 ledger line 97110942
 - 97110942 22 Nov 06:59 Desk phase D Command Bar
 - 115d29db 22 Nov 06:52 ledger line 962599c4
 - bda872da 22 Nov 06:52 ledger line ab5abefa
@@ -55,7 +56,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 68af5537 22 Nov 06:49 ledger line 2b86cc38
 - f659cbe6 22 Nov 06:49 ledger line 60380af2
 - 60380af2 22 Nov 06:49 Desk phase C GREEN live Chrome
-- f25c15cc 22 Nov 06:44 ledger line 7d53b5af
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
