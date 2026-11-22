@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 20:35 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 20:36 PKT) - read this FIRST for the Desk after a compaction
 DOING: D5a-3 finished in code: real HTTP/3 client + PostgreSQL integration test, cargo 40 pass; blueprint sent
 NEXT STEP: his desk-install + desk-restart, then his Control Plane address + public key (env), then D5a-5 live proof, D5 screen
 HIS LAST WORD: Dashboard folder first; adhoora nahi
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 79f0f952 22 Nov 20:36 Desk D5a-3 real HTTP/3 client + PostgreSQL integration test
 - bebf54a1 22 Nov 20:30 ledger line c940ec13
 - c940ec13 22 Nov 20:30 Working-now checkpoint 20:50
 - a222d842 22 Nov 20:29 ledger line c21ae224
@@ -72,17 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 2bb0c017 22 Nov 20:16 ledger line ac4901d0
 - 09c6e08f 22 Nov 20:16 ledger line 350ee8e9
 - a0962174 22 Nov 20:16 ledger line 76455551
-- 76455551 22 Nov 20:16 dashboard-first order
 
 ## Uncommitted Desk files
- M admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/STATUS-GREEN-TABLE-22NOV.md
- M admin-desk/server/src/lookup.rs
- M docs/claude/admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md
- M docs/claude/admin-desk/server/src/lookup.rs
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
