@@ -10,7 +10,7 @@ import { deskCall, DeskRefused, refusedMessage } from "./desk_kernel";
 import { openBridge, type Snapshot } from "./desk_stream";
 import { DeskBoot } from "./DeskBoot";
 import { barModel } from "./desk_bridge_pure";
-import { deskSub } from "./desk_cards";
+import { CHORD_MS, chordTarget, deskSub, typingTarget } from "./desk_cards";
 
 const hasSession = () => { try { return !!window.localStorage.getItem(DESK_SESSION_KEY); } catch { return false; } };
 const go = (to: string) => window.location.replace(to);
@@ -44,6 +44,17 @@ function Dashboard() {
   // D1: cards move inside this one page with the History API; the stream below stays open. Back restores the previous page.
   useEffect(() => { const on = () => setLoc(here()); window.addEventListener("popstate", on); return () => window.removeEventListener("popstate", on); }, []);
   const nav = (to: string) => { window.history.pushState(null, "", to); setLoc(here()); const id = to.split("#")[1]; window.setTimeout(() => (id ? document.getElementById(id) : null)?.scrollIntoView({ block: "center" }) ?? window.scrollTo(0, 0), 0); };
+  // D1b (his 22 Nov 07:33): keyboard shortcuts, "g" then a letter. Not while typing, not with Ctrl / Alt / Meta.
+  useEffect(() => {
+    let armed = 0;
+    const on = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey || e.altKey || e.repeat || typingTarget(e.target as HTMLElement | null)) return;
+      const r = chordTarget(Date.now() < armed, e.key);
+      if (r === "arm") { armed = Date.now() + CHORD_MS; return; }
+      armed = 0; if (r) { e.preventDefault(); nav(r); }
+    };
+    window.addEventListener("keydown", on); return () => window.removeEventListener("keydown", on);
+  }, []);
   const [me, setMe] = useState<Me | null>(null), [err, setErr] = useState(""), [out, setOut] = useState(false), [live, setLive] = useState<Snapshot>({ state: "connecting", data: {} });
   // Phase C2: the live Bridge stream (WebTransport, Rule 52 verified in the kernel). Starts once the account answer is trusted; stops on sign-out.
   useEffect(() => { if (!me) return; return openBridge(setLive); }, [me]);

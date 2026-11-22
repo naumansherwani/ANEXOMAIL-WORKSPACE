@@ -1,7 +1,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type { Bar, RowState } from "./desk_bridge_pure";
 import { DeskLink, type Nav } from "./DeskNav";
-import { route } from "./desk_cards";
+import { route, shortcutLabel } from "./desk_cards";
 
 /** ADMIN DESK Phase D (22 Nov 2026): the LIVE COMMAND BAR, his three items: Live SLA Clock, Active P1 Alerts (+ packages with prices), Mail and QUIC pipeline heartbeat.
  *  Pure presentation of a Bar made by desk_bridge_pure.barModel from kernel-verified stream frames (Rule 52). No fetch, no poll, no founder import, no mock data:
@@ -24,6 +24,7 @@ const CSS = `
 .dcb-dot[data-s=outage]{background:#FF5C5C;box-shadow:0 0 0 3px rgba(255,92,92,.3)}
 .dcb-rl{margin:0;font-size:14px;font-weight:600;overflow-wrap:anywhere}.dcb-rs{margin:2px 0 0;font-size:12.5px;color:var(--mute);overflow-wrap:anywhere}
 .dcb-frame{position:fixed;inset:0;z-index:40;pointer-events:none;box-shadow:inset 0 0 0 3px rgba(255,70,70,.85),inset 0 0 90px rgba(255,40,40,.35)}
+.dcb-card:hover .dkbd,.dcb-card:focus-within .dkbd{opacity:1;transform:none}
 .dcl{color:inherit;text-decoration:none}.dcl::after{content:"";position:absolute;inset:0;border-radius:18px}.dcl:focus-visible{outline:2px solid #8FB8FF;outline-offset:3px}.dcb-up{position:relative;z-index:1;color:inherit;text-decoration:underline;text-underline-offset:3px}
 .dcb-card:has(.dcl):hover{border-color:rgba(160,200,255,.5)}.dcb-rowlink{display:flex;align-items:flex-start;gap:10px;min-height:44px;width:100%;color:inherit;text-decoration:none;border-radius:10px}.dcb-rowlink:hover .dcb-rl{text-decoration:underline}.dcb-rowlink:focus-visible{outline:2px solid #8FB8FF;outline-offset:2px}
 @media (forced-colors:active){.dcb-card{border:1px solid CanvasText}.dcb-frame{box-shadow:none;border:3px solid Mark}}
@@ -43,25 +44,25 @@ export function DeskCommandBar({ bar, nav }: { bar: Bar; nav: Nav }) {
           : <motion.div key="f" className="dcb-frame" data-testid="p1-frame" aria-hidden="true" initial={{ opacity: 0 }} animate={{ opacity: [0.35, 1, 0.35] }} exit={{ opacity: 0 }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }} />)}
       </AnimatePresence>
       <div className="dcb-card">
-        <p className="dcb-k"><DeskLink to={route("sla")} nav={nav} className="dcl">Live SLA clock →</DeskLink></p>
+        <p className="dcb-k"><DeskLink to={route("sla")} nav={nav} className="dcl" keys={shortcutLabel("sla")} badge>Live SLA clock →</DeskLink></p>
         <p className="dcb-big">{bar.sla}</p>
         <p className="dcb-n">Average time to a first answer. Target: under 2 minutes. It shows a real time when cases exist.</p>
       </div>
       <div className="dcb-card dcb-p1" data-hot={hot} role={hot ? "alert" : undefined}>
-        <p className="dcb-k"><DeskLink to={route("alerts") + "?severity=p1"} nav={nav} className="dcl">Active P1 alerts →</DeskLink></p>
+        <p className="dcb-k"><DeskLink to={route("alerts") + "?severity=p1"} nav={nav} className="dcl" keys={shortcutLabel("alerts")} badge>Active P1 alerts →</DeskLink></p>
         <motion.p className="dcb-big" key={String(bar.p1)} initial={calm ? false : { opacity: 0.4, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>{bar.p1 === null ? (bar.wait ? "…" : "Stale") : bar.p1}</motion.p>
         {hot
           ? <p className="dcb-hot"><Alert />P1 open. Act now.</p>
           : <p className="dcb-n">{bar.p1 === null ? (bar.wait ? "Connecting…" : "Not answering. Waiting for a verified update.") : "0 is healthy."}</p>}
         {bar.p1 !== null && <p className="dcb-n">{bar.high} high · <DeskLink to={route("alerts") + "?status=unacked"} nav={nav} className="dcb-up">{bar.unacked} not acknowledged</DeskLink>{bar.oldestUnacked ? ` · oldest ${bar.oldestUnacked}` : ""}</p>}
-        <p className="dcb-n"><DeskLink to={route("plans")} nav={nav} className="dcb-up">{bar.prices}</DeskLink></p>
+        <p className="dcb-n"><DeskLink to={route("plans")} nav={nav} className="dcb-up" keys={shortcutLabel("plans")}>{bar.prices}</DeskLink></p>
       </div>
       <div className="dcb-card dcb-wide">
         <p className="dcb-k">Mail and QUIC pipeline</p>
         <ul className="dcb-rows">
           {bar.rows.map((r) => (
             <li className="dcb-row" key={r.key}>
-              <DeskLink to={route("services") + (r.key === "stream" ? "" : `#${r.key}`)} nav={nav} className="dcb-rowlink">
+              <DeskLink to={route("services") + (r.key === "stream" ? "" : `#${r.key}`)} nav={nav} className="dcb-rowlink" keys={shortcutLabel("services")}>
                 <i className="dcb-dot" data-s={WHERE[r.state]} aria-hidden="true" />
                 <div><p className="dcb-rl">{r.label}</p><p className="dcb-rs">{r.text}{r.detail ? ` · ${r.detail}` : ""}</p></div>
               </DeskLink>

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import type { Snapshot } from "./desk_stream";
 import { asServices, ago } from "./desk_bridge_pure";
-import { CARDS, alertFilter, asAlerts, cardById, filterAlerts, route } from "./desk_cards";
+import { CARDS, alertFilter, asAlerts, cardById, filterAlerts, route, shortcutLabel } from "./desk_cards";
 import { DeskLink, type Nav } from "./DeskNav";
 
 /** ADMIN DESK D1..D4 (22 Nov 2026): the clickable cards below the Command Bar and the pages they open. Every number comes from the kernel-verified stream (Rule 52);
@@ -10,6 +10,9 @@ const CSS = `
 .dcc{display:grid;gap:14px;margin-top:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr))}
 .dcc-card{position:relative;display:block;min-width:0;min-height:44px;padding:18px 20px;border:1px solid var(--line);border-radius:18px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);color:inherit;text-decoration:none;box-shadow:0 10px 30px rgba(2,8,22,.35);transition:transform .18s ease,border-color .18s ease}
 .dcc-card:hover{transform:translateY(-2px);border-color:rgba(160,200,255,.5)}.dcc-card:focus-visible,.dcl:focus-visible{outline:2px solid #8FB8FF;outline-offset:3px}
+.dkbd{position:absolute;right:12px;bottom:10px;padding:2px 8px;border:1px solid rgba(160,200,255,.4);border-radius:8px;background:rgba(10,20,45,.85);color:#CFE0FF;font:600 11px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;opacity:0;transform:translateY(3px);transition:opacity .15s ease,transform .15s ease;pointer-events:none}
+.dcc-card:hover .dkbd,.dcc-card:focus-visible .dkbd,.dcb-card:hover .dkbd,.dcb-card:focus-within .dkbd{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.dkbd{transition:none}}
 .dcc-k{margin:0;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
 .dcc-v{margin:8px 0 0;font-size:15px;line-height:1.45;overflow-wrap:anywhere}.dcc-go{float:right;opacity:.7}
 @media (prefers-reduced-motion:reduce){.dcc-card{transition:none}.dcc-card:hover{transform:none}}
@@ -26,7 +29,7 @@ export function DeskCardGrid({ nav }: { nav: Nav }) {
   return (
     <section className="dcc" aria-label="Desk areas"><style>{CSS}</style>
       {CARDS.filter((c) => !c.onBar).map((c) => (
-        <DeskLink key={c.id} to={route(c.id)} nav={nav} className="dcc-card">
+        <DeskLink key={c.id} to={route(c.id)} nav={nav} className="dcc-card" keys={shortcutLabel(c.id)} badge>
           <p className="dcc-k">{c.label}<Arrow /></p>
           <p className="dcc-v">{c.wired ? c.what : c.waits}</p>
         </DeskLink>

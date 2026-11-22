@@ -2209,3 +2209,5 @@
 - 22 Nov 2026 07:33 PKT: Desk D1 written: clickable cards, account cards removed, /dashboard/* pages, Connecting fix, desk_cards registry; rule book rebuilt by ckpt.sh. Waits his desk-install + live look.
 
 - 22 Nov 2026 07:30 PKT: his rules: 11 folder-wise green dashboard first, 12 whole Admin Desk green by 26 Nov 07:26 PKT (4 days), 13 no read no commit (gate checks receipt: rules, blueprint, rule book, both WORKING-NOW). Inboxes renamed Mailboxes.
+
+- 22 Nov 2026 07:37 PKT: Desk D1 GREEN (live Chrome look, desk-CKA6WGAE). D1b written: keyboard shortcuts (g then letter, hover badge), hand cursor on folders, bundle desk-ByW6Xrfq. Plan rows 14-15 (employee visibility answer, shortcuts).

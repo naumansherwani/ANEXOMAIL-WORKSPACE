@@ -80,6 +80,7 @@ const CSS = `
 .dsk-menu button{display:block;width:100%;min-height:44px;margin-top:6px;border:0;border-radius:12px;background:transparent;color:var(--ink);font-family:inherit;font-size:14px;text-align:left;padding:0 10px;cursor:pointer}
 .dsk-menu button:hover:not(:disabled){background:rgba(255,255,255,.06)}.dsk-menu button:disabled{color:var(--mute);cursor:default}
 .dsk-grid{display:grid;gap:14px;margin-top:30px;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr))}
+.dsk-nav,.dsk-pin,.dsk-av,.dsk-menu button:not(:disabled){cursor:pointer}
 .dsk-card{min-width:0;padding:18px 20px;border:1px solid var(--line);border-radius:18px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 10px 30px rgba(2,8,22,.35)}
 .dsk-k{margin:0;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
 .dsk-v{margin:8px 0 0;font-size:17px;font-weight:600;overflow-wrap:anywhere}
@@ -132,7 +133,7 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, s
               {g.label && <p className="dsk-grp">{g.label}</p>}
               {g.items.map((n) => (
                 <div className="dsk-row" key={n.key}>
-                  <button type="button" className="dsk-nav" aria-current={n.live ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={n.live ? undefined : "Opens when it is connected"} onClick={(e) => { if (!n.live) e.preventDefault(); else if (n.key === "dashboard") nav("/dashboard"); }}>{n.glyph}<span>{n.label}</span></button>
+                  <button type="button" className="dsk-nav" aria-current={n.live ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={n.live ? (n.key === "dashboard" ? "Dashboard · Shortcut: G then D" : undefined) : "Opens when it is connected"} onClick={(e) => { if (!n.live) e.preventDefault(); else if (n.key === "dashboard") nav("/dashboard"); }}>{n.glyph}<span>{n.label}</span></button>
                   {n.key !== "dashboard" && <button type="button" className="dsk-pin" aria-pressed={pins.includes(n.key)} aria-label={(pins.includes(n.key) ? "Unpin " : "Pin ") + n.label} onClick={() => toggle(n.key)}>{ico("M9 4h6l-1 6 3 3v2H7v-2l3-3zM12 15v5")}</button>}
                 </div>
               ))}
