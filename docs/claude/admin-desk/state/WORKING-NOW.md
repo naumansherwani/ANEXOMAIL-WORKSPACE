@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 07:15 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 07:18 PKT) - read this FIRST for the Desk after a compaction
 DOING: Desk phase C: C2 written (kernel stream client), phases blueprint + DESK PHASE START gate written
 NEXT STEP: his desk-install of the C2 build, my live Chrome look at the chip, then C GREEN, then D Command Bar
 HIS LAST WORD: her phase se pehle rules aur working now read, technology reminder, blueprint phases ke saath advance technology aur features, strict rules top
@@ -48,14 +48,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- bc2fdc2f 22 Nov 07:18 Desk: phase D GREEN after live Chrome look (22 Nov 07:19 PKT)
+- ea5d9cc9 22 Nov 07:15 ledger line fc8649ed
 - e7d22902 22 Nov 07:15 ledger line 7dee6d42
 - 7dee6d42 22 Nov 07:15 Desk: rule 10 + research log
 - bd5ab479 22 Nov 07:14 ledger line 5f449e7e
 - 4110299d 22 Nov 07:14 ledger line 56034001
 - 56034001 22 Nov 07:14 Desk: clickable cards plan D1-D6
 - b53d7760 22 Nov 06:59 ledger line b95fbfeb
-- 15528c11 22 Nov 06:59 ledger line 97110942
-- 97110942 22 Nov 06:59 Desk phase D Command Bar
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
