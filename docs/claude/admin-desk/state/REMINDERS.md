@@ -23,3 +23,5 @@
 - [22 Nov 2026 11:40 PKT] HE SLEEPS UNTIL EVENING: next code AD7 staff queues, then D5a-3 Rust door (test double); do NOT claim green; ask him package list, Control Plane address, S1 haan, landing P-PRIO words, trials@ yes/no.
 
 - [22 Nov 2026 20:08 PKT] OPEN: his ad-auto line for AD7. Next D5a-3 Rust signed lookup door (test double). Still waiting on him: package list, Control Plane address, S1 haan, P-PRIO words, trials@.
+
+- [22 Nov 2026 20:08 PKT] OPEN: his paste of the read-only command for the founder dist receipt (serverfirst.py record), then commit dist + give founder-install pull line. Thread audit (awam + founder thread code, read-only) = phase I step i0. Next D5a-3 Rust lookup door. Phase map = PHASE-TECH-SQL-MAP-22NOV.md.

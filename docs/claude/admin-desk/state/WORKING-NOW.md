@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 22 Nov 2026 19:56 PKT) - read this FIRST for the Desk after a compaction
-DOING: AD7 staff queues coded and proved on PG16
-NEXT STEP: his ad-auto for AD7; then D5a-3 Rust lookup door
-HIS LAST WORD: his 19:50 start next phase
+# ADMIN DESK WORKING NOW (manual checkpoint, 22 Nov 2026 20:05 PKT) - read this FIRST for the Desk after a compaction
+DOING: AD7 live on his server; phase-technology-SQL map and thread answer written
+NEXT STEP: D5a-3 Rust lookup door; founder dist receipt after his paste
+HIS LAST WORD: his 20:04 orders
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 3127c7b6 22 Nov 19:56 ledger line 3c007880
 - 3c007880 22 Nov 19:56 Checkpoint: WORKING-NOW refresh
 - b5679198 22 Nov 19:55 ledger line 61b5f411
 - 61b5f411 22 Nov 19:55 Desk AD7 staff queues (cases, Priority Support clock, assignment, status machine) proved on PostgreSQL 16
@@ -72,10 +73,21 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 1b0335d0 22 Nov 11:40 ledger line 06ed7785
 - 06ed7785 22 Nov 11:40 Desk backup reserve rule + restore script, blueprint regenerated, AD5/AD6 live noted
 - 51e7d043 22 Nov 11:40 ledger line 8814db90
-- 8814db90 22 Nov 11:40 AD6 live, backup rule
 
 ## Uncommitted Desk files
+ M admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/DESK-PHASES-22NOV.md
+ M admin-desk/NEXT-CODES-ORDER-22NOV.md
+ M admin-desk/state/REMINDERS.md
+ M docs/claude/admin-desk/BLUEPRINT-ADMIN-DESK.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/DESK-PHASES-22NOV.md
+ M docs/claude/admin-desk/NEXT-CODES-ORDER-22NOV.md
+ M docs/claude/admin-desk/state/REMINDERS.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+?? admin-desk/PHASE-TECH-SQL-MAP-22NOV.md
+?? docs/claude/admin-desk/PHASE-TECH-SQL-MAP-22NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn ADMIN DESK OPEN until 23 Nov: R3a2-dbsc [R3a2] Device-bound session (DBSC) -> needs DBSC in admin-desk/server/src/auth.rs
