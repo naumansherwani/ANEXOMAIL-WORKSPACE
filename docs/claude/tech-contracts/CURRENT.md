@@ -1,5 +1,15 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK D5b RUNBOOKS (phase 1k), written 23 Nov 2026 03:3x PKT BEFORE code. LIST: docs/claude/admin-desk/D5B-RUNBOOKS-LIST-23NOV.md (R1..R12)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL AD9: versioned runbooks, append-only, SHA-256 version chain, owner + approval fields, six-part CHECK, no-promise CHECK (schema-first on AD1..AD8) | sql/AD9.sql | no | real-PostgreSQL selftest |
+| AD9b tick ledger (who, when, version), append-only | sql/AD9b.sql | no | real-PostgreSQL selftest |
+| Signed Rust doors /desk/v1/runbooks and /desk/v1/runbooks/tick over HTTP/3, employees cannot approve | server/src/runbooks.rs | no | cargo test incl. real PostgreSQL |
+| Rule 52 kernel-verified reads, fail-closed Data unavailable | desk_kernel.ts, DeskRunbooks.tsx | no | bun tests + my signed-in Chrome look |
+| React 19 + TypeScript + Tailwind 4 library, checklist, say-this copy with selection fallback | DeskRunbooks.tsx, desk_runbook_pure.ts | no | bun tests, three widths |
+| One no-promise word list in three layers (gate, SQL CHECK, TS) | rules-gate.py, AD9.sql, desk_runbook_pure.ts | no | negative probes fail as designed |
+
 # TECH CONTRACT FOR PHASE: DESK D5 PLAN CONTEXT SCREEN (phase 1j), written 23 Nov 2026 03:1x PKT BEFORE code. LIST: docs/claude/admin-desk/D5-PLAN-CONTEXT-SCREEN-LIST-23NOV.md (P1..P12)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3279,3 +3289,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Gate loophole closed: contract block must match the NOW phase (negative probe tested). TESTED: probe refused as designed, normal commit passes. TECH-LAW CHECKED
 
 - After-compaction points file written (AFTER-COMPACTION-POINTS-23NOV.md). TESTED: gate pass, docs only. TECH-LAW CHECKED
+
+- 1k D5b runbooks: web research done, list R1-R12, ADVANCE-RESEARCH [1k] in blueprint + NOW-LIST, CURRENT.md contract written first. TESTED: gate pass, docs only. TECH-LAW CHECKED
+
+- 1k D5b runbooks: web research done, list R1-R12, ADVANCE-RESEARCH [1k] in blueprint + NOW-LIST, CURRENT.md contract written first. TESTED: gate pass, docs only. TECH-LAW CHECKED

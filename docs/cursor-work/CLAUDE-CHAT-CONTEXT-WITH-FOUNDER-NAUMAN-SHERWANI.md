@@ -5396,3 +5396,7 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - Gate loophole closed: contract block must match the NOW phase (negative probe tested). TESTED: probe refused as designed, normal commit passes. TECH-LAW CHECKED
 
 - After-compaction points file written (AFTER-COMPACTION-POINTS-23NOV.md). TESTED: gate pass, docs only. TECH-LAW CHECKED
+
+- 1k D5b runbooks: web research done, list R1-R12, ADVANCE-RESEARCH [1k] in blueprint + NOW-LIST, CURRENT.md contract written first. TESTED: gate pass, docs only. TECH-LAW CHECKED
+
+- 1k D5b runbooks: web research done, list R1-R12, ADVANCE-RESEARCH [1k] in blueprint + NOW-LIST, CURRENT.md contract written first. TESTED: gate pass, docs only. TECH-LAW CHECKED

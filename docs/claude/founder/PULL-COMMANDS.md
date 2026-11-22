@@ -3375,3 +3375,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Gate loophole closed: contract block must match the NOW phase (negative probe tested). TESTED: probe refused as designed, normal commit passes. TECH-LAW CHECKED
 
 - After-compaction points file written (AFTER-COMPACTION-POINTS-23NOV.md). TESTED: gate pass, docs only. TECH-LAW CHECKED
+
+- 1k D5b runbooks: web research done, list R1-R12, ADVANCE-RESEARCH [1k] in blueprint + NOW-LIST, CURRENT.md contract written first. TESTED: gate pass, docs only. TECH-LAW CHECKED
+
+- 1k D5b runbooks: web research done, list R1-R12, ADVANCE-RESEARCH [1k] in blueprint + NOW-LIST, CURRENT.md contract written first. TESTED: gate pass, docs only. TECH-LAW CHECKED
