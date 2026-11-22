@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 03:53 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:53 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1k = GREEN (his installs + my Chrome look). NOW = 1l D5c Escalate. Install slowness open: waiting for his read-only paste
 NEXT STEP: 1l research + LIST + ADVANCE-RESEARCH + contract; his build.log paste
 HIS LAST WORD: his 03:51
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- c195b47a 23 Nov 03:53 1k GREEN, NOW 1l
 - 7017b124 23 Nov 03:43 ledger line 2eb5f7e6
 - 2eb5f7e6 23 Nov 03:43 1k: AD1c repair + ad-auto retry
 - 602c8c54 23 Nov 03:39 ledger line 4fc3746f
@@ -72,11 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - ca5022eb 23 Nov 03:29 ledger line 8067194e
 - 8067194e 23 Nov 03:29 1k: runbooks code
 - 06f6c2ac 23 Nov 03:17 ledger line e75d586b
-- e75d586b 23 Nov 03:17 1k: research list + contract
 
 ## Uncommitted Desk files
- M admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
