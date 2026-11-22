@@ -388,6 +388,7 @@ docs/claude/admin-desk/scripts/desk-host-check.sh
 docs/claude/admin-desk/scripts/desk-install.sh
 docs/claude/admin-desk/scripts/desk-owner.sh
 docs/claude/admin-desk/scripts/desk-restart.sh
+docs/claude/admin-desk/scripts/desk-test-alert.sh
 docs/claude/admin-desk/server/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/server/Cargo.lock
 docs/claude/admin-desk/server/Cargo.toml

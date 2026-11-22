@@ -3001,3 +3001,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 22 Nov 2026 08:58 PKT: Desk transport (his 08:52 word): HTTP/3 primary with QUIC, TLS 1.3 AES-256-GCM, X25519MLKEM768, WebTransport, Rule 52; TCP only as the arrival fallback. No change on his server.
 
 - 22 Nov 2026 08:58 PKT: Desk transport word recorded, HTTP/3 primary with advance technology, TCP fallback only to arrive
+
+- 22 Nov 2026 09:05 PKT: Desk D4 gate DESK WIRING in rules-gate.py (registry test + no phase names / P1 in user text). D2 live proof uses desk.fadm_alert_raise through desk-test-alert.sh (one notice alert, no red pulse). Phase A measured: Chrome page protocol h2. HTTP/3 primary stays the target.
+
+- 22 Nov 2026 09:05 PKT: Desk D3b GREEN and D4 GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED; D8 closed; D2 test alert script written

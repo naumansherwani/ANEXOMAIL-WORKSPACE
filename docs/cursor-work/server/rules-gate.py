@@ -181,6 +181,22 @@ try:
 except ImportError:
     fail("DESK TECH", "admin-desk/gates/desk_tech_gate.py is missing")
 
+# ADMIN DESK D4 WIRING GATE (his 22 Nov 2026 08:56: "D4 gate banao"): a Desk card may never be dead, and the real Desk never shows phase names or "P1" (his 08:26 word).
+# Runs when a commit touches founder-web/src/desk: (1) the card registry test (route, track, "what it waits for", unique key), (2) no user-facing "Waits for phase" / "phase K" text.
+_dstaged = [f for f in subprocess.run(["git", "diff", "--cached", "--name-only"], capture_output=True, text=True).stdout.splitlines() if f.startswith("founder-web/src/desk/")]
+if _dstaged:
+    _r = subprocess.run(["bun", "test", "src/desk/desk_cards.test.ts"], cwd="founder-web", capture_output=True, text=True)
+    if _r.returncode != 0:
+        fail("DESK WIRING", "the Desk card registry test fails (a dead card or a broken route): " + (_r.stdout + _r.stderr).strip().splitlines()[-1][:160])
+    import re as _re
+    for _f in _dstaged:
+        if _f.endswith(".test.ts") or not _f.endswith((".ts", ".tsx")): continue
+        try: _t = open(_f, encoding="utf-8").read()
+        except OSError: continue
+        _t = _re.sub(r"/\*.*?\*/", "", _t, flags=_re.S); _t = _re.sub(r"(?m)^\s*//.*$", "", _t)
+        if _re.search(r"Waits for phase|[\"`>]\s*Phase [A-Z]\b|Active P1|P1 open", _t):
+            fail("DESK WIRING", f"{_f}: user-facing text names a phase or says P1; the real Desk uses plain words (Urgent alerts, Not connected yet)")
+
 
 # DESK PHASE START (his 22 Nov 2026 06:41): a commit that changes Desk CODE needs a Desk phase receipt (desk-phase-start.py, also run by rules-read.py) younger than 2 hours: the strict rules, the phase technology and WORKING-NOW were printed to Claude.
 if "--staged" in sys.argv:
