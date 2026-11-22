@@ -3128,3 +3128,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - D5a-2 INSTALLED (22 Nov 2026 ~21:50 PKT): his desk-install built the Desk with packages.rs and desk-restart is active (health 200, door 401); ad-auto reported AD6b already run, unexpected, waits his one read-only count of fadm_pkg_version and my live look. Not whole yet.
 
 - Blueprint Part 0j D5a-2 state added (22 Nov 2026 21:55 PKT): seed + Rust doors installed, ad-auto AD6b already-run to be confirmed by his count.
+
+- D5a-2 CLOSED (22 Nov 2026 ~22:00 PKT): WIRED YES, REAL YES for SQL (his paste: 7 packages, version 1, grace 3) and the door (my Chrome: unsigned call refused as unsigned_request on all three routes); session answers proved by cargo. Next D5a-3b responder.

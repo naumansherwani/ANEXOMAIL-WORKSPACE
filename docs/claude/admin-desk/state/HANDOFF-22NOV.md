@@ -25,3 +25,5 @@ desk-copy-sync.py sync -> lanes/lane-sync.py -> ckpt.sh "<doing>" "<next>" "<why
 ## D5a-2 STATE (22 Nov 2026 ~21:50 PKT)
 - Pushed: sql/AD6b.sql (+checks), scripts/gen-pkg-seed.py, server/src/packages.rs, contract block D5a-2 (all yes). His desk-install (rust files incl. packages.rs, build 1m26s) and desk-restart (service active, health 200, door 401) OK. ad-auto said "AD6b: already run": UNEXPECTED, confirm with his read-only count: psql "$DESK_DB_URL" -c "select pkg_id,version,grace_days from desk.fadm_pkg_version order by 1" (give it as ONE line using /etc/anexomail-desk/db.env). Then my live look. D5a-3b responder is next.
 - LOOP-AFTER-COMMIT BANNED (his 21:40): ckpt-loop writes only while real work is uncommitted; clean tree stays clean (docs/claude/LOOP-AFTER-COMMIT-BANNED-LAW-22NOV.md).
+
+- D5a-2 CLOSED (22 Nov ~22:00 PKT): his count paste = 7 packages v1 grace 3 (ad-auto "already run" = earlier run of his, no double seed); my Chrome: /desk/v1/packages, /pro, /enterprise all answer unsigned_request 400 (sealed). NEXT = D5a-3b responder (own Rust crate, UDP 127.0.0.1:4410, needs his fresh ss before any listener).
