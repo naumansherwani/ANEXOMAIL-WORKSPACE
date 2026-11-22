@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 03:10 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:11 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1j INSTALLED on his server (3 SAME), Chrome signed-in look next; new RESEARCH-IN-BLUEPRINT gate live
 NEXT STEP: Chrome signed-in look at /dashboard/plans then GREEN then send blueprint
 HIS LAST WORD: his 03:10 order
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 48bc8fa6 23 Nov 03:11 research-in-blueprint gate + 1j install proof
 - 08711266 23 Nov 03:02 ledger line 87c65037
 - 87c65037 23 Nov 03:02 1j: audit and autofix
 - 6b73183f 23 Nov 02:57 ledger line 53aed7fd
@@ -72,17 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 4b4b376e 23 Nov 02:56 ledger line ad2138b5
 - ad2138b5 23 Nov 02:56 1j: plan, list, ML-DSA gap plan
 - 308f6827 23 Nov 02:46 ledger line 711d040d
-- 711d040d 23 Nov 02:46 crypto choice note
 
 ## Uncommitted Desk files
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/NOW-LIST-23NOV.md
- M admin-desk/RULE-BOOK.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
-?? admin-desk/RESEARCH-IN-BLUEPRINT-LAW-23NOV.md
-?? docs/claude/admin-desk/RESEARCH-IN-BLUEPRINT-LAW-23NOV.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

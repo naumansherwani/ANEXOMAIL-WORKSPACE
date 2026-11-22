@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 03:10 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 03:11 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 1j INSTALLED on his server (3 SAME), Chrome signed-in look next; new RESEARCH-IN-BLUEPRINT gate live
 NEXT STEP: Chrome signed-in look at /dashboard/plans then GREEN then send blueprint
 HIS LAST WORD: his 03:10 order
@@ -18,36 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 48bc8fa6 23 Nov 03:11 research-in-blueprint gate + 1j install proof
 - 08711266 23 Nov 03:02 ledger line 87c65037
 - 87c65037 23 Nov 03:02 1j: audit and autofix
 - 6b73183f 23 Nov 02:57 ledger line 53aed7fd
 - 53aed7fd 23 Nov 02:57 1j: Plan context screen code
-- 4b4b376e 23 Nov 02:56 ledger line ad2138b5
 
 ## Uncommitted files (half-done work if any)
- M CLAUDE.md
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/NOW-LIST-23NOV.md
- M admin-desk/RULE-BOOK.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/RULE-BOOK.md
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/server/rules-gate.py
-?? admin-desk/RESEARCH-IN-BLUEPRINT-LAW-23NOV.md
-?? docs/claude/admin-desk/RESEARCH-IN-BLUEPRINT-LAW-23NOV.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/NOW-LIST-23NOV.md                       |  2 ++
- admin-desk/RULE-BOOK.md                            |  2 ++
- .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    |  2 ++
- docs/claude/admin-desk/NOW-LIST-23NOV.md           |  2 ++
- docs/claude/admin-desk/RULE-BOOK.md                |  2 ++
- docs/claude/state/WORKING-NOW.md                   | 33 ++++++++++------------
- docs/cursor-work/server/rules-gate.py              | 16 +++++++++++
- 9 files changed, 44 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 33 ++-------------------------------
+ 1 file changed, 2 insertions(+), 31 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -58,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a1d77c03f6239ef8a7eba36770b4e3701953b961)
+WIP snapshot: refs/wip/last (536ef13dc8fde236850a2163dd8ffca6067750b7)
