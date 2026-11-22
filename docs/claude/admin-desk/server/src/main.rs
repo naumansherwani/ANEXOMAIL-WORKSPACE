@@ -17,6 +17,7 @@ mod h3;
 mod probes;
 mod bridge;
 mod lookup;
+mod packages;
 mod sign;
 mod wt;
 mod signed;
@@ -92,6 +93,8 @@ async fn main() {
         .route("/desk/v1/bridge/alerts", get(bridge::alerts))
         .route("/desk/v1/bridge/alerts/act", post(bridge::alert_act))
         .route("/desk/v1/customer/lookup", post(lookup::lookup))
+        .route("/desk/v1/packages", get(packages::list))
+        .route("/desk/v1/packages/{id}", get(packages::one))
         .layer(middleware::from_fn(signed::guard));
     let app = Router::new()
         .route("/desk/v1/health", get(health))

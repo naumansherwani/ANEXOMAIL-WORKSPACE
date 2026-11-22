@@ -86,6 +86,7 @@ admin-desk/scripts/desk-owner.sh
 admin-desk/scripts/desk-restart.sh
 admin-desk/scripts/desk-restore.sh
 admin-desk/scripts/desk-test-alert.sh
+admin-desk/scripts/gen-pkg-seed.py
 admin-desk/server/00-FOUNDER-TECH-RULE.md
 admin-desk/server/Cargo.lock
 admin-desk/server/Cargo.toml
@@ -98,6 +99,7 @@ admin-desk/server/src/door.rs
 admin-desk/server/src/h3.rs
 admin-desk/server/src/lookup.rs
 admin-desk/server/src/main.rs
+admin-desk/server/src/packages.rs
 admin-desk/server/src/probes.rs
 admin-desk/server/src/sign.rs
 admin-desk/server/src/signed.rs
@@ -112,6 +114,7 @@ admin-desk/sql/AD3.sql
 admin-desk/sql/AD4.sql
 admin-desk/sql/AD5.sql
 admin-desk/sql/AD6.sql
+admin-desk/sql/AD6b.sql
 admin-desk/sql/AD7.sql
 admin-desk/sql/README.md
 admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
@@ -122,6 +125,7 @@ admin-desk/sql/checks/AD3-check.sql
 admin-desk/sql/checks/AD4-check.sql
 admin-desk/sql/checks/AD5-check.sql
 admin-desk/sql/checks/AD6-check.sql
+admin-desk/sql/checks/AD6b-check.sql
 admin-desk/sql/checks/AD7-check.sql
 admin-desk/sql/checks/README.md
 admin-desk/state/00-FOUNDER-TECH-RULE.md

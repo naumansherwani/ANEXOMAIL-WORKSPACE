@@ -3281,3 +3281,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 22 Nov 2026 21:22 PKT: his 20:59 order: D5a 1 to 5 one by one, nothing moves on until all five are done with proof the D5a list file written (state, proof and blocker per sub-phase); D5a-1 done with proof (planted money field refused by the gate). His fresh ss paste recorded; UDP 127.0.0.1:4410 reserved for the D5a-3b responder. Advance technology: Rust Tokio axum 0.8, quinn + h3, ed25519-dalek, Rule 52, PostgreSQL 16, commit gates.
 
 - 22 Nov 2026 21:26 PKT: handoff refreshed for compaction; no server pull pending (last server change 3fd29fe9 already installed by him); 2-minute checkpoint loop restarted; responder facts recorded (UDP 127.0.0.1:4410, schema-first read next). Advance technology: Rust Tokio axum 0.8, quinn + h3, ed25519-dalek, Rule 52, PostgreSQL 16.
+
+- D5a-2 CODE DONE (22 Nov 2026 22:0x PKT): AD6b seed of the 7 landing-page packages (features + limits, grace 3, no price) and Rust read doors /desk/v1/packages; 43 cargo tests, scratch PostgreSQL CHECK 5 rows true, isolated release build OK. Not live until his ad-auto, desk-install, desk-restart.
+
+- D5a-2 CODE DONE (22 Nov 2026 PKT): AD6b seed of the 7 landing-page packages (features + limits, grace 3, no price) and Rust read doors /desk/v1/packages; 43 cargo tests, scratch PostgreSQL CHECK 5 rows true, isolated release build OK. Not live until his ad-auto, desk-install, desk-restart.
