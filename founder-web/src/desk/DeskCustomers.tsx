@@ -32,7 +32,7 @@ function PlanDetail({ k, c, onBack }: { k: (typeof PKG_ALL)[number]; c: Customer
   const d = c.by_package[k], f = (PKGS as readonly string[]).includes(k) ? FACTS[k as PlanKey] : null;
   const rows = (o: Record<string, number>, w: (x: string) => string) => Object.keys(o).map((x) => ({ k: x, label: w(x), n: o[x] }));
   return <>
-    <section className="dcu-box"><button className="dcu-back" onClick={onBack}>← All plans</button>
+    <section className="dcu-box"><button className="dcu-back" onClick={onBack}>← Back to customers overview</button>
       <h3 style={{ marginTop: 14 }}>{PKG_WORDS[k]}</h3>
       <div className="dcu-stats">
         <div className="dcu-stat"><b>{d.companies}</b><small>{d.companies === 1 ? "company" : "companies"}</small></div>

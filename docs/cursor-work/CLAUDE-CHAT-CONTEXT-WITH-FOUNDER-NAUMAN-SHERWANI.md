@@ -5556,3 +5556,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 1m-8 B9b Customers GREEN (WIRED: YES / REAL: YES, his desk-install 66d7f804d CP4 6/6, my Chrome look: six plans + No plan yet + plan detail), TECH-LAW CHECKED, TESTED: Desk cargo 109, cp cargo 15, bun 122, tsc, vite, CP4 6/6
 
 - 1m-8 B9b Customers GREEN (WIRED: YES / REAL: YES, his install 5b671dd65 + CP4 6/6, my Chrome look: 7 plan rows, No plan yet 7, plan detail opens), Anexomail Command Center phase CC1 (BL-29) recorded in list, blueprint, NOW-LIST, WORKING-NOW (his 10:29 word), TECH-LAW CHECKED, TESTED: docs only on top of green code, gate 0 fail
+
+- FIX of BL-21 Customers: back button 'All plans' renamed 'Back to customers overview' (his 10:32 word), TECH-LAW CHECKED, TESTED: tsc, bun desk 122, vite build
