@@ -1,5 +1,5 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 10:1x PKT) - read this FIRST for the Desk after a compaction
-DOING: 1m-7 B6b = GREEN (BL-26 part 1, his install 49d663418 + my Chrome look). B6c bounce/complaint rates NOT YET (no awam delivery log). Starting B13 (BL-46 customer data access approval): web research -> D6 list -> ADVANCE-RESEARCH [1m] 1m-8 -> CURRENT.md (heading names BL-46 + LIST) -> AD18 SQL + Rust door + screen, ONE commit; gate PHASE FILES + ADVANCE-TECH row needed.
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 10:09 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1m-7 B6b code done, committing
 NEXT STEP: his ad-auto (AD17) + desk-install, my Chrome look at Deliverability
 HIS LAST WORD: his 09:55 order
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
@@ -65,14 +65,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- bd9a2eeb 23 Nov 10:09 B6b GREEN
+- 49d66341 23 Nov 09:59 ledger line 7fd84e13
 - 7fd84e13 23 Nov 09:59 Desk 1m-7 B6b own-domain mail posture + gate PHASE FILES
 - 99d32b28 23 Nov 09:52 ledger line 5f7f1cf3
 - 5f7f1cf3 23 Nov 09:52 B6b docs first
 - 5e086bac 23 Nov 09:37 ledger line b358e684
 - b358e684 23 Nov 09:37 BL-04 advance tech line
 - 91228d40 23 Nov 09:37 ledger line 28f6ddfa
-- 28f6ddfa 23 Nov 09:37 Advance technology per billionaire phase
-- b4f64008 23 Nov 09:34 ledger line b4dae7fe
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
