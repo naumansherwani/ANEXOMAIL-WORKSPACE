@@ -65,14 +65,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 3b7562a4 23 Nov 11:07 B9c wording fix
+- a6c095a4 23 Nov 11:07 ledger line 30915fc6
 - 30915fc6 23 Nov 11:07 B9c installed and seen, demo title smaller
 - e7fbb9bb 23 Nov 10:57 ledger line 0a1442c2
 - 0a1442c2 23 Nov 10:57 Command Center demo preserved
 - 07195cc4 23 Nov 10:48 ledger line dc13685a
 - dc13685a 23 Nov 10:48 B9c live plan updates (written)
 - c0ac155f 23 Nov 10:32 ledger line 2c97b98d
-- 2c97b98d 23 Nov 10:32 Customers back button wording
-- 24ec195f 23 Nov 10:30 ledger line 2864bb2f
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
