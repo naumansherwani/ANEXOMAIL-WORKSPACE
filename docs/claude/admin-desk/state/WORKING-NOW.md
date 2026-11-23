@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 07:52 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 07:52 PKT) - read this FIRST for the Desk after a compaction
 DOING: founder keys code done + tested, not installed; Desk keys not installed yet
 NEXT STEP: his founder-install + desk-install pastes, my Chrome looks, GREEN; then awam keys (new files), then B9
 HIS LAST WORD: his 07:51 order same for founder then awam
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 60aaff50 23 Nov 07:52 Founder keys: Ctrl+D, Ctrl+/, Alt+Shift pages, walk, sidebar follows
 - e02abe02 23 Nov 07:46 ledger line 489d6412
 - 489d6412 23 Nov 07:46 Desk 1m-keys: Ctrl+K palette, Ctrl+/ help, Alt+Shift keys for every rail folder
 - 0c68f7a6 23 Nov 07:37 ledger line 1878dd5d
@@ -72,13 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 66394b6e 23 Nov 07:30 ledger line 2fcb295b
 - 2fcb295b 23 Nov 07:30 Desk 1m small step GREEN, B9 honest state
 - c2d92563 23 Nov 07:16 ledger line 56b3e073
-- 56b3e073 23 Nov 07:16 Desk: gate covers control-plane + scripts, PROOF CP2 line, rail follows active page
 
 ## Uncommitted Desk files
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
