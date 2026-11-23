@@ -5897,3 +5897,5 @@ Features ki list (QC4 mein kya banega):
 - Desk tooltip text removed, short key only, WIRED: YES / REAL: not yet (his desk-install + my Chrome look), TECH-LAW CHECKED, TESTED: tsc, bun 99 pass, vite build
 
 - awam keys code done, WIRED: YES / REAL: not yet (his awam pull + my Chrome look), TECH-LAW CHECKED, TESTED: bun awam-keys 4 pass, tsc, vite build; 4 kernel-pin tests fail with and without this change
+
+- status 08:05 recorded in Desk, founder and awam blueprints, B9 contract block back on top, docs only, TECH-LAW CHECKED, TESTED: gate run (docs only)

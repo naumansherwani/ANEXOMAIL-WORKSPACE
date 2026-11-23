@@ -1,5 +1,15 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-4 B9 Customers and Plans), written 23 Nov 2026 06:3x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (U1..U12, REWRITTEN under the FUTURE-PROOF LAW)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL CP2 (awam database, Control Plane read-only role only): cp.census() = dimensions (package, state, interval, size band, 12-month growth, 30-day ended, renewals due) + SIX real needing-you-now signals (grace, not active yet, ended, payment received but not active, seats 90/95, storage 90/95) from the real awam tables, signal registry, SECURITY DEFINER, search_path fixed, EXECUTE only for cp_lookup, no id/name/e-mail/money (timestamps only from billing_intents); world-class gate headers; schema-first CP1, AD04, AD06 read | control-plane/sql/CP2.sql, control-plane/sql/checks/CP2-check.sql, scripts/cp-install.sh (step 3b) | yes | scratch awam DB built from the real schema snapshot: selftest ALL RULES PASSED twice (89/90/94/95 boundaries, payment-received, storage, over-limit, counts only), CP2 CHECK 8/8 true, CP1 CHECK 0 false |
+| Rust Control Plane census answer (Ed25519 signed, replay nonce) over HTTP/3 UDP 4410, request verified in Rust | control-plane/src/answer.rs, core.rs, verify.rs, db.rs | no | cargo tests |
+| PostgreSQL AD14: fadm_census_sample hourly append-only hash-chained series (forced RLS, frozen triggers, BRIN), SECURITY DEFINER fadm_census_record + door fadm_customers_board (same right as the plan lookup) | sql/AD14.sql, sql/checks/AD14-check.sql | no | selftest + CHECK on scratch |
+| Rust + Tokio + Axum 0.8 door /desk/v1/customers/census over the sealed HTTP/3 router, Control Plane call with fresh 15 s, deadline 6 s, breaker, shape check | server/src/customers.rs, main.rs | no | cargo tests |
+| Rule 52 kernel-verified read, fail-closed Data unavailable, honest "Not measured yet" rows, small-group note | desk_customers_pure.ts, DeskCustomers.tsx | no | bun tests, tsc |
+| React 19 + TypeScript Customers and Plans card wired, Ice-blue marks | DeskCustomers.tsx, desk_cards.ts, DeskCards.tsx | no | vite build, my Chrome look |
+
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, small step 1m-keys: keys for every rail folder, his haan 23 Nov 2026 07:44), written 23 Nov 2026 07:5x PKT BEFORE code. LIST/PLAN: docs/claude/admin-desk/RAIL-KEYS-PLAN-23NOV.md (ADVANCE-RESEARCH [1m-keys])
 
 | Advance technology | Where in code | IN CODE | Proof |
@@ -23,16 +33,6 @@
 | TypeScript pure founder key table (14 pages), Alt+Shift+letter by e.code, Ctrl+D home, Ctrl+/ help, Alt+Shift Up/Down walk; a key used twice = failing test | founder-web/src/founder_keys.ts + founder_keys.test.ts | yes | bun tests, tsc |
 | React 19 Keys sheet (role dialog, Esc, focus returns) in the existing Palette look; Ctrl+K search already exists (Palette.tsx) and is kept; aria-keyshortcuts + titles on every sidebar button; sidebar scroll follows the open page (look untouched, UI LAW additive) | FounderKeysHelp.tsx, App.tsx (one handler block, one mount, one effect) | yes | tsc, vite build, my Chrome look after his founder-install |
 | The existing "g then letter" founder jumps stay as they are (not touched) | App.tsx | yes | unchanged |
-
-# TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-4 B9 Customers and Plans), written 23 Nov 2026 06:3x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (U1..U12, REWRITTEN under the FUTURE-PROOF LAW)
-| Advance technology | Where in code | IN CODE | Proof |
-|---|---|---|---|
-| PostgreSQL CP2 (awam database, Control Plane read-only role only): cp.census() = dimensions (package, state, interval, size band, 12-month growth, 30-day ended, renewals due) + SIX real needing-you-now signals (grace, not active yet, ended, payment received but not active, seats 90/95, storage 90/95) from the real awam tables, signal registry, SECURITY DEFINER, search_path fixed, EXECUTE only for cp_lookup, no id/name/e-mail/money (timestamps only from billing_intents); world-class gate headers; schema-first CP1, AD04, AD06 read | control-plane/sql/CP2.sql, control-plane/sql/checks/CP2-check.sql, scripts/cp-install.sh (step 3b) | yes | scratch awam DB built from the real schema snapshot: selftest ALL RULES PASSED twice (89/90/94/95 boundaries, payment-received, storage, over-limit, counts only), CP2 CHECK 8/8 true, CP1 CHECK 0 false |
-| Rust Control Plane census answer (Ed25519 signed, replay nonce) over HTTP/3 UDP 4410, request verified in Rust | control-plane/src/answer.rs, core.rs, verify.rs, db.rs | no | cargo tests |
-| PostgreSQL AD14: fadm_census_sample hourly append-only hash-chained series (forced RLS, frozen triggers, BRIN), SECURITY DEFINER fadm_census_record + door fadm_customers_board (same right as the plan lookup) | sql/AD14.sql, sql/checks/AD14-check.sql | no | selftest + CHECK on scratch |
-| Rust + Tokio + Axum 0.8 door /desk/v1/customers/census over the sealed HTTP/3 router, Control Plane call with fresh 15 s, deadline 6 s, breaker, shape check | server/src/customers.rs, main.rs | no | cargo tests |
-| Rule 52 kernel-verified read, fail-closed Data unavailable, honest "Not measured yet" rows, small-group note | desk_customers_pure.ts, DeskCustomers.tsx | no | bun tests, tsc |
-| React 19 + TypeScript Customers and Plans card wired, Ice-blue marks | DeskCustomers.tsx, desk_cards.ts, DeskCards.tsx | no | vite build, my Chrome look |
 
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, small step: gate hole closed + rail follows the active page, his 23 Nov 2026 07:12 word), written 23 Nov 2026 07:3x PKT BEFORE code. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (U1..U12 header; this step has its own rows below)
 
@@ -3473,3 +3473,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Desk tooltip text removed, short key only, WIRED: YES / REAL: not yet (his desk-install + my Chrome look), TECH-LAW CHECKED, TESTED: tsc, bun 99 pass, vite build
 
 - awam keys code done, WIRED: YES / REAL: not yet (his awam pull + my Chrome look), TECH-LAW CHECKED, TESTED: bun awam-keys 4 pass, tsc, vite build; 4 kernel-pin tests fail with and without this change
+
+- status 08:05 recorded in Desk, founder and awam blueprints, B9 contract block back on top, docs only, TECH-LAW CHECKED, TESTED: gate run (docs only)

@@ -451,3 +451,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 > [22 Nov 2026 01:55 PKT] R-CRM added to the Desk plan (his 01:54): CRM as much as the awam user gets, company style, built NEW. MASTER-PLAN-22NOV.md. Not in code.
 
 - [22 Nov 2026 01:59 PKT] SANDBOX LIVE TEST done (real binary + real Postgres AD1/AD1b + real Chrome 390/820/1280): all pass after 2 UI fixes. SANDBOX-LIVE-TEST-22NOV.md. His rerun of desk-install is next, then my Chrome look on his real URL.
+
+> 23 Nov 2026 08:05 PKT STATUS (full: docs/claude/admin-desk/STATUS-23NOV-0805.md): Desk 1m small step GREEN; 1m-4 B9 not green (CP2 installed 8/8, Rust census/AD14/customers.rs/screen next). Keys for Desk (palette, Alt+Shift, tooltip = key only), founder and awam are written + tested + pushed, NOT installed, NOT GREEN until his install pastes and my Chrome looks. Awam core frozen, no sharing between Desk/founder/awam. Rule 52 unchanged.

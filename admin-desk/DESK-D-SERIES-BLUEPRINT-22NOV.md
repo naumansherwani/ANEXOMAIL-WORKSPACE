@@ -681,3 +681,5 @@ DISCUSS (his 07:00 word, no code until his haan): short keys for EVERY rail fold
 > 23 Nov 2026 08:0x PKT: 1m-keys code done + tested (bun 99 pass, tsc, vite build), awaits his desk-install and my Chrome look. Tech: React 19 + TypeScript, WCAG 2.1.1/2.1.4, aria-keyshortcuts, role dialog + combobox/listbox. Rule 52 unchanged (no data, no network).
 
 > 23 Nov 2026 08:1x PKT: FOUNDER KEYS code done (founder_keys.ts, FounderKeysHelp.tsx, App.tsx additive; bun 625 pass, tsc, vite build), not installed. React 19 + TypeScript, WCAG 2.1.1/2.1.4, aria-keyshortcuts. Awam keys next, new files only. Desk and founder code never import each other.
+
+> 23 Nov 2026 08:05 PKT STATUS (full: docs/claude/admin-desk/STATUS-23NOV-0805.md): Desk 1m small step GREEN; 1m-4 B9 not green (CP2 installed 8/8, Rust census/AD14/customers.rs/screen next). Keys for Desk (palette, Alt+Shift, tooltip = key only), founder and awam are written + tested + pushed, NOT installed, NOT GREEN until his install pastes and my Chrome looks. Awam core frozen, no sharing between Desk/founder/awam. Rule 52 unchanged.
