@@ -424,6 +424,7 @@ docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V7-LOGO-COLOUR-TITLE-PROPO
 docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
 docs/claude/admin-desk/demo/COMMAND-CENTER-FIRST-DEMO-23NOV-REJECTED.html
 docs/claude/admin-desk/demo/COMMAND-CENTER-OS-DEMO-24NOV.html
+docs/claude/admin-desk/demo/COMMAND-CENTER-SENIOR-EXEC-POSITION-24NOV.html
 docs/claude/admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V2-landing-login.html
 docs/claude/admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-dashboard.html
 docs/claude/admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-landing-1280.png

@@ -97,6 +97,7 @@ admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V7-LOGO-COLOUR-TITLE-PROPOSED.html
 admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
 admin-desk/demo/COMMAND-CENTER-FIRST-DEMO-23NOV-REJECTED.html
 admin-desk/demo/COMMAND-CENTER-OS-DEMO-24NOV.html
+admin-desk/demo/COMMAND-CENTER-SENIOR-EXEC-POSITION-24NOV.html
 admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V2-landing-login.html
 admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-dashboard.html
 admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-landing-1280.png
