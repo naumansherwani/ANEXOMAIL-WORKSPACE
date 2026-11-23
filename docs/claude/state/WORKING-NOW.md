@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 02:04 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 02:04 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: B9c Y5 written: AD19 Premium + Max seat promises, scratch-tested, waits his ad-auto
 NEXT STEP: his ad-auto, then watch Customers in my Chrome (Y6), then Y4, then BL-29 bridge
 HIS LAST WORD: his 24 Nov 01:57 order: continue B9c in strict order
@@ -19,43 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 758e9395 24 Nov 02:04 B9c Y5 AD19 Premium and Max seat promises
 - 20b56e65 24 Nov 01:58 ledger line 3a13f8dc
 - 3a13f8dc 24 Nov 01:58 Bridge decision final recorded
 - 24312836 24 Nov 01:41 ledger line 2a5a2927
 - 2a5a2927 24 Nov 01:41 Command Center OS security protocol
-- 5603be01 24 Nov 01:40 ledger line 9ab7c9f8
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/D6-CARDS-LIST-23NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-A  admin-desk/sql/AD19.sql
-A  admin-desk/sql/checks/AD19-check.sql
-M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-A  docs/claude/admin-desk/sql/AD19.sql
-A  docs/claude/admin-desk/sql/checks/AD19-check.sql
-M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  lanes/ALL-FILES.csv
-M  lanes/docs.txt
-M  lanes/shared.txt
-M  lovable-gold/README.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md                   | 40 ++++++++------
- docs/claude/tech-contracts/CURRENT.md              |  9 +++
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        | 10 ++--
- lanes/ALL-FILES.csv                                |  4 ++
- lanes/docs.txt                                     |  2 +
- lanes/shared.txt                                   |  2 +
- lovable-gold/README.md                             |  2 +-
- 18 files changed, 216 insertions(+), 24 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 40 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 38 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -66,4 +43,4 @@ M  lovable-gold/README.md
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ec9a775909e0eee597e7a6c327ec691d6cbf182e)
+WIP snapshot: refs/wip/last (2e0e7abab8f78ecef8f0b5235eff37e954c4f871)

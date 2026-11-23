@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 02:04 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 02:04 PKT) - read this FIRST for the Desk after a compaction
 DOING: B9c Y5 written: AD19 Premium + Max seat promises, scratch-tested, waits his ad-auto
 NEXT STEP: his ad-auto, then watch Customers in my Chrome (Y6), then Y4, then BL-29 bridge
 HIS LAST WORD: his 24 Nov 01:57 order: continue B9c in strict order
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 758e9395 24 Nov 02:04 B9c Y5 AD19 Premium and Max seat promises
 - 20b56e65 24 Nov 01:58 ledger line 3a13f8dc
 - 3a13f8dc 24 Nov 01:58 Bridge decision final recorded
 - 24312836 24 Nov 01:41 ledger line 2a5a2927
@@ -72,20 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 5603be01 24 Nov 01:40 ledger line 9ab7c9f8
 - 9ab7c9f8 24 Nov 01:40 Command Center OS phases and employee lifecycle plan
 - 5cd3dbfe 24 Nov 01:24 ledger line d898e87c
-- d898e87c 24 Nov 01:24 ANEXOMAIL Command Center brain law and plan, gate dates
 
 ## Uncommitted Desk files
-M  admin-desk/D6-CARDS-LIST-23NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-A  admin-desk/sql/AD19.sql
-A  admin-desk/sql/checks/AD19-check.sql
-M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-A  docs/claude/admin-desk/sql/AD19.sql
-A  docs/claude/admin-desk/sql/checks/AD19-check.sql
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
