@@ -134,3 +134,5 @@ LIGHT LEVEL BACK TO THE EARLIER LOW ONE (23 Nov 2026 11:4x PKT, his 11:39 word: 
 VERY LOW LIGHT V21 (23 Nov 2026 11:5x PKT, his 11:40 word: V20 still too bright): glow opacity .24 (V20 .5, V19 .38), moving light alpha .38 / line .34, blur 15 px. Saved demo/COMMAND-CENTER-DEMO-23NOV-V21-VERY-LOW-LIGHT.html; V20 kept as backup. Real Desk untouched until his haan.
 
 LOGO COLOURS TRAVEL V22 (23 Nov 2026 11:5x PKT, his 11:42 word: the golden light stays in the centre, the logo colours must pass from left to right): the static bright silver centre of the line and glow is REMOVED; the base is now one even navy-steel; the logo colours (navy, steel, silver, steel) are ONE travelling band that runs left to right along the line and the glow (4.2 s loop). Light level kept very low (V21). Saved demo/COMMAND-CENTER-DEMO-23NOV-V22-LOGO-COLOURS-TRAVEL-LEFT-TO-RIGHT.html; V21 kept. Real Desk untouched until his haan.
+
+BACK TO V21 (23 Nov 2026 11:4x PKT, his 11:44 word: the earlier one was fine): demo/COMMAND-CENTER-DEMO-23NOV.html = V21 again; V22 (logo colours travel) stays in the repo as a backup, not deleted. Real Desk untouched until his haan.

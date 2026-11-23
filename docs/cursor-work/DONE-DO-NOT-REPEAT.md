@@ -4519,3 +4519,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Command Center title demo V21: very low light (glow .24), V20 kept, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered and looked at, gate 0 fail
 
 - Command Center title demo V22: logo colours travel left to right, static centre light removed, V21 kept, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered frames looked at, gate 0 fail
+
+- Command Center title demo back to V21, V22 kept as backup, real Desk untouched, TECH-LAW CHECKED, TESTED: V21 file republished unchanged, gate 0 fail
