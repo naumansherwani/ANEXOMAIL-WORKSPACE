@@ -139,6 +139,16 @@ v = subprocess.run([sys.executable, "docs/cursor-work/server/manifest-verify.py"
 if not v or not v[-1].endswith(" 0 bad"):
     fail("manifest", "manifest-verify is not 0 bad: " + (v[-1] if v else "no output"))
 
+# HOLE CLOSED (his 23 Nov 2026 08:06, awam pull.sh build failed: 3 new awam files were not in the deploy manifest, so the server got AppShell.tsx without the files it imports): every NEW file under src/ must be listed in DEPLOY-MANIFEST.txt in the same commit.
+try:
+    _man = open("docs/cursor-work/server/DEPLOY-MANIFEST.txt").read()
+    _newsrc = [f for f in sh("git", "diff", "--cached", "--name-only", "--diff-filter=A").splitlines() if f.startswith("src/") and not f.endswith(("00-FOUNDER-TECH-RULE.md", "READ-FIRST-FOUNDER-LAW.md")) and not f.endswith(".md")]
+    _miss = [f for f in _newsrc if (f + " ") not in _man]
+    if _miss:
+        fail("MANIFEST NEW FILE", "new src/ file(s) not in docs/cursor-work/server/DEPLOY-MANIFEST.txt (run: python3 docs/cursor-work/server/manifest-sync.py " + " ".join(_miss[:6]) + "): the server would get the files that import them without them")
+except OSError:
+    pass
+
 # Loophole found 6 Nov 2026 (awam answered 404 for kernel 0.13.0): manifest-sync only auto-adds src/, so a deployed non-src file (the kernel wasm, public/) never reached the server.
 # Every shipped kernel wasm (user site + founder SPA + founder dist) and the wasm the pin names MUST be in the deploy manifest.
 try:

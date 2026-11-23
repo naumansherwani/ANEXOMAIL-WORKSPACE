@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 08:06 PKT) - read this FIRST for the Desk after a compaction
-DOING: status doc written, all blueprints updated; Desk/founder/awam keys wait for installs; B9 half
-NEXT STEP: his three install pastes + my Chrome looks, then B9 Rust census, AD14, customers.rs, screen
-HIS LAST WORD: his 08:05 order: read repo, update everything, send updated repo
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 08:07 PKT) - read this FIRST for the Desk after a compaction
+DOING: awam pull failed: new files not in deploy manifest, fixed + gate
+NEXT STEP: his awam pull re-run, then three Chrome looks, B9
+HIS LAST WORD: his 08:06 paste (pull.sh build FAIL)
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 18088658 23 Nov 08:05 ledger line 3c71506f
 - 3c71506f 23 Nov 08:05 Status 23 Nov 08:05 in all blueprints
 - f004d2c7 23 Nov 08:01 ledger line 9a5a58bc
 - 9a5a58bc 23 Nov 08:01 Awam keys: Ctrl+D, Ctrl+/, Alt+Shift pages, walk, rail follows
@@ -72,9 +73,10 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 00974202 23 Nov 07:56 Desk: remove Opens when it is connected, tooltip is the short key only
 - 4a22e32a 23 Nov 07:52 ledger line 60aaff50
 - 60aaff50 23 Nov 07:52 Founder keys: Ctrl+D, Ctrl+/, Alt+Shift pages, walk, sidebar follows
-- e02abe02 23 Nov 07:46 ledger line 489d6412
 
 ## Uncommitted Desk files
+ M admin-desk/NOW-LIST-23NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)

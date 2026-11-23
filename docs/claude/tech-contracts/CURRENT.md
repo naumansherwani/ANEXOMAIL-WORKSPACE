@@ -3475,3 +3475,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - awam keys code done, WIRED: YES / REAL: not yet (his awam pull + my Chrome look), TECH-LAW CHECKED, TESTED: bun awam-keys 4 pass, tsc, vite build; 4 kernel-pin tests fail with and without this change
 
 - status 08:05 recorded in Desk, founder and awam blueprints, B9 contract block back on top, docs only, TECH-LAW CHECKED, TESTED: gate run (docs only)
+
+- awam pull fix: 3 new files added to DEPLOY-MANIFEST.txt + gate MANIFEST NEW FILE, TECH-LAW CHECKED, TESTED: manifest-verify only WORKING-NOW stale, local bun run build:bun rc=0, gate probe FAIL as expected
