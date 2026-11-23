@@ -6045,3 +6045,5 @@ FINAL: 21 Nov Desk Isolation Law and Gate never break. Company OS (Command Cente
 - B9c Y5 GREEN WIRED: YES / REAL: YES: his ad-auto DONE (AD01..AD19), my Chrome shows six plans on Customers; Y6 timing not measured, Y4 open, TECH-LAW CHECKED, TESTED: live Chrome look on admindesk.anexomail.com/dashboard/customers, gate 0 fail
 
 - Text-only demo (Senior Executive under title, Customer Operations folder heading, landing ANEXOMAIL COMMAND CENTER + Operations line), real code untouched, TECH-LAW CHECKED, TESTED: real landing built in a scratch copy and screenshot at 1280 and 390, dashboard rendered, gate 0 fail
+
+- Login page kept original (code read, my Chrome signed in so only the dashboard seen), host change admindesk to commandcenteros judged possible and written as a plan, nothing coded, TECH-LAW CHECKED, TESTED: grep of every hard-coded host in Rust, scripts and UI, gate 0 fail
