@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 09:29 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 09:30 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: B10 GREEN, order lock
 NEXT STEP: BL-26 B6b research
 HIS LAST WORD: his 09:28 order
@@ -19,35 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 428b240e 23 Nov 09:30 B10 GREEN + billionaire ORDER-LOCK
 - fdcf8ea0 23 Nov 09:17 ledger line 637c6c9f
 - 637c6c9f 23 Nov 09:17 Desk 1m-6 B10 Reports + billionaire list + gate
 - fcab5d3d 23 Nov 09:04 ledger line 9771fea8
 - 9771fea8 23 Nov 09:04 B6 Deliverability GREEN
-- 5909b706 23 Nov 08:54 ledger line 7d665d21
 
 ## Uncommitted files (half-done work if any)
-M  CLAUDE.md
-M  admin-desk/BILLIONAIRE-SETUP-LIST-23NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/BILLIONAIRE-SETUP-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/server/rules-gate.py
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/NOW-LIST-23NOV.md                       |  2 ++
- .../admin-desk/BILLIONAIRE-SETUP-LIST-23NOV.md     |  4 ++-
- .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    |  2 ++
- docs/claude/admin-desk/NOW-LIST-23NOV.md           |  2 ++
- docs/claude/admin-desk/state/WORKING-NOW.md        |  5 ++--
- docs/claude/state/WORKING-NOW.md                   | 32 ++++++++++------------
- docs/cursor-work/server/rules-gate.py              | 11 ++++++++
- 10 files changed, 43 insertions(+), 22 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 32 ++------------------------------
+ 1 file changed, 2 insertions(+), 30 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -58,4 +43,4 @@ M  docs/cursor-work/server/rules-gate.py
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ea37f35f953a2115c21d6d566aee57cda008ee01)
+WIP snapshot: refs/wip/last (508fbe25d55f8ff94193a96dd71d4eee0adc9096)
