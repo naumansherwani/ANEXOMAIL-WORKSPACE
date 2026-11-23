@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 04:54 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 04:54 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: B13 Z2 Rust doors + Z3 React screen written
 NEXT STEP: install (ad-auto not needed, desk-install), Z4 customer approval path, Chrome look
 HIS LAST WORD: his 04:53 word
@@ -19,58 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- dfdcc940 24 Nov 04:54 B13 Z2 Z3
 - 62d25b7e 24 Nov 04:45 ledger line d1925bf8
 - d1925bf8 24 Nov 04:45 compact save
 - d3a03b56 24 Nov 04:34 ledger line 2f0cfb35
 - 2f0cfb35 24 Nov 04:34 ad-auto summary line
-- 422c3544 24 Nov 04:29 ledger line f0460f4d
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/D6-B13-CONSENT-ACCESS-LIST-24NOV.md
-A  admin-desk/server/src/consent.rs
-M  admin-desk/server/src/main.rs
-M  docs/claude/DONE-DO-NOT-REPEAT.md
-M  docs/claude/RESUME-POINT.md
-M  docs/claude/admin-desk/D6-B13-CONSENT-ACCESS-LIST-24NOV.md
-A  docs/claude/admin-desk/server/src/consent.rs
-M  docs/claude/admin-desk/server/src/main.rs
-M  docs/claude/admin-desk/state/WORKING-NOW.md
-M  docs/claude/founder/PULL-COMMANDS.md
-M  docs/claude/state/HEARTBEAT.json
-MM docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
-M  docs/cursor-work/DONE-DO-NOT-REPEAT.md
-M  docs/cursor-work/founder/founder-commands.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  docs/cursor-work/server/PULL-COMMANDS.md
-R  founder-web/dist-desk/assets/desk-BBu4h3TR.js -> founder-web/dist-desk/assets/desk-1lV7G7UG.js
-M  founder-web/dist-desk/desk.html
-R  founder-web/dist/assets/index-CXfrub1-.js -> founder-web/dist/assets/index-B4Ct4CKd.js
-M  founder-web/dist/index.html
-M  founder-web/src/desk/DeskCards.tsx
-A  founder-web/src/desk/DeskConsent.tsx
-M  founder-web/src/desk/desk_cards.ts
-A  founder-web/src/desk/desk_consent_pure.test.ts
-A  founder-web/src/desk/desk_consent_pure.ts
-M  founder-web/src/system_brain.json
-M  lanes/ALL-FILES.csv
-M  lanes/docs.txt
-M  lanes/founder.txt
-M  lanes/shared.txt
-M  lovable-gold/README.md
+ M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- founder-web/src/desk/desk_consent_pure.ts          | 48 +++++++++++++
- founder-web/src/system_brain.json                  |  6 +-
- lanes/ALL-FILES.csv                                |  4 +-
- lanes/docs.txt                                     |  1 +
- lanes/founder.txt                                  |  2 +-
- lanes/shared.txt                                   |  1 +
- lovable-gold/README.md                             |  2 +-
- 33 files changed, 459 insertions(+), 68 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 57 +++-------------------------------------
+ 1 file changed, 3 insertions(+), 54 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -81,4 +43,4 @@ M  lovable-gold/README.md
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (b49fd1003a60625c5b212af7abc727f321e720ec)
+WIP snapshot: refs/wip/last (26d0a4ddb7434e9ba23f4c83469f714eb23ae373)

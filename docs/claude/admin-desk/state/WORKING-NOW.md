@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 04:54 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 04:54 PKT) - read this FIRST for the Desk after a compaction
 DOING: B13 Z2 Rust doors + Z3 React screen written
 NEXT STEP: install (ad-auto not needed, desk-install), Z4 customer approval path, Chrome look
 HIS LAST WORD: his 04:53 word
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- dfdcc940 24 Nov 04:54 B13 Z2 Z3
 - 62d25b7e 24 Nov 04:45 ledger line d1925bf8
 - d1925bf8 24 Nov 04:45 compact save
 - d3a03b56 24 Nov 04:34 ledger line 2f0cfb35
@@ -72,21 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 422c3544 24 Nov 04:29 ledger line f0460f4d
 - f0460f4d 24 Nov 04:29 B13 Z1 AD20 + boot text
 - 5d51a61b 24 Nov 04:12 ledger line 15fee681
-- 15fee681 24 Nov 04:12 B13 research and list
 
 ## Uncommitted Desk files
-M  admin-desk/D6-B13-CONSENT-ACCESS-LIST-24NOV.md
-A  admin-desk/server/src/consent.rs
-M  admin-desk/server/src/main.rs
-M  docs/claude/admin-desk/D6-B13-CONSENT-ACCESS-LIST-24NOV.md
-A  docs/claude/admin-desk/server/src/consent.rs
-M  docs/claude/admin-desk/server/src/main.rs
-MM docs/claude/admin-desk/state/WORKING-NOW.md
-M  founder-web/src/desk/DeskCards.tsx
-A  founder-web/src/desk/DeskConsent.tsx
-M  founder-web/src/desk/desk_cards.ts
-A  founder-web/src/desk/desk_consent_pure.test.ts
-A  founder-web/src/desk/desk_consent_pure.ts
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
