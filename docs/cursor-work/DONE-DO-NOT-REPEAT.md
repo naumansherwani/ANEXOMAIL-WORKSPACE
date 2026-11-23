@@ -4405,3 +4405,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 1m-4 B9 Customers and Plans: web research, list U1..U9, ADVANCE-RESEARCH line, contract block written before code (docs only; TECH-LAW CHECKED, TESTED: rules-gate 0 fail, rows IN CODE=no until code)
 
 - FUTURE-PROOF LAW + gate (his 23 Nov 06:42), 1m-4 B9 plan rewritten with six real signals from the real awam tables, Dashboard hint G then D -> Ctrl+D (TECH-LAW CHECKED, TESTED: gate probe fails on a new 'Not measured' line, bun 93 pass, tsc, vite)
+
+- contract order: B9 block newest again after the Ctrl+D step (docs only; TECH-LAW CHECKED, TESTED: rules-gate 0 fail)

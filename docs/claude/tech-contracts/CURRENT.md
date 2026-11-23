@@ -1,10 +1,5 @@
 <!--TECHLAW-->
 
-# TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, small step: Dashboard shortcut hint Ctrl+D, his 23 Nov 2026 06:42 word), written 23 Nov 2026 06:5x PKT BEFORE code. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (U1..U12 header; this step has its own rows below)
-| Advance technology | Where in code | IN CODE | Proof |
-|---|---|---|---|
-| React 19 + TypeScript keyboard handler: Ctrl+D (nothing else held, not while typing) goes to the Dashboard, hint text "Dashboard · Ctrl+D", pure function ctrlHomeTarget; the page takes the key from the browser bookmark shortcut (honest note to him) | desk_cards.ts, DeskPages.tsx, DeskShell.tsx | yes | bun 93 pass incl. ctrlHomeTarget cases, tsc clean, vite build ok |
-
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-4 B9 Customers and Plans), written 23 Nov 2026 06:3x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (U1..U12, REWRITTEN under the FUTURE-PROOF LAW)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -14,6 +9,11 @@
 | Rust + Tokio + Axum 0.8 door /desk/v1/customers/census over the sealed HTTP/3 router, Control Plane call with fresh 15 s, deadline 6 s, breaker, shape check | server/src/customers.rs, main.rs | no | cargo tests |
 | Rule 52 kernel-verified read, fail-closed Data unavailable, honest "Not measured yet" rows, small-group note | desk_customers_pure.ts, DeskCustomers.tsx | no | bun tests, tsc |
 | React 19 + TypeScript Customers and Plans card wired, Ice-blue marks | DeskCustomers.tsx, desk_cards.ts, DeskCards.tsx | no | vite build, my Chrome look |
+
+# TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, small step: Dashboard shortcut hint Ctrl+D, his 23 Nov 2026 06:42 word), written 23 Nov 2026 06:5x PKT BEFORE code. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (U1..U12 header; this step has its own rows below)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| React 19 + TypeScript keyboard handler: Ctrl+D (nothing else held, not while typing) goes to the Dashboard, hint text "Dashboard · Ctrl+D", pure function ctrlHomeTarget; the page takes the key from the browser bookmark shortcut (honest note to him) | desk_cards.ts, DeskPages.tsx, DeskShell.tsx | yes | bun 93 pass incl. ctrlHomeTarget cases, tsc clean, vite build ok |
 
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-3 B8 Staff online and shifts), written 23 Nov 2026 06:1x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (T1..T7)
 | Advance technology | Where in code | IN CODE | Proof |
@@ -3419,3 +3419,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 1m-4 B9 Customers and Plans: web research, list U1..U9, ADVANCE-RESEARCH line, contract block written before code (docs only; TECH-LAW CHECKED, TESTED: rules-gate 0 fail, rows IN CODE=no until code)
 
 - FUTURE-PROOF LAW + gate (his 23 Nov 06:42), 1m-4 B9 plan rewritten with six real signals from the real awam tables, Dashboard hint G then D -> Ctrl+D (TECH-LAW CHECKED, TESTED: gate probe fails on a new 'Not measured' line, bun 93 pass, tsc, vite)
+
+- contract order: B9 block newest again after the Ctrl+D step (docs only; TECH-LAW CHECKED, TESTED: rules-gate 0 fail)
