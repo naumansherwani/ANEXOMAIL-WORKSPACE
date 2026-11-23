@@ -4533,3 +4533,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Command Center title + B9c INSTALLED on his server (desk-install 9/9, commit db7190ba8, bundle desk-C-0-8m1u.js SAME), seen in my Chrome at desktop width, NOT GREEN (390/820 + Y4/Y5/Y6 open), blueprint + WORKING-NOW + NOW-LIST + CLAUDE.md updated, approved codes backed up, TECH-LAW CHECKED, TESTED: live Chrome look desktop, gate 0 fail
 
 - Command Center title + B9c INSTALLED on his server (desk-install 9/9, commit db7190ba8, bundle desk-C-0-8m1u.js SAME), seen in my Chrome at desktop width, NOT GREEN (390/820 + Y4/Y5/Y6 open), blueprint + WORKING-NOW + NOW-LIST updated, approved codes backed up, TECH-LAW CHECKED, TESTED: live Chrome look desktop, gate 0 fail
+
+- ANEXOMAIL Command Center = the brain: his words saved verbatim, web research (appmaster, WorkOS, Ory, Grafana, Databricks), plan CC0..CC-LAST with advance technology, folder docs/claude/anexomail-command-center/, rename map, 8 stale gate checks repointed to real Desk files, 5 real gaps got new dates by his word, TECH-LAW CHECKED, TESTED: gate 0 fail

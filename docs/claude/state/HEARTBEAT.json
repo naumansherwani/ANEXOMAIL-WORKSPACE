@@ -1,7 +1,7 @@
 {
- "generated": "23 Nov 2026 12:01 +0500",
- "head": "db7190ba",
- "head_subject": "ledger line 5a47b976",
+ "generated": "24 Nov 2026 01:24 +0500",
+ "head": "d08d3cbf",
+ "head_subject": "ledger line bdd9471f",
  "now": "QCONNECT",
  "phases": {
   "GREEN": 28,
@@ -11,7 +11,7 @@
  },
  "q_done": 40,
  "q_open": 5,
- "checks_ok": 31,
+ "checks_ok": 38,
  "checks_open": [
   "M-moq",
   "D-clamav",
@@ -22,8 +22,8 @@
   "Q-smtp-mtasts",
   "Q-ledger-kernel",
   "AWAM-PREMIUM-MAX-LIVE",
-  "D-host-router",
-  "D-login-door",
-  "D-sql-owner"
+  "D-virtual-list",
+  "D-auto-submitted",
+  "D-imap-migrator"
  ]
 }

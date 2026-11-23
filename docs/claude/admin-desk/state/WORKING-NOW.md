@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 12:01 PKT) - read this FIRST for the Desk after a compaction
-DOING: Title + B9c installed, 390/820 and Y4/Y5/Y6 open; blueprint updated
-NEXT STEP: title 390/820 look, B9c Y4/Y5/Y6 after his Y6 answer, then BL-29 CC1
-HIS LAST WORD: his 11:58 order (sone gaya)
+# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 01:24 PKT) - read this FIRST for the Desk after a compaction
+DOING: ANEXOMAIL Command Center brain law written, gate dates fixed, today starts at BL-28 B9c Y5/Y4
+NEXT STEP: BL-28 B9c Y5 then Y4 schema-first; Y6 needs his answer; then BL-29 CC1
+HIS LAST WORD: his 24 Nov 01:03 word
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- d08d3cbf 23 Nov 12:01 ledger line bdd9471f
 - bdd9471f 23 Nov 12:01 Status: title + B9c installed, blueprint and resume updated
 - db7190ba 23 Nov 11:50 ledger line 5a47b976
 - 5a47b976 23 Nov 11:50 Command Center title in the real Desk
@@ -72,16 +73,20 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 6847778f 23 Nov 11:47 Command Center title V24 soft light centre
 - a15f318c 23 Nov 11:44 ledger line c024beeb
 - c024beeb 23 Nov 11:44 Command Center title V23 light less
-- 26de16bf 23 Nov 11:44 ledger line 797ba7f5
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  admin-desk/gates/DESK-FEATURES.json
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/gates/DESK-FEATURES.json
+MM docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
-warn ADMIN DESK OPEN until 24 Nov: R3p1-plans [R3p1] Plans as data (Premium, Max first) -> needs PostgreSQL RLS, hash-chained ledger in admin-desk/sql/AD02.sql
-warn ADMIN DESK OPEN until 24 Nov: R3p2-webhook [R3p2] Polar signed webhook door -> needs Rust Tokio axum, HMAC-SHA256 constant-time in admin-desk/server/src/polar.rs
-warn ADMIN DESK OPEN until 24 Nov: R3p4-sla [R3p4] SLA clock per plan -> needs Rust Tokio timers in admin-desk/server/src/sla.rs
+warn ADMIN DESK OPEN until 12 Dec: R3p2-webhook [R3p2] Polar signed webhook door -> needs Rust Tokio axum, HMAC-SHA256 constant-time in admin-desk/server/src/polar.rs
+warn ADMIN DESK OPEN until 8 Dec: R3p4-sla [R3p4] SLA clock per plan -> needs Rust Tokio timers in admin-desk/server/src/sla.rs
 warn ADMIN DESK OPEN until 2026-12-05: QUIC-datagram [R3a0-s2+] QUIC DATAGRAM (RFC 9221) + WebTransport for live Desk events (Rule 52 kernel RPC over QUIC) -> needs QUIC 
 warn ADMIN DESK OPEN until 2026-12-20: QUIC-moq [R3a0-s2+] Media over QUIC (MoQ) for Desk voice notes / live updates, later phase -> needs Media over QUIC (MoQ) for Desk 
 warn ADMIN DESK OPEN until 2027-01-10: QUIC-v2 [R3a0-s2+] QUIC version 2 (RFC 9369) when quinn ships it -> needs QUIC version 2 (RFC 9369) when quinn ships it in admin-de
