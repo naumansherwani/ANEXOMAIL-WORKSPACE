@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 07:46 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 07:46 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1m-keys code done + tested, not installed (palette, help, Alt+Shift keys for all rail folders)
 NEXT STEP: his desk-install paste, my Chrome look of every key family, GREEN; then B9 Control Plane Rust census, AD14, customers.rs, screen
 HIS LAST WORD: his haan 07:44 on the key map
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 489d6412 23 Nov 07:46 Desk 1m-keys: Ctrl+K palette, Ctrl+/ help, Alt+Shift keys for every rail folder
 - 0c68f7a6 23 Nov 07:37 ledger line 1878dd5d
 - 1878dd5d 23 Nov 07:37 Desk rail keys plan + research
 - 66394b6e 23 Nov 07:30 ledger line 2fcb295b
@@ -72,22 +73,11 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - c2d92563 23 Nov 07:16 ledger line 56b3e073
 - 56b3e073 23 Nov 07:16 Desk: gate covers control-plane + scripts, PROOF CP2 line, rail follows active page
 - ac50fd7e 23 Nov 07:01 ledger line 027ee67c
-- 027ee67c 23 Nov 07:01 Ctrl+D GREEN
 
 ## Uncommitted Desk files
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskPages.tsx
- M founder-web/src/desk/DeskShell.tsx
-?? founder-web/src/desk/DeskKeys.tsx
-?? founder-web/src/desk/desk_keys.test.ts
-?? founder-web/src/desk/desk_keys.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
-FAIL !!! ADMIN DESK HTTP/1 AND HTTP/2 ARE BOTH BANNED (HTTP/3 only) !!! founder-web/src/desk/DeskKeys.tsx mentions it; remove it
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
 warn ADMIN DESK OPEN until 24 Nov: R3p1-plans [R3p1] Plans as data (Premium, Max first) -> needs PostgreSQL RLS, hash-chained ledger in admin-desk/sql/AD02.sql
 warn ADMIN DESK OPEN until 24 Nov: R3p2-webhook [R3p2] Polar signed webhook door -> needs Rust Tokio axum, HMAC-SHA256 constant-time in admin-desk/server/src/polar.rs
