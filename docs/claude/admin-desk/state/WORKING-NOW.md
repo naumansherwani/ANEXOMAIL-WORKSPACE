@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 05:16 PKT) - read this FIRST for the Desk after a compaction
-DOING: 1m-1 code done (B1 queue pressure + B2 SLA at risk), waits his ad-auto + desk-install + my Chrome look
-NEXT STEP: his 2 server lines, Chrome look, then 1m-1 GREEN, next B3
-HIS LAST WORD: his 05:13: start 1m
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 05:22 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1m-1 AD11 ADVANCED rewrite pushed; waits his ad-auto + desk-install + my Chrome look
+NEXT STEP: his 2 server lines, Chrome look, 1m-1 GREEN, next B3
+HIS LAST WORD: his 05:18: read all old SQL, write world-class AD11
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 0f80d453 23 Nov 05:16 ledger line 0dde2fcb
 - 0dde2fcb 23 Nov 05:16 1m-1 B1+B2 code, 1l GREEN
 - 7c5e7107 23 Nov 05:10 ledger line bc169da6
 - bc169da6 23 Nov 05:10 Overview S4 reminder gate
@@ -72,10 +73,24 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - bc150900 23 Nov 05:06 Overview S4 later
 - db3b2083 23 Nov 05:04 ledger line 74022546
 - 74022546 23 Nov 05:04 1l live desktop proof
-- 21250ac7 23 Nov 05:02 ledger line bd60ce1b
 
 ## Uncommitted Desk files
+ M admin-desk/D6-CARDS-LIST-23NOV.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/NOW-LIST-23NOV.md
+ M admin-desk/server/src/pressure.rs
+ M admin-desk/sql/AD11.sql
+ M admin-desk/sql/checks/AD11-check.sql
+ M docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
+ M docs/claude/admin-desk/server/src/pressure.rs
+ M docs/claude/admin-desk/sql/AD11.sql
+ M docs/claude/admin-desk/sql/checks/AD11-check.sql
  M docs/claude/admin-desk/state/WORKING-NOW.md
+ M founder-web/src/desk/DeskPressure.tsx
+ M founder-web/src/desk/desk_pressure_pure.test.ts
+ M founder-web/src/desk/desk_pressure_pure.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

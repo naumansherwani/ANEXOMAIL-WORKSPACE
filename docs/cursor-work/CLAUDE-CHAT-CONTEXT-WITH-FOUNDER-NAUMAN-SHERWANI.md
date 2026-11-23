@@ -5452,3 +5452,7 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - OVERVIEW S4 REMINDER gate + plan + WORKING-NOW line, TESTED: gate run on this commit; TECH-LAW CHECKED
 
 - 1l GREEN (his server + my Chrome); 1m-1 CODE B1 queue pressure + B2 SLA at risk: AD11 + pressure.rs + DeskPressure.tsx, TESTED: scratch PG selftest + check 5/5, cargo 76 pass, bun 79 pass, tsc, vite; TECH-LAW CHECKED; GREEN waits his install + Chrome
+
+- 1m-1 AD11 ADVANCED: 1-minute hash-chained queue series, lazy sampler, team signal, aging, sparkline, trend, estimate, overload alert; TESTED: scratch PG selftest x2, 18 checks 0 false, cargo 76, bun 81, tsc, vite; TECH-LAW CHECKED; GREEN waits his install + Chrome
+
+- 1m-1 AD11 ADVANCED: 1-minute hash-chained queue series, lazy sampler, team signal, aging, sparkline, trend, estimate, overload alert, TESTED: scratch PG selftest x2, 18 checks 0 false, cargo 76 pass, bun 81 pass, tsc, vite; TECH-LAW CHECKED; GREEN waits his install + Chrome
