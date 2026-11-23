@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 04:48 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: 1l code done, waits his ad-auto + desk-install + my Chrome look
-NEXT STEP: his 2 server lines, Chrome look, then 1l GREEN
-HIS LAST WORD: his order: write the researched points as code
+# WORKING NOW (manual checkpoint, 23 Nov 2026 05:01 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: SQL files zero-padded; 1l installed on his server (AD10 CHECK OK, 3 PROOF SAME), my Chrome look next
+NEXT STEP: Chrome look: create TEST escalation, then 1l GREEN
+HIS LAST WORD: his order: AD10 sorted after AD9, save context
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
 ## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)
@@ -18,20 +18,65 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 446f959a 23 Nov 04:48 ledger line 3c87ed51
 - 3c87ed51 23 Nov 04:48 1l D5c Escalate code
 - 988153f9 23 Nov 04:36 ledger line 8f1f5669
 - 8f1f5669 23 Nov 04:36 1l research + contract before code
 - d23a5a2e 23 Nov 04:30 ledger line f4afe900
-- f4afe900 23 Nov 04:30 founder inbox plan + reminder gate
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/state/WORKING-NOW.md
+ M admin-desk/gates/DESK-FEATURES.json
+ M admin-desk/scripts/gen-pkg-seed.py
+ D admin-desk/sql/AD1.sql
+ D admin-desk/sql/AD1/00-FOUNDER-TECH-RULE.md
+ D admin-desk/sql/AD1/README.md
+ D admin-desk/sql/AD1b.sql
+ D admin-desk/sql/AD1c.sql
+ D admin-desk/sql/AD2.sql
+ D admin-desk/sql/AD3.sql
+ D admin-desk/sql/AD4.sql
+ D admin-desk/sql/AD4b.sql
+ D admin-desk/sql/AD5.sql
+ D admin-desk/sql/AD6.sql
+ D admin-desk/sql/AD6b.sql
+ D admin-desk/sql/AD6c.sql
+ D admin-desk/sql/AD6d.sql
+ D admin-desk/sql/AD7.sql
+ D admin-desk/sql/AD8.sql
+ D admin-desk/sql/AD9.sql
+ D admin-desk/sql/AD9b.sql
+ M admin-desk/sql/README.md
+ D admin-desk/sql/checks/AD1-check.sql
+ D admin-desk/sql/checks/AD1b-check.sql
+ D admin-desk/sql/checks/AD1c-check.sql
+ D admin-desk/sql/checks/AD2-check.sql
+ D admin-desk/sql/checks/AD3-check.sql
+ D admin-desk/sql/checks/AD4-check.sql
+ D admin-desk/sql/checks/AD4b-check.sql
+ D admin-desk/sql/checks/AD5-check.sql
+ D admin-desk/sql/checks/AD6-check.sql
+ D admin-desk/sql/checks/AD6b-check.sql
+ D admin-desk/sql/checks/AD6c-check.sql
+ D admin-desk/sql/checks/AD6d-check.sql
+ D admin-desk/sql/checks/AD7-check.sql
+ D admin-desk/sql/checks/AD8-check.sql
+ D admin-desk/sql/checks/AD9-check.sql
+ D admin-desk/sql/checks/AD9b-check.sql
+ M admin-desk/sql/checks/README.md
+ M admin-desk/tools/gen-ad9.py
+ M docs/claude/admin-desk/gates/DESK-FEATURES.json
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 47 ++--------------------------------------
- 1 file changed, 2 insertions(+), 45 deletions(-)
+ docs/claude/admin-desk/sql/checks/AD7-check.sql    |  15 -
+ docs/claude/admin-desk/sql/checks/AD8-check.sql    |  14 -
+ docs/claude/admin-desk/sql/checks/AD9-check.sql    |  12 -
+ docs/claude/admin-desk/sql/checks/AD9b-check.sql   |   8 -
+ docs/claude/admin-desk/sql/checks/README.md        |   2 +-
+ docs/claude/admin-desk/tools/gen-ad9.py            |   6 +-
+ docs/claude/state/WORKING-NOW.md                   |  64 +-
+ 79 files changed, 65 insertions(+), 7293 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -42,4 +87,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (81efe1189ffa190fdebe3d6df60b690eb3ab2a68)
+WIP snapshot: refs/wip/last (2d20441cae3efcd933e9513f00cfda7825f6c89e)

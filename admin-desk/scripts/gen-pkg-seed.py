@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""D5a-2: build sql/AD6b.sql (registry seed) from the published landing-page list src/lib/plans.ts. Features + limits only, never a price.
+"""D5a-2: build sql/AD06b.sql (registry seed) from the published landing-page list src/lib/plans.ts. Features + limits only, never a price.
 usage: python3 docs/claude/admin-desk/scripts/gen-pkg-seed.py   (needs bun; run from the repo root)"""
 import json, re, subprocess, hashlib, os
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", ".."))
@@ -50,5 +50,5 @@ for pid, p in plans.items():
     L.append(f"    v := desk.fadm_pkg_publish(o, '{pid}', '{p['name']}', current_date, '{json.dumps(feats(pid))}'::jsonb, '{json.dumps(lim)}'::jsonb, 0, 3, {('$s$'+SLA[pid]+'$s$') if pid in SLA else 'NULL'}, NULL);")
     L.append("  END IF;")
 L += ["END $$;", "COMMIT;"]
-open(os.path.join(ROOT, "docs/claude/admin-desk/sql/AD6b.sql"), "w").write("\n".join(L) + "\n")
+open(os.path.join(ROOT, "docs/claude/admin-desk/sql/AD06b.sql"), "w").write("\n".join(L) + "\n")
 print({k: len(feats(k)) for k in plans})

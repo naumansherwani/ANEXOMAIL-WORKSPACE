@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generates sql/AD9.sql (runbook library) and runbooks.seed.json from RUNBOOK-LIBRARY-DRAFT-22NOV.md section C. Run: python3 tools/gen-ad9.py"""
+"""Generates sql/AD09.sql (runbook library) and runbooks.seed.json from RUNBOOK-LIBRARY-DRAFT-22NOV.md section C. Run: python3 tools/gen-ad9.py"""
 import json, re, os
 D = os.path.dirname(os.path.abspath(__file__)) + "/.."
 md = open(D + "/RUNBOOK-LIBRARY-DRAFT-22NOV.md", encoding="utf-8").read()
@@ -47,5 +47,5 @@ tpl = open(D + "/tools/AD9.template.sql", encoding="utf-8").read()
 tpl = "\n".join(l + TAG if W.search(l) and "no-money-gate-ok" not in l and "@@SEED@@" not in l and not l.lstrip().startswith("--") else l for l in tpl.split("\n"))
 final = tpl.replace("@@SEED@@", seed).replace("@@NEVER@@", NEVER)
 final = "\n".join(l + TAG if W.search(l) and "no-money-gate-ok" not in l and not l.lstrip().startswith("--") else l for l in final.split("\n"))
-open(D + "/sql/AD9.sql", "w", encoding="utf-8").write(final)
-print("AD9.sql written,", len(rbs), "runbooks")
+open(D + "/sql/AD09.sql", "w", encoding="utf-8").write(final)
+print("AD09.sql written,", len(rbs), "runbooks")

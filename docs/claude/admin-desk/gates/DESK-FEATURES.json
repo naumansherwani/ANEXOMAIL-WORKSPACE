@@ -125,7 +125,7 @@
    "id": "R3a2-sql",
    "phase": "R3a2",
    "feature": "Desk schema: owner, sessions, hash-chained ledger, RLS, desk_app role",
-   "file": "admin-desk/sql/AD1.sql",
+   "file": "admin-desk/sql/AD01.sql",
    "tech": "PostgreSQL RLS, append-only hash chain, desk_app role",
    "must": [
     "row level security",
@@ -152,7 +152,7 @@
    "id": "R3p1-plans",
    "phase": "R3p1",
    "feature": "Plans as data (Premium, Max first)",
-   "file": "admin-desk/sql/AD2.sql",
+   "file": "admin-desk/sql/AD02.sql",
    "tech": "PostgreSQL RLS, hash-chained ledger",
    "must": [
     "fadm_plans",

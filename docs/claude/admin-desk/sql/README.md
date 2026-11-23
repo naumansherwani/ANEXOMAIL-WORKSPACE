@@ -1,2 +1,4 @@
 # Desk SQL series: AD1, AD2, ... (his 21 Nov 2026 08:19 word; founder and awam keep the E series)
 SCHEMA-FIRST LAW applies: before writing ADn read the schema that owns the tables (Desk tables are fadm_* ; the previous AD file; docs/claude/SQL-SCHEMA-FIRST-LAW-20NOV.md). First line of each file empty; each ADn has a CHECK and a selftest; desk_app role has grants on fadm_* only, ZERO on founder tables. Next free number = AD1 (nothing written yet). A Desk runner (ad-sql-run.sh) is written together with AD1.
+
+## SQL file names are zero-padded since 23 Nov 05:0x PKT (his word: AD10 must sort after AD9): AD01..AD09b, AD10. Old docs saying AD1/AD7 mean AD01/AD07.
