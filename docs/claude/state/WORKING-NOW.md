@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 07:56 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: removed 'Opens when it is connected' everywhere in the Desk, tooltip = short key only
-NEXT STEP: his desk-install + founder-install pastes, my Chrome looks; awam only on his word; B9
-HIS LAST WORD: his 07:56 order
+# WORKING NOW (manual checkpoint, 23 Nov 2026 08:01 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: awam keys code done + tested, not installed
+NEXT STEP: his desk/founder/awam install pastes + my Chrome looks; B9
+HIS LAST WORD: his 07:58 order awam keys whole website
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -19,20 +19,36 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- f39acb99 23 Nov 07:56 ledger line 00974202
 - 00974202 23 Nov 07:56 Desk: remove Opens when it is connected, tooltip is the short key only
 - 4a22e32a 23 Nov 07:52 ledger line 60aaff50
 - 60aaff50 23 Nov 07:52 Founder keys: Ctrl+D, Ctrl+/, Alt+Shift pages, walk, sidebar follows
 - e02abe02 23 Nov 07:46 ledger line 489d6412
-- 489d6412 23 Nov 07:46 Desk 1m-keys: Ctrl+K palette, Ctrl+/ help, Alt+Shift keys for every rail folder
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/NOW-LIST-23NOV.md
+ M docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M lovable-gold/MANIFEST.sha256
+ M lovable-gold/awam/src/components/app/AppShell.tsx
+ M src/components/app/AppShell.tsx
+?? src/components/app/AwamKeys.tsx
+?? src/lib/awam-keys.test.ts
+?? src/lib/awam-keys.ts
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 28 ++--------------------------
- 1 file changed, 2 insertions(+), 26 deletions(-)
+ docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md    |  2 ++
+ docs/claude/admin-desk/NOW-LIST-23NOV.md          |  2 ++
+ docs/claude/state/WORKING-NOW.md                  | 33 +++++++++++------------
+ docs/claude/tech-contracts/CURRENT.md             |  8 ++++++
+ lovable-gold/MANIFEST.sha256                      |  2 +-
+ lovable-gold/awam/src/components/app/AppShell.tsx |  8 +++++-
+ src/components/app/AppShell.tsx                   |  8 +++++-
+ 8 files changed, 44 insertions(+), 21 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -43,4 +59,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (df7488cfc85d3fcfd33c0450b9b2de312b7c1308)
+WIP snapshot: refs/wip/last (33390d992136807666184559a24b83600a2ab3fd)

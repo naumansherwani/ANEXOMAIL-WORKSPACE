@@ -8,6 +8,14 @@
 | React 19 command palette (role dialog, combobox + listbox, arrows, Enter, Esc, focus returns) that reaches every rail folder by name, and a Keys help sheet; aria-keyshortcuts on every rail button (WCAG 2.1.1 / 2.1.4: click still works) | DeskKeys.tsx, DeskShell.tsx, DeskPages.tsx | yes | tsc, vite build, my Chrome look of each key family |
 | Rail follows the key (scroll-follow already GREEN, data-here) | DeskShell.tsx | yes | my Chrome look |
 
+# TECH CONTRACT FOR PHASE: AWAM KEYS (his order 23 Nov 2026 07:58: "ab awam ke liye likho, yeh puri website ke liye hogi"), written 08:2x PKT BEFORE code. NEW files only; the 43 frozen awam core files are NOT touched (CORE FREEZE); nothing imported from the Desk or the founder app. PLAN/RESEARCH: docs/claude/admin-desk/RAIL-KEYS-PLAN-23NOV.md (same ADVANCE-RESEARCH [1m-keys]).
+
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| TypeScript pure awam key table (18 pages), Alt+Shift+letter by e.code, Ctrl+D home, Ctrl+/ help, Alt+Shift Up/Down walk over the rail as drawn; a key used twice = failing test | src/lib/awam-keys.ts + awam-keys.test.ts | yes | bun test 4 pass, tsc |
+| React 19 + shadcn Dialog Keys sheet and one hook (typing guard, open-dialog guard, rail scroll follows the page, chat key opens the new tab like the rail); aria-keyshortcuts + aria-current on rail links | src/components/app/AwamKeys.tsx, AppShell.tsx (one import block, one hook call, one mount, rail link attributes) | yes | tsc, vite build, my Chrome look after his awam pull |
+| Ctrl+K search (CommandPalette.tsx) and mail keys j/k/e/s/c kept untouched (mail keys ignore Alt, no clash) | unchanged | yes | read in code |
+
 # TECH CONTRACT FOR PHASE: FOUNDER KEYS (his order 23 Nov 2026 07:51: "yeh same founder ke liye banao phir awam ke liye", additive only, written 07:5x PKT BEFORE code; the Desk code is NOT imported, Desk Isolation Law). PLAN: docs/claude/admin-desk/RAIL-KEYS-PLAN-23NOV.md (ADVANCE-RESEARCH [1m-keys], same research); awam = the NEXT step, separate files.
 
 | Advance technology | Where in code | IN CODE | Proof |
@@ -3463,3 +3471,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - founder keys code done, WIRED: YES / REAL: not yet (his founder-install + my Chrome look), TECH-LAW CHECKED, TESTED: bun 625 pass (3 new), tsc, vite build
 
 - Desk tooltip text removed, short key only, WIRED: YES / REAL: not yet (his desk-install + my Chrome look), TECH-LAW CHECKED, TESTED: tsc, bun 99 pass, vite build
+
+- awam keys code done, WIRED: YES / REAL: not yet (his awam pull + my Chrome look), TECH-LAW CHECKED, TESTED: bun awam-keys 4 pass, tsc, vite build; 4 kernel-pin tests fail with and without this change

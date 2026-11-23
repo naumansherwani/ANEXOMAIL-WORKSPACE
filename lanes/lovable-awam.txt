@@ -221,6 +221,7 @@ src/assets/land-110m.json
 src/components/00-FOUNDER-TECH-RULE.md
 src/components/app/00-FOUNDER-TECH-RULE.md
 src/components/app/AppShell.tsx
+src/components/app/AwamKeys.tsx
 src/components/app/CommandPalette.tsx
 src/components/app/ComposeOverlay.tsx
 src/components/app/ConfirmButton.tsx
@@ -529,6 +530,8 @@ src/lib/appeal-evidence-core.ts
 src/lib/appeal-evidence.ts
 src/lib/assignee-name.ts
 src/lib/auth.tsx
+src/lib/awam-keys.test.ts
+src/lib/awam-keys.ts
 src/lib/billing-platform.ts
 src/lib/booking.ts
 src/lib/caldav.test.ts

@@ -5496,3 +5496,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - founder keys code done, WIRED: YES / REAL: not yet (his founder-install + my Chrome look), TECH-LAW CHECKED, TESTED: bun 625 pass (3 new), tsc, vite build
 
 - Desk tooltip text removed, short key only, WIRED: YES / REAL: not yet (his desk-install + my Chrome look), TECH-LAW CHECKED, TESTED: tsc, bun 99 pass, vite build
+
+- awam keys code done, WIRED: YES / REAL: not yet (his awam pull + my Chrome look), TECH-LAW CHECKED, TESTED: bun awam-keys 4 pass, tsc, vite build; 4 kernel-pin tests fail with and without this change

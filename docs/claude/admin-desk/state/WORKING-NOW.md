@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 07:56 PKT) - read this FIRST for the Desk after a compaction
-DOING: removed 'Opens when it is connected' everywhere in the Desk, tooltip = short key only
-NEXT STEP: his desk-install + founder-install pastes, my Chrome looks; awam only on his word; B9
-HIS LAST WORD: his 07:56 order
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 08:01 PKT) - read this FIRST for the Desk after a compaction
+DOING: awam keys code done + tested, not installed
+NEXT STEP: his desk/founder/awam install pastes + my Chrome looks; B9
+HIS LAST WORD: his 07:58 order awam keys whole website
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- f39acb99 23 Nov 07:56 ledger line 00974202
 - 00974202 23 Nov 07:56 Desk: remove Opens when it is connected, tooltip is the short key only
 - 4a22e32a 23 Nov 07:52 ledger line 60aaff50
 - 60aaff50 23 Nov 07:52 Founder keys: Ctrl+D, Ctrl+/, Alt+Shift pages, walk, sidebar follows
@@ -72,9 +73,10 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 489d6412 23 Nov 07:46 Desk 1m-keys: Ctrl+K palette, Ctrl+/ help, Alt+Shift keys for every rail folder
 - 0c68f7a6 23 Nov 07:37 ledger line 1878dd5d
 - 1878dd5d 23 Nov 07:37 Desk rail keys plan + research
-- 66394b6e 23 Nov 07:30 ledger line 2fcb295b
 
 ## Uncommitted Desk files
+ M admin-desk/NOW-LIST-23NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)

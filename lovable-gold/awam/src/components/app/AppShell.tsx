@@ -56,6 +56,8 @@ import { useAuth } from "@/lib/auth";
 import { warmKernel } from "@/lib/kernel/boot";
 import { useLiveEvents } from "@/lib/live";
 import { useLocale } from "@/lib/i18n";
+import { useAwamKeys } from "@/components/app/AwamKeys";
+import { awamKeyLabel } from "@/lib/awam-keys";
 import { notify } from "@/lib/notify";
 import { useAccountState } from "@/lib/trial";
 
@@ -113,6 +115,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   useLiveEvents(); // B4: one shared WebTransport push connection for every plan and account kind
   useEffect(() => warmKernel(), []); // Rule 52: kernel page ke saath jaagta hai (pehli use ka intezar nahi)
   const { t } = useLocale();
+  const awamKeys = useAwamKeys((to) => void navigate({ to: to as never }), pathname, t); // his 23 Nov 07:58 order: keys for every page
   const account = useAccountState();
   const trialAllowed = new Set(account.data?.trial_features ?? []);
   // Host once on mount (/app is ssr:false). Founder view sirf founder host.
@@ -219,6 +222,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <TouchScrollbar />
       <FxAmbient plan={billed} />
       <CommandPalette open={open} onOpenChange={setOpen} />
+      {awamKeys.help}
       <ReminderWatcher />
 
       {/* Top bar — brand, org, one search entry for the entire product */}
@@ -359,8 +363,10 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <Link
                   key={item.to}
                   to={item.to}
-                  title={collapsed ? t(item.label) : undefined}
+                  title={collapsed ? t(item.label) + (awamKeyLabel(item.to) ? " · " + awamKeyLabel(item.to) : "") : awamKeyLabel(item.to) || undefined}
                   aria-label={t(item.label)}
+                  aria-current={active ? "page" : undefined}
+                  aria-keyshortcuts={awamKeyLabel(item.to) || undefined}
                   className={`relative flex items-center gap-2.5 rounded-lg py-2 text-[13px] font-medium transition-opacity ${
                     collapsed ? "justify-center px-2" : "px-3"
                   } ${
