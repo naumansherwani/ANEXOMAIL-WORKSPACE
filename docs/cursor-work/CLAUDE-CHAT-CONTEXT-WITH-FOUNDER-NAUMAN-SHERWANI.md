@@ -5460,3 +5460,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 1m-1 GREEN B1 queue pressure + B2 SLA at risk, TESTED: his ad-auto AD11 CHECK OK 9/9, his desk-install bundle+kernel+binary SAME, my Chrome look queue + sla pages; TECH-LAW CHECKED; WIRED: YES / REAL: YES
 
 - 1m-1 GREEN B1 queue pressure + B2 SLA at risk, TESTED: his ad-auto AD11 CHECK OK 9/9, his desk-install bundle+kernel+binary SAME, my Chrome look queue + sla pages; TECH-LAW CHECKED; WIRED: YES / REAL: YES
+
+- 1m-2 B3 SECURITY HEALTH CODE: AD12 weighted 8-check score + hourly hash-chained series + drop alert, security.rs, DeskSecurity.tsx, TESTED: scratch PG selftest x2, 19 checks 0 false, cargo 81 pass, bun 87 pass, tsc, vite; TECH-LAW CHECKED; GREEN waits his install + Chrome

@@ -128,6 +128,7 @@ admin-desk/server/src/packages.rs
 admin-desk/server/src/pressure.rs
 admin-desk/server/src/probes.rs
 admin-desk/server/src/runbooks.rs
+admin-desk/server/src/security.rs
 admin-desk/server/src/sign.rs
 admin-desk/server/src/signed.rs
 admin-desk/server/src/wt.rs
@@ -152,6 +153,7 @@ admin-desk/sql/AD09.sql
 admin-desk/sql/AD09b.sql
 admin-desk/sql/AD10.sql
 admin-desk/sql/AD11.sql
+admin-desk/sql/AD12.sql
 admin-desk/sql/README.md
 admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/checks/AD01-check.sql
@@ -172,6 +174,7 @@ admin-desk/sql/checks/AD09-check.sql
 admin-desk/sql/checks/AD09b-check.sql
 admin-desk/sql/checks/AD10-check.sql
 admin-desk/sql/checks/AD11-check.sql
+admin-desk/sql/checks/AD12-check.sql
 admin-desk/sql/checks/README.md
 admin-desk/state/00-FOUNDER-TECH-RULE.md
 admin-desk/state/COMPACT-SAVE.md

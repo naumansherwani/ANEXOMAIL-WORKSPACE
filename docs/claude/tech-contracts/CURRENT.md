@@ -1,5 +1,13 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-2 B3 Security health), written 23 Nov 2026 05:4x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (S1..S7)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL AD12: read-only SECURITY DEFINER door fadm_security_health (weighted closed list of 8 checks, aggregate only, staff.read gate), hourly append-only hash-chained score series (forced RLS, frozen triggers, lazy advisory-lock sampler), score-drop alert on the AD03 feed (schema-first: AD01, AD02, AD11 read) | sql/AD12.sql, checks/AD12-check.sql | yes | scratch PostgreSQL: selftest (20+ rules incl. synthetic-score edges and real-count deltas) passes twice, AD12 check 8/8 true, all 19 check files 0 false rows |
+| Rust + Tokio + Axum 0.8 door /desk/v1/security/health over the sealed HTTP/3 router, response-shape check | server/src/security.rs, main.rs | yes | cargo 81 pass (shape tests: weights, order, na rule, counts add to 8, no personal field) |
+| Rule 52 kernel-verified read, fail-closed Data unavailable, 403 = "This is for people who manage staff" | desk_security_pure.ts, DeskSecurity.tsx | yes | bun tests 87 pass, tsc clean; my Chrome look next |
+| React 19 + TypeScript Security health card wired (no longer "Not connected yet"), Ice-blue marks | DeskSecurity.tsx, desk_cards.ts, DeskCards.tsx | yes | vite build ok; my Chrome look next |
+
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-1 B1 Queue pressure + B2 SLA at risk), written 23 Nov 2026 05:2x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (C1..C10)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3372,3 +3380,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 1m-1 GREEN B1 queue pressure + B2 SLA at risk, TESTED: his ad-auto AD11 CHECK OK 9/9, his desk-install bundle+kernel+binary SAME, my Chrome look queue + sla pages; TECH-LAW CHECKED; WIRED: YES / REAL: YES
 
 - 1m-1 GREEN B1 queue pressure + B2 SLA at risk, TESTED: his ad-auto AD11 CHECK OK 9/9, his desk-install bundle+kernel+binary SAME, my Chrome look queue + sla pages; TECH-LAW CHECKED; WIRED: YES / REAL: YES
+
+- 1m-2 B3 SECURITY HEALTH CODE: AD12 weighted 8-check score + hourly hash-chained series + drop alert, security.rs, DeskSecurity.tsx, TESTED: scratch PG selftest x2, 19 checks 0 false, cargo 81 pass, bun 87 pass, tsc, vite; TECH-LAW CHECKED; GREEN waits his install + Chrome

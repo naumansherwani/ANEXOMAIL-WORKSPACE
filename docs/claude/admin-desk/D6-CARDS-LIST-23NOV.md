@@ -24,3 +24,16 @@ SUB-PHASE 1m-1 = B1 Queue pressure + B2 SLA at risk (this block). The rest follo
 | C18 | fadm_queue_sample_chain_verify() recomputes the whole series chain; the CHECK file and the selftest call it. | AD01 | SHA-256 chain |
 SOURCES: https://front.com/blog/customer-service-dashboard ; https://support.zendesk.com/hc/en-us/articles/9757103543194 ; https://www.geckoboard.com/dashboard-examples/itsm/zendesk-sla-backlog-dashboard/ ; https://www.metabase.com/metrics/sla-breach-rate
 NAME NOTE: the blueprint reserved AD11 for "SLA clocks for all queues, automations, 7-day auto-mail gate"; the two thin read doors of 1m-1 take AD11 now (schema-first: AD07 and AD03 read first, nothing changed), the bigger SLA/automation SQL moves to AD12.
+
+## 1m-2 = B3 SECURITY HEALTH (this block, 23 Nov 2026 05:4x PKT; web research: Google Workspace "Monitor the health of your security settings" + "Get started with the security health page", Microsoft Secure Score idea of weighted recommendations). SCHEMA-FIRST read: AD01 (fadm_owner, fadm_passkey), AD02 (passkey columns aaguid/backup_eligible/slot/revoked_at, fadm_aaguid_allow, fadm_recovery, fadm_rel source/expires_at/revoked_at, fadm_alert, fadm_authorize + action staff.read), AD11 (sample series pattern).
+| # | Point (1m-2: B3 Security health of the Desk itself) | From | Advance technology next to it |
+|---|---|---|---|
+| S1 | ONE weighted SCORE 0..100 from a CLOSED list of 8 checks, each shown with what we have and what we need (have/of) and its weight; a check with nobody to check is "n/a" and does not count. Never a vague colour. | Google security health, Microsoft Secure Score | fadm_security_health (AD12), IMMUTABLE weights |
+| S2 | The 8 checks: every active staff member has a passkey (20) | two keys each (20) | all keys device-bound, none synced (15) | every key is an allowed model (10) | no open recovery (10) | no expired grant left un-revoked (10) | no break-glass active (10) | no unacknowledged high alert (5). | AD02 tables | PostgreSQL aggregates |
+| S3 | AGGREGATE ONLY: counts, never a name, e-mail, credential or key material. | zero-access spirit (B13) | selftest regex |
+| S4 | Only people who may list staff (action staff.read on the Desk department) see it; everyone else gets 403 and the card says "This is for people who manage staff". | AD02 authorize | fadm_authorize |
+| S5 | An append-only HOURLY series of the score (own SHA-256 chain, forced RLS, frozen triggers, lazy advisory-lock sampler, gaps kept) -> 24-point sparkline and a trend vs 24 hours ago. | AD11 pattern, E111 | PostgreSQL time series |
+| S6 | SCORE-DROP ALERT: a fall of 10 points or more between samples raises ONE high alert 'security.score_drop' (at most once per 6 hours) on the AD03 feed to the Urgent alerts card. | Google Alert Center | fadm_alert |
+| S7 | Rule 52 kernel-verified read, response-shape check in Rust and TypeScript, fail-closed Data unavailable; Ice-blue marks, no red. | Rule 52 | Rust + React 19 |
+SOURCES: https://knowledge.workspace.google.com/admin/security/monitor-the-health-of-your-security-settings ; https://support.google.com/a/answer/7491656
+NAME NOTE: AD12 is taken by this sub-phase (the bigger SLA/automation SQL moves to AD13).
