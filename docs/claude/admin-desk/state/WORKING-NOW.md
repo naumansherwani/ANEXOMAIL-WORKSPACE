@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 12:01 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 12:01 PKT) - read this FIRST for the Desk after a compaction
 DOING: Title + B9c installed, 390/820 and Y4/Y5/Y6 open; blueprint updated
 NEXT STEP: title 390/820 look, B9c Y4/Y5/Y6 after his Y6 answer, then BL-29 CC1
 HIS LAST WORD: his 11:58 order (sone gaya)
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- bdd9471f 23 Nov 12:01 Status: title + B9c installed, blueprint and resume updated
 - db7190ba 23 Nov 11:50 ledger line 5a47b976
 - 5a47b976 23 Nov 11:50 Command Center title in the real Desk
 - 2b0fed22 23 Nov 11:47 ledger line 6847778f
@@ -72,16 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - a15f318c 23 Nov 11:44 ledger line c024beeb
 - c024beeb 23 Nov 11:44 Command Center title V23 light less
 - 26de16bf 23 Nov 11:44 ledger line 797ba7f5
-- 797ba7f5 23 Nov 11:44 Command Center title demo back to V21
 
 ## Uncommitted Desk files
-M  admin-desk/D6-CARDS-LIST-23NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
