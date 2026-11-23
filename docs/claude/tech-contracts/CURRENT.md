@@ -1,9 +1,14 @@
 <!--TECHLAW-->
 
-# TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-4 B9 Customers and Plans), written 23 Nov 2026 06:3x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (U1..U9)
+# TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, small step: Dashboard shortcut hint Ctrl+D, his 23 Nov 2026 06:42 word), written 23 Nov 2026 06:5x PKT BEFORE code. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (U1..U12 header; this step has its own rows below)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
-| PostgreSQL CP2 (awam database, Control Plane read-only role only): cp.census() counts per package and per service state, SECURITY DEFINER, search_path fixed, EXECUTE only for cp_lookup, no id/name/e-mail/money; world-class gate headers; schema-first CP1, AD04, AD06 read | control-plane/sql/CP2.sql, control-plane/sql/checks/CP2-check.sql | no | written next, selftest + CHECK on scratch |
+| React 19 + TypeScript keyboard handler: Ctrl+D (nothing else held, not while typing) goes to the Dashboard, hint text "Dashboard · Ctrl+D", pure function ctrlHomeTarget; the page takes the key from the browser bookmark shortcut (honest note to him) | desk_cards.ts, DeskPages.tsx, DeskShell.tsx | yes | bun 93 pass incl. ctrlHomeTarget cases, tsc clean, vite build ok |
+
+# TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-4 B9 Customers and Plans), written 23 Nov 2026 06:3x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (U1..U12, REWRITTEN under the FUTURE-PROOF LAW)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL CP2 (awam database, Control Plane read-only role only): cp.census() = dimensions (package, state, interval, size band, 12-month growth, 30-day ended, renewals due) + SIX real needing-you-now signals (grace, not active yet, ended, payment received but not active, seats 90/95, storage 90/95) from the real awam tables, signal registry, SECURITY DEFINER, search_path fixed, EXECUTE only for cp_lookup, no id/name/e-mail/money (timestamps only from billing_intents); world-class gate headers; schema-first CP1, AD04, AD06 read | control-plane/sql/CP2.sql, control-plane/sql/checks/CP2-check.sql | no | written next, selftest + CHECK on scratch |
 | Rust Control Plane census answer (Ed25519 signed, replay nonce) over HTTP/3 UDP 4410, request verified in Rust | control-plane/src/answer.rs, core.rs, verify.rs, db.rs | no | cargo tests |
 | PostgreSQL AD14: fadm_census_sample hourly append-only hash-chained series (forced RLS, frozen triggers, BRIN), SECURITY DEFINER fadm_census_record + door fadm_customers_board (same right as the plan lookup) | sql/AD14.sql, sql/checks/AD14-check.sql | no | selftest + CHECK on scratch |
 | Rust + Tokio + Axum 0.8 door /desk/v1/customers/census over the sealed HTTP/3 router, Control Plane call with fresh 15 s, deadline 6 s, breaker, shape check | server/src/customers.rs, main.rs | no | cargo tests |
@@ -3412,3 +3417,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 1m-3 B8 Staff online and shifts GREEN (23 Nov 06:2x PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED; his ad-auto AD13 CHECK OK 7/7, desk-install 3 PROOF SAME at 0c9e3518d, my Chrome real board), next 1m-4 B9, TESTED: his server pastes + my live Chrome look
 
 - 1m-4 B9 Customers and Plans: web research, list U1..U9, ADVANCE-RESEARCH line, contract block written before code (docs only; TECH-LAW CHECKED, TESTED: rules-gate 0 fail, rows IN CODE=no until code)
+
+- FUTURE-PROOF LAW + gate (his 23 Nov 06:42), 1m-4 B9 plan rewritten with six real signals from the real awam tables, Dashboard hint G then D -> Ctrl+D (TECH-LAW CHECKED, TESTED: gate probe fails on a new 'Not measured' line, bun 93 pass, tsc, vite)

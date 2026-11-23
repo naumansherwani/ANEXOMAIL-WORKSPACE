@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 06:32 PKT) - read this FIRST for the Desk after a compaction
-DOING: 1m-4 B9 Customers and Plans: research + list U1..U9 + ADVANCE-RESEARCH + CURRENT.md block written (rows no); SQL CP2 + AD14 next
-NEXT STEP: write control-plane/sql/CP2.sql (cp.census) + CP2-check, control-plane Rust census answer, AD14.sql + check, customers.rs, TS card; each with gate headers; scratch tests
-HIS LAST WORD: his 06:31 order: plan points first
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 06:44 PKT) - read this FIRST for the Desk after a compaction
+DOING: FUTURE-PROOF LAW written + gate; 1m-4 B9 plan rewritten (six real signals, U1..U12); Ctrl+D Dashboard shortcut done; B9 code (CP2, AD14) next
+NEXT STEP: write CP2.sql + check, control-plane census answer, AD14, customers.rs, DeskCustomers.tsx; NEVER 'Not measured'; zero is data
+HIS LAST WORD: his 06:42 FUTURE-PROOF mindset
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 5098e513 23 Nov 06:32 ledger line 66b22bbc
 - 66b22bbc 23 Nov 06:32 1m-4 B9 plan
 - e6a014e0 23 Nov 06:25 ledger line 0c2930a6
 - 0c2930a6 23 Nov 06:25 1m-3 B8 GREEN
@@ -72,10 +73,19 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - fd2c053f 23 Nov 06:13 1m-3 B8 code
 - ec0e9286 23 Nov 06:08 ledger line 672841c2
 - 672841c2 23 Nov 06:08 1m-3 B8 plan
-- b5c7c16d 23 Nov 06:02 ledger line 148ef5af
 
 ## Uncommitted Desk files
+ M admin-desk/D6-CARDS-LIST-23NOV.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/NOW-LIST-23NOV.md
+ M docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+ M founder-web/src/desk/DeskPages.tsx
+ M founder-web/src/desk/DeskShell.tsx
+ M founder-web/src/desk/desk_cards.test.ts
+ M founder-web/src/desk/desk_cards.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

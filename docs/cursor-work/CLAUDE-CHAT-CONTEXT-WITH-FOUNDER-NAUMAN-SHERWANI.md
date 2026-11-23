@@ -5474,3 +5474,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 1m-3 B8 Staff online and shifts GREEN (23 Nov 06:2x PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED; his ad-auto AD13 CHECK OK 7/7, desk-install 3 PROOF SAME at 0c9e3518d, my Chrome real board), next 1m-4 B9, TESTED: his server pastes + my live Chrome look
 
 - 1m-4 B9 Customers and Plans: web research, list U1..U9, ADVANCE-RESEARCH line, contract block written before code (docs only; TECH-LAW CHECKED, TESTED: rules-gate 0 fail, rows IN CODE=no until code)
+
+- FUTURE-PROOF LAW + gate (his 23 Nov 06:42), 1m-4 B9 plan rewritten with six real signals from the real awam tables, Dashboard hint G then D -> Ctrl+D (TECH-LAW CHECKED, TESTED: gate probe fails on a new 'Not measured' line, bun 93 pass, tsc, vite)

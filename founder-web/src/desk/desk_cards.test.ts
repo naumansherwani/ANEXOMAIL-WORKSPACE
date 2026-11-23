@@ -38,3 +38,10 @@ test("D2 alert actions follow the status, closing needs a confirm, bodies match 
   expect(actBody(7, "ack")).toEqual({ alert: 7, event: "ack" }); expect(actBody(7, "resolve")).toEqual({ alert: 7, event: "status", status: "resolved" });
   expect(actMessage(200).ok).toBe(true); expect(actMessage(403).text).toContain("yourself"); expect(actMessage(422).ok).toBe(false); expect(actMessage(500).ok).toBe(false);
 });
+
+import { ctrlHomeTarget as _ctrlHome } from "./desk_cards";
+import { describe as _d, test as _t, expect as _e } from "bun:test";
+_d("Ctrl+D goes to the Dashboard (his 23 Nov 06:42 word)", () => {
+  const k = (o: Partial<{ code: string; altKey: boolean; shiftKey: boolean; ctrlKey: boolean; metaKey: boolean }>) => ({ code: "KeyD", altKey: false, shiftKey: false, ctrlKey: true, metaKey: false, ...o });
+  _t("Ctrl+D only", () => { _e(_ctrlHome(k({}))).toBe("/dashboard"); _e(_ctrlHome(k({ shiftKey: true }))).toBeNull(); _e(_ctrlHome(k({ altKey: true }))).toBeNull(); _e(_ctrlHome(k({ metaKey: true }))).toBeNull(); _e(_ctrlHome(k({ ctrlKey: false }))).toBeNull(); _e(_ctrlHome(k({ code: "KeyE" }))).toBeNull(); });
+});

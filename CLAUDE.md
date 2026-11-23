@@ -75,3 +75,5 @@ Full rules: `AGENTS.md` (Rules 1–73) and `docs/claude/founder/CODES/00-README-
 
 > ## >>> RESEARCH-IN-BLUEPRINT LAW (his 23 Nov 03:1x, STRICT, all website SOPs): web-research advance technology goes in the phase LIST + blueprint + NOW-LIST BEFORE commit; gate "RESEARCH IN BLUEPRINT" stops Claude; docs/claude/admin-desk/RESEARCH-IN-BLUEPRINT-LAW-23NOV.md <<<
 > ## >>> SQL WORLD-CLASS LAW (his 23 Nov 06:01, founder + awam + Desk, gate "SQL WORLD-CLASS"): every NEW sql = web research -> list -> ADVANCE-RESEARCH -> CURRENT.md -> read older SQL -> advance SQL with SCHEMA-FIRST / ADVANCE-RESEARCH / CHECK-FILE header, selftest, forced RLS, REVOKE PUBLIC: docs/claude/SQL-WORLD-CLASS-LAW-23NOV.md <<<
+
+> ## >>> FUTURE-PROOF LAW (his 23 Nov 06:42, founder + awam + Desk, gate "FUTURE-PROOF"): we build the system for when the business is big (Zendesk-class and beyond), ONCE. NEVER "Not measured yet": web-search how the best systems do it, design the real signal from the real tables, build it complete; zero is data. docs/claude/FUTURE-PROOF-LAW-23NOV.md <<<

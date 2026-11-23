@@ -109,6 +109,10 @@ export function chordTarget(armed: boolean, key: string): string | null | "arm" 
   if (k === HOME_KEY) return "/dashboard";
   const c = CARDS.find((x) => x.key === k); return c ? route(c.id) : null;
 }
+/** His 23 Nov 2026 06:42 word: the Dashboard hint says Ctrl+D. Ctrl+D (nothing else held) goes home; the page takes the key from the browser's bookmark shortcut (a bookmark is still one click away in the browser menu). */
+export function ctrlHomeTarget(e: { code: string; altKey: boolean; shiftKey: boolean; ctrlKey: boolean; metaKey: boolean }): string | null {
+  return e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey && e.code === "KeyD" ? "/dashboard" : null;
+}
 /** Keys must not fire while someone types. */
 export function typingTarget(t: { tagName?: string; isContentEditable?: boolean } | null): boolean {
   const n = (t?.tagName ?? "").toLowerCase(); return n === "input" || n === "textarea" || n === "select" || t?.isContentEditable === true;

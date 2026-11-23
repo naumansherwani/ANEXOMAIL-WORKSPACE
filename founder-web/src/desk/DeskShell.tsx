@@ -140,7 +140,7 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, s
               {g.label && <p className="dsk-grp">{g.label}</p>}
               {g.items.map((n) => (
                 <div className="dsk-row" key={n.key}>
-                  <button type="button" className="dsk-nav" aria-current={n.live ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={n.live ? (n.key === "dashboard" ? "Dashboard · G then D" : undefined) : "Opens when it is connected"} onClick={(e) => { if (!n.live) e.preventDefault(); else if (n.key === "dashboard") nav("/dashboard"); else nav(route(n.key)); }}>{n.glyph}<span>{n.label}</span></button>
+                  <button type="button" className="dsk-nav" aria-current={n.live ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={n.live ? (n.key === "dashboard" ? "Dashboard · Ctrl+D" : undefined) : "Opens when it is connected"} onClick={(e) => { if (!n.live) e.preventDefault(); else if (n.key === "dashboard") nav("/dashboard"); else nav(route(n.key)); }}>{n.glyph}<span>{n.label}</span></button>
                   {n.key !== "dashboard" && <button type="button" className="dsk-pin" aria-pressed={pins.includes(n.key)} aria-label={(pins.includes(n.key) ? "Unpin " : "Pin ") + n.label} onClick={() => toggle(n.key)}>{ico("M9 4h6l-1 6 3 3v2H7v-2l3-3zM12 15v5")}</button>}
                 </div>
               ))}

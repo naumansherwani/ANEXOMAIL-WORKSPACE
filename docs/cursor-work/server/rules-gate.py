@@ -375,6 +375,14 @@ for _sf in _sqlnew:
         fail("SQL WORLD-CLASS", f"{_sf}: SECURITY DEFINER without a fixed 'SET search_path'")
     if "CREATE FUNCTION" in _up.replace("CREATE OR REPLACE FUNCTION", "CREATE FUNCTION") and not re.search(r"REVOKE[^;]*FROM PUBLIC", _up):
         fail("SQL WORLD-CLASS", f"{_sf}: functions are created but nothing is REVOKEd FROM PUBLIC (AD1c lesson)")
+# FUTURE-PROOF (his word 23 Nov 2026 06:42 PKT, STRICT, whole website): the system is built ONCE for when the business is big; "Not measured" is an excuse, a real signal (zero is data) is the work. New lines in Desk source may not say it.
+_fp = [f for f in staged if re.match(r"(founder-web/src/desk/|docs/claude/admin-desk/server/src/).*\.(ts|tsx|rs)$", f)]
+for _f in _fp:
+    _d = subprocess.run(["git", "diff", "--cached", "-U0", "--no-color", "--", _f], capture_output=True, text=True).stdout
+    for _l in _d.splitlines():
+        if _l.startswith("+") and not _l.startswith("+++") and re.search(r"not measured", _l, re.I) and "future-proof-gate-ok" not in _l:
+            fail("FUTURE-PROOF", f"{_f}: a new line says 'Not measured'. His law (23 Nov 06:42): build the real signal from the real tables (web-search the best systems first); a zero is data, 'not measured' is an excuse. docs/claude/FUTURE-PROOF-LAW-23NOV.md")
+            break
 # FOUNDER INBOX REMINDER (his word 23 Nov 2026 04:29 PKT): the Admin Desk sends escalations to the founder; the founder-side receiver (Founder Escalation Inbox) is a LATER phase that must never be forgotten.
 # The plan file and its tag must stay in the Desk NOW-LIST, the Desk blueprint and the FOUNDER blueprint; once 1o DASHBOARD FINAL is GREEN the plan must say STATUS: STARTED or GREEN or the commit is stopped.
 _fi = "docs/claude/admin-desk/FOUNDER-ESCALATION-INBOX-PLAN-23NOV.md"

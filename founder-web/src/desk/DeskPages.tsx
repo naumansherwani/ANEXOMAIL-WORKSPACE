@@ -12,7 +12,7 @@ import { deskCall, DeskRefused, refusedMessage } from "./desk_kernel";
 import { openBridge, type Snapshot } from "./desk_stream";
 import { DeskBoot } from "./DeskBoot";
 import { barModel } from "./desk_bridge_pure";
-import { CHORD_MS, chordTarget, comboTarget, deskSub, typingTarget } from "./desk_cards";
+import { CHORD_MS, chordTarget, comboTarget, ctrlHomeTarget, deskSub, typingTarget } from "./desk_cards";
 
 const hasSession = () => { try { return !!window.localStorage.getItem(DESK_SESSION_KEY); } catch { return false; } };
 const go = (to: string) => window.location.replace(to);
@@ -58,7 +58,9 @@ function Dashboard() {
   useEffect(() => {
     let armed = 0;
     const on = (e: KeyboardEvent) => {
-      if (e.ctrlKey || e.metaKey || e.repeat || typingTarget(e.target as HTMLElement | null)) return;
+      if (e.repeat || typingTarget(e.target as HTMLElement | null)) return;
+      const h = ctrlHomeTarget(e); if (h) { e.preventDefault(); nav(h); return; } // Ctrl+D = Dashboard (his 23 Nov 06:42 word)
+      if (e.ctrlKey || e.metaKey) return;
       const c = comboTarget(e); if (c) { e.preventDefault(); nav(c); return; } // Alt+Shift+letter (his 08:04 word)
       if (e.altKey) return;
       const r = chordTarget(Date.now() < armed, e.key);
