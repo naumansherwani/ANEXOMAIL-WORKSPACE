@@ -406,6 +406,8 @@ docs/claude/admin-desk/demo/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/demo/COLOUR-DEMO-2-CINEMATIC-LIGHT-22NOV.png
 docs/claude/admin-desk/demo/COLOUR-DEMO-22NOV.md
 docs/claude/admin-desk/demo/COLOUR-DEMO-22NOV.png
+docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V6-BACKUP-BLUE-TITLE.html
+docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V7-LOGO-COLOUR-TITLE-PROPOSED.html
 docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
 docs/claude/admin-desk/demo/COMMAND-CENTER-FIRST-DEMO-23NOV-REJECTED.html
 docs/claude/admin-desk/docs/00-FOUNDER-TECH-RULE.md

@@ -3549,3 +3549,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - B9c blueprint and NOW-LIST: wrong SSE fallback wording removed (Desk bans HTTP fallback), TECH-LAW CHECKED, TESTED: docs only on top of tested code, gate 0 fail
 
 - Desk docs cleanup: every SSE fallback / HTTP fallback wording removed (Rule 52, HTTP/3 only, his 11:11 word), old 04:25 decision marked SUPERSEDED, code scan clean (only h3 ALPN), TECH-LAW CHECKED, TESTED: grep scan of Desk server, kernel and founder-web/src/desk: no SSE, no WebSocket, no http1/2; gate 0 fail
+
+- Command Center demo: V6 backed up, V7 (title in original logo A colours) proposed, TECH-LAW CHECKED, TESTED: demo files only, no Desk code changed, gate 0 fail
