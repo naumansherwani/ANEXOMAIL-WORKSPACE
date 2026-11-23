@@ -2617,3 +2617,5 @@
 - Real Desk title now COMMAND CENTER OS (only OS added, old file backed up) and AD06d CHECK repaired after his ad-auto CHECK FALSE, WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 127 pass, scratch PG16 AD06d CHECK 4 of 4 true, gate 0 fail
 
 - Real Desk title now COMMAND CENTER OS (only OS added, old file backed up) and AD06d CHECK repaired after his ad-auto CHECK FALSE, WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 127 pass, scratch PG16 AD06d CHECK 4 of 4 true, gate 0 fail
+
+- His three bridge answers locked verbatim (numbers, counts by default plus case-level access, Desk sees zero), order BL-46..OS-11 recorded in WORKING-NOW, NOW-LIST, blueprint and decision file, TECH-LAW CHECKED, TESTED: gate 0 fail
