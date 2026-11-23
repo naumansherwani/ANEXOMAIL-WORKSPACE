@@ -65,14 +65,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- b358e684 23 Nov 09:37 BL-04 advance tech line
+- 91228d40 23 Nov 09:37 ledger line 28f6ddfa
 - 28f6ddfa 23 Nov 09:37 Advance technology per billionaire phase
 - b4f64008 23 Nov 09:34 ledger line b4dae7fe
 - b4dae7fe 23 Nov 09:34 Billionaire after Dashboard order
 - 45f4339b 23 Nov 09:30 ledger line 428b240e
 - 428b240e 23 Nov 09:30 B10 GREEN + billionaire ORDER-LOCK
 - fdcf8ea0 23 Nov 09:17 ledger line 637c6c9f
-- 637c6c9f 23 Nov 09:17 Desk 1m-6 B10 Reports + billionaire list + gate
-- fcab5d3d 23 Nov 09:04 ledger line 9771fea8
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
