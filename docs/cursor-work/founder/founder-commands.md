@@ -5963,3 +5963,5 @@ Features ki list (QC4 mein kya banega):
 - 1m-9 B9c plan catalogue + live plan updates WRITTEN (AD18 NOTIFY at COMMIT + digest, Rust LISTEN bus + fourth signed track plans, kernel rebuilt, Customers re-reads), NOT GREEN until his install and my Chrome 1 s proof, BL-28, TECH-LAW CHECKED, TESTED: AD18 selftest + CHECK 5/5, desk cargo 109, kernel 9, bun desk 125, tsc, vite build
 
 - Command Center demo code preserved in docs/claude/admin-desk/demo (approved look, colours from DeskShell.tsx, real Desk untouched), TECH-LAW CHECKED, TESTED: docs and demo files only on top of green code, gate 0 fail
+
+- 1m-9 B9c INSTALLED (his desk-install 9/9 e7fbb9bb3, AD18 already run) and seen in my Chrome (Live verified = 4 signed tracks incl plans), NOT GREEN (Y6 needs a real release, Y4 Y5 open), wrong SSE fallback text removed (Desk bans HTTP fallback), Command Center demo title made smaller, BL-28, TECH-LAW CHECKED, TESTED: docs and demo only on top of tested code (AD18 CHECK 5/5, cargo 109, kernel 9, bun 125)

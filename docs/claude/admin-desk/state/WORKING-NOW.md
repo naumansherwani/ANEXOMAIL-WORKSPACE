@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 10:57 PKT) - read this FIRST for the Desk after a compaction
-DOING: Command Center demo preserved
-NEXT STEP: his word on wordmark, then B9c Y4/Y5/Y6
-HIS LAST WORD: his 10:57 word: perfect, preserve codes
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 11:07 PKT) - read this FIRST for the Desk after a compaction
+DOING: B9c installed and seen, demo title smaller
+NEXT STEP: Y6 proof with his word, Y4, Y5
+HIS LAST WORD: his 11:06 word: title too big, technology must be code
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e7fbb9bb 23 Nov 10:57 ledger line 0a1442c2
 - 0a1442c2 23 Nov 10:57 Command Center demo preserved
 - 07195cc4 23 Nov 10:48 ledger line dc13685a
 - dc13685a 23 Nov 10:48 B9c live plan updates (written)
@@ -72,10 +73,15 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 2c97b98d 23 Nov 10:32 Customers back button wording
 - 24ec195f 23 Nov 10:30 ledger line 2864bb2f
 - 2864bb2f 23 Nov 10:30 B9b GREEN + Command Center phase recorded
-- a8d7036d 23 Nov 10:28 ledger line e83cd9e7
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/BILLIONAIRE-SETUP-LIST-23NOV.md
+M  admin-desk/D6-CARDS-LIST-23NOV.md
+M  admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
+M  docs/claude/admin-desk/BILLIONAIRE-SETUP-LIST-23NOV.md
+M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
+M  docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
+MM docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
