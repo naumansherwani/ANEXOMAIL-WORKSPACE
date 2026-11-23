@@ -39,11 +39,11 @@ h1{margin:4px 0 0;font-size:clamp(28px,5vw,48px);line-height:1.05;background:lin
 @keyframes ul{to{transform:scaleX(1)}}
 @media(prefers-reduced-motion:reduce){#ttl .l1::after{animation:none;transform:none}}
 #ttl .l1{position:relative}
-#ttl .l1::before{content:"";position:absolute;left:0;right:.16em;bottom:-22px;height:26px;pointer-events:none;border-radius:50%;filter:blur(15px);opacity:0;
-background:linear-gradient(90deg,transparent 0%,rgba(195,204,216,.24) 50%,transparent 100%) 0 0/34% 100% no-repeat,linear-gradient(90deg,#1E3557 0%,#2C4C79 30%,#C3CCD8 55%,#2C4C79 80%,#1E3557 100%);
-animation:lightsin 1.2s ease 1.6s forwards,lightsrun 4.2s linear 1.6s infinite}
-@keyframes lightsin{to{opacity:.13}}
-@keyframes lightsrun{from{background-position:-50% 0,0 0}to{background-position:150% 0,0 0}}
+#ttl .l1::before{content:"";position:absolute;left:12%;right:calc(12% + .16em);bottom:-22px;height:26px;pointer-events:none;border-radius:50%;filter:blur(15px);opacity:0;
+background:radial-gradient(closest-side,#C3CCD8 0%,#2C4C79 55%,transparent 100%);
+animation:lightsin 1.2s ease 1.6s forwards,lightbreath 5s ease-in-out 2.8s infinite alternate}
+@keyframes lightsin{to{opacity:.2}}
+@keyframes lightbreath{from{opacity:.2}to{opacity:.3}}
 @media(prefers-reduced-motion:reduce){#ttl .l1::before{animation:none;opacity:.4}}
 #ttl .w{display:inline-block;white-space:nowrap}
 @keyframes inr{to{opacity:1;filter:blur(0);transform:none}}

@@ -138,3 +138,5 @@ LOGO COLOURS TRAVEL V22 (23 Nov 2026 11:5x PKT, his 11:42 word: the golden light
 BACK TO V21 (23 Nov 2026 11:4x PKT, his 11:44 word: the earlier one was fine): demo/COMMAND-CENTER-DEMO-23NOV.html = V21 again; V22 (logo colours travel) stays in the repo as a backup, not deleted. Real Desk untouched until his haan.
 
 LIGHT LESS V23 (23 Nov 2026 11:4x PKT, his 11:44 word 'light kam kero'): from V21, glow opacity .13 (V21 .24), moving light alpha .24, line band .2. Saved demo/COMMAND-CENTER-DEMO-23NOV-V23-LIGHT-LESS.html; V21 and V22 kept. Real Desk untouched until his haan.
+
+SOFT LIGHT AT THE CENTRE V24 (23 Nov 2026 11:5x PKT, his 11:47 word 'light ko halka sa center pe leke aao'): the running light under ANEXOMAIL is replaced by one soft light resting in the centre, a slow breathing .2 to .3 (no running); the line and everything else unchanged. MY READING of his word; V23 (running light) kept as backup. Saved demo/COMMAND-CENTER-DEMO-23NOV-V24-LIGHT-SOFT-CENTRE.html. Real Desk untouched until his haan.
