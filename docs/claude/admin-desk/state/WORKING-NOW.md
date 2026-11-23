@@ -1,5 +1,5 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 10:28 PKT) - read this FIRST for the Desk after a compaction
-DOING: 1m-8 B9b code done, committing
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 10:4x PKT) - read this FIRST for the Desk after a compaction
+DOING: 1m-8 B9b = GREEN (his install 5b671dd65 + my Chrome look). NEW (his 10:29): ANEXOMAIL COMMAND CENTER (CC1, BL-29): Admin Desk becomes a section BELOW it, directly connected to the founder for work purposes only, private; demo shown (Artifact). Waiting his answers to 3 open questions (list COMMAND CENTER section) before the contract; DESK ISOLATION LAW stays until his explicit word. NEXT code = 1m-9 B9c (BL-28 plan catalogue + live updates within 1 s), then CC1, B6c, B13, B11, B12.
 NEXT STEP: his desk-install, Chrome look at Customers
 HIS LAST WORD: his 10:12 + 10:16 words
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
