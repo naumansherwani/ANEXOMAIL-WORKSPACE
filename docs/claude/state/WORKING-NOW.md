@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 01:58 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 01:58 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Bridge decision FINAL recorded; strict order: BL-28 B9c Y5 next
 NEXT STEP: B9c Y5 schema-first (read AD06/AD18/AD07 + Control Plane SQL), then Y4, then Y6 (his answer)
 HIS LAST WORD: his 24 Nov 01:57 final decision
@@ -19,36 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 3a13f8dc 24 Nov 01:58 Bridge decision final recorded
 - 24312836 24 Nov 01:41 ledger line 2a5a2927
 - 2a5a2927 24 Nov 01:41 Command Center OS security protocol
 - 5603be01 24 Nov 01:40 ledger line 9ab7c9f8
 - 9ab7c9f8 24 Nov 01:40 Command Center OS phases and employee lifecycle plan
-- 5cd3dbfe 24 Nov 01:24 ledger line d898e87c
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/state/WORKING-NOW.md
-M  docs/claude/anexomail-command-center/COMMAND-CENTER-OS-PHASES-24NOV.md
-A  docs/claude/anexomail-command-center/DECISION-BRIDGE-FINAL-24NOV.md
-M  docs/claude/anexomail-command-center/README.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/founder/founder-commands.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/admin-desk/state/WORKING-NOW.md        |  1 +
- .../COMMAND-CENTER-OS-PHASES-24NOV.md              |  4 +--
- .../DECISION-BRIDGE-FINAL-24NOV.md                 | 10 +++++++
- docs/claude/anexomail-command-center/README.md     |  1 +
- docs/claude/state/WORKING-NOW.md                   | 33 ++++++++++------------
- docs/cursor-work/founder/founder-commands.md       |  4 +++
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        | 10 +++----
- 11 files changed, 44 insertions(+), 25 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 33 ++-------------------------------
+ 1 file changed, 2 insertions(+), 31 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -59,4 +43,4 @@ M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (7b7cc56d626907d137aea012baf8e186dcee9d69)
+WIP snapshot: refs/wip/last (4b64ca007cc5e3f6bd1b03783d852ea8d2e237ad)
