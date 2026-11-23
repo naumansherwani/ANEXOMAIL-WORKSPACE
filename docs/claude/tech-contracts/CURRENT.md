@@ -1,3 +1,10 @@
+# TECH CONTRACT FOR PHASE: DESK CARD B13 CONSENT + TIMER ACCESS (phase 1m, sub-phase B13 step Z1 SQL, list BL-46 (his 24 Nov 2026 04:26 PKT locked answers; ORDER-LOCK next after BL-28/BL-29), plus the boot screen text for BL-29 CC1), written 24 Nov 2026 05:1x PKT BEFORE the SQL ran on his server. LIST: docs/claude/admin-desk/D6-B13-CONSENT-ACCESS-LIST-24NOV.md (A1..A10). Z2 Rust door and Z3 React screen follow as their own steps.
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL AD20: consent table with a closed state machine trigger, tstzrange window (60/30/15 minute CHECK), EXCLUDE USING gist (btree_gist, partial-unique fallback), forced RLS with no policy, REVOKE PUBLIC, five SECURITY DEFINER doors, ledger line written BEFORE the read, no break-glass, no auto-approval, selftest + CHECK | docs/claude/admin-desk/sql/AD20.sql, docs/claude/admin-desk/sql/checks/AD20-check.sql | YES | scratch PG16: selftest ALL RULES PASSED, CHECK 8 of 8 true, second run idempotent |
+| React 19 + TypeScript boot screen reads COMMAND CENTER OS (text only) and the page title | founder-web/src/desk/DeskBoot.tsx, founder-web/desk.html | YES | bun test src/desk 127 pass, tsc clean, build:desk desk-BBu4h3TR.js |
+| Carried unchanged (Rust door and TS pure parsing of the customers phase, next to be extended in Z2/Z3) | docs/claude/admin-desk/server/src/customers.rs, founder-web/src/desk/desk_customers_pure.ts | YES | untouched |
+
 # TECH CONTRACT FOR PHASE: DESK COMMAND CENTER TEXT POSITION (phase 1m, sub-phase CC1-position, list BL-29 (CC1; his explicit 24 Nov 2026 03:57 PKT word "ab perfect hai likho codes aur pull kerwao"; BL-28 B9c stays next on the ORDER-LOCK, Y4 open), TEXT AND POSITION ONLY, design intact), written 24 Nov 2026 04:1x PKT BEFORE install. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3703,3 +3710,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Real Desk text and position: Senior Executive centred, landing title two lines, footer below the floor light, dist-desk rebuilt (desk-BTyOwH4h.js), WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 127 pass, tsc clean, build:desk ok, real built landing screenshot 1280, gate 0 fail
 
 - BL-46 B13 started: web research (Google Access Approval, PostgreSQL tstzrange EXCLUDE) and point list A1..A10 with advance technology written before code, install proof of 3675a1fd noted honestly (binary line DIFFERENT, page and kernel SAME), TECH-LAW CHECKED, TESTED: docs only, gate 0 fail
+
+- B13 Z1 AD20.sql (consent, tstzrange timer, EXCLUDE, forced RLS, ledger before read, no break-glass) and boot screen text COMMAND CENTER OS, WRITTEN not installed, TECH-LAW CHECKED, TESTED: scratch PG16 AD20 selftest ALL RULES PASSED, CHECK 8 of 8 true, idempotent, bun test src/desk 127 pass, tsc clean, build:desk ok, gate 0 fail
+
+- B13 Z1 AD20.sql (consent, tstzrange timer, EXCLUDE, forced RLS, ledger before read, no break-glass) and boot screen text COMMAND CENTER OS, WRITTEN not installed, TECH-LAW CHECKED, TESTED: scratch PG16 AD20 selftest ALL RULES PASSED, CHECK 8 of 8 true, idempotent, bun test src/desk 127 pass, tsc clean, build:desk ok, gate 0 fail
