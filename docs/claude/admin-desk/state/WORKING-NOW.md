@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 06:50 PKT) - read this FIRST for the Desk after a compaction
-DOING: 1m-4 B9: CP2.sql (cp.census) DONE + scratch-tested, cp-install step 3b added; next Control Plane Rust census, AD14, customers.rs, TS
-NEXT STEP: control-plane Rust census method (verify.rs/core.rs/db.rs/answer.rs), then AD14, server/src/customers.rs, desk_customers_pure.ts, DeskCustomers.tsx
-HIS LAST WORD: CP2 selftest x2 + check 8/8
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 07:01 PKT) - read this FIRST for the Desk after a compaction
+DOING: Ctrl+D step GREEN; 1m-4 B9: CP2 done, Control Plane Rust census + AD14 + customers.rs next; shortcut-for-all-folders is a DISCUSSION (no code until his haan)
+NEXT STEP: control-plane Rust census (verify.rs/core.rs/db.rs/answer.rs), AD14, customers.rs, DeskCustomers.tsx; ask him for the CP 3b/7 lines of desk-install
+HIS LAST WORD: Ctrl+D GREEN by his pastes + my Chrome
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 534d2339 23 Nov 06:50 ledger line 70d187b0
 - 70d187b0 23 Nov 06:50 1m-4 B9 CP2
 - a0d310be 23 Nov 06:44 ledger line 57ba7877
 - 1864b318 23 Nov 06:44 ledger line 78f5bd1d
@@ -72,9 +73,12 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 5098e513 23 Nov 06:32 ledger line 66b22bbc
 - 66b22bbc 23 Nov 06:32 1m-4 B9 plan
 - e6a014e0 23 Nov 06:25 ledger line 0c2930a6
-- 0c2930a6 23 Nov 06:25 1m-3 B8 GREEN
 
 ## Uncommitted Desk files
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/NOW-LIST-23NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
