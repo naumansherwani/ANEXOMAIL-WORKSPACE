@@ -2497,3 +2497,5 @@
 - status 08:05 recorded in Desk, founder and awam blueprints, B9 contract block back on top, docs only, TECH-LAW CHECKED, TESTED: gate run (docs only)
 
 - awam pull fix: 3 new files added to DEPLOY-MANIFEST.txt + gate MANIFEST NEW FILE, TECH-LAW CHECKED, TESTED: manifest-verify only WORKING-NOW stale, local bun run build:bun rc=0, gate probe FAIL as expected
+
+- keys for Desk, founder, awam + Desk tooltip GREEN, WIRED: YES / REAL: YES, TECH-LAW CHECKED, TESTED: his desk-install f39acb997 3x SAME + census 8/8, his awam pull build OK src same 627, his live look of all three
