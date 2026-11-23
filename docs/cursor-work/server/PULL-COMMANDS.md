@@ -2467,3 +2467,5 @@
 - 1m-3 B8 STAFF ONLINE AND SHIFTS CODE: AD13 live-session presence + shift coverage + elevation/break-glass countdown + hourly hash-chained series, staff.rs, DeskStaff.tsx, TESTED: scratch PG selftest x2, 20 checks 0 false, cargo 86 pass, bun 92 pass, tsc, vite; TECH-LAW CHECKED; GREEN waits his install + Chrome
 
 - 1m-3 B8 Staff online and shifts GREEN (23 Nov 06:2x PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED; his ad-auto AD13 CHECK OK 7/7, desk-install 3 PROOF SAME at 0c9e3518d, my Chrome real board), next 1m-4 B9, TESTED: his server pastes + my live Chrome look
+
+- 1m-4 B9 Customers and Plans: web research, list U1..U9, ADVANCE-RESEARCH line, contract block written before code (docs only; TECH-LAW CHECKED, TESTED: rules-gate 0 fail, rows IN CODE=no until code)

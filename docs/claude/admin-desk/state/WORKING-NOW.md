@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 06:25 PKT) - read this FIRST for the Desk after a compaction
-DOING: 1m-3 B8 GREEN written; starting 1m-4 B9 Customers and Plans
-NEXT STEP: 1m-4 B9: web research first, D6 list rows, ADVANCE-RESEARCH [1m], CURRENT.md block, AD14 SQL with SCHEMA-FIRST/ADVANCE-RESEARCH/CHECK-FILE header (read AD06 packages + AD04 lookup + Control Plane first), Rust door, TS, tests, his installs, my Chrome look
-HIS LAST WORD: 1m-3 GREEN by his pastes + my Chrome look
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 06:32 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1m-4 B9 Customers and Plans: research + list U1..U9 + ADVANCE-RESEARCH + CURRENT.md block written (rows no); SQL CP2 + AD14 next
+NEXT STEP: write control-plane/sql/CP2.sql (cp.census) + CP2-check, control-plane Rust census answer, AD14.sql + check, customers.rs, TS card; each with gate headers; scratch tests
+HIS LAST WORD: his 06:31 order: plan points first
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e6a014e0 23 Nov 06:25 ledger line 0c2930a6
 - 0c2930a6 23 Nov 06:25 1m-3 B8 GREEN
 - 0c9e3518 23 Nov 06:13 ledger line fd2c053f
 - fd2c053f 23 Nov 06:13 1m-3 B8 code
@@ -72,9 +73,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 672841c2 23 Nov 06:08 1m-3 B8 plan
 - b5c7c16d 23 Nov 06:02 ledger line 148ef5af
 - 148ef5af 23 Nov 06:02 SQL world-class gate + audit
-- 0ad4cc0e 23 Nov 05:55 ledger line dc70a99c
 
 ## Uncommitted Desk files
+ M admin-desk/D6-CARDS-LIST-23NOV.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/NOW-LIST-23NOV.md
+ M docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
