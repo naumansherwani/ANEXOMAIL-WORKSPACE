@@ -5638,3 +5638,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - Demo 2 landing and login text (web search of big companies, text only, real login code untouched), TECH-LAW CHECKED, TESTED: real pages built in a scratch copy and screenshot at 1280 and 390, gate 0 fail
 
 - CC1-text GREEN WIRED: YES / REAL: YES: his desk-install paste (bundle desk-D_0SyRgz.js SAME, kernel SAME) and my Chrome look at the dashboard (OS, Senior Executive, Customer Operations); Senior Executive centre demo; 390/820 open, TECH-LAW CHECKED, TESTED: live Chrome look desktop, demo rendered, gate 0 fail
+
+- Landing title smaller demo V3 (2 lines, max 64px, light visible), real code untouched, TECH-LAW CHECKED, TESTED: real page built in a scratch copy, screenshot 1280 and 390, gate 0 fail
