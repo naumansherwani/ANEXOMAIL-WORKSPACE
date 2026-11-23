@@ -5977,3 +5977,5 @@ Features ki list (QC4 mein kya banega):
 - Command Center title demo V15: COMMAND CENTER fitted exactly under the line (A to L), codes preserved with V14 backup, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered in Chrome and measured at 1280 and 390, gate 0 fail
 
 - Command Center title demo V16: Admin Desk rule mirrored on both sides, V15 saved first, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered in Chrome and looked at, gate 0 fail
+
+- Command Center title demo V17: soft logo-gradient light under ANEXOMAIL, V16 saved first, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered in Chrome two frames and looked at, gate 0 fail
