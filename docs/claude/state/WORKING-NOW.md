@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 09:34 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 09:37 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: B10 GREEN, order lock
 NEXT STEP: BL-26 B6b research
 HIS LAST WORD: his 09:28 order
@@ -19,11 +19,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 28f6ddfa 23 Nov 09:37 Advance technology per billionaire phase
+- b4f64008 23 Nov 09:34 ledger line b4dae7fe
 - b4dae7fe 23 Nov 09:34 Billionaire after Dashboard order
 - 45f4339b 23 Nov 09:30 ledger line 428b240e
 - 428b240e 23 Nov 09:30 B10 GREEN + billionaire ORDER-LOCK
-- fdcf8ea0 23 Nov 09:17 ledger line 637c6c9f
-- 637c6c9f 23 Nov 09:17 Desk 1m-6 B10 Reports + billionaire list + gate
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -43,4 +43,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (f2a90b1ad5b5b29a8a6af1cb71c42ee3bea9336f)
+WIP snapshot: refs/wip/last (18d1679b2b71da0bd8d9cd30e14270450eebf73b)
