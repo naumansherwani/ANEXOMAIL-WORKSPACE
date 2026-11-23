@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 10:57 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 10:57 PKT) - read this FIRST for the Desk after a compaction
 DOING: Command Center demo preserved
 NEXT STEP: his word on wordmark, then B9c Y4/Y5/Y6
 HIS LAST WORD: his 10:57 word: perfect, preserve codes
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 0a1442c2 23 Nov 10:57 Command Center demo preserved
 - 07195cc4 23 Nov 10:48 ledger line dc13685a
 - dc13685a 23 Nov 10:48 B9c live plan updates (written)
 - c0ac155f 23 Nov 10:32 ledger line 2c97b98d
@@ -72,16 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 24ec195f 23 Nov 10:30 ledger line 2864bb2f
 - 2864bb2f 23 Nov 10:30 B9b GREEN + Command Center phase recorded
 - a8d7036d 23 Nov 10:28 ledger line e83cd9e7
-- e83cd9e7 23 Nov 10:28 B9b GREEN
 
 ## Uncommitted Desk files
-M  admin-desk/D6-CARDS-LIST-23NOV.md
-A  admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
-A  admin-desk/demo/COMMAND-CENTER-FIRST-DEMO-23NOV-REJECTED.html
-M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
-A  docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
-A  docs/claude/admin-desk/demo/COMMAND-CENTER-FIRST-DEMO-23NOV-REJECTED.html
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
