@@ -5,3 +5,4 @@ Later: NEXATECT Command Center, same pattern (not built).
 
 24 Nov 2026 01:5x PKT: it is a company WORK OS. Phase plan (OS-0..OS-12, the 4-step employee lifecycle, the boundary): COMMAND-CENTER-OS-PHASES-24NOV.md.
 24 Nov 2026 02:0x PKT: security protocol (S1..S15, honest live/planned state): COMMAND-CENTER-OS-SECURITY-PROTOCOL-24NOV.md.
+24 Nov 2026 02:1x PKT: FINAL decision on the founder bridge: DECISION-BRIDGE-FINAL-24NOV.md.

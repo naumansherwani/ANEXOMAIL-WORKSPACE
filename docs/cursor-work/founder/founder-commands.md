@@ -6023,3 +6023,9 @@ Aap ka kaam sirf Chairman ki tarah faisla lena; Claude saara code aur buttons ba
 - ANEXOMAIL Command Center OS phase plan OS-0..OS-12 with advance technology per phase, employee lifecycle in his 4 steps as the LAST phase (OS-11), boundary written, web research OWASP passkey + capability security, TECH-LAW CHECKED, TESTED: gate 0 fail
 
 - Command Center OS security protocol S1..S15 (zero trust NIST 800-207, Zanzibar, Palantir markings, JIT, break-glass, passkey-only, DBSC, Rule 52, tamper-evident journal) with honest live/planned state, web research, TECH-LAW CHECKED, TESTED: gate 0 fail
+
+
+## 24 Nov 2026 01:57 PKT (his word, Rule 24)
+FINAL: 21 Nov Desk Isolation Law and Gate never break. Company OS (Command Center) stays in its own security domain, own binary, own tables (desk_*). 1) Command Center entry in the Founder OS sidebar talking ONLY through a One-Way Ed25519-Signed Bridge. 2) Strict one-way: from the Founder OS the Company OS live data (SLA, Urgent Alerts, Team Online, Employee Create/Freeze) is shown and controlled; the Company OS has zero access to founder tables or secrets. 3) Isolation gate stays active at multi-billion scale. Also: strict phase order, continue from where B9c stopped yesterday morning. Full text + diagram: docs/claude/anexomail-command-center/DECISION-BRIDGE-FINAL-24NOV.md
+
+- Founder OS to Command Center OS bridge DECIDED by his final word: one-way Ed25519 signed over QUIC, isolation law + gate stay, OS blind to founder, founder controls with signed commands + fresh touch; plan OS-5 updated, WORKING-NOW + NOW-LIST + blueprint 0r updated, TECH-LAW CHECKED, TESTED: gate 0 fail
