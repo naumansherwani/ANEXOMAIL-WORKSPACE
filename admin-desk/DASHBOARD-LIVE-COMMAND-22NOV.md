@@ -4,7 +4,7 @@ RULE FOR EVERY NUMBER: real or "not measured yet". Nothing invented, no mock (De
 ## A. LIVE COMMAND BAR (his three items, exact)
 | # | Item | His spec | What makes it REAL | Phase | Advance technology |
 |---|---|---|---|---|---|
-| A1 | Live SLA Clock | average speed of answering a customer, e.g. 0m 42s, target under 2 min | median first-response from fadm_case_event (AD3) per plan lane; shows "no cases yet" until real | R3f (needs AD3 cases) | Rust scheduler, Postgres window queries, SSE/WebTransport push |
+| A1 | Live SLA Clock | average speed of answering a customer, e.g. 0m 42s, target under 2 min | median first-response from fadm_case_event (AD3) per plan lane; shows "no cases yet" until real | R3f (needs AD3 cases) | Rust scheduler, Postgres window queries, WebTransport push |
 | A2 | Active P1 Alerts | all packages in view WITH PRICES, any urgent client problem; 0 is healthy; at 1 a red pulse over the whole screen | prices come ONLY from plan rows (fadm_plans, R3p; Business Max price in the awam blueprint = £125,000, his 21,500 claim is UNCONFIRMED, see C); P1 = case with priority p1 | R3p + R3f | Postgres plan rows, Rust, CSS pulse that obeys prefers-reduced-motion (a non-colour cue too: text + icon) |
 | A3 | Mail and QUIC Pipeline | live heartbeat HTTP/3 QUIC, TLS 1.3, ClamAV | each part shown only when measured: HTTP/3 = browser nextHopProtocol (the Desk is h3-only by law; today the browser still shows h2, so it will say so), TLS = server answer, ClamAV = a real scan heartbeat from the Rust door (not built) | R4-1b Bridge + R4-9 | Rust probes, PerformanceNavigationTiming, ClamAV via clamd socket |
 ## B. WORLD-ADVANCE CARDS (what Google Admin / Microsoft 365 / Zoho / Proton have, our version)
@@ -14,7 +14,7 @@ Research (22 Nov): Google Workspace security center and Admin console (security 
 | B1 | Queue pressure by team + plan lane (open, waiting, at risk) | Front/Zendesk | AD3 cases + queues | R3b | Rust, Postgres |
 | B2 | SLA at risk list (breach in under 15 min) | Zendesk | AD3 sla clocks | R3f | Rust scheduler |
 | B3 | Security health score for the Desk itself (passkeys device-bound %, staff with 2 keys, expired reviews, open recoveries) | Google security health, Microsoft Secure Score | AD2 tables (fadm_passkey, fadm_recovery, fadm_rel) | R4-1c | SQL views, Rust |
-| B4 | Alert center (burst freezes, break-glass used, policy changed, recovery opened) | Google Alert Center | fadm_alert + ledger kinds (AD2 live) | R4-1b Bridge | Postgres, SSE |
+| B4 | Alert center (burst freezes, break-glass used, policy changed, recovery opened) | Google Alert Center | fadm_alert + ledger kinds (AD2 live) | R4-1b Bridge | Postgres, WebTransport |
 | B5 | Service health: mail delivery, DNS, Storage Box, ClamAV, each with last probe time | Microsoft service health | Rust probes | R4-1b | Rust, tokio |
 | B6 | Deliverability: bounces, complaints, SPF/DKIM/DMARC, MTA-STS, DANE per company | Google/Proton | DNS probes | R4-10 + Day 4 | Rust DNS, Postgres |
 | B7 | Managed Move-In board: batches, retries, domain verification | Zoho migration | R4-11 tables | R4-11 | Rust |

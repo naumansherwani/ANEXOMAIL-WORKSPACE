@@ -77,7 +77,7 @@ Every row is the technology that must be IN CODE before that phase is GREEN (Rul
 | BL-48 | B12 (Dashboard 1m) | Web Key Directory (OpenPGP WKD, RFC 9580/9980 PQC) served by own Rust over HTTP/3, key transparency log as Merkle tree (RFC 9162 style) with signed tree heads checked in the Rust WASM kernel |
 | BL-07 | after 1n+1o | Automation engine in Rust+Tokio: rule DSL parsed to a typed AST, dry-run inside a rolled-back PostgreSQL transaction, every run an append-only ledger line with input hash; loop and rate guards |
 | BL-08 | after 1n+1o | Routing in PostgreSQL (SKIP LOCKED queue, skills and load as real columns), decision plus reason written to the ledger, explainable per case |
-| BL-10 | after 1n+1o | Collision locks as PostgreSQL advisory locks plus lease rows with expiry, live over WebTransport/SSE, who and since when shown |
+| BL-10 | after 1n+1o | Collision locks as PostgreSQL advisory locks plus lease rows with expiry, live over WebTransport, who and since when shown |
 | BL-11 | after 1n+1o | Merge/split as reversible event-sourced operations (24 h undo window), hash-chained, original case never deleted |
 | BL-12 | after 1n+1o | Read-only seat as a PostgreSQL role/right enforced by RLS and column grants, not a UI hide; tested by a rolled-back selftest |
 | BL-22 | after 1n+1o | Health/churn score as an explained weighted model over real seats, storage, payment signals; each point shown with its input row; versioned model, no black box |

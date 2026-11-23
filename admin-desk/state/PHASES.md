@@ -56,7 +56,7 @@ Updated 21 Nov 2026 10:20 PKT. Rule 52: signed kernel-verified calls, no raw fet
 
 - [22 Nov 2026 03:08 PKT] 4-DAY PLAN written (FOUR-DAY-PLAN-22NOV.md). Day1 R4-1b Bridge, AD3 SQL, AD2 Rust door. Day2 R4-2 inboxes, cases, routing. Day3 R3c auto mail, R3f SLA, R4-11 Managed Move-In. Day4 People, deliverability, security screens, CRM base, final proof. Advance tech per phase inside the file.
 
-- [22 Nov 2026 03:19 PKT] DASHBOARD PHASES (DASHBOARD-LIVE-COMMAND-22NOV.md): R4-1b Bridge = A3 pipeline heartbeat + B4 alert center + B5 service health (Rust probes, SSE); R3b/R3f = A1 Live SLA Clock + B1 queues + B2 SLA at risk (Rust scheduler, Postgres); R3p = A2 Active P1 + packages with prices + B9 (HMAC webhook, plan rows); R4-1c = B3 security health score (SQL views); R4-10 = B6 deliverability; R4-11 = B7 Move-In board; R4-2 = B11 spoof/link guard (Rust MIME). Tech per row in the file.
+- [22 Nov 2026 03:19 PKT] DASHBOARD PHASES (DASHBOARD-LIVE-COMMAND-22NOV.md): R4-1b Bridge = A3 pipeline heartbeat + B4 alert center + B5 service health (Rust probes, WebTransport); R3b/R3f = A1 Live SLA Clock + B1 queues + B2 SLA at risk (Rust scheduler, Postgres); R3p = A2 Active P1 + packages with prices + B9 (HMAC webhook, plan rows); R4-1c = B3 security health score (SQL views); R4-10 = B6 deliverability; R4-11 = B7 Move-In board; R4-2 = B11 spoof/link guard (Rust MIME). Tech per row in the file.
 
 - [22 Nov 2026 03:43 PKT] R4-1b BRIDGE (BRIDGE-PLAN-22NOV.md): step 1 AD3 SQL + AD3-check written and sandbox-tested; steps 2 Rust probes, 3 signed doors, 4 React command bar NOT written. Cases/queues/SLA SQL renumbered AD4.
 

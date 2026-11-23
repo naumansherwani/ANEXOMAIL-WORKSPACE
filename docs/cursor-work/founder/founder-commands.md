@@ -5967,3 +5967,5 @@ Features ki list (QC4 mein kya banega):
 - 1m-9 B9c INSTALLED (his desk-install 9/9 e7fbb9bb3, AD18 already run) and seen in my Chrome (Live verified = 4 signed tracks incl plans), NOT GREEN (Y6 needs a real release, Y4 Y5 open), wrong SSE fallback text removed (Desk bans HTTP fallback), Command Center demo title made smaller, BL-28, TECH-LAW CHECKED, TESTED: docs and demo only on top of tested code (AD18 CHECK 5/5, cargo 109, kernel 9, bun 125)
 
 - B9c blueprint and NOW-LIST: wrong SSE fallback wording removed (Desk bans HTTP fallback), TECH-LAW CHECKED, TESTED: docs only on top of tested code, gate 0 fail
+
+- Desk docs cleanup: every SSE fallback / HTTP fallback wording removed (Rule 52, HTTP/3 only, his 11:11 word), old 04:25 decision marked SUPERSEDED, code scan clean (only h3 ALPN), TECH-LAW CHECKED, TESTED: grep scan of Desk server, kernel and founder-web/src/desk: no SSE, no WebSocket, no http1/2; gate 0 fail

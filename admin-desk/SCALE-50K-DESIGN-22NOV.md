@@ -15,7 +15,7 @@ Goal: Desk serves awam problems; today 1 owner, tomorrow 50,000 staff, no redesi
 | S4 | Onboarding at scale: own SCIM 2.0 endpoint (bulk import/offboard 1,000s at once), one-click offboard kills sessions + keys instantly | Rust, SCIM RFC 7643/7644 | yes |
 | S5 | Staff sign-in: passkeys only (WebAuthn), device-bound sessions (DBSC), no shared logins, per-staff Rule 52 key | webauthn-rs, DBSC, Ed25519 | yes |
 | S6 | Case routing: queue + skill + priority + SLA clock; ack-driven reservation (no ack in N s = next agent); sticky to previous agent; supervisor overflow | Rust routers (stateless, horizontal), Postgres `FOR UPDATE SKIP LOCKED` queue | yes |
-| S7 | Live fan-out of cases/status to thousands of agents: WebTransport/QUIC streams per team, SSE fallback, no WebSocket | Rust wtransport/quinn, HTTP/3 | yes |
+| S7 | Live fan-out of cases/status to thousands of agents: WebTransport/QUIC streams per team, no WebSocket | Rust wtransport/quinn, HTTP/3 | yes |
 | S8 | Data scale: tenant key everywhere + RLS (belt and braces), monthly partitions for cases/messages/ledger, pgbouncer-style pool in Rust, read replicas for dashboards, cold archive to Hetzner Storage Box | Postgres partitioning, Hetzner | yes |
 | S9 | Tamper-proof audit: SHA-256 hash chain + daily Merkle root anchored; every staff action, every awam-data view logged; supervisors see who looked at what | Postgres ledger, Rust | yes |
 | S10 | Capacity + proof: load test 50,000 staff / 5,000 concurrent / 100 cases per second in my sandbox, published numbers; p95 targets (auth check < 10 ms, case assign < 200 ms) | Rust load tool, k6-free | yes |

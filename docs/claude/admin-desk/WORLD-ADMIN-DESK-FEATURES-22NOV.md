@@ -3,7 +3,7 @@ Method: web research (below) + his own Desk rules. The CODE folders are founder-
 Layout decision (his word): CASES live in ANEXOMAIL WORKSPACE with Inboxes; the folder ADMIN DESK holds the per-user views (Managed Move-In, People, CRM); Company holds Team and Audit.
 | # | Module | What | Tables | Technology | Phase |
 |---|---|---|---|---|---|
-| 01 | Inboxes (omnichannel mail) | Company mailboxes under ANEXOMAIL WORKSPACE: hello, moveyourbusiness, resolved; billing restricted folder; leo automation; noreply send-only; support@ banned | fadm_mailbox (AD1) + AD4 threads/messages; RLS by relation tuple | Rust axum + signed doors, WebTransport, SSE fallback | R4-2 |
+| 01 | Inboxes (omnichannel mail) | Company mailboxes under ANEXOMAIL WORKSPACE: hello, moveyourbusiness, resolved; billing restricted folder; leo automation; noreply send-only; support@ banned | fadm_mailbox (AD1) + AD4 threads/messages; RLS by relation tuple | Rust axum + signed doors, WebTransport | R4-2 |
 | 02 | Cases (tickets) | Every user problem as a case: owner, status, priority, plan, SLA clock; lives in ANEXOMAIL WORKSPACE (his 02:50 word); ADMIN DESK folder keeps the per-user views | AD3 fadm_case, fadm_case_event (append-only) | Rust, Postgres RLS + tuples (AD2 check) | R3b |
 | 03 | Routing and queues | Auto-assign by keyword, plan, language, skill, load; queues per team (support, migration, frontend_demo) | AD3 fadm_queue (units from AD2), fadm_route_rule | Rust rule engine, deterministic, tested | R3b |
 | 04 | SLA engine | First-response and resolution clocks by plan (Premium/Max first), business hours, pause/resume, breach alerts to the Desk's own bridge | AD3 fadm_sla_policy, fadm_sla_clock | Rust scheduler, Postgres | R3f |
@@ -11,7 +11,7 @@ Layout decision (his word): CASES live in ANEXOMAIL WORKSPACE with Inboxes; the 
 | 06 | Customer 360 | One page per company: plan, users count (metadata only, never message content), domains, DNS state, case history, last contact | reads Desk's own records fed by signed events, never awam tables | Rust, RLS, kernel-verified answers | R5a |
 | 07 | Managed Move-In | Customer onboarding cockpit: slots, cut-overs, mailbox and DNS checks (moves from founder) | AD5 fadm_movein, steps, checks | Rust + DNS probes | R4-11 |
 | 08 | CRM and leads | Leads, companies, deals-lite, notes, follow-ups; jitna user ko milta hai company ke style mein (his 01:54 word) | AD6 fadm_lead, fadm_contact | Rust, RLS | R-CRM |
-| 09 | Collaboration | Internal notes, mentions, shared drafts, escalation to lead or engineering, collision guard (two people never answer one case) | AD3 fadm_case_note | Rust, SSE/WebTransport presence | R3b |
+| 09 | Collaboration | Internal notes, mentions, shared drafts, escalation to lead or engineering, collision guard (two people never answer one case) | AD3 fadm_case_note | Rust, WebTransport presence | R3b |
 | 10 | Automation | No-code rules (when / if / then), RFC 3834 auto mail, auto-tag, auto-close; every rule versioned and audited | AD7 fadm_rule, fadm_rule_run | Rust rule engine, ledger | R3c |
 | 11 | Analytics and reports | Volume, first response, resolution, backlog, CSAT, per-team and per-person (with privacy limits) | materialised views over case events | Postgres, Rust, charts | R5c |
 | 12 | QA scoring and coaching | Sampled review of replies with a rubric, scores, coaching notes; reviewers never review themselves | AD8 fadm_qa_review | Rust, RLS | R5d |
@@ -20,7 +20,7 @@ Layout decision (his word): CASES live in ANEXOMAIL WORKSPACE with Inboxes; the 
 | 15 | Customer-consented data access | Before staff open a company's data, a reason is recorded and (for sensitive scopes) the company approves; time-boxed; shown to the customer. Pattern: Google Access Approval + Access Transparency | AD9 fadm_access_request | Rust, AD2 elevation + ledger | R5g |
 | 16 | Audit and transparency | Hash-chained ledger viewer, who viewed what, export with proof; the awam side seeing who viewed his data is a pending question (W-answer) | fadm_ledger (AD1) + AD2 kinds | Postgres hash chain, Merkle later, kernel verify | R5h |
 | 17 | Staff and access (IAM) | Invite, enrol, device-bound passkeys, mover/leaver, recovery, access review every 90 days, SCIM 2.0, AAGUID allow-list, office IP and shift lock | AD2 (LIVE) | Rust webauthn-rs, Argon2id, RFC 7643/7644 | ON1-ON12 |
-| 18 | Desk Bridge | The founder Bridge pattern made for the Desk: mail lanes, queue depth, SLA at risk, delivery speed, alerts (fadm_alert) | fadm_alert (AD2) + live counters | Rust, WebTransport/SSE, Three.js lane view | R4-1b |
+| 18 | Desk Bridge | The founder Bridge pattern made for the Desk: mail lanes, queue depth, SLA at risk, delivery speed, alerts (fadm_alert) | fadm_alert (AD2) + live counters | Rust, WebTransport, Three.js lane view | R4-1b |
 | 19 | Notifications | Per-person alerts (assigned, mentioned, SLA at risk), quiet hours; push only through his own Rust, no vendor | AD7 fadm_notice | Rust, Web Push (own) | R5i |
 | 20 | Incident and status comms | Known-issue banner, bulk reply to affected cases, status page content owned by the Desk | AD7 fadm_incident | Rust | R5j |
 | 21 | Security guard | Anti-scraping circuit breaker (AD2 burst), DBSC session binding, step-up for export, kill switch | AD2 fadm_burst + DBSC | Rust, DBSC | ON3, ON11 |
