@@ -100,6 +100,7 @@ admin-desk/demo/COMMAND-CENTER-OS-DEMO-24NOV.html
 admin-desk/demo/COMMAND-CENTER-SENIOR-EXEC-POSITION-24NOV.html
 admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V2-landing-login.html
 admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V3-landing-title-smaller.html
+admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V4-centre-footer.html
 admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-dashboard.html
 admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-landing-1280.png
 admin-desk/docs/00-FOUNDER-TECH-RULE.md
