@@ -5446,3 +5446,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - SQL ORDER FIX: AD1..AD9b renamed AD01..AD09b so AD10 sorts last, TESTED: ad-auto regex+sort -V checked, refs updated; his server AD10 CHECK OK 10/10 + install PROOF 3 SAME at 446f959a2; TECH-LAW CHECKED; 1l GREEN waits my Chrome look
 
 - 1l live look at desktop: case ESC-261123-00037 created + listed on his server, TESTED: my Chrome; TECH-LAW CHECKED; GREEN waits 390/820
+
+- OVERVIEW S4 recorded as later phase (after 1o, 1a, phone test), TESTED: docs only; TECH-LAW CHECKED
