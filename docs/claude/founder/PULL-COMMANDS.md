@@ -3467,3 +3467,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 1m small step GREEN: gate hole + PROOF CP2 + rail follows active page, WIRED: YES / REAL: YES, TECH-LAW CHECKED, TESTED: his desk-install c2d92563d binary/page/kernel SAME + CP2 CHECK 8 of 8, my Chrome Ctrl+D rail scrollTop 881 to 0
 
 - 1m-keys plan with web research written, no code, TESTED: gate run on docs only, TECH-LAW CHECKED
+
+- 1m-keys code done, WIRED: YES / REAL: not yet (his desk-install + my Chrome look), TECH-LAW CHECKED, TESTED: bun 99 pass (6 new key tests), tsc, vite build
+
+- 1m-keys code done, WIRED: YES / REAL: not yet (his desk-install + my Chrome look), TECH-LAW CHECKED, TESTED: bun 99 pass (6 new key tests), tsc, vite build

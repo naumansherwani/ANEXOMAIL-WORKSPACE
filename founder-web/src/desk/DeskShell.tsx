@@ -6,6 +6,8 @@ import type { Snapshot } from "./desk_stream";
 import { canSeeTech, systemsModel } from "./desk_systems_pure";
 import { route } from "./desk_cards";
 import type { Bar } from "./desk_bridge_pure";
+import { DeskKeys, type KeyItem } from "./DeskKeys";
+import { keyLabel } from "./desk_keys";
 import { useEffect, useState, type MouseEvent as ReactMouseEvent, type ReactNode } from "react";
 import { BrandMark } from "../signin/BrandMark";
 import { MODULES } from "./modules/registry";
@@ -127,13 +129,17 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, s
   }, [menu]);
   // his 23 Nov 07:12: when the page changes (Ctrl+D, a click, a key) the rail scrolls so the active item is in view; the rail's own scroll bar and look are untouched (block "nearest" moves nothing when the item is already visible).
   useEffect(() => { const el = document.querySelector<HTMLElement>(".dsk-scroll [data-here]"); if (el && typeof el.scrollIntoView === "function") el.scrollIntoView({ block: "nearest", inline: "nearest" }); }, [sub]);
+  // his 23 Nov 07:44 haan (1m-keys): Ctrl+K palette / Ctrl+/ Keys sheet. The key handler in DeskPages sends the event; the folder list is the rail itself.
+  const [kb, setKb] = useState<"" | "palette" | "help">("");
+  useEffect(() => { const on = (e: Event) => setKb((e as CustomEvent<"palette" | "help">).detail); window.addEventListener("desk-keys", on); return () => window.removeEventListener("desk-keys", on); }, []);
+  const kbItems: KeyItem[] = NAV.map((n) => ({ id: n.key, label: n.label, keys: keyLabel(n.key) }));
   // his 22 Nov 07:49: the ANEXOMAIL brand is a link. On a sub page it goes back to the dashboard; already on the dashboard it refreshes the page. Modified clicks fall through to the browser.
   const goHome = (e: ReactMouseEvent<HTMLAnchorElement>) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); if (sub) nav("/dashboard"); else window.location.reload(); };
   const d = new Date(now), first = me?.name?.trim().split(/\s+/)[0] || me?.email.split("@")[0] || "";
   const end = me ? parseWhen(me.expires_at) : null;
   const clock = d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" }), date = d.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
   return (
-    <div className="dsk"><style>{CSS}</style><div className="dsk-glow" aria-hidden="true" />
+    <div className="dsk"><style>{CSS}</style><div className="dsk-glow" aria-hidden="true" />{kb && <DeskKeys mode={kb} items={kbItems} onClose={() => setKb("")} onGo={(id) => { setKb(""); nav(id === "dashboard" ? "/dashboard" : route(id)); }} />}
       <nav className="dsk-rail" aria-label="Admin Desk">
         <div className="dsk-brand"><a href="/dashboard" className="dsk-home" onClick={goHome} title={sub ? "Back to the dashboard" : "Refresh the dashboard"} aria-label={sub ? "Anexomail Workspace, back to the dashboard" : "Anexomail Workspace, refresh the dashboard"}><BrandMark home={false} /></a></div>
         <div className="dsk-scroll">
@@ -142,7 +148,7 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, s
               {g.label && <p className="dsk-grp">{g.label}</p>}
               {g.items.map((n) => (
                 <div className="dsk-row" key={n.key}>
-                  <button type="button" className="dsk-nav" data-here={n.key === (sub || "dashboard") ? "1" : undefined} aria-current={n.live ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={n.live ? (n.key === "dashboard" ? "Dashboard · Ctrl+D" : undefined) : "Opens when it is connected"} onClick={(e) => { if (!n.live) e.preventDefault(); else if (n.key === "dashboard") nav("/dashboard"); else nav(route(n.key)); }}>{n.glyph}<span>{n.label}</span></button>
+                  <button type="button" className="dsk-nav" data-here={n.key === (sub || "dashboard") ? "1" : undefined} data-key={n.key} aria-keyshortcuts={keyLabel(n.key) ? keyLabel(n.key) : undefined} aria-current={n.live ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={(n.live ? n.label : "Opens when it is connected") + (keyLabel(n.key) ? " · " + keyLabel(n.key) : "")} onClick={(e) => { if (!n.live) e.preventDefault(); else if (n.key === "dashboard") nav("/dashboard"); else nav(route(n.key)); }}>{n.glyph}<span>{n.label}</span></button>
                   {n.key !== "dashboard" && <button type="button" className="dsk-pin" aria-pressed={pins.includes(n.key)} aria-label={(pins.includes(n.key) ? "Unpin " : "Pin ") + n.label} onClick={() => toggle(n.key)}>{ico("M9 4h6l-1 6 3 3v2H7v-2l3-3zM12 15v5")}</button>}
                 </div>
               ))}

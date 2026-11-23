@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 07:37 PKT) - read this FIRST for the Desk after a compaction
-DOING: rail keys plan + web research written (plan only)
-NEXT STEP: his haan on the key map; B9 Rust census, AD14, customers.rs, screen
-HIS LAST WORD: his 07:36 mixed Ctrl/Alt/Shift word
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 07:46 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1m-keys code done + tested, not installed (palette, help, Alt+Shift keys for all rail folders)
+NEXT STEP: his desk-install paste, my Chrome look of every key family, GREEN; then B9 Control Plane Rust census, AD14, customers.rs, screen
+HIS LAST WORD: his haan 07:44 on the key map
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 0c68f7a6 23 Nov 07:37 ledger line 1878dd5d
 - 1878dd5d 23 Nov 07:37 Desk rail keys plan + research
 - 66394b6e 23 Nov 07:30 ledger line 2fcb295b
 - 2fcb295b 23 Nov 07:30 Desk 1m small step GREEN, B9 honest state
@@ -72,12 +73,21 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 56b3e073 23 Nov 07:16 Desk: gate covers control-plane + scripts, PROOF CP2 line, rail follows active page
 - ac50fd7e 23 Nov 07:01 ledger line 027ee67c
 - 027ee67c 23 Nov 07:01 Ctrl+D GREEN
-- 534d2339 23 Nov 06:50 ledger line 70d187b0
 
 ## Uncommitted Desk files
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/NOW-LIST-23NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
+ M founder-web/src/desk/DeskPages.tsx
+ M founder-web/src/desk/DeskShell.tsx
+?? founder-web/src/desk/DeskKeys.tsx
+?? founder-web/src/desk/desk_keys.test.ts
+?? founder-web/src/desk/desk_keys.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
+FAIL !!! ADMIN DESK HTTP/1 AND HTTP/2 ARE BOTH BANNED (HTTP/3 only) !!! founder-web/src/desk/DeskKeys.tsx mentions it; remove it
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
 warn ADMIN DESK OPEN until 24 Nov: R3p1-plans [R3p1] Plans as data (Premium, Max first) -> needs PostgreSQL RLS, hash-chained ledger in admin-desk/sql/AD02.sql
 warn ADMIN DESK OPEN until 24 Nov: R3p2-webhook [R3p2] Polar signed webhook door -> needs Rust Tokio axum, HMAC-SHA256 constant-time in admin-desk/server/src/polar.rs

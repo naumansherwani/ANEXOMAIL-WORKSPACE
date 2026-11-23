@@ -12,6 +12,7 @@ import { deskCall, DeskRefused, refusedMessage } from "./desk_kernel";
 import { openBridge, type Snapshot } from "./desk_stream";
 import { DeskBoot } from "./DeskBoot";
 import { barModel } from "./desk_bridge_pure";
+import { helpKey, paletteKey, railComboTarget, railStep, stepKey } from "./desk_keys";
 import { CHORD_MS, chordTarget, comboTarget, ctrlHomeTarget, deskSub, typingTarget } from "./desk_cards";
 
 const hasSession = () => { try { return !!window.localStorage.getItem(DESK_SESSION_KEY); } catch { return false; } };
@@ -58,10 +59,15 @@ function Dashboard() {
   useEffect(() => {
     let armed = 0;
     const on = (e: KeyboardEvent) => {
-      if (e.repeat || typingTarget(e.target as HTMLElement | null)) return;
+      if (e.repeat) return;
+      if (paletteKey(e)) { e.preventDefault(); window.dispatchEvent(new CustomEvent("desk-keys", { detail: "palette" })); return; } // Ctrl+K (his 23 Nov 07:44 haan), also from a field
+      if (helpKey(e)) { e.preventDefault(); window.dispatchEvent(new CustomEvent("desk-keys", { detail: "help" })); return; } // Ctrl+/
+      if (typingTarget(e.target as HTMLElement | null) || document.querySelector(".dkb-box")) return;
       const h = ctrlHomeTarget(e); if (h) { e.preventDefault(); nav(h); return; } // Ctrl+D = Dashboard (his 23 Nov 06:42 word)
       if (e.ctrlKey || e.metaKey) return;
       const c = comboTarget(e); if (c) { e.preventDefault(); nav(c); return; } // Alt+Shift+letter (his 08:04 word)
+      const r2 = railComboTarget(e); if (r2) { e.preventDefault(); nav(r2); return; } // Alt+Shift+letter/digit of a rail folder
+      const sd = stepKey(e); if (sd) { e.preventDefault(); const ids = [...document.querySelectorAll<HTMLElement>(".dsk-scroll .dsk-nav")].map((b) => b.dataset.key ?? "").filter(Boolean); const to = railStep(ids, deskSub(window.location.pathname) || "dashboard", sd); nav(to === "dashboard" ? "/dashboard" : `/dashboard/${to}`); return; }
       if (e.altKey) return;
       const r = chordTarget(Date.now() < armed, e.key);
       if (r === "arm") { armed = Date.now() + CHORD_MS; return; }

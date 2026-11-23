@@ -677,3 +677,5 @@ DISCUSS (his 07:00 word, no code until his haan): short keys for EVERY rail fold
 > 23 Nov 2026 07:3x PKT: 1m small step (gate hole closed, PROOF CP2 line, rail follows active page) = GREEN, WIRED: YES / REAL: YES / TECH-LAW CHECKED (his desk-install c2d92563d 3x SAME + census CP2 8/8; my Chrome Ctrl+D rail look). 1m-4 B9 = not green: CP2 SQL installed; Control Plane Rust census, AD14, customers.rs, screen next. Rule 52 unchanged. Rail key map waits for his haan.
 
 > 23 Nov 2026 07:5x PKT: ADVANCE-RESEARCH [1m-keys] written (RAIL-KEYS-PLAN-23NOV.md): React 19 + TypeScript pure key table, WCAG 2.1.4 / 2.1.1, aria-keyshortcuts, Ctrl+K palette, e.code layout-safe. Plan only, awaits his haan.
+
+> 23 Nov 2026 08:0x PKT: 1m-keys code done + tested (bun 99 pass, tsc, vite build), awaits his desk-install and my Chrome look. Tech: React 19 + TypeScript, WCAG 2.1.1/2.1.4, aria-keyshortcuts, role dialog + combobox/listbox. Rule 52 unchanged (no data, no network).

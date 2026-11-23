@@ -1,5 +1,13 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, small step 1m-keys: keys for every rail folder, his haan 23 Nov 2026 07:44), written 23 Nov 2026 07:5x PKT BEFORE code. LIST/PLAN: docs/claude/admin-desk/RAIL-KEYS-PLAN-23NOV.md (ADVANCE-RESEARCH [1m-keys])
+
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| TypeScript pure key table: ONE table (card keys + 18 new rail keys, Audit uses its card key U so digits are 1..7), Alt+Shift letter/digit by e.code (Urdu layout safe), Alt+Shift Up/Down walk, Ctrl+K palette key, Ctrl+/ help key; duplicate / missing key = failing test | founder-web/src/desk/desk_keys.ts + desk_keys.test.ts | yes | bun tests, tsc |
+| React 19 command palette (role dialog, combobox + listbox, arrows, Enter, Esc, focus returns) that reaches every rail folder by name, and a Keys help sheet; aria-keyshortcuts on every rail button (WCAG 2.1.1 / 2.1.4: click still works) | DeskKeys.tsx, DeskShell.tsx, DeskPages.tsx | yes | tsc, vite build, my Chrome look of each key family |
+| Rail follows the key (scroll-follow already GREEN, data-here) | DeskShell.tsx | yes | my Chrome look |
+
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-4 B9 Customers and Plans), written 23 Nov 2026 06:3x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (U1..U12, REWRITTEN under the FUTURE-PROOF LAW)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3439,3 +3447,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 1m small step GREEN: gate hole + PROOF CP2 + rail follows active page, WIRED: YES / REAL: YES, TECH-LAW CHECKED, TESTED: his desk-install c2d92563d binary/page/kernel SAME + CP2 CHECK 8 of 8, my Chrome Ctrl+D rail scrollTop 881 to 0
 
 - 1m-keys plan with web research written, no code, TESTED: gate run on docs only, TECH-LAW CHECKED
+
+- 1m-keys code done, WIRED: YES / REAL: not yet (his desk-install + my Chrome look), TECH-LAW CHECKED, TESTED: bun 99 pass (6 new key tests), tsc, vite build
+
+- 1m-keys code done, WIRED: YES / REAL: not yet (his desk-install + my Chrome look), TECH-LAW CHECKED, TESTED: bun 99 pass (6 new key tests), tsc, vite build
