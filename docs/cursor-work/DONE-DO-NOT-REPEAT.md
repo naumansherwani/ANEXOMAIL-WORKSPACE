@@ -4491,3 +4491,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 1m-9 B9c plan catalogue + live plan updates WRITTEN (AD18 NOTIFY at COMMIT + digest, Rust LISTEN bus + fourth signed track plans, kernel rebuilt, Customers re-reads), NOT GREEN until his install and my Chrome 1 s proof, BL-28, TECH-LAW CHECKED, TESTED: AD18 selftest + CHECK 5/5, desk cargo 109, kernel 9, bun desk 125, tsc, vite build
 
 - 1m-9 B9c plan catalogue + live plan updates WRITTEN (AD18 NOTIFY at COMMIT + digest, Rust LISTEN bus + fourth signed track plans, kernel rebuilt, Customers re-reads), NOT GREEN until his install and my Chrome 1 s proof, BL-28, TECH-LAW CHECKED, TESTED: AD18 selftest + CHECK 5/5, desk cargo 109, kernel 9, bun desk 125, tsc, vite build
+
+- Command Center demo code preserved in docs/claude/admin-desk/demo (approved look, colours from DeskShell.tsx, real Desk untouched), TECH-LAW CHECKED, TESTED: docs and demo files only on top of green code, gate 0 fail

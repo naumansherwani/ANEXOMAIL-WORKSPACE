@@ -1,0 +1,96 @@
+<title>ANEXOMAIL Command Center</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+:root{--bg:#0b0c10;--ink:#e9ecf3;--mute:#8e9ab3;--line:rgba(160,200,255,.16);--glass:rgba(12,22,46,.62);--blue:#6fa6f2;--pale:#bfd6ff;--pill:rgba(111,166,242,.16)}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1100px 560px at 50% -12%,#1a2748 0%,rgba(11,12,16,0) 68%) fixed,var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,sans-serif;min-height:100vh;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.glow{position:fixed;inset:0;pointer-events:none;background:radial-gradient(500px 360px at 95% 20%,rgba(200,140,60,.10),transparent 70%),radial-gradient(600px 400px at 10% 90%,rgba(40,90,190,.20),transparent 70%)}
+.wrap{position:relative;max-width:1180px;margin:0 auto;padding-block:18px 48px}
+.demo{display:inline-block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--pale);color:var(--pale);padding:3px 10px;border-radius:99px}
+/* COMMAND CENTER (new, on top) */
+.cc{margin-top:12px;background:var(--glass);border:1px solid var(--line);border-radius:14px;padding:16px 18px;backdrop-filter:blur(14px)}
+.cchead{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.cchead svg{width:38px;height:38px}
+.cchead b{display:block;letter-spacing:.1em;font-size:15px}.cchead small{letter-spacing:.35em;font-size:9px;color:var(--mute)}
+.cchead .clk{margin-left:auto;text-align:right}.clk .t{font-size:26px;font-weight:200;letter-spacing:.04em}.clk .d{font-size:10px;letter-spacing:.16em;color:var(--mute)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.tabs button{min-height:44px;padding:0 18px;border-radius:12px;border:1px solid var(--line);background:none;color:var(--mute);font:inherit;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--pill);color:var(--ink)}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:14px}
+.stat{border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-width:0}
+.lab{font-size:11px;letter-spacing:.14em;color:var(--mute);text-transform:uppercase}.big{font-size:26px;font-weight:700;margin-top:2px}
+.bridge{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;margin:14px 0 4px}
+.node{padding:10px 18px;border:1px solid var(--line);border-radius:12px;min-height:44px;display:flex;align-items:center}
+.beam{width:min(120px,16vw);height:2px;background:linear-gradient(90deg,transparent,var(--blue),transparent);background-size:200% 100%;animation:b 2.2s linear infinite}
+@keyframes b{to{background-position:-200% 0}}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:10px}
+ul{margin:6px 0 0;padding-left:18px;line-height:1.7;color:var(--pale)}.no{color:#e0b36a}.ok{color:#8fd6bd}
+.log{font-family:ui-monospace,monospace;font-size:12px;line-height:1.7;overflow-x:auto;white-space:pre;color:var(--pale);margin-top:6px}
+/* ADMIN DESK (intact, shrunk) */
+.deskwrap{margin-top:14px}
+.deskbar{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:0 4px 6px}
+.deskbox{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:rgba(11,12,16,.6);height:clamp(300px,46vw,470px);position:relative}
+.deskin{width:1280px;height:660px;transform-origin:0 0;display:grid;grid-template-columns:232px 1fr;position:absolute;left:0;top:0}
+.side{background:var(--glass);border-right:1px solid var(--line);padding:16px 14px}
+.brand{display:flex;gap:10px;align-items:center;margin-bottom:16px}.brand svg{width:34px;height:34px}.brand b{display:block;font-size:13px;letter-spacing:.06em}.brand small{letter-spacing:.35em;font-size:8px;color:var(--mute)}
+.si{padding:10px 12px;border-radius:12px;color:var(--mute);font-size:14px}.si.on{background:var(--pill);color:var(--ink)}
+.grp{font-size:10px;letter-spacing:.14em;color:var(--mute);text-transform:uppercase;margin:16px 8px 6px}
+.dmain{padding:24px 40px}.hi{color:var(--mute);margin:0}
+h1{margin:4px 0 0;font-size:56px;line-height:1.05;background:linear-gradient(#fff 0%,#bfd6ff 60%,#6fa6f2 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.dg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+.dc{background:var(--glass);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.dc .lab{display:flex;justify-content:space-between}.dc .tx{color:var(--pale);margin-top:8px;line-height:1.5;font-size:15px}.dc .bg{font-size:34px;font-weight:700;margin-top:6px}
+[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<div class="glow"></div>
+<div class="wrap">
+<span class="demo">Demo · sample numbers · Admin Desk look unchanged</span>
+
+<section class="cc" aria-label="Anexomail Command Center">
+<div class="cchead">
+<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 8 L57 55 L44 55 L32 31 L20 55 L7 55 Z" fill="#2C4C79" stroke="#E6EBF1" stroke-width="2"/><path d="M32 22 L42 42 L22 42 Z" fill="#1E3557" stroke="#C3CCD8" stroke-width="1.4"/><path d="M12 49 L53 34" stroke="#E6EBF1" stroke-width="1.2"/><circle cx="17" cy="47.2" r="2.6" fill="#fff"/><circle cx="32" cy="41.8" r="2.6" fill="#fff"/><circle cx="48" cy="35.9" r="2.6" fill="#fff"/></svg>
+<div><b>ANEXOMAIL</b><small>COMMAND CENTER</small></div>
+<div class="clk"><div class="t" id="clk">10:39 AM</div><div class="d">MONDAY, NOVEMBER 23</div></div>
+</div>
+<div class="strip">
+<div class="stat"><div class="lab">Escalations</div><div class="big">3</div></div>
+<div class="stat"><div class="lab">Desk queue</div><div class="big">12</div></div>
+<div class="stat"><div class="lab">Companies</div><div class="big">7</div></div>
+<div class="stat"><div class="lab">Bridge</div><div class="big ok">Signed</div></div>
+</div>
+<div class="tabs" role="group" aria-label="Command Center views">
+<button aria-pressed="true" data-v="desk">Admin Desk</button><button aria-pressed="false" data-v="bridge">Work bridge &amp; privacy</button>
+</div>
+<div id="bridge" hidden>
+<div class="bridge"><div class="node">Founder</div><div class="beam"></div><div class="node">Signed &middot; work only &middot; audited</div><div class="beam"></div><div class="node">Admin Desk</div></div>
+<div class="two"><div class="stat"><div class="lab">Founder sees</div><ul class="ok"><li>Queue pressure</li><li>Alerts</li><li>Customer counts</li><li>Reports summary</li></ul></div>
+<div class="stat"><div class="lab">Desk never sees</div><ul class="no"><li>Founder mail, keys, sessions</li><li>Founder tables</li></ul></div></div>
+<div class="log">10:41:02  founder -> desk  VIEW queue      purpose=work  signed OK
+10:41:09  founder -> desk  VIEW customers  purpose=work  signed OK
+10:42:30  desk -> founder  ESCALATE        purpose=work  signed OK</div>
+</div>
+</section>
+
+<section class="deskwrap" id="desk">
+<div class="deskbar"><span>Admin Desk · under the Command Center · shown smaller</span><span>unchanged inside</span></div>
+<div class="deskbox" id="box"><div class="deskin" id="din">
+<div class="side"><div class="brand"><svg viewBox="0 0 64 64"><path d="M32 8 L57 55 L44 55 L32 31 L20 55 L7 55 Z" fill="#2C4C79" stroke="#E6EBF1" stroke-width="2"/><path d="M32 22 L42 42 L22 42 Z" fill="#1E3557" stroke="#C3CCD8" stroke-width="1.4"/></svg><div><b>ANEXOMAIL</b><small>WORKSPACE</small></div></div>
+<div class="si on">Dashboard</div><div class="grp">Anexomail Workspace</div><div class="si">Mailboxes</div><div class="si">Cases</div><div class="si">Replies</div><div class="si">Routing</div><div class="si">SLA clocks</div><div class="grp">Admin Desk</div><div class="si">Managed Move-In</div><div class="si">People</div><div class="si">CRM</div></div>
+<div class="dmain"><p class="hi">Good morning,</p><h1>Admin Desk</h1>
+<div class="dg">
+<div class="dc"><div class="lab">Live SLA clock <span>&rarr;</span></div><div class="bg">No cases yet</div><div class="tx">Target: under 2 minutes.</div></div>
+<div class="dc"><div class="lab">Urgent alerts <span>&rarr;</span></div><div class="bg">2</div><div class="tx">sample</div></div>
+<div class="dc"><div class="lab">Systems <span>&rarr;</span></div><div class="tx">Is the Desk working? Plain status for every employee.</div></div>
+<div class="dc"><div class="lab">Customers and plans <span>&rarr;</span></div><div class="tx">How many companies, on which plan, in which service state.</div></div>
+<div class="dc"><div class="lab">Runbooks <span>&rarr;</span></div><div class="tx">Nine step-by-step guides for the common customer problems.</div></div>
+<div class="dc"><div class="lab">Queue pressure <span>&rarr;</span></div><div class="tx">Open, waiting and at-risk cases by queue.</div></div>
+</div></div></div></div>
+</section>
+</div>
+<script>
+function fit(){var b=document.getElementById('box'),d=document.getElementById('din');d.style.transform='scale('+(b.clientWidth/1280)+')'}
+addEventListener('resize',fit);fit();
+var T=document.querySelectorAll('.tabs button');T.forEach(function(x){x.onclick=function(){T.forEach(function(y){y.setAttribute('aria-pressed','false')});x.setAttribute('aria-pressed','true');document.getElementById('bridge').hidden=x.dataset.v!=='bridge'}});
+function tick(){document.getElementById('clk').textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}tick();setInterval(tick,30000);
+</script>
