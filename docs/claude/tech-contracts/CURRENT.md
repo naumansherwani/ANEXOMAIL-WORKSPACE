@@ -1,5 +1,14 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-1 B1 Queue pressure + B2 SLA at risk), written 23 Nov 2026 05:2x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (C1..C10)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL AD11: read-only SECURITY DEFINER doors fadm_queue_pressure + fadm_sla_risk, permission per case (fadm_case_can), metadata only, no PUBLIC execute (schema-first on AD07 + AD03) | sql/AD11.sql, checks/AD11-check.sql | yes | scratch PostgreSQL: selftest passes (14 rules), AD11 check 5/5 true |
+| Rust + Tokio + Axum 0.8 doors /desk/v1/queues/pressure and /risk over the sealed HTTP/3 router, response-shape check (wrong shape = Data unavailable) | server/src/pressure.rs, main.rs | yes | cargo tests (shape tests) |
+| Rule 52 kernel-verified reads (deskCall), fail-closed Data unavailable | DeskPressure.tsx, desk_pressure_pure.ts | yes | bun tests 79 pass, tsc clean |
+| React 19 + TypeScript cards Queue pressure + Live SLA clock flip from "Not connected yet" to real data, 30 s refresh, flexing grid | DeskPressure.tsx, desk_cards.ts, DeskCards.tsx | yes | vite build + my Chrome look next |
+| 15-minute warning window is never a promise (words + test) | desk_pressure_pure.ts WINDOW_NOTE | yes | bun test |
+
 # TECH CONTRACT FOR PHASE: DESK D5c ESCALATE (phase 1l), written 23 Nov 2026 04:55 PKT BEFORE code. LIST: docs/claude/admin-desk/D5C-ESCALATE-LIST-23NOV.md (L1..L12)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3353,3 +3362,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - OVERVIEW S4 recorded as later phase (after 1o, 1a, phone test), TESTED: docs only; TECH-LAW CHECKED
 
 - OVERVIEW S4 REMINDER gate + plan + WORKING-NOW line, TESTED: gate run on this commit; TECH-LAW CHECKED
+
+- 1l GREEN (his server + my Chrome); 1m-1 CODE B1 queue pressure + B2 SLA at risk: AD11 + pressure.rs + DeskPressure.tsx, TESTED: scratch PG selftest + check 5/5, cargo 76 pass, bun 79 pass, tsc, vite; TECH-LAW CHECKED; GREEN waits his install + Chrome

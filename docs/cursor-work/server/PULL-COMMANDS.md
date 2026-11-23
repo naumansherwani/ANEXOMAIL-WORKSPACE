@@ -2445,3 +2445,5 @@
 - OVERVIEW S4 recorded as later phase (after 1o, 1a, phone test), TESTED: docs only; TECH-LAW CHECKED
 
 - OVERVIEW S4 REMINDER gate + plan + WORKING-NOW line, TESTED: gate run on this commit; TECH-LAW CHECKED
+
+- 1l GREEN (his server + my Chrome); 1m-1 CODE B1 queue pressure + B2 SLA at risk: AD11 + pressure.rs + DeskPressure.tsx, TESTED: scratch PG selftest + check 5/5, cargo 76 pass, bun 79 pass, tsc, vite; TECH-LAW CHECKED; GREEN waits his install + Chrome

@@ -22,6 +22,7 @@ mod lookup;
 mod packages;
 mod runbooks;
 mod escalations;
+mod pressure;
 mod sign;
 mod wt;
 mod signed;
@@ -116,6 +117,8 @@ async fn main() {
         .route("/desk/v1/runbooks/mark", post(runbooks::mark))
         .route("/desk/v1/escalations", post(escalations::create))
         .route("/desk/v1/escalations/list", post(escalations::list))
+        .route("/desk/v1/queues/pressure", post(pressure::queues))
+        .route("/desk/v1/queues/risk", post(pressure::risk))
         .layer(middleware::from_fn(signed::guard));
     let app = Router::new()
         .route("/desk/v1/health", get(health))
