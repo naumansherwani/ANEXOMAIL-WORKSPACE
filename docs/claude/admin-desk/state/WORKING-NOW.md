@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 07:56 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 07:56 PKT) - read this FIRST for the Desk after a compaction
 DOING: removed 'Opens when it is connected' everywhere in the Desk, tooltip = short key only
 NEXT STEP: his desk-install + founder-install pastes, my Chrome looks; awam only on his word; B9
 HIS LAST WORD: his 07:56 order
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 00974202 23 Nov 07:56 Desk: remove Opens when it is connected, tooltip is the short key only
 - 4a22e32a 23 Nov 07:52 ledger line 60aaff50
 - 60aaff50 23 Nov 07:52 Founder keys: Ctrl+D, Ctrl+/, Alt+Shift pages, walk, sidebar follows
 - e02abe02 23 Nov 07:46 ledger line 489d6412
@@ -72,13 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 0c68f7a6 23 Nov 07:37 ledger line 1878dd5d
 - 1878dd5d 23 Nov 07:37 Desk rail keys plan + research
 - 66394b6e 23 Nov 07:30 ledger line 2fcb295b
-- 2fcb295b 23 Nov 07:30 Desk 1m small step GREEN, B9 honest state
 
 ## Uncommitted Desk files
- M admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskShell.tsx
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
