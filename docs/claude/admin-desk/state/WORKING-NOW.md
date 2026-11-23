@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 08:01 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 08:01 PKT) - read this FIRST for the Desk after a compaction
 DOING: awam keys code done + tested, not installed
 NEXT STEP: his desk/founder/awam install pastes + my Chrome looks; B9
 HIS LAST WORD: his 07:58 order awam keys whole website
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 9a5a58bc 23 Nov 08:01 Awam keys: Ctrl+D, Ctrl+/, Alt+Shift pages, walk, rail follows
 - f39acb99 23 Nov 07:56 ledger line 00974202
 - 00974202 23 Nov 07:56 Desk: remove Opens when it is connected, tooltip is the short key only
 - 4a22e32a 23 Nov 07:52 ledger line 60aaff50
@@ -72,11 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - e02abe02 23 Nov 07:46 ledger line 489d6412
 - 489d6412 23 Nov 07:46 Desk 1m-keys: Ctrl+K palette, Ctrl+/ help, Alt+Shift keys for every rail folder
 - 0c68f7a6 23 Nov 07:37 ledger line 1878dd5d
-- 1878dd5d 23 Nov 07:37 Desk rail keys plan + research
 
 ## Uncommitted Desk files
- M admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
