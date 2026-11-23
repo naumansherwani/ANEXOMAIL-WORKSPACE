@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 03:56 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 03:56 PKT) - read this FIRST for the Desk after a compaction
 DOING: Demo V4: Senior Executive centred, footer below the light
 NEXT STEP: his haan, real text/position code, desk-install, BL-46 B13
 HIS LAST WORD: his 03:53 word
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 19a222c0 24 Nov 03:56 Text demo V4
 - e4497272 24 Nov 03:49 ledger line 1e6fc424
 - 1e6fc424 24 Nov 03:49 Landing title demo V3
 - cf963a77 24 Nov 03:47 ledger line 5d5d409f
@@ -72,16 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 19e077ae 24 Nov 03:35 ledger line c14f02e7
 - c14f02e7 24 Nov 03:35 Text demo 2
 - a9bf63f2 24 Nov 03:29 ledger line 109e89b8
-- 109e89b8 24 Nov 03:29 Desk text change + rebuilt bundle
 
 ## Uncommitted Desk files
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-A  admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V4-centre-footer.html
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-A  docs/claude/admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V4-centre-footer.html
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
