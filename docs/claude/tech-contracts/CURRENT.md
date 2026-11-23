@@ -3611,3 +3611,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Command Center title demo V22: logo colours travel left to right, static centre light removed, V21 kept, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered frames looked at, gate 0 fail
 
 - Command Center title demo back to V21, V22 kept as backup, real Desk untouched, TECH-LAW CHECKED, TESTED: V21 file republished unchanged, gate 0 fail
+
+- Command Center title demo V23: light less (glow .13), V21 and V22 kept, real Desk untouched, TECH-LAW CHECKED, TESTED: demo republished, gate 0 fail
