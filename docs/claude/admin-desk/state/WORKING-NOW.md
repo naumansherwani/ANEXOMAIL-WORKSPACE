@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 03:11 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 03:12 PKT) - read this FIRST for the Desk after a compaction
 DOING: Text-only demo: Senior Executive, Customer Operations, landing wording
 NEXT STEP: his haan, then real text change, desk-install; BL-46 B13
 HIS LAST WORD: his 03:08 word
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 588ba10d 24 Nov 03:12 Text-only demo
 - a3cea33c 24 Nov 02:45 ledger line 1a7aa1f5
 - 1a7aa1f5 24 Nov 02:45 B9c Y5 GREEN
 - 635fcaa7 24 Nov 02:39 ledger line 37fe24a7
@@ -72,18 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 7f1a8d48 24 Nov 02:23 ledger line 8103f7c1
 - 8103f7c1 24 Nov 02:23 OS in Desk title + AD06d check repair
 - 9c93fb2f 24 Nov 02:14 ledger line 45051194
-- 45051194 24 Nov 02:14 Title demo V25 COMMAND CENTER OS
 
 ## Uncommitted Desk files
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-A  admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-dashboard.html
-A  admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-landing-1280.png
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-A  docs/claude/admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-dashboard.html
-A  docs/claude/admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-landing-1280.png
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
