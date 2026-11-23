@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 10:32 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 10:32 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Customers back button renamed
 NEXT STEP: 1m-9 B9c
 HIS LAST WORD: his 10:32 word: All plans is nonsense
@@ -19,26 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 2c97b98d 23 Nov 10:32 Customers back button wording
 - 24ec195f 23 Nov 10:30 ledger line 2864bb2f
 - 2864bb2f 23 Nov 10:30 B9b GREEN + Command Center phase recorded
 - a8d7036d 23 Nov 10:28 ledger line e83cd9e7
 - e83cd9e7 23 Nov 10:28 B9b GREEN
-- 5b671dd6 23 Nov 10:20 ledger line 9863df1f
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
-R  founder-web/dist-desk/assets/desk-BoFzV3WI.js -> founder-web/dist-desk/assets/desk-4Jbh0Ykg.js
-M  founder-web/dist-desk/desk.html
-M  founder-web/src/desk/DeskCustomers.tsx
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md                   | 26 +++++++---------------
- .../assets/{desk-BoFzV3WI.js => desk-4Jbh0Ykg.js}  |  2 +-
- founder-web/dist-desk/desk.html                    |  2 +-
- founder-web/src/desk/DeskCustomers.tsx             |  2 +-
- 4 files changed, 11 insertions(+), 21 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 23 ++---------------------
+ 1 file changed, 2 insertions(+), 21 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -49,4 +43,4 @@ M  founder-web/src/desk/DeskCustomers.tsx
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (c96716fdf0062f5f2f66f1475a8a3efcc8bf560d)
+WIP snapshot: refs/wip/last (44792c6dd0bd218d1d9276fa1ab5e265c50cbf9c)

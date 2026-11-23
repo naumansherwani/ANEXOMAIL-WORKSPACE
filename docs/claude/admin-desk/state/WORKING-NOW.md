@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 10:32 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 10:32 PKT) - read this FIRST for the Desk after a compaction
 DOING: Customers back button renamed
 NEXT STEP: 1m-9 B9c
 HIS LAST WORD: his 10:32 word: All plans is nonsense
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 2c97b98d 23 Nov 10:32 Customers back button wording
 - 24ec195f 23 Nov 10:30 ledger line 2864bb2f
 - 2864bb2f 23 Nov 10:30 B9b GREEN + Command Center phase recorded
 - a8d7036d 23 Nov 10:28 ledger line e83cd9e7
@@ -72,11 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 5b671dd6 23 Nov 10:20 ledger line 9863df1f
 - 9863df1f 23 Nov 10:20 Gate forever law
 - 66d7f804 23 Nov 10:19 ledger line 9f005c22
-- 9f005c22 23 Nov 10:19 Desk 1m-8 B9b customers six packages + plan detail, B9c planned
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
-M  founder-web/src/desk/DeskCustomers.tsx
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
