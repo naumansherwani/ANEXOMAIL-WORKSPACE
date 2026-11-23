@@ -5979,3 +5979,5 @@ Features ki list (QC4 mein kya banega):
 - Command Center title demo V16: Admin Desk rule mirrored on both sides, V15 saved first, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered in Chrome and looked at, gate 0 fail
 
 - Command Center title demo V17: soft logo-gradient light under ANEXOMAIL, V16 saved first, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered in Chrome two frames and looked at, gate 0 fail
+
+- Command Center title demo V18: running logo-gradient light under ANEXOMAIL and along the line, V17 saved first, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered in Chrome three frames and looked at, gate 0 fail

@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 11:36 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Command Center title V17 saved
+# WORKING NOW (manual checkpoint, 23 Nov 2026 11:38 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Command Center title V18 saved
 NEXT STEP: his haan for real Desk title, then B9c Y4/Y5/Y6
-HIS LAST WORD: his 11:35 word
+HIS LAST WORD: his 11:37 word
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -19,20 +19,33 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 8f0e8d03 23 Nov 11:36 ledger line 4d748339
 - 4d748339 23 Nov 11:36 Command Center title V17 soft lights
 - 817fe50d 23 Nov 11:34 ledger line 39f3f182
 - 39f3f182 23 Nov 11:34 Command Center title V16 both lines
 - 21df4d77 23 Nov 11:32 ledger line b70ca054
-- b70ca054 23 Nov 11:32 Command Center title V15 fitted
 
 ## Uncommitted files (half-done work if any)
+M  admin-desk/D6-CARDS-LIST-23NOV.md
+A  admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V18-RUNNING-LIGHTS.html
+M  admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
+M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
+A  docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V18-RUNNING-LIGHTS.html
+M  docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
+M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 30 ++----------------------------
- 1 file changed, 2 insertions(+), 28 deletions(-)
+ ...MMAND-CENTER-DEMO-23NOV-V18-RUNNING-LIGHTS.html | 104 +++++++++++++++++++++
+ admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html     |  11 ++-
+ docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md      |   2 +
+ ...MMAND-CENTER-DEMO-23NOV-V18-RUNNING-LIGHTS.html | 104 +++++++++++++++++++++
+ .../admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html |  11 ++-
+ docs/claude/admin-desk/state/WORKING-NOW.md        |   2 +-
+ docs/claude/state/WORKING-NOW.md                   |  28 +++---
+ 8 files changed, 236 insertions(+), 28 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -43,4 +56,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (e9018c51530143fe39f6c86c62f1228138ec30f9)
+WIP snapshot: refs/wip/last (eeff288251d21d00a7a10611cf4914b6a1171f10)
