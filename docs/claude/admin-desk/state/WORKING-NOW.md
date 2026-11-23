@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 05:22 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 05:22 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1m-1 AD11 ADVANCED rewrite pushed; waits his ad-auto + desk-install + my Chrome look
 NEXT STEP: his 2 server lines, Chrome look, 1m-1 GREEN, next B3
 HIS LAST WORD: his 05:18: read all old SQL, write world-class AD11
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- c544bdbc 23 Nov 05:22 1m-1 AD11 advanced
 - 0f80d453 23 Nov 05:16 ledger line 0dde2fcb
 - 0dde2fcb 23 Nov 05:16 1m-1 B1+B2 code, 1l GREEN
 - 7c5e7107 23 Nov 05:10 ledger line bc169da6
@@ -72,25 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - fe54e05f 23 Nov 05:06 ledger line bc150900
 - bc150900 23 Nov 05:06 Overview S4 later
 - db3b2083 23 Nov 05:04 ledger line 74022546
-- 74022546 23 Nov 05:04 1l live desktop proof
 
 ## Uncommitted Desk files
- M admin-desk/D6-CARDS-LIST-23NOV.md
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/NOW-LIST-23NOV.md
- M admin-desk/server/src/pressure.rs
- M admin-desk/sql/AD11.sql
- M admin-desk/sql/checks/AD11-check.sql
- M docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/server/src/pressure.rs
- M docs/claude/admin-desk/sql/AD11.sql
- M docs/claude/admin-desk/sql/checks/AD11-check.sql
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskPressure.tsx
- M founder-web/src/desk/desk_pressure_pure.test.ts
- M founder-web/src/desk/desk_pressure_pure.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
