@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { deskCall } from "./desk_kernel";
 import { UNAVAILABLE_TEXT } from "./desk_lookup_pure";
+import { changedPlans, parsePlanDigest, planKey } from "./desk_plans_pure";
 import { FACTS, NONE_FACTS, SOURCE_NOTE, STAR_NOTE, UNKNOWN_FACTS, type PlanKey } from "./desk_packages_pure";
 import { growthWords, headline, isSmall, NOT_YOURS, NOTE, overLimitWords, PKGS, PKG_ALL, PKG_WORDS, parseCustomers, share, SMALL, sortedSignals, STATE_WORDS, STATES, TREND_WORDS, type Customers } from "./desk_customers_pure";
 
@@ -56,8 +57,8 @@ function PlanDetail({ k, c, onBack }: { k: (typeof PKG_ALL)[number]; c: Customer
     </div>
     <section className="dcu-box"><small>{NOTE}</small></section></>;
 }
-export function DeskCustomers() {
-  const [sel, setSel] = useState<(typeof PKG_ALL)[number] | null>(null), [v, setV] = useState<Customers | null>(null), [bad, setBad] = useState(false), [no, setNo] = useState(false);
+export function DeskCustomers({ plansFrame }: { plansFrame?: unknown } = {}) {
+  const [sel, setSel] = useState<(typeof PKG_ALL)[number] | null>(null), [news, setNews] = useState<string[]>([]), [tick, setTick] = useState(0), seen = useRef<ReturnType<typeof parsePlanDigest>>(null), [v, setV] = useState<Customers | null>(null), [bad, setBad] = useState(false), [no, setNo] = useState(false);
   useEffect(() => {
     let live = true;
     const go = () => deskCall("POST", "/desk/v1/customers/census", {}).then((r) => {
@@ -67,10 +68,19 @@ export function DeskCustomers() {
     }, () => { if (live) { setV(null); setBad(true); } });
     void go(); const t = setInterval(() => void go(), 60000);
     return () => { live = false; clearInterval(t); };
-  }, []);
+  }, [tick]);
+  // B9c: a plan release arrives on the live plans track (signed, kernel-verified); the screen re-reads by itself and says which plan changed
+  const pk = planKey(parsePlanDigest(plansFrame));
+  useEffect(() => {
+    const now = parsePlanDigest(plansFrame); if (!now) return;
+    const was = seen.current; seen.current = now;
+    if (was && planKey(was) !== planKey(now)) { setNews(changedPlans(was, now).map((k) => PKG_WORDS[k as keyof typeof PKG_WORDS] ?? k)); setTick((x) => x + 1); }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pk]);
   const c = v?.census;
   return (
     <div className="dcu"><style>{CSS}</style>
+      {news.length > 0 && <section className="dcu-box" role="status"><b>Plans updated just now:</b> {news.join(", ")}. The numbers below were re-read.</section>}
       {no && <section className="dcu-box"><p style={{ margin: 0 }}><b>{NOT_YOURS}</b> The company counts are shown only to people who may open a customer.</p></section>}
       {!no && bad && <section className="dcu-box"><p role="status" style={{ margin: 0 }}><b>{UNAVAILABLE_TEXT}</b> The numbers could not be verified, so none are shown.</p></section>}
       {!no && !bad && v === null && <section className="dcu-box"><small>Loading…</small></section>}

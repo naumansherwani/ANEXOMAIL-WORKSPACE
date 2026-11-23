@@ -6,7 +6,34 @@ use crate::auth;
 use axum::{extract::Request, http::{header, HeaderMap, HeaderValue, StatusCode}, response::{IntoResponse, Response}, Json};
 use serde::Deserialize;
 use std::{collections::HashMap, sync::Mutex, time::{Duration, Instant}};
-use tokio_postgres::{Client, Config, NoTls};
+use tokio_postgres::{AsyncMessage, Client, Config, NoTls};
+
+/// B9c (1m-9): the in-process bus a PostgreSQL NOTIFY on `desk_plans` (a plan release, sent at COMMIT) wakes. Every open live stream session subscribes and re-reads at once.
+pub fn plans_bus() -> &'static tokio::sync::broadcast::Sender<()> {
+    static BUS: std::sync::OnceLock<tokio::sync::broadcast::Sender<()>> = std::sync::OnceLock::new();
+    BUS.get_or_init(|| tokio::sync::broadcast::channel(16).0)
+}
+/// Drives a connection; with `listen` every NOTIFY on desk_plans pings the bus.
+async fn drive<S, T>(mut conn: tokio_postgres::Connection<S, T>, listen: bool)
+where S: tokio::io::AsyncRead + tokio::io::AsyncWrite + Unpin, T: tokio::io::AsyncRead + tokio::io::AsyncWrite + Unpin {
+    while let Some(m) = futures_util::future::poll_fn(|cx| conn.poll_message(cx)).await {
+        match m { Ok(AsyncMessage::Notification(n)) => { if listen && n.channel() == "desk_plans" { let _ = plans_bus().send(()); } } Ok(_) => {} Err(_) => break }
+    }
+}
+/// Keeps ONE dedicated connection LISTENing on desk_plans (reconnects with backoff, and pings the bus after every reconnect so no release is missed).
+pub async fn listen_plans() {
+    let mut wait = 1u64;
+    loop {
+        match open(true).await {
+            Ok(c) => match c.batch_execute("LISTEN desk_plans").await {
+                Ok(()) => { wait = 1; let _ = plans_bus().send(()); eprintln!("desk plans: LISTEN desk_plans ready"); while !c.is_closed() { tokio::time::sleep(Duration::from_secs(2)).await; } }
+                Err(e) => eprintln!("desk plans: LISTEN failed: {e}"),
+            },
+            Err(e) => eprintln!("desk plans: listener connection failed: {e}"),
+        }
+        tokio::time::sleep(Duration::from_secs(wait)).await; wait = (wait * 2).min(30);
+    }
+}
 
 pub const COOKIE: &str = "anexo.desk.session";
 const TTL_SECS: i64 = 12 * 3600;
@@ -14,12 +41,12 @@ const MAX_FAILS: u32 = 5;
 const WINDOW: Duration = Duration::from_secs(15 * 60);
 static FAILS: Mutex<Option<HashMap<String, (u32, Instant)>>> = Mutex::new(None);
 
-async fn open() -> Result<Client, String> {
+async fn open(listen: bool) -> Result<Client, String> {
     let url = std::env::var("DESK_APP_URL").map_err(|_| "DESK_APP_URL not set".to_string())?;
     let cfg: Config = url.parse().map_err(|_| "DESK_APP_URL is not a valid postgres url".to_string())?;
     if cfg.get_ssl_mode() == tokio_postgres::config::SslMode::Disable {
         let (c, conn) = cfg.connect(NoTls).await.map_err(|e| e.to_string())?;
-        tokio::spawn(async move { let _ = conn.await; }); return Ok(c);
+        tokio::spawn(drive(conn, listen)); return Ok(c);
     }
     let mut roots = rustls::RootCertStore::empty();
     for c in rustls_native_certs::load_native_certs().certs { let _ = roots.add(c); }
@@ -31,13 +58,13 @@ async fn open() -> Result<Client, String> {
     let tls = rustls::ClientConfig::builder_with_provider(std::sync::Arc::new(rustls::crypto::ring::default_provider()))
         .with_safe_default_protocol_versions().map_err(|e| e.to_string())?.with_root_certificates(roots).with_no_client_auth();
     let (c, conn) = cfg.connect(tokio_postgres_rustls::MakeRustlsConnect::new(tls)).await.map_err(|e| { let mut m = e.to_string(); let mut s: Option<&dyn std::error::Error> = std::error::Error::source(&e); while let Some(x) = s { m.push_str(": "); m.push_str(&x.to_string()); s = x.source(); } m })?;
-    tokio::spawn(async move { let _ = conn.await; }); Ok(c)
+    tokio::spawn(drive(conn, listen)); Ok(c)
 }
 static DB: tokio::sync::Mutex<Option<std::sync::Arc<Client>>> = tokio::sync::Mutex::const_new(None);
 pub async fn connect() -> Result<std::sync::Arc<Client>, String> {
     let mut g = DB.lock().await;
     if let Some(c) = g.as_ref() { if !c.is_closed() { return Ok(c.clone()); } }
-    let c = std::sync::Arc::new(open().await?); *g = Some(c.clone()); Ok(c)
+    let c = std::sync::Arc::new(open(false).await?); *g = Some(c.clone()); Ok(c)
 }
 pub async fn warm() { match connect().await { Ok(_) => eprintln!("desk door: database connection ready (role desk_app)"), Err(e) => eprintln!("desk door: database not ready yet: {e}") } }
 // every value below is validated or generated here (hex token hash, uuid, allowlisted email), so no prepared statement is needed.

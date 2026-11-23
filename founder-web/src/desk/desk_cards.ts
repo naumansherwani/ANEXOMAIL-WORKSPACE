@@ -34,7 +34,7 @@ export function cardProblems(cards: Card[] = CARDS): string[] {
     if (!/^[a-z]+$/.test(c.id)) out.push(`${c.id}: id must be lowercase letters`);
     if (seen.has(c.id)) out.push(`${c.id}: duplicate`); seen.add(c.id);
     if (!route(c.id).startsWith("/dashboard/")) out.push(`${c.id}: route outside /dashboard/`);
-    if (c.track !== null && !["summary", "services", "alerts", "lookup"].includes(c.track)) out.push(`${c.id}: unknown track`);
+    if (c.track !== null && !["summary", "services", "alerts", "plans", "lookup"].includes(c.track)) out.push(`${c.id}: unknown track`);
     if (c.wired && c.track === null) out.push(`${c.id}: wired but no track`);
     if (!c.wired && !c.waits) out.push(`${c.id}: not wired, must say what it waits for`);
     if (!/^[a-z0-9]$/.test(c.key) || c.key === HOME_KEY || cards.some((o) => o !== c && o.key === c.key)) out.push(`${c.id}: shortcut key must be one unique letter or digit other than ${HOME_KEY}`);

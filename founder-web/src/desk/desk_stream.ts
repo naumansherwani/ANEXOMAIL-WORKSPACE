@@ -16,7 +16,7 @@ const read = (k: string) => { try { return window.localStorage.getItem(k); } cat
 /** Start the stream. Returns stop(). onChange fires on every verified frame and every state change. */
 export function openBridge(onChange: (s: Snapshot) => void): () => void {
   let stopped = false, attempt = 0, everConnected = false, connected = false, wt = null as WebTransport | null;
-  const lastSeq: Record<Track, number> = { summary: 0, services: 0, alerts: 0 };
+  const lastSeq: Record<Track, number> = { summary: 0, services: 0, alerts: 0, plans: 0 };
   const lastAt: Partial<Record<Track, number>> = {};
   const data: Frames = {};
   let shown: StreamState | "" = "";

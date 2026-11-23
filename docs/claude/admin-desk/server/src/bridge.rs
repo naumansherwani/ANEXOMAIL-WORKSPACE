@@ -98,6 +98,7 @@ pub async fn track(token: &str, track: &str) -> Result<String, u16> {
         "summary" => format!("select desk.fadm_bridge_summary('{o}'::uuid)::text"),
         "services" => format!("select coalesce(jsonb_agg(to_jsonb(t)), '[]'::jsonb)::text from desk.fadm_bridge_services('{o}'::uuid) t"),
         "alerts" => format!("select coalesce(jsonb_agg(to_jsonb(t)), '[]'::jsonb)::text from desk.fadm_alert_list('{o}'::uuid, true, 100) t"),
+        "plans" => format!("select desk.fadm_plans_digest('{o}'::uuid)::text"),
         _ => return Err(404),
     };
     match rows(&c, &q).await {

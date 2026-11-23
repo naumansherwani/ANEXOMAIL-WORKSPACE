@@ -13,7 +13,7 @@ pub const HELLO_WAIT: Duration = Duration::from_secs(5);
 pub const TICK: Duration = Duration::from_secs(4);
 pub const HEARTBEAT: Duration = Duration::from_secs(8);
 const MAX_LIFE: Duration = Duration::from_secs(900);
-pub const TRACKS: [&str; 3] = ["summary", "services", "alerts"];
+pub const TRACKS: [&str; 4] = ["summary", "services", "alerts", "plans"];
 
 /// Source of one track: (token, track) -> JSON text, or the HTTP-style status of a refusal. Production = bridge::track; tests inject their own.
 pub type Fetch = Arc<dyn Fn(String, &'static str) -> Pin<Box<dyn Future<Output = Result<String, u16>> + Send>> + Send + Sync>;
@@ -62,11 +62,12 @@ where W: tokio::io::AsyncWrite + Unpin, R: tokio::io::AsyncRead + Unpin {
     if !crate::signed::nonce_fresh(&h.token, &h.nonce) { let _ = send.write_all(b"ERR 401 replayed_request\n").await; let _ = send.shutdown().await; return 3; }
     let salt = format!("{}{}", h.nonce, h.mac);
     let started = tokio::time::Instant::now();
-    let mut seq = [0u64; 3];
-    let mut last: [Option<String>; 3] = [None, None, None];
-    let mut sent_at = [tokio::time::Instant::now(); 3];
+    let mut seq = [0u64; 4];
+    let mut last: [Option<String>; 4] = [None, None, None, None];
+    let mut sent_at = [tokio::time::Instant::now(); 4];
     let mut n: u64 = 0;
     let mut first = true;
+    let mut plans_rx = crate::door::plans_bus().subscribe(); // B9c: a plan release wakes this loop at once (PostgreSQL NOTIFY), no waiting for the next tick
     loop {
         for (i, t) in TRACKS.iter().enumerate() {
             match (cfg.fetch)(h.token.clone(), t).await {
@@ -87,6 +88,7 @@ where W: tokio::io::AsyncWrite + Unpin, R: tokio::io::AsyncRead + Unpin {
         if started.elapsed() >= MAX_LIFE { break; }
         tokio::select! {
             _ = tokio::time::sleep(TICK) => {}
+            _ = plans_rx.recv() => {}
             r = async { let mut b = [0u8; 64]; recv.read(&mut b).await } => { if !matches!(r, Ok(k) if k > 0) { return 0; } }
         }
     }
@@ -156,7 +158,7 @@ mod tests {
     fn fake(deny: Option<u16>) -> Fetch {
         Arc::new(move |_t: String, track: &'static str| Box::pin(async move {
             if let Some(c) = deny { return Err(c); }
-            Ok(match track { "summary" => r#"{"p1":0}"#.to_string(), "services" => r#"[{"name":"db"}]"#.to_string(), _ => "[]".to_string() })
+            Ok(match track { "summary" => r#"{"p1":0}"#.to_string(), "services" => r#"[{"name":"db"}]"#.to_string(), "plans" => r#"{"n":0,"plans":[]}"#.to_string(), _ => "[]".to_string() })
         }))
     }
     async fn start(fetch: Fetch) -> Option<(u16, Vec<u8>)> {
@@ -200,10 +202,10 @@ mod tests {
         let out = talk(port, &cert, PATH, &hello(TOK, "0a0b0c0d0e0f00112233445566778899", ts), Duration::from_millis(1500)).await.unwrap();
         let text = String::from_utf8(out).unwrap();
         let lines: Vec<&str> = text.lines().collect();
-        assert_eq!(lines.len(), 3, "one frame per track at start: {text}");
+        assert_eq!(lines.len(), 4, "one frame per track at start: {text}");
         let mut tracks = vec![];
         for l in &lines { let b = verify_line(l).expect("every frame must verify with the Desk key"); assert_eq!(b["seq"], 1); tracks.push(b["track"].as_str().unwrap().to_string()); }
-        assert_eq!(tracks, ["summary", "services", "alerts"]);
+        assert_eq!(tracks, ["summary", "services", "alerts", "plans"]);
         let mut t = lines[0].to_string(); t = t.replace("p1", "p2"); assert!(verify_line(&t).is_none(), "a tampered frame must fail");
     }
     #[tokio::test(flavor = "multi_thread")]
@@ -216,7 +218,7 @@ mod tests {
         assert!(String::from_utf8(talk(port, &cert, PATH, &bad_mac, w).await.unwrap()).unwrap().starts_with("ERR 401 bad_mac"));
         assert!(String::from_utf8(talk(port, &cert, PATH, &hello(TOK, n, ts - 600), w).await.unwrap()).unwrap().starts_with("ERR 401 stale_request"));
         let h = hello(TOK, n, ts);
-        let first = String::from_utf8(talk(port, &cert, PATH, &h, w).await.unwrap()).unwrap(); assert!(first.contains("seq") && first.lines().count() == 3, "first: {first:?}");
+        let first = String::from_utf8(talk(port, &cert, PATH, &h, w).await.unwrap()).unwrap(); assert!(first.contains("seq") && first.lines().count() == 4, "first: {first:?}");
         assert!(String::from_utf8(talk(port, &cert, PATH, &h, w).await.unwrap()).unwrap().starts_with("ERR 401 replayed_request"), "the same hello must not work twice");
         assert!(talk(port, &cert, "/other", &hello(TOK, "2a2b2c2d2e2f00112233445566778899", ts), w).await.is_err(), "wrong path refused");
     }

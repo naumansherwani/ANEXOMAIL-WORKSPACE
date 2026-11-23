@@ -9,8 +9,8 @@ test("backoff doubles, caps at 30 s, jitter adds at most 20 %", () => {
   expect(backoffMs(0, 0)).toBe(1000); expect(backoffMs(1, 0)).toBe(2000); expect(backoffMs(3, 0)).toBe(8000); expect(backoffMs(9, 0)).toBe(30000); expect(backoffMs(99, 0)).toBe(30000);
   expect(backoffMs(0, 0.999)).toBeLessThanOrEqual(1200); expect(backoffMs(0, -5)).toBe(1000);
 });
-test("the page says Live only when all three tracks have a fresh verified frame", () => {
-  const now = 100_000, fresh = { summary: now - 1000, services: now - 2000, alerts: now - 500 };
+test("the page says Live only when all four tracks have a fresh verified frame", () => {
+  const now = 100_000, fresh = { summary: now - 1000, services: now - 2000, alerts: now - 500, plans: now - 700 };
   expect(overall(true, true, fresh, now)).toBe("live");
   expect(overall(true, true, { ...fresh, alerts: now - STALE_MS - 1 }, now)).toBe("stale");
   expect(overall(true, true, { summary: now }, now)).toBe("connecting");

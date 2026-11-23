@@ -103,7 +103,7 @@ export function DeskSubPage({ sub, search, hash, snap, nav, role = "", act }: { 
   if (card.id === "plans") return <Shell title="Plans and prices" back nav={nav}><p>Look up one company's plan, what is really switched on, usage and service state.</p><DeskPlan /></Shell>;
   if (card.id === "reports") return <Shell title="Reports" back nav={nav}><p>{card.what}.</p><DeskReports /></Shell>;
   if (card.id === "deliverability") return <Shell title="Deliverability" back nav={nav}><p>{card.what}.</p><DeskDeliverability /><DeskMailPosture /></Shell>;
-  if (card.id === "customers") return <Shell title="Customers and plans" back nav={nav}><p>{card.what}.</p><DeskCustomers /></Shell>;
+  if (card.id === "customers") return <Shell title="Customers and plans" back nav={nav}><p>{card.what}.</p><DeskCustomers plansFrame={snap.data.plans} /></Shell>;
   if (card.id === "staff") return <Shell title="Staff online and shifts" back nav={nav}><p>{card.what}.</p><DeskStaff /></Shell>;
   if (card.id === "security") return <Shell title="Security health" back nav={nav}><p>{card.what}.</p><DeskSecurity /></Shell>;
   if (card.id === "queue") return <Shell title="Queue pressure" back nav={nav}><p>{card.what}.</p><DeskQueuePressure /></Shell>;

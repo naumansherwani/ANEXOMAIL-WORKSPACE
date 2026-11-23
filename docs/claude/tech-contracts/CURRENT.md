@@ -1,5 +1,14 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-9 B9c Plan catalogue + live plan updates, list BL-28), written 23 Nov 2026 10:5x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (B9c section Y1..Y6, FUTURE-PROOF LAW, his 10:16 word: any plan change reaches the Desk within one second, automatically)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL AD18 on the AD06 versioned registry: SHA-256 content fingerprint per plan version, a transactional-outbox trigger that raises NOTIFY desk_plans at COMMIT of every release (a rolled-back release is never announced), a right-checked digest of every live plan (forced SECURITY DEFINER, fixed search_path, statement timeout, REVOKE PUBLIC, COMMENTs, rolled-back selftest) | sql/AD18.sql, sql/checks/AD18-check.sql | yes | scratch selftest + CHECK 5 rows true, NOTIFY not sent on rollback |
+| Rust + Tokio + tokio-postgres: ONE dedicated LISTEN connection (reconnect with backoff, resync ping after every reconnect) feeds an in-process broadcast bus; every open WebTransport stream session wakes at once and sends the changed plans frame, no waiting for the 4 s tick; fourth signed track plans over HTTP/3 | server/src/door.rs, server/src/wt.rs, server/src/bridge.rs, server/src/main.rs | yes | cargo tests 109 pass (4 tracks, seq, tamper) |
+| Rule 52: Rust WASM kernel accepts the fourth track (rebuilt), every plans frame Ed25519-signed and verified before the page sees it; fail-closed, wrong shape = no digest | kernel/src/wire.rs, desk_plans_pure.ts, desk_plans_pure.test.ts | yes | kernel tests 9, bun tests |
+| React 19 + TypeScript: the Customers screen re-reads by itself when a plan changes and says which plan changed (Plans updated just now); live chip now needs all four tracks | DeskCustomers.tsx, DeskCards.tsx, desk_stream.ts, desk_stream_pure.ts | yes | bun 125 pass, tsc, vite build |
+| Y4 what's-new notice for customers and Y5 Premium/Max seat promise in the over-limit count: deferred to the next B9c step (said honestly); Y6 the one-second measurement happens in my Chrome after his install | n/a | deferred (Y4, Y5, Y6 next, said honestly) | list Y4-Y6 |
+
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-8 B9b Customers: six packages, No plan yet, clickable plan detail, FIX of BL-21), written 23 Nov 2026 10:3x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (B9b section X1..X8, FUTURE-PROOF LAW)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3568,3 +3577,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 1m-8 B9b Customers GREEN (WIRED: YES / REAL: YES, his install 5b671dd65 + CP4 6/6, my Chrome look: 7 plan rows, No plan yet 7, plan detail opens), Anexomail Command Center phase CC1 (BL-29) recorded in list, blueprint, NOW-LIST, WORKING-NOW (his 10:29 word), TECH-LAW CHECKED, TESTED: docs only on top of green code, gate 0 fail
 
 - FIX of BL-21 Customers: back button 'All plans' renamed 'Back to customers overview' (his 10:32 word), TECH-LAW CHECKED, TESTED: tsc, bun desk 122, vite build
+
+- 1m-9 B9c plan catalogue + live plan updates WRITTEN (AD18 NOTIFY at COMMIT + digest, Rust LISTEN bus + fourth signed track plans, kernel rebuilt, Customers re-reads), NOT GREEN until his install and my Chrome 1 s proof, BL-28, TECH-LAW CHECKED, TESTED: AD18 selftest + CHECK 5/5, desk cargo 109, kernel 9, bun desk 125, tsc, vite build
+
+- 1m-9 B9c plan catalogue + live plan updates WRITTEN (AD18 NOTIFY at COMMIT + digest, Rust LISTEN bus + fourth signed track plans, kernel rebuilt, Customers re-reads), NOT GREEN until his install and my Chrome 1 s proof, BL-28, TECH-LAW CHECKED, TESTED: AD18 selftest + CHECK 5/5, desk cargo 109, kernel 9, bun desk 125, tsc, vite build

@@ -1,7 +1,7 @@
 // ADMIN DESK Phase C2 (22 Nov 2026): pure parts of the live Bridge stream (no browser, no network): line splitting, reconnect backoff, the one state the page shows.
 // Rule 52 itself (signature, track, clock, seq) lives in the Rust WASM kernel (verify_frame); this file only decides WHAT TO SHOW and WHEN TO RECONNECT.
 export type StreamState = "connecting" | "live" | "stale" | "offline";
-export const TRACKS = ["summary", "services", "alerts"] as const;
+export const TRACKS = ["summary", "services", "alerts", "plans"] as const;
 export type Track = (typeof TRACKS)[number];
 export const STALE_MS = 12_000; // the kernel's frame_is_stale rule (server heartbeat every 8 s)
 export const MAX_LINE = 256 * 1024;

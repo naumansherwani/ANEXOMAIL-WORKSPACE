@@ -5957,3 +5957,7 @@ Features ki list (QC4 mein kya banega):
 - 1m-8 B9b Customers GREEN (WIRED: YES / REAL: YES, his install 5b671dd65 + CP4 6/6, my Chrome look: 7 plan rows, No plan yet 7, plan detail opens), Anexomail Command Center phase CC1 (BL-29) recorded in list, blueprint, NOW-LIST, WORKING-NOW (his 10:29 word), TECH-LAW CHECKED, TESTED: docs only on top of green code, gate 0 fail
 
 - FIX of BL-21 Customers: back button 'All plans' renamed 'Back to customers overview' (his 10:32 word), TECH-LAW CHECKED, TESTED: tsc, bun desk 122, vite build
+
+- 1m-9 B9c plan catalogue + live plan updates WRITTEN (AD18 NOTIFY at COMMIT + digest, Rust LISTEN bus + fourth signed track plans, kernel rebuilt, Customers re-reads), NOT GREEN until his install and my Chrome 1 s proof, BL-28, TECH-LAW CHECKED, TESTED: AD18 selftest + CHECK 5/5, desk cargo 109, kernel 9, bun desk 125, tsc, vite build
+
+- 1m-9 B9c plan catalogue + live plan updates WRITTEN (AD18 NOTIFY at COMMIT + digest, Rust LISTEN bus + fourth signed track plans, kernel rebuilt, Customers re-reads), NOT GREEN until his install and my Chrome 1 s proof, BL-28, TECH-LAW CHECKED, TESTED: AD18 selftest + CHECK 5/5, desk cargo 109, kernel 9, bun desk 125, tsc, vite build

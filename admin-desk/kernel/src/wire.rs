@@ -57,7 +57,7 @@ pub fn verify_answer(pinned_pub_hex: &str, method: &str, path: &str, nonce: &str
 // ---- Phase C2 (22 Nov 2026): the live Bridge stream (WebTransport /wt/bridge). Same Rule 52, per frame. ----
 pub const STREAM_PATH: &str = "/wt/bridge";
 pub const STALE_SECS: i64 = 12;
-const TRACKS: [&str; 3] = ["summary", "services", "alerts"];
+const TRACKS: [&str; 4] = ["summary", "services", "alerts", "plans"];
 
 /// The first line of the stream: `ANX1 <token> <nonce> <ts> <mac>\n` (the browser cannot set headers on a WebTransport CONNECT, so the request MAC rides the hello).
 pub fn stream_hello(token: &str, nonce: &str, ts: i64) -> Result<String, &'static str> {

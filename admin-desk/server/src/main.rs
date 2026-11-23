@@ -95,6 +95,7 @@ async fn main() {
         match h3::selfcheck(a[2].parse().expect("ip:port"), &a[3], &cert).await { Ok(o) => { println!("H3CHECK OK: {o} (handshake = TLS 1.3, AES-256-GCM, X25519MLKEM768: the client offered nothing else)"); return; } Err(e) => { println!("H3CHECK FAIL: {e}"); std::process::exit(1); } }
     }
     tokio::spawn(door::warm());
+    tokio::spawn(door::listen_plans());
     let index = format!("{DIST}/desk.html");
     let files = ServeDir::new(DIST).fallback(ServeFile::new(index));
     signed::init();
