@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 08:07 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 08:07 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: awam pull failed: new files not in deploy manifest, fixed + gate
 NEXT STEP: his awam pull re-run, then three Chrome looks, B9
 HIS LAST WORD: his 08:06 paste (pull.sh build FAIL)
@@ -19,30 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 322539f3 23 Nov 08:07 Awam pull fix: manifest has the new key files, new gate
 - 18088658 23 Nov 08:05 ledger line 3c71506f
 - 3c71506f 23 Nov 08:05 Status 23 Nov 08:05 in all blueprints
 - f004d2c7 23 Nov 08:01 ledger line 9a5a58bc
 - 9a5a58bc 23 Nov 08:01 Awam keys: Ctrl+D, Ctrl+/, Alt+Shift pages, walk, rail follows
-- f39acb99 23 Nov 07:56 ledger line 00974202
 
 ## Uncommitted files (half-done work if any)
- M admin-desk/NOW-LIST-23NOV.md
- M docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/cursor-work/server/DEPLOY-MANIFEST.txt
- M docs/cursor-work/server/rules-gate.py
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/NOW-LIST-23NOV.md                   |  2 ++
- docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md |  2 ++
- docs/claude/admin-desk/NOW-LIST-23NOV.md       |  2 ++
- docs/claude/state/WORKING-NOW.md               | 28 +++++++++-----------------
- docs/cursor-work/server/DEPLOY-MANIFEST.txt    |  3 +++
- docs/cursor-work/server/rules-gate.py          | 10 +++++++++
- 6 files changed, 29 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 27 ++-------------------------
+ 1 file changed, 2 insertions(+), 25 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -53,4 +43,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (518afd6862bc514d550e7cc4f36f750b918285b8)
+WIP snapshot: refs/wip/last (2afa87f92e6eea7c57c03a27fe794f22747261c6)
