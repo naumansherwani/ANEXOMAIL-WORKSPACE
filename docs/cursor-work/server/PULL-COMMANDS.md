@@ -2647,3 +2647,7 @@
 - B13 Z1 AD20.sql (consent, tstzrange timer, EXCLUDE, forced RLS, ledger before read, no break-glass) and boot screen text COMMAND CENTER OS, WRITTEN not installed, TECH-LAW CHECKED, TESTED: scratch PG16 AD20 selftest ALL RULES PASSED, CHECK 8 of 8 true, idempotent, bun test src/desk 127 pass, tsc clean, build:desk ok, gate 0 fail
 
 - B13 Z1 AD20.sql (consent, tstzrange timer, EXCLUDE, forced RLS, ledger before read, no break-glass) and boot screen text COMMAND CENTER OS, WRITTEN not installed, TECH-LAW CHECKED, TESTED: scratch PG16 AD20 selftest ALL RULES PASSED, CHECK 8 of 8 true, idempotent, bun test src/desk 127 pass, tsc clean, build:desk ok, gate 0 fail
+
+- ad-auto quiet for old files plus one SUMMARY line (his 04:33 complaint), AD20 shown to be in his database by its CHECK, TECH-LAW CHECKED, TESTED: bash -n clean, quiet logic run, gate 0 fail
+
+- ad-auto quiet for old files plus one SUMMARY line (his 04:33 complaint), AD20 shown to be in his database by its CHECK, TECH-LAW CHECKED, TESTED: bash -n syntax OK, quiet logic run SK=1 pass, gate 0 fail
