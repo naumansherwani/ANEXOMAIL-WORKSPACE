@@ -2595,3 +2595,7 @@
 - Command Center title in the real Desk (DeskTitle.tsx, old shell backed up), TECH-LAW CHECKED, WRITTEN not installed, TESTED: tsc clean, bun test src/desk 127 pass, desk build ok, gate 0 fail
 
 - Command Center title in the real Desk (DeskTitle.tsx, old shell backed up), TECH-LAW CHECKED, WRITTEN not installed, TESTED: tsc clean, bun test src/desk 127 pass, desk build ok, gate 0 fail
+
+- Command Center title + B9c INSTALLED on his server (desk-install 9/9, commit db7190ba8, bundle desk-C-0-8m1u.js SAME), seen in my Chrome at desktop width, NOT GREEN (390/820 + Y4/Y5/Y6 open), blueprint + WORKING-NOW + NOW-LIST + CLAUDE.md updated, approved codes backed up, TECH-LAW CHECKED, TESTED: live Chrome look desktop, gate 0 fail
+
+- Command Center title + B9c INSTALLED on his server (desk-install 9/9, commit db7190ba8, bundle desk-C-0-8m1u.js SAME), seen in my Chrome at desktop width, NOT GREEN (390/820 + Y4/Y5/Y6 open), blueprint + WORKING-NOW + NOW-LIST updated, approved codes backed up, TECH-LAW CHECKED, TESTED: live Chrome look desktop, gate 0 fail

@@ -1,0 +1,2 @@
+# BACKUP, 23 Nov 2026 12:05 PKT: the approved ANEXOMAIL COMMAND CENTER title (his 11:48 "perfect hain, codes perserve kero")
+DeskTitle.tsx + desk_title.test.ts = what is live on his server (desk-install proof 23 Nov 11:58: bundle desk-C-0-8m1u.js, commit db7190ba8). APPROVED-DEMO-V24.html = the demo he approved. Earlier backup (the OLD shell, before the title): ../20261123-1150-before-command-center-title/DeskShell.tsx. Restore = copy back, then desk-install.
