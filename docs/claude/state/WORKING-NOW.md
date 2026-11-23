@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 06:44 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 06:44 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: FUTURE-PROOF LAW written + gate; 1m-4 B9 plan rewritten (six real signals, U1..U12); Ctrl+D Dashboard shortcut done; B9 code (CP2, AD14) next
 NEXT STEP: write CP2.sql + check, control-plane census answer, AD14, customers.rs, DeskCustomers.tsx; NEVER 'Not measured'; zero is data
 HIS LAST WORD: his 06:42 FUTURE-PROOF mindset
@@ -19,43 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 78f5bd1d 23 Nov 06:44 future-proof law + B9 plan + Ctrl+D
 - 5098e513 23 Nov 06:32 ledger line 66b22bbc
 - 66b22bbc 23 Nov 06:32 1m-4 B9 plan
 - e6a014e0 23 Nov 06:25 ledger line 0c2930a6
 - 0c2930a6 23 Nov 06:25 1m-3 B8 GREEN
-- 0c9e3518 23 Nov 06:13 ledger line fd2c053f
 
 ## Uncommitted files (half-done work if any)
- M CLAUDE.md
- M admin-desk/D6-CARDS-LIST-23NOV.md
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- M docs/cursor-work/server/rules-gate.py
- D founder-web/dist-desk/assets/desk-DDmX7br0.js
- M founder-web/dist-desk/desk.html
- M founder-web/src/desk/DeskPages.tsx
- M founder-web/src/desk/DeskShell.tsx
- M founder-web/src/desk/desk_cards.test.ts
- M founder-web/src/desk/desk_cards.ts
-?? docs/claude/FUTURE-PROOF-LAW-23NOV.md
-?? founder-web/dist-desk/assets/desk-DnRFMxBV.js
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/cursor-work/server/rules-gate.py              |   8 ++
- founder-web/dist-desk/assets/desk-DDmX7br0.js      | 158 ---------------------
- founder-web/dist-desk/desk.html                    |   2 +-
- founder-web/src/desk/DeskPages.tsx                 |   6 +-
- founder-web/src/desk/DeskShell.tsx                 |   2 +-
- founder-web/src/desk/desk_cards.test.ts            |   7 +
- founder-web/src/desk/desk_cards.ts                 |   4 +
- 16 files changed, 92 insertions(+), 206 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 40 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 38 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -66,4 +43,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (b25725914a50ab31fec255da2f8074359e47e125)
+WIP snapshot: refs/wip/last (52b76665cfc23ad95a448f057a4072738b213fcd)

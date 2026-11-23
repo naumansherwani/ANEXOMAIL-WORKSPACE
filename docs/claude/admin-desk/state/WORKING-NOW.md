@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 06:44 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 06:44 PKT) - read this FIRST for the Desk after a compaction
 DOING: FUTURE-PROOF LAW written + gate; 1m-4 B9 plan rewritten (six real signals, U1..U12); Ctrl+D Dashboard shortcut done; B9 code (CP2, AD14) next
 NEXT STEP: write CP2.sql + check, control-plane census answer, AD14, customers.rs, DeskCustomers.tsx; NEVER 'Not measured'; zero is data
 HIS LAST WORD: his 06:42 FUTURE-PROOF mindset
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 78f5bd1d 23 Nov 06:44 future-proof law + B9 plan + Ctrl+D
 - 5098e513 23 Nov 06:32 ledger line 66b22bbc
 - 66b22bbc 23 Nov 06:32 1m-4 B9 plan
 - e6a014e0 23 Nov 06:25 ledger line 0c2930a6
@@ -72,20 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 0c9e3518 23 Nov 06:13 ledger line fd2c053f
 - fd2c053f 23 Nov 06:13 1m-3 B8 code
 - ec0e9286 23 Nov 06:08 ledger line 672841c2
-- 672841c2 23 Nov 06:08 1m-3 B8 plan
 
 ## Uncommitted Desk files
- M admin-desk/D6-CARDS-LIST-23NOV.md
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskPages.tsx
- M founder-web/src/desk/DeskShell.tsx
- M founder-web/src/desk/desk_cards.test.ts
- M founder-web/src/desk/desk_cards.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
