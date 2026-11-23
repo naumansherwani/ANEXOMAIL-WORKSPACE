@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 04:45 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 04:45 PKT) - read this FIRST for the Desk after a compaction
 DOING: compact save: B13 Z1 in DB, boot text installed
 NEXT STEP: Z2 Rust signed door, Z3 React screen, Chrome look
 HIS LAST WORD: his compact order 04:5x
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- d1925bf8 24 Nov 04:45 compact save
 - d3a03b56 24 Nov 04:34 ledger line 2f0cfb35
 - 2f0cfb35 24 Nov 04:34 ad-auto summary line
 - 422c3544 24 Nov 04:29 ledger line f0460f4d
@@ -72,16 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 5d51a61b 24 Nov 04:12 ledger line 15fee681
 - 15fee681 24 Nov 04:12 B13 research and list
 - 94187041 24 Nov 03:58 ledger line 3675a1fd
-- 3675a1fd 24 Nov 03:58 Desk text position code
 
 ## Uncommitted Desk files
-A  admin-desk/COMPACT-RESUME-24NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-A  docs/claude/admin-desk/COMPACT-RESUME-24NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
