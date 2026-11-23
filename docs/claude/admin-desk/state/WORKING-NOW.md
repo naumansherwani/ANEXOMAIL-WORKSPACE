@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 04:57 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 04:57 PKT) - read this FIRST for the Desk after a compaction
 DOING: CC1 text+position GREEN (Chrome look)
 NEXT STEP: B13 Z4 plan, install Z2/Z3
 HIS LAST WORD: his 04:56 word
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 29cda3cb 24 Nov 04:57 CC1 green
 - 60befa73 24 Nov 04:54 ledger line dfdcc940
 - dfdcc940 24 Nov 04:54 B13 Z2 Z3
 - 62d25b7e 24 Nov 04:45 ledger line d1925bf8
@@ -72,14 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - d3a03b56 24 Nov 04:34 ledger line 2f0cfb35
 - 2f0cfb35 24 Nov 04:34 ad-auto summary line
 - 422c3544 24 Nov 04:29 ledger line f0460f4d
-- f0460f4d 24 Nov 04:29 B13 Z1 AD20 + boot text
 
 ## Uncommitted Desk files
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
