@@ -5514,3 +5514,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 1m-5 B6 Deliverability: web research, list U1..U8, ADVANCE-RESEARCH line, contract block written BEFORE code (docs only; TECH-LAW CHECKED, TESTED: docs only, no code changed)
 
 - 1m-5 B6 Deliverability WRITTEN (not green): CP3 cp.deliverability over real org_domains, Control Plane signed deliverability answer (aud desk-deliv), AD15 hourly chained series, Desk door /desk/v1/deliverability/board with sum checks, DeskDeliverability screen, card Alt+Shift+V, TECH-LAW CHECKED, TESTED: Desk cargo 97 pass, control-plane cargo 15 pass, bun desk 108 pass, tsc clean, vite desk build ok, CP3 selftest + CHECK 8/8 and AD15 selftest + CHECK 7/7 on scratch PG
+
+- 1m-5 B6 SQL hardened to world-class (his 08:53): CP3 function 5 s statement + 1 s lock timeout + comment, AD15 doors statement/lock timeouts, hash length CHECK, table and function comments, CHECK files CP3 9 rows AD15 8 rows, desk-install expects CP3 9/9, TECH-LAW CHECKED, TESTED: CP3 selftest + CHECK 9/9 and AD15 selftest + CHECK 8/8 on scratch PG

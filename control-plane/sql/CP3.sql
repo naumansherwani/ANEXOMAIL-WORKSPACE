@@ -9,7 +9,7 @@ create schema if not exists cp;
 do $$ begin if not exists (select 1 from pg_roles where rolname = 'cp_lookup') then create role cp_lookup nologin; end if; end $$;
 
 create or replace function cp.deliverability() returns jsonb
-language plpgsql stable security definer set search_path = pg_catalog, pg_temp as $f$
+language plpgsql stable security definer set search_path = pg_catalog, pg_temp set statement_timeout = '5s' set lock_timeout = '1s' as $f$
 declare r jsonb;
 begin
   with
@@ -52,6 +52,7 @@ begin
   into r from cnt;
   return r;
 end $f$;
+comment on function cp.deliverability() is 'CP3 (phase 1m-5 B6): deliverability census, COUNTS ONLY, read-only over public.org_domains. SECURITY DEFINER, fixed search_path, 5 s statement and 1 s lock timeout so a slow table can never hang the Control Plane. EXECUTE only for cp_lookup.';
 revoke all on function cp.deliverability() from public;
 grant usage on schema cp to cp_lookup;
 grant execute on function cp.deliverability() to cp_lookup;

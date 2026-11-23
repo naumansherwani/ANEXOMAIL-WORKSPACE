@@ -11,4 +11,8 @@ UNION ALL SELECT 'no AD15 function is executable by PUBLIC',
   NOT EXISTS (SELECT 1 FROM pg_proc p WHERE p.pronamespace = 'desk'::regnamespace AND p.proname IN ('fadm_deliv_allowed','fadm_deliv_begin','fadm_deliv_record','fadm_deliv_chain_verify','fadm_deliv_sample_chain','fadm_deliv_sample_frozen') AND has_function_privilege('public', p.oid, 'EXECUTE'))
 UNION ALL SELECT 'an unknown person gets NULL from both doors', desk.fadm_deliv_begin(gen_random_uuid()) IS NULL AND desk.fadm_deliv_record(gen_random_uuid(), '{}'::jsonb) IS NULL
 UNION ALL SELECT 'the deliverability series chain verifies', desk.fadm_deliv_chain_verify()
-UNION ALL SELECT 'the main ledger hash chain still verifies', desk.fadm_ledger_verify();
+UNION ALL SELECT 'the main ledger hash chain still verifies', desk.fadm_ledger_verify()
+UNION ALL SELECT 'the doors carry statement and lock timeouts, the series has a hash length CHECK, and table and doors are commented',
+  (SELECT count(*) = 3 AND bool_and(proconfig::text LIKE '%statement_timeout=%') FROM pg_proc WHERE pronamespace = 'desk'::regnamespace AND proname IN ('fadm_deliv_begin','fadm_deliv_record','fadm_deliv_chain_verify'))
+  AND EXISTS (SELECT 1 FROM pg_constraint WHERE conrelid = 'desk.fadm_deliv_sample'::regclass AND contype = 'c' AND pg_get_constraintdef(oid) LIKE '%octet_length(hash) = 32%')
+  AND obj_description('desk.fadm_deliv_sample'::regclass, 'pg_class') IS NOT NULL;

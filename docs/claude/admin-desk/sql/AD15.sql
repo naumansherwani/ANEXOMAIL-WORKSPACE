@@ -20,7 +20,8 @@ CREATE TABLE IF NOT EXISTS desk.fadm_deliv_sample (
   failing_n   int NOT NULL CHECK (failing_n >= 0),
   prev_hash   bytea NOT NULL DEFAULT sha256('x'::bytea),
   hash        bytea NOT NULL DEFAULT sha256('x'::bytea),
-  CHECK (verified_n + pending_n = domains_n AND all_ok_n <= verified_n AND failing_n <= companies_n)
+  CHECK (verified_n + pending_n = domains_n AND all_ok_n <= verified_n AND failing_n <= companies_n),
+  CHECK (octet_length(prev_hash) = 32 AND octet_length(hash) = 32)
 );
 CREATE INDEX IF NOT EXISTS fadm_deliv_sample_brin ON desk.fadm_deliv_sample USING brin (bucket);
 CREATE OR REPLACE FUNCTION desk.fadm_deliv_sample_chain() RETURNS trigger LANGUAGE plpgsql SET search_path = pg_catalog, desk AS $f$
@@ -55,7 +56,7 @@ CREATE OR REPLACE FUNCTION desk.fadm_deliv_allowed(p_actor uuid) RETURNS boolean
 $f$;
 
 -- 2) first half of the door: right check and ONE throttled ledger line
-CREATE OR REPLACE FUNCTION desk.fadm_deliv_begin(p_actor uuid) RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog, desk AS $f$
+CREATE OR REPLACE FUNCTION desk.fadm_deliv_begin(p_actor uuid) RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog, desk SET statement_timeout = '5s' SET lock_timeout = '2s' AS $f$
 BEGIN
   IF NOT desk.fadm_deliv_allowed(p_actor) THEN RETURN NULL; END IF;
   IF NOT EXISTS (SELECT 1 FROM desk.fadm_ledger WHERE actor = p_actor AND kind = 'lookup.company' AND detail->>'company' = '(deliverability)' AND ts > now() - interval '10 minutes') THEN
@@ -65,7 +66,7 @@ BEGIN
 END $f$;
 
 -- 3) second half: validate the answer the Desk already verified, write this hour once, answer the 24-hour line
-CREATE OR REPLACE FUNCTION desk.fadm_deliv_record(p_actor uuid, p_d jsonb) RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog, desk AS $f$
+CREATE OR REPLACE FUNCTION desk.fadm_deliv_record(p_actor uuid, p_d jsonb) RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path = pg_catalog, desk SET statement_timeout = '5s' SET lock_timeout = '2s' AS $f$
 DECLARE hb timestamptz := date_trunc('hour', now()); n int[]; sp jsonb; cur int; prv int; tr text;
 BEGIN
   IF NOT desk.fadm_deliv_allowed(p_actor) THEN RETURN NULL; END IF;
@@ -82,7 +83,7 @@ BEGIN
   RETURN jsonb_build_object('spark', sp, 'trend', tr);
 END $f$;
 
-CREATE OR REPLACE FUNCTION desk.fadm_deliv_chain_verify() RETURNS boolean LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog, desk AS $f$
+CREATE OR REPLACE FUNCTION desk.fadm_deliv_chain_verify() RETURNS boolean LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog, desk SET statement_timeout = '15s' AS $f$
 DECLARE p bytea := sha256('anexomail-desk-deliv-genesis'::bytea); r record;
 BEGIN
   FOR r IN SELECT * FROM desk.fadm_deliv_sample ORDER BY id LOOP
@@ -92,6 +93,10 @@ BEGIN
   RETURN true;
 END $f$;
 
+COMMENT ON TABLE desk.fadm_deliv_sample IS 'AD15: append-only hourly deliverability counts, SHA-256 chained under an advisory lock; frozen against UPDATE, DELETE and TRUNCATE; forced RLS; desk_app has no right on it.';
+COMMENT ON FUNCTION desk.fadm_deliv_begin(uuid) IS 'AD15 door 1: the customer.lookup right, one ledger line per ten minutes, 5 s statement / 2 s lock timeout.';
+COMMENT ON FUNCTION desk.fadm_deliv_record(uuid, jsonb) IS 'AD15 door 2: validates the signed counts (sums, parts within wholes), writes this hour once, returns the 24-hour line, 5 s statement / 2 s lock timeout.';
+COMMENT ON FUNCTION desk.fadm_deliv_chain_verify() IS 'AD15: re-walks the SHA-256 chain of the series; false on any broken link.';
 REVOKE ALL ON FUNCTION desk.fadm_deliv_allowed(uuid), desk.fadm_deliv_begin(uuid), desk.fadm_deliv_record(uuid, jsonb), desk.fadm_deliv_chain_verify() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION desk.fadm_deliv_begin(uuid), desk.fadm_deliv_record(uuid, jsonb), desk.fadm_deliv_chain_verify() TO desk_app;
 
