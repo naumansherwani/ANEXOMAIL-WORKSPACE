@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 04:33 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 04:34 PKT) - read this FIRST for the Desk after a compaction
 DOING: ad-auto quiet + summary line; AD20 confirmed in his DB
 NEXT STEP: his desk-install (boot text), Z2 Rust door
 HIS LAST WORD: his 04:33 complaint
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 2f0cfb35 24 Nov 04:34 ad-auto summary line
 - 422c3544 24 Nov 04:29 ledger line f0460f4d
 - f0460f4d 24 Nov 04:29 B13 Z1 AD20 + boot text
 - 5d51a61b 24 Nov 04:12 ledger line 15fee681
@@ -72,16 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 94187041 24 Nov 03:58 ledger line 3675a1fd
 - 3675a1fd 24 Nov 03:58 Desk text position code
 - a2c86b55 24 Nov 03:56 ledger line 19a222c0
-- 19a222c0 24 Nov 03:56 Text demo V4
 
 ## Uncommitted Desk files
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  admin-desk/scripts/ad-auto.sh
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/scripts/ad-auto.sh
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
