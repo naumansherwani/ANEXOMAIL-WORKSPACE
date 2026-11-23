@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 05:41 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 05:41 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1m-2 B3 Security health CODE done (AD12 + security.rs + DeskSecurity.tsx), waits his ad-auto + desk-install + my Chrome look
 NEXT STEP: his 2 server lines, Chrome look, 1m-2 GREEN, next B8 Staff online and shifts (order B3,B8,B9,B6,B7,B10..B13)
 HIS LAST WORD: his 05:37: green hai toh next phase shuru
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- d77ddc75 23 Nov 05:41 1m-2 B3 code
 - 7e204d1d 23 Nov 05:28 ledger line edb5ed4e
 - edb5ed4e 23 Nov 05:28 1m-1 GREEN
 - 0f2faece 23 Nov 05:22 ledger line c544bdbc
@@ -72,29 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 0f80d453 23 Nov 05:16 ledger line 0dde2fcb
 - 0dde2fcb 23 Nov 05:16 1m-1 B1+B2 code, 1l GREEN
 - 7c5e7107 23 Nov 05:10 ledger line bc169da6
-- bc169da6 23 Nov 05:10 Overview S4 reminder gate
 
 ## Uncommitted Desk files
- M admin-desk/D6-CARDS-LIST-23NOV.md
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/NOW-LIST-23NOV.md
- M admin-desk/server/src/main.rs
- M docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/server/src/main.rs
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskCards.tsx
- M founder-web/src/desk/desk_cards.ts
-?? admin-desk/server/src/security.rs
-?? admin-desk/sql/AD12.sql
-?? admin-desk/sql/checks/AD12-check.sql
-?? docs/claude/admin-desk/server/src/security.rs
-?? docs/claude/admin-desk/sql/AD12.sql
-?? docs/claude/admin-desk/sql/checks/AD12-check.sql
-?? founder-web/src/desk/DeskSecurity.tsx
-?? founder-web/src/desk/desk_security_pure.test.ts
-?? founder-web/src/desk/desk_security_pure.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
