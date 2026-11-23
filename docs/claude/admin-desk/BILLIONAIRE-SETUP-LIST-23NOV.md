@@ -111,3 +111,26 @@ ADVANCE-TECH BL-05 (CSAT): one-time Ed25519-signed survey token, one-click answe
 ADVANCE-TECH BL-63 (sandbox): every Desk SQL runs a rolled-back selftest on the live database and a shadow schema dry-run first, result stored as a PROOF line.
 ADVANCE-TECH BL-27 (migration): Rust IMAP migrator (imap-codec, resumable batches, retries with backoff), signed progress, no customer mail content shown to staff.
 ADVANCE-TECH BL-04 (B10 Reports, GREEN 23 Nov 2026): PostgreSQL AD16 SECURITY DEFINER report over the real case tables with median + p90, per-queue read right, Rust Axum door over HTTP/3 with sum checks, Rule 52 kernel verify, all IN CODE.
+
+| id | Phase | Advance technology (world advance, must be IN CODE before GREEN) |
+|---|---|---|
+| BL-26 | B6b | Rust hickory-resolver DNS probe with DNSSEC validation: MTA-STS (RFC 8461), TLS-RPT (RFC 8460), DANE TLSA (RFC 7672); bounce rates from DSN (RFC 3464) and complaint rates from ARF feedback (RFC 5965) against the 0.3 percent / 0.1 percent bulk-sender lines; AD hourly hash-chained series; Control Plane signed answer over HTTP/3; Rule 52 kernel verify |
+| BL-46 | B13 | consent-gated access: time-boxed grant enforced in PostgreSQL (tstzrange EXCLUDE constraint, expiry inside the database), customer consent signed, WebAuthn user-verification touch per open, audit line written BEFORE any read, metadata-only by default, Rule 52 kernel verify |
+| BL-49 | B11 | Rust link unwrapping (WHATWG URL parse, IDN homograph and confusable check per Unicode UTS #39), tracking-pixel block, Authentication-Results (RFC 8601) + ARC (RFC 8617) read, verdict hash-chained in the ledger, full link address always shown |
+| BL-48 | B12 | Web Key Directory (OpenPGP WKD) + key transparency log: Merkle tree with signed tree heads (RFC 9162 style), OpenPGP PQC (RFC 9980), company key directory checked by the Rust kernel, ML-DSA + Ed25519 hybrid signature on the tree head |
+| BL-07 | automations | declarative rules stored and validated in PostgreSQL (CHECK + trigger), dry-run inside a rolled-back transaction before enable, idempotency key + loop guard per run, every run a hash-chained ledger line |
+| BL-08 | routing | skill, capacity and shift aware assignment in SQL (SELECT FOR UPDATE SKIP LOCKED, least-loaded with fairness), decision and reason written to the ledger, shown to the owner in words |
+| BL-10 | collision | lease table with a tstzrange EXCLUDE constraint (one holder per case), heartbeat renewal, auto expiry, live update over WebTransport with SSE fallback, shown as who and since when |
+| BL-11 | merge/split | event-sourced append-only case events, merge and split reversible for 24 h enforced by the database, every step chained into the ledger, restricted cases never cross queues |
+| BL-12 | light agents | read-only seat as a database right inside fadm_authorize + forced RLS, CHECK that a light seat holds no write right, kernel-verified screens that hide nothing but cannot write |
+| BL-22 | health score | explainable additive score: every point comes from a named real signal (seats, storage, payment, deliverability), per-signal contribution shown row by row, Control Plane signed answer, Rule 52 kernel verify, never a black box |
+| BL-23 | forecast | range forecast from real billing intents with percentile intervals computed in SQL, inputs listed beside the range, signed answer, zero is data |
+| BL-24 | timeline | built only from the append-only hash-chained ledger, keyset pagination, every page chain-verified, nothing editable |
+| BL-61 | incidents | incident record with owner and deadline in PostgreSQL, blameless post-mortem as a versioned runbook, status words for employees, hash-chained ledger lines |
+| BL-66 | knowledge | versioned articles in PostgreSQL, full-text search (tsvector + websearch_to_tsquery) with trigram typo tolerance, each article linked to the runbook that uses it |
+| BL-67 | QA review | rubric scores chained in the ledger, seeded random sampling per agent, two-reviewer calibration, scores shown as counts only |
+| BL-50 | data requests | 30-day clock per request in the database, retention policy tables, crypto-erase where data is encrypted, deletion proof = hash ledger line, outside signed copy |
+| BL-05 | CSAT | one-time Ed25519-signed survey token, one-click answer, result signed and verified by the kernel, median and distribution only |
+| BL-63 | sandbox | every Desk SQL runs a rolled-back selftest on the live database and a shadow schema dry-run first, result stored as a PROOF line |
+| BL-27 | migration | Rust IMAP migrator (imap-codec, resumable batches, retries with backoff), signed progress, no customer mail content shown to staff |
+| BL-04 | B10 Reports, GREEN 23 Nov 2026 | PostgreSQL AD16 SECURITY DEFINER report over the real case tables with median + p90, per-queue read right, Rust Axum door over HTTP/3 with sum checks, Rule 52 kernel verify, all IN CODE |

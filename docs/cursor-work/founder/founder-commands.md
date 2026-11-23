@@ -5939,3 +5939,9 @@ Features ki list (QC4 mein kya banega):
 - ADVANCE-TECH BL-04 line added (B10 GREEN technology in code), TECH-LAW CHECKED, TESTED: docs only
 
 - 1m-7 B6b Own-domain mail posture (BL-26): web research, list W1..W8, ADVANCE-RESEARCH, contract written BEFORE code; bounce/complaint rates recorded as B6c NOT YET (no awam delivery log), TECH-LAW CHECKED, TESTED: docs only, no code changed
+
+- 1m-7 B6b Own-domain mail posture WRITTEN (not green): AD17 hash-chained series, Rust DNSSEC-validating probe /desk/v1/mailposture/board (MX, SPF, DKIM, DMARC, MTA-STS, TLS-RPT, DANE, DNSSEC), DeskMailPosture block in Deliverability card, gate PHASE FILES, bounce/complaint = B6c NOT YET, TECH-LAW CHECKED, TESTED: Desk cargo 109 pass, bun desk 118 pass, tsc clean, vite desk build ok, AD17 selftest + CHECK 8/8 on scratch PG
+
+- 1m-7 B6b Own-domain mail posture WRITTEN (not green): AD17 hash-chained series, Rust DNSSEC-validating probe /desk/v1/mailposture/board (MX, SPF, DKIM, DMARC, MTA-STS, TLS-RPT, DANE, DNSSEC), DeskMailPosture block in Deliverability card, gate PHASE FILES, bounce/complaint = B6c NOT YET, TECH-LAW CHECKED, TESTED: Desk cargo 109 pass, bun desk 118 pass, tsc clean, vite desk build ok, AD17 selftest + CHECK 8/8 on scratch PG
+
+- 1m-7 B6b Own-domain mail posture WRITTEN (not green): AD17 hash-chained series, Rust DNSSEC-validating probe /desk/v1/mailposture/board (MX, SPF, DKIM, DMARC, MTA-STS, TLS-RPT, DANE, DNSSEC), DeskMailPosture block in Deliverability card, gate PHASE FILES, bounce/complaint = B6c NOT YET, TECH-LAW CHECKED, TESTED: Desk cargo 109 pass, bun desk 118 pass, tsc clean, vite desk build ok, AD17 selftest + CHECK 8/8 on scratch PG

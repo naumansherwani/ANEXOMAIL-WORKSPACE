@@ -358,7 +358,7 @@ if _desk_code and os.path.exists(cur):
                 fail("BILLIONAIRE LIST", "ORDER-LOCK line is missing in BILLIONAIRE-SETUP-LIST-23NOV.md (his 09:28 order)")
             else:
                 _ord = _ol.group(1).strip(",").split(",")
-                _st = {m.group(1): m.group(2) for m in re.finditer(r"^\| (BL-\d{2}) \|[^|]*\|\s*([^|]*)\|", _txt, re.M)}
+                _st = {m.group(1): m.group(2) for m in re.finditer(r"^\| (BL-\d{2}) \|[^|]*\|\s*([^|]*)\|", _txt.split("## F. ADVANCE TECHNOLOGY PER PHASE")[0], re.M)}
                 _next = [i for i in _ord if not _st.get(i, "").strip().startswith("GREEN") and not _st.get(i, "").strip().startswith("NOT YET")]
                 _frows = set(re.findall(r"^\| (BL-\d{2}) \| [^|]+\| [^|]{40,}\|$", _txt.split("## F. ADVANCE TECHNOLOGY PER PHASE")[-1], re.M)) if "## F. ADVANCE TECHNOLOGY PER PHASE" in _txt else set()
                 if _next and _next[0] in _ids and _next[0] not in _frows:
@@ -372,6 +372,24 @@ if _desk_code and os.path.exists(cur):
                     fail("BILLIONAIRE LIST", "DASHBOARD-FIRST (his 09:33): BL-07 and later start only after the Dashboard order phases 1n and 1o are GREEN in NOW-LIST-23NOV.md")
                 if _next and _next[0] not in _ids:
                     fail("BILLIONAIRE LIST", f"ORDER-LOCK: the next row to build is {_next[0]}, but the contract heading names {sorted(_ids)}; follow his order and never rebuild a GREEN row")
+# PHASE FILES (his 23 Nov 09:55 order): the gate is told ALL the work of the phase. Every code path named in the "Where in code" column of the newest CURRENT.md contract block (a .rs, .sql, .ts or .tsx file name)
+# must EXIST in the repo before a Desk commit; every NEW AD*.sql must carry its CHECK file, and the contract must hold at least one SQL row, one Rust row and one screen row. No advance SQL or no advance code = the commit is stopped.
+if _desk_code and os.path.exists(cur):
+    _pb = (open(cur, errors="ignore").read().split("# TECH CONTRACT FOR PHASE") + ["", ""])[1]
+    _rows = [l for l in _pb.splitlines() if l.startswith("|") and len(l.split("|")) > 4 and not l.startswith("|---") and "Advance technology" not in l]
+    _names = []
+    for _l in _rows:
+        _names += re.findall(r"[A-Za-z0-9_./-]+\.(?:rs|sql|tsx|ts)\b", _l.split("|")[2])
+    _have_files = {os.path.basename(f) for root in ("docs/claude/admin-desk", "founder-web/src/desk", "control-plane") for dp, dn, fn in os.walk(root) if "node_modules" not in dp and "target" not in dp for f in fn}
+    _gone = sorted({os.path.basename(n) for n in _names if os.path.basename(n) not in _have_files})
+    if _names and _gone:
+        fail("PHASE FILES", f"the newest contract names code files that do not exist yet: {_gone[:5]} (advance SQL and advance code of the phase must be written before commit)")
+    _txt = " ".join(_names)
+    if _rows and not (re.search(r"\.sql", _txt) and re.search(r"\.rs", _txt) and re.search(r"\.tsx?", _txt)):
+        fail("PHASE FILES", "the newest contract must name at least one SQL file, one Rust file and one screen/TypeScript file (his 09:55 order: advance SQL + advance code + screen for every phase)")
+    for _s in [f for f in (staged if "staged" in globals() else []) if re.search(r"sql/AD\d+[a-z]?\.sql$", f)]:
+        if not os.path.exists(_s.replace("sql/", "sql/checks/").replace(".sql", "-check.sql")):
+            fail("PHASE FILES", f"{_s} has no CHECK file in sql/checks/")
 # RESEARCH IN BLUEPRINT (his word 23 Nov 2026 03:1x PKT, STRICT, for every phase and every SOP of the website): the advance technology that web research gives a phase must be written in
 # FOUR places BEFORE code is committed: the phase LIST file (named in the CURRENT.md heading), the Desk blueprint (line "ADVANCE-RESEARCH [<phase>]"), NOW-LIST-23NOV.md, and CURRENT.md rows all IN CODE.
 # One missing dot = the gate stops the commit and asks "is this phase's advance technology and advance code added?".

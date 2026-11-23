@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 09:52 PKT) - read this FIRST for the Desk after a compaction
-DOING: 1m-7 B6b docs written
-NEXT STEP: B6b code: mailposture.rs + AD17 + screen
-HIS LAST WORD: his 09:51 order
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 09:58 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1m-7 B6b code done, committing
+NEXT STEP: his ad-auto (AD17) + desk-install, my Chrome look at Deliverability
+HIS LAST WORD: his 09:55 order
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 99d32b28 23 Nov 09:52 ledger line 5f7f1cf3
 - 5f7f1cf3 23 Nov 09:52 B6b docs first
 - 5e086bac 23 Nov 09:37 ledger line b358e684
 - b358e684 23 Nov 09:37 BL-04 advance tech line
@@ -72,10 +73,25 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 28f6ddfa 23 Nov 09:37 Advance technology per billionaire phase
 - b4f64008 23 Nov 09:34 ledger line b4dae7fe
 - b4dae7fe 23 Nov 09:34 Billionaire after Dashboard order
-- 45f4339b 23 Nov 09:30 ledger line 428b240e
 
 ## Uncommitted Desk files
+M  admin-desk/server/Cargo.lock
+M  admin-desk/server/Cargo.toml
+A  admin-desk/server/src/mailposture.rs
+M  admin-desk/server/src/main.rs
+A  admin-desk/sql/AD17.sql
+A  admin-desk/sql/checks/AD17-check.sql
+M  docs/claude/admin-desk/server/Cargo.lock
+M  docs/claude/admin-desk/server/Cargo.toml
+A  docs/claude/admin-desk/server/src/mailposture.rs
+M  docs/claude/admin-desk/server/src/main.rs
+A  docs/claude/admin-desk/sql/AD17.sql
+A  docs/claude/admin-desk/sql/checks/AD17-check.sql
  M docs/claude/admin-desk/state/WORKING-NOW.md
+M  founder-web/src/desk/DeskCards.tsx
+A  founder-web/src/desk/DeskMailPosture.tsx
+A  founder-web/src/desk/desk_mailposture_pure.test.ts
+A  founder-web/src/desk/desk_mailposture_pure.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

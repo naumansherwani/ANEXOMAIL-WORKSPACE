@@ -36,6 +36,8 @@ hkdf = "0.12"
 # R3a2-dbsc (23 Nov 2026): Desk-own device-bound sessions. ES256 verification with ring (already inside rustls), base64url for the JWT parts.
 ring = "0.17"
 base64 = "0.22"
+# 1m-7 B6b (23 Nov 2026): Desk-own DNSSEC-validating DNS probe of the OWN mail domain (no outside service). Same version family as the founder stack, copied, never imported.
+hickory-resolver = { version = "0.25", default-features = false, features = ["tokio", "system-config", "dnssec-ring"] }
 
 [profile.release]
 opt-level = 3
