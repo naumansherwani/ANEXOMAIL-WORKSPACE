@@ -5965,3 +5965,5 @@ Features ki list (QC4 mein kya banega):
 - Command Center demo code preserved in docs/claude/admin-desk/demo (approved look, colours from DeskShell.tsx, real Desk untouched), TECH-LAW CHECKED, TESTED: docs and demo files only on top of green code, gate 0 fail
 
 - 1m-9 B9c INSTALLED (his desk-install 9/9 e7fbb9bb3, AD18 already run) and seen in my Chrome (Live verified = 4 signed tracks incl plans), NOT GREEN (Y6 needs a real release, Y4 Y5 open), wrong SSE fallback text removed (Desk bans HTTP fallback), Command Center demo title made smaller, BL-28, TECH-LAW CHECKED, TESTED: docs and demo only on top of tested code (AD18 CHECK 5/5, cargo 109, kernel 9, bun 125)
+
+- B9c blueprint and NOW-LIST: wrong SSE fallback wording removed (Desk bans HTTP fallback), TECH-LAW CHECKED, TESTED: docs only on top of tested code, gate 0 fail
