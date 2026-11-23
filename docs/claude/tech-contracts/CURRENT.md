@@ -3605,3 +3605,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Command Center title demo V19: running light dimmed (same motion), V18 saved first, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered in Chrome and looked at, gate 0 fail
 
 - Command Center title demo V20: light at the V17 level with the running motion, V19 saved first, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered in Chrome and looked at, gate 0 fail
+
+- Command Center title demo V21: very low light (glow .24), V20 kept, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered and looked at, gate 0 fail

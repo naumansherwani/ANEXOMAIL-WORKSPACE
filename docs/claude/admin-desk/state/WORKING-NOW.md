@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 11:39 PKT) - read this FIRST for the Desk after a compaction
-DOING: Command Center title V20 saved
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 11:41 PKT) - read this FIRST for the Desk after a compaction
+DOING: Command Center title V21 very low light
 NEXT STEP: his haan for real Desk title, then B9c Y4/Y5/Y6
-HIS LAST WORD: his 11:39 word
+HIS LAST WORD: his 11:40 word
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 162348b6 23 Nov 11:39 ledger line 79b3ffc9
 - 79b3ffc9 23 Nov 11:39 Command Center title V20 light level of V17
 - 63faea37 23 Nov 11:38 ledger line 9fbdc560
 - 9fbdc560 23 Nov 11:38 Command Center title V19 dimmer lights
@@ -72,9 +73,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 2f146569 23 Nov 11:38 Command Center title V18 running lights
 - 8f0e8d03 23 Nov 11:36 ledger line 4d748339
 - 4d748339 23 Nov 11:36 Command Center title V17 soft lights
-- 817fe50d 23 Nov 11:34 ledger line 39f3f182
 
 ## Uncommitted Desk files
+M  admin-desk/D6-CARDS-LIST-23NOV.md
+A  admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V21-VERY-LOW-LIGHT.html
+M  admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
+M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
+A  docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V21-VERY-LOW-LIGHT.html
+M  docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
