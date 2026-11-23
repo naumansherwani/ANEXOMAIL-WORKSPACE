@@ -17,7 +17,7 @@ export const CARDS: Card[] = [
   { id: "staff", key: "t", label: "Staff online and shifts", track: "lookup", phase: "D6", wired: true, onBar: false, what: "Who is online, who is on shift, who holds temporary access right now", waits: "" },
   { id: "deliverability", key: "v", label: "Deliverability", track: "lookup", phase: "1m-5", wired: true, onBar: false, what: "Which company domains pass SPF, DKIM, DMARC and MX, which checks are stale, and which domains are stuck in verification", waits: "" },
   { id: "movein", key: "m", label: "Managed Move-In", track: null, phase: "P", wired: false, onBar: false, what: "Batches, retries, domain verification", waits: "Not connected yet. Shows when customer move-in starts." },
-  { id: "reports", key: "r", label: "Reports", track: null, phase: "Q", wired: false, onBar: false, what: "Volume, first response, resolution, backlog", waits: "Not connected yet. Shows when reports are ready." },
+  { id: "reports", key: "r", label: "Reports", track: "lookup", phase: "1m-6", wired: true, onBar: false, what: "Volume, first response, resolution, backlog", waits: "Not connected yet. Shows when reports are ready." },
   { id: "audit", key: "u", label: "Ledger", track: null, phase: "L", wired: false, onBar: false, what: "Append-only ledger tail and chain check", waits: "Not connected yet. Shows when the audit log is connected." },
 ];
 export const route = (id: string) => `/dashboard/${id}`;

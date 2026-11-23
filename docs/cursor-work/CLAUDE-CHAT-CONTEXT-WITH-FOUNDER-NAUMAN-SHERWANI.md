@@ -5518,3 +5518,9 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 1m-5 B6 SQL hardened to world-class (his 08:53): CP3 function 5 s statement + 1 s lock timeout + comment, AD15 doors statement/lock timeouts, hash length CHECK, table and function comments, CHECK files CP3 9 rows AD15 8 rows, desk-install expects CP3 9/9, TECH-LAW CHECKED, TESTED: CP3 selftest + CHECK 9/9 and AD15 selftest + CHECK 8/8 on scratch PG
 
 - 1m-5 B6 Deliverability GREEN: WIRED: YES / REAL: YES / TECH-LAW CHECKED, his ad-auto AD15 already run (CHECK 8/8 incl. hardening row), desk-install 9/9 SAME build 5909b706e, CP3 CHECK 9/9, my Chrome look live 390/820 + Alt+Shift+V, TESTED: Desk cargo 97, control-plane 15, bun 108, tsc, vite
+
+- 1m-6 B10 Reports WRITTEN (not green): AD16 fadm_reports world-class SQL over real fadm_case, Desk Rust door /desk/v1/reports/summary with sum checks, DeskReports screen, card Alt+Shift+R wired, BILLIONAIRE list (BL-04, BL-45) + gate BILLIONAIRE LIST, TECH-LAW CHECKED, TESTED: Desk cargo 102 pass, bun desk 114 pass, tsc clean, vite desk build ok, AD16 selftest + CHECK 6/6 on scratch PG
+
+- 1m-6 B10 Reports WRITTEN (not green): AD16 fadm_reports world-class SQL over real fadm_case, Desk Rust door /desk/v1/reports/summary with sum checks, DeskReports screen, card Alt+Shift+R wired, BILLIONAIRE list (BL-04, BL-45) + gate BILLIONAIRE LIST, TECH-LAW CHECKED, TESTED: Desk cargo 102 pass, bun desk 114 pass, tsc clean, vite desk build ok, AD16 selftest + CHECK 6/6 on scratch PG
+
+- 1m-6 B10 Reports WRITTEN (not green): AD16 fadm_reports world-class SQL over real fadm_case, Desk Rust door /desk/v1/reports/summary with sum checks, DeskReports screen, card Alt+Shift+R wired, BILLIONAIRE list (BL-04, BL-45) + gate BILLIONAIRE LIST, TECH-LAW CHECKED, TESTED: Desk cargo 102 pass, bun desk 114 pass, tsc clean, vite desk build ok, AD16 selftest + CHECK 6/6 on scratch PG

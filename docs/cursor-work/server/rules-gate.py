@@ -337,6 +337,20 @@ if _desk_code and os.path.exists(cur):
         _bad = [l for l in _blk.splitlines() if l.startswith("|") and len(l.split("|")) > 4 and l.split("|")[3].strip().lower().split(" ")[0] in ("no", "partly", "pending")]
         if _bad:
             fail("INCOMPLETE ADVANCE", f"Desk code staged but {len(_bad)} advance technolog(y/ies) of the newest phase are not IN CODE yet (incomplete advance technology is banned): {_bad[0].split('|')[1].strip()[:80]}")
+# BILLIONAIRE LIST (his order 23 Nov 2026 09:11 PKT): the Desk copies the setup of the billionaire companies (Zendesk, Salesforce and the rest) and adds an advance level none of them have; the master list is
+# docs/claude/admin-desk/BILLIONAIRE-SETUP-LIST-23NOV.md (rows BL-xx). Desk code may only be committed when the newest CURRENT.md contract block names the BL id(s) it builds, and each named id must exist in the list.
+if _desk_code and os.path.exists(cur):
+    _bl = "docs/claude/admin-desk/BILLIONAIRE-SETUP-LIST-23NOV.md"
+    if not os.path.exists(_bl):
+        fail("BILLIONAIRE LIST", f"{_bl} is missing: the list of what the billionaire companies have (plus our advance level) must exist before Desk code is committed")
+    else:
+        _blk2 = (open(cur, errors="ignore").read().split("# TECH CONTRACT FOR PHASE") + ["", ""])[1]
+        _ids = set(re.findall(r"\bBL-\d{2}\b", _blk2.splitlines()[0] if _blk2.strip() else ""))
+        _have = set(re.findall(r"^\| (BL-\d{2}) \|", open(_bl, errors="ignore").read(), re.M))
+        if not _ids:
+            fail("BILLIONAIRE LIST", "the newest CURRENT.md contract heading names no BL id: which row of BILLIONAIRE-SETUP-LIST-23NOV.md does this phase build? (his 09:11 order: copy the billionaire setup and add the advance level)")
+        elif not _ids <= _have:
+            fail("BILLIONAIRE LIST", f"the contract names {sorted(_ids - _have)} which are not rows of BILLIONAIRE-SETUP-LIST-23NOV.md")
 # RESEARCH IN BLUEPRINT (his word 23 Nov 2026 03:1x PKT, STRICT, for every phase and every SOP of the website): the advance technology that web research gives a phase must be written in
 # FOUR places BEFORE code is committed: the phase LIST file (named in the CURRENT.md heading), the Desk blueprint (line "ADVANCE-RESEARCH [<phase>]"), NOW-LIST-23NOV.md, and CURRENT.md rows all IN CODE.
 # One missing dot = the gate stops the commit and asks "is this phase's advance technology and advance code added?".

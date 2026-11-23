@@ -1,5 +1,13 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-6 B10 Reports, list BL-04 + BL-45), written 23 Nov 2026 09:3x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (B10 section V1..V8, FUTURE-PROOF LAW)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL AD16: desk.fadm_reports(actor) STABLE SECURITY DEFINER over the real fadm_case + fadm_case_event (SCHEMA-FIRST AD07): 14-day created/solved/backlog line, first-reply and resolution median + p90 minutes, reopened 30 d, SLA priority (in time / late / waiting), per-queue split; counts and minutes only; ONLY queues the person may read (fadm_queue_can); statement/lock timeouts, rolled-back selftest | sql/AD16.sql, sql/checks/AD16-check.sql | yes | scratch selftest + CHECK 6/6 |
+| Rust + Tokio + Axum 0.8 door /desk/v1/reports/summary over the sealed HTTP/3 router, owner session, NULL = 403, closed key lists and sum checks (parts within whole, backlog = per-queue sum = end-of-day line), body cap 64 | server/src/reports.rs, main.rs | yes | cargo tests |
+| Rule 52 kernel-verified read, fail-closed Data unavailable, zero is data, empty median shown as No cases yet | desk_reports_pure.ts, DeskReports.tsx | yes | bun tests, tsc |
+| React 19 + TypeScript Reports card wired (existing card flips to wired), Ice-blue marks, Alt+Shift+R | desk_cards.ts, DeskCards.tsx | yes | vite build, my Chrome look |
+
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-5 B6 Deliverability), written 23 Nov 2026 08:4x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (B6 section U1..U8, FUTURE-PROOF LAW)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3503,3 +3511,9 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 1m-5 B6 SQL hardened to world-class (his 08:53): CP3 function 5 s statement + 1 s lock timeout + comment, AD15 doors statement/lock timeouts, hash length CHECK, table and function comments, CHECK files CP3 9 rows AD15 8 rows, desk-install expects CP3 9/9, TECH-LAW CHECKED, TESTED: CP3 selftest + CHECK 9/9 and AD15 selftest + CHECK 8/8 on scratch PG
 
 - 1m-5 B6 Deliverability GREEN: WIRED: YES / REAL: YES / TECH-LAW CHECKED, his ad-auto AD15 already run (CHECK 8/8 incl. hardening row), desk-install 9/9 SAME build 5909b706e, CP3 CHECK 9/9, my Chrome look live 390/820 + Alt+Shift+V, TESTED: Desk cargo 97, control-plane 15, bun 108, tsc, vite
+
+- 1m-6 B10 Reports WRITTEN (not green): AD16 fadm_reports world-class SQL over real fadm_case, Desk Rust door /desk/v1/reports/summary with sum checks, DeskReports screen, card Alt+Shift+R wired, BILLIONAIRE list (BL-04, BL-45) + gate BILLIONAIRE LIST, TECH-LAW CHECKED, TESTED: Desk cargo 102 pass, bun desk 114 pass, tsc clean, vite desk build ok, AD16 selftest + CHECK 6/6 on scratch PG
+
+- 1m-6 B10 Reports WRITTEN (not green): AD16 fadm_reports world-class SQL over real fadm_case, Desk Rust door /desk/v1/reports/summary with sum checks, DeskReports screen, card Alt+Shift+R wired, BILLIONAIRE list (BL-04, BL-45) + gate BILLIONAIRE LIST, TECH-LAW CHECKED, TESTED: Desk cargo 102 pass, bun desk 114 pass, tsc clean, vite desk build ok, AD16 selftest + CHECK 6/6 on scratch PG
+
+- 1m-6 B10 Reports WRITTEN (not green): AD16 fadm_reports world-class SQL over real fadm_case, Desk Rust door /desk/v1/reports/summary with sum checks, DeskReports screen, card Alt+Shift+R wired, BILLIONAIRE list (BL-04, BL-45) + gate BILLIONAIRE LIST, TECH-LAW CHECKED, TESTED: Desk cargo 102 pass, bun desk 114 pass, tsc clean, vite desk build ok, AD16 selftest + CHECK 6/6 on scratch PG

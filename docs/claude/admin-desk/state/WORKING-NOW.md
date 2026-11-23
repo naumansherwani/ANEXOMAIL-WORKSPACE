@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 09:04 PKT) - read this FIRST for the Desk after a compaction
-DOING: B6 Deliverability step 1 GREEN (his installs + my Chrome look). Next: B6b or B7 per order
-NEXT STEP: research for the next card, list, contract, then code in ONE commit
-HIS LAST WORD: his 09:03 paste + compact-save order
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 09:16 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1m-6 B10 Reports code done, committing
+NEXT STEP: his ad-auto (AD16) + desk-install, then my Chrome look
+HIS LAST WORD: his 09:15 order
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- fcab5d3d 23 Nov 09:04 ledger line 9771fea8
 - 9771fea8 23 Nov 09:04 B6 Deliverability GREEN
 - 5909b706 23 Nov 08:54 ledger line 7d665d21
 - 7d665d21 23 Nov 08:54 B6 SQL hardened: timeouts, hash CHECK, comments
@@ -72,10 +73,28 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 03e07af6 23 Nov 08:53 Desk B6 Deliverability: CP3, AD15, door, screen
 - 5003706f 23 Nov 08:41 ledger line fc677448
 - fc677448 23 Nov 08:41 Desk B6 Deliverability: research, list, contract
-- 3c8c3df3 23 Nov 08:40 ledger line 0c6a46ec
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+A  admin-desk/BILLIONAIRE-SETUP-LIST-23NOV.md
+M  admin-desk/D6-CARDS-LIST-23NOV.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  admin-desk/server/src/main.rs
+A  admin-desk/server/src/reports.rs
+A  admin-desk/sql/AD16.sql
+A  admin-desk/sql/checks/AD16-check.sql
+A  docs/claude/admin-desk/BILLIONAIRE-SETUP-LIST-23NOV.md
+M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/server/src/main.rs
+A  docs/claude/admin-desk/server/src/reports.rs
+A  docs/claude/admin-desk/sql/AD16.sql
+A  docs/claude/admin-desk/sql/checks/AD16-check.sql
+MM docs/claude/admin-desk/state/WORKING-NOW.md
+M  founder-web/src/desk/DeskCards.tsx
+A  founder-web/src/desk/DeskReports.tsx
+M  founder-web/src/desk/desk_cards.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

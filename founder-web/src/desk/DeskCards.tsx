@@ -14,6 +14,7 @@ import { DeskSecurity } from "./DeskSecurity";
 import { DeskStaff } from "./DeskStaff";
 import { DeskCustomers } from "./DeskCustomers";
 import { DeskDeliverability } from "./DeskDeliverability";
+import { DeskReports } from "./DeskReports";
 import { DeskRunbooks } from "./DeskRunbooks";
 
 /** ADMIN DESK D1..D4 (22 Nov 2026): the clickable cards below the Command Bar and the pages they open. Every number comes from the kernel-verified stream (Rule 52);
@@ -99,6 +100,7 @@ export function DeskSubPage({ sub, search, hash, snap, nav, role = "", act }: { 
     );
   }
   if (card.id === "plans") return <Shell title="Plans and prices" back nav={nav}><p>Look up one company's plan, what is really switched on, usage and service state.</p><DeskPlan /></Shell>;
+  if (card.id === "reports") return <Shell title="Reports" back nav={nav}><p>{card.what}.</p><DeskReports /></Shell>;
   if (card.id === "deliverability") return <Shell title="Deliverability" back nav={nav}><p>{card.what}.</p><DeskDeliverability /></Shell>;
   if (card.id === "customers") return <Shell title="Customers and plans" back nav={nav}><p>{card.what}.</p><DeskCustomers /></Shell>;
   if (card.id === "staff") return <Shell title="Staff online and shifts" back nav={nav}><p>{card.what}.</p><DeskStaff /></Shell>;
