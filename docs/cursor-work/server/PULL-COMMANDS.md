@@ -2481,3 +2481,5 @@
 - 1m small step gate hole + CP2 proof line + rail follows active page, WIRED: YES / REAL: not yet (his desk-install + my Chrome look), TECH-LAW CHECKED, TESTED: gate probe FAIL as expected, tsc, bun 93 pass, bash -n
 
 - 1m small step GREEN: gate hole + PROOF CP2 + rail follows active page, WIRED: YES / REAL: YES, TECH-LAW CHECKED, TESTED: his desk-install c2d92563d binary/page/kernel SAME + CP2 CHECK 8 of 8, my Chrome Ctrl+D rail scrollTop 881 to 0
+
+- 1m-keys plan with web research written, no code, TESTED: gate run on docs only, TECH-LAW CHECKED

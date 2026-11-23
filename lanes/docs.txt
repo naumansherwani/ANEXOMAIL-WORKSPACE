@@ -377,6 +377,7 @@ docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md
 docs/claude/admin-desk/PHASE-TECH-SQL-MAP-22NOV.md
 docs/claude/admin-desk/PLAN-CONTEXT-AND-RUNBOOKS-22NOV.md
 docs/claude/admin-desk/PLAN-DESK-UI-COPY-21NOV.md
+docs/claude/admin-desk/RAIL-KEYS-PLAN-23NOV.md
 docs/claude/admin-desk/README.md
 docs/claude/admin-desk/REMAINING-LIST-22NOV.md
 docs/claude/admin-desk/REPO-AUDIT-FOR-DESK-22NOV.md
