@@ -5909,3 +5909,5 @@ Features ki list (QC4 mein kya banega):
 - 1m-4 B9 Customers and Plans WRITTEN (not green): Control Plane signed census (aud desk-census), AD14 hourly chained series, Desk door /desk/v1/customers/census (fresh 15s, deadline 6s, breaker, shape check), DeskCustomers screen, card key Alt+Shift+8, TECH-LAW CHECKED, TESTED: Desk cargo 92 pass, control-plane cargo 13 pass, bun desk 104 pass, tsc clean, vite desk build ok, AD14 selftest + CHECK 7/7 on scratch PG
 
 - 1m-4 B9 Customers and Plans GREEN: WIRED: YES / REAL: YES / TECH-LAW CHECKED, his ad-auto AD14 CHECK 7/7, desk-install 9/9 SAME build 595cff51e, my Chrome look live 390/820/1200 + Alt+Shift+8, TESTED: Desk cargo 92, control-plane 13, bun 104, tsc, vite
+
+- 1m-5 B6 Deliverability: web research, list U1..U8, ADVANCE-RESEARCH line, contract block written BEFORE code (docs only; TECH-LAW CHECKED, TESTED: docs only, no code changed)

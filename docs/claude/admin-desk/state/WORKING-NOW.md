@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 08:40 PKT) - read this FIRST for the Desk after a compaction
-DOING: B9 GREEN (his installs + my Chrome look). Starting 1m-5 B6 Deliverability research
-NEXT STEP: B6: web research, list, ADVANCE-RESEARCH, CURRENT.md contract, then code
-HIS LAST WORD: gate wants phase complete before commit
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 08:41 PKT) - read this FIRST for the Desk after a compaction
+DOING: B9 GREEN. 1m-5 B6 Deliverability: research + list + ADVANCE-RESEARCH + contract written (docs only)
+NEXT STEP: B6 code: CP3.sql, Control Plane deliverability answer, AD15, deliverability.rs, pure ts + screen, wire card v, all ONE commit
+HIS LAST WORD: gate forces whole phase in one commit
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 3c8c3df3 23 Nov 08:40 ledger line 0c6a46ec
 - 0c6a46ec 23 Nov 08:40 B9 Customers and Plans GREEN
 - 595cff51 23 Nov 08:31 ledger line 0da64cac
 - 0da64cac 23 Nov 08:31 Desk B9 Customers and Plans: census door, screen, AD14, Control Plane
@@ -72,9 +73,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - d488a0b0 23 Nov 08:16 Keys GREEN for Desk, founder, awam; next phase B9 plan
 - 50c16bd9 23 Nov 08:07 ledger line 322539f3
 - 322539f3 23 Nov 08:07 Awam pull fix: manifest has the new key files, new gate
-- 18088658 23 Nov 08:05 ledger line 3c71506f
 
 ## Uncommitted Desk files
+M  admin-desk/D6-CARDS-LIST-23NOV.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
