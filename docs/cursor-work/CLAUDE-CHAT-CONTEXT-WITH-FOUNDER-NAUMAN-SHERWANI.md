@@ -5448,3 +5448,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 1l live look at desktop: case ESC-261123-00037 created + listed on his server, TESTED: my Chrome; TECH-LAW CHECKED; GREEN waits 390/820
 
 - OVERVIEW S4 recorded as later phase (after 1o, 1a, phone test), TESTED: docs only; TECH-LAW CHECKED
+
+- OVERVIEW S4 REMINDER gate + plan + WORKING-NOW line, TESTED: gate run on this commit; TECH-LAW CHECKED

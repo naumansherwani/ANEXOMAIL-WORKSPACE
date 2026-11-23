@@ -4377,3 +4377,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 1l live look at desktop: case ESC-261123-00037 created + listed on his server, TESTED: my Chrome; TECH-LAW CHECKED; GREEN waits 390/820
 
 - OVERVIEW S4 recorded as later phase (after 1o, 1a, phone test), TESTED: docs only; TECH-LAW CHECKED
+
+- OVERVIEW S4 REMINDER gate + plan + WORKING-NOW line, TESTED: gate run on this commit; TECH-LAW CHECKED

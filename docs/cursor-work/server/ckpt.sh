@@ -14,6 +14,7 @@ echo "# WORKING NOW ($WHY, $NOW) - read this FIRST after a compaction; it is whe
 echo "DOING: $DOING"
 echo "NEXT STEP: $NEXT"
 echo "HIS LAST WORD: $WORD"
+echo "LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o."
 echo "RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time."
 echo; echo "## LIVE PORTS OF HIS SERVER (docs/claude/state/PORTS-LIVE.md, his fresh ss paste; update it whenever he pastes a new one)"; sed -n '2,3p;8,16p' docs/claude/state/PORTS-LIVE.md 2>/dev/null | cut -c1-240
 echo; echo "## Last 5 commits"; git log -5 --format='- %h %ad %s' --date=format:'%d %b %H:%M' 2>/dev/null
