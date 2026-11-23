@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 05:01 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 05:02 PKT) - read this FIRST for the Desk after a compaction
 DOING: SQL files zero-padded; 1l installed on his server (AD10 CHECK OK, 3 PROOF SAME), my Chrome look next
 NEXT STEP: Chrome look: create TEST escalation, then 1l GREEN
 HIS LAST WORD: his order: AD10 sorted after AD9, save context
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- bd60ce1b 23 Nov 05:02 SQL names zero-padded
 - 446f959a 23 Nov 04:48 ledger line 3c87ed51
 - 3c87ed51 23 Nov 04:48 1l D5c Escalate code
 - 988153f9 23 Nov 04:36 ledger line 8f1f5669
@@ -72,29 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - d23a5a2e 23 Nov 04:30 ledger line f4afe900
 - f4afe900 23 Nov 04:30 founder inbox plan + reminder gate
 - e2147d46 23 Nov 04:25 ledger line c8287687
-- c8287687 23 Nov 04:25 founder escalation inbox parked after 1o + 1a
 
 ## Uncommitted Desk files
- M admin-desk/gates/DESK-FEATURES.json
- M admin-desk/scripts/gen-pkg-seed.py
- D admin-desk/sql/AD1.sql
- D admin-desk/sql/AD1/00-FOUNDER-TECH-RULE.md
- D admin-desk/sql/AD1/README.md
- D admin-desk/sql/AD1b.sql
- D admin-desk/sql/AD1c.sql
- D admin-desk/sql/AD2.sql
- D admin-desk/sql/AD3.sql
- D admin-desk/sql/AD4.sql
- D admin-desk/sql/AD4b.sql
- D admin-desk/sql/AD5.sql
- D admin-desk/sql/AD6.sql
- D admin-desk/sql/AD6b.sql
- D admin-desk/sql/AD6c.sql
- D admin-desk/sql/AD6d.sql
- D admin-desk/sql/AD7.sql
- D admin-desk/sql/AD8.sql
- D admin-desk/sql/AD9.sql
- D admin-desk/sql/AD9b.sql
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
