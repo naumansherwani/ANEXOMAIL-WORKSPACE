@@ -1,5 +1,13 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-3 B8 Staff online and shifts), written 23 Nov 2026 06:1x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (T1..T7)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL AD13: read-only SECURITY DEFINER door fadm_staff_board (online = live session once per person, on shift via fadm_in_shift, covered/gap/extra, elevation + break-glass countdown, staff.read gate), hourly append-only hash-chained series (forced RLS, frozen triggers, lazy advisory-lock sampler); schema-first AD01, AD02, AD12 read; world-class gate headers | sql/AD13.sql, sql/checks/AD13-check.sql | no | written next, selftest + CHECK on scratch |
+| Rust + Tokio + Axum 0.8 door /desk/v1/staff/board over the sealed HTTP/3 router, response-shape check | server/src/staff.rs, main.rs | no | cargo tests |
+| Rule 52 kernel-verified read, fail-closed Data unavailable, 403 = "This is for people who manage staff" | desk_staff_pure.ts, DeskStaff.tsx | no | bun tests, tsc |
+| React 19 + TypeScript Staff online and shifts card wired, Ice-blue marks | DeskStaff.tsx, desk_cards.ts, DeskCards.tsx | no | vite build, my Chrome look |
+
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-2 B3 Security health), written 23 Nov 2026 05:4x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (S1..S7)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3386,3 +3394,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 1m-2 B3 Security health GREEN (23 Nov 05:5x PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED; his ad-auto AD12 CHECK OK 8/8, desk-install 3 PROOF SAME at 7ba7e4211, my Chrome score 47 real), parked typing indicator idea, next 1m-3 B8, TESTED: his server pastes + my live Chrome look
 
 - SQL WORLD-CLASS gate locked for every SQL (founder, awam, Desk) + dashboard folder audit (23 Nov 06:0x PKT; TECH-LAW CHECKED, TESTED: gate negative probe fails 5 reasons, positive probe passes, rules-gate syntax ok)
+
+- 1m-3 B8 Staff online and shifts: web research, list T1..T7, ADVANCE-RESEARCH line, contract block written before code (docs only; TECH-LAW CHECKED, TESTED: rules-gate 0 fail, rows IN CODE=no until code)

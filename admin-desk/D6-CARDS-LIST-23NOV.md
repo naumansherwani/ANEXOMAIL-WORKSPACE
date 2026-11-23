@@ -37,3 +37,15 @@ NAME NOTE: the blueprint reserved AD11 for "SLA clocks for all queues, automatio
 | S7 | Rule 52 kernel-verified read, response-shape check in Rust and TypeScript, fail-closed Data unavailable; Ice-blue marks, no red. | Rule 52 | Rust + React 19 |
 SOURCES: https://knowledge.workspace.google.com/admin/security/monitor-the-health-of-your-security-settings ; https://support.google.com/a/answer/7491656
 NAME NOTE: AD12 is taken by this sub-phase (the bigger SLA/automation SQL moves to AD13).
+
+## 1m-3 B8 Staff online and shifts (web research 23 Nov 2026 06:1x PKT; SQL = AD13, schema-first: AD01 fadm_owner/fadm_session, AD02 fadm_shift/fadm_in_shift/fadm_rel/fadm_elevation/fadm_authorize, AD12 series pattern)
+| # | Point (what the research gave) | Source idea | Technology |
+|---|---|---|---|
+| T1 | ONLINE = a live session (not revoked, not expired) per staff member, counted once per person even with several devices; never a guessed "active" flag. | Freshdesk custom agent status, Dynamics 365 presence, Frappe agent availability | PostgreSQL SECURITY DEFINER door |
+| T2 | ON SHIFT = the Desk's own fadm_in_shift in the person's own time zone (fadm_owner.timezone); "covered" = on shift AND online; "gap" = on shift but not online; "extra" = online outside shift. | Zendesk WFM status sync, BoldDesk real-time availability dashboard | AD02 shift rules reused |
+| T3 | ELEVATIONS AND BREAK-GLASS with a COUNTDOWN: every live elevation/break-glass tuple (fadm_rel source elevation/breakglass) shows relation, unit, who holds it and minutes left; zero standing privilege made visible. | JIT access / NIST SP 800-53 AC-12 session termination, CyberArk, Delinea | AD02 fadm_rel reused |
+| T4 | STAFF-ONLY VIEW: names and per-person rows only for a person who holds staff.read on the Desk department; everyone else gets 403 "This is for people who manage staff". No e-mail, IP, device or key in the answer. | least privilege, same gate as B3 | fadm_authorize |
+| T5 | HOURLY APPEND-ONLY SERIES of online / on-shift / covered / elevations (own SHA-256 chain, forced RLS, frozen triggers, lazy advisory-lock sampler) -> 24-point sparkline and a trend. | AD11/AD12 pattern | PostgreSQL hash chain |
+| T6 | At most 50 people and 20 elevations per answer, closed shapes, shape check in Rust and TypeScript, fail-closed Data unavailable. | Rule 52 | Rust Axum + React 19 |
+| T7 | Rule 52 kernel-verified read, Ice-blue marks, no red, 44 px touch targets, same code on 390/820/1200+. | Rule 52, Rule 34 | Rust WASM kernel + React 19 |
+SOURCES: https://support.freshdesk.com/support/solutions/articles/50000006076-custom-agent-status ; https://learn.microsoft.com/en-au/dynamics365/customer-service/use/oc-manage-presence-status ; https://support.bolddesk.com/kb/article/16915/agent-availability-status-real-time-monitoring-dashboard ; https://www.upguard.com/compliance/nist-sp-800-53/ac/ac-12.md

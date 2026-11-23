@@ -5865,3 +5865,5 @@ Features ki list (QC4 mein kya banega):
 - 1m-2 B3 Security health GREEN (23 Nov 05:5x PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED; his ad-auto AD12 CHECK OK 8/8, desk-install 3 PROOF SAME at 7ba7e4211, my Chrome score 47 real), parked typing indicator idea, next 1m-3 B8, TESTED: his server pastes + my live Chrome look
 
 - SQL WORLD-CLASS gate locked for every SQL (founder, awam, Desk) + dashboard folder audit (23 Nov 06:0x PKT; TECH-LAW CHECKED, TESTED: gate negative probe fails 5 reasons, positive probe passes, rules-gate syntax ok)
+
+- 1m-3 B8 Staff online and shifts: web research, list T1..T7, ADVANCE-RESEARCH line, contract block written before code (docs only; TECH-LAW CHECKED, TESTED: rules-gate 0 fail, rows IN CODE=no until code)

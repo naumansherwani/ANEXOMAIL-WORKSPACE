@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 06:02 PKT) - read this FIRST for the Desk after a compaction
-DOING: SQL WORLD-CLASS gate locked for founder+awam+Desk; folder audit written
-NEXT STEP: 1m-3 B8 Staff online and shifts: web research first, list rows, ADVANCE-RESEARCH [1m], CURRENT.md block, AD13 SQL (new gate headers), code
-HIS LAST WORD: his 06:01 law
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 06:08 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1m-3 B8: research + list T1..T7 + ADVANCE-RESEARCH + CURRENT.md block written (rows no); SQL AD13 next
+NEXT STEP: write sql/AD13.sql with SCHEMA-FIRST/ADVANCE-RESEARCH/CHECK-FILE header + checks/AD13-check.sql, scratch selftest x2, then staff.rs, DeskStaff.tsx
+HIS LAST WORD: his 06:07 order
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- b5c7c16d 23 Nov 06:02 ledger line 148ef5af
 - 148ef5af 23 Nov 06:02 SQL world-class gate + audit
 - 0ad4cc0e 23 Nov 05:55 ledger line dc70a99c
 - dc70a99c 23 Nov 05:55 1m-2 B3 GREEN
@@ -72,9 +73,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - d77ddc75 23 Nov 05:41 1m-2 B3 code
 - 7e204d1d 23 Nov 05:28 ledger line edb5ed4e
 - edb5ed4e 23 Nov 05:28 1m-1 GREEN
-- 0f2faece 23 Nov 05:22 ledger line c544bdbc
 
 ## Uncommitted Desk files
+ M admin-desk/D6-CARDS-LIST-23NOV.md
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/NOW-LIST-23NOV.md
+ M docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
