@@ -5538,3 +5538,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - billionaire ADVANCE-TECH line next to every BL phase (list section F, blueprint, NOW-LIST, WORKING-NOW) and gate check, TECH-LAW CHECKED, TESTED: gate ast ok, all 20 ORDER-LOCK rows have a line, docs only
 
 - ADVANCE-TECH BL-04 line added (B10 GREEN technology in code), TECH-LAW CHECKED, TESTED: docs only
+
+- 1m-7 B6b Own-domain mail posture (BL-26): web research, list W1..W8, ADVANCE-RESEARCH, contract written BEFORE code; bounce/complaint rates recorded as B6c NOT YET (no awam delivery log), TECH-LAW CHECKED, TESTED: docs only, no code changed

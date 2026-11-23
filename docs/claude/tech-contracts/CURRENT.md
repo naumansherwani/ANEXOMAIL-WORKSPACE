@@ -1,5 +1,14 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-7 B6b Own-domain mail posture, list BL-26), written 23 Nov 2026 10:0x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (B6b section W1..W8, FUTURE-PROOF LAW)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| Rust + Tokio hickory-resolver DNSSEC-validating probe of Anexomail's OWN sending domain: MX, SPF, DKIM selector, DMARC (policy + rua), MTA-STS TXT (RFC 8461), TLS-RPT TXT (RFC 8460), DANE TLSA on the MX hosts (RFC 7672), DNSSEC chain status; each check ok / missing / bogus with the exact record name, read-only, 6 s deadline, no third-party service | server/src/mailposture.rs, main.rs | pending | cargo tests |
+| PostgreSQL AD17: hourly append-only hash-chained own-domain posture series (forced RLS, frozen triggers, BRIN, timeouts, COMMENTs, rolled-back selftest) so a record that disappears is seen as a change with a time | sql/AD17.sql, sql/checks/AD17-check.sql | pending | scratch selftest + his ad-auto |
+| Rule 52 kernel-verified read of the signed probe answer (Ed25519 Desk key), fail-closed Data unavailable, zero is data, record names shown (own domain only, no customer data) | desk_mailposture_pure.ts, DeskMailPosture.tsx | pending | bun tests, tsc |
+| React 19 + TypeScript block inside the existing Deliverability card (Ice-blue marks, no red) | DeskDeliverability.tsx | pending | vite build, my Chrome look |
+| NOT YET (said honestly, BL-26 second half): bounce + complaint RATES (DSN RFC 3464, ARF RFC 5965) need an awam delivery log; no such awam table exists today (fmail_outbox is founder lane and the Desk never mixes with it). Recorded as B6c, waits for the awam Rust MTA delivery log | n/a | no (by design, recorded) | list W8 |
+
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-6 B10 Reports, list BL-04 + BL-45), written 23 Nov 2026 09:3x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (B10 section V1..V8, FUTURE-PROOF LAW)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3531,3 +3540,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - billionaire ADVANCE-TECH line next to every BL phase (list section F, blueprint, NOW-LIST, WORKING-NOW) and gate check, TECH-LAW CHECKED, TESTED: gate ast ok, all 20 ORDER-LOCK rows have a line, docs only
 
 - ADVANCE-TECH BL-04 line added (B10 GREEN technology in code), TECH-LAW CHECKED, TESTED: docs only
+
+- 1m-7 B6b Own-domain mail posture (BL-26): web research, list W1..W8, ADVANCE-RESEARCH, contract written BEFORE code; bounce/complaint rates recorded as B6c NOT YET (no awam delivery log), TECH-LAW CHECKED, TESTED: docs only, no code changed
