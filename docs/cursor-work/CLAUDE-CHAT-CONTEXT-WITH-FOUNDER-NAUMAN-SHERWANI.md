@@ -5478,3 +5478,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - FUTURE-PROOF LAW + gate (his 23 Nov 06:42), 1m-4 B9 plan rewritten with six real signals from the real awam tables, Dashboard hint G then D -> Ctrl+D (TECH-LAW CHECKED, TESTED: gate probe fails on a new 'Not measured' line, bun 93 pass, tsc, vite)
 
 - contract order: B9 block newest again after the Ctrl+D step (docs only; TECH-LAW CHECKED, TESTED: rules-gate 0 fail)
+
+- 1m-4 B9 CP2 census SQL (cp.census, six real signal families + dimensions, boundaries 89/90/94/95, counts only) + cp-install step 3b, TESTED: scratch awam DB from the real schema snapshot, selftest x2 ALL RULES PASSED, CP2 CHECK 8/8 true, CP1 CHECK 0 false, bash -n; TECH-LAW CHECKED

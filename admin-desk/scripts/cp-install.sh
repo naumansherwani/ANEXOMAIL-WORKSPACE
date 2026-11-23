@@ -30,6 +30,10 @@ echo "== CP 3/7 database: CP1.sql + CHECK + read-only login cp_lookup"
 S="$(mktemp)"; show control-plane/sql/CP1.sql >"$S"; psqla -f "$S" 2>&1 | tail -3; [ "${PIPESTATUS[0]}" = 0 ] || { echo "FAIL: CP1.sql (a table it reads is missing?)"; rm -f "$S"; exit 4; }
 show control-plane/sql/checks/CP1-check.sql >"$S"; CH="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH" | sed 's/^/   /'
 echo "$CH" | grep -q '|f$' && { echo "FAIL: CP1 CHECK has a false row"; exit 4; }; echo "$CH" | grep -qi error && { echo "FAIL: CP1 CHECK error"; exit 4; }
+echo "== CP 3b/7 database: CP2.sql (census for Customers and Plans) + selftest + CHECK"
+S="$(mktemp)"; show control-plane/sql/CP2.sql >"$S"; C2="$(psqla -f "$S" 2>&1 | tail -4)"; C2R=$?; rm -f "$S"; echo "$C2" | sed 's/^/   /'
+S="$(mktemp)"; show control-plane/sql/checks/CP2-check.sql >"$S"; CH2="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH2" | sed 's/^/   /'
+if echo "$CH2" | grep -q '|f$' || echo "$CH2" | grep -qi error || echo "$C2" | grep -qi "error"; then echo "WARN: CP2 did not install cleanly: the Customers and Plans card will say Data unavailable (fail-closed) until it is fixed; the rest of the install continues"; else echo "OK: CP2 census installed and CHECKed"; fi
 PW="$(openssl rand -hex 24)"
 URL="$(ADMIN_URL="$ADMIN" CPW="$PW" python3 - <<'P'
 import os,urllib.parse as u
