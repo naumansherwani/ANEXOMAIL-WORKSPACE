@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 04:29 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 04:30 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: B13 Z1 AD20.sql written + boot screen text
 NEXT STEP: his ad-auto (AD20) + desk-install, then Z2 Rust door
 HIS LAST WORD: his 04:26 word
@@ -19,45 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- f0460f4d 24 Nov 04:29 B13 Z1 AD20 + boot text
 - 5d51a61b 24 Nov 04:12 ledger line 15fee681
 - 15fee681 24 Nov 04:12 B13 research and list
 - 94187041 24 Nov 03:58 ledger line 3675a1fd
 - 3675a1fd 24 Nov 03:58 Desk text position code
-- a2c86b55 24 Nov 03:56 ledger line 19a222c0
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/D6-B13-CONSENT-ACCESS-LIST-24NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-A  admin-desk/sql/AD20.sql
-A  admin-desk/sql/checks/AD20-check.sql
-A  backups/desk/20261124-0440-boot-text/DeskBoot.tsx
-A  backups/desk/20261124-0440-boot-text/desk.html
-M  docs/claude/admin-desk/D6-B13-CONSENT-ACCESS-LIST-24NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-A  docs/claude/admin-desk/sql/AD20.sql
-A  docs/claude/admin-desk/sql/checks/AD20-check.sql
-M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  founder-web/desk.html
-R  founder-web/dist-desk/assets/desk-BTyOwH4h.js -> founder-web/dist-desk/assets/desk-BBu4h3TR.js
-M  founder-web/dist-desk/desk.html
-M  founder-web/src/desk/DeskBoot.tsx
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md                   |  42 +++--
- docs/claude/tech-contracts/CURRENT.md              |   7 +
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  10 +-
- founder-web/desk.html                              |   6 +-
- .../assets/{desk-BTyOwH4h.js => desk-BBu4h3TR.js}  |   2 +-
- founder-web/dist-desk/desk.html                    |   8 +-
- founder-web/src/desk/DeskBoot.tsx                  |   4 +-
- 20 files changed, 547 insertions(+), 33 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 42 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 40 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -68,4 +43,4 @@ M  founder-web/src/desk/DeskBoot.tsx
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (e4adecdb9946f1f574b782f8ba546e8eaa3bf5d7)
+WIP snapshot: refs/wip/last (6b4dd603859ee030729a6aaf76af55e985eeb62b)

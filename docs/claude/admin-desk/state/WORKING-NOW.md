@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 04:29 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 04:30 PKT) - read this FIRST for the Desk after a compaction
 DOING: B13 Z1 AD20.sql written + boot screen text
 NEXT STEP: his ad-auto (AD20) + desk-install, then Z2 Rust door
 HIS LAST WORD: his 04:26 word
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- f0460f4d 24 Nov 04:29 B13 Z1 AD20 + boot text
 - 5d51a61b 24 Nov 04:12 ledger line 15fee681
 - 15fee681 24 Nov 04:12 B13 research and list
 - 94187041 24 Nov 03:58 ledger line 3675a1fd
@@ -72,21 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - a2c86b55 24 Nov 03:56 ledger line 19a222c0
 - 19a222c0 24 Nov 03:56 Text demo V4
 - e4497272 24 Nov 03:49 ledger line 1e6fc424
-- 1e6fc424 24 Nov 03:49 Landing title demo V3
 
 ## Uncommitted Desk files
-M  admin-desk/D6-B13-CONSENT-ACCESS-LIST-24NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-A  admin-desk/sql/AD20.sql
-A  admin-desk/sql/checks/AD20-check.sql
-M  docs/claude/admin-desk/D6-B13-CONSENT-ACCESS-LIST-24NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-A  docs/claude/admin-desk/sql/AD20.sql
-A  docs/claude/admin-desk/sql/checks/AD20-check.sql
-MM docs/claude/admin-desk/state/WORKING-NOW.md
-M  founder-web/src/desk/DeskBoot.tsx
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
