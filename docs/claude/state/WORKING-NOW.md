@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 11:47 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 11:47 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Command Center title V24 soft light centre
 NEXT STEP: his haan for real Desk title, then B9c Y4/Y5/Y6
 HIS LAST WORD: his 11:47 word
@@ -19,32 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 6847778f 23 Nov 11:47 Command Center title V24 soft light centre
 - a15f318c 23 Nov 11:44 ledger line c024beeb
 - c024beeb 23 Nov 11:44 Command Center title V23 light less
 - 26de16bf 23 Nov 11:44 ledger line 797ba7f5
 - 797ba7f5 23 Nov 11:44 Command Center title demo back to V21
-- 0f644bc4 23 Nov 11:43 ledger line c58b8634
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/D6-CARDS-LIST-23NOV.md
-A  admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V24-LIGHT-SOFT-CENTRE.html
-M  admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
-M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
-A  docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V24-LIGHT-SOFT-CENTRE.html
-M  docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/D6-CARDS-LIST-23NOV.md                  |   2 +
- ...ND-CENTER-DEMO-23NOV-V24-LIGHT-SOFT-CENTRE.html | 104 +++++++++++++++++++++
- admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html     |  10 +-
- docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md      |   2 +
- ...ND-CENTER-DEMO-23NOV-V24-LIGHT-SOFT-CENTRE.html | 104 +++++++++++++++++++++
- .../admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html |  10 +-
- docs/claude/state/WORKING-NOW.md                   |  27 ++----
- 7 files changed, 232 insertions(+), 27 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 29 ++---------------------------
+ 1 file changed, 2 insertions(+), 27 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -55,4 +43,4 @@ M  docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (d04661bce8256219335b2ef88c69b6d314dd1fcd)
+WIP snapshot: refs/wip/last (a2e75e91ef018e08153a6bb4aa460fb7a2460c4d)
