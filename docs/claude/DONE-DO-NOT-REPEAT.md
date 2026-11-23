@@ -2809,3 +2809,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Command Center title demo V18: running logo-gradient light under ANEXOMAIL and along the line, V17 saved first, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered in Chrome three frames and looked at, gate 0 fail
 
 - Command Center title demo V19: running light dimmed (same motion), V18 saved first, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered in Chrome and looked at, gate 0 fail
+
+- Command Center title demo V20: light at the V17 level with the running motion, V19 saved first, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered in Chrome and looked at, gate 0 fail
