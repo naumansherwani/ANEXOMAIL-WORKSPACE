@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 11:38 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 11:38 PKT) - read this FIRST for the Desk after a compaction
 DOING: Command Center title V19 saved
 NEXT STEP: his haan for real Desk title, then B9c Y4/Y5/Y6
 HIS LAST WORD: his 11:38 word
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 9fbdc560 23 Nov 11:38 Command Center title V19 dimmer lights
 - d92e3a03 23 Nov 11:38 ledger line 2f146569
 - 2f146569 23 Nov 11:38 Command Center title V18 running lights
 - 8f0e8d03 23 Nov 11:36 ledger line 4d748339
@@ -72,16 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 817fe50d 23 Nov 11:34 ledger line 39f3f182
 - 39f3f182 23 Nov 11:34 Command Center title V16 both lines
 - 21df4d77 23 Nov 11:32 ledger line b70ca054
-- b70ca054 23 Nov 11:32 Command Center title V15 fitted
 
 ## Uncommitted Desk files
-M  admin-desk/D6-CARDS-LIST-23NOV.md
-A  admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V19-DIMMER-LIGHTS.html
-M  admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
-M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
-A  docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V19-DIMMER-LIGHTS.html
-M  docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
