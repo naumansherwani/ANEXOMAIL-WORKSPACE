@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 08:31 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 08:31 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: B9 steps 2-5 written: Control Plane census, AD14, Desk customers.rs door, DeskCustomers screen (card key Alt+Shift+8)
 NEXT STEP: his ad-auto (AD14) then desk-install, then my Chrome look, then GREEN
 HIS LAST WORD: gate forces B9 as one commit
@@ -19,53 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 0da64cac 23 Nov 08:31 Desk B9 Customers and Plans: census door, screen, AD14, Control Plane
 - 4e43dc9a 23 Nov 08:16 ledger line d488a0b0
 - d488a0b0 23 Nov 08:16 Keys GREEN for Desk, founder, awam; next phase B9 plan
 - 50c16bd9 23 Nov 08:07 ledger line 322539f3
 - 322539f3 23 Nov 08:07 Awam pull fix: manifest has the new key files, new gate
-- 18088658 23 Nov 08:05 ledger line 3c71506f
 
 ## Uncommitted files (half-done work if any)
-A  admin-desk/server/src/customers.rs
-M  admin-desk/server/src/lookup.rs
-M  admin-desk/server/src/main.rs
-A  admin-desk/sql/AD14.sql
-A  admin-desk/sql/checks/AD14-check.sql
-M  control-plane/src/answer.rs
-A  control-plane/src/census.rs
-M  control-plane/src/core.rs
-M  control-plane/src/db.rs
-M  control-plane/src/h3srv.rs
-M  control-plane/src/main.rs
-M  control-plane/src/verify.rs
-A  docs/claude/admin-desk/server/src/customers.rs
-M  docs/claude/admin-desk/server/src/lookup.rs
-M  docs/claude/admin-desk/server/src/main.rs
-A  docs/claude/admin-desk/sql/AD14.sql
-A  docs/claude/admin-desk/sql/checks/AD14-check.sql
-M  docs/claude/admin-desk/state/WORKING-NOW.md
-MM docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-R  founder-web/dist-desk/assets/desk-BTnDrweL.js -> founder-web/dist-desk/assets/desk-zne_XITt.js
-M  founder-web/dist-desk/desk.html
-M  founder-web/src/desk/DeskCards.tsx
-A  founder-web/src/desk/DeskCustomers.tsx
-M  founder-web/src/desk/desk_cards.test.ts
-M  founder-web/src/desk/desk_cards.ts
-A  founder-web/src/desk/desk_customers_pure.test.ts
-A  founder-web/src/desk/desk_customers_pure.ts
+ M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- founder-web/dist-desk/desk.html                    |   2 +-
- founder-web/src/desk/DeskCards.tsx                 |   2 +
- founder-web/src/desk/DeskCustomers.tsx             |  80 ++++++++
- founder-web/src/desk/desk_cards.test.ts            |   2 +
- founder-web/src/desk/desk_cards.ts                 |   7 +-
- founder-web/src/desk/desk_customers_pure.test.ts   |  30 +++
- founder-web/src/desk/desk_customers_pure.ts        |  60 ++++++
- 28 files changed, 1145 insertions(+), 61 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 52 +++-------------------------------------
+ 1 file changed, 3 insertions(+), 49 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -76,4 +43,4 @@ A  founder-web/src/desk/desk_customers_pure.ts
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (9217ed195cbb156ae937fc17a2e9ed4aabc5878e)
+WIP snapshot: refs/wip/last (4949446b04e066304bb88f3f8a5baade54c6e56f)
