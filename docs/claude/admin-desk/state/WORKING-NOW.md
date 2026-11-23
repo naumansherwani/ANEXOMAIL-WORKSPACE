@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 06:13 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 06:13 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1m-3 B8 Staff online and shifts: CODE done (AD13 + staff.rs + DeskStaff.tsx), waits his ad-auto + desk-install + my Chrome look
 NEXT STEP: his 2 server lines, my Chrome look on /dashboard/staff, 1m-3 GREEN, next 1m-4 B9 Customers and Plans
 HIS LAST WORD: AD13 selftest x2, cargo 86, bun 92, tsc, vite
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- fd2c053f 23 Nov 06:13 1m-3 B8 code
 - ec0e9286 23 Nov 06:08 ledger line 672841c2
 - 672841c2 23 Nov 06:08 1m-3 B8 plan
 - b5c7c16d 23 Nov 06:02 ledger line 148ef5af
@@ -72,23 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 0ad4cc0e 23 Nov 05:55 ledger line dc70a99c
 - dc70a99c 23 Nov 05:55 1m-2 B3 GREEN
 - 7ba7e421 23 Nov 05:41 ledger line d77ddc75
-- d77ddc75 23 Nov 05:41 1m-2 B3 code
 
 ## Uncommitted Desk files
- M admin-desk/server/src/main.rs
- M docs/claude/admin-desk/server/src/main.rs
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskCards.tsx
- M founder-web/src/desk/desk_cards.ts
-?? admin-desk/server/src/staff.rs
-?? admin-desk/sql/AD13.sql
-?? admin-desk/sql/checks/AD13-check.sql
-?? docs/claude/admin-desk/server/src/staff.rs
-?? docs/claude/admin-desk/sql/AD13.sql
-?? docs/claude/admin-desk/sql/checks/AD13-check.sql
-?? founder-web/src/desk/DeskStaff.tsx
-?? founder-web/src/desk/desk_staff_pure.test.ts
-?? founder-web/src/desk/desk_staff_pure.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
