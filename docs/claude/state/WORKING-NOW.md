@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 08:54 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 08:54 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: B6 SQL hardened (his 08:53 'duniya ka advance sql'): statement/lock timeouts, hash length CHECK, comments, checks CP3 9/9 AD15 8/8
 NEXT STEP: his ad-auto + desk-install for B6, Chrome look, GREEN
 HIS LAST WORD: his word: world-class SQL
@@ -19,34 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 7d665d21 23 Nov 08:54 B6 SQL hardened: timeouts, hash CHECK, comments
 - 94263bdc 23 Nov 08:53 ledger line 03e07af6
 - 03e07af6 23 Nov 08:53 Desk B6 Deliverability: CP3, AD15, door, screen
 - 5003706f 23 Nov 08:41 ledger line fc677448
 - fc677448 23 Nov 08:41 Desk B6 Deliverability: research, list, contract
-- 3c8c3df3 23 Nov 08:40 ledger line 0c6a46ec
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/scripts/desk-install.sh
-M  admin-desk/sql/AD15.sql
-M  admin-desk/sql/checks/AD15-check.sql
-M  control-plane/sql/CP3.sql
-M  control-plane/sql/checks/CP3-check.sql
-M  docs/claude/admin-desk/scripts/desk-install.sh
-M  docs/claude/admin-desk/sql/AD15.sql
-M  docs/claude/admin-desk/sql/checks/AD15-check.sql
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/sql/checks/AD15-check.sql             |  6 ++++-
- control-plane/sql/CP3.sql                        |  3 ++-
- control-plane/sql/checks/CP3-check.sql           |  3 ++-
- docs/claude/admin-desk/scripts/desk-install.sh   |  2 +-
- docs/claude/admin-desk/sql/AD15.sql              | 13 +++++++---
- docs/claude/admin-desk/sql/checks/AD15-check.sql |  6 ++++-
- docs/claude/state/WORKING-NOW.md                 | 31 ++++++++++--------------
- 9 files changed, 47 insertions(+), 32 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 31 ++-----------------------------
+ 1 file changed, 2 insertions(+), 29 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -57,4 +43,4 @@ M  docs/claude/admin-desk/sql/checks/AD15-check.sql
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (0861c7009f7765e942623ff616e12992acb42b2b)
+WIP snapshot: refs/wip/last (658b4981a35e07bdbbeeba9527b9de9d6de3aa98)

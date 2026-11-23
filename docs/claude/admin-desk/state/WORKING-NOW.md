@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 08:54 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 08:54 PKT) - read this FIRST for the Desk after a compaction
 DOING: B6 SQL hardened (his 08:53 'duniya ka advance sql'): statement/lock timeouts, hash length CHECK, comments, checks CP3 9/9 AD15 8/8
 NEXT STEP: his ad-auto + desk-install for B6, Chrome look, GREEN
 HIS LAST WORD: his word: world-class SQL
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 7d665d21 23 Nov 08:54 B6 SQL hardened: timeouts, hash CHECK, comments
 - 94263bdc 23 Nov 08:53 ledger line 03e07af6
 - 03e07af6 23 Nov 08:53 Desk B6 Deliverability: CP3, AD15, door, screen
 - 5003706f 23 Nov 08:41 ledger line fc677448
@@ -72,15 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 3c8c3df3 23 Nov 08:40 ledger line 0c6a46ec
 - 0c6a46ec 23 Nov 08:40 B9 Customers and Plans GREEN
 - 595cff51 23 Nov 08:31 ledger line 0da64cac
-- 0da64cac 23 Nov 08:31 Desk B9 Customers and Plans: census door, screen, AD14, Control Plane
 
 ## Uncommitted Desk files
-M  admin-desk/scripts/desk-install.sh
-M  admin-desk/sql/AD15.sql
-M  admin-desk/sql/checks/AD15-check.sql
-M  docs/claude/admin-desk/scripts/desk-install.sh
-M  docs/claude/admin-desk/sql/AD15.sql
-M  docs/claude/admin-desk/sql/checks/AD15-check.sql
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
