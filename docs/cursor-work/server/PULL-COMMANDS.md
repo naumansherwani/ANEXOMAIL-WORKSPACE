@@ -2611,3 +2611,5 @@
 - B9c Y5 WRITTEN not installed: AD19 publishes Business Premium 7,000 and Business Max 125,000 seat promises as registry version 1, six package keys from one immutable function, customers door hands over six; TECH-LAW CHECKED, TESTED: scratch PG16 selftest ALL RULES PASSED, CHECK 6 of 6 true, second run idempotent, gate 0 fail
 
 - Command Center OS demo (HTML, sample data, real Desk untouched), TECH-LAW CHECKED, TESTED: rendered at 1280 and 390, no sideways scroll, flow clicked, gate 0 fail
+
+- Title demo V25: only the word OS added after COMMAND CENTER, all else identical to V24, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered and looked at, gate 0 fail

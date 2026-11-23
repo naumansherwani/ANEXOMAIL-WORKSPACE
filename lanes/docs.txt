@@ -418,6 +418,7 @@ docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V21-VERY-LOW-LIGHT.html
 docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V22-LOGO-COLOURS-TRAVEL-LEFT-TO-RIGHT.html
 docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V23-LIGHT-LESS.html
 docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V24-LIGHT-SOFT-CENTRE.html
+docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V25-COMMAND-CENTER-OS.html
 docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V6-BACKUP-BLUE-TITLE.html
 docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V7-LOGO-COLOUR-TITLE-PROPOSED.html
 docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html

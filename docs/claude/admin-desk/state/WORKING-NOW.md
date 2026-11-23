@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 02:13 PKT) - read this FIRST for the Desk after a compaction
-DOING: Command Center OS demo saved
-NEXT STEP: his ad-auto for AD19, Y6 proof, Y4, BL-29 bridge
-HIS LAST WORD: his 02:12 word
+# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 02:14 PKT) - read this FIRST for the Desk after a compaction
+DOING: Demo V25: only OS added after COMMAND CENTER
+NEXT STEP: his haan for the real title, AD19 ad-auto, Y6, Y4, bridge
+HIS LAST WORD: his 02:14 correction
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 8b91579e 24 Nov 02:13 ledger line 07c79e07
 - 07c79e07 24 Nov 02:13 Command Center OS demo
 - ae6abd62 24 Nov 02:04 ledger line 758e9395
 - 758e9395 24 Nov 02:04 B9c Y5 AD19 Premium and Max seat promises
@@ -72,10 +73,15 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 3a13f8dc 24 Nov 01:58 Bridge decision final recorded
 - 24312836 24 Nov 01:41 ledger line 2a5a2927
 - 2a5a2927 24 Nov 01:41 Command Center OS security protocol
-- 5603be01 24 Nov 01:40 ledger line 9ab7c9f8
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/D6-CARDS-LIST-23NOV.md
+A  admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V25-COMMAND-CENTER-OS.html
+M  admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
+M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
+A  docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V25-COMMAND-CENTER-OS.html
+M  docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
+MM docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
