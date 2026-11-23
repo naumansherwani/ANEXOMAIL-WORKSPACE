@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 09:52 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 09:52 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1m-7 B6b docs written
 NEXT STEP: B6b code: mailposture.rs + AD17 + screen
 HIS LAST WORD: his 09:51 order
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 5f7f1cf3 23 Nov 09:52 B6b docs first
 - 5e086bac 23 Nov 09:37 ledger line b358e684
 - b358e684 23 Nov 09:37 BL-04 advance tech line
 - 91228d40 23 Nov 09:37 ledger line 28f6ddfa
@@ -72,16 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - b4f64008 23 Nov 09:34 ledger line b4dae7fe
 - b4dae7fe 23 Nov 09:34 Billionaire after Dashboard order
 - 45f4339b 23 Nov 09:30 ledger line 428b240e
-- 428b240e 23 Nov 09:30 B10 GREEN + billionaire ORDER-LOCK
 
 ## Uncommitted Desk files
-M  admin-desk/D6-CARDS-LIST-23NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
