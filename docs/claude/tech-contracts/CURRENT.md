@@ -1,3 +1,9 @@
+# TECH CONTRACT FOR PHASE: DESK COMMAND CENTER TEXT POSITION (phase 1m, sub-phase CC1-position, list BL-29 (CC1; his explicit 24 Nov 2026 03:57 PKT word "ab perfect hai likho codes aur pull kerwao"; BL-28 B9c stays next on the ORDER-LOCK, Y4 open), TEXT AND POSITION ONLY, design intact), written 24 Nov 2026 04:1x PKT BEFORE install. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| React 19 + TypeScript: Senior Executive line centred on the title width (rules keep their own length), landing title in two lines at a smaller size, landing footer pinned to the bottom below the floor light plus the Authorized personnel line | founder-web/src/desk/DeskTitle.tsx, founder-web/src/desk/DeskPages.tsx | YES | bun test src/desk 127 pass, tsc clean, build:desk desk-BTyOwH4h.js, real built landing screenshot at 1280, old files in backups/desk/20261124-0405-centre-footer |
+| Carried unchanged (phase files) | docs/claude/admin-desk/sql/AD19.sql, docs/claude/admin-desk/server/src/customers.rs | YES | untouched |
+
 # TECH CONTRACT FOR PHASE: DESK COMMAND CENTER TEXT (phase 1m, sub-phase CC1-text, list BL-29 (CC1; his explicit 24 Nov 2026 03:28 PKT "meri haan hai"; BL-28 B9c Y5 is GREEN, Y4 stays open), TEXT ONLY, design intact), written 24 Nov 2026 03:4x PKT BEFORE install. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3691,3 +3697,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Landing title smaller demo V3 (2 lines, max 64px, light visible), real code untouched, TECH-LAW CHECKED, TESTED: real page built in a scratch copy, screenshot 1280 and 390, gate 0 fail
 
 - Demo V4 Senior Executive centred with original rule length and landing footer pinned below the floor light, real code untouched, TECH-LAW CHECKED, TESTED: demo rendered and measured (offset), landing built in a scratch copy at 1280 and 390, gate 0 fail
+
+- Real Desk text and position: Senior Executive centred, landing title two lines, footer below the floor light, dist-desk rebuilt (desk-BTyOwH4h.js), WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 127 pass, tsc clean, build:desk ok, real built landing screenshot 1280, gate 0 fail
+
+- Real Desk text and position: Senior Executive centred, landing title two lines, footer below the floor light, dist-desk rebuilt (desk-BTyOwH4h.js), WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 127 pass, tsc clean, build:desk ok, real built landing screenshot 1280, gate 0 fail

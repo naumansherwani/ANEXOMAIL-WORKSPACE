@@ -43,6 +43,7 @@ export function fitSpacing(bigWidth: number, bigSpacing: number, smallWidthAtZer
 export function DeskTitle() {
   const h = useRef<HTMLHeadingElement>(null);
   const cv = useRef<HTMLCanvasElement>(null);
+  const sb = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const fit = () => {
       const a = h.current?.querySelector<HTMLElement>(".l1"), b = h.current?.querySelector<HTMLElement>(".l2");
@@ -51,6 +52,8 @@ export function DeskTitle() {
       const ls = parseFloat(getComputedStyle(a).letterSpacing) || 0;
       const sp = fitSpacing(a.getBoundingClientRect().width, ls, b.getBoundingClientRect().width, (b.textContent ?? "").length);
       b.style.letterSpacing = `${sp}px`; b.style.marginRight = `${-sp}px`;
+      // his 24 Nov 03:57 word: the Senior Executive line (rules kept at their own length) is centred on the title width
+      const u = sb.current; if (u) { u.style.width = "fit-content"; u.style.marginLeft = "0px"; u.style.marginLeft = `${(a.getBoundingClientRect().width - u.getBoundingClientRect().width) / 2}px`; }
     };
     fit(); addEventListener("resize", fit);
     void document.fonts?.ready.then(fit);
@@ -80,7 +83,7 @@ export function DeskTitle() {
       <canvas ref={cv} className="dsk-sp" aria-hidden="true" />
       <div className="dsk-halo" aria-hidden="true" />
       <h1 ref={h} className="dsk-ttl" aria-label="ANEXOMAIL COMMAND CENTER OS">{line("l1", L[0])}{line("l2", L[1])}</h1>
-      <div className="dsk-sub"><span className="rule" />Senior Executive</div>
+      <div ref={sb} className="dsk-sub"><span className="rule" />Senior Executive</div>
     </div>
   );
 }

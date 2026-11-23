@@ -27,12 +27,15 @@ function Landing() {
         <DeskTelemetry />
         <section aria-label="Admin Desk" style={{ width: "100%", maxWidth: 760, display: "flex", flexDirection: "column", alignItems: "center", gap: 22, textAlign: "center" }}>
           <div style={{ transform: "scale(1.25)", marginBottom: 6 }}><BrandMark home={false} /></div>
-          <h1 style={{ margin: 0, fontWeight: 600, fontSize: "clamp(44px,8vw,92px)", lineHeight: 1.02, letterSpacing: "-0.035em", textWrap: "balance" as const, background: "linear-gradient(180deg,#FFFFFF 0%,#BFD6FF 55%,#6FA6F2 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>ANEXOMAIL COMMAND CENTER</h1>
+          <h1 style={{ margin: 0, fontWeight: 600, fontSize: "clamp(32px,5.2vw,64px)", lineHeight: 1.02, letterSpacing: "-0.035em", textWrap: "balance" as const, background: "linear-gradient(180deg,#FFFFFF 0%,#BFD6FF 55%,#6FA6F2 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>ANEXOMAIL<br />COMMAND CENTER</h1>
           <p style={{ margin: 0, maxWidth: 520, fontSize: "clamp(16px,2.2vw,19px)", lineHeight: 1.55, color: "#B7C6E2", textWrap: "balance" as const }}><b style={{ display: "block", letterSpacing: ".2em", fontSize: "1.15em", color: "#fff", marginBottom: 8 }}>OPERATIONS</b>People · Customers · CRM · Cases · Systems · Service Delivery</p>
           <p style={{ margin: 0, maxWidth: 560, padding: "12px 20px", fontSize: 14, lineHeight: 1.55, color: "#D5E1F7", textWrap: "balance" as const, border: "1px solid rgba(160,200,255,.22)", borderRadius: 16, background: "rgba(10,18,38,.5)", backdropFilter: "blur(14px)" }}>Our engine runs in milliseconds; our support should too. Own the issue, fix the root, leave zero open loops.</p>
           <button type="button" className="ax-a-hover" onClick={() => go("/adminlogin")} style={{ minHeight: 54, padding: "0 34px", border: 0, borderRadius: 16, cursor: "pointer", fontSize: 16, fontWeight: 600, color: "oklch(0.975 0.004 250)", background: "oklch(0.455 0.093 258)", boxShadow: "0 8px 24px rgba(4,18,43,.45)", display: "inline-flex", alignItems: "center", gap: 10 }}><HoverA />Sign in</button>
-          <p style={{ margin: "6px 0 0", fontSize: 11, letterSpacing: ".1em", color: "#8FA6CC" }}>Rust · Tokio · axum · Rust WASM kernel · WebAuthn passkeys · Three.js</p>
-        </section>
+          </section>
+        <footer style={{ position: "fixed", left: 0, right: 0, bottom: "max(14px, env(safe-area-inset-bottom, 0px))", display: "flex", flexDirection: "column", alignItems: "center", gap: 6, padding: "0 16px", textAlign: "center", zIndex: 2 }}>
+          <p style={{ margin: 0, fontSize: 11, letterSpacing: ".1em", color: "#8FA6CC" }}>Rust · Tokio · axum · Rust WASM kernel · WebAuthn passkeys · Three.js</p>
+          <p style={{ margin: 0, fontSize: 11, color: "#8FA6CC" }}>Authorized personnel only. Access is recorded. · © 2026 ANEXOMAIL · Privacy · Terms · Security</p>
+        </footer>
       </DeskScene>
     </main>
   );

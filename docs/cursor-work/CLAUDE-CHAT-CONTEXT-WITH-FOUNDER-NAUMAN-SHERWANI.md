@@ -5642,3 +5642,7 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - Landing title smaller demo V3 (2 lines, max 64px, light visible), real code untouched, TECH-LAW CHECKED, TESTED: real page built in a scratch copy, screenshot 1280 and 390, gate 0 fail
 
 - Demo V4 Senior Executive centred with original rule length and landing footer pinned below the floor light, real code untouched, TECH-LAW CHECKED, TESTED: demo rendered and measured (offset), landing built in a scratch copy at 1280 and 390, gate 0 fail
+
+- Real Desk text and position: Senior Executive centred, landing title two lines, footer below the floor light, dist-desk rebuilt (desk-BTyOwH4h.js), WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 127 pass, tsc clean, build:desk ok, real built landing screenshot 1280, gate 0 fail
+
+- Real Desk text and position: Senior Executive centred, landing title two lines, footer below the floor light, dist-desk rebuilt (desk-BTyOwH4h.js), WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 127 pass, tsc clean, build:desk ok, real built landing screenshot 1280, gate 0 fail
