@@ -1,4 +1,5 @@
 <title>Command Center Header</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap">
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
 :root{--ink:#E8EEF9;--mute:#9FB3D6;--line:rgba(160,200,255,.16);--glass:rgba(12,22,46,.62);--amber:255,170,70;--blue:#6FA6F2;--pale:#BFD6FF;--pill:rgba(111,166,242,.16)}
@@ -25,29 +26,29 @@ main{padding:24px clamp(16px,4vw,40px) 40px}
 .head{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .hi{color:var(--mute);margin:0}
 h1{margin:4px 0 0;font-size:clamp(28px,5vw,48px);line-height:1.05;background:linear-gradient(#fff 0%,#bfd6ff 60%,#6fa6f2 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.sub{font-size:clamp(16px,2vw,20px);color:var(--pale);margin-top:10px;font-weight:500}
+.sub{font-size:clamp(16px,2vw,20px);color:#C3CCD8;margin-top:10px;font-weight:500}
 .cc{border:0;background:none;padding:0 4px;margin-bottom:18px}.cc b{font-size:13px;letter-spacing:.06em}
+#ttl{margin:4px 0 0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;font-weight:600;line-height:1.05}
+#ttl .l1{display:block;font-size:clamp(28px,4.6vw,46px);font-weight:300;letter-spacing:.16em;margin-right:-.16em;color:#2C4C79;-webkit-text-stroke:.6px #E6EBF1;paint-order:stroke fill}
+#ttl .l2{display:block;font-size:clamp(10px,1.3vw,13px);letter-spacing:.5em;font-weight:500;margin-top:10px;line-height:1.2;color:#DCE3EC}
+#ttl .c{display:inline-block;opacity:0;filter:blur(10px);transform:translateY(.35em) scale(1.08);animation:inr .9s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--i)*70ms)}
+#ttl .l1{display:inline-block}
+#ttl .l1::after{content:"";display:block;height:1px;width:calc(100% - .16em);margin-top:10px;background:linear-gradient(90deg,#1E3557 0%,#2C4C79 22%,#C3CCD8 50%,#E6EBF1 58%,#2C4C79 82%,#1E3557 100%);box-shadow:0 0 8px rgba(44,76,121,.45);transform:scaleX(0);transform-origin:left;animation:ul 1.1s cubic-bezier(.3,.7,.2,1) 1.2s forwards}
+@keyframes ul{to{transform:scaleX(1)}}
+@media(prefers-reduced-motion:reduce){#ttl .l1::after{animation:none;transform:none}}
+#ttl .w{display:inline-block;white-space:nowrap}
+@keyframes inr{to{opacity:1;filter:blur(0);transform:none}}
+#ttl .l1{text-shadow:0 0 26px rgba(44,76,121,.95),0 0 2px rgba(230,235,241,.5)}
 .hero{position:relative;padding:6px 0 4px;isolation:isolate}
 .halo{position:absolute;left:-6%;top:-40%;width:70%;height:220%;z-index:-1;background:radial-gradient(closest-side,rgba(111,166,242,.22),transparent 70%);animation:halo 7s ease-in-out infinite alternate;pointer-events:none}
 @keyframes halo{from{opacity:.55;transform:translateX(-3%)}to{opacity:1;transform:translateX(6%)}}
 #sp{position:absolute;inset:-20px -10px;width:calc(100% + 20px);height:calc(100% + 40px);z-index:-1;pointer-events:none}
-#ttl{position:relative;letter-spacing:0;font-weight:600;font-size:inherit;display:block}
-#ttl .l1{display:block;font-size:clamp(26px,4.4vw,46px);letter-spacing:.12em;font-weight:700;line-height:1.05;margin-right:-.12em}
-#ttl .l2{display:block;font-size:clamp(10px,1.3vw,13px);letter-spacing:.5em;font-weight:500;margin-top:8px;line-height:1.2}
-.flare{display:block;position:absolute;left:-4%;top:42%;height:2px;width:0;background:linear-gradient(90deg,transparent,rgba(191,214,255,.0),#fff,rgba(191,214,255,0),transparent);box-shadow:0 0 18px 4px rgba(111,166,242,.6);opacity:0;animation:flare 1.5s cubic-bezier(.3,.7,.2,1) 1.1s forwards;pointer-events:none}
-@keyframes flare{0%{width:0;opacity:0}20%{opacity:1}100%{width:108%;opacity:0}}
-#ttl .l1 .c{background-image:linear-gradient(100deg,transparent 42%,rgba(255,255,255,.95) 50%,transparent 58%),linear-gradient(180deg,#fff 0%,#E3EEFF 38%,#9FC0F5 62%,#4F86D6 100%)}
-#ttl .w{display:inline-block;white-space:nowrap}
-#ttl .c{display:inline-block;opacity:0;filter:blur(10px);transform:translateY(.35em) scale(1.08);animation:in .9s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--i)*70ms);background-image:linear-gradient(100deg,transparent 42%,rgba(255,255,255,.95) 50%,transparent 58%),linear-gradient(180deg,#fff 0%,#BFD6FF 60%,#6FA6F2 100%);background-size:300% 100%,100% 100%;background-position:130% 0,0 0;-webkit-background-clip:text;background-clip:text;color:transparent}
-@keyframes in{to{opacity:1;filter:blur(0);transform:none}}
-#ttl.go .c{animation:in .9s cubic-bezier(.2,.8,.2,1) forwards,sheen 6s linear 1.8s infinite}
-@keyframes sheen{from{background-position:130% 0,0 0}to{background-position:-130% 0,0 0}}
-#ttl::after{content:none}
-@keyframes fadeglow{to{opacity:.9}}
+/* ORIGINAL ANEXOMAIL LOGO-A COLOURS in the text: steel fill #2C4C79 > navy #1E3557 with the silver outline #E6EBF1, exactly like the A mark; same animation */
+.sub{font-weight:500;letter-spacing:0}
 .sub{display:flex;align-items:center;gap:12px;opacity:0;animation:up .8s ease 1.4s forwards}
 .rule{display:inline-block;height:1px;width:clamp(36px,8vw,90px);background:linear-gradient(90deg,transparent,var(--blue))}
 @keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){#ttl .c,.sub{animation:none!important;opacity:1;filter:none;transform:none}.halo{animation:none}}
+@media(prefers-reduced-motion:reduce){.halo{animation:none}}
 .clock{text-align:right}.clock .t{font-size:44px;font-weight:200;letter-spacing:.04em}.clock .d{font-size:11px;letter-spacing:.16em;color:var(--mute)}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:22px}
 .card{background:var(--glass);border:1px solid var(--line);border-radius:14px;padding:16px 18px;min-width:0}
@@ -55,7 +56,7 @@ h1{margin:4px 0 0;font-size:clamp(28px,5vw,48px);line-height:1.05;background:lin
 .big{font-size:34px;font-weight:700;margin-top:6px}.tx{color:var(--pale);margin-top:8px;line-height:1.5;font-size:15px}
 </style>
 <div class="glow"></div><div class="grid-lines"></div>
-<div class="note"><b>Demo</b>Colours copied exactly from the Desk's own code (DeskShell.tsx). Only the big title changed: ANEXOMAIL COMMAND CENTER, with Admin Desk below it.</div>
+<div class="note"><b>Demo</b>Page colours = the Desk's own code. Title text colours = the original Anexomail logo A (steel #2C4C79, navy #1E3557, silver #E6EBF1 / #C3CCD8).</div>
 <div class="app">
 <nav class="side" aria-label="Desk">
 <div class="cc">
@@ -69,7 +70,7 @@ h1{margin:4px 0 0;font-size:clamp(28px,5vw,48px);line-height:1.05;background:lin
 <div class="si">Managed Move-In</div><div class="si">People</div><div class="si">CRM</div><div class="si">Plans</div>
 </nav>
 <main>
-<div class="head"><div><p class="hi">Good morning,</p><div class="hero"><canvas id="sp" aria-hidden="true"></canvas><div class="halo" aria-hidden="true"></div><h1 id="ttl" aria-label="ANEXOMAIL COMMAND CENTER"><span class="l1" data-t="ANEXOMAIL"></span><span class="flare" aria-hidden="true"></span><span class="l2" data-t="COMMAND CENTER"></span></h1><div class="sub"><span class="rule"></span>Admin Desk</div></div></div><div class="clock"><div class="t">10:50 AM</div><div class="d">MONDAY, NOVEMBER 23</div></div></div>
+<div class="head"><div><p class="hi">Good morning,</p><div class="hero"><canvas id="sp" aria-hidden="true"></canvas><div class="halo" aria-hidden="true"></div><h1 id="ttl" aria-label="ANEXOMAIL COMMAND CENTER"><span class="l1" data-t="ANEXOMAIL" aria-hidden="true"></span><span class="l2" data-t="COMMAND CENTER" aria-hidden="true"></span></h1><div class="sub"><span class="rule"></span>Admin Desk</div></div></div><div class="clock"><div class="t">10:50 AM</div><div class="d">MONDAY, NOVEMBER 23</div></div></div>
 <div class="grid">
 <div class="card"><div class="lab">Live SLA clock <span>&rarr;</span></div><div class="big">No cases yet</div><div class="tx">Average time to a first answer. Target: under 2 minutes.</div></div>
 <div class="card"><div class="lab">Urgent alerts <span>&rarr;</span></div><div class="big">&hellip;</div><div class="tx">Connecting&hellip;</div></div>
@@ -80,9 +81,8 @@ h1{margin:4px 0 0;font-size:clamp(28px,5vw,48px);line-height:1.05;background:lin
 </main>
 </div>
 <script>
-(function(){var t=document.getElementById('ttl'),i=0;
-['l1','l2'].forEach(function(k){var e=t.querySelector('.'+k),s=e.getAttribute('data-t');e.setAttribute('aria-hidden','true');s.split(' ').forEach(function(w,q){var W=document.createElement('span');W.className='w';for(var j=0;j<w.length;j++){var c=document.createElement('span');c.className='c';c.style.setProperty('--i',i++);c.textContent=w[j];W.appendChild(c)}e.appendChild(W);if(q<s.split(' ').length-1)e.appendChild(document.createTextNode(' '))})});
-setTimeout(function(){t.className='go'},2200);
+(function(){var t=document.getElementById('ttl'),i=0;['l1','l2'].forEach(function(k){var e=t.querySelector('.'+k),s=e.getAttribute('data-t'),ws=s.split(' ');ws.forEach(function(w,q){var W=document.createElement('span');W.className='w';for(var j=0;j<w.length;j++){var c=document.createElement('span');c.className='c';c.style.setProperty('--i',i++);c.textContent=w[j];W.appendChild(c)}e.appendChild(W);if(q<ws.length-1)e.appendChild(document.createTextNode(' '))})})})();
+(function(){
 var cv=document.getElementById('sp'),x=cv.getContext('2d'),P=[],W,H;function r(){var b=cv.getBoundingClientRect();W=cv.width=b.width;H=cv.height=b.height}r();addEventListener('resize',r);
 for(var n=0;n<34;n++)P.push({x:Math.random(),y:Math.random(),v:.0004+Math.random()*.0012,s:.5+Math.random()*1.4,p:Math.random()*6});
 if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
