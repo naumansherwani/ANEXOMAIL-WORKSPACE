@@ -3587,3 +3587,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - ANEXOMAIL Command Center = the brain: his words saved verbatim, web research (appmaster, WorkOS, Ory, Grafana, Databricks), plan CC0..CC-LAST with advance technology, folder docs/claude/anexomail-command-center/, rename map, 8 stale gate checks repointed to real Desk files, 5 real gaps got new dates by his word, TECH-LAW CHECKED, TESTED: gate 0 fail
 
 - ANEXOMAIL Command Center OS phase plan OS-0..OS-12 with advance technology per phase, employee lifecycle in his 4 steps as the LAST phase (OS-11), boundary written, web research OWASP passkey + capability security, TECH-LAW CHECKED, TESTED: gate 0 fail
+
+- Command Center OS security protocol S1..S15 (zero trust NIST 800-207, Zanzibar, Palantir markings, JIT, break-glass, passkey-only, DBSC, Rule 52, tamper-evident journal) with honest live/planned state, web research, TECH-LAW CHECKED, TESTED: gate 0 fail

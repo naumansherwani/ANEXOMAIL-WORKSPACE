@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 01:40 PKT) - read this FIRST for the Desk after a compaction
-DOING: Command Center OS phase plan OS-0..OS-12 + employee lifecycle written
-NEXT STEP: BL-28 B9c Y5 then Y4 schema-first; his answers: boundary, Y6, 3 bridge questions
-HIS LAST WORD: his 24 Nov 01:38 word
+# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 01:41 PKT) - read this FIRST for the Desk after a compaction
+DOING: OS security protocol S1..S15 written
+NEXT STEP: BL-28 B9c Y5 then Y4 schema-first; his answers pending
+HIS LAST WORD: his 24 Nov 01:40 word
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 5603be01 24 Nov 01:40 ledger line 9ab7c9f8
 - 9ab7c9f8 24 Nov 01:40 Command Center OS phases and employee lifecycle plan
 - 5cd3dbfe 24 Nov 01:24 ledger line d898e87c
 - d898e87c 24 Nov 01:24 ANEXOMAIL Command Center brain law and plan, gate dates
@@ -72,10 +73,13 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - bdd9471f 23 Nov 12:01 Status: title + B9c installed, blueprint and resume updated
 - db7190ba 23 Nov 11:50 ledger line 5a47b976
 - 5a47b976 23 Nov 11:50 Command Center title in the real Desk
-- 2b0fed22 23 Nov 11:47 ledger line 6847778f
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+MM docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

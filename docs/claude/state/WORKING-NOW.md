@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 01:40 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Command Center OS phase plan OS-0..OS-12 + employee lifecycle written
-NEXT STEP: BL-28 B9c Y5 then Y4 schema-first; his answers: boundary, Y6, 3 bridge questions
-HIS LAST WORD: his 24 Nov 01:38 word
+# WORKING NOW (manual checkpoint, 24 Nov 2026 01:41 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: OS security protocol S1..S15 written
+NEXT STEP: BL-28 B9c Y5 then Y4 schema-first; his answers pending
+HIS LAST WORD: his 24 Nov 01:40 word
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -19,20 +19,34 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 5603be01 24 Nov 01:40 ledger line 9ab7c9f8
 - 9ab7c9f8 24 Nov 01:40 Command Center OS phases and employee lifecycle plan
 - 5cd3dbfe 24 Nov 01:24 ledger line d898e87c
 - d898e87c 24 Nov 01:24 ANEXOMAIL Command Center brain law and plan, gate dates
 - d08d3cbf 23 Nov 12:01 ledger line bdd9471f
-- bdd9471f 23 Nov 12:01 Status: title + B9c installed, blueprint and resume updated
 
 ## Uncommitted files (half-done work if any)
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/state/WORKING-NOW.md
+A  docs/claude/anexomail-command-center/COMMAND-CENTER-OS-SECURITY-PROTOCOL-24NOV.md
+M  docs/claude/anexomail-command-center/README.md
  M docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 35 ++---------------------------------
- 1 file changed, 2 insertions(+), 33 deletions(-)
+ .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    |  2 ++
+ docs/claude/admin-desk/NOW-LIST-23NOV.md           |  1 +
+ docs/claude/admin-desk/state/WORKING-NOW.md        |  1 +
+ .../COMMAND-CENTER-OS-SECURITY-PROTOCOL-24NOV.md   | 24 +++++++++++++++++
+ docs/claude/anexomail-command-center/README.md     |  1 +
+ docs/claude/state/WORKING-NOW.md                   | 31 +++++++++-------------
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  8 +++---
+ 9 files changed, 49 insertions(+), 22 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -43,4 +57,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (6e3b221e8de64358183cf015a1ddca28ebe8967c)
+WIP snapshot: refs/wip/last (31fe3260e62481ed0e4ec61b904a7666ee7c9a85)
