@@ -24,6 +24,7 @@ mod runbooks;
 mod escalations;
 mod pressure;
 mod security;
+mod staff;
 mod sign;
 mod wt;
 mod signed;
@@ -121,6 +122,7 @@ async fn main() {
         .route("/desk/v1/queues/pressure", post(pressure::queues))
         .route("/desk/v1/queues/risk", post(pressure::risk))
         .route("/desk/v1/security/health", post(security::health))
+        .route("/desk/v1/staff/board", post(staff::board))
         .layer(middleware::from_fn(signed::guard));
     let app = Router::new()
         .route("/desk/v1/health", get(health))

@@ -4397,3 +4397,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - SQL WORLD-CLASS gate locked for every SQL (founder, awam, Desk) + dashboard folder audit (23 Nov 06:0x PKT; TECH-LAW CHECKED, TESTED: gate negative probe fails 5 reasons, positive probe passes, rules-gate syntax ok)
 
 - 1m-3 B8 Staff online and shifts: web research, list T1..T7, ADVANCE-RESEARCH line, contract block written before code (docs only; TECH-LAW CHECKED, TESTED: rules-gate 0 fail, rows IN CODE=no until code)
+
+- 1m-3 B8 STAFF ONLINE AND SHIFTS CODE: AD13 live-session presence + shift coverage + elevation/break-glass countdown + hourly hash-chained series, staff.rs, DeskStaff.tsx, TESTED: scratch PG selftest x2, 20 checks 0 false, cargo 86 pass, bun 92 pass, tsc, vite; TECH-LAW CHECKED; GREEN waits his install + Chrome

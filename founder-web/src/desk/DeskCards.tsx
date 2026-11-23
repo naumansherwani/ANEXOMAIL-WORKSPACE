@@ -11,6 +11,7 @@ import { DeskPlan } from "./DeskPlan";
 import { DeskEscalate } from "./DeskEscalate";
 import { DeskQueuePressure, DeskSlaRisk } from "./DeskPressure";
 import { DeskSecurity } from "./DeskSecurity";
+import { DeskStaff } from "./DeskStaff";
 import { DeskRunbooks } from "./DeskRunbooks";
 
 /** ADMIN DESK D1..D4 (22 Nov 2026): the clickable cards below the Command Bar and the pages they open. Every number comes from the kernel-verified stream (Rule 52);
@@ -96,6 +97,7 @@ export function DeskSubPage({ sub, search, hash, snap, nav, role = "", act }: { 
     );
   }
   if (card.id === "plans") return <Shell title="Plans and prices" back nav={nav}><p>Look up one company's plan, what is really switched on, usage and service state.</p><DeskPlan /></Shell>;
+  if (card.id === "staff") return <Shell title="Staff online and shifts" back nav={nav}><p>{card.what}.</p><DeskStaff /></Shell>;
   if (card.id === "security") return <Shell title="Security health" back nav={nav}><p>{card.what}.</p><DeskSecurity /></Shell>;
   if (card.id === "queue") return <Shell title="Queue pressure" back nav={nav}><p>{card.what}.</p><DeskQueuePressure /></Shell>;
   if (card.id === "sla") return <Shell title="Live SLA clock" back nav={nav}><p>{card.what}.</p><DeskSlaRisk /></Shell>;
