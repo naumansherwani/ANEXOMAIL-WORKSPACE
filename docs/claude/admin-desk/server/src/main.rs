@@ -21,6 +21,7 @@ mod dbsc;
 mod lookup;
 mod packages;
 mod runbooks;
+mod consent;
 mod escalations;
 mod pressure;
 mod security;
@@ -122,6 +123,9 @@ async fn main() {
         .route("/desk/v1/runbooks/tick", post(runbooks::tick))
         .route("/desk/v1/runbooks/ticks", post(runbooks::ticks))
         .route("/desk/v1/runbooks/mark", post(runbooks::mark))
+        .route("/desk/v1/consent/request", post(consent::request))
+        .route("/desk/v1/consent/board", post(consent::board))
+        .route("/desk/v1/consent/open", post(consent::open))
         .route("/desk/v1/escalations", post(escalations::create))
         .route("/desk/v1/escalations/list", post(escalations::list))
         .route("/desk/v1/queues/pressure", post(pressure::queues))

@@ -9,6 +9,7 @@ import { barModel } from "./desk_bridge_pure";
 import { DeskPipeline } from "./DeskCommandBar";
 import { DeskPlan } from "./DeskPlan";
 import { DeskEscalate } from "./DeskEscalate";
+import { DeskConsent } from "./DeskConsent";
 import { DeskQueuePressure, DeskSlaRisk } from "./DeskPressure";
 import { DeskSecurity } from "./DeskSecurity";
 import { DeskStaff } from "./DeskStaff";
@@ -108,6 +109,7 @@ export function DeskSubPage({ sub, search, hash, snap, nav, role = "", act }: { 
   if (card.id === "security") return <Shell title="Security health" back nav={nav}><p>{card.what}.</p><DeskSecurity /></Shell>;
   if (card.id === "queue") return <Shell title="Queue pressure" back nav={nav}><p>{card.what}.</p><DeskQueuePressure /></Shell>;
   if (card.id === "sla") return <Shell title="Live SLA clock" back nav={nav}><p>{card.what}.</p><DeskSlaRisk /></Shell>;
+  if (card.id === "consent") return <Shell title="Customer data access" back nav={nav}><p>{card.what}.</p><DeskConsent /></Shell>;
   if (card.id === "escalations") return <Shell title="Escalations" back nav={nav}><p>{card.what}.</p><DeskEscalate /></Shell>;
   if (card.id === "runbooks") return <Shell title="Runbooks" back nav={nav}><p>{card.what}.</p><DeskRunbooks role={role} /></Shell>;
   if (card.id === "systems") {

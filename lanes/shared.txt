@@ -150,6 +150,7 @@ admin-desk/server/src/00-FOUNDER-TECH-RULE.md
 admin-desk/server/src/audit.rs
 admin-desk/server/src/auth.rs
 admin-desk/server/src/bridge.rs
+admin-desk/server/src/consent.rs
 admin-desk/server/src/customers.rs
 admin-desk/server/src/dbsc.rs
 admin-desk/server/src/deliverability.rs

@@ -6075,3 +6075,7 @@ FINAL: 21 Nov Desk Isolation Law and Gate never break. Company OS (Command Cente
 - ad-auto quiet for old files plus one SUMMARY line (his 04:33 complaint), AD20 shown to be in his database by its CHECK, TECH-LAW CHECKED, TESTED: bash -n syntax OK, quiet logic run SK=1 pass, gate 0 fail
 
 - 24 Nov 2026 04:5x PKT: compact save COMPACT-RESUME-24NOV.md; AD20 in his DB (ad-auto already run), boot text page SAME; B13 not green. TECH-LAW CHECKED, TESTED: his ad-auto and desk-install pastes OK, gate pass
+
+- B13 Z2 consent.rs staff doors request/board/open (Rust Axum Rule 52 sealed, deny_unknown_fields, AD20 doors only, no self-approval door), WRITTEN not installed, TECH-LAW CHECKED, TESTED: cargo test 113 pass incl 4 consent tests
+
+- B13 Z2 consent.rs (Rust Axum Rule 52 doors request/board/open, no self-approval door) + Z3 DeskConsent.tsx (React 19 screen, strict parsers, countdown), WRITTEN not installed, TECH-LAW CHECKED, TESTED: cargo test 113 pass, bun test src/desk 131 pass, tsc clean, build:desk ok
