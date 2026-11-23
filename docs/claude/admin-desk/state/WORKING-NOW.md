@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 03:58 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 03:58 PKT) - read this FIRST for the Desk after a compaction
 DOING: Real code: Senior Executive centred, landing title smaller, footer below light
 NEXT STEP: his desk-install, Chrome look, then BL-46 B13
 HIS LAST WORD: his haan 03:57
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 3675a1fd 24 Nov 03:58 Desk text position code
 - a2c86b55 24 Nov 03:56 ledger line 19a222c0
 - 19a222c0 24 Nov 03:56 Text demo V4
 - e4497272 24 Nov 03:49 ledger line 1e6fc424
@@ -72,16 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - cf963a77 24 Nov 03:47 ledger line 5d5d409f
 - 5d5d409f 24 Nov 03:47 CC1-text GREEN
 - 19e077ae 24 Nov 03:35 ledger line c14f02e7
-- c14f02e7 24 Nov 03:35 Text demo 2
 
 ## Uncommitted Desk files
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-MM docs/claude/admin-desk/state/WORKING-NOW.md
-M  founder-web/src/desk/DeskPages.tsx
-M  founder-web/src/desk/DeskTitle.tsx
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
