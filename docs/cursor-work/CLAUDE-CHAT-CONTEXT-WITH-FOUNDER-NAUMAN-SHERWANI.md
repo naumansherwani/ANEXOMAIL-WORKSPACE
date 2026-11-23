@@ -5606,3 +5606,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - Command Center title + B9c INSTALLED on his server (desk-install 9/9, commit db7190ba8, bundle desk-C-0-8m1u.js SAME), seen in my Chrome at desktop width, NOT GREEN (390/820 + Y4/Y5/Y6 open), blueprint + WORKING-NOW + NOW-LIST updated, approved codes backed up, TECH-LAW CHECKED, TESTED: live Chrome look desktop, gate 0 fail
 
 - ANEXOMAIL Command Center = the brain: his words saved verbatim, web research (appmaster, WorkOS, Ory, Grafana, Databricks), plan CC0..CC-LAST with advance technology, folder docs/claude/anexomail-command-center/, rename map, 8 stale gate checks repointed to real Desk files, 5 real gaps got new dates by his word, TECH-LAW CHECKED, TESTED: gate 0 fail
+
+- ANEXOMAIL Command Center OS phase plan OS-0..OS-12 with advance technology per phase, employee lifecycle in his 4 steps as the LAST phase (OS-11), boundary written, web research OWASP passkey + capability security, TECH-LAW CHECKED, TESTED: gate 0 fail

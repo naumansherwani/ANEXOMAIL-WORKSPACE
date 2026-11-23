@@ -1,0 +1,36 @@
+# ANEXOMAIL COMMAND CENTER OS: PHASE PLAN (his word 24 Nov 2026 01:38 PKT, written 24 Nov 2026 01:5x PKT; read with COMMAND-CENTER-BRAIN-LAW-24NOV.md and state/WORKING-NOW.md)
+RULE: WE ARE BUILDING A COMPANY WORK OS, NOT A DASHBOARD. Every phase below has ITS advance technology next to it; the technology listed is CODE or the phase is not GREEN (Rule 52, HTTP/3 + WebTransport only, forced-RLS advance SQL with SCHEMA-FIRST / ADVANCE-RESEARCH / CHECK-FILE header, no third-party vendor, no mock data). Web research keeps going for every phase (RESEARCH-IN-BLUEPRINT law).
+
+## THE BOUNDARY (his words) AND THE ONE THING I NEED FROM HIM
+1. The founder has a bridge. That bridge now connects DIRECTLY to the Command Center OS.
+2. The OS may NEVER hand out founder information (prohibited, enforced by the isolation gate + no grants: the OS has no door, key, table or token of the founder).
+3. The OS is "built into" the founder. SAFE READING (what I build): the founder app gets a Command Center entry (launcher pane) that talks to the OS ONLY through the signed bridge, direction founder -> OS (asks, reads work numbers). The OS code stays its own security domain on its own host. A LITERAL merge of OS code into the founder binary/tables would break his DESK ISOLATION LAW (21 Nov 07:29, gate fails any mixing). I do NOT change that law or gate without his explicit word.
+
+## OS MINDSET: WHAT EVERY OS HAS, AND ITS COMPANY-OS PHASE (web research 24 Nov: capability-based security / least privilege (Capsicum, Krohn), OWASP Passkey cheat sheet, WorkOS provisioning, Grafana/Databricks identity)
+| Phase | OS part | What it does | Advance technology next to it |
+|---|---|---|---|
+| OS-0 | Identity of the OS | one name constant ANEXOMAIL Command Center; Admin Desk = a section; Claude -> Command Center -> Admin Desk folders | one constant, no logic change (CC0) |
+| OS-1 | Kernel contract | every call = a signed request checked against a CAPABILITY set; deny by default; no ambient authority | Rule 52 Ed25519 sealed calls verified in the Rust WASM kernel; capability set per role (AD07 who-sees-what); Rust Tokio/Axum over HTTP/3; capability idea from Capsicum |
+| OS-2 | Users + roles (the staff table) | staff, roles, role->capability sets, joiner / mover / leaver, time-limited exceptions that expire alone | PostgreSQL forced RLS + REVOKE PUBLIC, append-only hash-chained staff ledger (who changed what), selftest + CHECK file (schema-first on AD01/AD07) |
+| OS-3 | App registry (sections) | each section (Admin Desk, later others) registers itself: path, capabilities, nav | existing modules/registry + capability check server side; Radix/shadcn, React 19 |
+| OS-4 | Work engine | queues, cases, SLA clocks, automations | existing AD04/AD05/AD06b + SLA per plan (due 8 Dec); Rust Tokio timers |
+| OS-5 | Bridge (founder <-> OS) | founder reads OS work numbers + live customer issues; OS never returns founder data | Rust signed purpose-limited read-only bridge over HTTP/3 (BL-29 CC1), kernel-verified, audit on both sides |
+| OS-6 | Customer live view | open one customer: reason, 10-15 min read-only window, masked fields, customer notice, recent-access list | SECURITY DEFINER door + forced RLS + hash-chained access ledger (CC2) |
+| OS-7 | Event bus | any change reaches every open screen in about a second | PostgreSQL outbox NOTIFY at COMMIT + Rust LISTEN + signed tracks (B9c pattern, installed) |
+| OS-8 | Journal (audit) | every action signed, chained, copied outside the database | existing D5a-4 audit export (signed checkpoints to the Storage Box), extended to staff events |
+| OS-9 | Brain link | live to Supabase and to his server | Rust tokio-postgres, HTTP/3 only (CC3) |
+| OS-10 | Policy as data | plans, limits, roll-out flags as versioned data, not code | AD06/AD18 versioned registry + fingerprint |
+| OS-11 | LAST PHASE: EMPLOYEE LIFECYCLE (his 4 steps) | Add Staff, first login with passkey, role-limited screens, Revoke Access | see the 4-step table below |
+| OS-12 | NEXATECT Command Center | the same OS for another company | tenant id + product-name constant; NOT built now |
+
+## OS-11 = THE EMPLOYEE LIFECYCLE, HIS 4 STEPS, EACH WITH ITS ADVANCE TECHNOLOGY (the very last phase; needs the Desk passkey-only sign-in, due 8 Dec, built first)
+| Step | His flow | Advance technology (and what I tighten, said honestly) |
+|---|---|---|
+| 1 Add Staff | Team section -> Add Staff: name, work email, role (Support Agent, Migration Specialist, Frontend Editor). Save shows a 10-minute code (like 849-210). | Rust door + SQL fadm_staff_invite: the code is stored ONLY as a salted hash, single use, expires in 10 min, bound to that invitation and that email, max 5 wrong tries then the code burns (OWASP: rate limit, single use, challenge expiry). A 6-digit code alone is weak, so it only STARTS enrolment; it never signs anyone in. Fresh passkey touch of the founder to create the invite (like D2b-5). Append-only ledger line. |
+| 2 First login, no password | employee opens admindesk.anexomail.com, types the code, system asks fingerprint or FaceID (passkey); account is created, no password ever, key locked. | WebAuthn passkey-only registration (discoverable credential, rp_id admindesk.anexomail.com, exact-origin allowlist, user verification required, no attestation by default, challenge 16+ random bytes single use bound to the invitation, credential id unique, opaque user handle). I add ONE thing to his flow: a recovery path (a second passkey or a one-time recovery code) because the last passkey must never be the only way in (OWASP recovery rules). |
+| 3 Same software, own limits | Support Agent sees Inboxes, Cases, SLA clock; Migration Specialist sees Managed Move-In. NEVER visible: Founder Vault, bank / payment-provider money, customers' private sealed emails. | Capability set per role enforced SERVER SIDE (SQL RLS + door checks) and in the kernel, so hiding a button is never the only guard; the Founder Vault and money have NO grant for any staff role (isolation gate + REVOKE). |
+| 4 Revoke Access | one button. His word: "in one millisecond". | HONEST: the server-side revoke is one SQL transaction and takes effect on the very next signed call (fail-closed), and every open WebTransport stream of that person is closed; I will measure it and write the real number, I will not promise 1 ms. It removes the passkeys, ends all sessions, returns open tickets to the queue, notifies the founder on a trusted channel, blocks removing the last founder authenticator, and writes the ledger line (OWASP revocation rules, WorkOS "revoke within minutes"). |
+
+## ORDER (nothing in the ORDER-LOCK of BILLIONAIRE-SETUP-LIST-23NOV.md changes)
+Today and next: BL-28 B9c finish (Y5, Y4; Y6 waits his answer) -> BL-29 OS-5 bridge (needs his 3 answers + the boundary answer above) -> BL-46 B13 -> BL-49 B11 -> BL-48 B12 -> ... -> Desk passkey-only sign-in + SLA per plan (8 Dec) -> OS-11 employee lifecycle LAST.
+Sources: https://cheatsheetseries.owasp.org/cheatsheets/Passkey_Security_Cheat_Sheet.html ; https://css.csail.mit.edu/6.566/2014/readings/capsicum.pdf ; https://www.usenix.org/legacy/events/hotos05/final_papers/full_papers/krohn/krohn_html/index.html ; https://workos.com/guide/what-is-user-provisioning ; https://www.corbado.com/blog/enterprise-passkey-deployment-challenges
