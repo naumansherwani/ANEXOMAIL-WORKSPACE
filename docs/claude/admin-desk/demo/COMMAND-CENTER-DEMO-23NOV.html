@@ -32,7 +32,8 @@ h1{margin:4px 0 0;font-size:clamp(28px,5vw,48px);line-height:1.05;background:lin
 #ttl .l1{display:block;font-size:clamp(28px,4.6vw,46px);font-weight:300;letter-spacing:.16em;margin-right:-.16em;color:#2C4C79;-webkit-text-stroke:.6px #E6EBF1;paint-order:stroke fill}
 #ttl .l2{display:block;font-size:clamp(10px,1.3vw,13px);letter-spacing:.5em;font-weight:500;margin-top:10px;line-height:1.2;color:#DCE3EC}
 #ttl .c{display:inline-block;opacity:0;filter:blur(10px);transform:translateY(.35em) scale(1.08);animation:inr .9s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--i)*70ms)}
-#ttl .l1{display:inline-block}
+#ttl .l1{display:block;width:fit-content}
+#ttl .l2{width:fit-content;margin-right:0}
 #ttl .l1::after{content:"";display:block;height:1px;width:calc(100% - .16em);margin-top:10px;background:linear-gradient(90deg,#1E3557 0%,#2C4C79 22%,#C3CCD8 50%,#E6EBF1 58%,#2C4C79 82%,#1E3557 100%);box-shadow:0 0 8px rgba(44,76,121,.45);transform:scaleX(0);transform-origin:left;animation:ul 1.1s cubic-bezier(.3,.7,.2,1) 1.2s forwards}
 @keyframes ul{to{transform:scaleX(1)}}
 @media(prefers-reduced-motion:reduce){#ttl .l1::after{animation:none;transform:none}}
@@ -87,4 +88,8 @@ var cv=document.getElementById('sp'),x=cv.getContext('2d'),P=[],W,H;function r()
 for(var n=0;n<34;n++)P.push({x:Math.random(),y:Math.random(),v:.0004+Math.random()*.0012,s:.5+Math.random()*1.4,p:Math.random()*6});
 if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
 (function f(){x.clearRect(0,0,W,H);P.forEach(function(p){p.y-=p.v;p.p+=.03;if(p.y<0){p.y=1;p.x=Math.random()}x.globalAlpha=.25+.45*Math.abs(Math.sin(p.p));x.fillStyle='#bfd6ff';x.beginPath();x.arc(p.x*W,p.y*H,p.s,0,6.3);x.fill()});requestAnimationFrame(f)})()})();
+</script>
+<script>
+function fitTitle(){var t=document.getElementById('ttl'),a=t.querySelector('.l1'),b=t.querySelector('.l2');if(!a||!b)return;b.style.letterSpacing='0px';var W1=a.getBoundingClientRect().width-parseFloat(getComputedStyle(a).letterSpacing||0),w2=b.getBoundingClientRect().width,n=b.textContent.length-1,ls=Math.max(2,(W1-w2)/n);b.style.letterSpacing=ls+'px';b.style.marginRight=(-ls)+'px'}
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(fitTitle)}fitTitle();addEventListener('resize',fitTitle);
 </script>
