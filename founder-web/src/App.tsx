@@ -1,4 +1,6 @@
 import { useEffect, useState, useCallback, createContext, useContext, type ReactNode } from "react";
+import { FounderKeysHelp } from "./FounderKeysHelp";
+import { founderComboTarget, founderHelpKey, founderHomeKey, founderKeyLabel, founderStep, founderStepKey } from "./founder_keys";
 import { Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { get, hasToken, deviceStatus, setSetting, lastBridge } from "./api";
 import { AccountMenu, ProfileView } from "./Profile";
@@ -85,7 +87,7 @@ export default function App() {
   // TanStack Router (hash history): the current page is the route param, back/forward and deep links come from the router.
   const nav = useNavigate();
   const view = useRouterState({ select: (s) => s.location.pathname.replace(/^\/+/, "").split("/")[0] || "dashboard" });
-  const [pal, setPal] = useState(false); const [more, setMore] = useState(false);
+  const [pal, setPal] = useState(false); const [more, setMore] = useState(false); const [keysHelp, setKeysHelp] = useState(false);
   // Real URLs: #/finance etc. The page area fades in once on change (CSS, no waiting on the browser).
   const setView = useCallback((v: string) => { void nav({ to: "/$view", params: { view: v } }); }, [nav]);
   const [prof, setProf] = useState<Prof | null>(null);
@@ -123,6 +125,8 @@ export default function App() {
   useEffect(() => { if (authed && !pend) loadProf(); }, [authed, pend, loadProf]);
   useEffect(() => { if (!authed) return; let live = true; void lastBridge().then((s) => { if (live && s) { setD((c: any) => c ?? s.data); setAt((c) => c ?? s.at); } }); return () => { live = false; }; }, [authed]);
   useEffect(() => { if (!authed) return; load(); const t = setInterval(load, 15000); return () => clearInterval(t); }, [authed, load]);
+  // his 23 Nov 07:51: the sidebar scrolls so the open page is in view after any key (block nearest: nothing moves when it is already visible; the look is untouched).
+  useEffect(() => { document.querySelector<HTMLElement>(".sbscroll .nv[aria-current=page]")?.scrollIntoView?.({ block: "nearest" }); }, [view]);
   // Keyboard: Ctrl/⌘+K opens search; "g" then a letter jumps (g b Bridge · g f Finance · g p People · g m Mail · g s Settings).
   useEffect(() => {
     let armed = 0;
@@ -130,6 +134,13 @@ export default function App() {
     const on = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); setPal((v) => !v); return; }
       const el = e.target as HTMLElement | null, typing = !!el && (/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) || el.isContentEditable);
+      if (e.repeat) return;
+      if (founderHelpKey(e)) { e.preventDefault(); setKeysHelp((v) => !v); return; } // Ctrl+/ (his 23 Nov 07:51 order)
+      if (!typing) {
+        if (founderHomeKey(e)) { e.preventDefault(); setView("dashboard"); return; } // Ctrl+D
+        const to = founderComboTarget(e); if (to) { e.preventDefault(); setView(to); return; } // Alt+Shift+letter
+        const sd = founderStepKey(e); if (sd) { e.preventDefault(); const ids = [...document.querySelectorAll<HTMLElement>(".sbscroll .nv")].map((b) => b.dataset.key ?? "").filter(Boolean); const cur = (document.querySelector<HTMLElement>(".sbscroll .nv[aria-current=page]")?.dataset.key) ?? "dashboard"; setView(founderStep(ids, cur, sd)); return; }
+      }
       if (typing || e.ctrlKey || e.metaKey || e.altKey) return;
       if (armed && Date.now() - armed < 1200 && GO[e.key]) { armed = 0; setView(GO[e.key]); return; }
       armed = e.key === "g" ? Date.now() : 0;
@@ -144,7 +155,7 @@ export default function App() {
   const items: (NavItem & { href?: string })[] = [...CC.map(([k, n]) => ({ id: k, name: n, group: ["dashboard", "bridge"].includes(k) ? "Command center" : "Founder Workspace", icon: k, view: k })), { id: "settings", name: "Settings", group: "Account", icon: "settings", view: "settings" }, { id: "profile", name: "Profile & photo", group: "Account", icon: "people", view: "profile" }, { id: "devices", name: "Devices & sessions", group: "Account", icon: "settings", view: "devices" }];
   const pick = (x: NavItem & { href?: string }) => { setPal(false); if (x.href) window.open(x.href, "_blank", "noopener,noreferrer"); else setView(x.view); };
   const spot = (e: React.PointerEvent<HTMLElement>) => { const r = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`); e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`); };
-  const nvBtn = (k: string, n: string, i = 0) => <button key={k} className="nv" style={{ "--i": i } as React.CSSProperties} onPointerMove={spot} title={n} aria-current={view === k ? "page" : undefined} onClick={() => setView(k)}><Icon k={k} /><span className="lbl">{n}</span></button>;
+  const nvBtn = (k: string, n: string, i = 0) => <button key={k} className="nv" style={{ "--i": i } as React.CSSProperties} onPointerMove={spot} title={n + (founderKeyLabel(k) ? " · " + founderKeyLabel(k) : "")} data-key={k} aria-keyshortcuts={founderKeyLabel(k) || undefined} aria-current={view === k ? "page" : undefined} onClick={() => setView(k)}><Icon k={k} /><span className="lbl">{n}</span></button>;
   const shell: ShellData = { view, d, at, prof, loadProf, fx, setFx, slim, setSlim, err, setView, preview, setPreview };
   return (
     <ShellCtx.Provider value={shell}>
@@ -189,6 +200,7 @@ export default function App() {
       </nav>
       {more && <MoreSheet items={items} current={view} onPick={(x) => { setMore(false); pick(x); }} onClose={() => setMore(false)} />}
       {pal && <Palette items={items} onPick={pick} onClose={() => setPal(false)} />}
+      {keysHelp && <FounderKeysHelp items={items.map((x) => ({ id: x.id, name: x.name }))} onClose={() => setKeysHelp(false)} />}
       <KeyLayer />
     </div>
     </ShellCtx.Provider>

@@ -3471,3 +3471,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 1m-keys code done, WIRED: YES / REAL: not yet (his desk-install + my Chrome look), TECH-LAW CHECKED, TESTED: bun 99 pass (6 new key tests), tsc, vite build
 
 - 1m-keys code done, WIRED: YES / REAL: not yet (his desk-install + my Chrome look), TECH-LAW CHECKED, TESTED: bun 99 pass (6 new key tests), tsc, vite build
+
+- founder keys code done, WIRED: YES / REAL: not yet (his founder-install + my Chrome look), TECH-LAW CHECKED, TESTED: bun 625 pass (3 new), tsc, vite build

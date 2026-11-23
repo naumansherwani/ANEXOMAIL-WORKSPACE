@@ -8,6 +8,14 @@
 | React 19 command palette (role dialog, combobox + listbox, arrows, Enter, Esc, focus returns) that reaches every rail folder by name, and a Keys help sheet; aria-keyshortcuts on every rail button (WCAG 2.1.1 / 2.1.4: click still works) | DeskKeys.tsx, DeskShell.tsx, DeskPages.tsx | yes | tsc, vite build, my Chrome look of each key family |
 | Rail follows the key (scroll-follow already GREEN, data-here) | DeskShell.tsx | yes | my Chrome look |
 
+# TECH CONTRACT FOR PHASE: FOUNDER KEYS (his order 23 Nov 2026 07:51: "yeh same founder ke liye banao phir awam ke liye", additive only, written 07:5x PKT BEFORE code; the Desk code is NOT imported, Desk Isolation Law). PLAN: docs/claude/admin-desk/RAIL-KEYS-PLAN-23NOV.md (ADVANCE-RESEARCH [1m-keys], same research); awam = the NEXT step, separate files.
+
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| TypeScript pure founder key table (14 pages), Alt+Shift+letter by e.code, Ctrl+D home, Ctrl+/ help, Alt+Shift Up/Down walk; a key used twice = failing test | founder-web/src/founder_keys.ts + founder_keys.test.ts | yes | bun tests, tsc |
+| React 19 Keys sheet (role dialog, Esc, focus returns) in the existing Palette look; Ctrl+K search already exists (Palette.tsx) and is kept; aria-keyshortcuts + titles on every sidebar button; sidebar scroll follows the open page (look untouched, UI LAW additive) | FounderKeysHelp.tsx, App.tsx (one handler block, one mount, one effect) | yes | tsc, vite build, my Chrome look after his founder-install |
+| The existing "g then letter" founder jumps stay as they are (not touched) | App.tsx | yes | unchanged |
+
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-4 B9 Customers and Plans), written 23 Nov 2026 06:3x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (U1..U12, REWRITTEN under the FUTURE-PROOF LAW)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3451,3 +3459,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 1m-keys code done, WIRED: YES / REAL: not yet (his desk-install + my Chrome look), TECH-LAW CHECKED, TESTED: bun 99 pass (6 new key tests), tsc, vite build
 
 - 1m-keys code done, WIRED: YES / REAL: not yet (his desk-install + my Chrome look), TECH-LAW CHECKED, TESTED: bun 99 pass (6 new key tests), tsc, vite build
+
+- founder keys code done, WIRED: YES / REAL: not yet (his founder-install + my Chrome look), TECH-LAW CHECKED, TESTED: bun 625 pass (3 new), tsc, vite build

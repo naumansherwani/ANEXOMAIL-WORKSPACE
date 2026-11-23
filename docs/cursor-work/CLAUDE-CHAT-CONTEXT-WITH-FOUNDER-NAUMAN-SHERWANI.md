@@ -5492,3 +5492,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 1m-keys code done, WIRED: YES / REAL: not yet (his desk-install + my Chrome look), TECH-LAW CHECKED, TESTED: bun 99 pass (6 new key tests), tsc, vite build
 
 - 1m-keys code done, WIRED: YES / REAL: not yet (his desk-install + my Chrome look), TECH-LAW CHECKED, TESTED: bun 99 pass (6 new key tests), tsc, vite build
+
+- founder keys code done, WIRED: YES / REAL: not yet (his founder-install + my Chrome look), TECH-LAW CHECKED, TESTED: bun 625 pass (3 new), tsc, vite build

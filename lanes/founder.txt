@@ -201,7 +201,7 @@ founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-CZG-clkQ.js
+founder-web/dist/assets/index-DxMLDp1c.js
 founder-web/dist/assets/index-taNtCYNU.css
 founder-web/dist/assets/kernel.worker-DY4WQ2it.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
@@ -262,6 +262,7 @@ founder-web/src/EmojiShortcode.tsx
 founder-web/src/Finance.tsx
 founder-web/src/Flare.tsx
 founder-web/src/FollowupChip.tsx
+founder-web/src/FounderKeysHelp.tsx
 founder-web/src/KeyLayer.tsx
 founder-web/src/KeySwitch.tsx
 founder-web/src/Keys.tsx
@@ -505,6 +506,8 @@ founder-web/src/fonts/Inter-Medium.woff2
 founder-web/src/fonts/Inter-Regular.woff2
 founder-web/src/fonts/Inter-SemiBold.woff2
 founder-web/src/founder_face.test.ts
+founder-web/src/founder_keys.test.ts
+founder-web/src/founder_keys.ts
 founder-web/src/founder_mail_quiet.css
 founder-web/src/greeting.ts
 founder-web/src/kernel.host.test.ts
