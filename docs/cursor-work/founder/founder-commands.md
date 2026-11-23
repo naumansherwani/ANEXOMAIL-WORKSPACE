@@ -5987,3 +5987,5 @@ Features ki list (QC4 mein kya banega):
 - Command Center title demo V20: light at the V17 level with the running motion, V19 saved first, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered in Chrome and looked at, gate 0 fail
 
 - Command Center title demo V21: very low light (glow .24), V20 kept, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered and looked at, gate 0 fail
+
+- Command Center title demo V22: logo colours travel left to right, static centre light removed, V21 kept, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered frames looked at, gate 0 fail
