@@ -3,13 +3,15 @@ His words: copy the setup of the billionaire companies (Zendesk, Salesforce and 
 Sources used (web research, 23 Nov 2026): Zendesk Support / Explore metrics and admin docs, Salesforce Service Cloud (Omni-Channel, Entitlements and Milestones, Knowledge, Shield, Setup Audit Trail, Sharing Model), Front, Intercom, Freshdesk, ServiceNow, Google Workspace Admin (Security Center, Alert Center, Access Approval), Microsoft 365 Admin (Secure Score, Service Health), Proton (zero access). Law: FUTURE-PROOF (built ONCE for when the business is big), SQL WORLD-CLASS, Rule 52 (every number signed and kernel-verified), HTTP/3 only, no third-party vendor.
 Status words: GREEN = live and seen in Chrome. SQL = database part live, screen open. OPEN = planned, not built. NOT YET = needs a product that does not exist yet (said honestly, never faked).
 
+ORDER-LOCK (23 Nov 2026 09:35 PKT, his order): BL-04,BL-26,BL-46,BL-49,BL-48,BL-07,BL-08,BL-10,BL-11,BL-12,BL-22,BL-23,BL-24,BL-61,BL-66,BL-67,BL-50,BL-05,BL-63,BL-27  | Rule: build in THIS order, one BL row = one phase; a row marked GREEN is never rebuilt (no duplicate, no clash with existing phases); BL-27 waits for phase P; when every row is GREEN he decides the next work. The gate reads this line.
+
 ## A. Case desk (Zendesk Support, Salesforce Service Cloud, Front)
 | id | What they have | Anexomail Desk today | ADVANCE beyond them | Where |
 |---|---|---|---|---|
 | BL-01 | Shared inboxes per address, assignment, status flow | GREEN (AD5, AD7: addresses, cases, legal status moves) | status moves decided INSIDE the database, a case is never deleted, identity fixed | Cases |
 | BL-02 | Views, queues, queue pressure, backlog | GREEN (B1 AD11) | 1-minute hash-chained queue series, honest gaps, team signal calm/busy/strained/overloaded | B1 |
 | BL-03 | SLA policies and clocks, breach warnings | GREEN (B2) | clock exists exactly when the Priority label does (database CHECK), alert raised once | B2 |
-| BL-04 | Reports: created, solved, backlog, first reply, resolution, reopens | SQL (AD16, this phase) | medians and p90 (never averages), backlog rebuilt from the append-only event history, only queues the reader may read | B10 |
+| BL-04 | Reports: created, solved, backlog, first reply, resolution, reopens | GREEN (B10, AD16, 23 Nov 09:4x, his install + my Chrome) | medians and p90 (never averages), backlog rebuilt from the append-only event history, only queues the reader may read | B10 |
 | BL-05 | CSAT surveys | NOT YET (no survey table exists; nothing invented) | survey result signed and verified like every other number | B10b |
 | BL-06 | Macros / canned replies, runbooks | GREEN (9 runbooks, versions, checklist, words to say) | versioned runbooks with change log, staff acknowledge each version | Runbooks |
 | BL-07 | Triggers and automations | OPEN | every automation run is a ledger line; dry-run before enable | Automations |

@@ -351,6 +351,17 @@ if _desk_code and os.path.exists(cur):
             fail("BILLIONAIRE LIST", "the newest CURRENT.md contract heading names no BL id: which row of BILLIONAIRE-SETUP-LIST-23NOV.md does this phase build? (his 09:11 order: copy the billionaire setup and add the advance level)")
         elif not _ids <= _have:
             fail("BILLIONAIRE LIST", f"the contract names {sorted(_ids - _have)} which are not rows of BILLIONAIRE-SETUP-LIST-23NOV.md")
+        else:
+            # ORDER-LOCK (his 23 Nov 09:28): rows are built in the order of the ORDER-LOCK line; a GREEN row is never rebuilt; the heading must name the NEXT row that is not GREEN yet.
+            _txt = open(_bl, errors="ignore").read(); _ol = re.search(r"^ORDER-LOCK[^\n]*?:\s*((?:BL-\d{2},?)+)", _txt, re.M)
+            if not _ol:
+                fail("BILLIONAIRE LIST", "ORDER-LOCK line is missing in BILLIONAIRE-SETUP-LIST-23NOV.md (his 09:28 order)")
+            else:
+                _ord = _ol.group(1).strip(",").split(",")
+                _st = {m.group(1): m.group(2) for m in re.finditer(r"^\| (BL-\d{2}) \|[^|]*\|\s*([^|]*)\|", _txt, re.M)}
+                _next = [i for i in _ord if not _st.get(i, "").strip().startswith("GREEN") and not _st.get(i, "").strip().startswith("NOT YET")]
+                if _next and _next[0] not in _ids:
+                    fail("BILLIONAIRE LIST", f"ORDER-LOCK: the next row to build is {_next[0]}, but the contract heading names {sorted(_ids)}; follow his order and never rebuild a GREEN row")
 # RESEARCH IN BLUEPRINT (his word 23 Nov 2026 03:1x PKT, STRICT, for every phase and every SOP of the website): the advance technology that web research gives a phase must be written in
 # FOUR places BEFORE code is committed: the phase LIST file (named in the CURRENT.md heading), the Desk blueprint (line "ADVANCE-RESEARCH [<phase>]"), NOW-LIST-23NOV.md, and CURRENT.md rows all IN CODE.
 # One missing dot = the gate stops the commit and asks "is this phase's advance technology and advance code added?".
