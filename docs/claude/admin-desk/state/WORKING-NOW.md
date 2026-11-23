@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 10:47 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 10:48 PKT) - read this FIRST for the Desk after a compaction
 DOING: B9c written, tested, not green
 NEXT STEP: his ad-auto + desk-install, then Chrome 1 s proof
 HIS LAST WORD: his 10:46 word: no commit until advance codes
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- dc13685a 23 Nov 10:48 B9c live plan updates (written)
 - c0ac155f 23 Nov 10:32 ledger line 2c97b98d
 - 2c97b98d 23 Nov 10:32 Customers back button wording
 - 24ec195f 23 Nov 10:30 ledger line 2864bb2f
@@ -72,29 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - a8d7036d 23 Nov 10:28 ledger line e83cd9e7
 - e83cd9e7 23 Nov 10:28 B9b GREEN
 - 5b671dd6 23 Nov 10:20 ledger line 9863df1f
-- 9863df1f 23 Nov 10:20 Gate forever law
 
 ## Uncommitted Desk files
-M  admin-desk/D6-CARDS-LIST-23NOV.md
-M  admin-desk/kernel/src/wire.rs
-M  admin-desk/server/src/bridge.rs
-M  admin-desk/server/src/door.rs
-M  admin-desk/server/src/main.rs
-M  admin-desk/server/src/wt.rs
-A  admin-desk/sql/AD18.sql
-A  admin-desk/sql/checks/AD18-check.sql
-M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
-M  docs/claude/admin-desk/kernel/src/wire.rs
-M  docs/claude/admin-desk/server/src/bridge.rs
-M  docs/claude/admin-desk/server/src/door.rs
-M  docs/claude/admin-desk/server/src/main.rs
-M  docs/claude/admin-desk/server/src/wt.rs
-A  docs/claude/admin-desk/sql/AD18.sql
-A  docs/claude/admin-desk/sql/checks/AD18-check.sql
-MM docs/claude/admin-desk/state/WORKING-NOW.md
-M  founder-web/src/desk/DeskCards.tsx
-M  founder-web/src/desk/DeskCustomers.tsx
-M  founder-web/src/desk/desk_cards.ts
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

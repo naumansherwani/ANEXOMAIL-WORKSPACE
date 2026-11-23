@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 10:47 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 10:48 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: B9c written, tested, not green
 NEXT STEP: his ad-auto + desk-install, then Chrome 1 s proof
 HIS LAST WORD: his 10:46 word: no commit until advance codes
@@ -19,56 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- dc13685a 23 Nov 10:48 B9c live plan updates (written)
 - c0ac155f 23 Nov 10:32 ledger line 2c97b98d
 - 2c97b98d 23 Nov 10:32 Customers back button wording
 - 24ec195f 23 Nov 10:30 ledger line 2864bb2f
 - 2864bb2f 23 Nov 10:30 B9b GREEN + Command Center phase recorded
-- a8d7036d 23 Nov 10:28 ledger line e83cd9e7
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/D6-CARDS-LIST-23NOV.md
-M  admin-desk/kernel/src/wire.rs
-M  admin-desk/server/src/bridge.rs
-M  admin-desk/server/src/door.rs
-M  admin-desk/server/src/main.rs
-M  admin-desk/server/src/wt.rs
-A  admin-desk/sql/AD18.sql
-A  admin-desk/sql/checks/AD18-check.sql
-M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
-M  docs/claude/admin-desk/kernel/src/wire.rs
-M  docs/claude/admin-desk/server/src/bridge.rs
-M  docs/claude/admin-desk/server/src/door.rs
-M  docs/claude/admin-desk/server/src/main.rs
-M  docs/claude/admin-desk/server/src/wt.rs
-A  docs/claude/admin-desk/sql/AD18.sql
-A  docs/claude/admin-desk/sql/checks/AD18-check.sql
-M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-R  founder-web/dist-desk/assets/anexomail_desk_kernel_bg-pHx6Jilq.wasm -> founder-web/dist-desk/assets/anexomail_desk_kernel_bg-Bqxh7CCm.wasm
-R  founder-web/dist-desk/assets/desk-4Jbh0Ykg.js -> founder-web/dist-desk/assets/desk-1Cdrpg9I.js
-M  founder-web/dist-desk/desk.html
-M  founder-web/src/desk/DeskCards.tsx
-M  founder-web/src/desk/DeskCustomers.tsx
-M  founder-web/src/desk/desk_cards.ts
-A  founder-web/src/desk/desk_plans_pure.test.ts
-A  founder-web/src/desk/desk_plans_pure.ts
-M  founder-web/src/desk/desk_stream.ts
-M  founder-web/src/desk/desk_stream_pure.test.ts
-M  founder-web/src/desk/desk_stream_pure.ts
-M  founder-web/src/desk/kernel/anexomail_desk_kernel_bg.wasm
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- founder-web/src/desk/desk_cards.ts                 |   2 +-
- founder-web/src/desk/desk_plans_pure.test.ts       |  14 ++++++
- founder-web/src/desk/desk_plans_pure.ts            |  23 +++++++++
- founder-web/src/desk/desk_stream.ts                |   2 +-
- founder-web/src/desk/desk_stream_pure.test.ts      |   4 +-
- founder-web/src/desk/desk_stream_pure.ts           |   2 +-
- .../src/desk/kernel/anexomail_desk_kernel_bg.wasm  | Bin 120010 -> 120010 bytes
- 31 files changed, 331 insertions(+), 68 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 53 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 51 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -79,4 +43,4 @@ M  founder-web/src/desk/kernel/anexomail_desk_kernel_bg.wasm
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a7e166ffc9425c4c62510582f25e368f357d9fee)
+WIP snapshot: refs/wip/last (3cee16d80c498c3737c3f307cb68e8754c88efaf)
