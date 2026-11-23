@@ -48,6 +48,7 @@ h1{margin:4px 0 0;font-size:clamp(28px,5vw,48px);line-height:1.05;background:lin
 .sub{font-weight:500;letter-spacing:0}
 .sub{display:flex;align-items:center;gap:12px;opacity:0;animation:up .8s ease 1.4s forwards}
 .rule{display:inline-block;height:1px;width:clamp(36px,8vw,90px);background:linear-gradient(90deg,transparent,var(--blue))}
+.sub::after{content:"";display:inline-block;height:1px;width:clamp(36px,8vw,90px);background:linear-gradient(270deg,transparent,var(--blue))}
 @keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.halo{animation:none}}
 .clock{text-align:right}.clock .t{font-size:44px;font-weight:200;letter-spacing:.04em}.clock .d{font-size:11px;letter-spacing:.16em;color:var(--mute)}

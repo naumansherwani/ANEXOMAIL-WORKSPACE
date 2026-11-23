@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 11:32 PKT) - read this FIRST for the Desk after a compaction
-DOING: Command Center title fitted, V15 saved
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 11:34 PKT) - read this FIRST for the Desk after a compaction
+DOING: Command Center title V16 saved
 NEXT STEP: his haan for real Desk title, then B9c Y4/Y5/Y6
-HIS LAST WORD: his 11:31 word
+HIS LAST WORD: his 11:33 word
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 21df4d77 23 Nov 11:32 ledger line b70ca054
 - b70ca054 23 Nov 11:32 Command Center title V15 fitted
 - 73b12911 23 Nov 11:31 ledger line dd52df6a
 - dd52df6a 23 Nov 11:31 Command Center title demo approved
@@ -72,10 +73,15 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - efa7f2a5 23 Nov 11:17 Demo V6 backup and V7 proposal
 - 4003df3e 23 Nov 11:12 ledger line 80aad2ad
 - 80aad2ad 23 Nov 11:12 Remove SSE and HTTP fallback wording
-- 11153ecc 23 Nov 11:07 ledger line 3b7562a4
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/D6-CARDS-LIST-23NOV.md
+A  admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V16-APPROVED-BOTH-LINES.html
+M  admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
+M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
+A  docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V16-APPROVED-BOTH-LINES.html
+M  docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV.html
+MM docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

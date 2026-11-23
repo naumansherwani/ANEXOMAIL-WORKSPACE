@@ -2801,3 +2801,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Command Center title demo APPROVED and preserved (V14, backups V6 and V12), real Desk code untouched, TECH-LAW CHECKED, TESTED: demo files only, rendered in Chrome and looked at, gate 0 fail
 
 - Command Center title demo V15: COMMAND CENTER fitted exactly under the line (A to L), codes preserved with V14 backup, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered in Chrome and measured at 1280 and 390, gate 0 fail
+
+- Command Center title demo V16: Admin Desk rule mirrored on both sides, V15 saved first, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered in Chrome and looked at, gate 0 fail
