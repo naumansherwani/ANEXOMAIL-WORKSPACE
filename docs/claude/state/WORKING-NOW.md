@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 01:40 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 01:40 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Command Center OS phase plan OS-0..OS-12 + employee lifecycle written
 NEXT STEP: BL-28 B9c Y5 then Y4 schema-first; his answers: boundary, Y6, 3 bridge questions
 HIS LAST WORD: his 24 Nov 01:38 word
@@ -19,38 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 9ab7c9f8 24 Nov 01:40 Command Center OS phases and employee lifecycle plan
 - 5cd3dbfe 24 Nov 01:24 ledger line d898e87c
 - d898e87c 24 Nov 01:24 ANEXOMAIL Command Center brain law and plan, gate dates
 - d08d3cbf 23 Nov 12:01 ledger line bdd9471f
 - bdd9471f 23 Nov 12:01 Status: title + B9c installed, blueprint and resume updated
-- db7190ba 23 Nov 11:50 ledger line 5a47b976
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/state/WORKING-NOW.md
-A  docs/claude/anexomail-command-center/COMMAND-CENTER-OS-PHASES-24NOV.md
-M  docs/claude/anexomail-command-center/README.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/founder/founder-commands.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  lanes/ALL-FILES.csv
-M  lanes/docs.txt
-M  lovable-gold/README.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/anexomail-command-center/README.md     |  2 ++
- docs/claude/state/WORKING-NOW.md                   | 35 ++++++++++-----------
- docs/cursor-work/founder/founder-commands.md       | 11 +++++++
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        | 10 +++---
- lanes/ALL-FILES.csv                                |  1 +
- lanes/docs.txt                                     |  1 +
- lovable-gold/README.md                             |  2 +-
- 13 files changed, 81 insertions(+), 24 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 35 ++---------------------------------
+ 1 file changed, 2 insertions(+), 33 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -61,4 +43,4 @@ M  lovable-gold/README.md
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (3cb4afc717f4b6d8f9caab166c6cb69eb52dc350)
+WIP snapshot: refs/wip/last (6e3b221e8de64358183cf015a1ddca28ebe8967c)

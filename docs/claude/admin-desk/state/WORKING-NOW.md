@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 01:40 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 01:40 PKT) - read this FIRST for the Desk after a compaction
 DOING: Command Center OS phase plan OS-0..OS-12 + employee lifecycle written
 NEXT STEP: BL-28 B9c Y5 then Y4 schema-first; his answers: boundary, Y6, 3 bridge questions
 HIS LAST WORD: his 24 Nov 01:38 word
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 9ab7c9f8 24 Nov 01:40 Command Center OS phases and employee lifecycle plan
 - 5cd3dbfe 24 Nov 01:24 ledger line d898e87c
 - d898e87c 24 Nov 01:24 ANEXOMAIL Command Center brain law and plan, gate dates
 - d08d3cbf 23 Nov 12:01 ledger line bdd9471f
@@ -72,14 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - db7190ba 23 Nov 11:50 ledger line 5a47b976
 - 5a47b976 23 Nov 11:50 Command Center title in the real Desk
 - 2b0fed22 23 Nov 11:47 ledger line 6847778f
-- 6847778f 23 Nov 11:47 Command Center title V24 soft light centre
 
 ## Uncommitted Desk files
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
