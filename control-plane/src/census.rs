@@ -10,9 +10,13 @@ const MAX_SEATS: i64 = 999_999;
 #[derive(Debug, PartialEq)]
 pub struct CensusReq { pub request_id: String, pub limits: Value }
 
-pub fn verify_census(env: &str, desk_pub_hex: &str, seen: &Seen, now: i64) -> Result<CensusReq, &'static str> {
+pub const AUD_DELIV: &str = "desk-deliv";
+/// Phase 1m-5 B6: the deliverability request. Own audience (a census request can never be replayed as this one), no input at all: a "limits" field is refused.
+pub fn verify_deliv(env: &str, desk_pub_hex: &str, seen: &Seen, now: i64) -> Result<CensusReq, &'static str> { verify_inner(env, desk_pub_hex, seen, now, AUD_DELIV, false) }
+pub fn verify_census(env: &str, desk_pub_hex: &str, seen: &Seen, now: i64) -> Result<CensusReq, &'static str> { verify_inner(env, desk_pub_hex, seen, now, AUD_CENSUS, true) }
+fn verify_inner(env: &str, desk_pub_hex: &str, seen: &Seen, now: i64, aud: &str, with_limits: bool) -> Result<CensusReq, &'static str> {
     let b = signed_body(env, desk_pub_hex)?;
-    if b["aud"].as_str() != Some(AUD_CENSUS) || b["method"].as_str() != Some("read") { return Err("audience"); }
+    if b["aud"].as_str() != Some(aud) || b["method"].as_str() != Some("read") { return Err("audience"); }
     let (iat, exp) = (b["issued_at"].as_i64().ok_or("time")?, b["expires_at"].as_i64().ok_or("time")?);
     if iat < seen.boot() { return Err("before_boot"); }
     if exp - iat > EXPIRY || exp <= iat || iat > now + SKEW || exp < now { return Err("expired"); }
@@ -23,6 +27,7 @@ pub fn verify_census(env: &str, desk_pub_hex: &str, seen: &Seen, now: i64) -> Re
     let mut limits = Map::new();
     match b.get("limits") {
         None | Some(Value::Null) => {}
+        Some(_) if !with_limits => return Err("limits"),
         Some(Value::Object(m)) => { for (k, v) in m { let n = v.as_i64().ok_or("limits")?; if !PKGS.contains(&k.as_str()) || !(0..=MAX_SEATS).contains(&n) { return Err("limits"); } limits.insert(k.clone(), Value::from(n)); } }
         _ => return Err("limits"),
     }
@@ -64,5 +69,13 @@ mod t {
         assert_eq!(bad(10, json!({"limits": [1]})), Err("limits"));
         assert_eq!(verify_census("not json", &p, &s, 1010), Err("envelope"));
         let s2 = Seen::new(1005); assert_eq!(verify_census(&env(&k, json!({}), REQ_DOMAIN), &p, &s2, 1010), Err("before_boot"));
+    }
+    #[test] fn deliverability_request_has_its_own_audience_and_takes_no_input() {
+        let (k, p) = key(); let s = Seen::new(0);
+        let d = |rid: &str, extra: Value| { let mut b = json!({"aud": AUD_DELIV, "request_id": rid}); for (a, v) in extra.as_object().unwrap() { b[a] = v.clone(); } env(&k, b, REQ_DOMAIN) };
+        assert!(verify_deliv(&d("aaaaaaaa-2222-4333-8444-555555555555", json!({})), &p, &s, 1010).is_ok());
+        assert_eq!(verify_deliv(&d("bbbbbbbb-2222-4333-8444-555555555555", json!({"limits": {"pro": 5}})), &p, &s, 1010), Err("limits"), "no input allowed");
+        assert_eq!(verify_deliv(&env(&k, json!({"request_id": "cccccccc-2222-4333-8444-555555555555"}), REQ_DOMAIN), &p, &s, 1010), Err("audience"), "a census request is not a deliverability request");
+        assert_eq!(verify_census(&d("dddddddd-2222-4333-8444-555555555555", json!({})), &p, &s, 1010), Err("audience"), "and the other way round");
     }
 }

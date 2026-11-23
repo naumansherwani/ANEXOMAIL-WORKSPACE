@@ -124,6 +124,7 @@ admin-desk/server/src/auth.rs
 admin-desk/server/src/bridge.rs
 admin-desk/server/src/customers.rs
 admin-desk/server/src/dbsc.rs
+admin-desk/server/src/deliverability.rs
 admin-desk/server/src/door.rs
 admin-desk/server/src/escalations.rs
 admin-desk/server/src/h3.rs
@@ -162,6 +163,7 @@ admin-desk/sql/AD11.sql
 admin-desk/sql/AD12.sql
 admin-desk/sql/AD13.sql
 admin-desk/sql/AD14.sql
+admin-desk/sql/AD15.sql
 admin-desk/sql/README.md
 admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/checks/AD01-check.sql
@@ -185,6 +187,7 @@ admin-desk/sql/checks/AD11-check.sql
 admin-desk/sql/checks/AD12-check.sql
 admin-desk/sql/checks/AD13-check.sql
 admin-desk/sql/checks/AD14-check.sql
+admin-desk/sql/checks/AD15-check.sql
 admin-desk/sql/checks/README.md
 admin-desk/state/00-FOUNDER-TECH-RULE.md
 admin-desk/state/COMPACT-SAVE.md
@@ -232,9 +235,11 @@ control-plane/contract/DESK-LOOKUP-CONTRACT.json
 control-plane/sql/00-FOUNDER-TECH-RULE.md
 control-plane/sql/CP1.sql
 control-plane/sql/CP2.sql
+control-plane/sql/CP3.sql
 control-plane/sql/checks/00-FOUNDER-TECH-RULE.md
 control-plane/sql/checks/CP1-check.sql
 control-plane/sql/checks/CP2-check.sql
+control-plane/sql/checks/CP3-check.sql
 control-plane/src/00-FOUNDER-TECH-RULE.md
 control-plane/src/answer.rs
 control-plane/src/census.rs

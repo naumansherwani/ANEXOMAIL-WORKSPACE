@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 08:41 PKT) - read this FIRST for the Desk after a compaction
-DOING: B9 GREEN. 1m-5 B6 Deliverability: research + list + ADVANCE-RESEARCH + contract written (docs only)
-NEXT STEP: B6 code: CP3.sql, Control Plane deliverability answer, AD15, deliverability.rs, pure ts + screen, wire card v, all ONE commit
-HIS LAST WORD: gate forces whole phase in one commit
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 08:53 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1m-5 B6 Deliverability WRITTEN: CP3 SQL, Control Plane deliverability route, AD15, deliverability.rs, pure TS + screen, card v wired, installers updated
+NEXT STEP: his ad-auto (AD15) then desk-install (rebuilds Control Plane, CP3, PROOF deliverability CP3), my Chrome look, then GREEN
+HIS LAST WORD: gate forces one commit
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 5003706f 23 Nov 08:41 ledger line fc677448
 - fc677448 23 Nov 08:41 Desk B6 Deliverability: research, list, contract
 - 3c8c3df3 23 Nov 08:40 ledger line 0c6a46ec
 - 0c6a46ec 23 Nov 08:40 B9 Customers and Plans GREEN
@@ -72,10 +73,26 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 0da64cac 23 Nov 08:31 Desk B9 Customers and Plans: census door, screen, AD14, Control Plane
 - 4e43dc9a 23 Nov 08:16 ledger line d488a0b0
 - d488a0b0 23 Nov 08:16 Keys GREEN for Desk, founder, awam; next phase B9 plan
-- 50c16bd9 23 Nov 08:07 ledger line 322539f3
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/scripts/cp-install.sh
+M  admin-desk/scripts/desk-install.sh
+A  admin-desk/server/src/deliverability.rs
+M  admin-desk/server/src/main.rs
+A  admin-desk/sql/AD15.sql
+A  admin-desk/sql/checks/AD15-check.sql
+M  docs/claude/admin-desk/scripts/cp-install.sh
+M  docs/claude/admin-desk/scripts/desk-install.sh
+A  docs/claude/admin-desk/server/src/deliverability.rs
+M  docs/claude/admin-desk/server/src/main.rs
+A  docs/claude/admin-desk/sql/AD15.sql
+A  docs/claude/admin-desk/sql/checks/AD15-check.sql
+MM docs/claude/admin-desk/state/WORKING-NOW.md
+M  founder-web/src/desk/DeskCards.tsx
+A  founder-web/src/desk/DeskDeliverability.tsx
+M  founder-web/src/desk/desk_cards.ts
+A  founder-web/src/desk/desk_deliverability_pure.test.ts
+A  founder-web/src/desk/desk_deliverability_pure.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

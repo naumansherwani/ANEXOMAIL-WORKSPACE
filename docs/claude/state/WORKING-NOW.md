@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 08:41 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: B9 GREEN. 1m-5 B6 Deliverability: research + list + ADVANCE-RESEARCH + contract written (docs only)
-NEXT STEP: B6 code: CP3.sql, Control Plane deliverability answer, AD15, deliverability.rs, pure ts + screen, wire card v, all ONE commit
-HIS LAST WORD: gate forces whole phase in one commit
+# WORKING NOW (manual checkpoint, 23 Nov 2026 08:53 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 1m-5 B6 Deliverability WRITTEN: CP3 SQL, Control Plane deliverability route, AD15, deliverability.rs, pure TS + screen, card v wired, installers updated
+NEXT STEP: his ad-auto (AD15) then desk-install (rebuilds Control Plane, CP3, PROOF deliverability CP3), my Chrome look, then GREEN
+HIS LAST WORD: gate forces one commit
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -19,20 +19,54 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 5003706f 23 Nov 08:41 ledger line fc677448
 - fc677448 23 Nov 08:41 Desk B6 Deliverability: research, list, contract
 - 3c8c3df3 23 Nov 08:40 ledger line 0c6a46ec
 - 0c6a46ec 23 Nov 08:40 B9 Customers and Plans GREEN
 - 595cff51 23 Nov 08:31 ledger line 0da64cac
-- 0da64cac 23 Nov 08:31 Desk B9 Customers and Plans: census door, screen, AD14, Control Plane
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/state/WORKING-NOW.md
+M  admin-desk/scripts/cp-install.sh
+M  admin-desk/scripts/desk-install.sh
+A  admin-desk/server/src/deliverability.rs
+M  admin-desk/server/src/main.rs
+A  admin-desk/sql/AD15.sql
+A  admin-desk/sql/checks/AD15-check.sql
+A  control-plane/sql/CP3.sql
+A  control-plane/sql/checks/CP3-check.sql
+M  control-plane/src/answer.rs
+M  control-plane/src/census.rs
+M  control-plane/src/core.rs
+M  control-plane/src/db.rs
+M  control-plane/src/h3srv.rs
+M  docs/claude/admin-desk/scripts/cp-install.sh
+M  docs/claude/admin-desk/scripts/desk-install.sh
+A  docs/claude/admin-desk/server/src/deliverability.rs
+M  docs/claude/admin-desk/server/src/main.rs
+A  docs/claude/admin-desk/sql/AD15.sql
+A  docs/claude/admin-desk/sql/checks/AD15-check.sql
+M  docs/claude/admin-desk/state/WORKING-NOW.md
+MM docs/claude/state/WORKING-NOW.md
+M  docs/claude/tech-contracts/CURRENT.md
+R  founder-web/dist-desk/assets/desk-zne_XITt.js -> founder-web/dist-desk/assets/desk-a6D6-xa8.js
+M  founder-web/dist-desk/desk.html
+M  founder-web/src/desk/DeskCards.tsx
+A  founder-web/src/desk/DeskDeliverability.tsx
+M  founder-web/src/desk/desk_cards.ts
+A  founder-web/src/desk/desk_deliverability_pure.test.ts
+A  founder-web/src/desk/desk_deliverability_pure.ts
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 30 ++----------------------------
- 1 file changed, 2 insertions(+), 28 deletions(-)
+ .../assets/{desk-zne_XITt.js => desk-a6D6-xa8.js}  |  19 +-
+ founder-web/dist-desk/desk.html                    |   2 +-
+ founder-web/src/desk/DeskCards.tsx                 |   2 +
+ founder-web/src/desk/DeskDeliverability.tsx        |  67 +++++++
+ founder-web/src/desk/desk_cards.ts                 |   2 +-
+ .../src/desk/desk_deliverability_pure.test.ts      |  26 +++
+ founder-web/src/desk/desk_deliverability_pure.ts   |  50 ++++++
+ 29 files changed, 1082 insertions(+), 42 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -43,4 +77,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (1dbc3371b082bab1512663e8af97beb7200132d4)
+WIP snapshot: refs/wip/last (b44fd0941dfa22c09817879eb685c0be13e3edfc)

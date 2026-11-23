@@ -3,12 +3,12 @@
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-5 B6 Deliverability), written 23 Nov 2026 08:4x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (B6 section U1..U8, FUTURE-PROOF LAW)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
-| PostgreSQL CP3 (awam database, Control Plane read-only role only): cp.deliverability() = domains by status, posture of verified domains (SPF, DKIM, DMARC, MX, all four), never-checked, stale over 24 h, pending over 7 days, companies with a failing verified domain, SIX needs-you-now signals with runbooks; real public.org_domains (E15); SECURITY DEFINER, fixed search_path, EXECUTE only for cp_lookup, counts only; SCHEMA-FIRST E15 + CP2 | control-plane/sql/CP3.sql, checks/CP3-check.sql, scripts/cp-install.sh | no | scratch awam DB + CHECK |
-| Rust Control Plane deliverability answer (Ed25519 signed, replay nonce) over HTTP/3 UDP 4410 | control-plane/src/*.rs | no | cargo tests |
-| PostgreSQL AD15: hourly append-only hash-chained series (forced RLS, frozen triggers, BRIN), SECURITY DEFINER begin + record doors with the customer.lookup right | sql/AD15.sql, sql/checks/AD15-check.sql | no | scratch selftest + his ad-auto |
-| Rust + Tokio + Axum 0.8 door /desk/v1/deliverability/census over the sealed HTTP/3 router, fresh 15 s, deadline 6 s, breaker, shape check | server/src/deliverability.rs, main.rs | no | cargo tests |
-| Rule 52 kernel-verified read, fail-closed Data unavailable, zero is data, small-group note | desk_deliverability_pure.ts, DeskDeliverability.tsx | no | bun tests, tsc |
-| React 19 + TypeScript Deliverability card wired (existing card, flips to wired), Ice-blue marks, Alt+Shift+V | desk_cards.ts, DeskCards.tsx | no | vite build, my Chrome look |
+| PostgreSQL CP3 (awam database, Control Plane read-only role only): cp.deliverability() = domains by status, posture of verified domains (SPF, DKIM, DMARC, MX, all four), never-checked, stale over 24 h, pending over 7 days, companies with a failing verified domain, SIX needs-you-now signals with runbooks; real public.org_domains (E15); SECURITY DEFINER, fixed search_path, EXECUTE only for cp_lookup, counts only; SCHEMA-FIRST E15 + CP2 | control-plane/sql/CP3.sql, checks/CP3-check.sql, scripts/cp-install.sh | yes | scratch awam DB + CHECK |
+| Rust Control Plane deliverability answer (Ed25519 signed, replay nonce) over HTTP/3 UDP 4410 | control-plane/src/*.rs | yes | cargo tests |
+| PostgreSQL AD15: hourly append-only hash-chained series (forced RLS, frozen triggers, BRIN), SECURITY DEFINER begin + record doors with the customer.lookup right | sql/AD15.sql, sql/checks/AD15-check.sql | yes | scratch selftest + his ad-auto |
+| Rust + Tokio + Axum 0.8 door /desk/v1/deliverability/census over the sealed HTTP/3 router, fresh 15 s, deadline 6 s, breaker, shape check | server/src/deliverability.rs, main.rs | yes | cargo tests |
+| Rule 52 kernel-verified read, fail-closed Data unavailable, zero is data, small-group note | desk_deliverability_pure.ts, DeskDeliverability.tsx | yes | bun tests, tsc |
+| React 19 + TypeScript Deliverability card wired (existing card, flips to wired), Ice-blue marks, Alt+Shift+V | desk_cards.ts, DeskCards.tsx | yes | vite build, my Chrome look |
 
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-4 B9 Customers and Plans), written 23 Nov 2026 06:3x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (U1..U12, REWRITTEN under the FUTURE-PROOF LAW)
 | Advance technology | Where in code | IN CODE | Proof |
@@ -3497,3 +3497,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 1m-4 B9 Customers and Plans GREEN: WIRED: YES / REAL: YES / TECH-LAW CHECKED, his ad-auto AD14 CHECK 7/7, desk-install 9/9 SAME build 595cff51e, my Chrome look live 390/820/1200 + Alt+Shift+8, TESTED: Desk cargo 92, control-plane 13, bun 104, tsc, vite
 
 - 1m-5 B6 Deliverability: web research, list U1..U8, ADVANCE-RESEARCH line, contract block written BEFORE code (docs only; TECH-LAW CHECKED, TESTED: docs only, no code changed)
+
+- 1m-5 B6 Deliverability WRITTEN (not green): CP3 cp.deliverability over real org_domains, Control Plane signed deliverability answer (aud desk-deliv), AD15 hourly chained series, Desk door /desk/v1/deliverability/board with sum checks, DeskDeliverability screen, card Alt+Shift+V, TECH-LAW CHECKED, TESTED: Desk cargo 97 pass, control-plane cargo 15 pass, bun desk 108 pass, tsc clean, vite desk build ok, CP3 selftest + CHECK 8/8 and AD15 selftest + CHECK 7/7 on scratch PG

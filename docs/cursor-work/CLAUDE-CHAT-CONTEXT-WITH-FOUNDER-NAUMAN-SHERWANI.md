@@ -5512,3 +5512,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 1m-4 B9 Customers and Plans GREEN: WIRED: YES / REAL: YES / TECH-LAW CHECKED, his ad-auto AD14 CHECK 7/7, desk-install 9/9 SAME build 595cff51e, my Chrome look live 390/820/1200 + Alt+Shift+8, TESTED: Desk cargo 92, control-plane 13, bun 104, tsc, vite
 
 - 1m-5 B6 Deliverability: web research, list U1..U8, ADVANCE-RESEARCH line, contract block written BEFORE code (docs only; TECH-LAW CHECKED, TESTED: docs only, no code changed)
+
+- 1m-5 B6 Deliverability WRITTEN (not green): CP3 cp.deliverability over real org_domains, Control Plane signed deliverability answer (aud desk-deliv), AD15 hourly chained series, Desk door /desk/v1/deliverability/board with sum checks, DeskDeliverability screen, card Alt+Shift+V, TECH-LAW CHECKED, TESTED: Desk cargo 97 pass, control-plane cargo 15 pass, bun desk 108 pass, tsc clean, vite desk build ok, CP3 selftest + CHECK 8/8 and AD15 selftest + CHECK 7/7 on scratch PG

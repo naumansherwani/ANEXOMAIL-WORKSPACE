@@ -100,3 +100,6 @@ ADMINU="$( . /etc/anexomail/sync.env 2>/dev/null; printf %s "${WORKING_URL:-}" )
 CP2="$(show control-plane/sql/checks/CP2-check.sql | env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "${ADMINU:-postgres://none}" -X -q -At -f - 2>&1)"
 CPT="$(printf '%s\n' "$CP2" | grep -c '|t$')"; CPF="$(printf '%s\n' "$CP2" | grep -c '|f$')"
 if [ -n "$ADMINU" ] && [ "$CPT" -ge 8 ] && [ "$CPF" = 0 ]; then echo "   PROOF census (CP2): cp.census is in the awam database, CHECK $CPT of $CPT true"; else echo "   PROOF census (CP2): NOT PROVEN (true $CPT, false $CPF): the Customers and Plans card will say Data unavailable until this is fixed"; fi
+CP3="$(show control-plane/sql/checks/CP3-check.sql | env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "${ADMINU:-postgres://none}" -X -q -At -f - 2>&1)"
+CP3T="$(printf '%s\n' "$CP3" | grep -c '|t$')"; CP3F="$(printf '%s\n' "$CP3" | grep -c '|f$')"
+if [ -n "$ADMINU" ] && [ "$CP3T" -ge 8 ] && [ "$CP3F" = 0 ]; then echo "   PROOF deliverability (CP3): cp.deliverability is in the awam database, CHECK $CP3T of $CP3T true"; else echo "   PROOF deliverability (CP3): NOT PROVEN (true $CP3T, false $CP3F): the Deliverability card will say Data unavailable until this is fixed"; fi

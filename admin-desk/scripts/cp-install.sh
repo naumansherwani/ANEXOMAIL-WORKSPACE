@@ -34,6 +34,10 @@ echo "== CP 3b/7 database: CP2.sql (census for Customers and Plans) + selftest +
 S="$(mktemp)"; show control-plane/sql/CP2.sql >"$S"; C2="$(psqla -f "$S" 2>&1 | tail -4)"; C2R=$?; rm -f "$S"; echo "$C2" | sed 's/^/   /'
 S="$(mktemp)"; show control-plane/sql/checks/CP2-check.sql >"$S"; CH2="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH2" | sed 's/^/   /'
 if echo "$CH2" | grep -q '|f$' || echo "$CH2" | grep -qi error || echo "$C2" | grep -qi "error"; then echo "WARN: CP2 did not install cleanly: the Customers and Plans card will say Data unavailable (fail-closed) until it is fixed; the rest of the install continues"; else echo "OK: CP2 census installed and CHECKed"; fi
+echo "== CP 3c/7 database: CP3.sql (deliverability for the Deliverability card) + selftest + CHECK"
+S="$(mktemp)"; show control-plane/sql/CP3.sql >"$S"; C3="$(psqla -f "$S" 2>&1 | tail -4)"; rm -f "$S"; echo "$C3" | sed 's/^/   /'
+S="$(mktemp)"; show control-plane/sql/checks/CP3-check.sql >"$S"; CH3="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH3" | sed 's/^/   /'
+if echo "$CH3" | grep -q '|f$' || echo "$CH3" | grep -qi error || echo "$C3" | grep -qi "error"; then echo "WARN: CP3 did not install cleanly: the Deliverability card will say Data unavailable (fail-closed) until it is fixed; the rest of the install continues"; else echo "OK: CP3 deliverability installed and CHECKed"; fi
 PW="$(openssl rand -hex 24)"
 URL="$(ADMIN_URL="$ADMIN" CPW="$PW" python3 - <<'P'
 import os,urllib.parse as u

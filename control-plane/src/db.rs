@@ -31,6 +31,16 @@ impl Pg {
         };
         tokio::time::timeout(Duration::from_secs(5), work).await.map_err(|_| "database timeout".to_string())?
     }
+    /// Phase 1m-5 B6: `select cp.deliverability()::text` (counts only). Err = database unavailable (503).
+    pub async fn deliverability(&self) -> Result<Option<Value>, String> {
+        let work = async {
+            let c = self.client().await?;
+            let r = c.query_one("select cp.deliverability()::text", &[]).await.map_err(|e| e.to_string())?;
+            let t: Option<String> = r.get(0);
+            match t { None => Ok(None), Some(s) => serde_json::from_str(&s).map(Some).map_err(|e| e.to_string()) }
+        };
+        tokio::time::timeout(Duration::from_secs(8), work).await.map_err(|_| "database timeout".to_string())?
+    }
     /// Phase 1m-4 B9: `select cp.census($1)::text` (counts only). Ok(None) = the function refused the limits (null); Err = database unavailable (503, never a made-up number).
     pub async fn census(&self, limits: &Value) -> Result<Option<Value>, String> {
         let arg = limits.to_string();

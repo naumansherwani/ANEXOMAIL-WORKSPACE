@@ -25,6 +25,10 @@ impl Signer {
 
 impl Signer {
     /// Phase 1m-4 B9: the signed CENSUS answer (counts only). kind "census" keeps it from ever being read as a company answer; a database that returned nothing = refused (never a made-up number).
+    /// Phase 1m-5 B6: the signed deliverability answer (kind "deliverability"); None = refused.
+    pub fn deliv_answer(&self, request_id: &str, d: Option<&Value>, now: i64) -> String {
+        self.envelope(json!({"kind": "deliverability", "request_id": request_id, "answered_at": now, "deliverability": d.cloned().unwrap_or(Value::Null), "refused": d.is_none()}))
+    }
     pub fn census_answer(&self, request_id: &str, census: Option<&Value>, now: i64) -> String {
         self.envelope(json!({"kind": "census", "request_id": request_id, "answered_at": now, "census": census.cloned().unwrap_or(Value::Null), "refused": census.is_none()}))
     }
