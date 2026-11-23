@@ -125,6 +125,8 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, s
     document.addEventListener("pointerdown", away, true); document.addEventListener("keydown", esc);
     return () => { document.removeEventListener("pointerdown", away, true); document.removeEventListener("keydown", esc); };
   }, [menu]);
+  // his 23 Nov 07:12: when the page changes (Ctrl+D, a click, a key) the rail scrolls so the active item is in view; the rail's own scroll bar and look are untouched (block "nearest" moves nothing when the item is already visible).
+  useEffect(() => { const el = document.querySelector<HTMLElement>(".dsk-scroll [data-here]"); if (el && typeof el.scrollIntoView === "function") el.scrollIntoView({ block: "nearest", inline: "nearest" }); }, [sub]);
   // his 22 Nov 07:49: the ANEXOMAIL brand is a link. On a sub page it goes back to the dashboard; already on the dashboard it refreshes the page. Modified clicks fall through to the browser.
   const goHome = (e: ReactMouseEvent<HTMLAnchorElement>) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; e.preventDefault(); if (sub) nav("/dashboard"); else window.location.reload(); };
   const d = new Date(now), first = me?.name?.trim().split(/\s+/)[0] || me?.email.split("@")[0] || "";
@@ -140,7 +142,7 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, s
               {g.label && <p className="dsk-grp">{g.label}</p>}
               {g.items.map((n) => (
                 <div className="dsk-row" key={n.key}>
-                  <button type="button" className="dsk-nav" aria-current={n.live ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={n.live ? (n.key === "dashboard" ? "Dashboard · Ctrl+D" : undefined) : "Opens when it is connected"} onClick={(e) => { if (!n.live) e.preventDefault(); else if (n.key === "dashboard") nav("/dashboard"); else nav(route(n.key)); }}>{n.glyph}<span>{n.label}</span></button>
+                  <button type="button" className="dsk-nav" data-here={n.key === (sub || "dashboard") ? "1" : undefined} aria-current={n.live ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={n.live ? (n.key === "dashboard" ? "Dashboard · Ctrl+D" : undefined) : "Opens when it is connected"} onClick={(e) => { if (!n.live) e.preventDefault(); else if (n.key === "dashboard") nav("/dashboard"); else nav(route(n.key)); }}>{n.glyph}<span>{n.label}</span></button>
                   {n.key !== "dashboard" && <button type="button" className="dsk-pin" aria-pressed={pins.includes(n.key)} aria-label={(pins.includes(n.key) ? "Unpin " : "Pin ") + n.label} onClick={() => toggle(n.key)}>{ico("M9 4h6l-1 6 3 3v2H7v-2l3-3zM12 15v5")}</button>}
                 </div>
               ))}

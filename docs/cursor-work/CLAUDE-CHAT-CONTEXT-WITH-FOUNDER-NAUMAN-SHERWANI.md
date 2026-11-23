@@ -5482,3 +5482,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 1m-4 B9 CP2 census SQL (cp.census, six real signal families + dimensions, boundaries 89/90/94/95, counts only) + cp-install step 3b, TESTED: scratch awam DB from the real schema snapshot, selftest x2 ALL RULES PASSED, CP2 CHECK 8/8 true, CP1 CHECK 0 false, bash -n; TECH-LAW CHECKED
 
 - Ctrl+D Dashboard shortcut GREEN (23 Nov 07:0x PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED; his desk-install 3 PROOF SAME at 534d2339c, my Chrome: hint + Ctrl+D goes to /dashboard), shortcut-for-all-folders recorded as DISCUSS, TESTED: his server paste + my live Chrome key press
+
+- 1m small step gate hole + CP2 proof line + rail follows active page, WIRED: YES / REAL: not yet (his desk-install + my Chrome look), TECH-LAW CHECKED, TESTED: gate probe FAIL as expected, tsc, bun 93 pass, bash -n

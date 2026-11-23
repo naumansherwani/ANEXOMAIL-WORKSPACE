@@ -1,5 +1,13 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, small step: gate hole closed + rail follows the active page, his 23 Nov 2026 07:12 word), written 23 Nov 2026 07:3x PKT BEFORE code. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (U1..U12 header; this step has its own rows below)
+
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| Commit gate: control-plane/src, control-plane/sql/CP*, admin-desk/scripts/*.sh count as Desk code, so INCOMPLETE ADVANCE also stops a half-built sub-phase there | docs/cursor-work/server/rules-gate.py `_desk_code` | yes | probe: touched CP2.sql staged while B9 rows were "no" -> FAIL [INCOMPLETE ADVANCE], then reverted |
+| Installer prints the census proof (PROOF census CP2, true/false count) as the LAST lines, inside his tail -25 | docs/claude/admin-desk/scripts/desk-install.sh step 9b | yes | bash -n ok; live proof = his next desk-install |
+| React 19 rail follow: on page change the active rail item (data-here) scrolls into view, block nearest, rail look and scroll bar untouched | DeskShell.tsx | yes | tsc + 93 bun tests; live proof = my Chrome Ctrl+D look |
+
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-4 B9 Customers and Plans), written 23 Nov 2026 06:3x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (U1..U12, REWRITTEN under the FUTURE-PROOF LAW)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3425,3 +3433,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 1m-4 B9 CP2 census SQL (cp.census, six real signal families + dimensions, boundaries 89/90/94/95, counts only) + cp-install step 3b, TESTED: scratch awam DB from the real schema snapshot, selftest x2 ALL RULES PASSED, CP2 CHECK 8/8 true, CP1 CHECK 0 false, bash -n; TECH-LAW CHECKED
 
 - Ctrl+D Dashboard shortcut GREEN (23 Nov 07:0x PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED; his desk-install 3 PROOF SAME at 534d2339c, my Chrome: hint + Ctrl+D goes to /dashboard), shortcut-for-all-folders recorded as DISCUSS, TESTED: his server paste + my live Chrome key press
+
+- 1m small step gate hole + CP2 proof line + rail follows active page, WIRED: YES / REAL: not yet (his desk-install + my Chrome look), TECH-LAW CHECKED, TESTED: gate probe FAIL as expected, tsc, bun 93 pass, bash -n

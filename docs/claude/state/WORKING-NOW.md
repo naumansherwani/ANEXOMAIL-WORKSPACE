@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 07:01 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Ctrl+D step GREEN; 1m-4 B9: CP2 done, Control Plane Rust census + AD14 + customers.rs next; shortcut-for-all-folders is a DISCUSSION (no code until his haan)
-NEXT STEP: control-plane Rust census (verify.rs/core.rs/db.rs/answer.rs), AD14, customers.rs, DeskCustomers.tsx; ask him for the CP 3b/7 lines of desk-install
-HIS LAST WORD: Ctrl+D GREEN by his pastes + my Chrome
+# WORKING NOW (manual checkpoint, 23 Nov 2026 07:16 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: gate hole closed (control-plane + scripts count as Desk code), PROOF CP2 line in desk-install, rail follows active page
+NEXT STEP: rail key map for his haan, then B9 Rust census + AD14
+HIS LAST WORD: his 07:12: gate ne mistake ki, scroll bar active item par
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -19,20 +19,34 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- ac50fd7e 23 Nov 07:01 ledger line 027ee67c
 - 027ee67c 23 Nov 07:01 Ctrl+D GREEN
 - 534d2339 23 Nov 06:50 ledger line 70d187b0
 - 70d187b0 23 Nov 06:50 1m-4 B9 CP2
 - a0d310be 23 Nov 06:44 ledger line 57ba7877
-- 57ba7877 23 Nov 06:44 contract order
 
 ## Uncommitted files (half-done work if any)
+ M admin-desk/scripts/desk-install.sh
+ M docs/claude/admin-desk/scripts/desk-install.sh
  M docs/claude/state/WORKING-NOW.md
+ M docs/claude/tech-contracts/CURRENT.md
+ M docs/cursor-work/server/rules-gate.py
+ D founder-web/dist-desk/assets/desk-DnRFMxBV.js
+ M founder-web/dist-desk/desk.html
+ M founder-web/src/desk/DeskShell.tsx
+?? founder-web/dist-desk/assets/desk-Cv_U36OZ.js
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 25 ++-----------------------
- 1 file changed, 2 insertions(+), 23 deletions(-)
+ docs/claude/admin-desk/scripts/desk-install.sh |   5 +
+ docs/claude/state/WORKING-NOW.md               |  31 ++---
+ docs/claude/tech-contracts/CURRENT.md          |   8 ++
+ docs/cursor-work/server/rules-gate.py          |   3 +-
+ founder-web/dist-desk/assets/desk-DnRFMxBV.js  | 158 -------------------------
+ founder-web/dist-desk/desk.html                |   2 +-
+ founder-web/src/desk/DeskShell.tsx             |   4 +-
+ 8 files changed, 37 insertions(+), 179 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -43,4 +57,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (02e4d7fa6f3f10d00278466ac057fab09e4e25bc)
+WIP snapshot: refs/wip/last (e5950d2567f48d96cf8888093e665ed961d93eab)

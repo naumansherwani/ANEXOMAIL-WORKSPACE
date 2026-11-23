@@ -313,7 +313,8 @@ if os.path.exists(cur):
 # INCOMPLETE ADVANCE (his word 22 Nov 2026 20:36 PKT, in anger: "incomplete phase, incomplete codes, incomplete advance technology is BANNED; no commit"):
 # a commit that carries Desk CODE is refused unless the NEWEST technology contract block (top of CURRENT.md) has every listed advance technology IN CODE = yes (or n/a) and is not "IN PROGRESS".
 # Half-written phases stay in the working tree; only a finished phase is committed. Contract notes, docs and the ledger are not code and may be committed any time.
-_desk_code = [f for f in staged if re.match(r"docs/claude/admin-desk/server/src/.*\.rs$|founder-web/src/desk/|docs/claude/admin-desk/sql/AD[0-9]+[a-z]?\.sql$", f)]
+# HOLE CLOSED (his 23 Nov 2026 07:12, "gate ne mistake ki hai"): the Control Plane code and SQL and the Desk installers are Desk code too; a half-built sub-phase can no longer ride in through them.
+_desk_code = [f for f in staged if re.match(r"docs/claude/admin-desk/server/src/.*\.rs$|founder-web/src/desk/|docs/claude/admin-desk/sql/AD[0-9]+[a-z]?\.sql$|control-plane/src/.*\.rs$|control-plane/sql/CP[0-9]+\.sql$|docs/claude/admin-desk/scripts/.*\.sh$", f)]
 if _desk_code and os.path.exists(cur):
     _ct = open(cur, errors="ignore").read()
     _parts = _ct.split("# TECH CONTRACT FOR PHASE")
