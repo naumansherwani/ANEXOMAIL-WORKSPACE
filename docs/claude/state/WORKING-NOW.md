@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 11:50 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 11:50 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Command Center title written into the real Desk, not installed
 NEXT STEP: his desk-install, then my Chrome look 390/820/1200
 HIS LAST WORD: his 11:48 word
@@ -19,54 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 5a47b976 23 Nov 11:50 Command Center title in the real Desk
 - 2b0fed22 23 Nov 11:47 ledger line 6847778f
 - 6847778f 23 Nov 11:47 Command Center title V24 soft light centre
 - a15f318c 23 Nov 11:44 ledger line c024beeb
 - c024beeb 23 Nov 11:44 Command Center title V23 light less
-- 26de16bf 23 Nov 11:44 ledger line 797ba7f5
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/D6-CARDS-LIST-23NOV.md
-A  backups/desk/20261123-1150-before-command-center-title/00-FOUNDER-TECH-RULE.md
-A  backups/desk/20261123-1150-before-command-center-title/APPROVED-DEMO-V24.html
-A  backups/desk/20261123-1150-before-command-center-title/DeskShell.tsx
-M  docs/claude/DONE-DO-NOT-REPEAT.md
-M  docs/claude/RESUME-POINT.md
-M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
-M  docs/claude/admin-desk/state/WORKING-NOW.md
-M  docs/claude/founder/PULL-COMMANDS.md
-M  docs/claude/state/HEARTBEAT.json
-MM docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
-M  docs/cursor-work/DONE-DO-NOT-REPEAT.md
-M  docs/cursor-work/founder/founder-commands.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  docs/cursor-work/server/PULL-COMMANDS.md
-R  founder-web/dist-desk/assets/desk-1Cdrpg9I.js -> founder-web/dist-desk/assets/desk-C-0-8m1u.js
-M  founder-web/dist-desk/desk.html
-R  founder-web/dist/assets/index-DzXgfGGr.js -> founder-web/dist/assets/index-CPjskEk8.js
-M  founder-web/dist/index.html
-M  founder-web/src/desk/DeskShell.tsx
-A  founder-web/src/desk/DeskTitle.tsx
-A  founder-web/src/desk/desk_title.test.ts
-M  founder-web/src/system_brain.json
-M  lanes/ALL-FILES.csv
-M  lanes/founder.txt
-M  lanes/shared.txt
-M  lovable-gold/README.md
+ M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- founder-web/src/desk/DeskTitle.tsx                 |  86 ++++++++++
- founder-web/src/desk/desk_title.test.ts            |  15 ++
- founder-web/src/system_brain.json                  |   6 +-
- lanes/ALL-FILES.csv                                |   9 +-
- lanes/founder.txt                                  |   6 +-
- lanes/shared.txt                                   |   3 +
- lovable-gold/README.md                             |   2 +-
- 29 files changed, 527 insertions(+), 59 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 53 +++-------------------------------------
+ 1 file changed, 3 insertions(+), 50 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -77,4 +43,4 @@ M  lovable-gold/README.md
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (0a7e937070be341b8aaefbcc9f4cbf1007911ff7)
+WIP snapshot: refs/wip/last (954e85b5e75d0a319769f8102968c8dd950f7630)

@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 11:50 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 11:50 PKT) - read this FIRST for the Desk after a compaction
 DOING: Command Center title written into the real Desk, not installed
 NEXT STEP: his desk-install, then my Chrome look 390/820/1200
 HIS LAST WORD: his 11:48 word
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 5a47b976 23 Nov 11:50 Command Center title in the real Desk
 - 2b0fed22 23 Nov 11:47 ledger line 6847778f
 - 6847778f 23 Nov 11:47 Command Center title V24 soft light centre
 - a15f318c 23 Nov 11:44 ledger line c024beeb
@@ -72,15 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 26de16bf 23 Nov 11:44 ledger line 797ba7f5
 - 797ba7f5 23 Nov 11:44 Command Center title demo back to V21
 - 0f644bc4 23 Nov 11:43 ledger line c58b8634
-- c58b8634 23 Nov 11:43 Command Center title V22 logo colours travel
 
 ## Uncommitted Desk files
-M  admin-desk/D6-CARDS-LIST-23NOV.md
-M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
-MM docs/claude/admin-desk/state/WORKING-NOW.md
-M  founder-web/src/desk/DeskShell.tsx
-A  founder-web/src/desk/DeskTitle.tsx
-A  founder-web/src/desk/desk_title.test.ts
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
