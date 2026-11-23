@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 09:04 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 09:04 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: B6 Deliverability step 1 GREEN (his installs + my Chrome look). Next: B6b or B7 per order
 NEXT STEP: research for the next card, list, contract, then code in ONE commit
 HIS LAST WORD: his 09:03 paste + compact-save order
@@ -19,28 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 9771fea8 23 Nov 09:04 B6 Deliverability GREEN
 - 5909b706 23 Nov 08:54 ledger line 7d665d21
 - 7d665d21 23 Nov 08:54 B6 SQL hardened: timeouts, hash CHECK, comments
 - 94263bdc 23 Nov 08:53 ledger line 03e07af6
 - 03e07af6 23 Nov 08:53 Desk B6 Deliverability: CP3, AD15, door, screen
-- 5003706f 23 Nov 08:41 ledger line fc677448
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md        |  1 +
- admin-desk/NOW-LIST-23NOV.md                       |  1 +
- .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    |  1 +
- docs/claude/admin-desk/NOW-LIST-23NOV.md           |  1 +
- docs/claude/state/WORKING-NOW.md                   | 27 ++++++++--------------
- 5 files changed, 13 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 25 ++-----------------------
+ 1 file changed, 2 insertions(+), 23 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -51,4 +43,4 @@ M  docs/claude/admin-desk/NOW-LIST-23NOV.md
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (44d0c589ed29ea0a3bb3e4812739dd0aa1e8da08)
+WIP snapshot: refs/wip/last (8537f750280a3937197afde8320b1fb188077800)
