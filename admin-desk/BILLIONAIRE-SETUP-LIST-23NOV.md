@@ -110,3 +110,4 @@ ADVANCE-TECH BL-50 (data requests): 30-day clock per request in the database, re
 ADVANCE-TECH BL-05 (CSAT): one-time Ed25519-signed survey token, one-click answer, result signed and verified by the kernel, median and distribution only.
 ADVANCE-TECH BL-63 (sandbox): every Desk SQL runs a rolled-back selftest on the live database and a shadow schema dry-run first, result stored as a PROOF line.
 ADVANCE-TECH BL-27 (migration): Rust IMAP migrator (imap-codec, resumable batches, retries with backoff), signed progress, no customer mail content shown to staff.
+ADVANCE-TECH BL-04 (B10 Reports, GREEN 23 Nov 2026): PostgreSQL AD16 SECURITY DEFINER report over the real case tables with median + p90, per-queue read right, Rust Axum door over HTTP/3 with sum checks, Rule 52 kernel verify, all IN CODE.

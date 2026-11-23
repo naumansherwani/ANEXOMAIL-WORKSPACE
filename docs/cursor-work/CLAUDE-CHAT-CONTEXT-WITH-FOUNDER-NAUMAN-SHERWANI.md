@@ -5536,3 +5536,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - billionaire ADVANCE TECHNOLOGY per phase (list section F, blueprint, NOW-LIST, WORKING-NOW, gate row check), TECH-LAW CHECKED, TESTED: gate ast ok, docs only
 
 - billionaire ADVANCE-TECH line next to every BL phase (list section F, blueprint, NOW-LIST, WORKING-NOW) and gate check, TECH-LAW CHECKED, TESTED: gate ast ok, all 20 ORDER-LOCK rows have a line, docs only
+
+- ADVANCE-TECH BL-04 line added (B10 GREEN technology in code), TECH-LAW CHECKED, TESTED: docs only
