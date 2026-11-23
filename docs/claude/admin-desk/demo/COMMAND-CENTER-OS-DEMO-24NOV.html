@@ -1,0 +1,97 @@
+<title>ANEXOMAIL Command Center OS</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+:root{--ink:#E8EEF9;--mute:#9FB3D6;--line:rgba(160,200,255,.16);--glass:rgba(12,22,46,.62);--blue:#6FA6F2;--pale:#BFD6FF;--pill:rgba(111,166,242,.16);--amber:255,170,70;--ok:#8fd6bd;--warn:#e0b36a}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,sans-serif;background:linear-gradient(180deg,#060B19 0%,#0A1730 48%,#0F3460 100%) fixed;min-height:100vh;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.glow{position:fixed;inset:0;pointer-events:none;background:radial-gradient(55% 45% at 94% 0%,rgba(var(--amber),.22),transparent 62%),radial-gradient(60% 55% at 6% 100%,rgba(15,52,96,.85),transparent 70%)}
+.wrap{position:relative;max-width:1180px;margin:0 auto;padding-block:14px 48px}
+.demo{display:inline-block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--pale);color:var(--pale);padding:3px 10px;border-radius:99px}
+.top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:12px}
+.hi{color:var(--mute);margin:0;font-size:14px}
+.t1{font-size:clamp(28px,4.6vw,46px);font-weight:300;letter-spacing:.16em;color:#2C4C79;-webkit-text-stroke:.6px #E6EBF1;margin:4px 0 0;line-height:1.05;text-shadow:0 0 26px rgba(44,76,121,.95)}
+.t2{font-size:clamp(10px,1.3vw,13px);letter-spacing:.5em;color:#DCE3EC;font-weight:500;margin-top:8px}
+.t3{margin-top:8px;color:#C3CCD8;font-weight:500;display:flex;gap:10px;align-items:center}.t3:before,.t3:after{content:"";height:1px;width:60px;background:linear-gradient(90deg,transparent,var(--blue))}.t3:after{transform:scaleX(-1)}
+.ln{height:1px;width:min(420px,100%);margin-top:8px;background:linear-gradient(90deg,#1E3557,#2C4C79 22%,#C3CCD8 50%,#E6EBF1 58%,#2C4C79 82%,#1E3557)}
+.chip{display:inline-flex;gap:8px;align-items:center;min-height:36px;padding:0 14px;border:1px solid var(--line);border-radius:99px;background:var(--glass);font-size:13px;font-weight:600}.chip i{width:9px;height:9px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 3px rgba(111,166,242,.25)}
+.app{display:grid;grid-template-columns:232px minmax(0,1fr);gap:14px;margin-top:16px}
+@media(max-width:820px){.app{grid-template-columns:1fr}}
+.side,.card{background:var(--glass);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}
+.side button,.tabs button{min-height:44px;border:0;background:none;color:var(--mute);font:inherit;text-align:left;padding:0 12px;border-radius:12px;cursor:pointer;width:100%;display:flex;align-items:center}
+.side button[aria-current=true],.tabs button[aria-pressed=true]{background:var(--pill);color:var(--ink)}
+.grp{font-size:10px;letter-spacing:.14em;color:var(--mute);text-transform:uppercase;margin:14px 8px 6px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.tabs button{width:auto;border:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.lab{font-size:11px;letter-spacing:.14em;color:var(--mute);text-transform:uppercase}.big{font-size:30px;font-weight:700;margin-top:4px}.tx{color:var(--pale);line-height:1.5;margin-top:6px;font-size:14px}
+.ok{color:var(--ok)}.no{color:var(--warn)}
+input,select{min-height:44px;width:100%;border-radius:12px;border:1px solid var(--line);background:rgba(6,11,25,.6);color:var(--ink);font:inherit;padding:0 12px;margin:4px 0 10px}
+.btn{min-height:44px;padding:0 18px;border-radius:12px;border:1px solid var(--blue);background:rgba(111,166,242,.2);color:var(--ink);font:inherit;cursor:pointer}.btn.red{border-color:#c8665f;background:rgba(200,102,95,.18)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:12px}
+.st{border:1px solid var(--line);border-radius:12px;padding:10px 12px;color:var(--mute);font-size:13px}.st.on{color:var(--ink);border-color:var(--blue);background:var(--pill)}.st.done{color:var(--ok)}
+.code{font-size:38px;letter-spacing:.2em;font-weight:300;color:#fff}
+.log{font-family:ui-monospace,monospace;font-size:12px;line-height:1.7;white-space:pre-wrap;color:var(--pale)}
+.flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0;margin:8px 0}.node{border:1px solid var(--line);border-radius:12px;padding:12px 16px;min-height:44px;display:flex;align-items:center;text-align:center}
+.beam{width:min(110px,14vw);height:2px;background:linear-gradient(90deg,transparent,var(--blue),transparent);background-size:200% 100%;animation:b 2.2s linear infinite}@keyframes b{to{background-position:-200% 0}}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--mute);font-weight:500}
+.sc{overflow-x:auto}
+[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<div class="glow"></div>
+<div class="wrap">
+<span class="demo">Demo · sample data · nothing is real · Admin Desk look unchanged</span>
+<div class="top"><div><p class="hi">Good morning,</p><h1 class="t1" style="font-weight:300">ANEXOMAIL</h1><div class="ln"></div><div class="t2">COMMAND CENTER</div><div class="t3">Admin Desk</div></div>
+<div style="text-align:right"><span class="chip"><i></i>Live · verified</span><div style="font-size:34px;font-weight:200;margin-top:8px" id="clk">2:30 AM</div><div style="font-size:11px;letter-spacing:.16em;color:var(--mute)">TUESDAY, NOVEMBER 24</div></div></div>
+
+<div class="app">
+<nav class="side" aria-label="Where you are">
+<div class="grp">Founder OS (founderworkspace)</div>
+<button data-w="f" aria-current="false">Founder Vault</button>
+<button data-w="b" aria-current="false">Bridge</button>
+<button data-w="c" aria-current="true" style="margin-left:14px;width:calc(100% - 14px)">Command Center</button>
+<div class="grp">Inside Command Center OS</div>
+<button data-v="home" aria-current="true">Overview</button><button data-v="team" aria-current="false">Team (Add Staff)</button><button data-v="desk" aria-current="false">Admin Desk</button><button data-v="bridge" aria-current="false">Bridge and privacy</button><button data-v="phases" aria-current="false">OS phases</button>
+</nav>
+<main>
+<section id="home">
+<div class="grid"><div class="card"><div class="lab">Live SLA clock</div><div class="big">1m 42s</div><div class="tx">Average first answer. Target under 2 minutes.</div></div>
+<div class="card"><div class="lab">Urgent alerts</div><div class="big">2</div><div class="tx">1 not acknowledged</div></div>
+<div class="card"><div class="lab">Team online</div><div class="big">4 / 6</div><div class="tx">Two Support Agents, one Migration Specialist, one Frontend Editor.</div></div>
+<div class="card"><div class="lab">Bridge</div><div class="big ok">Signed</div><div class="tx">One-way, Ed25519, QUIC.</div></div></div>
+<div class="card" style="margin-top:12px"><div class="lab">Founder controls (signed commands, fresh passkey touch)</div><div class="tx">Add staff · Freeze a person · Revoke access · Company freeze switch. Everything is written to the audit journal on both sides.</div></div>
+</section>
+
+<section id="team" hidden>
+<div class="steps"><div class="st on" id="s1">1 Add Staff (20 s)</div><div class="st" id="s2">2 First login, passkey</div><div class="st" id="s3">3 Own limits</div><div class="st" id="s4">4 Revoke Access</div></div>
+<div class="card" id="p1"><div class="lab">Add Staff (you, in the Team section)</div>
+<label class="tx">Employee name<input id="nm" value="Ali Raza"></label><label class="tx">Work email<input id="em" value="ali@anexomail.com"></label>
+<label class="tx">Role<select id="rl"><option>Support Agent</option><option>Migration Specialist</option><option>Frontend Editor</option></select></label>
+<button class="btn" id="save">Save and show 10-minute code</button><div class="tx" style="color:var(--mute)">Needs your fresh passkey touch (demo: automatic).</div></div>
+<div class="card" id="p2" hidden><div class="lab">One-time code (stored only as a hash, single use, 10 minutes, 5 tries)</div><div class="code" id="cd">849-210</div><div class="tx">Expires in <b id="tm">10:00</b>. Give it to <b id="who"></b> by phone or in person. The code only STARTS enrolment, it never signs anyone in.</div>
+<div class="tx">Employee opens <b>admindesk.anexomail.com</b>, types the code, then the screen asks for fingerprint or FaceID.</div><button class="btn" id="pk">Employee touches passkey</button></div>
+<div class="card" id="p3" hidden><div class="lab ok">Account created: passkey only, no password</div><div class="tx">A recovery path (second passkey or one-time recovery code) is required before the first passkey is the only way in.</div>
+<div class="sc"><table><tr><th>Role</th><th>Sees</th><th>Never sees</th></tr><tr><td id="r1"></td><td id="r2"></td><td class="no">Founder Vault, bank / payment money, private sealed customer emails (no grant exists, enforced in SQL)</td></tr></table></div><button class="btn red" id="rv" style="margin-top:12px">Revoke Access</button></div>
+<div class="card" id="p4" hidden><div class="lab no">Access revoked</div><div class="tx">One transaction. The next signed call is refused, every open stream of this person is closed, passkeys and sessions are gone, open tickets are back in the queue, you are notified. The real time will be measured and written, not promised.</div></div>
+<div class="card log" id="lg" style="margin-top:12px">Audit journal (demo)</div>
+</section>
+
+<section id="desk" hidden><div class="card"><div class="lab">Admin Desk = one section of the OS</div><div class="tx">Inboxes, Cases, SLA clocks, Managed Move-In, Customers and plans. It keeps its own look, tables and keys exactly as today.</div></div></section>
+
+<section id="bridge" hidden><div class="card"><div class="flow"><div class="node">Founder OS<br>(Vault, Treasury, Keys)</div><div class="beam"></div><div class="node ok">ONE-WAY signed bridge<br>Ed25519 + QUIC</div><div class="beam"></div><div class="node">Company OS<br>(Command Center)</div></div>
+<div class="tx">Commands and live summaries go OUT from the founder. The Company OS has no founder address, table grant or network route, so it can never look in. The 21 Nov isolation gate runs on every commit.</div></div>
+<div class="grid" style="margin-top:12px"><div class="card"><div class="lab">Founder sees and controls</div><div class="tx ok">SLA, urgent alerts, who is online, create / freeze / revoke employee, company freeze</div></div><div class="card"><div class="lab">Company OS never gets</div><div class="tx no">Founder tables, keys, mail, treasury, sessions</div></div></div></section>
+
+<section id="phases" hidden><div class="card sc"><table><tr><th>Phase</th><th>OS part</th><th>State</th></tr>
+<tr><td>OS-0</td><td>Name, one constant</td><td>plan</td></tr><tr><td>OS-1</td><td>Kernel contract: signed call + capability per role</td><td>plan</td></tr><tr><td>OS-2</td><td>Staff and roles (forced RLS, chained ledger)</td><td>plan</td></tr><tr><td>OS-3</td><td>App registry (sections)</td><td>plan</td></tr><tr><td>OS-4</td><td>Work engine: queues, SLA</td><td class="ok">partly live</td></tr><tr><td>OS-5</td><td>One-way signed bridge</td><td>decided, next</td></tr><tr><td>OS-6</td><td>Customer live view</td><td>plan</td></tr><tr><td>OS-7</td><td>Event bus (outbox NOTIFY + LISTEN)</td><td class="ok">live</td></tr><tr><td>OS-8</td><td>Journal: signed, chained, copied outside</td><td class="ok">live</td></tr><tr><td>OS-9</td><td>Brain link: Supabase + server</td><td>plan</td></tr><tr><td>OS-10</td><td>Policy as data (plans)</td><td class="ok">live, Y5 written</td></tr><tr><td>OS-11</td><td>LAST: employee lifecycle</td><td>plan</td></tr><tr><td>OS-12</td><td>NEXATECT Command Center</td><td>later</td></tr></table></div></section>
+</main></div></div>
+<script>
+var V=['home','team','desk','bridge','phases'];
+document.querySelectorAll('.side [data-v]').forEach(function(b){b.onclick=function(){document.querySelectorAll('.side [data-v]').forEach(function(x){x.setAttribute('aria-current','false')});b.setAttribute('aria-current','true');V.forEach(function(v){document.getElementById(v).hidden=v!==b.dataset.v})}});
+var lg=document.getElementById('lg');function L(t){lg.textContent+='\n'+new Date().toTimeString().slice(0,8)+'  '+t}
+var ROLE={'Support Agent':'Inboxes, Cases, SLA clock, reply to customers live','Migration Specialist':'Managed Move-In (old Gmail / Zoho data shift)','Frontend Editor':'Content and page sections they own'};
+function st(n){for(var i=1;i<=4;i++){var e=document.getElementById('s'+i);e.className='st'+(i<n?' done':i==n?' on':'')}}
+var T;document.getElementById('save').onclick=function(){var n=document.getElementById('nm').value;document.getElementById('who').textContent=n;['p1'].forEach(function(i){document.getElementById(i).hidden=true});document.getElementById('p2').hidden=false;st(2);L('founder -> OS  CREATE_STAFF '+document.getElementById('em').value+' role='+document.getElementById('rl').value+'  signed OK, passkey touch OK');var s=600;clearInterval(T);T=setInterval(function(){s--;if(s<0){clearInterval(T);return}document.getElementById('tm').textContent=Math.floor(s/60)+':'+('0'+s%60).slice(-2)},1000)};
+document.getElementById('pk').onclick=function(){clearInterval(T);var r=document.getElementById('rl').value;document.getElementById('p2').hidden=true;document.getElementById('p3').hidden=false;document.getElementById('r1').textContent=r;document.getElementById('r2').textContent=ROLE[r];st(3);L('employee  PASSKEY_REGISTERED rp=admindesk.anexomail.com  code burned')};
+document.getElementById('rv').onclick=function(){document.getElementById('p3').hidden=true;document.getElementById('p4').hidden=false;st(4);L('founder -> OS  REVOKE_ACCESS  passkeys=0 sessions=0 streams closed, tickets returned')};
+document.getElementById('clk').textContent=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
+</script>
