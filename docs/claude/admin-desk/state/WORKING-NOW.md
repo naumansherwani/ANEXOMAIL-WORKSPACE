@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 06:50 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 06:50 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1m-4 B9: CP2.sql (cp.census) DONE + scratch-tested, cp-install step 3b added; next Control Plane Rust census, AD14, customers.rs, TS
 NEXT STEP: control-plane Rust census method (verify.rs/core.rs/db.rs/answer.rs), then AD14, server/src/customers.rs, desk_customers_pure.ts, DeskCustomers.tsx
 HIS LAST WORD: CP2 selftest x2 + check 8/8
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 70d187b0 23 Nov 06:50 1m-4 B9 CP2
 - a0d310be 23 Nov 06:44 ledger line 57ba7877
 - 1864b318 23 Nov 06:44 ledger line 78f5bd1d
 - 78f5bd1d 23 Nov 06:44 future-proof law + B9 plan + Ctrl+D
@@ -72,11 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 66b22bbc 23 Nov 06:32 1m-4 B9 plan
 - e6a014e0 23 Nov 06:25 ledger line 0c2930a6
 - 0c2930a6 23 Nov 06:25 1m-3 B8 GREEN
-- 0c9e3518 23 Nov 06:13 ledger line fd2c053f
 
 ## Uncommitted Desk files
- M admin-desk/scripts/cp-install.sh
- M docs/claude/admin-desk/scripts/cp-install.sh
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
