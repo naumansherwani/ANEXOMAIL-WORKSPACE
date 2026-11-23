@@ -5530,3 +5530,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 1m-6 B10 Reports GREEN (WIRED: YES / REAL: YES, his AD16 + install fdcf8ea0b, my Chrome look), ORDER-LOCK of billionaire list in list, blueprint, CLAUDE.md, WORKING-NOW and gate, TECH-LAW CHECKED, TESTED: gate ast ok, Desk cargo 102, bun 114
 
 - 1m-6 B10 Reports GREEN (WIRED: YES / REAL: YES, his AD16 + install fdcf8ea0b, my Chrome look), ORDER-LOCK of billionaire list in list, blueprint, CLAUDE.md, WORKING-NOW and gate, TECH-LAW CHECKED, TESTED: gate ast ok, Desk cargo 102, bun 114
+
+- billionaire DASHBOARD-FIRST rule (his 09:33): Dashboard order 1m/1n/1o/1a first, BL-07+ only after 1n and 1o GREEN, gate enforces, TECH-LAW CHECKED, TESTED: gate ast ok, docs only

@@ -5,6 +5,8 @@ Status words: GREEN = live and seen in Chrome. SQL = database part live, screen 
 
 ORDER-LOCK (23 Nov 2026 09:35 PKT, his order): BL-04,BL-26,BL-46,BL-49,BL-48,BL-07,BL-08,BL-10,BL-11,BL-12,BL-22,BL-23,BL-24,BL-61,BL-66,BL-67,BL-50,BL-05,BL-63,BL-27  | Rule: build in THIS order, one BL row = one phase; a row marked GREEN is never rebuilt (no duplicate, no clash with existing phases); BL-27 waits for phase P; when every row is GREEN he decides the next work. The gate reads this line.
 
+DASHBOARD-FIRST (23 Nov 2026 09:4x PKT, his 09:33 word 'dashboard ke folder ki tarteeb ke baad yeh chalay ga'): the Dashboard order of NOW-LIST-23NOV.md (1m cards B6b, B13, B11, B12, then 1n, 1o, 1a ...) runs FIRST and is never broken. BL-26, BL-46, BL-49, BL-48 ARE those Dashboard cards (B6b, B13, B11, B12), so they stay in the Dashboard order. The rows from BL-07 on (BL-07, 08, 10, 11, 12, 22, 23, 24, 61, 66, 67, 50, 05, 63, 27) start ONLY after phases 1n and 1o are GREEN in NOW-LIST-23NOV.md. The gate checks it.
+
 ## A. Case desk (Zendesk Support, Salesforce Service Cloud, Front)
 | id | What they have | Anexomail Desk today | ADVANCE beyond them | Where |
 |---|---|---|---|---|

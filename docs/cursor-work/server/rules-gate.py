@@ -360,6 +360,10 @@ if _desk_code and os.path.exists(cur):
                 _ord = _ol.group(1).strip(",").split(",")
                 _st = {m.group(1): m.group(2) for m in re.finditer(r"^\| (BL-\d{2}) \|[^|]*\|\s*([^|]*)\|", _txt, re.M)}
                 _next = [i for i in _ord if not _st.get(i, "").strip().startswith("GREEN") and not _st.get(i, "").strip().startswith("NOT YET")]
+                _tail = _ord[_ord.index("BL-07"):] if "BL-07" in _ord else []
+                _nlt = open("docs/claude/admin-desk/NOW-LIST-23NOV.md", errors="ignore").read() if os.path.exists("docs/claude/admin-desk/NOW-LIST-23NOV.md") else ""
+                if set(_tail) & _ids and not re.search(r"\b1o (?:GREEN|= GREEN)", _nlt):
+                    fail("BILLIONAIRE LIST", "DASHBOARD-FIRST (his 09:33): BL-07 and later start only after the Dashboard order phases 1n and 1o are GREEN in NOW-LIST-23NOV.md")
                 if _next and _next[0] not in _ids:
                     fail("BILLIONAIRE LIST", f"ORDER-LOCK: the next row to build is {_next[0]}, but the contract heading names {sorted(_ids)}; follow his order and never rebuild a GREEN row")
 # RESEARCH IN BLUEPRINT (his word 23 Nov 2026 03:1x PKT, STRICT, for every phase and every SOP of the website): the advance technology that web research gives a phase must be written in
