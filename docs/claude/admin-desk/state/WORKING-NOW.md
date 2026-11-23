@@ -4,6 +4,8 @@ NEXT STEP: BL-26 B6b research
 HIS LAST WORD: his 09:28 order
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
+ADVANCE TECH per billionaire phase: BILLIONAIRE-SETUP-LIST-23NOV.md section F (his 09:36); gate fails an ORDER-LOCK row without an ADVANCE-TECH line; the phase's technology must be IN CODE before GREEN.
+ADVANCE TECHNOLOGY per billionaire phase = BILLIONAIRE-SETUP-LIST-23NOV.md section F (his 09:35); the gate needs a section F row for the BL id of the newest contract.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
 FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admin-desk/ (python3 docs/cursor-work/server/desk-copy-sync.py sync).
 

@@ -63,5 +63,50 @@ DASHBOARD-FIRST (23 Nov 2026 09:4x PKT, his 09:33 word 'dashboard ke folder ki t
 ## E. ADVANCE LEVEL: what none of them have (already built or in the blueprint)
 E1 Every number carries a verified tick: signed by the Desk key and verified inside the browser by the Rust WASM kernel (Rule 52); a number that cannot be verified is not shown ("Data unavailable"). E2 Staff keys are device-bound passkeys only, enforced in the database. E3 Append-only hash-chained ledger with a signed outside copy and a check that needs no database. E4 The Desk is its OWN security domain (no founder or awam code, keys, doors or tables mixed in). E5 HTTP/3 over QUIC only, post-quantum hybrid key exchange on every listener. E6 No third-party vendor, ever. E7 Every new SQL ships a rolled-back selftest and a CHECK file, forced RLS, REVOKE PUBLIC, statement and lock timeouts. E8 Zero is data: no card says "not measured". E9 The Control Plane (the only thing that reads the customer database) is read-only, counts-only, signed both ways, replay-proof, with its own audience per question.
 
+## F. ADVANCE TECHNOLOGY PER PHASE (23 Nov 2026 09:4x PKT, his 09:35 order: next to every phase, the world's most advanced technology)
+Every row is the technology that must be IN CODE before that phase is GREEN (Rule 52, HTTP/3 only, Rust + Tokio + Axum, PostgreSQL forced RLS, React 19 + TS). Web research refines the row at the start of its phase and the refined text goes into the phase contract.
+| id | Phase | ADVANCE TECHNOLOGY (world-class) |
+|---|---|---|
+| BL-26 | B6b (Dashboard 1m) | Rust DNS probe (hickory-resolver, DNSSEC validating) for MTA-STS (RFC 8461), TLS-RPT (RFC 8460) and DANE TLSA (RFC 7672); DSN + feedback-loop (ARF RFC 5965) parsers in Rust; PostgreSQL append-only hash-chained hourly series, bounce 0.3 percent / complaint 0.1 percent lines (Gmail/Yahoo bulk-sender rules); Control Plane signed answer over HTTP/3; Rule 52 kernel verify |
+| BL-46 | B13 (Dashboard 1m) | Consent + timer access: PostgreSQL forced RLS with time-boxed grants (tstzrange EXCLUDE), customer consent signed with passkey (WebAuthn, ML-DSA hybrid when listed), metadata-only views by SECURITY DEFINER, every open = ledger line first; zero-access like Proton |
+| BL-49 | B11 (Dashboard 1m) | Rust inbound guard: full-URL display, redirect unrolling, tracking-pixel block, homograph (IDNA/UTS 46 + confusables) check, SPF/DKIM/DMARC/ARC verdict stored hash-chained; ClamAV scan result signed; Rule 52 kernel verifies verdict |
+| BL-48 | B12 (Dashboard 1m) | Web Key Directory (OpenPGP WKD, RFC 9580/9980 PQC) served by own Rust over HTTP/3, key transparency log as Merkle tree (RFC 9162 style) with signed tree heads checked in the Rust WASM kernel |
+| BL-07 | after 1n+1o | Automation engine in Rust+Tokio: rule DSL parsed to a typed AST, dry-run inside a rolled-back PostgreSQL transaction, every run an append-only ledger line with input hash; loop and rate guards |
+| BL-08 | after 1n+1o | Routing in PostgreSQL (SKIP LOCKED queue, skills and load as real columns), decision plus reason written to the ledger, explainable per case |
+| BL-10 | after 1n+1o | Collision locks as PostgreSQL advisory locks plus lease rows with expiry, live over WebTransport/SSE, who and since when shown |
+| BL-11 | after 1n+1o | Merge/split as reversible event-sourced operations (24 h undo window), hash-chained, original case never deleted |
+| BL-12 | after 1n+1o | Read-only seat as a PostgreSQL role/right enforced by RLS and column grants, not a UI hide; tested by a rolled-back selftest |
+| BL-22 | after 1n+1o | Health/churn score as an explained weighted model over real seats, storage, payment signals; each point shown with its input row; versioned model, no black box |
+| BL-23 | after 1n+1o | Renewal/expansion forecast from real billing intents as a range (p10/p50/p90) with its inputs, computed in SQL, signed by the Control Plane |
+| BL-24 | after 1n+1o | Customer timeline rebuilt from the append-only ledger by a read-only SECURITY DEFINER view, nothing editable, keyset pagination |
+| BL-61 | after 1n+1o | Incident record as hash-chained events with owner + deadline, post-mortem is a versioned runbook, status page text generated from verified service probes |
+| BL-66 | after 1n+1o | Knowledge base: versioned articles in PostgreSQL (full-text search with tsvector + trigram), each linked to the runbook that uses it, Rust renders sanitized Markdown |
+| BL-67 | after 1n+1o | QA review scores in a hash-chained table, sampling by SQL, reviewer cannot score own case (database CHECK) |
+| BL-50 | after 1n+1o | Data requests: retention policies in SQL, deletion by a Rust job, deletion proof = SHA-256 ledger line with Merkle checkpoint copied to the Storage Box |
+| BL-05 | after 1n+1o | CSAT survey table plus signed one-time tokens (Ed25519), result verified by the Rust WASM kernel, small-group rule |
+| BL-63 | after 1n+1o | Every Desk SQL runs its rolled-back selftest on the live database before it counts; dry-run mode for all write doors |
+| BL-27 | phase P | Rust IMAP migrator (imap-codec) batches with retry ledger, signed progress, needs phase P |
+
 ## ORDER OF WORK from this list (does not break the blueprint order)
 Now: BL-04 Reports (B10, AD16). Next: BL-26 (B6b), BL-46 (B13), BL-49 (B11), BL-48 (B12), then BL-07/08/10/11/12 (automations, routing, collision, merge, light agents), BL-22/23/24 (CRM health and forecast), BL-61, BL-66, BL-67, BL-50. BL-27 (B7) waits for phase P. Each row is built as ONE phase: web research -> this list -> ADVANCE-RESEARCH -> contract (names the BL id) -> world-class SQL and technology -> his install -> my Chrome look -> GREEN.
+
+## F. ADVANCE TECHNOLOGY PER PHASE (23 Nov 2026 09:4x PKT, his 09:36 order: the technology is written NEXT TO each phase; the gate refuses a commit when a row of ORDER-LOCK has none)
+ADVANCE-TECH BL-26 (B6b): Rust hickory-resolver DNS probe with DNSSEC validation: MTA-STS (RFC 8461), TLS-RPT (RFC 8460), DANE TLSA (RFC 7672); bounce rates from DSN (RFC 3464) and complaint rates from ARF feedback (RFC 5965) against the 0.3 percent / 0.1 percent bulk-sender lines; AD hourly hash-chained series; Control Plane signed answer over HTTP/3; Rule 52 kernel verify.
+ADVANCE-TECH BL-46 (B13): consent-gated access: time-boxed grant enforced in PostgreSQL (tstzrange EXCLUDE constraint, expiry inside the database), customer consent signed, WebAuthn user-verification touch per open, audit line written BEFORE any read, metadata-only by default, Rule 52 kernel verify.
+ADVANCE-TECH BL-49 (B11): Rust link unwrapping (WHATWG URL parse, IDN homograph and confusable check per Unicode UTS #39), tracking-pixel block, Authentication-Results (RFC 8601) + ARC (RFC 8617) read, verdict hash-chained in the ledger, full link address always shown.
+ADVANCE-TECH BL-48 (B12): Web Key Directory (OpenPGP WKD) + key transparency log: Merkle tree with signed tree heads (RFC 9162 style), OpenPGP PQC (RFC 9980), company key directory checked by the Rust kernel, ML-DSA + Ed25519 hybrid signature on the tree head.
+ADVANCE-TECH BL-07 (automations): declarative rules stored and validated in PostgreSQL (CHECK + trigger), dry-run inside a rolled-back transaction before enable, idempotency key + loop guard per run, every run a hash-chained ledger line.
+ADVANCE-TECH BL-08 (routing): skill, capacity and shift aware assignment in SQL (SELECT FOR UPDATE SKIP LOCKED, least-loaded with fairness), decision and reason written to the ledger, shown to the owner in words.
+ADVANCE-TECH BL-10 (collision): lease table with a tstzrange EXCLUDE constraint (one holder per case), heartbeat renewal, auto expiry, live update over WebTransport with SSE fallback, shown as who and since when.
+ADVANCE-TECH BL-11 (merge/split): event-sourced append-only case events, merge and split reversible for 24 h enforced by the database, every step chained into the ledger, restricted cases never cross queues.
+ADVANCE-TECH BL-12 (light agents): read-only seat as a database right inside fadm_authorize + forced RLS, CHECK that a light seat holds no write right, kernel-verified screens that hide nothing but cannot write.
+ADVANCE-TECH BL-22 (health score): explainable additive score: every point comes from a named real signal (seats, storage, payment, deliverability), per-signal contribution shown row by row, Control Plane signed answer, Rule 52 kernel verify, never a black box.
+ADVANCE-TECH BL-23 (forecast): range forecast from real billing intents with percentile intervals computed in SQL, inputs listed beside the range, signed answer, zero is data.
+ADVANCE-TECH BL-24 (timeline): built only from the append-only hash-chained ledger, keyset pagination, every page chain-verified, nothing editable.
+ADVANCE-TECH BL-61 (incidents): incident record with owner and deadline in PostgreSQL, blameless post-mortem as a versioned runbook, status words for employees, hash-chained ledger lines.
+ADVANCE-TECH BL-66 (knowledge): versioned articles in PostgreSQL, full-text search (tsvector + websearch_to_tsquery) with trigram typo tolerance, each article linked to the runbook that uses it.
+ADVANCE-TECH BL-67 (QA review): rubric scores chained in the ledger, seeded random sampling per agent, two-reviewer calibration, scores shown as counts only.
+ADVANCE-TECH BL-50 (data requests): 30-day clock per request in the database, retention policy tables, crypto-erase where data is encrypted, deletion proof = hash ledger line, outside signed copy.
+ADVANCE-TECH BL-05 (CSAT): one-time Ed25519-signed survey token, one-click answer, result signed and verified by the kernel, median and distribution only.
+ADVANCE-TECH BL-63 (sandbox): every Desk SQL runs a rolled-back selftest on the live database and a shadow schema dry-run first, result stored as a PROOF line.
+ADVANCE-TECH BL-27 (migration): Rust IMAP migrator (imap-codec, resumable batches, retries with backoff), signed progress, no customer mail content shown to staff.

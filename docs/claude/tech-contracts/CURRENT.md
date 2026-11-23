@@ -3525,3 +3525,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 1m-6 B10 Reports GREEN (WIRED: YES / REAL: YES, his AD16 + install fdcf8ea0b, my Chrome look), ORDER-LOCK of billionaire list in list, blueprint, CLAUDE.md, WORKING-NOW and gate, TECH-LAW CHECKED, TESTED: gate ast ok, Desk cargo 102, bun 114
 
 - billionaire DASHBOARD-FIRST rule (his 09:33): Dashboard order 1m/1n/1o/1a first, BL-07+ only after 1n and 1o GREEN, gate enforces, TECH-LAW CHECKED, TESTED: gate ast ok, docs only
+
+- billionaire ADVANCE TECHNOLOGY per phase (list section F, blueprint, NOW-LIST, WORKING-NOW, gate row check), TECH-LAW CHECKED, TESTED: gate ast ok, docs only
+
+- billionaire ADVANCE-TECH line next to every BL phase (list section F, blueprint, NOW-LIST, WORKING-NOW) and gate check, TECH-LAW CHECKED, TESTED: gate ast ok, all 20 ORDER-LOCK rows have a line, docs only

@@ -360,6 +360,12 @@ if _desk_code and os.path.exists(cur):
                 _ord = _ol.group(1).strip(",").split(",")
                 _st = {m.group(1): m.group(2) for m in re.finditer(r"^\| (BL-\d{2}) \|[^|]*\|\s*([^|]*)\|", _txt, re.M)}
                 _next = [i for i in _ord if not _st.get(i, "").strip().startswith("GREEN") and not _st.get(i, "").strip().startswith("NOT YET")]
+                _frows = set(re.findall(r"^\| (BL-\d{2}) \| [^|]+\| [^|]{40,}\|$", _txt.split("## F. ADVANCE TECHNOLOGY PER PHASE")[-1], re.M)) if "## F. ADVANCE TECHNOLOGY PER PHASE" in _txt else set()
+                if _next and _next[0] in _ids and _next[0] not in _frows:
+                    fail("BILLIONAIRE LIST", f"{_next[0]} has no ADVANCE TECHNOLOGY row in section F of BILLIONAIRE-SETUP-LIST-23NOV.md (his 09:35: advance technology next to every phase, world-class)")
+                _miss = [i for i in _ord if not re.search(r"^ADVANCE-TECH " + i + r" \([^)]*\): .{60,}", _txt, re.M)]
+                if _miss:
+                    fail("BILLIONAIRE LIST", f"ADVANCE-TECH line missing in BILLIONAIRE-SETUP-LIST-23NOV.md section F for {_miss[:4]} (his 09:36: advance technology next to every phase, world advance, before commit)")
                 _tail = _ord[_ord.index("BL-07"):] if "BL-07" in _ord else []
                 _nlt = open("docs/claude/admin-desk/NOW-LIST-23NOV.md", errors="ignore").read() if os.path.exists("docs/claude/admin-desk/NOW-LIST-23NOV.md") else ""
                 if set(_tail) & _ids and not re.search(r"\b1o (?:GREEN|= GREEN)", _nlt):
