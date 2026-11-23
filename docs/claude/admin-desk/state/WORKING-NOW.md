@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 10:19 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 10:20 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1m-8 B9b code done, committing
 NEXT STEP: his desk-install, Chrome look at Customers
 HIS LAST WORD: his 10:12 + 10:16 words
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 9f005c22 23 Nov 10:19 Desk 1m-8 B9b customers six packages + plan detail, B9c planned
 - 92f4d775 23 Nov 10:09 ledger line bd9a2eeb
 - bd9a2eeb 23 Nov 10:09 B6b GREEN
 - 49d66341 23 Nov 09:59 ledger line 7fd84e13
@@ -72,29 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 99d32b28 23 Nov 09:52 ledger line 5f7f1cf3
 - 5f7f1cf3 23 Nov 09:52 B6b docs first
 - 5e086bac 23 Nov 09:37 ledger line b358e684
-- b358e684 23 Nov 09:37 BL-04 advance tech line
 
 ## Uncommitted Desk files
-M  admin-desk/BILLIONAIRE-SETUP-LIST-23NOV.md
-M  admin-desk/D6-CARDS-LIST-23NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  admin-desk/scripts/cp-install.sh
-M  admin-desk/scripts/desk-install.sh
-M  admin-desk/server/src/customers.rs
-M  docs/claude/admin-desk/BILLIONAIRE-SETUP-LIST-23NOV.md
-M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/scripts/cp-install.sh
-M  docs/claude/admin-desk/scripts/desk-install.sh
-M  docs/claude/admin-desk/server/src/customers.rs
-MM docs/claude/admin-desk/state/WORKING-NOW.md
-M  founder-web/src/desk/DeskCustomers.tsx
-M  founder-web/src/desk/desk_customers_pure.test.ts
-M  founder-web/src/desk/desk_customers_pure.ts
-A  founder-web/src/desk/desk_packages_pure.test.ts
-A  founder-web/src/desk/desk_packages_pure.ts
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

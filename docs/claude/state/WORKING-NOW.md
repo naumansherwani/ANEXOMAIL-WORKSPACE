@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 10:19 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 10:20 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 1m-8 B9b code done, committing
 NEXT STEP: his desk-install, Chrome look at Customers
 HIS LAST WORD: his 10:12 + 10:16 words
@@ -19,57 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 9f005c22 23 Nov 10:19 Desk 1m-8 B9b customers six packages + plan detail, B9c planned
 - 92f4d775 23 Nov 10:09 ledger line bd9a2eeb
 - bd9a2eeb 23 Nov 10:09 B6b GREEN
 - 49d66341 23 Nov 09:59 ledger line 7fd84e13
 - 7fd84e13 23 Nov 09:59 Desk 1m-7 B6b own-domain mail posture + gate PHASE FILES
-- 99d32b28 23 Nov 09:52 ledger line 5f7f1cf3
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/BILLIONAIRE-SETUP-LIST-23NOV.md
-M  admin-desk/D6-CARDS-LIST-23NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  admin-desk/scripts/cp-install.sh
-M  admin-desk/scripts/desk-install.sh
-M  admin-desk/server/src/customers.rs
-A  control-plane/sql/CP4.sql
-A  control-plane/sql/checks/CP4-check.sql
-M  control-plane/src/census.rs
-M  docs/claude/admin-desk/BILLIONAIRE-SETUP-LIST-23NOV.md
-M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/scripts/cp-install.sh
-M  docs/claude/admin-desk/scripts/desk-install.sh
-M  docs/claude/admin-desk/server/src/customers.rs
-M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/server/rules-gate.py
-R  founder-web/dist-desk/assets/desk-DoEHb_-E.js -> founder-web/dist-desk/assets/desk-BoFzV3WI.js
-M  founder-web/dist-desk/desk.html
-M  founder-web/src/desk/DeskCustomers.tsx
-M  founder-web/src/desk/desk_customers_pure.test.ts
-M  founder-web/src/desk/desk_customers_pure.ts
-A  founder-web/src/desk/desk_packages_pure.test.ts
-A  founder-web/src/desk/desk_packages_pure.ts
-M  lanes/ALL-FILES.csv
-M  lanes/founder.txt
-M  lanes/shared.txt
-M  lovable-gold/README.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- founder-web/src/desk/desk_customers_pure.ts        |  23 +++-
- founder-web/src/desk/desk_packages_pure.test.ts    |   9 ++
- founder-web/src/desk/desk_packages_pure.ts         |  24 ++++
- lanes/ALL-FILES.csv                                |   6 +-
- lanes/founder.txt                                  |   4 +-
- lanes/shared.txt                                   |   2 +
- lovable-gold/README.md                             |   2 +-
- 32 files changed, 429 insertions(+), 60 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 54 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 52 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -80,4 +43,4 @@ M  lovable-gold/README.md
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a2d5f97a82e4ef51f1b0a0f7cdbb0c865c99fefa)
+WIP snapshot: refs/wip/last (b166afcb04e414a14f163ade845784fce158ee5d)
