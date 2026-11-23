@@ -1,3 +1,10 @@
+# TECH CONTRACT FOR PHASE: DESK COMMAND CENTER OS TITLE (phase 1m, sub-phase CC1-os, list BL-29 (his explicit 24 Nov 2026 02:2x PKT word "OS add kerne ke code likho"; BL-28 B9c stays OPEN and next on the ORDER-LOCK), plus AD06d CHECK repair for BL-28), written 24 Nov 2026 02:3x PKT BEFORE install. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| React 19 + TypeScript title, second line now COMMAND CENTER OS (only the word OS added, everything else identical, fitSpacing keeps the line as wide as ANEXOMAIL) | founder-web/src/desk/DeskTitle.tsx, founder-web/src/desk/desk_title.test.ts | YES | bun test src/desk 127 pass, old file backed up in backups/desk/20261124-0225-os-title |
+| PostgreSQL AD06d CHECK repaired: the list starts with the four landing page packages in order and may hold Premium and Max after them (AD19) | docs/claude/admin-desk/sql/AD06d.sql, docs/claude/admin-desk/sql/checks/AD06d-check.sql | YES | scratch PG16: 4 of 4 rows true |
+| Carried unchanged | docs/claude/admin-desk/sql/AD19.sql, docs/claude/admin-desk/server/src/customers.rs | YES | untouched |
+
 <!--TECHLAW-->
 
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-9 B9c step Y5 Premium and Max seat promises in the over-limit count, list BL-28), written 24 Nov 2026 02:4x PKT BEFORE the SQL ran on his server, rows updated after the scratch test. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (B9c Y5). Schema-first: AD06, AD06b, AD06d, AD14, AD18 read in full. Values are only his FINAL decisions: Business Premium 7,000 users (7 Nov section 6 A), Business Max strict cap 125,000 users per company (8 Nov G4); starred storage/transfer/file limits are NOT published (unverified), no feature list is invented.
@@ -3654,3 +3661,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Command Center OS demo (HTML, sample data, real Desk untouched), TECH-LAW CHECKED, TESTED: rendered at 1280 and 390, no sideways scroll, flow clicked, gate 0 fail
 
 - Title demo V25: only the word OS added after COMMAND CENTER, all else identical to V24, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered and looked at, gate 0 fail
+
+- Real Desk title now COMMAND CENTER OS (only OS added, old file backed up) and AD06d CHECK repaired after his ad-auto CHECK FALSE, WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 127 pass, scratch PG16 AD06d CHECK 4 of 4 true, gate 0 fail
+
+- Real Desk title now COMMAND CENTER OS (only OS added, old file backed up) and AD06d CHECK repaired after his ad-auto CHECK FALSE, WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 127 pass, scratch PG16 AD06d CHECK 4 of 4 true, gate 0 fail

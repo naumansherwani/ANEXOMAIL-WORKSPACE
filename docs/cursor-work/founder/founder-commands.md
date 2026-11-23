@@ -6035,3 +6035,7 @@ FINAL: 21 Nov Desk Isolation Law and Gate never break. Company OS (Command Cente
 - Command Center OS demo (HTML, sample data, real Desk untouched), TECH-LAW CHECKED, TESTED: rendered at 1280 and 390, no sideways scroll, flow clicked, gate 0 fail
 
 - Title demo V25: only the word OS added after COMMAND CENTER, all else identical to V24, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered and looked at, gate 0 fail
+
+- Real Desk title now COMMAND CENTER OS (only OS added, old file backed up) and AD06d CHECK repaired after his ad-auto CHECK FALSE, WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 127 pass, scratch PG16 AD06d CHECK 4 of 4 true, gate 0 fail
+
+- Real Desk title now COMMAND CENTER OS (only OS added, old file backed up) and AD06d CHECK repaired after his ad-auto CHECK FALSE, WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 127 pass, scratch PG16 AD06d CHECK 4 of 4 true, gate 0 fail

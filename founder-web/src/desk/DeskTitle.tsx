@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 /** Anexomail Command Center title (his 23 Nov 2026 11:48 "perfect hain", demo V24 = docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V24-LIGHT-SOFT-CENTRE.html).
- *  Replaces ONLY the big page title: ANEXOMAIL / COMMAND CENTER / Admin Desk. Every Desk colour, card, rail and clock stays as it was.
+ *  Replaces ONLY the big page title: ANEXOMAIL / COMMAND CENTER OS / Admin Desk. Every Desk colour, card, rail and clock stays as it was.
  *  Colours = the original Anexomail logo A (steel #2C4C79, navy #1E3557, silver #E6EBF1 / #C3CCD8). Own file, own CSS; pure CSS + one canvas, no network, no third party.
  *  Back to the old title: restore backups/desk/20261123-1150-before-command-center-title/DeskShell.tsx. Reduced motion = still picture. */
 export const TITLE_CSS = `
@@ -71,7 +71,7 @@ export function DeskTitle() {
     f();
     return () => { cancelAnimationFrame(raf); removeEventListener("resize", size); };
   }, []);
-  const L = titleLetters(["ANEXOMAIL", "COMMAND CENTER"]);
+  const L = titleLetters(["ANEXOMAIL", "COMMAND CENTER OS"]);
   const line = (k: string, words: { word: string; i: number }[]) => (
     <span className={k} aria-hidden="true">{words.map((w, q) => <span key={q}><span className="w">{[...w.word].map((ch, j) => <span key={j} className="c" style={{ ["--i" as string]: w.i + j }}>{ch}</span>)}</span>{q < words.length - 1 ? " " : ""}</span>)}</span>
   );
@@ -79,7 +79,7 @@ export function DeskTitle() {
     <div className="dsk-hero">
       <canvas ref={cv} className="dsk-sp" aria-hidden="true" />
       <div className="dsk-halo" aria-hidden="true" />
-      <h1 ref={h} className="dsk-ttl" aria-label="ANEXOMAIL COMMAND CENTER">{line("l1", L[0])}{line("l2", L[1])}</h1>
+      <h1 ref={h} className="dsk-ttl" aria-label="ANEXOMAIL COMMAND CENTER OS">{line("l1", L[0])}{line("l2", L[1])}</h1>
       <div className="dsk-sub"><span className="rule" />Admin Desk</div>
     </div>
   );
