@@ -2855,3 +2855,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Text-only demo (Senior Executive under title, Customer Operations folder heading, landing ANEXOMAIL COMMAND CENTER + Operations line), real code untouched, TECH-LAW CHECKED, TESTED: real landing built in a scratch copy and screenshot at 1280 and 390, dashboard rendered, gate 0 fail
 
 - Login page kept original (code read, my Chrome signed in so only the dashboard seen), host change admindesk to commandcenteros judged possible and written as a plan, nothing coded, TECH-LAW CHECKED, TESTED: grep of every hard-coded host in Rust, scripts and UI, gate 0 fail
+
+- Real Desk text: COMMAND CENTER OS, Senior Executive, Customer Operations rail heading, Landing ANEXOMAIL COMMAND CENTER + Operations line, dist-desk rebuilt (his last install showed the old bundle), WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 127 pass, tsc clean, build:desk ok, gate 0 fail
+
+- Real Desk text: COMMAND CENTER OS, Senior Executive, Customer Operations rail heading, Landing ANEXOMAIL COMMAND CENTER + Operations line, dist-desk rebuilt (his last install showed the old bundle), WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 127 pass, tsc clean, build:desk ok, gate 0 fail

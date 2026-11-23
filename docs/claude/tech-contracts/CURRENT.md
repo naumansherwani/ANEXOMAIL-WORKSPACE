@@ -1,3 +1,9 @@
+# TECH CONTRACT FOR PHASE: DESK COMMAND CENTER TEXT (phase 1m, sub-phase CC1-text, list BL-29 (CC1; his explicit 24 Nov 2026 03:28 PKT "meri haan hai"; BL-28 B9c Y5 is GREEN, Y4 stays open), TEXT ONLY, design intact), written 24 Nov 2026 03:4x PKT BEFORE install. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| React 19 + TypeScript: text-only changes (line under the title = Senior Executive, rail folder heading shown as Customer Operations, Landing title ANEXOMAIL COMMAND CENTER + Operations line); registry, tests, colours, motion untouched | founder-web/src/desk/DeskTitle.tsx, founder-web/src/desk/DeskShell.tsx, founder-web/src/desk/DeskPages.tsx | YES | bun test src/desk 127 pass, tsc clean, desk build desk-D_0SyRgz.js, old files in backups/desk/20261124-0335-text-change |
+| Carried unchanged (phase files) | docs/claude/admin-desk/sql/AD19.sql, docs/claude/admin-desk/server/src/customers.rs | YES | untouched |
+
 # TECH CONTRACT FOR PHASE: DESK COMMAND CENTER OS TITLE (phase 1m, sub-phase CC1-os, list BL-29 (his explicit 24 Nov 2026 02:2x PKT word "OS add kerne ke code likho"; BL-28 B9c stays OPEN and next on the ORDER-LOCK), plus AD06d CHECK repair for BL-28), written 24 Nov 2026 02:3x PKT BEFORE install. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3673,3 +3679,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Text-only demo (Senior Executive under title, Customer Operations folder heading, landing ANEXOMAIL COMMAND CENTER + Operations line), real code untouched, TECH-LAW CHECKED, TESTED: real landing built in a scratch copy and screenshot at 1280 and 390, dashboard rendered, gate 0 fail
 
 - Login page kept original (code read, my Chrome signed in so only the dashboard seen), host change admindesk to commandcenteros judged possible and written as a plan, nothing coded, TECH-LAW CHECKED, TESTED: grep of every hard-coded host in Rust, scripts and UI, gate 0 fail
+
+- Real Desk text: COMMAND CENTER OS, Senior Executive, Customer Operations rail heading, Landing ANEXOMAIL COMMAND CENTER + Operations line, dist-desk rebuilt (his last install showed the old bundle), WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 127 pass, tsc clean, build:desk ok, gate 0 fail
+
+- Real Desk text: COMMAND CENTER OS, Senior Executive, Customer Operations rail heading, Landing ANEXOMAIL COMMAND CENTER + Operations line, dist-desk rebuilt (his last install showed the old bundle), WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 127 pass, tsc clean, build:desk ok, gate 0 fail

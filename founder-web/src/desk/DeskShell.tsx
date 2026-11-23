@@ -146,7 +146,7 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, s
         <div className="dsk-scroll">
           {groups.map((g) => (
             <div key={g.label || "top"} style={{ display: "contents" }}>
-              {g.label && <p className="dsk-grp">{g.label}</p>}
+              {g.label && <p className="dsk-grp">{g.label === "Admin Desk" ? "Customer Operations" : g.label}</p>}
               {g.items.map((n) => (
                 <div className="dsk-row" key={n.key}>
                   <button type="button" className="dsk-nav" data-here={n.key === (sub || "dashboard") ? "1" : undefined} data-key={n.key} aria-keyshortcuts={keyLabel(n.key) ? keyLabel(n.key) : undefined} aria-current={n.live ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={keyLabel(n.key) || undefined} onClick={(e) => { if (!n.live) e.preventDefault(); else if (n.key === "dashboard") nav("/dashboard"); else nav(route(n.key)); }}>{n.glyph}<span>{n.label}</span></button>
