@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 07:16 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 07:16 PKT) - read this FIRST for the Desk after a compaction
 DOING: gate hole closed (control-plane + scripts count as Desk code), PROOF CP2 line in desk-install, rail follows active page
 NEXT STEP: rail key map for his haan, then B9 Rust census + AD14
 HIS LAST WORD: his 07:12: gate ne mistake ki, scroll bar active item par
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 56b3e073 23 Nov 07:16 Desk: gate covers control-plane + scripts, PROOF CP2 line, rail follows active page
 - ac50fd7e 23 Nov 07:01 ledger line 027ee67c
 - 027ee67c 23 Nov 07:01 Ctrl+D GREEN
 - 534d2339 23 Nov 06:50 ledger line 70d187b0
@@ -72,13 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - a0d310be 23 Nov 06:44 ledger line 57ba7877
 - 1864b318 23 Nov 06:44 ledger line 78f5bd1d
 - 78f5bd1d 23 Nov 06:44 future-proof law + B9 plan + Ctrl+D
-- 5098e513 23 Nov 06:32 ledger line 66b22bbc
 
 ## Uncommitted Desk files
- M admin-desk/scripts/desk-install.sh
- M docs/claude/admin-desk/scripts/desk-install.sh
  M docs/claude/admin-desk/state/WORKING-NOW.md
- M founder-web/src/desk/DeskShell.tsx
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

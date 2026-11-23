@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 07:16 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 07:16 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: gate hole closed (control-plane + scripts count as Desk code), PROOF CP2 line in desk-install, rail follows active page
 NEXT STEP: rail key map for his haan, then B9 Rust census + AD14
 HIS LAST WORD: his 07:12: gate ne mistake ki, scroll bar active item par
@@ -19,34 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 56b3e073 23 Nov 07:16 Desk: gate covers control-plane + scripts, PROOF CP2 line, rail follows active page
 - ac50fd7e 23 Nov 07:01 ledger line 027ee67c
 - 027ee67c 23 Nov 07:01 Ctrl+D GREEN
 - 534d2339 23 Nov 06:50 ledger line 70d187b0
 - 70d187b0 23 Nov 06:50 1m-4 B9 CP2
-- a0d310be 23 Nov 06:44 ledger line 57ba7877
 
 ## Uncommitted files (half-done work if any)
- M admin-desk/scripts/desk-install.sh
- M docs/claude/admin-desk/scripts/desk-install.sh
  M docs/claude/state/WORKING-NOW.md
- M docs/claude/tech-contracts/CURRENT.md
- M docs/cursor-work/server/rules-gate.py
- D founder-web/dist-desk/assets/desk-DnRFMxBV.js
- M founder-web/dist-desk/desk.html
- M founder-web/src/desk/DeskShell.tsx
-?? founder-web/dist-desk/assets/desk-Cv_U36OZ.js
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/admin-desk/scripts/desk-install.sh |   5 +
- docs/claude/state/WORKING-NOW.md               |  31 ++---
- docs/claude/tech-contracts/CURRENT.md          |   8 ++
- docs/cursor-work/server/rules-gate.py          |   3 +-
- founder-web/dist-desk/assets/desk-DnRFMxBV.js  | 158 -------------------------
- founder-web/dist-desk/desk.html                |   2 +-
- founder-web/src/desk/DeskShell.tsx             |   4 +-
- 8 files changed, 37 insertions(+), 179 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 31 ++-----------------------------
+ 1 file changed, 2 insertions(+), 29 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -57,4 +43,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (e5950d2567f48d96cf8888093e665ed961d93eab)
+WIP snapshot: refs/wip/last (01253ea6f1ae3ee2f98390c381fe7742d8b12798)
