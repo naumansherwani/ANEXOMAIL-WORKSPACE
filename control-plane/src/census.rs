@@ -4,7 +4,7 @@ use crate::verify::{signed_body, valid_id, Seen, EXPIRY, SKEW};
 use serde_json::{Map, Value};
 
 pub const AUD_CENSUS: &str = "desk-census";
-pub const PKGS: [&str; 4] = ["basic", "pro", "business", "business_pro"];
+pub const PKGS: [&str; 6] = ["basic", "pro", "business", "business_pro", "business_premium", "business_max"];
 const MAX_SEATS: i64 = 999_999;
 
 #[derive(Debug, PartialEq)]

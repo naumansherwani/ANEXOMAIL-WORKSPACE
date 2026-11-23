@@ -3,13 +3,14 @@ His words: copy the setup of the billionaire companies (Zendesk, Salesforce and 
 Sources used (web research, 23 Nov 2026): Zendesk Support / Explore metrics and admin docs, Salesforce Service Cloud (Omni-Channel, Entitlements and Milestones, Knowledge, Shield, Setup Audit Trail, Sharing Model), Front, Intercom, Freshdesk, ServiceNow, Google Workspace Admin (Security Center, Alert Center, Access Approval), Microsoft 365 Admin (Secure Score, Service Health), Proton (zero access). Law: FUTURE-PROOF (built ONCE for when the business is big), SQL WORLD-CLASS, Rule 52 (every number signed and kernel-verified), HTTP/3 only, no third-party vendor.
 Status words: GREEN = live and seen in Chrome. SQL = database part live, screen open. OPEN = planned, not built. NOT YET = needs a product that does not exist yet (said honestly, never faked).
 
-ORDER-LOCK (23 Nov 2026 09:35 PKT, his order): BL-04,BL-26,BL-46,BL-49,BL-48,BL-07,BL-08,BL-10,BL-11,BL-12,BL-22,BL-23,BL-24,BL-61,BL-66,BL-67,BL-50,BL-05,BL-63,BL-27  | Rule: build in THIS order, one BL row = one phase; a row marked GREEN is never rebuilt (no duplicate, no clash with existing phases); BL-27 waits for phase P; when every row is GREEN he decides the next work. The gate reads this line.
+ORDER-LOCK (23 Nov 2026 09:35 PKT, his order): BL-04,BL-26,BL-28,BL-46,BL-49,BL-48,BL-07,BL-08,BL-10,BL-11,BL-12,BL-22,BL-23,BL-24,BL-61,BL-66,BL-67,BL-50,BL-05,BL-63,BL-27  | Rule: build in THIS order, one BL row = one phase; a row marked GREEN is never rebuilt (no duplicate, no clash with existing phases); BL-27 waits for phase P; when every row is GREEN he decides the next work. The gate reads this line.
 
 DASHBOARD-FIRST (23 Nov 2026 09:4x PKT, his 09:33 word 'dashboard ke folder ki tarteeb ke baad yeh chalay ga'): the Dashboard order of NOW-LIST-23NOV.md (1m cards B6b, B13, B11, B12, then 1n, 1o, 1a ...) runs FIRST and is never broken. BL-26, BL-46, BL-49, BL-48 ARE those Dashboard cards (B6b, B13, B11, B12), so they stay in the Dashboard order. The rows from BL-07 on (BL-07, 08, 10, 11, 12, 22, 23, 24, 61, 66, 67, 50, 05, 63, 27) start ONLY after phases 1n and 1o are GREEN in NOW-LIST-23NOV.md. The gate checks it.
 
 ## A. Case desk (Zendesk Support, Salesforce Service Cloud, Front)
 | id | What they have | Anexomail Desk today | ADVANCE beyond them | Where |
 |---|---|---|---|---|
+| BL-28 | B9c | PostgreSQL versioned plan catalogue with append-only hash-chained release log and NOTIFY trigger, Rust tokio-postgres LISTEN fan-out over HTTP/3 WebTransport with SSE fallback, signed Rule 52 event, kernel-verified live refresh under one second |
 | BL-01 | Shared inboxes per address, assignment, status flow | GREEN (AD5, AD7: addresses, cases, legal status moves) | status moves decided INSIDE the database, a case is never deleted, identity fixed | Cases |
 | BL-02 | Views, queues, queue pressure, backlog | GREEN (B1 AD11) | 1-minute hash-chained queue series, honest gaps, team signal calm/busy/strained/overloaded | B1 |
 | BL-03 | SLA policies and clocks, breach warnings | GREEN (B2) | clock exists exactly when the Priority label does (database CHECK), alert raised once | B2 |
@@ -33,6 +34,7 @@ DASHBOARD-FIRST (23 Nov 2026 09:4x PKT, his 09:33 word 'dashboard ke folder ki t
 | BL-24 | Contact and company timeline | OPEN | timeline is built from the append-only ledger, nothing editable | CRM |
 | BL-25 | Domain and deliverability posture per customer | GREEN (B6 step 1) | SPF, DKIM, DMARC, MX from the real checks, sums verified before display | B6 |
 | BL-26 | Bounce and complaint rates, TLS reporting, DANE | GREEN part 1 (B6b own-domain posture 23 Nov 10:1x; rates = B6c NOT YET) | own-domain MTA-STS, TLS-RPT and DANE by our own Rust DNS probe | B6b |
+| BL-28 | Plan catalogue with versions, live plan changes, release notes per plan (Zendesk plan view, Salesforce product catalogue, Intercom what's new) | OPEN (B9c, 1m-9, his 10:16 word) | any plan change reaches every open Desk screen within ONE second: NOTIFY + Rust LISTEN + signed Rule 52 push over HTTP/3; the same table feeds the customer what's-new notice | B9c |
 | BL-27 | Migration / onboarding board | NOT YET (needs phase P, the Rust IMAP migrator) | batches and retries signed like every other number | B7 |
 ## C. Security and governance (Salesforce Shield, Google Security Center, Microsoft Secure Score, Okta)
 | id | What they have | Anexomail Desk today | ADVANCE beyond them | Where |
@@ -134,3 +136,4 @@ ADVANCE-TECH BL-04 (B10 Reports, GREEN 23 Nov 2026): PostgreSQL AD16 SECURITY DE
 | BL-63 | sandbox | every Desk SQL runs a rolled-back selftest on the live database and a shadow schema dry-run first, result stored as a PROOF line |
 | BL-27 | migration | Rust IMAP migrator (imap-codec, resumable batches, retries with backoff), signed progress, no customer mail content shown to staff |
 | BL-04 | B10 Reports, GREEN 23 Nov 2026 | PostgreSQL AD16 SECURITY DEFINER report over the real case tables with median + p90, per-queue read right, Rust Axum door over HTTP/3 with sum checks, Rule 52 kernel verify, all IN CODE |
+ADVANCE-TECH BL-28 (B9c): PostgreSQL versioned plan catalogue with append-only hash-chained release log and NOTIFY trigger, Rust tokio-postgres LISTEN fan-out over HTTP/3 WebTransport with SSE fallback, signed Rule 52 event, kernel-verified live refresh under one second, same table feeds the customer what's-new notice.

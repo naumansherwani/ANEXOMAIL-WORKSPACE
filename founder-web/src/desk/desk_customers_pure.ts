@@ -1,10 +1,12 @@
 // ADMIN DESK 1m-4 (card B9 Customers and Plans), 23 Nov 2026. Pure parsing of the one read-only door /desk/v1/customers/census. Fail-closed: anything that is not exactly the agreed shape is null and the screen says "Data unavailable".
 // Counts only (never a company name, e-mail, domain or person). No money. Zero is data, always shown as a number.
-export const PKGS = ["basic", "pro", "business", "business_pro"] as const;
+export const PKGS = ["basic", "pro", "business", "business_pro", "business_premium", "business_max"] as const;
+export const PKG_ALL = [...PKGS, "none", "unknown"] as const;
 export const STATES = ["active", "trialing", "grace_period", "not_active_yet", "ended"] as const;
 export const SIGNAL_KEYS = ["grace_period", "not_active_yet", "ended", "payment_received_not_active", "seats_90", "seats_95", "storage_90", "storage_95"] as const;
 export type Signal = { key: string; label: string; runbook: string | null; count: number };
-export type Census = { generated_at: string; companies: number; seats_in_use: number; packages: Record<string, number>; states: Record<string, number>; intervals: Record<string, number>; size_bands: Record<string, number>; growth_12m: number[]; ended_30d: number; renewals_7d: number; over_limit: Record<string, number>; signals: Signal[] };
+export type PlanDetail = { companies: number; seats_in_use: number; states: Record<string, number>; intervals: Record<string, number>; size_bands: Record<string, number>; storage_90: number };
+export type Census = { generated_at: string; companies: number; seats_in_use: number; packages: Record<string, number>; states: Record<string, number>; intervals: Record<string, number>; size_bands: Record<string, number>; growth_12m: number[]; ended_30d: number; renewals_7d: number; over_limit: Record<string, number>; by_package: Record<string, PlanDetail>; signals: Signal[] };
 export type Trend = "up" | "steady" | "down" | "unknown";
 export type Customers = { census: Census; spark: (number | null)[]; trend: Trend };
 const nat = (x: unknown): x is number => typeof x === "number" && Number.isInteger(x) && x >= 0;
@@ -16,12 +18,21 @@ function group(x: unknown, keys: readonly string[]): Record<string, number> | nu
 const total = (g: Record<string, number>) => Object.values(g).reduce((a, b) => a + b, 0);
 export function parseCustomers(j: unknown): Customers | null {
   const o = rec(j), c = rec(o?.census), s = rec(o?.series);
-  if (!o || !c || !s || Object.keys(c).length !== 12) return null;
+  if (!o || !c || !s || Object.keys(c).length !== 13) return null;
   if (!nat(c.companies) || !nat(c.seats_in_use) || !nat(c.ended_30d) || !nat(c.renewals_7d) || typeof c.generated_at !== "string" || !c.generated_at) return null;
   const n = c.companies;
-  const packages = group(c.packages, [...PKGS, "unknown"]), states = group(c.states, STATES), intervals = group(c.intervals, ["month", "year", "none"]), bands = group(c.size_bands, ["1", "2-5", "6-20", "21-100", "101+"]);
+  const packages = group(c.packages, PKG_ALL), states = group(c.states, STATES), intervals = group(c.intervals, ["month", "year", "none"]), bands = group(c.size_bands, ["1", "2-5", "6-20", "21-100", "101+"]);
   if (!packages || !states || !intervals || !bands) return null;
   if (total(packages) !== n || total(states) !== n || total(intervals) > n || total(bands) > n) return null;
+  const bpr = rec(c.by_package); if (!bpr || Object.keys(bpr).length !== PKG_ALL.length) return null;
+  const by: Record<string, PlanDetail> = {}; let seatSum = 0;
+  for (const k of PKG_ALL) {
+    const g = rec(bpr[k]); if (!g || Object.keys(g).length !== 6 || !nat(g.companies) || !nat(g.seats_in_use) || !nat(g.storage_90) || g.companies !== packages[k] || g.storage_90 > g.companies) return null;
+    const st = group(g.states, STATES), iv = group(g.intervals, ["month", "year", "none"]), bd = group(g.size_bands, ["1", "2-5", "6-20", "21-100", "101+"]);
+    if (!st || !iv || !bd || total(st) !== g.companies || total(iv) > g.companies || total(bd) > g.companies) return null;
+    seatSum += g.seats_in_use; by[k] = { companies: g.companies, seats_in_use: g.seats_in_use, states: st, intervals: iv, size_bands: bd, storage_90: g.storage_90 };
+  }
+  if (seatSum !== c.seats_in_use) return null;
   if (!Array.isArray(c.growth_12m) || c.growth_12m.length !== 12 || !c.growth_12m.every(nat)) return null;
   const ol = rec(c.over_limit); if (!ol) return null; const over: Record<string, number> = {};
   for (const [k, v] of Object.entries(ol)) { if (!(PKGS as readonly string[]).includes(k) || !nat(v) || v > n) return null; over[k] = v; }
@@ -33,9 +44,9 @@ export function parseCustomers(j: unknown): Customers | null {
     signals.push({ key: g.key as string, label: g.label, runbook: g.runbook as string | null, count: g.count });
   }
   if (!Array.isArray(s.spark) || s.spark.length !== 24 || !s.spark.every((x) => x === null || nat(x)) || !["up", "steady", "down", "unknown"].includes(s.trend as string)) return null;
-  return { census: { generated_at: c.generated_at, companies: n, seats_in_use: c.seats_in_use, packages, states, intervals, size_bands: bands, growth_12m: c.growth_12m as number[], ended_30d: c.ended_30d, renewals_7d: c.renewals_7d, over_limit: over, signals }, spark: s.spark as (number | null)[], trend: s.trend as Trend };
+  return { census: { generated_at: c.generated_at, companies: n, seats_in_use: c.seats_in_use, packages, states, intervals, size_bands: bands, growth_12m: c.growth_12m as number[], ended_30d: c.ended_30d, renewals_7d: c.renewals_7d, over_limit: over, by_package: by, signals }, spark: s.spark as (number | null)[], trend: s.trend as Trend };
 }
-export const PKG_WORDS: Record<string, string> = { basic: "Basic", pro: "Pro", business: "Business", business_pro: "Business Pro", unknown: "Plan not recognised" };
+export const PKG_WORDS: Record<string, string> = { basic: "Basic", pro: "Pro", business: "Business", business_pro: "Business Pro", business_premium: "Business Premium", business_max: "Business Max", none: "No plan yet", unknown: "Plan not recognised" };
 export const STATE_WORDS: Record<string, string> = { active: "Active", trialing: "Trial", grace_period: "Grace period", not_active_yet: "Not active yet", ended: "Ended" };
 export const TREND_WORDS: Record<Trend, string> = { up: "More companies than 24 hours ago", steady: "Same as 24 hours ago", down: "Fewer companies than 24 hours ago", unknown: "No 24-hour history yet" };
 export const NOT_YOURS = "This is for people who may open a customer.";

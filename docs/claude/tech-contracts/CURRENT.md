@@ -1,5 +1,13 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-8 B9b Customers: six packages, No plan yet, clickable plan detail, FIX of BL-21), written 23 Nov 2026 10:3x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (B9b section X1..X8, FUTURE-PROOF LAW)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL CP4 (awam database, Control Plane read-only role): cp.census counts SIX packages (basic, pro, business, business_pro, business_premium, business_max) + a real none bucket (no subscription yet) + unknown (a plan name nobody knows), and a by_package breakdown (states, intervals, size bands, seats in use, storage at 90 percent) in the SAME single set-based pass; SECURITY DEFINER, counts only, rolled-back selftest; SCHEMA-FIRST CP2 | control-plane/sql/CP4.sql, control-plane/sql/checks/CP4-check.sql, docs/claude/admin-desk/scripts/cp-install.sh | yes | scratch awam selftest + CHECK 6/6 |
+| Rust + Tokio + Axum 0.8 Desk door /desk/v1/customers/census: closed key lists, eight plan keys, every per-plan part within its whole, per-plan states add up to the plan, seats add up to the total; Control Plane limit keys widened to six | server/src/customers.rs, control-plane/src/census.rs | yes | cargo tests |
+| Rule 52 kernel-verified read, fail-closed Data unavailable, zero is data; plan words: No plan yet (was wrongly Plan not recognised) | desk_customers_pure.ts, desk_customers_pure.test.ts | yes | bun tests, tsc |
+| React 19 + TypeScript: every plan row is a 44 px button that opens ONLY that plan's detail: package card facts (price, users, storage, attachment, chat file, transfer, feature ladder from the founder decisions of 7 Nov 2026, starred values flagged as not yet verified) + live counts of that plan | DeskCustomers.tsx, desk_packages_pure.ts, desk_packages_pure.test.ts | yes | vite build, my Chrome look |
+
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-7 B6b Own-domain mail posture, list BL-26), written 23 Nov 2026 10:0x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (B6b section W1..W8, FUTURE-PROOF LAW)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3550,3 +3558,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 1m-7 B6b Own-domain mail posture WRITTEN (not green): AD17 hash-chained series, Rust DNSSEC-validating probe /desk/v1/mailposture/board (MX, SPF, DKIM, DMARC, MTA-STS, TLS-RPT, DANE, DNSSEC), DeskMailPosture block in Deliverability card, gate PHASE FILES, bounce/complaint = B6c NOT YET, TECH-LAW CHECKED, TESTED: Desk cargo 109 pass, bun desk 118 pass, tsc clean, vite desk build ok, AD17 selftest + CHECK 8/8 on scratch PG
 
 - 1m-7 B6b Own-domain mail posture GREEN (WIRED: YES / REAL: YES, his AD17 + install 49d663418, my Chrome look: 4 of 8 real checks pass), TECH-LAW CHECKED, TESTED: Desk cargo 109, bun 118, tsc, vite, AD17 8/8
+
+- 1m-8 B9b Customers WRITTEN (not green): CP4 six packages + No plan yet + by_package census in one pass, Desk door per-plan sum checks, every plan clickable with only that plan's detail (package card facts from his 7 Nov decisions), gate FIX of BL-xx rule (his word), B9c (1m-9, BL-28 live plan updates within 1 s) written into blueprint, TECH-LAW CHECKED, TESTED: Desk cargo 109 pass, control-plane cargo 15 pass, bun desk 122 pass, tsc clean, vite desk build ok, CP4 selftest + CHECK 6/6 on scratch awam PG

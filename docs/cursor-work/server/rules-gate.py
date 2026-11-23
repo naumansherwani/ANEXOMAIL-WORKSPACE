@@ -360,8 +360,10 @@ if _desk_code and os.path.exists(cur):
                 _ord = _ol.group(1).strip(",").split(",")
                 _st = {m.group(1): m.group(2) for m in re.finditer(r"^\| (BL-\d{2}) \|[^|]*\|\s*([^|]*)\|", _txt.split("## F. ADVANCE TECHNOLOGY PER PHASE")[0], re.M)}
                 _next = [i for i in _ord if not _st.get(i, "").strip().startswith("GREEN") and not _st.get(i, "").strip().startswith("NOT YET")]
+                # his 10:2x word ("FIX ka ristha de do"): a heading "FIX of BL-xx" for a row that is GREEN is a correction of finished work, not a rebuild, so it needs no ORDER-LOCK turn; every other check still applies.
+                _fix = re.search(r"FIX of (BL-\d{2})", _blk2.splitlines()[0]); _is_fix = bool(_fix) and _st.get(_fix.group(1), "").strip().startswith("GREEN")
                 _frows = set(re.findall(r"^\| (BL-\d{2}) \| [^|]+\| [^|]{40,}\|$", _txt.split("## F. ADVANCE TECHNOLOGY PER PHASE")[-1], re.M)) if "## F. ADVANCE TECHNOLOGY PER PHASE" in _txt else set()
-                if _next and _next[0] in _ids and _next[0] not in _frows:
+                if _next and _next[0] in _ids and _next[0] not in _frows and not _is_fix:
                     fail("BILLIONAIRE LIST", f"{_next[0]} has no ADVANCE TECHNOLOGY row in section F of BILLIONAIRE-SETUP-LIST-23NOV.md (his 09:35: advance technology next to every phase, world-class)")
                 _miss = [i for i in _ord if not re.search(r"^ADVANCE-TECH " + i + r" \([^)]*\): .{60,}", _txt, re.M)]
                 if _miss:
@@ -370,7 +372,7 @@ if _desk_code and os.path.exists(cur):
                 _nlt = open("docs/claude/admin-desk/NOW-LIST-23NOV.md", errors="ignore").read() if os.path.exists("docs/claude/admin-desk/NOW-LIST-23NOV.md") else ""
                 if set(_tail) & _ids and not re.search(r"\b1o (?:GREEN|= GREEN)", _nlt):
                     fail("BILLIONAIRE LIST", "DASHBOARD-FIRST (his 09:33): BL-07 and later start only after the Dashboard order phases 1n and 1o are GREEN in NOW-LIST-23NOV.md")
-                if _next and _next[0] not in _ids:
+                if _next and _next[0] not in _ids and not _is_fix:
                     fail("BILLIONAIRE LIST", f"ORDER-LOCK: the next row to build is {_next[0]}, but the contract heading names {sorted(_ids)}; follow his order and never rebuild a GREEN row")
 # PHASE FILES (his 23 Nov 09:55 order): the gate is told ALL the work of the phase. Every code path named in the "Where in code" column of the newest CURRENT.md contract block (a .rs, .sql, .ts or .tsx file name)
 # must EXIST in the repo before a Desk commit; every NEW AD*.sql must carry its CHECK file, and the contract must hold at least one SQL row, one Rust row and one screen row. No advance SQL or no advance code = the commit is stopped.

@@ -12,7 +12,8 @@ use serde_json::{json, Value};
 
 pub const AUD_CENSUS: &str = "desk-census";
 pub const CENSUS_PATH: &str = "/control/v1/census";
-const PKGS: [&str; 4] = ["basic", "pro", "business", "business_pro"];
+const PKGS: [&str; 6] = ["basic", "pro", "business", "business_pro", "business_premium", "business_max"];
+const PKG_ALL: [&str; 8] = ["basic", "pro", "business", "business_pro", "business_premium", "business_max", "none", "unknown"];
 const SIGNALS: [&str; 8] = ["grace_period", "not_active_yet", "ended", "payment_received_not_active", "seats_90", "seats_95", "storage_90", "storage_95"];
 
 fn out(status: StatusCode, body: String) -> Response { (status, [(header::CONTENT_TYPE, "application/json"), (header::CACHE_CONTROL, "no-store")], body).into_response() }
@@ -51,15 +52,35 @@ fn sum_of(v: &Value, keys: &[&str]) -> Option<i64> {
     let o = v.as_object()?; if o.len() != keys.len() { return None; }
     let mut t = 0; for k in keys { let x = o.get(*k)?.as_i64()?; if x < 0 { return None; } t += x; } Some(t)
 }
+/// The per-plan breakdown the plan detail page relies on: the eight plan keys, each group's own companies equal the plan count, its states add up to them, intervals and size bands never exceed them,
+/// the storage count never exceeds them, and every seat adds up to the whole. A part that does not add up to its whole = the whole answer is refused.
+fn by_package_ok(v: &Value, companies: i64) -> bool {
+    let Some(bp) = v["by_package"].as_object() else { return false };
+    if bp.len() != PKG_ALL.len() { return false; }
+    let mut seats = 0i64;
+    for k in PKG_ALL {
+        let Some(g) = bp.get(k).and_then(|x| x.as_object()) else { return false };
+        if g.len() != 6 { return false; }
+        let c = g.get("companies").and_then(|x| x.as_i64()).unwrap_or(-1);
+        if c < 0 || c > companies || Some(c) != v["packages"][k].as_i64() { return false; }
+        let (Some(st), Some(iv), Some(bd), Some(s90), Some(se)) = (g.get("states"), g.get("intervals"), g.get("size_bands"), g.get("storage_90").and_then(|x| x.as_i64()), g.get("seats_in_use").and_then(|x| x.as_i64())) else { return false };
+        if sum_of(st, &["active", "trialing", "grace_period", "not_active_yet", "ended"]) != Some(c) { return false; }
+        if sum_of(iv, &["month", "year", "none"]).map(|t| t > c).unwrap_or(true) || sum_of(bd, &["1", "2-5", "6-20", "21-100", "101+"]).map(|t| t > c).unwrap_or(true) { return false; }
+        if s90 < 0 || s90 > c || se < 0 { return false; }
+        seats += se;
+    }
+    seats == n(v, "seats_in_use")
+}
 /// The shape the card relies on: closed key lists, no negative number, every grouping adds up to the companies, eight fixed signals in order. No personal field is allowed anywhere.
 pub fn census_shape_ok(v: &Value) -> bool {
     let Some(o) = v.as_object() else { return false };
-    let keys = ["generated_at", "companies", "seats_in_use", "packages", "states", "intervals", "size_bands", "growth_12m", "ended_30d", "renewals_7d", "over_limit", "signals"];
+    let keys = ["generated_at", "companies", "seats_in_use", "packages", "states", "intervals", "size_bands", "growth_12m", "ended_30d", "renewals_7d", "over_limit", "by_package", "signals"];
     if o.len() != keys.len() || keys.iter().any(|k| !o.contains_key(*k)) { return false; }
     let companies = n(v, "companies");
     if companies < 0 || n(v, "seats_in_use") < 0 || n(v, "ended_30d") < 0 || n(v, "renewals_7d") < 0 { return false; }
     if !v["generated_at"].as_str().map(|s| !s.is_empty() && s.len() <= 40).unwrap_or(false) { return false; }
-    if sum_of(&v["packages"], &["basic", "pro", "business", "business_pro", "unknown"]) != Some(companies) { return false; }
+    if sum_of(&v["packages"], &PKG_ALL) != Some(companies) { return false; }
+    if !by_package_ok(v, companies) { return false; }
     if sum_of(&v["states"], &["active", "trialing", "grace_period", "not_active_yet", "ended"]) != Some(companies) { return false; }
     if sum_of(&v["intervals"], &["month", "year", "none"]).map(|t| t > companies).unwrap_or(true) { return false; }
     if sum_of(&v["size_bands"], &["1", "2-5", "6-20", "21-100", "101+"]).map(|t| t > companies).unwrap_or(true) { return false; }
@@ -131,10 +152,17 @@ mod tests {
     const RID: &str = "11111111-2222-4333-8444-555555555555";
     fn hexs(b: &[u8]) -> String { b.iter().map(|x| format!("{x:02x}")).collect() }
     fn cp() -> (SigningKey, String) { let k = SigningKey::from_bytes(&[7u8; 32]); let p = hexs(k.verifying_key().as_bytes()); (k, p) }
+    fn bp_fixture() -> Value {
+        let mut m = serde_json::Map::new();
+        for (k, c, se) in [("basic", 2, 8), ("pro", 1, 5), ("business", 1, 6), ("business_pro", 1, 4), ("business_premium", 1, 5), ("business_max", 0, 0), ("none", 1, 3), ("unknown", 0, 0)] {
+            m.insert(k.into(), json!({"companies": c, "seats_in_use": se, "states": {"active": c, "trialing": 0, "grace_period": 0, "not_active_yet": 0, "ended": 0}, "intervals": {"month": c, "year": 0, "none": 0}, "size_bands": {"1": c, "2-5": 0, "6-20": 0, "21-100": 0, "101+": 0}, "storage_90": 0}));
+        }
+        Value::Object(m)
+    }
     fn good() -> Value {
         let sig: Vec<Value> = SIGNALS.iter().map(|k| json!({"key": k, "label": "x", "runbook": null, "count": 1})).collect();
         json!({"generated_at": "2026-11-23T08:00:00Z", "companies": 7, "seats_in_use": 31,
-            "packages": {"basic": 2, "pro": 2, "business": 1, "business_pro": 1, "unknown": 1},
+            "packages": {"basic": 2, "pro": 1, "business": 1, "business_pro": 1, "business_premium": 1, "business_max": 0, "none": 1, "unknown": 0}, "by_package": bp_fixture(),
             "states": {"active": 3, "trialing": 1, "grace_period": 1, "not_active_yet": 1, "ended": 1},
             "intervals": {"month": 4, "year": 2, "none": 1}, "size_bands": {"1": 1, "2-5": 3, "6-20": 2, "21-100": 1, "101+": 0},
             "growth_12m": [0,0,0,0,0,0,0,1,2,3,5,7], "ended_30d": 1, "renewals_7d": 2, "over_limit": {"basic": 0, "pro": 1}, "signals": sig})
@@ -147,6 +175,7 @@ mod tests {
         assert!(census_shape_ok(&good()));
         let mut z = good(); z["companies"] = json!(0); z["seats_in_use"] = json!(0);
         for k in ["packages", "states"] { for (_, v) in z[k].as_object_mut().unwrap().iter_mut() { *v = json!(0); } }
+        for (_, g) in z["by_package"].as_object_mut().unwrap().iter_mut() { g["companies"] = json!(0); g["seats_in_use"] = json!(0); for k in ["states", "intervals", "size_bands"] { for (_, v) in g[k].as_object_mut().unwrap().iter_mut() { *v = json!(0); } } }
         for k in ["intervals", "size_bands"] { for (_, v) in z[k].as_object_mut().unwrap().iter_mut() { *v = json!(0); } }
         z["growth_12m"] = json!(vec![0; 12]); z["ended_30d"] = json!(0); z["renewals_7d"] = json!(0); z["over_limit"] = json!({});
         for s in z["signals"].as_array_mut().unwrap() { s["count"] = json!(0); }
@@ -155,7 +184,13 @@ mod tests {
     #[test] fn wrong_shapes_are_refused() {
         let bad = |f: &dyn Fn(&mut Value)| { let mut v = good(); f(&mut v); assert!(!census_shape_ok(&v)); };
         bad(&|v| v["states"]["active"] = json!(4));
-        bad(&|v| v["packages"]["unknown"] = json!(0));
+        bad(&|v| v["packages"]["business"] = json!(0));
+        bad(&|v| v["by_package"]["pro"]["companies"] = json!(2));
+        bad(&|v| v["by_package"]["basic"]["states"]["active"] = json!(1));
+        bad(&|v| v["by_package"]["business_max"]["seats_in_use"] = json!(5));
+        bad(&|v| v["by_package"]["none"]["storage_90"] = json!(2));
+        bad(&|v| v["by_package"]["evil"] = json!({}));
+        bad(&|v| { v["by_package"].as_object_mut().unwrap().remove("none"); });
         bad(&|v| v["companies"] = json!(-1));
         bad(&|v| v["intervals"]["month"] = json!(9));
         bad(&|v| v["size_bands"]["1"] = json!(9));
