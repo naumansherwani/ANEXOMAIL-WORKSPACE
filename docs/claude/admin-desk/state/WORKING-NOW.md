@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 05:02 PKT) - read this FIRST for the Desk after a compaction
-DOING: SQL files zero-padded; 1l installed on his server (AD10 CHECK OK, 3 PROOF SAME), my Chrome look next
-NEXT STEP: Chrome look: create TEST escalation, then 1l GREEN
-HIS LAST WORD: his order: AD10 sorted after AD9, save context
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 05:03 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1l live at 1536px proven (ESC-261123-00037); 390/820 + double-press left
+NEXT STEP: iframe 390/820 look, then 1l GREEN
+HIS LAST WORD: his order: update context
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 21250ac7 23 Nov 05:02 ledger line bd60ce1b
 - bd60ce1b 23 Nov 05:02 SQL names zero-padded
 - 446f959a 23 Nov 04:48 ledger line 3c87ed51
 - 3c87ed51 23 Nov 04:48 1l D5c Escalate code
@@ -72,9 +73,10 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 8f1f5669 23 Nov 04:36 1l research + contract before code
 - d23a5a2e 23 Nov 04:30 ledger line f4afe900
 - f4afe900 23 Nov 04:30 founder inbox plan + reminder gate
-- e2147d46 23 Nov 04:25 ledger line c8287687
 
 ## Uncommitted Desk files
+ M admin-desk/D5C-ESCALATE-LIST-23NOV.md
+ M docs/claude/admin-desk/D5C-ESCALATE-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)

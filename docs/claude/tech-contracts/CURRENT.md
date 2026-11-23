@@ -3347,3 +3347,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 1l D5c ESCALATE CODE: AD10 + escalations.rs + DeskEscalate.tsx, TESTED: scratch PG selftest x2, cargo 73 pass, bun 73 pass, tsc, vite; TECH-LAW CHECKED; GREEN waits his install + Chrome
 
 - SQL ORDER FIX: AD1..AD9b renamed AD01..AD09b so AD10 sorts last, TESTED: ad-auto regex+sort -V checked, refs updated; his server AD10 CHECK OK 10/10 + install PROOF 3 SAME at 446f959a2; TECH-LAW CHECKED; 1l GREEN waits my Chrome look
+
+- 1l live look at desktop: case ESC-261123-00037 created + listed on his server, TESTED: my Chrome; TECH-LAW CHECKED; GREEN waits 390/820

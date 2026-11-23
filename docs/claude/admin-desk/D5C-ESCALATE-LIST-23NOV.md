@@ -18,3 +18,5 @@ Order lock unchanged: 1l NOW, then 1m..1o. SCOPE (said plainly): 1l is the DESK 
 
 Tests that must pass: employee of company A cannot read company B cases; no money field accepted; a wrong or old signature is refused; a duplicate request id gives the same case; the outbox row exists in the same transaction (rollback test); Control Plane or database outage shows Data unavailable; agent cannot write a decision; flood ceiling refuses.
 Sources: OWASP Webhook Security Cheat Sheet; RFC 9421; PostgreSQL Cookbook "Transactional outbox"; support escalation-management guides (Zendesk, Hiver, GitLab handbook, Freshworks).
+
+- 23 Nov 2026 05:1x PKT 1l LIVE PROOF (my Chrome, own tab): his server AD10 CHECK OK 10/10, install 3 PROOF SAME at 446f959a2; Escalations card live; TEST escalation ESC-261123-00037 (company TESTCO-1L-CHROME) created, status "Created, waiting to be received", target "1 hour (a target, not a promise)", listed under Cases for this company at 1536 px. STILL OPEN before GREEN: iframe 390 + 820 look, same-fill double-press = same case (live).
