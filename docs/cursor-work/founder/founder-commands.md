@@ -5951,3 +5951,5 @@ Features ki list (QC4 mein kya banega):
 - 1m-8 B9b Customers WRITTEN (not green): CP4 six packages + No plan yet + by_package census in one pass, Desk door per-plan sum checks, every plan clickable with only that plan's detail (package card facts from his 7 Nov decisions), gate FIX of BL-xx rule (his word), B9c (1m-9, BL-28 live plan updates within 1 s) written into blueprint, TECH-LAW CHECKED, TESTED: Desk cargo 109 pass, control-plane cargo 15 pass, bun desk 122 pass, tsc clean, vite desk build ok, CP4 selftest + CHECK 6/6 on scratch awam PG
 
 - GATE FOREVER law: the gate guards its own checks (PHASE FILES, INCOMPLETE ADVANCE, BILLIONAIRE LIST, SQL WORLD-CLASS, RESEARCH IN BLUEPRINT, FUTURE-PROOF, NO TEST NO COMMIT can never be removed), FIX-of-GREEN-row exception documented, TECH-LAW CHECKED, TESTED: gate ast ok, gate run on staged files 0 fail
+
+- 1m-8 B9b Customers GREEN (WIRED: YES / REAL: YES, his desk-install 66d7f804d CP4 6/6, my Chrome look: six plans + No plan yet + plan detail), TECH-LAW CHECKED, TESTED: Desk cargo 109, cp cargo 15, bun 122, tsc, vite, CP4 6/6
