@@ -3683,3 +3683,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Real Desk text: COMMAND CENTER OS, Senior Executive, Customer Operations rail heading, Landing ANEXOMAIL COMMAND CENTER + Operations line, dist-desk rebuilt (his last install showed the old bundle), WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 127 pass, tsc clean, build:desk ok, gate 0 fail
 
 - Real Desk text: COMMAND CENTER OS, Senior Executive, Customer Operations rail heading, Landing ANEXOMAIL COMMAND CENTER + Operations line, dist-desk rebuilt (his last install showed the old bundle), WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 127 pass, tsc clean, build:desk ok, gate 0 fail
+
+- Demo 2 landing and login text (web search of big companies, text only, real login code untouched), TECH-LAW CHECKED, TESTED: real pages built in a scratch copy and screenshot at 1280 and 390, gate 0 fail
