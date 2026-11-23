@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 08:54 PKT) - read this FIRST for the Desk after a compaction
-DOING: B6 SQL hardened (his 08:53 'duniya ka advance sql'): statement/lock timeouts, hash length CHECK, comments, checks CP3 9/9 AD15 8/8
-NEXT STEP: his ad-auto + desk-install for B6, Chrome look, GREEN
-HIS LAST WORD: his word: world-class SQL
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 09:04 PKT) - read this FIRST for the Desk after a compaction
+DOING: B6 Deliverability step 1 GREEN (his installs + my Chrome look). Next: B6b or B7 per order
+NEXT STEP: research for the next card, list, contract, then code in ONE commit
+HIS LAST WORD: his 09:03 paste + compact-save order
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 5909b706 23 Nov 08:54 ledger line 7d665d21
 - 7d665d21 23 Nov 08:54 B6 SQL hardened: timeouts, hash CHECK, comments
 - 94263bdc 23 Nov 08:53 ledger line 03e07af6
 - 03e07af6 23 Nov 08:53 Desk B6 Deliverability: CP3, AD15, door, screen
@@ -72,9 +73,12 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - fc677448 23 Nov 08:41 Desk B6 Deliverability: research, list, contract
 - 3c8c3df3 23 Nov 08:40 ledger line 0c6a46ec
 - 0c6a46ec 23 Nov 08:40 B9 Customers and Plans GREEN
-- 595cff51 23 Nov 08:31 ledger line 0da64cac
 
 ## Uncommitted Desk files
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
