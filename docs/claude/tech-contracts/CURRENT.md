@@ -1,13 +1,5 @@
 <!--TECHLAW-->
 
-# TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, small step: gate hole closed + rail follows the active page, his 23 Nov 2026 07:12 word), written 23 Nov 2026 07:3x PKT BEFORE code. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (U1..U12 header; this step has its own rows below)
-
-| Advance technology | Where in code | IN CODE | Proof |
-|---|---|---|---|
-| Commit gate: control-plane/src, control-plane/sql/CP*, admin-desk/scripts/*.sh count as Desk code, so INCOMPLETE ADVANCE also stops a half-built sub-phase there | docs/cursor-work/server/rules-gate.py `_desk_code` | yes | probe: touched CP2.sql staged while B9 rows were "no" -> FAIL [INCOMPLETE ADVANCE], then reverted |
-| Installer prints the census proof (PROOF census CP2, true/false count) as the LAST lines, inside his tail -25 | docs/claude/admin-desk/scripts/desk-install.sh step 9b | yes | bash -n ok; live proof = his next desk-install |
-| React 19 rail follow: on page change the active rail item (data-here) scrolls into view, block nearest, rail look and scroll bar untouched | DeskShell.tsx | yes | tsc + 93 bun tests; live proof = my Chrome Ctrl+D look |
-
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-4 B9 Customers and Plans), written 23 Nov 2026 06:3x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (U1..U12, REWRITTEN under the FUTURE-PROOF LAW)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -17,6 +9,14 @@
 | Rust + Tokio + Axum 0.8 door /desk/v1/customers/census over the sealed HTTP/3 router, Control Plane call with fresh 15 s, deadline 6 s, breaker, shape check | server/src/customers.rs, main.rs | no | cargo tests |
 | Rule 52 kernel-verified read, fail-closed Data unavailable, honest "Not measured yet" rows, small-group note | desk_customers_pure.ts, DeskCustomers.tsx | no | bun tests, tsc |
 | React 19 + TypeScript Customers and Plans card wired, Ice-blue marks | DeskCustomers.tsx, desk_cards.ts, DeskCards.tsx | no | vite build, my Chrome look |
+
+# TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, small step: gate hole closed + rail follows the active page, his 23 Nov 2026 07:12 word), written 23 Nov 2026 07:3x PKT BEFORE code. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (U1..U12 header; this step has its own rows below)
+
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| Commit gate: control-plane/src, control-plane/sql/CP*, admin-desk/scripts/*.sh count as Desk code, so INCOMPLETE ADVANCE also stops a half-built sub-phase there | docs/cursor-work/server/rules-gate.py `_desk_code` | yes | probe: touched CP2.sql staged while B9 rows were "no" -> FAIL [INCOMPLETE ADVANCE], then reverted |
+| Installer prints the census proof (PROOF census CP2, true/false count) as the LAST lines, inside his tail -25 | docs/claude/admin-desk/scripts/desk-install.sh step 9b | yes | bash -n ok; LIVE PROVEN 23 Nov 07:3x: his desk-install c2d92563d printed PROOF census (CP2) CHECK 8 of 8 true |
+| React 19 rail follow: on page change the active rail item (data-here) scrolls into view, block nearest, rail look and scroll bar untouched | DeskShell.tsx | yes | tsc + 93 bun tests; LIVE PROVEN: my Chrome, bundle desk-Cv_U36OZ.js = repo, rail scrolled to bottom (881) then Ctrl+D -> /dashboard, rail scrollTop 0, Dashboard visible |
 
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, small step: Dashboard shortcut hint Ctrl+D, his 23 Nov 2026 06:42 word), written 23 Nov 2026 06:5x PKT BEFORE code. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (U1..U12 header; this step has its own rows below)
 | Advance technology | Where in code | IN CODE | Proof |
@@ -3435,3 +3435,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Ctrl+D Dashboard shortcut GREEN (23 Nov 07:0x PKT, WIRED: YES / REAL: YES / TECH-LAW CHECKED; his desk-install 3 PROOF SAME at 534d2339c, my Chrome: hint + Ctrl+D goes to /dashboard), shortcut-for-all-folders recorded as DISCUSS, TESTED: his server paste + my live Chrome key press
 
 - 1m small step gate hole + CP2 proof line + rail follows active page, WIRED: YES / REAL: not yet (his desk-install + my Chrome look), TECH-LAW CHECKED, TESTED: gate probe FAIL as expected, tsc, bun 93 pass, bash -n
+
+- 1m small step GREEN: gate hole + PROOF CP2 + rail follows active page, WIRED: YES / REAL: YES, TECH-LAW CHECKED, TESTED: his desk-install c2d92563d binary/page/kernel SAME + CP2 CHECK 8 of 8, my Chrome Ctrl+D rail scrollTop 881 to 0

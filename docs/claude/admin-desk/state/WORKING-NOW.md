@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 07:16 PKT) - read this FIRST for the Desk after a compaction
-DOING: gate hole closed (control-plane + scripts count as Desk code), PROOF CP2 line in desk-install, rail follows active page
-NEXT STEP: rail key map for his haan, then B9 Rust census + AD14
-HIS LAST WORD: his 07:12: gate ne mistake ki, scroll bar active item par
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 07:30 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1m small step GREEN (his install c2d92563d + my Chrome Ctrl+D rail look); B9 CP2 installed, rest not built
+NEXT STEP: his haan on rail key map + g-chord, then B9: Control Plane Rust census, AD14, customers.rs, screen (one commit)
+HIS LAST WORD: his 07:29 GREEN + compact-save order
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- c2d92563 23 Nov 07:16 ledger line 56b3e073
 - 56b3e073 23 Nov 07:16 Desk: gate covers control-plane + scripts, PROOF CP2 line, rail follows active page
 - ac50fd7e 23 Nov 07:01 ledger line 027ee67c
 - 027ee67c 23 Nov 07:01 Ctrl+D GREEN
@@ -72,9 +73,12 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 70d187b0 23 Nov 06:50 1m-4 B9 CP2
 - a0d310be 23 Nov 06:44 ledger line 57ba7877
 - 1864b318 23 Nov 06:44 ledger line 78f5bd1d
-- 78f5bd1d 23 Nov 06:44 future-proof law + B9 plan + Ctrl+D
 
 ## Uncommitted Desk files
+ M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M admin-desk/NOW-LIST-23NOV.md
+ M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+ M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
