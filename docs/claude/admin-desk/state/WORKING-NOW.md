@@ -1,5 +1,5 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 10:4x PKT) - read this FIRST for the Desk after a compaction
-DOING: 1m-8 B9b = GREEN. Now his 10:28 word: the Admin Desk becomes ANEXOMAIL COMMAND CENTER (Admin Desk sits below it), connected DIRECTLY to the founder but privacy-first, work purposes only: written as phase 1p (docs + demo first, no code before his haan on the demo). NEXT: B9c (1m-9, BL-28 live plan updates within 1 s), B6c, B13 (BL-46), B11, B12.
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 10:28 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1m-8 B9b code done, committing
 NEXT STEP: his desk-install, Chrome look at Customers
 HIS LAST WORD: his 10:12 + 10:16 words
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
@@ -65,14 +65,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e83cd9e7 23 Nov 10:28 B9b GREEN
+- 5b671dd6 23 Nov 10:20 ledger line 9863df1f
 - 9863df1f 23 Nov 10:20 Gate forever law
 - 66d7f804 23 Nov 10:19 ledger line 9f005c22
 - 9f005c22 23 Nov 10:19 Desk 1m-8 B9b customers six packages + plan detail, B9c planned
 - 92f4d775 23 Nov 10:09 ledger line bd9a2eeb
 - bd9a2eeb 23 Nov 10:09 B6b GREEN
 - 49d66341 23 Nov 09:59 ledger line 7fd84e13
-- 7fd84e13 23 Nov 09:59 Desk 1m-7 B6b own-domain mail posture + gate PHASE FILES
-- 99d32b28 23 Nov 09:52 ledger line 5f7f1cf3
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
