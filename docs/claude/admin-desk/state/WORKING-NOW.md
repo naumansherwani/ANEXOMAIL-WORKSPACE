@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 02:13 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 02:13 PKT) - read this FIRST for the Desk after a compaction
 DOING: Command Center OS demo saved
 NEXT STEP: his ad-auto for AD19, Y6 proof, Y4, BL-29 bridge
 HIS LAST WORD: his 02:12 word
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 07c79e07 24 Nov 02:13 Command Center OS demo
 - ae6abd62 24 Nov 02:04 ledger line 758e9395
 - 758e9395 24 Nov 02:04 B9c Y5 AD19 Premium and Max seat promises
 - 20b56e65 24 Nov 01:58 ledger line 3a13f8dc
@@ -72,14 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 24312836 24 Nov 01:41 ledger line 2a5a2927
 - 2a5a2927 24 Nov 01:41 Command Center OS security protocol
 - 5603be01 24 Nov 01:40 ledger line 9ab7c9f8
-- 9ab7c9f8 24 Nov 01:40 Command Center OS phases and employee lifecycle plan
 
 ## Uncommitted Desk files
-M  admin-desk/D6-CARDS-LIST-23NOV.md
-A  admin-desk/demo/COMMAND-CENTER-OS-DEMO-24NOV.html
-M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
-A  docs/claude/admin-desk/demo/COMMAND-CENTER-OS-DEMO-24NOV.html
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
