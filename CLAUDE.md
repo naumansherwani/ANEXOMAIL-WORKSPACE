@@ -74,3 +74,4 @@
 Full rules: `AGENTS.md` (Rules 1–73) and `docs/claude/founder/CODES/00-README-RULES.md` (FC1–FC42). After a compaction read `docs/cursor-work/founder/founder-commands.md` and `docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` before anything else.
 
 > ## >>> RESEARCH-IN-BLUEPRINT LAW (his 23 Nov 03:1x, STRICT, all website SOPs): web-research advance technology goes in the phase LIST + blueprint + NOW-LIST BEFORE commit; gate "RESEARCH IN BLUEPRINT" stops Claude; docs/claude/admin-desk/RESEARCH-IN-BLUEPRINT-LAW-23NOV.md <<<
+> ## >>> SQL WORLD-CLASS LAW (his 23 Nov 06:01, founder + awam + Desk, gate "SQL WORLD-CLASS"): every NEW sql = web research -> list -> ADVANCE-RESEARCH -> CURRENT.md -> read older SQL -> advance SQL with SCHEMA-FIRST / ADVANCE-RESEARCH / CHECK-FILE header, selftest, forced RLS, REVOKE PUBLIC: docs/claude/SQL-WORLD-CLASS-LAW-23NOV.md <<<

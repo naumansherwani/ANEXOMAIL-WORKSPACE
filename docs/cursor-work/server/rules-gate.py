@@ -347,6 +347,34 @@ if _desk_code and os.path.exists(cur):
         for _f in (_bp, _nl):
             if not os.path.exists(_f) or _tag not in open(_f, errors="ignore").read():
                 fail("RESEARCH IN BLUEPRINT", f"phase {_id}: '{_tag}' line (research points + advance technology + code files) is missing in {_f}. Is this phase's advance technology and advance code added?")
+# SQL WORLD-CLASS LAW (his word 23 Nov 2026 06:01 PKT, STRICT, EVERY SQL of the whole website: founder, awam/user, Admin Desk, shared): every NEW .sql file must be world-class advanced and written ON TOP of the older schema.
+# It sits beside RESEARCH IN BLUEPRINT (which stays intact) and extends the same order to founder and awam: web research -> list -> ADVANCE-RESEARCH line -> contract -> SQL. A new SQL file must carry in its first 60 lines:
+#   -- SCHEMA-FIRST: <older SQL files read>   -- ADVANCE-RESEARCH: [<phase>] <what research gave>   -- CHECK-FILE: <path that exists>
+# and the body must hold a selftest that rolls back; a CREATE TABLE needs FORCE ROW LEVEL SECURITY; SECURITY DEFINER needs a fixed search_path; every CREATE FUNCTION needs a REVOKE ... FROM PUBLIC.
+_sqlnew = [f for f in sh("git", "diff", "--cached", "--name-only", "--diff-filter=A").splitlines() if f.endswith(".sql") and "/checks/" not in f and not os.path.basename(f).upper().startswith("CHECK") and not f.startswith(("lovable-gold/", "backups/", "admin-desk/")) and not os.path.basename(f).startswith("00-")]
+for _sf in _sqlnew:
+    try:
+        _st = open(_sf, errors="ignore").read()
+    except OSError:
+        continue
+    _hd = "\n".join(_st.splitlines()[:60])
+    _up = _st.upper()
+    if "SCHEMA-FIRST:" not in _hd:
+        fail("SQL WORLD-CLASS", f"{_sf}: first 60 lines need '-- SCHEMA-FIRST: <older SQL files you read>' (his 23 Nov law, founder + awam + Desk)")
+    _am = re.search(r"-- ADVANCE-RESEARCH: \[([^\]]+)\] \S+", _hd)
+    if not _am:
+        fail("SQL WORLD-CLASS", f"{_sf}: first 60 lines need '-- ADVANCE-RESEARCH: [<phase>] <what the web research gave this SQL>'")
+    _cm = re.search(r"-- CHECK-FILE: (\S+)", _hd)
+    if not _cm or not os.path.exists(_cm.group(1)):
+        fail("SQL WORLD-CLASS", f"{_sf}: first 60 lines need '-- CHECK-FILE: <path>' and that CHECK file must exist")
+    if "SELFTEST" not in _up or not re.search(r"ROLLBACK|P0[A-Z0-9]{3}|RAISE EXCEPTION", _up):
+        fail("SQL WORLD-CLASS", f"{_sf}: no selftest that rolls back (raise + catch, or ROLLBACK): world-class SQL proves itself")
+    if "CREATE TABLE" in _up and "FORCE ROW LEVEL SECURITY" not in _up:
+        fail("SQL WORLD-CLASS", f"{_sf}: CREATE TABLE without FORCE ROW LEVEL SECURITY")
+    if "SECURITY DEFINER" in _up and not re.search(r"SET SEARCH_PATH", _up):
+        fail("SQL WORLD-CLASS", f"{_sf}: SECURITY DEFINER without a fixed 'SET search_path'")
+    if "CREATE FUNCTION" in _up.replace("CREATE OR REPLACE FUNCTION", "CREATE FUNCTION") and not re.search(r"REVOKE[^;]*FROM PUBLIC", _up):
+        fail("SQL WORLD-CLASS", f"{_sf}: functions are created but nothing is REVOKEd FROM PUBLIC (AD1c lesson)")
 # FOUNDER INBOX REMINDER (his word 23 Nov 2026 04:29 PKT): the Admin Desk sends escalations to the founder; the founder-side receiver (Founder Escalation Inbox) is a LATER phase that must never be forgotten.
 # The plan file and its tag must stay in the Desk NOW-LIST, the Desk blueprint and the FOUNDER blueprint; once 1o DASHBOARD FINAL is GREEN the plan must say STATUS: STARTED or GREEN or the commit is stopped.
 _fi = "docs/claude/admin-desk/FOUNDER-ESCALATION-INBOX-PLAN-23NOV.md"

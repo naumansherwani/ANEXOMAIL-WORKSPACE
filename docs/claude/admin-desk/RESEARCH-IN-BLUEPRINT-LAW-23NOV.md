@@ -5,3 +5,5 @@ Gate: rules-gate.py "RESEARCH IN BLUEPRINT" refuses a commit with Desk code when
 Also in force after every message: WORKING-NOW.md + 2-minute loop (inside the repo only), ledger, resume line, blueprint with date and time; Rule 52 = ADVANCE TECHNOLOGY FOR ANEXOMAIL; advance technology written next to every phase and subphase.
 
 LOOPHOLE CLOSED 23 Nov 03:1x (his autofix order): the gate also refuses Desk code when the newest contract block is not for the phase NOW-LIST marks '= NOW'. Negative probe tested (fails as designed).
+
+SQL WORLD-CLASS EXTENSION (his 23 Nov 2026 06:01): this law above stays intact; it now also applies to founder and awam SQL, see docs/claude/SQL-WORLD-CLASS-LAW-23NOV.md (gate "SQL WORLD-CLASS").

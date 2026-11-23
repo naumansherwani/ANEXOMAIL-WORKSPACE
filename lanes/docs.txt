@@ -318,6 +318,7 @@ docs/claude/SERVER-PORTS-RED-LINE-08NOV.md
 docs/claude/SIGNUP-SECURITY-MILITARY-GRADE-02NOV.md
 docs/claude/SQL-ORDER-E1-E160.md
 docs/claude/SQL-SCHEMA-FIRST-LAW-20NOV.md
+docs/claude/SQL-WORLD-CLASS-LAW-23NOV.md
 docs/claude/START-HERE-AFTER-COMPACTION.md
 docs/claude/SYS-LIVE-HEARTBEAT-PLAN-16NOV.md
 docs/claude/T-SERIES-BLUEPRINT.md
@@ -352,6 +353,7 @@ docs/claude/admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
 docs/claude/admin-desk/D5C-ESCALATE-LIST-23NOV.md
 docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
 docs/claude/admin-desk/DASHBOARD-CARDS-CLICK-PLAN-22NOV.md
+docs/claude/admin-desk/DASHBOARD-FOLDER-AUDIT-23NOV.md
 docs/claude/admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
 docs/claude/admin-desk/DASHBOARD-LIVE-COMMAND-22NOV.md
 docs/claude/admin-desk/DBSC-PHASE-LIST-23NOV.md
