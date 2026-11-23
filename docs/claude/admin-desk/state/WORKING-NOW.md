@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 11:47 PKT) - read this FIRST for the Desk after a compaction
-DOING: Command Center title V24 soft light centre
-NEXT STEP: his haan for real Desk title, then B9c Y4/Y5/Y6
-HIS LAST WORD: his 11:47 word
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 11:50 PKT) - read this FIRST for the Desk after a compaction
+DOING: Command Center title written into the real Desk, not installed
+NEXT STEP: his desk-install, then my Chrome look 390/820/1200
+HIS LAST WORD: his 11:48 word
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 2b0fed22 23 Nov 11:47 ledger line 6847778f
 - 6847778f 23 Nov 11:47 Command Center title V24 soft light centre
 - a15f318c 23 Nov 11:44 ledger line c024beeb
 - c024beeb 23 Nov 11:44 Command Center title V23 light less
@@ -72,10 +73,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 797ba7f5 23 Nov 11:44 Command Center title demo back to V21
 - 0f644bc4 23 Nov 11:43 ledger line c58b8634
 - c58b8634 23 Nov 11:43 Command Center title V22 logo colours travel
-- e848b87d 23 Nov 11:41 ledger line deb1d660
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/D6-CARDS-LIST-23NOV.md
+M  docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
+MM docs/claude/admin-desk/state/WORKING-NOW.md
+M  founder-web/src/desk/DeskShell.tsx
+A  founder-web/src/desk/DeskTitle.tsx
+A  founder-web/src/desk/desk_title.test.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

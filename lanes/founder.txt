@@ -175,7 +175,7 @@ founder-web/dist-desk/assets/Inter-Medium-DofoG70T.woff2
 founder-web/dist-desk/assets/Inter-Regular-DK7peppx.woff2
 founder-web/dist-desk/assets/Inter-SemiBold-CF8ghLaY.woff2
 founder-web/dist-desk/assets/anexomail_desk_kernel_bg-Bqxh7CCm.wasm
-founder-web/dist-desk/assets/desk-1Cdrpg9I.js
+founder-web/dist-desk/assets/desk-C-0-8m1u.js
 founder-web/dist-desk/assets/desk-qhQ_Ulle.css
 founder-web/dist-desk/assets/kernel.worker-DY4WQ2it.js
 founder-web/dist-desk/assets/three.module-C0S06CcT.js
@@ -201,7 +201,7 @@ founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
-founder-web/dist/assets/index-DzXgfGGr.js
+founder-web/dist/assets/index-DGS4aJoa.js
 founder-web/dist/assets/index-taNtCYNU.css
 founder-web/dist/assets/kernel.worker-DY4WQ2it.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
@@ -360,6 +360,7 @@ founder-web/src/desk/DeskShell.tsx
 founder-web/src/desk/DeskSignIn.tsx
 founder-web/src/desk/DeskStaff.tsx
 founder-web/src/desk/DeskTelemetry.tsx
+founder-web/src/desk/DeskTitle.tsx
 founder-web/src/desk/desk_bridge_pure.test.ts
 founder-web/src/desk/desk_bridge_pure.ts
 founder-web/src/desk/desk_cards.test.ts
@@ -403,6 +404,7 @@ founder-web/src/desk/desk_stream_pure.test.ts
 founder-web/src/desk/desk_stream_pure.ts
 founder-web/src/desk/desk_systems_pure.test.ts
 founder-web/src/desk/desk_systems_pure.ts
+founder-web/src/desk/desk_title.test.ts
 founder-web/src/desk/desk_trend_pure.test.ts
 founder-web/src/desk/desk_trend_pure.ts
 founder-web/src/desk/kernel/00-FOUNDER-TECH-RULE.md

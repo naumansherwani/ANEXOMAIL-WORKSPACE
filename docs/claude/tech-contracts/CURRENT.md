@@ -1,5 +1,13 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK COMMAND CENTER TITLE (phase 1m, sub-phase CC1-title, list BL-29 (CC1; built on his explicit 11:48 word while BL-28 B9c stays OPEN, never rebuilt), BL-28 stays next on the ORDER-LOCK, his 23 Nov 2026 11:48 PKT word "perfect hain ... yeh codes pull kerwao"), written BEFORE the code, rows updated after. Demo (his approved look) = docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V24-LIGHT-SOFT-CENTRE.html. Backup of the old shell = backups/desk/20261123-1150-before-command-center-title/. ONLY the big page title changes; every Desk colour, card, rail and clock stays. Own file, no founder code, no third party, no network.
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| React 19 + TypeScript component with per-letter CSS reveal, steel/navy/silver logo-A colours, line draw, soft breathing centre light, canvas particles (requestAnimationFrame, cleaned up on unmount), reduced-motion = still picture, aria-label for screen readers | founder-web/src/desk/DeskTitle.tsx, mounted by one line in DeskShell.tsx | YES | tsc clean, bun test src/desk 127 pass incl. desk_title.test.ts, vite desk build |
+| Pure helpers titleLetters and fitSpacing (small line spans exactly the big line) | DeskTitle.tsx | YES | desk_title.test.ts |
+| Carried unchanged by this step (the Desk phase files stay the same; the title is UI only) | docs/claude/admin-desk/sql/AD18.sql, docs/claude/admin-desk/server/src/door.rs, founder-web/src/desk/DeskShell.tsx | YES | untouched SQL and Rust; the live look in Chrome at 390 / 820 / 1200+ is listed in D6-CARDS-LIST after his desk-install |
+
+
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-9 B9c Plan catalogue + live plan updates, list BL-28), written 23 Nov 2026 10:5x PKT BEFORE code, rows updated when code was done. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (B9c section Y1..Y6, FUTURE-PROOF LAW, his 10:16 word: any plan change reaches the Desk within one second, automatically)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3615,3 +3623,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Command Center title demo V23: light less (glow .13), V21 and V22 kept, real Desk untouched, TECH-LAW CHECKED, TESTED: demo republished, gate 0 fail
 
 - Command Center title demo V24: soft light at the centre, V23 kept, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered and looked at, gate 0 fail
+
+- Command Center title in the real Desk (DeskTitle.tsx, old shell backed up), TECH-LAW CHECKED, WRITTEN not installed, TESTED: tsc clean, bun test src/desk 127 pass, desk build ok, gate 0 fail
+
+- Command Center title in the real Desk (DeskTitle.tsx, old shell backed up), TECH-LAW CHECKED, WRITTEN not installed, TESTED: tsc clean, bun test src/desk 127 pass, desk build ok, gate 0 fail

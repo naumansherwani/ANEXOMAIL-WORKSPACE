@@ -11,6 +11,7 @@ import { keyLabel } from "./desk_keys";
 import { useEffect, useState, type MouseEvent as ReactMouseEvent, type ReactNode } from "react";
 import { BrandMark } from "../signin/BrandMark";
 import { MODULES } from "./modules/registry";
+import { DeskTitle, TITLE_CSS } from "./DeskTitle";
 
 /** Admin Desk shell (R4-1, UI step 1, 22 Nov 2026): cinematic night-office look of the Desk login, calm work screen (ONE hero moment: the greeting).
  *  Pure presentation: every value comes in as a prop from a Desk-signed answer the kernel verified. No founder import, no raw fetch, no mock data.
@@ -139,7 +140,7 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, s
   const end = me ? parseWhen(me.expires_at) : null;
   const clock = d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" }), date = d.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
   return (
-    <div className="dsk"><style>{CSS}</style><div className="dsk-glow" aria-hidden="true" />{kb && <DeskKeys mode={kb} items={kbItems} onClose={() => setKb("")} onGo={(id) => { setKb(""); nav(id === "dashboard" ? "/dashboard" : route(id)); }} />}
+    <div className="dsk"><style>{CSS + TITLE_CSS}</style><div className="dsk-glow" aria-hidden="true" />{kb && <DeskKeys mode={kb} items={kbItems} onClose={() => setKb("")} onGo={(id) => { setKb(""); nav(id === "dashboard" ? "/dashboard" : route(id)); }} />}
       <nav className="dsk-rail" aria-label="Admin Desk">
         <div className="dsk-brand"><a href="/dashboard" className="dsk-home" onClick={goHome} title={sub ? "Back to the dashboard" : "Refresh the dashboard"} aria-label={sub ? "Anexomail Workspace, back to the dashboard" : "Anexomail Workspace, refresh the dashboard"}><BrandMark home={false} /></a></div>
         <div className="dsk-scroll">
@@ -166,7 +167,7 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, s
             <button type="button" role="menuitem" disabled={out} onClick={onSignOut}>{out ? "Signing out…" : "Sign out"}</button></div>}
         </div>
         <header className="dsk-top">
-          <div><p className="dsk-hi">{greeting(d.getHours())}{first ? "," : ""}</p><h1 className="dsk-h1">{me ? (me.name || first) : err ? "Dashboard" : "Loading your desk…"}</h1></div>
+          <div><p className="dsk-hi">{greeting(d.getHours())}{first ? "," : ""}</p><DeskTitle /></div>
           <div className="dsk-clock" aria-label={`${clock}, ${date}`}>{clock}<small>{date}</small></div>
         </header>
         {err && <p role="alert" className="dsk-err">{err}</p>}

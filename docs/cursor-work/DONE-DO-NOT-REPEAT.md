@@ -4525,3 +4525,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Command Center title demo V23: light less (glow .13), V21 and V22 kept, real Desk untouched, TECH-LAW CHECKED, TESTED: demo republished, gate 0 fail
 
 - Command Center title demo V24: soft light at the centre, V23 kept, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered and looked at, gate 0 fail
+
+- Command Center title in the real Desk (DeskTitle.tsx, old shell backed up), TECH-LAW CHECKED, WRITTEN not installed, TESTED: tsc clean, bun test src/desk 127 pass, desk build ok, gate 0 fail
+
+- Command Center title in the real Desk (DeskTitle.tsx, old shell backed up), TECH-LAW CHECKED, WRITTEN not installed, TESTED: tsc clean, bun test src/desk 127 pass, desk build ok, gate 0 fail

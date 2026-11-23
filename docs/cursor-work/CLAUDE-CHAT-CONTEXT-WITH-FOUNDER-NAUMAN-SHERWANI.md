@@ -5596,3 +5596,7 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - Command Center title demo V23: light less (glow .13), V21 and V22 kept, real Desk untouched, TECH-LAW CHECKED, TESTED: demo republished, gate 0 fail
 
 - Command Center title demo V24: soft light at the centre, V23 kept, real Desk untouched, TECH-LAW CHECKED, TESTED: rendered and looked at, gate 0 fail
+
+- Command Center title in the real Desk (DeskTitle.tsx, old shell backed up), TECH-LAW CHECKED, WRITTEN not installed, TESTED: tsc clean, bun test src/desk 127 pass, desk build ok, gate 0 fail
+
+- Command Center title in the real Desk (DeskTitle.tsx, old shell backed up), TECH-LAW CHECKED, WRITTEN not installed, TESTED: tsc clean, bun test src/desk 127 pass, desk build ok, gate 0 fail
