@@ -5646,3 +5646,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - Real Desk text and position: Senior Executive centred, landing title two lines, footer below the floor light, dist-desk rebuilt (desk-BTyOwH4h.js), WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 127 pass, tsc clean, build:desk ok, real built landing screenshot 1280, gate 0 fail
 
 - Real Desk text and position: Senior Executive centred, landing title two lines, footer below the floor light, dist-desk rebuilt (desk-BTyOwH4h.js), WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 127 pass, tsc clean, build:desk ok, real built landing screenshot 1280, gate 0 fail
+
+- BL-46 B13 started: web research (Google Access Approval, PostgreSQL tstzrange EXCLUDE) and point list A1..A10 with advance technology written before code, install proof of 3675a1fd noted honestly (binary line DIFFERENT, page and kernel SAME), TECH-LAW CHECKED, TESTED: docs only, gate 0 fail
