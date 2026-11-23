@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 23 Nov 2026 05:03 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 05:04 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: 1l live at 1536px proven (ESC-261123-00037); 390/820 + double-press left
 NEXT STEP: iframe 390/820 look, then 1l GREEN
 HIS LAST WORD: his order: update context
@@ -18,24 +18,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 74022546 23 Nov 05:04 1l live desktop proof
 - 21250ac7 23 Nov 05:02 ledger line bd60ce1b
 - bd60ce1b 23 Nov 05:02 SQL names zero-padded
 - 446f959a 23 Nov 04:48 ledger line 3c87ed51
 - 3c87ed51 23 Nov 04:48 1l D5c Escalate code
-- 988153f9 23 Nov 04:36 ledger line 8f1f5669
 
 ## Uncommitted files (half-done work if any)
- M admin-desk/D5C-ESCALATE-LIST-23NOV.md
- M docs/claude/admin-desk/D5C-ESCALATE-LIST-23NOV.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/D5C-ESCALATE-LIST-23NOV.md             |  2 ++
- docs/claude/admin-desk/D5C-ESCALATE-LIST-23NOV.md |  2 ++
- docs/claude/state/WORKING-NOW.md                  | 25 +++++++----------------
- 3 files changed, 11 insertions(+), 18 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 21 ++-------------------
+ 1 file changed, 2 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -46,4 +42,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (47372d042b3f72f908017fd48be599c5a19bd401)
+WIP snapshot: refs/wip/last (69b9083033aa84850283e5b2ce1b8cc793c4c695)

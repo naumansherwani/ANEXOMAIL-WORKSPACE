@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 05:03 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 05:04 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1l live at 1536px proven (ESC-261123-00037); 390/820 + double-press left
 NEXT STEP: iframe 390/820 look, then 1l GREEN
 HIS LAST WORD: his order: update context
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 74022546 23 Nov 05:04 1l live desktop proof
 - 21250ac7 23 Nov 05:02 ledger line bd60ce1b
 - bd60ce1b 23 Nov 05:02 SQL names zero-padded
 - 446f959a 23 Nov 04:48 ledger line 3c87ed51
@@ -72,11 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 988153f9 23 Nov 04:36 ledger line 8f1f5669
 - 8f1f5669 23 Nov 04:36 1l research + contract before code
 - d23a5a2e 23 Nov 04:30 ledger line f4afe900
-- f4afe900 23 Nov 04:30 founder inbox plan + reminder gate
 
 ## Uncommitted Desk files
- M admin-desk/D5C-ESCALATE-LIST-23NOV.md
- M docs/claude/admin-desk/D5C-ESCALATE-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
