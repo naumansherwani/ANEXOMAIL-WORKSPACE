@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 03:29 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 03:29 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Real text change + OS rebuilt into dist-desk (desk-D_0SyRgz.js)
 NEXT STEP: his desk-install, my Chrome look, then BL-46 B13
 HIS LAST WORD: his haan 03:28
@@ -19,41 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 109e89b8 24 Nov 03:29 Desk text change + rebuilt bundle
 - eac92117 24 Nov 03:21 ledger line 7282cdef
 - 7282cdef 24 Nov 03:21 Host idea
 - db86de0e 24 Nov 03:12 ledger line 588ba10d
 - 588ba10d 24 Nov 03:12 Text-only demo
-- a3cea33c 24 Nov 02:45 ledger line 1a7aa1f5
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-A  backups/desk/20261124-0335-text-change/DeskPages.tsx
-A  backups/desk/20261124-0335-text-change/DeskShell.tsx
-A  backups/desk/20261124-0335-text-change/DeskTitle.tsx
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-R  founder-web/dist-desk/assets/desk-C-0-8m1u.js -> founder-web/dist-desk/assets/desk-D_0SyRgz.js
-M  founder-web/dist-desk/desk.html
-M  founder-web/src/desk/DeskPages.tsx
-M  founder-web/src/desk/DeskShell.tsx
-M  founder-web/src/desk/DeskTitle.tsx
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/tech-contracts/CURRENT.md              |   6 +
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  10 +-
- .../assets/{desk-C-0-8m1u.js => desk-D_0SyRgz.js}  |   4 +-
- founder-web/dist-desk/desk.html                    |   2 +-
- founder-web/src/desk/DeskPages.tsx                 |   4 +-
- founder-web/src/desk/DeskShell.tsx                 |   2 +-
- founder-web/src/desk/DeskTitle.tsx                 |   4 +-
- 16 files changed, 414 insertions(+), 33 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 38 ++------------------------------------
+ 1 file changed, 2 insertions(+), 36 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -64,4 +43,4 @@ M  founder-web/src/desk/DeskTitle.tsx
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (e65069579a4f04fbf76e6493e2ef41058f026acd)
+WIP snapshot: refs/wip/last (b133a2ab8479d6f83a4372ea06ec2cbf95926f89)
