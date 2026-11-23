@@ -1,0 +1,5 @@
+# GATE FOREVER LAW (his 09:55 and 10:20, 23 Nov 2026 10:3x PKT, STRICT, forever)
+His words: until ALL features of a phase are on the list AND the advance SQL AND the advance code AND the advance technology are in the repo, a commit is IMPOSSIBLE. This rule stays forever, everywhere. If there is a problem, the GATE is told, never worked around.
+What the gate enforces for every Desk phase: PHASE FILES (contract names SQL + Rust + screen files that exist, every AD sql has its CHECK file), INCOMPLETE ADVANCE (no row pending/no), SQL WORLD-CLASS, RESEARCH IN BLUEPRINT, FUTURE-PROOF, BILLIONAIRE LIST (BL id, ORDER-LOCK, ADVANCE-TECH row), NO TEST NO COMMIT.
+The ONE narrow exception (his 10:2x word): a heading "FIX of BL-xx" for a row that is already GREEN is a correction of finished work and needs no ORDER-LOCK turn. It relaxes ONLY the order check; every other check above still applies in full.
+The gate now guards itself: if any of these checks is ever removed from rules-gate.py, the commit fails (GATE FOREVER).

@@ -374,6 +374,12 @@ if _desk_code and os.path.exists(cur):
                     fail("BILLIONAIRE LIST", "DASHBOARD-FIRST (his 09:33): BL-07 and later start only after the Dashboard order phases 1n and 1o are GREEN in NOW-LIST-23NOV.md")
                 if _next and _next[0] not in _ids and not _is_fix:
                     fail("BILLIONAIRE LIST", f"ORDER-LOCK: the next row to build is {_next[0]}, but the contract heading names {sorted(_ids)}; follow his order and never rebuild a GREEN row")
+# GATE FOREVER (his 09:55 / 10:20 law): the checks that make a Desk commit impossible without advance SQL, advance code and advance technology can never be deleted from this file.
+_forever = ["PHASE FILES", "INCOMPLETE ADVANCE", "BILLIONAIRE LIST", "SQL WORLD-CLASS", "RESEARCH IN BLUEPRINT", "FUTURE-PROOF", "NO TEST NO COMMIT"]
+_src = open(__file__, errors="ignore").read()
+for _k in _forever:
+    if _src.count('fail("' + _k + '"') < 1:
+        fail("GATE FOREVER", f"the check {_k} is missing from rules-gate.py: his law says a commit is impossible without advance SQL, advance code and advance technology; put it back (docs/claude/admin-desk/GATE-FOREVER-LAW-23NOV.md)")
 # PHASE FILES (his 23 Nov 09:55 order): the gate is told ALL the work of the phase. Every code path named in the "Where in code" column of the newest CURRENT.md contract block (a .rs, .sql, .ts or .tsx file name)
 # must EXIST in the repo before a Desk commit; every NEW AD*.sql must carry its CHECK file, and the contract must hold at least one SQL row, one Rust row and one screen row. No advance SQL or no advance code = the commit is stopped.
 if _desk_code and os.path.exists(cur):
