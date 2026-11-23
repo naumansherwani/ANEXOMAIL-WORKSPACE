@@ -1,4 +1,4 @@
-# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 11:12 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 11:17 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: B9c installed and seen, demo title smaller
 NEXT STEP: Y6 proof with his word, Y4, Y5
 HIS LAST WORD: his 11:06 word: title too big, technology must be code
@@ -19,11 +19,11 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- efa7f2a5 23 Nov 11:17 Demo V6 backup and V7 proposal
+- 4003df3e 23 Nov 11:12 ledger line 80aad2ad
 - 80aad2ad 23 Nov 11:12 Remove SSE and HTTP fallback wording
 - 11153ecc 23 Nov 11:07 ledger line 3b7562a4
 - 3b7562a4 23 Nov 11:07 B9c wording fix
-- a6c095a4 23 Nov 11:07 ledger line 30915fc6
-- 30915fc6 23 Nov 11:07 B9c installed and seen, demo title smaller
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
@@ -43,4 +43,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (3289693850aee5c3f42ecd59b71df5039c17b944)
+WIP snapshot: refs/wip/last (ccf9bd11b3bdc944ed9a08b9f33f81d03277419d)

@@ -1,5 +1,5 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 11:12 PKT) - read this FIRST for the Desk after a compaction
-DOING: B9c installed and seen, demo title smaller 11:2x: demo V6 backed up, V7 (title in logo-A colours) proposed and shown, waiting his word.
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 11:17 PKT) - read this FIRST for the Desk after a compaction
+DOING: B9c installed and seen, demo title smaller
 NEXT STEP: Y6 proof with his word, Y4, Y5
 HIS LAST WORD: his 11:06 word: title too big, technology must be code
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
@@ -65,14 +65,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- efa7f2a5 23 Nov 11:17 Demo V6 backup and V7 proposal
+- 4003df3e 23 Nov 11:12 ledger line 80aad2ad
 - 80aad2ad 23 Nov 11:12 Remove SSE and HTTP fallback wording
 - 11153ecc 23 Nov 11:07 ledger line 3b7562a4
 - 3b7562a4 23 Nov 11:07 B9c wording fix
 - a6c095a4 23 Nov 11:07 ledger line 30915fc6
 - 30915fc6 23 Nov 11:07 B9c installed and seen, demo title smaller
 - e7fbb9bb 23 Nov 10:57 ledger line 0a1442c2
-- 0a1442c2 23 Nov 10:57 Command Center demo preserved
-- 07195cc4 23 Nov 10:48 ledger line dc13685a
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
