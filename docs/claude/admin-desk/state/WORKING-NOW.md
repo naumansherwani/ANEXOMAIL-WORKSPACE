@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 05:06 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 05:06 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1l: 390/820 + double-press left; Overview S4 recorded as LATER
 NEXT STEP: 1l 390/820 iframe look then GREEN, then 1m
 HIS LAST WORD: his 05:06 order: Overview after dashboard
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- bc150900 23 Nov 05:06 Overview S4 later
 - db3b2083 23 Nov 05:04 ledger line 74022546
 - 74022546 23 Nov 05:04 1l live desktop proof
 - 21250ac7 23 Nov 05:02 ledger line bd60ce1b
@@ -72,13 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 446f959a 23 Nov 04:48 ledger line 3c87ed51
 - 3c87ed51 23 Nov 04:48 1l D5c Escalate code
 - 988153f9 23 Nov 04:36 ledger line 8f1f5669
-- 8f1f5669 23 Nov 04:36 1l research + contract before code
 
 ## Uncommitted Desk files
- M admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M admin-desk/NOW-LIST-23NOV.md
- M docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
- M docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
