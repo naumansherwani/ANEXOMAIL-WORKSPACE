@@ -2771,3 +2771,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - 1m-7 B6b Own-domain mail posture WRITTEN (not green): AD17 hash-chained series, Rust DNSSEC-validating probe /desk/v1/mailposture/board (MX, SPF, DKIM, DMARC, MTA-STS, TLS-RPT, DANE, DNSSEC), DeskMailPosture block in Deliverability card, gate PHASE FILES, bounce/complaint = B6c NOT YET, TECH-LAW CHECKED, TESTED: Desk cargo 109 pass, bun desk 118 pass, tsc clean, vite desk build ok, AD17 selftest + CHECK 8/8 on scratch PG
 
 - 1m-7 B6b Own-domain mail posture WRITTEN (not green): AD17 hash-chained series, Rust DNSSEC-validating probe /desk/v1/mailposture/board (MX, SPF, DKIM, DMARC, MTA-STS, TLS-RPT, DANE, DNSSEC), DeskMailPosture block in Deliverability card, gate PHASE FILES, bounce/complaint = B6c NOT YET, TECH-LAW CHECKED, TESTED: Desk cargo 109 pass, bun desk 118 pass, tsc clean, vite desk build ok, AD17 selftest + CHECK 8/8 on scratch PG
+
+- 1m-7 B6b Own-domain mail posture GREEN (WIRED: YES / REAL: YES, his AD17 + install 49d663418, my Chrome look: 4 of 8 real checks pass), TECH-LAW CHECKED, TESTED: Desk cargo 109, bun 118, tsc, vite, AD17 8/8

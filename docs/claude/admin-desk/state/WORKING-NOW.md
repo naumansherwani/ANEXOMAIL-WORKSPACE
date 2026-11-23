@@ -1,5 +1,5 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 09:59 PKT) - read this FIRST for the Desk after a compaction
-DOING: 1m-7 B6b code done, committing
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 10:1x PKT) - read this FIRST for the Desk after a compaction
+DOING: 1m-7 B6b = GREEN (BL-26 part 1, his install 49d663418 + my Chrome look). B6c bounce/complaint rates NOT YET (no awam delivery log). Starting B13 (BL-46 customer data access approval): web research -> D6 list -> ADVANCE-RESEARCH [1m] 1m-8 -> CURRENT.md (heading names BL-46 + LIST) -> AD18 SQL + Rust door + screen, ONE commit; gate PHASE FILES + ADVANCE-TECH row needed.
 NEXT STEP: his ad-auto (AD17) + desk-install, my Chrome look at Deliverability
 HIS LAST WORD: his 09:55 order
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.

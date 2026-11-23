@@ -32,7 +32,7 @@ DASHBOARD-FIRST (23 Nov 2026 09:4x PKT, his 09:33 word 'dashboard ke folder ki t
 | BL-23 | Renewal and expansion forecast | OPEN | forecast from real billing intents, shown as a range with its inputs | CRM |
 | BL-24 | Contact and company timeline | OPEN | timeline is built from the append-only ledger, nothing editable | CRM |
 | BL-25 | Domain and deliverability posture per customer | GREEN (B6 step 1) | SPF, DKIM, DMARC, MX from the real checks, sums verified before display | B6 |
-| BL-26 | Bounce and complaint rates, TLS reporting, DANE | OPEN (B6b) | own-domain MTA-STS, TLS-RPT and DANE by our own Rust DNS probe | B6b |
+| BL-26 | Bounce and complaint rates, TLS reporting, DANE | GREEN part 1 (B6b own-domain posture 23 Nov 10:1x; rates = B6c NOT YET) | own-domain MTA-STS, TLS-RPT and DANE by our own Rust DNS probe | B6b |
 | BL-27 | Migration / onboarding board | NOT YET (needs phase P, the Rust IMAP migrator) | batches and retries signed like every other number | B7 |
 ## C. Security and governance (Salesforce Shield, Google Security Center, Microsoft Secure Score, Okta)
 | id | What they have | Anexomail Desk today | ADVANCE beyond them | Where |
