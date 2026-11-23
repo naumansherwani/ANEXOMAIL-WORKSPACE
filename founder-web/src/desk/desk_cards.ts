@@ -9,6 +9,7 @@ export const CARDS: Card[] = [
   { id: "systems", key: "y", label: "Systems", track: "services", phase: "D7", wired: true, onBar: false, what: "Is the Desk working? Plain status for every employee, with what to tell customers", waits: "" },
   { id: "sla", key: "l", label: "Live SLA clock", track: "lookup", phase: "D6", wired: true, onBar: true, what: "Cases about to breach their first-answer target", waits: "" },
   { id: "plans", key: "p", label: "Plans and prices", track: "lookup", phase: "D5", wired: true, onBar: true, what: "Look up one company: plan, real features, usage and service state", waits: "" },
+  { id: "customers", key: "8", label: "Customers and plans", track: "lookup", phase: "1m-4", wired: true, onBar: false, what: "How many companies, on which plan, in which service state, and which ones need attention", waits: "" },
   { id: "runbooks", key: "b", label: "Runbooks", track: "lookup", phase: "D5b", wired: true, onBar: false, what: "Nine step-by-step guides for the common customer problems, with a checklist and the words to say", waits: "" },
   { id: "escalations", key: "x", label: "Escalations", track: "lookup", phase: "D5c", wired: true, onBar: false, what: "Pass a problem to the owner as a real case, and see its case number and status", waits: "" },
   { id: "queue", key: "q", label: "Queue pressure", track: "lookup", phase: "D6", wired: true, onBar: false, what: "Open, waiting and at-risk cases by queue", waits: "" },
@@ -36,7 +37,7 @@ export function cardProblems(cards: Card[] = CARDS): string[] {
     if (c.track !== null && !["summary", "services", "alerts", "lookup"].includes(c.track)) out.push(`${c.id}: unknown track`);
     if (c.wired && c.track === null) out.push(`${c.id}: wired but no track`);
     if (!c.wired && !c.waits) out.push(`${c.id}: not wired, must say what it waits for`);
-    if (!/^[a-z]$/.test(c.key) || c.key === HOME_KEY || cards.some((o) => o !== c && o.key === c.key)) out.push(`${c.id}: shortcut key must be one unique letter other than ${HOME_KEY}`);
+    if (!/^[a-z0-9]$/.test(c.key) || c.key === HOME_KEY || cards.some((o) => o !== c && o.key === c.key)) out.push(`${c.id}: shortcut key must be one unique letter or digit other than ${HOME_KEY}`);
     if (!c.phase || !c.label || !c.what) out.push(`${c.id}: label, phase and what are required`);
   }
   return out;
@@ -96,10 +97,10 @@ export const HOME_KEY = "d";
 export const CHORD_MS = 1200;
 export const shortcutOf = (id: string): string => (id === "home" ? HOME_KEY : cardById(id)?.key ?? "");
 export const shortcutLabel = (id: string): string => { const k = shortcutOf(id); return k ? `Alt+Shift+${k.toUpperCase()}` : ""; };
-/** Alt+Shift+letter. Uses e.code, so it works on any keyboard layout (Urdu included). */
+/** Alt+Shift+letter or digit. Uses e.code, so it works on any keyboard layout (Urdu included). */
 export function comboTarget(e: { code: string; altKey: boolean; shiftKey: boolean; ctrlKey: boolean; metaKey: boolean }): string | null {
   if (!e.altKey || !e.shiftKey || e.ctrlKey || e.metaKey) return null;
-  const m = /^Key([A-Z])$/.exec(e.code); if (!m) return null; const k = m[1].toLowerCase();
+  const m = /^(?:Key([A-Z])|Digit([0-9]))$/.exec(e.code); if (!m) return null; const k = (m[1] ?? m[2]).toLowerCase();
   if (k === HOME_KEY) return "/dashboard"; const c = CARDS.find((x) => x.key === k); return c ? route(c.id) : null;
 }
 /** "g" then a letter: where does this key go, given whether "g" was pressed a moment ago? null = nothing. */

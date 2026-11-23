@@ -23,6 +23,13 @@ impl Signer {
     }
 }
 
+impl Signer {
+    /// Phase 1m-4 B9: the signed CENSUS answer (counts only). kind "census" keeps it from ever being read as a company answer; a database that returned nothing = refused (never a made-up number).
+    pub fn census_answer(&self, request_id: &str, census: Option<&Value>, now: i64) -> String {
+        self.envelope(json!({"kind": "census", "request_id": request_id, "answered_at": now, "census": census.cloned().unwrap_or(Value::Null), "refused": census.is_none()}))
+    }
+}
+
 #[cfg(test)]
 mod t {
     use super::*;

@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 23 Nov 2026 08:16 PKT) - read this FIRST for the Desk after a compaction
-DOING: Desk, founder, awam keys + tooltip GREEN by his live look; next = B9 step 2 Control Plane Rust census
-NEXT STEP: B9 steps 2-5 as one commit: Control Plane Rust census, AD14, customers.rs, DeskCustomers screen
-HIS LAST WORD: his 08:1x: all three live checked, sab theek, update + send next phase
+# ADMIN DESK WORKING NOW (manual checkpoint, 23 Nov 2026 08:31 PKT) - read this FIRST for the Desk after a compaction
+DOING: B9 steps 2-5 written: Control Plane census, AD14, Desk customers.rs door, DeskCustomers screen (card key Alt+Shift+8)
+NEXT STEP: his ad-auto (AD14) then desk-install, then my Chrome look, then GREEN
+HIS LAST WORD: gate forces B9 as one commit
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 4e43dc9a 23 Nov 08:16 ledger line d488a0b0
 - d488a0b0 23 Nov 08:16 Keys GREEN for Desk, founder, awam; next phase B9 plan
 - 50c16bd9 23 Nov 08:07 ledger line 322539f3
 - 322539f3 23 Nov 08:07 Awam pull fix: manifest has the new key files, new gate
@@ -72,10 +73,25 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 3c71506f 23 Nov 08:05 Status 23 Nov 08:05 in all blueprints
 - f004d2c7 23 Nov 08:01 ledger line 9a5a58bc
 - 9a5a58bc 23 Nov 08:01 Awam keys: Ctrl+D, Ctrl+/, Alt+Shift pages, walk, rail follows
-- f39acb99 23 Nov 07:56 ledger line 00974202
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+A  admin-desk/server/src/customers.rs
+M  admin-desk/server/src/lookup.rs
+M  admin-desk/server/src/main.rs
+A  admin-desk/sql/AD14.sql
+A  admin-desk/sql/checks/AD14-check.sql
+A  docs/claude/admin-desk/server/src/customers.rs
+M  docs/claude/admin-desk/server/src/lookup.rs
+M  docs/claude/admin-desk/server/src/main.rs
+A  docs/claude/admin-desk/sql/AD14.sql
+A  docs/claude/admin-desk/sql/checks/AD14-check.sql
+MM docs/claude/admin-desk/state/WORKING-NOW.md
+M  founder-web/src/desk/DeskCards.tsx
+A  founder-web/src/desk/DeskCustomers.tsx
+M  founder-web/src/desk/desk_cards.test.ts
+M  founder-web/src/desk/desk_cards.ts
+A  founder-web/src/desk/desk_customers_pure.test.ts
+A  founder-web/src/desk/desk_customers_pure.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

@@ -4,11 +4,11 @@
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
 | PostgreSQL CP2 (awam database, Control Plane read-only role only): cp.census() = dimensions (package, state, interval, size band, 12-month growth, 30-day ended, renewals due) + SIX real needing-you-now signals (grace, not active yet, ended, payment received but not active, seats 90/95, storage 90/95) from the real awam tables, signal registry, SECURITY DEFINER, search_path fixed, EXECUTE only for cp_lookup, no id/name/e-mail/money (timestamps only from billing_intents); world-class gate headers; schema-first CP1, AD04, AD06 read | control-plane/sql/CP2.sql, control-plane/sql/checks/CP2-check.sql, scripts/cp-install.sh (step 3b) | yes | scratch awam DB built from the real schema snapshot: selftest ALL RULES PASSED twice (89/90/94/95 boundaries, payment-received, storage, over-limit, counts only), CP2 CHECK 8/8 true, CP1 CHECK 0 false |
-| Rust Control Plane census answer (Ed25519 signed, replay nonce) over HTTP/3 UDP 4410, request verified in Rust | control-plane/src/answer.rs, core.rs, verify.rs, db.rs | no | cargo tests |
-| PostgreSQL AD14: fadm_census_sample hourly append-only hash-chained series (forced RLS, frozen triggers, BRIN), SECURITY DEFINER fadm_census_record + door fadm_customers_board (same right as the plan lookup) | sql/AD14.sql, sql/checks/AD14-check.sql | no | selftest + CHECK on scratch |
-| Rust + Tokio + Axum 0.8 door /desk/v1/customers/census over the sealed HTTP/3 router, Control Plane call with fresh 15 s, deadline 6 s, breaker, shape check | server/src/customers.rs, main.rs | no | cargo tests |
-| Rule 52 kernel-verified read, fail-closed Data unavailable, honest "Not measured yet" rows, small-group note | desk_customers_pure.ts, DeskCustomers.tsx | no | bun tests, tsc |
-| React 19 + TypeScript Customers and Plans card wired, Ice-blue marks | DeskCustomers.tsx, desk_cards.ts, DeskCards.tsx | no | vite build, my Chrome look |
+| Rust Control Plane census answer (Ed25519 signed, replay nonce) over HTTP/3 UDP 4410, request verified in Rust | control-plane/src/answer.rs, core.rs, verify.rs, db.rs | yes | cargo tests |
+| PostgreSQL AD14: fadm_census_sample hourly append-only hash-chained series (forced RLS, frozen triggers, BRIN), SECURITY DEFINER fadm_census_record + door fadm_customers_board (same right as the plan lookup) | sql/AD14.sql, sql/checks/AD14-check.sql | yes | selftest + CHECK on scratch |
+| Rust + Tokio + Axum 0.8 door /desk/v1/customers/census over the sealed HTTP/3 router, Control Plane call with fresh 15 s, deadline 6 s, breaker, shape check | server/src/customers.rs, main.rs | yes | cargo tests |
+| Rule 52 kernel-verified read, fail-closed Data unavailable, zero is data (never "Not measured"), small-group note | desk_customers_pure.ts, DeskCustomers.tsx | yes | bun tests, tsc |
+| React 19 + TypeScript Customers and Plans card wired, Ice-blue marks | DeskCustomers.tsx, desk_cards.ts, DeskCards.tsx | yes | vite build, my Chrome look |
 
 # TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, small step 1m-keys: keys for every rail folder, his haan 23 Nov 2026 07:44), written 23 Nov 2026 07:5x PKT BEFORE code. LIST/PLAN: docs/claude/admin-desk/RAIL-KEYS-PLAN-23NOV.md (ADVANCE-RESEARCH [1m-keys])
 
@@ -3479,3 +3479,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - awam pull fix: 3 new files added to DEPLOY-MANIFEST.txt + gate MANIFEST NEW FILE, TECH-LAW CHECKED, TESTED: manifest-verify only WORKING-NOW stale, local bun run build:bun rc=0, gate probe FAIL as expected
 
 - keys for Desk, founder, awam + Desk tooltip GREEN, WIRED: YES / REAL: YES, TECH-LAW CHECKED, TESTED: his desk-install f39acb997 3x SAME + census 8/8, his awam pull build OK src same 627, his live look of all three
+
+- 1m-4 B9 Customers and Plans WRITTEN (not green): Control Plane signed census (aud desk-census), AD14 hourly chained series, Desk door /desk/v1/customers/census (fresh 15s, deadline 6s, breaker, shape check), DeskCustomers screen, card key Alt+Shift+8, TECH-LAW CHECKED, TESTED: Desk cargo 92 pass, control-plane cargo 13 pass, bun desk 104 pass, tsc clean, vite desk build ok, AD14 selftest + CHECK 7/7 on scratch PG
+
+- 1m-4 B9 Customers and Plans WRITTEN (not green): Control Plane signed census (aud desk-census), AD14 hourly chained series, Desk door /desk/v1/customers/census (fresh 15s, deadline 6s, breaker, shape check), DeskCustomers screen, card key Alt+Shift+8, TECH-LAW CHECKED, TESTED: Desk cargo 92 pass, control-plane cargo 13 pass, bun desk 104 pass, tsc clean, vite desk build ok, AD14 selftest + CHECK 7/7 on scratch PG

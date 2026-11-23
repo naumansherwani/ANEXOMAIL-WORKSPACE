@@ -21,7 +21,7 @@ pub fn allowed() -> Vec<String> {
     serde_json::from_str::<Value>(CONTRACT).ok().and_then(|v| v["allowed_fields"].as_array().map(|a| a.iter().filter_map(|x| x.as_str().map(str::to_string)).collect())).unwrap_or_default()
 }
 pub fn valid_ref(s: &str) -> bool { (6..=64).contains(&s.len()) && s.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'_' || b == b'-') }
-fn valid_id(s: &str) -> bool { (8..=64).contains(&s.len()) && s.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'-') }
+pub(crate) fn valid_id(s: &str) -> bool { (8..=64).contains(&s.len()) && s.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'-') }
 
 #[derive(Debug, PartialEq)]
 pub struct Req { pub request_id: String, pub company: String, pub fields: Vec<String> }
@@ -31,7 +31,8 @@ pub struct Req { pub request_id: String, pub company: String, pub fields: Vec<St
 pub struct Seen(Mutex<HashMap<String, i64>>, i64);
 impl Seen {
     pub fn new(boot: i64) -> Self { Seen(Mutex::new(HashMap::new()), boot) }
-    fn take(&self, id: &str, exp: i64, now: i64) -> bool {
+    pub(crate) fn boot(&self) -> i64 { self.1 }
+    pub(crate) fn take(&self, id: &str, exp: i64, now: i64) -> bool {
         let mut m = self.0.lock().unwrap_or_else(|e| e.into_inner());
         if m.len() >= CACHE_CAP { m.retain(|_, e| *e > now); }
         if m.len() >= CACHE_CAP || m.contains_key(id) { return false; }
@@ -39,14 +40,19 @@ impl Seen {
     }
 }
 
-pub fn verify(env: &str, desk_pub_hex: &str, seen: &Seen, now: i64) -> Result<Req, &'static str> {
+/// The signature half shared by every Desk request: envelope shape, Ed25519 over REQ_DOMAIN + body, body parsed. Anything wrong = refused.
+pub fn signed_body(env: &str, desk_pub_hex: &str) -> Result<Value, &'static str> {
     let e: Value = serde_json::from_str(env).map_err(|_| "envelope")?;
     let body = e["body"].as_str().ok_or("envelope")?;
     let sig = unhex(e["sig"].as_str().ok_or("envelope")?).ok_or("signature")?;
     let vk = unhex(desk_pub_hex).and_then(|b| <[u8; 32]>::try_from(b).ok()).and_then(|b| VerifyingKey::from_bytes(&b).ok()).ok_or("desk key")?;
     let sig = Signature::from_slice(&sig).map_err(|_| "signature")?;
     vk.verify(format!("{REQ_DOMAIN}\n{body}").as_bytes(), &sig).map_err(|_| "signature")?;
-    let b: Value = serde_json::from_str(body).map_err(|_| "body")?;
+    serde_json::from_str(body).map_err(|_| "body")
+}
+
+pub fn verify(env: &str, desk_pub_hex: &str, seen: &Seen, now: i64) -> Result<Req, &'static str> {
+    let b = signed_body(env, desk_pub_hex)?;
     if b["aud"].as_str() != Some(AUD) || b["method"].as_str() != Some("read") { return Err("audience"); }
     let (iat, exp) = (b["issued_at"].as_i64().ok_or("time")?, b["expires_at"].as_i64().ok_or("time")?);
     if iat < seen.1 { return Err("before_boot"); }

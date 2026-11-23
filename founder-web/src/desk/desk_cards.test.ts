@@ -45,3 +45,5 @@ _d("Ctrl+D goes to the Dashboard (his 23 Nov 06:42 word)", () => {
   const k = (o: Partial<{ code: string; altKey: boolean; shiftKey: boolean; ctrlKey: boolean; metaKey: boolean }>) => ({ code: "KeyD", altKey: false, shiftKey: false, ctrlKey: true, metaKey: false, ...o });
   _t("Ctrl+D only", () => { _e(_ctrlHome(k({}))).toBe("/dashboard"); _e(_ctrlHome(k({ shiftKey: true }))).toBeNull(); _e(_ctrlHome(k({ altKey: true }))).toBeNull(); _e(_ctrlHome(k({ metaKey: true }))).toBeNull(); _e(_ctrlHome(k({ ctrlKey: false }))).toBeNull(); _e(_ctrlHome(k({ code: "KeyE" }))).toBeNull(); });
 });
+
+test("a card can sit on a digit key: Alt+Shift+8 opens Customers and plans", () => { const e = { code: "Digit8", altKey: true, shiftKey: true, ctrlKey: false, metaKey: false }; expect(comboTarget(e)).toBe("/dashboard/customers"); expect(comboTarget({ ...e, ctrlKey: true })).toBeNull(); });

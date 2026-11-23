@@ -20,8 +20,8 @@ pub const FRESH: i64 = 15;
 pub const DEADLINE_SECS: u64 = 6;
 /// D5a-5 (1i): circuit breaker: BREAKER_FAILS failures inside BREAKER_WINDOW seconds open it for BREAKER_OPEN seconds.
 pub const BREAKER_FAILS: i64 = 3; pub const BREAKER_WINDOW: i64 = 30; pub const BREAKER_OPEN: i64 = 15;
-const REQ_DOMAIN: &str = "anexo-desk-lookup-v1";
-const ANS_DOMAIN: &str = "anexo-control-answer-v1";
+pub(crate) const REQ_DOMAIN: &str = "anexo-desk-lookup-v1";
+pub(crate) const ANS_DOMAIN: &str = "anexo-control-answer-v1";
 
 pub fn allowed() -> Vec<String> {
     serde_json::from_str::<Value>(CONTRACT).ok().and_then(|v| v["allowed_fields"].as_array().map(|a| a.iter().filter_map(|x| x.as_str().map(str::to_string)).collect())).unwrap_or_default()
@@ -32,7 +32,7 @@ pub fn valid_reason(s: &str) -> bool { let t = s.trim(); let n = t.chars().count
 pub fn valid_fields(f: &[String]) -> bool {
     let ok = allowed(); !f.is_empty() && f.len() <= ok.len() && f.iter().all(|x| ok.contains(x)) && { let mut s = f.to_vec(); s.sort(); s.dedup(); s.len() == f.len() }
 }
-fn uuid4() -> String {
+pub(crate) fn uuid4() -> String {
     use argon2::password_hash::rand_core::{OsRng, RngCore};
     let mut b = [0u8; 16]; OsRng.fill_bytes(&mut b); b[6] = (b[6] & 0x0f) | 0x40; b[8] = (b[8] & 0x3f) | 0x80;
     let h = hex(&b); format!("{}-{}-{}-{}-{}", &h[0..8], &h[8..12], &h[12..16], &h[16..20], &h[20..32])
@@ -102,11 +102,13 @@ pub fn version_line() -> String {
 /// Where the Control Plane is reached. Off = not configured: every lookup is "unavailable" (honest, fail closed).
 pub enum Plane { Off, H3 { addr: std::net::SocketAddr, host: String, ca_pem: Option<Vec<u8>> }, #[cfg(test)] Double(Box<dyn Fn(&str) -> Option<String> + Send + Sync>) }
 impl Plane {
-    async fn ask(&self, _env: &str) -> Option<String> { match self { Plane::Off => None, Plane::H3 { addr, host, ca_pem } => h3_post(*addr, host, ca_pem.as_deref(), CP_PATH, _env).await, #[cfg(test)] Plane::Double(f) => f(_env) } }
+    async fn ask(&self, env: &str) -> Option<String> { self.ask_path(CP_PATH, env).await }
+    /// Phase 1m-4: the same HTTP/3 client for another Control Plane route (the census).
+    pub(crate) async fn ask_path(&self, path: &str, _env: &str) -> Option<String> { match self { Plane::Off => None, Plane::H3 { addr, host, ca_pem } => h3_post(*addr, host, ca_pem.as_deref(), path, _env).await, #[cfg(test)] Plane::Double(f) => { let _ = path; f(_env) } } }
 }
 pub const CP_PATH: &str = "/control/v1/lookup";
 /// The real Control Plane is reached ONLY when his address (DESK_CONTROL_PLANE_ADDR = ip:udp-port) and host name (DESK_CONTROL_PLANE_HOST) are set; otherwise Off = fail closed.
-fn plane() -> Plane {
+pub(crate) fn plane() -> Plane {
     let (Ok(a), Ok(h)) = (std::env::var("DESK_CONTROL_PLANE_ADDR"), std::env::var("DESK_CONTROL_PLANE_HOST")) else { return Plane::Off };
     let Ok(addr) = a.parse() else { return Plane::Off };
     let ca_pem = std::env::var("DESK_CONTROL_PLANE_CA").ok().and_then(|p| std::fs::read(p).ok());
@@ -158,7 +160,7 @@ pub async fn selftest(company: &str) -> Result<String, String> {
     if accept(&a2, &key, &rid2, "no-such-company-0000", &fields, now) != Err(Reject::Refused) { return Err("unknown company was not refused".into()); }
     Ok(format!("LOOKUP SELFTEST OK: signed answer verified, replay refused, wrong key refused, unknown company refused; fields {}", Value::Object(got)))
 }
-fn cp_pub() -> String { std::env::var("DESK_CONTROL_PLANE_PUBKEY").unwrap_or_default() }
+pub(crate) fn cp_pub() -> String { std::env::var("DESK_CONTROL_PLANE_PUBKEY").unwrap_or_default() }
 
 fn out(status: StatusCode, body: Value) -> Response { (status, [(header::CONTENT_TYPE, "application/json"), (header::CACHE_CONTROL, "no-store")], body.to_string()).into_response() }
 /// ONE honest shape for every failure (D5a-5 F5): no fields, no cause, freshness null. The cause goes to the server log only.

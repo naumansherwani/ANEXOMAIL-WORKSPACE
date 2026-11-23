@@ -2729,3 +2729,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - awam pull fix: 3 new files added to DEPLOY-MANIFEST.txt + gate MANIFEST NEW FILE, TECH-LAW CHECKED, TESTED: manifest-verify only WORKING-NOW stale, local bun run build:bun rc=0, gate probe FAIL as expected
 
 - keys for Desk, founder, awam + Desk tooltip GREEN, WIRED: YES / REAL: YES, TECH-LAW CHECKED, TESTED: his desk-install f39acb997 3x SAME + census 8/8, his awam pull build OK src same 627, his live look of all three
+
+- 1m-4 B9 Customers and Plans WRITTEN (not green): Control Plane signed census (aud desk-census), AD14 hourly chained series, Desk door /desk/v1/customers/census (fresh 15s, deadline 6s, breaker, shape check), DeskCustomers screen, card key Alt+Shift+8, TECH-LAW CHECKED, TESTED: Desk cargo 92 pass, control-plane cargo 13 pass, bun desk 104 pass, tsc clean, vite desk build ok, AD14 selftest + CHECK 7/7 on scratch PG
+
+- 1m-4 B9 Customers and Plans WRITTEN (not green): Control Plane signed census (aud desk-census), AD14 hourly chained series, Desk door /desk/v1/customers/census (fresh 15s, deadline 6s, breaker, shape check), DeskCustomers screen, card key Alt+Shift+8, TECH-LAW CHECKED, TESTED: Desk cargo 92 pass, control-plane cargo 13 pass, bun desk 104 pass, tsc clean, vite desk build ok, AD14 selftest + CHECK 7/7 on scratch PG
