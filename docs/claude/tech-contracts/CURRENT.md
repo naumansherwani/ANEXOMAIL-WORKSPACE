@@ -1,5 +1,14 @@
 <!--TECHLAW-->
 
+# TECH CONTRACT FOR PHASE: DESK D6 CARDS (phase 1m, sub-phase 1m-9 B9c step Y5 Premium and Max seat promises in the over-limit count, list BL-28), written 24 Nov 2026 02:4x PKT BEFORE the SQL ran on his server, rows updated after the scratch test. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md (B9c Y5). Schema-first: AD06, AD06b, AD06d, AD14, AD18 read in full. Values are only his FINAL decisions: Business Premium 7,000 users (7 Nov section 6 A), Business Max strict cap 125,000 users per company (8 Nov G4); starred storage/transfer/file limits are NOT published (unverified), no feature list is invented.
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL AD19: the six package keys in ONE immutable SECURITY DEFINER function (single source of truth), Premium and Max published as version 1 through the append-only versioned registry (idempotent; the AD18 trigger raises NOTIFY desk_plans at COMMIT, so this release is also the live Y6 one-second proof), fadm_customers_begin hands over ALL SIX seat promises with the same right check, one throttled ledger line and a 5 s statement timeout, REVOKE PUBLIC, no new grant, rolled-back selftest P0AS1/P0AS2 | docs/claude/admin-desk/sql/AD19.sql, docs/claude/admin-desk/sql/checks/AD19-check.sql | YES | scratch PG16: AD01..AD15 + AD17 + AD18 + AD19 applied, selftest ALL RULES PASSED, second run idempotent (one version each), CHECK 6 of 6 true |
+| Rust door already reads six keys (PKGS, shape check, tests) | docs/claude/admin-desk/server/src/customers.rs | YES (unchanged, verified by reading) | existing cargo tests |
+| Control Plane already accepts six keys (PKGS) | control-plane/src/census.rs | YES (unchanged) | existing tests |
+| React 19 screen already lists six plans and words the over-limit count | founder-web/src/desk/desk_customers_pure.ts, founder-web/src/desk/DeskCustomers.tsx | YES (unchanged) | existing bun tests |
+
+
 # TECH CONTRACT FOR PHASE: DESK COMMAND CENTER TITLE (phase 1m, sub-phase CC1-title, list BL-29 (CC1; built on his explicit 11:48 word while BL-28 B9c stays OPEN, never rebuilt), BL-28 stays next on the ORDER-LOCK, his 23 Nov 2026 11:48 PKT word "perfect hain ... yeh codes pull kerwao"), written BEFORE the code, rows updated after. Demo (his approved look) = docs/claude/admin-desk/demo/COMMAND-CENTER-DEMO-23NOV-V24-LIGHT-SOFT-CENTRE.html. Backup of the old shell = backups/desk/20261123-1150-before-command-center-title/. ONLY the big page title changes; every Desk colour, card, rail and clock stays. Own file, no founder code, no third party, no network.
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3639,3 +3648,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Command Center OS security protocol S1..S15 (zero trust NIST 800-207, Zanzibar, Palantir markings, JIT, break-glass, passkey-only, DBSC, Rule 52, tamper-evident journal) with honest live/planned state, web research, TECH-LAW CHECKED, TESTED: gate 0 fail
 
 - Founder OS to Command Center OS bridge DECIDED by his final word: one-way Ed25519 signed over QUIC, isolation law + gate stay, OS blind to founder, founder controls with signed commands + fresh touch; plan OS-5 updated, WORKING-NOW + NOW-LIST + blueprint 0r updated, TECH-LAW CHECKED, TESTED: gate 0 fail
+
+- B9c Y5 WRITTEN not installed: AD19 publishes Business Premium 7,000 and Business Max 125,000 seat promises as registry version 1, six package keys from one immutable function, customers door hands over six; TECH-LAW CHECKED, TESTED: scratch PG16 selftest ALL RULES PASSED, CHECK 6 of 6 true, second run idempotent, gate 0 fail
