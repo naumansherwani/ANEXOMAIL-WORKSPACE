@@ -148,7 +148,7 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, s
               {g.label && <p className="dsk-grp">{g.label}</p>}
               {g.items.map((n) => (
                 <div className="dsk-row" key={n.key}>
-                  <button type="button" className="dsk-nav" data-here={n.key === (sub || "dashboard") ? "1" : undefined} data-key={n.key} aria-keyshortcuts={keyLabel(n.key) ? keyLabel(n.key) : undefined} aria-current={n.live ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={(n.live ? n.label : "Opens when it is connected") + (keyLabel(n.key) ? " · " + keyLabel(n.key) : "")} onClick={(e) => { if (!n.live) e.preventDefault(); else if (n.key === "dashboard") nav("/dashboard"); else nav(route(n.key)); }}>{n.glyph}<span>{n.label}</span></button>
+                  <button type="button" className="dsk-nav" data-here={n.key === (sub || "dashboard") ? "1" : undefined} data-key={n.key} aria-keyshortcuts={keyLabel(n.key) ? keyLabel(n.key) : undefined} aria-current={n.live ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={keyLabel(n.key) || undefined} onClick={(e) => { if (!n.live) e.preventDefault(); else if (n.key === "dashboard") nav("/dashboard"); else nav(route(n.key)); }}>{n.glyph}<span>{n.label}</span></button>
                   {n.key !== "dashboard" && <button type="button" className="dsk-pin" aria-pressed={pins.includes(n.key)} aria-label={(pins.includes(n.key) ? "Unpin " : "Pin ") + n.label} onClick={() => toggle(n.key)}>{ico("M9 4h6l-1 6 3 3v2H7v-2l3-3zM12 15v5")}</button>}
                 </div>
               ))}
@@ -162,7 +162,7 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, s
           {me && <span className="dsk-chip" title="Every answer on this page was signed by the Desk and verified in your browser" data-live={live}><i aria-hidden="true" />{chipText(live)}</span>}
           {me && <button type="button" className="dsk-av" aria-label="Account menu" aria-expanded={menu} onClick={() => setMenu((v) => !v)}>{(me.name || me.email).trim().split(/\s+/).slice(0, 2).map((w) => w[0]?.toUpperCase() ?? "").join("") || "?"}</button>}
           {me && menu && <div className="dsk-menu" role="menu"><b>{me.name || first}</b><small>{me.email}</small><span className="dsk-role">{me.role}</span>{end && <small>Session: {remaining(end, now)} left</small>}
-            <button type="button" role="menuitem" disabled title="Opens when it is connected">Profile and photo</button><button type="button" role="menuitem" disabled title="Opens when it is connected">Settings</button><button type="button" role="menuitem" disabled title="Opens when it is connected">Devices and sessions</button>
+            <button type="button" role="menuitem" disabled>Profile and photo</button><button type="button" role="menuitem" disabled>Settings</button><button type="button" role="menuitem" disabled>Devices and sessions</button>
             <button type="button" role="menuitem" disabled={out} onClick={onSignOut}>{out ? "Signing out…" : "Sign out"}</button></div>}
         </div>
         <header className="dsk-top">
