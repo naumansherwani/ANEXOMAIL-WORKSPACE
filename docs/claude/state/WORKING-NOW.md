@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 02:22 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 02:23 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: OS in real DeskTitle.tsx (written) + AD06d CHECK repair
 NEXT STEP: his ad-auto again, then desk-install, Y6, Y4
 HIS LAST WORD: his 02:2x word
@@ -19,33 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 8103f7c1 24 Nov 02:23 OS in Desk title + AD06d check repair
 - 9c93fb2f 24 Nov 02:14 ledger line 45051194
 - 45051194 24 Nov 02:14 Title demo V25 COMMAND CENTER OS
 - 8b91579e 24 Nov 02:13 ledger line 07c79e07
 - 07c79e07 24 Nov 02:13 Command Center OS demo
-- ae6abd62 24 Nov 02:04 ledger line 758e9395
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/sql/checks/AD06d-check.sql
-A  backups/desk/20261124-0225-os-title/DeskTitle-before-OS.tsx
-M  docs/claude/admin-desk/sql/checks/AD06d-check.sql
-M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  founder-web/src/desk/DeskTitle.tsx
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- .../20261124-0225-os-title/DeskTitle-before-OS.tsx | 86 ++++++++++++++++++++++
- docs/claude/admin-desk/sql/checks/AD06d-check.sql  |  4 +-
- docs/claude/admin-desk/state/WORKING-NOW.md        |  1 +
- docs/claude/state/WORKING-NOW.md                   | 30 +++-----
- docs/claude/tech-contracts/CURRENT.md              |  7 ++
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  6 +-
- founder-web/src/desk/DeskTitle.tsx                 |  6 +-
- 8 files changed, 116 insertions(+), 28 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 30 ++----------------------------
+ 1 file changed, 2 insertions(+), 28 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -56,4 +43,4 @@ M  founder-web/src/desk/DeskTitle.tsx
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (965e67c38d349fe2d8bd7cbb1c64803e992663d9)
+WIP snapshot: refs/wip/last (4d2f90996a4cfbdc235177e1d02080af73f43872)

@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 02:22 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 02:23 PKT) - read this FIRST for the Desk after a compaction
 DOING: OS in real DeskTitle.tsx (written) + AD06d CHECK repair
 NEXT STEP: his ad-auto again, then desk-install, Y6, Y4
 HIS LAST WORD: his 02:2x word
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 8103f7c1 24 Nov 02:23 OS in Desk title + AD06d check repair
 - 9c93fb2f 24 Nov 02:14 ledger line 45051194
 - 45051194 24 Nov 02:14 Title demo V25 COMMAND CENTER OS
 - 8b91579e 24 Nov 02:13 ledger line 07c79e07
@@ -72,13 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - ae6abd62 24 Nov 02:04 ledger line 758e9395
 - 758e9395 24 Nov 02:04 B9c Y5 AD19 Premium and Max seat promises
 - 20b56e65 24 Nov 01:58 ledger line 3a13f8dc
-- 3a13f8dc 24 Nov 01:58 Bridge decision final recorded
 
 ## Uncommitted Desk files
-M  admin-desk/sql/checks/AD06d-check.sql
-M  docs/claude/admin-desk/sql/checks/AD06d-check.sql
-MM docs/claude/admin-desk/state/WORKING-NOW.md
-M  founder-web/src/desk/DeskTitle.tsx
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
