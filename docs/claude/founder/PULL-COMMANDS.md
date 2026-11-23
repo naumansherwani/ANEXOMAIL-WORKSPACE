@@ -3605,3 +3605,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - His three bridge answers locked verbatim (numbers, counts by default plus case-level access, Desk sees zero), order BL-46..OS-11 recorded in WORKING-NOW, NOW-LIST, blueprint and decision file, TECH-LAW CHECKED, TESTED: gate 0 fail
 
 - B9c Y5 GREEN WIRED: YES / REAL: YES: his ad-auto DONE (AD01..AD19), my Chrome shows six plans on Customers; Y6 timing not measured, Y4 open, TECH-LAW CHECKED, TESTED: live Chrome look on admindesk.anexomail.com/dashboard/customers, gate 0 fail
+
+- Text-only demo (Senior Executive under title, Customer Operations folder heading, landing ANEXOMAIL COMMAND CENTER + Operations line), real code untouched, TECH-LAW CHECKED, TESTED: real landing built in a scratch copy and screenshot at 1280 and 390, dashboard rendered, gate 0 fail
