@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 09:22 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 09:22 PKT) - read this FIRST for the Desk after a compaction
 DOING: B13 T2 AD30 idempotent + advisor coverage table
 NEXT STEP: his desk-install, then T3
 HIS LAST WORD: advisor text vs code
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- ab7f6eb0 24 Nov 09:22 Desk B13 T2: AD30 idempotent, advisor coverage
 - 7a550734 24 Nov 09:20 ledger line f5b5d7d4
 - f5b5d7d4 24 Nov 09:20 Desk B13 T2: case-to-tenant binding AD30, not_bound door word
 - 1ae68d49 24 Nov 09:13 ledger line 5a00279a
@@ -72,15 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - c00bf6aa 24 Nov 09:12 ledger line d7bfb5df
 - d7bfb5df 24 Nov 09:12 Desk: 1m-L3 install proof, compaction save
 - 1bc496ed 24 Nov 09:05 ledger line 1ec1ce87
-- 1ec1ce87 24 Nov 09:05 Desk 1m-L3: incremental ledger check AD29, staff-only fault banner
 
 ## Uncommitted Desk files
-A  admin-desk/D6-B13-ADVISOR-COVERAGE-24NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  admin-desk/sql/AD30.sql
-A  docs/claude/admin-desk/D6-B13-ADVISOR-COVERAGE-24NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/sql/AD30.sql
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
