@@ -1,3 +1,11 @@
+# TECH CONTRACT FOR PHASE: AWAM SIGN-IN GLOBAL GRID LOOK (awam lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 12:33 order "2nd image approved hai, sari technology login page pe likho (MoQ, IETF bhi), Rule 52 text mat likho, back up le ke codes likho"; demo approved first in demo/awam-signin-24nov; backup = backups/awam/20261124-1235-before-signin-global-grid)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| React 19 + TypeScript strict + Tailwind 4 + Framer Motion + CSS only (no new dependency): left panel in the logo palette (navy / steel / silver), grid + scan line, INSIDE THE GLOBAL GRID, platinum rotating taglines, the full technology list in advanced wording WITHOUT the words Rule 52; right side navy with grid and glass card with a blue glowing edge; heading Enter The Global Grid + Your enterprise. Your network. Your access.; reduced-motion and fx-off respected; same code on 390 / 820 / 1200+ | src/components/site/AuthCinema.tsx, src/routes/auth.tsx, src/styles.css (the logo mark BrandMark and the whole sign-in logic are UNCHANGED); the sign-in path stays on docs/claude/admin-desk/sql/AD01.sql unchanged and docs/claude/admin-desk/server/src/auth.rs unchanged (no SQL or Rust touched) | YES | tsc clean; real render 1280/820/390: no sideways scroll, no Rule 52 text, card edge not clipped |
+| PROMISES: Media over QUIC, ML-DSA hybrid, OpenPGP PQC RFC 9980, MTA-STS, DANE, DBSC, HTTP/3 and others are WRITTEN on the page by his order before every one is in awam code; each is an OPEN promise in docs/claude/WEBSITE-PROMISES.md (rows P8..P17) and is closed only by its own phase proof | docs/claude/WEBSITE-PROMISES.md | YES (rows) | rows P8-P17 |
+
+RULE 52 COMBO: S=yes (sign-in calls untouched, text and style only) M=yes (no mail path touched; MTA-STS, DANE, DMARC are listed as promises) L=yes (no logging path touched)
+
 # TECH CONTRACT FOR PHASE: ADMIN DESK LOGIN TEXT (Desk lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 12:10 order "THE GLOBAL GRID WORKPLACE login page pe aye ga, ADMIN DESK aur Sign in to the company desk completly remove, baki ek inch change mat kero" and his 12:13 "APPROVED HAI, banao"; text only, demo approved first)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -4028,3 +4036,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Awam sign-in demo code preserved in demo/awam-signin-24nov, no src change. TECH-LAW CHECKED. TESTED: run.cjs renders idle, verify, passkey states on the real awam page at 1280 and 390 OK
 
 - Awam sign-in demo code preserved in demo/awam-signin-24nov, no src change. TECH-LAW CHECKED. TESTED: run.cjs renders idle, verify, passkey states on the real awam page at 1280 and 390 OK
+
+- AWAM SIGN-IN GLOBAL GRID LOOK: AuthCinema + auth.tsx + styles.css, full technology list (no Rule 52 words), promises P8-P17 OPEN. TECH-LAW CHECKED. TESTED: tsc clean, real render 1280/820/390 no sideways scroll, no Rule 52 text, card not clipped
+
+- AWAM SIGN-IN GLOBAL GRID LOOK: AuthCinema + auth.tsx + styles.css, full technology list (no Rule 52 words), promises P8-P17 OPEN. TECH-LAW CHECKED. TESTED: tsc clean, real render 1280/820/390 no sideways scroll, no Rule 52 text, card not clipped

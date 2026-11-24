@@ -1,5 +1,4 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Database, ShieldCheck, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 
@@ -11,10 +10,18 @@ const taglines = [
   "Work when it's done.",
 ];
 
-const trust = [
-  { icon: ShieldCheck, text: "256-bit TLS · device-bound sessions" },
-  { icon: Database, text: "Your data · export anytime · delete means delete" },
-  { icon: Zap, text: "Rust + WebTransport · async Tokio engine" },
+/* His 24 Nov 2026 12:33 word: every technology is listed on the sign-in page, in advanced wording. */
+const stack: { head: string; body: string }[] = [
+  { head: "Browser kernel", body: "Rust WebAssembly kernel · one kernel for the whole site" },
+  { head: "Engine", body: "Rust · Tokio async runtime · Axum" },
+  { head: "Network", body: "WebTransport over QUIC · HTTP/3 · Media over QUIC (IETF MoQ) · seamless fallback" },
+  { head: "Transport security", body: "TLS 1.3 · AES-256-GCM · X25519MLKEM768 post-quantum key exchange" },
+  { head: "Signatures", body: "Ed25519 + ML-DSA hybrid · OpenPGP PQC (RFC 9980) · HTTP signatures (RFC 9421, IETF WIMSE)" },
+  { head: "Mail trust", body: "MTA-STS · DANE · DMARC (RFC 7489) · OWASP-grade logging" },
+  { head: "Identity", body: "Passkeys (WebAuthn) · Argon2id · device-bound sessions (DBSC)" },
+  { head: "Data", body: "PostgreSQL 16 row-level security · hash chains · Merkle logs (RFC 6962)" },
+  { head: "Files", body: "Hetzner Storage Box · ClamAV virus scanning" },
+  { head: "Interface", body: "React 19 · TypeScript · TanStack Start & Router · Vite 8 · Tailwind CSS 4 · Radix / shadcn · Framer Motion · GSAP · Three.js" },
 ];
 
 /**
@@ -40,6 +47,10 @@ export function AuthCinema({ className }: { className?: string }) {
       {/* Radial mesh overlay */}
       <div className="ax-auth-cinema-mesh absolute inset-0" />
 
+      {/* Grid + scan line (logo palette) */}
+      <div className="ax-auth-grid absolute inset-0" />
+      <div className="ax-auth-scan absolute inset-x-0" />
+
       {/* Subtle grain texture */}
       <div className="absolute inset-0 ax-auth-cinema-grain opacity-[0.03]" />
 
@@ -50,8 +61,7 @@ export function AuthCinema({ className }: { className?: string }) {
       />
 
       {/* Content */}
-      <div className="relative z-10 pointer-events-none flex flex-col items-center gap-10 px-14 text-center">
-        {/* Brand mark — slightly larger */}
+      <div className="relative z-10 pointer-events-none flex flex-col items-center gap-6 px-10 text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -59,6 +69,8 @@ export function AuthCinema({ className }: { className?: string }) {
         >
           <BrandMark home={false} className="scale-[1.3] origin-center" />
         </motion.div>
+
+        <p className="text-[10.5px] font-semibold uppercase tracking-[0.5em] text-[#8E9BB0]">Inside the Global Grid</p>
 
         {/* Rotating taglines */}
         <div className="relative h-7 w-full overflow-hidden">
@@ -69,43 +81,43 @@ export function AuthCinema({ className }: { className?: string }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -14 }}
               transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="absolute inset-x-0 text-center text-[17px] font-semibold tracking-tight text-white/85"
+              className="ax-auth-tag absolute inset-x-0 text-center text-[17px] font-semibold tracking-tight"
             >
               {taglines[idx]}
             </motion.p>
           </AnimatePresence>
         </div>
 
-        {/* Dot indicators */}
         <div className="flex items-center gap-2">
           {taglines.map((_, i) => (
             <motion.div
               key={i}
               animate={{ opacity: i === idx ? 1 : 0.3, scale: i === idx ? 1 : 0.75 }}
               transition={{ duration: 0.3 }}
-              className="h-1.5 w-1.5 rounded-full bg-white"
+              className="h-1.5 w-1.5 rounded-full bg-[#C3CCD8]"
             />
           ))}
         </div>
 
-        {/* Divider */}
-        <div className="h-px w-20 bg-white/15" />
+        <div className="h-px w-20 bg-[#C3CCD8]/20" />
 
-        {/* Trust badges */}
-        <div className="flex flex-col gap-4">
-          {trust.map(({ icon: Icon, text }, i) => (
-            <motion.div
-              key={text}
+        {/* The whole technology stack */}
+        <ul className="flex w-full flex-col gap-2 text-left" aria-label="Technology">
+          {stack.map(({ head, body }, i) => (
+            <motion.li
+              key={head}
               initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 + i * 0.12, duration: 0.5, ease: "easeOut" }}
-              className="flex items-center gap-2.5 text-white/50"
+              animate={{ opacity: 0.9, x: 0 }}
+              transition={{ delay: 0.3 + i * 0.07, duration: 0.5, ease: "easeOut" }}
+              className="flex items-start gap-2.5"
             >
-              <Icon className="size-[15px] shrink-0 text-white/40" />
-              <span className="text-[13px] tracking-tight">{text}</span>
-            </motion.div>
+              <span className="mt-[5px] size-1.5 shrink-0 rounded-full bg-[#6FA6F2] shadow-[0_0_8px_#6FA6F2]" />
+              <span className="text-[11.5px] leading-snug tracking-tight text-[#C3CCD8]/75">
+                <b className="font-semibold text-[#E6ECF5]">{head}</b> — {body}
+              </span>
+            </motion.li>
           ))}
-        </div>
+        </ul>
       </div>
 
       {/* Bottom edge fade */}

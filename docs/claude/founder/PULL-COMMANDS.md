@@ -3803,3 +3803,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Awam sign-in demo code preserved in demo/awam-signin-24nov, no src change. TECH-LAW CHECKED. TESTED: run.cjs renders idle, verify, passkey states on the real awam page at 1280 and 390 OK
 
 - Awam sign-in demo code preserved in demo/awam-signin-24nov, no src change. TECH-LAW CHECKED. TESTED: run.cjs renders idle, verify, passkey states on the real awam page at 1280 and 390 OK
+
+- AWAM SIGN-IN GLOBAL GRID LOOK: AuthCinema + auth.tsx + styles.css, full technology list (no Rule 52 words), promises P8-P17 OPEN. TECH-LAW CHECKED. TESTED: tsc clean, real render 1280/820/390 no sideways scroll, no Rule 52 text, card not clipped
+
+- AWAM SIGN-IN GLOBAL GRID LOOK: AuthCinema + auth.tsx + styles.css, full technology list (no Rule 52 words), promises P8-P17 OPEN. TECH-LAW CHECKED. TESTED: tsc clean, real render 1280/820/390 no sideways scroll, no Rule 52 text, card not clipped
