@@ -824,3 +824,5 @@ ADVANCE-RESEARCH [1m] B13 T1 (24 Nov 2026): advisor review (verbatim in TENANT-I
 - B13 T2 AD30 = SQL GREEN by his word (24 Nov 2026 09:33 PKT, his desk-install). All phases in order: ALL-PHASES-IN-ORDER-24NOV.md. Next T3.
 
 - B13 T2 = GREEN (24 Nov 2026 09:33 PKT, his order; AD30 on his server, tests pass). Technology: PostgreSQL 16 immutable binding, idempotent, advisory lock, SHA-256 ledger; Rust Axum not_bound word; React TS screen text. Next T3.
+
+- B13 T2 AD30 case-to-tenant binding = GREEN (his word 24 Nov 2026 09:34 PKT; WIRED: YES / REAL: YES / TECH-LAW CHECKED). Next T3.
