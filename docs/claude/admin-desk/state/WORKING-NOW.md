@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 06:41 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 06:41 PKT) - read this FIRST for the Desk after a compaction
 DOING: cp5 scripts restored in source folder
 NEXT STEP: his desk-install then cp5-look
 HIS LAST WORD: his 06:39 anger: file missing
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 0e9fc8a4 24 Nov 06:41 cp5 scripts restored
 - a3ffb8fe 24 Nov 06:37 ledger line ef4a48f3
 - ef4a48f3 24 Nov 06:37 cp5 look
 - 490617d9 24 Nov 06:16 ledger line 26cca7be
@@ -72,20 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - e5d7ee52 24 Nov 06:07 ledger line 47c46e70
 - 47c46e70 24 Nov 06:07 b13 z4 plan
 - 5e2f36bd 24 Nov 06:00 ledger line a0654476
-- a0654476 24 Nov 06:00 title wrap green
 
 ## Uncommitted Desk files
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  admin-desk/README.md
-M  admin-desk/scripts/cp-install.sh
-A  admin-desk/scripts/cp5-look.sh
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/README.md
-M  docs/claude/admin-desk/scripts/cp-install.sh
-A  docs/claude/admin-desk/scripts/cp5-look.sh
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
