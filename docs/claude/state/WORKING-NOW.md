@@ -1,8 +1,8 @@
-# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 09:49 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 24 Nov 2026 10:02 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
-DOING: OS final decision + awam Move-In loopholes written; gate told; T3a AD31 next
-NEXT STEP: B13 T3a: read AD26 + awam member tables, write AD31 (awam DB resolver) with contract naming SQL+Rust+screen files
-HIS LAST WORD: R1 gate final authority; R5 read saved decision before coding; R6 green only his word or live proof
+DOING: Move-In plan saved, Priority Support gate reminder, T3 folder decisions; T3a AD31 next
+NEXT STEP: B13 T3a: read AD26 + awam member tables, write AD31 (awam DB resolver), contract naming SQL+Rust+screen files
+HIS LAST WORD: R1 gate final; R5 read saved decision first; R6 green only his word or live proof; R8 test accounts look only
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -20,20 +20,40 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 28662f6d 24 Nov 09:49 ledger line 0d1ae8d1
 - 0d1ae8d1 24 Nov 09:49 Desk: OS final decision and awam move-in loopholes
 - 6c06f9ee 24 Nov 09:43 ledger line 9d96440a
 - 9d96440a 24 Nov 09:43 Desk: OS to awam import connect plan
 - 0b4e69a8 24 Nov 09:37 ledger line ba1f46c4
-- ba1f46c4 24 Nov 09:37 Desk B13 T3: point list and research
 
 ## Uncommitted files (half-done work if any)
+M  admin-desk/D6-B13-T3-RESOLUTION-LIST-24NOV.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
+M  docs/claude/DECISION-REGISTRY.json
+A  docs/claude/MOVE-IN-SYSTEM-PLAN-24NOV.md
+M  docs/claude/TECH-LAW-GATE.json
+M  docs/claude/admin-desk/D6-B13-T3-RESOLUTION-LIST-24NOV.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
+M  lanes/ALL-FILES.csv
+M  lanes/docs.txt
+M  lovable-gold/README.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 32 ++------------------------------
- 1 file changed, 2 insertions(+), 30 deletions(-)
+ .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    |   2 +
+ docs/claude/admin-desk/NOW-LIST-23NOV.md           |   1 +
+ docs/claude/state/WORKING-NOW.md                   |  37 +-
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  18 +-
+ lanes/ALL-FILES.csv                                |   1 +
+ lanes/docs.txt                                     |   1 +
+ lovable-gold/README.md                             |   2 +-
+ 15 files changed, 577 insertions(+), 466 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -44,4 +64,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (be41db2b8c5bebf0c08a29f0e0fce6cf725d5b34)
+WIP snapshot: refs/wip/last (ed6806a9853017267481a752bbe8d9678813c71c)

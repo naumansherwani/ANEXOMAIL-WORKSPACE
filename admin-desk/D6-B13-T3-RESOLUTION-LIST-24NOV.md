@@ -26,3 +26,9 @@ POINTS TAKEN INTO T3, each built in the sub-step named:
 | T3b | Control Plane method 'resolve' (Rule 52, own audience, 15 s, replay cache, closed shapes) + Desk client in consent_cp-style module + unit tests (replay, wrong key, wrong shape, fail closed) | control-plane/src, docs/claude/admin-desk/server/src | after T3a |
 | T3c | Desk side: AD32 adds sender_domain + sender_aligned evidence to the case ingest event and a door that applies a verified verdict through fadm_case_bind; the automatic CALL at case creation waits for the Rust mail door (Folder 2) | AD32 + Rust door | after T3b; the live call = Folder 2 |
 | T3d | screen: case card shows 'Company: confirmed / waiting for confirmation (reason in words)' | DeskConsent / case card | with T3c |
+
+## MY DECISION BY FOLDER (his 10:01 word: "T3 ke mamlay jin folder se related hain un pe aaye gay, simple hai, tum khud decision liya karo") (24 Nov 2026 10:0x PKT)
+- T3a AD31 resolver (awam DB) + T3b Control Plane 'resolve' method + Desk client = DASHBOARD folder, B13 (built now, they are Control Plane / Desk files, no inbound mail needed).
+- T3c the automatic CALL when a case is created from incoming mail = FOLDER 2 Mailboxes (the Rust mail door that ingests mail and writes the sender domain + alignment into the case event). The hook point is written in Folder 2's row; until then AD30 binding is by T4 (manual, two staff).
+- T3d the case-card text 'company confirmed / waiting' = FOLDER 3 Cases (it is a case screen); until then the existing Customer data access screen carries the not_bound sentence.
+- Move-in requests (moveyourbusiness@) = PROSPECT cases: verdict 'unknown' is CORRECT, never bound, never consent (MOVE-IN-SYSTEM-PLAN-24NOV.md note 3). Move-in pipeline = FOLDER 8 phase P.

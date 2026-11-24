@@ -2999,3 +2999,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - OS to awam import plan from live Chrome look. TECH-LAW CHECKED: no code change. TESTED: docs only, my live look at /app/import console 0 errors, rules-gate 0 fail
 
 - OS final decision (A locked, B recommended, C awam loopholes AWL-MI1..6), awam blueprint block, DECISION-REGISTRY entry for mig_* SQL. TECH-LAW CHECKED: no code change. TESTED: docs and gate registry only, rules-gate 0 fail
+
+- Move-In plan verbatim + W1..W6 research checkpoints, Priority Support founder-contact gate (fails 9 Jan 2027), T3 folder decisions, registry entry. TECH-LAW CHECKED: no code change. TESTED: gate shows 5 TECH LAW OPEN warnings for the reminder, rules-gate 0 fail
