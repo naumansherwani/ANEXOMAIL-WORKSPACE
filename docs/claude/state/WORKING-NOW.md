@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 25 Nov 2026 03:39 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 03:39 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: T4e fix: Control Plane path list now has the tenant door (live proof 404 fixed); build-speed patch saved, waits his haan
@@ -21,30 +21,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 3ed095ff 25 Nov 03:39 T4e fix tenant path in Control Plane
 - 7fd24a11 25 Nov 03:22 ledger line d378ca2a
 - d378ca2a 25 Nov 03:22 install rule final separate
 - 7bff1f5b 25 Nov 03:20 ledger line 81106a36
 - 81106a36 25 Nov 03:20 B13 T4e code written and tested
-- d1594f03 25 Nov 03:14 ledger line cf47d83d
 
 ## Uncommitted files (half-done work if any)
-A  admin-desk/BUILD-SPEED-PROFILE-PATCH-25NOV.patch
-M  control-plane/src/h3srv.rs
-A  docs/claude/admin-desk/BUILD-SPEED-PROFILE-PATCH-25NOV.patch
-M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/BUILD-SPEED-PROFILE-PATCH-25NOV.patch   | 28 ++++++++++++++++++++++
- control-plane/src/h3srv.rs                         | 14 ++++++++++-
- .../BUILD-SPEED-PROFILE-PATCH-25NOV.patch          | 28 ++++++++++++++++++++++
- docs/claude/admin-desk/state/WORKING-NOW.md        |  2 ++
- docs/claude/state/WORKING-NOW.md                   | 28 ++++++++--------------
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  4 ++--
- 6 files changed, 83 insertions(+), 21 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 27 ++-------------------------
+ 1 file changed, 2 insertions(+), 25 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -55,4 +45,4 @@ M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (50287fbfaa0876d686a46ad1969bf51576310e77)
+WIP snapshot: refs/wip/last (cf4a117be4fc941a313299b9243db632fee18d27)
