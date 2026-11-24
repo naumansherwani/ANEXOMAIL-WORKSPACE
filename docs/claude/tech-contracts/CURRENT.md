@@ -1,3 +1,9 @@
+# TECH CONTRACT FOR PHASE: AWAM PACKAGE FACTS AND POOL LEVELS, SQL E202 (phase AWL-3 SQL second half, awam lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 08:17 PKT order, awam files untouched), written 08:3x PKT BEFORE install. LIST: docs/claude/AUDIT-24NOV-0820-AWAM-POINTS-AND-DESK.md
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL 16: package facts table (forced RLS, frozen except by numbered migration), public card view that hides starred numbers, derived-number check (pool = seats x 50 GB), pool levels as a pure function, hash-chained ledger kinds, service_role report door, selftest with custom SQLSTATE rollback, CHECK file | docs/cursor-work/sql/E202_awam_package_facts_pool.sql, docs/cursor-work/sql/CHECK_E202.sql | YES | scratch PostgreSQL 16: selftest 12 checks twice, CHECK 13 rows true, pool report end to end; NOT yet on his server |
+| Carried unchanged: E201 and the Desk tenant registry | docs/cursor-work/sql/E201_awam_package_caps_final.sql, docs/claude/admin-desk/sql/AD26.sql | YES | GREEN on his server |
+
 # TECH CONTRACT FOR PHASE: DESK TENANT REGISTRY GREEN NOTE (phase 1m, B13 first step AD26, list BL-46 B13 stays next; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 first by his 02:39 order), his 24 Nov 2026 08:13 PKT install paste, written 08:2x PKT. LIST: docs/claude/admin-desk/D6-B13-T1-GATE-CHECKLIST-24NOV.md
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3862,3 +3868,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - CLAUDE.md: fixed command forms rule added below the RULE 34 block (docs only; one duplicate RESUME line removed so RULE 34 stays inside the gate's top 17000 characters); TECH-LAW CHECKED; TESTED: rules-gate 0 fail on this commit, RULE 34 at char 16968
 
 - AD26 tenant registry + domain ownership GREEN on his server (WIRED: SQL yes / REAL: yes): his desk-install paste 24 Nov 08:13 PKT shows AD26 CHECK all true, OK installed and CHECKed, Control Plane signed lookup end to end, binary + page + kernel = repo build 1acac0af3, FACT orgs 7 / domains_verified 0 / history_rows 0 (real zero); my Chrome look: Desk login live HTTP/3, console 0 errors, no screen for AD26; TECH-LAW CHECKED; TESTED: his server paste + Chrome look
+
+- AWL-3 SQL second half E202 written: package_fact (his chart as data, starred values hidden from the public card, pool = seats x 50 GB, yearly free months, own-domain flag, unlimited only Max seats), pool levels 70/85/100 never blocked, pool report door + ledger kinds; audit doc awam points vs SQL + Desk live look findings D1-D7; TECH-LAW CHECKED; TESTED: scratch PostgreSQL 16 E202 selftest 12 checks twice, CHECK 13 rows true, pool report end to end, E201 CHECK still true; NOT on his server

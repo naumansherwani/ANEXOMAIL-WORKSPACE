@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 08:14 PKT) - read this FIRST for the Desk after a compaction
-DOING: AD26 tenant registry GREEN on his server; E201 GREEN; both Desk and awam SQL installed
-NEXT STEP: next: case-to-company binding table (immutable, ledger), Desk side; then consent wiring
-HIS LAST WORD: his 08:13 desk-install paste (AD26 CHECK all true, build 1acac0af3 = repo) + my Chrome look
+# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 08:20 PKT) - read this FIRST for the Desk after a compaction
+DOING: audit done; E202 awam package facts + pool levels written and scratch-tested
+NEXT STEP: his awam AUTO sql-run line paste (E202), then the case-to-company binding table
+HIS LAST WORD: his 08:17 order: every awam blueprint point in SQL, Desk audit, live look
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- be6bdc37 24 Nov 08:14 ledger line 2c566233
 - 2c566233 24 Nov 08:14 AD26 tenant registry GREEN
 - a9f96fd0 24 Nov 08:06 ledger line 6d38281d
 - 6d38281d 24 Nov 08:06 fixed command forms rule
@@ -72,9 +73,12 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - d7f23d8d 24 Nov 08:03 E201 GREEN SQL half, Max 125,000 final
 - 3212d702 24 Nov 07:53 ledger line de6596bb
 - de6596bb 24 Nov 07:53 ad-auto names AD21..AD26
-- e1041c4c 24 Nov 07:48 ledger line de12ed1d
 
 ## Uncommitted Desk files
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
