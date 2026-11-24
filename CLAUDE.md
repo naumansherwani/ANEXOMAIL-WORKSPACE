@@ -92,3 +92,5 @@ Full rules: `AGENTS.md` (Rules 1–73) and `docs/claude/founder/CODES/00-README-
 > ## >>> 25 Nov 2026 02:5x PKT: B13 T4a/b/c + T4g GREEN by his order (installs 02:17 + 02:35, builds SAME cf25976d0). NEXT = T4e. INSTALL SPLIT RULE: SQL = ad-auto.sh, WEB = desk-install.sh, Rule 52 = ONE web install with all the advance technology, seen live in Chrome: docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md <<<
 
 > ## >>> 25 Nov 2026 03:0x PKT (his 03:02): NO DOUBLE RUN. SQL install = admin-desk/scripts/desk-sql-install.sh (SQL only); WEB install = desk-install.sh (never runs SQL). Give only the install the phase needs. docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md <<<
+
+> ## >>> 25 Nov 2026 03:09 PKT (his 03:09): ONE COMMAND PER REPLY. Web = desk-install.sh does EVERYTHING incl. the Desk SQL once; SQL = desk-sql-install.sh ONLY for a SQL-only phase; NEVER both in one reply. docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md <<<

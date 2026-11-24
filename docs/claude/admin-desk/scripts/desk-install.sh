@@ -93,7 +93,9 @@ bash <(show admin-desk/scripts/cp-install.sh) || exit $?
 # 8/8 (his 23 Nov 2026 01:18: the Storage Box copy of the lookup-audit checkpoints, signed with the Desk key, timer every 10 minutes)
 echo "== 8/8 audit outside copy (D5a-4)"
 bash <(show admin-desk/scripts/audit-export-install.sh) || exit $?
-# his 25 Nov 2026 02:56 + 03:02 rule (STRICT): the WEB install NEVER runs the Desk SQL; SQL has its own command desk-sql-install.sh (ad-auto). No double run.
+# his 25 Nov 2026 03:09 decision (ONE COMMAND PER REPLY): the ONE web command does EVERYTHING, so the Desk SQL runs here, once (AD files already in the database are skipped). desk-sql-install.sh exists only for a phase that changed SQL and nothing else; a reply never gives both.
+echo "== 8b Desk SQL (ad-auto)"
+bash <(show admin-desk/scripts/ad-auto.sh) || exit $?
 # 9/9 (his 23 Nov 2026 02:38: "the last 15 lines must PROVE the new code is the one running"): printed LAST so `tail -15` always shows it. Read-only.
 echo "== 9/9 PROOF: the running binary and the live page are the NEW build"
 PID="$(systemctl show -p MainPID --value $SVC)"; RUN="$(sha256sum /proc/$PID/exe 2>/dev/null | cut -c1-12)"; BIN="$(sha256sum "$ROOT/anexomail-desk" | cut -c1-12)"; BLD="$(sha256sum "$NEW" | cut -c1-12)"

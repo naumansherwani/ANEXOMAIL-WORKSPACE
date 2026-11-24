@@ -861,10 +861,10 @@
   {
    "id": "INSTALL-SPLIT-RULE",
    "file": "docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md",
-   "must": "ONE web install carries ALL the advance technology",
+   "must": "ONE COMMAND PER REPLY: ONE web install carries ALL the advance technology",
    "status": "ok",
    "deadline": "B13 T4",
-   "why": "his 25 Nov 02:40/02:56 order: SQL install (ad-auto) and WEB install (desk-install) are separate; Rule 52 = one web install with all advance technology, seen live in Chrome.",
+   "why": "his 25 Nov 03:09 order: ONE COMMAND PER REPLY (web = everything incl. SQL once; SQL-only command only for SQL-only phases; never both).",
    "fail_after": "2027-01-09"
   },
   {
@@ -873,7 +873,7 @@
    "must": "SQL only",
    "status": "ok",
    "deadline": "B13 T4",
-   "why": "his 25 Nov 03:02 order: the SQL install has the word SQL in its name and desk-install never runs the Desk SQL (no double run).",
+   "why": "his 25 Nov 03:09 order: the SQL-only command exists (word SQL in the name) and is never given together with the web command.",
    "fail_after": "2027-01-09"
   }
  ]

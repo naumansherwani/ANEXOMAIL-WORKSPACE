@@ -1,8 +1,8 @@
-# INSTALL SPLIT RULE (his 25 Nov 2026 02:40, 02:56 and 03:02 PKT, STRICT, STANDING for the Admin Desk)
-1. SQL INSTALL = admin-desk/scripts/desk-sql-install.sh (the word SQL is IN the command name). SQL only: every Desk AD file not yet in the database, CHECK first. It never builds Rust, the page or the kernel.
-   git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:admin-desk/scripts/desk-sql-install.sh) 2>&1 | tail -25
-2. WEB INSTALL = admin-desk/scripts/desk-install.sh: Rust binary, page, WASM kernel and every other advance technology of the phase. WEB ONLY: it NEVER runs the Desk SQL any more (step 8b removed 25 Nov 03:0x). RULE 52: ONE web install carries ALL the advance technology of a phase; after it the technology is seen working LIVE in Chrome (390 / 820 / 1200+).
+# INSTALL RULE: ONE COMMAND PER REPLY (his 25 Nov 2026 02:40, 02:56, 03:02, 03:09 PKT, STRICT, STANDING for the Admin Desk)
+His anger was about TWO commands in one reply (a web install that also ran the SQL, then a second SQL command that ran it again). The fix he left to Claude (03:09): ONE COMMAND PER REPLY, always.
+1. WEB command = admin-desk/scripts/desk-install.sh. It does EVERYTHING of the phase: Rust binary, page, WASM kernel, every advance technology (Rule 52: ONE install carries ALL the advance technology, seen live in Chrome at 390 / 820 / 1200+) AND the Desk SQL once inside it (step 8b; files already in the database are skipped). Used for every phase that changes Rust, page or kernel, with or without SQL.
    git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:admin-desk/scripts/desk-install.sh) 2>&1 | tail -45
-3. NO DOUBLE RUN: a reply gives ONLY the install the phase needs, never both unless the phase has both SQL and web changes; then two numbered lines, SQL first, web second, each one plain line. (Incident 25 Nov 02:56: desk-install also ran the SQL, then ad-auto ran it again: his anger; fixed.)
-4. Both commands are ONE plain line, no label inside it. The reply writes the word SQL or WEB in the sentence next to the line.
-ONE web install carries ALL the advance technology (gate phrase).
+2. SQL command = admin-desk/scripts/desk-sql-install.sh (the word SQL is in the name). SQL ONLY, used ONLY when a phase changed SQL and nothing else (no Rust, page or kernel).
+   git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:admin-desk/scripts/desk-sql-install.sh) 2>&1 | tail -25
+3. A reply NEVER carries both. If the phase has code: the web command only. If it is SQL only: the SQL command only. The reply names the command (SQL or WEB) in the sentence beside the line; the line itself has no label.
+ONE COMMAND PER REPLY: ONE web install carries ALL the advance technology.

@@ -3145,3 +3145,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Install fix: desk-install.sh no longer runs the Desk SQL, new desk-sql-install.sh (SQL only, word SQL in the name), no double run; docs TWO-COMMANDS and INSTALL-SPLIT-RULE updated. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: bash syntax check OK on both scripts, gate run OK
 
 - Install fix: desk-install.sh no longer runs the Desk SQL, new desk-sql-install.sh (SQL only, word SQL in the name), no double run; docs TWO-COMMANDS and INSTALL-SPLIT-RULE updated. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: bash syntax check OK on both scripts, gate run OK
+
+- Install rule decided: ONE COMMAND PER REPLY. desk-install.sh does everything incl. the Desk SQL once (step 8b restored), desk-sql-install.sh only for SQL-only phases, never both; docs TWO-COMMANDS INSTALL-SPLIT-RULE ALL-PHASES NOW-LIST WORKING-NOW CLAUDE.md and gate ids updated. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: bash syntax check OK on desk-install.sh, gate run OK
