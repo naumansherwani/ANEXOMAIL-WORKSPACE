@@ -1,9 +1,9 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 14:37 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 14:43 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: Low data mode chip hidden outside /app (public site, sign-in, landing)
-NEXT STEP: his awam pull; my live look; then evening plan C1
-HIS LAST WORD: his 14:36 word
+DOING: SiteFooter.tsx added to DEPLOY-MANIFEST (pull never installed it); phase count written; evening resume wired
+NEXT STEP: HE pulls awam again; my live look at landing footer 390/820/1200+; then B13 T4 research+plan (EVENING-PLAN-24NOV.md)
+HIS LAST WORD: his 14:42 words
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 4cf0eefb 24 Nov 14:37 ledger line 3d0843c2
 - 3d0843c2 24 Nov 14:37 low data chip only in app
 - c1d06516 24 Nov 14:36 ledger line 4f7af502
 - 4f7af502 24 Nov 14:36 evening plan + live look
@@ -75,10 +76,11 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - e61cb1ab 24 Nov 14:31 login+footer: HTTP Message Signatures RFC 9421
 - 33fc7e91 24 Nov 14:19 ledger line 682d8807
 - 682d8807 24 Nov 14:19 awam landing footer matches login words
-- c3a259cd 24 Nov 14:16 ledger line f133c464
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/ALL-PHASES-IN-ORDER-24NOV.md
+M  docs/claude/admin-desk/ALL-PHASES-IN-ORDER-24NOV.md
+MM docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

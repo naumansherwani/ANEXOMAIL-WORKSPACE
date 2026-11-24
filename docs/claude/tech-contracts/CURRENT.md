@@ -4138,3 +4138,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - EVENING PLAN written (docs/claude/EVENING-PLAN-24NOV.md) + live look: /auth live and new, landing footer on live = old snapshot not in repo. TECH-LAW CHECKED. TESTED: docs only, live Chrome read of /auth text and / footer
 
 - LOW DATA CHIP only inside /app, never on public site (his 14:36). TECH-LAW CHECKED. TESTED: tsc clean
+
+- DEPLOY-MANIFEST now lists src/components/site/SiteFooter.tsx (root cause: pull showed DIFF SiteFooter, live footer old); PHASE COUNT block; CLAUDE.md top + RESUME-POINT resume lines for tonight. TECH-LAW CHECKED. TESTED: manifest-verify, gate run, his pull paste read
+
+- DEPLOY-MANIFEST now lists src/components/site/SiteFooter.tsx (root cause: pull showed DIFF SiteFooter, live footer old); PHASE COUNT block; RESUME-POINT line for tonight (CLAUDE.md top is gate-protected, untouched). TECH-LAW CHECKED. TESTED: manifest-verify 0 bad, gate 0 fail, his pull paste read
