@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 25 Nov 2026 03:19 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 03:20 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: B13 T4e code written + tested (SQL, Control Plane, Desk client, screen)
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 81106a36 25 Nov 03:20 B13 T4e code written and tested
 - d1594f03 25 Nov 03:14 ledger line cf47d83d
 - cf47d83d 25 Nov 03:14 T4e plan saved
 - 6513a45b 25 Nov 03:11 ledger line abdb285b
@@ -75,29 +76,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 4721db38 25 Nov 03:04 ledger line fff66f7a
 - fff66f7a 25 Nov 03:04 install fix no double run
 - a4a43143 25 Nov 02:57 ledger line 525a82a4
-- 525a82a4 25 Nov 02:57 T4 GREEN by his order + install split
 
 ## Uncommitted Desk files
-M  admin-desk/ALL-PHASES-IN-ORDER-24NOV.md
-M  admin-desk/scripts/cp-install.sh
-M  admin-desk/scripts/desk-install.sh
-M  admin-desk/server/src/bind_exception.rs
-M  admin-desk/server/src/main.rs
-A  admin-desk/server/src/tenant_cp.rs
-M  admin-desk/sql/AD31.sql
-M  admin-desk/sql/checks/AD31-check.sql
-M  docs/claude/admin-desk/ALL-PHASES-IN-ORDER-24NOV.md
-M  docs/claude/admin-desk/scripts/cp-install.sh
-M  docs/claude/admin-desk/scripts/desk-install.sh
-M  docs/claude/admin-desk/server/src/bind_exception.rs
-M  docs/claude/admin-desk/server/src/main.rs
-A  docs/claude/admin-desk/server/src/tenant_cp.rs
-M  docs/claude/admin-desk/sql/AD31.sql
-M  docs/claude/admin-desk/sql/checks/AD31-check.sql
-MM docs/claude/admin-desk/state/WORKING-NOW.md
-M  founder-web/src/desk/DeskBindException.tsx
-M  founder-web/src/desk/desk_bind_pure.test.ts
-M  founder-web/src/desk/desk_bind_pure.ts
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
