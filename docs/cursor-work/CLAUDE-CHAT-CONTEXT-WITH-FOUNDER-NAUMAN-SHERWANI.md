@@ -5858,3 +5858,7 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - BACKUP: backups/awam/20261124-1325-existing-login-live = the existing live awam login (auth, callback, AuthCinema, BrandMark, styles) with SHA256SUMS; src unchanged. TECH-LAW CHECKED. TESTED: sha256sum -c OK on 5 files, backup == src
 
 - BACKUP: backups/awam/20261124-1325-existing-login-live = the existing live awam login (auth, callback, AuthCinema, BrandMark, styles) with SHA256SUMS; src unchanged. TECH-LAW CHECKED. TESTED: sha256sum -c OK on 5 files, backup == src
+
+- AWAM SIGN-IN GLOBAL GRID LOOK SHIPPED = his approved demo real-exact copied unchanged (backups kept in backups/awam). TECH-LAW CHECKED. TESTED: tsc clean, dev render 1280/820/390 + reduced motion, 3 inputs render, no sideways scroll, dust on, 390 card not clipped
+
+- AWAM SIGN-IN GLOBAL GRID LOOK SHIPPED = his approved demo real-exact copied unchanged (backups kept in backups/awam); AuthDust.tsx added to DEPLOY-MANIFEST. TECH-LAW CHECKED. TESTED: tsc clean, dev render 1280/820/390 + reduced motion, 3 inputs render, no sideways scroll, dust on, 390 card not clipped

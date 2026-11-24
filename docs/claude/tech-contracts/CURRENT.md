@@ -1,3 +1,11 @@
+# TECH CONTRACT FOR PHASE: AWAM SIGN-IN GLOBAL GRID LOOK, SHIPPED (awam lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 13:25 order "yeh demo wala send kero, banao, real, approved hai"; code = demo/awam-signin-24nov/real-exact copied unchanged; backups: backups/awam/20261124-1235-before-signin-global-grid, 20261124-1305-original-live-on-his-server, 20261124-1325-existing-login-live)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| React 19 + TypeScript strict + Tailwind 4 + Framer Motion + CSS + Canvas (no new dependency): left panel in the logo palette with grid and ONE moving light, INSIDE THE GLOBAL GRID, seven technology lines as in his approved demo, navy right side with grid, beam, amber floor light and 46 dust motes, glass card with a blue glowing edge, heading Enter The Global Grid + Your enterprise. Your network. Your access.; reduced-motion and fx-off respected; same code on 390 / 820 / 1200+ | src/components/site/AuthCinema.tsx, src/components/site/AuthDust.tsx, src/routes/auth.tsx, src/styles.css; the sign-in path is UNCHANGED: docs/claude/admin-desk/sql/AD01.sql and docs/claude/admin-desk/server/src/auth.rs | YES | tsc clean, dev render 390/820/1280 |
+| PROMISES on the page by his order: WebTransport, HTTP/3, X25519MLKEM768 and AES-256-GCM lines are OPEN promises P8-P17 in docs/claude/WEBSITE-PROMISES.md (awam is Caddy HTTP/2 until K5b) | docs/claude/WEBSITE-PROMISES.md | YES (rows) | rows P8-P17 |
+
+RULE 52 COMBO: S=yes (no call changed, text and style only) M=yes (no mail path touched) L=yes (no logging path touched)
+
 # TECH CONTRACT FOR PHASE: AWAM SIGN-IN TEXT ONLY (awam lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 13:12 order: only the heading and the line under it change on the CURRENT login, nothing else; the demo look stays parked in demo/awam-signin-24nov/real-wip)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -4084,3 +4092,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - BACKUP: backups/awam/20261124-1325-existing-login-live = the existing live awam login (auth, callback, AuthCinema, BrandMark, styles) with SHA256SUMS; src unchanged. TECH-LAW CHECKED. TESTED: sha256sum -c OK on 5 files, backup == src
 
 - BACKUP: backups/awam/20261124-1325-existing-login-live = the existing live awam login (auth, callback, AuthCinema, BrandMark, styles) with SHA256SUMS; src unchanged. TECH-LAW CHECKED. TESTED: sha256sum -c OK on 5 files, backup == src
+
+- AWAM SIGN-IN GLOBAL GRID LOOK SHIPPED = his approved demo real-exact copied unchanged (backups kept in backups/awam). TECH-LAW CHECKED. TESTED: tsc clean, dev render 1280/820/390 + reduced motion, 3 inputs render, no sideways scroll, dust on, 390 card not clipped
+
+- AWAM SIGN-IN GLOBAL GRID LOOK SHIPPED = his approved demo real-exact copied unchanged (backups kept in backups/awam); AuthDust.tsx added to DEPLOY-MANIFEST. TECH-LAW CHECKED. TESTED: tsc clean, dev render 1280/820/390 + reduced motion, 3 inputs render, no sideways scroll, dust on, 390 card not clipped

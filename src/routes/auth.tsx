@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { AnexoMailField } from "@/components/site/AnexoMailField";
+import { AuthDust } from "@/components/site/AuthDust";
 import { AuthCinema } from "@/components/site/AuthCinema";
 import { CinematicSplash } from "@/components/site/CinematicSplash";
 import { AvailabilityHint, useHandleAvailability } from "@/components/auth/AvailabilityHint";
@@ -597,7 +598,11 @@ export function AuthPage({ founderLogin = false, startMode }: { founderLogin?: b
         <AuthCinema className="hidden lg:flex" />
 
         {/* RIGHT — Form panel */}
-        <div className="flex flex-1 items-center justify-center px-6 py-12 lg:px-14">
+        <div className="ax-auth-right relative flex min-w-0 flex-1 items-center justify-center overflow-hidden px-6 py-12 lg:px-14">
+          <div className="ax-auth-grid absolute inset-0" aria-hidden="true" />
+          <AuthDust />
+          <div className="ax-auth-beam absolute" aria-hidden="true" />
+          <div className="ax-auth-floor absolute bottom-0 left-[10%] right-[10%] h-[2px]" aria-hidden="true" />
           <div className={cn("ax-in w-full", "max-w-[28rem]")}>
 
             <div className="mb-6 lg:hidden">
@@ -614,7 +619,7 @@ export function AuthPage({ founderLogin = false, startMode }: { founderLogin?: b
             )}
 
             {/* Card */}
-            <div className="rounded-2xl border border-border bg-card p-ax-5 shadow-2xl">
+            <div className="ax-auth-card rounded-2xl border p-ax-5">
               {(
                 <>
               {/* Animated header — smooth morph on mode switch */}
@@ -648,7 +653,7 @@ export function AuthPage({ founderLogin = false, startMode }: { founderLogin?: b
                   ) : mode === "reset" ? (
                     <Header title="Choose a new password" sub="Use 6 to 15 characters." />
                   ) : (
-                    <Header title="Access Your Global Workspace" sub="Your mail, people, calendar and work. The all connected in one place." />
+                    <Header title="Enter The Global Grid" sub="Your enterprise. Your network. Your access." />
                   )}
                 </motion.div>
               </AnimatePresence>
