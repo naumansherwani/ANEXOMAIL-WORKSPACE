@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 13:14 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 13:14 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: awam sign-in: only the heading and the line under it (current login)
@@ -21,30 +21,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 1b0c24d6 24 Nov 13:14 awam sign-in heading text only
 - b267192b 24 Nov 13:07 ledger line 7de5879a
 - 7de5879a 24 Nov 13:07 card gradient demo saved
 - ac287a13 24 Nov 13:05 ledger line 346285b3
 - 346285b3 24 Nov 13:05 original sign-in backed up, final look parked
-- d375c88f 24 Nov 12:59 ledger line 0652f59e
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  lovable-gold/MANIFEST.sha256
-M  lovable-gold/awam/src/routes/auth.tsx
-M  src/routes/auth.tsx
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md            | 28 ++++++++++------------------
- docs/claude/tech-contracts/CURRENT.md       | 14 ++++++++++++++
- docs/cursor-work/server/DEPLOY-MANIFEST.txt | 10 +++++-----
- lovable-gold/MANIFEST.sha256                |  2 +-
- lovable-gold/awam/src/routes/auth.tsx       |  2 +-
- src/routes/auth.tsx                         |  2 +-
- 6 files changed, 32 insertions(+), 26 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 27 ++-------------------------
+ 1 file changed, 2 insertions(+), 25 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -55,4 +45,4 @@ M  src/routes/auth.tsx
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (e3f3c5c4f2ed466075518fd5a7e1d9aa525c3e68)
+WIP snapshot: refs/wip/last (dba7f95335180efb7a994775cda9d751c77a2115)
