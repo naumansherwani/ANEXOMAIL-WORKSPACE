@@ -177,6 +177,7 @@ admin-desk/scripts/desk-restart.sh
 admin-desk/scripts/desk-restore.sh
 admin-desk/scripts/desk-schema-look.sh
 admin-desk/scripts/desk-schema-look2.sh
+admin-desk/scripts/desk-sql-install.sh
 admin-desk/scripts/desk-test-alert.sh
 admin-desk/scripts/gen-pkg-seed.py
 admin-desk/server/00-FOUNDER-TECH-RULE.md

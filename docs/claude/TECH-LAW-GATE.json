@@ -866,6 +866,15 @@
    "deadline": "B13 T4",
    "why": "his 25 Nov 02:40/02:56 order: SQL install (ad-auto) and WEB install (desk-install) are separate; Rule 52 = one web install with all advance technology, seen live in Chrome.",
    "fail_after": "2027-01-09"
+  },
+  {
+   "id": "INSTALL-NO-DOUBLE-RUN",
+   "file": "admin-desk/scripts/desk-sql-install.sh",
+   "must": "SQL only",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 03:02 order: the SQL install has the word SQL in its name and desk-install never runs the Desk SQL (no double run).",
+   "fail_after": "2027-01-09"
   }
  ]
 }

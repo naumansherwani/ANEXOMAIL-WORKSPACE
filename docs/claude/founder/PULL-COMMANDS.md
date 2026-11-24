@@ -3895,3 +3895,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - B13 T4 install paste recorded (AD34 CHECK OK, builds SAME 7055241c7); T4a..T4h phase rows added; two separate installs rule (ad-auto SQL, desk-install web). RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: docs only, his install paste shows CHECK OK and SAME proofs, gate run OK
 
 - B13 T4a T4b T4c T4g GREEN WIRED: YES REAL: YES by his order: installs 02:17 and 02:35 show AD34 CHECK passed and binary page kernel SAME cf25976d0. Install split rule (ad-auto SQL, desk-install web, Rule 52 one web install). RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: his install paste CHECK passed, SAME proofs, gate run OK
+
+- Install fix: desk-install.sh no longer runs the Desk SQL, new desk-sql-install.sh (SQL only, word SQL in the name), no double run; docs TWO-COMMANDS and INSTALL-SPLIT-RULE updated. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: bash syntax check OK on both scripts, gate run OK
+
+- Install fix: desk-install.sh no longer runs the Desk SQL, new desk-sql-install.sh (SQL only, word SQL in the name), no double run; docs TWO-COMMANDS and INSTALL-SPLIT-RULE updated. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: bash syntax check OK on both scripts, gate run OK

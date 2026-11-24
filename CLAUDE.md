@@ -90,3 +90,5 @@ Full rules: `AGENTS.md` (Rules 1–73) and `docs/claude/founder/CODES/00-README-
 > ## >>> 25 Nov 2026 02:5x PKT (his 02:40 order): TWO SEPARATE INSTALLS: SQL = admin-desk/scripts/ad-auto.sh, WEB/Rust/page/kernel = admin-desk/scripts/desk-install.sh. B13 T4 code installed (his paste 02:17, AD34 CHECK OK, builds SAME 7055241c7); T4g cf25976d needs his ad-auto; build T4e, T4f, T4h next inside the existing AD34 (no new SQL file); live Chrome look of Company confirmation still OPEN. Read WORKING-NOW.md first. <<<
 
 > ## >>> 25 Nov 2026 02:5x PKT: B13 T4a/b/c + T4g GREEN by his order (installs 02:17 + 02:35, builds SAME cf25976d0). NEXT = T4e. INSTALL SPLIT RULE: SQL = ad-auto.sh, WEB = desk-install.sh, Rule 52 = ONE web install with all the advance technology, seen live in Chrome: docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md <<<
+
+> ## >>> 25 Nov 2026 03:0x PKT (his 03:02): NO DOUBLE RUN. SQL install = admin-desk/scripts/desk-sql-install.sh (SQL only); WEB install = desk-install.sh (never runs SQL). Give only the install the phase needs. docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md <<<
