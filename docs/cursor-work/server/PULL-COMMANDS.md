@@ -2937,3 +2937,9 @@
 - B13 T4i: his GLEIF RA list v1.9 CSV saved to admin-desk/data and read: 1178 register rows, 234 countries, no number-format column, RA codes not unique, Pakistan has SECP RA000475 and FBR RA001111. Nothing built yet. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: csv parsed 1181 rows true, gate run OK
 
 - B13 T4i: his GLEIF RA list v1.9 CSV saved to admin-desk/data and read: 1178 register rows, 234 countries, no number-format column, RA codes not unique, Pakistan has SECP RA000475 and FBR RA001111. Nothing built yet. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: csv parsed 1181 rows true, gate run OK
+
+- B13 T4i SQL: AD34 extended with desk.registry_kind loaded from the GLEIF RA list v1.9 (1181 rows, 234 jurisdictions), forced RLS, read-only for the app role, never deleted, shape needs its source, desk.registry_check closed words. WRITTEN + TESTED, NOT INSTALLED. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 AD34 CHECK 19 of 19 true, rerun keeps 1181 rows true, selftest OK, gate run OK
+
+- B13 T4i SQL: AD34 extended with desk.registry_kind loaded from the GLEIF RA list v1.9 (1181 rows, 234 jurisdictions), forced RLS, read-only for the app role, never deleted, shape needs its source, desk.registry_check closed words. WRITTEN + TESTED, NOT INSTALLED. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 AD34 CHECK 19 of 19 true, rerun keeps 1181 rows true, selftest OK, gate run OK
+
+- B13 T4i SQL: AD34 extended with desk.registry_kind loaded from the GLEIF RA list v1.9 (1181 rows, 234 jurisdictions), forced RLS, read-only for the app role, never deleted, shape needs its source, desk.registry_check closed words. WRITTEN + TESTED, NOT INSTALLED. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 AD34 CHECK 19 of 19 true, rerun keeps 1181 rows true, selftest OK, gate run OK

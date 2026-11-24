@@ -19,3 +19,9 @@ His order (04:21): "duniya ke har country ki company registration number alag ho
 - RA codes are NOT unique across rows (some codes repeat): the table key must be a row id, with the RA code as a plain column, checked at load.
 - Pakistan in the file: RA000475 Corporate Registry (Securities and Exchange Commission, www.secp.gov.pk); RA001111 Online Verification Services (FBR, https://e.fbr.gov.pk/esbn/Verification) = the tax side (NTN/STRN verification).
 - NEXT (not built): AD34 extension desk.registry_kind loaded from this file (country + register picker), format column empty = "shape unknown" until verified per register.
+
+## 25 Nov 2026 05:00 PKT: SQL WRITTEN + TESTED, NOT INSTALLED (his 04:31 order: build it future-proof ourselves, never ask the customer)
+- AD34 extended (no new SQL file): desk.registry_kind loaded from his GLEIF file (1,181 rows, 234 jurisdictions), row id key + generated row_hash (idempotent load), forced RLS, SELECT only for desk_app, never deleted (trigger P0AW5), number_shape always together with shape_source + shape_checked_on (CHECK), desk.registry_check(kind, number) answers closed words ok / wrong_shape / shape_unknown / bad_number / no_register. Selftest + 3 CHECK rows (AD34 CHECK now 19 of 19 true on scratch PostgreSQL 16; second run keeps 1181 rows).
+- Nothing in the customer flow asks for it: it is a reference the Desk uses only when a staff person needs it. Every shape stays NULL until a register's own page proves it (Pakistan SECP CUIN 7 digits needs SECP's page).
+- NEXT: his SQL command (desk-sql-install.sh), then the Desk read door + country/register picker on Company confirmation (Rust + React, web install), then the Pakistan shape from SECP's page.
+- Gate DESK NO-MONEY refused the first load (one GLEIF comment contains the word 'amount'); fixed honestly, gate untouched: comment column keeps the first 100 characters, full text stays in the CSV.

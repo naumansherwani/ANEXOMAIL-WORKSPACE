@@ -106,3 +106,5 @@ Full rules: `AGENTS.md` (Rules 1–73) and `docs/claude/founder/CODES/00-README-
 > ## >>> 25 Nov 2026 04:15 PKT: his installs OK (SQL then WEB, builds SAME ff1bee35e). Desk is separate from awam and founder (checked). NEXT = T4f: research line in blueprint FIRST, then code; T4e Chrome look owed. <<<
 
 > ## >>> 25 Nov 2026 04:35 PKT: T4e screen seen live at 1536 px (390/820 still owed); NEW T4i = company registration numbers of every country incl. Pakistan: plan admin-desk/D6-B13-T4I-REGISTRATION-NUMBERS-PLAN-25NOV.md (research written, not built). <<<
+
+> ## >>> 25 Nov 2026 05:00 PKT: T4i SQL (desk.registry_kind from GLEIF list + desk.registry_check) WRITTEN + TESTED in AD34, NOT installed: give him the SQL line only (desk-sql-install.sh). Then Rust door + picker (web). Never ask the customer for this; shapes stay NULL until a register page proves them. <<<

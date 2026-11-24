@@ -938,6 +938,15 @@
    "deadline": "B13 T4i",
    "why": "his 25 Nov 04:21 order: registration numbers for every country incl. Pakistan; research line written first (RESEARCH-IN-BLUEPRINT law), code later.",
    "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4i-sql-registry-kind",
+   "file": "admin-desk/sql/AD34.sql",
+   "must": "desk.registry_kind",
+   "status": "ok",
+   "deadline": "B13 T4i",
+   "why": "his 25 Nov 04:31 order: registration numbers of every country built once and future-proof: GLEIF list loaded in AD34, shape NULL until proven.",
+   "fail_after": "2027-01-09"
   }
  ]
 }
