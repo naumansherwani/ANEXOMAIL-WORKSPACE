@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 13:53 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 13:53 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: landing footer rows by his explicit approval
@@ -21,34 +21,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 1997a3a2 24 Nov 13:53 awam landing footer advance rows, chairman approved
 - 95182641 24 Nov 13:50 ledger line 99ba7cfd
 - 99ba7cfd 24 Nov 13:50 awam sign-in advance lines, footer held
 - 50b5df97 24 Nov 13:41 ledger line 4eb638ee
 - 4eb638ee 24 Nov 13:41 demo engine line fixed
-- 43ada395 24 Nov 13:38 ledger line a19f5aad
 
 ## Uncommitted files (half-done work if any)
-M  demo/awam-signin-24nov/real-landing/SiteFooter.tsx
-M  demo/awam-signin-24nov/screens/landing-footer-1280.png
-M  demo/awam-signin-24nov/screens/landing-footer-390.png
  M docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  lovable-gold/MANIFEST.sha256
-M  lovable-gold/awam/src/components/site/SiteFooter.tsx
-M  src/components/site/SiteFooter.tsx
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- .../screens/landing-footer-390.png                 | Bin 160672 -> 161987 bytes
- docs/claude/state/WORKING-NOW.md                   |  31 +++++++++------------
- docs/claude/tech-contracts/CURRENT.md              |   2 +-
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        |   8 +++---
- lovable-gold/MANIFEST.sha256                       |   2 +-
- .../awam/src/components/site/SiteFooter.tsx        |  14 +++++++---
- src/components/site/SiteFooter.tsx                 |  14 +++++++---
- 9 files changed, 43 insertions(+), 35 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 31 ++-----------------------------
+ 1 file changed, 2 insertions(+), 29 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -59,4 +45,4 @@ M  src/components/site/SiteFooter.tsx
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (ee65f9330fc06610ebb2e6de7b460340d0b22642)
+WIP snapshot: refs/wip/last (984c7deca1ab7946c436f317a9611033025497ee)
