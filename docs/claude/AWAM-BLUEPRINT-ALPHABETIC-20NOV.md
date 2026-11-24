@@ -131,3 +131,5 @@ The awam starts only after the FOUNDER blueprint is complete (founder target 25 
 > [24 Nov 2026 12:2x PKT] AWAM SIGN-IN DEMO V2 (logo palette + Rule 52 list); no awam code changed; the TLS/HTTP3 lines wait K5b (WEBSITE PROMISES P2).
 
 > [24 Nov 2026 12:3x PKT] AWAM SIGN-IN DEMO V3: left approved by him, right side navy demo; no awam code changed.
+
+> [24 Nov 2026 12:3x PKT] AWAM SIGN-IN DEMO code preserved in demo/awam-signin-24nov/ (no src change).

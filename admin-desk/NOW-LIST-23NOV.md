@@ -194,3 +194,6 @@ ADVANCE-RESEARCH [CC1] Anexomail Command Center (23 Nov 2026 10:4x PKT): his 10:
 
 - AWAM SIGN-IN DEMO V3 (24 Nov 2026 12:3x PKT, his 12:25 "left side kamaal hai lekin yeh black side ka maza nahi aa raha"): LEFT panel approved by him (logo palette + Rule 52 list). RIGHT side was plain black: demo re-tints it navy (radial steel glow, faint grid, floating dust like the Desk login, amber floor light), glass card with a silver hairline; fields, buttons, texts unchanged. DEMO ONLY, no awam code changed. Files: docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-right-*.png. Waits his approval; the HTTP/3, AES-256, X25519MLKEM768 lines stay off the live awam page until K5b proof (WEBSITE PROMISES P2).
 
+
+- DEMO FOLDER (24 Nov 2026 12:3x PKT, his 12:28 "codes preserve kero jo demo banaya hai, folder repo mein demo ke naam rakho"): all awam sign-in demo code is kept in the repo folder demo/awam-signin-24nov/ (demo.js = every demo change injected into the REAL /auth page, run.cjs = renders idle / verify-line / passkey-glow at 1280 and 390, README.md, screens/). NOT in src/, no awam code changed. Left panel approved by him (12:25); right side navy demo shown; ideas 2 (verify line) and 3 (passkey touch glow) shown as states. Waits his approval.
+

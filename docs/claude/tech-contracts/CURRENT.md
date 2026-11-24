@@ -4024,3 +4024,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Awam sign-in demo V2 only, no code change. TECH-LAW CHECKED. TESTED: demo rendered on the real awam page at 1280 OK
 
 - Awam sign-in demo V3 right side only, no code change. TECH-LAW CHECKED. TESTED: demo rendered on the real awam page at 1280 and 390 OK
+
+- Awam sign-in demo code preserved in demo/awam-signin-24nov, no src change. TECH-LAW CHECKED. TESTED: run.cjs renders idle, verify, passkey states on the real awam page at 1280 and 390 OK
+
+- Awam sign-in demo code preserved in demo/awam-signin-24nov, no src change. TECH-LAW CHECKED. TESTED: run.cjs renders idle, verify, passkey states on the real awam page at 1280 and 390 OK

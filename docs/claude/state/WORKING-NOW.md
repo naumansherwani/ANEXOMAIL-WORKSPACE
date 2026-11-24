@@ -1,9 +1,9 @@
-# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 12:26 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 24 Nov 2026 12:31 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: awam sign-in demo V3: right side navy (no code change)
+DOING: awam sign-in demo code preserved in demo/awam-signin-24nov (no src change)
 NEXT STEP: his approval of the awam demo; his plain desk-install; live Chrome look
-HIS LAST WORD: his 24 Nov 12:25 word: left kamaal, right black boring
+HIS LAST WORD: his 24 Nov 12:28 word: preserve demo codes in a repo folder named demo
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -21,20 +21,61 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- bd7a8b91 24 Nov 12:26 ledger line 1020c08e
 - 1020c08e 24 Nov 12:26 awam sign-in demo V3
 - af0c3143 24 Nov 12:24 ledger line 868c6876
 - 868c6876 24 Nov 12:24 awam sign-in demo V2
 - 56c3f3e3 24 Nov 12:22 ledger line cd29ece1
-- cd29ece1 24 Nov 12:22 awam sign-in demo (Global Grid)
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/state/WORKING-NOW.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+A  demo/00-FOUNDER-TECH-RULE.md
+A  demo/awam-signin-24nov/00-FOUNDER-TECH-RULE.md
+A  demo/awam-signin-24nov/README.md
+A  demo/awam-signin-24nov/demo.js
+A  demo/awam-signin-24nov/run.cjs
+A  demo/awam-signin-24nov/screens/00-FOUNDER-TECH-RULE.md
+A  demo/awam-signin-24nov/screens/awam-signin-idle-1280.png
+A  demo/awam-signin-24nov/screens/awam-signin-idle-390.png
+A  demo/awam-signin-24nov/screens/awam-signin-passkey-1280.png
+A  demo/awam-signin-24nov/screens/awam-signin-passkey-390.png
+A  demo/awam-signin-24nov/screens/awam-signin-verify-1280.png
+A  demo/awam-signin-24nov/screens/awam-signin-verify-390.png
+M  docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
+M  docs/claude/DONE-DO-NOT-REPEAT.md
+M  docs/claude/RESUME-POINT.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/state/WORKING-NOW.md
+M  docs/claude/founder/PULL-COMMANDS.md
+M  docs/claude/state/HEARTBEAT.json
+MM docs/claude/state/WORKING-NOW.md
+M  docs/claude/tech-contracts/CURRENT.md
+M  docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
+M  docs/cursor-work/DONE-DO-NOT-REPEAT.md
+M  docs/cursor-work/founder/founder-commands.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
+M  docs/cursor-work/server/PULL-COMMANDS.md
+R  founder-web/dist/assets/index-COka1JYn.js -> founder-web/dist/assets/index-DMwvW7fA.js
+M  founder-web/dist/index.html
+M  founder-web/src/system_brain.json
+M  lanes/ALL-FILES.csv
+M  lanes/founder.txt
+M  lanes/shared.txt
+M  lovable-gold/README.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 37 ++-----------------------------------
- 1 file changed, 2 insertions(+), 35 deletions(-)
+ .../{index-COka1JYn.js => index-DMwvW7fA.js}       |   2 +-
+ founder-web/dist/index.html                        |   2 +-
+ founder-web/src/system_brain.json                  |   6 +-
+ lanes/ALL-FILES.csv                                |  14 ++++-
+ lanes/founder.txt                                  |   2 +-
+ lanes/shared.txt                                   |  12 ++++
+ lovable-gold/README.md                             |   2 +-
+ 36 files changed, 225 insertions(+), 53 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -45,4 +86,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (e3dff6d5da503b1d0e1bc3d97968c6fab84c311f)
+WIP snapshot: refs/wip/last (8469bc3282bf897ead672245f3c8d53c69f9dc6b)
