@@ -1,7 +1,8 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 09:22 PKT) - read this FIRST for the Desk after a compaction
-DOING: B13 T2 AD30 idempotent + advisor coverage table
-NEXT STEP: his desk-install, then T3
-HIS LAST WORD: advisor text vs code
+# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 09:31 PKT) - read this FIRST for the Desk after a compaction
+LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
+DOING: GATE FINAL AUTHORITY law + 3 new gates
+NEXT STEP: his desk-install look at T2, then T3
+HIS LAST WORD: his 09:29 law
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -22,6 +23,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 12. FOUR-DAY TARGET (his 22 Nov 2026 07:26 PKT): the WHOLE Admin Desk is complete, wired and green in 4 days: by 26 Nov 2026 07:26 PKT. Day plan: docs/claude/admin-desk/FOUR-DAY-PLAN-22NOV.md. Every message re-
 13. NO READ, NO COMMIT (his 22 Nov 2026 07:26 PKT): the commit gate 'DESK PHASE START' fails a Desk code commit unless the receipt shows the strict rules, this blueprint, the rule book and both WORKING-NOW file
 14. NO PHASE NAME, NO "P1" ANYWHERE AN EMPLOYEE CAN SEE ON THE ADMIN DESK (his 22 Nov 2026 09:03 PKT, CHAIRMAN, said three times, "baaned hai"): not in cards, pages, tooltips, alert text, notes, test rows or da
+15. GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT, in anger, STANDING LAW FOR FOUNDER, AWAM AND DESK): the commit gate decides, not Claude. A commit happens ONLY when rules-gate.py approves; it checks 
 
 ## Phase table (docs/claude/admin-desk/state/PHASES.md)
 
@@ -65,6 +67,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 1fa4a4da 24 Nov 09:22 ledger line ab7f6eb0
 - ab7f6eb0 24 Nov 09:22 Desk B13 T2: AD30 idempotent, advisor coverage
 - 7a550734 24 Nov 09:20 ledger line f5b5d7d4
 - f5b5d7d4 24 Nov 09:20 Desk B13 T2: case-to-tenant binding AD30, not_bound door word
@@ -72,10 +75,19 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 5a00279a 24 Nov 09:13 Desk 1m-L3 GREEN desktop
 - c00bf6aa 24 Nov 09:12 ledger line d7bfb5df
 - d7bfb5df 24 Nov 09:12 Desk: 1m-L3 install proof, compaction save
-- 1bc496ed 24 Nov 09:05 ledger line 1ec1ce87
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/DESK-PHASES-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  admin-desk/RULE-BOOK.md
+M  admin-desk/sql/AD30.sql
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/DESK-PHASES-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/RULE-BOOK.md
+M  docs/claude/admin-desk/sql/AD30.sql
+MM docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

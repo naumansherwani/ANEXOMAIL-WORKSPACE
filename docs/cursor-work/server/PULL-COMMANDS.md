@@ -2753,3 +2753,7 @@
 - B13 T2 AD30 case-to-tenant binding + consent door not_bound word + screen text. TECH-LAW CHECKED: PostgreSQL 16 immutable binding, Rust Axum Rule 52 door, React TS. TESTED: AD30 selftest PG16 x2, CHECK 9/9, cargo test 126, bun test 140, tsc clean
 
 - AD30 idempotent + concurrency-safe after reading his advisor text; advisor coverage table. TECH-LAW CHECKED: PostgreSQL 16 advisory lock, immutable binding. TESTED: AD30 selftest PG16 x2, CHECK 9/9
+
+- GATE FINAL AUTHORITY law, gates DECISION READ + IDEMPOTENT WRITER + GATE AUTHORITY, AD30 DECISION-READ line. TECH-LAW CHECKED: gate code in Python, SQL unchanged in effect. TESTED: staged a bad AD99.sql, gate refused it (DECISION READ, IDEMPOTENT WRITER, PHASE FILES), then removed it; AD30 selftest PG16 still passes
+
+- GATE FINAL AUTHORITY law, gates DECISION READ + IDEMPOTENT WRITER + GATE AUTHORITY, ckpt.sh writes the law into both WORKING-NOW files, AD30 DECISION-READ line. TECH-LAW CHECKED: gate code in Python, SQL unchanged in effect. TESTED: staged a bad AD99.sql, gate refused it (DECISION READ, IDEMPOTENT WRITER, PHASE FILES), then removed it; AD30 selftest PG16 passes again

@@ -1,7 +1,8 @@
-# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 09:22 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: B13 T2 AD30 idempotent + advisor coverage table
-NEXT STEP: his desk-install, then T3
-HIS LAST WORD: advisor text vs code
+# WORKING NOW (manual checkpoint, 24 Nov 2026 09:31 PKT) - read this FIRST after a compaction; it is where the work stopped
+LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
+DOING: GATE FINAL AUTHORITY law + 3 new gates
+NEXT STEP: his desk-install look at T2, then T3
+HIS LAST WORD: his 09:29 law
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -19,20 +20,61 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 1fa4a4da 24 Nov 09:22 ledger line ab7f6eb0
 - ab7f6eb0 24 Nov 09:22 Desk B13 T2: AD30 idempotent, advisor coverage
 - 7a550734 24 Nov 09:20 ledger line f5b5d7d4
 - f5b5d7d4 24 Nov 09:20 Desk B13 T2: case-to-tenant binding AD30, not_bound door word
 - 1ae68d49 24 Nov 09:13 ledger line 5a00279a
-- 5a00279a 24 Nov 09:13 Desk 1m-L3 GREEN desktop
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/state/WORKING-NOW.md
+M  CLAUDE.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/DESK-PHASES-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  admin-desk/RULE-BOOK.md
+M  admin-desk/sql/AD30.sql
+M  docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
+M  docs/claude/BLUEPRINT-ABC-01NOV.md
+A  docs/claude/DECISION-REGISTRY.json
+M  docs/claude/DONE-DO-NOT-REPEAT.md
+A  docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
+M  docs/claude/RESUME-POINT.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/DESK-PHASES-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/RULE-BOOK.md
+M  docs/claude/admin-desk/sql/AD30.sql
+M  docs/claude/admin-desk/state/WORKING-NOW.md
+M  docs/claude/founder/PULL-COMMANDS.md
+M  docs/claude/state/HEARTBEAT.json
+MM docs/claude/state/WORKING-NOW.md
+M  docs/claude/tech-contracts/CURRENT.md
+M  docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
+M  docs/cursor-work/DONE-DO-NOT-REPEAT.md
+M  docs/cursor-work/founder/founder-commands.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
+M  docs/cursor-work/server/PULL-COMMANDS.md
+M  docs/cursor-work/server/ckpt.sh
+M  docs/cursor-work/server/rules-gate.py
+R  founder-web/dist/assets/index-CLSvcKwG.js -> founder-web/dist/assets/index-LF8wwgdg.js
+M  founder-web/dist/index.html
+M  founder-web/src/system_brain.json
+M  lanes/ALL-FILES.csv
+M  lanes/docs.txt
+M  lanes/founder.txt
+M  lovable-gold/README.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 30 ++----------------------------
- 1 file changed, 2 insertions(+), 28 deletions(-)
+ .../{index-CLSvcKwG.js => index-LF8wwgdg.js}       |  2 +-
+ founder-web/dist/index.html                        |  2 +-
+ founder-web/src/system_brain.json                  |  6 +--
+ lanes/ALL-FILES.csv                                |  4 +-
+ lanes/docs.txt                                     |  2 +
+ lanes/founder.txt                                  |  2 +-
+ lovable-gold/README.md                             |  2 +-
+ 36 files changed, 174 insertions(+), 60 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -43,4 +85,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (0e847f965198f77b4af0a63e0264e8d3f9315e27)
+WIP snapshot: refs/wip/last (5f45871d43f39a83e83d971ad48a51bb79852d26)

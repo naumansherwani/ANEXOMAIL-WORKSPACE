@@ -1,0 +1,13 @@
+{
+ "_note": "his 24 Nov 2026 09:29: a new SQL that touches these words must name the saved decision it follows in a '-- DECISION-READ: <path>' line; add a row whenever he saves a decision",
+ "entries": [
+  {
+   "words": [
+    "case_binding",
+    "tenant_id",
+    "consent"
+   ],
+   "decision": "docs/claude/admin-desk/TENANT-IDENTITY-CONSENT-DECISION-24NOV.md"
+  }
+ ]
+}

@@ -375,7 +375,7 @@ if _desk_code and os.path.exists(cur):
                 if _next and _next[0] not in _ids and not _is_fix:
                     fail("BILLIONAIRE LIST", f"ORDER-LOCK: the next row to build is {_next[0]}, but the contract heading names {sorted(_ids)}; follow his order and never rebuild a GREEN row")
 # GATE FOREVER (his 09:55 / 10:20 law): the checks that make a Desk commit impossible without advance SQL, advance code and advance technology can never be deleted from this file.
-_forever = ["PHASE FILES", "INCOMPLETE ADVANCE", "BILLIONAIRE LIST", "SQL WORLD-CLASS", "RESEARCH IN BLUEPRINT", "FUTURE-PROOF", "NO TEST NO COMMIT"]
+_forever = ["PHASE FILES", "INCOMPLETE ADVANCE", "BILLIONAIRE LIST", "SQL WORLD-CLASS", "RESEARCH IN BLUEPRINT", "FUTURE-PROOF", "NO TEST NO COMMIT", "DECISION READ", "IDEMPOTENT WRITER", "GATE AUTHORITY"]
 _src = open(__file__, errors="ignore").read()
 for _k in _forever:
     if _src.count('fail("' + _k + '"') < 1:
@@ -447,6 +447,32 @@ for _sf in _sqlnew:
         fail("SQL WORLD-CLASS", f"{_sf}: SECURITY DEFINER without a fixed 'SET search_path'")
     if "CREATE FUNCTION" in _up.replace("CREATE OR REPLACE FUNCTION", "CREATE FUNCTION") and not re.search(r"REVOKE[^;]*FROM PUBLIC", _up):
         fail("SQL WORLD-CLASS", f"{_sf}: functions are created but nothing is REVOKEd FROM PUBLIC (AD1c lesson)")
+    # DECISION READ (his 24 Nov 2026 09:29 PKT): a new SQL that touches a word of a SAVED decision must name that decision in '-- DECISION-READ: <path>' (and the file must exist). Registry: docs/claude/DECISION-REGISTRY.json
+    try:
+        _reg = json.load(open("docs/claude/DECISION-REGISTRY.json")).get("entries", [])
+    except (OSError, ValueError):
+        _reg = []
+        fail("DECISION READ", "docs/claude/DECISION-REGISTRY.json is missing or broken: the gate must know the saved decisions")
+    _dm = re.search(r"-- DECISION-READ: (\S+)", _hd)
+    for _e in _reg:
+        if any(w.lower() in _st.lower() for w in _e.get("words", [])):
+            if not _dm or _dm.group(1) != _e["decision"] or not os.path.exists(_e["decision"]):
+                fail("DECISION READ", f"{_sf}: touches {_e['words']} so the first 60 lines need '-- DECISION-READ: {_e['decision']}' (read it line by line before writing SQL; his saved decision, 24 Nov 09:29)")
+    if _dm and not os.path.exists(_dm.group(1)):
+        fail("DECISION READ", f"{_sf}: DECISION-READ names {_dm.group(1)} which does not exist")
+    # IDEMPOTENT WRITER (his advisor point 8): a SECURITY DEFINER function that binds, claims, registers or grants must say IDEMPOTENT and take a lock (the AD30 race, found late).
+    if re.search(r"CREATE (OR REPLACE )?FUNCTION [A-Z0-9_.]*(_BIND|_CLAIM|_REGISTER|_GRANT)\b", _up) and not ("IDEMPOTENT" in _up and "ADVISORY_XACT_LOCK" in _up):
+        fail("IDEMPOTENT WRITER", f"{_sf}: a bind/claim/register/grant function must be IDEMPOTENT (same answer twice = success) and concurrency-safe (pg_advisory_xact_lock)")
+# GATE AUTHORITY (his 24 Nov 2026 09:29 PKT): the law that the gate is the final authority must sit on top of CLAUDE.md, the three blueprints, both WORKING-NOW files and exist as a law file; a missing marker stops every commit.
+for _gf in ["CLAUDE.md", "docs/claude/BLUEPRINT-ABC-01NOV.md", "docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md", "docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md", "docs/claude/state/WORKING-NOW.md", "docs/claude/admin-desk/state/WORKING-NOW.md", "docs/claude/admin-desk/DESK-PHASES-22NOV.md"]:
+    try:
+        _gt = open(_gf, errors="ignore").read()
+    except OSError:
+        continue
+    if "GATE IS THE FINAL AUTHORITY" not in _gt[:(30000 if _gf == "CLAUDE.md" else 6000)]:
+        fail("GATE AUTHORITY", f"{_gf}: the line 'GATE IS THE FINAL AUTHORITY' must stay near the top (his 24 Nov 2026 09:29 law, docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md)")
+if not os.path.exists("docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md"):
+    fail("GATE AUTHORITY", "docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md is missing")
 # FUTURE-PROOF (his word 23 Nov 2026 06:42 PKT, STRICT, whole website): the system is built ONCE for when the business is big; "Not measured" is an excuse, a real signal (zero is data) is the work. New lines in Desk source may not say it.
 _fp = [f for f in staged if re.match(r"(founder-web/src/desk/|docs/claude/admin-desk/server/src/).*\.(ts|tsx|rs)$", f)]
 for _f in _fp:
