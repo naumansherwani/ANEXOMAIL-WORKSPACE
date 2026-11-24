@@ -5700,3 +5700,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - B13 Z4a GREEN WIRED: YES REAL: YES (his cp5-look paste: CHECK 12 of 12 true, 7 of 7 companies have an approver, chain verifies), TECH-LAW CHECKED, TESTED: his cp5-look paste on real database plus scratch PostgreSQL selftest pass
 
 - B13 Z4b-2 Desk consent_cp.rs client written, WIRED: NO, REAL: NO, TECH-LAW CHECKED, TESTED: cargo test 119 pass (new consent_cp tests)
+
+- pull command and advisor question recorded (docs only), TECH-LAW CHECKED, TESTED: docs only, gate pass
