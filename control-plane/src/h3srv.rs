@@ -12,6 +12,9 @@ pub const RESOLVE_PATH: &str = "/control/v1/resolve";
 pub const TENANT_PATH: &str = "/control/v1/tenant";
 const MAX_BODY: usize = 16 * 1024;
 
+/// The ONE list of doors this server answers (T4e fix, 25 Nov 2026: the tenant door was added to the dispatcher but not to this list, so the live proof got a 404). A test below proves every path constant is here.
+pub fn known_path(p: &str) -> bool { [PATH, CENSUS_PATH, DELIV_PATH, CONSENT_PATH, RESOLVE_PATH, TENANT_PATH].contains(&p) }
+
 pub fn provider() -> Arc<rustls::crypto::CryptoProvider> {
     let mut p = rp::default_provider();
     p.cipher_suites = vec![rp::cipher_suite::TLS13_AES_256_GCM_SHA384];
@@ -53,7 +56,7 @@ pub async fn serve(ep: quinn::Endpoint, core: Arc<Core>) {
                 let core = core.clone();
                 tokio::spawn(async move {
                     let reply = |code: u16| http::Response::builder().status(code).header("content-type", "application/json").body(()).unwrap();
-                    let path = req.uri().path().to_string(); if req.method() != http::Method::POST || (path != PATH && path != CENSUS_PATH && path != DELIV_PATH && path != CONSENT_PATH && path != RESOLVE_PATH) { let _ = st.send_response(reply(404)).await; let _ = st.finish().await; return; }
+                    let path = req.uri().path().to_string(); if req.method() != http::Method::POST || (!known_path(&path)) { let _ = st.send_response(reply(404)).await; let _ = st.finish().await; return; }
                     let mut got = Vec::new();
                     let read = tokio::time::timeout(Duration::from_secs(5), async { while let Ok(Some(mut b)) = st.recv_data().await { let n = b.remaining(); got.extend_from_slice(&b.copy_to_bytes(n)); if got.len() > MAX_BODY { return false; } } true }).await;
                     if !matches!(read, Ok(true)) { let _ = st.send_response(reply(413)).await; let _ = st.finish().await; return; }
@@ -63,5 +66,14 @@ pub async fn serve(ep: quinn::Endpoint, core: Arc<Core>) {
                 });
             }
         });
+    }
+}
+
+#[cfg(test)]
+mod route_t {
+    use super::*;
+    #[test] fn every_door_path_is_in_the_known_list_and_nothing_else_is() {
+        for p in [PATH, CENSUS_PATH, DELIV_PATH, CONSENT_PATH, RESOLVE_PATH, TENANT_PATH] { assert!(known_path(p), "{p}"); }
+        for p in ["/", "/control/v1", "/control/v1/tenant/", "/control/v1/bind", "/control/v1/TENANT"] { assert!(!known_path(p), "{p}"); }
     }
 }

@@ -3153,3 +3153,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - B13 T4e written: cp.tenant_info in AD31, Control Plane tenant door (audience desk-tenant, path /control/v1/tenant, Ed25519 workload key, RFC 9421 style signed envelope, WIMSE), Desk tenant_cp.rs gates propose and names pending, screen shows company name, installers print TENANT SELFTEST. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: scratch PG16 function test pass, control plane cargo 30 passed, desk cargo 145 passed, bun 152 pass, tsc clean, bash syntax OK, gate run OK
 
 - Install rule FINAL: step 8b removed from desk-install.sh again, SQL command and WEB command separate, 03:09 one-command idea withdrawn; docs and CLAUDE.md updated. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: bash syntax check OK, gate run OK
+
+- B13 T4e fix: control-plane h3srv.rs known_path list includes /control/v1/tenant (the live selftest got 404), route test added. Build-speed patch saved as a file only, not applied. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: control plane cargo 31 passed, gate run OK

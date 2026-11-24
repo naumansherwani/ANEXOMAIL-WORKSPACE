@@ -1,0 +1,28 @@
+diff --git a/control-plane/Cargo.toml b/control-plane/Cargo.toml
+index 23e4af0a..baa11f93 100644
+--- a/control-plane/Cargo.toml
++++ b/control-plane/Cargo.toml
+@@ -24,6 +24,6 @@ sha2 = "0.10"
+ 
+ [profile.release]
+ opt-level = 3
+-lto = true
+-codegen-units = 1
++lto = "thin"
++codegen-units = 16
+ strip = true
+diff --git a/docs/claude/admin-desk/server/Cargo.toml b/docs/claude/admin-desk/server/Cargo.toml
+index 65bf86c6..4c04fccf 100644
+--- a/docs/claude/admin-desk/server/Cargo.toml
++++ b/docs/claude/admin-desk/server/Cargo.toml
+@@ -41,8 +41,8 @@ hickory-resolver = { version = "0.25", default-features = false, features = ["to
+ 
+ [profile.release]
+ opt-level = 3
+-lto = true
+-codegen-units = 1
++lto = "thin"
++codegen-units = 16
+ strip = true
+ 
+ [dev-dependencies]
