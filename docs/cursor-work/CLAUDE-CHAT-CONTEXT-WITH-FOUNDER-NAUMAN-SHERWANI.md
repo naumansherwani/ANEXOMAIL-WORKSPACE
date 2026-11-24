@@ -5828,3 +5828,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - AWAM SIGN-IN GLOBAL GRID LOOK: AuthCinema + auth.tsx + styles.css, full technology list (no Rule 52 words), promises P8-P17 OPEN. TECH-LAW CHECKED. TESTED: tsc clean, real render 1280/820/390 no sideways scroll, no Rule 52 text, card not clipped
 
 - AWAM SIGN-IN GLOBAL GRID LOOK: AuthCinema + auth.tsx + styles.css, full technology list (no Rule 52 words), promises P8-P17 OPEN. TECH-LAW CHECKED. TESTED: tsc clean, real render 1280/820/390 no sideways scroll, no Rule 52 text, card not clipped
+
+- AWAM SIGN-IN RESTORED to the original from backups/awam/20261124-1235-before-signin-global-grid (his 12:44 order). TECH-LAW CHECKED. TESTED: src diff vs pre-change commit = empty, tsc clean
