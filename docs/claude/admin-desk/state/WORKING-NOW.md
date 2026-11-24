@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 07:49 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 07:53 PKT) - read this FIRST for the Desk after a compaction
 DOING: ad-auto names the awam-database files AD21..AD26
 NEXT STEP: his Desk T1 command, then E201
 HIS LAST WORD: his 07:48 question: why AD21 did not come
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- de6596bb 24 Nov 07:53 ad-auto names AD21..AD26
 - e1041c4c 24 Nov 07:48 ledger line de12ed1d
 - de12ed1d 24 Nov 07:48 Desk SQL one series AD21..AD26
 - aff2ba11 24 Nov 07:44 ledger line cc3d94c8
@@ -72,11 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - b5ba01e1 24 Nov 07:41 ledger line 543cdc4a
 - 543cdc4a 24 Nov 07:41 E201 awam package caps final (AWL-3 SQL)
 - 6c78729c 24 Nov 07:30 ledger line 77e022b6
-- 77e022b6 24 Nov 07:30 b13 t1 cp6
 
 ## Uncommitted Desk files
-M  admin-desk/scripts/ad-auto.sh
-M  docs/claude/admin-desk/scripts/ad-auto.sh
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
