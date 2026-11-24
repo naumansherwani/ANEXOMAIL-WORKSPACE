@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 13:18 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 13:18 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: demo real-exact = his 13:16 picture, demo folder only
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- a7b081cc 24 Nov 13:18 demo real-exact saved
 - 2a5baa73 24 Nov 13:14 ledger line 1b0c24d6
 - 1b0c24d6 24 Nov 13:14 awam sign-in heading text only
 - b267192b 24 Nov 13:07 ledger line 7de5879a
@@ -75,7 +76,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - ac287a13 24 Nov 13:05 ledger line 346285b3
 - 346285b3 24 Nov 13:05 original sign-in backed up, final look parked
 - d375c88f 24 Nov 12:59 ledger line 0652f59e
-- 0652f59e 24 Nov 12:59 awam sign-in back to original, look parked
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
