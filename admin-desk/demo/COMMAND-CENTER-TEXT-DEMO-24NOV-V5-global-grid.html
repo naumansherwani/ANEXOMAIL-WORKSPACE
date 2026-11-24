@@ -22,11 +22,15 @@
 @media(max-width:480px){.dsk-sub .rule,.dsk-sub::after{width:clamp(14px,4.5vw,36px)}.dsk-ttl .l2{white-space:nowrap}}
 @keyframes dsk-up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.dsk-ttl .c{animation:none;opacity:1;filter:none;transform:none}.dsk-ttl .l1::after{animation:none;transform:none}.dsk-ttl .l1::before{animation:none;opacity:.2}.dsk-halo{animation:none}.dsk-sub{animation:none;opacity:1}}</style>
-<div class=lab>NOW (LIVE TEXT)</div><div id=a></div><div class=lab>DEMO: THE GLOBAL GRID WORKPLACE</div><div id=b></div>
+<div class=lab>NOW (LIVE TEXT)</div><div id=a></div><div class=lab>DEMO V6: THE GLOBAL GRID WORKPLACE, INSIDE THE TITLE WIDTH</div><div id=b></div>
 <script>
 function mk(t){const L=["ANEXOMAIL","COMMAND CENTER OS"];let i=0;const line=(k,ln)=>`<span class="${k}" aria-hidden="true">${ln.split(" ").map(w=>{const o=`<span class="w">${[...w].map((ch,j)=>`<span class="c" style="--i:${i+j}">${ch}</span>`).join("")}</span>`;i+=w.length;return o}).join("&nbsp;")}</span>`;
 return `<p class=hi>Good morning,</p><div class="dsk-hero"><div class="dsk-halo"></div><h1 class="dsk-ttl">${line("l1",L[0])}${line("l2",L[1])}</h1><div class="dsk-sub"><span class="rule"></span><span style="white-space:nowrap">${t}</span></div></div>`}
 function fit(root){const a=root.querySelector(".l1"),b=root.querySelector(".l2"),u=root.querySelector(".dsk-sub");b.style.letterSpacing="0px";const ls=parseFloat(getComputedStyle(a).letterSpacing)||0;const n=b.textContent.length;const sp=Math.max(2,(a.getBoundingClientRect().width-ls-b.getBoundingClientRect().width)/(n-1));b.style.letterSpacing=sp+"px";b.style.marginRight=-sp+"px";u.style.width="fit-content";u.style.marginLeft="0px";u.style.marginLeft=Math.max(0,(a.getBoundingClientRect().width-u.getBoundingClientRect().width)/2)+"px"}
 a.innerHTML=mk("Senior Executive");b.innerHTML=mk("THE GLOBAL GRID WORKPLACE");
-const go=()=>{fit(a);fit(b)};document.fonts.ready.then(go);addEventListener("resize",go);go();
+/* V6: the long line must stay INSIDE the ANEXOMAIL width: the two side rules get short, the text size is fitted so rule+text+rule = title width */
+function fit2(root){const a=root.querySelector(".l1"),u=root.querySelector(".dsk-sub"),t=u.lastElementChild,r=u.querySelector(".rule");const W=a.getBoundingClientRect().width-parseFloat(getComputedStyle(a).letterSpacing||0);const R=Math.round(Math.min(26,W*.07));r.style.width=R+"px";u.style.setProperty("--rw",R+"px");t.style.fontSize="10px";const w10=t.getBoundingClientRect().width;const fs=Math.min(20,(W-2*R-24)/w10*10);t.style.fontSize=fs+"px";u.style.width=W+"px";u.style.marginLeft="0px";u.style.justifyContent="center"}
+const st=document.createElement("style");st.textContent="#b .dsk-sub::after{width:var(--rw,26px)!important}";document.head.appendChild(st);
+const go2=()=>{fit2(b)};
+const go=()=>{fit(a);fit(b);go2()};document.fonts.ready.then(go);addEventListener("resize",go);go();
 </script>

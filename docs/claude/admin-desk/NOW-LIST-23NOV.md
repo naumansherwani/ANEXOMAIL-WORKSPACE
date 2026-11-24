@@ -168,3 +168,5 @@ ADVANCE-RESEARCH [CC1] Anexomail Command Center (23 Nov 2026 10:4x PKT): his 10:
 ## 24 Nov 2026 11:30 PKT: B13 T3b PARTLY PROVEN on his server (his paste): RESOLVE SELFTEST OK, AD31 8/8, build SAME. AD32 NOT yet (he ran the older installer before the push). Re-run the PLAIN desk-install command; the installer now re-fetches and runs the newest script itself, then runs ad-auto (AD32). T3b GREEN only after the AD32 line.
 
 ## 24 Nov 2026 11:50 PKT: DEMO ONLY (real code NOT changed, waits his haan): Desk title line "Senior Executive" -> "THE GLOBAL GRID WORKPLACE", everything else identical. Demo admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V5-global-grid.html (+ 1280 and 390 png). Finding: the new line is wider than ANEXOMAIL (about 1.5x) at 1280 and 390; his word is text-only, so no layout change until he decides.
+
+## 24 Nov 2026 11:55 PKT: his word "bahar nikal gaya, baqwas": demo V6 fixes it: THE GLOBAL GRID WORKPLACE now fits INSIDE the ANEXOMAIL width (side rules short, text size fitted) at 1280 and 390. Demo only; real DeskTitle.tsx waits his haan.
