@@ -324,6 +324,14 @@ backups/awam/20261124-1305-pulled-version-c2ac03d9/AuthCinema.tsx
 backups/awam/20261124-1305-pulled-version-c2ac03d9/README.md
 backups/awam/20261124-1305-pulled-version-c2ac03d9/auth.tsx
 backups/awam/20261124-1305-pulled-version-c2ac03d9/styles.css
+backups/awam/20261124-1325-existing-login-live/00-FOUNDER-TECH-RULE.md
+backups/awam/20261124-1325-existing-login-live/AuthCinema.tsx
+backups/awam/20261124-1325-existing-login-live/BrandMark.tsx
+backups/awam/20261124-1325-existing-login-live/README.md
+backups/awam/20261124-1325-existing-login-live/SHA256SUMS.txt
+backups/awam/20261124-1325-existing-login-live/auth.tsx
+backups/awam/20261124-1325-existing-login-live/auth_.callback.tsx
+backups/awam/20261124-1325-existing-login-live/styles.css
 backups/desk/00-FOUNDER-TECH-RULE.md
 backups/desk/20261122-0603-50eec49a-perfect-login/00-FOUNDER-TECH-RULE.md
 backups/desk/20261122-0603-50eec49a-perfect-login/MANIFEST.txt

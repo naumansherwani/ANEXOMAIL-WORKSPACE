@@ -1,0 +1,1 @@
+The EXISTING awam login exactly as live after commit 68bfab62 (heading text Access Your Global Workspace, nothing else changed), his 13:24 order: preserve the login codes in a backup folder. Restore = copy these files back to src/routes and src/components/site and src/styles.css. Files are checked by SHA256SUMS.txt.

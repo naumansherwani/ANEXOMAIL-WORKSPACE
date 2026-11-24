@@ -1,9 +1,9 @@
-# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 13:23 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 24 Nov 2026 13:25 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: demo: double light fixed (halo removed), single moving light
-NEXT STEP: his approval, src stays original
-HIS LAST WORD: his 13:21: double light fix
+DOING: backup of the existing live login in backups/awam
+NEXT STEP: his word on the demo
+HIS LAST WORD: his 13:24: existing login codes preserved in a backup folder
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -21,20 +21,34 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 68bfab62 24 Nov 13:23 ledger line 80691342
 - 80691342 24 Nov 13:23 demo double light fixed
 - f04b1a16 24 Nov 13:18 ledger line a7b081cc
 - a7b081cc 24 Nov 13:18 demo real-exact saved
 - 2a5baa73 24 Nov 13:14 ledger line 1b0c24d6
-- 1b0c24d6 24 Nov 13:14 awam sign-in heading text only
 
 ## Uncommitted files (half-done work if any)
+A  backups/awam/20261124-1325-existing-login-live/AuthCinema.tsx
+A  backups/awam/20261124-1325-existing-login-live/BrandMark.tsx
+A  backups/awam/20261124-1325-existing-login-live/README.md
+A  backups/awam/20261124-1325-existing-login-live/SHA256SUMS.txt
+A  backups/awam/20261124-1325-existing-login-live/auth.tsx
+A  backups/awam/20261124-1325-existing-login-live/auth_.callback.tsx
+A  backups/awam/20261124-1325-existing-login-live/styles.css
  M docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 35 ++---------------------------------
- 1 file changed, 2 insertions(+), 33 deletions(-)
+ .../20261124-1325-existing-login-live/README.md    |    1 +
+ .../SHA256SUMS.txt                                 |    5 +
+ .../20261124-1325-existing-login-live/auth.tsx     | 1249 ++++++++++++++++
+ .../auth_.callback.tsx                             |  131 ++
+ .../20261124-1325-existing-login-live/styles.css   | 1530 ++++++++++++++++++++
+ docs/claude/state/WORKING-NOW.md                   |   31 +-
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        |    4 +-
+ 9 files changed, 3150 insertions(+), 20 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -45,4 +59,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (7cbe81d4c4e3b298a9ce41bef6dae353f38e49a1)
+WIP snapshot: refs/wip/last (78e59f892c2b37a15cbc778bd1e8008c5d163689)
