@@ -857,6 +857,15 @@
    "deadline": "B13 T4",
    "why": "his 25 Nov 2026 02:23 list, line T4h: signed ledger head written outside the database + verifier.",
    "fail_after": "2027-01-09"
+  },
+  {
+   "id": "INSTALL-SPLIT-RULE",
+   "file": "docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md",
+   "must": "ONE web install carries ALL the advance technology",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 02:40/02:56 order: SQL install (ad-auto) and WEB install (desk-install) are separate; Rule 52 = one web install with all advance technology, seen live in Chrome.",
+   "fail_after": "2027-01-09"
   }
  ]
 }

@@ -390,6 +390,7 @@ docs/claude/admin-desk/FOUNDER-ESCALATION-INBOX-PLAN-23NOV.md
 docs/claude/admin-desk/FOUNDER-TO-DESK-AUDIT-22NOV.md
 docs/claude/admin-desk/FOUR-DAY-PLAN-22NOV.md
 docs/claude/admin-desk/GATE-FOREVER-LAW-23NOV.md
+docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md
 docs/claude/admin-desk/MAILBOX-ROLES-PLAN-22NOV.md
 docs/claude/admin-desk/MASTER-PLAN-22NOV.md
 docs/claude/admin-desk/ML-DSA-HYBRID-GAP-PLAN-23NOV.md

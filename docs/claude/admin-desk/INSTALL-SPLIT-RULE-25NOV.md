@@ -1,0 +1,5 @@
+# INSTALL SPLIT RULE (his 25 Nov 2026 02:40 and 02:56 PKT, STANDING for the Admin Desk)
+1. SQL INSTALL = admin-desk/scripts/ad-auto.sh only (every Desk SQL AD01.. that is not yet in the database; the word "SQL" is always written beside the command in the reply).
+2. WEB INSTALL = admin-desk/scripts/desk-install.sh only: Rust binary, page, WASM kernel and every other advance technology of the phase. RULE 52: ONE web install carries ALL the advance technology of a phase; after it the technology is seen working LIVE in Chrome (390 / 820 / 1200+). Never a second hidden step.
+3. A reply gives only the install that the phase needs (SQL-only phase = ad-auto; code phase = desk-install). desk-install also runs the SQL part, so after a desk-install the SQL line is normally "already run".
+4. Both commands are ONE plain line with no label inside it: git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:admin-desk/scripts/X.sh) 2>&1 | tail -25 (ad-auto) or | tail -45 (desk-install).

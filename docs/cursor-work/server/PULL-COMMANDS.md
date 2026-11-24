@@ -2909,3 +2909,5 @@
 - B13 T4g DEFINER-OWNER written inside existing AD34: six doors owned by NOLOGIN NOBYPASSRLS desk_bind_owner with own RLS policies. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: AD34 selftest passed on PG16, CHECK 16/16 true, race test OK, doors still pass
 
 - B13 T4 install paste recorded (AD34 CHECK OK, builds SAME 7055241c7); T4a..T4h phase rows added; two separate installs rule (ad-auto SQL, desk-install web). RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: docs only, his install paste shows CHECK OK and SAME proofs, gate run OK
+
+- B13 T4a T4b T4c T4g GREEN WIRED: YES REAL: YES by his order: installs 02:17 and 02:35 show AD34 CHECK passed and binary page kernel SAME cf25976d0. Install split rule (ad-auto SQL, desk-install web, Rule 52 one web install). RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: his install paste CHECK passed, SAME proofs, gate run OK
