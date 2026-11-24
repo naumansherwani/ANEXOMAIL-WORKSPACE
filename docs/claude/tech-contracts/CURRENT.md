@@ -4044,3 +4044,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - AWAM SIGN-IN RESTORED to the original from backups/awam/20261124-1235-before-signin-global-grid (his 12:44 order). TECH-LAW CHECKED. TESTED: src diff vs pre-change commit = empty, tsc clean
 
 - AWAM SIGN-IN = HIS APPROVED DEMO as real code (glow card, 7 lines exactly as demo.js; original kept in backups/awam/20261124-1235-before-signin-global-grid). TECH-LAW CHECKED. TESTED: tsc clean, real render 1280/820/390 no sideways scroll, matches demo
+
+- AWAM SIGN-IN put back to the ORIGINAL (his 12:57: login stuck loading); new look parked in demo/awam-signin-24nov/real-wip, not live. TECH-LAW CHECKED. TESTED: src == backups/awam/20261124-1235 originals, tsc clean
+
+- AWAM SIGN-IN put back to the ORIGINAL (his 12:57: login stuck loading); new look parked in demo/awam-signin-24nov/real-wip, not live. TECH-LAW CHECKED. TESTED: src == backups/awam/20261124-1235 originals, tsc clean

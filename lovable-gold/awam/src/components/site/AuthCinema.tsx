@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { Database, ShieldCheck, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 
@@ -10,15 +11,10 @@ const taglines = [
   "Work when it's done.",
 ];
 
-/* His approved demo, exactly (demo/awam-signin-24nov/demo.js, his 12:46 word "touch nahi kerna": same lines, same look). */
-const stack: string[] = [
-  "Rust WASM kernel verifies every answer",
-  "Signed answers: Ed25519, replay refused (Rule 52)",
-  "Rust + Tokio + Axum engine",
-  "WebTransport · HTTP/3 · QUIC",
-  "TLS 1.3 · AES-256-GCM · X25519MLKEM768",
-  "Argon2id · passkeys · device-bound sessions",
-  "PostgreSQL 16 RLS · hash-chained ledger",
+const trust = [
+  { icon: ShieldCheck, text: "256-bit TLS · device-bound sessions" },
+  { icon: Database, text: "Your data · export anytime · delete means delete" },
+  { icon: Zap, text: "Rust + WebTransport · async Tokio engine" },
 ];
 
 /**
@@ -44,10 +40,6 @@ export function AuthCinema({ className }: { className?: string }) {
       {/* Radial mesh overlay */}
       <div className="ax-auth-cinema-mesh absolute inset-0" />
 
-      {/* Grid + scan line (logo palette) */}
-      <div className="ax-auth-grid absolute inset-0" />
-      <div className="ax-auth-scan absolute inset-x-0" />
-
       {/* Subtle grain texture */}
       <div className="absolute inset-0 ax-auth-cinema-grain opacity-[0.03]" />
 
@@ -58,7 +50,8 @@ export function AuthCinema({ className }: { className?: string }) {
       />
 
       {/* Content */}
-      <div className="relative z-10 pointer-events-none flex flex-col items-center gap-8 px-8 text-center">
+      <div className="relative z-10 pointer-events-none flex flex-col items-center gap-10 px-14 text-center">
+        {/* Brand mark — slightly larger */}
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -66,8 +59,6 @@ export function AuthCinema({ className }: { className?: string }) {
         >
           <BrandMark home={false} className="scale-[1.3] origin-center" />
         </motion.div>
-
-        <p className="text-[10.5px] font-semibold uppercase tracking-[0.5em] text-[#8E9BB0]">Inside the Global Grid</p>
 
         {/* Rotating taglines */}
         <div className="relative h-7 w-full overflow-hidden">
@@ -78,41 +69,43 @@ export function AuthCinema({ className }: { className?: string }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -14 }}
               transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="ax-auth-tag absolute inset-x-0 text-center text-[17px] font-semibold tracking-tight"
+              className="absolute inset-x-0 text-center text-[17px] font-semibold tracking-tight text-white/85"
             >
               {taglines[idx]}
             </motion.p>
           </AnimatePresence>
         </div>
 
+        {/* Dot indicators */}
         <div className="flex items-center gap-2">
           {taglines.map((_, i) => (
             <motion.div
               key={i}
               animate={{ opacity: i === idx ? 1 : 0.3, scale: i === idx ? 1 : 0.75 }}
               transition={{ duration: 0.3 }}
-              className="h-1.5 w-1.5 rounded-full bg-[#C3CCD8]"
+              className="h-1.5 w-1.5 rounded-full bg-white"
             />
           ))}
         </div>
 
-        <div className="h-px w-20 bg-[#C3CCD8]/20" />
+        {/* Divider */}
+        <div className="h-px w-20 bg-white/15" />
 
-        {/* The whole technology stack */}
-        <ul className="flex w-full flex-col gap-3.5 text-left" aria-label="Technology">
-          {stack.map((text, i) => (
-            <motion.li
+        {/* Trust badges */}
+        <div className="flex flex-col gap-4">
+          {trust.map(({ icon: Icon, text }, i) => (
+            <motion.div
               key={text}
               initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 0.9, x: 0 }}
-              transition={{ delay: 0.3 + i * 0.1, duration: 0.5, ease: "easeOut" }}
-              className="flex items-center gap-3"
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 + i * 0.12, duration: 0.5, ease: "easeOut" }}
+              className="flex items-center gap-2.5 text-white/50"
             >
-              <span className="size-1.5 shrink-0 rounded-full bg-[#6FA6F2] shadow-[0_0_8px_#6FA6F2]" />
-              <span className="whitespace-nowrap text-[14px] tracking-tight text-[#C3CCD8]/85">{text}</span>
-            </motion.li>
+              <Icon className="size-[15px] shrink-0 text-white/40" />
+              <span className="text-[13px] tracking-tight">{text}</span>
+            </motion.div>
           ))}
-        </ul>
+        </div>
       </div>
 
       {/* Bottom edge fade */}

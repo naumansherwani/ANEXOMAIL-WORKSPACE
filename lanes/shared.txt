@@ -383,7 +383,15 @@ demo/00-FOUNDER-TECH-RULE.md
 demo/awam-signin-24nov/00-FOUNDER-TECH-RULE.md
 demo/awam-signin-24nov/README.md
 demo/awam-signin-24nov/demo.js
+demo/awam-signin-24nov/left-compare.cjs
+demo/awam-signin-24nov/phase-check.cjs
 demo/awam-signin-24nov/real-shot.cjs
+demo/awam-signin-24nov/real-wip/00-FOUNDER-TECH-RULE.md
+demo/awam-signin-24nov/real-wip/AuthCinema.tsx
+demo/awam-signin-24nov/real-wip/AuthDust.tsx
+demo/awam-signin-24nov/real-wip/README.md
+demo/awam-signin-24nov/real-wip/auth.tsx
+demo/awam-signin-24nov/real-wip/styles.css
 demo/awam-signin-24nov/run.cjs
 demo/awam-signin-24nov/screens/00-FOUNDER-TECH-RULE.md
 demo/awam-signin-24nov/screens/awam-signin-idle-1280.png
