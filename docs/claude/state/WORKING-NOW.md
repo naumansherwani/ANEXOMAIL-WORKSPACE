@@ -1,9 +1,9 @@
-# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 11:13 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 24 Nov 2026 11:20 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: RULE 52 COMBO standing standard (RFC 9421, WIMSE, RFC 7489, OWASP) in Rule 52, 3 blueprints, gate
-NEXT STEP: his desk-install for B13 T3b (AD32 + resolve-selftest), then T3c
-HIS LAST WORD: R1 gate final; Rule 52 combo in every phase; versions never old
+DOING: waiting his desk-install paste for B13 T3b; dbsc-look finding recorded (no_cookie in observe)
+NEXT STEP: his desk-install | tail -45 (RESOLVE SELFTEST OK), then T3c; then 1m-L3b DBSC cookie cause
+HIS LAST WORD: R1 gate final; his fixed command form desk-install tail -45
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -21,20 +21,26 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- c543a874 24 Nov 11:13 ledger line cb9c7b55
 - cb9c7b55 24 Nov 11:13 Rule 52 combo standard + gate rule
 - 648b9754 24 Nov 11:11 ledger line eb7518a3
 - eb7518a3 24 Nov 11:11 Desk B13 T3b: sender-resolve door, AD32, RFC 9421 WIMSE 7489 OWASP
 - 0b7d147a 24 Nov 10:50 ledger line ea06fd4f
-- ea06fd4f 24 Nov 10:50 Desk B13 T3a GREEN + landing wording
 
 ## Uncommitted files (half-done work if any)
+M  admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 41 ++--------------------------------------
- 1 file changed, 2 insertions(+), 39 deletions(-)
+ admin-desk/NOW-LIST-23NOV.md                |  1 +
+ docs/claude/admin-desk/NOW-LIST-23NOV.md    |  1 +
+ docs/claude/state/WORKING-NOW.md            | 26 ++++++++------------------
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt |  4 ++--
+ 4 files changed, 12 insertions(+), 20 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -45,4 +51,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (8d4d818ab231478125d49bc4a595acede0f596ca)
+WIP snapshot: refs/wip/last (321ca5b54fe88022b4a4072dd067457a91182b1d)
