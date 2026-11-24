@@ -496,6 +496,7 @@ docs/claude/admin-desk/server/src/deliverability.rs
 docs/claude/admin-desk/server/src/door.rs
 docs/claude/admin-desk/server/src/escalations.rs
 docs/claude/admin-desk/server/src/h3.rs
+docs/claude/admin-desk/server/src/ledger.rs
 docs/claude/admin-desk/server/src/lookup.rs
 docs/claude/admin-desk/server/src/mailposture.rs
 docs/claude/admin-desk/server/src/main.rs
@@ -545,6 +546,7 @@ docs/claude/admin-desk/sql/AD23.sql
 docs/claude/admin-desk/sql/AD24.sql
 docs/claude/admin-desk/sql/AD25.sql
 docs/claude/admin-desk/sql/AD26.sql
+docs/claude/admin-desk/sql/AD27.sql
 docs/claude/admin-desk/sql/README.md
 docs/claude/admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/sql/checks/AD01-check.sql
@@ -580,6 +582,7 @@ docs/claude/admin-desk/sql/checks/AD23-check.sql
 docs/claude/admin-desk/sql/checks/AD24-check.sql
 docs/claude/admin-desk/sql/checks/AD25-check.sql
 docs/claude/admin-desk/sql/checks/AD26-check.sql
+docs/claude/admin-desk/sql/checks/AD27-check.sql
 docs/claude/admin-desk/sql/checks/README.md
 docs/claude/admin-desk/state/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/state/COMPACT-SAVE.md

@@ -166,6 +166,7 @@ admin-desk/server/src/deliverability.rs
 admin-desk/server/src/door.rs
 admin-desk/server/src/escalations.rs
 admin-desk/server/src/h3.rs
+admin-desk/server/src/ledger.rs
 admin-desk/server/src/lookup.rs
 admin-desk/server/src/mailposture.rs
 admin-desk/server/src/main.rs
@@ -215,6 +216,7 @@ admin-desk/sql/AD23.sql
 admin-desk/sql/AD24.sql
 admin-desk/sql/AD25.sql
 admin-desk/sql/AD26.sql
+admin-desk/sql/AD27.sql
 admin-desk/sql/README.md
 admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/checks/AD01-check.sql
@@ -250,6 +252,7 @@ admin-desk/sql/checks/AD23-check.sql
 admin-desk/sql/checks/AD24-check.sql
 admin-desk/sql/checks/AD25-check.sql
 admin-desk/sql/checks/AD26-check.sql
+admin-desk/sql/checks/AD27-check.sql
 admin-desk/sql/checks/README.md
 admin-desk/state/00-FOUNDER-TECH-RULE.md
 admin-desk/state/COMPACT-SAVE.md

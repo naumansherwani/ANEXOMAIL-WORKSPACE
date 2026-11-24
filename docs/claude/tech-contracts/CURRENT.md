@@ -1,3 +1,10 @@
+# TECH CONTRACT FOR PHASE: ADMIN DESK LEDGER CARD, 1m-L (Desk lane, card Ledger on the dashboard; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 08:34 PKT order "Ledger card wire kero abhi ke abhi"; the Desk is its own security domain, nothing of the founder or awam is touched), written 08:4x PKT BEFORE install. LIST: docs/claude/admin-desk/NOW-LIST-23NOV.md (ADVANCE-RESEARCH [1m] Ledger)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL 16: SECURITY DEFINER read door with fixed search_path and statement/lock timeouts, staff.read right check, bounded hash-chain window re-check (newest 2,000 lines recomputed and linked), kind + role + time only (never the detail), selftest with a tamper test rolled back with custom SQLSTATE, CHECK file | docs/claude/admin-desk/sql/AD27.sql, docs/claude/admin-desk/sql/checks/AD27-check.sql | YES | scratch PostgreSQL 16 with the whole Desk schema AD01..AD20: selftest run twice, CHECK 6 rows true; NOT yet on his server |
+| Rust + Axum + Tokio: ONE read-only door over the sealed router (Rule 52, kernel-verified reply, HTTP/3 only), closed key lists, role word list, tail newest first and never past the newest line, at most 20 lines, 8 kinds, fail-closed shape check | docs/claude/admin-desk/server/src/ledger.rs, docs/claude/admin-desk/server/src/main.rs | YES | cargo test ledger: 6 tests pass; NOT yet on his server |
+| React 19 + TypeScript strict, Rust WASM kernel verifies every frame (Rule 52), pure parser unit-tested, same code on 390 / 820 / 1200 (fluid grid, 44 px rows), a broken chain shown in the loud colour, "Data unavailable" when the answer cannot be trusted | founder-web/src/desk/DeskLedger.tsx, founder-web/src/desk/desk_ledger_pure.ts, founder-web/src/desk/desk_ledger_pure.test.ts, founder-web/src/desk/desk_cards.ts | YES | bun test src/desk 138 pass, tsc clean, build:desk done (bundle desk-DCP_xZ1L.js); live Chrome look after his install |
+
 # TECH CONTRACT FOR PHASE: AWAM PRICE MIGRATION TO HIS FINAL CHART, SQL E202 (phase AWL-3 SQL third piece, awam lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 08:31 PKT order, E201 stays as it is, awam files untouched), written 08:5x PKT BEFORE install. LIST: docs/claude/AWAM-LOOPHOLE-PHASES-24NOV.md (ADVANCE-RESEARCH [AWL-3])
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3880,3 +3887,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - E202 merged into E201 as PART 2, E202 + CHECK_E202 deleted, 2016 date typo fixed, CHECK_E201 25 rows. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 fresh run twice, upgrade from old E201, CHECK_E201 25 of 25 true, sql-editor-lint OK
 
 - E202 awam price migration (workspace_plans, price book, billing function, price ledger) written. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 run twice, selftest 7 checks, CHECK_E202 9 rows true, sql-editor-lint OK
+
+- Ledger card 1m-L: SQL AD27 board door + window chain check, Rust ledger door, React DeskLedger + pure parser, card flipped to wired. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 whole Desk schema AD27 selftest twice + CHECK 6 true, cargo test 125 pass (ledger 6), bun test src/desk 138 pass, tsc clean, build:desk

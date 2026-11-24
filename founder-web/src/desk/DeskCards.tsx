@@ -16,6 +16,7 @@ import { DeskStaff } from "./DeskStaff";
 import { DeskCustomers } from "./DeskCustomers";
 import { DeskDeliverability } from "./DeskDeliverability";
 import { DeskReports } from "./DeskReports";
+import { DeskLedger } from "./DeskLedger";
 import { DeskMailPosture } from "./DeskMailPosture";
 import { DeskRunbooks } from "./DeskRunbooks";
 
@@ -104,6 +105,7 @@ export function DeskSubPage({ sub, search, hash, snap, nav, role = "", act }: { 
     );
   }
   if (card.id === "plans") return <Shell title="Plans and prices" back nav={nav}><p>Look up one company's plan, what is really switched on, usage and service state.</p><DeskPlan /></Shell>;
+  if (card.id === "audit") return <Shell title="Ledger" back nav={nav}><p>{card.what}.</p><DeskLedger /></Shell>;
   if (card.id === "reports") return <Shell title="Reports" back nav={nav}><p>{card.what}.</p><DeskReports /></Shell>;
   if (card.id === "deliverability") return <Shell title="Deliverability" back nav={nav}><p>{card.what}.</p><DeskDeliverability /><DeskMailPosture /></Shell>;
   if (card.id === "customers") return <Shell title="Customers and plans" back nav={nav}><p>{card.what}.</p><DeskCustomers plansFrame={snap.data.plans} /></Shell>;

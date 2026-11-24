@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 08:34 PKT) - read this FIRST for the Desk after a compaction
-DOING: E202 price migration written + scratch-tested
-NEXT STEP: his AUTO sql-run paste (E201 re-run + E202), then purge old price text
-HIS LAST WORD: he ordered new schema SQL E202, E201 stays
+# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 08:41 PKT) - read this FIRST for the Desk after a compaction
+DOING: Ledger card 1m-L wired in code (AD27, ledger.rs, DeskLedger), tested
+NEXT STEP: his desk-install paste, then my Chrome look at the Ledger card
+HIS LAST WORD: his 08:34 order wire the Ledger card now
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 5710cf5d 24 Nov 08:34 ledger line 204ff52c
 - 204ff52c 24 Nov 08:34 E202: final price chart migration
 - 7f5341e5 24 Nov 08:25 ledger line c3ceddb2
 - c3ceddb2 24 Nov 08:25 E201: merge E202 facts + pool levels, delete E202
@@ -72,10 +73,26 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 93c3ed3c 24 Nov 08:20 E202 awam package facts + pool; audit
 - be6bdc37 24 Nov 08:14 ledger line 2c566233
 - 2c566233 24 Nov 08:14 AD26 tenant registry GREEN
-- a9f96fd0 24 Nov 08:06 ledger line 6d38281d
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+A  admin-desk/server/src/ledger.rs
+M  admin-desk/server/src/main.rs
+A  admin-desk/sql/AD27.sql
+A  admin-desk/sql/checks/AD27-check.sql
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+A  docs/claude/admin-desk/server/src/ledger.rs
+M  docs/claude/admin-desk/server/src/main.rs
+A  docs/claude/admin-desk/sql/AD27.sql
+A  docs/claude/admin-desk/sql/checks/AD27-check.sql
+MM docs/claude/admin-desk/state/WORKING-NOW.md
+M  founder-web/src/desk/DeskCards.tsx
+A  founder-web/src/desk/DeskLedger.tsx
+M  founder-web/src/desk/desk_cards.ts
+A  founder-web/src/desk/desk_ledger_pure.test.ts
+A  founder-web/src/desk/desk_ledger_pure.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

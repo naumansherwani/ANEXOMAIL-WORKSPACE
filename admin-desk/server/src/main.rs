@@ -29,6 +29,7 @@ mod staff;
 mod customers;
 mod deliverability;
 mod mailposture;
+mod ledger;
 mod reports;
 mod sign;
 mod wt;
@@ -135,6 +136,7 @@ async fn main() {
         .route("/desk/v1/customers/census", post(customers::census))
         .route("/desk/v1/deliverability/board", post(deliverability::board))
         .route("/desk/v1/reports/summary", post(reports::summary))
+        .route("/desk/v1/ledger/board", post(ledger::board))
         .route("/desk/v1/mailposture/board", post(mailposture::board))
         .layer(middleware::from_fn(signed::guard));
     let app = Router::new()

@@ -2963,3 +2963,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - E202 merged into E201 as PART 2, E202 + CHECK_E202 deleted, 2016 date typo fixed, CHECK_E201 25 rows. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 fresh run twice, upgrade from old E201, CHECK_E201 25 of 25 true, sql-editor-lint OK
 
 - E202 awam price migration (workspace_plans, price book, billing function, price ledger) written. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 run twice, selftest 7 checks, CHECK_E202 9 rows true, sql-editor-lint OK
+
+- Ledger card 1m-L: SQL AD27 board door + window chain check, Rust ledger door, React DeskLedger + pure parser, card flipped to wired. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 whole Desk schema AD27 selftest twice + CHECK 6 true, cargo test 125 pass (ledger 6), bun test src/desk 138 pass, tsc clean, build:desk
