@@ -17,7 +17,7 @@ const taglines = [
 /* His approved demo (demo/awam-signin-24nov/demo.js), the seven lines exactly. */
 const stack: string[] = [
   "Rust WebAssembly kernel verifies every answer",
-  "Rust 1.97 · Tokio 1.54 · Axum 0.8 engine",
+  "Rust + Tokio + Axum engine",
   "WebTransport · QUIC · HTTP/3",
   "Media over QUIC (IETF MoQ)",
   "TLS 1.3 · AES-256-GCM",

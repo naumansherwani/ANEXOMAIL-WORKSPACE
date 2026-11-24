@@ -1,9 +1,9 @@
-# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 13:38 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 24 Nov 2026 13:41 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: demo: still top light + attracting taglines
+DOING: demo: engine line = Rust + Tokio + Axum engine, no versions
 NEXT STEP: his approval then ship to src
-HIS LAST WORD: his 13:35: light at top, taglines demo
+HIS LAST WORD: his 13:40: sirf Rust + Tokio + Axum Engine
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -21,20 +21,33 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 43ada395 24 Nov 13:38 ledger line a19f5aad
 - a19f5aad 24 Nov 13:38 demo still light and taglines
 - c5d5922a 24 Nov 13:35 ledger line a222cd39
 - a222cd39 24 Nov 13:35 demo real-list advance only
 - f46e6dc0 24 Nov 13:27 ledger line 9f270af8
-- 9f270af8 24 Nov 13:27 awam sign-in Global Grid look shipped
 
 ## Uncommitted files (half-done work if any)
+M  demo/awam-signin-24nov/real-list/AuthCinema.tsx
+M  demo/awam-signin-24nov/real-list/README.md
+M  demo/awam-signin-24nov/real-taglines/AuthCinema.tsx
+M  demo/awam-signin-24nov/screens/list-1280.png
+M  demo/awam-signin-24nov/screens/list-1366.png
+M  demo/awam-signin-24nov/screens/list-1920.png
  M docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 44 ++--------------------------------------
- 1 file changed, 2 insertions(+), 42 deletions(-)
+ demo/awam-signin-24nov/real-list/README.md         |   2 ++
+ .../awam-signin-24nov/real-taglines/AuthCinema.tsx |   2 +-
+ demo/awam-signin-24nov/screens/list-1280.png       | Bin 1177617 -> 1176649 bytes
+ demo/awam-signin-24nov/screens/list-1366.png       | Bin 1179828 -> 1178852 bytes
+ demo/awam-signin-24nov/screens/list-1920.png       | Bin 1997175 -> 1994002 bytes
+ docs/claude/state/WORKING-NOW.md                   |  28 ++++++++-------------
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        |   4 +--
+ 8 files changed, 17 insertions(+), 21 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -45,4 +58,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (de0ca44fa38abdfe0dd5f9f9713cbe0c99c66a6a)
+WIP snapshot: refs/wip/last (d6d767d76a6bcf4970ac0aa697177b580ef77c33)

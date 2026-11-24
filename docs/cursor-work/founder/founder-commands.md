@@ -6287,3 +6287,5 @@ FINAL: 21 Nov Desk Isolation Law and Gate never break. Company OS (Command Cente
 - DEMO ONLY: left light rests at the top (real-list) and 7 rotating taglines (real-taglines), src untouched. TECH-LAW CHECKED. TESTED: light top stays at 32px over 3 moments, 7 taglines rendered, tsc clean, src diff empty
 
 - DEMO ONLY: left light rests at the top (real-list) and 7 rotating taglines (real-taglines), src untouched. TECH-LAW CHECKED. TESTED: light top stays at 32px over 3 moments, 7 taglines rendered, tsc clean, src diff empty
+
+- DEMO ONLY: engine line fixed to Rust + Tokio + Axum engine (no versions) in real-list and real-taglines; src untouched. TECH-LAW CHECKED. TESTED: grep no version digits in the line, dev render 1280 OK, tsc clean, src diff empty
