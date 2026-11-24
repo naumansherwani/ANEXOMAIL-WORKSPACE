@@ -4130,3 +4130,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - AWAM SIGN-IN SUB LINE 'Your enterprise. Your network. Access Your Global Workspace.' TECH-LAW CHECKED, TESTED: tsc clean, dev render 1280/820/390 h1+3 inputs, no sideways scroll, no Rule 52 text
 
 - STATE UPDATE 24 Nov 14:2x: B13 T3 Desk part green (T3a, T3b, T3c); next phase B13 T4; waits listed. TECH-LAW CHECKED. TESTED: docs only, gate run
+
+- AWAM LANDING FOOTER = login words word for word (network row with MoQ + RFC 9421 + WIMSE, TLS 1.3 with AES-256-GCM) by chairman's explicit order 14:17 with his screenshot. TECH-LAW CHECKED. TESTED: tsc clean, every login line found in footer
