@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 09:13 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 09:13 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1m-L3 GREEN desktop
 NEXT STEP: B13 Z4b-3
 HIS LAST WORD: live look done
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 5a00279a 24 Nov 09:13 Desk 1m-L3 GREEN desktop
 - c00bf6aa 24 Nov 09:12 ledger line d7bfb5df
 - d7bfb5df 24 Nov 09:12 Desk: 1m-L3 install proof, compaction save
 - 1bc496ed 24 Nov 09:05 ledger line 1ec1ce87
@@ -72,14 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - e2d19d33 24 Nov 08:54 ledger line 44e648f6
 - 44e648f6 24 Nov 08:54 Desk: AD28 ledger flood guard, GREEN lines, OS folder
 - 429cbe1f 24 Nov 08:41 ledger line 96843f30
-- 96843f30 24 Nov 08:41 Desk: wire the Ledger card (AD27)
 
 ## Uncommitted Desk files
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
