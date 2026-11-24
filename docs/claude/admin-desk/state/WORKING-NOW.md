@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 09:12 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 09:12 PKT) - read this FIRST for the Desk after a compaction
 DOING: 1m-L3 installed, B13 Z4b-3 next
 NEXT STEP: his look for GREEN; Z4b-3 wire
 HIS LAST WORD: compaction save
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- d7bfb5df 24 Nov 09:12 Desk: 1m-L3 install proof, compaction save
 - 1bc496ed 24 Nov 09:05 ledger line 1ec1ce87
 - 1ec1ce87 24 Nov 09:05 Desk 1m-L3: incremental ledger check AD29, staff-only fault banner
 - e2d19d33 24 Nov 08:54 ledger line 44e648f6
@@ -72,12 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 429cbe1f 24 Nov 08:41 ledger line 96843f30
 - 96843f30 24 Nov 08:41 Desk: wire the Ledger card (AD27)
 - 5710cf5d 24 Nov 08:34 ledger line 204ff52c
-- 204ff52c 24 Nov 08:34 E202: final price chart migration
 
 ## Uncommitted Desk files
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
