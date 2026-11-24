@@ -40,7 +40,7 @@ const groups = [
 const stack = [
   { where: "Built into your browser", what: "A Rust WebAssembly kernel verifies every answer" },
   { where: "Backend Engine", what: "Rust + Tokio + Axum engine" },
-  { where: "Advance Network Layer", what: "WebTransport · QUIC · HTTP/3 · Media over QUIC (IETF MoQ) added for ANEXOCHAT with HTTP/3 signatures (RFC 9421) · IETF WIMSE" },
+  { where: "Advance Network Layer", what: "WebTransport · QUIC · HTTP/3 · Media over QUIC (IETF MoQ) added for ANEXOCHAT with HTTP Message Signatures (RFC 9421) · IETF WIMSE" },
   { where: "Transport security", what: "TLS 1.3 with AES-256-GCM · X25519MLKEM768 post-quantum key exchange" },
   { where: "Signatures", what: "Ed25519 + ML-DSA hybrid signatures · OpenPGP PQC (RFC 9980)" },
   { where: "Mail trust", what: "MTA-STS · DANE · DMARC (RFC 7489)" },

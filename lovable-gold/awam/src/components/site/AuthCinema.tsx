@@ -19,7 +19,7 @@ const taglines = [
 const stack: string[] = [
   "A Rust WebAssembly kernel verifies every answer",
   "Rust + Tokio + Axum engine",
-  "WebTransport · QUIC · HTTP/3 · Media over QUIC (IETF MoQ) added for ANEXOCHAT with HTTP/3 signatures (RFC 9421) · IETF WIMSE",
+  "WebTransport · QUIC · HTTP/3 · Media over QUIC (IETF MoQ) added for ANEXOCHAT with HTTP Message Signatures (RFC 9421) · IETF WIMSE",
   "TLS 1.3 with AES-256-GCM",
   "X25519MLKEM768 post-quantum key exchange",
   "Ed25519 + ML-DSA hybrid signatures",

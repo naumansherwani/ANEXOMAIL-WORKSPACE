@@ -20,7 +20,7 @@ const stack: string[] = [
   "X25519MLKEM768 post-quantum key exchange",
   "Ed25519 + ML-DSA hybrid signatures",
   "OpenPGP PQC (RFC 9980)",
-  "HTTP/3 signatures (RFC 9421) · IETF WIMSE",
+  "HTTP Message Signatures (RFC 9421) · IETF WIMSE",
   "MTA-STS · DANE · DMARC (RFC 7489)",
   "Passkeys · DBSC device-bound sessions",
   "PostgreSQL 16 row-level security",
