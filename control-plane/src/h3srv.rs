@@ -9,6 +9,7 @@ pub const CENSUS_PATH: &str = "/control/v1/census";
 pub const DELIV_PATH: &str = "/control/v1/deliverability";
 pub const CONSENT_PATH: &str = "/control/v1/consent";
 pub const RESOLVE_PATH: &str = "/control/v1/resolve";
+pub const TENANT_PATH: &str = "/control/v1/tenant";
 const MAX_BODY: usize = 16 * 1024;
 
 pub fn provider() -> Arc<rustls::crypto::CryptoProvider> {
@@ -57,7 +58,7 @@ pub async fn serve(ep: quinn::Endpoint, core: Arc<Core>) {
                     let read = tokio::time::timeout(Duration::from_secs(5), async { while let Ok(Some(mut b)) = st.recv_data().await { let n = b.remaining(); got.extend_from_slice(&b.copy_to_bytes(n)); if got.len() > MAX_BODY { return false; } } true }).await;
                     if !matches!(read, Ok(true)) { let _ = st.send_response(reply(413)).await; let _ = st.finish().await; return; }
                     let Ok(body) = String::from_utf8(got) else { let _ = st.send_response(reply(400)).await; let _ = st.finish().await; return };
-                    let (code, out) = if path == CENSUS_PATH { core.handle_census(&body, now_secs()).await } else if path == DELIV_PATH { core.handle_deliv(&body, now_secs()).await } else if path == CONSENT_PATH { core.handle_consent(&body, now_secs()).await } else if path == RESOLVE_PATH { core.handle_resolve(&body, now_secs()).await } else { core.handle(&body, now_secs()).await };
+                    let (code, out) = if path == CENSUS_PATH { core.handle_census(&body, now_secs()).await } else if path == DELIV_PATH { core.handle_deliv(&body, now_secs()).await } else if path == CONSENT_PATH { core.handle_consent(&body, now_secs()).await } else if path == RESOLVE_PATH { core.handle_resolve(&body, now_secs()).await } else if path == TENANT_PATH { core.handle_tenant(&body, now_secs()).await } else { core.handle(&body, now_secs()).await };
                     let _ = st.send_response(reply(code)).await; if !out.is_empty() { let _ = st.send_data(Bytes::from(out)).await; } let _ = st.finish().await;
                 });
             }

@@ -37,6 +37,10 @@ impl Signer {
     pub fn resolve_answer(&self, request_id: &str, result: Option<&Value>, now: i64) -> String {
         self.envelope(json!({"kind": "resolve", "request_id": request_id, "answered_at": now, "result": result.cloned().unwrap_or(Value::Null), "refused": result.is_none()}))
     }
+    /// Phase 1m B13 T4e: the signed tenant-exists answer. kind "tenant" keeps it from ever being read as another answer; the result is exactly {exists, name} from cp.tenant_info; None = refused (the database refused the shape).
+    pub fn tenant_answer(&self, request_id: &str, result: Option<&Value>, now: i64) -> String {
+        self.envelope(json!({"kind": "tenant", "request_id": request_id, "answered_at": now, "result": result.cloned().unwrap_or(Value::Null), "refused": result.is_none()}))
+    }
     pub fn census_answer(&self, request_id: &str, census: Option<&Value>, now: i64) -> String {
         self.envelope(json!({"kind": "census", "request_id": request_id, "answered_at": now, "census": census.cloned().unwrap_or(Value::Null), "refused": census.is_none()}))
     }

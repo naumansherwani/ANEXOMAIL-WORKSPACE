@@ -33,6 +33,18 @@ DO $g$ BEGIN IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'cp_lookup') THEN
   GRANT EXECUTE ON FUNCTION cp.resolve_sender(text, text, boolean, timestamptz) TO cp_lookup;
 END IF; END $g$;
 
+-- T4e (his 25 Nov 2026 03:13 order, edit of THIS file, no new SQL file): READ DOOR 3, the tenant registry answer for the Desk: "is this company UUID real, and what is its display NAME?". Read only, one row at most, never cached by the caller for an approval.
+-- ADVANCE-RESEARCH (T4e): tenant registry as the single source of existence + display name (big multi-tenant SaaS pattern); least privilege (OWASP ASVS V4): one closed read-only function, nothing else is exposed; the name is cleaned (control characters out, 120 characters max) because it is shown to a human reviewer and must never carry markup tricks. Fail closed: bad input answers exists=false.
+CREATE OR REPLACE FUNCTION cp.tenant_info(p_tenant uuid) RETURNS jsonb LANGUAGE sql STABLE SECURITY DEFINER SET search_path = pg_catalog, pg_temp SET statement_timeout = '5s' AS $f$
+  SELECT CASE WHEN p_tenant IS NULL OR p_tenant = '00000000-0000-0000-0000-000000000000'::uuid THEN jsonb_build_object('exists', false, 'name', NULL)
+    ELSE coalesce((SELECT jsonb_build_object('exists', true, 'name', left(regexp_replace(coalesce(o.name, ''), '[[:cntrl:]]', '', 'g'), 120)) FROM public.orgs o WHERE o.id = p_tenant), jsonb_build_object('exists', false, 'name', NULL)) END
+$f$;
+COMMENT ON FUNCTION cp.tenant_info(uuid) IS 'AD31 T4e: company UUID -> {exists, name}; read only; name cleaned and cut at 120; unknown, nil or null UUID = exists false.';
+REVOKE ALL ON FUNCTION cp.tenant_info(uuid) FROM PUBLIC;
+DO $g$ BEGIN IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'cp_lookup') THEN
+  GRANT EXECUTE ON FUNCTION cp.tenant_info(uuid) TO cp_lookup;
+END IF; END $g$;
+
 -- SELFTEST (rolls back; success is the exception P0AU2) ------------------------------------------------------------------------------------------------------------------------------
 CREATE FUNCTION pg_temp.cp7_ok(c boolean, msg text) RETURNS void LANGUAGE plpgsql AS $f$ BEGIN IF c IS NOT TRUE THEN RAISE EXCEPTION 'AD31 selftest: %', msg USING ERRCODE = 'P0AU1'; END IF; END $f$;
 DO $$
@@ -69,6 +81,9 @@ BEGIN
   PERFORM pg_temp.cp7_ok(cp.resolve_sender('Bad Domain', 'ann', true, t0) ->> 'verdict' = 'unknown' AND cp.resolve_sender(NULL, 'ann', true, t0) ->> 'verdict' = 'unknown' AND cp.resolve_sender(d1, NULL, true, t0) ->> 'verdict' = 'unknown' AND cp.resolve_sender(d1, 'ann', NULL, t0) ->> 'verdict' = 'unknown' AND cp.resolve_sender(d1, 'Ann', true, t0) ->> 'verdict' = 'unknown', 'odd input answers unknown');
   PERFORM pg_temp.cp7_ok(NOT EXISTS (SELECT 1 FROM (VALUES ('ann'), ('stranger'), ('gone')) v(l) WHERE NOT (cp.resolve_sender(d1, v.l, true, t0) ->> 'verdict' = ANY (ARRAY['resolved','shared','unknown','ambiguous','multi_member','unaligned']))), 'every answer is a word of the closed list');
   PERFORM pg_temp.cp7_ok(has_function_privilege('cp_lookup', 'cp.resolve_sender(text,text,boolean,timestamptz)', 'EXECUTE') AND NOT has_function_privilege('public', 'cp.resolve_sender(text,text,boolean,timestamptz)', 'EXECUTE'), 'cp_lookup may run it, PUBLIC may not');
+  PERFORM pg_temp.cp7_ok((cp.tenant_info(o1) ->> 'exists')::boolean AND cp.tenant_info(o1) ->> 'name' = (SELECT left(regexp_replace(coalesce(n.name, ''), '[[:cntrl:]]', '', 'g'), 120) FROM public.orgs n WHERE n.id = o1), 'T4e: a real company answers exists + its name');
+  PERFORM pg_temp.cp7_ok(NOT (cp.tenant_info(gen_random_uuid()) ->> 'exists')::boolean AND NOT (cp.tenant_info(NULL) ->> 'exists')::boolean AND NOT (cp.tenant_info('00000000-0000-0000-0000-000000000000'::uuid) ->> 'exists')::boolean, 'T4e: unknown, null and nil UUIDs answer exists = false');
+  PERFORM pg_temp.cp7_ok(has_function_privilege('cp_lookup', 'cp.tenant_info(uuid)', 'EXECUTE') AND NOT has_function_privilege('public', 'cp.tenant_info(uuid)', 'EXECUTE'), 'T4e: only cp_lookup may ask');
   RAISE EXCEPTION 'AD31 selftest passed, rolling back' USING ERRCODE = 'P0AU2';
 EXCEPTION WHEN SQLSTATE 'P0AU2' THEN RAISE NOTICE 'AD31 selftest: ALL RULES PASSED (rows rolled back)';
 END $$;

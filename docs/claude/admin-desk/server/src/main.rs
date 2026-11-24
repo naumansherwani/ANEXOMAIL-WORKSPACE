@@ -21,7 +21,7 @@ mod dbsc;
 mod lookup;
 mod packages;
 mod runbooks;
-mod bind_exception; mod consent; #[allow(dead_code)] mod consent_cp; mod resolve_cp;
+mod bind_exception; mod tenant_cp; mod consent; #[allow(dead_code)] mod consent_cp; mod resolve_cp;
 mod escalations;
 mod pressure;
 mod security;
@@ -89,6 +89,9 @@ async fn main() {
     if a.get(1).map(String::as_str) == Some("version") && a.len() == 2 { println!("{}", lookup::version_line()); return; }
     if a.get(1).map(String::as_str) == Some("lookup-selftest") && a.len() == 3 {
         match lookup::selftest(&a[2]).await { Ok(o) => { println!("{o}"); return; } Err(e) => { println!("LOOKUP SELFTEST FAIL: {e}"); std::process::exit(4); } }
+    }
+    if a.get(1).map(String::as_str) == Some("tenant-selftest") && a.len() == 2 {
+        match tenant_cp::selftest().await { Ok(o) => { println!("{o}"); return; } Err(e) => { println!("TENANT SELFTEST FAIL: {e}"); std::process::exit(4); } }
     }
     if a.get(1).map(String::as_str) == Some("resolve-selftest") && a.len() == 2 {
         match resolve_cp::selftest().await { Ok(o) => { println!("{o}"); return; } Err(e) => { println!("RESOLVE SELFTEST FAIL: {e}"); std::process::exit(4); } }

@@ -125,3 +125,6 @@ case "$R" in "LOOKUP SELFTEST OK"*) echo "OK: Control Plane live on UDP 4410; th
 R2="$(env DESK_SIGN_SEED_FILE=/etc/anexomail-desk/sign.seed DESK_CONTROL_PLANE_ADDR=$LISTEN DESK_CONTROL_PLANE_HOST=$HOST DESK_CONTROL_PLANE_CA=$ETC/cert.pem DESK_CONTROL_PLANE_PUBKEY=$CPPUB "$DESKROOT/anexomail-desk" resolve-selftest 2>&1 | tail -1)"
 echo "   $R2"
 case "$R2" in "RESOLVE SELFTEST OK"*) echo "OK: sender-resolve door live over HTTP/3 (B13 T3b: signed request with its path, signed verdict, replay refused)";; *) echo "WARN: the sender-resolve proof did not pass (paste these lines); every sender stays unresolved (fail closed)";; esac
+R3="$(env DESK_SIGN_SEED_FILE=/etc/anexomail-desk/sign.seed DESK_CONTROL_PLANE_ADDR=$LISTEN DESK_CONTROL_PLANE_HOST=$HOST DESK_CONTROL_PLANE_CA=$ETC/cert.pem DESK_CONTROL_PLANE_PUBKEY=$CPPUB "$DESKROOT/anexomail-desk" tenant-selftest 2>&1 | tail -1)"
+echo "   $R3"
+case "$R3" in "TENANT SELFTEST OK"*) echo "OK: tenant-exists door live over HTTP/3 (B13 T4e: signed request with its path, signed answer {exists, name}, replay refused)";; *) echo "WARN: the tenant-exists proof did not pass (paste these lines); a manual company proposal stays closed (fail closed)";; esac

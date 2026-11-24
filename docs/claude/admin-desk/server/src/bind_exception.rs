@@ -2,7 +2,7 @@
 // Plan: D6-B13-T4-MANUAL-EXCEPTION-PLAN-25NOV.md. SQL: AD34 (desk.fadm_bind_* SECURITY DEFINER doors; desk_app has NO table right). The DATABASE decides: case.assign on both people, proposer <> decider (table CHECK, NIST AC-5),
 // one open proposal per case, 24 hours, approval only through the ONE writer desk.fadm_case_bind (AD30). FOUR doors: propose, decide, withdraw, pending. The actor is ALWAYS the signed-in staff person from the session, never a body field.
 // RULE 52 COMBO: S = every answer is one closed JSON shape on the sealed router; M = no mail path; L = the database writes one ledger line per step (closed words, the note never reaches the ledger), this file writes none of its own.
-// HONEST LIMIT (open, T4b-2): that the tenant UUID is a real company is NOT yet asked of the Control Plane here (it needs a new signed 'tenant exists' method); the database refuses only a NULL or nil UUID, and the reviewer sees the UUID + the proposer's note.
+// T4e (25 Nov 2026): the tenant UUID is asked of the Control Plane (signed, tenant_cp.rs) BEFORE the database is called: an unknown company = outcome "no_tenant", the Control Plane not answering = 503 (nothing is proposed on a guess). The pending list carries the company NAME from the Control Plane (tenant_name + name_state ok|missing|unavailable); the name is never stored or logged.
 use crate::bridge::owner;
 use crate::door::{lit, rows};
 use axum::{body::Bytes, http::{header, HeaderMap, StatusCode}, response::{IntoResponse, Response}};
@@ -15,7 +15,7 @@ fn unavailable() -> Response { err(StatusCode::SERVICE_UNAVAILABLE, "data_unavai
 /// The closed reason list, the same words as the SQL CHECK in AD34.
 pub const REASONS: [&str; 5] = ["customer_emailed_from_other_domain", "new_domain_not_yet_verified", "forwarded_mail", "staff_checked_contract", "other_with_note"];
 /// Every answer word the SQL doors can return; anything else is turned into "refused" (fail closed).
-pub const PROPOSE_WORDS: [&str; 11] = ["proposed", "not_active_staff", "no_right", "no_case", "bad_tenant", "bad_reason", "bad_note", "already_bound", "already_open", "too_many_open", "refused"];
+pub const PROPOSE_WORDS: [&str; 12] = ["proposed", "not_active_staff", "no_right", "no_case", "bad_tenant", "bad_reason", "bad_note", "already_bound", "already_open", "too_many_open", "no_tenant", "refused"];
 pub const DECIDE_WORDS: [&str; 10] = ["approved", "denied", "expired", "no_proposal", "already_decided", "same_person", "no_right", "not_active_staff", "bind_refused", "refused"];
 pub const WITHDRAW_WORDS: [&str; 6] = ["withdrawn", "no_proposal", "not_proposer", "already_decided", "not_active_staff", "refused"];
 
@@ -44,6 +44,13 @@ pub async fn propose(h: HeaderMap, body: Bytes) -> Response {
     if body.len() > 1024 { return err(StatusCode::PAYLOAD_TOO_LARGE, "too_large"); }
     let Ok(b) = serde_json::from_slice::<ProposeIn>(&body) else { return err(StatusCode::BAD_REQUEST, "bad_body") };
     if !propose_ok(&b) { return err(StatusCode::BAD_REQUEST, "bad_body"); }
+    // T4e: is this company real? asked of the Control Plane first (signed, never cached). Unknown = no_tenant; no answer = nothing is proposed.
+    match crate::tenant_cp::ask(&o, &b.tenant_id).await {
+        Ok(crate::tenant_cp::Tenant::Exists(_)) => {}
+        Ok(crate::tenant_cp::Tenant::Missing) => return out(StatusCode::CONFLICT, serde_json::json!({"outcome": "no_tenant"}).to_string()),
+        Err(crate::tenant_cp::Reject::Refused) => return err(StatusCode::FORBIDDEN, "refused"),
+        Err(crate::tenant_cp::Reject::Unavailable) => { eprintln!("desk bind: the Control Plane could not confirm the company"); return unavailable(); }
+    }
     let q = format!("select outcome || '|' || coalesce(proposal_id::text, '') from desk.fadm_bind_propose('{o}'::uuid, {}, '{}'::uuid, {}, {})", lit(&b.case_ref), b.tenant_id, lit(&b.reason), lit(b.note.trim()));
     match rows(&c, &q).await {
         Ok(v) => {
@@ -85,11 +92,25 @@ pub async fn pending(h: HeaderMap, body: Bytes) -> Response {
     let q = format!("select coalesce(json_agg(t), '[]'::json)::text from (select proposal_id, case_ref, tenant_id, reason, note, proposer_role, seconds_left, mine from desk.fadm_bind_pending('{o}'::uuid)) t");
     match rows(&c, &q).await {
         Ok(v) => match v.first().and_then(|r| r.get(0)) {
-            Some(j) if j.starts_with('[') => out(StatusCode::OK, format!("{{\"items\":{j}}}")),
+            Some(j) if j.starts_with('[') => out(StatusCode::OK, with_names(&o, j).await),
             _ => err(StatusCode::FORBIDDEN, "not_allowed"),
         },
         Err(e) => { eprintln!("desk bind: db: {e}"); unavailable() }
     }
+}
+
+/// T4e: adds the company NAME to every pending item, asked of the Control Plane (one signed question per distinct company, at most 20, never cached). name_state = ok | missing | unavailable (the Control Plane did not answer: the screen says so, it never shows a guessed name).
+async fn with_names(owner: &str, j: &str) -> String {
+    let Ok(mut items) = serde_json::from_str::<Vec<serde_json::Value>>(j) else { return format!("{{\"items\":{j}}}") };
+    let mut seen: Vec<(String, (&'static str, Option<String>))> = Vec::new();
+    for it in items.iter_mut().take(20) {
+        let t = it["tenant_id"].as_str().unwrap_or("").to_string();
+        let got = match seen.iter().find(|(k, _)| *k == t) { Some((_, v)) => v.clone(), None => {
+            let v = match crate::tenant_cp::ask(owner, &t).await { Ok(crate::tenant_cp::Tenant::Exists(n)) => ("ok", Some(n)), Ok(crate::tenant_cp::Tenant::Missing) => ("missing", None), Err(_) => ("unavailable", None) };
+            seen.push((t.clone(), v.clone())); v } };
+        it["name_state"] = serde_json::json!(got.0); it["tenant_name"] = match got.1 { Some(n) => serde_json::json!(n), None => serde_json::Value::Null };
+    }
+    serde_json::json!({"items": items}).to_string()
 }
 
 /// BACKGROUND EXPIRY WORKER (T4, acceptance 3): every 60 seconds one call of desk.fadm_bind_sweep() ends the stale open proposals. The DATABASE refuses an approval after 24 hours by itself (decision-time check + table CHECK),

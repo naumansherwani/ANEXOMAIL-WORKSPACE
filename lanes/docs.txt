@@ -547,6 +547,7 @@ docs/claude/admin-desk/server/src/security.rs
 docs/claude/admin-desk/server/src/sign.rs
 docs/claude/admin-desk/server/src/signed.rs
 docs/claude/admin-desk/server/src/staff.rs
+docs/claude/admin-desk/server/src/tenant_cp.rs
 docs/claude/admin-desk/server/src/wt.rs
 docs/claude/admin-desk/sql/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/sql/AD01.sql

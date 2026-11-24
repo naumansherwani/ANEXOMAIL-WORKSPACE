@@ -817,7 +817,7 @@
    "id": "T4-F7-screen-shows-name",
    "file": "founder-web/src/desk/desk_bind_pure.ts",
    "must": "tenantName",
-   "status": "open",
+   "status": "ok",
    "deadline": "B13 T4",
    "why": "his 25 Nov 2026 02:23 list, line F7: the screen shows the company NAME too (from the Control Plane): OPEN until T4e.",
    "fail_after": "2027-01-09"
@@ -825,8 +825,8 @@
   {
    "id": "T4e-tenant-exists",
    "file": "docs/claude/admin-desk/server/src/bind_exception.rs",
-   "must": "tenant_exists",
-   "status": "open",
+   "must": "tenant_cp::ask",
+   "status": "ok",
    "deadline": "B13 T4",
    "why": "his 25 Nov 2026 02:23 list, line T4e: Control Plane signed 'tenant exists' method + name (closes T4b-2).",
    "fail_after": "2027-01-09"
@@ -883,6 +883,24 @@
    "status": "ok",
    "deadline": "B13 T4e",
    "why": "his 25 Nov 03:13 order: T4e research line + plan in the blueprint before any code.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4e-control-plane-door",
+   "file": "control-plane/src/tenant.rs",
+   "must": "desk-tenant",
+   "status": "ok",
+   "deadline": "B13 T4e",
+   "why": "T4e: the Control Plane answers a signed tenant-exists question (own audience, own path, closed shape).",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4e-sql-tenant-info",
+   "file": "docs/claude/admin-desk/sql/AD31.sql",
+   "must": "cp.tenant_info",
+   "status": "ok",
+   "deadline": "B13 T4e",
+   "why": "T4e: read-only SQL function in the existing AD31 (no new SQL file).",
    "fail_after": "2027-01-09"
   }
  ]

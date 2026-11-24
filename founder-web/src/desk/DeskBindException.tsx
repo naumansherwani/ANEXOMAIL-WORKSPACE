@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { DeskRefused, deskCall } from "./desk_kernel";
 import { UNAVAILABLE_TEXT } from "./desk_lookup_pure";
-import { NOTE_MAX, UNVERIFIED_TEXT, REASONS, buildDecide, buildPropose, caseRefOk, leftWords, noteProblem, outcomeOf, outcomeWords, parsePending, reasonWords, tenantOk, type Pending } from "./desk_bind_pure";
+import { companyWords, NOTE_MAX, UNVERIFIED_TEXT, REASONS, buildDecide, buildPropose, caseRefOk, leftWords, noteProblem, outcomeOf, outcomeWords, parsePending, reasonWords, tenantOk, type Pending } from "./desk_bind_pure";
 
 /** ADMIN DESK B13 T4 (BL-46, 25 Nov 2026): Company confirmation. When a case cannot be tied to its customer company automatically, one staff person proposes the company and a DIFFERENT staff person confirms or declines it.
  *  Both need the right to assign cases; nobody can confirm their own proposal; a proposal runs out after 24 hours; every step is a ledger line. Every answer is kernel-verified (Rule 52); one that cannot be trusted shows "Data unavailable".
@@ -60,7 +60,7 @@ export function DeskBindException() {
         {items && items.length === 0 && <small>Nothing is waiting.</small>}
         {items && items.length > 0 && <ul className="dbx-list">{items.map((m) => {
           const l = left(m.secondsLeft);
-          return (<li key={m.id} className="dbx-row"><span><b>{m.caseRef}</b> · {reasonWords(m.reason)}<br /><small>Company <code>{m.tenantId}</code></small><br /><small>Proposed by a {m.proposerRole} · {leftWords(l)}</small>{m.note && <><br /><small>Note: {m.note}</small></>}</span>
+          return (<li key={m.id} className="dbx-row"><span><b>{m.caseRef}</b> · {reasonWords(m.reason)}<br /><small>Company <b>{companyWords(m)}</b> <code>{m.tenantId}</code></small><br /><small>Proposed by a {m.proposerRole} · {leftWords(l)}</small>{m.note && <><br /><small>Note: {m.note}</small></>}</span>
             <span className="dbx-act">{m.mine
               ? <button type="button" className="dbx-btn" disabled={busy || l === 0} onClick={() => withdraw(m.id)}>Take back</button>
               : <><button type="button" className="dbx-btn" disabled={busy || l === 0} onClick={() => decide(m.id, true)}>Confirm</button><button type="button" className="dbx-btn" disabled={busy || l === 0} onClick={() => decide(m.id, false)}>Decline</button></>}</span></li>);

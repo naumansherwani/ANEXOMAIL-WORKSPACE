@@ -67,6 +67,16 @@ impl Pg {
         };
         tokio::time::timeout(Duration::from_secs(8), work).await.map_err(|_| "database timeout".to_string())?
     }
+    /// Phase 1m B13 T4e: `select cp.tenant_info($1)::text` (AD31): {exists, name}. Never cached: a deleted company must show at once. Err = database unavailable (503, never a made-up name).
+    pub async fn tenant(&self, tenant: &str) -> Result<Option<Value>, String> {
+        let work = async {
+            let c = self.client().await?;
+            let r = c.query_one("select cp.tenant_info($1::text::uuid)::text", &[&tenant]).await.map_err(|e| e.to_string())?;
+            let t: Option<String> = r.get(0);
+            match t { None => Ok(None), Some(s) => serde_json::from_str(&s).map(Some).map_err(|e| e.to_string()) }
+        };
+        tokio::time::timeout(Duration::from_secs(5), work).await.map_err(|_| "database timeout".to_string())?
+    }
     /// Phase 1m B13 T3b: `select cp.resolve_sender($1,$2,$3)::text` (AD31): a verdict word and, only for "resolved", a tenant UUID. Ok(None) = the function refused (null); Err = database unavailable (503, never a made-up verdict).
     pub async fn resolve(&self, domain: &str, local: &str, aligned: bool) -> Result<Option<Value>, String> {
         let work = async {
