@@ -314,6 +314,16 @@ backups/awam/20261124-1235-before-signin-global-grid/AuthCinema.tsx
 backups/awam/20261124-1235-before-signin-global-grid/README.md
 backups/awam/20261124-1235-before-signin-global-grid/auth.tsx
 backups/awam/20261124-1235-before-signin-global-grid/styles.css
+backups/awam/20261124-1305-original-live-on-his-server/00-FOUNDER-TECH-RULE.md
+backups/awam/20261124-1305-original-live-on-his-server/AuthCinema.tsx
+backups/awam/20261124-1305-original-live-on-his-server/README.md
+backups/awam/20261124-1305-original-live-on-his-server/auth.tsx
+backups/awam/20261124-1305-original-live-on-his-server/styles.css
+backups/awam/20261124-1305-pulled-version-c2ac03d9/00-FOUNDER-TECH-RULE.md
+backups/awam/20261124-1305-pulled-version-c2ac03d9/AuthCinema.tsx
+backups/awam/20261124-1305-pulled-version-c2ac03d9/README.md
+backups/awam/20261124-1305-pulled-version-c2ac03d9/auth.tsx
+backups/awam/20261124-1305-pulled-version-c2ac03d9/styles.css
 backups/desk/00-FOUNDER-TECH-RULE.md
 backups/desk/20261122-0603-50eec49a-perfect-login/00-FOUNDER-TECH-RULE.md
 backups/desk/20261122-0603-50eec49a-perfect-login/MANIFEST.txt
@@ -383,6 +393,7 @@ demo/00-FOUNDER-TECH-RULE.md
 demo/awam-signin-24nov/00-FOUNDER-TECH-RULE.md
 demo/awam-signin-24nov/README.md
 demo/awam-signin-24nov/demo.js
+demo/awam-signin-24nov/final-check.cjs
 demo/awam-signin-24nov/left-compare.cjs
 demo/awam-signin-24nov/phase-check.cjs
 demo/awam-signin-24nov/real-shot.cjs

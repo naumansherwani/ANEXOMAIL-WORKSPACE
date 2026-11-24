@@ -4048,3 +4048,11 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - AWAM SIGN-IN put back to the ORIGINAL (his 12:57: login stuck loading); new look parked in demo/awam-signin-24nov/real-wip, not live. TECH-LAW CHECKED. TESTED: src == backups/awam/20261124-1235 originals, tsc clean
 
 - AWAM SIGN-IN put back to the ORIGINAL (his 12:57: login stuck loading); new look parked in demo/awam-signin-24nov/real-wip, not live. TECH-LAW CHECKED. TESTED: src == backups/awam/20261124-1235 originals, tsc clean
+
+- AWAM SIGN-IN: pulled version c2ac03d9 saved in backups/awam/20261124-1305-pulled-version-c2ac03d9 and latest look in demo/awam-signin-24nov/real-wip; src stays the ORIGINAL. TECH-LAW CHECKED. TESTED: src == original backup, dev render of parked look ok
+
+- AWAM SIGN-IN: pulled version c2ac03d9 saved in backups/awam/20261124-1305-pulled-version-c2ac03d9 and latest look in demo/awam-signin-24nov/real-wip; src stays the ORIGINAL. TECH-LAW CHECKED. TESTED: src == original backup, dev render of parked look ok
+
+- AWAM SIGN-IN: ORIGINAL stays live (backup backups/awam/20261124-1305-original-live-on-his-server); FINAL look (demo exact, Rule 52 words removed) parked in demo/awam-signin-24nov/real-wip until he says send. TECH-LAW CHECKED. TESTED: src == original backup, dev render of the final look 1280/820/390 + reduced motion no sideways scroll, form renders
+
+- AWAM SIGN-IN: ORIGINAL stays live (backup backups/awam/20261124-1305-original-live-on-his-server); FINAL look (demo exact, Rule 52 words removed) parked in demo/awam-signin-24nov/real-wip until he says send. TECH-LAW CHECKED. TESTED: src == original backup, dev render of the final look 1280/820/390 + reduced motion no sideways scroll, form renders

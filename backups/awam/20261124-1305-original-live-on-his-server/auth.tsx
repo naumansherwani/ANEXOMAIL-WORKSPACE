@@ -1,0 +1,1249 @@
+import { BrandSpinner, HoverA } from "@/components/state/BrandLoader";
+import { createFileRoute, redirect, useNavigate, useSearch, Link } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+
+import { AnexoMailField } from "@/components/site/AnexoMailField";
+import { AuthCinema } from "@/components/site/AuthCinema";
+import { CinematicSplash } from "@/components/site/CinematicSplash";
+import { AvailabilityHint, useHandleAvailability } from "@/components/auth/AvailabilityHint";
+import { ContactFields, contactToE164, type Contact } from "@/components/auth/ContactFields";
+import { flushContact, stashContact } from "@/lib/signx";
+import { anexomailAddress } from "@/lib/anexomail-address";
+import { Eye, EyeOff, KeyRound, Mail, ShieldCheck } from "lucide-react";
+
+import { BrandMark } from "@/components/site/BrandMark";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { rpcOrRest } from "@/lib/rpc";
+import { api, ApiError, sessionToken } from "@/lib/api";
+import { useAuth, type Session } from "@/lib/auth";
+import { collectDeviceSignals } from "@/lib/chat-safety";
+import { deviceKeyProof } from "@/lib/device-key";
+import { collectFingerprint } from "@/lib/device-fingerprint";
+import { SignupReview } from "@/components/auth/SignupReview";
+import { useLocale } from "@/lib/i18n";
+import { isFounderHost } from "@/lib/host";
+import { notify } from "@/lib/notify";
+import { enrolPasskey as createPasskey, passkeyLoginOptions, passkeyLoginVerify, recoveryCodeLogin } from "@/lib/passkey";
+import { RecoveryCodesPanel } from "@/components/app/security/RecoveryCodesPanel";
+import { cn } from "@/lib/utils";
+
+const SAVE_PASSWORD_KEY = "anexo.auth.save_password";
+
+function readSavePasswordPref(): boolean {
+  try {
+    const stored = window.localStorage.getItem(SAVE_PASSWORD_KEY);
+    if (stored === "0") return false;
+    if (stored === "1") return true;
+  } catch {
+    /* ignore */
+  }
+  return true;
+}
+
+function writeSavePasswordPref(on: boolean) {
+  try {
+    window.localStorage.setItem(SAVE_PASSWORD_KEY, on ? "1" : "0");
+  } catch {
+    /* ignore */
+  }
+}
+
+/** Browser password manager — we do not keep the password in the page. */
+function storeBrowserPassword(email: string, password: string) {
+  try {
+    const Ctor = (
+      window as unknown as {
+        PasswordCredential?: new (data: { id: string; name?: string; password: string }) => Credential;
+      }
+    ).PasswordCredential;
+    if (!Ctor || !navigator.credentials?.store) return;
+    void navigator.credentials.store(new Ctor({ id: email, name: email, password }));
+  } catch {
+    /* user declined or browser has no password store */
+  }
+}
+
+const KIND_KEY = "anexo.pending.workspace_kind";
+
+function lastNameFromLegal(full: string) {
+  const parts = full.trim().split(/\s+/).filter(Boolean);
+  return parts.length > 1 ? parts[parts.length - 1] : "";
+}
+
+export const Route = createFileRoute("/auth")({
+  ssr: false,
+  // Old links /auth?mode=signup keep working: they land on the clean /signup address.
+  beforeLoad: ({ search }) => {
+    if (search.mode === "signup") throw redirect({ to: "/signup" });
+  },
+  validateSearch: (search: Record<string, unknown>): { mode?: "signup" | "reset" | "forgot"; recovery?: string } => ({
+    mode:
+      search.mode === "signup" || search.mode === "reset" || search.mode === "forgot"
+        ? search.mode
+        : undefined,
+    recovery: typeof search.recovery === "string" ? search.recovery : undefined,
+  }),
+  head: () => ({
+    meta: [
+      { title: "Sign in — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Sign in to your ANEXOMAIL workspace, or create the account that owns your domain.",
+      },
+      { property: "og:title", content: "Sign in — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content: "Sign in to the ANEXOMAIL workspace on your own domain.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "robots", content: "noindex" },
+    ],
+  }),
+  component: () => <AuthPage />,
+});
+
+type Mode = "login" | "signup" | "link" | "forgot" | "reset" | "recovery";
+
+// LOCKED: social sign-in (Google / Apple / GitHub) ANEXOMAIL par nahi hai.
+// User khud account banata hai (email + password) → Supabase → dashboard.
+
+type LoginResult =
+  | ({ token: string; mfa_required?: false } & Session)
+  | { mfa_required: true; challenge_id: string };
+
+/**
+ * `founderLogin` = /founderlogin (founder host only): EXACTLY this same sign-in page, founder-only. After sign-in the founder lands on the
+ * Command Center (/f/); a non-founder account is refused. On awam hosts the route does not exist (redirects home). Rule 68.
+ */
+export function AuthPage({ founderLogin = false, startMode }: { founderLogin?: boolean; startMode?: "signup" }) {
+  const navigate = useNavigate();
+  const { acceptSession, status: authStatus } = useAuth();
+  const search = useSearch({ strict: false }) as { mode?: "signup" | "reset" | "forgot"; recovery?: string };
+  /** Login form se aaya = finish() ka apna redirect chalega; aur logged-in banda /auth khole to seedha /app. */
+  const loginStarted = useRef(false);
+
+  // Founder host (founderworkspace.*): awam-only extras (signup link, Save password, Forgot password) hidden — FX-25/26. Login design unchanged.
+  const [founderHost, setFounderHost] = useState(false);
+  useEffect(() => {
+    const fh = isFounderHost();
+    setFounderHost(fh);
+    if (founderLogin && !fh) void navigate({ to: "/", replace: true }); // awam host: /founderlogin exists nahi
+    if (!founderLogin && fh && window.location.hostname.toLowerCase() === "founderworkspace.anexomail.com") window.location.replace("/founderlogin" + window.location.search); // founder host: sign-in default = /founderlogin
+  }, [founderLogin]);
+  const [mode, setMode] = useState<Mode>(() => {
+    if (startMode === "signup" || search.mode === "signup") return "signup";
+    if (search.mode === "reset" || search.mode === "forgot") return search.mode;
+    return "login";
+  });
+  // Clean addresses (founder 2 Nov): creating an account lives at /signup, signing in at /auth. The address follows the mode, without a reload.
+  useEffect(() => {
+    if (founderLogin || typeof window === "undefined") return;
+    const here = window.location.pathname;
+    if (mode === "signup" && here === "/auth") window.history.replaceState(window.history.state, "", "/signup");
+    else if (mode === "login" && here === "/signup") window.history.replaceState(window.history.state, "", "/auth");
+  }, [mode, founderLogin]);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [name, setName] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [workRole, setWorkRole] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
+  const [recoveryKind, setRecoveryKind] = useState("gmail");
+  const [recoveryEmail, setRecoveryEmail] = useState("");
+  const [code, setCode] = useState("");
+  const [challengeId, setChallengeId] = useState<string | null>(null);
+  const [linkSent, setLinkSent] = useState(false);
+  /** Sign-up created but waiting for a human review (E70). Neutral wording: never says why. */
+  const [pendingReview, setPendingReview] = useState(false);
+  /** Passkey enrolment gate — signup ke baad lazmi step. */
+  const [enrol, setEnrol] = useState(false);
+  const [enrolBlocked, setEnrolBlocked] = useState<string | null>(null);
+  /** G35: pehle passkey ke saath bane 10 recovery codes — user save kar le tab aage */
+  const [enrolCodes, setEnrolCodes] = useState<string[] | null>(null);
+  const [recoveryCode, setRecoveryCode] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  /** Sign-up refused because this identity was blocked earlier — offer a human review. */
+  const [identityBlocked, setIdentityBlocked] = useState(false);
+
+  const [showSplash, setShowSplash] = useState(false);
+  /** Credentials sent, answer not back yet: the loading screen is already up (no dead click). */
+  const [signingIn, setSigningIn] = useState(false);
+  const [redirectTo, setRedirectTo] = useState<string | null>(null);
+  // Personal packages are retired (founder 2 Nov 2026): every new account is a Business-ladder workspace, so there is no kind to choose.
+  const [contact, setContact] = useState<Contact>({ country_iso2: "", national: "" });
+  const handleAvail = useHandleAvailability(email, mode === "signup");
+  const [moreDetails, setMoreDetails] = useState(false);
+  const [savePassword, setSavePassword] = useState(true);
+  const lastNameTouched = useRef(false);
+  const fromSignup = useRef(false);
+  const { t } = useLocale();
+
+  useEffect(() => {
+    setSavePassword(readSavePasswordPref());
+  }, []);
+
+  // Pehle se logged-in banda /auth par aaye (back button, purana tab) to login form nahi — seedha workspace.
+  useEffect(() => {
+    if (authStatus === "signed-in" && !loginStarted.current && !showSplash && mode === "login") {
+      if (founderLogin) window.location.assign("/");
+      else void navigate({ to: "/app", replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authStatus]);
+
+  const finish = async (token: string, authenticated?: Session) => {
+    loginStarted.current = true;
+    setShowSplash(true); // loading screen immediately; the destination is decided below while it shows
+    try {
+      window.sessionStorage.setItem("anexo.login.at", String(Date.now()));
+    } catch {
+      /* private window: bas retry-guard nahi */
+    }
+    sessionToken.set(token);
+    await flushContact(); // country + mobile typed at sign-up (no-op when nothing is waiting)
+    const session = authenticated ?? (await api<Session>("/api/auth/session"));
+    if (founderLogin && !session.user.is_founder) {
+      // /founderlogin sirf founder ke liye: awam account ka session foran saaf.
+      sessionToken.clear();
+      setShowSplash(false);
+      loginStarted.current = false;
+      setError("This sign-in is for the founder account only.");
+      return;
+    }
+    acceptSession(session);
+    if (founderLogin) {
+      setRedirectTo("/");
+      return;
+    }
+    window.sessionStorage.removeItem("anexo.pending.checkout");
+    // Polar checkout founder ke polar-rust-payment PM2 :3400 par hai — yahan
+    // login polar.sh pe nahi bhejte. Awam ANEXOMAIL pages pe rehta hai.
+    // FOUNDER PROTOCOL: founder ko awam ka claim/onboarding kabhi nahi — seedha /app.
+    const stored =
+      typeof window !== "undefined" ? window.sessionStorage.getItem(KIND_KEY) : null;
+    const kind =
+      session.user.account_kind ||
+      (stored === "personal" || stored === "business" ? stored : null);
+    const createdNow = fromSignup.current;
+    fromSignup.current = false;
+    let target = "/onboarding";
+    // An invitation link was opened before signing in (team invite): go back to it first — joining an
+    // organisation needs no plan, no claim and no workspace of your own.
+    let invited = false;
+    try {
+      invited = Boolean(window.sessionStorage.getItem("anexo.pending.invite"));
+    } catch {
+      /* private window: the link in the e-mail still works */
+    }
+    if (session.user.is_founder) target = "/app";
+    else if (invited) target = "/join";
+    else if (createdNow) target = "/plans";
+    else if (!session.user.anexomail_address) target = "/claim";
+    else if (kind === "personal") {
+      try {
+        await rpcOrRest("workspace.personal", { path: "/api/workspace/personal", method: "POST", body: {} }, {});
+      } catch {
+        /* session still opens; onboarding can retry */
+      }
+      window.sessionStorage.removeItem(KIND_KEY);
+      target = "/app";
+    } else if (session.user.onboarded) target = "/app";
+    setRedirectTo(target);
+  };
+
+  const fail = (e: unknown) => {
+    // Founder host guard (F1a-2): a founder account is recognised by the server on any awam host and sent to the founder portal (founder 1 Nov 05:53: "mujhe auto pehchan le"). No password or token is passed in the URL.
+    if (e instanceof ApiError && e.code === "founder_portal_only") {
+      window.location.assign("https://founderworkspace.anexomail.com/founderlogin");
+      return;
+    }
+    const raw =
+      e instanceof ApiError
+        ? e.message
+        : e instanceof Error
+          ? e.message
+          : "";
+    const message =
+      e instanceof ApiError && raw === "password_mismatch"
+          ? "Passwords do not match."
+          : /invalid login|invalid_credentials/i.test(raw)
+            ? "That email and password did not match. Use your @anexomail.com address."
+            : raw || "Something went wrong.";
+    setIdentityBlocked(e instanceof ApiError && e.code === "identity_blocked");
+    setSigningIn(false);
+    if (!redirectTo) setShowSplash(false);
+    setError(message);
+  };
+
+  const submit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setError(null);
+    setIdentityBlocked(false);
+    const mailbox = anexomailAddress(email);
+    if (mode === "login" && !challengeId) setSigningIn(true);
+    setBusy(true);
+    try {
+      if (challengeId) {
+        const res = await api<{ token: string }>("/api/auth/mfa/verify", {
+          method: "POST",
+          body: JSON.stringify({ challenge_id: challengeId, code }),
+          auth: false,
+        });
+        if (savePassword) storeBrowserPassword(mailbox || email, password);
+        await finish(res.token);
+        return;
+      }
+
+      if (!mailbox && mode !== "reset") {
+        setError("Enter your name only — @anexomail.com is already set.");
+        return;
+      }
+
+      if (mode === "recovery") {
+        const res = await recoveryCodeLogin(mailbox, recoveryCode);
+        notify.done(
+          "Signed in with a recovery code",
+          `${res.codes_left ?? 0} codes left. Add a new passkey now — your old devices may be lost.`,
+        );
+        await finish(res.token, res.needs_session ? undefined : (res as unknown as Session));
+        return;
+      }
+
+      if (mode === "link") {
+        await api("/api/auth/magic-link", {
+          method: "POST",
+          body: JSON.stringify({
+            email: mailbox,
+            redirect_to: `${window.location.origin}/auth/callback`,
+          }),
+          auth: false,
+        });
+        setLinkSent(true);
+        notify.done("Link sent", `Check ${mailbox} to finish signing in.`);
+        return;
+      }
+
+      if (mode === "forgot") {
+        const res = await api<{ ok: boolean; sent_to?: string }>("/api/auth/forgot-password", {
+          method: "POST",
+          body: JSON.stringify({ email: mailbox }),
+          auth: false,
+        });
+        setLinkSent(true);
+        notify.done(
+          "Reset link sent",
+          res.sent_to === "recovery"
+            ? "If this account has a recovery inbox, the link went there — not only to ANEXOMAIL."
+            : `Check ${mailbox} to choose a new password.`,
+        );
+        return;
+      }
+
+      if (mode === "reset") {
+        if (password !== passwordConfirm) throw new Error("password_mismatch");
+        const accessToken = new URLSearchParams(window.location.hash.replace(/^#/, "")).get(
+          "access_token",
+        );
+        await api("/api/auth/reset-password", {
+          method: "POST",
+          body: JSON.stringify({
+            access_token: accessToken,
+            recovery: search.recovery,
+            password,
+          }),
+          auth: false,
+        });
+        notify.done("Password updated", "You can now sign in with your new password.");
+        setPassword("");
+        setPasswordConfirm("");
+        setMode("login");
+        return;
+      }
+
+      if (mode === "signup") {
+        if (password !== passwordConfirm) throw new Error("password_mismatch");
+        if (!contact.country_iso2) throw new Error("Choose your country.");
+        if (handleAvail.state === "taken") throw new Error("That ANEXOMAIL name is already taken. Pick one of the available names.");
+        if (handleAvail.state === "blocked") throw new Error("ANEXOMAIL is not available in your country.");
+        if (contact.national.trim() && !contactToE164(contact, navigator.language.slice(0, 2))) throw new Error("Check your mobile number.");
+        const kind = "business";
+        const res = await api<{
+          token?: string;
+          confirmation_required?: boolean;
+          pending_approval?: boolean;
+          family?: boolean;
+          needs_passkey?: boolean;
+        }>("/api/auth/signup", {
+          method: "POST",
+          body: JSON.stringify({
+            email: mailbox,
+            password,
+            legal_name: name,
+            display_name: displayName.trim() || lastNameFromLegal(name) || name.trim(),
+            work_role: workRole || null,
+            avatar_url: avatarUrl || null,
+            preferences: {
+              locale: navigator.language,
+              workspace_kind: kind,
+            },
+            recovery_kind: recoveryKind,
+            recovery_email: recoveryEmail,
+            signals: collectDeviceSignals(),
+            device_proof: await deviceKeyProof(mailbox),
+            fingerprint: await collectFingerprint(),
+          }),
+          auth: false,
+        });
+        stashContact({ country_iso2: contact.country_iso2, e164: contactToE164(contact, navigator.language.slice(0, 2)) });
+        if (res.pending_approval) {
+          setSigningIn(false);
+          setPendingReview(true);
+          return;
+        }
+        if (res.confirmation_required || !res.token) {
+          setLinkSent(true);
+          notify.done("Confirm your email", `We sent a confirmation link to ${mailbox}.`);
+          return;
+        }
+        sessionToken.set(res.token);
+        fromSignup.current = true;
+        if (res.family || !res.needs_passkey) {
+          await finish(res.token);
+          return;
+        }
+        setEnrol(true);
+        return;
+      }
+
+      const res = await api<LoginResult>("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email: mailbox, password }),
+        auth: false,
+      });
+      if ("mfa_required" in res && res.mfa_required) {
+        setSigningIn(false);
+        setChallengeId(res.challenge_id);
+        return;
+      }
+      if (savePassword) storeBrowserPassword(mailbox, password);
+      await finish(res.token, res);
+    } catch (e) {
+      fail(e);
+    } finally {
+      if (!loginStarted.current) setSigningIn(false);
+      setBusy(false);
+    }
+  };
+
+  // Passkey autofill (conditional UI): on the sign-in form the browser lists the saved passkeys under the email box; choosing one signs in with no typing.
+  useEffect(() => {
+    if (mode !== "login" || founderLogin || founderHost || typeof window === "undefined") return;
+    if (!window.PublicKeyCredential || typeof PublicKeyCredential.isConditionalMediationAvailable !== "function") return;
+    const ctl = new AbortController();
+    let cancelled = false;
+    (async () => {
+      try {
+        if (!(await PublicKeyCredential.isConditionalMediationAvailable()) || cancelled) return;
+        const options = await passkeyLoginOptions("");
+        const credential = await navigator.credentials.get({
+          publicKey: PublicKeyCredential.parseRequestOptionsFromJSON(options.publicKey),
+          mediation: "conditional",
+          signal: ctl.signal,
+        });
+        if (!credential || cancelled) return;
+        loginStarted.current = true;
+        const res = await passkeyLoginVerify((credential as PublicKeyCredential).toJSON());
+        await finish(res.token);
+      } catch {
+        /* no passkey chosen, aborted, or not available: the normal form keeps working */
+      }
+    })();
+    return () => {
+      cancelled = true;
+      ctl.abort();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode, founderLogin, founderHost]);
+
+  const passkey = async () => {
+    setError(null);
+    if (!("credentials" in navigator) || !window.PublicKeyCredential) {
+      setError("This device doesn't support passkeys.");
+      return;
+    }
+    setBusy(true);
+    try {
+      // No username typed = the browser offers the passkeys it holds for this site (the server finds the account from the passkey).
+      const options = await passkeyLoginOptions(email.trim() ? anexomailAddress(email) : "");
+      const credential = await navigator.credentials.get({
+        publicKey: PublicKeyCredential.parseRequestOptionsFromJSON(options.publicKey),
+      });
+      if (!credential) throw new Error("cancelled");
+      const res = await passkeyLoginVerify((credential as PublicKeyCredential).toJSON());
+      await finish(res.token);
+    } catch (e) {
+      fail(e);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  /**
+   * Passkey enrolment (WebAuthn create) — signup ke foran baad, lazmi.
+   * Server abhi register endpoint na de to sach bolte hain, fake nahi karte.
+   */
+  const enrolPasskey = async () => {
+    setError(null);
+    setEnrolBlocked(null);
+    if (!("credentials" in navigator) || !window.PublicKeyCredential) {
+      setEnrolBlocked(
+        "This browser can't create a passkey. Open ANEXOMAIL in an up-to-date Chrome, Edge, Safari or Firefox — on a computer without Face ID or Windows Hello you can use your phone (QR code).",
+      );
+      return;
+    }
+    setBusy(true);
+    try {
+      const res = await createPasskey();
+      notify.done("Passkey saved", "You can now sign in without a password.");
+      if (res.recovery_codes) {
+        setEnrolCodes(res.recovery_codes);
+        return;
+      }
+      setEnrol(false);
+      const token = res.token ?? sessionToken.get();
+      if (!token) throw new Error("session_missing");
+      await finish(token);
+    } catch (e) {
+      if (e instanceof ApiError && e.isNotImplemented) {
+        setEnrolBlocked("We could not set up your passkey right now. Please try again in a moment.");
+      } else {
+        fail(e);
+      }
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const finishAfterCodes = async () => {
+    setEnrolCodes(null);
+    setEnrol(false);
+    const token = sessionToken.get();
+    if (!token) {
+      setError("Your session expired. Sign in again.");
+      return;
+    }
+    await finish(token);
+  };
+
+  // /founderlogin sirf founder host par: pehle host tay hone tak (ya awam host par) kuch render nahi.
+  if (founderLogin && !founderHost) return null;
+
+  // ── Passkey enrolment screen (post-signup) — centred, no split ──
+  if (enrol) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-background px-4 py-16">
+        <div className="ax-in w-full max-w-[27rem] rounded-2xl border border-border bg-card p-ax-5 text-center shadow-2xl">
+          <BrandMark />
+          {enrolCodes ? (
+            <div className="mt-ax-4">
+              <RecoveryCodesPanel codes={enrolCodes} onDone={() => void finishAfterCodes()} />
+            </div>
+          ) : (
+            <>
+              <ShieldCheck className="mx-auto mt-ax-4 size-6 text-cyan-accent" aria-hidden="true" />
+              <h1 className="ax-heading mt-ax-3 text-foreground">Add your passkey</h1>
+              <p className="ax-caption mt-2">
+                A passkey is required, together with your password. Use Face ID, Touch ID, fingerprint or Windows Hello on
+                this device — or choose your phone and scan the QR code the browser shows.
+              </p>
+              {enrolBlocked && (
+                <p role="alert" className="ax-caption mt-ax-3 text-destructive">
+                  {enrolBlocked}
+                </p>
+              )}
+              {error && (
+                <p role="alert" className="ax-caption mt-ax-3 text-destructive">
+                  {error}
+                </p>
+              )}
+              <Button className="ax-press mt-ax-4 w-full" onClick={enrolPasskey} disabled={busy}>
+                {busy && <BrandSpinner className="size-4" />}
+                <KeyRound className="size-4" />
+                Create my passkey
+              </Button>
+              <p className="ax-caption mt-ax-3">
+                Two days of real, limited workspace access start the moment your passkey is saved.
+              </p>
+            </>
+          )}
+        </div>
+      </main>
+    );
+  }
+
+  // ── Main auth surface — cinematic split layout ──
+  return (
+    <>
+      <main className="flex min-h-screen overflow-hidden bg-background">
+        {/* LEFT — Cinematic panel (desktop only) */}
+        <AuthCinema className="hidden lg:flex" />
+
+        {/* RIGHT — Form panel */}
+        <div className="flex flex-1 items-center justify-center px-6 py-12 lg:px-14">
+          <div className={cn("ax-in w-full", "max-w-[28rem]")}>
+
+            <div className="mb-6 lg:hidden">
+              <Link to="/" className="ax-focus rounded-md">
+                <BrandMark />
+              </Link>
+            </div>
+
+            {founderLogin && mode === "login" && (
+              <div className="mb-ax-4 text-center">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Founder protocol</p>
+                <h1 className="mt-1 text-3xl font-semibold tracking-tight text-foreground">Welcome, Founder</h1>
+              </div>
+            )}
+
+            {/* Card */}
+            <div className="rounded-2xl border border-border bg-card p-ax-5 shadow-2xl">
+              {(
+                <>
+              {/* Animated header — smooth morph on mode switch */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={challengeId ? "mfa-header" : mode + "-header"}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                >
+                  {challengeId ? (
+                    <Header
+                      title="Two-step verification"
+                      sub="Enter the 6-digit code from your authenticator app."
+                    />
+                  ) : mode === "signup" ? (
+                    <Header
+                      title="Create your account"
+                      sub="Your workspace — then choose your plan."
+                    />
+                  ) : mode === "recovery" ? (
+                    <Header title="Use a recovery code" sub="Lost your phone and your passkeys? Enter one of the 10 codes you saved. Each works once." />
+                  ) : mode === "link" ? (
+                    <Header title="Email me a link" sub="No password. The link signs you straight in." />
+                  ) : mode === "forgot" ? (
+                    <Header
+                      title="Reset your password"
+                      sub="If you saved a recovery inbox, the link goes there — Gmail, iCloud or whatever you chose."
+                    />
+                  ) : mode === "reset" ? (
+                    <Header title="Choose a new password" sub="Use 6 to 15 characters." />
+                  ) : (
+                    <Header title="Sign in" sub="Your mail, people, calendar and work — one surface." />
+                  )}
+                </motion.div>
+              </AnimatePresence>
+
+              {pendingReview ? (
+                <div className="mt-ax-4 rounded-xl border border-border bg-secondary/50 p-ax-4 text-center" role="status">
+                  <Mail className="mx-auto size-5 text-cyan-accent" />
+                  <p className="ax-label mt-ax-2 text-foreground">Your account is waiting for a quick review</p>
+                  <p className="ax-caption mt-1">
+                    We check some new accounts by hand. You can sign in as soon as it is approved — there is nothing else you need to do.
+                  </p>
+                  <Button
+                    variant="ghost"
+                    className="mt-ax-3"
+                    onClick={() => {
+                      setPendingReview(false);
+                      setMode("login");
+                    }}
+                  >
+                    Back to sign in
+                  </Button>
+                </div>
+              ) : linkSent ? (
+                <div className="mt-ax-4 rounded-xl border border-border bg-secondary/50 p-ax-4 text-center">
+                  <Mail className="mx-auto size-5 text-cyan-accent" />
+                  <p className="ax-label mt-ax-2 text-foreground">
+                    Link sent to {anexomailAddress(email) || email}
+                  </p>
+                  <p className="ax-caption mt-1">It expires in 15 minutes and works once.</p>
+                  <Button
+                    variant="ghost"
+                    className="mt-ax-3"
+                    onClick={() => {
+                      setLinkSent(false);
+                      setMode("login");
+                    }}
+                  >
+                    Use a password instead
+                  </Button>
+                </div>
+              ) : (
+                <AnimatePresence mode="wait">
+                  <motion.form
+                    key={challengeId ? "mfa" : mode}
+                    initial={{ opacity: 0, x: 12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -12 }}
+                    transition={{ duration: 0.22, ease: "easeOut" }}
+                    onSubmit={submit}
+                    name={mode === "login" ? "login" : undefined}
+                    method="post"
+                    autoComplete={mode === "login" && !savePassword ? "off" : "on"}
+                    className="mt-ax-4 space-y-ax-3"
+                  >
+                    {challengeId ? (
+                      <Field
+                        id="code"
+                        label="Authentication code"
+                        value={code}
+                        onChange={setCode}
+                        inputMode="numeric"
+                        autoComplete="one-time-code"
+                        placeholder="123456"
+                      />
+                    ) : (
+                      <>
+                        {mode === "signup" && (
+                          <>
+                            <Field
+                              id="signup-legal-name"
+                              label="Full legal name"
+                              value={name}
+                              onChange={(v) => {
+                                setName(v);
+                                if (!lastNameTouched.current) setDisplayName(lastNameFromLegal(v));
+                              }}
+                              autoComplete="off"
+                              placeholder="Your full name"
+                            />
+                            <Field
+                              id="signup-last-name"
+                              label="Last name"
+                              value={displayName}
+                              onChange={(v) => {
+                                lastNameTouched.current = true;
+                                setDisplayName(v);
+                              }}
+                              autoComplete="off"
+                            />
+                            <button
+                              type="button"
+                              className="ax-caption font-semibold text-cyan-accent"
+                              onClick={() => setMoreDetails((v) => !v)}
+                            >
+                              {moreDetails ? "Hide extra details" : "Add work role and photo (optional)"}
+                            </button>
+                            {moreDetails ? (
+                              <>
+                            <Field
+                              id="work-role"
+                              label="Work role"
+                              value={workRole}
+                              onChange={setWorkRole}
+                              placeholder="Founder, designer, operations…"
+                              required={false}
+                            />
+                            <Field
+                              id="avatar-url"
+                              label="Profile photo URL (optional)"
+                              type="url"
+                              value={avatarUrl}
+                              onChange={setAvatarUrl}
+                              placeholder="https://…"
+                              required={false}
+                            />
+                              </>
+                            ) : null}
+                          </>
+                        )}
+                        {mode !== "reset" && (
+                          <AnexoMailField
+                            id="email"
+                            label="Email"
+                            value={email}
+                            onChange={setEmail}
+                            autoComplete={mode === "login" ? "username webauthn" : "email"}
+                          />
+                        )}
+                        {mode === "signup" && (
+                          <>
+                            <AvailabilityHint a={handleAvail} onPick={setEmail} />
+                            <ContactFields value={contact} onChange={setContact} locale={navigator.language.slice(0, 2)} />
+                          </>
+                        )}
+                        {mode === "recovery" && (
+                          <Field
+                            id="recovery-code"
+                            label="Recovery code"
+                            value={recoveryCode}
+                            onChange={setRecoveryCode}
+                            autoComplete="off"
+                            placeholder="XXXX-XXXX-XXXX"
+                          />
+                        )}
+                        {mode !== "link" && mode !== "forgot" && mode !== "recovery" && (
+                          <>
+                            <PasswordField
+                              id="password"
+                              name="password"
+                              label="Password"
+                              value={password}
+                              onChange={setPassword}
+                              autoComplete={
+                                mode === "login"
+                                  ? savePassword
+                                    ? "current-password"
+                                    : "off"
+                                  : "new-password"
+                              }
+                              placeholder={mode === "signup" || mode === "reset" ? "6–15 characters" : undefined}
+                              enforceLength={mode === "signup" || mode === "reset"}
+                            />
+                            {mode === "login" && !founderHost && (
+                              <label
+                                htmlFor="save-password"
+                                className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-border bg-secondary/40 px-3 py-2.5"
+                              >
+                                <Checkbox
+                                  id="save-password"
+                                  checked={savePassword}
+                                  onCheckedChange={(v) => {
+                                    const on = v === true;
+                                    setSavePassword(on);
+                                    writeSavePasswordPref(on);
+                                  }}
+                                />
+                                <span className="text-[13px] font-semibold text-foreground">
+                                  {t("Save password")}
+                                </span>
+                              </label>
+                            )}
+                            {/* Password strength bar — signup only */}
+                            {mode === "signup" && <PasswordStrength password={password} />}
+                          </>
+                        )}
+                        {(mode === "signup" || mode === "reset") && (
+                          <PasswordField
+                            id="password-confirm"
+                            label="Confirm password"
+                            value={passwordConfirm}
+                            onChange={setPasswordConfirm}
+                            autoComplete="new-password"
+                            enforceLength
+                          />
+                        )}
+                        {mode === "signup" && (
+                          <>
+                            <div className="space-y-1.5">
+                              <Label htmlFor="recovery-kind" className="ax-caption text-foreground">
+                                Recovery account
+                              </Label>
+                              <select
+                                id="recovery-kind"
+                                className="flex h-10 w-full rounded-md border border-border bg-background px-3 text-sm"
+                                value={recoveryKind}
+                                onChange={(event) => setRecoveryKind(event.target.value)}
+                              >
+                                <option value="gmail">Gmail</option>
+                                <option value="apple">Apple / iCloud email</option>
+                                <option value="outlook">Outlook</option>
+                                <option value="other_email">Other email I can open</option>
+                              </select>
+                              <p className="ax-caption">
+                                We send password reset links to this email.
+                              </p>
+                            </div>
+                            <Field
+                              id="recovery-email"
+                              label="Recovery email"
+                              type="email"
+                              value={recoveryEmail}
+                              onChange={setRecoveryEmail}
+                              autoComplete="off"
+                              placeholder="you@gmail.com"
+                            />
+                          </>
+                        )}
+                      </>
+                    )}
+
+                    {error && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        role="alert"
+                        className="ax-caption text-destructive"
+                      >
+                        {error}
+                      </motion.p>
+                    )}
+                    {identityBlocked && mode === "signup" && (
+                      <SignupReview mailbox={anexomailAddress(email)} recoveryEmail={recoveryEmail} />
+                    )}
+
+                    <Button type="submit" className="ax-press ax-a-hover w-full" disabled={busy}>
+                      <HoverA busy={busy} />
+                      {challengeId
+                        ? "Verify and continue"
+                        : mode === "signup"
+                          ? "Create account"
+                          : mode === "forgot"
+                            ? "Send reset link"
+                            : mode === "reset"
+                              ? "Save new password"
+                              : mode === "link"
+                                ? "Send me the link"
+                                : mode === "recovery"
+                                  ? "Sign in with code"
+                                  : "Sign in"}
+                    </Button>
+                  </motion.form>
+                </AnimatePresence>
+              )}
+
+              {!challengeId && !linkSent && !pendingReview && (
+                <>
+                  {mode === "login" && !founderHost && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="mt-ax-2 w-full"
+                      onClick={() => {
+                        setError(null);
+                        setMode("forgot");
+                      }}
+                    >
+                      Forgot your password?
+                    </Button>
+                  )}
+                  {mode === "login" ? (
+                    <>
+                  <div className="my-ax-4 flex items-center gap-3">
+                    <div aria-hidden className="ax-hairline h-px flex-1" />
+                    <span className="ax-caption">or</span>
+                    <div aria-hidden className="ax-hairline h-px flex-1" />
+                  </div>
+
+                  <div className="space-y-ax-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="ax-press w-full"
+                      onClick={passkey}
+                      disabled={busy}
+                    >
+                      <KeyRound className="size-4" />
+                      Continue with a passkey
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="w-full"
+                      onClick={() => {
+                        setError(null);
+                        setMode("link");
+                      }}
+                    >
+                      <Mail className="size-4" />
+                      Email me a sign-in link
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="w-full"
+                      onClick={() => {
+                        setError(null);
+                        setMode("recovery");
+                      }}
+                    >
+                      <ShieldCheck className="size-4" />
+                      Lost your passkey? Use a recovery code
+                    </Button>
+                  </div>
+                    </>
+                  ) : null}
+
+                  {mode === "signup" ? (
+                    <p className="ax-caption mt-ax-3 text-center">
+                      Next you choose a plan on{" "}
+                      <span className="font-semibold text-foreground">anexomail.com/plans</span>.
+                    </p>
+                  ) : null}
+
+                  {!(founderHost && mode === "login") && (
+                  <p className="ax-caption mt-ax-4 text-center">
+                    {mode === "signup"
+                      ? "Already have a workspace?"
+                      : mode === "forgot" || mode === "reset" || mode === "recovery"
+                        ? "Remembered it?"
+                        : "New here?"}{" "}
+                    {mode === "login" ? (
+                      <button
+                        type="button"
+                        className="ax-focus rounded font-semibold text-cyan-accent"
+                        onClick={() => {
+                          setError(null);
+                          setMode("signup");
+                        }}
+                      >
+                        Create your account for workspace
+                      </button>
+                    ) : mode === "signup" ? (
+                      <>
+                        <button
+                          type="button"
+                          className="ax-focus rounded font-semibold text-cyan-accent"
+                          onClick={() => {
+                            setError(null);
+                            setMode("login");
+                          }}
+                        >
+                          Sign in
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        type="button"
+                        className="ax-focus rounded font-semibold text-cyan-accent"
+                        onClick={() => {
+                          setError(null);
+                          setMode("login");
+                        }}
+                      >
+                        Sign in
+                      </button>
+                    )}
+                  </p>
+                  )}
+                </>
+              )}
+                </>
+              )}
+            </div>
+
+            {/* Shield footer */}
+            <p className="ax-caption mt-ax-4 flex items-center justify-center gap-1.5">
+              <ShieldCheck className="size-3.5 text-cyan-accent" />
+              Sessions are device-bound and revocable from your account at any time.
+            </p>
+          </div>
+        </div>
+      </main>
+
+      {founderLogin ? (
+        <FounderProtocolSplash
+          open={showSplash || signingIn}
+          ready={Boolean(redirectTo)}
+          onDone={() => window.location.assign("/")}
+        />
+      ) : (
+      <CinematicSplash
+        open={showSplash || signingIn}
+        ready={Boolean(redirectTo)}
+        onDone={() => {
+          if (!redirectTo) return;
+          // In-app navigate — session memory (acceptSession) rehti hai.
+          // window.location.replace reload karta tha → gate dobara /auth bounce.
+          // replace: /auth history mein na rahe — warna Back dabate hi /auth -> turant /app (bounce).
+          if (founderLogin) {
+            window.location.assign("/"); // /f/ alag static Command Center (Caddy -> Rust), router route nahi
+            return;
+          }
+          void navigate({ to: redirectTo, replace: true });
+        }}
+      />
+      )}
+    </>
+  );
+}
+
+// ── Sub-components ────────────────────────────────────────────────────────────
+
+/**
+ * Founder login only (/founderlogin): after sign-in, "Founder protocol activating..." while the session is verified,
+ * then "activated", then the Command Center. No fake checks: "activated" shows only after the founder session is accepted.
+ */
+function FounderProtocolSplash({ open, ready, onDone }: { open: boolean; ready: boolean; onDone: () => void }) {
+  const [minDone, setMinDone] = useState(false);
+  const done = useRef(onDone);
+  done.current = onDone;
+  useEffect(() => {
+    if (!open) {
+      setMinDone(false);
+      return;
+    }
+    const t = window.setTimeout(() => setMinDone(true), 1400);
+    return () => window.clearTimeout(t);
+  }, [open]);
+  const activated = ready && minDone;
+  useEffect(() => {
+    if (!activated) return;
+    const t = window.setTimeout(() => done.current(), 1100);
+    return () => window.clearTimeout(t);
+  }, [activated]);
+  if (!open) return null;
+  return (
+    <div role="status" aria-live="polite" className="fixed inset-0 z-[200] flex flex-col items-center justify-center gap-ax-4 bg-background">
+      <BrandMark />
+      <p className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">Founder protocol</p>
+      <p className="text-2xl font-semibold tracking-tight text-foreground">
+        {activated ? "Activated" : "Activating\u2026"}
+      </p>
+      <div className="h-1 w-48 overflow-hidden rounded-full bg-border">
+        <div
+          className="h-full rounded-full bg-cyan-accent transition-all duration-[1400ms] ease-out"
+          style={{ width: activated ? "100%" : minDone ? "90%" : "70%" }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function Header({ title, sub }: { title: string; sub: string }) {
+  return (
+    <div className="text-center">
+      <h1 className="ax-heading text-foreground">{title}</h1>
+      <p className="ax-caption mt-1">{sub}</p>
+    </div>
+  );
+}
+
+function Field({
+  id,
+  label,
+  value,
+  onChange,
+  ...rest
+}: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+} & Omit<React.ComponentProps<typeof Input>, "onChange" | "value" | "id">) {
+  return (
+    <div className="space-y-1.5">
+      <Label htmlFor={id} className="ax-caption text-foreground">
+        {label}
+      </Label>
+      <Input
+        id={id}
+        value={value}
+        required
+        onChange={(e) => onChange(e.target.value)}
+        {...rest}
+        className={cn(
+          "bg-[#F9FAFB] text-[15px] font-semibold text-[#0B1220] placeholder:font-normal placeholder:text-[#6B7280]",
+          rest.className,
+        )}
+      />
+    </div>
+  );
+}
+
+function PasswordField({
+  id,
+  name,
+  label,
+  value,
+  onChange,
+  autoComplete,
+  placeholder,
+  enforceLength,
+}: {
+  id: string;
+  name?: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  autoComplete: string;
+  placeholder?: string;
+  /** true only for new-password fields (signup / reset). Login must never cap. */
+  enforceLength?: boolean;
+}) {
+  const [visible, setVisible] = useState(false);
+  return (
+    <div className="space-y-1.5">
+      <Label htmlFor={id} className="ax-caption text-foreground">
+        {label}
+      </Label>
+      <div className="relative">
+        <Input
+          id={id}
+          name={name}
+          type={visible ? "text" : "password"}
+          value={value}
+          required
+          {...(enforceLength ? { minLength: 6, maxLength: 15 } : {})}
+          autoComplete={autoComplete}
+          className="pr-10 bg-[#F9FAFB] text-[15px] font-semibold text-[#0B1220] placeholder:font-normal placeholder:text-[#6B7280]"
+          placeholder={placeholder}
+          onChange={(event) => onChange(event.target.value)}
+        />
+        <button
+          type="button"
+          className="absolute inset-y-0 right-0 flex w-10 items-center justify-center text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none"
+          aria-label={visible ? "Hide password" : "Show password"}
+          title={visible ? "Hide password" : "Show password"}
+          onClick={() => setVisible((current) => !current)}
+        >
+          {visible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/** Password strength bar — signup mode only. 4-bar visual indicator. */
+function PasswordStrength({ password }: { password: string }) {
+  if (!password) return null;
+  const score = getPasswordScore(password);
+  const labels = ["", "Weak", "Fair", "Good", "Strong"];
+  const colours = [
+    "",
+    "bg-destructive",
+    "bg-orange-400",
+    "bg-yellow-400",
+    "bg-green-500",
+  ];
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -4 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="space-y-1.5"
+    >
+      <div className="flex gap-1" aria-hidden>
+        {[1, 2, 3, 4].map((i) => (
+          <div
+            key={i}
+            className={`h-1 flex-1 rounded-full transition-all duration-300 ${i <= score ? colours[score] : "bg-border"}`}
+          />
+        ))}
+      </div>
+      <p className="ax-caption text-right">
+        {labels[score]}{" "}
+        {score < 3 && <span className="text-muted-foreground">— add numbers or symbols</span>}
+      </p>
+    </motion.div>
+  );
+}
+
+function getPasswordScore(pw: string): 1 | 2 | 3 | 4 {
+  let s = 0;
+  if (pw.length >= 8) s++;
+  if (/[A-Z]/.test(pw)) s++;
+  if (/[0-9]/.test(pw)) s++;
+  if (/[^A-Za-z0-9]/.test(pw)) s++;
+  return (Math.max(1, s) as 1 | 2 | 3 | 4);
+}

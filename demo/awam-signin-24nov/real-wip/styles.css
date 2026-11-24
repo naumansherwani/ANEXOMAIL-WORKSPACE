@@ -1131,10 +1131,9 @@ html[data-ax-motion="reduced"] .ax-loader-panel {
 
 /* Breathing gradient — Blue → Indigo → Deep navy loop, 12s, buttery smooth */
 .ax-auth-cinema-bg {
-  background: linear-gradient(135deg, #0b1220 0%, #1E3557 38%, #2C4C79 62%, #0b1220 100%);
+  background: linear-gradient(135deg, #0b1220 0%, #1e3a8a 35%, #312e81 65%, #0b1220 100%);
   background-size: 400% 400%;
-  /* his approved demo: the panel rests in the dark navy corner (the demo's !important shorthand froze the position at 0% 0%); no breathing */
-  background-position: 0% 0%;
+  animation: ax-cinema-breathe 12s ease infinite;
 }
 
 @keyframes ax-cinema-breathe {
@@ -1146,92 +1145,10 @@ html[data-ax-motion="reduced"] .ax-loader-panel {
 /* Radial mesh — soft light sources */
 .ax-auth-cinema-mesh {
   background-image:
-    radial-gradient(ellipse 60% 50% at 35% 30%, rgba(111, 166, 242, 0.2) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 60% at 70% 75%, rgba(195, 204, 216, 0.1) 0%, transparent 70%);
+    radial-gradient(ellipse 60% 50% at 30% 30%, rgba(37, 99, 235, 0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 75% 70%, rgba(79, 70, 229, 0.14) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 60% 20%, rgba(6, 182, 212, 0.08) 0%, transparent 60%);
 }
-
-/* his 24 Nov 2026 12:33: Global Grid sign-in. Left panel in the logo palette (navy / steel / silver); the right side is no longer plain black. */
-.ax-auth-grid {
-  pointer-events: none;
-  background-image: linear-gradient(rgba(195, 204, 216, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(195, 204, 216, 0.08) 1px, transparent 1px);
-  background-size: 44px 44px;
-  -webkit-mask-image: radial-gradient(ellipse 75% 60% at 50% 45%, #000 20%, transparent 75%);
-  mask-image: radial-gradient(ellipse 75% 60% at 50% 45%, #000 20%, transparent 75%);
-  animation: ax-auth-drift 18s linear infinite;
-}
-@keyframes ax-auth-drift { from { background-position: 0 0; } to { background-position: 44px 44px; } }
-.ax-auth-scan {
-  pointer-events: none;
-  height: 140px;
-  background: linear-gradient(180deg, transparent, rgba(195, 204, 216, 0.1), transparent);
-  animation: ax-auth-scan 7s ease-in-out infinite;
-}
-@keyframes ax-auth-scan { from { top: -140px; } to { top: 100%; } }
-.ax-auth-halo {
-  top: 5%;
-  height: 130px;
-  pointer-events: none;
-  background: linear-gradient(180deg, transparent, rgba(195, 204, 216, 0.1), transparent);
-}
-.ax-auth-tag {
-  background-image: linear-gradient(170deg, #F4F7FB 0%, #C3CCD8 55%, #8E9BB0 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.ax-auth-stage { background: #070d1a; }
-.ax-auth-right {
-  background:
-    radial-gradient(ellipse 70% 55% at 50% 42%, rgba(44, 76, 121, 0.38) 0%, rgba(30, 53, 87, 0.22) 40%, transparent 75%),
-    linear-gradient(180deg, #0a1324 0%, #070d1a 60%, #05080f 100%);
-}
-.ax-auth-beam {
-  left: 50%;
-  top: -10%;
-  width: 2px;
-  height: 120%;
-  pointer-events: none;
-  background: linear-gradient(180deg, transparent, rgba(111, 166, 242, 0.35), transparent);
-  transform: translateX(-50%);
-  filter: blur(1px);
-  opacity: 0.5;
-}
-.ax-auth-floor {
-  pointer-events: none;
-  left: 10%; right: 10%; height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(224, 170, 90, 0.55), transparent);
-  box-shadow: 0 0 40px 6px rgba(224, 170, 90, 0.18);
-}
-/* The sign-in card: glass with a blue edge glow (his approved picture 2 of 24 Nov 12:33) */
-.ax-auth-card {
-  position: relative;
-  background: linear-gradient(160deg, rgba(24, 40, 68, 0.72), rgba(10, 18, 34, 0.78));
-  border-color: rgba(160, 190, 235, 0.22);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 0 0 1px rgba(111, 166, 242, 0.06), 0 30px 80px rgba(0, 0, 0, 0.55), 0 0 90px rgba(44, 76, 121, 0.35);
-}
-/* While a sign-in or passkey touch is in progress the edge of the card glows blue (his approved demo, idea 3) */
-.ax-auth-card-touch {
-  border-color: rgba(111, 166, 242, 0.75);
-  box-shadow: 0 0 0 1px rgba(111, 166, 242, 0.45), 0 0 28px 4px rgba(111, 166, 242, 0.35), 0 30px 80px rgba(0, 0, 0, 0.55), 0 0 110px rgba(111, 166, 242, 0.28);
-  animation: ax-auth-pulse 1.6s ease-in-out infinite;
-}
-@keyframes ax-auth-pulse {
-  50% { box-shadow: 0 0 0 1px rgba(111, 166, 242, 0.65), 0 0 46px 8px rgba(111, 166, 242, 0.5), 0 30px 80px rgba(0, 0, 0, 0.55), 0 0 130px rgba(111, 166, 242, 0.4); }
-}
-.ax-auth-beam {
-  pointer-events: none;
-  left: 50%; top: -10%; width: 2px; height: 120%;
-  background: linear-gradient(180deg, transparent, rgba(111, 166, 242, 0.35), transparent);
-  transform: translateX(-50%); filter: blur(1px); opacity: 0.5;
-}
-.ax-auth-dust { pointer-events: none; }
-@keyframes ax-auth-in { from { opacity: 0; transform: translateX(-8px); } to { opacity: 0.9; transform: none; } }
-@media (prefers-reduced-motion: reduce) {
-  .ax-auth-grid, .ax-auth-scan, .ax-auth-card { animation: none; }
-}
-html[data-ax-fx="off"] .ax-auth-grid, html[data-ax-fx="off"] .ax-auth-scan, html[data-ax-fx="off"] .ax-auth-dust { display: none !important; }
 
 /* Grain texture overlay */
 .ax-auth-cinema-grain {
