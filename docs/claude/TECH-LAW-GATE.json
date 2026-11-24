@@ -983,6 +983,24 @@
    "deadline": "B13 T4h",
    "why": "his 04:48 order: the web research points of AD35 are told to the gate before the commit.",
    "fail_after": "2027-01-09"
+  },
+  {
+   "id": "INSTALL-LINE-FILE-SQL",
+   "file": "admin-desk/INSTALL-LINES-FINAL.txt",
+   "must": "desk-sql-install.sh) 2>&1 | tail -25",
+   "status": "ok",
+   "deadline": "forever",
+   "why": "his 25 Nov 04:53: the SQL install line is fixed, tail -25, no grep; Claude copies it from this file (install-line.sh sql).",
+   "fail_after": "2099-01-01"
+  },
+  {
+   "id": "INSTALL-LINE-FILE-WEB",
+   "file": "admin-desk/INSTALL-LINES-FINAL.txt",
+   "must": "desk-install.sh) 2>&1 | tail -45",
+   "status": "ok",
+   "deadline": "forever",
+   "why": "his 25 Nov 04:53: the WEB install line is fixed, tail -45; copy via install-line.sh web.",
+   "fail_after": "2099-01-01"
   }
  ]
 }

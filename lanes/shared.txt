@@ -60,6 +60,7 @@ admin-desk/FOUNDER-ESCALATION-INBOX-PLAN-23NOV.md
 admin-desk/FOUNDER-TO-DESK-AUDIT-22NOV.md
 admin-desk/FOUR-DAY-PLAN-22NOV.md
 admin-desk/GATE-FOREVER-LAW-23NOV.md
+admin-desk/INSTALL-LINES-FINAL.txt
 admin-desk/INSTALL-SPLIT-RULE-25NOV.md
 admin-desk/MAILBOX-ROLES-PLAN-22NOV.md
 admin-desk/MASTER-PLAN-22NOV.md
@@ -154,6 +155,7 @@ admin-desk/gates/00-FOUNDER-TECH-RULE.md
 admin-desk/gates/DESK-FEATURES.json
 admin-desk/gates/DESK-LOOKUP-CONTRACT.json
 admin-desk/gates/desk_tech_gate.py
+admin-desk/install-line.sh
 admin-desk/kernel/00-FOUNDER-TECH-RULE.md
 admin-desk/kernel/Cargo.lock
 admin-desk/kernel/Cargo.toml

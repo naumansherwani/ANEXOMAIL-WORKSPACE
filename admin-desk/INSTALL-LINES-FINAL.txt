@@ -1,0 +1,4 @@
+SQL (desk-sql-install.sh, only for a SQL phase, always first):
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:admin-desk/scripts/desk-sql-install.sh) 2>&1 | tail -25
+WEB (desk-install.sh, only for a web phase, always second, NEVER in the same reply as SQL):
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:admin-desk/scripts/desk-install.sh) 2>&1 | tail -45

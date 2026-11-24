@@ -112,3 +112,5 @@ Full rules: `AGENTS.md` (Rules 1–73) and `docs/claude/founder/CODES/00-README-
 > ## >>> 25 Nov 2026 04:5x PKT: AD35 (T4h checkpoints + T4i company identifiers + shape proof) WRITTEN + TESTED on scratch PG16 (CHECK 21 of 21), NOT INSTALLED; research told to the gate (D6-B13-AD35-RESEARCH-LIST-25NOV.md). Give him ONLY the SQL line (desk-sql-install.sh). No GREEN until his paste shows AD34 + AD35 "run and CHECK OK". <<<
 
 > ## >>> 25 Nov 2026 04:5x PKT (his 04:53): the install lines are FIXED, copy them letter for letter (SQL: desk-sql-install.sh with `| tail -25`, WEB: desk-install.sh with `| tail -45`); never add grep or change the tail. <<<
+
+> ## >>> 25 Nov 2026 04:5x PKT (his 04:53): INSTALL LINES = run `bash docs/claude/admin-desk/install-line.sh sql|web` and paste the output unchanged (file INSTALL-LINES-FINAL.txt, locked by gate). Never retype, never grep. <<<
