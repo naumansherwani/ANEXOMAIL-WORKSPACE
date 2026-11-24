@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 12:24 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 12:24 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: awam sign-in demo V2: logo palette + Rule 52 list (no code change)
@@ -21,42 +21,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 868c6876 24 Nov 12:24 awam sign-in demo V2
 - 56c3f3e3 24 Nov 12:22 ledger line cd29ece1
 - cd29ece1 24 Nov 12:22 awam sign-in demo (Global Grid)
 - b3163bf6 24 Nov 12:14 ledger line b3ea8c94
 - b3ea8c94 24 Nov 12:14 Desk login: THE GLOBAL GRID WORKPLACE
-- 0117af19 24 Nov 12:11 ledger line 73587c8a
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-A  admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-logo-a.png
-A  admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-logo-b.png
-A  admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-r52-a.png
-A  admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-r52-b.png
-A  admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-demo-script-r52.js
-M  docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-A  docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-logo-a.png
-A  docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-logo-b.png
-A  docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-r52-a.png
-A  docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-r52-b.png
-A  docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-demo-script-r52.js
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- .../demo/AWAM-SIGNIN-GLOBAL-GRID-awam-logo-a.png   | Bin 0 -> 2078157 bytes
- .../demo/AWAM-SIGNIN-GLOBAL-GRID-awam-logo-b.png   | Bin 0 -> 2088719 bytes
- .../demo/AWAM-SIGNIN-GLOBAL-GRID-awam-r52-a.png    | Bin 0 -> 2095981 bytes
- .../demo/AWAM-SIGNIN-GLOBAL-GRID-awam-r52-b.png    | Bin 0 -> 2118429 bytes
- .../AWAM-SIGNIN-GLOBAL-GRID-demo-script-r52.js     |  33 +++++++++++++++++
- docs/claude/state/WORKING-NOW.md                   |  39 +++++++++++----------
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  10 +++---
- 17 files changed, 106 insertions(+), 23 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 39 ++-------------------------------------
+ 1 file changed, 2 insertions(+), 37 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -67,4 +45,4 @@ M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (bdd7a86153048f454d611a1a6f3d33114daca1ed)
+WIP snapshot: refs/wip/last (8e22197d6b7e3bf230cad4ccec64f78bbc85b032)
