@@ -23,7 +23,7 @@ OPEN, in his locked order: **B13** (NOW) -> B11 -> B12 -> B6c (rates, needs a de
 | Z4a | customer consent inbox (CP5) | GREEN 24 Nov 07:0x |
 | T0 | schema study, threat model, rollback plan | GREEN (document) |
 | T1 | tenant registry + versioned domain ownership (AD26) | GREEN on his server 24 Nov 08:13 |
-| **T2** | case-to-tenant binding (AD30) | SQL half GREEN by his word 24 Nov 09:33 (his desk-install ran it); Rust word + screen text proven by tests only, no live unbound case exists to look at |
+| **T2** | case-to-tenant binding (AD30) | GREEN 24 Nov 09:33 PKT by his order (his desk-install ran AD30; Rust word + screen text proven by tests; the live refusal look waits for the first real unbound case) |
 | T3 | automatic company pickup from verified domain + membership (shared domains, two claimants, many memberships = pending) + Rust ingest hook | NEXT |
 | T4 | manual exception by authorized staff with a second reviewer (screen + granting case.assign) | after T3 |
 | T5 | dual-approved correction of a wrong binding | after T4 |
