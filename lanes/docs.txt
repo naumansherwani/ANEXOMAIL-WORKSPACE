@@ -399,6 +399,7 @@ docs/claude/admin-desk/SIDEBAR-SECTIONS-AND-LOOPHOLES-22NOV.md
 docs/claude/admin-desk/STATUS-23NOV-0805.md
 docs/claude/admin-desk/STATUS-GREEN-TABLE-22NOV.md
 docs/claude/admin-desk/STATUS-REAL-22NOV.md
+docs/claude/admin-desk/TENANT-IDENTITY-CONSENT-DECISION-24NOV.md
 docs/claude/admin-desk/TOPBAR-PLAN-22NOV.md
 docs/claude/admin-desk/TWO-COMMANDS.md
 docs/claude/admin-desk/WORLD-ADMIN-DESK-FEATURES-22NOV.md

@@ -3805,3 +3805,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - B13 Z4b-2 Desk consent_cp.rs client written, WIRED: NO, REAL: NO, TECH-LAW CHECKED, TESTED: cargo test 119 pass (new consent_cp tests)
 
 - pull command and advisor question recorded (docs only), TECH-LAW CHECKED, TESTED: docs only, gate pass
+
+- Tenant identity + consent permanent decision saved verbatim, install proof build 3e3f0b550 SAME, docs only, TECH-LAW CHECKED, TESTED: his desk-install paste binary page kernel SAME and CP5 selftest pass, gate pass
