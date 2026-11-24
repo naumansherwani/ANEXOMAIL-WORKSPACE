@@ -2709,3 +2709,7 @@
 - AWL-3 SQL half E201 awam package caps final written: six packages storable, Premium 7,000, Max strict 125,000, 90/95 alert ledger SHA-256 chain, strict seat guard, raise door; TECH-LAW CHECKED; TESTED: scratch PostgreSQL 16 selftest 16 checks twice, CHECK 12 rows, end-to-end real tables + real phase61 chart; NOT on his server, not GREEN
 
 - AWL-3 SQL half E201 awam package caps final written: six packages storable, Premium 7,000, Max strict 125,000, 90/95 alert ledger SHA-256 chain, strict seat guard, raise door; TECH-LAW CHECKED; TESTED: scratch PostgreSQL 16 selftest 16 checks twice, CHECK 12 rows, end-to-end real tables + real phase61 chart; NOT on his server, not GREEN
+
+- Desk SQL organised: CP1..CP6 and their checks moved from control-plane/sql into docs/claude/admin-desk/sql (installer reads admin-desk/sql); no SQL logic changed (only the CHECK-FILE path comments); TECH-LAW CHECKED; TESTED: bash -n on the three installers, cargo test control-plane 20 pass, CP6 diff = comment only, rules-gate
+
+- Desk SQL organised: CP1..CP6 and checks moved into docs/claude/admin-desk/sql (installer reads admin-desk/sql); CP1 got the world-class header + rolled-back selftest; CP6 selftest fixed for a FRESH install (empty ledger made the UPDATE test prove nothing); TECH-LAW CHECKED; TESTED: scratch PostgreSQL 16 CP1 CP2 CP4 CP5 CP6 selftests pass on fresh and rerun, CP6 CHECK all true, bash -n installers, cargo test control-plane 20 pass

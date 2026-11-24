@@ -1,7 +1,7 @@
 -- ANEXOMAIL CONTROL PLANE CP3 (phase 1m-5, card B6 Deliverability), 23 Nov 2026 PKT: the ONE read-only DELIVERABILITY door of the Control Plane on the awam database.
 -- SCHEMA-FIRST: CP1 (cp.lookup, role cp_lookup, SECURITY DEFINER pattern), CP2 (cp.census, signal registry pattern), E15 public.org_domains (status pending/verified/removed, txt_ok, mx_ok, spf_ok, dkim_ok, dmarc_ok, last_checked_at, verified_at, created_at) read from the live snapshot docs/cursor-work/live-snapshot/sql/schema-public.sql.
 -- ADVANCE-RESEARCH: [1m] authentication posture of every company domain (SPF, DKIM, DMARC, MX), freshness of the checks, domains stuck in verification, a closed signal registry with the runbook that fixes each; research list D6-CARDS-LIST-23NOV.md section B6 (Google Postmaster dashboards, Gmail/Yahoo bulk-sender rules, RFC 8460), set-based single pass, counts only.
--- CHECK-FILE: control-plane/sql/checks/CP3-check.sql
+-- CHECK-FILE: docs/claude/admin-desk/sql/checks/CP3-check.sql
 -- WHAT IT ADDS: cp.deliverability() returns jsonb, COUNTS ONLY. Role cp_lookup gets EXECUTE on that one function and nothing else (still no table right). It reads ONLY public.org_domains(org_id, status, spf_ok, dkim_ok, dmarc_ok, mx_ok, last_checked_at, created_at).
 --   It NEVER returns a domain name, a company id, a token, a DKIM key or an e-mail. Removed domains are not counted. Posture is counted over VERIFIED domains. A verified domain is "fully authenticated" when SPF, DKIM, DMARC and MX are all true.
 --   The SIGNAL REGISTRY is a closed list inside the function (key, label, runbook, source): a new signal is ONE row. Zero is shown as a real 0 (his FUTURE-PROOF LAW 23 Nov 06:42).

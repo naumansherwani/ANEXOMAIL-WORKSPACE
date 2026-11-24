@@ -1,4 +1,4 @@
-# B13 STEP T1 GATE CHECK LIST (24 Nov 2026 07:3x PKT; his 07:25 word: write the points first, tell the gates, follow the rules that already exist). Written BEFORE any T1 code. T1 = the TENANT REGISTRY CHECK + VERSIONED DOMAIN OWNERSHIP (awam database, schema cp, file control-plane/sql/CP6.sql).
+# B13 STEP T1 GATE CHECK LIST (24 Nov 2026 07:3x PKT; his 07:25 word: write the points first, tell the gates, follow the rules that already exist). Written BEFORE any T1 code. T1 = the TENANT REGISTRY CHECK + VERSIONED DOMAIN OWNERSHIP (awam database, schema cp, file docs/claude/admin-desk/sql/CP6.sql).
 ## A. THE RULES THAT ALREADY EXIST AND T1 FOLLOWS (each is a gate or a law; where it is checked)
 | # | Rule | Where | How T1 meets it |
 |---|---|---|---|
@@ -24,7 +24,7 @@
 7. cp.tenant_registry_check(): read-only report (counts only): orgs, organisations, account_organisations, orgs missing in organisations, orgs missing in account_organisations, domains verified, domains with an open history row, domains verified but missing history, overlapping ranges (must be 0). The proof that the three company tables do not disagree.
 8. Roles: cp_lookup (the Control Plane) may EXECUTE tenant_of_domain and tenant_registry_check only; the sync runs as the owner (installer) and by a Control Plane timer door later; PUBLIC nothing; the Desk never touches these tables.
 9. Selftest inside the file (rolled back, ALL RULES PASSED): moves a domain, refuses overlap, refuses shared domain, refuses unknown org, tenant_of_domain at two moments gives two tenants, sync idempotent, ledger chain verifies.
-10. CHECK file control-plane/sql/checks/CP6-check.sql: every row true on his real database; one FACT row prints the real counts.
+10. CHECK file docs/claude/admin-desk/sql/checks/CP6-check.sql: every row true on his real database; one FACT row prints the real counts.
 11. Installer step 3f in docs/claude/admin-desk/scripts/cp-install.sh (source folder) + synced mirror; WARN (not stop) if CP6 fails; tenant binding then stays closed.
 ## C. WHAT T1 DOES NOT DO
 No case binding (T2), no automatic resolution of a sender (T3), no Rust, no screen, no awam trigger or awam table change, no consent push. B13 and Z4b-3 stay NOT green.

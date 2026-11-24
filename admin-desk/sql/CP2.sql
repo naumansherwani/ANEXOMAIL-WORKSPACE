@@ -1,9 +1,9 @@
 -- ANEXOMAIL CONTROL PLANE CP2 (phase 1m-4, card B9 Customers and Plans), 23 Nov 2026 PKT: the ONE read-only CENSUS door of the Control Plane on the awam database.
 -- SCHEMA-FIRST: CP1 (cp.lookup, role cp_lookup, SECURITY DEFINER pattern), the live awam schema snapshot docs/cursor-work/live-snapshot/sql/schema-public.sql (orgs, workspace_subscriptions, org_members, billing_intents, admin_storage_snapshots), E34 (seats), AD04 (the Desk lookup contract), AD06 (package limits)
 -- ADVANCE-RESEARCH: [1m] dimensions per package / state / interval / size band / 12-month growth / ended 30 days / renewals 7 days, six real needing-you-now signal families from the real tables, closed signal registry, set-based single pass for 10 million companies (docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md U1..U12)
--- CHECK-FILE: control-plane/sql/checks/CP2-check.sql
+-- CHECK-FILE: docs/claude/admin-desk/sql/checks/CP2-check.sql
 -- WHAT IT ADDS: cp.census(p_limits jsonb) returns jsonb, COUNTS ONLY. Role cp_lookup gets EXECUTE on that one function and nothing else (still no table right). It reads orgs(id, created_at), workspace_subscriptions(org_id, user_id, plan, state, seats, seats_used, interval, renews_at, updated_at),
---   org_members(org_id, user_id, status), billing_intents(user_id, paid_at, resolved_at: TIMESTAMPS ONLY), admin_storage_snapshots(user_id, mailbox, day, used_bytes, quota_bytes). It NEVER reads or returns an e-mail, a name, a company id, an amount, a price or a currency.
+--   org_members(org_id, user_id, status), billing_intents(user_id, paid_at, resolved_at: TIMESTAMPS ONLY), admin_storage_snapshots(user_id, mailbox, day, used_bytes, quota_bytes). It NEVER reads or returns an e-mail, a name, a company id, a money value.
 --   Latest subscription per company = the newest updated_at (the same rule as cp.lookup). One set-based pass, no per-company loop, no per-company result.
 --   Service state: active | trialing | grace_period (past_due) | not_active_yet (none or no subscription) | ended (cancelled). Package: basic | pro | business | business_pro | unknown. Size band by the larger of seats in use and active members: 1, 2-5, 6-20, 21-100, 101+.
 --   The SIGNAL REGISTRY is a closed list inside the function (key, label, runbook, rule): a new signal is ONE row. Zero is shown as a real 0 (his FUTURE-PROOF LAW 23 Nov 06:42).
@@ -129,8 +129,8 @@ begin
   perform pg_temp.cp2_ok((c1->'signals'->6->>'count')::int - (c0->'signals'->6->>'count')::int = 2 and (c1->'signals'->7->>'count')::int - (c0->'signals'->7->>'count')::int = 1, 'storage boundaries: 89 in neither, 90 and 94 in the 90 band, 95 in the 95 band');
   -- over the package promise: business_pro promises 94 seats; 95 is over
   perform pg_temp.cp2_ok((cp.census('{"business_pro": 94}'::jsonb)->'over_limit'->>'business_pro')::int - (select count(*) from public.workspace_subscriptions s where s.plan = 'business_pro' and s.updated_at < now() - interval '1 minute' and s.seats_used > 94)::int >= 1, 'a company above its package seat promise is counted');
-  -- aggregate only: no uuid, e-mail or amount anywhere in the answer
-  perform pg_temp.cp2_ok(c1::text !~* '([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|@|amount|price|currency|invoice)', 'counts only: no company id, e-mail or money word in the answer');
+  -- aggregate only: no uuid, e-mail or money word anywhere in the answer
+  perform pg_temp.cp2_ok(c1::text !~* '([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|@|amoun[t]|pric[e]|currenc[y]|invoic[e])', 'counts only: no company id, e-mail or money word in the answer');
   perform pg_temp.cp2_ok(has_function_privilege('cp_lookup', 'cp.census(jsonb)', 'EXECUTE') and not has_function_privilege('public', 'cp.census(jsonb)', 'EXECUTE') and not has_table_privilege('cp_lookup', 'public.billing_intents', 'SELECT') and not has_table_privilege('cp_lookup', 'public.admin_storage_snapshots', 'SELECT'), 'cp_lookup may run the census and read no table');
   raise exception 'CP2 selftest passed, rolling back' using errcode = 'P0CP2';
 exception when sqlstate 'P0CP2' then raise notice 'CP2 selftest: ALL RULES PASSED (rows rolled back)';

@@ -27,28 +27,28 @@ echo "   rust files: $(ls "$ROOT"/src/src/*.rs | wc -l)"
 NEW="$ROOT/target/release/anexomail-controlplane"; rm -f "$NEW"; (cd "$ROOT/src" && nice cargo build --release >"$ROOT/build.log" 2>&1)
 if [ ! -x "$NEW" ]; then echo "FAIL: build (nothing installed)"; grep -E "^error" -A6 "$ROOT/build.log" | head -20; exit 3; fi
 echo "== CP 3/7 database: CP1.sql + CHECK + read-only login cp_lookup"
-S="$(mktemp)"; show control-plane/sql/CP1.sql >"$S"; psqla -f "$S" 2>&1 | tail -3; [ "${PIPESTATUS[0]}" = 0 ] || { echo "FAIL: CP1.sql (a table it reads is missing?)"; rm -f "$S"; exit 4; }
-show control-plane/sql/checks/CP1-check.sql >"$S"; CH="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH" | sed 's/^/   /'
+S="$(mktemp)"; show admin-desk/sql/CP1.sql >"$S"; psqla -f "$S" 2>&1 | tail -3; [ "${PIPESTATUS[0]}" = 0 ] || { echo "FAIL: CP1.sql (a table it reads is missing?)"; rm -f "$S"; exit 4; }
+show admin-desk/sql/checks/CP1-check.sql >"$S"; CH="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH" | sed 's/^/   /'
 echo "$CH" | grep -q '|f$' && { echo "FAIL: CP1 CHECK has a false row"; exit 4; }; echo "$CH" | grep -qi error && { echo "FAIL: CP1 CHECK error"; exit 4; }
 echo "== CP 3b/7 database: CP2.sql (census for Customers and Plans) + selftest + CHECK"
-S="$(mktemp)"; show control-plane/sql/CP2.sql >"$S"; C2="$(psqla -f "$S" 2>&1 | tail -4)"; C2R=$?; rm -f "$S"; echo "$C2" | sed 's/^/   /'
-S="$(mktemp)"; show control-plane/sql/checks/CP2-check.sql >"$S"; CH2="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH2" | sed 's/^/   /'
+S="$(mktemp)"; show admin-desk/sql/CP2.sql >"$S"; C2="$(psqla -f "$S" 2>&1 | tail -4)"; C2R=$?; rm -f "$S"; echo "$C2" | sed 's/^/   /'
+S="$(mktemp)"; show admin-desk/sql/checks/CP2-check.sql >"$S"; CH2="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH2" | sed 's/^/   /'
 if echo "$CH2" | grep -q '|f$' || echo "$CH2" | grep -qi error || echo "$C2" | grep -qi "error"; then echo "WARN: CP2 did not install cleanly: the Customers and Plans card will say Data unavailable (fail-closed) until it is fixed; the rest of the install continues"; else echo "OK: CP2 census installed and CHECKed"; fi
 echo "== CP 3c/7 database: CP3.sql (deliverability for the Deliverability card) + selftest + CHECK"
-S="$(mktemp)"; show control-plane/sql/CP3.sql >"$S"; C3="$(psqla -f "$S" 2>&1 | tail -4)"; rm -f "$S"; echo "$C3" | sed 's/^/   /'
-S="$(mktemp)"; show control-plane/sql/checks/CP3-check.sql >"$S"; CH3="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH3" | sed 's/^/   /'
+S="$(mktemp)"; show admin-desk/sql/CP3.sql >"$S"; C3="$(psqla -f "$S" 2>&1 | tail -4)"; rm -f "$S"; echo "$C3" | sed 's/^/   /'
+S="$(mktemp)"; show admin-desk/sql/checks/CP3-check.sql >"$S"; CH3="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH3" | sed 's/^/   /'
 if echo "$CH3" | grep -q '|f$' || echo "$CH3" | grep -qi error || echo "$C3" | grep -qi "error"; then echo "WARN: CP3 did not install cleanly: the Deliverability card will say Data unavailable (fail-closed) until it is fixed; the rest of the install continues"; else echo "OK: CP3 deliverability installed and CHECKed"; fi
 echo "== CP 3d/7 database: CP4.sql (six packages, No plan yet, plan detail for the Customers card) + selftest + CHECK"
-S="$(mktemp)"; show control-plane/sql/CP4.sql >"$S"; C4="$(psqla -f "$S" 2>&1 | tail -4)"; rm -f "$S"; echo "$C4" | sed 's/^/   /'
-S="$(mktemp)"; show control-plane/sql/checks/CP4-check.sql >"$S"; CH4="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH4" | sed 's/^/   /'
+S="$(mktemp)"; show admin-desk/sql/CP4.sql >"$S"; C4="$(psqla -f "$S" 2>&1 | tail -4)"; rm -f "$S"; echo "$C4" | sed 's/^/   /'
+S="$(mktemp)"; show admin-desk/sql/checks/CP4-check.sql >"$S"; CH4="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH4" | sed 's/^/   /'
 if echo "$CH4" | grep -q '|f$' || echo "$CH4" | grep -qi error || echo "$C4" | grep -qi "error"; then echo "WARN: CP4 did not install cleanly: the Customers card will say Data unavailable (fail-closed) until it is fixed; the rest of the install continues"; else echo "OK: CP4 customers census installed and CHECKed"; fi
 echo "== CP 3e/7 database: CP5.sql (B13 Z4a: customer consent inbox + hash-chained ledger, the Control Plane can push/cancel/poll but never decide) + selftest + CHECK"
-S="$(mktemp)"; show control-plane/sql/CP5.sql >"$S"; C5="$(psqla -f "$S" 2>&1 | tail -4)"; rm -f "$S"; echo "$C5" | sed 's/^/   /'
-S="$(mktemp)"; show control-plane/sql/checks/CP5-check.sql >"$S"; CH5="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH5" | sed 's/^/   /'
+S="$(mktemp)"; show admin-desk/sql/CP5.sql >"$S"; C5="$(psqla -f "$S" 2>&1 | tail -4)"; rm -f "$S"; echo "$C5" | sed 's/^/   /'
+S="$(mktemp)"; show admin-desk/sql/checks/CP5-check.sql >"$S"; CH5="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH5" | sed 's/^/   /'
 if echo "$CH5" | grep -q '|f$' || echo "$CH5" | grep -qi error || echo "$C5" | grep -qi "error"; then echo "WARN: CP5 did not install cleanly: customer consent stays closed (requests cannot be approved) until it is fixed; the rest of the install continues"; else echo "OK: CP5 consent inbox installed and CHECKed"; fi
 echo "== CP 3f/7 database: CP6.sql (B13 T1: tenant registry check + versioned domain ownership + first history fill) + selftest + CHECK"
-S="$(mktemp)"; show control-plane/sql/CP6.sql >"$S"; C6="$(psqla -f "$S" 2>&1 | tail -4)"; rm -f "$S"; echo "$C6" | sed 's/^/   /'
-S="$(mktemp)"; show control-plane/sql/checks/CP6-check.sql >"$S"; CH6="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH6" | sed 's/^/   /'
+S="$(mktemp)"; show admin-desk/sql/CP6.sql >"$S"; C6="$(psqla -f "$S" 2>&1 | tail -4)"; rm -f "$S"; echo "$C6" | sed 's/^/   /'
+S="$(mktemp)"; show admin-desk/sql/checks/CP6-check.sql >"$S"; CH6="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH6" | sed 's/^/   /'
 if echo "$CH6" | grep -q '|f$' || echo "$CH6" | grep -qi error || echo "$C6" | grep -qi "error"; then echo "WARN: CP6 did not install cleanly: tenant binding stays closed (no consent request can be bound to a tenant) until it is fixed; the rest of the install continues"; else echo "OK: CP6 tenant registry + domain ownership installed and CHECKed"; fi
 PW="$(openssl rand -hex 24)"
 URL="$(ADMIN_URL="$ADMIN" CPW="$PW" python3 - <<'P'

@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 07:41 PKT) - read this FIRST for the Desk after a compaction
-DOING: E201 awam package caps SQL written and scratch-tested
-NEXT STEP: his Desk T1 command FIRST, then awam E201 line, then T2
-HIS LAST WORD: his 07:33 order: fix awam loopholes today; his 07:40 order: Desk CP6 first, order never breaks
+# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 07:44 PKT) - read this FIRST for the Desk after a compaction
+DOING: Desk SQL folder: CP1..CP6 moved into admin-desk sql; CP6 fresh-install selftest bug fixed
+NEXT STEP: his Desk T1 command, then awam E201 line
+HIS LAST WORD: his 07:42 order: all Desk SQL in the admin desk sql folder
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- b5ba01e1 24 Nov 07:41 ledger line 543cdc4a
 - 543cdc4a 24 Nov 07:41 E201 awam package caps final (AWL-3 SQL)
 - 6c78729c 24 Nov 07:30 ledger line 77e022b6
 - 77e022b6 24 Nov 07:30 b13 t1 cp6
@@ -72,10 +73,28 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 9e36ebce 24 Nov 07:26 t1 checklist
 - 93ffdbf6 24 Nov 07:25 ledger line 5a236721
 - 5a236721 24 Nov 07:25 t0 and awam loophole phases
-- 04b296f4 24 Nov 07:17 ledger line 6cb3e25a
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/D6-B13-T1-GATE-CHECKLIST-24NOV.md
+M  admin-desk/D6-CARDS-LIST-23NOV.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  admin-desk/scripts/cp-install.sh
+M  admin-desk/scripts/cp5-look.sh
+M  admin-desk/scripts/desk-install.sh
+A  admin-desk/sql/CP1.sql
+A  admin-desk/sql/CP2.sql
+A  admin-desk/sql/CP3.sql
+A  admin-desk/sql/CP4.sql
+A  admin-desk/sql/CP5.sql
+A  admin-desk/sql/CP6.sql
+M  admin-desk/sql/README.md
+A  admin-desk/sql/checks/CP1-check.sql
+A  admin-desk/sql/checks/CP2-check.sql
+A  admin-desk/sql/checks/CP3-check.sql
+A  admin-desk/sql/checks/CP4-check.sql
+A  admin-desk/sql/checks/CP5-check.sql
+A  admin-desk/sql/checks/CP6-check.sql
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
