@@ -17,7 +17,19 @@ pub fn probe_sql(service: &str, ok: bool, ms: Option<u128>, detail: &str) -> Str
     format!("select desk.fadm_probe_record({}, {}, {}, {}::jsonb)::text", door::lit(service), ok, ms, door::lit(&d))
 }
 
+/// FLAP GUARD (his 24 Nov 05:14 PKT: "bug bar bar aata hai phir chala jata hai"): the state comes from the LAST probe only, and the database probe sits near its limit (about 270 ms against 300 ms), so ONE slow
+/// sample turned the whole Systems page red for 4 seconds. The latency a probe REPORTS is now the median of its last three passes (a single spike cannot cross the limit; real slowness still shows after two of
+/// three). A FAILED probe is never smoothed (an outage stays an outage), and the raw time of this sample goes into the detail note.
+pub fn smooth(buf: &mut Vec<u128>, sample: u128) -> u128 { buf.push(sample); if buf.len() > 3 { buf.remove(0); } let mut s = buf.clone(); s.sort_unstable(); s[s.len() / 2] }
+static RECENT: std::sync::OnceLock<std::sync::Mutex<std::collections::HashMap<String, Vec<u128>>>> = std::sync::OnceLock::new();
+fn smoothed(service: &str, sample: u128) -> u128 {
+    let m = RECENT.get_or_init(Default::default);
+    match m.lock() { Ok(mut g) => smooth(g.entry(service.to_string()).or_default(), sample), Err(_) => sample }
+}
+
 async fn record(service: &str, ok: bool, ms: Option<u128>, detail: &str) {
+    let (ms, detail) = match (ok, ms) { (true, Some(raw)) => { let sm = smoothed(service, raw); (Some(sm), format!("{detail} (this pass {raw} ms, reported = median of the last 3)")) } _ => (ms, detail.to_string()) };
+    let detail = detail.as_str();
     let Ok(c) = door::connect().await else { return };   // no database = nothing can be recorded; the state turns UNKNOWN by itself
     if let Err(e) = door::rows(&c, &probe_sql(service, ok, ms, detail)).await { eprintln!("desk probe {service}: record failed: {e}"); }
 }
@@ -82,6 +94,13 @@ mod tests {
         let q = probe_sql("db", true, Some(3), "it's fine");
         assert_eq!(q, "select desk.fadm_probe_record('db', true, 3, '{\"note\":\"it''s fine\"}'::jsonb)::text");
         assert!(probe_sql("db", false, None, "x").contains(", false, NULL, "));
+    }
+    #[test] fn one_slow_pass_cannot_cross_the_limit_but_sustained_slowness_does() {
+        let mut b = Vec::new();
+        assert_eq!(smooth(&mut b, 270), 270); assert_eq!(smooth(&mut b, 275), 275); assert_eq!(smooth(&mut b, 268), 270);
+        assert_eq!(smooth(&mut b, 900), 275, "a single spike of 900 ms stays under the 300 ms limit");
+        assert_eq!(smooth(&mut b, 910), 900, "two slow passes out of three are real slowness");
+        assert_eq!(smooth(&mut b, 5), 900); assert_eq!(smooth(&mut b, 5), 5);
     }
     #[test] fn latency_is_capped_to_the_column_limit() { assert!(probe_sql("db", true, Some(9_999_999), "").contains(", true, 600000, ")); }
     #[test] fn detail_is_cut_to_200_chars() { let q = probe_sql("db", true, Some(1), &"a".repeat(500)); assert!(q.len() < 330); }

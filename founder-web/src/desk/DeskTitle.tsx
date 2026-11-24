@@ -22,7 +22,7 @@ export const TITLE_CSS = `
 @keyframes dsk-halo{from{opacity:.55;transform:translateX(-3%)}to{opacity:1;transform:translateX(6%)}}
 .dsk-sp{position:absolute;inset:-20px -10px;width:calc(100% + 20px);height:calc(100% + 40px);z-index:-1;pointer-events:none}
 .dsk-sub{display:flex;align-items:center;gap:12px;margin-top:10px;font-size:clamp(16px,2vw,20px);font-weight:500;color:#C3CCD8;opacity:0;animation:dsk-up .8s ease 1.4s forwards}
-.dsk-sub .rule{display:inline-block;height:1px;width:clamp(36px,8vw,90px);background:linear-gradient(90deg,transparent,#6FA6F2)}
+.dsk-sub .rule{flex:0 1 auto;min-width:12px;display:inline-block;height:1px;width:clamp(36px,8vw,90px);background:linear-gradient(90deg,transparent,#6FA6F2)}
 .dsk-sub::after{content:"";display:inline-block;height:1px;width:clamp(36px,8vw,90px);background:linear-gradient(270deg,transparent,#6FA6F2)}
 @keyframes dsk-up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.dsk-ttl .c{animation:none;opacity:1;filter:none;transform:none}.dsk-ttl .l1::after{animation:none;transform:none}.dsk-ttl .l1::before{animation:none;opacity:.2}.dsk-halo{animation:none}.dsk-sub{animation:none;opacity:1}}
@@ -53,7 +53,7 @@ export function DeskTitle() {
       const sp = fitSpacing(a.getBoundingClientRect().width, ls, b.getBoundingClientRect().width, (b.textContent ?? "").length);
       b.style.letterSpacing = `${sp}px`; b.style.marginRight = `${-sp}px`;
       // his 24 Nov 03:57 word: the Senior Executive line (rules kept at their own length) is centred on the title width
-      const u = sb.current; if (u) { u.style.width = "fit-content"; u.style.marginLeft = "0px"; u.style.marginLeft = `${(a.getBoundingClientRect().width - u.getBoundingClientRect().width) / 2}px`; }
+      const u = sb.current; if (u) { u.style.width = "fit-content"; u.style.marginLeft = "0px"; u.style.marginLeft = `${Math.max(0, (a.getBoundingClientRect().width - u.getBoundingClientRect().width) / 2)}px`; }
     };
     fit(); addEventListener("resize", fit);
     void document.fonts?.ready.then(fit);
@@ -83,7 +83,7 @@ export function DeskTitle() {
       <canvas ref={cv} className="dsk-sp" aria-hidden="true" />
       <div className="dsk-halo" aria-hidden="true" />
       <h1 ref={h} className="dsk-ttl" aria-label="ANEXOMAIL COMMAND CENTER OS">{line("l1", L[0])}{line("l2", L[1])}</h1>
-      <div ref={sb} className="dsk-sub"><span className="rule" />Senior Executive</div>
+      <div ref={sb} className="dsk-sub"><span className="rule" /><span style={{ whiteSpace: "nowrap" }}>Senior Executive</span></div>
     </div>
   );
 }

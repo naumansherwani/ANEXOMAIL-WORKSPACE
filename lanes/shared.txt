@@ -281,6 +281,10 @@ backups/desk/20261124-0405-centre-footer/DeskTitle.tsx
 backups/desk/20261124-0440-boot-text/00-FOUNDER-TECH-RULE.md
 backups/desk/20261124-0440-boot-text/DeskBoot.tsx
 backups/desk/20261124-0440-boot-text/desk.html
+backups/desk/20261124-0515-mobile-fixes/00-FOUNDER-TECH-RULE.md
+backups/desk/20261124-0515-mobile-fixes/DeskCards.tsx
+backups/desk/20261124-0515-mobile-fixes/DeskShell.tsx
+backups/desk/20261124-0515-mobile-fixes/DeskTitle.tsx
 banned-countries/00-FOUNDER-TECH-RULE.md
 banned-countries/READ-FIRST-FOUNDER-LAW.md
 banned-countries/README.md

@@ -1,3 +1,9 @@
+# TECH CONTRACT FOR PHASE: DESK PHONE FIXES (phase 1m, sub-phase CC1-mobile, list BL-29 (CC1) and BL-46 B13 stays next; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 first by his 02:39 order), his 24 Nov 2026 05:14 PKT phone screenshots, written 05:2x PKT BEFORE install. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| Rust + Tokio probe smoothing: reported latency = median of the last 3 passes (flap guard), failed probes never smoothed, Rule 52 stream unchanged; PostgreSQL AD03 state rules carried unchanged | docs/claude/admin-desk/server/src/probes.rs, docs/claude/admin-desk/sql/AD03.sql | YES | cargo test probes 6 pass (1 new) |
+| React 19 + TypeScript: real BrandMark in the phone header, highlight only the open page (aria-current), Systems rows as plain blocks (shared-CSS leak fixed, reproduced in a sandbox page), Senior Executive never wraps | founder-web/src/desk/DeskShell.tsx, founder-web/src/desk/DeskCards.tsx, founder-web/src/desk/DeskTitle.tsx | YES | bun test src/desk 131 pass, tsc clean, build:desk ok |
+
 # TECH CONTRACT FOR PHASE: DESK CARD B13 CONSENT + TIMER ACCESS (phase 1m, sub-phases B13 step Z2 Rust signed doors + Z3 React screen, list BL-46 (his 24 Nov 2026 02:39 order puts BL-46 B13 first; BL-28 B9c Y4 stays open and is not skipped; his 04:53 PKT word: gate must see the advance technology codes before commit), written 24 Nov 2026 04:5x PKT BEFORE install. LIST: docs/claude/admin-desk/D6-B13-CONSENT-ACCESS-LIST-24NOV.md (A1..A10). Z3 React screen and Z4 customer-approval path (Control Plane) follow as their own steps.
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3737,3 +3743,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - CC1 text + position GREEN, WIRED: YES / REAL: YES, TECH-LAW CHECKED, TESTED: my live Chrome on admindesk bundle desk-BBu4h3TR.js = repo, Senior Executive centred, Customer Operations, tab title OK, live (1536 wide), 390/820 open
 
 - CC1 loading text GREEN (his eyes), install proof binary SAME, B13 Z2+Z3 GREEN as steps, WIRED: YES / REAL: YES, TECH-LAW CHECKED, TESTED: his desk-install proof 9/9 SAME and my live Chrome on /dashboard/consent bundle desk-1lV7G7UG.js board answered live, B13 phase not green (Z4 missing)
+
+- Four phone bugs fixed: real logo in mobile header, Systems flap guard (median of 3 probes), Systems rows shared-CSS li grid leak, only the open tab highlighted, Senior Executive nowrap, WRITTEN not installed, TECH-LAW CHECKED, TESTED: cargo test probes 6 pass, bun test src/desk 131 pass, tsc clean, build:desk ok, sandbox repro of the li leak fixed (b width 18 to 324)
+
+- Four phone bugs fixed: real logo in mobile header, Systems flap guard (median of 3 probes), Systems rows shared-CSS li grid leak, only the open tab highlighted, Senior Executive nowrap, WRITTEN not installed, TECH-LAW CHECKED, TESTED: cargo test probes 6 pass, bun test src/desk 131 pass, tsc clean, build:desk ok, sandbox repro of the li leak fixed (b width 18 to 324)

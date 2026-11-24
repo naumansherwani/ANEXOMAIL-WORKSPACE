@@ -149,7 +149,7 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, s
               {g.label && <p className="dsk-grp">{g.label === "Admin Desk" ? "Customer Operations" : g.label}</p>}
               {g.items.map((n) => (
                 <div className="dsk-row" key={n.key}>
-                  <button type="button" className="dsk-nav" data-here={n.key === (sub || "dashboard") ? "1" : undefined} data-key={n.key} aria-keyshortcuts={keyLabel(n.key) ? keyLabel(n.key) : undefined} aria-current={n.live ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={keyLabel(n.key) || undefined} onClick={(e) => { if (!n.live) e.preventDefault(); else if (n.key === "dashboard") nav("/dashboard"); else nav(route(n.key)); }}>{n.glyph}<span>{n.label}</span></button>
+                  <button type="button" className="dsk-nav" data-here={n.key === (sub || "dashboard") ? "1" : undefined} data-key={n.key} aria-keyshortcuts={keyLabel(n.key) ? keyLabel(n.key) : undefined} aria-current={n.live && n.key === (sub || "dashboard") ? "page" : undefined} aria-disabled={n.live ? undefined : true} title={keyLabel(n.key) || undefined} onClick={(e) => { if (!n.live) e.preventDefault(); else if (n.key === "dashboard") nav("/dashboard"); else nav(route(n.key)); }}>{n.glyph}<span>{n.label}</span></button>
                   {n.key !== "dashboard" && <button type="button" className="dsk-pin" aria-pressed={pins.includes(n.key)} aria-label={(pins.includes(n.key) ? "Unpin " : "Pin ") + n.label} onClick={() => toggle(n.key)}>{ico("M9 4h6l-1 6 3 3v2H7v-2l3-3zM12 15v5")}</button>}
                 </div>
               ))}
@@ -159,7 +159,7 @@ export function DeskShell({ me, err, out, onSignOut, live = "live", bar, snap, s
       </nav>
       <main className="dsk-main">
         <div className="dsk-bar">
-          <a href="/dashboard" className="dsk-homem" onClick={goHome} title={sub ? "Back to the dashboard" : "Refresh the dashboard"} aria-label={sub ? "Anexomail, back to the dashboard" : "Anexomail, refresh the dashboard"}>ANEXOMAIL</a>
+          <a href="/dashboard" className="dsk-homem" onClick={goHome} title={sub ? "Back to the dashboard" : "Refresh the dashboard"} aria-label={sub ? "Anexomail, back to the dashboard" : "Anexomail, refresh the dashboard"}><BrandMark home={false} /></a>
           {me && <span className="dsk-chip" title="Every answer on this page was signed by the Desk and verified in your browser" data-live={live}><i aria-hidden="true" />{chipText(live)}</span>}
           {me && <button type="button" className="dsk-av" aria-label="Account menu" aria-expanded={menu} onClick={() => setMenu((v) => !v)}>{(me.name || me.email).trim().split(/\s+/).slice(0, 2).map((w) => w[0]?.toUpperCase() ?? "").join("") || "?"}</button>}
           {me && menu && <div className="dsk-menu" role="menu"><b>{me.name || first}</b><small>{me.email}</small><span className="dsk-role">{me.role}</span>{end && <small>Session: {remaining(end, now)} left</small>}

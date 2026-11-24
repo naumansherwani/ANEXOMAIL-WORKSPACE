@@ -2661,3 +2661,7 @@
 - CC1 text + position GREEN, WIRED: YES / REAL: YES, TECH-LAW CHECKED, TESTED: my live Chrome on admindesk bundle desk-BBu4h3TR.js = repo, Senior Executive centred, Customer Operations, tab title OK, live (1536 wide), 390/820 open
 
 - CC1 loading text GREEN (his eyes), install proof binary SAME, B13 Z2+Z3 GREEN as steps, WIRED: YES / REAL: YES, TECH-LAW CHECKED, TESTED: his desk-install proof 9/9 SAME and my live Chrome on /dashboard/consent bundle desk-1lV7G7UG.js board answered live, B13 phase not green (Z4 missing)
+
+- Four phone bugs fixed: real logo in mobile header, Systems flap guard (median of 3 probes), Systems rows shared-CSS li grid leak, only the open tab highlighted, Senior Executive nowrap, WRITTEN not installed, TECH-LAW CHECKED, TESTED: cargo test probes 6 pass, bun test src/desk 131 pass, tsc clean, build:desk ok, sandbox repro of the li leak fixed (b width 18 to 324)
+
+- Four phone bugs fixed: real logo in mobile header, Systems flap guard (median of 3 probes), Systems rows shared-CSS li grid leak, only the open tab highlighted, Senior Executive nowrap, WRITTEN not installed, TECH-LAW CHECKED, TESTED: cargo test probes 6 pass, bun test src/desk 131 pass, tsc clean, build:desk ok, sandbox repro of the li leak fixed (b width 18 to 324)
