@@ -1,3 +1,9 @@
+# TECH CONTRACT FOR PHASE: AWAM PRICE MIGRATION TO HIS FINAL CHART, SQL E202 (phase AWL-3 SQL third piece, awam lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 08:31 PKT order, E201 stays as it is, awam files untouched), written 08:5x PKT BEFORE install. LIST: docs/claude/AWAM-LOOPHOLE-PHASES-24NOV.md (ADVANCE-RESEARCH [AWL-3])
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL 16: numbered repeatable price migration (touches only a row whose value differs), flat per-company prices in workspace_plans + price book + billing function, append-only SHA-256 hash-chained price ledger with forced RLS, selftest with custom SQLSTATE rollback, CHECK file | docs/cursor-work/sql/E202_awam_price_migration_final.sql, docs/cursor-work/sql/CHECK_E202.sql | YES | scratch PostgreSQL 16: run twice, selftest 7 checks, CHECK 9 rows true, ledger 10 lines not doubled on the second run; NOT yet on his server |
+| Carried unchanged: E201 (caps, six packages, chart facts) | docs/cursor-work/sql/E201_awam_package_caps_final.sql, docs/cursor-work/sql/CHECK_E201.sql | YES | part 1 GREEN on his server, part 2 waits his next AUTO paste |
+
 # TECH CONTRACT FOR PHASE: AWAM PACKAGE FACTS AND POOL LEVELS, PART 2 OF SQL E201 (phase AWL-3 SQL second half, awam lane; merged into E201 on his 24 Nov 2026 08:21 order, E202 deleted; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; awam files untouched), written 08:3x PKT BEFORE install. LIST: docs/claude/AUDIT-24NOV-0820-AWAM-POINTS-AND-DESK.md
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3872,3 +3878,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - AWL-3 SQL second half E202 written: package_fact (his chart as data, starred values hidden from the public card, pool = seats x 50 GB, yearly free months, own-domain flag, unlimited only Max seats), pool levels 70/85/100 never blocked, pool report door + ledger kinds; audit doc awam points vs SQL + Desk live look findings D1-D7; TECH-LAW CHECKED; TESTED: scratch PostgreSQL 16 E202 selftest 12 checks twice, CHECK 13 rows true, pool report end to end, E201 CHECK still true; NOT on his server
 
 - E202 merged into E201 as PART 2, E202 + CHECK_E202 deleted, 2016 date typo fixed, CHECK_E201 25 rows. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 fresh run twice, upgrade from old E201, CHECK_E201 25 of 25 true, sql-editor-lint OK
+
+- E202 awam price migration (workspace_plans, price book, billing function, price ledger) written. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 run twice, selftest 7 checks, CHECK_E202 9 rows true, sql-editor-lint OK

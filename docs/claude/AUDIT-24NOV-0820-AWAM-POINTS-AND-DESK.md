@@ -17,7 +17,7 @@ E201 was already run on his server (sha in his ledger), so an edit of E201 would
 | 12 | Premium and Max: own domain mailboxes (no @anexomail.com restriction) | WAS MISSING -> E201 part 2 flag; the mailbox-creation enforcement is app code, OPEN | package_fact.own_domain_mailboxes |
 | 13 | "Unlimited" = seats only, never storage or traffic | WAS MISSING -> E201 part 2 CHECK | seats_unlimited_card only for business_max |
 | 14 | Locked values win over the pasted chart (Basic 15 GB, Business Pro attachment 60 MB) | E201 part 2, conflict written in the note | package_fact.note |
-| 15 | No price change until he says go | RESPECTED. REAL FINDING (FACT row of CHECK_E201): workspace_plans still holds basic 23 / pro 46 / business 97 per user, his chart says 40 / 105 / 360 flat per company. NOT changed; waits for his go | CHECK_E201 row 13 |
+| 15 | No price change until he says go | His 08:28 word: the chart is FINAL, old prices go. E202 (price migration) written + scratch-tested, not on his server yet. WAS the finding (FACT row of CHECK_E201): workspace_plans still holds basic 23 / pro 46 / business 97 per user, his chart says 40 / 105 / 360 flat per company. NOT changed; waits for his go | CHECK_E201 row 13 |
 | 16 | 10 GB Max chat-file tier in the Rust engine, founder dashboard alert card, billing screen free-months, mailbox creation by the company | NOT SQL: Rust / React, OPEN | AWL-3 code half, AWL-2 |
 | 17 | 48-hour trial is the only free entry, trial -> paid changes only the package | existing E17; not touched | - |
 ## B. ADMIN DESK AUDIT (live, read-only look in his signed-in Chrome 08:19 PKT, nothing clicked, nothing changed)

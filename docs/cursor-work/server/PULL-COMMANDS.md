@@ -2731,3 +2731,5 @@
 - AWL-3 SQL second half E202 written: package_fact (his chart as data, starred values hidden from the public card, pool = seats x 50 GB, yearly free months, own-domain flag, unlimited only Max seats), pool levels 70/85/100 never blocked, pool report door + ledger kinds; audit doc awam points vs SQL + Desk live look findings D1-D7; TECH-LAW CHECKED; TESTED: scratch PostgreSQL 16 E202 selftest 12 checks twice, CHECK 13 rows true, pool report end to end, E201 CHECK still true; NOT on his server
 
 - E202 merged into E201 as PART 2, E202 + CHECK_E202 deleted, 2016 date typo fixed, CHECK_E201 25 rows. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 fresh run twice, upgrade from old E201, CHECK_E201 25 of 25 true, sql-editor-lint OK
+
+- E202 awam price migration (workspace_plans, price book, billing function, price ledger) written. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 run twice, selftest 7 checks, CHECK_E202 9 rows true, sql-editor-lint OK
