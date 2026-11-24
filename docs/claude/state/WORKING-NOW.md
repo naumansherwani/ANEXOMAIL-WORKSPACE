@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 08:54 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 08:54 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Ledger card GREEN desktop; AD28 ledger flood guard + dbsc look written; E201 E202 GREEN
 NEXT STEP: his desk-install paste (AD28) then desk-dbsc-look paste, then fix the cause of the refused refresh
 HIS LAST WORD: ledger card found 42,563 dbsc.refused lines; his loophole auto-fix rule
@@ -19,43 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 44e648f6 24 Nov 08:54 Desk: AD28 ledger flood guard, GREEN lines, OS folder
 - 429cbe1f 24 Nov 08:41 ledger line 96843f30
 - 96843f30 24 Nov 08:41 Desk: wire the Ledger card (AD27)
 - 5710cf5d 24 Nov 08:34 ledger line 204ff52c
 - 204ff52c 24 Nov 08:34 E202: final price chart migration
-- 7f5341e5 24 Nov 08:25 ledger line c3ceddb2
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-A  admin-desk/scripts/desk-dbsc-look.sh
-A  admin-desk/sql/AD28.sql
-A  admin-desk/sql/checks/AD28-check.sql
-M  docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
-M  docs/claude/AWAM-LOOPHOLE-PHASES-24NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-A  docs/claude/admin-desk/scripts/desk-dbsc-look.sh
-A  docs/claude/admin-desk/sql/AD28.sql
-A  docs/claude/admin-desk/sql/checks/AD28-check.sql
-M  docs/claude/admin-desk/state/WORKING-NOW.md
-A  docs/claude/anexomail-command-center/admin-desk/README.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  docs/cursor-work/sql/index.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/admin-desk/sql/checks/AD28-check.sql   | 11 ++++
- docs/claude/admin-desk/state/WORKING-NOW.md        |  6 +-
- .../anexomail-command-center/admin-desk/README.md  | 11 ++++
- docs/claude/state/WORKING-NOW.md                   | 40 +++++++------
- docs/claude/tech-contracts/CURRENT.md              |  7 +++
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        | 14 ++---
- docs/cursor-work/sql/index.md                      |  4 +-
- 18 files changed, 250 insertions(+), 30 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 40 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 38 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -66,4 +43,4 @@ M  docs/cursor-work/sql/index.md
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (186e7f054a2c2c5078acb6bde00557b20846e12d)
+WIP snapshot: refs/wip/last (10b7534128b0343e3ae144b1943b1170714fcc8e)
