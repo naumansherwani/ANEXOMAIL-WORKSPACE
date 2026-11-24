@@ -453,6 +453,9 @@ docs/claude/admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V5-global-grid-390.pn
 docs/claude/admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V5-global-grid.html
 docs/claude/admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-dashboard.html
 docs/claude/admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-landing-1280.png
+docs/claude/admin-desk/demo/LOGIN-GLOBAL-GRID-DEMO-1280.png
+docs/claude/admin-desk/demo/LOGIN-GLOBAL-GRID-DEMO-390.png
+docs/claude/admin-desk/demo/LOGIN-GLOBAL-GRID-TEXT-24NOV.patch
 docs/claude/admin-desk/docs/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/docs/BLUEPRINT-ABC-01NOV.COPY-21NOV-0825.md
 docs/claude/admin-desk/docs/PLAN-PREMIUM-MAX-21NOV.md

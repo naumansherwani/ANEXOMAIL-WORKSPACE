@@ -1,0 +1,19 @@
+diff --git a/founder-web/src/desk/DeskSignIn.tsx b/founder-web/src/desk/DeskSignIn.tsx
+index 03e9dd47..265377f6 100644
+--- a/founder-web/src/desk/DeskSignIn.tsx
++++ b/founder-web/src/desk/DeskSignIn.tsx
+@@ -61,8 +61,12 @@ export function DeskSignIn() {
+         <section style={card} aria-label="Admin Desk sign-in">
+           <div aria-hidden="true" style={{ position: "absolute", top: -60, left: "50%", width: 260, height: 160, transform: "translateX(-50%)", borderRadius: "50%", background: "radial-gradient(closest-side,rgba(95,168,255,.42),rgba(27,79,156,.22) 55%,rgba(10,26,62,0) 100%)", filter: "blur(6px)", pointerEvents: "none" }} />
+           <a href="/" aria-label="ANEXOMAIL Admin Desk home" className="dk-logo-card" style={{ minHeight: 44, alignItems: "center", color: "inherit", textDecoration: "none", position: "relative", zIndex: 1 }}><BrandMark home={false} /></a>
+-          <p style={{ margin: 0, fontSize: 12, letterSpacing: ".28em", color: "#8FB4FF" }}>ADMIN DESK</p>
+-          <h1 style={{ margin: 0, fontWeight: 500, fontSize: "clamp(24px,6vw,30px)", lineHeight: 1.15, textAlign: "center", textWrap: "balance" as const }}>Sign in to the company desk</h1>
++          {/* his 24 Nov 2026 12:09: the small ADMIN DESK label and the "Sign in to the company desk" heading are gone; THE GLOBAL GRID WORKPLACE stands there with the same two side lines as the dashboard line (rule, text, rule) */}
++          <h1 style={{ margin: 0, width: "100%", display: "flex", alignItems: "center", gap: 12, fontWeight: 500, fontSize: "clamp(14px,4.2vw,17px)", letterSpacing: ".06em", lineHeight: 1.2, color: "#C3CCD8" }}>
++            <span aria-hidden="true" style={{ flex: "1 1 14px", maxWidth: 70, minWidth: 12, height: 1, background: "linear-gradient(90deg,transparent,#6FA6F2)" }} />
++            <span style={{ whiteSpace: "nowrap" }}>THE GLOBAL GRID WORKPLACE</span>
++            <span aria-hidden="true" style={{ flex: "1 1 14px", maxWidth: 70, minWidth: 12, height: 1, background: "linear-gradient(270deg,transparent,#6FA6F2)" }} />
++          </h1>
+           <p style={{ margin: 0, fontSize: 14, lineHeight: 1.5, color: "#A9BAD6", textAlign: "center", maxWidth: 340 }}>Sovereign Desk Access. Protect every customer’s vault—secured by hardware, built for you to step in and resolve instantly.</p>
+           <div style={{ width: "100%", borderTop: "1px solid rgba(160,200,255,.14)", paddingTop: 12 }}>
+             <form onSubmit={submit} noValidate name="desklogin" method="post" autoComplete="on" style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 4 }}>
