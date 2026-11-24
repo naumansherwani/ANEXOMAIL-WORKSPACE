@@ -653,7 +653,7 @@ export function AuthPage({ founderLogin = false, startMode }: { founderLogin?: b
                   ) : mode === "reset" ? (
                     <Header title="Choose a new password" sub="Use 6 to 15 characters." />
                   ) : (
-                    <Header title="Enter The Global Grid" sub="Your enterprise. Your network. Your access." />
+                    <Header title="Enter The Global Grid" sub="Your enterprise. Your network. Access Your Global Workspace." />
                   )}
                 </motion.div>
               </AnimatePresence>
