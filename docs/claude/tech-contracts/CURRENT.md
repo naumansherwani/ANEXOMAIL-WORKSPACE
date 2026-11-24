@@ -1,3 +1,11 @@
+# TECH CONTRACT FOR PHASE: AWAM SIGN-IN (landing footer HELD: SiteFooter.tsx is the chairman wording and needs his explicit footer OK), SHIPPED (awam lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 13:44-13:49 orders: Rule 52 words out, advance-only lines, WebTransport/QUIC/HTTP/3 + Media over QUIC (IETF MoQ) added for ANEXOCHAT + HTTP/3 signatures (RFC 9421) + IETF WIMSE in ONE line, seven rotating taglines incl. Every answer, verified by WASM Kernel, light rests at the top; the same lines on the landing BUILT WITH footer; code = demo/awam-signin-24nov/real-taglines + real-landing copied unchanged)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| React 19 + TypeScript strict + Tailwind 4 + Framer Motion + CSS + Canvas (no new dependency): left panel with one resting light, 11 advance-only technology lines, 7 rotating taglines, navy right side with dust, glass card; landing footer BUILT WITH rows in the same wording; same on 390 / 820 / 1200+ | src/components/site/AuthCinema.tsx, src/components/site/AuthDust.tsx, src/routes/auth.tsx, src/styles.css, src/components/site/SiteFooter.tsx; the sign-in path is UNCHANGED: docs/claude/admin-desk/sql/AD01.sql and docs/claude/admin-desk/server/src/auth.rs | YES | tsc clean, dev render login 1280/820/390 + reduced motion, footer 1280/390, no sideways scroll |
+| PROMISES written on the pages by his order before every one is in awam code (Media over QUIC for ANEXOCHAT, ML-DSA hybrid, OpenPGP PQC, HTTP/3 signatures + WIMSE, MTA-STS, DANE, DBSC, HTTP/3 and AES-256 on awam until K5b): OPEN promises P8-P17 | docs/claude/WEBSITE-PROMISES.md | YES (rows) | rows P8-P17 |
+
+RULE 52 COMBO: S=yes (no call changed, text and style only) M=yes (no mail path touched; MTA-STS, DANE, DMARC listed as promises) L=yes (no logging path touched)
+
 # TECH CONTRACT FOR PHASE: AWAM SIGN-IN GLOBAL GRID LOOK, SHIPPED (awam lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 13:25 order "yeh demo wala send kero, banao, real, approved hai"; code = demo/awam-signin-24nov/real-exact copied unchanged; backups: backups/awam/20261124-1235-before-signin-global-grid, 20261124-1305-original-live-on-his-server, 20261124-1325-existing-login-live)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -4106,3 +4114,9 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - DEMO ONLY: left light rests at the top (real-list) and 7 rotating taglines (real-taglines), src untouched. TECH-LAW CHECKED. TESTED: light top stays at 32px over 3 moments, 7 taglines rendered, tsc clean, src diff empty
 
 - DEMO ONLY: engine line fixed to Rust + Tokio + Axum engine (no versions) in real-list and real-taglines; src untouched. TECH-LAW CHECKED. TESTED: grep no version digits in the line, dev render 1280 OK, tsc clean, src diff empty
+
+- DEMO ONLY: taglines incl. Every answer, verified by WASM Kernel; login lines HTTP/3 signatures and Media over QUIC (IETF MoQ) added for ANEXOCHAT; landing footer demo real-landing. src untouched. TECH-LAW CHECKED. TESTED: 7 taglines render, last tagline fits, landing footer 1280 and 390 no sideways scroll, tsc clean, src diff empty
+
+- AWAM SHIPPED: sign-in (11 advance lines, MoQ added for ANEXOCHAT, HTTP/3 signatures RFC 9421 + WIMSE, 7 taglines, resting light, no Rule 52 words) + landing BUILT WITH footer rows; promises P8-P17 OPEN. TECH-LAW CHECKED. TESTED: tsc clean, login render 1280/820/390 + reduced motion 3 inputs no sideways scroll, footer 1280/390 no sideways scroll
+
+- AWAM SHIPPED: sign-in only (11 advance lines, MoQ added for ANEXOCHAT, HTTP/3 signatures RFC 9421 + WIMSE, 7 taglines, resting light, no Rule 52 words); landing footer HELD in demo/awam-signin-24nov/real-landing because SiteFooter.tsx is the chairman wording (gate CHAIRMAN FOOTER); promises P8-P17 OPEN. TECH-LAW CHECKED. TESTED: tsc clean, login render 1280/820/390 + reduced motion 3 inputs no sideways scroll

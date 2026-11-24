@@ -8,17 +8,25 @@ const taglines = [
   "Mail when it matters.",
   "Chat when it's instant.",
   "Work when it's done.",
+  "Move in. We carry your mail.",
+  "Your domain. Your inbox.",
+  "Your data. Export anytime.",
+  "Every answer, verified by WASM Kernel.",
 ];
 
-/* His approved demo (demo/awam-signin-24nov/demo.js), the seven lines exactly, "(Rule 52)" removed by his 13:02 word. */
+/* His approved demo (demo/awam-signin-24nov/demo.js), the seven lines exactly. */
 const stack: string[] = [
-  "Rust WASM kernel verifies every answer",
-  "Signed answers: Ed25519, replay refused (Rule 52)",
+  "Rust WebAssembly kernel verifies every answer",
   "Rust + Tokio + Axum engine",
-  "WebTransport · HTTP/3 · QUIC",
-  "TLS 1.3 · AES-256-GCM · X25519MLKEM768",
-  "Argon2id · passkeys · device-bound sessions",
-  "PostgreSQL 16 RLS · hash-chained ledger",
+  "WebTransport · QUIC · HTTP/3 · Media over QUIC (IETF MoQ) added for ANEXOCHAT · HTTP/3 signatures (RFC 9421) · IETF WIMSE",
+  "TLS 1.3 · AES-256-GCM",
+  "X25519MLKEM768 post-quantum key exchange",
+  "Ed25519 + ML-DSA hybrid signatures",
+  "OpenPGP PQC (RFC 9980)",
+  "MTA-STS · DANE · DMARC (RFC 7489)",
+  "Passkeys · DBSC device-bound sessions",
+  "PostgreSQL 16 row-level security",
+  "Hash chains · Merkle logs (RFC 6962)",
 ];
 
 /**
@@ -30,7 +38,7 @@ export function AuthCinema({ className }: { className?: string }) {
   const [idx, setIdx] = useState(0);
 
   useEffect(() => {
-    const t = setInterval(() => setIdx((i) => (i + 1) % taglines.length), 3200);
+    const t = setInterval(() => setIdx((i) => (i + 1) % taglines.length), 3000);
     return () => clearInterval(t);
   }, []);
 
@@ -78,7 +86,7 @@ export function AuthCinema({ className }: { className?: string }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -14 }}
               transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="ax-auth-tag absolute inset-x-0 text-center text-[17px] font-semibold tracking-tight"
+              className={`ax-auth-tag absolute inset-x-0 text-center font-semibold tracking-tight ${taglines[idx].length > 34 ? "text-[14.5px] leading-[28px]" : "text-[17px]"}`}
             >
               {taglines[idx]}
             </motion.p>
@@ -105,11 +113,11 @@ export function AuthCinema({ className }: { className?: string }) {
               key={text}
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 0.9, x: 0 }}
-              transition={{ delay: 0.2 + i * 0.12, duration: 0.5, ease: "easeOut" }}
-              className="flex items-center gap-2.5"
+              transition={{ delay: 0.2 + i * 0.1, duration: 0.5, ease: "easeOut" }}
+              className={`flex gap-2.5 ${text.length > 48 ? "items-start" : "items-center"}`}
             >
-              <span className="size-[5px] shrink-0 rounded-full bg-[#6FA6F2] shadow-[0_0_8px_#6FA6F2]" />
-              <span className="whitespace-nowrap text-[12.5px] text-[#C3CCD8]">{text}</span>
+              <span className={`size-[5px] shrink-0 rounded-full bg-[#6FA6F2] shadow-[0_0_8px_#6FA6F2] ${text.length > 48 ? "mt-[7px]" : ""}`} />
+              <span className={`text-[12.5px] leading-snug text-[#C3CCD8] ${text.length > 48 ? "" : "whitespace-nowrap"}`}>{text}</span>
             </motion.li>
           ))}
         </ul>

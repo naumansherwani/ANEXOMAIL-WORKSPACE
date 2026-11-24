@@ -3097,3 +3097,9 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - DEMO ONLY: left light rests at the top (real-list) and 7 rotating taglines (real-taglines), src untouched. TECH-LAW CHECKED. TESTED: light top stays at 32px over 3 moments, 7 taglines rendered, tsc clean, src diff empty
 
 - DEMO ONLY: engine line fixed to Rust + Tokio + Axum engine (no versions) in real-list and real-taglines; src untouched. TECH-LAW CHECKED. TESTED: grep no version digits in the line, dev render 1280 OK, tsc clean, src diff empty
+
+- DEMO ONLY: taglines incl. Every answer, verified by WASM Kernel; login lines HTTP/3 signatures and Media over QUIC (IETF MoQ) added for ANEXOCHAT; landing footer demo real-landing. src untouched. TECH-LAW CHECKED. TESTED: 7 taglines render, last tagline fits, landing footer 1280 and 390 no sideways scroll, tsc clean, src diff empty
+
+- AWAM SHIPPED: sign-in (11 advance lines, MoQ added for ANEXOCHAT, HTTP/3 signatures RFC 9421 + WIMSE, 7 taglines, resting light, no Rule 52 words) + landing BUILT WITH footer rows; promises P8-P17 OPEN. TECH-LAW CHECKED. TESTED: tsc clean, login render 1280/820/390 + reduced motion 3 inputs no sideways scroll, footer 1280/390 no sideways scroll
+
+- AWAM SHIPPED: sign-in only (11 advance lines, MoQ added for ANEXOCHAT, HTTP/3 signatures RFC 9421 + WIMSE, 7 taglines, resting light, no Rule 52 words); landing footer HELD in demo/awam-signin-24nov/real-landing because SiteFooter.tsx is the chairman wording (gate CHAIRMAN FOOTER); promises P8-P17 OPEN. TECH-LAW CHECKED. TESTED: tsc clean, login render 1280/820/390 + reduced motion 3 inputs no sideways scroll
