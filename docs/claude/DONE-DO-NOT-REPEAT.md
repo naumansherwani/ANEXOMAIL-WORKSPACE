@@ -3043,3 +3043,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Awam sign-in cinematic demo only, no code change. TECH-LAW CHECKED. TESTED: demo rendered on the real awam page (vite dev) at 1280 and 390 OK
 
 - Awam sign-in demo V2 only, no code change. TECH-LAW CHECKED. TESTED: demo rendered on the real awam page at 1280 OK
+
+- Awam sign-in demo V3 right side only, no code change. TECH-LAW CHECKED. TESTED: demo rendered on the real awam page at 1280 and 390 OK

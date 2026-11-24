@@ -96,7 +96,11 @@ admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-logo-a.png
 admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-logo-b.png
 admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-r52-a.png
 admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-r52-b.png
+admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-right-390.png
+admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-right-a.png
+admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-right-b.png
 admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-demo-script-r52.js
+admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-demo-script-right.js
 admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-demo-script.js
 admin-desk/demo/COLOUR-DEMO-2-CINEMATIC-LIGHT-22NOV.png
 admin-desk/demo/COLOUR-DEMO-22NOV.md
