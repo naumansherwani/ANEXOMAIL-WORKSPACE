@@ -1,0 +1,32 @@
+# AWAM LOOPHOLE-FIX PHASES, IN ORDER (his 24 Nov 2026 07:23 PKT word: "awam ke blueprint main jo loopholes hain woh theek kerna hai, un ke andar phases tarteeb se likh do, main awam ki bari pe karaay gay"). Written as a plan only: NO awam code is touched now (awam stays frozen until the founder lane is complete). Each row has its advance technology (Rule 52, HTTP/3, Rust, PostgreSQL 16 world-class SQL) and a web-research line before code.
+# HIS STANDARD (07:23): Switzerland company registration planned; the bar for himself and for the awam = "Elon Musk level" (his words). Claude's reading, to be confirmed by him: measurable, provable, no unverified claim anywhere, security by construction (fail closed), every number on the site backed by a live proof, incident honesty. Not a legal opinion.
+## WHERE EACH LOOPHOLE COMES FROM (all found in the repo or in his server pastes, none invented)
+| # | Loophole | Source |
+|---|---|---|
+| L1 | Package code is OLD: Premium capped at 21,000 users in SQL (should be 7,000), no Business Max row, no 10 GB Max tier in main.rs, no Max cap / near-cap alert (90% yellow, 95% high) / pool throttle code | AWAM-BLUEPRINT-ALPHABETIC top block AW0, docs/awam/PACKAGES-CAPS-AUDIT-22NOV.md |
+| L2 | Three company tables (orgs 7, organisations 16, account_organisations 10) with no single canonical tenant key proven for the whole product; org_domains has no effective-dated history | his server paste cp5-look 24 Nov, schema snapshot, D6-B13-T0 |
+| L3 | Billing truth is empty: workspace_subscriptions 0 rows, polar_subscriptions 0 rows, no plan column on orgs, mailbox_storage rows link to no org | D5A-3B-SCHEMA-READ-22NOV.md (his pastes) |
+| L4 | Awam passkey sign-in: 7 loopholes (account oracle, distinct errors, no network limit or sign-in ledger, challenge spam, direct table access, clone detection not a database door, Bun route) | docs/claude/AWAM-PASSKEY-AUDIT-10NOV.md |
+| L5 | Awam transport still not the Rust TLS terminator; the TLS promise line P2 on the awam login/footer is OPEN | WEBSITE-PROMISES.md P2, AW2 |
+| L6 | The customer side of Desk consent has no screen: a company admin cannot approve, deny or revoke a staff data-access request | B13 Z4c (CP5 SQL door exists and is GREEN) |
+| L7 | 822 frozen Lovable files (475 endpoints) still run on Bun: banned for the website server | AW1 |
+| L8 | Landing page may link to the AI product before July 2027 (must show only "Coming soon") | AWAM-BLUEPRINT-ALPHABETIC section A |
+| L9 | Swiss company and Swiss data-protection program not written anywhere | this file, section SWISS |
+## THE ORDER (each phase GREEN only with WIRED: YES / REAL: YES / TECH-LAW CHECKED, seen at 390 / 820 / 1200+; awam gate and awam pull, never mixed with the founder or the Desk)
+| Phase | Fixes | Work | Advance technology |
+|---|---|---|---|
+| AWL-1 | L2 | ONE canonical tenant key: orgs.id; the other two tables reference it (checks first, no destructive change); versioned effective-dated domain ownership + case/tenant identity rules shared with the Desk (B13 T1..T3) | PostgreSQL 16: FK to registry, partial unique indexes, append-only hash-chained history, forced RLS, selftest + CHECK file, schema-first on the older SQL |
+| AWL-2 | L3 | Billing truth: one subscription row per company created at signup/trial (48-hour trial is the only free entry), plan column mapped to the six packages, mailbox_storage linked to org_id, Polar webhook writes through a SQL door | PostgreSQL 16 doors, append-only billing ledger, Rust axum + Tokio webhook with signature check, Rule 52 |
+| AWL-3 | L1 | Package code made final: Basic, Pro, Business, Business Pro, Business Premium (7,000 users / 70 TB / 100 MB / 4 GB chat file), Business Max (card unlimited, strict 125,000 cap, 90% yellow, 95% high, never blocked, pool throttle) | PostgreSQL CHECK + trigger caps, Rust door, alert ledger, kernel-verified numbers |
+| AWL-4 | L4 | Awam passkey door in Rust with generic errors, network limit, sign-in hash chain, discoverable credentials, clone detection as a SQL door | webauthn-rs, DBSC, PostgreSQL doors (E151/E153/E117 patterns), Rust WASM kernel |
+| AWL-5 | L5 | Awam transport (K5b): Rust rustls, TLS 1.3 AES-256-GCM, X25519MLKEM768, HTTP/3; his openssl proof; then the P2 line on the site becomes true | Rust + quinn + h3, post-quantum hybrid key exchange |
+| AWL-6 | L6 | Customer consent screen on the awam side: company admin approves, denies, revokes (ONE new route file, no edit of existing awam files); passkey digest verified in Rust before cp.consent_decide | WebAuthn user verification, cp.consent_decide / cp.consent_revoke (CP5), Rule 52, React 19 |
+| AWL-7 | L7 | Lovable-to-Rust migration with a loophole pass per file (AW1) | Rust twins, parity tests, loophole pass per file |
+| AWL-8 | L8 | Landing: no AI links, "Coming soon" only | static check + gate rule |
+| AWL-9 | L9 | SWISS program (below) | legal + technical records |
+## SWISS (L9): what is verified and what is NOT
+VERIFIED (Swiss government SME portal kmu.admin.ch, page "New Federal Act on Data Protection (nFADP)", read 24 Nov 2026): keep a record of processing activities (SMEs may be exempt where processing has limited risk); notify the FDPIC promptly of a data security breach; privacy by design; privacy by default (products configured to protect data without user action); genetic and biometric data are sensitive; profiling is covered.
+NOT VERIFIED (the page does not say, and no legal source was read): data protection impact assessments, processor contracts, fines, cross-border transfer rules, Swiss representative for foreign companies, data protection advisor. These need a Swiss lawyer. NOT legal advice.
+COMPANY REGISTRATION: choice of legal form (GmbH or AG), canton, and registered address are HIS decisions with a Swiss lawyer or notary; Claude does not decide them. WORK THAT CAN BE PREPARED NOW (technical, no legal claim): a record of processing generated from the real tables, a breach-response runbook with timestamps from the hash-chained ledgers, privacy-by-default settings audit, a data location statement (the real server places: Hetzner + Storage Box), a customer data-processing agreement template for the lawyer to review.
+## WHAT IS NOT DONE
+No awam code changed. No legal text written. Phases wait their turn after the founder lane and the Desk.

@@ -123,6 +123,7 @@ docs/claude/AWAM-FEATURES-BUN-TO-LATEST-03NOV.md
 docs/claude/AWAM-INHERIT-MANIFEST.json
 docs/claude/AWAM-INHERITS-FOUNDER-TECH-LAW-13NOV.md
 docs/claude/AWAM-LAUNCH-PLAN-19NOV.md
+docs/claude/AWAM-LOOPHOLE-PHASES-24NOV.md
 docs/claude/AWAM-LOVABLE-MIGRATION-15NOV.md
 docs/claude/AWAM-MAILBOX-UI-INHERIT-LAW-16NOV.md
 docs/claude/AWAM-MOBILE-LOGIN-COUNTRY-REQUIREMENT-01NOV.md
@@ -355,6 +356,7 @@ docs/claude/admin-desk/D5A5-FAIL-CLOSED-LIST-23NOV.md
 docs/claude/admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
 docs/claude/admin-desk/D5C-ESCALATE-LIST-23NOV.md
 docs/claude/admin-desk/D6-B13-CONSENT-ACCESS-LIST-24NOV.md
+docs/claude/admin-desk/D6-B13-T0-SCHEMA-THREAT-ROLLBACK-24NOV.md
 docs/claude/admin-desk/D6-B13-Z4-CUSTOMER-APPROVAL-PLAN-24NOV.md
 docs/claude/admin-desk/D6-B13-Z4-GATE-CHECKLIST-24NOV.md
 docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md

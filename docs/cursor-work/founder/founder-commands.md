@@ -6121,3 +6121,5 @@ FINAL: 21 Nov Desk Isolation Law and Gate never break. Company OS (Command Cente
 - pull command and advisor question recorded (docs only), TECH-LAW CHECKED, TESTED: docs only, gate pass
 
 - Tenant identity + consent permanent decision saved verbatim, install proof build 3e3f0b550 SAME, docs only, TECH-LAW CHECKED, TESTED: his desk-install paste binary page kernel SAME and CP5 selftest pass, gate pass
+
+- B13 T0 schema threat rollback plan + AWAM loophole phases AWL-1..AWL-9 written (docs only), TECH-LAW CHECKED, TESTED: docs only, facts from repo and his pastes and kmu.admin.ch, gate pass
