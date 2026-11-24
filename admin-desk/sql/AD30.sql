@@ -4,6 +4,7 @@
 -- CHECK-FILE: docs/claude/admin-desk/sql/checks/AD30-check.sql
 -- WHAT IT ADDS (AD01..AD29 unchanged except ONE function body: fadm_consent_request now refuses a case with no binding): desk.fadm_case_binding (one row per case, forever), kinds 'case.bound' and 'case.bind_refused' on the closed ledger list, desk.fadm_case_bind(...) (the only writer), desk.fadm_case_tenant(case ref) (read, NULL = unresolved), desk.fadm_consent_request (same checks as AD20 plus the binding rule).
 -- WHO MAY WRITE: sources 'verified_domain' and 'verified_member' are written by the Desk service itself after T3 proved them against the Control Plane (actor NULL = the system); source 'manual_exception' needs an active staff actor with the right case.assign AND a DIFFERENT active staff reviewer with the right case.assign (two people, never one). A correction of a wrong binding is NOT here: it is a later dual-approved procedure (T5) that adds a new row type, never an UPDATE.
+-- IDEMPOTENT + CONCURRENCY-SAFE (advisor point 8): the same binding sent twice is a success that writes nothing; two parallel ingests of one case queue on a per-case advisory lock; a DIFFERENT tenant for a bound case is always refused.
 -- HONEST LIMITS: this file proves "this case is bound to this UUID by this source, by these people, at this time". That the UUID is a real tenant is proved by T1 + the Rust door (Control Plane check) before it calls fadm_case_bind; the database cannot reach the awam database.
 CREATE TABLE IF NOT EXISTS desk.fadm_case_binding (
   case_id    uuid PRIMARY KEY REFERENCES desk.fadm_case(id),
@@ -43,7 +44,7 @@ BEGIN
   IF p_tenant IS NULL THEN why := 'no_tenant';
   ELSIF p_source NOT IN ('verified_domain', 'verified_member', 'manual_exception') THEN why := 'bad_source';
   ELSIF jsonb_typeof(p_evidence) <> 'object' OR octet_length(p_evidence::text) > 2000 THEN why := 'bad_evidence';
-  ELSIF EXISTS (SELECT 1 FROM desk.fadm_case_binding WHERE case_id = c.id) THEN why := 'already_bound';
+  ELSIF EXISTS (SELECT 1 FROM desk.fadm_case_binding WHERE case_id = c.id AND tenant_id <> p_tenant) THEN why := 'already_bound';
   ELSIF p_source = 'manual_exception' AND (p_actor IS NULL OR p_reviewer IS NULL OR p_actor = p_reviewer) THEN why := 'two_people_needed';
   ELSIF p_source = 'manual_exception' AND (SELECT count(*) FROM desk.fadm_owner o WHERE o.id IN (p_actor, p_reviewer) AND o.status = 'active') <> 2 THEN why := 'not_active_staff';
   ELSIF p_source = 'manual_exception' AND NOT (COALESCE((SELECT allowed FROM desk.fadm_authorize(p_actor, 'case.assign', desk.fadm_unit_id('department', 'desk'), NULL)), false) AND COALESCE((SELECT allowed FROM desk.fadm_authorize(p_reviewer, 'case.assign', desk.fadm_unit_id('department', 'desk'), NULL)), false)) THEN why := 'no_right';
@@ -51,6 +52,12 @@ BEGIN
   END IF;
   IF why IS NOT NULL THEN
     PERFORM desk.fadm_audit(p_actor, 'case.bind_refused', jsonb_build_object('case', p_case, 'why', why, 'source', left(COALESCE(p_source, '-'), 20)));
+    RETURN false;
+  END IF;
+  PERFORM pg_advisory_xact_lock(hashtextextended('desk.fadm_case_bind:' || c.id::text, 30));   -- two ingests of the same case wait for each other (concurrency-safe)
+  IF EXISTS (SELECT 1 FROM desk.fadm_case_binding WHERE case_id = c.id) THEN
+    IF EXISTS (SELECT 1 FROM desk.fadm_case_binding WHERE case_id = c.id AND tenant_id = p_tenant) THEN RETURN true; END IF;   -- IDEMPOTENT: the same answer again is a success and writes nothing
+    PERFORM desk.fadm_audit(p_actor, 'case.bind_refused', jsonb_build_object('case', p_case, 'why', 'already_bound', 'source', left(p_source, 20)));
     RETURN false;
   END IF;
   INSERT INTO desk.fadm_case_binding (case_id, tenant_id, source, actor, reviewer, evidence) VALUES (c.id, p_tenant, p_source, p_actor, p_reviewer, p_evidence);
@@ -107,6 +114,8 @@ BEGIN
   PERFORM pg_temp.ad30_ok(desk.fadm_case_bind(cref, t1, 'verified_domain', NULL, NULL, jsonb_build_object('domain', 'example.com')), 'the system binds a verified-domain case');
   PERFORM pg_temp.ad30_ok(desk.fadm_case_tenant(cref) = t1, 'the case now has its tenant');
   PERFORM pg_temp.ad30_ok(NOT desk.fadm_case_bind(cref, t2, 'verified_domain', NULL, NULL, '{}'::jsonb) AND desk.fadm_case_tenant(cref) = t1, 'a second binding (another tenant) is refused: already_bound');
+  n0 := (SELECT count(*) FROM desk.fadm_ledger);
+  PERFORM pg_temp.ad30_ok(desk.fadm_case_bind(cref, t1, 'verified_domain', NULL, NULL, '{}'::jsonb) AND (SELECT count(*) FROM desk.fadm_ledger) = n0 AND (SELECT count(*) FROM desk.fadm_case_binding WHERE tenant_id = t1) >= 1, 'the SAME answer again is idempotent: success, no new line, no new row');
   BEGIN UPDATE desk.fadm_case_binding SET tenant_id = t2; RAISE EXCEPTION 'no refusal u' USING ERRCODE = 'P0AT1'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;
   BEGIN DELETE FROM desk.fadm_case_binding; RAISE EXCEPTION 'no refusal d' USING ERRCODE = 'P0AT1'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;
   BEGIN TRUNCATE desk.fadm_case_binding; RAISE EXCEPTION 'no refusal t' USING ERRCODE = 'P0AT1'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;

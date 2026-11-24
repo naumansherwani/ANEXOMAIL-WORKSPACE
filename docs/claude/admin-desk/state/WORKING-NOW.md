@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 09:20 PKT) - read this FIRST for the Desk after a compaction
-DOING: B13 T2 AD30 + not_bound word
+# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 09:22 PKT) - read this FIRST for the Desk after a compaction
+DOING: B13 T2 AD30 idempotent + advisor coverage table
 NEXT STEP: his desk-install, then T3
-HIS LAST WORD: his saved tenant decision
+HIS LAST WORD: advisor text vs code
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 7a550734 24 Nov 09:20 ledger line f5b5d7d4
 - f5b5d7d4 24 Nov 09:20 Desk B13 T2: case-to-tenant binding AD30, not_bound door word
 - 1ae68d49 24 Nov 09:13 ledger line 5a00279a
 - 5a00279a 24 Nov 09:13 Desk 1m-L3 GREEN desktop
@@ -72,9 +73,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - d7bfb5df 24 Nov 09:12 Desk: 1m-L3 install proof, compaction save
 - 1bc496ed 24 Nov 09:05 ledger line 1ec1ce87
 - 1ec1ce87 24 Nov 09:05 Desk 1m-L3: incremental ledger check AD29, staff-only fault banner
-- e2d19d33 24 Nov 08:54 ledger line 44e648f6
 
 ## Uncommitted Desk files
+A  admin-desk/D6-B13-ADVISOR-COVERAGE-24NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  admin-desk/sql/AD30.sql
+A  docs/claude/admin-desk/D6-B13-ADVISOR-COVERAGE-24NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/sql/AD30.sql
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
