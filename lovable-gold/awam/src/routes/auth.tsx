@@ -648,7 +648,7 @@ export function AuthPage({ founderLogin = false, startMode }: { founderLogin?: b
                   ) : mode === "reset" ? (
                     <Header title="Choose a new password" sub="Use 6 to 15 characters." />
                   ) : (
-                    <Header title="Sign in" sub="Your mail, people, calendar and work — one surface." />
+                    <Header title="Access Your Global Workspace" sub="Your mail, people, calendar and work. The all connected in one place." />
                   )}
                 </motion.div>
               </AnimatePresence>

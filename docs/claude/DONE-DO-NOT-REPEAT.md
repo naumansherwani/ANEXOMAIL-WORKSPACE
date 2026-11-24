@@ -3071,3 +3071,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - AWAM SIGN-IN: ORIGINAL stays live (backup backups/awam/20261124-1305-original-live-on-his-server); FINAL look (demo exact, Rule 52 words removed) parked in demo/awam-signin-24nov/real-wip until he says send. TECH-LAW CHECKED. TESTED: src == original backup, dev render of the final look 1280/820/390 + reduced motion no sideways scroll, form renders
 
 - DEMO ONLY: awam sign-in card gradient in logo colours + final look files saved in demo/awam-signin-24nov (real-wip, screens, card-gradient.cjs); src untouched = original. TECH-LAW CHECKED. TESTED: dev render 1280 three moments, background-position moves 12% to 91%, tsc clean, src diff empty
+
+- AWAM SIGN-IN TEXT ONLY: heading Access Your Global Workspace + line under it, his exact words, nothing else changed. TECH-LAW CHECKED. TESTED: tsc clean, dev render 390/820/1280 heading shows, no sideways scroll, rest of the page identical to original

@@ -1,3 +1,17 @@
+# TECH CONTRACT FOR PHASE: AWAM SIGN-IN TEXT ONLY (awam lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 13:12 order: only the heading and the line under it change on the CURRENT login, nothing else; the demo look stays parked in demo/awam-signin-24nov/real-wip)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| React 19 + TypeScript strict: the sign-in Header text only, Access Your Global Workspace + Your mail, people, calendar and work. The all connected in one place. (his exact words); every colour, layout, field, button and the sign-in logic unchanged; same on 390 / 820 / 1200 | src/routes/auth.tsx (one line); the sign-in path is UNCHANGED: docs/claude/admin-desk/sql/AD01.sql and docs/claude/admin-desk/server/src/auth.rs | YES | tsc clean, dev render 390/820/1280 |
+
+RULE 52 COMBO: S=yes (no call changed) M=yes (no mail path touched) L=yes (no logging path touched)
+
+# TECH CONTRACT FOR PHASE: AWAM SIGN-IN HEADING TEXT (awam lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 13:11 order "Access Your Global Workspace / Your mail, people, calendar and work — all connected in one place. current wale pe, baki kuch change nahi")
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| React 19 + TypeScript strict: TWO text lines only (the sign-in heading and its sub line) on the CURRENT original page; no colour, layout, component or logic changed; same on 390 / 820 / 1200 | src/routes/auth.tsx (the only file changed, line 651); the sign-in path stays on docs/claude/admin-desk/sql/AD01.sql unchanged and docs/claude/admin-desk/server/src/auth.rs unchanged (no SQL or Rust touched) | YES | tsc clean; git diff = 1 line |
+
+RULE 52 COMBO: S=yes (sign-in calls untouched, text only) M=yes (no mail path touched) L=yes (no logging path touched)
+
 # TECH CONTRACT FOR PHASE: AWAM SIGN-IN GLOBAL GRID LOOK (RE-WRITTEN 12:50 exactly as his approved demo, his words "yeh final huwa tha", "mujhe yeh chaiye hain", "touch nahi kerna") (awam lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 12:33 order "2nd image approved hai, sari technology login page pe likho (MoQ, IETF bhi), Rule 52 text mat likho, back up le ke codes likho"; demo approved first in demo/awam-signin-24nov; backup = backups/awam/20261124-1235-before-signin-global-grid)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -4058,3 +4072,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - AWAM SIGN-IN: ORIGINAL stays live (backup backups/awam/20261124-1305-original-live-on-his-server); FINAL look (demo exact, Rule 52 words removed) parked in demo/awam-signin-24nov/real-wip until he says send. TECH-LAW CHECKED. TESTED: src == original backup, dev render of the final look 1280/820/390 + reduced motion no sideways scroll, form renders
 
 - DEMO ONLY: awam sign-in card gradient in logo colours + final look files saved in demo/awam-signin-24nov (real-wip, screens, card-gradient.cjs); src untouched = original. TECH-LAW CHECKED. TESTED: dev render 1280 three moments, background-position moves 12% to 91%, tsc clean, src diff empty
+
+- AWAM SIGN-IN TEXT ONLY: heading Access Your Global Workspace + line under it, his exact words, nothing else changed. TECH-LAW CHECKED. TESTED: tsc clean, dev render 390/820/1280 heading shows, no sideways scroll, rest of the page identical to original

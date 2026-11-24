@@ -1,9 +1,9 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 13:07 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 13:14 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: card logo-colour gradient demo saved in demo/awam-signin-24nov
-NEXT STEP: his approval of the demo, then ship real-wip to src
-HIS LAST WORD: his 13:05-13:06: gradient on the box, demo save in repo
+DOING: awam sign-in: only the heading and the line under it (current login)
+NEXT STEP: his pull then live Chrome look
+HIS LAST WORD: his 13:12: text only, nothing else
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- b267192b 24 Nov 13:07 ledger line 7de5879a
 - 7de5879a 24 Nov 13:07 card gradient demo saved
 - ac287a13 24 Nov 13:05 ledger line 346285b3
 - 346285b3 24 Nov 13:05 original sign-in backed up, final look parked
@@ -75,7 +76,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 0652f59e 24 Nov 12:59 awam sign-in back to original, look parked
 - c2ac03d9 24 Nov 12:50 ledger line 3d90027d
 - 3d90027d 24 Nov 12:50 awam sign-in approved demo as real code
-- f18b0145 24 Nov 12:44 ledger line a1c40c57
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
