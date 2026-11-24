@@ -6,7 +6,8 @@ import { BrandMark } from "@/components/site/BrandMark";
 
 const taglines = [
   "Mail when it matters.",
-  "Chat when it's instant.",
+  "Chat. Instantly. With ANEXOCHAT.",
+  "Real-time conversations. Seamlessly connected.",
   "Work when it's done.",
   "Move in. We carry your mail.",
   "Your domain. Your inbox.",
@@ -16,10 +17,10 @@ const taglines = [
 
 /* His approved demo (demo/awam-signin-24nov/demo.js), the seven lines exactly. */
 const stack: string[] = [
-  "Rust WebAssembly kernel verifies every answer",
+  "A Rust WebAssembly kernel verifies every answer",
   "Rust + Tokio + Axum engine",
-  "WebTransport · QUIC · HTTP/3 · Media over QUIC (IETF MoQ) added for ANEXOCHAT · HTTP/3 signatures (RFC 9421) · IETF WIMSE",
-  "TLS 1.3 · AES-256-GCM",
+  "WebTransport · QUIC · HTTP/3 · Media over QUIC (IETF MoQ) added for ANEXOCHAT with HTTP/3 signatures (RFC 9421) · IETF WIMSE",
+  "TLS 1.3 with AES-256-GCM",
   "X25519MLKEM768 post-quantum key exchange",
   "Ed25519 + ML-DSA hybrid signatures",
   "OpenPGP PQC (RFC 9980)",
