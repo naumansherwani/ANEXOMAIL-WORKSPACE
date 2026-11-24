@@ -5796,3 +5796,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - Recorded his desk-dbsc-look paste (42,654 no_cookie lines, observe mode, 6 owner sessions) and the fixed Desk command form tail -45. TECH-LAW CHECKED: docs only, no code. TESTED: gate approve, docs-only change pass
 
 - Desk installer prints a short summary, full log in /var/log/anexomail-desk-install, also runs ad-auto for AD32. TECH-LAW CHECKED. TESTED: bash -n OK, summary filter simulated pass
+
+- Desk installer screen = last 16 useful lines, rest in log file. TECH-LAW CHECKED. TESTED: bash -n OK

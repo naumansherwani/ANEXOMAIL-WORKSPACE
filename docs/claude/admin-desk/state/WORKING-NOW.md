@@ -1,9 +1,9 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 11:24 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 11:24 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: desk-install.sh: plain command, log file + short summary, runs ad-auto (AD32)
+DOING: desk-install.sh shows only the last 16 useful lines
 NEXT STEP: his install paste, then B13 T3b GREEN
-HIS LAST WORD: his 24 Nov 11:21 word: plain command should be enough
+HIS LAST WORD: his 24 Nov 11:24 word
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e72225aa 24 Nov 11:24 ledger line aa701036
 - aa701036 24 Nov 11:24 desk-install: one plain command, short summary
 - 1c7d121f 24 Nov 11:20 ledger line 4aa710f6
 - 4aa710f6 24 Nov 11:20 Desk note: dbsc-look finding, command form
@@ -75,9 +76,12 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - cb9c7b55 24 Nov 11:13 Rule 52 combo standard + gate rule
 - 648b9754 24 Nov 11:11 ledger line eb7518a3
 - eb7518a3 24 Nov 11:11 Desk B13 T3b: sender-resolve door, AD32, RFC 9421 WIMSE 7489 OWASP
-- 0b7d147a 24 Nov 10:50 ledger line ea06fd4f
 
 ## Uncommitted Desk files
+M  admin-desk/TWO-COMMANDS.md
+M  admin-desk/scripts/desk-install.sh
+M  docs/claude/admin-desk/TWO-COMMANDS.md
+M  docs/claude/admin-desk/scripts/desk-install.sh
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)

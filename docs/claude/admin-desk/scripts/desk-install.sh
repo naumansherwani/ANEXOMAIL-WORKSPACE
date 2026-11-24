@@ -6,7 +6,7 @@ set -u
 LOGDIR=/var/log/anexomail-desk-install; mkdir -p "$LOGDIR" 2>/dev/null; LOG="$LOGDIR/install-$(date +%Y%m%d-%H%M%S).log"; ls -t "$LOGDIR"/install-*.log 2>/dev/null | tail -n +11 | xargs -r rm -f
 exec 3>&1; exec >"$LOG" 2>&1
 summary() { RC=$1; set +e; { echo "== DESK INSTALL: $([ "$RC" = 0 ] && echo finished || echo "STOPPED (code $RC)"), full log: $LOG"
-  grep -E '^(OK|FAIL|WARN|FACT|AD[0-9]+[a-z]*:|SUMMARY|DONE)|^   (PROOF|DESK BUILD|RESOLVE SELFTEST|LOOKUP SELFTEST|AUDIT FILES OK|control plane ready|WARN|FAIL|note)' "$LOG" | head -45
+  grep -E '^(OK|FAIL|WARN|FACT|AD[0-9]+[a-z]*:|SUMMARY|DONE)|^   (PROOF|DESK BUILD|RESOLVE SELFTEST|LOOKUP SELFTEST|AUDIT FILES OK|control plane ready|WARN|FAIL|note)' "$LOG" | tail -16
   if [ "$RC" != 0 ]; then echo "-- last 20 lines of the log:"; tail -20 "$LOG"; fi; } >&3; }
 trap 'summary $?' EXIT
 REPO="${REPO:-/opt/anexomail-web}"; ROOT=/opt/anexomail-desk; SVC=anexomail-desk; export CARGO_TARGET_DIR="$ROOT/target"
