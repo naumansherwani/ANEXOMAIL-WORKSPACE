@@ -3911,3 +3911,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - AD29 + probes.rs + staff-only banner. TECH-LAW CHECKED: incremental anchored verify, Rust probe, React. TESTED: AD29 selftest PG16 x2, CHECK 6/6, cargo test 125, bun test 139, tsc clean
 
 - AD29 + probes.rs + staff-only banner. TECH-LAW CHECKED: incremental anchored verify, Rust probe, React. TESTED: AD29 selftest PG16 x2, CHECK 6/6, cargo test 125, bun test 139, tsc clean
+
+- 1m-L3 install proof recorded (build 1bc496ed8 SAME), not green until his look. TECH-LAW CHECKED: no code change. TESTED: his desk-install paste proofs binary, page, kernel SAME
