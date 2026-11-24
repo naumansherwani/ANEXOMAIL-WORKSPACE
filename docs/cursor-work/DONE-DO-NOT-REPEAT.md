@@ -4655,3 +4655,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - ad-auto.sh now prints the awam-database files AD21..AD26 instead of skipping them silently; TECH-LAW CHECKED; TESTED: bash -n ad-auto.sh ok, origin/main lists AD20..AD26 and checks AD21..AD26
 
 - E201 GREEN on his server (SQL half, WIRED: SQL yes / REAL: yes): his sql-run paste 24 Nov 08:03 PKT shows CHECK_E201 all 12 rows OK; Max price 125,000 FINAL by his word; Business 60 users stands; AWL-3 Rust half + billing rows OPEN; TECH-LAW CHECKED; TESTED: his server CHECK_E201 12 of 12 OK
+
+- CLAUDE.md top line: fixed command forms (awam SQL = AUTO sql-run only, Desk = desk-install only, AD one series, no C series); docs only; TECH-LAW CHECKED; TESTED: rules-gate 0 fail on the commit, line present in CLAUDE.md
+
+- CLAUDE.md: fixed command forms rule added below the RULE 34 block (docs only; one duplicate RESUME line removed so RULE 34 stays inside the gate's top 17000 characters); TECH-LAW CHECKED; TESTED: rules-gate 0 fail on this commit, RULE 34 at char 16968
