@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 07:31 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: B13 T1 CP6 written and tested
-NEXT STEP: his desk-install paste, then T2 case binding
-HIS LAST WORD: his 07:28 word: which phase, when codes
+# WORKING NOW (manual checkpoint, 24 Nov 2026 07:41 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: E201 awam package caps SQL written and scratch-tested
+NEXT STEP: his Desk T1 command FIRST, then awam E201 line, then T2
+HIS LAST WORD: his 07:33 order: fix awam loopholes today; his 07:40 order: Desk CP6 first, order never breaks
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -19,20 +19,55 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 6c78729c 24 Nov 07:30 ledger line 77e022b6
 - 77e022b6 24 Nov 07:30 b13 t1 cp6
 - 6d78da02 24 Nov 07:26 ledger line 9e36ebce
 - 9e36ebce 24 Nov 07:26 t1 checklist
 - 93ffdbf6 24 Nov 07:25 ledger line 5a236721
-- 5a236721 24 Nov 07:25 t0 and awam loophole phases
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/state/WORKING-NOW.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
+A  docs/claude/AWAM-E201-GATE-CHECKLIST-24NOV.md
+M  docs/claude/AWAM-LOOPHOLE-PHASES-24NOV.md
+M  docs/claude/DONE-DO-NOT-REPEAT.md
+M  docs/claude/RESUME-POINT.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/state/WORKING-NOW.md
+M  docs/claude/founder/PULL-COMMANDS.md
+M  docs/claude/state/HEARTBEAT.json
+MM docs/claude/state/WORKING-NOW.md
+M  docs/claude/tech-contracts/CURRENT.md
+M  docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
+M  docs/cursor-work/DONE-DO-NOT-REPEAT.md
+M  docs/cursor-work/founder/founder-commands.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
+M  docs/cursor-work/server/PULL-COMMANDS.md
+A  docs/cursor-work/sql/CHECK_E201.sql
+A  docs/cursor-work/sql/E201_awam_package_caps_final.sql
+M  docs/cursor-work/sql/index.md
+R  founder-web/dist/assets/index-CsDyrRci.js -> founder-web/dist/assets/index-C-V5xrHJ.js
+M  founder-web/dist/index.html
+M  founder-web/src/system_brain.json
+M  lanes/ALL-FILES.csv
+M  lanes/awam.txt
+M  lanes/docs.txt
+M  lanes/founder.txt
+M  lovable-gold/README.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 34 ++--------------------------------
- 1 file changed, 2 insertions(+), 32 deletions(-)
+ founder-web/dist/index.html                        |   2 +-
+ founder-web/src/system_brain.json                  |   6 +-
+ lanes/ALL-FILES.csv                                |   5 +-
+ lanes/awam.txt                                     |   2 +
+ lanes/docs.txt                                     |   1 +
+ lanes/founder.txt                                  |   2 +-
+ lovable-gold/README.md                             |   2 +-
+ 30 files changed, 488 insertions(+), 57 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -43,4 +78,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (35796c8b420220d54f2e66c6a78a68bbd1792d7f)
+WIP snapshot: refs/wip/last (bb95efd3d7899e9f2fb91599009ea56e2deab640)

@@ -1,3 +1,9 @@
+# TECH CONTRACT FOR PHASE: AWAM PACKAGE CAPS FINAL, SQL E201 (phase AWL-3 SQL half + AWL-2 SQL part, awam lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; this is his 24 Nov 2026 07:33 PKT order, awam files untouched), written 08:1x PKT BEFORE install. LIST: docs/claude/AWAM-E201-GATE-CHECKLIST-24NOV.md and docs/claude/AWAM-LOOPHOLE-PHASES-24NOV.md
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL 16: one seat-cap table (forced RLS), append-only SHA-256 hash-chained ledger, strict seat guard trigger with transaction advisory lock, alert levels 90/95/100 as one pure function, raise door (service_role only), selftest with custom SQLSTATE rollback, CHECK file, phase61 file_chart follows under its own guard | docs/cursor-work/sql/E201_awam_package_caps_final.sql, docs/cursor-work/sql/CHECK_E201.sql | YES | scratch PostgreSQL 16: selftest 16 checks twice, CHECK 12 rows true, end-to-end with real tables and the real phase61 chart; NOT yet on his server |
+| Carried unchanged: Control Plane CP6 and the Desk | control-plane/sql/CP6.sql, docs/claude/admin-desk/scripts/cp-install.sh | YES | untouched |
+
 # TECH CONTRACT FOR PHASE: DESK PHONE TITLE WRAP FIX (phase 1m, sub-phase CC1-mobile-3, list BL-29 (CC1) and BL-46 B13 stays next; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 first by his 02:39 order; the new OS rows were only WRITTEN into the list, at its end, by his 05:46 order, none is built here), his 24 Nov 2026 05:46 PKT screenshot, written 05:5x PKT BEFORE install. LIST: docs/claude/admin-desk/OS-INHERIT-AWAM-FOUNDER-PLAN-24NOV.md
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3820,3 +3826,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - B13 T1 gate checklist written before code (docs only), TECH-LAW CHECKED, TESTED: docs only, gate pass
 
 - B13 T1 CP6.sql tenant registry + versioned domain ownership written, WIRED: NO, REAL: NO, TECH-LAW CHECKED, TESTED: scratch PostgreSQL 16 CP6 selftest ALL RULES PASSED twice and CHECK 12 rows true
+
+- AWL-3 SQL half E201 awam package caps final written: six packages storable, Premium 7,000, Max strict 125,000, 90/95 alert ledger SHA-256 chain, strict seat guard, raise door; TECH-LAW CHECKED; TESTED: scratch PostgreSQL 16 selftest 16 checks twice, CHECK 12 rows, end-to-end real tables + real phase61 chart; NOT on his server, not GREEN
+
+- AWL-3 SQL half E201 awam package caps final written: six packages storable, Premium 7,000, Max strict 125,000, 90/95 alert ledger SHA-256 chain, strict seat guard, raise door; TECH-LAW CHECKED; TESTED: scratch PostgreSQL 16 selftest 16 checks twice, CHECK 12 rows, end-to-end real tables + real phase61 chart; NOT on his server, not GREEN

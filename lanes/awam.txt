@@ -433,6 +433,7 @@ docs/cursor-work/sql/CHECK_E195.sql
 docs/cursor-work/sql/CHECK_E196.sql
 docs/cursor-work/sql/CHECK_E199.sql
 docs/cursor-work/sql/CHECK_E200.sql
+docs/cursor-work/sql/CHECK_E201.sql
 docs/cursor-work/sql/CHECK_E42_E47.sql
 docs/cursor-work/sql/CHECK_E48.sql
 docs/cursor-work/sql/CHECK_E50.sql
@@ -514,6 +515,7 @@ docs/cursor-work/sql/E181_fix_send_ledger_text.sql
 docs/cursor-work/sql/E18_signup_device_gate_nonblocking.sql
 docs/cursor-work/sql/E193_company_emoji_pack.sql
 docs/cursor-work/sql/E19_password_reset_hardening.sql
+docs/cursor-work/sql/E201_awam_package_caps_final.sql
 docs/cursor-work/sql/E20_personal_plan_pending.sql
 docs/cursor-work/sql/E22_plan_replacement.sql
 docs/cursor-work/sql/E23_payment_activates_account.sql

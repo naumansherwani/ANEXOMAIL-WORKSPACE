@@ -5710,3 +5710,7 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - B13 T1 gate checklist written before code (docs only), TECH-LAW CHECKED, TESTED: docs only, gate pass
 
 - B13 T1 CP6.sql tenant registry + versioned domain ownership written, WIRED: NO, REAL: NO, TECH-LAW CHECKED, TESTED: scratch PostgreSQL 16 CP6 selftest ALL RULES PASSED twice and CHECK 12 rows true
+
+- AWL-3 SQL half E201 awam package caps final written: six packages storable, Premium 7,000, Max strict 125,000, 90/95 alert ledger SHA-256 chain, strict seat guard, raise door; TECH-LAW CHECKED; TESTED: scratch PostgreSQL 16 selftest 16 checks twice, CHECK 12 rows, end-to-end real tables + real phase61 chart; NOT on his server, not GREEN
+
+- AWL-3 SQL half E201 awam package caps final written: six packages storable, Premium 7,000, Max strict 125,000, 90/95 alert ledger SHA-256 chain, strict seat guard, raise door; TECH-LAW CHECKED; TESTED: scratch PostgreSQL 16 selftest 16 checks twice, CHECK 12 rows, end-to-end real tables + real phase61 chart; NOT on his server, not GREEN
