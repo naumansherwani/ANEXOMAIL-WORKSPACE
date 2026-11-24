@@ -170,3 +170,8 @@ ADVANCE-RESEARCH [CC1] Anexomail Command Center (23 Nov 2026 10:4x PKT): his 10:
 ## 24 Nov 2026 11:50 PKT: DEMO ONLY (real code NOT changed, waits his haan): Desk title line "Senior Executive" -> "THE GLOBAL GRID WORKPLACE", everything else identical. Demo admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V5-global-grid.html (+ 1280 and 390 png). Finding: the new line is wider than ANEXOMAIL (about 1.5x) at 1280 and 390; his word is text-only, so no layout change until he decides.
 
 ## 24 Nov 2026 11:55 PKT: his word "bahar nikal gaya, baqwas": demo V6 fixes it: THE GLOBAL GRID WORKPLACE now fits INSIDE the ANEXOMAIL width (side rules short, text size fitted) at 1280 and 390. Demo only; real DeskTitle.tsx waits his haan.
+
+
+- B13 T3b GREEN (24 Nov 2026 11:5x PKT): his plain desk-install paste (log install-20261124-064528): AD32 run and CHECK OK, RESOLVE SELFTEST OK, AD31 8/8, binary / page / kernel SAME. WIRED: YES / REAL: YES / TECH-LAW CHECKED. RULE 52 COMBO S=yes M=yes L=yes.
+- PARKED (his 11:55 word "yeh tagline kaise fit kerun park kero"): THE GLOBAL GRID WORKPLACE title text, demo V6 only (admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V5-global-grid.html); real DeskTitle.tsx NOT changed; resumes only on his haan.
+- B13 T3c (24 Nov 2026 12:0x PKT, RULE 52 COMBO S M L): AD33 fadm_case_apply_resolution (idempotent, latest decision wins, only answered+resolved binds, source verified_domain, request id as evidence, sender.applied ledger line), Rust apply_sql/apply_word, bindWords. Tests: PG16 selftest + CHECK 7/7, cargo 135, bun 143. NOT installed: his plain desk-install runs ad-auto and shows AD33. Checkpoints C1..C7 in D6-B13-T3-RESOLUTION-LIST-24NOV.md.

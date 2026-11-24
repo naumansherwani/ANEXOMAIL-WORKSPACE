@@ -560,6 +560,69 @@
    "deadline": "B13 T3b",
    "why": "his 11:04: OWASP Logging + fail closed: if the attempt cannot be written to the ledger the verdict is not used.",
    "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T3c-latest-decision-wins",
+   "file": "docs/claude/admin-desk/sql/AD33.sql",
+   "must": "ORDER BY at DESC",
+   "status": "ok",
+   "deadline": "B13 T3c",
+   "why": "T3c: the NEWEST attempt decides; an older resolved answer never binds.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T3c-only-resolved-binds",
+   "file": "docs/claude/admin-desk/sql/AD33.sql",
+   "must": "a.verdict IS DISTINCT FROM 'resolved'",
+   "status": "ok",
+   "deadline": "B13 T3c",
+   "why": "RFC 7489 / DECISION: only answered + resolved binds.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T3c-one-writer",
+   "file": "docs/claude/admin-desk/sql/AD33.sql",
+   "must": "desk.fadm_case_bind(p_case, a.tenant_id, 'verified_domain'",
+   "status": "ok",
+   "deadline": "B13 T3c",
+   "why": "NIST AC-3: the binding goes through the ONE writer AD30, source verified_domain.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T3c-evidence-request-id",
+   "file": "docs/claude/admin-desk/sql/AD33.sql",
+   "must": "jsonb_build_object('request', a.request_id",
+   "status": "ok",
+   "deadline": "B13 T3c",
+   "why": "NIST AU-10: the binding keeps the verified request id.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T3c-owasp-closed-word-line",
+   "file": "docs/claude/admin-desk/sql/AD33.sql",
+   "must": "'sender.applied'",
+   "status": "ok",
+   "deadline": "B13 T3c",
+   "why": "OWASP Logging: one ledger line per apply with a closed word.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T3c-rust-apply-after-log",
+   "file": "docs/claude/admin-desk/server/src/resolve_cp.rs",
+   "must": "apply_sql(case_ref)",
+   "status": "ok",
+   "deadline": "B13 T3c",
+   "why": "T3c: the Rust caller applies after the attempt line is written.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T3c-ts-bindwords",
+   "file": "founder-web/src/desk/desk_consent_pure.ts",
+   "must": "export function bindWords",
+   "status": "ok",
+   "deadline": "B13 T3c",
+   "why": "T3c: plain words for the apply result.",
+   "fail_after": "2027-01-09"
   }
  ]
 }

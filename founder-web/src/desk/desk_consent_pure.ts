@@ -82,3 +82,14 @@ export function resolutionWords(r: unknown): string {
     default: return "Not available.";
   }
 }
+
+/** AD33 / T3c: what the case card says about the result of applying the company check to a case (desk.fadm_case_apply_resolution: ONE closed word). Unknown word = shown as waiting (fail closed). */
+export function bindWords(w: unknown): string {
+  switch (w) {
+    case "bound": return "Company confirmed from the verified sender.";
+    case "already_bound": return "Company already confirmed.";
+    case "not_resolved": return "Waiting: the company check did not confirm a company, so nothing was linked.";
+    case "no_attempt": return "Waiting: the company has not been checked yet.";
+    default: return "Waiting: the company could not be linked.";
+  }
+}

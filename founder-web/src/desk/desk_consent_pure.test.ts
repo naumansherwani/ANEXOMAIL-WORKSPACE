@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { buildRequest, caseRefOk, leftWords, parseBoard, parseOpened, parseRequested, reasonProblem, refusalWords, resolutionWords, verdictWords, statusWords } from "./desk_consent_pure";
+import { bindWords, buildRequest, caseRefOk, leftWords, parseBoard, parseOpened, parseRequested, reasonProblem, refusalWords, resolutionWords, verdictWords, statusWords } from "./desk_consent_pure";
 const ID = "123e4567-e89b-12d3-a456-426614174000";
 test("a request needs a clean case ref, a known scope and a real reason", () => {
   expect(buildRequest({ caseRef: " CASE-1 ", scope: "metadata", reason: "customer asked us to look at the delay" })).toEqual({ case_ref: "CASE-1", scope: "metadata", reason: "customer asked us to look at the delay" });
@@ -42,4 +42,10 @@ test("the case card words for the last company check", () => {
   for (const v of ["shared", "unknown", "ambiguous", "multi_member", "unaligned"]) expect(resolutionWords({ outcome: "answered", verdict: v, at: 1 })).toMatch(/^Waiting:/);
   for (const o of ["unavailable", "refused", "invalid"]) expect(resolutionWords({ outcome: o, verdict: null, at: 1 })).toMatch(/^Waiting:/);
   for (const bad of [undefined, 5, "x", [], {}, { outcome: "answered", at: 1 }, { outcome: "answered", verdict: null, at: 1 }, { outcome: "maybe", verdict: null, at: 1 }, { outcome: "answered", verdict: "resolved", at: "1" }, { outcome: "answered", verdict: "resolved", at: 1, extra: 1 }]) expect(resolutionWords(bad)).toBe("Not available.");
+});
+
+test("the apply words of the company link (T3c): a known word is plain, everything else waits", () => {
+  expect(bindWords("bound")).toBe("Company confirmed from the verified sender.");
+  expect(bindWords("already_bound")).toBe("Company already confirmed.");
+  for (const w of ["not_resolved", "no_attempt", "refused", "BOUND", "", "maybe", null, 7, undefined]) expect(bindWords(w)).toMatch(/^Waiting:/);
 });

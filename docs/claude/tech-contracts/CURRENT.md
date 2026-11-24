@@ -1,3 +1,12 @@
+# TECH CONTRACT FOR PHASE: ADMIN DESK B13 T3c APPLY A VERIFIED VERDICT TO A CASE, SQL AD33 + Desk apply door + plain words (Desk lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next by his own order 10:09 Tarteeb B13; his 24 Nov 2026 11:56 order "blueprint awam side ka admin desk ka rules read kero, yeh critical phases hai, sql old read kero, gates ko batao, checkpoints list do"; T3b GREEN on his server 11:5x: AD32 CHECK OK + RESOLVE SELFTEST OK; the automatic call at case creation = Folder 2 mail door, case card text = Folder 3, T4 manual two-staff next)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL 16 idempotent state transition + NIST SP 800-53 AU-10 non-repudiation and AC-3 + RFC 7489 (only an answered and resolved NEWEST attempt may bind) + OWASP Logging (one sender.applied ledger line per apply, closed word, no address, no domain): AD33 desk.fadm_case_apply_resolution(case ref), SECURITY DEFINER, fixed search_path, 5 s statement and 2 s lock timeout, per-case advisory lock, binding through the ONE writer AD30 fadm_case_bind with source verified_domain and the request id as evidence, rolled-back selftest, CHECK file | docs/claude/admin-desk/sql/AD33.sql, docs/claude/admin-desk/sql/checks/AD33-check.sql | YES | selftest passes on PG16, CHECK 7 of 7 true |
+| Rust + Tokio 1.54.1 (newest) + Rule 52: the Desk calls the apply door only after the attempt line is written and only for a Resolved verdict; one argument (case ref), closed answer words tested against AD33, unknown word = refused (fail closed) | docs/claude/admin-desk/server/src/resolve_cp.rs | YES | cargo test Desk 135 pass |
+| React 19 + TypeScript strict: plain words for the apply result (bindWords), unknown word = waiting, same on 390 / 820 / 1200 | founder-web/src/desk/desk_consent_pure.ts, founder-web/src/desk/desk_consent_pure.test.ts | YES | bun test src/desk 143 pass, tsc clean |
+
+RULE 52 COMBO: S=yes (the Desk applies only a verdict the Control Plane signed under RFC 9421 path binding and WIMSE workload signature and the Desk verified; the apply door itself is reachable only from the Desk process) M=yes (RFC 7489: only an aligned, answered, resolved verdict can bind) L=yes (OWASP: a sender.applied ledger line for every apply, closed word, no address or domain)
+
 # TECH CONTRACT FOR PHASE: ADMIN DESK B13 T3b SENDER-RESOLVE DOOR over HTTP/3 (Rule 52) + attempt ledger, SQL AD32 + Control Plane door + Desk client (Control Plane + Desk lanes; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next by his own order 10:09 Tarteeb B13; his 24 Nov 2026 11:04 order "RFC 9421, IETF WIMSE HTTP-signature draft, RFC 7489, OWASP Logging is pe banao, yeh phase gate ko batao, ek bhi nahi chodo"; T3a AD31 GREEN 10:54, T3c Folder 2 mail door and T3d Folder 3 case card follow)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3992,3 +4001,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Demo V5 Global Grid Workplace text, demo only, no code change. TECH-LAW CHECKED. TESTED: demo rendered at 1280 and 390 OK
 
 - Demo V6 text fitted inside title width, demo only. TECH-LAW CHECKED. TESTED: rendered at 1280 and 390 OK
+
+- B13 T3b GREEN on his server (AD32 CHECK OK, RESOLVE SELFTEST OK). T3c AD33 apply door + Rust + bindWords written. TECH-LAW CHECKED. TESTED: PG16 selftest pass, CHECK 7/7 true, cargo 135 pass, bun 143 pass, tsc OK

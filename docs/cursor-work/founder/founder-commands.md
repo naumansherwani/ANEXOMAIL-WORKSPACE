@@ -6221,3 +6221,5 @@ FINAL: 21 Nov Desk Isolation Law and Gate never break. Company OS (Command Cente
 - Demo V5 Global Grid Workplace text, demo only, no code change. TECH-LAW CHECKED. TESTED: demo rendered at 1280 and 390 OK
 
 - Demo V6 text fitted inside title width, demo only. TECH-LAW CHECKED. TESTED: rendered at 1280 and 390 OK
+
+- B13 T3b GREEN on his server (AD32 CHECK OK, RESOLVE SELFTEST OK). T3c AD33 apply door + Rust + bindWords written. TECH-LAW CHECKED. TESTED: PG16 selftest pass, CHECK 7/7 true, cargo 135 pass, bun 143 pass, tsc OK

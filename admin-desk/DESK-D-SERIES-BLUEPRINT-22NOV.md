@@ -847,3 +847,8 @@ ADVANCE-RESEARCH [1m] B13 T1 (24 Nov 2026): advisor review (verbatim in TENANT-I
 - B13 T3b (24 Nov 2026 11:2x PKT): sender-resolve door (RFC 9421 path-bound signature, IETF WIMSE workload signature, RFC 7489 alignment flag, OWASP logging) written and tested: control-plane resolve.rs, Desk resolve_cp.rs, AD32, resolutionWords. NOT installed. Next: his desk-install, then T3c.
 
 - RULE 52 COMBO (24 Nov 2026 11:3x PKT): standing standard for every phase (RFC 9421, WIMSE, RFC 7489, OWASP), tagged beside every phase row; gate rule added.
+
+
+- B13 T3b GREEN (24 Nov 2026 11:5x PKT): his plain desk-install paste (log install-20261124-064528): AD32 run and CHECK OK, RESOLVE SELFTEST OK, AD31 8/8, binary / page / kernel SAME. WIRED: YES / REAL: YES / TECH-LAW CHECKED. RULE 52 COMBO S=yes M=yes L=yes.
+- PARKED (his 11:55 word "yeh tagline kaise fit kerun park kero"): THE GLOBAL GRID WORKPLACE title text, demo V6 only (admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V5-global-grid.html); real DeskTitle.tsx NOT changed; resumes only on his haan.
+- B13 T3c (24 Nov 2026 12:0x PKT, RULE 52 COMBO S M L): AD33 fadm_case_apply_resolution (idempotent, latest decision wins, only answered+resolved binds, source verified_domain, request id as evidence, sender.applied ledger line), Rust apply_sql/apply_word, bindWords. Tests: PG16 selftest + CHECK 7/7, cargo 135, bun 143. NOT installed: his plain desk-install runs ad-auto and shows AD33. Checkpoints C1..C7 in D6-B13-T3-RESOLUTION-LIST-24NOV.md.

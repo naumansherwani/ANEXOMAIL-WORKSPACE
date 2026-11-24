@@ -85,6 +85,13 @@ pub fn log_sql(case_ref: &str, rid: &str, res: &Result<Verdict, Reject>, invalid
     format!("select desk.fadm_resolve_log({}, {}::uuid, {}, {}::text, {})::text", q(case_ref), q(rid), q(outcome), verdict, tenant)
 }
 
+/// AD33 closed answer words of the apply door (the SQL list is the Rust list, tested).
+pub const APPLY_WORDS: [&str; 5] = ["bound", "already_bound", "not_resolved", "no_attempt", "refused"];
+/// The apply call (AD33 desk.fadm_case_apply_resolution): ONE case ref in, ONE closed word out. It carries no address, no domain and no tenant: the tenant comes from the newest verified answer already in the Desk ledger.
+pub fn apply_sql(case_ref: &str) -> String { format!("select desk.fadm_case_apply_resolution('{}')::text", case_ref.replace('\'', "''")) }
+/// Reads the apply answer: only a word of the closed list counts, anything else is fail closed ("refused").
+pub fn apply_word(raw: Option<&str>) -> &'static str { raw.and_then(|w| APPLY_WORDS.iter().find(|x| **x == w).copied()).unwrap_or("refused") }
+
 /// ONE attempt for ONE case, with its ledger line (T3c calls this with the sender the Folder 2 mail door hands over). Order: validate, sign, ask over HTTP/3, verify, THEN write the ledger report. If the report cannot be written the verdict is NOT used (Unavailable): no attempt without a line. Binding is not done here.
 #[allow(dead_code)] // T3c wires the door that calls this with the sender
 pub(crate) async fn resolve_and_log(c: &tokio_postgres::Client, p: &crate::lookup::Plane, s: &Signer, cp_pub_hex: &str, employee: &str, case_ref: &str, domain: &str, local: &str, aligned: bool, now: i64) -> Result<Verdict, Reject> {
@@ -93,6 +100,11 @@ pub(crate) async fn resolve_and_log(c: &tokio_postgres::Client, p: &crate::looku
     let res = if invalid { Err(Reject::Refused) } else { call(p, s, cp_pub_hex, employee, &rid, domain, local, aligned, now).await };
     let wrote = crate::door::rows(c, &log_sql(case_ref, &rid, &res, invalid)).await.ok().and_then(|v| v.first().and_then(|r| r.get(0).map(|x| x == "true"))).unwrap_or(false);
     if !wrote { eprintln!("desk resolve: the attempt could not be written to the ledger: the verdict is not used"); return Err(Reject::Unavailable); }
+    // T3c: a verified, resolved verdict is applied to the case by the ONE SQL door (AD33); it re-reads the NEWEST attempt itself, so nothing the caller says can bind a case
+    if matches!(res, Ok(Verdict::Resolved(_))) {
+        let w = crate::door::rows(c, &apply_sql(case_ref)).await.ok().and_then(|v| v.first().and_then(|r| r.get(0).map(|x| x.to_string())));
+        eprintln!("desk resolve: apply {}", apply_word(w.as_deref()));
+    }
     res
 }
 
@@ -191,5 +203,15 @@ mod tests {
         assert!(!log_sql("C-0'1", RID, &Err(Reject::Unavailable), false).contains("C-0'1"), "a quote in the case ref is escaped");
         let ad32 = include_str!("../../sql/AD32.sql");
         for w in ["'answered'", "'unavailable'", "'refused'", "'invalid'", "p_case text, p_request uuid, p_outcome text, p_verdict text, p_tenant uuid"] { assert!(ad32.contains(w), "{w} must match AD32"); }
+    }
+    #[test] fn the_apply_door_has_one_argument_and_a_closed_word_list_that_is_the_sql_list() {
+        assert_eq!(apply_sql("C-000036"), "select desk.fadm_case_apply_resolution('C-000036')::text");
+        assert!(!apply_sql("C-0'1").contains("C-0'1"), "a quote in the case ref is escaped");
+        for w in APPLY_WORDS { assert_eq!(apply_word(Some(w)), w); }
+        for bad in ["bind", "BOUND", "", "bound ", "true"] { assert_eq!(apply_word(Some(bad)), "refused", "{bad:?} is not a word of the list: fail closed"); }
+        assert_eq!(apply_word(None), "refused");
+        let ad33 = include_str!("../../sql/AD33.sql");
+        for w in APPLY_WORDS { assert!(ad33.contains(&format!("'{w}'")), "{w} missing in AD33"); }
+        assert!(ad33.contains("fadm_case_apply_resolution(p_case text)") && !ad33.contains("p_tenant"), "the door takes a case ref only: no tenant can be handed in");
     }
 }
