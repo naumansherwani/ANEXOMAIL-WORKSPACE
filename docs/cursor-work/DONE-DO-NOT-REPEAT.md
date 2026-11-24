@@ -4723,3 +4723,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - RULE 52 COMBO law: RFC 9421 + IETF WIMSE HTTP-signature + RFC 7489 + OWASP Logging added to Rule 52 for founder, awam and Desk; tags [S M L] beside 34 founder, 7 awam, 165 Desk and 53 billionaire rows; new gate rule RULE 52 COMBO. TECH-LAW CHECKED: Rule 52 signed calls, HTTP/3, Rust Tokio newest. TESTED: rules-gate approved with the contract line and FAILED for a bare line and for no line (3 cases proven), bash -n ckpt.sh OK, gate py parses OK
 
 - Recorded his desk-dbsc-look paste (42,654 no_cookie lines, observe mode, 6 owner sessions) and the fixed Desk command form tail -45. TECH-LAW CHECKED: docs only, no code. TESTED: gate approve, docs-only change pass
+
+- Desk installer prints a short summary, full log in /var/log/anexomail-desk-install, also runs ad-auto for AD32. TECH-LAW CHECKED. TESTED: bash -n OK, summary filter simulated pass

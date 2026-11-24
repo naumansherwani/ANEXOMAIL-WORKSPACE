@@ -2,6 +2,13 @@
 # ANEXOMAIL ADMIN DESK installer R3a0 (21 Nov 2026), R3d signing key + Rule 52 check (22 Nov 2026). DESK ISOLATION: its own user, own dir /opt/anexomail-desk, own unit anexomail-desk, loopback 127.0.0.1:4400.
 # Does NOT touch: anexomail-founder, anexomail-rust, ufw, any env of another service. Step 6/6 touches ONLY the admindesk block of the Caddyfile (one header line, backup + validate + rollback). Rerun is safe (old binary backed up, rollback on failure).
 set -u
+# his 24 Nov 2026 11:21: the PLAIN command (no tail) must be enough: everything goes to a log file, the screen gets only a short summary (and still works with | tail -45)
+LOGDIR=/var/log/anexomail-desk-install; mkdir -p "$LOGDIR" 2>/dev/null; LOG="$LOGDIR/install-$(date +%Y%m%d-%H%M%S).log"; ls -t "$LOGDIR"/install-*.log 2>/dev/null | tail -n +11 | xargs -r rm -f
+exec 3>&1; exec >"$LOG" 2>&1
+summary() { RC=$1; set +e; { echo "== DESK INSTALL: $([ "$RC" = 0 ] && echo finished || echo "STOPPED (code $RC)"), full log: $LOG"
+  grep -E '^(OK|FAIL|WARN|FACT|AD[0-9]+[a-z]*:|SUMMARY|DONE)|^   (PROOF|DESK BUILD|RESOLVE SELFTEST|LOOKUP SELFTEST|AUDIT FILES OK|control plane ready|WARN|FAIL|note)' "$LOG" | head -45
+  if [ "$RC" != 0 ]; then echo "-- last 20 lines of the log:"; tail -20 "$LOG"; fi; } >&3; }
+trap 'summary $?' EXIT
 REPO="${REPO:-/opt/anexomail-web}"; ROOT=/opt/anexomail-desk; SVC=anexomail-desk; export CARGO_TARGET_DIR="$ROOT/target"
 command -v cargo >/dev/null 2>&1 || export PATH="$HOME/.cargo/bin:$PATH"
 command -v cargo >/dev/null 2>&1 || { echo "FAIL: cargo not found"; exit 2; }
@@ -84,6 +91,9 @@ bash <(show admin-desk/scripts/cp-install.sh) || exit $?
 # 8/8 (his 23 Nov 2026 01:18: the Storage Box copy of the lookup-audit checkpoints, signed with the Desk key, timer every 10 minutes)
 echo "== 8/8 audit outside copy (D5a-4)"
 bash <(show admin-desk/scripts/audit-export-install.sh) || exit $?
+# his rule: every Desk server step inside the install: the Desk-database SQL (AD files not yet in the database, e.g. AD32)
+echo "== 8b Desk SQL (ad-auto)"
+bash <(show admin-desk/scripts/ad-auto.sh) || exit $?
 # 9/9 (his 23 Nov 2026 02:38: "the last 15 lines must PROVE the new code is the one running"): printed LAST so `tail -15` always shows it. Read-only.
 echo "== 9/9 PROOF: the running binary and the live page are the NEW build"
 PID="$(systemctl show -p MainPID --value $SVC)"; RUN="$(sha256sum /proc/$PID/exe 2>/dev/null | cut -c1-12)"; BIN="$(sha256sum "$ROOT/anexomail-desk" | cut -c1-12)"; BLD="$(sha256sum "$NEW" | cut -c1-12)"
