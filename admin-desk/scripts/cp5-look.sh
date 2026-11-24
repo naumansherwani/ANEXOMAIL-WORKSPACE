@@ -3,7 +3,9 @@
 set -u
 ADMIN="$( . /etc/anexomail/sync.env 2>/dev/null; printf %s "${WORKING_URL:-}" )"; [ -n "$ADMIN" ] || { echo "FAIL: no WORKING_URL in sync.env"; exit 2; }
 REPO="${REPO:-/opt/anexomail-web}"; git -C "$REPO" fetch -q origin main || { echo "FAIL: fetch"; exit 2; }
-q() { env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE PGOPTIONS="-c default_transaction_read_only=on" psql "$ADMIN" -X -q -At -F' | ' -v ON_ERROR_STOP=1 "$@" 2>&1; }
+q() { env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "$ADMIN" -X -q -At -F' | ' -v ON_ERROR_STOP=1 "$@" 2>&1; }
+echo "== 0. which database am I on (read-only select)"
+q -c "select current_database(), current_user, inet_server_port(), to_regclass('cp.consent_inbox') is not null as inbox_here, to_regprocedure('cp.consent_minutes(text)') is not null as fn_here, (select count(*) from pg_namespace where nspname='cp') as cp_schema" | sed 's/^/   /'
 echo "== 1. CP5 CHECK (every row must end true)"
 S="$(mktemp)"; git -C "$REPO" show origin/main:control-plane/sql/checks/CP5-check.sql >"$S"; q -f "$S" | sed 's/^/   /'; rm -f "$S"
 echo "== 2. the company families (counts only; -1 = table does not exist)"

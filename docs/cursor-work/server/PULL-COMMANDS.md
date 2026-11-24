@@ -2689,3 +2689,5 @@
 - B13 Z4 install: binary SAME 490617d9f, CP5 lines not visible so NOT GREEN; cp5-look.sh read-only script added, TECH-LAW CHECKED, TESTED: his desk-install paste 9/9 SAME, bash -n pass
 
 - B13 Z4: restored cp-install CP5 step 3e + cp5-look.sh in docs/claude/admin-desk/scripts (mirror had deleted them), TECH-LAW CHECKED, TESTED: bash -n pass, grep CP5 4 lines both copies, files exist in origin after push
+
+- B13 Z4a install proof: CP5 CHECK all true + approvers 7 of 7 on his server, cp5-look contradiction open so not green, cp5-look diagnostic added, TECH-LAW CHECKED, TESTED: his desk-install paste CP5 CHECK rows true binary SAME cc03446db, bash -n pass
