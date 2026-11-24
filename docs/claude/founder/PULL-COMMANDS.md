@@ -3911,3 +3911,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - B13 T4e fix: control-plane h3srv.rs known_path list includes /control/v1/tenant (the live selftest got 404), route test added. Build-speed patch saved as a file only, not applied. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: control plane cargo 31 passed, gate run OK
 
 - B13 T4e GREEN WIRED: YES REAL: YES (his install 03:50 TENANT SELFTEST OK, builds SAME a1a128dfe). Web install carries NO SQL: awam-sql.sh runs only from desk-sql-install.sh, gate ids added. Build profile thin LTO codegen-units 16. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: control plane cargo 31 passed, desk release build OK, bash -n OK, gate run OK
+
+- B13 T4e GREEN WIRED: YES REAL: YES (his install 03:50 TENANT SELFTEST OK, builds SAME a1a128dfe). Web install carries NO SQL: awam-sql.sh runs only from desk-sql-install.sh, gate ids added. Build profile thin LTO codegen-units 16. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: control plane cargo 31 passed, desk release build OK, bash -n OK, gate run OK
