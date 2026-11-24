@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 25 Nov 2026 03:22 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 03:22 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: install rule FINAL: SQL command and WEB command separate, web never runs Desk SQL
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- d378ca2a 25 Nov 03:22 install rule final separate
 - 7bff1f5b 25 Nov 03:20 ledger line 81106a36
 - 81106a36 25 Nov 03:20 B13 T4e code written and tested
 - d1594f03 25 Nov 03:14 ledger line cf47d83d
@@ -75,20 +76,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 6513a45b 25 Nov 03:11 ledger line abdb285b
 - abdb285b 25 Nov 03:11 one command per reply
 - 4721db38 25 Nov 03:04 ledger line fff66f7a
-- fff66f7a 25 Nov 03:04 install fix no double run
 
 ## Uncommitted Desk files
-M  admin-desk/ALL-PHASES-IN-ORDER-24NOV.md
-M  admin-desk/INSTALL-SPLIT-RULE-25NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  admin-desk/TWO-COMMANDS.md
-M  admin-desk/scripts/desk-install.sh
-M  docs/claude/admin-desk/ALL-PHASES-IN-ORDER-24NOV.md
-M  docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/TWO-COMMANDS.md
-M  docs/claude/admin-desk/scripts/desk-install.sh
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

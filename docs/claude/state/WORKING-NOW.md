@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 25 Nov 2026 03:22 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 03:22 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: install rule FINAL: SQL command and WEB command separate, web never runs Desk SQL
@@ -21,40 +21,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- d378ca2a 25 Nov 03:22 install rule final separate
 - 7bff1f5b 25 Nov 03:20 ledger line 81106a36
 - 81106a36 25 Nov 03:20 B13 T4e code written and tested
 - d1594f03 25 Nov 03:14 ledger line cf47d83d
 - cf47d83d 25 Nov 03:14 T4e plan saved
-- 6513a45b 25 Nov 03:11 ledger line abdb285b
 
 ## Uncommitted files (half-done work if any)
-M  CLAUDE.md
-M  admin-desk/ALL-PHASES-IN-ORDER-24NOV.md
-M  admin-desk/INSTALL-SPLIT-RULE-25NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  admin-desk/TWO-COMMANDS.md
-M  admin-desk/scripts/desk-install.sh
-M  docs/claude/TECH-LAW-GATE.json
-M  docs/claude/admin-desk/ALL-PHASES-IN-ORDER-24NOV.md
-M  docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/TWO-COMMANDS.md
-M  docs/claude/admin-desk/scripts/desk-install.sh
-M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md | 14 ++++----
- docs/claude/admin-desk/NOW-LIST-23NOV.md           |  1 +
- docs/claude/admin-desk/TWO-COMMANDS.md             |  2 +-
- docs/claude/admin-desk/scripts/desk-install.sh     |  4 +--
- docs/claude/admin-desk/state/WORKING-NOW.md        |  2 ++
- docs/claude/state/WORKING-NOW.md                   | 37 +++++++++++-----------
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        | 12 +++----
- 15 files changed, 53 insertions(+), 48 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 37 ++-----------------------------------
+ 1 file changed, 2 insertions(+), 35 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -65,4 +45,4 @@ M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (9d953b6f6c3ed248292952b0000d9b88e50abc0e)
+WIP snapshot: refs/wip/last (a037f4d7590184f478bd18417fee52aec9fcdf06)
