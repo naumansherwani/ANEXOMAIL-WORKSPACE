@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 08:20 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 08:20 PKT) - read this FIRST for the Desk after a compaction
 DOING: audit done; E202 awam package facts + pool levels written and scratch-tested
 NEXT STEP: his awam AUTO sql-run line paste (E202), then the case-to-company binding table
 HIS LAST WORD: his 08:17 order: every awam blueprint point in SQL, Desk audit, live look
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 93c3ed3c 24 Nov 08:20 E202 awam package facts + pool; audit
 - be6bdc37 24 Nov 08:14 ledger line 2c566233
 - 2c566233 24 Nov 08:14 AD26 tenant registry GREEN
 - a9f96fd0 24 Nov 08:06 ledger line 6d38281d
@@ -72,13 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 1acac0af 24 Nov 08:03 ledger line d7f23d8d
 - d7f23d8d 24 Nov 08:03 E201 GREEN SQL half, Max 125,000 final
 - 3212d702 24 Nov 07:53 ledger line de6596bb
-- de6596bb 24 Nov 07:53 ad-auto names AD21..AD26
 
 ## Uncommitted Desk files
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
