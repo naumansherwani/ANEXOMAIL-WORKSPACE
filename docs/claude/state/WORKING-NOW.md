@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 09:34 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 09:35 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 DOING: B13 T2 = GREEN (his word 09:34)
 NEXT STEP: T3 verified-domain resolution: web research list first, contract, AD31 + Rust hook
@@ -20,30 +20,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 20912c95 24 Nov 09:35 Desk B13 T2 GREEN
 - b2354ce5 24 Nov 09:34 ledger line 4d20e3e7
 - 4d20e3e7 24 Nov 09:34 Desk B13 T2 GREEN
 - 466906a9 24 Nov 09:33 ledger line 8484a918
 - 8484a918 24 Nov 09:33 Desk B13 T2 SQL green, all phases in order
-- de0fd3e2 24 Nov 09:31 ledger line 1f1730f2
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md        |  2 ++
- admin-desk/NOW-LIST-23NOV.md                       |  1 +
- .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    |  2 ++
- docs/claude/admin-desk/NOW-LIST-23NOV.md           |  1 +
- docs/claude/state/WORKING-NOW.md                   | 26 ++++++++--------------
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  8 +++----
- 6 files changed, 19 insertions(+), 21 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 27 ++-------------------------
+ 1 file changed, 2 insertions(+), 25 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -54,4 +44,4 @@ M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (4bff8f22729ab136dab6370244338e92d9f219a6)
+WIP snapshot: refs/wip/last (5554dcc7bcba4b3f5403173f439a53d9452d60e7)
