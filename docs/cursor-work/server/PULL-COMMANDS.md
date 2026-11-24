@@ -2757,3 +2757,5 @@
 - GATE FINAL AUTHORITY law, gates DECISION READ + IDEMPOTENT WRITER + GATE AUTHORITY, AD30 DECISION-READ line. TECH-LAW CHECKED: gate code in Python, SQL unchanged in effect. TESTED: staged a bad AD99.sql, gate refused it (DECISION READ, IDEMPOTENT WRITER, PHASE FILES), then removed it; AD30 selftest PG16 still passes
 
 - GATE FINAL AUTHORITY law, gates DECISION READ + IDEMPOTENT WRITER + GATE AUTHORITY, ckpt.sh writes the law into both WORKING-NOW files, AD30 DECISION-READ line. TECH-LAW CHECKED: gate code in Python, SQL unchanged in effect. TESTED: staged a bad AD99.sql, gate refused it (DECISION READ, IDEMPOTENT WRITER, PHASE FILES), then removed it; AD30 selftest PG16 passes again
+
+- B13 T2 AD30 SQL GREEN by his word 09:33 (his desk-install), all-phases list. TECH-LAW CHECKED: no code change. TESTED: docs only; AD30 selftest PG16 and CHECK 9/9 earlier, build 1fa4a4da8 SAME on his paste
