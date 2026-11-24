@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 08:05 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 08:06 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: command forms written as a fixed rule
 NEXT STEP: his Desk T1 command paste (AD26)
 HIS LAST WORD: his 08:05 anger: awam SQL command is the AUTO form only
@@ -19,24 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 6d38281d 24 Nov 08:06 fixed command forms rule
 - 1acac0af 24 Nov 08:03 ledger line d7f23d8d
 - d7f23d8d 24 Nov 08:03 E201 GREEN SQL half, Max 125,000 final
 - 3212d702 24 Nov 07:53 ledger line de6596bb
 - de6596bb 24 Nov 07:53 ad-auto names AD21..AD26
-- e1041c4c 24 Nov 07:48 ledger line de12ed1d
 
 ## Uncommitted files (half-done work if any)
-M  CLAUDE.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- CLAUDE.md                                   |  1 +
- docs/claude/state/WORKING-NOW.md            | 25 +++++++------------------
- docs/cursor-work/server/DEPLOY-MANIFEST.txt |  6 +++---
- 3 files changed, 11 insertions(+), 21 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 21 ++-------------------
+ 1 file changed, 2 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -47,4 +43,4 @@ M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (c0b6a6cb1a6e92e4ab932887454e7c514b17eae7)
+WIP snapshot: refs/wip/last (6de3c6c427ba2057098041e7c0fa95c5db8d7e7c)

@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 08:05 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 08:06 PKT) - read this FIRST for the Desk after a compaction
 DOING: command forms written as a fixed rule
 NEXT STEP: his Desk T1 command paste (AD26)
 HIS LAST WORD: his 08:05 anger: awam SQL command is the AUTO form only
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 6d38281d 24 Nov 08:06 fixed command forms rule
 - 1acac0af 24 Nov 08:03 ledger line d7f23d8d
 - d7f23d8d 24 Nov 08:03 E201 GREEN SQL half, Max 125,000 final
 - 3212d702 24 Nov 07:53 ledger line de6596bb
@@ -72,7 +73,6 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - e1041c4c 24 Nov 07:48 ledger line de12ed1d
 - de12ed1d 24 Nov 07:48 Desk SQL one series AD21..AD26
 - aff2ba11 24 Nov 07:44 ledger line cc3d94c8
-- cc3d94c8 24 Nov 07:44 Desk SQL folder: CP1..CP6 into admin-desk sql
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
