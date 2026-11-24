@@ -67,7 +67,8 @@ export function CrossPlatformBar() {
       text: "Offline — reading cached mail",
     });
   }
-  if (net.lowData) {
+  // Low-data chip: inside the app only (it says images are off in mail); never on the public site, sign-in or landing (his 24 Nov 14:36 order).
+  if (net.lowData && inApp) {
     chips.push({
       key: "low",
       icon: <SignalLow className="size-3" aria-hidden="true" />,

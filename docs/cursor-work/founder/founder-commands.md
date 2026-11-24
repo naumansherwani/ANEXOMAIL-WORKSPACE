@@ -6311,3 +6311,5 @@ FINAL: 21 Nov Desk Isolation Law and Gate never break. Company OS (Command Cente
 - AWAM LOGIN + LANDING FOOTER: 'HTTP/3 signatures (RFC 9421)' replaced by 'HTTP Message Signatures (RFC 9421)' (his 14:29; footer same words as login by his word-for-word order). TECH-LAW CHECKED. TESTED: tsc clean, login render 1280/820/390 3 inputs no sideways scroll
 
 - EVENING PLAN written (docs/claude/EVENING-PLAN-24NOV.md) + live look: /auth live and new, landing footer on live = old snapshot not in repo. TECH-LAW CHECKED. TESTED: docs only, live Chrome read of /auth text and / footer
+
+- LOW DATA CHIP only inside /app, never on public site (his 14:36). TECH-LAW CHECKED. TESTED: tsc clean
