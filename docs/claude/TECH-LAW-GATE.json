@@ -875,6 +875,15 @@
    "deadline": "B13 T4",
    "why": "his 25 Nov 03:09 order: the SQL-only command exists (word SQL in the name) and is never given together with the web command.",
    "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4e-plan-written",
+   "file": "docs/claude/admin-desk/D6-B13-T4E-TENANT-EXISTS-PLAN-25NOV.md",
+   "must": "RESEARCH (web, how the best systems do it)",
+   "status": "ok",
+   "deadline": "B13 T4e",
+   "why": "his 25 Nov 03:13 order: T4e research line + plan in the blueprint before any code.",
+   "fail_after": "2027-01-09"
   }
  ]
 }

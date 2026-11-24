@@ -94,3 +94,5 @@ Full rules: `AGENTS.md` (Rules 1–73) and `docs/claude/founder/CODES/00-README-
 > ## >>> 25 Nov 2026 03:0x PKT (his 03:02): NO DOUBLE RUN. SQL install = admin-desk/scripts/desk-sql-install.sh (SQL only); WEB install = desk-install.sh (never runs SQL). Give only the install the phase needs. docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md <<<
 
 > ## >>> 25 Nov 2026 03:09 PKT (his 03:09): ONE COMMAND PER REPLY. Web = desk-install.sh does EVERYTHING incl. the Desk SQL once; SQL = desk-sql-install.sh ONLY for a SQL-only phase; NEVER both in one reply. docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md <<<
+
+> ## >>> 25 Nov 2026 03:2x PKT (his 03:13): NOW = B13 T4e Control Plane tenant-exists + company NAME. Plan docs/claude/admin-desk/D6-B13-T4E-TENANT-EXISTS-PLAN-25NOV.md; read WORKING-NOW.md (resume block at the bottom); ONE COMMAND PER REPLY; never use the Monitor tool (foreground wait only); edit docs/claude/admin-desk only. RULE 52 COMBO S=yes M=N/A L=yes. <<<
