@@ -26,44 +26,8 @@ for f in $(git -C "$REPO" ls-tree --name-only origin/main control-plane/contract
 echo "   rust files: $(ls "$ROOT"/src/src/*.rs | wc -l)"
 NEW="$ROOT/target/release/anexomail-controlplane"; rm -f "$NEW"; (cd "$ROOT/src" && nice cargo build --release >"$ROOT/build.log" 2>&1)
 if [ ! -x "$NEW" ]; then echo "FAIL: build (nothing installed)"; grep -E "^error" -A6 "$ROOT/build.log" | head -20; exit 3; fi
-echo "== CP 3/7 database: AD21.sql + CHECK + read-only login cp_lookup"
-S="$(mktemp)"; show admin-desk/sql/AD21.sql >"$S"; psqla -f "$S" 2>&1 | tail -3; [ "${PIPESTATUS[0]}" = 0 ] || { echo "FAIL: AD21.sql (a table it reads is missing?)"; rm -f "$S"; exit 4; }
-show admin-desk/sql/checks/AD21-check.sql >"$S"; CH="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH" | sed 's/^/   /'
-echo "$CH" | grep -q '|f$' && { echo "FAIL: AD21 CHECK has a false row"; exit 4; }; echo "$CH" | grep -qi error && { echo "FAIL: AD21 CHECK error"; exit 4; }
-echo "== CP 3b/7 database: AD22.sql (census for Customers and Plans) + selftest + CHECK"
-S="$(mktemp)"; show admin-desk/sql/AD22.sql >"$S"; C2="$(psqla -f "$S" 2>&1 | tail -4)"; C2R=$?; rm -f "$S"; echo "$C2" | sed 's/^/   /'
-S="$(mktemp)"; show admin-desk/sql/checks/AD22-check.sql >"$S"; CH2="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH2" | sed 's/^/   /'
-if echo "$CH2" | grep -q '|f$' || echo "$CH2" | grep -qi error || echo "$C2" | grep -qi "error"; then echo "WARN: AD22 did not install cleanly: the Customers and Plans card will say Data unavailable (fail-closed) until it is fixed; the rest of the install continues"; else echo "OK: AD22 census installed and CHECKed"; fi
-echo "== CP 3c/7 database: AD23.sql (deliverability for the Deliverability card) + selftest + CHECK"
-S="$(mktemp)"; show admin-desk/sql/AD23.sql >"$S"; C3="$(psqla -f "$S" 2>&1 | tail -4)"; rm -f "$S"; echo "$C3" | sed 's/^/   /'
-S="$(mktemp)"; show admin-desk/sql/checks/AD23-check.sql >"$S"; CH3="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH3" | sed 's/^/   /'
-if echo "$CH3" | grep -q '|f$' || echo "$CH3" | grep -qi error || echo "$C3" | grep -qi "error"; then echo "WARN: AD23 did not install cleanly: the Deliverability card will say Data unavailable (fail-closed) until it is fixed; the rest of the install continues"; else echo "OK: AD23 deliverability installed and CHECKed"; fi
-echo "== CP 3d/7 database: AD24.sql (six packages, No plan yet, plan detail for the Customers card) + selftest + CHECK"
-S="$(mktemp)"; show admin-desk/sql/AD24.sql >"$S"; C4="$(psqla -f "$S" 2>&1 | tail -4)"; rm -f "$S"; echo "$C4" | sed 's/^/   /'
-S="$(mktemp)"; show admin-desk/sql/checks/AD24-check.sql >"$S"; CH4="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH4" | sed 's/^/   /'
-if echo "$CH4" | grep -q '|f$' || echo "$CH4" | grep -qi error || echo "$C4" | grep -qi "error"; then echo "WARN: AD24 did not install cleanly: the Customers card will say Data unavailable (fail-closed) until it is fixed; the rest of the install continues"; else echo "OK: AD24 customers census installed and CHECKed"; fi
-echo "== CP 3e/7 database: AD25.sql (B13 Z4a: customer consent inbox + hash-chained ledger, the Control Plane can push/cancel/poll but never decide) + selftest + CHECK"
-S="$(mktemp)"; show admin-desk/sql/AD25.sql >"$S"; C5="$(psqla -f "$S" 2>&1 | tail -4)"; rm -f "$S"; echo "$C5" | sed 's/^/   /'
-S="$(mktemp)"; show admin-desk/sql/checks/AD25-check.sql >"$S"; CH5="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH5" | sed 's/^/   /'
-if echo "$CH5" | grep -q '|f$' || echo "$CH5" | grep -qi error || echo "$C5" | grep -qi "error"; then echo "WARN: AD25 did not install cleanly: customer consent stays closed (requests cannot be approved) until it is fixed; the rest of the install continues"; else echo "OK: AD25 consent inbox installed and CHECKed"; fi
-echo "== CP 3f/7 database: AD26.sql (B13 T1: tenant registry check + versioned domain ownership + first history fill) + selftest + CHECK"
-S="$(mktemp)"; show admin-desk/sql/AD26.sql >"$S"; C6="$(psqla -f "$S" 2>&1 | tail -4)"; rm -f "$S"; echo "$C6" | sed 's/^/   /'
-S="$(mktemp)"; show admin-desk/sql/checks/AD26-check.sql >"$S"; CH6="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH6" | sed 's/^/   /'
-if echo "$CH6" | grep -q '|f$' || echo "$CH6" | grep -qi error || echo "$C6" | grep -qi "error"; then echo "WARN: AD26 did not install cleanly: tenant binding stays closed (no consent request can be bound to a tenant) until it is fixed; the rest of the install continues"; else echo "OK: AD26 tenant registry + domain ownership installed and CHECKed"; fi
-PW="$(openssl rand -hex 24)"
-URL="$(ADMIN_URL="$ADMIN" CPW="$PW" python3 - <<'P'
-import os,urllib.parse as u
-a=u.urlsplit(os.environ["ADMIN_URL"]); user=u.unquote(a.username or "postgres")
-nu="cp_lookup"+("."+user.split(".",1)[1] if "." in user else "")
-host=a.hostname+(":"+str(a.port) if a.port else ""); q=dict(u.parse_qsl(a.query)); q.setdefault("sslmode","require")
-print(u.urlunsplit((a.scheme,nu+":"+os.environ["CPW"]+"@"+host,a.path,u.urlencode(q),"")))
-P
-)" || { echo "FAIL: cp_lookup url"; exit 4; }
-printf "alter role cp_lookup login password :'pw';\n" | psqla -v pw="$PW" 2>&1 | tail -2; [ "${PIPESTATUS[1]}" = 0 ] || { echo "FAIL: ALTER ROLE cp_lookup"; exit 4; }; unset PW
-echo "== CP 3g/7 database: AD31.sql (B13 T3a: cp.resolve_sender, sender to tenant verdict) + selftest + CHECK"
-S="$(mktemp)"; show admin-desk/sql/AD31.sql >"$S"; C7="$(psqla -f "$S" 2>&1 | tail -4)"; rm -f "$S"; echo "$C7" | sed 's/^/   /'
-S="$(mktemp)"; show admin-desk/sql/checks/AD31-check.sql >"$S"; CH7="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH7" | sed 's/^/   /'
-if echo "$CH7" | grep -q '|f$' || echo "$CH7" | grep -qi error || echo "$C7" | grep -qi "error"; then echo "WARN: AD31 did not install cleanly: the sender verdict stays closed (every sender is unknown) until it is fixed; the rest of the install continues"; else echo "OK: AD31 sender-to-tenant verdict installed and CHECKed"; fi
+[ -s "$ETC/db.url" ] || { echo "FAIL: the SQL step has not run yet: run the SQL command first (desk-sql-install.sh), then this web command"; exit 4; }
+URL="$(cat "$ETC/db.url")"
 echo "== CP 4/7 user, key, certificate"
 id anexomail-cp >/dev/null 2>&1 || useradd --system --no-create-home --shell /usr/sbin/nologin anexomail-cp
 mkdir -p -m 700 "$ETC"; chown root:root "$ETC"

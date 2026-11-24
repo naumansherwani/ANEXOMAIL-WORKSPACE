@@ -902,6 +902,33 @@
    "deadline": "B13 T4e",
    "why": "T4e: read-only SQL function in the existing AD31 (no new SQL file).",
    "fail_after": "2027-01-09"
+  },
+  {
+   "id": "INSTALL-WEB-NO-SQL",
+   "file": "admin-desk/scripts/cp-install.sh",
+   "must": "run the SQL command first",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 03:54 order: the WEB install carries NO SQL (like founder-install.sh); cp-install only reads the db.url the SQL command stored.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "INSTALL-SQL-HAS-AWAM",
+   "file": "admin-desk/scripts/desk-sql-install.sh",
+   "must": "awam-sql.sh",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 03:54 order: the awam-database SQL (AD21..AD26, AD31) and its proofs run ONLY in the SQL command.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "INSTALL-AWAM-SQL-FILE",
+   "file": "admin-desk/scripts/awam-sql.sh",
+   "must": "the WEB install carries NO SQL",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "awam-database SQL lives only here.",
+   "fail_after": "2027-01-09"
   }
  ]
 }

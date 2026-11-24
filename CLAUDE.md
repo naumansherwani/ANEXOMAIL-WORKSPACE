@@ -100,3 +100,5 @@ Full rules: `AGENTS.md` (Rules 1–73) and `docs/claude/founder/CODES/00-README-
 > ## >>> 25 Nov 2026 03:5x PKT: B13 T4e WRITTEN + TESTED, NOT INSTALLED (SQL cp.tenant_info in AD31, Control Plane tenant door, Desk tenant_cp.rs, screen company name). Next his ONE web install (desk-install.sh), my live Chrome look, then T4f, T4h. <<<
 
 > ## >>> 25 Nov 2026 03:21 PKT (his FINAL 03:21): SQL command (desk-sql-install.sh) and WEB command (desk-install.sh) are SEPARATE, never one command for both; the web install never runs the Desk SQL. docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md <<<
+
+> ## >>> 25 Nov 2026 03:58 PKT: B13 T4e GREEN (WIRED: YES / REAL: YES, his install paste TENANT SELFTEST OK, SAME a1a128dfe; Chrome look owed). WEB install carries NO SQL: awam SQL moved to admin-desk/scripts/awam-sql.sh run only by desk-sql-install.sh (SQL first, web second); gate INSTALL-WEB-NO-SQL. Build thin LTO. Next T4f, T4h. <<<
