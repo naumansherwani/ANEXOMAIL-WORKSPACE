@@ -392,6 +392,7 @@ control-plane/src/verify.rs
 demo/00-FOUNDER-TECH-RULE.md
 demo/awam-signin-24nov/00-FOUNDER-TECH-RULE.md
 demo/awam-signin-24nov/README.md
+demo/awam-signin-24nov/card-gradient.cjs
 demo/awam-signin-24nov/demo.js
 demo/awam-signin-24nov/final-check.cjs
 demo/awam-signin-24nov/left-compare.cjs
@@ -411,6 +412,9 @@ demo/awam-signin-24nov/screens/awam-signin-passkey-1280.png
 demo/awam-signin-24nov/screens/awam-signin-passkey-390.png
 demo/awam-signin-24nov/screens/awam-signin-verify-1280.png
 demo/awam-signin-24nov/screens/awam-signin-verify-390.png
+demo/awam-signin-24nov/screens/card-gradient-1.png
+demo/awam-signin-24nov/screens/card-gradient-2.png
+demo/awam-signin-24nov/screens/card-gradient-3.png
 docs/cursor-work/server/all-pull.sh
 docs/cursor-work/server/manifest-sync.py
 docs/cursor-work/server/manifest-verify.py

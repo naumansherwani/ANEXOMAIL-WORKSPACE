@@ -1,9 +1,9 @@
-# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 13:05 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 24 Nov 2026 13:07 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: original awam sign-in kept live + backed up; final look parked in real-wip, to be sent to server later
-NEXT STEP: his word to ship the look to the server
-HIS LAST WORD: his 13:04: original back, keep in backup codes, send the new one later
+DOING: card logo-colour gradient demo saved in demo/awam-signin-24nov
+NEXT STEP: his approval of the demo, then ship real-wip to src
+HIS LAST WORD: his 13:05-13:06: gradient on the box, demo save in repo
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -21,20 +21,35 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- ac287a13 24 Nov 13:05 ledger line 346285b3
 - 346285b3 24 Nov 13:05 original sign-in backed up, final look parked
 - d375c88f 24 Nov 12:59 ledger line 0652f59e
 - 0652f59e 24 Nov 12:59 awam sign-in back to original, look parked
 - c2ac03d9 24 Nov 12:50 ledger line 3d90027d
-- 3d90027d 24 Nov 12:50 awam sign-in approved demo as real code
 
 ## Uncommitted files (half-done work if any)
+A  demo/awam-signin-24nov/card-gradient.cjs
+M  demo/awam-signin-24nov/real-wip/AuthCinema.tsx
+M  demo/awam-signin-24nov/real-wip/README.md
+M  demo/awam-signin-24nov/real-wip/auth.tsx
+M  demo/awam-signin-24nov/real-wip/styles.css
+A  demo/awam-signin-24nov/screens/card-gradient-1.png
+A  demo/awam-signin-24nov/screens/card-gradient-2.png
+A  demo/awam-signin-24nov/screens/card-gradient-3.png
  M docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 57 +++-------------------------------------
- 1 file changed, 3 insertions(+), 54 deletions(-)
+ demo/awam-signin-24nov/real-wip/auth.tsx           |  11 ++-
+ demo/awam-signin-24nov/real-wip/styles.css         |  86 +++++++++++++++++++--
+ demo/awam-signin-24nov/screens/card-gradient-1.png | Bin 0 -> 1217548 bytes
+ demo/awam-signin-24nov/screens/card-gradient-2.png | Bin 0 -> 1194483 bytes
+ demo/awam-signin-24nov/screens/card-gradient-3.png | Bin 0 -> 1203035 bytes
+ docs/claude/state/WORKING-NOW.md                   |  32 ++++----
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        |   4 +-
+ 10 files changed, 142 insertions(+), 48 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -45,4 +60,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (5f56e0907be9007d10aad644d2de65277341abed)
+WIP snapshot: refs/wip/last (cde1fc409184b09830160cb4caeeac3ab80abf06)
