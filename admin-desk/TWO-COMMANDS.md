@@ -2,7 +2,7 @@
 His word: "aaj ke baad sirf ek install ki command hogi jis mein sab kuch hoga, jaise founder ki install command thi, aur ek SQL ki command hogi, is ke ilawa koi command nahi hogi."
 1. INSTALL (everything: build all Rust files, page, service, own database login desk_app + Supabase CA pin, checks):
    git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:admin-desk/scripts/desk-install.sh)
-   (24 Nov 11:21, his word: the PLAIN command is the fixed form. The installer writes everything to /var/log/anexomail-desk-install/install-*.log and prints only the last 16 useful lines (OK/FAIL/PROOF) and the log path; on a failure it also prints the last 20 log lines. `| tail -45` still works. It now also runs ad-auto (Desk SQL, e.g. AD32), so ad-auto is no longer a separate step.)
+   (24 Nov 11:21, his word: the PLAIN command is the fixed form. The installer writes everything to /var/log/anexomail-desk-install/install-*.log and prints only the last 16 useful lines (OK/FAIL/PROOF) and the log path; it first fetches again and runs the NEWEST copy of itself (24 Nov 11:30); on a failure it also prints the last 20 log lines. `| tail -45` still works. It now also runs ad-auto (Desk SQL, e.g. AD32), so ad-auto is no longer a separate step.)
 2. SQL (runs every AD file not yet in the database, says "already run" for the rest, then its CHECK):
    git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:admin-desk/scripts/ad-auto.sh) 2>&1 | tail -25
 Every new Desk server step goes INSIDE one of these two scripts, never as a third command.

@@ -2,6 +2,8 @@
 # ANEXOMAIL ADMIN DESK installer R3a0 (21 Nov 2026), R3d signing key + Rule 52 check (22 Nov 2026). DESK ISOLATION: its own user, own dir /opt/anexomail-desk, own unit anexomail-desk, loopback 127.0.0.1:4400.
 # Does NOT touch: anexomail-founder, anexomail-rust, ufw, any env of another service. Step 6/6 touches ONLY the admindesk block of the Caddyfile (one header line, backup + validate + rollback). Rerun is safe (old binary backed up, rollback on failure).
 set -u
+# his 24 Nov 2026 11:30: the command must ALWAYS run the NEWEST script on origin/main (a push between his outer fetch and this run once ran the old one): fetch first, then run the newest copy of this script once
+if [ -z "${DESK_REEXEC:-}" ]; then R0="${REPO:-/opt/anexomail-web}"; git -C "$R0" fetch -q origin main 2>/dev/null; N0="$(git -C "$R0" show origin/main:admin-desk/scripts/desk-install.sh 2>/dev/null)"; if [ -n "$N0" ]; then export DESK_REEXEC=1; exec bash -c "$N0"; fi; fi
 # his 24 Nov 2026 11:21: the PLAIN command (no tail) must be enough: everything goes to a log file, the screen gets only a short summary (and still works with | tail -45)
 LOGDIR=/var/log/anexomail-desk-install; mkdir -p "$LOGDIR" 2>/dev/null; LOG="$LOGDIR/install-$(date +%Y%m%d-%H%M%S).log"; ls -t "$LOGDIR"/install-*.log 2>/dev/null | tail -n +11 | xargs -r rm -f
 exec 3>&1; exec >"$LOG" 2>&1

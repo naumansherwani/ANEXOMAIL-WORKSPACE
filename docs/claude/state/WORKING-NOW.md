@@ -1,9 +1,9 @@
-# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 11:24 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 24 Nov 2026 11:29 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: desk-install.sh shows only the last 16 useful lines
-NEXT STEP: his install paste, then B13 T3b GREEN
-HIS LAST WORD: his 24 Nov 11:24 word
+DOING: desk-install.sh re-runs the newest script itself; T3b selftest proven, AD32 waits
+NEXT STEP: his plain desk-install paste with AD32 line, then T3b GREEN, then T3c
+HIS LAST WORD: his 24 Nov 11:30 word: always pull the latest repo code
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -21,20 +21,33 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 7a668e62 24 Nov 11:24 ledger line 5c297125
 - 5c297125 24 Nov 11:24 desk-install: last 16 lines only
 - e72225aa 24 Nov 11:24 ledger line aa701036
 - aa701036 24 Nov 11:24 desk-install: one plain command, short summary
 - 1c7d121f 24 Nov 11:20 ledger line 4aa710f6
-- 4aa710f6 24 Nov 11:20 Desk note: dbsc-look finding, command form
 
 ## Uncommitted files (half-done work if any)
+M  admin-desk/NOW-LIST-23NOV.md
+M  admin-desk/TWO-COMMANDS.md
+M  admin-desk/scripts/desk-install.sh
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/TWO-COMMANDS.md
+M  docs/claude/admin-desk/scripts/desk-install.sh
  M docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 27 ++-------------------------
- 1 file changed, 2 insertions(+), 25 deletions(-)
+ admin-desk/TWO-COMMANDS.md                     |  2 +-
+ admin-desk/scripts/desk-install.sh             |  2 ++
+ docs/claude/admin-desk/NOW-LIST-23NOV.md       |  2 ++
+ docs/claude/admin-desk/TWO-COMMANDS.md         |  2 +-
+ docs/claude/admin-desk/scripts/desk-install.sh |  2 ++
+ docs/claude/state/WORKING-NOW.md               | 30 +++++++++++---------------
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt    |  8 +++----
+ 8 files changed, 26 insertions(+), 24 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -45,4 +58,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (0a9b01e38a2cec19e966015dd6c95cc05554af11)
+WIP snapshot: refs/wip/last (192adf2aa781ab1d30757de63c0582496e3c2dd6)

@@ -3986,3 +3986,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Desk installer prints a short summary, full log in /var/log/anexomail-desk-install, also runs ad-auto for AD32. TECH-LAW CHECKED. TESTED: bash -n OK, summary filter simulated pass
 
 - Desk installer screen = last 16 useful lines, rest in log file. TECH-LAW CHECKED. TESTED: bash -n OK
+
+- Desk installer always fetches and runs the newest origin/main script (re-exec guard). TECH-LAW CHECKED. TESTED: bash -n OK, re-exec simulated pass
