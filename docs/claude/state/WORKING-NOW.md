@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 25 Nov 2026 02:27 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 02:27 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: B13 T4g done inside existing AD34 (desk_bind_owner)
@@ -21,32 +21,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- c17c41c8 25 Nov 02:27 B13 T4g definer owner in AD34
 - 6305183f 25 Nov 02:24 ledger line 359aed49
 - 359aed49 25 Nov 02:24 B13 T4 complete list to gate
 - 7055241c 25 Nov 02:17 ledger line b9b0a498
 - b9b0a498 25 Nov 02:17 B13 T4 code: AD34 + Rust doors + screen
-- ea9da9c4 25 Nov 01:58 ledger line cade364d
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/sql/AD34.sql
-M  admin-desk/sql/checks/AD34-check.sql
-M  docs/claude/TECH-LAW-GATE.json
-M  docs/claude/admin-desk/sql/AD34.sql
-M  docs/claude/admin-desk/sql/checks/AD34-check.sql
-MM docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
+ M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/sql/AD34.sql                          | 24 ++++++++++++++++++
- admin-desk/sql/checks/AD34-check.sql             |  1 +
- docs/claude/TECH-LAW-GATE.json                   |  2 +-
- docs/claude/admin-desk/sql/AD34.sql              | 24 ++++++++++++++++++
- docs/claude/admin-desk/sql/checks/AD34-check.sql |  1 +
- docs/claude/state/WORKING-NOW.md                 | 31 +++++++++---------------
- docs/cursor-work/server/DEPLOY-MANIFEST.txt      |  6 ++---
- 7 files changed, 66 insertions(+), 23 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 31 +++----------------------------
+ 1 file changed, 3 insertions(+), 28 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -57,4 +45,4 @@ M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a6f0370bfdbe7f3bdc29065ad8578fbc358395d4)
+WIP snapshot: refs/wip/last (7d9139fd6a0bf954d7f770325d34378328886e49)

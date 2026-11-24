@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 25 Nov 2026 02:27 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 02:27 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: B13 T4g done inside existing AD34 (desk_bind_owner)
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- c17c41c8 25 Nov 02:27 B13 T4g definer owner in AD34
 - 6305183f 25 Nov 02:24 ledger line 359aed49
 - 359aed49 25 Nov 02:24 B13 T4 complete list to gate
 - 7055241c 25 Nov 02:17 ledger line b9b0a498
@@ -75,13 +76,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - ea9da9c4 25 Nov 01:58 ledger line cade364d
 - cade364d 25 Nov 01:58 B13 T4 plan + research; awam live confirmed
 - 47da5340 24 Nov 14:43 ledger line 801163ca
-- 801163ca 24 Nov 14:43 manifest fix footer + resume for tonight
 
 ## Uncommitted Desk files
-M  admin-desk/sql/AD34.sql
-M  admin-desk/sql/checks/AD34-check.sql
-M  docs/claude/admin-desk/sql/AD34.sql
-M  docs/claude/admin-desk/sql/checks/AD34-check.sql
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
