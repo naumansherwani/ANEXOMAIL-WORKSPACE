@@ -5770,3 +5770,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - B13 T2 GREEN WIRED: YES / REAL: YES, his word 09:34. TECH-LAW CHECKED. TESTED: his desk-install build 1fa4a4da8 SAME, AD30 selftest PG16 x2, CHECK 9/9, cargo 126, bun 140
 
 - B13 T3 point list + ADVANCE-RESEARCH written before code. TECH-LAW CHECKED: no code change. TESTED: docs only, rules-gate 0 fail
+
+- OS to awam import plan from live Chrome look. TECH-LAW CHECKED: no code change. TESTED: docs only, my live look at /app/import console 0 errors, rules-gate 0 fail

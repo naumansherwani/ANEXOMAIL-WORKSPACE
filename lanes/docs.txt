@@ -390,6 +390,7 @@ docs/claude/admin-desk/ML-DSA-HYBRID-GAP-PLAN-23NOV.md
 docs/claude/admin-desk/NEXT-CODES-ORDER-22NOV.md
 docs/claude/admin-desk/NEXT-PHASE-B9-23NOV.md
 docs/claude/admin-desk/NOW-LIST-23NOV.md
+docs/claude/admin-desk/OS-IMPORT-CONNECT-PLAN-24NOV.md
 docs/claude/admin-desk/OS-INHERIT-AWAM-FOUNDER-PLAN-24NOV.md
 docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md
 docs/claude/admin-desk/PHASE-TECH-SQL-MAP-22NOV.md

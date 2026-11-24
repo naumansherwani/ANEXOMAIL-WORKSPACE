@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 09:37 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 09:43 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
-DOING: B13 T3 point list + research written; T3a AD31 resolver next
-NEXT STEP: T3a: read AD26 + member tables, write AD31 (awam DB), contract with SQL+Rust+screen files
+DOING: OS import plan written from live look; T3a AD31 next
+NEXT STEP: T3a: read AD26 + member tables, write AD31
 HIS LAST WORD: gate is final authority
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
@@ -67,6 +67,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 0b4e69a8 24 Nov 09:37 ledger line ba1f46c4
 - ba1f46c4 24 Nov 09:37 Desk B13 T3: point list and research
 - 7d219104 24 Nov 09:35 ledger line 20912c95
 - 20912c95 24 Nov 09:35 Desk B13 T2 GREEN
@@ -74,9 +75,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 4d20e3e7 24 Nov 09:34 Desk B13 T2 GREEN
 - 466906a9 24 Nov 09:33 ledger line 8484a918
 - 8484a918 24 Nov 09:33 Desk B13 T2 SQL green, all phases in order
-- de0fd3e2 24 Nov 09:31 ledger line 1f1730f2
 
 ## Uncommitted Desk files
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+A  admin-desk/OS-IMPORT-CONNECT-PLAN-24NOV.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+A  docs/claude/admin-desk/OS-IMPORT-CONNECT-PLAN-24NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
