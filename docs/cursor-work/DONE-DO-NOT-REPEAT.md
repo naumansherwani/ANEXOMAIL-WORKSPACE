@@ -4601,3 +4601,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Four phone bugs fixed: real logo in mobile header, Systems flap guard (median of 3 probes), Systems rows shared-CSS li grid leak, only the open tab highlighted, Senior Executive nowrap, WRITTEN not installed, TECH-LAW CHECKED, TESTED: cargo test probes 6 pass, bun test src/desk 131 pass, tsc clean, build:desk ok, sandbox repro of the li leak fixed (b width 18 to 324)
 
 - Phone clock off-screen fixed (shrinkable left column, clock flex none, shorter side rules under 480 px) and OS-INHERIT plan OS-13..OS-23 with advance technology, WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 131 pass, tsc clean, build:desk ok, sandbox header at 390 clock right edge 374 no overflow
+
+- OS inherit plan section 6: awam and founder features in employee words, docs only, TECH-LAW CHECKED, TESTED: docs only, gate pass
