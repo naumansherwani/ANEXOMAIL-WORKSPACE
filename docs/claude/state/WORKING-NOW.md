@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 11:20 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 11:20 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: waiting his desk-install paste for B13 T3b; dbsc-look finding recorded (no_cookie in observe)
@@ -21,26 +21,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 4aa710f6 24 Nov 11:20 Desk note: dbsc-look finding, command form
 - c543a874 24 Nov 11:13 ledger line cb9c7b55
 - cb9c7b55 24 Nov 11:13 Rule 52 combo standard + gate rule
 - 648b9754 24 Nov 11:11 ledger line eb7518a3
 - eb7518a3 24 Nov 11:11 Desk B13 T3b: sender-resolve door, AD32, RFC 9421 WIMSE 7489 OWASP
-- 0b7d147a 24 Nov 10:50 ledger line ea06fd4f
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/NOW-LIST-23NOV.md                |  1 +
- docs/claude/admin-desk/NOW-LIST-23NOV.md    |  1 +
- docs/claude/state/WORKING-NOW.md            | 26 ++++++++------------------
- docs/cursor-work/server/DEPLOY-MANIFEST.txt |  4 ++--
- 4 files changed, 12 insertions(+), 20 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 23 ++---------------------
+ 1 file changed, 2 insertions(+), 21 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -51,4 +45,4 @@ M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (321ca5b54fe88022b4a4072dd067457a91182b1d)
+WIP snapshot: refs/wip/last (4e3ed0c82f45332e2c2100b9d9216dcb36e0563f)
