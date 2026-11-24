@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 14:19 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 14:19 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: Landing footer = login words word for word
@@ -21,28 +21,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 682d8807 24 Nov 14:19 awam landing footer matches login words
 - c3a259cd 24 Nov 14:16 ledger line f133c464
 - f133c464 24 Nov 14:16 state update: next phase B13 T4
 - b7a40544 24 Nov 14:11 ledger line 2f2fab7a
 - 2f2fab7a 24 Nov 14:11 awam sign-in: sub line Access Your Global Workspace
-- d82ee8be 24 Nov 14:06 ledger line b3f2858a
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  lovable-gold/MANIFEST.sha256
-M  lovable-gold/awam/src/components/site/SiteFooter.tsx
-M  src/components/site/SiteFooter.tsx
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md                   | 27 ++++++++--------------
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  6 ++---
- lovable-gold/MANIFEST.sha256                       |  2 +-
- .../awam/src/components/site/SiteFooter.tsx        |  7 +++---
- src/components/site/SiteFooter.tsx                 |  7 +++---
- 5 files changed, 19 insertions(+), 30 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 25 ++-----------------------
+ 1 file changed, 2 insertions(+), 23 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -53,4 +45,4 @@ M  src/components/site/SiteFooter.tsx
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (c9e297e506c32f7445483da1b0b2841f2465d17a)
+WIP snapshot: refs/wip/last (a46a102eb4ff8e800dc7ccc26f9862b9911572c5)
