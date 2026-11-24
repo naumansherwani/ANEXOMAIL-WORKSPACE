@@ -1,3 +1,12 @@
+# TECH CONTRACT FOR PHASE: 1m B13 T4 MANUAL COMPANY EXCEPTION WITH A SECOND REVIEWER (point list + research only in this block; ORDER-LOCK: BL-46 B13 NOW; his 25 Nov 2026 01:54 order "B13 T4: pehle web research aur plan, phir SQL AD34, Rust aur screen"; plan docs/claude/admin-desk/D6-B13-T4-MANUAL-EXCEPTION-PLAN-25NOV.md; files that exist today and stay UNCHANGED in this step: docs/claude/admin-desk/sql/AD30.sql, docs/claude/admin-desk/server/src/resolve_cp.rs, founder-web/src/desk/DeskConsent.tsx)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL 16 proposal-and-decision state machine, forced RLS, REVOKE PUBLIC, requester <> decider (NIST AC-5), 24 h expiry, advisory lock per proposal, ONE binding writer (AD30 fadm_case_bind), selftest + CHECK | docs/claude/admin-desk/sql/AD34.sql (T4a) | PLANNED | T4a scratch PostgreSQL 16 twice |
+| Rust Tokio + Axum staff doors over HTTP/3, signed envelope RFC 9421 + IETF WIMSE, passkey + DBSC session | docs/claude/admin-desk/server/src (T4b) | PLANNED | T4b cargo tests |
+| React 19 + TypeScript screen verified by the Rust WASM kernel, same on 390 / 820 / 1200+ | founder-web/src/desk (T4c) | PLANNED | T4c bun tests + live look |
+
+RULE 52 COMBO: S=yes (every door answer is a signed envelope verified by the kernel, as T3b) M=N/A (no mail path touched in T4) L=yes (every proposal, approval, denial, expiry, refusal = one ledger line, closed words, no free text)
+
 # TECH CONTRACT FOR PHASE: AWAM SIGN-IN + landing footer (his explicit chat approval 13:52 with the picture: "yeh gate ko bhejo ke approved hai"), SHIPPED (awam lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 13:44-13:49 orders: Rule 52 words out, advance-only lines, WebTransport/QUIC/HTTP/3 + Media over QUIC (IETF MoQ) added for ANEXOCHAT + HTTP/3 signatures (RFC 9421) + IETF WIMSE in ONE line, seven rotating taglines incl. Every answer, verified by WASM Kernel, light rests at the top; the same lines on the landing BUILT WITH footer; code = demo/awam-signin-24nov/real-taglines + real-landing copied unchanged)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -4142,3 +4151,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - DEPLOY-MANIFEST now lists src/components/site/SiteFooter.tsx (root cause: pull showed DIFF SiteFooter, live footer old); PHASE COUNT block; CLAUDE.md top + RESUME-POINT resume lines for tonight. TECH-LAW CHECKED. TESTED: manifest-verify, gate run, his pull paste read
 
 - DEPLOY-MANIFEST now lists src/components/site/SiteFooter.tsx (root cause: pull showed DIFF SiteFooter, live footer old); PHASE COUNT block; RESUME-POINT line for tonight (CLAUDE.md top is gate-protected, untouched). TECH-LAW CHECKED. TESTED: manifest-verify 0 bad, gate 0 fail, his pull paste read
+
+- B13 T4 POINT LIST + WEB RESEARCH (NIST AC-5, four-eyes, PostgreSQL state transitions) written in plan, NOW-LIST, CURRENT.md contract, D-series + awam blueprint; awam sign-in/footer live-confirmed at 1536 after his pull (628 same). TECH-LAW CHECKED. TESTED: his pull paste, my Chrome look, gate run
+
+- B13 T4 POINT LIST + WEB RESEARCH (NIST AC-5, four-eyes, PostgreSQL state transitions) in plan, NOW-LIST, CURRENT.md contract (cells PLANNED), D-series + awam blueprint; awam sign-in/footer live-confirmed at 1536 after his pull (628 same). TECH-LAW CHECKED. TESTED: his pull paste, my Chrome look, gate run

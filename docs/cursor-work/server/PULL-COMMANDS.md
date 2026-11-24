@@ -2895,3 +2895,7 @@
 - DEPLOY-MANIFEST now lists src/components/site/SiteFooter.tsx (root cause: pull showed DIFF SiteFooter, live footer old); PHASE COUNT block; CLAUDE.md top + RESUME-POINT resume lines for tonight. TECH-LAW CHECKED. TESTED: manifest-verify, gate run, his pull paste read
 
 - DEPLOY-MANIFEST now lists src/components/site/SiteFooter.tsx (root cause: pull showed DIFF SiteFooter, live footer old); PHASE COUNT block; RESUME-POINT line for tonight (CLAUDE.md top is gate-protected, untouched). TECH-LAW CHECKED. TESTED: manifest-verify 0 bad, gate 0 fail, his pull paste read
+
+- B13 T4 POINT LIST + WEB RESEARCH (NIST AC-5, four-eyes, PostgreSQL state transitions) written in plan, NOW-LIST, CURRENT.md contract, D-series + awam blueprint; awam sign-in/footer live-confirmed at 1536 after his pull (628 same). TECH-LAW CHECKED. TESTED: his pull paste, my Chrome look, gate run
+
+- B13 T4 POINT LIST + WEB RESEARCH (NIST AC-5, four-eyes, PostgreSQL state transitions) in plan, NOW-LIST, CURRENT.md contract (cells PLANNED), D-series + awam blueprint; awam sign-in/footer live-confirmed at 1536 after his pull (628 same). TECH-LAW CHECKED. TESTED: his pull paste, my Chrome look, gate run
