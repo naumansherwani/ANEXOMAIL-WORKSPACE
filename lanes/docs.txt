@@ -462,6 +462,7 @@ docs/claude/admin-desk/scripts/desk-h3-check.sh
 docs/claude/admin-desk/scripts/desk-h3-enable.sh
 docs/claude/admin-desk/scripts/desk-host-check.sh
 docs/claude/admin-desk/scripts/desk-install.sh
+docs/claude/admin-desk/scripts/desk-ledger-look.sh
 docs/claude/admin-desk/scripts/desk-owner.sh
 docs/claude/admin-desk/scripts/desk-restart.sh
 docs/claude/admin-desk/scripts/desk-restore.sh

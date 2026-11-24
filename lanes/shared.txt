@@ -135,6 +135,7 @@ admin-desk/scripts/desk-h3-check.sh
 admin-desk/scripts/desk-h3-enable.sh
 admin-desk/scripts/desk-host-check.sh
 admin-desk/scripts/desk-install.sh
+admin-desk/scripts/desk-ledger-look.sh
 admin-desk/scripts/desk-owner.sh
 admin-desk/scripts/desk-restart.sh
 admin-desk/scripts/desk-restore.sh
