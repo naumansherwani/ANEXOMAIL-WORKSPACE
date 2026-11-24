@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 08:25 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 08:25 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: E202 merged into E201 (his 08:21 order), E201 re-run pending on his server
 NEXT STEP: his awam AUTO sql-run paste (E201 re-run), then case-to-company binding table
 HIS LAST WORD: he ordered E201 edit, not a new file
@@ -19,43 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- c3ceddb2 24 Nov 08:25 E201: merge E202 facts + pool levels, delete E202
 - 7625b98e 24 Nov 08:20 ledger line 93c3ed3c
 - 93c3ed3c 24 Nov 08:20 E202 awam package facts + pool; audit
 - be6bdc37 24 Nov 08:14 ledger line 2c566233
 - 2c566233 24 Nov 08:14 AD26 tenant registry GREEN
-- a9f96fd0 24 Nov 08:06 ledger line 6d38281d
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/AUDIT-24NOV-0820-AWAM-POINTS-AND-DESK.md
-M  docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  docs/cursor-work/sql/CHECK_E201.sql
-D  docs/cursor-work/sql/CHECK_E202.sql
-M  docs/cursor-work/sql/E201_awam_package_caps_final.sql
-D  docs/cursor-work/sql/E202_awam_package_facts_pool.sql
-M  docs/cursor-work/sql/index.md
-M  lanes/ALL-FILES.csv
-M  lanes/awam.txt
-M  lovable-gold/README.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/cursor-work/sql/CHECK_E202.sql                |  17 --
- .../sql/E201_awam_package_caps_final.sql           | 173 ++++++++++++++++++++
- .../sql/E202_awam_package_facts_pool.sql           | 176 ---------------------
- docs/cursor-work/sql/index.md                      |   3 +-
- lanes/ALL-FILES.csv                                |   2 -
- lanes/awam.txt                                     |   2 -
- lovable-gold/README.md                             |   2 +-
- 18 files changed, 247 insertions(+), 250 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 40 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 38 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -66,4 +43,4 @@ M  lovable-gold/README.md
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (8d37dcdea4160fb9059b094cefeef12d63cad4c9)
+WIP snapshot: refs/wip/last (907ea1024ed8f2b4ed61548e03b7c9713cdc753a)

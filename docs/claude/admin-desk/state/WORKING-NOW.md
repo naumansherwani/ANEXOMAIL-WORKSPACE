@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 08:25 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 08:25 PKT) - read this FIRST for the Desk after a compaction
 DOING: E202 merged into E201 (his 08:21 order), E201 re-run pending on his server
 NEXT STEP: his awam AUTO sql-run paste (E201 re-run), then case-to-company binding table
 HIS LAST WORD: he ordered E201 edit, not a new file
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- c3ceddb2 24 Nov 08:25 E201: merge E202 facts + pool levels, delete E202
 - 7625b98e 24 Nov 08:20 ledger line 93c3ed3c
 - 93c3ed3c 24 Nov 08:20 E202 awam package facts + pool; audit
 - be6bdc37 24 Nov 08:14 ledger line 2c566233
@@ -72,14 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - a9f96fd0 24 Nov 08:06 ledger line 6d38281d
 - 6d38281d 24 Nov 08:06 fixed command forms rule
 - 1acac0af 24 Nov 08:03 ledger line d7f23d8d
-- d7f23d8d 24 Nov 08:03 E201 GREEN SQL half, Max 125,000 final
 
 ## Uncommitted Desk files
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
