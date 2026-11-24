@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 25 Nov 2026 04:51 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 04:52 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: AD35 SQL: signed ledger checkpoints + company identifiers + shape proof, tested
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 2a14c0ca 25 Nov 04:51 AD35 SQL
 - bb5710b2 25 Nov 04:33 ledger line 0ee59640
 - 0ee59640 25 Nov 04:33 T4i SQL registry kinds in AD34
 - 66c1b5f4 25 Nov 04:28 ledger line 6f59631d
@@ -75,20 +76,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 0e6c5970 25 Nov 04:23 ledger line 8cd3d58e
 - 8cd3d58e 25 Nov 04:23 T4e live look, T4i plan
 - 5d68b54d 25 Nov 04:12 ledger line a5919570
-- a5919570 25 Nov 04:12 T4e fix: rebuild dist-desk with the screen
 
 ## Uncommitted Desk files
-A  admin-desk/D6-B13-AD35-RESEARCH-LIST-25NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-A  admin-desk/sql/AD35.sql
-A  admin-desk/sql/checks/AD35-check.sql
-A  docs/claude/admin-desk/D6-B13-AD35-RESEARCH-LIST-25NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-A  docs/claude/admin-desk/sql/AD35.sql
-A  docs/claude/admin-desk/sql/checks/AD35-check.sql
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
