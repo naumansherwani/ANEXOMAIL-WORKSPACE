@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 10:02 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 10:02 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 DOING: Move-In plan saved, Priority Support gate reminder, T3 folder decisions; T3a AD31 next
 NEXT STEP: B13 T3a: read AD26 + awam member tables, write AD31 (awam DB resolver), contract naming SQL+Rust+screen files
@@ -67,6 +67,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 97021450 24 Nov 10:02 Desk: Move-In plan saved, priority support gate reminder, T3 by folder
 - 28662f6d 24 Nov 09:49 ledger line 0d1ae8d1
 - 0d1ae8d1 24 Nov 09:49 Desk: OS final decision and awam move-in loopholes
 - 6c06f9ee 24 Nov 09:43 ledger line 9d96440a
@@ -74,15 +75,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 0b4e69a8 24 Nov 09:37 ledger line ba1f46c4
 - ba1f46c4 24 Nov 09:37 Desk B13 T3: point list and research
 - 7d219104 24 Nov 09:35 ledger line 20912c95
-- 20912c95 24 Nov 09:35 Desk B13 T2 GREEN
 
 ## Uncommitted Desk files
-M  admin-desk/D6-B13-T3-RESOLUTION-LIST-24NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/D6-B13-T3-RESOLUTION-LIST-24NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
