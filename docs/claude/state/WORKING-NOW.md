@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 05:48 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 05:49 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: title wrap fix, OS-13..23 as BL-68..78 in the gate list
 NEXT STEP: his install of desk-C7e2ymzR, B13 Z4
 HIS LAST WORD: his 05:46 orders
@@ -19,43 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- b195ef94 24 Nov 05:49 title wrap and BL-68..78
 - 4034c8b5 24 Nov 05:36 ledger line c3f3b2d8
 - c3f3b2d8 24 Nov 05:36 OS inherit employee answer
 - cad8e1b7 24 Nov 05:33 ledger line 2a162a68
 - 2a162a68 24 Nov 05:33 phone clock and OS inherit plan
-- 10bb0381 24 Nov 05:18 ledger line a5fb5de7
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/BILLIONAIRE-SETUP-LIST-23NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  admin-desk/OS-INHERIT-AWAM-FOUNDER-PLAN-24NOV.md
-A  backups/desk/20261124-0548-os-wrap/DeskShell.tsx
-A  backups/desk/20261124-0548-os-wrap/DeskTitle.tsx
-M  docs/claude/admin-desk/BILLIONAIRE-SETUP-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/OS-INHERIT-AWAM-FOUNDER-PLAN-24NOV.md
-M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-R  founder-web/dist-desk/assets/desk-B8DS1CmL.js -> founder-web/dist-desk/assets/desk-C7e2ymzR.js
-M  founder-web/dist-desk/desk.html
-M  founder-web/src/desk/DeskShell.tsx
-M  founder-web/src/desk/DeskTitle.tsx
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md                   |  40 ++---
- docs/claude/tech-contracts/CURRENT.md              |   6 +
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  10 +-
- .../assets/{desk-B8DS1CmL.js => desk-C7e2ymzR.js}  |   4 +-
- founder-web/dist-desk/desk.html                    |   2 +-
- founder-web/src/desk/DeskShell.tsx                 |   2 +-
- founder-web/src/desk/DeskTitle.tsx                 |   2 +-
- 18 files changed, 405 insertions(+), 30 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 40 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 38 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -66,4 +43,4 @@ M  founder-web/src/desk/DeskTitle.tsx
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (faaf26450f708022bd27bcd399225987c1d2ef7c)
+WIP snapshot: refs/wip/last (5839d72f33413bb56a2e0f884bd7e977b7dff168)
