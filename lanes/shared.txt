@@ -315,12 +315,14 @@ control-plane/sql/CP2.sql
 control-plane/sql/CP3.sql
 control-plane/sql/CP4.sql
 control-plane/sql/CP5.sql
+control-plane/sql/CP6.sql
 control-plane/sql/checks/00-FOUNDER-TECH-RULE.md
 control-plane/sql/checks/CP1-check.sql
 control-plane/sql/checks/CP2-check.sql
 control-plane/sql/checks/CP3-check.sql
 control-plane/sql/checks/CP4-check.sql
 control-plane/sql/checks/CP5-check.sql
+control-plane/sql/checks/CP6-check.sql
 control-plane/src/00-FOUNDER-TECH-RULE.md
 control-plane/src/answer.rs
 control-plane/src/census.rs

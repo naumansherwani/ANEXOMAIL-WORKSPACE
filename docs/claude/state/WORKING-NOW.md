@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 07:26 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: B13 T1 gate checklist written first
-NEXT STEP: T1 CP6.sql code against the checklist
-HIS LAST WORD: his 07:25 word: points first, gates first
+# WORKING NOW (manual checkpoint, 24 Nov 2026 07:30 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: B13 T1 CP6 written and tested
+NEXT STEP: his desk-install paste, then T2 case binding
+HIS LAST WORD: his 07:28 word: which phase, when codes
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -19,20 +19,37 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 6d78da02 24 Nov 07:26 ledger line 9e36ebce
 - 9e36ebce 24 Nov 07:26 t1 checklist
 - 93ffdbf6 24 Nov 07:25 ledger line 5a236721
 - 5a236721 24 Nov 07:25 t0 and awam loophole phases
 - 04b296f4 24 Nov 07:17 ledger line 6cb3e25a
-- 6cb3e25a 24 Nov 07:17 tenant identity decision
 
 ## Uncommitted files (half-done work if any)
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  admin-desk/scripts/cp-install.sh
+A  control-plane/sql/CP6.sql
+A  control-plane/sql/checks/CP6-check.sql
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/scripts/cp-install.sh
+M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
+M  docs/claude/tech-contracts/CURRENT.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 31 ++-----------------------------
- 1 file changed, 2 insertions(+), 29 deletions(-)
+ .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    |   4 +
+ docs/claude/admin-desk/NOW-LIST-23NOV.md           |   1 +
+ docs/claude/admin-desk/scripts/cp-install.sh       |   4 +
+ docs/claude/admin-desk/state/WORKING-NOW.md        |   1 +
+ docs/claude/state/WORKING-NOW.md                   |  34 ++--
+ docs/claude/tech-contracts/CURRENT.md              |   7 +
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  10 +-
+ 12 files changed, 258 insertions(+), 23 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -43,4 +60,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (9a153d9a1697c8a36919491768bdad616bfa06a8)
+WIP snapshot: refs/wip/last (57bf7e4b430777c5824fa83b04ece52105cfe135)

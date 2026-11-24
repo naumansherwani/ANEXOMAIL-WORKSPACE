@@ -46,6 +46,10 @@ echo "== CP 3e/7 database: CP5.sql (B13 Z4a: customer consent inbox + hash-chain
 S="$(mktemp)"; show control-plane/sql/CP5.sql >"$S"; C5="$(psqla -f "$S" 2>&1 | tail -4)"; rm -f "$S"; echo "$C5" | sed 's/^/   /'
 S="$(mktemp)"; show control-plane/sql/checks/CP5-check.sql >"$S"; CH5="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH5" | sed 's/^/   /'
 if echo "$CH5" | grep -q '|f$' || echo "$CH5" | grep -qi error || echo "$C5" | grep -qi "error"; then echo "WARN: CP5 did not install cleanly: customer consent stays closed (requests cannot be approved) until it is fixed; the rest of the install continues"; else echo "OK: CP5 consent inbox installed and CHECKed"; fi
+echo "== CP 3f/7 database: CP6.sql (B13 T1: tenant registry check + versioned domain ownership + first history fill) + selftest + CHECK"
+S="$(mktemp)"; show control-plane/sql/CP6.sql >"$S"; C6="$(psqla -f "$S" 2>&1 | tail -4)"; rm -f "$S"; echo "$C6" | sed 's/^/   /'
+S="$(mktemp)"; show control-plane/sql/checks/CP6-check.sql >"$S"; CH6="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH6" | sed 's/^/   /'
+if echo "$CH6" | grep -q '|f$' || echo "$CH6" | grep -qi error || echo "$C6" | grep -qi "error"; then echo "WARN: CP6 did not install cleanly: tenant binding stays closed (no consent request can be bound to a tenant) until it is fixed; the rest of the install continues"; else echo "OK: CP6 tenant registry + domain ownership installed and CHECKed"; fi
 PW="$(openssl rand -hex 24)"
 URL="$(ADMIN_URL="$ADMIN" CPW="$PW" python3 - <<'P'
 import os,urllib.parse as u

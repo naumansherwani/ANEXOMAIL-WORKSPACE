@@ -16,6 +16,13 @@
 | Rust + Tokio probe smoothing: reported latency = median of the last 3 passes (flap guard), failed probes never smoothed, Rule 52 stream unchanged; PostgreSQL AD03 state rules carried unchanged | docs/claude/admin-desk/server/src/probes.rs, docs/claude/admin-desk/sql/AD03.sql | YES | cargo test probes 6 pass (1 new) |
 | React 19 + TypeScript: real BrandMark in the phone header, highlight only the open page (aria-current), Systems rows as plain blocks (shared-CSS leak fixed, reproduced in a sandbox page), Senior Executive never wraps | founder-web/src/desk/DeskShell.tsx, founder-web/src/desk/DeskCards.tsx, founder-web/src/desk/DeskTitle.tsx | YES | bun test src/desk 131 pass, tsc clean, build:desk ok |
 
+# TECH CONTRACT FOR PHASE: DESK CARD B13 TENANT REGISTRY CHECK + VERSIONED DOMAIN OWNERSHIP (phase 1m, sub-phase B13 step T1 SQL CP6, list BL-46 (his 24 Nov 2026 02:39 order puts BL-46 B13 first; BL-28 B9c Y4 stays open and is not skipped), written 24 Nov 2026 07:5x PKT BEFORE install). LISTS: docs/claude/admin-desk/D6-B13-T1-GATE-CHECKLIST-24NOV.md, D6-B13-T0-SCHEMA-THREAT-ROLLBACK-24NOV.md, TENANT-IDENTITY-CONSENT-DECISION-24NOV.md.
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL 16 world-class SQL on top of AD07, CP5 and the live awam schema (SCHEMA-FIRST header): cp.domain_ownership append-only effective-dated history with EXCLUDE USING gist tstzrange (a domain never belongs to two tenants at once), insert-time tenant-in-registry check (no FK, so awam account deletion is never blocked), closed shared-domain list that never matches, sync function with no trigger on any awam table, tenant_of_domain(domain, moment), tenant_registry_check counts, SHA-256 hash-chained cp.tenant_ledger written before each change, forced RLS, REVOKE PUBLIC, cp_lookup read doors only, selftest rolled back, CHECK file | control-plane/sql/CP6.sql, control-plane/sql/checks/CP6-check.sql, docs/claude/admin-desk/scripts/cp-install.sh | YES | scratch PostgreSQL 16: selftest ALL RULES PASSED twice (idempotent), CP6-check 12 rows true |
+| Rust Control Plane + Desk client already GREEN/installed (Z4b, Z4b-2), unchanged by T1 | control-plane/src/consent.rs, docs/claude/admin-desk/server/src/consent_cp.rs | YES unchanged | cargo tests unchanged |
+| React 19 staff screen unchanged | founder-web/src/desk/DeskConsent.tsx | YES unchanged | unchanged |
+
 # TECH CONTRACT FOR PHASE: DESK CARD B13 DESK-SIDE CONTROL PLANE CLIENT (phase 1m, sub-phase B13 step Z4b-2 pure Rust client building blocks, list BL-46 (his 24 Nov 2026 02:39 order puts BL-46 B13 first; BL-28 B9c Y4 stays open and is not skipped), written 24 Nov 2026 07:1x PKT BEFORE install; Z4b-3 wires the doors). LISTS: docs/claude/admin-desk/D6-B13-Z4-GATE-CHECKLIST-24NOV.md and D6-B13-Z4-CUSTOMER-APPROVAL-PLAN-24NOV.md.
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3811,3 +3818,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - B13 T0 schema threat rollback plan + AWAM loophole phases AWL-1..AWL-9 written (docs only), TECH-LAW CHECKED, TESTED: docs only, facts from repo and his pastes and kmu.admin.ch, gate pass
 
 - B13 T1 gate checklist written before code (docs only), TECH-LAW CHECKED, TESTED: docs only, gate pass
+
+- B13 T1 CP6.sql tenant registry + versioned domain ownership written, WIRED: NO, REAL: NO, TECH-LAW CHECKED, TESTED: scratch PostgreSQL 16 CP6 selftest ALL RULES PASSED twice and CHECK 12 rows true

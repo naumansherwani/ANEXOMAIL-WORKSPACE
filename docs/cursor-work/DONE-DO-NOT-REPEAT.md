@@ -4637,3 +4637,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - B13 T0 schema threat rollback plan + AWAM loophole phases AWL-1..AWL-9 written (docs only), TECH-LAW CHECKED, TESTED: docs only, facts from repo and his pastes and kmu.admin.ch, gate pass
 
 - B13 T1 gate checklist written before code (docs only), TECH-LAW CHECKED, TESTED: docs only, gate pass
+
+- B13 T1 CP6.sql tenant registry + versioned domain ownership written, WIRED: NO, REAL: NO, TECH-LAW CHECKED, TESTED: scratch PostgreSQL 16 CP6 selftest ALL RULES PASSED twice and CHECK 12 rows true
