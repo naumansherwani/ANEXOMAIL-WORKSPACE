@@ -947,6 +947,42 @@
    "deadline": "B13 T4i",
    "why": "his 25 Nov 04:31 order: registration numbers of every country built once and future-proof: GLEIF list loaded in AD34, shape NULL until proven.",
    "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4h-sql-checkpoint-tables",
+   "file": "admin-desk/sql/AD35.sql",
+   "must": "desk.ledger_checkpoint",
+   "status": "ok",
+   "deadline": "B13 T4h",
+   "why": "his 25 Nov 04:42 order AD35: signed ledger checkpoints in C2SP form, append-only, bound to the ledger line, off-box witness table; Rust signer + Storage Box copy stay open under T4h-ledger-checkpoints.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4i-sql-company-identifier",
+   "file": "admin-desk/sql/AD35.sql",
+   "must": "desk.company_identifier",
+   "status": "ok",
+   "deadline": "B13 T4i",
+   "why": "AD35: bitemporal company registry numbers, two different people, one live holder, ledger holds only a hash.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4i-sql-shape-proof",
+   "file": "admin-desk/sql/AD35.sql",
+   "must": "desk.registry_shape_prove",
+   "status": "ok",
+   "deadline": "B13 T4i",
+   "why": "AD35: a register number shape enters only with source, date, valid and invalid samples and a ReDoS guard.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "AD35-research-list",
+   "file": "admin-desk/D6-B13-AD35-RESEARCH-LIST-25NOV.md",
+   "must": "C2SP tlog-checkpoint",
+   "status": "ok",
+   "deadline": "B13 T4h",
+   "why": "his 04:48 order: the web research points of AD35 are told to the gate before the commit.",
+   "fail_after": "2027-01-09"
   }
  ]
 }

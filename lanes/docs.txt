@@ -364,6 +364,7 @@ docs/claude/admin-desk/D5A4-AUDIT-PROOF-LIST-23NOV.md
 docs/claude/admin-desk/D5A5-FAIL-CLOSED-LIST-23NOV.md
 docs/claude/admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
 docs/claude/admin-desk/D5C-ESCALATE-LIST-23NOV.md
+docs/claude/admin-desk/D6-B13-AD35-RESEARCH-LIST-25NOV.md
 docs/claude/admin-desk/D6-B13-ADVISOR-COVERAGE-24NOV.md
 docs/claude/admin-desk/D6-B13-CONSENT-ACCESS-LIST-24NOV.md
 docs/claude/admin-desk/D6-B13-T0-SCHEMA-THREAT-ROLLBACK-24NOV.md
@@ -598,6 +599,7 @@ docs/claude/admin-desk/sql/AD31.sql
 docs/claude/admin-desk/sql/AD32.sql
 docs/claude/admin-desk/sql/AD33.sql
 docs/claude/admin-desk/sql/AD34.sql
+docs/claude/admin-desk/sql/AD35.sql
 docs/claude/admin-desk/sql/README.md
 docs/claude/admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/sql/checks/AD01-check.sql
@@ -641,6 +643,7 @@ docs/claude/admin-desk/sql/checks/AD31-check.sql
 docs/claude/admin-desk/sql/checks/AD32-check.sql
 docs/claude/admin-desk/sql/checks/AD33-check.sql
 docs/claude/admin-desk/sql/checks/AD34-check.sql
+docs/claude/admin-desk/sql/checks/AD35-check.sql
 docs/claude/admin-desk/sql/checks/README.md
 docs/claude/admin-desk/state/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/state/COMPACT-SAVE.md
