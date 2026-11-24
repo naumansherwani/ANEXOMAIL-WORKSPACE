@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 13:04 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 13:05 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: original awam sign-in kept live + backed up; final look parked in real-wip, to be sent to server later
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 346285b3 24 Nov 13:05 original sign-in backed up, final look parked
 - d375c88f 24 Nov 12:59 ledger line 0652f59e
 - 0652f59e 24 Nov 12:59 awam sign-in back to original, look parked
 - c2ac03d9 24 Nov 12:50 ledger line 3d90027d
@@ -75,10 +76,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - f18b0145 24 Nov 12:44 ledger line a1c40c57
 - a1c40c57 24 Nov 12:44 awam sign-in restored to original
 - 30db258b 24 Nov 12:39 ledger line 22d06961
-- 22d06961 24 Nov 12:39 awam sign-in Global Grid look (backup first)
 
 ## Uncommitted Desk files
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
