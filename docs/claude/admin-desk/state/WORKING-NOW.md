@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 08:14 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 08:14 PKT) - read this FIRST for the Desk after a compaction
 DOING: AD26 tenant registry GREEN on his server; E201 GREEN; both Desk and awam SQL installed
 NEXT STEP: next: case-to-company binding table (immutable, ledger), Desk side; then consent wiring
 HIS LAST WORD: his 08:13 desk-install paste (AD26 CHECK all true, build 1acac0af3 = repo) + my Chrome look
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 2c566233 24 Nov 08:14 AD26 tenant registry GREEN
 - a9f96fd0 24 Nov 08:06 ledger line 6d38281d
 - 6d38281d 24 Nov 08:06 fixed command forms rule
 - 1acac0af 24 Nov 08:03 ledger line d7f23d8d
@@ -72,13 +73,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 3212d702 24 Nov 07:53 ledger line de6596bb
 - de6596bb 24 Nov 07:53 ad-auto names AD21..AD26
 - e1041c4c 24 Nov 07:48 ledger line de12ed1d
-- de12ed1d 24 Nov 07:48 Desk SQL one series AD21..AD26
 
 ## Uncommitted Desk files
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
