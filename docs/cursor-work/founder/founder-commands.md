@@ -6329,3 +6329,5 @@ FINAL: 21 Nov Desk Isolation Law and Gate never break. Company OS (Command Cente
 - B13 T4 COMPLETE LIST (F1..F7 + 8 acceptance points) told to the gate line by line; four open lines T4e T4f T4g T4h named with technology and order. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: docs and gate json only, gate run OK, json parses
 
 - B13 T4g DEFINER-OWNER written inside existing AD34: six doors owned by NOLOGIN NOBYPASSRLS desk_bind_owner with own RLS policies. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: AD34 selftest passed on PG16, CHECK 16/16 true, race test OK, doors still pass
+
+- B13 T4 install paste recorded (AD34 CHECK OK, builds SAME 7055241c7); T4a..T4h phase rows added; two separate installs rule (ad-auto SQL, desk-install web). RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: docs only, his install paste shows CHECK OK and SAME proofs, gate run OK
