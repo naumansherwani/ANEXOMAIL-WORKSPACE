@@ -21,3 +21,12 @@ test("owner sees technical rows, stale and connecting are honest", () => {
   const s = systemsModel("stale", { services: all("operational") }, "owner"); expect(s.overall).toBe("stale"); expect(s.areas.every((a) => a.tech.length === 0 && a.words === "Not answering")).toBe(true);
   expect(systemsModel("connecting", {}, "agent").headline).toBe("Connecting…");
 });
+
+test("an internal fault (audit trail) never shows What to tell customers, it shows a staff line", () => {
+  const rows = all("operational").map((s) => (s.service === "ledger" ? { ...s, state: "degraded" } : s));
+  const m = systemsModel("live", { services: rows }, "agent");
+  expect(m.overall).toBe("degraded"); expect(m.banner).toBeNull(); expect(m.staffBanner).toContain("Audit trail"); expect(m.staffBanner).toContain("Customers are not affected");
+  const both = all("operational").map((s) => (s.service === "ledger" ? { ...s, state: "degraded" } : s.service === "clamav" ? { ...s, state: "outage" } : s));
+  const b = systemsModel("live", { services: both }, "agent");
+  expect(b.banner).toContain("Virus scanning"); expect(b.banner).not.toContain("Audit trail"); expect(b.staffBanner).toContain("Audit trail");
+});

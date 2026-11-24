@@ -60,7 +60,7 @@ async fn probe_edge() {
 async fn probe_ledger() {
     let t = Instant::now();
     let (ok, note) = match door::connect().await {
-        Ok(c) => match door::rows(&c, "select desk.fadm_ledger_verify()::text").await { Ok(v) => (v.first().and_then(|r| r.get(0)) == Some("true"), "chain verify".to_string()), Err(e) => (false, e.to_string()) },
+        Ok(c) => match door::rows(&c, "select desk.fadm_ledger_verify_fast()::text").await { Ok(v) => (v.first().and_then(|r| r.get(0)) == Some("true"), "chain verify (incremental, full walk daily)".to_string()), Err(e) => (false, e.to_string()) },
         Err(e) => (false, e),
     };
     record("ledger", ok, Some(t.elapsed().as_millis()), if ok { "SHA-256 chain verifies" } else { &note }).await;

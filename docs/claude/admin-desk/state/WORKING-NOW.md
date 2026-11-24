@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 08:54 PKT) - read this FIRST for the Desk after a compaction
-DOING: Ledger card GREEN desktop; AD28 ledger flood guard + dbsc look written; E201 E202 GREEN
-NEXT STEP: his desk-install paste (AD28) then desk-dbsc-look paste, then fix the cause of the refused refresh
-HIS LAST WORD: ledger card found 42,563 dbsc.refused lines; his loophole auto-fix rule
+# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 09:05 PKT) - read this FIRST for the Desk after a compaction
+DOING: 1m-L3 AD29 incremental ledger check + staff banner
+NEXT STEP: his desk-install then my Chrome look
+HIS LAST WORD: probe walked 44k lines each minute
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e2d19d33 24 Nov 08:54 ledger line 44e648f6
 - 44e648f6 24 Nov 08:54 Desk: AD28 ledger flood guard, GREEN lines, OS folder
 - 429cbe1f 24 Nov 08:41 ledger line 96843f30
 - 96843f30 24 Nov 08:41 Desk: wire the Ledger card (AD27)
@@ -72,10 +73,23 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 204ff52c 24 Nov 08:34 E202: final price chart migration
 - 7f5341e5 24 Nov 08:25 ledger line c3ceddb2
 - c3ceddb2 24 Nov 08:25 E201: merge E202 facts + pool levels, delete E202
-- 7625b98e 24 Nov 08:20 ledger line 93c3ed3c
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  admin-desk/server/src/probes.rs
+A  admin-desk/sql/AD29.sql
+A  admin-desk/sql/checks/AD29-check.sql
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/server/src/probes.rs
+A  docs/claude/admin-desk/sql/AD29.sql
+A  docs/claude/admin-desk/sql/checks/AD29-check.sql
+MM docs/claude/admin-desk/state/WORKING-NOW.md
+M  founder-web/src/desk/DeskCards.tsx
+M  founder-web/src/desk/DeskCommandBar.tsx
+M  founder-web/src/desk/desk_systems_pure.test.ts
+M  founder-web/src/desk/desk_systems_pure.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

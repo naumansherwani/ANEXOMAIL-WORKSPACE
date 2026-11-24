@@ -6,15 +6,16 @@ import { asServices, ago, type Svc } from "./desk_bridge_pure";
 
 export type Level = "ok" | "degraded" | "outage" | "unknown" | "stale" | "connecting";
 export type Area = { id: string; label: string; level: Level; words: string; tell: string | null; tech: { label: string; text: string }[] };
-export type Systems = { overall: Level; headline: string; banner: string | null; areas: Area[]; showTech: boolean };
+export type Systems = { overall: Level; headline: string; banner: string | null; staffBanner: string | null; areas: Area[]; showTech: boolean };
 
 /** Which of the Desk's measured services belong to each plain-language area. */
-export const AREAS: { id: string; label: string; services: string[]; tell: string }[] = [
+export const AREAS: { id: string; label: string; services: string[]; tell: string; customer?: boolean }[] = [
   { id: "mail", label: "Receiving and sending company mail", services: ["mail_in", "mail_out"], tell: "We know mail may be late or missing for a short while and the team is working on it. Do not promise a time." },
   { id: "desk", label: "The Desk website and its secure connection", services: ["h3_edge", "tls"], tell: "The support desk is having trouble. Use the phone or note the customer's details and reply later." },
   { id: "records", label: "Sign-in and saving your work", services: ["db", "signer"], tell: "Some actions may not save right now. Write the customer's request down and enter it later." },
   { id: "virus", label: "Virus scanning of attachments", services: ["clamav"], tell: "Attachments may be held back for a short while. Ask the customer to wait; do not open files yourself." },
-  { id: "audit", label: "Audit trail (the record of who did what)", services: ["ledger"], tell: "Nothing to tell the customer. Tell your admin." },
+  // customer: false = an INTERNAL area (his 24 Nov 2026 09:0x word: no customers yet, the Desk is built for the future; an internal fault never shows "What to tell customers", it shows a staff line)
+  { id: "audit", label: "Audit trail (the record of who did what)", services: ["ledger"], tell: "Tell an owner or admin: the record of who did what is slow or failing. Customers are not affected.", customer: false },
 ];
 const WORDS: Record<Level, string> = { ok: "Working", degraded: "Slow or partly down", outage: "Down", unknown: "Not measured yet", stale: "Not answering", connecting: "Connecting…" };
 const RANK: Record<Level, number> = { ok: 0, unknown: 1, connecting: 1, degraded: 2, stale: 3, outage: 4 };
@@ -37,7 +38,8 @@ export function systemsModel(stream: StreamState, data: { services?: unknown }, 
     return { id: a.id, label: a.label, level: lvl, words: WORDS[lvl], tell: bad ? a.tell : null, tech };
   });
   const overall = worst(areas.map((a) => a.level));
-  const headline = overall === "ok" ? "Everything we measure is working." : overall === "outage" ? "Something is down. See below what to tell customers." : overall === "degraded" ? "Something is slow or partly down." : overall === "stale" ? "The Desk is not getting live updates. Do not trust the colours below." : overall === "connecting" ? "Connecting…" : "Working, but some parts are not measured yet.";
-  const hot = areas.filter((a) => a.tell);
-  return { overall, headline, banner: hot.length ? hot.map((a) => `${a.label}: ${a.tell}`).join(" ") : null, areas, showTech };
+  const headline = overall === "ok" ? "Everything we measure is working." : overall === "outage" ? "Something is down. See below what to do." : overall === "degraded" ? "Something is slow or partly down." : overall === "stale" ? "The Desk is not getting live updates. Do not trust the colours below." : overall === "connecting" ? "Connecting…" : "Working, but some parts have not reported yet.";
+  const isCustomer = (id: string) => AREAS.find((x) => x.id === id)?.customer !== false;
+  const hot = areas.filter((a) => a.tell && isCustomer(a.id)), inside = areas.filter((a) => a.tell && !isCustomer(a.id));
+  return { overall, headline, banner: hot.length ? hot.map((a) => `${a.label}: ${a.tell}`).join(" ") : null, staffBanner: inside.length ? inside.map((a) => `${a.label}: ${a.tell}`).join(" ") : null, areas, showTech };
 }

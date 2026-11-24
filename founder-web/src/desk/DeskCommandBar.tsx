@@ -63,6 +63,7 @@ export function DeskCommandBar({ bar, nav, sys, tech = true }: { bar: Bar; nav: 
         <p className="dcb-k"><DeskLink to={route("systems")} nav={nav} className="dcl" keys={shortcutLabel("systems")} badge>Systems →</DeskLink></p>
         <p className="dcb-n" role="status">{sys ? sys.headline : "Connecting…"}</p>
         {sys?.banner && <p className="dcb-hot">{sys.banner}</p>}
+        {sys?.staffBanner && <p className="dcb-n">For staff only. {sys.staffBanner}</p>}
         <p className="dcb-n">{tech ? "The full Mail and QUIC pipeline (HTTP/3 edge, TLS, database, signer, ledger, mail, ClamAV) lives in Systems." : "Plain status and what to tell customers live in Systems."}</p>
       </div>
     </section>

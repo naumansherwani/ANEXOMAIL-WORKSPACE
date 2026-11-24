@@ -1,3 +1,10 @@
+# TECH CONTRACT FOR PHASE: ADMIN DESK LEDGER CHECK THAT SCALES + STAFF-ONLY FAULT BANNER, 1m-L3 (Desk lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 09:00 and 09:04 PKT: no customers yet so the Desk is the working place, "staff only" is right; loophole auto fix)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL 16: append-only SHA-256 anchor table (forced RLS, deny-all, freeze triggers) + SECURITY DEFINER incremental verifier with fixed search_path, 30 s statement and 2 s lock timeout; checks only lines after the newest anchor, recomputes the anchored line, full walk from the genesis every 24 h (Certificate Transparency / Rekor checkpoint idea) | docs/claude/admin-desk/sql/AD29.sql, docs/claude/admin-desk/sql/checks/AD29-check.sql | YES | selftest P0AS2 passes twice on PG16 (tamper after anchor and anchored line both caught), CHECK 6 rows true |
+| Rust + Tokio: the 60 s ledger probe now calls the incremental check instead of walking 44k lines | docs/claude/admin-desk/server/src/probes.rs | YES | cargo test 125 pass |
+| React 19 + TypeScript: internal faults (audit trail) go to a "For staff only." line, never to "What to tell customers" | founder-web/src/desk/desk_systems_pure.ts, founder-web/src/desk/DeskCards.tsx, founder-web/src/desk/DeskCommandBar.tsx | YES | bun test src/desk 139 pass, tsc clean |
+
 # TECH CONTRACT FOR PHASE: ADMIN DESK LEDGER FLOOD GUARD, 1m-L2 (Desk lane; found by the Ledger card; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 08:53 PKT rule "loophole auto fix"; the Desk is its own security domain), written 08:5x PKT BEFORE install. LIST: docs/claude/admin-desk/NOW-LIST-23NOV.md (ADVANCE-RESEARCH [1m] ledger flood)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3900,3 +3907,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Ledger card 1m-L GREEN desktop (live Chrome look); AD28 ledger flood guard + desk-dbsc-look.sh; E201 + E202 GREEN on his server (his paste); Command Center OS folder home page. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 whole Desk schema AD28 selftest twice + CHECK 5 true, AD27 selftest again after AD28, bash -n desk-dbsc-look.sh
 
 - Ledger card 1m-L GREEN desktop (live Chrome look); AD28 ledger flood guard + desk-dbsc-look.sh; E201 + E202 GREEN on his server (his paste); Command Center OS folder home page. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 whole Desk schema AD28 selftest twice + CHECK 5 true, AD27 selftest again after AD28, bash -n desk-dbsc-look.sh
+
+- AD29 + probes.rs + staff-only banner. TECH-LAW CHECKED: incremental anchored verify, Rust probe, React. TESTED: AD29 selftest PG16 x2, CHECK 6/6, cargo test 125, bun test 139, tsc clean
+
+- AD29 + probes.rs + staff-only banner. TECH-LAW CHECKED: incremental anchored verify, Rust probe, React. TESTED: AD29 selftest PG16 x2, CHECK 6/6, cargo test 125, bun test 139, tsc clean

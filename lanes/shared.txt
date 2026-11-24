@@ -219,6 +219,7 @@ admin-desk/sql/AD25.sql
 admin-desk/sql/AD26.sql
 admin-desk/sql/AD27.sql
 admin-desk/sql/AD28.sql
+admin-desk/sql/AD29.sql
 admin-desk/sql/README.md
 admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/checks/AD01-check.sql
@@ -256,6 +257,7 @@ admin-desk/sql/checks/AD25-check.sql
 admin-desk/sql/checks/AD26-check.sql
 admin-desk/sql/checks/AD27-check.sql
 admin-desk/sql/checks/AD28-check.sql
+admin-desk/sql/checks/AD29-check.sql
 admin-desk/sql/checks/README.md
 admin-desk/state/00-FOUNDER-TECH-RULE.md
 admin-desk/state/COMPACT-SAVE.md

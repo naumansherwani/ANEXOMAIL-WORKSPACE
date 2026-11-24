@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 08:54 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Ledger card GREEN desktop; AD28 ledger flood guard + dbsc look written; E201 E202 GREEN
-NEXT STEP: his desk-install paste (AD28) then desk-dbsc-look paste, then fix the cause of the refused refresh
-HIS LAST WORD: ledger card found 42,563 dbsc.refused lines; his loophole auto-fix rule
+# WORKING NOW (manual checkpoint, 24 Nov 2026 09:05 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: 1m-L3 AD29 incremental ledger check + staff banner
+NEXT STEP: his desk-install then my Chrome look
+HIS LAST WORD: probe walked 44k lines each minute
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -19,20 +19,61 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- e2d19d33 24 Nov 08:54 ledger line 44e648f6
 - 44e648f6 24 Nov 08:54 Desk: AD28 ledger flood guard, GREEN lines, OS folder
 - 429cbe1f 24 Nov 08:41 ledger line 96843f30
 - 96843f30 24 Nov 08:41 Desk: wire the Ledger card (AD27)
 - 5710cf5d 24 Nov 08:34 ledger line 204ff52c
-- 204ff52c 24 Nov 08:34 E202: final price chart migration
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/state/WORKING-NOW.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  admin-desk/server/src/probes.rs
+A  admin-desk/sql/AD29.sql
+A  admin-desk/sql/checks/AD29-check.sql
+M  docs/claude/DONE-DO-NOT-REPEAT.md
+M  docs/claude/RESUME-POINT.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/server/src/probes.rs
+A  docs/claude/admin-desk/sql/AD29.sql
+A  docs/claude/admin-desk/sql/checks/AD29-check.sql
+M  docs/claude/admin-desk/state/WORKING-NOW.md
+M  docs/claude/founder/PULL-COMMANDS.md
+M  docs/claude/state/HEARTBEAT.json
+MM docs/claude/state/WORKING-NOW.md
+M  docs/claude/tech-contracts/CURRENT.md
+M  docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
+M  docs/cursor-work/DONE-DO-NOT-REPEAT.md
+M  docs/cursor-work/founder/founder-commands.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
+M  docs/cursor-work/server/PULL-COMMANDS.md
+R  founder-web/dist-desk/assets/desk-DCP_xZ1L.js -> founder-web/dist-desk/assets/desk-h-_oq7Or.js
+M  founder-web/dist-desk/desk.html
+R  founder-web/dist/assets/index-CYyAq-AD.js -> founder-web/dist/assets/index-Bg0b6xhm.js
+M  founder-web/dist/index.html
+M  founder-web/src/desk/DeskCards.tsx
+M  founder-web/src/desk/DeskCommandBar.tsx
+M  founder-web/src/desk/desk_systems_pure.test.ts
+M  founder-web/src/desk/desk_systems_pure.ts
+M  founder-web/src/system_brain.json
+M  lanes/ALL-FILES.csv
+M  lanes/docs.txt
+M  lanes/founder.txt
+M  lanes/shared.txt
+M  lovable-gold/README.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 40 ++--------------------------------------
- 1 file changed, 2 insertions(+), 38 deletions(-)
+ founder-web/src/desk/desk_systems_pure.ts          | 14 ++--
+ founder-web/src/system_brain.json                  |  6 +-
+ lanes/ALL-FILES.csv                                |  7 +-
+ lanes/docs.txt                                     |  2 +
+ lanes/founder.txt                                  |  3 +-
+ lanes/shared.txt                                   |  2 +
+ lovable-gold/README.md                             |  2 +-
+ 36 files changed, 360 insertions(+), 69 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -43,4 +84,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (10b7534128b0343e3ae144b1943b1170714fcc8e)
+WIP snapshot: refs/wip/last (5b3297476bd51b2cd5c15a39b205ac4cf16bbefa)

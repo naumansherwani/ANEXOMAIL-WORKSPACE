@@ -6161,3 +6161,7 @@ FINAL: 21 Nov Desk Isolation Law and Gate never break. Company OS (Command Cente
 - Ledger card 1m-L GREEN desktop (live Chrome look); AD28 ledger flood guard + desk-dbsc-look.sh; E201 + E202 GREEN on his server (his paste); Command Center OS folder home page. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 whole Desk schema AD28 selftest twice + CHECK 5 true, AD27 selftest again after AD28, bash -n desk-dbsc-look.sh
 
 - Ledger card 1m-L GREEN desktop (live Chrome look); AD28 ledger flood guard + desk-dbsc-look.sh; E201 + E202 GREEN on his server (his paste); Command Center OS folder home page. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 whole Desk schema AD28 selftest twice + CHECK 5 true, AD27 selftest again after AD28, bash -n desk-dbsc-look.sh
+
+- AD29 + probes.rs + staff-only banner. TECH-LAW CHECKED: incremental anchored verify, Rust probe, React. TESTED: AD29 selftest PG16 x2, CHECK 6/6, cargo test 125, bun test 139, tsc clean
+
+- AD29 + probes.rs + staff-only banner. TECH-LAW CHECKED: incremental anchored verify, Rust probe, React. TESTED: AD29 selftest PG16 x2, CHECK 6/6, cargo test 125, bun test 139, tsc clean

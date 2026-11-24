@@ -123,6 +123,7 @@ export function DeskSubPage({ sub, search, hash, snap, nav, role = "", act }: { 
         <p>{card.what}.</p>
         <p role="status" className="dcp-head" data-l={m.overall}>{m.headline}</p>
         {m.banner && <p role="alert" className="dcp-banner"><b>What to tell customers.</b> {m.banner}</p>}
+        {m.staffBanner && <p role="status" className="dcp-banner"><b>For staff only.</b> {m.staffBanner}</p>}
         <ul className="dcp-list">{m.areas.map((a) => (
           <li key={a.id} className="dcp-item" data-hot={a.level === "outage" || a.level === "degraded"}><b><i className="dcb-dot dcp-dot" data-s={dot(a.level)} aria-hidden="true" />{a.label}</b>
             {a.words}{a.tell && <><br /><small>{a.tell}</small></>}

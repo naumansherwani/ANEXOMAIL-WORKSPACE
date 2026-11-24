@@ -549,6 +549,7 @@ docs/claude/admin-desk/sql/AD25.sql
 docs/claude/admin-desk/sql/AD26.sql
 docs/claude/admin-desk/sql/AD27.sql
 docs/claude/admin-desk/sql/AD28.sql
+docs/claude/admin-desk/sql/AD29.sql
 docs/claude/admin-desk/sql/README.md
 docs/claude/admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/sql/checks/AD01-check.sql
@@ -586,6 +587,7 @@ docs/claude/admin-desk/sql/checks/AD25-check.sql
 docs/claude/admin-desk/sql/checks/AD26-check.sql
 docs/claude/admin-desk/sql/checks/AD27-check.sql
 docs/claude/admin-desk/sql/checks/AD28-check.sql
+docs/claude/admin-desk/sql/checks/AD29-check.sql
 docs/claude/admin-desk/sql/checks/README.md
 docs/claude/admin-desk/state/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/state/COMPACT-SAVE.md
