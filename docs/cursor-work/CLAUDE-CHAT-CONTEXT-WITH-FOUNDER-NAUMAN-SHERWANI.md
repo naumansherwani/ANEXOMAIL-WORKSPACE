@@ -5698,3 +5698,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - B13 Z4a install proof: CP5 CHECK all true + approvers 7 of 7 on his server, cp5-look contradiction open so not green, cp5-look diagnostic added, TECH-LAW CHECKED, TESTED: his desk-install paste CP5 CHECK rows true binary SAME cc03446db, bash -n pass
 
 - B13 Z4a GREEN WIRED: YES REAL: YES (his cp5-look paste: CHECK 12 of 12 true, 7 of 7 companies have an approver, chain verifies), TECH-LAW CHECKED, TESTED: his cp5-look paste on real database plus scratch PostgreSQL selftest pass
+
+- B13 Z4b-2 Desk consent_cp.rs client written, WIRED: NO, REAL: NO, TECH-LAW CHECKED, TESTED: cargo test 119 pass (new consent_cp tests)

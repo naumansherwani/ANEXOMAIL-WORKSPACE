@@ -16,6 +16,13 @@
 | Rust + Tokio probe smoothing: reported latency = median of the last 3 passes (flap guard), failed probes never smoothed, Rule 52 stream unchanged; PostgreSQL AD03 state rules carried unchanged | docs/claude/admin-desk/server/src/probes.rs, docs/claude/admin-desk/sql/AD03.sql | YES | cargo test probes 6 pass (1 new) |
 | React 19 + TypeScript: real BrandMark in the phone header, highlight only the open page (aria-current), Systems rows as plain blocks (shared-CSS leak fixed, reproduced in a sandbox page), Senior Executive never wraps | founder-web/src/desk/DeskShell.tsx, founder-web/src/desk/DeskCards.tsx, founder-web/src/desk/DeskTitle.tsx | YES | bun test src/desk 131 pass, tsc clean, build:desk ok |
 
+# TECH CONTRACT FOR PHASE: DESK CARD B13 DESK-SIDE CONTROL PLANE CLIENT (phase 1m, sub-phase B13 step Z4b-2 pure Rust client building blocks, list BL-46 (his 24 Nov 2026 02:39 order puts BL-46 B13 first; BL-28 B9c Y4 stays open and is not skipped), written 24 Nov 2026 07:1x PKT BEFORE install; Z4b-3 wires the doors). LISTS: docs/claude/admin-desk/D6-B13-Z4-GATE-CHECKLIST-24NOV.md and D6-B13-Z4-CUSTOMER-APPROVAL-PLAN-24NOV.md.
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| Rust + Tokio: Desk client of the Control Plane consent door over HTTP/3 (route /control/v1/consent, audience desk-consent), Ed25519 signed push/cancel/poll requests (Rule 52, 60 s), answer verified with the Control Plane key (kind consent, same method, same request id, fresh 15 s, not older than the request), closed answer shapes, a decision is read ONLY from a verified poll, the Desk has NO decide request, forged/odd polls never approve (unknown id, no decision_ref, window over 60 min, extra field, repeat), fail closed | docs/claude/admin-desk/server/src/consent_cp.rs, docs/claude/admin-desk/server/src/main.rs | YES (pure, wired in Z4b-3) | cargo test 119 pass (new consent_cp tests) |
+| PostgreSQL 16 customer-side consent inbox + ledger already GREEN on his server (Z4a) | control-plane/sql/CP5.sql | YES | his cp5-look paste: CHECK 12 of 12 true, 7 of 7 companies have an approver |
+| React 19 staff screen already shows the board (Z3, unchanged) | founder-web/src/desk/DeskConsent.tsx | YES | unchanged |
+
 # TECH CONTRACT FOR PHASE: DESK CARD B13 CUSTOMER CONSENT PATH (phase 1m, sub-phases B13 step Z4a SQL CP5 + Z4b Control Plane Rust door, list BL-46 (his 24 Nov 2026 02:39 order puts BL-46 B13 first; BL-28 B9c Y4 stays open and is not skipped; his 06:11 word: gate list first, then codes, Z4c customer screen waits his haan), written 24 Nov 2026 06:2x PKT BEFORE install. LISTS: docs/claude/admin-desk/D6-B13-Z4-GATE-CHECKLIST-24NOV.md and D6-B13-Z4-CUSTOMER-APPROVAL-PLAN-24NOV.md.
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3794,3 +3801,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - B13 Z4a install proof: CP5 CHECK all true + approvers 7 of 7 on his server, cp5-look contradiction open so not green, cp5-look diagnostic added, TECH-LAW CHECKED, TESTED: his desk-install paste CP5 CHECK rows true binary SAME cc03446db, bash -n pass
 
 - B13 Z4a GREEN WIRED: YES REAL: YES (his cp5-look paste: CHECK 12 of 12 true, 7 of 7 companies have an approver, chain verifies), TECH-LAW CHECKED, TESTED: his cp5-look paste on real database plus scratch PostgreSQL selftest pass
+
+- B13 Z4b-2 Desk consent_cp.rs client written, WIRED: NO, REAL: NO, TECH-LAW CHECKED, TESTED: cargo test 119 pass (new consent_cp tests)

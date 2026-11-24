@@ -483,6 +483,7 @@ docs/claude/admin-desk/server/src/audit.rs
 docs/claude/admin-desk/server/src/auth.rs
 docs/claude/admin-desk/server/src/bridge.rs
 docs/claude/admin-desk/server/src/consent.rs
+docs/claude/admin-desk/server/src/consent_cp.rs
 docs/claude/admin-desk/server/src/customers.rs
 docs/claude/admin-desk/server/src/dbsc.rs
 docs/claude/admin-desk/server/src/deliverability.rs
