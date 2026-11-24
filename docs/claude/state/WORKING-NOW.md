@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 12:11 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 12:11 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: B13 T3c GREEN; login text demo shown, real code waits his approval
@@ -21,38 +21,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 73587c8a 24 Nov 12:11 B13 T3c green, login text demo
 - eddfe1c5 24 Nov 11:58 ledger line a4cc7e40
 - a4cc7e40 24 Nov 11:58 B13 T3b green, T3c AD33 apply door
 - b0267a69 24 Nov 11:50 ledger line 8a54a385
 - 8a54a385 24 Nov 11:50 demo V6 global grid fits
-- 4c26a9af 24 Nov 11:46 ledger line d41c68e1
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-A  admin-desk/demo/LOGIN-GLOBAL-GRID-DEMO-1280.png
-A  admin-desk/demo/LOGIN-GLOBAL-GRID-DEMO-390.png
-A  admin-desk/demo/LOGIN-GLOBAL-GRID-TEXT-24NOV.patch
-M  docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-A  docs/claude/admin-desk/demo/LOGIN-GLOBAL-GRID-DEMO-1280.png
-A  docs/claude/admin-desk/demo/LOGIN-GLOBAL-GRID-DEMO-390.png
-A  docs/claude/admin-desk/demo/LOGIN-GLOBAL-GRID-TEXT-24NOV.patch
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    |   4 +++
- docs/claude/admin-desk/NOW-LIST-23NOV.md           |   4 +++
- .../demo/LOGIN-GLOBAL-GRID-DEMO-1280.png           | Bin 0 -> 2208781 bytes
- .../admin-desk/demo/LOGIN-GLOBAL-GRID-DEMO-390.png | Bin 0 -> 914201 bytes
- .../demo/LOGIN-GLOBAL-GRID-TEXT-24NOV.patch        |  19 +++++++++++
- docs/claude/state/WORKING-NOW.md                   |  35 ++++++++++-----------
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  10 +++---
- 13 files changed, 78 insertions(+), 23 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 35 ++---------------------------------
+ 1 file changed, 2 insertions(+), 33 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -63,4 +45,4 @@ M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (c09b7320969a45f2998886a8aa116d56fa3a1d91)
+WIP snapshot: refs/wip/last (ea77ff8c9a74e501cbb8e737175fb9a86e2e6244)
