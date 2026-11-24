@@ -6217,3 +6217,5 @@ FINAL: 21 Nov Desk Isolation Law and Gate never break. Company OS (Command Cente
 - Desk installer screen = last 16 useful lines, rest in log file. TECH-LAW CHECKED. TESTED: bash -n OK
 
 - Desk installer always fetches and runs the newest origin/main script (re-exec guard). TECH-LAW CHECKED. TESTED: bash -n OK, re-exec simulated pass
+
+- Demo V5 Global Grid Workplace text, demo only, no code change. TECH-LAW CHECKED. TESTED: demo rendered at 1280 and 390 OK
