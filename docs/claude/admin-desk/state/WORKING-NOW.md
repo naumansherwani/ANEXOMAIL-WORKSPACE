@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 11:46 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 11:46 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: demo: THE GLOBAL GRID WORKPLACE replaces Senior Executive (demo only)
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- d41c68e1 24 Nov 11:46 demo V5 global grid workplace
 - 36c405c5 24 Nov 11:29 ledger line a93bfeeb
 - a93bfeeb 24 Nov 11:29 desk-install: always newest script
 - 7a668e62 24 Nov 11:24 ledger line 5c297125
@@ -75,17 +76,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - e72225aa 24 Nov 11:24 ledger line aa701036
 - aa701036 24 Nov 11:24 desk-install: one plain command, short summary
 - 1c7d121f 24 Nov 11:20 ledger line 4aa710f6
-- 4aa710f6 24 Nov 11:20 Desk note: dbsc-look finding, command form
 
 ## Uncommitted Desk files
-M  admin-desk/NOW-LIST-23NOV.md
-A  admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V5-global-grid-1280.png
-A  admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V5-global-grid-390.png
-A  admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V5-global-grid.html
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-A  docs/claude/admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V5-global-grid-1280.png
-A  docs/claude/admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V5-global-grid-390.png
-A  docs/claude/admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V5-global-grid.html
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
