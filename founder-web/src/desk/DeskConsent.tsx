@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { deskCall } from "./desk_kernel";
 import { UNAVAILABLE_TEXT } from "./desk_lookup_pure";
-import { REASON_MAX, SCOPES, buildRequest, leftWords, parseBoard, parseOpened, parseRequested, reasonProblem, statusWords, caseRefOk, type Board, type Scope } from "./desk_consent_pure";
+import { REASON_MAX, SCOPES, buildRequest, leftWords, parseBoard, parseOpened, parseRequested, refusalWords, reasonProblem, statusWords, caseRefOk, type Board, type Scope } from "./desk_consent_pure";
 
 /** ADMIN DESK B13 (BL-46, 24 Nov 2026): Customer data access. Staff ask to look at ONE case; the customer's Company Admin / Security Admin must approve; then a short window opens (metadata 60, headers 30, content 15 minutes).
  *  Every answer is kernel-verified (Rule 52); one that cannot be trusted shows "Data unavailable". There is no approve button here and no way around the customer: no break-glass, no auto-approval.
@@ -35,7 +35,7 @@ export function DeskConsent() {
     try {
       const r = await deskCall("POST", "/desk/v1/consent/request", body); const p = r.status === 200 ? parseRequested(r.json) : null;
       if (p) { setReason(""); setMsg("Asked. The customer's Company Admin has to approve before anything opens."); setTick((n) => n + 1); }
-      else setMsg(r.status === 409 ? "The Desk did not accept that request. Content of a restricted case never opens, and you can have 5 requests waiting." : "The Desk could not send it. Nothing was asked. Try again in a moment.");
+      else setMsg(r.status === 409 ? refusalWords(r.json) : "The Desk could not send it. Nothing was asked. Try again in a moment.");
     } catch { setMsg("The Desk could not send it. Nothing was asked. Try again in a moment."); }
     setBusy(false);
   }

@@ -817,3 +817,5 @@ ADVANCE-RESEARCH [1m] B13 T1 (24 Nov 2026): advisor review (verbatim in TENANT-I
 - 1m-L3 (24 Nov 2026 09:1x PKT): WRITTEN + TESTED, waits his desk-install + my Chrome look. AD29 incremental ledger check (anchor, full walk daily; ADVANCE-RESEARCH: Certificate Transparency / Rekor checkpoints) + probes.rs uses it + staff-only fault banner. GREEN already: AD27 Ledger card (desktop, 43,507 lines chain verified), AD28 flood guard (live: ~4 lines/sec down to ~1/min); dbsc root cause = observe mode would-block no_cookie/enforce, his Chrome has no bound cookie.
 
 - 1m-L3 GREEN desktop (24 Nov 2026 09:1x PKT): AD29 incremental ledger check, Audit trail Working 284 ms in my Chrome, staff-only banner. Open gap: mail + ClamAV probes 'Not measured yet'.
+
+- B13 T2 AD30 case-to-tenant binding WRITTEN + TESTED (24 Nov 2026 09:3x PKT), not installed. Technology: PostgreSQL 16 immutable binding, forced RLS, hash-chained ledger, dual-person manual source. Next T3.

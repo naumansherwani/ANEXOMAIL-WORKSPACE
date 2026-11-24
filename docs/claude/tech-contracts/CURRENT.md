@@ -1,3 +1,10 @@
+# TECH CONTRACT FOR PHASE: ADMIN DESK B13 T2 CASE-TO-TENANT BINDING, SQL AD30 (Desk lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 07:16 saved decision + his 09:17 order "next phase shuru kero"; order T1 AD26 GREEN -> T2 this -> T3 automatic resolution + Rust ingest hook -> T4 manual UI with second reviewer -> Z4b-3 wiring)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL 16: immutable one-row-per-case tenant binding (primary key = case, three freeze triggers, forced RLS deny-all), closed source list, manual source needs two different active staff with case.assign (CHECK + function), SECURITY DEFINER single writer with fixed search_path and 5 s / 2 s timeouts, every refusal and binding a SHA-256 hash-chained ledger line, the consent request refuses an unbound case (fail closed); tenant isolation enforced in the database, not only in Rust | docs/claude/admin-desk/sql/AD30.sql, docs/claude/admin-desk/sql/checks/AD30-check.sql | YES | scratch PG16 selftest P0AT2 passed twice, CHECK 9 of 9 true, hash chain verifies |
+| Rust + Tokio + Axum: the consent request door answers the database's refusal "not bound to a company yet" with its own 409 word not_bound (never a generic refusal, never 503); Rule 52 sealed router unchanged; consent_cp.rs (Z4b-2) waits T3 | docs/claude/admin-desk/server/src/consent.rs | YES | cargo test 126 pass |
+| React 19 + TypeScript strict: the Customer data access screen tells staff in plain words that the case is not tied to a customer company yet (pure function + unit test), same on 390 / 820 / 1200 | founder-web/src/desk/desk_consent_pure.ts, founder-web/src/desk/DeskConsent.tsx, founder-web/src/desk/desk_consent_pure.test.ts | YES | bun test src/desk 140 pass, tsc clean |
+
 # TECH CONTRACT FOR PHASE: ADMIN DESK LEDGER CHECK THAT SCALES + STAFF-ONLY FAULT BANNER, 1m-L3 (Desk lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 09:00 and 09:04 PKT: no customers yet so the Desk is the working place, "staff only" is right; loophole auto fix)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3915,3 +3922,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - 1m-L3 install proof recorded (build 1bc496ed8 SAME), not green until his look. TECH-LAW CHECKED: no code change. TESTED: his desk-install paste proofs binary, page, kernel SAME
 
 - 1m-L3 GREEN desktop: WIRED YES REAL YES. TECH-LAW CHECKED. TESTED: my Chrome systems page Audit trail Working 284 ms, console 0 errors, build 1bc496ed8 SAME
+
+- B13 T2 AD30 case-to-tenant binding. TECH-LAW CHECKED: PostgreSQL 16 immutable binding, forced RLS, hash-chained ledger. TESTED: AD30 selftest PG16 x2, CHECK 9/9, chain verifies
+
+- B13 T2 AD30 case-to-tenant binding + consent door not_bound word + screen text. TECH-LAW CHECKED: PostgreSQL 16 immutable binding, Rust Axum Rule 52 door, React TS. TESTED: AD30 selftest PG16 x2, CHECK 9/9, cargo test 126, bun test 140, tsc clean

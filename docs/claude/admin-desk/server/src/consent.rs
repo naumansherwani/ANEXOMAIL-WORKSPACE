@@ -32,7 +32,7 @@ pub async fn request(h: HeaderMap, body: Bytes) -> Response {
     let q = format!("select desk.fadm_consent_request('{o}'::uuid, {}, {}, {})::text", lit(&b.case_ref), lit(&b.scope), lit(&b.reason));
     match rows(&c, &q).await {
         Ok(v) => match v.first().and_then(|r| r.get(0)).filter(|i| uuid_ok(i)) { Some(i) => out(StatusCode::OK, serde_json::json!({"consent_id": i, "status": "requested"}).to_string()), None => err(StatusCode::CONFLICT, "refused") },
-        Err(e) => { let m = format!("{e}"); if m.contains("not allowed") || m.contains("restricted") || m.contains("too many") || m.contains("no such case") { err(StatusCode::CONFLICT, "refused") } else { eprintln!("desk consent: db: {e}"); unavailable() } }
+        Err(e) => { let m = format!("{e}"); if m.contains("not bound to a company yet") { err(StatusCode::CONFLICT, "not_bound") } else if m.contains("not allowed") || m.contains("restricted") || m.contains("too many") || m.contains("no such case") { err(StatusCode::CONFLICT, "refused") } else { eprintln!("desk consent: db: {e}"); unavailable() } }
     }
 }
 /// POST /desk/v1/consent/board {}: counts + my own requests (case ref, scope, status, seconds left). No name, address, subject or money.
@@ -79,5 +79,16 @@ mod tests {
     #[test] fn uuid_check_is_strict() {
         assert!(uuid_ok("123e4567-e89b-12d3-a456-426614174000"));
         for s in ["", "123e4567e89b12d3a456426614174000", "123e4567-e89b-12d3-a456-42661417400'", "123e4567-e89b-12d3-a456-4266141740000", "gggggggg-e89b-12d3-a456-426614174000", "123e4567-e89b-12d3-a456-426614174000; --"] { assert!(!uuid_ok(s), "{s}"); }
+    }
+}
+
+#[cfg(test)]
+mod bind_tests {
+    // AD30: the database says "the case is not bound to a company yet"; the door must answer its own word, never a generic refusal and never 503.
+    #[test]
+    fn the_unbound_message_is_the_one_the_door_looks_for() {
+        let sql = include_str!("../../sql/AD30.sql");
+        assert!(sql.contains("the case is not bound to a company yet"));
+        assert!(include_str!("consent.rs").contains("\"not bound to a company yet\""));
     }
 }

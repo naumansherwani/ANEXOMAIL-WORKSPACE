@@ -6169,3 +6169,7 @@ FINAL: 21 Nov Desk Isolation Law and Gate never break. Company OS (Command Cente
 - 1m-L3 install proof recorded (build 1bc496ed8 SAME), not green until his look. TECH-LAW CHECKED: no code change. TESTED: his desk-install paste proofs binary, page, kernel SAME
 
 - 1m-L3 GREEN desktop: WIRED YES REAL YES. TECH-LAW CHECKED. TESTED: my Chrome systems page Audit trail Working 284 ms, console 0 errors, build 1bc496ed8 SAME
+
+- B13 T2 AD30 case-to-tenant binding. TECH-LAW CHECKED: PostgreSQL 16 immutable binding, forced RLS, hash-chained ledger. TESTED: AD30 selftest PG16 x2, CHECK 9/9, chain verifies
+
+- B13 T2 AD30 case-to-tenant binding + consent door not_bound word + screen text. TECH-LAW CHECKED: PostgreSQL 16 immutable binding, Rust Axum Rule 52 door, React TS. TESTED: AD30 selftest PG16 x2, CHECK 9/9, cargo test 126, bun test 140, tsc clean

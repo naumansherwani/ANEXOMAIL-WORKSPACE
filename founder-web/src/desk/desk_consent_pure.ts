@@ -46,3 +46,11 @@ export function statusWords(s: Row["status"]): string {
   return ({ requested: "Waiting for the customer's Company Admin", approved: "Approved, open now", denied: "The customer said no", revoked: "Closed early", expired: "Time is over", cancelled: "Cancelled" } as const)[s];
 }
 export function leftWords(sec: number): string { const m = Math.floor(sec / 60), s = sec % 60; return m > 0 ? `${m} min ${String(s).padStart(2, "0")} s left` : `${s} s left`; }
+
+/** AD30: why the Desk refused a request, in plain words. "not_bound" = the case has no company yet (the Desk never guesses a company from free text). */
+export function refusalWords(j: unknown): string {
+  const e = j !== null && typeof j === "object" ? (j as Record<string, unknown>).error : null;
+  return e === "not_bound"
+    ? "This case is not tied to a customer company yet, so nothing can be asked. The company has to be confirmed first (a verified domain, or two staff for an exception)."
+    : "The Desk did not accept that request. Content of a restricted case never opens, and you can have 5 requests waiting.";
+}

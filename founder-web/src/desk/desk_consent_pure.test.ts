@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { buildRequest, caseRefOk, leftWords, parseBoard, parseOpened, parseRequested, reasonProblem, statusWords } from "./desk_consent_pure";
+import { buildRequest, caseRefOk, leftWords, parseBoard, parseOpened, parseRequested, reasonProblem, refusalWords, statusWords } from "./desk_consent_pure";
 const ID = "123e4567-e89b-12d3-a456-426614174000";
 test("a request needs a clean case ref, a known scope and a real reason", () => {
   expect(buildRequest({ caseRef: " CASE-1 ", scope: "metadata", reason: "customer asked us to look at the delay" })).toEqual({ case_ref: "CASE-1", scope: "metadata", reason: "customer asked us to look at the delay" });
@@ -23,4 +23,10 @@ test("answers of the request and open doors are checked", () => {
 });
 test("words are plain and the clock reads well", () => {
   expect(leftWords(125)).toBe("2 min 05 s left"); expect(leftWords(9)).toBe("9 s left"); expect(statusWords("requested")).toContain("Company Admin"); expect(statusWords("denied")).toContain("no");
+});
+
+test("a request on a case with no company says so in plain words (AD30)", () => {
+  expect(refusalWords({ error: "not_bound" })).toContain("not tied to a customer company");
+  expect(refusalWords({ error: "refused" })).toContain("restricted case");
+  expect(refusalWords(null)).toContain("restricted case");
 });
