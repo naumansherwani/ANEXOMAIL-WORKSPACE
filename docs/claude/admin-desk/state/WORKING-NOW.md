@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 10:11 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 10:11 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 DOING: B13 T3a AD31 + resolve_cp.rs + verdict words written and tested; landing founder-contact removed
 NEXT STEP: his desk-install (AD31 on awam DB) then awam pull; then T3b Control Plane resolve method
@@ -67,6 +67,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 4b52e278 24 Nov 10:11 Desk B13 T3a: sender-to-tenant verdict AD31, landing founder-contact removed
 - 73603f96 24 Nov 10:02 ledger line 97021450
 - 97021450 24 Nov 10:02 Desk: Move-In plan saved, priority support gate reminder, T3 by folder
 - 28662f6d 24 Nov 09:49 ledger line 0d1ae8d1
@@ -74,24 +75,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 6c06f9ee 24 Nov 09:43 ledger line 9d96440a
 - 9d96440a 24 Nov 09:43 Desk: OS to awam import connect plan
 - 0b4e69a8 24 Nov 09:37 ledger line ba1f46c4
-- ba1f46c4 24 Nov 09:37 Desk B13 T3: point list and research
 
 ## Uncommitted Desk files
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  admin-desk/server/src/main.rs
-A  admin-desk/server/src/resolve_cp.rs
-A  admin-desk/sql/AD31.sql
-A  admin-desk/sql/checks/AD31-check.sql
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/server/src/main.rs
-A  docs/claude/admin-desk/server/src/resolve_cp.rs
-A  docs/claude/admin-desk/sql/AD31.sql
-A  docs/claude/admin-desk/sql/checks/AD31-check.sql
-MM docs/claude/admin-desk/state/WORKING-NOW.md
-M  founder-web/src/desk/desk_consent_pure.test.ts
-M  founder-web/src/desk/desk_consent_pure.ts
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
