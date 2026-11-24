@@ -2907,3 +2907,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Phone title wrap fixed (COMMAND CENTER OS one line, column back to title width, desktop CSS untouched) and OS-13..OS-23 written as BL-68..BL-78 with ADVANCE-TECH lines and ORDER-LOCK, Appearance with Cinematic stars toggle planned, WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 131 pass, tsc clean, build:desk ok, gate list rows 22 added
 
 - Read-only ledger probe look script (default_transaction_read_only on), TECH-LAW CHECKED, TESTED: bash -n ok, run on scratch PG16 all 5 sections print chain true 10 ms nothing written, gate pass
+
+- Dashboard folder remaining list written (11 items), docs only, TECH-LAW CHECKED, TESTED: docs only, counted from NOW-LIST and BILLIONAIRE list, gate pass

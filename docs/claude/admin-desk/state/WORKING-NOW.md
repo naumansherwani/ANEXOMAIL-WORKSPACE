@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 05:53 PKT) - read this FIRST for the Desk after a compaction
-DOING: ledger read-only look script
-NEXT STEP: his paste of desk-ledger-look, then decide fix
-HIS LAST WORD: his 05:52 DO
+# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 05:54 PKT) - read this FIRST for the Desk after a compaction
+DOING: dashboard folder remaining list
+NEXT STEP: his paste of desk-ledger-look, B13 Z4
+HIS LAST WORD: his 05:53 question
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- ec731295 24 Nov 05:53 ledger line dfb8e075
 - dfb8e075 24 Nov 05:53 ledger look
 - c0f5b138 24 Nov 05:49 ledger line b195ef94
 - b195ef94 24 Nov 05:49 title wrap and BL-68..78
@@ -72,10 +73,13 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - c3f3b2d8 24 Nov 05:36 OS inherit employee answer
 - cad8e1b7 24 Nov 05:33 ledger line 2a162a68
 - 2a162a68 24 Nov 05:33 phone clock and OS inherit plan
-- 10bb0381 24 Nov 05:18 ledger line a5fb5de7
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+MM docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
