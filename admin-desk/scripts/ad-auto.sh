@@ -8,11 +8,11 @@ REPO="${REPO:-/opt/anexomail-web}"; ENVF=/etc/anexomail-desk/db.env
 . "$ENVF"; [ -n "${DESK_DB_URL:-}" ] || { echo "FAIL: DESK_DB_URL empty"; exit 2; }
 git -C "$REPO" fetch -q origin main || { echo "FAIL: fetch"; exit 2; }
 P(){ env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "$DESK_DB_URL" -X -q -P pager=off "$@"; }
-S="$(mktemp)"; C="$(mktemp)"; trap 'rm -f "$S" "$C"' EXIT; N=0; BAD=0; SK=0; RAN=""; LASTN="$(for x in $(git -C "$REPO" ls-tree --name-only origin/main admin-desk/sql/ | sed -n 's#.*/\(AD[0-9][0-9]*[a-z]*\)\.sql$#\1#p' | sort -V); do git -C "$REPO" show "origin/main:admin-desk/sql/$x.sql" | head -5 | grep -q '^-- TARGET-DB: AWAM' || echo $x; done | tail -1)"
+AW=""; S="$(mktemp)"; C="$(mktemp)"; trap 'rm -f "$S" "$C"' EXIT; N=0; BAD=0; SK=0; RAN=""; LASTN="$(for x in $(git -C "$REPO" ls-tree --name-only origin/main admin-desk/sql/ | sed -n 's#.*/\(AD[0-9][0-9]*[a-z]*\)\.sql$#\1#p' | sort -V); do git -C "$REPO" show "origin/main:admin-desk/sql/$x.sql" | head -5 | grep -q '^-- TARGET-DB: AWAM' || echo $x; done | tail -1)"
 ok(){ ! echo "$1" | grep -qE '\| f( |$)|ERROR' && echo "$1" | grep -qE '\| t( |$)'; }
 for n in $(git -C "$REPO" ls-tree --name-only origin/main admin-desk/sql/ | sed -n 's#.*/\(AD[0-9][0-9]*[a-z]*\)\.sql$#\1#p' | sort -V); do
   git -C "$REPO" show "origin/main:admin-desk/sql/$n.sql" >"$S"
-  if head -5 "$S" | grep -q '^-- TARGET-DB: AWAM'; then continue; fi   # awam-database file (AD21..AD26): cp-install.sh runs it on the awam database, never on the Desk database
+  if head -5 "$S" | grep -q '^-- TARGET-DB: AWAM'; then AW="$AW $n"; continue; fi   # awam-database file (AD21..AD26): cp-install.sh runs it on the awam database, never on the Desk database
   N=$((N+1))
   HAS=0; git -C "$REPO" cat-file -e "origin/main:admin-desk/sql/checks/$n-check.sql" 2>/dev/null && { HAS=1; git -C "$REPO" show "origin/main:admin-desk/sql/checks/$n-check.sql" >"$C"; }
   if [ $HAS = 1 ]; then R="$(P -f "$C" 2>&1)"; if ok "$R"; then SK=$((SK+1)); [ "$n" = "$LASTN" ] && echo "$n: already run (yeh already is database mein implement hai), skipped"; continue; fi; fi
@@ -28,5 +28,6 @@ for n in $(git -C "$REPO" ls-tree --name-only origin/main admin-desk/sql/ | sed 
   if [ $HAS = 1 ]; then R="$(P -f "$C" 2>&1)"; echo "$R" | sed 's/^/   /'; ok "$R" && echo "$n: run and CHECK OK" || { echo "$n: CHECK FALSE"; BAD=1; break; }; fi
 done
 [ "$N" = 0 ] && { echo "FAIL: no AD sql on origin/main"; exit 2; }
+[ -n "$AW" ] && echo "AWAM-DATABASE FILES (they exist on origin/main, they run on the awam database through desk-install.sh / cp-install.sh, not here):$AW"
 echo "SUMMARY: $N files on origin/main, $SK already in the database (their CHECK passed, so the objects exist), ran now:${RAN:- none}, newest file = $LASTN"
 [ "$BAD" = 0 ] && echo "DONE: every Desk SQL is in the database" || exit 1

@@ -6137,3 +6137,7 @@ FINAL: 21 Nov Desk Isolation Law and Gate never break. Company OS (Command Cente
 - Desk SQL organised: CP1..CP6 and checks moved into docs/claude/admin-desk/sql (installer reads admin-desk/sql); CP1 got the world-class header + rolled-back selftest; CP6 selftest fixed for a FRESH install (empty ledger made the UPDATE test prove nothing); TECH-LAW CHECKED; TESTED: scratch PostgreSQL 16 CP1 CP2 CP4 CP5 CP6 selftests pass on fresh and rerun, CP6 CHECK all true, bash -n installers, cargo test control-plane 20 pass
 
 - Desk SQL one series: CP1..CP6 renamed AD21..AD26 (files, checks, labels, installers, docs); every one carries TARGET-DB AWAM DATABASE and ad-auto.sh / ad-sql-run.sh skip them so they never reach the Desk database; TECH-LAW CHECKED; TESTED: scratch PostgreSQL 16 AD21 AD22 AD24 AD25 AD26 selftests pass twice and CHECK rows true, AD23 only my stub lacked a column, bash -n on four scripts, cargo test control-plane
+
+- ad-auto.sh now prints the awam-database files AD21..AD26 instead of skipping them silently; TECH-LAW CHECKED; TESTED: bash -n, origin/main lists AD20..AD26 and checks AD21..AD26
+
+- ad-auto.sh now prints the awam-database files AD21..AD26 instead of skipping them silently; TECH-LAW CHECKED; TESTED: bash -n ad-auto.sh ok, origin/main lists AD20..AD26 and checks AD21..AD26
