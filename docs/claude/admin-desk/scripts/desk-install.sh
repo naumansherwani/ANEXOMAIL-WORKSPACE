@@ -103,6 +103,9 @@ if [ -n "$ADMINU" ] && [ "$CPT" -ge 8 ] && [ "$CPF" = 0 ]; then echo "   PROOF c
 AD24="$(show admin-desk/sql/checks/AD24-check.sql | env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "${ADMINU:-postgres://none}" -X -q -At -f - 2>&1)"
 AD24T="$(printf '%s\n' "$AD24" | grep -c '|t$')"; AD24F="$(printf '%s\n' "$AD24" | grep -c '|f$')"
 if [ -n "$ADMINU" ] && [ "$AD24T" -ge 6 ] && [ "$AD24F" = 0 ]; then echo "   PROOF customers plans (AD24): six packages + No plan yet + per-plan detail are in the awam database, CHECK $AD24T of $AD24T true"; else echo "   PROOF customers plans (AD24): NOT PROVEN (true $AD24T, false $AD24F): the Customers card will say Data unavailable until this is fixed"; fi
+AD31="$(show admin-desk/sql/checks/AD31-check.sql | env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "${ADMINU:-postgres://none}" -X -q -At -f - 2>&1)"
+AD31T="$(printf '%s\n' "$AD31" | grep -c '|t$')"; AD31F="$(printf '%s\n' "$AD31" | grep -c '|f$')"
+if [ -n "$ADMINU" ] && [ "$AD31T" -ge 8 ] && [ "$AD31F" = 0 ]; then echo "   PROOF sender verdict (AD31): cp.resolve_sender is in the awam database, CHECK $AD31T of $AD31T true"; else echo "   PROOF sender verdict (AD31): NOT PROVEN (true $AD31T, false $AD31F): every sender stays unknown until this is fixed"; fi
 AD23="$(show admin-desk/sql/checks/AD23-check.sql | env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "${ADMINU:-postgres://none}" -X -q -At -f - 2>&1)"
 AD23T="$(printf '%s\n' "$AD23" | grep -c '|t$')"; AD23F="$(printf '%s\n' "$AD23" | grep -c '|f$')"
 if [ -n "$ADMINU" ] && [ "$AD23T" -ge 9 ] && [ "$AD23F" = 0 ]; then echo "   PROOF deliverability (AD23): cp.deliverability is in the awam database, CHECK $AD23T of $AD23T true"; else echo "   PROOF deliverability (AD23): NOT PROVEN (true $AD23T, false $AD23F): the Deliverability card will say Data unavailable until this is fixed"; fi

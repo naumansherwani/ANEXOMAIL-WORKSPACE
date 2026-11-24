@@ -836,3 +836,7 @@ ADVANCE-RESEARCH [1m] B13 T1 (24 Nov 2026): advisor review (verbatim in TENANT-I
 - 24 Nov 2026 10:0x PKT: Move-In plan saved verbatim (docs/claude/MOVE-IN-SYSTEM-PLAN-24NOV.md, phase P Folder 8, web checkpoints W1..W6); T3 decisions by folder; Priority Support founder-contact gate reminder (fails 9 Jan 2027). Next T3a AD31.
 
 - B13 T3a (24 Nov 2026 10:1x PKT): AD31 sender-to-tenant verdict + resolve_cp.rs + verdictWords written and tested, not installed. Landing 'named founder contact' removed (his haan 10:07). Next T3b.
+
+- B13 T3a (24 Nov 2026 10:3x PKT): AD31 wired into cp-install.sh + proof line in desk-install.sh (was missing: not installed on his server at 10:20). enterprise.tsx added to DEPLOY-MANIFEST. tokio 1.54.1 = newest.
+
+- B13 T3a (24 Nov 2026 10:3x PKT): AD31 selftest rewritten for the live FKs (organisations, auth.users); old one reproduced his editor error on scratch with FKs; new passes x2, CHECK 8/8.

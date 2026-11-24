@@ -36,12 +36,16 @@ END IF; END $g$;
 -- SELFTEST (rolls back; success is the exception P0AU2) ------------------------------------------------------------------------------------------------------------------------------
 CREATE FUNCTION pg_temp.cp7_ok(c boolean, msg text) RETURNS void LANGUAGE plpgsql AS $f$ BEGIN IF c IS NOT TRUE THEN RAISE EXCEPTION 'AD31 selftest: %', msg USING ERRCODE = 'P0AU1'; END IF; END $f$;
 DO $$
-DECLARE o1 uuid := gen_random_uuid(); o2 uuid := gen_random_uuid(); t0 timestamptz := clock_timestamp(); sfx text := substr(md5(random()::text), 1, 8); d1 text; d2 text; dd text; r jsonb;
+DECLARE o1 uuid; o2 uuid; u1 uuid; u2 uuid; u3 uuid; u4 uuid; t0 timestamptz := clock_timestamp(); sfx text := substr(md5(random()::text), 1, 8); d1 text; d2 text; dd text; r jsonb;
 BEGIN
   d1 := 'ad31a' || sfx || '.example'; d2 := 'ad31b' || sfx || '.example'; dd := 'ad31c' || sfx || '.example';
-  INSERT INTO public.orgs (id, name) VALUES (o1, 'ad31-a-' || o1), (o2, 'ad31-b-' || o2);
+  -- the live schema (schema-public.sql): org_members.org_id -> organisations(id) and org_members.user_id -> auth.users(id), so the test uses two EXISTING tenants (public.orgs rows that are also in organisations; AD26 FACT: none missing) and four EXISTING auth users that are not yet members of them; only org_members rows are added, all rolled back
+  SELECT (array_agg(x.id))[1], (array_agg(x.id))[2] INTO o1, o2 FROM (SELECT t.id FROM public.orgs t WHERE EXISTS (SELECT 1 FROM public.organisations g WHERE g.id = t.id) ORDER BY t.id LIMIT 2) x;
+  IF o1 IS NULL OR o2 IS NULL OR o1 = o2 THEN RAISE EXCEPTION 'AD31 selftest: needs two existing tenants (public.orgs rows that are also in public.organisations)' USING ERRCODE = 'P0AU1'; END IF;
+  SELECT (array_agg(a.id))[1], (array_agg(a.id))[2], (array_agg(a.id))[3], (array_agg(a.id))[4] INTO u1, u2, u3, u4 FROM (SELECT au.id FROM auth.users au WHERE NOT EXISTS (SELECT 1 FROM public.org_members m WHERE m.user_id = au.id AND m.org_id IN (o1, o2)) ORDER BY au.id LIMIT 4) a;
+  IF u4 IS NULL THEN RAISE EXCEPTION 'AD31 selftest: needs four existing auth users that are not members of the two test tenants' USING ERRCODE = 'P0AU1'; END IF;
   INSERT INTO cp.domain_ownership (org_id, domain, valid_from) VALUES (o1, d1, t0 - interval '10 days'), (o2, d2, t0 - interval '10 days');
-  INSERT INTO public.org_members (org_id, user_id, email, status) VALUES (o1, gen_random_uuid(), 'ann@' || d1, 'active'), (o1, gen_random_uuid(), 'gone@' || d1, 'removed'), (o2, gen_random_uuid(), 'bob@' || d2, 'active');
+  INSERT INTO public.org_members (org_id, user_id, email, status) VALUES (o1, u1, 'ann@' || d1, 'active'), (o1, u2, 'gone@' || d1, 'removed'), (o2, u3, 'bob@' || d2, 'active');
   r := cp.resolve_sender(d1, 'ann', true, t0);
   PERFORM pg_temp.cp7_ok(r ->> 'verdict' = 'resolved' AND (r ->> 'tenant')::uuid = o1, 'an active member at a verified domain, aligned, resolves to ITS tenant');
   PERFORM pg_temp.cp7_ok(cp.resolve_sender(d1, 'ann', false, t0) ->> 'verdict' = 'unaligned' AND (cp.resolve_sender(d1, 'ann', false, t0) -> 'tenant') = 'null'::jsonb, 'a sender that did not authenticate as the domain is never resolved');
@@ -60,7 +64,7 @@ BEGIN
     ALTER TABLE cp.domain_ownership ENABLE TRIGGER USER;
     PERFORM pg_temp.cp7_ok(true, 'the database itself forbids two claimants (exclusion), the stronger guarantee');
   END;
-  INSERT INTO public.org_members (org_id, user_id, email, status) VALUES (o2, gen_random_uuid(), 'ann@' || d1, 'active');
+  INSERT INTO public.org_members (org_id, user_id, email, status) VALUES (o2, u4, 'ann@' || d1, 'active');
   PERFORM pg_temp.cp7_ok(cp.resolve_sender(d1, 'ann', true, t0) ->> 'verdict' = 'multi_member', 'the same address active in two tenants = multi_member (pending until a person chooses)');
   PERFORM pg_temp.cp7_ok(cp.resolve_sender('Bad Domain', 'ann', true, t0) ->> 'verdict' = 'unknown' AND cp.resolve_sender(NULL, 'ann', true, t0) ->> 'verdict' = 'unknown' AND cp.resolve_sender(d1, NULL, true, t0) ->> 'verdict' = 'unknown' AND cp.resolve_sender(d1, 'ann', NULL, t0) ->> 'verdict' = 'unknown' AND cp.resolve_sender(d1, 'Ann', true, t0) ->> 'verdict' = 'unknown', 'odd input answers unknown');
   PERFORM pg_temp.cp7_ok(NOT EXISTS (SELECT 1 FROM (VALUES ('ann'), ('stranger'), ('gone')) v(l) WHERE NOT (cp.resolve_sender(d1, v.l, true, t0) ->> 'verdict' = ANY (ARRAY['resolved','shared','unknown','ambiguous','multi_member','unaligned']))), 'every answer is a word of the closed list');

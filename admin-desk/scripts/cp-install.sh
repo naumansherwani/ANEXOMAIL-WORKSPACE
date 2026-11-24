@@ -60,6 +60,10 @@ print(u.urlunsplit((a.scheme,nu+":"+os.environ["CPW"]+"@"+host,a.path,u.urlencod
 P
 )" || { echo "FAIL: cp_lookup url"; exit 4; }
 printf "alter role cp_lookup login password :'pw';\n" | psqla -v pw="$PW" 2>&1 | tail -2; [ "${PIPESTATUS[1]}" = 0 ] || { echo "FAIL: ALTER ROLE cp_lookup"; exit 4; }; unset PW
+echo "== CP 3g/7 database: AD31.sql (B13 T3a: cp.resolve_sender, sender to tenant verdict) + selftest + CHECK"
+S="$(mktemp)"; show admin-desk/sql/AD31.sql >"$S"; C7="$(psqla -f "$S" 2>&1 | tail -4)"; rm -f "$S"; echo "$C7" | sed 's/^/   /'
+S="$(mktemp)"; show admin-desk/sql/checks/AD31-check.sql >"$S"; CH7="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH7" | sed 's/^/   /'
+if echo "$CH7" | grep -q '|f$' || echo "$CH7" | grep -qi error || echo "$C7" | grep -qi "error"; then echo "WARN: AD31 did not install cleanly: the sender verdict stays closed (every sender is unknown) until it is fixed; the rest of the install continues"; else echo "OK: AD31 sender-to-tenant verdict installed and CHECKed"; fi
 echo "== CP 4/7 user, key, certificate"
 id anexomail-cp >/dev/null 2>&1 || useradd --system --no-create-home --shell /usr/sbin/nologin anexomail-cp
 mkdir -p -m 700 "$ETC"; chown root:root "$ETC"
