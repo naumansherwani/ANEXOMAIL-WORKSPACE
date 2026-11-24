@@ -1,0 +1,1 @@
+real-exact: the sign-in look exactly as his 13:16 picture (quiet silver card edge, 7 lines incl. "(Rule 52)", halo, dust, beam, floor). DEMO ONLY, not in src. Shot: screens/exact-1280.png. Rule 52 words: one line in AuthCinema.tsx if he wants them out.

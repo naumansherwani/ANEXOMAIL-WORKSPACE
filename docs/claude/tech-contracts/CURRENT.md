@@ -4074,3 +4074,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - DEMO ONLY: awam sign-in card gradient in logo colours + final look files saved in demo/awam-signin-24nov (real-wip, screens, card-gradient.cjs); src untouched = original. TECH-LAW CHECKED. TESTED: dev render 1280 three moments, background-position moves 12% to 91%, tsc clean, src diff empty
 
 - AWAM SIGN-IN TEXT ONLY: heading Access Your Global Workspace + line under it, his exact words, nothing else changed. TECH-LAW CHECKED. TESTED: tsc clean, dev render 390/820/1280 heading shows, no sideways scroll, rest of the page identical to original
+
+- DEMO ONLY: demo/awam-signin-24nov/real-exact = his 13:16 picture exactly; src untouched = original text-only login. TECH-LAW CHECKED. TESTED: dev render 1280 side by side with his picture, tsc clean, src diff empty
+
+- DEMO ONLY: demo/awam-signin-24nov/real-exact = his 13:16 picture exactly; src untouched = original text-only login. TECH-LAW CHECKED. TESTED: dev render 1280 side by side with his picture, tsc clean, src diff empty
