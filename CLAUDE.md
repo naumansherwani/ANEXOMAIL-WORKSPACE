@@ -98,3 +98,5 @@ Full rules: `AGENTS.md` (Rules 1–73) and `docs/claude/founder/CODES/00-README-
 > ## >>> 25 Nov 2026 03:2x PKT (his 03:13): NOW = B13 T4e Control Plane tenant-exists + company NAME. Plan docs/claude/admin-desk/D6-B13-T4E-TENANT-EXISTS-PLAN-25NOV.md; read WORKING-NOW.md (resume block at the bottom); ONE COMMAND PER REPLY; never use the Monitor tool (foreground wait only); edit docs/claude/admin-desk only. RULE 52 COMBO S=yes M=N/A L=yes. <<<
 
 > ## >>> 25 Nov 2026 03:5x PKT: B13 T4e WRITTEN + TESTED, NOT INSTALLED (SQL cp.tenant_info in AD31, Control Plane tenant door, Desk tenant_cp.rs, screen company name). Next his ONE web install (desk-install.sh), my live Chrome look, then T4f, T4h. <<<
+
+> ## >>> 25 Nov 2026 03:21 PKT (his FINAL 03:21): SQL command (desk-sql-install.sh) and WEB command (desk-install.sh) are SEPARATE, never one command for both; the web install never runs the Desk SQL. docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md <<<

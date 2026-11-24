@@ -861,10 +861,10 @@
   {
    "id": "INSTALL-SPLIT-RULE",
    "file": "docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md",
-   "must": "ONE COMMAND PER REPLY: ONE web install carries ALL the advance technology",
+   "must": "ONE web install carries ALL the advance technology",
    "status": "ok",
    "deadline": "B13 T4",
-   "why": "his 25 Nov 03:09 order: ONE COMMAND PER REPLY (web = everything incl. SQL once; SQL-only command only for SQL-only phases; never both).",
+   "why": "his 25 Nov 03:21 FINAL order: SQL command and WEB command are SEPARATE; the web install never runs the Desk SQL.",
    "fail_after": "2027-01-09"
   },
   {

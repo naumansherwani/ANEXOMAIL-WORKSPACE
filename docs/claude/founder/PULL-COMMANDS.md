@@ -3905,3 +3905,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - B13 T4e plan: research line, design, 5 steps, contract row, resume block for a compacted Claude, gate id T4e-plan-written. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: docs only, gate run OK, json parses
 
 - B13 T4e written: cp.tenant_info in AD31, Control Plane tenant door (audience desk-tenant, path /control/v1/tenant, Ed25519 workload key, RFC 9421 style signed envelope, WIMSE), Desk tenant_cp.rs gates propose and names pending, screen shows company name, installers print TENANT SELFTEST. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: scratch PG16 function test pass, control plane cargo 30 passed, desk cargo 145 passed, bun 152 pass, tsc clean, bash syntax OK, gate run OK
+
+- Install rule FINAL: step 8b removed from desk-install.sh again, SQL command and WEB command separate, 03:09 one-command idea withdrawn; docs and CLAUDE.md updated. RULE 52 COMBO S=yes M=N/A L=yes. TECH-LAW CHECKED. TESTED: bash syntax check OK, gate run OK

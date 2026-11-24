@@ -1,9 +1,9 @@
-# WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 03:20 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 25 Nov 2026 03:22 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: B13 T4e code written + tested (SQL, Control Plane, Desk client, screen)
-NEXT STEP: his ONE web install (desk-install.sh), my live Chrome look, then T4f and T4h
-HIS LAST WORD: his 03:13 order
+DOING: install rule FINAL: SQL command and WEB command separate, web never runs Desk SQL
+NEXT STEP: his web install for T4e, my live Chrome look
+HIS LAST WORD: his 03:21 order
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -21,20 +21,40 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 7bff1f5b 25 Nov 03:20 ledger line 81106a36
 - 81106a36 25 Nov 03:20 B13 T4e code written and tested
 - d1594f03 25 Nov 03:14 ledger line cf47d83d
 - cf47d83d 25 Nov 03:14 T4e plan saved
 - 6513a45b 25 Nov 03:11 ledger line abdb285b
-- abdb285b 25 Nov 03:11 one command per reply
 
 ## Uncommitted files (half-done work if any)
+M  CLAUDE.md
+M  admin-desk/ALL-PHASES-IN-ORDER-24NOV.md
+M  admin-desk/INSTALL-SPLIT-RULE-25NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  admin-desk/TWO-COMMANDS.md
+M  admin-desk/scripts/desk-install.sh
+M  docs/claude/TECH-LAW-GATE.json
+M  docs/claude/admin-desk/ALL-PHASES-IN-ORDER-24NOV.md
+M  docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/TWO-COMMANDS.md
+M  docs/claude/admin-desk/scripts/desk-install.sh
+M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 53 ++--------------------------------------
- 1 file changed, 2 insertions(+), 51 deletions(-)
+ docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md | 14 ++++----
+ docs/claude/admin-desk/NOW-LIST-23NOV.md           |  1 +
+ docs/claude/admin-desk/TWO-COMMANDS.md             |  2 +-
+ docs/claude/admin-desk/scripts/desk-install.sh     |  4 +--
+ docs/claude/admin-desk/state/WORKING-NOW.md        |  2 ++
+ docs/claude/state/WORKING-NOW.md                   | 37 +++++++++++-----------
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        | 12 +++----
+ 15 files changed, 53 insertions(+), 48 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -45,4 +65,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (3dde014dba810f7d284cb01c61431d3b3252e919)
+WIP snapshot: refs/wip/last (9d953b6f6c3ed248292952b0000d9b88e50abc0e)

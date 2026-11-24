@@ -1,4 +1,4 @@
-## >>> 25 Nov 2026 03:09 PKT (his 03:09, STRICT): ONE COMMAND PER REPLY. WEB = desk-install.sh does everything incl. the Desk SQL once; SQL = desk-sql-install.sh ONLY for a SQL-only phase; never both in one reply. docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md <<<
+## >>> 25 Nov 2026 03:21 PKT (his FINAL 03:21): SQL command (desk-sql-install.sh) and WEB command (desk-install.sh) are SEPARATE; the web install never runs the Desk SQL; give each only when the phase changed it. docs/claude/admin-desk/INSTALL-SPLIT-RULE-25NOV.md <<<
 # ADMIN DESK: ONLY TWO SERVER COMMANDS (his 21 Nov 2026 21:41, written 21 Nov 2026 21:42 PKT)
 His word: "aaj ke baad sirf ek install ki command hogi jis mein sab kuch hoga, jaise founder ki install command thi, aur ek SQL ki command hogi, is ke ilawa koi command nahi hogi."
 1. INSTALL (everything: build all Rust files, page, service, own database login desk_app + Supabase CA pin, checks):
