@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 07:25 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 07:25 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: B13 T0 plan + awam loophole phases AWL-1..9 + Swiss facts
 NEXT STEP: B13 T1 AD21 (research line first)
 HIS LAST WORD: his 07:23 word
@@ -19,36 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 5a236721 24 Nov 07:25 t0 and awam loophole phases
 - 04b296f4 24 Nov 07:17 ledger line 6cb3e25a
 - 6cb3e25a 24 Nov 07:17 tenant identity decision
 - 3e3f0b55 24 Nov 07:03 ledger line 02c20159
 - 02c20159 24 Nov 07:03 advisor question
-- 80238a9d 24 Nov 06:59 ledger line b53b856e
 
 ## Uncommitted files (half-done work if any)
-A  admin-desk/D6-B13-T0-SCHEMA-THREAT-ROLLBACK-24NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
-A  docs/claude/AWAM-LOOPHOLE-PHASES-24NOV.md
-A  docs/claude/admin-desk/D6-B13-T0-SCHEMA-THREAT-ROLLBACK-24NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/AWAM-LOOPHOLE-PHASES-24NOV.md          | 32 ++++++++++++++++++++
- .../D6-B13-T0-SCHEMA-THREAT-ROLLBACK-24NOV.md      | 35 ++++++++++++++++++++++
- .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    |  4 +++
- docs/claude/admin-desk/NOW-LIST-23NOV.md           |  1 +
- docs/claude/admin-desk/state/WORKING-NOW.md        |  1 +
- docs/claude/state/WORKING-NOW.md                   | 33 ++++++++++----------
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        | 10 +++----
- 11 files changed, 134 insertions(+), 23 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 33 ++-------------------------------
+ 1 file changed, 2 insertions(+), 31 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -59,4 +43,4 @@ M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (3a0779592d10f19e25520b3542cf4ffe8cedbcd3)
+WIP snapshot: refs/wip/last (759eb0b1f76eea2217802d770f91a1e2226053f2)

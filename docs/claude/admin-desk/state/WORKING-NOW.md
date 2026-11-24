@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 07:25 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 07:25 PKT) - read this FIRST for the Desk after a compaction
 DOING: B13 T0 plan + awam loophole phases AWL-1..9 + Swiss facts
 NEXT STEP: B13 T1 AD21 (research line first)
 HIS LAST WORD: his 07:23 word
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 5a236721 24 Nov 07:25 t0 and awam loophole phases
 - 04b296f4 24 Nov 07:17 ledger line 6cb3e25a
 - 6cb3e25a 24 Nov 07:17 tenant identity decision
 - 3e3f0b55 24 Nov 07:03 ledger line 02c20159
@@ -72,16 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 80238a9d 24 Nov 06:59 ledger line b53b856e
 - b53b856e 24 Nov 06:59 z4b-2 client
 - df5ca0f0 24 Nov 06:56 ledger line 262397d6
-- 262397d6 24 Nov 06:56 z4a green
 
 ## Uncommitted Desk files
-A  admin-desk/D6-B13-T0-SCHEMA-THREAT-ROLLBACK-24NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-A  docs/claude/admin-desk/D6-B13-T0-SCHEMA-THREAT-ROLLBACK-24NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
