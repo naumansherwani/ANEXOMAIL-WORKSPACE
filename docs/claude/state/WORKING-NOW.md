@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 14:37 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 14:37 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: Low data mode chip hidden outside /app (public site, sign-in, landing)
@@ -21,28 +21,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 3d0843c2 24 Nov 14:37 low data chip only in app
 - c1d06516 24 Nov 14:36 ledger line 4f7af502
 - 4f7af502 24 Nov 14:36 evening plan + live look
 - 0f74d028 24 Nov 14:31 ledger line e61cb1ab
 - e61cb1ab 24 Nov 14:31 login+footer: HTTP Message Signatures RFC 9421
-- 33fc7e91 24 Nov 14:19 ledger line 682d8807
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  lovable-gold/MANIFEST.sha256
-M  lovable-gold/awam/src/components/app/CrossPlatformBar.tsx
-M  src/components/app/CrossPlatformBar.tsx
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md                   | 27 ++++++++--------------
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  8 +++----
- lovable-gold/MANIFEST.sha256                       |  2 +-
- .../awam/src/components/app/CrossPlatformBar.tsx   |  3 ++-
- src/components/app/CrossPlatformBar.tsx            |  3 ++-
- 5 files changed, 18 insertions(+), 25 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 25 ++-----------------------
+ 1 file changed, 2 insertions(+), 23 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -53,4 +45,4 @@ M  src/components/app/CrossPlatformBar.tsx
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (79fd6ae93f0507d6ae74b508c18f1ffc6a48b360)
+WIP snapshot: refs/wip/last (fdda0041844fe0e702303a89722a0865d399a397)
