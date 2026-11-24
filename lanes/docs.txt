@@ -368,6 +368,7 @@ docs/claude/admin-desk/D6-B13-CONSENT-ACCESS-LIST-24NOV.md
 docs/claude/admin-desk/D6-B13-T0-SCHEMA-THREAT-ROLLBACK-24NOV.md
 docs/claude/admin-desk/D6-B13-T1-GATE-CHECKLIST-24NOV.md
 docs/claude/admin-desk/D6-B13-T3-RESOLUTION-LIST-24NOV.md
+docs/claude/admin-desk/D6-B13-T4-ACCEPTANCE-25NOV.md
 docs/claude/admin-desk/D6-B13-T4-MANUAL-EXCEPTION-PLAN-25NOV.md
 docs/claude/admin-desk/D6-B13-Z4-CUSTOMER-APPROVAL-PLAN-24NOV.md
 docs/claude/admin-desk/D6-B13-Z4-GATE-CHECKLIST-24NOV.md
@@ -518,6 +519,7 @@ docs/claude/admin-desk/server/contract/DESK-LOOKUP-CONTRACT.json
 docs/claude/admin-desk/server/src/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/server/src/audit.rs
 docs/claude/admin-desk/server/src/auth.rs
+docs/claude/admin-desk/server/src/bind_exception.rs
 docs/claude/admin-desk/server/src/bridge.rs
 docs/claude/admin-desk/server/src/consent.rs
 docs/claude/admin-desk/server/src/consent_cp.rs
@@ -585,6 +587,7 @@ docs/claude/admin-desk/sql/AD30.sql
 docs/claude/admin-desk/sql/AD31.sql
 docs/claude/admin-desk/sql/AD32.sql
 docs/claude/admin-desk/sql/AD33.sql
+docs/claude/admin-desk/sql/AD34.sql
 docs/claude/admin-desk/sql/README.md
 docs/claude/admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/sql/checks/AD01-check.sql
@@ -627,6 +630,7 @@ docs/claude/admin-desk/sql/checks/AD30-check.sql
 docs/claude/admin-desk/sql/checks/AD31-check.sql
 docs/claude/admin-desk/sql/checks/AD32-check.sql
 docs/claude/admin-desk/sql/checks/AD33-check.sql
+docs/claude/admin-desk/sql/checks/AD34-check.sql
 docs/claude/admin-desk/sql/checks/README.md
 docs/claude/admin-desk/state/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/state/COMPACT-SAVE.md

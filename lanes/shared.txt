@@ -34,6 +34,7 @@ admin-desk/D6-B13-CONSENT-ACCESS-LIST-24NOV.md
 admin-desk/D6-B13-T0-SCHEMA-THREAT-ROLLBACK-24NOV.md
 admin-desk/D6-B13-T1-GATE-CHECKLIST-24NOV.md
 admin-desk/D6-B13-T3-RESOLUTION-LIST-24NOV.md
+admin-desk/D6-B13-T4-ACCEPTANCE-25NOV.md
 admin-desk/D6-B13-T4-MANUAL-EXCEPTION-PLAN-25NOV.md
 admin-desk/D6-B13-Z4-CUSTOMER-APPROVAL-PLAN-24NOV.md
 admin-desk/D6-B13-Z4-GATE-CHECKLIST-24NOV.md
@@ -184,6 +185,7 @@ admin-desk/server/contract/DESK-LOOKUP-CONTRACT.json
 admin-desk/server/src/00-FOUNDER-TECH-RULE.md
 admin-desk/server/src/audit.rs
 admin-desk/server/src/auth.rs
+admin-desk/server/src/bind_exception.rs
 admin-desk/server/src/bridge.rs
 admin-desk/server/src/consent.rs
 admin-desk/server/src/consent_cp.rs
@@ -251,6 +253,7 @@ admin-desk/sql/AD30.sql
 admin-desk/sql/AD31.sql
 admin-desk/sql/AD32.sql
 admin-desk/sql/AD33.sql
+admin-desk/sql/AD34.sql
 admin-desk/sql/README.md
 admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/checks/AD01-check.sql
@@ -293,6 +296,7 @@ admin-desk/sql/checks/AD30-check.sql
 admin-desk/sql/checks/AD31-check.sql
 admin-desk/sql/checks/AD32-check.sql
 admin-desk/sql/checks/AD33-check.sql
+admin-desk/sql/checks/AD34-check.sql
 admin-desk/sql/checks/README.md
 admin-desk/state/00-FOUNDER-TECH-RULE.md
 admin-desk/state/COMPACT-SAVE.md

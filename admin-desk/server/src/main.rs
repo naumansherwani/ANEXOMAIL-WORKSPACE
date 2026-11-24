@@ -21,7 +21,7 @@ mod dbsc;
 mod lookup;
 mod packages;
 mod runbooks;
-mod consent; #[allow(dead_code)] mod consent_cp; mod resolve_cp;
+mod bind_exception; mod consent; #[allow(dead_code)] mod consent_cp; mod resolve_cp;
 mod escalations;
 mod pressure;
 mod security;
@@ -101,6 +101,7 @@ async fn main() {
     }
     tokio::spawn(door::warm());
     tokio::spawn(door::listen_plans());
+    tokio::spawn(bind_exception::expiry_worker());
     let index = format!("{DIST}/desk.html");
     let files = ServeDir::new(DIST).fallback(ServeFile::new(index));
     signed::init();
@@ -130,6 +131,10 @@ async fn main() {
         .route("/desk/v1/consent/request", post(consent::request))
         .route("/desk/v1/consent/board", post(consent::board))
         .route("/desk/v1/consent/open", post(consent::open))
+        .route("/desk/v1/bind/propose", post(bind_exception::propose))
+        .route("/desk/v1/bind/decide", post(bind_exception::decide))
+        .route("/desk/v1/bind/withdraw", post(bind_exception::withdraw))
+        .route("/desk/v1/bind/pending", post(bind_exception::pending))
         .route("/desk/v1/escalations", post(escalations::create))
         .route("/desk/v1/escalations/list", post(escalations::list))
         .route("/desk/v1/queues/pressure", post(pressure::queues))

@@ -1,9 +1,9 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 01:58 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (manual checkpoint, 25 Nov 2026 02:17 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: B13 T4 plan + research committed; next T4a AD34 SQL
-NEXT STEP: T4a: write AD34.sql (SCHEMA-FIRST AD30/AD02), scratch PostgreSQL 16 twice, CHECK; then T4b Rust, T4c screen, T4d install
-HIS LAST WORD: his 01:54 words
+DOING: B13 T4 CODE written + tested (AD34, Rust doors + expiry worker, screen); gate told his 8 acceptance points
+NEXT STEP: his ONE Desk install (desk-install.sh), my live Chrome look, then T5
+HIS LAST WORD: his 02:12 acceptance list
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- ea9da9c4 25 Nov 01:58 ledger line cade364d
 - cade364d 25 Nov 01:58 B13 T4 plan + research; awam live confirmed
 - 47da5340 24 Nov 14:43 ledger line 801163ca
 - 801163ca 24 Nov 14:43 manifest fix footer + resume for tonight
@@ -75,10 +76,28 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 3d0843c2 24 Nov 14:37 low data chip only in app
 - c1d06516 24 Nov 14:36 ledger line 4f7af502
 - 4f7af502 24 Nov 14:36 evening plan + live look
-- 0f74d028 24 Nov 14:31 ledger line e61cb1ab
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+A  admin-desk/D6-B13-T4-ACCEPTANCE-25NOV.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+A  admin-desk/server/src/bind_exception.rs
+M  admin-desk/server/src/main.rs
+A  admin-desk/sql/AD34.sql
+A  admin-desk/sql/checks/AD34-check.sql
+A  docs/claude/admin-desk/D6-B13-T4-ACCEPTANCE-25NOV.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+A  docs/claude/admin-desk/server/src/bind_exception.rs
+M  docs/claude/admin-desk/server/src/main.rs
+A  docs/claude/admin-desk/sql/AD34.sql
+A  docs/claude/admin-desk/sql/checks/AD34-check.sql
+MM docs/claude/admin-desk/state/WORKING-NOW.md
+A  founder-web/src/desk/DeskBindException.tsx
+M  founder-web/src/desk/DeskCards.tsx
+A  founder-web/src/desk/desk_bind_pure.test.ts
+A  founder-web/src/desk/desk_bind_pure.ts
+M  founder-web/src/desk/desk_cards.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

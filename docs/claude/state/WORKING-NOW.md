@@ -1,9 +1,9 @@
-# WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 01:58 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 25 Nov 2026 02:17 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: B13 T4 plan + research committed; next T4a AD34 SQL
-NEXT STEP: T4a: write AD34.sql (SCHEMA-FIRST AD30/AD02), scratch PostgreSQL 16 twice, CHECK; then T4b Rust, T4c screen, T4d install
-HIS LAST WORD: his 01:54 words
+DOING: B13 T4 CODE written + tested (AD34, Rust doors + expiry worker, screen); gate told his 8 acceptance points
+NEXT STEP: his ONE Desk install (desk-install.sh), my live Chrome look, then T5
+HIS LAST WORD: his 02:12 acceptance list
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -21,20 +21,65 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- ea9da9c4 25 Nov 01:58 ledger line cade364d
 - cade364d 25 Nov 01:58 B13 T4 plan + research; awam live confirmed
 - 47da5340 24 Nov 14:43 ledger line 801163ca
 - 801163ca 24 Nov 14:43 manifest fix footer + resume for tonight
 - 4cf0eefb 24 Nov 14:37 ledger line 3d0843c2
-- 3d0843c2 24 Nov 14:37 low data chip only in app
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/state/WORKING-NOW.md
+M  CLAUDE.md
+A  admin-desk/D6-B13-T4-ACCEPTANCE-25NOV.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+A  admin-desk/server/src/bind_exception.rs
+M  admin-desk/server/src/main.rs
+A  admin-desk/sql/AD34.sql
+A  admin-desk/sql/checks/AD34-check.sql
+M  docs/claude/DONE-DO-NOT-REPEAT.md
+M  docs/claude/RESUME-POINT.md
+M  docs/claude/TECH-LAW-GATE.json
+A  docs/claude/admin-desk/D6-B13-T4-ACCEPTANCE-25NOV.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+A  docs/claude/admin-desk/server/src/bind_exception.rs
+M  docs/claude/admin-desk/server/src/main.rs
+A  docs/claude/admin-desk/sql/AD34.sql
+A  docs/claude/admin-desk/sql/checks/AD34-check.sql
+M  docs/claude/admin-desk/state/WORKING-NOW.md
+M  docs/claude/founder/PULL-COMMANDS.md
+M  docs/claude/state/HEARTBEAT.json
+MM docs/claude/state/WORKING-NOW.md
+M  docs/claude/tech-contracts/CURRENT.md
+M  docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
+M  docs/cursor-work/DONE-DO-NOT-REPEAT.md
+M  docs/cursor-work/founder/founder-commands.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
+M  docs/cursor-work/server/PULL-COMMANDS.md
+R  founder-web/dist/assets/index-zd8BoyaB.js -> founder-web/dist/assets/index-DAzF1mR6.js
+M  founder-web/dist/index.html
+A  founder-web/src/desk/DeskBindException.tsx
+M  founder-web/src/desk/DeskCards.tsx
+A  founder-web/src/desk/desk_bind_pure.test.ts
+A  founder-web/src/desk/desk_bind_pure.ts
+M  founder-web/src/desk/desk_cards.ts
+M  founder-web/src/system_brain.json
+M  lanes/ALL-FILES.csv
+M  lanes/docs.txt
+M  lanes/founder.txt
+M  lanes/shared.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 51 +++-------------------------------------
- 1 file changed, 3 insertions(+), 48 deletions(-)
+ founder-web/src/desk/desk_cards.ts                 |   1 +
+ founder-web/src/system_brain.json                  |   8 +-
+ lanes/ALL-FILES.csv                                |  13 +-
+ lanes/docs.txt                                     |   4 +
+ lanes/founder.txt                                  |   5 +-
+ lanes/shared.txt                                   |   4 +
+ lovable-gold/README.md                             |   2 +-
+ 41 files changed, 1488 insertions(+), 68 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -45,4 +90,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (8da4248580ebb20cf1a68813d6e4f567883ece34)
+WIP snapshot: refs/wip/last (8e148918d638bb2fd82fa58e21fc4dc176e25f53)

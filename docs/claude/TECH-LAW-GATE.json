@@ -623,6 +623,141 @@
    "deadline": "B13 T3c",
    "why": "T3c: plain words for the apply result.",
    "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-1-sod-db",
+   "file": "docs/claude/admin-desk/sql/AD34.sql",
+   "must": "fadm_bind_proposal_two_people",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:12 acceptance list: (1) separation of duties: decider <> proposer is a TABLE CHECK, not only a screen rule.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-1-sod-rights-in-txn",
+   "file": "docs/claude/admin-desk/sql/AD34.sql",
+   "must": "fadm_bind_may(p_actor)",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:12 acceptance list: (1) case.assign of the acting person is verified inside the database transaction by a SECURITY DEFINER function (a CHECK cannot read another table's permissions); AD30 fadm_case_bind re-verifies BOTH people.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-2-race-row-lock",
+   "file": "docs/claude/admin-desk/sql/AD34.sql",
+   "must": "FOR UPDATE",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:12 acceptance list: (2) approve and deny racing: SELECT ... FOR UPDATE on the proposal row plus the per-proposal advisory lock, same key in decide and withdraw.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-3-expiry-at-decision",
+   "file": "docs/claude/admin-desk/sql/AD34.sql",
+   "must": "expires_at <= now()",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:12 acceptance list: (3) expiry checked at decision time, even if the worker has not run.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-3-expiry-table-check",
+   "file": "docs/claude/admin-desk/sql/AD34.sql",
+   "must": "fadm_bind_proposal_no_late_approval",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:12 acceptance list: (3) a late approval cannot exist as a row (CHECK decided_at <= expires_at).",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-3-expiry-worker",
+   "file": "docs/claude/admin-desk/server/src/bind_exception.rs",
+   "must": "expiry_worker",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:12 acceptance list: (3) background expiry worker (every 60 s) calling desk.fadm_bind_sweep().",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-3-expiry-idempotent",
+   "file": "docs/claude/admin-desk/sql/AD34.sql",
+   "must": "SKIP LOCKED",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:12 acceptance list: (3) the sweep is idempotent (only pending rows move, one ledger line per real transition) and the guard trigger forbids resurrecting an ended proposal.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-4-writer-atomic",
+   "file": "docs/claude/admin-desk/sql/AD34.sql",
+   "must": "SET status = 'void'",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:12 acceptance list: (4) decide is one function = one transaction: fadm_case_bind and the end state commit together; a refusing writer makes the proposal void, never approved without a binding.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-5-ledger-serialised",
+   "file": "docs/claude/admin-desk/sql/AD01.sql",
+   "must": "pg_advisory_xact_lock(hashtext('desk.fadm_ledger'))",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:12 acceptance list: (5) concurrent ledger writes serialise under one advisory lock; update/delete/truncate are frozen by triggers.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-5-signed-checkpoints-offsite",
+   "file": "docs/claude/admin-desk/scripts/audit-export-install.sh",
+   "must": "audit",
+   "status": "open",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:12 acceptance list: (5) periodic signed ledger checkpoints preserved OUTSIDE the database: the existing audit export is the base; a signed head of the WHOLE ledger kept off-box is OPEN until it is its own step.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-6-definer-search-path",
+   "file": "docs/claude/admin-desk/sql/AD34.sql",
+   "must": "SET search_path = pg_catalog, desk",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:12 acceptance list: (6) SECURITY DEFINER: fixed search_path, schema-qualified objects, REVOKE PUBLIC, EXECUTE only to desk_app; CHECK file asserts desk_app is not superuser, no BYPASSRLS, no CREATE on desk or public.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-6-definer-owner-open",
+   "file": "docs/claude/admin-desk/sql/AD34.sql",
+   "must": "REVOKE ALL ON FUNCTION desk.fadm_bind_may",
+   "status": "open",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:12 acceptance list: (6) a NON-LOGIN least-privilege function OWNER with its own RLS policies is OPEN: today the installer role owns the Desk functions (design of AD01..AD34); changing the owner needs policies on every table the doors read, so it is its own phase (DEFINER-OWNER) and is not done in T4.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-7-request-binding",
+   "file": "docs/claude/admin-desk/server/src/signed.rs",
+   "must": "sign::verify_req",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:12 acceptance list: (7) every browser-to-Desk call carries the kernel HMAC over method, path, nonce, timestamp and body, with a replay cache per session; passkey is human sign-in, Ed25519 workload keys are service identity (WIMSE) and are never substituted for each other.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-7-rfc9421-header-form-open",
+   "file": "docs/claude/admin-desk/server/src/bind_exception.rs",
+   "must": "RULE 52 COMBO",
+   "status": "open",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:12 acceptance list: (7) the literal RFC 9421 header form (Signature-Input + Content-Digest) for browser-to-Desk calls is OPEN: today the same components are bound by the HMAC request MAC; Control Plane calls already use the signed envelope.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-8-wasm-fail-closed",
+   "file": "founder-web/src/desk/DeskBindException.tsx",
+   "must": "UNVERIFIED_TEXT",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:12 acceptance list: (8) the Rust WASM kernel verifies every answer; a refused answer is never shown as success and never claims that nothing changed; server and database stay the final authority.",
+   "fail_after": "2027-01-09"
   }
  ]
 }

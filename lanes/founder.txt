@@ -201,8 +201,8 @@ founder-web/dist/assets/compact-CelYNJqw.js
 founder-web/dist/assets/emoji-Csmgbn_H.js
 founder-web/dist/assets/emoji_ur_data-UqyhmUiF.js
 founder-web/dist/assets/gsap-OWHkPl-m.js
+founder-web/dist/assets/index-DiDdKUMM.js
 founder-web/dist/assets/index-taNtCYNU.css
-founder-web/dist/assets/index-zd8BoyaB.js
 founder-web/dist/assets/kernel.worker-DY4WQ2it.js
 founder-web/dist/assets/messages-DJ_oHCt2.js
 founder-web/dist/assets/three.core-BkCwB-2w.js
@@ -340,6 +340,7 @@ founder-web/src/dbsc_pure.ts
 founder-web/src/delivery_pure.test.ts
 founder-web/src/delivery_pure.ts
 founder-web/src/desk/00-FOUNDER-TECH-RULE.md
+founder-web/src/desk/DeskBindException.tsx
 founder-web/src/desk/DeskBoot.tsx
 founder-web/src/desk/DeskCards.tsx
 founder-web/src/desk/DeskCommandBar.tsx
@@ -363,6 +364,8 @@ founder-web/src/desk/DeskSignIn.tsx
 founder-web/src/desk/DeskStaff.tsx
 founder-web/src/desk/DeskTelemetry.tsx
 founder-web/src/desk/DeskTitle.tsx
+founder-web/src/desk/desk_bind_pure.test.ts
+founder-web/src/desk/desk_bind_pure.ts
 founder-web/src/desk/desk_bridge_pure.test.ts
 founder-web/src/desk/desk_bridge_pure.ts
 founder-web/src/desk/desk_cards.test.ts

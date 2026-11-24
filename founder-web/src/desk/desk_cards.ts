@@ -13,6 +13,7 @@ export const CARDS: Card[] = [
   { id: "runbooks", key: "b", label: "Runbooks", track: "lookup", phase: "D5b", wired: true, onBar: false, what: "Nine step-by-step guides for the common customer problems, with a checklist and the words to say", waits: "" },
   { id: "escalations", key: "x", label: "Escalations", track: "lookup", phase: "D5c", wired: true, onBar: false, what: "Pass a problem to the owner as a real case, and see its case number and status", waits: "" },
   { id: "consent", key: "9", label: "Customer data access", track: "lookup", phase: "B13", wired: true, onBar: false, what: "Ask to look at one customer case; it opens only after the customer's Company Admin approves, for a short time", waits: "" },
+  { id: "bind", key: "0", label: "Company confirmation", track: "lookup", phase: "B13", wired: true, onBar: false, what: "Tie a case to its customer company by hand: one person proposes, a different person confirms", waits: "" },
   { id: "queue", key: "q", label: "Queue pressure", track: "lookup", phase: "D6", wired: true, onBar: false, what: "Open, waiting and at-risk cases by queue", waits: "" },
   { id: "security", key: "e", label: "Security health", track: "lookup", phase: "D6", wired: true, onBar: false, what: "A score for the Desk itself: passkeys, two keys each, device-bound keys, open recoveries, break-glass", waits: "" },
   { id: "staff", key: "t", label: "Staff online and shifts", track: "lookup", phase: "D6", wired: true, onBar: false, what: "Who is online, who is on shift, who holds temporary access right now", waits: "" },

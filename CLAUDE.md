@@ -82,3 +82,5 @@ Full rules: `AGENTS.md` (Rules 1–73) and `docs/claude/founder/CODES/00-README-
 > ## >>> FUTURE-PROOF LAW (his 23 Nov 06:42, founder + awam + Desk, gate "FUTURE-PROOF"): we build the system for when the business is big (Zendesk-class and beyond), ONCE. NEVER "Not measured yet": web-search how the best systems do it, design the real signal from the real tables, build it complete; zero is data. docs/claude/FUTURE-PROOF-LAW-23NOV.md <<<
 
 > ## >>> BILLIONAIRE ORDER (his 23 Nov 09:28): follow ORDER-LOCK in admin-desk/BILLIONAIRE-SETUP-LIST-23NOV.md, never rebuild a GREEN row <<<
+
+> ## >>> 25 Nov 2026 02:4x PKT RESUME (his 02:03/02:12 orders): B13 T4 is WRITTEN + TESTED, NOT INSTALLED (AD34 + Rust doors + expiry worker + screen); his 8-point acceptance list is in docs/claude/admin-desk/D6-B13-T4-ACCEPTANCE-25NOV.md and in the gate (TECH-LAW-GATE.json ids T4-1..T4-8); next his ONE Desk install, my live look, then T5. Read WORKING-NOW.md + docs/claude/EVENING-PLAN-24NOV.md. RULE 52 COMBO and advance technology next to every phase, updated after every message. <<<
