@@ -758,6 +758,105 @@
    "deadline": "B13 T4",
    "why": "his 25 Nov 2026 02:12 acceptance list: (8) the Rust WASM kernel verifies every answer; a refused answer is never shown as success and never claims that nothing changed; server and database stay the final authority.",
    "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-F1-propose",
+   "file": "docs/claude/admin-desk/server/src/bind_exception.rs",
+   "must": "pub async fn propose",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:23 list, line F1: staff proposes a manual company exception (closed reason list, note up to 200).",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-F2-different-person",
+   "file": "docs/claude/admin-desk/sql/AD34.sql",
+   "must": "same_person",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:23 list, line F2: a different staff member decides; both need case.assign.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-F3-expiry-withdraw",
+   "file": "docs/claude/admin-desk/sql/AD34.sql",
+   "must": "fadm_bind_withdraw",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:23 list, line F3: 24 h expiry and withdraw by the proposer.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-F4-one-open",
+   "file": "docs/claude/admin-desk/sql/AD34.sql",
+   "must": "fadm_bind_proposal_one_open",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:23 list, line F4: one open proposal per case (partial unique index).",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-F5-one-writer",
+   "file": "docs/claude/admin-desk/sql/AD34.sql",
+   "must": "fadm_case_bind(cref, p.tenant_id, 'manual_exception'",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:23 list, line F5: approval binds only through the old writer fadm_case_bind.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-F6-ledger-closed-words",
+   "file": "docs/claude/admin-desk/sql/AD34.sql",
+   "must": "'bind.refused'",
+   "status": "ok",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:23 list, line F6: every step is one ledger line with closed words.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4-F7-screen-shows-name",
+   "file": "founder-web/src/desk/desk_bind_pure.ts",
+   "must": "tenantName",
+   "status": "open",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:23 list, line F7: the screen shows the company NAME too (from the Control Plane): OPEN until T4e.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4e-tenant-exists",
+   "file": "docs/claude/admin-desk/server/src/bind_exception.rs",
+   "must": "tenant_exists",
+   "status": "open",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:23 list, line T4e: Control Plane signed 'tenant exists' method + name (closes T4b-2).",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4f-rfc9421-headers",
+   "file": "docs/claude/admin-desk/server/src/signed.rs",
+   "must": "content-digest",
+   "status": "open",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:23 list, line T4f: literal RFC 9421 Signature-Input + Content-Digest for browser-to-Desk calls.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4g-definer-owner",
+   "file": "docs/claude/admin-desk/sql/AD34.sql",
+   "must": "desk_bind_owner",
+   "status": "open",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:23 list, line T4g: NOLOGIN least-privilege function owner with its own RLS policies.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4h-ledger-checkpoints",
+   "file": "docs/claude/admin-desk/server/src/ledger.rs",
+   "must": "checkpoint",
+   "status": "open",
+   "deadline": "B13 T4",
+   "why": "his 25 Nov 2026 02:23 list, line T4h: signed ledger head written outside the database + verifier.",
+   "fail_after": "2027-01-09"
   }
  ]
 }
