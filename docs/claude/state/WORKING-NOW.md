@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 11:58 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 11:58 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: B13 T3b GREEN; T3c written: AD33 apply door, Rust apply, bindWords; tagline parked
@@ -21,44 +21,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- a4cc7e40 24 Nov 11:58 B13 T3b green, T3c AD33 apply door
 - b0267a69 24 Nov 11:50 ledger line 8a54a385
 - 8a54a385 24 Nov 11:50 demo V6 global grid fits
 - 4c26a9af 24 Nov 11:46 ledger line d41c68e1
 - d41c68e1 24 Nov 11:46 demo V5 global grid workplace
-- 36c405c5 24 Nov 11:29 ledger line a93bfeeb
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/D6-B13-T3-RESOLUTION-LIST-24NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  admin-desk/server/src/resolve_cp.rs
-A  admin-desk/sql/AD33.sql
-A  admin-desk/sql/checks/AD33-check.sql
-M  docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
-M  docs/claude/TECH-LAW-GATE.json
-M  docs/claude/admin-desk/D6-B13-T3-RESOLUTION-LIST-24NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/server/src/resolve_cp.rs
-A  docs/claude/admin-desk/sql/AD33.sql
-A  docs/claude/admin-desk/sql/checks/AD33-check.sql
  M docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  founder-web/src/desk/desk_consent_pure.test.ts
-M  founder-web/src/desk/desk_consent_pure.ts
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/admin-desk/sql/AD33.sql                | 87 ++++++++++++++++++++++
- docs/claude/admin-desk/sql/checks/AD33-check.sql   | 10 +++
- docs/claude/state/WORKING-NOW.md                   | 41 +++++-----
- docs/claude/tech-contracts/CURRENT.md              |  9 +++
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        | 14 ++--
- founder-web/src/desk/desk_consent_pure.test.ts     |  8 +-
- founder-web/src/desk/desk_consent_pure.ts          | 11 +++
- 19 files changed, 408 insertions(+), 26 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 41 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 39 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -69,4 +45,4 @@ M  founder-web/src/desk/desk_consent_pure.ts
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (f2b1d3dc1965181a297a39901bb4877eac127e1c)
+WIP snapshot: refs/wip/last (19cd928614a6288ea58dbd7c4e812506eb5611d3)

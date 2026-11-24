@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 11:58 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 11:58 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: B13 T3b GREEN; T3c written: AD33 apply door, Rust apply, bindWords; tagline parked
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- a4cc7e40 24 Nov 11:58 B13 T3b green, T3c AD33 apply door
 - b0267a69 24 Nov 11:50 ledger line 8a54a385
 - 8a54a385 24 Nov 11:50 demo V6 global grid fits
 - 4c26a9af 24 Nov 11:46 ledger line d41c68e1
@@ -75,24 +76,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 36c405c5 24 Nov 11:29 ledger line a93bfeeb
 - a93bfeeb 24 Nov 11:29 desk-install: always newest script
 - 7a668e62 24 Nov 11:24 ledger line 5c297125
-- 5c297125 24 Nov 11:24 desk-install: last 16 lines only
 
 ## Uncommitted Desk files
-M  admin-desk/D6-B13-T3-RESOLUTION-LIST-24NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  admin-desk/server/src/resolve_cp.rs
-A  admin-desk/sql/AD33.sql
-A  admin-desk/sql/checks/AD33-check.sql
-M  docs/claude/admin-desk/D6-B13-T3-RESOLUTION-LIST-24NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/server/src/resolve_cp.rs
-A  docs/claude/admin-desk/sql/AD33.sql
-A  docs/claude/admin-desk/sql/checks/AD33-check.sql
  M docs/claude/admin-desk/state/WORKING-NOW.md
-M  founder-web/src/desk/desk_consent_pure.test.ts
-M  founder-web/src/desk/desk_consent_pure.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
