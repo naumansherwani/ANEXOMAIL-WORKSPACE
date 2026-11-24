@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 08:34 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 08:34 PKT) - read this FIRST for the Desk after a compaction
 DOING: E202 price migration written + scratch-tested
 NEXT STEP: his AUTO sql-run paste (E201 re-run + E202), then purge old price text
 HIS LAST WORD: he ordered new schema SQL E202, E201 stays
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 204ff52c 24 Nov 08:34 E202: final price chart migration
 - 7f5341e5 24 Nov 08:25 ledger line c3ceddb2
 - c3ceddb2 24 Nov 08:25 E201: merge E202 facts + pool levels, delete E202
 - 7625b98e 24 Nov 08:20 ledger line 93c3ed3c
@@ -72,10 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - be6bdc37 24 Nov 08:14 ledger line 2c566233
 - 2c566233 24 Nov 08:14 AD26 tenant registry GREEN
 - a9f96fd0 24 Nov 08:06 ledger line 6d38281d
-- 6d38281d 24 Nov 08:06 fixed command forms rule
 
 ## Uncommitted Desk files
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

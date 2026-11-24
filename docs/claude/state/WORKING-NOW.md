@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 08:34 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 08:34 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: E202 price migration written + scratch-tested
 NEXT STEP: his AUTO sql-run paste (E201 re-run + E202), then purge old price text
 HIS LAST WORD: he ordered new schema SQL E202, E201 stays
@@ -19,35 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 204ff52c 24 Nov 08:34 E202: final price chart migration
 - 7f5341e5 24 Nov 08:25 ledger line c3ceddb2
 - c3ceddb2 24 Nov 08:25 E201: merge E202 facts + pool levels, delete E202
 - 7625b98e 24 Nov 08:20 ledger line 93c3ed3c
 - 93c3ed3c 24 Nov 08:20 E202 awam package facts + pool; audit
-- be6bdc37 24 Nov 08:14 ledger line 2c566233
 
 ## Uncommitted files (half-done work if any)
-M  docs/claude/AUDIT-24NOV-0820-AWAM-POINTS-AND-DESK.md
-M  docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
-M  docs/claude/AWAM-LOOPHOLE-PHASES-24NOV.md
-M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-A  docs/cursor-work/sql/CHECK_E202.sql
-A  docs/cursor-work/sql/E202_awam_price_migration_final.sql
-M  docs/cursor-work/sql/index.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/admin-desk/state/WORKING-NOW.md        |   4 +-
- docs/claude/state/WORKING-NOW.md                   |  32 +-
- docs/claude/tech-contracts/CURRENT.md              |   6 +
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  10 +-
- docs/cursor-work/sql/CHECK_E202.sql                |  12 +
- .../sql/E202_awam_price_migration_final.sql        | 424 +++++++++++++++++++++
- docs/cursor-work/sql/index.md                      |   3 +-
- 10 files changed, 471 insertions(+), 29 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 32 ++------------------------------
+ 1 file changed, 2 insertions(+), 30 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -58,4 +43,4 @@ M  docs/cursor-work/sql/index.md
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (d53a08fe4c0b2d0c1185831539e3ae9b2b3d4a91)
+WIP snapshot: refs/wip/last (58ace250c7385477792296c7abec8ee7864de366)
