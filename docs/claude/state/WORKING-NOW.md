@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 25 Nov 2026 01:58 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 01:58 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: B13 T4 plan + research committed; next T4a AD34 SQL
@@ -21,52 +21,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- cade364d 25 Nov 01:58 B13 T4 plan + research; awam live confirmed
 - 47da5340 24 Nov 14:43 ledger line 801163ca
 - 801163ca 24 Nov 14:43 manifest fix footer + resume for tonight
 - 4cf0eefb 24 Nov 14:37 ledger line 3d0843c2
 - 3d0843c2 24 Nov 14:37 low data chip only in app
-- c1d06516 24 Nov 14:36 ledger line 4f7af502
 
 ## Uncommitted files (half-done work if any)
-A  admin-desk/D6-B13-T4-MANUAL-EXCEPTION-PLAN-25NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
-M  docs/claude/DONE-DO-NOT-REPEAT.md
-M  docs/claude/RESUME-POINT.md
-A  docs/claude/admin-desk/D6-B13-T4-MANUAL-EXCEPTION-PLAN-25NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/state/WORKING-NOW.md
-M  docs/claude/founder/PULL-COMMANDS.md
-M  docs/claude/state/HEARTBEAT.json
-MM docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
-M  docs/cursor-work/DONE-DO-NOT-REPEAT.md
-M  docs/cursor-work/founder/founder-commands.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  docs/cursor-work/server/PULL-COMMANDS.md
-R  founder-web/dist/assets/index-BIUkt9oI.js -> founder-web/dist/assets/index-DU7ZSCcX.js
-M  founder-web/dist/index.html
-M  founder-web/src/system_brain.json
-M  lanes/ALL-FILES.csv
-M  lanes/docs.txt
-M  lanes/founder.txt
-M  lanes/shared.txt
-M  lovable-gold/README.md
+ M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- founder-web/dist/index.html                        |  2 +-
- founder-web/src/system_brain.json                  |  6 +--
- lanes/ALL-FILES.csv                                |  4 +-
- lanes/docs.txt                                     |  1 +
- lanes/founder.txt                                  |  2 +-
- lanes/shared.txt                                   |  1 +
- lovable-gold/README.md                             |  2 +-
- 27 files changed, 158 insertions(+), 56 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 51 +++-------------------------------------
+ 1 file changed, 3 insertions(+), 48 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -77,4 +45,4 @@ M  lovable-gold/README.md
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (c81119823c652a602c392d53d1adb48787dea926)
+WIP snapshot: refs/wip/last (8da4248580ebb20cf1a68813d6e4f567883ece34)
