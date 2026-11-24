@@ -2803,3 +2803,9 @@
 - B13 T3b GREEN on his server (AD32 CHECK OK, RESOLVE SELFTEST OK). T3c AD33 apply door + Rust + bindWords written. TECH-LAW CHECKED. TESTED: PG16 selftest pass, CHECK 7/7 true, cargo 135 pass, bun 143 pass, tsc OK
 
 - B13 T3c GREEN on his server (AD33 run and CHECK OK, binary page kernel SAME). Login text demo only. TECH-LAW CHECKED. TESTED: live install paste AD33 CHECK OK, demo rendered from the real build at 1280 and 390 OK
+
+- Desk login text change written (text only). TECH-LAW CHECKED. TESTED: tsc clean, bun test 143 pass, build:desk OK, demo rendered from this build
+
+- Desk login text real, text only. TECH-LAW CHECKED. TESTED: tsc clean, bun test 143 pass, demo approved, bundle desk-Bkyw8jea.js contains the text and not the old heading
+
+- Desk login text real, text only. TECH-LAW CHECKED. TESTED: tsc clean, bun test 143 pass, demo approved, bundle desk-Bkyw8jea.js contains the text and not the old heading

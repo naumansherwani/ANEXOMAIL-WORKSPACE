@@ -1,3 +1,10 @@
+# TECH CONTRACT FOR PHASE: ADMIN DESK LOGIN TEXT (Desk lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 12:10 order "THE GLOBAL GRID WORKPLACE login page pe aye ga, ADMIN DESK aur Sign in to the company desk completly remove, baki ek inch change mat kero" and his 12:13 "APPROVED HAI, banao"; text only, demo approved first)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| React 19 + TypeScript strict + Vite: ONE heading line THE GLOBAL GRID WORKPLACE with the same two side rules as the dashboard line, replacing the small ADMIN DESK label and the Sign in to the company desk heading; every colour, card, field and button unchanged; Rule 52 sign-in path untouched (HTTP/3 only, kernel-verified), same on 390 / 820 / 1200 | founder-web/src/desk/DeskSignIn.tsx (the only file changed); the sign-in path it shows is UNCHANGED: docs/claude/admin-desk/sql/AD01.sql (sessions + Argon2id login SQL) and docs/claude/admin-desk/server/src/auth.rs (Rust login door) | YES | tsc clean, bun test src/desk 143 pass, demo screenshots 1280 and 390 approved by him |
+
+RULE 52 COMBO: S=yes (sign-in still goes through the Desk-signed, kernel-verified door; no call changed) M=yes (no mail path touched) L=yes (no logging path touched, the sign-in ledger lines are unchanged)
+
 # TECH CONTRACT FOR PHASE: ADMIN DESK B13 T3c APPLY A VERIFIED VERDICT TO A CASE, SQL AD33 + Desk apply door + plain words (Desk lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next by his own order 10:09 Tarteeb B13; his 24 Nov 2026 11:56 order "blueprint awam side ka admin desk ka rules read kero, yeh critical phases hai, sql old read kero, gates ko batao, checkpoints list do"; T3b GREEN on his server 11:5x: AD32 CHECK OK + RESOLVE SELFTEST OK; the automatic call at case creation = Folder 2 mail door, case card text = Folder 3, T4 manual two-staff next)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -4005,3 +4012,9 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - B13 T3b GREEN on his server (AD32 CHECK OK, RESOLVE SELFTEST OK). T3c AD33 apply door + Rust + bindWords written. TECH-LAW CHECKED. TESTED: PG16 selftest pass, CHECK 7/7 true, cargo 135 pass, bun 143 pass, tsc OK
 
 - B13 T3c GREEN on his server (AD33 run and CHECK OK, binary page kernel SAME). Login text demo only. TECH-LAW CHECKED. TESTED: live install paste AD33 CHECK OK, demo rendered from the real build at 1280 and 390 OK
+
+- Desk login text change written (text only). TECH-LAW CHECKED. TESTED: tsc clean, bun test 143 pass, build:desk OK, demo rendered from this build
+
+- Desk login text real, text only. TECH-LAW CHECKED. TESTED: tsc clean, bun test 143 pass, demo approved, bundle desk-Bkyw8jea.js contains the text and not the old heading
+
+- Desk login text real, text only. TECH-LAW CHECKED. TESTED: tsc clean, bun test 143 pass, demo approved, bundle desk-Bkyw8jea.js contains the text and not the old heading

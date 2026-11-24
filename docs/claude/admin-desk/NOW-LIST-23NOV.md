@@ -179,3 +179,9 @@ ADVANCE-RESEARCH [CC1] Anexomail Command Center (23 Nov 2026 10:4x PKT): his 10:
 - B13 T3c GREEN (24 Nov 2026 12:1x PKT): his plain desk-install paste (log install-20261124-065934): "AD33: run and CHECK OK", SUMMARY 33 files, DONE every Desk SQL, RESOLVE SELFTEST OK, build eddfe1c55 binary / page / kernel SAME, AD22 8/8, AD24 6/6, AD31 8/8, AD23 9/9. WIRED: YES / REAL: YES / TECH-LAW CHECKED. RULE 52 COMBO S=yes M=yes L=yes. The automatic call at case creation = Folder 2 mail door; case card text = Folder 3 (T3d).
 - LOGIN TEXT DEMO (24 Nov 2026 12:1x PKT, his 12:10 words "demo dekhao pehle, approved ke baad kerun ga"): login page: small ADMIN DESK label and "Sign in to the company desk" removed, THE GLOBAL GRID WORKPLACE with the same two side lines as the dashboard line; nothing else changes. Demo screenshots + patch: admin-desk/demo/LOGIN-GLOBAL-GRID-DEMO-1280.png, -390.png, LOGIN-GLOBAL-GRID-TEXT-24NOV.patch. REAL CODE NOT COMMITTED, waits his approval. The dashboard title tagline stays PARKED.
 
+
+- LOGIN TEXT GREEN-IN-CODE (24 Nov 2026 12:1x PKT, his 12:13 word "APPROVED HAI BANAO DEMO WALA CODES LIKHO"): DeskSignIn.tsx: ADMIN DESK label + "Sign in to the company desk" removed, THE GLOBAL GRID WORKPLACE with two side lines; nothing else changed. tsc clean, bun 143 pass, build:desk bundle desk-Bkyw8jea.js. NOT GREEN until his desk-install shows page SAME and my live Chrome look at 390 / 820 / 1200 (RULE 52 COMBO S=yes M=yes L=yes; text only).
+
+
+- LOGIN TEXT REAL (24 Nov 2026 12:1x PKT): his 12:13 "APPROVED HAI, banao". DeskSignIn.tsx: THE GLOBAL GRID WORKPLACE with two side rules replaces the ADMIN DESK label and the "Sign in to the company desk" heading; nothing else changed; build desk-Bkyw8jea.js; tsc clean, bun 143 pass. NOT GREEN until his plain desk-install shows the page SAME and my live Chrome look at 390 / 820 / 1200+.
+

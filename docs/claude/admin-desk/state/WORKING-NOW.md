@@ -1,9 +1,9 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 12:11 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 12:14 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: B13 T3c GREEN; login text demo shown, real code waits his approval
-NEXT STEP: his approval of the login demo, then real login text change; Folder 2 mail door / T4
-HIS LAST WORD: his 24 Nov 12:10 word: demo first, approval then code
+DOING: Desk login text real: THE GLOBAL GRID WORKPLACE, label and heading removed
+NEXT STEP: his plain desk-install, my live Chrome look, then GREEN; then Folder 2 / T4
+HIS LAST WORD: his 24 Nov 12:13 word: approved, make it real
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 0117af19 24 Nov 12:11 ledger line 73587c8a
 - 73587c8a 24 Nov 12:11 B13 T3c green, login text demo
 - eddfe1c5 24 Nov 11:58 ledger line a4cc7e40
 - a4cc7e40 24 Nov 11:58 B13 T3b green, T3c AD33 apply door
@@ -75,10 +76,14 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 8a54a385 24 Nov 11:50 demo V6 global grid fits
 - 4c26a9af 24 Nov 11:46 ledger line d41c68e1
 - d41c68e1 24 Nov 11:46 demo V5 global grid workplace
-- 36c405c5 24 Nov 11:29 ledger line a93bfeeb
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+MM docs/claude/admin-desk/state/WORKING-NOW.md
+M  founder-web/src/desk/DeskSignIn.tsx
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
