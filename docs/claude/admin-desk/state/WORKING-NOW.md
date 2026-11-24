@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 08:41 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 08:41 PKT) - read this FIRST for the Desk after a compaction
 DOING: Ledger card 1m-L wired in code (AD27, ledger.rs, DeskLedger), tested
 NEXT STEP: his desk-install paste, then my Chrome look at the Ledger card
 HIS LAST WORD: his 08:34 order wire the Ledger card now
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 96843f30 24 Nov 08:41 Desk: wire the Ledger card (AD27)
 - 5710cf5d 24 Nov 08:34 ledger line 204ff52c
 - 204ff52c 24 Nov 08:34 E202: final price chart migration
 - 7f5341e5 24 Nov 08:25 ledger line c3ceddb2
@@ -72,27 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 7625b98e 24 Nov 08:20 ledger line 93c3ed3c
 - 93c3ed3c 24 Nov 08:20 E202 awam package facts + pool; audit
 - be6bdc37 24 Nov 08:14 ledger line 2c566233
-- 2c566233 24 Nov 08:14 AD26 tenant registry GREEN
 
 ## Uncommitted Desk files
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-A  admin-desk/server/src/ledger.rs
-M  admin-desk/server/src/main.rs
-A  admin-desk/sql/AD27.sql
-A  admin-desk/sql/checks/AD27-check.sql
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-A  docs/claude/admin-desk/server/src/ledger.rs
-M  docs/claude/admin-desk/server/src/main.rs
-A  docs/claude/admin-desk/sql/AD27.sql
-A  docs/claude/admin-desk/sql/checks/AD27-check.sql
-MM docs/claude/admin-desk/state/WORKING-NOW.md
-M  founder-web/src/desk/DeskCards.tsx
-A  founder-web/src/desk/DeskLedger.tsx
-M  founder-web/src/desk/desk_cards.ts
-A  founder-web/src/desk/desk_ledger_pure.test.ts
-A  founder-web/src/desk/desk_ledger_pure.ts
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

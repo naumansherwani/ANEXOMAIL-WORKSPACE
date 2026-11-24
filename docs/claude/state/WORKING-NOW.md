@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 08:41 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 08:41 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Ledger card 1m-L wired in code (AD27, ledger.rs, DeskLedger), tested
 NEXT STEP: his desk-install paste, then my Chrome look at the Ledger card
 HIS LAST WORD: his 08:34 order wire the Ledger card now
@@ -19,48 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 96843f30 24 Nov 08:41 Desk: wire the Ledger card (AD27)
 - 5710cf5d 24 Nov 08:34 ledger line 204ff52c
 - 204ff52c 24 Nov 08:34 E202: final price chart migration
 - 7f5341e5 24 Nov 08:25 ledger line c3ceddb2
 - c3ceddb2 24 Nov 08:25 E201: merge E202 facts + pool levels, delete E202
-- 7625b98e 24 Nov 08:20 ledger line 93c3ed3c
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-A  admin-desk/server/src/ledger.rs
-M  admin-desk/server/src/main.rs
-A  admin-desk/sql/AD27.sql
-A  admin-desk/sql/checks/AD27-check.sql
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-A  docs/claude/admin-desk/server/src/ledger.rs
-M  docs/claude/admin-desk/server/src/main.rs
-A  docs/claude/admin-desk/sql/AD27.sql
-A  docs/claude/admin-desk/sql/checks/AD27-check.sql
-M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-R  founder-web/dist-desk/assets/desk-C7e2ymzR.js -> founder-web/dist-desk/assets/desk-DCP_xZ1L.js
-M  founder-web/dist-desk/desk.html
-M  founder-web/src/desk/DeskCards.tsx
-A  founder-web/src/desk/DeskLedger.tsx
-M  founder-web/src/desk/desk_cards.ts
-A  founder-web/src/desk/desk_ledger_pure.test.ts
-A  founder-web/src/desk/desk_ledger_pure.ts
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- .../assets/{desk-C7e2ymzR.js => desk-DCP_xZ1L.js}  |  22 +++--
- founder-web/dist-desk/desk.html                    |   2 +-
- founder-web/src/desk/DeskCards.tsx                 |   2 +
- founder-web/src/desk/DeskLedger.tsx                |  53 +++++++++++
- founder-web/src/desk/desk_cards.ts                 |   2 +-
- founder-web/src/desk/desk_ledger_pure.test.ts      |  22 +++++
- founder-web/src/desk/desk_ledger_pure.ts           |  49 ++++++++++
- 23 files changed, 573 insertions(+), 35 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 45 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 43 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -71,4 +43,4 @@ A  founder-web/src/desk/desk_ledger_pure.ts
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (9127617c33af4b0b9d6b4c3b5f12c21690e7ce8b)
+WIP snapshot: refs/wip/last (9970ad112df995b4dc3f3c5f61504642e7cda587)
