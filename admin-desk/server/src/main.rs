@@ -21,7 +21,7 @@ mod dbsc;
 mod lookup;
 mod packages;
 mod runbooks;
-mod consent; #[allow(dead_code)] mod consent_cp;
+mod consent; #[allow(dead_code)] mod consent_cp; #[allow(dead_code)] mod resolve_cp;
 mod escalations;
 mod pressure;
 mod security;

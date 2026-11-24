@@ -834,3 +834,5 @@ ADVANCE-RESEARCH [1m] B13 T1 (24 Nov 2026): advisor review (verbatim in TENANT-I
 - OS-FINAL-DECISION-24NOV.md (24 Nov 2026 09:5x PKT): A locked / B recommended / C awam loopholes AWL-MI1..6. B7 Move-in board = card movein, after B13, B11, B12. Next T3a AD31.
 
 - 24 Nov 2026 10:0x PKT: Move-In plan saved verbatim (docs/claude/MOVE-IN-SYSTEM-PLAN-24NOV.md, phase P Folder 8, web checkpoints W1..W6); T3 decisions by folder; Priority Support founder-contact gate reminder (fails 9 Jan 2027). Next T3a AD31.
+
+- B13 T3a (24 Nov 2026 10:1x PKT): AD31 sender-to-tenant verdict + resolve_cp.rs + verdictWords written and tested, not installed. Landing 'named founder contact' removed (his haan 10:07). Next T3b.

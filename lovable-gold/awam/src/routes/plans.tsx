@@ -166,7 +166,7 @@ const compare: { group: string; rows: Row[] }[] = [
         business: "Included",
       },
       {
-        label: "Priority Support (named founder contact)",
+        label: "Priority Support",
         basic: "Add-on £790/mo",
         pro: "Add-on £790/mo",
         business: "Add-on £790/mo",
@@ -353,7 +353,7 @@ const services = [
     ],
     features: [
       "Response within 2 business days, every business day",
-      "A named founder contact you email directly — no portal, no ticket number",
+      "Priority replies from our support team, within 2 business days",
       "Quarterly service and security review for your domain",
       "Priority migration scheduling — your move-in goes to the front of the queue",
       "Up to 3 companies at a time, so the promise stays real",

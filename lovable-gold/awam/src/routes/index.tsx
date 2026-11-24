@@ -486,7 +486,7 @@ function Index() {
                   </p>
                   <p className="mt-2 text-[15px] leading-relaxed text-foreground">
                     <strong className="font-extrabold">Priority Support — £790 / month.</strong> A
-                    named founder contact, a response within 2 business days, and a quarterly
+                    a priority support queue, a response within 2 business days, and a quarterly
                     service and security review.
                   </p>
                   <p className="mt-3 text-[13px] text-muted-foreground">

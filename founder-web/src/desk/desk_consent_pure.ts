@@ -54,3 +54,15 @@ export function refusalWords(j: unknown): string {
     ? "This case is not tied to a customer company yet, so nothing can be asked. The company has to be confirmed first (a verified domain, or two staff for an exception)."
     : "The Desk did not accept that request. Content of a restricted case never opens, and you can have 5 requests waiting.";
 }
+
+/** AD31 / T3: the closed verdict words of the company pickup, in plain words for staff. A word we do not know is shown as waiting (fail closed). */
+export function verdictWords(v: unknown): string {
+  switch (v) {
+    case "resolved": return "Company confirmed.";
+    case "shared": return "Waiting: the sender uses a free mail service, so the company cannot be told from it.";
+    case "ambiguous": return "Waiting: more than one company claims this domain. Held for a person to check.";
+    case "multi_member": return "Waiting: this person belongs to more than one company. A person has to choose.";
+    case "unaligned": return "Waiting: the message did not prove it came from its own domain.";
+    default: return "Waiting: the company is not confirmed yet.";
+  }
+}

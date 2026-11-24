@@ -13,13 +13,13 @@ export const Route = createFileRoute("/enterprise")({
       {
         name: "description",
         content:
-          "Priority Support: a named founder contact, a response within 2 business days, quarterly service and security review and priority migration scheduling — £790 a month, cancel any month.",
+          "Priority Support: a priority support queue, a response within 2 business days, quarterly service and security review and priority migration scheduling — £790 a month, cancel any month.",
       },
       { property: "og:title", content: "Priority Support — a response within 2 business days" },
       {
         property: "og:description",
         content:
-          "A named founder contact, response within 2 business days, quarterly review, priority migration scheduling. £790 a month.",
+          "A priority support queue, response within 2 business days, quarterly review, priority migration scheduling. £790 a month.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -30,7 +30,7 @@ export const Route = createFileRoute("/enterprise")({
 
 const items = [
   "Response within 2 business days, every business day.",
-  "A named founder contact who knows your domain, not a queue.",
+  "Priority replies from a support team that knows your domain.",
   "Quarterly service and security review: DKIM/SPF/DMARC, retention, exports, access.",
   "Priority migration scheduling — your move-in is slotted first.",
   "Direct escalation line for delivery incidents, with a written timeline after.",
@@ -99,7 +99,7 @@ function EnterprisePage() {
             When email stops, you call a person — not a portal.
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Every plan already gets human support. This adds a named founder contact, a response
+            Every plan already gets human support. This adds a priority support queue, a response
             within 2 business days, and a quarterly review you can put in front of an auditor.
           </p>
         </section>

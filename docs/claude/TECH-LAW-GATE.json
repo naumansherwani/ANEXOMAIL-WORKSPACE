@@ -439,45 +439,45 @@
    "id": "C4-priority-founder-contact-1",
    "file": "src/lib/revenue.ts",
    "mustnot": "named founder contact",
-   "status": "open",
+   "status": "ok",
    "deadline": "launch 16 Jan 2027",
-   "why": "his 24 Nov 2026 10:01: Priority Support must NOT promise 'a named founder contact' at launch; staff answer from resolved@ (MAILBOX-ROLES-PLAN C4). Awam file is frozen: the text edit needs his haan; this check only reminds and fails from the date.",
+   "why": "his 24 Nov 2026 10:07 HAAN: the landing promise 'a named founder contact' is removed from every landing file (staff answer Priority Support from resolved@); it must never come back (his founder message itself stays intact).",
    "fail_after": "2027-01-09"
   },
   {
    "id": "C4-priority-founder-contact-2",
    "file": "src/routes/enterprise.tsx",
    "mustnot": "named founder contact",
-   "status": "open",
+   "status": "ok",
    "deadline": "launch 16 Jan 2027",
-   "why": "his 24 Nov 2026 10:01: Priority Support must NOT promise 'a named founder contact' at launch; staff answer from resolved@ (MAILBOX-ROLES-PLAN C4). Awam file is frozen: the text edit needs his haan; this check only reminds and fails from the date.",
+   "why": "his 24 Nov 2026 10:07 HAAN: the landing promise 'a named founder contact' is removed from every landing file (staff answer Priority Support from resolved@); it must never come back (his founder message itself stays intact).",
    "fail_after": "2027-01-09"
   },
   {
    "id": "C4-priority-founder-contact-3",
    "file": "src/routes/pages.tsx",
    "mustnot": "named founder contact",
-   "status": "open",
+   "status": "ok",
    "deadline": "launch 16 Jan 2027",
-   "why": "his 24 Nov 2026 10:01: Priority Support must NOT promise 'a named founder contact' at launch; staff answer from resolved@ (MAILBOX-ROLES-PLAN C4). Awam file is frozen: the text edit needs his haan; this check only reminds and fails from the date.",
+   "why": "his 24 Nov 2026 10:07 HAAN: the landing promise 'a named founder contact' is removed from every landing file (staff answer Priority Support from resolved@); it must never come back (his founder message itself stays intact).",
    "fail_after": "2027-01-09"
   },
   {
    "id": "C4-priority-founder-contact-4",
    "file": "src/routes/plans.tsx",
    "mustnot": "named founder contact",
-   "status": "open",
+   "status": "ok",
    "deadline": "launch 16 Jan 2027",
-   "why": "his 24 Nov 2026 10:01: Priority Support must NOT promise 'a named founder contact' at launch; staff answer from resolved@ (MAILBOX-ROLES-PLAN C4). Awam file is frozen: the text edit needs his haan; this check only reminds and fails from the date.",
+   "why": "his 24 Nov 2026 10:07 HAAN: the landing promise 'a named founder contact' is removed from every landing file (staff answer Priority Support from resolved@); it must never come back (his founder message itself stays intact).",
    "fail_after": "2027-01-09"
   },
   {
    "id": "C4-priority-founder-contact-5",
    "file": "src/routes/index.tsx",
    "mustnot": "named founder contact",
-   "status": "open",
+   "status": "ok",
    "deadline": "launch 16 Jan 2027",
-   "why": "his 24 Nov 2026 10:01: Priority Support must NOT promise 'a named founder contact' at launch; staff answer from resolved@ (MAILBOX-ROLES-PLAN C4). Awam file is frozen: the text edit needs his haan; this check only reminds and fails from the date.",
+   "why": "his 24 Nov 2026 10:07 HAAN: the landing promise 'a named founder contact' is removed from every landing file (staff answer Priority Support from resolved@); it must never come back (his founder message itself stays intact).",
    "fail_after": "2027-01-09"
   }
  ]

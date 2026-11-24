@@ -1,3 +1,10 @@
+# TECH CONTRACT FOR PHASE: ADMIN DESK B13 T3a SENDER-TO-TENANT VERDICT, SQL AD31 + Desk reading (Control Plane + Desk lanes; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 10:09 order "Tarteeb: B13, phase hai, gate ko batao"; order T1 AD26 GREEN, T2 AD30 GREEN, T3a this, T3b Control Plane resolve method, T3c Folder 2, T3d Folder 3, then T4, T5, T6, Z4b-3, Z4c)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL 16 (awam database, schema cp): STABLE SECURITY DEFINER verdict function with fixed search_path and 5 s timeout; verified-domain ownership period at arrival time (AD26 history), DMARC identifier alignment flag (RFC 7489), active-member check, shared providers never resolve, two claimants = ambiguous, several memberships = multi_member, closed verdict words, only word + tenant UUID leave the database (data minimisation), REVOKE FROM PUBLIC, cp_lookup execute only | docs/claude/admin-desk/sql/AD31.sql, docs/claude/admin-desk/sql/checks/AD31-check.sql | YES | scratch PG16 selftest P0AU2 passed twice, CHECK 8 of 8 true |
+| Rust + Tokio (Desk side, Rule 52): strict reading of a verified Control Plane answer: closed 2-key shape, six verdict words, tenant UUID exactly when resolved, any deviation = fail closed; the word list is tested against AD31; the signed HTTP/3 call itself is T3b | docs/claude/admin-desk/server/src/resolve_cp.rs | YES | cargo test 130 pass |
+| React 19 + TypeScript strict: plain-words text for every verdict, unknown words wait (fail closed), same on 390 / 820 / 1200; shown on the case card in Folder 3 (T3d) | founder-web/src/desk/desk_consent_pure.ts, founder-web/src/desk/desk_consent_pure.test.ts | YES | bun test src/desk 141 pass, tsc clean |
+
 # TECH CONTRACT FOR PHASE: ADMIN DESK B13 T2 CASE-TO-TENANT BINDING, SQL AD30 (Desk lane; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 07:16 saved decision + his 09:17 order "next phase shuru kero"; order T1 AD26 GREEN -> T2 this -> T3 automatic resolution + Rust ingest hook -> T4 manual UI with second reviewer -> Z4b-3 wiring)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3946,3 +3953,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - OS final decision (A locked, B recommended, C awam loopholes AWL-MI1..6), awam blueprint block, DECISION-REGISTRY entry for mig_* SQL. TECH-LAW CHECKED: no code change. TESTED: docs and gate registry only, rules-gate 0 fail
 
 - Move-In plan verbatim + W1..W6 research checkpoints, Priority Support founder-contact gate (fails 9 Jan 2027), T3 folder decisions, registry entry. TECH-LAW CHECKED: no code change. TESTED: gate shows 5 TECH LAW OPEN warnings for the reminder, rules-gate 0 fail
+
+- B13 T3a AD31 sender-to-tenant verdict (awam DB), resolve_cp.rs, verdictWords, landing named-founder-contact removed with his haan. TECH-LAW CHECKED: PostgreSQL 16 STABLE verdict, Rust Rule 52 strict reader, React TS. TESTED: AD31 selftest PG16 x2, CHECK 8/8, cargo test 130, bun test 141, tsc clean
+
+- B13 T3a AD31 sender-to-tenant verdict (awam DB), resolve_cp.rs, verdictWords, landing named-founder-contact removed with his haan. TECH-LAW CHECKED: PostgreSQL 16 STABLE verdict, Rust Rule 52 strict reader, React TS. TESTED: AD31 selftest PG16 x2, CHECK 8/8, cargo test 130, bun test 141, tsc clean

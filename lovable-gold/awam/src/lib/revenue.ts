@@ -5,7 +5,7 @@
  *   1. Core subscriptions — flat per company per month: Basic £40 · Pro £105 · Business £360 · Business Pro £2,850
  *   2. Managed Move-In    — £568 / £1,670 / £2,210 / £3,350 one-time per company (banded by mailboxes)
  *   3. White-label / reseller — IT agencies, 20–30% recurring commission
- *   4. Priority Support   — named founder contact + reply within 2 business days, £790/mo add-on
+ *   4. Priority Support   — priority support queue + reply within 2 business days, £790/mo add-on
  *
  * NO MOCK: quote maths client-side hai (deterministic, real rate card), lekin
  * har lead/application asli backend row banata hai. Endpoint missing = honest state.

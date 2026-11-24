@@ -1,8 +1,8 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 10:02 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 10:11 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
-DOING: Move-In plan saved, Priority Support gate reminder, T3 folder decisions; T3a AD31 next
-NEXT STEP: B13 T3a: read AD26 + awam member tables, write AD31 (awam DB resolver), contract naming SQL+Rust+screen files
-HIS LAST WORD: R1 gate final; R5 read saved decision first; R6 green only his word or live proof; R8 test accounts look only
+DOING: B13 T3a AD31 + resolve_cp.rs + verdict words written and tested; landing founder-contact removed
+NEXT STEP: his desk-install (AD31 on awam DB) then awam pull; then T3b Control Plane resolve method
+HIS LAST WORD: R1 gate final; R5 read decision first; R6 green only his word or live proof
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -67,6 +67,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 73603f96 24 Nov 10:02 ledger line 97021450
 - 97021450 24 Nov 10:02 Desk: Move-In plan saved, priority support gate reminder, T3 by folder
 - 28662f6d 24 Nov 09:49 ledger line 0d1ae8d1
 - 0d1ae8d1 24 Nov 09:49 Desk: OS final decision and awam move-in loopholes
@@ -74,10 +75,23 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 9d96440a 24 Nov 09:43 Desk: OS to awam import connect plan
 - 0b4e69a8 24 Nov 09:37 ledger line ba1f46c4
 - ba1f46c4 24 Nov 09:37 Desk B13 T3: point list and research
-- 7d219104 24 Nov 09:35 ledger line 20912c95
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  admin-desk/server/src/main.rs
+A  admin-desk/server/src/resolve_cp.rs
+A  admin-desk/sql/AD31.sql
+A  admin-desk/sql/checks/AD31-check.sql
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/server/src/main.rs
+A  docs/claude/admin-desk/server/src/resolve_cp.rs
+A  docs/claude/admin-desk/sql/AD31.sql
+A  docs/claude/admin-desk/sql/checks/AD31-check.sql
+MM docs/claude/admin-desk/state/WORKING-NOW.md
+M  founder-web/src/desk/desk_consent_pure.test.ts
+M  founder-web/src/desk/desk_consent_pure.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

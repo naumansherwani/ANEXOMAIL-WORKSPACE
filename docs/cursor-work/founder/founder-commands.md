@@ -6193,3 +6193,7 @@ FINAL: 21 Nov Desk Isolation Law and Gate never break. Company OS (Command Cente
 - OS final decision (A locked, B recommended, C awam loopholes AWL-MI1..6), awam blueprint block, DECISION-REGISTRY entry for mig_* SQL. TECH-LAW CHECKED: no code change. TESTED: docs and gate registry only, rules-gate 0 fail
 
 - Move-In plan verbatim + W1..W6 research checkpoints, Priority Support founder-contact gate (fails 9 Jan 2027), T3 folder decisions, registry entry. TECH-LAW CHECKED: no code change. TESTED: gate shows 5 TECH LAW OPEN warnings for the reminder, rules-gate 0 fail
+
+- B13 T3a AD31 sender-to-tenant verdict (awam DB), resolve_cp.rs, verdictWords, landing named-founder-contact removed with his haan. TECH-LAW CHECKED: PostgreSQL 16 STABLE verdict, Rust Rule 52 strict reader, React TS. TESTED: AD31 selftest PG16 x2, CHECK 8/8, cargo test 130, bun test 141, tsc clean
+
+- B13 T3a AD31 sender-to-tenant verdict (awam DB), resolve_cp.rs, verdictWords, landing named-founder-contact removed with his haan. TECH-LAW CHECKED: PostgreSQL 16 STABLE verdict, Rust Rule 52 strict reader, React TS. TESTED: AD31 selftest PG16 x2, CHECK 8/8, cargo test 130, bun test 141, tsc clean
