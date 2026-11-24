@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 09:43 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 09:43 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 DOING: OS import plan written from live look; T3a AD31 next
 NEXT STEP: T3a: read AD26 + member tables, write AD31
@@ -20,33 +20,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 9d96440a 24 Nov 09:43 Desk: OS to awam import connect plan
 - 0b4e69a8 24 Nov 09:37 ledger line ba1f46c4
 - ba1f46c4 24 Nov 09:37 Desk B13 T3: point list and research
 - 7d219104 24 Nov 09:35 ledger line 20912c95
 - 20912c95 24 Nov 09:35 Desk B13 T2 GREEN
-- b2354ce5 24 Nov 09:34 ledger line 4d20e3e7
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-A  admin-desk/OS-IMPORT-CONNECT-PLAN-24NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-A  docs/claude/admin-desk/OS-IMPORT-CONNECT-PLAN-24NOV.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/NOW-LIST-23NOV.md                       |  1 +
- admin-desk/OS-IMPORT-CONNECT-PLAN-24NOV.md         | 20 ++++++++++++++++
- .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    |  2 ++
- docs/claude/admin-desk/NOW-LIST-23NOV.md           |  1 +
- .../admin-desk/OS-IMPORT-CONNECT-PLAN-24NOV.md     | 20 ++++++++++++++++
- docs/claude/state/WORKING-NOW.md                   | 28 +++++++++-------------
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  8 +++----
- 8 files changed, 61 insertions(+), 21 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 30 ++----------------------------
+ 1 file changed, 2 insertions(+), 28 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -57,4 +44,4 @@ M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (c177dcb03eeca25c8b41437fccdccbbb558a9832)
+WIP snapshot: refs/wip/last (d01b091f55ce8f0da7cc969d47fe00fed7f72980)
