@@ -1,7 +1,9 @@
+
+-- TARGET-DB: AWAM DATABASE (schema cp). NOT the Desk database: scripts/cp-install.sh runs this file on the awam database; ad-auto.sh and ad-sql-run.sh skip every file with this line.
 -- SCHEMA-FIRST: read before writing: sql/phase21_billing_platform.sql (workspace_subscriptions: org_id, plan, state), sql/phase60_org_identity_repair.sql (org_members: org_id, status), the awam public.orgs table (id only).
 -- ADVANCE-RESEARCH: [D5a-3b] a Desk-side lookup must be ONE closed, read-only SECURITY DEFINER door with a fixed search_path, no table right for its role, and answers that say null when the database does not hold a fact (Zendesk / Salesforce account views read through a narrow API, never the tables).
--- CHECK-FILE: docs/claude/admin-desk/sql/checks/CP1-check.sql
--- ANEXOMAIL CONTROL PLANE CP1 (22 Nov 2026, D5a-3b): the ONE read-only door the Control Plane responder uses on the awam database.
+-- CHECK-FILE: docs/claude/admin-desk/sql/checks/AD21-check.sql
+-- ANEXOMAIL CONTROL PLANE AD21 (22 Nov 2026, D5a-3b): the ONE read-only door the Control Plane responder uses on the awam database.
 -- Role cp_lookup has EXECUTE on cp.lookup(text) and NOTHING else: no table right, no other schema. The function reads only orgs.id,
 -- workspace_subscriptions(org_id, plan, state) and org_members(org_id, status). It never reads an email, a name or any money column.
 -- Honest: a value the database does not hold is JSON null, never a guess. Unknown company = null result (the responder answers refused).
@@ -31,10 +33,10 @@ grant usage on schema cp to cp_lookup; grant execute on function cp.lookup(text)
 -- selftest (added 24 Nov 2026 for the SQL world-class law): nothing is kept, it raises a custom SQLSTATE and catches it
 do $st$ begin
   begin
-    if cp.lookup(null) is not null or cp.lookup('not-a-uuid') is not null or cp.lookup('00000000-0000-0000-0000-000000000000') is not null then raise exception 'CP1 selftest: garbage or unknown company must give null'; end if;
-    if has_function_privilege('public', 'cp.lookup(text)', 'execute') or not has_function_privilege('cp_lookup', 'cp.lookup(text)', 'execute') then raise exception 'CP1 selftest: execute rights are wrong'; end if;
-    raise exception 'CP1 selftest done' using errcode = 'AC001';
+    if cp.lookup(null) is not null or cp.lookup('not-a-uuid') is not null or cp.lookup('00000000-0000-0000-0000-000000000000') is not null then raise exception 'AD21 selftest: garbage or unknown company must give null'; end if;
+    if has_function_privilege('public', 'cp.lookup(text)', 'execute') or not has_function_privilege('cp_lookup', 'cp.lookup(text)', 'execute') then raise exception 'AD21 selftest: execute rights are wrong'; end if;
+    raise exception 'AD21 selftest done' using errcode = 'AC001';
   exception when sqlstate 'AC001' then null;
   end;
-  raise notice 'CP1 selftest: ALL RULES PASSED (nothing kept)';
+  raise notice 'AD21 selftest: ALL RULES PASSED (nothing kept)';
 end $st$;

@@ -8,10 +8,12 @@ REPO="${REPO:-/opt/anexomail-web}"; ENVF=/etc/anexomail-desk/db.env
 . "$ENVF"; [ -n "${DESK_DB_URL:-}" ] || { echo "FAIL: DESK_DB_URL empty"; exit 2; }
 git -C "$REPO" fetch -q origin main || { echo "FAIL: fetch"; exit 2; }
 P(){ env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "$DESK_DB_URL" -X -q -P pager=off "$@"; }
-S="$(mktemp)"; C="$(mktemp)"; trap 'rm -f "$S" "$C"' EXIT; N=0; BAD=0; SK=0; RAN=""; LASTN="$(git -C "$REPO" ls-tree --name-only origin/main admin-desk/sql/ | sed -n 's#.*/\(AD[0-9][0-9]*[a-z]*\)\.sql$#\1#p' | sort -V | tail -1)"
+S="$(mktemp)"; C="$(mktemp)"; trap 'rm -f "$S" "$C"' EXIT; N=0; BAD=0; SK=0; RAN=""; LASTN="$(for x in $(git -C "$REPO" ls-tree --name-only origin/main admin-desk/sql/ | sed -n 's#.*/\(AD[0-9][0-9]*[a-z]*\)\.sql$#\1#p' | sort -V); do git -C "$REPO" show "origin/main:admin-desk/sql/$x.sql" | head -5 | grep -q '^-- TARGET-DB: AWAM' || echo $x; done | tail -1)"
 ok(){ ! echo "$1" | grep -qE '\| f( |$)|ERROR' && echo "$1" | grep -qE '\| t( |$)'; }
 for n in $(git -C "$REPO" ls-tree --name-only origin/main admin-desk/sql/ | sed -n 's#.*/\(AD[0-9][0-9]*[a-z]*\)\.sql$#\1#p' | sort -V); do
-  N=$((N+1)); git -C "$REPO" show "origin/main:admin-desk/sql/$n.sql" >"$S"
+  git -C "$REPO" show "origin/main:admin-desk/sql/$n.sql" >"$S"
+  if head -5 "$S" | grep -q '^-- TARGET-DB: AWAM'; then continue; fi   # awam-database file (AD21..AD26): cp-install.sh runs it on the awam database, never on the Desk database
+  N=$((N+1))
   HAS=0; git -C "$REPO" cat-file -e "origin/main:admin-desk/sql/checks/$n-check.sql" 2>/dev/null && { HAS=1; git -C "$REPO" show "origin/main:admin-desk/sql/checks/$n-check.sql" >"$C"; }
   if [ $HAS = 1 ]; then R="$(P -f "$C" 2>&1)"; if ok "$R"; then SK=$((SK+1)); [ "$n" = "$LASTN" ] && echo "$n: already run (yeh already is database mein implement hai), skipped"; continue; fi; fi
   echo "$n: not in the database yet, running it now"; RAN="$RAN $n"

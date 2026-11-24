@@ -95,14 +95,14 @@ if [ -n "$LIVE" ] && [ "$LIVE" = "$REPOJS" ]; then echo "   PROOF page: served b
 WASM="$(show founder-web/dist-desk/desk.html | grep -o 'anexomail_desk_kernel_bg-[A-Za-z0-9_-]*\.wasm' | head -1)"; [ -z "$WASM" ] && WASM="$(git -C "$REPO" ls-tree --name-only origin/main founder-web/dist-desk/assets/ | grep -o 'anexomail_desk_kernel_bg-[A-Za-z0-9_-]*\.wasm' | head -1)"
 SW="$(curl -s -H 'Host: admindesk.anexomail.com' "http://127.0.0.1:4400/assets/$WASM" | sha256sum | cut -c1-12)"; RW="$(git -C "$REPO" show "origin/main:founder-web/dist-desk/assets/$WASM" | sha256sum | cut -c1-12)"
 if [ -n "$WASM" ] && [ "$SW" = "$RW" ]; then echo "   PROOF kernel: served $WASM sha $SW = repo: SAME"; else echo "   PROOF kernel: DIFFERENT (served $SW, repo $RW, file ${WASM:-none})"; fi
-# 9b (his 23 Nov 2026 07:12: a step that is installed must be PROVEN in the last lines, never hidden above them): the census function of the Control Plane (CP2, Customers and Plans) is checked LAST, read-only.
+# 9b (his 23 Nov 2026 07:12: a step that is installed must be PROVEN in the last lines, never hidden above them): the census function of the Control Plane (AD22, Customers and Plans) is checked LAST, read-only.
 ADMINU="$( . /etc/anexomail/sync.env 2>/dev/null; printf %s "${WORKING_URL:-}" )"
-CP2="$(show admin-desk/sql/checks/CP2-check.sql | env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "${ADMINU:-postgres://none}" -X -q -At -f - 2>&1)"
-CPT="$(printf '%s\n' "$CP2" | grep -c '|t$')"; CPF="$(printf '%s\n' "$CP2" | grep -c '|f$')"
-if [ -n "$ADMINU" ] && [ "$CPT" -ge 8 ] && [ "$CPF" = 0 ]; then echo "   PROOF census (CP2): cp.census is in the awam database, CHECK $CPT of $CPT true"; else echo "   PROOF census (CP2): NOT PROVEN (true $CPT, false $CPF): the Customers and Plans card will say Data unavailable until this is fixed"; fi
-CP4="$(show admin-desk/sql/checks/CP4-check.sql | env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "${ADMINU:-postgres://none}" -X -q -At -f - 2>&1)"
-CP4T="$(printf '%s\n' "$CP4" | grep -c '|t$')"; CP4F="$(printf '%s\n' "$CP4" | grep -c '|f$')"
-if [ -n "$ADMINU" ] && [ "$CP4T" -ge 6 ] && [ "$CP4F" = 0 ]; then echo "   PROOF customers plans (CP4): six packages + No plan yet + per-plan detail are in the awam database, CHECK $CP4T of $CP4T true"; else echo "   PROOF customers plans (CP4): NOT PROVEN (true $CP4T, false $CP4F): the Customers card will say Data unavailable until this is fixed"; fi
-CP3="$(show admin-desk/sql/checks/CP3-check.sql | env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "${ADMINU:-postgres://none}" -X -q -At -f - 2>&1)"
-CP3T="$(printf '%s\n' "$CP3" | grep -c '|t$')"; CP3F="$(printf '%s\n' "$CP3" | grep -c '|f$')"
-if [ -n "$ADMINU" ] && [ "$CP3T" -ge 9 ] && [ "$CP3F" = 0 ]; then echo "   PROOF deliverability (CP3): cp.deliverability is in the awam database, CHECK $CP3T of $CP3T true"; else echo "   PROOF deliverability (CP3): NOT PROVEN (true $CP3T, false $CP3F): the Deliverability card will say Data unavailable until this is fixed"; fi
+AD22="$(show admin-desk/sql/checks/AD22-check.sql | env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "${ADMINU:-postgres://none}" -X -q -At -f - 2>&1)"
+CPT="$(printf '%s\n' "$AD22" | grep -c '|t$')"; CPF="$(printf '%s\n' "$AD22" | grep -c '|f$')"
+if [ -n "$ADMINU" ] && [ "$CPT" -ge 8 ] && [ "$CPF" = 0 ]; then echo "   PROOF census (AD22): cp.census is in the awam database, CHECK $CPT of $CPT true"; else echo "   PROOF census (AD22): NOT PROVEN (true $CPT, false $CPF): the Customers and Plans card will say Data unavailable until this is fixed"; fi
+AD24="$(show admin-desk/sql/checks/AD24-check.sql | env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "${ADMINU:-postgres://none}" -X -q -At -f - 2>&1)"
+AD24T="$(printf '%s\n' "$AD24" | grep -c '|t$')"; AD24F="$(printf '%s\n' "$AD24" | grep -c '|f$')"
+if [ -n "$ADMINU" ] && [ "$AD24T" -ge 6 ] && [ "$AD24F" = 0 ]; then echo "   PROOF customers plans (AD24): six packages + No plan yet + per-plan detail are in the awam database, CHECK $AD24T of $AD24T true"; else echo "   PROOF customers plans (AD24): NOT PROVEN (true $AD24T, false $AD24F): the Customers card will say Data unavailable until this is fixed"; fi
+AD23="$(show admin-desk/sql/checks/AD23-check.sql | env -u PGHOST -u PGPORT -u PGUSER -u PGDATABASE -u PGSERVICE psql "${ADMINU:-postgres://none}" -X -q -At -f - 2>&1)"
+AD23T="$(printf '%s\n' "$AD23" | grep -c '|t$')"; AD23F="$(printf '%s\n' "$AD23" | grep -c '|f$')"
+if [ -n "$ADMINU" ] && [ "$AD23T" -ge 9 ] && [ "$AD23F" = 0 ]; then echo "   PROOF deliverability (AD23): cp.deliverability is in the awam database, CHECK $AD23T of $AD23T true"; else echo "   PROOF deliverability (AD23): NOT PROVEN (true $AD23T, false $AD23F): the Deliverability card will say Data unavailable until this is fixed"; fi

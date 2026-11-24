@@ -18,12 +18,14 @@ git -C "$REPO" fetch -q origin main || { echo "FAIL: fetch"; exit 2; }
 T="$(mktemp)"; chmod 644 "$T"; trap 'rm -f "$T"' EXIT; RAN=""
 for f in $(git -C "$REPO" ls-tree --name-only origin/main admin-desk/sql/ | sed -n 's#.*/\(AD\([0-9][0-9]*\)\)\.sql$#\2 \1#p' | sort -n | awk '{print $2}'); do
   git -C "$REPO" show "origin/main:admin-desk/sql/$f.sql" >"$T"; h="$(sha256sum "$T" | cut -c1-16)"
+  if head -5 "$T" | grep -q '^-- TARGET-DB: AWAM'; then echo "   $f: awam-database file (cp-install.sh runs it there), skipped on the Desk database"; continue; fi
   if [ "${FORCE:-0}" != 1 ] && grep -q "^$f	$h	" "$LEDGER"; then echo "   $f: already applied (same sha256), skipped"; continue; fi
   echo "== running $f ($h)"; PSQL -d "$DB" -v ON_ERROR_STOP=1 -X -q -f "$T" 2>&1 | grep -v NOTICE | tail -8
   [ "${PIPESTATUS[0]}" = 0 ] || { echo "FAIL: $f stopped, nothing after it ran"; exit 3; }
   printf '%s\t%s\t%s\n' "$f" "$h" "$(date -u +%FT%TZ)" >>"$LEDGER"; RAN="$RAN $f"
 done
 for f in $(git -C "$REPO" ls-tree --name-only origin/main admin-desk/sql/checks/ | sed -n 's#.*/\(AD[0-9][0-9]*\)-check\.sql$#\1#p' | sort -V); do
+  git -C "$REPO" show "origin/main:admin-desk/sql/$f.sql" | head -5 | grep -q '^-- TARGET-DB: AWAM' && continue
   git -C "$REPO" show "origin/main:admin-desk/sql/checks/$f-check.sql" >"$T"
   echo "== check $f"; OUT="$(PSQL -d "$DB" -X -q -P pager=off -f "$T" 2>&1)"; echo "$OUT" | sed 's/^/   /'
   echo "$OUT" | grep -qE '\| f( |$)' && { echo "FAIL: a check row is false"; exit 4; }

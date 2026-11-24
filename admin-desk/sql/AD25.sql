@@ -1,7 +1,9 @@
--- ANEXOMAIL CONTROL PLANE CP5 (phase 1m, card B13 step Z4a, list BL-46: the CUSTOMER side of consent with a timer), 24 Nov 2026 PKT.
--- SCHEMA-FIRST: read before writing: AD20 (desk.fadm_consent: status requested -> approved|denied|cancelled, approved -> revoked|expired, window 60/30/15 minutes, fadm_consent_decide(consent, decision, consent_ref, approver_ref)), CP1 + CP4 (schema cp, role cp_lookup, SECURITY DEFINER with search_path = pg_catalog, pg_temp), the live awam schema docs/cursor-work/live-snapshot/sql/schema-public.sql (public.orgs, public.org_members(org_id, user_id, role org_role owner|admin|member, status)). Nothing is renamed or copied.
+
+-- TARGET-DB: AWAM DATABASE (schema cp). NOT the Desk database: scripts/cp-install.sh runs this file on the awam database; ad-auto.sh and ad-sql-run.sh skip every file with this line.
+-- ANEXOMAIL CONTROL PLANE AD25 (phase 1m, card B13 step Z4a, list BL-46: the CUSTOMER side of consent with a timer), 24 Nov 2026 PKT.
+-- SCHEMA-FIRST: read before writing: AD20 (desk.fadm_consent: status requested -> approved|denied|cancelled, approved -> revoked|expired, window 60/30/15 minutes, fadm_consent_decide(consent, decision, consent_ref, approver_ref)), AD21 + AD24 (schema cp, role cp_lookup, SECURITY DEFINER with search_path = pg_catalog, pg_temp), the live awam schema docs/cursor-work/live-snapshot/sql/schema-public.sql (public.orgs, public.org_members(org_id, user_id, role org_role owner|admin|member, status)). Nothing is renamed or copied.
 -- ADVANCE-RESEARCH: [1m] Z4a web research is in docs/claude/admin-desk/D6-B13-CONSENT-ACCESS-LIST-24NOV.md and D6-B13-Z4-CUSTOMER-APPROVAL-PLAN-24NOV.md (Google Access Approval: staff request, the customer admin approves, denies or revokes, history kept; PostgreSQL tstzrange windows, forced RLS, append-only hash chain).
--- CHECK-FILE: docs/claude/admin-desk/sql/checks/CP5-check.sql
+-- CHECK-FILE: docs/claude/admin-desk/sql/checks/AD25-check.sql
 -- WHAT IT ADDS (nothing else): cp.consent_inbox (one row per Desk request, per company), cp.consent_ledger (append-only SHA-256 hash chain, line written BEFORE each change), and six SECURITY DEFINER doors.
 --   SECURITY SPLIT: the Control Plane service role cp_lookup may ONLY push, cancel and poll. It can NEVER decide or revoke. The customer side (role cp_consent_customer, used later by the customer screen Z4c) may inbox, decide and revoke. A decision needs an ACTIVE owner or admin of THAT company and a passkey-assertion digest (verified by the customer screen's Rust in Z4c; the database requires it present and shaped, and keeps it). No auto-approval, no break-glass, no staff path to decide.
 --   No content, name, address, e-mail or money is stored: only case ref, scope, reason, times, ids.
@@ -92,7 +94,7 @@ CREATE OR REPLACE FUNCTION cp.consent_note(p_kind text, p_consent uuid, p_org uu
 $f$;
 
 -- WHO MAY DECIDE: an ACTIVE owner or admin of that company in public.org_members. ONE function, so the rule lives in one place.
--- HONEST NOTE: org_members.org_id references public.organisations(id) while the Desk's company id is public.orgs(id); that both id families are the same set is NOT proven. CP5-check reports how many companies have a reachable approver, and Z4c does not start until his paste shows it.
+-- HONEST NOTE: org_members.org_id references public.organisations(id) while the Desk's company id is public.orgs(id); that both id families are the same set is NOT proven. AD25-check reports how many companies have a reachable approver, and Z4c does not start until his paste shows it.
 CREATE OR REPLACE FUNCTION cp.consent_is_approver(p_org uuid, p_user uuid) RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path = pg_catalog, pg_temp AS $f$
   SELECT EXISTS (SELECT 1 FROM public.org_members m WHERE m.org_id = p_org AND m.user_id = p_user AND m.role IN ('owner', 'admin') AND coalesce(m.status::text, 'active') = 'active')
 $f$;
@@ -205,7 +207,7 @@ GRANT EXECUTE ON FUNCTION cp.consent_inbox_for(uuid, uuid), cp.consent_decide(uu
 GRANT EXECUTE ON FUNCTION cp.consent_approver_reach() TO cp_consent_customer;
 
 -- SELFTEST (rolled back): every rule once, then it raises to undo its own rows.
-CREATE FUNCTION pg_temp.cp5_ok(c boolean, msg text) RETURNS void LANGUAGE plpgsql AS $f$ BEGIN IF c IS NOT TRUE THEN RAISE EXCEPTION 'CP5 selftest: %', msg USING ERRCODE = 'P0AS1'; END IF; END $f$;
+CREATE FUNCTION pg_temp.cp5_ok(c boolean, msg text) RETURNS void LANGUAGE plpgsql AS $f$ BEGIN IF c IS NOT TRUE THEN RAISE EXCEPTION 'AD25 selftest: %', msg USING ERRCODE = 'P0AS1'; END IF; END $f$;
 DO $$
 DECLARE o1 uuid := gen_random_uuid(); o2 uuid := gen_random_uuid(); u_admin uuid := gen_random_uuid(); u_member uuid := gen_random_uuid(); u_other uuid := gen_random_uuid();
         c1 uuid := gen_random_uuid(); c2 uuid := gen_random_uuid(); c3 uuid := gen_random_uuid(); r jsonb; dg text := repeat('ab', 32); failed boolean;
@@ -252,7 +254,7 @@ BEGIN
   PERFORM pg_temp.cp5_ok(NOT has_function_privilege('cp_lookup', 'cp.consent_decide(uuid, uuid, text, text)', 'execute') AND NOT has_function_privilege('cp_lookup', 'cp.consent_revoke(uuid, uuid, text)', 'execute') AND NOT has_function_privilege('cp_lookup', 'cp.consent_inbox_for(uuid, uuid)', 'execute'), 'the Control Plane role can NEVER decide, revoke or read the customer inbox');
   PERFORM pg_temp.cp5_ok(NOT has_function_privilege('cp_consent_customer', 'cp.consent_push(uuid, text, text, text, text)', 'execute'), 'the customer role can never push a request');
   PERFORM cp.consent_note('selftest', NULL, NULL, 'cp5', '');
-  RAISE EXCEPTION 'CP5 selftest done' USING ERRCODE = 'P0AS2';
-EXCEPTION WHEN SQLSTATE 'P0AS2' THEN RAISE NOTICE 'CP5 selftest: ALL RULES PASSED (selftest rows rolled back)';
+  RAISE EXCEPTION 'AD25 selftest done' USING ERRCODE = 'P0AS2';
+EXCEPTION WHEN SQLSTATE 'P0AS2' THEN RAISE NOTICE 'AD25 selftest: ALL RULES PASSED (selftest rows rolled back)';
 END $$;
 COMMIT;

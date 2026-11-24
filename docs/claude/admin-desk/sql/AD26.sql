@@ -1,7 +1,9 @@
--- ANEXOMAIL CONTROL PLANE CP6 (phase 1m, card B13 step T1, list BL-46: TENANT REGISTRY CHECK + VERSIONED DOMAIN OWNERSHIP), 24 Nov 2026 PKT.
--- SCHEMA-FIRST: read before writing: AD07 (desk.fadm_case: company_ref is free text, no tenant UUID), CP5 (cp.consent_inbox / cp.consent_ledger, hash-chain pattern, roles cp_lookup and cp_consent_customer), CP4 (cp schema, SECURITY DEFINER with search_path = pg_catalog, pg_temp), the live awam schema docs/cursor-work/live-snapshot/sql/schema-public.sql: public.orgs (id, name), public.org_domains (org_id -> organisations(id) ON DELETE CASCADE, domain, status pending|verified|removed, verified_at, UNIQUE index org_domains_domain_active_uq on domain WHERE status <> 'removed'), public.organisations, public.account_organisations. Nothing is renamed, copied or changed in any awam table.
+
+-- TARGET-DB: AWAM DATABASE (schema cp). NOT the Desk database: scripts/cp-install.sh runs this file on the awam database; ad-auto.sh and ad-sql-run.sh skip every file with this line.
+-- ANEXOMAIL CONTROL PLANE AD26 (phase 1m, card B13 step T1, list BL-46: TENANT REGISTRY CHECK + VERSIONED DOMAIN OWNERSHIP), 24 Nov 2026 PKT.
+-- SCHEMA-FIRST: read before writing: AD07 (desk.fadm_case: company_ref is free text, no tenant UUID), AD25 (cp.consent_inbox / cp.consent_ledger, hash-chain pattern, roles cp_lookup and cp_consent_customer), AD24 (cp schema, SECURITY DEFINER with search_path = pg_catalog, pg_temp), the live awam schema docs/cursor-work/live-snapshot/sql/schema-public.sql: public.orgs (id, name), public.org_domains (org_id -> organisations(id) ON DELETE CASCADE, domain, status pending|verified|removed, verified_at, UNIQUE index org_domains_domain_active_uq on domain WHERE status <> 'removed'), public.organisations, public.account_organisations. Nothing is renamed, copied or changed in any awam table.
 -- ADVANCE-RESEARCH: [1m] B13 T1 (24 Nov 2026): outside advisor review saved verbatim in docs/claude/admin-desk/TENANT-IDENTITY-CONSENT-DECISION-24NOV.md (verified-domain registry as the automatic source, versioned domain ownership with effective dates, shared domains never auto-match, a domain claimed by two tenants is rejected); PostgreSQL range exclusion constraints (tstzrange + EXCLUDE USING gist) for non-overlapping validity periods.
--- CHECK-FILE: docs/claude/admin-desk/sql/checks/CP6-check.sql
+-- CHECK-FILE: docs/claude/admin-desk/sql/checks/AD26-check.sql
 -- WHAT IT ADDS (nothing else): cp.tenant_ledger (append-only SHA-256 chain), cp.shared_domain (closed list of free mail providers), cp.domain_ownership (append-only history, one row per owner period of a domain, EXCLUDE: a domain never belongs to two tenants at the same time), cp.domain_ownership_sync() (owner/installer only), cp.tenant_of_domain(domain, moment), cp.tenant_registry_check().
 -- DECISION NOTE (deviation from the T1 checklist point 3, stated openly): the checklist said FOREIGN KEY to orgs(id). A foreign key from this table to the awam table would BLOCK the awam account deletion flow (E24) and nFADP erasure. So the tenant must exist in public.orgs at INSERT time (trigger check), and history rows are never cascaded or deleted. Same safety, no effect on awam deletes.
 -- No domain token, DKIM key, e-mail address or money is stored: domain name, tenant UUID, times only.
@@ -9,7 +11,7 @@ BEGIN;
 CREATE SCHEMA IF NOT EXISTS cp;
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'cp_lookup') THEN CREATE ROLE cp_lookup NOLOGIN; END IF;
-  BEGIN CREATE EXTENSION IF NOT EXISTS btree_gist; EXCEPTION WHEN OTHERS THEN RAISE NOTICE 'CP6: btree_gist cannot be created here (%), the unique-open-period index fallback is used', SQLERRM; END;
+  BEGIN CREATE EXTENSION IF NOT EXISTS btree_gist; EXCEPTION WHEN OTHERS THEN RAISE NOTICE 'AD26: btree_gist cannot be created here (%), the unique-open-period index fallback is used', SQLERRM; END;
 END $$;
 
 CREATE TABLE IF NOT EXISTS cp.tenant_ledger (
@@ -162,7 +164,7 @@ GRANT USAGE ON SCHEMA cp TO cp_lookup;
 GRANT EXECUTE ON FUNCTION cp.tenant_of_domain(text, timestamptz), cp.tenant_registry_check(), cp.tenant_ledger_verify() TO cp_lookup;
 
 -- SELFTEST (rolled back). The real org_domains query is run on the live schema; the move/overlap rules use test rows only.
-CREATE FUNCTION pg_temp.cp6_ok(c boolean, msg text) RETURNS void LANGUAGE plpgsql AS $f$ BEGIN IF c IS NOT TRUE THEN RAISE EXCEPTION 'CP6 selftest: %', msg USING ERRCODE = 'P0AS1'; END IF; END $f$;
+CREATE FUNCTION pg_temp.cp6_ok(c boolean, msg text) RETURNS void LANGUAGE plpgsql AS $f$ BEGIN IF c IS NOT TRUE THEN RAISE EXCEPTION 'AD26 selftest: %', msg USING ERRCODE = 'P0AS1'; END IF; END $f$;
 DO $$
 DECLARE o1 uuid := gen_random_uuid(); o2 uuid := gen_random_uuid(); ghost uuid := gen_random_uuid(); t0 timestamptz := clock_timestamp(); s1 jsonb; s2 jsonb; failed boolean; v_real int;
 BEGIN
@@ -181,7 +183,7 @@ BEGIN
   failed := false; BEGIN INSERT INTO cp.domain_ownership (org_id, domain) VALUES (o1, 'gmail.com'); EXCEPTION WHEN insufficient_privilege THEN failed := true; END; PERFORM pg_temp.cp6_ok(failed, 'a shared mail domain can never be owned');
   PERFORM pg_temp.cp6_ok(cp.tenant_of_domain('gmail.com') IS NULL, 'a shared domain never resolves to a tenant');
   failed := false; BEGIN INSERT INTO cp.domain_ownership (org_id, domain) VALUES (ghost, 'cp6-ghost.example'); EXCEPTION WHEN foreign_key_violation THEN failed := true; END; PERFORM pg_temp.cp6_ok(failed, 'a tenant that is not in public.orgs is refused');
-  PERFORM pg_temp.cp6_ok(cp.tenant_of_domain('Bad Domain') IS NULL AND cp.tenant_of_domain(NULL) IS NULL AND cp.tenant_of_domain('CP6-TEST.EXAMPLE') IS NULL, 'odd input answers nothing');
+  PERFORM pg_temp.cp6_ok(cp.tenant_of_domain('Bad Domain') IS NULL AND cp.tenant_of_domain(NULL) IS NULL AND cp.tenant_of_domain('AD26-TEST.EXAMPLE') IS NULL, 'odd input answers nothing');
   failed := false; BEGIN UPDATE cp.domain_ownership SET org_id = o2 WHERE domain = 'cp6-test.example' AND org_id = o1; EXCEPTION WHEN insufficient_privilege THEN failed := true; END; PERFORM pg_temp.cp6_ok(failed, 'ownership facts are frozen');
   failed := false; BEGIN UPDATE cp.domain_ownership SET valid_to = t0 WHERE domain = 'cp6-test.example' AND org_id = o1; EXCEPTION WHEN insufficient_privilege THEN failed := true; END; PERFORM pg_temp.cp6_ok(failed, 'a closed period cannot change');
   failed := false; BEGIN DELETE FROM cp.domain_ownership; EXCEPTION WHEN insufficient_privilege THEN failed := true; END; PERFORM pg_temp.cp6_ok(failed, 'history DELETE refused');
@@ -190,8 +192,8 @@ BEGIN
   PERFORM pg_temp.cp6_ok(cp.tenant_ledger_verify(), 'the ledger chain verifies');
   PERFORM pg_temp.cp6_ok(NOT has_function_privilege('cp_lookup', 'cp.domain_ownership_sync()', 'execute') AND has_function_privilege('cp_lookup', 'cp.tenant_of_domain(text, timestamptz)', 'execute') AND NOT has_table_privilege('cp_lookup', 'cp.domain_ownership', 'select'), 'the Control Plane role can read the answer, never the table, never run the sync');
   PERFORM cp.tenant_note('selftest', NULL, NULL, 'cp6');
-  RAISE EXCEPTION 'CP6 selftest done' USING ERRCODE = 'P0AS2';
-EXCEPTION WHEN SQLSTATE 'P0AS2' THEN RAISE NOTICE 'CP6 selftest: ALL RULES PASSED (selftest rows rolled back)';
+  RAISE EXCEPTION 'AD26 selftest done' USING ERRCODE = 'P0AS2';
+EXCEPTION WHEN SQLSTATE 'P0AS2' THEN RAISE NOTICE 'AD26 selftest: ALL RULES PASSED (selftest rows rolled back)';
 END $$;
 COMMIT;
 -- first fill (outside the selftest, owner only): the real history starts here

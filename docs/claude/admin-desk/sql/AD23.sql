@@ -1,7 +1,9 @@
--- ANEXOMAIL CONTROL PLANE CP3 (phase 1m-5, card B6 Deliverability), 23 Nov 2026 PKT: the ONE read-only DELIVERABILITY door of the Control Plane on the awam database.
--- SCHEMA-FIRST: CP1 (cp.lookup, role cp_lookup, SECURITY DEFINER pattern), CP2 (cp.census, signal registry pattern), E15 public.org_domains (status pending/verified/removed, txt_ok, mx_ok, spf_ok, dkim_ok, dmarc_ok, last_checked_at, verified_at, created_at) read from the live snapshot docs/cursor-work/live-snapshot/sql/schema-public.sql.
+
+-- TARGET-DB: AWAM DATABASE (schema cp). NOT the Desk database: scripts/cp-install.sh runs this file on the awam database; ad-auto.sh and ad-sql-run.sh skip every file with this line.
+-- ANEXOMAIL CONTROL PLANE AD23 (phase 1m-5, card B6 Deliverability), 23 Nov 2026 PKT: the ONE read-only DELIVERABILITY door of the Control Plane on the awam database.
+-- SCHEMA-FIRST: AD21 (cp.lookup, role cp_lookup, SECURITY DEFINER pattern), AD22 (cp.census, signal registry pattern), E15 public.org_domains (status pending/verified/removed, txt_ok, mx_ok, spf_ok, dkim_ok, dmarc_ok, last_checked_at, verified_at, created_at) read from the live snapshot docs/cursor-work/live-snapshot/sql/schema-public.sql.
 -- ADVANCE-RESEARCH: [1m] authentication posture of every company domain (SPF, DKIM, DMARC, MX), freshness of the checks, domains stuck in verification, a closed signal registry with the runbook that fixes each; research list D6-CARDS-LIST-23NOV.md section B6 (Google Postmaster dashboards, Gmail/Yahoo bulk-sender rules, RFC 8460), set-based single pass, counts only.
--- CHECK-FILE: docs/claude/admin-desk/sql/checks/CP3-check.sql
+-- CHECK-FILE: docs/claude/admin-desk/sql/checks/AD23-check.sql
 -- WHAT IT ADDS: cp.deliverability() returns jsonb, COUNTS ONLY. Role cp_lookup gets EXECUTE on that one function and nothing else (still no table right). It reads ONLY public.org_domains(org_id, status, spf_ok, dkim_ok, dmarc_ok, mx_ok, last_checked_at, created_at).
 --   It NEVER returns a domain name, a company id, a token, a DKIM key or an e-mail. Removed domains are not counted. Posture is counted over VERIFIED domains. A verified domain is "fully authenticated" when SPF, DKIM, DMARC and MX are all true.
 --   The SIGNAL REGISTRY is a closed list inside the function (key, label, runbook, source): a new signal is ONE row. Zero is shown as a real 0 (his FUTURE-PROOF LAW 23 Nov 06:42).
@@ -52,17 +54,17 @@ begin
   into r from cnt;
   return r;
 end $f$;
-comment on function cp.deliverability() is 'CP3 (phase 1m-5 B6): deliverability census, COUNTS ONLY, read-only over public.org_domains. SECURITY DEFINER, fixed search_path, 5 s statement and 1 s lock timeout so a slow table can never hang the Control Plane. EXECUTE only for cp_lookup.';
+comment on function cp.deliverability() is 'AD23 (phase 1m-5 B6): deliverability census, COUNTS ONLY, read-only over public.org_domains. SECURITY DEFINER, fixed search_path, 5 s statement and 1 s lock timeout so a slow table can never hang the Control Plane. EXECUTE only for cp_lookup.';
 revoke all on function cp.deliverability() from public;
 grant usage on schema cp to cp_lookup;
 grant execute on function cp.deliverability() to cp_lookup;
 
 -- SELFTEST (rolls back; success is the exception P0CP3). Needs a superuser installer to switch off foreign keys for its synthetic rows. Every count is a DELTA of what the test adds (it also runs on the LIVE database).
-create function pg_temp.cp3_ok(c boolean, msg text) returns void language plpgsql as $f$ begin if c is not true then raise exception 'CP3 selftest: %', msg using errcode = 'P0CP1'; end if; end $f$;
+create function pg_temp.cp3_ok(c boolean, msg text) returns void language plpgsql as $f$ begin if c is not true then raise exception 'AD23 selftest: %', msg using errcode = 'P0CP1'; end if; end $f$;
 do $$
 declare c0 jsonb; c1 jsonb; a uuid := gen_random_uuid(); b uuid := gen_random_uuid(); n int := 0; dn text;
 begin
-  begin set local session_replication_role = replica; exception when insufficient_privilege then raise notice 'CP3 selftest: skipped (needs a superuser installer)'; return; end;
+  begin set local session_replication_role = replica; exception when insufficient_privilege then raise notice 'AD23 selftest: skipped (needs a superuser installer)'; return; end;
   c0 := cp.deliverability();
   perform pg_temp.cp3_ok(c0 is not null and jsonb_array_length(c0->'signals') = 6, 'six registered signals');
   -- company a: one fully good verified domain, one verified without DKIM (checked 2 days ago), one pending for 8 days; company b: one verified, never checked, nothing ok; one removed (not counted)
@@ -81,6 +83,6 @@ begin
   perform pg_temp.cp3_ok((c1->'signals'->1->>'count')::int - (c0->'signals'->1->>'count')::int = 2 and c1->'signals'->0->>'key' = 'spf_missing' and c1->'signals'->0->>'runbook' = 'Email not delivered' and c1->'signals'->4->'runbook' = 'null'::jsonb, 'signal order, counts and runbook names');
   perform pg_temp.cp3_ok(c1::text !~* '([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|@|cp3-|\.example|token|selector)', 'counts only: no domain, company id, token or e-mail in the answer');
   perform pg_temp.cp3_ok(has_function_privilege('cp_lookup', 'cp.deliverability()', 'EXECUTE') and not has_function_privilege('public', 'cp.deliverability()', 'EXECUTE') and not has_table_privilege('cp_lookup', 'public.org_domains', 'SELECT'), 'cp_lookup may run it, PUBLIC may not, and cp_lookup has no table right');
-  raise exception 'CP3 selftest passed, rolling back' using errcode = 'P0CP3';
-exception when sqlstate 'P0CP3' then raise notice 'CP3 selftest: ALL RULES PASSED (rows rolled back)';
+  raise exception 'AD23 selftest passed, rolling back' using errcode = 'P0CP3';
+exception when sqlstate 'P0CP3' then raise notice 'AD23 selftest: ALL RULES PASSED (rows rolled back)';
 end $$;

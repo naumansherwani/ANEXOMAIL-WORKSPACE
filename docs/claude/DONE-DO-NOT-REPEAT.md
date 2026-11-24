@@ -2560,7 +2560,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 - 22 Nov 2026 23:5x PKT: his second schema paste read (workspace_subscriptions 0 rows, mailbox_storage links to no org); D5a-3b contract v2 written (all rows open, nothing coded); FOLDER-PHASES-22NOV.md written: Dashboard phases on their own then folders 2 to 9 in rail order; blueprint Part 0k added.
 
-- D5a-3b CODE DONE 23 Nov 00:2x: control-plane crate (verify/answer/db/h3srv, 9 tests), CP1.sql read-only role EXECUTE-only (CHECK 8/8), Desk lookup-selftest, desk-install step 7/7 cp-install.sh; real HTTP/3 e2e on scratch PG; live Chrome audit: sealed doors 400 without nonce, h2 still (phase A). TECH-LAW CHECKED. Waits his install
+- D5a-3b CODE DONE 23 Nov 00:2x: control-plane crate (verify/answer/db/h3srv, 9 tests), AD21.sql read-only role EXECUTE-only (CHECK 8/8), Desk lookup-selftest, desk-install step 7/7 cp-install.sh; real HTTP/3 e2e on scratch PG; live Chrome audit: sealed doors 400 without nonce, h2 still (phase A). TECH-LAW CHECKED. Waits his install
 
 - R3a2-dbsc CODE DONE 23 Nov 00:5x + D5a-3b CODE DONE: AD8 (frozen device key, jti replay, hash-chained ledger kinds, 5 doors; CHECK 9/9), dbsc.rs (D1-D23 list from web research of W3C DBSC draft 9 Nov 2026: ES256 only, signed 60s challenge, Sec-Secure-Session-Id check, continue:false, scope closed, modes off/observe/enforce; 6 tests incl real PostgreSQL run), desk-install DBSC observe + step 7/7 control plane (control-plane crate 9 tests, CP1 CHECK 8/8, real h3 e2e). TECH-LAW CHECKED. Waits his install, ad-auto and one Chrome sign-in
 
@@ -2914,7 +2914,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 - B13 Z4 customer approval plan written (docs only), TECH-LAW CHECKED, TESTED: docs only, plan files exist, gate pass
 
-- B13 Z4a CP5.sql + Z4b Control Plane consent door written, WIRED: NO (not installed), REAL: NO, TECH-LAW CHECKED, TESTED: scratch PostgreSQL 16 CP5 selftest ALL RULES PASSED + CHECK 12 true, cargo test 20 pass
+- B13 Z4a AD25.sql + Z4b Control Plane consent door written, WIRED: NO (not installed), REAL: NO, TECH-LAW CHECKED, TESTED: scratch PostgreSQL 16 CP5 selftest ALL RULES PASSED + CHECK 12 true, cargo test 20 pass
 
 - B13 Z4 install: binary SAME 490617d9f, CP5 lines not visible so NOT GREEN; cp5-look.sh read-only script added, TECH-LAW CHECKED, TESTED: his desk-install paste 9/9 SAME, bash -n pass
 
@@ -2934,7 +2934,7 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 
 - B13 T1 gate checklist written before code (docs only), TECH-LAW CHECKED, TESTED: docs only, gate pass
 
-- B13 T1 CP6.sql tenant registry + versioned domain ownership written, WIRED: NO, REAL: NO, TECH-LAW CHECKED, TESTED: scratch PostgreSQL 16 CP6 selftest ALL RULES PASSED twice and CHECK 12 rows true
+- B13 T1 AD26.sql tenant registry + versioned domain ownership written, WIRED: NO, REAL: NO, TECH-LAW CHECKED, TESTED: scratch PostgreSQL 16 CP6 selftest ALL RULES PASSED twice and CHECK 12 rows true
 
 - AWL-3 SQL half E201 awam package caps final written: six packages storable, Premium 7,000, Max strict 125,000, 90/95 alert ledger SHA-256 chain, strict seat guard, raise door; TECH-LAW CHECKED; TESTED: scratch PostgreSQL 16 selftest 16 checks twice, CHECK 12 rows, end-to-end real tables + real phase61 chart; NOT on his server, not GREEN
 
@@ -2943,3 +2943,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Desk SQL organised: CP1..CP6 and their checks moved from control-plane/sql into docs/claude/admin-desk/sql (installer reads admin-desk/sql); no SQL logic changed (only the CHECK-FILE path comments); TECH-LAW CHECKED; TESTED: bash -n on the three installers, cargo test control-plane 20 pass, CP6 diff = comment only, rules-gate
 
 - Desk SQL organised: CP1..CP6 and checks moved into docs/claude/admin-desk/sql (installer reads admin-desk/sql); CP1 got the world-class header + rolled-back selftest; CP6 selftest fixed for a FRESH install (empty ledger made the UPDATE test prove nothing); TECH-LAW CHECKED; TESTED: scratch PostgreSQL 16 CP1 CP2 CP4 CP5 CP6 selftests pass on fresh and rerun, CP6 CHECK all true, bash -n installers, cargo test control-plane 20 pass
+
+- Desk SQL one series: CP1..CP6 renamed AD21..AD26 (files, checks, labels, installers, docs); every one carries TARGET-DB AWAM DATABASE and ad-auto.sh / ad-sql-run.sh skip them so they never reach the Desk database; TECH-LAW CHECKED; TESTED: scratch PostgreSQL 16 AD21 AD22 AD24 AD25 AD26 selftests pass twice and CHECK rows true, AD23 only my stub lacked a column, bash -n on four scripts, cargo test control-plane

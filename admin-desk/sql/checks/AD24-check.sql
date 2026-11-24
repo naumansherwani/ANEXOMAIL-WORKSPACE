@@ -1,4 +1,4 @@
--- CP4 CHECK (phase 1m-8 B9b): every row must be true
+-- AD24 CHECK (phase 1m-8 B9b): every row must be true
 select 'cp.census still SECURITY DEFINER with a fixed search_path, cp_lookup may run it, PUBLIC may not' as what,
   exists (select 1 from pg_proc p join pg_namespace n on n.oid = p.pronamespace where n.nspname = 'cp' and p.proname = 'census' and p.prosecdef and p.proconfig::text like '%search_path=pg_catalog, pg_temp%') and has_function_privilege('cp_lookup', 'cp.census(jsonb)', 'execute') and not has_function_privilege('public', 'cp.census(jsonb)', 'execute') as ok
 union all select 'the census carries by_package with the eight keys and six packages + none + unknown in packages', (select count(*) = 8 from jsonb_object_keys(cp.census('{}'::jsonb)->'by_package')) and (select count(*) = 8 from jsonb_object_keys(cp.census('{}'::jsonb)->'packages'))

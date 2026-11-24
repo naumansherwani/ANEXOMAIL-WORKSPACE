@@ -1,7 +1,9 @@
--- ANEXOMAIL CONTROL PLANE CP4 (phase 1m-8, card B9b Customers: six packages, No plan yet, plan detail), 23 Nov 2026 PKT. FIX of BL-21: replaces the ONE read-only CENSUS door.
--- SCHEMA-FIRST: CP2 (cp.census, role cp_lookup, SECURITY DEFINER, counts only), CP1 (cp.lookup), the live awam schema snapshot docs/cursor-work/live-snapshot/sql/schema-public.sql (orgs, workspace_subscriptions, org_members, billing_intents, admin_storage_snapshots), AD06 (package limits).
+
+-- TARGET-DB: AWAM DATABASE (schema cp). NOT the Desk database: scripts/cp-install.sh runs this file on the awam database; ad-auto.sh and ad-sql-run.sh skip every file with this line.
+-- ANEXOMAIL CONTROL PLANE AD24 (phase 1m-8, card B9b Customers: six packages, No plan yet, plan detail), 23 Nov 2026 PKT. FIX of BL-21: replaces the ONE read-only CENSUS door.
+-- SCHEMA-FIRST: AD22 (cp.census, role cp_lookup, SECURITY DEFINER, counts only), AD21 (cp.lookup), the live awam schema snapshot docs/cursor-work/live-snapshot/sql/schema-public.sql (orgs, workspace_subscriptions, org_members, billing_intents, admin_storage_snapshots), AD06 (package limits).
 -- ADVANCE-RESEARCH: [1m] 1m-8 Zendesk plan view (plan, seats bought vs used, allowances), Salesforce account view: SIX packages (basic, pro, business, business_pro, business_premium, business_max) + a real 'none' bucket (no subscription yet) beside 'unknown' (a plan name nobody knows), and a per-package breakdown (states, intervals, size bands, seats in use, storage at 90 percent) in the SAME single set-based pass, so a plan detail page needs no new door.
--- CHECK-FILE: docs/claude/admin-desk/sql/checks/CP4-check.sql
+-- CHECK-FILE: docs/claude/admin-desk/sql/checks/AD24-check.sql
 -- WHAT IT CHANGES (nothing else): cp.census gets 'business_premium', 'business_max', 'none' in packages (sum still = companies), and 'by_package' (8 keys, each counts only). A company with NO subscription is 'none' (was wrongly 'unknown' = "Plan not recognised"). p_limits may now name the six packages. Still counts only: no company id, e-mail, name, or a money value.
 create schema if not exists cp;
 do $$ begin if not exists (select 1 from pg_roles where rolname = 'cp_lookup') then create role cp_lookup nologin; end if; end $$;
@@ -91,14 +93,14 @@ begin
 end $f$;
 revoke all on function cp.census(jsonb) from public;
 revoke all on schema cp from public; grant usage on schema cp to cp_lookup; grant execute on function cp.census(jsonb) to cp_lookup;
-comment on function cp.census(jsonb) is 'CP4: the Control Plane census, counts only, six packages + none + unknown, per-package breakdown, one set-based pass.';
+comment on function cp.census(jsonb) is 'AD24: the Control Plane census, counts only, six packages + none + unknown, per-package breakdown, one set-based pass.';
 
 -- SELFTEST (rolls back; success is the exception P0CP4). Needs a superuser installer for synthetic rows. Runs on the LIVE database too: DELTAS only.
-create function pg_temp.cp4_ok(c boolean, msg text) returns void language plpgsql as $f$ begin if c is not true then raise exception 'CP4 selftest: %', msg using errcode = 'P0CP3'; end if; end $f$;
+create function pg_temp.cp4_ok(c boolean, msg text) returns void language plpgsql as $f$ begin if c is not true then raise exception 'AD24 selftest: %', msg using errcode = 'P0CP3'; end if; end $f$;
 do $$
 declare c0 jsonb; c1 jsonb; o record; u uuid; k text;
 begin
-  begin set local session_replication_role = replica; exception when insufficient_privilege then raise notice 'CP4 selftest: skipped (needs a superuser installer)'; return; end;
+  begin set local session_replication_role = replica; exception when insufficient_privilege then raise notice 'AD24 selftest: skipped (needs a superuser installer)'; return; end;
   c0 := cp.census('{}'::jsonb);
   perform pg_temp.cp4_ok(jsonb_typeof(c0->'by_package') = 'object' and (select count(*) from jsonb_object_keys(c0->'by_package')) = 8, 'by_package has the eight keys');
   perform pg_temp.cp4_ok(cp.census('{"business_premium": 7000, "business_max": 100000}'::jsonb) is not null and cp.census('{"evil": 1}'::jsonb) is null, 'the six packages are valid limit keys, anything else is null');
@@ -122,6 +124,6 @@ begin
   perform pg_temp.cp4_ok((select sum((v->>'companies')::int) from jsonb_each(c1->'by_package') e(k, v)) = (c1->>'companies')::int and (select sum((v->>'seats_in_use')::int) from jsonb_each(c1->'by_package') e(k, v)) = (c1->>'seats_in_use')::int, 'the per-package parts add up to the whole (companies and seats)');
   perform pg_temp.cp4_ok(c1::text !~* '([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|@|amoun[t]|pric[e]|currenc[y]|invoic[e])', 'counts only: no company id, e-mail or money word');
   perform pg_temp.cp4_ok(has_function_privilege('cp_lookup', 'cp.census(jsonb)', 'EXECUTE') and not has_function_privilege('public', 'cp.census(jsonb)', 'EXECUTE'), 'cp_lookup may run the census, PUBLIC may not');
-  raise exception 'CP4 selftest passed, rolling back' using errcode = 'P0CP4';
-exception when sqlstate 'P0CP4' then raise notice 'CP4 selftest: ALL RULES PASSED (rows rolled back)';
+  raise exception 'AD24 selftest passed, rolling back' using errcode = 'P0CP4';
+exception when sqlstate 'P0CP4' then raise notice 'AD24 selftest: ALL RULES PASSED (rows rolled back)';
 end $$;

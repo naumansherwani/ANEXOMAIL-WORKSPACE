@@ -1,7 +1,9 @@
--- ANEXOMAIL CONTROL PLANE CP2 (phase 1m-4, card B9 Customers and Plans), 23 Nov 2026 PKT: the ONE read-only CENSUS door of the Control Plane on the awam database.
--- SCHEMA-FIRST: CP1 (cp.lookup, role cp_lookup, SECURITY DEFINER pattern), the live awam schema snapshot docs/cursor-work/live-snapshot/sql/schema-public.sql (orgs, workspace_subscriptions, org_members, billing_intents, admin_storage_snapshots), E34 (seats), AD04 (the Desk lookup contract), AD06 (package limits)
+
+-- TARGET-DB: AWAM DATABASE (schema cp). NOT the Desk database: scripts/cp-install.sh runs this file on the awam database; ad-auto.sh and ad-sql-run.sh skip every file with this line.
+-- ANEXOMAIL CONTROL PLANE AD22 (phase 1m-4, card B9 Customers and Plans), 23 Nov 2026 PKT: the ONE read-only CENSUS door of the Control Plane on the awam database.
+-- SCHEMA-FIRST: AD21 (cp.lookup, role cp_lookup, SECURITY DEFINER pattern), the live awam schema snapshot docs/cursor-work/live-snapshot/sql/schema-public.sql (orgs, workspace_subscriptions, org_members, billing_intents, admin_storage_snapshots), E34 (seats), AD04 (the Desk lookup contract), AD06 (package limits)
 -- ADVANCE-RESEARCH: [1m] dimensions per package / state / interval / size band / 12-month growth / ended 30 days / renewals 7 days, six real needing-you-now signal families from the real tables, closed signal registry, set-based single pass for 10 million companies (docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md U1..U12)
--- CHECK-FILE: docs/claude/admin-desk/sql/checks/CP2-check.sql
+-- CHECK-FILE: docs/claude/admin-desk/sql/checks/AD22-check.sql
 -- WHAT IT ADDS: cp.census(p_limits jsonb) returns jsonb, COUNTS ONLY. Role cp_lookup gets EXECUTE on that one function and nothing else (still no table right). It reads orgs(id, created_at), workspace_subscriptions(org_id, user_id, plan, state, seats, seats_used, interval, renews_at, updated_at),
 --   org_members(org_id, user_id, status), billing_intents(user_id, paid_at, resolved_at: TIMESTAMPS ONLY), admin_storage_snapshots(user_id, mailbox, day, used_bytes, quota_bytes). It NEVER reads or returns an e-mail, a name, a company id, a money value.
 --   Latest subscription per company = the newest updated_at (the same rule as cp.lookup). One set-based pass, no per-company loop, no per-company result.
@@ -84,11 +86,11 @@ revoke all on schema cp from public; grant usage on schema cp to cp_lookup; gran
 
 -- SELFTEST (rolls back; success is the exception P0CP2). It needs the right to switch off the foreign keys for its synthetic rows (a superuser installer has it); without that right it says so and the CHECK file still runs.
 -- It runs on the LIVE database too, so every count is a DELTA of what the test adds, never an exact total.
-create function pg_temp.cp2_ok(c boolean, msg text) returns void language plpgsql as $f$ begin if c is not true then raise exception 'CP2 selftest: %', msg using errcode = 'P0CP1'; end if; end $f$;
+create function pg_temp.cp2_ok(c boolean, msg text) returns void language plpgsql as $f$ begin if c is not true then raise exception 'AD22 selftest: %', msg using errcode = 'P0CP1'; end if; end $f$;
 do $$
 declare c0 jsonb; c1 jsonb; o record; u uuid;
 begin
-  begin set local session_replication_role = replica; exception when insufficient_privilege then raise notice 'CP2 selftest: skipped (needs a superuser installer to switch off foreign keys for synthetic rows); the CHECK file still proves the privileges'; return; end;
+  begin set local session_replication_role = replica; exception when insufficient_privilege then raise notice 'AD22 selftest: skipped (needs a superuser installer to switch off foreign keys for synthetic rows); the CHECK file still proves the privileges'; return; end;
   c0 := cp.census('{}'::jsonb);
   perform pg_temp.cp2_ok(c0 is not null and jsonb_array_length(c0->'signals') = 8 and jsonb_array_length(c0->'growth_12m') = 12, 'the census has 8 registered signals and a 12-month growth line');
   perform pg_temp.cp2_ok(cp.census('[]'::jsonb) is null AND cp.census('{"evil": 1}'::jsonb) is null AND cp.census('{"basic": "x; drop"}'::jsonb) is null, 'bad limits make the function return null');
@@ -132,6 +134,6 @@ begin
   -- aggregate only: no uuid, e-mail or money word anywhere in the answer
   perform pg_temp.cp2_ok(c1::text !~* '([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|@|amoun[t]|pric[e]|currenc[y]|invoic[e])', 'counts only: no company id, e-mail or money word in the answer');
   perform pg_temp.cp2_ok(has_function_privilege('cp_lookup', 'cp.census(jsonb)', 'EXECUTE') and not has_function_privilege('public', 'cp.census(jsonb)', 'EXECUTE') and not has_table_privilege('cp_lookup', 'public.billing_intents', 'SELECT') and not has_table_privilege('cp_lookup', 'public.admin_storage_snapshots', 'SELECT'), 'cp_lookup may run the census and read no table');
-  raise exception 'CP2 selftest passed, rolling back' using errcode = 'P0CP2';
-exception when sqlstate 'P0CP2' then raise notice 'CP2 selftest: ALL RULES PASSED (rows rolled back)';
+  raise exception 'AD22 selftest passed, rolling back' using errcode = 'P0CP2';
+exception when sqlstate 'P0CP2' then raise notice 'AD22 selftest: ALL RULES PASSED (rows rolled back)';
 end $$;

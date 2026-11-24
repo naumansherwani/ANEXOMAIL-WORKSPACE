@@ -1,4 +1,4 @@
--- CP3 CHECK (phase 1m-5 B6): every row must be true
+-- AD23 CHECK (phase 1m-5 B6): every row must be true
 select 'cp.deliverability exists, SECURITY DEFINER, fixed search_path' as what,
   exists (select 1 from pg_proc p join pg_namespace n on n.oid = p.pronamespace where n.nspname = 'cp' and p.proname = 'deliverability' and p.prosecdef and p.proconfig::text like '%search_path=pg_catalog, pg_temp%') as ok
 union all select 'cp_lookup can execute it', has_function_privilege('cp_lookup', 'cp.deliverability()', 'execute')

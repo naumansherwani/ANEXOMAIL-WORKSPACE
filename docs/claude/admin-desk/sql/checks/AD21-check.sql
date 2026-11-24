@@ -1,4 +1,4 @@
-select 'CP1 function exists, security definer' as what, exists (select 1 from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='cp' and p.proname='lookup' and p.prosecdef) as ok
+select 'AD21 function exists, security definer' as what, exists (select 1 from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='cp' and p.proname='lookup' and p.prosecdef) as ok
 union all select 'cp_lookup can execute it', has_function_privilege('cp_lookup','cp.lookup(text)','execute')
 union all select 'PUBLIC cannot execute it', not has_function_privilege('public','cp.lookup(text)','execute')
 union all select 'cp_lookup has no table right on orgs', not has_table_privilege('cp_lookup','public.orgs','select')

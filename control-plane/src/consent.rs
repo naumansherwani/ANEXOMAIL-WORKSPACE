@@ -1,6 +1,6 @@
 // CONTROL PLANE consent.rs (phase 1m, card B13 step Z4b, BL-46, 24 Nov 2026): Rule 52 on the CONSENT door. Own audience "desk-consent".
 // Three closed methods: push (a staff request goes DOWN to the customer's company), cancel (staff withdraw it), poll (the Desk asks what the customer answered).
-// The Control Plane can NEVER decide: there is no decide method here and the database role has no right to the decide door (CP5.sql). Strict shapes, fail closed. Pure: the clock is passed in.
+// The Control Plane can NEVER decide: there is no decide method here and the database role has no right to the decide door (AD25.sql). Strict shapes, fail closed. Pure: the clock is passed in.
 use crate::verify::{signed_body, valid_id, Seen, EXPIRY, SKEW};
 use serde_json::Value;
 
