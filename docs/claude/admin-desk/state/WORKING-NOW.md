@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 07:41 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 07:41 PKT) - read this FIRST for the Desk after a compaction
 DOING: E201 awam package caps SQL written and scratch-tested
 NEXT STEP: his Desk T1 command FIRST, then awam E201 line, then T2
 HIS LAST WORD: his 07:33 order: fix awam loopholes today; his 07:40 order: Desk CP6 first, order never breaks
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 543cdc4a 24 Nov 07:41 E201 awam package caps final (AWL-3 SQL)
 - 6c78729c 24 Nov 07:30 ledger line 77e022b6
 - 77e022b6 24 Nov 07:30 b13 t1 cp6
 - 6d78da02 24 Nov 07:26 ledger line 9e36ebce
@@ -72,14 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 93ffdbf6 24 Nov 07:25 ledger line 5a236721
 - 5a236721 24 Nov 07:25 t0 and awam loophole phases
 - 04b296f4 24 Nov 07:17 ledger line 6cb3e25a
-- 6cb3e25a 24 Nov 07:17 tenant identity decision
 
 ## Uncommitted Desk files
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
