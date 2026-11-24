@@ -929,6 +929,15 @@
    "deadline": "B13 T4",
    "why": "awam-database SQL lives only here.",
    "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4i-plan-written",
+   "file": "admin-desk/D6-B13-T4I-REGISTRATION-NUMBERS-PLAN-25NOV.md",
+   "must": "GLEIF Registration Authorities List",
+   "status": "open",
+   "deadline": "B13 T4i",
+   "why": "his 25 Nov 04:21 order: registration numbers for every country incl. Pakistan; research line written first (RESEARCH-IN-BLUEPRINT law), code later.",
+   "fail_after": "2027-01-09"
   }
  ]
 }
