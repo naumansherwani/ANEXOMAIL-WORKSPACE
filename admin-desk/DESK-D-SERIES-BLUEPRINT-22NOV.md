@@ -830,3 +830,5 @@ ADVANCE-RESEARCH [1m] B13 T1 (24 Nov 2026): advisor review (verbatim in TENANT-I
 - ADVANCE-RESEARCH [T3] (24 Nov 2026 09:4x PKT): B13 T3 list written, verified-domain + DMARC-aligned sender -> one tenant UUID, closed verdict words; fact: no sender stored on cases, no inbound ingest until Folder 2. T3a AD31 next.
 
 - OS-IMPORT-CONNECT-PLAN-24NOV.md (24 Nov 2026 09:4x PKT): B7 Move-in board, receipt check, stuck-import case, Managed Move-In split. From my live look, no copy started.
+
+- OS-FINAL-DECISION-24NOV.md (24 Nov 2026 09:5x PKT): A locked / B recommended / C awam loopholes AWL-MI1..6. B7 Move-in board = card movein, after B13, B11, B12. Next T3a AD31.

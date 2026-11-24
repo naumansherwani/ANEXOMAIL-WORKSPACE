@@ -5772,3 +5772,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - B13 T3 point list + ADVANCE-RESEARCH written before code. TECH-LAW CHECKED: no code change. TESTED: docs only, rules-gate 0 fail
 
 - OS to awam import plan from live Chrome look. TECH-LAW CHECKED: no code change. TESTED: docs only, my live look at /app/import console 0 errors, rules-gate 0 fail
+
+- OS final decision (A locked, B recommended, C awam loopholes AWL-MI1..6), awam blueprint block, DECISION-REGISTRY entry for mig_* SQL. TECH-LAW CHECKED: no code change. TESTED: docs and gate registry only, rules-gate 0 fail
