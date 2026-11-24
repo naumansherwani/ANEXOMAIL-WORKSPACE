@@ -375,7 +375,7 @@ if _desk_code and os.path.exists(cur):
                 if _next and _next[0] not in _ids and not _is_fix:
                     fail("BILLIONAIRE LIST", f"ORDER-LOCK: the next row to build is {_next[0]}, but the contract heading names {sorted(_ids)}; follow his order and never rebuild a GREEN row")
 # GATE FOREVER (his 09:55 / 10:20 law): the checks that make a Desk commit impossible without advance SQL, advance code and advance technology can never be deleted from this file.
-_forever = ["PHASE FILES", "INCOMPLETE ADVANCE", "BILLIONAIRE LIST", "SQL WORLD-CLASS", "RESEARCH IN BLUEPRINT", "FUTURE-PROOF", "NO TEST NO COMMIT", "DECISION READ", "IDEMPOTENT WRITER", "GATE AUTHORITY"]
+_forever = ["PHASE FILES", "INCOMPLETE ADVANCE", "BILLIONAIRE LIST", "SQL WORLD-CLASS", "RESEARCH IN BLUEPRINT", "FUTURE-PROOF", "NO TEST NO COMMIT", "DECISION READ", "IDEMPOTENT WRITER", "GATE AUTHORITY", "RULE 52 COMBO"]
 _src = open(__file__, errors="ignore").read()
 for _k in _forever:
     if _src.count('fail("' + _k + '"') < 1:
@@ -473,6 +473,27 @@ for _gf in ["CLAUDE.md", "docs/claude/BLUEPRINT-ABC-01NOV.md", "docs/claude/AWAM
         fail("GATE AUTHORITY", f"{_gf}: the line 'GATE IS THE FINAL AUTHORITY' must stay near the top (his 24 Nov 2026 09:29 law, docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md)")
 if not os.path.exists("docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md"):
     fail("GATE AUTHORITY", "docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md is missing")
+# RULE 52 COMBO (his 24 Nov 2026 11:11 PKT, STANDING for founder, awam and Desk): RFC 9421 + IETF WIMSE HTTP-signature draft (S, signed service calls), RFC 7489 (M, mail sender identity), OWASP Logging (L) are part of Rule 52 for every phase.
+# (1) the law file exists and names all four sources, (2) the three blueprints carry the marker, (3) the NEWEST contract (when CURRENT.md is staged) carries the line `RULE 52 COMBO: S=yes|N/A (reason) M=yes|N/A (reason) L=yes|N/A (reason)`; a bare yes or a bare N/A (no reason in brackets) is refused.
+try:
+    _cl = open("docs/claude/RULE-52-COMBO-LAW-24NOV.md", errors="ignore").read()
+except OSError:
+    _cl = ""
+    fail("RULE 52 COMBO", "docs/claude/RULE-52-COMBO-LAW-24NOV.md is missing")
+for _src in ["RFC 9421", "WIMSE", "RFC 7489", "OWASP"]:
+    if _cl and _src not in _cl:
+        fail("RULE 52 COMBO", f"the law file no longer names {_src} (his 24 Nov 11:11 order: none may be left out)")
+for _bf in ["docs/claude/BLUEPRINT-ABC-01NOV.md", "docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md", "docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md", "docs/claude/RULE-52-ADVANCE-TECHNOLOGY-FOR-ANEXOMAIL.md"]:
+    try:
+        _bt = open(_bf, errors="ignore").read()
+    except OSError:
+        continue
+    if "RULE 52 COMBO" not in _bt[:8000]:
+        fail("RULE 52 COMBO", f"{_bf}: the RULE 52 COMBO block must stay near the top (his 24 Nov 2026 11:11 order)")
+if cur in staged and os.path.exists(cur):
+    _nb = (open(cur, errors="ignore").read().split("# TECH CONTRACT FOR PHASE") + ["", ""])[1]
+    if not re.search(r"RULE 52 COMBO:\s*S=(?:yes|N/A) \([^)]{6,}\)\s+M=(?:yes|N/A) \([^)]{6,}\)\s+L=(?:yes|N/A) \([^)]{6,}\)", _nb):
+        fail("RULE 52 COMBO", "the newest contract has no line `RULE 52 COMBO: S=yes|N/A (reason) M=yes|N/A (reason) L=yes|N/A (reason)` (RFC 9421 + WIMSE signed calls, RFC 7489 mail identity, OWASP logging: say yes, or N/A with a real reason)")
 # FUTURE-PROOF (his word 23 Nov 2026 06:42 PKT, STRICT, whole website): the system is built ONCE for when the business is big; "Not measured" is an excuse, a real signal (zero is data) is the work. New lines in Desk source may not say it.
 _fp = [f for f in staged if re.match(r"(founder-web/src/desk/|docs/claude/admin-desk/server/src/).*\.(ts|tsx|rs)$", f)]
 for _f in _fp:
