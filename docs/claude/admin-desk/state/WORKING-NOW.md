@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 09:37 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 09:37 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 DOING: B13 T3 point list + research written; T3a AD31 resolver next
 NEXT STEP: T3a: read AD26 + member tables, write AD31 (awam DB), contract with SQL+Rust+screen files
@@ -67,6 +67,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- ba1f46c4 24 Nov 09:37 Desk B13 T3: point list and research
 - 7d219104 24 Nov 09:35 ledger line 20912c95
 - 20912c95 24 Nov 09:35 Desk B13 T2 GREEN
 - b2354ce5 24 Nov 09:34 ledger line 4d20e3e7
@@ -74,15 +75,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 466906a9 24 Nov 09:33 ledger line 8484a918
 - 8484a918 24 Nov 09:33 Desk B13 T2 SQL green, all phases in order
 - de0fd3e2 24 Nov 09:31 ledger line 1f1730f2
-- 1f1730f2 24 Nov 09:31 Gate final authority law, decision-read and idempotent-writer gates
 
 ## Uncommitted Desk files
-A  admin-desk/D6-B13-T3-RESOLUTION-LIST-24NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-A  docs/claude/admin-desk/D6-B13-T3-RESOLUTION-LIST-24NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
