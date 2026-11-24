@@ -29,6 +29,7 @@ admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
 admin-desk/D5C-ESCALATE-LIST-23NOV.md
 admin-desk/D6-B13-CONSENT-ACCESS-LIST-24NOV.md
 admin-desk/D6-B13-Z4-CUSTOMER-APPROVAL-PLAN-24NOV.md
+admin-desk/D6-B13-Z4-GATE-CHECKLIST-24NOV.md
 admin-desk/D6-CARDS-LIST-23NOV.md
 admin-desk/DASHBOARD-CARDS-CLICK-PLAN-22NOV.md
 admin-desk/DASHBOARD-FOLDER-AUDIT-23NOV.md
@@ -308,14 +309,17 @@ control-plane/sql/CP1.sql
 control-plane/sql/CP2.sql
 control-plane/sql/CP3.sql
 control-plane/sql/CP4.sql
+control-plane/sql/CP5.sql
 control-plane/sql/checks/00-FOUNDER-TECH-RULE.md
 control-plane/sql/checks/CP1-check.sql
 control-plane/sql/checks/CP2-check.sql
 control-plane/sql/checks/CP3-check.sql
 control-plane/sql/checks/CP4-check.sql
+control-plane/sql/checks/CP5-check.sql
 control-plane/src/00-FOUNDER-TECH-RULE.md
 control-plane/src/answer.rs
 control-plane/src/census.rs
+control-plane/src/consent.rs
 control-plane/src/core.rs
 control-plane/src/db.rs
 control-plane/src/h3srv.rs

@@ -356,6 +356,7 @@ docs/claude/admin-desk/D5B-RUNBOOKS-LIST-23NOV.md
 docs/claude/admin-desk/D5C-ESCALATE-LIST-23NOV.md
 docs/claude/admin-desk/D6-B13-CONSENT-ACCESS-LIST-24NOV.md
 docs/claude/admin-desk/D6-B13-Z4-CUSTOMER-APPROVAL-PLAN-24NOV.md
+docs/claude/admin-desk/D6-B13-Z4-GATE-CHECKLIST-24NOV.md
 docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
 docs/claude/admin-desk/DASHBOARD-CARDS-CLICK-PLAN-22NOV.md
 docs/claude/admin-desk/DASHBOARD-FOLDER-AUDIT-23NOV.md

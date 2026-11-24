@@ -29,6 +29,10 @@ impl Signer {
     pub fn deliv_answer(&self, request_id: &str, d: Option<&Value>, now: i64) -> String {
         self.envelope(json!({"kind": "deliverability", "request_id": request_id, "answered_at": now, "deliverability": d.cloned().unwrap_or(Value::Null), "refused": d.is_none()}))
     }
+    /// Phase 1m Z4b B13: the signed consent answer. kind "consent" + the method, so it can never be read as another answer; None = refused (the database refused the shape or the facts).
+    pub fn consent_answer(&self, request_id: &str, method: &str, result: Option<&Value>, now: i64) -> String {
+        self.envelope(json!({"kind": "consent", "method": method, "request_id": request_id, "answered_at": now, "result": result.cloned().unwrap_or(Value::Null), "refused": result.is_none()}))
+    }
     pub fn census_answer(&self, request_id: &str, census: Option<&Value>, now: i64) -> String {
         self.envelope(json!({"kind": "census", "request_id": request_id, "answered_at": now, "census": census.cloned().unwrap_or(Value::Null), "refused": census.is_none()}))
     }

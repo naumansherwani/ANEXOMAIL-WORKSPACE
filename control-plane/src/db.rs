@@ -52,4 +52,19 @@ impl Pg {
         };
         tokio::time::timeout(Duration::from_secs(8), work).await.map_err(|_| "database timeout".to_string())?
     }
+    /// Phase 1m Z4b B13: ONE of cp.consent_push / cp.consent_cancel / cp.consent_poll (the only consent doors cp_lookup may run; it has no right to decide). Ok(None) = the database refused (null); Err = database unavailable (503).
+    pub async fn consent(&self, call: &crate::consent::Call) -> Result<Option<Value>, String> {
+        use crate::consent::Call;
+        let work = async {
+            let c = self.client().await?;
+            let r = match call {
+                Call::Push { consent, company, case_ref, scope, reason } => c.query_one("select cp.consent_push($1::text::uuid, $2::text, $3::text, $4::text, $5::text)::text", &[consent, company, case_ref, scope, reason]).await,
+                Call::Cancel { consent } => c.query_one("select cp.consent_cancel($1::text::uuid)::text", &[consent]).await,
+                Call::Poll { consents } => c.query_one("select cp.consent_poll($1::text[]::uuid[])::text", &[consents]).await,
+            }.map_err(|e| e.to_string())?;
+            let t: Option<String> = r.get(0);
+            match t { None => Ok(None), Some(s) => serde_json::from_str(&s).map(Some).map_err(|e| e.to_string()) }
+        };
+        tokio::time::timeout(Duration::from_secs(8), work).await.map_err(|_| "database timeout".to_string())?
+    }
 }

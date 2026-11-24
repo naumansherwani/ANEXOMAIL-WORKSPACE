@@ -43,6 +43,18 @@ impl Core {
             Err(e) => { eprintln!("control plane: database unavailable ({e})"); (503, String::new()) }
         }
     }
+    /// Phase 1m Z4b B13: consent. Order: rate, verify (own audience desk-consent, closed methods push|cancel|poll), ONE database door (never cached: a decision must show at once), signed answer. No decide method exists. 200 signed / 403 / 429 / 503 (database down = request stays waiting, never approved).
+    pub async fn handle_consent(&self, body: &str, now: i64) -> (u16, String) {
+        if !self.allow(now) { return (429, String::new()); }
+        let req = match crate::consent::verify_consent(body, &self.desk_pub, &self.seen, now) { Ok(r) => r, Err(why) => { eprintln!("control plane: consent request refused ({why})"); return (403, String::new()); } };
+        let method = match &req.call { crate::consent::Call::Push { .. } => "push", crate::consent::Call::Cancel { .. } => "cancel", crate::consent::Call::Poll { .. } => "poll" };
+        let found = match &self.src {
+            Source::Pg(p) => p.consent(&req.call).await,
+            #[cfg(test)] Source::Fixed(v) => Ok(v.clone()),
+            #[cfg(test)] Source::Down => Err("down".to_string()),
+        };
+        match found { Ok(v) => (200, self.signer.consent_answer(&req.request_id, method, v.as_ref(), now)), Err(e) => { eprintln!("control plane: database unavailable ({e})"); (503, String::new()) } }
+    }
     /// Phase 1m-4 B9: the census. Same order as a lookup: rate, verify (own audience desk-census), then ONE read-only function; the result is cached 60 s per seat-promise set; signed answer out. 200 signed / 403 / 429 / 503.
     pub async fn handle_census(&self, body: &str, now: i64) -> (u16, String) {
         if !self.allow(now) { return (429, String::new()); }
@@ -137,3 +149,26 @@ mod deliv_t {
     }
 }
 
+
+#[cfg(test)]
+mod consent_t {
+    use super::*; use crate::verify::{hex, REQ_DOMAIN}; use ed25519_dalek::{Signer as _, SigningKey}; use serde_json::json;
+    fn core(src: Source) -> (Core, SigningKey) { let d = SigningKey::from_bytes(&[3u8; 32]); (Core::new(hex(d.verifying_key().as_bytes()), Signer::from_seed_hex(&"07".repeat(32)).unwrap(), src, 0), d) }
+    fn env(k: &SigningKey, rid: &str, aud: &str, method: &str) -> String {
+        let body = json!({"aud":aud,"method":method,"request_id":rid,"employee_id":"e1","consent":"aaaaaaaa-0000-4000-8000-000000000001","issued_at":1000,"expires_at":1060}).to_string();
+        json!({"kid":"x","body":body,"sig":hex(&k.sign(format!("{REQ_DOMAIN}\n{body}").as_bytes()).to_bytes())}).to_string()
+    }
+    fn body(a: &str) -> Value { serde_json::from_str(serde_json::from_str::<Value>(a).unwrap()["body"].as_str().unwrap()).unwrap() }
+    #[tokio::test] async fn consent_flow_good_replay_wrong_audience_refused_down_and_rate() {
+        let (c, d) = core(Source::Fixed(Some(json!({"consent": "x", "status": "cancelled"}))));
+        let (s, a) = c.handle_consent(&env(&d, "aaaaaaaa-0000-4000-8000-000000000011", "desk-consent", "cancel"), 1010).await; assert_eq!(s, 200);
+        let b = body(&a); assert_eq!((b["kind"].as_str(), b["method"].as_str(), b["refused"].as_bool(), b["result"]["status"].as_str()), (Some("consent"), Some("cancel"), Some(false), Some("cancelled")));
+        assert_eq!(c.handle_consent(&env(&d, "aaaaaaaa-0000-4000-8000-000000000011", "desk-consent", "cancel"), 1010).await.0, 403, "replay");
+        assert_eq!(c.handle_consent(&env(&d, "aaaaaaaa-0000-4000-8000-000000000012", "desk-census", "cancel"), 1010).await.0, 403, "a census request is not accepted here");
+        assert_eq!(c.handle_consent(&env(&d, "aaaaaaaa-0000-4000-8000-000000000013", "desk-consent", "decide"), 1010).await.0, 403, "there is no decide method");
+        assert_eq!(c.handle_consent("garbage", 1010).await.0, 403);
+        let (c2, d2) = core(Source::Fixed(None)); let (s, a) = c2.handle_consent(&env(&d2, "aaaaaaaa-0000-4000-8000-000000000014", "desk-consent", "cancel"), 1010).await; assert_eq!(s, 200); assert_eq!(body(&a)["refused"], true); assert_eq!(body(&a)["result"], Value::Null);
+        let (c3, d3) = core(Source::Down); assert_eq!(c3.handle_consent(&env(&d3, "aaaaaaaa-0000-4000-8000-000000000015", "desk-consent", "cancel"), 1010).await.0, 503, "database down: nothing is approved");
+        let (c4, _) = core(Source::Down); let mut last = 0; for _ in 0..60 { last = c4.handle_consent("x", 1010).await.0; } assert_eq!(last, 429);
+    }
+}
