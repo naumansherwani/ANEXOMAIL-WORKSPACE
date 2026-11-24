@@ -3871,3 +3871,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - AWAM LANDING FOOTER = login words word for word (network row with MoQ + RFC 9421 + WIMSE, TLS 1.3 with AES-256-GCM) by chairman's explicit order 14:17 with his screenshot. TECH-LAW CHECKED. TESTED: tsc clean, every login line found in footer
 
 - AWAM LOGIN + LANDING FOOTER: 'HTTP/3 signatures (RFC 9421)' replaced by 'HTTP Message Signatures (RFC 9421)' (his 14:29; footer same words as login by his word-for-word order). TECH-LAW CHECKED. TESTED: tsc clean, login render 1280/820/390 3 inputs no sideways scroll
+
+- EVENING PLAN written (docs/claude/EVENING-PLAN-24NOV.md) + live look: /auth live and new, landing footer on live = old snapshot not in repo. TECH-LAW CHECKED. TESTED: docs only, live Chrome read of /auth text and / footer

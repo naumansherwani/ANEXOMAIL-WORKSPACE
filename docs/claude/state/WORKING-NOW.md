@@ -1,9 +1,9 @@
-# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 14:31 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 24 Nov 2026 14:36 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: Login + footer: HTTP Message Signatures (RFC 9421) replaces HTTP/3 signatures
-NEXT STEP: his awam pull, live Chrome look
-HIS LAST WORD: his 14:29 word
+DOING: Live look done: /auth new and live; landing footer on live is an OLD snapshot (text not in repo)
+NEXT STEP: TONIGHT: read docs/claude/EVENING-PLAN-24NOV.md; 1) read-only command to find what serves / landing; 2) B13 T4 research+plan then code
+HIS LAST WORD: his 14:35 word
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -21,20 +21,22 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 0f74d028 24 Nov 14:31 ledger line e61cb1ab
 - e61cb1ab 24 Nov 14:31 login+footer: HTTP Message Signatures RFC 9421
 - 33fc7e91 24 Nov 14:19 ledger line 682d8807
 - 682d8807 24 Nov 14:19 awam landing footer matches login words
 - c3a259cd 24 Nov 14:16 ledger line f133c464
-- f133c464 24 Nov 14:16 state update: next phase B13 T4
 
 ## Uncommitted files (half-done work if any)
+A  docs/claude/EVENING-PLAN-24NOV.md
  M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 32 ++------------------------------
- 1 file changed, 2 insertions(+), 30 deletions(-)
+ docs/claude/EVENING-PLAN-24NOV.md | 25 +++++++++++++++++++++++++
+ docs/claude/state/WORKING-NOW.md  | 24 ++++++------------------
+ 2 files changed, 31 insertions(+), 18 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -45,4 +47,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (468efbcd654008e5a42f87a61694e6a745bbb22b)
+WIP snapshot: refs/wip/last (9617bb166299204a795a68ba5ca629da56cc3ddc)
