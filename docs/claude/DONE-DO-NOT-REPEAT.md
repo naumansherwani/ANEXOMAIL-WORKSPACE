@@ -2955,3 +2955,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - CLAUDE.md top line: fixed command forms (awam SQL = AUTO sql-run only, Desk = desk-install only, AD one series, no C series); docs only; TECH-LAW CHECKED; TESTED: rules-gate 0 fail on the commit, line present in CLAUDE.md
 
 - CLAUDE.md: fixed command forms rule added below the RULE 34 block (docs only; one duplicate RESUME line removed so RULE 34 stays inside the gate's top 17000 characters); TECH-LAW CHECKED; TESTED: rules-gate 0 fail on this commit, RULE 34 at char 16968
+
+- AD26 tenant registry + domain ownership GREEN on his server (WIRED: SQL yes / REAL: yes): his desk-install paste 24 Nov 08:13 PKT shows AD26 CHECK all true, OK installed and CHECKed, Control Plane signed lookup end to end, binary + page + kernel = repo build 1acac0af3, FACT orgs 7 / domains_verified 0 / history_rows 0 (real zero); my Chrome look: Desk login live HTTP/3, console 0 errors, no screen for AD26; TECH-LAW CHECKED; TESTED: his server paste + Chrome look

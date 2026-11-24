@@ -1,3 +1,10 @@
+# TECH CONTRACT FOR PHASE: DESK TENANT REGISTRY GREEN NOTE (phase 1m, B13 first step AD26, list BL-46 B13 stays next; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 first by his 02:39 order), his 24 Nov 2026 08:13 PKT install paste, written 08:2x PKT. LIST: docs/claude/admin-desk/D6-B13-T1-GATE-CHECKLIST-24NOV.md
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL 16 tstzrange EXCLUDE gist history, SHA-256 hash-chained ledger, forced RLS, selftest, installer step 3f | docs/claude/admin-desk/sql/AD26.sql, docs/claude/admin-desk/scripts/cp-install.sh | YES | his server: AD26 CHECK all true, installed and CHECKed; FACT orgs 7, domains_verified 0, history_rows 0 |
+| Rust Control Plane live end to end (quinn + h3, Rule 52 signed lookup) | control-plane/src/consent.rs | YES | his server: LOOKUP SELFTEST OK on UDP 4410 |
+| Desk screen unchanged (login page live in my Chrome, console 0 errors) | founder-web/src/desk/DeskShell.tsx | YES | Chrome look 08:2x PKT |
+
 # TECH CONTRACT FOR PHASE: DESK SQL ONE SERIES: CP1..CP6 renamed AD21..AD26 (phase 1m, sub-phase B13 T1 housekeeping, list BL-46 B13 stays next; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 first by his 02:39 order), his 24 Nov 2026 07:42 and 07:47 PKT orders: every Admin Desk SQL in ONE folder and ONE series (AD); the C series name is deleted; awam and founder SQL stay in the E-series. The AD21..AD26 files carry the line TARGET-DB: AWAM DATABASE and ad-auto.sh / ad-sql-run.sh skip them (they run on the awam database through cp-install.sh). LIST: docs/claude/admin-desk/sql/README.md
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3853,3 +3860,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - CLAUDE.md top line: fixed command forms (awam SQL = AUTO sql-run only, Desk = desk-install only, AD one series, no C series); docs only; TECH-LAW CHECKED; TESTED: rules-gate 0 fail on the commit, line present in CLAUDE.md
 
 - CLAUDE.md: fixed command forms rule added below the RULE 34 block (docs only; one duplicate RESUME line removed so RULE 34 stays inside the gate's top 17000 characters); TECH-LAW CHECKED; TESTED: rules-gate 0 fail on this commit, RULE 34 at char 16968
+
+- AD26 tenant registry + domain ownership GREEN on his server (WIRED: SQL yes / REAL: yes): his desk-install paste 24 Nov 08:13 PKT shows AD26 CHECK all true, OK installed and CHECKed, Control Plane signed lookup end to end, binary + page + kernel = repo build 1acac0af3, FACT orgs 7 / domains_verified 0 / history_rows 0 (real zero); my Chrome look: Desk login live HTTP/3, console 0 errors, no screen for AD26; TECH-LAW CHECKED; TESTED: his server paste + Chrome look

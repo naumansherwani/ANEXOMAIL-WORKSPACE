@@ -37,3 +37,5 @@ AWL-3 SQL half = E201_awam_package_caps_final.sql WRITTEN + scratch-tested (not 
 
 ## E201 GREEN ON HIS SERVER, 24 Nov 2026 08:0x PKT
 His sql-run paste 08:03: CHECK_E201 12 of 12 rows OK. HIS WORD 08:03: Business Max = 125,000 FINAL; Business 60 users stands. OPEN questions above are CLOSED. AWL-3 Rust half and AWL-2 billing rows still OPEN.
+
+## 24 Nov 2026 08:2x PKT: the Desk side of AWL-1 (AD26 tenant registry + domain history) is GREEN on his server; awam table changes of AWL-1 (tenant key reference) still OPEN.
