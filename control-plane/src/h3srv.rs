@@ -1,4 +1,4 @@
-// CONTROL PLANE h3srv.rs (D5a-3b): HTTP/3 over QUIC only. TLS 1.3, AES-256-GCM only, X25519MLKEM768 first, ALPN h3, no 0-RTT, BBR. One route: POST /control/v1/lookup.
+// CONTROL PLANE h3srv.rs (D5a-3b): HTTP/3 over QUIC only. TLS 1.3, AES-256-GCM only, X25519MLKEM768 first, ALPN h3, no 0-RTT, BBR. Routes: POST /control/v1/lookup, census, deliverability, consent, resolve (T3b).
 use crate::core::Core;
 use bytes::{Buf, Bytes};
 use rustls::crypto::ring as rp;
@@ -8,6 +8,7 @@ pub const PATH: &str = "/control/v1/lookup";
 pub const CENSUS_PATH: &str = "/control/v1/census";
 pub const DELIV_PATH: &str = "/control/v1/deliverability";
 pub const CONSENT_PATH: &str = "/control/v1/consent";
+pub const RESOLVE_PATH: &str = "/control/v1/resolve";
 const MAX_BODY: usize = 16 * 1024;
 
 pub fn provider() -> Arc<rustls::crypto::CryptoProvider> {
@@ -51,12 +52,12 @@ pub async fn serve(ep: quinn::Endpoint, core: Arc<Core>) {
                 let core = core.clone();
                 tokio::spawn(async move {
                     let reply = |code: u16| http::Response::builder().status(code).header("content-type", "application/json").body(()).unwrap();
-                    let path = req.uri().path().to_string(); if req.method() != http::Method::POST || (path != PATH && path != CENSUS_PATH && path != DELIV_PATH && path != CONSENT_PATH) { let _ = st.send_response(reply(404)).await; let _ = st.finish().await; return; }
+                    let path = req.uri().path().to_string(); if req.method() != http::Method::POST || (path != PATH && path != CENSUS_PATH && path != DELIV_PATH && path != CONSENT_PATH && path != RESOLVE_PATH) { let _ = st.send_response(reply(404)).await; let _ = st.finish().await; return; }
                     let mut got = Vec::new();
                     let read = tokio::time::timeout(Duration::from_secs(5), async { while let Ok(Some(mut b)) = st.recv_data().await { let n = b.remaining(); got.extend_from_slice(&b.copy_to_bytes(n)); if got.len() > MAX_BODY { return false; } } true }).await;
                     if !matches!(read, Ok(true)) { let _ = st.send_response(reply(413)).await; let _ = st.finish().await; return; }
                     let Ok(body) = String::from_utf8(got) else { let _ = st.send_response(reply(400)).await; let _ = st.finish().await; return };
-                    let (code, out) = if path == CENSUS_PATH { core.handle_census(&body, now_secs()).await } else if path == DELIV_PATH { core.handle_deliv(&body, now_secs()).await } else if path == CONSENT_PATH { core.handle_consent(&body, now_secs()).await } else { core.handle(&body, now_secs()).await };
+                    let (code, out) = if path == CENSUS_PATH { core.handle_census(&body, now_secs()).await } else if path == DELIV_PATH { core.handle_deliv(&body, now_secs()).await } else if path == CONSENT_PATH { core.handle_consent(&body, now_secs()).await } else if path == RESOLVE_PATH { core.handle_resolve(&body, now_secs()).await } else { core.handle(&body, now_secs()).await };
                     let _ = st.send_response(reply(code)).await; if !out.is_empty() { let _ = st.send_data(Bytes::from(out)).await; } let _ = st.finish().await;
                 });
             }

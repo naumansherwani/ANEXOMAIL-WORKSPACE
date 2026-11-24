@@ -122,3 +122,6 @@ if [ -z "$ORG" ]; then echo "   note: no company row to look up; end-to-end proo
 R="$(env DESK_SIGN_SEED_FILE=/etc/anexomail-desk/sign.seed DESK_CONTROL_PLANE_ADDR=$LISTEN DESK_CONTROL_PLANE_HOST=$HOST DESK_CONTROL_PLANE_CA=$ETC/cert.pem DESK_CONTROL_PLANE_PUBKEY=$CPPUB "$DESKROOT/anexomail-desk" lookup-selftest "$ORG" 2>&1 | tail -1)"
 echo "   $R"
 case "$R" in "LOOKUP SELFTEST OK"*) echo "OK: Control Plane live on UDP 4410; the Desk can now ask it (D5a-3b)";; *) echo "FAIL: end-to-end proof did not pass (paste these lines); the Desk stays fail-closed"; exit 7;; esac
+R2="$(env DESK_SIGN_SEED_FILE=/etc/anexomail-desk/sign.seed DESK_CONTROL_PLANE_ADDR=$LISTEN DESK_CONTROL_PLANE_HOST=$HOST DESK_CONTROL_PLANE_CA=$ETC/cert.pem DESK_CONTROL_PLANE_PUBKEY=$CPPUB "$DESKROOT/anexomail-desk" resolve-selftest 2>&1 | tail -1)"
+echo "   $R2"
+case "$R2" in "RESOLVE SELFTEST OK"*) echo "OK: sender-resolve door live over HTTP/3 (B13 T3b: signed request with its path, signed verdict, replay refused)";; *) echo "WARN: the sender-resolve proof did not pass (paste these lines); every sender stays unresolved (fail closed)";; esac

@@ -1,0 +1,18 @@
+-- AD32 CHECK (B13 T3b sender-resolve attempt log): every row must be true
+SELECT 'the attempt table exists with forced RLS, deny-all policy, freeze triggers (row + truncate), closed to desk_app and PUBLIC' AS rule,
+  (SELECT relforcerowsecurity FROM pg_class WHERE oid = 'desk.fadm_resolve_attempt'::regclass) AND EXISTS (SELECT 1 FROM pg_policies WHERE schemaname = 'desk' AND tablename = 'fadm_resolve_attempt' AND policyname = 'p_resolve_none')
+  AND (SELECT count(*) FROM pg_trigger WHERE tgrelid = 'desk.fadm_resolve_attempt'::regclass AND tgname IN ('fadm_resolve_attempt_frozen', 'fadm_resolve_attempt_frozen_t')) = 2
+  AND NOT has_table_privilege('desk_app', 'desk.fadm_resolve_attempt', 'SELECT') AND NOT has_table_privilege('public', 'desk.fadm_resolve_attempt', 'SELECT') AS ok
+UNION ALL SELECT 'one attempt per request id: the request id is the primary key', EXISTS (SELECT 1 FROM pg_constraint WHERE conrelid = 'desk.fadm_resolve_attempt'::regclass AND contype = 'p')
+UNION ALL SELECT 'a verdict exists only on an answer and a tenant only on a resolved verdict (CHECKs)', (SELECT count(*) FROM pg_constraint WHERE conrelid = 'desk.fadm_resolve_attempt'::regclass AND conname IN ('fadm_resolve_attempt_verdict_only_when_answered', 'fadm_resolve_attempt_tenant_only_when_resolved')) = 2
+UNION ALL SELECT 'both ledger kinds are on the closed list', (SELECT count(*) FROM desk.fadm_ledger_kind WHERE kind IN ('sender.resolved', 'sender.resolve_failed')) = 2
+UNION ALL SELECT 'fadm_resolve_log is SECURITY DEFINER with fixed search_path, 5 s statement and 2 s lock timeout, commented; desk_app may run it, PUBLIC may not',
+  EXISTS (SELECT 1 FROM pg_proc p WHERE p.pronamespace = 'desk'::regnamespace AND p.proname = 'fadm_resolve_log' AND p.prosecdef AND p.proconfig::text LIKE '%search_path=pg_catalog, desk%' AND p.proconfig::text LIKE '%statement_timeout=5s%' AND p.proconfig::text LIKE '%lock_timeout=2s%' AND obj_description(p.oid, 'pg_proc') IS NOT NULL)
+  AND has_function_privilege('desk_app', 'desk.fadm_resolve_log(text,uuid,text,text,uuid)', 'EXECUTE') AND NOT has_function_privilege('public', 'desk.fadm_resolve_log(text,uuid,text,text,uuid)', 'EXECUTE')
+UNION ALL SELECT 'the writer has no parameter that could carry an address or a domain (OWASP: no personal data in the log)', (SELECT pg_get_function_arguments(p.oid) FROM pg_proc p WHERE p.pronamespace = 'desk'::regnamespace AND p.proname = 'fadm_resolve_log') = 'p_case text, p_request uuid, p_outcome text, p_verdict text, p_tenant uuid'
+UNION ALL SELECT 'fadm_case_resolution is SECURITY DEFINER, STABLE, fixed search_path; desk_app may run it, PUBLIC may not',
+  EXISTS (SELECT 1 FROM pg_proc p WHERE p.pronamespace = 'desk'::regnamespace AND p.proname = 'fadm_case_resolution' AND p.prosecdef AND p.provolatile = 's' AND p.proconfig::text LIKE '%search_path=pg_catalog, desk%')
+  AND has_function_privilege('desk_app', 'desk.fadm_case_resolution(text)', 'EXECUTE') AND NOT has_function_privilege('public', 'desk.fadm_case_resolution(text)', 'EXECUTE')
+UNION ALL SELECT 'no sender ledger line holds an address or a key outside the closed set (FACT over all lines so far)', NOT EXISTS (SELECT 1 FROM desk.fadm_ledger l WHERE l.kind IN ('sender.resolved', 'sender.resolve_failed') AND (l.detail::text ~ '@' OR EXISTS (SELECT 1 FROM jsonb_object_keys(l.detail) k WHERE k NOT IN ('case', 'request', 'verdict', 'tenant', 'outcome', 'why'))))
+UNION ALL SELECT 'the ledger chain verifies', desk.fadm_ledger_verify()
+UNION ALL SELECT 'earlier phases are untouched (AD30 binding doors still closed for PUBLIC)', NOT has_function_privilege('public', 'desk.fadm_case_bind(text,uuid,text,uuid,uuid,jsonb)', 'EXECUTE');

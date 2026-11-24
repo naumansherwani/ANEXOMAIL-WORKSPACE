@@ -33,6 +33,10 @@ impl Signer {
     pub fn consent_answer(&self, request_id: &str, method: &str, result: Option<&Value>, now: i64) -> String {
         self.envelope(json!({"kind": "consent", "method": method, "request_id": request_id, "answered_at": now, "result": result.cloned().unwrap_or(Value::Null), "refused": result.is_none()}))
     }
+    /// Phase 1m B13 T3b: the signed sender-resolve answer. kind "resolve" keeps it from ever being read as another answer; the result is exactly {verdict, tenant} from cp.resolve_sender; None = refused (the database refused the shape).
+    pub fn resolve_answer(&self, request_id: &str, result: Option<&Value>, now: i64) -> String {
+        self.envelope(json!({"kind": "resolve", "request_id": request_id, "answered_at": now, "result": result.cloned().unwrap_or(Value::Null), "refused": result.is_none()}))
+    }
     pub fn census_answer(&self, request_id: &str, census: Option<&Value>, now: i64) -> String {
         self.envelope(json!({"kind": "census", "request_id": request_id, "answered_at": now, "census": census.cloned().unwrap_or(Value::Null), "refused": census.is_none()}))
     }

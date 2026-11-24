@@ -1,7 +1,7 @@
 // ANEXOMAIL CONTROL PLANE responder (D5a-3b, 22 Nov 2026). Own binary. Answers the Admin Desk's signed, read-only company lookups over HTTP/3 only.
 // Env: CP_LISTEN (UDP ip:port), CP_CERT, CP_KEY, CP_SEED_FILE (own Ed25519 seed, hex), CP_DESK_PUBKEY (the Desk's public key, hex), CP_DB_URL (role cp_lookup), CP_DB_CA (optional).
 // `--print-pubkey` prints this Control Plane's public key (the Desk pins it as DESK_CONTROL_PLANE_PUBKEY). No secret is ever printed.
-mod answer; mod census; mod consent; mod core; mod db; mod h3srv; mod verify;
+mod answer; mod census; mod consent; mod core; mod db; mod h3srv; mod resolve; mod verify;
 use std::sync::Arc;
 
 fn need(k: &str) -> String { std::env::var(k).unwrap_or_else(|_| { eprintln!("control plane: {k} is not set"); std::process::exit(2) }) }

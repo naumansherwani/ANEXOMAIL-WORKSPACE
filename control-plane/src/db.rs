@@ -67,4 +67,14 @@ impl Pg {
         };
         tokio::time::timeout(Duration::from_secs(8), work).await.map_err(|_| "database timeout".to_string())?
     }
+    /// Phase 1m B13 T3b: `select cp.resolve_sender($1,$2,$3)::text` (AD31): a verdict word and, only for "resolved", a tenant UUID. Ok(None) = the function refused (null); Err = database unavailable (503, never a made-up verdict).
+    pub async fn resolve(&self, domain: &str, local: &str, aligned: bool) -> Result<Option<Value>, String> {
+        let work = async {
+            let c = self.client().await?;
+            let r = c.query_one("select cp.resolve_sender($1::text, $2::text, $3::boolean)::text", &[&domain, &local, &aligned]).await.map_err(|e| e.to_string())?;
+            let t: Option<String> = r.get(0);
+            match t { None => Ok(None), Some(s) => serde_json::from_str(&s).map(Some).map_err(|e| e.to_string()) }
+        };
+        tokio::time::timeout(Duration::from_secs(5), work).await.map_err(|_| "database timeout".to_string())?
+    }
 }

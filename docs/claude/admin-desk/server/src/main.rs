@@ -21,7 +21,7 @@ mod dbsc;
 mod lookup;
 mod packages;
 mod runbooks;
-mod consent; #[allow(dead_code)] mod consent_cp; #[allow(dead_code)] mod resolve_cp;
+mod consent; #[allow(dead_code)] mod consent_cp; mod resolve_cp;
 mod escalations;
 mod pressure;
 mod security;
@@ -89,6 +89,9 @@ async fn main() {
     if a.get(1).map(String::as_str) == Some("version") && a.len() == 2 { println!("{}", lookup::version_line()); return; }
     if a.get(1).map(String::as_str) == Some("lookup-selftest") && a.len() == 3 {
         match lookup::selftest(&a[2]).await { Ok(o) => { println!("{o}"); return; } Err(e) => { println!("LOOKUP SELFTEST FAIL: {e}"); std::process::exit(4); } }
+    }
+    if a.get(1).map(String::as_str) == Some("resolve-selftest") && a.len() == 2 {
+        match resolve_cp::selftest().await { Ok(o) => { println!("{o}"); return; } Err(e) => { println!("RESOLVE SELFTEST FAIL: {e}"); std::process::exit(4); } }
     }
     if a.get(1).map(String::as_str) == Some("audit-export") && a.len() == 3 { std::process::exit(audit::cmd_export(&a[2]).await); }
     if a.get(1).map(String::as_str) == Some("audit-verify") && (a.len() == 3 || a.len() == 4) { std::process::exit(audit::cmd_verify(&a[2], a.get(3).map(String::as_str))); }

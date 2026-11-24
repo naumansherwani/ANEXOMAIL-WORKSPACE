@@ -842,3 +842,5 @@ ADVANCE-RESEARCH [1m] B13 T1 (24 Nov 2026): advisor review (verbatim in TENANT-I
 - B13 T3a (24 Nov 2026 10:3x PKT): AD31 selftest rewritten for the live FKs (organisations, auth.users); old one reproduced his editor error on scratch with FKs; new passes x2, CHECK 8/8.
 
 - B13 T3a GREEN (24 Nov 2026 10:5x PKT): AD31 installed + CHECK 8/8 on his server. Rule 52 verdict call = T3b. Landing wording professional rewrite (index.tsx, plans.tsx).
+
+- B13 T3b (24 Nov 2026 11:2x PKT): sender-resolve door (RFC 9421 path-bound signature, IETF WIMSE workload signature, RFC 7489 alignment flag, OWASP logging) written and tested: control-plane resolve.rs, Desk resolve_cp.rs, AD32, resolutionWords. NOT installed. Next: his desk-install, then T3c.

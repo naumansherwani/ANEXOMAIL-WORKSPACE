@@ -66,3 +66,19 @@ export function verdictWords(v: unknown): string {
     default: return "Waiting: the company is not confirmed yet.";
   }
 }
+
+/** AD32 / T3b: what the case card says about the LAST company check of a case (desk.fadm_case_resolution: exactly {outcome, verdict, at}, or null = never asked). Any other shape is "Not available." (fail closed). */
+export function resolutionWords(r: unknown): string {
+  if (r === null) return "The company has not been checked yet.";
+  if (typeof r !== "object" || Array.isArray(r)) return "Not available.";
+  const o = r as Record<string, unknown>;
+  const keys = Object.keys(o).sort().join(",");
+  if (keys !== "at,outcome,verdict" || typeof o.at !== "number") return "Not available.";
+  switch (o.outcome) {
+    case "answered": return typeof o.verdict === "string" ? verdictWords(o.verdict) : "Not available.";
+    case "unavailable": return "Waiting: the company check could not be reached. It will be tried again.";
+    case "refused": return "Waiting: the company check was refused.";
+    case "invalid": return "Waiting: the sender address could not be used for a company check.";
+    default: return "Not available.";
+  }
+}
