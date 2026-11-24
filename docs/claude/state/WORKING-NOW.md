@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 12:50 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 12:50 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: awam sign-in = his approved demo as real code
@@ -21,35 +21,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 3d90027d 24 Nov 12:50 awam sign-in approved demo as real code
 - f18b0145 24 Nov 12:44 ledger line a1c40c57
 - a1c40c57 24 Nov 12:44 awam sign-in restored to original
 - 30db258b 24 Nov 12:39 ledger line 22d06961
 - 22d06961 24 Nov 12:39 awam sign-in Global Grid look (backup first)
-- 3b5bff6e 24 Nov 12:31 ledger line a884aa2e
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  lovable-gold/MANIFEST.sha256
-M  lovable-gold/awam/src/components/site/AuthCinema.tsx
-M  lovable-gold/awam/src/routes/auth.tsx
-M  lovable-gold/awam/src/styles.css
-M  src/components/site/AuthCinema.tsx
-M  src/routes/auth.tsx
-M  src/styles.css
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- lovable-gold/MANIFEST.sha256                       |  6 +--
- .../awam/src/components/site/AuthCinema.tsx        | 53 ++++++++++---------
- lovable-gold/awam/src/routes/auth.tsx              |  8 +--
- lovable-gold/awam/src/styles.css                   | 59 ++++++++++++++++++++--
- src/components/site/AuthCinema.tsx                 | 53 ++++++++++---------
- src/routes/auth.tsx                                |  8 +--
- src/styles.css                                     | 59 ++++++++++++++++++++--
- 10 files changed, 206 insertions(+), 90 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 32 ++------------------------------
+ 1 file changed, 2 insertions(+), 30 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -60,4 +45,4 @@ M  src/styles.css
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (4b51298e96af360bed3f155750e614dbd7bb76c8)
+WIP snapshot: refs/wip/last (033ad320d935f9d866560e65b4b5765186ae160c)
