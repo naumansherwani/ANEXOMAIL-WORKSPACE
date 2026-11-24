@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 08:41 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: Ledger card 1m-L wired in code (AD27, ledger.rs, DeskLedger), tested
-NEXT STEP: his desk-install paste, then my Chrome look at the Ledger card
-HIS LAST WORD: his 08:34 order wire the Ledger card now
+# WORKING NOW (manual checkpoint, 24 Nov 2026 08:54 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: Ledger card GREEN desktop; AD28 ledger flood guard + dbsc look written; E201 E202 GREEN
+NEXT STEP: his desk-install paste (AD28) then desk-dbsc-look paste, then fix the cause of the refused refresh
+HIS LAST WORD: ledger card found 42,563 dbsc.refused lines; his loophole auto-fix rule
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -19,20 +19,43 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 429cbe1f 24 Nov 08:41 ledger line 96843f30
 - 96843f30 24 Nov 08:41 Desk: wire the Ledger card (AD27)
 - 5710cf5d 24 Nov 08:34 ledger line 204ff52c
 - 204ff52c 24 Nov 08:34 E202: final price chart migration
 - 7f5341e5 24 Nov 08:25 ledger line c3ceddb2
-- c3ceddb2 24 Nov 08:25 E201: merge E202 facts + pool levels, delete E202
 
 ## Uncommitted files (half-done work if any)
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+A  admin-desk/scripts/desk-dbsc-look.sh
+A  admin-desk/sql/AD28.sql
+A  admin-desk/sql/checks/AD28-check.sql
+M  docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
+M  docs/claude/AWAM-LOOPHOLE-PHASES-24NOV.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+A  docs/claude/admin-desk/scripts/desk-dbsc-look.sh
+A  docs/claude/admin-desk/sql/AD28.sql
+A  docs/claude/admin-desk/sql/checks/AD28-check.sql
+M  docs/claude/admin-desk/state/WORKING-NOW.md
+A  docs/claude/anexomail-command-center/admin-desk/README.md
  M docs/claude/state/WORKING-NOW.md
+M  docs/claude/tech-contracts/CURRENT.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
+M  docs/cursor-work/sql/index.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 45 ++--------------------------------------
- 1 file changed, 2 insertions(+), 43 deletions(-)
+ docs/claude/admin-desk/sql/checks/AD28-check.sql   | 11 ++++
+ docs/claude/admin-desk/state/WORKING-NOW.md        |  6 +-
+ .../anexomail-command-center/admin-desk/README.md  | 11 ++++
+ docs/claude/state/WORKING-NOW.md                   | 40 +++++++------
+ docs/claude/tech-contracts/CURRENT.md              |  7 +++
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        | 14 ++---
+ docs/cursor-work/sql/index.md                      |  4 +-
+ 18 files changed, 250 insertions(+), 30 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -43,4 +66,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (9970ad112df995b4dc3f3c5f61504642e7cda587)
+WIP snapshot: refs/wip/last (186e7f054a2c2c5078acb6bde00557b20846e12d)

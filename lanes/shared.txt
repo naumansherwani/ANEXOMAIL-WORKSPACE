@@ -137,6 +137,7 @@ admin-desk/scripts/cp5-look.sh
 admin-desk/scripts/desk-alias-look.sh
 admin-desk/scripts/desk-appdb.sh
 admin-desk/scripts/desk-cert-sync.sh
+admin-desk/scripts/desk-dbsc-look.sh
 admin-desk/scripts/desk-h3-check.sh
 admin-desk/scripts/desk-h3-enable.sh
 admin-desk/scripts/desk-host-check.sh
@@ -217,6 +218,7 @@ admin-desk/sql/AD24.sql
 admin-desk/sql/AD25.sql
 admin-desk/sql/AD26.sql
 admin-desk/sql/AD27.sql
+admin-desk/sql/AD28.sql
 admin-desk/sql/README.md
 admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 admin-desk/sql/checks/AD01-check.sql
@@ -253,6 +255,7 @@ admin-desk/sql/checks/AD24-check.sql
 admin-desk/sql/checks/AD25-check.sql
 admin-desk/sql/checks/AD26-check.sql
 admin-desk/sql/checks/AD27-check.sql
+admin-desk/sql/checks/AD28-check.sql
 admin-desk/sql/checks/README.md
 admin-desk/state/00-FOUNDER-TECH-RULE.md
 admin-desk/state/COMPACT-SAVE.md

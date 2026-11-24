@@ -1,3 +1,10 @@
+# TECH CONTRACT FOR PHASE: ADMIN DESK LEDGER FLOOD GUARD, 1m-L2 (Desk lane; found by the Ledger card; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 08:53 PKT rule "loophole auto fix"; the Desk is its own security domain), written 08:5x PKT BEFORE install. LIST: docs/claude/admin-desk/NOW-LIST-23NOV.md (ADVANCE-RESEARCH [1m] ledger flood)
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| PostgreSQL 16: BEFORE INSERT trigger (after the kind check, before the SHA-256 chain) that counts an identical dbsc.refused inside 60 s instead of writing it and carries the repeat count on the next line; state table with FORCE RLS and a deny-all policy; SECURITY DEFINER with fixed search_path; selftest with custom SQLSTATE rollback incl. chain verify; CHECK file | docs/claude/admin-desk/sql/AD28.sql, docs/claude/admin-desk/sql/checks/AD28-check.sql | YES | scratch PostgreSQL 16 with the whole Desk schema: selftest twice, CHECK 5 rows true; NOT yet on his server |
+| Rust + Axum door and React page that show the ledger (carried unchanged from 1m-L): the card is what found the flood | docs/claude/admin-desk/server/src/ledger.rs, founder-web/src/desk/DeskLedger.tsx, founder-web/src/desk/desk_ledger_pure.ts | YES | Ledger card live on his Desk (my Chrome look 08:51, console 0 errors) |
+| Read-only root-cause script (default_transaction_read_only=on): which refusal repeats, rate per hour, which role | docs/claude/admin-desk/scripts/desk-dbsc-look.sh | YES | bash -n ok; waits his paste |
+
 # TECH CONTRACT FOR PHASE: ADMIN DESK LEDGER CARD, 1m-L (Desk lane, card Ledger on the dashboard; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 B13 stays next; his 24 Nov 2026 08:34 PKT order "Ledger card wire kero abhi ke abhi"; the Desk is its own security domain, nothing of the founder or awam is touched), written 08:4x PKT BEFORE install. LIST: docs/claude/admin-desk/NOW-LIST-23NOV.md (ADVANCE-RESEARCH [1m] Ledger)
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3889,3 +3896,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - E202 awam price migration (workspace_plans, price book, billing function, price ledger) written. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 run twice, selftest 7 checks, CHECK_E202 9 rows true, sql-editor-lint OK
 
 - Ledger card 1m-L: SQL AD27 board door + window chain check, Rust ledger door, React DeskLedger + pure parser, card flipped to wired. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 whole Desk schema AD27 selftest twice + CHECK 6 true, cargo test 125 pass (ledger 6), bun test src/desk 138 pass, tsc clean, build:desk
+
+- Ledger card 1m-L GREEN desktop (live Chrome look); AD28 ledger flood guard + desk-dbsc-look.sh; E201 + E202 GREEN on his server (his paste); Command Center OS folder home page. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 whole Desk schema AD28 selftest twice + CHECK 5 true, AD27 selftest again after AD28, bash -n desk-dbsc-look.sh
+
+- Ledger card 1m-L GREEN desktop (live Chrome look); AD28 ledger flood guard + desk-dbsc-look.sh; E201 + E202 GREEN on his server (his paste); Command Center OS folder home page. TECH-LAW CHECKED. TESTED: scratch PostgreSQL 16 whole Desk schema AD28 selftest twice + CHECK 5 true, AD27 selftest again after AD28, bash -n desk-dbsc-look.sh

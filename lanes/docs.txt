@@ -467,6 +467,7 @@ docs/claude/admin-desk/scripts/cp5-look.sh
 docs/claude/admin-desk/scripts/desk-alias-look.sh
 docs/claude/admin-desk/scripts/desk-appdb.sh
 docs/claude/admin-desk/scripts/desk-cert-sync.sh
+docs/claude/admin-desk/scripts/desk-dbsc-look.sh
 docs/claude/admin-desk/scripts/desk-h3-check.sh
 docs/claude/admin-desk/scripts/desk-h3-enable.sh
 docs/claude/admin-desk/scripts/desk-host-check.sh
@@ -547,6 +548,7 @@ docs/claude/admin-desk/sql/AD24.sql
 docs/claude/admin-desk/sql/AD25.sql
 docs/claude/admin-desk/sql/AD26.sql
 docs/claude/admin-desk/sql/AD27.sql
+docs/claude/admin-desk/sql/AD28.sql
 docs/claude/admin-desk/sql/README.md
 docs/claude/admin-desk/sql/checks/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/sql/checks/AD01-check.sql
@@ -583,6 +585,7 @@ docs/claude/admin-desk/sql/checks/AD24-check.sql
 docs/claude/admin-desk/sql/checks/AD25-check.sql
 docs/claude/admin-desk/sql/checks/AD26-check.sql
 docs/claude/admin-desk/sql/checks/AD27-check.sql
+docs/claude/admin-desk/sql/checks/AD28-check.sql
 docs/claude/admin-desk/sql/checks/README.md
 docs/claude/admin-desk/state/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/state/COMPACT-SAVE.md
@@ -605,6 +608,8 @@ docs/claude/anexomail-command-center/COMMAND-CENTER-OS-SECURITY-PROTOCOL-24NOV.m
 docs/claude/anexomail-command-center/DECISION-BRIDGE-FINAL-24NOV.md
 docs/claude/anexomail-command-center/FOUNDER-DECISIONS-BRIDGE-24NOV.md
 docs/claude/anexomail-command-center/README.md
+docs/claude/anexomail-command-center/admin-desk/00-FOUNDER-TECH-RULE.md
+docs/claude/anexomail-command-center/admin-desk/README.md
 docs/claude/awam-passkey-reference/00-FOUNDER-TECH-RULE.md
 docs/claude/awam-passkey-reference/E139_founder_webauthn_l3.sql.txt
 docs/claude/awam-passkey-reference/E151_ceremony.sql.txt

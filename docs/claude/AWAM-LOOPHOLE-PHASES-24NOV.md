@@ -41,3 +41,6 @@ His sql-run paste 08:03: CHECK_E201 12 of 12 rows OK. HIS WORD 08:03: Business M
 ## 24 Nov 2026 08:2x PKT: the Desk side of AWL-1 (AD26 tenant registry + domain history) is GREEN on his server; awam table changes of AWL-1 (tenant key reference) still OPEN.
 
 ADVANCE-RESEARCH [AWL-3] E202 (24 Nov 2026 08:5x PKT): a price book changes through a numbered repeatable migration that touches only rows whose value differs, every changed number goes into an append-only SHA-256 chain (audit-log practice, same pattern as package_cap_ledger), plan prices are flat per company (Zendesk-class), one place of truth per number. E202 = SQL for his 08:31 order; Polar dashboard prices are his hands.
+
+## E201 + E202 GREEN ON HIS SERVER, 24 Nov 2026 08:5x PKT
+His AUTO sql-run paste 08:4x: CHECK_E201 all rows OK (incl. the chart-as-data rows), CHECK_E202 9 of 9 OK, 'DONE: sab theek.'. AWL-3 SQL half GREEN. AWL-3 Rust half and AWL-2 billing rows/webhook still OPEN.
