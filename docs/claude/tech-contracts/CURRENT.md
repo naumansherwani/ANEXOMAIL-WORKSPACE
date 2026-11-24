@@ -1,3 +1,9 @@
+# TECH CONTRACT FOR PHASE: DESK PHONE TITLE WRAP FIX (phase 1m, sub-phase CC1-mobile-3, list BL-29 (CC1) and BL-46 B13 stays next; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 first by his 02:39 order; the new OS rows were only WRITTEN into the list, at its end, by his 05:46 order, none is built here), his 24 Nov 2026 05:46 PKT screenshot, written 05:5x PKT BEFORE install. LIST: docs/claude/admin-desk/OS-INHERIT-AWAM-FOUNDER-PLAN-24NOV.md
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| React 19 + TypeScript + CSS: the left header column is back to the title width, the title line COMMAND CENTER OS never wraps under 480 px, clock never shrinks, desktop rules untouched | founder-web/src/desk/DeskShell.tsx, founder-web/src/desk/DeskTitle.tsx, founder-web/src/desk/desk_title.test.ts | YES | bun test src/desk 131 pass, tsc clean, build:desk ok |
+| Carried unchanged: Rust probe smoothing and the Desk SQL | docs/claude/admin-desk/server/src/probes.rs, docs/claude/admin-desk/sql/AD03.sql | YES | untouched |
+
 # TECH CONTRACT FOR PHASE: DESK PHONE CLOCK FIX + OS INHERIT PLAN (phase 1m, sub-phase CC1-mobile-2, list BL-29 (CC1) and BL-46 B13 stays next; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 first by his 02:39 order), his 24 Nov 2026 05:30 PKT order, written 05:4x PKT BEFORE install. LIST: docs/claude/admin-desk/OS-INHERIT-AWAM-FOUNDER-PLAN-24NOV.md
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3757,3 +3763,9 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Phone clock off-screen fixed (shrinkable left column, clock flex none, shorter side rules under 480 px) and OS-INHERIT plan OS-13..OS-23 with advance technology, WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 131 pass, tsc clean, build:desk ok, sandbox header at 390 clock right edge 374 no overflow
 
 - OS inherit plan section 6: awam and founder features in employee words, docs only, TECH-LAW CHECKED, TESTED: docs only, gate pass
+
+- Phone title wrap fixed (COMMAND CENTER OS one line, column back to title width, desktop CSS untouched) and OS-13..OS-23 written as BL-68..BL-78 with ADVANCE-TECH lines and ORDER-LOCK, Appearance with Cinematic stars toggle planned, WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 131 pass, tsc clean, build:desk ok, gate list rows 22 added
+
+- Phone title wrap fixed (COMMAND CENTER OS one line, column back to title width, desktop CSS untouched) and OS-13..OS-23 written as BL-68..BL-78 with ADVANCE-TECH lines and ORDER-LOCK, Appearance with Cinematic stars toggle planned, WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 131 pass, tsc clean, build:desk ok, gate list rows 22 added
+
+- Phone title wrap fixed (COMMAND CENTER OS one line, column back to title width, desktop CSS untouched) and OS-13..OS-23 written as BL-68..BL-78 with ADVANCE-TECH lines and ORDER-LOCK, Appearance with Cinematic stars toggle planned, WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 131 pass, tsc clean, build:desk ok, gate list rows 22 added

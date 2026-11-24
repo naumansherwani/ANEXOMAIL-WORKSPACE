@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 05:36 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: OS inherit plan: employee-words answer
-NEXT STEP: his install of desk-B8DS1CmL, his haan per OS row
-HIS LAST WORD: his 05:36 question
+# WORKING NOW (manual checkpoint, 24 Nov 2026 05:48 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: title wrap fix, OS-13..23 as BL-68..78 in the gate list
+NEXT STEP: his install of desk-C7e2ymzR, B13 Z4
+HIS LAST WORD: his 05:46 orders
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -19,20 +19,43 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 4034c8b5 24 Nov 05:36 ledger line c3f3b2d8
 - c3f3b2d8 24 Nov 05:36 OS inherit employee answer
 - cad8e1b7 24 Nov 05:33 ledger line 2a162a68
 - 2a162a68 24 Nov 05:33 phone clock and OS inherit plan
 - 10bb0381 24 Nov 05:18 ledger line a5fb5de7
-- a5fb5de7 24 Nov 05:18 phone fixes
 
 ## Uncommitted files (half-done work if any)
+M  admin-desk/BILLIONAIRE-SETUP-LIST-23NOV.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  admin-desk/OS-INHERIT-AWAM-FOUNDER-PLAN-24NOV.md
+A  backups/desk/20261124-0548-os-wrap/DeskShell.tsx
+A  backups/desk/20261124-0548-os-wrap/DeskTitle.tsx
+M  docs/claude/admin-desk/BILLIONAIRE-SETUP-LIST-23NOV.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/OS-INHERIT-AWAM-FOUNDER-PLAN-24NOV.md
+M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
+M  docs/claude/tech-contracts/CURRENT.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
+R  founder-web/dist-desk/assets/desk-B8DS1CmL.js -> founder-web/dist-desk/assets/desk-C7e2ymzR.js
+M  founder-web/dist-desk/desk.html
+M  founder-web/src/desk/DeskShell.tsx
+M  founder-web/src/desk/DeskTitle.tsx
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 31 ++-----------------------------
- 1 file changed, 2 insertions(+), 29 deletions(-)
+ docs/claude/state/WORKING-NOW.md                   |  40 ++---
+ docs/claude/tech-contracts/CURRENT.md              |   6 +
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  10 +-
+ .../assets/{desk-B8DS1CmL.js => desk-C7e2ymzR.js}  |   4 +-
+ founder-web/dist-desk/desk.html                    |   2 +-
+ founder-web/src/desk/DeskShell.tsx                 |   2 +-
+ founder-web/src/desk/DeskTitle.tsx                 |   2 +-
+ 18 files changed, 405 insertions(+), 30 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -43,4 +66,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (553c9879a22e7b4983a53eb627adc9b0da2b5fff)
+WIP snapshot: refs/wip/last (faaf26450f708022bd27bcd399225987c1d2ef7c)

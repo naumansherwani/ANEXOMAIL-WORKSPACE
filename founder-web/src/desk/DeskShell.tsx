@@ -71,7 +71,7 @@ const CSS = `
 .dsk-nav[aria-disabled=true]{opacity:.55;cursor:default}
 .dsk-nav:focus-visible,.dsk-out:focus-visible{outline:2px solid #BFD6FF;outline-offset:2px}
 .dsk-main{position:relative;z-index:1;margin:0 auto;max-width:68rem;padding:28px max(16px,env(safe-area-inset-left)) calc(96px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-right))}
-.dsk-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.dsk-top>div:first-child{min-width:0}.dsk-clock{flex:none}
+.dsk-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.dsk-clock{flex:none}
 .dsk-hi{margin:0;color:var(--mute);font-size:14px}
 .dsk-h1{margin:4px 0 0;font-size:clamp(30px,5.4vw,52px);line-height:1.05;font-weight:600;letter-spacing:-.03em;text-wrap:balance;background:linear-gradient(180deg,#fff 0%,#BFD6FF 60%,#6FA6F2 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .dsk-clock{font-variant-numeric:tabular-nums;font-size:clamp(22px,3.4vw,34px);font-weight:300;letter-spacing:.02em;color:#D5E1F7;text-align:right;white-space:nowrap}

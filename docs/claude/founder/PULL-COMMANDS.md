@@ -3653,3 +3653,9 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - Phone clock off-screen fixed (shrinkable left column, clock flex none, shorter side rules under 480 px) and OS-INHERIT plan OS-13..OS-23 with advance technology, WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 131 pass, tsc clean, build:desk ok, sandbox header at 390 clock right edge 374 no overflow
 
 - OS inherit plan section 6: awam and founder features in employee words, docs only, TECH-LAW CHECKED, TESTED: docs only, gate pass
+
+- Phone title wrap fixed (COMMAND CENTER OS one line, column back to title width, desktop CSS untouched) and OS-13..OS-23 written as BL-68..BL-78 with ADVANCE-TECH lines and ORDER-LOCK, Appearance with Cinematic stars toggle planned, WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 131 pass, tsc clean, build:desk ok, gate list rows 22 added
+
+- Phone title wrap fixed (COMMAND CENTER OS one line, column back to title width, desktop CSS untouched) and OS-13..OS-23 written as BL-68..BL-78 with ADVANCE-TECH lines and ORDER-LOCK, Appearance with Cinematic stars toggle planned, WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 131 pass, tsc clean, build:desk ok, gate list rows 22 added
+
+- Phone title wrap fixed (COMMAND CENTER OS one line, column back to title width, desktop CSS untouched) and OS-13..OS-23 written as BL-68..BL-78 with ADVANCE-TECH lines and ORDER-LOCK, Appearance with Cinematic stars toggle planned, WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 131 pass, tsc clean, build:desk ok, gate list rows 22 added

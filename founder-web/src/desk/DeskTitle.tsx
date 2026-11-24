@@ -25,7 +25,7 @@ export const TITLE_CSS = `
 .dsk-sub .rule{flex:0 1 auto;min-width:12px;display:inline-block;height:1px;width:clamp(36px,8vw,90px);background:linear-gradient(90deg,transparent,#6FA6F2)}
 .dsk-sub::after{content:"";display:inline-block;height:1px;width:clamp(36px,8vw,90px);background:linear-gradient(270deg,transparent,#6FA6F2)}
 /* his 24 Nov 05:30 (phone): on a narrow phone the two side rules are shorter so the Senior Executive line is never wider than the title and the clock keeps its place */
-@media(max-width:480px){.dsk-sub .rule,.dsk-sub::after{width:clamp(14px,4.5vw,36px)}}
+@media(max-width:480px){.dsk-sub .rule,.dsk-sub::after{width:clamp(14px,4.5vw,36px)}.dsk-ttl .l2{white-space:nowrap}}
 @keyframes dsk-up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.dsk-ttl .c{animation:none;opacity:1;filter:none;transform:none}.dsk-ttl .l1::after{animation:none;transform:none}.dsk-ttl .l1::before{animation:none;opacity:.2}.dsk-halo{animation:none}.dsk-sub{animation:none;opacity:1}}
 `;
