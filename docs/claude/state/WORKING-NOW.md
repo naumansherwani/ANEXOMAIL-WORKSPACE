@@ -1,8 +1,8 @@
-# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 10:23 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 24 Nov 2026 10:50 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
-DOING: B13 T3a: AD31 selftest fixed for live FKs; AD31 wired into cp-install + proof; enterprise.tsx in manifest
-NEXT STEP: his desk-install (PROOF sender verdict AD31) then awam pull; then T3b
-HIS LAST WORD: R1 gate final; selftest must run on a scratch with the live FKs; green only with proof
+DOING: B13 T3a GREEN (AD31 installed, CHECK 8/8); landing wording professional
+NEXT STEP: T3b: Control Plane signed resolve over HTTP/3 (Rule 52), then T3c, T3d
+HIS LAST WORD: R1 gate final; his rule: versions never old; green only with proof
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -20,20 +20,36 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 3e817e50 24 Nov 10:23 ledger line 35cbc5d1
 - 35cbc5d1 24 Nov 10:23 Desk B13 T3a: AD31 selftest live-FK fix + install wiring
 - a1fc0b01 24 Nov 10:11 ledger line 4b52e278
 - 4b52e278 24 Nov 10:11 Desk B13 T3a: sender-to-tenant verdict AD31, landing founder-contact removed
 - 73603f96 24 Nov 10:02 ledger line 97021450
-- 97021450 24 Nov 10:02 Desk: Move-In plan saved, priority support gate reminder, T3 by folder
 
 ## Uncommitted files (half-done work if any)
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
+M  lovable-gold/MANIFEST.sha256
+M  lovable-gold/awam/src/routes/index.tsx
+M  lovable-gold/awam/src/routes/plans.tsx
+M  src/routes/index.tsx
+M  src/routes/plans.tsx
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 51 +++-------------------------------------
- 1 file changed, 3 insertions(+), 48 deletions(-)
+ docs/claude/state/WORKING-NOW.md                   | 33 ++++++++++------------
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        | 14 ++++-----
+ lovable-gold/MANIFEST.sha256                       |  4 +--
+ lovable-gold/awam/src/routes/index.tsx             | 21 +++++++-------
+ lovable-gold/awam/src/routes/plans.tsx             |  8 +++---
+ src/routes/index.tsx                               | 21 +++++++-------
+ src/routes/plans.tsx                               |  8 +++---
+ 11 files changed, 58 insertions(+), 57 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -44,4 +60,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (41d427dfb6cb442a936abf1efdfd4be0b3fee08c)
+WIP snapshot: refs/wip/last (1c96ad33fdcd049f0e7ca85fd73a947e953aaeb3)

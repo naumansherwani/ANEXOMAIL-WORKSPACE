@@ -5784,3 +5784,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - B13 T3a install fix: AD31 into cp-install.sh + desk-install proof, enterprise.tsx into DEPLOY-MANIFEST. TECH-LAW CHECKED: PostgreSQL 16 verdict, tokio 1.54.1 newest, Rule 52. TESTED: bash -n both scripts, manifest-verify clean, desk-copy-sync same, gate approve
 
 - B13 T3a: AD31 selftest rewritten for live FKs (organisations, auth.users), AD31 wired into cp-install + desk-install proof, enterprise.tsx into DEPLOY-MANIFEST. TECH-LAW CHECKED: PostgreSQL 16 verdict, tokio 1.54.1 newest, Rule 52. TESTED: AD31 selftest passed x2 on scratch PG16 with live FKs (old version reproduced his FK error), CHECK 8/8 true, org_members 0 rows after, bash -n installers OK
+
+- B13 T3a GREEN: AD31 installed on his server, CHECK 8 of 8 true, binary page kernel SAME, awam server==repo 627. Landing wording rewritten professionally (index.tsx, plans.tsx). TECH-LAW CHECKED: PostgreSQL 16 verdict, tokio 1.54.1 newest, Rule 52 verdict call is T3b. TESTED: his server install paste CHECK 8/8 true, tsc clean pass, bun test routes 0 fail

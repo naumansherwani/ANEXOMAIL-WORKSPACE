@@ -475,23 +475,22 @@ function Index() {
               <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr] lg:items-center">
                 <div>
                   <span className="ax-eyebrow">
-                    Need help moving in, or a named person afterwards?
+                    Need help moving in, or faster support afterwards?
                   </span>
                   <p className="mt-4 text-[15px] leading-relaxed text-foreground">
-                    <strong className="font-extrabold">
-                      Managed Move-In — £568 / £1,670 / £2,210 / £3,350 one-off.
-                    </strong>{" "}
-                    Priced by mailbox count: 1–5, 6–15, 16–29, or 30+. We move the whole company off
-                    your old provider and prove your domain is green.
+                    <strong className="font-extrabold">Managed Move-In, one-off.</strong> £568 for
+                    1–5 mailboxes, £1,670 for 6–15, £2,210 for 16–29 and £3,350 for 30 or more. We
+                    move your whole company off your old provider and show you your domain passing
+                    its checks.
                   </p>
                   <p className="mt-2 text-[15px] leading-relaxed text-foreground">
-                    <strong className="font-extrabold">Priority Support — £790 / month.</strong> A
-                    a priority support queue, a response within 2 business days, and a quarterly
-                    service and security review.
+                    <strong className="font-extrabold">Priority Support, £790 a month.</strong> A
+                    priority support queue, a reply within 2 business days, and a quarterly service
+                    and security review.
                   </p>
                   <p className="mt-3 text-[13px] text-muted-foreground">
-                    Two move-ins a month, three Priority Support companies at a time — capped so
-                    both stay real.
+                    We take on two move-ins a month and three Priority Support companies at a time,
+                    so each one gets proper attention.
                   </p>
                 </div>
                 <div className="flex flex-col gap-3">

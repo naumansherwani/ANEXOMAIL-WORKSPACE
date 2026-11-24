@@ -840,3 +840,5 @@ ADVANCE-RESEARCH [1m] B13 T1 (24 Nov 2026): advisor review (verbatim in TENANT-I
 - B13 T3a (24 Nov 2026 10:3x PKT): AD31 wired into cp-install.sh + proof line in desk-install.sh (was missing: not installed on his server at 10:20). enterprise.tsx added to DEPLOY-MANIFEST. tokio 1.54.1 = newest.
 
 - B13 T3a (24 Nov 2026 10:3x PKT): AD31 selftest rewritten for the live FKs (organisations, auth.users); old one reproduced his editor error on scratch with FKs; new passes x2, CHECK 8/8.
+
+- B13 T3a GREEN (24 Nov 2026 10:5x PKT): AD31 installed + CHECK 8/8 on his server. Rule 52 verdict call = T3b. Landing wording professional rewrite (index.tsx, plans.tsx).

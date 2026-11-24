@@ -1,8 +1,8 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 10:23 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 10:50 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
-DOING: B13 T3a: AD31 selftest fixed for live FKs; AD31 wired into cp-install + proof; enterprise.tsx in manifest
-NEXT STEP: his desk-install (PROOF sender verdict AD31) then awam pull; then T3b
-HIS LAST WORD: R1 gate final; selftest must run on a scratch with the live FKs; green only with proof
+DOING: B13 T3a GREEN (AD31 installed, CHECK 8/8); landing wording professional
+NEXT STEP: T3b: Control Plane signed resolve over HTTP/3 (Rule 52), then T3c, T3d
+HIS LAST WORD: R1 gate final; his rule: versions never old; green only with proof
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -67,6 +67,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 3e817e50 24 Nov 10:23 ledger line 35cbc5d1
 - 35cbc5d1 24 Nov 10:23 Desk B13 T3a: AD31 selftest live-FK fix + install wiring
 - a1fc0b01 24 Nov 10:11 ledger line 4b52e278
 - 4b52e278 24 Nov 10:11 Desk B13 T3a: sender-to-tenant verdict AD31, landing founder-contact removed
@@ -74,9 +75,12 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 97021450 24 Nov 10:02 Desk: Move-In plan saved, priority support gate reminder, T3 by folder
 - 28662f6d 24 Nov 09:49 ledger line 0d1ae8d1
 - 0d1ae8d1 24 Nov 09:49 Desk: OS final decision and awam move-in loopholes
-- 6c06f9ee 24 Nov 09:43 ledger line 9d96440a
 
 ## Uncommitted Desk files
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)

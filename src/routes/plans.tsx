@@ -337,7 +337,7 @@ const services = [
     ],
     terms:
       "50% on accepting the plan, 50% the day after cut-over. Old mailboxes are copied, never deleted.",
-    capacity: "Two move-ins a month — done by hand, not queued",
+    capacity: "Two move-ins a month, each handled personally by our team",
     cta: "Email us to start your move-in",
     to: "/migration" as const,
   },
@@ -345,7 +345,7 @@ const services = [
     name: "Priority Support",
     price: "£790",
     unit: " / month",
-    body: "For companies that need a named person answering, not a queue. Sits on top of any plan.",
+    body: "For companies that want their requests handled first, with a guaranteed reply time. Sits on top of any plan.",
     tiers: [
       "Any plan · added or dropped monthly",
       "Invoiced monthly in advance",
@@ -448,8 +448,8 @@ function PlansPage() {
           <h2 className="text-2xl text-foreground md:text-3xl">Done-for-you services</h2>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
             Two things you can buy on top of a plan: getting moved in without doing the work
-            yourself, and a named person on the other end afterwards. Both are capped on purpose —
-            we would rather say "next month" than do it badly.
+            yourself, and priority support afterwards. Both are limited on purpose, so every company
+            we take on receives proper attention.
           </p>
 
           <div className="mt-7 grid gap-5 md:grid-cols-2">
