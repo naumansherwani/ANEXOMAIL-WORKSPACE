@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 25 Nov 2026 04:11 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 04:12 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: T4e FIX: dist-desk rebuilt (Company confirmation screen was NOT in the live bundle)
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- a5919570 25 Nov 04:12 T4e fix: rebuild dist-desk with the screen
 - 71f92d97 25 Nov 04:07 ledger line 3dbf762e
 - 3dbf762e 25 Nov 04:07 T4e GREEN, web install without SQL, thin LTO
 - ff1bee35 25 Nov 03:58 ledger line 36d19d78
@@ -75,10 +76,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - a1a128df 25 Nov 03:39 ledger line 3ed095ff
 - 3ed095ff 25 Nov 03:39 T4e fix tenant path in Control Plane
 - 7fd24a11 25 Nov 03:22 ledger line d378ca2a
-- d378ca2a 25 Nov 03:22 install rule final separate
 
 ## Uncommitted Desk files
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

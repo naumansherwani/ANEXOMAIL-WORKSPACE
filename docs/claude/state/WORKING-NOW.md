@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 25 Nov 2026 04:11 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 04:12 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: T4e FIX: dist-desk rebuilt (Company confirmation screen was NOT in the live bundle)
@@ -21,30 +21,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- a5919570 25 Nov 04:12 T4e fix: rebuild dist-desk with the screen
 - 71f92d97 25 Nov 04:07 ledger line 3dbf762e
 - 3dbf762e 25 Nov 04:07 T4e GREEN, web install without SQL, thin LTO
 - ff1bee35 25 Nov 03:58 ledger line 36d19d78
 - 36d19d78 25 Nov 03:58 T4e GREEN, web install without SQL, thin LTO
-- a1a128df 25 Nov 03:39 ledger line 3ed095ff
 
 ## Uncommitted files (half-done work if any)
-M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-A  founder-web/dist-desk/assets/desk-B5yyzip8.js
-D  founder-web/dist-desk/assets/desk-Bkyw8jea.js
-M  founder-web/dist-desk/desk.html
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/admin-desk/state/WORKING-NOW.md   |   2 +
- docs/claude/state/WORKING-NOW.md              |  28 ++-
- docs/cursor-work/server/DEPLOY-MANIFEST.txt   |   4 +-
- founder-web/dist-desk/assets/desk-B5yyzip8.js | 243 ++++++++++++++++++++++++++
- founder-web/dist-desk/assets/desk-Bkyw8jea.js | 234 -------------------------
- founder-web/dist-desk/desk.html               |   2 +-
- 6 files changed, 258 insertions(+), 255 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 27 ++-------------------------
+ 1 file changed, 2 insertions(+), 25 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -55,4 +45,4 @@ M  founder-web/dist-desk/desk.html
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (5624892743de879c2b5ed391f8d884f2bc867211)
+WIP snapshot: refs/wip/last (2361b41cfaef4154b922add686a8ddebac0cd381)
