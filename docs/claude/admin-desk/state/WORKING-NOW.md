@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 07:30 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 07:31 PKT) - read this FIRST for the Desk after a compaction
 DOING: B13 T1 CP6 written and tested
 NEXT STEP: his desk-install paste, then T2 case binding
 HIS LAST WORD: his 07:28 word: which phase, when codes
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 77e022b6 24 Nov 07:30 b13 t1 cp6
 - 6d78da02 24 Nov 07:26 ledger line 9e36ebce
 - 9e36ebce 24 Nov 07:26 t1 checklist
 - 93ffdbf6 24 Nov 07:25 ledger line 5a236721
@@ -72,16 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 04b296f4 24 Nov 07:17 ledger line 6cb3e25a
 - 6cb3e25a 24 Nov 07:17 tenant identity decision
 - 3e3f0b55 24 Nov 07:03 ledger line 02c20159
-- 02c20159 24 Nov 07:03 advisor question
 
 ## Uncommitted Desk files
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  admin-desk/scripts/cp-install.sh
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/scripts/cp-install.sh
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
