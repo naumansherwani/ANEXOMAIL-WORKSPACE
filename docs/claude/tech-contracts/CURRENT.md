@@ -4096,3 +4096,7 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - AWAM SIGN-IN GLOBAL GRID LOOK SHIPPED = his approved demo real-exact copied unchanged (backups kept in backups/awam). TECH-LAW CHECKED. TESTED: tsc clean, dev render 1280/820/390 + reduced motion, 3 inputs render, no sideways scroll, dust on, 390 card not clipped
 
 - AWAM SIGN-IN GLOBAL GRID LOOK SHIPPED = his approved demo real-exact copied unchanged (backups kept in backups/awam); AuthDust.tsx added to DEPLOY-MANIFEST. TECH-LAW CHECKED. TESTED: tsc clean, dev render 1280/820/390 + reduced motion, 3 inputs render, no sideways scroll, dust on, 390 card not clipped
+
+- DEMO ONLY: demo/awam-signin-24nov/real-list = Rule 52 words removed and all Rule 52 technologies as 18 lines. src untouched. TECH-LAW CHECKED. TESTED: dev render 1280x800 1366x768 1920x1080, list fits, no Rule 52 text on page, tsc clean
+
+- DEMO ONLY: demo/awam-signin-24nov/real-list = 13 advance-only lines (no port names, no HTTP fallback, no Rule 52 words), engine line with real versions Rust 1.97 Tokio 1.54 Axum 0.8 from Cargo.lock. src untouched. TECH-LAW CHECKED. TESTED: dev render 1280x800 1366x768 1920x1080, no Rule 52 text, tsc clean, src diff empty

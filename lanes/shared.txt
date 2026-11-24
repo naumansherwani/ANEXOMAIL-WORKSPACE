@@ -405,6 +405,7 @@ demo/awam-signin-24nov/demo.js
 demo/awam-signin-24nov/exact-shot.cjs
 demo/awam-signin-24nov/final-check.cjs
 demo/awam-signin-24nov/left-compare.cjs
+demo/awam-signin-24nov/list-shot.cjs
 demo/awam-signin-24nov/phase-check.cjs
 demo/awam-signin-24nov/real-exact/00-FOUNDER-TECH-RULE.md
 demo/awam-signin-24nov/real-exact/AuthCinema.tsx
@@ -412,6 +413,12 @@ demo/awam-signin-24nov/real-exact/AuthDust.tsx
 demo/awam-signin-24nov/real-exact/README.md
 demo/awam-signin-24nov/real-exact/auth.tsx
 demo/awam-signin-24nov/real-exact/styles.css
+demo/awam-signin-24nov/real-list/00-FOUNDER-TECH-RULE.md
+demo/awam-signin-24nov/real-list/AuthCinema.tsx
+demo/awam-signin-24nov/real-list/AuthDust.tsx
+demo/awam-signin-24nov/real-list/README.md
+demo/awam-signin-24nov/real-list/auth.tsx
+demo/awam-signin-24nov/real-list/styles.css
 demo/awam-signin-24nov/real-shot.cjs
 demo/awam-signin-24nov/real-wip/00-FOUNDER-TECH-RULE.md
 demo/awam-signin-24nov/real-wip/AuthCinema.tsx
@@ -435,6 +442,9 @@ demo/awam-signin-24nov/screens/exact-single-light-1.png
 demo/awam-signin-24nov/screens/exact-single-light-2.png
 demo/awam-signin-24nov/screens/exact-single-light-3.png
 demo/awam-signin-24nov/screens/exact-single-light-strip.png
+demo/awam-signin-24nov/screens/list-1280.png
+demo/awam-signin-24nov/screens/list-1366.png
+demo/awam-signin-24nov/screens/list-1920.png
 docs/cursor-work/server/all-pull.sh
 docs/cursor-work/server/manifest-sync.py
 docs/cursor-work/server/manifest-verify.py
