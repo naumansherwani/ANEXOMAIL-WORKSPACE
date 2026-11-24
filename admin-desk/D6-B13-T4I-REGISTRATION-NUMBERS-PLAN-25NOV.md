@@ -12,3 +12,10 @@ His order (04:21): "duniya ke har country ki company registration number alag ho
 ## Needs from him
 - The GLEIF RA list file (CSV) from the GLEIF page (this sandbox cannot download it; its network allow-list refuses that host) and a yes after the License terms are read.
 ## Not built yet: everything above.
+
+## 25 Nov 2026 04:45 PKT: HIS CSV READ (docs/claude/admin-desk/data/gleif-ra-list-v1.9-2026-09-30.csv, GLEIF RA list v1.9, 1,181 lines)
+- PROVEN from the file: 1,178 real register rows in 234 countries/jurisdictions + 3 special codes (RA777777 public legal documents, RA888888 temporary, RA999999 none available). Columns: RA code, country, country code, jurisdiction, register name, local name, responsible organisation, website, comments (445 rows have a comment).
+- The file has NO number format column: it names WHICH register exists, not how its numbers look. So a per-country number shape is NOT in GLEIF's list and must never be invented; formats are added one by one only from the register's own page (Pakistan first: CUIN 7 digits needs SECP's page).
+- RA codes are NOT unique across rows (some codes repeat): the table key must be a row id, with the RA code as a plain column, checked at load.
+- Pakistan in the file: RA000475 Corporate Registry (Securities and Exchange Commission, www.secp.gov.pk); RA001111 Online Verification Services (FBR, https://e.fbr.gov.pk/esbn/Verification) = the tax side (NTN/STRN verification).
+- NEXT (not built): AD34 extension desk.registry_kind loaded from this file (country + register picker), format column empty = "shape unknown" until verified per register.
