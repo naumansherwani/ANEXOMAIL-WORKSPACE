@@ -1,9 +1,9 @@
-# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 12:14 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 24 Nov 2026 12:22 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: Desk login text real: THE GLOBAL GRID WORKPLACE, label and heading removed
-NEXT STEP: his plain desk-install, my live Chrome look, then GREEN; then Folder 2 / T4
-HIS LAST WORD: his 24 Nov 12:13 word: approved, make it real
+DOING: awam sign-in cinematic demo (no code change)
+NEXT STEP: his approval of the awam demo; his plain desk-install for the Desk login; then live Chrome look
+HIS LAST WORD: his 24 Nov 12:21 word: demo first, admin desk left behind
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -21,20 +21,40 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- b3163bf6 24 Nov 12:14 ledger line b3ea8c94
 - b3ea8c94 24 Nov 12:14 Desk login: THE GLOBAL GRID WORKPLACE
 - 0117af19 24 Nov 12:11 ledger line 73587c8a
 - 73587c8a 24 Nov 12:11 B13 T3c green, login text demo
 - eddfe1c5 24 Nov 11:58 ledger line a4cc7e40
-- a4cc7e40 24 Nov 11:58 B13 T3b green, T3c AD33 apply door
 
 ## Uncommitted files (half-done work if any)
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+A  admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-cine-a.png
+A  admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-cine-b.png
+A  admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-demo-390.png
+A  admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-demo-script.js
+M  docs/claude/AWAM-BLUEPRINT-ALPHABETIC-20NOV.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+A  docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-cine-a.png
+A  docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-cine-b.png
+A  docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-demo-390.png
+A  docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-demo-script.js
  M docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 48 +++-------------------------------------
- 1 file changed, 3 insertions(+), 45 deletions(-)
+ docs/claude/admin-desk/NOW-LIST-23NOV.md           |   3 ++
+ .../demo/AWAM-SIGNIN-GLOBAL-GRID-awam-cine-a.png   | Bin 0 -> 2055628 bytes
+ .../demo/AWAM-SIGNIN-GLOBAL-GRID-awam-cine-b.png   | Bin 0 -> 2056242 bytes
+ .../demo/AWAM-SIGNIN-GLOBAL-GRID-awam-demo-390.png | Bin 0 -> 128007 bytes
+ .../demo/AWAM-SIGNIN-GLOBAL-GRID-demo-script.js    |  22 ++++++++++++
+ docs/claude/state/WORKING-NOW.md                   |  37 +++++++++++----------
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  10 +++---
+ 15 files changed, 82 insertions(+), 23 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -45,4 +65,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (8ebc9b32a2aa044f4d75b6934d851cc21476126c)
+WIP snapshot: refs/wip/last (4e4fa5bc35dae81d773a55d1e8c1e8626d6dee05)

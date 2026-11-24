@@ -6231,3 +6231,5 @@ FINAL: 21 Nov Desk Isolation Law and Gate never break. Company OS (Command Cente
 - Desk login text real, text only. TECH-LAW CHECKED. TESTED: tsc clean, bun test 143 pass, demo approved, bundle desk-Bkyw8jea.js contains the text and not the old heading
 
 - Desk login text real, text only. TECH-LAW CHECKED. TESTED: tsc clean, bun test 143 pass, demo approved, bundle desk-Bkyw8jea.js contains the text and not the old heading
+
+- Awam sign-in cinematic demo only, no code change. TECH-LAW CHECKED. TESTED: demo rendered on the real awam page (vite dev) at 1280 and 390 OK

@@ -125,3 +125,5 @@ The awam starts only after the FOUNDER blueprint is complete (founder target 25 
 > [24 Nov 2026 12:0x PKT] ADMIN DESK B13 T3b GREEN, T3c written (AD33, Desk database only): awam side unchanged; cp.resolve_sender (AD31) stays the read-only verdict source. RULE 52 COMBO S=yes M=yes L=yes. The landing wording changes (index.tsx, plans.tsx) still await his awam pull + my live Chrome look.
 
 > [24 Nov 2026 12:1x PKT] ADMIN DESK B13 T3c GREEN (AD33 on his server, CHECK OK). Awam side unchanged. RULE 52 COMBO S=yes M=yes L=yes.
+
+> [24 Nov 2026 12:2x PKT] AWAM SIGN-IN DEMO ONLY (Enter The Global Grid + cinematic left panel); no awam code changed; waits his approval. RULE 52 COMBO unchanged.
