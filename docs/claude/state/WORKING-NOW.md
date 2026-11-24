@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 11:10 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 11:11 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 DOING: B13 T3b written + tested: resolve door (Control Plane), Desk client, AD32 ledger, resolutionWords; RFC 9421 + WIMSE + RFC 7489 + OWASP in gate
 NEXT STEP: his desk-install (AD32 + resolve-selftest) then T3c Folder 2 call
@@ -20,65 +20,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- eb7518a3 24 Nov 11:11 Desk B13 T3b: sender-resolve door, AD32, RFC 9421 WIMSE 7489 OWASP
 - 0b7d147a 24 Nov 10:50 ledger line ea06fd4f
 - ea06fd4f 24 Nov 10:50 Desk B13 T3a GREEN + landing wording
 - 3e817e50 24 Nov 10:23 ledger line 35cbc5d1
 - 35cbc5d1 24 Nov 10:23 Desk B13 T3a: AD31 selftest live-FK fix + install wiring
-- a1fc0b01 24 Nov 10:11 ledger line 4b52e278
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/D6-B13-T3-RESOLUTION-LIST-24NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  admin-desk/scripts/cp-install.sh
-M  admin-desk/server/src/main.rs
-M  admin-desk/server/src/resolve_cp.rs
-A  admin-desk/sql/AD32.sql
-A  admin-desk/sql/checks/AD32-check.sql
-M  control-plane/src/answer.rs
-M  control-plane/src/core.rs
-M  control-plane/src/db.rs
-M  control-plane/src/h3srv.rs
-M  control-plane/src/main.rs
-A  control-plane/src/resolve.rs
-M  docs/claude/DONE-DO-NOT-REPEAT.md
-M  docs/claude/RESUME-POINT.md
-M  docs/claude/TECH-LAW-GATE.json
-M  docs/claude/admin-desk/D6-B13-T3-RESOLUTION-LIST-24NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/scripts/cp-install.sh
-M  docs/claude/admin-desk/server/src/main.rs
-M  docs/claude/admin-desk/server/src/resolve_cp.rs
-A  docs/claude/admin-desk/sql/AD32.sql
-A  docs/claude/admin-desk/sql/checks/AD32-check.sql
-M  docs/claude/admin-desk/state/WORKING-NOW.md
-M  docs/claude/founder/PULL-COMMANDS.md
-M  docs/claude/state/HEARTBEAT.json
-MM docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
-M  docs/cursor-work/DONE-DO-NOT-REPEAT.md
-M  docs/cursor-work/founder/founder-commands.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-M  docs/cursor-work/server/PULL-COMMANDS.md
-R  founder-web/dist/assets/index-B2QkqI9H.js -> founder-web/dist/assets/index-Dfh4FVuW.js
-M  founder-web/dist/index.html
-M  founder-web/src/desk/desk_consent_pure.test.ts
-M  founder-web/src/desk/desk_consent_pure.ts
-M  founder-web/src/system_brain.json
+ M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- lanes/docs.txt                                     |   2 +
- lanes/founder.txt                                  |   2 +-
- lanes/shared.txt                                   |   3 +
- lovable-gold/MANIFEST.sha256                       |   2 +-
- lovable-gold/README.md                             |   2 +-
- lovable-gold/awam/src/routes/index.tsx             |  17 ++-
- src/routes/index.tsx                               |  17 ++-
- 48 files changed, 1003 insertions(+), 86 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 64 ++--------------------------------------
+ 1 file changed, 3 insertions(+), 61 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -89,4 +44,4 @@ M  founder-web/src/system_brain.json
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (4ff4946aac1a55d16af4735da488146daca524bc)
+WIP snapshot: refs/wip/last (f51ba9c1abad8e1479dd1a2af281a9f106f0b1ae)
