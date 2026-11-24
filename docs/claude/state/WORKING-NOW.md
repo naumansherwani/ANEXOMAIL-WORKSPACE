@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 24 Nov 2026 07:48 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 07:48 PKT) - read this FIRST after a compaction; it is where the work stopped
 DOING: Desk SQL ONE series AD: CP1..CP6 renamed AD21..AD26, awam-db marker, runners skip them
 NEXT STEP: his Desk T1 command (AD26 = old CP6), then awam E201 line
 HIS LAST WORD: his 07:47 order: C series deleted, everything AD in one folder
@@ -19,65 +19,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- de12ed1d 24 Nov 07:48 Desk SQL one series AD21..AD26
 - aff2ba11 24 Nov 07:44 ledger line cc3d94c8
 - cc3d94c8 24 Nov 07:44 Desk SQL folder: CP1..CP6 into admin-desk sql
 - b5ba01e1 24 Nov 07:41 ledger line 543cdc4a
 - 543cdc4a 24 Nov 07:41 E201 awam package caps final (AWL-3 SQL)
-- 6c78729c 24 Nov 07:30 ledger line 77e022b6
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/D6-B13-T1-GATE-CHECKLIST-24NOV.md
-M  admin-desk/D6-B13-Z4-GATE-CHECKLIST-24NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  admin-desk/scripts/ad-auto.sh
-M  admin-desk/scripts/ad-sql-run.sh
-M  admin-desk/scripts/cp-install.sh
-M  admin-desk/scripts/cp5-look.sh
-M  admin-desk/scripts/desk-install.sh
-R  admin-desk/sql/CP1.sql -> admin-desk/sql/AD21.sql
-R  docs/claude/admin-desk/sql/CP2.sql -> admin-desk/sql/AD22.sql
-R  admin-desk/sql/CP3.sql -> admin-desk/sql/AD23.sql
-R  docs/claude/admin-desk/sql/CP4.sql -> admin-desk/sql/AD24.sql
-R  admin-desk/sql/CP5.sql -> admin-desk/sql/AD25.sql
-R  admin-desk/sql/CP6.sql -> admin-desk/sql/AD26.sql
-M  admin-desk/sql/README.md
-R  admin-desk/sql/checks/CP1-check.sql -> admin-desk/sql/checks/AD21-check.sql
-R  docs/claude/admin-desk/sql/checks/CP2-check.sql -> admin-desk/sql/checks/AD22-check.sql
-R  admin-desk/sql/checks/CP3-check.sql -> admin-desk/sql/checks/AD23-check.sql
-R  docs/claude/admin-desk/sql/checks/CP4-check.sql -> admin-desk/sql/checks/AD24-check.sql
-R  admin-desk/sql/checks/CP5-check.sql -> admin-desk/sql/checks/AD25-check.sql
-R  admin-desk/sql/checks/CP6-check.sql -> admin-desk/sql/checks/AD26-check.sql
-M  admin-desk/state/HANDOFF-22NOV.md
-M  control-plane/src/consent.rs
-M  docs/claude/DONE-DO-NOT-REPEAT.md
-M  docs/claude/RESUME-POINT.md
-M  docs/claude/admin-desk/D6-B13-T1-GATE-CHECKLIST-24NOV.md
-M  docs/claude/admin-desk/D6-B13-Z4-GATE-CHECKLIST-24NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/scripts/ad-auto.sh
-M  docs/claude/admin-desk/scripts/ad-sql-run.sh
-M  docs/claude/admin-desk/scripts/cp-install.sh
-M  docs/claude/admin-desk/scripts/cp5-look.sh
-M  docs/claude/admin-desk/scripts/desk-install.sh
-R  docs/claude/admin-desk/sql/CP1.sql -> docs/claude/admin-desk/sql/AD21.sql
-R  admin-desk/sql/CP2.sql -> docs/claude/admin-desk/sql/AD22.sql
-R  docs/claude/admin-desk/sql/CP3.sql -> docs/claude/admin-desk/sql/AD23.sql
-R  admin-desk/sql/CP4.sql -> docs/claude/admin-desk/sql/AD24.sql
-R  docs/claude/admin-desk/sql/CP5.sql -> docs/claude/admin-desk/sql/AD25.sql
+ M docs/claude/state/WORKING-NOW.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- ...DE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md |  6 +-
- docs/cursor-work/DONE-DO-NOT-REPEAT.md             |  6 +-
- docs/cursor-work/founder/founder-commands.md       |  6 +-
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        | 36 ++++++------
- docs/cursor-work/server/PULL-COMMANDS.md           |  6 +-
- lanes/ALL-FILES.csv                                | 24 ++++----
- lanes/docs.txt                                     | 24 ++++----
- 59 files changed, 378 insertions(+), 316 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 64 ++--------------------------------------
+ 1 file changed, 3 insertions(+), 61 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -88,4 +43,4 @@ R  docs/claude/admin-desk/sql/CP5.sql -> docs/claude/admin-desk/sql/AD25.sql
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (1b2ee63cc23c9d39b1007e0fbf30444f1d21bb96)
+WIP snapshot: refs/wip/last (f8e2851037b644eec9326a3d84608279fa671329)

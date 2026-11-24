@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 07:48 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 07:48 PKT) - read this FIRST for the Desk after a compaction
 DOING: Desk SQL ONE series AD: CP1..CP6 renamed AD21..AD26, awam-db marker, runners skip them
 NEXT STEP: his Desk T1 command (AD26 = old CP6), then awam E201 line
 HIS LAST WORD: his 07:47 order: C series deleted, everything AD in one folder
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- de12ed1d 24 Nov 07:48 Desk SQL one series AD21..AD26
 - aff2ba11 24 Nov 07:44 ledger line cc3d94c8
 - cc3d94c8 24 Nov 07:44 Desk SQL folder: CP1..CP6 into admin-desk sql
 - b5ba01e1 24 Nov 07:41 ledger line 543cdc4a
@@ -72,29 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 6c78729c 24 Nov 07:30 ledger line 77e022b6
 - 77e022b6 24 Nov 07:30 b13 t1 cp6
 - 6d78da02 24 Nov 07:26 ledger line 9e36ebce
-- 9e36ebce 24 Nov 07:26 t1 checklist
 
 ## Uncommitted Desk files
-M  admin-desk/D6-B13-T1-GATE-CHECKLIST-24NOV.md
-M  admin-desk/D6-B13-Z4-GATE-CHECKLIST-24NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  admin-desk/scripts/ad-auto.sh
-M  admin-desk/scripts/ad-sql-run.sh
-M  admin-desk/scripts/cp-install.sh
-M  admin-desk/scripts/cp5-look.sh
-M  admin-desk/scripts/desk-install.sh
-R  admin-desk/sql/CP1.sql -> admin-desk/sql/AD21.sql
-R  docs/claude/admin-desk/sql/CP2.sql -> admin-desk/sql/AD22.sql
-R  admin-desk/sql/CP3.sql -> admin-desk/sql/AD23.sql
-R  docs/claude/admin-desk/sql/CP4.sql -> admin-desk/sql/AD24.sql
-R  admin-desk/sql/CP5.sql -> admin-desk/sql/AD25.sql
-R  admin-desk/sql/CP6.sql -> admin-desk/sql/AD26.sql
-M  admin-desk/sql/README.md
-R  admin-desk/sql/checks/CP1-check.sql -> admin-desk/sql/checks/AD21-check.sql
-R  docs/claude/admin-desk/sql/checks/CP2-check.sql -> admin-desk/sql/checks/AD22-check.sql
-R  admin-desk/sql/checks/CP3-check.sql -> admin-desk/sql/checks/AD23-check.sql
-R  docs/claude/admin-desk/sql/checks/CP4-check.sql -> admin-desk/sql/checks/AD24-check.sql
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
