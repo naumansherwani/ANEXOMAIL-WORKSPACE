@@ -1,7 +1,7 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 06:37 PKT) - read this FIRST for the Desk after a compaction
-DOING: cp5-look read-only script, install proof recorded
-NEXT STEP: his paste of cp5-look, then fix approver family (CP6) if needed
-HIS LAST WORD: his 06:36 order
+# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 06:41 PKT) - read this FIRST for the Desk after a compaction
+DOING: cp5 scripts restored in source folder
+NEXT STEP: his desk-install then cp5-look
+HIS LAST WORD: his 06:39 anger: file missing
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- a3ffb8fe 24 Nov 06:37 ledger line ef4a48f3
 - ef4a48f3 24 Nov 06:37 cp5 look
 - 490617d9 24 Nov 06:16 ledger line 26cca7be
 - 26cca7be 24 Nov 06:16 b13 z4a z4b
@@ -72,10 +73,19 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 47c46e70 24 Nov 06:07 b13 z4 plan
 - 5e2f36bd 24 Nov 06:00 ledger line a0654476
 - a0654476 24 Nov 06:00 title wrap green
-- 21a4f6f2 24 Nov 05:54 ledger line 438b135a
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  admin-desk/README.md
+M  admin-desk/scripts/cp-install.sh
+A  admin-desk/scripts/cp5-look.sh
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/README.md
+M  docs/claude/admin-desk/scripts/cp-install.sh
+A  docs/claude/admin-desk/scripts/cp5-look.sh
+MM docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

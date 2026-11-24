@@ -42,6 +42,10 @@ echo "== CP 3d/7 database: CP4.sql (six packages, No plan yet, plan detail for t
 S="$(mktemp)"; show control-plane/sql/CP4.sql >"$S"; C4="$(psqla -f "$S" 2>&1 | tail -4)"; rm -f "$S"; echo "$C4" | sed 's/^/   /'
 S="$(mktemp)"; show control-plane/sql/checks/CP4-check.sql >"$S"; CH4="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH4" | sed 's/^/   /'
 if echo "$CH4" | grep -q '|f$' || echo "$CH4" | grep -qi error || echo "$C4" | grep -qi "error"; then echo "WARN: CP4 did not install cleanly: the Customers card will say Data unavailable (fail-closed) until it is fixed; the rest of the install continues"; else echo "OK: CP4 customers census installed and CHECKed"; fi
+echo "== CP 3e/7 database: CP5.sql (B13 Z4a: customer consent inbox + hash-chained ledger, the Control Plane can push/cancel/poll but never decide) + selftest + CHECK"
+S="$(mktemp)"; show control-plane/sql/CP5.sql >"$S"; C5="$(psqla -f "$S" 2>&1 | tail -4)"; rm -f "$S"; echo "$C5" | sed 's/^/   /'
+S="$(mktemp)"; show control-plane/sql/checks/CP5-check.sql >"$S"; CH5="$(psqla -f "$S" 2>&1)"; rm -f "$S"; echo "$CH5" | sed 's/^/   /'
+if echo "$CH5" | grep -q '|f$' || echo "$CH5" | grep -qi error || echo "$C5" | grep -qi "error"; then echo "WARN: CP5 did not install cleanly: customer consent stays closed (requests cannot be approved) until it is fixed; the rest of the install continues"; else echo "OK: CP5 consent inbox installed and CHECKed"; fi
 PW="$(openssl rand -hex 24)"
 URL="$(ADMIN_URL="$ADMIN" CPW="$PW" python3 - <<'P'
 import os,urllib.parse as u

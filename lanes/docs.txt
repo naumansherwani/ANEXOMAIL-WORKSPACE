@@ -457,6 +457,7 @@ docs/claude/admin-desk/scripts/ad-db-env.sh
 docs/claude/admin-desk/scripts/ad-sql-run.sh
 docs/claude/admin-desk/scripts/audit-export-install.sh
 docs/claude/admin-desk/scripts/cp-install.sh
+docs/claude/admin-desk/scripts/cp5-look.sh
 docs/claude/admin-desk/scripts/desk-alias-look.sh
 docs/claude/admin-desk/scripts/desk-appdb.sh
 docs/claude/admin-desk/scripts/desk-cert-sync.sh
