@@ -38,11 +38,17 @@ const groups = [
 
 // Wording decided by the founder (1 Nov 13:53). Technology names must stay true: do not add a name that is not in the code or on the server.
 const stack = [
-  { where: "Built into your browser", what: "A Rust WebAssembly kernel — one kernel for the whole site" },
-  { where: "Backend Engine", what: "Rust · Tokio Async runtime · Axum" },
-  { where: "Advance Network Layer", what: "Live WebTransport over UDP · QUIC Native Pipeline · HTTP/3 · Media over QUIC (MoQ, IETF Standards Track) with Seamless Cross-Protocol HTTP Fallback" },
+  { where: "Built into your browser", what: "A Rust WebAssembly kernel verifies every answer" },
+  { where: "Backend Engine", what: "Rust + Tokio + Axum engine" },
+  { where: "Advance Network Layer", what: "WebTransport · QUIC · HTTP/3" },
+  { where: "ANEXOCHAT", what: "Media over QUIC (IETF MoQ) added for ANEXOCHAT" },
+  { where: "Transport security", what: "TLS 1.3 · AES-256-GCM · X25519MLKEM768 post-quantum key exchange" },
+  { where: "Signatures", what: "Ed25519 + ML-DSA hybrid signatures · OpenPGP PQC (RFC 9980) · HTTP/3 signatures (RFC 9421) · IETF WIMSE" },
+  { where: "Mail trust", what: "MTA-STS · DANE · DMARC (RFC 7489)" },
+  { where: "Sessions", what: "Passkeys · DBSC device-bound sessions" },
+  { where: "Data", what: "PostgreSQL 16 row-level security · Hash chains · Merkle logs (RFC 6962)" },
   { where: "Website", what: "React 19 · TypeScript · TanStack Start & Router · Vite 8 · Tailwind CSS 4 · Radix / shadcn · Framer Motion · GSAP · Three.js with 3D Cinematic Frontend" },
-  { where: "Data & files", what: "PostgreSQL with row-level security · Hetzner Storage Box for attachments · ClamAV virus scanning" },
+  { where: "Files", what: "Hetzner Storage Box for attachments · ClamAV virus scanning" },
 ];
 
 export function SiteFooter() {
