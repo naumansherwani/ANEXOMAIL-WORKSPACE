@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 06:16 PKT) - read this FIRST after a compaction; it is where the work stopped
-DOING: B13 Z4a+Z4b written and tested
-NEXT STEP: Z4b-2 Desk client, install, his Z4c haan
-HIS LAST WORD: his 06:11 + 06:13 words
+# WORKING NOW (manual checkpoint, 24 Nov 2026 06:37 PKT) - read this FIRST after a compaction; it is where the work stopped
+DOING: cp5-look read-only script, install proof recorded
+NEXT STEP: his paste of cp5-look, then fix approver family (CP6) if needed
+HIS LAST WORD: his 06:36 order
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -19,20 +19,32 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 490617d9 24 Nov 06:16 ledger line 26cca7be
 - 26cca7be 24 Nov 06:16 b13 z4a z4b
 - e5d7ee52 24 Nov 06:07 ledger line 47c46e70
 - 47c46e70 24 Nov 06:07 b13 z4 plan
 - 5e2f36bd 24 Nov 06:00 ledger line a0654476
-- a0654476 24 Nov 06:00 title wrap green
 
 ## Uncommitted files (half-done work if any)
+M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 40 ++--------------------------------------
- 1 file changed, 2 insertions(+), 38 deletions(-)
+ admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md        |  3 +++
+ admin-desk/NOW-LIST-23NOV.md                       |  1 +
+ .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    |  3 +++
+ docs/claude/admin-desk/NOW-LIST-23NOV.md           |  1 +
+ docs/claude/admin-desk/state/WORKING-NOW.md        |  1 +
+ docs/claude/state/WORKING-NOW.md                   | 29 ++++++++--------------
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  8 +++---
+ 7 files changed, 24 insertions(+), 22 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -43,4 +55,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (b9e4bc0e23052ae88d0dce9ef4813249430fcfbe)
+WIP snapshot: refs/wip/last (098c43833e6c79516445e206da81670a13a72e82)

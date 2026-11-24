@@ -6107,3 +6107,5 @@ FINAL: 21 Nov Desk Isolation Law and Gate never break. Company OS (Command Cente
 - B13 Z4 customer approval plan written (docs only), TECH-LAW CHECKED, TESTED: docs only, plan files exist, gate pass
 
 - B13 Z4a CP5.sql + Z4b Control Plane consent door written, WIRED: NO (not installed), REAL: NO, TECH-LAW CHECKED, TESTED: scratch PostgreSQL 16 CP5 selftest ALL RULES PASSED + CHECK 12 true, cargo test 20 pass
+
+- B13 Z4 install: binary SAME 490617d9f, CP5 lines not visible so NOT GREEN; cp5-look.sh read-only script added, TECH-LAW CHECKED, TESTED: his desk-install paste 9/9 SAME, bash -n pass
