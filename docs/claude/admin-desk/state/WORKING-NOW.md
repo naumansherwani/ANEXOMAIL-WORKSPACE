@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 12:26 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 12:26 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: awam sign-in demo V3: right side navy (no code change)
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 1020c08e 24 Nov 12:26 awam sign-in demo V3
 - af0c3143 24 Nov 12:24 ledger line 868c6876
 - 868c6876 24 Nov 12:24 awam sign-in demo V2
 - 56c3f3e3 24 Nov 12:22 ledger line cd29ece1
@@ -75,21 +76,8 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - b3163bf6 24 Nov 12:14 ledger line b3ea8c94
 - b3ea8c94 24 Nov 12:14 Desk login: THE GLOBAL GRID WORKPLACE
 - 0117af19 24 Nov 12:11 ledger line 73587c8a
-- 73587c8a 24 Nov 12:11 B13 T3c green, login text demo
 
 ## Uncommitted Desk files
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-A  admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-right-390.png
-A  admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-right-a.png
-A  admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-right-b.png
-A  admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-demo-script-right.js
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-A  docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-right-390.png
-A  docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-right-a.png
-A  docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-right-b.png
-A  docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-demo-script-right.js
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
