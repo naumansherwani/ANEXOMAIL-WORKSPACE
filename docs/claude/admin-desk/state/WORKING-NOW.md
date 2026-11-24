@@ -1,9 +1,9 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 02:24 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (manual checkpoint, 25 Nov 2026 02:27 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: B13 T4 COMPLETE LIST told to the gate (F1..F7, T4-1..8); open lines T4e..T4h to be built
-NEXT STEP: his Desk install of T4 (pending); then build T4e Control Plane tenant-exists + company name, T4f, T4g, T4h in order
-HIS LAST WORD: his 02:23 order
+DOING: B13 T4g done inside existing AD34 (desk_bind_owner)
+NEXT STEP: T4e Control Plane tenant-exists + name, T4f RFC 9421 headers, T4h signed ledger checkpoints; his Desk install pending
+HIS LAST WORD: his 02:23 order, no new SQL
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 6305183f 25 Nov 02:24 ledger line 359aed49
 - 359aed49 25 Nov 02:24 B13 T4 complete list to gate
 - 7055241c 25 Nov 02:17 ledger line b9b0a498
 - b9b0a498 25 Nov 02:17 B13 T4 code: AD34 + Rust doors + screen
@@ -75,9 +76,12 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - cade364d 25 Nov 01:58 B13 T4 plan + research; awam live confirmed
 - 47da5340 24 Nov 14:43 ledger line 801163ca
 - 801163ca 24 Nov 14:43 manifest fix footer + resume for tonight
-- 4cf0eefb 24 Nov 14:37 ledger line 3d0843c2
 
 ## Uncommitted Desk files
+M  admin-desk/sql/AD34.sql
+M  admin-desk/sql/checks/AD34-check.sql
+M  docs/claude/admin-desk/sql/AD34.sql
+M  docs/claude/admin-desk/sql/checks/AD34-check.sql
  M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)

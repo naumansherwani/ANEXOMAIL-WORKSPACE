@@ -844,7 +844,7 @@
    "id": "T4g-definer-owner",
    "file": "docs/claude/admin-desk/sql/AD34.sql",
    "must": "desk_bind_owner",
-   "status": "open",
+   "status": "ok",
    "deadline": "B13 T4",
    "why": "his 25 Nov 2026 02:23 list, line T4g: NOLOGIN least-privilege function owner with its own RLS policies.",
    "fail_after": "2027-01-09"

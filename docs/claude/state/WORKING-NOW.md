@@ -1,9 +1,9 @@
-# WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 02:24 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 25 Nov 2026 02:27 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: B13 T4 COMPLETE LIST told to the gate (F1..F7, T4-1..8); open lines T4e..T4h to be built
-NEXT STEP: his Desk install of T4 (pending); then build T4e Control Plane tenant-exists + company name, T4f, T4g, T4h in order
-HIS LAST WORD: his 02:23 order
+DOING: B13 T4g done inside existing AD34 (desk_bind_owner)
+NEXT STEP: T4e Control Plane tenant-exists + name, T4f RFC 9421 headers, T4h signed ledger checkpoints; his Desk install pending
+HIS LAST WORD: his 02:23 order, no new SQL
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -21,20 +21,32 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 6305183f 25 Nov 02:24 ledger line 359aed49
 - 359aed49 25 Nov 02:24 B13 T4 complete list to gate
 - 7055241c 25 Nov 02:17 ledger line b9b0a498
 - b9b0a498 25 Nov 02:17 B13 T4 code: AD34 + Rust doors + screen
 - ea9da9c4 25 Nov 01:58 ledger line cade364d
-- cade364d 25 Nov 01:58 B13 T4 plan + research; awam live confirmed
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/state/WORKING-NOW.md
+M  admin-desk/sql/AD34.sql
+M  admin-desk/sql/checks/AD34-check.sql
+M  docs/claude/TECH-LAW-GATE.json
+M  docs/claude/admin-desk/sql/AD34.sql
+M  docs/claude/admin-desk/sql/checks/AD34-check.sql
+MM docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 32 ++------------------------------
- 1 file changed, 2 insertions(+), 30 deletions(-)
+ admin-desk/sql/AD34.sql                          | 24 ++++++++++++++++++
+ admin-desk/sql/checks/AD34-check.sql             |  1 +
+ docs/claude/TECH-LAW-GATE.json                   |  2 +-
+ docs/claude/admin-desk/sql/AD34.sql              | 24 ++++++++++++++++++
+ docs/claude/admin-desk/sql/checks/AD34-check.sql |  1 +
+ docs/claude/state/WORKING-NOW.md                 | 31 +++++++++---------------
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt      |  6 ++---
+ 7 files changed, 66 insertions(+), 23 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -45,4 +57,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a4f28295f2ecd18171c1f25d02598df3ad9265e6)
+WIP snapshot: refs/wip/last (a6f0370bfdbe7f3bdc29065ad8578fbc358395d4)

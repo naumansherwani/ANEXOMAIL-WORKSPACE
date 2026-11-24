@@ -202,6 +202,30 @@ DO $g$ BEGIN IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'desk_app') THEN
   GRANT EXECUTE ON FUNCTION desk.fadm_bind_sweep(), desk.fadm_bind_propose(uuid, text, uuid, text, text), desk.fadm_bind_decide(uuid, uuid, boolean), desk.fadm_bind_withdraw(uuid, uuid), desk.fadm_bind_pending(uuid) TO desk_app;
 END IF; END $g$;
 
+-- T4g DEFINER-OWNER (his 25 Nov 02:23 point 6): the six doors are owned by a NOLOGIN, NOBYPASSRLS, NOSUPERUSER role that holds only what the doors touch ----------------
+-- Honest scope: only the AD34 doors move to this owner; older Desk functions stay with the installer role until their own phases give them policies.
+DO $o$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'desk_bind_owner') THEN CREATE ROLE desk_bind_owner NOLOGIN NOSUPERUSER NOBYPASSRLS NOCREATEDB NOCREATEROLE NOREPLICATION; END IF;
+  BEGIN EXECUTE format('GRANT desk_bind_owner TO %I', current_user); EXCEPTION WHEN OTHERS THEN NULL; END;   -- the installer must be a member to hand functions over
+END $o$;
+GRANT USAGE, CREATE ON SCHEMA desk TO desk_bind_owner;      -- CREATE is required by PostgreSQL for ALTER FUNCTION ... OWNER TO; the role cannot log in
+GRANT SELECT, INSERT, UPDATE ON desk.fadm_bind_proposal TO desk_bind_owner;
+GRANT SELECT ON desk.fadm_case, desk.fadm_owner, desk.fadm_case_binding, desk.fadm_unit TO desk_bind_owner;
+GRANT INSERT, SELECT ON desk.fadm_ledger TO desk_bind_owner;
+GRANT EXECUTE ON FUNCTION desk.fadm_audit(uuid, text, jsonb), desk.fadm_authorize(uuid, text, uuid, inet, timestamptz), desk.fadm_case_bind(text, uuid, text, uuid, uuid, jsonb), desk.fadm_unit_id(text, text), desk.fadm_case_tenant(text) TO desk_bind_owner;
+DO $q$ DECLARE t text; BEGIN
+  FOREACH t IN ARRAY ARRAY['fadm_bind_proposal', 'fadm_case', 'fadm_owner', 'fadm_case_binding', 'fadm_ledger', 'fadm_unit'] LOOP
+    EXECUTE format('DROP POLICY IF EXISTS p_bind_owner ON desk.%I', t);
+    EXECUTE format('CREATE POLICY p_bind_owner ON desk.%I FOR ALL TO desk_bind_owner USING (true) WITH CHECK (true)', t);
+  END LOOP;
+END $q$;
+ALTER FUNCTION desk.fadm_bind_may(uuid) OWNER TO desk_bind_owner;
+ALTER FUNCTION desk.fadm_bind_sweep() OWNER TO desk_bind_owner;
+ALTER FUNCTION desk.fadm_bind_propose(uuid, text, uuid, text, text) OWNER TO desk_bind_owner;
+ALTER FUNCTION desk.fadm_bind_decide(uuid, uuid, boolean) OWNER TO desk_bind_owner;
+ALTER FUNCTION desk.fadm_bind_withdraw(uuid, uuid) OWNER TO desk_bind_owner;
+ALTER FUNCTION desk.fadm_bind_pending(uuid) OWNER TO desk_bind_owner;
+
 -- SELFTEST (rolls back; success is the exception P0AW4) ------------------------------------------------------------------------------------------------------------------------------
 CREATE FUNCTION pg_temp.ad34_ok(c boolean, msg text) RETURNS void LANGUAGE plpgsql AS $f$ BEGIN IF c IS NOT TRUE THEN RAISE EXCEPTION 'AD34 selftest: %', msg USING ERRCODE = 'P0AW3'; END IF; END $f$;
 DO $$
