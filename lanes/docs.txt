@@ -426,6 +426,11 @@ docs/claude/admin-desk/demo/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-cine-a.png
 docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-cine-b.png
 docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-demo-390.png
+docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-logo-a.png
+docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-logo-b.png
+docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-r52-a.png
+docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-awam-r52-b.png
+docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-demo-script-r52.js
 docs/claude/admin-desk/demo/AWAM-SIGNIN-GLOBAL-GRID-demo-script.js
 docs/claude/admin-desk/demo/COLOUR-DEMO-2-CINEMATIC-LIGHT-22NOV.png
 docs/claude/admin-desk/demo/COLOUR-DEMO-22NOV.md

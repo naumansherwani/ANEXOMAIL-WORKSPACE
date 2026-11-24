@@ -2811,3 +2811,5 @@
 - Desk login text real, text only. TECH-LAW CHECKED. TESTED: tsc clean, bun test 143 pass, demo approved, bundle desk-Bkyw8jea.js contains the text and not the old heading
 
 - Awam sign-in cinematic demo only, no code change. TECH-LAW CHECKED. TESTED: demo rendered on the real awam page (vite dev) at 1280 and 390 OK
+
+- Awam sign-in demo V2 only, no code change. TECH-LAW CHECKED. TESTED: demo rendered on the real awam page at 1280 OK
