@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 24 Nov 2026 05:33 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 05:33 PKT) - read this FIRST for the Desk after a compaction
 DOING: phone clock fix + OS inherit plan
 NEXT STEP: his install of desk-B8DS1CmL, then his haan per OS-13..23 row
 HIS LAST WORD: his 05:30 order
@@ -65,6 +65,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 2a162a68 24 Nov 05:33 phone clock and OS inherit plan
 - 10bb0381 24 Nov 05:18 ledger line a5fb5de7
 - a5fb5de7 24 Nov 05:18 phone fixes
 - 393c2e31 24 Nov 05:04 ledger line 51cbf9bc
@@ -72,18 +73,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - f5eeb67d 24 Nov 04:57 ledger line 29cda3cb
 - 29cda3cb 24 Nov 04:57 CC1 green
 - 60befa73 24 Nov 04:54 ledger line dfdcc940
-- dfdcc940 24 Nov 04:54 B13 Z2 Z3
 
 ## Uncommitted Desk files
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-A  admin-desk/OS-INHERIT-AWAM-FOUNDER-PLAN-24NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-A  docs/claude/admin-desk/OS-INHERIT-AWAM-FOUNDER-PLAN-24NOV.md
-MM docs/claude/admin-desk/state/WORKING-NOW.md
-M  founder-web/src/desk/DeskShell.tsx
-M  founder-web/src/desk/DeskTitle.tsx
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
