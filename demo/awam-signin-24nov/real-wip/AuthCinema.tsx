@@ -47,7 +47,6 @@ export function AuthCinema({ className }: { className?: string }) {
       {/* Grid + scan line (logo palette) */}
       <div className="ax-auth-grid absolute inset-0" />
       <div className="ax-auth-scan absolute inset-x-0" />
-      <div className="ax-auth-halo absolute inset-x-0" />
 
       {/* Subtle grain texture */}
       <div className="absolute inset-0 ax-auth-cinema-grain opacity-[0.03]" />

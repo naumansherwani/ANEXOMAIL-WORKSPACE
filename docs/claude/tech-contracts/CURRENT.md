@@ -4078,3 +4078,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - DEMO ONLY: demo/awam-signin-24nov/real-exact = his 13:16 picture exactly; src untouched = original text-only login. TECH-LAW CHECKED. TESTED: dev render 1280 side by side with his picture, tsc clean, src diff empty
 
 - DEMO ONLY: demo/awam-signin-24nov/real-exact = his 13:16 picture exactly; src untouched = original text-only login. TECH-LAW CHECKED. TESTED: dev render 1280 side by side with his picture, tsc clean, src diff empty
+
+- DEMO ONLY: double light fixed in demo/awam-signin-24nov real-exact + real-wip (static halo removed, only the moving scan light). src untouched = original. TECH-LAW CHECKED. TESTED: dev render 3 moments single light, tsc clean, src diff empty

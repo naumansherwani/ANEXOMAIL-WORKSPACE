@@ -1,9 +1,9 @@
-# WORKING NOW (auto snapshot before a compaction, 24 Nov 2026 13:18 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 24 Nov 2026 13:23 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: demo real-exact = his 13:16 picture, demo folder only
+DOING: demo: double light fixed (halo removed), single moving light
 NEXT STEP: his approval, src stays original
-HIS LAST WORD: his 13:16: demo mein ek ek cheez same
+HIS LAST WORD: his 13:21: double light fix
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -21,20 +21,38 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- f04b1a16 24 Nov 13:18 ledger line a7b081cc
 - a7b081cc 24 Nov 13:18 demo real-exact saved
 - 2a5baa73 24 Nov 13:14 ledger line 1b0c24d6
 - 1b0c24d6 24 Nov 13:14 awam sign-in heading text only
 - b267192b 24 Nov 13:07 ledger line 7de5879a
-- 7de5879a 24 Nov 13:07 card gradient demo saved
 
 ## Uncommitted files (half-done work if any)
+M  demo/awam-signin-24nov/exact-shot.cjs
+M  demo/awam-signin-24nov/real-exact/AuthCinema.tsx
+M  demo/awam-signin-24nov/real-exact/README.md
+M  demo/awam-signin-24nov/real-exact/styles.css
+M  demo/awam-signin-24nov/real-wip/AuthCinema.tsx
+M  demo/awam-signin-24nov/real-wip/styles.css
+M  demo/awam-signin-24nov/screens/exact-1280.png
+A  demo/awam-signin-24nov/screens/exact-single-light-1.png
+A  demo/awam-signin-24nov/screens/exact-single-light-2.png
+A  demo/awam-signin-24nov/screens/exact-single-light-3.png
+A  demo/awam-signin-24nov/screens/exact-single-light-strip.png
  M docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 31 ++-----------------------------
- 1 file changed, 2 insertions(+), 29 deletions(-)
+ demo/awam-signin-24nov/screens/exact-1280.png      | Bin 1159964 -> 1149718 bytes
+ .../screens/exact-single-light-1.png               | Bin 0 -> 570668 bytes
+ .../screens/exact-single-light-2.png               | Bin 0 -> 569741 bytes
+ .../screens/exact-single-light-3.png               | Bin 0 -> 567376 bytes
+ .../screens/exact-single-light-strip.png           | Bin 0 -> 843033 bytes
+ docs/claude/state/WORKING-NOW.md                   |  33 ++++++++++-----------
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        |   4 +--
+ 13 files changed, 24 insertions(+), 35 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -45,4 +63,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (e61858bf41ef08be238834aee1d9f7a882c56ae1)
+WIP snapshot: refs/wip/last (d2634f848e5190eec47ee5b27c142421ed194ebe)

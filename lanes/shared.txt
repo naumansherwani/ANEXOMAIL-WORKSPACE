@@ -423,6 +423,10 @@ demo/awam-signin-24nov/screens/card-gradient-1.png
 demo/awam-signin-24nov/screens/card-gradient-2.png
 demo/awam-signin-24nov/screens/card-gradient-3.png
 demo/awam-signin-24nov/screens/exact-1280.png
+demo/awam-signin-24nov/screens/exact-single-light-1.png
+demo/awam-signin-24nov/screens/exact-single-light-2.png
+demo/awam-signin-24nov/screens/exact-single-light-3.png
+demo/awam-signin-24nov/screens/exact-single-light-strip.png
 docs/cursor-work/server/all-pull.sh
 docs/cursor-work/server/manifest-sync.py
 docs/cursor-work/server/manifest-verify.py
