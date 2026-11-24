@@ -1,3 +1,9 @@
+# TECH CONTRACT FOR PHASE: DESK PHONE CLOCK FIX + OS INHERIT PLAN (phase 1m, sub-phase CC1-mobile-2, list BL-29 (CC1) and BL-46 B13 stays next; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 first by his 02:39 order), his 24 Nov 2026 05:30 PKT order, written 05:4x PKT BEFORE install. LIST: docs/claude/admin-desk/OS-INHERIT-AWAM-FOUNDER-PLAN-24NOV.md
+| Advance technology | Where in code | IN CODE | Proof |
+|---|---|---|---|
+| React 19 + TypeScript + CSS: left header column may shrink, clock never shrinks, shorter Senior Executive side rules under 480 px, one build for 390 / 820 / 1200+ | founder-web/src/desk/DeskShell.tsx, founder-web/src/desk/DeskTitle.tsx, founder-web/src/desk/desk_title.test.ts | YES | bun test src/desk 131 pass, tsc clean, sandbox header page at 390: clock right edge 374, no overflow |
+| Carried unchanged: Rust probe smoothing and the Desk SQL | docs/claude/admin-desk/server/src/probes.rs, docs/claude/admin-desk/sql/AD03.sql | YES | untouched |
+
 # TECH CONTRACT FOR PHASE: DESK PHONE FIXES (phase 1m, sub-phase CC1-mobile, list BL-29 (CC1) and BL-46 B13 stays next; ORDER-LOCK: BL-28 B9c Y4 open, BL-46 first by his 02:39 order), his 24 Nov 2026 05:14 PKT phone screenshots, written 05:2x PKT BEFORE install. LIST: docs/claude/admin-desk/D6-CARDS-LIST-23NOV.md
 | Advance technology | Where in code | IN CODE | Proof |
 |---|---|---|---|
@@ -3747,3 +3753,5 @@ Desk-own (no founder import). Advance technology: React 19 + TS, kernel-verified
 - Four phone bugs fixed: real logo in mobile header, Systems flap guard (median of 3 probes), Systems rows shared-CSS li grid leak, only the open tab highlighted, Senior Executive nowrap, WRITTEN not installed, TECH-LAW CHECKED, TESTED: cargo test probes 6 pass, bun test src/desk 131 pass, tsc clean, build:desk ok, sandbox repro of the li leak fixed (b width 18 to 324)
 
 - Four phone bugs fixed: real logo in mobile header, Systems flap guard (median of 3 probes), Systems rows shared-CSS li grid leak, only the open tab highlighted, Senior Executive nowrap, WRITTEN not installed, TECH-LAW CHECKED, TESTED: cargo test probes 6 pass, bun test src/desk 131 pass, tsc clean, build:desk ok, sandbox repro of the li leak fixed (b width 18 to 324)
+
+- Phone clock off-screen fixed (shrinkable left column, clock flex none, shorter side rules under 480 px) and OS-INHERIT plan OS-13..OS-23 with advance technology, WRITTEN not installed, TECH-LAW CHECKED, TESTED: bun test src/desk 131 pass, tsc clean, build:desk ok, sandbox header at 390 clock right edge 374 no overflow
