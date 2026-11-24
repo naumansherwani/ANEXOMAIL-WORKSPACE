@@ -2949,3 +2949,5 @@ G2 TECHNOLOGY (written before the phase starts, founder rule): the vault key (HK
 - ad-auto.sh now prints the awam-database files AD21..AD26 instead of skipping them silently; TECH-LAW CHECKED; TESTED: bash -n, origin/main lists AD20..AD26 and checks AD21..AD26
 
 - ad-auto.sh now prints the awam-database files AD21..AD26 instead of skipping them silently; TECH-LAW CHECKED; TESTED: bash -n ad-auto.sh ok, origin/main lists AD20..AD26 and checks AD21..AD26
+
+- E201 GREEN on his server (SQL half, WIRED: SQL yes / REAL: yes): his sql-run paste 24 Nov 08:03 PKT shows CHECK_E201 all 12 rows OK; Max price 125,000 FINAL by his word; Business 60 users stands; AWL-3 Rust half + billing rows OPEN; TECH-LAW CHECKED; TESTED: his server CHECK_E201 12 of 12 OK
