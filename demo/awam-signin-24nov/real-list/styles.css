@@ -1164,9 +1164,9 @@ html[data-ax-motion="reduced"] .ax-loader-panel {
   pointer-events: none;
   height: 140px;
   background: linear-gradient(180deg, transparent, rgba(195, 204, 216, 0.1), transparent);
-  animation: ax-auth-scan 7s ease-in-out infinite;
+  /* his 13:35: the light no longer travels; it rests at the top of the panel (where his picture shows it) */
+  top: 4%;
 }
-@keyframes ax-auth-scan { from { top: -140px; } to { top: 100%; } }
 .ax-auth-tag {
   background-image: linear-gradient(170deg, #F4F7FB 0%, #C3CCD8 55%, #8E9BB0 100%);
   -webkit-background-clip: text;
@@ -1206,7 +1206,7 @@ html[data-ax-motion="reduced"] .ax-loader-panel {
 }
 @keyframes ax-auth-in { from { opacity: 0; transform: translateX(-8px); } to { opacity: 0.9; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
-  .ax-auth-grid, .ax-auth-scan { animation: none; }
+  .ax-auth-grid { animation: none; }
 }
 html[data-ax-fx="off"] .ax-auth-grid, html[data-ax-fx="off"] .ax-auth-scan, html[data-ax-fx="off"] .ax-auth-dust { display: none !important; }
 
