@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 25 Nov 2026 02:24 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 02:24 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: B13 T4 COMPLETE LIST told to the gate (F1..F7, T4-1..8); open lines T4e..T4h to be built
@@ -21,35 +21,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 359aed49 25 Nov 02:24 B13 T4 complete list to gate
 - 7055241c 25 Nov 02:17 ledger line b9b0a498
 - b9b0a498 25 Nov 02:17 B13 T4 code: AD34 + Rust doors + screen
 - ea9da9c4 25 Nov 01:58 ledger line cade364d
 - cade364d 25 Nov 01:58 B13 T4 plan + research; awam live confirmed
-- 47da5340 24 Nov 14:43 ledger line 801163ca
 
 ## Uncommitted files (half-done work if any)
-M  CLAUDE.md
-A  admin-desk/D6-B13-T4-COMPLETE-LIST-25NOV.md
-M  admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/TECH-LAW-GATE.json
-A  docs/claude/admin-desk/D6-B13-T4-COMPLETE-LIST-25NOV.md
-M  docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/NOW-LIST-23NOV.md                       |  1 +
- docs/claude/TECH-LAW-GATE.json                     | 99 ++++++++++++++++++++++
- .../admin-desk/D6-B13-T4-COMPLETE-LIST-25NOV.md    | 20 +++++
- .../admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md    |  1 +
- docs/claude/admin-desk/NOW-LIST-23NOV.md           |  1 +
- docs/claude/state/WORKING-NOW.md                   | 32 +++----
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        | 12 +--
- 10 files changed, 165 insertions(+), 24 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 32 ++------------------------------
+ 1 file changed, 2 insertions(+), 30 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -60,4 +45,4 @@ M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (dda75fa4912031dabfa5d6b13cf1dae6f5920a57)
+WIP snapshot: refs/wip/last (a4f28295f2ecd18171c1f25d02598df3ad9265e6)
