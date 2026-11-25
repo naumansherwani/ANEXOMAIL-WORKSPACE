@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 25 Nov 2026 05:35 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 05:35 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: AD34+AD35: tables renamed fadm_* (AD01 law), helpers granted explicitly, install simulation twice
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- aa922bb1 25 Nov 05:35 AD01 fadm prefix fix
 - ffcb7c75 25 Nov 05:01 ledger line e06252ce
 - e06252ce 25 Nov 05:01 AD35 SQL
 - 429f5a38 25 Nov 05:00 ledger line 2bfb7928
@@ -75,26 +76,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - c609b9bd 25 Nov 04:54 ledger line a3227453
 - a3227453 25 Nov 04:54 AD35 SQL
 - f638116a 25 Nov 04:53 ledger line 40034b4e
-- 40034b4e 25 Nov 04:53 AD35 SQL
 
 ## Uncommitted Desk files
-M  admin-desk/D6-B13-AD35-RESEARCH-LIST-25NOV.md
-M  admin-desk/D6-B13-T4I-REGISTRATION-NUMBERS-PLAN-25NOV.md
-M  admin-desk/sql/AD34.sql
-M  admin-desk/sql/AD35.sql
-M  admin-desk/sql/checks/AD34-check.sql
-M  admin-desk/sql/checks/AD35-check.sql
-A  admin-desk/tests/00-FOUNDER-TECH-RULE.md
-A  admin-desk/tests/sim-auto.sh
-M  docs/claude/admin-desk/D6-B13-AD35-RESEARCH-LIST-25NOV.md
-M  docs/claude/admin-desk/D6-B13-T4I-REGISTRATION-NUMBERS-PLAN-25NOV.md
-M  docs/claude/admin-desk/sql/AD34.sql
-M  docs/claude/admin-desk/sql/AD35.sql
-M  docs/claude/admin-desk/sql/checks/AD34-check.sql
-M  docs/claude/admin-desk/sql/checks/AD35-check.sql
-MM docs/claude/admin-desk/state/WORKING-NOW.md
-A  docs/claude/admin-desk/tests/00-FOUNDER-TECH-RULE.md
-A  docs/claude/admin-desk/tests/sim-auto.sh
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
