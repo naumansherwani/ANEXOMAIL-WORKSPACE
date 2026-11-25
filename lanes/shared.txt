@@ -167,6 +167,7 @@ admin-desk/scripts/00-FOUNDER-TECH-RULE.md
 admin-desk/scripts/ad-auto.sh
 admin-desk/scripts/ad-check.sh
 admin-desk/scripts/ad-db-env.sh
+admin-desk/scripts/ad-legacy-rename.sh
 admin-desk/scripts/ad-sql-run.sh
 admin-desk/scripts/audit-export-install.sh
 admin-desk/scripts/awam-sql.sh
@@ -313,6 +314,11 @@ admin-desk/sql/checks/AD33-check.sql
 admin-desk/sql/checks/AD34-check.sql
 admin-desk/sql/checks/AD35-check.sql
 admin-desk/sql/checks/README.md
+admin-desk/sql/checks/legacy-rename-check.sql
+admin-desk/sql/editor/00-FOUNDER-TECH-RULE.md
+admin-desk/sql/editor/AD34-editor.sql
+admin-desk/sql/editor/AD35-editor.sql
+admin-desk/sql/legacy-rename.sql
 admin-desk/state/00-FOUNDER-TECH-RULE.md
 admin-desk/state/COMPACT-SAVE.md
 admin-desk/state/HANDOFF-22NOV.md
@@ -320,6 +326,7 @@ admin-desk/state/PHASES.md
 admin-desk/state/REMINDERS.md
 admin-desk/state/RESUME.md
 admin-desk/tests/00-FOUNDER-TECH-RULE.md
+admin-desk/tests/make-editor-sql.sh
 admin-desk/tests/sim-auto.sh
 admin-desk/tools/00-FOUNDER-TECH-RULE.md
 admin-desk/tools/AD9.template.sql

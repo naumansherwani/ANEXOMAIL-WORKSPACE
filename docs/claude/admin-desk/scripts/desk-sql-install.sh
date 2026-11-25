@@ -4,6 +4,7 @@ set -uo pipefail
 echo "== DESK SQL INSTALL (SQL only, no web build)"
 REPO="${REPO:-/opt/anexomail-web}"
 git -C "$REPO" fetch -q origin main || { echo "FAIL: fetch"; exit 2; }
+bash <(git -C "$REPO" show origin/main:admin-desk/scripts/ad-legacy-rename.sh) || exit $?
 bash <(git -C "$REPO" show origin/main:admin-desk/scripts/ad-auto.sh) || exit $?
 echo "== AWAM-DATABASE SQL (Control Plane: AD21..AD26, AD31) + proofs"
 bash <(git -C "$REPO" show origin/main:admin-desk/scripts/awam-sql.sh) || exit $?

@@ -1,0 +1,3 @@
+-- legacy-rename CHECK (B13 T4i): every row must be true
+SELECT 'no table in schema desk lacks the fadm_ prefix (AD01 law)' AS rule, NOT EXISTS (SELECT 1 FROM pg_class c JOIN pg_namespace s ON s.oid = c.relnamespace WHERE s.nspname = 'desk' AND c.relkind = 'r' AND c.relname NOT LIKE 'fadm\_%') AS ok
+UNION ALL SELECT 'none of the five early-named tables is left behind', to_regclass('desk.registry_kind') IS NULL AND to_regclass('desk.ledger_checkpoint') IS NULL AND to_regclass('desk.ledger_checkpoint_witness') IS NULL AND to_regclass('desk.ledger_merkle_root') IS NULL AND to_regclass('desk.company_identifier') IS NULL;

@@ -1001,6 +1001,33 @@
    "deadline": "forever",
    "why": "his 25 Nov 04:53: the WEB install line is fixed, tail -45; copy via install-line.sh web.",
    "fail_after": "2099-01-01"
+  },
+  {
+   "id": "T4i-legacy-rename",
+   "file": "admin-desk/sql/legacy-rename.sql",
+   "must": "RENAME TO",
+   "status": "ok",
+   "deadline": "B13 T4i",
+   "why": "his 25 Nov 05:29 server paste: AD01 fails on any desk table not named fadm_*; the five early-named tables are renamed (rows kept) before AD01 runs.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "INSTALL-LEGACY-RENAME-STEP",
+   "file": "admin-desk/scripts/desk-sql-install.sh",
+   "must": "ad-legacy-rename.sh",
+   "status": "ok",
+   "deadline": "forever",
+   "why": "the SQL install runs the legacy rename BEFORE ad-auto so AD01 is not stopped by an orphan table.",
+   "fail_after": "2099-01-01"
+  },
+  {
+   "id": "EDITOR-FILES-AD34-AD35",
+   "file": "admin-desk/tests/make-editor-sql.sh",
+   "must": "CHECK LAST",
+   "status": "ok",
+   "deadline": "forever",
+   "why": "his rule 25 Nov 05:51: SQL runs in his SQL editor, CHECK on his server; editor files = SQL + CHECK last.",
+   "fail_after": "2099-01-01"
   }
  ]
 }

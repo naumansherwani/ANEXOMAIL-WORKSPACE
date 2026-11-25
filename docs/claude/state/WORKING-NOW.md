@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 05:49 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 25 Nov 2026 05:54 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: his 05:49 AD35 alone in editor 42P01 is by design
+DOING: his 05:53: I broke the fadm_ table pattern, fixed, legacy-rename with selftest and CHECK
 NEXT STEP: his SQL line (install-line.sh sql)
 HIS LAST WORD: his 05:46 order
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
@@ -21,20 +21,63 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- d994831e 25 Nov 05:49 ledger line 8128a123
 - 8128a123 25 Nov 05:49 AD35 alone note
 - 59762854 25 Nov 05:47 ledger line bcc6676e
 - bcc6676e 25 Nov 05:47 editor error note
 - 8a865ae1 25 Nov 05:35 ledger line aa922bb1
-- aa922bb1 25 Nov 05:35 AD01 fadm prefix fix
 
 ## Uncommitted files (half-done work if any)
- M docs/claude/state/WORKING-NOW.md
+M  CLAUDE.md
+A  admin-desk/scripts/ad-legacy-rename.sh
+M  admin-desk/scripts/desk-sql-install.sh
+A  admin-desk/sql/checks/legacy-rename-check.sql
+A  admin-desk/sql/editor/00-FOUNDER-TECH-RULE.md
+A  admin-desk/sql/editor/AD34-editor.sql
+A  admin-desk/sql/editor/AD35-editor.sql
+A  admin-desk/sql/legacy-rename.sql
+A  admin-desk/tests/make-editor-sql.sh
+M  docs/claude/DONE-DO-NOT-REPEAT.md
+M  docs/claude/RESUME-POINT.md
+M  docs/claude/TECH-LAW-GATE.json
+A  docs/claude/admin-desk/scripts/ad-legacy-rename.sh
+M  docs/claude/admin-desk/scripts/desk-sql-install.sh
+A  docs/claude/admin-desk/sql/checks/legacy-rename-check.sql
+A  docs/claude/admin-desk/sql/editor/00-FOUNDER-TECH-RULE.md
+A  docs/claude/admin-desk/sql/editor/AD34-editor.sql
+A  docs/claude/admin-desk/sql/editor/AD35-editor.sql
+A  docs/claude/admin-desk/sql/legacy-rename.sql
+M  docs/claude/admin-desk/state/WORKING-NOW.md
+A  docs/claude/admin-desk/tests/make-editor-sql.sh
+M  docs/claude/founder/PULL-COMMANDS.md
+M  docs/claude/state/HEARTBEAT.json
+MM docs/claude/state/WORKING-NOW.md
+M  docs/claude/tech-contracts/CURRENT.md
+M  docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md
+M  docs/cursor-work/DONE-DO-NOT-REPEAT.md
+M  docs/cursor-work/founder/founder-commands.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
+M  docs/cursor-work/server/PULL-COMMANDS.md
+R  founder-web/dist/assets/index-BySpq46c.js -> founder-web/dist/assets/index-CyjvvtcP.js
+M  founder-web/dist/index.html
+M  founder-web/src/system_brain.json
+M  lanes/ALL-FILES.csv
+M  lanes/docs.txt
+M  lanes/founder.txt
+M  lanes/shared.txt
+M  lovable-gold/README.md
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 ++---------------------
- 1 file changed, 2 insertions(+), 21 deletions(-)
+ founder-web/dist/index.html                        |    2 +-
+ founder-web/src/system_brain.json                  |    8 +-
+ lanes/ALL-FILES.csv                                |   16 +-
+ lanes/docs.txt                                     |    7 +
+ lanes/founder.txt                                  |    2 +-
+ lanes/shared.txt                                   |    7 +
+ lovable-gold/README.md                             |    2 +-
+ 38 files changed, 5403 insertions(+), 54 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -45,4 +88,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (141fb30c6903331a68c6f36cb9d811efe45f889a)
+WIP snapshot: refs/wip/last (bd07ba675568a3fa27a9d9828098073d2fad471d)
