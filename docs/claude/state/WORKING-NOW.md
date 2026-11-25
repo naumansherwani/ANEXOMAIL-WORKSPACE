@@ -1,9 +1,9 @@
-# WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 06:35 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 25 Nov 2026 06:52 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: his 06:23 order: AD35 rewritten on top of the 1565-line AD34, web points 19..22 given to the gate first, deadline 30 Nov
-NEXT STEP: his gate + commit, then his SQL line (install-line.sh sql)
-HIS LAST WORD: his 06:34 order (SQL is not on GitHub, push it)
+DOING: his server paste 06:46: AD35 failed on a big ledger, selftest fixed, tested, pushing
+NEXT STEP: his SQL line again (install-line.sh sql), then his paste
+HIS LAST WORD: his 06:51 order (read my repo, AD34 stays 1565 lines)
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -21,20 +21,37 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- cf53992c 25 Nov 06:35 ledger line 64ced011
 - 64ced011 25 Nov 06:35 B13 T4h/T4i: AD35 rewritten on the 1565-line AD34 (preflight, naming law, definer report), tested, not installed
 - ec2eeb89 25 Nov 05:59 ledger line e1981f0c
 - e1981f0c 25 Nov 05:59 non-superuser editor test
 - 31b3f609 25 Nov 05:54 ledger line d67ba0b7
-- d67ba0b7 25 Nov 05:54 legacy rename + editor files
 
 ## Uncommitted files (half-done work if any)
+M  admin-desk/D6-B13-AD35-RESEARCH-LIST-25NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  admin-desk/sql/AD35.sql
+M  admin-desk/sql/editor/AD35-editor.sql
+M  docs/claude/TECH-LAW-GATE.json
+M  docs/claude/admin-desk/D6-B13-AD35-RESEARCH-LIST-25NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/sql/AD35.sql
+M  docs/claude/admin-desk/sql/editor/AD35-editor.sql
+M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 36 ++----------------------------------
- 1 file changed, 2 insertions(+), 34 deletions(-)
+ .../admin-desk/D6-B13-AD35-RESEARCH-LIST-25NOV.md  |  1 +
+ docs/claude/admin-desk/NOW-LIST-23NOV.md           |  1 +
+ docs/claude/admin-desk/sql/AD35.sql                | 30 +++++++++++--------
+ docs/claude/admin-desk/sql/editor/AD35-editor.sql  | 30 +++++++++++--------
+ docs/claude/admin-desk/state/WORKING-NOW.md        |  9 ++++++
+ docs/claude/state/WORKING-NOW.md                   | 34 ++++++++++------------
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  6 ++--
+ 12 files changed, 113 insertions(+), 69 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -45,4 +62,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (a5df097e6ba52e5e40f5942af214e480f4354616)
+WIP snapshot: refs/wip/last (f3a47ca0ade70baa45d2de0a7404bee94d1942f4)
