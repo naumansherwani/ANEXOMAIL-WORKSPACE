@@ -1,9 +1,9 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 07:40 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (manual checkpoint, 25 Nov 2026 07:44 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: T4i picker GREEN: his install paste 07:3x SAME + my live Chrome look; next T4h Rust signer
-NEXT STEP: T4h Rust signer: research line to the gate first, then code
-HIS LAST WORD: his 07:38 order: green, next phase, speed
+DOING: his 07:40 order: banned countries out of the Desk picker; native grey list rejected, demo of a beautiful combobox first
+NEXT STEP: demo of the Desk combobox, his pick, then code; then T4h ledger signer
+HIS LAST WORD: his 07:40/07:43 UI order: banned list + beautiful picker demo
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e3c5a3ab 25 Nov 07:40 ledger line e097ebc7
 - e097ebc7 25 Nov 07:40 Desk: T4i GREEN, T4h signer next
 - 2a131cdc 25 Nov 07:33 ledger line dd8816d1
 - dd8816d1 25 Nov 07:33 Desk: T4i Rust registry doors + picker screen (web install)
@@ -75,10 +76,13 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 0424a1b0 25 Nov 07:27 Desk: compact resume saved, T4i code starts
 - 59aabafc 25 Nov 07:21 ledger line e805ad5d
 - e805ad5d 25 Nov 07:21 Desk: final date 5 Dec, dates for all phases
-- 803dd08e 25 Nov 07:18 ledger line a8a77ad2
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/server/src/registry.rs
+M  docs/claude/admin-desk/server/src/registry.rs
+MM docs/claude/admin-desk/state/WORKING-NOW.md
+M  founder-web/src/desk/desk_registry_pure.test.ts
+M  founder-web/src/desk/desk_registry_pure.ts
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

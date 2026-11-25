@@ -6,6 +6,8 @@
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const CTRL = /[\u0000-\u001f\u007f]/;
 export const NUMBER_MAX = 80;
+/** Countries where ANEXOMAIL is not available (banned-countries/banned.json is the ONE list; the Desk keeps its own copy, a test fails on drift). The Rust door already drops them; this is the second layer. */
+export const BANNED_ISO: readonly string[] = ["AF", "IL", "KP", "SY"];
 export const countryCodeOk = (c: string) => /^[A-Z]{2}$/.test(c);
 export const numberOk = (n: string) => { const t = [...n.trim()].length; return t >= 1 && t <= NUMBER_MAX && !CTRL.test(n); };
 
@@ -20,6 +22,7 @@ export function parseCountries(j: unknown): Country[] | null {
   for (const r of x.countries as unknown[]) {
     const o = r as Record<string, unknown> | null;
     if (o === null || typeof o !== "object" || typeof o.code !== "string" || !countryCodeOk(o.code) || !text(o.country, 120) || o.country === "" || !Number.isInteger(o.registers) || (o.registers as number) < 1) return null;
+    if (BANNED_ISO.includes(o.code)) continue;   // never listed, even if the server sent it
     out.push({ code: o.code, country: o.country, registers: o.registers as number });
   }
   return out;
@@ -95,3 +98,32 @@ export function parseHistory(j: unknown): Held[] | null {
   return out;
 }
 export const registerLabel = (r: Register): string => `${r.name || r.authority || r.raCode} (${r.raCode})${r.shapeKnown ? "" : " - number shape not proven"}`;
+
+// ---- the searchable list of the pickers (WAI-ARIA APG editable combobox with list autocomplete): pure part ----
+export type ComboItem = { key: string; label: string; hint?: string; note?: string };
+/** Lower case, no accents, no extra spaces: "Cote d'Ivoire" is found by "cote", "Curaçao" by "curacao". */
+export const fold = (t: string): string => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/\s+/g, " ").trim();
+/** Items that match the typed text, best first: a label that STARTS with it, then a word that starts with it, then any other place it appears (label or hint). An empty text keeps the order. At most `max` items. */
+export function filterItems(items: readonly ComboItem[], q: string, max = 300): ComboItem[] {
+  const f = fold(q);
+  if (f === "") return items.slice(0, max);
+  const ranked: { it: ComboItem; r: number; i: number }[] = [];
+  items.forEach((it, i) => {
+    const l = fold(it.label), h = fold(it.hint ?? "");
+    const r = l.startsWith(f) ? 0 : l.split(" ").some((w) => w.startsWith(f)) ? 1 : l.includes(f) ? 2 : h.includes(f) ? 3 : -1;
+    if (r >= 0) ranked.push({ it, r, i });
+  });
+  ranked.sort((a, b) => a.r - b.r || a.i - b.i);
+  return ranked.slice(0, max).map((x) => x.it);
+}
+/** Splits a label into [before, match, after] for the highlight; no match = the whole label as "before". Works on the folded text, so the cut falls on the same letters of the original (folding never changes the length of a plain letter). */
+export function splitMatch(label: string, q: string): [string, string, string] {
+  const f = fold(q); if (f === "") return [label, "", ""];
+  const chars = [...label]; let folded = ""; const at: number[] = [];
+  chars.forEach((c, i) => { const g = fold(c === " " ? " " : c); for (let k = 0; k < g.length; k++) at.push(i); folded += g; });
+  const pos = folded.indexOf(f); if (pos < 0 || f.length === 0) return [label, "", ""];
+  const a = at[pos], b = at[pos + f.length - 1] + 1;
+  return [chars.slice(0, a).join(""), chars.slice(a, b).join(""), chars.slice(b).join("")];
+}
+/** Next active row for the arrow keys (wraps round); -1 means "none yet". */
+export const stepActive = (cur: number, dir: 1 | -1, n: number): number => (n <= 0 ? -1 : cur < 0 ? (dir === 1 ? 0 : n - 1) : (cur + dir + n) % n);

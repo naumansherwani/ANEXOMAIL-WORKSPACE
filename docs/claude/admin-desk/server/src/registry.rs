@@ -17,6 +17,10 @@ pub const CHECK_WORDS: [&str; 5] = ["ok", "wrong_shape", "shape_unknown", "bad_n
 /// The closed states of desk.company_identifier_lookup (AD35).
 pub const LOOKUP_STATES: [&str; 5] = ["found", "none", "no_right", "no_register", "bad_number"];
 pub const SHAPE_STATES: [&str; 2] = ["shape_ok", "shape_unproven"];
+/// The countries where ANEXOMAIL is not available (his 7 Nov order, banned-countries/banned.json is the ONE list). The Desk keeps its OWN copy (Desk isolation law: no import from founder or awam code); a test reads banned.json and fails on any drift.
+/// No customer company can exist there, so the pickers never list them and a pick of one answers an empty list.
+pub const BANNED_ISO: [&str; 4] = ["AF", "IL", "KP", "SY"];
+pub fn banned(code: &str) -> bool { BANNED_ISO.contains(&code) }
 
 pub fn word(raw: Option<&str>, list: &[&'static str]) -> &'static str { raw.and_then(|w| list.iter().find(|x| **x == w).copied()).unwrap_or("refused") }
 pub fn uuid_ok(s: &str) -> bool { s.len() == 36 && s.bytes().enumerate().all(|(i, b)| if matches!(i, 8 | 13 | 18 | 23) { b == b'-' } else { b.is_ascii_hexdigit() }) }
@@ -37,9 +41,13 @@ pub async fn countries(h: HeaderMap, body: Bytes) -> Response {
     let (c, _o) = match owner(&h).await { Ok(x) => x, Err(r) => return r };
     if body.len() > 64 { return err(StatusCode::PAYLOAD_TOO_LARGE, "too_large"); }
     match rows(&c, "select desk.registry_countries()::text").await {
-        Ok(v) => match v.first().and_then(|r| r.get(0)) { Some(j) if j.starts_with('[') => out(StatusCode::OK, format!("{{\"countries\":{j}}}")), _ => unavailable() },
+        Ok(v) => match v.first().and_then(|r| r.get(0)) { Some(j) if j.starts_with('[') => out(StatusCode::OK, format!("{{\"countries\":{}}}", without_banned(j))), _ => unavailable() },
         Err(e) => { eprintln!("desk registry: db: {e}"); unavailable() }
     }
+}
+/// Drops the banned countries from the database list. A list that cannot be read is refused as "[]" (fail closed: nothing is shown rather than something banned).
+pub fn without_banned(j: &str) -> String {
+    match serde_json::from_str::<Vec<serde_json::Value>>(j) { Ok(v) => serde_json::Value::Array(v.into_iter().filter(|c| !c["code"].as_str().map_or(true, banned)).collect()).to_string(), Err(_) => "[]".to_string() }
 }
 /// POST /desk/v1/registry/pick {country}: the registers of one country (at most 100) with whether a number shape is proven.
 pub async fn pick(h: HeaderMap, body: Bytes) -> Response {
@@ -47,6 +55,7 @@ pub async fn pick(h: HeaderMap, body: Bytes) -> Response {
     if body.len() > 128 { return err(StatusCode::PAYLOAD_TOO_LARGE, "too_large"); }
     let Ok(b) = serde_json::from_slice::<PickIn>(&body) else { return err(StatusCode::BAD_REQUEST, "bad_body") };
     if !country_ok(&b.country) { return err(StatusCode::BAD_REQUEST, "bad_body"); }
+    if banned(&b.country) { return out(StatusCode::OK, "{\"registers\":[]}".to_string()); }
     match rows(&c, &format!("select desk.registry_pick({})::text", lit(&b.country))).await {
         Ok(v) => match v.first().and_then(|r| r.get(0)) { Some(j) if j.starts_with('[') => out(StatusCode::OK, format!("{{\"registers\":{j}}}")), _ => unavailable() },
         Err(e) => { eprintln!("desk registry: db: {e}"); unavailable() }
@@ -114,6 +123,20 @@ mod tests {
     #[test] fn country_must_be_two_capital_letters() {
         assert!(country_ok("PK")); assert!(country_ok("GB"));
         for bad in ["pk", "P", "PAK", "P1", "P K", "", "P'", "Pk"] { assert!(!country_ok(bad), "{bad}"); }
+    }
+    /// Finds banned-countries/banned.json by walking up from the crate folder (the Desk exists as two identical copies at different depths).
+    fn truth() -> Vec<String> {
+        let mut d = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        loop { let f = d.join("banned-countries").join("banned.json"); if f.is_file() { let v: serde_json::Value = serde_json::from_str(&std::fs::read_to_string(f).unwrap()).unwrap();
+            return v["countries"].as_array().unwrap().iter().map(|c| c["iso2"].as_str().unwrap().to_string()).collect(); } assert!(d.pop(), "banned-countries/banned.json not found above the crate"); }
+    }
+    #[test] fn the_banned_list_equals_banned_json() { let mut t = truth(); t.sort(); let mut m: Vec<String> = BANNED_ISO.iter().map(|x| x.to_string()).collect(); m.sort(); assert_eq!(m, t, "the Desk copy drifted from banned-countries/banned.json"); }
+    #[test] fn banned_countries_never_reach_the_picker() {
+        let list = r#"[{"code":"AF","country":"Afghanistan","registers":2},{"code":"PK","country":"Pakistan","registers":2},{"code":"IL","country":"Israel","registers":3},{"code":"KP","country":"North Korea","registers":1},{"code":"SY","country":"Syria","registers":1},{"code":"PS","country":"Palestine","registers":1}]"#;
+        let v: Vec<serde_json::Value> = serde_json::from_str(&without_banned(list)).unwrap();
+        assert_eq!(v.iter().map(|c| c["code"].as_str().unwrap()).collect::<Vec<_>>(), ["PK", "PS"], "Palestine is not banned, the four are");
+        assert_eq!(without_banned("not json"), "[]");
+        assert!(banned("SY") && !banned("PK") && !banned("PS"));
     }
     #[test] fn registry_id_must_be_positive() { assert!(registry_ok(1)); assert!(!registry_ok(0)); assert!(!registry_ok(-5)); }
     #[test] fn a_number_is_printable_and_bounded() {

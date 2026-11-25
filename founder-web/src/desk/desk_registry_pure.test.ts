@@ -1,5 +1,6 @@
 import { expect, test } from "bun:test";
-import { buildHistory, buildNumber, checkWords, countryCodeOk, lookupWords, numberOk, parseCheck, parseCountries, parseHistory, parseLookup, parseRegisters, registerLabel } from "./desk_registry_pure";
+import { readFileSync } from "node:fs";
+import { BANNED_ISO, filterItems, fold, splitMatch, stepActive, buildHistory, buildNumber, checkWords, countryCodeOk, lookupWords, numberOk, parseCheck, parseCountries, parseHistory, parseLookup, parseRegisters, registerLabel } from "./desk_registry_pure";
 
 const T = "123e4567-e89b-12d3-a456-426614174000";
 const reg = (o: Record<string, unknown> = {}) => ({ id: 7, ra_code: "RA000475", name: "Corporate Registry", authority: "Securities and Exchange Commission", website: "www.secp.gov.pk", shape_known: false, ...o });
@@ -52,4 +53,28 @@ test("parseHistory accepts the exact shape and fails closed", () => {
 test("register label says when a shape is not proven", () => {
   expect(registerLabel({ id: 7, raCode: "RA000475", name: "Corporate Registry", authority: "SECP", website: "", shapeKnown: false })).toBe("Corporate Registry (RA000475) - number shape not proven");
   expect(registerLabel({ id: 8, raCode: "RA000001", name: "", authority: "Central Registry", website: "", shapeKnown: true })).toBe("Central Registry (RA000001)");
+});
+test("the banned countries are the repo list and are never offered", () => {
+  const truth = (JSON.parse(readFileSync(new URL("../../../banned-countries/banned.json", import.meta.url), "utf8")).countries as { iso2: string }[]).map((c) => c.iso2).sort();
+  expect([...BANNED_ISO].sort()).toEqual(truth);
+  const got = parseCountries({ countries: ["AF", "PK", "IL", "KP", "SY", "PS"].map((code) => ({ code, country: code + " land", registers: 1 })) });
+  expect(got?.map((c) => c.code)).toEqual(["PK", "PS"]);
+});
+
+const items = [{ key: "CI", label: "Côte d'Ivoire" }, { key: "CW", label: "Curaçao" }, { key: "PK", label: "Pakistan" }, { key: "PS", label: "Palestine" }, { key: "PA", label: "Panama" }, { key: "KP", label: "North Korea" }, { key: "GB", label: "United Kingdom", hint: "GB" }];
+test("fold ignores accents, case and extra spaces", () => { expect(fold("  Côte  d'Ivoire ")).toBe("cote d'ivoire"); expect(fold("Curaçao")).toBe("curacao"); });
+test("filterItems ranks a label that starts with the text first, then a word, then anywhere, then the hint", () => {
+  expect(filterItems(items, "pa").map((i) => i.key)).toEqual(["PK", "PS", "PA"]);   // Pakistan, Palestine, Panama all start with pa (original order)
+  expect(filterItems(items, "cote").map((i) => i.key)).toEqual(["CI"]); expect(filterItems(items, "CURACAO").map((i) => i.key)).toEqual(["CW"]);
+  expect(filterItems(items, "korea").map((i) => i.key)).toEqual(["KP"]);            // a later word
+  expect(filterItems(items, "ingdom").map((i) => i.key)).toEqual(["GB"]);           // inside a word
+  expect(filterItems(items, "gb").map((i) => i.key)).toEqual(["GB"]);               // the hint
+  expect(filterItems(items, "zzz")).toEqual([]); expect(filterItems(items, "").length).toBe(items.length); expect(filterItems(items, "", 2).length).toBe(2);
+});
+test("splitMatch cuts the label on the same letters the person typed", () => {
+  expect(splitMatch("Pakistan", "kis")).toEqual(["Pa", "kis", "tan"]); expect(splitMatch("Curaçao", "curac")).toEqual(["", "Curaç", "ao"]);
+  expect(splitMatch("Pakistan", "")).toEqual(["Pakistan", "", ""]); expect(splitMatch("Pakistan", "xyz")).toEqual(["Pakistan", "", ""]);
+});
+test("stepActive wraps round and starts from the right end", () => {
+  expect(stepActive(-1, 1, 3)).toBe(0); expect(stepActive(-1, -1, 3)).toBe(2); expect(stepActive(2, 1, 3)).toBe(0); expect(stepActive(0, -1, 3)).toBe(2); expect(stepActive(0, 1, 0)).toBe(-1);
 });

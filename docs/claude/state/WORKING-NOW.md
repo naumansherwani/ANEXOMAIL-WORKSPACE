@@ -1,9 +1,9 @@
-# WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 07:40 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 25 Nov 2026 07:44 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: T4i picker GREEN: his install paste 07:3x SAME + my live Chrome look; next T4h Rust signer
-NEXT STEP: T4h Rust signer: research line to the gate first, then code
-HIS LAST WORD: his 07:38 order: green, next phase, speed
+DOING: his 07:40 order: banned countries out of the Desk picker; native grey list rejected, demo of a beautiful combobox first
+NEXT STEP: demo of the Desk combobox, his pick, then code; then T4h ledger signer
+HIS LAST WORD: his 07:40/07:43 UI order: banned list + beautiful picker demo
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -21,20 +21,34 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- e3c5a3ab 25 Nov 07:40 ledger line e097ebc7
 - e097ebc7 25 Nov 07:40 Desk: T4i GREEN, T4h signer next
 - 2a131cdc 25 Nov 07:33 ledger line dd8816d1
 - dd8816d1 25 Nov 07:33 Desk: T4i Rust registry doors + picker screen (web install)
 - b1368897 25 Nov 07:27 ledger line 0424a1b0
-- 0424a1b0 25 Nov 07:27 Desk: compact resume saved, T4i code starts
 
 ## Uncommitted files (half-done work if any)
+M  admin-desk/server/src/registry.rs
+M  docs/claude/admin-desk/server/src/registry.rs
+M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
+R  founder-web/dist-desk/assets/desk-BIV8Jawp.js -> founder-web/dist-desk/assets/desk-DPrzbeN8.js
+M  founder-web/dist-desk/desk.html
+M  founder-web/src/desk/desk_registry_pure.test.ts
+M  founder-web/src/desk/desk_registry_pure.ts
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 21 ++-------------------
- 1 file changed, 2 insertions(+), 19 deletions(-)
+ docs/claude/admin-desk/state/WORKING-NOW.md        |  1 +
+ docs/claude/state/WORKING-NOW.md                   | 31 +++++++++------------
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  4 +--
+ .../assets/{desk-BIV8Jawp.js => desk-DPrzbeN8.js}  | 32 +++++++++++-----------
+ founder-web/dist-desk/desk.html                    |  2 +-
+ founder-web/src/desk/desk_registry_pure.test.ts    | 27 +++++++++++++++++-
+ founder-web/src/desk/desk_registry_pure.ts         | 32 ++++++++++++++++++++++
+ 9 files changed, 139 insertions(+), 40 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -45,4 +59,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (701a11d567ca88cfae9731ca6948d8e1da2d992f)
+WIP snapshot: refs/wip/last (b59dc53726a7e169d95847bdcf314d85f7387cd9)
