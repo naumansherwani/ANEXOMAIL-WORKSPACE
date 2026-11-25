@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 25 Nov 2026 07:33 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 07:33 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: T4i picker written + tested: Rust registry doors, pure TS, screen section; research told to the gate first
@@ -21,45 +21,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- dd8816d1 25 Nov 07:33 Desk: T4i Rust registry doors + picker screen (web install)
 - b1368897 25 Nov 07:27 ledger line 0424a1b0
 - 0424a1b0 25 Nov 07:27 Desk: compact resume saved, T4i code starts
 - 59aabafc 25 Nov 07:21 ledger line e805ad5d
 - e805ad5d 25 Nov 07:21 Desk: final date 5 Dec, dates for all phases
-- 803dd08e 25 Nov 07:18 ledger line a8a77ad2
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/D6-B13-T4I-REGISTRATION-NUMBERS-PLAN-25NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  admin-desk/server/src/main.rs
-A  admin-desk/server/src/registry.rs
-M  docs/claude/TECH-LAW-GATE.json
-M  docs/claude/admin-desk/D6-B13-T4I-REGISTRATION-NUMBERS-PLAN-25NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/server/src/main.rs
-A  docs/claude/admin-desk/server/src/registry.rs
-M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/claude/tech-contracts/CURRENT.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
-D  founder-web/dist-desk/assets/desk-B5yyzip8.js
-A  founder-web/dist-desk/assets/desk-BIV8Jawp.js
-M  founder-web/dist-desk/desk.html
-M  founder-web/src/desk/DeskBindException.tsx
-A  founder-web/src/desk/DeskRegistryPicker.tsx
-A  founder-web/src/desk/desk_registry_pure.test.ts
-A  founder-web/src/desk/desk_registry_pure.ts
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- founder-web/dist-desk/assets/desk-B5yyzip8.js      | 243 ---------------------
- founder-web/dist-desk/assets/desk-BIV8Jawp.js      | 243 +++++++++++++++++++++
- founder-web/dist-desk/desk.html                    |   2 +-
- founder-web/src/desk/DeskBindException.tsx         |   2 +
- founder-web/src/desk/DeskRegistryPicker.tsx        |  57 +++++
- founder-web/src/desk/desk_registry_pure.test.ts    |  55 +++++
- founder-web/src/desk/desk_registry_pure.ts         |  97 ++++++++
- 20 files changed, 892 insertions(+), 273 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 42 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 40 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -70,4 +45,4 @@ A  founder-web/src/desk/desk_registry_pure.ts
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (5ba056fb2c8a1742f1b34e2bcbc11c91da511d68)
+WIP snapshot: refs/wip/last (4d8e042501f7e783505b177aa1442435ad0a8b16)

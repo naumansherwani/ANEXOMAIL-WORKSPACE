@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 25 Nov 2026 07:33 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 07:33 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: T4i picker written + tested: Rust registry doors, pure TS, screen section; research told to the gate first
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- dd8816d1 25 Nov 07:33 Desk: T4i Rust registry doors + picker screen (web install)
 - b1368897 25 Nov 07:27 ledger line 0424a1b0
 - 0424a1b0 25 Nov 07:27 Desk: compact resume saved, T4i code starts
 - 59aabafc 25 Nov 07:21 ledger line e805ad5d
@@ -75,22 +76,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 803dd08e 25 Nov 07:18 ledger line a8a77ad2
 - a8a77ad2 25 Nov 07:18 Desk: where we stand and Dashboard phases left counted
 - b87d97c6 25 Nov 07:15 ledger line 81a13ba8
-- 81a13ba8 25 Nov 07:15 Desk: AD35 SQL green on his server, next phase T4i Rust doors + picker
 
 ## Uncommitted Desk files
-M  admin-desk/D6-B13-T4I-REGISTRATION-NUMBERS-PLAN-25NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  admin-desk/server/src/main.rs
-A  admin-desk/server/src/registry.rs
-M  docs/claude/admin-desk/D6-B13-T4I-REGISTRATION-NUMBERS-PLAN-25NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/server/src/main.rs
-A  docs/claude/admin-desk/server/src/registry.rs
-MM docs/claude/admin-desk/state/WORKING-NOW.md
-M  founder-web/src/desk/DeskBindException.tsx
-A  founder-web/src/desk/DeskRegistryPicker.tsx
-A  founder-web/src/desk/desk_registry_pure.test.ts
-A  founder-web/src/desk/desk_registry_pure.ts
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
