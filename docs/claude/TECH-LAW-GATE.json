@@ -942,7 +942,7 @@
   {
    "id": "T4i-sql-registry-kind",
    "file": "admin-desk/sql/AD34.sql",
-   "must": "desk.registry_kind",
+   "must": "desk.fadm_registry_kind",
    "status": "ok",
    "deadline": "B13 T4i",
    "why": "his 25 Nov 04:31 order: registration numbers of every country built once and future-proof: GLEIF list loaded in AD34, shape NULL until proven.",
@@ -951,7 +951,7 @@
   {
    "id": "T4h-sql-checkpoint-tables",
    "file": "admin-desk/sql/AD35.sql",
-   "must": "desk.ledger_checkpoint",
+   "must": "desk.fadm_ledger_checkpoint",
    "status": "ok",
    "deadline": "B13 T4h",
    "why": "his 25 Nov 04:42 order AD35: signed ledger checkpoints in C2SP form, append-only, bound to the ledger line, off-box witness table; Rust signer + Storage Box copy stay open under T4h-ledger-checkpoints.",
@@ -960,7 +960,7 @@
   {
    "id": "T4i-sql-company-identifier",
    "file": "admin-desk/sql/AD35.sql",
-   "must": "desk.company_identifier",
+   "must": "desk.fadm_company_identifier",
    "status": "ok",
    "deadline": "B13 T4i",
    "why": "AD35: bitemporal company registry numbers, two different people, one live holder, ledger holds only a hash.",

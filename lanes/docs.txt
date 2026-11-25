@@ -654,6 +654,8 @@ docs/claude/admin-desk/state/PHASES.md
 docs/claude/admin-desk/state/REMINDERS.md
 docs/claude/admin-desk/state/RESUME.md
 docs/claude/admin-desk/state/WORKING-NOW.md
+docs/claude/admin-desk/tests/00-FOUNDER-TECH-RULE.md
+docs/claude/admin-desk/tests/sim-auto.sh
 docs/claude/admin-desk/tools/00-FOUNDER-TECH-RULE.md
 docs/claude/admin-desk/tools/AD9.template.sql
 docs/claude/admin-desk/tools/gen-ad9.py

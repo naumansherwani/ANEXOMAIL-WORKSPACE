@@ -205,7 +205,7 @@ END IF; END $g$;
 -- T4i REGISTRY KINDS (his 25 Nov 2026 04:21 order: company registration numbers of EVERY country, Pakistan included; future-proof, built once, used when needed) -------------------------------------
 -- RESEARCH (plan docs/claude/admin-desk/D6-B13-T4I-REGISTRATION-NUMBERS-PLAN-25NOV.md): GLEIF Registration Authorities List v1.9 (30 Sep 2026, his file): 1,178 registers in 234 jurisdictions + 3 special codes. The list names the register, NOT the number shape,
 -- so number_shape stays NULL ("shape unknown") until a register's own page proves one; nothing is ever invented. RA codes repeat across rows, so the key is a row id and a generated row_hash keeps the load idempotent.
-CREATE TABLE IF NOT EXISTS desk.registry_kind (
+CREATE TABLE IF NOT EXISTS desk.fadm_registry_kind (
   id            bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   ra_code       text NOT NULL CHECK (ra_code ~ '^RA[0-9]{6}$'),
   country       text NOT NULL DEFAULT '',
@@ -224,19 +224,19 @@ CREATE TABLE IF NOT EXISTS desk.registry_kind (
   CONSTRAINT registry_kind_row_hash_key UNIQUE (row_hash),
   CONSTRAINT registry_kind_shape_proof CHECK ((number_shape IS NULL) = (shape_source IS NULL) AND (shape_source IS NULL) = (shape_checked_on IS NULL))
 );
-CREATE INDEX IF NOT EXISTS registry_kind_country_idx ON desk.registry_kind (country_code, ra_code);
-ALTER TABLE desk.registry_kind ENABLE ROW LEVEL SECURITY; ALTER TABLE desk.registry_kind FORCE ROW LEVEL SECURITY;
-DROP POLICY IF EXISTS p_registry_read ON desk.registry_kind;
-CREATE POLICY p_registry_read ON desk.registry_kind FOR SELECT TO desk_app USING (true);
-REVOKE ALL ON desk.registry_kind FROM PUBLIC; GRANT SELECT ON desk.registry_kind TO desk_app;
-CREATE OR REPLACE FUNCTION desk.registry_no_delete() RETURNS trigger LANGUAGE plpgsql SET search_path = pg_catalog, pg_temp AS $f$ BEGIN RAISE EXCEPTION 'desk.registry_kind rows are never deleted' USING ERRCODE = 'P0AW5'; END $f$;
-DROP TRIGGER IF EXISTS registry_kind_no_delete ON desk.registry_kind;
-CREATE TRIGGER registry_kind_no_delete BEFORE DELETE ON desk.registry_kind FOR EACH ROW EXECUTE FUNCTION desk.registry_no_delete();
+CREATE INDEX IF NOT EXISTS registry_kind_country_idx ON desk.fadm_registry_kind (country_code, ra_code);
+ALTER TABLE desk.fadm_registry_kind ENABLE ROW LEVEL SECURITY; ALTER TABLE desk.fadm_registry_kind FORCE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS p_registry_read ON desk.fadm_registry_kind;
+CREATE POLICY p_registry_read ON desk.fadm_registry_kind FOR SELECT TO desk_app USING (true);
+REVOKE ALL ON desk.fadm_registry_kind FROM PUBLIC; GRANT SELECT ON desk.fadm_registry_kind TO desk_app;
+CREATE OR REPLACE FUNCTION desk.registry_no_delete() RETURNS trigger LANGUAGE plpgsql SET search_path = pg_catalog, pg_temp AS $f$ BEGIN RAISE EXCEPTION 'desk.fadm_registry_kind rows are never deleted' USING ERRCODE = 'P0AW5'; END $f$;
+DROP TRIGGER IF EXISTS registry_kind_no_delete ON desk.fadm_registry_kind;
+CREATE TRIGGER registry_kind_no_delete BEFORE DELETE ON desk.fadm_registry_kind FOR EACH ROW EXECUTE FUNCTION desk.registry_no_delete();
 -- the check a screen asks: normalise, then compare ONLY against a proven shape; closed answer words, never a guess
 CREATE OR REPLACE FUNCTION desk.registry_check(p_kind bigint, p_number text) RETURNS text LANGUAGE plpgsql STABLE SET search_path = pg_catalog, pg_temp AS $f$
-DECLARE k desk.registry_kind; n text;
+DECLARE k desk.fadm_registry_kind; n text;
 BEGIN
-  SELECT * INTO k FROM desk.registry_kind WHERE id = p_kind;
+  SELECT * INTO k FROM desk.fadm_registry_kind WHERE id = p_kind;
   IF NOT FOUND THEN RETURN 'no_register'; END IF;
   n := upper(regexp_replace(coalesce(p_number, ''), '[[:space:][:cntrl:]\\-]', '', 'g'));
   IF n = '' OR char_length(n) > 64 THEN RETURN 'bad_number'; END IF;
@@ -244,7 +244,7 @@ BEGIN
   RETURN CASE WHEN n ~ k.number_shape THEN 'ok' ELSE 'wrong_shape' END;
 END $f$;
 REVOKE ALL ON FUNCTION desk.registry_check(bigint, text) FROM PUBLIC; GRANT EXECUTE ON FUNCTION desk.registry_check(bigint, text) TO desk_app;
-INSERT INTO desk.registry_kind (ra_code, country, country_code, jurisdiction, register_name, local_name, authority, local_authority, website, comment) VALUES
+INSERT INTO desk.fadm_registry_kind (ra_code, country, country_code, jurisdiction, register_name, local_name, authority, local_authority, website, comment) VALUES
 ('RA777777','','','','','','','','','to be used for ''Public Legal Documents'' for General Government Entities and International Organizati'),
 ('RA888888','','','','','','','','','temporary code; new registration authority code requested'),
 ('RA999999','','','','','','','','','no registration authority available for this legal entity'),
@@ -1555,11 +1555,11 @@ BEGIN
     AND NOT has_table_privilege('desk_app', 'desk.fadm_bind_proposal', 'SELECT') AND NOT has_table_privilege('desk_app', 'desk.fadm_bind_proposal', 'INSERT')
     AND (SELECT relforcerowsecurity FROM pg_class WHERE oid = 'desk.fadm_bind_proposal'::regclass), 'desk_app calls the doors only; the table is forced RLS and closed');
   -- T4i registry kinds
-  PERFORM pg_temp.ad34_ok((SELECT count(*) FROM desk.registry_kind) >= 1178 AND (SELECT count(DISTINCT country_code) FROM desk.registry_kind WHERE country_code <> '') >= 234, 'the GLEIF list is loaded: 1178 registers in 234 jurisdictions');
-  PERFORM pg_temp.ad34_ok(EXISTS (SELECT 1 FROM desk.registry_kind WHERE country_code = 'PK' AND ra_code = 'RA000475') AND EXISTS (SELECT 1 FROM desk.registry_kind WHERE country_code = 'PK' AND ra_code = 'RA001111'), 'Pakistan has SECP RA000475 and FBR RA001111');
-  PERFORM pg_temp.ad34_ok(desk.registry_check(-1, '123') = 'no_register' AND desk.registry_check((SELECT id FROM desk.registry_kind WHERE ra_code = 'RA000475' LIMIT 1), '  ') = 'bad_number' AND desk.registry_check((SELECT id FROM desk.registry_kind WHERE ra_code = 'RA000475' LIMIT 1), '0123456') = 'shape_unknown', 'an unproven shape answers shape_unknown, never a guess');
-  BEGIN DELETE FROM desk.registry_kind WHERE ra_code = 'RA000475'; PERFORM pg_temp.ad34_ok(false, 'registry rows cannot be deleted'); EXCEPTION WHEN SQLSTATE 'P0AW5' THEN NULL; END;
-  BEGIN INSERT INTO desk.registry_kind (ra_code, number_shape) VALUES ('RA000001', '^[0-9]+$'); PERFORM pg_temp.ad34_ok(false, 'a shape without its source is refused'); EXCEPTION WHEN check_violation THEN NULL; END;
+  PERFORM pg_temp.ad34_ok((SELECT count(*) FROM desk.fadm_registry_kind) >= 1178 AND (SELECT count(DISTINCT country_code) FROM desk.fadm_registry_kind WHERE country_code <> '') >= 234, 'the GLEIF list is loaded: 1178 registers in 234 jurisdictions');
+  PERFORM pg_temp.ad34_ok(EXISTS (SELECT 1 FROM desk.fadm_registry_kind WHERE country_code = 'PK' AND ra_code = 'RA000475') AND EXISTS (SELECT 1 FROM desk.fadm_registry_kind WHERE country_code = 'PK' AND ra_code = 'RA001111'), 'Pakistan has SECP RA000475 and FBR RA001111');
+  PERFORM pg_temp.ad34_ok(desk.registry_check(-1, '123') = 'no_register' AND desk.registry_check((SELECT id FROM desk.fadm_registry_kind WHERE ra_code = 'RA000475' LIMIT 1), '  ') = 'bad_number' AND desk.registry_check((SELECT id FROM desk.fadm_registry_kind WHERE ra_code = 'RA000475' LIMIT 1), '0123456') = 'shape_unknown', 'an unproven shape answers shape_unknown, never a guess');
+  BEGIN DELETE FROM desk.fadm_registry_kind WHERE ra_code = 'RA000475'; PERFORM pg_temp.ad34_ok(false, 'registry rows cannot be deleted'); EXCEPTION WHEN SQLSTATE 'P0AW5' THEN NULL; END;
+  BEGIN INSERT INTO desk.fadm_registry_kind (ra_code, number_shape) VALUES ('RA000001', '^[0-9]+$'); PERFORM pg_temp.ad34_ok(false, 'a shape without its source is refused'); EXCEPTION WHEN check_violation THEN NULL; END;
   RAISE EXCEPTION 'AD34 selftest passed, rolling back' USING ERRCODE = 'P0AW4';
 EXCEPTION WHEN SQLSTATE 'P0AW4' THEN RAISE NOTICE 'AD34 selftest: ALL RULES PASSED (rows rolled back)';
 END $$;

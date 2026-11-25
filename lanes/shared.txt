@@ -319,6 +319,8 @@ admin-desk/state/HANDOFF-22NOV.md
 admin-desk/state/PHASES.md
 admin-desk/state/REMINDERS.md
 admin-desk/state/RESUME.md
+admin-desk/tests/00-FOUNDER-TECH-RULE.md
+admin-desk/tests/sim-auto.sh
 admin-desk/tools/00-FOUNDER-TECH-RULE.md
 admin-desk/tools/AD9.template.sql
 admin-desk/tools/gen-ad9.py

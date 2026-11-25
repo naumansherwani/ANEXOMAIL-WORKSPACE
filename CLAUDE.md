@@ -118,3 +118,5 @@ Full rules: `AGENTS.md` (Rules 1–73) and `docs/claude/founder/CODES/00-README-
 > ## >>> 25 Nov 2026 04:5x PKT (his 04:57): AD35 grown to 832 lines with real parts E/F/G (RFC 9162 Merkle proofs, bitemporal as-of, self-audit), CHECK 26 of 26, NOT INSTALLED. His SQL line = bash docs/claude/admin-desk/install-line.sh sql (paste unchanged). <<<
 
 > ## >>> 25 Nov 2026 05:0x PKT (his 05:00): AD35 heading carries AD34 and its advance level (AD34 untouched). SQL line for him = bash docs/claude/admin-desk/install-line.sh sql. NOT INSTALLED. <<<
+
+> ## >>> 25 Nov 2026 05:4x PKT (his 05:29 paste): his SQL install stopped at AD01 because every table in schema desk must be named fadm_* (AD01 law). My 5 new tables renamed (fadm_registry_kind, fadm_ledger_checkpoint, fadm_ledger_checkpoint_witness, fadm_ledger_merkle_root, fadm_company_identifier). TEST LAW: run docs/claude/admin-desk/tests/sim-auto.sh TWICE on a fresh scratch DB before handing him any SQL line; pass 2 must skip every file. ALL NEW DESK TABLES ARE NAMED fadm_*. <<<
