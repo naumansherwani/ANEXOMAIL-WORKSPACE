@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 25 Nov 2026 08:05 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 08:05 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: his 08:05 order: lighter look from the Desk own glass approved (better); demo kept in docs/claude/admin-desk/demo (DESK-COMBOBOX-DEMO-25NOV.html) with a cursor-hover walk-through; real code must take this look
@@ -21,33 +21,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 1a48e266 25 Nov 08:05 Desk: cinematic searchable dropdown + banned note
 - 183d78c4 25 Nov 08:00 ledger line a5a5d9ff
 - a5a5d9ff 25 Nov 08:00 Desk: cinematic searchable dropdown + banned note
 - cb88d46d 25 Nov 07:53 ledger line 44808d60
 - 44808d60 25 Nov 07:53 Desk: cinematic searchable dropdown + banned note
-- 2a65b9bb 25 Nov 07:44 ledger line 8a863113
 
 ## Uncommitted files (half-done work if any)
-A  admin-desk/demo/DESK-COMBOBOX-DEMO-25NOV-hover.png
-A  admin-desk/demo/DESK-COMBOBOX-DEMO-25NOV.html
-A  admin-desk/demo/DESK-COMBOBOX-DEMO-25NOV.md
-A  docs/claude/admin-desk/demo/DESK-COMBOBOX-DEMO-25NOV-hover.png
-A  docs/claude/admin-desk/demo/DESK-COMBOBOX-DEMO-25NOV.html
-A  docs/claude/admin-desk/demo/DESK-COMBOBOX-DEMO-25NOV.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- admin-desk/demo/DESK-COMBOBOX-DEMO-25NOV.html      | 163 +++++++++++++++++++++
- admin-desk/demo/DESK-COMBOBOX-DEMO-25NOV.md        |   6 +
- .../demo/DESK-COMBOBOX-DEMO-25NOV-hover.png        | Bin 0 -> 671885 bytes
- .../admin-desk/demo/DESK-COMBOBOX-DEMO-25NOV.html  | 163 +++++++++++++++++++++
- .../admin-desk/demo/DESK-COMBOBOX-DEMO-25NOV.md    |   6 +
- docs/claude/state/WORKING-NOW.md                   |  28 ++--
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        |   4 +-
- 8 files changed, 351 insertions(+), 19 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 30 ++----------------------------
+ 1 file changed, 2 insertions(+), 28 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -58,4 +45,4 @@ M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (32a53668b30bb4ce23e4c98443038bf66d3ae95f)
+WIP snapshot: refs/wip/last (9f2041439f28bc172064e0f2757f0a3b61c10b96)
