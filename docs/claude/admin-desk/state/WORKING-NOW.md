@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 25 Nov 2026 05:54 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 05:54 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: his 05:53: I broke the fadm_ table pattern, fixed, legacy-rename with selftest and CHECK
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- d67ba0b7 25 Nov 05:54 legacy rename + editor files
 - d994831e 25 Nov 05:49 ledger line 8128a123
 - 8128a123 25 Nov 05:49 AD35 alone note
 - 59762854 25 Nov 05:47 ledger line bcc6676e
@@ -75,26 +76,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 8a865ae1 25 Nov 05:35 ledger line aa922bb1
 - aa922bb1 25 Nov 05:35 AD01 fadm prefix fix
 - ffcb7c75 25 Nov 05:01 ledger line e06252ce
-- e06252ce 25 Nov 05:01 AD35 SQL
 
 ## Uncommitted Desk files
-A  admin-desk/scripts/ad-legacy-rename.sh
-M  admin-desk/scripts/desk-sql-install.sh
-A  admin-desk/sql/checks/legacy-rename-check.sql
-A  admin-desk/sql/editor/00-FOUNDER-TECH-RULE.md
-A  admin-desk/sql/editor/AD34-editor.sql
-A  admin-desk/sql/editor/AD35-editor.sql
-A  admin-desk/sql/legacy-rename.sql
-A  admin-desk/tests/make-editor-sql.sh
-A  docs/claude/admin-desk/scripts/ad-legacy-rename.sh
-M  docs/claude/admin-desk/scripts/desk-sql-install.sh
-A  docs/claude/admin-desk/sql/checks/legacy-rename-check.sql
-A  docs/claude/admin-desk/sql/editor/00-FOUNDER-TECH-RULE.md
-A  docs/claude/admin-desk/sql/editor/AD34-editor.sql
-A  docs/claude/admin-desk/sql/editor/AD35-editor.sql
-A  docs/claude/admin-desk/sql/legacy-rename.sql
-MM docs/claude/admin-desk/state/WORKING-NOW.md
-A  docs/claude/admin-desk/tests/make-editor-sql.sh
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
