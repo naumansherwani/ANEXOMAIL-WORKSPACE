@@ -2985,3 +2985,5 @@
 - 25 Nov 2026 07:30 PKT COMPACT RESUME block written in WORKING-NOW (his 07:27 order); state: AD35 SQL green, final date 5 Dec, doing T4i Rust doors + picker. Notes only. RULE 52 COMBO S=yes M=N/A L=yes.
 
 - 25 Nov 2026 07:5x PKT B13 T4i picker WRITTEN + TESTED, NOT INSTALLED. TESTED: cargo test whole suite 152 passed 0 failed, bun test src/desk 161 pass 0 fail, tsc clean, Desk bundle built. Research told to the gate first (T4I-R). Pakistan shape stays NULL; write door closed until a proposal flow. RULE 52 COMBO S=yes M=N/A L=yes.
+
+- 25 Nov 2026 07:5x PKT B13 T4i Rust doors + picker = GREEN (WIRED: YES / REAL: YES, TECH-LAW CHECKED, TESTED: cargo 152 passed, bun desk 161 pass; his install paste: binary 2a131cdc0 SAME, page desk-BIV8Jawp.js SAME, kernel SAME; my live Chrome look: 234 countries, Pakistan 2 registers, honest shape-unknown and none answers, 44 px, no spill; 390/820 measured by container width, real phone look is his). Write door still closed (T4I-5 open). RULE 52 COMBO S=yes M=N/A L=yes.
