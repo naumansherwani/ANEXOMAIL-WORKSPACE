@@ -14,12 +14,15 @@
 --   2) AD34 gave the register LIST -> AD35 gives the register SHAPE only through desk.registry_shape_prove (https source + date + valid and invalid samples + ReDoS guard) and freezes every identity column of desk.fadm_registry_kind.
 --   3) AD34 keeps its own hash-chained ledger lines -> AD35 makes that ledger provable from OUTSIDE the database: C2SP signed checkpoints, off-box witnesses, RFC 9162 Merkle roots with inclusion and consistency proofs
 --      and pure verifiers a monitor can run, so one bind.* line can be proven without handing over the whole ledger.
---   4) AD34 owner role desk_bind_owner -> AD35 owner role desk_proof_owner (same pattern: NOLOGIN, no superuser, no BYPASSRLS), 23 doors, closed words, REVOKE PUBLIC, selftest + 26-row CHECK.
+--   4) AD34 owner role desk_bind_owner -> AD35 owner role desk_proof_owner (same pattern: NOLOGIN, no superuser, no BYPASSRLS), 26 doors, closed words, REVOKE PUBLIC, selftest + 27-row CHECK.
+--   5) AD34 fails with a cryptic 42P01 when its table is missing -> AD35 starts with a FAIL-FAST PREFLIGHT: it names every missing AD01 / AD34 object (P0AX0) before anything is created, and desk.ad35_preflight() answers ready / missing.
+--   6) AD01 enforces the fadm_ table law only when it reruns -> AD35 adds desk.ad35_naming_law() (tables outside the law) and desk.ad35_definer_report() (SECURITY DEFINER functions with an unpinned search_path or open to PUBLIC), and the self-audit grows from nine to twelve rules.
 -- ADVANCE TECHNOLOGY BASE: PostgreSQL 16 forced RLS, SECURITY DEFINER with pinned search_path, append-only tables with freeze triggers, SHA-256 hash chain + RFC 9162 Merkle tree, Ed25519 (RFC 8032) signatures made by the Rust signer,
 --   C2SP tlog-checkpoint + cosignature format (ML-DSA ready), bitemporal history, NIST AC-5, OWASP logging. Valid for the 2026 web and built so a larger company (Zendesk class and beyond) needs no rewrite.
 -- ======================================================================================================================================================================================================
 -- SCHEMA-FIRST: read before writing: AD01 (desk.fadm_ledger: seq, ts, kind, detail, prev_hash, hash; the chain trigger computes seq and both hashes, three freeze triggers; fadm_ledger_verify walks from the genesis hash with sha256(prev || seq|ts|kind|detail)), AD02 (desk.fadm_audit, fadm_ledger_kind guard, fadm_authorize, fadm_rel), AD29 (desk.fadm_ledger_anchor: DB-internal anchors; AD35 does not replace them, it adds SIGNED ones), AD30 (desk.fadm_case_binding, the ONE binding writer), AD34 (desk.fadm_bind_proposal, desk.fadm_bind_may = case.assign on the desk department, desk_bind_owner pattern, desk.fadm_registry_kind, desk.registry_check, the P0AW* error codes). Nothing of AD01..AD34 is changed except two additive guards on desk.fadm_registry_kind (frozen identity columns).
 -- ADVANCE-RESEARCH: [1m] B13 T4h + T4i (25 Nov 2026 web search; plan docs/claude/admin-desk/D6-B13-T4I-REGISTRATION-NUMBERS-PLAN-25NOV.md): (1) C2SP tlog-checkpoint + tlog-cosignature (https://github.com/C2SP/C2SP/blob/main/tlog-cosignature.md): a transparency-log checkpoint is a small text body of origin line, tree size in ASCII decimal and the base64 root hash, each line ending in a newline, signed with Ed25519 (RFC 8032); a cosigner adds a timestamp and signs the same body; ML-DSA-44 is recommended for new deployments. AD35 stores exactly that body format and the signature the Rust signer makes, binds the body to the ledger line it claims, and records off-box witnesses. (2) RFC 9162 Certificate Transparency 2.0 (https://www.rfc-editor.org/rfc/rfc9162.html): an append-only log is audited by signed tree heads plus consistency checks between two heads, so a monitor verifies only what was added since its last head; AD35 verifies the ledger between two checkpoints with a ranged walk. (3) PostgreSQL temporal constraints (https://www.postgresql.org/docs/current/ddl-temporal-tables.html): WITHOUT OVERLAPS needs btree_gist and a newer PostgreSQL than this server is proven to run, so the same guarantee (one live holder per company number, no overlapping periods) is built with PARTIAL UNIQUE INDEXES plus an advisory-lock trigger that works on PostgreSQL 16. (4) Bitemporal history (valid time + recorded time): a company identifier is never overwritten; it is closed with a reason and a new row opened, so what was true when, and who recorded it, is answerable years later. (5) GLEIF Registration Authorities List v1.9: the list names the register, not the number shape, so a shape enters the table only through a PROOF function with its source page and sample numbers; the database refuses a shape without its source (AD34 CHECK) and refuses a pattern that can run away (nested quantifiers) or that fails its own samples. (6) OWASP Logging: ledger lines carry closed words and ids, never a company number (only a 12-character hash of it) and never free text.
+-- ADVANCE-RESEARCH: [1m] B13 T4h + T4i AD35 REWRITE (25 Nov 2026 06:3x, points 19..22 in docs/claude/admin-desk/D6-B13-AD35-RESEARCH-LIST-25NOV.md): (19) fail-fast migration preflight (Percona Community fail-fast PostgreSQL preflight; Flyway pre-migration checks) -> the P0AX0 block + ad35_preflight; (20) the fadm_ naming law as a living check -> ad35_naming_law; (21) SECURITY DEFINER hygiene (PostgreSQL wiki CVE-2018-1058 search_path guide; CIS PostgreSQL 17 Benchmark 4.5) -> ad35_definer_report; (22) transparency-log design re-read (Russ Cox tlog, C2SP): no change.
 -- DECISION-READ: docs/claude/admin-desk/TENANT-IDENTITY-CONSENT-DECISION-24NOV.md (a company is tied to a case only by a controlled path: two authorised staff, a reason, a ledger line, never a silent guess; AD35 adds the company's registry identity as evidence, it never binds a case by itself).
 -- CHECK-FILE: docs/claude/admin-desk/sql/checks/AD35-check.sql
 -- WHAT IT ADDS (AD01..AD34 unchanged, no table of an earlier phase is rewritten):
@@ -27,9 +30,25 @@
 --   B) desk.fadm_company_identifier (bitemporal: a company's registry number per register, valid time + recorded time, two different confirmers, one live holder per number, one live number per company per register), desk.registry_normalise, and the doors desk.company_identifier_set, desk.company_identifier_end, desk.company_identifier_lookup, desk.company_identifier_history.
 --   C) desk.registry_shape_prove (migration-only: a register's number shape enters only with source, date, valid samples and invalid samples; a runaway pattern is refused), a guard that freezes every identity column of desk.fadm_registry_kind, and the picker readers desk.registry_countries and desk.registry_pick.
 --   D) ledger kinds ckpt.recorded, ckpt.refused, ident.recorded, ident.superseded, ident.ended, ident.refused; the NOLOGIN owner role desk_proof_owner (NOSUPERUSER, NOBYPASSRLS) that owns the AD35 doors.
+--   H) the fail-fast preflight (DO block P0AX0 + desk.ad35_preflight), desk.ad35_naming_law, desk.ad35_definer_report; the self-audit desk.ad35_selfcheck now answers twelve closed rules (preflight_ready, naming_law_kept, definer_clean added).
 -- WHO MAY DO WHAT: the checkpoint doors are called by the Desk service role (desk_app): the Rust signer reads the head body, signs it with the Desk's own key (never inside the database) and stores the signature; company_identifier_set and company_identifier_end need TWO DIFFERENT active staff who both hold case.assign on the desk department (the right AD34 uses) and answer closed words; company_identifier_lookup and company_identifier_history need staff.read; registry_shape_prove has no client grant at all (migration or a reviewed SQL file only).
 -- IDEMPOTENT + CONCURRENCY-SAFE: rerunning this file changes nothing (IF NOT EXISTS, CREATE OR REPLACE, DROP TRIGGER IF EXISTS); the same checkpoint twice answers 'already'; the same identifier twice answers 'already'; two staff racing on one company number queue on a per-number advisory lock, two racing on one company queue on a per-company advisory lock, locks are always taken number first then company so they cannot deadlock each other; the partial unique indexes are the last line when a lock is bypassed.
 -- HONEST LIMITS: (1) PostgreSQL 16 has no Ed25519 verify, so the database stores the signature and proves the body matches the ledger line, the key id and size order; the Rust verifier (T4h Rust side, not in this file) checks the signature and the off-box copy (needs the Storage Box credentials, his hands). (2) The database cannot know that a tenant UUID is a real company: the Rust door asks the Control Plane first (T4e); this file refuses nil/null only. (3) A register whose shape is not proven stays 'shape_unproven': the number is accepted as typed after normalisation and the row says so; it is never presented as verified. (4) The ranged chain walk is capped (20,000 lines per call); a larger gap answers 'range_too_large' and the daily full verification (AD29) remains the authority.
+
+-- A-1) FAIL-FAST PREFLIGHT: AD35 needs AD01 and AD34 (the 1565-line file). If anything is missing, stop NOW with a named, readable error and create nothing -----------------------------------------
+DO $pre$ DECLARE miss text[] := ARRAY[]::text[];
+BEGIN
+  IF to_regclass('desk.fadm_ledger') IS NULL THEN miss := array_append(miss, 'AD01 table desk.fadm_ledger'::text); END IF;
+  IF to_regclass('desk.fadm_owner') IS NULL THEN miss := array_append(miss, 'AD01 table desk.fadm_owner'::text); END IF;
+  IF to_regclass('desk.fadm_bind_proposal') IS NULL THEN miss := array_append(miss, 'AD34 table desk.fadm_bind_proposal'::text); END IF;
+  IF to_regclass('desk.fadm_registry_kind') IS NULL THEN miss := array_append(miss, 'AD34 table desk.fadm_registry_kind'::text); END IF;
+  IF to_regprocedure('desk.fadm_bind_may(uuid)') IS NULL THEN miss := array_append(miss, 'AD34 function desk.fadm_bind_may(uuid)'::text); END IF;
+  IF to_regprocedure('desk.registry_check(bigint,text)') IS NULL THEN miss := array_append(miss, 'AD34 function desk.registry_check(bigint,text)'::text); END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'desk_bind_owner') THEN miss := array_append(miss, 'AD34 role desk_bind_owner'::text); END IF;
+  IF cardinality(miss) > 0 THEN
+    RAISE EXCEPTION 'AD35 needs AD34 first. Missing: %', array_to_string(miss, '; ') USING ERRCODE = 'P0AX0', HINT = 'Run desk-sql-install.sh, or run AD34 in the editor first (then its CHECK), and only then AD35.';
+  END IF;
+END $pre$;
 
 -- A0) owner role, ledger kinds ------------------------------------------------------------------------------------------------------------------------------------------------
 DO $o$ BEGIN
@@ -633,6 +652,40 @@ BEGIN
 END $f$;
 COMMENT ON FUNCTION desk.company_identifier_stats(uuid) IS 'AD35: counts only (live, shape_ok, shape_unproven, replaced, withdrawn, wrong, registers with a proven shape). staff.read.';
 
+-- H) PREFLIGHT, NAMING LAW AND DEFINER HYGIENE: read doors a monitor and the Systems card can call (closed words, names only, no data) ---------------------------------------------------------
+CREATE OR REPLACE FUNCTION desk.ad35_preflight() RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog, desk SET statement_timeout = '5s' AS $f$
+DECLARE miss text[] := ARRAY[]::text[];
+BEGIN
+  IF to_regclass('desk.fadm_ledger') IS NULL THEN miss := array_append(miss, 'AD01 desk.fadm_ledger'::text); END IF;
+  IF to_regclass('desk.fadm_owner') IS NULL THEN miss := array_append(miss, 'AD01 desk.fadm_owner'::text); END IF;
+  IF to_regclass('desk.fadm_bind_proposal') IS NULL THEN miss := array_append(miss, 'AD34 desk.fadm_bind_proposal'::text); END IF;
+  IF to_regclass('desk.fadm_registry_kind') IS NULL THEN miss := array_append(miss, 'AD34 desk.fadm_registry_kind'::text); END IF;
+  IF to_regprocedure('desk.fadm_bind_may(uuid)') IS NULL THEN miss := array_append(miss, 'AD34 desk.fadm_bind_may'::text); END IF;
+  IF to_regprocedure('desk.registry_check(bigint,text)') IS NULL THEN miss := array_append(miss, 'AD34 desk.registry_check'::text); END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'desk_bind_owner') THEN miss := array_append(miss, 'AD34 role desk_bind_owner'::text); END IF;
+  RETURN jsonb_build_object('state', CASE WHEN cardinality(miss) = 0 THEN 'ready' ELSE 'missing' END, 'missing', to_jsonb(miss));
+END $f$;
+COMMENT ON FUNCTION desk.ad35_preflight() IS 'AD35: are the AD01 and AD34 objects AD35 stands on all there? state ready or missing, plus the names that are missing. No data.';
+
+CREATE OR REPLACE FUNCTION desk.ad35_naming_law() RETURNS jsonb LANGUAGE sql STABLE SECURITY DEFINER SET search_path = pg_catalog, desk SET statement_timeout = '5s' AS $f$
+  SELECT jsonb_build_object('state', CASE WHEN count(*) = 0 THEN 'kept' ELSE 'broken' END, 'tables_outside_law', COALESCE(jsonb_agg(c.relname ORDER BY c.relname), '[]'::jsonb))
+  FROM pg_class c WHERE c.relnamespace = 'desk'::regnamespace AND c.relkind IN ('r', 'p') AND c.relname NOT LIKE 'fadm\_%'
+$f$;
+COMMENT ON FUNCTION desk.ad35_naming_law() IS 'AD35: the AD01 law (every table in schema desk is named fadm_*) as a read door: state kept or broken, plus the names outside the law. No data.';
+
+CREATE OR REPLACE FUNCTION desk.ad35_definer_report() RETURNS jsonb LANGUAGE sql STABLE SECURITY DEFINER SET search_path = pg_catalog, desk SET statement_timeout = '5s' AS $f$
+  SELECT jsonb_build_object('state', CASE WHEN count(*) FILTER (WHERE s.bad) = 0 THEN 'clean' ELSE 'findings' END, 'checked', count(*),
+    'findings', COALESCE(jsonb_agg(s.name ORDER BY s.name) FILTER (WHERE s.bad), '[]'::jsonb))
+  FROM (SELECT p.oid::regprocedure::text AS name,
+          (NOT EXISTS (SELECT 1 FROM unnest(COALESCE(p.proconfig, ARRAY[]::text[])) c WHERE c LIKE 'search_path=%')
+           OR EXISTS (SELECT 1 FROM unnest(COALESCE(p.proconfig, ARRAY[]::text[])) c WHERE c LIKE 'search_path=%' AND c ~ '(^|[=, ])public([, ]|$)')
+           OR has_function_privilege('public', p.oid, 'EXECUTE')) AS bad
+        FROM pg_proc p
+        WHERE p.pronamespace = 'desk'::regnamespace AND p.prosecdef
+          AND (p.proname LIKE 'fadm\_bind\_%' OR p.proname LIKE 'ledger\_%' OR p.proname LIKE 'merkle\_%' OR p.proname LIKE 'company\_identifier\_%' OR p.proname LIKE 'registry\_%' OR p.proname LIKE 'ad35\_%')) s
+$f$;
+COMMENT ON FUNCTION desk.ad35_definer_report() IS 'AD35: SECURITY DEFINER hygiene of the AD34 + AD35 functions (search_path pinned without public, closed to PUBLIC): state clean or findings, plus names only. No data.';
+
 -- G) SELF-AUDIT: one call answers whether AD34 + AD35 still hold in the running database (closed rule names + booleans, no data) ----------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION desk.ad35_selfcheck() RETURNS TABLE(rule text, ok boolean) LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog, desk SET statement_timeout = '25s' AS $f$
 DECLARE head bigint; m record; okc boolean := true;
@@ -650,8 +703,11 @@ BEGIN
   rule := 'shapes_have_sources'; ok := NOT EXISTS (SELECT 1 FROM desk.fadm_registry_kind WHERE number_shape IS NOT NULL AND (shape_source IS NULL OR shape_checked_on IS NULL)); RETURN NEXT;
   rule := 'ledger_no_gap'; ok := (SELECT count(*) = COALESCE(max(seq) - min(seq) + 1, 0) FROM desk.fadm_ledger WHERE seq > COALESCE(head, 0) - 2000); RETURN NEXT;
   rule := 'ledger_has_no_numbers'; ok := NOT EXISTS (SELECT 1 FROM desk.fadm_ledger l, jsonb_object_keys(l.detail) k WHERE l.kind LIKE 'ident.%' AND k NOT IN ('identifier_id', 'registry_id', 'shape_state', 'number_hash', 'reason', 'why')); RETURN NEXT;
+  rule := 'preflight_ready'; ok := COALESCE(desk.ad35_preflight()->>'state' = 'ready', false); RETURN NEXT;
+  rule := 'naming_law_kept'; ok := COALESCE(desk.ad35_naming_law()->>'state' = 'kept', false); RETURN NEXT;
+  rule := 'definer_clean'; ok := COALESCE(desk.ad35_definer_report()->>'state' = 'clean', false); RETURN NEXT;
 END $f$;
-COMMENT ON FUNCTION desk.ad35_selfcheck() IS 'AD35: nine closed rule names with true/false (recent chain, checkpoints bound to the ledger, stored Merkle roots recompute, two people, one live holder, one live number per company, shapes have sources, ledger holds no numbers). No data leaves.';
+COMMENT ON FUNCTION desk.ad35_selfcheck() IS 'AD35: twelve closed rule names with true/false (preflight, naming law, definer hygiene, recent chain, checkpoints bound to the ledger, stored Merkle roots recompute, two people, one live holder, one live number per company, shapes have sources, ledger holds no numbers). No data leaves.';
 
 -- D) hand the AD35 doors to the NOLOGIN owner and open exactly what each needs --------------------------------------------------------------------------------------------------------
 GRANT SELECT ON desk.fadm_ledger TO desk_proof_owner;
@@ -689,7 +745,7 @@ DO $a$ DECLARE f text; BEGIN
     'desk.company_identifier_lookup(uuid, bigint, text)', 'desk.company_identifier_history(uuid, uuid)', 'desk.registry_shape_prove(bigint, text, text, date, text[], text[])',
     'desk.registry_countries()', 'desk.registry_pick(text)',
     'desk.merkle_leaves(bigint)', 'desk.ledger_merkle_head()', 'desk.ledger_merkle_record(bigint)', 'desk.ledger_merkle_inclusion(bigint, bigint)', 'desk.ledger_merkle_consistency(bigint, bigint)',
-    'desk.company_identifier_as_of(uuid, uuid, timestamptz, timestamptz)', 'desk.company_identifier_review_due(uuid, integer)', 'desk.company_identifier_conflicts(uuid)', 'desk.company_identifier_stats(uuid)', 'desk.ad35_selfcheck()'] LOOP
+    'desk.company_identifier_as_of(uuid, uuid, timestamptz, timestamptz)', 'desk.company_identifier_review_due(uuid, integer)', 'desk.company_identifier_conflicts(uuid)', 'desk.company_identifier_stats(uuid)', 'desk.ad35_selfcheck()', 'desk.ad35_preflight()', 'desk.ad35_naming_law()', 'desk.ad35_definer_report()'] LOOP
     EXECUTE format('ALTER FUNCTION %s OWNER TO desk_proof_owner', f);
     EXECUTE format('REVOKE ALL ON FUNCTION %s FROM PUBLIC', f);
   END LOOP;
@@ -701,7 +757,7 @@ DO $g$ BEGIN IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'desk_app') THEN
     desk.registry_countries(), desk.registry_pick(text), desk.registry_normalise(text), desk.ledger_origin(), desk.ledger_checkpoint_body(bigint, bytea),
     desk.ledger_merkle_head(), desk.ledger_merkle_record(bigint), desk.ledger_merkle_inclusion(bigint, bigint), desk.ledger_merkle_consistency(bigint, bigint),
     desk.merkle_verify_inclusion(bytea, bigint, bigint, bytea[], bytea), desk.merkle_verify_consistency(bigint, bigint, bytea, bytea, bytea[]), desk.merkle_leaf(bytea), desk.merkle_node(bytea, bytea),
-    desk.company_identifier_as_of(uuid, uuid, timestamptz, timestamptz), desk.company_identifier_review_due(uuid, integer), desk.company_identifier_conflicts(uuid), desk.company_identifier_stats(uuid), desk.ad35_selfcheck() TO desk_app;
+    desk.company_identifier_as_of(uuid, uuid, timestamptz, timestamptz), desk.company_identifier_review_due(uuid, integer), desk.company_identifier_conflicts(uuid), desk.company_identifier_stats(uuid), desk.ad35_selfcheck(), desk.ad35_preflight(), desk.ad35_naming_law(), desk.ad35_definer_report() TO desk_app;
 END IF; END $g$;
 
 -- SELFTEST (rolls back; success is the exception P0AX4) ------------------------------------------------------------------------------------------------------------------------------
@@ -855,7 +911,11 @@ BEGIN
   PERFORM pg_temp.ad35_ok(jsonb_typeof(j) = 'array' AND desk.company_identifier_conflicts(a3) IS NULL, 'the conflicts report answers an array for staff only');
   j := desk.company_identifier_stats(a1);
   PERFORM pg_temp.ad35_ok((j->>'live')::int >= 2 AND (j->>'live_shape_ok')::int >= 0 AND (j->>'wrong')::int >= 1 AND (j->>'replaced')::int >= 1 AND (j->>'registers_total')::int >= 1178 AND desk.company_identifier_stats(a3) IS NULL, 'statistics are plain counts and need staff.read');
-  PERFORM pg_temp.ad35_ok((SELECT count(*) FROM desk.ad35_selfcheck()) = 9 AND (SELECT bool_and(ok) FROM desk.ad35_selfcheck()), 'the nine self-audit rules are all true, false: ' || COALESCE((SELECT string_agg(rule, ',') FROM desk.ad35_selfcheck() WHERE NOT ok), 'none'));
+  PERFORM pg_temp.ad35_ok(desk.ad35_preflight()->>'state' = 'ready' AND jsonb_array_length(desk.ad35_preflight()->'missing') = 0, 'the preflight finds AD01 and AD34 whole');
+  PERFORM pg_temp.ad35_ok(desk.ad35_naming_law()->>'state' IN ('kept', 'broken') AND jsonb_typeof(desk.ad35_naming_law()->'tables_outside_law') = 'array', 'the naming law door answers a closed word');
+  BEGIN CREATE TABLE desk.zz_not_fadm_probe (x int); PERFORM pg_temp.ad35_ok(desk.ad35_naming_law()->>'state' = 'broken' AND desk.ad35_naming_law()->'tables_outside_law' ? 'zz_not_fadm_probe', 'a table outside the law is named by the naming law door'); EXCEPTION WHEN insufficient_privilege THEN NULL; END;
+  PERFORM pg_temp.ad35_ok(desk.ad35_definer_report()->>'state' IN ('clean', 'findings') AND (desk.ad35_definer_report()->>'checked')::int >= 10 AND jsonb_typeof(desk.ad35_definer_report()->'findings') = 'array', 'the definer report answers a closed word over at least ten functions');
+  PERFORM pg_temp.ad35_ok((SELECT count(*) FROM desk.ad35_selfcheck()) = 12 AND (SELECT bool_and(ok) FROM desk.ad35_selfcheck() WHERE rule NOT IN ('preflight_ready', 'naming_law_kept', 'definer_clean')), 'the nine data self-audit rules are all true and the three hygiene rules answer, false: ' || COALESCE((SELECT string_agg(rule, ',') FROM desk.ad35_selfcheck() WHERE NOT ok), 'none'));
   RAISE EXCEPTION 'AD35 selftest passed, rolling back' USING ERRCODE = 'P0AX4';
 EXCEPTION WHEN SQLSTATE 'P0AX4' THEN RAISE NOTICE 'AD35 selftest: ALL RULES PASSED (rows rolled back)';
 END $$;
@@ -886,7 +946,7 @@ UNION ALL SELECT 'every live and past identifier has two different people (FACT 
 UNION ALL SELECT 'no company holds two live numbers in one register and no number has two live holders (FACT)', NOT EXISTS (SELECT 1 FROM desk.fadm_company_identifier WHERE valid_to IS NULL GROUP BY tenant_id, registry_id HAVING count(*) > 1) AND NOT EXISTS (SELECT 1 FROM desk.fadm_company_identifier WHERE valid_to IS NULL GROUP BY registry_id, number_norm HAVING count(*) > 1)
 UNION ALL SELECT 'the AD35 doors are owned by desk_proof_owner, SECURITY DEFINER, search_path pinned, commented, closed to PUBLIC',
   (SELECT count(*) FROM pg_proc p JOIN pg_roles r ON r.oid = p.proowner WHERE p.pronamespace = 'desk'::regnamespace AND r.rolname = 'desk_proof_owner' AND p.prosecdef AND p.proconfig::text LIKE '%search_path=pg_catalog, desk%' AND p.proconfig::text NOT LIKE '%public%'
-    AND p.proname IN ('ledger_checkpoint_head', 'ledger_checkpoint_put', 'ledger_checkpoint_witnessed', 'ledger_checkpoint_verify', 'ledger_checkpoint_status', 'ledger_range_ok', 'company_identifier_set', 'company_identifier_end', 'company_identifier_lookup', 'company_identifier_history', 'registry_shape_prove', 'registry_countries', 'registry_pick', 'merkle_leaves', 'ledger_merkle_head', 'ledger_merkle_record', 'ledger_merkle_inclusion', 'ledger_merkle_consistency', 'company_identifier_as_of', 'company_identifier_review_due', 'company_identifier_conflicts', 'company_identifier_stats', 'ad35_selfcheck')) = 23
+    AND p.proname IN ('ledger_checkpoint_head', 'ledger_checkpoint_put', 'ledger_checkpoint_witnessed', 'ledger_checkpoint_verify', 'ledger_checkpoint_status', 'ledger_range_ok', 'company_identifier_set', 'company_identifier_end', 'company_identifier_lookup', 'company_identifier_history', 'registry_shape_prove', 'registry_countries', 'registry_pick', 'merkle_leaves', 'ledger_merkle_head', 'ledger_merkle_record', 'ledger_merkle_inclusion', 'ledger_merkle_consistency', 'company_identifier_as_of', 'company_identifier_review_due', 'company_identifier_conflicts', 'company_identifier_stats', 'ad35_selfcheck', 'ad35_preflight', 'ad35_naming_law', 'ad35_definer_report')) = 26
   AND NOT has_function_privilege('public', 'desk.ledger_checkpoint_put(bigint,text,bytea)', 'EXECUTE') AND NOT has_function_privilege('public', 'desk.company_identifier_set(uuid,uuid,uuid,bigint,text)', 'EXECUTE')
 UNION ALL SELECT 'the app role may run the doors it needs and can NOT run registry_shape_prove (migration only) or the internal helpers',
   has_function_privilege('desk_app', 'desk.ledger_checkpoint_put(bigint,text,bytea)', 'EXECUTE') AND has_function_privilege('desk_app', 'desk.ledger_checkpoint_head()', 'EXECUTE') AND has_function_privilege('desk_app', 'desk.company_identifier_set(uuid,uuid,uuid,bigint,text)', 'EXECUTE') AND has_function_privilege('desk_app', 'desk.registry_pick(text)', 'EXECUTE')
@@ -905,6 +965,6 @@ UNION ALL SELECT 'stored Merkle roots are append-only (update, delete, truncate 
   AND NOT EXISTS (SELECT 1 FROM (SELECT tree_size, root_hash FROM desk.fadm_ledger_merkle_root ORDER BY tree_size DESC LIMIT 3) r WHERE desk.merkle_leaves(r.tree_size) IS NULL OR desk.merkle_mth(desk.merkle_leaves(r.tree_size), 0, r.tree_size::integer) <> r.root_hash)
 UNION ALL SELECT 'a monitor can verify with the pure functions only: desk_app may run the verifiers and the proof doors, not the internal leaf loader', has_function_privilege('desk_app', 'desk.merkle_verify_inclusion(bytea,bigint,bigint,bytea[],bytea)', 'EXECUTE') AND has_function_privilege('desk_app', 'desk.ledger_merkle_inclusion(bigint,bigint)', 'EXECUTE') AND has_function_privilege('desk_app', 'desk.ledger_merkle_consistency(bigint,bigint)', 'EXECUTE') AND NOT has_function_privilege('desk_app', 'desk.merkle_leaves(bigint)', 'EXECUTE') AND NOT has_function_privilege('public', 'desk.ledger_merkle_record(bigint)', 'EXECUTE')
 UNION ALL SELECT 'the as-of, review, conflicts and statistics readers exist for staff and are closed to PUBLIC', has_function_privilege('desk_app', 'desk.company_identifier_as_of(uuid,uuid,timestamptz,timestamptz)', 'EXECUTE') AND has_function_privilege('desk_app', 'desk.company_identifier_stats(uuid)', 'EXECUTE') AND NOT has_function_privilege('public', 'desk.company_identifier_review_due(uuid,integer)', 'EXECUTE') AND NOT has_function_privilege('public', 'desk.company_identifier_conflicts(uuid)', 'EXECUTE')
-UNION ALL SELECT 'the self-audit answers its nine rules and every one is true', (SELECT count(*) FROM desk.ad35_selfcheck()) = 9 AND (SELECT bool_and(ok) FROM desk.ad35_selfcheck())
+UNION ALL SELECT 'the self-audit answers its twelve rules (incl. preflight, naming law, definer hygiene) and every one is true', (SELECT count(*) FROM desk.ad35_selfcheck()) = 12 AND (SELECT bool_and(ok) FROM desk.ad35_selfcheck())
 UNION ALL SELECT 'the pure helpers survive a rerun of AD03: closed to PUBLIC, granted explicitly to desk_proof_owner', NOT has_function_privilege('public', 'desk.ledger_origin()', 'EXECUTE') AND NOT has_function_privilege('public', 'desk.merkle_mth(bytea[],integer,integer)', 'EXECUTE') AND NOT has_function_privilege('public', 'desk.registry_normalise(text)', 'EXECUTE')
   AND has_function_privilege('desk_proof_owner', 'desk.ledger_origin()', 'EXECUTE') AND has_function_privilege('desk_proof_owner', 'desk.merkle_mth(bytea[],integer,integer)', 'EXECUTE') AND has_function_privilege('desk_proof_owner', 'desk.registry_normalise(text)', 'EXECUTE') AND has_function_privilege('desk_proof_owner', 'desk.merkle_verify_consistency(bigint,bigint,bytea,bytea,bytea[])', 'EXECUTE');

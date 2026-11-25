@@ -1,9 +1,9 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 05:59 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (manual checkpoint, 25 Nov 2026 06:35 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: his 05:53: I broke the fadm_ table pattern, fixed, legacy-rename with selftest and CHECK
-NEXT STEP: his SQL line (install-line.sh sql)
-HIS LAST WORD: his 05:46 order
+DOING: his 06:23 order: AD35 rewritten on top of the 1565-line AD34, web points 19..22 given to the gate first, deadline 30 Nov
+NEXT STEP: his gate + commit, then his SQL line (install-line.sh sql)
+HIS LAST WORD: his 06:34 order (SQL is not on GitHub, push it)
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- ec2eeb89 25 Nov 05:59 ledger line e1981f0c
 - e1981f0c 25 Nov 05:59 non-superuser editor test
 - 31b3f609 25 Nov 05:54 ledger line d67ba0b7
 - d67ba0b7 25 Nov 05:54 legacy rename + editor files
@@ -75,10 +76,19 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 8128a123 25 Nov 05:49 AD35 alone note
 - 59762854 25 Nov 05:47 ledger line bcc6676e
 - bcc6676e 25 Nov 05:47 editor error note
-- 8a865ae1 25 Nov 05:35 ledger line aa922bb1
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/D6-B13-AD35-RESEARCH-LIST-25NOV.md
+M  admin-desk/NOW-LIST-23NOV.md
+M  admin-desk/sql/AD35.sql
+M  admin-desk/sql/checks/AD35-check.sql
+M  admin-desk/sql/editor/AD35-editor.sql
+M  docs/claude/admin-desk/D6-B13-AD35-RESEARCH-LIST-25NOV.md
+M  docs/claude/admin-desk/NOW-LIST-23NOV.md
+M  docs/claude/admin-desk/sql/AD35.sql
+M  docs/claude/admin-desk/sql/checks/AD35-check.sql
+M  docs/claude/admin-desk/sql/editor/AD35-editor.sql
+MM docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
