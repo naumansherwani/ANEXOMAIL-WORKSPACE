@@ -116,3 +116,5 @@ Full rules: `AGENTS.md` (Rules 1–73) and `docs/claude/founder/CODES/00-README-
 > ## >>> 25 Nov 2026 04:5x PKT (his 04:53): INSTALL LINES = run `bash docs/claude/admin-desk/install-line.sh sql|web` and paste the output unchanged (file INSTALL-LINES-FINAL.txt, locked by gate). Never retype, never grep. <<<
 
 > ## >>> 25 Nov 2026 04:5x PKT (his 04:57): AD35 grown to 832 lines with real parts E/F/G (RFC 9162 Merkle proofs, bitemporal as-of, self-audit), CHECK 26 of 26, NOT INSTALLED. His SQL line = bash docs/claude/admin-desk/install-line.sh sql (paste unchanged). <<<
+
+> ## >>> 25 Nov 2026 05:0x PKT (his 05:00): AD35 heading carries AD34 and its advance level (AD34 untouched). SQL line for him = bash docs/claude/admin-desk/install-line.sh sql. NOT INSTALLED. <<<

@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 05:00 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 25 Nov 2026 05:01 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: AD35 SQL grown: Merkle RFC 9162 proofs, as-of, self-audit, tested
+DOING: AD35 heading carries AD34 and its advance level, tested
 NEXT STEP: his SQL line (desk-sql-install.sh), then Rust door + picker
 HIS LAST WORD: his 04:42 order AD35 advance SQL, research told to the gate
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
@@ -21,20 +21,30 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 429f5a38 25 Nov 05:00 ledger line 2bfb7928
 - 2bfb7928 25 Nov 05:00 AD35 SQL
 - c609b9bd 25 Nov 04:54 ledger line a3227453
 - a3227453 25 Nov 04:54 AD35 SQL
 - f638116a 25 Nov 04:53 ledger line 40034b4e
-- 40034b4e 25 Nov 04:53 AD35 SQL
 
 ## Uncommitted files (half-done work if any)
+M  CLAUDE.md
+M  admin-desk/sql/AD35.sql
+M  docs/claude/admin-desk/sql/AD35.sql
+M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 37 ++-----------------------------------
- 1 file changed, 2 insertions(+), 35 deletions(-)
+ CLAUDE.md                                   |  2 ++
+ admin-desk/sql/AD35.sql                     | 17 +++++++++++++++++
+ docs/claude/admin-desk/sql/AD35.sql         | 17 +++++++++++++++++
+ docs/claude/admin-desk/state/WORKING-NOW.md |  2 ++
+ docs/claude/state/WORKING-NOW.md            | 24 ++++++++----------------
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt |  6 +++---
+ 6 files changed, 49 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -45,4 +55,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (1ff65514e9e374e37126b9e28498457b28675f3d)
+WIP snapshot: refs/wip/last (4c4f62868ab687f683ab3f2c630f32773ea10c83)
