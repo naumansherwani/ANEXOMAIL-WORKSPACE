@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 25 Nov 2026 07:27 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 07:27 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: COMPACT RESUME written (his 07:27): AD35 SQL green, final date 5 Dec, now T4i Rust doors + picker
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 0424a1b0 25 Nov 07:27 Desk: compact resume saved, T4i code starts
 - 59aabafc 25 Nov 07:21 ledger line e805ad5d
 - e805ad5d 25 Nov 07:21 Desk: final date 5 Dec, dates for all phases
 - 803dd08e 25 Nov 07:18 ledger line a8a77ad2
@@ -75,10 +76,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - b87d97c6 25 Nov 07:15 ledger line 81a13ba8
 - 81a13ba8 25 Nov 07:15 Desk: AD35 SQL green on his server, next phase T4i Rust doors + picker
 - 78d63dbc 25 Nov 06:59 ledger line 66e7f184
-- 66e7f184 25 Nov 06:59 Desk notes: his Supabase dashboard screenshots, AD35 fix awaits his install paste
 
 ## Uncommitted Desk files
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
