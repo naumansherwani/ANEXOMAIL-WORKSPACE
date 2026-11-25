@@ -41,8 +41,8 @@ export function DeskRegistryPicker({ onCompany }: { onCompany: (tenantId: string
       {!bad && countries === null && <small>Loading…</small>}
       {countries && <>
         <div className="dbx-grid">
-          <div className="dbx-f"><span id="dbx-c-l">Country</span><DeskCombobox label="Country" placeholder="Choose a country" emptyWords="No country matches." items={countryItems} value={country || null} onPick={setCountry} /></div>
-          <div className="dbx-f"><span id="dbx-r-l">Register</span><DeskCombobox label="Register" placeholder={registers === null ? "Choose a country first" : "Choose a register"} emptyWords="No register is listed for this country." items={registerItems} value={regId === null ? null : String(regId)} onPick={(k) => setRegId(Number(k))} disabled={!registers || registers.length === 0} /></div>
+          <div className="dbx-f"><span id="dbx-c-l">Country</span><DeskCombobox label="Country" placeholder="Choose a country" emptyWords="No country matches." searchWords="Search countries" items={countryItems} value={country || null} onPick={setCountry} /></div>
+          <div className="dbx-f"><span id="dbx-r-l">Register</span><DeskCombobox label="Register" placeholder={registers === null ? "Choose a country first" : "Choose a register"} emptyWords="No register is listed for this country." searchWords="Search registers" items={registerItems} value={regId === null ? null : String(regId)} onPick={(k) => setRegId(Number(k))} disabled={!registers || registers.length === 0} /></div>
           <label>Registration number <input value={num} maxLength={NUMBER_MAX} onChange={(e) => setNum(e.target.value)} autoComplete="off" spellCheck={false} inputMode="text" /></label>
         </div>
         <p style={{ margin: "10px 0 0" }}><small>{bannedNote()}</small></p>
