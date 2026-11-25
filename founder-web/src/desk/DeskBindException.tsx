@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { DeskRefused, deskCall } from "./desk_kernel";
 import { UNAVAILABLE_TEXT } from "./desk_lookup_pure";
+import { DeskRegistryPicker } from "./DeskRegistryPicker";
 import { companyWords, NOTE_MAX, UNVERIFIED_TEXT, REASONS, buildDecide, buildPropose, caseRefOk, leftWords, noteProblem, outcomeOf, outcomeWords, parsePending, reasonWords, tenantOk, type Pending } from "./desk_bind_pure";
 
 /** ADMIN DESK B13 T4 (BL-46, 25 Nov 2026): Company confirmation. When a case cannot be tied to its customer company automatically, one staff person proposes the company and a DIFFERENT staff person confirms or declines it.
@@ -42,6 +43,7 @@ export function DeskBindException() {
   const withdraw = (id: string) => { const b = buildDecide(id, false); if (b) void call("/desk/v1/bind/withdraw", { proposal_id: b.proposal_id }, () => undefined); };
   return (
     <div className="dbx"><style>{CSS}</style>
+      <DeskRegistryPicker onCompany={(id) => setTenantId(id)} />
       <section className="dbx-box"><h3>Propose a company for one case</h3>
         <div className="dbx-grid">
           <label>Case reference <input value={caseRef} onChange={(e) => setCaseRef(e.target.value)} autoComplete="off" spellCheck={false} /></label>

@@ -993,7 +993,7 @@
    "why": "his 06:24 order: the new web points 19..22 of the AD35 rewrite are told to the gate before the code.",
    "fail_after": "2027-01-09"
   },
- {
+  {
    "id": "AD35-preflight",
    "file": "admin-desk/sql/AD35.sql",
    "must": "ad35_preflight",
@@ -1002,7 +1002,7 @@
    "why": "AD35 rewrite: fail-fast preflight (P0AX0 naming the missing AD34 objects) + read door ad35_preflight.",
    "fail_after": "2027-01-09"
   },
- {
+  {
    "id": "AD35-naming-law",
    "file": "admin-desk/sql/AD35.sql",
    "must": "ad35_naming_law",
@@ -1011,7 +1011,7 @@
    "why": "AD35 rewrite: the fadm_ naming law as a living read door.",
    "fail_after": "2027-01-09"
   },
- {
+  {
    "id": "AD35-definer-report",
    "file": "admin-desk/sql/AD35.sql",
    "must": "ad35_definer_report",
@@ -1020,7 +1020,7 @@
    "why": "AD35 rewrite: SECURITY DEFINER hygiene report (CVE-2018-1058 guide, CIS PostgreSQL 17 4.5).",
    "fail_after": "2027-01-09"
   },
- {
+  {
    "id": "AD35-scale-selftest",
    "file": "admin-desk/sql/AD35.sql",
    "must": "SCALE RULE",
@@ -1029,7 +1029,7 @@
    "why": "his server paste 06:4x: AD35 failed on a big ledger; the selftest must not grow with the ledger (web point 23).",
    "fail_after": "2027-01-09"
   },
- {
+  {
    "id": "INSTALL-LINE-FILE-SQL",
    "file": "admin-desk/INSTALL-LINES-FINAL.txt",
    "must": "desk-sql-install.sh) 2>&1 | tail -25",
@@ -1073,6 +1073,60 @@
    "deadline": "forever",
    "why": "his rule 25 Nov 05:51: SQL runs in his SQL editor, CHECK on his server; editor files = SQL + CHECK last.",
    "fail_after": "2099-01-01"
+  },
+  {
+   "id": "T4I-R-research",
+   "file": "docs/claude/admin-desk/D6-B13-T4I-REGISTRATION-NUMBERS-PLAN-25NOV.md",
+   "must": "T4i PICKER RESEARCH",
+   "status": "ok",
+   "deadline": "B13 T4i",
+   "why": "his 07:32 rule: the web research of the picker is told to the gate before the code is pulled.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4I-1-rust-doors",
+   "file": "admin-desk/server/src/registry.rs",
+   "must": "desk.registry_countries",
+   "status": "ok",
+   "deadline": "B13 T4i",
+   "why": "five read-only Rust doors, closed words, no actor or second person in the body.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4I-2-pure",
+   "file": "founder-web/src/desk/desk_registry_pure.ts",
+   "must": "parseLookup",
+   "status": "ok",
+   "deadline": "B13 T4i",
+   "why": "pure fail-closed parsing of every registry answer.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4I-3-screen",
+   "file": "founder-web/src/desk/DeskRegistryPicker.tsx",
+   "must": "/desk/v1/registry/lookup",
+   "status": "ok",
+   "deadline": "B13 T4i",
+   "why": "country + register + number picker on Company confirmation, 390/820/1200+, kernel-verified.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4I-4-pakistan-shape",
+   "file": "docs/claude/admin-desk/D6-B13-T4I-REGISTRATION-NUMBERS-PLAN-25NOV.md",
+   "must": "Pakistan number shape STAYS NULL",
+   "status": "ok",
+   "deadline": "B13 T4i",
+   "why": "SECP FAQ gives no digit count; shape stays NULL until a register page states it.",
+   "fail_after": "2027-01-09"
+  },
+  {
+   "id": "T4I-5-write-door",
+   "file": "docs/claude/admin-desk/D6-B13-T4I-REGISTRATION-NUMBERS-PLAN-25NOV.md",
+   "must": "no browser write door in this phase",
+   "status": "open",
+   "deadline": "B13 T4i",
+   "why": "record/end identifier needs a proposal + confirm flow (a later SQL file) so the second person is in their own session.",
+   "fail_after": "2027-01-09"
   }
  ]
 }

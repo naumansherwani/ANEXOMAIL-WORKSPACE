@@ -216,6 +216,7 @@ admin-desk/server/src/main.rs
 admin-desk/server/src/packages.rs
 admin-desk/server/src/pressure.rs
 admin-desk/server/src/probes.rs
+admin-desk/server/src/registry.rs
 admin-desk/server/src/reports.rs
 admin-desk/server/src/resolve_cp.rs
 admin-desk/server/src/runbooks.rs

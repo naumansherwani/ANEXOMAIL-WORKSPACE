@@ -21,7 +21,7 @@ mod dbsc;
 mod lookup;
 mod packages;
 mod runbooks;
-mod bind_exception; mod tenant_cp; mod consent; #[allow(dead_code)] mod consent_cp; mod resolve_cp;
+mod bind_exception; mod registry; mod tenant_cp; mod consent; #[allow(dead_code)] mod consent_cp; mod resolve_cp;
 mod escalations;
 mod pressure;
 mod security;
@@ -138,6 +138,11 @@ async fn main() {
         .route("/desk/v1/bind/decide", post(bind_exception::decide))
         .route("/desk/v1/bind/withdraw", post(bind_exception::withdraw))
         .route("/desk/v1/bind/pending", post(bind_exception::pending))
+        .route("/desk/v1/registry/countries", post(registry::countries))
+        .route("/desk/v1/registry/pick", post(registry::pick))
+        .route("/desk/v1/registry/check", post(registry::check))
+        .route("/desk/v1/registry/lookup", post(registry::lookup))
+        .route("/desk/v1/registry/history", post(registry::history))
         .route("/desk/v1/escalations", post(escalations::create))
         .route("/desk/v1/escalations/list", post(escalations::list))
         .route("/desk/v1/queues/pressure", post(pressure::queues))

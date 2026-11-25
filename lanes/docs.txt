@@ -550,6 +550,7 @@ docs/claude/admin-desk/server/src/main.rs
 docs/claude/admin-desk/server/src/packages.rs
 docs/claude/admin-desk/server/src/pressure.rs
 docs/claude/admin-desk/server/src/probes.rs
+docs/claude/admin-desk/server/src/registry.rs
 docs/claude/admin-desk/server/src/reports.rs
 docs/claude/admin-desk/server/src/resolve_cp.rs
 docs/claude/admin-desk/server/src/runbooks.rs
