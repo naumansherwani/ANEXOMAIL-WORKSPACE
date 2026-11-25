@@ -1,4 +1,4 @@
-# WORKING NOW (manual checkpoint, 25 Nov 2026 06:52 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 06:52 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: his server paste 06:46: AD35 failed on a big ledger, selftest fixed, tested, pushing
@@ -21,37 +21,20 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- e06cd7f3 25 Nov 06:52 B13 T4h/T4i: AD35 selftest no longer grows with the ledger (his server paste fix), tested, not installed
 - cf53992c 25 Nov 06:35 ledger line 64ced011
 - 64ced011 25 Nov 06:35 B13 T4h/T4i: AD35 rewritten on the 1565-line AD34 (preflight, naming law, definer report), tested, not installed
 - ec2eeb89 25 Nov 05:59 ledger line e1981f0c
 - e1981f0c 25 Nov 05:59 non-superuser editor test
-- 31b3f609 25 Nov 05:54 ledger line d67ba0b7
 
 ## Uncommitted files (half-done work if any)
-M  admin-desk/D6-B13-AD35-RESEARCH-LIST-25NOV.md
-M  admin-desk/NOW-LIST-23NOV.md
-M  admin-desk/sql/AD35.sql
-M  admin-desk/sql/editor/AD35-editor.sql
-M  docs/claude/TECH-LAW-GATE.json
-M  docs/claude/admin-desk/D6-B13-AD35-RESEARCH-LIST-25NOV.md
-M  docs/claude/admin-desk/NOW-LIST-23NOV.md
-M  docs/claude/admin-desk/sql/AD35.sql
-M  docs/claude/admin-desk/sql/editor/AD35-editor.sql
-M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
-M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- .../admin-desk/D6-B13-AD35-RESEARCH-LIST-25NOV.md  |  1 +
- docs/claude/admin-desk/NOW-LIST-23NOV.md           |  1 +
- docs/claude/admin-desk/sql/AD35.sql                | 30 +++++++++++--------
- docs/claude/admin-desk/sql/editor/AD35-editor.sql  | 30 +++++++++++--------
- docs/claude/admin-desk/state/WORKING-NOW.md        |  9 ++++++
- docs/claude/state/WORKING-NOW.md                   | 34 ++++++++++------------
- docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  6 ++--
- 12 files changed, 113 insertions(+), 69 deletions(-)
+ docs/claude/state/WORKING-NOW.md | 34 ++--------------------------------
+ 1 file changed, 2 insertions(+), 32 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -62,4 +45,4 @@ M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (f3a47ca0ade70baa45d2de0a7404bee94d1942f4)
+WIP snapshot: refs/wip/last (45eff16ca4e409fa631233eba3082fd9d8558622)
