@@ -120,3 +120,5 @@ Full rules: `AGENTS.md` (Rules 1–73) and `docs/claude/founder/CODES/00-README-
 > ## >>> 25 Nov 2026 05:0x PKT (his 05:00): AD35 heading carries AD34 and its advance level (AD34 untouched). SQL line for him = bash docs/claude/admin-desk/install-line.sh sql. NOT INSTALLED. <<<
 
 > ## >>> 25 Nov 2026 05:4x PKT (his 05:29 paste): his SQL install stopped at AD01 because every table in schema desk must be named fadm_* (AD01 law). My 5 new tables renamed (fadm_registry_kind, fadm_ledger_checkpoint, fadm_ledger_checkpoint_witness, fadm_ledger_merkle_root, fadm_company_identifier). TEST LAW: run docs/claude/admin-desk/tests/sim-auto.sh TWICE on a fresh scratch DB before handing him any SQL line; pass 2 must skip every file. ALL NEW DESK TABLES ARE NAMED fadm_*. <<<
+
+> ## >>> 25 Nov 2026 05:4x PKT (his 05:46): Supabase editor error 42P01 desk.fadm_registry_kind = AD34 not installed yet (expected). Desk SQL only via desk-sql-install.sh, never by hand in an editor. <<<
