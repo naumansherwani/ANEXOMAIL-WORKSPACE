@@ -1,9 +1,9 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 08:05 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (manual checkpoint, 25 Nov 2026 08:07 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: his 08:05 order: lighter look from the Desk own glass approved (better); demo kept in docs/claude/admin-desk/demo (DESK-COMBOBOX-DEMO-25NOV.html) with a cursor-hover walk-through; real code must take this look
+DOING: his 08:06 haan: the approved demo look (Desk own glass + blur, faint corner glows, soft glow on field / lit row / match, hover colour fix, visible Search box) is now in DeskCombobox.tsx; proven in Chrome with the real Desk CSS; bundle rebuilt
 NEXT STEP: demo of the Desk combobox, his pick, then code; then T4h ledger signer
-HIS LAST WORD: his 08:05: demo approved and saved in the repo demo folder
+HIS LAST WORD: his 08:06: approved look coded
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- fc6c3041 25 Nov 08:05 ledger line 1a48e266
 - 1a48e266 25 Nov 08:05 Desk: cinematic searchable dropdown + banned note
 - 183d78c4 25 Nov 08:00 ledger line a5a5d9ff
 - a5a5d9ff 25 Nov 08:00 Desk: cinematic searchable dropdown + banned note
@@ -75,10 +76,10 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 44808d60 25 Nov 07:53 Desk: cinematic searchable dropdown + banned note
 - 2a65b9bb 25 Nov 07:44 ledger line 8a863113
 - 8a863113 25 Nov 07:44 Desk: banned countries out of the picker; combobox demo next
-- e3c5a3ab 25 Nov 07:40 ledger line e097ebc7
 
 ## Uncommitted Desk files
  M docs/claude/admin-desk/state/WORKING-NOW.md
+M  founder-web/src/desk/DeskCombobox.tsx
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
