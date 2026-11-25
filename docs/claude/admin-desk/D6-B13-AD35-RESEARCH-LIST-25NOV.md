@@ -15,3 +15,11 @@ Each point = what the research says -> the AD35 object that carries it (docs/cla
 12. Country and register picker for the screen (no free text for the country): -> desk.registry_countries() and desk.registry_pick(code), read-only.
 
 OPEN, named (not hidden): Rust signer that signs desk.ledger_checkpoint_head() and writes the Storage Box copy (T4h Rust, needs his Storage Box credentials); Rust doors + picker for company_identifier_* (T4i web); real shapes for Pakistan (SECP CUIN, FBR NTN/STRN) only from the register pages; T4f literal RFC 9421 headers.
+
+## Added 25 Nov 2026 04:5x PKT (his 04:57 order "2000 lines, itna advance"): points 13..18
+13. RFC 9162 section 2.1 Merkle tree (leaf SHA-256(0x00||d), node SHA-256(0x01||l||r), split at the largest power of two below n): AD35 part E, desk.merkle_leaf / merkle_node / merkle_mth / merkle_pow2_below, checked against the published empty-tree and empty-leaf hashes.
+14. RFC 9162 2.1.3 inclusion proofs (audit path + verification) and 2.1.4 consistency proofs (SUBPROOF + verification): desk.merkle_path, desk.merkle_subproof, pure verifiers desk.merkle_verify_inclusion / merkle_verify_consistency (no table access, so an outside monitor can run the same text); tested exhaustively: every inclusion and every consistency proof of every tree size 1..40 verifies and every forgery (changed path element, wrong index, other leaf, forked old head) fails.
+15. Stored roots: desk.ledger_merkle_root append-only, one root per tree size; a recomputed root that differs = 'mismatch' alarm (ledger altered).
+16. Bitemporal as-of reading (valid time + recorded time, "what did we believe at T2 about T1"): desk.company_identifier_as_of.
+17. Review and conflict reports (re-verification queue for old identifiers, same number live for several companies, plain statistics): company_identifier_review_due / conflicts / stats, all staff.read, capped.
+18. Self-audit door desk.ad35_selfcheck(): nine closed rule names with true/false for the Systems card, no data.

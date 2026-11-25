@@ -388,11 +388,258 @@ END $f$;
 COMMENT ON FUNCTION desk.registry_countries() IS 'AD35: jurisdictions with how many registers each, for the country picker.';
 COMMENT ON FUNCTION desk.registry_pick(text) IS 'AD35: the registers of one country (two-letter code, at most 100) with whether a number shape is proven, for the register picker.';
 
+-- E) RFC 9162 MERKLE TREE OVER THE LEDGER (section 2.1: leaf = SHA-256(0x00 || data), node = SHA-256(0x01 || left || right), split at the largest power of two below n) ----------------------------------
+-- WHY: the hash chain proves order only if somebody walks all of it. A Merkle root lets an outside monitor check ONE line (inclusion proof, log n hashes) or check that today's head extends yesterday's head (consistency proof)
+-- without the whole ledger. Leaf data = the chain hash of ledger line seq, so the Merkle tree is welded to the chain AD01 already guarantees. Tree size n covers ledger lines 1..n.
+CREATE OR REPLACE FUNCTION desk.merkle_leaf(p_data bytea) RETURNS bytea LANGUAGE sql IMMUTABLE PARALLEL SAFE SET search_path = pg_catalog AS $f$ SELECT sha256('\x00'::bytea || p_data) $f$;
+CREATE OR REPLACE FUNCTION desk.merkle_node(p_left bytea, p_right bytea) RETURNS bytea LANGUAGE sql IMMUTABLE PARALLEL SAFE SET search_path = pg_catalog AS $f$ SELECT sha256('\x01'::bytea || p_left || p_right) $f$;
+COMMENT ON FUNCTION desk.merkle_leaf(bytea) IS 'AD35: RFC 9162 leaf hash SHA-256(0x00 || data).';
+COMMENT ON FUNCTION desk.merkle_node(bytea, bytea) IS 'AD35: RFC 9162 interior hash SHA-256(0x01 || left || right).';
+
+CREATE OR REPLACE FUNCTION desk.merkle_pow2_below(p_n integer) RETURNS integer LANGUAGE plpgsql IMMUTABLE PARALLEL SAFE SET search_path = pg_catalog AS $f$
+DECLARE k integer := 1;
+BEGIN
+  IF p_n IS NULL OR p_n < 2 THEN RAISE EXCEPTION 'AD35: split needs n >= 2' USING ERRCODE = 'P0AX2'; END IF;
+  WHILE k * 2 < p_n LOOP k := k * 2; END LOOP;
+  RETURN k;
+END $f$;
+COMMENT ON FUNCTION desk.merkle_pow2_below(integer) IS 'AD35: the largest power of two strictly smaller than n (RFC 9162 split point k).';
+
+-- MTH over leaves lo..hi-1 of a 1-based array of leaf data
+CREATE OR REPLACE FUNCTION desk.merkle_mth(p_leaves bytea[], p_lo integer, p_hi integer) RETURNS bytea LANGUAGE plpgsql IMMUTABLE PARALLEL SAFE SET search_path = pg_catalog AS $f$
+DECLARE n integer := p_hi - p_lo; k integer;
+BEGIN
+  IF n < 0 THEN RAISE EXCEPTION 'AD35: bad merkle range' USING ERRCODE = 'P0AX2'; END IF;
+  IF n = 0 THEN RETURN sha256(''::bytea); END IF;
+  IF n = 1 THEN RETURN desk.merkle_leaf(p_leaves[p_lo + 1]); END IF;
+  k := desk.merkle_pow2_below(n);
+  RETURN desk.merkle_node(desk.merkle_mth(p_leaves, p_lo, p_lo + k), desk.merkle_mth(p_leaves, p_lo + k, p_hi));
+END $f$;
+COMMENT ON FUNCTION desk.merkle_mth(bytea[], integer, integer) IS 'AD35: RFC 9162 MTH of leaves lo..hi-1 (empty tree = SHA-256 of the empty string).';
+
+-- audit path for leaf m (0-based inside lo..hi) = RFC 9162 2.1.3.1
+CREATE OR REPLACE FUNCTION desk.merkle_path(p_leaves bytea[], p_m integer, p_lo integer, p_hi integer) RETURNS bytea[] LANGUAGE plpgsql IMMUTABLE PARALLEL SAFE SET search_path = pg_catalog AS $f$
+DECLARE n integer := p_hi - p_lo; k integer;
+BEGIN
+  IF n <= 1 THEN RETURN ARRAY[]::bytea[]; END IF;
+  k := desk.merkle_pow2_below(n);
+  IF p_m < k THEN RETURN desk.merkle_path(p_leaves, p_m, p_lo, p_lo + k) || desk.merkle_mth(p_leaves, p_lo + k, p_hi);
+  ELSE RETURN desk.merkle_path(p_leaves, p_m - k, p_lo + k, p_hi) || desk.merkle_mth(p_leaves, p_lo, p_lo + k); END IF;
+END $f$;
+COMMENT ON FUNCTION desk.merkle_path(bytea[], integer, integer, integer) IS 'AD35: RFC 9162 2.1.3.1 audit path of one leaf.';
+
+-- consistency subproof (RFC 9162 2.1.4.1): first m leaves are a prefix of leaves lo..hi
+CREATE OR REPLACE FUNCTION desk.merkle_subproof(p_leaves bytea[], p_m integer, p_lo integer, p_hi integer, p_b boolean) RETURNS bytea[] LANGUAGE plpgsql IMMUTABLE PARALLEL SAFE SET search_path = pg_catalog AS $f$
+DECLARE n integer := p_hi - p_lo; k integer;
+BEGIN
+  IF p_m = n THEN
+    IF p_b THEN RETURN ARRAY[]::bytea[]; END IF;
+    RETURN ARRAY[desk.merkle_mth(p_leaves, p_lo, p_hi)];
+  END IF;
+  k := desk.merkle_pow2_below(n);
+  IF p_m <= k THEN RETURN desk.merkle_subproof(p_leaves, p_m, p_lo, p_lo + k, p_b) || desk.merkle_mth(p_leaves, p_lo + k, p_hi);
+  ELSE RETURN desk.merkle_subproof(p_leaves, p_m - k, p_lo + k, p_hi, false) || desk.merkle_mth(p_leaves, p_lo, p_lo + k); END IF;
+END $f$;
+COMMENT ON FUNCTION desk.merkle_subproof(bytea[], integer, integer, integer, boolean) IS 'AD35: RFC 9162 2.1.4.1 SUBPROOF.';
+
+-- verifiers: pure, no table access, so an outside monitor can run the same text (RFC 9162 2.1.3.2 and 2.1.4.2)
+CREATE OR REPLACE FUNCTION desk.merkle_verify_inclusion(p_data bytea, p_index bigint, p_size bigint, p_path bytea[], p_root bytea) RETURNS boolean LANGUAGE plpgsql IMMUTABLE PARALLEL SAFE SET search_path = pg_catalog AS $f$
+DECLARE fn bigint; sn bigint; r bytea; p bytea;
+BEGIN
+  IF p_data IS NULL OR p_path IS NULL OR p_root IS NULL OR octet_length(p_root) <> 32 OR p_index IS NULL OR p_size IS NULL OR p_index < 0 OR p_size < 1 OR p_index >= p_size OR cardinality(p_path) > 64 THEN RETURN false; END IF;
+  fn := p_index; sn := p_size - 1; r := desk.merkle_leaf(p_data);
+  FOREACH p IN ARRAY p_path LOOP
+    IF p IS NULL OR octet_length(p) <> 32 OR sn = 0 THEN RETURN false; END IF;
+    IF (fn & 1) = 1 OR fn = sn THEN
+      r := desk.merkle_node(p, r);
+      IF (fn & 1) = 0 THEN WHILE (fn & 1) = 0 AND fn <> 0 LOOP fn := fn >> 1; sn := sn >> 1; END LOOP; END IF;
+    ELSE r := desk.merkle_node(r, p); END IF;
+    fn := fn >> 1; sn := sn >> 1;
+  END LOOP;
+  RETURN sn = 0 AND r = p_root;
+END $f$;
+COMMENT ON FUNCTION desk.merkle_verify_inclusion(bytea, bigint, bigint, bytea[], bytea) IS 'AD35: RFC 9162 2.1.3.2 inclusion verification (index is 0-based).';
+
+CREATE OR REPLACE FUNCTION desk.merkle_verify_consistency(p_first bigint, p_second bigint, p_first_root bytea, p_second_root bytea, p_path bytea[]) RETURNS boolean LANGUAGE plpgsql IMMUTABLE PARALLEL SAFE SET search_path = pg_catalog AS $f$
+DECLARE fn bigint; sn bigint; fr bytea; sr bytea; c bytea; pth bytea[]; i integer;
+BEGIN
+  IF p_first IS NULL OR p_second IS NULL OR p_first < 1 OR p_second < p_first OR p_path IS NULL OR p_first_root IS NULL OR p_second_root IS NULL OR octet_length(p_first_root) <> 32 OR octet_length(p_second_root) <> 32 OR cardinality(p_path) > 64 THEN RETURN false; END IF;
+  IF p_first = p_second THEN RETURN cardinality(p_path) = 0 AND p_first_root = p_second_root; END IF;
+  pth := p_path;
+  IF (p_first & (p_first - 1)) = 0 THEN pth := ARRAY[p_first_root] || pth; END IF;
+  IF cardinality(pth) < 1 THEN RETURN false; END IF;
+  fn := p_first - 1; sn := p_second - 1;
+  WHILE (fn & 1) = 1 LOOP fn := fn >> 1; sn := sn >> 1; END LOOP;
+  fr := pth[1]; sr := pth[1];
+  IF fr IS NULL OR octet_length(fr) <> 32 THEN RETURN false; END IF;
+  FOR i IN 2 .. cardinality(pth) LOOP
+    c := pth[i];
+    IF c IS NULL OR octet_length(c) <> 32 OR sn = 0 THEN RETURN false; END IF;
+    IF (fn & 1) = 1 OR fn = sn THEN
+      fr := desk.merkle_node(c, fr); sr := desk.merkle_node(c, sr);
+      IF (fn & 1) = 0 THEN WHILE (fn & 1) = 0 AND fn <> 0 LOOP fn := fn >> 1; sn := sn >> 1; END LOOP; END IF;
+    ELSE sr := desk.merkle_node(sr, c); END IF;
+    fn := fn >> 1; sn := sn >> 1;
+  END LOOP;
+  RETURN fr = p_first_root AND sr = p_second_root AND sn = 0;
+END $f$;
+COMMENT ON FUNCTION desk.merkle_verify_consistency(bigint, bigint, bytea, bytea, bytea[]) IS 'AD35: RFC 9162 2.1.4.2 consistency verification: the head of size second extends the head of size first.';
+
+-- the stored roots: append-only, one per tree size; a second computation that disagrees is the alarm ('mismatch')
+CREATE TABLE IF NOT EXISTS desk.ledger_merkle_root (
+  tree_size   bigint PRIMARY KEY CHECK (tree_size >= 1),
+  root_hash   bytea  NOT NULL CHECK (octet_length(root_hash) = 32),
+  computed_at timestamptz NOT NULL DEFAULT clock_timestamp()
+);
+ALTER TABLE desk.ledger_merkle_root ENABLE ROW LEVEL SECURITY;
+ALTER TABLE desk.ledger_merkle_root FORCE ROW LEVEL SECURITY;
+REVOKE ALL ON desk.ledger_merkle_root FROM PUBLIC;
+DO $p$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE schemaname = 'desk' AND tablename = 'ledger_merkle_root' AND policyname = 'p_merkle_none') THEN
+    CREATE POLICY p_merkle_none ON desk.ledger_merkle_root FOR ALL USING (false) WITH CHECK (false);
+  END IF;
+END $p$;
+DROP TRIGGER IF EXISTS ledger_merkle_root_frozen ON desk.ledger_merkle_root;
+CREATE TRIGGER ledger_merkle_root_frozen BEFORE UPDATE OR DELETE ON desk.ledger_merkle_root FOR EACH ROW EXECUTE FUNCTION desk.ledger_checkpoint_frozen();
+DROP TRIGGER IF EXISTS ledger_merkle_root_frozen_t ON desk.ledger_merkle_root;
+CREATE TRIGGER ledger_merkle_root_frozen_t BEFORE TRUNCATE ON desk.ledger_merkle_root FOR EACH STATEMENT EXECUTE FUNCTION desk.ledger_checkpoint_frozen();
+
+CREATE OR REPLACE FUNCTION desk.merkle_leaves(p_size bigint) RETURNS bytea[] LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog, desk SET statement_timeout = '20s' AS $f$
+DECLARE a bytea[];
+BEGIN
+  IF p_size IS NULL OR p_size < 1 OR p_size > 50000 THEN RETURN NULL; END IF;
+  SELECT array_agg(hash ORDER BY seq) INTO a FROM desk.fadm_ledger WHERE seq <= p_size;
+  IF a IS NULL OR cardinality(a) <> p_size THEN RETURN NULL; END IF;
+  RETURN a;
+END $f$;
+COMMENT ON FUNCTION desk.merkle_leaves(bigint) IS 'AD35: the chain hashes of ledger lines 1..size as the Merkle leaf data (at most 50,000 lines per call); NULL when the lines are not contiguous. Internal helper, no client grant.';
+
+CREATE OR REPLACE FUNCTION desk.ledger_merkle_head() RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog, desk SET statement_timeout = '25s' AS $f$
+DECLARE n bigint; a bytea[];
+BEGIN
+  SELECT max(seq) INTO n FROM desk.fadm_ledger;
+  IF n IS NULL THEN RETURN jsonb_build_object('state', 'empty'); END IF;
+  IF n > 50000 THEN RETURN jsonb_build_object('state', 'too_large', 'tree_size', n); END IF;
+  a := desk.merkle_leaves(n);
+  IF a IS NULL THEN RETURN jsonb_build_object('state', 'gap', 'tree_size', n); END IF;
+  RETURN jsonb_build_object('state', 'ok', 'tree_size', n, 'root_b64', encode(desk.merkle_mth(a, 0, n::integer), 'base64'));
+END $f$;
+COMMENT ON FUNCTION desk.ledger_merkle_head() IS 'AD35: the RFC 9162 root of the whole ledger now, closed states ok, empty, too_large, gap.';
+
+CREATE OR REPLACE FUNCTION desk.ledger_merkle_record(p_size bigint) RETURNS text LANGUAGE plpgsql SECURITY DEFINER SET search_path = pg_catalog, desk SET statement_timeout = '25s' SET lock_timeout = '2s' AS $f$
+DECLARE a bytea[]; r bytea; old bytea;
+BEGIN
+  IF p_size IS NULL OR p_size < 1 THEN RETURN 'bad_size'; END IF;
+  IF p_size > 50000 THEN RETURN 'too_large'; END IF;
+  a := desk.merkle_leaves(p_size);
+  IF a IS NULL THEN RETURN 'no_line'; END IF;
+  r := desk.merkle_mth(a, 0, p_size::integer);
+  PERFORM pg_advisory_xact_lock(hashtext('desk.ledger_merkle_record'));
+  SELECT root_hash INTO old FROM desk.ledger_merkle_root WHERE tree_size = p_size;
+  IF old IS NULL THEN INSERT INTO desk.ledger_merkle_root (tree_size, root_hash) VALUES (p_size, r); RETURN 'recorded'; END IF;
+  IF old = r THEN RETURN 'already'; END IF;
+  PERFORM desk.fadm_audit(NULL, 'ckpt.refused', jsonb_build_object('why', 'merkle_mismatch'));
+  RETURN 'mismatch';
+END $f$;
+COMMENT ON FUNCTION desk.ledger_merkle_record(bigint) IS 'AD35: compute and store the RFC 9162 root of tree size p_size. Closed words recorded, already, mismatch (a stored root differs from the recomputed one = the ledger was altered), bad_size, too_large, no_line.';
+
+CREATE OR REPLACE FUNCTION desk.ledger_merkle_inclusion(p_seq bigint, p_size bigint) RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog, desk SET statement_timeout = '25s' AS $f$
+DECLARE a bytea[]; path bytea[]; x bytea; arr jsonb := '[]'::jsonb;
+BEGIN
+  IF p_seq IS NULL OR p_size IS NULL OR p_seq < 1 OR p_size < p_seq THEN RETURN jsonb_build_object('state', 'bad_range'); END IF;
+  a := desk.merkle_leaves(p_size);
+  IF a IS NULL THEN RETURN jsonb_build_object('state', 'no_line'); END IF;
+  path := desk.merkle_path(a, (p_seq - 1)::integer, 0, p_size::integer);
+  FOREACH x IN ARRAY path LOOP arr := arr || to_jsonb(encode(x, 'base64')); END LOOP;
+  RETURN jsonb_build_object('state', 'ok', 'seq', p_seq, 'tree_size', p_size, 'leaf_data_b64', encode(a[p_seq::integer], 'base64'), 'path_b64', arr, 'root_b64', encode(desk.merkle_mth(a, 0, p_size::integer), 'base64'));
+END $f$;
+COMMENT ON FUNCTION desk.ledger_merkle_inclusion(bigint, bigint) IS 'AD35: inclusion proof of ledger line seq in the tree of the given size (leaf data, audit path, root), verified by desk.merkle_verify_inclusion with index seq-1.';
+
+CREATE OR REPLACE FUNCTION desk.ledger_merkle_consistency(p_old bigint, p_new bigint) RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog, desk SET statement_timeout = '25s' AS $f$
+DECLARE a bytea[]; path bytea[]; x bytea; arr jsonb := '[]'::jsonb;
+BEGIN
+  IF p_old IS NULL OR p_new IS NULL OR p_old < 1 OR p_new < p_old THEN RETURN jsonb_build_object('state', 'bad_range'); END IF;
+  a := desk.merkle_leaves(p_new);
+  IF a IS NULL THEN RETURN jsonb_build_object('state', 'no_line'); END IF;
+  IF p_old < p_new THEN path := desk.merkle_subproof(a, p_old::integer, 0, p_new::integer, true); ELSE path := ARRAY[]::bytea[]; END IF;
+  FOREACH x IN ARRAY path LOOP arr := arr || to_jsonb(encode(x, 'base64')); END LOOP;
+  RETURN jsonb_build_object('state', 'ok', 'old_size', p_old, 'new_size', p_new, 'old_root_b64', encode(desk.merkle_mth(a, 0, p_old::integer), 'base64'), 'new_root_b64', encode(desk.merkle_mth(a, 0, p_new::integer), 'base64'), 'path_b64', arr);
+END $f$;
+COMMENT ON FUNCTION desk.ledger_merkle_consistency(bigint, bigint) IS 'AD35: consistency proof that the head of size new extends the head of size old, verified by desk.merkle_verify_consistency.';
+
+-- F) AS-OF (bitemporal) READERS, REVIEW QUEUE, CONFLICT AND STATISTICS REPORTS FOR COMPANY IDENTIFIERS ------------------------------------------------------------------------------------------
+-- two time axes: valid time (valid_from / valid_to: when the number belonged to the company) and recorded time (recorded_at: when we wrote it down). The end of a period is known from the moment it is written (valid_to).
+CREATE OR REPLACE FUNCTION desk.company_identifier_as_of(p_actor uuid, p_tenant uuid, p_valid timestamptz, p_known timestamptz DEFAULT NULL) RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog, desk SET statement_timeout = '3s' AS $f$
+DECLARE known timestamptz := COALESCE(p_known, clock_timestamp());
+BEGIN
+  IF NOT COALESCE((SELECT allowed FROM desk.fadm_authorize(p_actor, 'staff.read', desk.fadm_unit_id('department', 'desk'), NULL)), false) THEN RETURN NULL; END IF;
+  IF p_tenant IS NULL OR p_valid IS NULL THEN RETURN '[]'::jsonb; END IF;
+  RETURN COALESCE((SELECT jsonb_agg(jsonb_build_object('id', c.id, 'register', k.register_name, 'country', k.country_code, 'ra_code', k.ra_code, 'number', c.number_norm, 'shape_state', c.shape_state) ORDER BY c.id)
+    FROM desk.company_identifier c JOIN desk.registry_kind k ON k.id = c.registry_id
+    WHERE c.tenant_id = p_tenant AND c.recorded_at <= known AND c.valid_from <= p_valid AND (c.valid_to IS NULL OR c.valid_to > p_valid OR c.valid_to > known)), '[]'::jsonb);
+END $f$;
+COMMENT ON FUNCTION desk.company_identifier_as_of(uuid, uuid, timestamptz, timestamptz) IS 'AD35: which registry numbers did this company hold at valid time p_valid, as we knew it at recorded time p_known (default now). staff.read. A period whose end was written after p_known still counts as open.';
+
+CREATE OR REPLACE FUNCTION desk.company_identifier_review_due(p_actor uuid, p_days integer) RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog, desk SET statement_timeout = '3s' AS $f$
+DECLARE d integer := LEAST(GREATEST(COALESCE(p_days, 365), 1), 3650);
+BEGIN
+  IF NOT COALESCE((SELECT allowed FROM desk.fadm_authorize(p_actor, 'staff.read', desk.fadm_unit_id('department', 'desk'), NULL)), false) THEN RETURN NULL; END IF;
+  RETURN COALESCE((SELECT jsonb_agg(x ORDER BY x->>'age_days' DESC) FROM (
+    SELECT jsonb_build_object('id', c.id, 'tenant_id', c.tenant_id, 'country', k.country_code, 'ra_code', k.ra_code, 'shape_state', c.shape_state, 'age_days', floor(EXTRACT(epoch FROM (clock_timestamp() - c.valid_from)) / 86400)::int) AS x
+    FROM desk.company_identifier c JOIN desk.registry_kind k ON k.id = c.registry_id WHERE c.valid_to IS NULL AND c.valid_from < clock_timestamp() - make_interval(days => d) ORDER BY c.valid_from, c.id LIMIT 200) q), '[]'::jsonb);
+END $f$;
+COMMENT ON FUNCTION desk.company_identifier_review_due(uuid, integer) IS 'AD35: live identifiers older than p_days (1..3650, default 365) that deserve a fresh look at the register, oldest first, at most 200. staff.read.';
+
+CREATE OR REPLACE FUNCTION desk.company_identifier_conflicts(p_actor uuid) RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog, desk SET statement_timeout = '3s' AS $f$
+BEGIN
+  IF NOT COALESCE((SELECT allowed FROM desk.fadm_authorize(p_actor, 'staff.read', desk.fadm_unit_id('department', 'desk'), NULL)), false) THEN RETURN NULL; END IF;
+  RETURN COALESCE((SELECT jsonb_agg(x) FROM (
+    SELECT jsonb_build_object('number', c.number_norm, 'companies', count(DISTINCT c.tenant_id), 'registers', count(DISTINCT c.registry_id)) AS x
+    FROM desk.company_identifier c WHERE c.valid_to IS NULL GROUP BY c.number_norm HAVING count(DISTINCT c.tenant_id) > 1 ORDER BY count(DISTINCT c.tenant_id) DESC, c.number_norm LIMIT 100) q), '[]'::jsonb);
+END $f$;
+COMMENT ON FUNCTION desk.company_identifier_conflicts(uuid) IS 'AD35: the same normalised number live for two or more companies in different registers (legal in principle, worth a human look), at most 100. staff.read.';
+
+CREATE OR REPLACE FUNCTION desk.company_identifier_stats(p_actor uuid) RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog, desk SET statement_timeout = '3s' AS $f$
+BEGIN
+  IF NOT COALESCE((SELECT allowed FROM desk.fadm_authorize(p_actor, 'staff.read', desk.fadm_unit_id('department', 'desk'), NULL)), false) THEN RETURN NULL; END IF;
+  RETURN jsonb_build_object(
+    'live', (SELECT count(*) FROM desk.company_identifier WHERE valid_to IS NULL),
+    'live_shape_ok', (SELECT count(*) FROM desk.company_identifier WHERE valid_to IS NULL AND shape_state = 'shape_ok'),
+    'live_shape_unproven', (SELECT count(*) FROM desk.company_identifier WHERE valid_to IS NULL AND shape_state = 'shape_unproven'),
+    'replaced', (SELECT count(*) FROM desk.company_identifier WHERE ended_why = 'replaced'),
+    'withdrawn', (SELECT count(*) FROM desk.company_identifier WHERE ended_why = 'withdrawn'),
+    'wrong', (SELECT count(*) FROM desk.company_identifier WHERE ended_why = 'wrong'),
+    'registers_with_shape', (SELECT count(*) FROM desk.registry_kind WHERE number_shape IS NOT NULL),
+    'registers_total', (SELECT count(*) FROM desk.registry_kind));
+END $f$;
+COMMENT ON FUNCTION desk.company_identifier_stats(uuid) IS 'AD35: counts only (live, shape_ok, shape_unproven, replaced, withdrawn, wrong, registers with a proven shape). staff.read.';
+
+-- G) SELF-AUDIT: one call answers whether AD34 + AD35 still hold in the running database (closed rule names + booleans, no data) ----------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION desk.ad35_selfcheck() RETURNS TABLE(rule text, ok boolean) LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog, desk SET statement_timeout = '25s' AS $f$
+DECLARE head bigint; m record; okc boolean := true;
+BEGIN
+  SELECT max(seq) INTO head FROM desk.fadm_ledger;
+  rule := 'ledger_recent_chain'; ok := COALESCE(desk.ledger_range_ok(GREATEST(COALESCE(head, 0) - 2000, 0), COALESCE(head, 0)) = 'ok', false); RETURN NEXT;
+  rule := 'checkpoints_bound'; ok := NOT EXISTS (SELECT 1 FROM desk.ledger_checkpoint_verify(20) v WHERE v.outcome NOT IN ('ok', 'range_too_large')); RETURN NEXT;
+  FOR m IN SELECT r.tree_size, r.root_hash FROM desk.ledger_merkle_root r ORDER BY r.tree_size DESC LIMIT 3 LOOP
+    IF m.tree_size <= 50000 AND desk.merkle_leaves(m.tree_size) IS NOT NULL THEN okc := okc AND desk.merkle_mth(desk.merkle_leaves(m.tree_size), 0, m.tree_size::integer) = m.root_hash; END IF;
+  END LOOP;
+  rule := 'merkle_roots_recompute'; ok := okc; RETURN NEXT;
+  rule := 'two_people_everywhere'; ok := NOT EXISTS (SELECT 1 FROM desk.company_identifier WHERE recorded_by = confirmed_by); RETURN NEXT;
+  rule := 'one_live_holder'; ok := NOT EXISTS (SELECT 1 FROM desk.company_identifier WHERE valid_to IS NULL GROUP BY registry_id, number_norm HAVING count(*) > 1); RETURN NEXT;
+  rule := 'one_live_number_per_company'; ok := NOT EXISTS (SELECT 1 FROM desk.company_identifier WHERE valid_to IS NULL GROUP BY tenant_id, registry_id HAVING count(*) > 1); RETURN NEXT;
+  rule := 'shapes_have_sources'; ok := NOT EXISTS (SELECT 1 FROM desk.registry_kind WHERE number_shape IS NOT NULL AND (shape_source IS NULL OR shape_checked_on IS NULL)); RETURN NEXT;
+  rule := 'ledger_no_gap'; ok := (SELECT count(*) = COALESCE(max(seq) - min(seq) + 1, 0) FROM desk.fadm_ledger WHERE seq > COALESCE(head, 0) - 2000); RETURN NEXT;
+  rule := 'ledger_has_no_numbers'; ok := NOT EXISTS (SELECT 1 FROM desk.fadm_ledger l, jsonb_object_keys(l.detail) k WHERE l.kind LIKE 'ident.%' AND k NOT IN ('identifier_id', 'registry_id', 'shape_state', 'number_hash', 'reason', 'why')); RETURN NEXT;
+END $f$;
+COMMENT ON FUNCTION desk.ad35_selfcheck() IS 'AD35: nine closed rule names with true/false (recent chain, checkpoints bound to the ledger, stored Merkle roots recompute, two people, one live holder, one live number per company, shapes have sources, ledger holds no numbers). No data leaves.';
+
 -- D) hand the AD35 doors to the NOLOGIN owner and open exactly what each needs --------------------------------------------------------------------------------------------------------
 GRANT SELECT ON desk.fadm_ledger TO desk_proof_owner;
 GRANT INSERT ON desk.fadm_ledger TO desk_proof_owner;
 GRANT SELECT, INSERT ON desk.ledger_checkpoint TO desk_proof_owner;
 GRANT SELECT, INSERT ON desk.ledger_checkpoint_witness TO desk_proof_owner;
+GRANT SELECT, INSERT ON desk.ledger_merkle_root TO desk_proof_owner;
 GRANT SELECT, INSERT, UPDATE ON desk.company_identifier TO desk_proof_owner;
 GRANT SELECT ON desk.registry_kind TO desk_proof_owner;
 GRANT UPDATE (number_shape, shape_source, shape_checked_on) ON desk.registry_kind TO desk_proof_owner;
@@ -400,7 +647,7 @@ GRANT SELECT ON desk.fadm_owner, desk.fadm_unit TO desk_proof_owner;
 GRANT EXECUTE ON FUNCTION desk.registry_check(bigint, text) TO desk_proof_owner;
 GRANT EXECUTE ON FUNCTION desk.fadm_audit(uuid, text, jsonb), desk.fadm_authorize(uuid, text, uuid, inet, timestamptz), desk.fadm_unit_id(text, text), desk.fadm_bind_may(uuid) TO desk_proof_owner;
 DO $q$ DECLARE t text; BEGIN
-  FOREACH t IN ARRAY ARRAY['fadm_ledger', 'ledger_checkpoint', 'ledger_checkpoint_witness', 'company_identifier', 'registry_kind', 'fadm_owner', 'fadm_unit'] LOOP
+  FOREACH t IN ARRAY ARRAY['fadm_ledger', 'ledger_checkpoint', 'ledger_checkpoint_witness', 'ledger_merkle_root', 'company_identifier', 'registry_kind', 'fadm_owner', 'fadm_unit'] LOOP
     EXECUTE format('DROP POLICY IF EXISTS p_proof_owner ON desk.%I', t);
     EXECUTE format('CREATE POLICY p_proof_owner ON desk.%I FOR ALL TO desk_proof_owner USING (true) WITH CHECK (true)', t);
   END LOOP;
@@ -411,7 +658,9 @@ DO $a$ DECLARE f text; BEGIN
     'desk.ledger_checkpoint_put(bigint, text, bytea)', 'desk.ledger_checkpoint_witnessed(bigint, text, bytea)', 'desk.ledger_checkpoint_verify(integer)', 'desk.ledger_checkpoint_status()',
     'desk.company_identifier_refuse(uuid, text)', 'desk.company_identifier_set(uuid, uuid, uuid, bigint, text)', 'desk.company_identifier_end(uuid, uuid, bigint, text)',
     'desk.company_identifier_lookup(uuid, bigint, text)', 'desk.company_identifier_history(uuid, uuid)', 'desk.registry_shape_prove(bigint, text, text, date, text[], text[])',
-    'desk.registry_countries()', 'desk.registry_pick(text)'] LOOP
+    'desk.registry_countries()', 'desk.registry_pick(text)',
+    'desk.merkle_leaves(bigint)', 'desk.ledger_merkle_head()', 'desk.ledger_merkle_record(bigint)', 'desk.ledger_merkle_inclusion(bigint, bigint)', 'desk.ledger_merkle_consistency(bigint, bigint)',
+    'desk.company_identifier_as_of(uuid, uuid, timestamptz, timestamptz)', 'desk.company_identifier_review_due(uuid, integer)', 'desk.company_identifier_conflicts(uuid)', 'desk.company_identifier_stats(uuid)', 'desk.ad35_selfcheck()'] LOOP
     EXECUTE format('ALTER FUNCTION %s OWNER TO desk_proof_owner', f);
     EXECUTE format('REVOKE ALL ON FUNCTION %s FROM PUBLIC', f);
   END LOOP;
@@ -420,7 +669,10 @@ END $a$;
 DO $g$ BEGIN IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'desk_app') THEN
   GRANT EXECUTE ON FUNCTION desk.ledger_checkpoint_head(), desk.ledger_checkpoint_put(bigint, text, bytea), desk.ledger_checkpoint_witnessed(bigint, text, bytea), desk.ledger_checkpoint_verify(integer), desk.ledger_checkpoint_status(),
     desk.company_identifier_set(uuid, uuid, uuid, bigint, text), desk.company_identifier_end(uuid, uuid, bigint, text), desk.company_identifier_lookup(uuid, bigint, text), desk.company_identifier_history(uuid, uuid),
-    desk.registry_countries(), desk.registry_pick(text), desk.registry_normalise(text), desk.ledger_origin(), desk.ledger_checkpoint_body(bigint, bytea) TO desk_app;
+    desk.registry_countries(), desk.registry_pick(text), desk.registry_normalise(text), desk.ledger_origin(), desk.ledger_checkpoint_body(bigint, bytea),
+    desk.ledger_merkle_head(), desk.ledger_merkle_record(bigint), desk.ledger_merkle_inclusion(bigint, bigint), desk.ledger_merkle_consistency(bigint, bigint),
+    desk.merkle_verify_inclusion(bytea, bigint, bigint, bytea[], bytea), desk.merkle_verify_consistency(bigint, bigint, bytea, bytea, bytea[]), desk.merkle_leaf(bytea), desk.merkle_node(bytea, bytea),
+    desk.company_identifier_as_of(uuid, uuid, timestamptz, timestamptz), desk.company_identifier_review_due(uuid, integer), desk.company_identifier_conflicts(uuid), desk.company_identifier_stats(uuid), desk.ad35_selfcheck() TO desk_app;
 END IF; END $g$;
 
 -- SELFTEST (rolls back; success is the exception P0AX4) ------------------------------------------------------------------------------------------------------------------------------
@@ -520,6 +772,61 @@ BEGIN
   j := desk.registry_countries(); PERFORM pg_temp.ad35_ok(jsonb_typeof(j) = 'array' AND jsonb_array_length(j) >= 234, 'the picker lists every jurisdiction');
   j := desk.registry_pick('PK'); PERFORM pg_temp.ad35_ok(jsonb_array_length(j) >= 2 AND j::text LIKE '%RA000475%' AND j::text LIKE '%RA001111%', 'the picker lists the registers of Pakistan');
   PERFORM pg_temp.ad35_ok(desk.registry_pick('pk') = '[]'::jsonb AND desk.registry_pick(NULL) = '[]'::jsonb AND desk.registry_pick('PKX') = '[]'::jsonb, 'the picker takes only a two-letter upper-case code');
+  -- E) Merkle (RFC 9162): known vector, then EVERY inclusion and EVERY consistency proof for every tree size up to 40
+  FOR n0 IN 1 .. 45 LOOP PERFORM desk.fadm_audit(NULL, 'ckpt.refused', jsonb_build_object('why', 'selftest-' || n0)); END LOOP;
+  PERFORM pg_temp.ad35_ok(desk.merkle_leaf(''::bytea) = decode('6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d', 'hex') AND desk.merkle_mth(ARRAY[]::bytea[], 0, 0) = decode('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'hex'), 'the RFC 6962 / 9162 reference hashes match (empty tree, empty leaf)');
+  PERFORM pg_temp.ad35_ok(desk.merkle_pow2_below(2) = 1 AND desk.merkle_pow2_below(3) = 2 AND desk.merkle_pow2_below(4) = 2 AND desk.merkle_pow2_below(5) = 4 AND desk.merkle_pow2_below(8) = 4 AND desk.merkle_pow2_below(9) = 8, 'the split point is the largest power of two below n');
+  DECLARE lv bytea[]; sz integer; ix integer; m integer; pth bytea[]; rt bytea; rm bytea; bad integer := 0; tot integer := 0; mut bytea[];
+  BEGIN
+    FOR sz IN 1 .. 40 LOOP
+      lv := desk.merkle_leaves(sz); rt := desk.merkle_mth(lv, 0, sz);
+      FOR ix IN 0 .. sz - 1 LOOP
+        pth := desk.merkle_path(lv, ix, 0, sz); tot := tot + 1;
+        IF NOT desk.merkle_verify_inclusion(lv[ix + 1], ix, sz, pth, rt) THEN bad := bad + 1; END IF;
+        IF sz > 1 THEN
+          mut := pth; mut[1] := sha256('tamper'::bytea);
+          IF desk.merkle_verify_inclusion(lv[ix + 1], ix, sz, mut, rt) THEN bad := bad + 1; END IF;                       -- a changed path element must fail
+          IF desk.merkle_verify_inclusion(lv[ix + 1], (ix + 1) % sz, sz, pth, rt) AND (ix + 1) % sz <> ix THEN bad := bad + 1; END IF;   -- the wrong index must fail
+        END IF;
+        IF desk.merkle_verify_inclusion(sha256('other'::bytea), ix, sz, pth, rt) THEN bad := bad + 1; END IF;            -- other leaf data must fail
+      END LOOP;
+      FOR m IN 1 .. sz LOOP
+        rm := desk.merkle_mth(lv, 0, m); pth := desk.merkle_subproof(lv, m, 0, sz, true); tot := tot + 1;
+        IF NOT desk.merkle_verify_consistency(m, sz, rm, rt, pth) THEN bad := bad + 1; END IF;
+        IF m < sz THEN
+          IF desk.merkle_verify_consistency(m, sz, sha256('forked'::bytea), rt, pth) THEN bad := bad + 1; END IF;       -- a forked old head must fail
+          IF cardinality(pth) > 0 THEN mut := pth; mut[cardinality(pth)] := sha256('tamper'::bytea); IF desk.merkle_verify_consistency(m, sz, rm, rt, mut) THEN bad := bad + 1; END IF; END IF;
+        END IF;
+      END LOOP;
+    END LOOP;
+    PERFORM pg_temp.ad35_ok(bad = 0 AND tot > 1000, 'all ' || tot || ' inclusion and consistency proofs of sizes 1..40 verify and every forgery fails (bad=' || bad || ')');
+  END;
+  PERFORM pg_temp.ad35_ok(NOT desk.merkle_verify_inclusion(NULL, 0, 1, ARRAY[]::bytea[], sha256('x'::bytea)) AND NOT desk.merkle_verify_inclusion(sha256('x'::bytea), 5, 3, ARRAY[]::bytea[], sha256('x'::bytea)) AND NOT desk.merkle_verify_consistency(0, 3, sha256('a'::bytea), sha256('b'::bytea), ARRAY[]::bytea[]) AND NOT desk.merkle_verify_consistency(5, 3, sha256('a'::bytea), sha256('b'::bytea), ARRAY[]::bytea[]) AND desk.merkle_verify_consistency(3, 3, sha256('a'::bytea), sha256('a'::bytea), ARRAY[]::bytea[]) AND NOT desk.merkle_verify_consistency(3, 3, sha256('a'::bytea), sha256('b'::bytea), ARRAY[]::bytea[]), 'the verifiers answer false on bad input and handle size = size');
+  hd := desk.ledger_merkle_head();
+  PERFORM pg_temp.ad35_ok(hd->>'state' = 'ok' AND (hd->>'tree_size')::bigint >= 45, 'the Merkle head answers ok with the tree size');
+  sz := (hd->>'tree_size')::bigint;
+  PERFORM pg_temp.ad35_ok(desk.ledger_merkle_record(0) = 'bad_size' AND desk.ledger_merkle_record(sz + 100000) IN ('too_large', 'no_line') AND desk.ledger_merkle_record(sz - 10) = 'recorded' AND desk.ledger_merkle_record(sz - 10) = 'already' AND desk.ledger_merkle_record(sz) = 'recorded', 'roots are recorded once per size');
+  PERFORM pg_temp.ad35_ok((SELECT root_hash FROM desk.ledger_merkle_root WHERE tree_size = sz) = decode(hd->>'root_b64', 'base64'), 'the stored root equals the head root');
+  BEGIN UPDATE desk.ledger_merkle_root SET root_hash = decode(repeat('00', 32), 'hex'); PERFORM pg_temp.ad35_ok(false, 'a stored root can not be updated'); EXCEPTION WHEN insufficient_privilege THEN NULL; END;
+  j := desk.ledger_merkle_inclusion(7, sz);
+  PERFORM pg_temp.ad35_ok(j->>'state' = 'ok' AND desk.merkle_verify_inclusion(decode(j->>'leaf_data_b64', 'base64'), 6, sz, ARRAY(SELECT decode(x, 'base64') FROM jsonb_array_elements_text(j->'path_b64') x), decode(j->>'root_b64', 'base64')), 'the inclusion door gives a proof the pure verifier accepts');
+  PERFORM pg_temp.ad35_ok(desk.ledger_merkle_inclusion(0, 5)->>'state' = 'bad_range' AND desk.ledger_merkle_inclusion(9, 5)->>'state' = 'bad_range' AND desk.ledger_merkle_inclusion(1, 99999999)->>'state' = 'no_line', 'the inclusion door answers closed states');
+  j := desk.ledger_merkle_consistency(10, sz);
+  PERFORM pg_temp.ad35_ok(j->>'state' = 'ok' AND desk.merkle_verify_consistency(10, sz, decode(j->>'old_root_b64', 'base64'), decode(j->>'new_root_b64', 'base64'), ARRAY(SELECT decode(x, 'base64') FROM jsonb_array_elements_text(j->'path_b64') x)), 'the consistency door gives a proof the pure verifier accepts');
+  PERFORM pg_temp.ad35_ok(desk.ledger_merkle_consistency(5, 3)->>'state' = 'bad_range' AND desk.ledger_merkle_consistency(sz, sz)->>'state' = 'ok', 'the consistency door answers closed states');
+  -- F) as-of, review, conflicts, stats, selfcheck
+  PERFORM desk.company_identifier_set(a1, a2, t1, k2, 'ntn-1111111-1');
+  j := desk.company_identifier_as_of(a1, t1, clock_timestamp());
+  PERFORM pg_temp.ad35_ok(jsonb_typeof(j) = 'array' AND jsonb_array_length(j) >= 1, 'as-of now lists the live numbers');
+  PERFORM pg_temp.ad35_ok(desk.company_identifier_as_of(a1, t1, clock_timestamp() - interval '10 days') = '[]'::jsonb, 'as-of ten days ago (before the first number) is empty');
+  PERFORM pg_temp.ad35_ok(desk.company_identifier_as_of(a3, t1, clock_timestamp()) IS NULL AND desk.company_identifier_as_of(a1, NULL, clock_timestamp()) = '[]'::jsonb, 'as-of needs staff.read and a tenant');
+  PERFORM pg_temp.ad35_ok((desk.company_identifier_as_of(a1, t1, (SELECT valid_from FROM desk.company_identifier WHERE id = i1) + interval '1 microsecond', (SELECT recorded_at FROM desk.company_identifier WHERE id = i1) + interval '1 microsecond')::text) LIKE '%0123456%', 'as we knew it right after the first record, the first number was live (the later replacement was not known yet)');
+  PERFORM pg_temp.ad35_ok(jsonb_typeof(desk.company_identifier_review_due(a1, 365)) = 'array' AND jsonb_array_length(desk.company_identifier_review_due(a1, 365)) = 0 AND jsonb_array_length(desk.company_identifier_review_due(a1, 1)) = 0 AND desk.company_identifier_review_due(a3, 30) IS NULL, 'nothing is due for review today and the door needs staff.read');
+  j := desk.company_identifier_conflicts(a1);
+  PERFORM pg_temp.ad35_ok(jsonb_typeof(j) = 'array' AND desk.company_identifier_conflicts(a3) IS NULL, 'the conflicts report answers an array for staff only');
+  j := desk.company_identifier_stats(a1);
+  PERFORM pg_temp.ad35_ok((j->>'live')::int >= 2 AND (j->>'live_shape_ok')::int >= 0 AND (j->>'wrong')::int >= 1 AND (j->>'replaced')::int >= 1 AND (j->>'registers_total')::int >= 1178 AND desk.company_identifier_stats(a3) IS NULL, 'statistics are plain counts and need staff.read');
+  PERFORM pg_temp.ad35_ok((SELECT count(*) FROM desk.ad35_selfcheck()) = 9 AND (SELECT bool_and(ok) FROM desk.ad35_selfcheck()), 'the nine self-audit rules are all true, false: ' || COALESCE((SELECT string_agg(rule, ',') FROM desk.ad35_selfcheck() WHERE NOT ok), 'none'));
   RAISE EXCEPTION 'AD35 selftest passed, rolling back' USING ERRCODE = 'P0AX4';
 EXCEPTION WHEN SQLSTATE 'P0AX4' THEN RAISE NOTICE 'AD35 selftest: ALL RULES PASSED (rows rolled back)';
 END $$;
