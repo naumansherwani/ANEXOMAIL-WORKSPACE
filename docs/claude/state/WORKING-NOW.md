@@ -1,7 +1,7 @@
-# WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 05:47 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 25 Nov 2026 05:49 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: his 05:46 editor error 42P01 recorded: AD34 not installed yet
+DOING: his 05:49 AD35 alone in editor 42P01 is by design
 NEXT STEP: his SQL line (install-line.sh sql)
 HIS LAST WORD: his 05:46 order
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
@@ -21,20 +21,26 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 59762854 25 Nov 05:47 ledger line bcc6676e
 - bcc6676e 25 Nov 05:47 editor error note
 - 8a865ae1 25 Nov 05:35 ledger line aa922bb1
 - aa922bb1 25 Nov 05:35 AD01 fadm prefix fix
 - ffcb7c75 25 Nov 05:01 ledger line e06252ce
-- e06252ce 25 Nov 05:01 AD35 SQL
 
 ## Uncommitted files (half-done work if any)
+M  CLAUDE.md
+M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 23 ++---------------------
- 1 file changed, 2 insertions(+), 21 deletions(-)
+ CLAUDE.md                                   |  2 ++
+ docs/claude/admin-desk/state/WORKING-NOW.md |  2 ++
+ docs/claude/state/WORKING-NOW.md            | 22 ++++++----------------
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt |  6 +++---
+ 4 files changed, 13 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -45,4 +51,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (cf7827a6996cbcc0aac82674a5c913e925c1e06b)
+WIP snapshot: refs/wip/last (2fa02b1957dbe96ad209e8f012e791800a0d05d2)
