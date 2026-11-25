@@ -1471,7 +1471,7 @@ ON CONFLICT (row_hash) DO NOTHING;
 -- Honest scope: only the AD34 doors move to this owner; older Desk functions stay with the installer role until their own phases give them policies.
 DO $o$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'desk_bind_owner') THEN CREATE ROLE desk_bind_owner NOLOGIN NOSUPERUSER NOBYPASSRLS NOCREATEDB NOCREATEROLE NOREPLICATION; END IF;
-  BEGIN EXECUTE format('GRANT desk_bind_owner TO %I', current_user); EXCEPTION WHEN OTHERS THEN NULL; END;   -- the installer must be a member to hand functions over
+  BEGIN IF current_setting('server_version_num')::int >= 160000 THEN EXECUTE format('GRANT desk_bind_owner TO %I WITH SET TRUE', current_user); ELSE EXECUTE format('GRANT desk_bind_owner TO %I', current_user); END IF; EXCEPTION WHEN OTHERS THEN NULL; END;   -- the installer must be a member to hand functions over
 END $o$;
 GRANT USAGE, CREATE ON SCHEMA desk TO desk_bind_owner;      -- CREATE is required by PostgreSQL for ALTER FUNCTION ... OWNER TO; the role cannot log in
 GRANT SELECT, INSERT, UPDATE ON desk.fadm_bind_proposal TO desk_bind_owner;

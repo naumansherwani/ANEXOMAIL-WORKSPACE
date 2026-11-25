@@ -34,7 +34,7 @@
 -- A0) owner role, ledger kinds ------------------------------------------------------------------------------------------------------------------------------------------------
 DO $o$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'desk_proof_owner') THEN CREATE ROLE desk_proof_owner NOLOGIN NOSUPERUSER NOBYPASSRLS NOCREATEDB NOCREATEROLE NOREPLICATION; END IF;
-  BEGIN EXECUTE format('GRANT desk_proof_owner TO %I', current_user); EXCEPTION WHEN OTHERS THEN NULL; END;   -- the installer must be a member to hand functions over
+  BEGIN IF current_setting('server_version_num')::int >= 160000 THEN EXECUTE format('GRANT desk_proof_owner TO %I WITH SET TRUE', current_user); ELSE EXECUTE format('GRANT desk_proof_owner TO %I', current_user); END IF; EXCEPTION WHEN OTHERS THEN NULL; END;   -- the installer must be a member to hand functions over
 END $o$;
 GRANT USAGE, CREATE ON SCHEMA desk TO desk_proof_owner;
 

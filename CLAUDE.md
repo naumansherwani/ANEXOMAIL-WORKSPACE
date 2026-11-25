@@ -126,3 +126,5 @@ Full rules: `AGENTS.md` (Rules 1–73) and `docs/claude/founder/CODES/00-README-
 > ## >>> 25 Nov 2026 05:5x PKT (his 05:49): AD35 pasted alone into an editor fails with 42P01 by design (needs AD34 and the older files). Never hand-run Desk SQL; only desk-sql-install.sh. <<<
 
 > ## >>> 25 Nov 2026 05:5x PKT (his 05:51): HIS SQL RULE = the SQL is pasted into his SQL EDITOR, the CHECK runs on his server (desk-sql-install.sh). Editor files (CHECK last): docs/claude/admin-desk/sql/editor/AD34-editor.sql then AD35-editor.sql (tests/make-editor-sql.sh). Old non-fadm_ tables are renamed by sql/legacy-rename.sql (inside AD34-editor and before ad-auto). NEVER tell him not to use the editor. <<<
+
+> ## >>> 25 Nov 2026 05:5x PKT (his 05:57): editor SQL is tested as a TRUE NON-SUPERUSER (role with createrole + bypassrls, password login over 127.0.0.1) before it is handed over; owner-role grants use WITH SET TRUE on PG16+. AD34 + AD35 editor files pass 19/19 and 27/27 that way. <<<
