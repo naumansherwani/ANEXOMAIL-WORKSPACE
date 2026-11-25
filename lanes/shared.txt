@@ -145,6 +145,9 @@ admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V5-global-grid-390.png
 admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V5-global-grid.html
 admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-dashboard.html
 admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-landing-1280.png
+admin-desk/demo/DESK-COMBOBOX-DEMO-25NOV-hover.png
+admin-desk/demo/DESK-COMBOBOX-DEMO-25NOV.html
+admin-desk/demo/DESK-COMBOBOX-DEMO-25NOV.md
 admin-desk/demo/LOGIN-GLOBAL-GRID-DEMO-1280.png
 admin-desk/demo/LOGIN-GLOBAL-GRID-DEMO-390.png
 admin-desk/demo/LOGIN-GLOBAL-GRID-TEXT-24NOV.patch

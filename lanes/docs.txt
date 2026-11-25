@@ -479,6 +479,9 @@ docs/claude/admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V5-global-grid-390.pn
 docs/claude/admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-V5-global-grid.html
 docs/claude/admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-dashboard.html
 docs/claude/admin-desk/demo/COMMAND-CENTER-TEXT-DEMO-24NOV-landing-1280.png
+docs/claude/admin-desk/demo/DESK-COMBOBOX-DEMO-25NOV-hover.png
+docs/claude/admin-desk/demo/DESK-COMBOBOX-DEMO-25NOV.html
+docs/claude/admin-desk/demo/DESK-COMBOBOX-DEMO-25NOV.md
 docs/claude/admin-desk/demo/LOGIN-GLOBAL-GRID-DEMO-1280.png
 docs/claude/admin-desk/demo/LOGIN-GLOBAL-GRID-DEMO-390.png
 docs/claude/admin-desk/demo/LOGIN-GLOBAL-GRID-TEXT-24NOV.patch

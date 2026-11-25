@@ -1,0 +1,163 @@
+<title>Desk Country Picker</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* The Desk's OWN tokens and background, copied from founder-web/src/desk/DeskShell.tsx (.dsk) and DeskBindException.tsx (.dbx). Nothing recoloured. The Desk is dark only. */
+:root{--ink:#E8EEF9;--mute:#9FB3D6;--glass:rgba(12,22,46,.62);--line:rgba(160,200,255,.16);--amber:255,170,70;--btn:rgba(120,170,255,.16);--btnline:rgba(160,200,255,.5);--focus:#8FB8FF;--panel:#1A2F57;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0}
+.dsk{font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;position:relative;min-height:100vh;color:var(--ink);background:linear-gradient(180deg,#060B19 0%,#0A1730 48%,#0F3460 100%);overflow-x:hidden;padding-block:26px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.dsk::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(55% 45% at 94% 0%,rgba(var(--amber),.26),transparent 62%),radial-gradient(60% 55% at 6% 100%,rgba(15,52,96,.85),transparent 70%)}
+.dsk-glow{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(64% 40% at 90% 100%,rgba(var(--amber),.22),transparent 68%),radial-gradient(78% 36% at 42% 100%,rgba(111,166,242,.20),transparent 72%),radial-gradient(42% 26% at 4% 100%,rgba(var(--amber),.11),transparent 70%)}
+.dsk::after{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0,transparent 14vw,rgba(160,200,255,.05) 14vw,rgba(160,200,255,.05) calc(14vw + 1px));box-shadow:inset 0 0 180px rgba(0,0,0,.55)}
+.wrap{max-width:1040px;margin:0 auto;position:relative;z-index:1}
+h1{font-size:22px;margin:0 0 4px;font-weight:700;text-wrap:balance}
+.sub{color:var(--mute);font-size:14px;margin:0 0 20px;max-width:64ch;line-height:1.5}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,19rem),1fr))}
+.dbx-box{position:relative;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--glass);min-width:0;overflow-wrap:anywhere}
+.dbx-box:has(.pop){z-index:30}
+.dbx-box h3{margin:0 0 8px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);font-weight:600}
+.dbx-box h2{font-size:15px;margin:0 0 4px}.dbx-box p{font-size:13px;color:var(--mute);margin:0 0 14px;line-height:1.5}
+label.f{display:block;font-size:13px;color:var(--mute);margin:0 0 6px}
+/* the trigger looks exactly like the Desk's own select/input */
+.trig{width:100%;min-height:44px;display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--glass);color:inherit;font:inherit;cursor:pointer;text-align:left;max-width:100%}
+.trig:focus-visible,.trig[aria-expanded=true]{outline:2px solid var(--focus);outline-offset:3px;box-shadow:0 0 22px rgba(143,184,255,.28)}
+.trig .ph{color:var(--mute)}.trig .grow{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.opt[aria-selected=true] .code{box-shadow:0 0 10px rgba(143,184,255,.35)}
+.code{display:inline-grid;place-items:center;min-width:30px;height:22px;padding:0 7px;border-radius:7px;border:1px solid var(--line);background:var(--btn);font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--focus);flex:none;white-space:nowrap}
+.chev{width:16px;height:16px;flex:none;opacity:.7;transition:transform .15s}.trig[aria-expanded=true] .chev{transform:rotate(180deg)}
+/* the cinematic part: a glass popover in the same navy, same line colour, same blue as the Desk buttons */
+.pw{position:relative}
+.pop{position:absolute;z-index:20;left:0;right:0;top:calc(100% + 8px);border:1px solid var(--btnline);border-radius:14px;background:radial-gradient(70% 90% at 100% 0%,rgba(var(--amber),.13),transparent 70%),radial-gradient(80% 70% at 0% 100%,rgba(111,166,242,.16),transparent 70%),rgba(10,22,46,.90);-webkit-backdrop-filter:blur(18px) saturate(1.15);backdrop-filter:blur(18px) saturate(1.15);box-shadow:0 26px 60px -14px rgba(0,0,0,.6),0 0 34px rgba(111,166,242,.18);overflow:hidden;animation:in .14s ease-out}
+@keyframes in{from{opacity:0;transform:translateY(-4px) scale(.985)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.pop{animation:none}.chev{transition:none}}
+.sr{display:flex;align-items:center;gap:10px;padding:0 14px;border-bottom:1px solid var(--line);min-height:48px}
+.sr svg{width:16px;height:16px;opacity:.6;flex:none}
+.sr:focus-within{box-shadow:inset 0 -1px 0 rgba(143,184,255,.5)}
+.sr input{flex:1;min-width:0;min-height:46px;background:transparent;border:0;outline:0;color:inherit;font:inherit}
+.sr input::placeholder{color:var(--mute)}
+.kbd{font-size:11px;color:var(--mute);border:1px solid var(--line);border-radius:6px;padding:2px 6px;flex:none}
+.list{max-height:min(46vh,320px);overflow:auto;padding:6px;scrollbar-width:thin;scrollbar-color:var(--btnline) transparent}
+.opt{display:flex;align-items:center;gap:10px;min-height:44px;padding:0 10px;border-radius:10px;cursor:pointer;font-size:14px;position:relative;border:1px solid transparent}
+.opt[aria-selected=true]{background:var(--btn);border-color:var(--btnline);box-shadow:0 0 18px rgba(120,170,255,.22)}
+.opt .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.opt .n{font-size:12px;color:var(--mute);font-variant-numeric:tabular-nums;flex:none}
+mark{background:none;color:var(--focus);font-weight:700;text-shadow:0 0 10px rgba(143,184,255,.55)}
+.tick{width:16px;height:16px;color:var(--focus);flex:none}
+.empty{padding:22px 14px;text-align:center;color:var(--mute);font-size:13px}
+.foot{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:9px 14px;border-top:1px solid var(--line);font-size:11px;color:var(--mute)}
+.two{display:grid;grid-template-columns:1fr;border:1px solid var(--btnline);border-radius:14px;background:var(--panel);overflow:hidden}
+@media (min-width:560px){.two{grid-template-columns:44% 56%}}
+.two .l{border-right:1px solid var(--line)}@media (max-width:559px){.two .l{border-right:0;border-bottom:1px solid var(--line)}}
+.reg{padding:10px 12px;border-radius:10px;cursor:pointer;margin:2px 0;min-height:44px;border:1px solid transparent}
+.reg[aria-selected=true]{background:var(--btn);border-color:var(--btnline)}
+.reg .t{font-size:14px;font-weight:600}.reg .s{font-size:12px;color:var(--mute);margin-top:2px;line-height:1.4}
+.pill{display:inline-block;font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--btnline);color:var(--mute);margin-top:6px}
+.scrim{position:fixed;inset:0;z-index:50;background:rgba(2,6,16,.66);backdrop-filter:blur(3px);display:flex;align-items:flex-end;justify-content:center;animation:fade .15s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.sheet{width:min(560px,100%);max-height:86vh;border:1px solid var(--btnline);border-bottom:0;border-radius:20px 20px 0 0;background:var(--panel);display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom,0px);animation:up .2s ease-out;color:var(--ink);font-family:inherit}
+@keyframes up{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}
+.grab{width:40px;height:4px;border-radius:4px;background:var(--btnline);margin:10px auto 2px}
+.sheet .list{max-height:none;flex:1}
+.top{display:flex;justify-content:space-between;align-items:center;padding:6px 14px}.top b{font-size:15px}
+.x{min-width:44px;min-height:44px;border:0;background:none;color:var(--mute);font:inherit;font-size:13px;cursor:pointer;border-radius:10px}
+.x:focus-visible{outline:2px solid var(--focus)}
+.res{margin-top:14px;padding:10px 12px;border-radius:12px;border:1px dashed var(--btnline);font-size:13px;color:var(--mute);min-height:44px}
+.res b{color:var(--ink)}
+.fcur{position:fixed;z-index:99;width:22px;height:22px;pointer-events:none;transition:left .45s cubic-bezier(.4,0,.2,1),top .45s cubic-bezier(.4,0,.2,1);filter:drop-shadow(0 0 6px rgba(143,184,255,.8))}
+.note{margin-top:14px;font-size:12px;color:var(--mute);line-height:1.5}
+</style>
+<div class="dsk"><div class="dsk-glow"></div>
+<div class="wrap">
+  <h1>Company registration number: country and register picker</h1>
+  <p class="sub">Same Desk, same colours: your navy glass, your line colour, your blue button colour, your focus ring. Only the dropdown changes: the same searchable list that is now in the code, with a soft glow in the Desk blue (field, panel, lit row, match). Afghanistan, Israel, North Korea and Syria are not in it (banned-countries/banned.json). Try each one.</p>
+  <div class="grid">
+    <section class="dbx-box"><h3>A. Search list</h3><p>Type to search, arrows and Enter to choose. The match is lit in the Desk blue. Country first, then the register in a list of the same kind.</p>
+      <label class="f">Country</label><div class="pw" id="pa"></div>
+      <label class="f" style="margin-top:12px">Register</label><div class="pw" id="pa2"></div>
+      <div class="res" id="ra">Nothing chosen yet.</div><button class="trig" id="play" type="button" style="margin-top:12px;justify-content:center;border-color:var(--btnline);background:var(--btn)"><span class="grow" style="text-align:center">Watch the cursor move over the options</span></button></section>
+    <section class="dbx-box"><h3>B. Two panes</h3><p>Countries on the left, the registers of the chosen country on the right, with what is known about the number shape. One panel.</p>
+      <div class="pw" id="pb"></div><div class="res" id="rb">Nothing chosen yet.</div></section>
+    <section class="dbx-box"><h3>C. Sheet on a phone</h3><p>On a phone the list slides up from the bottom with a big search box and 48 px rows. On a laptop it opens centred.</p>
+      <label class="f">Country</label><button class="trig" id="cbtn" type="button" aria-haspopup="dialog"><span class="grow ph" id="clab">Choose a country</span><svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg></button>
+      <div class="res" id="rc">Nothing chosen yet.</div></section>
+  </div>
+  <p class="note">Pakistan has two registers (SECP and FBR) and the Desk says honestly that no number shape is proven for them yet.</p>
+</div></div>
+<script>
+const C=[["AL","Albania",2],["DZ","Algeria",3],["AD","Andorra",2],["AO","Angola",3],["AR","Argentina",3],["AM","Armenia",2],["AU","Australia",7],["AT","Austria",17],["AZ","Azerbaijan",2],["BH","Bahrain",2],["BD","Bangladesh",4],["BE","Belgium",3],["BR","Brazil",4],["CA","Canada",16],["CN","China",3],["DK","Denmark",2],["EG","Egypt",3],["FR","France",5],["DE","Germany",9],["IN","India",4],["ID","Indonesia",3],["IE","Ireland",3],["IT","Italy",3],["JP","Japan",2],["JO","Jordan",2],["KE","Kenya",2],["KW","Kuwait",2],["MY","Malaysia",3],["NL","Netherlands",3],["NG","Nigeria",2],["NO","Norway",2],["OM","Oman",2],["PK","Pakistan",2],["PS","Palestine",1],["QA","Qatar",3],["SA","Saudi Arabia",3],["SG","Singapore",3],["ZA","South Africa",3],["ES","Spain",4],["LK","Sri Lanka",2],["SE","Sweden",2],["CH","Switzerland",3],["TR","Turkey",3],["AE","United Arab Emirates",12],["GB","United Kingdom",4],["US","United States",52]];
+const R={PK:[["RA000475","Corporate Registry","Securities and Exchange Commission (www.secp.gov.pk)",false],["RA001111","Online Verification Services","Federal Board of Revenue (e.fbr.gov.pk), the tax side",false]],GB:[["RA000585","Companies House","Registrar of Companies for England and Wales",true]],AT:[["RA000017","Firmenbuch","Austrian company register",false],["RA000018","Vereinsregister","Association register",false]]};
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function hl(t,q){if(!q)return esc(t);const i=t.toLowerCase().indexOf(q.toLowerCase());return i<0?esc(t):esc(t.slice(0,i))+"<mark>"+esc(t.slice(i,i+q.length))+"</mark>"+esc(t.slice(i+q.length))}
+const SEARCH='<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="9" r="5.5"/><path d="M13.5 13.5L17 17"/></svg>';
+const CHEV='<svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>';
+const TICK='<svg class="tick" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 10.5l4 4 8-9"/></svg>';
+/* generic combobox: items=[{k,name,code,n}] */
+function combo(host,{items,placeholder,onPick,label,render,empty,searchWords}){searchWords=searchWords||"Search";
+  let open=false,q="",idx=0,sel=null,uid="c"+Math.random().toString(36).slice(2,7);
+  host.innerHTML=`<button class="trig" type="button" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="${uid}l" aria-label="${label}"><span class="grow ph">${placeholder}</span>${CHEV}</button>`;
+  const t=$(".trig",host);
+  function f(){const s=q.trim().toLowerCase();return items.filter(i=>!s||i.name.toLowerCase().includes(s)||(i.code||"").toLowerCase()===s)}
+  function paint(){
+    const L=f(); if(idx>=L.length)idx=Math.max(0,L.length-1);
+    let pop=$(".pop",host); if(!open){pop&&pop.remove();return}
+    if(!pop){pop=document.createElement("div");pop.className="pop";host.appendChild(pop);
+      pop.innerHTML=`<div class="sr">${SEARCH}<input type="text" role="searchbox" aria-label="${searchWords}" aria-controls="${uid}l" autocomplete="off" spellcheck="false" placeholder="${searchWords}"><span class="kbd">Esc</span></div><div class="list" id="${uid}l" role="listbox"></div><div class="foot"><span>↑ ↓ to move · Enter to choose</span><span class="cnt"></span></div>`;
+      const inp=$("input",pop); inp.addEventListener("input",()=>{q=inp.value;idx=0;paint()}); inp.addEventListener("keydown",kd); setTimeout(()=>inp.focus(),0)}
+    const lb=$(".list",pop); const qq=q.trim();
+    lb.innerHTML=L.length?L.map((i,n)=>`<div class="opt" role="option" id="${uid}o${n}" aria-selected="${n===idx}" data-n="${n}">${i.code?`<span class="code">${i.code}</span>`:""}<span class="nm">${render?render(i,qq):hl(i.name,qq)}</span>${i.n!=null?`<span class="n">${i.n}</span>`:""}${sel&&sel.k===i.k?TICK:""}</div>`).join(""):`<div class="empty">${empty||"No match."} Nothing is guessed.</div>`;
+    $(".cnt",pop).textContent=L.length+" of "+items.length;
+    $("input",pop).setAttribute("aria-activedescendant",L.length?uid+"o"+idx:"");
+    lb.querySelectorAll(".opt").forEach(o=>{o.onmousemove=()=>{const n=+o.dataset.n;if(n!==idx){idx=n;lb.querySelectorAll(".opt").forEach((x,m)=>x.setAttribute("aria-selected",m===idx))}};o.onclick=()=>choose(L[+o.dataset.n])});
+    const a=lb.querySelector('[aria-selected="true"]'); a&&a.scrollIntoView({block:"nearest"});
+  }
+  function choose(i){if(!i)return;sel=i;set(false);t.querySelector(".grow").className="grow";t.querySelector(".grow").innerHTML=(i.code?`<span class="code">${i.code}</span> `:"")+esc(i.name);onPick(i);t.focus()}
+  function set(v){open=v;t.setAttribute("aria-expanded",v);if(!v){q="";idx=0}paint()}
+  function kd(e){const L=f();
+    if(e.key==="ArrowDown"){e.preventDefault();idx=Math.min(L.length-1,idx+1);paint()}
+    else if(e.key==="ArrowUp"){e.preventDefault();idx=Math.max(0,idx-1);paint()}
+    else if(e.key==="Home"){idx=0;paint()}else if(e.key==="End"){idx=L.length-1;paint()}
+    else if(e.key==="Enter"){e.preventDefault();choose(L[idx])}
+    else if(e.key==="Escape"||e.key==="Tab"){set(false);if(e.key==="Escape")t.focus()}}
+  t.onclick=()=>set(!open); t.onkeydown=e=>{if(open)return;if(e.key==="ArrowDown"||e.key==="Enter"||e.key===" "){e.preventDefault();set(true)}else if(e.key.length===1&&!e.ctrlKey&&!e.metaKey&&!e.altKey){e.preventDefault();q=e.key;set(true);const i=$("input",host);if(i)i.value=q;paint()}};
+  document.addEventListener("pointerdown",e=>{if(open&&!host.contains(e.target))set(false)});
+  return {reset(){sel=null;t.querySelector(".grow").className="grow ph";t.querySelector(".grow").textContent=placeholder},setItems(x){items=x}}
+}
+const items=C.map(([c,n,k])=>({k:c,code:c,name:n,n:k}));
+/* A */
+let regA; const ra=$("#ra");
+const cA=combo($("#pa"),{items,placeholder:"Choose a country",label:"Country",searchWords:"Search countries",empty:"No country matches.",onPick(i){const r=R[i.k]||[];regA.setItems(r.map(x=>({k:x[0],code:x[0],name:x[1],n:null,sub:x[2],shape:x[3]})));regA.reset();ra.innerHTML=`<b>${esc(i.name)}</b> · ${i.n} register${i.n>1?"s":""}. Now choose the register.`}});
+regA=combo($("#pa2"),{items:[],placeholder:"Choose a country first",label:"Register",searchWords:"Search registers",empty:"No register listed for this country in this demo.",render:(i,q)=>`<span style="display:block"><span style="display:block">${hl(i.name,q)}</span><span style="display:block;font-size:12px;color:var(--mute);white-space:normal">${esc(i.sub)}</span></span>`,onPick(i){ra.innerHTML=`<b>${esc(i.name)}</b> (RA${esc(i.code)}).<br>${i.shape?"A number shape is proven for this register.":"No number shape has been proven for this register yet, so the Desk cannot check the shape. What you type is used as typed."}`}});
+/* B */
+(function(){const h=$("#pb");h.innerHTML=`<button class="trig" type="button" aria-expanded="false" aria-haspopup="dialog"><span class="grow ph">Choose country and register</span>${CHEV}</button>`;const t=$(".trig",h);let o=false,q="",ci=null,ri=0,ki=0;
+ function L(){const s=q.trim().toLowerCase();return items.filter(i=>!s||i.name.toLowerCase().includes(s)||i.code.toLowerCase()===s)}
+ function paint(){let p=$(".pop",h);if(!o){p&&p.remove();return}
+  if(!p){p=document.createElement("div");p.className="pop";p.style.maxWidth="100%";h.appendChild(p);p.innerHTML=`<div class="two"><div class="l"><div class="sr">${SEARCH}<input type="text" aria-label="Search countries" placeholder="Search countries" autocomplete="off"></div><div class="list" role="listbox" aria-label="Countries"></div></div><div class="r"><div class="sr" style="min-height:48px"><span style="font-size:12px;color:var(--mute)" id="rh">Registers</span></div><div class="list" role="listbox" aria-label="Registers"></div></div></div>`;
+   const inp=$("input",p);inp.oninput=()=>{q=inp.value;ki=0;paint()};inp.onkeydown=e=>{const l=L();if(e.key==="ArrowDown"){e.preventDefault();ki=Math.min(l.length-1,ki+1);paint()}else if(e.key==="ArrowUp"){e.preventDefault();ki=Math.max(0,ki-1);paint()}else if(e.key==="Enter"){e.preventDefault();if(l[ki]){ci=l[ki];ri=0;paint()}}else if(e.key==="Escape"){o=false;t.setAttribute("aria-expanded",false);paint();t.focus()}};setTimeout(()=>inp.focus(),0)}
+  const l=L(),lb=$(".l .list",p),rb=$(".r .list",p);if(ki>=l.length)ki=0;
+  lb.innerHTML=l.length?l.map((i,n)=>`<div class="opt" role="option" aria-selected="${ci?ci.k===i.k:n===ki}" data-k="${i.k}"><span class="code">${i.code}</span><span class="nm">${hl(i.name,q.trim())}</span><span class="n">${i.n}</span></div>`).join(""):`<div class="empty">No country matches. Nothing is guessed.</div>`;
+  lb.querySelectorAll(".opt").forEach(e=>e.onclick=()=>{ci=items.find(x=>x.k===e.dataset.k);paint()});
+  const rs=ci?(R[ci.k]||[]):[];$("#rh",p).textContent=ci?ci.name+" · registers":"Registers";
+  rb.innerHTML=!ci?`<div class="empty">Choose a country on the left.</div>`:rs.length?rs.map((x,n)=>`<div class="reg" role="option" aria-selected="${n===ri}" data-n="${n}"><div class="t">${esc(x[1])}</div><div class="s">${esc(x[2])}</div><span class="pill ${x[3]?"":"am"}">${x[3]?"Number shape proven":"Number shape not proven yet"}</span></div>`).join(""):`<div class="empty">No register listed for this country in this demo.</div>`;
+  rb.querySelectorAll(".reg").forEach(e=>e.onclick=()=>{const x=rs[+e.dataset.n];o=false;t.setAttribute("aria-expanded",false);t.querySelector(".grow").className="grow";t.querySelector(".grow").innerHTML=`<span class="code">${ci.code}</span> ${esc(ci.name)} · ${esc(x[1])}`;$("#rb").innerHTML=`<b>${esc(x[1])}</b> (${x[0]}), ${esc(ci.name)}.<br>${x[3]?"A number shape is proven.":"No number shape has been proven yet, so the Desk cannot check the shape. What you type is used as typed."}`;paint();t.focus()})}
+ t.onclick=()=>{o=!o;t.setAttribute("aria-expanded",o);paint()};document.addEventListener("pointerdown",e=>{if(o&&!h.contains(e.target)){o=false;t.setAttribute("aria-expanded",false);paint()}})})();
+/* C */
+(function(){const b=$("#cbtn");b.onclick=()=>{const sc=document.createElement("div");sc.className="scrim";sc.innerHTML=`<div class="sheet" role="dialog" aria-modal="true" aria-label="Choose a country"><div class="grab"></div><div class="top"><b>Country</b><button class="x" type="button">Close</button></div><div class="sr">${SEARCH}<input type="text" aria-label="Search countries" placeholder="Search countries" autocomplete="off" style="min-height:52px"></div><div class="list" role="listbox"></div></div>`;document.body.appendChild(sc);
+ const inp=$("input",sc),lb=$(".list",sc);let q="";const close=()=>{sc.remove();b.focus()};
+ function paint(){const s=q.trim().toLowerCase(),l=items.filter(i=>!s||i.name.toLowerCase().includes(s)||i.code.toLowerCase()===s);lb.innerHTML=l.length?l.map(i=>`<div class="opt" role="option" data-k="${i.k}" style="min-height:48px"><span class="code">${i.code}</span><span class="nm">${hl(i.name,q.trim())}</span><span class="n">${i.n}</span></div>`).join(""):`<div class="empty">No country matches. Nothing is guessed.</div>`;lb.querySelectorAll(".opt").forEach(e=>e.onclick=()=>{const i=items.find(x=>x.k===e.dataset.k);$("#clab").className="grow";$("#clab").innerHTML=`<span class="code">${i.code}</span> ${esc(i.name)}`;$("#rc").innerHTML=`<b>${esc(i.name)}</b> · ${i.n} register${i.n>1?"s":""}.`;close()})}
+ inp.oninput=()=>{q=inp.value;paint()};sc.onpointerdown=e=>{if(e.target===sc)close()};$(".x",sc).onclick=close;sc.onkeydown=e=>{if(e.key==="Escape")close()};paint();setTimeout(()=>inp.focus(),30)}})();
+
+
+/* cursor walk-through: the real rows are hovered one by one by a visible cursor, then one is chosen */
+(function(){const b=$("#play");let busy=false;
+ const wait=ms=>new Promise(r=>setTimeout(r,ms));
+ b.onclick=async()=>{if(busy)return;busy=true;const cur=document.createElement("div");cur.className="fcur";cur.innerHTML='<svg viewBox="0 0 22 22" width="22" height="22"><path d="M3 2l14 8-6 2 4 7-3 1.5-4-7-5 4z" fill="#E8EEF9" stroke="#060B19" stroke-width="1.2"/></svg>';document.body.appendChild(cur);
+  const go=async(el,dx=40,dy=18)=>{const r=el.getBoundingClientRect();cur.style.left=(r.left+dx)+"px";cur.style.top=(r.top+dy)+"px";await wait(520)};
+  const trig=$("#pa .trig");trig.scrollIntoView({block:"center"});await wait(300);
+  cur.style.left="20px";cur.style.top="20px";await wait(50);await go(trig,120,22);trig.click();await wait(450);
+  const rows=[...document.querySelectorAll("#pa .opt")];
+  for(const i of [1,2,3,4]){if(!rows[i])break;await go(rows[i],120,22);rows[i].dispatchEvent(new MouseEvent("mousemove",{bubbles:true}));await wait(650)}
+  if(rows[3]){await go(rows[3],120,22);rows[3].click()}
+  await wait(900);cur.remove();busy=false}})();
+</script>
