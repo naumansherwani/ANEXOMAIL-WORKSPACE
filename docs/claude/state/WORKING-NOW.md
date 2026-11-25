@@ -1,9 +1,9 @@
-# WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 07:44 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 25 Nov 2026 07:53 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: his 07:40 order: banned countries out of the Desk picker; native grey list rejected, demo of a beautiful combobox first
+DOING: his 07:52 order: demo APPROVED (original Desk colours untouched); cinematic searchable dropdown built for country and register, plus banned-countries note
 NEXT STEP: demo of the Desk combobox, his pick, then code; then T4h ledger signer
-HIS LAST WORD: his 07:40/07:43 UI order: banned list + beautiful picker demo
+HIS LAST WORD: his 07:52: demo approved, dropdown built, note added
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -21,20 +21,33 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 2a65b9bb 25 Nov 07:44 ledger line 8a863113
 - 8a863113 25 Nov 07:44 Desk: banned countries out of the picker; combobox demo next
 - e3c5a3ab 25 Nov 07:40 ledger line e097ebc7
 - e097ebc7 25 Nov 07:40 Desk: T4i GREEN, T4h signer next
 - 2a131cdc 25 Nov 07:33 ledger line dd8816d1
-- dd8816d1 25 Nov 07:33 Desk: T4i Rust registry doors + picker screen (web install)
 
 ## Uncommitted files (half-done work if any)
  M docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
+R  founder-web/dist-desk/assets/desk-DPrzbeN8.js -> founder-web/dist-desk/assets/desk-Dy44C29m.js
+M  founder-web/dist-desk/desk.html
+A  founder-web/src/desk/DeskCombobox.tsx
+M  founder-web/src/desk/DeskRegistryPicker.tsx
+M  founder-web/src/desk/desk_registry_pure.test.ts
+M  founder-web/src/desk/desk_registry_pure.ts
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 31 ++-----------------------------
- 1 file changed, 2 insertions(+), 29 deletions(-)
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        |  4 +-
+ .../assets/{desk-DPrzbeN8.js => desk-Dy44C29m.js}  | 49 +++++++++-----
+ founder-web/dist-desk/desk.html                    |  2 +-
+ founder-web/src/desk/DeskCombobox.tsx              | 76 ++++++++++++++++++++++
+ founder-web/src/desk/DeskRegistryPicker.tsx        | 17 +++--
+ founder-web/src/desk/desk_registry_pure.test.ts    |  9 ++-
+ founder-web/src/desk/desk_registry_pure.ts         |  9 +++
+ 8 files changed, 150 insertions(+), 44 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -45,4 +58,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (01b609752c47da810f64d2369e0c4206d42db836)
+WIP snapshot: refs/wip/last (8daead3b0f6dd715286d203c630094cff58aaec2)

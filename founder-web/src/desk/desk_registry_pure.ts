@@ -127,3 +127,12 @@ export function splitMatch(label: string, q: string): [string, string, string] {
 }
 /** Next active row for the arrow keys (wraps round); -1 means "none yet". */
 export const stepActive = (cur: number, dir: 1 | -1, n: number): number => (n <= 0 ? -1 : cur < 0 ? (dir === 1 ? 0 : n - 1) : (cur + dir + n) % n);
+
+// ---- the short note under the pickers: which countries are not listed, and why (professional wording, built from the same BANNED_ISO list) ----
+export const BANNED_NAMES: Readonly<Record<string, string>> = { AF: "Afghanistan", IL: "Israel", KP: "North Korea", SY: "Syria" };
+/** One sentence for staff. It names the countries from BANNED_ISO, so the note and the filter can never disagree (a test fails if a banned code has no name). */
+export function bannedNote(): string {
+  const n = BANNED_ISO.map((c) => BANNED_NAMES[c] ?? c).sort();
+  const list = n.length > 1 ? `${n.slice(0, -1).join(", ")} and ${n[n.length - 1]}` : n.join("");
+  return `${list} are not listed. Anexomail does not provide its service in these countries, so no company register is offered for them.`;
+}

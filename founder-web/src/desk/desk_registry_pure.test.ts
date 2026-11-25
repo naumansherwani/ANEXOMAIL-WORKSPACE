@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
-import { BANNED_ISO, filterItems, fold, splitMatch, stepActive, buildHistory, buildNumber, checkWords, countryCodeOk, lookupWords, numberOk, parseCheck, parseCountries, parseHistory, parseLookup, parseRegisters, registerLabel } from "./desk_registry_pure";
+import { BANNED_ISO, BANNED_NAMES, bannedNote, filterItems, fold, splitMatch, stepActive, buildHistory, buildNumber, checkWords, countryCodeOk, lookupWords, numberOk, parseCheck, parseCountries, parseHistory, parseLookup, parseRegisters, registerLabel } from "./desk_registry_pure";
 
 const T = "123e4567-e89b-12d3-a456-426614174000";
 const reg = (o: Record<string, unknown> = {}) => ({ id: 7, ra_code: "RA000475", name: "Corporate Registry", authority: "Securities and Exchange Commission", website: "www.secp.gov.pk", shape_known: false, ...o });
@@ -77,4 +77,11 @@ test("splitMatch cuts the label on the same letters the person typed", () => {
 });
 test("stepActive wraps round and starts from the right end", () => {
   expect(stepActive(-1, 1, 3)).toBe(0); expect(stepActive(-1, -1, 3)).toBe(2); expect(stepActive(2, 1, 3)).toBe(0); expect(stepActive(0, -1, 3)).toBe(2); expect(stepActive(0, 1, 0)).toBe(-1);
+});
+
+test("the note names exactly the banned countries, in plain professional words", () => {
+  for (const c of BANNED_ISO) expect(BANNED_NAMES[c]).toBeTruthy();
+  const n = bannedNote();
+  expect(n).toBe("Afghanistan, Israel, North Korea and Syria are not listed. Anexomail does not provide its service in these countries, so no company register is offered for them.");
+  expect(Object.keys(BANNED_NAMES).sort()).toEqual([...BANNED_ISO].sort());
 });
