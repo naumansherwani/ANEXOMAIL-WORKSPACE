@@ -1,9 +1,9 @@
-# WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 07:21 PKT) - read this FIRST after a compaction; it is where the work stopped
+# WORKING NOW (manual checkpoint, 25 Nov 2026 07:27 PKT) - read this FIRST after a compaction; it is where the work stopped
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: his 07:20 order: final date 5 Dec, date next to every phase written
+DOING: COMPACT RESUME written (his 07:27): AD35 SQL green, final date 5 Dec, now T4i Rust doors + picker
 NEXT STEP: T4i Rust doors + picker screen (web install)
-HIS LAST WORD: his 07:20 order: 5 Dec final, dates for all phases
+HIS LAST WORD: his 07:27 order: save context, then write the codes
 LATER (his 23 Nov 05:10, OVERVIEW-S4-LATER): Overview screen (his 22.jpg look) comes at the END, after 1o, 1a, phone/tablet test, Founder Escalation Inbox: docs/claude/admin-desk/OVERVIEW-S4-PLAN-23NOV.md. Also FOUNDER-ESCALATION-INBOX after 1o.
 RULE: finish THIS step first (uncommitted files below are the half-done code), then commit with rec.sh. ONE phase, ONE command at a time.
 
@@ -21,20 +21,24 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 ## RESERVED BY HIS WORD 21 Nov 2026 07:5x PKT: TCP 127.0.0.1:4400 = ADMIN DESK (own Rust process `anexomail-desk`, loopback only; Caddy has the admindesk block since 21 Nov 07:51 PKT: reverse_proxy 127.0.0.1:4400, validated + reloaded; noth
 
 ## Last 5 commits
+- 59aabafc 25 Nov 07:21 ledger line e805ad5d
 - e805ad5d 25 Nov 07:21 Desk: final date 5 Dec, dates for all phases
 - 803dd08e 25 Nov 07:18 ledger line a8a77ad2
 - a8a77ad2 25 Nov 07:18 Desk: where we stand and Dashboard phases left counted
 - b87d97c6 25 Nov 07:15 ledger line 81a13ba8
-- 81a13ba8 25 Nov 07:15 Desk: AD35 SQL green on his server, next phase T4i Rust doors + picker
 
 ## Uncommitted files (half-done work if any)
+M  docs/claude/admin-desk/state/WORKING-NOW.md
  M docs/claude/state/WORKING-NOW.md
+M  docs/cursor-work/server/DEPLOY-MANIFEST.txt
 
 ## EDIT IN PROGRESS (docs/claude/state/EDIT-INTENT.md; empty = no edit was cut)
 
 ## Uncommitted size
- docs/claude/state/WORKING-NOW.md | 29 ++---------------------------
- 1 file changed, 2 insertions(+), 27 deletions(-)
+ docs/claude/admin-desk/state/WORKING-NOW.md |  1 +
+ docs/claude/state/WORKING-NOW.md            | 23 ++++++-----------------
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt |  4 ++--
+ 3 files changed, 9 insertions(+), 19 deletions(-)
 
 ## Q state
 === PHASE NOW (docs/claude/PHASE-NOW.md, open it first) ===
@@ -45,4 +49,4 @@ UPDATE RULE: every time he pastes a new `ss`, replace the table below + the date
 === Q-SERIES HANDOFF (automatic, SessionStart hook). READ THIS FIRST, then work. ===
 <!--QSTATE-->
 ## Q-SERIES STATE (generated from docs/claude/state/Q-STATE.jsonl by docs/cursor-work/server/qstate.py: do not edit by hand)
-WIP snapshot: refs/wip/last (b72dcf74b5595e0ac650bd2bb6e8bceda2c68984)
+WIP snapshot: refs/wip/last (ea28a96e1b0a74361ddf17a5244873166c3414de)
