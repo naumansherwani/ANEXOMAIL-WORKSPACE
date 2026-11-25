@@ -1,9 +1,9 @@
-# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 07:18 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (manual checkpoint, 25 Nov 2026 07:21 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
-DOING: his 07:17 question: where we stand and how many Dashboard phases remain; counted block written
-NEXT STEP: T4i Rust doors + picker screen (web install), then T4h signer
-HIS LAST WORD: his 07:17 order: updated blueprint in chat, where we stand, Dashboard phases left
+DOING: his 07:20 order: final date 5 Dec, date next to every phase written
+NEXT STEP: T4i Rust doors + picker screen (web install)
+HIS LAST WORD: his 07:20 order: 5 Dec final, dates for all phases
 LAWS: Desk isolation (never mix with founder/awam) / HTTP/1 + HTTP/2 BANNED, HTTP/3 only / Rule 52 kernel-verified calls / founder technology or MORE advanced / every phase row = feature + code + technology + HAAN / address him only as Aap, Roman Urdu short, end with Rule-70 table + 'Abhi code mein NAHI'.
 REMINDER (his 22 Nov 06:41): BEFORE EVERY DESK PHASE run rules-read.py + desk-phase-start.py <phase>, read this file and docs/claude/admin-desk/DESK-PHASES-22NOV.md (strict rules + technology + features per phase). Technology listed = CODE. HTTP/1 + HTTP/2 never named.
 RULE BOOK: docs/claude/admin-desk/RULE-BOOK.md (strict rules 1..N, rebuilt from DESK-PHASES-22NOV.md each checkpoint); blueprint: BLUEPRINT-ADMIN-DESK.md + DESK-PHASES-22NOV.md.
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- 803dd08e 25 Nov 07:18 ledger line a8a77ad2
 - a8a77ad2 25 Nov 07:18 Desk: where we stand and Dashboard phases left counted
 - b87d97c6 25 Nov 07:15 ledger line 81a13ba8
 - 81a13ba8 25 Nov 07:15 Desk: AD35 SQL green on his server, next phase T4i Rust doors + picker
@@ -75,10 +76,13 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 66e7f184 25 Nov 06:59 Desk notes: his Supabase dashboard screenshots, AD35 fix awaits his install paste
 - 8df14de0 25 Nov 06:52 ledger line e06cd7f3
 - e06cd7f3 25 Nov 06:52 B13 T4h/T4i: AD35 selftest no longer grows with the ledger (his server paste fix), tested, not installed
-- cf53992c 25 Nov 06:35 ledger line 64ced011
 
 ## Uncommitted Desk files
- M docs/claude/admin-desk/state/WORKING-NOW.md
+M  admin-desk/ALL-PHASES-IN-ORDER-24NOV.md
+A  admin-desk/DATES-5DEC-PLAN-25NOV.md
+M  docs/claude/admin-desk/ALL-PHASES-IN-ORDER-24NOV.md
+A  docs/claude/admin-desk/DATES-5DEC-PLAN-25NOV.md
+MM docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json

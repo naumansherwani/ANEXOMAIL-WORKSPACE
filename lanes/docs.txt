@@ -382,6 +382,7 @@ docs/claude/admin-desk/DASHBOARD-CARDS-CLICK-PLAN-22NOV.md
 docs/claude/admin-desk/DASHBOARD-FOLDER-AUDIT-23NOV.md
 docs/claude/admin-desk/DASHBOARD-FOLDER-ORDER-22NOV.md
 docs/claude/admin-desk/DASHBOARD-LIVE-COMMAND-22NOV.md
+docs/claude/admin-desk/DATES-5DEC-PLAN-25NOV.md
 docs/claude/admin-desk/DBSC-PHASE-LIST-23NOV.md
 docs/claude/admin-desk/DESK-D-SERIES-BLUEPRINT-22NOV.md
 docs/claude/admin-desk/DESK-GATE-LESSON-22NOV.md

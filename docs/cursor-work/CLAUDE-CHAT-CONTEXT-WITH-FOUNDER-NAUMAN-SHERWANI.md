@@ -5984,3 +5984,5 @@ S4 written (E164 + Rust + browser). Install order: 1 sql-run (auto E164, then CH
 - 25 Nov 2026 07:15 PKT B13 T4h/T4i AD35 SQL = GREEN (SQL layer only): WIRED: YES / REAL: YES, TECH-LAW CHECKED, TESTED: scratch PG16 two-pass, non-superuser editor 27/27, 45k ledger; his server paste 07:15: 35 of 35 files already in the database, their CHECK passed, ran now none, newest AD35. Rust signer, Storage Box copy, Rust doors and picker NOT built. RULE 52 COMBO S=yes M=N/A L=yes.
 
 - 25 Nov 2026 07:2x PKT WHERE WE STAND counted in ALL-PHASES-IN-ORDER: Folder 1 Dashboard 15 steps, 11 done, 4 open; cards 22 rows, 15 done, 7 open; B13 8 sub-steps open (T3d, T4f, T4h Rust, T4i Rust + picker, T5, T6, Z4b-3, Z4c). Notes only. RULE 52 COMBO S=yes M=N/A L=yes.
+
+- 25 Nov 2026 07:2x PKT his FINAL DATE 5 Dec 2026 for the whole Admin Desk; DATES-5DEC-PLAN-25NOV.md gives a date to every phase (Dashboard folder through 3 Dec, folders 2..9 on 4-5 Dec as target, B7/BL-05/BL-27 NOT YET). Notes only. RULE 52 COMBO S=yes M=N/A L=yes.
