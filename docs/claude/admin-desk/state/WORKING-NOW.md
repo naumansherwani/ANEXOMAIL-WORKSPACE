@@ -1,4 +1,4 @@
-# ADMIN DESK WORKING NOW (manual checkpoint, 25 Nov 2026 07:40 PKT) - read this FIRST for the Desk after a compaction
+# ADMIN DESK WORKING NOW (auto snapshot before a compaction, 25 Nov 2026 07:40 PKT) - read this FIRST for the Desk after a compaction
 LAW: GATE IS THE FINAL AUTHORITY (his 24 Nov 2026 09:29 PKT): a commit happens ONLY when rules-gate.py approves; never cheat or loosen a gate; docs/claude/GATE-FINAL-AUTHORITY-LAW-24NOV.md
 LAW: RULE 52 COMBO (his 24 Nov 2026 11:11 PKT): RFC 9421 + IETF WIMSE HTTP-signature (S signed calls), RFC 7489 (M mail identity), OWASP Logging (L) in EVERY phase of founder, awam and Desk; contract line RULE 52 COMBO: S= M= L=; docs/claude/RULE-52-COMBO-LAW-24NOV.md
 DOING: T4i picker GREEN: his install paste 07:3x SAME + my live Chrome look; next T4h Rust signer
@@ -68,6 +68,7 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 ## Desk ports on his server: TCP 127.0.0.1:4400 (loopback) + UDP 4400 (own HTTP/3, ufw open); public TCP 443 via founder SNI front -> awam-edge -> Caddy -> Desk; Desk cert copy /etc/anexomail/tls/desk (root only, systemd LoadCredential)
 
 ## Last 8 Desk commits
+- e097ebc7 25 Nov 07:40 Desk: T4i GREEN, T4h signer next
 - 2a131cdc 25 Nov 07:33 ledger line dd8816d1
 - dd8816d1 25 Nov 07:33 Desk: T4i Rust registry doors + picker screen (web install)
 - b1368897 25 Nov 07:27 ledger line 0424a1b0
@@ -75,10 +76,9 @@ FOLDER: canonical docs/claude/admin-desk/ (edit here) + identical root copy admi
 - 59aabafc 25 Nov 07:21 ledger line e805ad5d
 - e805ad5d 25 Nov 07:21 Desk: final date 5 Dec, dates for all phases
 - 803dd08e 25 Nov 07:18 ledger line a8a77ad2
-- a8a77ad2 25 Nov 07:18 Desk: where we stand and Dashboard phases left counted
 
 ## Uncommitted Desk files
-MM docs/claude/admin-desk/state/WORKING-NOW.md
+ M docs/claude/admin-desk/state/WORKING-NOW.md
 
 ## Gate rows (admin-desk/gates/DESK-FEATURES.json)
 warn R3a2-dbsc now holds in code: change its status to code in admin-desk/gates/DESK-FEATURES.json
